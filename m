@@ -1,104 +1,67 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [RFC, PATCH, RESEND] spi, spidev: Add support for long SPI
- transfers
-Date: Tue, 25 Nov 2014 22:25:56 +0000
-Message-ID: <20141125222556.GA7712@sirena.org.uk>
-References: <1416853893-1993-1-git-send-email-andrew.smirnov@gmail.com>
- <20141125124229.GY7712@sirena.org.uk>
- <CAHQ1cqGvDft1t5MkaqT-xsfBygdghA3mK_a7x+Z3L6HtvqrwhA@mail.gmail.com>
- <20141125134048.GE7712@sirena.org.uk>
- <CAHQ1cqHSdV4XTxwnPYfdBK8mVYQk9O3akynSM_hUGmVDMRU3FA@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="kE3bP8KkoMMpyhFK"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Andrey Yurovsky <yurovsky-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Andrey Smirnov <andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Weike Chen <alvin.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 0/2 v4] SPI: spi-pxa2xx: Add support for Intel Quark X1000 SPI controller
+Date: Wed, 26 Nov 2014 02:35:08 -0800
+Message-ID: <1416998110-4856-1-git-send-email-alvin.chen@intel.com>
+Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Boon Leong Ong <boon.leong.ong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Hock Leong Kweh <hock.leong.kweh-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Alvin Chen <alvin.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAHQ1cqHSdV4XTxwnPYfdBK8mVYQk9O3akynSM_hUGmVDMRU3FA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hi,
+Intel Quark X1000 consists of two SPI controllers which can be PCI enumerated.
+SPI-PXA2XX PCI layer doesn't support it. Thus, we add support for Intel Quark
+X1000 SPI as well.
 
---kE3bP8KkoMMpyhFK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+---
+v4:
+[PATCH 1/2]
+* No changes.
+[PATCH 2/2]
+* Move all Quark specific macros out of #ifdef 'CONFIG_ARCH_PXA'.
 
-On Tue, Nov 25, 2014 at 01:18:45PM -0800, Andrey Smirnov wrote:
+v3:
+[PATCH 1/2]
+* Improve the commit message.
+* A couple of minor fixes.
+[PATCH 2/2]
+* Set '.num_chipselect' to '1' instead of '4'.
+* A couple of minor fixes.
 
-> >> in my wording of the summary and not use the word "transfer" anywhere,
-> >> but it looks like I slipped twice and that might have contributed to
-> >> this confusion. I apologize for this and hope that my comments
-> >> clarified my meaning/intent
+v2:
+  Split into two patches: one is for helper functions,
+  and another is for quark supporting.
 
-> > Sorry it's still not at all clear, please re-read what I wrote about
-> > what bits_per_word means since I really don't think you've understood
-> > what it's for.
+[PATCH 1/2]
+* Add helper functions to access registers.
+* Use 'switch' instead of 'if-else'.
+[PATCH 2/2]
+* Use 'switch' instead of 'if-else'.
+* Add comments for the 'dds'&'clk_div' caculation.
+* A couple of minor fixes.
 
-> OK, I think I use too generic terms and descriptions and maybe that's
-> why it is not very clear what I mean. Just to give more context I am
-> working with i.MX6 SPI peripheral, and AFAIK I have two options of
-> using it:
+Weike Chen (2):
+  SPI: spi-pxa2xx: Add helpers for regiseters' accessing
+  SPI: spi-pxa2xx: SPI support for Intel Quark X1000
 
-Ah, i.MX...  When I've worked with it I managed the chip select with
-GPIO since it was flipping the chip select per word.
+ drivers/spi/spi-pxa2xx-pci.c |    8 ++
+ drivers/spi/spi-pxa2xx.c     |  304 ++++++++++++++++++++++++++++++++++++------
+ drivers/spi/spi-pxa2xx.h     |   16 ++-
+ include/linux/pxa2xx_ssp.h   |   20 +++
+ 4 files changed, 303 insertions(+), 45 deletions(-)
 
-> - Use a generic GPIO as SS/CS. This way everything works exactly as
-> you describe, but unfortunately using GPIO leads to a significant
-> overhead for SS/CS assertion/deassertion.
+-- 
+1.7.9.5
 
-It's really surprising that it's expensive to use a GPIO, I've not seen
-other users complaining about that.  Do we understand why (I'm guessing
-you have some extremely performance sensitive application here so you're
-just more picky than most)?
-
-> - Use hardware controlled SS/CS in which case peripheral toggles the
-> line every "burst" it transmits, "burst" is n bits where n can be from
-> 1 to 2^12
->  For 1 <= n <= 32, and software SS/CS the concept of a "burst" matches
-> the meaning of "bits_per_word" field and this is exactly how it is
-> setup in the driver.
-
-But if we go over 32 bits it doesn't do the byte swapping?  Hardware
-designers are wonderful, creative people sometimes.  In general this
-isn't going to be sufficient for all transfers even with the non swapped
-case since it means we can't do more than one transfer per message
-unless we start coalescing in the core and putting in dummies for cases
-where transfers change (we should do these things, they're a win in
-general since we can just set the message up and let the hardware do the
-transfer, but it's not completely trivial).
-
-> So with all of this in mind what I am trying to achive is to have
-> longest transaction with minimal CS/SS switching overhead. The change
-> in my patch allows me to set the length of a burst to its limit.
-
-The driver should probably just be doing that where it can, it seems
-like the burst size should be based on the transfer length not the word
-size - we might need to just manually mangle the data for short
-transfers.
-
-The *easiest* thing would be to manage as a GPIO, though - it's normally
-fast enough.  Some more information about your application might help -
-what sort of transfers is it doing for example?
-
---kE3bP8KkoMMpyhFK
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBAgAGBQJUdQHzAAoJECTWi3JdVIfQ9KAH/3d3Mf1j2E7fKxc6fmjm64hq
-8lWnwEY20IwRtZUR8xmDbjdGrXrWej8x8i+6CZqgMwA2fKVrWdn1awRK/DnGGBWF
-Bofxmz95LBwHxlnPgpM52J+bhRLaoQiLIw+W9yh/NhgXRZ8cZsEIxpEl2gwevLiX
-71GxDhwx4XHXfZozz8lrUIEPC6EueCw1MUBEyeM9uTM+vrO0rzLxYOzIZWx2aek9
-7+IOZVr10WNRsQ0Jb04GikqzgUMg3B71bSTV08tntZ36Uu+eGqrzmdkc9+ROXqe+
-TIHPbH7YgXikT8anP9s/OJFf9f90i0OXjWKIy4HfPGG0KNmxMR2rx2IsJDxB9uA=
-=cCZP
------END PGP SIGNATURE-----
-
---kE3bP8KkoMMpyhFK--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

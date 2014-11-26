@@ -1,230 +1,890 @@
-From: Weike Chen <alvin.chen@intel.com>
-Subject: [PATCH 1/2 v4] SPI: spi-pxa2xx: Add helpers for regiseters' accessing
-Date: Wed, 26 Nov 2014 02:35:09 -0800
-Message-ID: <1416998110-4856-2-git-send-email-alvin.chen@intel.com>
-References: <1416998110-4856-1-git-send-email-alvin.chen@intel.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Boon Leong Ong <boon.leong.ong@intel.com>,
-	Hock Leong Kweh <hock.leong.kweh@intel.com>,
-	Alvin Chen <alvin.chen@intel.com>,
-	Olof Johansson <olof@lixom.net>
-To: Mark Brown <broonie@kernel.org>, Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>
+From: Laurentiu Palcu <laurentiu.palcu@intel.com>
+Subject: [PATCH v6 1/2] spi: add support for DLN-2 USB-SPI adapter
+Date: Wed, 26 Nov 2014 12:09:09 +0200
+Message-ID: <1416996549-29328-1-git-send-email-laurentiu.palcu@intel.com>
+References: <1416312599-5176-2-git-send-email-laurentiu.palcu@intel.com>
+Cc: Octavian Purdila <octavian.purdila@intel.com>,
+	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Laurentiu Palcu <laurentiu.palcu@intel.com>
+To: Mark Brown <broonie@kernel.org>,
+	Samuel Ortiz <sameo@linux.intel.com>,
+	Lee Jones <lee.jones@linaro.org>,
+	Johan Havold <johan@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1416998110-4856-1-git-send-email-alvin.chen@intel.com>
+In-Reply-To: <1416312599-5176-2-git-send-email-laurentiu.palcu@intel.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-There are several registers for SPI, and the registers of 'SSCR0' and 'SSCR1'
-are accessed frequently. This path is to introduce helper functions to
-simplify the accessing of 'SSCR0' and 'SSCR1'.
+This adds support for Diolan DLN2 USB-SPI adapter.
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Weike Chen <alvin.chen@intel.com>
+Information about the USB protocol interface can be found in the
+Programmer's Reference Manual [1], see section 5.4.6 for the SPI
+master module commands and responses.
+
+[1] https://www.diolan.com/downloads/dln-api-manual.pdf
+
+Signed-off-by: Laurentiu Palcu <laurentiu.palcu@intel.com>
 ---
- drivers/spi/spi-pxa2xx.c |  107 ++++++++++++++++++++++++++++++++++++----------
- 1 file changed, 84 insertions(+), 23 deletions(-)
+Changes in v6:
+ * use get_unaligned macro in dln2_spi_copy_from_buf() for BE 32 bit case since
+   the DLN2 RX buffer is just 2 byte aligned. Also, document this in the
+   function comment;
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index d8a105f..770b581 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -80,6 +80,73 @@ static bool is_lpss_ssp(const struct driver_data *drv_data)
- 	return drv_data->ssp_type == LPSS_SSP;
- }
+laurentiu
+
+ drivers/spi/Kconfig    |  10 +
+ drivers/spi/Makefile   |   1 +
+ drivers/spi/spi-dln2.c | 809 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 820 insertions(+)
+ create mode 100644 drivers/spi/spi-dln2.c
+
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 62e2242..a52a910 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -176,6 +176,16 @@ config SPI_DAVINCI
+ 	help
+ 	  SPI master controller for DaVinci/DA8x/OMAP-L/AM1x SPI modules.
  
-+static u32 pxa2xx_spi_get_ssrc1_change_mask(const struct driver_data *drv_data)
++config SPI_DLN2
++       tristate "Diolan DLN-2 USB SPI adapter"
++       depends on MFD_DLN2
++       help
++         If you say yes to this option, support will be included for Diolan
++         DLN2, a USB to SPI interface.
++
++         This driver can also be built as a module.  If so, the module
++         will be called spi-dln2.
++
+ config SPI_EFM32
+ 	tristate "EFM32 SPI controller"
+ 	depends on OF && ARM && (ARCH_EFM32 || COMPILE_TEST)
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 762da07..b315da2 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -26,6 +26,7 @@ obj-$(CONFIG_SPI_CADENCE)		+= spi-cadence.o
+ obj-$(CONFIG_SPI_CLPS711X)		+= spi-clps711x.o
+ obj-$(CONFIG_SPI_COLDFIRE_QSPI)		+= spi-coldfire-qspi.o
+ obj-$(CONFIG_SPI_DAVINCI)		+= spi-davinci.o
++obj-$(CONFIG_SPI_DLN2)			+= spi-dln2.o
+ obj-$(CONFIG_SPI_DESIGNWARE)		+= spi-dw.o
+ obj-$(CONFIG_SPI_DW_MMIO)		+= spi-dw-mmio.o
+ obj-$(CONFIG_SPI_DW_PCI)		+= spi-dw-midpci.o
+diff --git a/drivers/spi/spi-dln2.c b/drivers/spi/spi-dln2.c
+new file mode 100644
+index 0000000..cad52b2
+--- /dev/null
++++ b/drivers/spi/spi-dln2.c
+@@ -0,0 +1,809 @@
++/*
++ * Driver for the Diolan DLN-2 USB-SPI adapter
++ *
++ * Copyright (c) 2014 Intel Corporation
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation, version 2.
++ */
++
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/platform_device.h>
++#include <linux/mfd/dln2.h>
++#include <linux/spi/spi.h>
++
++#define DLN2_SPI_MODULE_ID		0x02
++#define DLN2_SPI_CMD(cmd)		DLN2_CMD(cmd, DLN2_SPI_MODULE_ID)
++
++/* SPI commands */
++#define DLN2_SPI_GET_PORT_COUNT			DLN2_SPI_CMD(0x00)
++#define DLN2_SPI_ENABLE				DLN2_SPI_CMD(0x11)
++#define DLN2_SPI_DISABLE			DLN2_SPI_CMD(0x12)
++#define DLN2_SPI_IS_ENABLED			DLN2_SPI_CMD(0x13)
++#define DLN2_SPI_SET_MODE			DLN2_SPI_CMD(0x14)
++#define DLN2_SPI_GET_MODE			DLN2_SPI_CMD(0x15)
++#define DLN2_SPI_SET_FRAME_SIZE			DLN2_SPI_CMD(0x16)
++#define DLN2_SPI_GET_FRAME_SIZE			DLN2_SPI_CMD(0x17)
++#define DLN2_SPI_SET_FREQUENCY			DLN2_SPI_CMD(0x18)
++#define DLN2_SPI_GET_FREQUENCY			DLN2_SPI_CMD(0x19)
++#define DLN2_SPI_READ_WRITE			DLN2_SPI_CMD(0x1A)
++#define DLN2_SPI_READ				DLN2_SPI_CMD(0x1B)
++#define DLN2_SPI_WRITE				DLN2_SPI_CMD(0x1C)
++#define DLN2_SPI_SET_DELAY_BETWEEN_SS		DLN2_SPI_CMD(0x20)
++#define DLN2_SPI_GET_DELAY_BETWEEN_SS		DLN2_SPI_CMD(0x21)
++#define DLN2_SPI_SET_DELAY_AFTER_SS		DLN2_SPI_CMD(0x22)
++#define DLN2_SPI_GET_DELAY_AFTER_SS		DLN2_SPI_CMD(0x23)
++#define DLN2_SPI_SET_DELAY_BETWEEN_FRAMES	DLN2_SPI_CMD(0x24)
++#define DLN2_SPI_GET_DELAY_BETWEEN_FRAMES	DLN2_SPI_CMD(0x25)
++#define DLN2_SPI_SET_SS				DLN2_SPI_CMD(0x26)
++#define DLN2_SPI_GET_SS				DLN2_SPI_CMD(0x27)
++#define DLN2_SPI_RELEASE_SS			DLN2_SPI_CMD(0x28)
++#define DLN2_SPI_SS_VARIABLE_ENABLE		DLN2_SPI_CMD(0x2B)
++#define DLN2_SPI_SS_VARIABLE_DISABLE		DLN2_SPI_CMD(0x2C)
++#define DLN2_SPI_SS_VARIABLE_IS_ENABLED		DLN2_SPI_CMD(0x2D)
++#define DLN2_SPI_SS_AAT_ENABLE			DLN2_SPI_CMD(0x2E)
++#define DLN2_SPI_SS_AAT_DISABLE			DLN2_SPI_CMD(0x2F)
++#define DLN2_SPI_SS_AAT_IS_ENABLED		DLN2_SPI_CMD(0x30)
++#define DLN2_SPI_SS_BETWEEN_FRAMES_ENABLE	DLN2_SPI_CMD(0x31)
++#define DLN2_SPI_SS_BETWEEN_FRAMES_DISABLE	DLN2_SPI_CMD(0x32)
++#define DLN2_SPI_SS_BETWEEN_FRAMES_IS_ENABLED	DLN2_SPI_CMD(0x33)
++#define DLN2_SPI_SET_CPHA			DLN2_SPI_CMD(0x34)
++#define DLN2_SPI_GET_CPHA			DLN2_SPI_CMD(0x35)
++#define DLN2_SPI_SET_CPOL			DLN2_SPI_CMD(0x36)
++#define DLN2_SPI_GET_CPOL			DLN2_SPI_CMD(0x37)
++#define DLN2_SPI_SS_MULTI_ENABLE		DLN2_SPI_CMD(0x38)
++#define DLN2_SPI_SS_MULTI_DISABLE		DLN2_SPI_CMD(0x39)
++#define DLN2_SPI_SS_MULTI_IS_ENABLED		DLN2_SPI_CMD(0x3A)
++#define DLN2_SPI_GET_SUPPORTED_MODES		DLN2_SPI_CMD(0x40)
++#define DLN2_SPI_GET_SUPPORTED_CPHA_VALUES	DLN2_SPI_CMD(0x41)
++#define DLN2_SPI_GET_SUPPORTED_CPOL_VALUES	DLN2_SPI_CMD(0x42)
++#define DLN2_SPI_GET_SUPPORTED_FRAME_SIZES	DLN2_SPI_CMD(0x43)
++#define DLN2_SPI_GET_SS_COUNT			DLN2_SPI_CMD(0x44)
++#define DLN2_SPI_GET_MIN_FREQUENCY		DLN2_SPI_CMD(0x45)
++#define DLN2_SPI_GET_MAX_FREQUENCY		DLN2_SPI_CMD(0x46)
++#define DLN2_SPI_GET_MIN_DELAY_BETWEEN_SS	DLN2_SPI_CMD(0x47)
++#define DLN2_SPI_GET_MAX_DELAY_BETWEEN_SS	DLN2_SPI_CMD(0x48)
++#define DLN2_SPI_GET_MIN_DELAY_AFTER_SS		DLN2_SPI_CMD(0x49)
++#define DLN2_SPI_GET_MAX_DELAY_AFTER_SS		DLN2_SPI_CMD(0x4A)
++#define DLN2_SPI_GET_MIN_DELAY_BETWEEN_FRAMES	DLN2_SPI_CMD(0x4B)
++#define DLN2_SPI_GET_MAX_DELAY_BETWEEN_FRAMES	DLN2_SPI_CMD(0x4C)
++
++#define DLN2_SPI_MAX_XFER_SIZE			256
++#define DLN2_SPI_BUF_SIZE			(DLN2_SPI_MAX_XFER_SIZE + 16)
++#define DLN2_SPI_ATTR_LEAVE_SS_LOW		BIT(0)
++#define DLN2_TRANSFERS_WAIT_COMPLETE		1
++#define DLN2_TRANSFERS_CANCEL			0
++
++struct dln2_spi {
++	struct platform_device *pdev;
++	struct spi_master *master;
++	u8 port;
++
++	/*
++	 * This buffer will be used mainly for read/write operations. Since
++	 * they're quite large, we cannot use the stack. Protection is not
++	 * needed because all SPI communication is serialized by the SPI core.
++	 */
++	void *buf;
++
++	u8 bpw;
++	u32 speed;
++	u16 mode;
++	u8 cs;
++};
++
++/*
++ * Enable/Disable SPI module. The disable command will wait for transfers to
++ * complete first.
++ */
++static int dln2_spi_enable(struct dln2_spi *dln2, bool enable)
 +{
-+	switch (drv_data->ssp_type) {
-+	default:
-+		return SSCR1_CHANGE_MASK;
++	int ret;
++	u16 cmd;
++	struct {
++		u8 port;
++		u8 wait_for_completion;
++	} tx;
++	unsigned len = sizeof(tx);
++
++	tx.port = dln2->port;
++
++	if (enable) {
++		cmd = DLN2_SPI_ENABLE;
++		len -= sizeof(tx.wait_for_completion);
++	} else {
++		tx.wait_for_completion = DLN2_TRANSFERS_WAIT_COMPLETE;
++		cmd = DLN2_SPI_DISABLE;
 +	}
++
++	ret = dln2_transfer_tx(dln2->pdev, cmd, &tx, len);
++	if (ret < 0)
++		return ret;
++
++	return 0;
 +}
 +
-+static u32
-+pxa2xx_spi_get_rx_default_thre(const struct driver_data *drv_data)
++/*
++ * Select/unselect multiple CS lines. The selected lines will be automatically
++ * toggled LOW/HIGH by the board firmware during transfers, provided they're
++ * enabled first.
++ *
++ * Ex: cs_mask = 0x03 -> CS0 & CS1 will be selected and the next WR/RD operation
++ *                       will toggle the lines LOW/HIGH automatically.
++ */
++static int dln2_spi_cs_set(struct dln2_spi *dln2, u8 cs_mask)
 +{
-+	switch (drv_data->ssp_type) {
-+	default:
-+		return RX_THRESH_DFLT;
-+	}
++	struct {
++		u8 port;
++		u8 cs;
++	} tx;
++
++	tx.port = dln2->port;
++
++	/*
++	 * According to Diolan docs, "a slave device can be selected by changing
++	 * the corresponding bit value to 0". The rest must be set to 1. Hence
++	 * the bitwise NOT in front.
++	 */
++	tx.cs = ~cs_mask;
++
++	return dln2_transfer_tx(dln2->pdev, DLN2_SPI_SET_SS, &tx, sizeof(tx));
 +}
 +
-+static bool pxa2xx_spi_txfifo_full(const struct driver_data *drv_data)
++/*
++ * Select one CS line. The other lines will be un-selected.
++ */
++static int dln2_spi_cs_set_one(struct dln2_spi *dln2, u8 cs)
 +{
-+	void __iomem *reg = drv_data->ioaddr;
-+	u32 mask;
-+
-+	switch (drv_data->ssp_type) {
-+	default:
-+		mask = SSSR_TFL_MASK;
-+		break;
-+	}
-+
-+	return (read_SSSR(reg) & mask) == mask;
++	return dln2_spi_cs_set(dln2, BIT(cs));
 +}
 +
-+static void pxa2xx_spi_clear_rx_thre(const struct driver_data *drv_data,
-+				     u32 *sccr1_reg)
++/*
++ * Enable/disable CS lines for usage. The module has to be disabled first.
++ */
++static int dln2_spi_cs_enable(struct dln2_spi *dln2, u8 cs_mask, bool enable)
 +{
-+	u32 mask;
++	struct {
++		u8 port;
++		u8 cs;
++	} tx;
++	u16 cmd;
 +
-+	switch (drv_data->ssp_type) {
-+	default:
-+		mask = SSCR1_RFT;
-+		break;
-+	}
-+	*sccr1_reg &= ~mask;
++	tx.port = dln2->port;
++	tx.cs = cs_mask;
++	cmd = enable ? DLN2_SPI_SS_MULTI_ENABLE : DLN2_SPI_SS_MULTI_DISABLE;
++
++	return dln2_transfer_tx(dln2->pdev, cmd, &tx, sizeof(tx));
 +}
 +
-+static void pxa2xx_spi_set_rx_thre(const struct driver_data *drv_data,
-+				   u32 *sccr1_reg, u32 threshold)
++static int dln2_spi_cs_enable_all(struct dln2_spi *dln2, bool enable)
 +{
-+	switch (drv_data->ssp_type) {
-+	default:
-+		*sccr1_reg |= SSCR1_RxTresh(threshold);
-+		break;
-+	}
++	u8 cs_mask = GENMASK(dln2->master->num_chipselect - 1, 0);
++
++	return dln2_spi_cs_enable(dln2, cs_mask, enable);
 +}
 +
-+static u32 pxa2xx_configure_sscr0(const struct driver_data *drv_data,
-+				  u32 clk_div, u8 bits)
++static int dln2_spi_get_cs_num(struct dln2_spi *dln2, u16 *cs_num)
 +{
-+	switch (drv_data->ssp_type) {
-+	default:
-+		return clk_div
-+			| SSCR0_Motorola
-+			| SSCR0_DataSize(bits > 16 ? bits - 16 : bits)
-+			| SSCR0_SSE
-+			| (bits > 16 ? SSCR0_EDSS : 0);
-+	}
++	int ret;
++	struct {
++		u8 port;
++	} tx;
++	struct {
++		__le16 cs_count;
++	} rx;
++	unsigned rx_len = sizeof(rx);
++
++	tx.port = dln2->port;
++	ret = dln2_transfer(dln2->pdev, DLN2_SPI_GET_SS_COUNT, &tx, sizeof(tx),
++			    &rx, &rx_len);
++	if (ret < 0)
++		return ret;
++	if (rx_len < sizeof(rx))
++		return -EPROTO;
++
++	*cs_num = le16_to_cpu(rx.cs_count);
++
++	dev_dbg(&dln2->pdev->dev, "cs_num = %d\n", *cs_num);
++
++	return 0;
 +}
 +
- /*
-  * Read and write LPSS SSP private registers. Caller must first check that
-  * is_lpss_ssp() returns true before these can be called.
-@@ -234,7 +301,7 @@ static int null_writer(struct driver_data *drv_data)
- 	void __iomem *reg = drv_data->ioaddr;
- 	u8 n_bytes = drv_data->n_bytes;
- 
--	if (((read_SSSR(reg) & SSSR_TFL_MASK) == SSSR_TFL_MASK)
-+	if (pxa2xx_spi_txfifo_full(drv_data)
- 		|| (drv_data->tx == drv_data->tx_end))
- 		return 0;
- 
-@@ -262,7 +329,7 @@ static int u8_writer(struct driver_data *drv_data)
- {
- 	void __iomem *reg = drv_data->ioaddr;
- 
--	if (((read_SSSR(reg) & SSSR_TFL_MASK) == SSSR_TFL_MASK)
-+	if (pxa2xx_spi_txfifo_full(drv_data)
- 		|| (drv_data->tx == drv_data->tx_end))
- 		return 0;
- 
-@@ -289,7 +356,7 @@ static int u16_writer(struct driver_data *drv_data)
- {
- 	void __iomem *reg = drv_data->ioaddr;
- 
--	if (((read_SSSR(reg) & SSSR_TFL_MASK) == SSSR_TFL_MASK)
-+	if (pxa2xx_spi_txfifo_full(drv_data)
- 		|| (drv_data->tx == drv_data->tx_end))
- 		return 0;
- 
-@@ -316,7 +383,7 @@ static int u32_writer(struct driver_data *drv_data)
- {
- 	void __iomem *reg = drv_data->ioaddr;
- 
--	if (((read_SSSR(reg) & SSSR_TFL_MASK) == SSSR_TFL_MASK)
-+	if (pxa2xx_spi_txfifo_full(drv_data)
- 		|| (drv_data->tx == drv_data->tx_end))
- 		return 0;
- 
-@@ -508,8 +575,9 @@ static irqreturn_t interrupt_transfer(struct driver_data *drv_data)
- 		 * remaining RX bytes.
- 		 */
- 		if (pxa25x_ssp_comp(drv_data)) {
-+			u32 rx_thre;
- 
--			sccr1_reg &= ~SSCR1_RFT;
-+			pxa2xx_spi_clear_rx_thre(drv_data, &sccr1_reg);
- 
- 			bytes_left = drv_data->rx_end - drv_data->rx;
- 			switch (drv_data->n_bytes) {
-@@ -519,10 +587,11 @@ static irqreturn_t interrupt_transfer(struct driver_data *drv_data)
- 				bytes_left >>= 1;
- 			}
- 
--			if (bytes_left > RX_THRESH_DFLT)
--				bytes_left = RX_THRESH_DFLT;
-+			rx_thre = pxa2xx_spi_get_rx_default_thre(drv_data);
-+			if (rx_thre > bytes_left)
-+				rx_thre = bytes_left;
- 
--			sccr1_reg |= SSCR1_RxTresh(bytes_left);
-+			pxa2xx_spi_set_rx_thre(drv_data, &sccr1_reg, rx_thre);
- 		}
- 		write_SSCR1(sccr1_reg, reg);
- 	}
-@@ -613,6 +682,7 @@ static void pump_transfers(unsigned long data)
- 	u32 cr1;
- 	u32 dma_thresh = drv_data->cur_chip->dma_threshold;
- 	u32 dma_burst = drv_data->cur_chip->dma_burst_size;
-+	u32 change_mask = pxa2xx_spi_get_ssrc1_change_mask(drv_data);
- 
- 	/* Get current state information */
- 	message = drv_data->cur_msg;
-@@ -731,11 +801,7 @@ static void pump_transfers(unsigned long data)
- 						     "pump_transfers: DMA burst size reduced to match bits_per_word\n");
- 		}
- 
--		cr0 = clk_div
--			| SSCR0_Motorola
--			| SSCR0_DataSize(bits > 16 ? bits - 16 : bits)
--			| SSCR0_SSE
--			| (bits > 16 ? SSCR0_EDSS : 0);
-+		cr0 = pxa2xx_configure_sscr0(drv_data, clk_div, bits);
- 	}
- 
- 	message->state = RUNNING_STATE;
-@@ -772,16 +838,15 @@ static void pump_transfers(unsigned long data)
- 	}
- 
- 	/* see if we need to reload the config registers */
--	if ((read_SSCR0(reg) != cr0)
--		|| (read_SSCR1(reg) & SSCR1_CHANGE_MASK) !=
--			(cr1 & SSCR1_CHANGE_MASK)) {
-+	if ((read_SSCR0(reg) != cr0) ||
-+	    (read_SSCR1(reg) & change_mask) != (cr1 & change_mask)) {
- 
- 		/* stop the SSP, and update the other bits */
- 		write_SSCR0(cr0 & ~SSCR0_SSE, reg);
- 		if (!pxa25x_ssp_comp(drv_data))
- 			write_SSTO(chip->timeout, reg);
- 		/* first set CR1 without interrupt and service enables */
--		write_SSCR1(cr1 & SSCR1_CHANGE_MASK, reg);
-+		write_SSCR1(cr1 & change_mask, reg);
- 		/* restart the SSP */
- 		write_SSCR0(cr0, reg);
- 
-@@ -959,12 +1024,8 @@ static int setup(struct spi_device *spi)
- 	clk_div = ssp_get_clk_div(drv_data, spi->max_speed_hz);
- 	chip->speed_hz = spi->max_speed_hz;
- 
--	chip->cr0 = clk_div
--			| SSCR0_Motorola
--			| SSCR0_DataSize(spi->bits_per_word > 16 ?
--				spi->bits_per_word - 16 : spi->bits_per_word)
--			| SSCR0_SSE
--			| (spi->bits_per_word > 16 ? SSCR0_EDSS : 0);
-+	chip->cr0 = pxa2xx_configure_sscr0(drv_data, clk_div,
-+					   spi->bits_per_word);
- 	chip->cr1 &= ~(SSCR1_SPO | SSCR1_SPH);
- 	chip->cr1 |= (((spi->mode & SPI_CPHA) != 0) ? SSCR1_SPH : 0)
- 			| (((spi->mode & SPI_CPOL) != 0) ? SSCR1_SPO : 0);
++static int dln2_spi_get_speed(struct dln2_spi *dln2, u16 cmd, u32 *freq)
++{
++	int ret;
++	struct {
++		u8 port;
++	} tx;
++	struct {
++		__le32 speed;
++	} rx;
++	unsigned rx_len = sizeof(rx);
++
++	tx.port = dln2->port;
++
++	ret = dln2_transfer(dln2->pdev, cmd, &tx, sizeof(tx), &rx, &rx_len);
++	if (ret < 0)
++		return ret;
++	if (rx_len < sizeof(rx))
++		return -EPROTO;
++
++	*freq = le32_to_cpu(rx.speed);
++
++	return 0;
++}
++
++/*
++ * Get bus min/max frequencies.
++ */
++static int dln2_spi_get_speed_range(struct dln2_spi *dln2, u32 *fmin, u32 *fmax)
++{
++	int ret;
++
++	ret = dln2_spi_get_speed(dln2, DLN2_SPI_GET_MIN_FREQUENCY, fmin);
++	if (ret < 0)
++		return ret;
++
++	ret = dln2_spi_get_speed(dln2, DLN2_SPI_GET_MAX_FREQUENCY, fmax);
++	if (ret < 0)
++		return ret;
++
++	dev_dbg(&dln2->pdev->dev, "freq_min = %d, freq_max = %d\n",
++		*fmin, *fmax);
++
++	return 0;
++}
++
++/*
++ * Set the bus speed. The module will automatically round down to the closest
++ * available frequency and returns it. The module has to be disabled first.
++ */
++static int dln2_spi_set_speed(struct dln2_spi *dln2, u32 speed)
++{
++	int ret;
++	struct {
++		u8 port;
++		__le32 speed;
++	} __packed tx;
++	struct {
++		__le32 speed;
++	} rx;
++	int rx_len = sizeof(rx);
++
++	tx.port = dln2->port;
++	tx.speed = cpu_to_le32(speed);
++
++	ret = dln2_transfer(dln2->pdev, DLN2_SPI_SET_FREQUENCY, &tx, sizeof(tx),
++			    &rx, &rx_len);
++	if (ret < 0)
++		return ret;
++	if (rx_len < sizeof(rx))
++		return -EPROTO;
++
++	return 0;
++}
++
++/*
++ * Change CPOL & CPHA. The module has to be disabled first.
++ */
++static int dln2_spi_set_mode(struct dln2_spi *dln2, u8 mode)
++{
++	struct {
++		u8 port;
++		u8 mode;
++	} tx;
++
++	tx.port = dln2->port;
++	tx.mode = mode;
++
++	return dln2_transfer_tx(dln2->pdev, DLN2_SPI_SET_MODE, &tx, sizeof(tx));
++}
++
++/*
++ * Change frame size. The module has to be disabled first.
++ */
++static int dln2_spi_set_bpw(struct dln2_spi *dln2, u8 bpw)
++{
++	struct {
++		u8 port;
++		u8 bpw;
++	} tx;
++
++	tx.port = dln2->port;
++	tx.bpw = bpw;
++
++	return dln2_transfer_tx(dln2->pdev, DLN2_SPI_SET_FRAME_SIZE,
++				&tx, sizeof(tx));
++}
++
++static int dln2_spi_get_supported_frame_sizes(struct dln2_spi *dln2,
++					      u32 *bpw_mask)
++{
++	int ret;
++	struct {
++		u8 port;
++	} tx;
++	struct {
++		u8 count;
++		u8 frame_sizes[36];
++	} *rx = dln2->buf;
++	unsigned rx_len = sizeof(*rx);
++	int i;
++
++	tx.port = dln2->port;
++
++	ret = dln2_transfer(dln2->pdev, DLN2_SPI_GET_SUPPORTED_FRAME_SIZES,
++			    &tx, sizeof(tx), rx, &rx_len);
++	if (ret < 0)
++		return ret;
++	if (rx_len < sizeof(*rx))
++		return -EPROTO;
++	if (rx->count > ARRAY_SIZE(rx->frame_sizes))
++		return -EPROTO;
++
++	*bpw_mask = 0;
++	for (i = 0; i < rx->count; i++)
++		*bpw_mask |= BIT(rx->frame_sizes[i] - 1);
++
++	dev_dbg(&dln2->pdev->dev, "bpw_mask = 0x%X\n", *bpw_mask);
++
++	return 0;
++}
++
++/*
++ * Copy the data to DLN2 buffer and change the byte order to LE, requested by
++ * DLN2 module. SPI core makes sure that the data length is a multiple of word
++ * size.
++ */
++static int dln2_spi_copy_to_buf(u8 *dln2_buf, const u8 *src, u16 len, u8 bpw)
++{
++#ifdef __LITTLE_ENDIAN
++	memcpy(dln2_buf, src, len);
++#else
++	if (bpw <= 8) {
++		memcpy(dln2_buf, src, len);
++	} else if (bpw <= 16) {
++		__le16 *d = (__le16 *)dln2_buf;
++		u16 *s = (u16 *)src;
++
++		len = len / 2;
++		while (len--)
++			*d++ = cpu_to_le16p(s++);
++	} else {
++		__le32 *d = (__le32 *)dln2_buf;
++		u32 *s = (u32 *)src;
++
++		len = len / 4;
++		while (len--)
++			*d++ = cpu_to_le32p(s++);
++	}
++#endif
++
++	return 0;
++}
++
++/*
++ * Copy the data from DLN2 buffer and convert to CPU byte order since the DLN2
++ * buffer is LE ordered. SPI core makes sure that the data length is a multiple
++ * of word size. The RX dln2_buf is 2 byte aligned so, for BE, we have to make
++ * sure we avoid unaligned accesses for 32 bit case.
++ */
++static int dln2_spi_copy_from_buf(u8 *dest, const u8 *dln2_buf, u16 len, u8 bpw)
++{
++#ifdef __LITTLE_ENDIAN
++	memcpy(dest, dln2_buf, len);
++#else
++	if (bpw <= 8) {
++		memcpy(dest, dln2_buf, len);
++	} else if (bpw <= 16) {
++		u16 *d = (u16 *)dest;
++		__le16 *s = (__le16 *)dln2_buf;
++
++		len = len / 2;
++		while (len--)
++			*d++ = le16_to_cpup(s++);
++	} else {
++		u32 *d = (u32 *)dest;
++		__le32 *s = (__le32 *)dln2_buf;
++
++		len = len / 4;
++		while (len--)
++			*d++ = get_unaligned_le32(s++);
++	}
++#endif
++
++	return 0;
++}
++
++/*
++ * Perform one write operation.
++ */
++static int dln2_spi_write_one(struct dln2_spi *dln2, const u8 *data,
++			      u16 data_len, u8 attr)
++{
++	struct {
++		u8 port;
++		__le16 size;
++		u8 attr;
++		u8 buf[DLN2_SPI_MAX_XFER_SIZE];
++	} __packed *tx = dln2->buf;
++	unsigned tx_len;
++
++	BUILD_BUG_ON(sizeof(*tx) > DLN2_SPI_BUF_SIZE);
++
++	if (data_len > DLN2_SPI_MAX_XFER_SIZE)
++		return -EINVAL;
++
++	tx->port = dln2->port;
++	tx->size = cpu_to_le16(data_len);
++	tx->attr = attr;
++
++	dln2_spi_copy_to_buf(tx->buf, data, data_len, dln2->bpw);
++
++	tx_len = sizeof(*tx) + data_len - DLN2_SPI_MAX_XFER_SIZE;
++	return dln2_transfer_tx(dln2->pdev, DLN2_SPI_WRITE, tx, tx_len);
++}
++
++/*
++ * Perform one read operation.
++ */
++static int dln2_spi_read_one(struct dln2_spi *dln2, u8 *data,
++			     u16 data_len, u8 attr)
++{
++	int ret;
++	struct {
++		u8 port;
++		__le16 size;
++		u8 attr;
++	} __packed tx;
++	struct {
++		__le16 size;
++		u8 buf[DLN2_SPI_MAX_XFER_SIZE];
++	} __packed *rx = dln2->buf;
++	unsigned rx_len = sizeof(*rx);
++
++	BUILD_BUG_ON(sizeof(*rx) > DLN2_SPI_BUF_SIZE);
++
++	if (data_len > DLN2_SPI_MAX_XFER_SIZE)
++		return -EINVAL;
++
++	tx.port = dln2->port;
++	tx.size = cpu_to_le16(data_len);
++	tx.attr = attr;
++
++	ret = dln2_transfer(dln2->pdev, DLN2_SPI_READ, &tx, sizeof(tx),
++			    rx, &rx_len);
++	if (ret < 0)
++		return ret;
++	if (rx_len < sizeof(rx->size) + data_len)
++		return -EPROTO;
++	if (le16_to_cpu(rx->size) != data_len)
++		return -EPROTO;
++
++	dln2_spi_copy_from_buf(data, rx->buf, data_len, dln2->bpw);
++
++	return 0;
++}
++
++/*
++ * Perform one write & read operation.
++ */
++static int dln2_spi_read_write_one(struct dln2_spi *dln2, const u8 *tx_data,
++				   u8 *rx_data, u16 data_len, u8 attr)
++{
++	int ret;
++	struct {
++		u8 port;
++		__le16 size;
++		u8 attr;
++		u8 buf[DLN2_SPI_MAX_XFER_SIZE];
++	} __packed *tx;
++	struct {
++		__le16 size;
++		u8 buf[DLN2_SPI_MAX_XFER_SIZE];
++	} __packed *rx;
++	unsigned tx_len, rx_len;
++
++	BUILD_BUG_ON(sizeof(*tx) > DLN2_SPI_BUF_SIZE ||
++		     sizeof(*rx) > DLN2_SPI_BUF_SIZE);
++
++	if (data_len > DLN2_SPI_MAX_XFER_SIZE)
++		return -EINVAL;
++
++	/*
++	 * Since this is a pseudo full-duplex communication, we're perfectly
++	 * safe to use the same buffer for both tx and rx. When DLN2 sends the
++	 * response back, with the rx data, we don't need the tx buffer anymore.
++	 */
++	tx = dln2->buf;
++	rx = dln2->buf;
++
++	tx->port = dln2->port;
++	tx->size = cpu_to_le16(data_len);
++	tx->attr = attr;
++
++	dln2_spi_copy_to_buf(tx->buf, tx_data, data_len, dln2->bpw);
++
++	tx_len = sizeof(*tx) + data_len - DLN2_SPI_MAX_XFER_SIZE;
++	rx_len = sizeof(*rx);
++
++	ret = dln2_transfer(dln2->pdev, DLN2_SPI_READ_WRITE, tx, tx_len,
++			    rx, &rx_len);
++	if (ret < 0)
++		return ret;
++	if (rx_len < sizeof(rx->size) + data_len)
++		return -EPROTO;
++	if (le16_to_cpu(rx->size) != data_len)
++		return -EPROTO;
++
++	dln2_spi_copy_from_buf(rx_data, rx->buf, data_len, dln2->bpw);
++
++	return 0;
++}
++
++/*
++ * Read/Write wrapper. It will automatically split an operation into multiple
++ * single ones due to device buffer constraints.
++ */
++static int dln2_spi_rdwr(struct dln2_spi *dln2, const u8 *tx_data,
++			 u8 *rx_data, u16 data_len, u8 attr) {
++	int ret;
++	u16 len;
++	u8 temp_attr;
++	u16 remaining = data_len;
++	u16 offset;
++
++	do {
++		if (remaining > DLN2_SPI_MAX_XFER_SIZE) {
++			len = DLN2_SPI_MAX_XFER_SIZE;
++			temp_attr = DLN2_SPI_ATTR_LEAVE_SS_LOW;
++		} else {
++			len = remaining;
++			temp_attr = attr;
++		}
++
++		offset = data_len - remaining;
++
++		if (tx_data && rx_data) {
++			ret = dln2_spi_read_write_one(dln2,
++						      tx_data + offset,
++						      rx_data + offset,
++						      len, temp_attr);
++		} else if (tx_data) {
++			ret = dln2_spi_write_one(dln2,
++						 tx_data + offset,
++						 len, temp_attr);
++		} else if (rx_data) {
++			ret = dln2_spi_read_one(dln2,
++						rx_data + offset,
++						len, temp_attr);
++		 } else {
++			return -EINVAL;
++		 }
++
++		if (ret < 0)
++			return ret;
++
++		remaining -= len;
++	} while (remaining);
++
++	return 0;
++}
++
++static int dln2_spi_prepare_message(struct spi_master *master,
++				    struct spi_message *message)
++{
++	int ret;
++	struct dln2_spi *dln2 = spi_master_get_devdata(master);
++	struct spi_device *spi = message->spi;
++
++	if (dln2->cs != spi->chip_select) {
++		ret = dln2_spi_cs_set_one(dln2, spi->chip_select);
++		if (ret < 0)
++			return ret;
++
++		dln2->cs = spi->chip_select;
++	}
++
++	return 0;
++}
++
++static int dln2_spi_transfer_setup(struct dln2_spi *dln2, u32 speed,
++				   u8 bpw, u8 mode)
++{
++	int ret;
++	bool bus_setup_change;
++
++	bus_setup_change = dln2->speed != speed || dln2->mode != mode ||
++			   dln2->bpw != bpw;
++
++	if (!bus_setup_change)
++		return 0;
++
++	ret = dln2_spi_enable(dln2, false);
++	if (ret < 0)
++		return ret;
++
++	if (dln2->speed != speed) {
++		ret = dln2_spi_set_speed(dln2, speed);
++		if (ret < 0)
++			return ret;
++
++		dln2->speed = speed;
++	}
++
++	if (dln2->mode != mode) {
++		ret = dln2_spi_set_mode(dln2, mode & 0x3);
++		if (ret < 0)
++			return ret;
++
++		dln2->mode = mode;
++	}
++
++	if (dln2->bpw != bpw) {
++		ret = dln2_spi_set_bpw(dln2, bpw);
++		if (ret < 0)
++			return ret;
++
++		dln2->bpw = bpw;
++	}
++
++	ret = dln2_spi_enable(dln2, true);
++	if (ret < 0)
++		return ret;
++
++	return 0;
++}
++
++static int dln2_spi_transfer_one_message(struct spi_master *master,
++					 struct spi_message *msg)
++{
++	struct dln2_spi *dln2 = spi_master_get_devdata(master);
++	struct spi_device *spi = msg->spi;
++	struct spi_transfer *xfer;
++	int status;
++
++	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
++		u8 attr = 0;
++
++		status = dln2_spi_transfer_setup(dln2, xfer->speed_hz,
++						 xfer->bits_per_word,
++						 spi->mode);
++		if (status < 0) {
++			dev_err(&dln2->pdev->dev, "Cannot setup transfer\n");
++			break;
++		}
++
++		if (!xfer->cs_change &&
++		    !list_is_last(&xfer->transfer_list, &msg->transfers))
++			attr = xfer->cs_change ? 0 : DLN2_SPI_ATTR_LEAVE_SS_LOW;
++
++		status = dln2_spi_rdwr(dln2, xfer->tx_buf, xfer->rx_buf,
++				       xfer->len, attr);
++		if (status < 0) {
++			dev_err(&dln2->pdev->dev, "write/read failed!\n");
++			break;
++		}
++
++		status = 0;
++	}
++
++	msg->status = status;
++	spi_finalize_current_message(master);
++	return status;
++}
++
++static int dln2_spi_probe(struct platform_device *pdev)
++{
++	struct spi_master *master;
++	struct dln2_spi *dln2;
++	struct dln2_platform_data *pdata = dev_get_platdata(&pdev->dev);
++	int ret;
++
++	master = spi_alloc_master(&pdev->dev, sizeof(*dln2));
++	if (!master)
++		return -ENOMEM;
++
++	platform_set_drvdata(pdev, master);
++
++	dln2 = spi_master_get_devdata(master);
++
++	dln2->buf = devm_kmalloc(&pdev->dev, DLN2_SPI_BUF_SIZE, GFP_KERNEL);
++	if (!dln2->buf) {
++		ret = -ENOMEM;
++		goto exit_free_master;
++	}
++
++	dln2->master = master;
++	dln2->pdev = pdev;
++	dln2->port = pdata->port;
++	/* cs number can never be 0xff, so the first transfer will set the cs */
++	dln2->cs = 0xff;
++
++	/* disable SPI module before continuing with the setup */
++	ret = dln2_spi_enable(dln2, false);
++	if (ret < 0) {
++		dev_err(&pdev->dev, "Failed to disable SPI module\n");
++		goto exit_free_master;
++	}
++
++	ret = dln2_spi_get_cs_num(dln2, &master->num_chipselect);
++	if (ret < 0) {
++		dev_err(&pdev->dev, "Failed to get number of CS pins\n");
++		goto exit_free_master;
++	}
++
++	ret = dln2_spi_get_speed_range(dln2,
++				       &master->min_speed_hz,
++				       &master->max_speed_hz);
++	if (ret < 0) {
++		dev_err(&pdev->dev, "Failed to read bus min/max freqs\n");
++		goto exit_free_master;
++	}
++
++	ret = dln2_spi_get_supported_frame_sizes(dln2,
++						 &master->bits_per_word_mask);
++	if (ret < 0) {
++		dev_err(&pdev->dev, "Failed to read supported frame sizes\n");
++		goto exit_free_master;
++	}
++
++	ret = dln2_spi_cs_enable_all(dln2, true);
++	if (ret < 0) {
++		dev_err(&pdev->dev, "Failed to enable CS pins\n");
++		goto exit_free_master;
++	}
++
++	master->bus_num = -1;
++	master->mode_bits = SPI_CPOL | SPI_CPHA;
++	master->prepare_message = dln2_spi_prepare_message;
++	master->transfer_one_message = dln2_spi_transfer_one_message;
++
++	/* enable SPI module, we're good to go */
++	ret = dln2_spi_enable(dln2, true);
++	if (ret < 0) {
++		dev_err(&pdev->dev, "Failed to enable SPI module\n");
++		goto exit_free_master;
++	}
++
++	ret = devm_spi_register_master(&pdev->dev, master);
++	if (ret < 0) {
++		dev_err(&pdev->dev, "Failed to register master\n");
++		goto exit_register;
++	}
++
++	return ret;
++
++exit_register:
++	if (dln2_spi_enable(dln2, false) < 0)
++		dev_err(&pdev->dev, "Failed to disable SPI module\n");
++exit_free_master:
++	spi_master_put(master);
++
++	return ret;
++}
++
++static int dln2_spi_remove(struct platform_device *pdev)
++{
++	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
++	struct dln2_spi *dln2 = spi_master_get_devdata(master);
++
++	if (dln2_spi_enable(dln2, false) < 0)
++		dev_err(&pdev->dev, "Failed to disable SPI module\n");
++
++	return 0;
++}
++
++static struct platform_driver spi_dln2_driver = {
++	.driver.name	= "dln2-spi",
++	.probe		= dln2_spi_probe,
++	.remove		= dln2_spi_remove,
++};
++module_platform_driver(spi_dln2_driver);
++
++MODULE_DESCRIPTION("Driver for the Diolan DLN2 SPI master interface");
++MODULE_AUTHOR("Laurentiu Palcu <laurentiu.palcu@intel.com>");
++MODULE_LICENSE("GPL v2");
++MODULE_ALIAS("platform:dln2-spi");
 -- 
-1.7.9.5
+1.9.1

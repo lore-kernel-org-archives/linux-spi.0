@@ -1,890 +1,409 @@
-From: Laurentiu Palcu <laurentiu.palcu@intel.com>
-Subject: [PATCH v6 1/2] spi: add support for DLN-2 USB-SPI adapter
-Date: Wed, 26 Nov 2014 12:09:09 +0200
-Message-ID: <1416996549-29328-1-git-send-email-laurentiu.palcu@intel.com>
-References: <1416312599-5176-2-git-send-email-laurentiu.palcu@intel.com>
-Cc: Octavian Purdila <octavian.purdila@intel.com>,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Laurentiu Palcu <laurentiu.palcu@intel.com>
-To: Mark Brown <broonie@kernel.org>,
-	Samuel Ortiz <sameo@linux.intel.com>,
-	Lee Jones <lee.jones@linaro.org>,
-	Johan Havold <johan@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1416312599-5176-2-git-send-email-laurentiu.palcu@intel.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH v8 3/8] OF: DT-Overlay configfs interface (v2)
+Date: Wed, 26 Nov 2014 12:49:33 +0000
+Message-ID: <20141126124933.ECED6C40914@trevor.secretlab.ca>
+References: <1414528565-10907-1-git-send-email-pantelis.antoniou@konsulko.com>
+	<1414528565-10907-4-git-send-email-pantelis.antoniou@konsulko.com>
+	<20141125102844.79BAEC44089@trevor.secretlab.ca>
+	<773D4828-4530-46E7-8786-1DBA490C36EB@antoniou-consulting.com>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
+	Matt Porter <matt.porter-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Koen Kooi <koen-QLwJDigV5abLmq1fohREcCpxlwaOVQ5f@public.gmane.org>,
+	Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
+	Alison Chaiken <Alison_Chaiken-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
+	Dinh Nguyen <dinh.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Jan Lubbe <jluebbe-H4yykcOXDpCzQB+pC5nmwQ@public.gmane.org>,
+	Alexander Sverdlin <alexander.sverdlin-OYasijW0DpE@public.gmane.org>,
+	Michael Stickel <ms-g5CePrrZ5ROELgA04lAiVw@public.gmane.org>,
+	Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>,
+	Dirk Behme <dirk.behme-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Alan Tull <delicious.quinoa-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	Michael Bohan <mbohan-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Ionut Nicu <ioan.nicu.ext-OYasijW0DpE@public.gmane.org>,
+	Michal Simek <monstr-pSz03upnqPeHXe+LvDLADg@public.gmane.org>,
+	Matt Ranostay <mranostay-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Joel Becker <jlbec-aKy9MeLSZ9dg9hUCZPvPmw@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+To: Pantelis Antoniou <panto-wVdstyuyKrO8r51toPun2/C9HSW9iNxf@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <773D4828-4530-46E7-8786-1DBA490C36EB-wVdstyuyKrO8r51toPun2/C9HSW9iNxf@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-This adds support for Diolan DLN2 USB-SPI adapter.
+On Tue, 25 Nov 2014 16:50:15 +0200
+, Pantelis Antoniou <panto-wVdstyuyKrO8r51toPun2/C9HSW9iNxf@public.gmane.org>
+ wrote:
+> Hi Grant,
+>=20
+> > On Nov 25, 2014, at 12:28 , Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org=
+> wrote:
+> >=20
+> > Hi Pantelis,
+> >=20
+> > Comments below...
+> >=20
+> > On Tue, 28 Oct 2014 22:36:00 +0200
+> > , Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+> > wrote:
+> >> Add a runtime interface to using configfs for generic device tree =
+overlay
+> >> usage.
+> >>=20
+> >> A device-tree configfs entry is created in /config/device-tree/ove=
+rlays
+> >>=20
+> >> * To create an overlay you mkdir the directory:
+> >>=20
+> >> 	# mkdir /config/device-tree/overlays/foo
+> >>=20
+> >> * Either you echo the overlay firmware file to the path property f=
+ile.
+> >>=20
+> >> 	# echo foo.dtbo >/config/device-tree/overlays/foo/path
+> >>=20
+> >> * Or you cat the contents of the overlay to the dtbo file
+> >>=20
+> >> 	# cat foo.dtbo >/config/device-tree/overlays/foo/dtbo
+> >>=20
+> >> The overlay file will be applied.
+> >>=20
+> >> To remove it simply rmdir the directory.
+> >>=20
+> >> 	# rmdir /config/device-tree/overlays/foo
+> >=20
+> > The above is documentation on how to use it, but it isn't a good co=
+mmit
+> > message. The above should be moved into a documentation file (if it
+> > isn't already and I've missed it) and the commit message should giv=
+e
+> > detail about what was needed, what was changed to make it happen, a=
+nd
+> > what the result of the new code is.
+> >=20
+>=20
+> Hmm, okie dokie.
+>=20
+> >>=20
+> >> Changes since v1:
+> >> * of_resolve() -> of_resolve_phandles().
+> >>=20
+> >> Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+> >> ---
+> >> drivers/of/Kconfig    |   7 ++
+> >> drivers/of/Makefile   |   1 +
+> >> drivers/of/configfs.c | 340 ++++++++++++++++++++++++++++++++++++++=
+++++++++++++
+> >> 3 files changed, 348 insertions(+)
+> >> create mode 100644 drivers/of/configfs.c
+> >>=20
+> >> diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
+> >> index aa315c4..d59ba40 100644
+> >> --- a/drivers/of/Kconfig
+> >> +++ b/drivers/of/Kconfig
+> >> @@ -90,4 +90,11 @@ config OF_OVERLAY
+> >> 	select OF_DEVICE
+> >> 	select OF_RESOLVE
+> >>=20
+> >> +config OF_CONFIGFS
+> >> +	bool "OpenFirmware Overlay ConfigFS interface"
+> >=20
+> > Despite all the APIs being prefixed with OpenFirmware, this isn't a=
+n
+> > OpenFirmware interface, it is a device tree interface.
+> >=20
+>=20
+> OK, so device tree config fs interface?
 
-Information about the USB protocol interface can be found in the
-Programmer's Reference Manual [1], see section 5.4.6 for the SPI
-master module commands and responses.
+Yes
 
-[1] https://www.diolan.com/downloads/dln-api-manual.pdf
+>=20
+> >> +	select CONFIGFS_FS
+> >> +	select OF_OVERLAY
+> >> +	help
+> >> +	  Enable a simple user-space driver DT overlay interface.
+> >> +
+> >> endmenu # OF
+> >> diff --git a/drivers/of/Makefile b/drivers/of/Makefile
+> >> index 1bfe462..6d12949 100644
+> >> --- a/drivers/of/Makefile
+> >> +++ b/drivers/of/Makefile
+> >> @@ -15,6 +15,7 @@ obj-$(CONFIG_OF_MTD)	+=3D of_mtd.o
+> >> obj-$(CONFIG_OF_RESERVED_MEM) +=3D of_reserved_mem.o
+> >> obj-$(CONFIG_OF_RESOLVE)  +=3D resolver.o
+> >> obj-$(CONFIG_OF_OVERLAY) +=3D overlay.o
+> >> +obj-$(CONFIG_OF_CONFIGFS) +=3D configfs.o
+> >=20
+> > Tip: Insert lines in the middle of the block, roughly alphabeticall=
+y
+> > sorted. It cuts down on merge conflicts that way.
+> >=20
+>=20
+> k
+>=20
+> >>=20
+> >> CFLAGS_fdt.o =3D -I$(src)/../../scripts/dtc/libfdt
+> >> CFLAGS_fdt_address.o =3D -I$(src)/../../scripts/dtc/libfdt
+> >> diff --git a/drivers/of/configfs.c b/drivers/of/configfs.c
+> >> new file mode 100644
+> >> index 0000000..932f572
+> >> --- /dev/null
+> >> +++ b/drivers/of/configfs.c
+> >> @@ -0,0 +1,340 @@
+> >> +/*
+> >> + * Configfs entries for device-tree
+> >> + *
+> >> + * Copyright (C) 2013 - Pantelis Antoniou <panto@antoniou-consult=
+ing.com>
+> >> + *
+> >> + * This program is free software; you can redistribute it and/or
+> >> + * modify it under the terms of the GNU General Public License
+> >> + * as published by the Free Software Foundation; either version
+> >> + * 2 of the License, or (at your option) any later version.
+> >> + */
+> >> +#include <linux/ctype.h>
+> >> +#include <linux/cpu.h>
+> >> +#include <linux/module.h>
+> >> +#include <linux/of.h>
+> >> +#include <linux/of_fdt.h>
+> >> +#include <linux/spinlock.h>
+> >> +#include <linux/slab.h>
+> >> +#include <linux/proc_fs.h>
+> >> +#include <linux/configfs.h>
+> >> +#include <linux/types.h>
+> >> +#include <linux/stat.h>
+> >> +#include <linux/limits.h>
+> >> +#include <linux/file.h>
+> >> +#include <linux/vmalloc.h>
+> >> +#include <linux/firmware.h>
+> >> +
+> >> +#include "of_private.h"
+> >> +
+> >> +#ifdef CONFIG_OF_OVERLAY
+> >=20
+> > ???
+> >=20
+> > This file shouldn't even be compiled if CONFIG_OF_OVERLAY isn't
+> > selected. Why is this here?
+> >=20
+>=20
+> Err, good question.
+>=20
+> >> +
+> >> +struct cfs_overlay_item {
+> >> +	struct config_item	item;
+> >> +
+> >> +	char			path[PATH_MAX];
+> >> +
+> >> +	const struct firmware	*fw;
+> >> +	struct device_node	*overlay;
+> >> +	int			ov_id;
+> >> +
+> >> +	void			*dtbo;
+> >> +	int			dtbo_size;
+> >> +};
+> >> +
+> >> +static int create_overlay(struct cfs_overlay_item *overlay, void =
+*blob)
+> >> +{
+> >> +	int err;
+> >> +
+> >> +	/* unflatten the tree */
+> >> +	of_fdt_unflatten_tree((void *)blob, &overlay->overlay);
+> >=20
+> > blob is already void*
+> >=20
+>=20
+> ok
+>=20
+> >> +	if (overlay->overlay =3D=3D NULL) {
+> >> +		pr_err("%s: failed to unflatten tree\n", __func__);
+> >> +		err =3D -EINVAL;
+> >> +		goto out_err;
+> >> +	}
+> >> +	pr_debug("%s: unflattened OK\n", __func__);
+> >> +
+> >> +	/* mark it as detached */
+> >> +	of_node_set_flag(overlay->overlay, OF_DETACHED);
+> >> +
+> >> +	/* perform resolution */
+> >> +	err =3D of_resolve_phandles(overlay->overlay);
+> >> +	if (err !=3D 0) {
+> >> +		pr_err("%s: Failed to resolve tree\n", __func__);
+> >> +		goto out_err;
+> >> +	}
+> >> +	pr_debug("%s: resolved OK\n", __func__);
+> >> +
+> >> +	err =3D of_overlay_create(overlay->overlay);
+> >> +	if (err < 0) {
+> >> +		pr_err("%s: Failed to create overlay (err=3D%d)\n",
+> >> +				__func__, err);
+> >> +		goto out_err;
+> >> +	}
+> >> +	overlay->ov_id =3D err;
+> >> +
+> >> +out_err:
+> >> +	return err;
+> >> +}
+> >> +
+> >> +static inline struct cfs_overlay_item *to_cfs_overlay_item(
+> >> +		struct config_item *item)
+> >> +{
+> >> +	return item ? container_of(item, struct cfs_overlay_item, item) =
+: NULL;
+> >> +}
+> >> +
+> >> +CONFIGFS_ATTR_STRUCT(cfs_overlay_item);
+> >> +#define CFS_OVERLAY_ITEM_ATTR(_name, _mode, _show, _store)	\
+> >> +struct cfs_overlay_item_attribute cfs_overlay_item_attr_##_name =3D=
+ \
+> >> +	__CONFIGFS_ATTR(_name, _mode, _show, _store)
+> >> +#define CFS_OVERLAY_ITEM_ATTR_RO(_name, _show)	\
+> >> +struct cfs_overlay_item_attribute cfs_overlay_item_attr_##_name =3D=
+ \
+> >> +	__CONFIGFS_ATTR_RO(_name, _show)
+> >> +
+> >> +CONFIGFS_BIN_ATTR_STRUCT(cfs_overlay_item);
+> >> +#define CFS_OVERLAY_ITEM_BIN_ATTR(_name, _mode, _read, _write, _p=
+riv, _max) \
+> >> +struct cfs_overlay_item_bin_attribute cfs_overlay_item_bin_attr_#=
+#_name =3D \
+> >> +	__CONFIGFS_BIN_ATTR(_name, _mode, _read, _write, _priv, _max)
+> >> +#define CFS_OVERLAY_ITEM_BIN_ATTR_RO(_name, _read, _priv, _max)	\
+> >> +struct cfs_overlay_item_bin_attribute cfs_overlay_item_bin_attr_#=
+#_name =3D \
+> >> +	__CONFIGFS_BIN_ATTR_RO(_name, _read, _priv, _max)
+> >> +
+> >> +static ssize_t cfs_overlay_item_path_show(struct cfs_overlay_item=
+ *overlay,
+> >> +		char *page)
+> >> +{
+> >> +	return sprintf(page, "%s\n", overlay->path);
+> >> +}
+> >> +
+> >> +static ssize_t cfs_overlay_item_path_store(struct cfs_overlay_ite=
+m *overlay,
+> >> +		const char *page, size_t count)
+> >> +{
+> >> +	const char *p =3D page;
+> >> +	char *s;
+> >> +	int err;
+> >> +
+> >> +	/* if it's set do not allow changes */
+> >> +	if (overlay->path[0] !=3D '\0' || overlay->dtbo_size > 0)
+> >> +		return -EPERM;
+> >> +
+> >> +	/* copy to path buffer (and make sure it's always zero terminate=
+d */
+> >> +	count =3D snprintf(overlay->path, sizeof(overlay->path) - 1, "%s=
+", p);
+> >> +	overlay->path[sizeof(overlay->path) - 1] =3D '\0';
+> >> +
+> >> +	/* strip trailing newlines */
+> >> +	s =3D overlay->path + strlen(overlay->path);
+> >> +	while (s > overlay->path && *--s =3D=3D '\n')
+> >> +		*s =3D '\0';
+> >> +
+> >> +	pr_debug("%s: path is '%s'\n", __func__, overlay->path);
+> >> +
+> >> +	err =3D request_firmware(&overlay->fw, overlay->path, NULL);
+> >> +	if (err !=3D 0)
+> >> +		goto out_err;
+> >> +
+> >> +	err =3D create_overlay(overlay, (void *)overlay->fw->data);
+> >> +	if (err !=3D 0)
+> >> +		goto out_err;
+> >> +
+> >> +	return count;
+> >> +
+> >> +out_err:
+> >> +
+> >> +	release_firmware(overlay->fw);
+> >> +	overlay->fw =3D NULL;
+> >> +
+> >> +	overlay->path[0] =3D '\0';
+> >> +	return err;
+> >> +}
+> >> +
+> >> +static ssize_t cfs_overlay_item_status_show(struct cfs_overlay_it=
+em *overlay,
+> >> +		char *page)
+> >> +{
+> >> +	return sprintf(page, "%s\n",
+> >> +			overlay->ov_id >=3D 0 ? "applied" : "unapplied");
+> >> +}
+> >> +
+> >> +CFS_OVERLAY_ITEM_ATTR(path, S_IRUGO | S_IWUSR,
+> >> +		cfs_overlay_item_path_show, cfs_overlay_item_path_store);
+> >=20
+> > World writable? Am I reading this correctly?
+> >=20
+>=20
+> Err, user writeable, world readable. =E2=80=9C-rw-r--r=E2=80=94"
 
-Signed-off-by: Laurentiu Palcu <laurentiu.palcu@intel.com>
----
-Changes in v6:
- * use get_unaligned macro in dln2_spi_copy_from_buf() for BE 32 bit case since
-   the DLN2 RX buffer is just 2 byte aligned. Also, document this in the
-   function comment;
+Oops, I did read it wrong. Sorry for the noise
 
-laurentiu
+> > DT modifications are privileged. A user can potentially get arbitra=
+ry
+> > access to i2c, spi, gpio or other things that shouldn't be allowed.=
+ This
+> > feature give access right into the Linux driver model.
+> >=20
+>=20
+> Yes, it does.
+>=20
+> > Before this can be merged, it needs to be locked down, and there ne=
+eds
+> > to be documentation about how it is locked down. Owned by root is o=
+nly
+> > the first step, there also needs to be some rules about which nodes=
+ can
+> > be modified by the configfs interface. By default think no modifica=
+tions
+> > should be allowed on a tree unless there are properties somewhere i=
+n the
+> > tree that explicitly allow modifications to be performed.
+> >=20
+>=20
+> TBH this is more of a debug level interface. The way I see it a diffe=
+rent
+> overlay manager, that=E2=80=99s tuned to the platform, should handle =
+the overlay
+> request and application, in a manner that=E2=80=99s not directly open=
+ to user
+> control. For example in a beaglebone you=E2=80=99d have a =E2=80=98ca=
+pe=E2=80=99 manager reading
+> the i2c eeproms and request the overlays they match without any user-=
+space
+> implication.
 
- drivers/spi/Kconfig    |  10 +
- drivers/spi/Makefile   |   1 +
- drivers/spi/spi-dln2.c | 809 +++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 820 insertions(+)
- create mode 100644 drivers/spi/spi-dln2.c
+Right.
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 62e2242..a52a910 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -176,6 +176,16 @@ config SPI_DAVINCI
- 	help
- 	  SPI master controller for DaVinci/DA8x/OMAP-L/AM1x SPI modules.
- 
-+config SPI_DLN2
-+       tristate "Diolan DLN-2 USB SPI adapter"
-+       depends on MFD_DLN2
-+       help
-+         If you say yes to this option, support will be included for Diolan
-+         DLN2, a USB to SPI interface.
-+
-+         This driver can also be built as a module.  If so, the module
-+         will be called spi-dln2.
-+
- config SPI_EFM32
- 	tristate "EFM32 SPI controller"
- 	depends on OF && ARM && (ARCH_EFM32 || COMPILE_TEST)
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index 762da07..b315da2 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -26,6 +26,7 @@ obj-$(CONFIG_SPI_CADENCE)		+= spi-cadence.o
- obj-$(CONFIG_SPI_CLPS711X)		+= spi-clps711x.o
- obj-$(CONFIG_SPI_COLDFIRE_QSPI)		+= spi-coldfire-qspi.o
- obj-$(CONFIG_SPI_DAVINCI)		+= spi-davinci.o
-+obj-$(CONFIG_SPI_DLN2)			+= spi-dln2.o
- obj-$(CONFIG_SPI_DESIGNWARE)		+= spi-dw.o
- obj-$(CONFIG_SPI_DW_MMIO)		+= spi-dw-mmio.o
- obj-$(CONFIG_SPI_DW_PCI)		+= spi-dw-midpci.o
-diff --git a/drivers/spi/spi-dln2.c b/drivers/spi/spi-dln2.c
-new file mode 100644
-index 0000000..cad52b2
---- /dev/null
-+++ b/drivers/spi/spi-dln2.c
-@@ -0,0 +1,809 @@
-+/*
-+ * Driver for the Diolan DLN-2 USB-SPI adapter
-+ *
-+ * Copyright (c) 2014 Intel Corporation
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation, version 2.
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+#include <linux/mfd/dln2.h>
-+#include <linux/spi/spi.h>
-+
-+#define DLN2_SPI_MODULE_ID		0x02
-+#define DLN2_SPI_CMD(cmd)		DLN2_CMD(cmd, DLN2_SPI_MODULE_ID)
-+
-+/* SPI commands */
-+#define DLN2_SPI_GET_PORT_COUNT			DLN2_SPI_CMD(0x00)
-+#define DLN2_SPI_ENABLE				DLN2_SPI_CMD(0x11)
-+#define DLN2_SPI_DISABLE			DLN2_SPI_CMD(0x12)
-+#define DLN2_SPI_IS_ENABLED			DLN2_SPI_CMD(0x13)
-+#define DLN2_SPI_SET_MODE			DLN2_SPI_CMD(0x14)
-+#define DLN2_SPI_GET_MODE			DLN2_SPI_CMD(0x15)
-+#define DLN2_SPI_SET_FRAME_SIZE			DLN2_SPI_CMD(0x16)
-+#define DLN2_SPI_GET_FRAME_SIZE			DLN2_SPI_CMD(0x17)
-+#define DLN2_SPI_SET_FREQUENCY			DLN2_SPI_CMD(0x18)
-+#define DLN2_SPI_GET_FREQUENCY			DLN2_SPI_CMD(0x19)
-+#define DLN2_SPI_READ_WRITE			DLN2_SPI_CMD(0x1A)
-+#define DLN2_SPI_READ				DLN2_SPI_CMD(0x1B)
-+#define DLN2_SPI_WRITE				DLN2_SPI_CMD(0x1C)
-+#define DLN2_SPI_SET_DELAY_BETWEEN_SS		DLN2_SPI_CMD(0x20)
-+#define DLN2_SPI_GET_DELAY_BETWEEN_SS		DLN2_SPI_CMD(0x21)
-+#define DLN2_SPI_SET_DELAY_AFTER_SS		DLN2_SPI_CMD(0x22)
-+#define DLN2_SPI_GET_DELAY_AFTER_SS		DLN2_SPI_CMD(0x23)
-+#define DLN2_SPI_SET_DELAY_BETWEEN_FRAMES	DLN2_SPI_CMD(0x24)
-+#define DLN2_SPI_GET_DELAY_BETWEEN_FRAMES	DLN2_SPI_CMD(0x25)
-+#define DLN2_SPI_SET_SS				DLN2_SPI_CMD(0x26)
-+#define DLN2_SPI_GET_SS				DLN2_SPI_CMD(0x27)
-+#define DLN2_SPI_RELEASE_SS			DLN2_SPI_CMD(0x28)
-+#define DLN2_SPI_SS_VARIABLE_ENABLE		DLN2_SPI_CMD(0x2B)
-+#define DLN2_SPI_SS_VARIABLE_DISABLE		DLN2_SPI_CMD(0x2C)
-+#define DLN2_SPI_SS_VARIABLE_IS_ENABLED		DLN2_SPI_CMD(0x2D)
-+#define DLN2_SPI_SS_AAT_ENABLE			DLN2_SPI_CMD(0x2E)
-+#define DLN2_SPI_SS_AAT_DISABLE			DLN2_SPI_CMD(0x2F)
-+#define DLN2_SPI_SS_AAT_IS_ENABLED		DLN2_SPI_CMD(0x30)
-+#define DLN2_SPI_SS_BETWEEN_FRAMES_ENABLE	DLN2_SPI_CMD(0x31)
-+#define DLN2_SPI_SS_BETWEEN_FRAMES_DISABLE	DLN2_SPI_CMD(0x32)
-+#define DLN2_SPI_SS_BETWEEN_FRAMES_IS_ENABLED	DLN2_SPI_CMD(0x33)
-+#define DLN2_SPI_SET_CPHA			DLN2_SPI_CMD(0x34)
-+#define DLN2_SPI_GET_CPHA			DLN2_SPI_CMD(0x35)
-+#define DLN2_SPI_SET_CPOL			DLN2_SPI_CMD(0x36)
-+#define DLN2_SPI_GET_CPOL			DLN2_SPI_CMD(0x37)
-+#define DLN2_SPI_SS_MULTI_ENABLE		DLN2_SPI_CMD(0x38)
-+#define DLN2_SPI_SS_MULTI_DISABLE		DLN2_SPI_CMD(0x39)
-+#define DLN2_SPI_SS_MULTI_IS_ENABLED		DLN2_SPI_CMD(0x3A)
-+#define DLN2_SPI_GET_SUPPORTED_MODES		DLN2_SPI_CMD(0x40)
-+#define DLN2_SPI_GET_SUPPORTED_CPHA_VALUES	DLN2_SPI_CMD(0x41)
-+#define DLN2_SPI_GET_SUPPORTED_CPOL_VALUES	DLN2_SPI_CMD(0x42)
-+#define DLN2_SPI_GET_SUPPORTED_FRAME_SIZES	DLN2_SPI_CMD(0x43)
-+#define DLN2_SPI_GET_SS_COUNT			DLN2_SPI_CMD(0x44)
-+#define DLN2_SPI_GET_MIN_FREQUENCY		DLN2_SPI_CMD(0x45)
-+#define DLN2_SPI_GET_MAX_FREQUENCY		DLN2_SPI_CMD(0x46)
-+#define DLN2_SPI_GET_MIN_DELAY_BETWEEN_SS	DLN2_SPI_CMD(0x47)
-+#define DLN2_SPI_GET_MAX_DELAY_BETWEEN_SS	DLN2_SPI_CMD(0x48)
-+#define DLN2_SPI_GET_MIN_DELAY_AFTER_SS		DLN2_SPI_CMD(0x49)
-+#define DLN2_SPI_GET_MAX_DELAY_AFTER_SS		DLN2_SPI_CMD(0x4A)
-+#define DLN2_SPI_GET_MIN_DELAY_BETWEEN_FRAMES	DLN2_SPI_CMD(0x4B)
-+#define DLN2_SPI_GET_MAX_DELAY_BETWEEN_FRAMES	DLN2_SPI_CMD(0x4C)
-+
-+#define DLN2_SPI_MAX_XFER_SIZE			256
-+#define DLN2_SPI_BUF_SIZE			(DLN2_SPI_MAX_XFER_SIZE + 16)
-+#define DLN2_SPI_ATTR_LEAVE_SS_LOW		BIT(0)
-+#define DLN2_TRANSFERS_WAIT_COMPLETE		1
-+#define DLN2_TRANSFERS_CANCEL			0
-+
-+struct dln2_spi {
-+	struct platform_device *pdev;
-+	struct spi_master *master;
-+	u8 port;
-+
-+	/*
-+	 * This buffer will be used mainly for read/write operations. Since
-+	 * they're quite large, we cannot use the stack. Protection is not
-+	 * needed because all SPI communication is serialized by the SPI core.
-+	 */
-+	void *buf;
-+
-+	u8 bpw;
-+	u32 speed;
-+	u16 mode;
-+	u8 cs;
-+};
-+
-+/*
-+ * Enable/Disable SPI module. The disable command will wait for transfers to
-+ * complete first.
-+ */
-+static int dln2_spi_enable(struct dln2_spi *dln2, bool enable)
-+{
-+	int ret;
-+	u16 cmd;
-+	struct {
-+		u8 port;
-+		u8 wait_for_completion;
-+	} tx;
-+	unsigned len = sizeof(tx);
-+
-+	tx.port = dln2->port;
-+
-+	if (enable) {
-+		cmd = DLN2_SPI_ENABLE;
-+		len -= sizeof(tx.wait_for_completion);
-+	} else {
-+		tx.wait_for_completion = DLN2_TRANSFERS_WAIT_COMPLETE;
-+		cmd = DLN2_SPI_DISABLE;
-+	}
-+
-+	ret = dln2_transfer_tx(dln2->pdev, cmd, &tx, len);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+/*
-+ * Select/unselect multiple CS lines. The selected lines will be automatically
-+ * toggled LOW/HIGH by the board firmware during transfers, provided they're
-+ * enabled first.
-+ *
-+ * Ex: cs_mask = 0x03 -> CS0 & CS1 will be selected and the next WR/RD operation
-+ *                       will toggle the lines LOW/HIGH automatically.
-+ */
-+static int dln2_spi_cs_set(struct dln2_spi *dln2, u8 cs_mask)
-+{
-+	struct {
-+		u8 port;
-+		u8 cs;
-+	} tx;
-+
-+	tx.port = dln2->port;
-+
-+	/*
-+	 * According to Diolan docs, "a slave device can be selected by changing
-+	 * the corresponding bit value to 0". The rest must be set to 1. Hence
-+	 * the bitwise NOT in front.
-+	 */
-+	tx.cs = ~cs_mask;
-+
-+	return dln2_transfer_tx(dln2->pdev, DLN2_SPI_SET_SS, &tx, sizeof(tx));
-+}
-+
-+/*
-+ * Select one CS line. The other lines will be un-selected.
-+ */
-+static int dln2_spi_cs_set_one(struct dln2_spi *dln2, u8 cs)
-+{
-+	return dln2_spi_cs_set(dln2, BIT(cs));
-+}
-+
-+/*
-+ * Enable/disable CS lines for usage. The module has to be disabled first.
-+ */
-+static int dln2_spi_cs_enable(struct dln2_spi *dln2, u8 cs_mask, bool enable)
-+{
-+	struct {
-+		u8 port;
-+		u8 cs;
-+	} tx;
-+	u16 cmd;
-+
-+	tx.port = dln2->port;
-+	tx.cs = cs_mask;
-+	cmd = enable ? DLN2_SPI_SS_MULTI_ENABLE : DLN2_SPI_SS_MULTI_DISABLE;
-+
-+	return dln2_transfer_tx(dln2->pdev, cmd, &tx, sizeof(tx));
-+}
-+
-+static int dln2_spi_cs_enable_all(struct dln2_spi *dln2, bool enable)
-+{
-+	u8 cs_mask = GENMASK(dln2->master->num_chipselect - 1, 0);
-+
-+	return dln2_spi_cs_enable(dln2, cs_mask, enable);
-+}
-+
-+static int dln2_spi_get_cs_num(struct dln2_spi *dln2, u16 *cs_num)
-+{
-+	int ret;
-+	struct {
-+		u8 port;
-+	} tx;
-+	struct {
-+		__le16 cs_count;
-+	} rx;
-+	unsigned rx_len = sizeof(rx);
-+
-+	tx.port = dln2->port;
-+	ret = dln2_transfer(dln2->pdev, DLN2_SPI_GET_SS_COUNT, &tx, sizeof(tx),
-+			    &rx, &rx_len);
-+	if (ret < 0)
-+		return ret;
-+	if (rx_len < sizeof(rx))
-+		return -EPROTO;
-+
-+	*cs_num = le16_to_cpu(rx.cs_count);
-+
-+	dev_dbg(&dln2->pdev->dev, "cs_num = %d\n", *cs_num);
-+
-+	return 0;
-+}
-+
-+static int dln2_spi_get_speed(struct dln2_spi *dln2, u16 cmd, u32 *freq)
-+{
-+	int ret;
-+	struct {
-+		u8 port;
-+	} tx;
-+	struct {
-+		__le32 speed;
-+	} rx;
-+	unsigned rx_len = sizeof(rx);
-+
-+	tx.port = dln2->port;
-+
-+	ret = dln2_transfer(dln2->pdev, cmd, &tx, sizeof(tx), &rx, &rx_len);
-+	if (ret < 0)
-+		return ret;
-+	if (rx_len < sizeof(rx))
-+		return -EPROTO;
-+
-+	*freq = le32_to_cpu(rx.speed);
-+
-+	return 0;
-+}
-+
-+/*
-+ * Get bus min/max frequencies.
-+ */
-+static int dln2_spi_get_speed_range(struct dln2_spi *dln2, u32 *fmin, u32 *fmax)
-+{
-+	int ret;
-+
-+	ret = dln2_spi_get_speed(dln2, DLN2_SPI_GET_MIN_FREQUENCY, fmin);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = dln2_spi_get_speed(dln2, DLN2_SPI_GET_MAX_FREQUENCY, fmax);
-+	if (ret < 0)
-+		return ret;
-+
-+	dev_dbg(&dln2->pdev->dev, "freq_min = %d, freq_max = %d\n",
-+		*fmin, *fmax);
-+
-+	return 0;
-+}
-+
-+/*
-+ * Set the bus speed. The module will automatically round down to the closest
-+ * available frequency and returns it. The module has to be disabled first.
-+ */
-+static int dln2_spi_set_speed(struct dln2_spi *dln2, u32 speed)
-+{
-+	int ret;
-+	struct {
-+		u8 port;
-+		__le32 speed;
-+	} __packed tx;
-+	struct {
-+		__le32 speed;
-+	} rx;
-+	int rx_len = sizeof(rx);
-+
-+	tx.port = dln2->port;
-+	tx.speed = cpu_to_le32(speed);
-+
-+	ret = dln2_transfer(dln2->pdev, DLN2_SPI_SET_FREQUENCY, &tx, sizeof(tx),
-+			    &rx, &rx_len);
-+	if (ret < 0)
-+		return ret;
-+	if (rx_len < sizeof(rx))
-+		return -EPROTO;
-+
-+	return 0;
-+}
-+
-+/*
-+ * Change CPOL & CPHA. The module has to be disabled first.
-+ */
-+static int dln2_spi_set_mode(struct dln2_spi *dln2, u8 mode)
-+{
-+	struct {
-+		u8 port;
-+		u8 mode;
-+	} tx;
-+
-+	tx.port = dln2->port;
-+	tx.mode = mode;
-+
-+	return dln2_transfer_tx(dln2->pdev, DLN2_SPI_SET_MODE, &tx, sizeof(tx));
-+}
-+
-+/*
-+ * Change frame size. The module has to be disabled first.
-+ */
-+static int dln2_spi_set_bpw(struct dln2_spi *dln2, u8 bpw)
-+{
-+	struct {
-+		u8 port;
-+		u8 bpw;
-+	} tx;
-+
-+	tx.port = dln2->port;
-+	tx.bpw = bpw;
-+
-+	return dln2_transfer_tx(dln2->pdev, DLN2_SPI_SET_FRAME_SIZE,
-+				&tx, sizeof(tx));
-+}
-+
-+static int dln2_spi_get_supported_frame_sizes(struct dln2_spi *dln2,
-+					      u32 *bpw_mask)
-+{
-+	int ret;
-+	struct {
-+		u8 port;
-+	} tx;
-+	struct {
-+		u8 count;
-+		u8 frame_sizes[36];
-+	} *rx = dln2->buf;
-+	unsigned rx_len = sizeof(*rx);
-+	int i;
-+
-+	tx.port = dln2->port;
-+
-+	ret = dln2_transfer(dln2->pdev, DLN2_SPI_GET_SUPPORTED_FRAME_SIZES,
-+			    &tx, sizeof(tx), rx, &rx_len);
-+	if (ret < 0)
-+		return ret;
-+	if (rx_len < sizeof(*rx))
-+		return -EPROTO;
-+	if (rx->count > ARRAY_SIZE(rx->frame_sizes))
-+		return -EPROTO;
-+
-+	*bpw_mask = 0;
-+	for (i = 0; i < rx->count; i++)
-+		*bpw_mask |= BIT(rx->frame_sizes[i] - 1);
-+
-+	dev_dbg(&dln2->pdev->dev, "bpw_mask = 0x%X\n", *bpw_mask);
-+
-+	return 0;
-+}
-+
-+/*
-+ * Copy the data to DLN2 buffer and change the byte order to LE, requested by
-+ * DLN2 module. SPI core makes sure that the data length is a multiple of word
-+ * size.
-+ */
-+static int dln2_spi_copy_to_buf(u8 *dln2_buf, const u8 *src, u16 len, u8 bpw)
-+{
-+#ifdef __LITTLE_ENDIAN
-+	memcpy(dln2_buf, src, len);
-+#else
-+	if (bpw <= 8) {
-+		memcpy(dln2_buf, src, len);
-+	} else if (bpw <= 16) {
-+		__le16 *d = (__le16 *)dln2_buf;
-+		u16 *s = (u16 *)src;
-+
-+		len = len / 2;
-+		while (len--)
-+			*d++ = cpu_to_le16p(s++);
-+	} else {
-+		__le32 *d = (__le32 *)dln2_buf;
-+		u32 *s = (u32 *)src;
-+
-+		len = len / 4;
-+		while (len--)
-+			*d++ = cpu_to_le32p(s++);
-+	}
-+#endif
-+
-+	return 0;
-+}
-+
-+/*
-+ * Copy the data from DLN2 buffer and convert to CPU byte order since the DLN2
-+ * buffer is LE ordered. SPI core makes sure that the data length is a multiple
-+ * of word size. The RX dln2_buf is 2 byte aligned so, for BE, we have to make
-+ * sure we avoid unaligned accesses for 32 bit case.
-+ */
-+static int dln2_spi_copy_from_buf(u8 *dest, const u8 *dln2_buf, u16 len, u8 bpw)
-+{
-+#ifdef __LITTLE_ENDIAN
-+	memcpy(dest, dln2_buf, len);
-+#else
-+	if (bpw <= 8) {
-+		memcpy(dest, dln2_buf, len);
-+	} else if (bpw <= 16) {
-+		u16 *d = (u16 *)dest;
-+		__le16 *s = (__le16 *)dln2_buf;
-+
-+		len = len / 2;
-+		while (len--)
-+			*d++ = le16_to_cpup(s++);
-+	} else {
-+		u32 *d = (u32 *)dest;
-+		__le32 *s = (__le32 *)dln2_buf;
-+
-+		len = len / 4;
-+		while (len--)
-+			*d++ = get_unaligned_le32(s++);
-+	}
-+#endif
-+
-+	return 0;
-+}
-+
-+/*
-+ * Perform one write operation.
-+ */
-+static int dln2_spi_write_one(struct dln2_spi *dln2, const u8 *data,
-+			      u16 data_len, u8 attr)
-+{
-+	struct {
-+		u8 port;
-+		__le16 size;
-+		u8 attr;
-+		u8 buf[DLN2_SPI_MAX_XFER_SIZE];
-+	} __packed *tx = dln2->buf;
-+	unsigned tx_len;
-+
-+	BUILD_BUG_ON(sizeof(*tx) > DLN2_SPI_BUF_SIZE);
-+
-+	if (data_len > DLN2_SPI_MAX_XFER_SIZE)
-+		return -EINVAL;
-+
-+	tx->port = dln2->port;
-+	tx->size = cpu_to_le16(data_len);
-+	tx->attr = attr;
-+
-+	dln2_spi_copy_to_buf(tx->buf, data, data_len, dln2->bpw);
-+
-+	tx_len = sizeof(*tx) + data_len - DLN2_SPI_MAX_XFER_SIZE;
-+	return dln2_transfer_tx(dln2->pdev, DLN2_SPI_WRITE, tx, tx_len);
-+}
-+
-+/*
-+ * Perform one read operation.
-+ */
-+static int dln2_spi_read_one(struct dln2_spi *dln2, u8 *data,
-+			     u16 data_len, u8 attr)
-+{
-+	int ret;
-+	struct {
-+		u8 port;
-+		__le16 size;
-+		u8 attr;
-+	} __packed tx;
-+	struct {
-+		__le16 size;
-+		u8 buf[DLN2_SPI_MAX_XFER_SIZE];
-+	} __packed *rx = dln2->buf;
-+	unsigned rx_len = sizeof(*rx);
-+
-+	BUILD_BUG_ON(sizeof(*rx) > DLN2_SPI_BUF_SIZE);
-+
-+	if (data_len > DLN2_SPI_MAX_XFER_SIZE)
-+		return -EINVAL;
-+
-+	tx.port = dln2->port;
-+	tx.size = cpu_to_le16(data_len);
-+	tx.attr = attr;
-+
-+	ret = dln2_transfer(dln2->pdev, DLN2_SPI_READ, &tx, sizeof(tx),
-+			    rx, &rx_len);
-+	if (ret < 0)
-+		return ret;
-+	if (rx_len < sizeof(rx->size) + data_len)
-+		return -EPROTO;
-+	if (le16_to_cpu(rx->size) != data_len)
-+		return -EPROTO;
-+
-+	dln2_spi_copy_from_buf(data, rx->buf, data_len, dln2->bpw);
-+
-+	return 0;
-+}
-+
-+/*
-+ * Perform one write & read operation.
-+ */
-+static int dln2_spi_read_write_one(struct dln2_spi *dln2, const u8 *tx_data,
-+				   u8 *rx_data, u16 data_len, u8 attr)
-+{
-+	int ret;
-+	struct {
-+		u8 port;
-+		__le16 size;
-+		u8 attr;
-+		u8 buf[DLN2_SPI_MAX_XFER_SIZE];
-+	} __packed *tx;
-+	struct {
-+		__le16 size;
-+		u8 buf[DLN2_SPI_MAX_XFER_SIZE];
-+	} __packed *rx;
-+	unsigned tx_len, rx_len;
-+
-+	BUILD_BUG_ON(sizeof(*tx) > DLN2_SPI_BUF_SIZE ||
-+		     sizeof(*rx) > DLN2_SPI_BUF_SIZE);
-+
-+	if (data_len > DLN2_SPI_MAX_XFER_SIZE)
-+		return -EINVAL;
-+
-+	/*
-+	 * Since this is a pseudo full-duplex communication, we're perfectly
-+	 * safe to use the same buffer for both tx and rx. When DLN2 sends the
-+	 * response back, with the rx data, we don't need the tx buffer anymore.
-+	 */
-+	tx = dln2->buf;
-+	rx = dln2->buf;
-+
-+	tx->port = dln2->port;
-+	tx->size = cpu_to_le16(data_len);
-+	tx->attr = attr;
-+
-+	dln2_spi_copy_to_buf(tx->buf, tx_data, data_len, dln2->bpw);
-+
-+	tx_len = sizeof(*tx) + data_len - DLN2_SPI_MAX_XFER_SIZE;
-+	rx_len = sizeof(*rx);
-+
-+	ret = dln2_transfer(dln2->pdev, DLN2_SPI_READ_WRITE, tx, tx_len,
-+			    rx, &rx_len);
-+	if (ret < 0)
-+		return ret;
-+	if (rx_len < sizeof(rx->size) + data_len)
-+		return -EPROTO;
-+	if (le16_to_cpu(rx->size) != data_len)
-+		return -EPROTO;
-+
-+	dln2_spi_copy_from_buf(rx_data, rx->buf, data_len, dln2->bpw);
-+
-+	return 0;
-+}
-+
-+/*
-+ * Read/Write wrapper. It will automatically split an operation into multiple
-+ * single ones due to device buffer constraints.
-+ */
-+static int dln2_spi_rdwr(struct dln2_spi *dln2, const u8 *tx_data,
-+			 u8 *rx_data, u16 data_len, u8 attr) {
-+	int ret;
-+	u16 len;
-+	u8 temp_attr;
-+	u16 remaining = data_len;
-+	u16 offset;
-+
-+	do {
-+		if (remaining > DLN2_SPI_MAX_XFER_SIZE) {
-+			len = DLN2_SPI_MAX_XFER_SIZE;
-+			temp_attr = DLN2_SPI_ATTR_LEAVE_SS_LOW;
-+		} else {
-+			len = remaining;
-+			temp_attr = attr;
-+		}
-+
-+		offset = data_len - remaining;
-+
-+		if (tx_data && rx_data) {
-+			ret = dln2_spi_read_write_one(dln2,
-+						      tx_data + offset,
-+						      rx_data + offset,
-+						      len, temp_attr);
-+		} else if (tx_data) {
-+			ret = dln2_spi_write_one(dln2,
-+						 tx_data + offset,
-+						 len, temp_attr);
-+		} else if (rx_data) {
-+			ret = dln2_spi_read_one(dln2,
-+						rx_data + offset,
-+						len, temp_attr);
-+		 } else {
-+			return -EINVAL;
-+		 }
-+
-+		if (ret < 0)
-+			return ret;
-+
-+		remaining -= len;
-+	} while (remaining);
-+
-+	return 0;
-+}
-+
-+static int dln2_spi_prepare_message(struct spi_master *master,
-+				    struct spi_message *message)
-+{
-+	int ret;
-+	struct dln2_spi *dln2 = spi_master_get_devdata(master);
-+	struct spi_device *spi = message->spi;
-+
-+	if (dln2->cs != spi->chip_select) {
-+		ret = dln2_spi_cs_set_one(dln2, spi->chip_select);
-+		if (ret < 0)
-+			return ret;
-+
-+		dln2->cs = spi->chip_select;
-+	}
-+
-+	return 0;
-+}
-+
-+static int dln2_spi_transfer_setup(struct dln2_spi *dln2, u32 speed,
-+				   u8 bpw, u8 mode)
-+{
-+	int ret;
-+	bool bus_setup_change;
-+
-+	bus_setup_change = dln2->speed != speed || dln2->mode != mode ||
-+			   dln2->bpw != bpw;
-+
-+	if (!bus_setup_change)
-+		return 0;
-+
-+	ret = dln2_spi_enable(dln2, false);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (dln2->speed != speed) {
-+		ret = dln2_spi_set_speed(dln2, speed);
-+		if (ret < 0)
-+			return ret;
-+
-+		dln2->speed = speed;
-+	}
-+
-+	if (dln2->mode != mode) {
-+		ret = dln2_spi_set_mode(dln2, mode & 0x3);
-+		if (ret < 0)
-+			return ret;
-+
-+		dln2->mode = mode;
-+	}
-+
-+	if (dln2->bpw != bpw) {
-+		ret = dln2_spi_set_bpw(dln2, bpw);
-+		if (ret < 0)
-+			return ret;
-+
-+		dln2->bpw = bpw;
-+	}
-+
-+	ret = dln2_spi_enable(dln2, true);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static int dln2_spi_transfer_one_message(struct spi_master *master,
-+					 struct spi_message *msg)
-+{
-+	struct dln2_spi *dln2 = spi_master_get_devdata(master);
-+	struct spi_device *spi = msg->spi;
-+	struct spi_transfer *xfer;
-+	int status;
-+
-+	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
-+		u8 attr = 0;
-+
-+		status = dln2_spi_transfer_setup(dln2, xfer->speed_hz,
-+						 xfer->bits_per_word,
-+						 spi->mode);
-+		if (status < 0) {
-+			dev_err(&dln2->pdev->dev, "Cannot setup transfer\n");
-+			break;
-+		}
-+
-+		if (!xfer->cs_change &&
-+		    !list_is_last(&xfer->transfer_list, &msg->transfers))
-+			attr = xfer->cs_change ? 0 : DLN2_SPI_ATTR_LEAVE_SS_LOW;
-+
-+		status = dln2_spi_rdwr(dln2, xfer->tx_buf, xfer->rx_buf,
-+				       xfer->len, attr);
-+		if (status < 0) {
-+			dev_err(&dln2->pdev->dev, "write/read failed!\n");
-+			break;
-+		}
-+
-+		status = 0;
-+	}
-+
-+	msg->status = status;
-+	spi_finalize_current_message(master);
-+	return status;
-+}
-+
-+static int dln2_spi_probe(struct platform_device *pdev)
-+{
-+	struct spi_master *master;
-+	struct dln2_spi *dln2;
-+	struct dln2_platform_data *pdata = dev_get_platdata(&pdev->dev);
-+	int ret;
-+
-+	master = spi_alloc_master(&pdev->dev, sizeof(*dln2));
-+	if (!master)
-+		return -ENOMEM;
-+
-+	platform_set_drvdata(pdev, master);
-+
-+	dln2 = spi_master_get_devdata(master);
-+
-+	dln2->buf = devm_kmalloc(&pdev->dev, DLN2_SPI_BUF_SIZE, GFP_KERNEL);
-+	if (!dln2->buf) {
-+		ret = -ENOMEM;
-+		goto exit_free_master;
-+	}
-+
-+	dln2->master = master;
-+	dln2->pdev = pdev;
-+	dln2->port = pdata->port;
-+	/* cs number can never be 0xff, so the first transfer will set the cs */
-+	dln2->cs = 0xff;
-+
-+	/* disable SPI module before continuing with the setup */
-+	ret = dln2_spi_enable(dln2, false);
-+	if (ret < 0) {
-+		dev_err(&pdev->dev, "Failed to disable SPI module\n");
-+		goto exit_free_master;
-+	}
-+
-+	ret = dln2_spi_get_cs_num(dln2, &master->num_chipselect);
-+	if (ret < 0) {
-+		dev_err(&pdev->dev, "Failed to get number of CS pins\n");
-+		goto exit_free_master;
-+	}
-+
-+	ret = dln2_spi_get_speed_range(dln2,
-+				       &master->min_speed_hz,
-+				       &master->max_speed_hz);
-+	if (ret < 0) {
-+		dev_err(&pdev->dev, "Failed to read bus min/max freqs\n");
-+		goto exit_free_master;
-+	}
-+
-+	ret = dln2_spi_get_supported_frame_sizes(dln2,
-+						 &master->bits_per_word_mask);
-+	if (ret < 0) {
-+		dev_err(&pdev->dev, "Failed to read supported frame sizes\n");
-+		goto exit_free_master;
-+	}
-+
-+	ret = dln2_spi_cs_enable_all(dln2, true);
-+	if (ret < 0) {
-+		dev_err(&pdev->dev, "Failed to enable CS pins\n");
-+		goto exit_free_master;
-+	}
-+
-+	master->bus_num = -1;
-+	master->mode_bits = SPI_CPOL | SPI_CPHA;
-+	master->prepare_message = dln2_spi_prepare_message;
-+	master->transfer_one_message = dln2_spi_transfer_one_message;
-+
-+	/* enable SPI module, we're good to go */
-+	ret = dln2_spi_enable(dln2, true);
-+	if (ret < 0) {
-+		dev_err(&pdev->dev, "Failed to enable SPI module\n");
-+		goto exit_free_master;
-+	}
-+
-+	ret = devm_spi_register_master(&pdev->dev, master);
-+	if (ret < 0) {
-+		dev_err(&pdev->dev, "Failed to register master\n");
-+		goto exit_register;
-+	}
-+
-+	return ret;
-+
-+exit_register:
-+	if (dln2_spi_enable(dln2, false) < 0)
-+		dev_err(&pdev->dev, "Failed to disable SPI module\n");
-+exit_free_master:
-+	spi_master_put(master);
-+
-+	return ret;
-+}
-+
-+static int dln2_spi_remove(struct platform_device *pdev)
-+{
-+	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
-+	struct dln2_spi *dln2 = spi_master_get_devdata(master);
-+
-+	if (dln2_spi_enable(dln2, false) < 0)
-+		dev_err(&pdev->dev, "Failed to disable SPI module\n");
-+
-+	return 0;
-+}
-+
-+static struct platform_driver spi_dln2_driver = {
-+	.driver.name	= "dln2-spi",
-+	.probe		= dln2_spi_probe,
-+	.remove		= dln2_spi_remove,
-+};
-+module_platform_driver(spi_dln2_driver);
-+
-+MODULE_DESCRIPTION("Driver for the Diolan DLN2 SPI master interface");
-+MODULE_AUTHOR("Laurentiu Palcu <laurentiu.palcu@intel.com>");
-+MODULE_LICENSE("GPL v2");
-+MODULE_ALIAS("platform:dln2-spi");
--- 
-1.9.1
+> However, this is an interface that developers will use daily, so I ag=
+ree
+> that we need to look into the security model now before it=E2=80=99s =
+too late.
+>=20
+> How do you feel for something like this in chosen:
+>=20
+> overlay-targets =3D =E2=80=9C/ocp=E2=80=9D, =E2=80=9C/pinctrl=E2=80=9D=
+;
+
+It's a reasonable proposal. I'd like to have some time to think on it
+though. The other way to do it would be to add properties throughout th=
+e
+tree that mask/unmask modifications by overlay. I think the overlays ar=
+e
+more a property of the board than a configurable boot time argument (so
+not something that would normally go in /chosen)
+
+g.
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

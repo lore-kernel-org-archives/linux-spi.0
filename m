@@ -1,40 +1,40 @@
 From: Beniamino Galvani <b.galvani-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: meson: Select REGMAP_MMIO
-Date: Thu, 27 Nov 2014 00:07:48 +0100
-Message-ID: <1417043268-17563-1-git-send-email-b.galvani@gmail.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jim Davis <jim.epost-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Beniamino Galvani <b.galvani-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: randconfig build error with next-20141126, in
+ drivers/spi/spi-meson-spifc.c
+Date: Thu, 27 Nov 2014 00:12:25 +0100
+Message-ID: <20141126231225.GA17600@gmail.com>
+References: <CA+r1Zhh3Fhcvx9nSDxPnrC-gzR0Z50O7nwzvkhhX6QAS2qmasQ@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: Stephen Rothwell <sfr-3FnU+UHB4dNDw9hX6IcOSA@public.gmane.org>,
+	linux-next <linux-next-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	broonie <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jim Davis <jim.epost-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CA+r1Zhh3Fhcvx9nSDxPnrC-gzR0Z50O7nwzvkhhX6QAS2qmasQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The Meson SPIFC driver uses regmap mmio functions and so it must
-select REGMAP_MMIO to avoid the following build error:
+On Wed, Nov 26, 2014 at 10:53:28AM -0700, Jim Davis wrote:
+> Building with the attached random configuration file,
+> 
+> drivers/built-in.o: In function `meson_spifc_probe':
+> spi-meson-spifc.c:(.text+0x14b4a8): undefined reference to
+> `devm_regmap_init_mmio_clk'
+> make: *** [vmlinux] Error 1
 
-spi-meson-spifc.c: undefined reference to `devm_regmap_init_mmio_clk'
+Hi,
 
-Reported-by: Jim Davis <jim.epost-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Beniamino Galvani <b.galvani-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+I've just submitted a fix for the missing Kconfig dependency.
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 0373c37..400c344 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -311,6 +311,7 @@ config SPI_FSL_ESPI
- config SPI_MESON_SPIFC
- 	tristate "Amlogic Meson SPIFC controller"
- 	depends on ARCH_MESON || COMPILE_TEST
-+	select REGMAP_MMIO
- 	help
- 	  This enables master mode support for the SPIFC (SPI flash
- 	  controller) available in Amlogic Meson SoCs.
--- 
-1.9.1
-
+Thanks,
+Beniamino
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

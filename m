@@ -1,250 +1,331 @@
-From: Maxime Coquelin <maxime.coquelin-qxv4g6HH51o@public.gmane.org>
-Subject: Re: [PATCH 1/4] spi: Add new driver for STMicroelectronics' SPI Controller
-Date: Thu, 27 Nov 2014 14:24:08 +0100
-Message-ID: <547725F8.1050106@st.com>
-References: <1417088636-11994-1-git-send-email-lee.jones@linaro.org> <1417088636-11994-2-git-send-email-lee.jones@linaro.org>
+From: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Subject: Re: [PATCH 2/3] ARM: edma: Rename header file for
+ dmaengine filter function definition
+Date: Thu, 27 Nov 2014 16:23:31 +0200
+Message-ID: <547733E3.3020408@ti.com>
+References: <1417084891-17990-1-git-send-email-peter.ujfalusi@ti.com>
+ <1417084891-17990-3-git-send-email-peter.ujfalusi@ti.com>
+ <8235185.7qUDHu9jso@wuerfel>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	<kernel-F5mvAk5X5gdBDgjK7y7TUQ@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1417088636-11994-2-git-send-email-lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
+Cc: alsa-devel@alsa-project.org, linux-omap@vger.kernel.org,
+ linux@arm.linux.org.uk, vinod.koul@intel.com, linux-mmc@vger.kernel.org,
+ nsekhar@ti.com, Liam Girdwood <lgirdwood@gmail.com>,
+ linux-kernel@vger.kernel.org, khilman@deeprootsystems.com,
+ Tony Lindgren <tony@atomide.com>, Mark Brown <broonie@kernel.org>,
+ chris@printf.net, dmaengine@vger.kernel.org, ulf.hansson@linaro.org,
+ linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+To: Arnd Bergmann <arnd@arndb.de>
+Return-path: <alsa-devel-bounces@alsa-project.org>
+In-Reply-To: <8235185.7qUDHu9jso@wuerfel>
+List-Unsubscribe: <http://mailman.alsa-project.org/mailman/options/alsa-devel>,
+ <mailto:alsa-devel-request@alsa-project.org?subject=unsubscribe>
+List-Archive: <http://mailman.alsa-project.org/pipermail/alsa-devel/>
+List-Post: <mailto:alsa-devel@alsa-project.org>
+List-Help: <mailto:alsa-devel-request@alsa-project.org?subject=help>
+List-Subscribe: <http://mailman.alsa-project.org/mailman/listinfo/alsa-devel>,
+ <mailto:alsa-devel-request@alsa-project.org?subject=subscribe>
+Errors-To: alsa-devel-bounces@alsa-project.org
+Sender: alsa-devel-bounces@alsa-project.org
+List-Id: linux-spi.vger.kernel.org
 
+On 11/27/2014 01:14 PM, Arnd Bergmann wrote:
+> On Thursday 27 November 2014 12:41:30 Peter Ujfalusi wrote:
+>> diff --git a/include/linux/edma-dmaengine.h b/include/linux/edma-dmaengi=
+ne.h
+>> new file mode 100644
+>> index 000000000000..8a2602809a77
+>> --- /dev/null
+>> +++ b/include/linux/edma-dmaengine.h
+>> @@ -0,0 +1,29 @@
+>> +struct dma_chan;
+>> +
+>> +#if defined(CONFIG_TI_EDMA) || defined(CONFIG_TI_EDMA_MODULE)
+>> +bool edma_filter_fn(struct dma_chan *, void *);
+>> +#else
+>> +static inline bool edma_filter_fn(struct dma_chan *chan, void *param)
+>> +{
+>> +	return false;
+>> +}
+>> +#endif
+>> +
+>> +#endif
+> =
 
-On 11/27/2014 12:43 PM, Lee Jones wrote:
-> This patch adds support for the SPI portion of ST's SSC device.
->
-> Signed-off-by: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+> It's better not to hardcode the name of the filter function in a driver,
+> better move the filter function into platform code and pass it down
+> to the driver in the platform_data pointer in davinci_mmc_config and
+> davinci_spi_platform_data to get rid of this dependency.
+> =
+
+> Something roughly like the patch below.
+
+This will only work in case of legacy boot. When booting with DT we do not
+have pdata and after this patch in dt boot we are not going to be able to g=
+et
+the DMA resources either.
+
+I think if we want to do something like this, it has to be done within the
+dmaengine framework. The dma controller's of_dma_filter_info already have
+.filter_fn which could be used by the framework.
+
+On the other hand the davinci_mmc (and spi-davinci) is only going to work on
+davinci devices, so I don't really see issue with 'hard coding' davinci
+related callback in the code.
+
+-- =
+
+P=E9ter
+
+> =
+
+> 	Arnd
+> =
+
+> =
+
 > ---
->   drivers/spi/Kconfig  |   8 +
->   drivers/spi/Makefile |   1 +
->   drivers/spi/spi-st.c | 535 +++++++++++++++++++++++++++++++++++++++++++++++++++
->   3 files changed, 544 insertions(+)
->   create mode 100644 drivers/spi/spi-st.c
-<snip>
+> [DRAFT] ARM: davinci: pass dma config through platform data
+> =
 
-> +
-> +static int spi_st_probe(struct platform_device *pdev)
-> +{
-> +	struct device_node *np = pdev->dev.of_node;
-> +	struct device *dev = &pdev->dev;
-> +	struct spi_master *master;
-> +	struct resource *res;
-> +	struct spi_st *spi_st;
-> +	int num_cs, cs_gpio, i, ret = 0;
-> +	u32 var;
-> +	
-> +	printk("LEE: %s: %s()[%d]: Probing\n", __FILE__, __func__, __LINE__);
-> +
-> +	master = spi_alloc_master(&pdev->dev, sizeof(*spi_st));
-> +	if (!master) {
-> +		dev_err(&pdev->dev, "failed to allocate spi master\n");
-> +		return -ENOMEM;
-> +	}
-> +	spi_st = spi_master_get_devdata(master);
-> +
-> +	if (!IS_ERR(dev->pins->p)) {
-> +		spi_st->pins_sleep =
-> +			pinctrl_lookup_state(dev->pins->p, PINCTRL_STATE_SLEEP);
-> +		if (IS_ERR(spi_st->pins_sleep))
-> +			dev_warn(&pdev->dev, "could not get sleep pinstate\n");
-> +	}
-> +
-> +	num_cs = of_gpio_named_count(np, "cs-gpios");
-> +
-> +	for (i = 0; i < num_cs; i++) {
-> +		cs_gpio = of_get_named_gpio(np, "cs-gpios", i);
-> +
-> +		if (!gpio_is_valid(cs_gpio)) {
-> +			dev_err(&pdev->dev,
-> +				"%d is not a valid gpio\n", cs_gpio);
-> +			return -EINVAL;
-> +		}
-> +			
-> +		if (devm_gpio_request(&pdev->dev, cs_gpio, pdev->name)) {
-> +			dev_err(&pdev->dev,
-> +				"could not request %d gpio\n", cs_gpio);
-> +			return -EINVAL;
-> +		}
-> +	}
-> +
-> +	spi_st->clk = of_clk_get_by_name(np, "ssc");
-> +	if (IS_ERR(spi_st->clk)) {
-> +		dev_err(&pdev->dev, "Unable to request clock\n");
-> +		ret = PTR_ERR(spi_st->clk);
-> +		goto free_master;
-> +	}
-> +
-> +	ret = clk_prepare_enable(spi_st->clk);
-> +	if (ret)
-> +		goto free_master;
-> +
-> +	master->dev.of_node		= np;
-> +	master->bus_num			= pdev->id;
-> +	master->mode_bits		= MODEBITS;
-> +	spi_st->bitbang.master		= spi_master_get(master);
-> +	spi_st->bitbang.setup_transfer	= spi_st_setup_transfer;
-> +	spi_st->bitbang.txrx_bufs	= spi_st_txrx_bufs;
-> +	spi_st->bitbang.master->setup	= spi_st_setup;
-> +	spi_st->bitbang.master->cleanup	= spi_st_cleanup;
-> +	spi_st->bitbang.chipselect	= spi_st_gpio_chipselect;
-> +	spi_st->dev			= dev;
-> +
-> +	init_completion(&spi_st->done);
-> +
-> +	/* Get resources */
-> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +	spi_st->base = devm_ioremap_resource(&pdev->dev, res);
-> +	if (IS_ERR(spi_st->base)) {
-> +		ret = PTR_ERR(spi_st->base);
-> +		goto clk_disable;
-> +	}
-> +
-> +	spi_st->irq = irq_of_parse_and_map(np, 0);
-> +	if (!spi_st->irq) {
-> +		dev_err(&pdev->dev, "IRQ missing or invalid\n");
-> +		ret = -EINVAL;
-> +		goto clk_disable;
-> +	}
-> +
-> +	ret = devm_request_irq(&pdev->dev, spi_st->irq, spi_st_irq, 0,
-> +			       pdev->name, spi_st);
-> +	if (ret) {
-> +		dev_err(&pdev->dev, "Failed to request irq %d\n", spi_st->irq);
-> +		goto clk_disable;
-> +	}
-> +
-> +	/* Disable I2C and Reset SSC */
-> +	writel_relaxed(0x0, spi_st->base + SSC_I2C);
-> +	var = readw(spi_st->base + SSC_CTL);
-Why not readw_relaxed to be consistent with readl:s?
-> +	var |= SSC_CTL_SR;
-> +	writel_relaxed(var, spi_st->base + SSC_CTL);
-> +
-> +	udelay(1);
-> +	var = readl_relaxed(spi_st->base + SSC_CTL);
-> +	var &= ~SSC_CTL_SR;
-> +	writel_relaxed(var, spi_st->base + SSC_CTL);
-> +
-> +	/* Set SSC into slave mode before reconfiguring PIO pins */
-> +	var = readl_relaxed(spi_st->base + SSC_CTL);
-> +	var &= ~SSC_CTL_MS;
-> +	writel_relaxed(var, spi_st->base + SSC_CTL);
-> +
-> +	/* Start "bitbang" worker */
-> +	ret = spi_bitbang_start(&spi_st->bitbang);
-> +	if (ret) {
-> +		dev_err(&pdev->dev, "bitbang start failed [%d]\n", ret);
-> +		goto clk_disable;
-> +	}
-> +
-> +	dev_info(&pdev->dev, "registered SPI Bus %d\n", master->bus_num);
-> +
-> +	platform_set_drvdata(pdev, master);
+> DMA slave drivers are supposed to be written independent of the dma engine
+> driver, which means that the mmc and spi drivers on davinci should not
+> reference the edma_filter_fn or know about the specific format of the
+> data passed into it.
+> =
 
-Shouldn't you call devm_spi_register_master ?
-> +
-> +	/* by default the device is on */
-> +	pm_runtime_set_active(&pdev->dev);
-> +	pm_runtime_enable(&pdev->dev);
-> +
-> +	return 0;
-> +
-> +clk_disable:
-> +	clk_disable_unprepare(spi_st->clk);
-> +free_master:
-> +	spi_master_put(master);
-> +
-> +	return ret;
-> +}
-> +
-> +static int spi_st_remove(struct platform_device *pdev)
-> +{
-> +	struct spi_master *master = platform_get_drvdata(pdev);
-> +	struct spi_st *spi_st = spi_master_get_devdata(master);
-> +
-> +	spi_bitbang_stop(&spi_st->bitbang);
-> +	clk_disable_unprepare(spi_st->clk);
-> +
-> +	if (spi_st->pins_sleep)
-> +		pinctrl_select_state(pdev->dev.pins->p, spi_st->pins_sleep);
-You should use pinctrl_pm_select_sleep_state(dev); instead.
+> This changes the channel data from a resource into a void pointer and
+> passes it as platform data along with the filter function.
+> =
 
-> +
-> +	spi_master_put(spi_st->bitbang.master);
-If you use devm_spi_register_master at probe time,
-you shouldn't need to call spi_master_put IIUC.
+> TODO: do the same thing for SPI, and adapt the filter function for the
+> new format.
+> =
 
-> +
-> +	return 0;
-> +}
-> +
-> +#ifdef CONFIG_PM_SLEEP
-> +static int spi_st_suspend(struct device *dev)
-> +{
-> +	struct spi_master *master = dev_get_drvdata(dev);
-> +	struct spi_st *spi_st = spi_master_get_devdata(master);
-> +
-> +	writel_relaxed(0, spi_st->base + SSC_IEN);
-> +
-> +	if (!IS_ERR(spi_st->pins_sleep))
-> +		pinctrl_select_state(dev->pins->p, spi_st->pins_sleep);
-Ditto
-> +
-> +	clk_disable_unprepare(spi_st->clk);
-> +
-> +	return 0;
-> +}
-> +
-> +static int spi_st_resume(struct device *dev)
-> +{
-> +	struct spi_master *master = dev_get_drvdata(dev);
-> +	struct spi_st *spi_st = spi_master_get_devdata(master);
-> +	int ret;
-> +
-> +	ret = clk_prepare_enable(spi_st->clk);
-> +
-> +	if (!IS_ERR(dev->pins->default_state))
-> +		pinctrl_select_state(dev->pins->p, dev->pins->default_state);
-     pinctrl_pm_select_default_state(i2c_dev->dev);
-     pinctrl_pm_select_idle_state(i2c_dev->dev);
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> =
 
-> +
-> +	return ret;
-> +}
-> +#endif
-> +
-> +static SIMPLE_DEV_PM_OPS(spi_st_pm, spi_st_suspend, spi_st_resume);
-> +
-> +static struct of_device_id stm_spi_match[] = {
-> +	{ .compatible = "st,comms-ssc-spi", },
-> +	{ .compatible = "st,comms-ssc4-spi", },
-> +	{},
-> +};
-> +MODULE_DEVICE_TABLE(of, stm_spi_match);
-> +
-> +static struct platform_driver spi_st_driver = {
-> +	.driver = {
-> +		.name = "spi-st",
-> +		.pm = &spi_st_pm,
-> +		.of_match_table = of_match_ptr(stm_spi_match),
-> +	},
-> +	.probe = spi_st_probe,
-> +	.remove = spi_st_remove,
-> +};
-> +module_platform_driver(spi_st_driver);
-> +
-> +MODULE_AUTHOR("Patrice Chotard <patrice.chotard-qxv4g6HH51o@public.gmane.org>");
-> +MODULE_DESCRIPTION("STM SSC SPI driver");
-> +MODULE_LICENSE("GPL v2");
-
+>  arch/arm/mach-davinci/devices-da8xx.c     | 26 ++++++--------------------
+>  arch/arm/mach-davinci/devices.c           | 22 ++++++----------------
+>  drivers/mmc/host/davinci_mmc.c            | 27 +++++++++++--------------=
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+>  include/linux/platform_data/mmc-davinci.h |  5 +++++
+>  4 files changed, 28 insertions(+), 52 deletions(-)
+> =
+
+> diff --git a/arch/arm/mach-davinci/devices-da8xx.c b/arch/arm/mach-davinc=
+i/devices-da8xx.c
+> index b85b781b05fd..4aa872dc6dc3 100644
+> --- a/arch/arm/mach-davinci/devices-da8xx.c
+> +++ b/arch/arm/mach-davinci/devices-da8xx.c
+> @@ -671,16 +671,6 @@ static struct resource da8xx_mmcsd0_resources[] =3D {
+>  		.end	=3D IRQ_DA8XX_MMCSDINT0,
+>  		.flags	=3D IORESOURCE_IRQ,
+>  	},
+> -	{		/* DMA RX */
+> -		.start	=3D DA8XX_DMA_MMCSD0_RX,
+> -		.end	=3D DA8XX_DMA_MMCSD0_RX,
+> -		.flags	=3D IORESOURCE_DMA,
+> -	},
+> -	{		/* DMA TX */
+> -		.start	=3D DA8XX_DMA_MMCSD0_TX,
+> -		.end	=3D DA8XX_DMA_MMCSD0_TX,
+> -		.flags	=3D IORESOURCE_DMA,
+> -	},
+>  };
+>  =
+
+>  static struct platform_device da8xx_mmcsd0_device =3D {
+> @@ -693,6 +683,9 @@ static struct platform_device da8xx_mmcsd0_device =3D=
+ {
+>  int __init da8xx_register_mmcsd0(struct davinci_mmc_config *config)
+>  {
+>  	da8xx_mmcsd0_device.dev.platform_data =3D config;
+> +	config->filter =3D edma_filter_fn;
+> +	config->rxdma =3D (void *)DA8XX_DMA_MMCSD0_RX;
+> +	config->txdma =3D (void *)DA8XX_DMA_MMCSD0_TX;
+>  	return platform_device_register(&da8xx_mmcsd0_device);
+>  }
+>  =
+
+> @@ -708,16 +701,6 @@ static struct resource da850_mmcsd1_resources[] =3D {
+>  		.end	=3D IRQ_DA850_MMCSDINT0_1,
+>  		.flags	=3D IORESOURCE_IRQ,
+>  	},
+> -	{		/* DMA RX */
+> -		.start	=3D DA850_DMA_MMCSD1_RX,
+> -		.end	=3D DA850_DMA_MMCSD1_RX,
+> -		.flags	=3D IORESOURCE_DMA,
+> -	},
+> -	{		/* DMA TX */
+> -		.start	=3D DA850_DMA_MMCSD1_TX,
+> -		.end	=3D DA850_DMA_MMCSD1_TX,
+> -		.flags	=3D IORESOURCE_DMA,
+> -	},
+>  };
+>  =
+
+>  static struct platform_device da850_mmcsd1_device =3D {
+> @@ -730,6 +713,9 @@ static struct platform_device da850_mmcsd1_device =3D=
+ {
+>  int __init da850_register_mmcsd1(struct davinci_mmc_config *config)
+>  {
+>  	da850_mmcsd1_device.dev.platform_data =3D config;
+> +	config->filter =3D edma_filter_fn;
+> +	config->rxdma =3D (void *)DA8XX_DMA_MMCSD1_RX;
+> +	config->txdma =3D (void *)DA8XX_DMA_MMCSD1_TX;
+>  	return platform_device_register(&da850_mmcsd1_device);
+>  }
+>  #endif
+> diff --git a/arch/arm/mach-davinci/devices.c b/arch/arm/mach-davinci/devi=
+ces.c
+> index 6257aa452568..7b7039d9b079 100644
+> --- a/arch/arm/mach-davinci/devices.c
+> +++ b/arch/arm/mach-davinci/devices.c
+> @@ -144,14 +144,6 @@ static struct resource mmcsd0_resources[] =3D {
+>  		.start =3D IRQ_SDIOINT,
+>  		.flags =3D IORESOURCE_IRQ,
+>  	},
+> -	/* DMA channels: RX, then TX */
+> -	{
+> -		.start =3D EDMA_CTLR_CHAN(0, DAVINCI_DMA_MMCRXEVT),
+> -		.flags =3D IORESOURCE_DMA,
+> -	}, {
+> -		.start =3D EDMA_CTLR_CHAN(0, DAVINCI_DMA_MMCTXEVT),
+> -		.flags =3D IORESOURCE_DMA,
+> -	},
+>  };
+>  =
+
+>  static struct platform_device davinci_mmcsd0_device =3D {
+> @@ -181,14 +173,6 @@ static struct resource mmcsd1_resources[] =3D {
+>  		.start =3D IRQ_DM355_SDIOINT1,
+>  		.flags =3D IORESOURCE_IRQ,
+>  	},
+> -	/* DMA channels: RX, then TX */
+> -	{
+> -		.start =3D EDMA_CTLR_CHAN(0, 30),	/* rx */
+> -		.flags =3D IORESOURCE_DMA,
+> -	}, {
+> -		.start =3D EDMA_CTLR_CHAN(0, 31),	/* tx */
+> -		.flags =3D IORESOURCE_DMA,
+> -	},
+>  };
+>  =
+
+>  static struct platform_device davinci_mmcsd1_device =3D {
+> @@ -218,6 +202,9 @@ void __init davinci_setup_mmc(int module, struct davi=
+nci_mmc_config *config)
+>  	 */
+>  	switch (module) {
+>  	case 1:
+> +		config->filter =3D edma_filter_fn;
+> +		config->rxdma =3D (void *)EDMA_CTLR_CHAN(0, DAVINCI_DMA_MMCRXEVT);
+> +		config->txdma =3D (void *)EDMA_CTLR_CHAN(0, DAVINCI_DMA_MMCTXEVT);
+>  		if (cpu_is_davinci_dm355()) {
+>  			/* REVISIT we may not need all these pins if e.g. this
+>  			 * is a hard-wired SDIO device...
+> @@ -247,6 +234,9 @@ void __init davinci_setup_mmc(int module, struct davi=
+nci_mmc_config *config)
+>  		pdev =3D &davinci_mmcsd1_device;
+>  		break;
+>  	case 0:
+> +		config->filter =3D edma_filter_fn;
+> +		config->rxdma =3D (void *)EDMA_CTLR_CHAN(0, 30);
+> +		config->txdma =3D (void *)EDMA_CTLR_CHAN(0, 31);
+>  		if (cpu_is_davinci_dm355()) {
+>  			mmcsd0_resources[0].start =3D DM355_MMCSD0_BASE;
+>  			mmcsd0_resources[0].end =3D DM355_MMCSD0_BASE + SZ_4K - 1;
+> diff --git a/drivers/mmc/host/davinci_mmc.c b/drivers/mmc/host/davinci_mm=
+c.c
+> index 1625f908dc70..3f25be9942c8 100644
+> --- a/drivers/mmc/host/davinci_mmc.c
+> +++ b/drivers/mmc/host/davinci_mmc.c
+> @@ -202,7 +202,8 @@ struct mmc_davinci_host {
+>  	u32 buffer_bytes_left;
+>  	u32 bytes_left;
+>  =
+
+> -	u32 rxdma, txdma;
+> +	dma_filter_fn filter;
+> +	void *rxdma, *txdma;
+>  	struct dma_chan *dma_tx;
+>  	struct dma_chan *dma_rx;
+>  	bool use_dma;
+> @@ -524,16 +525,16 @@ static int __init davinci_acquire_dma_channels(stru=
+ct mmc_davinci_host *host)
+>  	dma_cap_set(DMA_SLAVE, mask);
+>  =
+
+>  	host->dma_tx =3D
+> -		dma_request_slave_channel_compat(mask, edma_filter_fn,
+> -				&host->txdma, mmc_dev(host->mmc), "tx");
+> +		dma_request_slave_channel_compat(mask, host->filter,
+> +				host->txdma, mmc_dev(host->mmc), "tx");
+>  	if (!host->dma_tx) {
+>  		dev_err(mmc_dev(host->mmc), "Can't get dma_tx channel\n");
+>  		return -ENODEV;
+>  	}
+>  =
+
+>  	host->dma_rx =3D
+> -		dma_request_slave_channel_compat(mask, edma_filter_fn,
+> -				&host->rxdma, mmc_dev(host->mmc), "rx");
+> +		dma_request_slave_channel_compat(mask, host->filter,
+> +				host->rxdma, mmc_dev(host->mmc), "rx");
+>  	if (!host->dma_rx) {
+>  		dev_err(mmc_dev(host->mmc), "Can't get dma_rx channel\n");
+>  		r =3D -ENODEV;
+> @@ -1262,17 +1263,11 @@ static int __init davinci_mmcsd_probe(struct plat=
+form_device *pdev)
+>  	host =3D mmc_priv(mmc);
+>  	host->mmc =3D mmc;	/* Important */
+>  =
+
+> -	r =3D platform_get_resource(pdev, IORESOURCE_DMA, 0);
+> -	if (!r)
+> -		dev_warn(&pdev->dev, "RX DMA resource not specified\n");
+> -	else
+> -		host->rxdma =3D r->start;
+> -
+> -	r =3D platform_get_resource(pdev, IORESOURCE_DMA, 1);
+> -	if (!r)
+> -		dev_warn(&pdev->dev, "TX DMA resource not specified\n");
+> -	else
+> -		host->txdma =3D r->start;
+> +	if (pdata) {
+> +		host->filter =3D pdata->filter;
+> +		host->rxdma  =3D pdata->rxdma;
+> +		host->txdma  =3D pdata->txdma;
+> +	}
+>  =
+
+>  	host->mem_res =3D mem;
+>  	host->base =3D ioremap(mem->start, mem_size);
+> diff --git a/include/linux/platform_data/mmc-davinci.h b/include/linux/pl=
+atform_data/mmc-davinci.h
+> index 9cea4ee377b5..0e5809bcaff0 100644
+> --- a/include/linux/platform_data/mmc-davinci.h
+> +++ b/include/linux/platform_data/mmc-davinci.h
+> @@ -25,6 +25,11 @@ struct davinci_mmc_config {
+>  =
+
+>  	/* Number of sg segments */
+>  	u8	nr_sg;
+> +
+> +	/* DMA setup */
+> +	dma_filter_fn filter;
+> +	void	*rxdma;
+> +	void	*txdma;
+>  };
+>  void davinci_setup_mmc(int module, struct davinci_mmc_config *config);
+>  =
+
+> =
+
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-omap" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> =

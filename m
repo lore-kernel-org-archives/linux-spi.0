@@ -1,57 +1,72 @@
-From: David Jander <david@protonic.nl>
-Subject: Re: MCP2515 implementation is slow
-Date: Thu, 27 Nov 2014 08:33:46 +0100
-Message-ID: <20141127083346.79d4a5af@archvile>
-References: <84a1d29551f84f5494b309e1ad1e0840@SGPMBX1004.APAC.bosch.com>
+From: Laurentiu Palcu <laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v6 1/2] spi: add support for DLN-2 USB-SPI adapter
+Date: Thu, 27 Nov 2014 12:30:35 +0200
+Message-ID: <20141127103034.GP2583@lpalcu-linux>
+References: <1416312599-5176-2-git-send-email-laurentiu.palcu@intel.com>
+ <1416996549-29328-1-git-send-email-laurentiu.palcu@intel.com>
+ <20141126182521.GP7712@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"linux-can@vger.kernel.org" <linux-can@vger.kernel.org>,
-	gianluca <gianlucarenzi@eurekelettronica.it>
-To: "Pankajkumar Misra (RBEI/EEA2)" <Pankaj.Kumar@in.bosch.com>
-Return-path: <linux-can-owner@vger.kernel.org>
-In-Reply-To: <84a1d29551f84f5494b309e1ad1e0840@SGPMBX1004.APAC.bosch.com>
-Sender: linux-can-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Johan Havold <johan-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20141126182521.GP7712-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, 25 Nov 2014 16:19:33 +0000
-"Pankajkumar Misra (RBEI/EEA2)" <Pankaj.Kumar@in.bosch.com> wrote:
-
-> I have compiled MCP251x.c kernel driver module for Olimex A20-Olinuxino
-> Micro.
+On Wed, Nov 26, 2014 at 06:25:21PM +0000, Mark Brown wrote:
+> On Wed, Nov 26, 2014 at 12:09:09PM +0200, Laurentiu Palcu wrote:
 > 
-> The device is working fine for one frame at a time at 500ms. If I send two
-> or more frame at the same time, CAN is going to bus-off due to overrun
-> errors. Even if I send one frame at faster rate say, 100ms,results in
-> bus-off.
-
-I tend to think there is something other wrong with your setup. Maybe you are
-missing bus-termination/biasing? Chip-clock?
-The device should never go in bus-off mode if there are RX-overruns. If it
-goes into bus-off, there is something wrong in the hardware.
-
-> I am communicating with module with ip commands, cansend & candump.
-> Also my SPI module is working only at 250K baud, not any other baud.
-
-We use a MCP2515 with this driver at 250kbit/s receiving back-to-back messages
-without loss on a i.MX51. Please note, that it won't work reliably at any
-higher bitrate and system load is quite high.
-
-The MCP2515 is a very bad design, but the driver performance has improved a lot
-since spi-bitbang started using a kthread instead of a work-queue.
-
-> Any suggestions.
+> > +static int dln2_spi_transfer_one_message(struct spi_master *master,
+> > +					 struct spi_message *msg)
+> > +{
+> > +	struct dln2_spi *dln2 = spi_master_get_devdata(master);
+> > +	struct spi_device *spi = msg->spi;
+> > +	struct spi_transfer *xfer;
+> > +	int status;
+> > +
+> > +	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+> > +		u8 attr = 0;
+> > +
+> > +		status = dln2_spi_transfer_setup(dln2, xfer->speed_hz,
+> > +						 xfer->bits_per_word,
+> > +						 spi->mode);
+> > +		if (status < 0) {
+> > +			dev_err(&dln2->pdev->dev, "Cannot setup transfer\n");
+> > +			break;
+> > +		}
+> > +
+> > +		if (!xfer->cs_change &&
+> > +		    !list_is_last(&xfer->transfer_list, &msg->transfers))
+> > +			attr = xfer->cs_change ? 0 : DLN2_SPI_ATTR_LEAVE_SS_LOW;
+> > +
+> > +		status = dln2_spi_rdwr(dln2, xfer->tx_buf, xfer->rx_buf,
+> > +				       xfer->len, attr);
 > 
-> Best Regards,
-> Pankaj
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-can" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> We recently added a spi_transfer_is_last() operation which should allow
+> you to move this to using transfer_one() which is a bit nicer.
+Ok, sounds good!
 
-Best regards,
+> 
+> > +	/* enable SPI module, we're good to go */
+> > +	ret = dln2_spi_enable(dln2, true);
+> > +	if (ret < 0) {
+> > +		dev_err(&pdev->dev, "Failed to enable SPI module\n");
+> > +		goto exit_free_master;
+> > +	}
+> 
+> It would be nice to have runtime PM operations which keep the device
+> disabled when idle, presumably that'd save a bit of power and it's
+> generally better practice.
+I'll add runtime PM and send a v7.
 
--- 
-David Jander
-Protonic Holland.
+laurentiu
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

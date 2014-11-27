@@ -1,62 +1,72 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/4] spi: st: Provide Device Tree binding documentation
-Date: Thu, 27 Nov 2014 16:30:59 +0000
-Message-ID: <20141127163059.GZ7712@sirena.org.uk>
-References: <1417088636-11994-1-git-send-email-lee.jones@linaro.org>
- <1417088636-11994-3-git-send-email-lee.jones@linaro.org>
- <20141127130053.GW7712@sirena.org.uk>
- <20141127145542.GH4628@x1>
+From: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Subject: Re: [PATCH 2/3] ARM: edma: Rename header file for
+ dmaengine filter function definition
+Date: Thu, 27 Nov 2014 20:46:12 +0200
+Message-ID: <54777174.4070203@ti.com>
+References: <1417084891-17990-1-git-send-email-peter.ujfalusi@ti.com>
+ <8235185.7qUDHu9jso@wuerfel> <547733E3.3020408@ti.com>
+ <3300340.ou8f7H2hIc@wuerfel>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="dfAulW8sdm/Y0CsS"
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	kernel-F5mvAk5X5gdBDgjK7y7TUQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20141127145542.GH4628@x1>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
+Cc: alsa-devel@alsa-project.org, linux@arm.linux.org.uk, vinod.koul@intel.com,
+ nsekhar@ti.com, linux-spi@vger.kernel.org, linux-mmc@vger.kernel.org,
+ Liam Girdwood <lgirdwood@gmail.com>, linux-kernel@vger.kernel.org,
+ khilman@deeprootsystems.com, Tony Lindgren <tony@atomide.com>,
+ Mark Brown <broonie@kernel.org>, chris@printf.net, dmaengine@vger.kernel.org,
+ ulf.hansson@linaro.org, linux-omap@vger.kernel.org
+To: Arnd Bergmann <arnd@arndb.de>, <linux-arm-kernel@lists.infradead.org>
+Return-path: <alsa-devel-bounces@alsa-project.org>
+In-Reply-To: <3300340.ou8f7H2hIc@wuerfel>
+List-Unsubscribe: <http://mailman.alsa-project.org/mailman/options/alsa-devel>,
+ <mailto:alsa-devel-request@alsa-project.org?subject=unsubscribe>
+List-Archive: <http://mailman.alsa-project.org/pipermail/alsa-devel/>
+List-Post: <mailto:alsa-devel@alsa-project.org>
+List-Help: <mailto:alsa-devel-request@alsa-project.org?subject=help>
+List-Subscribe: <http://mailman.alsa-project.org/mailman/listinfo/alsa-devel>,
+ <mailto:alsa-devel-request@alsa-project.org?subject=subscribe>
+Errors-To: alsa-devel-bounces@alsa-project.org
+Sender: alsa-devel-bounces@alsa-project.org
+List-Id: linux-spi.vger.kernel.org
 
+On 11/27/2014 04:50 PM, Arnd Bergmann wrote:
+> On Thursday 27 November 2014 16:23:31 Peter Ujfalusi wrote:
+>> This will only work in case of legacy boot. When booting with DT we do n=
+ot
+>> have pdata and after this patch in dt boot we are not going to be able t=
+o get
+>> the DMA resources either.
+> =
 
---dfAulW8sdm/Y0CsS
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> No, when booting with DT, the filter_fn and data are not used at all,
+> we get the dma channel by parsing the DT instead.
 
-On Thu, Nov 27, 2014 at 02:55:42PM +0000, Lee Jones wrote:
-> On Thu, 27 Nov 2014, Mark Brown wrote:
+Correct.
 
-> > What do the two different compatible strings mean (for example, should
-> > ssc4 be used for version 4 and higher or is it just a quirk for that
-> > version)?
+>> I think if we want to do something like this, it has to be done within t=
+he
+>> dmaengine framework. The dma controller's of_dma_filter_info already have
+>> .filter_fn which could be used by the framework.
+> =
 
-> This appears to be historical.  There aren't any functional
-> differences i.e. we don't match on them.  I believe the former is a
-> more informal, generic name and the latter is the official name of the
-> IP block.  The I2C component already upstreamed has the same naming
-> conventions by the looks of it.
+> No, of_dma_filter_info/of_dma_simple_xlate was a mistake, we should never
+> have even introduced that. All drivers that rely on this can simply
+> provide their own xlate function that calls of_dma_get_slave_channel()
+> or one of the related functions.
+> =
 
-Probably best to say something or retire one then.
+> edma is particularly trivial, it can just use of_dma_xlate_by_chan_id()
+> instead of of_dma_simple_xlate, as it looks up the channel by its number.
 
---dfAulW8sdm/Y0CsS
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+I see. With this series I did not planed to fix all edma related issues, ju=
+st
+as a start clean up the related header files. I would rather not add fixes =
+to
+mmc, spi, etc drivers since while you have valid point it is not in the sco=
+pe
+of this series.
+Can we do the changes you are suggesting in an incremental manner?
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+-- =
 
-iQEcBAEBAgAGBQJUd1HCAAoJECTWi3JdVIfQOWoH/1hYO3qV5JbFVeE0xphBa4Td
-1xry2lXjk5lelhXBiNcpkEq2hLJVXQntjaLu5L2syKi9TvD9JNT6HycJvVv33vU3
-jlkcY7A6hM+ol8ExKBH0rcUQS/mWFPqj19+WtKKR01NlP08qaN5KHJmxcAseGxNV
-J2Y9t4usSRw2XTtxOXN/R4KcwZqZSFdLA+NPFJv92B9UVnzEnlKCLDxdB8ETSfCS
-C7MBYmmYyDvbF1waozT0bLBV2qMLj8L+pA3CGWBW8zZQANL1FNHsC1ciNx3Qa2y7
-Di1Mgs1UexxS+zl7OgWGyPc3MQorck6DOPhJkBwct7HliP9egEUCvw1yVsY7dk0=
-=mAJ2
------END PGP SIGNATURE-----
-
---dfAulW8sdm/Y0CsS--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+P=E9ter

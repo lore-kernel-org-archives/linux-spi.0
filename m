@@ -1,72 +1,62 @@
-From: Laurentiu Palcu <laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v6 1/2] spi: add support for DLN-2 USB-SPI adapter
-Date: Thu, 27 Nov 2014 12:30:35 +0200
-Message-ID: <20141127103034.GP2583@lpalcu-linux>
-References: <1416312599-5176-2-git-send-email-laurentiu.palcu@intel.com>
- <1416996549-29328-1-git-send-email-laurentiu.palcu@intel.com>
- <20141126182521.GP7712@sirena.org.uk>
+From: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Subject: [PATCH 0/3] ARM: edma: Correct header file usage
+Date: Thu, 27 Nov 2014 12:41:28 +0200
+Message-ID: <1417084891-17990-1-git-send-email-peter.ujfalusi@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Johan Havold <johan-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20141126182521.GP7712-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: alsa-devel@alsa-project.org, linux-omap@vger.kernel.org,
+ Tony Lindgren <tony@atomide.com>, linux-kernel@vger.kernel.org,
+ linux-mmc@vger.kernel.org, chris@printf.net,
+ Liam Girdwood <lgirdwood@gmail.com>, dmaengine@vger.kernel.org,
+ ulf.hansson@linaro.org, linux-spi@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+To: Mark Brown <broonie@kernel.org>, <linux@arm.linux.org.uk>,
+ <nsekhar@ti.com>, <arnd@arndb.de>, <vinod.koul@intel.com>,
+ <khilman@deeprootsystems.com>
+Return-path: <alsa-devel-bounces@alsa-project.org>
+List-Unsubscribe: <http://mailman.alsa-project.org/mailman/options/alsa-devel>,
+ <mailto:alsa-devel-request@alsa-project.org?subject=unsubscribe>
+List-Archive: <http://mailman.alsa-project.org/pipermail/alsa-devel/>
+List-Post: <mailto:alsa-devel@alsa-project.org>
+List-Help: <mailto:alsa-devel-request@alsa-project.org?subject=help>
+List-Subscribe: <http://mailman.alsa-project.org/mailman/listinfo/alsa-devel>,
+ <mailto:alsa-devel-request@alsa-project.org?subject=subscribe>
+Errors-To: alsa-devel-bounces@alsa-project.org
+Sender: alsa-devel-bounces@alsa-project.org
+List-Id: linux-spi.vger.kernel.org
 
-On Wed, Nov 26, 2014 at 06:25:21PM +0000, Mark Brown wrote:
-> On Wed, Nov 26, 2014 at 12:09:09PM +0200, Laurentiu Palcu wrote:
-> 
-> > +static int dln2_spi_transfer_one_message(struct spi_master *master,
-> > +					 struct spi_message *msg)
-> > +{
-> > +	struct dln2_spi *dln2 = spi_master_get_devdata(master);
-> > +	struct spi_device *spi = msg->spi;
-> > +	struct spi_transfer *xfer;
-> > +	int status;
-> > +
-> > +	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
-> > +		u8 attr = 0;
-> > +
-> > +		status = dln2_spi_transfer_setup(dln2, xfer->speed_hz,
-> > +						 xfer->bits_per_word,
-> > +						 spi->mode);
-> > +		if (status < 0) {
-> > +			dev_err(&dln2->pdev->dev, "Cannot setup transfer\n");
-> > +			break;
-> > +		}
-> > +
-> > +		if (!xfer->cs_change &&
-> > +		    !list_is_last(&xfer->transfer_list, &msg->transfers))
-> > +			attr = xfer->cs_change ? 0 : DLN2_SPI_ATTR_LEAVE_SS_LOW;
-> > +
-> > +		status = dln2_spi_rdwr(dln2, xfer->tx_buf, xfer->rx_buf,
-> > +				       xfer->len, attr);
-> 
-> We recently added a spi_transfer_is_last() operation which should allow
-> you to move this to using transfer_one() which is a bit nicer.
-Ok, sounds good!
+Hi,
 
-> 
-> > +	/* enable SPI module, we're good to go */
-> > +	ret = dln2_spi_enable(dln2, true);
-> > +	if (ret < 0) {
-> > +		dev_err(&pdev->dev, "Failed to enable SPI module\n");
-> > +		goto exit_free_master;
-> > +	}
-> 
-> It would be nice to have runtime PM operations which keep the device
-> disabled when idle, presumably that'd save a bit of power and it's
-> generally better practice.
-I'll add runtime PM and send a v7.
+The linux/platform_data/edma.h file was used for API definition as well, which
+is not correct since the header should only contain platform data related
+structures, defines, etc.
 
-laurentiu
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Mark: I think this series can go via arm since it is just changing include stuff
+under ASoC.
+
+Regards,
+Peter
+---
+Peter Ujfalusi (3):
+  ASoC: davinci-evm: Do not include edma headers
+  ARM: edma: Rename header file for dmaengine filter function definition
+  ARM: edma: Split up header file to platform_data and API file
+
+ arch/arm/common/edma.c                     |   3 +-
+ arch/arm/mach-davinci/devices.c            |   1 +
+ arch/arm/mach-davinci/include/mach/da8xx.h |   1 +
+ drivers/dma/edma.c                         |   2 +-
+ drivers/mmc/host/davinci_mmc.c             |   3 +-
+ drivers/spi/spi-davinci.c                  |   2 +-
+ include/linux/edma-dmaengine.h             |  29 ++++++
+ include/linux/edma.h                       | 152 ++++++++++++++++++++++++++---
+ include/linux/platform_data/edma.h         | 148 ++--------------------------
+ sound/soc/davinci/davinci-evm.c            |   3 -
+ sound/soc/davinci/davinci-pcm.h            |   1 +
+ sound/soc/davinci/edma-pcm.c               |   2 +-
+ 12 files changed, 182 insertions(+), 165 deletions(-)
+ create mode 100644 include/linux/edma-dmaengine.h
+
+-- 
+2.1.3

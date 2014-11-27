@@ -1,41 +1,57 @@
-From: Beniamino Galvani <b.galvani-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: randconfig build error with next-20141126, in
- drivers/spi/spi-meson-spifc.c
-Date: Thu, 27 Nov 2014 00:12:25 +0100
-Message-ID: <20141126231225.GA17600@gmail.com>
-References: <CA+r1Zhh3Fhcvx9nSDxPnrC-gzR0Z50O7nwzvkhhX6QAS2qmasQ@mail.gmail.com>
+From: David Jander <david@protonic.nl>
+Subject: Re: MCP2515 implementation is slow
+Date: Thu, 27 Nov 2014 08:33:46 +0100
+Message-ID: <20141127083346.79d4a5af@archvile>
+References: <84a1d29551f84f5494b309e1ad1e0840@SGPMBX1004.APAC.bosch.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Stephen Rothwell <sfr-3FnU+UHB4dNDw9hX6IcOSA@public.gmane.org>,
-	linux-next <linux-next-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	broonie <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jim Davis <jim.epost-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CA+r1Zhh3Fhcvx9nSDxPnrC-gzR0Z50O7nwzvkhhX6QAS2qmasQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	"linux-can@vger.kernel.org" <linux-can@vger.kernel.org>,
+	gianluca <gianlucarenzi@eurekelettronica.it>
+To: "Pankajkumar Misra (RBEI/EEA2)" <Pankaj.Kumar@in.bosch.com>
+Return-path: <linux-can-owner@vger.kernel.org>
+In-Reply-To: <84a1d29551f84f5494b309e1ad1e0840@SGPMBX1004.APAC.bosch.com>
+Sender: linux-can-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Wed, Nov 26, 2014 at 10:53:28AM -0700, Jim Davis wrote:
-> Building with the attached random configuration file,
+On Tue, 25 Nov 2014 16:19:33 +0000
+"Pankajkumar Misra (RBEI/EEA2)" <Pankaj.Kumar@in.bosch.com> wrote:
+
+> I have compiled MCP251x.c kernel driver module for Olimex A20-Olinuxino
+> Micro.
 > 
-> drivers/built-in.o: In function `meson_spifc_probe':
-> spi-meson-spifc.c:(.text+0x14b4a8): undefined reference to
-> `devm_regmap_init_mmio_clk'
-> make: *** [vmlinux] Error 1
+> The device is working fine for one frame at a time at 500ms. If I send two
+> or more frame at the same time, CAN is going to bus-off due to overrun
+> errors. Even if I send one frame at faster rate say, 100ms,results in
+> bus-off.
 
-Hi,
+I tend to think there is something other wrong with your setup. Maybe you are
+missing bus-termination/biasing? Chip-clock?
+The device should never go in bus-off mode if there are RX-overruns. If it
+goes into bus-off, there is something wrong in the hardware.
 
-I've just submitted a fix for the missing Kconfig dependency.
+> I am communicating with module with ip commands, cansend & candump.
+> Also my SPI module is working only at 250K baud, not any other baud.
 
-Thanks,
-Beniamino
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+We use a MCP2515 with this driver at 250kbit/s receiving back-to-back messages
+without loss on a i.MX51. Please note, that it won't work reliably at any
+higher bitrate and system load is quite high.
+
+The MCP2515 is a very bad design, but the driver performance has improved a lot
+since spi-bitbang started using a kthread instead of a work-queue.
+
+> Any suggestions.
+> 
+> Best Regards,
+> Pankaj
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-can" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+
+Best regards,
+
+-- 
+David Jander
+Protonic Holland.

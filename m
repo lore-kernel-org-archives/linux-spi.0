@@ -1,53 +1,249 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/4] spi: st: Provide Device Tree binding documentation
-Date: Thu, 27 Nov 2014 13:00:53 +0000
-Message-ID: <20141127130053.GW7712@sirena.org.uk>
-References: <1417088636-11994-1-git-send-email-lee.jones@linaro.org>
- <1417088636-11994-3-git-send-email-lee.jones@linaro.org>
+From: Maxime Coquelin <maxime.coquelin-qxv4g6HH51o@public.gmane.org>
+Subject: Re: [PATCH 1/4] spi: Add new driver for STMicroelectronics' SPI Controller
+Date: Thu, 27 Nov 2014 14:24:08 +0100
+Message-ID: <547725F8.1050106@st.com>
+References: <1417088636-11994-1-git-send-email-lee.jones@linaro.org> <1417088636-11994-2-git-send-email-lee.jones@linaro.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="mv22/3EYgOJmG2Gb"
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	kernel-F5mvAk5X5gdBDgjK7y7TUQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	<kernel-F5mvAk5X5gdBDgjK7y7TUQ@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1417088636-11994-3-git-send-email-lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+In-Reply-To: <1417088636-11994-2-git-send-email-lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---mv22/3EYgOJmG2Gb
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On 11/27/2014 12:43 PM, Lee Jones wrote:
+> This patch adds support for the SPI portion of ST's SSC device.
+>
+> Signed-off-by: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+> ---
+>   drivers/spi/Kconfig  |   8 +
+>   drivers/spi/Makefile |   1 +
+>   drivers/spi/spi-st.c | 535 +++++++++++++++++++++++++++++++++++++++++++++++++++
+>   3 files changed, 544 insertions(+)
+>   create mode 100644 drivers/spi/spi-st.c
+<snip>
 
-On Thu, Nov 27, 2014 at 11:43:54AM +0000, Lee Jones wrote:
+> +
+> +static int spi_st_probe(struct platform_device *pdev)
+> +{
+> +	struct device_node *np = pdev->dev.of_node;
+> +	struct device *dev = &pdev->dev;
+> +	struct spi_master *master;
+> +	struct resource *res;
+> +	struct spi_st *spi_st;
+> +	int num_cs, cs_gpio, i, ret = 0;
+> +	u32 var;
+> +	
+> +	printk("LEE: %s: %s()[%d]: Probing\n", __FILE__, __func__, __LINE__);
+> +
+> +	master = spi_alloc_master(&pdev->dev, sizeof(*spi_st));
+> +	if (!master) {
+> +		dev_err(&pdev->dev, "failed to allocate spi master\n");
+> +		return -ENOMEM;
+> +	}
+> +	spi_st = spi_master_get_devdata(master);
+> +
+> +	if (!IS_ERR(dev->pins->p)) {
+> +		spi_st->pins_sleep =
+> +			pinctrl_lookup_state(dev->pins->p, PINCTRL_STATE_SLEEP);
+> +		if (IS_ERR(spi_st->pins_sleep))
+> +			dev_warn(&pdev->dev, "could not get sleep pinstate\n");
+> +	}
+> +
+> +	num_cs = of_gpio_named_count(np, "cs-gpios");
+> +
+> +	for (i = 0; i < num_cs; i++) {
+> +		cs_gpio = of_get_named_gpio(np, "cs-gpios", i);
+> +
+> +		if (!gpio_is_valid(cs_gpio)) {
+> +			dev_err(&pdev->dev,
+> +				"%d is not a valid gpio\n", cs_gpio);
+> +			return -EINVAL;
+> +		}
+> +			
+> +		if (devm_gpio_request(&pdev->dev, cs_gpio, pdev->name)) {
+> +			dev_err(&pdev->dev,
+> +				"could not request %d gpio\n", cs_gpio);
+> +			return -EINVAL;
+> +		}
+> +	}
+> +
+> +	spi_st->clk = of_clk_get_by_name(np, "ssc");
+> +	if (IS_ERR(spi_st->clk)) {
+> +		dev_err(&pdev->dev, "Unable to request clock\n");
+> +		ret = PTR_ERR(spi_st->clk);
+> +		goto free_master;
+> +	}
+> +
+> +	ret = clk_prepare_enable(spi_st->clk);
+> +	if (ret)
+> +		goto free_master;
+> +
+> +	master->dev.of_node		= np;
+> +	master->bus_num			= pdev->id;
+> +	master->mode_bits		= MODEBITS;
+> +	spi_st->bitbang.master		= spi_master_get(master);
+> +	spi_st->bitbang.setup_transfer	= spi_st_setup_transfer;
+> +	spi_st->bitbang.txrx_bufs	= spi_st_txrx_bufs;
+> +	spi_st->bitbang.master->setup	= spi_st_setup;
+> +	spi_st->bitbang.master->cleanup	= spi_st_cleanup;
+> +	spi_st->bitbang.chipselect	= spi_st_gpio_chipselect;
+> +	spi_st->dev			= dev;
+> +
+> +	init_completion(&spi_st->done);
+> +
+> +	/* Get resources */
+> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> +	spi_st->base = devm_ioremap_resource(&pdev->dev, res);
+> +	if (IS_ERR(spi_st->base)) {
+> +		ret = PTR_ERR(spi_st->base);
+> +		goto clk_disable;
+> +	}
+> +
+> +	spi_st->irq = irq_of_parse_and_map(np, 0);
+> +	if (!spi_st->irq) {
+> +		dev_err(&pdev->dev, "IRQ missing or invalid\n");
+> +		ret = -EINVAL;
+> +		goto clk_disable;
+> +	}
+> +
+> +	ret = devm_request_irq(&pdev->dev, spi_st->irq, spi_st_irq, 0,
+> +			       pdev->name, spi_st);
+> +	if (ret) {
+> +		dev_err(&pdev->dev, "Failed to request irq %d\n", spi_st->irq);
+> +		goto clk_disable;
+> +	}
+> +
+> +	/* Disable I2C and Reset SSC */
+> +	writel_relaxed(0x0, spi_st->base + SSC_I2C);
+> +	var = readw(spi_st->base + SSC_CTL);
+Why not readw_relaxed to be consistent with readl:s?
+> +	var |= SSC_CTL_SR;
+> +	writel_relaxed(var, spi_st->base + SSC_CTL);
+> +
+> +	udelay(1);
+> +	var = readl_relaxed(spi_st->base + SSC_CTL);
+> +	var &= ~SSC_CTL_SR;
+> +	writel_relaxed(var, spi_st->base + SSC_CTL);
+> +
+> +	/* Set SSC into slave mode before reconfiguring PIO pins */
+> +	var = readl_relaxed(spi_st->base + SSC_CTL);
+> +	var &= ~SSC_CTL_MS;
+> +	writel_relaxed(var, spi_st->base + SSC_CTL);
+> +
+> +	/* Start "bitbang" worker */
+> +	ret = spi_bitbang_start(&spi_st->bitbang);
+> +	if (ret) {
+> +		dev_err(&pdev->dev, "bitbang start failed [%d]\n", ret);
+> +		goto clk_disable;
+> +	}
+> +
+> +	dev_info(&pdev->dev, "registered SPI Bus %d\n", master->bus_num);
+> +
+> +	platform_set_drvdata(pdev, master);
 
-> +Required properties:
-> +- compatible	: "st,comms-ssc-spi" or "st,comms-ssc4-spi"
+Shouldn't you call devm_spi_register_master ?
+> +
+> +	/* by default the device is on */
+> +	pm_runtime_set_active(&pdev->dev);
+> +	pm_runtime_enable(&pdev->dev);
+> +
+> +	return 0;
+> +
+> +clk_disable:
+> +	clk_disable_unprepare(spi_st->clk);
+> +free_master:
+> +	spi_master_put(master);
+> +
+> +	return ret;
+> +}
+> +
+> +static int spi_st_remove(struct platform_device *pdev)
+> +{
+> +	struct spi_master *master = platform_get_drvdata(pdev);
+> +	struct spi_st *spi_st = spi_master_get_devdata(master);
+> +
+> +	spi_bitbang_stop(&spi_st->bitbang);
+> +	clk_disable_unprepare(spi_st->clk);
+> +
+> +	if (spi_st->pins_sleep)
+> +		pinctrl_select_state(pdev->dev.pins->p, spi_st->pins_sleep);
+You should use pinctrl_pm_select_sleep_state(dev); instead.
 
-What do the two different compatible strings mean (for example, should
-ssc4 be used for version 4 and higher or is it just a quirk for that
-version)?
+> +
+> +	spi_master_put(spi_st->bitbang.master);
+If you use devm_spi_register_master at probe time,
+you shouldn't need to call spi_master_put IIUC.
 
---mv22/3EYgOJmG2Gb
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+> +
+> +	return 0;
+> +}
+> +
+> +#ifdef CONFIG_PM_SLEEP
+> +static int spi_st_suspend(struct device *dev)
+> +{
+> +	struct spi_master *master = dev_get_drvdata(dev);
+> +	struct spi_st *spi_st = spi_master_get_devdata(master);
+> +
+> +	writel_relaxed(0, spi_st->base + SSC_IEN);
+> +
+> +	if (!IS_ERR(spi_st->pins_sleep))
+> +		pinctrl_select_state(dev->pins->p, spi_st->pins_sleep);
+Ditto
+> +
+> +	clk_disable_unprepare(spi_st->clk);
+> +
+> +	return 0;
+> +}
+> +
+> +static int spi_st_resume(struct device *dev)
+> +{
+> +	struct spi_master *master = dev_get_drvdata(dev);
+> +	struct spi_st *spi_st = spi_master_get_devdata(master);
+> +	int ret;
+> +
+> +	ret = clk_prepare_enable(spi_st->clk);
+> +
+> +	if (!IS_ERR(dev->pins->default_state))
+> +		pinctrl_select_state(dev->pins->p, dev->pins->default_state);
+     pinctrl_pm_select_default_state(i2c_dev->dev);
+     pinctrl_pm_select_idle_state(i2c_dev->dev);
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+> +
+> +	return ret;
+> +}
+> +#endif
+> +
+> +static SIMPLE_DEV_PM_OPS(spi_st_pm, spi_st_suspend, spi_st_resume);
+> +
+> +static struct of_device_id stm_spi_match[] = {
+> +	{ .compatible = "st,comms-ssc-spi", },
+> +	{ .compatible = "st,comms-ssc4-spi", },
+> +	{},
+> +};
+> +MODULE_DEVICE_TABLE(of, stm_spi_match);
+> +
+> +static struct platform_driver spi_st_driver = {
+> +	.driver = {
+> +		.name = "spi-st",
+> +		.pm = &spi_st_pm,
+> +		.of_match_table = of_match_ptr(stm_spi_match),
+> +	},
+> +	.probe = spi_st_probe,
+> +	.remove = spi_st_remove,
+> +};
+> +module_platform_driver(spi_st_driver);
+> +
+> +MODULE_AUTHOR("Patrice Chotard <patrice.chotard-qxv4g6HH51o@public.gmane.org>");
+> +MODULE_DESCRIPTION("STM SSC SPI driver");
+> +MODULE_LICENSE("GPL v2");
 
-iQEcBAEBAgAGBQJUdyCFAAoJECTWi3JdVIfQyZkH/jf2ZF5qoC1l32gbd1cJ69YV
-k/Gne/q1Idfy43qupB73e5HonqJ4e448EImpxQSJ38TcY7xuaP3KE1zsRCY8c6VF
-ai7x4si1ejQ8pzqncY+BpjcP8sR9y8oHPOEHcYPFL+myfUHxJvLFVYRNXH8EM0hK
-AAKF1qHqq/sAhyiRDa1lRICW0fcO+8s4DOu451GrqUEdixxUn4Uf/P59FKm1587r
-R4IUFfN7RMRd6R0jc+0YxLFC8FH2bc9pz2SVN28W8QaRGzJ9CYGfu9QyOGlxrUJt
-8Zd7PV8mVRccAvbVuD/1XfXpIFRexipJKPMpbNz32UasNJM49Bw9U/AwgC9B428=
-=gWma
------END PGP SIGNATURE-----
-
---mv22/3EYgOJmG2Gb--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,64 +1,63 @@
-From: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-Subject: [PATCH 2/2] spi: cadence: Fix 3-to-8 mux mode
-Date: Thu, 27 Nov 2014 16:12:18 +0100
-Message-ID: <1417101138-2619-2-git-send-email-lars@metafoo.de>
-References: <1417101138-2619-1-git-send-email-lars@metafoo.de>
-Cc: Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	Soren Brinkmann <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/4] spi: Add new driver for STMicroelectronics' SPI
+ Controller
+Date: Thu, 27 Nov 2014 16:24:59 +0000
+Message-ID: <20141127162459.GY7712@sirena.org.uk>
+References: <1417088636-11994-1-git-send-email-lee.jones@linaro.org>
+ <1417088636-11994-2-git-send-email-lee.jones@linaro.org>
+ <20141127125904.GV7712@sirena.org.uk>
+ <20141127150508.GI4628@x1>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="zBkzUKoNN9/BHFeb"
+Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	kernel-F5mvAk5X5gdBDgjK7y7TUQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1417101138-2619-1-git-send-email-lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20141127150508.GI4628@x1>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-In 3-to-8 mux mode for the CS pins we need to set the PERI_SEL bit in the
-control register. Currently the driver never sets this bit even when
-configured for 3-to-8 mux mode. This patch adds code which sets the bit
-during device initialization when necessary.
 
-Signed-off-by: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
----
- drivers/spi/spi-cadence.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+--zBkzUKoNN9/BHFeb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
-index 2404937..5a67498 100644
---- a/drivers/spi/spi-cadence.c
-+++ b/drivers/spi/spi-cadence.c
-@@ -47,6 +47,7 @@
- #define CDNS_SPI_CR_CPHA_MASK		0x00000004 /* Clock Phase Control */
- #define CDNS_SPI_CR_CPOL_MASK		0x00000002 /* Clock Polarity Control */
- #define CDNS_SPI_CR_SSCTRL_MASK		0x00003C00 /* Slave Select Mask */
-+#define CDNS_SPI_CR_PERI_SEL_MASK	0x00000200 /* Peripheral Select Decode */
- #define CDNS_SPI_CR_BAUD_DIV_MASK	0x00000038 /* Baud Rate Divisor Mask */
- #define CDNS_SPI_CR_MSTREN_MASK		0x00000001 /* Master Enable Mask */
- #define CDNS_SPI_CR_MANSTRTEN_MASK	0x00008000 /* Manual TX Enable Mask */
-@@ -148,6 +149,11 @@ static inline void cdns_spi_write(struct cdns_spi *xspi, u32 offset, u32 val)
-  */
- static void cdns_spi_init_hw(struct cdns_spi *xspi)
- {
-+	u32 ctrl_reg = CDNS_SPI_CR_DEFAULT_MASK;
-+
-+	if (xspi->is_decoded_cs)
-+		ctrl_reg |= CDNS_SPI_CR_PERI_SEL_MASK;
-+
- 	cdns_spi_write(xspi, CDNS_SPI_ER_OFFSET,
- 		       CDNS_SPI_ER_DISABLE_MASK);
- 	cdns_spi_write(xspi, CDNS_SPI_IDR_OFFSET,
-@@ -160,8 +166,7 @@ static void cdns_spi_init_hw(struct cdns_spi *xspi)
- 
- 	cdns_spi_write(xspi, CDNS_SPI_ISR_OFFSET,
- 		       CDNS_SPI_IXR_ALL_MASK);
--	cdns_spi_write(xspi, CDNS_SPI_CR_OFFSET,
--		       CDNS_SPI_CR_DEFAULT_MASK);
-+	cdns_spi_write(xspi, CDNS_SPI_CR_OFFSET, ctrl_reg);
- 	cdns_spi_write(xspi, CDNS_SPI_ER_OFFSET,
- 		       CDNS_SPI_ER_ENABLE_MASK);
- }
--- 
-1.8.0
+On Thu, Nov 27, 2014 at 03:05:08PM +0000, Lee Jones wrote:
 
+> > > +		/* Set SSC_CTL to 16 bits-per-word */
+> > > +		ctl = readl_relaxed(spi_st->base + SSC_CTL);
+> > > +		writel_relaxed((ctl | 0xf), spi_st->base + SSC_CTL);
+
+> > > +		readl_relaxed(spi_st->base + SSC_RBUF);
+
+> > No byte swapping issues here?
+
+> I think this implementation has been pretty heavily tested.  What
+> should I be looking out for?
+
+The bytes on the bus should be in exactly the same order as in memory if
+the word size is 8, SPI words should be big endian normally.
+
+--zBkzUKoNN9/BHFeb
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBAgAGBQJUd1BaAAoJECTWi3JdVIfQST0H/2HZDGXTX2tMsJEAuWKCam/d
++dHlbwpd10cbDyLHMxX1FRToqMzTjTPRV41fVVqbOmIF7qXh+GeogAgeaZvdhAvw
+v0GFS30LGtHbCJkLVwxOHAMZMJ8QhGh5aSUkKQVu9IT33FVnEECers5saWpnPMuS
+cwvX9lnV6PjqTdsWsmrOaAPhWHJs7grKKtLn3dXStBUo/vXvfxqded9fWwL8t1Cd
+4y+AYu/PAeME2wfakOwZ12j0Fn5S0fdvNX55UXbScn93eNyHU3mJqe/CnUmbXTfy
+PyIC021qIxT+z5AKZgqDLxV8wHhDyTA6jqJ8PDyKU3PvLSIiYOCBorBUtl2Hxgo=
+=3gML
+-----END PGP SIGNATURE-----
+
+--zBkzUKoNN9/BHFeb--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,55 +1,260 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: Check for spi_of_notifier when CONFIG_OF_DYNAMIC=y
-Date: Thu, 27 Nov 2014 11:07:06 +0000
-Message-ID: <20141127110706.GI7712@sirena.org.uk>
-References: <1417040037-22522-1-git-send-email-festevam@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH 2/3] ARM: edma: Rename header file for dmaengine filter function definition
+Date: Thu, 27 Nov 2014 12:14:27 +0100
+Message-ID: <8235185.7qUDHu9jso@wuerfel>
+References: <1417084891-17990-1-git-send-email-peter.ujfalusi@ti.com> <1417084891-17990-3-git-send-email-peter.ujfalusi@ti.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="amleibWWk9XZhw3o"
-Cc: pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org, grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1417040037-22522-1-git-send-email-festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: Mark Brown <broonie@kernel.org>, linux@arm.linux.org.uk,
+	nsekhar@ti.com, vinod.koul@intel.com, khilman@deeprootsystems.com,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
+	ulf.hansson@linaro.org, chris@printf.net,
+	linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-omap@vger.kernel.org,
+	Tony Lindgren <tony@atomide.com>, dmaengine@vger.kernel.org
+To: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1417084891-17990-3-git-send-email-peter.ujfalusi@ti.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
+
+On Thursday 27 November 2014 12:41:30 Peter Ujfalusi wrote:
+> diff --git a/include/linux/edma-dmaengine.h b/include/linux/edma-dmaengine.h
+> new file mode 100644
+> index 000000000000..8a2602809a77
+> --- /dev/null
+> +++ b/include/linux/edma-dmaengine.h
+> @@ -0,0 +1,29 @@
+> +struct dma_chan;
+> +
+> +#if defined(CONFIG_TI_EDMA) || defined(CONFIG_TI_EDMA_MODULE)
+> +bool edma_filter_fn(struct dma_chan *, void *);
+> +#else
+> +static inline bool edma_filter_fn(struct dma_chan *chan, void *param)
+> +{
+> +	return false;
+> +}
+> +#endif
+> +
+> +#endif
+
+It's better not to hardcode the name of the filter function in a driver,
+better move the filter function into platform code and pass it down
+to the driver in the platform_data pointer in davinci_mmc_config and
+davinci_spi_platform_data to get rid of this dependency.
+
+Something roughly like the patch below.
+
+	Arnd
 
 
---amleibWWk9XZhw3o
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+---
+[DRAFT] ARM: davinci: pass dma config through platform data
 
-On Wed, Nov 26, 2014 at 08:13:57PM -0200, Fabio Estevam wrote:
-> From: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
->=20
-> Since commit ce79d54ae447d651173 ("spi/of: Add OF notifier handler") the=
-=20
-> following warning is seen on a imx53 system that has CONFIG_OF_DYNAMIC=3D=
-n:
+DMA slave drivers are supposed to be written independent of the dma engine
+driver, which means that the mmc and spi drivers on davinci should not
+reference the edma_filter_fn or know about the specific format of the
+data passed into it.
 
-Reviwed-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+This changes the channel data from a resource into a void pointer and
+passes it as platform data along with the filter function.
 
---amleibWWk9XZhw3o
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+TODO: do the same thing for SPI, and adapt the filter function for the
+new format.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-iQEcBAEBAgAGBQJUdwXZAAoJECTWi3JdVIfQuccH/0j5THhVBJODorQHQJ8FDZYD
-YNM7xY1Z8Yfx6OjFYRsWcqxK331yRJXbs2m4f4F1bavFPYS+pZiQIhg4XvscxA2H
-ujP7yXw5aM1ZRjzqrA+5FOquF+8xlJlLf09zdxNUnuWeXKWZ5/cp6CcMDJVrEawq
-mF1ZxHj1LU1YL54w7Vgup/2yBzhxElK+0glBT+RwspacEsTr1VP0Mz11jjcDd7EB
-PbgZdeCsTa7lcDTVuDNS2J5D3PYvrb9bvPo7Xrfpk/qGsmg+r4nSouE5BBmj2c/+
-1WM6w+VH3St+IQgfYEVlVhfNopiVE+jgz6cj49TZ3NpEpG7ZT+bj5TZPPkoRZSo=
-=/jyl
------END PGP SIGNATURE-----
+ arch/arm/mach-davinci/devices-da8xx.c     | 26 ++++++--------------------
+ arch/arm/mach-davinci/devices.c           | 22 ++++++----------------
+ drivers/mmc/host/davinci_mmc.c            | 27 +++++++++++----------------
+ include/linux/platform_data/mmc-davinci.h |  5 +++++
+ 4 files changed, 28 insertions(+), 52 deletions(-)
 
---amleibWWk9XZhw3o--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/arch/arm/mach-davinci/devices-da8xx.c b/arch/arm/mach-davinci/devices-da8xx.c
+index b85b781b05fd..4aa872dc6dc3 100644
+--- a/arch/arm/mach-davinci/devices-da8xx.c
++++ b/arch/arm/mach-davinci/devices-da8xx.c
+@@ -671,16 +671,6 @@ static struct resource da8xx_mmcsd0_resources[] = {
+ 		.end	= IRQ_DA8XX_MMCSDINT0,
+ 		.flags	= IORESOURCE_IRQ,
+ 	},
+-	{		/* DMA RX */
+-		.start	= DA8XX_DMA_MMCSD0_RX,
+-		.end	= DA8XX_DMA_MMCSD0_RX,
+-		.flags	= IORESOURCE_DMA,
+-	},
+-	{		/* DMA TX */
+-		.start	= DA8XX_DMA_MMCSD0_TX,
+-		.end	= DA8XX_DMA_MMCSD0_TX,
+-		.flags	= IORESOURCE_DMA,
+-	},
+ };
+ 
+ static struct platform_device da8xx_mmcsd0_device = {
+@@ -693,6 +683,9 @@ static struct platform_device da8xx_mmcsd0_device = {
+ int __init da8xx_register_mmcsd0(struct davinci_mmc_config *config)
+ {
+ 	da8xx_mmcsd0_device.dev.platform_data = config;
++	config->filter = edma_filter_fn;
++	config->rxdma = (void *)DA8XX_DMA_MMCSD0_RX;
++	config->txdma = (void *)DA8XX_DMA_MMCSD0_TX;
+ 	return platform_device_register(&da8xx_mmcsd0_device);
+ }
+ 
+@@ -708,16 +701,6 @@ static struct resource da850_mmcsd1_resources[] = {
+ 		.end	= IRQ_DA850_MMCSDINT0_1,
+ 		.flags	= IORESOURCE_IRQ,
+ 	},
+-	{		/* DMA RX */
+-		.start	= DA850_DMA_MMCSD1_RX,
+-		.end	= DA850_DMA_MMCSD1_RX,
+-		.flags	= IORESOURCE_DMA,
+-	},
+-	{		/* DMA TX */
+-		.start	= DA850_DMA_MMCSD1_TX,
+-		.end	= DA850_DMA_MMCSD1_TX,
+-		.flags	= IORESOURCE_DMA,
+-	},
+ };
+ 
+ static struct platform_device da850_mmcsd1_device = {
+@@ -730,6 +713,9 @@ static struct platform_device da850_mmcsd1_device = {
+ int __init da850_register_mmcsd1(struct davinci_mmc_config *config)
+ {
+ 	da850_mmcsd1_device.dev.platform_data = config;
++	config->filter = edma_filter_fn;
++	config->rxdma = (void *)DA8XX_DMA_MMCSD1_RX;
++	config->txdma = (void *)DA8XX_DMA_MMCSD1_TX;
+ 	return platform_device_register(&da850_mmcsd1_device);
+ }
+ #endif
+diff --git a/arch/arm/mach-davinci/devices.c b/arch/arm/mach-davinci/devices.c
+index 6257aa452568..7b7039d9b079 100644
+--- a/arch/arm/mach-davinci/devices.c
++++ b/arch/arm/mach-davinci/devices.c
+@@ -144,14 +144,6 @@ static struct resource mmcsd0_resources[] = {
+ 		.start = IRQ_SDIOINT,
+ 		.flags = IORESOURCE_IRQ,
+ 	},
+-	/* DMA channels: RX, then TX */
+-	{
+-		.start = EDMA_CTLR_CHAN(0, DAVINCI_DMA_MMCRXEVT),
+-		.flags = IORESOURCE_DMA,
+-	}, {
+-		.start = EDMA_CTLR_CHAN(0, DAVINCI_DMA_MMCTXEVT),
+-		.flags = IORESOURCE_DMA,
+-	},
+ };
+ 
+ static struct platform_device davinci_mmcsd0_device = {
+@@ -181,14 +173,6 @@ static struct resource mmcsd1_resources[] = {
+ 		.start = IRQ_DM355_SDIOINT1,
+ 		.flags = IORESOURCE_IRQ,
+ 	},
+-	/* DMA channels: RX, then TX */
+-	{
+-		.start = EDMA_CTLR_CHAN(0, 30),	/* rx */
+-		.flags = IORESOURCE_DMA,
+-	}, {
+-		.start = EDMA_CTLR_CHAN(0, 31),	/* tx */
+-		.flags = IORESOURCE_DMA,
+-	},
+ };
+ 
+ static struct platform_device davinci_mmcsd1_device = {
+@@ -218,6 +202,9 @@ void __init davinci_setup_mmc(int module, struct davinci_mmc_config *config)
+ 	 */
+ 	switch (module) {
+ 	case 1:
++		config->filter = edma_filter_fn;
++		config->rxdma = (void *)EDMA_CTLR_CHAN(0, DAVINCI_DMA_MMCRXEVT);
++		config->txdma = (void *)EDMA_CTLR_CHAN(0, DAVINCI_DMA_MMCTXEVT);
+ 		if (cpu_is_davinci_dm355()) {
+ 			/* REVISIT we may not need all these pins if e.g. this
+ 			 * is a hard-wired SDIO device...
+@@ -247,6 +234,9 @@ void __init davinci_setup_mmc(int module, struct davinci_mmc_config *config)
+ 		pdev = &davinci_mmcsd1_device;
+ 		break;
+ 	case 0:
++		config->filter = edma_filter_fn;
++		config->rxdma = (void *)EDMA_CTLR_CHAN(0, 30);
++		config->txdma = (void *)EDMA_CTLR_CHAN(0, 31);
+ 		if (cpu_is_davinci_dm355()) {
+ 			mmcsd0_resources[0].start = DM355_MMCSD0_BASE;
+ 			mmcsd0_resources[0].end = DM355_MMCSD0_BASE + SZ_4K - 1;
+diff --git a/drivers/mmc/host/davinci_mmc.c b/drivers/mmc/host/davinci_mmc.c
+index 1625f908dc70..3f25be9942c8 100644
+--- a/drivers/mmc/host/davinci_mmc.c
++++ b/drivers/mmc/host/davinci_mmc.c
+@@ -202,7 +202,8 @@ struct mmc_davinci_host {
+ 	u32 buffer_bytes_left;
+ 	u32 bytes_left;
+ 
+-	u32 rxdma, txdma;
++	dma_filter_fn filter;
++	void *rxdma, *txdma;
+ 	struct dma_chan *dma_tx;
+ 	struct dma_chan *dma_rx;
+ 	bool use_dma;
+@@ -524,16 +525,16 @@ static int __init davinci_acquire_dma_channels(struct mmc_davinci_host *host)
+ 	dma_cap_set(DMA_SLAVE, mask);
+ 
+ 	host->dma_tx =
+-		dma_request_slave_channel_compat(mask, edma_filter_fn,
+-				&host->txdma, mmc_dev(host->mmc), "tx");
++		dma_request_slave_channel_compat(mask, host->filter,
++				host->txdma, mmc_dev(host->mmc), "tx");
+ 	if (!host->dma_tx) {
+ 		dev_err(mmc_dev(host->mmc), "Can't get dma_tx channel\n");
+ 		return -ENODEV;
+ 	}
+ 
+ 	host->dma_rx =
+-		dma_request_slave_channel_compat(mask, edma_filter_fn,
+-				&host->rxdma, mmc_dev(host->mmc), "rx");
++		dma_request_slave_channel_compat(mask, host->filter,
++				host->rxdma, mmc_dev(host->mmc), "rx");
+ 	if (!host->dma_rx) {
+ 		dev_err(mmc_dev(host->mmc), "Can't get dma_rx channel\n");
+ 		r = -ENODEV;
+@@ -1262,17 +1263,11 @@ static int __init davinci_mmcsd_probe(struct platform_device *pdev)
+ 	host = mmc_priv(mmc);
+ 	host->mmc = mmc;	/* Important */
+ 
+-	r = platform_get_resource(pdev, IORESOURCE_DMA, 0);
+-	if (!r)
+-		dev_warn(&pdev->dev, "RX DMA resource not specified\n");
+-	else
+-		host->rxdma = r->start;
+-
+-	r = platform_get_resource(pdev, IORESOURCE_DMA, 1);
+-	if (!r)
+-		dev_warn(&pdev->dev, "TX DMA resource not specified\n");
+-	else
+-		host->txdma = r->start;
++	if (pdata) {
++		host->filter = pdata->filter;
++		host->rxdma  = pdata->rxdma;
++		host->txdma  = pdata->txdma;
++	}
+ 
+ 	host->mem_res = mem;
+ 	host->base = ioremap(mem->start, mem_size);
+diff --git a/include/linux/platform_data/mmc-davinci.h b/include/linux/platform_data/mmc-davinci.h
+index 9cea4ee377b5..0e5809bcaff0 100644
+--- a/include/linux/platform_data/mmc-davinci.h
++++ b/include/linux/platform_data/mmc-davinci.h
+@@ -25,6 +25,11 @@ struct davinci_mmc_config {
+ 
+ 	/* Number of sg segments */
+ 	u8	nr_sg;
++
++	/* DMA setup */
++	dma_filter_fn filter;
++	void	*rxdma;
++	void	*txdma;
+ };
+ void davinci_setup_mmc(int module, struct davinci_mmc_config *config);
+ 

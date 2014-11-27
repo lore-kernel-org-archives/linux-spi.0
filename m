@@ -1,75 +1,48 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 1/3] ASoC: davinci-evm: Do not include edma
-	headers
-Date: Thu, 27 Nov 2014 10:58:15 +0000
-Message-ID: <20141127105815.GE7712@sirena.org.uk>
-References: <1417084891-17990-1-git-send-email-peter.ujfalusi@ti.com>
- <1417084891-17990-2-git-send-email-peter.ujfalusi@ti.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: meson: Select REGMAP_MMIO
+Date: Thu, 27 Nov 2014 11:00:25 +0000
+Message-ID: <20141127110025.GG7712@sirena.org.uk>
+References: <1417043268-17563-1-git-send-email-b.galvani@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5591616059259594004=="
-Cc: alsa-devel@alsa-project.org, linux-omap@vger.kernel.org,
- linux@arm.linux.org.uk, arnd@arndb.de, vinod.koul@intel.com,
- linux-mmc@vger.kernel.org, nsekhar@ti.com, Liam Girdwood <lgirdwood@gmail.com>,
- linux-kernel@vger.kernel.org, khilman@deeprootsystems.com,
- Tony Lindgren <tony@atomide.com>, chris@printf.net, dmaengine@vger.kernel.org,
- ulf.hansson@linaro.org, linux-spi@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-To: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Return-path: <alsa-devel-bounces@alsa-project.org>
-In-Reply-To: <1417084891-17990-2-git-send-email-peter.ujfalusi@ti.com>
-List-Unsubscribe: <http://mailman.alsa-project.org/mailman/options/alsa-devel>,
- <mailto:alsa-devel-request@alsa-project.org?subject=unsubscribe>
-List-Archive: <http://mailman.alsa-project.org/pipermail/alsa-devel/>
-List-Post: <mailto:alsa-devel@alsa-project.org>
-List-Help: <mailto:alsa-devel-request@alsa-project.org?subject=help>
-List-Subscribe: <http://mailman.alsa-project.org/mailman/listinfo/alsa-devel>,
- <mailto:alsa-devel-request@alsa-project.org?subject=subscribe>
-Errors-To: alsa-devel-bounces@alsa-project.org
-Sender: alsa-devel-bounces@alsa-project.org
-List-Id: linux-spi.vger.kernel.org
-
-
---===============5591616059259594004==
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="PcDVawgyoD+Fem/v"
+	protocol="application/pgp-signature"; boundary="G0xbash/Z2FAVN3O"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jim Davis <jim.epost-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Beniamino Galvani <b.galvani-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
+In-Reply-To: <1417043268-17563-1-git-send-email-b.galvani-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---PcDVawgyoD+Fem/v
+--G0xbash/Z2FAVN3O
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 27, 2014 at 12:41:29PM +0200, Peter Ujfalusi wrote:
-> The machine driver has no business with the underlying dma.
->=20
-> Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+On Thu, Nov 27, 2014 at 12:07:48AM +0100, Beniamino Galvani wrote:
+> The Meson SPIFC driver uses regmap mmio functions and so it must
+> select REGMAP_MMIO to avoid the following build error:
 
-Acked-by: Mark Brown <broonie@kernel.org>
+Applied, thanks.
 
---PcDVawgyoD+Fem/v
+--G0xbash/Z2FAVN3O
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBAgAGBQJUdwPGAAoJECTWi3JdVIfQ7MAH/RnpLGoXRwTP9XeiV2TTbYT5
-tJZBqFx5ZrFhdJICHzRhGTMnbKKEcYZ+zjVIs5ln6jEgn/YhOxAfR1lfwNUs9T+/
-m3RZqF1ZBHPHWP+dLSwXSsdzZNxSO1G+4sx/+GtmXMeUZLODJb9ZJguMSDd7I+f7
-jYH41qW9Y5/z7yp3Oo0Jx2BDwQZA0KmJ0jffN7XGmXMd+/fHUWFLknujfeq1XPkD
-VDMElbg3PMqLKYLXNE1yCfP3jb/Sn50DEyyiotRFNU5pyU2vp+0nmIeygtRsukmE
-RPdeQI6UAn/Wdj6PBVVhx7DbvVOjdIkwfdopP47RQolnFtf44Q9wmMtJwCaqNVM=
-=fVaF
+iQEcBAEBAgAGBQJUdwRIAAoJECTWi3JdVIfQDZ8H/2PxoN88ZL+jJmJsl1q8rUbG
+Sss454llCba3mQAlvJ52JDTakf1CsqEPCctj1aauQXWyPsl0HeNcglW1V7DrzBoQ
+Sr5+bm50g1U88GyuBDFcDqTMjPC5p9MGlDaQt/Kj/1Cr9h/1c76XA11h4p6ilLBZ
+bCRR/Vau40ByJRGUs3XJA24octq7rQY9JKmmSc2zuikETq6lnHysLXNk7DcH0NGH
+P4wFVp2lVrgLU000ZPO+1Ro5v7/DOQ6yf0iVMEKzHLkkzODyAU4RcSYExPgzxlNq
+djU2qeSVKFczzR+H25R1ZlPt0q7Lsk3Ce2wCC4eZ/k8BAEsGmvJsAKRRg7W5BBs=
+=psFe
 -----END PGP SIGNATURE-----
 
---PcDVawgyoD+Fem/v--
-
---===============5591616059259594004==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-
---===============5591616059259594004==--
+--G0xbash/Z2FAVN3O--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

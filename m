@@ -1,72 +1,86 @@
-From: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Subject: Re: [PATCH 2/3] ARM: edma: Rename header file for
- dmaengine filter function definition
-Date: Fri, 28 Nov 2014 09:16:24 +0200
-Message-ID: <54782148.6040108@ti.com>
-References: <1417084891-17990-1-git-send-email-peter.ujfalusi@ti.com>
- <3300340.ou8f7H2hIc@wuerfel> <54777174.4070203@ti.com>
- <4859328.eEV7jzKEaA@wuerfel>
+From: Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: cadence: Init HW after reading devicetree attributes
+Date: Fri, 28 Nov 2014 08:52:50 +0100
+Message-ID: <12a23265d44b4b128b55b5c378d352c1@BY2FFO11FD018.protection.gbl>
+References: <1417101138-2619-1-git-send-email-lars@metafoo.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
-Cc: alsa-devel@alsa-project.org, linux@arm.linux.org.uk, vinod.koul@intel.com,
- nsekhar@ti.com, linux-spi@vger.kernel.org, linux-mmc@vger.kernel.org,
- Liam Girdwood <lgirdwood@gmail.com>, linux-kernel@vger.kernel.org,
- khilman@deeprootsystems.com, Tony Lindgren <tony@atomide.com>,
- Mark Brown <broonie@kernel.org>, chris@printf.net, dmaengine@vger.kernel.org,
- ulf.hansson@linaro.org, linux-omap@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-To: Arnd Bergmann <arnd@arndb.de>
-Return-path: <alsa-devel-bounces@alsa-project.org>
-In-Reply-To: <4859328.eEV7jzKEaA@wuerfel>
-List-Unsubscribe: <http://mailman.alsa-project.org/mailman/options/alsa-devel>,
- <mailto:alsa-devel-request@alsa-project.org?subject=unsubscribe>
-List-Archive: <http://mailman.alsa-project.org/pipermail/alsa-devel/>
-List-Post: <mailto:alsa-devel@alsa-project.org>
-List-Help: <mailto:alsa-devel-request@alsa-project.org?subject=help>
-List-Subscribe: <http://mailman.alsa-project.org/mailman/listinfo/alsa-devel>,
- <mailto:alsa-devel-request@alsa-project.org?subject=subscribe>
-Errors-To: alsa-devel-bounces@alsa-project.org
-Sender: alsa-devel-bounces@alsa-project.org
-List-Id: linux-spi.vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Cc: Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	Soren Brinkmann <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Paul Cercueil <paul.cercueil-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+To: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1417101138-2619-1-git-send-email-lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 11/27/2014 11:52 PM, Arnd Bergmann wrote:
-> On Thursday 27 November 2014 20:46:12 Peter Ujfalusi wrote:
->>
->> I see. With this series I did not planed to fix all edma related issues,=
- just
->> as a start clean up the related header files. I would rather not add fix=
-es to
->> mmc, spi, etc drivers since while you have valid point it is not in the =
-scope
->> of this series.
->> Can we do the changes you are suggesting in an incremental manner?
-> =
+On 11/27/2014 04:12 PM, Lars-Peter Clausen wrote:
+> From: Paul Cercueil <paul.cercueil-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+> 
+> This will make it possible to use the settings specified in the devicetree
+> to configure the hardware.
+> 
+> Signed-off-by: Paul Cercueil <paul.cercueil-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+> Signed-off-by: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+> ---
+>  drivers/spi/spi-cadence.c | 24 +++++++++++-------------
+>  1 file changed, 11 insertions(+), 13 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
+> index 7b811e3..2404937 100644
+> --- a/drivers/spi/spi-cadence.c
+> +++ b/drivers/spi/spi-cadence.c
+> @@ -516,6 +516,17 @@ static int cdns_spi_probe(struct platform_device *pdev)
+>  		goto clk_dis_apb;
+>  	}
+>  
+> +	ret = of_property_read_u32(pdev->dev.of_node, "num-cs", &num_cs);
+> +	if (ret < 0)
+> +		master->num_chipselect = CDNS_SPI_DEFAULT_NUM_CS;
+> +	else
+> +		master->num_chipselect = num_cs;
+> +
+> +	ret = of_property_read_u32(pdev->dev.of_node, "is-decoded-cs",
+> +				   &xspi->is_decoded_cs);
+> +	if (ret < 0)
+> +		xspi->is_decoded_cs = 0;
+> +
+>  	/* SPI controller initializations */
+>  	cdns_spi_init_hw(xspi);
+>  
+> @@ -534,19 +545,6 @@ static int cdns_spi_probe(struct platform_device *pdev)
+>  		goto remove_master;
+>  	}
+>  
+> -	ret = of_property_read_u32(pdev->dev.of_node, "num-cs", &num_cs);
+> -
+> -	if (ret < 0)
+> -		master->num_chipselect = CDNS_SPI_DEFAULT_NUM_CS;
+> -	else
+> -		master->num_chipselect = num_cs;
+> -
+> -	ret = of_property_read_u32(pdev->dev.of_node, "is-decoded-cs",
+> -				   &xspi->is_decoded_cs);
+> -
+> -	if (ret < 0)
+> -		xspi->is_decoded_cs = 0;
+> -
+>  	master->prepare_transfer_hardware = cdns_prepare_transfer_hardware;
+>  	master->prepare_message = cdns_prepare_message;
+>  	master->transfer_one = cdns_transfer_one;
+> 
 
-> Sure, but I'd leave the existing filter function declaration alone then
-> and not move it, since we wouldn't want to keep it in the long run.
+That's reasonable patch to do without any functional impact now.
 
-but if you want to reference the filter function (which is in
-drivers/dma/edma.c) in arch/arm/mach-davinci/ directory, we will need it.
-Don't we?
+Reviewed-by: Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
 
-If I leave the header as it is, then how would we clean up the edma headers=
-? I
-would not put the API definitions for the arch code into the same file as we
-have the filter definition.
+Thanks,
+Michal
 
-
-> =
-
-> 	Arnd
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-omap" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> =
-
-
-
--- =
-
-P=E9ter
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

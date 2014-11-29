@@ -1,66 +1,52 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v7 1/2] spi: add support for DLN-2 USB-SPI adapter
-Date: Fri, 28 Nov 2014 19:46:31 +0000
-Message-ID: <20141128194631.GA7712@sirena.org.uk>
-References: <1416312599-5176-2-git-send-email-laurentiu.palcu@intel.com>
- <1417180198-9393-1-git-send-email-laurentiu.palcu@intel.com>
- <20141128141053.GL7712@sirena.org.uk>
- <20141128145703.GA16201@lpalcu-linux>
- <20141128151435.GQ7712@sirena.org.uk>
- <20141128153125.GB16201@lpalcu-linux>
- <20141128160156.GX7712@sirena.org.uk>
- <20141128181326.GA23784@lpalcu-laptop>
- <20141128183507.GZ7712@sirena.org.uk>
- <20141128192742.GA24340@lpalcu-laptop>
+From: SF Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [PATCH 1/1] SPI-txx9: Deletion of an unnecessary check before the
+ function call "clk_disable"
+Date: Sat, 29 Nov 2014 18:40:28 +0100
+Message-ID: <547A050C.5040906@users.sourceforge.net>
+References: <5307CAA2.8060406@users.sourceforge.net> <alpine.DEB.2.02.1402212321410.2043@localhost6.localdomain6> <530A086E.8010901@users.sourceforge.net> <alpine.DEB.2.02.1402231635510.1985@localhost6.localdomain6> <530A72AA.3000601@users.sourceforge.net> <alpine.DEB.2.02.1402240658210.2090@localhost6.localdomain6> <530B5FB6.6010207@users.sourceforge.net> <alpine.DEB.2.10.1402241710370.2074@hadrien> <530C5E18.1020800@users.sourceforge.net> <alpine.DEB.2.10.1402251014170.2080@hadrien> <530CD2C4.4050903@users.sourceforge.net> <alpine.DEB.2.10.1402251840450.7035@hadrien> <530CF8FF.8080600@users.sourceforge.net> <alpine.DEB.2.02.1402252117150.2047@localhost6.localdomain6> <530DD06F.4090703@users.sourceforge.net> <alpine.DEB.2.02.1402262129250.2221@localhost6.localdomain6> <5317A59D.4@users.so
+ urceforge.net>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="CRMN+rJXY4OIvj2Z"
-Cc: Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Johan Havold <johan-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Laurentiu Palcu <laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Cc: LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Julia Lawall <julia.lawall-L2FTfq7BK8M@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20141128192742.GA24340@lpalcu-laptop>
+In-Reply-To: <5317A59D.4-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+From: Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Date: Sat, 29 Nov 2014 18:34:20 +0100
 
---CRMN+rJXY4OIvj2Z
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The clk_disable() function tests whether its argument is NULL and then
+returns immediately. Thus the test around the call is not needed.
 
-On Fri, Nov 28, 2014 at 09:27:42PM +0200, Laurentiu Palcu wrote:
-> On Fri, Nov 28, 2014 at 06:35:07PM +0000, Mark Brown wrote:
+This issue was detected by using the Coccinelle software.
 
-> > Fortunately I've deleted old parts of the thread so I didn't notice you
-> > were doing this.
+Signed-off-by: Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+---
+ drivers/spi/spi-txx9.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-> Fortunately? I'm afraid to ask why...
+diff --git a/drivers/spi/spi-txx9.c b/drivers/spi/spi-txx9.c
+index 0da7c67..9190124 100644
+--- a/drivers/spi/spi-txx9.c
++++ b/drivers/spi/spi-txx9.c
+@@ -402,8 +402,7 @@ exit_busy:
+ exit:
+ 	if (c->workqueue)
+ 		destroy_workqueue(c->workqueue);
+-	if (c->clk)
+-		clk_disable(c->clk);
++	clk_disable(c->clk);
+ 	spi_master_put(master);
+ 	return ret;
+ }
+-- 
+2.1.3
 
-I'd have at best been confused as to what the current version of the
-code was (like I was confused about what was going on with patch 2 here)
-or at worst not noticed the patches at all.
-
---CRMN+rJXY4OIvj2Z
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBAgAGBQJUeNEWAAoJECTWi3JdVIfQ70sH/1VczVIyLq0lC8Csrai6Cc6x
-yaqdyNuVLjAArj/YNjf4LT8Pdthw43UOu3NlLbXsTgp20JFoWUVtI8wEjomYVz25
-W3dadEuAMhKt4AwAhPTJE6IJVXYaWMSO/bq/12vnmuugaMer75ozuJl5c7fhNODC
-QfPegDE3UAlK6h83mvpGNRtJYJvsVdPSvD1mHQMQjjImgMUTky5yak5RWfNybJkl
-yQPsdkVYcllWpXZCPblIVq+s4VhxcjmiWtf6uto+x5c6EyVnNZwmj/xU8pEVuHZs
-Wif3QZsSd8YMgVNoPPSvtqUcmq/s9igAaP08JwKZdg15M2nj5vTq1gAki4a26zY=
-=lRAA
------END PGP SIGNATURE-----
-
---CRMN+rJXY4OIvj2Z--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

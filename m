@@ -1,49 +1,61 @@
-From: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
-Subject: rockchip spi: dma engine use buggy
-Date: Mon, 1 Dec 2014 13:26:22 +0000
-Message-ID: <20141201132622.GE3836@n2100.arm.linux.org.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 1/1] SPI-txx9: Deletion of an unnecessary check before
+ the function call "clk_disable"
+Date: Mon, 1 Dec 2014 19:25:40 +0000
+Message-ID: <20141201192540.GM7712@sirena.org.uk>
+References: <530C5E18.1020800@users.sourceforge.net>
+ <alpine.DEB.2.10.1402251014170.2080@hadrien>
+ <530CD2C4.4050903@users.sourceforge.net>
+ <alpine.DEB.2.10.1402251840450.7035@hadrien>
+ <530CF8FF.8080600@users.sourceforge.net>
+ <alpine.DEB.2.02.1402252117150.2047@localhost6.localdomain6>
+ <530DD06F.4090703@users.sourceforge.net>
+ <alpine.DEB.2.02.1402262129250.2221@localhost6.localdomain6>
+ <5317A59D.4@users.sourceforge.net>
+ <547A050C.5040906@users.sourceforge.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: addy ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="3dMOQFbIPOCGfYdm"
+Cc: linux-spi@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+	kernel-janitors@vger.kernel.org,
+	Julia Lawall <julia.lawall@lip6.fr>
+To: SF Markus Elfring <elfring@users.sourceforge.net>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <547A050C.5040906@users.sourceforge.net>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-While looking at a warning which came up in my nightly builds, I spotted
-this:
 
-+               rxconf.src_addr_width = rs->n_bytes;
-+               rxconf.src_maxburst = rs->n_bytes;
+--3dMOQFbIPOCGfYdm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-+               txconf.dst_addr_width = rs->n_bytes;
-+               txconf.dst_maxburst = rs->n_bytes;
+On Sat, Nov 29, 2014 at 06:40:28PM +0100, SF Markus Elfring wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Sat, 29 Nov 2014 18:34:20 +0100
+>=20
+> The clk_disable() function tests whether its argument is NULL and then
+> returns immediately. Thus the test around the call is not needed.
 
-which is incorrect.  The documentation for the maxburst fields says:
+Applied, but please do try to use subject lines matching the style for
+the subsystem.
 
- * @src_maxburst: the maximum number of words (note: words, as in
- * units of the src_addr_width member, not bytes) that can be sent
- * in one burst to the device. Typically something like half the
- * FIFO depth on I/O peripherals so you don't overflow it. This
- * may or may not be applicable on memory sources.
- * @dst_maxburst: same as src_maxburst but for destination target
- * mutatis mutandis.
+--3dMOQFbIPOCGfYdm
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-In other words, if n_bytes is:
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-- one, we tell the DMA engine that it can burst one byte.
-- two, we tell the DMA engine that it can burst _two_ 16-bit words,
-  in other words, four bytes.
-- four, we tell the DMA engine that it can burst _four_ 32-bit words,
-  in other words, 16 bytes.
+iQEcBAEBAgAGBQJUfMCzAAoJECTWi3JdVIfQ0T4H/0xhWZpQIq2arup2m4KilsRg
+zwchhHnOwmPcomLlJMa/6evEBP2drBpJkpzPs5vwpPI+0/ctiNFuxyq9f4OWlGJ8
+hrnCL0N/Qz6B9Y5GnJDSQL+sZwr1GFkM5T0nba72dc32HTuibwqvjPwhbZsekw2A
++ekjRnL0qk0jfS2VNHNFzR+0WN8TX0B2GfVWNRhpLlGIsN7z5+ociFKLZvC57vsN
+BKebhg2bzf1nWepTcSa9NIJEXG7TB8X8F1z7WBuJmot8NxP3o0yWdIhyicP1H2tk
+3eXMIy17TM192FNyPv1fbeIeYjYZ3zM6XOylZlZPtsw0NRUId+miywL7Vb8/jgM=
+=wFaD
+-----END PGP SIGNATURE-----
 
-Somehow, I don't think that's correct.
-
--- 
-FTTC broadband for 0.8mile line: currently at 9.5Mbps down 400kbps up
-according to speedtest.net.
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--3dMOQFbIPOCGfYdm--

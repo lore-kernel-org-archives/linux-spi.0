@@ -1,130 +1,89 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH][RFC] spi: sh-msiof: Configure MSIOF sync signal timing in
- device tree
-Date: Mon, 1 Dec 2014 09:26:49 +0100
-Message-ID: <CAMuHMdVHJqzMhY28Cb65tzB0E2X8YW_moeJkWGaWYaUQUBhU7w@mail.gmail.com>
-References: <5477EFD7.50307@renesas.com>
-	<3485316.4muPRcz2if@avalon>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
-	Magnus Damm <damm-yzvPICuk2ACczHhG9Qg4qA@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"pawel.moll-5wv7dgnIgG8@public.gmane.org" <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	"mark.rutland-5wv7dgnIgG8@public.gmane.org" <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	"ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org" <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	"galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org" <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Yoshihiro Shimoda <yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-	Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH] spi/pxa2xx: Clear cur_chip pointer before starting next message
+Date: Mon,  1 Dec 2014 11:12:46 +0200
+Message-ID: <1417425166-150374-1-git-send-email-mika.westerberg@linux.intel.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+	Martin Oldfield <m@mjoldfield.com>,
+	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <3485316.4muPRcz2if@avalon>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Shimoda-san, Laurent,
+Once the current message is finished, the driver notifies SPI core about
+this by calling spi_finalize_current_message(). This function queues next
+message to be transferred. If there are more messages in the queue, it is
+possible that the driver is asked to transfer the next message at this
+point.
 
-On Sun, Nov 30, 2014 at 9:23 PM, Laurent Pinchart
-<laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org> wrote:
-> On Friday 28 November 2014 12:45:27 Yoshihiro Shimoda wrote:
->> The MSIOF controller has DTDL and SYNCDL in SITMDR1 and SIRMDR1
->> registers. So, this patch adds new properties like the following
->> commit:
->>   d0fb47a5237d8b9576113568bacfd27892308b62
->>   (spi: fsl-espi: Configure FSL eSPI CSBEF and CSAFT)
->>
->> The DTDL is the chip select (SYNC) setup time.
->>  b'000: No bit delay
->>  b'001: 1-clock-cycle delay
->>  b'010: 2-clock-cycle delay
->>  b'101: 0.5-clock-cycle delay
->>  b'110: 1.5-clock-cycle delay
->>
->> The SYNCDL is the chip select (SYNC) hold time.
->>  b'000: No bit delay
->>  b'001: 1-clock-cycle delay
->>  b'010: 2-clock-cycle delay
->>  b'011: 3-clock-cycle delay
->>  b'101: 0.5-clock-cycle delay
->>  b'110: 1.5-clock-cycle delay
+When spi_finalize_current_message() returns the driver clears the
+drv_data->cur_chip pointer to NULL. The problem is that if the driver
+already started the next message clearing drv_data->cur_chip will cause
+NULL pointer dereference which crashes the kernel like:
 
-You forgot to quote the last line from the DTDL and SYNCDL paragraphs:
+ BUG: unable to handle kernel NULL pointer dereference at 0000000000000048
+ IP: [<ffffffffa0022bc8>] cs_deassert+0x18/0x70 [spi_pxa2xx_platform]
+ PGD 78bb8067 PUD 37712067 PMD 0
+ Oops: 0000 [#1] SMP
+ Modules linked in:
+ CPU: 1 PID: 11 Comm: ksoftirqd/1 Tainted: G           O   3.18.0-rc4-mjo #5
+ Hardware name: Intel Corp. VALLEYVIEW B3 PLATFORM/NOTEBOOK, BIOS MNW2CRB1.X64.0071.R30.1408131301 08/13/2014
+ task: ffff880077f9f290 ti: ffff88007a820000 task.ti: ffff88007a820000
+ RIP: 0010:[<ffffffffa0022bc8>]  [<ffffffffa0022bc8>] cs_deassert+0x18/0x70 [spi_pxa2xx_platform]
+ RSP: 0018:ffff88007a823d08  EFLAGS: 00010202
+ RAX: 0000000000000008 RBX: ffff8800379a4430 RCX: 0000000000000026
+ RDX: 0000000000000000 RSI: 0000000000000246 RDI: ffff8800379a4430
+ RBP: ffff88007a823d18 R08: 00000000ffffffff R09: 000000007a9bc65a
+ R10: 000000000000028f R11: 0000000000000005 R12: ffff880070123e98
+ R13: ffff880070123de8 R14: 0000000000000100 R15: ffffc90004888000
+ FS:  0000000000000000(0000) GS:ffff880079a80000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 000000008005003b
+ CR2: 0000000000000048 CR3: 000000007029b000 CR4: 00000000001007e0
+ Stack:
+  ffff88007a823d58 ffff8800379a4430 ffff88007a823d48 ffffffffa0022c89
+  0000000000000000 ffff8800379a4430 0000000000000000 0000000000000006
+  ffff88007a823da8 ffffffffa0023be0 ffff88007a823dd8 ffffffff81076204
+ Call Trace:
+  [<ffffffffa0022c89>] giveback+0x69/0xa0 [spi_pxa2xx_platform]
+  [<ffffffffa0023be0>] pump_transfers+0x710/0x740 [spi_pxa2xx_platform]
+  [<ffffffff81076204>] ? pick_next_task_fair+0x744/0x830
+  [<ffffffff81049679>] tasklet_action+0xa9/0xe0
+  [<ffffffff81049a0e>] __do_softirq+0xee/0x280
+  [<ffffffff81049bc0>] run_ksoftirqd+0x20/0x40
+  [<ffffffff810646df>] smpboot_thread_fn+0xff/0x1b0
+  [<ffffffff810645e0>] ? SyS_setgroups+0x150/0x150
+  [<ffffffff81060f9d>] kthread+0xcd/0xf0
+  [<ffffffff81060ed0>] ? kthread_create_on_node+0x180/0x180
+  [<ffffffff8187a82c>] ret_from_fork+0x7c/0xb0
 
-| In case of SPI mode, only 000 is allowed to set to this field.
+Fix this by clearing drv_data->cur_chip before we call spi_finalize_current_message().
 
-And the spi-sh-msiof driver is using the MSIOF in SPI mode???
+Reported-by: Martin Oldfield <m@mjoldfield.com>
+Signed-off-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+---
+ drivers/spi/spi-pxa2xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
->> Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
->> ---
->>
->>  I would like to add new properties for sh-msiof driver to adjust
->> the SYNC siginal timing using DTDL and SYNCDL. In the current driver,
->> these parameters are hardcoded to 0. And then, I checked other spi
->> drivers, and I found the following commit:
->>   d0fb47a5237d8b9576113568bacfd27892308b62
->>   (spi: fsl-espi: Configure FSL eSPI CSBEF and CSAFT)
->>
->> If this patch is reasonable, I will modify the sh-msiof driver.
->> Or, should we add a new function for this timing adjusting in the
->> spi framework?
->>
->>  Documentation/devicetree/bindings/spi/sh-msiof.txt |    8 ++++++++
->>  drivers/spi/spi-sh-msiof.c                         |    2 ++
->>  2 files changed, 10 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/spi/sh-msiof.txt
->> b/Documentation/devicetree/bindings/spi/sh-msiof.txt index d11c372..5fe8ffd
->> 100644
->> --- a/Documentation/devicetree/bindings/spi/sh-msiof.txt
->> +++ b/Documentation/devicetree/bindings/spi/sh-msiof.txt
->> @@ -30,6 +30,14 @@ Optional properties:
->>                        specifiers, one for transmission, and one for
->>                        reception.
->>  - dma-names            : Must contain a list of two DMA names, "tx" and
->> "rx".
->> +- renesas,tdmr-dtdl    : delay sync signal (setup) in transmit mode
->> +                      (default is 0, we can set it to 0, 1, 2, 5, or 6)
->> +- renesas,tdmr-syncdl  : delay sync signal (hold) in transmit mode
->> +                      (default is 0, we can set it to 0, 1, 2, 3, 5, or 6)
->> +- renesas,rdmr-dtdl    : delay sync signal (setup) in receive mode
->> +                      (default is 0, we can set it to 0, 1, 2, 5, or 6)
->> +- renesas,rdmr-syncdl  : delay sync signal (hold) in receive mode
->> +                      (default is 0, we can set it to 0, 1, 2, 3, 5, or 6)
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 9e9e0f971e6c..d95656d05eb6 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -402,8 +402,8 @@ static void giveback(struct driver_data *drv_data)
+ 			cs_deassert(drv_data);
+ 	}
+ 
+-	spi_finalize_current_message(drv_data->master);
+ 	drv_data->cur_chip = NULL;
++	spi_finalize_current_message(drv_data->master);
+ }
+ 
+ static void reset_sccr1(struct driver_data *drv_data)
+-- 
+2.1.3
 
-In general, it's frowned upon the specify actual register values in DT.
-So I think it's better to specify the delay values instead of the
-bitfield values,
-and drop the "tdmr" and "rdmr" from the names.
-As DT supports integers only, that should become a fixed point value.
-E.g. delay in deci-clocks (0, 5, 10, 15, 20)?
-Or as a percentage of the clock cycle (0, 50, 100, 150, 200)?
-
-Do you really need two sets of values, for both transmit and receive?
-I.e. do you need different values for transmit and receive for your use case?
-SPI does both transmit and receive using the same clock and chip select.
-I know some MSIOF implementations can handle both indepedently.
-
-And to answer your last question: if several drivers need this, it makes sense
-to make this general, and add support in the SPI core. Mark?
-
-> Was it really the intent of this patch to add DT properties without providing
-> an implementation in the sh-msiof driver ?
-
-Given the sentence "If this patch is reasonable, I will modify the sh-msiof
-driver." in the introduction, I think so.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

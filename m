@@ -1,74 +1,43 @@
-From: yoshihiro shimoda <yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
-Subject: RE: [PATCH][RFC] spi: sh-msiof: Configure MSIOF sync signal timing in
- device tree
-Date: Tue, 2 Dec 2014 07:40:22 +0000
-Message-ID: <2a5d70d337a643b097875ac81b488e52@HKNPR06MB322.apcprd06.prod.outlook.com>
-References: <5477EFD7.50307@renesas.com>	<3485316.4muPRcz2if@avalon>
- <CAMuHMdVHJqzMhY28Cb65tzB0E2X8YW_moeJkWGaWYaUQUBhU7w@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
-	Magnus Damm <damm-yzvPICuk2ACczHhG9Qg4qA@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"pawel.moll-5wv7dgnIgG8@public.gmane.org" <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	"mark.rutland-5wv7dgnIgG8@public.gmane.org" <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	"ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org" <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	"galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org" <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-	Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+From: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: [PATCH v2 0/4] spi: st: New driver for ST's SPI Controller
+Date: Tue,  2 Dec 2014 15:40:40 +0000
+Message-ID: <1417534844-25080-1-git-send-email-lee.jones@linaro.org>
+Cc: lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, kernel-F5mvAk5X5gdBDgjK7y7TUQ@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAMuHMdVHJqzMhY28Cb65tzB0E2X8YW_moeJkWGaWYaUQUBhU7w-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-Language: ja-JP
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-SGkgR2VlcnQtc2FuLCBMYXVyZW50LXNhbiwNCg0KVGhhbmsgeW91IHZlcnkgbXVjaCBmb3IgeW91
-ciBjb21tZW50cyENCg0KPiBPbiBTdW4sIE5vdiAzMCwgMjAxNCBhdCA5OjIzIFBNLCBMYXVyZW50
-IFBpbmNoYXJ0IDxsYXVyZW50LnBpbmNoYXJ0QGlkZWFzb25ib2FyZC5jb20+IHdyb3RlOg0KPiA+
-IE9uIEZyaWRheSAyOCBOb3ZlbWJlciAyMDE0IDEyOjQ1OjI3IFlvc2hpaGlybyBTaGltb2RhIHdy
-b3RlOg0KPiA+PiBUaGUgTVNJT0YgY29udHJvbGxlciBoYXMgRFRETCBhbmQgU1lOQ0RMIGluIFNJ
-VE1EUjEgYW5kIFNJUk1EUjENCj4gPj4gcmVnaXN0ZXJzLiBTbywgdGhpcyBwYXRjaCBhZGRzIG5l
-dyBwcm9wZXJ0aWVzIGxpa2UgdGhlIGZvbGxvd2luZw0KPiA+PiBjb21taXQ6DQo+ID4+ICAgZDBm
-YjQ3YTUyMzdkOGI5NTc2MTEzNTY4YmFjZmQyNzg5MjMwOGI2Mg0KPiA+PiAgIChzcGk6IGZzbC1l
-c3BpOiBDb25maWd1cmUgRlNMIGVTUEkgQ1NCRUYgYW5kIENTQUZUKQ0KPiA+Pg0KPiA+PiBUaGUg
-RFRETCBpcyB0aGUgY2hpcCBzZWxlY3QgKFNZTkMpIHNldHVwIHRpbWUuDQo+ID4+ICBiJzAwMDog
-Tm8gYml0IGRlbGF5DQo+ID4+ICBiJzAwMTogMS1jbG9jay1jeWNsZSBkZWxheQ0KPiA+PiAgYicw
-MTA6IDItY2xvY2stY3ljbGUgZGVsYXkNCj4gPj4gIGInMTAxOiAwLjUtY2xvY2stY3ljbGUgZGVs
-YXkNCj4gPj4gIGInMTEwOiAxLjUtY2xvY2stY3ljbGUgZGVsYXkNCj4gPj4NCj4gPj4gVGhlIFNZ
-TkNETCBpcyB0aGUgY2hpcCBzZWxlY3QgKFNZTkMpIGhvbGQgdGltZS4NCj4gPj4gIGInMDAwOiBO
-byBiaXQgZGVsYXkNCj4gPj4gIGInMDAxOiAxLWNsb2NrLWN5Y2xlIGRlbGF5DQo+ID4+ICBiJzAx
-MDogMi1jbG9jay1jeWNsZSBkZWxheQ0KPiA+PiAgYicwMTE6IDMtY2xvY2stY3ljbGUgZGVsYXkN
-Cj4gPj4gIGInMTAxOiAwLjUtY2xvY2stY3ljbGUgZGVsYXkNCj4gPj4gIGInMTEwOiAxLjUtY2xv
-Y2stY3ljbGUgZGVsYXkNCj4gDQo+IFlvdSBmb3Jnb3QgdG8gcXVvdGUgdGhlIGxhc3QgbGluZSBm
-cm9tIHRoZSBEVERMIGFuZCBTWU5DREwgcGFyYWdyYXBoczoNCj4gDQo+IHwgSW4gY2FzZSBvZiBT
-UEkgbW9kZSwgb25seSAwMDAgaXMgYWxsb3dlZCB0byBzZXQgdG8gdGhpcyBmaWVsZC4NCg0KVGhh
-bmsgeW91IGZvciB0aGUgcG9pbnQhDQpJIGFza2VkIEhXIHRlYW0gYWJvdXQgdGhlIHBhcmFncmFw
-aHMuIEFuZCB0aGVuLCB0aGUgcGFyYWdyYXBocyBhcmUgY29ycmVjdC4NCg0KPiBBbmQgdGhlIHNw
-aS1zaC1tc2lvZiBkcml2ZXIgaXMgdXNpbmcgdGhlIE1TSU9GIGluIFNQSSBtb2RlPz8/DQoNClll
-cywgdGhlIGRyaXZlciBpcyB1c2luZyB0aGUgTVNJT0YgaW4gU1BJIG1vZGUuDQpTbywgd2UgaGF2
-ZSBubyBjaGFuY2UgdG8gc2V0IHRoZSBEVERMIGFuZCBTWU5DREwgdG8gMCBpbiBTUEkgbW9kZS4N
-Cg0KSSBzaG91bGQgaGF2ZSBsb29rZWQgaW50byB0aGUgZGF0YXNoZWV0IG1vcmUgYmVmb3JlIEkg
-c2VudCB0aGlzIFJGQy4NCg0KPCBzbmlwID4NCj4gPiBXYXMgaXQgcmVhbGx5IHRoZSBpbnRlbnQg
-b2YgdGhpcyBwYXRjaCB0byBhZGQgRFQgcHJvcGVydGllcyB3aXRob3V0DQo+ID4gcHJvdmlkaW5n
-IGFuIGltcGxlbWVudGF0aW9uIGluIHRoZSBzaC1tc2lvZiBkcml2ZXIgPw0KPiANCj4gR2l2ZW4g
-dGhlIHNlbnRlbmNlICJJZiB0aGlzIHBhdGNoIGlzIHJlYXNvbmFibGUsIEkgd2lsbCBtb2RpZnkg
-dGhlIHNoLW1zaW9mIGRyaXZlci4iIGluIHRoZSBpbnRyb2R1Y3Rpb24sIEkgdGhpbmsgc28uDQoN
-ClllcywgSSBtZWFudCB0aGF0Lg0KDQpCZXN0IHJlZ2FyZHMsDQpZb3NoaWhpcm8gU2hpbW9kYQ0K
-DQo+IEdye29ldGplLGVldGluZ31zLA0KPiANCj4gICAgICAgICAgICAgICAgICAgICAgICAgR2Vl
-cnQNCj4gDQo+IC0tDQo+IEdlZXJ0IFV5dHRlcmhvZXZlbiAtLSBUaGVyZSdzIGxvdHMgb2YgTGlu
-dXggYmV5b25kIGlhMzIgLS0gZ2VlcnRAbGludXgtbTY4ay5vcmcNCj4gDQo+IEluIHBlcnNvbmFs
-IGNvbnZlcnNhdGlvbnMgd2l0aCB0ZWNobmljYWwgcGVvcGxlLCBJIGNhbGwgbXlzZWxmIGEgaGFj
-a2VyLiBCdXQgd2hlbiBJJ20gdGFsa2luZyB0byBqb3VybmFsaXN0cyBJIGp1c3Qgc2F5DQo+ICJw
-cm9ncmFtbWVyIiBvciBzb21ldGhpbmcgbGlrZSB0aGF0Lg0KPiAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIC0tIExpbnVzIFRvcnZhbGRzDQo+IC0tDQo+IFRvIHVuc3Vic2NyaWJlIGZy
-b20gdGhpcyBsaXN0OiBzZW5kIHRoZSBsaW5lICJ1bnN1YnNjcmliZSBkZXZpY2V0cmVlIiBpbiB0
-aGUgYm9keSBvZiBhIG1lc3NhZ2UgdG8gbWFqb3Jkb21vQHZnZXIua2VybmVsLm9yZw0KPiBNb3Jl
-IG1ham9yZG9tbyBpbmZvIGF0ICBodHRwOi8vdmdlci5rZXJuZWwub3JnL21ham9yZG9tby1pbmZv
-Lmh0bWwNCg==
+This is a new driver which controls the SPI component of ST's
+Synchronous Serial Controller (SSC).
+
+v1 => v2:
+- New, more specific CONFIG symbol
+- Increased Runtime PM functionality
+- Make use of new Pinctrl API
+- Convert from SPI Bitbang => Transfer One
+- Omit functionality which Core can handle
+- Removal of *cough* debug code 
+
+Lee Jones (4):
+  spi: Add new driver for STMicroelectronics' SPI Controller
+  spi: st: Provide Device Tree binding documentation
+  ARM: sti: Provide DT nodes for SSC[0..4]
+  ARM: sti: Provide DT nodes for SBC SSC[0..2]
+
+ Documentation/devicetree/bindings/spi/spi-st.txt |  40 ++
+ arch/arm/boot/dts/stih407.dtsi                   |  85 ++++
+ drivers/spi/Kconfig                              |   7 +
+ drivers/spi/Makefile                             |   1 +
+ drivers/spi/spi-st-ssc4.c                        | 509 +++++++++++++++++++++++
+ 5 files changed, 642 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-st.txt
+ create mode 100644 drivers/spi/spi-st-ssc4.c
+
+-- 
+1.9.1
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

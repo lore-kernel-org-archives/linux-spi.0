@@ -1,44 +1,65 @@
-From: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: [PATCH v2 0/4] spi: st: New driver for ST's SPI Controller
-Date: Tue,  2 Dec 2014 15:40:40 +0000
-Message-ID: <1417534844-25080-1-git-send-email-lee.jones@linaro.org>
-Cc: lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, kernel-F5mvAk5X5gdBDgjK7y7TUQ@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Lee Jones <lee.jones@linaro.org>
+Subject: [PATCH v2 4/4] ARM: sti: Provide DT nodes for SBC SSC[0..2]
+Date: Tue,  2 Dec 2014 15:40:44 +0000
+Message-ID: <1417534844-25080-5-git-send-email-lee.jones@linaro.org>
+References: <1417534844-25080-1-git-send-email-lee.jones@linaro.org>
+Cc: lee.jones@linaro.org, kernel@stlinux.com, broonie@kernel.org,
+	linux-spi@vger.kernel.org, devicetree@vger.kernel.org
+To: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1417534844-25080-1-git-send-email-lee.jones@linaro.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-This is a new driver which controls the SPI component of ST's
-Synchronous Serial Controller (SSC).
+The Synchronous Serial Controller is used to provide SPI.
 
-v1 => v2:
-- New, more specific CONFIG symbol
-- Increased Runtime PM functionality
-- Make use of new Pinctrl API
-- Convert from SPI Bitbang => Transfer One
-- Omit functionality which Core can handle
-- Removal of *cough* debug code 
+These are the ports which are located on the Stand-By Controller (SBC).
 
-Lee Jones (4):
-  spi: Add new driver for STMicroelectronics' SPI Controller
-  spi: st: Provide Device Tree binding documentation
-  ARM: sti: Provide DT nodes for SSC[0..4]
-  ARM: sti: Provide DT nodes for SBC SSC[0..2]
+Signed-off-by: Lee Jones <lee.jones@linaro.org>
+---
+ arch/arm/boot/dts/stih407.dtsi | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
- Documentation/devicetree/bindings/spi/spi-st.txt |  40 ++
- arch/arm/boot/dts/stih407.dtsi                   |  85 ++++
- drivers/spi/Kconfig                              |   7 +
- drivers/spi/Makefile                             |   1 +
- drivers/spi/spi-st-ssc4.c                        | 509 +++++++++++++++++++++++
- 5 files changed, 642 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-st.txt
- create mode 100644 drivers/spi/spi-st-ssc4.c
-
+diff --git a/arch/arm/boot/dts/stih407.dtsi b/arch/arm/boot/dts/stih407.dtsi
+index 90bc090..80e2407 100644
+--- a/arch/arm/boot/dts/stih407.dtsi
++++ b/arch/arm/boot/dts/stih407.dtsi
+@@ -329,5 +329,36 @@
+ 
+ 			status = "disabled";
+ 		};
++
++		/* SBC SSC */
++		spi@9540000 {
++			compatible = "st,comms-ssc4-spi";
++			reg = <0x9540000 0x110>;
++			interrupts = <GIC_SPI 135 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&clk_sysin>;
++			clock-names = "ssc";
++
++			status = "disabled";
++		};
++
++		spi@9541000 {
++			compatible = "st,comms-ssc4-spi";
++			reg = <0x9541000 0x110>;
++			interrupts = <GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&clk_sysin>;
++			clock-names = "ssc";
++
++			status = "disabled";
++		};
++
++		spi@9542000 {
++			compatible = "st,comms-ssc4-spi";
++			reg = <0x9542000 0x110>;
++			interrupts = <GIC_SPI 137 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&clk_sysin>;
++			clock-names = "ssc";
++
++			status = "disabled";
++		};
+ 	};
+ };
 -- 
 1.9.1
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

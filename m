@@ -1,48 +1,49 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: core: Do not mangle error code from kthread_run()
-Date: Thu, 4 Dec 2014 22:42:47 +0000
-Message-ID: <20141204224247.GD11764@sirena.org.uk>
-References: <1417683745-26349-1-git-send-email-jarkko.nikula@linux.intel.com>
+Subject: Re: [PATCH] spi: spi-fsl-spi: Return an error code in
+ fsl_spi_do_one_msg()
+Date: Thu, 4 Dec 2014 22:44:23 +0000
+Message-ID: <20141204224422.GE11764@sirena.org.uk>
+References: <1417698947-4273-1-git-send-email-fabio.estevam@freescale.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="T7mxYSe680VjQnyC"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="CGDBiGfvSTbxKZlW"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+To: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1417683745-26349-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <1417698947-4273-1-git-send-email-fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---T7mxYSe680VjQnyC
+--CGDBiGfvSTbxKZlW
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Dec 04, 2014 at 11:02:25AM +0200, Jarkko Nikula wrote:
-> kthread_run() could return ERR_PTR(-EINTR) from kthread_create_on_node().
-> Return the actual error code in spi_init_queue() instead of mangling it to
-> -ENOMEM.
+On Thu, Dec 04, 2014 at 11:15:47AM -0200, Fabio Estevam wrote:
+> Since commit c592becbe704127 ("spi: fsl-(e)spi: migrate to generic master
+> queueing") the function fsl_spi_do_one_msg() is not void anymore, so return
+> an error code to avoid the following buid warning:
 
 Applied, thanks.
 
---T7mxYSe680VjQnyC
+--CGDBiGfvSTbxKZlW
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBAgAGBQJUgONnAAoJECTWi3JdVIfQLjEH/iNn3jCx0jEklSruI8OspxUc
-u2ftdFFH/1pW3+5/UYxJccaxxUXx4rGYArshaBq0sP4CWxPjjMpLCBAafGr+chag
-nMqy2ewj9Y4LpReK5N9OKOr1EwoAAVNSeM+6iKdC09IPb9aToA/4kwMTNLEj69G6
-i4o3j4Es6eAemsWdWIRM5HI8+oaJv31WAZ7IQvxFSvViHfdqTp8OpJekRQzojxM5
-CPUK692lVUTyqKZghIT/jneMLsz1nsIR6wDDJvF6ofCpCASNYyAil0X246ImwknH
-JiBiC+Elk2j0cOVfMxvPflw7xO5gZlb3+enV6jyj0Czh75+7BC8CFJHFZPdLj4s=
-=43IU
+iQEcBAEBAgAGBQJUgOPGAAoJECTWi3JdVIfQUWIH+wSqeFIwNV1CQChSIuohH38U
+geM9z6FY84kuylK+cOlYoPnOdyPi+5WZaIcNrlNBWRFWjIwiHThqEyw2oKKjAiD+
+HWN7QjdvQYtI3lWhEvk1IqA1CLcC4SbUy+fXwHXrD0ELnmTyQtN5xE7zn7xPHKmM
+5qhG6fxc2jjZyv5e33x9qzd7bTovXzigMmzgPCvlu0SapXmAa7fPKQDSgF0BxNO2
+aTEr077+Sjkxtd40pGW+JxJVVBhdLKHWrCJdSuZF3sp1ESzYFsYAkCwlpSWHpI9n
+/y5Tbtfi1lKroheJaHnnr0G48Ifz3kHAIbxI5cEsJZ3AOna2wuwsSJRZ4Wps0Rg=
+=0kNl
 -----END PGP SIGNATURE-----
 
---T7mxYSe680VjQnyC--
+--CGDBiGfvSTbxKZlW--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

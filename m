@@ -1,56 +1,48 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [STLinux Kernel] [PATCH v2 1/4] spi: Add new driver for
- STMicroelectronics' SPI Controller
-Date: Thu, 4 Dec 2014 22:41:41 +0000
-Message-ID: <20141204224140.GB11764@sirena.org.uk>
-References: <1417534844-25080-1-git-send-email-lee.jones@linaro.org>
- <1417534844-25080-2-git-send-email-lee.jones@linaro.org>
- <547DE5FA.5000409@st.com>
- <20141203091707.GH22522@x1>
+Subject: Re: [PATCH] spi: core: Do not mangle error code from kthread_run()
+Date: Thu, 4 Dec 2014 22:42:47 +0000
+Message-ID: <20141204224247.GD11764@sirena.org.uk>
+References: <1417683745-26349-1-git-send-email-jarkko.nikula@linux.intel.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="7ZAtKRhVyVSsbBD2"
-Cc: Patrice Chotard <patrice.chotard-qxv4g6HH51o@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kernel-F5mvAk5X5gdBDgjK7y7TUQ@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="T7mxYSe680VjQnyC"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20141203091707.GH22522@x1>
+In-Reply-To: <1417683745-26349-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---7ZAtKRhVyVSsbBD2
+--T7mxYSe680VjQnyC
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Dec 03, 2014 at 09:17:07AM +0000, Lee Jones wrote:
+On Thu, Dec 04, 2014 at 11:02:25AM +0200, Jarkko Nikula wrote:
+> kthread_run() could return ERR_PTR(-EINTR) from kthread_create_on_node().
+> Return the actual error code in spi_init_queue() instead of mangling it to
+> -ENOMEM.
 
->   Would you mind casting your eye over this submission prior to
-> the v3 please?
+Applied, thanks.
 
-This all seems fine (which also means that the DT updates are good to
-go).
-
---7ZAtKRhVyVSsbBD2
+--T7mxYSe680VjQnyC
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBAgAGBQJUgOMkAAoJECTWi3JdVIfQoPsH/3idF/c+bYZmPNTn1dciMUO9
-kNekhodEpU3vtdeaytOkw+EgiJA1/sxmd83m/6RVh8+xExgL9JPNRtayiHn5UIDn
-gomVtR7NM3sKJfuOiE9aXSSSJ3VL6R3ceqh/ySb703IHPV5IZwr/o8IWYFtFMDR/
-JlpnRtzEE8trPviMYI2LCF/ENwQd2IxshK8jdMUU3s/DlS1LqMfR+j7ri2FRpgVj
-EFoZgn/REWVb2w7pqtjPzyAZoaxxL3K7Wj+jx3taycNLkiFwoX+lUawZDLQHU47r
-0SRTw0ADbSd22o0D86QPVt3rreLJrc6ijmdd4BFi+auXTEfmkHlAKmRuk0zlis0=
-=vyX6
+iQEcBAEBAgAGBQJUgONnAAoJECTWi3JdVIfQLjEH/iNn3jCx0jEklSruI8OspxUc
+u2ftdFFH/1pW3+5/UYxJccaxxUXx4rGYArshaBq0sP4CWxPjjMpLCBAafGr+chag
+nMqy2ewj9Y4LpReK5N9OKOr1EwoAAVNSeM+6iKdC09IPb9aToA/4kwMTNLEj69G6
+i4o3j4Es6eAemsWdWIRM5HI8+oaJv31WAZ7IQvxFSvViHfdqTp8OpJekRQzojxM5
+CPUK692lVUTyqKZghIT/jneMLsz1nsIR6wDDJvF6ofCpCASNYyAil0X246ImwknH
+JiBiC+Elk2j0cOVfMxvPflw7xO5gZlb3+enV6jyj0Czh75+7BC8CFJHFZPdLj4s=
+=43IU
 -----END PGP SIGNATURE-----
 
---7ZAtKRhVyVSsbBD2--
+--T7mxYSe680VjQnyC--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

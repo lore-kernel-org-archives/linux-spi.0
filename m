@@ -1,40 +1,49 @@
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-Subject: Re: [PATCH] spi/pxa2xx: Clear cur_chip pointer before starting next message
-Date: Fri, 05 Dec 2014 19:36:41 +0100
-Message-ID: <87r3wex7t2.fsf@free.fr>
-References: <1417425166-150374-1-git-send-email-mika.westerberg@linux.intel.com>
-	<87egsfyvsd.fsf@free.fr> <20141205082429.GF1306@lahna.fi.intel.com>
-Mime-Version: 1.0
-Content-Type: text/plain
-Cc: linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-	Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Martin Oldfield <m@mjoldfield.com>,
-	linux-kernel@vger.kernel.org
-To: Mika Westerberg <mika.westerberg@linux.intel.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20141205082429.GF1306@lahna.fi.intel.com> (Mika Westerberg's
-	message of "Fri, 5 Dec 2014 10:24:29 +0200")
-Sender: linux-kernel-owner@vger.kernel.org
+From: Mark Brown <broonie@kernel.org>
+Subject: [PATCH] spi/s3c64xx: Remove redundant runtime PM management
+Date: Fri,  5 Dec 2014 20:27:42 +0000
+Message-ID: <1417811262-11652-1-git-send-email-broonie@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>
+To: linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Mika Westerberg <mika.westerberg@linux.intel.com> writes:
+The device already asks the core to hold a runtime PM reference while it
+is active so it is redundant to open code that in the driver itself.
 
-> On Thu, Dec 04, 2014 at 10:01:06PM +0100, Robert Jarzmik wrote:
->> So with your change, we have :
->>   	drv_data->cur_chip = NULL;
->> 	spi_finalize_current_message(drv_data->master);
->> 
->> In that case, if spi_finalize_current_message() queues another message, upon
->> this next message completion, won't giveback() be called, and dereference
->> cur_chip as well ?
->
-> When the next message is started pxa2xx_spi_transfer_one_message() gets
-> called and that will set cur_chip again.
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-s3c64xx.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-Acked-by: Robert Jarzmik <robert.jarzmik@free.fr>
-
-Cheers.
-
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 9c616091429d..197bcf093174 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -346,16 +346,8 @@ static int s3c64xx_spi_prepare_transfer(struct spi_master *spi)
+ 		spi->dma_tx = sdd->tx_dma.ch;
+ 	}
+ 
+-	ret = pm_runtime_get_sync(&sdd->pdev->dev);
+-	if (ret < 0) {
+-		dev_err(dev, "Failed to enable device: %d\n", ret);
+-		goto out_tx;
+-	}
+-
+ 	return 0;
+ 
+-out_tx:
+-	dma_release_channel(sdd->tx_dma.ch);
+ out_rx:
+ 	dma_release_channel(sdd->rx_dma.ch);
+ out:
+@@ -372,7 +364,6 @@ static int s3c64xx_spi_unprepare_transfer(struct spi_master *spi)
+ 		dma_release_channel(sdd->tx_dma.ch);
+ 	}
+ 
+-	pm_runtime_put(&sdd->pdev->dev);
+ 	return 0;
+ }
+ 
 -- 
-Robert
+2.1.3

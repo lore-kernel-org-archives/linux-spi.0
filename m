@@ -1,49 +1,154 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: [PATCH] spi/s3c64xx: Remove redundant runtime PM management
-Date: Fri,  5 Dec 2014 20:27:42 +0000
-Message-ID: <1417811262-11652-1-git-send-email-broonie@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>
-To: linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Subject: [PATCH] SPI / PM: Replace CONFIG_PM_RUNTIME with CONFIG_PM
+Date: Sat, 06 Dec 2014 03:30:23 +0100
+Message-ID: <2091649.zj2SIBdzpD@vostro.rjw.lan>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7Bit
+Cc: Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Ben Dooks <ben-linux@fluff.org>,
+	Kukjin Kim <kgene.kim@samsung.com>, linux-spi@vger.kernel.org,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux PM list <linux-pm@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-pm-owner@vger.kernel.org>
+Sender: linux-pm-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The device already asks the core to hold a runtime PM reference while it
-is active so it is redundant to open code that in the driver itself.
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Signed-off-by: Mark Brown <broonie@kernel.org>
+After commit b2b49ccbdd54 (PM: Kconfig: Set PM_RUNTIME if PM_SLEEP is
+selected) PM_RUNTIME is always set if PM is set, so #ifdef blocks
+depending on CONFIG_PM_RUNTIME may now be changed to depend on
+CONFIG_PM.
+
+Replace CONFIG_PM_RUNTIME with CONFIG_PM everywhere under
+drivers/spi/.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/spi/spi-s3c64xx.c | 9 ---------
- 1 file changed, 9 deletions(-)
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 9c616091429d..197bcf093174 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -346,16 +346,8 @@ static int s3c64xx_spi_prepare_transfer(struct spi_master *spi)
- 		spi->dma_tx = sdd->tx_dma.ch;
- 	}
+Note: This depends on commit b2b49ccbdd54 (PM: Kconfig: Set PM_RUNTIME if
+PM_SLEEP is selected) which is only in linux-next at the moment (via the
+linux-pm tree).
+
+Please let me know if it is OK to take this one into linux-pm.
+
+---
+ drivers/spi/spi-coldfire-qspi.c |    2 +-
+ drivers/spi/spi-orion.c         |    2 +-
+ drivers/spi/spi-pxa2xx.c        |    2 +-
+ drivers/spi/spi-qup.c           |    4 ++--
+ drivers/spi/spi-rockchip.c      |    4 ++--
+ drivers/spi/spi-s3c64xx.c       |    4 ++--
+ 6 files changed, 9 insertions(+), 9 deletions(-)
+
+Index: linux-pm/drivers/spi/spi-s3c64xx.c
+===================================================================
+--- linux-pm.orig/drivers/spi/spi-s3c64xx.c
++++ linux-pm/drivers/spi/spi-s3c64xx.c
+@@ -1266,7 +1266,7 @@ static int s3c64xx_spi_resume(struct dev
+ }
+ #endif /* CONFIG_PM_SLEEP */
  
--	ret = pm_runtime_get_sync(&sdd->pdev->dev);
--	if (ret < 0) {
--		dev_err(dev, "Failed to enable device: %d\n", ret);
--		goto out_tx;
--	}
--
- 	return 0;
+-#ifdef CONFIG_PM_RUNTIME
++#ifdef CONFIG_PM
+ static int s3c64xx_spi_runtime_suspend(struct device *dev)
+ {
+ 	struct spi_master *master = dev_get_drvdata(dev);
+@@ -1296,7 +1296,7 @@ static int s3c64xx_spi_runtime_resume(st
  
--out_tx:
--	dma_release_channel(sdd->tx_dma.ch);
- out_rx:
- 	dma_release_channel(sdd->rx_dma.ch);
- out:
-@@ -372,7 +364,6 @@ static int s3c64xx_spi_unprepare_transfer(struct spi_master *spi)
- 		dma_release_channel(sdd->tx_dma.ch);
- 	}
- 
--	pm_runtime_put(&sdd->pdev->dev);
  	return 0;
  }
+-#endif /* CONFIG_PM_RUNTIME */
++#endif /* CONFIG_PM */
  
--- 
-2.1.3
+ static const struct dev_pm_ops s3c64xx_spi_pm = {
+ 	SET_SYSTEM_SLEEP_PM_OPS(s3c64xx_spi_suspend, s3c64xx_spi_resume)
+Index: linux-pm/drivers/spi/spi-coldfire-qspi.c
+===================================================================
+--- linux-pm.orig/drivers/spi/spi-coldfire-qspi.c
++++ linux-pm/drivers/spi/spi-coldfire-qspi.c
+@@ -491,7 +491,7 @@ static int mcfqspi_resume(struct device
+ }
+ #endif
+ 
+-#ifdef CONFIG_PM_RUNTIME
++#ifdef CONFIG_PM
+ static int mcfqspi_runtime_suspend(struct device *dev)
+ {
+ 	struct spi_master *master = dev_get_drvdata(dev);
+Index: linux-pm/drivers/spi/spi-qup.c
+===================================================================
+--- linux-pm.orig/drivers/spi/spi-qup.c
++++ linux-pm/drivers/spi/spi-qup.c
+@@ -646,7 +646,7 @@ error:
+ 	return ret;
+ }
+ 
+-#ifdef CONFIG_PM_RUNTIME
++#ifdef CONFIG_PM
+ static int spi_qup_pm_suspend_runtime(struct device *device)
+ {
+ 	struct spi_master *master = dev_get_drvdata(device);
+@@ -672,7 +672,7 @@ static int spi_qup_pm_resume_runtime(str
+ 	writel_relaxed(config, controller->base + QUP_CONFIG);
+ 	return 0;
+ }
+-#endif /* CONFIG_PM_RUNTIME */
++#endif /* CONFIG_PM */
+ 
+ #ifdef CONFIG_PM_SLEEP
+ static int spi_qup_suspend(struct device *device)
+Index: linux-pm/drivers/spi/spi-orion.c
+===================================================================
+--- linux-pm.orig/drivers/spi/spi-orion.c
++++ linux-pm/drivers/spi/spi-orion.c
+@@ -523,7 +523,7 @@ static int orion_spi_remove(struct platf
+ 
+ MODULE_ALIAS("platform:" DRIVER_NAME);
+ 
+-#ifdef CONFIG_PM_RUNTIME
++#ifdef CONFIG_PM
+ static int orion_spi_runtime_suspend(struct device *dev)
+ {
+ 	struct spi_master *master = dev_get_drvdata(dev);
+Index: linux-pm/drivers/spi/spi-rockchip.c
+===================================================================
+--- linux-pm.orig/drivers/spi/spi-rockchip.c
++++ linux-pm/drivers/spi/spi-rockchip.c
+@@ -801,7 +801,7 @@ static int rockchip_spi_resume(struct de
+ }
+ #endif /* CONFIG_PM_SLEEP */
+ 
+-#ifdef CONFIG_PM_RUNTIME
++#ifdef CONFIG_PM
+ static int rockchip_spi_runtime_suspend(struct device *dev)
+ {
+ 	struct spi_master *master = dev_get_drvdata(dev);
+@@ -829,7 +829,7 @@ static int rockchip_spi_runtime_resume(s
+ 
+ 	return ret;
+ }
+-#endif /* CONFIG_PM_RUNTIME */
++#endif /* CONFIG_PM */
+ 
+ static const struct dev_pm_ops rockchip_spi_pm = {
+ 	SET_SYSTEM_SLEEP_PM_OPS(rockchip_spi_suspend, rockchip_spi_resume)
+Index: linux-pm/drivers/spi/spi-pxa2xx.c
+===================================================================
+--- linux-pm.orig/drivers/spi/spi-pxa2xx.c
++++ linux-pm/drivers/spi/spi-pxa2xx.c
+@@ -1307,7 +1307,7 @@ static int pxa2xx_spi_resume(struct devi
+ }
+ #endif
+ 
+-#ifdef CONFIG_PM_RUNTIME
++#ifdef CONFIG_PM
+ static int pxa2xx_spi_runtime_suspend(struct device *dev)
+ {
+ 	struct driver_data *drv_data = dev_get_drvdata(dev);
+

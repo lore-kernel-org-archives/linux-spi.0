@@ -1,46 +1,48 @@
-From: Vinod Koul <vinod.koul@intel.com>
-Subject: Re: [PATCH 3/3] ARM: edma: Split up header file to platform_data and
- API file
-Date: Mon, 8 Dec 2014 18:19:17 +0530
-Message-ID: <20141208124917.GI16827@intel.com>
-References: <1417084891-17990-1-git-send-email-peter.ujfalusi@ti.com>
- <1417084891-17990-4-git-send-email-peter.ujfalusi@ti.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie@kernel.org>, linux@arm.linux.org.uk,
-	nsekhar@ti.com, arnd@arndb.de, khilman@deeprootsystems.com,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
-	ulf.hansson@linaro.org, chris@printf.net,
-	linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-omap@vger.kernel.org,
-	Tony Lindgren <tony@atomide.com>, dmaengine@vger.kernel.org
-To: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Return-path: <linux-mmc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1417084891-17990-4-git-send-email-peter.ujfalusi@ti.com>
-Sender: linux-mmc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: [PATCH v3 0/4] spi: st: New driver for ST's SPI Controller
+Date: Mon,  8 Dec 2014 12:53:30 +0000
+Message-ID: <1418043214-14324-1-git-send-email-lee.jones@linaro.org>
+Cc: lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, kernel-F5mvAk5X5gdBDgjK7y7TUQ@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Nov 27, 2014 at 12:41:31PM +0200, Peter Ujfalusi wrote:
-> include/linux/platform_data/ is not a correct place to keep the API
-> definitions for edma, it is meant to be only for the pdata for the device.
-> Clean up this by moving the API to include/linux/edma.h
-> 
-> Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-> ---
->  arch/arm/common/edma.c                     |   3 +-
->  arch/arm/mach-davinci/devices.c            |   1 +
->  arch/arm/mach-davinci/include/mach/da8xx.h |   1 +
->  drivers/dma/edma.c                         |   2 +-
->  include/linux/edma.h                       | 153 +++++++++++++++++++++++++++++
->  include/linux/platform_data/edma.h         | 148 ++--------------------------
->  sound/soc/davinci/davinci-pcm.h            |   1 +
->  7 files changed, 165 insertions(+), 144 deletions(-)
->  create mode 100644 include/linux/edma.h
-I was hoping that this will have delete for platform_data/edma.h, do we
-still need that and why shouldn't we get rid of this :)
+This is a new driver which controls the SPI component of ST's
+Synchronous Serial Controller (SSC).
+ 
+v2 => v3:
+- Fixes Patrice's review comments
+- Removed COMPILE_TEST (at least until Will Deacon's patch lands)
+
+v1 => v2:
+- New, more specific CONFIG symbol
+- Increased Runtime PM functionality
+- Make use of new Pinctrl API
+- Convert from SPI Bitbang => Transfer One
+- Omit functionality which Core can handle
+- Removal of *cough* debug code
+
+Lee Jones (4):
+  spi: Add new driver for STMicroelectronics' SPI Controller
+  spi: st: Provide Device Tree binding documentation
+  ARM: sti: Provide DT nodes for SSC[0..4]
+  ARM: sti: Provide DT nodes for SBC SSC[0..2]
+
+ Documentation/devicetree/bindings/spi/spi-st.txt |  40 ++
+ arch/arm/boot/dts/stih407.dtsi                   |  85 ++++
+ drivers/spi/Kconfig                              |   7 +
+ drivers/spi/Makefile                             |   1 +
+ drivers/spi/spi-st-ssc4.c                        | 509 +++++++++++++++++++++++
+ 5 files changed, 642 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-st.txt
+ create mode 100644 drivers/spi/spi-st-ssc4.c
 
 -- 
-~Vinod
+1.9.1
 
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

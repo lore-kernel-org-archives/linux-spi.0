@@ -1,48 +1,46 @@
-From: Alexandru Gagniuc <mr.nuke.me-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 3/3] ARM: sun4i: dt: cubieboard: Enable SPI0
-Date: Mon,  8 Dec 2014 04:14:02 -0600
-Message-ID: <1418033642-29731-4-git-send-email-mr.nuke.me@gmail.com>
-References: <1418033642-29731-1-git-send-email-mr.nuke.me@gmail.com>
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org,
-	robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, pawel.moll-5wv7dgnIgG8@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
-	ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org, galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org,
-	linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Alexandru Gagniuc <mr.nuke.me-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1418033642-29731-1-git-send-email-mr.nuke.me-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Vinod Koul <vinod.koul@intel.com>
+Subject: Re: [PATCH 3/3] ARM: edma: Split up header file to platform_data and
+ API file
+Date: Mon, 8 Dec 2014 18:19:17 +0530
+Message-ID: <20141208124917.GI16827@intel.com>
+References: <1417084891-17990-1-git-send-email-peter.ujfalusi@ti.com>
+ <1417084891-17990-4-git-send-email-peter.ujfalusi@ti.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie@kernel.org>, linux@arm.linux.org.uk,
+	nsekhar@ti.com, arnd@arndb.de, khilman@deeprootsystems.com,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
+	ulf.hansson@linaro.org, chris@printf.net,
+	linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-omap@vger.kernel.org,
+	Tony Lindgren <tony@atomide.com>, dmaengine@vger.kernel.org
+To: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Return-path: <linux-mmc-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1417084891-17990-4-git-send-email-peter.ujfalusi@ti.com>
+Sender: linux-mmc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Only SPI0 is enabled, as the schematic denotes it as the only SPI bus,
-while other pins are reserved for different peripherals.
+On Thu, Nov 27, 2014 at 12:41:31PM +0200, Peter Ujfalusi wrote:
+> include/linux/platform_data/ is not a correct place to keep the API
+> definitions for edma, it is meant to be only for the pdata for the device.
+> Clean up this by moving the API to include/linux/edma.h
+> 
+> Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+> ---
+>  arch/arm/common/edma.c                     |   3 +-
+>  arch/arm/mach-davinci/devices.c            |   1 +
+>  arch/arm/mach-davinci/include/mach/da8xx.h |   1 +
+>  drivers/dma/edma.c                         |   2 +-
+>  include/linux/edma.h                       | 153 +++++++++++++++++++++++++++++
+>  include/linux/platform_data/edma.h         | 148 ++--------------------------
+>  sound/soc/davinci/davinci-pcm.h            |   1 +
+>  7 files changed, 165 insertions(+), 144 deletions(-)
+>  create mode 100644 include/linux/edma.h
+I was hoping that this will have delete for platform_data/edma.h, do we
+still need that and why shouldn't we get rid of this :)
 
-Signed-off-by: Alexandru Gagniuc <mr.nuke.me-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- arch/arm/boot/dts/sun4i-a10-cubieboard.dts | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/arch/arm/boot/dts/sun4i-a10-cubieboard.dts b/arch/arm/boot/dts/sun4i-a10-cubieboard.dts
-index 6a310da..140e3ee 100644
---- a/arch/arm/boot/dts/sun4i-a10-cubieboard.dts
-+++ b/arch/arm/boot/dts/sun4i-a10-cubieboard.dts
-@@ -148,6 +148,12 @@
- 			pinctrl-0 = <&i2c1_pins_a>;
- 			status = "okay";
- 		};
-+
-+		spi0: spi@01c05000 {
-+			pinctrl-names = "default";
-+			pinctrl-0 = <&spi0_pins_a>;
-+			status = "okay";
-+		};
- 	};
- 
- 	leds {
 -- 
-1.9.3
+~Vinod
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

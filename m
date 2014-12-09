@@ -1,69 +1,56 @@
-From: Lee Jones <lee.jones@linaro.org>
-Subject: [PATCH v4 2/2] spi: st: Provide Device Tree binding documentation
-Date: Tue,  9 Dec 2014 20:21:31 +0000
-Message-ID: <1418156491-26613-3-git-send-email-lee.jones@linaro.org>
-References: <1418156491-26613-1-git-send-email-lee.jones@linaro.org>
-Cc: lee.jones@linaro.org, kernel@stlinux.com, broonie@kernel.org,
-	linux-spi@vger.kernel.org, devicetree@vger.kernel.org
-To: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1418156491-26613-1-git-send-email-lee.jones@linaro.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: [PATCH] spi/falcon: Remove hardware prepare and unprepare functions
+Date: Tue,  9 Dec 2014 22:20:15 +0000
+Message-ID: <1418163615-2442-1-git-send-email-broonie@kernel.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Thomas Langer <thomas.langer-th3ZBGNqt+7QT0dZR+AlfA@public.gmane.org>,
+	John Crispin <blogic-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-This patch adds DT documentation for the SPI portion of ST's SSC device.
+They are completely empty and therefore serve no function.
 
-Signed-off-by: Lee Jones <lee.jones@linaro.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- Documentation/devicetree/bindings/spi/spi-st.txt | 40 ++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-st.txt
+ drivers/spi/spi-falcon.c | 12 ------------
+ 1 file changed, 12 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-st.txt b/Documentation/devicetree/bindings/spi/spi-st.txt
-new file mode 100644
-index 0000000..fe54959
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-st.txt
-@@ -0,0 +1,40 @@
-+STMicroelectronics SSC (SPI) Controller
-+---------------------------------------
-+
-+Required properties:
-+- compatible	: "st,comms-ssc4-spi"
-+- reg		: Offset and length of the device's register set
-+- interrupts	: The interrupt specifier
-+- clock-names	: Must contain "ssc"
-+- clocks	: Must contain an entry for each name in clock-names
-+		    See ../clk/*
-+- pinctrl-names	: Uses "default", can use "sleep" if provided
-+		    See ../pinctrl/pinctrl-binding.txt
-+
-+Optional properties:
-+- cs-gpios	: List of GPIO chip selects
-+		    See ../spi/spi-bus.txt
-+
-+Child nodes represent devices on the SPI bus
-+  See ../spi/spi-bus.txt
-+
-+Example:
-+	spi@9840000 {
-+		compatible	= "st,comms-ssc4-spi";
-+		reg		= <0x9840000 0x110>;
-+		interrupts	= <GIC_SPI 112 IRQ_TYPE_LEVEL_HIGH>;
-+		clocks		= <&clk_s_c0_flexgen CLK_EXT2F_A9>;
-+		clock-names	= "ssc";
-+		pinctrl-0	= <&pinctrl_spi0_default>;
-+		pinctrl-names	= "default";
-+		cs-gpios	= <&pio17 5 0>;
-+		#address-cells	= <1>;
-+		#size-cells	= <0>;
-+
-+		st95hf@0{
-+			compatible		= "st,st95hf";
-+			reg			= <0>;
-+			spi-max-frequency	= <1000000>;
-+			interrupts		= <2 IRQ_TYPE_EDGE_FALLING>;
-+		};
-+	};
+diff --git a/drivers/spi/spi-falcon.c b/drivers/spi/spi-falcon.c
+index 912b9037e9cf..286b2c81fc6b 100644
+--- a/drivers/spi/spi-falcon.c
++++ b/drivers/spi/spi-falcon.c
+@@ -353,16 +353,6 @@ static int falcon_sflash_setup(struct spi_device *spi)
+ 	return 0;
+ }
+ 
+-static int falcon_sflash_prepare_xfer(struct spi_master *master)
+-{
+-	return 0;
+-}
+-
+-static int falcon_sflash_unprepare_xfer(struct spi_master *master)
+-{
+-	return 0;
+-}
+-
+ static int falcon_sflash_xfer_one(struct spi_master *master,
+ 					struct spi_message *m)
+ {
+@@ -420,9 +410,7 @@ static int falcon_sflash_probe(struct platform_device *pdev)
+ 	master->mode_bits = SPI_MODE_3;
+ 	master->flags = SPI_MASTER_HALF_DUPLEX;
+ 	master->setup = falcon_sflash_setup;
+-	master->prepare_transfer_hardware = falcon_sflash_prepare_xfer;
+ 	master->transfer_one_message = falcon_sflash_xfer_one;
+-	master->unprepare_transfer_hardware = falcon_sflash_unprepare_xfer;
+ 	master->dev.of_node = pdev->dev.of_node;
+ 
+ 	ret = devm_spi_register_master(&pdev->dev, master);
 -- 
-1.9.1
+2.1.3
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

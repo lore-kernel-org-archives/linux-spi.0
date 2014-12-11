@@ -1,46 +1,61 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 1/4] spi: Move queue data structure initialisation to main master init
-Date: Thu, 11 Dec 2014 12:26:39 +0000
-Message-ID: <1418300802-3803-1-git-send-email-broonie@kernel.org>
+Subject: [PATCH 2/4] spi: Check to see if the device is processing a message before we idle
+Date: Thu, 11 Dec 2014 12:26:40 +0000
+Message-ID: <1418300802-3803-2-git-send-email-broonie@kernel.org>
+References: <1418300802-3803-1-git-send-email-broonie@kernel.org>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1418300802-3803-1-git-send-email-broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Since most devices now do use the standard queue and in order to avoid
-initialisation ordering issues being introduced by further refactorings
-to improve performance move the initialisation of the queue and the lock
-for it to the main master allocation.
+cur_msg is updated under the queue lock and holds the message we are
+currently processing. Since currently we only ever do removals in the
+pump kthread it doesn't matter in what order we do things but we want
+to be able to push things out from the submitting thread so pull the
+check to see if we're currently handling a message before we check to
+see if the queue is idle.
 
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/spi/spi.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index da7e6225b8f6..b81ccdb1bc16 100644
+index b81ccdb1bc16..0bc752d17be5 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -989,9 +989,6 @@ static int spi_init_queue(struct spi_master *master)
- {
- 	struct sched_param param = { .sched_priority = MAX_RT_PRIO - 1 };
+@@ -891,8 +891,16 @@ static void spi_pump_messages(struct kthread_work *work)
+ 	bool was_busy = false;
+ 	int ret;
  
--	INIT_LIST_HEAD(&master->queue);
--	spin_lock_init(&master->queue_lock);
--
- 	master->running = false;
- 	master->busy = false;
- 
-@@ -1595,6 +1592,8 @@ int spi_register_master(struct spi_master *master)
- 		dynamic = 1;
+-	/* Lock queue and check for queue work */
++	/* Lock queue */
+ 	spin_lock_irqsave(&master->queue_lock, flags);
++
++	/* Make sure we are not already running a message */
++	if (master->cur_msg) {
++		spin_unlock_irqrestore(&master->queue_lock, flags);
++		return;
++	}
++
++	/* Check if the queue is idle */
+ 	if (list_empty(&master->queue) || !master->running) {
+ 		if (!master->busy) {
+ 			spin_unlock_irqrestore(&master->queue_lock, flags);
+@@ -916,11 +924,6 @@ static void spi_pump_messages(struct kthread_work *work)
+ 		return;
  	}
  
-+	INIT_LIST_HEAD(&master->queue);
-+	spin_lock_init(&master->queue_lock);
- 	spin_lock_init(&master->bus_lock_spinlock);
- 	mutex_init(&master->bus_lock_mutex);
- 	master->bus_lock_flag = 0;
+-	/* Make sure we are not already running a message */
+-	if (master->cur_msg) {
+-		spin_unlock_irqrestore(&master->queue_lock, flags);
+-		return;
+-	}
+ 	/* Extract head of queue */
+ 	master->cur_msg =
+ 		list_first_entry(&master->queue, struct spi_message, queue);
 -- 
 2.1.3
 

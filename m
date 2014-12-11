@@ -1,11 +1,12 @@
 From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH 0/3] ARM: sun4i: SPI improvements
-Date: Thu, 11 Dec 2014 17:56:02 +0100
-Message-ID: <20141211165602.GD8739@lukather>
+Subject: Re: [PATCH 2/3] ARM: sun4i: dt: Add pin muxing options for SPI
+Date: Thu, 11 Dec 2014 17:57:38 +0100
+Message-ID: <20141211165738.GE8739@lukather>
 References: <1418033642-29731-1-git-send-email-mr.nuke.me@gmail.com>
+ <1418033642-29731-3-git-send-email-mr.nuke.me@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="3Shs6nLsUBL77Lfu"
+	protocol="application/pgp-signature"; boundary="v6ieFHm5OYqyo94Y"
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
 	pawel.moll-5wv7dgnIgG8@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
 	ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org, galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org,
@@ -13,34 +14,24 @@ Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yR
 To: Alexandru Gagniuc <mr.nuke.me-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1418033642-29731-1-git-send-email-mr.nuke.me-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1418033642-29731-3-git-send-email-mr.nuke.me-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---3Shs6nLsUBL77Lfu
+--v6ieFHm5OYqyo94Y
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 08, 2014 at 04:13:59AM -0600, Alexandru Gagniuc wrote:
-> This is a series of patches that gets SPI working in a better state on the
-> Cubieboard. The main motivation was to use flashrom to to program SPI ROM=
-s.
-> There is one patch missing, which adds an spidev node on the Cubieboard. =
-Since
-> Maxime did not like the approach in that patch, I've left it out for now.
+On Mon, Dec 08, 2014 at 04:14:01AM -0600, Alexandru Gagniuc wrote:
+> These are based on the available SPI configurations of Cubieboard,
+> Olimex LIME, and PcDuino. There is no pin group for SPI3, as all the
+> boards seem to use those pins for EMAC.
+>=20
+> Signed-off-by: Alexandru Gagniuc <mr.nuke.me-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-Just to make things straight, it's not me alone that didn't like the
-approach.
-
-It's both wrong on a theorical point of view to put that in the DT,
-since it has no hardware meaning at all (ie it doesn't describe the
-hardware, or the state the bootloader left the hardware in), and this
-has been NAKed a number of times already by Mark Brown.
-
-See http://permalink.gmane.org/gmane.linux.kernel.spi.devel/11747 for
-example.
+Applied, thanks.
 
 Maxime
 
@@ -49,29 +40,29 @@ Maxime Ripard, Free Electrons
 Embedded Linux, Kernel and Android engineering
 http://free-electrons.com
 
---3Shs6nLsUBL77Lfu
+--v6ieFHm5OYqyo94Y
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQIcBAEBAgAGBQJUicyiAAoJEBx+YmzsjxAg9twP/3bQgAN+X5ClIXQJ+Qlx9oRJ
-d0fkgMv5w9XgpSzMcSYFBUzKlarTm4FPvyCa/0075ylAuP3fPTgwn37JYU+s6gvf
-PnYHhk+JGsimwzD55+HldZm+d+7rbOGvvCRq8nTOtWDCyhJ6NOH775Gkg3BIVB3V
-uzeEvDxdAFhT6M9lJOVRrmCQ5+lTVjEnkeirmkdTMISzYn4elajWW2ncIYow2hQV
-pWL9iM7MBjLHP/yFzLeqD5fcc6hALDBsKiagj+EI3gXKYI5Qxyjh6mJUcjuFa/Da
-yur5bevfa87LhFkf1EsY8z/Q2bGGzhei/3tbW7dsZoGieEgJQ+m3rfRpMyitbfv9
-siTEt0y8UhYS+1Du8yqhCL7IYS1hn1VAizTdFK/VyNcQ2vGyU5eZEtAoWiO11LhD
-AkK/9SUTJvspBENbTZkbDAL2SMB7AbluGiofQvwYXtYXwoGc81ivZtNx96WmCyUG
-8tHKhSRxG7SECx9T/jcW7xulc92BUHfOHOjfIKqSYblbrWYmFoL/y1LbTXwqxnY1
-Wc30O4UWYXeRyj/PPxAqS70ItXY+av4o6CARqAcGSJ7pYr0JxbyYtFeCqu2T+58v
-D6zvRAUW97B8ATUf+5v2X+BnetL/M6mSgv0eLxzE7qLk7v/nHuOMFHtPtjR+ocSd
-YSHxlUQYTZmgdUnEfk9w
-=agy8
+iQIcBAEBAgAGBQJUic0CAAoJEBx+YmzsjxAgEWgP+QHAbD/JejGbMjvYsA+Xjde4
+HkHFCKuNx1a7xV2reHm4/cd/Kk5yyMnLVMYqpnuOUylrwVTIm4s9rmKvRfnwDG/K
+FiL3nyhYKhn5uNVYglzdGO7HX1d9AjHARJBi46wTDT6VpektwGaEzzeWY7/j0agO
+DanQQxweV4xLGYzXo7opl4qrLUNLwycXvy35L/8cHqISB6C1f4nWMhLzX+JDorKJ
+E8MSxihgDFo+JjHUk+nCOJ+zkqIXkR4yPETLZeTOpm8nkaRXYNOkdvgEB916hnjF
+Hy0IbrnRITKDndahLpZCkEqImLg+MqTKkYS/lL2q8kBBWtbJo3CWsLbcvvu44o3e
+3doE4T+HGSXJQw70Wa5dVdlE9miiiBhfIn6JWHYFTW5CjmBSaAlg9dTNIsvhlmG2
+0Q7Pw4gIMZW1xvJ1BWHm13B6uAREjMXyxw3KYe6m+tmckjkv5nFGyUf5CecyL6zU
+QfqVwfXSbWh+mECK/SJAmraB8R21tajqY3AolSFyurHoQevaNxixHN4lkJ1NJyuH
+hat2+4Tg5Uy1JpJaU/ly/+Xr1CY6OOzOmDXRlbNlsIc67t7d0q+Gd+BrHpduKrLX
+uS65JDOwlRH482ao60pMY99/eWWXCbPMHLZb89UjnQy5PEGj73bHFmNkJMyRzBlY
+Nk/DKvP5EfqjEACmsuXB
+=m+2y
 -----END PGP SIGNATURE-----
 
---3Shs6nLsUBL77Lfu--
+--v6ieFHm5OYqyo94Y--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

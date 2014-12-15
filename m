@@ -1,123 +1,57 @@
-From: yoshihiro shimoda <yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
-Subject: RE: [PATCH][RFC] spi: sh-msiof: Configure MSIOF sync signal timing in
- device tree
-Date: Mon, 15 Dec 2014 01:52:10 +0000
-Message-ID: <HKNPR06MB322F8E989442EC8FF37FAD9D86F0@HKNPR06MB322.apcprd06.prod.outlook.com>
-References: <5477EFD7.50307@renesas.com>	<3485316.4muPRcz2if@avalon>
- <CAMuHMdVHJqzMhY28Cb65tzB0E2X8YW_moeJkWGaWYaUQUBhU7w@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
-	Magnus Damm <damm-yzvPICuk2ACczHhG9Qg4qA@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"pawel.moll-5wv7dgnIgG8@public.gmane.org" <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	"mark.rutland-5wv7dgnIgG8@public.gmane.org" <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	"ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org" <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	"galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org" <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-	Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+From: Yoshihiro Kaneko <ykaneko0929-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH/RFC] spi: sh-msiof: Add runtime PM lock in initializing
+Date: Mon, 15 Dec 2014 23:01:11 +0900
+Message-ID: <1418652071-6396-1-git-send-email-ykaneko0929@gmail.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+	linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAMuHMdVHJqzMhY28Cb65tzB0E2X8YW_moeJkWGaWYaUQUBhU7w-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-Language: ja-JP
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-SGkgR2VlcnQtc2FuLA0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IGRl
-dmljZXRyZWUtb3duZXJAdmdlci5rZXJuZWwub3JnIFttYWlsdG86ZGV2aWNldHJlZS1vd25lckB2
-Z2VyLmtlcm5lbC5vcmddIE9uIEJlaGFsZiBPZiBHZWVydCBVeXR0ZXJob2V2ZW4NCj4gU2VudDog
-TW9uZGF5LCBEZWNlbWJlciAwMSwgMjAxNCA1OjI3IFBNDQo+IA0KPiBIaSBTaGltb2RhLXNhbiwg
-TGF1cmVudCwNCj4gDQo+IE9uIFN1biwgTm92IDMwLCAyMDE0IGF0IDk6MjMgUE0sIExhdXJlbnQg
-UGluY2hhcnQNCj4gPGxhdXJlbnQucGluY2hhcnRAaWRlYXNvbmJvYXJkLmNvbT4gd3JvdGU6DQo+
-ID4gT24gRnJpZGF5IDI4IE5vdmVtYmVyIDIwMTQgMTI6NDU6MjcgWW9zaGloaXJvIFNoaW1vZGEg
-d3JvdGU6DQo+ID4+IFRoZSBNU0lPRiBjb250cm9sbGVyIGhhcyBEVERMIGFuZCBTWU5DREwgaW4g
-U0lUTURSMSBhbmQgU0lSTURSMQ0KPiA+PiByZWdpc3RlcnMuIFNvLCB0aGlzIHBhdGNoIGFkZHMg
-bmV3IHByb3BlcnRpZXMgbGlrZSB0aGUgZm9sbG93aW5nDQo+ID4+IGNvbW1pdDoNCj4gPj4gICBk
-MGZiNDdhNTIzN2Q4Yjk1NzYxMTM1NjhiYWNmZDI3ODkyMzA4YjYyDQo+ID4+ICAgKHNwaTogZnNs
-LWVzcGk6IENvbmZpZ3VyZSBGU0wgZVNQSSBDU0JFRiBhbmQgQ1NBRlQpDQo+ID4+DQo+ID4+IFRo
-ZSBEVERMIGlzIHRoZSBjaGlwIHNlbGVjdCAoU1lOQykgc2V0dXAgdGltZS4NCj4gPj4gIGInMDAw
-OiBObyBiaXQgZGVsYXkNCj4gPj4gIGInMDAxOiAxLWNsb2NrLWN5Y2xlIGRlbGF5DQo+ID4+ICBi
-JzAxMDogMi1jbG9jay1jeWNsZSBkZWxheQ0KPiA+PiAgYicxMDE6IDAuNS1jbG9jay1jeWNsZSBk
-ZWxheQ0KPiA+PiAgYicxMTA6IDEuNS1jbG9jay1jeWNsZSBkZWxheQ0KPiA+Pg0KPiA+PiBUaGUg
-U1lOQ0RMIGlzIHRoZSBjaGlwIHNlbGVjdCAoU1lOQykgaG9sZCB0aW1lLg0KPiA+PiAgYicwMDA6
-IE5vIGJpdCBkZWxheQ0KPiA+PiAgYicwMDE6IDEtY2xvY2stY3ljbGUgZGVsYXkNCj4gPj4gIGIn
-MDEwOiAyLWNsb2NrLWN5Y2xlIGRlbGF5DQo+ID4+ICBiJzAxMTogMy1jbG9jay1jeWNsZSBkZWxh
-eQ0KPiA+PiAgYicxMDE6IDAuNS1jbG9jay1jeWNsZSBkZWxheQ0KPiA+PiAgYicxMTA6IDEuNS1j
-bG9jay1jeWNsZSBkZWxheQ0KPiANCj4gWW91IGZvcmdvdCB0byBxdW90ZSB0aGUgbGFzdCBsaW5l
-IGZyb20gdGhlIERUREwgYW5kIFNZTkNETCBwYXJhZ3JhcGhzOg0KPiANCj4gfCBJbiBjYXNlIG9m
-IFNQSSBtb2RlLCBvbmx5IDAwMCBpcyBhbGxvd2VkIHRvIHNldCB0byB0aGlzIGZpZWxkLg0KPiAN
-Cj4gQW5kIHRoZSBzcGktc2gtbXNpb2YgZHJpdmVyIGlzIHVzaW5nIHRoZSBNU0lPRiBpbiBTUEkg
-bW9kZT8/Pw0KDQpBZnRlciBJIGFza2VkIEhXIHRlYW0gYWJvdXQgdGhpcyByZXN0cmljdGlvbiwg
-dGhpcyBjb250cm9sbGVyIGNhbiBzZXQNCnRoZSBEVERML1NZTkNETCBpbiB0cmFuc2ZlciBtb2Rl
-Lg0KKEluIG90aGVyIHdvcmRzLCB0aGUgY3VycmVudCBtYW51YWwgaGFzIGVycm9yIGFib3V0IHRo
-aXMgc3BlY2lmaWNhdGlvbi4pDQoNClNvLCBJIHdvdWxkIGxpa2UgdG8gc2VuZCBwYXRjaGVzIGZv
-ciB0aGlzIGNvbmZpZ3VyYXRpb25zLg0KDQo8IHNuaXAgPg0KPiA+PiBkaWZmIC0tZ2l0IGEvRG9j
-dW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL3NwaS9zaC1tc2lvZi50eHQNCj4gPj4gYi9E
-b2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3Mvc3BpL3NoLW1zaW9mLnR4dCBpbmRleCBk
-MTFjMzcyLi41ZmU4ZmZkDQo+ID4+IDEwMDY0NA0KPiA+PiAtLS0gYS9Eb2N1bWVudGF0aW9uL2Rl
-dmljZXRyZWUvYmluZGluZ3Mvc3BpL3NoLW1zaW9mLnR4dA0KPiA+PiArKysgYi9Eb2N1bWVudGF0
-aW9uL2RldmljZXRyZWUvYmluZGluZ3Mvc3BpL3NoLW1zaW9mLnR4dA0KPiA+PiBAQCAtMzAsNiAr
-MzAsMTQgQEAgT3B0aW9uYWwgcHJvcGVydGllczoNCj4gPj4gICAgICAgICAgICAgICAgICAgICAg
-ICBzcGVjaWZpZXJzLCBvbmUgZm9yIHRyYW5zbWlzc2lvbiwgYW5kIG9uZSBmb3INCj4gPj4gICAg
-ICAgICAgICAgICAgICAgICAgICByZWNlcHRpb24uDQo+ID4+ICAtIGRtYS1uYW1lcyAgICAgICAg
-ICAgIDogTXVzdCBjb250YWluIGEgbGlzdCBvZiB0d28gRE1BIG5hbWVzLCAidHgiIGFuZA0KPiA+
-PiAicngiLg0KPiA+PiArLSByZW5lc2FzLHRkbXItZHRkbCAgICA6IGRlbGF5IHN5bmMgc2lnbmFs
-IChzZXR1cCkgaW4gdHJhbnNtaXQgbW9kZQ0KPiA+PiArICAgICAgICAgICAgICAgICAgICAgIChk
-ZWZhdWx0IGlzIDAsIHdlIGNhbiBzZXQgaXQgdG8gMCwgMSwgMiwgNSwgb3IgNikNCj4gPj4gKy0g
-cmVuZXNhcyx0ZG1yLXN5bmNkbCAgOiBkZWxheSBzeW5jIHNpZ25hbCAoaG9sZCkgaW4gdHJhbnNt
-aXQgbW9kZQ0KPiA+PiArICAgICAgICAgICAgICAgICAgICAgIChkZWZhdWx0IGlzIDAsIHdlIGNh
-biBzZXQgaXQgdG8gMCwgMSwgMiwgMywgNSwgb3IgNikNCj4gPj4gKy0gcmVuZXNhcyxyZG1yLWR0
-ZGwgICAgOiBkZWxheSBzeW5jIHNpZ25hbCAoc2V0dXApIGluIHJlY2VpdmUgbW9kZQ0KPiA+PiAr
-ICAgICAgICAgICAgICAgICAgICAgIChkZWZhdWx0IGlzIDAsIHdlIGNhbiBzZXQgaXQgdG8gMCwg
-MSwgMiwgNSwgb3IgNikNCj4gPj4gKy0gcmVuZXNhcyxyZG1yLXN5bmNkbCAgOiBkZWxheSBzeW5j
-IHNpZ25hbCAoaG9sZCkgaW4gcmVjZWl2ZSBtb2RlDQo+ID4+ICsgICAgICAgICAgICAgICAgICAg
-ICAgKGRlZmF1bHQgaXMgMCwgd2UgY2FuIHNldCBpdCB0byAwLCAxLCAyLCAzLCA1LCBvciA2KQ0K
-PiANCj4gSW4gZ2VuZXJhbCwgaXQncyBmcm93bmVkIHVwb24gdGhlIHNwZWNpZnkgYWN0dWFsIHJl
-Z2lzdGVyIHZhbHVlcyBpbiBEVC4NCj4gU28gSSB0aGluayBpdCdzIGJldHRlciB0byBzcGVjaWZ5
-IHRoZSBkZWxheSB2YWx1ZXMgaW5zdGVhZCBvZiB0aGUNCj4gYml0ZmllbGQgdmFsdWVzLA0KPiBh
-bmQgZHJvcCB0aGUgInRkbXIiIGFuZCAicmRtciIgZnJvbSB0aGUgbmFtZXMuDQoNClRoYW5rIHlv
-dSB2ZXJ5IG11Y2ggZm9yIHlvdXIgY29tbWVudC4NCkkgdW5kZXJzdG9vZCB3ZSBjYW4gdXNlIHNw
-ZWNpZnkgdGhlIGRlbGF5IHZhbHVlcyBpbiBEVC4NCg0KPiBBcyBEVCBzdXBwb3J0cyBpbnRlZ2Vy
-cyBvbmx5LCB0aGF0IHNob3VsZCBiZWNvbWUgYSBmaXhlZCBwb2ludCB2YWx1ZS4NCj4gRS5nLiBk
-ZWxheSBpbiBkZWNpLWNsb2NrcyAoMCwgNSwgMTAsIDE1LCAyMCk/DQo+IE9yIGFzIGEgcGVyY2Vu
-dGFnZSBvZiB0aGUgY2xvY2sgY3ljbGUgKDAsIDUwLCAxMDAsIDE1MCwgMjAwKT8NCg0KSSB3aWxs
-IHVzZSBhIHBlcmNlbnRhZ2Ugb2YgdGhlIGNsb2NrIGN5Y2xlLg0KDQo+IERvIHlvdSByZWFsbHkg
-bmVlZCB0d28gc2V0cyBvZiB2YWx1ZXMsIGZvciBib3RoIHRyYW5zbWl0IGFuZCByZWNlaXZlPw0K
-PiBJLmUuIGRvIHlvdSBuZWVkIGRpZmZlcmVudCB2YWx1ZXMgZm9yIHRyYW5zbWl0IGFuZCByZWNl
-aXZlIGZvciB5b3VyIHVzZSBjYXNlPw0KPiBTUEkgZG9lcyBib3RoIHRyYW5zbWl0IGFuZCByZWNl
-aXZlIHVzaW5nIHRoZSBzYW1lIGNsb2NrIGFuZCBjaGlwIHNlbGVjdC4NCj4gSSBrbm93IHNvbWUg
-TVNJT0YgaW1wbGVtZW50YXRpb25zIGNhbiBoYW5kbGUgYm90aCBpbmRlcGVkZW50bHkuDQoNClNp
-bmNlIE1TSU9GIGNhbiBzZXQgdGhlIGNvbmZpZ3VyYXRpb25zIGluIHRyYW5zbWl0IGFjdHVhbGx5
-LA0KSSB3aWxsIHNldCB0aGUgdmFsdWVzIGZvciB0cmFuc21pdCBtb2RlLg0KDQo+IEFuZCB0byBh
-bnN3ZXIgeW91ciBsYXN0IHF1ZXN0aW9uOiBpZiBzZXZlcmFsIGRyaXZlcnMgbmVlZCB0aGlzLCBp
-dCBtYWtlcyBzZW5zZQ0KPiB0byBtYWtlIHRoaXMgZ2VuZXJhbCwgYW5kIGFkZCBzdXBwb3J0IGlu
-IHRoZSBTUEkgY29yZS4gTWFyaz8NCg0KSSBjaGVja2VkIHRoZSBmaWxlcyBpbiBEb2N1bWVudGF0
-aW9uL2RldmljZXRyZWUvc3BpLywgYW5kIHRoZW4NCkkgZm91bmQgMiBmaWxlcyBhYm91dCBzdWNo
-IGNvbmZpZ3VyYXRpb25zOg0KIC0gZnNsLGNzYmVmIGFuZCBmc2wsY3NhZnQgaW4gZnNsLXNwaS50
-eHQ6DQogIC0gSSBhbHJlYWR5IG1lbnRpb25zIGluIHRoaXMgUkZDIHBhdGNoLg0KDQogLSBzYW1z
-dW5nLHNwaS1kZWVkYmFjay1kZWxheSBpbiBzcGktc2Ftc3VuZy50eHQ6DQogIC0gQnV0IGl0IGlz
-IG9ubHkgYWZmZWN0IHRvIG1pc28gbGluZT8/DQogICAgSSBkb24ndCBrbm93IGFib3V0IHRoZSBk
-ZXRhaWwgb2YgdGhpcyBwYXJhbWV0ZXIuDQoNClNvLCBhbG1vc3QgYWxsIGRyaXZlcnMgZG9lc24n
-dCBoYXZlIHN1Y2ggY29uZmlndXJhdGlvbiBhdCB0aGUgbW9tZW50LCBJIHRoaW5rLg0KDQpCZXN0
-IHJlZ2FyZHMsDQpZb3NoaWhpcm8gU2hpbW9kYQ0KDQo+ID4gV2FzIGl0IHJlYWxseSB0aGUgaW50
-ZW50IG9mIHRoaXMgcGF0Y2ggdG8gYWRkIERUIHByb3BlcnRpZXMgd2l0aG91dCBwcm92aWRpbmcN
-Cj4gPiBhbiBpbXBsZW1lbnRhdGlvbiBpbiB0aGUgc2gtbXNpb2YgZHJpdmVyID8NCj4gDQo+IEdp
-dmVuIHRoZSBzZW50ZW5jZSAiSWYgdGhpcyBwYXRjaCBpcyByZWFzb25hYmxlLCBJIHdpbGwgbW9k
-aWZ5IHRoZSBzaC1tc2lvZg0KPiBkcml2ZXIuIiBpbiB0aGUgaW50cm9kdWN0aW9uLCBJIHRoaW5r
-IHNvLg0KPiANCj4gR3J7b2V0amUsZWV0aW5nfXMsDQo+IA0KPiAgICAgICAgICAgICAgICAgICAg
-ICAgICBHZWVydA0KPiANCj4gLS0NCj4gR2VlcnQgVXl0dGVyaG9ldmVuIC0tIFRoZXJlJ3MgbG90
-cyBvZiBMaW51eCBiZXlvbmQgaWEzMiAtLSBnZWVydEBsaW51eC1tNjhrLm9yZw0KPiANCj4gSW4g
-cGVyc29uYWwgY29udmVyc2F0aW9ucyB3aXRoIHRlY2huaWNhbCBwZW9wbGUsIEkgY2FsbCBteXNl
-bGYgYSBoYWNrZXIuIEJ1dA0KPiB3aGVuIEknbSB0YWxraW5nIHRvIGpvdXJuYWxpc3RzIEkganVz
-dCBzYXkgInByb2dyYW1tZXIiIG9yIHNvbWV0aGluZyBsaWtlIHRoYXQuDQo+ICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgLS0gTGludXMgVG9ydmFsZHMNCj4gLS0NCj4gVG8gdW5zdWJz
-Y3JpYmUgZnJvbSB0aGlzIGxpc3Q6IHNlbmQgdGhlIGxpbmUgInVuc3Vic2NyaWJlIGRldmljZXRy
-ZWUiIGluDQo+IHRoZSBib2R5IG9mIGEgbWVzc2FnZSB0byBtYWpvcmRvbW9Admdlci5rZXJuZWwu
-b3JnDQo+IE1vcmUgbWFqb3Jkb21vIGluZm8gYXQgIGh0dHA6Ly92Z2VyLmtlcm5lbC5vcmcvbWFq
-b3Jkb21vLWluZm8uaHRtbA0K
+From: Hisashi Nakamura <hisashi.nakamura.ak-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+
+SH-MSIOF driver is enabled autosuspend API of spi framework.
+But autosuspend framework doesn't work during initializing.
+So runtime PM lock is added in SH-MSIOF driver initializing.
+
+Signed-off-by: Hisashi Nakamura <hisashi.nakamura.ak-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+Signed-off-by: Yoshihiro Kaneko <ykaneko0929-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+
+This patch is based on the for-next branch of Mark Brown's spi tree.
+
+ drivers/spi/spi-sh-msiof.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 3f36540..1405293 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -480,6 +480,8 @@ static int sh_msiof_spi_setup(struct spi_device *spi)
+ 	struct device_node	*np = spi->master->dev.of_node;
+ 	struct sh_msiof_spi_priv *p = spi_master_get_devdata(spi->master);
+ 
++	pm_runtime_get_sync(&p->pdev->dev);
++
+ 	if (!np) {
+ 		/*
+ 		 * Use spi->controller_data for CS (same strategy as spi_gpio),
+@@ -498,6 +500,9 @@ static int sh_msiof_spi_setup(struct spi_device *spi)
+ 	if (spi->cs_gpio >= 0)
+ 		gpio_set_value(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
+ 
++
++	pm_runtime_put_sync(&p->pdev->dev);
++
+ 	return 0;
+ }
+ 
+-- 
+1.9.1
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

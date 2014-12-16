@@ -1,58 +1,50 @@
-From: Sergei Shtylyov <sergei.shtylyov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH/RFC] spi: sh-msiof: Add runtime PM lock in initializing
-Date: Mon, 15 Dec 2014 21:19:59 +0300
-Message-ID: <548F264F.5000901@cogentembedded.com>
-References: <1418652071-6396-1-git-send-email-ykaneko0929@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
-	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-	linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Yoshihiro Kaneko <ykaneko0929-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1418652071-6396-1-git-send-email-ykaneko0929-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: "Ivan T. Ivanov" <iivanov@mm-sol.com>
+Subject: [PATCH] spi: qup: Add SPI_CPOL configuration support
+Date: Tue, 16 Dec 2014 12:21:55 +0200
+Message-ID: <1418725315-25621-1-git-send-email-iivanov@mm-sol.com>
+Cc: "Ivan T. Ivanov" <iivanov@mm-sol.com>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-arm-msm-owner@vger.kernel.org>
+Sender: linux-arm-msm-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hello.
+Device support SPI_CPOL, but driver have missed to add
+support for this configuration.
 
-On 12/15/2014 05:01 PM, Yoshihiro Kaneko wrote:
+Signed-off-by: Ivan T. Ivanov <iivanov@mm-sol.com>
+---
+ drivers/spi/spi-qup.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-> From: Hisashi Nakamura <hisashi.nakamura.ak-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
-
-> SH-MSIOF driver is enabled autosuspend API of spi framework.
-> But autosuspend framework doesn't work during initializing.
-> So runtime PM lock is added in SH-MSIOF driver initializing.
-
-> Signed-off-by: Hisashi Nakamura <hisashi.nakamura.ak-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
-> Signed-off-by: Yoshihiro Kaneko <ykaneko0929-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> ---
-
-> This patch is based on the for-next branch of Mark Brown's spi tree.
-
->   drivers/spi/spi-sh-msiof.c | 5 +++++
->   1 file changed, 5 insertions(+)
-
-> diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-> index 3f36540..1405293 100644
-> --- a/drivers/spi/spi-sh-msiof.c
-> +++ b/drivers/spi/spi-sh-msiof.c
-[...]
-> @@ -498,6 +500,9 @@ static int sh_msiof_spi_setup(struct spi_device *spi)
->   	if (spi->cs_gpio >= 0)
->   		gpio_set_value(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
->
-> +
-> +	pm_runtime_put_sync(&p->pdev->dev);
-> +
-
-    Do you really need the sync version here?
-
-WBR, Sergei
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
+index 390ed71..1c3329c 100644
+--- a/drivers/spi/spi-qup.c
++++ b/drivers/spi/spi-qup.c
+@@ -337,7 +337,7 @@ static irqreturn_t spi_qup_qup_irq(int irq, void *dev_id)
+ static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer)
+ {
+ 	struct spi_qup *controller = spi_master_get_devdata(spi->master);
+-	u32 config, iomode, mode;
++	u32 config, iomode, mode, control;
+ 	int ret, n_words, w_size;
+ 
+ 	if (spi->mode & SPI_LOOP && xfer->len > controller->in_fifo_sz) {
+@@ -392,6 +392,15 @@ static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer)
+ 
+ 	writel_relaxed(iomode, controller->base + QUP_IO_M_MODES);
+ 
++	control = readl_relaxed(controller->base + SPI_IO_CONTROL);
++
++	if (spi->mode & SPI_CPOL)
++		control |= SPI_IO_C_CLK_IDLE_HIGH;
++	else
++		control &= ~SPI_IO_C_CLK_IDLE_HIGH;
++
++	writel_relaxed(control, controller->base + SPI_IO_CONTROL);
++
+ 	config = readl_relaxed(controller->base + SPI_CONFIG);
+ 
+ 	if (spi->mode & SPI_LOOP)
+-- 
+1.9.1

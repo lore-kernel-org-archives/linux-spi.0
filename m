@@ -1,86 +1,56 @@
-From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Subject: [PATCH 1/4] spi: Replace CONFIG_PM_RUNTIME with CONFIG_PM
-Date: Fri, 19 Dec 2014 02:49:26 +0100
-Message-ID: <6486956.sOFTSHEqBe@vostro.rjw.lan>
-References: <472992175.g1ArEYGFPo@vostro.rjw.lan>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH RFT] spi: dw: Fix off-by-one for checking fifo depth
+Date: Fri, 19 Dec 2014 16:01:39 +0800
+Message-ID: <1418976099.23257.4.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7Bit
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Kevin Hilman <khilman@kernel.org>, linux-spi@vger.kernel.org
-To: Linux PM list <linux-pm@vger.kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <472992175.g1ArEYGFPo@vostro.rjw.lan>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>,
+	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+The fifo depth could be from 2 to 256 from HW spec, so fix off-by-one for
+checking fifo depth.
+Without this patch, fifo is 258 after for loop iteration for the "no-match"
+case. So below line does not catch the "no-match" case.
+        dws->fifo_len = (fifo == 257) ? 0 : fifo;
 
-A couple of new CONFIG_PM_RUNTIME users have been added recently
-in the SPI subsystem.
-
-However, after commit b2b49ccbdd54 (PM: Kconfig: Set PM_RUNTIME if
-PM_SLEEP is selected) PM_RUNTIME is always set if PM is set, so
-#ifdef blocks depending on CONFIG_PM_RUNTIME may now be changed to
-depend on CONFIG_PM.
-
-Replace CONFIG_PM_RUNTIME with CONFIG_PM everywhere under
-drivers/spi/ (again).
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 ---
+Hi,
+I don't have this hardware handy, so please test it.
 
-Please let me know if there are any objections against pushing this through
-the linux-pm tree.
+BTW, I'm wondering if it make sense to set dws->fifo_len to 0.
+Isn't it suppose to be 2 ~ 256?
 
----
- drivers/spi/spi-img-spfi.c    |    4 ++--
- drivers/spi/spi-meson-spifc.c |    4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+Thanks.
+ drivers/spi/spi-dw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Index: linux-pm/drivers/spi/spi-meson-spifc.c
-===================================================================
---- linux-pm.orig/drivers/spi/spi-meson-spifc.c
-+++ linux-pm/drivers/spi/spi-meson-spifc.c
-@@ -413,7 +413,7 @@ static int meson_spifc_resume(struct dev
- }
- #endif /* CONFIG_PM_SLEEP */
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index d0d5542..74b27479 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -621,7 +621,7 @@ static void spi_hw_init(struct dw_spi *dws)
+ 	if (!dws->fifo_len) {
+ 		u32 fifo;
  
--#ifdef CONFIG_PM_RUNTIME
-+#ifdef CONFIG_PM
- static int meson_spifc_runtime_suspend(struct device *dev)
- {
- 	struct spi_master *master = dev_get_drvdata(dev);
-@@ -431,7 +431,7 @@ static int meson_spifc_runtime_resume(st
- 
- 	return clk_prepare_enable(spifc->clk);
- }
--#endif /* CONFIG_PM_RUNTIME */
-+#endif /* CONFIG_PM */
- 
- static const struct dev_pm_ops meson_spifc_pm_ops = {
- 	SET_SYSTEM_SLEEP_PM_OPS(meson_spifc_suspend, meson_spifc_resume)
-Index: linux-pm/drivers/spi/spi-img-spfi.c
-===================================================================
---- linux-pm.orig/drivers/spi/spi-img-spfi.c
-+++ linux-pm/drivers/spi/spi-img-spfi.c
-@@ -663,7 +663,7 @@ static int img_spfi_remove(struct platfo
- 	return 0;
- }
- 
--#ifdef CONFIG_PM_RUNTIME
-+#ifdef CONFIG_PM
- static int img_spfi_runtime_suspend(struct device *dev)
- {
- 	struct spi_master *master = dev_get_drvdata(dev);
-@@ -692,7 +692,7 @@ static int img_spfi_runtime_resume(struc
- 
- 	return 0;
- }
--#endif /* CONFIG_PM_RUNTIME */
-+#endif /* CONFIG_PM */
- 
- #ifdef CONFIG_PM_SLEEP
- static int img_spfi_suspend(struct device *dev)
+-		for (fifo = 2; fifo <= 257; fifo++) {
++		for (fifo = 2; fifo <= 256; fifo++) {
+ 			dw_writew(dws, DW_SPI_TXFLTR, fifo);
+ 			if (fifo != dw_readw(dws, DW_SPI_TXFLTR))
+ 				break;
+-- 
+1.9.1
+
+
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

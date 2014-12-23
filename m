@@ -1,113 +1,76 @@
-From: Mirza Krak <mirza.krak-3xdUHytR7SMQwY+2splSUA@public.gmane.org>
-Subject: Re: [PATCH 1/1] spi: fsl-dspi: Fixes warning due to devm_kzalloc on
- unbound device
-Date: Tue, 23 Dec 2014 09:57:03 +0100
-Message-ID: <20141223095703.4221b9a1@mirza-hm>
-References: <1417723755-5372-1-git-send-email-mirza.krak@hostmobility.com>
+From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [PATCH] spi/pxa2xx: Clear cur_chip pointer before starting next
+ message
+Date: Tue, 23 Dec 2014 15:49:17 +0200
+Message-ID: <20141223134917.GI1314@lahna.fi.intel.com>
+References: <1417425166-150374-1-git-send-email-mika.westerberg@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+	Martin Oldfield <m@mjoldfield.com>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1417723755-5372-1-git-send-email-mirza.krak-3xdUHytR7SMQwY+2splSUA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1417425166-150374-1-git-send-email-mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi!
-
-Any feedback on this?
-
-Best Regards / Mirza
-
-On Thu,  4 Dec 2014 21:09:15 +0100
-Mirza Krak <mirza.krak-3xdUHytR7SMQwY+2splSUA@public.gmane.org> wrote:
-
-> ------------[ cut here ]------------
-> WARNING: at drivers/base/dd.c:286 driver_probe_device+0x1b4/0x22c()
-> Modules linked in:
-> Backtrace:
-> [<80011644>] (dump_backtrace) from [<800117e0>] (show_stack+0x18/0x1c)
-> r6:0000011e r5:00000009 r4:00000000 r3:00000000
-> [<800117c8>] (show_stack) from [<805961e8>] (dump_stack+0x20/0x28)
-> [<805961c8>] (dump_stack) from [<80020e48>]
-> (warn_slowpath_common+0x6c/0x8c)
-> [<80020ddc>] (warn_slowpath_common) from [<80020e8c>]
-> (warn_slowpath_null+0x24/0x2c) r8:00000006 r7:7f005b94 r6:8ea1ae34
-> r5:8ea1ae00 r4:80837290
-> [<80020e68>] (warn_slowpath_null) from [<802d9078>]
-> (driver_probe_device+0x1b4/0x22c)
-> [<802d8ec4>] (driver_probe_device) from [<802d9184>]
-> (__driver_attach+0x94/0x98) r8:7f00b000 r7:00000000 r6:8ea1ae34
-> r5:7f005b94 r4:8ea1ae00 r3:00000000
-> [<802d90f0>] (__driver_attach) from [<802d778c>]
-> (bus_for_each_dev+0x5c/0x90) r6:802d90f0 r5:7f005b94 r4:00000000
-> r3:8ea120bc
-> [<802d7730>] (bus_for_each_dev) from [<802d8acc>]
-> (driver_attach+0x24/0x28) r6:807c8428 r5:8e335e80 r4:7f005b94
-> [<802d8aa8>] (driver_attach) from [<802d874c>]
-> (bus_add_driver+0xdc/0x1d8)
-> [<802d8670>] (bus_add_driver) from [<802d9814>]
-> (driver_register+0x80/0xfc) r7:8e307d00 r6:8e307e00 r5:807a93d8
-> r4:7f005b94
-> [<802d9794>] (driver_register) from [<8034f410>]
-> (spi_register_driver+0x4c/0x60) r5:807a93d8 r4:807a93d8
-> [<8034f3c4>] (spi_register_driver) from [<7f00b01c>]
-> (mx4_io_init+0x1c/0x28 [spi_pic])
-> [<7f00b000>] (mx4_io_init [spi_pic]) from [<8000874c>]
-> (do_one_initcall+0x88/0x1cc)
-> [<800086c4>] (do_one_initcall) from [<800638ac>]
-> (load_module+0x1634/0x1d10) r10:800611c0 r9:7f006174 r8:00000001
-> r7:8e307d00 r6:00000001 r5:7f006180 r4:8e12bf48
-> [<80062278>] (load_module) from [<80064068>]
-> (SyS_init_module+0xe0/0xf4) r10:00000000 r9:8e12a000 r8:8000e9e4
-> r7:00000080 r6:00884008 r5:00884018 r4:0000cb5d
-> [<80063f88>] (SyS_init_module) from [<8000e840>]
-> (ret_fast_syscall+0x0/0x30) r6:7eee4e53 r5:7eee4e53 r4:0000cb5d
-> ---[ end trace 9c516d4cef36cef3 ]---
+On Mon, Dec 01, 2014 at 11:12:46AM +0200, Mika Westerberg wrote:
+> Once the current message is finished, the driver notifies SPI core about
+> this by calling spi_finalize_current_message(). This function queues next
+> message to be transferred. If there are more messages in the queue, it is
+> possible that the driver is asked to transfer the next message at this
+> point.
 > 
-> Inspired by: 10aa5a35e34f ("SPI: fix over-eager devm_xxx()
-> conversion")
+> When spi_finalize_current_message() returns the driver clears the
+> drv_data->cur_chip pointer to NULL. The problem is that if the driver
+> already started the next message clearing drv_data->cur_chip will cause
+> NULL pointer dereference which crashes the kernel like:
 > 
-> Signed-off-by: Mirza Krak <mirza.krak-3xdUHytR7SMQwY+2splSUA@public.gmane.org>
-> ---
->  drivers/spi/spi-fsl-dspi.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
+>  BUG: unable to handle kernel NULL pointer dereference at 0000000000000048
+>  IP: [<ffffffffa0022bc8>] cs_deassert+0x18/0x70 [spi_pxa2xx_platform]
+>  PGD 78bb8067 PUD 37712067 PMD 0
+>  Oops: 0000 [#1] SMP
+>  Modules linked in:
+>  CPU: 1 PID: 11 Comm: ksoftirqd/1 Tainted: G           O   3.18.0-rc4-mjo #5
+>  Hardware name: Intel Corp. VALLEYVIEW B3 PLATFORM/NOTEBOOK, BIOS MNW2CRB1.X64.0071.R30.1408131301 08/13/2014
+>  task: ffff880077f9f290 ti: ffff88007a820000 task.ti: ffff88007a820000
+>  RIP: 0010:[<ffffffffa0022bc8>]  [<ffffffffa0022bc8>] cs_deassert+0x18/0x70 [spi_pxa2xx_platform]
+>  RSP: 0018:ffff88007a823d08  EFLAGS: 00010202
+>  RAX: 0000000000000008 RBX: ffff8800379a4430 RCX: 0000000000000026
+>  RDX: 0000000000000000 RSI: 0000000000000246 RDI: ffff8800379a4430
+>  RBP: ffff88007a823d18 R08: 00000000ffffffff R09: 000000007a9bc65a
+>  R10: 000000000000028f R11: 0000000000000005 R12: ffff880070123e98
+>  R13: ffff880070123de8 R14: 0000000000000100 R15: ffffc90004888000
+>  FS:  0000000000000000(0000) GS:ffff880079a80000(0000) knlGS:0000000000000000
+>  CS:  0010 DS: 0000 ES: 0000 CR0: 000000008005003b
+>  CR2: 0000000000000048 CR3: 000000007029b000 CR4: 00000000001007e0
+>  Stack:
+>   ffff88007a823d58 ffff8800379a4430 ffff88007a823d48 ffffffffa0022c89
+>   0000000000000000 ffff8800379a4430 0000000000000000 0000000000000006
+>   ffff88007a823da8 ffffffffa0023be0 ffff88007a823dd8 ffffffff81076204
+>  Call Trace:
+>   [<ffffffffa0022c89>] giveback+0x69/0xa0 [spi_pxa2xx_platform]
+>   [<ffffffffa0023be0>] pump_transfers+0x710/0x740 [spi_pxa2xx_platform]
+>   [<ffffffff81076204>] ? pick_next_task_fair+0x744/0x830
+>   [<ffffffff81049679>] tasklet_action+0xa9/0xe0
+>   [<ffffffff81049a0e>] __do_softirq+0xee/0x280
+>   [<ffffffff81049bc0>] run_ksoftirqd+0x20/0x40
+>   [<ffffffff810646df>] smpboot_thread_fn+0xff/0x1b0
+>   [<ffffffff810645e0>] ? SyS_setgroups+0x150/0x150
+>   [<ffffffff81060f9d>] kthread+0xcd/0xf0
+>   [<ffffffff81060ed0>] ? kthread_create_on_node+0x180/0x180
+>   [<ffffffff8187a82c>] ret_from_fork+0x7c/0xb0
 > 
-> diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-> index 831ceb4..78509d6 100644
-> --- a/drivers/spi/spi-fsl-dspi.c
-> +++ b/drivers/spi/spi-fsl-dspi.c
-> @@ -342,7 +342,7 @@ static int dspi_setup_transfer(struct spi_device
-> *spi, struct spi_transfer *t) /* Only alloc on first setup */
->  	chip = spi_get_ctldata(spi);
->  	if (chip == NULL) {
-> -		chip = devm_kzalloc(&spi->dev, sizeof(struct
-> chip_data),
-> +		chip = kzalloc(sizeof(struct chip_data), GFP_KERNEL);
->  				    GFP_KERNEL);
->  		if (!chip)
->  			return -ENOMEM;
-> @@ -382,6 +382,11 @@ static int dspi_setup(struct spi_device *spi)
->  	return dspi_setup_transfer(spi, NULL);
->  }
->  
-> +static void dspi_cleanup(struct spi_device *spi)
-> +{
-> +	spi_bitbang_cleanup(spi);
-> +}
-> +
->  static irqreturn_t dspi_interrupt(int irq, void *dev_id)
->  {
->  	struct fsl_dspi *dspi = (struct fsl_dspi *)dev_id;
-> @@ -465,6 +470,7 @@ static int dspi_probe(struct platform_device
-> *pdev) dspi->bitbang.setup_transfer = dspi_setup_transfer;
->  	dspi->bitbang.txrx_bufs = dspi_txrx_transfer;
->  	dspi->bitbang.master->setup = dspi_setup;
-> +	dspi->bitbang.master->cleanup = dspi_cleanup;
->  	dspi->bitbang.master->dev.of_node = pdev->dev.of_node;
->  
->  	master->mode_bits = SPI_CPOL | SPI_CPHA;
+> Fix this by clearing drv_data->cur_chip before we call spi_finalize_current_message().
+> 
+> Reported-by: Martin Oldfield <m@mjoldfield.com>
+> Signed-off-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 
+Mark, any comments on this?
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

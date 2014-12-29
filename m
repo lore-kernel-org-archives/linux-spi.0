@@ -1,59 +1,90 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2] spi: sh-msiof: Configure MSIOF sync signal timing in
- device tree
-Date: Wed, 24 Dec 2014 12:31:28 +0000
-Message-ID: <20141224123128.GX17800@sirena.org.uk>
-References: <5493DEB9.1080906@renesas.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="YIbTR3mqhHpBjtK1"
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-	damm-yzvPICuk2ACczHhG9Qg4qA@public.gmane.org,
-	Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"pawel.moll-5wv7dgnIgG8@public.gmane.org" <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	"mark.rutland-5wv7dgnIgG8@public.gmane.org" <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	"ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org" <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	"galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org" <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Yoshihiro Shimoda <yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH RESEND] spi/pxa2xx: Clear cur_chip pointer before starting next message
+Date: Mon, 29 Dec 2014 10:33:36 +0200
+Message-ID: <1419842016-208334-1-git-send-email-mika.westerberg@linux.intel.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+	Martin Oldfield <m@mjoldfield.com>,
+	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <5493DEB9.1080906-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Once the current message is finished, the driver notifies SPI core about
+this by calling spi_finalize_current_message(). This function queues next
+message to be transferred. If there are more messages in the queue, it is
+possible that the driver is asked to transfer the next message at this
+point.
 
---YIbTR3mqhHpBjtK1
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+When spi_finalize_current_message() returns the driver clears the
+drv_data->cur_chip pointer to NULL. The problem is that if the driver
+already started the next message clearing drv_data->cur_chip will cause
+NULL pointer dereference which crashes the kernel like:
 
-On Fri, Dec 19, 2014 at 05:15:53PM +0900, Yoshihiro Shimoda wrote:
-> The MSIOF controller has DTDL and SYNCDL in SITMDR1 register. So,
-> this patch adds new properties like the following commit:
->   d0fb47a5237d8b9576113568bacfd27892308b62
->   (spi: fsl-espi: Configure FSL eSPI CSBEF and CSAFT)
+ BUG: unable to handle kernel NULL pointer dereference at 0000000000000048
+ IP: [<ffffffffa0022bc8>] cs_deassert+0x18/0x70 [spi_pxa2xx_platform]
+ PGD 78bb8067 PUD 37712067 PMD 0
+ Oops: 0000 [#1] SMP
+ Modules linked in:
+ CPU: 1 PID: 11 Comm: ksoftirqd/1 Tainted: G           O   3.18.0-rc4-mjo #5
+ Hardware name: Intel Corp. VALLEYVIEW B3 PLATFORM/NOTEBOOK, BIOS MNW2CRB1.X64.0071.R30.1408131301 08/13/2014
+ task: ffff880077f9f290 ti: ffff88007a820000 task.ti: ffff88007a820000
+ RIP: 0010:[<ffffffffa0022bc8>]  [<ffffffffa0022bc8>] cs_deassert+0x18/0x70 [spi_pxa2xx_platform]
+ RSP: 0018:ffff88007a823d08  EFLAGS: 00010202
+ RAX: 0000000000000008 RBX: ffff8800379a4430 RCX: 0000000000000026
+ RDX: 0000000000000000 RSI: 0000000000000246 RDI: ffff8800379a4430
+ RBP: ffff88007a823d18 R08: 00000000ffffffff R09: 000000007a9bc65a
+ R10: 000000000000028f R11: 0000000000000005 R12: ffff880070123e98
+ R13: ffff880070123de8 R14: 0000000000000100 R15: ffffc90004888000
+ FS:  0000000000000000(0000) GS:ffff880079a80000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 000000008005003b
+ CR2: 0000000000000048 CR3: 000000007029b000 CR4: 00000000001007e0
+ Stack:
+  ffff88007a823d58 ffff8800379a4430 ffff88007a823d48 ffffffffa0022c89
+  0000000000000000 ffff8800379a4430 0000000000000000 0000000000000006
+  ffff88007a823da8 ffffffffa0023be0 ffff88007a823dd8 ffffffff81076204
+ Call Trace:
+  [<ffffffffa0022c89>] giveback+0x69/0xa0 [spi_pxa2xx_platform]
+  [<ffffffffa0023be0>] pump_transfers+0x710/0x740 [spi_pxa2xx_platform]
+  [<ffffffff81076204>] ? pick_next_task_fair+0x744/0x830
+  [<ffffffff81049679>] tasklet_action+0xa9/0xe0
+  [<ffffffff81049a0e>] __do_softirq+0xee/0x280
+  [<ffffffff81049bc0>] run_ksoftirqd+0x20/0x40
+  [<ffffffff810646df>] smpboot_thread_fn+0xff/0x1b0
+  [<ffffffff810645e0>] ? SyS_setgroups+0x150/0x150
+  [<ffffffff81060f9d>] kthread+0xcd/0xf0
+  [<ffffffff81060ed0>] ? kthread_create_on_node+0x180/0x180
+  [<ffffffff8187a82c>] ret_from_fork+0x7c/0xb0
 
-Applied, thanks.
+Fix this by clearing drv_data->cur_chip before we call spi_finalize_current_message().
 
---YIbTR3mqhHpBjtK1
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Reported-by: Martin Oldfield <m@mjoldfield.com>
+Signed-off-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Acked-by: Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>
+---
+ drivers/spi/spi-pxa2xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 05c623cfb078..23822e7df6c1 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -546,8 +546,8 @@ static void giveback(struct driver_data *drv_data)
+ 			cs_deassert(drv_data);
+ 	}
+ 
+-	spi_finalize_current_message(drv_data->master);
+ 	drv_data->cur_chip = NULL;
++	spi_finalize_current_message(drv_data->master);
+ }
+ 
+ static void reset_sccr1(struct driver_data *drv_data)
+-- 
+2.1.3
 
-iQEcBAEBAgAGBQJUmrIfAAoJECTWi3JdVIfQCK0H/jn56k1JgpRke5m++TfJAtz1
-fS1r8ODeIfaa3pr7AgZRV96VGTi/g+4UFGCCLu+IYyaj3jxW9TImIzBdlc2SJXRC
-lrLycvxAJN85mZdZnsdFvLUWmdJfqVSKG7nuZaFJvl82t+MjAh38XPivF1hWBeBZ
-gDyNRs9p9UJfQQ7rVJ6OJvNCs3m7vZ6FXx9oqWW1MfJ4DoU9AqGxygGOk8Sbjuwr
-3J6Qn8fmmCUcZjqCqWmyoVaufbGQSaVkp1Vp4d1lhlZ/1dzqvV5hK0j642npKi+M
-ti8kyL2gk6S8UQkTyXhNGOHXMWqj8nC8h/AA64gwdzRz5c4R5nthfY26l785nLo=
-=K/R7
------END PGP SIGNATURE-----
-
---YIbTR3mqhHpBjtK1--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

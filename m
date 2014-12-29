@@ -1,48 +1,72 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: qup: Add SPI_CPOL configuration support
-Date: Mon, 29 Dec 2014 17:14:33 +0000
-Message-ID: <20141229171433.GD17800@sirena.org.uk>
-References: <1418725315-25621-1-git-send-email-iivanov@mm-sol.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="FBzHcVv9FDoUuQV5"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
+From: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: spi-imx: Do not store the irq number in the private structure
+Date: Mon, 29 Dec 2014 19:38:51 -0200
+Message-ID: <1419889131-15472-1-git-send-email-festevam@gmail.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1418725315-25621-1-git-send-email-iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+From: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 
---FBzHcVv9FDoUuQV5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The irq number is only used inside the probe function, so there is really no
+need to store it in the private structure.
 
-On Tue, Dec 16, 2014 at 12:21:55PM +0200, Ivan T. Ivanov wrote:
-> Device support SPI_CPOL, but driver have missed to add
-> support for this configuration.
+Use a local 'irq' variable to hold the the irq number instead.
 
-Applied, thanks.
+Signed-off-by: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+---
+ drivers/spi/spi-imx.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
---FBzHcVv9FDoUuQV5
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 961b97d..6a2ff75 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -89,7 +89,6 @@ struct spi_imx_data {
+ 
+ 	struct completion xfer_done;
+ 	void __iomem *base;
+-	int irq;
+ 	struct clk *clk_per;
+ 	struct clk *clk_ipg;
+ 	unsigned long spi_clk;
+@@ -1076,7 +1075,7 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 	struct spi_master *master;
+ 	struct spi_imx_data *spi_imx;
+ 	struct resource *res;
+-	int i, ret, num_cs;
++	int i, ret, num_cs, irq;
+ 
+ 	if (!np && !mxc_platform_info) {
+ 		dev_err(&pdev->dev, "can't get the platform data\n");
+@@ -1143,16 +1142,16 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 		goto out_master_put;
+ 	}
+ 
+-	spi_imx->irq = platform_get_irq(pdev, 0);
+-	if (spi_imx->irq < 0) {
+-		ret = spi_imx->irq;
++	irq = platform_get_irq(pdev, 0);
++	if (irq < 0) {
++		ret = irq;
+ 		goto out_master_put;
+ 	}
+ 
+-	ret = devm_request_irq(&pdev->dev, spi_imx->irq, spi_imx_isr, 0,
++	ret = devm_request_irq(&pdev->dev, irq, spi_imx_isr, 0,
+ 			       dev_name(&pdev->dev), spi_imx);
+ 	if (ret) {
+-		dev_err(&pdev->dev, "can't get irq%d: %d\n", spi_imx->irq, ret);
++		dev_err(&pdev->dev, "can't get irq%d: %d\n", irq, ret);
+ 		goto out_master_put;
+ 	}
+ 
+-- 
+1.9.1
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBAgAGBQJUoYv5AAoJECTWi3JdVIfQBToH/3LpACz0ln+PYeIQxc034Yqd
-34llPbVHgwvdw12E5V32s+M+LwlSO9zMccEY/b11MM39ceEHoZlUi5nUqD19Pz/f
-JmBCc62KLbQ0+Qtal1BFmuKSknMWbw9ewBdvdRh6sdnMfE6n7rHUxEKnsds4X63E
-9jPPUu4apOYFVqM2c4IReuyzJrDwEADcKnYTvjy/aPtz+UmdE9s8yRqYbb8NPh2t
-LDeU2mM/UVVjctHM/INBQj1fEfeWKqW6Hhq8CDgt7bvbaBthMirDWuGvUCGRbJip
-xzZD0TYPAYO/7KAwSG+1DkRo2ppvfmeZARlwlZ+wmxqf/TlQ1CfZwPGhbqefah8=
-=B2x2
------END PGP SIGNATURE-----
-
---FBzHcVv9FDoUuQV5--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

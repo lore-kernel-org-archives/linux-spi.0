@@ -1,43 +1,55 @@
-From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH] spi/spidev: Convert to use unified device property API
-Date: Mon, 29 Dec 2014 11:41:14 +0200
-Message-ID: <1419846074-240217-1-git-send-email-mika.westerberg@linux.intel.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH] spi/dln2: Fix for PM_RUNTIME removal
+Date: Mon, 29 Dec 2014 16:03:40 +0100
+Message-ID: <CAMuHMdUeD4dFAxCgK8JO9MS_BCruCJk4AZ29Qr77XpfcgVpnRg@mail.gmail.com>
+References: <1419294557-10632-1-git-send-email-broonie@kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: Laurentiu Palcu <laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1419294557-10632-1-git-send-email-broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-This will allow the driver to match using DT compatible property if the
-device has ACPI _HID of "PRP0001" and accompanying "compatible" property
-listed in _DSD.
+Hi Mark,
 
-Signed-off-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
----
- drivers/spi/spidev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Tue, Dec 23, 2014 at 1:29 AM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+> ---
+>  drivers/spi/spi-dln2.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/spi/spi-dln2.c b/drivers/spi/spi-dln2.c
+> index 7b35454..cede063 100644
+> --- a/drivers/spi/spi-dln2.c
+> +++ b/drivers/spi/spi-dln2.c
+> @@ -850,7 +850,7 @@ static int dln2_spi_resume(struct device *dev)
+>  }
+>  #endif /* CONFIG_PM_SLEEP */
+>
+> -#ifdef CONFIG_PM_RUNTIME
+> +#ifdef CONFIG_PM
+>  static int dln2_spi_runtime_suspend(struct device *dev)
+>  {
+>         struct spi_master *master = dev_get_drvdata(dev);
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 6941e04afb8c..f4742fad4307 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -700,7 +700,7 @@ static struct spi_driver spidev_spi_driver = {
- 	.driver = {
- 		.name =		"spidev",
- 		.owner =	THIS_MODULE,
--		.of_match_table = of_match_ptr(spidev_dt_ids),
-+		.of_match_table = spidev_dt_ids,
- 	},
- 	.probe =	spidev_probe,
- 	.remove =	spidev_remove,
--- 
-2.1.3
+You forgot to update the comment for the corresponding #endif a few
+lines below:
 
+        #endif /* CONFIG_PM_RUNTIME */
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

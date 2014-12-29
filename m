@@ -1,55 +1,56 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH] spi/dln2: Fix for PM_RUNTIME removal
-Date: Mon, 29 Dec 2014 16:03:40 +0100
-Message-ID: <CAMuHMdUeD4dFAxCgK8JO9MS_BCruCJk4AZ29Qr77XpfcgVpnRg@mail.gmail.com>
-References: <1419294557-10632-1-git-send-email-broonie@kernel.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi/spidev: Convert to use unified device property API
+Date: Mon, 29 Dec 2014 16:03:16 +0000
+Message-ID: <20141229160316.GO17800@sirena.org.uk>
+References: <1419846074-240217-1-git-send-email-mika.westerberg@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Laurentiu Palcu <laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="E0e4ihfNxLmjeTLW"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1419294557-10632-1-git-send-email-broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1419846074-240217-1-git-send-email-mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Mark,
 
-On Tue, Dec 23, 2014 at 1:29 AM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> ---
->  drivers/spi/spi-dln2.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/spi/spi-dln2.c b/drivers/spi/spi-dln2.c
-> index 7b35454..cede063 100644
-> --- a/drivers/spi/spi-dln2.c
-> +++ b/drivers/spi/spi-dln2.c
-> @@ -850,7 +850,7 @@ static int dln2_spi_resume(struct device *dev)
->  }
->  #endif /* CONFIG_PM_SLEEP */
->
-> -#ifdef CONFIG_PM_RUNTIME
-> +#ifdef CONFIG_PM
->  static int dln2_spi_runtime_suspend(struct device *dev)
->  {
->         struct spi_master *master = dev_get_drvdata(dev);
+--E0e4ihfNxLmjeTLW
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-You forgot to update the comment for the corresponding #endif a few
-lines below:
+On Mon, Dec 29, 2014 at 11:41:14AM +0200, Mika Westerberg wrote:
+> This will allow the driver to match using DT compatible property if the
+> device has ACPI _HID of "PRP0001" and accompanying "compatible" property
+> listed in _DSD.
 
-        #endif /* CONFIG_PM_RUNTIME */
+Which nobody should be doing since it's already totally broken for
+something to be using this on the DT side except in the one case of the
+Rohm device which is listed there.  I don't want to merge anything which
+allows the breakage we're seeing with people putting spidev in their DTs
+to be propagated into ACPI, at most we should have something that
+specifically identifies individual devices only.
 
-Gr{oetje,eeting}s,
+--E0e4ihfNxLmjeTLW
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-                        Geert
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+iQEcBAEBAgAGBQJUoXtEAAoJECTWi3JdVIfQtFQH/RWVQu+hAR8vPuKzMwIcllNK
+BmlpZlqV2mxJQ7hyt8DOQuYp7J5Edw9XexIQefE5b/dEiAZiuOPOv3J+m0MQM2+h
+mY/m9o1aZzJ+aLIlNoSQhp9cTDX9DZnX9mohENaUZgpvGkAjvVqEDdUs/gwDlD5a
+dlPVzxMHI/o8VeW+0caSxhRK/ZaFsRdyxqElb/LmP8njtNzAvM7R9Ntar3MJ6wCN
+18P/INpQtsNxPHvAanc45pLn0oGI6EUxRrxxwGJkO33oHeuGkYbX667hm2xkQIdE
+5t68HlDb5iKS3jU8ivktixpoRRmOYHjwjUBBBhMQgn0pALn9o0W94SZOXHnchmg=
+=JGH5
+-----END PGP SIGNATURE-----
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+--E0e4ihfNxLmjeTLW--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

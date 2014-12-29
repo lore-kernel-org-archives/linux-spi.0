@@ -1,72 +1,48 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [GIT PULL] spi fixes for v3.19
-Date: Mon, 29 Dec 2014 16:22:34 +0000
-Message-ID: <20141229162234.GX17800@sirena.org.uk>
+Subject: Re: [PATCH] spi: qup: Add SPI_CPOL configuration support
+Date: Mon, 29 Dec 2014 17:14:33 +0000
+Message-ID: <20141229171433.GD17800@sirena.org.uk>
+References: <1418725315-25621-1-git-send-email-iivanov@mm-sol.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="PeEtTtIyPIoxp38l"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="FBzHcVv9FDoUuQV5"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
+In-Reply-To: <1418725315-25621-1-git-send-email-iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---PeEtTtIyPIoxp38l
+--FBzHcVv9FDoUuQV5
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-The following changes since commit 97bf6af1f928216fd6c5a66e8a57bfa95a659672:
+On Tue, Dec 16, 2014 at 12:21:55PM +0200, Ivan T. Ivanov wrote:
+> Device support SPI_CPOL, but driver have missed to add
+> support for this configuration.
 
-  Linux 3.19-rc1 (2014-12-20 17:08:50 -0800)
+Applied, thanks.
 
-are available in the git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-v3.19-rc2
-
-for you to fetch changes up to ee4629f5b2f3dda7c83fa816068a67073abb55d9:
-
-  Merge remote-tracking branches 'spi/fix/img-spfi' and 'spi/fix/msiof' into spi-linus (2014-12-24 12:57:54 +0000)
-
-----------------------------------------------------------------
-spi: Fixes for v3.19
-
-A few driver specific fixes here, the DMA burst size increase in the
-spfi driver is a fix to make the hardware happier in some situations.
-
-----------------------------------------------------------------
-Andrew Bresticker (2):
-      spi: img-spfi: Enable controller before starting TX DMA
-      spi: img-spfi: Increase DMA burst size
-
-Hisashi Nakamura (1):
-      spi: sh-msiof: Add runtime PM lock in initializing
-
-Mark Brown (1):
-      Merge remote-tracking branches 'spi/fix/img-spfi' and 'spi/fix/msiof' into spi-linus
-
- drivers/spi/spi-img-spfi.c | 8 ++++----
- drivers/spi/spi-sh-msiof.c | 5 +++++
- 2 files changed, 9 insertions(+), 4 deletions(-)
-
---PeEtTtIyPIoxp38l
+--FBzHcVv9FDoUuQV5
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBAgAGBQJUoX/KAAoJECTWi3JdVIfQEQgH/3GzO1IF5/oSw5YNywyIcu7w
-sAyUVp6d6pkfJi4313dNVzXpdTKwJsanBK837NX2W8aYJjGseTtRzIkhFpYejy8T
-cTLTrEbInlLi+r/pwuoupPJ/Xvfr1Xss1gi0Lx3yfaYqOgMs8r0o3aNe0cW6lJyq
-/X0hVGrJSnQjxpj5JKhv2AQfgKsLdv8Cp7kGVhM+HWcR9NSSniPkg5as/dKkRzcP
-7ODzIGq59eOOyTEIutc0PpVusWqGh9Ba9fI3F8onT3QOMxLlK9wUaL4dQHTi5Z39
-RN/r15K3gR0B1xk6kw+Av7f8BhNLOqJ56kpOVH6iS57t6FEs1VphKmJvDFgHDXI=
-=Pv9i
+iQEcBAEBAgAGBQJUoYv5AAoJECTWi3JdVIfQBToH/3LpACz0ln+PYeIQxc034Yqd
+34llPbVHgwvdw12E5V32s+M+LwlSO9zMccEY/b11MM39ceEHoZlUi5nUqD19Pz/f
+JmBCc62KLbQ0+Qtal1BFmuKSknMWbw9ewBdvdRh6sdnMfE6n7rHUxEKnsds4X63E
+9jPPUu4apOYFVqM2c4IReuyzJrDwEADcKnYTvjy/aPtz+UmdE9s8yRqYbb8NPh2t
+LDeU2mM/UVVjctHM/INBQj1fEfeWKqW6Hhq8CDgt7bvbaBthMirDWuGvUCGRbJip
+xzZD0TYPAYO/7KAwSG+1DkRo2ppvfmeZARlwlZ+wmxqf/TlQ1CfZwPGhbqefah8=
+=B2x2
 -----END PGP SIGNATURE-----
 
---PeEtTtIyPIoxp38l--
+--FBzHcVv9FDoUuQV5--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

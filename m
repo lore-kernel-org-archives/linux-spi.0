@@ -1,59 +1,39 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH] spi: dw: Fix detecting FIFO depth
-Date: Mon, 05 Jan 2015 09:32:56 +0800
-Message-ID: <1420421576.6968.1.camel@phoenix>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>,
-	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: sirf: drop redundant sirf,marco-spi compatible string
+Date: Sat,  3 Jan 2015 17:04:44 +0800
+Message-ID: <1420275884-10942-1-git-send-email-21cnbao@gmail.com>
+Cc: workgroup.linux-kQvG35nSl+M@public.gmane.org, Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Current code tries to find the highest valid fifo depth by checking the value
-it wrote to DW_SPI_TXFLTR. There are a few problems in current code:
-1) There is an off-by-one in dws->fifo_len setting because it assumes the latest
-   register write fails so the latest valid value should be fifo - 1.
-2) We know the depth could be from 2 to 256 from HW spec, so it is not necessary
-   to test fifo == 257. In the case fifo is 257, it means the latest valid
-   setting is fifo = 256. So after the for loop iteration, we should check
-   fifo == 2 case instead of fifo == 257 if detecting the FIFO depth fails.
-This patch fixes above issues.
+From: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
 
-Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Reviewed-and-tested-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+"sirf,marco-spi" is redundant as all SPI controllers in CSR SiRFSoC are
+compatible with prima2-spi.
+at the same time, the whole marco project was dropped and its replacement
+atlas7 is also compatible with prima2 in SPI.
+
+Signed-off-by: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
 ---
- drivers/spi/spi-dw.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-sirf.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index d0d5542..1a0f266 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -621,13 +621,13 @@ static void spi_hw_init(struct dw_spi *dws)
- 	if (!dws->fifo_len) {
- 		u32 fifo;
+diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
+index d075191..f5715c9 100644
+--- a/drivers/spi/spi-sirf.c
++++ b/drivers/spi/spi-sirf.c
+@@ -818,7 +818,6 @@ static SIMPLE_DEV_PM_OPS(spi_sirfsoc_pm_ops, spi_sirfsoc_suspend,
  
--		for (fifo = 2; fifo <= 257; fifo++) {
-+		for (fifo = 2; fifo <= 256; fifo++) {
- 			dw_writew(dws, DW_SPI_TXFLTR, fifo);
- 			if (fifo != dw_readw(dws, DW_SPI_TXFLTR))
- 				break;
- 		}
- 
--		dws->fifo_len = (fifo == 257) ? 0 : fifo;
-+		dws->fifo_len = (fifo == 2) ? 0 : fifo - 1;
- 		dw_writew(dws, DW_SPI_TXFLTR, 0);
- 	}
- }
+ static const struct of_device_id spi_sirfsoc_of_match[] = {
+ 	{ .compatible = "sirf,prima2-spi", },
+-	{ .compatible = "sirf,marco-spi", },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, spi_sirfsoc_of_match);
 -- 
-1.9.1
-
-
+2.2.1
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

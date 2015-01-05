@@ -1,48 +1,47 @@
-From: Joe Perches <joe-6d6DIl74uiNBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: [PATCH 3/3] spi:spi-gpio: fixed space coding styple issue
-Date: Mon, 05 Jan 2015 05:38:53 -0800
-Message-ID: <1420465133.2652.12.camel@perches.com>
-References: <1420459263-2190-1-git-send-email-nizamhaider786@gmail.com>
-	 <1420461363.2652.6.camel@perches.com>
-	 <20150105133014.GP11764@sirena.org.uk>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: st-ssc4: Remove duplicate code to test unsupported
+ mode bits
+Date: Mon, 05 Jan 2015 22:49:36 +0800
+Message-ID: <1420469376.6880.1.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Cc: nizamhaider786-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150105133014.GP11764-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, 2015-01-05 at 13:30 +0000, Mark Brown wrote:
-> On Mon, Jan 05, 2015 at 04:36:03AM -0800, Joe Perches wrote:
-> > On Mon, 2015-01-05 at 17:31 +0530, nizamhaider786-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org wrote:
-> > > From: Nizam Haider <nizamhaider786-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> 
-> > > fixed a coding style issue
-> 
-> > This is a checkpatch defect and not a coding styple (style) issue.
-> 
-> > Please don't blindly take checkpatch messages as dicta.
-> 
-> No, it's a coding style thing.
+spi_setup() will test unsupported mode bits before calling spi->master->setup.
+Thus remove duplicate code to test unsupported mode bits in spi_st_setup().
 
-It's a coding style consistency thing.
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi-st-ssc4.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-> It may have been identified by
-> checkpatch but that's what it is.
+diff --git a/drivers/spi/spi-st-ssc4.c b/drivers/spi/spi-st-ssc4.c
+index 8f8770a..2faeaa7 100644
+--- a/drivers/spi/spi-st-ssc4.c
++++ b/drivers/spi/spi-st-ssc4.c
+@@ -217,12 +217,6 @@ static int spi_st_setup(struct spi_device *spi)
+ 	int cs = spi->cs_gpio;
+ 	int ret;
+ 
+-	if (spi->mode & ~MODEBITS) {
+-		dev_err(&spi->dev, "unsupported mode bits 0x%x\n",
+-			spi->mode & ~MODEBITS);
+-		return -EINVAL;
+-	}
+-
+ 	if (!hz)  {
+ 		dev_err(&spi->dev, "max_speed_hz unspecified\n");
+ 		return -EINVAL;
+-- 
+1.9.1
 
-__pure is a #define for a gcc attribute
 
-include/linux/compiler-gcc.h:#define __pure                             __attribute__((pure))
-
-macro attributes are almost always used
-with space separators in the kernel.
-
-All instances of __pure in the kernel have
-a space before the use.
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

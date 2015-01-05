@@ -1,44 +1,54 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: meson: Constify struct regmap_config
-Date: Mon, 5 Jan 2015 20:11:41 +0000
-Message-ID: <20150105201141.GK2634@sirena.org.uk>
-References: <1420448821-9942-1-git-send-email-k.kozlowski@samsung.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v1] spi: dw: amend warning message
+Date: Mon, 5 Jan 2015 20:21:06 +0000
+Message-ID: <20150105202106.GO2634@sirena.org.uk>
+References: <1420207565-14712-1-git-send-email-andriy.shevchenko@linux.intel.com>
+ <1420207868.12456.16.camel@linux.intel.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="45wMVEkw4XUbiYON"
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Krzysztof Kozlowski <k.kozlowski@samsung.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="z4D23EFnZpzTzcHd"
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1420448821-9942-1-git-send-email-k.kozlowski@samsung.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1420207868.12456.16.camel-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---45wMVEkw4XUbiYON
+--z4D23EFnZpzTzcHd
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Mon, Jan 05, 2015 at 10:07:01AM +0100, Krzysztof Kozlowski wrote:
-> The regmap_config struct may be const because it is not modified by the
-> driver and regmap_init() accepts pointer to const.
+On Fri, Jan 02, 2015 at 04:11:08PM +0200, Andy Shevchenko wrote:
+> On Fri, 2015-01-02 at 16:06 +0200, Andy Shevchenko wrote:
 
-Applied, thanks.
+> > +			dev_warn(dev, "DMA init failed\n");
 
---45wMVEkw4XUbiYON
+> Oops, based on some WIP patches, though still applies smoothly on top of
+> recent linux-next.
+
+Not with git am it doesn't (I suspect mostly because it's easily
+confused by not having the required SHA1s but still).
+
+--z4D23EFnZpzTzcHd
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBAgAGBQJUqu/8AAoJECTWi3JdVIfQVw8H/1QYQCphSwMTJFrYStcURBiH
-p16kJAUTOCPSGOwFuP4VkRXqhlegjGkiOzHYsUh9sKb8SE83JJu2EBEwefLzsk2r
-U4d0geYs1Tfv1rCcfxr5eWLsO2Qn6eBZPSUSmhbGiwTUf3adyPJBUzMSyC4YYrWI
-zuuRJKd4vH5ktwf9SBSUENLdfgVq/816+nLMOx8GsPiODZ7I4VANYjX2aglylWPS
-i4zzPsDJDibxbnCVGxQRzzIdvXoW+QX7HHI9VpaZ/9ejv9z7Muyex/Zsd+gOnitr
-6vBxXCwnsQ3gpTZ0aOu+NuZBkOg8lrDhRduf/y9h06HP+yY4PUDsWFVuO0K/mUI=
-=PoJS
+iQEcBAEBAgAGBQJUqvIxAAoJECTWi3JdVIfQ6AYH/j1kA6zFMXB/ckKEEDV42/2J
+QlMLgANDV3teUdlwXRoRGZpCyrggQkq1uTdJcVUBpZxMSpZibw4eNDy/sg2rPhuY
++ItXThAnDmz4oN/eyoP2AuLWbnlfzZmPl+fWexT/25xhO7jYgAlzxmp44f8Nb3dy
+97ESmUc36C+RCiPtqAXF9CdbEZUIwqjOtctdRPzGKkE+DnHdOsIDgAOjPEjJ5kwG
+RVtHvhaFvzB5Bxj/I3FlGF1wB3+/zjE7N85LSGPj75Ym4r7PFKy8BEjEQIHR6tcr
+Aj4DOTPN5icUsCB7AC84vFNB+JWydDgX+aHjmA26GJsoNOvk3vAE8aop617vVzg=
+=/syI
 -----END PGP SIGNATURE-----
 
---45wMVEkw4XUbiYON--
+--z4D23EFnZpzTzcHd--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,49 +1,36 @@
-From: nizamhaider786-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-Subject: [PATCH 3/3] spi:spi-gpio: fixed space coding styple issue
-Date: Mon,  5 Jan 2015 17:31:03 +0530
-Message-ID: <1420459263-2190-1-git-send-email-nizamhaider786@gmail.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Nizam Haider <nizamhaider786-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Joe Perches <joe@perches.com>
+Subject: Re: [PATCH 3/3] spi:spi-gpio: fixed space coding styple issue
+Date: Mon, 05 Jan 2015 04:36:03 -0800
+Message-ID: <1420461363.2652.6.camel@perches.com>
+References: <1420459263-2190-1-git-send-email-nizamhaider786@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+Cc: broonie@kernel.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+To: nizamhaider786@gmail.com
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1420459263-2190-1-git-send-email-nizamhaider786@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Nizam Haider <nizamhaider786-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+On Mon, 2015-01-05 at 17:31 +0530, nizamhaider786@gmail.com wrote:
+> From: Nizam Haider <nizamhaider786@gmail.com>
+> 
+> fixed a coding style issue
 
-fixed a coding style issue
+This is a checkpatch defect and not a coding styple (style) issue.
 
-Signed-off-by: Nizam Haider <nizamhaider786-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spi-gpio.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Please don't blindly take checkpatch messages as dicta.
 
-diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
-index aee4e75..702b0b8 100644
---- a/drivers/spi/spi-gpio.c
-+++ b/drivers/spi/spi-gpio.c
-@@ -92,7 +92,7 @@ struct spi_gpio {
- 
- /*----------------------------------------------------------------------*/
- 
--static inline struct spi_gpio * __pure
-+static inline struct spi_gpio *__pure
- spi_to_spi_gpio(const struct spi_device *spi)
- {
- 	const struct spi_bitbang	*bang;
-@@ -103,7 +103,7 @@ spi_to_spi_gpio(const struct spi_device *spi)
- 	return spi_gpio;
- }
- 
--static inline struct spi_gpio_platform_data * __pure
-+static inline struct spi_gpio_platform_data *__pure
- spi_to_pdata(const struct spi_device *spi)
- {
- 	return &spi_to_spi_gpio(spi)->pdata;
--- 
-2.1.3
+btw: The "From: " line in your email message body isn't necessary 
+     or desired.  Please be careful with spelling/typos too.
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
+[]
+> @@ -92,7 +92,7 @@ struct spi_gpio {
+>  
+>  /*----------------------------------------------------------------------*/
+>  
+> -static inline struct spi_gpio * __pure
+> +static inline struct spi_gpio *__pure

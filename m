@@ -1,51 +1,46 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: Backport of spi-fsl-spi bugfix to 3.14.y
-Date: Mon, 5 Jan 2015 15:48:34 +0000
-Message-ID: <20150105154834.GV11764@sirena.org.uk>
-References: <1420472564.803.9.camel@gmail.com>
+Subject: Re: [PATCH 3/3] spi:spi-gpio: fixed space coding styple issue
+Date: Mon, 5 Jan 2015 18:32:55 +0000
+Message-ID: <20150105183255.GC2634@sirena.org.uk>
+References: <1420459263-2190-1-git-send-email-nizamhaider786@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="cUzoOeFTT7puyy6E"
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org, Stefan Roese <sr@denx.de>
-To: Esben Haabendal <esbenhaabendal@gmail.com>
-Return-path: <stable-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="vEao7xgI/oilGqZ+"
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: nizamhaider786@gmail.com
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1420472564.803.9.camel@gmail.com>
-Sender: stable-owner@vger.kernel.org
+In-Reply-To: <1420459263-2190-1-git-send-email-nizamhaider786@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---cUzoOeFTT7puyy6E
+--vEao7xgI/oilGqZ+
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 05, 2015 at 04:42:44PM +0100, Esben Haabendal wrote:
+On Mon, Jan 05, 2015 at 05:31:03PM +0530, nizamhaider786@gmail.com wrote:
+> From: Nizam Haider <nizamhaider786@gmail.com>
+>=20
+> fixed a coding style issue
 
-> Please consider commit 4302a59629f7a0bd70fd1605d2b558597517372a
-> (spi: fsl: Fix problem with multi message transfers) for inclusion in
-> stable kernel 3.14.
+Applied, thanks.
 
-> It fixes a regression when using mmc_spi driver on top of spi-fsl-spi
-> driver (tested with powerpc mpc8313 based board).
-
-Has this ever worked?
-
---cUzoOeFTT7puyy6E
+--vEao7xgI/oilGqZ+
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBAgAGBQJUqrJRAAoJECTWi3JdVIfQWi8H/1kxAGrrDcnP2l4IFYBHJZ8e
-oL2J/Isl2HVPmzfbo5e8TSyV3KPIFnBTPM5GSu0cDmsuI0g8yxKtLrdqgxzvQbGm
-S4WdQ2SkCtGZmGbOfQNlMG6AtSIwIiQKbjnVgy82Z9IC++KX2ZBIJSM5O/YmcO/G
-v5nAmuhuab/AiSZjHKzgsVHhoBnhsbRBkaxplX7morQhG3K/zAI08lYnRqr3haML
-T+QmhGGAc368YiLNXu3+USDsuhWeKOoV17G+jAcvqnf6Dsq4MqpHhj4QLGgT7rd9
-z5KegOTWt508Ckv8ADEBoQ7omC1OylmkaQTVQBcmsKnArYfBBAvyvN7gS/F1ifI=
-=3OrN
+iQEcBAEBAgAGBQJUqtjWAAoJECTWi3JdVIfQc1gH/2ldDh0wKwoSVdw858G/9mnI
+WAEZcZfVqEewL/zwXYEN3HK2tjq+kWGf6Sbop1KDyESVPstwLdWBqCMoj9fk/HK/
+b8GtIZdM4X0bxq7w/tyWYubSw7KucUFb27scmeo+eVn624fmSWWiTJedmhZCrkYJ
+kNInbw7ahxlA8ek+G23V8lB0QUg+gKkIF5vuVjsfFDcKbbe5tbRAyrxBl3Mj2jF8
+vHUyEwWeV2Bj3t6ZeNOC0P4y0fX8OAGCKhgo6nDU2l7+peFBn5qhfc8W9CYyz6GQ
+wdSn6lJBkbgBd0DwafLDw8PQwnWn0UaEFTbd09wB/X6/g6ZVr4G8JyJwRS3c2hI=
+=+92D
 -----END PGP SIGNATURE-----
 
---cUzoOeFTT7puyy6E--
+--vEao7xgI/oilGqZ+--

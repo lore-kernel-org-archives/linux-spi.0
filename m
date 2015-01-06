@@ -1,46 +1,49 @@
-From: yoshihiro shimoda <yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
-Subject: RE: [PATCH] spi: sh-msiof: fix MDR1_FLD_MASK value
-Date: Tue, 6 Jan 2015 11:15:49 +0000
-Message-ID: <HKNPR06MB322CD2512711FAE69EBC5F3D8590@HKNPR06MB322.apcprd06.prod.outlook.com>
-References: <1420538486-1420-1-git-send-email-yoshihiro.shimoda.uh@renesas.com>
- <CAMuHMdUjor__TCQwDcHAR9-vH54=qB-_E5AM2a4hp2B+wE9c4Q@mail.gmail.com>
- <HKNPR06MB322387C2B14F90694CA90A8D8590@HKNPR06MB322.apcprd06.prod.outlook.com>
- <20150106110831.GV2634@sirena.org.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: fsl-(e)spi: Support compile as module
+Date: Tue, 6 Jan 2015 12:01:44 +0000
+Message-ID: <20150106120144.GY2634@sirena.org.uk>
+References: <1420538586-15867-1-git-send-email-esben.haabendal@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux-sh list <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="+0KmLy8UubQqhxHi"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Esben Haabendal <eha-/iRVSOupHO4@public.gmane.org>
+To: esben.haabendal-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150106110831.GV2634-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Content-Language: ja-JP
+Content-Disposition: inline
+In-Reply-To: <1420538586-15867-1-git-send-email-esben.haabendal-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Mark,
 
-> 
-> On Tue, Jan 06, 2015 at 10:57:32AM +0000, yoshihiro shimoda wrote:
-> 
-> > > This patch doesn't apply, since Mark has applied your other patch
-> > > "spi: sh-msiof: Configure MSIOF sync signal timing in device tree".
-> > >
-> > > Please rebase on top of spi/for-next (or renesas-drivers-2015-01-06-v3.19-rc3).
-> 
-> > Oops. Thank you for the point.
-> > I used spi/for-linux branch. So, I will rebase on top of spi/for-next.
-> 
-> Actually since it's a fix I applied it on a fix branch anyway and
-> merged.
+--+0KmLy8UubQqhxHi
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Thank you!
-I already submitted v2 patch, but please ignore it.
+On Tue, Jan 06, 2015 at 11:03:06AM +0100, esben.haabendal-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org wrote:
 
-Best regards,
-Yoshihiro Shimoda
+> -#ifdef CONFIG_SPI_FSL_SPI
+> +#if defined(CONFIG_SPI_FSL_SPI) || defined(CONFIG_SPI_FSL_SPI_MODULE)
 
+This should use IS_ENABLED().
+
+--+0KmLy8UubQqhxHi
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBAgAGBQJUq86nAAoJECTWi3JdVIfQ84wIAIPOGKLGORndCrmRLXI7Niiv
+bTF+A3h9piw+RYsfdjG4aZ04tNIdsOUVVvhUIn2bRQ7CJRNQJy14B/l+cScrSVUi
+CBmKusi6QbKLV/7GhBauwEcSlX89bo3BlQTwXWGSOTgnRXZsEJcmtIzN+GpNYOS/
+BdXVoCxod0JyN3vhkU9pYxsfmEFgds7aFi3GH6yjlEnBT2emniug+1CBOgaE5CH4
+WaCh0NhPipj1kno1YnwlyatV5dFHL8JWNCgvH6D5Fa5flyxwwQSaLU1EV73h9JQ4
+QGXARQH2T8e/I24PtjSc0lKRukzqtr+jZnDfhUNWfoAFqPZbpOaqokPNhyZeMgk=
+=HslY
+-----END PGP SIGNATURE-----
+
+--+0KmLy8UubQqhxHi--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

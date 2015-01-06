@@ -1,200 +1,80 @@
-From: esben.haabendal@gmail.com
-Subject: [PATCH v2] spi: fsl-(e)spi: Support compile as module
-Date: Tue,  6 Jan 2015 14:07:34 +0100
-Message-ID: <1420549654-8754-1-git-send-email-esben.haabendal@gmail.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Esben Haabendal <eha@deif.com>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Laurentiu Palcu <laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi/dln2: simplify return flow for dln2_spi_transfer_setup and dln2_spi_enable
+Date: Tue,  6 Jan 2015 15:23:40 +0200
+Message-ID: <1420550620-12693-1-git-send-email-laurentiu.palcu@intel.com>
+Cc: Julia Lawall <julia.lawall-L2FTfq7BK8M@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Laurentiu Palcu <laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Esben Haabendal <eha@deif.com>
+This fixes the following kbuild test robot warnings:
 
-Signed-off-by: Esben Haabendal <eha@deif.com>
+>> drivers/spi/spi-dln2.c:124:1-4: WARNING: end returns can be simplified if negative or 0 value
+>> drivers/spi/spi-dln2.c:656:1-4: WARNING: end returns can be simplified if negative or 0 value
+
+Additionally, fix a comment after switching from CONFIG_PM_RUNTIME to
+CONFIG_PM.
+
+Reported-by: Julia Lawall <julia.lawall-L2FTfq7BK8M@public.gmane.org>
+Signed-off-by: Laurentiu Palcu <laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 ---
-Changes in v2:
- - Use IS_ENABLED() in spi-fsl-lib.h
+ drivers/spi/spi-dln2.c | 15 +++------------
+ 1 file changed, 3 insertions(+), 12 deletions(-)
 
-drivers/spi/Kconfig       |  4 ++--
- drivers/spi/spi-fsl-cpm.c |  9 +++++++++
- drivers/spi/spi-fsl-lib.c | 14 ++++++++++++--
- drivers/spi/spi-fsl-lib.h |  4 ++--
- 4 files changed, 25 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 9982998..468d13c 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -279,7 +279,7 @@ config SPI_FSL_CPM
- 	depends on FSL_SOC
- 
- config SPI_FSL_SPI
--	bool "Freescale SPI controller and Aeroflex Gaisler GRLIB SPI controller"
-+	tristate "Freescale SPI controller and Aeroflex Gaisler GRLIB SPI controller"
- 	depends on OF
- 	select SPI_FSL_LIB
- 	select SPI_FSL_CPM if FSL_SOC
-@@ -300,7 +300,7 @@ config SPI_FSL_DSPI
- 	  mode. VF610 platform uses the controller.
- 
- config SPI_FSL_ESPI
--	bool "Freescale eSPI controller"
-+	tristate "Freescale eSPI controller"
- 	depends on FSL_SOC
- 	select SPI_FSL_LIB
- 	help
-diff --git a/drivers/spi/spi-fsl-cpm.c b/drivers/spi/spi-fsl-cpm.c
-index e85ab1c..9c46a30 100644
---- a/drivers/spi/spi-fsl-cpm.c
-+++ b/drivers/spi/spi-fsl-cpm.c
-@@ -20,6 +20,7 @@
- #include <linux/dma-mapping.h>
- #include <linux/fsl_devices.h>
- #include <linux/kernel.h>
-+#include <linux/module.h>
- #include <linux/of_address.h>
- #include <linux/spi/spi.h>
- #include <linux/types.h>
-@@ -68,6 +69,7 @@ void fsl_spi_cpm_reinit_txrx(struct mpc8xxx_spi *mspi)
- 		}
+diff --git a/drivers/spi/spi-dln2.c b/drivers/spi/spi-dln2.c
+index cede063..3b7d91d 100644
+--- a/drivers/spi/spi-dln2.c
++++ b/drivers/spi/spi-dln2.c
+@@ -103,7 +103,6 @@ struct dln2_spi {
+  */
+ static int dln2_spi_enable(struct dln2_spi *dln2, bool enable)
+ {
+-	int ret;
+ 	u16 cmd;
+ 	struct {
+ 		u8 port;
+@@ -121,11 +120,7 @@ static int dln2_spi_enable(struct dln2_spi *dln2, bool enable)
+ 		cmd = DLN2_SPI_DISABLE;
  	}
+ 
+-	ret = dln2_transfer_tx(dln2->pdev, cmd, &tx, len);
+-	if (ret < 0)
+-		return ret;
+-
+-	return 0;
++	return dln2_transfer_tx(dln2->pdev, cmd, &tx, len);
  }
-+EXPORT_SYMBOL_GPL(fsl_spi_cpm_reinit_txrx);
  
- static void fsl_spi_cpm_bufs_start(struct mpc8xxx_spi *mspi)
- {
-@@ -162,6 +164,7 @@ err_rx_dma:
- 		dma_unmap_single(dev, mspi->tx_dma, t->len, DMA_TO_DEVICE);
- 	return -ENOMEM;
- }
-+EXPORT_SYMBOL_GPL(fsl_spi_cpm_bufs);
- 
- void fsl_spi_cpm_bufs_complete(struct mpc8xxx_spi *mspi)
- {
-@@ -174,6 +177,7 @@ void fsl_spi_cpm_bufs_complete(struct mpc8xxx_spi *mspi)
- 		dma_unmap_single(dev, mspi->rx_dma, t->len, DMA_FROM_DEVICE);
- 	mspi->xfer_in_progress = NULL;
- }
-+EXPORT_SYMBOL_GPL(fsl_spi_cpm_bufs_complete);
- 
- void fsl_spi_cpm_irq(struct mpc8xxx_spi *mspi, u32 events)
- {
-@@ -198,6 +202,7 @@ void fsl_spi_cpm_irq(struct mpc8xxx_spi *mspi, u32 events)
- 	else
- 		complete(&mspi->done);
- }
-+EXPORT_SYMBOL_GPL(fsl_spi_cpm_irq);
- 
- static void *fsl_spi_alloc_dummy_rx(void)
- {
-@@ -375,6 +380,7 @@ err_pram:
- 	fsl_spi_free_dummy_rx();
- 	return -ENOMEM;
- }
-+EXPORT_SYMBOL_GPL(fsl_spi_cpm_init);
- 
- void fsl_spi_cpm_free(struct mpc8xxx_spi *mspi)
- {
-@@ -389,3 +395,6 @@ void fsl_spi_cpm_free(struct mpc8xxx_spi *mspi)
- 	cpm_muram_free(cpm_muram_offset(mspi->pram));
- 	fsl_spi_free_dummy_rx();
- }
-+EXPORT_SYMBOL_GPL(fsl_spi_cpm_free);
-+
-+MODULE_LICENSE("GPL");
-diff --git a/drivers/spi/spi-fsl-lib.c b/drivers/spi/spi-fsl-lib.c
-index 9d3f9e0..cb35d2f 100644
---- a/drivers/spi/spi-fsl-lib.c
-+++ b/drivers/spi/spi-fsl-lib.c
-@@ -21,6 +21,7 @@
- #include <linux/interrupt.h>
- #include <linux/kernel.h>
- #include <linux/mm.h>
-+#include <linux/module.h>
- #include <linux/of_platform.h>
- #include <linux/spi/spi.h>
- #ifdef CONFIG_FSL_SOC
-@@ -35,7 +36,8 @@ void mpc8xxx_spi_rx_buf_##type(u32 data, struct mpc8xxx_spi *mpc8xxx_spi) \
- 	type *rx = mpc8xxx_spi->rx;					  \
- 	*rx++ = (type)(data >> mpc8xxx_spi->rx_shift);			  \
- 	mpc8xxx_spi->rx = rx;						  \
--}
-+}									  \
-+EXPORT_SYMBOL_GPL(mpc8xxx_spi_rx_buf_##type);
- 
- #define MPC8XXX_SPI_TX_BUF(type)				\
- u32 mpc8xxx_spi_tx_buf_##type(struct mpc8xxx_spi *mpc8xxx_spi)	\
-@@ -47,7 +49,8 @@ u32 mpc8xxx_spi_tx_buf_##type(struct mpc8xxx_spi *mpc8xxx_spi)	\
- 	data = *tx++ << mpc8xxx_spi->tx_shift;			\
- 	mpc8xxx_spi->tx = tx;					\
- 	return data;						\
--}
-+}								\
-+EXPORT_SYMBOL_GPL(mpc8xxx_spi_tx_buf_##type);
- 
- MPC8XXX_SPI_RX_BUF(u8)
- MPC8XXX_SPI_RX_BUF(u16)
-@@ -60,6 +63,7 @@ struct mpc8xxx_spi_probe_info *to_of_pinfo(struct fsl_spi_platform_data *pdata)
- {
- 	return container_of(pdata, struct mpc8xxx_spi_probe_info, pdata);
- }
-+EXPORT_SYMBOL_GPL(to_of_pinfo);
- 
- const char *mpc8xxx_spi_strmode(unsigned int flags)
- {
-@@ -75,6 +79,7 @@ const char *mpc8xxx_spi_strmode(unsigned int flags)
+ /*
+@@ -653,11 +648,7 @@ static int dln2_spi_transfer_setup(struct dln2_spi *dln2, u32 speed,
+ 		dln2->bpw = bpw;
  	}
- 	return "CPU";
+ 
+-	ret = dln2_spi_enable(dln2, true);
+-	if (ret < 0)
+-		return ret;
+-
+-	return 0;
++	return dln2_spi_enable(dln2, true);
  }
-+EXPORT_SYMBOL_GPL(mpc8xxx_spi_strmode);
  
- void mpc8xxx_spi_probe(struct device *dev, struct resource *mem,
- 			unsigned int irq)
-@@ -107,6 +112,7 @@ void mpc8xxx_spi_probe(struct device *dev, struct resource *mem,
+ static int dln2_spi_transfer_one(struct spi_master *master,
+@@ -866,7 +857,7 @@ static int dln2_spi_runtime_resume(struct device *dev)
  
- 	init_completion(&mpc8xxx_spi->done);
+ 	return  dln2_spi_enable(dln2, true);
  }
-+EXPORT_SYMBOL_GPL(mpc8xxx_spi_probe);
+-#endif /* CONFIG_PM_RUNTIME */
++#endif /* CONFIG_PM */
  
- int mpc8xxx_spi_remove(struct device *dev)
- {
-@@ -125,6 +131,7 @@ int mpc8xxx_spi_remove(struct device *dev)
- 
- 	return 0;
- }
-+EXPORT_SYMBOL_GPL(mpc8xxx_spi_remove);
- 
- int of_mpc8xxx_spi_probe(struct platform_device *ofdev)
- {
-@@ -171,3 +178,6 @@ int of_mpc8xxx_spi_probe(struct platform_device *ofdev)
- 
- 	return 0;
- }
-+EXPORT_SYMBOL_GPL(of_mpc8xxx_spi_probe);
-+
-+MODULE_LICENSE("GPL");
-diff --git a/drivers/spi/spi-fsl-lib.h b/drivers/spi/spi-fsl-lib.h
-index b4ed04e..1326a39 100644
---- a/drivers/spi/spi-fsl-lib.h
-+++ b/drivers/spi/spi-fsl-lib.h
-@@ -28,7 +28,7 @@ struct mpc8xxx_spi {
- 	/* rx & tx bufs from the spi_transfer */
- 	const void *tx;
- 	void *rx;
--#ifdef CONFIG_SPI_FSL_ESPI
-+#if IS_ENABLED(CONFIG_SPI_FSL_ESPI)
- 	int len;
- #endif
- 
-@@ -68,7 +68,7 @@ struct mpc8xxx_spi {
- 
- 	unsigned int flags;
- 
--#ifdef CONFIG_SPI_FSL_SPI
-+#if IS_ENABLED(CONFIG_SPI_FSL_SPI)
- 	int type;
- 	int native_chipselects;
- 	u8 max_bits_per_word;
+ static const struct dev_pm_ops dln2_spi_pm = {
+ 	SET_SYSTEM_SLEEP_PM_OPS(dln2_spi_suspend, dln2_spi_resume)
 -- 
-2.1.4
+1.9.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

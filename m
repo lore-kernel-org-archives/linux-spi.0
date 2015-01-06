@@ -1,171 +1,53 @@
-From: Ken Wilson <ken.wilson@opengear.com>
-Subject: [PATCH] spi: orion: Add multiple chip select support for Armada 370
- and 375
-Date: Wed,  7 Jan 2015 07:30:46 +1000
-Message-ID: <1420579846-31962-1-git-send-email-ken.wilson@opengear.com>
+From: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH] spi: orion: Add multiple chip select support for Armada
+ 370 and 375
+Date: Tue, 06 Jan 2015 18:37:01 -0300
+Message-ID: <54AC557D.1080605@free-electrons.com>
+References: <1420579846-31962-1-git-send-email-ken.wilson@opengear.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: mark.rutland@arm.com, devicetree@vger.kernel.org, linux@arm.linux.org.uk,
- pawel.moll@arm.com, ijc+devicetree@hellion.org.uk, ken.wilson@opengear.com,
- gerg@uclinux.org, linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
- broonie@kernel.org, ezequiel.garcia@free-electrons.com, galak@codeaurora.org,
- linux-arm-kernel@lists.infradead.org
-To: robh+dt@kernel.org
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: pawel.moll-5wv7dgnIgG8@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
+	ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org, galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org,
+	linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Ken Wilson <ken.wilson-xg7Pnmy8KxlWk0Htik3J/w@public.gmane.org>, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1420579846-31962-1-git-send-email-ken.wilson-xg7Pnmy8KxlWk0Htik3J/w@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Create a new dt binding for the Armada 375 that supports up to
-3 chip selects but uses the same prescaler values and algorithm
-as the basic orion binding.
+On 01/06/2015 06:30 PM, Ken Wilson wrote:
+> Create a new dt binding for the Armada 375 that supports up to
+> 3 chip selects but uses the same prescaler values and algorithm
+> as the basic orion binding.
+>=20
+> Update the Armada 370 so that it supports up to 4 chip selects.
+>=20
+> This has been tested on the Armada 375 with multiple SPI-NOR chips.
+>=20
+> Signed-off-by: Ken Wilson <ken.wilson-xg7Pnmy8KxlWk0Htik3J/w@public.gmane.org>
+> ---
+>  .../devicetree/bindings/spi/spi-orion.txt          |  3 ++-
+>  arch/arm/boot/dts/armada-375.dtsi                  |  4 +--
+>  drivers/spi/spi-orion.c                            | 29 ++++++++++++=
++++++++---
 
-Update the Armada 370 so that it supports up to 4 chip selects.
+You will have to split this changeset in three patches, given these
+three files carry different kind of changes:
 
-This has been tested on the Armada 375 with multiple SPI-NOR chips.
+1. The driver change itself
+2. The devicetree binding documentation change
+3. The devicetree dtsi change
 
-Signed-off-by: Ken Wilson <ken.wilson@opengear.com>
----
- .../devicetree/bindings/spi/spi-orion.txt          |  3 ++-
- arch/arm/boot/dts/armada-375.dtsi                  |  4 +--
- drivers/spi/spi-orion.c                            | 29 +++++++++++++++++++---
- 3 files changed, 29 insertions(+), 7 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/spi/spi-orion.txt b/Documentation/devicetree/bindings/spi/spi-orion.txt
-index 50c3a3d..2aeeb85 100644
---- a/Documentation/devicetree/bindings/spi/spi-orion.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-orion.txt
-@@ -1,7 +1,8 @@
- Marvell Orion SPI device
- 
- Required properties:
--- compatible : should be "marvell,orion-spi" or "marvell,armada-370-spi".
-+- compatible : should be "marvell,orion-spi", "marvell,armada-370-spi",
-+	or "marvell,armada-375-spi".
- - reg : offset and length of the register set for the device
- - cell-index : Which of multiple SPI controllers is this.
- Optional properties:
-diff --git a/arch/arm/boot/dts/armada-375.dtsi b/arch/arm/boot/dts/armada-375.dtsi
-index de65714..f7a5ce2 100644
---- a/arch/arm/boot/dts/armada-375.dtsi
-+++ b/arch/arm/boot/dts/armada-375.dtsi
-@@ -192,7 +192,7 @@
- 			};
- 
- 			spi0: spi@10600 {
--				compatible = "marvell,orion-spi";
-+				compatible = "marvell,armada-375-spi", "marvell,orion-spi";
- 				reg = <0x10600 0x50>;
- 				#address-cells = <1>;
- 				#size-cells = <0>;
-@@ -203,7 +203,7 @@
- 			};
- 
- 			spi1: spi@10680 {
--				compatible = "marvell,orion-spi";
-+				compatible = "marvell,armada-375-spi", "marvell,orion-spi";
- 				reg = <0x10680 0x50>;
- 				#address-cells = <1>;
- 				#size-cells = <0>;
-diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-index c76b7d7..4129c37 100644
---- a/drivers/spi/spi-orion.c
-+++ b/drivers/spi/spi-orion.c
-@@ -28,7 +28,6 @@
- /* Runtime PM autosuspend timeout: PM is fairly light on this driver */
- #define SPI_AUTOSUSPEND_TIMEOUT		200
- 
--#define ORION_NUM_CHIPSELECTS		1 /* only one slave is supported*/
- #define ORION_SPI_WAIT_RDY_MAX_LOOP	2000 /* in usec */
- 
- #define ORION_SPI_IF_CTRL_REG		0x00
-@@ -44,6 +43,7 @@
- #define ARMADA_SPI_CLK_PRESCALE_MASK	0xDF
- #define ORION_SPI_MODE_MASK		(ORION_SPI_MODE_CPOL | \
- 					 ORION_SPI_MODE_CPHA)
-+#define ORION_SPI_CS_MASK	0x1C
- 
- enum orion_spi_type {
- 	ORION_SPI,
-@@ -55,6 +55,7 @@ struct orion_spi_dev {
- 	unsigned int		min_divisor;
- 	unsigned int		max_divisor;
- 	u32			prescale_mask;
-+	u8			num_cs;
- };
- 
- struct orion_spi {
-@@ -201,6 +202,13 @@ orion_spi_setup_transfer(struct spi_device *spi, struct spi_transfer *t)
- 
- 	orion_spi_mode_set(spi);
- 
-+	if (orion_spi->master->num_chipselect > 1) {
-+		orion_spi_clrbits(orion_spi, ORION_SPI_IF_CTRL_REG,
-+				ORION_SPI_CS_MASK);
-+		orion_spi_setbits(orion_spi, ORION_SPI_IF_CTRL_REG,
-+				(spi->chip_select) << 2);
-+	}
-+
- 	rc = orion_spi_baudrate_set(spi, speed);
- 	if (rc)
- 		return rc;
-@@ -398,18 +406,31 @@ static const struct orion_spi_dev orion_spi_dev_data = {
- 	.min_divisor = 4,
- 	.max_divisor = 30,
- 	.prescale_mask = ORION_SPI_CLK_PRESCALE_MASK,
-+	.num_cs = 1,
- };
- 
--static const struct orion_spi_dev armada_spi_dev_data = {
-+static const struct orion_spi_dev armada_370_spi_dev_data = {
- 	.typ = ARMADA_SPI,
- 	.min_divisor = 1,
- 	.max_divisor = 1920,
- 	.prescale_mask = ARMADA_SPI_CLK_PRESCALE_MASK,
-+	.num_cs = 4,
-+};
-+
-+static const struct orion_spi_dev armada_375_spi_dev_data = {
-+	.typ = ORION_SPI,
-+	.min_divisor = 4,
-+	.max_divisor = 30,
-+	.prescale_mask = ORION_SPI_CLK_PRESCALE_MASK,
-+	.num_cs = 3,
- };
- 
- static const struct of_device_id orion_spi_of_match_table[] = {
- 	{ .compatible = "marvell,orion-spi", .data = &orion_spi_dev_data, },
--	{ .compatible = "marvell,armada-370-spi", .data = &armada_spi_dev_data, },
-+	{ .compatible = "marvell,armada-370-spi",
-+		.data = &armada_370_spi_dev_data, },
-+	{ .compatible = "marvell,armada-375-spi",
-+		.data = &armada_375_spi_dev_data, },
- 	{}
- };
- MODULE_DEVICE_TABLE(of, orion_spi_of_match_table);
-@@ -444,7 +465,6 @@ static int orion_spi_probe(struct platform_device *pdev)
- 	master->mode_bits = SPI_CPHA | SPI_CPOL;
- 
- 	master->transfer_one_message = orion_spi_transfer_one_message;
--	master->num_chipselect = ORION_NUM_CHIPSELECTS;
- 	master->bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(16);
- 	master->auto_runtime_pm = true;
- 
-@@ -470,6 +490,7 @@ static int orion_spi_probe(struct platform_device *pdev)
- 	tclk_hz = clk_get_rate(spi->clk);
- 	master->max_speed_hz = DIV_ROUND_UP(tclk_hz, devdata->min_divisor);
- 	master->min_speed_hz = DIV_ROUND_UP(tclk_hz, devdata->max_divisor);
-+	master->num_chipselect = devdata->num_cs;
- 
- 	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	spi->base = devm_ioremap_resource(&pdev->dev, r);
--- 
-2.0.0
+Regards,
+--=20
+Ezequiel Garc=EDa, Free Electrons
+Embedded Linux, Kernel and Android Engineering
+http://free-electrons.com
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" i=
+n
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

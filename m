@@ -1,37 +1,35 @@
-From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH] spi: dln2: Correct #endif comment for #ifdef CONFIG_PM
-Date: Tue,  6 Jan 2015 21:16:02 +0100
-Message-ID: <1420575362-17076-1-git-send-email-geert+renesas@glider.be>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Esben Haabendal <esben.haabendal@gmail.com>
+Subject: Re: Backport of spi-fsl-spi bugfix to 3.14.y
+Date: Tue, 6 Jan 2015 22:15:47 +0100
+Message-ID: <CAOR3GqUBWyfUvNG-8JiPVkis6b_25Eq_REtcp=kLN3CUoqsG6g@mail.gmail.com>
+References: <1420472564.803.9.camel@gmail.com> <20150105154834.GV11764@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org, Stefan Roese <sr@denx.de>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <20150105154834.GV11764@sirena.org.uk>
+Sender: stable-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Fixes: b2e5dda14fbc2ca1 ("spi/dln2: Fix for PM_RUNTIME removal")
----
- drivers/spi/spi-dln2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 5 January 2015 at 16:48, Mark Brown <broonie@kernel.org> wrote:
+> On Mon, Jan 05, 2015 at 04:42:44PM +0100, Esben Haabendal wrote:
+>
+>> Please consider commit 4302a59629f7a0bd70fd1605d2b558597517372a
+>> (spi: fsl: Fix problem with multi message transfers) for inclusion in
+>> stable kernel 3.14.
+>
+>> It fixes a regression when using mmc_spi driver on top of spi-fsl-spi
+>> driver (tested with powerpc mpc8313 based board).
+>
+> Has this ever worked?
 
-diff --git a/drivers/spi/spi-dln2.c b/drivers/spi/spi-dln2.c
-index cede0633c05a5a87..8afa999266a37068 100644
---- a/drivers/spi/spi-dln2.c
-+++ b/drivers/spi/spi-dln2.c
-@@ -866,7 +866,7 @@ static int dln2_spi_runtime_resume(struct device *dev)
- 
- 	return  dln2_spi_enable(dln2, true);
- }
--#endif /* CONFIG_PM_RUNTIME */
-+#endif /* CONFIG_PM */
- 
- static const struct dev_pm_ops dln2_spi_pm = {
- 	SET_SYSTEM_SLEEP_PM_OPS(dln2_spi_suspend, dln2_spi_resume)
--- 
-1.9.1
+Yes, I have used mmc_spi with spi-fsl-spi on the same board with success
+with in 2.6.33, 3.0 and 3.4.
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+I have no idea what has caused this to break.  Maybe mmc_spi driver was
+not doing multi message transfers earlier?
+
+/Esben

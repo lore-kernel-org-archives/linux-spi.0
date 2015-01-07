@@ -1,56 +1,49 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: sh-msiof: Use async pm_runtime_put() in
- sh_msiof_spi_setup()
-Date: Wed, 7 Jan 2015 17:30:49 +0000
-Message-ID: <20150107173049.GZ2634@sirena.org.uk>
-References: <1420645045-18804-1-git-send-email-geert+renesas@glider.be>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2 2/2] spi: dw: print debug message with FIFO size
+Date: Wed, 7 Jan 2015 18:01:23 +0000
+Message-ID: <20150107180123.GG2634@sirena.org.uk>
+References: <1420642615-8986-1-git-send-email-andriy.shevchenko@linux.intel.com>
+ <1420642615-8986-2-git-send-email-andriy.shevchenko@linux.intel.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="EAECBqR2X0HbR9Ag"
-Cc: Hisashi Nakamura <hisashi.nakamura.ak@renesas.com>,
-	Yoshihiro Kaneko <ykaneko0929@gmail.com>,
-	Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-	linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-To: Geert Uytterhoeven <geert+renesas@glider.be>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="ygMS4IY6gunbiOBN"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1420645045-18804-1-git-send-email-geert+renesas@glider.be>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1420642615-8986-2-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---EAECBqR2X0HbR9Ag
+--ygMS4IY6gunbiOBN
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 07, 2015 at 04:37:25PM +0100, Geert Uytterhoeven wrote:
-> There's no need to use the synchronous version.
->=20
-> Reported-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> Fixes: 015760563ec77bf1 ("spi: sh-msiof: Add runtime PM lock in initializ=
-ing")
-> ---
-> Please note that 015760563ec77bf1 is marked for stable.
+On Wed, Jan 07, 2015 at 04:56:55PM +0200, Andy Shevchenko wrote:
+> When autodetection is used it would be useful to know what the FIFO size is.
+> The patch adds a debug message for this purpose.
 
-Sure, but this is just an optimisation really.  Anyway, applied.
+Applied, thanks.
 
---EAECBqR2X0HbR9Ag
+--ygMS4IY6gunbiOBN
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBAgAGBQJUrW1JAAoJECTWi3JdVIfQzR8IAIVOuPgFmdD0C+2xKrd2u2CS
-EZVtK41XVKtnDh94TXRc9txAt1b3avpiimtkZhRUBXM1WVOSuNsjD3maCdVPSOrH
-DhREiOczbnN3ylmhSnDhvisjWXpwiscqma9Fi2M6Hb9v5Lzb5aUkchkzdYgZjQei
-hqeO9KKxCcBfBCEmcJJ7oRQAYCTmGOtR9xmfFZAhYjmQiBuQezioHV56uTQHb1R9
-rPDI+ogbC9tTwDrbZSLS+HtLXbaa2LG9MpNWcxKuT00mpoczMFwmwxCd5Rpxxrxa
-baWneQO8FaZiv8R0ER7Gbcp9s9Vb1P+W+31JBD2Jtays/BCDTIwAPFyCSZ57KiE=
-=0tJq
+iQEcBAEBAgAGBQJUrXRyAAoJECTWi3JdVIfQ4PkH/jGBaO81exMVawWGy/aA3y/b
+5bbLf9TM9xNl/o9jrGcT/9tPv+cNhuEuQhks0MU/suUi3WOwUCwix7+31pQELiAF
+vSPq90XdAstBRLemNnhIkY+cJUAye8a+LLBTdG6fzO2bpQdvBBfJsqLXBAKQxdqV
+zYpmiDwdg7ppVTDqQMn+DXQ+0b3VXWpUILmr4cxYb1rthEu1m7Sp+6hd4SbzWBYz
+2uY0bg4h2YyyXcyFVA3e8SDiHVnCCDe/4IG4W4SZX/3g9dGiYJG900vBXDEBqdrv
+rwt6V7X5PFh1WmD7LOLW9wxm7N8XYfUHyZvSlbC/39SQkbNyM7eRsiMoBWsnwGI=
+=pzoK
 -----END PGP SIGNATURE-----
 
---EAECBqR2X0HbR9Ag--
+--ygMS4IY6gunbiOBN--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

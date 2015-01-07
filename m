@@ -1,46 +1,56 @@
-From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH] spi: sh-msiof: Use async pm_runtime_put() in sh_msiof_spi_setup()
-Date: Wed,  7 Jan 2015 16:37:25 +0100
-Message-ID: <1420645045-18804-1-git-send-email-geert+renesas@glider.be>
-Cc: Hisashi Nakamura <hisashi.nakamura.ak-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-	Yoshihiro Kaneko <ykaneko0929-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Sergei Shtylyov <sergei.shtylyov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi: sh-msiof: Use async pm_runtime_put() in
+ sh_msiof_spi_setup()
+Date: Wed, 7 Jan 2015 17:30:49 +0000
+Message-ID: <20150107173049.GZ2634@sirena.org.uk>
+References: <1420645045-18804-1-git-send-email-geert+renesas@glider.be>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="EAECBqR2X0HbR9Ag"
+Cc: Hisashi Nakamura <hisashi.nakamura.ak@renesas.com>,
+	Yoshihiro Kaneko <ykaneko0929@gmail.com>,
+	Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+	linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1420645045-18804-1-git-send-email-geert+renesas@glider.be>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-There's no need to use the synchronous version.
 
-Reported-by: Sergei Shtylyov <sergei.shtylyov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>
-Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Fixes: 015760563ec77bf1 ("spi: sh-msiof: Add runtime PM lock in initializing")
----
-Please note that 015760563ec77bf1 is marked for stable.
+--EAECBqR2X0HbR9Ag
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
- drivers/spi/spi-sh-msiof.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Wed, Jan 07, 2015 at 04:37:25PM +0100, Geert Uytterhoeven wrote:
+> There's no need to use the synchronous version.
+>=20
+> Reported-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Fixes: 015760563ec77bf1 ("spi: sh-msiof: Add runtime PM lock in initializ=
+ing")
+> ---
+> Please note that 015760563ec77bf1 is marked for stable.
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 3f7ea2d49456e754..050e9188df1b309c 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -546,7 +546,7 @@ static int sh_msiof_spi_setup(struct spi_device *spi)
- 		gpio_set_value(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
- 
- 
--	pm_runtime_put_sync(&p->pdev->dev);
-+	pm_runtime_put(&p->pdev->dev);
- 
- 	return 0;
- }
--- 
-1.9.1
+Sure, but this is just an optimisation really.  Anyway, applied.
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--EAECBqR2X0HbR9Ag
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBAgAGBQJUrW1JAAoJECTWi3JdVIfQzR8IAIVOuPgFmdD0C+2xKrd2u2CS
+EZVtK41XVKtnDh94TXRc9txAt1b3avpiimtkZhRUBXM1WVOSuNsjD3maCdVPSOrH
+DhREiOczbnN3ylmhSnDhvisjWXpwiscqma9Fi2M6Hb9v5Lzb5aUkchkzdYgZjQei
+hqeO9KKxCcBfBCEmcJJ7oRQAYCTmGOtR9xmfFZAhYjmQiBuQezioHV56uTQHb1R9
+rPDI+ogbC9tTwDrbZSLS+HtLXbaa2LG9MpNWcxKuT00mpoczMFwmwxCd5Rpxxrxa
+baWneQO8FaZiv8R0ER7Gbcp9s9Vb1P+W+31JBD2Jtays/BCDTIwAPFyCSZ57KiE=
+=0tJq
+-----END PGP SIGNATURE-----
+
+--EAECBqR2X0HbR9Ag--

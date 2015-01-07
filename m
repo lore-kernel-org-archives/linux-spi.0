@@ -1,36 +1,39 @@
 From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH v2 1/2] spi: dw: amend warning message
-Date: Wed,  7 Jan 2015 16:56:54 +0200
-Message-ID: <1420642615-8986-1-git-send-email-andriy.shevchenko@linux.intel.com>
-Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Subject: Re: [PATCH v1] spi: dw: amend warning message
+Date: Wed, 07 Jan 2015 16:58:33 +0200
+Message-ID: <1420642713.12456.22.camel@linux.intel.com>
+References: <1420207565-14712-1-git-send-email-andriy.shevchenko@linux.intel.com>
+	 <1420207868.12456.16.camel@linux.intel.com>
+	 <20150105202106.GO2634@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150105202106.GO2634-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-In case of warning message in ->probe() we have to use HW device name instead
-of master because last is not defined yet.
+On Mon, 2015-01-05 at 20:21 +0000, Mark Brown wrote:
+> On Fri, Jan 02, 2015 at 04:11:08PM +0200, Andy Shevchenko wrote:
+> > On Fri, 2015-01-02 at 16:06 +0200, Andy Shevchenko wrote:
+> 
+> > > +			dev_warn(dev, "DMA init failed\n");
+> 
+> > Oops, based on some WIP patches, though still applies smoothly on top of
+> > recent linux-next.
+> 
+> Not with git am it doesn't (I suspect mostly because it's easily
+> confused by not having the required SHA1s but still).
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
----
- drivers/spi/spi-dw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+git am -C1 -s helps, but anyway I submitted v2 with one additional patch
+(the add-on I suggested to Alex Lin to print FIFO size when
+autodetection happened).
 
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index 1a0f266..8edcd1b 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -673,7 +673,7 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
- 	if (dws->dma_ops && dws->dma_ops->dma_init) {
- 		ret = dws->dma_ops->dma_init(dws);
- 		if (ret) {
--			dev_warn(&master->dev, "DMA init failed\n");
-+			dev_warn(dev, "DMA init failed\n");
- 			dws->dma_inited = 0;
- 		}
- 	}
 -- 
-2.1.3
+Andy Shevchenko <andriy.shevchenko-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Intel Finland Oy
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

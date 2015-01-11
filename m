@@ -1,48 +1,73 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v1] spi: dw-pci: describe Intel MID controllers better
-Date: Wed, 7 Jan 2015 18:01:31 +0000
-Message-ID: <20150107180131.GH2634@sirena.org.uk>
-References: <1420643700-23059-1-git-send-email-andriy.shevchenko@linux.intel.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="o2u2a/VXF22CnfBq"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, x86-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+From: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: sirf: add missed devicetree binding document
+Date: Sun, 11 Jan 2015 21:58:55 +0800
+Message-ID: <1420984735-3842-1-git-send-email-21cnbao@gmail.com>
+Cc: workgroup.linux-kQvG35nSl+M@public.gmane.org, Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>,
+	Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1420643700-23059-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+From: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
 
---o2u2a/VXF22CnfBq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
+Signed-off-by: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
+---
+ Documentation/devicetree/bindings/spi/spi-sirf.txt | 41 ++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-sirf.txt
 
-On Wed, Jan 07, 2015 at 05:15:00PM +0200, Andy Shevchenko wrote:
-> There are more that one SPI controller on the Intel MID boards. This patch
-> describes the status and IDs of them. From now on we also have to care about
-> bus number that must be unique per host.
+diff --git a/Documentation/devicetree/bindings/spi/spi-sirf.txt b/Documentation/devicetree/bindings/spi/spi-sirf.txt
+new file mode 100644
+index 0000000..4c7adb8f
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-sirf.txt
+@@ -0,0 +1,41 @@
++* CSR SiRFprimaII Serial Peripheral Interface
++
++Required properties:
++- compatible : Should be "sirf,prima2-spi"
++- reg : Offset and length of the register set for the device
++- interrupts : Should contain SPI interrupt
++- resets: phandle to the reset controller asserting this device in
++          reset
++  See ../reset/reset.txt for details.
++- dmas : Must contain an entry for each entry in clock-names.
++  See ../dma/dma.txt for details.
++- dma-names : Must include the following entries:
++  - rx
++  - tx
++- clocks : Must contain an entry for each entry in clock-names.
++  See ../clocks/clock-bindings.txt for details.
++
++- #address-cells: Number of cells required to define a chip select
++                  address on the SPI bus. Should be set to 1.
++- #size-cells:    Should be zero.
++
++Optional properties:
++- spi-max-frequency: Specifies maximum SPI clock frequency,
++                     Units - Hz. Definition as per
++                     Documentation/devicetree/bindings/spi/spi-bus.txt
++- cs-gpios:     should specify GPIOs used for chipselects.
++
++Example:
++
++spi0: spi@b00d0000 {
++	compatible = "sirf,prima2-spi";
++	reg = <0xb00d0000 0x10000>;
++	interrupts = <15>;
++	dmas = <&dmac1 9>,
++		<&dmac1 4>;
++	dma-names = "rx", "tx";
++	#address-cells = <1>;
++	#size-cells = <0>;
++	clocks = <&clks 19>;
++	resets = <&rstc 26>;
++};
+-- 
+2.2.1
 
-Applied, thanks.
-
---o2u2a/VXF22CnfBq
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBAgAGBQJUrXR6AAoJECTWi3JdVIfQli8H/2I65cccMthACVDDDPqoff03
-/Jd/P44IqesFN8iK5opgrpYxepIyIpW/+4obSTESNdnZK3/BkBdoQAUvxOTmbFms
-UVNNWrHJoeI60XV89XWSVTsI3rf9e1nGYnvn3pABGRSH5aZglrQtq0a8S9vN70tA
-KrPeQuerUBqPpOuIMOvRoLfS1towZJp+nSpKOZvTrTW4RsDN0Mn46kh37ar1i7Qf
-CjJqCdkp3Ds0bQctO5njUd8gBv5NJ7HGL4pfNcAVv4TnvLxV1ClPUuMwA3f1OVT/
-VOloX0TmHD7cCPl3/Bs8MkmWeReBQjNRFfoqqvHgmTVFWH+C9puUdDCG9rtDfis=
-=eaf/
------END PGP SIGNATURE-----
-
---o2u2a/VXF22CnfBq--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

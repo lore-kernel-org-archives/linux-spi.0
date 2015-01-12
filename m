@@ -1,108 +1,48 @@
-From: Ken Wilson <ken.wilson@opengear.com>
-Subject: [PATCHv2 2/2] spi: orion: Add multiple chip select support to spi-orion
-Date: Mon, 12 Jan 2015 13:14:00 +1000
-Message-ID: <1421032440-15335-3-git-send-email-ken.wilson@opengear.com>
-References: <1421032440-15335-1-git-send-email-ken.wilson@opengear.com>
-Cc: robh+dt@kernel.org, pawel.moll@arm.com, mark.rutland@arm.com,
-	ijc+devicetree@hellion.org.uk, galak@codeaurora.org,
-	broonie@kernel.org, ezequiel.garcia@free-electrons.com,
-	gerg@uclinux.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	Ken Wilson <ken.wilson@opengear.com>
-To: thomas.petazzoni@free-electrons.com
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1421032440-15335-1-git-send-email-ken.wilson@opengear.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: sirf: add missed devicetree binding document
+Date: Mon, 12 Jan 2015 12:30:55 +0000
+Message-ID: <20150112123055.GE4160@sirena.org.uk>
+References: <1420984735-3842-1-git-send-email-21cnbao@gmail.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="3yNHWXBV/QO9xKNm"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, workgroup.linux-kQvG35nSl+M@public.gmane.org,
+	Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>, Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
+To: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1420984735-3842-1-git-send-email-21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-This commit adds support for multiple hardware chip selects to spi-orion.
-The number of supported chip selects varies based on the SoC and pin
-configuration, so it is set using the num-cs device tree binding.
 
-Signed-off-by: Ken Wilson <ken.wilson@opengear.com>
----
- Documentation/devicetree/bindings/spi/spi-orion.txt |  3 +++
- drivers/spi/spi-orion.c                             | 17 +++++++++++++++--
- 2 files changed, 18 insertions(+), 2 deletions(-)
+--3yNHWXBV/QO9xKNm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-orion.txt b/Documentation/devicetree/bindings/spi/spi-orion.txt
-index 50c3a3d..0f8fd7e 100644
---- a/Documentation/devicetree/bindings/spi/spi-orion.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-orion.txt
-@@ -6,6 +6,8 @@ Required properties:
- - cell-index : Which of multiple SPI controllers is this.
- Optional properties:
- - interrupts : Is currently not used.
-+- num-cs     : The total number of chip selects used by this platform.
-+		If unset, this defaults to 1.
- 
- Example:
-        spi@10600 {
-@@ -15,5 +17,6 @@ Example:
- 	       cell-index = <0>;
- 	       reg = <0x10600 0x28>;
- 	       interrupts = <23>;
-+	       num-cs = <1>;
- 	       status = "disabled";
-        };
-diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-index e6ac9d5..1c28152 100644
---- a/drivers/spi/spi-orion.c
-+++ b/drivers/spi/spi-orion.c
-@@ -28,7 +28,6 @@
- /* Runtime PM autosuspend timeout: PM is fairly light on this driver */
- #define SPI_AUTOSUSPEND_TIMEOUT		200
- 
--#define ORION_NUM_CHIPSELECTS		1 /* only one slave is supported*/
- #define ORION_SPI_WAIT_RDY_MAX_LOOP	2000 /* in usec */
- 
- #define ORION_SPI_IF_CTRL_REG		0x00
-@@ -44,6 +43,10 @@
- #define ARMADA_SPI_CLK_PRESCALE_MASK	0xDF
- #define ORION_SPI_MODE_MASK		(ORION_SPI_MODE_CPOL | \
- 					 ORION_SPI_MODE_CPHA)
-+#define ORION_SPI_CS_MASK	0x1C
-+#define ORION_SPI_CS_SHIFT	2
-+#define ORION_SPI_CS(cs)	((cs << ORION_SPI_CS_SHIFT) & \
-+					ORION_SPI_CS_MASK)
- 
- enum orion_spi_type {
- 	ORION_SPI,
-@@ -221,6 +224,10 @@ static void orion_spi_set_cs(struct spi_device *spi, bool enable)
- 
- 	orion_spi = spi_master_get_devdata(spi->master);
- 
-+	orion_spi_clrbits(orion_spi, ORION_SPI_IF_CTRL_REG, ORION_SPI_CS_MASK);
-+	orion_spi_setbits(orion_spi, ORION_SPI_IF_CTRL_REG,
-+				ORION_SPI_CS(spi->chip_select));
-+
- 	/* Chip select logic is inverted from spi_set_cs */
- 	if (!enable)
- 		orion_spi_setbits(orion_spi, ORION_SPI_IF_CTRL_REG, 0x1);
-@@ -406,17 +413,23 @@ static int orion_spi_probe(struct platform_device *pdev)
- 		master->bus_num = pdev->id;
- 	if (pdev->dev.of_node) {
- 		u32 cell_index;
-+		u32 num_cs;
- 
- 		if (!of_property_read_u32(pdev->dev.of_node, "cell-index",
- 					  &cell_index))
- 			master->bus_num = cell_index;
-+
-+		if (!of_property_read_u32(pdev->dev.of_node, "num_cs",
-+					  &num_cs))
-+			master->num_chipselect = num_cs;
-+		else
-+			master->num_chipselect = 1;
- 	}
- 
- 	/* we support only mode 0, and no options */
- 	master->mode_bits = SPI_CPHA | SPI_CPOL;
- 	master->set_cs = orion_spi_set_cs;
- 	master->transfer_one = orion_spi_transfer_one;
--	master->num_chipselect = ORION_NUM_CHIPSELECTS;
- 	master->setup = orion_spi_setup;
- 	master->bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(16);
- 	master->auto_runtime_pm = true;
--- 
-2.0.0
+On Sun, Jan 11, 2015 at 09:58:55PM +0800, Barry Song wrote:
+> From: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
+
+Applied, thanks.
+
+--3yNHWXBV/QO9xKNm
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBAgAGBQJUs75+AAoJECTWi3JdVIfQjogH/jDfVZbbv528PZ+V8FjtTyok
+sa4gmHhcBnBM9kBp0+MX5Pl6+OjpuSaFRU8NHfhVMJ9sbHYio3Un6Squx5PmTJwa
+nmI6E9QpH/ZC+EJvvIKMJCosgj58w++ySXJ9jnx8JG2o8W0SQRuAdhVO+U8ygF7t
+4ivKttlYQDnTzRcRKSOsgFbEfrwggPaPPTdzUxe7jpvq75zkAksVMH5tvv8o+Qyg
+fr2agBaUQxfe5pZ0FYkO8slTT0BSpJaGOELLYVPf/aLhkLxwnH1A1Rlw/THS7dd+
+4B8zCyGE3xx8joBhxHoUBYFm1nIIYDISCdzW92w5FTZIcMR9q31U+OH+pp0iHmA=
+=ndhu
+-----END PGP SIGNATURE-----
+
+--3yNHWXBV/QO9xKNm--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

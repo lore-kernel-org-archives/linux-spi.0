@@ -1,50 +1,66 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: st-ssc4: Remove duplicate code to test unsupported
- mode bits
-Date: Wed, 14 Jan 2015 19:17:38 +0000
-Message-ID: <20150114191738.GF3043@sirena.org.uk>
-References: <1420469376.6880.1.camel@phoenix>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCHv2 2/2] spi: orion: Add multiple chip select support to
+ spi-orion
+Date: Wed, 14 Jan 2015 20:06:26 +0000
+Message-ID: <20150114200626.GN3043@sirena.org.uk>
+References: <1421032440-15335-1-git-send-email-ken.wilson@opengear.com>
+ <1421032440-15335-3-git-send-email-ken.wilson@opengear.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="oFbHfjnMgUMsrGjO"
-Cc: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="SgT04PEqo/+yUDw3"
+Cc: thomas.petazzoni@free-electrons.com, robh+dt@kernel.org,
+	pawel.moll@arm.com, mark.rutland@arm.com,
+	ijc+devicetree@hellion.org.uk, galak@codeaurora.org,
+	ezequiel.garcia@free-electrons.com, gerg@uclinux.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org
+To: Ken Wilson <ken.wilson@opengear.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1420469376.6880.1.camel@phoenix>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1421032440-15335-3-git-send-email-ken.wilson@opengear.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---oFbHfjnMgUMsrGjO
+--SgT04PEqo/+yUDw3
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Mon, Jan 05, 2015 at 10:49:36PM +0800, Axel Lin wrote:
-> spi_setup() will test unsupported mode bits before calling spi->master->setup.
-> Thus remove duplicate code to test unsupported mode bits in spi_st_setup().
+On Mon, Jan 12, 2015 at 01:14:00PM +1000, Ken Wilson wrote:
 
-Applied, thanks.
+> +- num-cs     : The total number of chip selects used by this platform.
+> +		If unset, this defaults to 1.
 
---oFbHfjnMgUMsrGjO
+So, this is intended to be the number of hardware chip selects that can
+be configured but the first commit mentioned GPIOs as an option too so
+we should at least say that this is specifically the controller
+supported ones.  However...
+
+> +#define ORION_SPI_CS_MASK	0x1C
+> +#define ORION_SPI_CS_SHIFT	2
+> +#define ORION_SPI_CS(cs)	((cs << ORION_SPI_CS_SHIFT) & \
+> +					ORION_SPI_CS_MASK)
+
+...given that we have a fixed bitfield here which we know and doesn't
+appear to depend on configuration do we even need this to be
+configurable - given that we're going to need an explicit node for any
+slave can't we just accept any sane chip select for a slave without
+extending the binding?
+
+--SgT04PEqo/+yUDw3
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJUtsDQAAoJECTWi3JdVIfQO3kH/39xI+wtcqUHbPr+HJ4gmeM3
-XAC/YwLJRIw74jYtFQ/u4CCxTyeNCR2GZGeI6YONRpnVVbBOE1JEzwXaOcJH5kw3
-jJYtOUX3nofoGqhPhXPI6dwt1LDwzJeY9UVhDjotVfR+5vi17Z7OrME32SC03E3/
-mmWM4xwNFsWCL7PoCxrx8SxXILIqRDJutrAH3Zao1RPjwWTgAa3+PNvC3yabjDiW
-zYaE7Hin9i2e+pm1u0xDMhF5tK2duAWDTaAUNeo7F4ojiCzRt+oE7Gu7vjrSVcvj
-5IQe2Axckt6Rf5oRj2RWFT7mGuDbtj+FFOIVg6rTh/9g1mATJmi5j/Fz01MxKRU=
-=H9g+
+iQEcBAEBCAAGBQJUtsxCAAoJECTWi3JdVIfQON0H/1W+W9OIt4nQmp4YmrbbORPs
+TyEnxWbjrhVVjaktUcm9ChTnVXpvtirsvTrjRCTHJKOT0hrLBbE7wcwvyICpggY4
+gAT5MlBrVavPL44zZB3f36FxrrN+86dKwfeQ+XrWJ8XM6QA3gV136zVQuGmJ6j50
+35JAYVSJY3v2zwmD99Qzl3hIzpST++xZkmw7jAgXT9g/V7fU707aJ8PJIl0LaSdU
+WC7CoA10rcCX9PMxtzfGvH1cN8svY7MiEmaZx2pb7YVndt9qMzTn/IrR7DqJKNJc
+mkSa0Mtm6Tds4wZedpc96/XLNlfdKBGZpceYcTo+mbBnSfv9fwTh/5lKE+fJWE8=
+=nyM7
 -----END PGP SIGNATURE-----
 
---oFbHfjnMgUMsrGjO--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--SgT04PEqo/+yUDw3--

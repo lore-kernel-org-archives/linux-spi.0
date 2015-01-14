@@ -1,48 +1,120 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: sirf: add missed devicetree binding document
-Date: Mon, 12 Jan 2015 12:30:55 +0000
-Message-ID: <20150112123055.GE4160@sirena.org.uk>
-References: <1420984735-3842-1-git-send-email-21cnbao@gmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH] spi: sh-msiof: Update calculation of frequency dividing
+Date: Wed, 14 Jan 2015 09:36:41 +0100
+Message-ID: <CAMuHMdWet3AWrHMzygNOaEKMM8qzXUZ5ub_mcAWiHh_SQLoXeA@mail.gmail.com>
+References: <1421220335-22503-1-git-send-email-nobuhiro.iwamatsu.yj@renesas.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="3yNHWXBV/QO9xKNm"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, workgroup.linux-kQvG35nSl+M@public.gmane.org,
-	Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>, Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
-To: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1420984735-3842-1-git-send-email-21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-spi <linux-spi@vger.kernel.org>,
+	Linux-sh list <linux-sh@vger.kernel.org>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+To: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj@renesas.com>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1421220335-22503-1-git-send-email-nobuhiro.iwamatsu.yj@renesas.com>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+Hi Iwamatsu-san,
 
---3yNHWXBV/QO9xKNm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Wed, Jan 14, 2015 at 8:25 AM, Nobuhiro Iwamatsu
+<nobuhiro.iwamatsu.yj@renesas.com> wrote:
+> sh-msiof of frequency dividing does not perform the calculation, driver have
+> to manage setting value in the table. It is not possible to set frequency
+> dividing value close to the actual data in this way. This changes from
+> frequency dividing of table management to setting by calculation.
+> This driver is able to set a value close to the actual data.
 
-On Sun, Jan 11, 2015 at 09:58:55PM +0800, Barry Song wrote:
-> From: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
+Thanks for your patch!
 
-Applied, thanks.
+> diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+> index 96a5fc0..58b1bfe 100644
+> --- a/drivers/spi/spi-sh-msiof.c
+> +++ b/drivers/spi/spi-sh-msiof.c
+> @@ -241,42 +241,37 @@ static irqreturn_t sh_msiof_spi_irq(int irq, void *data)
+>
+>  static struct {
+>         unsigned short div;
+> -       unsigned short scr;
+> -} const sh_msiof_spi_clk_table[] = {
+> -       { 1,    SCR_BRPS( 1) | SCR_BRDV_DIV_1 },
+> -       { 2,    SCR_BRPS( 1) | SCR_BRDV_DIV_2 },
+> -       { 4,    SCR_BRPS( 1) | SCR_BRDV_DIV_4 },
+> -       { 8,    SCR_BRPS( 1) | SCR_BRDV_DIV_8 },
+> -       { 16,   SCR_BRPS( 1) | SCR_BRDV_DIV_16 },
+> -       { 32,   SCR_BRPS( 1) | SCR_BRDV_DIV_32 },
+> -       { 64,   SCR_BRPS(32) | SCR_BRDV_DIV_2 },
+> -       { 128,  SCR_BRPS(32) | SCR_BRDV_DIV_4 },
+> -       { 256,  SCR_BRPS(32) | SCR_BRDV_DIV_8 },
+> -       { 512,  SCR_BRPS(32) | SCR_BRDV_DIV_16 },
+> -       { 1024, SCR_BRPS(32) | SCR_BRDV_DIV_32 },
+> +       unsigned short brdv;
+> +} const sh_msiof_spi_div_table[] = {
+> +       { 1,    SCR_BRDV_DIV_1 },
+> +       { 2,    SCR_BRDV_DIV_2 },
+> +       { 4,    SCR_BRDV_DIV_4 },
+> +       { 8,    SCR_BRDV_DIV_8 },
+> +       { 16,   SCR_BRDV_DIV_16 },
+> +       { 32,   SCR_BRDV_DIV_32 },
+>  };
+>
+>  static void sh_msiof_spi_set_clk_regs(struct sh_msiof_spi_priv *p,
+>                                       unsigned long parent_rate, u32 spi_hz)
+>  {
+>         unsigned long div = 1024;
+> +       unsigned long brps, scr;
 
---3yNHWXBV/QO9xKNm
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+"u32", as these are (parts of) 32-bit register values.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+>         size_t k;
+>
+>         if (!WARN_ON(!spi_hz || !parent_rate))
+>                 div = DIV_ROUND_UP(parent_rate, spi_hz);
+>
+> -       /* TODO: make more fine grained */
+> -
+> -       for (k = 0; k < ARRAY_SIZE(sh_msiof_spi_clk_table); k++) {
+> -               if (sh_msiof_spi_clk_table[k].div >= div)
+> -                       break;
+> +       for (k = 0; k < ARRAY_SIZE(sh_msiof_spi_div_table); k++) {
+> +               brps = DIV_ROUND_UP(div, sh_msiof_spi_div_table[k].div);
+> +               if (brps > 32) /* max of brsv is 32 */
 
-iQEcBAEBAgAGBQJUs75+AAoJECTWi3JdVIfQjogH/jDfVZbbv528PZ+V8FjtTyok
-sa4gmHhcBnBM9kBp0+MX5Pl6+OjpuSaFRU8NHfhVMJ9sbHYio3Un6Squx5PmTJwa
-nmI6E9QpH/ZC+EJvvIKMJCosgj58w++ySXJ9jnx8JG2o8W0SQRuAdhVO+U8ygF7t
-4ivKttlYQDnTzRcRKSOsgFbEfrwggPaPPTdzUxe7jpvq75zkAksVMH5tvv8o+Qyg
-fr2agBaUQxfe5pZ0FYkO8slTT0BSpJaGOELLYVPf/aLhkLxwnH1A1Rlw/THS7dd+
-4B8zCyGE3xx8joBhxHoUBYFm1nIIYDISCdzW92w5FTZIcMR9q31U+OH+pp0iHmA=
-=ndhu
------END PGP SIGNATURE-----
+max of brdv
 
---3yNHWXBV/QO9xKNm--
+> +                       continue;
+> +               break;
+
+Having a conditional "continue" followed by a "break" looks strange.
+
+        if (brps <= 32) /* max of brdv is 32 */
+                break
+
+>         }
+
+"brps" may be larger than 32 after the loop.
+In the old code, the min_t() below handled that case.
+
+> -       k = min_t(int, k, ARRAY_SIZE(sh_msiof_spi_clk_table) - 1);
+> -
+> -       sh_msiof_write(p, TSCR, sh_msiof_spi_clk_table[k].scr);
+> +       scr = sh_msiof_spi_div_table[k].brdv | (brps -1) << 8;
+
+"scr = sh_msiof_spi_div_table[k].brdv | SCR_BRPS(i);" would avoid the need
+for "- 1" and the hardcoded shift.
+
+> +       sh_msiof_write(p, TSCR, scr);
+>         if (!(p->chipdata->master_flags & SPI_MASTER_MUST_TX))
+> -               sh_msiof_write(p, RSCR, sh_msiof_spi_clk_table[k].scr);
+> +               sh_msiof_write(p, RSCR, scr);
+>  }
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

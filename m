@@ -1,60 +1,139 @@
-From: Ken Wilson <ken.wilson-xg7Pnmy8KxlWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCHv2 2/2] spi: orion: Add multiple chip select support to
- spi-orion
-Date: Thu, 15 Jan 2015 11:07:12 +1000
-Message-ID: <54B712C0.5010808@opengear.com>
-References: <1421032440-15335-1-git-send-email-ken.wilson@opengear.com> <1421032440-15335-3-git-send-email-ken.wilson@opengear.com> <20150114200626.GN3043@sirena.org.uk>
+From: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj@renesas.com>
+Subject: Re: [PATCH] spi: sh-msiof: Update calculation of frequency dividing
+Date: Thu, 15 Jan 2015 10:26:06 +0900
+Message-ID: <54B7172E.9020509@renesas.com>
+References: <1421220335-22503-1-git-send-email-nobuhiro.iwamatsu.yj@renesas.com> <CAMuHMdWet3AWrHMzygNOaEKMM8qzXUZ5ub_mcAWiHh_SQLoXeA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	pawel.moll-5wv7dgnIgG8@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
-	ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org, galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org,
-	ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org, gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150114200626.GN3043-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: linux-spi <linux-spi@vger.kernel.org>,
+	Linux-sh list <linux-sh@vger.kernel.org>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <CAMuHMdWet3AWrHMzygNOaEKMM8qzXUZ5ub_mcAWiHh_SQLoXeA@mail.gmail.com>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi,
 
-On 15/01/15 06:06, Mark Brown wrote:
-> On Mon, Jan 12, 2015 at 01:14:00PM +1000, Ken Wilson wrote:
+Thanks for your review.
+
+(2015/01/14 17:36), Geert Uytterhoeven wrote:
+> Hi Iwamatsu-san,
 >
->> +- num-cs     : The total number of chip selects used by this platform.
->> +		If unset, this defaults to 1.
-> So, this is intended to be the number of hardware chip selects that can
-> be configured but the first commit mentioned GPIOs as an option too so
-> we should at least say that this is specifically the controller
-> supported ones.  However...
+> On Wed, Jan 14, 2015 at 8:25 AM, Nobuhiro Iwamatsu
+> <nobuhiro.iwamatsu.yj@renesas.com>  wrote:
+>> sh-msiof of frequency dividing does not perform the calculation, driver have
+>> to manage setting value in the table. It is not possible to set frequency
+>> dividing value close to the actual data in this way. This changes from
+>> frequency dividing of table management to setting by calculation.
+>> This driver is able to set a value close to the actual data.
 >
->> +#define ORION_SPI_CS_MASK	0x1C
->> +#define ORION_SPI_CS_SHIFT	2
->> +#define ORION_SPI_CS(cs)	((cs << ORION_SPI_CS_SHIFT) & \
->> +					ORION_SPI_CS_MASK)
-> ...given that we have a fixed bitfield here which we know and doesn't
-> appear to depend on configuration do we even need this to be
-> configurable - given that we're going to need an explicit node for any
-> slave can't we just accept any sane chip select for a slave without
-> extending the binding?
-The different implementations that use this driver (Marvell Kirkwood, 
-Armada 370/375) all
-have a different number of supported chip selects, that fit into this 
-bit mask. There are also
-multiple SPI controllers on each SoC which support different numbers of 
-chip selects.
-For example, on the Armada 375, SPI0 supports 3 chip selects, while SPI1 
-only has 1.
+> Thanks for your patch!
+>
+>> diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+>> index 96a5fc0..58b1bfe 100644
+>> --- a/drivers/spi/spi-sh-msiof.c
+>> +++ b/drivers/spi/spi-sh-msiof.c
+>> @@ -241,42 +241,37 @@ static irqreturn_t sh_msiof_spi_irq(int irq, void *data)
+>>
+>>   static struct {
+>>          unsigned short div;
+>> -       unsigned short scr;
+>> -} const sh_msiof_spi_clk_table[] = {
+>> -       { 1,    SCR_BRPS( 1) | SCR_BRDV_DIV_1 },
+>> -       { 2,    SCR_BRPS( 1) | SCR_BRDV_DIV_2 },
+>> -       { 4,    SCR_BRPS( 1) | SCR_BRDV_DIV_4 },
+>> -       { 8,    SCR_BRPS( 1) | SCR_BRDV_DIV_8 },
+>> -       { 16,   SCR_BRPS( 1) | SCR_BRDV_DIV_16 },
+>> -       { 32,   SCR_BRPS( 1) | SCR_BRDV_DIV_32 },
+>> -       { 64,   SCR_BRPS(32) | SCR_BRDV_DIV_2 },
+>> -       { 128,  SCR_BRPS(32) | SCR_BRDV_DIV_4 },
+>> -       { 256,  SCR_BRPS(32) | SCR_BRDV_DIV_8 },
+>> -       { 512,  SCR_BRPS(32) | SCR_BRDV_DIV_16 },
+>> -       { 1024, SCR_BRPS(32) | SCR_BRDV_DIV_32 },
+>> +       unsigned short brdv;
+>> +} const sh_msiof_spi_div_table[] = {
+>> +       { 1,    SCR_BRDV_DIV_1 },
+>> +       { 2,    SCR_BRDV_DIV_2 },
+>> +       { 4,    SCR_BRDV_DIV_4 },
+>> +       { 8,    SCR_BRDV_DIV_8 },
+>> +       { 16,   SCR_BRDV_DIV_16 },
+>> +       { 32,   SCR_BRDV_DIV_32 },
+>>   };
+>>
+>>   static void sh_msiof_spi_set_clk_regs(struct sh_msiof_spi_priv *p,
+>>                                        unsigned long parent_rate, u32 spi_hz)
+>>   {
+>>          unsigned long div = 1024;
+>> +       unsigned long brps, scr;
+>
+> "u32", as these are (parts of) 32-bit register values.
+>
 
-I agree that we could support any sane chip select for a slave, since 
-the slave addresses do need
-to be explicitly defined. I'm happy with whatever your preference is.
+I see. I will fix.
 
-Thanks,
-Ken
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+>>          size_t k;
+>>
+>>          if (!WARN_ON(!spi_hz || !parent_rate))
+>>                  div = DIV_ROUND_UP(parent_rate, spi_hz);
+>>
+>> -       /* TODO: make more fine grained */
+>> -
+>> -       for (k = 0; k<  ARRAY_SIZE(sh_msiof_spi_clk_table); k++) {
+>> -               if (sh_msiof_spi_clk_table[k].div>= div)
+>> -                       break;
+>> +       for (k = 0; k<  ARRAY_SIZE(sh_msiof_spi_div_table); k++) {
+>> +               brps = DIV_ROUND_UP(div, sh_msiof_spi_div_table[k].div);
+>> +               if (brps>  32) /* max of brsv is 32 */
+>
+> max of brdv
+
+Thanks, I will fix.
+
+>
+>> +                       continue;
+>> +               break;
+>
+> Having a conditional "continue" followed by a "break" looks strange.
+>
+>          if (brps<= 32) /* max of brdv is 32 */
+>                  break
+>
+
+OK, I will fix this.
+>>          }
+>
+> "brps" may be larger than 32 after the loop.
+> In the old code, the min_t() below handled that case.
+>
+
+Yes, and div is equal to or higher than 1024, this calculation does not work correctly.
+This is the specifications of the device. If div is more than 1024, to add the process
+of this function returns error.
+
+>> -       k = min_t(int, k, ARRAY_SIZE(sh_msiof_spi_clk_table) - 1);
+>> -
+>> -       sh_msiof_write(p, TSCR, sh_msiof_spi_clk_table[k].scr);
+>> +       scr = sh_msiof_spi_div_table[k].brdv | (brps -1)<<  8;
+>
+> "scr = sh_msiof_spi_div_table[k].brdv | SCR_BRPS(i);" would avoid the need
+> for "- 1" and the hardcoded shift.
+>
+
+I see. I change to using SCR_BRPS(i).
+
+>> +       sh_msiof_write(p, TSCR, scr);
+>>          if (!(p->chipdata->master_flags&  SPI_MASTER_MUST_TX))
+>> -               sh_msiof_write(p, RSCR, sh_msiof_spi_clk_table[k].scr);
+>> +               sh_msiof_write(p, RSCR, scr);
+>>   }
+>
+> Gr{oetje,eeting}s,
+>
+>                          Geert
+>
+
+Best regards,
+   Nobuhiro

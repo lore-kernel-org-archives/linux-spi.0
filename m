@@ -1,110 +1,56 @@
-From: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj@renesas.com>
-Subject: [PATCH v2] spi: sh-msiof: Update calculation of frequency dividing
-Date: Thu, 15 Jan 2015 10:50:13 +0900
-Message-ID: <1421286613-8240-1-git-send-email-nobuhiro.iwamatsu.yj@renesas.com>
-Cc: linux-sh@vger.kernel.org, sergei.shtylyov@cogentembedded.com,
-	geert@glider.be, yoshihiro.shimoda.uh@renesas.com,
-	Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj@renesas.com>
-To: linux-spi@vger.kernel.org
-Return-path: <linux-sh-owner@vger.kernel.org>
-Sender: linux-sh-owner@vger.kernel.org
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCHv2 2/2] spi: orion: Add multiple chip select support to
+ spi-orion
+Date: Thu, 15 Jan 2015 11:22:13 +0000
+Message-ID: <20150115112213.GT3043@sirena.org.uk>
+References: <1421032440-15335-1-git-send-email-ken.wilson@opengear.com>
+ <1421032440-15335-3-git-send-email-ken.wilson@opengear.com>
+ <20150114200626.GN3043@sirena.org.uk>
+ <54B712C0.5010808@opengear.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="TJ9V72hR/LoebVea"
+Cc: thomas.petazzoni@free-electrons.com, robh+dt@kernel.org,
+	pawel.moll@arm.com, mark.rutland@arm.com,
+	ijc+devicetree@hellion.org.uk, galak@codeaurora.org,
+	ezequiel.garcia@free-electrons.com, gerg@uclinux.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org
+To: Ken Wilson <ken.wilson@opengear.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <54B712C0.5010808@opengear.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-sh-msiof of frequency dividing does not perform the calculation, driver have
-to manage setting value in the table. It is not possible to set frequency
-dividing value close to the actual data in this way. This changes from
-frequency dividing of table management to setting by calculation.
-This driver is able to set a value close to the actual data.
 
-Signed-off-by: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj@renesas.com>
----
- V2:
-   - use u32 instead of unsigned long.
-   - Fix loop.
-   - Use SCR_BRPS instead of hoard code shift.
-   - Add check of div maximum value.
+--TJ9V72hR/LoebVea
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
- drivers/spi/spi-sh-msiof.c | 45 +++++++++++++++++++++++----------------------
- 1 file changed, 23 insertions(+), 22 deletions(-)
+On Thu, Jan 15, 2015 at 11:07:12AM +1000, Ken Wilson wrote:
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 96a5fc0..545ffff 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -241,42 +241,41 @@ static irqreturn_t sh_msiof_spi_irq(int irq, void *data)
- 
- static struct {
- 	unsigned short div;
--	unsigned short scr;
--} const sh_msiof_spi_clk_table[] = {
--	{ 1,	SCR_BRPS( 1) | SCR_BRDV_DIV_1 },
--	{ 2,	SCR_BRPS( 1) | SCR_BRDV_DIV_2 },
--	{ 4,	SCR_BRPS( 1) | SCR_BRDV_DIV_4 },
--	{ 8,	SCR_BRPS( 1) | SCR_BRDV_DIV_8 },
--	{ 16,	SCR_BRPS( 1) | SCR_BRDV_DIV_16 },
--	{ 32,	SCR_BRPS( 1) | SCR_BRDV_DIV_32 },
--	{ 64,	SCR_BRPS(32) | SCR_BRDV_DIV_2 },
--	{ 128,	SCR_BRPS(32) | SCR_BRDV_DIV_4 },
--	{ 256,	SCR_BRPS(32) | SCR_BRDV_DIV_8 },
--	{ 512,	SCR_BRPS(32) | SCR_BRDV_DIV_16 },
--	{ 1024,	SCR_BRPS(32) | SCR_BRDV_DIV_32 },
-+	unsigned short brdv;
-+} const sh_msiof_spi_div_table[] = {
-+	{ 1,	SCR_BRDV_DIV_1 },
-+	{ 2,	SCR_BRDV_DIV_2 },
-+	{ 4,	SCR_BRDV_DIV_4 },
-+	{ 8,	SCR_BRDV_DIV_8 },
-+	{ 16,	SCR_BRDV_DIV_16 },
-+	{ 32,	SCR_BRDV_DIV_32 },
- };
- 
--static void sh_msiof_spi_set_clk_regs(struct sh_msiof_spi_priv *p,
-+static int sh_msiof_spi_set_clk_regs(struct sh_msiof_spi_priv *p,
- 				      unsigned long parent_rate, u32 spi_hz)
- {
- 	unsigned long div = 1024;
-+	u32 brps, scr;
- 	size_t k;
- 
- 	if (!WARN_ON(!spi_hz || !parent_rate))
- 		div = DIV_ROUND_UP(parent_rate, spi_hz);
- 
--	/* TODO: make more fine grained */
-+	if (div > 1024) /* Max of divider is 1024 */
-+		return -EINVAL;
- 
--	for (k = 0; k < ARRAY_SIZE(sh_msiof_spi_clk_table); k++) {
--		if (sh_msiof_spi_clk_table[k].div >= div)
-+	for (k = 0; k < ARRAY_SIZE(sh_msiof_spi_div_table); k++) {
-+		brps = DIV_ROUND_UP(div, sh_msiof_spi_div_table[k].div);
-+		if (brps <= 32) /* max of brdv is 32 */
- 			break;
- 	}
- 
--	k = min_t(int, k, ARRAY_SIZE(sh_msiof_spi_clk_table) - 1);
--
--	sh_msiof_write(p, TSCR, sh_msiof_spi_clk_table[k].scr);
-+	scr = sh_msiof_spi_div_table[k].brdv | SCR_BRPS(brps);
-+	sh_msiof_write(p, TSCR, scr);
- 	if (!(p->chipdata->master_flags & SPI_MASTER_MUST_TX))
--		sh_msiof_write(p, RSCR, sh_msiof_spi_clk_table[k].scr);
-+		sh_msiof_write(p, RSCR, scr);
-+
-+	return 0;
- }
- 
- static void sh_msiof_spi_set_pin_regs(struct sh_msiof_spi_priv *p,
-@@ -804,7 +803,9 @@ static int sh_msiof_transfer_one(struct spi_master *master,
- 	int ret;
- 
- 	/* setup clocks (clock already enabled in chipselect()) */
--	sh_msiof_spi_set_clk_regs(p, clk_get_rate(p->clk), t->speed_hz);
-+	ret = sh_msiof_spi_set_clk_regs(p, clk_get_rate(p->clk), t->speed_hz);
-+	if (ret)
-+		return ret;
- 
- 	while (master->dma_tx && len > 15) {
- 		/*
--- 
-2.1.3
+> I agree that we could support any sane chip select for a slave, since the
+> slave addresses do need
+> to be explicitly defined. I'm happy with whatever your preference is.
 
+Just accepting anything seems easier both for users and in
+implementation.
+
+--TJ9V72hR/LoebVea
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJUt6LkAAoJECTWi3JdVIfQboMH/2FrwA8VEDSQZzlbas58eEws
+vD1EgggndHLeSSniFHUblzCjn6CGldTpIHlFi7OUrsoaHkASWhEtDyCfrTG+AUec
+zVIA1rHqYSOXZXFIZynP9QM7a6P43Fh/WaVN0YkUb0rSnxC4CsJx4KxILgiVdaSm
+bY6rh1oc/tQU/FghZvJiTIHGbhviuNLcjvrvUvydLVZDX5xQkb0QerumMFD8MVcu
+6Mnpd1wNfcz7YIcL7LoDxJ4KTp6Op1g9sQVcqHJSpSFfQ99rRCEycytOWDbulL9j
+LPpgFY3RecxnOQGdWW4BxvZbCds4GV3aHPE8IjAr4l5+Xiez2gbUg6pj4Ar0n2I=
+=pf3A
+-----END PGP SIGNATURE-----
+
+--TJ9V72hR/LoebVea--

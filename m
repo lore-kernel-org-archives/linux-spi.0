@@ -1,46 +1,68 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH v2] spi: sh-msiof: Update calculation of frequency dividing
-Date: Thu, 15 Jan 2015 15:21:12 +0100
-Message-ID: <CAMuHMdWwXGaMYpuPJ2_429kc65D0p26dOL-wz7GpWxQAqdJpwQ@mail.gmail.com>
-References: <1421286613-8240-1-git-send-email-nobuhiro.iwamatsu.yj@renesas.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: linux-spi <linux-spi@vger.kernel.org>,
-	Linux-sh list <linux-sh@vger.kernel.org>,
-	Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-To: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj@renesas.com>
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <1421286613-8240-1-git-send-email-nobuhiro.iwamatsu.yj@renesas.com>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Ken Wilson <ken.wilson-xg7Pnmy8KxlWk0Htik3J/w@public.gmane.org>
+Subject: [PATCHv3] spi: orion: Add multiple chip select support to spi-orion
+Date: Fri, 16 Jan 2015 13:10:47 +1000
+Message-ID: <1421377847-3198-1-git-send-email-ken.wilson@opengear.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Ken Wilson <ken.wilson-xg7Pnmy8KxlWk0Htik3J/w@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Iwamatsu-san,
+This commit adds support for multiple hardware chip selects to spi-orion.
+Different SoCs support different number of chip selects (up to
+8 on some platforms). The driver allows up to this number, and it is up
+to the implementer to only use the chip selects that are available.
 
-Thanks for the update!
+Signed-off-by: Ken Wilson <ken.wilson-xg7Pnmy8KxlWk0Htik3J/w@public.gmane.org>
+---
+ drivers/spi/spi-orion.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-On Thu, Jan 15, 2015 at 2:50 AM, Nobuhiro Iwamatsu
-<nobuhiro.iwamatsu.yj@renesas.com> wrote:
-> @@ -804,7 +803,9 @@ static int sh_msiof_transfer_one(struct spi_master *master,
->         int ret;
->
->         /* setup clocks (clock already enabled in chipselect()) */
-> -       sh_msiof_spi_set_clk_regs(p, clk_get_rate(p->clk), t->speed_hz);
-> +       ret = sh_msiof_spi_set_clk_regs(p, clk_get_rate(p->clk), t->speed_hz);
-> +       if (ret)
-> +               return ret;
-
-I think this can be handled by the core, if we fill in spi_master.min_speed_hz.
-
-BTW, you should also CC Mark Brown when sending SPI patches.
-
-Gr{oetje,eeting}s,
-
-                        Geert
+diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
+index e6ac9d5..db50f0e 100644
+--- a/drivers/spi/spi-orion.c
++++ b/drivers/spi/spi-orion.c
+@@ -28,7 +28,12 @@
+ /* Runtime PM autosuspend timeout: PM is fairly light on this driver */
+ #define SPI_AUTOSUSPEND_TIMEOUT		200
+ 
+-#define ORION_NUM_CHIPSELECTS		1 /* only one slave is supported*/
++/* Some SoCs using this driver support up to 8 chip selects.
++ * It is up to the implementer to only use the chip selects
++ * that are available.
++ */
++#define ORION_NUM_CHIPSELECTS		8
++
+ #define ORION_SPI_WAIT_RDY_MAX_LOOP	2000 /* in usec */
+ 
+ #define ORION_SPI_IF_CTRL_REG		0x00
+@@ -44,6 +49,10 @@
+ #define ARMADA_SPI_CLK_PRESCALE_MASK	0xDF
+ #define ORION_SPI_MODE_MASK		(ORION_SPI_MODE_CPOL | \
+ 					 ORION_SPI_MODE_CPHA)
++#define ORION_SPI_CS_MASK	0x1C
++#define ORION_SPI_CS_SHIFT	2
++#define ORION_SPI_CS(cs)	((cs << ORION_SPI_CS_SHIFT) & \
++					ORION_SPI_CS_MASK)
+ 
+ enum orion_spi_type {
+ 	ORION_SPI,
+@@ -221,6 +230,10 @@ static void orion_spi_set_cs(struct spi_device *spi, bool enable)
+ 
+ 	orion_spi = spi_master_get_devdata(spi->master);
+ 
++	orion_spi_clrbits(orion_spi, ORION_SPI_IF_CTRL_REG, ORION_SPI_CS_MASK);
++	orion_spi_setbits(orion_spi, ORION_SPI_IF_CTRL_REG,
++				ORION_SPI_CS(spi->chip_select));
++
+ 	/* Chip select logic is inverted from spi_set_cs */
+ 	if (!enable)
+ 		orion_spi_setbits(orion_spi, ORION_SPI_IF_CTRL_REG, 0x1);
+-- 
+2.0.0
 
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

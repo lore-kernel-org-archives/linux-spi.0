@@ -1,68 +1,54 @@
-From: Ken Wilson <ken.wilson-xg7Pnmy8KxlWk0Htik3J/w@public.gmane.org>
-Subject: [PATCHv3] spi: orion: Add multiple chip select support to spi-orion
-Date: Fri, 16 Jan 2015 13:10:47 +1000
-Message-ID: <1421377847-3198-1-git-send-email-ken.wilson@opengear.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Ken Wilson <ken.wilson-xg7Pnmy8KxlWk0Htik3J/w@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH] spi: of: do not try load modules for of-registered devices
+Date: Fri, 16 Jan 2015 00:08:05 -0800
+Message-ID: <20150116080805.GA8206@dtor-ws>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
+	Grant Likely <grant.likely@linaro.org>,
+	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-This commit adds support for multiple hardware chip selects to spi-orion.
-Different SoCs support different number of chip selects (up to
-8 on some platforms). The driver allows up to this number, and it is up
-to the implementer to only use the chip selects that are available.
+Trying to register an SPI device asynchronously (via async_schedule() call)
+results in an ugly warning from request_module() warning about potential
+deadlock (because request_module tries to wait for async works to
+complete). While we could try to switch to request_module_nowait(), other
+buses, as well as SPI itself when not using device tree, do not try to load
+modules, but rather rely on the standard infrastructure (udev) to execute
+module loading, and we should be doing the same.
 
-Signed-off-by: Ken Wilson <ken.wilson-xg7Pnmy8KxlWk0Htik3J/w@public.gmane.org>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 ---
- drivers/spi/spi-orion.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/spi/spi.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-index e6ac9d5..db50f0e 100644
---- a/drivers/spi/spi-orion.c
-+++ b/drivers/spi/spi-orion.c
-@@ -28,7 +28,12 @@
- /* Runtime PM autosuspend timeout: PM is fairly light on this driver */
- #define SPI_AUTOSUSPEND_TIMEOUT		200
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 66a70e9..e1b15d5 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -20,7 +20,6 @@
+  */
  
--#define ORION_NUM_CHIPSELECTS		1 /* only one slave is supported*/
-+/* Some SoCs using this driver support up to 8 chip selects.
-+ * It is up to the implementer to only use the chip selects
-+ * that are available.
-+ */
-+#define ORION_NUM_CHIPSELECTS		8
-+
- #define ORION_SPI_WAIT_RDY_MAX_LOOP	2000 /* in usec */
+ #include <linux/kernel.h>
+-#include <linux/kmod.h>
+ #include <linux/device.h>
+ #include <linux/init.h>
+ #include <linux/cache.h>
+@@ -1320,7 +1319,6 @@ of_register_spi_device(struct spi_master *master, struct device_node *nc)
+ 	spi->dev.of_node = nc;
  
- #define ORION_SPI_IF_CTRL_REG		0x00
-@@ -44,6 +49,10 @@
- #define ARMADA_SPI_CLK_PRESCALE_MASK	0xDF
- #define ORION_SPI_MODE_MASK		(ORION_SPI_MODE_CPOL | \
- 					 ORION_SPI_MODE_CPHA)
-+#define ORION_SPI_CS_MASK	0x1C
-+#define ORION_SPI_CS_SHIFT	2
-+#define ORION_SPI_CS(cs)	((cs << ORION_SPI_CS_SHIFT) & \
-+					ORION_SPI_CS_MASK)
- 
- enum orion_spi_type {
- 	ORION_SPI,
-@@ -221,6 +230,10 @@ static void orion_spi_set_cs(struct spi_device *spi, bool enable)
- 
- 	orion_spi = spi_master_get_devdata(spi->master);
- 
-+	orion_spi_clrbits(orion_spi, ORION_SPI_IF_CTRL_REG, ORION_SPI_CS_MASK);
-+	orion_spi_setbits(orion_spi, ORION_SPI_IF_CTRL_REG,
-+				ORION_SPI_CS(spi->chip_select));
-+
- 	/* Chip select logic is inverted from spi_set_cs */
- 	if (!enable)
- 		orion_spi_setbits(orion_spi, ORION_SPI_IF_CTRL_REG, 0x1);
+ 	/* Register the new device */
+-	request_module("%s%s", SPI_MODULE_PREFIX, spi->modalias);
+ 	rc = spi_add_device(spi);
+ 	if (rc) {
+ 		dev_err(&master->dev, "spi_device register error %s\n",
 -- 
-2.0.0
+2.2.0.rc0.207.ga3a616c
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+
+-- 
+Dmitry

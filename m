@@ -1,47 +1,58 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: Kconfig: Remove additional newline
-Date: Fri, 16 Jan 2015 16:31:03 +0000
-Message-ID: <20150116163103.GD3856@sirena.org.uk>
-References: <05f726669457897c9d926e4c395ffaf08cd974f6.1421413208.git.michal.simek@xilinx.com>
+From: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: st-ssc4: Remove duplicate code to test unsupported
+ mode bits
+Date: Sun, 18 Jan 2015 12:44:35 +0000
+Message-ID: <20150118124435.GT3574@x1>
+References: <1420469376.6880.1.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="VMt1DrMGOVs3KQwf"
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, monstr-pSz03upnqPeHXe+LvDLADg@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <05f726669457897c9d926e4c395ffaf08cd974f6.1421413208.git.michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+In-Reply-To: <1420469376.6880.1.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Mon, 05 Jan 2015, Axel Lin wrote:
 
---VMt1DrMGOVs3KQwf
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> spi_setup() will test unsupported mode bits before calling spi->maste=
+r->setup.
+> Thus remove duplicate code to test unsupported mode bits in spi_st_se=
+tup().
+>=20
+> Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+> ---
+>  drivers/spi/spi-st-ssc4.c | 6 ------
+>  1 file changed, 6 deletions(-)
 
-On Fri, Jan 16, 2015 at 02:00:11PM +0100, Michal Simek wrote:
-> Trivial fix.
+=46WIW: Acked-by: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
-Applied, thanks.
+> diff --git a/drivers/spi/spi-st-ssc4.c b/drivers/spi/spi-st-ssc4.c
+> index 8f8770a..2faeaa7 100644
+> --- a/drivers/spi/spi-st-ssc4.c
+> +++ b/drivers/spi/spi-st-ssc4.c
+> @@ -217,12 +217,6 @@ static int spi_st_setup(struct spi_device *spi)
+>  	int cs =3D spi->cs_gpio;
+>  	int ret;
+> =20
+> -	if (spi->mode & ~MODEBITS) {
+> -		dev_err(&spi->dev, "unsupported mode bits 0x%x\n",
+> -			spi->mode & ~MODEBITS);
+> -		return -EINVAL;
+> -	}
+> -
+>  	if (!hz)  {
+>  		dev_err(&spi->dev, "max_speed_hz unspecified\n");
+>  		return -EINVAL;
 
---VMt1DrMGOVs3KQwf
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJUuTzGAAoJECTWi3JdVIfQzUcH/iZR1LiYPhPYYlbnOsp52eGg
-JH68QhIQK4NmvQM42B+DvLC5YrhXEOEayjlF20RUiqZbclAxL4Rf1hA0aq7Xm2D6
-WJyb9m/jGAcedI1vcK00K5ZYOWvgRW35zuwNnmxeF3lyKotiWrRNk4b/P2Yz7uq0
-963LeO4qjRKtue3iP+yPpXkcBuTF2suIwRRdT+QF/qDyWDgl/iIXI8FKc29xWj2E
-rPoAT96uG/PDCo4/K1n3mp88ityLlAJR17dLGtI30igN95tkqyCKGbvl5D5KaW15
-xVRpupRiBP94vxbhcDb+rAdlETkKkVWc+Vb4RhTdDfN+UjoUHDlrYelrURXwxuo=
-=Gj7U
------END PGP SIGNATURE-----
-
---VMt1DrMGOVs3KQwf--
+--=20
+Lee Jones
+Linaro STMicroelectronics Landing Team Lead
+Linaro.org =E2=94=82 Open source software for ARM SoCs
+=46ollow Linaro: Facebook | Twitter | Blog
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

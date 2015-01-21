@@ -1,65 +1,32 @@
-From: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 1/3] spi/xilinx: Use automatic bus number on device tree
-Date: Wed, 21 Jan 2015 16:53:08 +0100
-Message-ID: <1421855590-9210-2-git-send-email-ricardo.ribalda@gmail.com>
-References: <1421855590-9210-1-git-send-email-ricardo.ribalda@gmail.com>
-Cc: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	=?UTF-8?q?S=C3=B6ren=20Brinkmann?= <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1421855590-9210-1-git-send-email-ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH 1/3] spi/xilinx: Use automatic bus number on device tree
+Date: Wed, 21 Jan 2015 17:02:41 +0100
+Message-ID: <54BFCDA1.4060205@metafoo.de>
+References: <1421855590-9210-1-git-send-email-ricardo.ribalda@gmail.com> <1421855590-9210-2-git-send-email-ricardo.ribalda@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+To: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Michal Simek <michal.simek@xilinx.com>,
+	=?windows-1252?Q?S=F6ren_Brink?= =?windows-1252?Q?mann?=
+	<soren.brinkmann@xilinx.com>, linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1421855590-9210-2-git-send-email-ricardo.ribalda@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-If there is more than one spi device on a device tree, the second one
-will fail to probe due to a duplicated bus_num.
+On 01/21/2015 04:53 PM, Ricardo Ribalda Delgado wrote:
+> If there is more than one spi device on a device tree, the second one
+> will fail to probe due to a duplicated bus_num.
+ > [...]
 
-This patch uses automatic bus number if the device is deined on a device
-tree.
+This should already be fixed. See commit 4b153a2137c5 ("spi: xilinx: Use 
+pdev->id instead of pdev->dev.id for the SPI bus number")[1]. If the device 
+was registered using devicetree pdev->id is -1, so dynamic numbers will be used.
 
-Signed-off-by: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spi-xilinx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+- Lars
 
-diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-index 79bd84f..2ea4ca5 100644
---- a/drivers/spi/spi-xilinx.c
-+++ b/drivers/spi/spi-xilinx.c
-@@ -332,14 +332,17 @@ static int xilinx_spi_probe(struct platform_device *pdev)
- 	struct spi_master *master;
- 	u32 tmp;
- 	u8 i;
-+	s16 bus_num;
- 
- 	pdata = dev_get_platdata(&pdev->dev);
- 	if (pdata) {
- 		num_cs = pdata->num_chipselect;
- 		bits_per_word = pdata->bits_per_word;
-+		bus_num = pdev->id;
- 	} else {
- 		of_property_read_u32(pdev->dev.of_node, "xlnx,num-ss-bits",
- 					  &num_cs);
-+		bus_num = -1;
- 	}
- 
- 	if (!num_cs) {
-@@ -369,7 +372,7 @@ static int xilinx_spi_probe(struct platform_device *pdev)
- 		goto put_master;
- 	}
- 
--	master->bus_num = pdev->id;
-+	master->bus_num = bus_num;
- 	master->num_chipselect = num_cs;
- 	master->dev.of_node = pdev->dev.of_node;
- 
--- 
-2.1.4
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+[1] 
+http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/drivers/spi/spi-xilinx.c?id=4b153a2137c5d2914794c8944d78c731c1b0ae9d

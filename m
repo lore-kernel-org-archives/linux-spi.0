@@ -1,10 +1,8 @@
 From: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
-Subject: [PATCH 00/18] spi/xilinx: Speed-up
-Date: Fri, 23 Jan 2015 17:08:32 +0100
-Message-ID: <1422029330-10971-1-git-send-email-ricardo.ribalda@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+Subject: [PATCH 05/18] spi/xilinx: Leave the IRQ always enabled.
+Date: Fri, 23 Jan 2015 17:08:37 +0100
+Message-ID: <1422029330-10971-6-git-send-email-ricardo.ribalda@gmail.com>
+References: <1422029330-10971-1-git-send-email-ricardo.ribalda@gmail.com>
 Cc: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
 To: Mark Brown <broonie@kernel.org>,
 	Michal Simek <michal.simek@xilinx.com>,
@@ -12,77 +10,70 @@ To: Mark Brown <broonie@kernel.org>,
 	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1422029330-10971-1-git-send-email-ricardo.ribalda@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This set of patches has been developed after using the core to access a=
- spi
-nor flash. The initial performance was not as desired. The following ch=
-anges
-have been done.
+Instead of enabling the IRQ and disabling it for every transaction.
 
--This series of patches add driver support for hardware implemented mod=
-es:
-LSB_FIRS, LOOP and CS_HIGH.
+Specially the small transactions (1,2 words) benefit from removing 3 bus
+accesses.
 
--There is support for irq less operations.
+Signed-off-by: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
+---
+ drivers/spi/spi-xilinx.c | 19 +++++--------------
+ 1 file changed, 5 insertions(+), 14 deletions(-)
 
--The buffer size of the core is detected at probe time, speeding up the
-operations.
-
--Code has been simplify and cleaned
-
-This are the results, before and after the patchet
-
-Original
-root@qt5022:~# dd if=3D/dev/mtd0 of=3D/dev/null
-16384+0 records in
-16384+0 records out
-8388608 bytes (8.4 MB) copied, 117.985 s, 71.1 kB/s
-
-=C2=A037: =C2=A0 =C2=A0 =C2=A0 =C2=A0107 =C2=A0 =C2=A0 =C2=A082853 =C2=A0=
-Xilinx INTC Level =C2=A0 1 =C2=A0b0010000.spi-flash
-
-After patchset (irq):
-root@qt5022:~# dd if=3D/dev/mtd0 of=3D/dev/null
-16384+0 records in
-16384+0 records out
-8388608 bytes (8.4 MB) copied, 49.009 s, 171 kB/s
-
-After patchset (irq):
-root@qt5022:~# dd if=3D/dev/mtd0 of=3D/dev/null
-16384+0 records in
-16384+0 records out
-8388608 bytes (8.4 MB) copied, 41.2526 s, 203 kB/s
-
-IRQS:=C2=A0ZERO
-
-This set of patches supersedes the previous patchet with only LSB_FIRST=
- and LOOP
-
-Ricardo Ribalda Delgado (18):
-  spi/xilinx: Support for spi mode LSB_FIRST
-  spi/xilinx: Support for spi mode LOOP
-  spi/xilinx: Simplify data read from the Rx FIFO
-  spi-xilinx: Simplify spi_fill_tx_fifo
-  spi/xilinx: Leave the IRQ always enabled.
-  spi/xilinx: Code cleanup
-  spi/xilinx: Use cached value of register
-  spi/xilinx: Support cores with no interrupt
-  spi/xilinx: Do not inhibit transmission in polling mode
-  spi/xilinx: Support for spi mode CS_HIGH
-  spi/xilinx: Remove rx_fn and tx_fn pointer
-  spi/xilinx: Make spi_tx and spi_rx simmetric
-  spi/xilinx: Convert remainding_bytes in remaining words
-  spi/xilinx: Convert bits_per_word in bytes_per_word
-  spi/xilinx: Remove iowrite/ioread wrappers
-  spi/xilinx: Reset core before buffer_size detection
-  spi/xilinx: Remove remaining_words driver data variable
-  spi/xilinx: Check number of slaves range
-
- drivers/spi/spi-xilinx.c | 306 ++++++++++++++++++++++-----------------=
---------
- 1 file changed, 146 insertions(+), 160 deletions(-)
-
---=20
+diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
+index 17480a2..408a842 100644
+--- a/drivers/spi/spi-xilinx.c
++++ b/drivers/spi/spi-xilinx.c
+@@ -167,8 +167,11 @@ static void xspi_init_hw(struct xilinx_spi *xspi)
+ 	/* Reset the SPI device */
+ 	xspi->write_fn(XIPIF_V123B_RESET_MASK,
+ 		regs_base + XIPIF_V123B_RESETR_OFFSET);
+-	/* Disable all the interrupts just in case */
+-	xspi->write_fn(0, regs_base + XIPIF_V123B_IIER_OFFSET);
++	/* Enable the transmit empty interrupt, which we use to determine
++	 * progress on the transmission.
++	 */
++	xspi->write_fn(XSPI_INTR_TX_EMPTY,
++			regs_base + XIPIF_V123B_IIER_OFFSET);
+ 	/* Enable the global IPIF interrupt */
+ 	xspi->write_fn(XIPIF_V123B_GINTR_ENABLE,
+ 		regs_base + XIPIF_V123B_DGIER_OFFSET);
+@@ -237,7 +240,6 @@ static void xilinx_spi_fill_tx_fifo(struct xilinx_spi *xspi, int n_words)
+ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
+ {
+ 	struct xilinx_spi *xspi = spi_master_get_devdata(spi->master);
+-	u32 ipif_ier;
+ 
+ 	/* We get here with transmitter inhibited */
+ 
+@@ -246,14 +248,6 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	xspi->remaining_bytes = t->len;
+ 	reinit_completion(&xspi->done);
+ 
+-
+-	/* Enable the transmit empty interrupt, which we use to determine
+-	 * progress on the transmission.
+-	 */
+-	ipif_ier = xspi->read_fn(xspi->regs + XIPIF_V123B_IIER_OFFSET);
+-	xspi->write_fn(ipif_ier | XSPI_INTR_TX_EMPTY,
+-		xspi->regs + XIPIF_V123B_IIER_OFFSET);
+-
+ 	for (;;) {
+ 		u16 cr;
+ 		int n_words;
+@@ -290,9 +284,6 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 			break;
+ 	}
+ 
+-	/* Disable the transmit empty interrupt */
+-	xspi->write_fn(ipif_ier, xspi->regs + XIPIF_V123B_IIER_OFFSET);
+-
+ 	return t->len - xspi->remaining_bytes;
+ }
+ 
+-- 
 2.1.4

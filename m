@@ -1,7 +1,7 @@
 From: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
-Subject: [PATCH 04/18] spi-xilinx: Simplify spi_fill_tx_fifo
-Date: Fri, 23 Jan 2015 17:08:36 +0100
-Message-ID: <1422029330-10971-5-git-send-email-ricardo.ribalda@gmail.com>
+Subject: [PATCH 17/18] spi/xilinx: Remove remaining_words driver data variable
+Date: Fri, 23 Jan 2015 17:08:49 +0100
+Message-ID: <1422029330-10971-18-git-send-email-ricardo.ribalda@gmail.com>
 References: <1422029330-10971-1-git-send-email-ricardo.ribalda@gmail.com>
 Cc: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
 To: Mark Brown <broonie@kernel.org>,
@@ -14,97 +14,79 @@ In-Reply-To: <1422029330-10971-1-git-send-email-ricardo.ribalda@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Instead of checking the TX_FULL flag for every transaction, find out the
-size of the buffer at probe time and use it.
+The variable never leaves the scope of txrx_bufs.
 
 Signed-off-by: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
 ---
- drivers/spi/spi-xilinx.c | 39 ++++++++++++++++++++++++++-------------
- 1 file changed, 26 insertions(+), 13 deletions(-)
+ drivers/spi/spi-xilinx.c | 28 ++++++++++++----------------
+ 1 file changed, 12 insertions(+), 16 deletions(-)
 
 diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-index 416b227..17480a2 100644
+index 8c25c59..026f4c5 100644
 --- a/drivers/spi/spi-xilinx.c
 +++ b/drivers/spi/spi-xilinx.c
-@@ -88,6 +88,7 @@ struct xilinx_spi {
+@@ -86,7 +86,6 @@ struct xilinx_spi {
+ 
+ 	u8 *rx_ptr;		/* pointer in the Tx buffer */
  	const u8 *tx_ptr;	/* pointer in the Rx buffer */
- 	int remaining_bytes;	/* the number of bytes left to transfer */
- 	u8 bits_per_word;
-+	int buffer_size;	/* buffer size in words */
- 	unsigned int (*read_fn)(void __iomem *);
- 	void (*write_fn)(u32, void __iomem *);
- 	void (*tx_fn)(struct xilinx_spi *);
-@@ -221,24 +222,16 @@ static int xilinx_spi_setup_transfer(struct spi_device *spi,
+-	int remaining_words;	/* the number of words left to transfer */
+ 	u8 bytes_per_word;
+ 	int buffer_size;	/* buffer size in words */
+ 	u32 cs_inactive;	/* Level of the CS pins when inactive*/
+@@ -209,33 +208,27 @@ static int xilinx_spi_setup_transfer(struct spi_device *spi,
  	return 0;
  }
  
--static int xilinx_spi_fill_tx_fifo(struct xilinx_spi *xspi)
-+static void xilinx_spi_fill_tx_fifo(struct xilinx_spi *xspi, int n_words)
- {
--	u8 sr;
--	int n_words = 0;
-+	xspi->remaining_bytes -= n_words * xspi->bits_per_word / 8;
- 
--	/* Fill the Tx FIFO with as many bytes as possible */
--	sr = xspi->read_fn(xspi->regs + XSPI_SR_OFFSET);
--	while ((sr & XSPI_SR_TX_FULL_MASK) == 0 && xspi->remaining_bytes > 0) {
-+	while (n_words--)
- 		if (xspi->tx_ptr)
- 			xspi->tx_fn(xspi);
- 		else
- 			xspi->write_fn(0, xspi->regs + XSPI_TXD_OFFSET);
--		xspi->remaining_bytes -= xspi->bits_per_word / 8;
--		sr = xspi->read_fn(xspi->regs + XSPI_SR_OFFSET);
--		n_words++;
--	}
+-static void xilinx_spi_fill_tx_fifo(struct xilinx_spi *xspi, int n_words)
+-{
+-	xspi->remaining_words -= n_words;
 -
--	return n_words;
-+	return;
- }
- 
+-	while (n_words--)
+-		xilinx_spi_tx(xspi);
+-	return;
+-}
+-
  static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
-@@ -265,7 +258,10 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
- 		u16 cr;
- 		int n_words;
+ {
+ 	struct xilinx_spi *xspi = spi_master_get_devdata(spi->master);
++	int remaining_words;	/* the number of words left to transfer */
  
--		n_words = xilinx_spi_fill_tx_fifo(xspi);
-+		n_words = (xspi->remaining_bytes * 8) / xspi->bits_per_word;
-+		n_words = min(n_words, xspi->buffer_size);
-+
-+		xilinx_spi_fill_tx_fifo(xspi, n_words);
+ 	/* We get here with transmitter inhibited */
+ 
+ 	xspi->tx_ptr = t->tx_buf;
+ 	xspi->rx_ptr = t->rx_buf;
+-	xspi->remaining_words = t->len / xspi->bytes_per_word;
++	remaining_words = t->len / xspi->bytes_per_word;
+ 	reinit_completion(&xspi->done);
+ 
+-	while (xspi->remaining_words) {
++	while (remaining_words) {
+ 		u16 cr = 0;
+-		int n_words;
++		int n_words, tx_words, rx_words;
+ 
+-		n_words = min(xspi->remaining_words, xspi->buffer_size);
++		n_words = min(remaining_words, xspi->buffer_size);
+ 
+-		xilinx_spi_fill_tx_fifo(xspi, n_words);
++		tx_words = n_words;
++		while (tx_words--)
++			xilinx_spi_tx(xspi);
  
  		/* Start the transfer by not inhibiting the transmitter any
  		 * longer
-@@ -322,6 +318,21 @@ static irqreturn_t xilinx_spi_irq(int irq, void *dev_id)
- 	return IRQ_HANDLED;
- }
+@@ -261,8 +254,11 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 			       xspi->regs + XSPI_CR_OFFSET);
  
-+static int xilinx_spi_find_buffer_size(struct xilinx_spi *xspi)
-+{
-+	u8 sr;
-+	int n_words = 0;
+ 		/* Read out all the data from the Rx FIFO */
+-		while (n_words--)
++		rx_words = n_words;
++		while (rx_words--)
+ 			xilinx_spi_rx(xspi);
 +
-+	/* Fill the Tx FIFO with as many words as possible */
-+	do {
-+		xspi->write_fn(0, xspi->regs + XSPI_TXD_OFFSET);
-+		sr = xspi->read_fn(xspi->regs + XSPI_SR_OFFSET);
-+		n_words++;
-+	} while (!(sr & XSPI_SR_TX_FULL_MASK));
-+
-+	return n_words;
-+}
-+
- static const struct of_device_id xilinx_spi_of_match[] = {
- 	{ .compatible = "xlnx,xps-spi-2.00.a", },
- 	{ .compatible = "xlnx,xps-spi-2.00.b", },
-@@ -413,6 +424,8 @@ static int xilinx_spi_probe(struct platform_device *pdev)
- 		goto put_master;
++		remaining_words -= n_words;
  	}
  
-+	xspi->buffer_size = xilinx_spi_find_buffer_size(xspi);
-+
- 	/* SPI controller initializations */
- 	xspi_init_hw(xspi);
- 
+ 	return t->len;
 -- 
 2.1.4

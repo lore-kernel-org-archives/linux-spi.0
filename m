@@ -1,100 +1,97 @@
-From: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
-Subject: [PATCH 09/18] spi/xilinx: Do not inhibit transmission in polling mode
-Date: Fri, 23 Jan 2015 17:08:41 +0100
-Message-ID: <1422029330-10971-10-git-send-email-ricardo.ribalda@gmail.com>
+From: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 08/18] spi/xilinx: Support cores with no interrupt
+Date: Fri, 23 Jan 2015 17:08:40 +0100
+Message-ID: <1422029330-10971-9-git-send-email-ricardo.ribalda@gmail.com>
 References: <1422029330-10971-1-git-send-email-ricardo.ribalda@gmail.com>
-Cc: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
-To: Mark Brown <broonie@kernel.org>,
-	Michal Simek <michal.simek@xilinx.com>,
-	=?UTF-8?q?S=C3=B6ren=20Brinkmann?= <soren.brinkmann@xilinx.com>,
-	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1422029330-10971-1-git-send-email-ricardo.ribalda@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	=?UTF-8?q?S=C3=B6ren=20Brinkmann?= <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1422029330-10971-1-git-send-email-ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-When no irq is used, there is no need to inhibit the transmission for
-every transaction. This inhibition was implemented to avoid a race
-condition with the irq handler.
+The core can run in polling mode. In fact, the performance of the core
+is similar (or even better), due to the fact most of the spi
+transactions are just a couple of bytes and there is one irq per
+transactions.
 
-Signed-off-by: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
+When an mtd device is connected via spi, reading 8MB of data produces
+more than 80K interrupts (with irq disabling, context swith....)
+
+Signed-off-by: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-xilinx.c | 25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+ drivers/spi/spi-xilinx.c | 33 +++++++++++++++++++--------------
+ 1 file changed, 19 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-index 8a28cab..a70cb91 100644
+index 3f8450d..8a28cab 100644
 --- a/drivers/spi/spi-xilinx.c
 +++ b/drivers/spi/spi-xilinx.c
-@@ -163,6 +163,7 @@ static void xspi_rx32(struct xilinx_spi *xspi)
- static void xspi_init_hw(struct xilinx_spi *xspi)
- {
- 	void __iomem *regs_base = xspi->regs;
-+	u32 inhibit;
- 
- 	/* Reset the SPI device */
- 	xspi->write_fn(XIPIF_V123B_RESET_MASK,
-@@ -173,16 +174,19 @@ static void xspi_init_hw(struct xilinx_spi *xspi)
+@@ -173,8 +173,11 @@ static void xspi_init_hw(struct xilinx_spi *xspi)
  	xspi->write_fn(XSPI_INTR_TX_EMPTY,
  			regs_base + XIPIF_V123B_IIER_OFFSET);
  	/* Enable the global IPIF interrupt */
--	if (xspi->irq >= 0)
-+	if (xspi->irq >= 0) {
- 		xspi->write_fn(XIPIF_V123B_GINTR_ENABLE,
- 			regs_base + XIPIF_V123B_DGIER_OFFSET);
--	else
-+		inhibit = XSPI_CR_TRANS_INHIBIT;
-+	} else {
- 		xspi->write_fn(0, regs_base + XIPIF_V123B_DGIER_OFFSET);
-+		inhibit = 0;
-+	}
+-	xspi->write_fn(XIPIF_V123B_GINTR_ENABLE,
+-		regs_base + XIPIF_V123B_DGIER_OFFSET);
++	if (xspi->irq >= 0)
++		xspi->write_fn(XIPIF_V123B_GINTR_ENABLE,
++			regs_base + XIPIF_V123B_DGIER_OFFSET);
++	else
++		xspi->write_fn(0, regs_base + XIPIF_V123B_DGIER_OFFSET);
  	/* Deselect the slave on the SPI bus */
  	xspi->write_fn(0xffff, regs_base + XSPI_SSR_OFFSET);
  	/* Disable the transmitter, enable Manual Slave Select Assertion,
- 	 * put SPI controller into master mode, and enable it */
--	xspi->write_fn(XSPI_CR_TRANS_INHIBIT | XSPI_CR_MANUAL_SSELECT |
-+	xspi->write_fn(inhibit | XSPI_CR_MANUAL_SSELECT |
- 		XSPI_CR_MASTER_MODE | XSPI_CR_ENABLE | XSPI_CR_TXFIFO_RESET |
- 		XSPI_CR_RXFIFO_RESET, regs_base + XSPI_CR_OFFSET);
- }
-@@ -252,7 +256,7 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
- 	reinit_completion(&xspi->done);
+@@ -264,7 +267,12 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 							~XSPI_CR_TRANS_INHIBIT;
+ 		xspi->write_fn(cr, xspi->regs + XSPI_CR_OFFSET);
  
- 	while (xspi->remaining_bytes) {
--		u16 cr;
-+		u16 cr = 0;
- 		int n_words;
- 
- 		n_words = (xspi->remaining_bytes * 8) / xspi->bits_per_word;
-@@ -263,13 +267,13 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
- 		/* Start the transfer by not inhibiting the transmitter any
- 		 * longer
- 		 */
--		cr = xspi->read_fn(xspi->regs + XSPI_CR_OFFSET) &
--							~XSPI_CR_TRANS_INHIBIT;
--		xspi->write_fn(cr, xspi->regs + XSPI_CR_OFFSET);
- 
--		if (xspi->irq >= 0)
-+		if (xspi->irq >= 0) {
-+			cr = xspi->read_fn(xspi->regs + XSPI_CR_OFFSET) &
-+							~XSPI_CR_TRANS_INHIBIT;
-+			xspi->write_fn(cr, xspi->regs + XSPI_CR_OFFSET);
- 			wait_for_completion(&xspi->done);
--		else
-+		} else
- 			while (!(xspi->read_fn(xspi->regs + XSPI_SR_OFFSET) &
- 						XSPI_SR_TX_EMPTY_MASK))
- 				;
-@@ -279,7 +283,8 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
- 		 * transmitter while the Isr refills the transmit register/FIFO,
- 		 * or make sure it is stopped if we're done.
- 		 */
--		xspi->write_fn(cr | XSPI_CR_TRANS_INHIBIT,
+-		wait_for_completion(&xspi->done);
 +		if (xspi->irq >= 0)
-+			xspi->write_fn(cr | XSPI_CR_TRANS_INHIBIT,
- 			       xspi->regs + XSPI_CR_OFFSET);
++			wait_for_completion(&xspi->done);
++		else
++			while (!(xspi->read_fn(xspi->regs + XSPI_SR_OFFSET) &
++						XSPI_SR_TX_EMPTY_MASK))
++				;
  
- 		/* Read out all the data from the Rx FIFO */
+ 		/* A transmit has just completed. Process received data and
+ 		 * check for more data to transmit. Always inhibit the
+@@ -412,20 +420,17 @@ static int xilinx_spi_probe(struct platform_device *pdev)
+ 
+ 	xspi->buffer_size = xilinx_spi_find_buffer_size(xspi);
+ 
+-	/* SPI controller initializations */
+-	xspi_init_hw(xspi);
+-
+ 	xspi->irq = platform_get_irq(pdev, 0);
+-	if (xspi->irq < 0) {
+-		ret = xspi->irq;
+-		goto put_master;
++	if (xspi->irq >= 0) {
++		/* Register for SPI Interrupt */
++		ret = devm_request_irq(&pdev->dev, xspi->irq, xilinx_spi_irq, 0,
++				dev_name(&pdev->dev), xspi);
++		if (ret)
++			goto put_master;
+ 	}
+ 
+-	/* Register for SPI Interrupt */
+-	ret = devm_request_irq(&pdev->dev, xspi->irq, xilinx_spi_irq, 0,
+-			       dev_name(&pdev->dev), xspi);
+-	if (ret)
+-		goto put_master;
++	/* SPI controller initializations */
++	xspi_init_hw(xspi);
+ 
+ 	ret = spi_bitbang_start(&xspi->bitbang);
+ 	if (ret) {
 -- 
 2.1.4
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

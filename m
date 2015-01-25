@@ -1,86 +1,53 @@
-From: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 03/18] spi/xilinx: Simplify data read from the Rx FIFO
-Date: Fri, 23 Jan 2015 17:08:35 +0100
-Message-ID: <1422029330-10971-4-git-send-email-ricardo.ribalda@gmail.com>
-References: <1422029330-10971-1-git-send-email-ricardo.ribalda@gmail.com>
-Cc: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	=?UTF-8?q?S=C3=B6ren=20Brinkmann?= <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>
+Subject: Re: Backport of spi-fsl-spi bugfix to 3.14.y
+Date: Sun, 25 Jan 2015 09:38:53 -0800
+Message-ID: <20150125173853.GA6467@kroah.com>
+References: <1420472564.803.9.camel@gmail.com>
+ <20150105154834.GV11764@sirena.org.uk>
+ <CAOR3GqUBWyfUvNG-8JiPVkis6b_25Eq_REtcp=kLN3CUoqsG6g@mail.gmail.com>
+ <20150123124529.GU21293@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: Esben Haabendal <esben.haabendal-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1422029330-10971-1-git-send-email-ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20150123124529.GU21293-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The number of words in the read buffer will be exactly the same as the
-number of words written on write buffer, once the transaction has
-finished.
+On Fri, Jan 23, 2015 at 12:45:29PM +0000, Mark Brown wrote:
+> On Tue, Jan 06, 2015 at 10:15:47PM +0100, Esben Haabendal wrote:
+> > On 5 January 2015 at 16:48, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> 
+> > >> Please consider commit 4302a59629f7a0bd70fd1605d2b558597517372a
+> > >> (spi: fsl: Fix problem with multi message transfers) for inclusion in
+> > >> stable kernel 3.14.
+> 
+> > >> It fixes a regression when using mmc_spi driver on top of spi-fsl-spi
+> > >> driver (tested with powerpc mpc8313 based board).
+> 
+> > > Has this ever worked?
+> 
+> > Yes, I have used mmc_spi with spi-fsl-spi on the same board with success
+> > with in 2.6.33, 3.0 and 3.4.
+> 
+> > I have no idea what has caused this to break.  Maybe mmc_spi driver was
+> > not doing multi message transfers earlier?
+> 
+> So, I now see this has actually been merged into stable without getting
+> to the bottom of why it's helping anything...  this is a bit worrying
+> since it's adding new functionality and not really a bug fix.  It'd have
+> been good to at least get a followup here.
 
-Instead of cheking the rx_empty flags for every word simply save the
-number of words written by fill_tx_fifo.
+Do you want me to revert something from the stable tree?  If so, has it
+also been reverted upstream?
 
-Signed-off-by: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spi-xilinx.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+confused,
 
-diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-index e1d9a20..416b227 100644
---- a/drivers/spi/spi-xilinx.c
-+++ b/drivers/spi/spi-xilinx.c
-@@ -221,9 +221,10 @@ static int xilinx_spi_setup_transfer(struct spi_device *spi,
- 	return 0;
- }
- 
--static void xilinx_spi_fill_tx_fifo(struct xilinx_spi *xspi)
-+static int xilinx_spi_fill_tx_fifo(struct xilinx_spi *xspi)
- {
- 	u8 sr;
-+	int n_words = 0;
- 
- 	/* Fill the Tx FIFO with as many bytes as possible */
- 	sr = xspi->read_fn(xspi->regs + XSPI_SR_OFFSET);
-@@ -234,7 +235,10 @@ static void xilinx_spi_fill_tx_fifo(struct xilinx_spi *xspi)
- 			xspi->write_fn(0, xspi->regs + XSPI_TXD_OFFSET);
- 		xspi->remaining_bytes -= xspi->bits_per_word / 8;
- 		sr = xspi->read_fn(xspi->regs + XSPI_SR_OFFSET);
-+		n_words++;
- 	}
-+
-+	return n_words;
- }
- 
- static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
-@@ -259,9 +263,9 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
- 
- 	for (;;) {
- 		u16 cr;
--		u8 sr;
-+		int n_words;
- 
--		xilinx_spi_fill_tx_fifo(xspi);
-+		n_words = xilinx_spi_fill_tx_fifo(xspi);
- 
- 		/* Start the transfer by not inhibiting the transmitter any
- 		 * longer
-@@ -282,11 +286,8 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
- 			       xspi->regs + XSPI_CR_OFFSET);
- 
- 		/* Read out all the data from the Rx FIFO */
--		sr = xspi->read_fn(xspi->regs + XSPI_SR_OFFSET);
--		while ((sr & XSPI_SR_RX_EMPTY_MASK) == 0) {
-+		while (n_words--)
- 			xspi->rx_fn(xspi);
--			sr = xspi->read_fn(xspi->regs + XSPI_SR_OFFSET);
--		}
- 
- 		/* See if there is more data to send */
- 		if (xspi->remaining_bytes <= 0)
--- 
-2.1.4
-
+greg k-h
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

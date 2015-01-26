@@ -1,51 +1,80 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 01/18] spi/xilinx: Support for spi mode LSB_FIRST
-Date: Mon, 26 Jan 2015 19:23:44 +0000
-Message-ID: <20150126192344.GH21293@sirena.org.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 04/18] spi-xilinx: Simplify spi_fill_tx_fifo
+Date: Mon, 26 Jan 2015 23:54:38 +0000
+Message-ID: <20150126235438.GJ21293@sirena.org.uk>
 References: <1422029330-10971-1-git-send-email-ricardo.ribalda@gmail.com>
- <1422029330-10971-2-git-send-email-ricardo.ribalda@gmail.com>
+ <1422029330-10971-5-git-send-email-ricardo.ribalda@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="R8CP7fzfAHpwDIZp"
-Cc: Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	=?iso-8859-1?Q?S=F6ren?= Brinkmann <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="W/y7qBwfEQL/2otS"
+Cc: Michal Simek <michal.simek@xilinx.com>,
+	=?iso-8859-1?Q?S=F6ren?= Brinkmann <soren.brinkmann@xilinx.com>,
+	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+To: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1422029330-10971-2-git-send-email-ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1422029330-10971-5-git-send-email-ricardo.ribalda@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---R8CP7fzfAHpwDIZp
+--W/y7qBwfEQL/2otS
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 23, 2015 at 05:08:33PM +0100, Ricardo Ribalda Delgado wrote:
-> Hardware supports LSB_FIRST mode. Support it also in the driver.
+On Fri, Jan 23, 2015 at 05:08:36PM +0100, Ricardo Ribalda Delgado wrote:
+> Instead of checking the TX_FULL flag for every transaction, find out the
+> size of the buffer at probe time and use it.
 
-Applied, thanks.
+So, I see what's going on here and the potential performance benefit
+=66rom avoiding the MMIO access.  However I can't help but worry that this
+makes things more fragile - the current code will transparently handle
+any races or anything which result in a misfilling of the FIFO for some
+reason either now or in the future as performance is improved and the
+driver gets more fancy.
 
---R8CP7fzfAHpwDIZp
+As things stand if I look at the code it's fairly clear it should be
+safe and unfortunately we only have an underrun interrupt which will be
+triggered normally (no overflow interrupt) so we can't really use that
+to add a bit of robustness.  I'm tempted to suggest checking that we did
+trigger the FIFO full flag when we fill the FIFO but that feels like
+overengineering.
+
+Let me think about this, I'll probably apply it but if you can think
+about ways of making this more robust that'd be good.
+
+> @@ -413,6 +424,8 @@ static int xilinx_spi_probe(struct platform_device *p=
+dev)
+>  		goto put_master;
+>  	}
+> =20
+> +	xspi->buffer_size =3D xilinx_spi_find_buffer_size(xspi);
+> +
+>  	/* SPI controller initializations */
+>  	xspi_init_hw(xspi);
+
+It seems safer to reset the hardware, probe the FIFO size and then reset
+the hardware again in case something decided to leave some data in the
+FIFO (perhaps some bootloader wasn't as well programmed as one might
+desire for example).  Not cricial now but it could again become
+important with future optimizations.
+
+--W/y7qBwfEQL/2otS
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJUxpQ/AAoJECTWi3JdVIfQzhQH/1DmOTqHDDxN11dZIkiaQbB/
-xczfP5xpaq/cTq11hOpf50Z1ID7kg1o/hQQUyf9Wk4hhC/sex0j6ZKyZlzJqnndU
-83Q+KTCBKs3SPnUasjpB3tADR4IHTwV4nNcs9esas8GhbY1l3KBH8qZVIiKVOQOT
-cQe3+x87xDTQoxRtLchNIlGHCzj8fwmVoV2LTQHS++AFj2zVKiEc1xr/l53VeJaE
-5+XNQkygJ8fjBNvv4OGRj81TB+lagu/2w3yms99Y2VO1QBp0l47sWPLbfilYTzd1
-JYEolfYmvn3zvOP+UxUe+1GeARSaqnf3klQ2SLHqc1e78lShV/EBSCzp/y23Lss=
-=mJq6
+iQEcBAEBCAAGBQJUxtO9AAoJECTWi3JdVIfQKSsH/Ah9V6F++jpOAxUkVw9fUE8A
+pCqrFInxUDHKY/+I03IuaBd2lgaRY+cYPqYnBXPKJEvJSvarwFJMZOCNnLGgjdYC
+wXdpXtXIyu3hzJErddzLxTcYTG6z1XEJT0xo42brxloLUbmjezwnjESqy/UA28AG
+l3/2FwA2Q0lx7OVmT5YKUF3/URIi1C4vWnbr25hQrT6RxXMqlJDEae9vSJ2GqxIm
+9Iiqr8ZLHflcttfPPG2Q+Mz3bIT01ZhpCiR65fy6NctkzRAp+aDwhCdhNXcfQ7H0
+XJpvSX8puTx6LnOPm8tTb+79yCo7sTzfaW8KEQdeoX0O1cuYklXJ21c/f2gr4nc=
+=Cdfu
 -----END PGP SIGNATURE-----
 
---R8CP7fzfAHpwDIZp--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--W/y7qBwfEQL/2otS--

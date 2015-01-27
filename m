@@ -1,80 +1,96 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 04/18] spi-xilinx: Simplify spi_fill_tx_fifo
-Date: Mon, 26 Jan 2015 23:54:38 +0000
-Message-ID: <20150126235438.GJ21293@sirena.org.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 08/18] spi/xilinx: Support cores with no interrupt
+Date: Tue, 27 Jan 2015 00:04:28 +0000
+Message-ID: <20150127000428.GK21293@sirena.org.uk>
 References: <1422029330-10971-1-git-send-email-ricardo.ribalda@gmail.com>
- <1422029330-10971-5-git-send-email-ricardo.ribalda@gmail.com>
+ <1422029330-10971-9-git-send-email-ricardo.ribalda@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="W/y7qBwfEQL/2otS"
-Cc: Michal Simek <michal.simek@xilinx.com>,
-	=?iso-8859-1?Q?S=F6ren?= Brinkmann <soren.brinkmann@xilinx.com>,
-	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-To: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="3w8x3zxtEJX8SUiO"
+Cc: Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	=?iso-8859-1?Q?S=F6ren?= Brinkmann <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1422029330-10971-5-git-send-email-ricardo.ribalda@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1422029330-10971-9-git-send-email-ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---W/y7qBwfEQL/2otS
+--3w8x3zxtEJX8SUiO
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 23, 2015 at 05:08:36PM +0100, Ricardo Ribalda Delgado wrote:
-> Instead of checking the TX_FULL flag for every transaction, find out the
-> size of the buffer at probe time and use it.
+On Fri, Jan 23, 2015 at 05:08:40PM +0100, Ricardo Ribalda Delgado wrote:
 
-So, I see what's going on here and the potential performance benefit
-=66rom avoiding the MMIO access.  However I can't help but worry that this
-makes things more fragile - the current code will transparently handle
-any races or anything which result in a misfilling of the FIFO for some
-reason either now or in the future as performance is improved and the
-driver gets more fancy.
+> The core can run in polling mode. In fact, the performance of the core
+> is similar (or even better), due to the fact most of the spi
+> transactions are just a couple of bytes and there is one irq per
+> transactions.
 
-As things stand if I look at the code it's fairly clear it should be
-safe and unfortunately we only have an underrun interrupt which will be
-triggered normally (no overflow interrupt) so we can't really use that
-to add a bit of robustness.  I'm tempted to suggest checking that we did
-trigger the FIFO full flag when we fill the FIFO but that feels like
-overengineering.
+> When an mtd device is connected via spi, reading 8MB of data produces
+> more than 80K interrupts (with irq disabling, context swith....)
 
-Let me think about this, I'll probably apply it but if you can think
-about ways of making this more robust that'd be good.
+Right, for short transfers polling tends to win every time over
+interrupts - if you look at other controller drivers you'll see a lot of
+them use this technique.  The best practice here is generally to use a
+copy break and do very short transfers in polling mode and go back to
+interrupts for larger ones.  This break is typically done at the point
+where we go over a FIFO in transfer size since normally if the device is
+designed to be run with DMA the FIFO will be quite small.
 
-> @@ -413,6 +424,8 @@ static int xilinx_spi_probe(struct platform_device *p=
-dev)
->  		goto put_master;
+Obviously this isn't quite the same case since not only is there no DMA
+support (yet?) but the FIFO could be any size but similar things apply
+especially if someone configured the device with a large FIFO.
+
+> -	xspi_init_hw(xspi);
+> -
+>  	xspi->irq =3D platform_get_irq(pdev, 0);
+> -	if (xspi->irq < 0) {
+> -		ret =3D xspi->irq;
+> -		goto put_master;
+> +	if (xspi->irq >=3D 0) {
+> +		/* Register for SPI Interrupt */
+> +		ret =3D devm_request_irq(&pdev->dev, xspi->irq, xilinx_spi_irq, 0,
+> +				dev_name(&pdev->dev), xspi);
+> +		if (ret)
+> +			goto put_master;
 >  	}
 > =20
-> +	xspi->buffer_size =3D xilinx_spi_find_buffer_size(xspi);
-> +
->  	/* SPI controller initializations */
->  	xspi_init_hw(xspi);
+> -	/* Register for SPI Interrupt */
+> -	ret =3D devm_request_irq(&pdev->dev, xspi->irq, xilinx_spi_irq, 0,
+> -			       dev_name(&pdev->dev), xspi);
+> -	if (ret)
+> -		goto put_master;
+> +	/* SPI controller initializations */
+> +	xspi_init_hw(xspi);
 
-It seems safer to reset the hardware, probe the FIFO size and then reset
-the hardware again in case something decided to leave some data in the
-FIFO (perhaps some bootloader wasn't as well programmed as one might
-desire for example).  Not cricial now but it could again become
-important with future optimizations.
+This appears to move the interrupt request before the hardware reset.
+Are you sure the interrupt handler won't misbehave if it fires before we
+finished initializing?  One thing the hardware reset should do is get
+the device in a known good state.
 
---W/y7qBwfEQL/2otS
+--3w8x3zxtEJX8SUiO
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJUxtO9AAoJECTWi3JdVIfQKSsH/Ah9V6F++jpOAxUkVw9fUE8A
-pCqrFInxUDHKY/+I03IuaBd2lgaRY+cYPqYnBXPKJEvJSvarwFJMZOCNnLGgjdYC
-wXdpXtXIyu3hzJErddzLxTcYTG6z1XEJT0xo42brxloLUbmjezwnjESqy/UA28AG
-l3/2FwA2Q0lx7OVmT5YKUF3/URIi1C4vWnbr25hQrT6RxXMqlJDEae9vSJ2GqxIm
-9Iiqr8ZLHflcttfPPG2Q+Mz3bIT01ZhpCiR65fy6NctkzRAp+aDwhCdhNXcfQ7H0
-XJpvSX8puTx6LnOPm8tTb+79yCo7sTzfaW8KEQdeoX0O1cuYklXJ21c/f2gr4nc=
-=Cdfu
+iQEcBAEBCAAGBQJUxtYLAAoJECTWi3JdVIfQOwUH/1aYs5vxXqB1lWaVjS5o4GNq
+pl9g+ATdXLxZScdsv1aquXZH/mjGQVKvVjQ47eUkB1eDPUdqhwR9pmEK3VDK24vc
+D3bhYTsmkL1VtYWLBFRsY2EMWfQitXLE+B9/Cgpls5WLLalKeWL/5eGMSdat7Ysn
+2JrU7OeVIZihJnua731RwDWuCu0VYHxDwpybdYp20xqru+T4KZJVGpDCVZRiRpuj
+nuNTdWuJgzaMviPIDnKW8ena2sarnBDpYLF3EQZsGHWQvBneJXVC1Wv4wJzsXapv
+/D5vAJBuApN6mqBeeG5qEPeePwIbm6HM2DtKQXW5CIFbyTLMZsE2FWoijoObE2M=
+=ekUg
 -----END PGP SIGNATURE-----
 
---W/y7qBwfEQL/2otS--
+--3w8x3zxtEJX8SUiO--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

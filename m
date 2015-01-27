@@ -1,87 +1,53 @@
-From: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 11/18] spi/xilinx: Remove rx_fn and tx_fn pointer
-Date: Tue, 27 Jan 2015 11:00:51 +0100
-Message-ID: <CAPybu_3gF1BXhq4j5Z3DfM8_PxuK72Pshm6_5qVKH-ZyYTpgig@mail.gmail.com>
-References: <1422029330-10971-1-git-send-email-ricardo.ribalda@gmail.com>
- <1422029330-10971-12-git-send-email-ricardo.ribalda@gmail.com> <20150127000903.GM21293@sirena.org.uk>
+From: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
+Subject: Re: [PATCH 00/18] spi/xilinx: Speed-up
+Date: Tue, 27 Jan 2015 11:17:42 +0100
+Message-ID: <CAPybu_1==6gvwbWQWxSj_C3siGFTjvqNh1=Xj6jvu_xQFOA-Kw@mail.gmail.com>
+References: <1422029330-10971-1-git-send-email-ricardo.ribalda@gmail.com> <20150127001419.GO21293@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Cc: Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	=?UTF-8?Q?S=C3=B6ren_Brinkmann?= <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+Cc: Michal Simek <michal.simek@xilinx.com>,
+	=?UTF-8?Q?S=C3=B6ren_Brinkmann?= <soren.brinkmann@xilinx.com>,
+	linux-spi@vger.kernel.org,
 	"moderated list:ARM/S5P EXYNOS AR..."
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Andy Whitcroft <apw-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>,
-	Joe Perches <joe-6d6DIl74uiNBDgjK7y7TUQ@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150127000903.GM21293-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+	<linux-arm-kernel@lists.infradead.org>,
+	LKML <linux-kernel@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20150127001419.GO21293@sirena.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 Hello Mark
 
-
-> Perhaps I'm missing something here but we only seem to be incrementing
-> rx_ptr for the 32 bit case here...
-
-The unified diff is a bit confusing this time.
-
-This is how the function looks after the patch.
-All the modes are handled in a generic way.
-
-Which I believe it is right:
-
-static void xilinx_spi_rx(struct xilinx_spi *xspi)
-{
-u32 data = xspi->read_fn(xspi->regs + XSPI_RXD_OFFSET);
-
-if (!xspi->rx_ptr)
-    return;
-
-switch (xspi->bits_per_word) {
-case 8:
-    *(u8 *)(xspi->rx_ptr) = data;
-break;
-case 16:
-    *(u16 *)(xspi->rx_ptr) = data;
-break;
-case 32:
-    *(u32 *)(xspi->rx_ptr) = data;
-break;
-}
-
-xspi->rx_ptr += xspi->bits_per_word/8;
-}
-
-
+On Tue, Jan 27, 2015 at 1:14 AM, Mark Brown <broonie@kernel.org> wrote:
 
 >
->> +     xspi->rx_ptr += xspi->bits_per_word/8;
+> In general the best way to present a series is to start off with any bug
+> fixes (so they can be sent to Linus and stable if needed), then move on
+> to mechanical and stylistic cleanups (since they tend to be easy to
+> review and apply) and finally move on to new functionality (since that
+> is most likely to run into review problems and the cleanups should help
+> review).
+
+Will try to follow that pattern the next time.
+
+The development of the patchset has been a bit chaotic. I opened up
+the code to support more modes and then I realize that I could improve
+the poor performance I was having with the driver....
+
 >
-> ...which looks to duplicate this which handles all cases.  Also there's
-> a coding style thing - spaces around the / please.
+>>   spi/xilinx: Support for spi mode LOOP
+>>   spi/xilinx: Simplify data read from the Rx FIFO
+>>   spi-xilinx: Simplify spi_fill_tx_fifo
+>
+> spi-xilinx?
 
-I am fixing this on the next version. (and  xspi->tx_ptr +=
-xspi->bits_per_word/8;)
+Thanks! Fixed on the next version.
 
-I am also cc: the maintainers of checkpatch, because for whatever
-reason, this was not found by the script
-
-ricardo@neopili:~/curro/qtec/linux-upstream$ scripts/checkpatch.pl
-xilinx-spi2/0011-spi-xilinx-Remove-rx_fn-and-tx_fn-pointer.patch
-total: 0 errors, 0 warnings, 109 lines checked
-
-xilinx-spi2/0011-spi-xilinx-Remove-rx_fn-and-tx_fn-pointer.patch has
-no obvious style problems and is ready for submission.
+BTW what is preferred spi/xilinx: or spi: xilinx: ?I have seen both naming.
 
 Thanks!
 
 
 -- 
 Ricardo Ribalda
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

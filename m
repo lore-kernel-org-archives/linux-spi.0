@@ -1,53 +1,68 @@
-From: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
-Subject: Re: [PATCH 00/18] spi/xilinx: Speed-up
-Date: Tue, 27 Jan 2015 11:17:42 +0100
-Message-ID: <CAPybu_1==6gvwbWQWxSj_C3siGFTjvqNh1=Xj6jvu_xQFOA-Kw@mail.gmail.com>
-References: <1422029330-10971-1-git-send-email-ricardo.ribalda@gmail.com> <20150127001419.GO21293@sirena.org.uk>
+From: Bhuvanchandra DV <bhuvanchandra.dv@toradex.com>
+Subject: [PATCH 1/7] ARM: vf610: add second DSPI instance
+Date: Tue, 27 Jan 2015 16:27:18 +0530
+Message-ID: <1422356244-15629-2-git-send-email-bhuvanchandra.dv@toradex.com>
+References: <1422356244-15629-1-git-send-email-bhuvanchandra.dv@toradex.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Michal Simek <michal.simek@xilinx.com>,
-	=?UTF-8?Q?S=C3=B6ren_Brinkmann?= <soren.brinkmann@xilinx.com>,
-	linux-spi@vger.kernel.org,
-	"moderated list:ARM/S5P EXYNOS AR..."
+Content-Type: text/plain
+Cc: <stefan@agner.ch>, <shawn.guo@linaro.org>, <robh+dt@kernel.org>,
+	<pawel.moll@arm.com>, <ijc+devicetree@hellion.org.uk>,
+	<galak@codeaurora.org>, <linux@arm.linux.org.uk>,
+	<broonie@kernel.org>, <B44548@freescale.com>,
+	<Li.Xiubo@freescale.com>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>,
 	<linux-arm-kernel@lists.infradead.org>,
-	LKML <linux-kernel@vger.kernel.org>
-To: Mark Brown <broonie@kernel.org>
+	<linux-spi@vger.kernel.org>,
+	Bhuvanchandra DV <bhuvanchandra.dv@toradex.com>
+To: <mark.rutland@arm.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20150127001419.GO21293@sirena.org.uk>
+In-Reply-To: <1422356244-15629-1-git-send-email-bhuvanchandra.dv@toradex.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello Mark
+Acked-by: Stefan Agner <stefan@agner.ch>
+Signed-off-by: Bhuvanchandra DV <bhuvanchandra.dv@toradex.com>
+---
+ arch/arm/boot/dts/vf500.dtsi |  4 ++++
+ arch/arm/boot/dts/vfxxx.dtsi | 11 +++++++++++
+ 2 files changed, 15 insertions(+)
 
-On Tue, Jan 27, 2015 at 1:14 AM, Mark Brown <broonie@kernel.org> wrote:
-
->
-> In general the best way to present a series is to start off with any bug
-> fixes (so they can be sent to Linus and stable if needed), then move on
-> to mechanical and stylistic cleanups (since they tend to be easy to
-> review and apply) and finally move on to new functionality (since that
-> is most likely to run into review problems and the cleanups should help
-> review).
-
-Will try to follow that pattern the next time.
-
-The development of the patchset has been a bit chaotic. I opened up
-the code to support more modes and then I realize that I could improve
-the poor performance I was having with the driver....
-
->
->>   spi/xilinx: Support for spi mode LOOP
->>   spi/xilinx: Simplify data read from the Rx FIFO
->>   spi-xilinx: Simplify spi_fill_tx_fifo
->
-> spi-xilinx?
-
-Thanks! Fixed on the next version.
-
-BTW what is preferred spi/xilinx: or spi: xilinx: ?I have seen both naming.
-
-Thanks!
-
-
+diff --git a/arch/arm/boot/dts/vf500.dtsi b/arch/arm/boot/dts/vf500.dtsi
+index 1dbf8d2..f5f807c 100644
+--- a/arch/arm/boot/dts/vf500.dtsi
++++ b/arch/arm/boot/dts/vf500.dtsi
+@@ -66,6 +66,10 @@
+ 	interrupts = <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>;
+ };
+ 
++&dspi1 {
++	interrupts = <GIC_SPI 68 IRQ_TYPE_LEVEL_HIGH>;
++};
++
+ &edma0 {
+ 	interrupts = <GIC_SPI 8 IRQ_TYPE_LEVEL_HIGH>,
+ 			<GIC_SPI 9 IRQ_TYPE_LEVEL_HIGH>;
+diff --git a/arch/arm/boot/dts/vfxxx.dtsi b/arch/arm/boot/dts/vfxxx.dtsi
+index a29c7ce..789744b 100644
+--- a/arch/arm/boot/dts/vfxxx.dtsi
++++ b/arch/arm/boot/dts/vfxxx.dtsi
+@@ -139,6 +139,17 @@
+ 				status = "disabled";
+ 			};
+ 
++			dspi1: dspi1@4002d000 {
++				#address-cells = <1>;
++				#size-cells = <0>;
++				compatible = "fsl,vf610-dspi";
++				reg = <0x4002d000 0x1000>;
++				clocks = <&clks VF610_CLK_DSPI1>;
++				clock-names = "dspi";
++				spi-num-chipselects = <5>;
++				status = "disabled";
++			};
++
+ 			sai2: sai@40031000 {
+ 				compatible = "fsl,vf610-sai";
+ 				reg = <0x40031000 0x1000>;
 -- 
-Ricardo Ribalda
+2.2.2

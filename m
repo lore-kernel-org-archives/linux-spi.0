@@ -1,212 +1,65 @@
-From: Bhuvanchandra DV <bhuvanchandra.dv-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 7/7] spi: spi-fsl-dspi: Add support for TCFQ transfer mode
-Date: Tue, 27 Jan 2015 16:33:28 +0530
-Message-ID: <1422356608-15961-2-git-send-email-bhuvanchandra.dv@toradex.com>
-References: <1422356608-15961-1-git-send-email-bhuvanchandra.dv@toradex.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 00/18] spi/xilinx: Speed-up
+Date: Tue, 27 Jan 2015 11:59:53 +0000
+Message-ID: <20150127115953.GQ21293@sirena.org.uk>
+References: <1422029330-10971-1-git-send-email-ricardo.ribalda@gmail.com>
+ <20150127001419.GO21293@sirena.org.uk>
+ <CAPybu_1==6gvwbWQWxSj_C3siGFTjvqNh1=Xj6jvu_xQFOA-Kw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <stefan-XLVq0VzYD2Y@public.gmane.org>, <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	<pawel.moll-5wv7dgnIgG8@public.gmane.org>, <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	<galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	<broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <B44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	<Li.Xiubo-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="gmAlUWRVDrnirEWv"
+Cc: Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	=?iso-8859-1?Q?S=F6ren?= Brinkmann <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"moderated list:ARM/S5P EXYNOS AR..."
 	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Bhuvanchandra DV <bhuvanchandra.dv-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
-To: <mark.rutland-5wv7dgnIgG8@public.gmane.org>
+	LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1422356608-15961-1-git-send-email-bhuvanchandra.dv-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAPybu_1==6gvwbWQWxSj_C3siGFTjvqNh1=Xj6jvu_xQFOA-Kw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Chao Fu <B44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 
-TCFQ is interrupt of Transfer Complete Flag in DSPI module.
-EOQ is interrupt of End of Queue Flag in DSPI module.
-For adopting of different platform, either of them is a way of DSPI
-transfer data. This patch add TCF support for DSPI module  in other platform.
+--gmAlUWRVDrnirEWv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Signed-off-by: Bhuvanchandra DV <bhuvanchandra.dv-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
----
- .../devicetree/bindings/spi/spi-fsl-dspi.txt       |  2 +
- drivers/spi/spi-fsl-dspi.c                         | 74 +++++++++++++++++++---
- 2 files changed, 68 insertions(+), 8 deletions(-)
+On Tue, Jan 27, 2015 at 11:17:42AM +0100, Ricardo Ribalda Delgado wrote:
+> On Tue, Jan 27, 2015 at 1:14 AM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt b/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt
-index cbbe16e..b50439f 100644
---- a/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt
-@@ -15,6 +15,8 @@ Optional property:
- - big-endian: If present the dspi device's registers are implemented
-   in big endian mode, otherwise in native mode(same with CPU), for more
-   detail please see: Documentation/devicetree/bindings/regmap/regmap.txt.
-+- tcfq-mode: If present, the data transfer will be done at TCFQ interrupt.
-+  By default, driver chooses EOQ interrupt if 'tcfq-mode' property was not set.
- 
- Example:
- 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index e0ce906..feca2fd 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -63,9 +63,11 @@
- #define SPI_CTAR0_SLAVE	0x0c
- 
- #define SPI_SR			0x2c
-+#define SPI_SR_TCFQF		0x80000000
- #define SPI_SR_EOQF		0x10000000
- 
- #define SPI_RSER		0x30
-+#define SPI_RSER_TCFQE		0x80000000
- #define SPI_RSER_EOQFE		0x10000000
- 
- #define SPI_PUSHR		0x34
-@@ -105,6 +107,12 @@ struct chip_data {
- 	u16 void_write_data;
- };
- 
-+enum dspi_trans_mode {
-+	DSPI_EOQ_MODE = 0,
-+	DSPI_TCFQ_MODE,
-+	DSPI_DMA_MODE, /*TODO*/
-+};
-+
- struct fsl_dspi {
- 	struct spi_master	*master;
- 	struct platform_device	*pdev;
-@@ -125,6 +133,7 @@ struct fsl_dspi {
- 	u8			cs;
- 	u16			void_write_data;
- 	u32			cs_change;
-+	enum dspi_trans_mode	trans_mode;
- 
- 	wait_queue_head_t	waitq;
- 	u32			waitflags;
-@@ -225,7 +234,7 @@ static void dspi_data_from_popr(struct fsl_dspi *dspi, int rx_word)
- 	}
- }
- 
--static int dspi_transfer_write(struct fsl_dspi *dspi)
-+static int dspi_eoq_write(struct fsl_dspi *dspi)
- {
- 	int tx_count = 0;
- 	int tx_word;
-@@ -269,7 +278,7 @@ static int dspi_transfer_write(struct fsl_dspi *dspi)
- 	return tx_count * (tx_word + 1);
- }
- 
--static int dspi_transfer_read(struct fsl_dspi *dspi)
-+static int dspi_eoq_read(struct fsl_dspi *dspi)
- {
- 	int rx_count = 0;
- 	int rx_word = is_double_byte_mode(dspi);
-@@ -283,6 +292,37 @@ static int dspi_transfer_read(struct fsl_dspi *dspi)
- 	return rx_count;
- }
- 
-+static int dspi_tcfq_write(struct fsl_dspi *dspi)
-+{
-+	int tx_word;
-+	u32 dspi_pushr = 0;
-+
-+	tx_word = is_double_byte_mode(dspi);
-+
-+	if (tx_word && (dspi->len == 1)) {
-+		dspi->dataflags |= TRAN_STATE_WORD_ODD_NUM;
-+		regmap_update_bits(dspi->regmap, SPI_CTAR(dspi->cs),
-+				SPI_FRAME_BITS_MASK, SPI_FRAME_BITS(8));
-+		tx_word = 0;
-+	}
-+
-+	dspi_pushr = dspi_data_to_pushr(dspi, tx_word);
-+
-+	if ((dspi->cs_change) && (!dspi->len))
-+		dspi_pushr &= ~SPI_PUSHR_CONT;
-+
-+	regmap_write(dspi->regmap, SPI_PUSHR, dspi_pushr);
-+
-+	return tx_word + 1;
-+}
-+
-+static void dspi_tcfq_read(struct fsl_dspi *dspi)
-+{
-+	int rx_word = is_double_byte_mode(dspi);
-+
-+	dspi_data_from_popr(dspi, rx_word);
-+}
-+
- static int dspi_transfer_one_message(struct spi_master *master,
- 		struct spi_message *message)
- {
-@@ -326,8 +366,13 @@ static int dspi_transfer_one_message(struct spi_master *master,
- 			regmap_write(dspi->regmap, SPI_CTAR(dspi->cs),
- 					dspi->cur_chip->ctar_val);
- 
--		regmap_write(dspi->regmap, SPI_RSER, SPI_RSER_EOQFE);
--		message->actual_length += dspi_transfer_write(dspi);
-+		if (dspi->trans_mode == DSPI_EOQ_MODE) {
-+			regmap_write(dspi->regmap, SPI_RSER, SPI_RSER_EOQFE);
-+			message->actual_length += dspi_eoq_write(dspi);
-+		} else if (dspi->trans_mode == DSPI_TCFQ_MODE) {
-+			regmap_write(dspi->regmap, SPI_RSER, SPI_RSER_TCFQE);
-+			message->actual_length += dspi_tcfq_write(dspi);
-+		}
- 
- 		if (wait_event_interruptible(dspi->waitq, dspi->waitflags))
- 			dev_err(&dspi->pdev->dev, "wait transfer complete fail!\n");
-@@ -399,8 +444,13 @@ static irqreturn_t dspi_interrupt(int irq, void *dev_id)
- 
- 	struct spi_message *msg = dspi->cur_msg;
- 
--	regmap_write(dspi->regmap, SPI_SR, SPI_SR_EOQF);
--	dspi_transfer_read(dspi);
-+	if (dspi->trans_mode == DSPI_EOQ_MODE) {
-+		regmap_write(dspi->regmap, SPI_SR, SPI_SR_EOQF);
-+		dspi_eoq_read(dspi);
-+	} else if (dspi->trans_mode == DSPI_TCFQ_MODE) {
-+		regmap_write(dspi->regmap, SPI_SR, SPI_SR_TCFQF);
-+		dspi_tcfq_read(dspi);
-+	}
- 
- 	if (!dspi->len) {
- 		if (dspi->dataflags & TRAN_STATE_WORD_ODD_NUM)
-@@ -409,8 +459,12 @@ static irqreturn_t dspi_interrupt(int irq, void *dev_id)
- 
- 		dspi->waitflags = 1;
- 		wake_up_interruptible(&dspi->waitq);
--	} else
--		msg->actual_length += dspi_transfer_write(dspi);
-+	} else {
-+		if (dspi->trans_mode == DSPI_EOQ_MODE)
-+			msg->actual_length += dspi_eoq_write(dspi);
-+		else if (dspi->trans_mode == DSPI_TCFQ_MODE)
-+			msg->actual_length += dspi_tcfq_write(dspi);
-+	}
- 
- 	return IRQ_HANDLED;
- }
-@@ -470,6 +524,7 @@ static int dspi_probe(struct platform_device *pdev)
- 	dspi = spi_master_get_devdata(master);
- 	dspi->pdev = pdev;
- 	dspi->master = master;
-+	dspi->trans_mode = DSPI_EOQ_MODE;
- 
- 	master->transfer = NULL;
- 	master->setup = dspi_setup;
-@@ -481,6 +536,9 @@ static int dspi_probe(struct platform_device *pdev)
- 	master->bits_per_word_mask = SPI_BPW_MASK(4) | SPI_BPW_MASK(8) |
- 					SPI_BPW_MASK(16);
- 
-+	if (of_property_read_bool(np, "tcfq-mode"))
-+		dspi->trans_mode = DSPI_TCFQ_MODE;
-+
- 	ret = of_property_read_u32(np, "spi-num-chipselects", &cs_num);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "can't get spi-num-chipselects\n");
--- 
-2.2.2
+> >>   spi/xilinx: Support for spi mode LOOP
+> >>   spi/xilinx: Simplify data read from the Rx FIFO
+> >>   spi-xilinx: Simplify spi_fill_tx_fifo
 
+> > spi-xilinx?
+
+> Thanks! Fixed on the next version.
+
+> BTW what is preferred spi/xilinx: or spi: xilinx: ?I have seen both naming.
+
+Traditionally SPI always used spi/xilinx but that's too far out from the
+normal kernel standards so it's hard to get people to follow it at all
+so I don't worry about that specific bit too much.
+
+--gmAlUWRVDrnirEWv
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJUx324AAoJECTWi3JdVIfQhK8H/0ZXDUtTT+oo6vY86o4oGdYr
+v5xw6IQAoXKBJeOoGxlZCcphe5f4ljPVorRhhGN687coWlUspsKnnwEbxaIkaZRU
+ey5WwYXoIKV/uIAbHEhF6W/F5cURs8tPYIfZfAVGbqXKa3ONAmlXf2ZpPoaLJGbf
+fYVsgOgsY7cx8ewVYBdB2F15ZNuNDoGGvNMYGaDO5TAmoj5e//K+T25HOSMgPJaY
+MV+Ptn9womu9QEIwbIaFoZZMFDUT+l/NRK9qpSNOZOH6GwDQNDgy5s533qfRY3gO
+wUDL76bShR8hSG8zRvgEi8za5MMcbzpbYW/7R16jw0shvf2fCLdEPmnGazOE+wU=
+=v4Yv
+-----END PGP SIGNATURE-----
+
+--gmAlUWRVDrnirEWv--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

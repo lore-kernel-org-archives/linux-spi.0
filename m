@@ -1,18 +1,14 @@
-From: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
-Subject: [PATCH v2 15/15] spi/xilinx: Use polling mode on small transfers
-Date: Wed, 28 Jan 2015 13:23:54 +0100
-Message-ID: <1422447834-23116-16-git-send-email-ricardo.ribalda@gmail.com>
-References: <1422447834-23116-1-git-send-email-ricardo.ribalda@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH] spi/rockchip: avoid uninitialized-use warning
+Date: Wed, 28 Jan 2015 14:25:10 +0100
+Message-ID: <1957186.KORYFIrP42@wuerfel>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
-To: Mark Brown <broonie@kernel.org>, Michal Simek <michal.simek@xilinx.com>,
- =?UTF-8?q?S=C3=B6ren=20Brinkmann?= <soren.brinkmann@xilinx.com>,
- linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
+Cc: Addy Ke <addy.ke@rock-chips.com>, Doug Anderson <dianders@chromium.org>,
+ linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1422447834-23116-1-git-send-email-ricardo.ribalda@gmail.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -24,116 +20,58 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Small transfers generally can be accomplished faster in polling mode.
-This patch select the transfer which size is bellow the buffer size to
-be done on polling mode
+We currently get a warning about potentially uninitialized variables
+in the rockchip spi driver, at least in certain toolchain versions:
 
-Suggested-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
----
- drivers/spi/spi-xilinx.c | 43 +++++++++++++++++++++++++------------------
- 1 file changed, 25 insertions(+), 18 deletions(-)
+spi/spi-rockchip.c: In function 'rockchip_spi_prepare_dma':
+include/linux/dmaengine.h:796:2: warning: 'txdesc' may be used uninitialized in this function
+include/linux/dmaengine.h:796:2: warning: 'rxdesc' may be used uninitialized in this function
 
-diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-index 134d8cd..c6b0a6e 100644
---- a/drivers/spi/spi-xilinx.c
-+++ b/drivers/spi/spi-xilinx.c
-@@ -130,7 +130,6 @@ static void xilinx_spi_rx(struct xilinx_spi *xspi)
- static void xspi_init_hw(struct xilinx_spi *xspi)
- {
- 	void __iomem *regs_base = xspi->regs;
--	u32 inhibit;
+The reason seems to be that gcc cannot know whether the value
+of the rs->rx and rs->tx variables change between the two points
+these are accessed.
+
+The code is actually correct, but to make this clearer to the
+compiler, this changes the conditionals to test for the local
+rxdesc/txdesc variables instead, which it knows won't change.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index daabbabd26b0..1a777dc261d6 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -437,6 +437,7 @@ static void rockchip_spi_prepare_dma(struct rockchip_spi *rs)
+ 	rs->state &= ~TXBUSY;
+ 	spin_unlock_irqrestore(&rs->lock, flags);
  
- 	/* Reset the SPI device */
- 	xspi->write_fn(XIPIF_V123B_RESET_MASK,
-@@ -140,22 +139,15 @@ static void xspi_init_hw(struct xilinx_spi *xspi)
- 	 */
- 	xspi->write_fn(XSPI_INTR_TX_EMPTY,
- 			regs_base + XIPIF_V123B_IIER_OFFSET);
--	/* Enable the global IPIF interrupt */
--	if (xspi->irq >= 0) {
--		xspi->write_fn(XIPIF_V123B_GINTR_ENABLE,
--			regs_base + XIPIF_V123B_DGIER_OFFSET);
--		inhibit = XSPI_CR_TRANS_INHIBIT;
--	} else {
--		xspi->write_fn(0, regs_base + XIPIF_V123B_DGIER_OFFSET);
--		inhibit = 0;
--	}
-+	/* Disable the global IPIF interrupt */
-+	xspi->write_fn(0, regs_base + XIPIF_V123B_DGIER_OFFSET);
- 	/* Deselect the slave on the SPI bus */
- 	xspi->write_fn(0xffff, regs_base + XSPI_SSR_OFFSET);
- 	/* Disable the transmitter, enable Manual Slave Select Assertion,
- 	 * put SPI controller into master mode, and enable it */
--	xspi->write_fn(inhibit | XSPI_CR_MANUAL_SSELECT |
--		XSPI_CR_MASTER_MODE | XSPI_CR_ENABLE | XSPI_CR_TXFIFO_RESET |
--		XSPI_CR_RXFIFO_RESET, regs_base + XSPI_CR_OFFSET);
-+	xspi->write_fn(XSPI_CR_MANUAL_SSELECT |	XSPI_CR_MASTER_MODE |
-+		XSPI_CR_ENABLE | XSPI_CR_TXFIFO_RESET |	XSPI_CR_RXFIFO_RESET,
-+		regs_base + XSPI_CR_OFFSET);
- }
- 
- static void xilinx_spi_chipselect(struct spi_device *spi, int is_on)
-@@ -214,6 +206,8 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
- {
- 	struct xilinx_spi *xspi = spi_master_get_devdata(spi->master);
- 	int remaining_words;	/* the number of words left to transfer */
-+	bool use_irq = false;
-+	u16 cr = 0;
- 
- 	/* We get here with transmitter inhibited */
- 
-@@ -222,8 +216,20 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
- 	remaining_words = t->len / xspi->bytes_per_word;
- 	reinit_completion(&xspi->done);
- 
-+	if (xspi->irq >= 0 &&  remaining_words > xspi->buffer_size) {
-+		use_irq = true;
-+		xspi->write_fn(XSPI_INTR_TX_EMPTY,
-+				xspi->regs + XIPIF_V123B_IISR_OFFSET);
-+		/* Enable the global IPIF interrupt */
-+		xspi->write_fn(XIPIF_V123B_GINTR_ENABLE,
-+				xspi->regs + XIPIF_V123B_DGIER_OFFSET);
-+		/* Inhibit irq to avoid spurious irqs on tx_empty*/
-+		cr = xspi->read_fn(xspi->regs + XSPI_CR_OFFSET);
-+		xspi->write_fn(cr | XSPI_CR_TRANS_INHIBIT,
-+			       xspi->regs + XSPI_CR_OFFSET);
-+	}
-+
- 	while (remaining_words) {
--		u16 cr = 0;
- 		int n_words, tx_words, rx_words;
- 
- 		n_words = min(remaining_words, xspi->buffer_size);
-@@ -236,9 +242,7 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
- 		 * longer
- 		 */
- 
--		if (xspi->irq >= 0) {
--			cr = xspi->read_fn(xspi->regs + XSPI_CR_OFFSET) &
--							~XSPI_CR_TRANS_INHIBIT;
-+		if (use_irq) {
- 			xspi->write_fn(cr, xspi->regs + XSPI_CR_OFFSET);
- 			wait_for_completion(&xspi->done);
- 		} else
-@@ -251,7 +255,7 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
- 		 * transmitter while the Isr refills the transmit register/FIFO,
- 		 * or make sure it is stopped if we're done.
- 		 */
--		if (xspi->irq >= 0)
-+		if (use_irq)
- 			xspi->write_fn(cr | XSPI_CR_TRANS_INHIBIT,
- 			       xspi->regs + XSPI_CR_OFFSET);
- 
-@@ -263,6 +267,9 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
- 		remaining_words -= n_words;
++	rxdesc = NULL;
+ 	if (rs->rx) {
+ 		rxconf.direction = rs->dma_rx.direction;
+ 		rxconf.src_addr = rs->dma_rx.addr;
+@@ -453,6 +454,7 @@ static void rockchip_spi_prepare_dma(struct rockchip_spi *rs)
+ 		rxdesc->callback_param = rs;
  	}
  
-+	if (use_irq)
-+		xspi->write_fn(0, xspi->regs + XIPIF_V123B_DGIER_OFFSET);
-+
- 	return t->len;
- }
++	txdesc = NULL;
+ 	if (rs->tx) {
+ 		txconf.direction = rs->dma_tx.direction;
+ 		txconf.dst_addr = rs->dma_tx.addr;
+@@ -470,7 +472,7 @@ static void rockchip_spi_prepare_dma(struct rockchip_spi *rs)
+ 	}
  
--- 
-2.1.4
+ 	/* rx must be started before tx due to spi instinct */
+-	if (rs->rx) {
++	if (rxdesc) {
+ 		spin_lock_irqsave(&rs->lock, flags);
+ 		rs->state |= RXBUSY;
+ 		spin_unlock_irqrestore(&rs->lock, flags);
+@@ -478,7 +480,7 @@ static void rockchip_spi_prepare_dma(struct rockchip_spi *rs)
+ 		dma_async_issue_pending(rs->dma_rx.ch);
+ 	}
+ 
+-	if (rs->tx) {
++	if (txdesc) {
+ 		spin_lock_irqsave(&rs->lock, flags);
+ 		rs->state |= TXBUSY;
+ 		spin_unlock_irqrestore(&rs->lock, flags);

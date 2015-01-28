@@ -1,10 +1,10 @@
 From: BhuvanChandra.DV <bhuvanchandra.dv@toradex.com>
-Subject: Re: [PATCH 4/7] spi: spi-fsl-dspi: avoid preparing the clock two times
-Date: Wed, 28 Jan 2015 06:58:33 +0000
-Message-ID: <1422428658040.88027@toradex.com>
+Subject: Re: [PATCH 3/7] spi: spi-fsl-dspi: Remove usage of devm_kzalloc
+Date: Wed, 28 Jan 2015 07:05:55 +0000
+Message-ID: <1422429099979.36592@toradex.com>
 References: <1422356244-15629-1-git-send-email-bhuvanchandra.dv@toradex.com>
- <1422356244-15629-5-git-send-email-bhuvanchandra.dv@toradex.com>
- <20150127130117.GU21293@sirena.org.uk>
+ <1422356244-15629-4-git-send-email-bhuvanchandra.dv@toradex.com>
+ <20150127195234.GP21293@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -24,9 +24,9 @@ Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>,
  "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20150127130117.GU21293@sirena.org.uk>
+In-Reply-To: <20150127195234.GP21293@sirena.org.uk>
 Content-Language: en-IN
-Content-ID: <2FBC3D3D0C135044B31BCFB8805A25B2@toradex.com>
+Content-ID: <4DFFBB99900C8C4C913A540DE3462F9E@toradex.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -39,17 +39,14 @@ Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead
 List-Id: linux-spi.vger.kernel.org
 
 
-On 01/27/2015 06:31 PM, Mark Brown wrote:
-> On Tue, Jan 27, 2015 at 04:27:21PM +0530, Bhuvanchandra DV wrote:
->> regmap_read/regmap_write will expect the peripheral clock
->> to be enabled before accessing the registers of the peripheral.
->> Since the peripheral clock is enabled separatly, avoid redundant clock
->> prepare (with devm_regmap_init_mmio_clk) and use devm_regmap_init_mmio instead.
-> What's the advantage of this?  The clock API is refcounted so there
-> should be no issue with this and it seems like it's opening us up to
-> bugs if there's a path where we interact with the registers without
-> enabling the clocks.
+On 01/28/2015 01:22 AM, Mark Brown wrote:
+> On Tue, Jan 27, 2015 at 04:27:20PM +0530, Bhuvanchandra DV wrote:
+>> devm_* API was supposed to be used only in probe function call.
+>> Memory is allocated at 'probe' and free automatically at 'remove'.
+> Applied, thanks.  Please don't dump entire backtraces into your commit
+> logs - they're far too big and not very helpful, they can obscure real
+> content in the message.  Explain in words what the problem is and if a
+> backtrace helps illustrate that edit it down to only relevant portions
+> rather than blindly including the entire thing.
 
-My initial thought was that, since regmap_mmio_init_clk() does call
-clk_prepare(), to go with regmap_mmio_init() as clk_prepare_enable()
-is called at a later stage in the probe().
+OK

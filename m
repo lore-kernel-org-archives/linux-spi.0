@@ -1,16 +1,19 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: pl08x: do not select S3C64XX_PL080
-Date: Wed, 28 Jan 2015 17:37:42 +0000
-Message-ID: <20150128173742.GA21293@sirena.org.uk>
-References: <1957186.KORYFIrP42@wuerfel>
- <2608153.sC21ihDxEF@wuerfel>
+Subject: Re: [PATCH 7/7] spi: spi-fsl-dspi: Add support for TCFQ transfer mode
+Date: Wed, 28 Jan 2015 19:03:42 +0000
+Message-ID: <20150128190342.GE21293@sirena.org.uk>
+References: <1422356608-15961-1-git-send-email-bhuvanchandra.dv@toradex.com>
+ <1422356608-15961-2-git-send-email-bhuvanchandra.dv@toradex.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2741153409227543815=="
-Cc: linux-samsung-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-spi@vger.kernel.org
-To: Arnd Bergmann <arnd@arndb.de>
+Content-Type: multipart/mixed; boundary="===============6940705788445701169=="
+Cc: mark.rutland@arm.com, devicetree@vger.kernel.org, linux@arm.linux.org.uk,
+ B44548@freescale.com, pawel.moll@arm.com, ijc+devicetree@hellion.org.uk,
+ Li.Xiubo@freescale.com, linux-kernel@vger.kernel.org, stefan@agner.ch,
+ linux-spi@vger.kernel.org, robh+dt@kernel.org, galak@codeaurora.org,
+ shawn.guo@linaro.org, linux-arm-kernel@lists.infradead.org
+To: Bhuvanchandra DV <bhuvanchandra.dv@toradex.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <2608153.sC21ihDxEF@wuerfel>
+In-Reply-To: <1422356608-15961-2-git-send-email-bhuvanchandra.dv@toradex.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -23,44 +26,55 @@ Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead
 List-Id: linux-spi.vger.kernel.org
 
 
---===============2741153409227543815==
+--===============6940705788445701169==
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="cvzIkD8pNUQN9i8I"
+	protocol="application/pgp-signature"; boundary="UAlHjJyhZOsh4iI+"
 Content-Disposition: inline
 
 
---cvzIkD8pNUQN9i8I
+--UAlHjJyhZOsh4iI+
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Jan 28, 2015 at 02:27:06PM +0100, Arnd Bergmann wrote:
-> The pl08x driver originally selected S3C64XX_PL080 to avoid having
-> the legacy Samsung DMA interfaces. Those are now gone, so the
-> select is no longer needed, but it now causes problems when
-> CONFIG_DMA_ENGINE is disabled:
+On Tue, Jan 27, 2015 at 04:33:28PM +0530, Bhuvanchandra DV wrote:
 
-Applied, thanks.
+> TCFQ is interrupt of Transfer Complete Flag in DSPI module.
+> EOQ is interrupt of End of Queue Flag in DSPI module.
+> For adopting of different platform, either of them is a way of DSPI
+> transfer data. This patch add TCF support for DSPI module  in other platform.
 
---cvzIkD8pNUQN9i8I
+I can't really understand what the purpose of this is, sorry.  What are
+these modes and why would one choose one over the other?  Your changelog
+suggests this is being done per board which implies that it's tuning for
+performance but that's usually something that should be done in device
+drivers, not the device tree - perhaps the tuning will change over time
+as the driver is optimized or perhaps it varies depending on the
+transfer.
+
+The code mentions a DMA option as well, generally where it's available
+DMA is something that's chosen at runtime based on the length of the
+transfer.
+
+--UAlHjJyhZOsh4iI+
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJUyR5lAAoJECTWi3JdVIfQ3oAH/A5p6HJXHPMs5BfmlU6BaqUx
-RUbu1UscJkaug8njc82qvpofFHxeS4ClccaBWoFjdDCuVKEngxTDBKJjrvY2+3Od
-wwF7Zu9jReLFK+pJFk3lQtCh11buVNyDouyfqahGejX6lLTY6Tf5jBK4UM+OglKD
-x/G9wrMxuSyieRTAwuRKehBtzYtzSb6HgbIXRJj7vBbZaFPGhnJj1lFCub6lQ51H
-Zy+pMGObEaNewEomnbys7qEOuIjAuFL20rfIzAzmu8s71/GYwjP+2rB0KxQLvR4/
-jOc/fjptQMhTf3sZWOvOnmdZTTx4Jl0gm4j4iD/jM/+sGh2kribyaR+YlTj3cB0=
-=mEzf
+iQEcBAEBCAAGBQJUyTKOAAoJECTWi3JdVIfQPKcH/3Erd0oqBbMx2yTzxFxA7J+w
+KStS/tk19QvU1KJHTUi/CdoTkejfrmG5p8EL8xpfzBz3ZRXO8jnu7ux4hbP5AfoP
+tRHFmWrronc4CMiyU/319oWHxA+GZS9mUa6uYncqy6wIuZiYRS1RUVFliNuf0pcr
+26P4ScT4MakcnNWh70PDIddzmKZk3MjMksr3iUCp+CHf5cAAYAclyOZ3KQ5xWQsX
+SkCpQt5Kb29f7DC7tSbnJQVeff/kJy8Yuxb98kqqsLSSZVvxlj5ctGzZa480wmo/
++lKJFRam+VoljjCZjXVedzAsgibfhoc09Bpue1tAzjwLaOb1VLDqdmteDjG6xJA=
+=C6j2
 -----END PGP SIGNATURE-----
 
---cvzIkD8pNUQN9i8I--
+--UAlHjJyhZOsh4iI+--
 
 
---===============2741153409227543815==
+--===============6940705788445701169==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -71,4 +85,4 @@ linux-arm-kernel mailing list
 linux-arm-kernel@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
 
---===============2741153409227543815==--
+--===============6940705788445701169==--

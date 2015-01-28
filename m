@@ -1,13 +1,13 @@
-From: Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH] spi: pl08x: do not select S3C64XX_PL080
-Date: Wed, 28 Jan 2015 14:27:06 +0100
-Message-ID: <2608153.sC21ihDxEF@wuerfel>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi/rockchip: avoid uninitialized-use warning
+Date: Wed, 28 Jan 2015 17:36:47 +0000
+Message-ID: <20150128173647.GZ21293@sirena.org.uk>
 References: <1957186.KORYFIrP42@wuerfel>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>, linux-samsung-soc@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============7125510561526158532=="
+Cc: Addy Ke <addy.ke@rock-chips.com>, Doug Anderson <dianders@chromium.org>,
+ linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
+To: Arnd Bergmann <arnd@arndb.de>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
 In-Reply-To: <1957186.KORYFIrP42@wuerfel>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
@@ -21,26 +21,51 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-The pl08x driver originally selected S3C64XX_PL080 to avoid having
-the legacy Samsung DMA interfaces. Those are now gone, so the
-select is no longer needed, but it now causes problems when
-CONFIG_DMA_ENGINE is disabled:
 
-arch/arm/plat-samsung/built-in.o: In function `s3c64xx_spi0_set_platdata':
-:(.init.text+0x518): undefined reference to `pl08x_filter_id'
+--===============7125510561526158532==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="+Vji0eDhhLYWF1je"
+Content-Disposition: inline
 
-This simply removes the 'select' to avoid this problem.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+--+Vji0eDhhLYWF1je
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 9b81b39de54e..7727660e9702 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -470,7 +470,6 @@ config SPI_S3C24XX_FIQ
- config SPI_S3C64XX
- 	tristate "Samsung S3C64XX series type SPI"
- 	depends on (PLAT_SAMSUNG || ARCH_EXYNOS)
--	select S3C64XX_PL080 if ARCH_S3C64XX
- 	help
- 	  SPI driver for Samsung S3C64XX and newer SoCs.
+On Wed, Jan 28, 2015 at 02:25:10PM +0100, Arnd Bergmann wrote:
+> We currently get a warning about potentially uninitialized variables
+> in the rockchip spi driver, at least in certain toolchain versions:
+
+Applied, thanks.
+
+--+Vji0eDhhLYWF1je
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJUyR4vAAoJECTWi3JdVIfQmLAH/0y3lsziZWsCZIiESFCVrFts
+ZMZSqg97RXck1oND3xprQYzNwKjasrX6y/zhquobya2vNuFPIv+kAkZph1CAqLD8
+HV5xmvBFhq//N8ZlLoLFUXGwUMbtRQA7RCR+SvObh6Ky9HTV6KSeP6VlSK5KUSOK
+zqfd8FqRWuouht6OPgfhe/lEuMj3l2Fg3YVoBZdk3M5ihSAGDdwf8JQ1yhNF8pZY
+cVu6dtaF4zI+5N1m323rWHs1/hUIQYm8jPKNwYfzCVKZ56F6rtlsRJxjbqqE+zYd
+JjZggBXZhs09X17CgAI+wLS8YvdN/Pz/76yapAmlo4IZ3nQaXbEawnR8tt8INkg=
+=C5l9
+-----END PGP SIGNATURE-----
+
+--+Vji0eDhhLYWF1je--
+
+
+--===============7125510561526158532==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+linux-arm-kernel mailing list
+linux-arm-kernel@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+
+--===============7125510561526158532==--

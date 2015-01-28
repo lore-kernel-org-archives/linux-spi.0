@@ -1,21 +1,16 @@
-From: Stefan Agner <stefan@agner.ch>
-Subject: Re: [PATCH 2/7] ARM: vf-colibri: add SPI support and enable MCP2515
- CAN
-Date: Wed, 28 Jan 2015 10:55:23 +0100
-Message-ID: <47943ef82a880a0c681ccd0b9fd22eda@agner.ch>
-References: <1422356244-15629-1-git-send-email-bhuvanchandra.dv@toradex.com>
- <1422356244-15629-3-git-send-email-bhuvanchandra.dv@toradex.com>
+From: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
+Subject: [PATCH v2 00/15] spi/xilinx: Speed-up
+Date: Wed, 28 Jan 2015 13:23:39 +0100
+Message-ID: <1422447834-23116-1-git-send-email-ricardo.ribalda@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: mark.rutland@arm.com, devicetree@vger.kernel.org, linux@arm.linux.org.uk,
- B44548@freescale.com, pawel.moll@arm.com, ijc+devicetree@hellion.org.uk,
- Li.Xiubo@freescale.com, broonie@kernel.org, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org, robh+dt@kernel.org, galak@codeaurora.org,
- shawn.guo@linaro.org, linux-arm-kernel@lists.infradead.org
-To: Bhuvanchandra DV <bhuvanchandra.dv@toradex.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
+To: Mark Brown <broonie@kernel.org>, Michal Simek <michal.simek@xilinx.com>,
+ =?UTF-8?q?S=C3=B6ren=20Brinkmann?= <soren.brinkmann@xilinx.com>,
+ linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1422356244-15629-3-git-send-email-bhuvanchandra.dv@toradex.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -27,131 +22,45 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On 2015-01-27 11:57, Bhuvanchandra DV wrote:
-> MCP2515 CAN controller is available on Colibri Evaluation board.
-> Hence enable MCP2515 CAN.
-> 
-> Signed-off-by: Bhuvanchandra DV <bhuvanchandra.dv@toradex.com>
-> ---
->  arch/arm/boot/dts/vf-colibri-eval-v3.dtsi | 31 +++++++++++++++++++++++++++++++
->  arch/arm/boot/dts/vf-colibri.dtsi         | 15 +++++++++++++++
->  2 files changed, 46 insertions(+)
-> 
-> diff --git a/arch/arm/boot/dts/vf-colibri-eval-v3.dtsi
-> b/arch/arm/boot/dts/vf-colibri-eval-v3.dtsi
-> index 36cafbf..69364b0 100644
-> --- a/arch/arm/boot/dts/vf-colibri-eval-v3.dtsi
-> +++ b/arch/arm/boot/dts/vf-colibri-eval-v3.dtsi
-> @@ -12,6 +12,12 @@
->  		bootargs = "console=ttyLP0,115200";
->  	};
->  
-> +	clk16m: clk16m {
-> +		compatible = "fixed-clock";
-> +		#clock-cells = <0>;
-> +		clock-frequency = <16000000>;
-> +	};
-> +
->  	regulators {
->  		compatible = "simple-bus";
->  		#address-cells = <1>;
-> @@ -47,6 +53,21 @@
->  	status  = "okay";
->  };
->  
-> +&dspi1 {
-> +	status = "okay";
-> +
-> +	can2: mcp2515@0 {
-
-
-The device tree usage website states (devicetree.org): "nodes are named
-according to what kind of device it represents"...
-
-You can use the label to specify the type, e.g. I would suggest to use
-something like:
-
-
-	mcp2515can: can@0 {
-...
-
-
-
-
-> +		compatible = "microchip,mcp2515";
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&pinctrl_can_int>;
-> +		reg = <0>;
-> +		clocks = <&clk16m>;
-> +		spi-max-frequency = <10000000>;
-> +		interrupt-parent = <&gpio2>;
-
-The interrupt line of the MCP2515 is connected to SODIMM 73, which is
-PORT1[11] on Vybrid. My recent renaming of the GPIO's has been merged
-already:
-https://lkml.org/lkml/2015/1/16/419
-
-Hence, this should be updated to gpio1.
-
-
-> +		interrupts = <11 GPIO_ACTIVE_LOW>;
-> +	};
-> +};
-> +
->  &esdhc1 {
->  	pinctrl-names = "default";
->  	pinctrl-0 = <&pinctrl_esdhc1>;
-> @@ -94,3 +115,13 @@
->  &usbh1 {
->  	vbus-supply = <&usbh_vbus_reg>;
->  };
-> +
-> +&iomuxc {
-> +	vf610-colibri {
-> +		pinctrl_can_int: can_int {
-> +			fsl,pins = <
-> +				VF610_PAD_PTB21__GPIO_43	0x22ed
-> +			>;
-> +		};
-> +	};
-> +};
-> diff --git a/arch/arm/boot/dts/vf-colibri.dtsi
-> b/arch/arm/boot/dts/vf-colibri.dtsi
-> index 5c2b732..fbef082 100644
-> --- a/arch/arm/boot/dts/vf-colibri.dtsi
-> +++ b/arch/arm/boot/dts/vf-colibri.dtsi
-> @@ -23,6 +23,12 @@
->  	status = "okay";
->  };
->  
-> +&dspi1 {
-> +	bus-num = <1>;
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_dspi1>;
-> +};
-> +
->  &edma0 {
->  	status = "okay";
->  };
-> @@ -107,6 +113,15 @@
->  			>;
->  		};
->  
-> +		pinctrl_dspi1: dspi1grp {
-> +			fsl,pins = <
-> +				VF610_PAD_PTD5__DSPI1_CS0		0x33e2
-> +				VF610_PAD_PTD6__DSPI1_SIN		0x33e1
-> +				VF610_PAD_PTD7__DSPI1_SOUT		0x33e2
-> +				VF610_PAD_PTD8__DSPI1_SCK		0x33e2
-> +			>;
-> +		};
-> +
->  		pinctrl_esdhc1: esdhc1grp {
->  			fsl,pins = <
->  				VF610_PAD_PTA24__ESDHC1_CLK	0x31ef
-
-
-The rest looks good, thx.
-
---
-Stefan
+VGhpcyBzZXQgb2YgcGF0Y2hlcyBoYXMgYmVlbiBkZXZlbG9wZWQgYWZ0ZXIgdXNpbmcgdGhlIGNv
+cmUgdG8gYWNjZXNzIGEgc3BpCm5vciBmbGFzaC4gVGhlIGluaXRpYWwgcGVyZm9ybWFuY2Ugd2Fz
+IG5vdCBhcyBkZXNpcmVkLiBUaGUgZm9sbG93aW5nIGNoYW5nZXMKaGF2ZSBiZWVuIGRvbmUuCgot
+VGhpcyBzZXJpZXMgb2YgcGF0Y2hlcyBhZGQgZHJpdmVyIHN1cHBvcnQgZm9yIGhhcmR3YXJlIGlt
+cGxlbWVudGVkIG1vZGVzOgpMU0JfRklSUywgTE9PUCBhbmQgQ1NfSElHSC4KCi1UaGVyZSBpcyBz
+dXBwb3J0IGZvciBpcnEgbGVzcyBvcGVyYXRpb25zLgoKLVRoZSBidWZmZXIgc2l6ZSBvZiB0aGUg
+Y29yZSBpcyBkZXRlY3RlZCBhdCBwcm9iZSB0aW1lLCBzcGVlZGluZyB1cCB0aGUKb3BlcmF0aW9u
+cy4KCi1Db2RlIGhhcyBiZWVuIHNpbXBsaWZ5IGFuZCBjbGVhbmVkCgpUaGlzIGFyZSB0aGUgcmVz
+dWx0cywgYmVmb3JlIGFuZCBhZnRlciB0aGUgcGF0Y2hldAoKT3JpZ2luYWwKcm9vdEBxdDUwMjI6
+fiMgZGQgaWY9L2Rldi9tdGQwIG9mPS9kZXYvbnVsbAoxNjM4NCswIHJlY29yZHMgaW4KMTYzODQr
+MCByZWNvcmRzIG91dAo4Mzg4NjA4IGJ5dGVzICg4LjQgTUIpIGNvcGllZCwgMTE3Ljk4NSBzLCA3
+MS4xIGtCL3MKCsKgMzc6IMKgIMKgIMKgIMKgMTA3IMKgIMKgIMKgODI4NTMgwqBYaWxpbnggSU5U
+QyBMZXZlbCDCoCAxIMKgYjAwMTAwMDAuc3BpLWZsYXNoCgpBZnRlciBwYXRjaHNldCAoaXJxKToK
+cm9vdEBxdDUwMjI6fiMgZGQgaWY9L2Rldi9tdGQwIG9mPS9kZXYvbnVsbAoxNjM4NCswIHJlY29y
+ZHMgaW4KMTYzODQrMCByZWNvcmRzIG91dAo4Mzg4NjA4IGJ5dGVzICg4LjQgTUIpIGNvcGllZCwg
+NDkuMDA5IHMsIDE3MSBrQi9zCgpBZnRlciBwYXRjaHNldCAocG9sbGluZyk6CnJvb3RAcXQ1MDIy
+On4jIGRkIGlmPS9kZXYvbXRkMCBvZj0vZGV2L251bGwKMTYzODQrMCByZWNvcmRzIGluCjE2Mzg0
+KzAgcmVjb3JkcyBvdXQKODM4ODYwOCBieXRlcyAoOC40IE1CKSBjb3BpZWQsIDQxLjI1MjYgcywg
+MjAzIGtCL3MKCklSUVM6wqBaRVJPCgpDaGFuZ2Vsb2cgdjI6CgotQWRkIHBhdGNoIHNwaS94aWxp
+bng6IFVzZSBwb2xsaW5nIG1vZGUgb24gc21hbGwgdHJhbnNmZXJzCi1NZXJnZSBzcGkveGlsaW54
+OiBSZXNldCBjb3JlIGJlZm9yZSBidWZmZXJfc2l6ZSBkZXRlY3Rpb24gd2l0aCBzcGkveGlsaW54
+OiAKU2ltcGxpZnkgc3BpX2ZpbGxfdHhfZmlmbwotRml4IGNvZGVzdHlsZSBvbiBSZW1vdmUgcnhf
+Zm4gYW5kIHR4X2ZuIHBvaW50ZXIKLVJlbW92ZSBhbHJlYWR5IG1lcmdlZCBwYXRjaGVzCgpSaWNh
+cmRvIFJpYmFsZGEgRGVsZ2FkbyAoMTUpOgogIHNwaS94aWxpbng6IFNpbXBsaWZ5IHNwaV9maWxs
+X3R4X2ZpZm8KICBzcGkveGlsaW54OiBMZWF2ZSB0aGUgSVJRIGFsd2F5cyBlbmFibGVkLgogIHNw
+aS94aWxpbng6IENvZGUgY2xlYW51cAogIHNwaS94aWxpbng6IFVzZSBjYWNoZWQgdmFsdWUgb2Yg
+cmVnaXN0ZXIKICBzcGkveGlsaW54OiBTdXBwb3J0IGNvcmVzIHdpdGggbm8gaW50ZXJydXB0CiAg
+c3BpL3hpbGlueDogRG8gbm90IGluaGliaXQgdHJhbnNtaXNzaW9uIGluIHBvbGxpbmcgbW9kZQog
+IHNwaS94aWxpbng6IFN1cHBvcnQgZm9yIHNwaSBtb2RlIENTX0hJR0gKICBzcGkveGlsaW54OiBS
+ZW1vdmUgcnhfZm4gYW5kIHR4X2ZuIHBvaW50ZXIKICBzcGkveGlsaW54OiBNYWtlIHNwaV90eCBh
+bmQgc3BpX3J4IHNpbW1ldHJpYwogIHNwaS94aWxpbng6IENvbnZlcnQgcmVtYWluZGluZ19ieXRl
+cyBpbiByZW1haW5pbmcgd29yZHMKICBzcGkveGlsaW54OiBDb252ZXJ0IGJpdHNfcGVyX3dvcmQg
+aW4gYnl0ZXNfcGVyX3dvcmQKICBzcGkveGlsaW54OiBSZW1vdmUgaW93cml0ZS9pb3JlYWQgd3Jh
+cHBlcnMKICBzcGkveGlsaW54OiBSZW1vdmUgcmVtYWluaW5nX3dvcmRzIGRyaXZlciBkYXRhIHZh
+cmlhYmxlCiAgc3BpL3hpbGlueDogQ2hlY2sgbnVtYmVyIG9mIHNsYXZlcyByYW5nZQogIHNwaS94
+aWxpbng6IFVzZSBwb2xsaW5nIG1vZGUgb24gc21hbGwgdHJhbnNmZXJzCgogZHJpdmVycy9zcGkv
+c3BpLXhpbGlueC5jIHwgMzM3ICsrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgMTU3IGluc2VydGlvbnMoKyksIDE4MCBkZWxldGlv
+bnMoLSkKCi0tIAoyLjEuNAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fCmxpbnV4LWFybS1rZXJuZWwgbWFpbGluZyBsaXN0CmxpbnV4LWFybS1rZXJuZWxA
+bGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xp
+c3RpbmZvL2xpbnV4LWFybS1rZXJuZWwK

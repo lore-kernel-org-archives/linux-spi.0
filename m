@@ -1,16 +1,17 @@
-From: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
-Subject: [PATCH] spi/xilinx: Check number of slaves range
-Date: Wed, 28 Jan 2015 20:53:39 +0100
-Message-ID: <1422474819-22689-1-git-send-email-ricardo.ribalda@gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi/xilinx: Check number of slaves range
+Date: Wed, 28 Jan 2015 19:57:48 +0000
+Message-ID: <20150128195748.GQ21293@sirena.org.uk>
+References: <1422474819-22689-1-git-send-email-ricardo.ribalda@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Ricardo Ribalda <ricardo.ribalda@gmail.com>
-To: Mark Brown <broonie@kernel.org>, Michal Simek <michal.simek@xilinx.com>,
- =?UTF-8?q?S=C3=B6ren=20Brinkmann?= <soren.brinkmann@xilinx.com>,
- linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============0022430508080649295=="
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Michal Simek <michal.simek@xilinx.com>,
+ =?iso-8859-1?Q?S=F6ren?= Brinkmann <soren.brinkmann@xilinx.com>,
+ linux-spi@vger.kernel.org
+To: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1422474819-22689-1-git-send-email-ricardo.ribalda@gmail.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -22,44 +23,54 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Ricardo Ribalda <ricardo.ribalda@gmail.com>
 
-The core only supports up to 32 slaves, and the chipselect function
-expects the same.
+--===============0022430508080649295==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="5j9EWX0zxF50a1Bm"
+Content-Disposition: inline
 
-Signed-off-by: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
----
 
-v2: Change suggested by Mark Brown
--Namespace the constant
+--5j9EWX0zxF50a1Bm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
- drivers/spi/spi-xilinx.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+On Wed, Jan 28, 2015 at 08:53:39PM +0100, Ricardo Ribalda Delgado wrote:
+> From: Ricardo Ribalda <ricardo.ribalda@gmail.com>
+>=20
+> The core only supports up to 32 slaves, and the chipselect function
+> expects the same.
 
-diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-index 416b227..354dbb4 100644
---- a/drivers/spi/spi-xilinx.c
-+++ b/drivers/spi/spi-xilinx.c
-@@ -22,6 +22,8 @@
- #include <linux/spi/xilinx_spi.h>
- #include <linux/io.h>
- 
-+#define XILINX_SPI_MAX_CS	32
-+
- #define XILINX_SPI_NAME "xilinx_spi"
- 
- /* Register definitions as per "OPB Serial Peripheral Interface (SPI) (v1.00e)
-@@ -354,6 +356,11 @@ static int xilinx_spi_probe(struct platform_device *pdev)
- 		return -EINVAL;
- 	}
- 
-+	if (num_cs > XILINX_SPI_MAX_CS) {
-+		dev_err(&pdev->dev, "Invalid number of spi slaves\n");
-+		return -EINVAL;
-+	}
-+
- 	master = spi_alloc_master(&pdev->dev, sizeof(struct xilinx_spi));
- 	if (!master)
- 		return -ENODEV;
--- 
-2.1.4
+Applied, thanks.
+
+--5j9EWX0zxF50a1Bm
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJUyT87AAoJECTWi3JdVIfQiHoH/j4TmPHpDKBCuyxNQ5mYqJei
+J0ffaP0OLVnhH3UUff8omaQpkVIvY5anTuvKJtLHsRUmqp3d8+LYKmcS/GjUWrEY
+cCK7L1B/tmV9oH5JKKbodjuSV5g8MHy3G2ayBNuOz/uTo5K0xfjnJj5a3QI12sDI
+vxKHCSfrXxzIf0SfKjOfEprHWyjNQMljM+4xjvAM7q/cuyFnojc35vs/nT78lC6c
+IPA16HMeHgBOf7xqb07DifMI+w0naAO17CVjL2PgYMZyPMncgVaM/WSp4wE0TxXi
+jv00oL6LdNln5MYaUW9ezuGYaWdngLNIOcWidBbXRUgtCVPkmkyivRhYjnwen7Q=
+=8ucE
+-----END PGP SIGNATURE-----
+
+--5j9EWX0zxF50a1Bm--
+
+
+--===============0022430508080649295==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+linux-arm-kernel mailing list
+linux-arm-kernel@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+
+--===============0022430508080649295==--

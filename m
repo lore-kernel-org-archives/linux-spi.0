@@ -1,16 +1,18 @@
 From: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
-Subject: [PATCH v2 00/15] spi/xilinx: Speed-up
-Date: Wed, 28 Jan 2015 13:23:39 +0100
-Message-ID: <1422447834-23116-1-git-send-email-ricardo.ribalda@gmail.com>
+Subject: [PATCH v2 01/15] spi/xilinx: Simplify spi_fill_tx_fifo
+Date: Wed, 28 Jan 2015 13:23:40 +0100
+Message-ID: <1422447834-23116-2-git-send-email-ricardo.ribalda@gmail.com>
+References: <1422447834-23116-1-git-send-email-ricardo.ribalda@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Cc: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
 To: Mark Brown <broonie@kernel.org>, Michal Simek <michal.simek@xilinx.com>,
  =?UTF-8?q?S=C3=B6ren=20Brinkmann?= <soren.brinkmann@xilinx.com>,
  linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  linux-kernel@vger.kernel.org
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1422447834-23116-1-git-send-email-ricardo.ribalda@gmail.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -22,45 +24,111 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-VGhpcyBzZXQgb2YgcGF0Y2hlcyBoYXMgYmVlbiBkZXZlbG9wZWQgYWZ0ZXIgdXNpbmcgdGhlIGNv
-cmUgdG8gYWNjZXNzIGEgc3BpCm5vciBmbGFzaC4gVGhlIGluaXRpYWwgcGVyZm9ybWFuY2Ugd2Fz
-IG5vdCBhcyBkZXNpcmVkLiBUaGUgZm9sbG93aW5nIGNoYW5nZXMKaGF2ZSBiZWVuIGRvbmUuCgot
-VGhpcyBzZXJpZXMgb2YgcGF0Y2hlcyBhZGQgZHJpdmVyIHN1cHBvcnQgZm9yIGhhcmR3YXJlIGlt
-cGxlbWVudGVkIG1vZGVzOgpMU0JfRklSUywgTE9PUCBhbmQgQ1NfSElHSC4KCi1UaGVyZSBpcyBz
-dXBwb3J0IGZvciBpcnEgbGVzcyBvcGVyYXRpb25zLgoKLVRoZSBidWZmZXIgc2l6ZSBvZiB0aGUg
-Y29yZSBpcyBkZXRlY3RlZCBhdCBwcm9iZSB0aW1lLCBzcGVlZGluZyB1cCB0aGUKb3BlcmF0aW9u
-cy4KCi1Db2RlIGhhcyBiZWVuIHNpbXBsaWZ5IGFuZCBjbGVhbmVkCgpUaGlzIGFyZSB0aGUgcmVz
-dWx0cywgYmVmb3JlIGFuZCBhZnRlciB0aGUgcGF0Y2hldAoKT3JpZ2luYWwKcm9vdEBxdDUwMjI6
-fiMgZGQgaWY9L2Rldi9tdGQwIG9mPS9kZXYvbnVsbAoxNjM4NCswIHJlY29yZHMgaW4KMTYzODQr
-MCByZWNvcmRzIG91dAo4Mzg4NjA4IGJ5dGVzICg4LjQgTUIpIGNvcGllZCwgMTE3Ljk4NSBzLCA3
-MS4xIGtCL3MKCsKgMzc6IMKgIMKgIMKgIMKgMTA3IMKgIMKgIMKgODI4NTMgwqBYaWxpbnggSU5U
-QyBMZXZlbCDCoCAxIMKgYjAwMTAwMDAuc3BpLWZsYXNoCgpBZnRlciBwYXRjaHNldCAoaXJxKToK
-cm9vdEBxdDUwMjI6fiMgZGQgaWY9L2Rldi9tdGQwIG9mPS9kZXYvbnVsbAoxNjM4NCswIHJlY29y
-ZHMgaW4KMTYzODQrMCByZWNvcmRzIG91dAo4Mzg4NjA4IGJ5dGVzICg4LjQgTUIpIGNvcGllZCwg
-NDkuMDA5IHMsIDE3MSBrQi9zCgpBZnRlciBwYXRjaHNldCAocG9sbGluZyk6CnJvb3RAcXQ1MDIy
-On4jIGRkIGlmPS9kZXYvbXRkMCBvZj0vZGV2L251bGwKMTYzODQrMCByZWNvcmRzIGluCjE2Mzg0
-KzAgcmVjb3JkcyBvdXQKODM4ODYwOCBieXRlcyAoOC40IE1CKSBjb3BpZWQsIDQxLjI1MjYgcywg
-MjAzIGtCL3MKCklSUVM6wqBaRVJPCgpDaGFuZ2Vsb2cgdjI6CgotQWRkIHBhdGNoIHNwaS94aWxp
-bng6IFVzZSBwb2xsaW5nIG1vZGUgb24gc21hbGwgdHJhbnNmZXJzCi1NZXJnZSBzcGkveGlsaW54
-OiBSZXNldCBjb3JlIGJlZm9yZSBidWZmZXJfc2l6ZSBkZXRlY3Rpb24gd2l0aCBzcGkveGlsaW54
-OiAKU2ltcGxpZnkgc3BpX2ZpbGxfdHhfZmlmbwotRml4IGNvZGVzdHlsZSBvbiBSZW1vdmUgcnhf
-Zm4gYW5kIHR4X2ZuIHBvaW50ZXIKLVJlbW92ZSBhbHJlYWR5IG1lcmdlZCBwYXRjaGVzCgpSaWNh
-cmRvIFJpYmFsZGEgRGVsZ2FkbyAoMTUpOgogIHNwaS94aWxpbng6IFNpbXBsaWZ5IHNwaV9maWxs
-X3R4X2ZpZm8KICBzcGkveGlsaW54OiBMZWF2ZSB0aGUgSVJRIGFsd2F5cyBlbmFibGVkLgogIHNw
-aS94aWxpbng6IENvZGUgY2xlYW51cAogIHNwaS94aWxpbng6IFVzZSBjYWNoZWQgdmFsdWUgb2Yg
-cmVnaXN0ZXIKICBzcGkveGlsaW54OiBTdXBwb3J0IGNvcmVzIHdpdGggbm8gaW50ZXJydXB0CiAg
-c3BpL3hpbGlueDogRG8gbm90IGluaGliaXQgdHJhbnNtaXNzaW9uIGluIHBvbGxpbmcgbW9kZQog
-IHNwaS94aWxpbng6IFN1cHBvcnQgZm9yIHNwaSBtb2RlIENTX0hJR0gKICBzcGkveGlsaW54OiBS
-ZW1vdmUgcnhfZm4gYW5kIHR4X2ZuIHBvaW50ZXIKICBzcGkveGlsaW54OiBNYWtlIHNwaV90eCBh
-bmQgc3BpX3J4IHNpbW1ldHJpYwogIHNwaS94aWxpbng6IENvbnZlcnQgcmVtYWluZGluZ19ieXRl
-cyBpbiByZW1haW5pbmcgd29yZHMKICBzcGkveGlsaW54OiBDb252ZXJ0IGJpdHNfcGVyX3dvcmQg
-aW4gYnl0ZXNfcGVyX3dvcmQKICBzcGkveGlsaW54OiBSZW1vdmUgaW93cml0ZS9pb3JlYWQgd3Jh
-cHBlcnMKICBzcGkveGlsaW54OiBSZW1vdmUgcmVtYWluaW5nX3dvcmRzIGRyaXZlciBkYXRhIHZh
-cmlhYmxlCiAgc3BpL3hpbGlueDogQ2hlY2sgbnVtYmVyIG9mIHNsYXZlcyByYW5nZQogIHNwaS94
-aWxpbng6IFVzZSBwb2xsaW5nIG1vZGUgb24gc21hbGwgdHJhbnNmZXJzCgogZHJpdmVycy9zcGkv
-c3BpLXhpbGlueC5jIHwgMzM3ICsrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgMTU3IGluc2VydGlvbnMoKyksIDE4MCBkZWxldGlv
-bnMoLSkKCi0tIAoyLjEuNAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCmxpbnV4LWFybS1rZXJuZWwgbWFpbGluZyBsaXN0CmxpbnV4LWFybS1rZXJuZWxA
-bGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xp
-c3RpbmZvL2xpbnV4LWFybS1rZXJuZWwK
+Instead of checking the TX_FULL flag for every transaction, find out the
+size of the buffer at probe time and use it.
+
+To avoid situations where the core had some data on the buffer before
+initialization, the core is reseted before the buffer size is detected
+
+Signed-off-by: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
+---
+v2: Changes Requested by Mark Brown <broonie@kernel.org>
+
+Before discovering the buffer size, reset the core.
+
+ drivers/spi/spi-xilinx.c | 46 +++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 33 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
+index 416b227..1890af8 100644
+--- a/drivers/spi/spi-xilinx.c
++++ b/drivers/spi/spi-xilinx.c
+@@ -88,6 +88,7 @@ struct xilinx_spi {
+ 	const u8 *tx_ptr;	/* pointer in the Rx buffer */
+ 	int remaining_bytes;	/* the number of bytes left to transfer */
+ 	u8 bits_per_word;
++	int buffer_size;	/* buffer size in words */
+ 	unsigned int (*read_fn)(void __iomem *);
+ 	void (*write_fn)(u32, void __iomem *);
+ 	void (*tx_fn)(struct xilinx_spi *);
+@@ -221,24 +222,16 @@ static int xilinx_spi_setup_transfer(struct spi_device *spi,
+ 	return 0;
+ }
+ 
+-static int xilinx_spi_fill_tx_fifo(struct xilinx_spi *xspi)
++static void xilinx_spi_fill_tx_fifo(struct xilinx_spi *xspi, int n_words)
+ {
+-	u8 sr;
+-	int n_words = 0;
++	xspi->remaining_bytes -= n_words * xspi->bits_per_word / 8;
+ 
+-	/* Fill the Tx FIFO with as many bytes as possible */
+-	sr = xspi->read_fn(xspi->regs + XSPI_SR_OFFSET);
+-	while ((sr & XSPI_SR_TX_FULL_MASK) == 0 && xspi->remaining_bytes > 0) {
++	while (n_words--)
+ 		if (xspi->tx_ptr)
+ 			xspi->tx_fn(xspi);
+ 		else
+ 			xspi->write_fn(0, xspi->regs + XSPI_TXD_OFFSET);
+-		xspi->remaining_bytes -= xspi->bits_per_word / 8;
+-		sr = xspi->read_fn(xspi->regs + XSPI_SR_OFFSET);
+-		n_words++;
+-	}
+-
+-	return n_words;
++	return;
+ }
+ 
+ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
+@@ -265,7 +258,10 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 		u16 cr;
+ 		int n_words;
+ 
+-		n_words = xilinx_spi_fill_tx_fifo(xspi);
++		n_words = (xspi->remaining_bytes * 8) / xspi->bits_per_word;
++		n_words = min(n_words, xspi->buffer_size);
++
++		xilinx_spi_fill_tx_fifo(xspi, n_words);
+ 
+ 		/* Start the transfer by not inhibiting the transmitter any
+ 		 * longer
+@@ -322,6 +318,28 @@ static irqreturn_t xilinx_spi_irq(int irq, void *dev_id)
+ 	return IRQ_HANDLED;
+ }
+ 
++static int xilinx_spi_find_buffer_size(struct xilinx_spi *xspi)
++{
++	u8 sr;
++	int n_words = 0;
++
++	/*
++	 * Before the buffer_size detection we reset the core
++	 * to make sure we start with a clean state.
++	 */
++	xspi->write_fn(XIPIF_V123B_RESET_MASK,
++		xspi->regs + XIPIF_V123B_RESETR_OFFSET);
++
++	/* Fill the Tx FIFO with as many words as possible */
++	do {
++		xspi->write_fn(0, xspi->regs + XSPI_TXD_OFFSET);
++		sr = xspi->read_fn(xspi->regs + XSPI_SR_OFFSET);
++		n_words++;
++	} while (!(sr & XSPI_SR_TX_FULL_MASK));
++
++	return n_words;
++}
++
+ static const struct of_device_id xilinx_spi_of_match[] = {
+ 	{ .compatible = "xlnx,xps-spi-2.00.a", },
+ 	{ .compatible = "xlnx,xps-spi-2.00.b", },
+@@ -413,6 +431,8 @@ static int xilinx_spi_probe(struct platform_device *pdev)
+ 		goto put_master;
+ 	}
+ 
++	xspi->buffer_size = xilinx_spi_find_buffer_size(xspi);
++
+ 	/* SPI controller initializations */
+ 	xspi_init_hw(xspi);
+ 
+-- 
+2.1.4

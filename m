@@ -1,17 +1,16 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 00/15] spi/xilinx: Speed-up
-Date: Wed, 28 Jan 2015 19:43:11 +0000
-Message-ID: <20150128194311.GL21293@sirena.org.uk>
-References: <1422447834-23116-1-git-send-email-ricardo.ribalda@gmail.com>
+From: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
+Subject: [PATCH] spi/xilinx: Check number of slaves range
+Date: Wed, 28 Jan 2015 20:53:39 +0100
+Message-ID: <1422474819-22689-1-git-send-email-ricardo.ribalda@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7510276472656004075=="
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Michal Simek <michal.simek@xilinx.com>,
- =?iso-8859-1?Q?S=F6ren?= Brinkmann <soren.brinkmann@xilinx.com>,
- linux-spi@vger.kernel.org
-To: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Ricardo Ribalda <ricardo.ribalda@gmail.com>
+To: Mark Brown <broonie@kernel.org>, Michal Simek <michal.simek@xilinx.com>,
+ =?UTF-8?q?S=C3=B6ren=20Brinkmann?= <soren.brinkmann@xilinx.com>,
+ linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1422447834-23116-1-git-send-email-ricardo.ribalda@gmail.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -23,53 +22,44 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+From: Ricardo Ribalda <ricardo.ribalda@gmail.com>
 
---===============7510276472656004075==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="w4kmnulvTLkiEiiC"
-Content-Disposition: inline
+The core only supports up to 32 slaves, and the chipselect function
+expects the same.
 
+Signed-off-by: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
+---
 
---w4kmnulvTLkiEiiC
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+v2: Change suggested by Mark Brown
+-Namespace the constant
 
-On Wed, Jan 28, 2015 at 01:23:39PM +0100, Ricardo Ribalda Delgado wrote:
-> This set of patches has been developed after using the core to access a spi
-> nor flash. The initial performance was not as desired. The following changes
-> have been done.
+ drivers/spi/spi-xilinx.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Applied everything except the MAX_CS change, thanks - that's fine, just
-needs the define namespacing.
-
---w4kmnulvTLkiEiiC
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJUyTvOAAoJECTWi3JdVIfQAeIH/jY5M7AACxsPPc5/154+/igf
-xB1YBGfVxVVq+wT3TTvTZwXKvfSjfWufV6FIdu0V/IDhLjn7u8+sPzJxdKRvs53+
-haPmIzd9fh3EMyi9wo8IRkVoaaUAbF3jQ7565vI39e1lJQYMJ/Og9x+kNPqT5qGf
-SYjrzHKivM0pi+lulOHkSSgQ0vHxPDFlvJqPZSnFgIyQJtFTqCt01+xbZUBk0+mw
-HwxOyLoBkSktZLl8WUrWccm5zyzHvma0js/oTLpC0BtY8uwYBQ6u1D758Bzkcm/a
-AXOX4ILu7QRhzOQiKnCROM++72gl+1mbJjjAGk2WyOaV+PJBz3vT7ZClUFf3mbo=
-=ZkCl
------END PGP SIGNATURE-----
-
---w4kmnulvTLkiEiiC--
-
-
---===============7510276472656004075==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-linux-arm-kernel mailing list
-linux-arm-kernel@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-
---===============7510276472656004075==--
+diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
+index 416b227..354dbb4 100644
+--- a/drivers/spi/spi-xilinx.c
++++ b/drivers/spi/spi-xilinx.c
+@@ -22,6 +22,8 @@
+ #include <linux/spi/xilinx_spi.h>
+ #include <linux/io.h>
+ 
++#define XILINX_SPI_MAX_CS	32
++
+ #define XILINX_SPI_NAME "xilinx_spi"
+ 
+ /* Register definitions as per "OPB Serial Peripheral Interface (SPI) (v1.00e)
+@@ -354,6 +356,11 @@ static int xilinx_spi_probe(struct platform_device *pdev)
+ 		return -EINVAL;
+ 	}
+ 
++	if (num_cs > XILINX_SPI_MAX_CS) {
++		dev_err(&pdev->dev, "Invalid number of spi slaves\n");
++		return -EINVAL;
++	}
++
+ 	master = spi_alloc_master(&pdev->dev, sizeof(struct xilinx_spi));
+ 	if (!master)
+ 		return -ENODEV;
+-- 
+2.1.4

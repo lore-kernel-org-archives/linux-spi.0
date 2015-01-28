@@ -1,19 +1,18 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 5/7] spi: spi-fsl-dspi: Remove spi-bitbang
-Date: Wed, 28 Jan 2015 19:25:45 +0000
-Message-ID: <20150128192545.GA12296@sirena.org.uk>
-References: <1422356244-15629-1-git-send-email-bhuvanchandra.dv@toradex.com>
- <1422356244-15629-6-git-send-email-bhuvanchandra.dv@toradex.com>
+Subject: Re: [PATCH v2 02/15] spi/xilinx: Leave the IRQ always enabled.
+Date: Wed, 28 Jan 2015 19:38:20 +0000
+Message-ID: <20150128193820.GJ21293@sirena.org.uk>
+References: <1422447834-23116-1-git-send-email-ricardo.ribalda@gmail.com>
+ <1422447834-23116-3-git-send-email-ricardo.ribalda@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4201417194081579740=="
-Cc: mark.rutland@arm.com, devicetree@vger.kernel.org, linux@arm.linux.org.uk,
- B44548@freescale.com, pawel.moll@arm.com, ijc+devicetree@hellion.org.uk,
- Li.Xiubo@freescale.com, linux-kernel@vger.kernel.org, stefan@agner.ch,
- linux-spi@vger.kernel.org, robh+dt@kernel.org, galak@codeaurora.org,
- shawn.guo@linaro.org, linux-arm-kernel@lists.infradead.org
-To: Bhuvanchandra DV <bhuvanchandra.dv@toradex.com>
+Content-Type: multipart/mixed; boundary="===============6137348011148092725=="
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Michal Simek <michal.simek@xilinx.com>,
+ =?iso-8859-1?Q?S=F6ren?= Brinkmann <soren.brinkmann@xilinx.com>,
+ linux-spi@vger.kernel.org
+To: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1422356244-15629-6-git-send-email-bhuvanchandra.dv@toradex.com>
+In-Reply-To: <1422447834-23116-3-git-send-email-ricardo.ribalda@gmail.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -26,45 +25,48 @@ Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead
 List-Id: linux-spi.vger.kernel.org
 
 
---===============4201417194081579740==
+--===============6137348011148092725==
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="cNdxnHkX5QqsyA0e"
+	protocol="application/pgp-signature"; boundary="GMAK4tsM7WHnyxbM"
 Content-Disposition: inline
 
 
---cNdxnHkX5QqsyA0e
+--GMAK4tsM7WHnyxbM
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 27, 2015 at 04:27:22PM +0530, Bhuvanchandra DV wrote:
-> From: Chao Fu <B44548@freescale.com>
+On Wed, Jan 28, 2015 at 01:23:41PM +0100, Ricardo Ribalda Delgado wrote:
+> Instead of enabling the IRQ and disabling it for every transaction.
 >=20
-> DSPI module need cs change information in
-> a spi transfer. According to cs change, DSPI
+> Specially the small transactions (1,2 words) benefit from removing 3 bus
+> accesses.
 
-Applied, thanks.
+For this particular change I don't think it matters but in general
+moving things that do need to be enabled and disabled to
+{un,}prepare_transfer_hardware() will avoid quite a bit of overhead
+under load.
 
---cNdxnHkX5QqsyA0e
+--GMAK4tsM7WHnyxbM
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJUyTe4AAoJECTWi3JdVIfQEHQH/RdKiPoPotBM0/69lF5IH44z
-7AiRC0G611a+DnAkBrQmYHZ+od0qfKEUYF1C1RBfrHXo8qzQWqw6o4aDJS2whh6t
-fIeJrIRGMISYoh5I83Jwe39f3IZwGtOtw8igQiqjq1sBzH2YoPD+Szmq2IhSufMB
-qf47bJbq2IqlrTK8WK2Ev4d2ear534injn5vycf9DN5/G+yDwkM+t2ACZh3ujBzf
-5lslQGYFmm89AZImSA/VnlSjXyUQ2Fm7tRnSWbjfXNRTNnISOdpLE6BNMMWEcWdy
-pDnVTHK/zd77xBfFrxfdvWB64J6GWQH6OiPRE9spwriakeQgOzTS0wOQgUlIbBk=
-=WP2r
+iQEcBAEBCAAGBQJUyTqrAAoJECTWi3JdVIfQxZUH/jJTTkEYThZvBD050a87k2Tg
+CeNoDZAKEaKWT/2BN2WFG6LlPb23eeVnoeqx1cA6UAUI9v8ZkkZR1+dLJBp30oRl
+JZ3NS9QkR7f+nYASW0GKJORvmYy58D1x+9kUk5Xyu0wOYawUwvTJNAKACH9EO1Uo
+pqn62FJsV1rvYlkcdww6eIIt6XuTPF1tt0W3E7l5jwuj4mgB5Oh3DVk/Q9DNC/0Z
+EQrFUCLqk5uz6MT3v6CEecTw4IC6sFaduIBaCAxVui3H32YU+hcgm3tVYhYCn6Tv
+jusuIEvMke3wfk898Eafqmle6otcB8YZTWVley9RARVH6IVpDGPya7hDT7V/Vow=
+=7G/h
 -----END PGP SIGNATURE-----
 
---cNdxnHkX5QqsyA0e--
+--GMAK4tsM7WHnyxbM--
 
 
---===============4201417194081579740==
+--===============6137348011148092725==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -75,4 +77,4 @@ linux-arm-kernel mailing list
 linux-arm-kernel@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
 
---===============4201417194081579740==--
+--===============6137348011148092725==--

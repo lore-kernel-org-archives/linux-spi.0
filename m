@@ -1,14 +1,15 @@
 From: Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH] spi/rockchip: avoid uninitialized-use warning
-Date: Wed, 28 Jan 2015 14:25:10 +0100
-Message-ID: <1957186.KORYFIrP42@wuerfel>
+Subject: [PATCH] spi: pl08x: do not select S3C64XX_PL080
+Date: Wed, 28 Jan 2015 14:27:06 +0100
+Message-ID: <2608153.sC21ihDxEF@wuerfel>
+References: <1957186.KORYFIrP42@wuerfel>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Addy Ke <addy.ke@rock-chips.com>, Doug Anderson <dianders@chromium.org>,
- linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>, linux-samsung-soc@vger.kernel.org
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1957186.KORYFIrP42@wuerfel>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -20,58 +21,26 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-We currently get a warning about potentially uninitialized variables
-in the rockchip spi driver, at least in certain toolchain versions:
+The pl08x driver originally selected S3C64XX_PL080 to avoid having
+the legacy Samsung DMA interfaces. Those are now gone, so the
+select is no longer needed, but it now causes problems when
+CONFIG_DMA_ENGINE is disabled:
 
-spi/spi-rockchip.c: In function 'rockchip_spi_prepare_dma':
-include/linux/dmaengine.h:796:2: warning: 'txdesc' may be used uninitialized in this function
-include/linux/dmaengine.h:796:2: warning: 'rxdesc' may be used uninitialized in this function
+arch/arm/plat-samsung/built-in.o: In function `s3c64xx_spi0_set_platdata':
+:(.init.text+0x518): undefined reference to `pl08x_filter_id'
 
-The reason seems to be that gcc cannot know whether the value
-of the rs->rx and rs->tx variables change between the two points
-these are accessed.
-
-The code is actually correct, but to make this clearer to the
-compiler, this changes the conditionals to test for the local
-rxdesc/txdesc variables instead, which it knows won't change.
+This simply removes the 'select' to avoid this problem.
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index daabbabd26b0..1a777dc261d6 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -437,6 +437,7 @@ static void rockchip_spi_prepare_dma(struct rockchip_spi *rs)
- 	rs->state &= ~TXBUSY;
- 	spin_unlock_irqrestore(&rs->lock, flags);
- 
-+	rxdesc = NULL;
- 	if (rs->rx) {
- 		rxconf.direction = rs->dma_rx.direction;
- 		rxconf.src_addr = rs->dma_rx.addr;
-@@ -453,6 +454,7 @@ static void rockchip_spi_prepare_dma(struct rockchip_spi *rs)
- 		rxdesc->callback_param = rs;
- 	}
- 
-+	txdesc = NULL;
- 	if (rs->tx) {
- 		txconf.direction = rs->dma_tx.direction;
- 		txconf.dst_addr = rs->dma_tx.addr;
-@@ -470,7 +472,7 @@ static void rockchip_spi_prepare_dma(struct rockchip_spi *rs)
- 	}
- 
- 	/* rx must be started before tx due to spi instinct */
--	if (rs->rx) {
-+	if (rxdesc) {
- 		spin_lock_irqsave(&rs->lock, flags);
- 		rs->state |= RXBUSY;
- 		spin_unlock_irqrestore(&rs->lock, flags);
-@@ -478,7 +480,7 @@ static void rockchip_spi_prepare_dma(struct rockchip_spi *rs)
- 		dma_async_issue_pending(rs->dma_rx.ch);
- 	}
- 
--	if (rs->tx) {
-+	if (txdesc) {
- 		spin_lock_irqsave(&rs->lock, flags);
- 		rs->state |= TXBUSY;
- 		spin_unlock_irqrestore(&rs->lock, flags);
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 9b81b39de54e..7727660e9702 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -470,7 +470,6 @@ config SPI_S3C24XX_FIQ
+ config SPI_S3C64XX
+ 	tristate "Samsung S3C64XX series type SPI"
+ 	depends on (PLAT_SAMSUNG || ARCH_EXYNOS)
+-	select S3C64XX_PL080 if ARCH_S3C64XX
+ 	help
+ 	  SPI driver for Samsung S3C64XX and newer SoCs.

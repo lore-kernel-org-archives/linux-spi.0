@@ -1,66 +1,55 @@
-From: Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>
-Subject: Re: [PATCH 7/7] spi: spi-fsl-dspi: Add support for TCFQ transfer mode
-Date: Thu, 29 Jan 2015 19:10:31 +0100
-Message-ID: <1a28f3439386e1132ae0f3ab80666305@agner.ch>
-References: <1422356608-15961-1-git-send-email-bhuvanchandra.dv@toradex.com>
- <1422356608-15961-2-git-send-email-bhuvanchandra.dv@toradex.com>
- <20150128190342.GE21293@sirena.org.uk> <1422533049999.91114@toradex.com>
- <20150129121320.GI21293@sirena.org.uk> <1422536382672.21760@toradex.com>
+From: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH] spi/xilinx: Cast ioread32/iowrite32 function pointers
+Date: Thu, 29 Jan 2015 23:11:47 +0100
+Message-ID: <2800334.5ezTSQFkNQ@wuerfel>
+References: <1422543073-21895-1-git-send-email-ricardo.ribalda@gmail.com> <CAMuHMdX5CMH0Q5S_BBjb-F-kJfzkTS+sP9H-FDe_K_gFRxK7pw@mail.gmail.com> <CAPybu_3O3Rcq1Rvxvbpc-GOSs+VbO74_u+vfH+UtXjLAQjWLQA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, mark.rutland-5wv7dgnIgG8@public.gmane.org,
-	shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, pawel.moll-5wv7dgnIgG8@public.gmane.org,
-	ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org, galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org,
-	linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org, B44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org,
-	Li.Xiubo-KZfg59tc24xl57MIdRCFDg@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: "BhuvanChandra.DV" <bhuvanchandra.dv-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>,
-	Li.Xiubo-KZfg59tc24xl57MIdRCFDg@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1422536382672.21760-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Michal Simek <michal.simek@xilinx.com>,
+	Mark Brown <broonie@kernel.org>,
+	=?ISO-8859-1?Q?S=F6ren?= Brinkmann <soren.brinkmann@xilinx.com>,
+	linux-spi <linux-spi@vger.kernel.org>
+To: linux-arm-kernel@lists.infradead.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <CAPybu_3O3Rcq1Rvxvbpc-GOSs+VbO74_u+vfH+UtXjLAQjWLQA@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On 2015-01-29 13:53, BhuvanChandra.DV wrote:
-> On 01/29/2015 05:43 PM, Mark Brown wrote:
->> On Thu, Jan 29, 2015 at 11:58:25AM +0000, BhuvanChandra.DV wrote:
->>
->>> As far as i understood the major difference between the two modes are when
->>> the interrupt to trigger, as EOQ mode will trigger the interrupt at end of
->>> queue and TCF will trigger the interrupt at every frame transfer. Probably
->>> mode selection shouldn't be a device tree property, but i don't see any
->>> automatic way to choose between the modes.
->>> Maybe a config would be more appropriate?
->> Or if there's either no particular reason to choose one over the other
->> or one is always better then just pick one in the driver and don't worry
->> about implementing both.
+On Thursday 29 January 2015 17:39:08 Ricardo Ribalda Delgado wrote:
+> > I think the definitions in include/asm-generic/iomap.h are actually wrong,
+> > as they lack a const:
+> >
+> >     extern unsigned int ioread8(void __iomem *);
+> >     extern unsigned int ioread16(void __iomem *);
+> >     extern unsigned int ioread16be(void __iomem *);
+> >     extern unsigned int ioread32(void __iomem *);
+> >     extern unsigned int ioread32be(void __iomem *);
+> >
+> > Note that the definitions in include/asm-generic/io.h do have the const:
+> >
+> >     static inline u8 ioread8(const volatile void __iomem *addr)
+> >     static inline u16 ioread16(const volatile void __iomem *addr)
+> >     static inline u32 ioread32(const volatile void __iomem *addr)
+> >     static inline u16 ioread16be(const volatile void __iomem *addr)
+> >     static inline u32 ioread32be(const volatile void __iomem *addr)
 > 
-> Among the two, EOQ would be better since with TCF, interrupts are generated at
-> every frame transfer, which could be a problem at higher frequencies.
-> I think we can omit this patch then.
+> 
+> I think you are right: ioread/iowrite is poorly implemented in many arches 
+> 
+> Would you mind sending the patch for asm-generic/iomap ? Or you want
+> me to do it.
+> 
 
-It would be interesting to know what the authors original motivation
-implementing this feature was. Reading the email of the original
-patchset indicates that there are platforms where only TCF is supported:
+I think we don't need the 'volatile' keyword here. The main reason
+we have it on readl() is to shut up the compiler when dealing with
+ancient driver code that annotates iomem pointers as volatile.
 
-<quote>
-For adopting of different platform, either of them is a way of DSPI
-transfer data.
-</quote>
+This is generally considered a (minor) driver mistake though, and
+modern drivers that for some reason use ioread*() typically don't
+do that (or they get a warning).
 
-However, I don't know which platform that would be. Also, it seems that
-Chao Fu's email is not valid anymore. 
-
-@Xiubo Li, maybe you can shed some light on this?
-
->From the platform I am concerned about, Vybrid, it seems not very
-useful, so I'm fine with omitting that patch.
-
---
-Stefan 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+	Arnd

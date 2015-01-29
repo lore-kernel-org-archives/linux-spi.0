@@ -1,58 +1,67 @@
-From: BhuvanChandra.DV <bhuvanchandra.dv@toradex.com>
-Subject: Re: [PATCH 7/7] spi: spi-fsl-dspi: Add support for TCFQ transfer mode
-Date: Thu, 29 Jan 2015 12:53:57 +0000
-Message-ID: <1422536382672.21760@toradex.com>
-References: <1422356608-15961-1-git-send-email-bhuvanchandra.dv@toradex.com>
- <1422356608-15961-2-git-send-email-bhuvanchandra.dv@toradex.com>
- <20150128190342.GE21293@sirena.org.uk> <1422533049999.91114@toradex.com>
- <20150129121320.GI21293@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux@arm.linux.org.uk" <linux@arm.linux.org.uk>,
- "B44548@freescale.com" <B44548@freescale.com>,
- "pawel.moll@arm.com" <pawel.moll@arm.com>,
- "ijc+devicetree@hellion.org.uk" <ijc+devicetree@hellion.org.uk>,
- "Li.Xiubo@freescale.com" <Li.Xiubo@freescale.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stefan@agner.ch" <stefan@agner.ch>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- "robh+dt@kernel.org" <robh+dt@kernel.org>,
- "galak@codeaurora.org" <galak@codeaurora.org>,
- "shawn.guo@linaro.org" <shawn.guo@linaro.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20150129121320.GI21293@sirena.org.uk>
-Content-Language: en-IN
-Content-ID: <2EB79AB5DBC01549B4F66E2879FBDED3@toradex.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+From: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi/xilinx: Cast ioread32/iowrite32 function pointers
+Date: Thu, 29 Jan 2015 15:51:13 +0100
+Message-ID: <1422543073-21895-1-git-send-email-ricardo.ribalda@gmail.com>
+Cc: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	=?UTF-8?q?S=C3=B6ren=20Brinkmann?= <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+IO functions prototypes may have different argument qualifiers
+on different architectures.
 
-On 01/29/2015 05:43 PM, Mark Brown wrote:
-> On Thu, Jan 29, 2015 at 11:58:25AM +0000, BhuvanChandra.DV wrote:
->
->> As far as i understood the major difference between the two modes are when
->> the interrupt to trigger, as EOQ mode will trigger the interrupt at end of
->> queue and TCF will trigger the interrupt at every frame transfer. Probably
->> mode selection shouldn't be a device tree property, but i don't see any
->> automatic way to choose between the modes.
->> Maybe a config would be more appropriate?
-> Or if there's either no particular reason to choose one over the other
-> or one is always better then just pick one in the driver and don't worry
-> about implementing both.
+This patch cast the assignment of the function, to match the one defined
+at iomap.h.
 
-Among the two, EOQ would be better since with TCF, interrupts are generated at
-every frame transfer, which could be a problem at higher frequencies.
-I think we can omit this patch then.
+Fixes: 99082eab63449f9d spi/xilinx: Remove iowrite/ioread wrappers
+Reported-by: kbuild test robot <fengguang.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi-xilinx.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
+index 0e8962c..418e730 100644
+--- a/drivers/spi/spi-xilinx.c
++++ b/drivers/spi/spi-xilinx.c
+@@ -91,7 +91,7 @@ struct xilinx_spi {
+ 	u8 bytes_per_word;
+ 	int buffer_size;	/* buffer size in words */
+ 	u32 cs_inactive;	/* Level of the CS pins when inactive*/
+-	unsigned int (*read_fn)(void __iomem *);
++	u32 (*read_fn)(void __iomem *);
+ 	void (*write_fn)(u32, void __iomem *);
+ };
+ 
+@@ -378,15 +378,15 @@ static int xilinx_spi_probe(struct platform_device *pdev)
+ 	 * Setup little endian helper functions first and try to use them
+ 	 * and check if bit was correctly setup or not.
+ 	 */
+-	xspi->read_fn = ioread32;
+-	xspi->write_fn = iowrite32;
++	xspi->read_fn = (u32 (*)(void __iomem *)) ioread32;
++	xspi->write_fn = (void (*)(u32, void __iomem *)) iowrite32;
+ 
+ 	xspi->write_fn(XSPI_CR_LOOP, xspi->regs + XSPI_CR_OFFSET);
+ 	tmp = xspi->read_fn(xspi->regs + XSPI_CR_OFFSET);
+ 	tmp &= XSPI_CR_LOOP;
+ 	if (tmp != XSPI_CR_LOOP) {
+-		xspi->read_fn = ioread32be;
+-		xspi->write_fn = iowrite32be;
++		xspi->read_fn = (u32 (*)(void __iomem *)) ioread32be;
++		xspi->write_fn = (void (*)(u32, void __iomem *)) iowrite32be;
+ 	}
+ 
+ 	master->bits_per_word_mask = SPI_BPW_MASK(bits_per_word);
+-- 
+2.1.4
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

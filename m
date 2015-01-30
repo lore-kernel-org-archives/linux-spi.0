@@ -1,61 +1,81 @@
-From: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj@renesas.com>
-Subject: Re: [PATCH v2] spi: sh-msiof: Update calculation of frequency dividing
-Date: Fri, 30 Jan 2015 15:13:53 +0900
-Message-ID: <54CB2121.4000607@renesas.com>
-References: <1421286613-8240-1-git-send-email-nobuhiro.iwamatsu.yj@renesas.com> <CAMuHMdWwXGaMYpuPJ2_429kc65D0p26dOL-wz7GpWxQAqdJpwQ@mail.gmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH] spi/xilinx: Fix access invalid memory on xilinx_spi_tx
+Date: Fri, 30 Jan 2015 11:06:32 +0100
+Message-ID: <CAMuHMdU7=w1C6xjDhHwaFmw7Ct4OwfUHCKr8KsZKEoLZzfpf0Q@mail.gmail.com>
+References: <1422598209-5999-1-git-send-email-ricardo.ribalda@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi <linux-spi@vger.kernel.org>,
-	Linux-sh list <linux-sh@vger.kernel.org>,
-	Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <CAMuHMdWwXGaMYpuPJ2_429kc65D0p26dOL-wz7GpWxQAqdJpwQ@mail.gmail.com>
-Sender: linux-sh-owner@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie@kernel.org>,
+	Michal Simek <michal.simek@xilinx.com>,
+	=?UTF-8?Q?S=C3=B6ren_Brinkmann?= <soren.brinkmann@xilinx.com>,
+	linux-spi <linux-spi@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1422598209-5999-1-git-send-email-ricardo.ribalda@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+Hi Ricardo,
 
-(2015/01/15 23:21), Geert Uytterhoeven wrote:
-> Hi Iwamatsu-san,
+On Fri, Jan 30, 2015 at 7:10 AM, Ricardo Ribalda Delgado
+<ricardo.ribalda@gmail.com> wrote:
+> On 1 and 2 bytes per word, the transfer of the 3 last bytes will access
+> memory outside rx_ptr.
 >
-> Thanks for the update!
+> Although this has not trigger any error on real hardware, we should
+> better fix this.
 >
-> On Thu, Jan 15, 2015 at 2:50 AM, Nobuhiro Iwamatsu
-> <nobuhiro.iwamatsu.yj@renesas.com>  wrote:
->> @@ -804,7 +803,9 @@ static int sh_msiof_transfer_one(struct spi_master *master,
->>          int ret;
->>
->>          /* setup clocks (clock already enabled in chipselect()) */
->> -       sh_msiof_spi_set_clk_regs(p, clk_get_rate(p->clk), t->speed_hz);
->> +       ret = sh_msiof_spi_set_clk_regs(p, clk_get_rate(p->clk), t->speed_hz);
->> +       if (ret)
->> +               return ret;
+> Fixes: 24ba5e593f391507 Remove rx_fn and tx_fn pointer
+> Signed-off-by: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
+> ---
+>  drivers/spi/spi-xilinx.c | 17 ++++++++++++++++-
+>  1 file changed, 16 insertions(+), 1 deletion(-)
 >
-> I think this can be handled by the core, if we fill in spi_master.min_speed_hz.
+> diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
+> index 2ca55f6..a1b664d 100644
+> --- a/drivers/spi/spi-xilinx.c
+> +++ b/drivers/spi/spi-xilinx.c
+> @@ -97,11 +97,26 @@ struct xilinx_spi {
+>
+>  static void xilinx_spi_tx(struct xilinx_spi *xspi)
+>  {
+> +       u32 data = 0;
+> +
+>         if (!xspi->tx_ptr) {
+>                 xspi->write_fn(0, xspi->regs + XSPI_TXD_OFFSET);
+>                 return;
+>         }
+> -       xspi->write_fn(*(u32 *)(xspi->tx_ptr), xspi->regs + XSPI_TXD_OFFSET);
+> +
+> +       switch (xspi->bytes_per_word) {
+> +       case 1:
+> +               data = *(u8 *)(xspi->rx_ptr);
+> +               break;
+> +       case 2:
+> +               data = *(u16 *)(xspi->rx_ptr);
+> +               break;
+> +       case 4:
+> +               data = *(u32 *)(xspi->rx_ptr);
+> +               break;
+> +       }
+> +
+> +       xspi->write_fn(data, xspi->regs + XSPI_TXD_OFFSET);
 
-I see. I removed this change.
+Is this endian-safe?
 
->
-> BTW, you should also CC Mark Brown when sending SPI patches.
+>         xspi->tx_ptr += xspi->bytes_per_word;
+>  }
 
-OK, I will add him form next patch.
+Gr{oetje,eeting}s,
 
->
-> Gr{oetje,eeting}s,
->
->                          Geert
+                        Geert
 
-Best regards,
-   Nobuhiro
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
->
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
->
-> In personal conversations with technical people, I call myself a hacker. But
-> when I'm talking to journalists I just say "programmer" or something like that.
->                                  -- Linus Torvalds
-
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

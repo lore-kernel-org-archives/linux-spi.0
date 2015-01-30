@@ -1,65 +1,98 @@
-From: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi/xilinx: Fix access invalid memory on xilinx_spi_tx
-Date: Fri, 30 Jan 2015 07:10:09 +0100
-Message-ID: <1422598209-5999-1-git-send-email-ricardo.ribalda@gmail.com>
-Cc: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	=?UTF-8?q?S=C3=B6ren=20Brinkmann?= <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj@renesas.com>
+Subject: [PATCH] spi: sh-msiof: Update calculation of frequency dividing
+Date: Fri, 30 Jan 2015 15:11:54 +0900
+Message-ID: <1422598314-6889-1-git-send-email-nobuhiro.iwamatsu.yj@renesas.com>
+Cc: linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
+	sergei.shtylyov@cogentembedded.com, geert@glider.be,
+	Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj@renesas.com>
+To: broonie@kernel.org
+Return-path: <linux-sh-owner@vger.kernel.org>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On 1 and 2 bytes per word, the transfer of the 3 last bytes will access
-memory outside rx_ptr.
+sh-msiof of frequency dividing does not perform the calculation, driver have
+to manage setting value in the table. It is not possible to set frequency
+dividing value close to the actual data in this way. This changes from
+frequency dividing of table management to setting by calculation.
+This driver is able to set a value close to the actual data.
 
-Although this has not trigger any error on real hardware, we should
-better fix this.
-
-Fixes: 24ba5e593f391507 Remove rx_fn and tx_fn pointer
-Signed-off-by: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj@renesas.com>
 ---
- drivers/spi/spi-xilinx.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+v3:
+ - Remove check of div maximum value.
+ - Fix count of overrun by min_t.
+v2:
+ - use u32 instead of unsigned long.
+ - Fix loop.
+ - Use SCR_BRPS instead of hoard code shift.
+ - Add check of div maximum value.
 
-diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-index 2ca55f6..a1b664d 100644
---- a/drivers/spi/spi-xilinx.c
-+++ b/drivers/spi/spi-xilinx.c
-@@ -97,11 +97,26 @@ struct xilinx_spi {
+ drivers/spi/spi-sh-msiof.c | 36 ++++++++++++++++--------------------
+ 1 file changed, 16 insertions(+), 20 deletions(-)
+
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 96a5fc0..bcc961f 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -241,42 +241,38 @@ static irqreturn_t sh_msiof_spi_irq(int irq, void *data)
  
- static void xilinx_spi_tx(struct xilinx_spi *xspi)
+ static struct {
+ 	unsigned short div;
+-	unsigned short scr;
+-} const sh_msiof_spi_clk_table[] = {
+-	{ 1,	SCR_BRPS( 1) | SCR_BRDV_DIV_1 },
+-	{ 2,	SCR_BRPS( 1) | SCR_BRDV_DIV_2 },
+-	{ 4,	SCR_BRPS( 1) | SCR_BRDV_DIV_4 },
+-	{ 8,	SCR_BRPS( 1) | SCR_BRDV_DIV_8 },
+-	{ 16,	SCR_BRPS( 1) | SCR_BRDV_DIV_16 },
+-	{ 32,	SCR_BRPS( 1) | SCR_BRDV_DIV_32 },
+-	{ 64,	SCR_BRPS(32) | SCR_BRDV_DIV_2 },
+-	{ 128,	SCR_BRPS(32) | SCR_BRDV_DIV_4 },
+-	{ 256,	SCR_BRPS(32) | SCR_BRDV_DIV_8 },
+-	{ 512,	SCR_BRPS(32) | SCR_BRDV_DIV_16 },
+-	{ 1024,	SCR_BRPS(32) | SCR_BRDV_DIV_32 },
++	unsigned short brdv;
++} const sh_msiof_spi_div_table[] = {
++	{ 1,	SCR_BRDV_DIV_1 },
++	{ 2,	SCR_BRDV_DIV_2 },
++	{ 4,	SCR_BRDV_DIV_4 },
++	{ 8,	SCR_BRDV_DIV_8 },
++	{ 16,	SCR_BRDV_DIV_16 },
++	{ 32,	SCR_BRDV_DIV_32 },
+ };
+ 
+ static void sh_msiof_spi_set_clk_regs(struct sh_msiof_spi_priv *p,
+ 				      unsigned long parent_rate, u32 spi_hz)
  {
-+	u32 data = 0;
-+
- 	if (!xspi->tx_ptr) {
- 		xspi->write_fn(0, xspi->regs + XSPI_TXD_OFFSET);
- 		return;
+ 	unsigned long div = 1024;
++	u32 brps, scr;
+ 	size_t k;
+ 
+ 	if (!WARN_ON(!spi_hz || !parent_rate))
+ 		div = DIV_ROUND_UP(parent_rate, spi_hz);
+ 
+-	/* TODO: make more fine grained */
+-
+-	for (k = 0; k < ARRAY_SIZE(sh_msiof_spi_clk_table); k++) {
+-		if (sh_msiof_spi_clk_table[k].div >= div)
++	for (k = 0; k < ARRAY_SIZE(sh_msiof_spi_div_table); k++) {
++		brps = DIV_ROUND_UP(div, sh_msiof_spi_div_table[k].div);
++		if (brps <= 32) /* max of brdv is 32 */
+ 			break;
  	}
--	xspi->write_fn(*(u32 *)(xspi->tx_ptr), xspi->regs + XSPI_TXD_OFFSET);
-+
-+	switch (xspi->bytes_per_word) {
-+	case 1:
-+		data = *(u8 *)(xspi->rx_ptr);
-+		break;
-+	case 2:
-+		data = *(u16 *)(xspi->rx_ptr);
-+		break;
-+	case 4:
-+		data = *(u32 *)(xspi->rx_ptr);
-+		break;
-+	}
-+
-+	xspi->write_fn(data, xspi->regs + XSPI_TXD_OFFSET);
- 	xspi->tx_ptr += xspi->bytes_per_word;
+ 
+-	k = min_t(int, k, ARRAY_SIZE(sh_msiof_spi_clk_table) - 1);
++	k = min_t(int, k, ARRAY_SIZE(sh_msiof_spi_div_table) - 1);
+ 
+-	sh_msiof_write(p, TSCR, sh_msiof_spi_clk_table[k].scr);
++	scr = sh_msiof_spi_div_table[k].brdv | SCR_BRPS(brps);
++	sh_msiof_write(p, TSCR, scr);
+ 	if (!(p->chipdata->master_flags & SPI_MASTER_MUST_TX))
+-		sh_msiof_write(p, RSCR, sh_msiof_spi_clk_table[k].scr);
++		sh_msiof_write(p, RSCR, scr);
  }
  
+ static void sh_msiof_spi_set_pin_regs(struct sh_msiof_spi_priv *p,
 -- 
-2.1.4
+2.1.3
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

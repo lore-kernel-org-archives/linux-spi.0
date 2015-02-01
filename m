@@ -1,24 +1,24 @@
-From: Nicholas Mc Guire <hofrat-Q945KHDl0DbYtjvyW6yDsg@public.gmane.org>
+From: Nicholas Mc Guire <hofrat@osadl.org>
 Subject: [PATCH 1/2] spi: tegra20-sflash: cleanup wait_for_completion return handling
-Date: Sun,  1 Feb 2015 08:00:04 -0500
-Message-ID: <1422795604-29004-1-git-send-email-hofrat@osadl.org>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Alexandre Courbot <gnurou-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Nicholas Mc Guire <hofrat-Q945KHDl0DbYtjvyW6yDsg@public.gmane.org>
-To: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Date: Sun,  1 Feb 2015 08:00:16 -0500
+Message-ID: <1422795616-29038-1-git-send-email-hofrat@osadl.org>
+Cc: Mark Brown <broonie@kernel.org>,
+	Stephen Warren <swarren@wwwdotorg.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Alexandre Courbot <gnurou@gmail.com>,
+	linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Nicholas Mc Guire <hofrat@osadl.org>
+To: Laxman Dewangan <ldewangan@nvidia.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 return type of wait_for_completion_timeout is unsigned long not int, this
 patch adds an appropriate variable and fixes up the assignment.
 As the string in dev_err already states "timeout" there
 is little point in printing the 0 here.
 
-Signed-off-by: Nicholas Mc Guire <hofrat-Q945KHDl0DbYtjvyW6yDsg@public.gmane.org>
+Signed-off-by: Nicholas Mc Guire <hofrat@osadl.org>
 ---
 
 This patch was only compile tested with tegra_defconfig
@@ -58,8 +58,3 @@ index b6558bb..48a7c74 100644
  		}
 -- 
 1.7.10.4
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

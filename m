@@ -1,7 +1,7 @@
 From: Nicholas Mc Guire <hofrat-Q945KHDl0DbYtjvyW6yDsg@public.gmane.org>
-Subject: [PATCH 2/2] spi: tegra20-slink: cleanup wait_for_completion return handling
-Date: Sun,  1 Feb 2015 08:02:07 -0500
-Message-ID: <1422795727-29097-1-git-send-email-hofrat@osadl.org>
+Subject: [PATCH] spi: tegra114: cleanup wait_for_completion return handling
+Date: Sun,  1 Feb 2015 08:55:11 -0500
+Message-ID: <1422798911-1626-1-git-send-email-hofrat@osadl.org>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
 	Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
@@ -15,47 +15,48 @@ List-ID: <linux-spi.vger.kernel.org>
 
 return type of wait_for_completion_timeout is unsigned long not int, this
 patch adds an appropriate variable and fixes up the assignment.
-As the string in dev_err already states "timeout" there is little point in
-printing the 0 here as it just restates "timeout".
+As the string in dev_err already explicitly states "timeout" there
+is little point in printing the 0 here which also just says "timeout".
 
 Signed-off-by: Nicholas Mc Guire <hofrat-Q945KHDl0DbYtjvyW6yDsg@public.gmane.org>
 ---
 
 This patch was only compile tested with tegra_defconfig
-(implies CONFIG_SPI_TEGRA20_SLINK=y)
+(implies CONFIG_SPI_TEGRA114=y)
 
 Patch is against 3.19.0-rc6 -next-20150130
 
- drivers/spi/spi-tegra20-slink.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/spi/spi-tegra114.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
-index 85c91f5..106afe1 100644
---- a/drivers/spi/spi-tegra20-slink.c
-+++ b/drivers/spi/spi-tegra20-slink.c
-@@ -811,6 +811,7 @@ static int tegra_slink_transfer_one(struct spi_master *master,
- {
- 	struct tegra_slink_data *tspi = spi_master_get_devdata(master);
+diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+index 73779ce..0dfb422 100644
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -807,6 +807,7 @@ static int tegra_spi_transfer_one_message(struct spi_master *master,
+ 	struct spi_transfer *xfer;
+ 	struct spi_device *spi = msg->spi;
  	int ret;
 +	unsigned long dma_timeout;
+ 	bool skip = false;
  
- 	reinit_completion(&tspi->xfer_completion);
- 	ret = tegra_slink_start_transfer_one(spi, xfer);
-@@ -820,11 +821,10 @@ static int tegra_slink_transfer_one(struct spi_master *master,
- 		return ret;
- 	}
+ 	msg->status = 0;
+@@ -833,11 +834,10 @@ static int tegra_spi_transfer_one_message(struct spi_master *master,
+ 		}
  
--	ret = wait_for_completion_timeout(&tspi->xfer_completion,
-+	dma_timeout = wait_for_completion_timeout(&tspi->xfer_completion,
- 					  SLINK_DMA_TIMEOUT);
--	if (WARN_ON(ret == 0)) {
--		dev_err(tspi->dev,
--			"spi trasfer timeout, err %d\n", ret);
-+	if (WARN_ON(dma_timeout == 0)) {
-+		dev_err(tspi->dev, "spi trasfer timeout\n");
- 		return -EIO;
- 	}
- 
+ 		is_first_msg = false;
+-		ret = wait_for_completion_timeout(&tspi->xfer_completion,
+-						SPI_DMA_TIMEOUT);
+-		if (WARN_ON(ret == 0)) {
+-			dev_err(tspi->dev,
+-				"spi trasfer timeout, err %d\n", ret);
++		dma_timeout = wait_for_completion_timeout(
++				&tspi->xfer_completion, SPI_DMA_TIMEOUT);
++		if (WARN_ON(dma_timeout == 0)) {
++			dev_err(tspi->dev, "spi trasfer timeout\n");
+ 			ret = -EIO;
+ 			goto complete_xfer;
+ 		}
 -- 
 1.7.10.4
 

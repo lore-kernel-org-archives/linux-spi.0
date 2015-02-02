@@ -1,66 +1,59 @@
-From: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
-Subject: [PATCH v2] spi/xilinx: Fix access invalid memory on xilinx_spi_tx
-Date: Mon,  2 Feb 2015 11:06:56 +0100
-Message-ID: <1422871616-6686-1-git-send-email-ricardo.ribalda@gmail.com>
-Cc: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
-To: Mark Brown <broonie@kernel.org>,
-	Michal Simek <michal.simek@xilinx.com>,
-	=?UTF-8?q?S=C3=B6ren=20Brinkmann?= <soren.brinkmann@xilinx.com>,
-	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/2 v3] spi: tegra20-sflash: cleanup wait_for_completion
+ return handling
+Date: Mon, 2 Feb 2015 11:40:11 +0000
+Message-ID: <20150202114011.GJ21293@sirena.org.uk>
+References: <1422870712-2710-1-git-send-email-hofrat@osadl.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="qj2xQFWTK7ooCBoA"
+Cc: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
+	Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Alexandre Courbot <gnurou-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Nicholas Mc Guire <hofrat-Q945KHDl0DbYtjvyW6yDsg@public.gmane.org>
+Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1422870712-2710-1-git-send-email-hofrat-Q945KHDl0DbYtjvyW6yDsg@public.gmane.org>
+Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 1 and 2 bytes per word, the transfer of the 3 last bytes will access
-memory outside tx_ptr.
 
-Although this has not trigger any error on real hardware, we should
-better fix this.
+--qj2xQFWTK7ooCBoA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Fixes: 24ba5e593f391507 Remove rx_fn and tx_fn pointer
-Signed-off-by: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
----
+On Mon, Feb 02, 2015 at 04:51:52AM -0500, Nicholas Mc Guire wrote:
+> return type of wait_for_completion_timeout is unsigned long not int, this
+> patch adds an appropriate variable and fixes up the assignment.
+> As the string in dev_err already states "timeout" there
+> is little point in printing the 0 here.
 
-v2:
+This is labelled as patch 1/2 but appears to be sent as a single patch
+and there's several other versions of patches for the Tegra code from
+you at least some of which *do* include two patches.  Please understand
+that the purpose of numbering patches with posted patch series is to
+allow the patches to be sorted within that series.
 
-v1 was completely wrong, sorry about that :(. This v2 has been tested on x86
- 1 byte per word
+This is all confusing, I'm going to ignore all of these patches.  Please
+resubmit.
 
- drivers/spi/spi-xilinx.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+--qj2xQFWTK7ooCBoA
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-index d1901d5..133f53a 100644
---- a/drivers/spi/spi-xilinx.c
-+++ b/drivers/spi/spi-xilinx.c
-@@ -117,11 +117,26 @@ static unsigned int xspi_read32_be(void __iomem *addr)
- 
- static void xilinx_spi_tx(struct xilinx_spi *xspi)
- {
-+	u32 data = 0;
-+
- 	if (!xspi->tx_ptr) {
- 		xspi->write_fn(0, xspi->regs + XSPI_TXD_OFFSET);
- 		return;
- 	}
--	xspi->write_fn(*(u32 *)(xspi->tx_ptr), xspi->regs + XSPI_TXD_OFFSET);
-+
-+	switch (xspi->bytes_per_word) {
-+	case 1:
-+		data = *(u8 *)(xspi->tx_ptr);
-+		break;
-+	case 2:
-+		data = *(u16 *)(xspi->tx_ptr);
-+		break;
-+	case 4:
-+		data = *(u32 *)(xspi->tx_ptr);
-+		break;
-+	}
-+
-+	xspi->write_fn(data, xspi->regs + XSPI_TXD_OFFSET);
- 	xspi->tx_ptr += xspi->bytes_per_word;
- }
- 
--- 
-2.1.4
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJUz2IaAAoJECTWi3JdVIfQYBIH/2HqnkjMZMlXbtClfCDyGYu+
+fKWKY6vceuO2jsg0GO5jNRHIq/xxHzXv7wyguiTqdtX5vSpt6t3jLReBmwpv8IBu
+6gUMz73u0GD5kXDxzkq6O6KXi7u5MmsMAdj5SoF4I3wEanS+OL7CiOhNldvFjlwX
+EHHBowc7hYbmbtxoTaIKGzobRXu4PVB2RVxDpf2iAN2G7bcnfUtkqlrfDpVL2UpE
+DEmYxTz/WigflK9gPe8Cr5Ls0bTQy/F/Ff9YNCz+K0Vn6MgqK7LZUTDFnnfPqPRn
+1w5JamxcBtwVzg2Qx6I1tktG5mxUViRVm24pDUtLUF2bIvM4C71lq4V0QFIvsc8=
+=YVQq
+-----END PGP SIGNATURE-----
+
+--qj2xQFWTK7ooCBoA--

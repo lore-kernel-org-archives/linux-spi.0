@@ -1,58 +1,52 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/5] spi: mxs: cleanup wait_for_completion return handling
-Date: Mon, 2 Feb 2015 12:11:37 +0000
-Message-ID: <20150202121137.GO21293@sirena.org.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 5/5] spi: ti-qspi: cleanup wait_for_completion return
+ handling
+Date: Mon, 2 Feb 2015 12:16:01 +0000
+Message-ID: <20150202121601.GP21293@sirena.org.uk>
 References: <1422865837-10357-1-git-send-email-hofrat@osadl.org>
- <1422865837-10357-2-git-send-email-hofrat@osadl.org>
+ <1422865837-10357-5-git-send-email-hofrat@osadl.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="vET4Xl8WLaXB2XUg"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Nicholas Mc Guire <hofrat-Q945KHDl0DbYtjvyW6yDsg@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="mQZYU1XZRcIUQ9HK"
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Nicholas Mc Guire <hofrat@osadl.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1422865837-10357-2-git-send-email-hofrat-Q945KHDl0DbYtjvyW6yDsg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1422865837-10357-5-git-send-email-hofrat@osadl.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---vET4Xl8WLaXB2XUg
+--mQZYU1XZRcIUQ9HK
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Mon, Feb 02, 2015 at 03:30:33AM -0500, Nicholas Mc Guire wrote:
+On Mon, Feb 02, 2015 at 03:30:36AM -0500, Nicholas Mc Guire wrote:
 
-> -	ret = wait_for_completion_timeout(&spi->c,
-> -				msecs_to_jiffies(SSP_TIMEOUT));
-> -	if (!ret) {
-> +	if (!wait_for_completion_timeout(&spi->c,
-> +	    msecs_to_jiffies(SSP_TIMEOUT))) {
+> -		ret = wait_for_completion_timeout(&qspi->transfer_complete,
+> -						  QSPI_COMPLETION_TIMEOUT);
+> -		if (ret == 0) {
+> +		if (!wait_for_completion_timeout(&qspi->transfer_complete,
+> +		    QSPI_COMPLETION_TIMEOUT)) {
 
-Your new indentation is pretty confusing here, I had to look twice to
-realize that the msecs_to_jiffies() is still an argument to
-wait_for_completion().  Generally arguments to functions should be
-aligned with the opening ( for the function, or at least much more
-deeply aligned than the function itself (as was the case with the
-original code).
+Same indentation issue as with the earlier patch here.  I also just
+noticed that you're not CCing driver maintainers, please try to do that
+so they get a chance to review things.
 
---vET4Xl8WLaXB2XUg
+--mQZYU1XZRcIUQ9HK
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJUz2l4AAoJECTWi3JdVIfQp24H/3o9SLtcwpAJi3YKizec2TXp
-6h+JKrGD2WAZXAyf8B9Hn3xYjz830C5V4+NEbRwPdR1zRcpOBUNHdIiyjjiZikWx
-lOdcLV+YH0vn1xkAicc+tAG2Ow2yx9dwqysJoJZj3KEggfNBi+lo7uMOLAFZgFZ0
-AuX2MIfJZTIAKMBLZ+SaSnEDTr2I0dnENZtXRtBkV4okGpKPcP70mm0nfxFRIMeq
-DF4WhPobxzG2dvxTgywS5FSnZJz5L6XdAmSD0elekRBDYoU3yguPxSV/WFPvgWkz
-MSREuzQPP51dIPWRDNKyOWViONHRbGbmh6HhiM71oXVHBMytozP5qed6zrv/YuY=
-=fzuo
+iQEcBAEBCAAGBQJUz2qAAAoJECTWi3JdVIfQoloH/0CCLtprOWLQwM1AzJuEn4by
+Cak1k+Y60sYyWsP9vVTN8KXTZa8AipC5dcAXLi6SFj5E/qcBsllL56628NyoETgw
+nURPVoXPFGIiq0uRvP/ke1rfAurOI3FFAQ/7pyuaiFHnTKWsQNpXSFQf7znDA68q
+IHuipc+lWimN+E0Ta8CM0NL/xoAZ25X35wDfttxyGSmj9/JrEiVPFU9CkUck+urn
+TG0/MjQWWDVe++gF2nuMZrE2JnLse16IjkBJuTLOKobZRHO+nAUkOjxXH7Dz03a1
+53l4Dqs94EpOLXuC/J4UJAMQwws8fvfn8sotA9kMH0U0Azfid8PP3wszM4isHX0=
+=3ZpS
 -----END PGP SIGNATURE-----
 
---vET4Xl8WLaXB2XUg--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--mQZYU1XZRcIUQ9HK--

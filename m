@@ -1,62 +1,70 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: imx6dl, spi: read/write problem with SPI-NOR on imx6d
-Date: Mon, 2 Feb 2015 12:25:32 +0000
-Message-ID: <20150202122532.GS21293@sirena.org.uk>
-References: <54CB6D8F.5010804@denx.de>
- <20150202035430.GA27494@Robin-OptiPlex-780>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="WG9qowv1NtzwMEkm"
-Cc: Heiko Schocher <hs-ynQEQJNshbs@public.gmane.org>, Frank Li <Frank.Li-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Cajus Hahn <cajus.hahn-L9/KCGF6/QDQT0dZR+AlfA@public.gmane.org>,
-	Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Robin Gong <b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+From: Nicholas Mc Guire <hofrat-Q945KHDl0DbYtjvyW6yDsg@public.gmane.org>
+Subject: [PATCH v2] spi: atmel: cleanup wait_for_completion return handling
+Date: Mon,  2 Feb 2015 10:43:31 -0500
+Message-ID: <1422891811-28541-1-git-send-email-hofrat@osadl.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Nicholas Mc Guire <hofrat-Q945KHDl0DbYtjvyW6yDsg@public.gmane.org>
+To: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20150202035430.GA27494@Robin-OptiPlex-780>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+return type of wait_for_completion_timeout is unsigned long not int, this
+patch adds an appropriate variable and fixes up the assignment. It removes 
+the else branch as the only thing it was doing is assigning ret = 0; - but 
+ret is never used thereafter so that is not needed. As the string in 
+dev_err already states "timeout" there is little point in printing the 0. 
+A typo in "trasfer" -> transfer is also fixed.
 
---WG9qowv1NtzwMEkm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Nicholas Mc Guire <hofrat-Q945KHDl0DbYtjvyW6yDsg@public.gmane.org>
+---
 
-On Mon, Feb 02, 2015 at 11:54:31AM +0800, Robin Gong wrote:
-> On Fri, Jan 30, 2015 at 12:39:59PM +0100, Heiko Schocher wrote:
+v2: fixes commit message and whitespace damage reported by
+    Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 
-> > and I could not see in the commit f62caccd, that DMA gets disabled
-> > for imx6dl ... Is this missing? Or should this be done in the board
-> > specific DTS?
+This patch was only compile tested with at91_dt_defconfig
+(implies CONFIG_SPI_ATMEL=y)
 
-> Yes, the patch about DTS was dropped as below. Sorry, the next patch not ready
-> yet, I'll create it once I have time...
-> https://lkml.org/lkml/2014/9/10/91
+Patch is against 3.19.0-rc6 (localversion-next = -next-20150202)
 
-If this is breaking users then a patch providing the fix needs to be
-done fairly urgently, and given that we're supposed to have stable DTs
-we probably need a quirk based on SoC type in the driver as well.
+ drivers/spi/spi-atmel.c |   12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
---WG9qowv1NtzwMEkm
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index 23d8f5f5..9af7841 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -1046,6 +1046,7 @@ static int atmel_spi_one_transfer(struct spi_master *master,
+ 	struct atmel_spi_device	*asd;
+ 	int			timeout;
+ 	int			ret;
++	unsigned long		dma_timeout;
+ 
+ 	as = spi_master_get_devdata(master);
+ 
+@@ -1103,15 +1104,12 @@ static int atmel_spi_one_transfer(struct spi_master *master,
+ 
+ 		/* interrupts are disabled, so free the lock for schedule */
+ 		atmel_spi_unlock(as);
+-		ret = wait_for_completion_timeout(&as->xfer_completion,
+-							SPI_DMA_TIMEOUT);
++		dma_timeout = wait_for_completion_timeout(&as->xfer_completion,
++							  SPI_DMA_TIMEOUT);
+ 		atmel_spi_lock(as);
+-		if (WARN_ON(ret == 0)) {
+-			dev_err(&spi->dev,
+-				"spi trasfer timeout, err %d\n", ret);
++		if (WARN_ON(dma_timeout == 0)) {
++			dev_err(&spi->dev, "spi transfer timeout\n");
+ 			as->done_status = -EIO;
+-		} else {
+-			ret = 0;
+ 		}
+ 
+ 		if (as->done_status)
+-- 
+1.7.10.4
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJUz2y7AAoJECTWi3JdVIfQN0sH/1ABrXXiikqNqTjhGgeKaU8+
-ohN2eHSRJ6JMRrbZU1L1ELLS0/egXcJdciEGF8vCFzbti9MKAAypTIEc+YFNiW5d
-6TF0sqRC7ID/VPyiKfgG675cHUlX+yIDmIv9takSaJF8NNboS6E5qQmPqNCztMf7
-BD9sWwII4ebYdroRIlQcemJR0chGBKLKj492eLZgU7kQulvHgyMX5qyu6ok+Lelk
-1QvOAI4tig3O3BT2w6ksoqKWeetN1d654bRg6V6ckLgQpeUTCsrzdYKW0MTV/tmk
-XWY8nKDGI91W+1oB+uQGGVzfivk0rI+plBud2pktTsCimU/0sfJBvmlV4P1AuQk=
-=IqUv
------END PGP SIGNATURE-----
-
---WG9qowv1NtzwMEkm--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

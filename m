@@ -1,60 +1,41 @@
-From: Nicholas Mc Guire <hofrat@osadl.org>
-Subject: [PATCH 3/5] spi: sh-msiof: cleanup wait_for_completion return handling
-Date: Mon,  2 Feb 2015 03:30:34 -0500
-Message-ID: <1422865837-10357-3-git-send-email-hofrat@osadl.org>
-References: <1422865837-10357-1-git-send-email-hofrat@osadl.org>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Nicholas Mc Guire <der.herr@hofr.at>
-To: Mark Brown <broonie@kernel.org>
+From: Laxman Dewangan <ldewangan@nvidia.com>
+Subject: Re: [PATCH 1/2] spi: tegra20-sflash: cleanup wait_for_completion
+ return handling
+Date: Mon, 2 Feb 2015 14:30:53 +0530
+Message-ID: <54CF3CC5.6030204@nvidia.com>
+References: <1422795604-29004-1-git-send-email-hofrat@osadl.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Stephen Warren <swarren@wwwdotorg.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Alexandre Courbot <gnurou@gmail.com>,
+	<linux-spi@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+To: Nicholas Mc Guire <hofrat@osadl.org>,
+	Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1422865837-10357-1-git-send-email-hofrat@osadl.org>
+In-Reply-To: <1422795604-29004-1-git-send-email-hofrat@osadl.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Nicholas Mc Guire <der.herr@hofr.at>
+On Sunday 01 February 2015 06:30 PM, Nicholas Mc Guire wrote:
+> return type of wait_for_completion_timeout is unsigned long not int, this
+> patch adds an appropriate variable and fixes up the assignment.
+> As the string in dev_err already states "timeout" there
+> is little point in printing the 0 here.
+>
+> Signed-off-by: Nicholas Mc Guire <hofrat@osadl.org>
 
-return type of wait_for_completion_timeout is unsigned long not int, this
-patch uses the return value of wait_for_completion_timeout in the condition 
-directly rather than assigning it to an incorrect type variable.
+Looks good to me. Thanks for fixing this.
+I think it is good if we fix the typo here also.
 
-Signed-off-by: Nicholas Mc Guire <der.herr@hofr.at>
----
+Acked-by: Laxman Dewangan <ldewangan@nvidia.com>
 
-The return type of wait_for_completion_timeout is unsigned long not
-int. This patch resolves the type missmatch by moving the call to
-wait_for_completion_timeout into the condition.
+>
+> +		if (WARN_ON(dma_timeout == 0)) {
+>   			dev_err(tsd->dev,
+> -				"spi trasfer timeout, err %d\n", ret);
+> +				"spi trasfer timeout\n");
 
-This patch was only compile tested with: polaris_defconfig
-CONFIG_SPI=y, CONFIG_SPI_SH_MSIOF=m
-
-Patch is against 3.19.0-rc6 -next-20150130
-
- drivers/spi/spi-sh-msiof.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 9a884e6..9409873 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -640,8 +640,7 @@ static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
- 	}
- 
- 	/* wait for tx fifo to be emptied / rx fifo to be filled */
--	ret = wait_for_completion_timeout(&p->done, HZ);
--	if (!ret) {
-+	if (!wait_for_completion_timeout(&p->done, HZ)) {
- 		dev_err(&p->pdev->dev, "PIO timeout\n");
- 		ret = -ETIMEDOUT;
- 		goto stop_reset;
-@@ -751,8 +750,7 @@ static int sh_msiof_dma_once(struct sh_msiof_spi_priv *p, const void *tx,
- 	}
- 
- 	/* wait for tx fifo to be emptied / rx fifo to be filled */
--	ret = wait_for_completion_timeout(&p->done, HZ);
--	if (!ret) {
-+	if (!wait_for_completion_timeout(&p->done, HZ)) {
- 		dev_err(&p->pdev->dev, "DMA timeout\n");
- 		ret = -ETIMEDOUT;
- 		goto stop_reset;
--- 
-1.7.10.4
+trasfer -> transfer.

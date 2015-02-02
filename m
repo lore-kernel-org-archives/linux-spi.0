@@ -1,56 +1,62 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2] spi/xilinx: Fix access invalid memory on xilinx_spi_tx
-Date: Mon, 2 Feb 2015 12:17:43 +0000
-Message-ID: <20150202121743.GQ21293@sirena.org.uk>
-References: <1422871616-6686-1-git-send-email-ricardo.ribalda@gmail.com>
+Subject: Re: imx6dl, spi: read/write problem with SPI-NOR on imx6d
+Date: Mon, 2 Feb 2015 12:25:32 +0000
+Message-ID: <20150202122532.GS21293@sirena.org.uk>
+References: <54CB6D8F.5010804@denx.de>
+ <20150202035430.GA27494@Robin-OptiPlex-780>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="KWLARvBP14GYNO+U"
-Cc: Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	=?iso-8859-1?Q?S=F6ren?= Brinkmann <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="WG9qowv1NtzwMEkm"
+Cc: Heiko Schocher <hs-ynQEQJNshbs@public.gmane.org>, Frank Li <Frank.Li-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Cajus Hahn <cajus.hahn-L9/KCGF6/QDQT0dZR+AlfA@public.gmane.org>,
+	Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Robin Gong <b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1422871616-6686-1-git-send-email-ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <20150202035430.GA27494@Robin-OptiPlex-780>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---KWLARvBP14GYNO+U
+--WG9qowv1NtzwMEkm
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 02, 2015 at 11:06:56AM +0100, Ricardo Ribalda Delgado wrote:
-> On 1 and 2 bytes per word, the transfer of the 3 last bytes will access
-> memory outside tx_ptr.
->=20
-> Although this has not trigger any error on real hardware, we should
-> better fix this.
->=20
-> Fixes: 24ba5e593f391507 Remove rx_fn and tx_fn pointer
+On Mon, Feb 02, 2015 at 11:54:31AM +0800, Robin Gong wrote:
+> On Fri, Jan 30, 2015 at 12:39:59PM +0100, Heiko Schocher wrote:
 
-Applied, thanks.  Fixes: usually has () around the commit title.
+> > and I could not see in the commit f62caccd, that DMA gets disabled
+> > for imx6dl ... Is this missing? Or should this be done in the board
+> > specific DTS?
 
---KWLARvBP14GYNO+U
+> Yes, the patch about DTS was dropped as below. Sorry, the next patch not ready
+> yet, I'll create it once I have time...
+> https://lkml.org/lkml/2014/9/10/91
+
+If this is breaking users then a patch providing the fix needs to be
+done fairly urgently, and given that we're supposed to have stable DTs
+we probably need a quirk based on SoC type in the driver as well.
+
+--WG9qowv1NtzwMEkm
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEbBAEBCAAGBQJUz2rnAAoJECTWi3JdVIfQtRsH+IyGFCnthmsJpheGB6ofxsW8
-Yeq92lQ6B5JmxlHVP4wHeOeI20MgBnm1iGUDixJz58G+H27yDQjueJVOl2OzNeQT
-3HxfSFCFuEVt2GaAu70GOfinB78wWpNhjuw0ndGQaCLMBnZsHKSGXrwr0fINdRc/
-nmJ7eZiuztiBV568URO0l1LoNGUB0kf8HuseRSGoiJHhKcTI6z+wcdlJxrwxBuT+
-9gXH9k3DgI9hOMnCmqpFjGzl/p4etT8Xp4Q+NTjlFW/rOzGUcHerkAEYtNtf9K5+
-21NKFcX9a8ee//McxnD+W4afZgIgIdpqMWkbr1xAyYL1qaV8me5SYLL2sO2vYA==
-=HAm6
+iQEcBAEBCAAGBQJUz2y7AAoJECTWi3JdVIfQN0sH/1ABrXXiikqNqTjhGgeKaU8+
+ohN2eHSRJ6JMRrbZU1L1ELLS0/egXcJdciEGF8vCFzbti9MKAAypTIEc+YFNiW5d
+6TF0sqRC7ID/VPyiKfgG675cHUlX+yIDmIv9takSaJF8NNboS6E5qQmPqNCztMf7
+BD9sWwII4ebYdroRIlQcemJR0chGBKLKj492eLZgU7kQulvHgyMX5qyu6ok+Lelk
+1QvOAI4tig3O3BT2w6ksoqKWeetN1d654bRg6V6ckLgQpeUTCsrzdYKW0MTV/tmk
+XWY8nKDGI91W+1oB+uQGGVzfivk0rI+plBud2pktTsCimU/0sfJBvmlV4P1AuQk=
+=IqUv
 -----END PGP SIGNATURE-----
 
---KWLARvBP14GYNO+U--
+--WG9qowv1NtzwMEkm--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

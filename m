@@ -1,69 +1,66 @@
-From: Nicholas Mc Guire <hofrat-Q945KHDl0DbYtjvyW6yDsg@public.gmane.org>
-Subject: [PATCH 1/2 v3] spi: tegra20-sflash: cleanup wait_for_completion return handling
-Date: Mon,  2 Feb 2015 04:51:52 -0500
-Message-ID: <1422870712-2710-1-git-send-email-hofrat@osadl.org>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Alexandre Courbot <gnurou-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Nicholas Mc Guire <hofrat-Q945KHDl0DbYtjvyW6yDsg@public.gmane.org>
-To: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
+Subject: [PATCH v2] spi/xilinx: Fix access invalid memory on xilinx_spi_tx
+Date: Mon,  2 Feb 2015 11:06:56 +0100
+Message-ID: <1422871616-6686-1-git-send-email-ricardo.ribalda@gmail.com>
+Cc: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
+To: Mark Brown <broonie@kernel.org>,
+	Michal Simek <michal.simek@xilinx.com>,
+	=?UTF-8?q?S=C3=B6ren=20Brinkmann?= <soren.brinkmann@xilinx.com>,
+	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-return type of wait_for_completion_timeout is unsigned long not int, this
-patch adds an appropriate variable and fixes up the assignment.
-As the string in dev_err already states "timeout" there
-is little point in printing the 0 here.
+On 1 and 2 bytes per word, the transfer of the 3 last bytes will access
+memory outside tx_ptr.
 
-Signed-off-by: Nicholas Mc Guire <hofrat-Q945KHDl0DbYtjvyW6yDsg@public.gmane.org>
+Although this has not trigger any error on real hardware, we should
+better fix this.
+
+Fixes: 24ba5e593f391507 Remove rx_fn and tx_fn pointer
+Signed-off-by: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
 ---
 
-v2: typo fixed as suggested by Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-v3: merged dev_err into one line as suggested by Laxman Dewangan 
-    <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+v2:
 
-This patch was only compile tested with tegra_defconfig
-(implies CONFIG_SPI_TEGRA20_SFLASH=y)
+v1 was completely wrong, sorry about that :(. This v2 has been tested on x86
+ 1 byte per word
 
-Patch is against 3.19.0-rc6 -next-20150202
+ drivers/spi/spi-xilinx.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
- drivers/spi/spi-tegra20-sflash.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
-index b6558bb..c23d3d4 100644
---- a/drivers/spi/spi-tegra20-sflash.c
-+++ b/drivers/spi/spi-tegra20-sflash.c
-@@ -323,6 +323,7 @@ static int tegra_sflash_transfer_one_message(struct spi_master *master,
- 	struct spi_transfer *xfer;
- 	struct spi_device *spi = msg->spi;
- 	int ret;
-+	unsigned long dma_timeout;
+diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
+index d1901d5..133f53a 100644
+--- a/drivers/spi/spi-xilinx.c
++++ b/drivers/spi/spi-xilinx.c
+@@ -117,11 +117,26 @@ static unsigned int xspi_read32_be(void __iomem *addr)
  
- 	msg->status = 0;
- 	msg->actual_length = 0;
-@@ -337,11 +338,10 @@ static int tegra_sflash_transfer_one_message(struct spi_master *master,
- 			goto exit;
- 		}
- 		is_first_msg = false;
--		ret = wait_for_completion_timeout(&tsd->xfer_completion,
-+		dma_timeout = wait_for_completion_timeout(&tsd->xfer_completion,
- 						SPI_DMA_TIMEOUT);
--		if (WARN_ON(ret == 0)) {
--			dev_err(tsd->dev,
--				"spi trasfer timeout, err %d\n", ret);
-+		if (WARN_ON(dma_timeout == 0)) {
-+			dev_err(tsd->dev, "spi transfer timeout\n");
- 			ret = -EIO;
- 			goto exit;
- 		}
+ static void xilinx_spi_tx(struct xilinx_spi *xspi)
+ {
++	u32 data = 0;
++
+ 	if (!xspi->tx_ptr) {
+ 		xspi->write_fn(0, xspi->regs + XSPI_TXD_OFFSET);
+ 		return;
+ 	}
+-	xspi->write_fn(*(u32 *)(xspi->tx_ptr), xspi->regs + XSPI_TXD_OFFSET);
++
++	switch (xspi->bytes_per_word) {
++	case 1:
++		data = *(u8 *)(xspi->tx_ptr);
++		break;
++	case 2:
++		data = *(u16 *)(xspi->tx_ptr);
++		break;
++	case 4:
++		data = *(u32 *)(xspi->tx_ptr);
++		break;
++	}
++
++	xspi->write_fn(data, xspi->regs + XSPI_TXD_OFFSET);
+ 	xspi->tx_ptr += xspi->bytes_per_word;
+ }
+ 
 -- 
-1.7.10.4
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+2.1.4

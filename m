@@ -1,64 +1,37 @@
-From: Nicholas Mc Guire <hofrat@osadl.org>
-Subject: [PATCH 1/2 v2] spi: tegra20-sflash: cleanup wait_for_completion return handling
-Date: Mon,  2 Feb 2015 04:11:50 -0500
-Message-ID: <1422868311-10929-2-git-send-email-hofrat@osadl.org>
-References: <1422868311-10929-1-git-send-email-hofrat@osadl.org>
-Cc: Mark Brown <broonie@kernel.org>,
+From: Laxman Dewangan <ldewangan@nvidia.com>
+Subject: Re: [PATCH 1/2] spi: tegra20-sflash: cleanup wait_for_completion
+ return handling
+Date: Mon, 2 Feb 2015 14:45:28 +0530
+Message-ID: <54CF4030.5080407@nvidia.com>
+References: <1422795604-29004-1-git-send-email-hofrat@osadl.org> <54CF3CC5.6030204@nvidia.com> <20150202090809.GB19706@opentech.at>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Nicholas Mc Guire <hofrat@osadl.org>,
+	Mark Brown <broonie@kernel.org>,
 	Stephen Warren <swarren@wwwdotorg.org>,
 	Thierry Reding <thierry.reding@gmail.com>,
 	Alexandre Courbot <gnurou@gmail.com>,
-	linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Nicholas Mc Guire <hofrat@osadl.org>
-To: Laxman Dewangan <ldewangan@nvidia.com>
+	<linux-spi@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+To: Nicholas Mc Guire <der.herr@hofr.at>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1422868311-10929-1-git-send-email-hofrat@osadl.org>
+In-Reply-To: <20150202090809.GB19706@opentech.at>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-return type of wait_for_completion_timeout is unsigned long not int, this
-patch adds an appropriate variable and fixes up the assignment.
-As the string in dev_err already states "timeout" there
-is little point in printing the 0 here.
-
-Signed-off-by: Nicholas Mc Guire <hofrat@osadl.org>
----
-
-v2: typo fixed as suggested by Laxman Dewangan <ldewangan@nvidia.com>
-
-This patch was only compile tested with tegra_defconfig
-(implies CONFIG_SPI_TEGRA20_SFLASH=y)
-
-Patch is against 3.19.0-rc6 -next-20150130
-
- drivers/spi/spi-tegra20-sflash.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
-index b6558bb..48a7c74 100644
---- a/drivers/spi/spi-tegra20-sflash.c
-+++ b/drivers/spi/spi-tegra20-sflash.c
-@@ -323,6 +323,7 @@ static int tegra_sflash_transfer_one_message(struct spi_master *master,
- 	struct spi_transfer *xfer;
- 	struct spi_device *spi = msg->spi;
- 	int ret;
-+	unsigned long dma_timeout;
- 
- 	msg->status = 0;
- 	msg->actual_length = 0;
-@@ -337,11 +338,11 @@ static int tegra_sflash_transfer_one_message(struct spi_master *master,
- 			goto exit;
- 		}
- 		is_first_msg = false;
--		ret = wait_for_completion_timeout(&tsd->xfer_completion,
-+		dma_timeout = wait_for_completion_timeout(&tsd->xfer_completion,
- 						SPI_DMA_TIMEOUT);
--		if (WARN_ON(ret == 0)) {
-+		if (WARN_ON(dma_timeout == 0)) {
- 			dev_err(tsd->dev,
--				"spi trasfer timeout, err %d\n", ret);
-+				"spi transfer timeout\n");
- 			ret = -EIO;
- 			goto exit;
- 		}
--- 
-1.7.10.4
+On Monday 02 February 2015 02:38 PM, Nicholas Mc Guire wrote:
+> On Mon, 02 Feb 2015, Laxman Dewangan wrote:
+>
+>>
+>>> +		if (WARN_ON(dma_timeout == 0)) {
+>>>    			dev_err(tsd->dev,
+>>> -				"spi trasfer timeout, err %d\n", ret);
+>>> +				"spi trasfer timeout\n");
+>> trasfer -> transfer.
+>>
+>>
+> overlooked that - sorry - will fix it up and resubmit.
+>
+Thanks, And possibly we will be able to merge two lines into single one 
+i.e. single line error message.

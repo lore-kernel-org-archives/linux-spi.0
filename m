@@ -1,52 +1,57 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 5/5] spi: ti-qspi: cleanup wait_for_completion return
- handling
-Date: Mon, 2 Feb 2015 12:16:01 +0000
-Message-ID: <20150202121601.GP21293@sirena.org.uk>
-References: <1422865837-10357-1-git-send-email-hofrat@osadl.org>
- <1422865837-10357-5-git-send-email-hofrat@osadl.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2] spi/xilinx: Fix access invalid memory on xilinx_spi_tx
+Date: Mon, 2 Feb 2015 12:17:43 +0000
+Message-ID: <20150202121743.GQ21293@sirena.org.uk>
+References: <1422871616-6686-1-git-send-email-ricardo.ribalda@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="mQZYU1XZRcIUQ9HK"
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Nicholas Mc Guire <hofrat@osadl.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="KWLARvBP14GYNO+U"
+Cc: Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	=?iso-8859-1?Q?S=F6ren?= Brinkmann <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1422865837-10357-5-git-send-email-hofrat@osadl.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1422871616-6686-1-git-send-email-ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---mQZYU1XZRcIUQ9HK
+--KWLARvBP14GYNO+U
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 02, 2015 at 03:30:36AM -0500, Nicholas Mc Guire wrote:
+On Mon, Feb 02, 2015 at 11:06:56AM +0100, Ricardo Ribalda Delgado wrote:
+> On 1 and 2 bytes per word, the transfer of the 3 last bytes will access
+> memory outside tx_ptr.
+>=20
+> Although this has not trigger any error on real hardware, we should
+> better fix this.
+>=20
+> Fixes: 24ba5e593f391507 Remove rx_fn and tx_fn pointer
 
-> -		ret = wait_for_completion_timeout(&qspi->transfer_complete,
-> -						  QSPI_COMPLETION_TIMEOUT);
-> -		if (ret == 0) {
-> +		if (!wait_for_completion_timeout(&qspi->transfer_complete,
-> +		    QSPI_COMPLETION_TIMEOUT)) {
+Applied, thanks.  Fixes: usually has () around the commit title.
 
-Same indentation issue as with the earlier patch here.  I also just
-noticed that you're not CCing driver maintainers, please try to do that
-so they get a chance to review things.
-
---mQZYU1XZRcIUQ9HK
+--KWLARvBP14GYNO+U
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJUz2qAAAoJECTWi3JdVIfQoloH/0CCLtprOWLQwM1AzJuEn4by
-Cak1k+Y60sYyWsP9vVTN8KXTZa8AipC5dcAXLi6SFj5E/qcBsllL56628NyoETgw
-nURPVoXPFGIiq0uRvP/ke1rfAurOI3FFAQ/7pyuaiFHnTKWsQNpXSFQf7znDA68q
-IHuipc+lWimN+E0Ta8CM0NL/xoAZ25X35wDfttxyGSmj9/JrEiVPFU9CkUck+urn
-TG0/MjQWWDVe++gF2nuMZrE2JnLse16IjkBJuTLOKobZRHO+nAUkOjxXH7Dz03a1
-53l4Dqs94EpOLXuC/J4UJAMQwws8fvfn8sotA9kMH0U0Azfid8PP3wszM4isHX0=
-=3ZpS
+iQEbBAEBCAAGBQJUz2rnAAoJECTWi3JdVIfQtRsH+IyGFCnthmsJpheGB6ofxsW8
+Yeq92lQ6B5JmxlHVP4wHeOeI20MgBnm1iGUDixJz58G+H27yDQjueJVOl2OzNeQT
+3HxfSFCFuEVt2GaAu70GOfinB78wWpNhjuw0ndGQaCLMBnZsHKSGXrwr0fINdRc/
+nmJ7eZiuztiBV568URO0l1LoNGUB0kf8HuseRSGoiJHhKcTI6z+wcdlJxrwxBuT+
+9gXH9k3DgI9hOMnCmqpFjGzl/p4etT8Xp4Q+NTjlFW/rOzGUcHerkAEYtNtf9K5+
+21NKFcX9a8ee//McxnD+W4afZgIgIdpqMWkbr1xAyYL1qaV8me5SYLL2sO2vYA==
+=HAm6
 -----END PGP SIGNATURE-----
 
---mQZYU1XZRcIUQ9HK--
+--KWLARvBP14GYNO+U--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

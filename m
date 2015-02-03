@@ -1,46 +1,48 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v1] spi: imx: use pio mode for i.mx6dl
-Date: Tue, 3 Feb 2015 12:18:10 +0000
-Message-ID: <20150203121810.GJ21293@sirena.org.uk>
-References: <1422930353-4339-1-git-send-email-b38343@freescale.com>
+From: Sifan Naeem <sifan.naeem@imgtec.com>
+Subject: [PATCH] spi: img-spfi: same edge bit set to double spfi speeds
+Date: Tue, 3 Feb 2015 17:46:05 +0000
+Message-ID: <1422985565-14163-1-git-send-email-sifan.naeem@imgtec.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="ce8zlQhVsmlNj00H"
-Cc: l.stach@pengutronix.de, shawn.guo@linaro.org,
-	Frank.Li@freescale.com, Fabio.Estevam@freescale.com, hs@denx.de,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Robin Gong <b38343@freescale.com>
+Content-Type: text/plain
+Cc: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	Sifan Naeem <sifan.naeem@imgtec.com>
+To: <broonie@kernel.org>, <abrestic@chromium.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1422930353-4339-1-git-send-email-b38343@freescale.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Setting the same edge bit is required for operating at full bitrate
+programmed into the SPFI control register. Without this bit set the
+max operating bitrate supported would be half the maximum bitrate
+supported by the img-spfi block.
+It's safe to set this bit for all transactions.
 
---ce8zlQhVsmlNj00H
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Sifan Naeem <sifan.naeem@imgtec.com>
+---
+ drivers/spi/spi-img-spfi.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-On Tue, Feb 03, 2015 at 10:25:53AM +0800, Robin Gong wrote:
-> For TKT238285 hardware issue which may cause txfifo store data twice can only
-> be caught on i.mx6dl, we use pio mode instead of DMA mode on i.mx6dl.
-
-Applied, thanks.
-
---ce8zlQhVsmlNj00H
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJU0LyCAAoJECTWi3JdVIfQOeIIAIVDhfe0eBkE+EGSjuOuXMP+
-QR83ewVcxHqqVKxdyNPHLm5lUk28zy5p6brWt6MB5DTZNvLwz98cL4feTQCdQwhD
-/t0I145s1NhAJslGV+140HvuvyeoZU9CtbeDtKIADLeJYruXUVaEDT5Q92eznM4H
-VYP59f53TZr4dUlJoNznfQf4bokYDyFnCIBgsjS8NtO/iPtKamt6PSNQ89MuxLcB
-tR5YfK4j4h4VE81Zlj1/yxppH4NllueSn4hVuSvYWZbOmYSV8iY5pEOlRlDykXx9
-4JDuGzze5y9vCd7QfrEpVGz6dEVRXGphi3SFcZxb4nx5XqwrLK86eH5XeiMlLGQ=
-=4QG1
------END PGP SIGNATURE-----
-
---ce8zlQhVsmlNj00H--
+diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
+index c01567d..e6f77b8 100644
+--- a/drivers/spi/spi-img-spfi.c
++++ b/drivers/spi/spi-img-spfi.c
+@@ -39,6 +39,7 @@
+ #define SPFI_CONTROL_SOFT_RESET			BIT(11)
+ #define SPFI_CONTROL_SEND_DMA			BIT(10)
+ #define SPFI_CONTROL_GET_DMA			BIT(9)
++#define SPFI_CONTROL_SE			BIT(8)
+ #define SPFI_CONTROL_TMODE_SHIFT		5
+ #define SPFI_CONTROL_TMODE_MASK			0x7
+ #define SPFI_CONTROL_TMODE_SINGLE		0
+@@ -435,6 +436,9 @@ static void img_spfi_config(struct spi_master *master, struct spi_device *spi,
+ 		val |= SPFI_CONTROL_CONTINUE;
+ 	spfi_writel(spfi, val, SPFI_CONTROL);
+ 
++	/* Double the transfer speed by setting Same Edge. */
++	val |= SPFI_CONTROL_SE;
++
+ 	val = spfi_readl(spfi, SPFI_PORT_STATE);
+ 	if (spi->mode & SPI_CPHA)
+ 		val |= SPFI_PORT_STATE_CK_PHASE(spi->chip_select);
+-- 
+1.7.9.5

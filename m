@@ -1,55 +1,49 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 3/5] spi: sh-msiof: cleanup wait_for_completion return
- handling
-Date: Wed, 4 Feb 2015 20:53:03 +0000
-Message-ID: <20150204205303.GK21293@sirena.org.uk>
+Subject: Re: [PATCH 4/5] spi: spi-imx: cleanup wait_for_completion handling
+Date: Wed, 4 Feb 2015 20:53:26 +0000
+Message-ID: <20150204205326.GL21293@sirena.org.uk>
 References: <1422865837-10357-1-git-send-email-hofrat@osadl.org>
- <1422865837-10357-3-git-send-email-hofrat@osadl.org>
+ <1422865837-10357-4-git-send-email-hofrat@osadl.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Q1fIFGkghhj0JTDH"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Nicholas Mc Guire <der.herr-kA1LtwSENNE@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="AliU6hqk+0M/2vc/"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Nicholas Mc Guire <hofrat-Q945KHDl0DbYtjvyW6yDsg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1422865837-10357-3-git-send-email-hofrat-Q945KHDl0DbYtjvyW6yDsg@public.gmane.org>
+In-Reply-To: <1422865837-10357-4-git-send-email-hofrat-Q945KHDl0DbYtjvyW6yDsg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---Q1fIFGkghhj0JTDH
+--AliU6hqk+0M/2vc/
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 02, 2015 at 03:30:34AM -0500, Nicholas Mc Guire wrote:
-> From: Nicholas Mc Guire <der.herr-kA1LtwSENNE@public.gmane.org>
->=20
-> return type of wait_for_completion_timeout is unsigned long not int, this
-> patch uses the return value of wait_for_completion_timeout in the conditi=
-on=20
-> directly rather than assigning it to an incorrect type variable.
+On Mon, Feb 02, 2015 at 03:30:35AM -0500, Nicholas Mc Guire wrote:
+> return type of wait_for_completion_timeout is unsigned long not int and
+> always returns >=0 , this patch adds a suitable return variable and
+> simplifies the return value checking as there is no < 0 case.
 
 Applied, thanks.
 
---Q1fIFGkghhj0JTDH
+--AliU6hqk+0M/2vc/
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJU0oauAAoJECTWi3JdVIfQnu8H/2LVx5f0f67KcCU4wgsb2XMF
-5GLHT11z1nXBgKtR+ptGpW8xgVy5osXsXXd5RYL9aLpbewRkoqQvex8w0TMqhIcV
-rynbeIaFmbFiyMz8oi7803ZCkoQzGcb9xbIp/H9ISKpxuaVHoC1QXCJYk97lhIhq
-oaEmFQoEeyJ4QZINDGOeQWbDEUX4X2z3xYyO+D7mUDWiaU2ZmCi9kkmycasOKyUa
-bISOnf7QQY3dSgj5PilgboyHZwSmqslt8aEzCtmiGfA/jynOMP94c836NKLccR5r
-qx9YuKtA8ZK7BF6zhLMa6jW5cBTg78N2CGtirOGw2gXDCKm8iEcsYORIGmjEJYo=
-=FyGw
+iQEcBAEBCAAGBQJU0obFAAoJECTWi3JdVIfQgOAH/1MSoXcNF0GpZDoSozARu1aJ
+0hi7mtnAe+9Y3nOPxzlfmHoYHqwwuSucjCLX72hbnE/yiIyt9j3CwfHBLiCyOQIw
+kNr8cia8QcHeUFs5F3Xet5WtyXvT0m3rmUUzaSMex//gMB1ZfmJUk4+oVjbzD2Ba
+A2uGhKzOyzdVKg6CygiV1t/qJxiv9fQhuVemRQ0Q7WkYg0PTGlhgcbbUeQesZavq
+WDugQmJkVC414YDJVqh1hQqGSkyUHtlc9G5/17dj8HLDtV8Zw0bYhT8h3pHB/w6F
+MCttgFdRnmpzgIib4sS4wXEQtSk1ezrpx4QXsDPmS1wvHAdTyVi5DxtEgVxUmHY=
+=pFdV
 -----END PGP SIGNATURE-----
 
---Q1fIFGkghhj0JTDH--
+--AliU6hqk+0M/2vc/--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,51 +1,49 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: spi-pxa2xx: only include mach/dma.h for legacy DMA
-Date: Wed, 4 Feb 2015 20:14:24 +0000
-Message-ID: <20150204201424.GD21293@sirena.org.uk>
-References: <1423004615-16085-1-git-send-email-robh@kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 1/5] spi: match var type to return type of
+ wait_for_completion
+Date: Wed, 4 Feb 2015 20:52:39 +0000
+Message-ID: <20150204205239.GJ21293@sirena.org.uk>
+References: <1422865837-10357-1-git-send-email-hofrat@osadl.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="+ADn8P7LGHbCQUlh"
-Cc: Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="fz1k6AzmkLjpZ+k2"
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Nicholas Mc Guire <der.herr@hofr.at>
+To: Nicholas Mc Guire <hofrat@osadl.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1423004615-16085-1-git-send-email-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1422865837-10357-1-git-send-email-hofrat@osadl.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---+ADn8P7LGHbCQUlh
+--fz1k6AzmkLjpZ+k2
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 03, 2015 at 05:03:35PM -0600, Rob Herring wrote:
-> Move the include of mach/dma.h to the legacy PXA DMA code where it is used.
-> This enables building spi-pxa2xx on ARM64.
+On Mon, Feb 02, 2015 at 03:30:32AM -0500, Nicholas Mc Guire wrote:
+> From: Nicholas Mc Guire <der.herr@hofr.at>
+>=20
+> return type of wait_for_completion_timeout is unsigned long not int, this
+> patch changes the type of m from int to unsigned long.
 
-Applied, thanks.
+applied, thanks.
 
---+ADn8P7LGHbCQUlh
+--fz1k6AzmkLjpZ+k2
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJU0n2fAAoJECTWi3JdVIfQwXoH/jn+gASYym6DDRGrwc8ivkcq
-QT621Aa0cB3WE3/0ZC8iIGaBzBQKywaJw6gjTjMDBTT+6PEZ/tsPe7VeW1gdmNtD
-7Xwx8Y/cKnfyy37ClxFda7FdY2z79MFbGEbuxVS4TjsW0gKaXpvBY7X/56f7XXRj
-wPK3M6ZGFTSIaqmZ0F8anABgUpyN9gF0bagfZaA7tpAlc1Fat2YhLXP5aGcy0ZZQ
-NQmLe+kgLLCMy/q8u8vDBdpmWfutEjh+hP72q1Hg2CFSGHYVazNLsQzQbOTjignk
-/2lIj8QhpfB7BF5bjADdUpXiPzcci/XHEYpYXdVYL4MnTUqINVMV575gSYbkFnA=
-=W9M5
+iQEcBAEBCAAGBQJU0oaXAAoJECTWi3JdVIfQscEH/0uCzBRduPkfLOaaIkygxZ0S
+h+5lErgmhFOyHjFVgLIiBSVtFkZVIk8iD6UYRNaCUPQh2qEddM9bYRl7scdF1TU5
+X70gWdD5Dsfu2O265HnAr0BitPWiDVAHIQQNGPeHlVAOJjhpXGxlKZ2mSGTYreAS
+ypCFL3XGJOfJIoBkE4PcyDiBwVf5k3NlEGfDCIiEvuu7WQ8NDXHgS/tuavQZiOKj
+K2nFVKq/J7HD6EUGzNNXxCcHFvTzRA6Fzfik6BxQVOWbPCWDxtk66fM7tZbS81zi
+UtFjed1SJXg957fpWWMrL8aGKztndamhYWrTx+Nl57RNTn5ZN5qkTxYdsL7CXkk=
+=ugcx
 -----END PGP SIGNATURE-----
 
---+ADn8P7LGHbCQUlh--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--fz1k6AzmkLjpZ+k2--

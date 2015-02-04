@@ -1,79 +1,86 @@
-From: Esben Haabendal <esbenhaabendal@gmail.com>
-Subject: Re: Backport of spi-fsl-spi bugfix to 3.14.y
-Date: Wed, 04 Feb 2015 10:03:33 +0100
-Message-ID: <1423040613.3304.10.camel@gmail.com>
-References: <1420472564.803.9.camel@gmail.com>
-	 <20150105154834.GV11764@sirena.org.uk>
-	 <CAOR3GqUBWyfUvNG-8JiPVkis6b_25Eq_REtcp=kLN3CUoqsG6g@mail.gmail.com>
-	 <20150123124529.GU21293@sirena.org.uk> <20150125173853.GA6467@kroah.com>
-	 <20150125201254.GX21293@sirena.org.uk> <20150125220723.GD29924@kroah.com>
+From: Nicolas Ferre <nicolas.ferre@atmel.com>
+Subject: Re: [PATCH v2] spi: atmel: cleanup wait_for_completion return handling
+Date: Wed, 4 Feb 2015 10:18:00 +0100
+Message-ID: <54D1E3C8.7000304@atmel.com>
+References: <1422891811-28541-1-git-send-email-hofrat@osadl.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie@kernel.org>,
-	Esben Haabendal <esben.haabendal@gmail.com>,
-	stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org, Stefan Roese <sr@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <20150125220723.GD29924@kroah.com>
-Sender: stable-owner@vger.kernel.org
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: Nicholas Mc Guire <hofrat@osadl.org>,
+	Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1422891811-28541-1-git-send-email-hofrat@osadl.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, 2015-01-25 at 14:07 -0800, Greg Kroah-Hartman wrote:
-> On Sun, Jan 25, 2015 at 08:12:54PM +0000, Mark Brown wrote:
-> > On Sun, Jan 25, 2015 at 09:38:53AM -0800, Greg Kroah-Hartman wrote:
-> > > On Fri, Jan 23, 2015 at 12:45:29PM +0000, Mark Brown wrote:
-> > 
-> > > > So, I now see this has actually been merged into stable without getting
-> > > > to the bottom of why it's helping anything...  this is a bit worrying
-> > > > since it's adding new functionality and not really a bug fix.  It'd have
-> > > > been good to at least get a followup here.
-> > 
-> > > Do you want me to revert something from the stable tree?  If so, has it
-> > > also been reverted upstream?
-> > 
-> > The patch just isn't an obvious -stable patch - it's adding new
-> > functionality, not fixing a bug, and I was surprised to discover it had
-> > been added as a result.  It's fine as new functionality and therefore
-> > hasn't been reverted upstream.
-> > 
-> > We can probably leave it there, though if this is OK that's a bit of a
-> > change, but if this new functionality is a good fix then we're probably
-> > leaving other systems unfixed which isn't good, I would be very much
-> > happier if we understood what had changed here.  If new functionality is
-> > OK there's a probably a bunch of other changes we should be pulling
-> > back.
-> 
-> New functionality shouldn't be added, but sometimes things slip in due
-> to the volume of patches and how people word-smith changelog entries :(
+Le 02/02/2015 16:43, Nicholas Mc Guire a =E9crit :
+> return type of wait_for_completion_timeout is unsigned long not int, =
+this
+> patch adds an appropriate variable and fixes up the assignment. It re=
+moves=20
+> the else branch as the only thing it was doing is assigning ret =3D 0=
+; - but=20
+> ret is never used thereafter so that is not needed. As the string in=20
+> dev_err already states "timeout" there is little point in printing th=
+e 0.=20
+> A typo in "trasfer" -> transfer is also fixed.
+>=20
+> Signed-off-by: Nicholas Mc Guire <hofrat@osadl.org>
 
-In this case, I don't believe anybody has tried to fiddle with changelog
-entried.
+Acked-by: Nicolas Ferre <nicolas.ferre@atmel.com>
 
-I merely stated that the commit in question fixed an (observed)
-regression.  The commit itself states that it changes behaviour of the
-driver, although my interpretation of this change in behaviour still is
-that it replaces a clearly broken behaviour (returning -EINVAL for all
-multi message transfers) with a proper handling of these.
+Thanks. Bye.
 
-I suspect that the regression I have observed is caused by the
-combination of the following two commits:
+> ---
+>=20
+> v2: fixes commit message and whitespace damage reported by
+>     Mark Brown <broonie@kernel.org>
+>=20
+> This patch was only compile tested with at91_dt_defconfig
+> (implies CONFIG_SPI_ATMEL=3Dy)
+>=20
+> Patch is against 3.19.0-rc6 (localversion-next =3D -next-20150202)
+>=20
+>  drivers/spi/spi-atmel.c |   12 +++++-------
+>  1 file changed, 5 insertions(+), 7 deletions(-)
+>=20
+> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+> index 23d8f5f5..9af7841 100644
+> --- a/drivers/spi/spi-atmel.c
+> +++ b/drivers/spi/spi-atmel.c
+> @@ -1046,6 +1046,7 @@ static int atmel_spi_one_transfer(struct spi_ma=
+ster *master,
+>  	struct atmel_spi_device	*asd;
+>  	int			timeout;
+>  	int			ret;
+> +	unsigned long		dma_timeout;
+> =20
+>  	as =3D spi_master_get_devdata(master);
+> =20
+> @@ -1103,15 +1104,12 @@ static int atmel_spi_one_transfer(struct spi_=
+master *master,
+> =20
+>  		/* interrupts are disabled, so free the lock for schedule */
+>  		atmel_spi_unlock(as);
+> -		ret =3D wait_for_completion_timeout(&as->xfer_completion,
+> -							SPI_DMA_TIMEOUT);
+> +		dma_timeout =3D wait_for_completion_timeout(&as->xfer_completion,
+> +							  SPI_DMA_TIMEOUT);
+>  		atmel_spi_lock(as);
+> -		if (WARN_ON(ret =3D=3D 0)) {
+> -			dev_err(&spi->dev,
+> -				"spi trasfer timeout, err %d\n", ret);
+> +		if (WARN_ON(dma_timeout =3D=3D 0)) {
+> +			dev_err(&spi->dev, "spi transfer timeout\n");
+>  			as->done_status =3D -EIO;
+> -		} else {
+> -			ret =3D 0;
+>  		}
+> =20
+>  		if (as->done_status)
+>=20
 
-commit 059b8ffeee5b427949872bb6ed5db5ae0788054e
-  spi: make sure all transfer has proper speed set
 
-commit e6811d1d7a6a38ee637fe219c3b67dbfe17e8b3f
-  spi: make sure all transfer has bits_per_word set
-
-And the broken behaviour of the spi-fsl-spi driver prior to the (now
-backported) commit 4302a59629f7a0bd70fd1605d2b558597517372a.
-
-A side effect of the two above mentioned commits is that the spi all
-transfers (in multi message transfers) have their transfer speed_hz and
-bits_per_word set, which is not handled properly by spi-fsl-spi.
-
-As such, I believe the backport is a valid bugfix backport for all
-stable kernels including the two spi commits mentioned.
-
-/Esben
+--=20
+Nicolas Ferre

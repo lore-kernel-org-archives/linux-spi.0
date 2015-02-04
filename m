@@ -1,52 +1,57 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: spi-pxa2xx: only include mach/dma.h for legacy DMA
-Date: Wed, 4 Feb 2015 10:30:27 +0000
-Message-ID: <20150204103027.GS21293@sirena.org.uk>
-References: <1423004615-16085-1-git-send-email-robh@kernel.org>
+Subject: Re: [PATCH v2] spi: atmel: cleanup wait_for_completion return
+ handling
+Date: Wed, 4 Feb 2015 11:26:12 +0000
+Message-ID: <20150204112612.GX21293@sirena.org.uk>
+References: <1422891811-28541-1-git-send-email-hofrat@osadl.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Wg47JZ3KdM6fhUKj"
-Cc: Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="9Jsz9XfKtAbN70/g"
+Cc: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Nicholas Mc Guire <hofrat-Q945KHDl0DbYtjvyW6yDsg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1423004615-16085-1-git-send-email-robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+In-Reply-To: <1422891811-28541-1-git-send-email-hofrat-Q945KHDl0DbYtjvyW6yDsg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---Wg47JZ3KdM6fhUKj
+--9Jsz9XfKtAbN70/g
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 03, 2015 at 05:03:35PM -0600, Rob Herring wrote:
+On Mon, Feb 02, 2015 at 10:43:31AM -0500, Nicholas Mc Guire wrote:
+> return type of wait_for_completion_timeout is unsigned long not int, this
+> patch adds an appropriate variable and fixes up the assignment. It remove=
+s=20
+> the else branch as the only thing it was doing is assigning ret =3D 0; - =
+but=20
+> ret is never used thereafter so that is not needed. As the string in=20
+> dev_err already states "timeout" there is little point in printing the 0.=
+=20
+> A typo in "trasfer" -> transfer is also fixed.
 
-> Move the include of mach/dma.h to the legacy PXA DMA code where it is used.
-> This enables building spi-pxa2xx on ARM64.
+Applied, thanks.
 
-If this enables the building of spi-pxa2xx on ARMv8 I'd expect to see a
-Kconfig change as well, we're not getting build failures at the minute?
-
---Wg47JZ3KdM6fhUKj
+--9Jsz9XfKtAbN70/g
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJU0fTCAAoJECTWi3JdVIfQPwAH/ArkgQx4FRYwAbvqAy+6vKED
-qdZ2Eh6FQvARgaIWQjXL+ukkEYeMSl5Pm2QlW2X75uf0tahMVPTiXnAdKrkYtkKp
-uXKYfjpKf43Ec6aIO4KxPE31SdnGLW4qkS73QMq1oxfe0OPJwRHQ1F/23KMNaZTG
-ZyKPWhJ1Sz3ORa3WDk4ZVhqJ405P3Z/4r8dkvikAKtxtg9BRIUoW2nwhJUN4foMI
-2CSq4KIvtKpjJ1KlQP62LgT2/8FNUo2pUCQ49yALu93xwZcSrubJIHggP/V7l4OW
-iQwIiIsemIMcdE8i4j/1FZVueugr4OruVfoNLuBNlal7o0RESi0mWF4g75ZZukk=
-=9Xun
+iQEcBAEBCAAGBQJU0gHTAAoJECTWi3JdVIfQA0IH/3qLR4UR4mW73VR2k4Z8+EoN
+KoUzzhGdlaKRr/UnTDt8paGgFac1vFpdg8BgbPJTbsUtsf5tYHmldxMJg8oLoJKJ
+1xx9Tj0CKGT15QL9uY4esaKVLHCqPFeePDik+UpBH0MM3QSaFm+y/t6xHj56pCwA
+EmbtKWsdabszDBnPqd1s99h4XwIU2ObL6sqFiqU2WWtSp650DZeDFv+YaxTot8rI
+mpe/sl/GWNIfqugzfQPGh9TVhxSWRVAf0S4nS2lfqDD56Pr8dyLEU2hX67CV7BHo
+QHuHxlLBqqGoDrfm9/ez0ktdpPotDSmpCUyhhBwykEJm9bKw9hwq5K4AMGqlq6o=
+=Ns8l
 -----END PGP SIGNATURE-----
 
---Wg47JZ3KdM6fhUKj--
+--9Jsz9XfKtAbN70/g--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

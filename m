@@ -1,75 +1,74 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [GIT PULL] spi fixes for v3.19
-Date: Wed, 4 Feb 2015 21:08:30 +0000
-Message-ID: <20150204210830.GO21293@sirena.org.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: Backport of spi-fsl-spi bugfix to 3.14.y
+Date: Thu, 5 Feb 2015 14:33:48 +0000
+Message-ID: <20150205143348.GV21293@sirena.org.uk>
+References: <1420472564.803.9.camel@gmail.com>
+ <20150105154834.GV11764@sirena.org.uk>
+ <CAOR3GqUBWyfUvNG-8JiPVkis6b_25Eq_REtcp=kLN3CUoqsG6g@mail.gmail.com>
+ <20150123124529.GU21293@sirena.org.uk>
+ <20150125173853.GA6467@kroah.com>
+ <20150125201254.GX21293@sirena.org.uk>
+ <20150125220723.GD29924@kroah.com>
+ <1423040613.3304.10.camel@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="uYN4FLSULGyR+p/T"
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="y/aqi7sag87A1fiJ"
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Esben Haabendal <esben.haabendal@gmail.com>,
+	stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org, Stefan Roese <sr@denx.de>
+To: Esben Haabendal <esbenhaabendal@gmail.com>
+Return-path: <stable-owner@vger.kernel.org>
 Content-Disposition: inline
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1423040613.3304.10.camel@gmail.com>
+Sender: stable-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---uYN4FLSULGyR+p/T
+--y/aqi7sag87A1fiJ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-The following changes since commit e36f014edff70fc02b3d3d79cead1d58f289332e:
+On Wed, Feb 04, 2015 at 10:03:33AM +0100, Esben Haabendal wrote:
 
-  Linux 3.19-rc7 (2015-02-01 20:07:21 -0800)
+> I suspect that the regression I have observed is caused by the
+> combination of the following two commits:
 
-are available in the git repository at:
+> commit 059b8ffeee5b427949872bb6ed5db5ae0788054e
+>   spi: make sure all transfer has proper speed set
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-v3.19-rc7
+> commit e6811d1d7a6a38ee637fe219c3b67dbfe17e8b3f
+>   spi: make sure all transfer has bits_per_word set
 
-for you to fetch changes up to d426a842b0c203c182ec2658efc4282ef1eb80be:
+> And the broken behaviour of the spi-fsl-spi driver prior to the (now
+> backported) commit 4302a59629f7a0bd70fd1605d2b558597517372a.
 
-  Merge remote-tracking branches 'spi/fix/fsl-dspi' and 'spi/fix/imx' into spi-linus (2015-02-04 20:57:31 +0000)
+> A side effect of the two above mentioned commits is that the spi all
+> transfers (in multi message transfers) have their transfer speed_hz and
+> bits_per_word set, which is not handled properly by spi-fsl-spi.
 
-----------------------------------------------------------------
-spi: Fixes for v3.19
+OK, so this is the analysis I was looking for before we merged the patch
+into stable - we shouldn't normally be merging new features in so we
+really need to understand why the new feature is appropriate.  "This
+seems to make it work" isn't doing that.
 
-A couple of driver specific fixes:
+The other problem was that I didn't know this was in stable until after
+the fact - we should try to avoid that happening in future.
 
- - Disable DMA mode for i.MX6DL chips due to a hardware bug.
- - Don't use devm_kzalloc() outside of bind/unbind paths in the fsl-dspi
-   driver, fixing memory leaks.
-
-----------------------------------------------------------------
-Bhuvanchandra DV (1):
-      spi: spi-fsl-dspi: Remove usage of devm_kzalloc
-
-Mark Brown (1):
-      Merge remote-tracking branches 'spi/fix/fsl-dspi' and 'spi/fix/imx' into spi-linus
-
-Robin Gong (1):
-      spi: imx: use pio mode for i.mx6dl
-
- drivers/spi/spi-fsl-dspi.c | 14 ++++++++++++--
- drivers/spi/spi-imx.c      |  4 ++++
- 2 files changed, 16 insertions(+), 2 deletions(-)
-
---uYN4FLSULGyR+p/T
+--y/aqi7sag87A1fiJ
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJU0opNAAoJECTWi3JdVIfQQuIH/2sc2iauv5eljwQqdSFjflkJ
-cwhl2DYz++doCESddNi7/MF2O4i6bBN/nMLmmae4n10Sm8n46F5pgWpW6VIGgcw0
-/BBcPbP+1r+8plV7o57OUqe7S/P/+WZFK9XclqXHjWxKTG+UVjPEIzei/vE8gV+j
-0lnaBHHbaq2lqmoaTbC9oX6IhOYeBofYc/seTfDkaLKrNCcuPL+F0RODdCrIJBi9
-OVsv3USIZUj3GOw9TR7OcJI9tkXXJQGk2P5//RG38Pe5mgbKnirCFEFhPrsuLSTE
-tnQJ83x6PZCJ6w3A8qovOq1X74iyUjmofnNLkzgLrf9qM3R/kl3KYtI8Aysz79Q=
-=m6Km
+iQEcBAEBCAAGBQJU039LAAoJECTWi3JdVIfQsvoH/jH9wG0RgLrSovObnpE9D2DW
+6s3BR7rO6VBhvj6ens1/H7NdoOT0uZTD5GKzb7MOY98XQiTJ6gdNVitNhG1V4VQ6
+xy8QNl7kfz+l1MF1KnPFmws1yKk3zrDfF2cQ7SNysDaB8botXWIM9FA91+l+xuQj
+TBL/T4CkWV09578kLAUzidquCJcvtv1aTEqCsOl1lV0KahOBUyF+G+FNrVyRZwN4
+hKovEdYCzF22kMtX7ocd8w6fji/maYhpzRAa+6s3Ix6htuFgV8RBOs2Nt77IcK5Y
+fLSVmO5uJSrKyAjiMXsHpoeA1oANFzfnqWZlpDRzicBdZczqVCBm8wJzeJ39cPo=
+=TZG3
 -----END PGP SIGNATURE-----
 
---uYN4FLSULGyR+p/T--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--y/aqi7sag87A1fiJ--

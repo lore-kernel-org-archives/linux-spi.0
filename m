@@ -1,13 +1,13 @@
-From: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
-Subject: [PATCH] spi: sc18is602: Support multiple devices on a single I2C bus if DT is configured
-Date: Fri,  6 Feb 2015 12:25:54 -0800
-Message-ID: <1423254354-18846-1-git-send-email-linux@roeck-us.net>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
-To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH resend] spi: sc18is602: Support multiple devices on a single I2C bus if DT is configured
+Date: Fri,  6 Feb 2015 12:27:54 -0800
+Message-ID: <1423254474-18963-1-git-send-email-linux@roeck-us.net>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Guenter Roeck <linux@roeck-us.net>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The driver currently only supports a single device per I2C bus since it uses
 the I2C bus number to set the SPI bus number. This makes it impossible to
@@ -19,9 +19,11 @@ result in every instantiation getting a different bus number starting with
 configured, however, the SPI bus number is obtained from devicetree
 data. So we can use dynamic SPI bus numbers in this case.
 
-Reported-and-Tested-by: Marco Menchise <marco.menchise-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+Reported-and-Tested-by: Marco Menchise <marco.menchise@gmail.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
+Resend, this time with Mark's correct e-mail address. Sorry for the noise.
+
  drivers/spi/spi-sc18is602.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
@@ -40,8 +42,3 @@ index 237f2e7..c04e601 100644
  	master->setup = sc18is602_setup;
 -- 
 2.1.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

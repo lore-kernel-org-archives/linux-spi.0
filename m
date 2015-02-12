@@ -1,93 +1,66 @@
-From: Aurelien BOUIN <a.bouin@gmail.com>
-Subject: [PATCH 3/4] spi: imx: Chose DMA bits per word transfered
-Date: Thu, 12 Feb 2015 13:07:27 +0100
-Message-ID: <1423742848-15369-3-git-send-email-a.bouin@gmail.com>
+From: Aurelien BOUIN <a.bouin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 2/4] spi: imx: checkpatch cleanup
+Date: Thu, 12 Feb 2015 13:07:26 +0100
+Message-ID: <1423742848-15369-2-git-send-email-a.bouin@gmail.com>
 References: <1423742848-15369-1-git-send-email-a.bouin@gmail.com>
-Cc: festevam@gmail.com, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Aurelien BOUIN <a.bouin@gmail.com>
-To: broonie@kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1423742848-15369-1-git-send-email-a.bouin@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Aurelien BOUIN <a.bouin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1423742848-15369-1-git-send-email-a.bouin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-This patch enable to give a parameter to device tree to set the number of bits per word the DMA uses in transfer
-In device tree you can specify fsl,spi-dma-bits-per-word = <16>; in the ecspi section
+This patch solve various issue detected by checkpatch.pl
 
-Signed-off-by: Aurelien BOUIN <a.bouin@gmail.com>
+Signed-off-by: Aurelien BOUIN <a.bouin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index f8400b2..9690d57 100644
+index fe1b769..f8400b2 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -110,6 +110,7 @@ struct spi_imx_data {
- 	u32 rxt_wml;
- 	struct completion dma_rx_completion;
- 	struct completion dma_tx_completion;
-+	unsigned int dma_bits_per_word;
+@@ -282,7 +282,8 @@ static unsigned int mx51_ecspi_clkdiv(unsigned int fin, unsigned int fspi,
+ 		(post << MX51_ECSPI_CTRL_POSTDIV_OFFSET);
+ }
  
- 	const struct spi_imx_devtype_data *devtype_data;
- 	int chipselect[0];
-@@ -825,6 +826,7 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
+-static void __maybe_unused mx51_ecspi_intctrl(struct spi_imx_data *spi_imx, int enable)
++static void __maybe_unused mx51_ecspi_intctrl(struct spi_imx_data *spi_imx,
++		int enable)
  {
- 	struct dma_slave_config slave_config = {};
- 	int ret;
-+	enum dma_slave_buswidth dsb_default = DMA_SLAVE_BUSWIDTH_1_BYTE;
+ 	unsigned val = 0;
  
- 	/* use pio mode for i.mx6dl chip TKT238285 */
- 	if (of_machine_is_compatible("fsl,imx6dl"))
-@@ -837,10 +839,20 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
- 		ret = -EINVAL;
- 		goto err;
- 	}
--
-+	switch (spi_imx->dma_bits_per_word) {
-+	case 32:
-+		dsb_default = DMA_SLAVE_BUSWIDTH_4_BYTES;
-+		break;
-+	case 16:
-+		dsb_default = DMA_SLAVE_BUSWIDTH_2_BYTES;
-+		break;
-+	default:
-+		dsb_default = DMA_SLAVE_BUSWIDTH_1_BYTE;
-+		break;
-+	}
- 	slave_config.direction = DMA_MEM_TO_DEV;
- 	slave_config.dst_addr = res->start + MXC_CSPITXDATA;
--	slave_config.dst_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
-+	slave_config.dst_addr_width = dsb_default;
- 	slave_config.dst_maxburst = spi_imx_get_fifosize(spi_imx) / 2;
- 	ret = dmaengine_slave_config(master->dma_tx, &slave_config);
- 	if (ret) {
-@@ -858,7 +870,7 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
+@@ -426,7 +427,8 @@ static void __maybe_unused mx51_ecspi_reset(struct spi_imx_data *spi_imx)
+  * the i.MX35 has a slightly different register layout for bits
+  * we do not use here.
+  */
+-static void __maybe_unused mx31_intctrl(struct spi_imx_data *spi_imx, int enable)
++static void __maybe_unused mx31_intctrl(struct spi_imx_data *spi_imx,
++		int enable)
+ {
+ 	unsigned int val = 0;
  
- 	slave_config.direction = DMA_DEV_TO_MEM;
- 	slave_config.src_addr = res->start + MXC_CSPIRXDATA;
--	slave_config.src_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
-+	slave_config.src_addr_width = dsb_default;
- 	slave_config.src_maxburst = spi_imx_get_fifosize(spi_imx) / 2;
- 	ret = dmaengine_slave_config(master->dma_rx, &slave_config);
- 	if (ret) {
-@@ -1083,7 +1095,7 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	struct spi_master *master;
- 	struct spi_imx_data *spi_imx;
- 	struct resource *res;
--	int i, ret, num_cs;
-+	int i, ret, num_cs, dma_bits_per_word = 8;
+@@ -504,7 +506,8 @@ static void __maybe_unused mx31_reset(struct spi_imx_data *spi_imx)
+ #define MX21_CSPICTRL_DR_SHIFT	14
+ #define MX21_CSPICTRL_CS_SHIFT	19
  
- 	if (!np && !mxc_platform_info) {
- 		dev_err(&pdev->dev, "can't get the platform data\n");
-@@ -1138,6 +1150,11 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	spi_imx->bitbang.master->prepare_message = spi_imx_prepare_message;
- 	spi_imx->bitbang.master->unprepare_message = spi_imx_unprepare_message;
- 	spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
-+	if (of_property_read_u32(np, "fsl,spi-dma-bits-per-word",
-+			&dma_bits_per_word))
-+		spi_imx->dma_bits_per_word = dma_bits_per_word;
-+	else
-+		spi_imx->dma_bits_per_word = 8;
+-static void __maybe_unused mx21_intctrl(struct spi_imx_data *spi_imx, int enable)
++static void __maybe_unused mx21_intctrl(struct spi_imx_data *spi_imx,
++		int enable)
+ {
+ 	unsigned int val = 0;
  
- 	init_completion(&spi_imx->xfer_done);
+@@ -1111,6 +1114,7 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 
+ 	for (i = 0; i < master->num_chipselect; i++) {
+ 		int cs_gpio = of_get_named_gpio(np, "cs-gpios", i);
++
+ 		if (!gpio_is_valid(cs_gpio) && mxc_platform_info)
+ 			cs_gpio = mxc_platform_info->chipselect[i];
  
 -- 
 1.9.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

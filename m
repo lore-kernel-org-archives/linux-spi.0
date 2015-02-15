@@ -1,56 +1,81 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: xilinx: Use standard num-cs binding
-Date: Sat, 14 Feb 2015 14:35:43 +0900
-Message-ID: <20150214053543.GL9110@finisterre.sirena.org.uk>
-References: <67f3c196833c427a489ca2c530d08987a6b5ee2a.1421412912.git.michal.simek@xilinx.com>
- <CAHTX3dJRGhwo7FW+VJxfEJmx-9FdjFN5EnxG0RRDfMOm3=VU4A@mail.gmail.com>
+From: Ian Abbott <abbotti-GUHe90Wt2aFaa/9Udqfwiw@public.gmane.org>
+Subject: Re: [PATCH] spi: spidev: only use up TX/RX bounce buffer space when
+ needed
+Date: Sun, 15 Feb 2015 10:30:22 +0000
+Message-ID: <54E0753E.30208@mev.co.uk>
+References: <1423743188-1821-1-git-send-email-abbotti@mev.co.uk> <20150214044910.GF9110@finisterre.sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="pFej7zHSL6C5fFIz"
-Cc: LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	=?iso-8859-1?Q?S=F6ren?= Brinkmann <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-arm <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Michal Simek <monstr-pSz03upnqPeHXe+LvDLADg@public.gmane.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAHTX3dJRGhwo7FW+VJxfEJmx-9FdjFN5EnxG0RRDfMOm3=VU4A-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20150214044910.GF9110-bheZrs9scGb3/WHNxyQH9YN0K6Il/+VY@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On 14/02/15 04:49, Mark Brown wrote:
+> On Thu, Feb 12, 2015 at 12:13:08PM +0000, Ian Abbott wrote:
+>> Devices have separate, pre-allocated TX and RX bounce buffers of fixed
+>> size.  Currently, each transfer uses up space in both buffers even if
+>> the user-supplied no TX data or no RX space.  Change it to only use up
+>> space in the TX and RX bounce buffers as required.
+>
+> This is a bit hard to parse.  I think you're talking about buffers in
+> spidev here but it's unclear and you've not described in what way you're
+> changing the code and we do currently only seem to copy data when the
+> user has asked for it.
 
---pFej7zHSL6C5fFIz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Yes, I was talking about spidev. I did tag it in the subject line of the 
+commit message, though I'm sorry if the rest of it is difficult to parse.
 
-On Wed, Feb 11, 2015 at 12:07:20PM +0100, Michal Simek wrote:
-> 2015-01-16 13:55 GMT+01:00 Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>:
+Yes, we copy data when the user asked for it. The patch is trying to 
+avoid wasting space in the TX and/or RX buffers when the user _didn't_ 
+ask for it.
 
-> > Use standard num-cs binding property and setup
-> > "xlnx,num-ss-bits" as deprecated.
+>> Since dummy transfers with no user-supplied TX data and no user-supplied
+>> RX space will no longer use up space in the bounce buffers, limit the
+>> overall SPI message length to INT_MAX instead of the buffer size.
+>
+> That doesn't seem to follow at all.  No mention has been made of
+> eliminating the buffers entirely or otherwise ensuring that we can
+> handle transfers of any length - not using the buffer for transmit isn't
+> going to make the receive buffer any bigger and indeed...
+>
+>>   		if (u_tmp->rx_buf) {
+>> +			rx_total += k_tmp->len;
+>> +			if (rx_total > bufsiz) {
+>> +				status = -EMSGSIZE;
+>> +				goto done;
+>> +			}
+>
+> ...we do still seem to be limited to the buffer size here as one would
+> expect?
 
-> Any update on this one?
+Yes, the patch limits the total user-specified TX data and the total 
+user-specified RX data to the pre-allocated buffer size individually 
+rather than limiting the total sum of user RX and TX data.
 
-Don't send content free quoted pings, they're just adding to the e-mail
-volume and hence wasting people's time.
+> Basically I'm not entirely clear what this change is supposed to be
+> doing or what the expected benefit is.  I *think* the goal is to allow
+> multi-transfer messages with a mix of unidirectional transfers to be
+> larger but the changelog needs to be clearer and it's not 100% clear why
+> we'd bother to check for INT_MAX.
 
---pFej7zHSL6C5fFIz
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+My intention was to use the pre-allocated buffers more efficiently in 
+the case of multiple, half-duplex transfers in different directions, not 
+to allow transfers of any length.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+The check against INT_MAX is there because a struct spi_ioc_transfer 
+might have rx_buf==NULL, tx_buf==NULL and len!=0, in which case it would 
+no longer use up space in either of the pre-allocated buffers so neither 
+rx_total nor tx_total would increase.  Checking the sum of the len 
+fields against INT_MAX prevents arithmetic overflow in the return value 
+of the function.
 
-iQEcBAEBCAAGBQJU3t6uAAoJECTWi3JdVIfQQn0H/2Thgoq+PgKYLzEUbibNqSDq
-mlSubspCcJ5Mr9ARIPwvRG7+US4+U6iA4FHKVg6OqIWEvrpvCN5HHKjm73C5gJX9
-l+OyrVf9JDos1lMQLTj9G4uuKH7QQSX6xBjQ2Fc15gRClpJlXx62uOskKU5WV3/q
-bey985KHD7mkfP326njCf82ao1oAJpI4vSxzwp8gqjUjIzTTCE6234ecwNmtw0q3
-cwdVU6YZE3aXIFBDN7LGwINwNYHKnPp6AR3GL2albq85fZUZthGDYLN6L2yeY7S8
-QXiypOTx6PnQXNfkWX237CCuT4l4NHXNJFx8K2ZSiroZO9bvD5oKD426ym/mAPo=
-=m+w/
------END PGP SIGNATURE-----
-
---pFej7zHSL6C5fFIz--
+-- 
+-=( Ian Abbott @ MEV Ltd.    E-mail: <abbotti-GUHe90Wt2aFaa/9Udqfwiw@public.gmane.org> )=-
+-=(                          Web: http://www.mev.co.uk/  )=-
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,54 +1,50 @@
-From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Subject: Re: [PATCH] spi: sirf: add reset controller dependency
-Date: Thu, 19 Feb 2015 16:01:29 +0100
-Message-ID: <7767301.zaEX63gvjp@wuerfel>
-References: <4553005.HBquOfbqXe@wuerfel> <20150219094155.GA3198@finisterre.sirena.org.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/1] drivers: spi: ti-qspi: wait for busy bit clear
+ before data write/read
+Date: Sat, 21 Feb 2015 18:29:21 +0900
+Message-ID: <20150221092921.GD6236@finisterre.sirena.org.uk>
+References: <1424199831-5518-1-git-send-email-mugunthanvnm@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Philipp Zabel <p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
-To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="wLAMOaPNJ0fu1fTG"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mugunthan V N <mugunthanvnm-l0cyMroinI0@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150219094155.GA3198-bheZrs9scGb3/WHNxyQH9YN0K6Il/+VY@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1424199831-5518-1-git-send-email-mugunthanvnm-l0cyMroinI0@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Thursday 19 February 2015 18:41:55 Mark Brown wrote:
-> On Wed, Feb 18, 2015 at 04:29:10PM +0100, Arnd Bergmann wrote:
-> 
-> > The adds a dependency in Kconfig to prevent it from being selected
-> > if the resets are not available.
-> 
-> Why is this a better fix than making the reset controller API stub
-> itself out?  It's probably not such a big deal here but for devices that
-> could be integrated into SoCs with and without reset controllers it
-> seems like we might want that.
 
-I would prefer that too, but it's not what the reset maintainer decided
-to have, citing b424080a9e0 ("reset: Add optional resets and stubs"):
-    
-    This patch adds device_reset_optional and (devm_)reset_control_get_optional
-    variants that drivers can use to indicate they can function without control
-    over the reset line. For those functions, stubs are added so the drivers can
-    be compiled with CONFIG_RESET_CONTROLLER disabled.
-    Also, device_reset is annotated with __must_check. Drivers ignoring the return
-    value should use device_reset_optional instead.
-    
-    Signed-off-by: Philipp Zabel <p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-    Reviewed-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-    Reviewed-by: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-    Acked-by: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+--wLAMOaPNJ0fu1fTG
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-So the stubs are provided for all functions except device_reset() and
-reset_control_get(), and drivers using the API need to either call the
-stubbed-out _optional() versions of these functions or have the explicit
-dependency.
+On Wed, Feb 18, 2015 at 12:33:51AM +0530, Mugunthan V N wrote:
+> Data corruption is seen while reading/writing large data from/to qspi
+> device because the data register is over written or read before data
+> is ready which is denoted by busy bit in status register. SO adding
+> a busy bit check before writing/reading data to/from qspi device.
 
-	Arnd
+Applied, thanks.
+
+--wLAMOaPNJ0fu1fTG
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJU6E/xAAoJECTWi3JdVIfQ4hwH/jHj8GK1XaN/RFCtH5DsAxAL
+ACvib5R+VH+jBkHLj8Yr/BDV7lk+Ffekp+oMH53M6CbhHTIFMgwC2nlWVkafhetV
+Wors/lgpACcNeq78UKN92K76lCQyU8bgatF1et2bhStBZISCCtTlp3IZwJ5Qv4EN
+LJpQ0wFnZfwiReNz/z7CHiWBEZz/cq+kXNw4+DPtMJ0ZnwoTuz3886DR6VIsz2n7
+wzdBXePcXnNXbaphYd4FSqiV04Yydx4zP0lsyvs8Tq8xwbLe+lKxNI6OeCsvTF3B
+VMY5+gMmTigNiHsF1GRUjwL6vrCXEcYNGYmyOYXEJhNAWd6c9vfMUV1wfSmZVRA=
+=x5xG
+-----END PGP SIGNATURE-----
+
+--wLAMOaPNJ0fu1fTG--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

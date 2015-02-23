@@ -1,49 +1,61 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] drivers: spi: fix compiler warning in spi-s3c64xx
-Date: Mon, 23 Feb 2015 23:21:35 +0900
-Message-ID: <20150223142135.GC6236@finisterre.sirena.org.uk>
-References: <1424694646-26002-1-git-send-email-andre.przywara@arm.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 3/4] spi: imx: Chose DMA bits per word transfered
+Date: Mon, 23 Feb 2015 23:46:26 +0900
+Message-ID: <20150223144626.GE6236@finisterre.sirena.org.uk>
+References: <1423742848-15369-1-git-send-email-a.bouin@gmail.com>
+ <1423742848-15369-3-git-send-email-a.bouin@gmail.com>
+ <20150221143528.GU6236@finisterre.sirena.org.uk>
+ <CAFeThoDBstQ_=gsi2o509qqQR6PbV4MxsNe=hEhKj4Mj162osA@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="3WLtXmtPTeS+BWmV"
-Cc: Kukjin Kim <kgene@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-	arnd@arndb.de
-To: Andre Przywara <andre.przywara@arm.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="RHnfto7yGd+QdmRl"
+Cc: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: =?iso-8859-1?Q?aur=E9lien?= bouin <a.bouin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1424694646-26002-1-git-send-email-andre.przywara@arm.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <CAFeThoDBstQ_=gsi2o509qqQR6PbV4MxsNe=hEhKj4Mj162osA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---3WLtXmtPTeS+BWmV
-Content-Type: text/plain; charset=us-ascii
+--RHnfto7yGd+QdmRl
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 23, 2015 at 12:30:46PM +0000, Andre Przywara wrote:
-> The Exynos 7 arm64 support now allows the S3C64xx SPI driver to be
-> compiled into an ARM64 kernel, so the cast from the [rt]x_dmach int
-> variable to a void* in this driver now triggers a warning.
-> Add a long cast to silence the compiler.
+On Mon, Feb 23, 2015 at 09:44:50AM +0100, aur=E9lien bouin wrote:
+> At the moment there is no possibility to change the dma bits per word use=
+ ...
+> It is an easy way to be able to do so.
+> Feel free to propose something better
 
-Applied, thanks.
+Once more don't top post.  To repeat what I said:
 
---3WLtXmtPTeS+BWmV
+| Why would this be a DT property?  It seems like something the driver
+| ought to be able to figure out automatically if it matters.
+
+The above doesn't address my question.
+
+--RHnfto7yGd+QdmRl
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJU6zduAAoJECTWi3JdVIfQ/WgH/2WjP9ysYqvL5bvXNUgCFosp
-Uje0DBt0s5Dsysrw+ZiYgSNgYiBx4ieG3xjtWPgAgYBhtH9gyjFGbNosdKP6dhhB
-BGOSR+O3PzuxmjEbWyqAhgQ8yY0iWwWmFWbngnIf7/7+R0nw0klEwzms54vg56EB
-5Op5indYqYh5mX09Y78EjynKQhr/M21u/tcZ7nMWmuZwYmxAp+XmFl0KJG5CFuTI
-oRnKT58Ene79abXVw1GaC9dJCa3IhYHh0DF19tgKNx5BVsOXgKfNZTCqC6+pDf0t
-v5GQlN57UpR+nD7Fldnl7MLnJV9lCGbQIJC7UfINaDvEJmnoQ1pMqlT2rshyy/I=
-=Y0hP
+iQEcBAEBCAAGBQJU6z1BAAoJECTWi3JdVIfQQeMH+wVsmRBW/KJq3FAmxv3Gkewr
+kGlU/bcX7jXtl0dlxrHd2ko353WGozn+9W9g6jq/YNN1jL4XkyS4WF5s8EDKQXqC
+OxqRqE33QjX7t/S5I9/G1wYOXunR4ZRnMXpmSe58KkE9NVaeF/2V9dsDiv1Dg4Kw
+FzcvMouvAi1xg2+EjUuyhEDYK4Lqoi/2qP3epETDOcH2gwTwpgFjbkaI+bYbQQUl
+jjgG3HS3WPAH6uMawujgY8EZTr9aLKxZE7NlVLTszGxpq2DijjpBEkOfjyTmrR6N
+Tu+vsX+kTAXHwTfBjgXt0RLpmRaBc7XBnaPnvSq2vO2f84mwkvtfzJx3JxkCxCA=
+=Qn1f
 -----END PGP SIGNATURE-----
 
---3WLtXmtPTeS+BWmV--
+--RHnfto7yGd+QdmRl--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

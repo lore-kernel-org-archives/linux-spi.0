@@ -1,37 +1,49 @@
-From: =?UTF-8?Q?aur=C3=A9lien_bouin?= <a.bouin@gmail.com>
-Subject: Re: [PATCH 3/4] spi: imx: Chose DMA bits per word transfered
-Date: Mon, 23 Feb 2015 16:25:51 +0100
-Message-ID: <CAFeThoD+k0DMM=dCzxO1bmC=32W_9g1pCgevNyKNsv_kzaRHeg@mail.gmail.com>
-References: <1423742848-15369-1-git-send-email-a.bouin@gmail.com>
-	<1423742848-15369-3-git-send-email-a.bouin@gmail.com>
-	<20150221143528.GU6236@finisterre.sirena.org.uk>
-	<CAFeThoDBstQ_=gsi2o509qqQR6PbV4MxsNe=hEhKj4Mj162osA@mail.gmail.com>
-	<20150223144626.GE6236@finisterre.sirena.org.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2] spi: spidev: only use up TX/RX bounce buffer space
+ when needed
+Date: Tue, 24 Feb 2015 00:46:24 +0900
+Message-ID: <20150223154624.GH6236@finisterre.sirena.org.uk>
+References: <1422643413-21796-1-git-send-email-abbotti@mev.co.uk>
+ <1424098847-14390-1-git-send-email-abbotti@mev.co.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Fabio Estevam <festevam@gmail.com>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="LWVQOr/QoF/fPPTS"
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Ian Abbott <abbotti@mev.co.uk>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20150223144626.GE6236@finisterre.sirena.org.uk>
+Content-Disposition: inline
+In-Reply-To: <1424098847-14390-1-git-send-email-abbotti@mev.co.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-2015-02-23 15:46 GMT+01:00 Mark Brown <broonie@kernel.org>:
-> On Mon, Feb 23, 2015 at 09:44:50AM +0100, aur=C3=A9lien bouin wrote:
->> At the moment there is no possibility to change the dma bits per wor=
-d use ...
->> It is an easy way to be able to do so.
->> Feel free to propose something better
->
-> Once more don't top post.  To repeat what I said:
->
-> | Why would this be a DT property?  It seems like something the drive=
-r
-> | ought to be able to figure out automatically if it matters.
->
-> The above doesn't address my question.
-Currently the driver does not figure it out automatically, it is a fix
-8bits per word DMA use.
+
+--LWVQOr/QoF/fPPTS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Mon, Feb 16, 2015 at 03:00:47PM +0000, Ian Abbott wrote:
+> This patch changes the way space is reserved in spidev's pre-allocated
+> TX and RX bounce buffers to avoid wasting space in the buffers for an
+> SPI message consisting of multiple, half-duplex transfers in different
+> directions.
+
+Applied, thanks.  This probably goes to the other extreme on changelog
+verbosity!
+
+--LWVQOr/QoF/fPPTS
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJU60tPAAoJECTWi3JdVIfQn1IH/1TnH0vOL30l/NdGoJ0LjbkC
+Z75oJikR76mCsZbjhVO3fZhyqGhiFF2cRS341jumDubNbdBR/CCfhyVaQ/ANCHAf
+QheOQ38VqjEEfks16ZHP9oGAbuihG1EVloGTlC5X/LL64wXUh/L4wd4s4cS76QTe
+WM8Q83bcXmIQYFFZTodLCzcg3mcy/NMQm7829D7KdZNs8+lKPC91+2u5nhov4laK
+jIr59JPIbwmHo4VZOk6yXbQedVx8GYh73uaRJegJ39y4oa64AmavJ1Z8+IuBWJBa
+eycp89FM2av6DSxTH2eqjqUkyuQKnsyCEP7CP/gXsmBoUdtcQzscnfEw+I7U1YY=
+=LQ9l
+-----END PGP SIGNATURE-----
+
+--LWVQOr/QoF/fPPTS--

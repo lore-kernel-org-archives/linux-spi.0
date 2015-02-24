@@ -1,161 +1,61 @@
-From: Philipp Zabel <p.zabel@pengutronix.de>
-Subject: Re: [PATCH] spi: sirf: add reset controller dependency
-Date: Tue, 24 Feb 2015 15:27:29 +0100
-Message-ID: <1424788049.3957.38.camel@pengutronix.de>
-References: <4553005.HBquOfbqXe@wuerfel> <6170208.Z0Upu48JrX@wuerfel>
-	 <20150224075018.GM6236@finisterre.sirena.org.uk>
-	 <6951359.9Y8ugYfjuJ@wuerfel>
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [PATCH v1 1/1] spi: clarify what driver can do with
+ message->status
+Date: Tue, 24 Feb 2015 16:35:27 +0200
+Message-ID: <1424788527.14897.27.camel@linux.intel.com>
+References: <1424772249-9676-1-git-send-email-andriy.shevchenko@linux.intel.com>
+	 <20150224132411.GF6236@finisterre.sirena.org.uk>
+	 <1424784807.14897.24.camel@linux.intel.com>
+	 <20150224141706.GK6236@finisterre.sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Cc: linux-arm-kernel@lists.infradead.org,
-	Mark Brown <broonie@kernel.org>, Marek Vasut <marex@denx.de>,
-	Wolfram Sang <wsa@the-dreams.de>, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org, Barry Song <Baohua.Song@csr.com>,
-	Maxime Ripard <maxime.ripard@free-electrons.com>
-To: Arnd Bergmann <arnd@arndb.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <6951359.9Y8ugYfjuJ@wuerfel>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150224141706.GK6236-bheZrs9scGb3/WHNxyQH9YN0K6Il/+VY@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Arnd,
-
-thanks for taking the time to clean this up.
-
-Am Dienstag, den 24.02.2015, 14:02 +0100 schrieb Arnd Bergmann:
-> On Tuesday 24 February 2015 16:50:18 Mark Brown wrote:
-> > On Mon, Feb 23, 2015 at 11:01:18PM +0100, Arnd Bergmann wrote:
-> > > On Saturday 21 February 2015 18:44:58 Mark Brown wrote:
-> > 
-> > > > In that case a dependency seems wrong, I'd expect to see a select - it's
-> > > > a bit obscure to have to grovel around to figure out what magic options
-> > > > are needed to make things turn on and resets feel more like a utility
-> > > > thing than a control bus (which tend to be the things we depend on).
-> > > > Dunno, perhaps I'm wrong?
-> > 
-> > > Mixing 'select' and 'depends on' causes recursive dependencies, and
-> > > there are already lots of drivers that do 'depends on RESET_CONTROLLER'.
-> > 
-> > Well, perhaps that's the cleanup we should be doing then...  one of the
-> > big problems with some of the other randconfig work there's been is that
-> > a lot of the patches just add dependencies without looking at if that
-> > makes sense.
+On Tue, 2015-02-24 at 23:17 +0900, Mark Brown wrote:
+> On Tue, Feb 24, 2015 at 03:33:27PM +0200, Andy Shevchenko wrote:
+> > On Tue, 2015-02-24 at 22:24 +0900, Mark Brown wrote:
 > 
-> I've tried sanitizing the logic more globally now. The approach below
-> gets rid of most of the Kconfig logic and just ensures that things work
-> out of the box, by having drivers that call reset_controller_register
-> 'select RESET_CONTROLLER', but letting drivers that use the API
-> link correctly all the time.
+> > > > +	/* The actual driver may set this field to indicate an error, e.g. -EIO
+> > > > +	 * for failed transfer. */
+> > > >  	int			status;
 > 
-> At the same time, I try to improve the behavior of device_reset_optional(),
-> which now returns success if the subsystem is disabled and no 'resets'
-> property is present, while the device_reset() call always fails if
-> the subsystem is disabled.
+> > > Let's take a step back here: what documentation are you looking at which
+> > > says anything else about status?
 > 
-> Any comments?
+> > The description of this field above, namely " * @status: zero for
+> > success, else negative errno".
+> 
+> ...which suggests that anything detecting an error should report it via
+> status, no?
 
-My motivation to not provide (devm_)reset_control_get stubs if
-RESET_CONTROLLER is disabled was that drivers using it incorrectly
-already fail at build time. If I understand correctly people
-overwhelmingly dislike this because it shifts complexity into the build
-system instead. With this in mind, I'm ok to let us build drivers that
-are effectively broken when RESET_CONTROLLER is disabled, as long as
-(devm_)reset_control_get and device_reset cause appropriate warnings.
+Unclear. I dived into spi.c to understand if I could override or not.
+There are two fields status and state, the latter is dedicated for an
+actual driver usage, and that is clear. Many (old) drivers are using
+state as a storage for custom status. Newer drivers, that are using SPI
+core, mostly don't care about error handling at all (at least I didn't
+find an existing example of the message->status usage).
 
-[...]
-> diff --git a/include/linux/reset.h b/include/linux/reset.h
-> index da5602bd77d7..72b9d4b67023 100644
-> --- a/include/linux/reset.h
-> +++ b/include/linux/reset.h
-> @@ -40,50 +40,73 @@ struct reset_control *of_reset_control_get(struct device_node *node,
->  
->  #else
->  
-> +static inline struct reset_control *reset_control_get(struct device *dev, const char *id)
-> +{
-> +	return ERR_PTR(-ENOSYS);
-> +}
-> +
-> +static inline struct reset_control *devm_reset_control_get(struct device *dev, const char *id)
-> +{
-> +	return ERR_PTR(-ENOSYS);
-> +}
-> +
-> +static inline int __must_check device_reset(struct device *dev)
-> +{
-> +	return -ENOSYS;
-> +}
-> +
 
-These are never supposed to be called. I'd prefer them to at least print
-a warning similar to the stubs below.
+> > > I'd also expect this to go with the other kerneldoc for the field.
+> 
+> > Any place that suits better.
+> 
+> Well, see above...
 
->  static inline int reset_control_reset(struct reset_control *rstc)
->  {
-> -	WARN_ON(1);
-> +	WARN_ON(rstc != NULL);
->  	return 0;
->  }
->  
->  static inline int reset_control_assert(struct reset_control *rstc)
->  {
-> -	WARN_ON(1);
-> +	WARN_ON(rstc != NULL);
->  	return 0;
->  }
->  
->  static inline int reset_control_deassert(struct reset_control *rstc)
->  {
-> -	WARN_ON(1);
-> +	WARN_ON(rstc != NULL);
->  	return 0;
->  }
->  
->  static inline int reset_control_status(struct reset_control *rstc)
->  {
-> -	WARN_ON(1);
-> +	WARN_ON(rstc != NULL);
->  	return 0;
->  }
->  
->  static inline void reset_control_put(struct reset_control *rstc)
->  {
-> -	WARN_ON(1);
-> +	WARN_ON(rstc != NULL);
->  }
->  
->  static inline int device_reset_optional(struct device *dev)
->  {
-> -	return -ENOSYS;
-> +	if (of_property_read_bool(dev->of_node, "resets"))
-> +		return -ENOSYS;
-> +
-> +	return 0;
->  }
+Regarding my above comment can we extend the description of the field
+then?
 
-I approve of these changes.
+-- 
+Andy Shevchenko <andriy.shevchenko-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Intel Finland Oy
 
-> +/*
-> + * We intentionally return NULL here when no resets are specified
-> + * or when building without DT, which is interpreted as 'success'
-> + * if reset controller support is left out from the kernel.
-> + */
->  static inline struct reset_control *reset_control_get_optional(
->  					struct device *dev, const char *id)
->  {
-> -	return ERR_PTR(-ENOSYS);
-> +	return ERR_PTR(device_reset_optional(dev));
->  }
->  
->  static inline struct reset_control *devm_reset_control_get_optional(
->  					struct device *dev, const char *id)
->  {
-> -	return ERR_PTR(-ENOSYS);
-> +	return reset_control_get_optional(dev, id);
->  }
-
-This is a bit indirect, but with the comment it's clear enough.
-
-regards
-Philipp
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

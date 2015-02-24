@@ -1,48 +1,62 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v1 5/5] spi: dw: move to SPI core message handling
-Date: Tue, 24 Feb 2015 23:45:15 +0900
-Message-ID: <20150224144515.GM6236@finisterre.sirena.org.uk>
-References: <1424777534-14246-1-git-send-email-andriy.shevchenko@linux.intel.com>
- <1424777534-14246-6-git-send-email-andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH] spi: xilinx: Use standard num-cs binding
+Date: Tue, 24 Feb 2015 23:52:09 +0900
+Message-ID: <20150224145209.GP6236@finisterre.sirena.org.uk>
+References: <67f3c196833c427a489ca2c530d08987a6b5ee2a.1421412912.git.michal.simek@xilinx.com>
+ <CAHTX3dJRGhwo7FW+VJxfEJmx-9FdjFN5EnxG0RRDfMOm3=VU4A@mail.gmail.com>
+ <20150214053543.GL9110@finisterre.sirena.org.uk>
+ <54EAFF4A.1080605@monstr.eu>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="M70YYmmjmThh04Jd"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="hwMNHYNcH9aNQF1X"
+Cc: LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	=?iso-8859-1?Q?S=F6ren?= Brinkmann <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-arm <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Michal Simek <monstr-pSz03upnqPeHXe+LvDLADg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1424777534-14246-6-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <54EAFF4A.1080605-pSz03upnqPeHXe+LvDLADg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---M70YYmmjmThh04Jd
+--hwMNHYNcH9aNQF1X
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Feb 24, 2015 at 01:32:14PM +0200, Andy Shevchenko wrote:
-> This patch removes a lot of duplicate code since SPI core provides a nice
-> message handling.
+On Mon, Feb 23, 2015 at 11:22:02AM +0100, Michal Simek wrote:
+> On 02/14/2015 06:35 AM, Mark Brown wrote:
 
-This looks good modulo the issue you identified BTW.
+> > Don't send content free quoted pings, they're just adding to the e-mail
+> > volume and hence wasting people's time.
 
---M70YYmmjmThh04Jd
+> How do you want me to send ping on pending patches?
+> Just send them with RESEND prefix?
+> I just want to clarify this.
+
+Reposting is helpful if things have been forgotten.  Though in this case
+I'm deliberately leaving it for a while because of the nagging (since I
+don't want people to get the impression that it's helpful).  Plus I'm
+travelling.
+
+--hwMNHYNcH9aNQF1X
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJU7I56AAoJECTWi3JdVIfQhIoH/3deq8VcAbxpqMQ8Em+GtVlL
-PM8tWuQ4GL45B+7J/o44mTaIIL43P2sRO64QFsnt0yVEmMlutTrxvALMfTgxgQvr
-REjICrwe16X8JeimFSoGgo7Y5HE7HgLnM3476pm5W49vC/UlKA9JrnmMdCOKnR0H
-1IfYFF3f+60JRL3zWi9OSO/VOjK3/tKviqTtc7LIeJyzIAFG3FYjuxQVFO4V7jS2
-yDPZ9/200OId3Mrh8qtmK9LuvnpnUoRJk5K6ZiRK3bAjM6r2H/FfxfiYLeoNGHg9
-MWUlif8O38IWFMxDN7Y6Z+BeNhIeJZRXOjJJNlO1JUU1cYn3NhcedGDjN9dtJxs=
-=BlfY
+iQEcBAEBCAAGBQJU7JAYAAoJECTWi3JdVIfQyCwH/RynefeutsE/pzkKmmf9tFQ8
+nIXnR7TZi2fqIK+T0S3yDwe1Kl5g0xwvCwCO9PtGv55a38PaOk+1IJXqYmVimDo9
+ZnDzVxuSSAd1BHRp1dlADXUqfVpRNZhQGRjtp4Rw7dACzGjoz3VBT1u8BCvAU6UT
+PnmOKx2AUqPI2fiUqaaLESDaxKMDS/YBTJiVfpyZApbpaqq6GAuVVDjMolIEpAnv
+7oBG8VF9mdTQUSbEdPPJEH0+yICA1t8CQt5g7CK3sCh8jGzPFzY3bh8MGKQGvkR7
+8PnxnkLZKNnfeOuaLyXtgx9IXFYJOKfhRE/sJZ37Rjbo0Xhm6jxzIzsJf8tbf/A=
+=w5nm
 -----END PGP SIGNATURE-----
 
---M70YYmmjmThh04Jd--
+--hwMNHYNcH9aNQF1X--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

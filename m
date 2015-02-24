@@ -1,62 +1,67 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: xilinx: Use standard num-cs binding
-Date: Tue, 24 Feb 2015 23:52:09 +0900
-Message-ID: <20150224145209.GP6236@finisterre.sirena.org.uk>
-References: <67f3c196833c427a489ca2c530d08987a6b5ee2a.1421412912.git.michal.simek@xilinx.com>
- <CAHTX3dJRGhwo7FW+VJxfEJmx-9FdjFN5EnxG0RRDfMOm3=VU4A@mail.gmail.com>
- <20150214053543.GL9110@finisterre.sirena.org.uk>
- <54EAFF4A.1080605@monstr.eu>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="hwMNHYNcH9aNQF1X"
-Cc: LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	=?iso-8859-1?Q?S=F6ren?= Brinkmann <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-arm <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Michal Simek <monstr-pSz03upnqPeHXe+LvDLADg@public.gmane.org>
+From: Torsten Fleischer <torfl6749-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 1/1] spi: atmel: Fix interrupt setup for PDC transfers
+Date: Tue, 24 Feb 2015 16:32:57 +0100
+Message-ID: <1424791977-2178-1-git-send-email-torfl6749@gmail.com>
+Cc: Torsten Fleischer <torfl6749-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <54EAFF4A.1080605-pSz03upnqPeHXe+LvDLADg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+From: Torsten Fleischer <torfl6749-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
---hwMNHYNcH9aNQF1X
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Additionally to the current DMA transfer the PDC allows to set up a next DMA
+transfer. This is useful for larger SPI transfers.
 
-On Mon, Feb 23, 2015 at 11:22:02AM +0100, Michal Simek wrote:
-> On 02/14/2015 06:35 AM, Mark Brown wrote:
+The driver currently waits for ENDRX as end of the transfer. But ENDRX is set
+when the current DMA transfer is done (RCR = 0), i.e. it doesn't include the
+next DMA transfer.
+Thus a subsequent SPI transfer could be started although there is currently a
+transfer in progress. This can cause invalid accesses to the SPI slave devices
+and to SPI transfer errors.
 
-> > Don't send content free quoted pings, they're just adding to the e-mail
-> > volume and hence wasting people's time.
+This issue has been observed on a hardware with a M25P128 SPI NOR flash.
 
-> How do you want me to send ping on pending patches?
-> Just send them with RESEND prefix?
-> I just want to clarify this.
+So instead of ENDRX we should wait for RXBUFF. This flag is set if there is
+no more DMA transfer in progress (RCR = RNCR = 0).
 
-Reposting is helpful if things have been forgotten.  Though in this case
-I'm deliberately leaving it for a while because of the nagging (since I
-don't want people to get the impression that it's helpful).  Plus I'm
-travelling.
+Signed-off-by: Torsten Fleischer <torfl6749-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi-atmel.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---hwMNHYNcH9aNQF1X
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index 9af7841..06de340 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -764,17 +764,17 @@ static void atmel_spi_pdc_next_xfer(struct spi_master *master,
+ 			(unsigned long long)xfer->rx_dma);
+ 	}
+ 
+-	/* REVISIT: We're waiting for ENDRX before we start the next
++	/* REVISIT: We're waiting for RXBUFF before we start the next
+ 	 * transfer because we need to handle some difficult timing
+-	 * issues otherwise. If we wait for ENDTX in one transfer and
+-	 * then starts waiting for ENDRX in the next, it's difficult
+-	 * to tell the difference between the ENDRX interrupt we're
+-	 * actually waiting for and the ENDRX interrupt of the
++	 * issues otherwise. If we wait for TXBUFE in one transfer and
++	 * then starts waiting for RXBUFF in the next, it's difficult
++	 * to tell the difference between the RXBUFF interrupt we're
++	 * actually waiting for and the RXBUFF interrupt of the
+ 	 * previous transfer.
+ 	 *
+ 	 * It should be doable, though. Just not now...
+ 	 */
+-	spi_writel(as, IER, SPI_BIT(ENDRX) | SPI_BIT(OVRES));
++	spi_writel(as, IER, SPI_BIT(RXBUFF) | SPI_BIT(OVRES));
+ 	spi_writel(as, PTCR, SPI_BIT(TXTEN) | SPI_BIT(RXTEN));
+ }
+ 
+-- 
+2.1.4
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJU7JAYAAoJECTWi3JdVIfQyCwH/RynefeutsE/pzkKmmf9tFQ8
-nIXnR7TZi2fqIK+T0S3yDwe1Kl5g0xwvCwCO9PtGv55a38PaOk+1IJXqYmVimDo9
-ZnDzVxuSSAd1BHRp1dlADXUqfVpRNZhQGRjtp4Rw7dACzGjoz3VBT1u8BCvAU6UT
-PnmOKx2AUqPI2fiUqaaLESDaxKMDS/YBTJiVfpyZApbpaqq6GAuVVDjMolIEpAnv
-7oBG8VF9mdTQUSbEdPPJEH0+yICA1t8CQt5g7CK3sCh8jGzPFzY3bh8MGKQGvkR7
-8PnxnkLZKNnfeOuaLyXtgx9IXFYJOKfhRE/sJZ37Rjbo0Xhm6jxzIzsJf8tbf/A=
-=w5nm
------END PGP SIGNATURE-----
-
---hwMNHYNcH9aNQF1X--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

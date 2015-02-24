@@ -1,53 +1,48 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH v1 5/5] spi: dw: move to SPI core message handling
-Date: Tue, 24 Feb 2015 23:44:33 +0900
-Message-ID: <20150224144433.GL6236@finisterre.sirena.org.uk>
+Date: Tue, 24 Feb 2015 23:45:15 +0900
+Message-ID: <20150224144515.GM6236@finisterre.sirena.org.uk>
 References: <1424777534-14246-1-git-send-email-andriy.shevchenko@linux.intel.com>
  <1424777534-14246-6-git-send-email-andriy.shevchenko@linux.intel.com>
- <1424782738.14897.22.camel@linux.intel.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="PEFDyIIeORe/70g6"
+	protocol="application/pgp-signature"; boundary="M70YYmmjmThh04Jd"
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1424782738.14897.22.camel-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <1424777534-14246-6-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---PEFDyIIeORe/70g6
+--M70YYmmjmThh04Jd
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Feb 24, 2015 at 02:58:58PM +0200, Andy Shevchenko wrote:
-> On Tue, 2015-02-24 at 13:32 +0200, Andy Shevchenko wrote:
+On Tue, Feb 24, 2015 at 01:32:14PM +0200, Andy Shevchenko wrote:
+> This patch removes a lot of duplicate code since SPI core provides a nice
+> message handling.
 
-> > -void dw_spi_xfer_done(struct dw_spi *dws)
-> > -{
+This looks good modulo the issue you identified BTW.
 
-> This one should be removed from spi-dw.h as well.
-
-OK, I've applied 1-4 but not this one.
-
---PEFDyIIeORe/70g6
+--M70YYmmjmThh04Jd
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJU7I5MAAoJECTWi3JdVIfQTLsH/j5L2pBfBiZYWyLrXU6LP4c9
-vyHMCDrzkXFX00OjB9JhkafubakPgBjXjtOnrXgIyXi/QJS4JjG0UTWQxTJssCJb
-BP3YOozAGctZR2HCOKliIky2U+LIPHW4aMXWZ11/beRmsC8LJxio6J0r4nlrsxkW
-fFLmDTuCs7vMbDAiFOS2ydjVkdaA6nxLMed2JGP+Di2D4IxRMLuLYJbRDxiGdifj
-48K7CqZ6gY/VWxTgwN9kz0idq87bhKhQfzqSPbWDPxCDS1QH6sxm6cAyKEHpCR0R
-aPg8GH2E8f70MNVBZNzELEilMcPGHOGBWNR8Ct/I9B1IhL6CGVPBL0hhShy7ogM=
-=jNbr
+iQEcBAEBCAAGBQJU7I56AAoJECTWi3JdVIfQhIoH/3deq8VcAbxpqMQ8Em+GtVlL
+PM8tWuQ4GL45B+7J/o44mTaIIL43P2sRO64QFsnt0yVEmMlutTrxvALMfTgxgQvr
+REjICrwe16X8JeimFSoGgo7Y5HE7HgLnM3476pm5W49vC/UlKA9JrnmMdCOKnR0H
+1IfYFF3f+60JRL3zWi9OSO/VOjK3/tKviqTtc7LIeJyzIAFG3FYjuxQVFO4V7jS2
+yDPZ9/200OId3Mrh8qtmK9LuvnpnUoRJk5K6ZiRK3bAjM6r2H/FfxfiYLeoNGHg9
+MWUlif8O38IWFMxDN7Y6Z+BeNhIeJZRXOjJJNlO1JUU1cYn3NhcedGDjN9dtJxs=
+=BlfY
 -----END PGP SIGNATURE-----
 
---PEFDyIIeORe/70g6--
+--M70YYmmjmThh04Jd--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

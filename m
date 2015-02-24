@@ -1,125 +1,421 @@
-From: Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>
-Subject: Re: [PATCH] spi: sirf: add reset controller dependency
-Date: Tue, 24 Feb 2015 18:56:44 +0800
-Message-ID: <CAGb2v64hgW39c+gQXp-btpOu2_ddEnGBQk7udMGatCG8We+dBQ@mail.gmail.com>
-References: <4553005.HBquOfbqXe@wuerfel> <6170208.Z0Upu48JrX@wuerfel>
- <20150224075018.GM6236@finisterre.sirena.org.uk> <5840299.CR2H70RAJi@wuerfel>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: linux-arm-kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
-	linux-kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Philipp Zabel <p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>,
-	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH v1 5/5] spi: dw: move to SPI core message handling
+Date: Tue, 24 Feb 2015 13:32:14 +0200
+Message-ID: <1424777534-14246-6-git-send-email-andriy.shevchenko@linux.intel.com>
+References: <1424777534-14246-1-git-send-email-andriy.shevchenko@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <5840299.CR2H70RAJi@wuerfel>
+In-Reply-To: <1424777534-14246-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Feb 24, 2015 at 6:27 PM, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org> wrote:
-> On Tuesday 24 February 2015 16:50:18 Mark Brown wrote:
->> On Mon, Feb 23, 2015 at 11:01:18PM +0100, Arnd Bergmann wrote:
->> > On Saturday 21 February 2015 18:44:58 Mark Brown wrote:
->>
->> > > In that case a dependency seems wrong, I'd expect to see a select - it's
->> > > a bit obscure to have to grovel around to figure out what magic options
->> > > are needed to make things turn on and resets feel more like a utility
->> > > thing than a control bus (which tend to be the things we depend on).
->> > > Dunno, perhaps I'm wrong?
->>
->> > Mixing 'select' and 'depends on' causes recursive dependencies, and
->> > there are already lots of drivers that do 'depends on RESET_CONTROLLER'.
->>
->> Well, perhaps that's the cleanup we should be doing then...  one of the
->> big problems with some of the other randconfig work there's been is that
->> a lot of the patches just add dependencies without looking at if that
->> makes sense.
->
-> I generally try to keep the big picture in mind, but sometimes I take
-> an easier way out to avoid starting a long discussion.
->
->> > Most users of this symbol seem to follow the strategy of selecting
->> > RESET_CONTROLLER when a driver is there to provide the functionality,
->> > but depending on it when a driver uses it. We are however a bit
->> > inconsistent here and it would be nice to clean it up.
->>
->> Right, to me that feels the opposite way round to how we normally do
->> things - the drivers for the subsystem normally depend on the subsystem
->> (or are hidden by it).
->
-> I think it's the more common of the two approaches, but we are definitely
-> inconsistent here. To make everything consistent here, I'd just do this:
->
-> diff --git a/drivers/gpu/drm/sti/Kconfig b/drivers/gpu/drm/sti/Kconfig
-> index fbccc105819b..0670aa17409d 100644
-> --- a/drivers/gpu/drm/sti/Kconfig
-> +++ b/drivers/gpu/drm/sti/Kconfig
-> @@ -1,7 +1,7 @@
->  config DRM_STI
->         tristate "DRM Support for STMicroelectronics SoC stiH41x Series"
->         depends on DRM && (SOC_STIH415 || SOC_STIH416 || ARCH_MULTIPLATFORM) && HAVE_DMA_ATTRS
-> -       select RESET_CONTROLLER
-> +       depends on RESET_CONTROLLER
->         select DRM_KMS_HELPER
->         select DRM_GEM_CMA_HELPER
->         select DRM_KMS_CMA_HELPER
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-> index 7d3af190be55..545b442253e4 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
-> +++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-> @@ -1,11 +1,11 @@
->  config STMMAC_ETH
->         tristate "STMicroelectronics 10/100/1000 Ethernet driver"
->         depends on HAS_IOMEM && HAS_DMA
-> +       depends on RESET_CONTROLLER
->         select MII
->         select PHYLIB
->         select CRC32
->         select PTP_1588_CLOCK
-> -       select RESET_CONTROLLER
+This patch removes a lot of duplicate code since SPI core provides a nice
+message handling.
 
-I was the one that introduced this. At the time a generic binding for the
-stmmac core was requested, which supported an optional reset control. There
-wasn't an *_optional stub available, so I went with this. See
+Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+---
+ drivers/spi/spi-dw-mid.c |   4 +-
+ drivers/spi/spi-dw.c     | 182 +++++++++++------------------------------------
+ drivers/spi/spi-dw.h     |  22 ------
+ 3 files changed, 44 insertions(+), 164 deletions(-)
 
-    http://lists.infradead.org/pipermail/linux-arm-kernel/2014-January/224684.html
+diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
+index a0197fd..8f68e82 100644
+--- a/drivers/spi/spi-dw-mid.c
++++ b/drivers/spi/spi-dw-mid.c
+@@ -110,7 +110,7 @@ static void dw_spi_dma_tx_done(void *arg)
+ 
+ 	if (test_and_clear_bit(TX_BUSY, &dws->dma_chan_busy) & BIT(RX_BUSY))
+ 		return;
+-	dw_spi_xfer_done(dws);
++	spi_finalize_current_transfer(dws->master);
+ }
+ 
+ static struct dma_async_tx_descriptor *dw_spi_dma_prepare_tx(struct dw_spi *dws)
+@@ -155,7 +155,7 @@ static void dw_spi_dma_rx_done(void *arg)
+ 
+ 	if (test_and_clear_bit(RX_BUSY, &dws->dma_chan_busy) & BIT(TX_BUSY))
+ 		return;
+-	dw_spi_xfer_done(dws);
++	spi_finalize_current_transfer(dws->master);
+ }
+ 
+ static struct dma_async_tx_descriptor *dw_spi_dma_prepare_rx(struct dw_spi *dws)
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index 281121f..4729821 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -28,11 +28,6 @@
+ #include <linux/debugfs.h>
+ #endif
+ 
+-#define START_STATE	((void *)0)
+-#define RUNNING_STATE	((void *)1)
+-#define DONE_STATE	((void *)2)
+-#define ERROR_STATE	((void *)-1)
+-
+ /* Slave spi_dev related */
+ struct chip_data {
+ 	u16 cr0;
+@@ -143,6 +138,18 @@ static inline void dw_spi_debugfs_remove(struct dw_spi *dws)
+ }
+ #endif /* CONFIG_DEBUG_FS */
+ 
++static void dw_spi_set_cs(struct spi_device *spi, bool enable)
++{
++	struct dw_spi *dws = spi_master_get_devdata(spi->master);
++
++	/* Chip select logic is inverted from spi_set_cs() */
++	if (dws->cs_control)
++		dws->cs_control(!enable);
++
++	if (!enable)
++		dw_writel(dws, DW_SPI_SER, BIT(spi->chip_select));
++}
++
+ /* Return the max entries we can fill into tx fifo */
+ static inline u32 tx_max(struct dw_spi *dws)
+ {
+@@ -209,94 +216,42 @@ static void dw_reader(struct dw_spi *dws)
+ 	}
+ }
+ 
+-static void *next_transfer(struct dw_spi *dws)
+-{
+-	struct spi_message *msg = dws->cur_msg;
+-	struct spi_transfer *trans = dws->cur_transfer;
+-
+-	/* Move to next transfer */
+-	if (trans->transfer_list.next != &msg->transfers) {
+-		dws->cur_transfer =
+-			list_entry(trans->transfer_list.next,
+-					struct spi_transfer,
+-					transfer_list);
+-		return RUNNING_STATE;
+-	}
+-
+-	return DONE_STATE;
+-}
+-
+ /*
+  * Note: first step is the protocol driver prepares
+  * a dma-capable memory, and this func just need translate
+  * the virt addr to physical
+  */
+-static int map_dma_buffers(struct dw_spi *dws)
++static int map_dma_buffers(struct spi_master *master,
++		struct spi_device *spi, struct spi_transfer *transfer)
+ {
+-	if (!dws->cur_msg->is_dma_mapped
++	struct dw_spi *dws = spi_master_get_devdata(master);
++	struct chip_data *chip = spi_get_ctldata(spi);
++
++	if (!master->cur_msg->is_dma_mapped
+ 		|| !dws->dma_inited
+-		|| !dws->cur_chip->enable_dma
++		|| !chip->enable_dma
+ 		|| !dws->dma_ops)
+ 		return 0;
+ 
+-	if (dws->cur_transfer->tx_dma)
+-		dws->tx_dma = dws->cur_transfer->tx_dma;
++	if (transfer->tx_dma)
++		dws->tx_dma = transfer->tx_dma;
+ 
+-	if (dws->cur_transfer->rx_dma)
+-		dws->rx_dma = dws->cur_transfer->rx_dma;
++	if (transfer->rx_dma)
++		dws->rx_dma = transfer->rx_dma;
+ 
+ 	return 1;
+ }
+ 
+-/* Caller already set message->status; dma and pio irqs are blocked */
+-static void giveback(struct dw_spi *dws)
+-{
+-	struct spi_transfer *last_transfer;
+-	struct spi_message *msg;
+-
+-	msg = dws->cur_msg;
+-	dws->cur_msg = NULL;
+-	dws->cur_transfer = NULL;
+-	dws->prev_chip = dws->cur_chip;
+-	dws->cur_chip = NULL;
+-	dws->dma_mapped = 0;
+-
+-	last_transfer = list_last_entry(&msg->transfers, struct spi_transfer,
+-					transfer_list);
+-
+-	if (!last_transfer->cs_change)
+-		spi_chip_sel(dws, msg->spi, 0);
+-
+-	spi_finalize_current_message(dws->master);
+-}
+-
+ static void int_error_stop(struct dw_spi *dws, const char *msg)
+ {
+ 	/* Stop the hw */
+ 	spi_enable_chip(dws, 0);
+ 
+ 	dev_err(&dws->master->dev, "%s\n", msg);
+-	dws->cur_msg->state = ERROR_STATE;
+-	tasklet_schedule(&dws->pump_transfers);
++	dws->master->cur_msg->status = -EIO;
++	spi_finalize_current_transfer(dws->master);
+ }
+ 
+-void dw_spi_xfer_done(struct dw_spi *dws)
+-{
+-	/* Update total byte transferred return count actual bytes read */
+-	dws->cur_msg->actual_length += dws->len;
+-
+-	/* Move to next transfer */
+-	dws->cur_msg->state = next_transfer(dws);
+-
+-	/* Handle end of message */
+-	if (dws->cur_msg->state == DONE_STATE) {
+-		dws->cur_msg->status = 0;
+-		giveback(dws);
+-	} else
+-		tasklet_schedule(&dws->pump_transfers);
+-}
+-EXPORT_SYMBOL_GPL(dw_spi_xfer_done);
+-
+ static irqreturn_t interrupt_transfer(struct dw_spi *dws)
+ {
+ 	u16 irq_status = dw_readw(dws, DW_SPI_ISR);
+@@ -313,7 +268,7 @@ static irqreturn_t interrupt_transfer(struct dw_spi *dws)
+ 	dw_reader(dws);
+ 	if (dws->rx_end == dws->rx) {
+ 		spi_mask_intr(dws, SPI_INT_TXEI);
+-		dw_spi_xfer_done(dws);
++		spi_finalize_current_transfer(dws->master);
+ 		return IRQ_HANDLED;
+ 	}
+ 	if (irq_status & SPI_INT_TXEI) {
+@@ -328,13 +283,14 @@ static irqreturn_t interrupt_transfer(struct dw_spi *dws)
+ 
+ static irqreturn_t dw_spi_irq(int irq, void *dev_id)
+ {
+-	struct dw_spi *dws = dev_id;
++	struct spi_master *master = dev_id;
++	struct dw_spi *dws = spi_master_get_devdata(master);
+ 	u16 irq_status = dw_readw(dws, DW_SPI_ISR) & 0x3f;
+ 
+ 	if (!irq_status)
+ 		return IRQ_NONE;
+ 
+-	if (!dws->cur_msg) {
++	if (!master->cur_msg) {
+ 		spi_mask_intr(dws, SPI_INT_TXEI);
+ 		return IRQ_HANDLED;
+ 	}
+@@ -343,7 +299,7 @@ static irqreturn_t dw_spi_irq(int irq, void *dev_id)
+ }
+ 
+ /* Must be called inside pump_transfers() */
+-static void poll_transfer(struct dw_spi *dws)
++static int poll_transfer(struct dw_spi *dws)
+ {
+ 	do {
+ 		dw_writer(dws);
+@@ -351,17 +307,14 @@ static void poll_transfer(struct dw_spi *dws)
+ 		cpu_relax();
+ 	} while (dws->rx_end > dws->rx);
+ 
+-	dw_spi_xfer_done(dws);
++	return 0;
+ }
+ 
+-static void pump_transfers(unsigned long data)
++static int dw_spi_transfer_one(struct spi_master *master,
++		struct spi_device *spi, struct spi_transfer *transfer)
+ {
+-	struct dw_spi *dws = (struct dw_spi *)data;
+-	struct spi_message *message = NULL;
+-	struct spi_transfer *transfer = NULL;
+-	struct spi_transfer *previous = NULL;
+-	struct spi_device *spi = NULL;
+-	struct chip_data *chip = NULL;
++	struct dw_spi *dws = spi_master_get_devdata(master);
++	struct chip_data *chip = spi_get_ctldata(spi);
+ 	u8 bits = 0;
+ 	u8 imask = 0;
+ 	u8 cs_change = 0;
+@@ -370,32 +323,6 @@ static void pump_transfers(unsigned long data)
+ 	u32 speed = 0;
+ 	u32 cr0 = 0;
+ 
+-	/* Get current state information */
+-	message = dws->cur_msg;
+-	transfer = dws->cur_transfer;
+-	chip = dws->cur_chip;
+-	spi = message->spi;
+-
+-	if (message->state == ERROR_STATE) {
+-		message->status = -EIO;
+-		goto early_exit;
+-	}
+-
+-	/* Handle end of message */
+-	if (message->state == DONE_STATE) {
+-		message->status = 0;
+-		goto early_exit;
+-	}
+-
+-	/* Delay if requested at end of transfer */
+-	if (message->state == RUNNING_STATE) {
+-		previous = list_entry(transfer->transfer_list.prev,
+-					struct spi_transfer,
+-					transfer_list);
+-		if (previous->delay_usecs)
+-			udelay(previous->delay_usecs);
+-	}
+-
+ 	dws->n_bytes = chip->n_bytes;
+ 	dws->dma_width = chip->dma_width;
+ 	dws->cs_control = chip->cs_control;
+@@ -406,7 +333,7 @@ static void pump_transfers(unsigned long data)
+ 	dws->tx_end = dws->tx + transfer->len;
+ 	dws->rx = transfer->rx_buf;
+ 	dws->rx_end = dws->rx + transfer->len;
+-	dws->len = dws->cur_transfer->len;
++	dws->len = transfer->len;
+ 	if (chip != dws->prev_chip)
+ 		cs_change = 1;
+ 
+@@ -434,7 +361,6 @@ static void pump_transfers(unsigned long data)
+ 			| (spi->mode << SPI_MODE_OFFSET)
+ 			| (chip->tmode << SPI_TMOD_OFFSET);
+ 	}
+-	message->state = RUNNING_STATE;
+ 
+ 	/*
+ 	 * Adjust transfer mode if necessary. Requires platform dependent
+@@ -453,7 +379,7 @@ static void pump_transfers(unsigned long data)
+ 	}
+ 
+ 	/* Check if current transfer is a DMA transaction */
+-	dws->dma_mapped = map_dma_buffers(dws);
++	dws->dma_mapped = map_dma_buffers(master, spi, transfer);
+ 
+ 	/*
+ 	 * Interrupt mode
+@@ -479,7 +405,6 @@ static void pump_transfers(unsigned long data)
+ 		dw_writew(dws, DW_SPI_CTRL0, cr0);
+ 
+ 		spi_set_clk(dws, chip->clk_div);
+-		spi_chip_sel(dws, spi, 1);
+ 
+ 		/* Set the interrupt mask, for poll mode just disable all int */
+ 		spi_mask_intr(dws, 0xff);
+@@ -498,31 +423,9 @@ static void pump_transfers(unsigned long data)
+ 		dws->dma_ops->dma_transfer(dws, cs_change);
+ 
+ 	if (chip->poll_mode)
+-		poll_transfer(dws);
+-
+-	return;
++		return poll_transfer(dws);
+ 
+-early_exit:
+-	giveback(dws);
+-}
+-
+-static int dw_spi_transfer_one_message(struct spi_master *master,
+-		struct spi_message *msg)
+-{
+-	struct dw_spi *dws = spi_master_get_devdata(master);
+-
+-	dws->cur_msg = msg;
+-	/* Initial message state */
+-	dws->cur_msg->state = START_STATE;
+-	dws->cur_transfer = list_entry(dws->cur_msg->transfers.next,
+-						struct spi_transfer,
+-						transfer_list);
+-	dws->cur_chip = spi_get_ctldata(dws->cur_msg->spi);
+-
+-	/* Launch transfers */
+-	tasklet_schedule(&dws->pump_transfers);
+-
+-	return 0;
++	return dws->len;
+ }
+ 
+ /* This may be called twice for each spi dev */
+@@ -648,7 +551,7 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
+ 	snprintf(dws->name, sizeof(dws->name), "dw_spi%d", dws->bus_num);
+ 
+ 	ret = devm_request_irq(dev, dws->irq, dw_spi_irq, IRQF_SHARED,
+-			dws->name, dws);
++			dws->name, master);
+ 	if (ret < 0) {
+ 		dev_err(&master->dev, "can not get IRQ\n");
+ 		goto err_free_master;
+@@ -660,7 +563,8 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
+ 	master->num_chipselect = dws->num_cs;
+ 	master->setup = dw_spi_setup;
+ 	master->cleanup = dw_spi_cleanup;
+-	master->transfer_one_message = dw_spi_transfer_one_message;
++	master->set_cs = dw_spi_set_cs;
++	master->transfer_one = dw_spi_transfer_one;
+ 	master->max_speed_hz = dws->max_freq;
+ 	master->dev.of_node = dev->of_node;
+ 
+@@ -675,8 +579,6 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
+ 		}
+ 	}
+ 
+-	tasklet_init(&dws->pump_transfers, pump_transfers, (unsigned long)dws);
+-
+ 	spi_master_set_devdata(master, dws);
+ 	ret = devm_spi_register_master(dev, master);
+ 	if (ret) {
+diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+index 3d32be6..19c5c46 100644
+--- a/drivers/spi/spi-dw.h
++++ b/drivers/spi/spi-dw.h
+@@ -109,13 +109,7 @@ struct dw_spi {
+ 	u16			bus_num;
+ 	u16			num_cs;		/* supported slave numbers */
+ 
+-	/* Message Transfer pump */
+-	struct tasklet_struct	pump_transfers;
+-
+ 	/* Current message transfer state info */
+-	struct spi_message	*cur_msg;
+-	struct spi_transfer	*cur_transfer;
+-	struct chip_data	*cur_chip;
+ 	struct chip_data	*prev_chip;
+ 	size_t			len;
+ 	void			*tx;
+@@ -182,22 +176,6 @@ static inline void spi_set_clk(struct dw_spi *dws, u16 div)
+ 	dw_writel(dws, DW_SPI_BAUDR, div);
+ }
+ 
+-static inline void spi_chip_sel(struct dw_spi *dws, struct spi_device *spi,
+-		int active)
+-{
+-	u16 cs = spi->chip_select;
+-	int gpio_val = active ? (spi->mode & SPI_CS_HIGH) :
+-		!(spi->mode & SPI_CS_HIGH);
+-
+-	if (dws->cs_control)
+-		dws->cs_control(active);
+-	if (gpio_is_valid(spi->cs_gpio))
+-		gpio_set_value(spi->cs_gpio, gpio_val);
+-
+-	if (active)
+-		dw_writel(dws, DW_SPI_SER, 1 << cs);
+-}
+-
+ /* Disable IRQ bits */
+ static inline void spi_mask_intr(struct dw_spi *dws, u32 mask)
+ {
+-- 
+2.1.4
 
-With commit b424080a9e08 ("reset: Add optional resets and stubs") in, I
-think using devm_reset_control_get() in the driver is the proper solution.
-The hardware is found in quite a few platforms, and not all of them have
-reset controllers.
-
-
-ChenYu
-
->         ---help---
->           This is the driver for the Ethernet IPs are built around a
->           Synopsys IP Core and only tested on the STMicroelectronics
->
->> > In this particular patch, I'm just following what others do.
->>
->> > We should probably 'select ARCH_HAS_RESET_CONTROLLER' unconditionally
->> > for ARM ARCH_MULTIPLATFORM, as it's a bit silly to select both
->> > ARCH_HAS_RESET_CONTROLLER and RESET_CONTROLLER from platform code.
->>
->> That does seem a bit odd.  TBH I'm never sure that ARCH_HAS_ is that
->> good an idea for the driver things, most of them can just as reasonably
->> be used by off-SoC things.
->
-> I'm totally fine with a patch to kill that off. I suspect it was introduced
-> in order to not show up on x86 and stay under Linus' radar. He does get
-> upset sometimes about seeing too many options for stuff he does not care
-> about, especially when it breaks on x86.
->
->         Arnd
->
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

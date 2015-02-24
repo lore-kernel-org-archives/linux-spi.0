@@ -1,67 +1,161 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v1 1/1] spi: clarify what driver can do with
- message->status
-Date: Tue, 24 Feb 2015 23:17:06 +0900
-Message-ID: <20150224141706.GK6236@finisterre.sirena.org.uk>
-References: <1424772249-9676-1-git-send-email-andriy.shevchenko@linux.intel.com>
- <20150224132411.GF6236@finisterre.sirena.org.uk>
- <1424784807.14897.24.camel@linux.intel.com>
+From: Philipp Zabel <p.zabel@pengutronix.de>
+Subject: Re: [PATCH] spi: sirf: add reset controller dependency
+Date: Tue, 24 Feb 2015 15:27:29 +0100
+Message-ID: <1424788049.3957.38.camel@pengutronix.de>
+References: <4553005.HBquOfbqXe@wuerfel> <6170208.Z0Upu48JrX@wuerfel>
+	 <20150224075018.GM6236@finisterre.sirena.org.uk>
+	 <6951359.9Y8ugYfjuJ@wuerfel>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="nkAIkdqOakIAdIKa"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1424784807.14897.24.camel-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: linux-arm-kernel@lists.infradead.org,
+	Mark Brown <broonie@kernel.org>, Marek Vasut <marex@denx.de>,
+	Wolfram Sang <wsa@the-dreams.de>, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org, Barry Song <Baohua.Song@csr.com>,
+	Maxime Ripard <maxime.ripard@free-electrons.com>
+To: Arnd Bergmann <arnd@arndb.de>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <6951359.9Y8ugYfjuJ@wuerfel>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+Hi Arnd,
 
---nkAIkdqOakIAdIKa
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+thanks for taking the time to clean this up.
 
-On Tue, Feb 24, 2015 at 03:33:27PM +0200, Andy Shevchenko wrote:
-> On Tue, 2015-02-24 at 22:24 +0900, Mark Brown wrote:
+Am Dienstag, den 24.02.2015, 14:02 +0100 schrieb Arnd Bergmann:
+> On Tuesday 24 February 2015 16:50:18 Mark Brown wrote:
+> > On Mon, Feb 23, 2015 at 11:01:18PM +0100, Arnd Bergmann wrote:
+> > > On Saturday 21 February 2015 18:44:58 Mark Brown wrote:
+> > 
+> > > > In that case a dependency seems wrong, I'd expect to see a select - it's
+> > > > a bit obscure to have to grovel around to figure out what magic options
+> > > > are needed to make things turn on and resets feel more like a utility
+> > > > thing than a control bus (which tend to be the things we depend on).
+> > > > Dunno, perhaps I'm wrong?
+> > 
+> > > Mixing 'select' and 'depends on' causes recursive dependencies, and
+> > > there are already lots of drivers that do 'depends on RESET_CONTROLLER'.
+> > 
+> > Well, perhaps that's the cleanup we should be doing then...  one of the
+> > big problems with some of the other randconfig work there's been is that
+> > a lot of the patches just add dependencies without looking at if that
+> > makes sense.
+> 
+> I've tried sanitizing the logic more globally now. The approach below
+> gets rid of most of the Kconfig logic and just ensures that things work
+> out of the box, by having drivers that call reset_controller_register
+> 'select RESET_CONTROLLER', but letting drivers that use the API
+> link correctly all the time.
+> 
+> At the same time, I try to improve the behavior of device_reset_optional(),
+> which now returns success if the subsystem is disabled and no 'resets'
+> property is present, while the device_reset() call always fails if
+> the subsystem is disabled.
+> 
+> Any comments?
 
-> > > +	/* The actual driver may set this field to indicate an error, e.g. -EIO
-> > > +	 * for failed transfer. */
-> > >  	int			status;
+My motivation to not provide (devm_)reset_control_get stubs if
+RESET_CONTROLLER is disabled was that drivers using it incorrectly
+already fail at build time. If I understand correctly people
+overwhelmingly dislike this because it shifts complexity into the build
+system instead. With this in mind, I'm ok to let us build drivers that
+are effectively broken when RESET_CONTROLLER is disabled, as long as
+(devm_)reset_control_get and device_reset cause appropriate warnings.
 
-> > Let's take a step back here: what documentation are you looking at which
-> > says anything else about status?
+[...]
+> diff --git a/include/linux/reset.h b/include/linux/reset.h
+> index da5602bd77d7..72b9d4b67023 100644
+> --- a/include/linux/reset.h
+> +++ b/include/linux/reset.h
+> @@ -40,50 +40,73 @@ struct reset_control *of_reset_control_get(struct device_node *node,
+>  
+>  #else
+>  
+> +static inline struct reset_control *reset_control_get(struct device *dev, const char *id)
+> +{
+> +	return ERR_PTR(-ENOSYS);
+> +}
+> +
+> +static inline struct reset_control *devm_reset_control_get(struct device *dev, const char *id)
+> +{
+> +	return ERR_PTR(-ENOSYS);
+> +}
+> +
+> +static inline int __must_check device_reset(struct device *dev)
+> +{
+> +	return -ENOSYS;
+> +}
+> +
 
-> The description of this field above, namely " * @status: zero for
-> success, else negative errno".
+These are never supposed to be called. I'd prefer them to at least print
+a warning similar to the stubs below.
 
-...which suggests that anything detecting an error should report it via
-status, no?
+>  static inline int reset_control_reset(struct reset_control *rstc)
+>  {
+> -	WARN_ON(1);
+> +	WARN_ON(rstc != NULL);
+>  	return 0;
+>  }
+>  
+>  static inline int reset_control_assert(struct reset_control *rstc)
+>  {
+> -	WARN_ON(1);
+> +	WARN_ON(rstc != NULL);
+>  	return 0;
+>  }
+>  
+>  static inline int reset_control_deassert(struct reset_control *rstc)
+>  {
+> -	WARN_ON(1);
+> +	WARN_ON(rstc != NULL);
+>  	return 0;
+>  }
+>  
+>  static inline int reset_control_status(struct reset_control *rstc)
+>  {
+> -	WARN_ON(1);
+> +	WARN_ON(rstc != NULL);
+>  	return 0;
+>  }
+>  
+>  static inline void reset_control_put(struct reset_control *rstc)
+>  {
+> -	WARN_ON(1);
+> +	WARN_ON(rstc != NULL);
+>  }
+>  
+>  static inline int device_reset_optional(struct device *dev)
+>  {
+> -	return -ENOSYS;
+> +	if (of_property_read_bool(dev->of_node, "resets"))
+> +		return -ENOSYS;
+> +
+> +	return 0;
+>  }
 
-> > I'd also expect this to go with the other kerneldoc for the field.
+I approve of these changes.
 
-> Any place that suits better.
+> +/*
+> + * We intentionally return NULL here when no resets are specified
+> + * or when building without DT, which is interpreted as 'success'
+> + * if reset controller support is left out from the kernel.
+> + */
+>  static inline struct reset_control *reset_control_get_optional(
+>  					struct device *dev, const char *id)
+>  {
+> -	return ERR_PTR(-ENOSYS);
+> +	return ERR_PTR(device_reset_optional(dev));
+>  }
+>  
+>  static inline struct reset_control *devm_reset_control_get_optional(
+>  					struct device *dev, const char *id)
+>  {
+> -	return ERR_PTR(-ENOSYS);
+> +	return reset_control_get_optional(dev, id);
+>  }
 
-Well, see above...
+This is a bit indirect, but with the comment it's clear enough.
 
---nkAIkdqOakIAdIKa
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEbBAEBCAAGBQJU7IfhAAoJECTWi3JdVIfQ4cEH8wWR7LtVzA+epAboZEtO7eO4
-hM9M9Cex74n7dgS5aflt322QCTmkdWoergkF2A38STATmsY+u83Dgxm43295Z8sB
-8q0gfi3VxBr4WUb7OEKguG3RdxxOzf4Odk13WIEcDqpP+lJhFVeMKAjmOvbqom6z
-OSuXGyFp/YMcMfpPJvk6sDihH3N/SyMDYjK5kK/aGo5+5S8+7qBqfMtQ5RqfpiUG
-mz7hzhyl9QNrDKxdMNatTgYuUKZRK3gzqNX7Cn8ngHcfFPjO+3VR8X96kzTfUtFb
-QUxsIJjrvw4DodCAKfi0nzu/J5CTmoHtslsx24CjGjKK04ks89yDGAw1qJIb1A==
-=Xvnq
------END PGP SIGNATURE-----
-
---nkAIkdqOakIAdIKa--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+regards
+Philipp

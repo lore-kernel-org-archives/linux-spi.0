@@ -1,48 +1,44 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v1 1/1] spi: dw-pci: correct number of chip selects
-Date: Tue, 24 Feb 2015 16:59:45 +0900
-Message-ID: <20150224075945.GO6236@finisterre.sirena.org.uk>
-References: <1424706954-6055-1-git-send-email-andriy.shevchenko@linux.intel.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi: Enable Cadence SPI driver for ARM64
+Date: Tue, 24 Feb 2015 17:08:07 +0900
+Message-ID: <20150224080807.GS6236@finisterre.sirena.org.uk>
+References: <859f9c4d3fbbc5153d924d7a6e36aa3a734e1b16.1424763838.git.michal.simek@xilinx.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="aE2Tjr+Wh4rS13mJ"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="kjwfQs4m3ZHLWJuw"
+Cc: linux-kernel@vger.kernel.org, monstr@monstr.eu,
+	linux-spi@vger.kernel.org
+To: Michal Simek <michal.simek@xilinx.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1424706954-6055-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <859f9c4d3fbbc5153d924d7a6e36aa3a734e1b16.1424763838.git.michal.simek@xilinx.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---aE2Tjr+Wh4rS13mJ
+--kjwfQs4m3ZHLWJuw
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Mon, Feb 23, 2015 at 05:55:54PM +0200, Andy Shevchenko wrote:
-> The commit d58cf5ff6500 brought a second controller to the list of supported
-> devices and changed a number of the chip selects. Besides the previous number
+On Tue, Feb 24, 2015 at 08:44:01AM +0100, Michal Simek wrote:
+> This driver is used on new Xilinx ZynqMP SoC.
 
-Applied, thanks.
+Why does this have an architecture dependence at all?
 
---aE2Tjr+Wh4rS13mJ
+--kjwfQs4m3ZHLWJuw
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJU7C9wAAoJECTWi3JdVIfQVckH/08E7nb0cQxPUrGiJ8sRSDKF
-B1NmwGMEgXchl8FcR3SR9A0C5TJc/XqSN4G731sLzmeU/sXmAjvuPMrRfuGg6QEs
-D+g5CKLv/R30lt4o87x3qYQzfr/dvowlwzayLT7UUnevcTlCHvDZTDCyR3G9L1Ia
-3/RyQwamsM5wHOx2hWwMG1U3j2tUZNmIE8GeOVzfTyip3+77cNeG3YvSi0AA39dG
-S7NeDdLTcolhiVS+8FRan0tlMMA2gGf5krPfUtbvwJemfhx6J48fBUHVcqgUB4B/
-uOE9zzLfTKzdfnojPDTM0ioRD/nMHNpPKz8paeBqhpcqkhp6ahxsnQZrilsSRwQ=
-=DYbf
+iQEcBAEBCAAGBQJU7DFmAAoJECTWi3JdVIfQ9YUH/RTwoEIDB17yvYbTRle2jIAv
+uvGfSiXCsup17Kw+vObe2LNzZqpD4bA7a70WPfZC9m5MB2oUBnixD+OXDeYwfNQ5
+zx+ix037ov1w+8koGNdXFFKjwh8WiFtjbojh2ixrk8Z0cbdBE+qWOaYGgkkUt76Z
+xbfMk2LReq5alJXR0eiOluiBu+AQ4m5O3m6XstzaqAD1FOaWZdYSJXnE/Y5tzq78
+hdioWlvnSyTeqoXKO+n8xfspIq6ywQ8ckqqyHlSFAv2nCi3xdvTxWPMob7qiwHK3
+79jdokj+Zhddg0jGJWYS8FoHg++nJ9S4H3l1VTuUiQtbV5javlT0VbiJhXGaVIU=
+=Qefe
 -----END PGP SIGNATURE-----
 
---aE2Tjr+Wh4rS13mJ--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--kjwfQs4m3ZHLWJuw--

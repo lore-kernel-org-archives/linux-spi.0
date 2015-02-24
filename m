@@ -1,60 +1,53 @@
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [PATCH v1 1/1] spi: clarify what driver can do with
- message->status
-Date: Tue, 24 Feb 2015 16:35:27 +0200
-Message-ID: <1424788527.14897.27.camel@linux.intel.com>
-References: <1424772249-9676-1-git-send-email-andriy.shevchenko@linux.intel.com>
-	 <20150224132411.GF6236@finisterre.sirena.org.uk>
-	 <1424784807.14897.24.camel@linux.intel.com>
-	 <20150224141706.GK6236@finisterre.sirena.org.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v1 5/5] spi: dw: move to SPI core message handling
+Date: Tue, 24 Feb 2015 23:44:33 +0900
+Message-ID: <20150224144433.GL6236@finisterre.sirena.org.uk>
+References: <1424777534-14246-1-git-send-email-andriy.shevchenko@linux.intel.com>
+ <1424777534-14246-6-git-send-email-andriy.shevchenko@linux.intel.com>
+ <1424782738.14897.22.camel@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="PEFDyIIeORe/70g6"
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150224141706.GK6236-bheZrs9scGb3/WHNxyQH9YN0K6Il/+VY@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1424782738.14897.22.camel-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, 2015-02-24 at 23:17 +0900, Mark Brown wrote:
-> On Tue, Feb 24, 2015 at 03:33:27PM +0200, Andy Shevchenko wrote:
-> > On Tue, 2015-02-24 at 22:24 +0900, Mark Brown wrote:
-> 
-> > > > +	/* The actual driver may set this field to indicate an error, e.g. -EIO
-> > > > +	 * for failed transfer. */
-> > > >  	int			status;
-> 
-> > > Let's take a step back here: what documentation are you looking at which
-> > > says anything else about status?
-> 
-> > The description of this field above, namely " * @status: zero for
-> > success, else negative errno".
-> 
-> ...which suggests that anything detecting an error should report it via
-> status, no?
 
-Unclear. I dived into spi.c to understand if I could override or not.
-There are two fields status and state, the latter is dedicated for an
-actual driver usage, and that is clear. Many (old) drivers are using
-state as a storage for custom status. Newer drivers, that are using SPI
-core, mostly don't care about error handling at all (at least I didn't
-find an existing example of the message->status usage).
+--PEFDyIIeORe/70g6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
+On Tue, Feb 24, 2015 at 02:58:58PM +0200, Andy Shevchenko wrote:
+> On Tue, 2015-02-24 at 13:32 +0200, Andy Shevchenko wrote:
 
-> > > I'd also expect this to go with the other kerneldoc for the field.
-> 
-> > Any place that suits better.
-> 
-> Well, see above...
+> > -void dw_spi_xfer_done(struct dw_spi *dws)
+> > -{
 
-Regarding my above comment can we extend the description of the field
-then?
+> This one should be removed from spi-dw.h as well.
 
--- 
-Andy Shevchenko <andriy.shevchenko-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Intel Finland Oy
+OK, I've applied 1-4 but not this one.
 
+--PEFDyIIeORe/70g6
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJU7I5MAAoJECTWi3JdVIfQTLsH/j5L2pBfBiZYWyLrXU6LP4c9
+vyHMCDrzkXFX00OjB9JhkafubakPgBjXjtOnrXgIyXi/QJS4JjG0UTWQxTJssCJb
+BP3YOozAGctZR2HCOKliIky2U+LIPHW4aMXWZ11/beRmsC8LJxio6J0r4nlrsxkW
+fFLmDTuCs7vMbDAiFOS2ydjVkdaA6nxLMed2JGP+Di2D4IxRMLuLYJbRDxiGdifj
+48K7CqZ6gY/VWxTgwN9kz0idq87bhKhQfzqSPbWDPxCDS1QH6sxm6cAyKEHpCR0R
+aPg8GH2E8f70MNVBZNzELEilMcPGHOGBWNR8Ct/I9B1IhL6CGVPBL0hhShy7ogM=
+=jNbr
+-----END PGP SIGNATURE-----
+
+--PEFDyIIeORe/70g6--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

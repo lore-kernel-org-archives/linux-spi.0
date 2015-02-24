@@ -1,29 +1,42 @@
-From: Michal Simek <michal.simek@xilinx.com>
-Subject: Re: [PATCH] spi: Enable Cadence SPI driver for ARM64
-Date: Tue, 24 Feb 2015 09:23:29 +0100
-Message-ID: <16fcf6871bb9482a89a5ca5827c78286@BN1BFFO11FD047.protection.gbl>
-References: <859f9c4d3fbbc5153d924d7a6e36aa3a734e1b16.1424763838.git.michal.simek@xilinx.com>
- <20150224080807.GS6236@finisterre.sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-Cc: <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>
-To: Mark Brown <broonie@kernel.org>,
-	Michal Simek <michal.simek@xilinx.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20150224080807.GS6236@finisterre.sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH v1 1/1] spi: clarify what driver can do with message->status
+Date: Tue, 24 Feb 2015 12:04:09 +0200
+Message-ID: <1424772249-9676-1-git-send-email-andriy.shevchenko@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 02/24/2015 09:08 AM, Mark Brown wrote:
-> On Tue, Feb 24, 2015 at 08:44:01AM +0100, Michal Simek wrote:
->> This driver is used on new Xilinx ZynqMP SoC.
-> 
-> Why does this have an architecture dependence at all?
+Currently it's unclear from the documentation if an actual driver may or may
+not override the message->status field. It seems there is no other way to
+indicate an error when transfer is failed, e.g. when gets overrun or underrun
+interrupt. The patch states this clearly in the comments near to field
+definition.
 
-Let me push this to my repo and run Fenguang's system on it if there
-is any build error on others architectures.
-I expect that this could be sufficient test, right?
+Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+---
+ include/linux/spi/spi.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Thanks,
-Michal
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index ed9489d..92cff9a 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -680,6 +680,9 @@ struct spi_message {
+ 	void			*context;
+ 	unsigned		frame_length;
+ 	unsigned		actual_length;
++
++	/* The actual driver may set this field to indicate an error, e.g. -EIO
++	 * for failed transfer. */
+ 	int			status;
+ 
+ 	/* for optional use by whatever driver currently owns the
+-- 
+2.1.4
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,52 +1,64 @@
-From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Subject: Re: [PATCH] spi: sirf: add reset controller dependency
-Date: Mon, 23 Feb 2015 23:01:18 +0100
-Message-ID: <6170208.Z0Upu48JrX@wuerfel>
-References: <4553005.HBquOfbqXe@wuerfel> <7767301.zaEX63gvjp@wuerfel> <20150221094458.GM6236@finisterre.sirena.org.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 3/4] spi: imx: Chose DMA bits per word transfered
+Date: Tue, 24 Feb 2015 10:54:44 +0900
+Message-ID: <20150224015444.GK6236@finisterre.sirena.org.uk>
+References: <1423742848-15369-1-git-send-email-a.bouin@gmail.com>
+ <1423742848-15369-3-git-send-email-a.bouin@gmail.com>
+ <20150221143528.GU6236@finisterre.sirena.org.uk>
+ <CAFeThoDBstQ_=gsi2o509qqQR6PbV4MxsNe=hEhKj4Mj162osA@mail.gmail.com>
+ <20150223144626.GE6236@finisterre.sirena.org.uk>
+ <CAFeThoD+k0DMM=dCzxO1bmC=32W_9g1pCgevNyKNsv_kzaRHeg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Philipp Zabel <p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150221094458.GM6236-bheZrs9scGb3/WHNxyQH9YN0K6Il/+VY@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="ENS8W0Tt0j5TmTCM"
+Cc: Fabio Estevam <festevam@gmail.com>,
+	linux-spi <linux-spi@vger.kernel.org>,
+	linux-kernel@vger.kernel.org
+To: =?iso-8859-1?Q?aur=E9lien?= bouin <a.bouin@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <CAFeThoD+k0DMM=dCzxO1bmC=32W_9g1pCgevNyKNsv_kzaRHeg@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Saturday 21 February 2015 18:44:58 Mark Brown wrote:
-> On Thu, Feb 19, 2015 at 04:01:29PM +0100, Arnd Bergmann wrote:
-> 
-> > So the stubs are provided for all functions except device_reset() and
-> > reset_control_get(), and drivers using the API need to either call the
-> > stubbed-out _optional() versions of these functions or have the explicit
-> > dependency.
-> 
-> In that case a dependency seems wrong, I'd expect to see a select - it's
-> a bit obscure to have to grovel around to figure out what magic options
-> are needed to make things turn on and resets feel more like a utility
-> thing than a control bus (which tend to be the things we depend on).
-> Dunno, perhaps I'm wrong?
 
-Mixing 'select' and 'depends on' causes recursive dependencies, and
-there are already lots of drivers that do 'depends on RESET_CONTROLLER'.
+--ENS8W0Tt0j5TmTCM
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Most users of this symbol seem to follow the strategy of selecting
-RESET_CONTROLLER when a driver is there to provide the functionality,
-but depending on it when a driver uses it. We are however a bit
-inconsistent here and it would be nice to clean it up.
+On Mon, Feb 23, 2015 at 04:25:51PM +0100, aur=E9lien bouin wrote:
+> 2015-02-23 15:46 GMT+01:00 Mark Brown <broonie@kernel.org>:
+> > On Mon, Feb 23, 2015 at 09:44:50AM +0100, aur=E9lien bouin wrote:
 
-In this particular patch, I'm just following what others do.
+> > Once more don't top post.  To repeat what I said:
 
-We should probably 'select ARCH_HAS_RESET_CONTROLLER' unconditionally
-for ARM ARCH_MULTIPLATFORM, as it's a bit silly to select both
-ARCH_HAS_RESET_CONTROLLER and RESET_CONTROLLER from platform code.
+> > | Why would this be a DT property?  It seems like something the driver
+> > | ought to be able to figure out automatically if it matters.
 
-	Arnd
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> > The above doesn't address my question.
+
+> Currently the driver does not figure it out automatically, it is a fix
+> 8bits per word DMA use.
+
+You're still not explaining why it's not a better fix for the driver to
+figure this out for itself, or why it's not possible for it to do that
+even if it would be better.
+
+--ENS8W0Tt0j5TmTCM
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJU69njAAoJECTWi3JdVIfQEcEIAIVkXldqyK1kA6U8Egr/PAc4
++YhJTKdEzprrxTfFZeaoau9B9dqN5Cr0s8LcgL6ZyPeSBZ2TUACsnZTpWT2rycob
+xMIOnMGC+zpPSdzaMJohS/bTlCiXKJqNVXHBaYrjubR+YU0np6Aimtz8Gflr84tZ
+oZoz+CQD5Tus51QUdnwZKjKr0Dbmh0y6s41apf12ckLKxN/FVJ72u+CcAjCui6FH
+zBFaud9nC/Xa38we7R9IfH4ftOb4YjIcoiDCuuQY1GCWKyoCdnNCaXyIrDdRD3df
+jGgYsyeBIqsWVgotEvb+lYyQ7FEIEwXICEmw4YliVL4AF0PjCAr8pQnvgMn4x3g=
+=L4GX
+-----END PGP SIGNATURE-----
+
+--ENS8W0Tt0j5TmTCM--

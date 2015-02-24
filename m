@@ -1,511 +1,609 @@
-From: Stanimir Varbanov <stanimir.varbanov-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: [PATCH v2] spi: qup: Add DMA capabilities
-Date: Tue, 24 Feb 2015 15:00:03 +0200
-Message-ID: <1424782803-13103-1-git-send-email-stanimir.varbanov@linaro.org>
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Andy Gross <agross-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Sagar Dharia <sdharia-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Daniel Sneddon <dsneddon-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Stanimir Varbanov <stanimir.varbanov-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH] spi: sirf: add reset controller dependency
+Date: Tue, 24 Feb 2015 14:02:15 +0100
+Message-ID: <6951359.9Y8ugYfjuJ@wuerfel>
+References: <4553005.HBquOfbqXe@wuerfel> <6170208.Z0Upu48JrX@wuerfel> <20150224075018.GM6236@finisterre.sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: Mark Brown <broonie@kernel.org>, Marek Vasut <marex@denx.de>,
+	Wolfram Sang <wsa@the-dreams.de>, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org, Philipp Zabel <p.zabel@pengutronix.de>,
+	Barry Song <Baohua.Song@csr.com>,
+	Maxime Ripard <maxime.ripard@free-electrons.com>
+To: linux-arm-kernel@lists.infradead.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20150224075018.GM6236@finisterre.sirena.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Andy Gross <agross-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+On Tuesday 24 February 2015 16:50:18 Mark Brown wrote:
+> On Mon, Feb 23, 2015 at 11:01:18PM +0100, Arnd Bergmann wrote:
+> > On Saturday 21 February 2015 18:44:58 Mark Brown wrote:
+> 
+> > > In that case a dependency seems wrong, I'd expect to see a select - it's
+> > > a bit obscure to have to grovel around to figure out what magic options
+> > > are needed to make things turn on and resets feel more like a utility
+> > > thing than a control bus (which tend to be the things we depend on).
+> > > Dunno, perhaps I'm wrong?
+> 
+> > Mixing 'select' and 'depends on' causes recursive dependencies, and
+> > there are already lots of drivers that do 'depends on RESET_CONTROLLER'.
+> 
+> Well, perhaps that's the cleanup we should be doing then...  one of the
+> big problems with some of the other randconfig work there's been is that
+> a lot of the patches just add dependencies without looking at if that
+> makes sense.
 
-This patch adds DMA capabilities to the spi-qup driver.  If DMA channels are
-present, the QUP will use DMA instead of block mode for transfers to/from SPI
-peripherals for transactions larger than the length of a block.
+I've tried sanitizing the logic more globally now. The approach below
+gets rid of most of the Kconfig logic and just ensures that things work
+out of the box, by having drivers that call reset_controller_register
+'select RESET_CONTROLLER', but letting drivers that use the API
+link correctly all the time.
 
-Signed-off-by: Andy Gross <agross-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-Signed-off-by: Stanimir Varbanov <stanimir.varbanov-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
----
+At the same time, I try to improve the behavior of device_reset_optional(),
+which now returns success if the subsystem is disabled and no 'resets'
+property is present, while the device_reset() call always fails if
+the subsystem is disabled.
 
-This is reworked version with comments addressed
- - use SPI core DMA mapping code
- - implemented .can_dma callback
- - use dmaengine api's to account deferred_probe
+Any comments?
 
-First version can be found at [1].
+	Arnd
 
-[1] https://lkml.org/lkml/2014/6/26/481
-
-regards,
-Stan
-
- .../devicetree/bindings/spi/qcom,spi-qup.txt       |    8 +
- drivers/spi/spi-qup.c                              |  300 +++++++++++++++++++-
- 2 files changed, 293 insertions(+), 15 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt b/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
-index e2c88df..a0357c7 100644
---- a/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
-+++ b/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
-@@ -33,6 +33,11 @@ Optional properties:
- 		nodes.  If unspecified, a single SPI device without a chip
- 		select can be used.
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 6aa2a766be66..fb568fb18047 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -311,6 +311,7 @@ choice
  
-+- dmas:         Two DMA channel specifiers following the convention outlined
-+                in bindings/dma/dma.txt
-+- dma-names:    Names for the dma channels, if present. There must be at
-+                least one channel named "tx" for transmit and named "rx" for
-+                receive.
+ config ARCH_MULTIPLATFORM
+ 	bool "Allow multiple platforms to be selected"
++	select ARCH_HAS_RESET_CONTROLLER
+ 	select ARCH_WANT_OPTIONAL_GPIOLIB
+ 	select ARM_HAS_SG_CHAIN
+ 	select ARM_PATCH_PHYS_VIRT
+diff --git a/arch/arm/mach-berlin/Kconfig b/arch/arm/mach-berlin/Kconfig
+index 3e40a947f3ea..b595683d9138 100644
+--- a/arch/arm/mach-berlin/Kconfig
++++ b/arch/arm/mach-berlin/Kconfig
+@@ -1,6 +1,5 @@
+ menuconfig ARCH_BERLIN
+ 	bool "Marvell Berlin SoCs" if ARCH_MULTI_V7
+-	select ARCH_HAS_RESET_CONTROLLER
+ 	select ARCH_REQUIRE_GPIOLIB
+ 	select ARM_GIC
+ 	select DW_APB_ICTL
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index e8627e04e1e6..dae7d996790e 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -56,7 +56,6 @@ config HAVE_IMX_MMDC
  
- SPI slave nodes must be children of the SPI master node and can contain
- properties described in Documentation/devicetree/bindings/spi/spi-bus.txt
-@@ -51,6 +56,9 @@ Example:
- 		clocks = <&gcc GCC_BLSP2_QUP2_SPI_APPS_CLK>, <&gcc GCC_BLSP2_AHB_CLK>;
- 		clock-names = "core", "iface";
+ config HAVE_IMX_SRC
+ 	def_bool y if SMP
+-	select ARCH_HAS_RESET_CONTROLLER
  
-+		dmas = <&blsp1_bam 13>, <&blsp2_bam 12>;
-+		dma-names = "rx", "tx";
-+
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&spi8_default>;
+ config IMX_HAVE_IOMUX_V1
+ 	bool
+diff --git a/arch/arm/mach-mmp/Kconfig b/arch/arm/mach-mmp/Kconfig
+index 3d788d7d3b7b..1bd074de8c62 100644
+--- a/arch/arm/mach-mmp/Kconfig
++++ b/arch/arm/mach-mmp/Kconfig
+@@ -91,6 +91,7 @@ config MACH_MMP_DT
+ 	select PINCTRL_SINGLE
+ 	select COMMON_CLK
+ 	select ARCH_HAS_RESET_CONTROLLER
++	select RESET_CONTROLLER
+ 	select CPU_MOHAWK
+ 	help
+ 	  Include support for Marvell MMP2 based platforms using
+@@ -105,6 +106,7 @@ config MACH_MMP2_DT
+ 	select PINCTRL_SINGLE
+ 	select COMMON_CLK
+ 	select ARCH_HAS_RESET_CONTROLLER
++	select RESET_CONTROLLER
+ 	select CPU_PJ4
+ 	help
+ 	  Include support for Marvell MMP2 based platforms using
+diff --git a/arch/arm/mach-prima2/Kconfig b/arch/arm/mach-prima2/Kconfig
+index e03d8b5c9ad0..629a24d5ce1e 100644
+--- a/arch/arm/mach-prima2/Kconfig
++++ b/arch/arm/mach-prima2/Kconfig
+@@ -1,6 +1,5 @@
+ menuconfig ARCH_SIRF
+ 	bool "CSR SiRF" if ARCH_MULTI_V7
+-	select ARCH_HAS_RESET_CONTROLLER
+ 	select ARCH_REQUIRE_GPIOLIB
+ 	select GENERIC_IRQ_CHIP
+ 	select NO_IOPORT_MAP
+diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
+index ae4eb7cc4bcc..17d2df427c3c 100644
+--- a/arch/arm/mach-rockchip/Kconfig
++++ b/arch/arm/mach-rockchip/Kconfig
+@@ -2,7 +2,6 @@ config ARCH_ROCKCHIP
+ 	bool "Rockchip RK2928 and RK3xxx SOCs" if ARCH_MULTI_V7
+ 	select PINCTRL
+ 	select PINCTRL_ROCKCHIP
+-	select ARCH_HAS_RESET_CONTROLLER
+ 	select ARCH_REQUIRE_GPIOLIB
+ 	select ARM_AMBA
+ 	select ARM_GIC
+@@ -12,6 +11,7 @@ config ARCH_ROCKCHIP
+ 	select HAVE_ARM_TWD if SMP
+ 	select DW_APB_TIMER_OF
+ 	select REGULATOR if PM
++	select RESET_CONTROLLER
+ 	select ROCKCHIP_TIMER
+ 	select ARM_GLOBAL_TIMER
+ 	select CLKSRC_ARM_GLOBAL_TIMER_SCHED_CLOCK
+diff --git a/arch/arm/mach-sti/Kconfig b/arch/arm/mach-sti/Kconfig
+index 3b1ac463a494..f25e626ed3fc 100644
+--- a/arch/arm/mach-sti/Kconfig
++++ b/arch/arm/mach-sti/Kconfig
+@@ -5,7 +5,6 @@ menuconfig ARCH_STI
+ 	select PINCTRL
+ 	select PINCTRL_ST
+ 	select MFD_SYSCON
+-	select ARCH_HAS_RESET_CONTROLLER
+ 	select HAVE_ARM_SCU if SMP
+ 	select ARCH_REQUIRE_GPIOLIB
+ 	select ARM_ERRATA_754322
+@@ -13,7 +12,6 @@ menuconfig ARCH_STI
+ 	select ARM_ERRATA_775420
+ 	select PL310_ERRATA_753970 if CACHE_L2X0
+ 	select PL310_ERRATA_769419 if CACHE_L2X0
+-	select RESET_CONTROLLER
+ 	help
+ 	  Include support for STiH41x SOCs like STiH415/416 using the device tree
+ 	  for discovery
+diff --git a/arch/arm/mach-sunxi/Kconfig b/arch/arm/mach-sunxi/Kconfig
+index 3c84be680d7d..9a9689ebc047 100644
+--- a/arch/arm/mach-sunxi/Kconfig
++++ b/arch/arm/mach-sunxi/Kconfig
+@@ -1,13 +1,11 @@
+ menuconfig ARCH_SUNXI
+ 	bool "Allwinner SoCs" if ARCH_MULTI_V7
+ 	select ARCH_REQUIRE_GPIOLIB
+-	select ARCH_HAS_RESET_CONTROLLER
+ 	select CLKSRC_MMIO
+ 	select GENERIC_IRQ_CHIP
+ 	select PINCTRL
+ 	select RESET_CONTROLLER
+ 	select SUN4I_TIMER
+-	select RESET_CONTROLLER
  
-diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index e7fb5a0..386ae69 100644
---- a/drivers/spi/spi-qup.c
-+++ b/drivers/spi/spi-qup.c
-@@ -22,6 +22,8 @@
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
- #include <linux/spi/spi.h>
-+#include <linux/dmaengine.h>
-+#include <linux/dma-mapping.h>
+ if ARCH_SUNXI
  
- #define QUP_CONFIG			0x0000
- #define QUP_STATE			0x0004
-@@ -116,6 +118,8 @@
- 
- #define SPI_NUM_CHIPSELECTS		4
- 
-+#define SPI_MAX_DMA_XFER		(SZ_64K - 64)
-+
- /* high speed mode is when bus rate is greater then 26MHz */
- #define SPI_HS_MIN_RATE			26000000
- #define SPI_MAX_RATE			50000000
-@@ -143,6 +147,11 @@ struct spi_qup {
- 	int			tx_bytes;
- 	int			rx_bytes;
- 	int			qup_v1;
-+
-+	int			dma_available;
-+	struct dma_slave_config	rx_conf;
-+	struct dma_slave_config	tx_conf;
-+	atomic_t		dma_outstanding;
- };
- 
- 
-@@ -198,6 +207,16 @@ static int spi_qup_set_state(struct spi_qup *controller, u32 state)
- 	return 0;
- }
- 
-+static int spi_qup_get_word_sz(struct spi_transfer *xfer)
-+{
-+	if (xfer->bits_per_word <= 8)
-+		return 1;
-+
-+	if (xfer->bits_per_word <= 16)
-+		return 2;
-+
-+	return 4;
-+}
- 
- static void spi_qup_fifo_read(struct spi_qup *controller,
- 			    struct spi_transfer *xfer)
-@@ -266,6 +285,101 @@ static void spi_qup_fifo_write(struct spi_qup *controller,
- 	}
- }
- 
-+static void spi_qup_dma_done(void *data)
-+{
-+	struct spi_qup *qup = data;
-+
-+	if (atomic_dec_and_test(&qup->dma_outstanding))
-+		complete(&qup->done);
-+}
-+
-+static int spi_qup_prep_sg(struct spi_master *master, struct spi_transfer *xfer,
-+			   enum dma_transfer_direction dir)
-+{
-+	struct spi_qup *qup = spi_master_get_devdata(master);
-+	unsigned long flags = DMA_PREP_INTERRUPT | DMA_PREP_FENCE;
-+	struct dma_async_tx_descriptor *desc;
-+	struct scatterlist *sgl;
-+	dma_cookie_t cookie;
-+	unsigned int nents;
-+	struct dma_chan *chan;
-+	int ret;
-+
-+	if (dir == DMA_MEM_TO_DEV) {
-+		chan = master->dma_tx;
-+		nents = xfer->tx_sg.nents;
-+		sgl = xfer->tx_sg.sgl;
-+	} else {
-+		chan = master->dma_rx;
-+		nents = xfer->rx_sg.nents;
-+		sgl = xfer->rx_sg.sgl;
-+	}
-+
-+	desc = dmaengine_prep_slave_sg(chan, sgl, nents, dir, flags);
-+	if (!desc)
-+		return -EINVAL;
-+
-+	desc->callback = spi_qup_dma_done;
-+	desc->callback_param = qup;
-+
-+	cookie = dmaengine_submit(desc);
-+	ret = dma_submit_error(cookie);
-+	if (ret)
-+		return ret;
-+
-+	atomic_inc(&qup->dma_outstanding);
-+
-+	return 0;
-+}
-+
-+static int spi_qup_do_dma(struct spi_master *master, struct spi_transfer *xfer)
-+{
-+	struct spi_qup *qup = spi_master_get_devdata(master);
-+	int ret;
-+
-+	atomic_set(&qup->dma_outstanding, 0);
-+
-+	reinit_completion(&qup->done);
-+
-+	if (xfer->rx_buf) {
-+		ret = spi_qup_prep_sg(master, xfer, DMA_DEV_TO_MEM);
-+		if (ret)
-+			return ret;
-+
-+		dma_async_issue_pending(master->dma_rx);
-+	}
-+
-+	if (xfer->tx_buf) {
-+		ret = spi_qup_prep_sg(master, xfer, DMA_MEM_TO_DEV);
-+		if (ret)
-+			goto err_rx;
-+
-+		dma_async_issue_pending(master->dma_tx);
-+	}
-+
-+	ret = spi_qup_set_state(qup, QUP_STATE_RUN);
-+	if (ret) {
-+		dev_warn(qup->dev, "cannot set RUN state\n");
-+		goto err_tx;
-+	}
-+
-+	if (!wait_for_completion_timeout(&qup->done, msecs_to_jiffies(1000))) {
-+		ret = -ETIMEDOUT;
-+		goto err_tx;
-+	}
-+
-+	return 0;
-+
-+err_tx:
-+	if (xfer->tx_buf)
-+		dmaengine_terminate_all(master->dma_tx);
-+err_rx:
-+	if (xfer->rx_buf)
-+		dmaengine_terminate_all(master->dma_rx);
-+
-+	return ret;
-+}
-+
- static irqreturn_t spi_qup_qup_irq(int irq, void *dev_id)
+diff --git a/arch/arm/mach-sunxi/sunxi.c b/arch/arm/mach-sunxi/sunxi.c
+index 1bc811a74a9f..0949a060fa72 100644
+--- a/arch/arm/mach-sunxi/sunxi.c
++++ b/arch/arm/mach-sunxi/sunxi.c
+@@ -44,7 +44,7 @@ extern void __init sun6i_reset_init(void);
+ static void __init sun6i_timer_init(void)
  {
- 	struct spi_qup *controller = dev_id;
-@@ -315,11 +429,13 @@ static irqreturn_t spi_qup_qup_irq(int irq, void *dev_id)
- 		error = -EIO;
- 	}
+ 	of_clk_init(NULL);
+-	if (IS_ENABLED(CONFIG_RESET_CONTROLLER))
++	if (IS_ENABLED(CONFIG_RESET_SUNXI))
+ 		sun6i_reset_init();
+ 	clocksource_of_init();
+ }
+diff --git a/arch/arm/mach-tegra/Kconfig b/arch/arm/mach-tegra/Kconfig
+index 5d1a318f1302..4488966c2841 100644
+--- a/arch/arm/mach-tegra/Kconfig
++++ b/arch/arm/mach-tegra/Kconfig
+@@ -8,7 +8,6 @@ menuconfig ARCH_TEGRA
+ 	select HAVE_ARM_SCU if SMP
+ 	select HAVE_ARM_TWD if SMP
+ 	select PINCTRL
+-	select ARCH_HAS_RESET_CONTROLLER
+ 	select RESET_CONTROLLER
+ 	select SOC_BUS
+ 	select USB_ULPI if USB_PHY
+diff --git a/drivers/dma/Kconfig b/drivers/dma/Kconfig
+index a874b6ec6650..cc87138f43e7 100644
+--- a/drivers/dma/Kconfig
++++ b/drivers/dma/Kconfig
+@@ -403,7 +403,6 @@ config XILINX_VDMA
+ config DMA_SUN6I
+ 	tristate "Allwinner A31 SoCs DMA support"
+ 	depends on MACH_SUN6I || MACH_SUN8I || COMPILE_TEST
+-	depends on RESET_CONTROLLER
+ 	select DMA_ENGINE
+ 	select DMA_VIRTUAL_CHANNELS
+ 	help
+diff --git a/drivers/gpu/drm/rockchip/Kconfig b/drivers/gpu/drm/rockchip/Kconfig
+index 35215f6867d3..cb21e3821244 100644
+--- a/drivers/gpu/drm/rockchip/Kconfig
++++ b/drivers/gpu/drm/rockchip/Kconfig
+@@ -1,7 +1,6 @@
+ config DRM_ROCKCHIP
+ 	tristate "DRM Support for Rockchip"
+ 	depends on DRM && ROCKCHIP_IOMMU
+-	depends on RESET_CONTROLLER
+ 	select DRM_KMS_HELPER
+ 	select DRM_KMS_FB_HELPER
+ 	select DRM_PANEL
+diff --git a/drivers/gpu/drm/sti/Kconfig b/drivers/gpu/drm/sti/Kconfig
+index 0670aa17409d..8b9527dcf8c7 100644
+--- a/drivers/gpu/drm/sti/Kconfig
++++ b/drivers/gpu/drm/sti/Kconfig
+@@ -1,7 +1,6 @@
+ config DRM_STI
+ 	tristate "DRM Support for STMicroelectronics SoC stiH41x Series"
+ 	depends on DRM && (SOC_STIH415 || SOC_STIH416 || ARCH_MULTIPLATFORM) && HAVE_DMA_ATTRS
+-	depends on RESET_CONTROLLER
+ 	select DRM_KMS_HELPER
+ 	select DRM_GEM_CMA_HELPER
+ 	select DRM_KMS_CMA_HELPER
+diff --git a/drivers/gpu/drm/tegra/Kconfig b/drivers/gpu/drm/tegra/Kconfig
+index 74d9d621453d..a188994027f9 100644
+--- a/drivers/gpu/drm/tegra/Kconfig
++++ b/drivers/gpu/drm/tegra/Kconfig
+@@ -3,7 +3,6 @@ config DRM_TEGRA
+ 	depends on ARCH_TEGRA || (ARM && COMPILE_TEST)
+ 	depends on COMMON_CLK
+ 	depends on DRM
+-	depends on RESET_CONTROLLER
+ 	select DRM_KMS_HELPER
+ 	select DRM_MIPI_DSI
+ 	select DRM_PANEL
+diff --git a/drivers/gpu/ipu-v3/Kconfig b/drivers/gpu/ipu-v3/Kconfig
+index aefdff95356d..08766c6e7856 100644
+--- a/drivers/gpu/ipu-v3/Kconfig
++++ b/drivers/gpu/ipu-v3/Kconfig
+@@ -1,7 +1,6 @@
+ config IMX_IPUV3_CORE
+ 	tristate "IPUv3 core support"
+ 	depends on SOC_IMX5 || SOC_IMX6Q || ARCH_MULTIPLATFORM
+-	depends on RESET_CONTROLLER
+ 	select GENERIC_IRQ_CHIP
+ 	help
+ 	  Choose this if you have a i.MX5/6 system and want to use the Image
+diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
+index 22da9c2ffa22..e9dae74b98a7 100644
+--- a/drivers/i2c/busses/Kconfig
++++ b/drivers/i2c/busses/Kconfig
+@@ -829,7 +829,6 @@ config I2C_STU300
  
--	if (opflags & QUP_OP_IN_SERVICE_FLAG)
--		spi_qup_fifo_read(controller, xfer);
-+	if (!controller->dma_available) {
-+		if (opflags & QUP_OP_IN_SERVICE_FLAG)
-+			spi_qup_fifo_read(controller, xfer);
+ config I2C_SUN6I_P2WI
+ 	tristate "Allwinner sun6i internal P2WI controller"
+-	depends on RESET_CONTROLLER
+ 	depends on MACH_SUN6I || COMPILE_TEST
+ 	help
+ 	  If you say yes to this option, support will be included for the
+diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
+index 545b442253e4..33c195780554 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
++++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
+@@ -1,7 +1,6 @@
+ config STMMAC_ETH
+ 	tristate "STMicroelectronics 10/100/1000 Ethernet driver"
+ 	depends on HAS_IOMEM && HAS_DMA
+-	depends on RESET_CONTROLLER
+ 	select MII
+ 	select PHYLIB
+ 	select CRC32
+diff --git a/drivers/phy/Kconfig b/drivers/phy/Kconfig
+index 2962de205ba7..561742b7f4b3 100644
+--- a/drivers/phy/Kconfig
++++ b/drivers/phy/Kconfig
+@@ -17,7 +17,8 @@ config GENERIC_PHY
  
--	if (opflags & QUP_OP_OUT_SERVICE_FLAG)
--		spi_qup_fifo_write(controller, xfer);
-+		if (opflags & QUP_OP_OUT_SERVICE_FLAG)
-+			spi_qup_fifo_write(controller, xfer);
-+	}
+ config PHY_BERLIN_USB
+ 	tristate "Marvell Berlin USB PHY Driver"
+-	depends on ARCH_BERLIN && RESET_CONTROLLER && HAS_IOMEM && OF
++	depends on ARCH_BERLIN || COMPILE_TEST
++	depends on HAS_IOMEM && OF
+ 	select GENERIC_PHY
+ 	help
+ 	  Enable this to support the USB PHY on Marvell Berlin SoCs.
+@@ -164,8 +165,8 @@ config PHY_HIX5HD2_SATA
  
- 	spin_lock_irqsave(&controller->lock, flags);
- 	controller->error = error;
-@@ -358,12 +474,7 @@ static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer)
- 		return -EIO;
- 	}
+ config PHY_SUN4I_USB
+ 	tristate "Allwinner sunxi SoC USB PHY driver"
+-	depends on ARCH_SUNXI && HAS_IOMEM && OF
+-	depends on RESET_CONTROLLER
++	depends on ARCH_SUNXI || COMPILE_TEST
++	depends on HAS_IOMEM && OF
+ 	select GENERIC_PHY
+ 	help
+ 	  Enable this to support the transceiver that is part of Allwinner
+@@ -269,7 +270,6 @@ config PHY_XGENE
  
--	w_size = 4;
--	if (xfer->bits_per_word <= 8)
--		w_size = 1;
--	else if (xfer->bits_per_word <= 16)
--		w_size = 2;
--
-+	w_size = spi_qup_get_word_sz(xfer);
- 	n_words = xfer->len / w_size;
- 	controller->w_size = w_size;
+ config PHY_STIH407_USB
+ 	tristate "STMicroelectronics USB2 picoPHY driver for STiH407 family"
+-	depends on RESET_CONTROLLER
+ 	depends on ARCH_STI || COMPILE_TEST
+ 	select GENERIC_PHY
+ 	help
+diff --git a/drivers/pinctrl/sunxi/Kconfig b/drivers/pinctrl/sunxi/Kconfig
+index 2eb893e0ea1e..9fd24783be61 100644
+--- a/drivers/pinctrl/sunxi/Kconfig
++++ b/drivers/pinctrl/sunxi/Kconfig
+@@ -27,7 +27,6 @@ config PINCTRL_SUN6I_A31S
  
-@@ -374,19 +485,46 @@ static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer)
- 		/* must be zero for FIFO */
- 		writel_relaxed(0, controller->base + QUP_MX_INPUT_CNT);
- 		writel_relaxed(0, controller->base + QUP_MX_OUTPUT_CNT);
--	} else {
-+	} else if (!controller->dma_available) {
- 		mode = QUP_IO_M_MODE_BLOCK;
- 		writel_relaxed(n_words, controller->base + QUP_MX_INPUT_CNT);
- 		writel_relaxed(n_words, controller->base + QUP_MX_OUTPUT_CNT);
- 		/* must be zero for BLOCK and BAM */
- 		writel_relaxed(0, controller->base + QUP_MX_READ_CNT);
- 		writel_relaxed(0, controller->base + QUP_MX_WRITE_CNT);
-+	} else {
-+		mode = QUP_IO_M_MODE_BAM;
-+		writel_relaxed(0, controller->base + QUP_MX_READ_CNT);
-+		writel_relaxed(0, controller->base + QUP_MX_WRITE_CNT);
-+
-+		if (!controller->qup_v1) {
-+			void __iomem *input_cnt;
-+
-+			input_cnt = controller->base + QUP_MX_INPUT_CNT;
-+			/*
-+			 * for DMA transfers, both QUP_MX_INPUT_CNT and
-+			 * QUP_MX_OUTPUT_CNT must be zero to all cases but one.
-+			 * That case is a non-balanced transfer when there is
-+			 * only a rx_buf.
-+			 */
-+			if (xfer->tx_buf)
-+				writel_relaxed(0, input_cnt);
-+			else
-+				writel_relaxed(n_words, input_cnt);
-+
-+			writel_relaxed(0, controller->base + QUP_MX_OUTPUT_CNT);
-+		}
- 	}
+ config PINCTRL_SUN6I_A31_R
+ 	def_bool MACH_SUN6I
+-	depends on RESET_CONTROLLER
+ 	select PINCTRL_SUNXI_COMMON
  
- 	iomode = readl_relaxed(controller->base + QUP_IO_M_MODES);
- 	/* Set input and output transfer mode */
- 	iomode &= ~(QUP_IO_M_INPUT_MODE_MASK | QUP_IO_M_OUTPUT_MODE_MASK);
--	iomode &= ~(QUP_IO_M_PACK_EN | QUP_IO_M_UNPACK_EN);
-+
-+	if (!controller->dma_available)
-+		iomode &= ~(QUP_IO_M_PACK_EN | QUP_IO_M_UNPACK_EN);
-+	else
-+		iomode |= QUP_IO_M_PACK_EN | QUP_IO_M_UNPACK_EN;
-+
- 	iomode |= (mode << QUP_IO_M_OUTPUT_MODE_MASK_SHIFT);
- 	iomode |= (mode << QUP_IO_M_INPUT_MODE_MASK_SHIFT);
+ config PINCTRL_SUN7I_A20
+@@ -40,7 +39,6 @@ config PINCTRL_SUN8I_A23
  
-@@ -419,11 +557,31 @@ static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer)
- 	config &= ~(QUP_CONFIG_NO_INPUT | QUP_CONFIG_NO_OUTPUT | QUP_CONFIG_N);
- 	config |= xfer->bits_per_word - 1;
- 	config |= QUP_CONFIG_SPI_MODE;
-+
-+	if (controller->dma_available) {
-+		if (!xfer->tx_buf)
-+			config |= QUP_CONFIG_NO_OUTPUT;
-+		if (!xfer->rx_buf)
-+			config |= QUP_CONFIG_NO_INPUT;
-+	}
-+
- 	writel_relaxed(config, controller->base + QUP_CONFIG);
+ config PINCTRL_SUN8I_A23_R
+ 	def_bool MACH_SUN8I
+-	depends on RESET_CONTROLLER
+ 	select PINCTRL_SUNXI_COMMON
  
- 	/* only write to OPERATIONAL_MASK when register is present */
--	if (!controller->qup_v1)
--		writel_relaxed(0, controller->base + QUP_OPERATIONAL_MASK);
-+	if (!controller->qup_v1) {
-+		u32 mask = 0;
+ config PINCTRL_SUN9I_A80
+diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
+index 0615f50a14cd..12026a1893b5 100644
+--- a/drivers/reset/Kconfig
++++ b/drivers/reset/Kconfig
+@@ -1,15 +1,24 @@
+-config ARCH_HAS_RESET_CONTROLLER
++config RESET_CONTROLLER
+ 	bool
+ 
+-menuconfig RESET_CONTROLLER
+-	bool "Reset Controller Support"
+-	default y if ARCH_HAS_RESET_CONTROLLER
+-	help
+-	  Generic Reset Controller support.
++menu "Reset Controller Support"
++	depends on ARCH_HAS_RESET_CONTROLLER || COMPILE_TEST
+ 
+-	  This framework is designed to abstract reset handling of devices
+-	  via GPIOs or SoC-internal reset controller modules.
++config RESET_SOCFPGA
++	bool "Altera SOCFPGA reset controller" if COMPILE_TEST
++	default ARCH_SOCFPGA
++	select RESET_CONTROLLER
+ 
+-	  If unsure, say no.
++config RESET_BERLIN
++	bool "Marvell Berlin reset controller" if COMPILE_TEST
++	default ARCH_BERLIN
++	select RESET_CONTROLLER
 +
-+		/*
-+		 * mask INPUT and OUTPUT service flags to prevent IRQs on FIFO
-+		 * status change in BAM mode
-+		 */
++config RESET_SUNXI
++	bool "Allwinner reset controller" if COMPILE_TEST
++	default ARCH_SUNXI
++	select RESET_CONTROLLER
+ 
+ source "drivers/reset/sti/Kconfig"
 +
-+		if (mode == QUP_IO_M_MODE_BAM)
-+			mask = QUP_OP_IN_SERVICE_FLAG | QUP_OP_OUT_SERVICE_FLAG;
++endmenu
+diff --git a/drivers/reset/Makefile b/drivers/reset/Makefile
+index 157d421f755b..14d3850847b8 100644
+--- a/drivers/reset/Makefile
++++ b/drivers/reset/Makefile
+@@ -1,5 +1,5 @@
+ obj-$(CONFIG_RESET_CONTROLLER) += core.o
+-obj-$(CONFIG_ARCH_SOCFPGA) += reset-socfpga.o
+-obj-$(CONFIG_ARCH_BERLIN) += reset-berlin.o
+-obj-$(CONFIG_ARCH_SUNXI) += reset-sunxi.o
+-obj-$(CONFIG_ARCH_STI) += sti/
++obj-$(CONFIG_RESET_SOCFPGA) += reset-socfpga.o
++obj-$(CONFIG_RESET_BERLIN) += reset-berlin.o
++obj-$(CONFIG_RESET_SUNXI) += reset-sunxi.o
++obj-$(CONFIG_RESET_STI_SYSCFG) += sti/
+diff --git a/drivers/reset/sti/Kconfig b/drivers/reset/sti/Kconfig
+index f8c15a37fb35..ef9bb8675577 100644
+--- a/drivers/reset/sti/Kconfig
++++ b/drivers/reset/sti/Kconfig
+@@ -1,19 +1,19 @@
+-if ARCH_STI
++if ARCH_STI || COMPILE_TEST
+ 
+-config STI_RESET_SYSCFG
++config RESET_STI_SYSCFG
+ 	bool
+ 	select RESET_CONTROLLER
+ 
+-config STIH415_RESET
+-	bool
+-	select STI_RESET_SYSCFG
++config RESET_STIH415
++	bool "STmicroelectronics STiH415 reset controller" if COMPILE_TEST
++	select RESET_STI_SYSCFG
+ 
+-config STIH416_RESET
+-	bool
+-	select STI_RESET_SYSCFG
++config RESET_STIH416
++	bool "STmicroelectronics STiH416 reset controller" if COMPILE_TEST
++	select RESET_STI_SYSCFG
+ 
+-config STIH407_RESET
+-	bool
+-	select STI_RESET_SYSCFG
++config RESET_STIH407
++	bool "STmicroelectronics STiH407 reset controller" if COMPILE_TEST
++	select RESET_STI_SYSCFG
+ 
+ endif
+diff --git a/drivers/reset/sti/Makefile b/drivers/reset/sti/Makefile
+index dc85dfbe56a9..445bdddf45b9 100644
+--- a/drivers/reset/sti/Makefile
++++ b/drivers/reset/sti/Makefile
+@@ -1,5 +1,5 @@
+-obj-$(CONFIG_STI_RESET_SYSCFG) += reset-syscfg.o
++obj-$(CONFIG_RESET_STI_SYSCFG) += reset-syscfg.o
+ 
+-obj-$(CONFIG_STIH415_RESET) += reset-stih415.o
+-obj-$(CONFIG_STIH416_RESET) += reset-stih416.o
+-obj-$(CONFIG_STIH407_RESET) += reset-stih407.o
++obj-$(CONFIG_RESET_STIH415) += reset-stih415.o
++obj-$(CONFIG_RESET_STIH416) += reset-stih416.o
++obj-$(CONFIG_RESET_STIH407) += reset-stih407.o
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index b3ae90e4c03c..e0fb9ecac3d0 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -507,7 +507,6 @@ config SPI_SH_HSPI
+ config SPI_SIRF
+ 	tristate "CSR SiRFprimaII SPI controller"
+ 	depends on SIRF_DMA
+-	depends on RESET_CONTROLLER
+ 	select SPI_BITBANG
+ 	help
+ 	  SPI driver for CSR SiRFprimaII SoCs
+@@ -528,7 +527,6 @@ config SPI_SUN4I
+ config SPI_SUN6I
+ 	tristate "Allwinner A31 SPI controller"
+ 	depends on ARCH_SUNXI || COMPILE_TEST
+-	depends on RESET_CONTROLLER
+ 	help
+ 	  This enables using the SPI controller on the Allwinner A31 SoCs.
+ 
+@@ -542,7 +540,7 @@ config SPI_MXS
+ config SPI_TEGRA114
+ 	tristate "NVIDIA Tegra114 SPI Controller"
+ 	depends on (ARCH_TEGRA && TEGRA20_APB_DMA) || COMPILE_TEST
+-	depends on RESET_CONTROLLER && HAS_DMA
++	depends on HAS_DMA
+ 	help
+ 	  SPI driver for NVIDIA Tegra114 SPI Controller interface. This controller
+ 	  is different than the older SoCs SPI controller and also register interface
+@@ -551,7 +549,6 @@ config SPI_TEGRA114
+ config SPI_TEGRA20_SFLASH
+ 	tristate "Nvidia Tegra20 Serial flash Controller"
+ 	depends on ARCH_TEGRA || COMPILE_TEST
+-	depends on RESET_CONTROLLER
+ 	help
+ 	  SPI driver for Nvidia Tegra20 Serial flash Controller interface.
+ 	  The main usecase of this controller is to use spi flash as boot
+@@ -560,7 +557,7 @@ config SPI_TEGRA20_SFLASH
+ config SPI_TEGRA20_SLINK
+ 	tristate "Nvidia Tegra20/Tegra30 SLINK Controller"
+ 	depends on (ARCH_TEGRA && TEGRA20_APB_DMA) || COMPILE_TEST
+-	depends on RESET_CONTROLLER && HAS_DMA
++	depends on HAS_DMA
+ 	help
+ 	  SPI driver for Nvidia Tegra20/Tegra30 SLINK Controller interface.
+ 
+diff --git a/drivers/thermal/Kconfig b/drivers/thermal/Kconfig
+index af40db0df58e..e89fd2dfef81 100644
+--- a/drivers/thermal/Kconfig
++++ b/drivers/thermal/Kconfig
+@@ -157,8 +157,7 @@ config SPEAR_THERMAL
+ 
+ config ROCKCHIP_THERMAL
+ 	tristate "Rockchip thermal driver"
+-	depends on ARCH_ROCKCHIP
+-	depends on RESET_CONTROLLER
++	depends on ARCH_ROCKCHIP || COMPILE_TEST
+ 	help
+ 	  Rockchip thermal driver provides support for Temperature sensor
+ 	  ADC (TS-ADC) found on Rockchip SoCs. It supports one critical
+diff --git a/drivers/usb/phy/Kconfig b/drivers/usb/phy/Kconfig
+index 52d3d58252e1..aabbf02c54bc 100644
+--- a/drivers/usb/phy/Kconfig
++++ b/drivers/usb/phy/Kconfig
+@@ -140,7 +140,6 @@ config USB_ISP1301
+ config USB_MSM_OTG
+ 	tristate "Qualcomm on-chip USB OTG controller support"
+ 	depends on (USB || USB_GADGET) && (ARCH_MSM || ARCH_QCOM || COMPILE_TEST)
+-	depends on RESET_CONTROLLER
+ 	select USB_PHY
+ 	help
+ 	  Enable this to support the USB OTG transceiver on Qualcomm chips. It
+diff --git a/include/linux/reset.h b/include/linux/reset.h
+index da5602bd77d7..72b9d4b67023 100644
+--- a/include/linux/reset.h
++++ b/include/linux/reset.h
+@@ -40,50 +40,73 @@ struct reset_control *of_reset_control_get(struct device_node *node,
+ 
+ #else
+ 
++static inline struct reset_control *reset_control_get(struct device *dev, const char *id)
++{
++	return ERR_PTR(-ENOSYS);
++}
 +
-+		writel_relaxed(mask, controller->base + QUP_OPERATIONAL_MASK);
-+	}
++static inline struct reset_control *devm_reset_control_get(struct device *dev, const char *id)
++{
++	return ERR_PTR(-ENOSYS);
++}
 +
++static inline int __must_check device_reset(struct device *dev)
++{
++	return -ENOSYS;
++}
++
+ static inline int reset_control_reset(struct reset_control *rstc)
+ {
+-	WARN_ON(1);
++	WARN_ON(rstc != NULL);
  	return 0;
  }
  
-@@ -452,6 +610,11 @@ static int spi_qup_transfer_one(struct spi_master *master,
- 	controller->tx_bytes = 0;
- 	spin_unlock_irqrestore(&controller->lock, flags);
- 
-+	if (controller->dma_available) {
-+		ret = spi_qup_do_dma(master, xfer);
-+		goto exit;
-+	}
-+
- 	if (spi_qup_set_state(controller, QUP_STATE_RUN)) {
- 		dev_warn(controller->dev, "cannot set RUN state\n");
- 		goto exit;
-@@ -471,6 +634,7 @@ static int spi_qup_transfer_one(struct spi_master *master,
- 
- 	if (!wait_for_completion_timeout(&controller->done, timeout))
- 		ret = -ETIMEDOUT;
-+
- exit:
- 	spi_qup_set_state(controller, QUP_STATE_RESET);
- 	spin_lock_irqsave(&controller->lock, flags);
-@@ -478,6 +642,100 @@ exit:
- 	if (!ret)
- 		ret = controller->error;
- 	spin_unlock_irqrestore(&controller->lock, flags);
-+
-+	return ret;
-+}
-+
-+static bool spi_qup_can_dma(struct spi_master *master, struct spi_device *spi,
-+			    struct spi_transfer *xfer)
-+{
-+	struct spi_qup *qup = spi_master_get_devdata(master);
-+	size_t dma_align = dma_get_cache_alignment();
-+	int n_words, w_size;
-+
-+	qup->dma_available = 0;
-+
-+	if (xfer->rx_buf && xfer->len % qup->in_blk_sz)
-+		return false;
-+
-+	if (xfer->tx_buf && xfer->len % qup->out_blk_sz)
-+		return false;
-+
-+	if (IS_ERR_OR_NULL(master->dma_rx) || IS_ERR_OR_NULL(master->dma_tx))
-+		return false;
-+
-+	if (!IS_ALIGNED((size_t)xfer->tx_buf, dma_align) ||
-+	    !IS_ALIGNED((size_t)xfer->rx_buf, dma_align))
-+		return false;
-+
-+	w_size = spi_qup_get_word_sz(xfer);
-+	n_words = xfer->len / w_size;
-+
-+	/* will use fifo mode */
-+	if (n_words <= (qup->in_fifo_sz / sizeof(u32)))
-+		return false;
-+
-+	qup->dma_available = 1;
-+
-+	return true;
-+}
-+
-+static void spi_qup_release_dma(struct spi_master *master)
-+{
-+	if (!IS_ERR_OR_NULL(master->dma_rx))
-+		dma_release_channel(master->dma_rx);
-+	if (!IS_ERR_OR_NULL(master->dma_tx))
-+		dma_release_channel(master->dma_tx);
-+}
-+
-+static int spi_qup_init_dma(struct spi_master *master, resource_size_t base)
-+{
-+	struct spi_qup *spi = spi_master_get_devdata(master);
-+	struct dma_slave_config *rx_conf = &spi->rx_conf,
-+				*tx_conf = &spi->tx_conf;
-+	struct device *dev = spi->dev;
-+	int ret;
-+
-+	/* allocate dma resources, if available */
-+	master->dma_rx = dma_request_slave_channel_reason(dev, "rx");
-+	if (IS_ERR(master->dma_rx))
-+		return PTR_ERR(master->dma_rx);
-+
-+	master->dma_tx = dma_request_slave_channel_reason(dev, "tx");
-+	if (IS_ERR(master->dma_tx)) {
-+		ret = PTR_ERR(master->dma_tx);
-+		goto err_tx;
-+	}
-+
-+	/* set DMA parameters */
-+	rx_conf->direction = DMA_DEV_TO_MEM;
-+	rx_conf->device_fc = 1;
-+	rx_conf->src_addr = base + QUP_INPUT_FIFO;
-+	rx_conf->src_maxburst = spi->in_blk_sz;
-+
-+	tx_conf->direction = DMA_MEM_TO_DEV;
-+	tx_conf->device_fc = 1;
-+	tx_conf->dst_addr = base + QUP_OUTPUT_FIFO;
-+	tx_conf->dst_maxburst = spi->out_blk_sz;
-+
-+	ret = dmaengine_slave_config(master->dma_rx, rx_conf);
-+	if (ret) {
-+		dev_err(dev, "failed to configure RX channel\n");
-+		goto err;
-+	}
-+
-+	ret = dmaengine_slave_config(master->dma_tx, tx_conf);
-+	if (ret) {
-+		dev_err(dev, "failed to configure TX channel\n");
-+		goto err;
-+	}
-+
-+	return 0;
-+
-+err:
-+	dma_release_channel(master->dma_tx);
-+err_tx:
-+	dma_release_channel(master->dma_rx);
- 	return ret;
+ static inline int reset_control_assert(struct reset_control *rstc)
+ {
+-	WARN_ON(1);
++	WARN_ON(rstc != NULL);
+ 	return 0;
  }
  
-@@ -553,6 +811,8 @@ static int spi_qup_probe(struct platform_device *pdev)
- 	master->transfer_one = spi_qup_transfer_one;
- 	master->dev.of_node = pdev->dev.of_node;
- 	master->auto_runtime_pm = true;
-+	master->dma_alignment = dma_get_cache_alignment();
-+	master->max_dma_len = SPI_MAX_DMA_XFER;
+ static inline int reset_control_deassert(struct reset_control *rstc)
+ {
+-	WARN_ON(1);
++	WARN_ON(rstc != NULL);
+ 	return 0;
+ }
  
- 	platform_set_drvdata(pdev, master);
+ static inline int reset_control_status(struct reset_control *rstc)
+ {
+-	WARN_ON(1);
++	WARN_ON(rstc != NULL);
+ 	return 0;
+ }
  
-@@ -621,10 +881,16 @@ static int spi_qup_probe(struct platform_device *pdev)
- 	writel_relaxed(0, base + SPI_CONFIG);
- 	writel_relaxed(SPI_IO_C_NO_TRI_STATE, base + SPI_IO_CONTROL);
+ static inline void reset_control_put(struct reset_control *rstc)
+ {
+-	WARN_ON(1);
++	WARN_ON(rstc != NULL);
+ }
  
-+	ret = spi_qup_init_dma(master, res->start);
-+	if (ret == -EPROBE_DEFER)
-+		goto error;
-+	else if (!ret)
-+		master->can_dma = spi_qup_can_dma;
+ static inline int device_reset_optional(struct device *dev)
+ {
+-	return -ENOSYS;
++	if (of_property_read_bool(dev->of_node, "resets"))
++		return -ENOSYS;
 +
- 	ret = devm_request_irq(dev, irq, spi_qup_qup_irq,
- 			       IRQF_TRIGGER_HIGH, pdev->name, controller);
- 	if (ret)
--		goto error;
-+		goto error_dma;
++	return 0;
+ }
  
- 	pm_runtime_set_autosuspend_delay(dev, MSEC_PER_SEC);
- 	pm_runtime_use_autosuspend(dev);
-@@ -639,6 +905,8 @@ static int spi_qup_probe(struct platform_device *pdev)
++/*
++ * We intentionally return NULL here when no resets are specified
++ * or when building without DT, which is interpreted as 'success'
++ * if reset controller support is left out from the kernel.
++ */
+ static inline struct reset_control *reset_control_get_optional(
+ 					struct device *dev, const char *id)
+ {
+-	return ERR_PTR(-ENOSYS);
++	return ERR_PTR(device_reset_optional(dev));
+ }
  
- disable_pm:
- 	pm_runtime_disable(&pdev->dev);
-+error_dma:
-+	spi_qup_release_dma(master);
- error:
- 	clk_disable_unprepare(cclk);
- 	clk_disable_unprepare(iclk);
-@@ -730,6 +998,8 @@ static int spi_qup_remove(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
+ static inline struct reset_control *devm_reset_control_get_optional(
+ 					struct device *dev, const char *id)
+ {
+-	return ERR_PTR(-ENOSYS);
++	return reset_control_get_optional(dev, id);
+ }
  
-+	spi_qup_release_dma(master);
-+
- 	clk_disable_unprepare(controller->cclk);
- 	clk_disable_unprepare(controller->iclk);
- 
--- 
-1.7.0.4
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+ static inline struct reset_control *of_reset_control_get(
+diff --git a/sound/soc/tegra/Kconfig b/sound/soc/tegra/Kconfig
+index a6768f832c6f..70f58bd43a56 100644
+--- a/sound/soc/tegra/Kconfig
++++ b/sound/soc/tegra/Kconfig
+@@ -2,7 +2,6 @@ config SND_SOC_TEGRA
+ 	tristate "SoC Audio for the Tegra System-on-Chip"
+ 	depends on (ARCH_TEGRA && TEGRA20_APB_DMA) || COMPILE_TEST
+ 	depends on COMMON_CLK
+-	depends on RESET_CONTROLLER
+ 	select REGMAP_MMIO
+ 	select SND_SOC_GENERIC_DMAENGINE_PCM
+ 	help

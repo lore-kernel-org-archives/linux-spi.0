@@ -1,66 +1,75 @@
-From: Torsten Fleischer <torfl6749-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 1/1] spi: atmel: Fix interrupt setup for PDC transfers
-Date: Tue, 24 Feb 2015 16:32:57 +0100
-Message-ID: <1424791977-2178-1-git-send-email-torfl6749@gmail.com>
-Cc: Torsten Fleischer <torfl6749-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+From: Stanimir Varbanov <stanimir.varbanov-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2] spi: qup: Add DMA capabilities
+Date: Tue, 24 Feb 2015 18:08:54 +0200
+Message-ID: <54ECA216.306@linaro.org>
+References: <1424782803-13103-1-git-send-email-stanimir.varbanov@linaro.org> <20150224135622.GH6236@finisterre.sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Andy Gross <agross-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Sagar Dharia <sdharia-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Daniel Sneddon <dsneddon-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150224135622.GH6236-bheZrs9scGb3/WHNxyQH9YN0K6Il/+VY@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Torsten Fleischer <torfl6749-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+On 02/24/2015 03:56 PM, Mark Brown wrote:
+> On Tue, Feb 24, 2015 at 03:00:03PM +0200, Stanimir Varbanov wrote:
+> 
+>> +static void spi_qup_dma_done(void *data)
+>> +{
+>> +	struct spi_qup *qup = data;
+>> +
+>> +	if (atomic_dec_and_test(&qup->dma_outstanding))
+>> +		complete(&qup->done);
+>> +}
+> 
+> I'm finding it hard to be thrilled about the use of atomics for
+> synchronization (they're just generally hard to work with) and...
+> 
+>> +	cookie = dmaengine_submit(desc);
+>> +	ret = dma_submit_error(cookie);
+>> +	if (ret)
+>> +		return ret;
+> 
+>> +	atomic_inc(&qup->dma_outstanding);
+> 
+> ..don't we have two potential races here: one if somehow the DMA manages
+> to complete prior to the atomic_inc() (unlikely but that's what race
+> conditions are all about really) and one if we are issuing multiple DMAs
+> and the early ones complete before the later ones are issued?
+> 
 
-Additionally to the current DMA transfer the PDC allows to set up a next DMA
-transfer. This is useful for larger SPI transfers.
+yes, there is a potential race between atomic_inc and dma callback. I
+reordered these calls to save few checks, and now it returns to me.
 
-The driver currently waits for ENDRX as end of the transfer. But ENDRX is set
-when the current DMA transfer is done (RCR = 0), i.e. it doesn't include the
-next DMA transfer.
-Thus a subsequent SPI transfer could be started although there is currently a
-transfer in progress. This can cause invalid accesses to the SPI slave devices
-and to SPI transfer errors.
+I imagine few options here:
 
-This issue has been observed on a hardware with a M25P128 SPI NOR flash.
+ - reorder the dmaengine calls and atomic operations, i.e.
+call atomic_inc for rx and tx channels before corresponding
+dmaengine_submit and dmaengine_issue_pending.
 
-So instead of ENDRX we should wait for RXBUFF. This flag is set if there is
-no more DMA transfer in progress (RCR = RNCR = 0).
+ - have two different dma callbacks and two completions and waiting for
+the two.
 
-Signed-off-by: Torsten Fleischer <torfl6749-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spi-atmel.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ - manage to receive only one dma callback, i.e. the last transfer in
+case of presence of the rx_buf and tx_buf at the same time.
 
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 9af7841..06de340 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -764,17 +764,17 @@ static void atmel_spi_pdc_next_xfer(struct spi_master *master,
- 			(unsigned long long)xfer->rx_dma);
- 	}
- 
--	/* REVISIT: We're waiting for ENDRX before we start the next
-+	/* REVISIT: We're waiting for RXBUFF before we start the next
- 	 * transfer because we need to handle some difficult timing
--	 * issues otherwise. If we wait for ENDTX in one transfer and
--	 * then starts waiting for ENDRX in the next, it's difficult
--	 * to tell the difference between the ENDRX interrupt we're
--	 * actually waiting for and the ENDRX interrupt of the
-+	 * issues otherwise. If we wait for TXBUFE in one transfer and
-+	 * then starts waiting for RXBUFF in the next, it's difficult
-+	 * to tell the difference between the RXBUFF interrupt we're
-+	 * actually waiting for and the RXBUFF interrupt of the
- 	 * previous transfer.
- 	 *
- 	 * It should be doable, though. Just not now...
- 	 */
--	spi_writel(as, IER, SPI_BIT(ENDRX) | SPI_BIT(OVRES));
-+	spi_writel(as, IER, SPI_BIT(RXBUFF) | SPI_BIT(OVRES));
- 	spi_writel(as, PTCR, SPI_BIT(TXTEN) | SPI_BIT(RXTEN));
- }
- 
--- 
-2.1.4
+ - let me see for better solution.
+
+Thanks for the comments.
+
+regards,
+Stan
+
+
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

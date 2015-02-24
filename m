@@ -1,70 +1,49 @@
-From: Torsten Fleischer <torfl6749-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 1/1] spi: atmel: Fix interrupt setup for PDC transfers
-Date: Tue, 24 Feb 2015 13:26:20 +0100
-Message-ID: <CANZ4BrSBnE78Z8WeNvRhEZRdxKMhToxpwcSvf0cLpZLJxGA78Q@mail.gmail.com>
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [PATCH v1 5/5] spi: dw: move to SPI core message handling
+Date: Tue, 24 Feb 2015 14:58:58 +0200
+Message-ID: <1424782738.14897.22.camel@linux.intel.com>
+References: <1424777534-14246-1-git-send-email-andriy.shevchenko@linux.intel.com>
+	 <1424777534-14246-6-git-send-email-andriy.shevchenko@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-To: "nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org" <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Torsten Fleischer <torfl6749-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1424777534-14246-6-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Additionally to the current DMA transfer the PDC allows to set up a next DMA
-transfer. This is useful for larger SPI transfers.
+On Tue, 2015-02-24 at 13:32 +0200, Andy Shevchenko wrote:
+> This patch removes a lot of duplicate code since SPI core provides a nice
+> message handling.
+> 
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 
-The driver currently waits for ENDRX as end of the transfer. But ENDRX is set
-when the current DMA transfer is done (RCR = 0), i.e. it doesn't include the
-next DMA transfer.
-Thus a subsequent SPI transfer could be started although there is currently a
-transfer in progress. This can cause invalid accesses to the SPI slave devices
-and to SPI transfer errors.
+> -void dw_spi_xfer_done(struct dw_spi *dws)
+> -{
+> -	/* Update total byte transferred return count actual bytes read */
+> -	dws->cur_msg->actual_length += dws->len;
+> -
+> -	/* Move to next transfer */
+> -	dws->cur_msg->state = next_transfer(dws);
+> -
+> -	/* Handle end of message */
+> -	if (dws->cur_msg->state == DONE_STATE) {
+> -		dws->cur_msg->status = 0;
+> -		giveback(dws);
+> -	} else
+> -		tasklet_schedule(&dws->pump_transfers);
+> -}
+> -EXPORT_SYMBOL_GPL(dw_spi_xfer_done);
 
-This issue has been observed on a hardware with a M25P128 SPI NOR flash.
+This one should be removed from spi-dw.h as well.
 
-So instead of ENDRX we should wait for RXBUFF. This flag is set if there is
-no more DMA transfer in progress (RCR = RNCR = 0).
-
-Signed-off-by: Torsten Fleischer <torfl6749-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spi-atmel.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 9af7841..06de340 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -764,17 +764,17 @@ static void atmel_spi_pdc_next_xfer(struct
-spi_master *master,
-  (unsigned long long)xfer->rx_dma);
-  }
-
-- /* REVISIT: We're waiting for ENDRX before we start the next
-+ /* REVISIT: We're waiting for RXBUFF before we start the next
-  * transfer because we need to handle some difficult timing
-- * issues otherwise. If we wait for ENDTX in one transfer and
-- * then starts waiting for ENDRX in the next, it's difficult
-- * to tell the difference between the ENDRX interrupt we're
-- * actually waiting for and the ENDRX interrupt of the
-+ * issues otherwise. If we wait for TXBUFE in one transfer and
-+ * then starts waiting for RXBUFF in the next, it's difficult
-+ * to tell the difference between the RXBUFF interrupt we're
-+ * actually waiting for and the RXBUFF interrupt of the
-  * previous transfer.
-  *
-  * It should be doable, though. Just not now...
-  */
-- spi_writel(as, IER, SPI_BIT(ENDRX) | SPI_BIT(OVRES));
-+ spi_writel(as, IER, SPI_BIT(RXBUFF) | SPI_BIT(OVRES));
-  spi_writel(as, PTCR, SPI_BIT(TXTEN) | SPI_BIT(RXTEN));
- }
 
 -- 
-2.1.4
+Andy Shevchenko <andriy.shevchenko-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Intel Finland Oy
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

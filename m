@@ -1,79 +1,64 @@
-From: "Ivan T. Ivanov" <iivanov@mm-sol.com>
-Subject: Re: [PATCH v2] spi: qup: Add DMA capabilities
-Date: Tue, 24 Feb 2015 19:11:56 +0200
-Message-ID: <1424797916.2340.19.camel@mm-sol.com>
-References: <1424782803-13103-1-git-send-email-stanimir.varbanov@linaro.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-spi@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Kumar Gala <galak@codeaurora.org>,
-	Andy Gross <agross@codeaurora.org>,
-	Sagar Dharia <sdharia@codeaurora.org>,
-	Daniel Sneddon <dsneddon@codeaurora.org>
-To: Stanimir Varbanov <stanimir.varbanov@linaro.org>
-Return-path: <linux-arm-msm-owner@vger.kernel.org>
-In-Reply-To: <1424782803-13103-1-git-send-email-stanimir.varbanov@linaro.org>
-Sender: linux-arm-msm-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH v1 1/1] spi: dw: revisit FIFO size detection again
+Date: Tue, 24 Feb 2015 20:43:08 +0200
+Message-ID: <1424803388-6033-1-git-send-email-andriy.shevchenko@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>, stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+The commit d297933cc7fc (spi: dw: Fix detecting FIFO depth) tries to fix the
+logic of the FIFO detection based on the description on the comments. However,
+there is a slight difference between numbers in TX Level and TX FIFO size.
 
-Hi Stan, 
+So, by specification the FIFO size would be in a range 2-256 bytes. From TX
+Level prospective it means we can set threshold in the range 0-(FIFO size - 1)
+bytes. Hence there are currently two issues:
+  a) FIFO size 2 bytes is actually skipped since TX Level is 1 bit and could be
+     either 0 or 1 byte;
+  b) FIFO size is incorrectly decreased by 1 which already done by meaning of
+     TX Level register.
 
-Sorry I didn't saw this first look.
+This patch fixes it eventually right.
 
-On Tue, 2015-02-24 at 15:00 +0200, Stanimir Varbanov wrote:
+Fixes: d297933cc7fc (spi: dw: Fix detecting FIFO depth)
+Cc: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Cc: stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+---
 
-<snip>
+Shame on me I somehow missed this when tested mentioned patch.
 
-> 
-> +static bool spi_qup_can_dma(struct spi_master *master, struct spi_device *spi,
-> +                                                       struct spi_transfer *xfer)
-> +{
-> +       struct spi_qup *qup = spi_master_get_devdata(master);
-> +       size_t dma_align = dma_get_cache_alignment();
-> +       int n_words, w_size;
-> +
-> +       qup->dma_available = 0;
-> +
-> +       if (xfer->rx_buf && xfer->len % qup->in_blk_sz)
-> +               return false;
-> +
-> +       if (xfer->tx_buf && xfer->len % qup->out_blk_sz)
-> +               return false;
-> +
+ drivers/spi/spi-dw.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Actually we can end up here with tx_buf or rx_buf to be NULL.
-Which voids my previous comments about these pointers.
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index 0257dd1..ba9773d 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -494,14 +494,14 @@ static void spi_hw_init(struct device *dev, struct dw_spi *dws)
+ 	if (!dws->fifo_len) {
+ 		u32 fifo;
+ 
+-		for (fifo = 2; fifo <= 256; fifo++) {
++		for (fifo = 1; fifo <= 256; fifo++) {
+ 			dw_writew(dws, DW_SPI_TXFLTR, fifo);
+ 			if (fifo != dw_readw(dws, DW_SPI_TXFLTR))
+ 				break;
+ 		}
+ 		dw_writew(dws, DW_SPI_TXFLTR, 0);
+ 
+-		dws->fifo_len = (fifo == 2) ? 0 : fifo - 1;
++		dws->fifo_len = (fifo == 1) ? 0 : fifo;
+ 		dev_dbg(dev, "Detected FIFO size: %u bytes\n", dws->fifo_len);
+ 	}
+ }
+-- 
+2.1.4
 
-It will be simpler if you just check transfer length.
-
-And better return false if both are NULL.
-
-> +       if (IS_ERR_OR_NULL(master->dma_rx) || IS_ERR_OR_NULL(master->dma_tx))
-> +               return false;
-> +
-> +       if (!IS_ALIGNED((size_t)xfer->tx_buf, dma_align) ||
-> +                                       !IS_ALIGNED((size_t)xfer->rx_buf, dma_align))
-> +               return false;
-
-Testing NULL for alignment is fine, right?
-
-> +       w_size = spi_qup_get_word_sz(xfer);
-> +       n_words = xfer->len / w_size;
-> +
-> +       /* will use fifo mode */
-> +       if (n_words <= (qup->in_fifo_sz / sizeof(u32)))
-> +               return false;
-> +
-> +       qup->dma_available = 1;
-> +
-> +       return true;
-> +}
-> +
-
-Regards,
-Ivan
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

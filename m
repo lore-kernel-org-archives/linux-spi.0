@@ -1,7 +1,7 @@
 From: Axel Lin <axel.lin@ingics.com>
 Subject: Re: [PATCH v1 1/1] spi: dw: revisit FIFO size detection again
-Date: Wed, 25 Feb 2015 07:45:16 +0800
-Message-ID: <CAFRkauC4KuNpx08u0GJEEY68GTwFo3oskN0sfEoZLt4_z1FVmQ@mail.gmail.com>
+Date: Wed, 25 Feb 2015 12:53:54 +0800
+Message-ID: <CAFRkauBykVRaS9nEKTw-opYoe6z50eA=qwg74nBB1y9tzMm4gg@mail.gmail.com>
 References: <1424803388-6033-1-git-send-email-andriy.shevchenko@linux.intel.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -33,5 +33,26 @@ List-Id: linux-spi.vger.kernel.org
 > Cc: Axel Lin <axel.lin@ingics.com>
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>
+> Shame on me I somehow missed this when tested mentioned patch.
+>
+>  drivers/spi/spi-dw.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+> index 0257dd1..ba9773d 100644
+> --- a/drivers/spi/spi-dw.c
+> +++ b/drivers/spi/spi-dw.c
+> @@ -494,14 +494,14 @@ static void spi_hw_init(struct device *dev, struct dw_spi *dws)
+>         if (!dws->fifo_len) {
+>                 u32 fifo;
+>
+> -               for (fifo = 2; fifo <= 256; fifo++) {
+> +               for (fifo = 1; fifo <= 256; fifo++) {
 
-Reviewed-by: Axel Lin <axel.lin@ingics.com>
+I think the upper bound of the for loop should be 255 (FIFO size - 1)
+for (fifo = 1; fifo <= 255; fifo++) {
+so if writting 255 to DW_SPI_TXFLTR success, fifo_len is 256.
+
+no need to test writing 256 to  DW_SPI_TXFLTR.

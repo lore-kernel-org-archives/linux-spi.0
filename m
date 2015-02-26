@@ -1,77 +1,75 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v1 1/1] spi: clarify what driver can do with
- message->status
-Date: Thu, 26 Feb 2015 11:48:12 +0900
-Message-ID: <20150226024812.GK6236@finisterre.sirena.org.uk>
-References: <1424772249-9676-1-git-send-email-andriy.shevchenko@linux.intel.com>
- <20150224132411.GF6236@finisterre.sirena.org.uk>
- <1424784807.14897.24.camel@linux.intel.com>
- <20150224141706.GK6236@finisterre.sirena.org.uk>
- <1424788527.14897.27.camel@linux.intel.com>
+From: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/7] ARM: vf610: add second DSPI instance
+Date: Thu, 26 Feb 2015 16:02:20 +0800
+Message-ID: <20150226080217.GG20028@dragon>
+References: <1422356244-15629-1-git-send-email-bhuvanchandra.dv@toradex.com>
+ <1422356244-15629-2-git-send-email-bhuvanchandra.dv@toradex.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="kW8VbOAxhix4S1vC"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: mark.rutland-5wv7dgnIgG8@public.gmane.org, stefan-XLVq0VzYD2Y@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	pawel.moll-5wv7dgnIgG8@public.gmane.org, ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org,
+	galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org, linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	B44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org, Li.Xiubo-KZfg59tc24xl57MIdRCFDg@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Bhuvanchandra DV <bhuvanchandra.dv-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1424788527.14897.27.camel-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <1422356244-15629-2-git-send-email-bhuvanchandra.dv-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Tue, Jan 27, 2015 at 04:27:18PM +0530, Bhuvanchandra DV wrote:
+> Acked-by: Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>
+> Signed-off-by: Bhuvanchandra DV <bhuvanchandra.dv-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
 
---kW8VbOAxhix4S1vC
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Applied, thanks.
 
-On Tue, Feb 24, 2015 at 04:35:27PM +0200, Andy Shevchenko wrote:
-> On Tue, 2015-02-24 at 23:17 +0900, Mark Brown wrote:
-
-> > ...which suggests that anything detecting an error should report it via
-> > status, no?
-
-> Unclear. I dived into spi.c to understand if I could override or not.
-> There are two fields status and state, the latter is dedicated for an
-> actual driver usage, and that is clear. Many (old) drivers are using
-> state as a storage for custom status. Newer drivers, that are using SPI
-> core, mostly don't care about error handling at all (at least I didn't
-> find an existing example of the message->status usage).
-
-This isn't something specific to modern drivers, the status field has
-been there since forever and is still widely used.  Almost all error
-detection for SPI controllers (especially that's likely to trigger and
-therefore have a practical effect) is timeouts and that's been factored
-out into the core for the more modern drivers.
-
-> > > > I'd also expect this to go with the other kerneldoc for the field.
-
-> > > Any place that suits better.
-
-> > Well, see above...
-
-> Regarding my above comment can we extend the description of the field
-> then?
-
-Let's see what a patch looks like.  I am wary of documentation that's
-too verbose since it can cause people to glaze over when reading it.
-
---kW8VbOAxhix4S1vC
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJU7olrAAoJECTWi3JdVIfQqbwH/1vvZww01umZqtbrKmFbfSmS
-B+moUmiBoFlNaCxPt9EGWSxJv8JoewP/R8OSQpm7UhaV2q0FGtKCgnnlkuab9YCg
-nFNBR1VA+vdvCmNgbJrSuvha9AwZmmbJcthgWEX+JAJVhq5JknPuwGdZg0N9/E1u
-fPiRNHcDS6rGPK4OjUDHFBMb+1V/42j1HyrAbF8YdR0XXHo7zHYtpJ9JmY5qgKnv
-PHblvwV5FkWOFc+FzIGZ4S1L16Kl8sXV9hHT9MNRdMvZeNKqATj3Y3zr/tXIc39D
-dTDWBe7MTgNhAXY5g4Kc6BdVfYswYtUIj9ru86UuzZ8ty0FG+JmKl1YXf8ebZYQ=
-=zHz5
------END PGP SIGNATURE-----
-
---kW8VbOAxhix4S1vC--
+> ---
+>  arch/arm/boot/dts/vf500.dtsi |  4 ++++
+>  arch/arm/boot/dts/vfxxx.dtsi | 11 +++++++++++
+>  2 files changed, 15 insertions(+)
+> 
+> diff --git a/arch/arm/boot/dts/vf500.dtsi b/arch/arm/boot/dts/vf500.dtsi
+> index 1dbf8d2..f5f807c 100644
+> --- a/arch/arm/boot/dts/vf500.dtsi
+> +++ b/arch/arm/boot/dts/vf500.dtsi
+> @@ -66,6 +66,10 @@
+>  	interrupts = <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>;
+>  };
+>  
+> +&dspi1 {
+> +	interrupts = <GIC_SPI 68 IRQ_TYPE_LEVEL_HIGH>;
+> +};
+> +
+>  &edma0 {
+>  	interrupts = <GIC_SPI 8 IRQ_TYPE_LEVEL_HIGH>,
+>  			<GIC_SPI 9 IRQ_TYPE_LEVEL_HIGH>;
+> diff --git a/arch/arm/boot/dts/vfxxx.dtsi b/arch/arm/boot/dts/vfxxx.dtsi
+> index a29c7ce..789744b 100644
+> --- a/arch/arm/boot/dts/vfxxx.dtsi
+> +++ b/arch/arm/boot/dts/vfxxx.dtsi
+> @@ -139,6 +139,17 @@
+>  				status = "disabled";
+>  			};
+>  
+> +			dspi1: dspi1@4002d000 {
+> +				#address-cells = <1>;
+> +				#size-cells = <0>;
+> +				compatible = "fsl,vf610-dspi";
+> +				reg = <0x4002d000 0x1000>;
+> +				clocks = <&clks VF610_CLK_DSPI1>;
+> +				clock-names = "dspi";
+> +				spi-num-chipselects = <5>;
+> +				status = "disabled";
+> +			};
+> +
+>  			sai2: sai@40031000 {
+>  				compatible = "fsl,vf610-sai";
+>  				reg = <0x40031000 0x1000>;
+> -- 
+> 2.2.2
+> 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

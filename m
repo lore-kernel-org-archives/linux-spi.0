@@ -1,75 +1,53 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2] spi: qup: Add DMA capabilities
-Date: Thu, 26 Feb 2015 11:33:17 +0900
-Message-ID: <20150226023317.GE6236@finisterre.sirena.org.uk>
-References: <1424782803-13103-1-git-send-email-stanimir.varbanov@linaro.org>
- <20150224135622.GH6236@finisterre.sirena.org.uk>
- <54ECA216.306@linaro.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/1] spi: atmel: Fix interrupt setup for PDC transfers
+Date: Thu, 26 Feb 2015 11:34:38 +0900
+Message-ID: <20150226023438.GF6236@finisterre.sirena.org.uk>
+References: <1424791977-2178-1-git-send-email-torfl6749@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="LuH5Zozo3bmn6wjd"
-Cc: linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
-	Rob Herring <robh+dt@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Kumar Gala <galak@codeaurora.org>,
-	Andy Gross <agross@codeaurora.org>,
-	Sagar Dharia <sdharia@codeaurora.org>,
-	Daniel Sneddon <dsneddon@codeaurora.org>
-To: Stanimir Varbanov <stanimir.varbanov@linaro.org>
-Return-path: <linux-arm-msm-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="mew6/suNvUayQDfo"
+Cc: nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Torsten Fleischer <torfl6749-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <54ECA216.306@linaro.org>
-Sender: linux-arm-msm-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1424791977-2178-1-git-send-email-torfl6749-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---LuH5Zozo3bmn6wjd
+--mew6/suNvUayQDfo
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 24, 2015 at 06:08:54PM +0200, Stanimir Varbanov wrote:
+On Tue, Feb 24, 2015 at 04:32:57PM +0100, Torsten Fleischer wrote:
+> From: Torsten Fleischer <torfl6749-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+>=20
+> Additionally to the current DMA transfer the PDC allows to set up a next =
+DMA
+> transfer. This is useful for larger SPI transfers.
 
-> yes, there is a potential race between atomic_inc and dma callback. I
-> reordered these calls to save few checks, and now it returns to me.
+Applied, thanks.
 
-> I imagine few options here:
-
->  - reorder the dmaengine calls and atomic operations, i.e.
-> call atomic_inc for rx and tx channels before corresponding
-> dmaengine_submit and dmaengine_issue_pending.
-
->  - have two different dma callbacks and two completions and waiting for
-> the two.
-
->  - manage to receive only one dma callback, i.e. the last transfer in
-> case of presence of the rx_buf and tx_buf at the same time.
-
->  - let me see for better solution.
-
-Any solution which doesn't make use of atomics is likely to be better,
-as I said they are enormously error prone.  A more common approach is a
-single completion triggering on the RX (for RX only or bidirectional
-transfers) or TX if that's the only thing active.  For most hardware you
-can just use the RX to manage completion since it must of necessity
-complete at the same time as or later than the transmit side, transmit
-often completes early since the DMA completes when the FIFO is full not
-when the data is on the wire.
-
---LuH5Zozo3bmn6wjd
+--mew6/suNvUayQDfo
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJU7oXsAAoJECTWi3JdVIfQ6dEH/i01U4dPHFLAyECWxZgarSWL
-6/8J05YeGghSPz6NRFt5yjegy/vuTyyEptgrKzyy+hd23Iq6bl7RMa28YbEuAd8m
-9gsa/azVnI7RIPoh8qkyjTSceF6kEe4OJ0C46V6gvBjS4mwHyUWH8nJOYX9AL45q
-izl6VvwhTOZXZtZaCm9mSw48Q8bhL7r0/NJL6ysa3Di3oYQNZ0cfIlhuzmy73NqT
-zr9e+2LEJzQm4oXS30GxJD0Eu4eH2Pq5k9yJZm9DoAfmQVY9+VIZmQ4C9IhP/VYB
-Cc4APLjLaEQZb92RwdcHa4rbTNlwhnBSkY+SnMigDN4q0n1TamEslat1tcctXcI=
-=x3K5
+iQEcBAEBCAAGBQJU7oY9AAoJECTWi3JdVIfQyDUH/i8Qyz41y0S6c/RoZyjgWEgY
+tePLzFst1TF5Zo054cfOdlmLucgtG5eBlDkpuGdOXWswn66DX8ds/oDLc9Y4dsCp
+A2pBjb3CQvCFRW2wb+KR2E0Bvr8a0fc0ycrNAJKWuAWay/S6IhlWPmz8B6qLwyCL
+hUsF9l7IamCjTDweFxEXkM/UyXOPaRB5yWVhF4JBB/8ISjudfJoSbafZERrtjjyi
+6tUPeIchqUulpL900zhSmWcMXgqZktQVbBMRqYRMIC7bSGII+KSFLtehC7ovsbfX
+duHEbfCWBmtmgneQIU1U1NxYPH25C7Fc6tFZ4RkhlwIdxCUxUuWukLVTqVTykP0=
+=Osce
 -----END PGP SIGNATURE-----
 
---LuH5Zozo3bmn6wjd--
+--mew6/suNvUayQDfo--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

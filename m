@@ -1,55 +1,50 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: spidev_test: Added functionalities
-Date: Thu, 26 Feb 2015 11:01:06 +0900
-Message-ID: <20150226020106.GU6236@finisterre.sirena.org.uk>
-References: <1424891324-24784-1-git-send-email-adrianremonda@gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2 1/1] spi: dw: revisit FIFO size detection again
+Date: Thu, 26 Feb 2015 11:10:02 +0900
+Message-ID: <20150226021002.GY6236@finisterre.sirena.org.uk>
+References: <1424857176-4711-1-git-send-email-andriy.shevchenko@linux.intel.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="skgCfLFhCSVZJUH9"
-Cc: Jonathan Corbet <corbet@lwn.net>,
-	"open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
-	"open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>
-To: Adrian Remonda <adrianremonda@gmail.com>
-Return-path: <linux-doc-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="bEH3Ad9qdU9b/Xs9"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>,
+	stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1424891324-24784-1-git-send-email-adrianremonda@gmail.com>
-Sender: linux-doc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1424857176-4711-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---skgCfLFhCSVZJUH9
+--bEH3Ad9qdU9b/Xs9
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Feb 25, 2015 at 08:08:44PM +0100, Adrian Remonda wrote:
-> This is a patch that add functionalities to the spidev_test tool found
-> in Documentation/spi/spidev_test.c.
+On Wed, Feb 25, 2015 at 11:39:36AM +0200, Andy Shevchenko wrote:
+> The commit d297933cc7fc (spi: dw: Fix detecting FIFO depth) tries to fix the
+> logic of the FIFO detection based on the description on the comments. However,
+> there is a slight difference between numbers in TX Level and TX FIFO size.
 
-> - Cleaned hexadecimal dump
-> - Added verbose mode to see the transmitting sequence
-> - Added input buffer from the terminal. Now it is possible to send
->   string and hexadecimal data as an input parameter:
+Applied, thanks.
 
-Since this is doing several different things then it should be a series
-of patches rather than a single patch - please see SubmittingPatches for
-advice on how to prepare patches for submission.  It is hard to review
-changes which do more than one thing.
-
---skgCfLFhCSVZJUH9
+--bEH3Ad9qdU9b/Xs9
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJU7n5hAAoJECTWi3JdVIfQNGwH/Ri/NJss2tT7za5c7bGYSEsY
-gu7gJVs9Qssg43WGqCUY+V772seAVfiHfWJgh58rHqY1sCs+W6U3CXJRU+t5py5P
-A02PIxHYem/y1xvP/oIxpZNJV6ajgEd+EJzKeYQHtnjDOfuJtX+KI8DQdUi6lMkD
-SKw7iILDI6xBZ0ghfr3TA1+AWeav8xR7xuc9T6JOnAnRwrseu3s6USSE/4CCqU8W
-veowrLMWVnyXKabp9ggx7XayhHioQ641nrtuLgrdsO8gLD0iIfa88ALb0f6pgEsB
-SG4nalW47MZNxU8a+AkQytElelUlDTwVjdeJcJzlQ5DqFi33+v9h5JDa+splBRE=
-=OlM7
+iQEcBAEBCAAGBQJU7oB5AAoJECTWi3JdVIfQZBQH/RbR1hbcH6fx/kxwotgx/cQG
+yW+bW+kh+XIo1NLINEDSjKwk0+5vCazcWxYwM6r1ocMHdYg4pBJoX2h/YHTaL6VF
+TVISGYgXYBdSI/5Sxe3Qk2rDRAOTG2nr4XZ5j9gEu25M/HP74zLiQV6+bVYKai/t
+ziTRSKnYK9LS5LkoV3L7TFaHmTENBmYzDn+T0ANpHFbYtD0VSLyWXchwyJKpqduN
+iK7AXtkrnVXRA74e8mejIXzRnpxNoP3sZs5v4IWCD+anlX655H4iY0EZLXVQ7v6L
+vSe0Z1b62dGd22kR59DwQa19N+oP+d/jX5UTKQFVyp/Kmg3zphsDeL/hxjIuAtw=
+=ngPW
 -----END PGP SIGNATURE-----
 
---skgCfLFhCSVZJUH9--
+--bEH3Ad9qdU9b/Xs9--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

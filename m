@@ -1,48 +1,112 @@
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [PATCH v1 1/1] spi: clarify what driver can do with
- message->status
-Date: Thu, 26 Feb 2015 15:15:45 +0200
-Message-ID: <1424956545.14897.93.camel@linux.intel.com>
-References: <1424772249-9676-1-git-send-email-andriy.shevchenko@linux.intel.com>
-	 <20150224132411.GF6236@finisterre.sirena.org.uk>
-	 <1424784807.14897.24.camel@linux.intel.com>
-	 <20150224141706.GK6236@finisterre.sirena.org.uk>
-	 <1424788527.14897.27.camel@linux.intel.com>
-	 <20150226024812.GK6236@finisterre.sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+From: Christophe Leroy <christophe.leroy-GgN8y9CXRhA@public.gmane.org>
+Subject: [PATCH] spi: fsl-spi: use of_iomap() to map parameter ram on CPM1
+Date: Thu, 26 Feb 2015 17:11:42 +0100 (CET)
+Message-ID: <20150226161142.D08681A2360@localhost.localdomain>
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150226024812.GK6236-bheZrs9scGb3/WHNxyQH9YN0K6Il/+VY@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, 2015-02-26 at 11:48 +0900, Mark Brown wrote:
-> On Tue, Feb 24, 2015 at 04:35:27PM +0200, Andy Shevchenko wrote:
-> > On Tue, 2015-02-24 at 23:17 +0900, Mark Brown wrote:
->=20
-> > > ...which suggests that anything detecting an error should report =
-it via
-> > > status, no?
+On CPM2, the SPI parameter RAM is dynamically allocated in the dualport RAM
+whereas in CPM1, it is statically allocated to a default address with
+capability to relocate it somewhere else via the use of CPM micropatch.
+The address of the parameter RAM is given by the boot loader and expected
+to be mapped via of_iomap()
 
-=E2=80=A6
+In the current implementation, in function fsl_spi_cpm_get_pram() there is
+a confusion between the SPI_BASE register and the base of the SPI
+parameter RAM. Fortunatly, it is working properly with MPC866 and MPC885
+because they do set SPI_BASE, but on MPC860 and other old MPC8xx that doesn't
+set SPI_BASE, pram_ofs is not properly set.
+Also, the parameter RAM is not properly mapped with of_iomap() as it should
+but still gets accessible by chance through the full RAM which is mapped
+from somewhere else.
 
-> > Regarding my above comment can we extend the description of the fie=
-ld
-> > then?
->=20
-> Let's see what a patch looks like.  I am wary of documentation that's
-> too verbose since it can cause people to glaze over when reading it.
+This patch applies to the SPI driver the same principle as for the CPM UART:
+when the CPM is of type CPM1, we simply do an of_iomap() of the area provided
+via the device tree.
 
-I asked Mika's opinion and he wasn't confused by current description.
-Hence, let's discontinuing this effort.
+Signed-off-by: Christophe Leroy <christophe.leroy-GgN8y9CXRhA@public.gmane.org>
 
---=20
-Andy Shevchenko <andriy.shevchenko-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Intel Finland Oy
+---
+ drivers/spi/spi-fsl-cpm.c | 32 +++++++++++++++-----------------
+ 1 file changed, 15 insertions(+), 17 deletions(-)
+
+diff --git a/drivers/spi/spi-fsl-cpm.c b/drivers/spi/spi-fsl-cpm.c
+index e85ab1c..97c28d7 100644
+--- a/drivers/spi/spi-fsl-cpm.c
++++ b/drivers/spi/spi-fsl-cpm.c
+@@ -264,17 +264,6 @@ static unsigned long fsl_spi_cpm_get_pram(struct mpc8xxx_spi *mspi)
+ 	if (mspi->flags & SPI_CPM2) {
+ 		pram_ofs = cpm_muram_alloc(SPI_PRAM_SIZE, 64);
+ 		out_be16(spi_base, pram_ofs);
+-	} else {
+-		struct spi_pram __iomem *pram = spi_base;
+-		u16 rpbase = in_be16(&pram->rpbase);
+-
+-		/* Microcode relocation patch applied? */
+-		if (rpbase) {
+-			pram_ofs = rpbase;
+-		} else {
+-			pram_ofs = cpm_muram_alloc(SPI_PRAM_SIZE, 64);
+-			out_be16(spi_base, pram_ofs);
+-		}
+ 	}
+ 
+ 	iounmap(spi_base);
+@@ -287,7 +276,6 @@ int fsl_spi_cpm_init(struct mpc8xxx_spi *mspi)
+ 	struct device_node *np = dev->of_node;
+ 	const u32 *iprop;
+ 	int size;
+-	unsigned long pram_ofs;
+ 	unsigned long bds_ofs;
+ 
+ 	if (!(mspi->flags & SPI_CPM_MODE))
+@@ -314,8 +302,17 @@ int fsl_spi_cpm_init(struct mpc8xxx_spi *mspi)
+ 		}
+ 	}
+ 
+-	pram_ofs = fsl_spi_cpm_get_pram(mspi);
+-	if (IS_ERR_VALUE(pram_ofs)) {
++	if (mspi->flags & SPI_CPM1) {
++		mspi->pram = of_iomap(np, 1);
++	} else {
++		unsigned long pram_ofs = fsl_spi_cpm_get_pram(mspi);
++
++		if (IS_ERR_VALUE(pram_ofs))
++			mspi->pram = NULL;
++		else
++			mspi->pram = cpm_muram_addr(pram_ofs);
++	}
++	if (mspi->pram == NULL) {
+ 		dev_err(dev, "can't allocate spi parameter ram\n");
+ 		goto err_pram;
+ 	}
+@@ -341,8 +338,6 @@ int fsl_spi_cpm_init(struct mpc8xxx_spi *mspi)
+ 		goto err_dummy_rx;
+ 	}
+ 
+-	mspi->pram = cpm_muram_addr(pram_ofs);
+-
+ 	mspi->tx_bd = cpm_muram_addr(bds_ofs);
+ 	mspi->rx_bd = cpm_muram_addr(bds_ofs + sizeof(*mspi->tx_bd));
+ 
+@@ -370,7 +365,10 @@ err_dummy_rx:
+ err_dummy_tx:
+ 	cpm_muram_free(bds_ofs);
+ err_bds:
+-	cpm_muram_free(pram_ofs);
++	if (mspi->flags & SPI_CPM1)
++		iounmap(mspi->pram);
++	else
++		cpm_muram_free(cpm_muram_offset(mspi->pram));
+ err_pram:
+ 	fsl_spi_free_dummy_rx();
+ 	return -ENOMEM;
+-- 
+2.1.0
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

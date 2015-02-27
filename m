@@ -1,61 +1,33 @@
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [PATCH v3 2/3] spi: dw: program registers as soon as possible
-Date: Fri, 27 Feb 2015 22:11:21 +0200
-Message-ID: <1425067881.14897.105.camel@linux.intel.com>
-References: <1425054977-9859-1-git-send-email-andriy.shevchenko@linux.intel.com>
-	 <1425054977-9859-3-git-send-email-andriy.shevchenko@linux.intel.com>
+From: Jonathan Corbet <corbet@lwn.net>
+Subject: Re: [PATCH] spi: spidev_test: Added functionalities
+Date: Fri, 27 Feb 2015 15:11:17 -0700
+Message-ID: <20150227151117.15a79baa@lwn.net>
+References: <1424891324-24784-1-git-send-email-adrianremonda@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1425054977-9859-3-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+Cc: Mark Brown <broonie@kernel.org>,
+	linux-spi@vger.kernel.org (open list:SPI SUBSYSTEM),
+	linux-doc@vger.kernel.org (open list:DOCUMENTATION),
+	linux-kernel@vger.kernel.org (open list)
+To: Adrian Remonda <adrianremonda@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1424891324-24784-1-git-send-email-adrianremonda@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Fri, 2015-02-27 at 18:36 +0200, Andy Shevchenko wrote:
-> This patch refactors the code in pump_transfers() to reprogram the registers
-> immediately when we have a new configuration data. The behaviour is slightly
-> modified:
->  - chip is always disabled and reenabled
->  - CTRL0 is always reprogrammed
-> 
-> This change allows to do a further refactoring and simplier conversion to use
-> SPI core DMA routines in the future.
-> 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+On Wed, 25 Feb 2015 20:08:44 +0100
+Adrian Remonda <adrianremonda@gmail.com> wrote:
 
->  	/*
->  	 * Interrupt mode
->  	 * we only need set the TXEI IRQ, as TX/RX always happen syncronizely
-> +	 * Set the interrupt mask, for poll mode just disable all interrupts.
->  	 */
-> -	if (!dws->dma_mapped && !chip->poll_mode) {
-> +	if (chip->poll_mode) {
-> +		spi_mask_intr(dws, 0xff);
-> +	} else if (dws->dma_mapped) {
-> +		spi_mask_intr(dws, 0xff);
-> +	} else {
->  		txlevel = min_t(u16, dws->fifo_len / 2, dws->len / dws->n_bytes);
-> +		dw_writew(dws, DW_SPI_TXFLTR, txlevel);
->  
-> +		spi_mask_intr(dws, 0xff);
->  		imask |= SPI_INT_TXEI | SPI_INT_TXOI |
->  			 SPI_INT_RXUI | SPI_INT_RXOI;
-> +		spi_umask_intr(dws, imask);
-> +
->  		dws->transfer_handler = interrupt_transfer;
->  	}
+> This is a patch that add functionalities to the spidev_test tool found
+> in Documentation/spi/spidev_test.c.
 
-Perhaps I have to revisit this piece of code.
+This seems good.  But our hope is to move useful code out of
+Documentation; care to submit a patch putting it properly somewhere under
+tools/?
 
+(Meanwhile, I've applied this one).
 
--- 
-Andy Shevchenko <andriy.shevchenko-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Intel Finland Oy
+Thanks,
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+jon

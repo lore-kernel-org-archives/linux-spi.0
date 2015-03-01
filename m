@@ -1,50 +1,38 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: spidev_test: Added functionalities
-Date: Sat, 28 Feb 2015 16:27:42 +0900
-Message-ID: <20150228072742.GM6236@finisterre.sirena.org.uk>
-References: <1424891324-24784-1-git-send-email-adrianremonda@gmail.com>
- <20150227151117.15a79baa@lwn.net>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="No+p7QntJvZK+Tqp"
-Cc: Adrian Remonda <adrianremonda@gmail.com>,
-	"open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
-	"open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>
-To: Jonathan Corbet <corbet@lwn.net>
-Return-path: <linux-doc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20150227151117.15a79baa@lwn.net>
-Sender: linux-doc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Marcin Bis <marcin-hTNZmJK687nVItvQsEIGlw@public.gmane.org>
+Subject: [PATCH] spi - fix a typo in comment.
+Date: Sun,  1 Mar 2015 13:49:32 +0100
+Message-ID: <1425214172-23269-1-git-send-email-marcin@bis.org.pl>
+Cc: trivial-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Marcin Bis <marcin-hTNZmJK687nVItvQsEIGlw@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+alway -> always
 
---No+p7QntJvZK+Tqp
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Marcin Bis <marcin-hTNZmJK687nVItvQsEIGlw@public.gmane.org>
+---
+ include/linux/spi/spi.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On Fri, Feb 27, 2015 at 03:11:17PM -0700, Jonathan Corbet wrote:
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index ed9489d..856d34d 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -649,7 +649,7 @@ struct spi_transfer {
+  * sequence completes.  On some systems, many such sequences can execute as
+  * as single programmed DMA transfer.  On all systems, these messages are
+  * queued, and might complete after transactions to other devices.  Messages
+- * sent to a given spi_device are alway executed in FIFO order.
++ * sent to a given spi_device are always executed in FIFO order.
+  *
+  * The code that submits an spi_message (and its spi_transfers)
+  * to the lower layers is responsible for managing its memory.
+-- 
+1.9.1
 
-> (Meanwhile, I've applied this one).
-
-Sorry, I shoud've been clearer that my previous mail was intended as a
-nack for the patch as submitted - I'd expected SPI documentation/test
-code updates to be going via the SPI tree.
-
---No+p7QntJvZK+Tqp
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJU8W3qAAoJECTWi3JdVIfQNmEH/2HVbJSnf2yf069TDRSqcMXA
-IFHU98FrVyLWrF7NaaLWYhtwPyWeqgItrV6fx3u7rCrID+r5OzcYMp4icP8zwGf0
-ttXsApSPRHEmB0D0CCcZcozt4s+VwE6GwJ+2UZfvILq/0UmPzGd50Kp/QL4zZU+o
-E7jjIt/ZGOdhRXntDa9b7j9CKSydMtNGHxNQyaD6tTnbDfpGK/tpbM4GcMsn0IhQ
-5ITd9JUrOJCyu5oOYWhNpYpEk9VUS1wSihNEwTTi2ekyymqwtf0OzECJ2l8P/G0o
-zfdoTDmkC96VguRVzgV7zH/Sb69aJR0SmQZDINPitxsuNN+xDwiv0yeRTFeYxpM=
-=m0nY
------END PGP SIGNATURE-----
-
---No+p7QntJvZK+Tqp--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

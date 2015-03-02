@@ -1,7 +1,7 @@
 From: Sifan Naeem <sifan.naeem@imgtec.com>
-Subject: [PATCH] spi: img-spfi: Remove udelay in soft reset
-Date: Mon, 2 Mar 2015 16:01:58 +0000
-Message-ID: <1425312118-13952-1-git-send-email-sifan.naeem@imgtec.com>
+Subject: [PATCH] spi: img-spfi: Verify max spfi transfer length
+Date: Mon, 2 Mar 2015 16:06:46 +0000
+Message-ID: <1425312406-14076-1-git-send-email-sifan.naeem@imgtec.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Cc: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
@@ -11,26 +11,35 @@ Return-path: <linux-kernel-owner@vger.kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Removing the udelay between setting and clearing the soft reset bit in
-the spfi control register as it is not required.
+Maximum transfer length supported by SPFI is 65535, this is limited
+by the number of bits available in SPFI TSize register to represent
+the transfer size.
+For transfer requests larger than the maximum supported the driver
+will return an invalid argument error.
 
 Signed-off-by: Sifan Naeem <sifan.naeem@imgtec.com>
 Reviewed-by: Andrew Bresticker <abrestic@chromium.org>
 ---
- drivers/spi/spi-img-spfi.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/spi/spi-img-spfi.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
-index c01567d..fde4b5d 100644
+index c01567d..e649bc7 100644
 --- a/drivers/spi/spi-img-spfi.c
 +++ b/drivers/spi/spi-img-spfi.c
-@@ -134,7 +134,6 @@ static inline void spfi_stop(struct img_spfi *spfi)
- static inline void spfi_reset(struct img_spfi *spfi)
- {
- 	spfi_writel(spfi, SPFI_CONTROL_SOFT_RESET, SPFI_CONTROL);
--	udelay(1);
- 	spfi_writel(spfi, 0, SPFI_CONTROL);
- }
+@@ -459,6 +459,13 @@ static int img_spfi_transfer_one(struct spi_master *master,
+ 	unsigned long flags;
+ 	int ret;
  
++	if (xfer->len > SPFI_TRANSACTION_TSIZE_MASK) {
++		dev_err(spfi->dev,
++			"Transfer length (%d) is greater than the max supported (%d)",
++			xfer->len, SPFI_TRANSACTION_TSIZE_MASK);
++		return -EINVAL;
++	}
++
+ 	/*
+ 	 * Stop all DMA and reset the controller if the previous transaction
+ 	 * timed-out and never completed it's DMA.
 -- 
 1.7.9.5

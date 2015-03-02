@@ -1,107 +1,45 @@
 From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH v4 2/3] spi: dw: program registers as soon as possible
-Date: Mon,  2 Mar 2015 14:58:56 +0200
-Message-ID: <1425301137-8043-3-git-send-email-andriy.shevchenko@linux.intel.com>
-References: <1425301137-8043-1-git-send-email-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v4 0/3] spi: dw: refactor to use SPI core message handling
+Date: Mon,  2 Mar 2015 14:58:54 +0200
+Message-ID: <1425301137-8043-1-git-send-email-andriy.shevchenko@linux.intel.com>
 Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1425301137-8043-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-This patch refactors the code in pump_transfers() to reprogram the registers
-immediately when we have a new configuration data. The behaviour is slightly
-modified:
- - chip is always disabled and reenabled
- - CTRL0 is always reprogrammed
+This patch series is dedicated to refactoring of spi-dw driver to use SPI core
+message handling. The driver has been tested in PIO mode on Intel Medfield
+device in loopback mode.
 
-This change allows to do a further refactoring and simplier conversion to use
-SPI core DMA routines in the future.
+Note, the patch 3/3 depends on [1].
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
----
- drivers/spi/spi-dw.c | 38 +++++++++++++++-----------------------
- 1 file changed, 15 insertions(+), 23 deletions(-)
+[1] http://www.spinics.net/lists/linux-spi/msg02982.html
 
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index 2e9e1f9..9396dae 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -409,6 +409,8 @@ static void pump_transfers(unsigned long data)
- 	if (chip != dws->prev_chip)
- 		cs_change = 1;
- 
-+	spi_enable_chip(dws, 0);
-+
- 	cr0 = chip->cr0;
- 
- 	/* Handle per transfer options for bpw and speed */
-@@ -423,6 +425,8 @@ static void pump_transfers(unsigned long data)
- 
- 			chip->speed_hz = speed;
- 			chip->clk_div = clk_div;
-+
-+			spi_set_clk(dws, chip->clk_div);
- 		}
- 	}
- 	if (transfer->bits_per_word) {
-@@ -451,44 +455,32 @@ static void pump_transfers(unsigned long data)
- 		cr0 |= (chip->tmode << SPI_TMOD_OFFSET);
- 	}
- 
-+	dw_writew(dws, DW_SPI_CTRL0, cr0);
-+	spi_chip_sel(dws, spi, 1);
-+
- 	/* Check if current transfer is a DMA transaction */
- 	dws->dma_mapped = map_dma_buffers(dws);
- 
-+	/* For poll mode just disable all interrupts */
-+	spi_mask_intr(dws, 0xff);
-+
- 	/*
- 	 * Interrupt mode
- 	 * we only need set the TXEI IRQ, as TX/RX always happen syncronizely
- 	 */
- 	if (!dws->dma_mapped && !chip->poll_mode) {
- 		txlevel = min_t(u16, dws->fifo_len / 2, dws->len / dws->n_bytes);
-+		dw_writew(dws, DW_SPI_TXFLTR, txlevel);
- 
-+		/* Set the interrupt mask */
- 		imask |= SPI_INT_TXEI | SPI_INT_TXOI |
- 			 SPI_INT_RXUI | SPI_INT_RXOI;
-+		spi_umask_intr(dws, imask);
-+
- 		dws->transfer_handler = interrupt_transfer;
- 	}
- 
--	/*
--	 * Reprogram registers only if
--	 *	1. chip select changes
--	 *	2. clk_div is changed
--	 *	3. control value changes
--	 */
--	if (dw_readw(dws, DW_SPI_CTRL0) != cr0 || cs_change || clk_div || imask) {
--		spi_enable_chip(dws, 0);
--
--		dw_writew(dws, DW_SPI_CTRL0, cr0);
--
--		spi_set_clk(dws, chip->clk_div);
--		spi_chip_sel(dws, spi, 1);
--
--		/* Set the interrupt mask, for poll mode just disable all int */
--		spi_mask_intr(dws, 0xff);
--		if (imask)
--			spi_umask_intr(dws, imask);
--		if (txlevel)
--			dw_writew(dws, DW_SPI_TXFLTR, txlevel);
--
--		spi_enable_chip(dws, 1);
--	}
-+	spi_enable_chip(dws, 1);
- 
- 	if (cs_change)
- 		dws->prev_chip = chip;
+Changelog v4:
+- rename spi_disable_intr() -> spi_reset_chip() which is more proper (patch 1/3)
+- simplify patch 2/3
+
+Changelog v3:
+- introduce patch 1/3 and 2/3 to make state of the SPI controller consistent
+- return 1 instead of transfer length from transfer_one()
+- use newly introduced handle_err()
+
+Changelog v2:
+- remove leftovers from spi-dw.h
+- remove unused members of dw_spi, i.e. cur_dev, max_bits_per_word
+- reuse chip->cs_control directly
+
+Andy Shevchenko (3):
+  spi: dw: make sure SPI controller is enabled
+  spi: dw: program registers as soon as possible
+  spi: dw: move to SPI core message handling
+
+ drivers/spi/spi-dw-mid.c |   4 +-
+ drivers/spi/spi-dw.c     | 226 +++++++++++++----------------------------------
+ drivers/spi/spi-dw.h     |  38 +++-----
+ 3 files changed, 77 insertions(+), 191 deletions(-)
+
 -- 
 2.1.4
 

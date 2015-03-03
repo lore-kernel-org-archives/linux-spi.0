@@ -1,51 +1,45 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: spi-pxa2xx: Fix potential NULL handler data in
- pump_transfers
-Date: Tue, 3 Mar 2015 10:02:40 +0000
-Message-ID: <20150303100240.GK21293@sirena.org.uk>
-References: <1425351570-29571-1-git-send-email-huiquan.zhong@intel.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi - fix a typo in comment.
+Date: Tue, 3 Mar 2015 14:14:51 +0000
+Message-ID: <20150303141451.GS21293@sirena.org.uk>
+References: <1425214172-23269-1-git-send-email-marcin@bis.org.pl>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="g8GocXA1jxbUqAjB"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
-	andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
-To: Huiquan Zhong <huiquan.zhong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="p/pjXyC+ACeUMKbl"
+Cc: trivial@kernel.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+To: Marcin Bis <marcin@bis.org.pl>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1425351570-29571-1-git-send-email-huiquan.zhong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1425214172-23269-1-git-send-email-marcin@bis.org.pl>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---g8GocXA1jxbUqAjB
+--p/pjXyC+ACeUMKbl
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Mar 03, 2015 at 10:59:30AM +0800, Huiquan Zhong wrote:
-> Set drv_data->cur_chip to NULL before finalize current message, otherwise
-> kernel may crash.
+On Sun, Mar 01, 2015 at 01:49:32PM +0100, Marcin Bis wrote:
+> alway -> always
 
-This doesn't apply against curent code (even Linus' tree) because an
-equivalent change has already been made.
+Applied, thanks.  Please use subject lines reflecting the normal style
+for the subsystem (spi: ).
 
---g8GocXA1jxbUqAjB
+--p/pjXyC+ACeUMKbl
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJU9Ya/AAoJECTWi3JdVIfQzjQH/1crjAWS7RJjkNTvU0Ie33Jh
-huQYr8GvRK49ySRMNva3ujj1REi3TXmZWl1pXwif/L8JMILJRJSr7jpxtRd7xTeZ
-IJEdwo9x3u1HjzIg1fhBUbVgzHCS1bn+HX4DjgPW9a/MjjBi7m4NQdPvpfBMu1lP
-OJXPqKjoBMN9QksnNsDMIIwFF4XoUvSfgFPCRMp1pAOc6TfC8PRh7/swLrFn6F6V
-+Pbh78f9REh92Tqm4GoV89cWIFDkSeWRW8COqqoGY9y0d0g5Gs7r/EBy11aimm6Z
-lNKJXUfiUGGTj4aNS+OiO9fX5+o3DzX9tb8Ar5cXiRyGOTedOMKJfoWcFv90S44=
-=idRY
+iQEcBAEBCAAGBQJU9cHaAAoJECTWi3JdVIfQpmEH/jnz01OLlN6la0PEkY+ppvTg
+JXzyDNk5FB/9hwEkRUN2V/NetYTReFAPPtTAnfoBb6bOXfDzSLnk9nAbuX8n6/SD
+43xn48lRQSWk2YH/dgWOQYRHm7RwlL7D2mz/lZ0CfQx99r2g4OxpVA5gFQdA1Mhq
+7AiiK0961DTLyB9882v7PtB73aFr0XLDZRZe64EZgTJOPAKUCjkonghc1GaGKX9t
+olgJT8yXOphCLmbBdZOg8gL+UBVFrSBKuJLWfWCH5tLCgq3HZxAX7odX3b+xeunI
+tuTKSM6STkprKlifoWsmZSm/NWLfel2Ts0WGHQe6Bx8VKP/xai0aF3f8dhuOti0=
+=HBs2
 -----END PGP SIGNATURE-----
 
---g8GocXA1jxbUqAjB--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--p/pjXyC+ACeUMKbl--

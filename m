@@ -1,51 +1,48 @@
-From: Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>
-Subject: [PATCH] spi: spi-imx: use correct enumeration type
-Date: Tue,  3 Mar 2015 00:28:31 +0100
-Message-ID: <1425338911-11407-1-git-send-email-stefan@agner.ch>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	llvmlinux-cunTk1MwBs98uUxBSJOaYoYkZiVZrdSR2LY78lusg7I@public.gmane.org, stefan-XLVq0VzYD2Y@public.gmane.org
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+From: Huiquan Zhong <huiquan.zhong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: spi-pxa2xx: Fix potential NULL handler data in pump_transfers
+Date: Tue,  3 Mar 2015 10:59:30 +0800
+Message-ID: <1425351570-29571-1-git-send-email-huiquan.zhong@intel.com>
+Cc: mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
+	Huiquan Zhong <huiquan.zhong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The fourth argument of dmaengine_prep_slave_sg needs to be of the
-enumeration type dma_transfer_direction instead of dma_data_direction.
-Since the used enumeration values actually stay the same, this is not
-an actual issue at runtime.
+Set drv_data->cur_chip to NULL before finalize current message, otherwise
+kernel may crash.
 
-Signed-off-by: Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>
+BUG: unable to handle kernel NULL pointer dereference at 000000000000001c
+IP: [<ffffffff824a0ae2>] pump_transfers+0x32/0x640
+
+It is possibility that workqueue schedule next pump_messages before
+statement: drv_data->cur_chip = NULL;
+This will override the drv_data->cur_chip to NULL.
+
+Fix this by moving spi_finalize_current_message(drv_data->master) call after
+drv_data->cur_chip = NULL in giveback().
+
+Signed-off-by: Huiquan Zhong <huiquan.zhong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 ---
-This showed up when I tried using LLVM/clang to build a kernel for
-a Freescale Vybrid based board.
+ drivers/spi/spi-pxa2xx.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- drivers/spi/spi-imx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 961b97d..220f566 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -899,7 +899,7 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 05c623c..23822e7 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -546,8 +546,8 @@ static void giveback(struct driver_data *drv_data)
+ 			cs_deassert(drv_data);
+ 	}
  
- 	if (tx) {
- 		desc_tx = dmaengine_prep_slave_sg(master->dma_tx,
--					tx->sgl, tx->nents, DMA_TO_DEVICE,
-+					tx->sgl, tx->nents, DMA_MEM_TO_DEV,
- 					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
- 		if (!desc_tx)
- 			goto no_dma;
-@@ -911,7 +911,7 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+-	spi_finalize_current_message(drv_data->master);
+ 	drv_data->cur_chip = NULL;
++	spi_finalize_current_message(drv_data->master);
+ }
  
- 	if (rx) {
- 		desc_rx = dmaengine_prep_slave_sg(master->dma_rx,
--					rx->sgl, rx->nents, DMA_FROM_DEVICE,
-+					rx->sgl, rx->nents, DMA_DEV_TO_MEM,
- 					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
- 		if (!desc_rx)
- 			goto no_dma;
+ static void reset_sccr1(struct driver_data *drv_data)
 -- 
-2.3.0
+1.7.9.5
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

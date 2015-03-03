@@ -1,45 +1,48 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: img-spfi: Remove udelay in soft reset
-Date: Tue, 3 Mar 2015 14:27:09 +0000
-Message-ID: <20150303142709.GX21293@sirena.org.uk>
-References: <1425312118-13952-1-git-send-email-sifan.naeem@imgtec.com>
+Subject: Re: [PATCH] spi: img-spfi: Verify max spfi transfer length
+Date: Tue, 3 Mar 2015 14:26:47 +0000
+Message-ID: <20150303142646.GW21293@sirena.org.uk>
+References: <1425312406-14076-1-git-send-email-sifan.naeem@imgtec.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="vcFgiivuaw+Jg4lr"
+	protocol="application/pgp-signature"; boundary="d8bwjOb9LdeKYTt3"
 Cc: abrestic@chromium.org, linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 To: Sifan Naeem <sifan.naeem@imgtec.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1425312118-13952-1-git-send-email-sifan.naeem@imgtec.com>
+In-Reply-To: <1425312406-14076-1-git-send-email-sifan.naeem@imgtec.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---vcFgiivuaw+Jg4lr
+--d8bwjOb9LdeKYTt3
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Mon, Mar 02, 2015 at 04:01:58PM +0000, Sifan Naeem wrote:
-> Removing the udelay between setting and clearing the soft reset bit in
-> the spfi control register as it is not required.
+On Mon, Mar 02, 2015 at 04:06:46PM +0000, Sifan Naeem wrote:
+> Maximum transfer length supported by SPFI is 65535, this is limited
+> by the number of bits available in SPFI TSize register to represent
+> the transfer size.
+> For transfer requests larger than the maximum supported the driver
+> will return an invalid argument error.
 
 Applied, thanks.
 
---vcFgiivuaw+Jg4lr
+--d8bwjOb9LdeKYTt3
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJU9cS8AAoJECTWi3JdVIfQeGwH/imdaX3CmdniosPVd+ZHi+wV
-awamBoTnSSno9nnW49UMV4t/IPOndEA+quR0ZF1LbtYq5xYSRaEoa6hrr7bdkGDW
-IbOMrPCSM5rmy6nH0YwfVViF+vLo3m49uLLMKQ6saaTNgGMQudPbltI6s1cvXUbn
-8onu0ffPSJ0viuIlQzORg5NP2Ttr1j2SJoxWVWJoA3uc/02kmzFBxZ5aRqxulU2p
-mEGCkWuLQJy73Wb+x/oSI32VnM6CukEjYK9tqruvbjg+GZAblMLFGEu6mPH/HXn4
-mZYSimjssqVEivkBGGmWxKSR/4IBLf39uLf6J3Uug6LLFpaIKMA24obfhKQYqFE=
-=8lq9
+iQEcBAEBCAAGBQJU9cSlAAoJECTWi3JdVIfQ4KEH/RzDzlBh2NJeDysAGUhwm6Nt
+3rPt/ZrTHCbMjCDCSaYHz9AQwveHcrdWHmMDksgZNbHkne+Z0JJUozZLE4prYTIV
+ZOPbeaNCTvB/rQj1BCJN97MfGsldXHZwD3LFBeOI9jExSMaTc4H1HLKvtJuUg2K5
+U1bnQvpdHTehF1RfVnbMG5Lc7zW4Pfdp0mWhFNEysijjELr4bqnnFVoZaZ7E2BB7
+VyDfgpbcDVSAu5i7kmvblpeEBRqi7FfAwiC3F2XMJcV4k1Rb5PxZm8F4ycPzwhjz
+GInylI8g2qwNjduKfXuQgo9lgath2J65h78A+jh2yZ1fm6/sHERlwAdNs/IX0FM=
+=4oYC
 -----END PGP SIGNATURE-----
 
---vcFgiivuaw+Jg4lr--
+--d8bwjOb9LdeKYTt3--

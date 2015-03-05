@@ -1,55 +1,74 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: spidev_test: Added functionalities
-Date: Wed, 4 Mar 2015 23:54:39 +0000
-Message-ID: <20150304235439.GX21293@sirena.org.uk>
-References: <1424891324-24784-1-git-send-email-adrianremonda@gmail.com>
- <20150227151117.15a79baa@lwn.net>
- <20150301182841.GA19947@debian.home>
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [RFC/PATCH 0/2] spi: spi-dw: Select 16b or 32b register access
+Date: Thu, 05 Mar 2015 12:43:53 +0200
+Message-ID: <1425552233.14897.189.camel@linux.intel.com>
+References: <1425501075-17081-1-git-send-email-tthayer@opensource.altera.com>
+	 <1425501868.14897.178.camel@linux.intel.com>
+	 <54F7809E.2010307@opensource.altera.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="GNXaOx9AMrrC7lQw"
-Cc: Jonathan Corbet <corbet@lwn.net>,
-	"open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
-	"open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>
-To: AdrianRemonda <adrianremonda@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20150301182841.GA19947@debian.home>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, jkosina-AlSwsSmVLrQ@public.gmane.org,
+	pawel.moll-5wv7dgnIgG8@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
+	ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org, dinguyen-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org,
+	linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, tthayer.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org, baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org, jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org,
+	galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org
+To: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <54F7809E.2010307-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+On Wed, 2015-03-04 at 16:01 -0600, Thor Thayer wrote:
+> Hi Andy,
+> 
+> On 03/04/2015 02:44 PM, Andy Shevchenko wrote:
+> > On Wed, 2015-03-04 at 14:31 -0600, tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org wrote:
+> >> From: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+> >>
+> >> The Altera Arria10 SoC requires 32 bit accesses to peripherals. The
+> >> DesignWare SPI peripheral registers are on 32bit boundaries so this
+> >> patch is minimal. Function pointers are used to select 32bit access
+> >> or 16bit accesses.
+> >
+> >
+> > So, what is exactly the issue when we read only half of the register?
+> > Bus lock, or what?
+> >
+> 
+> The read actually works on our chip but I changed both read and write to 
+> be consistent. For Arria10, on a 16 bit write the data isn't written 
+> into the DesignWare register.
 
---GNXaOx9AMrrC7lQw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+How did you exactly check this?
 
-On Sun, Mar 01, 2015 at 07:28:41PM +0100, AdrianRemonda wrote:
+> 
+> In reply to your other email, yes it does support the DW_apb_ssi but the 
+> Arria10 architecture requires 32 bit access (actually as you point out, 
+> 32 bit writes). We're using the original driver on our older chips but 
+> Arria10 requires upstream changes.
 
-> I apologize for the wrong patch format.
-> Should I contact the mantainer of the tool path and ask him where to add
-> it? Or how should I proceed?
+Can you check if the following helps in your case:
 
-I am the relevant maintainer here.  The main thing from my point of view
-is to split the three changes you were making out into separate commits
-so they can be easily reviewed.  Jon is right that this should be moved
-into a better directory but that's a separate issue that can be tackled
-separately (though feel free to do it immediately if you like!).
+--- a/drivers/spi/spi-dw.h
++++ b/drivers/spi/spi-dw.h
+@@ -170,6 +170,8 @@ static inline u16 dw_readw(struct dw_spi *dws, u32 offset)
+ static inline void dw_writew(struct dw_spi *dws, u32 offset, u16 val)
+ {
+        __raw_writew(val, dws->regs + offset);
++       mmiowb():
++       __raw_readw(dws->regs + offset);
+ }
+ 
+ static inline void spi_enable_chip(struct dw_spi *dws, int enable)
 
---GNXaOx9AMrrC7lQw
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+-- 
+Andy Shevchenko <andriy.shevchenko-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Intel Finland Oy
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJU95s+AAoJECTWi3JdVIfQqsMH/2N8+mOgAtTnKhRrQeWSyvfg
-eqxPzyShSoOR7JSGGuUVPdIkjpSjzHwxWSImCBLFwrgZTDB6ccVeaAlDzjI+n6wF
-GgtmFOJvCMR0Rg1qWxQrZi/jZk4NAB0i9ZtFSYm19xab6J4QjmuGzrKItdHmisLp
-uwttF/dUFyIgBcjb91MM39t71qchgpk3iBPegewkd/7FH0ZShFfW/fCNaommtUL7
-pvGCl8d8M6s4AcLe5ntL6Asyll/YEq6ogTmFJd2xCqBb4eccLvRf59ZeWkR7Yokx
-nhD0rxQ36TErBrqgHB9w0Qx15kjYZ+fSzd6Odlkr/+qjC0RDhKaB4+OqKGW7Sk0=
-=fJdw
------END PGP SIGNATURE-----
-
---GNXaOx9AMrrC7lQw--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

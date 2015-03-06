@@ -1,115 +1,64 @@
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [RFC/PATCH 0/2] spi: spi-dw: Select 16b or 32b register access
-Date: Thu, 05 Mar 2015 23:54:15 +0200
-Message-ID: <1425592455.14897.193.camel@linux.intel.com>
-References: <1425501075-17081-1-git-send-email-tthayer@opensource.altera.com>
-		 <1425501868.14897.178.camel@linux.intel.com>
-		 <54F7809E.2010307@opensource.altera.com>
-	 <1425552233.14897.189.camel@linux.intel.com>
-	 <54F8BF6A.70305@opensource.altera.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2 2/9] spi: dw-mid: clear BUSY flag fist and test other
+ one
+Date: Fri, 6 Mar 2015 11:25:19 +0000
+Message-ID: <20150306112519.GH21293@sirena.org.uk>
+References: <1425320166-13788-1-git-send-email-andriy.shevchenko@linux.intel.com>
+ <1425320166-13788-3-git-send-email-andriy.shevchenko@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: broonie@kernel.org, grant.likely@linaro.org, jkosina@suse.cz,
-	pawel.moll@arm.com, robh+dt@kernel.org, mark.rutland@arm.com,
-	ijc+devicetree@hellion.org.uk, dinguyen@opensource.altera.com,
-	linux-doc@vger.kernel.org, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, tthayer.linux@gmail.com,
-	axel.lin@ingics.com, baruch@tkos.co.il, jg1.han@samsung.com,
-	galak@codeaurora.org
-To: Thor Thayer <tthayer@opensource.altera.com>
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <54F8BF6A.70305@opensource.altera.com>
-Sender: linux-doc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="Jj43h3y7V46AI03H"
+Cc: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1425320166-13788-3-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, 2015-03-05 at 14:41 -0600, Thor Thayer wrote:
-> Hi Andy,
+
+--Jj43h3y7V46AI03H
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Mar 02, 2015 at 08:15:59PM +0200, Andy Shevchenko wrote:
+> The logic of DMA completion is broken now since test_and_clear_bit() never
+> returns the other bit is set. It means condition are always false and we =
+have
+> spi_finalize_current_transfer() called per each DMA completion which is w=
+rong.
 >=20
-> On 03/05/2015 04:43 AM, Andy Shevchenko wrote:
-> > On Wed, 2015-03-04 at 16:01 -0600, Thor Thayer wrote:
-> >> Hi Andy,
-> >>
-> >> On 03/04/2015 02:44 PM, Andy Shevchenko wrote:
-> >>> On Wed, 2015-03-04 at 14:31 -0600, tthayer@opensource.altera.com =
-wrote:
-> >>>> From: Thor Thayer <tthayer@opensource.altera.com>
-> >>>>
-> >>>> The Altera Arria10 SoC requires 32 bit accesses to peripherals. =
-The
-> >>>> DesignWare SPI peripheral registers are on 32bit boundaries so t=
-his
-> >>>> patch is minimal. Function pointers are used to select 32bit acc=
-ess
-> >>>> or 16bit accesses.
-> >>>
-> >>>
-> >>> So, what is exactly the issue when we read only half of the regis=
-ter?
-> >>> Bus lock, or what?
-> >>>
-> >>
-> >> The read actually works on our chip but I changed both read and wr=
-ite to
-> >> be consistent. For Arria10, on a 16 bit write the data isn't writt=
-en
-> >> into the DesignWare register.
-> >
-> > How did you exactly check this?
-> >
+> The patch fixes logic by clearing BUSY bit first and then check for the o=
+ther
+> one.
 >=20
-> Sorry, I should have been more clear. The architecture of the Arria10=
-=20
-> SoC enforces 32 bit writes - even for the APB bus. The Arria10's=20
-> interconnect only allows 32 bit writes.
+> Fixes: 30c8eb52cc4a (spi: dw-mid: split rx and tx callbacks when DMA)
 
-Hmm=E2=80=A6 So, reads are okay, but writes are 32 bit only? Have you a=
-ny link
-to the documentation where I could read this?
+The commit this is fixing is in v3.19 so this should go to stable but I
+can't apply this against my fix/dw branch.  Can you generate a version
+that can be applied there please?  We'll need to work out the merge
+issues with the current code I gues...
 
-> As a result, the solution below doesn't work for us.
+--Jj43h3y7V46AI03H
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-My thought was about post writes. That's why I was wondering and still
-wonder if something to clarify in the documentation.=20
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
->=20
-> I do have a much cleaner patch to re-submit but I haven't applied it =
-on=20
-> top of your patches yet & tested yet.
+iQEcBAEBCAAGBQJU+Y6eAAoJECTWi3JdVIfQQv4H/ROnWKRmeFcNsKDPmhPhxO2w
+ovgIvF6SUlzeUTzaa4X7SzobMTTaUh2k8QJy/iWF9iQgVUWRCJvAwQSZCqqI2TP4
+WMMlPu2smDX848nuFzaB3jGTh589NOC8+jRtP8q3HUlRsATDsh7DgHtQOv4ufMkq
+WX544HQCZcZO71i3/AXhyxyffgD3Pssk/2IbgnXlDxsyXO/Hvp0CdluLyCQRDJlX
+74lvujuFBylYp0VI9Nd6qJ+kTxjD7ULZrcy38uVwQy+Y77Pezs+d0Exo0oA861y2
+FhrnkSQOwyvDU7kYUV/Xs79rURStAEHMdrPmmmDcFyWfcNmMxHHJol+PQnO8U1s=
+=YmLC
+-----END PGP SIGNATURE-----
 
-Okay, please, apply the above as a part of commit message.
-I also would like to test it on Intel Medfield.
-
->=20
-> >>
-> >> In reply to your other email, yes it does support the DW_apb_ssi b=
-ut the
-> >> Arria10 architecture requires 32 bit access (actually as you point=
- out,
-> >> 32 bit writes). We're using the original driver on our older chips=
- but
-> >> Arria10 requires upstream changes.
-> >
-> > Can you check if the following helps in your case:
-> >
-> > --- a/drivers/spi/spi-dw.h
-> > +++ b/drivers/spi/spi-dw.h
-> > @@ -170,6 +170,8 @@ static inline u16 dw_readw(struct dw_spi *dws, =
-u32 offset)
-> >   static inline void dw_writew(struct dw_spi *dws, u32 offset, u16 =
-val)
-> >   {
-> >          __raw_writew(val, dws->regs + offset);
-> > +       mmiowb():
-> > +       __raw_readw(dws->regs + offset);
-> >   }
-> >
-> >   static inline void spi_enable_chip(struct dw_spi *dws, int enable=
-)
-> >
-
-
---=20
-Andy Shevchenko <andriy.shevchenko@intel.com>
-Intel Finland Oy
-
+--Jj43h3y7V46AI03H--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,41 +1,69 @@
 From: "Ivan T. Ivanov" <iivanov@mm-sol.com>
-Subject: Re: [PATCH v4] spi: qup: Add DMA capabilities
-Date: Fri, 06 Mar 2015 16:38:22 +0200
-Message-ID: <1425652702.2440.3.camel@mm-sol.com>
-References: <1425463325-25805-1-git-send-email-stanimir.varbanov@linaro.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-spi@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Kumar Gala <galak@codeaurora.org>,
-	Andy Gross <agross@codeaurora.org>,
-	Sagar Dharia <sdharia@codeaurora.org>,
-	Daniel Sneddon <dsneddon@codeaurora.org>
-To: Stanimir Varbanov <stanimir.varbanov@linaro.org>
+Subject: [PATCH 2/2] spi: qup: Request CS GPIO's during probe
+Date: Fri,  6 Mar 2015 17:26:18 +0200
+Message-ID: <1425655578-22400-2-git-send-email-iivanov@mm-sol.com>
+References: <1425655578-22400-1-git-send-email-iivanov@mm-sol.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-arm-msm-owner@vger.kernel.org>
-In-Reply-To: <1425463325-25805-1-git-send-email-stanimir.varbanov@linaro.org>
+In-Reply-To: <1425655578-22400-1-git-send-email-iivanov@mm-sol.com>
 Sender: linux-arm-msm-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Ensure that driver is owner of the GPIO's used for CS signals.
 
-On Wed, 2015-03-04 at 12:02 +0200, Stanimir Varbanov wrote:
-> From: Andy Gross <agross@codeaurora.org>
-> 
-> This patch adds DMA capabilities to the spi-qup driver.  If DMA channels are
-> present, the QUP will use DMA instead of block mode for transfers to/from SPI
-> peripherals for transactions larger than the length of a block.
-> 
-> Signed-off-by: Andy Gross <agross@codeaurora.org>
-> Signed-off-by: Stanimir Varbanov varbanov@linaro.org>
+Signed-off-by: Ivan T. Ivanov <iivanov@mm-sol.com>
+---
+ drivers/spi/spi-qup.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-Reviewed-by: Ivan T. Ivanov <iivanov@mm-sol.com>
+diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
+index 2b2c359..a07ba46 100644
+--- a/drivers/spi/spi-qup.c
++++ b/drivers/spi/spi-qup.c
+@@ -14,11 +14,13 @@
+ #include <linux/clk.h>
+ #include <linux/delay.h>
+ #include <linux/err.h>
++#include <linux/gpio.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
+ #include <linux/list.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
++#include <linux/of_gpio.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/spi/spi.h>
+@@ -499,7 +501,7 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 	struct device *dev;
+ 	void __iomem *base;
+ 	u32 max_freq, iomode, num_cs;
+-	int ret, irq, size;
++	int ret, irq, size, cs, cs_gpio;
 
-Tested on top of Archit's DMA patch[1].
+ 	dev = &pdev->dev;
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+@@ -556,6 +558,19 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 	else
+ 		master->num_chipselect = num_cs;
 
-Thanks,
-Ivan
-
-[1] https://lkml.org/lkml/2015/1/22/52
++	for (cs = 0; cs < master->num_chipselect; cs++) {
++		cs_gpio = of_get_named_gpio(dev->of_node, "cs-gpios", cs);
++
++		if (!gpio_is_valid(cs_gpio))
++			continue;
++
++		ret = devm_gpio_request(&pdev->dev, cs_gpio, "spi-qup-cs");
++		if (ret) {
++			dev_err(&pdev->dev, "can't get cs gpios\n");
++			goto error;
++		}
++	}
++
+ 	master->bus_num = pdev->id;
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LOOP;
+ 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
+--
+1.9.1

@@ -1,7 +1,7 @@
 From: <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
-Subject: [RFC/PATCHv2 1/3] spi: dw-spi: Single Register read to clear IRQs
-Date: Fri, 6 Mar 2015 17:46:32 -0600
-Message-ID: <1425685594-26595-2-git-send-email-tthayer@opensource.altera.com>
+Subject: [RFC/PATCHv2 2/3] dt-binding: spi: spi-dw: Select 16b or 32b access for Designware SPI
+Date: Fri, 6 Mar 2015 17:46:33 -0600
+Message-ID: <1425685594-26595-3-git-send-email-tthayer@opensource.altera.com>
 References: <1425685594-26595-1-git-send-email-tthayer@opensource.altera.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -9,8 +9,7 @@ Cc: <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY7
 	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>,
 	<tthayer.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>,
 	<baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>, <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	<jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>, <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Andy Shevchenko <andriy.shevchenko-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+	<jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>, <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
 To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, <jkosina-AlSwsSmVLrQ@public.gmane.org>,
 	<pawel.moll-5wv7dgnIgG8@public.gmane.org>, <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
 	<ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, <dinguyen-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
@@ -21,31 +20,28 @@ List-ID: <linux-spi.vger.kernel.org>
 
 From: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
 
-Instead of clearing the RxU, RxO, and TxO IRQs individually with
-3 register reads, a single read of the ICR register will do the
-same thing.
+Altera's Arria10 architecture requires a 32bit write accesses for
+APB peripherals. The current spi-dw driver uses 16bit accesses in
+some locations. This patch updated the bindings with an optional
+field in the devicetree to select 32bit accesses.
 
 Signed-off-by: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-dw.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ Documentation/devicetree/bindings/spi/spi-dw.txt |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index 950bc50..c5fa2be 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -258,9 +258,7 @@ static irqreturn_t interrupt_transfer(struct dw_spi *dws)
+diff --git a/Documentation/devicetree/bindings/spi/spi-dw.txt b/Documentation/devicetree/bindings/spi/spi-dw.txt
+index 7b63ed6..034dbdd 100644
+--- a/Documentation/devicetree/bindings/spi/spi-dw.txt
++++ b/Documentation/devicetree/bindings/spi/spi-dw.txt
+@@ -11,6 +11,7 @@ Required properties:
  
- 	/* Error handling */
- 	if (irq_status & (SPI_INT_TXOI | SPI_INT_RXOI | SPI_INT_RXUI)) {
--		dw_readw(dws, DW_SPI_TXOICR);
--		dw_readw(dws, DW_SPI_RXOICR);
--		dw_readw(dws, DW_SPI_RXUICR);
-+		dw_readw(dws, DW_SPI_ICR);
- 		int_error_stop(dws, "interrupt_transfer: fifo overrun/underrun");
- 		return IRQ_HANDLED;
- 	}
+ Optional properties:
+ - cs-gpios: see spi-bus.txt
++- 32bit_access : use 32 bit register accesses
+ 
+ Example:
+ 
 -- 
 1.7.9.5
 

@@ -1,42 +1,41 @@
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [PATCH v2 1/9] spi: dw-mid: avoid potential NULL dereference
-Date: Fri, 06 Mar 2015 14:53:54 +0200
-Message-ID: <1425646434.14897.198.camel@linux.intel.com>
-References: <1425320166-13788-1-git-send-email-andriy.shevchenko@linux.intel.com>
-	 <1425320166-13788-2-git-send-email-andriy.shevchenko@linux.intel.com>
-	 <20150306112858.GI21293@sirena.org.uk>
+From: "Ivan T. Ivanov" <iivanov@mm-sol.com>
+Subject: Re: [PATCH v4] spi: qup: Add DMA capabilities
+Date: Fri, 06 Mar 2015 16:38:22 +0200
+Message-ID: <1425652702.2440.3.camel@mm-sol.com>
+References: <1425463325-25805-1-git-send-email-stanimir.varbanov@linaro.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Cc: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150306112858.GI21293-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-spi@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Kumar Gala <galak@codeaurora.org>,
+	Andy Gross <agross@codeaurora.org>,
+	Sagar Dharia <sdharia@codeaurora.org>,
+	Daniel Sneddon <dsneddon@codeaurora.org>
+To: Stanimir Varbanov <stanimir.varbanov@linaro.org>
+Return-path: <linux-arm-msm-owner@vger.kernel.org>
+In-Reply-To: <1425463325-25805-1-git-send-email-stanimir.varbanov@linaro.org>
+Sender: linux-arm-msm-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Fri, 2015-03-06 at 11:28 +0000, Mark Brown wrote:
-> On Mon, Mar 02, 2015 at 08:15:58PM +0200, Andy Shevchenko wrote:
-> > When DMA descriptor allocation fails we should not try to assign any fields in
-> > the bad descriptor. The patch adds the necessary checks for that.
+
+On Wed, 2015-03-04 at 12:02 +0200, Stanimir Varbanov wrote:
+> From: Andy Gross <agross@codeaurora.org>
 > 
-> Applied, thanks.  The rest of the series all looks OK but it looks like
-> we should get patch 2 into stable like I said in reply to it - apply
-> that on fix/dw 
+> This patch adds DMA capabilities to the spi-qup driver.  If DMA channels are
+> present, the QUP will use DMA instead of block mode for transfers to/from SPI
+> peripherals for transactions larger than the length of a block.
+> 
+> Signed-off-by: Andy Gross <agross@codeaurora.org>
+> Signed-off-by: Stanimir Varbanov varbanov@linaro.org>
 
-Okay, I have resent it just in case.
+Reviewed-by: Ivan T. Ivanov <iivanov@mm-sol.com>
 
-> and then everything else on a merge of that and topic/dw.
+Tested on top of Archit's DMA patch[1].
 
-Just to kindly remind that it has a dependency on two previous series,
-one of them touches SPI core.
+Thanks,
+Ivan
 
--- 
-Andy Shevchenko <andriy.shevchenko-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Intel Finland Oy
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+[1] https://lkml.org/lkml/2015/1/22/52

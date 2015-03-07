@@ -1,36 +1,41 @@
-From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v2, resend for stable 1/1] spi: dw-mid: clear BUSY flag
- fist and test other one
-Date: Sat, 7 Mar 2015 21:14:53 +0200
-Message-ID: <CAHp75VcGyq57Fg3BMqS1Z67be3DkYQ3pdgvpL5zdicfDZp+Txg@mail.gmail.com>
-References: <1425645721-18142-1-git-send-email-andriy.shevchenko@linux.intel.com>
-	<20150307112238.GK28806@sirena.org.uk>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH v4] spi: qup: Add DMA capabilities
+Date: Sat, 7 Mar 2015 21:43:35 +0200
+Message-ID: <CAHp75VeYanNJrEyTtcxb5g5DB8=609nebgZm8zVAeJdmSgHjkQ@mail.gmail.com>
+References: <1425463325-25805-1-git-send-email-stanimir.varbanov@linaro.org>
+	<20150307112109.GJ28806@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150307112238.GK28806-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Stanimir Varbanov <stanimir.varbanov@linaro.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-spi@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Kumar Gala <galak@codeaurora.org>,
+	Andy Gross <agross@codeaurora.org>,
+	Sagar Dharia <sdharia@codeaurora.org>,
+	Daniel Sneddon <dsneddon@codeaurora.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-arm-msm-owner@vger.kernel.org>
+In-Reply-To: <20150307112109.GJ28806@sirena.org.uk>
+Sender: linux-arm-msm-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Sat, Mar 7, 2015 at 1:22 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Fri, Mar 06, 2015 at 02:42:01PM +0200, Andy Shevchenko wrote:
->> The logic of DMA completion is broken now since test_and_clear_bit() never
->> returns the other bit is set. It means condition are always false and we have
->> spi_finalize_current_transfer() called per each DMA completion which is wrong.
+On Sat, Mar 7, 2015 at 1:21 PM, Mark Brown <broonie@kernel.org> wrote:
+> On Wed, Mar 04, 2015 at 12:02:05PM +0200, Stanimir Varbanov wrote:
+>> From: Andy Gross <agross@codeaurora.org>
+>>
+>> This patch adds DMA capabilities to the spi-qup driver.  If DMA channels are
+>> present, the QUP will use DMA instead of block mode for transfers to/from SPI
+>> peripherals for transactions larger than the length of a block.
 >
-> Applied, thanks.  I assume you're also going to resend the other bits if
-> they're still valid?
+> Applied, but why is there no devm_dma_request_slave_channel_reason()?
 
-Yes, they are.
-I will do next working day (On Monday I think ).
+I suppose the answer would be "we have a lot of slightly different
+cases and we have to get rid of current mess with legacy API calls".
+The most problematic stuff now inside DMA slave subsystem is so called
+"filter function". It's a main impediment right now as I understand.
 
 -- 
 With Best Regards,
 Andy Shevchenko
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

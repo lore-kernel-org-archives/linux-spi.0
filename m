@@ -1,57 +1,51 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v4] spi: qup: Add DMA capabilities
-Date: Sat, 7 Mar 2015 11:21:09 +0000
-Message-ID: <20150307112109.GJ28806@sirena.org.uk>
-References: <1425463325-25805-1-git-send-email-stanimir.varbanov@linaro.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2, resend for stable 1/1] spi: dw-mid: clear BUSY flag
+ fist and test other one
+Date: Sat, 7 Mar 2015 11:22:38 +0000
+Message-ID: <20150307112238.GK28806@sirena.org.uk>
+References: <1425645721-18142-1-git-send-email-andriy.shevchenko@linux.intel.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="C7PTD44AewjTsiSV"
-Cc: linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
-	Rob Herring <robh+dt@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Kumar Gala <galak@codeaurora.org>,
-	Andy Gross <agross@codeaurora.org>,
-	Sagar Dharia <sdharia@codeaurora.org>,
-	Daniel Sneddon <dsneddon@codeaurora.org>
-To: Stanimir Varbanov <stanimir.varbanov@linaro.org>
-Return-path: <linux-arm-msm-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="RVlUGXxwBj5SDcM9"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1425463325-25805-1-git-send-email-stanimir.varbanov@linaro.org>
-Sender: linux-arm-msm-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1425645721-18142-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---C7PTD44AewjTsiSV
+--RVlUGXxwBj5SDcM9
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 04, 2015 at 12:02:05PM +0200, Stanimir Varbanov wrote:
-> From: Andy Gross <agross@codeaurora.org>
->=20
-> This patch adds DMA capabilities to the spi-qup driver.  If DMA channels =
-are
-> present, the QUP will use DMA instead of block mode for transfers to/from=
- SPI
-> peripherals for transactions larger than the length of a block.
+On Fri, Mar 06, 2015 at 02:42:01PM +0200, Andy Shevchenko wrote:
+> The logic of DMA completion is broken now since test_and_clear_bit() never
+> returns the other bit is set. It means condition are always false and we have
+> spi_finalize_current_transfer() called per each DMA completion which is wrong.
 
-Applied, but why is there no devm_dma_request_slave_channel_reason()?
+Applied, thanks.  I assume you're also going to resend the other bits if
+they're still valid?
 
---C7PTD44AewjTsiSV
+--RVlUGXxwBj5SDcM9
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJU+t8lAAoJECTWi3JdVIfQs4gH/0nm7+UyZMKhHaNG8wqmRR4o
-Q2trD/02vP3Ftdf2FV9Cr56HRpIYWUXqXF4vX9agqu3lWlWCFInmXS92bRfEeEFu
-oqlaIXjL3rCHWotNM/WkaDxDZjHz9kC0+2EyieOpaTsDHivw7dXKcTzHelcJyoB2
-58LGjB+QDCPAJwdGHVNM40Hm0eSvMoTXf69EFdKWS+LLaWr9BP9ZRDrGn6IdjROL
-prC0P7CgfVXvWTFVaSTNjJ19Ob1RhoMjiWu1ePuFhtqcx3tU1UenrPkji1jJM0rc
-4OP1skvOhWv7KWFBGx2tUb43c3fvESUQHdNoR5pB7o/lLOtauoCN4fGwylJ1H4Q=
-=98XD
+iQEcBAEBCAAGBQJU+t99AAoJECTWi3JdVIfQrOQH/31bd+2fVhfBMETTvi7tQRD1
+ORp2QKuH/+7gdtBgXQcw2AbEGVaA8M2ignZqk817WCN98AkaN0e+gpPVCyHXdj7B
+xbXWKrgsnlAX5cDKdGhLHwa0nAy06mJWSX+p2I7fGwshxA5IP1wzrb4cP3Wm+Mim
+wMDNnw+EkpEmhgYw2ArVzUU8uabAvXtRnA1aqf/uK404IGCLR0P3oJ4xlNRropGU
+NM/7STHyxWoQ+IG6iJCqJF59U9dtTXPnF5yogGIa60XIYZMGllR+JJHoqe+VNnb2
+gwmxODgvJA7T5+mgjvtgaBcEE0Y1C1bU+IBs2nCmtsUX6Msj9fTvfGMCphC11uU=
+=3S57
 -----END PGP SIGNATURE-----
 
---C7PTD44AewjTsiSV--
+--RVlUGXxwBj5SDcM9--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

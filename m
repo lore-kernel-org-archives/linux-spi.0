@@ -1,47 +1,66 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: qup: Fix cs-num DT property parsing
-Date: Sat, 7 Mar 2015 11:01:04 +0000
-Message-ID: <20150307110104.GE28806@sirena.org.uk>
-References: <1425655578-22400-1-git-send-email-iivanov@mm-sol.com>
+Subject: Re: [PATCH v2 2/9] spi: dw-mid: clear BUSY flag fist and test other
+ one
+Date: Sat, 7 Mar 2015 11:04:15 +0000
+Message-ID: <20150307110415.GF28806@sirena.org.uk>
+References: <1425320166-13788-1-git-send-email-andriy.shevchenko@linux.intel.com>
+ <1425320166-13788-3-git-send-email-andriy.shevchenko@linux.intel.com>
+ <20150306112519.GH21293@sirena.org.uk>
+ <1425645629.14897.196.camel@linux.intel.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="XuV1QlJbYrcVoo+x"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="7mxbaLlpDEyR1+x6"
+Cc: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1425655578-22400-1-git-send-email-iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
+In-Reply-To: <1425645629.14897.196.camel-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---XuV1QlJbYrcVoo+x
-Content-Type: text/plain; charset=us-ascii
+--7mxbaLlpDEyR1+x6
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 06, 2015 at 05:26:17PM +0200, Ivan T. Ivanov wrote:
-> num-cs is 32 bit property, don't read just upper 16 bits.
+On Fri, Mar 06, 2015 at 02:40:29PM +0200, Andy Shevchenko wrote:
+> On Fri, 2015-03-06 at 11:25 +0000, Mark Brown wrote:
 
-Applied, thanks.
+> > The commit this is fixing is in v3.19 so this should go to stable but I
+> > can't apply this against my fix/dw branch.  Can you generate a version
+> > that can be applied there please?  We'll need to work out the merge
+> > issues with the current code I gues...
 
---XuV1QlJbYrcVoo+x
+> Hmm=E2=80=A6 Just tried apply on top on fix/dw using
+
+> git am -C1 -s
+> 0001-spi-dw-mid-clear-BUSY-flag-fist-and-test-other-one.patch
+
+> It went fine with reduced context.
+
+> Shall I still resend you that version?
+
+Yes, please resend.
+
+--7mxbaLlpDEyR1+x6
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJU+tpwAAoJECTWi3JdVIfQRyQH/3MN4ljUfYM5tP684CNTvsvG
-E87FSj711yP0MMFyEVKH+KsF4Pbth1lyHyI0W1nK9198fv04x2VVmKraeRo2SPCN
-jgvg1Gl74BM8BWEKcrb9CG+evNNuTKrePJRladov2eTia2P2AfNI7H0euxDvhk3G
-yp/g66BRjISH0GuZeZgtdoFk9YNdM+UlR8WxMjOsi6uAGW7Kv5r3UIpvPi7Z4Ske
-lf4fk2yGSNdXr7/X+pcqfq03qsNHEwT0MrUMRF331KdLl8/igL3TRjZiD+wY/TQX
-sWOV8FBS/O/p7GegZX/9vf/AM6D04DegLWfhJxNIJQ+29pH+NAW5K2K/EjPFJl8=
-=H2YC
+iQEcBAEBCAAGBQJU+tsuAAoJECTWi3JdVIfQQAcH/2SMZaEkmsiSTquEM4wDvp/A
+p0WqzUAhEE96rXMxpTA2WvMlRt0ex+kOFNfPSCRXSlfeYIz6BHY7+3y1l+ZJ3brb
+NBztcrl8YqDCwkamybzJvvB/xABs+TfKvxg1jliKzD0B0vsMXo+L1lOlm4oubGLf
+Wd1mpG6yREf4l58t77Cq+dXzO4QsW7jwugfQldGMGzi7OkAhsVOLaqcat/8pY9jm
+jwbIYCin7XMl08vLmvnDAM8NKBCNwRI2M24qM7dACsehi382d+CBUBC761tLzRpq
+zZtMtWAFqPPP3yf5fyMWJ2f4fNYMBSr4c8Xna7BCgFzQ/8GK5cxf2vXtS32zfVk=
+=hYT6
 -----END PGP SIGNATURE-----
 
---XuV1QlJbYrcVoo+x--
+--7mxbaLlpDEyR1+x6--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,77 +1,53 @@
-From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Subject: Re: [PATCH 2/2] dt/bindings: control CS via standard GPIO operations
- instead of SPI-HW
-Date: Fri, 06 Mar 2015 22:47:53 -0700
-Message-ID: <54FA9109.6080102@wwwdotorg.org>
-References: <1425487205-5477-1-git-send-email-kernel@martin.sperl.org> <1425487205-5477-2-git-send-email-kernel@martin.sperl.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/2] SPI: control CS via standard GPIO operations instead
+ of SPI-HW
+Date: Sat, 7 Mar 2015 10:50:52 +0000
+Message-ID: <20150307105052.GA28806@sirena.org.uk>
+References: <1425487205-5477-1-git-send-email-kernel@martin.sperl.org>
+ <54FA8EB8.9090102@wwwdotorg.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 8bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="7AUc2qLy4jB3hD7Z"
+Cc: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1425487205-5477-2-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <54FA8EB8.9090102-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 03/04/2015 09:40 AM, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
-> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-> 
-> Change the device tree to use cs-gpios for the spi bus master
-> and standard gpio operation instead of relying on the HW with
-> just 2 chip_selects using ALT0.
-> 
-> This reassigns the existing CS pins 7(=CS1) and 8(=CS0)
-> as output instead of ALT0 (=SPI HW block controlled) 
-> and adds them in the list of cs-gpios for the spi-bus.
 
-These pins aren't used by anything on the board, but are rather part of
-the expansion header. I wonder if we wouldn't be better off removing any
-configuration of the pins from the DT. After all, we can't guarantee how
-the user has connected them. The "default" usage, a/k/a the expansion
-header signal naming, isn't any guarantee.
+--7AUc2qLy4jB3hD7Z
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Rather, the user should specify what they want to use the pin as; as a
-GPIO input, GPIO output, or an SPI chip-select.
+On Fri, Mar 06, 2015 at 10:38:00PM -0700, Stephen Warren wrote:
 
-> diff --git a/arch/arm/boot/dts/bcm2835-rpi.dtsi b/arch/arm/boot/dts/bcm2835-rpi.dtsi
+> BTW, you forgot to Cc the SPI maintainer, so he probably won't see your
+> patch and apply it.
 
->  	gpioout: gpioout {
-> -		brcm,pins = <6>;
-> +		brcm,pins = <6 7 8>;
->  		brcm,function = <1>; /* GPIO out */
->  	};
->  
->  	alt0: alt0 {
-> -		brcm,pins = <0 1 2 3 4 5 7 8 9 10 11 14 15 40 45>;
-> +		brcm,pins = <0 1 2 3 4 5 9 10 11 14 15 40 45>;
->  		brcm,function = <4>; /* alt0 */
->  	};
+Correct, if something doesn't end up in my inbox I'm not going to look
+at it - see SubmittingPatches for the process.
 
-While the existing DT already has this issue, note that this forces
-these pins to be driven as outputs. What if the user has hooked up an
-external device that drives these signals, and wants to use the pins as
-GPIO inputs?
+--7AUc2qLy4jB3hD7Z
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-> diff --git a/arch/arm/boot/dts/bcm2835.dtsi b/arch/arm/boot/dts/bcm2835.dtsi
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
->  			#address-cells = <1>;
->  			#size-cells = <0>;
->  			status = "disabled";
-> +			cs-gpios = <&gpio 8 0>, <&gpio 7 0>;
->  		};
+iQEcBAEBCAAGBQJU+tgLAAoJECTWi3JdVIfQtkUH/RYu0IACVK3a9+rGWmAEuDBN
+F7JyRPUPA58Rn7lIy+YVclhb6qBk3DSAVzxkzWt/zC+qwg6eQF9/l3AGS3lz/Wlu
+LsE5CTyUFMC1mP8+DKQBfVtwPH6aj2KX1wi01cNZspRSX+c017GtD9Gkn6gwk9PX
+iH2dMZaPogqo7NUfZtEk7mY5w91Mln8Iiprfg+mSY2WKRVsQoTOkmNou5eequnpP
+KtLxZfoLTDfUVgdR6dEFBhW0VhCCbJXxxEjXfbiB7/V6GYsHzBfBOhhk9EbNbGs4
+yGADt/KsjRTj1mZdK70ZWTEPMXlZKTo4rlMmhE/EgmYgpt7hZOHZE0jIz5M8GjE=
+=KeZD
+-----END PGP SIGNATURE-----
 
-This shouldn't be in the SoC .dtsi file. It's quite possible for someone
-to use other GPIOs as SPI CS. It's board or even use-case specific
-whether those are the correct values.
-
-I would argue that we should not put any cs-gpios into any in-kernel DT
-file, since there's no on-board usage of SPI on the RPi boards.
-
-For SPI to be useful, the user has to add a DT node to represent the SPI
-device itself anyway, so adding some properties to the controller to
-define which GPIOs to use for SPI CS can be done then too.
+--7AUc2qLy4jB3hD7Z--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

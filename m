@@ -1,40 +1,36 @@
-From: AdrianRemonda <adrianremonda@gmail.com>
-Subject: Re: [PATCH] spi: spidev_test: Added functionalities
-Date: Sat, 7 Mar 2015 12:59:24 -0500
-Message-ID: <20150307175924.GA18227@debian>
-References: <1424891324-24784-1-git-send-email-adrianremonda@gmail.com>
- <20150227151117.15a79baa@lwn.net>
- <20150301182841.GA19947@debian.home>
- <20150304235439.GX21293@sirena.org.uk>
+From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v2, resend for stable 1/1] spi: dw-mid: clear BUSY flag
+ fist and test other one
+Date: Sat, 7 Mar 2015 21:14:53 +0200
+Message-ID: <CAHp75VcGyq57Fg3BMqS1Z67be3DkYQ3pdgvpL5zdicfDZp+Txg@mail.gmail.com>
+References: <1425645721-18142-1-git-send-email-andriy.shevchenko@linux.intel.com>
+	<20150307112238.GK28806@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Jonathan Corbet <corbet@lwn.net>,
-	"open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
-	"open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-doc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20150304235439.GX21293@sirena.org.uk>
-Sender: linux-doc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150307112238.GK28806-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Mar 04, 2015 at 11:54:39PM +0000, Mark Brown wrote:
-> On Sun, Mar 01, 2015 at 07:28:41PM +0100, AdrianRemonda wrote:
-> 
-> > I apologize for the wrong patch format.
-> > Should I contact the mantainer of the tool path and ask him where to add
-> > it? Or how should I proceed?
-> 
-> I am the relevant maintainer here.  The main thing from my point of view
-> is to split the three changes you were making out into separate commits
-> so they can be easily reviewed.  Jon is right that this should be moved
-> into a better directory but that's a separate issue that can be tackled
-> separately (though feel free to do it immediately if you like!).
+On Sat, Mar 7, 2015 at 1:22 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Fri, Mar 06, 2015 at 02:42:01PM +0200, Andy Shevchenko wrote:
+>> The logic of DMA completion is broken now since test_and_clear_bit() never
+>> returns the other bit is set. It means condition are always false and we have
+>> spi_finalize_current_transfer() called per each DMA completion which is wrong.
+>
+> Applied, thanks.  I assume you're also going to resend the other bits if
+> they're still valid?
 
-Thanks. I sent it to you and moved it to the tools dir.
+Yes, they are.
+I will do next working day (On Monday I think ).
 
-Regards,
-Adrian
-
-
+-- 
+With Best Regards,
+Andy Shevchenko
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

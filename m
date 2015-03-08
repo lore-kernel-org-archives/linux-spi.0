@@ -1,67 +1,54 @@
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [RFC/PATCHv2 2/3] dt-binding: spi: spi-dw: Select 16b or 32b
- access for Designware SPI
-Date: Sat, 7 Mar 2015 21:58:22 +0200
-Message-ID: <CAHp75Vddg3T4oymsixbJWPWnELF3fE5Z4HRe4CxAFd+Eb=VVmA@mail.gmail.com>
-References: <1425685594-26595-1-git-send-email-tthayer@opensource.altera.com>
-	<1425685594-26595-3-git-send-email-tthayer@opensource.altera.com>
+From: Joe Perches <joe@perches.com>
+Subject: Re: [PATCH 1/4] Cleaned hexadecimal dump
+Date: Sat, 07 Mar 2015 18:22:05 -0800
+Message-ID: <1425781325.16901.27.camel@perches.com>
+References: <1425750995-18176-1-git-send-email-adrianremonda@gmail.com>
+	 <1425750995-18176-2-git-send-email-adrianremonda@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Mark Brown <broonie@kernel.org>,
-	Grant Likely <grant.likely@linaro.org>,
-	Jiri Kosina <jkosina@suse.cz>, Pawel Moll <pawel.moll@arm.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	ijc+devicetree@hellion.org.uk, dinguyen@opensource.altera.com,
-	Linux Documentation List <linux-doc@vger.kernel.org>,
-	linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-	tthayer.linux@gmail.com, Axel Lin <axel.lin@ingics.com>,
-	baruch@tkos.co.il,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jingoo Han <jg1.han@samsung.com>,
-	Kumar Gala <galak@codeaurora.org>
-To: tthayer@opensource.altera.com
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+Cc: broonie@kernel.org, corbet@lwn.net, linux-spi@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Adrian Remonda <adrianremonda@gmail.com>
 Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <1425685594-26595-3-git-send-email-tthayer@opensource.altera.com>
+In-Reply-To: <1425750995-18176-2-git-send-email-adrianremonda@gmail.com>
 Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, Mar 7, 2015 at 1:46 AM,  <tthayer@opensource.altera.com> wrote:
-> From: Thor Thayer <tthayer@opensource.altera.com>
->
-> Altera's Arria10 architecture requires a 32bit write accesses for
-> APB peripherals. The current spi-dw driver uses 16bit accesses in
-> some locations. This patch updated the bindings with an optional
-> field in the devicetree to select 32bit accesses.
->
+On Sat, 2015-03-07 at 12:56 -0500, Adrian Remonda wrote:
+> Signed-off-by: Adrian Remonda <adrianremonda@gmail.com>
+[]
+> diff --git a/Documentation/spi/spidev_test.c b/Documentation/spi/spidev_test.c
+[]
+> +static void hexDump(const void *src, size_t length, size_t bLine, char *prefix)
+> +{
 
-One comment below.
+Is there something necessary that print_hex_dump can't do?
 
-> Signed-off-by: Thor Thayer <tthayer@opensource.altera.com>
-> ---
->  Documentation/devicetree/bindings/spi/spi-dw.txt |    1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/Documentation/devicetree/bindings/spi/spi-dw.txt b/Docum=
-entation/devicetree/bindings/spi/spi-dw.txt
-> index 7b63ed6..034dbdd 100644
-> --- a/Documentation/devicetree/bindings/spi/spi-dw.txt
-> +++ b/Documentation/devicetree/bindings/spi/spi-dw.txt
-> @@ -11,6 +11,7 @@ Required properties:
->
->  Optional properties:
->  - cs-gpios: see spi-bus.txt
-> +- 32bit_access : use 32 bit register accesses
->
+> +	int i = 0;
+> +	char *address = (char *)src;
+> +	char *line = (char *)address;
+> +	unsigned char c;
+> +
+> +	printf("%s | ", prefix);
+> +	while (length-- > 0) {
+> +		printf("%02X ", (unsigned char)*address++);
+> +		if (!(++i % bLine) || (length == 0 && i % bLine)) {
+> +			if (length == 0) {
+> +				while (i++ % bLine)
+> +					printf("__ ");
+> +			}
+> +			printf(" | ");  /* right close */
+> +			while (line < address) {
+> +				c = *line++;
+> +				printf("%c", (c < 33 || c == 255) ? 0x2E : c);
+> +			}
+> +			printf("\n");
+> +			if (length > 0)
+> +				printf("%s | ", prefix);
+> +		}
+> +	}
+> +}
 
-The most big issue for my opinion with DT is an absence of the
-standard for naming properties.
-
-So, why underscore? May be it's a time to append a generic description
-of this field to Documentation/devicetree/=E2=80=A6
 
 
---=20
-With Best Regards,
-Andy Shevchenko

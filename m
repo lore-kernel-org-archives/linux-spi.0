@@ -1,57 +1,47 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: xilinx: Use standard num-cs binding
-Date: Sun, 8 Mar 2015 19:00:12 +0000
-Message-ID: <20150308190012.GV28806@sirena.org.uk>
-References: <67f3c196833c427a489ca2c530d08987a6b5ee2a.1421412912.git.michal.simek@xilinx.com>
+Subject: Re: [PATCH 1/2] spi: Use PM ops instead of legacy suspend/resume
+Date: Sun, 8 Mar 2015 19:58:09 +0000
+Message-ID: <20150308195809.GB28806@sirena.org.uk>
+References: <1425822998-30487-1-git-send-email-lars@metafoo.de>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="BcZrms9gUsdgyR6a"
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, monstr-pSz03upnqPeHXe+LvDLADg@public.gmane.org,
-	=?iso-8859-1?Q?S=F6ren?= Brinkmann <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="AdjLlRqdF7kYRNze"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <67f3c196833c427a489ca2c530d08987a6b5ee2a.1421412912.git.michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+In-Reply-To: <1425822998-30487-1-git-send-email-lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---BcZrms9gUsdgyR6a
+--AdjLlRqdF7kYRNze
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 16, 2015 at 01:55:14PM +0100, Michal Simek wrote:
-> Use standard num-cs binding property and setup
-> "xlnx,num-ss-bits" as deprecated.
+On Sun, Mar 08, 2015 at 02:56:37PM +0100, Lars-Peter Clausen wrote:
+> New drivers should use PM ops instead of the legacy suspend/resume
+> callbacks. Update the SPI device driver guide to reflect this.
 
-Why?  These properties mean different things - num-cs is a bit confused
-and is the total number of available chip selects for the system (which
-could include GPIOs) while num-ss-bits is the size of the bitfield
-(which could include things not actually mapped out properly/successfully=
-=20
-or something if the hardware designers were feeling particularly inspired).
+Applied both, thanks.
 
-I'm not convinced num-cs ever made any sense.
-
---BcZrms9gUsdgyR6a
+--AdjLlRqdF7kYRNze
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJU/Jw7AAoJECTWi3JdVIfQFuUH/iGrogTvEN2ibylzo/fvGwuw
-mnp69cL2y5sjdegiaYcSchqAZxMqQHz/AeHJBvF5rlB+rb2Xdo4tsrqhZy5iK8iJ
-PaTBXvX5gcG0cIZaHp7hvq1AY5rM/HUWpDl7bvDYl/JsBIv2eTIQe+NwTr5GrXYd
-RCK2fkOj73GdHEqaRpAOG+3uHbyzmJtJbW7fq3xfDeaf9nb+loZq7pqgyUUVV6Lq
-4e/nf2WKn7Wr7YkZ1ezZSRmUBuA/G1z04qDvEzBFBpGj6sktPJEFOyd07fcyaLBD
-px0qEWRTZ8tNLuZFx4lXWLOmZBWCb3uPjpax4pMxXViiQJUCz0d04bwGH/KSWX0=
-=iZtX
+iQEcBAEBCAAGBQJU/KnQAAoJECTWi3JdVIfQ1hwH/0gADlRQdF+uFwiLWr1kiEvk
+j46RF/lsOoyNd50xTN/fgfzFiCXIcGvfDRopJ57ChaKPdQONNmAOhJqWpAEV71Cm
+COK0gdJ/6N64wNXff5ZoSlvoSaJj1POXk5MXIsrpYd7dJ0w8MaLrvuuYiVxdnbvC
+jJV89IxqOC1zCccKk4Prj5yBh5SLj2FE5MvD2v/8CYjP2FewcqFk6iulxATEF9Qf
+1PUKW3tuFW7D1/+ErVOvPeEKZOuaESacDvgOlWPTuS+mjfANsTtyCbOJFrnwWOJ7
+8mWKAyG7nu+xuT6NUWMMdnu1MjoveZRBXvQdVHSQdcvApANFh+HkHbE+SeYOF34=
+=8sgj
 -----END PGP SIGNATURE-----
 
---BcZrms9gUsdgyR6a--
+--AdjLlRqdF7kYRNze--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,79 +1,63 @@
 From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH v3 4/7] spi: dw-mid: clear ongoing DMA transfers on timeout
-Date: Mon,  9 Mar 2015 16:48:48 +0200
-Message-ID: <1425912531-23457-5-git-send-email-andriy.shevchenko@linux.intel.com>
-References: <1425912531-23457-1-git-send-email-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v3 0/7] spi: dw: make DMA working
+Date: Mon,  9 Mar 2015 16:48:44 +0200
+Message-ID: <1425912531-23457-1-git-send-email-andriy.shevchenko@linux.intel.com>
 Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1425912531-23457-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-This patch shuts up any ongoing DMA transfer in case of error.
+This patch series is dedicated to make DMA working on Intel Medfield device
+with SPI DW and DW DMA. The previous version would be found here [1].
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
----
- drivers/spi/spi-dw-mid.c | 13 +++++++++++++
- drivers/spi/spi-dw.c     |  3 +++
- drivers/spi/spi-dw.h     |  1 +
- 3 files changed, 17 insertions(+)
+The patch 3/7 is a bugfix, though it's not marked as a fix to reduce a noise on
+stable kernels, where DMA wasn't working properly anyway. Last one is the
+removal of old DMA driver, since the only user of it in upstream was SPI DW.
 
-diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
-index 3729cdd..e614190 100644
---- a/drivers/spi/spi-dw-mid.c
-+++ b/drivers/spi/spi-dw-mid.c
-@@ -270,11 +270,24 @@ static int mid_spi_dma_transfer(struct dw_spi *dws)
- 	return 0;
- }
- 
-+static void mid_spi_dma_stop(struct dw_spi *dws)
-+{
-+	if (test_bit(TX_BUSY, &dws->dma_chan_busy)) {
-+		dmaengine_terminate_all(dws->txchan);
-+		clear_bit(TX_BUSY, &dws->dma_chan_busy);
-+	}
-+	if (test_bit(RX_BUSY, &dws->dma_chan_busy)) {
-+		dmaengine_terminate_all(dws->rxchan);
-+		clear_bit(RX_BUSY, &dws->dma_chan_busy);
-+	}
-+}
-+
- static struct dw_spi_dma_ops mid_dma_ops = {
- 	.dma_init	= mid_spi_dma_init,
- 	.dma_exit	= mid_spi_dma_exit,
- 	.dma_setup	= mid_spi_dma_setup,
- 	.dma_transfer	= mid_spi_dma_transfer,
-+	.dma_stop	= mid_spi_dma_stop,
- };
- #endif
- 
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index c7c2fcc..d53cffe 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -432,6 +432,9 @@ static void dw_spi_handle_err(struct spi_master *master,
- {
- 	struct dw_spi *dws = spi_master_get_devdata(master);
- 
-+	if (dws->dma_mapped)
-+		dws->dma_ops->dma_stop(dws);
-+
- 	spi_reset_chip(dws);
- }
- 
-diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index 7351692..7f130bd 100644
---- a/drivers/spi/spi-dw.h
-+++ b/drivers/spi/spi-dw.h
-@@ -93,6 +93,7 @@ struct dw_spi_dma_ops {
- 	void (*dma_exit)(struct dw_spi *dws);
- 	int (*dma_setup)(struct dw_spi *dws);
- 	int (*dma_transfer)(struct dw_spi *dws);
-+	void (*dma_stop)(struct dw_spi *dws);
- };
- 
- struct dw_spi {
+Vinod, since the patch 7/7 removes the driver your are author of, please give
+your Ack. Reliminary answer, as I remember, was okay to remove.
+
+The driver was tested in loop back mode. It looks like there are not so many
+users of it right now, but I would really appreciate if anyone could test the
+driver on different hardware platforms (to be sure that I didn't break it).
+
+As a side effect the patch 6/7 fixes the memore leak in probe(). Mark, we
+discussed that bug earlier in last year.
+
+[1] http://www.spinics.net/lists/linux-spi/msg03013.html
+
+Changelog v3:
+- rebase on top of recent spi/for-next
+
+Changelog v2:
+- change the approach (most of the patches were rewritten)
+- rebased on top of recent linux-next
+- added IRQ handler for DMA case to cover FIFO overrun/underrun issue
+
+Andy Shevchenko (7):
+  spi: dw-mid: convert value of dma_width to enum dma_slave_buswidth
+  spi: dw-mid: split dma_setup() from dma_transfer()
+  spi: dw-mid: take care of FIFO overrun/underrun when do DMA
+  spi: dw-mid: clear ongoing DMA transfers on timeout
+  spi: dw-mid: move to use core SPI DMA mappings
+  spi: dw-mid: convert to use dw_dmac instead of intel_mid_dma
+  dmaengine: intel-mid-dma: remove the driver
+
+ drivers/dma/Kconfig              |   13 -
+ drivers/dma/Makefile             |    1 -
+ drivers/dma/intel_mid_dma.c      | 1447 --------------------------------------
+ drivers/dma/intel_mid_dma_regs.h |  299 --------
+ drivers/spi/Kconfig              |    2 +-
+ drivers/spi/spi-dw-mid.c         |  157 +++--
+ drivers/spi/spi-dw.c             |   74 +-
+ drivers/spi/spi-dw.h             |   22 +-
+ include/linux/intel_mid_dma.h    |   76 --
+ 9 files changed, 137 insertions(+), 1954 deletions(-)
+ delete mode 100644 drivers/dma/intel_mid_dma.c
+ delete mode 100644 drivers/dma/intel_mid_dma_regs.h
+ delete mode 100644 include/linux/intel_mid_dma.h
+
 -- 
 2.1.4
 

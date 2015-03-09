@@ -1,7 +1,7 @@
 From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH v3 6/7] spi: dw-mid: convert to use dw_dmac instead of intel_mid_dma
-Date: Mon,  9 Mar 2015 16:48:50 +0200
-Message-ID: <1425912531-23457-7-git-send-email-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v3 2/7] spi: dw-mid: split dma_setup() from dma_transfer()
+Date: Mon,  9 Mar 2015 16:48:46 +0200
+Message-ID: <1425912531-23457-3-git-send-email-andriy.shevchenko@linux.intel.com>
 References: <1425912531-23457-1-git-send-email-andriy.shevchenko@linux.intel.com>
 Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
@@ -10,156 +10,159 @@ In-Reply-To: <1425912531-23457-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd5
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-intel_mid_dma seems to be unmaintained for a long time. Moreover, the IP block
-of DMA itself is the same in both dw_dmac and intel_mid_dma. This patch moves
-spi-dw-midpci to use dw_dmac driver.
+The patch splits DMA preparatory code to dma_setup() callback. The change also
+converts transfer_one() to program DMA whenever the transfer is DMA mapped. The
+change is a follow up of the converion to use SPI core transfer_one_message().
+Since the DMA mapped transfers can be interleaved with PIO ones the DMA related
+configuration should respect that.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 ---
- drivers/spi/Kconfig      |  2 +-
- drivers/spi/spi-dw-mid.c | 45 +++++++++++++++++++--------------------------
+ drivers/spi/spi-dw-mid.c | 17 ++++++-----------
+ drivers/spi/spi-dw.c     | 23 +++++++++++++----------
  drivers/spi/spi-dw.h     |  4 ++--
- 3 files changed, 22 insertions(+), 29 deletions(-)
+ 3 files changed, 21 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index ab8dfbe..9131079 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -632,7 +632,7 @@ config SPI_DW_PCI
- 
- config SPI_DW_MID_DMA
- 	bool "DMA support for DW SPI controller on Intel MID platform"
--	depends on SPI_DW_PCI && INTEL_MID_DMAC
-+	depends on SPI_DW_PCI && DW_DMAC_PCI
- 
- config SPI_DW_MMIO
- 	tristate "Memory-mapped io interface driver for DW SPI core"
 diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
-index 599dad4..d4109f6 100644
+index 25c8fa7..4b4d266 100644
 --- a/drivers/spi/spi-dw-mid.c
 +++ b/drivers/spi/spi-dw-mid.c
-@@ -23,29 +23,31 @@
- #include "spi-dw.h"
- 
- #ifdef CONFIG_SPI_DW_MID_DMA
--#include <linux/intel_mid_dma.h>
- #include <linux/pci.h>
-+#include <linux/platform_data/dma-dw.h>
- 
- #define RX_BUSY		0
- #define TX_BUSY		1
- 
--struct mid_dma {
--	struct intel_mid_dma_slave	dmas_tx;
--	struct intel_mid_dma_slave	dmas_rx;
--};
-+static struct dw_dma_slave mid_dma_tx = { .dst_id = 1 };
-+static struct dw_dma_slave mid_dma_rx = { .src_id = 0 };
- 
- static bool mid_spi_dma_chan_filter(struct dma_chan *chan, void *param)
- {
--	struct dw_spi *dws = param;
-+	struct dw_dma_slave *s = param;
-+
-+	if (s->dma_dev != chan->device->dev)
-+		return false;
- 
--	return dws->dma_dev == chan->device->dev;
-+	chan->private = s;
-+	return true;
+@@ -207,12 +207,10 @@ static struct dma_async_tx_descriptor *dw_spi_dma_prepare_rx(struct dw_spi *dws)
+ 	return rxdesc;
  }
  
- static int mid_spi_dma_init(struct dw_spi *dws)
+-static void dw_spi_dma_setup(struct dw_spi *dws)
++static int mid_spi_dma_setup(struct dw_spi *dws)
  {
--	struct mid_dma *dw_dma = dws->dma_priv;
- 	struct pci_dev *dma_dev;
--	struct intel_mid_dma_slave *rxs, *txs;
-+	struct dw_dma_slave *tx = dws->dma_tx;
-+	struct dw_dma_slave *rx = dws->dma_rx;
- 	dma_cap_mask_t mask;
+ 	u16 dma_ctrl = 0;
  
- 	/*
-@@ -56,29 +58,21 @@ static int mid_spi_dma_init(struct dw_spi *dws)
- 	if (!dma_dev)
- 		return -ENODEV;
- 
--	dws->dma_dev = &dma_dev->dev;
+-	spi_enable_chip(dws, 0);
 -
- 	dma_cap_zero(mask);
- 	dma_cap_set(DMA_SLAVE, mask);
+ 	dw_writew(dws, DW_SPI_DMARDLR, 0xf);
+ 	dw_writew(dws, DW_SPI_DMATDLR, 0x10);
  
- 	/* 1. Init rx channel */
--	dws->rxchan = dma_request_channel(mask, mid_spi_dma_chan_filter, dws);
-+	rx->dma_dev = &dma_dev->dev;
-+	dws->rxchan = dma_request_channel(mask, mid_spi_dma_chan_filter, rx);
- 	if (!dws->rxchan)
- 		goto err_exit;
--	rxs = &dw_dma->dmas_rx;
--	rxs->hs_mode = LNW_DMA_HW_HS;
--	rxs->cfg_mode = LNW_DMA_PER_TO_MEM;
--	dws->rxchan->private = rxs;
- 	dws->master->dma_rx = dws->rxchan;
+@@ -222,21 +220,17 @@ static void dw_spi_dma_setup(struct dw_spi *dws)
+ 		dma_ctrl |= SPI_DMA_RDMAE;
+ 	dw_writew(dws, DW_SPI_DMACR, dma_ctrl);
  
- 	/* 2. Init tx channel */
--	dws->txchan = dma_request_channel(mask, mid_spi_dma_chan_filter, dws);
-+	tx->dma_dev = &dma_dev->dev;
-+	dws->txchan = dma_request_channel(mask, mid_spi_dma_chan_filter, tx);
- 	if (!dws->txchan)
- 		goto free_rxchan;
--	txs = &dw_dma->dmas_tx;
--	txs->hs_mode = LNW_DMA_HW_HS;
--	txs->cfg_mode = LNW_DMA_MEM_TO_PER;
--	dws->txchan->private = txs;
- 	dws->master->dma_tx = dws->txchan;
+-	spi_enable_chip(dws, 1);
++	return 0;
+ }
  
- 	dws->dma_inited = 1;
-@@ -163,7 +157,7 @@ static struct dma_async_tx_descriptor *dw_spi_dma_prepare_tx(struct dw_spi *dws,
+-static int mid_spi_dma_transfer(struct dw_spi *dws, int cs_change)
++static int mid_spi_dma_transfer(struct dw_spi *dws)
+ {
+ 	struct dma_async_tx_descriptor *txdesc, *rxdesc;
  
- 	txconf.direction = DMA_MEM_TO_DEV;
- 	txconf.dst_addr = dws->dma_addr;
--	txconf.dst_maxburst = LNW_DMA_MSIZE_16;
-+	txconf.dst_maxburst = 16;
- 	txconf.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
- 	txconf.dst_addr_width = convert_dma_width(dws->dma_width);
- 	txconf.device_fc = false;
-@@ -209,7 +203,7 @@ static struct dma_async_tx_descriptor *dw_spi_dma_prepare_rx(struct dw_spi *dws,
+-	/* 1. setup DMA related registers */
+-	if (cs_change)
+-		dw_spi_dma_setup(dws);
+-
+-	/* 2. Prepare the TX dma transfer */
++	/* Prepare the TX dma transfer */
+ 	txdesc = dw_spi_dma_prepare_tx(dws);
  
- 	rxconf.direction = DMA_DEV_TO_MEM;
- 	rxconf.src_addr = dws->dma_addr;
--	rxconf.src_maxburst = LNW_DMA_MSIZE_16;
-+	rxconf.src_maxburst = 16;
- 	rxconf.dst_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
- 	rxconf.src_addr_width = convert_dma_width(dws->dma_width);
- 	rxconf.device_fc = false;
-@@ -328,9 +322,8 @@ int dw_spi_mid_init(struct dw_spi *dws)
- 	iounmap(clk_reg);
+-	/* 3. Prepare the RX dma transfer */
++	/* Prepare the RX dma transfer */
+ 	rxdesc = dw_spi_dma_prepare_rx(dws);
  
- #ifdef CONFIG_SPI_DW_MID_DMA
--	dws->dma_priv = kzalloc(sizeof(struct mid_dma), GFP_KERNEL);
--	if (!dws->dma_priv)
--		return -ENOMEM;
-+	dws->dma_tx = &mid_dma_tx;
-+	dws->dma_rx = &mid_dma_rx;
- 	dws->dma_ops = &mid_dma_ops;
+ 	/* rx must be started before tx due to spi instinct */
+@@ -258,6 +252,7 @@ static int mid_spi_dma_transfer(struct dw_spi *dws, int cs_change)
+ static struct dw_spi_dma_ops mid_dma_ops = {
+ 	.dma_init	= mid_spi_dma_init,
+ 	.dma_exit	= mid_spi_dma_exit,
++	.dma_setup	= mid_spi_dma_setup,
+ 	.dma_transfer	= mid_spi_dma_transfer,
+ };
  #endif
- 	return 0;
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index f3e4092..c7c2fcc 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -316,11 +316,11 @@ static int dw_spi_transfer_one(struct spi_master *master,
+ 	struct dw_spi *dws = spi_master_get_devdata(master);
+ 	struct chip_data *chip = spi_get_ctldata(spi);
+ 	u8 imask = 0;
+-	u8 cs_change = 0;
+ 	u16 txlevel = 0;
+ 	u16 clk_div = 0;
+ 	u32 speed = 0;
+ 	u32 cr0 = 0;
++	int ret;
+ 
+ 	dws->n_bytes = chip->n_bytes;
+ 	dws->dma_width = chip->dma_width;
+@@ -332,8 +332,6 @@ static int dw_spi_transfer_one(struct spi_master *master,
+ 	dws->rx = transfer->rx_buf;
+ 	dws->rx_end = dws->rx + transfer->len;
+ 	dws->len = transfer->len;
+-	if (chip != dws->prev_chip)
+-		cs_change = 1;
+ 
+ 	spi_enable_chip(dws, 0);
+ 
+@@ -397,7 +395,13 @@ static int dw_spi_transfer_one(struct spi_master *master,
+ 	 * Interrupt mode
+ 	 * we only need set the TXEI IRQ, as TX/RX always happen syncronizely
+ 	 */
+-	if (!dws->dma_mapped && !chip->poll_mode) {
++	if (dws->dma_mapped) {
++		ret = dws->dma_ops->dma_setup(dws);
++		if (ret < 0) {
++			spi_enable_chip(dws, 1);
++			return ret;
++		}
++	} else if (!chip->poll_mode) {
+ 		txlevel = min_t(u16, dws->fifo_len / 2, dws->len / dws->n_bytes);
+ 		dw_writew(dws, DW_SPI_TXFLTR, txlevel);
+ 
+@@ -411,11 +415,11 @@ static int dw_spi_transfer_one(struct spi_master *master,
+ 
+ 	spi_enable_chip(dws, 1);
+ 
+-	if (cs_change)
+-		dws->prev_chip = chip;
+-
+-	if (dws->dma_mapped)
+-		dws->dma_ops->dma_transfer(dws, cs_change);
++	if (dws->dma_mapped) {
++		ret = dws->dma_ops->dma_transfer(dws);
++		if (ret < 0)
++			return ret;
++	}
+ 
+ 	if (chip->poll_mode)
+ 		return poll_transfer(dws);
+@@ -546,7 +550,6 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
+ 
+ 	dws->master = master;
+ 	dws->type = SSI_MOTO_SPI;
+-	dws->prev_chip = NULL;
+ 	dws->dma_inited = 0;
+ 	dws->dma_addr = (dma_addr_t)(dws->paddr + 0x60);
+ 	snprintf(dws->name, sizeof(dws->name), "dw_spi%d", dws->bus_num);
 diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index f298df5..41f77e2 100644
+index 855bfdd..7351692 100644
 --- a/drivers/spi/spi-dw.h
 +++ b/drivers/spi/spi-dw.h
-@@ -128,10 +128,10 @@ struct dw_spi {
- 	struct dma_chan		*txchan;
- 	struct dma_chan		*rxchan;
- 	unsigned long		dma_chan_busy;
--	struct device		*dma_dev;
- 	dma_addr_t		dma_addr; /* phy address of the Data register */
- 	struct dw_spi_dma_ops	*dma_ops;
--	void			*dma_priv; /* platform relate info */
-+	void			*dma_tx;
-+	void			*dma_rx;
+@@ -91,7 +91,8 @@ struct dw_spi;
+ struct dw_spi_dma_ops {
+ 	int (*dma_init)(struct dw_spi *dws);
+ 	void (*dma_exit)(struct dw_spi *dws);
+-	int (*dma_transfer)(struct dw_spi *dws, int cs_change);
++	int (*dma_setup)(struct dw_spi *dws);
++	int (*dma_transfer)(struct dw_spi *dws);
+ };
  
- 	/* Bus interface info */
- 	void			*priv;
+ struct dw_spi {
+@@ -109,7 +110,6 @@ struct dw_spi {
+ 	u16			num_cs;		/* supported slave numbers */
+ 
+ 	/* Current message transfer state info */
+-	struct chip_data	*prev_chip;
+ 	size_t			len;
+ 	void			*tx;
+ 	void			*tx_end;
 -- 
 2.1.4
 

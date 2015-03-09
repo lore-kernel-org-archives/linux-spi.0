@@ -1,94 +1,46 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [GIT PULL] spi fixes for v4.0
-Date: Mon, 9 Mar 2015 18:08:01 +0000
-Message-ID: <20150309180801.GJ28806@sirena.org.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2] spi: cadence: Remove Kconfig dependency
+Date: Mon, 9 Mar 2015 18:09:38 +0000
+Message-ID: <20150309180938.GL28806@sirena.org.uk>
+References: <6202725ab40c7bb26e8650f904bba68b8996f07c.1425890773.git.michal.simek@xilinx.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="MRqhvNSJsMAynmoC"
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="SUaMdvPJwViBZG9r"
+Cc: linux-kernel@vger.kernel.org, monstr@monstr.eu,
+	linux-spi@vger.kernel.org
+To: Michal Simek <michal.simek@xilinx.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <6202725ab40c7bb26e8650f904bba68b8996f07c.1425890773.git.michal.simek@xilinx.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---MRqhvNSJsMAynmoC
+--SUaMdvPJwViBZG9r
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-The following changes since commit 13a7a6ac0a11197edcd0f756a035f472b42cdf8b:
+On Mon, Mar 09, 2015 at 09:46:15AM +0100, Michal Simek wrote:
+> Remove Kconfig dependency and enable driver for
+> all ARCHs.
+> Also update help description.
 
-  Linux 4.0-rc2 (2015-03-03 09:04:59 -0800)
+Applied, thanks.
 
-are available in the git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-v4.0-rc2
-
-for you to fetch changes up to 60c1beeff40b04097298e10640580f62420a55ca:
-
-  Merge remote-tracking branches 'spi/fix/atmel', 'spi/fix/doc', 'spi/fix/dw', 'spi/fix/img-spfi', 'spi/fix/pl022' and 'spi/fix/ti-qspi' into spi-linus (2015-03-06 21:10:56 +0000)
-
-----------------------------------------------------------------
-spi: Fixes for v4.0
-
-A collection of driver specific fixes to which the usual comments about
-them being important if you see them mostly apply (except for the
-comment fix).  The pl022 one is particularly nasty for anyone affected
-by it.
-
-----------------------------------------------------------------
-Alexander Sverdlin (1):
-      spi: pl022: Fix race in giveback() leading to driver lock-up
-
-Andy Shevchenko (3):
-      spi: dw-pci: correct number of chip selects
-      spi: dw: revisit FIFO size detection again
-      spi: dw-mid: avoid potential NULL dereference
-
-Marcin Bis (1):
-      spi: fix a typo in comment.
-
-Mark Brown (1):
-      Merge remote-tracking branches 'spi/fix/atmel', 'spi/fix/doc', 'spi/fix/dw', 'spi/fix/img-spfi', 'spi/fix/pl022' and 'spi/fix/ti-qspi' into spi-linus
-
-Mugunthan V N (1):
-      drivers: spi: ti-qspi: wait for busy bit clear before data write/read
-
-Sifan Naeem (1):
-      spi: img-spfi: Verify max spfi transfer length
-
-Torsten Fleischer (1):
-      spi: atmel: Fix interrupt setup for PDC transfers
-
- drivers/spi/spi-atmel.c    | 12 ++++++------
- drivers/spi/spi-dw-mid.c   |  6 ++++++
- drivers/spi/spi-dw-pci.c   |  4 ++--
- drivers/spi/spi-dw.c       |  4 ++--
- drivers/spi/spi-img-spfi.c |  7 +++++++
- drivers/spi/spi-pl022.c    |  2 +-
- drivers/spi/spi-ti-qspi.c  | 22 ++++++++++++++++++++++
- include/linux/spi/spi.h    |  2 +-
- 8 files changed, 47 insertions(+), 12 deletions(-)
-
---MRqhvNSJsMAynmoC
+--SUaMdvPJwViBZG9r
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJU/eGAAAoJECTWi3JdVIfQs28H/3cH7vC15H9mFhk0GhbVC5jL
-wNOu81lP1P39SAQn1TzjYKKuKW23zYCLPOpJXbGlLvMyv0fwbItY09WxxRJL33DJ
-uScYA3cjgMSggvE2iuUtqG2im/tYroON+kcKFCJ60gt2DRAYDHAmxhF/XEids7hQ
-kc6Mnv4MRJgKtuZCT5DCcedKaXzHtyZlj71RQeCv2DeLGAQD5HhoTUPVAtFZoa9C
-SZSUrvsf7hqDmhqioY5uWWeexdGUByGL/mrTFFkjqvnjRj1+l0fV5Mtki6hjdhoV
-6CiJw/M0e2kJndcXa2fDK51zFwEF/u/QYQSI6qmObKc4p/PK0y7MpTjd0A8n9RQ=
-=jBGm
+iQEcBAEBCAAGBQJU/eHhAAoJECTWi3JdVIfQ5dcH/2aqvQW99CqPrW3ppQYT78Lk
+JXmSBb4v6VYwnTr+ToER+HnVxayXP9Sdq8dfILZnyOPzviDrEqjYMI5Ya1bN9B/D
+F9WUBWx3feLQVHF2PWRJA3JIZdP4+XM0NzDXowCQqO+qoqdexqJNJuNW28ABpGOt
+aKBsfn1gymNR87vFWnn08Sq5lzzVICsZl440ljI9UjuBXftdCLSJFHoVSmyXcG6a
++yIAUe6Ps19A9uxhLzY0sDo1JSrSeQXEF6tYh8qubm/g5DzVyqp3obZEc3Bp2xvZ
++Khsoem1Ru/OSrURGAZwH7VJumF5Cp9d6+F4cyiKQbmsyDNKXpX6EFgrTjfycnM=
+=Y/fO
 -----END PGP SIGNATURE-----
 
---MRqhvNSJsMAynmoC--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--SUaMdvPJwViBZG9r--

@@ -1,47 +1,52 @@
-From: Michal Simek <michal.simek@xilinx.com>
-Subject: [PATCH v2] spi: cadence: Remove Kconfig dependency
-Date: Mon,  9 Mar 2015 09:46:15 +0100
-Message-ID: <6202725ab40c7bb26e8650f904bba68b8996f07c.1425890773.git.michal.simek@xilinx.com>
+From: Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v4] spi: qup: Add DMA capabilities
+Date: Mon, 09 Mar 2015 10:12:49 +0100
+Message-ID: <54FD6411.90401@metafoo.de>
+References: <1425463325-25805-1-git-send-email-stanimir.varbanov@linaro.org>	<20150307112109.GJ28806@sirena.org.uk>	<CAHp75VeYanNJrEyTtcxb5g5DB8=609nebgZm8zVAeJdmSgHjkQ@mail.gmail.com>	<54FC30BE.1070606@metafoo.de> <CAHp75Vd7+GxT01+X5u4n=tXdBu-gcmdS-AETu0yK6PWFfjzDEA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
-To: linux-kernel@vger.kernel.org, monstr@monstr.eu
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie@kernel.org>,
+	Stanimir Varbanov <stanimir.varbanov@linaro.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-spi@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Kumar Gala <galak@codeaurora.org>,
+	Andy Gross <agross@codeaurora.org>,
+	Sagar Dharia <sdharia@codeaurora.org>,
+	Daniel Sneddon <dsneddon@codeaurora.org>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Return-path: <linux-arm-msm-owner@vger.kernel.org>
+In-Reply-To: <CAHp75Vd7+GxT01+X5u4n=tXdBu-gcmdS-AETu0yK6PWFfjzDEA@mail.gmail.com>
+Sender: linux-arm-msm-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Remove Kconfig dependency and enable driver for
-all ARCHs.
-Also update help description.
+On 03/08/2015 01:20 PM, Andy Shevchenko wrote:
+> On Sun, Mar 8, 2015 at 1:21 PM, Lars-Peter Clausen <lars@metafoo.de> wrote:
+>> On 03/07/2015 08:43 PM, Andy Shevchenko wrote:
+>>>
+>>> On Sat, Mar 7, 2015 at 1:21 PM, Mark Brown <broonie@kernel.org> wrote:
+>
+>>>> Applied, but why is there no devm_dma_request_slave_channel_reason()?
+>>>
+>>> I suppose the answer would be "we have a lot of slightly different
+>>> cases and we have to get rid of current mess with legacy API calls".
+>>> The most problematic stuff now inside DMA slave subsystem is so called
+>>> "filter function". It's a main impediment right now as I understand.
+>>
+>> dma_request_slave_channel_reason() is the sane API though and does not use
+>> the filter functions. Adding a devm version of it seems reasonable.
+>
+> It would be dma_request_slave_channel() in the first place, but legacy
+> stuff didn't allow to do that, so here we are. I wouldn't like the
+> idea of creating devm_dma_* before we will have stable function names
+> without legacy involving.
+>
 
-Signed-off-by: Michal Simek <michal.simek@xilinx.com>
-Acked-by: S=C3=B6ren Brinkmann <soren.brinkmann@xilinx.com>
----
+At some point when all callers dma_request_slave_channel() have been updated 
+to use dma_request_slave_channel_reason(), the later might be renamed to the 
+former. I don't see the problem with having to do the same for a 
+devm_dma_request_slave_channel_reason().
 
-Changes in v2:
-- Remove ARM and ARM64 in Kconfig
-
-Test for all archs done by Kbuild test robot without any problem.
----
- drivers/spi/Kconfig | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index ab8dfbef6f1b..0c008162d0af 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -159,10 +159,9 @@ config SPI_BUTTERFLY
-=20
- config SPI_CADENCE
- 	tristate "Cadence SPI controller"
--	depends on ARM
- 	help
- 	  This selects the Cadence SPI controller master driver
--	  used by Xilinx Zynq.
-+	  used by Xilinx Zynq and ZynqMP.
-=20
- config SPI_CLPS711X
- 	tristate "CLPS711X host SPI controller"
---=20
-1.8.2.3
+- Lars

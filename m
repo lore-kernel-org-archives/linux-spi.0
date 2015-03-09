@@ -1,81 +1,95 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH 1/4] Cleaned hexadecimal dump
-Date: Mon, 9 Mar 2015 14:51:17 +0100
-Message-ID: <CAMuHMdU4JeKqH7ac2iC0EkWYdH+3-xNmKyeVBq374gcmdCQ9GQ@mail.gmail.com>
-References: <1425750995-18176-1-git-send-email-adrianremonda@gmail.com>
-	<1425750995-18176-2-git-send-email-adrianremonda@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Jonathan Corbet <corbet-T1hC0tSOHrs@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Adrian Remonda <adrianremonda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH v3 1/7] spi: dw-mid: convert value of dma_width to enum dma_slave_buswidth
+Date: Mon,  9 Mar 2015 16:48:45 +0200
+Message-ID: <1425912531-23457-2-git-send-email-andriy.shevchenko@linux.intel.com>
+References: <1425912531-23457-1-git-send-email-andriy.shevchenko@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1425750995-18176-2-git-send-email-adrianremonda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1425912531-23457-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Sat, Mar 7, 2015 at 6:56 PM, Adrian Remonda <adrianremonda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> diff --git a/Documentation/spi/spidev_test.c b/Documentation/spi/spidev_test.c
-> index 3a2f9d59edab..533050ced9f1 100644
-> --- a/Documentation/spi/spidev_test.c
-> +++ b/Documentation/spi/spidev_test.c
-> @@ -15,6 +15,7 @@
->  #include <unistd.h>
->  #include <stdio.h>
->  #include <stdlib.h>
-> +#include <string.h>
->  #include <getopt.h>
->  #include <fcntl.h>
->  #include <sys/ioctl.h>
-> @@ -35,6 +36,33 @@ static uint8_t bits = 8;
->  static uint32_t speed = 500000;
->  static uint16_t delay;
->
-> +static void hexDump(const void *src, size_t length, size_t bLine, char *prefix)
-> +{
-> +       int i = 0;
-> +       char *address = (char *)src;
+DMAEngine has a specific type to be used for bus width. This patch converts the
+code to use the values of the specific type when configure DMA transfer.
 
-If you use "const char *address", you don't need the cast.
-If you use "const unsigned char *address", one more cast below can be dropped.
+Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+---
+ drivers/spi/spi-dw-mid.c | 13 +++++++++++--
+ drivers/spi/spi-dw.c     | 12 ++++++++----
+ 2 files changed, 19 insertions(+), 6 deletions(-)
 
-> +       char *line = (char *)address;
+diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
+index c8416ef..25c8fa7 100644
+--- a/drivers/spi/spi-dw-mid.c
++++ b/drivers/spi/spi-dw-mid.c
+@@ -100,6 +100,15 @@ static void mid_spi_dma_exit(struct dw_spi *dws)
+ 	dma_release_channel(dws->rxchan);
+ }
+ 
++static enum dma_slave_buswidth convert_dma_width(u32 dma_width) {
++	if (dma_width == 1)
++		return DMA_SLAVE_BUSWIDTH_1_BYTE;
++	else if (dma_width == 2)
++		return DMA_SLAVE_BUSWIDTH_2_BYTES;
++
++	return DMA_SLAVE_BUSWIDTH_UNDEFINED;
++}
++
+ /*
+  * dws->dma_chan_busy is set before the dma transfer starts, callback for tx
+  * channel will clear a corresponding bit.
+@@ -126,7 +135,7 @@ static struct dma_async_tx_descriptor *dw_spi_dma_prepare_tx(struct dw_spi *dws)
+ 	txconf.dst_addr = dws->dma_addr;
+ 	txconf.dst_maxburst = LNW_DMA_MSIZE_16;
+ 	txconf.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
+-	txconf.dst_addr_width = dws->dma_width;
++	txconf.dst_addr_width = convert_dma_width(dws->dma_width);
+ 	txconf.device_fc = false;
+ 
+ 	dmaengine_slave_config(dws->txchan, &txconf);
+@@ -175,7 +184,7 @@ static struct dma_async_tx_descriptor *dw_spi_dma_prepare_rx(struct dw_spi *dws)
+ 	rxconf.src_addr = dws->dma_addr;
+ 	rxconf.src_maxburst = LNW_DMA_MSIZE_16;
+ 	rxconf.dst_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
+-	rxconf.src_addr_width = dws->dma_width;
++	rxconf.src_addr_width = convert_dma_width(dws->dma_width);
+ 	rxconf.device_fc = false;
+ 
+ 	dmaengine_slave_config(dws->rxchan, &rxconf);
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index 950bc50..f3e4092 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -315,7 +315,6 @@ static int dw_spi_transfer_one(struct spi_master *master,
+ {
+ 	struct dw_spi *dws = spi_master_get_devdata(master);
+ 	struct chip_data *chip = spi_get_ctldata(spi);
+-	u8 bits = 0;
+ 	u8 imask = 0;
+ 	u8 cs_change = 0;
+ 	u16 txlevel = 0;
+@@ -357,9 +356,14 @@ static int dw_spi_transfer_one(struct spi_master *master,
+ 		}
+ 	}
+ 	if (transfer->bits_per_word) {
+-		bits = transfer->bits_per_word;
+-		dws->n_bytes = dws->dma_width = bits >> 3;
+-		cr0 = (bits - 1)
++		if (transfer->bits_per_word == 8) {
++			dws->n_bytes = 1;
++			dws->dma_width = 1;
++		} else if (transfer->bits_per_word == 16) {
++			dws->n_bytes = 2;
++			dws->dma_width = 2;
++		}
++		cr0 = (transfer->bits_per_word - 1)
+ 			| (chip->type << SPI_FRF_OFFSET)
+ 			| (spi->mode << SPI_MODE_OFFSET)
+ 			| (chip->tmode << SPI_TMOD_OFFSET);
+-- 
+2.1.4
 
-"const unsigned char *line", and drop the cast.
-
-> +       unsigned char c;
-> +
-> +       printf("%s | ", prefix);
-> +       while (length-- > 0) {
-> +               printf("%02X ", (unsigned char)*address++);
-
-> @@ -76,12 +104,7 @@ static void transfer(int fd)
->         if (ret < 1)
->                 pabort("can't send spi message");
->
-> -       for (ret = 0; ret < ARRAY_SIZE(tx); ret++) {
-> -               if (!(ret % 6))
-> -                       puts("");
-> -               printf("%.2X ", rx[ret]);
-> -       }
-> -       puts("");
-> +       hexDump(rx, ARRAY_SIZE(tx), 32, "RX");
-
-I know rx and tx have the same size, but please switch to "ARRAY_SIZE(RX)"
-while at it.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

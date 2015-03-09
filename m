@@ -1,107 +1,47 @@
-From: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: qup: Request CS GPIO's during probe
-Date: Mon, 09 Mar 2015 10:20:07 +0200
-Message-ID: <1425889207.2440.9.camel@mm-sol.com>
-References: <1425655578-22400-1-git-send-email-iivanov@mm-sol.com>
-	 <1425655578-22400-2-git-send-email-iivanov@mm-sol.com>
-	 <54F9F31A.3050501@codeaurora.org>
+From: Michal Simek <michal.simek@xilinx.com>
+Subject: [PATCH v2] spi: cadence: Remove Kconfig dependency
+Date: Mon,  9 Mar 2015 09:46:15 +0100
+Message-ID: <6202725ab40c7bb26e8650f904bba68b8996f07c.1425890773.git.michal.simek@xilinx.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Stephen Boyd <sboyd-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <54F9F31A.3050501-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
+To: linux-kernel@vger.kernel.org, monstr@monstr.eu
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+Remove Kconfig dependency and enable driver for
+all ARCHs.
+Also update help description.
 
-Hi Stephen,
+Signed-off-by: Michal Simek <michal.simek@xilinx.com>
+Acked-by: S=C3=B6ren Brinkmann <soren.brinkmann@xilinx.com>
+---
 
-> On Mar 6, 2015, at 8:34 PM, Stephen Boyd <sboyd-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org> wrote=
-:
-> On 03/06/15 07:26, Ivan T. Ivanov wrote:
-> > Ensure that driver is owner of the GPIO's used for CS signals.
-> Why? What happens if we don=E2=80=99t?
+Changes in v2:
+- Remove ARM and ARM64 in Kconfig
 
-We can have wrong DT configuration, which could reconfigure
-GPIO=E2=80=99s without any warning or error.
+Test for all archs done by Kbuild test robot without any problem.
+---
+ drivers/spi/Kconfig | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-> > Signed-off-by: Ivan T. Ivanov <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
-> > ---
-> > drivers/spi/spi-qup.c | 17 ++++++++++++++++-
-> > 1 file changed, 16 insertions(+), 1 deletion(-)
-> >=20
-> > diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-> > index 2b2c359..a07ba46 100644
-> > --- a/drivers/spi/spi-qup.c
-> > +++ b/drivers/spi/spi-qup.c
-> > @@ -14,11 +14,13 @@
-> > #include <linux/clk.h>
-> > #include <linux/delay.h>
-> > #include <linux/err.h>
-> > +#include <linux/gpio.h>
-> > #include <linux/interrupt.h>
-> > #include <linux/io.h>
-> > #include <linux/list.h>
-> > #include <linux/module.h>
-> > #include <linux/of.h>
-> > +#include <linux/of_gpio.h>
-> > #include <linux/platform_device.h>
-> > #include <linux/pm_runtime.h>
-> > #include <linux/spi/spi.h>
-> > @@ -499,7 +501,7 @@ static int spi_qup_probe(struct platform_device=
- *pdev)
-> >         struct device *dev;
-> >         void __iomem *base;
-> >         u32 max_freq, iomode, num_cs;
-> > -       int ret, irq, size;
-> > +       int ret, irq, size, cs, cs_gpio;
-> >=20
-> >         dev =3D &pdev->dev;
-> >         res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> > @@ -556,6 +558,19 @@ static int spi_qup_probe(struct platform_devic=
-e *pdev)
-> >         else
-> >                 master->num_chipselect =3D num_cs;
-> >=20
-> > +       for (cs =3D 0; cs < master->num_chipselect; cs++) {
-> > +               cs_gpio =3D of_get_named_gpio(dev->of_node, "cs-gpi=
-os", cs);
-> > +
-> > +               if (!gpio_is_valid(cs_gpio))
-> > +                       continue;
-> > +
-> > +               ret =3D devm_gpio_request(&pdev->dev, cs_gpio, "spi=
--qup-cs");
-> > +               if (ret) {
-> > +                       dev_err(&pdev->dev, "can't get cs gpios\n")=
-;
-> > +                       goto error;
-> > +               }
-> > +       }
-> > +
-> >         master->bus_num =3D pdev->id;
-> Is this related to [1]? In that case I was just relying on DT/pinctrl=
- to
-> properly request the gpios.
-
-But the DT/pinctrl did not request GPIO=E2=80=99s, it just configure th=
-em.
-=46or some reason we are ending without any pinctrl_map of type=20
-PIN_MAP_TYPE_MUX_GROUP, which is used for pin reservation.=20
-
-> [1] https://lkml.org/lkml/2014/5/27/784
-
-I have missed this one. I have considered same approach, but abandoned
-it, because of issues related to double request reasons mentioned by Ma=
-rk.
-
-Regards,
-Ivan
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index ab8dfbef6f1b..0c008162d0af 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -159,10 +159,9 @@ config SPI_BUTTERFLY
+=20
+ config SPI_CADENCE
+ 	tristate "Cadence SPI controller"
+-	depends on ARM
+ 	help
+ 	  This selects the Cadence SPI controller master driver
+-	  used by Xilinx Zynq.
++	  used by Xilinx Zynq and ZynqMP.
+=20
+ config SPI_CLPS711X
+ 	tristate "CLPS711X host SPI controller"
+--=20
+1.8.2.3

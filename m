@@ -1,41 +1,41 @@
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [PATCH v4 0/3] spi: dw: refactor to use SPI core message
- handling
-Date: Mon, 09 Mar 2015 13:41:36 +0200
-Message-ID: <1425901296.14897.221.camel@linux.intel.com>
-References: <1425301137-8043-1-git-send-email-andriy.shevchenko@linux.intel.com>
-	 <20150306202822.GE21293@sirena.org.uk>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [RFC PATCH] spi: Ensure that CS line is in non-active state after setup
+Date: Mon, 9 Mar 2015 14:11:45 +0200
+Message-ID: <CAHp75VcVqbiYWvBkcZrp7wwVjjfNO_S75am=9KCJ_cOWja5BJw@mail.gmail.com>
+References: <1425656716-25363-1-git-send-email-iivanov@mm-sol.com>
+	<20150308200142.GC28806@sirena.org.uk>
+	<1425885096.2440.6.camel@mm-sol.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150306202822.GE21293-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	linux-arm-msm@vger.kernel.org
+To: "Ivan T. Ivanov" <iivanov@mm-sol.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1425885096.2440.6.camel@mm-sol.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Fri, 2015-03-06 at 20:28 +0000, Mark Brown wrote:
-> On Mon, Mar 02, 2015 at 02:58:54PM +0200, Andy Shevchenko wrote:
-> > This patch series is dedicated to refactoring of spi-dw driver to use SPI core
-> > message handling. The driver has been tested in PIO mode on Intel Medfield
-> > device in loopback mode.
-> > 
-> > Note, the patch 3/3 depends on [1].
-> > 
-> > [1] http://www.spinics.net/lists/linux-spi/msg02982.html
-> 
-> Please ensure that your e-mails are readable by humans - if you're
-> referencing some other patch include a human readable description.
+On Mon, Mar 9, 2015 at 9:11 AM, Ivan T. Ivanov <iivanov@mm-sol.com> wrote:
+>
+> On Sun, 2015-03-08 at 20:01 +0000, Mark Brown wrote:
+>> On Fri, Mar 06, 2015 at 05:45:15PM +0200, Ivan T. Ivanov wrote:
+>>
+>> >         if (spi->master->setup)
+>> >                 status = spi->master->setup(spi);
+>> > +       else
+>> > +               spi_set_cs(spi, false);
+>>
+>> Why would this be conditional on there not being a setup operation?
+>> It's a good idea, I just don't see why the backstop isn't always useful.
+>
+> I was thinking that this is expected to be handled inside
+> setup operation, nothing more.
 
-Noted! Thanks for tip.
+Agree with Mark. It's perhaps a good idea to call unconditionally
+before ->setup().
 
 
 -- 
-Andy Shevchenko <andriy.shevchenko-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Intel Finland Oy
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+With Best Regards,
+Andy Shevchenko

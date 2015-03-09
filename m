@@ -1,7 +1,7 @@
 From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH v3 1/7] spi: dw-mid: convert value of dma_width to enum dma_slave_buswidth
-Date: Mon,  9 Mar 2015 16:48:45 +0200
-Message-ID: <1425912531-23457-2-git-send-email-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v3 4/7] spi: dw-mid: clear ongoing DMA transfers on timeout
+Date: Mon,  9 Mar 2015 16:48:48 +0200
+Message-ID: <1425912531-23457-5-git-send-email-andriy.shevchenko@linux.intel.com>
 References: <1425912531-23457-1-git-send-email-andriy.shevchenko@linux.intel.com>
 Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
@@ -10,83 +10,70 @@ In-Reply-To: <1425912531-23457-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd5
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-DMAEngine has a specific type to be used for bus width. This patch converts the
-code to use the values of the specific type when configure DMA transfer.
+This patch shuts up any ongoing DMA transfer in case of error.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 ---
- drivers/spi/spi-dw-mid.c | 13 +++++++++++--
- drivers/spi/spi-dw.c     | 12 ++++++++----
- 2 files changed, 19 insertions(+), 6 deletions(-)
+ drivers/spi/spi-dw-mid.c | 13 +++++++++++++
+ drivers/spi/spi-dw.c     |  3 +++
+ drivers/spi/spi-dw.h     |  1 +
+ 3 files changed, 17 insertions(+)
 
 diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
-index c8416ef..25c8fa7 100644
+index 3729cdd..e614190 100644
 --- a/drivers/spi/spi-dw-mid.c
 +++ b/drivers/spi/spi-dw-mid.c
-@@ -100,6 +100,15 @@ static void mid_spi_dma_exit(struct dw_spi *dws)
- 	dma_release_channel(dws->rxchan);
+@@ -270,11 +270,24 @@ static int mid_spi_dma_transfer(struct dw_spi *dws)
+ 	return 0;
  }
  
-+static enum dma_slave_buswidth convert_dma_width(u32 dma_width) {
-+	if (dma_width == 1)
-+		return DMA_SLAVE_BUSWIDTH_1_BYTE;
-+	else if (dma_width == 2)
-+		return DMA_SLAVE_BUSWIDTH_2_BYTES;
-+
-+	return DMA_SLAVE_BUSWIDTH_UNDEFINED;
++static void mid_spi_dma_stop(struct dw_spi *dws)
++{
++	if (test_bit(TX_BUSY, &dws->dma_chan_busy)) {
++		dmaengine_terminate_all(dws->txchan);
++		clear_bit(TX_BUSY, &dws->dma_chan_busy);
++	}
++	if (test_bit(RX_BUSY, &dws->dma_chan_busy)) {
++		dmaengine_terminate_all(dws->rxchan);
++		clear_bit(RX_BUSY, &dws->dma_chan_busy);
++	}
 +}
 +
- /*
-  * dws->dma_chan_busy is set before the dma transfer starts, callback for tx
-  * channel will clear a corresponding bit.
-@@ -126,7 +135,7 @@ static struct dma_async_tx_descriptor *dw_spi_dma_prepare_tx(struct dw_spi *dws)
- 	txconf.dst_addr = dws->dma_addr;
- 	txconf.dst_maxburst = LNW_DMA_MSIZE_16;
- 	txconf.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
--	txconf.dst_addr_width = dws->dma_width;
-+	txconf.dst_addr_width = convert_dma_width(dws->dma_width);
- 	txconf.device_fc = false;
+ static struct dw_spi_dma_ops mid_dma_ops = {
+ 	.dma_init	= mid_spi_dma_init,
+ 	.dma_exit	= mid_spi_dma_exit,
+ 	.dma_setup	= mid_spi_dma_setup,
+ 	.dma_transfer	= mid_spi_dma_transfer,
++	.dma_stop	= mid_spi_dma_stop,
+ };
+ #endif
  
- 	dmaengine_slave_config(dws->txchan, &txconf);
-@@ -175,7 +184,7 @@ static struct dma_async_tx_descriptor *dw_spi_dma_prepare_rx(struct dw_spi *dws)
- 	rxconf.src_addr = dws->dma_addr;
- 	rxconf.src_maxburst = LNW_DMA_MSIZE_16;
- 	rxconf.dst_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
--	rxconf.src_addr_width = dws->dma_width;
-+	rxconf.src_addr_width = convert_dma_width(dws->dma_width);
- 	rxconf.device_fc = false;
- 
- 	dmaengine_slave_config(dws->rxchan, &rxconf);
 diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index 950bc50..f3e4092 100644
+index c7c2fcc..d53cffe 100644
 --- a/drivers/spi/spi-dw.c
 +++ b/drivers/spi/spi-dw.c
-@@ -315,7 +315,6 @@ static int dw_spi_transfer_one(struct spi_master *master,
+@@ -432,6 +432,9 @@ static void dw_spi_handle_err(struct spi_master *master,
  {
  	struct dw_spi *dws = spi_master_get_devdata(master);
- 	struct chip_data *chip = spi_get_ctldata(spi);
--	u8 bits = 0;
- 	u8 imask = 0;
- 	u8 cs_change = 0;
- 	u16 txlevel = 0;
-@@ -357,9 +356,14 @@ static int dw_spi_transfer_one(struct spi_master *master,
- 		}
- 	}
- 	if (transfer->bits_per_word) {
--		bits = transfer->bits_per_word;
--		dws->n_bytes = dws->dma_width = bits >> 3;
--		cr0 = (bits - 1)
-+		if (transfer->bits_per_word == 8) {
-+			dws->n_bytes = 1;
-+			dws->dma_width = 1;
-+		} else if (transfer->bits_per_word == 16) {
-+			dws->n_bytes = 2;
-+			dws->dma_width = 2;
-+		}
-+		cr0 = (transfer->bits_per_word - 1)
- 			| (chip->type << SPI_FRF_OFFSET)
- 			| (spi->mode << SPI_MODE_OFFSET)
- 			| (chip->tmode << SPI_TMOD_OFFSET);
+ 
++	if (dws->dma_mapped)
++		dws->dma_ops->dma_stop(dws);
++
+ 	spi_reset_chip(dws);
+ }
+ 
+diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+index 7351692..7f130bd 100644
+--- a/drivers/spi/spi-dw.h
++++ b/drivers/spi/spi-dw.h
+@@ -93,6 +93,7 @@ struct dw_spi_dma_ops {
+ 	void (*dma_exit)(struct dw_spi *dws);
+ 	int (*dma_setup)(struct dw_spi *dws);
+ 	int (*dma_transfer)(struct dw_spi *dws);
++	void (*dma_stop)(struct dw_spi *dws);
+ };
+ 
+ struct dw_spi {
 -- 
 2.1.4
 

@@ -1,57 +1,44 @@
-From: "Ivan T. Ivanov" <iivanov@mm-sol.com>
-Subject: Re: [PATCH 2/2] spi: qup: Request CS GPIO's during probe
-Date: Tue, 10 Mar 2015 14:53:17 +0200
-Message-ID: <1425991997.12581.1.camel@mm-sol.com>
-References: <1425655578-22400-1-git-send-email-iivanov@mm-sol.com>
-	 <1425655578-22400-2-git-send-email-iivanov@mm-sol.com>
-	 <20150307105948.GD28806@sirena.org.uk>
-	 <1425889415.2440.10.camel@mm-sol.com>
-	 <20150309182841.GW28806@sirena.org.uk>
-	 <1425975056.2440.24.camel@mm-sol.com>
-	 <20150310110638.GD28806@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-arm-msm-owner@vger.kernel.org>
-In-Reply-To: <20150310110638.GD28806@sirena.org.uk>
-Sender: linux-arm-msm-owner@vger.kernel.org
+From: Adrian Remonda <adrianremonda@gmail.com>
+Subject: [PATCHv2 0/4] spi: spidev_test: Added functionalities
+Date: Tue, 10 Mar 2015 16:12:29 -0400
+Message-ID: <1426018353-13442-1-git-send-email-adrianremonda@gmail.com>
+Cc: adrianremonda@gmail.com, broonie@kernel.org, corbet@lwn.net,
+	linux-spi@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+To: unlisted-recipients:; (no To-header on input)
+Return-path: <linux-doc-owner@vger.kernel.org>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+This is the corrected version of a patch series that adds functionalities 
+to the spidev_test tool found in Documentation/spi/spidev_test.c.
 
-On Tue, 2015-03-10 at 11:06 +0000, Mark Brown wrote:
-> On Tue, Mar 10, 2015 at 10:10:56AM +0200, Ivan T. Ivanov wrote:
-> > On Mon, 2015-03-09 at 18:28 +0000, Mark Brown wrote:
-> 
-> > > > About the API usage, point taken. GPIO requesting part is more important
-> > > > in this case. pinctrl core did not request pins and wrong DT configuration
-> > > > could lead to surprises without any warnings or errors.
-> 
-> > > That doesn't answer my concern at all.
-> 
-> > I am not sure that I am following you.
-> 
-> > I can not use spi_master::cs_gpios, which is populated by
-> > of_spi_register_master(), because spi_register_master()
-> > populate SPI devices and they could issue setup method.
-> 
-> I'm sorry but I can't parse the above.  What does "they could issue
-> setup method" mean and why is it a problem?
+- Cleaned hexadecimal dump
+- Added verbose mode to see the transmitting sequence
+- Added input buffer from the terminal. Now it is possible to send
+  string and hexadecimal data as an input parameter:
 
-Client drivers could execute spi_setup() in probe(), so we have
-to ensure that CS GPIO's are available before this, no?
+  Example that shows verbose mode and a sending sequence:
 
-> 
-> > Requesting GPIO's in core framework is also not a easy
-> > option because of arguments here[1].
-> 
-> We should really fix that though.
-> 
+  root@microZed:~# ./a.out -D /dev/spidev32766.1 -p "\x23ab1" -v
+  spi mode: 0x0
+  bits per word: 8
+  max speed: 500000 Hz (500 KHz)
+  TX | 23 61 62 31 __ __ __ __  | #ab1
+  RX | FF FF FF FF __ __ __ __  | ....
 
-I think that pinctrl framework should automatically
-request pins belonging to group when state is selected.
+Adrian Remonda (4):
+  Cleaned hexadecimal dump
+  Added verbose output
+  Added input buffer from the terminal
+  Moved spidev_tool.c to tools/spi
 
-Regards,
-Ivan
+ Documentation/spi/spidev_test.c |  243 ------------------------------
+ tools/spi/spidev_test.c         |  318 +++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 318 insertions(+), 243 deletions(-)
+ delete mode 100644 Documentation/spi/spidev_test.c
+ create mode 100644 tools/spi/spidev_test.c
+
+-- 
+1.7.10.4
+

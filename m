@@ -1,95 +1,73 @@
-From: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH 2/2] spi: qup: Request CS GPIO's during probe
-Date: Tue, 10 Mar 2015 10:31:38 +0200
-Message-ID: <1425976298.2440.26.camel@mm-sol.com>
+Date: Tue, 10 Mar 2015 11:06:38 +0000
+Message-ID: <20150310110638.GD28806@sirena.org.uk>
 References: <1425655578-22400-1-git-send-email-iivanov@mm-sol.com>
-		 <1425655578-22400-2-git-send-email-iivanov@mm-sol.com>
-		 <54F9F31A.3050501@codeaurora.org> <1425889207.2440.9.camel@mm-sol.com>
-	 <54FDEC36.5080403@codeaurora.org>
+ <1425655578-22400-2-git-send-email-iivanov@mm-sol.com>
+ <20150307105948.GD28806@sirena.org.uk>
+ <1425889415.2440.10.camel@mm-sol.com>
+ <20150309182841.GW28806@sirena.org.uk>
+ <1425975056.2440.24.camel@mm-sol.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="Jm4NjHtWXfjOIegD"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Stephen Boyd <sboyd-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+To: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <54FDEC36.5080403-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1425975056.2440.24.camel-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi,=20
 
-On Mon, 2015-03-09 at 11:53 -0700, Stephen Boyd wrote:
-> On 03/09/15 01:20, Ivan T. Ivanov wrote:
-> > Hi Stephen,
-> >=20
-> > > On Mar 6, 2015, at 8:34 PM, Stephen Boyd <sboyd-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org> w=
-rote:
-> > > On 03/06/15 07:26, Ivan T. Ivanov wrote:
-> > > > Ensure that driver is owner of the GPIO's used for CS signals.
-> > > Why? What happens if we don=E2=80=99t?
-> > We can have wrong DT configuration, which could reconfigure
-> > GPIO=E2=80=99s without any warning or error.
->=20
-> Ouch. That sounds bad. Can you please add this information to the com=
-mit
-> text?
+--Jm4NjHtWXfjOIegD
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Sure.
+On Tue, Mar 10, 2015 at 10:10:56AM +0200, Ivan T. Ivanov wrote:
+> On Mon, 2015-03-09 at 18:28 +0000, Mark Brown wrote:
 
-> > > > +       for (cs =3D 0; cs < master->num_chipselect; cs++) {
-> > > > +               cs_gpio =3D of_get_named_gpio(dev->of_node, "cs=
--gpios", cs);
-> > > > +
-> > > > +               if (!gpio_is_valid(cs_gpio))
-> > > > +                       continue;
-> > > > +
-> > > > +               ret =3D devm_gpio_request(&pdev->dev, cs_gpio, =
-"spi-qup-cs");
-> > > > +               if (ret) {
-> > > > +                       dev_err(&pdev->dev, "can't get cs gpios=
-\n");
-> > > > +                       goto error;
-> > > > +               }
-> > > > +       }
-> > > > +
-> > > >         master->bus_num =3D pdev->id;
-> > > Is this related to [1]? In that case I was just relying on DT/pin=
-ctrl to
-> > > properly request the gpios.
-> > But the DT/pinctrl did not request GPIO=E2=80=99s, it just configur=
-e them.
-> > For some reason we are ending without any pinctrl_map of type
-> > PIN_MAP_TYPE_MUX_GROUP, which is used for pin reservation.
-> >=20
->=20
-> Ah ok. I seem to be misremembering the details.
+> > > About the API usage, point taken. GPIO requesting part is more import=
+ant
+> > > in this case. pinctrl core did not request pins and wrong DT configur=
+ation
+> > > could lead to surprises without any warnings or errors.
 
-:-) I still have version of downstream "msm-pinctrl" driver,=20
-which create PIN_MAP_TYPE_MUX_GROUP maps during node to map
-parsing.=20
+> > That doesn't answer my concern at all.
 
->=20
-> Can you please use the gpiod interfaces here (devm_gpiod_get_index)?
+> I am not sure that I am following you.=20
 
-Sure.
+> I can not use spi_master::cs_gpios, which is populated by=20
+> of_spi_register_master(), because spi_register_master()=20
+> populate SPI devices and they could issue setup method.
 
-> That's more modern. Also, don't print any error because -EPROBE_DEFER
-may come out and=20
+I'm sorry but I can't parse the above.  What does "they could issue
+setup method" mean and why is it a problem?
 
-Well, this could not happen. Driver probe will not called until default=
-=20
-pinctrl state is not available and we rely on this for proper driver
-functionality.=20
+> Requesting GPIO's in core framework is also not a easy
+> option because of arguments here[1].
 
-> because __gpiod_get_index() already prints an error on
-> failure at the debug level.
+We should really fix that though.
 
-Ok.
+--Jm4NjHtWXfjOIegD
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-Thanks,=20
-Ivan
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJU/tA9AAoJECTWi3JdVIfQY+0H/1Q2KzHpIrD75lH/krD1TF2i
+cvzpY3BlNSFDsI8hX7cPEG1UxxfzUfpPElH/KQ2pJNEITuXX9AFwPnmxmDRbe8zc
+7UESjKKZjdEzRxp+NmB57U8FyGF9wrSaiY62lRRWoSjWXA6tE+QeaKIKE8KLwoIg
+U9vyPTHzqcLaL4yrs1nlLnc67kaUOV4i/DagzdVZ60EHv59Mg4nIp+BTUBjnPkjC
+Fje2o/R7DjTfaWEE8uIrlYFS8NN/dUGfYZ+IPadvV5ex0sUWInge5fyvdnCiBk1h
+oa8LHqm+wmjJjnqBJldj6joHjqqdLur/RenlffdOHGvs1aMvemhJWLiWHwBYUh0=
+=Cb0p
+-----END PGP SIGNATURE-----
+
+--Jm4NjHtWXfjOIegD--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

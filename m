@@ -1,19 +1,54 @@
-From: =?utf-8?b?SsO0bmF0YXM=?= Rech <jonatas.rech-rCUF4CxDseZknzVnJbg3IA@public.gmane.org>
-Subject: Re: Fixing eSPI controller driver: some queries
-Date: Mon, 9 Mar 2015 20:34:41 +0000 (UTC)
-Message-ID: <loom.20150309T213257-40@post.gmane.org>
-References: <CAAXf6LUeAUYOUT70fbYWoG-zcr15Q495MB0f1YLd6su1CLqLEA@mail.gmail.com> <20130205173214.7B4853E166D@localhost> <CAAXf6LVDo7Ux+Qxanob9BFKBro7BkHyjgRiBV899OHQPN51w_g@mail.gmail.com>
+From: "Ivan T. Ivanov" <iivanov@mm-sol.com>
+Subject: Re: [PATCH 2/2] spi: qup: Request CS GPIO's during probe
+Date: Tue, 10 Mar 2015 10:10:56 +0200
+Message-ID: <1425975056.2440.24.camel@mm-sol.com>
+References: <1425655578-22400-1-git-send-email-iivanov@mm-sol.com>
+	 <1425655578-22400-2-git-send-email-iivanov@mm-sol.com>
+	 <20150307105948.GD28806@sirena.org.uk>
+	 <1425889415.2440.10.camel@mm-sol.com>
+	 <20150309182841.GW28806@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: base64
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20150309182841.GW28806@sirena.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-PiBUaGFua3MgR3JhbnQgZm9yIHlvdXIgcmVzcG9uc2VzLgo+IEknbSBwbGFubmluZyB0byBmaXhpbmcgdGhlIGRyaXZlciwgSSdsbCBzZW5kIGl0IHdoZW4gSSdtIGRvbmUuCj4gCj4gQmVzdCByZWdhcmRzLAo+IFRob21hcwo+IAo+IAoKVGhvbWFzLAoKSSByZWNlbnRseSBjYW1lIGFjcm9zcyB0aGUgc2FtZSBwcm9ibGVtcyB0cnlpbmcgdG8gdXNlIHRoZSBmc2wtZXNwaSBkcml2ZXIKYW5kIHJlYWNoZWQgdGhlIGV4YWN0IHNhbWUgY29uY2x1c2lvbnMgcmVnYXJkaW5nIHRoZSByeCBidWZmZXIgYW5kIGl0J3MKaW5jb21wYXRpYmlsaXR5IHdpdGggZnVsbC1kdXBsZXggdHJhbnNhY3Rpb25zLiBEaWQgeW91IGV2ZW50dWFsbHkgdXBkYXRlIHRoZQpwYXRjaD8KClRoZSBkcml2ZXIgaXMgYnJva2VuIGluZGVlZCwgYW5kIEkgdGhpbmsgeW91IHNob3VsZCBzdWJtaXQgdGhlIGZpeCBvbmNlIG1vcmUuCgpCZXN0IHJlZ2FyZHMsCgpKw7RuYXRhcyBSZWNoCgo=
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+On Mon, 2015-03-09 at 18:28 +0000, Mark Brown wrote:
+> On Mon, Mar 09, 2015 at 10:23:35AM +0200, Ivan T. Ivanov wrote:
+> > Hi,
+> 
+> Don't reply off list unless there's a good reason...
+
+Sorry, it was not intentional. Wrong button.
+
+> 
+> > > Any new GPIO users should really be using the gpiod API, however this is
+> > > duplicating core functionality so as Stephen says why are we doing this?
+> 
+> > About the API usage, point taken. GPIO requesting part is more important
+> > in this case. pinctrl core did not request pins and wrong DT configuration
+> > could lead to surprises without any warnings or errors.
+> 
+> That doesn't answer my concern at all.
+
+I am not sure that I am following you. 
+
+I can not use spi_master::cs_gpios, which is populated by 
+of_spi_register_master(), because spi_register_master() 
+populate SPI devices and they could issue setup method.
+
+Requesting GPIO's in core framework is also not a easy
+option because of arguments here[1].
+
+Probably I am still missing something.
+
+Regards,
+Ivan
+
+[1] https://lkml.org/lkml/2014/5/24/75

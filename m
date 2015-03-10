@@ -1,91 +1,74 @@
-From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [RFC/PATCHv2 3/3] spi: dw-spi: Pointers select 16b vs. 32b
- DesignWare access
-Date: Tue, 10 Mar 2015 22:44:36 +0200
-Message-ID: <CAHp75VcgX8WWPkHVH80eQXGAG76xSG1YpDfb24E6aWA7GZ3OZg@mail.gmail.com>
-References: <1425685594-26595-1-git-send-email-tthayer@opensource.altera.com>
-	<1425685594-26595-4-git-send-email-tthayer@opensource.altera.com>
-	<CAHp75VcceG2O+YCw4twBzC_2v9+XQRpfBxMqGXERi3amnj3rdA@mail.gmail.com>
-	<54FDDFE6.8010109@opensource.altera.com>
-	<CAHp75Vf6dgobzZyJxu8eiqGgC7FRrwLCmyMf5Agk6S3jHDj4bw@mail.gmail.com>
-	<54FDF8BB.4050202@opensource.altera.com>
-	<CAHp75VcmNOaiyRNLFzQT7nKS6piZzpYSoS785J86rKtNXx6KNg@mail.gmail.com>
-	<54FF556A.3020408@opensource.altera.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi: qup: Request CS GPIO's during probe
+Date: Tue, 10 Mar 2015 20:47:50 +0000
+Message-ID: <20150310204750.GR28806@sirena.org.uk>
+References: <1425655578-22400-1-git-send-email-iivanov@mm-sol.com>
+ <1425655578-22400-2-git-send-email-iivanov@mm-sol.com>
+ <20150307105948.GD28806@sirena.org.uk>
+ <1425889415.2440.10.camel@mm-sol.com>
+ <20150309182841.GW28806@sirena.org.uk>
+ <1425975056.2440.24.camel@mm-sol.com>
+ <20150310110638.GD28806@sirena.org.uk>
+ <1425991997.12581.1.camel@mm-sol.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Jiri Kosina <jkosina-AlSwsSmVLrQ@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	"ijc+devicetree" <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	dinguyen <dinguyen-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>,
-	Linux Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Thor Thayer <tthayer.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>, baruch <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>,
-	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-To: tthayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="QLqFJahxFu65lVwk"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <54FF556A.3020408-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1425991997.12581.1.camel-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Mar 10, 2015 at 10:34 PM, Thor Thayer
-<tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org> wrote:
-> On 03/09/2015 03:02 PM, Andy Shevchenko wrote:
->>
->> On Mon, Mar 9, 2015 at 9:47 PM, Thor Thayer
->> <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org> wrote:
->>>
->>> On 03/09/2015 01:54 PM, Andy Shevchenko wrote:
->>
->>
->>> Yes, I just need the 32 bit write. I was trying to remain consistent but
->>> I
->>> agree that only changing only writes would minimize the changes.
->>
->>
->> Which is still makes me anxious.
->>
->> I have briefly read a chapter for SPI in pdf you sent link to. I
->> didn't find anything except SPI supports 32 bit data width.
->>
->> It would be nice if you ping your HW engineers and clarify what
->> exactly is happening there.
->>
->
-> I confirmed with our HW engineer that writes are required to be 32 bits. We
-> are in the process of updating our documentation to explicitly say this.
->
-> Since there are no byte enables on our 32 bit APB interface, writing only 1
-> or 2 bytes could corrupt the other bytes in the 32 bit word. The 32 bit
-> write enforces requiring an explicit read/modify/write for less than 32 bit
-> writes.
->
-> Since reads are non-destructive (nothing is being written back into the
-> register), it is safe for all reads to get promoted to 32 bit reads.
 
-Thanks for detailed explanation!
+--QLqFJahxFu65lVwk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> Is it preferable to have both 32 bit reads and writes for consistency?
->
-> Or is it preferable to make the minimal number of changes which would be to
-> only add a 32 bit write function?
+On Tue, Mar 10, 2015 at 02:53:17PM +0200, Ivan T. Ivanov wrote:
+>=20
+> On Tue, 2015-03-10 at 11:06 +0000, Mark Brown wrote:
 
-Both I think just to be more clear.
+> > I'm sorry but I can't parse the above.  What does "they could issue
+> > setup method" mean and why is it a problem?
 
-However, I'm now considering what if we just replace
-dw_{write/read}w() by l-variants without any additional DT property
-and accessor functions?
-Would it work for both your cases (old chip, new chip)?
-On my side I may test this on Intel MID.
+> Client drivers could execute spi_setup() in probe(), so we have
+> to ensure that CS GPIO's are available before this, no?
 
--- 
-With Best Regards,
-Andy Shevchenko
+I see.  Yes, that's a concern.  It should be in the changelog.
+
+> > > Requesting GPIO's in core framework is also not a easy
+> > > option because of arguments here[1].
+
+> > We should really fix that though.
+
+> I think that pinctrl framework should automatically
+> request pins belonging to group when state is selected.
+
+That doesn't help users as not every GPIO is associated with a pin
+controller - they'd still have to handle the case where they had to do
+things themselves.
+
+--QLqFJahxFu65lVwk
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJU/1h1AAoJECTWi3JdVIfQHIkH/jwhurdMF4W13lHvE8vDWpwi
+lo7kaqGpZFj8SmBnVTxE1p7JYr197/VtMOgwUu09cMKugLGR1zn2QU0jPTqnxare
+5LOPdAzg1/W1fbvlp4TXMGJ4YjslKj1P0tC0yrjdlOlrNnZAM64xLZAQh1MbJT5q
+QCC3O5alyUg2JwD6hFbBMbOFZ5pwOVNoqyUDSMXmgFXRXA/KrXeQa11pv+dHUHsE
+akw6OvDz+3DLjKZbNannrCPCd35x9l5yL7HCj6hBZvLKAd9RoFllNw5wYe8CieOn
+j2kE+JN5jQOEK3J7eGzX/9kwWyHzRDLxbPZSUUE16WWIKpbVaLEf/JiIHvR+bzI=
+=R5P+
+-----END PGP SIGNATURE-----
+
+--QLqFJahxFu65lVwk--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,56 +1,54 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCHv2 1/4] Cleaned hexadecimal dump
-Date: Tue, 10 Mar 2015 20:52:53 +0000
-Message-ID: <20150310205253.GS28806@sirena.org.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCHv2 3/4] Added input buffer from the terminal
+Date: Tue, 10 Mar 2015 20:53:07 +0000
+Message-ID: <20150310205307.GU28806@sirena.org.uk>
 References: <1426018353-13442-1-git-send-email-adrianremonda@gmail.com>
  <1426018353-13442-2-git-send-email-adrianremonda@gmail.com>
+ <1426018353-13442-3-git-send-email-adrianremonda@gmail.com>
+ <1426018353-13442-4-git-send-email-adrianremonda@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="yE3esYaFu3yg/VEv"
-Cc: corbet-T1hC0tSOHrs@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Adrian Remonda <adrianremonda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="Ec463DdZaKtRhMf1"
+Cc: corbet@lwn.net, linux-spi@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Adrian Remonda <adrianremonda@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1426018353-13442-2-git-send-email-adrianremonda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1426018353-13442-4-git-send-email-adrianremonda@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---yE3esYaFu3yg/VEv
+--Ec463DdZaKtRhMf1
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 10, 2015 at 04:12:30PM -0400, Adrian Remonda wrote:
-> 	v2: Fixed coding style and removed unnecessary castings
-> 	As noted by Geert Uytterhoeven and Mark Brown
+On Tue, Mar 10, 2015 at 04:12:32PM -0400, Adrian Remonda wrote:
+> 	Now it is possible to send string and hexadecimal data as an input param=
+eter
+> =09
+> 	v2: Fixed coding style and removed unnecessary castings from malloc
+> 	Noted by Mark Brown
 >=20
 > 	modified:   Documentation/spi/spidev_test.c
 
-Applied, thanks, but please follow the process in SubmittingPatches:
+Applied, thanks.
 
- - Include stuff like the above after the ---
- - Use subject lines matching the style for the subsystem.
-
---yE3esYaFu3yg/VEv
+--Ec463DdZaKtRhMf1
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJU/1mkAAoJECTWi3JdVIfQO08H/1TnYiBhaoEj+Jy2T0vTPCiA
-Mt+595fp32PGW84dLhWqfWHk/82KTXUB979NokF8j21xAWEsUZUjYxzk9CGkakzf
-bS5X15+5jjof9k2e+BAm43Rm+nr0aTUv9O+TXW+Vta9N2iFkcKgSz163ZehAFp68
-fUASrZD29YVbjmn8V11wNQ/1rUwbBkjf6CpTHMoS6RkiEMA+8Gx3XqkAOYhNy+TE
-td54cZLY4DVwuMVLfaQ94+VtAedsdwFLMFHbrSQhFVwuYsijEyJfyl96mg7YjrWI
-JsiN7IavmFdvICvvvvYGzWhLm2PiR+/qLZF3TgGWyF5r7iy513y2mi/wTq/VDfw=
-=p/A4
+iQEcBAEBCAAGBQJU/1mzAAoJECTWi3JdVIfQilQH/3QFv0eA/+tc2ajkLXMQ006Y
+eylgu2LRYOuppZUxiXisfXD1FCC7y92R7p9181j+eSEk12vhvjzPOK7ahAocQiWb
+NRIPg9TnZi7O4qcfxeJZrgCCNB85jv6uutpkvZo43oH4sXPFFkPUDKVaMkuljYVo
+XJ8MjwFpi4zbg7BkVgkOhPdtJrJmPanwPiRLY27awB/l8KpKfm9qzEuuIB93WkWc
+E3Vsw/q6cYccv6U2cFK1czMEGI6ROzPkZ3B/ln0NZPD7UDenxfqDH654xXf24ACS
+olvh2djM8i5gObbkrMqCE2tzY3NJWygDDwF514PB9QpvPzODOSIk8Jz4ShpiN9Q=
+=+p07
 -----END PGP SIGNATURE-----
 
---yE3esYaFu3yg/VEv--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--Ec463DdZaKtRhMf1--

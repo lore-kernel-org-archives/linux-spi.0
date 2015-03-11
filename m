@@ -1,76 +1,99 @@
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [RFC/PATCHv2 3/3] spi: dw-spi: Pointers select 16b vs. 32b
- DesignWare access
-Date: Wed, 11 Mar 2015 12:27:16 +0200
-Message-ID: <1426069636.14897.271.camel@linux.intel.com>
-References: <1425685594-26595-1-git-send-email-tthayer@opensource.altera.com>
-	 <1425685594-26595-4-git-send-email-tthayer@opensource.altera.com>
-	 <CAHp75VcceG2O+YCw4twBzC_2v9+XQRpfBxMqGXERi3amnj3rdA@mail.gmail.com>
-	 <54FDDFE6.8010109@opensource.altera.com>
-	 <CAHp75Vf6dgobzZyJxu8eiqGgC7FRrwLCmyMf5Agk6S3jHDj4bw@mail.gmail.com>
-	 <54FDF8BB.4050202@opensource.altera.com>
-	 <CAHp75VcmNOaiyRNLFzQT7nKS6piZzpYSoS785J86rKtNXx6KNg@mail.gmail.com>
-	 <54FF556A.3020408@opensource.altera.com>
-	 <CAHp75VcgX8WWPkHVH80eQXGAG76xSG1YpDfb24E6aWA7GZ3OZg@mail.gmail.com>
-	 <54FF6E91.1010704@opensource.altera.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Jiri Kosina <jkosina-AlSwsSmVLrQ@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	ijc+devicetree <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	dinguyen <dinguyen-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>,
-	Linux Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Thor Thayer <tthayer.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>, baruch <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>,
-	Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-To: tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: Re: [PATCH 2/2] dt/bindings: control CS via standard GPIO operations instead of SPI-HW
+Date: Wed, 11 Mar 2015 16:21:45 +0100
+Message-ID: <A8477522-2A97-4D1B-89EC-A70B5A28489F@martin.sperl.org>
+References: <1425487205-5477-1-git-send-email-kernel@martin.sperl.org> <1425487205-5477-2-git-send-email-kernel@martin.sperl.org> <54FA9109.6080102@wwwdotorg.org>
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2070.6\))
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 8BIT
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <54FF6E91.1010704-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+In-Reply-To: <54FA9109.6080102-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, 2015-03-10 at 17:22 -0500, Thor Thayer wrote:
-
-
-> > However, I'm now considering what if we just replace
-> > dw_{write/read}w() by l-variants without any additional DT property
-> > and accessor functions?
-> > Would it work for both your cases (old chip, new chip)?
-> > On my side I may test this on Intel MID.
-> >
+> On 07.03.2015, at 06:47, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org> wrote:
 > 
-> Yes, this would be the simplest solution. The l-variant certainly works 
-> on our legacy SoCs. I'll be curious to hear your testing results.
-
-Whenever you send a new version of patch.
-
-> The data sheet mentions that registers are addressed at 32-bit 
-> boundaries to remain consistent with the AHB bus (Section 6.1 of 
-> dw_apb_ssi_db.pdf).  Additionally unused bits are reserved for writes 
-> and 0 for reads so this seems like a good solution.
+> These pins aren't used by anything on the board, but are rather part of
+> the expansion header. I wonder if we wouldn't be better off removing any
+> configuration of the pins from the DT. After all, we can't guarantee how
+> the user has connected them. The "default" usage, a/k/a the expansion
+> header signal naming, isn't any guarantee.
 > 
-> My concern is the presence of legacy devices that I have no way of 
-> testing. Is a Request For Test in the body of the patch sufficient?
+> Rather, the user should specify what they want to use the pin as; as a
+> GPIO input, GPIO output, or an SPI chip-select.
+...
+> While the existing DT already has this issue, note that this forces
+> these pins to be driven as outputs. What if the user has hooked up an
+> external device that drives these signals, and wants to use the pins as
+> GPIO inputs?
 
-Better to write this wider in cover letter or (in case of one patch) in
-additional description usually located after '---' line.
 
-Since I fixed couple of bugs in core I'm not sure we have a lot of
-users. Nevertheless, can you check who was recent and / or active
-contributor to spi-dw-mmio.c and put him / her to Cc list.
+Actually if you look at the Documentation on page 102 you will find that
+those pins are pulled high by default (if it is HW or firmware I am not
+sure) - so a hat designer needs to take this into consideration anyway.
+The only difference is that it is pulled high and not driven high/low.
 
--- 
-Andy Shevchenko <andriy.shevchenko-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Intel Finland Oy
+Also with the "new" models there is the Firmware that will read those 
+"hat-descriptors" from the eeprom and configure the GPIO "modes" and
+pullups based on this information.
 
---
+But then it means in principle that this is a more general issue
+that just became apparent now.
+
+
+> This shouldn't be in the SoC .dtsi file. It's quite possible for someone
+> to use other GPIOs as SPI CS. It's board or even use-case specific
+> whether those are the correct values.
+> 
+> I would argue that we should not put any cs-gpios into any in-kernel DT
+> file, since there's no on-board usage of SPI on the RPi boards.
+
+but then: why not just make it optional and NOT configuring it at all
+and keep it "outside".
+
+> For SPI to be useful, the user has to add a DT node to represent the SPI
+> device itself anyway, so adding some properties to the controller to
+> define which GPIOs to use for SPI CS can be done then too.
+
+>From what I have seen (and I am not an expert) is that with the 
+foundation device trees each "device" (spi/i2c/...) has a separate
+Gpio section, which gets referenced inside the spi/i2c/... block.
+
+As far as I understood with this setup the GPIOs ALT only gets set
+up when the driver itself loads (probably while parsing the DT
+for the device)
+
+So this is maybe the way forward for the whole default-dt?
+
+For SPI it would look like this:
+&gpio {
+        spi0_pins: spi0_pins {
+                brcm,pins = <7 8 9 10 11>;
+                brcm,function = <4>; /* alt0 */
+        };
+	...
+}
+
+&spi0 {
+	...
+        pinctrl-0 = <&spi0_pins>;
+	...
+}
+
+And if you keep spi0 disabled in the dtsi files then the ALT
+modes should not be set.
+
+Obviously we could also split the gpio-block into 
+"normal SPI" and "CS" pins, which would allow changing the
+"defaults" also in the dts that gets build.
+
+So how should we proceed?
+
+Martin--
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

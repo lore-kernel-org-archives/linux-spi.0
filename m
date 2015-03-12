@@ -1,64 +1,47 @@
-From: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj@renesas.com>
-Subject: [PATCH] spi: sh-msiof: Fix limit maximum word transfer size of FIFO size
-Date: Thu, 12 Mar 2015 11:31:16 +0900
-Message-ID: <1426127476-18456-1-git-send-email-nobuhiro.iwamatsu.yj@renesas.com>
-Cc: linux-sh@vger.kernel.org, linux-spi@vger.kernel.org,
-	yoshihiro.shimoda.uh@renesas.com,
-	Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj@renesas.com>
-To: broonie@kernel.org
-Return-path: <linux-sh-owner@vger.kernel.org>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: leroy christophe <christophe.leroy-GgN8y9CXRhA@public.gmane.org>
+Subject: Re: [PATCH] spi: fsl-spi: use of_iomap() to map parameter ram on
+ CPM1
+Date: Thu, 12 Mar 2015 07:52:53 +0100
+Message-ID: <550137C5.1020109@c-s.fr>
+References: <20150226161142.D08681A2360@localhost.localdomain> <20150303184403.GE21293@sirena.org.uk> <54F6BBA7.8040008@c-s.fr> <20150306114413.GM21293@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=windows-1252;
+	format=flowed
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150306114413.GM21293-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-This driver is the case of tx_buf was set or SPI_MASTER_MUST_TX is set to
-master_flags, will be transmit mode. However, the current code, when
-transmit mode and buffer is NULL, will be set to value of receive mode
-size.
-This is when the SPI_MASTER_MUST_TX is set to master_flags, sets to
-transmit and receive either small size of FIFO, so as not to set the
-actual size larger than value of FIFO.
 
-Signed-off-by: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj@renesas.com>
----
- drivers/spi/spi-sh-msiof.c | 24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
+Le 06/03/2015 12:44, Mark Brown a =E9crit :
+> On Wed, Mar 04, 2015 at 09:00:39AM +0100, leroy christophe wrote:
+>> Le 03/03/2015 19:44, Mark Brown a =E9crit :
+>>> Why are we using of_iomap() rather than a generic I/O mapping funct=
+ion
+>>> here?
+>> because all drivers for powerpc seems to be using of_iomap(), as on =
+powerpc
+>> the HW is described by the bootloader in a OF device tree.
+>> Today, of_iomap() is at least used in FSL SPI, FSL UART, SPI mpc52xx=
+, UART
+>> mpc52xx, i2c-mpc, i2c-cpm, freescale ethernet drivers, etc ....
+>> Is it not correct ?
+> It's legacy, all that code is really old.  Modern code is written in =
+as
+> architecture and firmware neutral a fashion as possible to make thing=
+s
+> more consistent and maintainable.
+This patch is only a small bug fix.
+That driver already contains calls to of_iomap() and other related of_=20
+functions.
+Is it worth rewriting the driver for just a small bug fix ?
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index e57eec0..260f433 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -606,12 +606,26 @@ static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
- {
- 	int fifo_shift;
- 	int ret;
-+	int rx_words = min_t(int, words, p->rx_fifo_size);
-+	int tx_words = min_t(int, words, p->tx_fifo_size);
- 
--	/* limit maximum word transfer to rx/tx fifo size */
--	if (tx_buf)
--		words = min_t(int, words, p->tx_fifo_size);
--	if (rx_buf)
--		words = min_t(int, words, p->rx_fifo_size);
-+	/*
-+	 * limit maximum word transfer to rx/tx fifo size.
-+	 *
-+	 * If SPI_MASTER_MUST_TX was enabled in master_flags, words was
-+	 * set to small value of FIFO.
-+	 */
-+	if (p->chipdata->master_flags & SPI_MASTER_MUST_TX) {
-+		if (rx_words > tx_words)
-+			words = tx_words;
-+		else
-+			words = rx_words;
-+	} else {
-+		if (tx_buf)
-+			words = tx_words;
-+		if (rx_buf)
-+			words = rx_words;
-+	}
- 
- 	/* the fifo contents need shifting */
- 	fifo_shift = 32 - bits;
--- 
-2.1.3
-
+Christophe
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

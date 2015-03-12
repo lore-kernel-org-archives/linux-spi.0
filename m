@@ -1,81 +1,45 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: sh-msiof: Fix limit maximum word transfer size of
- FIFO size
-Date: Thu, 12 Mar 2015 16:00:47 +0000
-Message-ID: <20150312160047.GQ28806@sirena.org.uk>
-References: <1426127476-18456-1-git-send-email-nobuhiro.iwamatsu.yj@renesas.com>
- <CAMuHMdXmr7QH8jSkyH2q6xCise7ew5YzyAFc6Zb0psHZt3mGrg@mail.gmail.com>
+From: <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+Subject: [PATCHv5] spi: Convert DesignWare SPI driver to 32-bit accesses
+Date: Thu, 12 Mar 2015 14:19:30 -0500
+Message-ID: <1426187971-8794-1-git-send-email-tthayer@opensource.altera.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="9BaxaTZrvsRxcpDQ"
-Cc: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj@renesas.com>,
-	Linux-sh list <linux-sh@vger.kernel.org>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdXmr7QH8jSkyH2q6xCise7ew5YzyAFc6Zb0psHZt3mGrg@mail.gmail.com>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain
+Cc: <jkosina-AlSwsSmVLrQ@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>, <tthayer.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	<axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>, <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>,
+	<andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>, <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	<galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	<swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>,
+	<wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>, <s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	<Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	<dinguyen-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+From: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
 
---9BaxaTZrvsRxcpDQ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Altera's Arria10 SoC requires that all write accesses of APB
+peripherals be 32-bit. The DesignWare documentation indicates
+this change is supported by the design.
 
-On Thu, Mar 12, 2015 at 01:35:10PM +0100, Geert Uytterhoeven wrote:
-> On Thu, Mar 12, 2015 at 3:31 AM, Nobuhiro Iwamatsu
+Request for Testing:
+Please test on legacy DesignWare SPI platforms. If a problem is
+discovered, please reply to this thread.
 
-> > This driver is the case of tx_buf was set or SPI_MASTER_MUST_TX is set to
-> > master_flags, will be transmit mode. However, the current code, when
-> > transmit mode and buffer is NULL, will be set to value of receive mode
-> > size.
+Thor Thayer (1):
+  spi: dw-spi: Convert 16bit accesses to 32bit accesses
 
-> If SPI_MASTER_MUST_TX is set, tx_buf will never be NULL.
-> If an SPI slave driver submits a receive-only request, the SPI core will
-> provide a dummy buffer (spi_master.dummy_tx).
+ drivers/spi/spi-dw-mid.c |   10 +++++-----
+ drivers/spi/spi-dw.c     |   24 ++++++++++++------------
+ drivers/spi/spi-dw.h     |   10 ----------
+ 3 files changed, 17 insertions(+), 27 deletions(-)
 
-Right, my reading of the changelog was that this was a red herring.
+-- 
+1.7.9.5
 
-> > +       int rx_words = min_t(int, words, p->rx_fifo_size);
-> > +       int tx_words = min_t(int, words, p->tx_fifo_size);
-
-> Sorry, I fail to see what exactly this is fixing.
-
-> If SPI_MASTER_MUST_TX is set, all hardware SPI transfers are either
->   a) transmit-only.
->   b) bidirectional (transmit buffer may be a dummy, provided by the SPI core).
-
-> For case a, only the TX FIFO size matters.
->   - The original code ignored the RX FIFO size (rx_buf == NULL),
->   - After your change, it always uses the minimum of the TX and RX FIFO sizes
->     (granted, the RX FIFO size is larger, so this doesn't make a difference on
->     current hardware).
-
-...
-
-> What am I missing?
-> Are you using a backport with broken SPI_MASTER_MUST_TX handling in the SPI
-> core?
-
-My understanding was that it was just about making sure that the driver
-picked the minimum of the two FIFO sizes.
-
---9BaxaTZrvsRxcpDQ
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVAbguAAoJECTWi3JdVIfQ9dwH/3FQtIEPeg0iKwW6m73LTnwb
-aP9JKAIwO2Xhh1VAuDdgvceFMkZVTzGpRPggt++Yt0kYR2fr4cKaUjH9nRBaCkYK
-OahANCvKD/SgrOSkbT2YRyfDsgiYyXfQFbWrQ5f5Hfm57JCaBG/MFZnkQIs3MhsG
-nqxbMxX2WoSqNhKZQa3hmQ0KFPyKjzhzJNAgx5ykPoQ2vkwl0zhytxhlHOViW3OB
-0CobXAM9ICuzzCDvbOBpeW+2cR9PMhUBjnAW4mPlcKVR5qfZVxo+2LoLRORNDfur
-tmN6hXV1hswcXjkcGPHwqrA3jd1LCdiI8ltkp/dC0hjdyTWNb71yqve015JYCNU=
-=ncb+
------END PGP SIGNATURE-----
-
---9BaxaTZrvsRxcpDQ--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

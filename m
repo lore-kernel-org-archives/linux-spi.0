@@ -1,44 +1,64 @@
-From: <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
-Subject: [PATCHv4] spi: Convert Designware SPI driver to 32-bit accesses
-Date: Wed, 11 Mar 2015 16:33:17 -0500
-Message-ID: <1426109598-3940-1-git-send-email-tthayer@opensource.altera.com>
-Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <jkosina-AlSwsSmVLrQ@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>, <tthayer.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	<axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>, <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>,
-	<andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>, <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	<galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	<swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>,
-	<wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>, <s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	<Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
-To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	<dinguyen-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj@renesas.com>
+Subject: [PATCH] spi: sh-msiof: Fix limit maximum word transfer size of FIFO size
+Date: Thu, 12 Mar 2015 11:31:16 +0900
+Message-ID: <1426127476-18456-1-git-send-email-nobuhiro.iwamatsu.yj@renesas.com>
+Cc: linux-sh@vger.kernel.org, linux-spi@vger.kernel.org,
+	yoshihiro.shimoda.uh@renesas.com,
+	Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj@renesas.com>
+To: broonie@kernel.org
+Return-path: <linux-sh-owner@vger.kernel.org>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+This driver is the case of tx_buf was set or SPI_MASTER_MUST_TX is set to
+master_flags, will be transmit mode. However, the current code, when
+transmit mode and buffer is NULL, will be set to value of receive mode
+size.
+This is when the SPI_MASTER_MUST_TX is set to master_flags, sets to
+transmit and receive either small size of FIFO, so as not to set the
+actual size larger than value of FIFO.
 
-Altera's Arria10 SoC requires that all write accesses of APB
-peripherals be 32-bit. The DesignWare documentation indicates
-this change is supported by the design.
+Signed-off-by: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj@renesas.com>
+---
+ drivers/spi/spi-sh-msiof.c | 24 +++++++++++++++++++-----
+ 1 file changed, 19 insertions(+), 5 deletions(-)
 
-Request for Testing:
-Please test on legacy DesignWare SPI devices. If a problem is
-discovered, please reply to this thread.
-
-Thor Thayer (1):
-  spi: dw-spi: Convert 16bit accesses to 32bit accesses
-
- drivers/spi/spi-dw.c |   24 ++++++++++++------------
- drivers/spi/spi-dw.h |   10 ----------
- 2 files changed, 12 insertions(+), 22 deletions(-)
-
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index e57eec0..260f433 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -606,12 +606,26 @@ static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
+ {
+ 	int fifo_shift;
+ 	int ret;
++	int rx_words = min_t(int, words, p->rx_fifo_size);
++	int tx_words = min_t(int, words, p->tx_fifo_size);
+ 
+-	/* limit maximum word transfer to rx/tx fifo size */
+-	if (tx_buf)
+-		words = min_t(int, words, p->tx_fifo_size);
+-	if (rx_buf)
+-		words = min_t(int, words, p->rx_fifo_size);
++	/*
++	 * limit maximum word transfer to rx/tx fifo size.
++	 *
++	 * If SPI_MASTER_MUST_TX was enabled in master_flags, words was
++	 * set to small value of FIFO.
++	 */
++	if (p->chipdata->master_flags & SPI_MASTER_MUST_TX) {
++		if (rx_words > tx_words)
++			words = tx_words;
++		else
++			words = rx_words;
++	} else {
++		if (tx_buf)
++			words = tx_words;
++		if (rx_buf)
++			words = rx_words;
++	}
+ 
+ 	/* the fifo contents need shifting */
+ 	fifo_shift = 32 - bits;
 -- 
-1.7.9.5
+2.1.3
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

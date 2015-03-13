@@ -1,61 +1,77 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCHv5] spi: Convert DesignWare SPI driver to 32-bit accesses
-Date: Thu, 12 Mar 2015 19:46:42 +0000
-Message-ID: <20150312194642.GA28806@sirena.org.uk>
-References: <1426187971-8794-1-git-send-email-tthayer@opensource.altera.com>
+From: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v3 7/7] dmaengine: intel-mid-dma: remove the driver
+Date: Fri, 13 Mar 2015 13:51:13 +0530
+Message-ID: <20150313082112.GF32000@intel.com>
+References: <1425912531-23457-1-git-send-email-andriy.shevchenko@linux.intel.com>
+ <1425912531-23457-8-git-send-email-andriy.shevchenko@linux.intel.com>
+ <20150309181151.GN28806@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="/DKyarNrjr/gdwox"
-Cc: grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, dinguyen-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org,
-	jkosina-AlSwsSmVLrQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	tthayer.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org, baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org,
-	andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org,
-	galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org, jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
-	swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org, hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org,
-	wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org, s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, Julia.Lawall-L2FTfq7BK8M@public.gmane.org
-To: tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="LyciRD1jyfeSSjG0"
+Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1426187971-8794-1-git-send-email-tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+In-Reply-To: <20150309181151.GN28806-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---/DKyarNrjr/gdwox
+--LyciRD1jyfeSSjG0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 12, 2015 at 02:19:30PM -0500, tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org wro=
-te:
-> From: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+On Mon, Mar 09, 2015 at 06:11:51PM +0000, Mark Brown wrote:
+> On Mon, Mar 09, 2015 at 04:48:51PM +0200, Andy Shevchenko wrote:
+> > Since the last and the only user of this driver is converted to use dw_=
+dmac we
+> > can remove driver from the tree.
+> >=20
+> > Moreover, besides the driver is unmaintained a long time, it serves for=
+ the
+> > DesignWare DMA IP, for which we have already driver in the tree.
+> >=20
+> > Cc: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+> > Cc: dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 >=20
-> Altera's Arria10 SoC requires that all write accesses of APB
-> peripherals be 32-bit. The DesignWare documentation indicates
-> this change is supported by the design.
+> Applied everything except this one, thanks.  I'm OK with applying this
+> if Vinod is - Vinod?
+yes I think it is right time to do so :)
 
-Please don't send cover letters for single patches, they just add to
-mail volume and often cause useful information to get lost from the
-changelog - put anything that shouldn't go in the changelog after the
---- in the mail and anything else in the changelog itself.
+So:
 
---/DKyarNrjr/gdwox
+Acked-by: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+
+Thanks
+--=20
+~Vinod
+
+--LyciRD1jyfeSSjG0
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Version: GnuPG v1.4.11 (GNU/Linux)
 
-iQEcBAEBCAAGBQJVAe0hAAoJECTWi3JdVIfQTzUH+QGt+lmeHydT+Jt4qBcoerHg
-LeSezWxJukT7Vtf8+eBZMZMGcvwLnOEaBpvi11vSjEEk87j2rwjdK/SzyRWEsR18
-dlLEkebA2NnkunBRY8W65gm3Um6P8OvC8G6zfFQfFp9PUA/CwldZNDsGjiN+s5+a
-AgzLnt+UD7ITxICnX2D1DTqEPvvUP9VGPpgKeerRSanCdqAhthHv2n1gWi8crvvw
-LVn5WSYryt1A3zBx0Tbs28HlKeP+VWCPr1RJbHWcgDRYksuIOb2L3I8uvb0LG/78
-YbdiPXeMlyU5/KariVvYk3LvszOcoxBqSCOCZdRbYgLTmSObJC3R1qvJq6FU550=
-=/I23
+iQIcBAEBAgAGBQJVAp34AAoJEHwUBw8lI4NHX5AP/jwHlEv78P6lQ0B141OP+q/m
+aDjS/VTX0X9ytEPOINI9OxDkPBR4wyx3P/q112ImPIqePsdE22B0bIgLGVjLUAQv
+mXBam72Ku6XRAz8aNT+l4bFw7Cr+NALqnOoC2EHWJfEgxCqB0eBMDK+FrnFycNga
+HkLeZkoNO2PYkEF8+gKMdZkHtAhGUTy8bdZM3xRzGQEKS2+ezBswX2aM+L925yoU
+4q8/JM2z5XqB20PZZN9pUJeiaUsRtSvT+Rv0Rd9aIepHepbyjRxLiX9oXDDuU7dL
+TaBil3WnkTcVsa+p5SAFlQqx0kBSDXR/7txs8GLK5Jx/ZyhrYTgJJIpBUZISQ1Mm
+SGtiUKIBIng/Unu8nZ6T+wIn2ojmm0dyaNSXf8cFXi9nVzBpUpokwPYi5ALDqaZd
+qGGaygojyz/X2Y3FGV7GGU6DZGs98TFpdOQ/1VcXfQEX84pC32QF3DyzlHwZORBV
+EV8YOSdB/1R6KDfBceGdb5NFl0+7n5whW7w+23kO7Kk5PNyRl66RYOddLy8jtneO
+bntZ6RokiIFJWQS4rjzbO/ma4DJYO1UACkut+UAvAPy077q1TFAwQaggRDTHc6yr
+ozuDzeUR6Jxm9rlHIs+zg2vdShG1dJ4ILGPZV9DXkN/R5U1gvkjkB93G8Kuzc7b3
+Q/XY8pWKny6JhOwIo7/V
+=mHYU
 -----END PGP SIGNATURE-----
 
---/DKyarNrjr/gdwox--
+--LyciRD1jyfeSSjG0--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

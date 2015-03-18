@@ -1,50 +1,97 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3 7/7] dmaengine: intel-mid-dma: remove the driver
-Date: Tue, 17 Mar 2015 12:31:48 +0000
-Message-ID: <20150317123148.GN28806@sirena.org.uk>
-References: <1425912531-23457-1-git-send-email-andriy.shevchenko@linux.intel.com>
- <1425912531-23457-8-git-send-email-andriy.shevchenko@linux.intel.com>
+From: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj@renesas.com>
+Subject: Re: [PATCH] spi: sh-msiof: Fix limit maximum word transfer size of
+ FIFO size
+Date: Wed, 18 Mar 2015 12:50:31 +0900
+Message-ID: <5508F607.7010104@renesas.com>
+References: <1426127476-18456-1-git-send-email-nobuhiro.iwamatsu.yj@renesas.com> <CAMuHMdXmr7QH8jSkyH2q6xCise7ew5YzyAFc6Zb0psHZt3mGrg@mail.gmail.com> <CABMQnVK=-okU4L8vCnY15Vpwy9uCoOLzmnOPkpxj4=U6JXzSOg@mail.gmail.com> <CAMuHMdWVRCpF72tS7pQc-cwSMTU-mbqJWtjPtjDSe8YNo-dpqw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="o1EK/QvPH/YNh/i/"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1425912531-23457-8-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie@kernel.org>,
+	Linux-sh list <linux-sh@vger.kernel.org>,
+	linux-spi <linux-spi@vger.kernel.org>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <CAMuHMdWVRCpF72tS7pQc-cwSMTU-mbqJWtjPtjDSe8YNo-dpqw@mail.gmail.com>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+Hi,
 
---o1EK/QvPH/YNh/i/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+(2015/03/16 16:50), Geert Uytterhoeven wrote:
+> Hi Iwamatsu-san,
+>
+> On Mon, Mar 16, 2015 at 2:18 AM, Nobuhiro Iwamatsu
+> <nobuhiro.iwamatsu.yj@renesas.com>  wrote:
+>> 2015-03-12 21:35 GMT+09:00 Geert Uytterhoeven<geert@linux-m68k.org>:
+>>> On Thu, Mar 12, 2015 at 3:31 AM, Nobuhiro Iwamatsu
+>>> <nobuhiro.iwamatsu.yj@renesas.com>  wrote:
+>
+>>>> -       /* limit maximum word transfer to rx/tx fifo size */
+>>>> -       if (tx_buf)
+>>>> -               words = min_t(int, words, p->tx_fifo_size);
+>>>> -       if (rx_buf)
+>>>> -               words = min_t(int, words, p->rx_fifo_size);
+>
+>>> Sorry, I fail to see what exactly this is fixing.
+>>>
+>>> If SPI_MASTER_MUST_TX is set, all hardware SPI transfers are either
+>>>    a) transmit-only.
+>>>    b) bidirectional (transmit buffer may be a dummy, provided by the SPI core).
+>>>
+>>> For case a, only the TX FIFO size matters.
+>>>    - The original code ignored the RX FIFO size (rx_buf == NULL),
+>>>    - After your change, it always uses the minimum of the TX and RX FIFO sizes
+>>>      (granted, the RX FIFO size is larger, so this doesn't make a difference on
+>>>      current hardware).
+>>
+>> Yes.
+>>
+>>>
+>>> For case b, both FIFO sizes matter, and the original code handled that fine
+>>> (tx_buf != NULL, rx_buf != NULL).
+>>>
+>>> What am I missing?
+>>> Are you using a backport with broken SPI_MASTER_MUST_TX handling in the SPI
+>>> core?
+>>
+>> When tx_buf != NULL and rx_buf != NULL, current code uses FIFO size of
+>> rx_buffer.
+>> Since TX FIFO size is smaller than RX FIFO  size, corrent code set the
+>> wrong value to SITMDR2 register.
+>
+> if tx_buf != NULL and rx_buf != NULL, current code does:
+>
+>      words = min_t(int, words, p->tx_fifo_size);
+>      words = min_t(int, words, p->rx_fifo_size);
+>
+> Hence words will be the minimum of the original value of words, tx_fifo_size,
+> and rx_fifo_size. What's wrong about that?
+>
 
-On Mon, Mar 09, 2015 at 04:48:51PM +0200, Andy Shevchenko wrote:
-> Since the last and the only user of this driver is converted to use dw_dmac we
-> can remove driver from the tree.
+I see. I understood about this.
+Sorry, my bad.
 
-Applied, thanks.
+Mark, if you do not apply this patch to your repository, could you ignore this?
 
---o1EK/QvPH/YNh/i/
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+>> Therefore, this patch selects a smaller FIFO size, adds the function to set.
+>>
+>> Does this has become a description?
+>>
+>>>
+>>> I've just verified that with today's tree (renesas-drivers-2015-03-12-v4.0-rc3),
+>>> SPI_MASTER_MUST_TX works fine, and a dummy tx_buf is passed when needed.
+>>
+>> I think correctly work on hardware. However, driver has been set to
+>> the correct register value?
+>
+> I printed the value of words, which is passed to sh_msiof_spi_set_mode_regs().
+>
+> Gr{oetje,eeting}s,
+>
+>                          Geert
+>
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVCB6zAAoJECTWi3JdVIfQZasH/RTMfGSydjn5YFOEemdxyYDE
-8PPWrRNUxlrpBIKy4yDydApnPEYrE00KD29vRCgmlIwfEccHaxCRb+eClfQ5OD3h
-EJ3g6rGw2yn9mtUHkds0YR3TFEiHCzaSohHZGafv8yFLPxLuUgOLFQ/xgrk8NiYo
-QgUWxRvnYcRBn2MhGbLX5A50bVrcs7Cnw367DH78XG49Wv3VdoDa2fSSFeM0gVK0
-/NkkKfugCue4B6b/9nCJzjIJsFLRt2qfIxwvJ/2exrWi1xIHh4PCCrqn37KzxfFZ
-CDisf8f0OBXma32afK2OsWu9g7fptHTGOMXgqE76ZaL+/ksVZs1iIOjKxkH81UI=
-=2cgF
------END PGP SIGNATURE-----
-
---o1EK/QvPH/YNh/i/--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Best regards,
+   Nobuhiro

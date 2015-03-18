@@ -1,59 +1,48 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: fsl-spi: use of_iomap() to map parameter ram on CPM1
-Date: Wed, 18 Mar 2015 12:03:10 +0000
-Message-ID: <20150318120310.GH2869@sirena.org.uk>
-References: <20150226161142.D08681A2360@localhost.localdomain>
- <20150303184403.GE21293@sirena.org.uk>
- <54F6BBA7.8040008@c-s.fr>
- <20150306114413.GM21293@sirena.org.uk>
- <550137C5.1020109@c-s.fr>
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
+	<u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: [PATCH] spi: trigger trace event for message-done before
+ mesg->complete
+Date: Wed, 18 Mar 2015 14:32:26 +0100
+Message-ID: <20150318133226.GR10068@pengutronix.de>
+References: <1426674448-8246-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ <20150318113635.GB2869@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="VkqCAaSJIySsbD6j"
-Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-spi@vger.kernel.org
-To: leroy christophe <christophe.leroy@c-s.fr>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <550137C5.1020109@c-s.fr>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
-
-
---VkqCAaSJIySsbD6j
 Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20150318113635.GB2869-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Mar 12, 2015 at 07:52:53AM +0100, leroy christophe wrote:
-> Le 06/03/2015 12:44, Mark Brown a =E9crit :
+On Wed, Mar 18, 2015 at 11:36:35AM +0000, Mark Brown wrote:
+> On Wed, Mar 18, 2015 at 11:27:28AM +0100, Uwe Kleine-K=F6nig wrote:
+> > With spidev the mesg->complete callback points to spidev_complete.
+> > Calling this unblocks spidev_sync and so spidev_sync_write finishes=
+=2E As
+> > the struct spi_message just read is a local variable in
+> > spidev_sync_write and recording the trace event accesses this messa=
+ge
+> > the recording is better done first. The same can happen for
+> > spidev_sync_read.
+>=20
+> Applied, thanks.  I'm a bit suspicious that the changelog talks only
+> about spidev though...
+That's my workflow. Maybe the important thing here is also that I use
+-rt?!
 
-> >It's legacy, all that code is really old.  Modern code is written in as
-> >architecture and firmware neutral a fashion as possible to make things
-> >more consistent and maintainable.
+Best regards
+Uwe
 
-> This patch is only a small bug fix.
-> That driver already contains calls to of_iomap() and other related of_
-> functions.
-> Is it worth rewriting the driver for just a small bug fix ?
-
-I don't think you need to fix other usages but I'd rather not introduce
-new usages of legacy APIs that just need to be fixed up.
-
---VkqCAaSJIySsbD6j
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVCWl+AAoJECTWi3JdVIfQfZsH/0fCYhhOEQLFPasU8BgvaLBP
-xrfFRNI70rtnduJIRrUQZyYToXK3K63n2s3h3irKb7w80/id7d93fEv/NATIqQ/I
-/8I7HuuV59ojtpMEKQISVxXAokxwOZhERQWPCpHFRAYndLgUD/r20Oo/kY0quj/m
-39ka5bhDK16jCbfUSpyCNmKJ2Xt0vqIeE9lhGepnkoDjCFd/JMvYXj0zPrPcAbsx
-SEk6rjwDwd3cX3Qq895Lt4bTfpExJRckqpstF2a9hRNG7EIKeisgSuNGZzSt49Y9
-kqCLK6ai+Qvx2p/a78Q11eEnnih02VRVCZ5WnSZ361jUCMaozJrYI8Zk8q3VWWw=
-=dop1
------END PGP SIGNATURE-----
-
---VkqCAaSJIySsbD6j--
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig        =
+    |
+Industrial Linux Solutions                 | http://www.pengutronix.de/=
+  |
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

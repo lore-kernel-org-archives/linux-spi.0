@@ -1,59 +1,56 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: sh-msiof: Fix limit maximum word transfer size of
- FIFO size
-Date: Wed, 18 Mar 2015 10:51:16 +0000
-Message-ID: <20150318105116.GA2869@sirena.org.uk>
-References: <1426127476-18456-1-git-send-email-nobuhiro.iwamatsu.yj@renesas.com>
- <CAMuHMdXmr7QH8jSkyH2q6xCise7ew5YzyAFc6Zb0psHZt3mGrg@mail.gmail.com>
- <CABMQnVK=-okU4L8vCnY15Vpwy9uCoOLzmnOPkpxj4=U6JXzSOg@mail.gmail.com>
- <CAMuHMdWVRCpF72tS7pQc-cwSMTU-mbqJWtjPtjDSe8YNo-dpqw@mail.gmail.com>
- <5508F607.7010104@renesas.com>
+Subject: Re: [PATCH] spi: trigger trace event for message-done before
+ mesg->complete
+Date: Wed, 18 Mar 2015 11:36:35 +0000
+Message-ID: <20150318113635.GB2869@sirena.org.uk>
+References: <1426674448-8246-1-git-send-email-u.kleine-koenig@pengutronix.de>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="T4sUOijqQbZv57TR"
-Cc: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-	Linux-sh list <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
-To: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="JYK4vJDZwFMowpUq"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
+	<u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <5508F607.7010104-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+In-Reply-To: <1426674448-8246-1-git-send-email-u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---T4sUOijqQbZv57TR
-Content-Type: text/plain; charset=us-ascii
+--JYK4vJDZwFMowpUq
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 18, 2015 at 12:50:31PM +0900, Nobuhiro Iwamatsu wrote:
-> (2015/03/16 16:50), Geert Uytterhoeven wrote:
+On Wed, Mar 18, 2015 at 11:27:28AM +0100, Uwe Kleine-K=F6nig wrote:
+> With spidev the mesg->complete callback points to spidev_complete.
+> Calling this unblocks spidev_sync and so spidev_sync_write finishes. As
+> the struct spi_message just read is a local variable in
+> spidev_sync_write and recording the trace event accesses this message
+> the recording is better done first. The same can happen for
+> spidev_sync_read.
 
-> I see. I understood about this.
-> Sorry, my bad.
+Applied, thanks.  I'm a bit suspicious that the changelog talks only
+about spidev though...
 
-> Mark, if you do not apply this patch to your repository, could you ignore this?
-
-OK, I'll drop it.
-
---T4sUOijqQbZv57TR
+--JYK4vJDZwFMowpUq
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVCVidAAoJECTWi3JdVIfQFXIH/jQGjPPZS1MRk9Qk81DG5FlI
-XDVxq+dVWMNSeq7JiGQ/xEYocZEYJiIz9lvjU6u4/JgK1nH/FWP6NT/iUp0zX3uc
-fcJRmdU3XD9fJaMnfmK6+8Ofh7yf57AbQan5vv831ZDCqcRkg4aQA92K2pSaRL4p
-KU6Kf4dn+PV0OGDSvicXsWmGc+ULUoeDFHFUHtgbBx1qT6mk4xS/hFZQy07vCN6x
-GmCqlAwPgHrgX8H/Jhc+05AOv9NX2AOLsZH+8cTOh5ymMSZswRveTM8w5ztqTDQE
-cxE5PL97gYxm2JGmQnth1zkNFqeOjnjrhZDjCp5NYtkUAvVJH6L8xSTd3TvavwA=
-=4gm/
+iQEcBAEBCAAGBQJVCWNDAAoJECTWi3JdVIfQtE4H+QGVJRpdG2tCj2PK7jfJOmQI
+D5GctIB3BquHHxvub9I5c5nGiyZ7g6RhtA+yLYLRRUMy4PQ3NgF7WoXnt9S/rvHI
+xWDkpUid56ohrY+yvVEAZvvcoQlmGsVI1oSAFGvsf4kwjahZjvutqLnSxSM/slM/
+cr/bRXgxtwOgHyonnVAnaEitKKwTB1fNe2GyVbImsmrSfxnjX1CdwCqQRkGnGNdk
+zLJ1ELCvakzkUqka/6u3vu856fcz/xsW83DFv7JvPRrqlMQcxywtnkzT3HbemJWD
+MH574DTtuoeAmXXhMmfsNRYqzJ+0q7Cj+eM9DV6/9Z/8lyvFTkqnZgMekOjDAqI=
+=/yoi
 -----END PGP SIGNATURE-----
 
---T4sUOijqQbZv57TR--
+--JYK4vJDZwFMowpUq--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

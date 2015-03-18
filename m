@@ -1,97 +1,63 @@
-From: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj@renesas.com>
-Subject: Re: [PATCH] spi: sh-msiof: Fix limit maximum word transfer size of
- FIFO size
-Date: Wed, 18 Mar 2015 12:50:31 +0900
-Message-ID: <5508F607.7010104@renesas.com>
-References: <1426127476-18456-1-git-send-email-nobuhiro.iwamatsu.yj@renesas.com> <CAMuHMdXmr7QH8jSkyH2q6xCise7ew5YzyAFc6Zb0psHZt3mGrg@mail.gmail.com> <CABMQnVK=-okU4L8vCnY15Vpwy9uCoOLzmnOPkpxj4=U6JXzSOg@mail.gmail.com> <CAMuHMdWVRCpF72tS7pQc-cwSMTU-mbqJWtjPtjDSe8YNo-dpqw@mail.gmail.com>
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?=
+	<u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: [PATCH] spi: trigger trace event for message-done before mesg->complete
+Date: Wed, 18 Mar 2015 11:27:28 +0100
+Message-ID: <1426674448-8246-1-git-send-email-u.kleine-koenig@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie@kernel.org>,
-	Linux-sh list <linux-sh@vger.kernel.org>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <CAMuHMdWVRCpF72tS7pQc-cwSMTU-mbqJWtjPtjDSe8YNo-dpqw@mail.gmail.com>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi,
+With spidev the mesg->complete callback points to spidev_complete.
+Calling this unblocks spidev_sync and so spidev_sync_write finishes. As
+the struct spi_message just read is a local variable in
+spidev_sync_write and recording the trace event accesses this message
+the recording is better done first. The same can happen for
+spidev_sync_read.
 
-(2015/03/16 16:50), Geert Uytterhoeven wrote:
-> Hi Iwamatsu-san,
->
-> On Mon, Mar 16, 2015 at 2:18 AM, Nobuhiro Iwamatsu
-> <nobuhiro.iwamatsu.yj@renesas.com>  wrote:
->> 2015-03-12 21:35 GMT+09:00 Geert Uytterhoeven<geert@linux-m68k.org>:
->>> On Thu, Mar 12, 2015 at 3:31 AM, Nobuhiro Iwamatsu
->>> <nobuhiro.iwamatsu.yj@renesas.com>  wrote:
->
->>>> -       /* limit maximum word transfer to rx/tx fifo size */
->>>> -       if (tx_buf)
->>>> -               words = min_t(int, words, p->tx_fifo_size);
->>>> -       if (rx_buf)
->>>> -               words = min_t(int, words, p->rx_fifo_size);
->
->>> Sorry, I fail to see what exactly this is fixing.
->>>
->>> If SPI_MASTER_MUST_TX is set, all hardware SPI transfers are either
->>>    a) transmit-only.
->>>    b) bidirectional (transmit buffer may be a dummy, provided by the SPI core).
->>>
->>> For case a, only the TX FIFO size matters.
->>>    - The original code ignored the RX FIFO size (rx_buf == NULL),
->>>    - After your change, it always uses the minimum of the TX and RX FIFO sizes
->>>      (granted, the RX FIFO size is larger, so this doesn't make a difference on
->>>      current hardware).
->>
->> Yes.
->>
->>>
->>> For case b, both FIFO sizes matter, and the original code handled that fine
->>> (tx_buf != NULL, rx_buf != NULL).
->>>
->>> What am I missing?
->>> Are you using a backport with broken SPI_MASTER_MUST_TX handling in the SPI
->>> core?
->>
->> When tx_buf != NULL and rx_buf != NULL, current code uses FIFO size of
->> rx_buffer.
->> Since TX FIFO size is smaller than RX FIFO  size, corrent code set the
->> wrong value to SITMDR2 register.
->
-> if tx_buf != NULL and rx_buf != NULL, current code does:
->
->      words = min_t(int, words, p->tx_fifo_size);
->      words = min_t(int, words, p->rx_fifo_size);
->
-> Hence words will be the minimum of the original value of words, tx_fifo_size,
-> and rx_fifo_size. What's wrong about that?
->
+This fixes an oops observed on a 3.14-rt system with spidev activity
+after
 
-I see. I understood about this.
-Sorry, my bad.
+	echo 1 > /sys/kernel/debug/tracing/events/spi/enable
 
-Mark, if you do not apply this patch to your repository, could you ignore this?
+=2E
 
->> Therefore, this patch selects a smaller FIFO size, adds the function to set.
->>
->> Does this has become a description?
->>
->>>
->>> I've just verified that with today's tree (renesas-drivers-2015-03-12-v4.0-rc3),
->>> SPI_MASTER_MUST_TX works fine, and a dummy tx_buf is passed when needed.
->>
->> I think correctly work on hardware. However, driver has been set to
->> the correct register value?
->
-> I printed the value of words, which is passed to sh_msiof_spi_set_mode_regs().
->
-> Gr{oetje,eeting}s,
->
->                          Geert
->
+Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+---
+ drivers/spi/spi.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Best regards,
-   Nobuhiro
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 6d3b9b76c80b..df577518b770 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -994,13 +994,14 @@ void spi_finalize_current_message(struct spi_mast=
+er *master)
+ 				"failed to unprepare message: %d\n", ret);
+ 		}
+ 	}
++
++	trace_spi_message_done(mesg);
++
+ 	master->cur_msg_prepared =3D false;
+=20
+ 	mesg->state =3D NULL;
+ 	if (mesg->complete)
+ 		mesg->complete(mesg->context);
+-
+-	trace_spi_message_done(mesg);
+ }
+ EXPORT_SYMBOL_GPL(spi_finalize_current_message);
+=20
+--=20
+2.1.4
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

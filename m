@@ -1,7 +1,7 @@
 From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH V2] SPI: BCM2835: allow arbitrary GPIO to act as SPI-chip_select
-Date: Thu, 19 Mar 2015 09:01:51 +0000
-Message-ID: <1426755714-28130-2-git-send-email-kernel@martin.sperl.org>
+Subject: [PATCH] SPI: BCM2835: clock divider can be a multiple of 2
+Date: Thu, 19 Mar 2015 09:01:52 +0000
+Message-ID: <1426755714-28130-3-git-send-email-kernel@martin.sperl.org>
 References: <1426755714-28130-1-git-send-email-kernel@martin.sperl.org>
 Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, warren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
@@ -13,137 +13,31 @@ List-ID: <linux-spi.vger.kernel.org>
 
 From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-use cs-gpios for the spi bus master and standard gpio operation
-instead of relying on the HW with just 2 chip_selects.
+The official documentation is wrong in this respect.
+Has been tested empirically for dividers 2-1024
 
 Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 ---
- drivers/spi/spi-bcm2835.c |   65 ++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 58 insertions(+), 7 deletions(-)
+ drivers/spi/spi-bcm2835.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index e1dea40..5fbad64 100644
+index e1dea40..779e3a8 100644
 --- a/drivers/spi/spi-bcm2835.c
 +++ b/drivers/spi/spi-bcm2835.c
-@@ -30,6 +30,7 @@
- #include <linux/of.h>
- #include <linux/of_irq.h>
- #include <linux/of_device.h>
-+#include <linux/of_gpio.h>
- #include <linux/spi/spi.h>
-
- /* SPI register offsets */
-@@ -116,6 +117,16 @@ static inline void bcm2835_wr_fifo(struct bcm2835_spi *bs, int len)
- 	}
- }
-
-+/* ideally spi_set_cs would be exported by spi-core */
-+static inline void bcm2835_set_cs(struct spi_device *spi, bool enable)
-+{
-+	if (spi->mode & SPI_CS_HIGH)
-+		enable = !enable;
-+
-+	if (gpio_is_valid(spi->cs_gpio))
-+		gpio_set_value(spi->cs_gpio, !enable);
-+}
-+
- static irqreturn_t bcm2835_spi_interrupt(int irq, void *dev_id)
- {
- 	struct spi_master *master = dev_id;
-@@ -207,12 +218,24 @@ static int bcm2835_spi_start_transfer(
- 		cs |= BCM2835_SPI_CS_CPHA;
-
- 	if (!(spi->mode & SPI_NO_CS)) {
--		if (spi->mode & SPI_CS_HIGH) {
--			cs |= BCM2835_SPI_CS_CSPOL;
--			cs |= BCM2835_SPI_CS_CSPOL0 << spi->chip_select;
--		}
-+		if (gpio_is_valid(spi->cs_gpio)) {
-+			bcm2835_set_cs(spi, 1);
-+		} else {
-+			/* Legacy mode using HW chip selects
-+			 * note that there is a bug in this when there are
-+			 * multiple devices on the bus with at least one
-+			 * having SPI_CS_HIGH set - the other CS_CSPOLX get
-+			 * reset to 0 when any other device starts a transfer
-+			 * this is due to a shared register for the polarity
-+			 */
-+			if (spi->mode & SPI_CS_HIGH) {
-+				cs |= BCM2835_SPI_CS_CSPOL;
-+				cs |= BCM2835_SPI_CS_CSPOL0
-+					<< spi->chip_select;
-+			}
-
--		cs |= spi->chip_select;
-+			cs |= spi->chip_select;
-+		}
- 	}
-
- 	reinit_completion(&bs->done);
-@@ -248,9 +271,12 @@ static int bcm2835_spi_finish_transfer(
- 	if (tfr->delay_usecs)
- 		udelay(tfr->delay_usecs);
-
--	if (cs_change)
-+	if (cs_change) {
-+		/* reset CS */
-+		bcm2835_set_cs(spi, 0);
- 		/* Clear TA flag */
- 		bcm2835_wr(bs, BCM2835_SPI_CS, cs & ~BCM2835_SPI_CS_TA);
-+	}
-
- 	return 0;
- }
-@@ -290,15 +316,39 @@ static int bcm2835_spi_transfer_one(
- 	}
-
- out:
--	/* Clear FIFOs, and disable the HW block */
-+	/* Clear FIFOs, reset CS and disable the HW block */
- 	bcm2835_wr(bs, BCM2835_SPI_CS,
- 		   BCM2835_SPI_CS_CLEAR_RX | BCM2835_SPI_CS_CLEAR_TX);
-+	bcm2835_set_cs(spi, 0);
- 	mesg->status = err;
- 	spi_finalize_current_message(master);
-
- 	return 0;
- }
-
-+static int bcm2835_spi_setup(struct spi_device *spi)
-+{
-+	/* do not care when in SPI_NO_CS mode */
-+	if (spi->mode & SPI_NO_CS)
-+		return 0;
-+
-+	/* setting up CS right from the start */
-+	if (gpio_is_valid(spi->cs_gpio)) {
-+		bcm2835_set_cs(spi, 0);
-+		return 0;
-+	}
-+
-+	/* Legacy mode using HW chipselects */
-+	if (spi->chip_select > 2) {
-+		dev_err(&spi->dev,
-+			"setup: only three native chip-selects are supported\n"
-+			);
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
- static int bcm2835_spi_probe(struct platform_device *pdev)
- {
- 	struct spi_master *master;
-@@ -318,6 +368,7 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
- 	master->bits_per_word_mask = SPI_BPW_MASK(8);
- 	master->num_chipselect = 3;
- 	master->transfer_one_message = bcm2835_spi_transfer_one;
-+	master->setup = bcm2835_spi_setup;
- 	master->dev.of_node = pdev->dev.of_node;
-
- 	bs = spi_master_get_devdata(master);
---
+@@ -192,8 +192,9 @@ static int bcm2835_spi_start_transfer(
+ 	if (spi_hz >= clk_hz / 2) {
+ 		cdiv = 2; /* clk_hz/2 is the fastest we can go */
+ 	} else if (spi_hz) {
+-		/* CDIV must be a power of two */
+-		cdiv = roundup_pow_of_two(DIV_ROUND_UP(clk_hz, spi_hz));
++		/* CDIV must be a multiple of two */
++		cdiv = DIV_ROUND_UP(clk_hz, spi_hz);
++		cdiv += (cdiv % 2);
+ 
+ 		if (cdiv >= 65536)
+ 			cdiv = 0; /* 0 is the slowest we can go */
+-- 
 1.7.10.4
 
 --

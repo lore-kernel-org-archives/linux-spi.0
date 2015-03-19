@@ -1,50 +1,48 @@
-From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH] SPI: BCM2835: enable support of 3-wire mode
-Date: Thu, 19 Mar 2015 09:01:53 +0000
-Message-ID: <1426755714-28130-4-git-send-email-kernel@martin.sperl.org>
-References: <1426755714-28130-1-git-send-email-kernel@martin.sperl.org>
-Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, warren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: Patch to parameterize DMA_MIN_BYTES for omap2-mcspi
+Date: Thu, 19 Mar 2015 09:47:08 +0000
+Message-ID: <20150319094708.GO2869@sirena.org.uk>
+References: <1426741501.10003.6.camel@midgaarde>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="lLR1BQqf7txDtYcF"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Greg Knight <g.knight-+7FPL3kuI1+B+jHODAdFcQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1426755714-28130-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1426741501.10003.6.camel@midgaarde>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
----
- drivers/spi/spi-bcm2835.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+--lLR1BQqf7txDtYcF
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index e1dea40..51883f8 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -67,7 +67,8 @@
- #define BCM2835_SPI_CS_CS_01		0x00000001
- 
- #define BCM2835_SPI_TIMEOUT_MS	30000
--#define BCM2835_SPI_MODE_BITS	(SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_NO_CS)
-+#define BCM2835_SPI_MODE_BITS	(SPI_CPOL | SPI_CPHA | SPI_CS_HIGH \
-+				| SPI_NO_CS | SPI_3WIRE)
- 
- #define DRV_NAME	"spi-bcm2835"
- 
-@@ -201,6 +202,9 @@ static int bcm2835_spi_start_transfer(
- 		cdiv = 0; /* 0 is the slowest we can go */
- 	}
- 
-+	if ((spi->mode & SPI_3WIRE) && (tfr->rx_buf))
-+		cs |= BCM2835_SPI_CS_REN;
-+
- 	if (spi->mode & SPI_CPOL)
- 		cs |= BCM2835_SPI_CS_CPOL;
- 	if (spi->mode & SPI_CPHA)
--- 
-1.7.10.4
+On Thu, Mar 19, 2015 at 01:05:01AM -0400, Greg Knight wrote:
 
+> What is the process for getting this upstreamed?
+
+Please submit the patch following the process in
+Documentation/SubmittingPatches.
+
+--lLR1BQqf7txDtYcF
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVCpsbAAoJECTWi3JdVIfQQl4H/3IwcXHu9SE0Aw4Q4BZwZsEA
+Cf263POyp7X7U6dScCFWAc+8UeUpCpsOGrdXNhi8dbEBjS6b3hrV1Wv3oNNmQsk6
+PubkO4Xm7wufqAzvG4Podz4hzQY5Og1W1WLZTdbVgEk71U0AnMVzS/iA5u3rYtKK
+uftkC2XZVSRdS92bo9/6GTYi9iVBXwLIbhNSZPre4HiL67NgXz5YV3vtMFLeYmkY
+DrJrHFmqR/t4tvG4DbXJYqhqw9siUdIsq+1VUafCmATFlx7vNdjyIv+RbDXhtzP0
+s8APVYtuBuNa5fS2r9fvbh+TDqLZOaQ9jlYWlEXY8XPIAE1z2Q43nmvefAXjzxQ=
+=1/AE
+-----END PGP SIGNATURE-----
+
+--lLR1BQqf7txDtYcF--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,69 +1,81 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: trigger trace event for message-done before
- mesg->complete
-Date: Thu, 19 Mar 2015 11:51:12 +0000
-Message-ID: <20150319115112.GS2869@sirena.org.uk>
-References: <1426674448-8246-1-git-send-email-u.kleine-koenig@pengutronix.de>
- <20150318113635.GB2869@sirena.org.uk>
- <20150318133226.GR10068@pengutronix.de>
- <20150318135854.GI2869@sirena.org.uk>
- <20150318144854.GS10068@pengutronix.de>
- <20150319112430.GP2869@sirena.org.uk>
- <20150319114842.GU10068@pengutronix.de>
+From: Peter Ujfalusi <peter.ujfalusi-l0cyMroinI0@public.gmane.org>
+Subject: Re: Patch to parameterize DMA_MIN_BYTES for omap2-mcspi
+Date: Thu, 19 Mar 2015 14:34:30 +0200
+Message-ID: <550AC256.4070509@ti.com>
+References: <1426741501.10003.6.camel@midgaarde>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="FiqEyLLt06qkB6ow"
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
-	<u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Greg Knight <g.knight-+7FPL3kuI1+B+jHODAdFcQ@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20150319114842.GU10068-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+In-Reply-To: <1426741501.10003.6.camel@midgaarde>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-
---FiqEyLLt06qkB6ow
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Mar 19, 2015 at 12:48:42PM +0100, Uwe Kleine-K=F6nig wrote:
-> On Thu, Mar 19, 2015 at 11:24:30AM +0000, Mark Brown wrote:
-
-> > Sure, but it's better to write it up in terms of a generic driver - it's
-> > the difference between "let's work around this driver" and "the core
-> > isn't doing the right thing for drivers here".
-
-> OK, so something like:
-
-> spi: trigger trace event for message-done before mesg->complete
+On 03/19/2015 07:05 AM, Greg Knight wrote:
+> Hi, Mark,
 >=20
-> The message's complete callback might (permissibly) free the memory that
-> holds the message. As recording the trace event for the end of a
-> transfer accesses this message the recording is better done first.
+> I've attached a patch which adds a device-tree field "ti,dma-min-byte=
+s"
+> which replaces the macro DMA_MIN_BYTES. Adjusting this field addresse=
+s
+> issues we've had where, in our particular use case, the usleep() in t=
+he
+> SPI worker thread eats a full 20% of our CPU (AM3359).
+>=20
+> I opted to implement it as a device-tree parameter and keep the origi=
+nal
+> value (160) as the default, in order to avoid impacting anyone else.
+>=20
+> The patch is attached. Patches 1-2 are an unrelated McASP change (see=
+ my
+> other message).
+>=20
+> What is the process for getting this upstreamed?
 
-Yes, that's the sort of thing I was looking for - it just makes the
-review a bit easier.
+Please follow the guidelines in Documentation/SubmittingPatches. Patche=
+s as
+attachments are not preferred since it makes replying/commenting on the
+patches hard.
 
---FiqEyLLt06qkB6ow
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Strictly speaking the dma-min-bytes should not be in DT, it is a softwa=
+re
+parameter for the Linux SPI driver implementation.
+Also, when changing DT bindings, please update the documentation as wel=
+l (and
+CC the relevant lists with that).
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+This threshold of 160 bytes in the omap2-mcspi driver is artificial any=
+ways it
+is changed from 8 to 160 by this commit:
+8b66c13474e16 spi/omap2_mcspi: change default DMA_MIN_BYTES value to 16=
+0
 
-iQEcBAEBCAAGBQJVCrgvAAoJECTWi3JdVIfQ/oIH/jFQvfkKbhj9OT5+LYQBkrCZ
-YIwDCxPAwKeRwTSSDveAUwu3tIDBMiU3e0zEKeOqNZMpZvhdSgcl8q8nsM1xi3oN
-t4bblLHbTFP8RRGEwoSZkMY1Bk9oQLE+1luet3/Potef4n3+vpCM3A0Y6TWFiIIG
-d+8vvac/oEMfhrb52uEbh5FBNbMFG4CjmBHrhdYH5h1uhQ/Ft+nS10yE3ZIMV55g
-i8CdrKmf+YBpWBVnZVHb2CI2yrT4UyvCC7ou0+0HMGXdVXEGoHdlId7qUx0zPgGf
-n9OTri/Yg4yIxY3WplAX0S6HNcA9vnfP3rwUKlMf5NiBxHL1ioJ12nrs2PXEdBU=
-=2WER
------END PGP SIGNATURE-----
+It has been changed because of wl1271, but I'm not sure if banging byte=
+s over
+the bus when the transfer is less then 160bytes is that great thing. I =
+would
+guess that the sweet spot is at around the low tens.
 
---FiqEyLLt06qkB6ow--
+But if it is really like this that different devices perform better wit=
+h
+different threshold for choosing between PIO or DMA transfer then this =
+setting
+should come from the slave device and should only affect the transfer s=
+etup
+when communicating with that device.
+
+Probably adding a parameter (optional) to spi_device struct, so drivers=
+ can
+pass dma_over_poi_threshold?
+If it is not set, than just use whatever is the default.
+
+But I don't think this setting should be in the DT.
+
+--=20
+P=C3=A9ter
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

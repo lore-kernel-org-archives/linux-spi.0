@@ -1,133 +1,66 @@
-From: Greg Knight <g.knight@symetrica.com>
-Subject: Patch to parameterize DMA_MIN_BYTES for omap2-mcspi
-Date: Thu, 19 Mar 2015 01:05:01 -0400
-Message-ID: <1426741501.10003.6.camel@midgaarde>
+From: Simon Horman <horms@verge.net.au>
+Subject: Re: [PATCH/RFC] spi: sh-msiof: Fix MSIOF address for DMAC
+Date: Thu, 19 Mar 2015 15:52:27 +0900
+Message-ID: <20150319065225.GA30499@verge.net.au>
+References: <1426430192-3271-1-git-send-email-ykaneko0929@gmail.com>
+ <CAMuHMdX_PrPLh1vyzpd+P=ehCNCPmfqkFVjt4RjjBjT9gOiqFg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="=-3100BQj99xIKfIdFECJw"
-Cc: linux-spi@vger.kernel.org, linux-omap@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-omap-owner@vger.kernel.org>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Yoshihiro Kaneko <ykaneko0929@gmail.com>,
+	Ryo Kataoka <ryo.kataoka.wt@renesas.com>,
+	linux-spi <linux-spi@vger.kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Linux-sh list <linux-sh@vger.kernel.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdX_PrPLh1vyzpd+P=ehCNCPmfqkFVjt4RjjBjT9gOiqFg@mail.gmail.com>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi Geert,
 
---=-3100BQj99xIKfIdFECJw
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+On Tue, Mar 17, 2015 at 10:28:22AM +0100, Geert Uytterhoeven wrote:
+> Hi Kaneko-san, Kataoka-san,
+> 
+> On Sun, Mar 15, 2015 at 3:36 PM, Yoshihiro Kaneko <ykaneko0929@gmail.com> wrote:
+> > From: Ryo Kataoka <ryo.kataoka.wt@renesas.com>
+> >
+> > MSIOF Base Address H'E6xx can be accessed by CPU and DMAC.
+> > MSIOF Base Address H'E7xx for DMAC was removed from H/W manual.
+> 
+> "Address 0xE7xx can be accesses only from DMA." was indeed removed.
+> However, "Note: Address H'E6xx can be accessed only by CPU." is still
+> there in the latest version of the R-Car Gen2 manual I have (v1.01).
 
-Hi, Mark,
+Thanks, somehow I miss-read the H'E6xx portion of the manual when
+I looked over this patch prior to Kaneko-san posting it.
 
-I've attached a patch which adds a device-tree field "ti,dma-min-bytes"
-which replaces the macro DMA_MIN_BYTES. Adjusting this field addresses
-issues we've had where, in our particular use case, the usleep() in the
-SPI worker thread eats a full 20% of our CPU (AM3359).
+> Presumably all of this was copied from another SoC (see below)?
+>
+> MSIOF DMA seems to work fine on my Koelsch (R-Car M2-W ES1.0) with this patch
+> (and the DTS changes) applied, though.
+>
+> > Signed-off-by: Ryo Kataoka <ryo.kataoka.wt@renesas.com>
+> > Signed-off-by: Yoshihiro Kaneko <ykaneko0929@gmail.com>
+> > ---
+> >
+> > Hi Geert-san,
+> >
+> > I have also found patches to address this problem in DTS files
+> > which seems to be a good way to handle this problem. I plan to send
+> > them separately. I'm unsure if this driver change is also appropriate.
+> 
+> If there really exist no SoCs where the DMA engine has to access a different
+> register set than the CPU, then it can be removed from the driver, and from
+> the binding docs in Documentation/devicetree/bindings/spi/sh-msiof.txt.
+> 
+> However, according to the manuals, SH-Mobile AG5 (sh73a0), R-Mobile APE6
+> (r8a73a4), and R-Mobile A1 (r8a7740) also have MSIOF blocks with two register
+> banks?
 
-I opted to implement it as a device-tree parameter and keep the original
-value (160) as the default, in order to avoid impacting anyone else.
-
-The patch is attached. Patches 1-2 are an unrelated McASP change (see my
-other message).
-
-What is the process for getting this upstreamed?
-
-Thanks,
-Greg
-
---=-3100BQj99xIKfIdFECJw
-Content-Disposition: attachment;
-	filename*0=0003-spi-omap2-mcspi-DMA_MIN_BYTES-hashdef-ti-dma-min-byt.pat;
-	filename*1=ch
-Content-Type: text/x-patch;
-	name="0003-spi-omap2-mcspi-DMA_MIN_BYTES-hashdef-ti-dma-min-byt.patch";
-	charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-
->From 2b51699d1f7f05de45f0f0f065c37da81181f4eb Mon Sep 17 00:00:00 2001
-From: Greg Knight <g.knight@symetrica.com>
-Date: Mon, 2 Mar 2015 10:44:21 -0500
-Subject: [PATCH 3/3] spi-omap2-mcspi: DMA_MIN_BYTES hashdef =>
- ti,dma-min-bytes device tree option
-
----
- drivers/spi/spi-omap2-mcspi.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 70cd418..4ac1f3e 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -117,8 +117,7 @@ struct omap2_mcspi_dma {
- /* use PIO for small transfers, avoiding DMA setup/teardown overhead and
-  * cache operations; better heuristics consider wordsize and bitrate.
-  */
--#define DMA_MIN_BYTES			160
--
-+#define DMA_MIN_BYTES_DEFAULT			160
- 
- /*
-  * Used for context save and restore, structure members to be updated whenever
-@@ -141,6 +140,9 @@ struct omap2_mcspi {
- 	struct omap2_mcspi_regs ctx;
- 	int			fifo_depth;
- 	unsigned int		pin_dir:1;
-+
-+	/* SPI transfer threshold over which we prefer DMA to PIO */
-+	unsigned dma_min_bytes;
- };
- 
- struct omap2_mcspi_cs {
-@@ -1115,7 +1117,7 @@ static void omap2_mcspi_work(struct omap2_mcspi *mcspi, struct spi_message *m)
- 			unsigned	count;
- 
- 			if ((mcspi_dma->dma_rx && mcspi_dma->dma_tx) &&
--			    (m->is_dma_mapped || t->len >= DMA_MIN_BYTES))
-+			    (m->is_dma_mapped || t->len >= mcspi->dma_min_bytes))
- 				omap2_mcspi_set_fifo(spi, t, 1);
- 
- 			omap2_mcspi_set_enable(spi, 1);
-@@ -1126,7 +1128,7 @@ static void omap2_mcspi_work(struct omap2_mcspi *mcspi, struct spi_message *m)
- 						+ OMAP2_MCSPI_TX0);
- 
- 			if ((mcspi_dma->dma_rx && mcspi_dma->dma_tx) &&
--			    (m->is_dma_mapped || t->len >= DMA_MIN_BYTES))
-+			    (m->is_dma_mapped || t->len >= mcspi->dma_min_bytes))
- 				count = omap2_mcspi_txrx_dma(spi, t);
- 			else
- 				count = omap2_mcspi_txrx_pio(spi, t);
-@@ -1216,7 +1218,7 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
- 			return -EINVAL;
- 		}
- 
--		if (m->is_dma_mapped || len < DMA_MIN_BYTES)
-+		if (m->is_dma_mapped || len < mcspi->dma_min_bytes)
- 			continue;
- 
- 		if (mcspi_dma->dma_tx && tx_buf != NULL) {
-@@ -1331,10 +1333,12 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
- 
- 	mcspi = spi_master_get_devdata(master);
- 	mcspi->master = master;
-+	mcspi->dma_min_bytes = DMA_MIN_BYTES_DEFAULT;
- 
- 	match = of_match_device(omap_mcspi_of_match, &pdev->dev);
- 	if (match) {
- 		u32 num_cs = 1; /* default number of chipselect */
-+		u32 dma_min_bytes;
- 		pdata = match->data;
- 
- 		of_property_read_u32(node, "ti,spi-num-cs", &num_cs);
-@@ -1342,6 +1346,8 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
- 		master->bus_num = bus_num++;
- 		if (of_get_property(node, "ti,pindir-d0-out-d1-in", NULL))
- 			mcspi->pin_dir = MCSPI_PINDIR_D0_OUT_D1_IN;
-+		if (!of_property_read_u32(node, "ti,dma-min-bytes", &dma_min_bytes))
-+			mcspi->dma_min_bytes = (unsigned) dma_min_bytes;
- 	} else {
- 		pdata = dev_get_platdata(&pdev->dev);
- 		master->num_chipselect = pdata->num_cs;
--- 
-1.9.1
-
-
---=-3100BQj99xIKfIdFECJw--
-
+Looking over the documentation for those SoCs, yes that does seem to be the
+case. And for the APE6 (I have v0.7 of the manual) it specifies 0xE6xx can
+only be accessed by CPU while 0xE7xx can be accessed only from DMA. Unless
+that documentation is wrong then it seems to support leaving the driver as is.

@@ -1,7 +1,7 @@
 From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH] SPI: BCM2835: clock divider can be a multiple of 2
-Date: Thu, 19 Mar 2015 09:01:52 +0000
-Message-ID: <1426755714-28130-3-git-send-email-kernel@martin.sperl.org>
+Subject: [PATCH] SPI: BCM2835: enable support of 3-wire mode
+Date: Thu, 19 Mar 2015 09:01:53 +0000
+Message-ID: <1426755714-28130-4-git-send-email-kernel@martin.sperl.org>
 References: <1426755714-28130-1-git-send-email-kernel@martin.sperl.org>
 Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, warren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
@@ -13,30 +13,35 @@ List-ID: <linux-spi.vger.kernel.org>
 
 From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-The official documentation is wrong in this respect.
-Has been tested empirically for dividers 2-1024
-
 Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 ---
- drivers/spi/spi-bcm2835.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/spi/spi-bcm2835.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index e1dea40..779e3a8 100644
+index e1dea40..51883f8 100644
 --- a/drivers/spi/spi-bcm2835.c
 +++ b/drivers/spi/spi-bcm2835.c
-@@ -192,8 +192,9 @@ static int bcm2835_spi_start_transfer(
- 	if (spi_hz >= clk_hz / 2) {
- 		cdiv = 2; /* clk_hz/2 is the fastest we can go */
- 	} else if (spi_hz) {
--		/* CDIV must be a power of two */
--		cdiv = roundup_pow_of_two(DIV_ROUND_UP(clk_hz, spi_hz));
-+		/* CDIV must be a multiple of two */
-+		cdiv = DIV_ROUND_UP(clk_hz, spi_hz);
-+		cdiv += (cdiv % 2);
+@@ -67,7 +67,8 @@
+ #define BCM2835_SPI_CS_CS_01		0x00000001
  
- 		if (cdiv >= 65536)
- 			cdiv = 0; /* 0 is the slowest we can go */
+ #define BCM2835_SPI_TIMEOUT_MS	30000
+-#define BCM2835_SPI_MODE_BITS	(SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_NO_CS)
++#define BCM2835_SPI_MODE_BITS	(SPI_CPOL | SPI_CPHA | SPI_CS_HIGH \
++				| SPI_NO_CS | SPI_3WIRE)
+ 
+ #define DRV_NAME	"spi-bcm2835"
+ 
+@@ -201,6 +202,9 @@ static int bcm2835_spi_start_transfer(
+ 		cdiv = 0; /* 0 is the slowest we can go */
+ 	}
+ 
++	if ((spi->mode & SPI_3WIRE) && (tfr->rx_buf))
++		cs |= BCM2835_SPI_CS_REN;
++
+ 	if (spi->mode & SPI_CPOL)
+ 		cs |= BCM2835_SPI_CS_CPOL;
+ 	if (spi->mode & SPI_CPHA)
 -- 
 1.7.10.4
 

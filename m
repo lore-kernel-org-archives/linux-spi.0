@@ -1,60 +1,60 @@
-From: Olliver Schinagl <oliver-dxLnbx3+1qmEVqv0pETR8A@public.gmane.org>
-Subject: Re: =?utf-8?b?W1JFU0VORF8y?= PATCH 1/3] ARM: sun4i: spi: Allow transfers larger than FIFO size
-Date: Fri, 20 Mar 2015 07:11:21 +0000 (UTC)
-Message-ID: <loom.20150320T080853-145@post.gmane.org>
-References: <118558573.kx0II8vAKN@nukelap.gtech>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH V2] SPI: BCM2835: allow arbitrary GPIO to act as
+ SPI-chip_select
+Date: Fri, 20 Mar 2015 09:52:47 +0000
+Message-ID: <20150320095247.GE2869@sirena.org.uk>
+References: <1426755714-28130-1-git-send-email-kernel@martin.sperl.org>
+ <1426755714-28130-2-git-send-email-kernel@martin.sperl.org>
+ <550BAA89.5090707@wwwdotorg.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="B3XPdYri2NuANWBV"
+Cc: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <550BAA89.5090707-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hey all,
 
-mrnuke <mr.nuke.me@...> writes:
+--B3XPdYri2NuANWBV
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> 
-> SPI transfers were limited to one FIFO depth, which is 64 bytes.
-> This was an artificial limitation, however, as the hardware can handle
-> much larger bursts. To accommodate this, we enable the interrupt when
-> the Rx FIFO is 3/4 full, and drain the FIFO within the interrupt
-> handler. The 3/4 ratio was chosen arbitrarily, with the intention to
-> reduce the potential number of interrupts.
-> 
-> Since the SUN4I_CTL_TP bit is set, the hardware will pause
-> transmission whenever the FIFO is full, so there is no risk of losing
-> data if we can't service the interrupt in time.
-> 
-> For the Tx side, enable and use the Tx FIFO 3/4 empty interrupt to
-> replenish the FIFO on large SPI bursts. This requires more care in
-> when the interrupt is left enabled, as this interrupt will continually
-> trigger when the FIFO is less than 1/4 full, even though we
-> acknowledge it.
+On Thu, Mar 19, 2015 at 11:05:13PM -0600, Stephen Warren wrote:
+> On 03/19/2015 03:01 AM, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
+> > From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+> >=20
+> > use cs-gpios for the spi bus master and standard gpio operation
+> > instead of relying on the HW with just 2 chip_selects.
+>=20
+> A changelog between v1 and v2 would be useful. I think this looks OK
+> though, so,
+> Acked-by: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 
-You can have my Tested-by: Olliver Schinagl <oliver-dxLnbx3+1qmEVqv0pETR8A@public.gmane.org>
+Note that none of these patches appear to have been sent to me, Stephen
+has CCed me in as far as I can tell...
 
-Been using it with mmc-spi with great success. Actually it was the only way
-to use mmc-spi ;)
+--B3XPdYri2NuANWBV
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-I haven't used the other patches in this series, nor looked at them. I've
-done a few mmc read and writes (a few mb's) and got good performance to boot
-(1.5 - 2 MB/s).
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-Olliver
+iQEcBAEBCAAGBQJVC+3uAAoJECTWi3JdVIfQTE8H/janLisG6U+HUb/43oDN8S5e
+USCqyuEtjLY0W1QE+A19qesTrDuARQDd66lMXvoqSLAh7gx6CnSs386T6vfI287w
+rZMiFTxrybL4UVSq+10N3rXR2LVRDkwdffytXJIJdRu4W4tvHqPGL06hNrlSFU7K
+pVn2fR/4rDR7GmEwvpO1jVL53a5JTseVfCnbpE1KEBwqyy3ccnaQaoG8Chqt6pBL
+8cD+AI6cqFAPHY650tbUOpShpY0mtdlp3qLvnkPkkeWVcX7lCSAl+1dkvV4mb/r6
+LzxRfI4dIMfSuYb/+ZtO0NjSl+O2S1gf5Cd1izCpHAESJRNFi0rxpIRVEIjRS9I=
+=5BYm
+-----END PGP SIGNATURE-----
 
-> 
-> Signed-off-by: Alexandru Gagniuc <mr.nuke.me@...>
-> Acked-by: Maxime Ripard <maxime.ripard@...>
-> ---
->  drivers/spi/spi-sun4i.c | 71
-++++++++++++++++++++++++++++++++++++++++++-------
->  1 file changed, 62 insertions(+), 9 deletions(-)
-> 
-
-
-
+--B3XPdYri2NuANWBV--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

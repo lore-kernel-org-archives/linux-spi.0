@@ -1,54 +1,52 @@
-From: "Ivan T. Ivanov" <iivanov@mm-sol.com>
-Subject: Re: [PATCH v2] spi: Ensure that CS line is in non-active state
- after spi_setup()
-Date: Fri, 20 Mar 2015 18:14:49 +0200
-Message-ID: <1426868089.14974.12.camel@mm-sol.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2] spi: Ensure that CS line is in non-active state after
+ spi_setup()
+Date: Fri, 20 Mar 2015 16:17:12 +0000
+Message-ID: <20150320161712.GP2869@sirena.org.uk>
 References: <1426265029-12280-1-git-send-email-iivanov@mm-sol.com>
+ <1426868089.14974.12.camel@mm-sol.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="Vj8lTl3Roa4E9STX"
 Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-arm-msm@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
+To: "Ivan T. Ivanov" <iivanov@mm-sol.com>
 Return-path: <linux-arm-msm-owner@vger.kernel.org>
-In-Reply-To: <1426265029-12280-1-git-send-email-iivanov@mm-sol.com>
+Content-Disposition: inline
+In-Reply-To: <1426868089.14974.12.camel@mm-sol.com>
 Sender: linux-arm-msm-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
-On Fri, 2015-03-13 at 18:43 +0200, Ivan T. Ivanov wrote:
-> Some devices samples state of the chip select signal during power up
-> and act differently based on this state, so SPI core should ensure
-> that CS line is driven in non-active state after spi_setup().
-> 
-> Signed-off-by: Ivan T. Ivanov <iivanov@mm-sol.com>
-> ---
+--Vj8lTl3Roa4E9STX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Any comments on this one?
+On Fri, Mar 20, 2015 at 06:14:49PM +0200, Ivan T. Ivanov wrote:
 
-Forget to add changes since v1 [1].
+> Any comments on this one?
 
-CS is set to non-active state unconditionally before
-spi->master->setup()
+> Forget to add changes since v1 [1].
 
-Regards,
-Ivan
+> CS is set to non-active state unconditionally before
+> spi->master->setup()
 
-[1] http://www.spinics.net/lists/linux-spi/msg03056.html
+Please don't send content free quoted pings.
 
->  drivers/spi/spi.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index c64a3e5..4023cc9 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -1893,6 +1893,8 @@ int spi_setup(struct spi_device *spi)
->         if (!spi->max_speed_hz)
->                 spi->max_speed_hz = spi->master->max_speed_hz;
-> 
-> +       spi_set_cs(spi, false);
-> +
->         if (spi->master->setup)
->                 status = spi->master->setup(spi);
-> 
+--Vj8lTl3Roa4E9STX
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVDEgIAAoJECTWi3JdVIfQ+24H/j6VV4zMVrcwLbUWYQSJih5z
+G+JmLp/SCTtbvNYgPF9AytehScb2xp0fR0a4bzBbUn+tF10vIZB+qvdDOhy4/lJF
+T5EVfsKaE2i0H8oP1WnAafiO/chuS/T77M2R1Fg9eup2khFNUJ7KaHJYMBL+X2lB
+E8SCrN+ko9owy+rRssrPyj6nL7KCGmosb1SR1AJ6Au1gxImawizouDbA49aFfz3N
+CeR461n3EM/etogPyiNYWXkh1i/m5W+yY5hfFT9QW1sxaPdyRC20+mlGdbF1lrx0
+1hKKWLPGnwK4NB/S/ICmvRTuWpGm6oLIcJtXaT+exW3GCNo7Fnj13WUSsPs9g+0=
+=evbq
+-----END PGP SIGNATURE-----
+
+--Vj8lTl3Roa4E9STX--

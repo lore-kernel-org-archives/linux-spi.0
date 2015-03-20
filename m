@@ -1,42 +1,36 @@
 From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH] SPI: BCM2835: enable support of 3-wire mode
-Date: Fri, 20 Mar 2015 07:17:42 +0100
-Message-ID: <E14CA860-07F3-455A-8504-86CF7367B738@martin.sperl.org>
-References: <1426755714-28130-1-git-send-email-kernel@martin.sperl.org> <1426755714-28130-4-git-send-email-kernel@martin.sperl.org> <550BAC49.3000105@wwwdotorg.org>
+Subject: Re: [PATCH] SPI: BCM2835: fix all checkpath --strict messages
+Date: Fri, 20 Mar 2015 07:26:29 +0100
+Message-ID: <7727F65E-D8BC-4299-A359-56FA449C3379@martin.sperl.org>
+References: <1426755714-28130-1-git-send-email-kernel@martin.sperl.org> <550BA8FE.7030001@wwwdotorg.org>
 Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2070.6\))
 Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
 Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <550BAC49.3000105-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+In-Reply-To: <550BA8FE.7030001-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
-> On 20.03.2015, at 06:12, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org> wrote:
-> I can see how that tells the HW which direction to transfer data in
-> 3WIRE mode, but how does the HW know whether it's in 3WIRE mode or has
-> separate RX/TX lines?
+> On 20.03.2015, at 05:58, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org> wrote:
+> 
+> Do you have a list of the warnings this fixes and why? The extra
+> wrapping here looks a bit odd, since the lines before your patch are
+> well under 80 columns.
 
-The HW assumes with this flag that MISO (=RX) sits on the same physical
-line as MOSI (=TX). This flag essentially just changes directions of
-the TX GPIO pin from out to in and samples the level on the TX pin.
+scripts/checkpatch.pl --file --terse --strict drivers/spi/spi-bcm2835.c
+drivers/spi/spi-bcm2835.c:182: CHECK: Alignment should match open parenthesis
+drivers/spi/spi-bcm2835.c:191: CHECK: braces {} should be used on all arms of this statement
+drivers/spi/spi-bcm2835.c:234: CHECK: Alignment should match open parenthesis
+drivers/spi/spi-bcm2835.c:256: CHECK: Alignment should match open parenthesis
+drivers/spi/spi-bcm2835.c:271: CHECK: Alignment should match open parenthesis
+drivers/spi/spi-bcm2835.c:346: CHECK: Alignment should match open parenthesis
+total: 0 errors, 0 warnings, 6 checks, 403 lines checked
 
-Without this patch what you would need to do to make such a device
-work is connecting RX with TX and that with the MIMO pin of the final
-device (maybe add a pullup). This flag is essentially just a shortcut.
-
-Note that the SPI-framework does the testing so that either RX or TX
-can be set in SPI-3WIRE mode (not both).
-
-Ciao,
-	Martin
-
-
-
---
+Martin--
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

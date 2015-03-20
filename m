@@ -1,60 +1,57 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 1/2] spi: Add SPI driver for Mikrotik RB4xx series boards
-Date: Fri, 20 Mar 2015 12:56:27 +0000
-Message-ID: <20150320125627.GK2869@sirena.org.uk>
-References: <1426853793-24454-1-git-send-email-bert@biot.com>
- <1426853793-24454-2-git-send-email-bert@biot.com>
+From: Peter Ujfalusi <peter.ujfalusi-l0cyMroinI0@public.gmane.org>
+Subject: Re: Patch to parameterize DMA_MIN_BYTES for omap2-mcspi
+Date: Fri, 20 Mar 2015 14:58:33 +0200
+Message-ID: <550C1979.5030208@ti.com>
+References: <1426741501.10003.6.camel@midgaarde>	<550AC256.4070509@ti.com>	 <CAAQQ3un3k-0nY8xaOXKbmCznOk69ZEhbWLd5ZZV1_=rQLOyspg@mail.gmail.com>	 <550AF7F6.7080200@ti.com> <1426786080.13824.23.camel@symus-gk-mint>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="09CsGkDdkTpDWDy8"
-Cc: ralf@linux-mips.org, linux-mips@linux-mips.org,
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-To: Bert Vermeulen <bert@biot.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1426853793-24454-2-git-send-email-bert@biot.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Greg Knight <g.knight-+7FPL3kuI1+B+jHODAdFcQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1426786080.13824.23.camel@symus-gk-mint>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
+
+On 03/19/2015 07:28 PM, Greg Knight wrote:
+> Changing DMA_MIN_BYTES to, say, "dma_min_time_ms" sounds reasonable t=
+o
+> me. I don't know how to compute it completely accurately as some SPI
+> implementations I've seen seem to like to inject little delays betwee=
+n
+> bytes for some reason, but a reasonable enough estimate should just b=
+e
+> spi_transfer_time_ms =3D (bits * 1000) / spi_clock_speed.
+>=20
+> I would like to have the ability to configure it without a kernel
+> recompile, though. Would a kernel param (module_param) be acceptable =
+for
+> this application?
+
+Or sysfs interface as Mark suggested? But module_param should work as w=
+ell.
+
+> You don't happen to know the WL12xx SPI clock speed off the top of yo=
+ur
+> head, do you?
+
+In case of n900 it is 48000000 (board-rx51-peripherals.c). It is using =
+32bit
+words over SPI.
+
+Based on this and your experience I guess it is possible to come up wit=
+h a
+formula which satisfy both.
+
+> Regards,
+> Greg
+>=20
 
 
---09CsGkDdkTpDWDy8
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Mar 20, 2015 at 01:16:32PM +0100, Bert Vermeulen wrote:
-
-> index 856d34d..0d55661 100644
-> --- a/include/linux/spi/spi.h
-> +++ b/include/linux/spi/spi.h
-> @@ -616,6 +616,7 @@ struct spi_transfer {
->  	struct sg_table rx_sg;
-> =20
->  	unsigned	cs_change:1;
-> +	unsigned	fast_write:1;
->  	unsigned	tx_nbits:3;
->  	unsigned	rx_nbits:3;
->  #define	SPI_NBITS_SINGLE	0x01 /* 1bit transfer */
-
-One other thing I just noticed: this is extending the core with no
-documentation or other comment on what it's supposed to do (there's no
-commit message at all).  Any changes to the core should be a separate
-patch which makes it clear what the changes are supposed to do.
-
---09CsGkDdkTpDWDy8
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVDBj6AAoJECTWi3JdVIfQ+0gH/3CSDV+t3aCoq0dmjFaFmxke
-VI4J7E7lmrMLkzIUonknHHNr0ZBevgB+qVAVb2+D13cn9T3pdCC8rmrVyeP8AkbY
-Zwt4TihTAw7KKUJGTFWRTOHguWRLQFSuTM8pQqqX+2Rj/AS1Ez7vW1P03pQkJviV
-kTI3iiomN+iA9sdkcHHPINeRijtIVQh++cgJKYfRHLXxwuwNcBRox5c5AzDzEyKg
-K9B3QRZupeyUVNZWRGiWSNSGLUxEF7qz/6fpC+i9131j6ybSr+Atg2x4D3nWJgFS
-ph9LVVavMtkzDUgQRIzf+kGrfQA9FvC/XRhVZihMsTFDIn+dp8xmKlk5fyfhizM=
-=4K//
------END PGP SIGNATURE-----
-
---09CsGkDdkTpDWDy8--
+--=20
+P=C3=A9ter
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,61 +1,41 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH V2] SPI: BCM2835: allow arbitrary GPIO to act as
- SPI-chip_select
-Date: Fri, 20 Mar 2015 09:52:47 +0000
-Message-ID: <20150320095247.GE2869@sirena.org.uk>
-References: <1426755714-28130-1-git-send-email-kernel@martin.sperl.org>
- <1426755714-28130-2-git-send-email-kernel@martin.sperl.org>
- <550BAA89.5090707@wwwdotorg.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="B3XPdYri2NuANWBV"
-Cc: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <550BAA89.5090707-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Bert Vermeulen <bert@biot.com>
+Subject: [PATCH 0/2] spi: Add driver for Routerboard RB4xx boards
+Date: Fri, 20 Mar 2015 13:16:31 +0100
+Message-ID: <1426853793-24454-1-git-send-email-bert@biot.com>
+Cc: Bert Vermeulen <bert@biot.com>
+To: ralf@linux-mips.org, broonie@kernel.org, linux-mips@linux-mips.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+Return-path: <linux-mips-bounce@linux-mips.org>
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+List-Id: linux-spi.vger.kernel.org
 
+The driver mediates access between the connected CPLD and other devices
+on the bus.
 
---B3XPdYri2NuANWBV
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Imported from the OpenWrt project.
 
-On Thu, Mar 19, 2015 at 11:05:13PM -0600, Stephen Warren wrote:
-> On 03/19/2015 03:01 AM, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
-> > From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-> >=20
-> > use cs-gpios for the spi bus master and standard gpio operation
-> > instead of relying on the HW with just 2 chip_selects.
->=20
-> A changelog between v1 and v2 would be useful. I think this looks OK
-> though, so,
-> Acked-by: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Bert Vermeulen (2):
+  spi: Add SPI driver for Mikrotik RB4xx series boards
+  spi: Add driver for the CPLD chip on Mikrotik RB4xx boards
 
-Note that none of these patches appear to have been sent to me, Stephen
-has CCed me in as far as I can tell...
+ arch/mips/include/asm/mach-ath79/rb4xx_cpld.h |  41 +++
+ drivers/spi/Kconfig                           |  14 +
+ drivers/spi/Makefile                          |   2 +
+ drivers/spi/spi-rb4xx-cpld.c                  | 326 +++++++++++++++++
+ drivers/spi/spi-rb4xx.c                       | 505 ++++++++++++++++++++++++++
+ include/linux/spi/spi.h                       |   2 +
+ 6 files changed, 890 insertions(+)
+ create mode 100644 arch/mips/include/asm/mach-ath79/rb4xx_cpld.h
+ create mode 100644 drivers/spi/spi-rb4xx-cpld.c
+ create mode 100644 drivers/spi/spi-rb4xx.c
 
---B3XPdYri2NuANWBV
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVC+3uAAoJECTWi3JdVIfQTE8H/janLisG6U+HUb/43oDN8S5e
-USCqyuEtjLY0W1QE+A19qesTrDuARQDd66lMXvoqSLAh7gx6CnSs386T6vfI287w
-rZMiFTxrybL4UVSq+10N3rXR2LVRDkwdffytXJIJdRu4W4tvHqPGL06hNrlSFU7K
-pVn2fR/4rDR7GmEwvpO1jVL53a5JTseVfCnbpE1KEBwqyy3ccnaQaoG8Chqt6pBL
-8cD+AI6cqFAPHY650tbUOpShpY0mtdlp3qLvnkPkkeWVcX7lCSAl+1dkvV4mb/r6
-LzxRfI4dIMfSuYb/+ZtO0NjSl+O2S1gf5Cd1izCpHAESJRNFi0rxpIRVEIjRS9I=
-=5BYm
------END PGP SIGNATURE-----
-
---B3XPdYri2NuANWBV--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+-- 
+1.9.1

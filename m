@@ -1,446 +1,147 @@
-From: Bert Vermeulen <bert@biot.com>
-Subject: [PATCH 2/2] spi: Add driver for the CPLD chip on Mikrotik RB4xx boards
-Date: Fri, 20 Mar 2015 13:16:33 +0100
-Message-ID: <1426853793-24454-3-git-send-email-bert@biot.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: Add SPI driver for Mikrotik RB4xx series boards
+Date: Fri, 20 Mar 2015 12:51:39 +0000
+Message-ID: <20150320125139.GJ2869@sirena.org.uk>
 References: <1426853793-24454-1-git-send-email-bert@biot.com>
-Cc: Bert Vermeulen <bert@biot.com>
-To: ralf@linux-mips.org, broonie@kernel.org, linux-mips@linux-mips.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-Return-path: <linux-mips-bounce@linux-mips.org>
-In-Reply-To: <1426853793-24454-1-git-send-email-bert@biot.com>
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-List-Id: linux-spi.vger.kernel.org
+ <1426853793-24454-2-git-send-email-bert@biot.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="kJCZHFqBEEYq/eA6"
+Cc: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Bert Vermeulen <bert-Nh2F35Ii2RQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1426853793-24454-2-git-send-email-bert-Nh2F35Ii2RQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The CPLD is connected to the NAND flash chip and five LEDs. Access to
-those devices goes via this driver.
 
-Signed-off-by: Bert Vermeulen <bert@biot.com>
----
- arch/mips/include/asm/mach-ath79/rb4xx_cpld.h |  41 ++++
- drivers/spi/Kconfig                           |   8 +
- drivers/spi/Makefile                          |   1 +
- drivers/spi/spi-rb4xx-cpld.c                  | 326 ++++++++++++++++++++++++++
- 4 files changed, 376 insertions(+)
- create mode 100644 arch/mips/include/asm/mach-ath79/rb4xx_cpld.h
- create mode 100644 drivers/spi/spi-rb4xx-cpld.c
+--kJCZHFqBEEYq/eA6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/arch/mips/include/asm/mach-ath79/rb4xx_cpld.h b/arch/mips/include/asm/mach-ath79/rb4xx_cpld.h
-new file mode 100644
-index 0000000..1df5a7e
---- /dev/null
-+++ b/arch/mips/include/asm/mach-ath79/rb4xx_cpld.h
-@@ -0,0 +1,41 @@
-+/*
-+ * SPI driver definitions for the CPLD chip on the Mikrotik RB4xx boards
-+ *
-+ * Copyright (C) 2010 Gabor Juhos <juhosg@openwrt.org>
-+ *
-+ * This file was based on the patches for Linux 2.6.27.39 published by
-+ * MikroTik for their RouterBoard 4xx series devices.
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License version 2 as published
-+ * by the Free Software Foundation.
-+ */
-+
-+#define CPLD_GPIO_nLED1		0
-+#define CPLD_GPIO_nLED2		1
-+#define CPLD_GPIO_nLED3		2
-+#define CPLD_GPIO_nLED4		3
-+#define CPLD_GPIO_FAN		4
-+#define CPLD_GPIO_ALE		5
-+#define CPLD_GPIO_CLE		6
-+#define CPLD_GPIO_nCE		7
-+#define CPLD_GPIO_nLED5		8
-+
-+#define CPLD_NUM_GPIOS		9
-+
-+#define CPLD_CFG_nLED1		BIT(CPLD_GPIO_nLED1)
-+#define CPLD_CFG_nLED2		BIT(CPLD_GPIO_nLED2)
-+#define CPLD_CFG_nLED3		BIT(CPLD_GPIO_nLED3)
-+#define CPLD_CFG_nLED4		BIT(CPLD_GPIO_nLED4)
-+#define CPLD_CFG_FAN		BIT(CPLD_GPIO_FAN)
-+#define CPLD_CFG_ALE		BIT(CPLD_GPIO_ALE)
-+#define CPLD_CFG_CLE		BIT(CPLD_GPIO_CLE)
-+#define CPLD_CFG_nCE		BIT(CPLD_GPIO_nCE)
-+#define CPLD_CFG_nLED5		BIT(CPLD_GPIO_nLED5)
-+
-+struct rb4xx_cpld_platform_data {
-+	unsigned	gpio_base;
-+};
-+
-+extern int rb4xx_cpld_read(unsigned char *rx_buf, unsigned cnt);
-+extern int rb4xx_cpld_write(const unsigned char *buf, unsigned count);
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index aa76ce5..b32fa6a 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -435,6 +435,14 @@ config SPI_RB4XX
- 	help
- 	  SPI controller driver for the Mikrotik RB4xx series boards.
- 
-+config SPI_RB4XX_CPLD
-+	tristate "MikroTik RB4XX CPLD driver"
-+	depends on ATH79_MACH_RB4XX
-+	help
-+	  SPI driver for the Xilinx CPLD chip present on the MikroTik
-+	  RB4xx boards. It controls CPU access to the NAND flash and
-+	  user LEDs.
-+
- config SPI_RSPI
- 	tristate "Renesas RSPI/QSPI controller"
- 	depends on SUPERH || ARCH_SHMOBILE || COMPILE_TEST
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index 0218f39..c9bbdf9 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -67,6 +67,7 @@ obj-$(CONFIG_SPI_PXA2XX_PCI)		+= spi-pxa2xx-pci.o
- obj-$(CONFIG_SPI_QUP)			+= spi-qup.o
- obj-$(CONFIG_SPI_ROCKCHIP)		+= spi-rockchip.o
- obj-$(CONFIG_SPI_RB4XX)			+= spi-rb4xx.o
-+obj-$(CONFIG_SPI_RB4XX_CPLD)		+= spi-rb4xx-cpld.o
- obj-$(CONFIG_SPI_RSPI)			+= spi-rspi.o
- obj-$(CONFIG_SPI_S3C24XX)		+= spi-s3c24xx-hw.o
- spi-s3c24xx-hw-y			:= spi-s3c24xx.o
-diff --git a/drivers/spi/spi-rb4xx-cpld.c b/drivers/spi/spi-rb4xx-cpld.c
-new file mode 100644
-index 0000000..4e777e2
---- /dev/null
-+++ b/drivers/spi/spi-rb4xx-cpld.c
-@@ -0,0 +1,326 @@
-+/*
-+ * SPI driver for the CPLD chip on the Mikrotik RB4xx boards
-+ *
-+ * Copyright (C) 2010 Gabor Juhos <juhosg@openwrt.org>
-+ *
-+ * This file was based on the patches for Linux 2.6.27.39 published by
-+ * MikroTik for their RouterBoard 4xx series devices.
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License version 2 as published
-+ * by the Free Software Foundation.
-+ */
-+
-+#include <linux/types.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/init.h>
-+#include <linux/module.h>
-+#include <linux/device.h>
-+#include <linux/bitops.h>
-+#include <linux/spi/spi.h>
-+#include <linux/gpio.h>
-+#include <linux/slab.h>
-+
-+#include <asm/mach-ath79/rb4xx_cpld.h>
-+
-+#define DRV_NAME	"spi-rb4xx-cpld"
-+#define DRV_DESC	"RB4xx CPLD driver"
-+#define DRV_VERSION	"0.1.0"
-+
-+#define CPLD_CMD_WRITE_NAND	0x08 /* send cmd, n x send data, send idle */
-+#define CPLD_CMD_WRITE_CFG	0x09 /* send cmd, n x send cfg */
-+#define CPLD_CMD_READ_NAND	0x0a /* send cmd, send idle, n x read data */
-+#define CPLD_CMD_READ_FAST	0x0b /* send cmd, 4 x idle, n x read data */
-+#define CPLD_CMD_LED5_ON	0x0c /* send cmd */
-+#define CPLD_CMD_LED5_OFF	0x0d /* send cmd */
-+
-+struct rb4xx_cpld {
-+	struct spi_device	*spi;
-+	struct mutex		lock;
-+	struct gpio_chip	chip;
-+	unsigned int		config;
-+};
-+
-+static struct rb4xx_cpld *rb4xx_cpld;
-+
-+static inline struct rb4xx_cpld *gpio_to_cpld(struct gpio_chip *chip)
-+{
-+	return container_of(chip, struct rb4xx_cpld, chip);
-+}
-+
-+static int rb4xx_cpld_write_cmd(struct rb4xx_cpld *cpld, unsigned char cmd)
-+{
-+	struct spi_transfer t[1];
-+	struct spi_message m;
-+	unsigned char tx_buf[1];
-+	int err;
-+
-+	spi_message_init(&m);
-+	memset(&t, 0, sizeof(t));
-+
-+	t[0].tx_buf = tx_buf;
-+	t[0].len = sizeof(tx_buf);
-+	spi_message_add_tail(&t[0], &m);
-+
-+	tx_buf[0] = cmd;
-+
-+	err = spi_sync(cpld->spi, &m);
-+	return err;
-+}
-+
-+static int rb4xx_cpld_write_cfg(struct rb4xx_cpld *cpld, unsigned char config)
-+{
-+	struct spi_transfer t[1];
-+	struct spi_message m;
-+	unsigned char cmd[2];
-+	int err;
-+
-+	spi_message_init(&m);
-+	memset(&t, 0, sizeof(t));
-+
-+	t[0].tx_buf = cmd;
-+	t[0].len = sizeof(cmd);
-+	spi_message_add_tail(&t[0], &m);
-+
-+	cmd[0] = CPLD_CMD_WRITE_CFG;
-+	cmd[1] = config;
-+
-+	err = spi_sync(cpld->spi, &m);
-+	return err;
-+}
-+
-+static int __rb4xx_cpld_change_cfg(struct rb4xx_cpld *cpld, unsigned mask,
-+				   unsigned value)
-+{
-+	unsigned int config;
-+	int err;
-+
-+	config = cpld->config & ~mask;
-+	config |= value;
-+
-+	if ((cpld->config ^ config) & 0xff) {
-+		err = rb4xx_cpld_write_cfg(cpld, config);
-+		if (err)
-+			return err;
-+	}
-+
-+	if ((cpld->config ^ config) & CPLD_CFG_nLED5) {
-+		err = rb4xx_cpld_write_cmd(cpld, (value) ? CPLD_CMD_LED5_ON :
-+							   CPLD_CMD_LED5_OFF);
-+		if (err)
-+			return err;
-+	}
-+
-+	cpld->config = config;
-+	return 0;
-+}
-+
-+int rb4xx_cpld_read(unsigned char *rx_buf, unsigned count)
-+{
-+	static const unsigned char cmd[2] = { CPLD_CMD_READ_NAND, 0 };
-+	struct spi_transfer t[2] = {
-+		{
-+			.tx_buf = &cmd,
-+			.len = 2,
-+		}, {
-+			.tx_buf = NULL,
-+			.rx_buf = rx_buf,
-+			.len = count,
-+		},
-+	};
-+	struct spi_message m;
-+
-+	if (rb4xx_cpld == NULL)
-+		return -ENODEV;
-+
-+	spi_message_init(&m);
-+	spi_message_add_tail(&t[0], &m);
-+	spi_message_add_tail(&t[1], &m);
-+	return spi_sync(rb4xx_cpld->spi, &m);
-+}
-+EXPORT_SYMBOL_GPL(rb4xx_cpld_read);
-+
-+int rb4xx_cpld_write(const unsigned char *buf, unsigned count)
-+{
-+	static const unsigned char cmd = CPLD_CMD_WRITE_NAND;
-+	struct spi_transfer t[3] = {
-+		{
-+			.tx_buf = &cmd,
-+			.len = 1,
-+		}, {
-+			.tx_buf = buf,
-+			.len = count,
-+			.fast_write = 1,
-+		}, {
-+			.len = 1,
-+			.fast_write = 1,
-+		},
-+	};
-+	struct spi_message m;
-+
-+	if (rb4xx_cpld == NULL)
-+		return -ENODEV;
-+
-+	spi_message_init(&m);
-+	spi_message_add_tail(&t[0], &m);
-+	spi_message_add_tail(&t[1], &m);
-+	spi_message_add_tail(&t[2], &m);
-+	return spi_sync(rb4xx_cpld->spi, &m);
-+}
-+EXPORT_SYMBOL_GPL(rb4xx_cpld_write);
-+
-+static int rb4xx_cpld_gpio_get(struct gpio_chip *chip, unsigned offset)
-+{
-+	struct rb4xx_cpld *cpld = gpio_to_cpld(chip);
-+	int ret;
-+
-+	mutex_lock(&cpld->lock);
-+	ret = (cpld->config >> offset) & 1;
-+	mutex_unlock(&cpld->lock);
-+
-+	return ret;
-+}
-+
-+static void rb4xx_cpld_gpio_set(struct gpio_chip *chip, unsigned offset,
-+				int value)
-+{
-+	struct rb4xx_cpld *cpld = gpio_to_cpld(chip);
-+
-+	mutex_lock(&cpld->lock);
-+	__rb4xx_cpld_change_cfg(cpld, (1 << offset), !!value << offset);
-+	mutex_unlock(&cpld->lock);
-+}
-+
-+static int rb4xx_cpld_gpio_direction_input(struct gpio_chip *chip,
-+					   unsigned offset)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
-+static int rb4xx_cpld_gpio_direction_output(struct gpio_chip *chip,
-+					    unsigned offset,
-+					    int value)
-+{
-+	struct rb4xx_cpld *cpld = gpio_to_cpld(chip);
-+	int ret;
-+
-+	mutex_lock(&cpld->lock);
-+	ret = __rb4xx_cpld_change_cfg(cpld, (1 << offset), !!value << offset);
-+	mutex_unlock(&cpld->lock);
-+
-+	return ret;
-+}
-+
-+static int rb4xx_cpld_gpio_init(struct rb4xx_cpld *cpld, unsigned int base)
-+{
-+	int err;
-+
-+	/* init config */
-+	cpld->config = CPLD_CFG_nLED1 | CPLD_CFG_nLED2 | CPLD_CFG_nLED3 |
-+		       CPLD_CFG_nLED4 | CPLD_CFG_nLED5;
-+	rb4xx_cpld_write_cfg(cpld, cpld->config);
-+
-+	/* setup GPIO chip */
-+	cpld->chip.label = DRV_NAME;
-+
-+	cpld->chip.get = rb4xx_cpld_gpio_get;
-+	cpld->chip.set = rb4xx_cpld_gpio_set;
-+	cpld->chip.direction_input = rb4xx_cpld_gpio_direction_input;
-+	cpld->chip.direction_output = rb4xx_cpld_gpio_direction_output;
-+
-+	cpld->chip.base = base;
-+	cpld->chip.ngpio = CPLD_NUM_GPIOS;
-+	cpld->chip.can_sleep = 1;
-+	cpld->chip.dev = &cpld->spi->dev;
-+	cpld->chip.owner = THIS_MODULE;
-+
-+	err = gpiochip_add(&cpld->chip);
-+	if (err)
-+		dev_err(&cpld->spi->dev, "adding GPIO chip failed, err=%d\n",
-+			err);
-+
-+	return err;
-+}
-+
-+static int rb4xx_cpld_probe(struct spi_device *spi)
-+{
-+	struct rb4xx_cpld *cpld;
-+	struct rb4xx_cpld_platform_data *pdata;
-+	int err;
-+
-+	pdata = spi->dev.platform_data;
-+	if (!pdata) {
-+		dev_dbg(&spi->dev, "no platform data\n");
-+		return -EINVAL;
-+	}
-+
-+	cpld = kzalloc(sizeof(*cpld), GFP_KERNEL);
-+	if (!cpld)
-+		return -ENOMEM;
-+
-+	mutex_init(&cpld->lock);
-+	cpld->spi = spi_dev_get(spi);
-+	dev_set_drvdata(&spi->dev, cpld);
-+
-+	spi->mode = SPI_MODE_0;
-+	spi->bits_per_word = 8;
-+	err = spi_setup(spi);
-+	if (err) {
-+		dev_err(&spi->dev, "spi_setup failed, err=%d\n", err);
-+		goto err_drvdata;
-+	}
-+
-+	err = rb4xx_cpld_gpio_init(cpld, pdata->gpio_base);
-+	if (err)
-+		goto err_drvdata;
-+
-+	rb4xx_cpld = cpld;
-+
-+	return 0;
-+
-+err_drvdata:
-+	dev_set_drvdata(&spi->dev, NULL);
-+	kfree(cpld);
-+
-+	return err;
-+}
-+
-+static int rb4xx_cpld_remove(struct spi_device *spi)
-+{
-+	struct rb4xx_cpld *cpld;
-+
-+	rb4xx_cpld = NULL;
-+	cpld = dev_get_drvdata(&spi->dev);
-+	dev_set_drvdata(&spi->dev, NULL);
-+	kfree(cpld);
-+
-+	return 0;
-+}
-+
-+static struct spi_driver rb4xx_cpld_driver = {
-+	.driver = {
-+		.name		= DRV_NAME,
-+		.bus		= &spi_bus_type,
-+		.owner		= THIS_MODULE,
-+	},
-+	.probe		= rb4xx_cpld_probe,
-+	.remove		= rb4xx_cpld_remove,
-+};
-+
-+static int __init rb4xx_cpld_init(void)
-+{
-+	return spi_register_driver(&rb4xx_cpld_driver);
-+}
-+module_init(rb4xx_cpld_init);
-+
-+static void __exit rb4xx_cpld_exit(void)
-+{
-+	spi_unregister_driver(&rb4xx_cpld_driver);
-+}
-+module_exit(rb4xx_cpld_exit);
-+
-+MODULE_DESCRIPTION(DRV_DESC);
-+MODULE_VERSION(DRV_VERSION);
-+MODULE_AUTHOR("Gabor Juhos <juhosg@openwrt.org>");
-+MODULE_LICENSE("GPL v2");
--- 
-1.9.1
+On Fri, Mar 20, 2015 at 01:16:32PM +0100, Bert Vermeulen wrote:
+
+> +#define DRV_NAME	"rb4xx-spi"
+> +#define DRV_DESC	"Mikrotik RB4xx SPI controller driver"
+
+Both of these are used exactly once, the defines aren't adding anything
+except indirection.
+
+> +#define DRV_VERSION	"0.1.0"
+
+The kernel is already versioned, don't include versions for individual
+drivers - nobody is going to update it anyway.
+
+> +static unsigned spi_clk_low = AR71XX_SPI_IOC_CS1;
+
+No global variables, use driver data.
+
+> +#ifdef RB4XX_SPI_DEBUG
+> +static inline void do_spi_delay(void)
+> +{
+> +	ndelay(20000);
+> +}
+> +#else
+> +static inline void do_spi_delay(void) { }
+> +#endif
+
+Remove this, if it's useful implement it generically.
+
+> +static inline void do_spi_init(struct spi_device *spi)
+> +{
+> +	unsigned cs = AR71XX_SPI_IOC_CS0 | AR71XX_SPI_IOC_CS1;
+> +
+> +	if (!(spi->mode & SPI_CS_HIGH))
+> +		cs ^= (spi->chip_select == 2) ? AR71XX_SPI_IOC_CS1 :
+> +						AR71XX_SPI_IOC_CS0;
+
+Please write this expression in a more legible fashion, I can't really
+tell what it's supposed to do.
+
+> +static void do_spi_byte(void __iomem *base, unsigned char byte)
+> +{
+> +	do_spi_clk(base, byte >> 7);
+> +	do_spi_clk(base, byte >> 6);
+> +	do_spi_clk(base, byte >> 5);
+> +	do_spi_clk(base, byte >> 4);
+> +	do_spi_clk(base, byte >> 3);
+> +	do_spi_clk(base, byte >> 2);
+> +	do_spi_clk(base, byte >> 1);
+> +	do_spi_clk(base, byte);
+
+This looks awfully like it's bitbanging the value out, can we not use
+spi-bitbang here?
+
+> +	pr_debug("spi_byte sent 0x%02x got 0x%02x\n",
+> +		 (unsigned)byte,
+> +		 (unsigned char)__raw_readl(base + AR71XX_SPI_REG_RDS));
+
+dev_dbg().
+
+> +static inline void do_spi_clk_fast(void __iomem *base, unsigned bit1,
+> +				   unsigned bit2)
+
+Why would we ever want the slow version?
+
+> +static int rb4xx_spi_msg(struct rb4xx_spi *rbspi, struct spi_message *m)
+> +{
+> +	struct spi_transfer *t = NULL;
+> +	void __iomem *base = rbspi->base;
+> +
+> +	m->status = 0;
+> +	if (list_empty(&m->transfers))
+> +		return -1;
+> +
+> +	__raw_writel(AR71XX_SPI_FS_GPIO, base + AR71XX_SPI_REG_FS);
+> +	__raw_writel(SPI_CTRL_FASTEST, base + AR71XX_SPI_REG_CTRL);
+> +	do_spi_init(m->spi);
+> +
+> +	list_for_each_entry(t, &m->transfers, transfer_list) {
+> +		int len;
+
+This is reimplementing the core message queue code, provide a
+transfer_one() operation if there's some reason not to use bitbang.
+
+> +static void rb4xx_spi_process_queue_locked(struct rb4xx_spi *rbspi,
+> +					   unsigned long *flags)
+
+Similarly all the queue code is reimplementing core functionality.
+
+> +static int __init rb4xx_spi_init(void)
+> +{
+> +	return platform_driver_register(&rb4xx_spi_drv);
+> +}
+> +subsys_initcall(rb4xx_spi_init);
+> +
+> +static void __exit rb4xx_spi_exit(void)
+> +{
+> +	platform_driver_unregister(&rb4xx_spi_drv);
+> +}
+> +
+> +module_exit(rb4xx_spi_exit);
+
+module_platform_driver()
+
+--kJCZHFqBEEYq/eA6
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVDBfaAAoJECTWi3JdVIfQUDgH/jijJq+oLBdsPEXkvG5V6m0J
+uVT74rmxOJxe8R1jiDlA/XLoEnxN9A2uczJyDCVIHfbUQ3ps/8xR/VCQqnQeb+ka
+QR+PdsfSaDmmidwYiMy14wl/NctrLTJ9Sxo5GzWhFEf4hT1ru6/M9UbKtF+1MrRk
+sfTT7EwYHqNRJIi24xXIcejNj8ALCnrJByeJrGKw/SsdIXhynQ7pcz6pCWV/Nr1f
+KN0TOy11K7ZU9kMJzDliiCv5bJdX3pms/Mj+vZwvqksOQo6NiCaxlCo/fsnskSr4
+IagsWXOSaP+JN52VzGTmYQN+FIQs6hO63HiICIjxRvfU6rQqCKbOWeB5XJ5HPN8=
+=HgHw
+-----END PGP SIGNATURE-----
+
+--kJCZHFqBEEYq/eA6--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

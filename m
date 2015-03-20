@@ -1,52 +1,55 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2] spi: Ensure that CS line is in non-active state after
- spi_setup()
-Date: Fri, 20 Mar 2015 16:17:12 +0000
-Message-ID: <20150320161712.GP2869@sirena.org.uk>
-References: <1426265029-12280-1-git-send-email-iivanov@mm-sol.com>
- <1426868089.14974.12.camel@mm-sol.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH V2] SPI: BCM2835: fix all checkpath --strict messages
+Date: Fri, 20 Mar 2015 18:05:01 +0000
+Message-ID: <20150320180501.GQ2869@sirena.org.uk>
+References: <1426755714-28130-1-git-send-email-kernel@martin.sperl.org>
+ <550BA8FE.7030001@wwwdotorg.org>
+ <7727F65E-D8BC-4299-A359-56FA449C3379@martin.sperl.org>
+ <20150320134053.GN2869@sirena.org.uk>
+ <78137BE7-37A4-4144-BBCC-CBEDA70DD31A@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Vj8lTl3Roa4E9STX"
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org
-To: "Ivan T. Ivanov" <iivanov@mm-sol.com>
-Return-path: <linux-arm-msm-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="Gl2oMwHnV9aOxBMt"
+Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1426868089.14974.12.camel@mm-sol.com>
-Sender: linux-arm-msm-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <78137BE7-37A4-4144-BBCC-CBEDA70DD31A-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---Vj8lTl3Roa4E9STX
+--Gl2oMwHnV9aOxBMt
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Mar 20, 2015 at 06:14:49PM +0200, Ivan T. Ivanov wrote:
+On Fri, Mar 20, 2015 at 03:26:11PM +0100, Martin Sperl wrote:
+> The following errors/warnings issued by checkpatch.pl --strict have been fixed:
+> drivers/spi/spi-bcm2835.c:182: CHECK: Alignment should match open parenthesis
 
-> Any comments on this one?
+Applied, but please use subject lines matching the style for the
+subsystem and don't bury new patches in the middle of existing threads
+- both make it hard to find and follow things.
 
-> Forget to add changes since v1 [1].
-
-> CS is set to non-active state unconditionally before
-> spi->master->setup()
-
-Please don't send content free quoted pings.
-
---Vj8lTl3Roa4E9STX
+--Gl2oMwHnV9aOxBMt
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVDEgIAAoJECTWi3JdVIfQ+24H/j6VV4zMVrcwLbUWYQSJih5z
-G+JmLp/SCTtbvNYgPF9AytehScb2xp0fR0a4bzBbUn+tF10vIZB+qvdDOhy4/lJF
-T5EVfsKaE2i0H8oP1WnAafiO/chuS/T77M2R1Fg9eup2khFNUJ7KaHJYMBL+X2lB
-E8SCrN+ko9owy+rRssrPyj6nL7KCGmosb1SR1AJ6Au1gxImawizouDbA49aFfz3N
-CeR461n3EM/etogPyiNYWXkh1i/m5W+yY5hfFT9QW1sxaPdyRC20+mlGdbF1lrx0
-1hKKWLPGnwK4NB/S/ICmvRTuWpGm6oLIcJtXaT+exW3GCNo7Fnj13WUSsPs9g+0=
-=evbq
+iQEcBAEBCAAGBQJVDGFMAAoJECTWi3JdVIfQ1gcH/1ARJXwt8G29s3hDvVKlOi+w
+ouiwkhg913HgHrQt+xw+QO2+qVPI1OZZJwmoZ2csYqzIkOXtz3CXFADeWNkc8rYL
+V4vUiE+k+2C5+jXo/6PgFrMtmsgewea1y1j5FGfeEMX18yMbH5bPQZN4WEFhcich
+6xbMXjE2vjemETtCeocc3h7FsYMSTA2QcV+B1ESV18/NVVWiruQ92JgDQzQkqqle
+8//SCjYyuChhayyUV/T0Ab0C1oy16v8O7tOLyWs19a77PXb6ejpWxP9hzw0MDj+w
+lVMwqYAK5AJR96EemGQzcNNf7rhokhmAbYCnRoL4Z315BdHfv9wvJppvM4Tguts=
+=Nxzw
 -----END PGP SIGNATURE-----
 
---Vj8lTl3Roa4E9STX--
+--Gl2oMwHnV9aOxBMt--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

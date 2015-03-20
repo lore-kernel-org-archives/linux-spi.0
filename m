@@ -1,77 +1,59 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH] SPI: BCM2835: clock divider can be a multiple of 2
-Date: Fri, 20 Mar 2015 08:04:27 +0100
-Message-ID: <6EBE48E2-80E7-454C-A84C-231D45DC64E0@martin.sperl.org>
-References: <1426755714-28130-1-git-send-email-kernel@martin.sperl.org> <1426755714-28130-3-git-send-email-kernel@martin.sperl.org> <550BAAD8.20206@wwwdotorg.org>
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2070.6\))
-Content-Type: text/plain; charset=windows-1252
+From: Olliver Schinagl <oliver-dxLnbx3+1qmEVqv0pETR8A@public.gmane.org>
+Subject: Re: =?utf-8?b?W1JFU0VORF8y?= PATCH 1/3] ARM: sun4i: spi: Allow transfers larger than FIFO size
+Date: Fri, 20 Mar 2015 07:11:21 +0000 (UTC)
+Message-ID: <loom.20150320T080853-145@post.gmane.org>
+References: <118558573.kx0II8vAKN@nukelap.gtech>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	notro-L59+Z2yzLopAfugRpC6u6w@public.gmane.org
-To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <550BAAD8.20206-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hey all,
 
-> On 20.03.2015, at 06:06, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org> wrote:
+mrnuke <mr.nuke.me@...> writes:
+
 > 
-> On 03/19/2015 03:01 AM, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
->> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
->> 
->> The official documentation is wrong in this respect.
->> Has been tested empirically for dividers 2-1024
+> SPI transfers were limited to one FIFO depth, which is 64 bytes.
+> This was an artificial limitation, however, as the hardware can handle
+> much larger bursts. To accommodate this, we enable the interrupt when
+> the Rx FIFO is 3/4 full, and drain the FIFO within the interrupt
+> handler. The 3/4 ratio was chosen arbitrarily, with the intention to
+> reduce the potential number of interrupts.
 > 
-> Do you have a link to a confirmation of this from the RPi Foundation or
-> Broadcom, even a forum post or something? How does the RPI Foundation's
-> downstream kernel restrict the divider?
+> Since the SUN4I_CTL_TP bit is set, the hardware will pause
+> transmission whenever the FIFO is full, so there is no risk of losing
+> data if we can't service the interrupt in time.
+> 
+> For the Tx side, enable and use the Tx FIFO 3/4 empty interrupt to
+> replenish the FIFO on large SPI bursts. This requires more care in
+> when the interrupt is left enabled, as this interrupt will continually
+> trigger when the FIFO is less than 1/4 full, even though we
+> acknowledge it.
 
-Unfortunately there are no official errata by the foundation.
+You can have my Tested-by: Olliver Schinagl <oliver-dxLnbx3+1qmEVqv0pETR8A@public.gmane.org>
 
-Here the argument by a foundation official (Gordon Hollingworth)
-why they do not (want to) provide updates:
-http://www.raspberrypi.org/forums/viewtopic.php?p=447724#p447724
+Been using it with mmc-spi with great success. Actually it was the only way
+to use mmc-spi ;)
 
-That is in a slightly different context, but still it also applies to
-errata in general.
+I haven't used the other patches in this series, nor looked at them. I've
+done a few mmc read and writes (a few mb's) and got good performance to boot
+(1.5 - 2 MB/s).
 
-The foundation spi-bcm2708 driver also relies on the power-of 2 rule
-following to the letter the documentation they provide.
+Olliver
 
-For some more infos of experience please look here:
-https://github.com/notro/spi-bcm2708/wiki
-http://www.raspberrypi.org/forums/viewtopic.php?f=44&t=43442
-http://elinux.org/BCM2835_datasheet_errata#p156
+> 
+> Signed-off-by: Alexandru Gagniuc <mr.nuke.me@...>
+> Acked-by: Maxime Ripard <maxime.ripard@...>
+> ---
+>  drivers/spi/spi-sun4i.c | 71
+++++++++++++++++++++++++++++++++++++++++++-------
+>  1 file changed, 62 insertions(+), 9 deletions(-)
+> 
 
-Notro and I have been running an out of tree driver for a long time
-and that never showed any issues with this multiple of 2.
 
-Some of these kernels/drivers have been shared with lots of people
-for the use with TFT displays or CAN controllers.
-
-I have measured this empirically for every divider between 2 to 1024
-by doing some transfers, and measuring them with a SALEAE logic analyzer.
-
-See here: for the analysis:
-https://github.com/msperl/spi-bcm2835/issues/8
-
-You can also fetch the raw data and csv exports here:
-https://github.com/msperl/spi-bcm2835/blob/patch_the_upstream/images/
-
-Note that the descriptions of how to do polled, interrupt driven and 
-DMA driven SPI transfers (page 158) is also not completely accurate.
-It seems to show some "procedures", but these are not optimized and
-some are inconsistent: e.g: this limitation of 16/12 byte transfers
-while the register documentation says 16 words not bytes - which means 
-64 bytes can enter the FIFO buffer (which is also the limit when
-the HW signals that it is full via BCM2835_SPI_CS_TXD)
-
-This will be one of the next patches for improvement of the driver.
-
-Martin
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

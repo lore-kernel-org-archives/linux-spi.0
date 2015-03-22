@@ -1,59 +1,67 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 09/13] spi: atmel: use endian agnostic IO
-Date: Sun, 22 Mar 2015 18:01:10 +0000
-Message-ID: <20150322180110.GN6643@sirena.org.uk>
-References: <1426693992-31163-1-git-send-email-ben.dooks@codethink.co.uk>
- <1426693992-31163-10-git-send-email-ben.dooks@codethink.co.uk>
+Subject: Re: Patch to parameterize DMA_MIN_BYTES for omap2-mcspi
+Date: Sun, 22 Mar 2015 16:31:46 +0000
+Message-ID: <20150322163146.GI6643@sirena.org.uk>
+References: <1426741501.10003.6.camel@midgaarde>
+ <550AC256.4070509@ti.com>
+ <CAAQQ3un3k-0nY8xaOXKbmCznOk69ZEhbWLd5ZZV1_=rQLOyspg@mail.gmail.com>
+ <550AF7F6.7080200@ti.com>
+ <1426786080.13824.23.camel@symus-gk-mint>
+ <20150319185129.GZ2869@sirena.org.uk>
+ <550C1C2C.5080204@ti.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="b1ERR0FXR0PvNIRE"
-Cc: linux-kernel-81qHHgoATdFT9dQujB1mzip2UmYkHbXO@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	"open list:SPI SUBSYSTEM" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Ben Dooks <ben.dooks-4yDnlxn2s6sWdaTGBSpHTA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="e5GLnnZ8mDMEwH4V"
+Cc: Greg Knight <g.knight-+7FPL3kuI1+B+jHODAdFcQ@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Peter Ujfalusi <peter.ujfalusi-l0cyMroinI0@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1426693992-31163-10-git-send-email-ben.dooks-4yDnlxn2s6sWdaTGBSpHTA@public.gmane.org>
+In-Reply-To: <550C1C2C.5080204-l0cyMroinI0@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---b1ERR0FXR0PvNIRE
+--e5GLnnZ8mDMEwH4V
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 18, 2015 at 03:53:08PM +0000, Ben Dooks wrote:
-> Use the endian agnositc IO functions instead of the __raw ones for when
-> the driver is in use on big-endian systems.
->=20
-> Signed-off-by: Ben Dooks <ben.dooks-4yDnlxn2s6sWdaTGBSpHTA@public.gmane.org>
-> --
-> CC: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org> (supporter:ATMEL SPI DRIVER)
-> CC: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> (maintainer:SPI SUBSYSTEM)
-> CC: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org (open list:SPI SUBSYSTEM)
+On Fri, Mar 20, 2015 at 03:10:04PM +0200, Peter Ujfalusi wrote:
+> On 03/19/2015 08:51 PM, Mark Brown wrote:
 
-Applied, thanks.  If you don't want things to go into the message then
-they should be after --- not --.
+> > You probably need both - there's often a hard limit where the FIFO size
+> > in the hardware becomes a limit for DMA as well as a soft limit on top
+> > of that for performance reasons.
 
---b1ERR0FXR0PvNIRE
+> The FIFO is only going to be enabled when the DMA is used for transfer so we
+> should have some lower limit for the PIO/DMA threshold. The FIFO in McSPI is a
+
+Right, that's pretty much what I'm trying to say.
+
+> tricky one anyways, since it has only one FIFO but several channels and the
+> FIFO can be enabled for only one channel, if it is enabled for more channels
+> it is not going to be used by either channel.
+
+Not sure I follow this - how does this whole multiple channels thing
+work for SPI exactly?
+
+--e5GLnnZ8mDMEwH4V
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVDwNlAAoJECTWi3JdVIfQG6MH/R2R+hSQ7KQgW5c+Khg/huRy
-nzpjVf0UxdHd5H1d2PdHmWOx5Ps8QAAFfbiPnBGQzOu9bv7go6kRMsqSFPkANrhN
-5+3eJsrVwWgg1YVwxTMydN4lEks5e1EpBIm7INqVpE8WMw+uWeb/0mZT8zfKhtMd
-UTGmfzcZ1StpBVWIMCP+aF1/Q/T+sy7pAIGhNGYSqsm99MfQ1Ny+S7WAC3D4XB0n
-rJHiPntYSkrp0KaCpnmgHFrwiV8V3NdzgWiqBZzQB0mLMReC1P0iEZcek8OIL5jW
-IFpN1IKMFu5PWt2+QKdERZ6b3KE5tjXjU79Is/tayhtE6YG25mWibV2ABJeSvKI=
-=wME2
+iQEcBAEBCAAGBQJVDu5xAAoJECTWi3JdVIfQ9f8H/jXlMXHoNJeQb+FzdD8Mnqax
+u0Uu/zMjKtwKFPzaDd0liGD0kfXdrrlKS8YdrEIrz8C1IAXgvAZckSoVbaW/F1rX
+GovubBZnv+iHOU8AZWwcVnDPJ2TynJfHk2+MtDCjr3Ca6lFGKd5sW70mj0E/GtBF
+Nujx2moD5ZNsHeE1Ys5K3D3FjTW55Ip2kxJoC9dRXrL6qATjkAUp8NIWb62g7Xi3
+mYafUpAxZziSmbRmeNWWQKOnzi75btQv99koQQD0myUB6VmxUx1Kvado1xWysAxz
+SQ7cxudTwSD7lf9MW3V2riG8mmuO8TW0tz28K5dOisfR9B9k3eXy/KBtBxpcJoQ=
+=fcrt
 -----END PGP SIGNATURE-----
 
---b1ERR0FXR0PvNIRE--
+--e5GLnnZ8mDMEwH4V--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

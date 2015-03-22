@@ -1,67 +1,66 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: Patch to parameterize DMA_MIN_BYTES for omap2-mcspi
-Date: Sun, 22 Mar 2015 16:31:46 +0000
-Message-ID: <20150322163146.GI6643@sirena.org.uk>
-References: <1426741501.10003.6.camel@midgaarde>
- <550AC256.4070509@ti.com>
- <CAAQQ3un3k-0nY8xaOXKbmCznOk69ZEhbWLd5ZZV1_=rQLOyspg@mail.gmail.com>
- <550AF7F6.7080200@ti.com>
- <1426786080.13824.23.camel@symus-gk-mint>
- <20150319185129.GZ2869@sirena.org.uk>
- <550C1C2C.5080204@ti.com>
+Subject: Re: [PATCH 1/2] spi: Add SPI driver for Mikrotik RB4xx series boards
+Date: Sun, 22 Mar 2015 16:17:37 +0000
+Message-ID: <20150322161737.GE6643@sirena.org.uk>
+References: <1426853793-24454-1-git-send-email-bert@biot.com>
+ <1426853793-24454-2-git-send-email-bert@biot.com>
+ <20150320125139.GJ2869@sirena.org.uk>
+ <550EA6A4.6010206@biot.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="e5GLnnZ8mDMEwH4V"
-Cc: Greg Knight <g.knight-+7FPL3kuI1+B+jHODAdFcQ@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Peter Ujfalusi <peter.ujfalusi-l0cyMroinI0@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="uCPdOCrL+PnN2Vxy"
+Cc: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Bert Vermeulen <bert-Nh2F35Ii2RQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <550C1C2C.5080204-l0cyMroinI0@public.gmane.org>
+In-Reply-To: <550EA6A4.6010206-Nh2F35Ii2RQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---e5GLnnZ8mDMEwH4V
+--uCPdOCrL+PnN2Vxy
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Mar 20, 2015 at 03:10:04PM +0200, Peter Ujfalusi wrote:
-> On 03/19/2015 08:51 PM, Mark Brown wrote:
+On Sun, Mar 22, 2015 at 12:25:24PM +0100, Bert Vermeulen wrote:
 
-> > You probably need both - there's often a hard limit where the FIFO size
-> > in the hardware becomes a limit for DMA as well as a soft limit on top
-> > of that for performance reasons.
+> It is bitbanging, at least on write. The hardware has a shift register that
+> is uses for reads. The generic spi for this board's architecture (ath79)
+> indeed uses spi-bitbang.
 
-> The FIFO is only going to be enabled when the DMA is used for transfer so we
-> should have some lower limit for the PIO/DMA threshold. The FIFO in McSPI is a
+> This "fast SPI" thing is what makes this one different: the boot flash and
+> MMC use regular SPI on the same bus as the CPLD. This CPLD needs this fast
+> SPI: a mode where it shifts in two bits per clock. The second bit is
+> apparently sent via the CS2 pin.
 
-Right, that's pretty much what I'm trying to say.
+Please make sure that all this is visible to someone looking at the
+driver, it's really not at all clear what's going on just from reading
+the code.
 
-> tricky one anyways, since it has only one FIFO but several channels and the
-> FIFO can be enabled for only one channel, if it is enabled for more channels
-> it is not going to be used by either channel.
+> So I don't think spi-bitbang will do. I need to see about reworking things
+> to use less custom queueing -- I'm not that familiar with this yet.
 
-Not sure I follow this - how does this whole multiple channels thing
-work for SPI exactly?
+Mostly it's just a case of deleting the loops and using the core ones
+instead.
 
---e5GLnnZ8mDMEwH4V
+--uCPdOCrL+PnN2Vxy
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVDu5xAAoJECTWi3JdVIfQ9f8H/jXlMXHoNJeQb+FzdD8Mnqax
-u0Uu/zMjKtwKFPzaDd0liGD0kfXdrrlKS8YdrEIrz8C1IAXgvAZckSoVbaW/F1rX
-GovubBZnv+iHOU8AZWwcVnDPJ2TynJfHk2+MtDCjr3Ca6lFGKd5sW70mj0E/GtBF
-Nujx2moD5ZNsHeE1Ys5K3D3FjTW55Ip2kxJoC9dRXrL6qATjkAUp8NIWb62g7Xi3
-mYafUpAxZziSmbRmeNWWQKOnzi75btQv99koQQD0myUB6VmxUx1Kvado1xWysAxz
-SQ7cxudTwSD7lf9MW3V2riG8mmuO8TW0tz28K5dOisfR9B9k3eXy/KBtBxpcJoQ=
-=fcrt
+iQEcBAEBCAAGBQJVDusgAAoJECTWi3JdVIfQF00H/1CX4uVd9kD+thBosHoEGVPU
+vDmCiJ7Ctm1baIBF3I1zqC7IOSxuJC4oHiIK+I5FnEfnlZuToIC2IbBIFRRou1G/
+z1AE2HX5lwIj1HgsdhOxzkmS9XszIE4jI4yvA7POlk4u0+mhn8mGwKwDLZQ3NGBF
+9nmFp2RRXMeg1wM9139kfTPcfPlPG7rDLKin4LRBTBQd8gllZ8bv4xjForq5ewU3
+AKrb00Mj3bfm4ia5Ai9zQKFa3oKdHWWP+HHGmS29Wgk3ICeGbxl3FRukiKPFrLmk
+s/ljtrc6Jjst/WZaBSfsJ6IoXWE1Qg6o6DchokmKvvqCKqyrpjyIJ69T6JdxuM8=
+=sXDW
 -----END PGP SIGNATURE-----
 
---e5GLnnZ8mDMEwH4V--
+--uCPdOCrL+PnN2Vxy--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

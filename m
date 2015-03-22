@@ -1,54 +1,64 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH V2] SPI: BCM2835: fix all checkpath --strict messages
-Date: Fri, 20 Mar 2015 18:05:01 +0000
-Message-ID: <20150320180501.GQ2869@sirena.org.uk>
-References: <1426755714-28130-1-git-send-email-kernel@martin.sperl.org>
- <550BA8FE.7030001@wwwdotorg.org>
- <7727F65E-D8BC-4299-A359-56FA449C3379@martin.sperl.org>
- <20150320134053.GN2869@sirena.org.uk>
- <78137BE7-37A4-4144-BBCC-CBEDA70DD31A@martin.sperl.org>
+From: Bert Vermeulen <bert-Nh2F35Ii2RQ@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: Add SPI driver for Mikrotik RB4xx series boards
+Date: Sun, 22 Mar 2015 12:25:24 +0100
+Message-ID: <550EA6A4.6010206@biot.com>
+References: <1426853793-24454-1-git-send-email-bert@biot.com> <1426853793-24454-2-git-send-email-bert@biot.com> <20150320125139.GJ2869@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Gl2oMwHnV9aOxBMt"
-Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <78137BE7-37A4-4144-BBCC-CBEDA70DD31A-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <20150320125139.GJ2869-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On 03/20/2015 01:51 PM, Mark Brown wrote:
 
---Gl2oMwHnV9aOxBMt
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Mark,
 
-On Fri, Mar 20, 2015 at 03:26:11PM +0100, Martin Sperl wrote:
-> The following errors/warnings issued by checkpatch.pl --strict have been fixed:
-> drivers/spi/spi-bcm2835.c:182: CHECK: Alignment should match open parenthesis
+Thanks very much for your detailed review. I'll fix things according to your
+comments. However...
 
-Applied, but please use subject lines matching the style for the
-subsystem and don't bury new patches in the middle of existing threads
-- both make it hard to find and follow things.
+> On Fri, Mar 20, 2015 at 01:16:32PM +0100, Bert Vermeulen wrote:
+>> +static void do_spi_byte(void __iomem *base, unsigned char byte)
+>> +{
+>> +	do_spi_clk(base, byte >> 7);
+>> +	do_spi_clk(base, byte >> 6);
+>> +	do_spi_clk(base, byte >> 5);
+>> +	do_spi_clk(base, byte >> 4);
+>> +	do_spi_clk(base, byte >> 3);
+>> +	do_spi_clk(base, byte >> 2);
+>> +	do_spi_clk(base, byte >> 1);
+>> +	do_spi_clk(base, byte);
+> 
+> This looks awfully like it's bitbanging the value out, can we not use
+> spi-bitbang here?
+> 
 
---Gl2oMwHnV9aOxBMt
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+[...]
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+>> +static inline void do_spi_clk_fast(void __iomem *base, unsigned bit1,
+>> +				   unsigned bit2)
+> 
+> Why would we ever want the slow version?
 
-iQEcBAEBCAAGBQJVDGFMAAoJECTWi3JdVIfQ1gcH/1ARJXwt8G29s3hDvVKlOi+w
-ouiwkhg913HgHrQt+xw+QO2+qVPI1OZZJwmoZ2csYqzIkOXtz3CXFADeWNkc8rYL
-V4vUiE+k+2C5+jXo/6PgFrMtmsgewea1y1j5FGfeEMX18yMbH5bPQZN4WEFhcich
-6xbMXjE2vjemETtCeocc3h7FsYMSTA2QcV+B1ESV18/NVVWiruQ92JgDQzQkqqle
-8//SCjYyuChhayyUV/T0Ab0C1oy16v8O7tOLyWs19a77PXb6ejpWxP9hzw0MDj+w
-lVMwqYAK5AJR96EemGQzcNNf7rhokhmAbYCnRoL4Z315BdHfv9wvJppvM4Tguts=
-=Nxzw
------END PGP SIGNATURE-----
+It is bitbanging, at least on write. The hardware has a shift register that
+is uses for reads. The generic spi for this board's architecture (ath79)
+indeed uses spi-bitbang.
 
---Gl2oMwHnV9aOxBMt--
+This "fast SPI" thing is what makes this one different: the boot flash and
+MMC use regular SPI on the same bus as the CPLD. This CPLD needs this fast
+SPI: a mode where it shifts in two bits per clock. The second bit is
+apparently sent via the CS2 pin.
+
+So I don't think spi-bitbang will do. I need to see about reworking things
+to use less custom queueing -- I'm not that familiar with this yet.
+
+
+-- 
+Bert Vermeulen        bert-Nh2F35Ii2RQ@public.gmane.org          email/xmpp
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

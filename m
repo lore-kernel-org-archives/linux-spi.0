@@ -1,52 +1,50 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: bcm2835: fill/drain SPI-fifo as much as possible
- during interrupt
-Date: Mon, 23 Mar 2015 11:49:14 -0700
-Message-ID: <20150323184914.GK14954@sirena.org.uk>
-References: <F89FEE91-D292-4835-9F49-76A69A17BA4F@martin.sperl.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi: spidev: fix possible arithmetic overflow for
+ multi-transfer message
+Date: Mon, 23 Mar 2015 11:50:42 -0700
+Message-ID: <20150323185042.GL14954@sirena.org.uk>
+References: <1427133027-8134-1-git-send-email-abbotti@mev.co.uk>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="j/HO4hzKTNbM1mOX"
-Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="Qgd2S+2VS1hsWwXW"
+Cc: linux-spi@vger.kernel.org,
+	Dan Carpenter <dan.carpenter@oracle.com>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+To: Ian Abbott <abbotti@mev.co.uk>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <F89FEE91-D292-4835-9F49-76A69A17BA4F-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1427133027-8134-1-git-send-email-abbotti@mev.co.uk>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---j/HO4hzKTNbM1mOX
+--Qgd2S+2VS1hsWwXW
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Mon, Mar 23, 2015 at 03:11:53PM +0100, Martin Sperl wrote:
-> Implement the recommendation from the BCM2835 data-sheet
-> with regards to polling drivers to fill/drain the FIFO as much data as possible
-> also for the interrupt-driven case (which this driver is making use of).
+On Mon, Mar 23, 2015 at 05:50:27PM +0000, Ian Abbott wrote:
 
-Applied, thanks.
+> Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+> Cc: <stable@vger.kernel.org> # 4.0+
 
---j/HO4hzKTNbM1mOX
+This doesn't apply against Linus' tree as far as I can tell - if you
+think this needs to go to stable please send a version that applies
+against that.
+
+--Qgd2S+2VS1hsWwXW
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVEGAqAAoJECTWi3JdVIfQs4IH/RhH868Dk/aLtdFOC6AuhWw3
-8OSgVJQt+eWcw9Z7YFcS0o8ozw+rChTDGj+7Fuqww5M1Gpco/c+Yvo8bf5CMD3DU
-WQ82Ch7UdnzMldMtnNngsfW61EyJKjmDko/7wwe7k8SkCyosfpnFM0f3/OrU44Hj
-5cyIwYK898VVFB47gwel4qYbFrAvoZSkLRD+RWkThXogPWOn9RxtBxFAu6Rh0IY3
-YivWkjLNc4YGxfpFHyWsoP6CrxdCf4ypikWcuhYvsMPxO+4kLXlU4r0eL01ZL9K2
-V89jdmaxwe7k7myr7sGRXI0QMlhKDv3A+GO6TLLCmjFQ10sIlHAp9Bv2zC0w1gQ=
-=L6/A
+iQEcBAEBCAAGBQJVEGCCAAoJECTWi3JdVIfQtWoH/04X7RAnscSz6x0OoSfZKDd7
+5RcNzsSBW8XUz2I5QEw/kms9b61YJSvBPwPx+3T7D5oXnCXdXC51DisPbTQ6kY9o
+iHd7ntyPt7536CbmkZQUHURUtqWFaj4oj2KowNbVpEUGVyTWoflYQ3VHkRnzz141
+t9/tUu3c9SCgUQKPKdzcca7eZ4ZUlI2as8OtQk5jxlOWMJnyQr0SGptrNzo/T/5p
+xCW9fZxs67EquKPW/9YEmbZOwj28iZzSZzjMxjB8Tbih4hWd46ywAGtcLr7zSbPI
+r2yZyeL1SG0sqCufb6TKHCT3Z4d4w2jDoC9RXChWK+C5Yw7wm6ovgCxlVEQ5S54=
+=07vN
 -----END PGP SIGNATURE-----
 
---j/HO4hzKTNbM1mOX--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--Qgd2S+2VS1hsWwXW--

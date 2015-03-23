@@ -1,50 +1,53 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: spidev: fix possible arithmetic overflow for
- multi-transfer message
-Date: Mon, 23 Mar 2015 11:50:42 -0700
-Message-ID: <20150323185042.GL14954@sirena.org.uk>
-References: <1427133027-8134-1-git-send-email-abbotti@mev.co.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] SPI: BCM2835: clock divider can be a multiple of 2
+Date: Mon, 23 Mar 2015 11:53:11 -0700
+Message-ID: <20150323185311.GM14954@sirena.org.uk>
+References: <1426755714-28130-1-git-send-email-kernel@martin.sperl.org>
+ <1426755714-28130-3-git-send-email-kernel@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Qgd2S+2VS1hsWwXW"
-Cc: linux-spi@vger.kernel.org,
-	Dan Carpenter <dan.carpenter@oracle.com>,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-To: Ian Abbott <abbotti@mev.co.uk>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="/t6ASE28jIy1gGy9"
+Cc: warren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1427133027-8134-1-git-send-email-abbotti@mev.co.uk>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1426755714-28130-3-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---Qgd2S+2VS1hsWwXW
+--/t6ASE28jIy1gGy9
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 23, 2015 at 05:50:27PM +0000, Ian Abbott wrote:
+On Thu, Mar 19, 2015 at 09:01:52AM +0000, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
+> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+>=20
+> The official documentation is wrong in this respect.
+> Has been tested empirically for dividers 2-1024
 
-> Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-> Cc: <stable@vger.kernel.org> # 4.0+
+Applied, thanks.
 
-This doesn't apply against Linus' tree as far as I can tell - if you
-think this needs to go to stable please send a version that applies
-against that.
-
---Qgd2S+2VS1hsWwXW
+--/t6ASE28jIy1gGy9
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVEGCCAAoJECTWi3JdVIfQtWoH/04X7RAnscSz6x0OoSfZKDd7
-5RcNzsSBW8XUz2I5QEw/kms9b61YJSvBPwPx+3T7D5oXnCXdXC51DisPbTQ6kY9o
-iHd7ntyPt7536CbmkZQUHURUtqWFaj4oj2KowNbVpEUGVyTWoflYQ3VHkRnzz141
-t9/tUu3c9SCgUQKPKdzcca7eZ4ZUlI2as8OtQk5jxlOWMJnyQr0SGptrNzo/T/5p
-xCW9fZxs67EquKPW/9YEmbZOwj28iZzSZzjMxjB8Tbih4hWd46ywAGtcLr7zSbPI
-r2yZyeL1SG0sqCufb6TKHCT3Z4d4w2jDoC9RXChWK+C5Yw7wm6ovgCxlVEQ5S54=
-=07vN
+iQEcBAEBCAAGBQJVEGEWAAoJECTWi3JdVIfQansH/3QwVMx1+JVTcbvr0NsVc1/d
+gI/D/sK9Hw2KaCRHecEjFEQxVcc4b/q6+JnW8XhEBXgRrzdf1HjkdLFWryZ/YyEa
+8Xda3FiT+4Ii9kv1QWJxZ/cUOE/uFPDBVOC/vqMKBGhoSGdVedNAtf1QIl3ByM7n
+HoU/oujkEbh6FnzPHagcWJ9ObK6uqvX6e0ZRoD2gPRuZlCuOSFwrUIOw31GrOUg/
+dxRvCcmGifFcmJpRrB5nI3M5S8LPMRs277foy/fYpdbBhll2AY67O97BPLyiK6Lj
+1IiGyBbHV1VrovB86Dkfz9im0Y9IF0Gg1nDBPNAhIa4J4RZ9tEmhu51IW2P8Va8=
+=Q8/F
 -----END PGP SIGNATURE-----
 
---Qgd2S+2VS1hsWwXW--
+--/t6ASE28jIy1gGy9--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

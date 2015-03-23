@@ -1,48 +1,60 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: pxa2xx: Remove needless includes
-Date: Mon, 23 Mar 2015 09:43:54 -0700
-Message-ID: <20150323164354.GF14954@sirena.org.uk>
-References: <1427112468-26782-1-git-send-email-jarkko.nikula@linux.intel.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="NQTVMVnDVuULnIzU"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+From: Ian Abbott <abbotti-GUHe90Wt2aFaa/9Udqfwiw@public.gmane.org>
+Subject: [PATCH] spi: spidev: fix possible arithmetic overflow for multi-transfer message
+Date: Mon, 23 Mar 2015 17:50:27 +0000
+Message-ID: <1427133027-8134-1-git-send-email-abbotti@mev.co.uk>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>,
+	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Ian Abbott <abbotti-GUHe90Wt2aFaa/9Udqfwiw@public.gmane.org>
+To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1427112468-26782-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+`spidev_message()` sums the lengths of the individual SPI transfers to
+determine the overall SPI message length.  It restricts the total
+length, returning an error if too long, but it does not check for
+arithmetic overflow.  For example, if the SPI message consisted of two
+transfers and the first has a length of 10 and the second has a length
+of (__u32)(-1), the total length would be seen as 9, even though the
+second transfer is actually very long.  If the second transfer specifies
+a null `rx_buf` and a non-null `tx_buf`, the `copy_from_user()` could
+overrun the spidev's pre-allocated tx buffer before it reaches an
+invalid user memory address.  Fix it by checking that neither the total
+nor the individual transfer lengths exceed the maximum allowed value.
 
---NQTVMVnDVuULnIzU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Thanks to Dan Carpenter for reporting the potential integer overflow.
 
-On Mon, Mar 23, 2015 at 02:07:47PM +0200, Jarkko Nikula wrote:
-> These asm/io.h, asm/irq.h and asm/delay.h are needless since they are
-> already included by linux/io.h via drivers/spi/spi-pxa2xx.h,
-> linux/interrupt.h and linux/delay.h.
+Signed-off-by: Ian Abbott <abbotti-GUHe90Wt2aFaa/9Udqfwiw@public.gmane.org>
+Cc: <stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org> # 4.0+
+---
+This could be backported to kernels prior to 4.0, but the total and
+individual lengths would need to be checked against `bufsiz` instead of
+`INT_MAX`.
+---
+ drivers/spi/spidev.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Applied both, thanks.
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index bb6b3ab..23ad978 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -249,9 +249,10 @@ static int spidev_message(struct spidev_data *spidev,
+ 		total += k_tmp->len;
+ 		/* Since the function returns the total length of transfers
+ 		 * on success, restrict the total to positive int values to
+-		 * avoid the return value looking like an error.
++		 * avoid the return value looking like an error.  Also check
++		 * each transfer length to avoid arithmetic overflow.
+ 		 */
+-		if (total > INT_MAX) {
++		if (total > INT_MAX || k_tmp->len > INT_MAX) {
+ 			status = -EMSGSIZE;
+ 			goto done;
+ 		}
+-- 
+2.1.4
 
---NQTVMVnDVuULnIzU
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVEELJAAoJECTWi3JdVIfQktMH/2DjLmgxoAcSGTOEox0jwvVN
-dyWklYk9zE0lFsXT53UwHuL9yZIWlbwR5i5eY50G6F3kkFVY8NeeMDP/XVgaFQXP
-SUAd0TwA/TpunHxtnGR3hLzdgJUIhZ1gSdXRBbV7qlgQQbLJvzfqobYJYQbi+V+P
-Uc59d4yAVWmu9IEPIzLOeEWZeXXSHsb3U+duwm7m5GE0mH0ZY0epEgVTU40IAcEU
-E9JKVQeMbrVmZ8cdlMe9ZXwt7lEMhe/C9vncexjk5alUnaot5Q2I2OKFz0TbGnur
-S7bladzwxyr0tjM0xofcgNuqMXQjwQFWiCm5lFF4eEE5x6NYpnxAcfci2eruQVA=
-=7I9A
------END PGP SIGNATURE-----
-
---NQTVMVnDVuULnIzU--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

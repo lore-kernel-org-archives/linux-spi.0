@@ -1,41 +1,64 @@
-From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH 1/2] spi: pxa2xx: Remove needless includes
-Date: Mon, 23 Mar 2015 14:07:47 +0200
-Message-ID: <1427112468-26782-1-git-send-email-jarkko.nikula@linux.intel.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Subject: re: spi: spidev: only use up TX/RX bounce buffer space when needed
+Date: Mon, 23 Mar 2015 16:01:37 +0300
+Message-ID: <20150323130136.GA6761@mwanda>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: abbotti-GUHe90Wt2aFaa/9Udqfwiw@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-These asm/io.h, asm/irq.h and asm/delay.h are needless since they are
-already included by linux/io.h via drivers/spi/spi-pxa2xx.h,
-linux/interrupt.h and linux/delay.h.
+Hi Ian,
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
----
- drivers/spi/spi-pxa2xx.c | 4 ----
- 1 file changed, 4 deletions(-)
+The patch 9a12bff7c346: "spi: spidev: only use up TX/RX bounce buffer
+space when needed" from Feb 16, 2015, has a potential integer overflow
+issue.
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 6f72ad01e041..74342d167324 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -30,10 +30,6 @@
- #include <linux/pm_runtime.h>
- #include <linux/acpi.h>
- 
--#include <asm/io.h>
--#include <asm/irq.h>
--#include <asm/delay.h>
--
- #include "spi-pxa2xx.h"
- 
- MODULE_AUTHOR("Stephen Street");
--- 
-2.1.4
+drivers/spi/spidev.c
+   241          total = 0;
+   242          tx_total = 0;
+   243          rx_total = 0;
+   244          for (n = n_xfers, k_tmp = k_xfers, u_tmp = u_xfers;
+   245                          n;
+   246                          n--, k_tmp++, u_tmp++) {
+   247                  k_tmp->len = u_tmp->len;
+   248  
+   249                  total += k_tmp->len;
+                        ^^^^^^^^^^^^^^^^^^^
+This is a potential integer overflow but the impact is not serious.
 
+   250                  /* Since the function returns the total length of transfers
+   251                   * on success, restrict the total to positive int values to
+   252                   * avoid the return value looking like an error.
+   253                   */
+   254                  if (total > INT_MAX) {
+   255                          status = -EMSGSIZE;
+   256                          goto done;
+   257                  }
+   258  
+   259                  if (u_tmp->rx_buf) {
+   260                          /* this transfer needs space in RX bounce buffer */
+   261                          rx_total += k_tmp->len;
+                                ^^^^^^^^^^^^^^^^^^^^^^
+This one can maybe result in an info leak?  I'm not sure.
+
+   262                          if (rx_total > bufsiz) {
+   263                                  status = -EMSGSIZE;
+   264                                  goto done;
+   265                          }
+   266                          k_tmp->rx_buf = rx_buf;
+   267                          if (!access_ok(VERIFY_WRITE, (u8 __user *)
+   268                                                  (uintptr_t) u_tmp->rx_buf,
+   269                                                  u_tmp->len))
+   270                                  goto done;
+   271                          rx_buf += k_tmp->len;
+   272                  }
+
+regards,
+dan carpenter
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

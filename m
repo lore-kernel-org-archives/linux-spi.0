@@ -1,51 +1,40 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] SPI: BCM2835: enable support of 3-wire mode
-Date: Mon, 23 Mar 2015 11:57:28 -0700
-Message-ID: <20150323185728.GN14954@sirena.org.uk>
-References: <1426755714-28130-1-git-send-email-kernel@martin.sperl.org>
- <1426755714-28130-4-git-send-email-kernel@martin.sperl.org>
+From: Ian Abbott <abbotti-GUHe90Wt2aFaa/9Udqfwiw@public.gmane.org>
+Subject: Re: [PATCH] spi: spidev: fix possible arithmetic overflow for multi-transfer
+ message
+Date: Mon, 23 Mar 2015 19:29:15 +0000
+Message-ID: <5510698B.3040000@mev.co.uk>
+References: <1427133027-8134-1-git-send-email-abbotti@mev.co.uk> <20150323185042.GL14954@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="3rMDlCEgcaHQQFB+"
-Cc: warren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1426755714-28130-4-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <20150323185042.GL14954-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On 23/03/15 18:50, Mark Brown wrote:
+> On Mon, Mar 23, 2015 at 05:50:27PM +0000, Ian Abbott wrote:
+>
+>> Signed-off-by: Ian Abbott <abbotti-GUHe90Wt2aFaa/9Udqfwiw@public.gmane.org>
+>> Cc: <stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org> # 4.0+
+>
+> This doesn't apply against Linus' tree as far as I can tell - if you
+> think this needs to go to stable please send a version that applies
+> against that.
+>
 
---3rMDlCEgcaHQQFB+
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Sorry about that.  It applies to linux-next and might apply against 4.1, 
+depending on the timing.
 
-On Thu, Mar 19, 2015 at 09:01:53AM +0000, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
-> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
->=20
-> Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Can you strip the Cc line or do you want me to repost the patch?
 
-Applied, thanks.
-
---3rMDlCEgcaHQQFB+
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVEGIXAAoJECTWi3JdVIfQV0wIAICBRINn6POw5w2ol9NlJQJs
-Jg/LzZN4WwKaJt50D+PqcUFgvbXsF1cVzRYioENxvalS4EUYZWogZ4QnZxViudoD
-vpZersXTLxHyphJ5rqEp9SaXtG5PX7uSByW70gef5NFeQRVjMiV0unH/me63VGrB
-IE1YqxLoEPKLzM/HLbPyzUhe6clS43jetjoHqIe4h/pgdPLlx1fef4dcD3WHvsnb
-vxXGQyIyhYzxytuMh9rgMUYrEojTOZ581Em2hSmEhhqkMbXpEw6P9LCYw21virRe
-BMk6ZoPIOAJvTQvfafFO8x464EJQdQ9Nmmqqy5oHswl/JU75UabIkwYWtHSfz50=
-=9Jdq
------END PGP SIGNATURE-----
-
---3rMDlCEgcaHQQFB+--
+-- 
+-=( Ian Abbott @ MEV Ltd.    E-mail: <abbotti-GUHe90Wt2aFaa/9Udqfwiw@public.gmane.org> )=-
+-=(                          Web: http://www.mev.co.uk/  )=-
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

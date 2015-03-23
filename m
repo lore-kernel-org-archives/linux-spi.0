@@ -1,97 +1,48 @@
-From: Ian Abbott <abbotti-GUHe90Wt2aFaa/9Udqfwiw@public.gmane.org>
-Subject: Re: spi: spidev: only use up TX/RX bounce buffer space when needed
-Date: Mon, 23 Mar 2015 15:53:49 +0000
-Message-ID: <5510370D.6020007@mev.co.uk>
-References: <20150323130136.GA6761@mwanda>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: pxa2xx: Remove needless includes
+Date: Mon, 23 Mar 2015 09:43:54 -0700
+Message-ID: <20150323164354.GF14954@sirena.org.uk>
+References: <1427112468-26782-1-git-send-email-jarkko.nikula@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="NQTVMVnDVuULnIzU"
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150323130136.GA6761@mwanda>
+Content-Disposition: inline
+In-Reply-To: <1427112468-26782-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 23/03/15 13:01, Dan Carpenter wrote:
-> Hi Ian,
->
-> The patch 9a12bff7c346: "spi: spidev: only use up TX/RX bounce buffer
-> space when needed" from Feb 16, 2015, has a potential integer overflow
-> issue.
->
-> drivers/spi/spidev.c
->     241          total = 0;
->     242          tx_total = 0;
->     243          rx_total = 0;
->     244          for (n = n_xfers, k_tmp = k_xfers, u_tmp = u_xfers;
->     245                          n;
->     246                          n--, k_tmp++, u_tmp++) {
->     247                  k_tmp->len = u_tmp->len;
->     248
->     249                  total += k_tmp->len;
->                          ^^^^^^^^^^^^^^^^^^^
-> This is a potential integer overflow but the impact is not serious.
 
-It's possible, although the previous version also had the same problem. 
-  It's quite serious as the SPI core may read past the end of the 
-pre-allocated rx buffer and write past the end of the pre-allocated tx 
-buffer.
+--NQTVMVnDVuULnIzU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
->
->     250                  /* Since the function returns the total length of transfers
->     251                   * on success, restrict the total to positive int values to
->     252                   * avoid the return value looking like an error.
->     253                   */
->     254                  if (total > INT_MAX) {
+On Mon, Mar 23, 2015 at 02:07:47PM +0200, Jarkko Nikula wrote:
+> These asm/io.h, asm/irq.h and asm/delay.h are needless since they are
+> already included by linux/io.h via drivers/spi/spi-pxa2xx.h,
+> linux/interrupt.h and linux/delay.h.
 
-Changing that to `if (total > INT_MAX || k_tmp->len > INT_MAX)` would 
-fix the overflow.  I'll send a patch later today.
+Applied both, thanks.
 
->     255                          status = -EMSGSIZE;
->     256                          goto done;
->     257                  }
->     258
->     259                  if (u_tmp->rx_buf) {
->     260                          /* this transfer needs space in RX bounce buffer */
->     261                          rx_total += k_tmp->len;
->                                  ^^^^^^^^^^^^^^^^^^^^^^
-> This one can maybe result in an info leak?  I'm not sure.
+--NQTVMVnDVuULnIzU
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-This is reserving space in the pre-allocated rx buffer which should be 
-fine as long as the previous integer overflow is fixed.  After the call 
-to spi_sync(), there is a possibility of copying old data from the SPI 
-device to the user if the SPI message was not fully transferred.  If 
-that's a problem, I think the safest fix would be to clear the 
-pre-allocated rx buffer (at least the first rx_total bytes) before 
-calling spi_sync().  Alternatively, the code that copies the rx data 
-back to the user could stop copying when the returned message length is 
-exceeded, and either clear the remaining user rx buffer space or leave 
-it unchanged.  I guess that's open to discussion.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
->
->     262                          if (rx_total > bufsiz) {
->     263                                  status = -EMSGSIZE;
->     264                                  goto done;
->     265                          }
->     266                          k_tmp->rx_buf = rx_buf;
->     267                          if (!access_ok(VERIFY_WRITE, (u8 __user *)
->     268                                                  (uintptr_t) u_tmp->rx_buf,
->     269                                                  u_tmp->len))
->     270                                  goto done;
->     271                          rx_buf += k_tmp->len;
->     272                  }
->
-> regards,
-> dan carpenter
->
+iQEcBAEBCAAGBQJVEELJAAoJECTWi3JdVIfQktMH/2DjLmgxoAcSGTOEox0jwvVN
+dyWklYk9zE0lFsXT53UwHuL9yZIWlbwR5i5eY50G6F3kkFVY8NeeMDP/XVgaFQXP
+SUAd0TwA/TpunHxtnGR3hLzdgJUIhZ1gSdXRBbV7qlgQQbLJvzfqobYJYQbi+V+P
+Uc59d4yAVWmu9IEPIzLOeEWZeXXSHsb3U+duwm7m5GE0mH0ZY0epEgVTU40IAcEU
+E9JKVQeMbrVmZ8cdlMe9ZXwt7lEMhe/C9vncexjk5alUnaot5Q2I2OKFz0TbGnur
+S7bladzwxyr0tjM0xofcgNuqMXQjwQFWiCm5lFF4eEE5x6NYpnxAcfci2eruQVA=
+=7I9A
+-----END PGP SIGNATURE-----
 
-Best regards,
-Ian Abbott
-
--- 
--=( Ian Abbott @ MEV Ltd.    E-mail: <abbotti-GUHe90Wt2aFaa/9Udqfwiw@public.gmane.org> )=-
--=(                          Web: http://www.mev.co.uk/  )=-
+--NQTVMVnDVuULnIzU--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

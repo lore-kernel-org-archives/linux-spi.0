@@ -1,63 +1,52 @@
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH v1 1/2] spi: pxa2xx: shift clk_div in one place
-Date: Tue, 24 Mar 2015 17:43:21 +0200
-Message-ID: <1427211802-217454-2-git-send-email-andriy.shevchenko@linux.intel.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v1 0/2] spi: pxa2xx: allow to set mostly any baudrate for
+ Quark case
+Date: Tue, 24 Mar 2015 09:23:23 -0700
+Message-ID: <20150324162323.GH17265@sirena.org.uk>
 References: <1427211802-217454-1-git-send-email-andriy.shevchenko@linux.intel.com>
-Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"Chen, Alvin" <alvin.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="zhtSGe8h3+lMyY1M"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, "Chen, Alvin" <alvin.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
 	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
 In-Reply-To: <1427211802-217454-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-This patch refactors ssp_get_clk_div() and pxa2xx_ssp_get_clk_div() to align
-clk_div calculations, i.e. ssp_get_clk_div() and quark_x1000_set_clk_regvals()
-will return plain clk_div and it will be shifted to proper position in
-pxa2xx_ssp_get_clk_div().
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
----
- drivers/spi/spi-pxa2xx.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+--zhtSGe8h3+lMyY1M
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 6f72ad0..dd56bf5 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -730,23 +730,23 @@ static unsigned int ssp_get_clk_div(struct driver_data *drv_data, int rate)
- 	rate = min_t(int, ssp_clk, rate);
- 
- 	if (ssp->type == PXA25x_SSP || ssp->type == CE4100_SSP)
--		return ((ssp_clk / (2 * rate) - 1) & 0xff) << 8;
-+		return (ssp_clk / (2 * rate) - 1) & 0xff;
- 	else
--		return ((ssp_clk / rate - 1) & 0xfff) << 8;
-+		return (ssp_clk / rate - 1) & 0xfff;
- }
- 
- static unsigned int pxa2xx_ssp_get_clk_div(struct driver_data *drv_data,
- 					   struct chip_data *chip, int rate)
- {
--	u32 clk_div;
-+	unsigned int clk_div;
- 
- 	switch (drv_data->ssp_type) {
- 	case QUARK_X1000_SSP:
- 		quark_x1000_set_clk_regvals(rate, &chip->dds_rate, &clk_div);
--		return clk_div << 8;
- 	default:
--		return ssp_get_clk_div(drv_data, rate);
-+		clk_div = ssp_get_clk_div(drv_data, rate);
- 	}
-+	return clk_div << 8;
- }
- 
- static void pump_transfers(unsigned long data)
--- 
-2.1.4
+On Tue, Mar 24, 2015 at 05:43:20PM +0200, Andy Shevchenko wrote:
 
+> Mark, it would be nice to have this in 4.0-rcX since it will be the first
+> kernel with Quark support. And I applied necessary patch to allow user to
+> select SPI driver for it, though it's up to you.
+
+We're at -rc5 now, that seems too late to try to get a new feature into
+v4.0 I'm afraid.
+
+--zhtSGe8h3+lMyY1M
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVEY96AAoJECTWi3JdVIfQF9cH/RmwjuBXBCnKS/KkhbGlvR+R
+H/dANBjAaiYo778y+a/k4No3N195qE6lrLSa1E5y9YC0avdBDQJw7aXeeYwP1atl
+Zs5J4cKwq6Zd8pC9BYyGjaoIvJqZI2wgMtQWJGfcZsS/jlfM6swNqzN2id9D/pYZ
+T+SXf/E0TUYEWnWxvUMZWNWTmpuPrNJI/hcBTeZOyGOIe3FR/tbzAqrHkwhZ0ZYp
+oJ6Va54e1/FyKoX4yTFXZBhdXD1CaIWLn6FnR8G6c2l/R2AeLArJT57hLtkNev3T
+j+d2dVvLF+hU2UO+8LYHY3IibvQJobXsOw2fDW8oSYZ7OYxli2DFkxuQyyejcoo=
+=NHPr
+-----END PGP SIGNATURE-----
+
+--zhtSGe8h3+lMyY1M--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

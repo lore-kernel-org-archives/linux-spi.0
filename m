@@ -1,36 +1,60 @@
 From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH v1 0/2] spi: pxa2xx: allow to set mostly any baudrate for Quark case
-Date: Tue, 24 Mar 2015 17:43:20 +0200
-Message-ID: <1427211802-217454-1-git-send-email-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 1/2] spi: pxa2xx: shift clk_div in one place
+Date: Tue, 24 Mar 2015 17:43:21 +0200
+Message-ID: <1427211802-217454-2-git-send-email-andriy.shevchenko@linux.intel.com>
+References: <1427211802-217454-1-git-send-email-andriy.shevchenko@linux.intel.com>
 Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	"Chen, Alvin" <alvin.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
 	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1427211802-217454-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Currently driver relies on a table that is really unflexible and contains only
-small subset of all possible variabts.
+This patch refactors ssp_get_clk_div() and pxa2xx_ssp_get_clk_div() to align
+clk_div calculations, i.e. ssp_get_clk_div() and quark_x1000_set_clk_regvals()
+will return plain clk_div and it will be shifted to proper position in
+pxa2xx_ssp_get_clk_div().
 
-The patch series replaces the table by an approximation.
+Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+---
+ drivers/spi/spi-pxa2xx.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-The code has been tested on Galileo Gen 1 board with loopback mode enabled.
-
-Mark, it would be nice to have this in 4.0-rcX since it will be the first
-kernel with Quark support. And I applied necessary patch to allow user to
-select SPI driver for it, though it's up to you.
-
-P.S. It was my bad I had to insist to use the approximation instead of some
-unflexible tables in the first place.
-
-Andy Shevchenko (2):
-  spi: pxa2xx: shift clk_div in one place
-  spi: pxa2xx: replace ugly table by approximation
-
- drivers/spi/spi-pxa2xx.c | 161 +++++++++++++++++++++++++++--------------------
- 1 file changed, 94 insertions(+), 67 deletions(-)
-
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 6f72ad0..dd56bf5 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -730,23 +730,23 @@ static unsigned int ssp_get_clk_div(struct driver_data *drv_data, int rate)
+ 	rate = min_t(int, ssp_clk, rate);
+ 
+ 	if (ssp->type == PXA25x_SSP || ssp->type == CE4100_SSP)
+-		return ((ssp_clk / (2 * rate) - 1) & 0xff) << 8;
++		return (ssp_clk / (2 * rate) - 1) & 0xff;
+ 	else
+-		return ((ssp_clk / rate - 1) & 0xfff) << 8;
++		return (ssp_clk / rate - 1) & 0xfff;
+ }
+ 
+ static unsigned int pxa2xx_ssp_get_clk_div(struct driver_data *drv_data,
+ 					   struct chip_data *chip, int rate)
+ {
+-	u32 clk_div;
++	unsigned int clk_div;
+ 
+ 	switch (drv_data->ssp_type) {
+ 	case QUARK_X1000_SSP:
+ 		quark_x1000_set_clk_regvals(rate, &chip->dds_rate, &clk_div);
+-		return clk_div << 8;
+ 	default:
+-		return ssp_get_clk_div(drv_data, rate);
++		clk_div = ssp_get_clk_div(drv_data, rate);
+ 	}
++	return clk_div << 8;
+ }
+ 
+ static void pump_transfers(unsigned long data)
 -- 
 2.1.4
 

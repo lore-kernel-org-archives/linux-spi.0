@@ -1,81 +1,178 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [GIT PULL] spi fixes for v4.0
-Date: Tue, 24 Mar 2015 14:07:27 -0700
-Message-ID: <20150324210727.GA28997@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Nq2Wo0NMKNjxTN9z"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: Re: [PATCH V2 - RESEND] SPI: BCM2835: allow arbitrary GPIO to act as SPI-chip_select
+Date: Wed, 25 Mar 2015 08:10:57 +0100
+Message-ID: <1756D77D-173D-4D6D-B629-59CC8A49714F@martin.sperl.org>
+References: <1426755714-28130-1-git-send-email-kernel@martin.sperl.org> <1426755714-28130-2-git-send-email-kernel@martin.sperl.org> <550BAA89.5090707@wwwdotorg.org> <20150320095247.GE2869@sirena.org.uk>
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2070.6\))
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 8BIT
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <20150320095247.GE2869-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+use cs-gpios for the spi bus master and standard gpio operation
+instead of relying on the HW with just 2 chip_selects.
 
---Nq2Wo0NMKNjxTN9z
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Tested with 2x mcp251x (can bus), fb_st7735 (TFT framebuffer device) 
+and enc28j60 (ethernet) drivers.
 
-The following changes since commit bc465aa9d045feb0e13b4a8f32cc33c1943f62d6:
+Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-  Linux 4.0-rc5 (2015-03-22 16:50:21 -0700)
+---
+ drivers/spi/spi-bcm2835.c |   65 ++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 58 insertions(+), 7 deletions(-)
 
-are available in the git repository at:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-v4=
-=2E0-rc5
+> On 20.03.2015, at 10:52, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> 
+> On Thu, Mar 19, 2015 at 11:05:13PM -0600, Stephen Warren wrote:
+>> 
+>> 
+>> A changelog between v1 and v2 would be useful. I think this looks OK
+>> though, so,
+>> Acked-by: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+> 
 
-for you to fetch changes up to 072ac04d31b14647e9835b1a699ebe3413e5d222:
+Changelog:
+  V1->V2: use gpio_is_valid
+          added error for null GPIO in DT for any CS except 0 or 1.
+          no patch for bcm2835 device tree to use new system
 
-  Merge remote-tracking branches 'spi/fix/dw', 'spi/fix/queue' and 'spi/fix=
-/qup' into spi-linus (2015-03-24 10:38:44 -0700)
+> Note that none of these patches appear to have been sent to me, Stephen
+> has CCed me in as far as I can tell...
+Resent patch below.
 
-----------------------------------------------------------------
-spi: Fixes for v4.0
 
-A couple of driver specific fixes of the usual "important if you have
-that device" kind together with a fix for a use after free bug that was
-introduced into the trace code in some of the recent refactoring of the
-message queue handling.
+diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+index e1dea40..5fbad64 100644
+--- a/drivers/spi/spi-bcm2835.c
++++ b/drivers/spi/spi-bcm2835.c
+@@ -30,6 +30,7 @@
+ #include <linux/of.h>
+ #include <linux/of_irq.h>
+ #include <linux/of_device.h>
++#include <linux/of_gpio.h>
+ #include <linux/spi/spi.h>
 
-----------------------------------------------------------------
-Andy Shevchenko (1):
-      spi: dw-mid: clear BUSY flag fist and test other one
+ /* SPI register offsets */
+@@ -116,6 +117,16 @@ static inline void bcm2835_wr_fifo(struct bcm2835_spi *bs, int len)
+ 	}
+ }
 
-Ivan T. Ivanov (1):
-      spi: qup: Fix cs-num DT property parsing
++/* ideally spi_set_cs would be exported by spi-core */
++static inline void bcm2835_set_cs(struct spi_device *spi, bool enable)
++{
++	if (spi->mode & SPI_CS_HIGH)
++		enable = !enable;
++
++	if (gpio_is_valid(spi->cs_gpio))
++		gpio_set_value(spi->cs_gpio, !enable);
++}
++
+ static irqreturn_t bcm2835_spi_interrupt(int irq, void *dev_id)
+ {
+ 	struct spi_master *master = dev_id;
+@@ -207,12 +218,24 @@ static int bcm2835_spi_start_transfer(
+ 		cs |= BCM2835_SPI_CS_CPHA;
 
-Mark Brown (1):
-      Merge remote-tracking branches 'spi/fix/dw', 'spi/fix/queue' and 'spi=
-/fix/qup' into spi-linus
+ 	if (!(spi->mode & SPI_NO_CS)) {
+-		if (spi->mode & SPI_CS_HIGH) {
+-			cs |= BCM2835_SPI_CS_CSPOL;
+-			cs |= BCM2835_SPI_CS_CSPOL0 << spi->chip_select;
+-		}
++		if (gpio_is_valid(spi->cs_gpio)) {
++			bcm2835_set_cs(spi, 1);
++		} else {
++			/* Legacy mode using HW chip selects
++			 * note that there is a bug in this when there are
++			 * multiple devices on the bus with at least one
++			 * having SPI_CS_HIGH set - the other CS_CSPOLX get
++			 * reset to 0 when any other device starts a transfer
++			 * this is due to a shared register for the polarity
++			 */
++			if (spi->mode & SPI_CS_HIGH) {
++				cs |= BCM2835_SPI_CS_CSPOL;
++				cs |= BCM2835_SPI_CS_CSPOL0
++					<< spi->chip_select;
++			}
 
-Uwe Kleine-K=F6nig (1):
-      spi: trigger trace event for message-done before mesg->complete
+-		cs |= spi->chip_select;
++			cs |= spi->chip_select;
++		}
+ 	}
 
- drivers/spi/spi-dw-mid.c | 6 ++++--
- drivers/spi/spi-qup.c    | 9 +++++----
- drivers/spi/spi.c        | 5 +++--
- 3 files changed, 12 insertions(+), 8 deletions(-)
+ 	reinit_completion(&bs->done);
+@@ -248,9 +271,12 @@ static int bcm2835_spi_finish_transfer(
+ 	if (tfr->delay_usecs)
+ 		udelay(tfr->delay_usecs);
 
---Nq2Wo0NMKNjxTN9z
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+-	if (cs_change)
++	if (cs_change) {
++		/* reset CS */
++		bcm2835_set_cs(spi, 0);
+ 		/* Clear TA flag */
+ 		bcm2835_wr(bs, BCM2835_SPI_CS, cs & ~BCM2835_SPI_CS_TA);
++	}
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+ 	return 0;
+ }
+@@ -290,15 +316,39 @@ static int bcm2835_spi_transfer_one(
+ 	}
 
-iQEcBAEBCAAGBQJVEdIPAAoJECTWi3JdVIfQ/loH/07YwMydhEw6Q1nGogAJnahq
-32Nrq+hKnw/p+SJBdsANWhg8FttFgji8CajQtwgPsj4/kiZGRjr+3EUwsy2bvW/n
-424QVlu0cUZG6uOIAkzShcEjP+b47zT3vlRBb/aSaSaHAZQBRAMYoPxCy7aRjSQ+
-HSypLLgSNRGPFrWXakfZqfZxIE3gTcXuOiJxcAjW+dGeyPHV0Cqisa9hQIeQ5Vzn
-XqS7lUmWv749eY0azrmel0rXeI5/oFPS88bHO5DVGo0uI0LPVNOrnqZ5DUzFSQTA
-3cfqm5/DyiYJEHyL19bdNNsgB0oTC7aqKSA1CRvg9dbONUnzgXpqf/5JiTnIDSM=
-=7jhh
------END PGP SIGNATURE-----
+ out:
+-	/* Clear FIFOs, and disable the HW block */
++	/* Clear FIFOs, reset CS and disable the HW block */
+ 	bcm2835_wr(bs, BCM2835_SPI_CS,
+ 		   BCM2835_SPI_CS_CLEAR_RX | BCM2835_SPI_CS_CLEAR_TX);
++	bcm2835_set_cs(spi, 0);
+ 	mesg->status = err;
+ 	spi_finalize_current_message(master);
 
---Nq2Wo0NMKNjxTN9z--
+ 	return 0;
+ }
+
++static int bcm2835_spi_setup(struct spi_device *spi)
++{
++	/* do not care when in SPI_NO_CS mode */
++	if (spi->mode & SPI_NO_CS)
++		return 0;
++
++	/* setting up CS right from the start */
++	if (gpio_is_valid(spi->cs_gpio)) {
++		bcm2835_set_cs(spi, 0);
++		return 0;
++	}
++
++	/* Legacy mode using HW chipselects */
++	if (spi->chip_select > 2) {
++		dev_err(&spi->dev,
++			"setup: only three native chip-selects are supported\n"
++			);
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
+ static int bcm2835_spi_probe(struct platform_device *pdev)
+ {
+ 	struct spi_master *master;
+@@ -318,6 +368,7 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
+ 	master->bits_per_word_mask = SPI_BPW_MASK(8);
+ 	master->num_chipselect = 3;
+ 	master->transfer_one_message = bcm2835_spi_transfer_one;
++	master->setup = bcm2835_spi_setup;
+ 	master->dev.of_node = pdev->dev.of_node;
+
+ 	bs = spi_master_get_devdata(master);
+--
+1.7.10.4
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

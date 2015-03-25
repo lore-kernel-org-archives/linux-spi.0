@@ -1,63 +1,57 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH V2 - RESEND] SPI: BCM2835: allow arbitrary GPIO to act as
- SPI-chip_select
-Date: Wed, 25 Mar 2015 08:16:11 -0700
-Message-ID: <20150325151611.GA3572@sirena.org.uk>
-References: <1426755714-28130-1-git-send-email-kernel@martin.sperl.org>
- <1426755714-28130-2-git-send-email-kernel@martin.sperl.org>
- <550BAA89.5090707@wwwdotorg.org>
- <20150320095247.GE2869@sirena.org.uk>
- <1756D77D-173D-4D6D-B629-59CC8A49714F@martin.sperl.org>
+Subject: Re: [PATCH v1 2/2] spi: pxa2xx: replace ugly table by approximation
+Date: Wed, 25 Mar 2015 08:17:01 -0700
+Message-ID: <20150325151701.GB3572@sirena.org.uk>
+References: <1427211802-217454-1-git-send-email-andriy.shevchenko@linux.intel.com>
+ <1427211802-217454-3-git-send-email-andriy.shevchenko@linux.intel.com>
+ <20150324165954.GL17265@sirena.org.uk>
+ <1427279865.14897.405.camel@linux.intel.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="OXfL5xGRrasGEqWY"
-Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="E39vaYmALEf/7YXx"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, "Chen, Alvin" <alvin.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1756D77D-173D-4D6D-B629-59CC8A49714F-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <1427279865.14897.405.camel-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---OXfL5xGRrasGEqWY
+--E39vaYmALEf/7YXx
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Mar 25, 2015 at 08:10:57AM +0100, Martin Sperl wrote:
+On Wed, Mar 25, 2015 at 12:37:45PM +0200, Andy Shevchenko wrote:
+> On Tue, 2015-03-24 at 09:59 -0700, Mark Brown wrote:
 
-> +static inline void bcm2835_set_cs(struct spi_device *spi, bool enable)
-> +{
-> +	if (spi->mode & SPI_CS_HIGH)
-> +		enable = !enable;
-> +
-> +	if (gpio_is_valid(spi->cs_gpio))
-> +		gpio_set_value(spi->cs_gpio, !enable);
-> +}
+> > I'm not sure that
+> > one could reasonably expect someone to follow this code without doing
+> > detective work.  I think the biggest thing is that the comments aren't
+> > saying why the code is doing what it's doing.
 
-This appears to be open coding the core spi_set_cs() support for GPIOs,
-why are we not just setting cs_gpio and letting the core take care of
-things?
+> Should I cite data sheet in case to explain some branches?
 
---OXfL5xGRrasGEqWY
+Yes, that should be helpful.
+
+--E39vaYmALEf/7YXx
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVEtE6AAoJECTWi3JdVIfQ8qYH/2sstTQJXkT6MTNltSBhfGGv
-+yllgCSlduM7PEB8FqklJESEcnAJn93R3kkyVgAPZdW3KzM4yLuIGzWbg/jZc77e
-cpkn+p/1W1hUgNncgtU79cft56HcKYeGK3mJAouI+9b0e8mr8TR3MvxdnvMC9HzK
-B00CDXAAt8MgyUZC4B4fpx9Oorx+wsRAMgObC+4bqdw4muyzNfo4/qJwCs7aaSR2
-X45fazuN8/NluuDDyRR/4s23zfJ45vdAM/zYz9CzmSndNcVJ9H2Egc0OzLCD5P9t
-UPoedALdESeWfDGw8Q808WSxc62BnDovcsksymApoVI/yjmGloALOilZyfqjafo=
-=atnQ
+iQEcBAEBCAAGBQJVEtFtAAoJECTWi3JdVIfQ+G4H/RbtNrOa3+m5CgIrRY8Dt0ea
+F9HpV+qbVV5GB6mtYyewoc/Mx9gFG7XANx7ctgYLTdOvQ5KIsae5nP2SDFJN8uzt
+mBzmXsB1wiBdU3+V97zve67sTiePo6m4v0ezw2DPiGFq9vMhE4/kDh9i6oQ0+kkz
+jn7I3KBPFsPIQcxM1p7JCSdJZ9ta0uxDWd8Mqntwe/ZOSjv9P3Td6qtrP+wB6Bo8
+KNPcEzBUSX/VbBEiHXv90cSanucq+ZL+BfXfLGCtYS5nLjZT8u3Ww9EJuF34I+vg
+TErmMrQIFbSMlunSwEB/sr3P7mANY+jVFT44WxhNWU2Hzhgo9Tc9bEWhkkho/ek=
+=CRgR
 -----END PGP SIGNATURE-----
 
---OXfL5xGRrasGEqWY--
+--E39vaYmALEf/7YXx--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

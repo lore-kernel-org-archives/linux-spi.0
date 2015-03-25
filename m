@@ -1,50 +1,70 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/1] spi: dw: fix crash on setup stage
-Date: Wed, 25 Mar 2015 11:54:57 -0700
-Message-ID: <20150325185457.GM3572@sirena.org.uk>
-References: <1427307986-112219-1-git-send-email-andriy.shevchenko@linux.intel.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Aaj1jBvBEV7KRjLi"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: Re: [PATCH V2 - RESEND] SPI: BCM2835: allow arbitrary GPIO to act as SPI-chip_select
+Date: Wed, 25 Mar 2015 20:43:36 +0100
+Message-ID: <561486F6-3580-4884-8A6A-8477D8C3BDC9@martin.sperl.org>
+References: <1426755714-28130-1-git-send-email-kernel@martin.sperl.org> <1426755714-28130-2-git-send-email-kernel@martin.sperl.org> <550BAA89.5090707@wwwdotorg.org> <20150320095247.GE2869@sirena.org.uk> <1756D77D-173D-4D6D-B629-59CC8A49714F@martin.sperl.org> <20150325151611.GA3572@sirena.org.uk> <681599F9-2D88-49FF-BD16-4F388D0B2874@martin.sperl.org> <20150325165441.GI3572@sirena.org.uk> <767DFCCF-C8A4-44B3-9E85-96011B0FF0FA@martin.sperl.org> <20150325185007.GL3572@sirena.org.uk>
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2070.6\))
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1427307986-112219-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <20150325185007.GL3572-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---Aaj1jBvBEV7KRjLi
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> On 25.03.2015, at 19:50, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> 
+> This sounds like you're trying to work aroud the core rather than work
+> with the core - enhance the core so that it can express what you need.
+> 
 
-On Wed, Mar 25, 2015 at 08:26:26PM +0200, Andy Shevchenko wrote:
-> The commit 1a7b7ee72c21 (spi: Ensure that CS line is in non-active state after
-> spi_setup()) introduces an unconditional call of spi_set_cs() before ->setup().
-> The dw_spi_set_cs() relies on that fact that ->setup() is already called, but
-> it doesn't now. This patch fixes the crash by adding an additional check to
-> dw_spi_set_cs().
+Working in a single driver makes things more local without having
+a "moving" target with lots of other patches. If done right most of it
+then can get moved to the core - if needed...
 
-Applied, thanks.
+>> From my perspective I want to minimize the dependencies while I create
+>> this proof of concept.
+>> And for my testing this with several different devices I need support
+>> for multiple devices and for that I need this patch go in first.
+>> Taking baby steps here.
+> 
+> I had been under the impression that you had already done a lot of proof
+> of concept work with this stuff?
 
---Aaj1jBvBEV7KRjLi
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+I had an Idea - that specific one has not been tested yet, but from the
+measurements on interrupt and scheduling latencies these seem low hanging
+fruit.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+> 
+>> Also there is another point here, that Stephen pointed out:
+>> Would not a switch from the use of the "native-cs" to "gpio-only" mean
+>> a required change in Device-tree? And isn't DT assumed to be a stabe API?
+> 
+> Can you be more specific about what change you think might be required?
+> Currently the driver doesn't support GPIOs as chip selects at all so
+> anything enabling them is going to be new.
+Well, if we say we "need" gpio_cs to be set in DT of the master, then
+that might be assumed an API change that might break some custom 
+device-trees - I was mostly referring to that.
 
-iQEcBAEBCAAGBQJVEwSAAAoJECTWi3JdVIfQcXMH/0xS2Rd/Op7rWdqJ3IHLLicg
-qCDtH1vDtCGBv5pUewWhfhH/lvKKCErvOeyV8fNo8UhXjn3+QoLN71tPqy3913iA
-j7TJa2y9txEmMHfY9ZYUeS7JPCM2H4j64JLUv/eq2WTo9SjSXaSlcHcFIK3Dvsc3
-0zpfylHlAJpfKYgmShfQ01UEAsYxa2+D7AFomlX6bF3jm9cCy1Poiwicjy5Ke9bd
-UmzLwj3aIpgh13pZZD5knu9I7VjLKHDqqpQOap0/GdAQINDi9i1Pzz35DkzFwPRf
-E91rsd7GiwcImYhHDuV6lsduskACIeSQVPUPKKM1RM/yijaarr3i+pjJQaJ1L9s=
-=/pTs
------END PGP SIGNATURE-----
+So how would that situation be with the requirement to use the GPIO_CS 
+explicitly?
 
---Aaj1jBvBEV7KRjLi--
+>> So to summarize: do you want me to move to transfer_one instead and
+>> then revert back for the optimizations?
+> 
+> Drivers should in general be moving to use modern APIs.  If current APIs
+> need enhancing then look into doing that.
+OK, so I will try to take the "modernization" approach, but a quick look
+shows some headaches, that the current driver is hiding behind scheduling
+latencies...
+
+Martin
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

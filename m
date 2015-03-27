@@ -1,46 +1,56 @@
-From: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi/rockchip: Add device tree property to configure
- Rx Sample Delay
-Date: Thu, 26 Mar 2015 17:29:24 -0700
-Message-ID: <CAD=FV=VjTK2fvBnZwrLXuqVSMZC4CD3NFEykUxbt1-LV_MgQRA@mail.gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi/rockchip: Round up clock rate divisor to err on
+ the safe side
+Date: Thu, 26 Mar 2015 17:46:09 -0700
+Message-ID: <20150327004609.GB3572@sirena.org.uk>
 References: <1427412625-12377-1-git-send-email-jwerner@chromium.org>
-	<1427412625-12377-2-git-send-email-jwerner@chromium.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="T0u6oYl84yPn00Od"
+Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
 	Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
 	addy ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Julius Werner <jwerner-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1427412625-12377-2-git-send-email-jwerner-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1427412625-12377-1-git-send-email-jwerner-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Julius,
 
-On Thu, Mar 26, 2015 at 4:30 PM, Julius Werner <jwerner-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org> wrote:
-> We have found that we can sometimes see read failures on boards with
-> high-capacitance SPI lines. It seems that the controller samples the Rx
-> data line too early, and its register interface has an "Rx Sample Delay"
-> setting to fine-tune against this issue.
->
-> This patch adds a new optional device tree entry that can configure this
-> delay in terms of nanoseconds. The kernel will calculate the
-> best-fitting amount of parent clock ticks to program the controller with
-> based on that.
->
-> Signed-off-by: Julius Werner <jwerner-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-> ---
->  .../devicetree/bindings/spi/spi-rockchip.txt        |  4 ++++
->  drivers/spi/spi-rockchip.c                          | 21 +++++++++++++++++++++
->  2 files changed, 25 insertions(+)
+--T0u6oYl84yPn00Od
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Reviewed-by: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+On Thu, Mar 26, 2015 at 04:30:24PM -0700, Julius Werner wrote:
+> The Rockchip SPI driver currently calculates its clock rate divisor by
+> integer dividing the parent rate by the target rate, and then rounding
+> the result up to the next even number (since the divisor must be
+> even).
+
+Applied both, thanks.
+
+--T0u6oYl84yPn00Od
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVFKhQAAoJECTWi3JdVIfQwFkH/j+maez2s4cqChJbduOnwABh
+9CEoPMZfuEUr2xoqwALE491xrlsAVhiv58LM0/3R6OXzh/RvTkisrVS2D9T/Pd0d
+ADf9srakamClgrOTcEMeJDNB25pTXVVCkvek0SJWgrefPC2hxpl+caGv4fZmjEXU
+RepzAZQGKtn/xAX6HMso9sWzTJBZAEPaY/dmutnjt0ywS184sk6+v0X426sfFyYl
+09CkegF/ChBjkgWA7jJn+3l3O+cX8ekTMf2AdJeszUxka+9yhkUJDWbdT8YK0eiA
+KVGK1dDTlDUAlfgm4pwEwkbi28Kp/kMyTTaPow2i1Z0SE2NRzOrYvOn4jYt5l84=
+=DLmY
+-----END PGP SIGNATURE-----
+
+--T0u6oYl84yPn00Od--
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,100 +1,72 @@
-From: Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
-Subject: spi: bcm2835: strange observation with cs_gpios low after reboot
-Date: Sat, 28 Mar 2015 13:12:02 +0100
-Message-ID: <DFD4303D-1BE7-4B34-88CB-985699787A1F@sperl.org>
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: Re: [PATCH] SPI: bcm2835: move to the transfer_one driver model
+Date: Sat, 28 Mar 2015 19:11:59 +0100
+Message-ID: <AB966507-3A94-4421-8153-AB4090E309AF@martin.sperl.org>
+References: <1426755714-28130-1-git-send-email-kernel@martin.sperl.org> <1426755714-28130-2-git-send-email-kernel@martin.sperl.org> <550BAA89.5090707@wwwdotorg.org> <20150320095247.GE2869@sirena.org.uk> <1756D77D-173D-4D6D-B629-59CC8A49714F@martin.sperl.org> <20150325151611.GA3572@sirena.org.uk> <681599F9-2D88-49FF-BD16-4F388D0B2874@martin.sperl.org> <20150325165441.GI3572@sirena.org.uk> <767DFCCF-C8A4-44B3-9E85-96011B0FF0FA@martin.sperl.org> <20150325185007.GL3572@sirena.org.uk> <561486F6-3580-4884-8A6A-8477D8C3BDC9@martin.sperl.org> <30057D30-6A2D-4517-B374-76FF2448E455@martin.sperl.org> <5516296A.2030505@wwwdotorg.org>
 Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2070.6\))
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 7bit
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
- linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
- linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
-List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	notro-L59+Z2yzLopAfugRpC6u6w@public.gmane.org
+To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <5516296A.2030505-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-I found the following strange situation with cs_gpios after a reboot
-of my raspberry-pi.
 
-Essentially on first load one of my devices does not get detected.
-Only when I reload the spi-bcm2835 driver the second device gets
-correctly detected.
+> On 28.03.2015, at 05:09, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org> wrote:
+> Can you expand on that a bit more?
+> 
+> Are you planning on implementing code in the driver so it always uses
+> GPIO CS even when GPIOs aren't specified in the DT, or disabling those
+> optimizations when native CS is in use?
 
-The reason behind this is that at one point (probably during 
-pin-control) the GPIOs that are set to output, but the level is
-not modified in the register, so it is pulled low.
+>> So the question is if we should depreciate native chip-selects for this
+>> driver with one of those future improvements listed below.
+> 
+> Only if you can make the driver transparently use GPIO CS mode even when
+> no GPIOs are specified in the DT. DT is an ABI, and old DTs need to
+> continue to work on newer kernels.
+No I think I will just have a case where some optimization only get used
+when using gpio - even though it adds a bit of complexity/code to maintain.
 
-They only get set to the correct polarity when spi_setup is running
-during the initialization of the device itself, which results in
-the 2 identical devices getting configured at the same time while the
-first device is running with spi_setup having run while the second
-is still pending a call to spi_setup which sets up gpio with the 
-correct polarity and thus is also responding even if not intended.
+The code to alter the pin-mode from ALT1 to OUT is probably more complex
+than just adding a "dev_warn" during probe to indicate that it is 
+depreciated/no longer recommended and an if statement to discriminate the
+situation.
 
-The second time I load the spi-bcm2835 driver it works fine
-as the levels have been set already and the levels are not modified.
+If you know how to change the Mode of a pin on the fly, then we can add
+that at a some point.
 
-Is this something that has been observed before?
+> 
+>> As for testing: I have also tried to test with mmc_spi, but I have not
+>> been able to make that driver work reliably in any recent kernel
+>> versions.
+>> Most of the time I see timeouts - and with lots of different SD-cards...
+>> 
+>> IIRC the last time I tested it successfully was with 3.12.
+> 
+> It'd be great if you could use "git bisect" to track down the change
+> that broke this.
 
-My dt has the following:
+The problem is that it is a lot of kernel-versions I would have to test
+to figure out why and with the rpi used for compiling the kernel it 
+becomes a prohibitive long exercise...
 
-&gpio {
-	spi_cs_pins: spi_cs_pins {
-		brcm,pins = <4 5 6>;
-		brcm,function = <1>; /* output */
-	};
-}
+Also I may have a slightly different setup now compared to when I did
+the test initially, so this may be the trigger as well. 
+Hence I was asking if someone had similar issues/has a working setup 
+with an up to date kernel. (Also I think the last time I tried it was
+still based on the foundation kernels before an upstream kernel existed)
 
-&spi {
-	cs-gpios = <0>, <0>, <&gpio 6 0>, <&gpio 5 0>, <&gpio 4 0>;
-};
+I will give it a try running an old kernel, but it may take some time...
 
-I have also tried:
-	cs-gpios = <0>, <0>, <&gpio 6 1>, <&gpio 5 1>, <&gpio 4 1>;
-but it makes no difference.
 
-The following in my driver solves the problem for now, but ignores
-the configured CS polarity initially, but it handles the "typical"
-case of normal CS polarity:
 
-static int spi_initialsetup_gpio(struct spi_master* master)
-{
-	int i;
-	bool level;
-	if (!master->cs_gpios)
-		return 0;
-
-	for (i = 0; i < master->num_chipselect; i++) {
-		if (gpio_is_valid(master->cs_gpios[i])) {
-			/* actually we need to figure out the
-			 * configured CSPOL of that device here,
-			 * not sure how to do that...
-			 */
-			level = true;
-			gpio_set_value(master->cs_gpios[i], level);
-		}
-	}
-	return 0;
-}
-
-and call it inside spi_probe after spi_register_master.
-
-I wonder if this is some oversight either on the spi side or on
-the bcm2835-pinctrl side.
-
-Note that the same thing may happen if a spi-device is:
-	status = "disabled";
-in the device-tree but still connected to the bus electrically.
-
-In my experience this may make the bus unusable, but that might
-get attributed to a bad device-tree itself - still it is a possible
-pitfall that we might want to avoid...
-
-Martin
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

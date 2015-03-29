@@ -1,88 +1,57 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: [PATCH/RFC 6/6] spi: bcm2835: set gpio-cs to high state prior to any
-Date: Sun, 29 Mar 2015 16:03:28 +0200
-Message-ID: <DA037FBB-56A7-4379-88F0-650367BBB822@martin.sperl.org>
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2070.6\))
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 8BIT
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/6] spi: bcm2835: remove dependency on handle_err which
+ is
+Date: Sun, 29 Mar 2015 09:48:18 -0700
+Message-ID: <20150329164818.GO1743@sirena.org.uk>
+References: <72441EEF-C509-433B-9DBA-53A936ED5BDB@martin.sperl.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="XLsjFikA86nwwlhe"
+Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <72441EEF-C509-433B-9DBA-53A936ED5BDB-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
- device initialization
 
-The situation has been observed that on the RPI after a reboot the
-GPIOs used for chip-selects are set to low when pinctl finishes setting
-up the direction of the pins.
+--XLsjFikA86nwwlhe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This can negatively impact the spi-bus and inhibit propper device
-detection.
+On Sun, Mar 29, 2015 at 04:03:22PM +0200, Martin Sperl wrote:
+>  in spi-for-next
+>=20
+> Remove the implementation of handle_err, the function of which was introd=
+uced to
+> spi-for-next with patch b716c4ff=20
 
-This (incomplete) code pulls the CS high to avoid the situation in the
-common case of "normal" CS-priority - it still needs a revisit to get
-the reverse polarity cases right as well.
+Why?
 
-A variation of this probably should get moved into spi_register_master
-to fix this for other spi-controller as well.
+When referencing patches please include the patch title as well as the
+hash, this makes the mail/commit log more directly readable by humans.
 
-Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Tested-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+--XLsjFikA86nwwlhe
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
----
- drivers/spi/spi-bcm2835.c |   23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-Applies against spi - topic/bcm2835.
+iQEcBAEBCAAGBQJVGCzRAAoJECTWi3JdVIfQ5owH/2GHq1755w97V5Q+LPGJw7Yx
+5dghE58VrYR4W5wJe39t+QLO1h+otKMiXPVDlnaHsKsFlCIIIa5RtXpTW65uqMeC
+HFA0Zh2ia7VNH7Ai1axZLy1klLvuO005yWneBjFzBA1fyzdrh82LVajVMoBV//YE
+qPpsB0qfXW/vED8BTLTvi500vJCZvI3W8UHrm3UEy9s/YOBOnC7Mcpp/T7hgkUch
+EoyTSQZuQ6SiObbCLQRJl7XxanjWDx1LgnynWc5njvLl2ndAzY9tv+xYgmkqQGWl
+OU1akU2q78GDeNP2SygjQO9J3mf4AjDrwTGX6nzCdV6b98RYMFw623FyPSj0+Yg=
+=DR0d
+-----END PGP SIGNATURE-----
 
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index 1d731b8..b6825a4 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -349,6 +349,26 @@ static int bcm2835_spi_setup(struct spi_device *spi)
- 	return -EINVAL;
- }
- 
-+static void bcm2835_spi_initialsetup_gpio(struct spi_master *master)
-+{
-+	int i;
-+	bool level;
-+
-+	if (!master->cs_gpios)
-+		return;
-+
-+	for (i = 0; i < master->num_chipselect; i++) {
-+		if (gpio_is_valid(master->cs_gpios[i])) {
-+			/* actually we need to figure out the
-+			 * configured CSPOL of that device here,
-+			 * not sure how to do that...
-+			 */
-+			level = true;
-+			gpio_set_value(master->cs_gpios[i], level);
-+		}
-+	}
-+}
-+
- static int bcm2835_spi_probe(struct platform_device *pdev)
- {
- 	struct spi_master *master;
-@@ -414,6 +434,9 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
- 		goto out_clk_disable;
- 	}
- 
-+	/* set GPIO-CS to disabled */
-+	bcm2835_spi_initialsetup_gpio(master);
-+
- 	return 0;
- 
- out_clk_disable:
--- 
-1.7.10.4
-
-
+--XLsjFikA86nwwlhe--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

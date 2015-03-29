@@ -1,57 +1,51 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/6] spi: bcm2835: remove dependency on handle_err which
- is
-Date: Sun, 29 Mar 2015 09:48:18 -0700
-Message-ID: <20150329164818.GO1743@sirena.org.uk>
-References: <72441EEF-C509-433B-9DBA-53A936ED5BDB@martin.sperl.org>
+Subject: Re: [PATCH 2/6] spi: bcm2835: fix code formatting issue
+Date: Sun, 29 Mar 2015 09:52:44 -0700
+Message-ID: <20150329165243.GP1743@sirena.org.uk>
+References: <92559EB4-3319-4F7F-8B18-61F8AC79CE7B@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="XLsjFikA86nwwlhe"
+	protocol="application/pgp-signature"; boundary="/d7X7C0hV/blnKmH"
 Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
 To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <72441EEF-C509-433B-9DBA-53A936ED5BDB-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <92559EB4-3319-4F7F-8B18-61F8AC79CE7B-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---XLsjFikA86nwwlhe
+--/d7X7C0hV/blnKmH
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Sun, Mar 29, 2015 at 04:03:22PM +0200, Martin Sperl wrote:
->  in spi-for-next
->=20
-> Remove the implementation of handle_err, the function of which was introd=
-uced to
-> spi-for-next with patch b716c4ff=20
+On Sun, Mar 29, 2015 at 04:03:23PM +0200, Martin Sperl wrote:
+> Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+> Tested-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-Why?
+Applied, thanks.  It's generally not needed to add a tested by tag for a
+patch you wrote yourself, that's the general assumption (and in this
+case as it's a reformatting there's not a huge amount of testing to do).
 
-When referencing patches please include the patch title as well as the
-hash, this makes the mail/commit log more directly readable by humans.
-
---XLsjFikA86nwwlhe
+--/d7X7C0hV/blnKmH
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVGCzRAAoJECTWi3JdVIfQ5owH/2GHq1755w97V5Q+LPGJw7Yx
-5dghE58VrYR4W5wJe39t+QLO1h+otKMiXPVDlnaHsKsFlCIIIa5RtXpTW65uqMeC
-HFA0Zh2ia7VNH7Ai1axZLy1klLvuO005yWneBjFzBA1fyzdrh82LVajVMoBV//YE
-qPpsB0qfXW/vED8BTLTvi500vJCZvI3W8UHrm3UEy9s/YOBOnC7Mcpp/T7hgkUch
-EoyTSQZuQ6SiObbCLQRJl7XxanjWDx1LgnynWc5njvLl2ndAzY9tv+xYgmkqQGWl
-OU1akU2q78GDeNP2SygjQO9J3mf4AjDrwTGX6nzCdV6b98RYMFw623FyPSj0+Yg=
-=DR0d
+iQEcBAEBCAAGBQJVGC3bAAoJECTWi3JdVIfQJfQH/20u8bfOnT04g9VlB+9Gk4Kv
+4+AJFVAgKDtWWpI71Ix7KdtVQF6eTE/fMEVw7YJFG8IQE6Uf8hf9aTIJb8nBc1zQ
+aiPZA8Qpa0GlWUFxvbofIbQ4omiEVLwn1Oz9VCcCSPURoMthcgPvBbNG1KwbVBfR
+hylsFVF3HjdTXZKcU4zWAbkiHzcs+o+0k5j9MSZYoM04RtNocv0+7sP7xNC6eMuT
+AHrLuyP7OfhmWwuVuox47Aj1VkkUsqtjWkYuRXtt70Ru0DwYP45zCeaQx16nujMQ
+Ma3QxbvfHwiPIwuOoyJqdAcVP0pOyDnfUiIrz5SWF/sqh2V7Em54OgHPkqoskEo=
+=cTxz
 -----END PGP SIGNATURE-----
 
---XLsjFikA86nwwlhe--
+--/d7X7C0hV/blnKmH--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,55 +1,78 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 3/6] spi: bcm2835: fill FIFO before enabling interrupts to
-Date: Sun, 29 Mar 2015 09:55:05 -0700
-Message-ID: <20150329165505.GQ1743@sirena.org.uk>
-References: <3628E5E2-7EA9-488F-AF5F-A2E43D2D1E3E@martin.sperl.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="dJyWBSYfjLochwFK"
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: Re: [PATCH 1/6] spi: bcm2835: remove dependency on handle_err which is
+Date: Sun, 29 Mar 2015 19:03:44 +0200
+Message-ID: <119C0671-7379-483A-B734-441E6354633E@martin.sperl.org>
+References: <72441EEF-C509-433B-9DBA-53A936ED5BDB@martin.sperl.org> <20150329164818.GO1743@sirena.org.uk>
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2070.6\))
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 8BIT
 Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <3628E5E2-7EA9-488F-AF5F-A2E43D2D1E3E-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <20150329164818.GO1743-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---dJyWBSYfjLochwFK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> On 29.03.2015, at 18:48, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> 
+> On Sun, Mar 29, 2015 at 04:03:22PM +0200, Martin Sperl wrote:
+>> in spi-for-next
+>> 
+>> Remove the implementation of handle_err, the function of which was introduced to
+>> spi-for-next with patch b716c4ff 
+> 
+> Why?
+> 
+> When referencing patches please include the patch title as well as the
+> hash, this makes the mail/commit log more directly readable by humans.
 
-On Sun, Mar 29, 2015 at 04:03:25PM +0200, Martin Sperl wrote:
->  reduce interrupts/message
+This is what I have received and the patch fixes that compile issue...
 
-Applied, thanks.  There's something wrong with the way you're sending
-patches - long subject lines are being wrapped into the body of the
-patch.  Please check this, the easiest thing is most likely to be to use
-git format-patch and git send-email to send your patches as that's
-pretty much zero effort.
+tree:   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi topic/bcm2835
+head:   31239b1e92ce1efe9caf5d7d7e901ae02a9ad229
+commit: 31239b1e92ce1efe9caf5d7d7e901ae02a9ad229 [6/6] SPI: bcm2835: move to the transfer_one driver model
+config: powerpc-allmodconfig (attached as .config)
+reproduce:
+ wget https://git.kernel.org/cgit/linux/kernel/git/wfg/lkp-tests.git/plain/sbin/make.cross -O ~/bin/make.cross
+ chmod +x ~/bin/make.cross
+ git checkout 31239b1e92ce1efe9caf5d7d7e901ae02a9ad229
+ # save the attached .config to linux build tree
+ make.cross ARCH=powerpc 
 
-Please while looking at this also look into threading your patches into
-a single thread per series, this makes things easier to work with.
+All error/warnings:
 
---dJyWBSYfjLochwFK
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+  drivers/spi/spi-bcm2835.c: In function 'bcm2835_spi_probe':
+>> drivers/spi/spi-bcm2835.c:318:8: error: 'struct spi_master' has no member named 'handle_err'
+    master->handle_err = bcm2835_spi_handle_err;
+          ^
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+vim +318 drivers/spi/spi-bcm2835.c
 
-iQEcBAEBCAAGBQJVGC5oAAoJECTWi3JdVIfQuf8H/1fBKddAEzrhqZ0O0knpcJkq
-9i2hraOUarzlvLZ22PQCjP7CML9ysqykwClz2+AdqWSzVSkhAPYk2Pcyva/7x7oV
-BTqobWhHAhOBpOrytXhMEizByVmJGCnkAqJCH6K+G5XQv8m6iYXjyDARznHdVF8K
-J0kstpTMdvbFcfbOQbhybdiZD358rPc4Yl9gKMNjA39aDXPOIasp7KOe06iwOOci
-/uXdhmJybVShLoImrXS3VRTYzcI0X92XyU+xVhmE5uyfqX3/QK3w49a9zbLQ2ety
-FsaVrhlvBDzln6daDnZ7vEzlkbSLwLGi396LwauZcROqcmsAl4MWggoJg7X4iFo=
-=5134
------END PGP SIGNATURE-----
+  312		master->mode_bits = BCM2835_SPI_MODE_BITS;
+  313		master->bits_per_word_mask = SPI_BPW_MASK(8);
+  314		master->num_chipselect = 3;
+  315		master->setup = bcm2835_spi_setup;
+  316		master->set_cs = bcm2835_spi_set_cs;
+  317		master->transfer_one = bcm2835_spi_transfer_one;
+> 318		master->handle_err = bcm2835_spi_handle_err;
+  319		master->dev.of_node = pdev->dev.of_node;
+  320	
+  321		bs = spi_master_get_devdata(master);
 
---dJyWBSYfjLochwFK--
+
+handle_err was introduced to for-next with b716c4ff by Andy Shevchenko
+titled: "spi: introduce master->handle_err() callback"
+
+But this is not included in the topic/bcm2835 branch, so the compile fails
+because of the missing handle_err in spi_master.
+
+If you merge that one in topic/bcm2835, then you can drop this patch.
+
+
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,7 +1,7 @@
 From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: [PATCH 3/6] spi: bcm2835: fill FIFO before enabling interrupts to
-Date: Sun, 29 Mar 2015 16:03:25 +0200
-Message-ID: <3628E5E2-7EA9-488F-AF5F-A2E43D2D1E3E@martin.sperl.org>
+Subject: [PATCH 4/6] spi: bcm2835: warn about native-chip-selects being used
+Date: Sun, 29 Mar 2015 16:03:26 +0200
+Message-ID: <0330B85B-A297-482B-80A9-E01F236D33D2@martin.sperl.org>
 Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2070.6\))
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 8BIT
@@ -13,53 +13,67 @@ Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
- reduce interrupts/message
-
-To reduce the number of interrupts/message we fill the FIFO before
-enabling interrupts - for short messages this reduces the interrupt count
-from 2 to 1 interrupt.
-
-There have been rare cases where short (<200ns) chip-select switches with
-native CS have been observed during such operation, this is why this
-optimization is only enabled for GPIO-CS.
-
 Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Tested-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 ---
- drivers/spi/spi-bcm2835.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/spi/spi-bcm2835.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
 Applies against spi - topic/bcm2835
 
+Could get replaced by something similar to this.
+	if (!gpio_is_valid(spi->gpio_cs)) {
+		if (spi->chip_select == 0) {
+			spi->gpio_cs = 8;
+			gpio_set_output(spi->gpio_cs);
+		}
+		if (spi->chip_select == 1) {
+			spi->gpio_cs = 7;
+			gpio_set_output(spi->gpio_cs);
+		}
+	}
+But I do not know what is the correct call to use.
+
 diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index 72d4525..adf157b 100644
+index adf157b..601fc5e 100644
 --- a/drivers/spi/spi-bcm2835.c
 +++ b/drivers/spi/spi-bcm2835.c
-@@ -203,6 +203,22 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
- 	bs->tx_len = tfr->len;
- 	bs->rx_len = tfr->len;
+@@ -82,6 +82,7 @@ struct bcm2835_spi {
+ 	u8 *rx_buf;
+ 	int tx_len;
+ 	int rx_len;
++	bool native_cs_use_warning_done;
+ };
  
-+	/* fill in fifo if we have gpio-cs
-+	 * note that there have been rare events where the native-CS
-+	 * flapped for <1us which may change the behaviour
-+	 * with gpio-cs this does not happen, so it is implemented
-+	 * only for this case
-+	 */
-+	if (gpio_is_valid(spi->cs_gpio)) {
-+		/* enable HW block, but without interrupts enabled
-+		 * this would triggern an immediate interrupt
-+		 */
-+		bcm2835_wr(bs, BCM2835_SPI_CS,
-+			   cs | BCM2835_SPI_CS_TA);
-+		/* fill in tx fifo as much as possible */
-+		bcm2835_wr_fifo(bs);
-+	}
+ static inline u32 bcm2835_rd(struct bcm2835_spi *bs, unsigned reg)
+@@ -287,6 +288,9 @@ static void bcm2835_spi_set_cs(struct spi_device *spi, bool gpio_level)
+ 
+ static int bcm2835_spi_setup(struct spi_device *spi)
+ {
++	struct spi_master *master = spi->master;
++	struct bcm2835_spi *bs = spi_master_get_devdata(master);
 +
  	/*
- 	 * Enable the HW block. This will immediately trigger a DONE (TX
- 	 * empty) interrupt, upon which we will fill the TX FIFO with the
+ 	 * sanity checking the native-chipselects
+ 	 */
+@@ -294,6 +298,14 @@ static int bcm2835_spi_setup(struct spi_device *spi)
+ 		return 0;
+ 	if (gpio_is_valid(spi->cs_gpio))
+ 		return 0;
++	/* we are in the native chipselect case now,
++	 * so warn about the fact that some things may not work as well
++	 */
++	if (!bs->native_cs_use_warning_done) {
++		dev_warn(&spi->dev,
++			 "setup: native chipselect is used - some driver functions/optimizations are not applied\n");
++		bs->native_cs_use_warning_done = 1;
++	}
+ 	if (spi->chip_select < 3)
+ 		return 0;
+ 
 -- 
 1.7.10.4
+
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

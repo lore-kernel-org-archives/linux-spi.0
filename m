@@ -1,61 +1,88 @@
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [patch] spi: pxa2xx: missing break in pxa2xx_ssp_get_clk_div()
-Date: Mon, 30 Mar 2015 13:55:12 +0300
-Message-ID: <1427712912.14897.441.camel@linux.intel.com>
-References: <20150330103040.GB27144@mwanda>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie@kernel.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Daniel Mack <daniel@zonque.org>,
-	linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-To: Dan Carpenter <dan.carpenter@oracle.com>
-Return-path: <kernel-janitors-owner@vger.kernel.org>
-In-Reply-To: <20150330103040.GB27144@mwanda>
-Sender: kernel-janitors-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Aaron Brice <aaron.brice-vSOi0k5x9wFWk0Htik3J/w@public.gmane.org>
+Subject: [PATCH v2 1/2] spi: fsl-dspi: Fix clock rate scale values
+Date: Mon, 30 Mar 2015 10:49:15 -0700
+Message-ID: <1427737756-20487-2-git-send-email-aaron.brice@datasoft.com>
+References: <1427737756-20487-1-git-send-email-aaron.brice@datasoft.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	stefan-XLVq0VzYD2Y@public.gmane.org
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1427737756-20487-1-git-send-email-aaron.brice-vSOi0k5x9wFWk0Htik3J/w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, 2015-03-30 at 13:30 +0300, Dan Carpenter wrote:
-> We refactored this code but accidentally left out a break statement so
-> QUARK_X1000_SSP isn't handled correctly.
-> 
+Previous algorithm had an outer loop with the values {2,3,5,7} and an
+inner loop with {2,4,6,8,16,32,...,32768}, and would pick the first
+value over the required scaling value (where the total scale was the two
+numbers multiplied).
 
-Thanks for catching this!
-One comment below.
+Since the inner loop went up to 32768 it would always pick a value of 2
+for PBR and a much higher than necessary value for BR.  The desired
+scale factor was being divided by two I believe to compensate for the
+much higher scale factors (the divide by two not specified in the
+reference manual).
 
+Updated to check all values and find the smallest scale factor possible
+without going over the desired clock rate.
 
-> Fixes: 025ffe88ee60 ('spi: pxa2xx: shift clk_div in one place')
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> 
-> diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-> index 60526a5..a081cfc 100644
-> --- a/drivers/spi/spi-pxa2xx.c
-> +++ b/drivers/spi/spi-pxa2xx.c
-> @@ -791,6 +791,7 @@ static unsigned int pxa2xx_ssp_get_clk_div(struct driver_data *drv_data,
->  	switch (drv_data->ssp_type) {
->  	case QUARK_X1000_SSP:
->  		clk_div = quark_x1000_get_clk_div(rate, &chip->dds_rate);
-> +		break;
->  	default:
->  		clk_div = ssp_get_clk_div(drv_data, rate);
+Signed-off-by: Aaron Brice <aaron.brice-vSOi0k5x9wFWk0Htik3J/w@public.gmane.org>
+---
+ drivers/spi/spi-fsl-dspi.c | 35 +++++++++++++++++++++--------------
+ 1 file changed, 21 insertions(+), 14 deletions(-)
 
-It would be nice to have a break here as well, but I think we also may
-change this to if-else-if construction.
-
->  	}
-
-Whatever solution you choose
-Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
-And actually 
-Tested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
-Now run with time to see the difference.
-
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index d1a3924..96cac87 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -148,23 +148,30 @@ static void hz_to_spi_baud(char *pbr, char *br, int speed_hz,
+ 		16,	32,	64,	128,
+ 		256,	512,	1024,	2048,
+ 		4096,	8192,	16384,	32768 };
+-	int temp, i = 0, j = 0;
+-
+-	temp = clkrate / 2 / speed_hz;
+-
+-	for (i = 0; i < ARRAY_SIZE(pbr_tbl); i++)
+-		for (j = 0; j < ARRAY_SIZE(brs); j++) {
+-			if (pbr_tbl[i] * brs[j] >= temp) {
+-				*pbr = i;
+-				*br = j;
+-				return;
++	int scale_needed, scale, minscale = INT_MAX;
++	int i, j;
++
++	scale_needed = clkrate / speed_hz;
++
++	for (i = 0; i < ARRAY_SIZE(brs); i++)
++		for (j = 0; j < ARRAY_SIZE(pbr_tbl); j++) {
++			scale = brs[i] * pbr_tbl[j];
++			if (scale >= scale_needed) {
++				if (scale < minscale) {
++					minscale = scale;
++					*br = i;
++					*pbr = j;
++				}
++				break;
+ 			}
+ 		}
+ 
+-	pr_warn("Can not find valid baud rate,speed_hz is %d,clkrate is %ld\
+-		,we use the max prescaler value.\n", speed_hz, clkrate);
+-	*pbr = ARRAY_SIZE(pbr_tbl) - 1;
+-	*br =  ARRAY_SIZE(brs) - 1;
++	if (minscale == INT_MAX) {
++		pr_warn("Can not find valid baud rate,speed_hz is %d,clkrate is %ld, we use the max prescaler value.\n",
++			speed_hz, clkrate);
++		*pbr = ARRAY_SIZE(pbr_tbl) - 1;
++		*br =  ARRAY_SIZE(brs) - 1;
++	}
+ }
+ 
+ static int dspi_transfer_write(struct fsl_dspi *dspi)
 -- 
-Andy Shevchenko <andriy.shevchenko@intel.com>
-Intel Finland Oy
+2.1.0
 
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

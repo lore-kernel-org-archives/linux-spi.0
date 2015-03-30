@@ -1,27 +1,31 @@
-From: Aaron Brice <aaron.brice@datasoft.com>
-Subject: [PATCH v2 0/2] spi: fsl-dspi (vf610) clock fixes
-Date: Mon, 30 Mar 2015 10:49:14 -0700
-Message-ID: <1427737756-20487-1-git-send-email-aaron.brice@datasoft.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stefan@agner.ch
-To: broonie@kernel.org
+From: Bert Vermeulen <bert@biot.com>
+Subject: [PATCH v2 0/1] spi: Add driver for Routerboard RB4xx boards
+Date: Mon, 30 Mar 2015 20:24:16 +0200
+Message-ID: <1427739857-13395-1-git-send-email-bert@biot.com>
+Cc: Bert Vermeulen <bert@biot.com>
+To: ralf@linux-mips.org, broonie@kernel.org, linux-mips@linux-mips.org,
+	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+	andy.shevchenko@gmail.com
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-We were having intermittent problems writing to SRAM chip on SPI bus on vf610
-SoM.  Added support for CS setup and hold times to meet the SRAM spec.  In the
-process noticed that the baud rate was a little high.
+Changes in v2:
+This is a near complete rewrite of the original OpenWrt driver. All comments
+were taken into account, and the spi_transfer.fast_write flag is gone.
+Instead, the cs_change flag is used. It's not too bad a hack, as it really
+does use CS.
 
-Changes since v1:
- * More detail in commit message for clock rate fix
+The CPLD module will be submitted as an MFD driver, as suggested.
 
-Aaron Brice (2):
-  spi: fsl-dspi: Fix clock rate scale values
-  spi: fsl-dspi: Add ~50ns delay between cs and sck
+Bert Vermeulen (1):
+  spi: Add SPI driver for Mikrotik RB4xx series boards
 
- drivers/spi/spi-fsl-dspi.c | 84 ++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 70 insertions(+), 14 deletions(-)
+ drivers/spi/Kconfig     |   6 ++
+ drivers/spi/Makefile    |   1 +
+ drivers/spi/spi-rb4xx.c | 241 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 248 insertions(+)
+ create mode 100644 drivers/spi/spi-rb4xx.c
 
 -- 
-2.1.0
+1.9.1

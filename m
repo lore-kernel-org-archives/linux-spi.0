@@ -1,36 +1,40 @@
 From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH 4/6] spi: bcm2835: warn about native-chip-selects being used
-Date: Mon, 30 Mar 2015 21:20:20 +0200
-Message-ID: <4790EEB6-C62D-4FE0-98AE-26ADE3024B04@martin.sperl.org>
-References: <0330B85B-A297-482B-80A9-E01F236D33D2@martin.sperl.org> <20150330042205.GB1568@sirena.org.uk>
+Subject: Re: [PATCH/RFC 6/6] spi: bcm2835: set gpio-cs to high state prior to any
+Date: Mon, 30 Mar 2015 21:25:38 +0200
+Message-ID: <F17E5383-B75E-4884-9673-0C9E95750E4A@martin.sperl.org>
+References: <DA037FBB-56A7-4379-88F0-650367BBB822@martin.sperl.org> <20150330042821.GD1568@sirena.org.uk>
 Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2070.6\))
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150330042205.GB1568-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <20150330042821.GD1568-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
-> On 30.03.2015, at 06:22, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
->> 
->> But I do not know what is the correct call to use.
+> On 30.03.2015, at 06:28, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
 > 
-> I don't know what you mean by "correct call" here, sorry.  If you're
-> talking about working out which GPIO maps to the /CS pin then can the
-> pinctrl API help?
+> On Sun, Mar 29, 2015 at 04:03:28PM +0200, Martin Sperl wrote:
+> 
+>> A variation of this probably should get moved into spi_register_master
+>> to fix this for other spi-controller as well.
+> 
+> Yes, this is the wrong place to solve this.
 
-Well - how do I change the mode of a GPIO to output (which is typically ALT0)?
-something like this:
->> 			gpio_set_output(spi->gpio_cs);
+So should we move that into spi_register_master?
+My question for completeness remains: how do we get the devices
+from dt or whatever while we are still registering the master?
 
-I was hoping someone would have an explicit pointer...
+Also I am still missing a bit of the big picture and vision how
+to implement it taking all different HW/setup cases into account.
 
-Martin
+That is why I have put it as an RFC - mostly to get the issue some
+exposure and some ideas.
+
 
 
 --

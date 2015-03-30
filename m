@@ -1,57 +1,74 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3 1/1] spi: Using Trigger number to transmit/receive data
-Date: Sun, 29 Mar 2015 21:30:49 -0700
-Message-ID: <20150330043049.GE1568@sirena.org.uk>
-References: <1414034053-14750-1-git-send-email-cm-hiep@jinso.co.jp>
- <1414034053-14750-2-git-send-email-cm-hiep@jinso.co.jp>
+Subject: Re: [PATCH 5/6] spi: bcm2835: add polling mode for transfers below
+ 30us
+Date: Sun, 29 Mar 2015 21:27:27 -0700
+Message-ID: <20150330042727.GC1568@sirena.org.uk>
+References: <808DC596-35BB-4A08-8CF4-DFAB6294636E@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="EgVrEAR5UttbsTXg"
-Cc: geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org, yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org,
-	ryusuke.sakato.bx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Cao Minh Hiep <cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="1SQmhf2mF2YjsYvc"
+Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1414034053-14750-2-git-send-email-cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
+In-Reply-To: <808DC596-35BB-4A08-8CF4-DFAB6294636E-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---EgVrEAR5UttbsTXg
+--1SQmhf2mF2YjsYvc
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 23, 2014 at 12:14:13PM +0900, Cao Minh Hiep wrote:
-> From: Hiep Cao Minh <cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
->=20
-> In order to transmit and receive data when have 32 bytes of data that
-> ready has prepared on Transmit/Receive Buffer to transmit or receive.
-> Instead transmits/receives a byte data using Transmit/Receive Buffer
-> Data Triggering Number will improve the speed of transfer data.
+On Sun, Mar 29, 2015 at 04:03:27PM +0200, Martin Sperl wrote:
 
-Applied, thanks.  It'd have helped to be more explicit about what a
-"trigger number" is here - it's not a commonly used term.  "Trigger
-level" is more normal.
+> +	/* check if we shall run in polling mode */
+> +	xfer_time_us = tfr->len * 9 * 1000000 / spi_used_hz;
+> +	if (xfer_time_us <= BCM2835_SPI_POLLING_LIMIT_US) {
 
---EgVrEAR5UttbsTXg
+
+> +		/* Transfer complete - reset SPI HW */
+> +		bcm2835_spi_reset_hw(master);
+> +		/* and return without waiting for completion */
+> +		return 0;
+> +	}
+
+The logic here is fine but it's more common to construct these things by
+having separate functions for the different modes of operation.  This
+makes the code more straightforward since it's clear that there are
+alternative branches being taken which isn't so obvious here as the
+polling case is an else within the main transfer function.  You end up
+with
+
+
+	if (polling)
+		driver_polling_transfer()
+	else if (interrupt)
+		driver_interrupt_transfer()
+	else
+		driver_dma_transfer()
+
+or whatever at the point where the flows branch.
+
+--1SQmhf2mF2YjsYvc
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVGNF4AAoJECTWi3JdVIfQK0UH/1QOQfOb3gz6gxmdpBTksck6
-nVFWHbq0tiGXv3KIq1ciUKRRCQD8mcwb+WDxFPf+NPp8gJwINyTPgUENHn13JVzj
-vgMZzcHl85KpDkLauh74SLSbn8kmlVToF0WrCjO0n8345GvWxE7tMcRUYiyKfE/X
-xdZ/abeRvYLXNg5nXsJFNq7JVWS4FiDHIpBQLivd4qBZRRu9p1OIwrKHE0QL/qKZ
-Ma1tg9VxvAlz5aAxDNUcBmzrzzntkk01x5TS5sG0HvRC4HVF1fmoERNJShCrYQtZ
-mndWmYmySnwrg8xY4E+EU6DtVhTXW+viEJefOLr/Fvd+QAL4rW9ob+SFgxafPQo=
-=acKP
+iQEcBAEBCAAGBQJVGNCuAAoJECTWi3JdVIfQ4CkH/jEhamB10Vx8Y39+5xQCK/eN
+1/udosT0XRPTzpCmGIV9fAtT2wFCmArkTVwabhLsfzS2eG0Aqmy0XVaqjjx8ZNZ0
+5phREwmXOK1PJzSu5NIF+KPtYnCrYZMzVZN340BRUmr3ZvMOkbVqyKkIeEqGOeEk
+agH7uxVd7XWgyui7OFfSa7xEPVSj6yM5VthPR2118g+AYbj30st1fqPBZhtLqKrU
+TGuh0MoMl28OMHL4U9cM/dUV3Zfkx85coOoewWtLFqFrc8jtTXhD1d/MKAXsSnHq
+Y46P+k2h3JzawhzGHw8l6ZyOVRXDwPKLs8qMQ4xClOykHILSv1cE7OLBJnvNBLo=
+=UDa6
 -----END PGP SIGNATURE-----
 
---EgVrEAR5UttbsTXg--
+--1SQmhf2mF2YjsYvc--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

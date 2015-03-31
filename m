@@ -1,50 +1,36 @@
-From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Subject: Re: [PATCH/RFC 6/6] spi: bcm2835: set gpio-cs to high state prior
- to any
-Date: Mon, 30 Mar 2015 21:35:45 -0600
-Message-ID: <551A1611.1090708@wwwdotorg.org>
-References: <DA037FBB-56A7-4379-88F0-650367BBB822@martin.sperl.org> <20150330042821.GD1568@sirena.org.uk> <F17E5383-B75E-4884-9673-0C9E95750E4A@martin.sperl.org>
+From: Cao Minh Hiep <cm-hiep@jinso.co.jp>
+Subject: Re: [PATCH v3 1/1] spi: Using Trigger number to transmit/receive
+ data
+Date: Tue, 31 Mar 2015 14:24:38 +0900
+Message-ID: <551A2F96.2050000@jinso.co.jp>
+References: <1414034053-14750-1-git-send-email-cm-hiep@jinso.co.jp> <1414034053-14750-2-git-send-email-cm-hiep@jinso.co.jp> <20150330043049.GE1568@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <F17E5383-B75E-4884-9673-0C9E95750E4A-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8;
+	format=flowed
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: geert+renesas@glider.be, linux-spi@vger.kernel.org,
+	kuninori.morimoto.gx@renesas.com, yoshihiro.shimoda.uh@renesas.com,
+	ryusuke.sakato.bx@renesas.com, linux-sh@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <20150330043049.GE1568@sirena.org.uk>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On 03/30/2015 01:25 PM, Martin Sperl wrote:
-> 
->> On 30.03.2015, at 06:28, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
->>
->> On Sun, Mar 29, 2015 at 04:03:28PM +0200, Martin Sperl wrote:
->>
->>> A variation of this probably should get moved into spi_register_master
->>> to fix this for other spi-controller as well.
->>
->> Yes, this is the wrong place to solve this.
-> 
-> So should we move that into spi_register_master?
-> My question for completeness remains: how do we get the devices
-> from dt or whatever while we are still registering the master?
-> 
-> Also I am still missing a bit of the big picture and vision how
-> to implement it taking all different HW/setup cases into account.
-> 
-> That is why I have put it as an RFC - mostly to get the issue some
-> exposure and some ideas.
+Hi Mark-san
 
-I suspect the solution is simply not to have the pinctrl node set the CS
-pins to GPIO_OUT, but rather rely on gpio_request() ->
-bcm2835_gpio_request() -> bcm2835_pmx_gpio_set_direction() setting up
-the pinmux function for any GPIOs that are requested. Presumably, the CS
-GPIO for each chip is only requested when the DT node for the SPI device
-(not SPI controller device) has been parsed, so the correct GPIO CS
-value can be passed to gpio_request()/gpio_direction_output()?
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+On 2015=E5=B9=B403=E6=9C=8830=E6=97=A5 13:30, Mark Brown wrote:
+> On Thu, Oct 23, 2014 at 12:14:13PM +0900, Cao Minh Hiep wrote:
+>> From: Hiep Cao Minh <cm-hiep@jinso.co.jp>
+>>
+>> In order to transmit and receive data when have 32 bytes of data tha=
+t
+>> ready has prepared on Transmit/Receive Buffer to transmit or receive=
+=2E
+>> Instead transmits/receives a byte data using Transmit/Receive Buffer
+>> Data Triggering Number will improve the speed of transfer data.
+> Applied, thanks.  It'd have helped to be more explicit about what a
+> "trigger number" is here - it's not a commonly used term.  "Trigger
+> level" is more normal.
+Thank you very much!
+Hiep.

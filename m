@@ -1,9 +1,9 @@
 From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Subject: Re: [PATCH 1/6] spi: bcm2835: remove dependency on handle_err which
- is
-Date: Mon, 30 Mar 2015 21:13:00 -0600
-Message-ID: <551A10BC.1010607@wwwdotorg.org>
-References: <72441EEF-C509-433B-9DBA-53A936ED5BDB@martin.sperl.org> <20150329164818.GO1743@sirena.org.uk>
+Subject: Re: [PATCH 3/6] spi: bcm2835: fill FIFO before enabling interrupts
+ to
+Date: Mon, 30 Mar 2015 21:16:21 -0600
+Message-ID: <551A1185.6060502@wwwdotorg.org>
+References: <3628E5E2-7EA9-488F-AF5F-A2E43D2D1E3E@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 7bit
@@ -12,39 +12,47 @@ Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, lee-DgEjT+Ai2y
 	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
 To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150329164818.GO1743-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <3628E5E2-7EA9-488F-AF5F-A2E43D2D1E3E-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 03/29/2015 10:48 AM, Mark Brown wrote:
-> On Sun, Mar 29, 2015 at 04:03:22PM +0200, Martin Sperl wrote:
->> in spi-for-next
->> 
->> Remove the implementation of handle_err, the function of which
->> was introduced to spi-for-next with patch b716c4ff
+On 03/29/2015 08:03 AM, Martin Sperl wrote:
+>  reduce interrupts/message
 > 
-> Why?
+> To reduce the number of interrupts/message we fill the FIFO before
+> enabling interrupts - for short messages this reduces the interrupt count
+> from 2 to 1 interrupt.
 > 
-> When referencing patches please include the patch title as well as
-> the hash, this makes the mail/commit log more directly readable by
-> humans.
+> There have been rare cases where short (<200ns) chip-select switches with
+> native CS have been observed during such operation, this is why this
+> optimization is only enabled for GPIO-CS.
 
-I believe these days it's also typical to use a 12-character commit
-hash when referencing commits; IIRC Linus suggested the following in
-your ~/.gitconfig:
+> diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
 
-[core]
-        abbrev = 12
+> +	/* fill in fifo if we have gpio-cs
+> +	 * note that there have been rare events where the native-CS
+> +	 * flapped for <1us which may change the behaviour
+> +	 * with gpio-cs this does not happen, so it is implemented
+> +	 * only for this case
+> +	 */
+> +	if (gpio_is_valid(spi->cs_gpio)) {
+> +		/* enable HW block, but without interrupts enabled
+> +		 * this would triggern an immediate interrupt
+> +		 */
+> +		bcm2835_wr(bs, BCM2835_SPI_CS,
+> +			   cs | BCM2835_SPI_CS_TA);
+> +		/* fill in tx fifo as much as possible */
+> +		bcm2835_wr_fifo(bs);
+> +	}
 
-... which would yield the following:
+I can understand perfectly why the code fills the FIFO before enabling
+interrupts; it avoids having to immediately service an interrupt simply
+to fill the FIFO.
 
-$ git log --oneline -1 b716c4ff|cat
-b716c4ffc6a2 spi: introduce master->handle_err() callback
-
-... so you'd typically write the following in a commit log:
-
-b716c4ffc6a2 (spi: introduce master->handle_err() callback)
-
+However, I'm not sure why this is in any way related to whether the
+chip-select GPIO is valid. Surely we always want to do this? How does
+the mechanism used to control chip selects influence whether we want to
+pre-fill the FIFO?
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,159 +1,344 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH] SPI: bcm2835: move to the transfer_one driver model
-Date: Tue, 31 Mar 2015 16:49:32 +0200
-Message-ID: <E13569A5-33E5-48ED-B25F-EC7374E144C9@martin.sperl.org>
-References: <1426755714-28130-1-git-send-email-kernel@martin.sperl.org> <1426755714-28130-2-git-send-email-kernel@martin.sperl.org> <550BAA89.5090707@wwwdotorg.org> <20150320095247.GE2869@sirena.org.uk> <1756D77D-173D-4D6D-B629-59CC8A49714F@martin.sperl.org> <20150325151611.GA3572@sirena.org.uk> <681599F9-2D88-49FF-BD16-4F388D0B2874@martin.sperl.org> <20150325165441.GI3572@sirena.org.uk> <767DFCCF-C8A4-44B3-9E85-96011B0FF0FA@martin.sperl.org> <20150325185007.GL3572@sirena.org.uk> <561486F6-3580-4884-8A6A-8477D8C3BDC9@martin.sperl.org> <30057D30-6A2D-4517-B374-76FF2448E455@martin.sperl.org> <5516296A.2030505@wwwdotorg.org>
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2070.6\))
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 8BIT
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	notro-L59+Z2yzLopAfugRpC6u6w@public.gmane.org
-To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v3] spi: Add SPI driver for Mikrotik RB4xx series boards
+Date: Tue, 31 Mar 2015 18:00:45 +0300
+Message-ID: <CAHp75Vdu==oJC=daF-eri1otBN3GveQxVA66mHfNyAgit8XkXA@mail.gmail.com>
+References: <1427811090-17276-1-git-send-email-bert@biot.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Bert Vermeulen <bert-Nh2F35Ii2RQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <5516296A.2030505-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+In-Reply-To: <1427811090-17276-1-git-send-email-bert-Nh2F35Ii2RQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Tue, Mar 31, 2015 at 5:11 PM, Bert Vermeulen <bert-Nh2F35Ii2RQ@public.gmane.org> wrote:
+> This driver mediates access between the connected CPLD and other devices
+> on the bus.
+>
+> The m25p80-compatible boot flash and (some models) MMC use regular SPI,
+> bitbanged as required by the SoC. However the SPI-connected CPLD has
+> a "fast write" mode, in which two bits are transferred by SPI clock
+> cycle. The second bit is transmitted with the SoC's CS2 pin.
+>
+> Protocol drivers using this fast write facility signal this by setting
+> the cs_change flag on transfers.
+>
+> Signed-off-by: Bert Vermeulen <bert-Nh2F35Ii2RQ@public.gmane.org>
 
-> On 28.03.2015, at 05:09, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org> wrote:
->> As for testing: I have also tried to test with mmc_spi, but I have not
->> been able to make that driver work reliably in any recent kernel
->> versions.
->> Most of the time I see timeouts - and with lots of different SD-cards...
->> 
->> IIRC the last time I tested it successfully was with 3.12.
-> 
-> It'd be great if you could use "git bisect" to track down the change
-> that broke this.
+Couple of minor comments below.
 
-Here some info on my testing with the upstream kernels:
-3.12.0 - 5e01dc7b26d9f24f39abace5da98ccbd6a5ceb52 - WORKS
-3.13.0 - d8ec26d7f8287f5788a494f56e8814210f0e64be - FAILS
-which is what I had suspected.
+After addressing them
+Reviewed-by: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-Bisection between these shows the responsible commit is:
+> ---
+>  drivers/spi/Kconfig     |   6 ++
+>  drivers/spi/Makefile    |   1 +
+>  drivers/spi/spi-rb4xx.c | 244 ++++++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 251 insertions(+)
+>  create mode 100644 drivers/spi/spi-rb4xx.c
+>
+> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+> index ab8dfbe..aa76ce5 100644
+> --- a/drivers/spi/Kconfig
+> +++ b/drivers/spi/Kconfig
+> @@ -429,6 +429,12 @@ config SPI_ROCKCHIP
+>           The main usecase of this controller is to use spi flash as boot
+>           device.
+>
+> +config SPI_RB4XX
+> +       tristate "Mikrotik RB4XX SPI master"
+> +       depends on SPI_MASTER && ATH79_MACH_RB4XX
+> +       help
+> +         SPI controller driver for the Mikrotik RB4xx series boards.
+> +
+>  config SPI_RSPI
+>         tristate "Renesas RSPI/QSPI controller"
+>         depends on SUPERH || ARCH_SHMOBILE || COMPILE_TEST
+> diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+> index d8cbf65..0218f39 100644
+> --- a/drivers/spi/Makefile
+> +++ b/drivers/spi/Makefile
+> @@ -66,6 +66,7 @@ obj-$(CONFIG_SPI_PXA2XX)              += spi-pxa2xx-platform.o
+>  obj-$(CONFIG_SPI_PXA2XX_PCI)           += spi-pxa2xx-pci.o
+>  obj-$(CONFIG_SPI_QUP)                  += spi-qup.o
+>  obj-$(CONFIG_SPI_ROCKCHIP)             += spi-rockchip.o
+> +obj-$(CONFIG_SPI_RB4XX)                        += spi-rb4xx.o
+>  obj-$(CONFIG_SPI_RSPI)                 += spi-rspi.o
+>  obj-$(CONFIG_SPI_S3C24XX)              += spi-s3c24xx-hw.o
+>  spi-s3c24xx-hw-y                       := spi-s3c24xx.o
+> diff --git a/drivers/spi/spi-rb4xx.c b/drivers/spi/spi-rb4xx.c
+> new file mode 100644
+> index 0000000..aa0a1bf
+> --- /dev/null
+> +++ b/drivers/spi/spi-rb4xx.c
+> @@ -0,0 +1,244 @@
+> +/*
+> + * SPI controller driver for the Mikrotik RB4xx boards
+> + *
+> + * Copyright (C) 2010 Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+> + * Copyright (C) 2015 Bert Vermeulen <bert-Nh2F35Ii2RQ@public.gmane.org>
+> + *
+> + * This file was based on the patches for Linux 2.6.27.39 published by
+> + * MikroTik for their RouterBoard 4xx series devices.
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License version 2 as
+> + * published by the Free Software Foundation.
+> + *
+> + */
+> +
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/clk.h>
+> +#include <linux/spi/spi.h>
+> +
+> +#include <asm/mach-ath79/ar71xx_regs.h>
+> +
+> +#define SPI_CLOCK_FASTEST      0x40
+> +#define SPI_HZ                 33333334
+> +#define CPLD_CMD_WRITE_NAND    0x08 /* bulk write mode */
+> +
+> +struct rb4xx_spi {
+> +       void __iomem            *base;
+> +       struct spi_master       *master;
+> +};
+> +
+> +static inline u32 rb4xx_read(struct rb4xx_spi *rbspi, u32 reg)
+> +{
+> +       return __raw_readl(rbspi->base + reg);
+> +}
+> +
+> +static inline void rb4xx_write(struct rb4xx_spi *rbspi, u32 reg, u32 value)
+> +{
+> +       __raw_writel(value, rbspi->base + reg);
+> +}
+> +
+> +static inline void do_spi_clk(struct rb4xx_spi *rbspi, u32 spi_ioc, int value)
+> +{
+> +       u32 regval;
+> +
+> +       regval = spi_ioc;
+> +       if (value & BIT(0))
+> +               regval |= AR71XX_SPI_IOC_DO;
+> +
+> +       rb4xx_write(rbspi, AR71XX_SPI_REG_IOC, regval);
+> +       rb4xx_write(rbspi, AR71XX_SPI_REG_IOC, regval | AR71XX_SPI_IOC_CLK);
+> +}
+> +
+> +static void do_spi_byte(struct rb4xx_spi *rbspi, u32 spi_ioc, u8 byte)
+> +{
+> +       int i;
+> +
+> +       for (i = 7; i >= 0; i--)
+> +               do_spi_clk(rbspi, spi_ioc, byte >> i);
+> +}
+> +
+> +static inline void do_spi_clk_fast(struct rb4xx_spi *rbspi, u32 spi_ioc,
+> +                                  u8 value)
+> +{
+> +       u32 regval;
+> +
+> +       regval = spi_ioc;
+> +       if (value & BIT(1))
+> +               regval |= AR71XX_SPI_IOC_DO;
+> +       if (value & BIT(0))
+> +               regval |= AR71XX_SPI_IOC_CS2;
+> +
+> +       rb4xx_write(rbspi, AR71XX_SPI_REG_IOC, regval);
+> +       rb4xx_write(rbspi, AR71XX_SPI_REG_IOC, regval | AR71XX_SPI_IOC_CLK);
+> +}
+> +
+> +/* Two bits at a time, msb first */
+> +static void do_spi_byte_fast(struct rb4xx_spi *rbspi, u32 spi_ioc, u8 byte)
+> +{
+> +       do_spi_clk_fast(rbspi, spi_ioc, byte >> 6);
+> +       do_spi_clk_fast(rbspi, spi_ioc, byte >> 4);
+> +       do_spi_clk_fast(rbspi, spi_ioc, byte >> 2);
+> +       do_spi_clk_fast(rbspi, spi_ioc, byte >> 0);
+> +}
+> +
+> +static void set_cs(struct spi_device *spi, bool enable)
+> +{
+> +       struct rb4xx_spi *rbspi = spi_master_get_devdata(spi->master);
+> +
+> +       /*
+> +        * Setting CS is done along with bitbanging the actual values,
+> +        * since it's all on the same hardware register. However the
+> +        * CPLD needs CS deselected after every command.
+> +        */
+> +       if (!enable)
+> +               rb4xx_write(rbspi, AR71XX_SPI_REG_IOC,
+> +                           AR71XX_SPI_IOC_CS0 | AR71XX_SPI_IOC_CS1);
+> +}
+> +
+> +/* Deselect CS0 and CS1. */
+> +static int unprep(struct spi_master *master)
+> +{
+> +       struct rb4xx_spi *rbspi = spi_master_get_devdata(master);
+> +
+> +       rb4xx_write(rbspi, AR71XX_SPI_REG_IOC,
+> +                   AR71XX_SPI_IOC_CS0 | AR71XX_SPI_IOC_CS1);
+> +
+> +       return 0;
+> +}
+> +
+> +static int rb4xx_transfer_one(struct spi_master *master,
+> +                             struct spi_device *spi, struct spi_transfer *t)
+> +{
+> +       struct rb4xx_spi *rbspi = spi_master_get_devdata(master);
+> +       int i;
+> +       u32 spi_ioc;
+> +       u8 *rx_buf;
+> +       const u8 *tx_buf;
+> +       unsigned char out;
+> +
+> +       /*
+> +        * Prime the SPI register with the SPI device selected. The m25p80 boot
+> +        * flash and CPLD share the CS0 pin. This works because the CPLD's
+> +        * command set was designed to almost not clash with that of the
+> +        * boot flash.
+> +        */
+> +       if (spi->chip_select == 2)
+> +               spi_ioc = AR71XX_SPI_IOC_CS0;
+> +       else
+> +               spi_ioc = AR71XX_SPI_IOC_CS1;
+> +
+> +       tx_buf = t->tx_buf;
+> +       rx_buf = t->rx_buf;
+> +       for (i = 0; i < t->len; ++i) {
+> +               out = tx_buf ? tx_buf[i] : 0x00;
+> +               if (spi->chip_select == 1 && t->cs_change) {
+> +                       /* CPLD in bulk write mode gets two bits per clock */
+> +                       do_spi_byte_fast(rbspi, spi_ioc, out);
+> +                       /* Don't want the real CS toggled */
+> +                       t->cs_change = 0;
+> +               } else {
+> +                       do_spi_byte(rbspi, spi_ioc, out);
+> +               }
+> +               if (!rx_buf)
+> +                       continue;
+> +               rx_buf[i] = rb4xx_read(rbspi, AR71XX_SPI_REG_RDS);
+> +       }
+> +       spi_finalize_current_transfer(master);
+> +
+> +       return 0;
+> +}
+> +
+> +static int rb4xx_spi_setup(struct spi_device *spi)
+> +{
+> +       if (spi->mode & ~SPI_CS_HIGH) {
+> +               dev_err(&spi->dev, "mode %x not supported\n", spi->mode);
+> +               return -EINVAL;
+> +       }
+> +
+> +       if (spi->bits_per_word != 8 && spi->bits_per_word != 0) {
+> +               dev_err(&spi->dev, "bits_per_word %u not supported\n",
+> +                       spi->bits_per_word);
+> +               return -EINVAL;
+> +       }
+> +
+> +       return 0;
+> +}
+> +
+> +static int rb4xx_spi_probe(struct platform_device *pdev)
+> +{
+> +       struct spi_master *master;
+> +       struct clk *ahb_clk;
+> +       struct rb4xx_spi *rbspi;
+> +       struct resource *r;
+> +       int err = 0;
 
-[sperl@build linux-upstream]$ git bisect bad
-0589342c27944e50ebd7a54f5215002b6598b748 is the first bad commit
-commit 0589342c27944e50ebd7a54f5215002b6598b748
-Author: Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>
-Date:   Tue Oct 29 23:36:46 2013 -0500
+Redundant assignment.
 
-    of: set dma_mask to point to coherent_dma_mask
+> +       void __iomem *spi_base;
+> +
+> +       ahb_clk = devm_clk_get(&pdev->dev, "ahb");
+> +       if (IS_ERR(ahb_clk))
+> +               return PTR_ERR(ahb_clk);
+> +
+> +       err = clk_prepare_enable(ahb_clk);
+> +       if (err)
+> +               return err;
+> +
+> +       r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> +       spi_base = devm_ioremap_resource(&pdev->dev, r);
+> +       if (!spi_base)
+> +               return PTR_ERR(spi_base);
+> +
+> +       master = spi_alloc_master(&pdev->dev, sizeof(*rbspi));
+> +       if (!master)
+> +               return -ENOMEM;
+> +
+> +       master->bus_num = 0;
+> +       master->num_chipselect = 3;
+> +       master->setup = rb4xx_spi_setup;
+> +       master->transfer_one = rb4xx_transfer_one;
+> +       master->unprepare_transfer_hardware = unprep;
 
-    Platform devices created by DT code don't initialize dma_mask pointer to
-    anything. Set it to coherent_dma_mask by default if the architecture
-    code has not set it.
+Shouldn't it be named like others, i.e.
+rb4xx_unprepare_transfer_hardware() ?
 
-    Signed-off-by: Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>
+> +       master->set_cs = set_cs;
 
-:040000 040000 805e59ffdb181a71299f354ee7cca727dad4778a 5445e765b6be497d45af3f108c3f38ef6aabb44a M	drivers
+Ditto.
 
-It is a surprising result and does not really explain the situation.
-
-I did check the last working (0589342c2794) and non 
-working (13ccacd5945a) commits again after cleaning the builds
-and rebuilding from scratch.
-
-I did not believe this so I reran the bisect just to make sure - 
-this time also rebuilding the dtb every time.
-
-Now I went back to 4.0.rc5+ and patched it as follows:
---- a/drivers/of/platform.c
-+++ b/drivers/of/platform.c
-@@ -179,9 +179,10 @@ static void of_dma_configure(struct device *dev)
-         * Set it to coherent_dma_mask by default if the architecture
-         * code has not set it.
-         */
-+/*
-        if (!dev->dma_mask)
-                dev->dma_mask = &dev->coherent_dma_mask;
--
-+*/
-        ret = of_dma_get_range(dev->of_node, &dma_addr, &paddr, &size);
-        if (ret < 0) {
-                dma_addr = offset = 0;
-
-And now it works - the SD card gets detected immediately,
-I can mount it and everything...
-
-Is this something we need to fix in bcm2835 by using the "correct"
-coherent_dma_mask?
-
-Still I do not understand why we need dma_mask not set for the
-mmc_spi driver and how it influences the behaviour...
-
-Martin
-
-P.s: Note that I have built like this:
-make bcm2835_defconfig
-echo "CONFIG_MMC_SPI=y" >> .config
-
-using the following diff to enable mmc_spi in the device-tree:
---- a/arch/arm/boot/dts/bcm2835-rpi-b.dts
-+++ b/arch/arm/boot/dts/bcm2835-rpi-b.dts
-@@ -50,3 +50,14 @@
- 	status = "okay";
- 	bus-width = <4>;
- };
-+
-+&spi {
-+	status = "okay";
-+	sd1: sd@1 {
-+		reg = <1>;
-+		status = "okay";
-+		compatible = "spi,mmc_spi";
-+		voltage-ranges = <3200 3500>;
-+		spi-max-frequency = <8000000>;
-+	};
-+};
+> +
+> +       rbspi = spi_master_get_devdata(master);
+> +       rbspi->master = master;
+> +       rbspi->base = spi_base;
+> +
+> +       platform_set_drvdata(pdev, rbspi);
+> +
+> +       err = spi_register_master(master);
+> +       if (err) {
+> +               dev_err(&pdev->dev, "failed to register SPI master\n");
+> +               spi_master_put(master);
+> +               return err;
+> +       }
+> +
+> +       /* Enable SPI */
+> +       rb4xx_write(rbspi, AR71XX_SPI_REG_FS, AR71XX_SPI_FS_GPIO);
+> +
+> +       return 0;
+> +}
+> +
+> +static int rb4xx_spi_remove(struct platform_device *pdev)
+> +{
+> +       struct rb4xx_spi *rbspi = platform_get_drvdata(pdev);
+> +
+> +       spi_master_put(rbspi->master);
+> +
+> +       return 0;
+> +}
+> +
+> +static struct platform_driver rb4xx_spi_drv = {
+> +       .probe          = rb4xx_spi_probe,
+> +       .remove         = rb4xx_spi_remove,
+> +       .driver         = {
+> +               .name   = "rb4xx-spi",
+> +       },
+> +};
+> +
+> +module_platform_driver(rb4xx_spi_drv);
+> +
+> +MODULE_DESCRIPTION("Mikrotik RB4xx SPI controller driver");
+> +MODULE_AUTHOR("Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>");
+> +MODULE_AUTHOR("Bert Vermeulen <bert-Nh2F35Ii2RQ@public.gmane.org>");
+> +MODULE_LICENSE("GPL v2");
+> --
+> 1.9.1
+>
 
 
-Note if you want to repeat this, then you have to boot with the
-SD card removed, because otherwise mmc0 will be the sd card on
-the SPI bus and not the "native" SD card...
 
-I have now also patched out the changes introduces with the patch
-in a 4.0rc and the result is 
-
-here the bisect log:
-git bisect start
-# good: [5e01dc7b26d9f24f39abace5da98ccbd6a5ceb52] Linux 3.12
-git bisect good 5e01dc7b26d9f24f39abace5da98ccbd6a5ceb52
-# bad: [d8ec26d7f8287f5788a494f56e8814210f0e64be] Linux 3.13
-git bisect bad d8ec26d7f8287f5788a494f56e8814210f0e64be
-# bad: [42a2d923cc349583ebf6fdd52a7d35e1c2f7e6bd] Merge git://git.kernel.org/pub/scm/linux/kernel/git/davem/net-next
-git bisect bad 42a2d923cc349583ebf6fdd52a7d35e1c2f7e6bd
-# good: [4b4d2b463461f1b86fd89353184e6f2938e7566b] Merge tag 'h8300-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging
-git bisect good 4b4d2b463461f1b86fd89353184e6f2938e7566b
-# bad: [5cbb3d216e2041700231bcfc383ee5f8b7fc8b74] Merge branch 'akpm' (patches from Andrew Morton)
-git bisect bad 5cbb3d216e2041700231bcfc383ee5f8b7fc8b74
-# good: [eeab517b68beb9e044e869bee18e3bdfa60e5aca] Merge tag 'sound-3.13-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound
-git bisect good eeab517b68beb9e044e869bee18e3bdfa60e5aca
-# bad: [07eb6597c059d9276c8dc7cd0401083ed66ad714] MAINTAINERS: remove Richard Purdie as backlight maintainer
-git bisect bad 07eb6597c059d9276c8dc7cd0401083ed66ad714
-# good: [85b656cf1560e27a89354a23f2c10ba229d2f173] Merge branch 'for-next' of git://git.kernel.org/pub/scm/linux/kernel/git/cooloney/linux-leds
-git bisect good 85b656cf1560e27a89354a23f2c10ba229d2f173
-# bad: [a8f70de37bbb991033208edff7758d997d68db37] ocfs2: use bitmap_weight()
-git bisect bad a8f70de37bbb991033208edff7758d997d68db37
-# good: [b5b4bb3f6a11f9c37b6d53138244f2ffe5bacd12] of: only include prom.h on sparc
-git bisect good b5b4bb3f6a11f9c37b6d53138244f2ffe5bacd12
-# good: [355e62f5ad12b005c862838156262eb2df2f8dff] of/irq: Fix potential buffer overflow
-git bisect good 355e62f5ad12b005c862838156262eb2df2f8dff
-# bad: [74dac2ed699cbe1dee0e4e7891619d53a5f2632f] of: irq: Fix interrupt-map entry matching
-git bisect bad 74dac2ed699cbe1dee0e4e7891619d53a5f2632f
-# bad: [f0e1bfbd2d1b0900a56c25cea35be2467a5cfc32] of: Add AU Optronics Corporation vendor prefix
-git bisect bad f0e1bfbd2d1b0900a56c25cea35be2467a5cfc32
-# good: [67aeb39a173b5c172c75c5b9f1844853aec16eb4] of: Add vendor prefix for Cadence
-git bisect good 67aeb39a173b5c172c75c5b9f1844853aec16eb4
-# good: [13ccacd5945aa5ce81d8566f57587e95fbd90742] of: add vendor prefix for PHYTEC Messtechnik GmbH
-git bisect good 13ccacd5945aa5ce81d8566f57587e95fbd90742
-# bad: [0589342c27944e50ebd7a54f5215002b6598b748] of: set dma_mask to point to coherent_dma_mask
-git bisect bad 0589342c27944e50ebd7a54f5215002b6598b748
-# first bad commit: [0589342c27944e50ebd7a54f5215002b6598b748] of: set dma_mask to point to coherent_dma_mask
-
+-- 
+With Best Regards,
+Andy Shevchenko
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

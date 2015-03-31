@@ -1,98 +1,182 @@
-From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: Re: [PATCH v2] spi: bitbang: only toggle bitchanges
-Date: Tue, 31 Mar 2015 20:59:28 +0200
-Message-ID: <CAOiHx=k_NhSgzUDNPGXLUWN9r9bJ1rbsv3vLg_gFKpuinEqKmA@mail.gmail.com>
-References: <20150331141321.GR2869@sirena.org.uk> <1427812501-7194-1-git-send-email-m.grzeschik@pengutronix.de>
+From: Aaron Brice <aaron.brice-vSOi0k5x9wFWk0Htik3J/w@public.gmane.org>
+Subject: Re: [PATCH v2 2/2] spi: fsl-dspi: Add ~50ns delay between cs and
+ sck
+Date: Tue, 31 Mar 2015 12:14:38 -0700
+Message-ID: <551AF21E.2040506@datasoft.com>
+References: <1427737756-20487-1-git-send-email-aaron.brice@datasoft.com> <1427737756-20487-3-git-send-email-aaron.brice@datasoft.com> <f3ccbe7241da59150674ec6e1488048e@agner.ch>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
-To: Michael Grzeschik <m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1427812501-7194-1-git-send-email-m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+In-Reply-To: <f3ccbe7241da59150674ec6e1488048e-XLVq0VzYD2Y@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Mar 31, 2015 at 4:35 PM, Michael Grzeschik
-<m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org> wrote:
-> The current implementation of bitbang_txrx_be_cpha0 and
-> bitbang_txrx_be_cpha1 always call setmosi. That runs into several
-> unnecessary calls into the gpiolib when the level of the GPIO actually
-> has not to be changed.
+On 03/30/2015 03:13 PM, Stefan Agner wrote:
+> Hi Aaron,
 >
-> This patch changes the routines to remember the last GPIO level
-> and only calls setmosi if an change has to be made. This
-> way it improves the transfer throughput.
+> Thanks for the fixes! Some comments below:
 >
-> Signed-off-by: Michael Grzeschik <m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-> ---
-> v2: added missing braces
->
->  drivers/spi/spi-bitbang-txrx.h | 18 ++++++++++++++----
->  1 file changed, 14 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/spi/spi-bitbang-txrx.h b/drivers/spi/spi-bitbang-txrx.h
-> index c616e41..06b34e5 100644
-> --- a/drivers/spi/spi-bitbang-txrx.h
-> +++ b/drivers/spi/spi-bitbang-txrx.h
-> @@ -49,12 +49,17 @@ bitbang_txrx_be_cpha0(struct spi_device *spi,
->  {
->         /* if (cpol == 0) this is SPI_MODE_0; else this is SPI_MODE_2 */
->
-> +       bool oldbit = !(word & 1);
 
-Is it intentional you check the first bit (word & 1) here? Everywhere
-else you use (word & 31).
+Thanks for the review!
 
->         /* clock starts at inactive polarity */
->         for (word <<= (32 - bits); likely(bits); bits--) {
+> On 2015-03-30 19:49, Aaron Brice wrote:
+>> Add delay between chip select and clock signals, before clock starts and
+>> after clock stops.
 >
->                 /* setup MSB (to slave) on trailing edge */
-> -               if ((flags & SPI_MASTER_NO_TX) == 0)
-> -                       setmosi(spi, word & (1 << 31));
-> +               if ((flags & SPI_MASTER_NO_TX) == 0) {
-> +                       if ((word & (1 << 31)) != oldbit) {
-
-You are comparing a bool to an int, and ((word & (1 << 31)) will
-always be != true (== 1). Your condition needs to be !!(word & (1 <<
-31)) != oldbit .
-
-> +                               setmosi(spi, word & (1 << 31));
-> +                               oldbit = word & (1 << 31);
-> +                       }
-> +               }
->                 spidelay(nsecs);        /* T(setup) */
+> This 50ns are specifc to the SPI slave at hand (SRAM) is this correct?
+> If yes, this would probably need new slave properties. I found a TI
+> controller which also supports such properties:
+> http://lists.infradead.org/pipermail/linux-arm-kernel/2014-September/285761.html
 >
->                 setsck(spi, !cpol);
-> @@ -76,13 +81,18 @@ bitbang_txrx_be_cpha1(struct spi_device *spi,
->  {
->         /* if (cpol == 0) this is SPI_MODE_1; else this is SPI_MODE_3 */
->
-> +       bool oldbit = !(word & (1 << 31));
->         /* clock starts at inactive polarity */
->         for (word <<= (32 - bits); likely(bits); bits--) {
->
->                 /* setup MSB (to slave) on leading edge */
->                 setsck(spi, !cpol);
-> -               if ((flags & SPI_MASTER_NO_TX) == 0)
-> -                       setmosi(spi, word & (1 << 31));
-> +               if ((flags & SPI_MASTER_NO_TX) == 0) {
-> +                       if ((word & (1 << 31)) != oldbit) {
 
-Same issue here.
+Thanks for the link.  Those properties didn't make it into the kernel, 
+Mark said the chip select delays were covered by "the standard delays" 
+but I'm not sure what that means?
 
-> +                               setmosi(spi, word & (1 << 31));
-> +                               oldbit = word & (1 << 31);
-> +                       }
-> +               }
->                 spidelay(nsecs); /* T(setup) */
+The minimum 50ns was specified in the SRAM datasheet, but I haven't 
+worked with a lot of SPI devices, I don't know if this varies widely or 
+if it's more or less standard?
+
+I hard-coded this based on spi-bitbang having a hard-coded ndelay(100) 
+after chipselect, although there is a FIXME comment above it..  Should I 
+add this as a standard spi-bus slave node binding and update spi-bitbang 
+also, or just fsl-dspi?
+
+>>
+>> Signed-off-by: Aaron Brice <aaron.brice-vSOi0k5x9wFWk0Htik3J/w@public.gmane.org>
+>> ---
+>>   drivers/spi/spi-fsl-dspi.c | 53 ++++++++++++++++++++++++++++++++++++++++++++--
+>>   1 file changed, 51 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+>> index 96cac87..41284cc 100644
+>> --- a/drivers/spi/spi-fsl-dspi.c
+>> +++ b/drivers/spi/spi-fsl-dspi.c
+>> @@ -20,6 +20,7 @@
+>>   #include <linux/interrupt.h>
+>>   #include <linux/io.h>
+>>   #include <linux/kernel.h>
+>> +#include <linux/math64.h>
+>>   #include <linux/module.h>
+>>   #include <linux/of.h>
+>>   #include <linux/of_device.h>
+>> @@ -51,7 +52,7 @@
+>>   #define SPI_CTAR_CPOL(x)	((x) << 26)
+>>   #define SPI_CTAR_CPHA(x)	((x) << 25)
+>>   #define SPI_CTAR_LSBFE(x)	((x) << 24)
+>> -#define SPI_CTAR_PCSSCR(x)	(((x) & 0x00000003) << 22)
+>> +#define SPI_CTAR_PCSSCK(x)	(((x) & 0x00000003) << 22)
+>>   #define SPI_CTAR_PASC(x)	(((x) & 0x00000003) << 20)
+>>   #define SPI_CTAR_PDT(x)	(((x) & 0x00000003) << 18)
+>>   #define SPI_CTAR_PBR(x)	(((x) & 0x00000003) << 16)
+>> @@ -59,6 +60,7 @@
+>>   #define SPI_CTAR_ASC(x)	(((x) & 0x0000000f) << 8)
+>>   #define SPI_CTAR_DT(x)		(((x) & 0x0000000f) << 4)
+>>   #define SPI_CTAR_BR(x)		((x) & 0x0000000f)
+>> +#define SPI_CTAR_SCALE_BITS	0xf
+>>
+>>   #define SPI_CTAR0_SLAVE	0x0c
+>>
+>> @@ -99,6 +101,8 @@
+>>   #define SPI_CS_ASSERT		0x02
+>>   #define SPI_CS_DROP		0x04
+>>
+>> +#define NSEC_PER_SEC		1000000000L
+>> +
 >
->                 setsck(spi, cpol);
-> --
+> Avoid redefine this, should be available from headers (e.g. time.h)
+>
 
-Regards
-Jonas
+Ok.
+
+>>   struct chip_data {
+>>   	u32 mcr_val;
+>>   	u32 ctar_val;
+>> @@ -174,6 +178,40 @@ static void hz_to_spi_baud(char *pbr, char *br,
+>> int speed_hz,
+>>   	}
+>>   }
+>>
+>> +static void ns_delay_scale(char *psc, char *sc, int delay_ns,
+>> +		unsigned long clkrate)
+>> +{
+>> +	int pscale_tbl[4] = {1, 3, 5, 7};
+>> +	int scale_needed, scale, minscale = INT_MAX;
+>> +	int i, j;
+>> +	u32 remainder;
+>> +
+>> +	scale_needed = div_u64_rem((u64)delay_ns * clkrate, NSEC_PER_SEC,
+>> +			&remainder);
+>> +	if (remainder)
+>> +		scale_needed++;
+>> +
+>> +	for (i = 0; i < ARRAY_SIZE(pscale_tbl); i++)
+>> +		for (j = 0; j <= SPI_CTAR_SCALE_BITS; j++) {
+>> +			scale = pscale_tbl[i] * (2 << j);
+>> +			if (scale >= scale_needed) {
+>> +				if (scale < minscale) {
+>> +					minscale = scale;
+>> +					*psc = i;
+>> +					*sc = j;
+>> +				}
+>> +				break;
+>> +			}
+>> +		}
+>> +
+>> +	if (minscale == INT_MAX) {
+>> +		pr_warn("Cannot find correct scale values for %dns delay at clkrate
+>> %ld, using max prescaler value",
+>> +			delay_ns, clkrate);
+>> +		*psc = ARRAY_SIZE(pscale_tbl) - 1;
+>> +		*sc = SPI_CTAR_SCALE_BITS;
+>> +	}
+>> +}
+>> +
+>>   static int dspi_transfer_write(struct fsl_dspi *dspi)
+>>   {
+>>   	int tx_count = 0;
+>> @@ -352,7 +390,8 @@ static int dspi_setup(struct spi_device *spi)
+>>   {
+>>   	struct chip_data *chip;
+>>   	struct fsl_dspi *dspi = spi_master_get_devdata(spi->master);
+>> -	unsigned char br = 0, pbr = 0, fmsz = 0;
+>> +	unsigned char br = 0, pbr = 0, pcssck = 0, cssck = 0;
+>> +	unsigned char pasc = 0, asc = 0, fmsz = 0;
+>>
+>>   	if ((spi->bits_per_word >= 4) && (spi->bits_per_word <= 16)) {
+>>   		fmsz = spi->bits_per_word - 1;
+>> @@ -377,10 +416,20 @@ static int dspi_setup(struct spi_device *spi)
+>>   	hz_to_spi_baud(&pbr, &br,
+>>   			spi->max_speed_hz, clk_get_rate(dspi->clk));
+>>
+>> +	/* Set PCS to SCK delay scale values for 50ns delay*/
+>> +	ns_delay_scale(&pcssck, &cssck, 50, clk_get_rate(dspi->clk));
+>> +
+>> +	/* Set After SCK delay scale values for 50ns delay*/
+>> +	ns_delay_scale(&pasc, &asc, 50, clk_get_rate(dspi->clk));
+>> +
+>
+> This functions calls clk_get_rate three times, can you add a local
+> variable for it?
+>
+
+Ok.
+
+>>   	chip->ctar_val =  SPI_CTAR_FMSZ(fmsz)
+>>   		| SPI_CTAR_CPOL(spi->mode & SPI_CPOL ? 1 : 0)
+>>   		| SPI_CTAR_CPHA(spi->mode & SPI_CPHA ? 1 : 0)
+>>   		| SPI_CTAR_LSBFE(spi->mode & SPI_LSB_FIRST ? 1 : 0)
+>> +		| SPI_CTAR_PCSSCK(pcssck)
+>> +		| SPI_CTAR_CSSCK(cssck)
+>> +		| SPI_CTAR_PASC(pasc)
+>> +		| SPI_CTAR_ASC(asc)
+>>   		| SPI_CTAR_PBR(pbr)
+>>   		| SPI_CTAR_BR(br);
+>
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

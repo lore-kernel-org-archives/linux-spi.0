@@ -1,59 +1,95 @@
 From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: Re: [PATCH v4] spi: Add SPI driver for Mikrotik RB4xx series boards
-Date: Tue, 31 Mar 2015 20:41:20 +0200
-Message-ID: <CAOiHx=krTV-NKPD-C1jMhyjmz8qWuLmBWQVwSYGqmaFyq96QWg@mail.gmail.com>
-References: <1427819134-29128-1-git-send-email-bert@biot.com>
+Subject: Re: [PATCH v2] spi: bitbang: only toggle bitchanges
+Date: Tue, 31 Mar 2015 20:59:28 +0200
+Message-ID: <CAOiHx=k_NhSgzUDNPGXLUWN9r9bJ1rbsv3vLg_gFKpuinEqKmA@mail.gmail.com>
+References: <20150331141321.GR2869@sirena.org.uk> <1427812501-7194-1-git-send-email-m.grzeschik@pengutronix.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Cc: Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	MIPS Mailing List <linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-To: Bert Vermeulen <bert-Nh2F35Ii2RQ@public.gmane.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+To: Michael Grzeschik <m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1427819134-29128-1-git-send-email-bert-Nh2F35Ii2RQ@public.gmane.org>
+In-Reply-To: <1427812501-7194-1-git-send-email-m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi,
-
-On Tue, Mar 31, 2015 at 6:25 PM, Bert Vermeulen <bert-Nh2F35Ii2RQ@public.gmane.org> wrote:
-> This driver mediates access between the connected CPLD and other devices
-> on the bus.
+On Tue, Mar 31, 2015 at 4:35 PM, Michael Grzeschik
+<m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org> wrote:
+> The current implementation of bitbang_txrx_be_cpha0 and
+> bitbang_txrx_be_cpha1 always call setmosi. That runs into several
+> unnecessary calls into the gpiolib when the level of the GPIO actually
+> has not to be changed.
 >
-> The m25p80-compatible boot flash and (some models) MMC use regular SPI,
-> bitbanged as required by the SoC. However the SPI-connected CPLD has
-> a "fast write" mode, in which two bits are transferred by SPI clock
-> cycle. The second bit is transmitted with the SoC's CS2 pin.
+> This patch changes the routines to remember the last GPIO level
+> and only calls setmosi if an change has to be made. This
+> way it improves the transfer throughput.
 >
-> Protocol drivers using this fast write facility signal this by setting
-> the cs_change flag on transfers.
->
-> Signed-off-by: Bert Vermeulen <bert-Nh2F35Ii2RQ@public.gmane.org>
+> Signed-off-by: Michael Grzeschik <m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 > ---
->  drivers/spi/Kconfig     |   6 ++
->  drivers/spi/Makefile    |   1 +
->  drivers/spi/spi-rb4xx.c | 244 ++++++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 251 insertions(+)
->  create mode 100644 drivers/spi/spi-rb4xx.c
+> v2: added missing braces
 >
-> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-> index ab8dfbe..aa76ce5 100644
-> --- a/drivers/spi/Kconfig
-> +++ b/drivers/spi/Kconfig
-> @@ -429,6 +429,12 @@ config SPI_ROCKCHIP
->           The main usecase of this controller is to use spi flash as boot
->           device.
+>  drivers/spi/spi-bitbang-txrx.h | 18 ++++++++++++++----
+>  1 file changed, 14 insertions(+), 4 deletions(-)
 >
-> +config SPI_RB4XX
-> +       tristate "Mikrotik RB4XX SPI master"
-> +       depends on SPI_MASTER && ATH79_MACH_RB4XX
+> diff --git a/drivers/spi/spi-bitbang-txrx.h b/drivers/spi/spi-bitbang-txrx.h
+> index c616e41..06b34e5 100644
+> --- a/drivers/spi/spi-bitbang-txrx.h
+> +++ b/drivers/spi/spi-bitbang-txrx.h
+> @@ -49,12 +49,17 @@ bitbang_txrx_be_cpha0(struct spi_device *spi,
+>  {
+>         /* if (cpol == 0) this is SPI_MODE_0; else this is SPI_MODE_2 */
+>
+> +       bool oldbit = !(word & 1);
 
-There is no ATH79_MACH_RB4XX in upstream. I suggest depending on just
-ATH79, allowing maintainers/patch submitters to at least test build
-any future modifications on it.
+Is it intentional you check the first bit (word & 1) here? Everywhere
+else you use (word & 31).
 
+>         /* clock starts at inactive polarity */
+>         for (word <<= (32 - bits); likely(bits); bits--) {
+>
+>                 /* setup MSB (to slave) on trailing edge */
+> -               if ((flags & SPI_MASTER_NO_TX) == 0)
+> -                       setmosi(spi, word & (1 << 31));
+> +               if ((flags & SPI_MASTER_NO_TX) == 0) {
+> +                       if ((word & (1 << 31)) != oldbit) {
+
+You are comparing a bool to an int, and ((word & (1 << 31)) will
+always be != true (== 1). Your condition needs to be !!(word & (1 <<
+31)) != oldbit .
+
+> +                               setmosi(spi, word & (1 << 31));
+> +                               oldbit = word & (1 << 31);
+> +                       }
+> +               }
+>                 spidelay(nsecs);        /* T(setup) */
+>
+>                 setsck(spi, !cpol);
+> @@ -76,13 +81,18 @@ bitbang_txrx_be_cpha1(struct spi_device *spi,
+>  {
+>         /* if (cpol == 0) this is SPI_MODE_1; else this is SPI_MODE_3 */
+>
+> +       bool oldbit = !(word & (1 << 31));
+>         /* clock starts at inactive polarity */
+>         for (word <<= (32 - bits); likely(bits); bits--) {
+>
+>                 /* setup MSB (to slave) on leading edge */
+>                 setsck(spi, !cpol);
+> -               if ((flags & SPI_MASTER_NO_TX) == 0)
+> -                       setmosi(spi, word & (1 << 31));
+> +               if ((flags & SPI_MASTER_NO_TX) == 0) {
+> +                       if ((word & (1 << 31)) != oldbit) {
+
+Same issue here.
+
+> +                               setmosi(spi, word & (1 << 31));
+> +                               oldbit = word & (1 << 31);
+> +                       }
+> +               }
+>                 spidelay(nsecs); /* T(setup) */
+>
+>                 setsck(spi, cpol);
+> --
 
 Regards
 Jonas

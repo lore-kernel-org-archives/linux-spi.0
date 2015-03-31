@@ -1,53 +1,68 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: Using gpio_keys with regmapped gpio?
-Date: Tue, 31 Mar 2015 21:04:03 +0100
-Message-ID: <20150331200403.GW2869@sirena.org.uk>
-References: <551AFC2F.3060300@opensource.altera.com>
+From: Michael Grzeschik <mgr-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: [PATCH v2] spi: bitbang: only toggle bitchanges
+Date: Tue, 31 Mar 2015 22:13:00 +0200
+Message-ID: <20150331201300.GB12253@pengutronix.de>
+References: <20150331141321.GR2869@sirena.org.uk>
+ <1427812501-7194-1-git-send-email-m.grzeschik@pengutronix.de>
+ <CAOiHx=k_NhSgzUDNPGXLUWN9r9bJ1rbsv3vLg_gFKpuinEqKmA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="cUQyP71RyCFJ5E3t"
-Cc: dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, linux-input-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+To: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <551AFC2F.3060300-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+In-Reply-To: <CAOiHx=k_NhSgzUDNPGXLUWN9r9bJ1rbsv3vLg_gFKpuinEqKmA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Tue, Mar 31, 2015 at 08:59:28PM +0200, Jonas Gorski wrote:
+> On Tue, Mar 31, 2015 at 4:35 PM, Michael Grzeschik
+> <m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org> wrote:
+> > The current implementation of bitbang_txrx_be_cpha0 and
+> > bitbang_txrx_be_cpha1 always call setmosi. That runs into several
+> > unnecessary calls into the gpiolib when the level of the GPIO actually
+> > has not to be changed.
+> >
+> > This patch changes the routines to remember the last GPIO level
+> > and only calls setmosi if an change has to be made. This
+> > way it improves the transfer throughput.
+> >
+> > Signed-off-by: Michael Grzeschik <m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+> > ---
+> > v2: added missing braces
+> >
+> >  drivers/spi/spi-bitbang-txrx.h | 18 ++++++++++++++----
+> >  1 file changed, 14 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/drivers/spi/spi-bitbang-txrx.h b/drivers/spi/spi-bitbang-txrx.h
+> > index c616e41..06b34e5 100644
+> > --- a/drivers/spi/spi-bitbang-txrx.h
+> > +++ b/drivers/spi/spi-bitbang-txrx.h
+> > @@ -49,12 +49,17 @@ bitbang_txrx_be_cpha0(struct spi_device *spi,
+> >  {
+> >         /* if (cpol == 0) this is SPI_MODE_0; else this is SPI_MODE_2 */
+> >
+> > +       bool oldbit = !(word & 1);
+> 
+> Is it intentional you check the first bit (word & 1) here? Everywhere
+> else you use (word & 31).
 
---cUQyP71RyCFJ5E3t
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Doh! I was reworking this from an _le_ variant of the same code.
+This hunk unfortunately is an leftover... :/
 
-On Tue, Mar 31, 2015 at 02:57:35PM -0500, Thor Thayer wrote:
+Mark, should I send a corrected version or do you squash the 31 into the
+applied patch?
 
-> Which brings up my next question. Can the gpio_keys framework be used with a
-> regmapped gpio? I haven't been able to find any examples of gpio_keys with
-> an external gpio expander and maybe this isn't valid usage.
+Thanks for the hint,
+Michael
 
-Why would there be any problem doing that?  I suspect a lack of examples
-is more to do with it being rare to build hardware like that (usually on
-SoC GPIOs are fairly abundant and much more performant) than anything
-else.
-
---cUQyP71RyCFJ5E3t
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVGv2zAAoJECTWi3JdVIfQKGsH/1HmZnD1JvWno3f+3vEHl8Ag
-NIDI5wBhmtUF/W98TMgEjv/FjDJGLJNWae9vRJDySkHOiCRITyczHtFL6vlpt2cY
-8a/DKbFAvjVYahMiFAc6mdoPeXhmuDpo8N5wSVJHRiSetTqXqo+2BbBb2IcjcVZA
-RNGaMGuy68EgmXND81XsdYJM94A6vd75IBBRdnABHOCeoZqG7vaEfOokrQb1U8n4
-ArBOlvvaHjBLsqITKSCTJO8uImo5P+hHbg4n0fFXjHrpZtS8w5nmkCThbzB9vrRK
-TVWtBwsIb4br9F8XWKROQcU94U+QIgtUOg8I0+p3UYnWy0xJBWEKUAix693vnZA=
-=N+rn
------END PGP SIGNATURE-----
-
---cUQyP71RyCFJ5E3t--
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

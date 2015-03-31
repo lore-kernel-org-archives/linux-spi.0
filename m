@@ -1,38 +1,43 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH 5/6] spi: bcm2835: add polling mode for transfers below 30us
-Date: Tue, 31 Mar 2015 08:00:11 +0200
-Message-ID: <E15DA84C-4EF9-432A-ADA9-81789EAE379F@martin.sperl.org>
-References: <808DC596-35BB-4A08-8CF4-DFAB6294636E@martin.sperl.org> <551A1466.2020706@wwwdotorg.org>
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2070.6\))
-Content-Type: text/plain; charset=windows-1252
+From: Pelle Nilsson <per.nilsson-5TWeZ6kPplYAvxtiuMwx3w@public.gmane.org>
+Subject: spi-altera in mainline
+Date: Tue, 31 Mar 2015 09:43:09 +0200
+Message-ID: <551A500D.6030701@xelmo.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <551A1466.2020706-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-
-> On 31.03.2015, at 05:28, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org> wrote:
->> +	/* check if we shall run in polling mode */
->> +	xfer_time_us = tfr->len * 9 * 1000000 / spi_used_hz;
-> 
-> Why 9 not 8; presumably thats bits per byte, and IIRC SPI doesn't have
-> anything like I2C's ack bit per byte?
-
-Well - the bcm2835 make a 1 cycle wait after each byte transferred.
-Hence 9 bit actual length we need to account for.
-
-Actually on top of that there are 3 more cycles when bringing the SPI
-hardware active (at least with native CS) - but these are minimal
-offsets.
-
-Martin
+(Resending this bug report to linux-spi as requested, first reported to
+nios2-dev-g9ZBwUv/Ih/yUk5EbOjzudqWx8ZoriO+@public.gmane.org)
 
 
+Hello
+
+Using spi-altera from (and with) mainline kernel 4.0rc3 gives a kernel
+panic on first attempted SPI transfer. After debugging, it seems to be
+caused by commit 24778be2 which removed the empty implementation of
+altera_spi_setupxfer() (the function was temporarily added back in
+commit 103ccee4 because of a perceived problem, and then removed again
+in commit 30af9b55). This causes two problems:
+
+1) Since spi-altera doesn't zero-initialize the spi_bitbang struct,
+bitbang->setup_transfer points to a random memory location, obviously
+giving a kernel panic when it's called.
+
+2) Even if I zero-initialize it, spi-bitbang reacts to this by calling
+its built-in setup function spi_bitbang_setup_transfer(), and this
+function tries to write to fields in the struct pointed out by
+spi->controller_state. However, spi->controller_state is NULL (at least
+for me), so this again gives a kernel panic due to NULL pointer dereference.
+
+So the easiest way I could find to get the driver working is by
+reverting the change mentioned above, adding back an empty
+implementation of altera_spi_setupxfer().
+
+Best regards, Pelle
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

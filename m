@@ -1,8 +1,8 @@
 From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH 3/6] spi: bcm2835: fill FIFO before enabling interrupts to
-Date: Tue, 31 Mar 2015 07:51:43 +0200
-Message-ID: <ECAA248A-EAF4-4B94-9905-9FD7D6DB48C9@martin.sperl.org>
-References: <3628E5E2-7EA9-488F-AF5F-A2E43D2D1E3E@martin.sperl.org> <551A1185.6060502@wwwdotorg.org>
+Subject: Re: [PATCH/RFC 6/6] spi: bcm2835: set gpio-cs to high state prior to any
+Date: Tue, 31 Mar 2015 07:56:59 +0200
+Message-ID: <18CE4830-9283-4650-9069-17140765EFA7@martin.sperl.org>
+References: <DA037FBB-56A7-4379-88F0-650367BBB822@martin.sperl.org> <20150330042821.GD1568@sirena.org.uk> <F17E5383-B75E-4884-9673-0C9E95750E4A@martin.sperl.org> <551A1611.1090708@wwwdotorg.org>
 Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2070.6\))
 Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 7bit
@@ -11,32 +11,28 @@ Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, lee-DgEjT+Ai2y
 	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
 To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <551A1185.6060502-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+In-Reply-To: <551A1611.1090708-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
-> On 31.03.2015, at 05:16, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org> wrote:
+> On 31.03.2015, at 05:35, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org> wrote:
 > 
-> I can understand perfectly why the code fills the FIFO before enabling
-> interrupts; it avoids having to immediately service an interrupt simply
-> to fill the FIFO.
-> 
-> However, I'm not sure why this is in any way related to whether the
-> chip-select GPIO is valid. Surely we always want to do this? How does
-> the mechanism used to control chip selects influence whether we want to
-> pre-fill the FIFO?
+> I suspect the solution is simply not to have the pinctrl node set the CS
+> pins to GPIO_OUT, but rather rely on gpio_request() ->
+> bcm2835_gpio_request() -> bcm2835_pmx_gpio_set_direction() setting up
+> the pinmux function for any GPIOs that are requested. Presumably, the CS
+> GPIO for each chip is only requested when the DT node for the SPI device
+> (not SPI controller device) has been parsed, so the correct GPIO CS
+> value can be passed to gpio_request()/gpio_direction_output()?
 
-During the time I was building a DMA only driver I saw "rare" glitches
-in the CS line when using native CS. The "glitch" is that the CS drops
-to inactive for a short period of time - typically 1 sample length at
-10MHz sample rate, so <0.1us.
+I will investigate that and create a patch to spi_register_master that
+does that for any GPIO-chipselect - this still leaves the question of
+how to iterate over all the configured devices early to detect if they
+hace cspol set and then setting it low instead of high.
 
-These "glitches" also once have been observed with the current driver
-when using native-CS, so I think it is prudent to avoid native-CS when
-enabling this optimization.
+Martin
 
-Hence this limitation or maybe even the full move to GPIO-CS for all.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

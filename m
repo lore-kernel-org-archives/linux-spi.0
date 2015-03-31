@@ -1,68 +1,51 @@
-From: Michael Grzeschik <mgr-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: Re: [PATCH v2] spi: bitbang: only toggle bitchanges
-Date: Tue, 31 Mar 2015 22:13:00 +0200
-Message-ID: <20150331201300.GB12253@pengutronix.de>
-References: <20150331141321.GR2869@sirena.org.uk>
- <1427812501-7194-1-git-send-email-m.grzeschik@pengutronix.de>
- <CAOiHx=k_NhSgzUDNPGXLUWN9r9bJ1rbsv3vLg_gFKpuinEqKmA@mail.gmail.com>
+From: Dmitry Torokhov <dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: Using gpio_keys with regmapped gpio?
+Date: Tue, 31 Mar 2015 13:17:39 -0700
+Message-ID: <20150331201739.GA29015@dtor-ws>
+References: <551AFC2F.3060300@opensource.altera.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
-To: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-input-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CAOiHx=k_NhSgzUDNPGXLUWN9r9bJ1rbsv3vLg_gFKpuinEqKmA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <551AFC2F.3060300-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Mar 31, 2015 at 08:59:28PM +0200, Jonas Gorski wrote:
-> On Tue, Mar 31, 2015 at 4:35 PM, Michael Grzeschik
-> <m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org> wrote:
-> > The current implementation of bitbang_txrx_be_cpha0 and
-> > bitbang_txrx_be_cpha1 always call setmosi. That runs into several
-> > unnecessary calls into the gpiolib when the level of the GPIO actually
-> > has not to be changed.
-> >
-> > This patch changes the routines to remember the last GPIO level
-> > and only calls setmosi if an change has to be made. This
-> > way it improves the transfer throughput.
-> >
-> > Signed-off-by: Michael Grzeschik <m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-> > ---
-> > v2: added missing braces
-> >
-> >  drivers/spi/spi-bitbang-txrx.h | 18 ++++++++++++++----
-> >  1 file changed, 14 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/drivers/spi/spi-bitbang-txrx.h b/drivers/spi/spi-bitbang-txrx.h
-> > index c616e41..06b34e5 100644
-> > --- a/drivers/spi/spi-bitbang-txrx.h
-> > +++ b/drivers/spi/spi-bitbang-txrx.h
-> > @@ -49,12 +49,17 @@ bitbang_txrx_be_cpha0(struct spi_device *spi,
-> >  {
-> >         /* if (cpol == 0) this is SPI_MODE_0; else this is SPI_MODE_2 */
-> >
-> > +       bool oldbit = !(word & 1);
+On Tue, Mar 31, 2015 at 02:57:35PM -0500, Thor Thayer wrote:
+> Hi,
 > 
-> Is it intentional you check the first bit (word & 1) here? Everywhere
-> else you use (word & 31).
+> I have a SPI gpio expander chip that is using the regmap framework.
+> There are some pushbuttons that I'd like to use the gpio_keys
+> framework for but only the first button press creates an input
+> event.
+> 
+> It seems like my problem occurs because I'm only getting events on a
+> button press.  The input_get_disposition() function toggles a local
+> copy of the button state [__change_bit(code, dev->key);] in the
+> input.c file. I think this function also needs to be called when the
+> button is released to toggle the dev->key state and re-arm for the
+> next button press.
 
-Doh! I was reworking this from an _le_ variant of the same code.
-This hunk unfortunately is an leftover... :/
+Yes.
 
-Mark, should I send a corrected version or do you squash the 31 into the
-applied patch?
+> 
+> I tried enabling autorepeat but that causes an infinite loop in the
+> input_repeat_key() function.
+> 
+> In both cases, it seems like the button press condition must be
+> cleared when the button is released. This seems like it should be
+> common for all GPIOs so I'm probably missing something.
 
-Thanks for the hint,
-Michael
+It sounds like your expander does not generate interrupt when the button
+is released and so gpio-keys driver is not aware of it.
+
+Thanks.
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Dmitry
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

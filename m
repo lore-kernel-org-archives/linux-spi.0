@@ -1,9 +1,9 @@
 From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Subject: Re: [PATCH 5/6] spi: bcm2835: add polling mode for transfers below
- 30us
-Date: Mon, 30 Mar 2015 21:28:38 -0600
-Message-ID: <551A1466.2020706@wwwdotorg.org>
-References: <808DC596-35BB-4A08-8CF4-DFAB6294636E@martin.sperl.org>
+Subject: Re: [PATCH/RFC 6/6] spi: bcm2835: set gpio-cs to high state prior
+ to any
+Date: Mon, 30 Mar 2015 21:35:45 -0600
+Message-ID: <551A1611.1090708@wwwdotorg.org>
+References: <DA037FBB-56A7-4379-88F0-650367BBB822@martin.sperl.org> <20150330042821.GD1568@sirena.org.uk> <F17E5383-B75E-4884-9673-0C9E95750E4A@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 7bit
@@ -12,51 +12,38 @@ Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, lee-DgEjT+Ai2y
 	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
 To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <808DC596-35BB-4A08-8CF4-DFAB6294636E-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <F17E5383-B75E-4884-9673-0C9E95750E4A-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 03/29/2015 08:03 AM, Martin Sperl wrote:
-> In cases of short transfer times the CPU is spending lots of time
-> in the interrupt handler and scheduler to reschedule the worker thread.
+On 03/30/2015 01:25 PM, Martin Sperl wrote:
 > 
-> Measurements show that we have times where it takes 29.32us to between
-> the last clock change and the time that the worker-thread is running again
-> returning from wait_for_completion_timeout().
+>> On 30.03.2015, at 06:28, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+>>
+>> On Sun, Mar 29, 2015 at 04:03:28PM +0200, Martin Sperl wrote:
+>>
+>>> A variation of this probably should get moved into spi_register_master
+>>> to fix this for other spi-controller as well.
+>>
+>> Yes, this is the wrong place to solve this.
 > 
-> During this time the interrupt-handler is running calling complete()
-> and then also the scheduler is rescheduling the worker thread.
+> So should we move that into spi_register_master?
+> My question for completeness remains: how do we get the devices
+> from dt or whatever while we are still registering the master?
 > 
-> This time can vary depending on how much of the code is still in
-> CPU-caches, when there is a burst of spi transfers the subsequent delays
-> are in the order of 25us, so the value of 30us seems reasonable.
+> Also I am still missing a bit of the big picture and vision how
+> to implement it taking all different HW/setup cases into account.
 > 
-> With polling the whole transfer of 4 bytes at 10MHz finishes after 6.16us
-> (CS down to up) with the real transfer (clock running) taking 3.56us.
-> So the efficiency has much improved and also freeing CPU cycles, reducing
-> interrupts and context switches.
-> 
-> Because of the above 30us seems to be a reasonable limit for polling.
+> That is why I have put it as an RFC - mostly to get the issue some
+> exposure and some ideas.
 
-> diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-
-> @@ -204,6 +207,37 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
-
-> +	spi_used_hz = (cdiv) ? (clk_hz / cdiv) : (clk_hz / 65536);
-
-"(cdiv)" can be just "cdiv".
-
-> +	/* check if we shall run in polling mode */
-> +	xfer_time_us = tfr->len * 9 * 1000000 / spi_used_hz;
-
-Why 9 not 8; presumably thats bits per byte, and IIRC SPI doesn't have
-anything like I2C's ack bit per byte?
-
-> +	if (xfer_time_us <= BCM2835_SPI_POLLING_LIMIT_US) {
-...
-> +			if ((bs->rx_len) && (time_after(jiffies, timeout))) {
-
-There are many extra brackets here too.
+I suspect the solution is simply not to have the pinctrl node set the CS
+pins to GPIO_OUT, but rather rely on gpio_request() ->
+bcm2835_gpio_request() -> bcm2835_pmx_gpio_set_direction() setting up
+the pinmux function for any GPIOs that are requested. Presumably, the CS
+GPIO for each chip is only requested when the DT node for the SPI device
+(not SPI controller device) has been parsed, so the correct GPIO CS
+value can be passed to gpio_request()/gpio_direction_output()?
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

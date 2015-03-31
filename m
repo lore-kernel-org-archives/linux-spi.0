@@ -1,71 +1,36 @@
-From: Michael Grzeschik <m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH] spi: bitbang: only toggle bitchanges
-Date: Tue, 31 Mar 2015 15:54:49 +0200
-Message-ID: <1427810089-14866-1-git-send-email-m.grzeschik@pengutronix.de>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+From: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Subject: Re: [PATCH v2 1/1] spi: pxa2xx: missing break in
+ pxa2xx_ssp_get_clk_div()
+Date: Tue, 31 Mar 2015 17:04:29 +0300
+Message-ID: <20150331140429.GY16501@mwanda>
+References: <1427809778-99984-1-git-send-email-andriy.shevchenko@linux.intel.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1427809778-99984-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The current implementation of bitbang_txrx_be_cpha0 and
-bitbang_txrx_be_cpha1 always call setmosi. That runs into several
-unnecessary calls into the gpiolib when the level of the GPIO actually
-has not to be changed.
+On Tue, Mar 31, 2015 at 04:49:38PM +0300, Andy Shevchenko wrote:
+> From: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+> 
+> We refactored this code but accidentally left out a break statement so
+> QUARK_X1000_SSP isn't handled correctly.
+> 
+> Fixes: 025ffe88ee60 ('spi: pxa2xx: shift clk_div in one place')
+> Tested-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+> Signed-off-by: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
 
-This patch changes the routines to remember the last GPIO level
-and only calls setmosi if an change has to be made. This
-way it improves the transfer throughput.
+Thanks for this.  Sorry, for the delay I was confused earlier about if
+I should wait for you to switch it to an if statement but after Mark's
+comments then planning to resend later.  But you have done it for me,
+thanks!
 
-Signed-off-by: Michael Grzeschik <m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
----
- drivers/spi/spi-bitbang-txrx.h | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-bitbang-txrx.h b/drivers/spi/spi-bitbang-txrx.h
-index c616e41..62bdf62 100644
---- a/drivers/spi/spi-bitbang-txrx.h
-+++ b/drivers/spi/spi-bitbang-txrx.h
-@@ -49,12 +49,16 @@ bitbang_txrx_be_cpha0(struct spi_device *spi,
- {
- 	/* if (cpol == 0) this is SPI_MODE_0; else this is SPI_MODE_2 */
- 
-+	bool oldbit = !(word & 1);
- 	/* clock starts at inactive polarity */
- 	for (word <<= (32 - bits); likely(bits); bits--) {
- 
- 		/* setup MSB (to slave) on trailing edge */
- 		if ((flags & SPI_MASTER_NO_TX) == 0)
--			setmosi(spi, word & (1 << 31));
-+			if ((word & (1 << 31)) != oldbit) {
-+				setmosi(spi, word & (1 << 31));
-+				oldbit = word & (1 << 31);
-+			}
- 		spidelay(nsecs);	/* T(setup) */
- 
- 		setsck(spi, !cpol);
-@@ -76,13 +80,17 @@ bitbang_txrx_be_cpha1(struct spi_device *spi,
- {
- 	/* if (cpol == 0) this is SPI_MODE_1; else this is SPI_MODE_3 */
- 
-+	bool oldbit = !(word & (1 << 31));
- 	/* clock starts at inactive polarity */
- 	for (word <<= (32 - bits); likely(bits); bits--) {
- 
- 		/* setup MSB (to slave) on leading edge */
- 		setsck(spi, !cpol);
- 		if ((flags & SPI_MASTER_NO_TX) == 0)
--			setmosi(spi, word & (1 << 31));
-+			if ((word & (1 << 31)) != oldbit) {
-+				setmosi(spi, word & (1 << 31));
-+				oldbit = word & (1 << 31);
-+			}
- 		spidelay(nsecs); /* T(setup) */
- 
- 		setsck(spi, cpol);
--- 
-2.1.4
+regards,
+dan carpenter
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

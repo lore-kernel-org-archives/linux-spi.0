@@ -1,8 +1,8 @@
 From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH/RFC 6/6] spi: bcm2835: set gpio-cs to high state prior to any
-Date: Tue, 31 Mar 2015 07:56:59 +0200
-Message-ID: <18CE4830-9283-4650-9069-17140765EFA7@martin.sperl.org>
-References: <DA037FBB-56A7-4379-88F0-650367BBB822@martin.sperl.org> <20150330042821.GD1568@sirena.org.uk> <F17E5383-B75E-4884-9673-0C9E95750E4A@martin.sperl.org> <551A1611.1090708@wwwdotorg.org>
+Subject: Re: [PATCH 5/6] spi: bcm2835: add polling mode for transfers below 30us
+Date: Tue, 31 Mar 2015 08:00:11 +0200
+Message-ID: <E15DA84C-4EF9-432A-ADA9-81789EAE379F@martin.sperl.org>
+References: <808DC596-35BB-4A08-8CF4-DFAB6294636E@martin.sperl.org> <551A1466.2020706@wwwdotorg.org>
 Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2070.6\))
 Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 7bit
@@ -11,27 +11,27 @@ Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, lee-DgEjT+Ai2y
 	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
 To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <551A1611.1090708-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+In-Reply-To: <551A1466.2020706-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
-> On 31.03.2015, at 05:35, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org> wrote:
+> On 31.03.2015, at 05:28, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org> wrote:
+>> +	/* check if we shall run in polling mode */
+>> +	xfer_time_us = tfr->len * 9 * 1000000 / spi_used_hz;
 > 
-> I suspect the solution is simply not to have the pinctrl node set the CS
-> pins to GPIO_OUT, but rather rely on gpio_request() ->
-> bcm2835_gpio_request() -> bcm2835_pmx_gpio_set_direction() setting up
-> the pinmux function for any GPIOs that are requested. Presumably, the CS
-> GPIO for each chip is only requested when the DT node for the SPI device
-> (not SPI controller device) has been parsed, so the correct GPIO CS
-> value can be passed to gpio_request()/gpio_direction_output()?
+> Why 9 not 8; presumably thats bits per byte, and IIRC SPI doesn't have
+> anything like I2C's ack bit per byte?
 
-I will investigate that and create a patch to spi_register_master that
-does that for any GPIO-chipselect - this still leaves the question of
-how to iterate over all the configured devices early to detect if they
-hace cspol set and then setting it low instead of high.
+Well - the bcm2835 make a 1 cycle wait after each byte transferred.
+Hence 9 bit actual length we need to account for.
+
+Actually on top of that there are 3 more cycles when bringing the SPI
+hardware active (at least with native CS) - but these are minimal
+offsets.
 
 Martin
+
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

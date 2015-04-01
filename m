@@ -1,51 +1,46 @@
-From: Chen Gang <xili_gchen_5257@hotmail.com>
-Subject: [PATCH] spi: spi-bfin5xx: Initialize cr_width in bfin_spi_pump_transfers()
-Date: Thu, 2 Apr 2015 03:03:33 +0800
-Message-ID: <BLU436-SMTP1172BE3B8CDF9C6A7CC89CCB9F30@phx.gbl>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi: spi-bfin5xx: Initialize cr_width in
+ bfin_spi_pump_transfers()
+Date: Wed, 1 Apr 2015 21:29:06 +0100
+Message-ID: <20150401202906.GD6023@sirena.org.uk>
+References: <BLU436-SMTP1172BE3B8CDF9C6A7CC89CCB9F30@phx.gbl>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="2iBwrppp/7QCDedR"
 Cc: linux-spi@vger.kernel.org,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: broonie@kernel.org
+To: Chen Gang <xili_gchen_5257@hotmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <BLU436-SMTP1172BE3B8CDF9C6A7CC89CCB9F30@phx.gbl>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-cr_width may be not initialized before using by cr, the related warning
-(with defconfig under blackfin by gcc5):
 
-    CC      drivers/spi/spi-bfin5xx.o
-  drivers/spi/spi-bfin5xx.c: In function 'bfin_spi_pump_transfers':
-  drivers/spi/spi-bfin5xx.c:655:5: warning: 'cr_width' may be used uninitialized in this function [-Wmaybe-uninitialized]
-    cr |= cr_width;
-       ^
+--2iBwrppp/7QCDedR
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Signed-off-by: Chen Gang <gang.chen.5i5j@gmail.com>
----
- drivers/spi/spi-bfin5xx.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+On Thu, Apr 02, 2015 at 03:03:33AM +0800, Chen Gang wrote:
+> cr_width may be not initialized before using by cr, the related warning
+> (with defconfig under blackfin by gcc5):
 
-diff --git a/drivers/spi/spi-bfin5xx.c b/drivers/spi/spi-bfin5xx.c
-index 3707993..a3d65b4 100644
---- a/drivers/spi/spi-bfin5xx.c
-+++ b/drivers/spi/spi-bfin5xx.c
-@@ -559,7 +559,7 @@ static void bfin_spi_pump_transfers(unsigned long data)
- 	struct spi_transfer *previous = NULL;
- 	struct bfin_spi_slave_data *chip = NULL;
- 	unsigned int bits_per_word;
--	u16 cr, cr_width, dma_width, dma_config;
-+	u16 cr, cr_width = 0, dma_width, dma_config;
- 	u32 tranf_success = 1;
- 	u8 full_duplex = 0;
- 
-@@ -648,7 +648,6 @@ static void bfin_spi_pump_transfers(unsigned long data)
- 	} else if (bits_per_word == 8) {
- 		drv_data->n_bytes = bits_per_word/8;
- 		drv_data->len = transfer->len;
--		cr_width = 0;
- 		drv_data->ops = &bfin_bfin_spi_transfer_ops_u8;
- 	}
- 	cr = bfin_read(&drv_data->regs->ctl) & ~(BIT_CTL_TIMOD | BIT_CTL_WORDSIZE);
--- 
-1.9.3
+Applied, thanks.
+
+--2iBwrppp/7QCDedR
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVHFURAAoJECTWi3JdVIfQLFYH/2xd1PZfLy94zuZMwTZjRP/7
+6ED0Ei8YKS2WIxa3llZ8qgeVKEO9GfGSjwTnM3V+1yfNUALc6LEGgHUUtKJ9FW66
+YGOEpQl/HeAm/KLuMryVqcmqN8nN/cxgMe782HX+XZXb0VvE7xQFMeaKBH+eHvxM
+48O+eFea7r9cwSkVfymctXYfpPlFAx8mT5iyJ8813vi4Jn2c2QgohdZBSbGlbV4l
+A+7/LCABKCqn4RSEt21F90+70Q3VMxDt1nLMxeBgc/i7FFFRC4abXGw1DZe8Wd/+
+DQ7VPzt57BV+K4GJHli41rK+vJGnBd8s8lK9PAlL9th5RLiYBMiftrASVOTzeeQ=
+=21AT
+-----END PGP SIGNATURE-----
+
+--2iBwrppp/7QCDedR--

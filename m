@@ -1,78 +1,51 @@
-From: Dmitry Torokhov <dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: Using gpio_keys with regmapped gpio?
-Date: Wed, 1 Apr 2015 09:00:39 -0700
-Message-ID: <CAKdAkRTNz85qapvVnMaEb5-4eTWPOxjBLi+0VWXSgh6Gn62srA@mail.gmail.com>
-References: <551AFC2F.3060300@opensource.altera.com>
-	<20150331201739.GA29015@dtor-ws>
-	<551B0C43.5000101@opensource.altera.com>
-	<CAKdAkRTwPwSThinV-t6UN3LMY8-XXYJ1dB+11U9SZ=zZT4Kt7g@mail.gmail.com>
+From: Chen Gang <xili_gchen_5257@hotmail.com>
+Subject: [PATCH] spi: spi-bfin5xx: Initialize cr_width in bfin_spi_pump_transfers()
+Date: Thu, 2 Apr 2015 03:03:33 +0800
+Message-ID: <BLU436-SMTP1172BE3B8CDF9C6A7CC89CCB9F30@phx.gbl>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-input-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-input-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAKdAkRTwPwSThinV-t6UN3LMY8-XXYJ1dB+11U9SZ=zZT4Kt7g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi@vger.kernel.org,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: broonie@kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Wed, Apr 1, 2015 at 8:59 AM, Dmitry Torokhov
-<dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> On Tue, Mar 31, 2015 at 2:06 PM, Thor Thayer
-> <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org> wrote:
->>
->>
->> On 03/31/2015 03:17 PM, Dmitry Torokhov wrote:
->>>
->>> On Tue, Mar 31, 2015 at 02:57:35PM -0500, Thor Thayer wrote:
->>>>
->>>> Hi,
->>>>
->>>> I have a SPI gpio expander chip that is using the regmap framework.
->>>> There are some pushbuttons that I'd like to use the gpio_keys
->>>> framework for but only the first button press creates an input
->>>> event.
->>>>
->>>> It seems like my problem occurs because I'm only getting events on a
->>>> button press.  The input_get_disposition() function toggles a local
->>>> copy of the button state [__change_bit(code, dev->key);] in the
->>>> input.c file. I think this function also needs to be called when the
->>>> button is released to toggle the dev->key state and re-arm for the
->>>> next button press.
->>>
->>>
->>> Yes.
->>>
->>>>
->>>> I tried enabling autorepeat but that causes an infinite loop in the
->>>> input_repeat_key() function.
->>>>
->>>> In both cases, it seems like the button press condition must be
->>>> cleared when the button is released. This seems like it should be
->>>> common for all GPIOs so I'm probably missing something.
->>>
->>>
->>> It sounds like your expander does not generate interrupt when the button
->>> is released and so gpio-keys driver is not aware of it.
->>>
->>> Thanks.
->>>
->>
->> Thanks for the quick reply. Is giving an interrupt on both press and release
->> a requirement for gpio-keys? or is there another setup that I'm not aware
->> of?
->>
->
-> Yes.
+cr_width may be not initialized before using by cr, the related warning
+(with defconfig under blackfin by gcc5):
 
-And by that I meant "Yes, it is a requirement".
+    CC      drivers/spi/spi-bfin5xx.o
+  drivers/spi/spi-bfin5xx.c: In function 'bfin_spi_pump_transfers':
+  drivers/spi/spi-bfin5xx.c:655:5: warning: 'cr_width' may be used uninitialized in this function [-Wmaybe-uninitialized]
+    cr |= cr_width;
+       ^
 
-Thanks.
+Signed-off-by: Chen Gang <gang.chen.5i5j@gmail.com>
+---
+ drivers/spi/spi-bfin5xx.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
+diff --git a/drivers/spi/spi-bfin5xx.c b/drivers/spi/spi-bfin5xx.c
+index 3707993..a3d65b4 100644
+--- a/drivers/spi/spi-bfin5xx.c
++++ b/drivers/spi/spi-bfin5xx.c
+@@ -559,7 +559,7 @@ static void bfin_spi_pump_transfers(unsigned long data)
+ 	struct spi_transfer *previous = NULL;
+ 	struct bfin_spi_slave_data *chip = NULL;
+ 	unsigned int bits_per_word;
+-	u16 cr, cr_width, dma_width, dma_config;
++	u16 cr, cr_width = 0, dma_width, dma_config;
+ 	u32 tranf_success = 1;
+ 	u8 full_duplex = 0;
+ 
+@@ -648,7 +648,6 @@ static void bfin_spi_pump_transfers(unsigned long data)
+ 	} else if (bits_per_word == 8) {
+ 		drv_data->n_bytes = bits_per_word/8;
+ 		drv_data->len = transfer->len;
+-		cr_width = 0;
+ 		drv_data->ops = &bfin_bfin_spi_transfer_ops_u8;
+ 	}
+ 	cr = bfin_read(&drv_data->regs->ctl) & ~(BIT_CTL_TIMOD | BIT_CTL_WORDSIZE);
 -- 
-Dmitry
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+1.9.3

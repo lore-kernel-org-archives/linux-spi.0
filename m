@@ -1,54 +1,34 @@
-From: Lucas Stach <l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH] spi: imx: read back the RX/TX watermark levels earlier
-Date: Wed,  1 Apr 2015 10:46:15 +0200
-Message-ID: <1427877975-816-1-git-send-email-l.stach@pengutronix.de>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Subject: Re: [PATCH 5/6] spi: bcm2835: add polling mode for transfers below
+ 30us
+Date: Wed, 01 Apr 2015 09:14:07 -0600
+Message-ID: <551C0B3F.40807@wwwdotorg.org>
+References: <808DC596-35BB-4A08-8CF4-DFAB6294636E@martin.sperl.org> <551A1466.2020706@wwwdotorg.org> <E15DA84C-4EF9-432A-ADA9-81789EAE379F@martin.sperl.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <E15DA84C-4EF9-432A-ADA9-81789EAE379F-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-They are used to decide if the controller can do DMA on a buffer
-of a specific length and thus are needed before any transfer is attempted.
+On 03/31/2015 12:00 AM, Martin Sperl wrote:
+>
+>> On 31.03.2015, at 05:28, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org> wrote:
+>>> +	/* check if we shall run in polling mode */
+>>> +	xfer_time_us = tfr->len * 9 * 1000000 / spi_used_hz;
+>>
+>> Why 9 not 8; presumably thats bits per byte, and IIRC SPI doesn't have
+>> anything like I2C's ack bit per byte?
+>
+> Well - the bcm2835 make a 1 cycle wait after each byte transferred.
+> Hence 9 bit actual length we need to account for.
 
-This fixes a memory leak where the SPI core uses the drivers can_dma()
-callback to determine if a buffer needs to be mapped. As the watermark
-levels aren't correct at that point the driver falsely claims to be able to
-DMA the buffer when it fact it isn't.
-After the transfer has been done the core uses the same callback to
-determine if it needs to unmap the buffers. As the driver now correctly
-claims to not being able to DMA the buffer the core doesn't attempt to
-unmap the buffer which leaves the SGT leaking.
-
-Signed-off-by: Lucas Stach <l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
----
- drivers/spi/spi-imx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 6fea4af51c41..aea3a67e5ce1 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -370,8 +370,6 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
- 	if (spi_imx->dma_is_inited) {
- 		dma = readl(spi_imx->base + MX51_ECSPI_DMA);
- 
--		spi_imx->tx_wml = spi_imx_get_fifosize(spi_imx) / 2;
--		spi_imx->rx_wml = spi_imx_get_fifosize(spi_imx) / 2;
- 		spi_imx->rxt_wml = spi_imx_get_fifosize(spi_imx) / 2;
- 		rx_wml_cfg = spi_imx->rx_wml << MX51_ECSPI_DMA_RX_WML_OFFSET;
- 		tx_wml_cfg = spi_imx->tx_wml << MX51_ECSPI_DMA_TX_WML_OFFSET;
-@@ -868,6 +866,8 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
- 	master->max_dma_len = MAX_SDMA_BD_BYTES;
- 	spi_imx->bitbang.master->flags = SPI_MASTER_MUST_RX |
- 					 SPI_MASTER_MUST_TX;
-+	spi_imx->tx_wml = spi_imx_get_fifosize(spi_imx) / 2;
-+	spi_imx->rx_wml = spi_imx_get_fifosize(spi_imx) / 2;
- 	spi_imx->dma_is_inited = 1;
- 
- 	return 0;
--- 
-2.1.4
+How odd. A comment to that effect might be useful for future readers.
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

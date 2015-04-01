@@ -1,46 +1,48 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: spi-bfin5xx: Initialize cr_width in
- bfin_spi_pump_transfers()
-Date: Wed, 1 Apr 2015 21:29:06 +0100
-Message-ID: <20150401202906.GD6023@sirena.org.uk>
-References: <BLU436-SMTP1172BE3B8CDF9C6A7CC89CCB9F30@phx.gbl>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: imx: read back the RX/TX watermark levels earlier
+Date: Wed, 1 Apr 2015 21:31:21 +0100
+Message-ID: <20150401203121.GF6023@sirena.org.uk>
+References: <1427877975-816-1-git-send-email-l.stach@pengutronix.de>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="2iBwrppp/7QCDedR"
-Cc: linux-spi@vger.kernel.org,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Chen Gang <xili_gchen_5257@hotmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="oFbHfjnMgUMsrGjO"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+To: Lucas Stach <l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <BLU436-SMTP1172BE3B8CDF9C6A7CC89CCB9F30@phx.gbl>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1427877975-816-1-git-send-email-l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---2iBwrppp/7QCDedR
+--oFbHfjnMgUMsrGjO
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Apr 02, 2015 at 03:03:33AM +0800, Chen Gang wrote:
-> cr_width may be not initialized before using by cr, the related warning
-> (with defconfig under blackfin by gcc5):
+On Wed, Apr 01, 2015 at 10:46:15AM +0200, Lucas Stach wrote:
+> They are used to decide if the controller can do DMA on a buffer
+> of a specific length and thus are needed before any transfer is attempted.
 
 Applied, thanks.
 
---2iBwrppp/7QCDedR
+--oFbHfjnMgUMsrGjO
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVHFURAAoJECTWi3JdVIfQLFYH/2xd1PZfLy94zuZMwTZjRP/7
-6ED0Ei8YKS2WIxa3llZ8qgeVKEO9GfGSjwTnM3V+1yfNUALc6LEGgHUUtKJ9FW66
-YGOEpQl/HeAm/KLuMryVqcmqN8nN/cxgMe782HX+XZXb0VvE7xQFMeaKBH+eHvxM
-48O+eFea7r9cwSkVfymctXYfpPlFAx8mT5iyJ8813vi4Jn2c2QgohdZBSbGlbV4l
-A+7/LCABKCqn4RSEt21F90+70Q3VMxDt1nLMxeBgc/i7FFFRC4abXGw1DZe8Wd/+
-DQ7VPzt57BV+K4GJHli41rK+vJGnBd8s8lK9PAlL9th5RLiYBMiftrASVOTzeeQ=
-=21AT
+iQEcBAEBCAAGBQJVHFWYAAoJECTWi3JdVIfQykUH/1a2kS/Umi1tHIsOZG8qkeHh
+fDsUZp1ix6YMbx1zpQ6ByEyXMrP6rUCr17jFOYfAmgF7ik79aSMtNnggBaGAlchN
+pXPmTcEyjjG8UADxkyHCmMiWxy3Jw+xSKpB6x70yq2C1PkOg5hxS0XF+Jr7FHsTp
+v9JQkW+u8UDXYinjdDw0pBRA9bNXpbtvx0ysvcOMwzzKm2NfTTk+9lra13GU6Khq
+PjwvdHI7PaObxMUake0v8QGcbRAsuG5VW6KwqbksfAUXfNJk1jzAGArUN4s6oRve
+jJwG3yvpwS45Sd+cQQmLI9EmGCBPyd4sJaL5wScvP9OEfC+F9vAydZPgv1q5Pik=
+=DkD9
 -----END PGP SIGNATURE-----
 
---2iBwrppp/7QCDedR--
+--oFbHfjnMgUMsrGjO--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

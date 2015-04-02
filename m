@@ -1,47 +1,107 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: imx: read back the RX/TX watermark levels earlier
-Date: Wed, 1 Apr 2015 21:32:51 +0100
-Message-ID: <20150401203251.GG6023@sirena.org.uk>
-References: <1427877975-816-1-git-send-email-l.stach@pengutronix.de>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="oOB74oR0WcNeq9Zb"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
-To: Lucas Stach <l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v1 0/2] spi: fsl-dspi: better approximation for baudrate
+Date: Thu,  2 Apr 2015 12:11:45 +0300
+Message-ID: <1427965907-28125-1-git-send-email-andy.shevchenko@gmail.com>
+Cc: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Aaron Brice <aaron.brice-vSOi0k5x9wFWk0Htik3J/w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1427877975-816-1-git-send-email-l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+This series makes better approximation when baud rate divisor parameters are
+calculated.
 
---oOB74oR0WcNeq9Zb
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The algorithm is represent as Python script here [1]. First parameter is
+algorithm (0 - original, 1 - after patch 1/2, 2 - after patch 2/2, 3 - memory
+vs. performance: use precalculated scales).
 
-On Wed, Apr 01, 2015 at 10:46:15AM +0200, Lucas Stach wrote:
-> They are used to decide if the controller can do DMA on a buffer
-> of a specific length and thus are needed before any transfer is attempted.
+I played with let's say standard baud rates (which I used for Quark) and
+separately run algorithms 0 and 1 for range 100-5000 baud. Input frequency is
+64MHz. It seems my algo shows better results in all cases. Here is a diff for
+'standard' baud rates
+(speed_hz, DBR, i, BR, j, PBR, real baud rate, difference):
 
-Applied, thanks.
+--- result0     2015-04-02 00:38:48.845761004 +0300
++++ result1     2015-04-02 00:38:48.913760154 +0300
+@@ -5,7 +5,7 @@
+ 25000000 0 0  2     0 2 16000000 9000000
+ 20000000 0 0  2     0 2 16000000 4000000
+ 16667000 0 0  2     0 2 16000000 667000
+-13333000 0 0  2     0 2 16000000 2667000
++13333000 0 0  2     1 3 10666666 2666334
+ 12500000 0 0  2     1 3 10666666 1833334
+ 10000000 0 0  2     1 3 10666666 666666
+ 8000000  0 1  4     0 2 8000000 0
+@@ -17,36 +17,36 @@
+ 3140500  0 1  4     2 5 3200000 59500
+ 3125000  0 1  4     2 5 3200000 75000
+ 3109500  0 1  4     2 5 3200000 90500
+-2500000  0 1  4     3 7 2285714 214286
++2500000  0 3  8     1 3 2666666 166666
+ 2000000  0 4  16    0 2 2000000 0
+ 1563000  0 3  8     2 5 1600000 37000
+-1250000  0 3  8     3 7 1142857 107143
++1250000  0 4  16    1 3 1333333 83333
+ 1006000  0 5  32    0 2 1000000 6000
+ 1000000  0 5  32    0 2 1000000 0
+ 994000   0 5  32    0 2 1000000 6000
+ 800000   0 4  16    2 5 800000 0
+-781250   0 5  32    1 3 666666 114584
+-625000   0 4  16    3 7 571428 53572
++781250   0 4  16    2 5 800000 18750
++625000   0 5  32    1 3 666666 41666
+ 500000   0 6  64    0 2 500000 0
+ 400000   0 5  32    2 5 400000 0
+-390625   0 6  64    1 3 333333 57292
++390625   0 5  32    2 5 400000 9375
+ 250000   0 7  128   0 2 250000 0
+ 200000   0 6  64    2 5 200000 0
+ 205313   0 6  64    2 5 200000 5313
+-195313   0 7  128   1 3 166666 28647
+-185313   0 7  128   1 3 166666 18647
++195313   0 6  64    2 5 200000 4687
++185313   0 6  64    2 5 200000 14687
+ 125000   0 8  256   0 2 125000 0
+ 100700   0 7  128   2 5 100000 700
+ 100000   0 7  128   2 5 100000 0
+-99300    0 8  256   1 3 83333 15967
++99300    0 7  128   2 5 100000 700
+ 50000    0 8  256   2 5 50000 0
+ 25000    0 9  512   2 5 25000 0
+-10066    0 10 1024  3 7 8928 1138
+-10016    0 10 1024  3 7 8928 1088
+-9966     0 10 1024  3 7 8928 1038
+-5065     0 11 2048  3 7 4464 601
+-5040     0 11 2048  3 7 4464 576
+-5015     0 11 2048  3 7 4464 551
++10066    0 11 2048  1 3 10416 350
++10016    0 11 2048  1 3 10416 400
++9966     0 11 2048  1 3 10416 450
++5065     0 12 4096  1 3 5208 143
++5040     0 12 4096  1 3 5208 168
++5015     0 12 4096  1 3 5208 193
+ 1007     0 15 32768 0 2 976 31
+ 1002     0 15 32768 0 2 976 26
+ 997      0 15 32768 0 2 976 21
 
---oOB74oR0WcNeq9Zb
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Patch 2 is RFC, since I don't know if all DSPI modules has that bit (at least
+what I found on public for MC55xx) and how duty cycle is significant.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Not compiled. Not tested.
 
-iQEcBAEBCAAGBQJVHFXyAAoJECTWi3JdVIfQd1EH/1SfWZsALmyiADwyr7hWD37L
-6ytsXLYOOERfMZdj8hdDBEO4yRnZBnoXP2CmbYrR8k9tRV44s+C1QHgCnP9YgAJC
-uxf6jo2V66peKj0xgF7LWMeo3XOhtDtROajXXlrLHcLu7WkLWPFGL4onLFlBwfN0
-TO8FKEkS+CLiegJ1AFtLHmZFb8wDtTqW//eItL1iQXFXgdCPrFkcIrF0Zs3uqYt/
-pGiHZOsfAwUhNPXvhtbXs0HbbWRw8jYWTL59T/syDSdJH48vlG6M9vt2UWa9nfCK
-4LZnAn5xy768i+QTcAI4pHKYlx2PAfHST0eisNlNJrlqvYd8cakoSBmWNQuHqW8=
-=IY0X
------END PGP SIGNATURE-----
+[1] http://pastebin.com/uy0CKc6b
 
---oOB74oR0WcNeq9Zb--
+Andy Shevchenko (2):
+  spi: fsl-dspi: increase precision of baud rate approximation
+  spi: fsl-dspi: use double baud rate in approximation
+
+ drivers/spi/spi-fsl-dspi.c | 50 +++++++++++++++++++++-------------------------
+ 1 file changed, 23 insertions(+), 27 deletions(-)
+
+-- 
+1.9.3
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

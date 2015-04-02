@@ -1,7 +1,7 @@
 From: Jonathan Richardson <jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-Subject: [PATCH 1/4] ARM: dts: Add binding for Broadcom MSPI driver.
-Date: Thu, 2 Apr 2015 12:23:20 -0700
-Message-ID: <1428002603-21892-2-git-send-email-jonathar@broadcom.com>
+Subject: [PATCH 4/4] spi: bcm-mspi: Add support to set serial baud clock rate
+Date: Thu, 2 Apr 2015 12:23:23 -0700
+Message-ID: <1428002603-21892-5-git-send-email-jonathar@broadcom.com>
 References: <1428002603-21892-1-git-send-email-jonathar@broadcom.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -22,57 +22,122 @@ In-Reply-To: <1428002603-21892-1-git-send-email-jonathar-dY08KVG/lbpWk0Htik3J/w@
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The driver wasn't setting the SPBR (serial clock baud rate) which caused
+it to run at the slowest speed possible. The driver now calculates the
+SPBR based on the reference clock frequency resulting in much faster
+SPI transfers.
 
 Signed-off-by: Jonathan Richardson <jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
 ---
- .../devicetree/bindings/spi/brcm,mspi-spi.txt      |   38 ++++++++++++++++++++
- 1 file changed, 38 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/brcm,mspi-spi.txt
+ drivers/spi/spi-bcm-mspi.c |   48 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/spi/brcm,mspi-spi.txt b/Documentation/devicetree/bindings/spi/brcm,mspi-spi.txt
-new file mode 100644
-index 0000000..16164e3
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/brcm,mspi-spi.txt
-@@ -0,0 +1,38 @@
-+Broadcom MSPI controller
+diff --git a/drivers/spi/spi-bcm-mspi.c b/drivers/spi/spi-bcm-mspi.c
+index df27449..5617b5b 100644
+--- a/drivers/spi/spi-bcm-mspi.c
++++ b/drivers/spi/spi-bcm-mspi.c
+@@ -18,10 +18,15 @@
+ #include <linux/bcma/bcma.h>
+ #include <linux/spi/spi.h>
+ #include <linux/of.h>
++#include <linux/clk.h>
+ 
+ #include "spi-bcm-mspi.h"
+ 
+ #define BCM_MSPI_MAX_SPI_BAUD   13500000	/* 216 MHz? */
++#define SPBR_MIN                8U
++#define SPBR_MAX                255U
++#define MSPI_SPCR0_LSB_OFFSET   0x200
++#define MSPI_SPCR0_LSB_SHIFT    0
+ 
+ /* The longest observed required wait was 19 ms */
+ #define BCM_MSPI_SPE_TIMEOUT_MS 80
+@@ -33,7 +38,9 @@ struct bcm_mspi {
+ 
+ 	void __iomem *base;
+ 	struct spi_master *master;
++	struct clk *clk;
+ 	size_t read_offset;
++	u32    spbr;
+ 
+ 	void (*mspi_write)(struct bcm_mspi *mspi, u16 offset, u32 value);
+ 	u32 (*mspi_read)(struct bcm_mspi *mspi, u16 offset);
+@@ -45,6 +52,15 @@ static inline unsigned int bcm_mspi_calc_timeout(size_t len)
+ 	return (len * 9000 / BCM_MSPI_MAX_SPI_BAUD * 110 / 100) + 1;
+ }
+ 
++static void bcm_mspi_hw_init(struct bcm_mspi *mspi)
++{
++	/* Set SPBR (serial clock baud rate). */
++	if (mspi->spbr) {
++		mspi->mspi_write(mspi, MSPI_SPCR0_LSB_OFFSET,
++			mspi->spbr << MSPI_SPCR0_LSB_SHIFT);
++	}
++}
 +
-+Required properties:
-+- compatible: Must be either "brcm,mspi" or "brcm,bcma-mspi". Use
-+  "brcm,bcma-mspi" for controllers on a bcma bus and "brcm,mspi" otherwise.
+ static int bcm_mspi_wait(struct bcm_mspi *mspi, unsigned int timeout_ms)
+ {
+ 	unsigned long deadline;
+@@ -221,6 +237,7 @@ static struct bcm_mspi *bcm_mspi_init(struct device *dev)
+ {
+ 	struct bcm_mspi *data;
+ 	struct spi_master *master;
++	u32 desired_rate;
+ 
+ 	master = spi_alloc_master(dev, sizeof(*data));
+ 	if (!master) {
+@@ -235,6 +252,31 @@ static struct bcm_mspi *bcm_mspi_init(struct device *dev)
+ 	master->dev.of_node = dev->of_node;
+ 	master->transfer_one = bcm_mspi_transfer_one;
+ 
++	/*
++	 * Enable clock if provided. The frequency can be changed by setting
++	 * SPBR (serial clock baud rate) based on the desired 'clock-frequency'.
++	 *
++	 * Baud rate is calculated as: mspi_clk / (2 * SPBR) where SPBR is a
++	 * value between 1-255. If not set then it is left at the h/w default.
++	 */
++	data->clk = devm_clk_get(dev, "mspi_clk");
++	if (!IS_ERR(data->clk)) {
++		int ret = clk_prepare_enable(data->clk);
 +
-+- reg:  Physical base address and length of the controller's registers.
++		if (ret < 0) {
++			dev_err(dev, "failed to enable clock: %d\n", ret);
++			return 0;
++		}
 +
-+- interrupts: The interrupt id for the controller.
++		/* Calculate SPBR if clock-frequency provided. */
++		if (of_property_read_u32(dev->of_node, "clock-frequency",
++			&desired_rate) >= 0) {
++			u32 spbr = clk_get_rate(data->clk) / (2 * desired_rate);
 +
-+- #address-cells: should be 1.
++			data->spbr = clamp_val(spbr, SPBR_MIN, SPBR_MAX);
++		}
++	}
 +
-+- #size-cells: should be 0.
+ 	return data;
+ }
+ 
+@@ -286,6 +328,9 @@ static int bcm_mspi_probe(struct platform_device *pdev)
+ 	data->mspi_write = bcm_mspi_write;
+ 	platform_set_drvdata(pdev, data);
+ 
++	/* Initialize SPI controller. */
++	bcm_mspi_hw_init(data);
 +
-+Optional properties:
-+- clocks: The MSPI reference clock. If not provided then it is assumed a clock
-+  is enabled by default and no control of clock-frequency (see below) is
-+  possible.
+ 	err = devm_spi_register_master(dev, data->master);
+ 	if (err)
+ 		goto out;
+@@ -360,6 +405,9 @@ static int bcm_mspi_bcma_probe(struct bcma_device *core)
+ 	data->core = core;
+ 	bcma_set_drvdata(core, data);
+ 
++	/* Initialize SPI controller. */
++	bcm_mspi_hw_init(data);
 +
-+- clock-names: The name of the reference clock.
-+
-+- clock-frequency: Desired frequency of the clock. This will set the serial
-+  clock baud rate (SPBR) based on the reference clock frequency. The frequency
-+  of the SPBR is mspi_clk / (2 * SPBR) where SPBR is a value between 1-255
-+  determined by the desired 'clock-frequency'. If not provided then the default
-+  baud rate of the controller is used.
-+
-+Example:
-+
-+mspi@18047000 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	compatible = "brcm,mspi";
-+	reg = <0x18047000 0x1000>;
-+	clocks = <&axi41_clk>;
-+	clock-names = "mspi_clk";
-+	clock-frequency = <12500000>;
-+};
+ 	err = devm_spi_register_master(&core->dev, data->master);
+ 	if (err) {
+ 		spi_master_put(data->master);
 -- 
 1.7.9.5
 

@@ -1,104 +1,107 @@
 From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v1 0/2] spi: fsl-dspi: better approximation for baudrate
-Date: Thu,  2 Apr 2015 12:11:45 +0300
-Message-ID: <1427965907-28125-1-git-send-email-andy.shevchenko@gmail.com>
+Subject: [PATCH v1 2/2][RFC] spi: fsl-dspi: use double baud rate in approximation
+Date: Thu,  2 Apr 2015 12:11:47 +0300
+Message-ID: <1427965907-28125-3-git-send-email-andy.shevchenko@gmail.com>
+References: <1427965907-28125-1-git-send-email-andy.shevchenko@gmail.com>
 Cc: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 To: Aaron Brice <aaron.brice-vSOi0k5x9wFWk0Htik3J/w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1427965907-28125-1-git-send-email-andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-This series makes better approximation when baud rate divisor parameters are
-calculated.
+The CTAR register has DBR bit which allows to double a baud rate, though
+it makes duty cycle deviate from 50/50.
 
-The algorithm is represent as Python script here [1]. First parameter is
-algorithm (0 - original, 1 - after patch 1/2, 2 - after patch 2/2, 3 - memory
-vs. performance: use precalculated scales).
+This patch tries to approximate better using DBR. It helps in case of
+highest possible baud rates.
 
-I played with let's say standard baud rates (which I used for Quark) and
-separately run algorithms 0 and 1 for range 100-5000 baud. Input frequency is
-64MHz. It seems my algo shows better results in all cases. Here is a diff for
-'standard' baud rates
-(speed_hz, DBR, i, BR, j, PBR, real baud rate, difference):
+Signed-off-by: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi-fsl-dspi.c | 34 ++++++++++++++++++++--------------
+ 1 file changed, 20 insertions(+), 14 deletions(-)
 
---- result0     2015-04-02 00:38:48.845761004 +0300
-+++ result1     2015-04-02 00:38:48.913760154 +0300
-@@ -5,7 +5,7 @@
- 25000000 0 0  2     0 2 16000000 9000000
- 20000000 0 0  2     0 2 16000000 4000000
- 16667000 0 0  2     0 2 16000000 667000
--13333000 0 0  2     0 2 16000000 2667000
-+13333000 0 0  2     1 3 10666666 2666334
- 12500000 0 0  2     1 3 10666666 1833334
- 10000000 0 0  2     1 3 10666666 666666
- 8000000  0 1  4     0 2 8000000 0
-@@ -17,36 +17,36 @@
- 3140500  0 1  4     2 5 3200000 59500
- 3125000  0 1  4     2 5 3200000 75000
- 3109500  0 1  4     2 5 3200000 90500
--2500000  0 1  4     3 7 2285714 214286
-+2500000  0 3  8     1 3 2666666 166666
- 2000000  0 4  16    0 2 2000000 0
- 1563000  0 3  8     2 5 1600000 37000
--1250000  0 3  8     3 7 1142857 107143
-+1250000  0 4  16    1 3 1333333 83333
- 1006000  0 5  32    0 2 1000000 6000
- 1000000  0 5  32    0 2 1000000 0
- 994000   0 5  32    0 2 1000000 6000
- 800000   0 4  16    2 5 800000 0
--781250   0 5  32    1 3 666666 114584
--625000   0 4  16    3 7 571428 53572
-+781250   0 4  16    2 5 800000 18750
-+625000   0 5  32    1 3 666666 41666
- 500000   0 6  64    0 2 500000 0
- 400000   0 5  32    2 5 400000 0
--390625   0 6  64    1 3 333333 57292
-+390625   0 5  32    2 5 400000 9375
- 250000   0 7  128   0 2 250000 0
- 200000   0 6  64    2 5 200000 0
- 205313   0 6  64    2 5 200000 5313
--195313   0 7  128   1 3 166666 28647
--185313   0 7  128   1 3 166666 18647
-+195313   0 6  64    2 5 200000 4687
-+185313   0 6  64    2 5 200000 14687
- 125000   0 8  256   0 2 125000 0
- 100700   0 7  128   2 5 100000 700
- 100000   0 7  128   2 5 100000 0
--99300    0 8  256   1 3 83333 15967
-+99300    0 7  128   2 5 100000 700
- 50000    0 8  256   2 5 50000 0
- 25000    0 9  512   2 5 25000 0
--10066    0 10 1024  3 7 8928 1138
--10016    0 10 1024  3 7 8928 1088
--9966     0 10 1024  3 7 8928 1038
--5065     0 11 2048  3 7 4464 601
--5040     0 11 2048  3 7 4464 576
--5015     0 11 2048  3 7 4464 551
-+10066    0 11 2048  1 3 10416 350
-+10016    0 11 2048  1 3 10416 400
-+9966     0 11 2048  1 3 10416 450
-+5065     0 12 4096  1 3 5208 143
-+5040     0 12 4096  1 3 5208 168
-+5015     0 12 4096  1 3 5208 193
- 1007     0 15 32768 0 2 976 31
- 1002     0 15 32768 0 2 976 26
- 997      0 15 32768 0 2 976 21
-
-Patch 2 is RFC, since I don't know if all DSPI modules has that bit (at least
-what I found on public for MC55xx) and how duty cycle is significant.
-
-Not compiled. Not tested.
-
-[1] http://pastebin.com/uy0CKc6b
-
-Andy Shevchenko (2):
-  spi: fsl-dspi: increase precision of baud rate approximation
-  spi: fsl-dspi: use double baud rate in approximation
-
- drivers/spi/spi-fsl-dspi.c | 50 +++++++++++++++++++++-------------------------
- 1 file changed, 23 insertions(+), 27 deletions(-)
-
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 31cdee5..92d387a 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -47,6 +47,7 @@
+ #define SPI_TCR			0x08
+ 
+ #define SPI_CTAR(x)		(0x0c + (((x) & 0x3) * 4))
++#define SPI_CTAR_DBR(x)		(((x) & 0x00000001) << 31)
+ #define SPI_CTAR_FMSZ(x)	(((x) & 0x0000000f) << 27)
+ #define SPI_CTAR_CPOL(x)	((x) << 26)
+ #define SPI_CTAR_CPHA(x)	((x) << 25)
+@@ -139,8 +140,8 @@ static inline int is_double_byte_mode(struct fsl_dspi *dspi)
+ 	return ((val & SPI_FRAME_BITS_MASK) == SPI_FRAME_BITS(8)) ? 0 : 1;
+ }
+ 
+-static void hz_to_spi_baud(char *pbr, char *br, int speed_hz,
+-		unsigned long clkrate)
++static void hz_to_spi_baud(char *dbr, char *pbr, char *br,
++		int speed_hz, unsigned long clkrate)
+ {
+ 	/* Valid baud rate pre-scaler values */
+ 	int pbr_tbl[4] = {2, 3, 5, 7};
+@@ -151,17 +152,21 @@ static void hz_to_spi_baud(char *pbr, char *br, int speed_hz,
+ 		4096,	8192,	16384,	32768,
+ 	};
+ 	unsigned long r = INT_MAX, tmp;
+-	int i, j;
+-
+-	for (i = 0; i < ARRAY_SIZE(brs); i++)
+-		for (j = 0; j < ARRAY_SIZE(pbr_tbl); j++) {
+-			tmp = abs(clkrate / pbr_tbl[j] / brs[i] - speed_hz);
+-			if (tmp >= r)
+-				continue;
+-			r = tmp;
+-			*br = i;
+-			*pbr = j;
++	int i, j, k;
++
++	for (k = 0; k < 2; k++) {
++		for (i = 0; i < ARRAY_SIZE(brs); i++) {
++			for (j = 0; j < ARRAY_SIZE(pbr_tbl); j++) {
++				tmp = abs(clkrate / pbr_tbl[j] / brs[i] - speed_hz);
++				if (tmp >= r)
++					continue;
++				r = tmp;
++				*br = i;
++				*pbr = j;
++				*dbr = k;
++			}
+ 		}
++	}
+ }
+ 
+ static int dspi_transfer_write(struct fsl_dspi *dspi)
+@@ -342,7 +347,7 @@ static int dspi_setup(struct spi_device *spi)
+ {
+ 	struct chip_data *chip;
+ 	struct fsl_dspi *dspi = spi_master_get_devdata(spi->master);
+-	unsigned char br = 0, pbr = 0, fmsz = 0;
++	unsigned char br = 0, pbr = 0, dbr = 0, fmsz = 0;
+ 
+ 	if ((spi->bits_per_word >= 4) && (spi->bits_per_word <= 16)) {
+ 		fmsz = spi->bits_per_word - 1;
+@@ -364,13 +369,14 @@ static int dspi_setup(struct spi_device *spi)
+ 
+ 	chip->void_write_data = 0;
+ 
+-	hz_to_spi_baud(&pbr, &br,
++	hz_to_spi_baud(&dbr, &pbr, &br,
+ 			spi->max_speed_hz, clk_get_rate(dspi->clk));
+ 
+ 	chip->ctar_val =  SPI_CTAR_FMSZ(fmsz)
+ 		| SPI_CTAR_CPOL(spi->mode & SPI_CPOL ? 1 : 0)
+ 		| SPI_CTAR_CPHA(spi->mode & SPI_CPHA ? 1 : 0)
+ 		| SPI_CTAR_LSBFE(spi->mode & SPI_LSB_FIRST ? 1 : 0)
++		| SPI_CTAR_DBR(dbr)
+ 		| SPI_CTAR_PBR(pbr)
+ 		| SPI_CTAR_BR(br);
+ 
 -- 
 1.9.3
 

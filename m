@@ -1,40 +1,59 @@
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH 2/4] spi: bcm53xx: Refactor to make driver nonspecific to
- 53xx SoCs
-Date: Fri, 3 Apr 2015 16:35:10 +0300
-Message-ID: <CAHp75Vf0JrB5pqNEouLzyOf5mmi05Ut_cybd37suTrLbJOFHKA@mail.gmail.com>
+From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 3/4] spi: bcm-mspi: Make BCMA optional to support non-BCMA chips
+Date: Fri, 3 Apr 2015 16:38:09 +0300
+Message-ID: <CAHp75VcMg-8X8DtHbQrmugzWG5VzzHXcpWNiyrTT=qmuCvA95w@mail.gmail.com>
 References: <1428002603-21892-1-git-send-email-jonathar@broadcom.com>
-	<1428002603-21892-3-git-send-email-jonathar@broadcom.com>
+	<1428002603-21892-4-git-send-email-jonathar@broadcom.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie@kernel.org>, Dmitry Torokhov <dtor@google.com>,
-	Anatol Pomazau <anatol@google.com>,
-	Scott Branden <sbranden@broadcom.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Pawel Moll <pawel.moll@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Ian Campbell <ijc+devicetree@hellion.org.uk>,
-	Kumar Gala <galak@codeaurora.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	linux-spi@vger.kernel.org,
-	bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
-	devicetree <devicetree@vger.kernel.org>,
-	Rafal Milecki <zajec5@gmail.com>
-To: Jonathan Richardson <jonathar@broadcom.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1428002603-21892-3-git-send-email-jonathar@broadcom.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Dmitry Torokhov <dtor-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
+	Anatol Pomazau <anatol-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
+	Scott Branden <sbranden-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	bcm-kernel-feedback-list <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Rafal Milecki <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Jonathan Richardson <jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1428002603-21892-4-git-send-email-jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
 On Thu, Apr 2, 2015 at 10:23 PM, Jonathan Richardson
-<jonathar@broadcom.com> wrote:
-> The Broadcom MSPI controller is used on various SoCs. It is being
-> renamed so that it can be extended and reused on other chips. It is
-> renamed to bcm-mspi.
->
-What if you resend this one with -M -C applied?
+<jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org> wrote:
+> The Broadcom MSPI controller is used on various chips. The driver only
+> supported BCM53xx chips with BCMA (an AMBA bus variant). The driver is
+> refactored to make BCMA optional and provides a new config for non BCMA
+> systems.
 
+>  struct bcm_mspi {
+> +       #ifdef CONFIG_SPI_BCMA_MSPI
+>         struct bcma_device *core;
+> -       struct spi_master *master;
+> +       #endif
+>
+> +       void __iomem *base;
+> +       struct spi_master *master;
+>         size_t read_offset;
+
+> +       void (*mspi_write)(struct bcm_mspi *mspi, u16 offset, u32 value);
+> +       u32 (*mspi_read)(struct bcm_mspi *mspi, u16 offset);
+> +};
+
+To avoid ugly ifdefs I think better to split driver to core part and
+the actual driver part, at the end you will have something like
+mspi-core.c mspi-53xx.c mspi-whatever.c. Check for example spi-dw*.c
 
 -- 
 With Best Regards,
 Andy Shevchenko
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,150 +1,77 @@
-From: Aaron Brice <aaron.brice@datasoft.com>
-Subject: [PATCH v3 3/3] spi: fsl-dspi: Add ~50ns delay between cs and sck
-Date: Fri,  3 Apr 2015 13:39:31 -0700
-Message-ID: <1428093571-20407-4-git-send-email-aaron.brice@datasoft.com>
-References: <1428093571-20407-1-git-send-email-aaron.brice@datasoft.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stefan@agner.ch, devicetree@vger.kernel.org
-To: broonie@kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1428093571-20407-1-git-send-email-aaron.brice@datasoft.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v1 0/2] spi: fsl-dspi: better approximation for baudrate
+Date: Fri, 3 Apr 2015 23:59:08 +0300
+Message-ID: <CAHp75Vfa9b0s6rXMbUERbbGRowGp4bidKH1UZ4a8HAx23oSrLw@mail.gmail.com>
+References: <1427965907-28125-1-git-send-email-andy.shevchenko@gmail.com>
+	<551ED2F6.8020701@datasoft.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Aaron Brice <aaron.brice-vSOi0k5x9wFWk0Htik3J/w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <551ED2F6.8020701-vSOi0k5x9wFWk0Htik3J/w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Add delay between chip select and clock signals, before clock starts and
-after clock stops.
+On Fri, Apr 3, 2015 at 8:50 PM, Aaron Brice <aaron.brice-vSOi0k5x9wFWk0Htik3J/w@public.gmane.org> wrote:
+> On 04/02/2015 02:11 AM, Andy Shevchenko wrote:
+>>
+>> This series makes better approximation when baud rate divisor parameters
+>> are
+>> calculated.
+>>
+>> The algorithm is represent as Python script here [1]. First parameter is
+>> algorithm (0 - original, 1 - after patch 1/2, 2 - after patch 2/2, 3 -
+>> memory
+>> vs. performance: use precalculated scales).
+>>
+>> I played with let's say standard baud rates (which I used for Quark) and
+>> separately run algorithms 0 and 1 for range 100-5000 baud. Input frequency
+>> is
+>> 64MHz. It seems my algo shows better results in all cases. Here is a diff
+>> for
+>> 'standard' baud rates
+>> (speed_hz, DBR, i, BR, j, PBR, real baud rate, difference):
 
-Signed-off-by: Aaron Brice <aaron.brice@datasoft.com>
----
- drivers/spi/spi-fsl-dspi.c | 64 +++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 60 insertions(+), 4 deletions(-)
+[]
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 8213358..5fe54cd 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -20,6 +20,7 @@
- #include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/kernel.h>
-+#include <linux/math64.h>
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/of_device.h>
-@@ -29,6 +30,7 @@
- #include <linux/sched.h>
- #include <linux/spi/spi.h>
- #include <linux/spi/spi_bitbang.h>
-+#include <linux/time.h>
- 
- #define DRIVER_NAME "fsl-dspi"
- 
-@@ -51,7 +53,7 @@
- #define SPI_CTAR_CPOL(x)	((x) << 26)
- #define SPI_CTAR_CPHA(x)	((x) << 25)
- #define SPI_CTAR_LSBFE(x)	((x) << 24)
--#define SPI_CTAR_PCSSCR(x)	(((x) & 0x00000003) << 22)
-+#define SPI_CTAR_PCSSCK(x)	(((x) & 0x00000003) << 22)
- #define SPI_CTAR_PASC(x)	(((x) & 0x00000003) << 20)
- #define SPI_CTAR_PDT(x)	(((x) & 0x00000003) << 18)
- #define SPI_CTAR_PBR(x)	(((x) & 0x00000003) << 16)
-@@ -59,6 +61,7 @@
- #define SPI_CTAR_ASC(x)	(((x) & 0x0000000f) << 8)
- #define SPI_CTAR_DT(x)		(((x) & 0x0000000f) << 4)
- #define SPI_CTAR_BR(x)		((x) & 0x0000000f)
-+#define SPI_CTAR_SCALE_BITS	0xf
- 
- #define SPI_CTAR0_SLAVE	0x0c
- 
-@@ -176,6 +179,40 @@ static void hz_to_spi_baud(char *pbr, char *br, int speed_hz,
- 	}
- }
- 
-+static void ns_delay_scale(char *psc, char *sc, int delay_ns,
-+		unsigned long clkrate)
-+{
-+	int pscale_tbl[4] = {1, 3, 5, 7};
-+	int scale_needed, scale, minscale = INT_MAX;
-+	int i, j;
-+	u32 remainder;
-+
-+	scale_needed = div_u64_rem((u64)delay_ns * clkrate, NSEC_PER_SEC,
-+			&remainder);
-+	if (remainder)
-+		scale_needed++;
-+
-+	for (i = 0; i < ARRAY_SIZE(pscale_tbl); i++)
-+		for (j = 0; j <= SPI_CTAR_SCALE_BITS; j++) {
-+			scale = pscale_tbl[i] * (2 << j);
-+			if (scale >= scale_needed) {
-+				if (scale < minscale) {
-+					minscale = scale;
-+					*psc = i;
-+					*sc = j;
-+				}
-+				break;
-+			}
-+		}
-+
-+	if (minscale == INT_MAX) {
-+		pr_warn("Cannot find correct scale values for %dns delay at clkrate %ld, using max prescaler value",
-+			delay_ns, clkrate);
-+		*psc = ARRAY_SIZE(pscale_tbl) - 1;
-+		*sc = SPI_CTAR_SCALE_BITS;
-+	}
-+}
-+
- static int dspi_transfer_write(struct fsl_dspi *dspi)
- {
- 	int tx_count = 0;
-@@ -354,7 +391,10 @@ static int dspi_setup(struct spi_device *spi)
- {
- 	struct chip_data *chip;
- 	struct fsl_dspi *dspi = spi_master_get_devdata(spi->master);
--	unsigned char br = 0, pbr = 0, fmsz = 0;
-+	u32 cs_sck_delay = 0, sck_cs_delay = 0;
-+	unsigned char br = 0, pbr = 0, pcssck = 0, cssck = 0;
-+	unsigned char pasc = 0, asc = 0, fmsz = 0;
-+	unsigned long clkrate;
- 
- 	if ((spi->bits_per_word >= 4) && (spi->bits_per_word <= 16)) {
- 		fmsz = spi->bits_per_word - 1;
-@@ -371,18 +411,34 @@ static int dspi_setup(struct spi_device *spi)
- 			return -ENOMEM;
- 	}
- 
-+	of_property_read_u32(spi->dev.of_node, "fsl,spi-cs-sck-delay",
-+			&cs_sck_delay);
-+
-+	of_property_read_u32(spi->dev.of_node, "fsl,spi-sck-cs-delay",
-+			&sck_cs_delay);
-+
- 	chip->mcr_val = SPI_MCR_MASTER | SPI_MCR_PCSIS |
- 		SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF;
- 
- 	chip->void_write_data = 0;
- 
--	hz_to_spi_baud(&pbr, &br,
--			spi->max_speed_hz, clk_get_rate(dspi->clk));
-+	clkrate = clk_get_rate(dspi->clk);
-+	hz_to_spi_baud(&pbr, &br, spi->max_speed_hz, clkrate);
-+
-+	/* Set PCS to SCK delay scale values */
-+	ns_delay_scale(&pcssck, &cssck, cs_sck_delay, clkrate);
-+
-+	/* Set After SCK delay scale values */
-+	ns_delay_scale(&pasc, &asc, sck_cs_delay, clkrate);
- 
- 	chip->ctar_val =  SPI_CTAR_FMSZ(fmsz)
- 		| SPI_CTAR_CPOL(spi->mode & SPI_CPOL ? 1 : 0)
- 		| SPI_CTAR_CPHA(spi->mode & SPI_CPHA ? 1 : 0)
- 		| SPI_CTAR_LSBFE(spi->mode & SPI_LSB_FIRST ? 1 : 0)
-+		| SPI_CTAR_PCSSCK(pcssck)
-+		| SPI_CTAR_CSSCK(cssck)
-+		| SPI_CTAR_PASC(pasc)
-+		| SPI_CTAR_ASC(asc)
- 		| SPI_CTAR_PBR(pbr)
- 		| SPI_CTAR_BR(br);
- 
+>>   3140500  0 1  4     2 5 3200000 59500
+>>   3125000  0 1  4     2 5 3200000 75000
+>>   3109500  0 1  4     2 5 3200000 90500
+>> -2500000  0 1  4     3 7 2285714 214286
+>> +2500000  0 3  8     1 3 2666666 166666
+>
+> The rest of these I'm not sure about.  The property is called
+> "spi-max-frequency" and the description in the bindings document is:
+>
+> - spi-max-frequency - (required) Maximum SPI clocking speed of device in Hz
+
+I think we are talking about real world and real hardware. As far as I
+understand the problem with SPI (or any other) clocking is a
+consistent error.
+
+If you have that error is a big enough the data might be corrupted.
+How big? Each difference between clocking is for hardware the shifted
+phase.  When phase is deviated your consumer might missed change of
+the signal and inverted a bit.
+
+Thus, if the delta for clocking is small the hardware will still catch
+the change of the signal.
+
+So, in practice it is quite unlikely to happen since usual devices
+have enough frequency margin.
+
+> In the rest of the examples you've gotten a closer baud rate by exceeding
+> the "Maximum" value.  I don't think you want best approximation, I think you
+> want closest without going over..
+
+Can you test on real hardware? I'm pretty sure it's quite hard to find
+something that will not work.
+
 -- 
-2.1.0
+With Best Regards,
+Andy Shevchenko
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

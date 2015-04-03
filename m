@@ -1,35 +1,86 @@
 From: Aaron Brice <aaron.brice-vSOi0k5x9wFWk0Htik3J/w@public.gmane.org>
-Subject: [PATCH v3 0/3] spi: fsl-dspi (vf610) clock fixes
-Date: Fri,  3 Apr 2015 13:39:28 -0700
-Message-ID: <1428093571-20407-1-git-send-email-aaron.brice@datasoft.com>
+Subject: [PATCH v3 1/3] spi: fsl-dspi: Fix clock rate scale values
+Date: Fri,  3 Apr 2015 13:39:29 -0700
+Message-ID: <1428093571-20407-2-git-send-email-aaron.brice@datasoft.com>
+References: <1428093571-20407-1-git-send-email-aaron.brice@datasoft.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	stefan-XLVq0VzYD2Y@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1428093571-20407-1-git-send-email-aaron.brice-vSOi0k5x9wFWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-We were having intermittent problems writing to SRAM chip on SPI bus on vf610
-SoM.  Added support for CS setup and hold times to meet the SRAM spec.  In the
-process noticed that the baud rate was a little high.
+Previous algorithm had an outer loop with the values {2,3,5,7} and an
+inner loop with {2,4,6,8,16,32,...,32768}, and would pick the first
+value over the required scaling value (where the total scale was the two
+numbers multiplied).
 
-Changes since v2:
- * Incorporate fixes per Stefen Agner review, namely moved hard-coded 50ns
-   delays to device tree properties
- * Fix for baud rate scale value remainders, reported by Andy Shevchenko
+Since the inner loop went up to 32768 it would always pick a value of 2
+for PBR and a much higher than necessary value for BR.  The desired
+scale factor was being divided by two I believe to compensate for the
+much higher scale factors (the divide by two not specified in the
+reference manual).
 
-Changes since v1:
- * More detail in commit message for clock rate fix
+Updated to check all values and find the smallest scale factor possible
+without going over the desired clock rate.
 
-Aaron Brice (3):
-  spi: fsl-dspi: Fix clock rate scale values
-  devicetree: spi: fsl-dspi: Add cs-sck delays
-  spi: fsl-dspi: Add ~50ns delay between cs and sck
+Signed-off-by: Aaron Brice <aaron.brice-vSOi0k5x9wFWk0Htik3J/w@public.gmane.org>
+---
+ drivers/spi/spi-fsl-dspi.c | 37 +++++++++++++++++++++++--------------
+ 1 file changed, 23 insertions(+), 14 deletions(-)
 
- .../devicetree/bindings/spi/spi-fsl-dspi.txt       |  8 ++
- drivers/spi/spi-fsl-dspi.c                         | 97 ++++++++++++++++++----
- 2 files changed, 89 insertions(+), 16 deletions(-)
-
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index d1a3924..8213358 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -148,23 +148,32 @@ static void hz_to_spi_baud(char *pbr, char *br, int speed_hz,
+ 		16,	32,	64,	128,
+ 		256,	512,	1024,	2048,
+ 		4096,	8192,	16384,	32768 };
+-	int temp, i = 0, j = 0;
+-
+-	temp = clkrate / 2 / speed_hz;
+-
+-	for (i = 0; i < ARRAY_SIZE(pbr_tbl); i++)
+-		for (j = 0; j < ARRAY_SIZE(brs); j++) {
+-			if (pbr_tbl[i] * brs[j] >= temp) {
+-				*pbr = i;
+-				*br = j;
+-				return;
++	int scale_needed, scale, minscale = INT_MAX;
++	int i, j;
++
++	scale_needed = clkrate / speed_hz;
++	if (clkrate % speed_hz)
++		scale_needed++;
++
++	for (i = 0; i < ARRAY_SIZE(brs); i++)
++		for (j = 0; j < ARRAY_SIZE(pbr_tbl); j++) {
++			scale = brs[i] * pbr_tbl[j];
++			if (scale >= scale_needed) {
++				if (scale < minscale) {
++					minscale = scale;
++					*br = i;
++					*pbr = j;
++				}
++				break;
+ 			}
+ 		}
+ 
+-	pr_warn("Can not find valid baud rate,speed_hz is %d,clkrate is %ld\
+-		,we use the max prescaler value.\n", speed_hz, clkrate);
+-	*pbr = ARRAY_SIZE(pbr_tbl) - 1;
+-	*br =  ARRAY_SIZE(brs) - 1;
++	if (minscale == INT_MAX) {
++		pr_warn("Can not find valid baud rate,speed_hz is %d,clkrate is %ld, we use the max prescaler value.\n",
++			speed_hz, clkrate);
++		*pbr = ARRAY_SIZE(pbr_tbl) - 1;
++		*br =  ARRAY_SIZE(brs) - 1;
++	}
+ }
+ 
+ static int dspi_transfer_write(struct fsl_dspi *dspi)
 -- 
 2.1.0
 

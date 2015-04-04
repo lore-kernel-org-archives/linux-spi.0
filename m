@@ -1,91 +1,70 @@
-From: Aaron Brice <aaron.brice-vSOi0k5x9wFWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCH v1 0/2] spi: fsl-dspi: better approximation for baudrate
-Date: Fri, 03 Apr 2015 15:44:01 -0700
-Message-ID: <551F17B1.3010109@datasoft.com>
-References: <1427965907-28125-1-git-send-email-andy.shevchenko@gmail.com>	<551ED2F6.8020701@datasoft.com> <CAHp75Vfa9b0s6rXMbUERbbGRowGp4bidKH1UZ4a8HAx23oSrLw@mail.gmail.com>
+From: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 4/4] spi: bcm-mspi: Add support to set serial baud clock
+ rate
+Date: Sat, 04 Apr 2015 12:12:59 -0700
+Message-ID: <552037BB.7050803@gmail.com>
+References: <1428002603-21892-1-git-send-email-jonathar@broadcom.com> <1428002603-21892-5-git-send-email-jonathar@broadcom.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAHp75Vfa9b0s6rXMbUERbbGRowGp4bidKH1UZ4a8HAx23oSrLw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Scott Branden <sbranden-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	bcm-kernel-feedback-list <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rafal Milecki <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Kevin Cernekee <cernekee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Jonathan Richardson <jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Dmitry Torokhov <dtor-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
+	Anatol Pomazau <anatol-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1428002603-21892-5-git-send-email-jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-On 04/03/2015 01:59 PM, Andy Shevchenko wrote:
-> On Fri, Apr 3, 2015 at 8:50 PM, Aaron Brice <aaron.brice-vSOi0k5x9wFWk0Htik3J/w@public.gmane.org> wrote:
->> On 04/02/2015 02:11 AM, Andy Shevchenko wrote:
->>>
->>> This series makes better approximation when baud rate divisor parameters
->>> are
->>> calculated.
->>>
->>> The algorithm is represent as Python script here [1]. First parameter is
->>> algorithm (0 - original, 1 - after patch 1/2, 2 - after patch 2/2, 3 -
->>> memory
->>> vs. performance: use precalculated scales).
->>>
->>> I played with let's say standard baud rates (which I used for Quark) and
->>> separately run algorithms 0 and 1 for range 100-5000 baud. Input frequency
->>> is
->>> 64MHz. It seems my algo shows better results in all cases. Here is a diff
->>> for
->>> 'standard' baud rates
->>> (speed_hz, DBR, i, BR, j, PBR, real baud rate, difference):
-> 
-> []
-> 
->>>   3140500  0 1  4     2 5 3200000 59500
->>>   3125000  0 1  4     2 5 3200000 75000
->>>   3109500  0 1  4     2 5 3200000 90500
->>> -2500000  0 1  4     3 7 2285714 214286
->>> +2500000  0 3  8     1 3 2666666 166666
->>
->> The rest of these I'm not sure about.  The property is called
->> "spi-max-frequency" and the description in the bindings document is:
->>
->> - spi-max-frequency - (required) Maximum SPI clocking speed of device in Hz
-> 
-> I think we are talking about real world and real hardware. As far as I
-> understand the problem with SPI (or any other) clocking is a
-> consistent error.
-> 
-> If you have that error is a big enough the data might be corrupted.
-> How big? Each difference between clocking is for hardware the shifted
-> phase.  When phase is deviated your consumer might missed change of
-> the signal and inverted a bit.
-> 
-> Thus, if the delta for clocking is small the hardware will still catch
-> the change of the signal.
-> 
-> So, in practice it is quite unlikely to happen since usual devices
-> have enough frequency margin.
-> 
+Le 02/04/2015 12:23, Jonathan Richardson a =C3=A9crit :
+> The driver wasn't setting the SPBR (serial clock baud rate) which cau=
+sed
+> it to run at the slowest speed possible. The driver now calculates th=
+e
+> SPBR based on the reference clock frequency resulting in much faster
+> SPI transfers.
+>=20
+> Signed-off-by: Jonathan Richardson <jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+> ---
 
-You're probably right that the extra Hz are "unlikely" to break
-anything.  I think they're also unlikely to improve anything noticeably,
-what systems do you have where the transfer speed of a SPI device is the
-bottleneck?  In my case [1], I'm 1000% more concerned about reliability
-than throughput for the SPI devices.
+[snip]
 
-If I had one that was a bottleneck I could always bump up the
-spi-max-frequency to a value that exceeded the spec to see if it would
-work, but at least I'd be explicitly exceeding the spec instead of
-having the driver silently do it for me..
+> +	data->clk =3D devm_clk_get(dev, "mspi_clk");
+> +	if (!IS_ERR(data->clk)) {
+> +		int ret =3D clk_prepare_enable(data->clk);
+> +
+> +		if (ret < 0) {
+> +			dev_err(dev, "failed to enable clock: %d\n", ret);
+> +			return 0;
+> +		}
+> +
+> +		/* Calculate SPBR if clock-frequency provided. */
+> +		if (of_property_read_u32(dev->of_node, "clock-frequency",
+> +			&desired_rate) >=3D 0) {
+> +			u32 spbr =3D clk_get_rate(data->clk) / (2 * desired_rate);
 
-> Can you test on real hardware? I'm pretty sure it's quite hard to find
-> something that will not work.
-> 
+Usually, specifying a "clock-frequency" property is done when there is
+no clock provider available, yet we take this code path only if we coul=
+d
+find a "mspi_clk" which sounds a litle weird.
 
-Shouldn't the burden be on you to prove that setting the frequency 8%
-higher than the max frequency is safe on all hardware?
-
-[1] http://datasoft.com/products/sidebridge/index.html
-
-Aaron
-
+Once there is a proper "mspi_clk" clock, I would make it mandatory for
+the clock provider to be able to provide the rate as well?
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+=46lorian
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" i=
+n
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,116 +1,51 @@
-From: Florian Fainelli <f.fainelli@gmail.com>
-Subject: Re: [PATCH 1/4] ARM: dts: Add binding for Broadcom MSPI driver.
-Date: Sat, 04 Apr 2015 12:17:57 -0700
-Message-ID: <552038E5.6050609@gmail.com>
-References: <1428002603-21892-1-git-send-email-jonathar@broadcom.com> <1428002603-21892-2-git-send-email-jonathar@broadcom.com>
+From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Subject: Re: [PATCH 3/6] spi: bcm2835: fill FIFO before enabling interrupts
+ to
+Date: Sat, 04 Apr 2015 19:49:41 -0600
+Message-ID: <552094B5.3050109@wwwdotorg.org>
+References: <3628E5E2-7EA9-488F-AF5F-A2E43D2D1E3E@martin.sperl.org> <551A1185.6060502@wwwdotorg.org> <20150331052519.GZ2869@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Scott Branden <sbranden@broadcom.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Pawel Moll <pawel.moll@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Ian Campbell <ijc+devicetree@hellion.org.uk>,
-	Kumar Gala <galak@codeaurora.org>,
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
-	devicetree@vger.kernel.org, Rafal Milecki <zajec5@gmail.com>,
-	Brian Norris <computersforpeace@gmail.com>,
-	Kevin Cernekee <cernekee@gmail.com>
-To: Jonathan Richardson <jonathar@broadcom.com>,
-	Mark Brown <broonie@kernel.org>,
-	Dmitry Torokhov <dtor@google.com>,
-	Anatol Pomazau <anatol@google.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1428002603-21892-2-git-send-email-jonathar@broadcom.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150331052519.GZ2869-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Le 02/04/2015 12:23, Jonathan Richardson a =C3=A9crit :
->=20
-> Signed-off-by: Jonathan Richardson <jonathar@broadcom.com>
-> ---
->  .../devicetree/bindings/spi/brcm,mspi-spi.txt      |   38 ++++++++++=
-++++++++++
->  1 file changed, 38 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/spi/brcm,mspi-s=
-pi.txt
->=20
-> diff --git a/Documentation/devicetree/bindings/spi/brcm,mspi-spi.txt =
-b/Documentation/devicetree/bindings/spi/brcm,mspi-spi.txt
-> new file mode 100644
-> index 0000000..16164e3
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/brcm,mspi-spi.txt
-> @@ -0,0 +1,38 @@
-> +Broadcom MSPI controller
-> +
-> +Required properties:
-> +- compatible: Must be either "brcm,mspi" or "brcm,bcma-mspi". Use
-> +  "brcm,bcma-mspi" for controllers on a bcma bus and "brcm,mspi" oth=
-erwise.
+On 03/30/2015 11:25 PM, Mark Brown wrote:
+> On Mon, Mar 30, 2015 at 09:16:21PM -0600, Stephen Warren wrote:
+>> On 03/29/2015 08:03 AM, Martin Sperl wrote:
+> 
+>>> There have been rare cases where short (<200ns) chip-select
+>>> switches with native CS have been observed during such
+>>> operation, this is why this optimization is only enabled for
+>>> GPIO-CS.
+> 
+>>> +	/* fill in fifo if we have gpio-cs +	 * note that there have
+>>> been rare events where the native-CS +	 * flapped for <1us
+>>> which may change the behaviour +	 * with gpio-cs this does not
+>>> happen, so it is implemented +	 * only for this case +	 */
+> 
+>> However, I'm not sure why this is in any way related to whether
+>> the chip-select GPIO is valid. Surely we always want to do this?
+>> How does the mechanism used to control chip selects influence
+>> whether we want to pre-fill the FIFO?
+> 
+> I think both the comment and the commit message answer that
+> question - something triggers spurious chip select changes?
 
-We need a more specific compatible property here since there are at
-least 3 known SoCs families within Broadcom (Cygnus, BCM53xx, BCM7xxx)
-that use this controller, also older versions of the core did not have =
-a
-revision register, yet they had an internal version numbering that we
-might want to reflect here. This does not need to be fixed immediately
-though, we can add compatible strings as we start adding support for
-older cores.
+I must admit I don't feel either the commit message or the comment
+explain the situation. They certainly state that there are glitches in
+the "native CS" case, but that doesn't *explain* them. It seems more
+likely the under-filling the FIFO would cause periods where the FIFO
+was empty which would be aout the only case I could naively think of
+for the CS to be de-asserted. More investigation would be useful.
 
-> +
-> +- reg:  Physical base address and length of the controller's registe=
-rs.
-> +
-> +- interrupts: The interrupt id for the controller.
-
-I think this should be two cells, on BCM7xxx chips there is a MSPI_DONE
-and a MSPI_ERROR interrupt bit, we typically only use the first one, bu=
-t
-since we are describing the hardware here, we need to be exhaustive.
-
-> +
-> +- #address-cells: should be 1.
-> +
-> +- #size-cells: should be 0.
-> +
-> +Optional properties:
-> +- clocks: The MSPI reference clock. If not provided then it is assum=
-ed a clock
-> +  is enabled by default and no control of clock-frequency (see below=
-) is
-> +  possible.
-> +
-> +- clock-names: The name of the reference clock.
-> +
-> +- clock-frequency: Desired frequency of the clock. This will set the=
- serial
-> +  clock baud rate (SPBR) based on the reference clock frequency. The=
- frequency
-> +  of the SPBR is mspi_clk / (2 * SPBR) where SPBR is a value between=
- 1-255
-> +  determined by the desired 'clock-frequency'. If not provided then =
-the default
-> +  baud rate of the controller is used.
-
-See my reply to the patch 4, that does not seem to match the
-"clock-frequency" vs. clock phandles practices in DT.
-
-> +
-> +Example:
-> +
-> +mspi@18047000 {
-> +	#address-cells =3D <1>;
-> +	#size-cells =3D <0>;
-> +	compatible =3D "brcm,mspi";
-> +	reg =3D <0x18047000 0x1000>;
-> +	clocks =3D <&axi41_clk>;
-> +	clock-names =3D "mspi_clk";
-> +	clock-frequency =3D <12500000>;
-
-Since "interrupts" is a mandatory property you might want the example t=
-o
-show it for consistency.
 --
-=46lorian
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

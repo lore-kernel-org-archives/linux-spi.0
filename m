@@ -1,45 +1,82 @@
-From: Jonathan Richardson <jonathar@broadcom.com>
-Subject: Re: [PATCH 2/4] spi: bcm53xx: Refactor to make driver nonspecific
- to 53xx SoCs
-Date: Mon, 6 Apr 2015 11:30:18 -0700
-Message-ID: <5522D0BA.2050805@broadcom.com>
-References: <1428002603-21892-1-git-send-email-jonathar@broadcom.com> <1428002603-21892-3-git-send-email-jonathar@broadcom.com> <CAHp75Vf0JrB5pqNEouLzyOf5mmi05Ut_cybd37suTrLbJOFHKA@mail.gmail.com>
+From: Jonathan Richardson <jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+Subject: Re: [PATCH 3/4] spi: bcm-mspi: Make BCMA optional to support non-BCMA
+ chips
+Date: Mon, 6 Apr 2015 11:39:03 -0700
+Message-ID: <5522D2C7.8090708@broadcom.com>
+References: <1428002603-21892-1-git-send-email-jonathar@broadcom.com>	<1428002603-21892-4-git-send-email-jonathar@broadcom.com> <CAHp75VcMg-8X8DtHbQrmugzWG5VzzHXcpWNiyrTT=qmuCvA95w@mail.gmail.com> <551ED345.1000702@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie@kernel.org>, Dmitry Torokhov <dtor@google.com>,
-	Anatol Pomazau <anatol@google.com>,
-	Scott Branden <sbranden@broadcom.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Pawel Moll <pawel.moll@arm.com>,
-	"Mark Rutland" <mark.rutland@arm.com>,
-	Ian Campbell <ijc+devicetree@hellion.org.uk>,
-	Kumar Gala <galak@codeaurora.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	<linux-spi@vger.kernel.org>,
-	bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
-	devicetree <devicetree@vger.kernel.org>,
-	Rafal Milecki <zajec5@gmail.com>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAHp75Vf0JrB5pqNEouLzyOf5mmi05Ut_cybd37suTrLbJOFHKA@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Dmitry Torokhov <dtor-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
+	Anatol Pomazau <anatol-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
+	Scott Branden <sbranden-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	"Kumar Gala" <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	bcm-kernel-feedback-list <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Rafal Milecki <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <551ED345.1000702-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 15-04-03 06:35 AM, Andy Shevchenko wrote:
-> On Thu, Apr 2, 2015 at 10:23 PM, Jonathan Richardson
-> <jonathar@broadcom.com> wrote:
->> The Broadcom MSPI controller is used on various SoCs. It is being
->> renamed so that it can be extended and reused on other chips. It is
->> renamed to bcm-mspi.
+On 15-04-03 10:52 AM, Florian Fainelli wrote:
+> On 03/04/15 06:38, Andy Shevchenko wrote:
+>> On Thu, Apr 2, 2015 at 10:23 PM, Jonathan Richardson
+>> <jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org> wrote:
+>>> The Broadcom MSPI controller is used on various chips. The driver only
+>>> supported BCM53xx chips with BCMA (an AMBA bus variant). The driver is
+>>> refactored to make BCMA optional and provides a new config for non BCMA
+>>> systems.
 >>
-> What if you resend this one with -M -C applied?
+>>>  struct bcm_mspi {
+>>> +       #ifdef CONFIG_SPI_BCMA_MSPI
+>>>         struct bcma_device *core;
+>>> -       struct spi_master *master;
+>>> +       #endif
+>>>
+>>> +       void __iomem *base;
+>>> +       struct spi_master *master;
+>>>         size_t read_offset;
+>>
+>>> +       void (*mspi_write)(struct bcm_mspi *mspi, u16 offset, u32 value);
+>>> +       u32 (*mspi_read)(struct bcm_mspi *mspi, u16 offset);
+>>> +};
+>>
+>> To avoid ugly ifdefs I think better to split driver to core part and
+>> the actual driver part, at the end you will have something like
+>> mspi-core.c mspi-53xx.c mspi-whatever.c. Check for example spi-dw*.c
+>>
 > 
+> Actually, I am really curious whether we need the special BCMA I/O
+> accessors in the first place, cannot we just access the MSPI core on
+> BCM53xx chips using regular MMIO? That would probably solve the
+> "problem" entirely. Rafal, did you try this before?
+> 
+> As for splitting the driver into a "library" driver which is mostly
+> independent from the bus and a bus-specific wrapper, I think BCMA is
+> really the only special case here, which is why I suggested earlier to
+> Jonathan that we might just prefer ifdefing things out instead of
+> creating a separate layer just for BCMA.
 > 
 
-I'm not seeing any difference in the patches unfortunately. I'll keep
-playing with it and re-send if I can find a way to improve it.
+I cringed adding the ifdefs to the driver but didn't think the small
+amount of code that wouldn't be used again warranted 3 files. I could
+also handle the two different probe routines by doing some DT parsing in
+init, but then BCMA would have to be compiled for the non-BCMA MSPI
+driver and I didn't want to do that either.
 
-The changes are just renaming variables, structures, functions, file
-name to get rid of 53xx and replace with mspi. The config is renamed
-from SPI_BCM53XX to SPI_BCMA_MSPI.
+
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

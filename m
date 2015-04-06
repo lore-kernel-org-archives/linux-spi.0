@@ -1,98 +1,46 @@
-From: =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 3/4] spi: bcm-mspi: Make BCMA optional to support non-BCMA chips
-Date: Mon, 6 Apr 2015 12:36:11 +0200
-Message-ID: <CACna6ry9qxzY9xaaqR8K6XgSEun31c=d1XrWH_vk7Fq7fJTxoA@mail.gmail.com>
-References: <1428002603-21892-1-git-send-email-jonathar@broadcom.com>
-	<1428002603-21892-4-git-send-email-jonathar@broadcom.com>
-	<CAHp75VcMg-8X8DtHbQrmugzWG5VzzHXcpWNiyrTT=qmuCvA95w@mail.gmail.com>
-	<551ED345.1000702@gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [patch] spi: signedness bug in qspi_trigger_transfer_out_int()
+Date: Mon, 6 Apr 2015 17:20:23 +0100
+Message-ID: <20150406162023.GK6023@sirena.org.uk>
+References: <20150403084527.GA27292@mwanda>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Jonathan Richardson <jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Dmitry Torokhov <dtor-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
-	Anatol Pomazau <anatol-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
-	Scott Branden <sbranden-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	bcm-kernel-feedback-list <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <551ED345.1000702-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
-
-On 3 April 2015 at 19:52, Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote=
-:
-> On 03/04/15 06:38, Andy Shevchenko wrote:
->> On Thu, Apr 2, 2015 at 10:23 PM, Jonathan Richardson
->> <jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org> wrote:
->>> The Broadcom MSPI controller is used on various chips. The driver o=
-nly
->>> supported BCM53xx chips with BCMA (an AMBA bus variant). The driver=
- is
->>> refactored to make BCMA optional and provides a new config for non =
-BCMA
->>> systems.
->>
->>>  struct bcm_mspi {
->>> +       #ifdef CONFIG_SPI_BCMA_MSPI
->>>         struct bcma_device *core;
->>> -       struct spi_master *master;
->>> +       #endif
->>>
->>> +       void __iomem *base;
->>> +       struct spi_master *master;
->>>         size_t read_offset;
->>
->>> +       void (*mspi_write)(struct bcm_mspi *mspi, u16 offset, u32 v=
-alue);
->>> +       u32 (*mspi_read)(struct bcm_mspi *mspi, u16 offset);
->>> +};
->>
->> To avoid ugly ifdefs I think better to split driver to core part and
->> the actual driver part, at the end you will have something like
->> mspi-core.c mspi-53xx.c mspi-whatever.c. Check for example spi-dw*.c
->
-> Actually, I am really curious whether we need the special BCMA I/O
-> accessors in the first place, cannot we just access the MSPI core on
-> BCM53xx chips using regular MMIO? That would probably solve the
-> "problem" entirely. Rafal, did you try this before?
-
-It's a matter of choice between:
-1) Using one design for all bcma users
-2) Using one design for all bcm-mspi users
-I believe no matter which one you choose, you'll break another one.
-
-If you take a look at drivers/bcma/host_soc.c, you'll see we've there
-core->io_addr. I guess you could use it as the base in bcm-mspi. That
-of course will make you a bit less compatible with other bcma drivers
-(skipping bcma R/W layer).
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="qE0/TkNoJLLGUzs4"
+Cc: Hiep Cao Minh <cm-hiep@jinso.co.jp>, linux-spi@vger.kernel.org,
+	kernel-janitors@vger.kernel.org
+To: Dan Carpenter <dan.carpenter@oracle.com>
+Return-path: <kernel-janitors-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20150403084527.GA27292@mwanda>
+Sender: kernel-janitors-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
-> As for splitting the driver into a "library" driver which is mostly
-> independent from the bus and a bus-specific wrapper, I think BCMA is
-> really the only special case here, which is why I suggested earlier t=
-o
-> Jonathan that we might just prefer ifdefing things out instead of
-> creating a separate layer just for BCMA.
+--qE0/TkNoJLLGUzs4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-I think you may be right, this #if for bcma shouldn't be that bad and
-it shouldn't grow in the future.
-Still, I'd like to get this patch split nicely to review independent ch=
-anges.
+On Fri, Apr 03, 2015 at 11:45:27AM +0300, Dan Carpenter wrote:
+> We need "ret" to be unsigned for the error handling to work.  The
+> signedness of "i" and "n" don't matter but qspi_set_send_trigger()
+> returns an int so I've changed them to int as well.
 
---=20
-Rafa=C5=82
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Applied, thanks.
+
+--qE0/TkNoJLLGUzs4
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVIrJGAAoJECTWi3JdVIfQ2r4H/R27iq0VQzvUAkmAA5XpXwL5
+YCJWG0fp+mKwJtkMK/LMvI/CN6T17yzeAmR3SddVmVsTBObwC1f78fv5cfVIqMhg
+f6ZwD4GSH0NmSHiAPeCYFbd8EFXxzSkPtj36ZAZmN7Ujh5ez8ZXekxp2IA0dORpM
+3/DY0jvgBFYvXt8M0MSrIlHT+YPbevMvNg1FHqxpNz9iAuXaVa7n2qdD25JAMpE/
+0jdp1agr0p5W2rS0ZFAQmpr9TEmYEFHUgDcKofJaJGkV2/JcLaxQbmAh6vAl45fj
+4F4J5toBj82JxmgAsxx3CUOXTCcybQ+B3jI4UNBRXT2JLItf/ZK3Ura8bgTXXtI=
+=KAi4
+-----END PGP SIGNATURE-----
+
+--qE0/TkNoJLLGUzs4--

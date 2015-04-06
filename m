@@ -1,38 +1,45 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH] spi: setting up cs_gpio levels prior to registering spi devices
-Date: Mon, 6 Apr 2015 20:37:37 +0200
-Message-ID: <897B0B6D-3885-4792-AD51-BB4D2656C3C5@martin.sperl.org>
-References: <1428340592-3196-3-git-send-email-kernel@martin.sperl.org> <20150406173607.GX6023@sirena.org.uk>
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2070.6\))
-Content-Type: text/plain; charset=us-ascii
+From: Jonathan Richardson <jonathar@broadcom.com>
+Subject: Re: [PATCH 2/4] spi: bcm53xx: Refactor to make driver nonspecific
+ to 53xx SoCs
+Date: Mon, 6 Apr 2015 11:30:18 -0700
+Message-ID: <5522D0BA.2050805@broadcom.com>
+References: <1428002603-21892-1-git-send-email-jonathar@broadcom.com> <1428002603-21892-3-git-send-email-jonathar@broadcom.com> <CAHp75Vf0JrB5pqNEouLzyOf5mmi05Ut_cybd37suTrLbJOFHKA@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: 7bit
-Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150406173607.GX6023-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, Dmitry Torokhov <dtor@google.com>,
+	Anatol Pomazau <anatol@google.com>,
+	Scott Branden <sbranden@broadcom.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Pawel Moll <pawel.moll@arm.com>,
+	"Mark Rutland" <mark.rutland@arm.com>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	<linux-spi@vger.kernel.org>,
+	bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
+	devicetree <devicetree@vger.kernel.org>,
+	Rafal Milecki <zajec5@gmail.com>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <CAHp75Vf0JrB5pqNEouLzyOf5mmi05Ut_cybd37suTrLbJOFHKA@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-
-> On 06.04.2015, at 19:36, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+On 15-04-03 06:35 AM, Andy Shevchenko wrote:
+> On Thu, Apr 2, 2015 at 10:23 PM, Jonathan Richardson
+> <jonathar@broadcom.com> wrote:
+>> The Broadcom MSPI controller is used on various SoCs. It is being
+>> renamed so that it can be extended and reused on other chips. It is
+>> renamed to bcm-mspi.
+>>
+> What if you resend this one with -M -C applied?
 > 
-> Please write a series of if statements with continues instead, the above
-> block is pretty much illegible with the lack of vertical space, mixture
-> of bracketing levels and small indent for the active statement at the
-> end.
-will do...
+> 
 
-> As far as I can tell this code only works for GPIO chip selects?
-Correct - unless you want to extend struct spi_master with a new method
-to make this generic - maybe at a later point in time...
+I'm not seeing any difference in the patches unfortunately. I'll keep
+playing with it and re-send if I can find a way to improve it.
 
-> Please don't write placeholders like this.
-will do - I just was not sure if it is needed or not, so I wanted to make
-it explicit to say: maybe we need something here as well...
-
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+The changes are just renaming variables, structures, functions, file
+name to get rid of 53xx and replace with mspi. The config is renamed
+from SPI_BCM53XX to SPI_BCMA_MSPI.

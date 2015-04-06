@@ -1,7 +1,7 @@
 From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH] spi: bcm2835: transform native-cs to gpio-cs on first spi_setup
-Date: Mon,  6 Apr 2015 17:16:31 +0000
-Message-ID: <1428340592-3196-2-git-send-email-kernel@martin.sperl.org>
+Subject: [PATCH] spi: setting up cs_gpio levels prior to registering spi devices
+Date: Mon,  6 Apr 2015 17:16:32 +0000
+Message-ID: <1428340592-3196-3-git-send-email-kernel@martin.sperl.org>
 Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
@@ -13,32 +13,22 @@ List-ID: <linux-spi.vger.kernel.org>
 
 From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-Transforms the bcm-2835 native SPI-chip select to their gpio-cs equivalent.
+With multiple SPI devices on the same bus and using cs_gpio there
+is the problem that the default GPIO levels are not necessarily
+correct, which can result in multiple devices (of the same type)
+getting configured because the corresponding CS is low on initial
+setup.
 
-This allows for some support of some optimizations that are not
-possible due to HW-gliches on the CS line - especially filling
-the FIFO before enabling SPI interrupts (by writing to CS register)
-while the transfer is already in progress (See commit: e3a2be3030e2)
+This patch sets up the "correct" default levels for each chip select
+line prior to registering any of the devices.
 
-This patch also works arround some issues in bcm2835-pinctrl which does not
-set the value when setting the GPIO as output - it just sets up output and
-(typically) leaves the GPIO as low.  When a fix for this is merged then this
-gpio_set_value can get removed from bcm2835_spi_setup.
+It implements the polarity configurations set in DT (spi-cs-pol)
+as well as "mode & SPI_CS_POL" provided in board_info.
 
 Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 ---
- drivers/spi/spi-bcm2835.c |   49 ++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 44 insertions(+), 5 deletions(-)
-
-Applies against: spi - for-next
-
-There was a question if we could move the native-cs to GPIO in the driver
-itself.
-
-This patch implements this, but it is quite complex for the minimal gains.
-
-Maybe the originally proposed simple warning recommending to use cs_gpio
-in DT would be a sufficient alternative that introduces less code.
+ drivers/spi/spi.c |   67 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 67 insertions(+)
 
 Tested with the following setup:
 * native CS:
@@ -50,81 +40,102 @@ Tested with the following setup:
 * gpio-CS with "spi-cs-pol" set in DT:
   * fb_st7735r
 
-Note: that there is a possible the risk that a transfer (for a different
-device) is running at the time of this change - maybe some "extra" bus-locking
-is needed during the change of the GPIO function to output.
+Note: I can not test the board-info code due to lack of a corrsponding setup.
 
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index 88b808b..b2651fa 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -351,8 +351,15 @@ static void bcm2835_spi_set_cs(struct spi_device *spi, bool gpio_level)
- 	bcm2835_wr(bs, BCM2835_SPI_CS, cs);
+There is also a acpi function implemented, but it contains no code as of now.
+The question here is if there is a need for something like this with ACPI.
+
+We could also extend this to set up the GPIO as output regardless of any
+configuration in the gpio section in the device-tree.
+
+This would allow us to reduce the amount of redundant configuration inside
+the DT that has to be kept in sync (gpio and spi sections).
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 04e9d92..807890a 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1483,6 +1483,70 @@ static int of_spi_register_master(struct spi_master *master)
  }
+ #endif
 
-+static int chip_match_name(struct gpio_chip *chip, void *data)
++static void boardinfo_spi_setup_gpiopins(struct spi_master *master)
 +{
-+	return !strcmp(chip->label, data);
++	struct boardinfo *bi;
++	struct spi_board_info *sbi;
++
++	mutex_lock(&board_lock);
++	list_for_each_entry(bi, &board_list, list) {
++		sbi = &bi->board_info;
++		if ((master->bus_num == sbi->bus_num) &&
++		    (sbi->chip_select < master->num_chipselect) &&
++		    gpio_is_valid(master->cs_gpios[sbi->chip_select]) &&
++		    (sbi->mode & SPI_CS_HIGH))
++			gpio_set_value(master->cs_gpios[sbi->chip_select], 0);
++	}
++	mutex_unlock(&board_lock);
 +}
 +
- static int bcm2835_spi_setup(struct spi_device *spi)
- {
-+	int err;
-+	struct gpio_chip *chip;
- 	/*
- 	 * sanity checking the native-chipselects
- 	 */
-@@ -360,13 +367,45 @@ static int bcm2835_spi_setup(struct spi_device *spi)
- 		return 0;
- 	if (gpio_is_valid(spi->cs_gpio))
- 		return 0;
--	if (spi->chip_select < 3)
-+	if (spi->chip_select > 1) {
-+		/* error in the case of native CS requested with CS > 1
-+		 * officially there is a CS2, but it is not documented
-+		 * which GPIO is connected with that...
-+		 */
-+		dev_err(&spi->dev,
-+			"setup: only two native chip-selects are supported\n");
-+		return -EINVAL;
++#if defined(CONFIG_OF)
++static void of_spi_setup_gpiopins(struct spi_master *master)
++{
++	struct device_node *nc;
++	u32 value;
++	int rc;
++
++	for_each_available_child_of_node(master->dev.of_node, nc) {
++		rc = of_property_read_u32(nc, "reg", &value);
++		if ((!rc) &&
++		    (value < master->num_chipselect) &&
++		    gpio_is_valid(master->cs_gpios[value]) &&
++		    of_find_property(nc, "spi-cs-high", NULL))
++			gpio_set_value(master->cs_gpios[value], 0);
 +	}
-+	/* now translate native cs to GPIO */
++}
++#else
++static void of_spi_setup_gpiopins(struct spi_master *master) { }
++#endif
 +
-+	/* get the gpio chip for the base */
-+	chip = gpiochip_find("pinctrl-bcm2835", chip_match_name);
-+	if (!chip)
- 		return 0;
-
--	/* error in the case of native CS requested with CS-id > 2 */
--	dev_err(&spi->dev,
--		"setup: only three native chip-selects are supported\n");
--	return -EINVAL;
-+	/* and calculate the real CS */
-+	spi->cs_gpio = chip->base + 8 - spi->chip_select;
-+
-+	/* and set up the "mode" and level */
-+	dev_info(&spi->dev, "setting up native-CS%i as GPIO %i\n",
-+		 spi->chip_select, spi->cs_gpio);
-+
-+	/* set up GPIO as output and pull to the correct level */
-+	err = gpio_direction_output(spi->cs_gpio,
-+				    (spi->mode & SPI_CS_HIGH) ? 0 : 1);
-+	if (err) {
-+		dev_err(&spi->dev,
-+			"could not set CS%i gpio %i as output: %i",
-+			spi->chip_select, spi->cs_gpio, err);
-+		return err;
-+	}
-+	/* the implementation of pinctrl-bcm2835 currently does not
-+	 * set the GPIO value when using gpio_direction_output
-+	 * so we are setting it here explicitly
++static void acpi_spi_setup_gpiopins(struct spi_master *master)
++{
++	/* probably not needed, as there seems to be no cs_gpio
++	 * information in the ACPI structures but left for completeness
++	 * to get extended if needed
 +	 */
-+	gpio_set_value(spi->cs_gpio, (spi->mode & SPI_CS_HIGH) ? 0 : 1);
++}
 +
-+	return 0;
- }
++static void spi_setup_gpiopins(struct spi_master *master)
++{
++	int i;
++
++	if (!master->cs_gpios)
++		return;
++
++	/* set up default level high for all configured cs_gpios */
++	for (i = 0; i < master->num_chipselect; i++) {
++		if (gpio_is_valid(master->cs_gpios[i]))
++			gpio_set_value(master->cs_gpios[i], 1);
++	}
++
++	/* handle reverse polarity cases for all possible config types */
++	boardinfo_spi_setup_gpiopins(master);
++	of_spi_setup_gpiopins(master);
++	acpi_spi_setup_gpiopins(master);
++}
++
+ /**
+  * spi_register_master - register SPI master controller
+  * @master: initialized master, originally from spi_alloc_master()
+@@ -1536,6 +1600,9 @@ int spi_register_master(struct spi_master *master)
+ 		dynamic = 1;
+ 	}
 
- static int bcm2835_spi_probe(struct platform_device *pdev)
++	/* setting up gpio-cs with the correct levels */
++	spi_setup_gpiopins(master);
++
+ 	INIT_LIST_HEAD(&master->queue);
+ 	spin_lock_init(&master->queue_lock);
+ 	spin_lock_init(&master->bus_lock_spinlock);
 --
 1.7.10.4
 

@@ -1,7 +1,7 @@
 From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH V2] spi: bcm2835: enabling polling mode for transfers shorter than 30us
-Date: Mon,  6 Apr 2015 17:16:30 +0000
-Message-ID: <1428340592-3196-1-git-send-email-kernel@martin.sperl.org>
+Subject: [PATCH] spi: bcm2835: transform native-cs to gpio-cs on first spi_setup
+Date: Mon,  6 Apr 2015 17:16:31 +0000
+Message-ID: <1428340592-3196-2-git-send-email-kernel@martin.sperl.org>
 Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
@@ -13,39 +13,32 @@ List-ID: <linux-spi.vger.kernel.org>
 
 From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-In cases of short transfer times the CPU is spending lots of time
-in the interrupt handler and scheduler to reschedule the worker thread.
+Transforms the bcm-2835 native SPI-chip select to their gpio-cs equivalent.
 
-Measurements show that we have times where it takes 29.32us to between
-the last clock change and the time that the worker-thread is running again
-returning from wait_for_completion_timeout().
+This allows for some support of some optimizations that are not
+possible due to HW-gliches on the CS line - especially filling
+the FIFO before enabling SPI interrupts (by writing to CS register)
+while the transfer is already in progress (See commit: e3a2be3030e2)
 
-During this time the interrupt-handler is running calling complete()
-and then also the scheduler is rescheduling the worker thread.
-
-This time can vary depending on how much of the code is still in
-CPU-caches, when there is a burst of spi transfers the subsequent delays
-are in the order of 25us, so the value of 30us seems reasonable.
-
-With polling the whole transfer of 4 bytes at 10MHz finishes after 6.16us
-(CS down to up) with the real transfer (clock running) taking 3.56us.
-So the efficiency has much improved and is also freeing CPU cycles,
-reducing interrupts and context switches.
-
-Because of the above 30us seems to be a reasonable limit for polling.
+This patch also works arround some issues in bcm2835-pinctrl which does not
+set the value when setting the GPIO as output - it just sets up output and
+(typically) leaves the GPIO as low.  When a fix for this is merged then this
+gpio_set_value can get removed from bcm2835_spi_setup.
 
 Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 ---
- drivers/spi/spi-bcm2835.c |  112 ++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 86 insertions(+), 26 deletions(-)
+ drivers/spi/spi-bcm2835.c |   49 ++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 44 insertions(+), 5 deletions(-)
 
 Applies against: spi - for-next
 
-Changelog:
-[V1 -> V2]:
-  * moved to separate handler functions for polling and interrupt driven
-  * added some comments clarifying why we have 9 clocks/byte
-  * fixed extra/redundant brackets
+There was a question if we could move the native-cs to GPIO in the driver
+itself.
+
+This patch implements this, but it is quite complex for the minimal gains.
+
+Maybe the originally proposed simple warning recommending to use cs_gpio
+in DT would be a sufficient alternative that introduces less code.
 
 Tested with the following setup:
 * native CS:
@@ -54,161 +47,84 @@ Tested with the following setup:
 * gpio-CS:
   * mcp2515
   * enc28j60
-* gpio-CS with spi-cs-pol:
+* gpio-CS with "spi-cs-pol" set in DT:
   * fb_st7735r
 
+Note: that there is a possible the risk that a transfer (for a different
+device) is running at the time of this change - maybe some "extra" bus-locking
+is needed during the change of the GPIO function to output.
+
 diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index 08e5406..88b808b 100644
+index 88b808b..b2651fa 100644
 --- a/drivers/spi/spi-bcm2835.c
 +++ b/drivers/spi/spi-bcm2835.c
-@@ -68,7 +68,8 @@
- #define BCM2835_SPI_CS_CS_10		0x00000002
- #define BCM2835_SPI_CS_CS_01		0x00000001
-
--#define BCM2835_SPI_TIMEOUT_MS	30000
-+#define BCM2835_SPI_POLLING_LIMIT_US	30
-+#define BCM2835_SPI_TIMEOUT_MS		30000
- #define BCM2835_SPI_MODE_BITS	(SPI_CPOL | SPI_CPHA | SPI_CS_HIGH \
- 				| SPI_NO_CS | SPI_3WIRE)
-
-@@ -156,12 +157,86 @@ static irqreturn_t bcm2835_spi_interrupt(int irq, void *dev_id)
- 	return IRQ_HANDLED;
+@@ -351,8 +351,15 @@ static void bcm2835_spi_set_cs(struct spi_device *spi, bool gpio_level)
+ 	bcm2835_wr(bs, BCM2835_SPI_CS, cs);
  }
 
-+static int bcm2835_spi_transfer_one_poll(struct spi_master *master,
-+					 struct spi_device *spi,
-+					 struct spi_transfer *tfr,
-+					 u32 cs,
-+					 unsigned long xfer_time_us)
++static int chip_match_name(struct gpio_chip *chip, void *data)
 +{
-+	struct bcm2835_spi *bs = spi_master_get_devdata(master);
-+	unsigned long timeout = jiffies +
-+		max(4 * xfer_time_us * HZ / 1000000, 2uL);
-+
-+	/* enable HW block without interrupts */
-+	bcm2835_wr(bs, BCM2835_SPI_CS, cs | BCM2835_SPI_CS_TA);
-+
-+	/* set timeout to 4x the expected time, or 2 jiffies */
-+	/* loop until finished the transfer */
-+	while (bs->rx_len) {
-+		/* read from fifo as much as possible */
-+		bcm2835_rd_fifo(bs);
-+		/* fill in tx fifo as much as possible */
-+		bcm2835_wr_fifo(bs);
-+		/* if we still expect some data after the read,
-+		 * check for a possible timeout
-+		 */
-+		if (bs->rx_len && time_after(jiffies, timeout)) {
-+			/* Transfer complete - reset SPI HW */
-+			bcm2835_spi_reset_hw(master);
-+			/* and return timeout */
-+			return -ETIMEDOUT;
-+		}
-+	}
-+
-+	/* Transfer complete - reset SPI HW */
-+	bcm2835_spi_reset_hw(master);
-+	/* and return without waiting for completion */
-+	return 0;
++	return !strcmp(chip->label, data);
 +}
 +
-+static int bcm2835_spi_transfer_one_irq(struct spi_master *master,
-+					struct spi_device *spi,
-+					struct spi_transfer *tfr,
-+					u32 cs)
-+{
-+	struct bcm2835_spi *bs = spi_master_get_devdata(master);
-+
-+	/* fill in fifo if we have gpio-cs
-+	 * note that there have been rare events where the native-CS
-+	 * flapped for <1us which may change the behaviour
-+	 * with gpio-cs this does not happen, so it is implemented
-+	 * only for this case
-+	 */
-+	if (gpio_is_valid(spi->cs_gpio)) {
-+		/* enable HW block, but without interrupts enabled
-+		 * this would triggern an immediate interrupt
-+		 */
-+		bcm2835_wr(bs, BCM2835_SPI_CS,
-+			   cs | BCM2835_SPI_CS_TA);
-+		/* fill in tx fifo as much as possible */
-+		bcm2835_wr_fifo(bs);
-+	}
-+
-+	/*
-+	 * Enable the HW block. This will immediately trigger a DONE (TX
-+	 * empty) interrupt, upon which we will fill the TX FIFO with the
-+	 * first TX bytes. Pre-filling the TX FIFO here to avoid the
-+	 * interrupt doesn't work:-(
-+	 */
-+	cs |= BCM2835_SPI_CS_INTR | BCM2835_SPI_CS_INTD | BCM2835_SPI_CS_TA;
-+	bcm2835_wr(bs, BCM2835_SPI_CS, cs);
-+
-+	/* signal that we need to wait for completion */
-+	return 1;
-+}
-+
- static int bcm2835_spi_transfer_one(struct spi_master *master,
- 				    struct spi_device *spi,
- 				    struct spi_transfer *tfr)
+ static int bcm2835_spi_setup(struct spi_device *spi)
  {
- 	struct bcm2835_spi *bs = spi_master_get_devdata(master);
- 	unsigned long spi_hz, clk_hz, cdiv;
-+	unsigned long spi_used_hz, xfer_time_us;
- 	u32 cs = bcm2835_rd(bs, BCM2835_SPI_CS);
++	int err;
++	struct gpio_chip *chip;
+ 	/*
+ 	 * sanity checking the native-chipselects
+ 	 */
+@@ -360,13 +367,45 @@ static int bcm2835_spi_setup(struct spi_device *spi)
+ 		return 0;
+ 	if (gpio_is_valid(spi->cs_gpio))
+ 		return 0;
+-	if (spi->chip_select < 3)
++	if (spi->chip_select > 1) {
++		/* error in the case of native CS requested with CS > 1
++		 * officially there is a CS2, but it is not documented
++		 * which GPIO is connected with that...
++		 */
++		dev_err(&spi->dev,
++			"setup: only two native chip-selects are supported\n");
++		return -EINVAL;
++	}
++	/* now translate native cs to GPIO */
++
++	/* get the gpio chip for the base */
++	chip = gpiochip_find("pinctrl-bcm2835", chip_match_name);
++	if (!chip)
+ 		return 0;
 
- 	/* set clock */
-@@ -180,6 +255,7 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
- 	} else {
- 		cdiv = 0; /* 0 is the slowest we can go */
- 	}
-+	spi_used_hz = cdiv ? (clk_hz / cdiv) : (clk_hz / 65536);
- 	bcm2835_wr(bs, BCM2835_SPI_CLK, cdiv);
-
- 	/* handle all the modes */
-@@ -203,33 +279,17 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
- 	bs->tx_len = tfr->len;
- 	bs->rx_len = tfr->len;
-
--	/* fill in fifo if we have gpio-cs
--	 * note that there have been rare events where the native-CS
--	 * flapped for <1us which may change the behaviour
--	 * with gpio-cs this does not happen, so it is implemented
--	 * only for this case
--	 */
--	if (gpio_is_valid(spi->cs_gpio)) {
--		/* enable HW block, but without interrupts enabled
--		 * this would triggern an immediate interrupt
--		 */
--		bcm2835_wr(bs, BCM2835_SPI_CS,
--			   cs | BCM2835_SPI_CS_TA);
--		/* fill in tx fifo as much as possible */
--		bcm2835_wr_fifo(bs);
--	}
-+	/* calculate the estimated time in us the transfer runs */
-+	xfer_time_us = tfr->len
-+		* 9 /* clocks/byte - SPI-HW waits 1 clock after each byte */
-+		* 1000000 / spi_used_hz;
-
--	/*
--	 * Enable the HW block. This will immediately trigger a DONE (TX
--	 * empty) interrupt, upon which we will fill the TX FIFO with the
--	 * first TX bytes. Pre-filling the TX FIFO here to avoid the
--	 * interrupt doesn't work:-(
--	 */
--	cs |= BCM2835_SPI_CS_INTR | BCM2835_SPI_CS_INTD | BCM2835_SPI_CS_TA;
--	bcm2835_wr(bs, BCM2835_SPI_CS, cs);
-+	/* for short requests run polling*/
-+	if (xfer_time_us <= BCM2835_SPI_POLLING_LIMIT_US)
-+		return bcm2835_spi_transfer_one_poll(master, spi, tfr,
-+						     cs, xfer_time_us);
-
--	/* signal that we need to wait for completion */
--	return 1;
-+	return bcm2835_spi_transfer_one_irq(master, spi, tfr, cs);
+-	/* error in the case of native CS requested with CS-id > 2 */
+-	dev_err(&spi->dev,
+-		"setup: only three native chip-selects are supported\n");
+-	return -EINVAL;
++	/* and calculate the real CS */
++	spi->cs_gpio = chip->base + 8 - spi->chip_select;
++
++	/* and set up the "mode" and level */
++	dev_info(&spi->dev, "setting up native-CS%i as GPIO %i\n",
++		 spi->chip_select, spi->cs_gpio);
++
++	/* set up GPIO as output and pull to the correct level */
++	err = gpio_direction_output(spi->cs_gpio,
++				    (spi->mode & SPI_CS_HIGH) ? 0 : 1);
++	if (err) {
++		dev_err(&spi->dev,
++			"could not set CS%i gpio %i as output: %i",
++			spi->chip_select, spi->cs_gpio, err);
++		return err;
++	}
++	/* the implementation of pinctrl-bcm2835 currently does not
++	 * set the GPIO value when using gpio_direction_output
++	 * so we are setting it here explicitly
++	 */
++	gpio_set_value(spi->cs_gpio, (spi->mode & SPI_CS_HIGH) ? 0 : 1);
++
++	return 0;
  }
 
- static void bcm2835_spi_handle_err(struct spi_master *master,
+ static int bcm2835_spi_probe(struct platform_device *pdev)
 --
 1.7.10.4
 

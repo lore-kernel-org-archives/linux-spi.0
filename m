@@ -1,77 +1,73 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 3/6] spi: bcm2835: fill FIFO before enabling interrupts to
-Date: Mon, 6 Apr 2015 18:21:30 +0100
-Message-ID: <20150406172130.GU6023@sirena.org.uk>
-References: <3628E5E2-7EA9-488F-AF5F-A2E43D2D1E3E@martin.sperl.org>
- <551A1185.6060502@wwwdotorg.org>
- <20150331052519.GZ2869@sirena.org.uk>
- <552094B5.3050109@wwwdotorg.org>
+Subject: Re: [PATCH] SPI: bcm2835: move to the transfer_one driver model
+Date: Mon, 6 Apr 2015 18:26:43 +0100
+Message-ID: <20150406172643.GV6023@sirena.org.uk>
+References: <A1AEABE2-F0D2-481B-BD83-E1AD7861E960@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="csoOxBvjhnnTVlaS"
-Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	protocol="application/pgp-signature"; boundary="Mwz/dta3oUwEdwoz"
+Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	notro-L59+Z2yzLopAfugRpC6u6w@public.gmane.org
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <552094B5.3050109-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+In-Reply-To: <A1AEABE2-F0D2-481B-BD83-E1AD7861E960-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---csoOxBvjhnnTVlaS
+--Mwz/dta3oUwEdwoz
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Apr 04, 2015 at 07:49:41PM -0600, Stephen Warren wrote:
-> On 03/30/2015 11:25 PM, Mark Brown wrote:
-> > On Mon, Mar 30, 2015 at 09:16:21PM -0600, Stephen Warren wrote:
-> >> On 03/29/2015 08:03 AM, Martin Sperl wrote:
+On Fri, Apr 03, 2015 at 12:17:31PM +0200, Martin Sperl wrote:
+> > On 01.04.2015, at 17:20, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org> wrote:
 
-> >>> There have been rare cases where short (<200ns) chip-select
-> >>> switches with native CS have been observed during such
-> >>> operation, this is why this optimization is only enabled for
-> >>> GPIO-CS.
+It looks like something rewrote Stephen's message to have no word
+wrapping...
 
-> >> However, I'm not sure why this is in any way related to whether
-> >> the chip-select GPIO is valid. Surely we always want to do this?
-> >> How does the mechanism used to control chip selects influence
-> >> whether we want to pre-fill the FIFO?
+> If you read the mmc_spi driver there is a lot of places where we have=20
+> constructs like this:
+>         if (host->dma_dev) {
+>                 host->m.is_dma_mapped =3D 1;
+>                 dma_sync_single_for_device(host->dma_dev,
+>                                 host->data_dma, sizeof(*host->data),
+>                                 DMA_BIDIRECTIONAL);
+>         }
+>         status =3D spi_sync_locked(host->spi, &host->m);
 
-> > I think both the comment and the commit message answer that
-> > question - something triggers spurious chip select changes?
+We probably need to have a good, hard look at this stuff - in general we
+shouldn't be using this sort of mapping in clients, and for some systems
+this will actually end up broken.
 
-> I must admit I don't feel either the commit message or the comment
-> explain the situation. They certainly state that there are glitches in
-> the "native CS" case, but that doesn't *explain* them. It seems more
-> likely the under-filling the FIFO would cause periods where the FIFO
-> was empty which would be aout the only case I could naively think of
-> for the CS to be de-asserted. More investigation would be useful.
+> Unfortunately I can not test if the the mmc_spi issue exists on a
+> beaglebone, as the mmc_spi driver can not even get compiled there because
+> of CONFIG_HIGHMEM being set which conflicts with KConfig portion for
+> mmc_spi...
 
-Right, and I have to say I do suspect that the underlying thing is that
-the FIFO is underrunning, but as far as the optimization is concerned
-that's a separate thing.  The reason this isn't enabled for native chip
-selects is that it's not working, the reason it's not working is
-something that should indeed probably be investigated.
+This is a bit alarming and probably also indicates that the code needs
+looking at.
 
---csoOxBvjhnnTVlaS
+--Mwz/dta3oUwEdwoz
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVIsCZAAoJECTWi3JdVIfQSv0H/R2cL8Iu8M831P8hUSmxQZYS
-48agAqvnLRzcgVc+Sym1eTQkO21wMskW+1vgjnl6LYmYvPmZ1wWX9rj8N8nWEbOX
-aOQXQX+sKJEjwZPLp10DeLYTjtwQhf/JVZylwtUGfzs4cDoylabimg1mvo0KP4o6
-qt/5+cbOlh4MdSOpX/doh85fsyxCnIhBEhtJ9sDuYSyjBezw5kJ1M07JqJtaKLYS
-5usBi44qVeICdCJwMOBHhv2RwHweIIE6Jkwv8719xcP3BseOaNLdhs95AjkvXOQH
-QpWCZFliHTPb1Y0ZcVxUX6E6tB5K2lvDJjgyKERMuEX6EG2lof4pyn2v5Rd/jo4=
-=ZNKM
+iQEcBAEBCAAGBQJVIsHSAAoJECTWi3JdVIfQUOYH/jodmo21wO0n39Dv4PdYROrl
+z2GuxqnvzN9SK7G5+J/SrjjzttIAdXF3hEJ8iYeuWREE01ZI27/Cq4b5/Xt9BGnL
+MsFboyyATZ1Qk180AMZpcvNJRqPqSKLYEkGnA0rRBZuzJ8EpCJVQGMB1NwT4FNW7
+2flNjyI2SwBbhqBcXW8N3PZ0YtO+DcarjvvLNOKjbBli3BhdHNaZtKzGNpPWSKnA
+xBuwyujx6ZXxJyQ2EO/3o/x/ay84BRKpLm08ODpJPPSYmjiE8GiuXLzYWj6Ct36a
+gYVpDgSSHHdq24FOJkzNijPitL9tOa39oiqjj7L0qdnggrX93swwQ6GoPJ1hNJA=
+=Mt/R
 -----END PGP SIGNATURE-----
 
---csoOxBvjhnnTVlaS--
+--Mwz/dta3oUwEdwoz--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

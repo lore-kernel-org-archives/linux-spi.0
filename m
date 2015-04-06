@@ -1,14 +1,16 @@
 From: =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH 3/4] spi: bcm-mspi: Make BCMA optional to support non-BCMA chips
-Date: Mon, 6 Apr 2015 12:26:55 +0200
-Message-ID: <CACna6rx6ogbK=0rbmNCOYUyyP2rC+Tb5xpMeb45kcNS8eCRfsw@mail.gmail.com>
+Date: Mon, 6 Apr 2015 12:36:11 +0200
+Message-ID: <CACna6ry9qxzY9xaaqR8K6XgSEun31c=d1XrWH_vk7Fq7fJTxoA@mail.gmail.com>
 References: <1428002603-21892-1-git-send-email-jonathar@broadcom.com>
 	<1428002603-21892-4-git-send-email-jonathar@broadcom.com>
 	<CAHp75VcMg-8X8DtHbQrmugzWG5VzzHXcpWNiyrTT=qmuCvA95w@mail.gmail.com>
+	<551ED345.1000702@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Jonathan Richardson <jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+Cc: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Jonathan Richardson <jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Dmitry Torokhov <dtor-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
 	Anatol Pomazau <anatol-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
@@ -22,45 +24,71 @@ Cc: Jonathan Richardson <jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
 	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	bcm-kernel-feedback-list <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
 	devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAHp75VcMg-8X8DtHbQrmugzWG5VzzHXcpWNiyrTT=qmuCvA95w-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <551ED345.1000702-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 3 April 2015 at 15:38, Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> w=
-rote:
-> On Thu, Apr 2, 2015 at 10:23 PM, Jonathan Richardson
-> <jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org> wrote:
->> The Broadcom MSPI controller is used on various chips. The driver on=
-ly
->> supported BCM53xx chips with BCMA (an AMBA bus variant). The driver =
-is
->> refactored to make BCMA optional and provides a new config for non B=
-CMA
->> systems.
->
->>  struct bcm_mspi {
->> +       #ifdef CONFIG_SPI_BCMA_MSPI
->>         struct bcma_device *core;
->> -       struct spi_master *master;
->> +       #endif
+On 3 April 2015 at 19:52, Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote=
+:
+> On 03/04/15 06:38, Andy Shevchenko wrote:
+>> On Thu, Apr 2, 2015 at 10:23 PM, Jonathan Richardson
+>> <jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org> wrote:
+>>> The Broadcom MSPI controller is used on various chips. The driver o=
+nly
+>>> supported BCM53xx chips with BCMA (an AMBA bus variant). The driver=
+ is
+>>> refactored to make BCMA optional and provides a new config for non =
+BCMA
+>>> systems.
 >>
->> +       void __iomem *base;
->> +       struct spi_master *master;
->>         size_t read_offset;
+>>>  struct bcm_mspi {
+>>> +       #ifdef CONFIG_SPI_BCMA_MSPI
+>>>         struct bcma_device *core;
+>>> -       struct spi_master *master;
+>>> +       #endif
+>>>
+>>> +       void __iomem *base;
+>>> +       struct spi_master *master;
+>>>         size_t read_offset;
+>>
+>>> +       void (*mspi_write)(struct bcm_mspi *mspi, u16 offset, u32 v=
+alue);
+>>> +       u32 (*mspi_read)(struct bcm_mspi *mspi, u16 offset);
+>>> +};
+>>
+>> To avoid ugly ifdefs I think better to split driver to core part and
+>> the actual driver part, at the end you will have something like
+>> mspi-core.c mspi-53xx.c mspi-whatever.c. Check for example spi-dw*.c
 >
->> +       void (*mspi_write)(struct bcm_mspi *mspi, u16 offset, u32 va=
-lue);
->> +       u32 (*mspi_read)(struct bcm_mspi *mspi, u16 offset);
->> +};
->
-> To avoid ugly ifdefs I think better to split driver to core part and
-> the actual driver part, at the end you will have something like
-> mspi-core.c mspi-53xx.c mspi-whatever.c. Check for example spi-dw*.c
+> Actually, I am really curious whether we need the special BCMA I/O
+> accessors in the first place, cannot we just access the MSPI core on
+> BCM53xx chips using regular MMIO? That would probably solve the
+> "problem" entirely. Rafal, did you try this before?
 
-I also believe we usually (always?) don't align any #if-s (no indent/ta=
-bs).
+It's a matter of choice between:
+1) Using one design for all bcma users
+2) Using one design for all bcm-mspi users
+I believe no matter which one you choose, you'll break another one.
+
+If you take a look at drivers/bcma/host_soc.c, you'll see we've there
+core->io_addr. I guess you could use it as the base in bcm-mspi. That
+of course will make you a bit less compatible with other bcma drivers
+(skipping bcma R/W layer).
+
+
+> As for splitting the driver into a "library" driver which is mostly
+> independent from the bus and a bus-specific wrapper, I think BCMA is
+> really the only special case here, which is why I suggested earlier t=
+o
+> Jonathan that we might just prefer ifdefing things out instead of
+> creating a separate layer just for BCMA.
+
+I think you may be right, this #if for bcma shouldn't be that bad and
+it shouldn't grow in the future.
+Still, I'd like to get this patch split nicely to review independent ch=
+anges.
 
 --=20
 Rafa=C5=82

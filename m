@@ -1,70 +1,46 @@
-From: Jonathan Richardson <jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCH 4/4] spi: bcm-mspi: Add support to set serial baud clock
- rate
-Date: Mon, 6 Apr 2015 11:54:10 -0700
-Message-ID: <5522D652.4020205@broadcom.com>
-References: <1428002603-21892-1-git-send-email-jonathar@broadcom.com> <1428002603-21892-5-git-send-email-jonathar@broadcom.com> <552037BB.7050803@gmail.com> <20150406094636.GC6023@sirena.org.uk>
+From: Jonathan Richardson <jonathar@broadcom.com>
+Subject: Re: [PATCH 2/4] spi: bcm53xx: Refactor to make driver nonspecific
+ to 53xx SoCs
+Date: Mon, 6 Apr 2015 11:58:20 -0700
+Message-ID: <5522D74C.9090906@broadcom.com>
+References: <1428002603-21892-1-git-send-email-jonathar@broadcom.com> <1428002603-21892-3-git-send-email-jonathar@broadcom.com> <CAHp75Vf0JrB5pqNEouLzyOf5mmi05Ut_cybd37suTrLbJOFHKA@mail.gmail.com> <CACna6ryc+2-3+G7WT0XerNkFgop44EP9zMvrVT+mMtCVjGPLuA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Dmitry Torokhov <dtor-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
-	Anatol Pomazau <anatol-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
-	Scott Branden <sbranden-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	bcm-kernel-feedback-list <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Rafal Milecki <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Kevin Cernekee <cernekee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150406094636.GC6023-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Dmitry Torokhov <dtor@google.com>,
+	Anatol Pomazau <anatol@google.com>,
+	Scott Branden <sbranden@broadcom.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	"Kumar Gala" <galak@codeaurora.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	linux-spi <linux-spi@vger.kernel.org>,
+	bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
+	devicetree <devicetree@vger.kernel.org>
+To: =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <CACna6ryc+2-3+G7WT0XerNkFgop44EP9zMvrVT+mMtCVjGPLuA@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On 15-04-06 02:46 AM, Mark Brown wrote:
-> On Sat, Apr 04, 2015 at 12:12:59PM -0700, Florian Fainelli wrote:
->> Le 02/04/2015 12:23, Jonathan Richardson a =E9crit :
+On 15-04-06 03:18 AM, Rafa=C5=82 Mi=C5=82ecki wrote:
+> On 3 April 2015 at 15:35, Andy Shevchenko <andy.shevchenko@gmail.com>=
+ wrote:
+>> On Thu, Apr 2, 2015 at 10:23 PM, Jonathan Richardson
+>> <jonathar@broadcom.com> wrote:
+>>> The Broadcom MSPI controller is used on various SoCs. It is being
+>>> renamed so that it can be extended and reused on other chips. It is
+>>> renamed to bcm-mspi.
+>>>
+>> What if you resend this one with -M -C applied?
 >=20
->>> +		/* Calculate SPBR if clock-frequency provided. */
->>> +		if (of_property_read_u32(dev->of_node, "clock-frequency",
->>> +			&desired_rate) >=3D 0) {
->>> +			u32 spbr =3D clk_get_rate(data->clk) / (2 * desired_rate);
->=20
->> Usually, specifying a "clock-frequency" property is done when there =
-is
->> no clock provider available, yet we take this code path only if we c=
-ould
->> find a "mspi_clk" which sounds a litle weird.
->=20
->> Once there is a proper "mspi_clk" clock, I would make it mandatory f=
-or
->> the clock provider to be able to provide the rate as well?
->=20
-> As far as I can tell it's already mandatory if the property is presen=
-t -
-> it's taking the clock presented to the block and then using an intern=
-al
-> divider to bring that down to the desired rate.
->=20
-> We are missing error handling though.
+> Definitely, right now I can't really review this patch (and I want to=
+).
 >=20
 
-Thanks for the review. Yes that's correct. I also tried to make it
-backwards compatible with the current version of the driver where you
-can ignore configuring the frequency. The result being ref clock
-frequency / 2 * 255. If you provide the clock then it will
-enable/prepare it. If you also provide clock-frequency then it will
-configure the SPBR. If you don't provide anything then it works as
-before - it assumes the clock is already enabled and uses the h/w
-default SPBR.
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Thanks Rafal for the review. Please see previous reply to Andy and let
+me know if I'm missing something.

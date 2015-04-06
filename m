@@ -1,85 +1,58 @@
-From: Andrew Bresticker <abrestic@chromium.org>
-Subject: [PATCH 2/5] spi: img-spfi: Implement a prepare_message() callback
-Date: Mon,  6 Apr 2015 14:29:04 -0700
-Message-ID: <1428355747-16822-2-git-send-email-abrestic@chromium.org>
+From: Andrew Bresticker <abrestic-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: [PATCH 4/5] spi: img-spfi: Setup TRANSACTION register before CONTROL register
+Date: Mon,  6 Apr 2015 14:29:06 -0700
+Message-ID: <1428355747-16822-4-git-send-email-abrestic@chromium.org>
 References: <1428355747-16822-1-git-send-email-abrestic@chromium.org>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Ezequiel Garcia <ezequiel.garcia@imgtec.com>,
-	Andrew Bresticker <abrestic@chromium.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1428355747-16822-1-git-send-email-abrestic@chromium.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Sifan Naeem <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>,
+	Andrew Bresticker <abrestic-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1428355747-16822-1-git-send-email-abrestic-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
+From: Sifan Naeem <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
 
-In preparation for switching to using the SPI core's CS GPIO handling,
-move setup of the PORT_STATE register, which must be configured before
-CS is asserted, to a prepare_message() callback.
+Setting the transfer length in the TRANSACTION register after the
+CONTROL register is programmed causes intermittent timeout issues in
+SPFI transfers when using the SPI framework to control the CS GPIO
+lines.  To avoid this issue, set transfer length before programming
+the CONTROL register.
 
-Signed-off-by: Ezequiel Garcia <ezequiel.garcia@imgtec.com>
-Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
+Signed-off-by: Sifan Naeem <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Andrew Bresticker <abrestic-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 ---
- drivers/spi/spi-img-spfi.c | 32 ++++++++++++++++++++------------
- 1 file changed, 20 insertions(+), 12 deletions(-)
+ drivers/spi/spi-img-spfi.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
-index 7d18bec..b1c0165 100644
+index 30c89f9..adeaa2f 100644
 --- a/drivers/spi/spi-img-spfi.c
 +++ b/drivers/spi/spi-img-spfi.c
-@@ -397,6 +397,25 @@ stop_dma:
- 	return -EIO;
- }
+@@ -458,6 +458,9 @@ static void img_spfi_config(struct spi_master *master, struct spi_device *spi,
+ 	val |= div << SPFI_DEVICE_PARAMETER_BITCLK_SHIFT;
+ 	spfi_writel(spfi, val, SPFI_DEVICE_PARAMETER(spi->chip_select));
  
-+static int img_spfi_prepare(struct spi_master *master, struct spi_message *msg)
-+{
-+	struct img_spfi *spfi = spi_master_get_devdata(master);
-+	u32 val;
++	spfi_writel(spfi, xfer->len << SPFI_TRANSACTION_TSIZE_SHIFT,
++		    SPFI_TRANSACTION);
 +
-+	val = spfi_readl(spfi, SPFI_PORT_STATE);
-+	if (msg->spi->mode & SPI_CPHA)
-+		val |= SPFI_PORT_STATE_CK_PHASE(msg->spi->chip_select);
-+	else
-+		val &= ~SPFI_PORT_STATE_CK_PHASE(msg->spi->chip_select);
-+	if (msg->spi->mode & SPI_CPOL)
-+		val |= SPFI_PORT_STATE_CK_POL(msg->spi->chip_select);
-+	else
-+		val &= ~SPFI_PORT_STATE_CK_POL(msg->spi->chip_select);
-+	spfi_writel(spfi, val, SPFI_PORT_STATE);
-+
-+	return 0;
-+}
-+
- static void img_spfi_config(struct spi_master *master, struct spi_device *spi,
- 			    struct spi_transfer *xfer)
- {
-@@ -434,18 +453,6 @@ static void img_spfi_config(struct spi_master *master, struct spi_device *spi,
+ 	val = spfi_readl(spfi, SPFI_CONTROL);
+ 	val &= ~(SPFI_CONTROL_SEND_DMA | SPFI_CONTROL_GET_DMA);
+ 	if (xfer->tx_buf)
+@@ -476,8 +479,6 @@ static void img_spfi_config(struct spi_master *master, struct spi_device *spi,
  					      &master->cur_msg->transfers))
  		val |= SPFI_CONTROL_CONTINUE;
  	spfi_writel(spfi, val, SPFI_CONTROL);
--
--	val = spfi_readl(spfi, SPFI_PORT_STATE);
--	if (spi->mode & SPI_CPHA)
--		val |= SPFI_PORT_STATE_CK_PHASE(spi->chip_select);
--	else
--		val &= ~SPFI_PORT_STATE_CK_PHASE(spi->chip_select);
--	if (spi->mode & SPI_CPOL)
--		val |= SPFI_PORT_STATE_CK_POL(spi->chip_select);
--	else
--		val &= ~SPFI_PORT_STATE_CK_POL(spi->chip_select);
--	spfi_writel(spfi, val, SPFI_PORT_STATE);
--
- 	spfi_writel(spfi, xfer->len << SPFI_TRANSACTION_TSIZE_SHIFT,
- 		    SPFI_TRANSACTION);
+-	spfi_writel(spfi, xfer->len << SPFI_TRANSACTION_TSIZE_SHIFT,
+-		    SPFI_TRANSACTION);
  }
-@@ -599,6 +606,7 @@ static int img_spfi_probe(struct platform_device *pdev)
  
- 	master->set_cs = img_spfi_set_cs;
- 	master->transfer_one = img_spfi_transfer_one;
-+	master->prepare_message = img_spfi_prepare;
- 
- 	spfi->tx_ch = dma_request_slave_channel(spfi->dev, "tx");
- 	spfi->rx_ch = dma_request_slave_channel(spfi->dev, "rx");
+ static int img_spfi_transfer_one(struct spi_master *master,
 -- 
 2.2.0.rc0.207.ga3a616c
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

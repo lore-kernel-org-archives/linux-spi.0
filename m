@@ -1,106 +1,56 @@
-From: Jonathan Richardson <jonathar@broadcom.com>
-Subject: Re: [PATCH 3/4] spi: bcm-mspi: Make BCMA optional to support non-BCMA
- chips
-Date: Mon, 6 Apr 2015 12:09:26 -0700
-Message-ID: <5522D9E6.3080008@broadcom.com>
-References: <1428002603-21892-1-git-send-email-jonathar@broadcom.com> <1428002603-21892-4-git-send-email-jonathar@broadcom.com> <CAHp75VcMg-8X8DtHbQrmugzWG5VzzHXcpWNiyrTT=qmuCvA95w@mail.gmail.com> <551ED345.1000702@gmail.com> <CACna6ry9qxzY9xaaqR8K6XgSEun31c=d1XrWH_vk7Fq7fJTxoA@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Florian Fainelli <f.fainelli@gmail.com>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Dmitry Torokhov <dtor@google.com>,
-	Anatol Pomazau <anatol@google.com>,
-	Scott Branden <sbranden@broadcom.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Pawel Moll <pawel.moll@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Ian Campbell <ijc+devicetree@hellion.org.uk>,
-	Kumar Gala <galak@codeaurora.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
-	devicetree <devicetree@vger.kernel.org>
-To: =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CACna6ry9qxzY9xaaqR8K6XgSEun31c=d1XrWH_vk7Fq7fJTxoA@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Andrew Bresticker <abrestic-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: [PATCH 1/5] spi: img-spfi: Limit bit clock to 1/4th of input clock
+Date: Mon,  6 Apr 2015 14:29:03 -0700
+Message-ID: <1428355747-16822-1-git-send-email-abrestic@chromium.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Andrew Bresticker <abrestic-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 15-04-06 03:36 AM, Rafa=C5=82 Mi=C5=82ecki wrote:
-> On 3 April 2015 at 19:52, Florian Fainelli <f.fainelli@gmail.com> wro=
-te:
->> On 03/04/15 06:38, Andy Shevchenko wrote:
->>> On Thu, Apr 2, 2015 at 10:23 PM, Jonathan Richardson
->>> <jonathar@broadcom.com> wrote:
->>>> The Broadcom MSPI controller is used on various chips. The driver =
-only
->>>> supported BCM53xx chips with BCMA (an AMBA bus variant). The drive=
-r is
->>>> refactored to make BCMA optional and provides a new config for non=
- BCMA
->>>> systems.
->>>
->>>>  struct bcm_mspi {
->>>> +       #ifdef CONFIG_SPI_BCMA_MSPI
->>>>         struct bcma_device *core;
->>>> -       struct spi_master *master;
->>>> +       #endif
->>>>
->>>> +       void __iomem *base;
->>>> +       struct spi_master *master;
->>>>         size_t read_offset;
->>>
->>>> +       void (*mspi_write)(struct bcm_mspi *mspi, u16 offset, u32 =
-value);
->>>> +       u32 (*mspi_read)(struct bcm_mspi *mspi, u16 offset);
->>>> +};
->>>
->>> To avoid ugly ifdefs I think better to split driver to core part an=
-d
->>> the actual driver part, at the end you will have something like
->>> mspi-core.c mspi-53xx.c mspi-whatever.c. Check for example spi-dw*.=
-c
->>
->> Actually, I am really curious whether we need the special BCMA I/O
->> accessors in the first place, cannot we just access the MSPI core on
->> BCM53xx chips using regular MMIO? That would probably solve the
->> "problem" entirely. Rafal, did you try this before?
->=20
-> It's a matter of choice between:
-> 1) Using one design for all bcma users
-> 2) Using one design for all bcm-mspi users
-> I believe no matter which one you choose, you'll break another one.
->=20
-> If you take a look at drivers/bcma/host_soc.c, you'll see we've there
-> core->io_addr. I guess you could use it as the base in bcm-mspi. That
-> of course will make you a bit less compatible with other bcma drivers
-> (skipping bcma R/W layer).
+Although the SPFI BITCLK divider supports a value of up to 255, only
+values up to 128 are usable.  This results in a maximum possible bit
+clock rate of 1/4th the input clock rate.
 
-That would require compiling in BCMA for a driver/chip that doesn't use
-BCMA but then I could do DT parsing in init only anyway. I don't think
-that's really an option so I'm going to leave as is unless there is
-further opinion on it.
+Signed-off-by: Andrew Bresticker <abrestic-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+---
+ drivers/spi/spi-img-spfi.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
->=20
->=20
->> As for splitting the driver into a "library" driver which is mostly
->> independent from the bus and a bus-specific wrapper, I think BCMA is
->> really the only special case here, which is why I suggested earlier =
-to
->> Jonathan that we might just prefer ifdefing things out instead of
->> creating a separate layer just for BCMA.
->=20
-> I think you may be right, this #if for bcma shouldn't be that bad and
-> it shouldn't grow in the future.
-> Still, I'd like to get this patch split nicely to review independent =
-changes.
->=20
+diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
+index e649bc7..7d18bec 100644
+--- a/drivers/spi/spi-img-spfi.c
++++ b/drivers/spi/spi-img-spfi.c
+@@ -405,10 +405,10 @@ static void img_spfi_config(struct spi_master *master, struct spi_device *spi,
+ 
+ 	/*
+ 	 * output = spfi_clk * (BITCLK / 512), where BITCLK must be a
+-	 * power of 2 up to 256 (where 255 == 256 since BITCLK is 8 bits)
++	 * power of 2 up to 128
+ 	 */
+-	div = DIV_ROUND_UP(master->max_speed_hz, xfer->speed_hz);
+-	div = clamp(512 / (1 << get_count_order(div)), 1, 255);
++	div = DIV_ROUND_UP(clk_get_rate(spfi->spfi_clk), xfer->speed_hz);
++	div = clamp(512 / (1 << get_count_order(div)), 1, 128);
+ 
+ 	val = spfi_readl(spfi, SPFI_DEVICE_PARAMETER(spi->chip_select));
+ 	val &= ~(SPFI_DEVICE_PARAMETER_BITCLK_MASK <<
+@@ -594,8 +594,8 @@ static int img_spfi_probe(struct platform_device *pdev)
+ 	master->num_chipselect = 5;
+ 	master->dev.of_node = pdev->dev.of_node;
+ 	master->bits_per_word_mask = SPI_BPW_MASK(32) | SPI_BPW_MASK(8);
+-	master->max_speed_hz = clk_get_rate(spfi->spfi_clk);
+-	master->min_speed_hz = master->max_speed_hz / 512;
++	master->max_speed_hz = clk_get_rate(spfi->spfi_clk) / 4;
++	master->min_speed_hz = clk_get_rate(spfi->spfi_clk) / 512;
+ 
+ 	master->set_cs = img_spfi_set_cs;
+ 	master->transfer_one = img_spfi_transfer_one;
+-- 
+2.2.0.rc0.207.ga3a616c
 
-Making BCMA optional was made possible by using DT. I'm not sure I coul=
-d
-split it into two commits. I would have to add a hard coded SPI device
-for non-BMCA as well. I thought the driver was a bit odd in that this
-was hard coded. Normally this should be in a separate driver. How would
-you use it if you wanted to use m25p80 for example?
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

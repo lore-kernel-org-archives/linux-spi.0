@@ -1,58 +1,53 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH] spi: bcm2835: transform native-cs to gpio-cs on first
- spi_setup
-Date: Tue, 07 Apr 2015 14:15:26 +0200
-Message-ID: <5523CA5E.3020200@martin.sperl.org>
-References: <1428340592-3196-2-git-send-email-kernel@martin.sperl.org> <20150406172913.GW6023@sirena.org.uk> <12F93D4D-EDCB-4F48-B42B-049ECAD7F5E8@martin.sperl.org> <20150406174552.GY6023@sirena.org.uk> <F4571783-619C-4664-B14F-207E2D3F60C3@martin.sperl.org> <20150406181033.GB6023@sirena.org.uk>
+From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Subject: Re: [PATCH 3/6] spi: bcm2835: fill FIFO before enabling interrupts
+ to
+Date: Tue, 07 Apr 2015 09:39:03 -0600
+Message-ID: <5523FA17.6040009@wwwdotorg.org>
+References: <3628E5E2-7EA9-488F-AF5F-A2E43D2D1E3E@martin.sperl.org> <551A1185.6060502@wwwdotorg.org> <20150331052519.GZ2869@sirena.org.uk> <552094B5.3050109@wwwdotorg.org> <20150406172130.GU6023@sirena.org.uk> <B9B4E3CA-D9F2-4A79-BC78-C3BD4B3844F2@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150406181033.GB6023-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <B9B4E3CA-D9F2-4A79-BC78-C3BD4B3844F2-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 2015-04-06 20:10, Mark Brown wrote:
-> People adding things to the standard kernel (presumably people push
-> their board support in there) would still have to work out which
-> chip select corresponds to which GPIO and write that mapping into
-> their DT with the corresponding loss of legibility there, and of
-> course there's the cost of modifying existing users.
+On 04/07/2015 12:25 AM, Martin Sperl wrote:
 >
-> It *would* be nice if the mapping to which pin has which function
-> were pushed into the pinctrl driver (and then possibly into the DT
-> for it) but generally this seems like something we should be doing
-> more of not less of.
+>> On 06.04.2015, at 19:21, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+>> Right, and I have to say I do suspect that the underlying thing is that
+>> the FIFO is underrunning, but as far as the optimization is concerned
+>> that's a separate thing.  The reason this isn't enabled for native chip
+>> selects is that it's not working, the reason it's not working is
+>> something that should indeed probably be investigated.
+ >
+> Actually it happens exactly when setting the CS-register with the
+> interrupt flags enabled - typically observed in the middle of a transmit
+> of a byte the CS jumps, but the clock and data continue the transfers
+> correctly
 >
-The foundation gets to a point of using device-tree overlays to minimize
-this kind of manual changes - the default still would include CS0=GPIO8
-and CS1=GPIO7. If someone needs more CS, then the extra CS needs to get
-configured in an overlay overriding those pins - so not a huge
-difference
+> As the CS register contains the interrupt flags as well as the
+> control for the native-chip-selects this is impacting the chip select
+> lines in native mode.
 
-If we add "cs_gpios = <&gpio 8 0> <&gpio 7 0>" to the dtsi or assume it
-is native, where this code essentially does what is needed to translate
-it to the above.
+Is the driver simply programming the HW incorrectly then? I would expect 
+the driver to do something roughly like:
 
-Just tell me if we need spi_bus_lock on the "change" path to avoid
-unpleasant behavior and I will create a patch incorporating that.
-Spi_setup can sleep, so we can wait for the bus to become idle before
-such a change...
+* Set up the HW to execute the transaction; everything except enabling 
+IRQs and telling the HW to "go"
+* Clear stale IRQ status (perhaps do this right at the start)
+* Enable IRQs
+* Tell the HW to "go"
 
-Alternatively we could also add something like:
-     int initial_chip_select_setup(int cs, int cspol);
-as a method in spi_master that the framework would call prior to
-registering all spi_devices with spi_device_register.
+... then not touch any CS-related register for the entire transfer. 
+There shouldn't be a need to enable/disable IRQs during the transfer; 
+just leave them enabled the entire time, until all bytes have been 
+transferred.
 
-In the code for the spi-bcm2835 we can run the native-CS to GPIO
-translation.
-
-I could create a patch that handles this.
-
-If you like it as is, merge it.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,53 +1,49 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/5] spi: img-spfi: Implement a prepare_message() callback
-Date: Tue, 7 Apr 2015 12:18:01 +0100
-Message-ID: <20150407111801.GJ6023@sirena.org.uk>
+Subject: Re: [PATCH 1/5] spi: img-spfi: Limit bit clock to 1/4th of input
+ clock
+Date: Tue, 7 Apr 2015 12:19:34 +0100
+Message-ID: <20150407111934.GK6023@sirena.org.uk>
 References: <1428355747-16822-1-git-send-email-abrestic@chromium.org>
- <1428355747-16822-2-git-send-email-abrestic@chromium.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="yMeU8KwQKf0wI0P3"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Ezequiel Garcia <ezequiel.garcia-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="MbiMhNjKwMZ0Kn0G"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Andrew Bresticker <abrestic-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1428355747-16822-2-git-send-email-abrestic-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+In-Reply-To: <1428355747-16822-1-git-send-email-abrestic-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---yMeU8KwQKf0wI0P3
+--MbiMhNjKwMZ0Kn0G
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 06, 2015 at 02:29:04PM -0700, Andrew Bresticker wrote:
-> From: Ezequiel Garcia <ezequiel.garcia-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
->=20
-> In preparation for switching to using the SPI core's CS GPIO handling,
-> move setup of the PORT_STATE register, which must be configured before
-> CS is asserted, to a prepare_message() callback.
+On Mon, Apr 06, 2015 at 02:29:03PM -0700, Andrew Bresticker wrote:
+> Although the SPFI BITCLK divider supports a value of up to 255, only
+> values up to 128 are usable.  This results in a maximum possible bit
+> clock rate of 1/4th the input clock rate.
 
 Applied, thanks.
 
---yMeU8KwQKf0wI0P3
+--MbiMhNjKwMZ0Kn0G
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVI7zpAAoJECTWi3JdVIfQ3WcIAIV643iINYXBBLx/fr3o7jnS
-+62oqVGXWYySM7QDFFVhmWOy0KBvNZ+0nYL5THvgSGoKSh9tUTJQH09uXGKDgmxi
-fUnpx7maJyObInfxE/Nlo5ycUxz0fiAac7gUEjw+dwzy8qrkephGXDjV1gwKH1Pe
-Zt4s45F95n0B6dLxQ6U1UYrd78fhCj2QCRDhgHYcqj2nWqQ0/iBpvt7QsoTYNK66
-Mrik6fKVS4PLHCgIF2DkyMUQ4MyqRhpJsOTOGmmPIaGwniN2YVR/diVTClAfF4Cm
-dLxQy9EZ7upwTVo5VLrJvHSHNdZ3hnKX1a3yUEIt16ZEXtSzI2hmAz9FcVC0U4s=
-=5K1u
+iQEcBAEBCAAGBQJVI71FAAoJECTWi3JdVIfQcTkH/2xRDx2QG93dct6n+U3SmLzr
+A+l9B8GWLJgLpXkNWEYc1z30yaPnvyPuwh2hQbW9MiZ+KMJAJ6THDGM3lP7pVJZi
+net2VIC7iiPFrMvJXE+Y6nP8lspgIB/geGxKiz5/nEfsNSjf15Ub4aCGPtiI20jR
+HK5dIPrbWW/7KI51xSMBZFCHs5MW6x2sJ9oShktRoWNBIlFiE0bOftkHgAWkwHic
+9/YLmhU68eX9yV9JfD7VrEPEAbYtnp4+vp5S4x/l/xfuZlCgw1Q+s6CZzfJCptFV
+fnHf6lyIeMDBPURX789KJhKSpGEwMxD9I+WyYZKghrA/cQxPnKy6Gf/yIN7eEoA=
+=je+L
 -----END PGP SIGNATURE-----
 
---yMeU8KwQKf0wI0P3--
+--MbiMhNjKwMZ0Kn0G--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

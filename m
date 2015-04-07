@@ -1,38 +1,59 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH 3/6] spi: bcm2835: fill FIFO before enabling interrupts to
-Date: Tue, 7 Apr 2015 08:43:02 +0200
-Message-ID: <47A937D5-8520-471C-A164-198DFD7F68B3@martin.sperl.org>
-References: <3628E5E2-7EA9-488F-AF5F-A2E43D2D1E3E@martin.sperl.org> <551A1185.6060502@wwwdotorg.org> <20150331052519.GZ2869@sirena.org.uk> <552094B5.3050109@wwwdotorg.org> <20150406172130.GU6023@sirena.org.uk> <B9B4E3CA-D9F2-4A79-BC78-C3BD4B3844F2@martin.sperl.org>
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2070.6\))
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 8BIT
-Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 2/4] spi: bcm53xx: Refactor to make driver nonspecific to
+ 53xx SoCs
+Date: Tue, 7 Apr 2015 11:03:09 +0300
+Message-ID: <CAHp75Vf3Fyw-ZgcgsCki6_TvqMh9A3+dmeRLq42pcTj7YAieQQ@mail.gmail.com>
+References: <1428002603-21892-1-git-send-email-jonathar@broadcom.com>
+	<1428002603-21892-3-git-send-email-jonathar@broadcom.com>
+	<CAHp75Vf0JrB5pqNEouLzyOf5mmi05Ut_cybd37suTrLbJOFHKA@mail.gmail.com>
+	<5522D0BA.2050805@broadcom.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Dmitry Torokhov <dtor-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
+	Anatol Pomazau <anatol-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
+	Scott Branden <sbranden-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+	bcm-kernel-feedback-list <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Rafal Milecki <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Jonathan Richardson <jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <B9B4E3CA-D9F2-4A79-BC78-C3BD4B3844F2-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <5522D0BA.2050805-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Now remembering a bit more from what I have observed:
-> On 07.04.2015, at 08:25, Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org> wrote:
-> 
-> See also:
-> http://www.raspberrypi.org/forums/viewtopic.php?f=44&t=19489&start=125#p451817
-> for some observations mostly related to CLEAR_TX/CLEAR_RX that also
-> de-assert CS for short periods.
+On Mon, Apr 6, 2015 at 9:30 PM, Jonathan Richardson
+<jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org> wrote:
+> On 15-04-03 06:35 AM, Andy Shevchenko wrote:
+>> On Thu, Apr 2, 2015 at 10:23 PM, Jonathan Richardson
+>> <jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org> wrote:
+>>> The Broadcom MSPI controller is used on various SoCs. It is being
+>>> renamed so that it can be extended and reused on other chips. It is
+>>> renamed to bcm-mspi.
+>>>
+>> What if you resend this one with -M -C applied?
+>>
+>>
+>
+> I'm not seeing any difference in the patches unfortunately. I'll keep
+> playing with it and re-send if I can find a way to improve it.
+>
+> The changes are just renaming variables, structures, functions, file
+> name to get rid of 53xx and replace with mspi. The config is renamed
+> from SPI_BCM53XX to SPI_BCMA_MSPI.
+>
 
-Note that this TX/RX reset with native CS is also inhibiting the use
-of DMA for any transfers not a multiple of 4 (DMA transfers data into
-the FIFO in words not bytes). Because after those transfers we have
-to reset the FIFO or the remaining bytes still in the FIFO will get
-shifted out before a subsequent transfer.
+Better to split: a) moving, b) renaming something inside.
 
-So for any DMA enabled driver we need this kind of gpio-cs to avoid
-this CS-glitch situation unless we want a "DMA only on multiple of 4"
-with native-cs situation...
-
+-- 
+With Best Regards,
+Andy Shevchenko
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

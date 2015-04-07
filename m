@@ -1,64 +1,46 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 3/6] spi: bcm2835: fill FIFO before enabling interrupts to
-Date: Tue, 7 Apr 2015 18:40:03 +0100
-Message-ID: <20150407174003.GN6023@sirena.org.uk>
-References: <3628E5E2-7EA9-488F-AF5F-A2E43D2D1E3E@martin.sperl.org>
- <551A1185.6060502@wwwdotorg.org>
- <20150331052519.GZ2869@sirena.org.uk>
- <552094B5.3050109@wwwdotorg.org>
- <20150406172130.GU6023@sirena.org.uk>
- <B9B4E3CA-D9F2-4A79-BC78-C3BD4B3844F2@martin.sperl.org>
- <5523FA17.6040009@wwwdotorg.org>
- <1BAEDC46-354E-49F4-BC6A-6AA5C1A4A1B4@martin.sperl.org>
+From: Andrew Bresticker <abrestic@chromium.org>
+Subject: Re: [PATCH 4/5] spi: img-spfi: Setup TRANSACTION register before
+ CONTROL register
+Date: Tue, 7 Apr 2015 10:59:05 -0700
+Message-ID: <CAL1qeaEBzpfrarYA0v3vhtPyQ_RuTQ2mRG4J180XV0aMp6hacA@mail.gmail.com>
+References: <1428355747-16822-1-git-send-email-abrestic@chromium.org>
+	<1428355747-16822-4-git-send-email-abrestic@chromium.org>
+	<20150407112306.GL6023@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="qj6EhVtbuE7iUtz+"
-Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1BAEDC46-354E-49F4-BC6A-6AA5C1A4A1B4-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-spi@vger.kernel.org,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Sifan Naeem <sifan.naeem@imgtec.com>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20150407112306.GL6023@sirena.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+On Tue, Apr 7, 2015 at 4:23 AM, Mark Brown <broonie@kernel.org> wrote:
+> On Mon, Apr 06, 2015 at 02:29:06PM -0700, Andrew Bresticker wrote:
+>> From: Sifan Naeem <sifan.naeem@imgtec.com>
+>>
+>> Setting the transfer length in the TRANSACTION register after the
+>> CONTROL register is programmed causes intermittent timeout issues in
+>> SPFI transfers when using the SPI framework to control the CS GPIO
+>> lines.  To avoid this issue, set transfer length before programming
+>> the CONTROL register.
+>
+> This is fine but it appears to be a bug fix and therefore should have
+> been at the start of the series so it could be applied as such and sent
+> to Linus.  As it is it depends on the refactoring for prepare() which
+> prevents that, please regenerate against Linus' tree so it can be sent
+> as a fix.
 
---qj6EhVtbuE7iUtz+
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The bug this patch fixes is only exposed once the driver is converted
+to use CS GPIOs (patch 5/5 in this series), so it's not needed unless
+that patch is taken.  Really the entire series could be considered
+fixes (with patches 2, 3, and 4 being preparatory work for patch 5)
+since the switch to using CS GPIOs is to work around the hardware's
+buggy CS handling.  That said, support for the first SoC using this
+controller (IMG Pistachio) is slated to be merged for 4.1, so I'm not
+sure that pulling these fixes into 4.0 is totally necessary.
 
-On Tue, Apr 07, 2015 at 07:05:01PM +0200, Martin Sperl wrote:
-
-> But as spi_messages with multiple spi_transfers are rarely used
-> and as the issue itself is only happening only with a low probability
-> and some devices not detecting cs changes that are below a certain time
-> the likleyhood of such a situation being detected are minimal and
-> would typically get attributed to other factors...
-
-For your workload perhaps.  For some workloads they are very common
-(register reads are the most obvious example, they are typically a write
-transfer to provide the register address followed by a read transfer for
-the data).
-
---qj6EhVtbuE7iUtz+
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVJBZyAAoJECTWi3JdVIfQk0gH/04U7MVZRXPk6zH91lzXsq4h
-XXhp7z10lOfEyxXxQjUIRN6IgCq683fP2MGvjU15UiVobSupUMneHnlsh4z2mz5h
-XbB972WJNeuH7f+FXxGix1hS8wD3vZ9JOoyZkIRC8LILIzyOhwQpyPd8GoHJtvzv
-GnZabar/NGxchqJS1zxDRD9Qr/Af4QGp9GJPG1ZX42OC/QTK95XX1wf5oXMvq4CF
-MXN6bvpTUYElLk6sij1Qp6jDwwMu5r1xzmdK8akEX58yQvs9XHJeB+pFPBqQI0WH
-wd8DbLQ50xiPVG6+Lt7WJEiiewCqajFyLEq0XHkBsqFihbVFfMgbeSX68qyQFe8=
-=jhcO
------END PGP SIGNATURE-----
-
---qj6EhVtbuE7iUtz+--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Thanks,
+Andrew

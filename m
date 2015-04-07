@@ -1,60 +1,72 @@
-From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Subject: Re: [PATCH] spi: bcm2835: transform native-cs to gpio-cs on first
- spi_setup
-Date: Tue, 07 Apr 2015 09:43:36 -0600
-Message-ID: <5523FB28.5050202@wwwdotorg.org>
-References: <1428340592-3196-2-git-send-email-kernel@martin.sperl.org> <5523487B.70501@wwwdotorg.org> <A080E422-054D-401A-9302-389487FA8042@martin.sperl.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 3/6] spi: bcm2835: fill FIFO before enabling interrupts to
+Date: Tue, 7 Apr 2015 17:28:57 +0100
+Message-ID: <20150407162857.GM6023@sirena.org.uk>
+References: <3628E5E2-7EA9-488F-AF5F-A2E43D2D1E3E@martin.sperl.org>
+ <551A1185.6060502@wwwdotorg.org>
+ <20150331052519.GZ2869@sirena.org.uk>
+ <552094B5.3050109@wwwdotorg.org>
+ <20150406172130.GU6023@sirena.org.uk>
+ <B9B4E3CA-D9F2-4A79-BC78-C3BD4B3844F2@martin.sperl.org>
+ <5523FA17.6040009@wwwdotorg.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="xyVbWWff76yUiXzJ"
+Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>, lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <A080E422-054D-401A-9302-389487FA8042-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <5523FA17.6040009-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 04/06/2015 11:45 PM, Martin Sperl wrote:
->
->> On 07.04.2015, at 05:01, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org> wrote:
->> I believe the bcm283x have 2 types of SPI controller. There is 1
->> instance of the HW that this driver controls (SPI0), and that has CS0,
->> CS1. There are two instances of a different SPI HW block (SPI1, SPI2),
->> and those each have CS0, CS1, CS2. At least, that's my interpretation of
->> the table that shows the pinctrl module's per-pin alternate function values.
->
-> Yes and no - SPI1 and SPI2 are a totally different beasts as these are
-> "auxiliar devices" that have 2x2 word fifos, no DMA and minimal interrupt
-> support and use a distinct register layout compared to SPI0.
-> See BCM2835 Arm Peripherials page 20-27 for details.
->
-> Essentially these are intended to get used for low speed devices or devices
-> that run short transfers (<4-8 bytes)
->
-> So these devices would need a totally separate SPI driver, which this driver
-> does not and can not handle...
 
-That's exactly what I said.
+--xyVbWWff76yUiXzJ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
->> Should that be an error? Not being able to find the gpiochip implies the
->> code can't manipulate the CS lines at all, I think?
- >
-> Will add an dev_warn_once and contine without optimizations - the code
-> still does check for the cs_gpio, so we would run without it?
-> It could just be a rename of the pinctrl driver that would trigger this.
->
-> You want it as an error?
+On Tue, Apr 07, 2015 at 09:39:03AM -0600, Stephen Warren wrote:
+> On 04/07/2015 12:25 AM, Martin Sperl wrote:
 
-If the rest of the driver is expected to always check whether 
-spi->cs_gpio is valid or not, and support the gpio-is-not-valid case, I 
-guess it's OK for that case *not* to error out.
+> >As the CS register contains the interrupt flags as well as the
+> >control for the native-chip-selects this is impacting the chip select
+> >lines in native mode.
 
-I think we should at least warn to indicate that something unexpected 
-happened.
+> Is the driver simply programming the HW incorrectly then? I would expect the
+> driver to do something roughly like:
 
-Shouldn't spi->cs_gpio be set to e.g. -1 if the pinctrl device can't be 
-found, so that the rest of the driver does know that the GPIO is invalid?
+> * Set up the HW to execute the transaction; everything except enabling IRQs
+> and telling the HW to "go"
+> * Clear stale IRQ status (perhaps do this right at the start)
+> * Enable IRQs
+> * Tell the HW to "go"
+
+> ... then not touch any CS-related register for the entire transfer. There
+> shouldn't be a need to enable/disable IRQs during the transfer; just leave
+> them enabled the entire time, until all bytes have been transferred.
+
+We will need to make sure /CS is kept asserted between transfers in a
+message too.
+
+--xyVbWWff76yUiXzJ
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVJAXIAAoJECTWi3JdVIfQOWUH/izw/OPHqBoLqUqjAuyN86fo
+oTucZ8lmDmbVJslYWhLcqOxLDrR/ySIpfXOgSh8LokuV4JrkwhK0nbzcifuaVzfv
+QtYR3eLpMN3k/H55YQMmgFS9AAaMZCNsN3pAyh3LLGoZ93qNDMJ1gsQzF+nlav09
+lnKK1/z+YEn3ZnubNY9UeX8qmKRcOFQhyOHUx2hMC0f+BKfTkvqw0HXW+3NH7tSX
+iWl1j9ZZ98U8AEjAVhBj046veHVl5+3oDicNCJcKducARxzhqYVxAliQiSixc0Lb
+BrKIyoybd0ZDX6RVsn8hBlUWgGHN9GAAiZRXBD14Fk/QeLwVfeoPL7FVTR5XAbM=
+=3K93
+-----END PGP SIGNATURE-----
+
+--xyVbWWff76yUiXzJ--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

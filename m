@@ -1,49 +1,116 @@
-From: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Subject: Re: [PATCH 02/14] ALSA: portman2x4: return proper error values from
- attach
-Date: Wed, 8 Apr 2015 19:10:25 +0530
-Message-ID: <20150408134025.GA12139@sudip-PC>
-References: <1428492040-5581-1-git-send-email-sudipm.mukherjee@gmail.com>
- <1428492040-5581-3-git-send-email-sudipm.mukherjee@gmail.com>
- <55252E09.2060600@cogentembedded.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jean Delvare <jdelvare@suse.de>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Rodolfo Giometti <giometti@enneenne.com>,
-	"James E.J. Bottomley" <JBottomley@parallels.com>,
-	Mark Brown <broonie@kernel.org>,
-	Willy Tarreau <willy@meta-x.org>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.de>,
-	linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-	netdev@vger.kernel.org, linux-scsi@vger.kernel.org,
-	linux-spi@vger.kernel.org, devel@driverdev.osuosl.org,
-	alsa-devel@alsa-project.org
-To: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <55252E09.2060600@cogentembedded.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Andrew Bresticker <abrestic-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: [PATCH V2 1/3] spi: img-spfi: Implement a handle_err() callback
+Date: Wed,  8 Apr 2015 10:03:14 -0700
+Message-ID: <1428512596-23766-1-git-send-email-abrestic@chromium.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Ezequiel Garcia <ezequiel.garcia-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>,
+	Andrew Bresticker <abrestic-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Apr 08, 2015 at 04:32:57PM +0300, Sergei Shtylyov wrote:
-> Hello.
-> 
-> On 4/8/2015 2:20 PM, Sudip Mukherjee wrote:
-> 
-> >now that we are monitoring the return value from attach, make the
-> 
->    So you've first changed the method prototype and follow up with
-> the changes to the actual implementations? That's backward. I'm
-> afraid such changes can't be done piecemeal.
-Dan Carpenter has exlained me the problem with this aproach. I have
-already sent a v2 which doesnot break anything and if everyone approves
-that way then we can change one driver at a time and nothing will
-break.
+From: Ezequiel Garcia <ezequiel.garcia-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
 
-regards
-sudip
+The driver can be greatly simplified by moving the transfer timeout
+handling to a handle_err() callback.
 
-> 
+Signed-off-by: Ezequiel Garcia <ezequiel.garcia-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Andrew Bresticker <abrestic-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+---
+Changes from v1:
+ - Moved timeout handling from unprepare_message() to handle_err()
+---
+ drivers/spi/spi-img-spfi.c | 44 ++++++++++++++++++++++++--------------------
+ 1 file changed, 24 insertions(+), 20 deletions(-)
+
+diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
+index bef986f..a3cf5be 100644
+--- a/drivers/spi/spi-img-spfi.c
++++ b/drivers/spi/spi-img-spfi.c
+@@ -270,7 +270,6 @@ static int img_spfi_start_pio(struct spi_master *master,
+ 
+ 	if (rx_bytes > 0 || tx_bytes > 0) {
+ 		dev_err(spfi->dev, "PIO transfer timed out\n");
+-		spfi_reset(spfi);
+ 		return -ETIMEDOUT;
+ 	}
+ 
+@@ -396,6 +395,29 @@ stop_dma:
+ 	return -EIO;
+ }
+ 
++static void img_spfi_handle_err(struct spi_master *master,
++				struct spi_message *msg)
++{
++	struct img_spfi *spfi = spi_master_get_devdata(master);
++	unsigned long flags;
++
++	/*
++	 * Stop all DMA and reset the controller if the previous transaction
++	 * timed-out and never completed it's DMA.
++	 */
++	spin_lock_irqsave(&spfi->lock, flags);
++	if (spfi->tx_dma_busy || spfi->rx_dma_busy) {
++		spfi->tx_dma_busy = false;
++		spfi->rx_dma_busy = false;
++
++		dmaengine_terminate_all(spfi->tx_ch);
++		dmaengine_terminate_all(spfi->rx_ch);
++	}
++	spin_unlock_irqrestore(&spfi->lock, flags);
++
++	spfi_reset(spfi);
++}
++
+ static int img_spfi_prepare(struct spi_master *master, struct spi_message *msg)
+ {
+ 	struct img_spfi *spfi = spi_master_get_devdata(master);
+@@ -462,8 +484,6 @@ static int img_spfi_transfer_one(struct spi_master *master,
+ 				 struct spi_transfer *xfer)
+ {
+ 	struct img_spfi *spfi = spi_master_get_devdata(spi->master);
+-	bool dma_reset = false;
+-	unsigned long flags;
+ 	int ret;
+ 
+ 	if (xfer->len > SPFI_TRANSACTION_TSIZE_MASK) {
+@@ -473,23 +493,6 @@ static int img_spfi_transfer_one(struct spi_master *master,
+ 		return -EINVAL;
+ 	}
+ 
+-	/*
+-	 * Stop all DMA and reset the controller if the previous transaction
+-	 * timed-out and never completed it's DMA.
+-	 */
+-	spin_lock_irqsave(&spfi->lock, flags);
+-	if (spfi->tx_dma_busy || spfi->rx_dma_busy) {
+-		dev_err(spfi->dev, "SPI DMA still busy\n");
+-		dma_reset = true;
+-	}
+-	spin_unlock_irqrestore(&spfi->lock, flags);
+-
+-	if (dma_reset) {
+-		dmaengine_terminate_all(spfi->tx_ch);
+-		dmaengine_terminate_all(spfi->rx_ch);
+-		spfi_reset(spfi);
+-	}
+-
+ 	img_spfi_config(master, spi, xfer);
+ 	if (master->can_dma && master->can_dma(master, spi, xfer))
+ 		ret = img_spfi_start_dma(master, spi, xfer);
+@@ -607,6 +610,7 @@ static int img_spfi_probe(struct platform_device *pdev)
+ 	master->set_cs = img_spfi_set_cs;
+ 	master->transfer_one = img_spfi_transfer_one;
+ 	master->prepare_message = img_spfi_prepare;
++	master->handle_err = img_spfi_handle_err;
+ 
+ 	spfi->tx_ch = dma_request_slave_channel(spfi->dev, "tx");
+ 	spfi->rx_ch = dma_request_slave_channel(spfi->dev, "rx");
+-- 
+2.2.0.rc0.207.ga3a616c
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

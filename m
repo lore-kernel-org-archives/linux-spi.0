@@ -1,12 +1,14 @@
-From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: Re: [PATCH v2 5/5] spi: bcm-mspi: Add support to set serial baud
- clock rate
-Date: Wed, 8 Apr 2015 21:32:09 +0200
-Message-ID: <CAOiHx=n2VccuO-Z2K2MviAL+n61nGfmHbU=pEd6seLEJ=-hG1g@mail.gmail.com>
-References: <1428516275-12819-1-git-send-email-jonathar@broadcom.com> <1428516275-12819-6-git-send-email-jonathar@broadcom.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2 2/5] spi: bcm53xx: Refactor driver to make nonspecific
+ to 53xx SoCs
+Date: Wed, 8 Apr 2015 20:49:15 +0100
+Message-ID: <20150408194915.GK6023@sirena.org.uk>
+References: <1428516275-12819-1-git-send-email-jonathar@broadcom.com>
+ <1428516275-12819-3-git-send-email-jonathar@broadcom.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Dmitry Torokhov <dtor-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="KOeZZ+6t3JCr/UYt"
+Cc: Dmitry Torokhov <dtor-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
 	Anatol Pomazau <anatol-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
 	Scott Branden <sbranden-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
 	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
@@ -14,147 +16,53 @@ Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Dmitry Torokho
 	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
 	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
 	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	bcm-kernel-feedback-list <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Rafal Milecki <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rafal Milecki <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 To: Jonathan Richardson <jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1428516275-12819-6-git-send-email-jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1428516275-12819-3-git-send-email-jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi,
 
-On Wed, Apr 8, 2015 at 8:04 PM, Jonathan Richardson
-<jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org> wrote:
-> The driver wasn't setting the SPBR (serial clock baud rate) which caused
-> it to run at the slowest speed possible. The driver now calculates the
-> SPBR based on the reference clock frequency resulting in much faster
-> SPI transfers.
->
-> Signed-off-by: Jonathan Richardson <jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+--KOeZZ+6t3JCr/UYt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Wed, Apr 08, 2015 at 11:04:32AM -0700, Jonathan Richardson wrote:
+
 > ---
->  drivers/spi/spi-bcm-mspi.c |   50 ++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 50 insertions(+)
->
-> diff --git a/drivers/spi/spi-bcm-mspi.c b/drivers/spi/spi-bcm-mspi.c
-> index 32bb1f0..9320de9 100644
-> --- a/drivers/spi/spi-bcm-mspi.c
-> +++ b/drivers/spi/spi-bcm-mspi.c
-> @@ -18,10 +18,15 @@
->  #include <linux/bcma/bcma.h>
->  #include <linux/spi/spi.h>
->  #include <linux/of.h>
-> +#include <linux/clk.h>
->
->  #include "spi-bcm-mspi.h"
->
->  #define BCM_MSPI_MAX_SPI_BAUD   13500000       /* 216 MHz? */
-> +#define SPBR_MIN                8U
-> +#define SPBR_MAX                255U
-> +#define MSPI_SPCR0_LSB_OFFSET   0x200
-> +#define MSPI_SPCR0_LSB_SHIFT    0
->
->  /* The longest observed required wait was 19 ms */
->  #define BCM_MSPI_SPE_TIMEOUT_MS 80
-> @@ -33,7 +38,9 @@ struct bcm_mspi {
->
->         void __iomem *base;
->         struct spi_master *master;
-> +       struct clk *clk;
->         size_t read_offset;
-> +       u32    spbr;
->
->         void (*mspi_write)(struct bcm_mspi *mspi, u16 offset, u32 value);
->         u32 (*mspi_read)(struct bcm_mspi *mspi, u16 offset);
-> @@ -45,6 +52,15 @@ static inline unsigned int bcm_mspi_calc_timeout(size_t len)
->         return (len * 9000 / BCM_MSPI_MAX_SPI_BAUD * 110 / 100) + 1;
->  }
->
-> +static void bcm_mspi_hw_init(struct bcm_mspi *mspi)
-> +{
-> +       /* Set SPBR (serial clock baud rate). */
-> +       if (mspi->spbr) {
-> +               mspi->mspi_write(mspi, MSPI_SPCR0_LSB_OFFSET,
-> +                       mspi->spbr << MSPI_SPCR0_LSB_SHIFT);
-> +       }
-> +}
-> +
->  static int bcm_mspi_wait(struct bcm_mspi *mspi, unsigned int timeout_ms)
->  {
->         unsigned long deadline;
-> @@ -222,6 +238,7 @@ static struct bcm_mspi *bcm_mspi_init(struct device *dev)
->  {
->         struct bcm_mspi *data;
->         struct spi_master *master;
-> +       u32 desired_rate;
->
->         master = spi_alloc_master(dev, sizeof(*data));
->         if (!master) {
-> @@ -236,6 +253,33 @@ static struct bcm_mspi *bcm_mspi_init(struct device *dev)
->         master->dev.of_node = dev->of_node;
->         master->transfer_one = bcm_mspi_transfer_one;
->
-> +       /*
-> +        * Enable clock if provided. The frequency can be changed by setting
-> +        * SPBR (serial clock baud rate) based on the desired 'clock-frequency'.
-> +        *
-> +        * Baud rate is calculated as: mspi_clk / (2 * SPBR) where SPBR is a
-> +        * value between 1-255. If not set then it is left at the h/w default.
-> +        */
-> +       data->clk = devm_clk_get(dev, "mspi_clk");
-> +       if (!IS_ERR(data->clk)) {
-> +               int ret = clk_prepare_enable(data->clk);
+>  drivers/spi/Kconfig        |    7 +-
+>  drivers/spi/Makefile       |    2 +-
+>  drivers/spi/spi-bcm-mspi.c |  301 ++++++++++++++++++++++++++++++++++++++++++++
+>  drivers/spi/spi-bcm-mspi.h |   72 +++++++++++
+>  drivers/spi/spi-bcm53xx.c  |  299 -------------------------------------------
+>  drivers/spi/spi-bcm53xx.h  |   72 -----------
+>  6 files changed, 377 insertions(+), 376 deletions(-)
 
-You need to disable_unprepare the clock on removal, I don't see you doing that.
+Please use git format-patch -M and split the moves from the renames,
+this is basically unreviewable as is since it's just a remove/add.
 
-> +
-> +               if (ret < 0) {
-> +                       dev_err(dev, "failed to enable clock: %d\n", ret);
-> +                       return 0;
-> +               }
-> +
-> +               /* Calculate SPBR if clock-frequency provided. */
-> +               if (of_property_read_u32(dev->of_node, "clock-frequency",
-> +                       &desired_rate) >= 0) {
-> +                       u32 spbr = clk_get_rate(data->clk) / (2 * desired_rate);
-> +
-> +                       if (spbr > 0)
-> +                               data->spbr = clamp_val(spbr, SPBR_MIN,
-> +                                       SPBR_MAX);
-> +               }
-> +       }
-> +
->         return data;
->  }
->
-> @@ -287,6 +331,9 @@ static int bcm_mspi_probe(struct platform_device *pdev)
->         data->mspi_write = bcm_mspi_write;
->         platform_set_drvdata(pdev, data);
->
-> +       /* Initialize SPI controller. */
-> +       bcm_mspi_hw_init(data);
-> +
->         err = devm_spi_register_master(dev, data->master);
->         if (err)
->                 goto out;
-> @@ -362,6 +409,9 @@ static int bcm_mspi_bcma_probe(struct bcma_device *core)
->
->         bcma_set_drvdata(core, data);
->
-> +       /* Initialize SPI controller. */
-> +       bcm_mspi_hw_init(data);
-> +
->         err = devm_spi_register_master(&core->dev, data->master);
->         if (err) {
->                 spi_master_put(data->master);
-> --
+--KOeZZ+6t3JCr/UYt
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-Regards
-Jonas
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVJYY6AAoJECTWi3JdVIfQZ7IH/0hAlehA4FKwPMLgflObJXg7
+h2Nqzsezn36NKLc7zW1wIRGgGF1jR1+9vXVZM1F/t7L8ai6gu28zLXcn7kUddk9E
+sAIPFanGtFjbF8RWzKWPazN0mFDSZOsKN5ectfXo/tB+Xf9lGlnocH0sW33uwM9h
+S8M7TX+wHyMqsLVxP9R48mLkA9MecS/K0bvrTWbI33SeCx3Ja4prCcM3Tuk/l0Uf
+AbjHx8x/sAumvAS01vu7OpeuwEYNzSGlDpcyeWwL3Vb6qVYBh//Hh/NvjH1XRDde
+aD/ELjPo+lpA6mqTzYM0TncJd1t5FOJiBUzkjBN/eb0hnBBLwtxPQOjpR42ekTI=
+=E0TY
+-----END PGP SIGNATURE-----
+
+--KOeZZ+6t3JCr/UYt--
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,47 +1,56 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH 3/6] spi: bcm2835: fill FIFO before enabling interrupts
- to
-Date: Wed, 08 Apr 2015 11:41:15 +0200
-Message-ID: <5524F7BB.8000905@martin.sperl.org>
-References: <3628E5E2-7EA9-488F-AF5F-A2E43D2D1E3E@martin.sperl.org> <551A1185.6060502@wwwdotorg.org> <20150331052519.GZ2869@sirena.org.uk> <552094B5.3050109@wwwdotorg.org> <20150406172130.GU6023@sirena.org.uk> <B9B4E3CA-D9F2-4A79-BC78-C3BD4B3844F2@martin.sperl.org> <5523FA17.6040009@wwwdotorg.org> <20150407162857.GM6023@sirena.org.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 4/5] spi: img-spfi: Setup TRANSACTION register before
+ CONTROL register
+Date: Wed, 8 Apr 2015 11:36:38 +0100
+Message-ID: <20150408103638.GU6023@sirena.org.uk>
+References: <1428355747-16822-1-git-send-email-abrestic@chromium.org>
+ <1428355747-16822-4-git-send-email-abrestic@chromium.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="SbCGc7/cX5mN2zxo"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Sifan Naeem <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
+To: Andrew Bresticker <abrestic-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150407162857.GM6023-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1428355747-16822-4-git-send-email-abrestic-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 2015-04-07 18:28, Mark Brown wrote:
-> On Tue, Apr 07, 2015 at 09:39:03AM -0600, Stephen Warren wrote:
->> On 04/07/2015 12:25 AM, Martin Sperl wrote:
->> ... then not touch any CS-related register for the entire transfer. There
->> shouldn't be a need to enable/disable IRQs during the transfer; just leave
->> them enabled the entire time, until all bytes have been transferred.
->
-> We will need to make sure /CS is kept asserted between transfers in a
-> message too.
-The problem is here that you need to touch the CS-register when an
-individual spi-transfer is finished, as only that way you can disable
-the (level)interrupts, which would fire immediately again when you exit
-chip-select.
 
-So you are at the risk of it happening at that phase as well...
-and during the next spi_transfer_one you need to reenable the
-interrupts again.
+--SbCGc7/cX5mN2zxo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Anyway: my latest incarnation of the driver does now implement full
-cs_gpio operation with native-cs getting translated during the
-new spi_register_cs phase when registering the bus using the (new)
-function-pointer register_cs in spi_master.
-So this issue goes away and the code becomes smaller at the same time.
+On Mon, Apr 06, 2015 at 02:29:06PM -0700, Andrew Bresticker wrote:
+> From: Sifan Naeem <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
+>=20
+> Setting the transfer length in the TRANSACTION register after the
+> CONTROL register is programmed causes intermittent timeout issues in
+> SPFI transfers when using the SPI framework to control the CS GPIO
+> lines.  To avoid this issue, set transfer length before programming
+> the CONTROL register.
 
-This is also used to set up chip_selects to their defaults levels prior
-to any activity on the SPI bus.
+Applied, thanks.
+
+--SbCGc7/cX5mN2zxo
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVJQS1AAoJECTWi3JdVIfQc/8H/231IPPWR1su/YILOrKOcjtJ
+nUKqy6uTxzRWIW5gHoZayO33gUi7oLLFFBpVmrYCjbbRlCiYBHyR2PI+F4m5T3eh
+ekNypmj1zLCagjvH1UGqhK9MNZgkvjdPowOZGrkA3yn9/ZUUToXE+1+rCCZB36RU
+wAyflVb+Ocq/XBMJXIuBZj+RdimcXNv1Y/3C1uOxXb1kbARyYbxSN/BpY7DRJnXc
+4Lox4vBWQpwbrE+fk6Q7q/VbxKbd+AvX4hIu0GsjlDyzRY4QBUwMlj8YQ1pZpKX2
+dw+b6iJYwxYBn9ttsMgaxSpw1O3z1985V2tOzIeVux09hoHCfsulu0jsBIuZUDw=
+=XhFU
+-----END PGP SIGNATURE-----
+
+--SbCGc7/cX5mN2zxo--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

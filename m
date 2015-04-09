@@ -1,51 +1,51 @@
-From: Pelle Nilsson <per.nilsson-5TWeZ6kPplYAvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 1/1] spi: altera: Add empty implementation of setup_transfer callback
-Date: Thu,  9 Apr 2015 17:03:42 +0200
-Message-ID: <1428591822-24279-2-git-send-email-per.nilsson@xelmo.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 0/1] Fix NULL pointer dereference
+Date: Thu, 9 Apr 2015 16:26:49 +0100
+Message-ID: <20150409152649.GX6023@sirena.org.uk>
 References: <1428591822-24279-1-git-send-email-per.nilsson@xelmo.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="kqMyilcFgfUVP095"
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	nios2-dev-g9ZBwUv/Ih/yUk5EbOjzuce+I+R0W71w@public.gmane.org
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+To: Pelle Nilsson <per.nilsson-5TWeZ6kPplYAvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
 In-Reply-To: <1428591822-24279-1-git-send-email-per.nilsson-5TWeZ6kPplYAvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-This callback is mandatory since txrx_bufs callback is defined. The lack of
-it causes a kernel panic on first SPI transaction.
 
-Signed-off-by: Pelle Nilsson <per.nilsson-5TWeZ6kPplYAvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spi-altera.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+--kqMyilcFgfUVP095
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/spi/spi-altera.c b/drivers/spi/spi-altera.c
-index b95010e..6d72b1d 100644
---- a/drivers/spi/spi-altera.c
-+++ b/drivers/spi/spi-altera.c
-@@ -197,6 +197,11 @@ static irqreturn_t altera_spi_irq(int irq, void *dev)
- 	return IRQ_HANDLED;
- }
- 
-+static int altera_spi_setupxfer(struct spi_device *spi, struct spi_transfer *t)
-+{
-+	return 0;
-+}
-+
- static int altera_spi_probe(struct platform_device *pdev)
- {
- 	struct altera_spi *hw;
-@@ -220,6 +225,7 @@ static int altera_spi_probe(struct platform_device *pdev)
- 
- 	/* setup the state for the bitbang driver */
- 	hw->bitbang.master = master;
-+	hw->bitbang.setup_transfer = altera_spi_setupxfer;
- 	hw->bitbang.chipselect = altera_spi_chipsel;
- 	hw->bitbang.txrx_bufs = altera_spi_txrx;
- 
--- 
-1.9.1
+On Thu, Apr 09, 2015 at 05:03:41PM +0200, Pelle Nilsson wrote:
+> As I reported earlier, spi-altera driver is broken and causes a kernel
+> panic due to a NULL pointer dereference during first SPI
 
+Please don't send cover letters for single patches, it tends to mean
+you've not written enough in the commit message.  Either the mail is
+redundant and shouldn't be sent or there should be more in the patch
+either in the commit message or after the ---.
+
+--kqMyilcFgfUVP095
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVJpo4AAoJECTWi3JdVIfQTWoH/RSh/God43IjEAlrM9M1Ibou
+pJS9mw1tBhNaPjvp4dMmZ7AsGGjTCnNriRZ4F2bGj5YfUz2Vz4z/jxDF4dVkVv//
+mGm+YKFjoaUyyV6Orn0KqZLVogDPm9KKnEvSpUwx5/WLzrGa1mv9cxBwA893lC2g
+gGdY0YK6+/mfaxdfytMO2KP5ug+k5n/6fofTW0F//df0xBVIzs+nqzrEO0NdV423
+Czll51Co98xLOags07p6bT/oQnVC5medAsCpziGg9P4nDRX0yTRk5Nf4i/VRyv+c
+asluyrgT0uhRPeId2yV3IuuRRY/3Bph512g0+mD/Sq8YoHWyHNZa84iqVA2lJSM=
+=/6DO
+-----END PGP SIGNATURE-----
+
+--kqMyilcFgfUVP095--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

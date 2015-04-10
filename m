@@ -1,93 +1,57 @@
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: Re: [REGRESSION] commit 0461a41 "spi: Pump transfers inside
- calling context for spi_sync()" breaks Apalis/Colibri T30 with MCP2515
- SPI CAN controller
-Date: Fri, 10 Apr 2015 17:15:11 +0200
-Message-ID: <5527E8FF.7050104@pengutronix.de>
-References: <1428670853.7008.87.camel@localhost.localdomain> <20150410132330.GH6023@sirena.org.uk>
+From: Bert Vermeulen <bert-Nh2F35Ii2RQ@public.gmane.org>
+Subject: Re: [PATCH v6] spi: Add SPI driver for Mikrotik RB4xx series boards
+Date: Fri, 10 Apr 2015 17:31:15 +0200
+Message-ID: <5527ECC3.1000209@biot.com>
+References: <1428285263-15135-1-git-send-email-bert@biot.com> <20150406163905.GL6023@sirena.org.uk> <5526EFA0.2010108@biot.com> <20150409215047.GE6023@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature";
- boundary="wfG8euhQrESrjeIrSeTWvVv3P9BILVKXO"
-Cc: linux-can@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux@arm.linux.org.uk, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
-	Laxman Dewangan <ldewangan@nvidia.com>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Wolfgang Grandegger <wg@grandegger.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Stephen Warren <swarren@wwwdotorg.org>,
-	Alexandre Courbot <gnurou@gmail.com>,
-	Stefan Agner <stefan@agner.ch>,
-	Himangi Saraogi <himangi774@gmail.com>,
-	Julia Lawall <julia.lawall@lip6.fr>,
-	Stefano Babic <sbabic@denx.de>,
-	Christian Pellegrin <chripell@fsfe.org>,
-	"DavidS.Miller" <davem@davemloft.net>,
-	Marc Zyngier <maz@misterjones.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>
-To: Mark Brown <broonie@kernel.org>,
-	Marcel Ziswiler <marcel@ziswiler.com>
-Return-path: <linux-can-owner@vger.kernel.org>
-In-Reply-To: <20150410132330.GH6023@sirena.org.uk>
-Sender: linux-can-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
-
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---wfG8euhQrESrjeIrSeTWvVv3P9BILVKXO
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Cc: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150409215047.GE6023-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 04/10/2015 03:23 PM, Mark Brown wrote:
-> On Fri, Apr 10, 2015 at 03:00:53PM +0200, Marcel Ziswiler wrote:
->> Hi there
->=20
-> Please try to use somewhat more targetted CC lists...
->=20
->> I also have not yet looked further into what exactly is happening and
->> whether or not the SPI stack, the Tegra SPI controller driver or the
->> MCP2515 SPI CAN driver is to blame but rather decided to ask Mr. Brown=
+On 04/09/2015 11:50 PM, Mark Brown wrote:
+> On Thu, Apr 09, 2015 at 11:31:12PM +0200, Bert Vermeulen wrote:
+>>  The m25p80-compatible boot flash and (some models) MMC use regular SPI,
+>>  bitbanged as required by the SoC. However the SPI-connected CPLD has
+>>  a "fast write" mode, in which two bits are transferred by SPI clock
+>>  cycle. The second bit is transmitted with the SoC's CS2 pin.
+> 
+>>  Protocol drivers using this fast write facility signal this by setting
+>>  the cs_change flag on transfers.
+> 
+>> The cs_change flag is used here instead of the openwrt version's
+>> spi_transfer.fast_write flag. The CPLD driver sets this flag on a
+>> per-transfer basis.
+> 
+> No, this is broken - it's abusing a standard API in a way that's
+> completly incompatible with the meaning of that API which is obviously a
+> very bad idea, especially since good practice is to offload the
+> implementation of that standard API to the core.  It *sounds* like
+> you're just trying to implement two wire mode which does have a standard
+> API, please use that.
 
->> and the community first for any insights they might have to share.
->> Anybody?
->=20
-> I'd ask for trace logs but obviously we can't turn them on until boot
-> has finished...  Adding some trace in the relevant bits of code to try
-> to see where it's deadlocking is the obvious first step.
+Can you please advise what kind of solution would be acceptable then? I need
+to signal from an SPI protocol driver to an SPI master on a per-transfer basis.
 
-FWIW: the mcp2515 driver is accessing the SPI bus during probe(). Seems
-you have to instrument the SPI stack and/or host driver.
+Adding a flag to struct spi_transfer for this one driver, as openwrt does,
+seems stupid -- I agree. And sure, using spi_transfer.cs_change is a little
+dodgy. But I don't see a standard way to do it otherwise, and I don't really
+want to keep trying things until you approve of one. So tell me how you
+would do it, and I'll implement it that way. I just want to get this code in.
 
-Marc
-
---=20
-Pengutronix e.K.                  | Marc Kleine-Budde           |
-Industrial Linux Solutions        | Phone: +49-231-2826-924     |
-Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
+Also, I have no idea what you mean by two-wire mode. This "fast mode" is SPI
++ one extra pin.
 
 
---wfG8euhQrESrjeIrSeTWvVv3P9BILVKXO
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBCgAGBQJVJ+kCAAoJECte4hHFiupUv7IP/j2LqRbj+5HeXLthNT5xQxhn
-IeSCIbXU2ohGHPRrEkXbuO0BbQYOsC9PoX3D0TB77iQzeKtBPJ+wDuPGhj/jIc1P
-ZLbry+sDe0RaYhNdfKGcLYMNMqbBf08+NcFQxf9tmTAFkDA+7n9H+CBvg4QWj1p5
-nvUjyHf/kz4zFHUx6qJnKzEL7ysqxYtOuYMUOCWj5G3EiIsVkmr3l32nj0vdREh1
-WgF6xqu9xu6h/6FSKsNlOFKZM3MS4fOX+AgPsMdvj7aqZyxMABV74XOQg0KInwlQ
-/bdEdiMozLJK9Snnhar2dYwxqopZgONKAsOMJ4WqawjRzdKuLnv6SYxTsIpI/Vmz
-tUZ5UW9W5Jouuy1LrXSxqcdjb8Spl6jDKbNvkUx2hOB+B3dYqIi8/Wab0CJpVadK
-w6WC+qNuh3aef/nHw9mw3AY3gqx1YyNEtG2FL7hcn04YcR+1yrCfdYw63U7mBJ5X
-Iyxsj0jZZPiWymk0S12QnTjeVI5ooEAx4tG1wPr8805ROeeU1VfujRON0IwkyrsU
-9uImSuRRkH7D6jJO124iuOR5Q2Sb8/LcXYWi9YLSgbNQESmlPuwtKsrbYAWVp3aw
-hZLkWb3B/ymrAQ1BMV38yG8WVNjQkiKDAg7BHcAx/TTpK0ECEA/sUSZl3t3B0tqK
-ny6epGxrOWZrLHKnt3TO
-=xDk+
------END PGP SIGNATURE-----
-
---wfG8euhQrESrjeIrSeTWvVv3P9BILVKXO--
+-- 
+Bert Vermeulen        bert-Nh2F35Ii2RQ@public.gmane.org          email/xmpp
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

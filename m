@@ -1,58 +1,58 @@
-From: Jonathan Richardson <jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCH v2 4/5] spi: bcm-mspi: Make BCMA optional to support non-BCMA
- chips
-Date: Thu, 9 Apr 2015 15:26:29 -0700
-Message-ID: <5526FC95.1000500@broadcom.com>
-References: <1428516275-12819-1-git-send-email-jonathar@broadcom.com> <1428516275-12819-5-git-send-email-jonathar@broadcom.com> <20150408200306.GM6023@sirena.org.uk>
+From: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Subject: Re: [PATCH 12/14] i2c-parport: return proper error values from attach
+Date: Fri, 10 Apr 2015 10:35:43 +0530
+Message-ID: <20150410050543.GA3561@sudip-PC>
+References: <1428492040-5581-1-git-send-email-sudipm.mukherjee@gmail.com>
+ <1428492040-5581-13-git-send-email-sudipm.mukherjee@gmail.com>
+ <20150409071307.GA1166@katana>
+ <20150409113342.5621af83@endymion.delvare>
+ <20150409102528.GC1166@katana>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Dmitry Torokhov <dtor-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
-	Anatol Pomazau <anatol-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
-	Scott Branden <sbranden-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	"Ian Campbell" <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	bcm-kernel-feedback-list <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Rafal Milecki <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150408200306.GM6023-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: devel@driverdev.osuosl.org, Rodolfo Giometti <giometti@enneenne.com>,
+ linux-scsi@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+ Takashi Iwai <tiwai@suse.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org,
+ "James E.J. Bottomley" <JBottomley@parallels.com>,
+ Jaroslav Kysela <perex@perex.cz>, alsa-devel@alsa-project.org,
+ Mark Brown <broonie@kernel.org>, linux-i2c@vger.kernel.org,
+ Willy Tarreau <willy@meta-x.org>, linux-spi@vger.kernel.org,
+ netdev@vger.kernel.org, Jean Delvare <jdelvare@suse.de>
+To: Wolfram Sang <wsa@the-dreams.de>
+Return-path: <driverdev-devel-bounces@linuxdriverproject.org>
+Content-Disposition: inline
+In-Reply-To: <20150409102528.GC1166@katana>
+List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/driverdev-devel>,
+ <mailto:driverdev-devel-request@linuxdriverproject.org?subject=unsubscribe>
+List-Archive: <http://driverdev.linuxdriverproject.org/pipermail/driverdev-devel/>
+List-Post: <mailto:driverdev-devel@linuxdriverproject.org>
+List-Help: <mailto:driverdev-devel-request@linuxdriverproject.org?subject=help>
+List-Subscribe: <http://driverdev.linuxdriverproject.org/mailman/listinfo/driverdev-devel>,
+ <mailto:driverdev-devel-request@linuxdriverproject.org?subject=subscribe>
+Errors-To: driverdev-devel-bounces@linuxdriverproject.org
+Sender: "devel" <driverdev-devel-bounces@linuxdriverproject.org>
 List-Id: linux-spi.vger.kernel.org
 
-On 15-04-08 01:03 PM, Mark Brown wrote:
-> On Wed, Apr 08, 2015 at 11:04:34AM -0700, Jonathan Richardson wrote:
+On Thu, Apr 09, 2015 at 12:25:28PM +0200, Wolfram Sang wrote:
 > 
->>   - A new config for non-BCMA chips has been added.
->>   - Common code between the BCMA and non BCMA version are shared.
->>   - Function pointers to set read/write functions to abstract bcma
->>     and non-bcma versions are provided.
->>   - DT is now mandatory. Hard coded SPI devices are removed and must be
->>     set in DT.
->>   - Remove function was unnecessary and removed.
+> > It doesn't really matter that the error codes are different, it matters
+> > that they are meaningful. As much as possible you should pass error
+> > codes from the lower layers. parport_claim_or_block() and
+> > i2c_bit_add_bus() return proper error codes so you should record and
+> > transmit them.
 > 
-> This looks like it should be a patch series in itself - for example, the
-> move to using function pointers as a read/write operation looks like
-> something that could easily be pulled out, as could the removal of
-> unused functions.  Having things split out makes life a lot easier for
-> review since it makes it much easier to check if the change is doing the
-> things it's supposed to be doing.
+> Oh, surely yes. I assumed they don't and this series is a first step to
+> fix this. Should have looked myself. Thanks for jumping in here.
 > 
+I planned this series to be the first step to fix the attach function
+which does not return it succeeded or failed. And if attach has failed
+then there is no reason that module_init will report success.
 
-Mark, thanks for the comments. I think we need a new driver instead of
-trying to re-use the existing driver that requires quite a few changes
-and that I also can't test. Having both drivers in the same file doesn't
-work well either. Common code isn't desirable because we're likely going
-to make changes to it anyway. It doesn't use interrupts currently and I
-don't like the polling for SPI transfer completion. Once I make the
-changes I'll submit a standalone non-BCMA MSPI driver for review.
+But as Greg pointed out that the first step should be to bring the
+parallel port in the driver model. I am working on that now, I will
+post a v2 of this series once that modification is done, and that will
+need extensive testing.
 
-Jon
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+regards
+sudip

@@ -1,24 +1,64 @@
-From: Pelle Nilsson <per.nilsson@xelmo.com>
-Subject: Re: [PATCH 1/1] spi: altera: Add empty implementation of setup_transfer
- callback
-Date: Mon, 13 Apr 2015 11:45:41 +0200
-Message-ID: <552B9045.4040709@xelmo.com>
-References: <1428591822-24279-1-git-send-email-per.nilsson@xelmo.com> <1428591822-24279-2-git-send-email-per.nilsson@xelmo.com> <20150409154045.GZ6023@sirena.org.uk> <55269FDC.8040306@xelmo.com> <20150409161059.GA6023@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	nios2-dev@lists.rocketboards.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20150409161059.GA6023@sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Pelle Nilsson <per.nilsson-5TWeZ6kPplYAvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: bitbang: Make setup_transfer callback optional
+Date: Mon, 13 Apr 2015 12:08:05 +0200
+Message-ID: <1428919685-14190-1-git-send-email-per.nilsson@xelmo.com>
+References: <552B9045.4040709@xelmo.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	nios2-dev-g9ZBwUv/Ih/yUk5EbOjzuce+I+R0W71w@public.gmane.org
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <552B9045.4040709-5TWeZ6kPplYAvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 2015-04-09 18:10, Mark Brown wrote:
-> On Thu, Apr 09, 2015 at 05:50:52PM +0200, Pelle Nilsson wrote: What
-> I'm trying to suggest is that you're perhaps fixing the wrong 
-> problem - make the callback optional if there's a good reason for
-> it.
+spi-altera doesn't register this callback, and doesn't have a need for it,
+but currently causes a NULL dereference when callback is called.
+---
+ drivers/spi/spi-bitbang.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-Yes, the callback can be made optional, I'll send a new patch.
+diff --git a/drivers/spi/spi-bitbang.c b/drivers/spi/spi-bitbang.c
+index 5ef6638..d02057d 100644
+--- a/drivers/spi/spi-bitbang.c
++++ b/drivers/spi/spi-bitbang.c
+@@ -180,7 +180,7 @@ int spi_bitbang_setup(struct spi_device *spi)
+ {
+ 	struct spi_bitbang_cs	*cs = spi->controller_state;
+ 	struct spi_bitbang	*bitbang;
+-	int			retval;
++	int			retval = 0;
+ 	unsigned long		flags;
+ 
+ 	bitbang = spi_master_get_devdata(spi->master);
+@@ -197,7 +197,8 @@ int spi_bitbang_setup(struct spi_device *spi)
+ 	if (!cs->txrx_word)
+ 		return -EINVAL;
+ 
+-	retval = bitbang->setup_transfer(spi, NULL);
++	if (bitbang->setup_transfer)
++		retval = bitbang->setup_transfer(spi, NULL);
+ 	if (retval < 0)
+ 		return retval;
+ 
+@@ -295,9 +296,11 @@ static int spi_bitbang_transfer_one(struct spi_master *master,
+ 
+ 		/* init (-1) or override (1) transfer params */
+ 		if (do_setup != 0) {
+-			status = bitbang->setup_transfer(spi, t);
+-			if (status < 0)
+-				break;
++			if (bitbang->setup_transfer) {
++				status = bitbang->setup_transfer(spi, t);
++				if (status < 0)
++					break;
++			}
+ 			if (do_setup == -1)
+ 				do_setup = 0;
+ 		}
+-- 
+1.9.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

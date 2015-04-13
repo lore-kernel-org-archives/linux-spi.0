@@ -1,62 +1,81 @@
-From: Pelle Nilsson <per.nilsson-5TWeZ6kPplYAvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: bitbang: Make setup_transfer callback optional
-Date: Mon, 13 Apr 2015 12:08:05 +0200
-Message-ID: <1428919685-14190-1-git-send-email-per.nilsson@xelmo.com>
-References: <552B9045.4040709@xelmo.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	nios2-dev-g9ZBwUv/Ih/yUk5EbOjzuce+I+R0W71w@public.gmane.org
+From: Michael Grzeschik <m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: [PATCH v3] spi: bitbang: only toggle bitchanges
+Date: Mon, 13 Apr 2015 12:59:30 +0200
+Message-ID: <1428922770-16955-1-git-send-email-m.grzeschik@pengutronix.de>
+References: <20150331202306.GX2869@sirena.org.uk>
+Cc: kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <552B9045.4040709-5TWeZ6kPplYAvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <20150331202306.GX2869-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-spi-altera doesn't register this callback, and doesn't have a need for it,
-but currently causes a NULL dereference when callback is called.
----
- drivers/spi/spi-bitbang.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+The current implementation of bitbang_txrx_be_cpha0 and
+bitbang_txrx_be_cpha1 always call setmosi. That runs into several
+unnecessary calls into the gpiolib when the level of the GPIO actually
+has not to be changed.
 
-diff --git a/drivers/spi/spi-bitbang.c b/drivers/spi/spi-bitbang.c
-index 5ef6638..d02057d 100644
---- a/drivers/spi/spi-bitbang.c
-+++ b/drivers/spi/spi-bitbang.c
-@@ -180,7 +180,7 @@ int spi_bitbang_setup(struct spi_device *spi)
+This patch changes the routines to remember the last GPIO level
+and only calls setmosi if an change has to be made. This
+way it improves the transfer throughput.
+
+Signed-off-by: Michael Grzeschik <m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+---
+v2: - added missing braces
+v3: - fixed initial value of oldbit
+    - added !! to condition for bool comparison
+
+ drivers/spi/spi-bitbang-txrx.h | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/spi-bitbang-txrx.h b/drivers/spi/spi-bitbang-txrx.h
+index c616e41..58606bf 100644
+--- a/drivers/spi/spi-bitbang-txrx.h
++++ b/drivers/spi/spi-bitbang-txrx.h
+@@ -49,12 +49,17 @@ bitbang_txrx_be_cpha0(struct spi_device *spi,
  {
- 	struct spi_bitbang_cs	*cs = spi->controller_state;
- 	struct spi_bitbang	*bitbang;
--	int			retval;
-+	int			retval = 0;
- 	unsigned long		flags;
+ 	/* if (cpol == 0) this is SPI_MODE_0; else this is SPI_MODE_2 */
  
- 	bitbang = spi_master_get_devdata(spi->master);
-@@ -197,7 +197,8 @@ int spi_bitbang_setup(struct spi_device *spi)
- 	if (!cs->txrx_word)
- 		return -EINVAL;
++	bool oldbit = !(word & (1 << 31));
+ 	/* clock starts at inactive polarity */
+ 	for (word <<= (32 - bits); likely(bits); bits--) {
  
--	retval = bitbang->setup_transfer(spi, NULL);
-+	if (bitbang->setup_transfer)
-+		retval = bitbang->setup_transfer(spi, NULL);
- 	if (retval < 0)
- 		return retval;
- 
-@@ -295,9 +296,11 @@ static int spi_bitbang_transfer_one(struct spi_master *master,
- 
- 		/* init (-1) or override (1) transfer params */
- 		if (do_setup != 0) {
--			status = bitbang->setup_transfer(spi, t);
--			if (status < 0)
--				break;
-+			if (bitbang->setup_transfer) {
-+				status = bitbang->setup_transfer(spi, t);
-+				if (status < 0)
-+					break;
+ 		/* setup MSB (to slave) on trailing edge */
+-		if ((flags & SPI_MASTER_NO_TX) == 0)
+-			setmosi(spi, word & (1 << 31));
++		if ((flags & SPI_MASTER_NO_TX) == 0) {
++			if (!!(word & (1 << 31)) != oldbit) {
++				setmosi(spi, word & (1 << 31));
++				oldbit = word & (1 << 31);
 +			}
- 			if (do_setup == -1)
- 				do_setup = 0;
- 		}
++		}
+ 		spidelay(nsecs);	/* T(setup) */
+ 
+ 		setsck(spi, !cpol);
+@@ -76,13 +81,18 @@ bitbang_txrx_be_cpha1(struct spi_device *spi,
+ {
+ 	/* if (cpol == 0) this is SPI_MODE_1; else this is SPI_MODE_3 */
+ 
++	bool oldbit = !(word & (1 << 31));
+ 	/* clock starts at inactive polarity */
+ 	for (word <<= (32 - bits); likely(bits); bits--) {
+ 
+ 		/* setup MSB (to slave) on leading edge */
+ 		setsck(spi, !cpol);
+-		if ((flags & SPI_MASTER_NO_TX) == 0)
+-			setmosi(spi, word & (1 << 31));
++		if ((flags & SPI_MASTER_NO_TX) == 0) {
++			if (!!(word & (1 << 31)) != oldbit) {
++				setmosi(spi, word & (1 << 31));
++				oldbit = word & (1 << 31);
++			}
++		}
+ 		spidelay(nsecs); /* T(setup) */
+ 
+ 		setsck(spi, cpol);
 -- 
-1.9.1
+2.1.4
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

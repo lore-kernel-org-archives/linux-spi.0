@@ -1,50 +1,37 @@
-From: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
-Subject: [PATCH] spi: bcm2835: Add GPIOLIB dependency
-Date: Mon, 13 Apr 2015 21:24:48 -0700
-Message-ID: <1428985488-3811-1-git-send-email-linux@roeck-us.net>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>,
-	Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: Re: [PATCH] spi: bcm2835: Add GPIOLIB dependency
+Date: Tue, 14 Apr 2015 07:48:55 +0200
+Message-ID: <B320F6B6-23A4-4ECF-9B16-2C177D9EE96F@martin.sperl.org>
+References: <1428985488-3811-1-git-send-email-linux@roeck-us.net>
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2070.6\))
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, jim.epost-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1428985488-3811-1-git-send-email-linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Fix:
 
-drivers/spi/spi-bcm2835.c: In function 'chip_match_name':
-drivers/spi/spi-bcm2835.c:356:21: error:
-			dereferencing pointer to incomplete type
-drivers/spi/spi-bcm2835.c: In function 'bcm2835_spi_setup':
-drivers/spi/spi-bcm2835.c:382:2: error:
-	`		implicit declaration of function 'gpiochip_find'
-drivers/spi/spi-bcm2835.c:387:21: error:
-			dereferencing pointer to incomplete type
+> On 14.04.2015, at 06:24, Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org> wrote:
+> 
+> by adding the now mandatory GPIOLIB dependency.
+> 
+Note this shows up during automated randconfig testing.
 
-by adding the now mandatory GPIOLIB dependency.
+> Fixes: a30a555d7435 ("spi: bcm2835: transform native-cs to gpio-cs
+> 	on first spi_setup")
+> Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+> Signed-off-by: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
 
-Fixes: a30a555d7435 ("spi: bcm2835: transform native-cs to gpio-cs
-	on first spi_setup")
-Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Signed-off-by: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
----
- drivers/spi/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+I have had an identical patch in the pipeline as well, but
+I was still testing it over the night.
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 198f96b7fb45..a132180a9251 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -78,6 +78,7 @@ config SPI_ATMEL
- config SPI_BCM2835
- 	tristate "BCM2835 SPI controller"
- 	depends on ARCH_BCM2835 || COMPILE_TEST
-+	depends on GPIOLIB
- 	help
- 	  This selects a driver for the Broadcom BCM2835 SPI master.
- 
--- 
-2.1.0
+Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

@@ -1,85 +1,97 @@
-From: Michael Welling <mwelling-EkmVulN54Sk@public.gmane.org>
-Subject: Re: [PATCH] spi: omap2-mcspi: Add support for GPIO chipselects
-Date: Mon, 13 Apr 2015 15:45:21 -0500
-Message-ID: <20150413204521.GA2873@deathray>
-References: <1428528961-7838-1-git-send-email-mwelling@ieee.org>
+From: Ezequiel Garcia <ezequiel-30ULvvUtt6G51wMPkGsGjgyUoB5FGQPZ@public.gmane.org>
+Subject: Re: [Nios2-dev] [PATCH] spi: bitbang: Make setup_transfer callback
+ optional
+Date: Mon, 13 Apr 2015 21:22:49 -0300
+Message-ID: <552C5DD9.2030001@vanguardiasur.com.ar>
+References: <552B9045.4040709@xelmo.com> <1428919685-14190-1-git-send-email-per.nilsson@xelmo.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Cc: nios2-dev-g9ZBwUv/Ih/yUk5EbOjzuce+I+R0W71w@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Pelle Nilsson <per.nilsson-5TWeZ6kPplYAvxtiuMwx3w@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1428528961-7838-1-git-send-email-mwelling-EkmVulN54Sk@public.gmane.org>
+In-Reply-To: <1428919685-14190-1-git-send-email-per.nilsson-5TWeZ6kPplYAvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-I noticed a response to my message on the mailing lists that did not appear in
-my mailbox. Not sure where it went.
+Hi Pelle,
 
-Sorry about the over 80 characters in the commit log.
+Just some minor nitpicks.
 
-As for the question about the uninitialized GPIOs, it is taken care in the 
-core SPI driver.
+On 04/13/2015 07:08 AM, Pelle Nilsson wrote:
+> spi-altera doesn't register this callback, and doesn't have a need for it,
+> but currently causes a NULL dereference when callback is called.
 
-The cs_gpio struct member is initialized to -ENOENT in spi_alloc_device:
-http://lxr.free-electrons.com/source/drivers/spi/spi.c#L353
+This commit needs a Signed-off-by tag.
 
-If there are GPIOs specified in the devicetree the value is updated:
-http://lxr.free-electrons.com/source/drivers/spi/spi.c#L440
+Also, maybe you can avoid talking about spi-altera in the commit, since
+this change is not related to it. Instead you can explain that some SPI
+controllers don't register the callback (e.g. spi-altera) and so this
+commit makes it optional to prevent a NULL dereference.
 
-On Wed, Apr 08, 2015 at 04:36:01PM -0500, Michael Welling wrote:
-> This patch allows for GPIOs specified in the devicetree to be used as SPI chipselects
-> on TI OMAP2 SoCs.
-> 
-> Tested on the AM3354.
-> 
-> Signed-off-by: Michael Welling <mwelling-EkmVulN54Sk@public.gmane.org>
+You explained in the cover that you are fixing commit 30af9b558a56 so
+you probably want to add a Fixes tag (Documentation/SubmittingPatches
+explains this procedure). The stable team will use the Fixes tag to
+backport the change if needed.
+
 > ---
->  drivers/spi/spi-omap2-mcspi.c |   10 ++++++++++
->  1 file changed, 10 insertions(+)
+>  drivers/spi/spi-bitbang.c | 13 ++++++++-----
+>  1 file changed, 8 insertions(+), 5 deletions(-)
 > 
-> diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-> index 4df8942..464dec9 100644
-> --- a/drivers/spi/spi-omap2-mcspi.c
-> +++ b/drivers/spi/spi-omap2-mcspi.c
-> @@ -35,6 +35,7 @@
->  #include <linux/gcd.h>
->  
->  #include <linux/spi/spi.h>
-> +#include <linux/gpio.h>
->  
->  #include <linux/platform_data/spi-omap2-mcspi.h>
->  
-> @@ -246,6 +247,9 @@ static void omap2_mcspi_force_cs(struct spi_device *spi, int cs_active)
+> diff --git a/drivers/spi/spi-bitbang.c b/drivers/spi/spi-bitbang.c
+> index 5ef6638..d02057d 100644
+> --- a/drivers/spi/spi-bitbang.c
+> +++ b/drivers/spi/spi-bitbang.c
+> @@ -180,7 +180,7 @@ int spi_bitbang_setup(struct spi_device *spi)
 >  {
->  	u32 l;
+>  	struct spi_bitbang_cs	*cs = spi->controller_state;
+>  	struct spi_bitbang	*bitbang;
+> -	int			retval;
+> +	int			retval = 0;
+>  	unsigned long		flags;
 >  
-> +	if (gpio_is_valid(spi->cs_gpio))
-> +		gpio_set_value(spi->cs_gpio, (cs_active) ? 0 : 1);
-> +
-
-This may need to be changed to reflect the value of the spi->mode SPI_CS_HIGH
-bit. It seems that I assumed that the chipselects are active low above.
-
->  	l = mcspi_cached_chconf0(spi);
->  	if (cs_active)
->  		l |= OMAP2_MCSPI_CHCONF_FORCE;
-> @@ -1015,6 +1019,12 @@ static int omap2_mcspi_setup(struct spi_device *spi)
->  	if (ret < 0)
->  		return ret;
+>  	bitbang = spi_master_get_devdata(spi->master);
+> @@ -197,7 +197,8 @@ int spi_bitbang_setup(struct spi_device *spi)
+>  	if (!cs->txrx_word)
+>  		return -EINVAL;
 >  
-> +	if (gpio_is_valid(spi->cs_gpio)) {
-> +		if (gpio_request(spi->cs_gpio, dev_name(&spi->dev)) == 0)
-> +			gpio_direction_output(spi->cs_gpio,
-> +					!(spi->mode & SPI_CS_HIGH));
-> +	}
-> +
->  	ret = omap2_mcspi_setup_transfer(spi, NULL);
->  	pm_runtime_mark_last_busy(mcspi->dev);
->  	pm_runtime_put_autosuspend(mcspi->dev);
-> -- 
-> 1.7.9.5
+> -	retval = bitbang->setup_transfer(spi, NULL);
+> +	if (bitbang->setup_transfer)
+
+retval is only used in this scope, so you can declare it only here:
+
+        if (bitbang->setup_transfer) {
+                int retval = bitbang->setup_transfer(spi, NULL);
+                if (retval < 0)
+                        return retval;
+        }
+
+> +		retval = bitbang->setup_transfer(spi, NULL);
+>  	if (retval < 0)
+>  		return retval;
+>  
+> @@ -295,9 +296,11 @@ static int spi_bitbang_transfer_one(struct spi_master *master,
+>  
+>  		/* init (-1) or override (1) transfer params */
+>  		if (do_setup != 0) {
+> -			status = bitbang->setup_transfer(spi, t);
+> -			if (status < 0)
+> -				break;
+> +			if (bitbang->setup_transfer) {
+> +				status = bitbang->setup_transfer(spi, t);
+> +				if (status < 0)
+> +					break;
+> +			}
+>  			if (do_setup == -1)
+>  				do_setup = 0;
+>  		}
 > 
+
+Other than that, the commit looks good.
+-- 
+Ezequiel Garcia, VanguardiaSur
+www.vanguardiasur.com.ar
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,72 +1,52 @@
-From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH] spi: bcm2835: remove timeout code from polling function
-Date: Tue, 14 Apr 2015 16:39:44 +0000
-Message-ID: <1429029590-21799-1-git-send-email-kernel@martin.sperl.org>
-Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: bcm2835: Add GPIOLIB dependency
+Date: Tue, 14 Apr 2015 21:08:28 +0100
+Message-ID: <20150414200828.GP6023@sirena.org.uk>
+References: <1428985488-3811-1-git-send-email-linux@roeck-us.net>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="1/FhgkYIk4AzJcsY"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+To: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1428985488-3811-1-git-send-email-linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-The way that the timeout code is written in the polling function
-the timeout does also trigger when interrupted/rescheduled while
-inside the polling loop.
+--1/FhgkYIk4AzJcsY
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This removes the code until we have a "better" solution that can also
-handle external delays and uses something more exact than jiffies.
+On Mon, Apr 13, 2015 at 09:24:48PM -0700, Guenter Roeck wrote:
+> Fix:
+>=20
+> drivers/spi/spi-bcm2835.c: In function 'chip_match_name':
+> drivers/spi/spi-bcm2835.c:356:21: error:
+> 			dereferencing pointer to incomplete type
 
-Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
----
- drivers/spi/spi-bcm2835.c |   12 ------------
- 1 file changed, 12 deletions(-)
+Applied, thanks.
 
-This fixes a regression due to the introduction of this polling mode.
-See email with detailed observations on the issue.
+--1/FhgkYIk4AzJcsY
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-This patch is an implementation of one of those mentioned options to
-fix the issue.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index f63864a..af29467 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -164,28 +164,16 @@ static int bcm2835_spi_transfer_one_poll(struct spi_master *master,
- 					 unsigned long xfer_time_us)
- {
- 	struct bcm2835_spi *bs = spi_master_get_devdata(master);
--	unsigned long timeout = jiffies +
--		max(4 * xfer_time_us * HZ / 1000000, 2uL);
- 
- 	/* enable HW block without interrupts */
- 	bcm2835_wr(bs, BCM2835_SPI_CS, cs | BCM2835_SPI_CS_TA);
- 
--	/* set timeout to 4x the expected time, or 2 jiffies */
- 	/* loop until finished the transfer */
- 	while (bs->rx_len) {
- 		/* read from fifo as much as possible */
- 		bcm2835_rd_fifo(bs);
- 		/* fill in tx fifo as much as possible */
- 		bcm2835_wr_fifo(bs);
--		/* if we still expect some data after the read,
--		 * check for a possible timeout
--		 */
--		if (bs->rx_len && time_after(jiffies, timeout)) {
--			/* Transfer complete - reset SPI HW */
--			bcm2835_spi_reset_hw(master);
--			/* and return timeout */
--			return -ETIMEDOUT;
--		}
- 	}
- 
- 	/* Transfer complete - reset SPI HW */
--- 
-1.7.10.4
+iQEcBAEBCAAGBQJVLXO7AAoJECTWi3JdVIfQrX8H+QFUvD4+BEfsQ6n7n+CHXiDh
+OAR/DwnU/Ws8e8yTwVWIKrreH1jZh0V83C8XIZSIr9Zmcka6gCrZLIRzmoqJyKJG
+2Th8pBaG5lKTUSNCAXyQZJvplgEXYj880Oh1Loj8bncQhGChylbVSq5CvvJXCJqD
+PrTPW5HMMUunGLiidA4QiP3I3VS3cwI/HUO0VyZRcxhk46oc1vfPetqMINIj8B1p
+zECUvD2BTS5qEpxINqtF1pR4fYuasezVCenHo29BHluJRioTQE7fGtOP0j0xPbFv
+Q4GvJsqA0PbyOQ9NDfZ1hDS0Zcy4n9o4LXBhpaeyT59k9ApiYXEiMn155VJM7iM=
+=9VkA
+-----END PGP SIGNATURE-----
 
+--1/FhgkYIk4AzJcsY--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

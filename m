@@ -1,36 +1,72 @@
-From: Ezequiel Garcia <ezequiel-30ULvvUtt6G51wMPkGsGjgyUoB5FGQPZ@public.gmane.org>
-Subject: Re: [PATCH v2] spi: bitbang: Make setup_transfer() callback optional
-Date: Tue, 14 Apr 2015 12:36:22 -0300
-Message-ID: <552D33F6.2020407@vanguardiasur.com.ar>
-References: <1428919685-14190-1-git-send-email-per.nilsson@xelmo.com> <1429018817-18117-1-git-send-email-per.nilsson@xelmo.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	nios2-dev-g9ZBwUv/Ih/yUk5EbOjzuce+I+R0W71w@public.gmane.org
-To: Pelle Nilsson <per.nilsson-5TWeZ6kPplYAvxtiuMwx3w@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
+Subject: [PATCH] spi: bcm2835: remove timeout code from polling function
+Date: Tue, 14 Apr 2015 16:39:44 +0000
+Message-ID: <1429029590-21799-1-git-send-email-kernel@martin.sperl.org>
+Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
+	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1429018817-18117-1-git-send-email-per.nilsson-5TWeZ6kPplYAvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
+The way that the timeout code is written in the polling function
+the timeout does also trigger when interrupted/rescheduled while
+inside the polling loop.
 
-On 04/14/2015 10:40 AM, Pelle Nilsson wrote:
-> Some controller drivers have no need of this callback (spi-altera even
-> causes a NULL pointer dereference because it doesn't register the callback,
-> falsely assuming that it is already optional).
-> 
-> Fixes: 30af9b558a56 ("spi/bitbang: Drop empty setup() functions")
-> Signed-off-by: Pelle Nilsson <per.nilsson-5TWeZ6kPplYAvxtiuMwx3w@public.gmane.org>
+This removes the code until we have a "better" solution that can also
+handle external delays and uses something more exact than jiffies.
 
-Reviewed-by: Ezequiel Garcia <ezequiel.garcia-30ULvvUtt6G51wMPkGsGjgyUoB5FGQPZ@public.gmane.org>
+Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+---
+ drivers/spi/spi-bcm2835.c |   12 ------------
+ 1 file changed, 12 deletions(-)
 
-Please note the merge window is open, so don't expect Mark to pick
-your change soon.
+This fixes a regression due to the introduction of this polling mode.
+See email with detailed observations on the issue.
+
+This patch is an implementation of one of those mentioned options to
+fix the issue.
+
+diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+index f63864a..af29467 100644
+--- a/drivers/spi/spi-bcm2835.c
++++ b/drivers/spi/spi-bcm2835.c
+@@ -164,28 +164,16 @@ static int bcm2835_spi_transfer_one_poll(struct spi_master *master,
+ 					 unsigned long xfer_time_us)
+ {
+ 	struct bcm2835_spi *bs = spi_master_get_devdata(master);
+-	unsigned long timeout = jiffies +
+-		max(4 * xfer_time_us * HZ / 1000000, 2uL);
+ 
+ 	/* enable HW block without interrupts */
+ 	bcm2835_wr(bs, BCM2835_SPI_CS, cs | BCM2835_SPI_CS_TA);
+ 
+-	/* set timeout to 4x the expected time, or 2 jiffies */
+ 	/* loop until finished the transfer */
+ 	while (bs->rx_len) {
+ 		/* read from fifo as much as possible */
+ 		bcm2835_rd_fifo(bs);
+ 		/* fill in tx fifo as much as possible */
+ 		bcm2835_wr_fifo(bs);
+-		/* if we still expect some data after the read,
+-		 * check for a possible timeout
+-		 */
+-		if (bs->rx_len && time_after(jiffies, timeout)) {
+-			/* Transfer complete - reset SPI HW */
+-			bcm2835_spi_reset_hw(master);
+-			/* and return timeout */
+-			return -ETIMEDOUT;
+-		}
+ 	}
+ 
+ 	/* Transfer complete - reset SPI HW */
 -- 
-Ezequiel Garcia, VanguardiaSur
-www.vanguardiasur.com.ar
+1.7.10.4
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

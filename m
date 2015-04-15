@@ -1,50 +1,33 @@
-From: Huiquan Zhong <huiquan.zhong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: fix one potential spin_lock issue
-Date: Wed, 15 Apr 2015 16:00:32 +0800
-Message-ID: <1429084832-8953-1-git-send-email-huiquan.zhong@intel.com>
-Cc: huiquanz.zhong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, Huiquan Zhong <huiquan.zhong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+From: Jakub Kicinski <moorray3-5tc4TXWwyLM@public.gmane.org>
+Subject: spi-imx: real time operation
+Date: Wed, 15 Apr 2015 17:09:36 +0200
+Message-ID: <20150415170936.3e506e6c@north>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Markus.Niebel-HVi9AzVXQk5Wk0Htik3J/w@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-master->pump_messages workqueue can be queued by spi_start_queue(),
-__spi_queued_transfer().
+Hi Markus!
 
-there is one case that if one resume thread call spi_start_queue(),
-and at the same time another spi_device thread call spi_queued_transfer()
-to do spi transfer, then the first workqueue will start the spi transfer,
-but the next workqueue queued before SPI transfer complete, will unusual
-terminate spi transfer.
+I've seen your patch from July which added rt parameter to spi-imx [1].
+If I understand the code correctly spi-imx is using bitbang, therefore
+it uses old SPI API, therefore the message pump does not apply to it,
+therefore setting master->rt has no effect.
 
-Add spin_lock protection to avoid this case.
+Is my understanding correct?  If so before I convert spi-imx not to use
+bitbang I would like to ask you if you have not already done it? ;)
 
-Signed-off-by: Huiquan Zhong <huiquan.zhong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spi.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Without SPI threads running with RT prio I can't even reliably use an
+sc16is7xx UART at 115200...
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index d5d7d22..2bc387b 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1017,9 +1017,11 @@ static int spi_start_queue(struct spi_master *master)
- 
- 	master->running = true;
- 	master->cur_msg = NULL;
--	spin_unlock_irqrestore(&master->queue_lock, flags);
- 
--	queue_kthread_work(&master->kworker, &master->pump_messages);
-+	if (!list_empty(&master->queue))
-+		queue_kthread_work(&master->kworker, &master->pump_messages);
-+
-+	spin_unlock_irqrestore(&master->queue_lock, flags);
- 
- 	return 0;
- }
--- 
-1.7.9.5
+[1] http://www.spinics.net/lists/arm-kernel/msg348713.html
 
+
+Thanks
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

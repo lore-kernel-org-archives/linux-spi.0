@@ -1,57 +1,38 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH V2] spi: bcm2835: enabling polling mode for transfers shorter than 30us
-Date: Wed, 15 Apr 2015 21:33:48 +0200
-Message-ID: <262B0C8C-7728-458E-8748-06F79251BE0C@martin.sperl.org>
-References: <1428340592-3196-1-git-send-email-kernel@martin.sperl.org> <20150410185132.GU6023@sirena.org.uk> <F35B7C71-1917-40AE-BA42-CB3E63B877EF@martin.sperl.org> <20150415185824.GU6023@sirena.org.uk>
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2070.6\))
-Content-Type: text/plain; charset=us-ascii
+From: Jakub =?UTF-8?B?S2ljacWEc2tp?= <moorray3-5tc4TXWwyLM@public.gmane.org>
+Subject: Re: spi-imx: real time operation
+Date: Wed, 15 Apr 2015 21:36:52 +0200
+Message-ID: <20150415213652.102dfb2f@north>
+References: <20150415170936.3e506e6c@north>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Markus.Niebel-HVi9AzVXQk5Wk0Htik3J/w@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150415185824.GU6023-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <20150415170936.3e506e6c@north>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Wed, 15 Apr 2015 17:09:36 +0200, Jakub Kicinski wrote:
+> Hi Markus!
+> 
+> I've seen your patch from July which added rt parameter to spi-imx [1].
+> If I understand the code correctly spi-imx is using bitbang, therefore
+> it uses old SPI API, therefore the message pump does not apply to it,
+> therefore setting master->rt has no effect.
+> 
+> Is my understanding correct?  If so before I convert spi-imx not to use
+> bitbang I would like to ask you if you have not already done it? ;)
+> 
+> Without SPI threads running with RT prio I can't even reliably use an
+> sc16is7xx UART at 115200...
+> 
+> [1] http://www.spinics.net/lists/arm-kernel/msg348713.html
 
-> On 15.04.2015, at 20:58, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> Running without a timeout doesn't feel safe - the standard thing here is
-> to busy wait for a short period then fall back to something that sleeps
-> if that times out.
+Ugh.. I missed 2025172e3280 ("spi/bitbang: Use core message pump"),
+working with old kernels bit my in the rear end.
 
-That is what is implemented now, but unfortunately the issue is that the 
-implementation as of now is depending on jiffies, which I found out to be
-in the order of 10ms and on top requires a timer interrupt which would
-interrupt polling in the first place. But it is still sensitive enough
-to trigger on some rescheduling of the polling thread.
-
-One possibility could be increasing the timeout to something longer like
-one second or a fraction of one second.
-
-Something along those lines:
--	unsigned long timeout = jiffies +
--		max(4 * xfer_time_us * HZ / 1000000, 2uL);
-+	/* one second timeout - this should also allow for graceful
-+	 * timeouts even when experiencing rescheduling of the thread
-+	 */
-+	unsigned long timeout = jiffies + HZ;
-
-Would this be sufficient and acceptable?
-
-Alternatively we would need some way to measure the time in uSeconds
-quite accurately and then code some "rescheduling" detection into the
-polling loop to modify the end-time if the thread got rescheduled or
-otherwise interrupted for longer periods. Things would get complicated
-here...
-
-What kind of interface could we use for this timeout behavior?
-
-The question here is - is the "simple" 1 second timeout approach
-sufficient or would we need something more complex?
-
-The patch removing the timeout worked for about 1.47B SPI messages
-using the polling code-path now without issues.
+Sorry for the noise.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,52 +1,50 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: bcm2835: Add GPIOLIB dependency
-Date: Tue, 14 Apr 2015 21:08:28 +0100
-Message-ID: <20150414200828.GP6023@sirena.org.uk>
-References: <1428985488-3811-1-git-send-email-linux@roeck-us.net>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="1/FhgkYIk4AzJcsY"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-To: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+From: Huiquan Zhong <huiquan.zhong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: fix one potential spin_lock issue
+Date: Wed, 15 Apr 2015 16:00:32 +0800
+Message-ID: <1429084832-8953-1-git-send-email-huiquan.zhong@intel.com>
+Cc: huiquanz.zhong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, Huiquan Zhong <huiquan.zhong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1428985488-3811-1-git-send-email-linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+master->pump_messages workqueue can be queued by spi_start_queue(),
+__spi_queued_transfer().
 
---1/FhgkYIk4AzJcsY
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+there is one case that if one resume thread call spi_start_queue(),
+and at the same time another spi_device thread call spi_queued_transfer()
+to do spi transfer, then the first workqueue will start the spi transfer,
+but the next workqueue queued before SPI transfer complete, will unusual
+terminate spi transfer.
 
-On Mon, Apr 13, 2015 at 09:24:48PM -0700, Guenter Roeck wrote:
-> Fix:
->=20
-> drivers/spi/spi-bcm2835.c: In function 'chip_match_name':
-> drivers/spi/spi-bcm2835.c:356:21: error:
-> 			dereferencing pointer to incomplete type
+Add spin_lock protection to avoid this case.
 
-Applied, thanks.
+Signed-off-by: Huiquan Zhong <huiquan.zhong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---1/FhgkYIk4AzJcsY
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index d5d7d22..2bc387b 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1017,9 +1017,11 @@ static int spi_start_queue(struct spi_master *master)
+ 
+ 	master->running = true;
+ 	master->cur_msg = NULL;
+-	spin_unlock_irqrestore(&master->queue_lock, flags);
+ 
+-	queue_kthread_work(&master->kworker, &master->pump_messages);
++	if (!list_empty(&master->queue))
++		queue_kthread_work(&master->kworker, &master->pump_messages);
++
++	spin_unlock_irqrestore(&master->queue_lock, flags);
+ 
+ 	return 0;
+ }
+-- 
+1.7.9.5
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVLXO7AAoJECTWi3JdVIfQrX8H+QFUvD4+BEfsQ6n7n+CHXiDh
-OAR/DwnU/Ws8e8yTwVWIKrreH1jZh0V83C8XIZSIr9Zmcka6gCrZLIRzmoqJyKJG
-2Th8pBaG5lKTUSNCAXyQZJvplgEXYj880Oh1Loj8bncQhGChylbVSq5CvvJXCJqD
-PrTPW5HMMUunGLiidA4QiP3I3VS3cwI/HUO0VyZRcxhk46oc1vfPetqMINIj8B1p
-zECUvD2BTS5qEpxINqtF1pR4fYuasezVCenHo29BHluJRioTQE7fGtOP0j0xPbFv
-Q4GvJsqA0PbyOQ9NDfZ1hDS0Zcy4n9o4LXBhpaeyT59k9ApiYXEiMn155VJM7iM=
-=9VkA
------END PGP SIGNATURE-----
-
---1/FhgkYIk4AzJcsY--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

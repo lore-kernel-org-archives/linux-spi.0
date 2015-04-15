@@ -1,66 +1,57 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH V2] spi: bcm2835: enabling polling mode for transfers
- shorter than 30us
-Date: Wed, 15 Apr 2015 19:58:24 +0100
-Message-ID: <20150415185824.GU6023@sirena.org.uk>
-References: <1428340592-3196-1-git-send-email-kernel@martin.sperl.org>
- <20150410185132.GU6023@sirena.org.uk>
- <F35B7C71-1917-40AE-BA42-CB3E63B877EF@martin.sperl.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="J3ka6RmEn/3843Zy"
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: Re: [PATCH V2] spi: bcm2835: enabling polling mode for transfers shorter than 30us
+Date: Wed, 15 Apr 2015 21:33:48 +0200
+Message-ID: <262B0C8C-7728-458E-8748-06F79251BE0C@martin.sperl.org>
+References: <1428340592-3196-1-git-send-email-kernel@martin.sperl.org> <20150410185132.GU6023@sirena.org.uk> <F35B7C71-1917-40AE-BA42-CB3E63B877EF@martin.sperl.org> <20150415185824.GU6023@sirena.org.uk>
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2070.6\))
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <F35B7C71-1917-40AE-BA42-CB3E63B877EF-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <20150415185824.GU6023-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---J3ka6RmEn/3843Zy
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> On 15.04.2015, at 20:58, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> Running without a timeout doesn't feel safe - the standard thing here is
+> to busy wait for a short period then fall back to something that sleeps
+> if that times out.
 
-On Tue, Apr 14, 2015 at 04:29:49PM +0200, Martin Sperl wrote:
+That is what is implemented now, but unfortunately the issue is that the 
+implementation as of now is depending on jiffies, which I found out to be
+in the order of 10ms and on top requires a timer interrupt which would
+interrupt polling in the first place. But it is still sensitive enough
+to trigger on some rescheduling of the polling thread.
 
-> Approaches I can think of to solve the issue:
-> * accept this fact as a reality - drivers should be able to handle
->   such situations in a well-behaved manner
-> * remove polling mode completely from the spi-bcm2835 driver
-> * remove the timeout code when polling
-> * make the timeout a warning
-> * set the timeout to something much longer say 200ms
-> * stop the system from interrupting (either scheduler or interrupt
->   handler) for the next 30us or the calculated timeout-period.
->   Maybe by holding a spinlock (or similar) / disabling interrupts /
->   ...?
-> * others
+One possibility could be increasing the timeout to something longer like
+one second or a fraction of one second.
 
-> So the question is: which approach should get implemented?
+Something along those lines:
+-	unsigned long timeout = jiffies +
+-		max(4 * xfer_time_us * HZ / 1000000, 2uL);
++	/* one second timeout - this should also allow for graceful
++	 * timeouts even when experiencing rescheduling of the thread
++	 */
++	unsigned long timeout = jiffies + HZ;
 
-Running without a timeout doesn't feel safe - the standard thing here is
-to busy wait for a short period then fall back to something that sleeps
-if that times out.
+Would this be sufficient and acceptable?
 
---J3ka6RmEn/3843Zy
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Alternatively we would need some way to measure the time in uSeconds
+quite accurately and then code some "rescheduling" detection into the
+polling loop to modify the end-time if the thread got rescheduled or
+otherwise interrupted for longer periods. Things would get complicated
+here...
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+What kind of interface could we use for this timeout behavior?
 
-iQEcBAEBCAAGBQJVLrTPAAoJECTWi3JdVIfQ09gH/3Q/+KYksSGr8T+2kicleJ60
-9WQGaFv1QNChe+j/RH3Y7Y7FudLkTy5pJSpJhyanw9wN/Fh96koeZ07jaTMoRsUF
-gSUjZUzPm67aA4JIWtVueeRPzV1G4LjQRu0Esd00KfrM+NyrKD1ehBZzujEEF0BX
-yS7i4jMD8xeDFR15BOxVSbnwTGOhJmjYiq/dCOjsrjhRLdFY3GZDIY27kBsoMajv
-rgSCm0REZ+BhEftjVNALo8kCp06w44SbT/d2OPOtE0BHURxPWNpc1zQQVBDWyRCf
-nPi/p3ZgQI0pxtQos+QDucfFpl8mjX3AP0wI7bSdhTifZ4gpZRh79sWGkP0t/18=
-=V+PE
------END PGP SIGNATURE-----
+The question here is - is the "simple" 1 second timeout approach
+sufficient or would we need something more complex?
 
---J3ka6RmEn/3843Zy--
+The patch removing the timeout worked for about 1.47B SPI messages
+using the polling code-path now without issues.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,38 +1,51 @@
-From: Jakub =?UTF-8?B?S2ljacWEc2tp?= <moorray3-5tc4TXWwyLM@public.gmane.org>
-Subject: Re: spi-imx: real time operation
-Date: Wed, 15 Apr 2015 21:36:52 +0200
-Message-ID: <20150415213652.102dfb2f@north>
-References: <20150415170936.3e506e6c@north>
+From: Robin Gong <b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Subject: [PATCH v1] spi: check tx_buf and rx_buf in spi_unmap_msg
+Date: Thu, 16 Apr 2015 10:54:18 +0800
+Message-ID: <1429152858-1141-1-git-send-email-b38343@freescale.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Markus.Niebel-HVi9AzVXQk5Wk0Htik3J/w@public.gmane.org
+Content-Type: text/plain
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150415170936.3e506e6c@north>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, 15 Apr 2015 17:09:36 +0200, Jakub Kicinski wrote:
-> Hi Markus!
-> 
-> I've seen your patch from July which added rt parameter to spi-imx [1].
-> If I understand the code correctly spi-imx is using bitbang, therefore
-> it uses old SPI API, therefore the message pump does not apply to it,
-> therefore setting master->rt has no effect.
-> 
-> Is my understanding correct?  If so before I convert spi-imx not to use
-> bitbang I would like to ask you if you have not already done it? ;)
-> 
-> Without SPI threads running with RT prio I can't even reliably use an
-> sc16is7xx UART at 115200...
-> 
-> [1] http://www.spinics.net/lists/arm-kernel/msg348713.html
+Some spi device drivers use the same tx_buf and rx_buf repeatly for better
+performance such as driver/input/touchsreen/ads7846.c, but spi core grab tx_buf
+/rx_buf of transfer and set them as dummy_tx/dummy_rx once they are NULL. Thus,
+in the second time the tx_buf/rx_buf will be replaced by dummy_tx/dummy_rx and
+the data which produced by the last tx or rx may be wrongly sent to the device
+or handled by the upper level protocol. This patch just keep the orignal value
+of tx_buf/rx_buf if they are NULL after this transfer processed.
 
-Ugh.. I missed 2025172e3280 ("spi/bitbang: Use core message pump"),
-working with old kernels bit my in the rear end.
+Signed-off-by: Robin Gong <b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+---
+ drivers/spi/spi.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-Sorry for the noise.
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index d5d7d22..50910d8 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -583,6 +583,15 @@ static int spi_unmap_msg(struct spi_master *master, struct spi_message *msg)
+ 	rx_dev = master->dma_rx->device->dev;
+ 
+ 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
++		/*
++		 * Restore the original value of tx_buf or rx_buf if they are
++		 * NULL.
++		 */
++		if (xfer->tx_buf == master->dummy_tx)
++			xfer->tx_buf = NULL;
++		if (xfer->rx_buf == master->dummy_rx)
++			xfer->rx_buf = NULL;
++
+ 		if (!master->can_dma(master, msg->spi, xfer))
+ 			continue;
+ 
+-- 
+1.9.1
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

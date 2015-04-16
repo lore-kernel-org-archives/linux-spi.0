@@ -1,66 +1,52 @@
-From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH] spi: bcm2835: change timeout of polling driver to 1s
-Date: Thu, 16 Apr 2015 07:51:26 +0000
-Message-ID: <1429170693-1718-1-git-send-email-kernel@martin.sperl.org>
-Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: bcm2835: change timeout of polling driver to 1s
+Date: Thu, 16 Apr 2015 18:57:20 +0100
+Message-ID: <20150416175720.GC6023@sirena.org.uk>
+References: <1429170693-1718-1-git-send-email-kernel@martin.sperl.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="m+9w2cAX2VMqUZAN"
+Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1429170693-1718-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-The way that the timeout code is written in the polling function
-the timeout does also trigger when interrupted or rescheduled while
-in the polling loop.
+--m+9w2cAX2VMqUZAN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This patch changes the timeout from effectively 20ms (=2 jiffies) to
-1 second and removes the time that the transfer really takes out of
-the computation, as - per design - this is <30us and the jiffie resolution
-is 10ms so that does not make any difference what so ever.
+On Thu, Apr 16, 2015 at 07:51:26AM +0000, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
+> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+>=20
+> The way that the timeout code is written in the polling function
+> the timeout does also trigger when interrupted or rescheduled while
+> in the polling loop.
 
-Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Applied, thanks.
 
----
- drivers/spi/spi-bcm2835.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+--m+9w2cAX2VMqUZAN
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-This is an alternative to:
-[PATCH] spi: bcm2835: remove timeout code from polling function
-that totally removes the timeout.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-Where Mark has some concerns when runnig without a timeout
+iQEcBAEBCAAGBQJVL/f/AAoJECTWi3JdVIfQlOwH/j3eRDwr6RdE4Pr1OlRKUOhR
+qX8BQFBSI/nf7zBw+0yE8vv2nHGJqPaa11IaKzHiYIuA0tLmabRpd2n2ks93QI8I
+ewKO0q5h+SiXpz9YbxduG4JF+rhCdI63nfcDd7mLQmyH9tkRKJ/fwU1xuqK0Yrmq
+91iQ94MJY3lW25YWnigjVpaZMDXT+OvHIJpgoHYWWEeDBOlC/PwZE0m9aeDgyhkx
+VD6M3B+e5ba7ogr3BxBn1HLksQn+/Ck/jmVgjiwVMWpuSLltbPEzWPHkTnMLycSA
+zbn+RiUSq0WWeL8mVBKPrehhapt3ZhgxdoTKOb7CT/u+V/1aKCni//xVwibWvZc=
+=13Ke
+-----END PGP SIGNATURE-----
 
-Test have also been done totally removing the timeout code and the result
-was that 2.5B SPI messages got transferred without any issues. So in
-principle even that would work...
-
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index f63864a..0323439 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -164,13 +164,12 @@ static int bcm2835_spi_transfer_one_poll(struct spi_master *master,
- 					 unsigned long xfer_time_us)
- {
- 	struct bcm2835_spi *bs = spi_master_get_devdata(master);
--	unsigned long timeout = jiffies +
--		max(4 * xfer_time_us * HZ / 1000000, 2uL);
-+	/* set timeout to 1 second of maximum polling */
-+	unsigned long timeout = jiffies + HZ;
-
- 	/* enable HW block without interrupts */
- 	bcm2835_wr(bs, BCM2835_SPI_CS, cs | BCM2835_SPI_CS_TA);
-
--	/* set timeout to 4x the expected time, or 2 jiffies */
- 	/* loop until finished the transfer */
- 	while (bs->rx_len) {
- 		/* read from fifo as much as possible */
---
-1.7.10.4
-
+--m+9w2cAX2VMqUZAN--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

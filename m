@@ -1,50 +1,65 @@
-From: Robin Gong <b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: [PATCH v1] spi: check tx_buf and rx_buf in spi_unmap_msg
-Date: Thu, 16 Apr 2015 10:54:18 +0800
-Message-ID: <1429152858-1141-1-git-send-email-b38343@freescale.com>
-Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
+Subject: [PATCH] spi: bcm2835: change timeout of polling driver to 1s
+Date: Thu, 16 Apr 2015 07:51:26 +0000
+Message-ID: <1429170693-1718-1-git-send-email-kernel@martin.sperl.org>
+Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
+	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Some spi device drivers use the same tx_buf and rx_buf repeatly for better
-performance such as driver/input/touchsreen/ads7846.c, but spi core grab tx_buf
-/rx_buf of transfer and set them as dummy_tx/dummy_rx once they are NULL. Thus,
-in the second time the tx_buf/rx_buf will be replaced by dummy_tx/dummy_rx and
-the data which produced by the last tx or rx may be wrongly sent to the device
-or handled by the upper level protocol. This patch just keep the orignal value
-of tx_buf/rx_buf if they are NULL after this transfer processed.
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-Signed-off-by: Robin Gong <b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+The way that the timeout code is written in the polling function
+the timeout does also trigger when interrupted or rescheduled while
+in the polling loop.
+
+This patch changes the timeout from effectively 20ms (=2 jiffies) to
+1 second and removes the time that the transfer really takes out of
+the computation, as - per design - this is <30us and the jiffie resolution
+is 10ms so that does not make any difference what so ever.
+
+Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+
 ---
- drivers/spi/spi.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/spi/spi-bcm2835.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index d5d7d22..50910d8 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -583,6 +583,15 @@ static int spi_unmap_msg(struct spi_master *master, struct spi_message *msg)
- 	rx_dev = master->dma_rx->device->dev;
- 
- 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
-+		/*
-+		 * Restore the original value of tx_buf or rx_buf if they are
-+		 * NULL.
-+		 */
-+		if (xfer->tx_buf == master->dummy_tx)
-+			xfer->tx_buf = NULL;
-+		if (xfer->rx_buf == master->dummy_rx)
-+			xfer->rx_buf = NULL;
-+
- 		if (!master->can_dma(master, msg->spi, xfer))
- 			continue;
- 
--- 
-1.9.1
+This is an alternative to:
+[PATCH] spi: bcm2835: remove timeout code from polling function
+that totally removes the timeout.
+
+Where Mark has some concerns when runnig without a timeout
+
+Test have also been done totally removing the timeout code and the result
+was that 2.5B SPI messages got transferred without any issues. So in
+principle even that would work...
+
+diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+index f63864a..0323439 100644
+--- a/drivers/spi/spi-bcm2835.c
++++ b/drivers/spi/spi-bcm2835.c
+@@ -164,13 +164,12 @@ static int bcm2835_spi_transfer_one_poll(struct spi_master *master,
+ 					 unsigned long xfer_time_us)
+ {
+ 	struct bcm2835_spi *bs = spi_master_get_devdata(master);
+-	unsigned long timeout = jiffies +
+-		max(4 * xfer_time_us * HZ / 1000000, 2uL);
++	/* set timeout to 1 second of maximum polling */
++	unsigned long timeout = jiffies + HZ;
+
+ 	/* enable HW block without interrupts */
+ 	bcm2835_wr(bs, BCM2835_SPI_CS, cs | BCM2835_SPI_CS_TA);
+
+-	/* set timeout to 4x the expected time, or 2 jiffies */
+ 	/* loop until finished the transfer */
+ 	while (bs->rx_len) {
+ 		/* read from fifo as much as possible */
+--
+1.7.10.4
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

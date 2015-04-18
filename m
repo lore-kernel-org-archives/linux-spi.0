@@ -1,54 +1,50 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: fsl-espi: fix behaviour for full-duplex xfers
-Date: Sat, 18 Apr 2015 13:55:56 +0100
-Message-ID: <20150418125556.GR26185@sirena.org.uk>
-References: <1429111398-21444-1-git-send-email-jonatas.rech@datacom.ind.br>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v7] spi: Add SPI driver for Mikrotik RB4xx series boards
+Date: Sat, 18 Apr 2015 13:58:04 +0100
+Message-ID: <20150418125804.GS26185@sirena.org.uk>
+References: <1429112632-32153-1-git-send-email-bert@biot.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="OrT4iOlIQZp3kw4S"
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Jonatas Rech <jonatas.rech@datacom.ind.br>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="2/Dpz40iF3jpiHxF"
+Cc: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org
+To: Bert Vermeulen <bert-Nh2F35Ii2RQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1429111398-21444-1-git-send-email-jonatas.rech@datacom.ind.br>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1429112632-32153-1-git-send-email-bert-Nh2F35Ii2RQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---OrT4iOlIQZp3kw4S
+--2/Dpz40iF3jpiHxF
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Apr 15, 2015 at 12:23:18PM -0300, Jonatas Rech wrote:
+On Wed, Apr 15, 2015 at 05:43:52PM +0200, Bert Vermeulen wrote:
+> This driver mediates access between the connected CPLD and other devices
+> on the bus.
 
-> Furthermore, this correction has exposed an inconsistency in the
-> protocol driver <-> controller driver interaction. The spi-fsl-espi
-> driver artificially inserts TX bytes when message fragmentation is
-> necessary (due to SPCOM_TRANLEN_MAX) instead of informing the
-> protocol driver of the hardware limitation. This was tested with the
-> m25p80 NOR flash protocol driver. Since fixing this issue may cause
-> other client drivers to malfunction, it was left as is.
+Applied, thanks.
 
-Sorry, you're saying that the driver is sending more data than it's
-being asked to in some situations?  That is a *very* serious bug in both
-this driver and any other driver which relies on (as opposed to merely
-tolerates) this behaviour.  If that is the case it really needs to be
-fixed fairly urgently.
-
---OrT4iOlIQZp3kw4S
+--2/Dpz40iF3jpiHxF
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVMlRbAAoJECTWi3JdVIfQFE8H/iEQbgW4EJrgWv4pgYC3jQzs
-erydLJdZHbJErbdef9YEeIPrmYC1CBKuiRYuk89LTbScvnrBDAfijEHMYGjRJdLg
-BrIE48uvfHEHlDIUEatfxsyQOqLwfmzbAIZryantWzFa8/BsTP349q+d2HtXH3JU
-ERcLjnlqaRStc6K+7XL3Dc1N2R1qy6jukZ8Qfh71pj+kwFQX4W/q2MpuToHLfwhk
-IfkFkySM4oiZxClvrK86TGEU9GwKELN2gYwNsBRz95fFuC8Ec3yOdXwtVF3GBWnW
-s9K03SYxbTGoEaaZCi3KWz28gJEL/HrbNY5UBiaU501Qr1/0rxRkZUcrRnYjyMc=
-=9zud
+iQEcBAEBCAAGBQJVMlTcAAoJECTWi3JdVIfQ7dIH/0UkeFmhK+/CE+ph9UK1ziHI
+cuzrYy4F64RnEgMzPHf/Dk/THiLGoHA4tTBvx3NIzEQF/8rTTUjfPiBZOPtCvFMi
+hdR2w/1NM+PWf4RVJJquNJa3IFIGiMu/l/QRN4wDZyHr4tj0Ff1OtJ1h07bnKp0y
+tXt9wCqVkE0mnoOqbgsovtQdCwfEq9MDVtRMtfospvZ0xGjRDcHc/av9POnhW6zM
+kKcboZqaslMKngw8SYLtq3zvO6f0kz/G5AMKWy6hLfxVsgsZYd0y7HRhpqqLWn5f
+AEExoyNAoMyrDGHwGA+OJiaIRo1FWqNkrAy8j+OAx1dFlnOGZ3hxqJKiO1jSrSA=
+=2mNZ
 -----END PGP SIGNATURE-----
 
---OrT4iOlIQZp3kw4S--
+--2/Dpz40iF3jpiHxF--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

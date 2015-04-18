@@ -1,49 +1,45 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v7] spi: Add SPI driver for Mikrotik RB4xx series boards
-Date: Sat, 18 Apr 2015 13:58:04 +0100
-Message-ID: <20150418125804.GS26185@sirena.org.uk>
-References: <1429112632-32153-1-git-send-email-bert@biot.com>
+From: Marc Kleine-Budde <mkl-96ES3uSCik0DzuLLRaFpuw@public.gmane.org>
+Subject: Re: [PATCH v3] spi: bitbang: only toggle bitchanges
+Date: Sat, 18 Apr 2015 15:18:49 +0200
+Message-ID: <db1d2b9a-730b-40a5-a4f6-091fd3fad0e7@email.android.com>
+References: <20150331202306.GX2869@sirena.org.uk> <1428922770-16955-1-git-send-email-m.grzeschik@pengutronix.de> <20150418120926.GL26185@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="2/Dpz40iF3jpiHxF"
-Cc: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org
-To: Bert Vermeulen <bert-Nh2F35Ii2RQ@public.gmane.org>
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Michael Grzeschik <m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1429112632-32153-1-git-send-email-bert-Nh2F35Ii2RQ@public.gmane.org>
+In-Reply-To: <20150418120926.GL26185-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---2/Dpz40iF3jpiHxF
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Wed, Apr 15, 2015 at 05:43:52PM +0200, Bert Vermeulen wrote:
-> This driver mediates access between the connected CPLD and other devices
-> on the bus.
+On April 18, 2015 2:09:26 PM GMT+02:00, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+>On Mon, Apr 13, 2015 at 12:59:30PM +0200, Michael Grzeschik wrote:
+>> The current implementation of bitbang_txrx_be_cpha0 and
+>> bitbang_txrx_be_cpha1 always call setmosi. That runs into several
+>> unnecessary calls into the gpiolib when the level of the GPIO
+>actually
+>> has not to be changed.
+>> 
+>> This patch changes the routines to remember the last GPIO level
+>> and only calls setmosi if an change has to be made. This
+>> way it improves the transfer throughput.
+>
+>Do you have any benchmarking or anything showing that this offers a
+>practical benefit?  Generally a bitbanging system would be using memory
+>mapped GPIOs for the bus so we're talking about replacing a memory
+>access with some shifts and logic operations here and while I can
+>believe that something that runs in cache is going to be an overall win
+>over going out to a device it's not quite so clear cut as it could be.
 
-Applied, thanks.
+IIRC we had a reduction of about 30% when programming an FPGA via SPI. But Michael can give you the exact numbers. 
 
---2/Dpz40iF3jpiHxF
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVMlTcAAoJECTWi3JdVIfQ7dIH/0UkeFmhK+/CE+ph9UK1ziHI
-cuzrYy4F64RnEgMzPHf/Dk/THiLGoHA4tTBvx3NIzEQF/8rTTUjfPiBZOPtCvFMi
-hdR2w/1NM+PWf4RVJJquNJa3IFIGiMu/l/QRN4wDZyHr4tj0Ff1OtJ1h07bnKp0y
-tXt9wCqVkE0mnoOqbgsovtQdCwfEq9MDVtRMtfospvZ0xGjRDcHc/av9POnhW6zM
-kKcboZqaslMKngw8SYLtq3zvO6f0kz/G5AMKWy6hLfxVsgsZYd0y7HRhpqqLWn5f
-AEExoyNAoMyrDGHwGA+OJiaIRo1FWqNkrAy8j+OAx1dFlnOGZ3hxqJKiO1jSrSA=
-=2mNZ
------END PGP SIGNATURE-----
-
---2/Dpz40iF3jpiHxF--
+Marc
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

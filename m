@@ -1,73 +1,67 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH V2] spi: bcm2835: enabling polling mode for transfers
- shorter than 30us
-Date: Sat, 18 Apr 2015 13:27:48 +0100
-Message-ID: <20150418122748.GO26185@sirena.org.uk>
-References: <1428340592-3196-1-git-send-email-kernel@martin.sperl.org>
- <20150410185132.GU6023@sirena.org.uk>
- <F35B7C71-1917-40AE-BA42-CB3E63B877EF@martin.sperl.org>
- <20150415185824.GU6023@sirena.org.uk>
- <262B0C8C-7728-458E-8748-06F79251BE0C@martin.sperl.org>
- <20150418104202.GA26185@sirena.org.uk>
- <54169601-55F7-464C-8A0E-ABF833C0F3BA@martin.sperl.org>
- <20150418115343.GI26185@sirena.org.uk>
- <EB2DE44C-29CA-422D-A89C-4173E02A2CEF@martin.sperl.org>
+Subject: Re: [PATCH] spi: fix one potential spin_lock issue
+Date: Sat, 18 Apr 2015 13:49:14 +0100
+Message-ID: <20150418124914.GQ26185@sirena.org.uk>
+References: <1429084832-8953-1-git-send-email-huiquan.zhong@intel.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="WoqaC9TUMqqIOlla"
-Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="v+Mbu5iuT/5Blw/K"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, huiquanz.zhong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
+To: Huiquan Zhong <huiquan.zhong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <EB2DE44C-29CA-422D-A89C-4173E02A2CEF-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <1429084832-8953-1-git-send-email-huiquan.zhong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---WoqaC9TUMqqIOlla
+--v+Mbu5iuT/5Blw/K
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Apr 18, 2015 at 02:13:56PM +0200, Martin Sperl wrote:
-> > On 18.04.2015, at 13:53, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+On Wed, Apr 15, 2015 at 04:00:32PM +0800, Huiquan Zhong wrote:
+> master->pump_messages workqueue can be queued by spi_start_queue(),
+> __spi_queued_transfer().
+>=20
+> there is one case that if one resume thread call spi_start_queue(),
+> and at the same time another spi_device thread call spi_queued_transfer()
+> to do spi transfer, then the first workqueue will start the spi transfer,
+> but the next workqueue queued before SPI transfer complete, will unusual
+> terminate spi transfer.
 
-> > As I've said several times now 1s seems far too long for a busy wait,
-> > the driver should fall back to something that sleeps after an initial
-> > busy wait (once it's clear we're over time).
+I've applied this, it took a while mostly because it is very hard for me
+to understand your commit message - I'm not clear what mechanism will
+cause a problem for a running transfer ("unusual terminate spi
+transfer").  I can see we might end up with the work being added to the
+queue more often than is needed but not how that ends up causing
+anything other than a little wasted work. =20
 
-> Then I have misread what you wrote - I understood you wanted to avoid
-> having no timeout at all.
+Your commit message suggests it's to do with multiple devices adding to
+the queue simultaneously but the queue access in __spi_queued_transfer()
+and __spi_pump_messages() all appears to be done with the queue lock
+held...
 
-No, that's correct - we shouldn't be busy waiting for ever so we need
-something that will terminate.
+I'm still not 100% clear that this is doing anything other than making
+the locking a bit more consistent.
 
-> So you want something like:
-> * wait for 4 jiffies (which is 40ms typically)
-> * if we exceed that, then enable interrupts for the rest of the transfer
-> and let the 30s timeout handle everything else
-
-That's probably fine, though the 40ms is a bit on the long side.  The
-30s timeout could use pulling in too, that's going to fail very badly if
-anything does go wronng.
-
---WoqaC9TUMqqIOlla
+--v+Mbu5iuT/5Blw/K
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVMk3DAAoJECTWi3JdVIfQz3cH/2VkIYx5BUJ5LOGgpTfe6t1M
-QYuKQsAW76JiUwwbnrNRffFqLFntF3Rk5DAuLZYiDKaiEg6jnFhiIOp2F2WUmQmV
-7YJRStNvXaJ/apFlQDmM4JKR5t1bH4g7i0q3Bp/lW6VYFjI6AUMt7DiYusVoLI6h
-33C/CC0Pva3wgoq04hPJtEcM39cM0gZOPOw54oO9CE3FFszGvGqS0RJ9LD423RYD
-XmHVEDGHNi5Q6PVjG7A6ar0RQLTKLxiqn1q4yuK7sV4SdpdCfGJKN4DuOJz/2BKL
-Z2qG6JRpgP3zveu7ck3xvbdNgXypPdiSB5s6pi/zwD/5v/danjcXuLFnEp2RoB8=
-=Hk2w
+iQEcBAEBCAAGBQJVMlLJAAoJECTWi3JdVIfQKAkH/0/iMiTHi+PlwRCFqqT0p3fO
+XKBrw3ep1cLtBX40RGIA9AN0l2Ksds0w3zQu1PJB1CgJqf1z6n8DhKwrexW5Qnqm
+vpQjtGVRRuudu/Sm2/adB348fjESMvOA5PyokbrtQTeQ0jvJwB4XBm0TDFa+cbHD
+4M1S0b/i64kwM/PnNCK7+7ioTe+i13cbsaV++G06rVNDxZYuYb359YGkSAUlRGUd
+W5jI6rysCYk8GuILFGCO9y+XD9zWFHv0rT+JIi9LCG7Z1yXG3IIzCnxlcRGzq5Ka
+Jc7nl9ssk8+0rM9fZQXVOvVBHXRxJYBXweaE4kkLysxbq0UK30vJrjeCpJB+M6w=
+=hWX0
 -----END PGP SIGNATURE-----
 
---WoqaC9TUMqqIOlla--
+--v+Mbu5iuT/5Blw/K--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

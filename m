@@ -1,63 +1,136 @@
-From: "Zhong, Huiquan" <huiquan.zhong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: RE: [PATCH] spi: fix one potential spin_lock issue
-Date: Mon, 20 Apr 2015 02:54:05 +0000
-Message-ID: <5C100827E7A2704FA82A3269FBF0E13CE6DB6C@shsmsx102.ccr.corp.intel.com>
-References: <1429084832-8953-1-git-send-email-huiquan.zhong@intel.com>
- <20150418124914.GQ26185@sirena.org.uk>
+From: Cao Minh Hiep <cm-hiep@jinso.co.jp>
+Subject: Re: [PATCH v3 1/1] spi: Using Trigger number to transmit/receive
+ data
+Date: Mon, 20 Apr 2015 16:04:42 +0900
+Message-ID: <5534A50A.8000109@jinso.co.jp>
+References: <1414034053-14750-1-git-send-email-cm-hiep@jinso.co.jp>	<1414034053-14750-2-git-send-email-cm-hiep@jinso.co.jp> <CAMuHMdWcfij=gFwT9c5wT1+mBT7Q-Fc5_qzqSjLk4RvOEsUGgA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150418124914.GQ26185-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=utf-8;
+	format=flowed
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
+	Mark Brown <broonie@kernel.org>,
+	linux-spi <linux-spi@vger.kernel.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Ryusuke Sakato <ryusuke.sakato.bx@renesas.com>,
+	Linux-sh list <linux-sh@vger.kernel.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <CAMuHMdWcfij=gFwT9c5wT1+mBT7Q-Fc5_qzqSjLk4RvOEsUGgA@mail.gmail.com>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Seems that issue can't reproduce in latest kernel since there is one patch (comments is 983aee5d7090cf12b624f18533777caa09d067b1) to check if the device is processing a message before idle.
-So no need my patch with the latest kernel upstream. Sorry to disturb.
+Hi Geert-san
+I am sorry for late replying.
+
+On 2015=E5=B9=B404=E6=9C=8808=E6=97=A5 03:51, Geert Uytterhoeven wrote:
+> Hi Hiep-san,
+>
+> On Thu, Oct 23, 2014 at 5:14 AM, Cao Minh Hiep <cm-hiep@jinso.co.jp> =
+wrote:
+>> From: Hiep Cao Minh <cm-hiep@jinso.co.jp>
+>>
+>> In order to transmit and receive data when have 32 bytes of data tha=
+t
+>> ready has prepared on Transmit/Receive Buffer to transmit or receive=
+=2E
+>> Instead transmits/receives a byte data using Transmit/Receive Buffer
+>> Data Triggering Number will improve the speed of transfer data.
+> Please accept my apologies for these late review comments.
+> I had completely forgotten about your patch, until I noticed Mark had
+> applied it.
+  No problems. Thanks,
+>> --- a/drivers/spi/spi-rspi.c
+>> +++ b/drivers/spi/spi-rspi.c
+>> @@ -614,19 +667,29 @@ static bool rspi_can_dma(struct spi_master *ma=
+ster, struct spi_device *spi,
+>>          return __rspi_can_dma(rspi, xfer);
+>>   }
+>>
+>> -static int rspi_common_transfer(struct rspi_data *rspi,
+>> -                               struct spi_transfer *xfer)
+>> +static int rspi_dma_check_then_transfer(struct rspi_data *rspi,
+>> +                                        struct spi_transfer *xfer)
+>>   {
+>> -       int ret;
+>> -
+>>          if (rspi->master->can_dma && __rspi_can_dma(rspi, xfer)) {
+>>                  /* rx_buf can be NULL on RSPI on SH in TX-only Mode=
+ */
+>> -               ret =3D rspi_dma_transfer(rspi, &xfer->tx_sg,
+>> +               int ret =3D rspi_dma_transfer(rspi, &xfer->tx_sg,
+>>                                          xfer->rx_buf ? &xfer->rx_sg=
+ : NULL);
+>>                  if (ret !=3D -EAGAIN)
+>> -                       return ret;
+>> +                       return 0;
+> Shouldn't you propagate "ret" here, instead of returning zero?
+> Else you will turn a failure into a success below (see "here").
+Thanks, I will keep the "ret" here.
+>>          }
+>>
+>> +       return -EAGAIN;
+>> +}
+>> +
+>> +static int rspi_common_transfer(struct rspi_data *rspi,
+>> +                               struct spi_transfer *xfer)
+>> +{
+>> +       int ret;
+>> +
+>> +       ret =3D rspi_dma_check_then_transfer(rspi, xfer);
+>> +       if (ret !=3D -EAGAIN)
+>> +               return ret;
+> ... here.
+>
+>> +
+>>          ret =3D rspi_pio_transfer(rspi, xfer->tx_buf, xfer->rx_buf,=
+ xfer->len);
+>>          if (ret < 0)
+>>                  return ret;
+>> @@ -666,12 +729,59 @@ static int rspi_rz_transfer_one(struct spi_mas=
+ter *master,
+>>          return rspi_common_transfer(rspi, xfer);
+>>   }
+>>
+>> +static int qspi_trigger_transfer_out_int(struct rspi_data *rspi, co=
+nst u8 *tx,
+> I guess this should be called "qspi_trigger_transfer_out_in" (without=
+ "t")?
+>
+thanks, I will re-do that.
+
+>> +                                       u8 *rx, unsigned int len)
+>>   static int qspi_transfer_out_in(struct rspi_data *rspi,
+>>                                  struct spi_transfer *xfer)
+>>   {
+>> +       int ret;
+>> +
+>>          qspi_receive_init(rspi);
+>>
+>> -       return rspi_common_transfer(rspi, xfer);
+>> +       ret =3D rspi_dma_check_then_transfer(rspi, xfer);
+>> +       if (ret !=3D -EAGAIN)
+>> +               return ret;
+>> +
+>> +       ret =3D qspi_trigger_transfer_out_int(rspi, xfer->tx_buf,
+>> +                                           xfer->rx_buf, xfer->len)=
+;
+>> +       if (ret < 0)
+>> +               return ret;
+>> +
+>> +       return 0;
+> You could just write
+>
+>        return qspi_trigger_transfer_out_int(rspi, xfer->tx_buf,
+>                                             xfer->rx_buf, xfer->len);
+ok. Thanks,
+
+I will update your comments in other patch, then sending them to you an=
+d=20
+Mark-san.
+
+Best Regards,
+Hiep.
 
 
-commit 983aee5d7090cf12b624f18533777caa09d067b1
-Author: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Date:   Tue Dec 9 19:46:56 2014 +0000
-
-    spi: Check to see if the device is processing a message before we idle
-
-    cur_msg is updated under the queue lock and holds the message we are
-    currently processing. Since currently we only ever do removals in the
-    pump kthread it doesn't matter in what order we do things but we want
-    to be able to push things out from the submitting thread so pull the
-    check to see if we're currently handling a message before we check to
-    see if the queue is idle.
-
-Thanks,
-Huiquan
-
------Original Message-----
-From: Mark Brown [mailto:broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org] 
-Sent: Saturday, April 18, 2015 8:49 PM
-To: Zhong, Huiquan
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; huiquanz.zhong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
-Subject: Re: [PATCH] spi: fix one potential spin_lock issue
-
-On Wed, Apr 15, 2015 at 04:00:32PM +0800, Huiquan Zhong wrote:
-> master->pump_messages workqueue can be queued by spi_start_queue(),
-> __spi_queued_transfer().
-> 
-> there is one case that if one resume thread call spi_start_queue(), 
-> and at the same time another spi_device thread call 
-> spi_queued_transfer() to do spi transfer, then the first workqueue 
-> will start the spi transfer, but the next workqueue queued before SPI 
-> transfer complete, will unusual terminate spi transfer.
-
-I've applied this, it took a while mostly because it is very hard for me to understand your commit message - I'm not clear what mechanism will cause a problem for a running transfer ("unusual terminate spi transfer").  I can see we might end up with the work being added to the queue more often than is needed but not how that ends up causing anything other than a little wasted work.  
-
-Your commit message suggests it's to do with multiple devices adding to the queue simultaneously but the queue access in __spi_queued_transfer() and __spi_pump_messages() all appears to be done with the queue lock held...
-
-I'm still not 100% clear that this is doing anything other than making the locking a bit more consistent.
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

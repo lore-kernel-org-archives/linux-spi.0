@@ -1,155 +1,123 @@
-From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH] spi: bcm2835: fallback to interrupt for polling timeouts exceeding 2 jiffies
-Date: Wed, 22 Apr 2015 07:33:03 +0000
-Message-ID: <1429687984-7350-1-git-send-email-kernel@martin.sperl.org>
-References: <E9247B42-11B6-4032-A6C1-1FCEA3EDA2A6@martin.sperl.org>
-Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+From: Fionn Cleary <clearyf-/Zw1syy4LHg@public.gmane.org>
+Subject: [PATCH] spi/omap2-mcpsi: Always call spi_finalize_current_message()
+Date: Wed, 22 Apr 2015 15:39:56 +0200
+Message-ID: <87vbgo2ser.fsf@tcd.ie>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="=-=-="
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: broonie-GFdadSzt00ze9xe1eoZjHA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <E9247B42-11B6-4032-A6C1-1FCEA3EDA2A6-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+--=-=-=
+Content-Type: multipart/signed; boundary="==-=-=";
+	micalg=pgp-sha1; protocol="application/pgp-signature"
 
-The polling mode of the driver is designed for transfers that run
-less than 30us - it will only execute under those circumstances.
-So it should run comfortably without getting interrupted by the
-scheduler.
+--==-=-=
+Content-Type: text/plain
 
-But there are situations where the raspberry pi is so overloaded
-that it can take up to 80 jiffies until the polling thread gets
-rescheduled - this has been observed especially under heavy
-IO situations.
+Hi,
 
-In such a situation we now fall back to the interrupt handler and
-log the situation at debug level.
+While testing the omap2-mcspi driver I discovered that triggering the
+error conditions in omap2_mcspi_transfer_one_message() will result in
+the queue for the bus locking up while waiting for
+spi_finalize_current_message().  This patch ensure that
+spi_finalize_current_message() is always called for all error conditions
+in omap2_mcspi_transfer_one_message().
 
-Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Regards,
+Fionn
+
+--==-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBAgAGBQJVN6SsAAoJEDmlvs+cFU0LiLkP/jTznyklmofioXoW+ziKEr4d
+OKjpsiP6q1D6gRGDuX7dbc2bDzLBD4A7cbcCOKW2Yml5dkIrSWN5tdWi31eb8fgD
+FMBzWx4kvYG3JswMyMQufq7Ch8kbwfnp0riPsKoeZR+aAB2hVEpbyBBrS6usufOt
+4xoSGPKpLW1PJdXhWdeH+P71BtMdBmTbLHoAytrBI1hfe1J6vxJMATw7Ica0jJUV
+xJnABwmCCakuxxgoUwTMKrfXIuRAn08HQXBZsh81JNI4vTnp+5a/Cre2Qjuh8YPp
+Q6KFTM0KelMau5o5IV5/i1NcPqM1auih+co6OMp9p57+lrGmQHlxM5UEzDFufZH8
+ENDr4vuHgBo2Gq9rN7qsWAAJ1pCt9TlCM/5/bsdwYVBLtdJW2p1ixfGCuwF7Ccwj
+haDMWmtEA1nzfi2a+2Fje7hQRs8q0z55mj0cPNgKswIot43JtSBtSHlzaGPvy1SG
+oMXWTL6wlV13pHh0+2FnxbvSUlZdKEnJZ72PDTU8TdzcQ1STkfCj/9axViwj9lS7
+BU2HbuCOQrFIB8ZSL0/BwgQ0dn/n6zaYXOikROZhp7o+Yu4iu9e/WnytBLGRWzE0
+OmEqrXWhcQCieoOfwygVJK//6Bwh9MY1RvLWu48Tk2Q9W1UwT1d45xjf1oIKYwUW
+TijlUC1Nn4RUx3tOwjq2
+=iOtE
+-----END PGP SIGNATURE-----
+--==-=-=--
+
+--=-=-=
+Content-Type: text/x-diff
+Content-Disposition: inline;
+ filename=0001-spi-omap2-mcpsi-Always-call-spi_finalize_current_mess.patch
+
+>From 2ec7ba94e9045a78de14192690134fc3d53c38f0 Mon Sep 17 00:00:00 2001
+From: Fionn Cleary <fionn.cleary-6oiIBCxl0MMjD8S081q9vkEOCMrvLtNR@public.gmane.org>
+Date: Wed, 22 Apr 2015 13:40:53 +0200
+Subject: [PATCH] spi/omap2-mcpsi: Always call spi_finalize_current_message()
+
+The spi queue waits forever for spi_finalize_current_message() to be
+called, blocking the bus.  Ensure that all error paths from
+omap2_mcspi_transfer_one_message() call spi_finalize_current_message().
+
+Signed-off-by: Fionn Cleary <fionn.cleary-6oiIBCxl0MMjD8S081q9vkEOCMrvLtNR@public.gmane.org>
 ---
- drivers/spi/spi-bcm2835.c |   87 ++++++++++++++++++++++++++-------------------
- 1 file changed, 50 insertions(+), 37 deletions(-)
+ drivers/spi/spi-omap2-mcspi.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-Applies against for-next
-
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index 37875cf..830d99c 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -69,7 +69,7 @@
- #define BCM2835_SPI_CS_CS_01		0x00000001
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 3bc3cba..4acce76 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -1234,7 +1234,8 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
+ 					tx_buf ? "tx" : "",
+ 					rx_buf ? "rx" : "",
+ 					t->bits_per_word);
+-			return -EINVAL;
++			m->status = -EINVAL;
++			goto out;
+ 		}
  
- #define BCM2835_SPI_POLLING_LIMIT_US	30
--#define BCM2835_SPI_TIMEOUT_MS		30000
-+#define BCM2835_SPI_POLLING_JIFFIES	2
- #define BCM2835_SPI_MODE_BITS	(SPI_CPOL | SPI_CPHA | SPI_CS_HIGH \
- 				| SPI_NO_CS | SPI_3WIRE)
+ 		if (m->is_dma_mapped || len < DMA_MIN_BYTES)
+@@ -1246,7 +1247,8 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
+ 			if (dma_mapping_error(mcspi->dev, t->tx_dma)) {
+ 				dev_dbg(mcspi->dev, "dma %cX %d bytes error\n",
+ 						'T', len);
+-				return -EINVAL;
++				m->status = -EINVAL;
++				goto out;
+ 			}
+ 		}
+ 		if (mcspi_dma->dma_rx && rx_buf != NULL) {
+@@ -1258,14 +1260,16 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
+ 				if (tx_buf != NULL)
+ 					dma_unmap_single(mcspi->dev, t->tx_dma,
+ 							len, DMA_TO_DEVICE);
+-				return -EINVAL;
++				m->status = -EINVAL;
++				goto out;
+ 			}
+ 		}
+ 	}
  
-@@ -157,42 +157,6 @@ static irqreturn_t bcm2835_spi_interrupt(int irq, void *dev_id)
- 	return IRQ_HANDLED;
- }
- 
--static int bcm2835_spi_transfer_one_poll(struct spi_master *master,
--					 struct spi_device *spi,
--					 struct spi_transfer *tfr,
--					 u32 cs,
--					 unsigned long xfer_time_us)
--{
--	struct bcm2835_spi *bs = spi_master_get_devdata(master);
--	/* set timeout to 1 second of maximum polling */
--	unsigned long timeout = jiffies + HZ;
--
--	/* enable HW block without interrupts */
--	bcm2835_wr(bs, BCM2835_SPI_CS, cs | BCM2835_SPI_CS_TA);
--
--	/* loop until finished the transfer */
--	while (bs->rx_len) {
--		/* read from fifo as much as possible */
--		bcm2835_rd_fifo(bs);
--		/* fill in tx fifo as much as possible */
--		bcm2835_wr_fifo(bs);
--		/* if we still expect some data after the read,
--		 * check for a possible timeout
--		 */
--		if (bs->rx_len && time_after(jiffies, timeout)) {
--			/* Transfer complete - reset SPI HW */
--			bcm2835_spi_reset_hw(master);
--			/* and return timeout */
--			return -ETIMEDOUT;
--		}
--	}
--
--	/* Transfer complete - reset SPI HW */
--	bcm2835_spi_reset_hw(master);
--	/* and return without waiting for completion */
+ 	omap2_mcspi_work(mcspi, m);
++out:
+ 	spi_finalize_current_message(master);
 -	return 0;
--}
--
- static int bcm2835_spi_transfer_one_irq(struct spi_master *master,
- 					struct spi_device *spi,
- 					struct spi_transfer *tfr,
-@@ -229,6 +193,55 @@ static int bcm2835_spi_transfer_one_irq(struct spi_master *master,
- 	return 1;
++	return m->status;
  }
  
-+static int bcm2835_spi_transfer_one_poll(struct spi_master *master,
-+					 struct spi_device *spi,
-+					 struct spi_transfer *tfr,
-+					 u32 cs,
-+					 unsigned long xfer_time_us)
-+{
-+	struct bcm2835_spi *bs = spi_master_get_devdata(master);
-+	unsigned long timeout;
-+
-+	/* enable HW block without interrupts */
-+	bcm2835_wr(bs, BCM2835_SPI_CS, cs | BCM2835_SPI_CS_TA);
-+
-+	/* fill in the fifo before timeout calculations
-+	 * if we are interrupted here, then the data is
-+	 * getting transferred by the HW while we are interrupted
-+	 */
-+	bcm2835_wr_fifo(bs);
-+
-+	/* set the timeout */
-+	timeout = jiffies + BCM2835_SPI_POLLING_JIFFIES;
-+
-+	/* loop until finished the transfer */
-+	while (bs->rx_len) {
-+		/* fill in tx fifo with remaining data */
-+		bcm2835_wr_fifo(bs);
-+
-+		/* read from fifo as much as possible */
-+		bcm2835_rd_fifo(bs);
-+
-+		/* if there is still data pending to read
-+		 * then check the timeout
-+		 */
-+		if (bs->rx_len && time_after(jiffies, timeout)) {
-+			dev_dbg_ratelimited(&spi->dev,
-+					    "timeout period reached: jiffies: %lu remaining tx/rx: %d/%d - falling back to interrupt mode\n",
-+					    jiffies - timeout,
-+					    bs->tx_len, bs->rx_len);
-+			/* fall back to interrupt mode */
-+			return bcm2835_spi_transfer_one_irq(master, spi,
-+							    tfr, cs);
-+		}
-+	}
-+
-+	/* Transfer complete - reset SPI HW */
-+	bcm2835_spi_reset_hw(master);
-+	/* and return without waiting for completion */
-+	return 0;
-+}
-+
- static int bcm2835_spi_transfer_one(struct spi_master *master,
- 				    struct spi_device *spi,
- 				    struct spi_transfer *tfr)
+ static int omap2_mcspi_master_setup(struct omap2_mcspi *mcspi)
 -- 
-1.7.10.4
+1.9.1
 
+
+--=-=-=--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

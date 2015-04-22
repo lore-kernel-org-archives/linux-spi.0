@@ -1,75 +1,155 @@
-From: "Zhong, Huiquan" <huiquan.zhong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: RE: [PATCH] spi/pxa2xx: add support for Intel Broxton
-Date: Wed, 22 Apr 2015 02:59:49 +0000
-Message-ID: <5C100827E7A2704FA82A3269FBF0E13CE7D9C9@shsmsx102.ccr.corp.intel.com>
-References: <1429573714-68828-1-git-send-email-qipeng.zha@intel.com>
- <55365451.4010000@linux.intel.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"Yang, Fei" <fei.yang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	"Chen, Jason CJ" <jason.cj.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	"Zheng, Qi" <qi.zheng-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	"Zha, Qipeng" <qipeng.zha-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
+Subject: [PATCH] spi: bcm2835: fallback to interrupt for polling timeouts exceeding 2 jiffies
+Date: Wed, 22 Apr 2015 07:33:03 +0000
+Message-ID: <1429687984-7350-1-git-send-email-kernel@martin.sperl.org>
+References: <E9247B42-11B6-4032-A6C1-1FCEA3EDA2A6@martin.sperl.org>
+Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
+	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <55365451.4010000-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Content-Language: en-US
+In-Reply-To: <E9247B42-11B6-4032-A6C1-1FCEA3EDA2A6-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-OK.
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
------Original Message-----
-From: Jarkko Nikula [mailto:jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org] 
-Sent: Tuesday, April 21, 2015 9:45 PM
-To: Zha, Qipeng; linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org; Yang, Fei; Zhong, Huiquan; Chen, Jason CJ; Zheng, Qi; Andy Shevchenko
-Subject: Re: [PATCH] spi/pxa2xx: add support for Intel Broxton
+The polling mode of the driver is designed for transfers that run
+less than 30us - it will only execute under those circumstances.
+So it should run comfortably without getting interrupted by the
+scheduler.
 
-Hi Huiquan and Qipeng
+But there are situations where the raspberry pi is so overloaded
+that it can take up to 80 jiffies until the polling thread gets
+rescheduled - this has been observed especially under heavy
+IO situations.
 
-On 04/21/2015 02:48 AM, qipeng.zha wrote:
-> From: Huiquan Zhong <huiquan.zhong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
->
-> Broxton have 3 SPI ports, PCI ids are 0x0ac2, 0x0ac4, 0x0ac6.
-> The LPSS SSP private register offset is 0x200. iDMA register offset is 
-> 0x800.
->
-> Every Broxton SPI Controller have integrated one dedicated DMA IP.
-> Two DMA channels mapping:
-> 	channel[0] -> SPI Tx,
-> 	channel[1] -> SPI Rx.
->
-> BXT SSP SPI does not support DMA burst mode operation. Only iDMA 
-> M-Size setting equal to 1(Single) is supported for all DMA peripherial 
-> transfers from the SSP to the DMA and from the DMA to the SSP, 
-> otherwise RX data corruption will happen.
->
-> Use a new parameter(.chip_select) for BXT dedicated cs control.
->
-> Signed-off-by: Huiquan Zhong <huiquan.zhong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-> ---
->   drivers/spi/spi-pxa2xx-pci.c   | 103 ++++++++++++++++++++++++++++++++++++++++
->   drivers/spi/spi-pxa2xx.c       | 105 +++++++++++++++++++++++++++++++++++++++++
->   drivers/spi/spi-pxa2xx.h       |   1 +
->   include/linux/pxa2xx_ssp.h     |   3 ++
->   include/linux/spi/pxa2xx_spi.h |   2 +
->   5 files changed, 214 insertions(+)
->
-Can we hold this a bit and join our efforts? We have been cooking a support for Skylake recently with a plan to extend to Broxton later.
+In such a situation we now fall back to the interrupt handler and
+log the situation at debug level.
 
-Major difference to patch here is that we plan to use common code that probes PCI and ACPI enumerated individual devices (I2C, SPI and UART) and their integrated DMA (which doesn't have its own PCI or ACPI ID and not all devices have it) and adds them as platform devices.
+Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+---
+ drivers/spi/spi-bcm2835.c |   87 ++++++++++++++++++++++++++-------------------
+ 1 file changed, 50 insertions(+), 37 deletions(-)
 
-That module will take care of reset and clock management so for instance this SPI code becomes a bit shorter and avoids similar code in I2C and UART too. Our MFD loader has been posted recently but is not merged yet:
+Applies against for-next
 
-https://lkml.org/lkml/2015/3/31/258
+diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+index 37875cf..830d99c 100644
+--- a/drivers/spi/spi-bcm2835.c
++++ b/drivers/spi/spi-bcm2835.c
+@@ -69,7 +69,7 @@
+ #define BCM2835_SPI_CS_CS_01		0x00000001
+ 
+ #define BCM2835_SPI_POLLING_LIMIT_US	30
+-#define BCM2835_SPI_TIMEOUT_MS		30000
++#define BCM2835_SPI_POLLING_JIFFIES	2
+ #define BCM2835_SPI_MODE_BITS	(SPI_CPOL | SPI_CPHA | SPI_CS_HIGH \
+ 				| SPI_NO_CS | SPI_3WIRE)
+ 
+@@ -157,42 +157,6 @@ static irqreturn_t bcm2835_spi_interrupt(int irq, void *dev_id)
+ 	return IRQ_HANDLED;
+ }
+ 
+-static int bcm2835_spi_transfer_one_poll(struct spi_master *master,
+-					 struct spi_device *spi,
+-					 struct spi_transfer *tfr,
+-					 u32 cs,
+-					 unsigned long xfer_time_us)
+-{
+-	struct bcm2835_spi *bs = spi_master_get_devdata(master);
+-	/* set timeout to 1 second of maximum polling */
+-	unsigned long timeout = jiffies + HZ;
+-
+-	/* enable HW block without interrupts */
+-	bcm2835_wr(bs, BCM2835_SPI_CS, cs | BCM2835_SPI_CS_TA);
+-
+-	/* loop until finished the transfer */
+-	while (bs->rx_len) {
+-		/* read from fifo as much as possible */
+-		bcm2835_rd_fifo(bs);
+-		/* fill in tx fifo as much as possible */
+-		bcm2835_wr_fifo(bs);
+-		/* if we still expect some data after the read,
+-		 * check for a possible timeout
+-		 */
+-		if (bs->rx_len && time_after(jiffies, timeout)) {
+-			/* Transfer complete - reset SPI HW */
+-			bcm2835_spi_reset_hw(master);
+-			/* and return timeout */
+-			return -ETIMEDOUT;
+-		}
+-	}
+-
+-	/* Transfer complete - reset SPI HW */
+-	bcm2835_spi_reset_hw(master);
+-	/* and return without waiting for completion */
+-	return 0;
+-}
+-
+ static int bcm2835_spi_transfer_one_irq(struct spi_master *master,
+ 					struct spi_device *spi,
+ 					struct spi_transfer *tfr,
+@@ -229,6 +193,55 @@ static int bcm2835_spi_transfer_one_irq(struct spi_master *master,
+ 	return 1;
+ }
+ 
++static int bcm2835_spi_transfer_one_poll(struct spi_master *master,
++					 struct spi_device *spi,
++					 struct spi_transfer *tfr,
++					 u32 cs,
++					 unsigned long xfer_time_us)
++{
++	struct bcm2835_spi *bs = spi_master_get_devdata(master);
++	unsigned long timeout;
++
++	/* enable HW block without interrupts */
++	bcm2835_wr(bs, BCM2835_SPI_CS, cs | BCM2835_SPI_CS_TA);
++
++	/* fill in the fifo before timeout calculations
++	 * if we are interrupted here, then the data is
++	 * getting transferred by the HW while we are interrupted
++	 */
++	bcm2835_wr_fifo(bs);
++
++	/* set the timeout */
++	timeout = jiffies + BCM2835_SPI_POLLING_JIFFIES;
++
++	/* loop until finished the transfer */
++	while (bs->rx_len) {
++		/* fill in tx fifo with remaining data */
++		bcm2835_wr_fifo(bs);
++
++		/* read from fifo as much as possible */
++		bcm2835_rd_fifo(bs);
++
++		/* if there is still data pending to read
++		 * then check the timeout
++		 */
++		if (bs->rx_len && time_after(jiffies, timeout)) {
++			dev_dbg_ratelimited(&spi->dev,
++					    "timeout period reached: jiffies: %lu remaining tx/rx: %d/%d - falling back to interrupt mode\n",
++					    jiffies - timeout,
++					    bs->tx_len, bs->rx_len);
++			/* fall back to interrupt mode */
++			return bcm2835_spi_transfer_one_irq(master, spi,
++							    tfr, cs);
++		}
++	}
++
++	/* Transfer complete - reset SPI HW */
++	bcm2835_spi_reset_hw(master);
++	/* and return without waiting for completion */
++	return 0;
++}
++
+ static int bcm2835_spi_transfer_one(struct spi_master *master,
+ 				    struct spi_device *spi,
+ 				    struct spi_transfer *tfr)
+-- 
+1.7.10.4
 
---
-Jarkko
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,122 +1,50 @@
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v3] spi: fsl-spi: use devm_ioremap_resource() to map parameter ram on CPM1
-Date: Wed, 22 Apr 2015 16:28:20 +0200 (CEST)
-Message-ID: <20150422142820.4267B1A242E@localhost.localdomain>
-Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-spi@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: "DATACOM - Jonatas.Rech" <jonatas.rech-rCUF4CxDseZknzVnJbg3IA@public.gmane.org>
+Subject: Re: [PATCH] spi: fsl-espi: fix behaviour for full-duplex xfers
+Date: Wed, 22 Apr 2015 12:09:03 -0300 (BRT)
+Message-ID: <363371145.339730.1429715343024.JavaMail.zimbra@datacom.ind.br>
+References: <1429111398-21444-1-git-send-email-jonatas.rech@datacom.ind.br> <20150418125556.GR26185@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150418125556.GR26185-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On CPM2, the SPI parameter RAM is dynamically allocated in the
-dualport RAM whereas in CPM1, it is statically allocated to a default
-address with capability to relocate it somewhere else via the use of
-CPM micropatch. The address of the parameter RAM is given by the boot
-loader and expected to be mapped via devm_ioremap_resource()
+That's right.
 
-In the current implementation, in function fsl_spi_cpm_get_pram()
-there is a confusion between the SPI_BASE register and the base of the
-SPI parameter RAM. Fortunatly, it is working properly with MPC866 and
-MPC885 because they do set SPI_BASE, but on MPC860 and other old
-MPC8xx that doesn't set SPI_BASE, pram_ofs is not properly set.
-Also, the parameter RAM is not properly mapped with
-devm_ioremap_resource() as it should but still gets accessible by
-chance through the full RAM which is mapped from somewhere else.
+The m25p80 driver can send down a message that's bigger than the amount the spi-fsl-espi driver can handle in a single espi_transfer (64KiB), when the application wants to read the whole memory content, for instance. In this case, the Freescale driver splits the message in 64KiB chunks, adding a "Read the next 64KiB" command in the TX buffer so the flash memory can output data from the expected offset. In the end, the m25p80 driver sees all the data as one big rx_buf, as it expected in the first place.
 
-This patch applies to the SPI driver the same principle as for the
-CPM UART: when the CPM is of type CPM1, we simply do an
-devm_ioremap_resource() of the area provided via the device tree.
+I don't think a controller driver should make this kind of assumption on how protocol (slave device) drivers intend to use it. Instead, I think this kind of intelligence (about fragmentation and replaying of TX commands) should be in the protocol drivers themselves, aware of the maximum message length the hardware can handle.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Unfortunately, I don't know how many protocol drivers currently rely on this, or even how other controller drivers deal with this expected behavior.
 
----
- v2: Use devm_ioremap_resource() instead of_iomap()
- v3: Replaced of_iomap() by devm_ioremap_resource() in the patch text
 
- drivers/spi/spi-fsl-cpm.c | 35 ++++++++++++++++++-----------------
- 1 file changed, 18 insertions(+), 17 deletions(-)
+----- Original Message -----
+From: "Mark Brown" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: "DATACOM" <jonatas.rech-rCUF4CxDseZknzVnJbg3IA@public.gmane.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Sent: Saturday, April 18, 2015 9:55:56 AM
+Subject: Re: [PATCH] spi: fsl-espi: fix behaviour for full-duplex xfers
 
-diff --git a/drivers/spi/spi-fsl-cpm.c b/drivers/spi/spi-fsl-cpm.c
-index e85ab1c..4e5c945 100644
---- a/drivers/spi/spi-fsl-cpm.c
-+++ b/drivers/spi/spi-fsl-cpm.c
-@@ -23,6 +23,7 @@
- #include <linux/of_address.h>
- #include <linux/spi/spi.h>
- #include <linux/types.h>
-+#include <linux/platform_device.h>
- 
- #include "spi-fsl-cpm.h"
- #include "spi-fsl-lib.h"
-@@ -264,17 +265,6 @@ static unsigned long fsl_spi_cpm_get_pram(struct mpc8xxx_spi *mspi)
- 	if (mspi->flags & SPI_CPM2) {
- 		pram_ofs = cpm_muram_alloc(SPI_PRAM_SIZE, 64);
- 		out_be16(spi_base, pram_ofs);
--	} else {
--		struct spi_pram __iomem *pram = spi_base;
--		u16 rpbase = in_be16(&pram->rpbase);
--
--		/* Microcode relocation patch applied? */
--		if (rpbase) {
--			pram_ofs = rpbase;
--		} else {
--			pram_ofs = cpm_muram_alloc(SPI_PRAM_SIZE, 64);
--			out_be16(spi_base, pram_ofs);
--		}
- 	}
- 
- 	iounmap(spi_base);
-@@ -287,7 +277,6 @@ int fsl_spi_cpm_init(struct mpc8xxx_spi *mspi)
- 	struct device_node *np = dev->of_node;
- 	const u32 *iprop;
- 	int size;
--	unsigned long pram_ofs;
- 	unsigned long bds_ofs;
- 
- 	if (!(mspi->flags & SPI_CPM_MODE))
-@@ -314,8 +303,21 @@ int fsl_spi_cpm_init(struct mpc8xxx_spi *mspi)
- 		}
- 	}
- 
--	pram_ofs = fsl_spi_cpm_get_pram(mspi);
--	if (IS_ERR_VALUE(pram_ofs)) {
-+	if (mspi->flags & SPI_CPM1) {
-+		struct resource *res;
-+
-+		res = platform_get_resource(to_platform_device(dev),
-+					    IORESOURCE_MEM, 1);
-+		mspi->pram = devm_ioremap_resource(dev, res);
-+	} else {
-+		unsigned long pram_ofs = fsl_spi_cpm_get_pram(mspi);
-+
-+		if (IS_ERR_VALUE(pram_ofs))
-+			mspi->pram = NULL;
-+		else
-+			mspi->pram = cpm_muram_addr(pram_ofs);
-+	}
-+	if (mspi->pram == NULL) {
- 		dev_err(dev, "can't allocate spi parameter ram\n");
- 		goto err_pram;
- 	}
-@@ -341,8 +343,6 @@ int fsl_spi_cpm_init(struct mpc8xxx_spi *mspi)
- 		goto err_dummy_rx;
- 	}
- 
--	mspi->pram = cpm_muram_addr(pram_ofs);
--
- 	mspi->tx_bd = cpm_muram_addr(bds_ofs);
- 	mspi->rx_bd = cpm_muram_addr(bds_ofs + sizeof(*mspi->tx_bd));
- 
-@@ -370,7 +370,8 @@ err_dummy_rx:
- err_dummy_tx:
- 	cpm_muram_free(bds_ofs);
- err_bds:
--	cpm_muram_free(pram_ofs);
-+	if (!(mspi->flags & SPI_CPM1))
-+		cpm_muram_free(cpm_muram_offset(mspi->pram));
- err_pram:
- 	fsl_spi_free_dummy_rx();
- 	return -ENOMEM;
--- 
-2.1.0
+On Wed, Apr 15, 2015 at 12:23:18PM -0300, Jonatas Rech wrote:
+
+> Furthermore, this correction has exposed an inconsistency in the
+> protocol driver <-> controller driver interaction. The spi-fsl-espi
+> driver artificially inserts TX bytes when message fragmentation is
+> necessary (due to SPCOM_TRANLEN_MAX) instead of informing the
+> protocol driver of the hardware limitation. This was tested with the
+> m25p80 NOR flash protocol driver. Since fixing this issue may cause
+> other client drivers to malfunction, it was left as is.
+
+Sorry, you're saying that the driver is sending more data than it's
+being asked to in some situations?  That is a *very* serious bug in both
+this driver and any other driver which relies on (as opposed to merely
+tolerates) this behaviour.  If that is the case it really needs to be
+fixed fairly urgently.
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

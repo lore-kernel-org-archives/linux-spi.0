@@ -1,92 +1,50 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: spidev and the use of spi_async instead of spi_sync
-Date: Wed, 22 Apr 2015 17:55:44 +0200
-Message-ID: <AED5BFFC-FF25-4699-9534-AAB3AE285021@martin.sperl.org>
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2098\))
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: spidev and the use of spi_async instead of spi_sync
+Date: Wed, 22 Apr 2015 20:41:33 +0100
+Message-ID: <20150422194133.GI22845@sirena.org.uk>
+References: <AED5BFFC-FF25-4699-9534-AAB3AE285021@martin.sperl.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="aJFFgG5QZHt5jcrP"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <AED5BFFC-FF25-4699-9534-AAB3AE285021-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-With the 4.0 kernel there has been a nice improvement for
-spi_sync where, when there is nothing in the queue the message
-pump will get executed in the context of the caller.
 
-This means reduction in the number of context switches and more,
-which is nice.
+--aJFFgG5QZHt5jcrP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Unfortunately this does not impact spidev, as it (re)implements
-spi_sync on its own.
+On Wed, Apr 22, 2015 at 05:55:44PM +0200, Martin Sperl wrote:
 
-Here the code as of now:
-/*
- * We can't use the standard synchronous wrappers for file I/O; we
- * need to protect against async removal of the underlying spi_device.
- */
-static void spidev_complete(void *arg)
-{
-        complete(arg);
-}
+> As this code is from 2008 the situation may be different
+> now and we can use spi_sync instead?
 
-static ssize_t
-spidev_sync(struct spidev_data *spidev, struct spi_message *message)
-{
-        DECLARE_COMPLETION_ONSTACK(done);
-        int status;
+Yes, that seems sensible.  I can't think of any reason why it shouldn't
+have done that in the first place.  For things like this please just
+provide a patch directly, it's much quicker and easier.
 
-        message->complete = spidev_complete;
-        message->context = &done;
+--aJFFgG5QZHt5jcrP
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-        spin_lock_irq(&spidev->spi_lock);
-        if (spidev->spi == NULL)
-                status = -ESHUTDOWN;
-        else
-                status = spi_async(spidev->spi, message);
-        spin_unlock_irq(&spidev->spi_lock);
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-        if (status == 0) {
-                wait_for_completion(&done);
-                status = message->status;
-                if (status == 0)
-                        status = message->actual_length;
-        }
-        return status;
-}
+iQEcBAEBCAAGBQJVN/lsAAoJECTWi3JdVIfQ0nkH/18ffDLCKJURYyt1EvyKTIKM
+LYWSS2aGASXtg2ZOIMW2as2xwT1d0rXxJFpDNK5LQ8VTfO8qDwkTYDHS4NDyAGUG
+N0VMY9BObHf7nyhldT37roVTW6W94uuSJbf0FuWKv1dZu9OW7lG+4VDRl8FXHEom
+klc/md3whiBIgLBwJGapo8JJnqbBiwsyp2c7mnGGfD5d2W3EE5relYSj+ogwlsYp
+P9Lp4uuEutrfRz3AOvjFjJjrhb0ZVc4iHvGWWLgy+VuR7dzHMDroJdNWIvaBdUIt
+tr5fSl7J19/XTJt3kPX9H2+Z+yPBODpcrzRpBHtFFtQzeqkhR2t/I0P59PLmqNM=
+=Axid
+-----END PGP SIGNATURE-----
 
-As this code is from 2008 the situation may be different
-now and we can use spi_sync instead?
-
-Maybe a patch along the following lines:
-static ssize_t
-spidev_sync(struct spidev_data *spidev, struct spi_message *message)
-{
-        DECLARE_COMPLETION_ONSTACK(done);
-        int status;
-	struct spi_device *spi;
-
-        spin_lock_irq(&spidev->spi_lock);
-	spi = spidev->spi;
-        spin_unlock_irq(&spidev->spi_lock);
-
-	if (!spi)
-		return -ESHUTDOWN;
-	
-	status = spi_sync(spi, message);
-
-	if (!status)
-		status = message->actual_length;
-
-        return status;
-}
-
-would be a working solution, but then I am unsure about the reason why
-this locking is in place.
-
-So I just want to point out that this may be a candidate for
-improvement.
-
+--aJFFgG5QZHt5jcrP--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

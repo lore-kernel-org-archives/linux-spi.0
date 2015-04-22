@@ -1,49 +1,92 @@
-From: "DATACOM - Jonatas.Rech" <jonatas.rech-rCUF4CxDseZknzVnJbg3IA@public.gmane.org>
-Subject: Re: [PATCH] spi: fsl-espi: fix behaviour for full-duplex xfers
-Date: Wed, 22 Apr 2015 12:09:03 -0300 (BRT)
-Message-ID: <363371145.339730.1429715343024.JavaMail.zimbra@datacom.ind.br>
-References: <1429111398-21444-1-git-send-email-jonatas.rech@datacom.ind.br> <20150418125556.GR26185@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: spidev and the use of spi_async instead of spi_sync
+Date: Wed, 22 Apr 2015 17:55:44 +0200
+Message-ID: <AED5BFFC-FF25-4699-9534-AAB3AE285021@martin.sperl.org>
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2098\))
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150418125556.GR26185-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-That's right.
+With the 4.0 kernel there has been a nice improvement for
+spi_sync where, when there is nothing in the queue the message
+pump will get executed in the context of the caller.
 
-The m25p80 driver can send down a message that's bigger than the amount the spi-fsl-espi driver can handle in a single espi_transfer (64KiB), when the application wants to read the whole memory content, for instance. In this case, the Freescale driver splits the message in 64KiB chunks, adding a "Read the next 64KiB" command in the TX buffer so the flash memory can output data from the expected offset. In the end, the m25p80 driver sees all the data as one big rx_buf, as it expected in the first place.
+This means reduction in the number of context switches and more,
+which is nice.
 
-I don't think a controller driver should make this kind of assumption on how protocol (slave device) drivers intend to use it. Instead, I think this kind of intelligence (about fragmentation and replaying of TX commands) should be in the protocol drivers themselves, aware of the maximum message length the hardware can handle.
+Unfortunately this does not impact spidev, as it (re)implements
+spi_sync on its own.
 
-Unfortunately, I don't know how many protocol drivers currently rely on this, or even how other controller drivers deal with this expected behavior.
+Here the code as of now:
+/*
+ * We can't use the standard synchronous wrappers for file I/O; we
+ * need to protect against async removal of the underlying spi_device.
+ */
+static void spidev_complete(void *arg)
+{
+        complete(arg);
+}
 
+static ssize_t
+spidev_sync(struct spidev_data *spidev, struct spi_message *message)
+{
+        DECLARE_COMPLETION_ONSTACK(done);
+        int status;
 
------ Original Message -----
-From: "Mark Brown" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: "DATACOM" <jonatas.rech-rCUF4CxDseZknzVnJbg3IA@public.gmane.org>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Sent: Saturday, April 18, 2015 9:55:56 AM
-Subject: Re: [PATCH] spi: fsl-espi: fix behaviour for full-duplex xfers
+        message->complete = spidev_complete;
+        message->context = &done;
 
-On Wed, Apr 15, 2015 at 12:23:18PM -0300, Jonatas Rech wrote:
+        spin_lock_irq(&spidev->spi_lock);
+        if (spidev->spi == NULL)
+                status = -ESHUTDOWN;
+        else
+                status = spi_async(spidev->spi, message);
+        spin_unlock_irq(&spidev->spi_lock);
 
-> Furthermore, this correction has exposed an inconsistency in the
-> protocol driver <-> controller driver interaction. The spi-fsl-espi
-> driver artificially inserts TX bytes when message fragmentation is
-> necessary (due to SPCOM_TRANLEN_MAX) instead of informing the
-> protocol driver of the hardware limitation. This was tested with the
-> m25p80 NOR flash protocol driver. Since fixing this issue may cause
-> other client drivers to malfunction, it was left as is.
+        if (status == 0) {
+                wait_for_completion(&done);
+                status = message->status;
+                if (status == 0)
+                        status = message->actual_length;
+        }
+        return status;
+}
 
-Sorry, you're saying that the driver is sending more data than it's
-being asked to in some situations?  That is a *very* serious bug in both
-this driver and any other driver which relies on (as opposed to merely
-tolerates) this behaviour.  If that is the case it really needs to be
-fixed fairly urgently.
+As this code is from 2008 the situation may be different
+now and we can use spi_sync instead?
+
+Maybe a patch along the following lines:
+static ssize_t
+spidev_sync(struct spidev_data *spidev, struct spi_message *message)
+{
+        DECLARE_COMPLETION_ONSTACK(done);
+        int status;
+	struct spi_device *spi;
+
+        spin_lock_irq(&spidev->spi_lock);
+	spi = spidev->spi;
+        spin_unlock_irq(&spidev->spi_lock);
+
+	if (!spi)
+		return -ESHUTDOWN;
+	
+	status = spi_sync(spi, message);
+
+	if (!status)
+		status = message->actual_length;
+
+        return status;
+}
+
+would be a working solution, but then I am unsure about the reason why
+this locking is in place.
+
+So I just want to point out that this may be a candidate for
+improvement.
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

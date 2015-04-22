@@ -1,64 +1,54 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: fsl-espi: fix behaviour for full-duplex xfers
-Date: Wed, 22 Apr 2015 20:57:46 +0100
-Message-ID: <20150422195746.GM22845@sirena.org.uk>
-References: <1429111398-21444-1-git-send-email-jonatas.rech@datacom.ind.br>
- <20150418125556.GR26185@sirena.org.uk>
- <363371145.339730.1429715343024.JavaMail.zimbra@datacom.ind.br>
+From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Subject: Re: [PATCH v2] spi: fsl-spi: use of_iomap() to map parameter ram on CPM1
+Date: Wed, 22 Apr 2015 22:46:05 +0200
+Message-ID: <CAOiHx==hwBGsYwT6MFV-ur=wnnUmqw_GF7sN8KOwUho3fz5uew@mail.gmail.com>
+References: <20150422141721.D3F8C1A242E@localhost.localdomain>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="S4au6D4xuhGIk15i"
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: "DATACOM - Jonatas.Rech" <jonatas.rech@datacom.ind.br>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <363371145.339730.1429715343024.JavaMail.zimbra@datacom.ind.br>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Christophe Leroy <christophe.leroy-GgN8y9CXRhA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150422141721.D3F8C1A242E-bi+AKbBUZKY6gyzm1THtWbp2dZbC/Bob@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
+
+Hi Christophe,
+
+On Wed, Apr 22, 2015 at 4:17 PM, Christophe Leroy
+<christophe.leroy-GgN8y9CXRhA@public.gmane.org> wrote:
+> On CPM2, the SPI parameter RAM is dynamically allocated in the
+> dualport RAM whereas in CPM1, it is statically allocated to a default
+> address with capability to relocate it somewhere else via the use of
+> CPM micropatch. The address of the parameter RAM is given by the boot
+> loader and expected to be mapped via of_iomap()
+>
+> In the current implementation, in function fsl_spi_cpm_get_pram()
+> there is a confusion between the SPI_BASE register and the base of the
+> SPI parameter RAM. Fortunatly, it is working properly with MPC866 and
+> MPC885 because they do set SPI_BASE, but on MPC860 and other old
+> MPC8xx that doesn't set SPI_BASE, pram_ofs is not properly set.
+> Also, the parameter RAM is not properly mapped with of_iomap() as it
+> should but still gets accessible by chance through the full RAM which
+> is mapped from somewhere else.
+>
+> This patch applies to the SPI driver the same principle as for the
+> CPM UART: when the CPM is of type CPM1, we simply do an of_iomap() of
+> the area provided via the device tree.
+>
+> Signed-off-by: Christophe Leroy <christophe.leroy-GgN8y9CXRhA@public.gmane.org>
+>
+> ---
+>  v2: Use devm_ioremap_resource() instead of_iomap()
+
+Your subject and commitlog still talk about using of_iomap(), you need
+to update them too.
 
 
---S4au6D4xuhGIk15i
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Wed, Apr 22, 2015 at 12:09:03PM -0300, DATACOM - Jonatas.Rech wrote:
-
-Don't top post (context is important for people to know what you are
-talking about) and please fix your mailer to word wrap within
-paragraphs so your mail can be read and replied to more readily.
-
-> The m25p80 driver can send down a message that's bigger than the
-> amount the spi-fsl-espi driver can handle in a single espi_transfer
-> (64KiB), when the application wants to read the whole memory content,
-> for instance. In this case, the Freescale driver splits the message in
-> 64KiB chunks, adding a "Read the next 64KiB" command in the TX buffer
-> so the flash memory can output data from the expected offset. In the
-> end, the m25p80 driver sees all the data as one big rx_buf, as it
-> expected in the first place.
-
-This is completely broken.
-
-> Unfortunately, I don't know how many protocol drivers currently rely
-> on this, or even how other controller drivers deal with this expected
-> behavior.
-
-This is not expected behaviour for anything and should be fixed
-urgently.
-
---S4au6D4xuhGIk15i
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVN/06AAoJECTWi3JdVIfQE5kH/i4hIyw4PkGuPj8V3tIZGwW8
-J/W1oAqKvVAnQ/jo8Misj1asgi7Zrp2Hq1xbAzPsdPAoLgOTF8MCB7NS+ReY4/wo
-U+svp4sh0eEt4FuZQFBUMTOz5z1DUBIXjzn5G6J9UAZuiVXH88pf0/ofKrsgYYO+
-WPzODwr9P0RvJNc/6+cuJYYRzmppKQEEF00t7wLxSGaL3Oc4Pe6f1VrH5f092KVZ
-z4xw7TU5SLCB5zinQ0JXG8AG6CTmeRqv0CrQhmEAdZAMSbwBN7OWCAEXloPF7K7q
-fulPV5Gt1YOs9fpXpdrKf5dmidWgBGTrKd8Dnup0m+O1cYs9kUqb/etBHwXSs8c=
-=S+Tc
------END PGP SIGNATURE-----
-
---S4au6D4xuhGIk15i--
+Regards
+Jonas
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,52 +1,55 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3] spi: fsl-spi: use devm_ioremap_resource() to map
- parameter ram on CPM1
-Date: Wed, 22 Apr 2015 20:46:55 +0100
-Message-ID: <20150422194655.GJ22845@sirena.org.uk>
-References: <20150422142820.4267B1A242E@localhost.localdomain>
+Subject: Re: [PATCH] spi: bcm2835: fallback to interrupt for polling timeouts
+ exceeding 2 jiffies
+Date: Wed, 22 Apr 2015 20:50:45 +0100
+Message-ID: <20150422195045.GL22845@sirena.org.uk>
+References: <E9247B42-11B6-4032-A6C1-1FCEA3EDA2A6@martin.sperl.org>
+ <1429687984-7350-1-git-send-email-kernel@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="LkBseQZEL/3d2JPd"
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Christophe Leroy <christophe.leroy-GgN8y9CXRhA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="RnxXMyWEPIZsopkG"
+Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20150422142820.4267B1A242E-bi+AKbBUZKY6gyzm1THtWbp2dZbC/Bob@public.gmane.org>
+In-Reply-To: <1429687984-7350-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---LkBseQZEL/3d2JPd
+--RnxXMyWEPIZsopkG
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 22, 2015 at 04:28:20PM +0200, Christophe Leroy wrote:
-> On CPM2, the SPI parameter RAM is dynamically allocated in the
-> dualport RAM whereas in CPM1, it is statically allocated to a default
-> address with capability to relocate it somewhere else via the use of
-> CPM micropatch. The address of the parameter RAM is given by the boot
-> loader and expected to be mapped via devm_ioremap_resource()
+On Wed, Apr 22, 2015 at 07:33:03AM +0000, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
+> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+>=20
+> The polling mode of the driver is designed for transfers that run
+> less than 30us - it will only execute under those circumstances.
+> So it should run comfortably without getting interrupted by the
+> scheduler.
 
 Applied, thanks.
 
---LkBseQZEL/3d2JPd
+--RnxXMyWEPIZsopkG
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVN/quAAoJECTWi3JdVIfQ0yQH/2DJ9S8GfJwPwo8ruC+0YONd
-SroWJBoDjaXQs8IdvGag/sge4We8f4OAC8gSef3wS/IVp45IHiEH5wzRKiO52Mey
-GObMbcLhwX3ASMF5h4wIIV7C4G5sSkam/9awUZghlUNV8m+3dhc1gBmpgYAIwldp
-mDv53gkJLt7bC+0vYmIU2Iuyf7z0bEODVuICsuPEes5GRsWCwELnIQ0aOIOq5GAc
-kAaV56UV69E2/eXeGpq7O4fcwENe0uDFgt7dzzQK8lXO0GYbTk/c8+nY1oCA2Hsk
-pj18A+AsFnKbaNpSMvNB4B05mi9gAyZqaMR7KQfty9BJX0oM1f4iKW+g+wj8RwE=
-=Yt/f
+iQEcBAEBCAAGBQJVN/uUAAoJECTWi3JdVIfQnI0H/2odGbssDOjl/c1D1dq3FW6t
+d4MB3wBgFS4LN4iwSwt507Jaj1aMbEkI6K1gESX3YouVGMchBwSaALfu0Jsy6jrN
+8bwYNj6XaFOVF6RjhosRqmU7Ct56JfNLL6x6N1ZTz102R40FX9ShbE021RGid4TH
+u+jcaCoTmmGh1vf33VvKJjqxoG+sSGnZp1XU68c8mjVRi/t4BBmXrfS08wQ+g2Ok
+5bHR+ITenAl41UIptTRZBXDxJxyIP/KxEm03EyFsyahT0jgTrNZzy9vd9qgR5Zo9
+F8U1muTa2CC9XkAfKM8e257o99P3LJ3+bFwkLl3NnxvTuHuSIszvAjDgXj0E1Ik=
+=wmKa
 -----END PGP SIGNATURE-----
 
---LkBseQZEL/3d2JPd--
+--RnxXMyWEPIZsopkG--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

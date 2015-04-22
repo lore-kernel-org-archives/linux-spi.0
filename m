@@ -1,123 +1,56 @@
-From: Fionn Cleary <clearyf-/Zw1syy4LHg@public.gmane.org>
-Subject: [PATCH] spi/omap2-mcpsi: Always call spi_finalize_current_message()
-Date: Wed, 22 Apr 2015 15:39:56 +0200
-Message-ID: <87vbgo2ser.fsf@tcd.ie>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi/omap2-mcpsi: Always call
+ spi_finalize_current_message()
+Date: Wed, 22 Apr 2015 15:11:39 +0100
+Message-ID: <20150422141139.GX22845@sirena.org.uk>
+References: <87vbgo2ser.fsf@tcd.ie>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="=-=-="
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="XiX5sJQOWZsNRXst"
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: broonie-GFdadSzt00ze9xe1eoZjHA@public.gmane.org
+To: Fionn Cleary <clearyf-/Zw1syy4LHg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <87vbgo2ser.fsf-/Zw1syy4LHg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
---=-=-=
-Content-Type: multipart/signed; boundary="==-=-=";
-	micalg=pgp-sha1; protocol="application/pgp-signature"
 
---==-=-=
-Content-Type: text/plain
+--XiX5sJQOWZsNRXst
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Wed, Apr 22, 2015 at 03:39:56PM +0200, Fionn Cleary wrote:
+> Hi,
+>=20
+> While testing the omap2-mcspi driver I discovered that triggering the
+> error conditions in omap2_mcspi_transfer_one_message() will result in
+> the queue for the bus locking up while waiting for
+> spi_finalize_current_message().  This patch ensure that
+> spi_finalize_current_message() is always called for all error conditions
+> in omap2_mcspi_transfer_one_message().
 
-While testing the omap2-mcspi driver I discovered that triggering the
-error conditions in omap2_mcspi_transfer_one_message() will result in
-the queue for the bus locking up while waiting for
-spi_finalize_current_message().  This patch ensure that
-spi_finalize_current_message() is always called for all error conditions
-in omap2_mcspi_transfer_one_message().
+Please follow the patch submission process covered in SubmittingPatches
+- please send to the maintainer and send in the format covered there.
 
-Regards,
-Fionn
-
---==-=-=
+--XiX5sJQOWZsNRXst
 Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
+Version: GnuPG v2
 
-iQIcBAEBAgAGBQJVN6SsAAoJEDmlvs+cFU0LiLkP/jTznyklmofioXoW+ziKEr4d
-OKjpsiP6q1D6gRGDuX7dbc2bDzLBD4A7cbcCOKW2Yml5dkIrSWN5tdWi31eb8fgD
-FMBzWx4kvYG3JswMyMQufq7Ch8kbwfnp0riPsKoeZR+aAB2hVEpbyBBrS6usufOt
-4xoSGPKpLW1PJdXhWdeH+P71BtMdBmTbLHoAytrBI1hfe1J6vxJMATw7Ica0jJUV
-xJnABwmCCakuxxgoUwTMKrfXIuRAn08HQXBZsh81JNI4vTnp+5a/Cre2Qjuh8YPp
-Q6KFTM0KelMau5o5IV5/i1NcPqM1auih+co6OMp9p57+lrGmQHlxM5UEzDFufZH8
-ENDr4vuHgBo2Gq9rN7qsWAAJ1pCt9TlCM/5/bsdwYVBLtdJW2p1ixfGCuwF7Ccwj
-haDMWmtEA1nzfi2a+2Fje7hQRs8q0z55mj0cPNgKswIot43JtSBtSHlzaGPvy1SG
-oMXWTL6wlV13pHh0+2FnxbvSUlZdKEnJZ72PDTU8TdzcQ1STkfCj/9axViwj9lS7
-BU2HbuCOQrFIB8ZSL0/BwgQ0dn/n6zaYXOikROZhp7o+Yu4iu9e/WnytBLGRWzE0
-OmEqrXWhcQCieoOfwygVJK//6Bwh9MY1RvLWu48Tk2Q9W1UwT1d45xjf1oIKYwUW
-TijlUC1Nn4RUx3tOwjq2
-=iOtE
+iQEcBAEBCAAGBQJVN6waAAoJECTWi3JdVIfQ8JgH/RTlXbLUl6cXEePBHJsCY+4n
+9qeb7xEuB8DJi3gvYvFetpaABYcbetBfmhNaGX5iu4Ut/Swqcj1Vv0d6zmDOMX2e
+h6C0w4O1Azhn7PvBC9siD/jvs4swO1wWzwZ4id6WP+QIys0sjZT8CJdkb0NZJKHh
+yhaEy7UhO/g02aKn9Hqi6iRE+fArg1cgtyLW8eqtwEnWeK4uia0/+GIEmkwY9WDL
+o2kR8G1a46tEJPZ/fCMIfCobtTeeRX6nsXs+89ApG/3WQvXPRDDzTFX5BLgRSp9A
+6c/BcXShIRhncS9ZNuubI6ki0KHJvSLquCMS8jLdXQGRK/tCj/k8T6PcRZ9Zx5o=
+=B0mG
 -----END PGP SIGNATURE-----
---==-=-=--
 
---=-=-=
-Content-Type: text/x-diff
-Content-Disposition: inline;
- filename=0001-spi-omap2-mcpsi-Always-call-spi_finalize_current_mess.patch
-
->From 2ec7ba94e9045a78de14192690134fc3d53c38f0 Mon Sep 17 00:00:00 2001
-From: Fionn Cleary <fionn.cleary-6oiIBCxl0MMjD8S081q9vkEOCMrvLtNR@public.gmane.org>
-Date: Wed, 22 Apr 2015 13:40:53 +0200
-Subject: [PATCH] spi/omap2-mcpsi: Always call spi_finalize_current_message()
-
-The spi queue waits forever for spi_finalize_current_message() to be
-called, blocking the bus.  Ensure that all error paths from
-omap2_mcspi_transfer_one_message() call spi_finalize_current_message().
-
-Signed-off-by: Fionn Cleary <fionn.cleary-6oiIBCxl0MMjD8S081q9vkEOCMrvLtNR@public.gmane.org>
----
- drivers/spi/spi-omap2-mcspi.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 3bc3cba..4acce76 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1234,7 +1234,8 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
- 					tx_buf ? "tx" : "",
- 					rx_buf ? "rx" : "",
- 					t->bits_per_word);
--			return -EINVAL;
-+			m->status = -EINVAL;
-+			goto out;
- 		}
- 
- 		if (m->is_dma_mapped || len < DMA_MIN_BYTES)
-@@ -1246,7 +1247,8 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
- 			if (dma_mapping_error(mcspi->dev, t->tx_dma)) {
- 				dev_dbg(mcspi->dev, "dma %cX %d bytes error\n",
- 						'T', len);
--				return -EINVAL;
-+				m->status = -EINVAL;
-+				goto out;
- 			}
- 		}
- 		if (mcspi_dma->dma_rx && rx_buf != NULL) {
-@@ -1258,14 +1260,16 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
- 				if (tx_buf != NULL)
- 					dma_unmap_single(mcspi->dev, t->tx_dma,
- 							len, DMA_TO_DEVICE);
--				return -EINVAL;
-+				m->status = -EINVAL;
-+				goto out;
- 			}
- 		}
- 	}
- 
- 	omap2_mcspi_work(mcspi, m);
-+out:
- 	spi_finalize_current_message(master);
--	return 0;
-+	return m->status;
- }
- 
- static int omap2_mcspi_master_setup(struct omap2_mcspi *mcspi)
--- 
-1.9.1
-
-
---=-=-=--
+--XiX5sJQOWZsNRXst--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

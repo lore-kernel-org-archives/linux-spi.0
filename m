@@ -1,50 +1,52 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: spidev and the use of spi_async instead of spi_sync
-Date: Wed, 22 Apr 2015 20:41:33 +0100
-Message-ID: <20150422194133.GI22845@sirena.org.uk>
-References: <AED5BFFC-FF25-4699-9534-AAB3AE285021@martin.sperl.org>
+Subject: Re: [PATCH v3] spi: fsl-spi: use devm_ioremap_resource() to map
+ parameter ram on CPM1
+Date: Wed, 22 Apr 2015 20:46:55 +0100
+Message-ID: <20150422194655.GJ22845@sirena.org.uk>
+References: <20150422142820.4267B1A242E@localhost.localdomain>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="aJFFgG5QZHt5jcrP"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="LkBseQZEL/3d2JPd"
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Christophe Leroy <christophe.leroy-GgN8y9CXRhA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <AED5BFFC-FF25-4699-9534-AAB3AE285021-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <20150422142820.4267B1A242E-bi+AKbBUZKY6gyzm1THtWbp2dZbC/Bob@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---aJFFgG5QZHt5jcrP
+--LkBseQZEL/3d2JPd
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Apr 22, 2015 at 05:55:44PM +0200, Martin Sperl wrote:
+On Wed, Apr 22, 2015 at 04:28:20PM +0200, Christophe Leroy wrote:
+> On CPM2, the SPI parameter RAM is dynamically allocated in the
+> dualport RAM whereas in CPM1, it is statically allocated to a default
+> address with capability to relocate it somewhere else via the use of
+> CPM micropatch. The address of the parameter RAM is given by the boot
+> loader and expected to be mapped via devm_ioremap_resource()
 
-> As this code is from 2008 the situation may be different
-> now and we can use spi_sync instead?
+Applied, thanks.
 
-Yes, that seems sensible.  I can't think of any reason why it shouldn't
-have done that in the first place.  For things like this please just
-provide a patch directly, it's much quicker and easier.
-
---aJFFgG5QZHt5jcrP
+--LkBseQZEL/3d2JPd
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVN/lsAAoJECTWi3JdVIfQ0nkH/18ffDLCKJURYyt1EvyKTIKM
-LYWSS2aGASXtg2ZOIMW2as2xwT1d0rXxJFpDNK5LQ8VTfO8qDwkTYDHS4NDyAGUG
-N0VMY9BObHf7nyhldT37roVTW6W94uuSJbf0FuWKv1dZu9OW7lG+4VDRl8FXHEom
-klc/md3whiBIgLBwJGapo8JJnqbBiwsyp2c7mnGGfD5d2W3EE5relYSj+ogwlsYp
-P9Lp4uuEutrfRz3AOvjFjJjrhb0ZVc4iHvGWWLgy+VuR7dzHMDroJdNWIvaBdUIt
-tr5fSl7J19/XTJt3kPX9H2+Z+yPBODpcrzRpBHtFFtQzeqkhR2t/I0P59PLmqNM=
-=Axid
+iQEcBAEBCAAGBQJVN/quAAoJECTWi3JdVIfQ0yQH/2DJ9S8GfJwPwo8ruC+0YONd
+SroWJBoDjaXQs8IdvGag/sge4We8f4OAC8gSef3wS/IVp45IHiEH5wzRKiO52Mey
+GObMbcLhwX3ASMF5h4wIIV7C4G5sSkam/9awUZghlUNV8m+3dhc1gBmpgYAIwldp
+mDv53gkJLt7bC+0vYmIU2Iuyf7z0bEODVuICsuPEes5GRsWCwELnIQ0aOIOq5GAc
+kAaV56UV69E2/eXeGpq7O4fcwENe0uDFgt7dzzQK8lXO0GYbTk/c8+nY1oCA2Hsk
+pj18A+AsFnKbaNpSMvNB4B05mi9gAyZqaMR7KQfty9BJX0oM1f4iKW+g+wj8RwE=
+=Yt/f
 -----END PGP SIGNATURE-----
 
---aJFFgG5QZHt5jcrP--
+--LkBseQZEL/3d2JPd--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,57 +1,80 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH] spi: spidev: Warn loudly if instantiated from DT as "spidev"
-Date: Thu, 23 Apr 2015 09:45:16 +0200
-Message-ID: <CAMuHMdW5hgB7vFmMc6TRqJ2wwWZ0=S+OKdQQoucXakoSnVixtw@mail.gmail.com>
-References: <1427499742-26916-1-git-send-email-broonie@kernel.org>
-	<7C2BEBF5-5169-4804-A7B8-DBCE2E9E8C70@martin.sperl.org>
-	<CAMuHMdUv0z=VOec+JbbRBeM9fg2TvQgRX4GefVbOZDoQoOECQQ@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
+Subject: [PATCH] spi: spidev: use spi_sync instead of spi_async
+Date: Thu, 23 Apr 2015 07:56:01 +0000
+Message-ID: <1429775761-3149-1-git-send-email-kernel@martin.sperl.org>
+References: <20150422194133.GI22845@sirena.org.uk>
+Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAMuHMdUv0z=VOec+JbbRBeM9fg2TvQgRX4GefVbOZDoQoOECQQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20150422194133.GI22845-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Apr 23, 2015 at 9:42 AM, Geert Uytterhoeven
-<geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org> wrote:
->> Note that on a raspberry pi the 2 SPI devices are by default configu=
-red
->> as spidev and only overlays would change the settings to a different
->> alias. So this change will impact that default immediately.
->>
->> Thus I wonder if it is wise to produce potential =E2=80=9Csupport is=
-sues" for
->> distributions triggered by this patch.
->
-> So what you need is a way to handover from generic spidev to a device=
--specific
-> driver, cfr. what graphics drivers do when the device has been bound =
-to by
-> vesafb or simplefb.
->
-> Could this be implemented in a generic way in the spi or DT code?
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-I guess this has been suggested before: the spi core could provide spid=
-ev
-access to all spi client devices which are not bound by a driver?
+This has the benefit that the "optimization" of the framework in regards
+to spi_sync will also benefit spidev users directly and allow running
+spi transfers without a necessary context-switch to message-pump.
 
-Gr{oetje,eeting}s,
+Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+---
+ drivers/spi/spidev.c |   30 +++++++++---------------------
+ 1 file changed, 9 insertions(+), 21 deletions(-)
 
-                        Geert
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 92c909e..b00ae96 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -95,37 +95,25 @@ MODULE_PARM_DESC(bufsiz, "data bytes in biggest supported SPI message");
+ 
+ /*-------------------------------------------------------------------------*/
+ 
+-/*
+- * We can't use the standard synchronous wrappers for file I/O; we
+- * need to protect against async removal of the underlying spi_device.
+- */
+-static void spidev_complete(void *arg)
+-{
+-	complete(arg);
+-}
+-
+ static ssize_t
+ spidev_sync(struct spidev_data *spidev, struct spi_message *message)
+ {
+ 	DECLARE_COMPLETION_ONSTACK(done);
+ 	int status;
+-
+-	message->complete = spidev_complete;
+-	message->context = &done;
++	struct spi_device *spi;
+ 
+ 	spin_lock_irq(&spidev->spi_lock);
+-	if (spidev->spi == NULL)
++	spi = spidev->spi;
++	spin_unlock_irq(&spidev->spi_lock);
++
++	if (spi == NULL)
+ 		status = -ESHUTDOWN;
+ 	else
+-		status = spi_async(spidev->spi, message);
+-	spin_unlock_irq(&spidev->spi_lock);
++		status = spi_sync(spi, message);
++
++	if (status == 0)
++		status = message->actual_length;
+ 
+-	if (status == 0) {
+-		wait_for_completion(&done);
+-		status = message->status;
+-		if (status == 0)
+-			status = message->actual_length;
+-	}
+ 	return status;
+ }
+ 
+-- 
+1.7.10.4
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-=
-m68k.org
-
-In personal conversations with technical people, I call myself a hacker=
-=2E But
-when I'm talking to journalists I just say "programmer" or something li=
-ke that.
-                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

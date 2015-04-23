@@ -1,57 +1,82 @@
-From: Jonatas Rech <jonatas.rech-rCUF4CxDseZknzVnJbg3IA@public.gmane.org>
-Subject: Re: [PATCH] spi: fsl-espi: fix behaviour for full-duplex xfers
-Date: Thu, 23 Apr 2015 15:06:22 -0300
-Message-ID: <20150423180622.GC12637@datacom.ind.br>
-References: <1429111398-21444-1-git-send-email-jonatas.rech@datacom.ind.br>
- <20150418125556.GR26185@sirena.org.uk>
- <363371145.339730.1429715343024.JavaMail.zimbra@datacom.ind.br>
- <20150422195746.GM22845@sirena.org.uk>
+From: Fionn Cleary <clearyf-/Zw1syy4LHg@public.gmane.org>
+Subject: [PATCH] spi/omap2-mcpsi: Always call spi_finalize_current_message()
+Date: Thu, 23 Apr 2015 21:13:40 +0200
+Message-ID: <87h9s63bff.fsf@tcd.ie>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20150422195746.GM22845-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Apr 22, 2015 at 08:57:46PM +0100, Mark Brown wrote:
-> On Wed, Apr 22, 2015 at 12:09:03PM -0300, DATACOM - Jonatas.Rech wrote:
-> 
-> Don't top post (context is important for people to know what you are
-> talking about) and please fix your mailer to word wrap within
-> paragraphs so your mail can be read and replied to more readily.
-> 
+The spi queue waits forever for spi_finalize_current_message() to be
+called, blocking the bus.  Ensure that all error paths from
+omap2_mcspi_transfer_one_message() call spi_finalize_current_message().
 
-I'm sorry for that, thanks for the heads-up.
+Signed-off-by: Fionn Cleary <fionn.cleary-6oiIBCxl0MMjD8S081q9vkEOCMrvLtNR@public.gmane.org>
+---
+ drivers/spi/spi-omap2-mcspi.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-> > The m25p80 driver can send down a message that's bigger than the
-> > amount the spi-fsl-espi driver can handle in a single espi_transfer
-> > (64KiB), when the application wants to read the whole memory content,
-> > for instance. In this case, the Freescale driver splits the message in
-> > 64KiB chunks, adding a "Read the next 64KiB" command in the TX buffer
-> > so the flash memory can output data from the expected offset. In the
-> > end, the m25p80 driver sees all the data as one big rx_buf, as it
-> > expected in the first place.
-> 
-> This is completely broken.
-> 
-> > Unfortunately, I don't know how many protocol drivers currently rely
-> > on this, or even how other controller drivers deal with this expected
-> > behavior.
-> 
-> This is not expected behaviour for anything and should be fixed
-> urgently.
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 102cff5..f7b13e1 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -1216,6 +1216,7 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
+ 	struct omap2_mcspi	*mcspi;
+ 	struct omap2_mcspi_dma	*mcspi_dma;
+ 	struct spi_transfer	*t;
++	int status;
+ 
+ 	spi = m->spi;
+ 	mcspi = spi_master_get_devdata(master);
+@@ -1235,7 +1236,8 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
+ 					tx_buf ? "tx" : "",
+ 					rx_buf ? "rx" : "",
+ 					t->bits_per_word);
+-			return -EINVAL;
++			status = -EINVAL;
++			goto out;
+ 		}
+ 
+ 		if (m->is_dma_mapped || len < DMA_MIN_BYTES)
+@@ -1247,7 +1249,8 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
+ 			if (dma_mapping_error(mcspi->dev, t->tx_dma)) {
+ 				dev_dbg(mcspi->dev, "dma %cX %d bytes error\n",
+ 						'T', len);
+-				return -EINVAL;
++				status = -EINVAL;
++				goto out;
+ 			}
+ 		}
+ 		if (mcspi_dma->dma_rx && rx_buf != NULL) {
+@@ -1259,14 +1262,19 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
+ 				if (tx_buf != NULL)
+ 					dma_unmap_single(mcspi->dev, t->tx_dma,
+ 							len, DMA_TO_DEVICE);
+-				return -EINVAL;
++				status = -EINVAL;
++				goto out;
+ 			}
+ 		}
+ 	}
+ 
+ 	omap2_mcspi_work(mcspi, m);
++	/* spi_finalize_current_message() changes the status inside the
++	 * spi_message, save the status here. */
++	status = m->status;
++out:
+ 	spi_finalize_current_message(master);
+-	return 0;
++	return status;
+ }
+ 
+ static int omap2_mcspi_master_setup(struct omap2_mcspi *mcspi)
+-- 
+1.9.1
 
-I agree, but please note that this came up while I was trying to fix the
-full-duplex functionality, and it's a different problem. Fixing this would
-impact protocol drivers, as stated earlier. It would take some time for me to
-study other drivers and come up with the best solution for this driver plus
-(at least) the m25p80, which supports the hardware I currently have access to.
 
-I know this must be fixed, but wouldn't it be subject to a different patch?
-Thanks in advance for the advice.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

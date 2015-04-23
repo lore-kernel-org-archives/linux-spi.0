@@ -1,52 +1,55 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: spidev: use spi_sync instead of spi_async
-Date: Thu, 23 Apr 2015 10:34:31 +0100
-Message-ID: <20150423093431.GR22845@sirena.org.uk>
-References: <20150422194133.GI22845@sirena.org.uk>
- <1429775761-3149-1-git-send-email-kernel@martin.sperl.org>
+Subject: Re: [PATCH] spi: spidev: Warn loudly if instantiated from DT as
+ "spidev"
+Date: Thu, 23 Apr 2015 11:36:52 +0100
+Message-ID: <20150423103652.GT22845@sirena.org.uk>
+References: <1427499742-26916-1-git-send-email-broonie@kernel.org>
+ <7C2BEBF5-5169-4804-A7B8-DBCE2E9E8C70@martin.sperl.org>
+ <CAMuHMdUv0z=VOec+JbbRBeM9fg2TvQgRX4GefVbOZDoQoOECQQ@mail.gmail.com>
+ <CAMuHMdW5hgB7vFmMc6TRqJ2wwWZ0=S+OKdQQoucXakoSnVixtw@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="LZ92CUgs0ha736zO"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
+	protocol="application/pgp-signature"; boundary="EEDXPAtTg2mD7Iri"
+Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1429775761-3149-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <CAMuHMdW5hgB7vFmMc6TRqJ2wwWZ0=S+OKdQQoucXakoSnVixtw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---LZ92CUgs0ha736zO
+--EEDXPAtTg2mD7Iri
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 23, 2015 at 07:56:01AM +0000, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
-> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
->=20
-> This has the benefit that the "optimization" of the framework in regards
-> to spi_sync will also benefit spidev users directly and allow running
-> spi transfers without a necessary context-switch to message-pump.
+On Thu, Apr 23, 2015 at 09:45:16AM +0200, Geert Uytterhoeven wrote:
 
-Applied, thanks.
+> I guess this has been suggested before: the spi core could provide spidev
+> access to all spi client devices which are not bound by a driver?
 
---LZ92CUgs0ha736zO
+I don't know if it's been suggested before, certainly nobody did the
+work to make it happen.  I don't think I have a massive objection in
+principal.
+
+--EEDXPAtTg2mD7Iri
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVOLynAAoJECTWi3JdVIfQzfAH/0HjX64xsB7PisffNXSxo9UQ
-MRYVRxgKr0+DkXzWuMoW1pwAARki264Ome2sDxIid6rrLtJbuIFJQxKBaruU/sjx
-Z40mcrt0gJjP/pAq/dltpodTz/zg2corK9X59wGr+HawGiz+4PygZk8o+OQHNFUq
-diVNKTdnZdQ+y/kW7YnvCTBqLu7rFaYGGC4g9+1t08KedZ1bLFWu2QO22bXfFv4/
-+bQ6ziiID1kc+Gatmc8cEUloijqcIcgJ2qNiwB+wTt329RTCueb4zEflNtorVQt8
-/Kso2h7URMaI4ig2UuoJwqjRHayI5AHO7TGsgWbJ9YQ1sygFXc4mK9Uau+1n5JY=
-=sO/g
+iQEcBAEBCAAGBQJVOMtDAAoJECTWi3JdVIfQvbUH/i+2oZwHdw5omLfxG+zR4J3/
+IcJ38M2Shxr/Ro8M9b6emFLnNHm6SPdu1OjewyTEPlAyrcFBkfQ7ygekNB38lv8E
+FsZiOd4qMjz/+8yyESEOIZrIHSuoVdmibL+wG8XnzyIg7uiVHwVuH9WoFCWLsJBZ
+wrfzN/42s4o68I7q1nkJzP0JiTpyWZ4O9hgcIpKez8wAjr+mfNW/nL4BfFIfQpIM
+2PlCcwFDZvznyUvuUUMsBKXMqL3y9vE1B29dNRL/Oiz7GUnUdBkyPFb67XkcgBjQ
+ddR0upRkjZgDO4GY7FQcoPOhY8rMPQ8K7Nw/USZBnyU8JAWcdJuMrjHc34lmrGA=
+=LZNm
 -----END PGP SIGNATURE-----
 
---LZ92CUgs0ha736zO--
+--EEDXPAtTg2mD7Iri--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,47 +1,35 @@
-From: Christophe Leroy <christophe.leroy-GgN8y9CXRhA@public.gmane.org>
-Subject: [PATCH] spi: fsl-spi: fix devm_ioremap_resource() error case
-Date: Thu, 23 Apr 2015 14:11:47 +0200 (CEST)
-Message-ID: <20150423121147.AFEA31A2439@localhost.localdomain>
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: Re: [PATCH] spi: spidev: Warn loudly if instantiated from DT as "spidev"
+Date: Thu, 23 Apr 2015 15:21:26 +0200
+Message-ID: <5538F1D6.7020503@martin.sperl.org>
+References: <1427499742-26916-1-git-send-email-broonie@kernel.org> <7C2BEBF5-5169-4804-A7B8-DBCE2E9E8C70@martin.sperl.org> <CAMuHMdUv0z=VOec+JbbRBeM9fg2TvQgRX4GefVbOZDoQoOECQQ@mail.gmail.com> <CAMuHMdW5hgB7vFmMc6TRqJ2wwWZ0=S+OKdQQoucXakoSnVixtw@mail.gmail.com> <20150423103652.GT22845@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150423103652.GT22845-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-devm_ioremap_resource() doesn't return NULL but an ERR_PTR on error.
 
-Reported-by: Jonas Gorsky <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Signed-off-by: Christophe Leroy <christophe.leroy-GgN8y9CXRhA@public.gmane.org>
+On 2015-04-23 12:36, Mark Brown wrote:
+> On Thu, Apr 23, 2015 at 09:45:16AM +0200, Geert Uytterhoeven wrote:
+>
+>> I guess this has been suggested before: the spi core could provide spidev
+>> access to all spi client devices which are not bound by a driver?
+>
+> I don't know if it's been suggested before, certainly nobody did the
+> work to make it happen.  I don't think I have a massive objection in
+> principal.
+>
 
----
- drivers/spi/spi-fsl-cpm.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-fsl-cpm.c b/drivers/spi/spi-fsl-cpm.c
-index 4e5c945..1e66644 100644
---- a/drivers/spi/spi-fsl-cpm.c
-+++ b/drivers/spi/spi-fsl-cpm.c
-@@ -305,10 +305,15 @@ int fsl_spi_cpm_init(struct mpc8xxx_spi *mspi)
- 
- 	if (mspi->flags & SPI_CPM1) {
- 		struct resource *res;
-+		void *pram;
- 
- 		res = platform_get_resource(to_platform_device(dev),
- 					    IORESOURCE_MEM, 1);
--		mspi->pram = devm_ioremap_resource(dev, res);
-+		pram = devm_ioremap_resource(dev, res);
-+		if (IS_ERR(pram))
-+			mspi->pram = NULL;
-+		else
-+			mspi->pram = pram;
- 	} else {
- 		unsigned long pram_ofs = fsl_spi_cpm_get_pram(mspi);
- 
--- 
-2.1.0
-
+Maybe until that is fixed keep the warning message but remove the
+WARN_ON(...), which is responsible for the 50+ lines in dmesg which
+looks like a major issue because of the full stack-trace produced
+and not just a "simple" warning...
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

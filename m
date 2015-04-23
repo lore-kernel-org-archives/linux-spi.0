@@ -1,80 +1,91 @@
-From: Fionn Cleary <clearyf-/Zw1syy4LHg@public.gmane.org>
-Subject: [PATCH] spi/omap2-mcpsi: Always call spi_finalize_current_message()
-Date: Thu, 23 Apr 2015 21:13:40 +0200
-Message-ID: <87h9s63bff.fsf@tcd.ie>
-Mime-Version: 1.0
-Content-Type: text/plain
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: Re: [PATCH] spi: spidev: Warn loudly if instantiated from DT as "spidev"
+Date: Thu, 23 Apr 2015 21:23:55 +0200
+Message-ID: <1B291B64-3DF2-4476-B2C4-46013509F453@martin.sperl.org>
+References: <1427499742-26916-1-git-send-email-broonie@kernel.org> <7C2BEBF5-5169-4804-A7B8-DBCE2E9E8C70@martin.sperl.org> <CAMuHMdUv0z=VOec+JbbRBeM9fg2TvQgRX4GefVbOZDoQoOECQQ@mail.gmail.com> <CAMuHMdW5hgB7vFmMc6TRqJ2wwWZ0=S+OKdQQoucXakoSnVixtw@mail.gmail.com> <20150423103652.GT22845@sirena.org.uk> <5538F1D6.7020503@martin.sperl.org> <20150423133622.GV22845@sirena.org.uk> <5538F95A.20203@martin.sperl.org> <20150423181317.GZ22845@sirena.org.uk>
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2098\))
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150423181317.GZ22845-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The spi queue waits forever for spi_finalize_current_message() to be
-called, blocking the bus.  Ensure that all error paths from
-omap2_mcspi_transfer_one_message() call spi_finalize_current_message().
 
-Signed-off-by: Fionn Cleary <fionn.cleary-6oiIBCxl0MMjD8S081q9vkEOCMrvLtNR@public.gmane.org>
----
- drivers/spi/spi-omap2-mcspi.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+> On 23.04.2015, at 20:13, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+>=20
+> As *repeatedly* mentioned before please stop taking things off-list. =
+ I
+> really shouldn't need to remind you of this quite so often, I'm very
+> tempted to start ignoring such messages.
+>=20
+This was NOT my intention and I am really sorry for that.
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 102cff5..f7b13e1 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1216,6 +1216,7 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
- 	struct omap2_mcspi	*mcspi;
- 	struct omap2_mcspi_dma	*mcspi_dma;
- 	struct spi_transfer	*t;
-+	int status;
- 
- 	spi = m->spi;
- 	mcspi = spi_master_get_devdata(master);
-@@ -1235,7 +1236,8 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
- 					tx_buf ? "tx" : "",
- 					rx_buf ? "rx" : "",
- 					t->bits_per_word);
--			return -EINVAL;
-+			status = -EINVAL;
-+			goto out;
- 		}
- 
- 		if (m->is_dma_mapped || len < DMA_MIN_BYTES)
-@@ -1247,7 +1249,8 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
- 			if (dma_mapping_error(mcspi->dev, t->tx_dma)) {
- 				dev_dbg(mcspi->dev, "dma %cX %d bytes error\n",
- 						'T', len);
--				return -EINVAL;
-+				status = -EINVAL;
-+				goto out;
- 			}
- 		}
- 		if (mcspi_dma->dma_rx && rx_buf != NULL) {
-@@ -1259,14 +1262,19 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
- 				if (tx_buf != NULL)
- 					dma_unmap_single(mcspi->dev, t->tx_dma,
- 							len, DMA_TO_DEVICE);
--				return -EINVAL;
-+				status = -EINVAL;
-+				goto out;
- 			}
- 		}
- 	}
- 
- 	omap2_mcspi_work(mcspi, m);
-+	/* spi_finalize_current_message() changes the status inside the
-+	 * spi_message, save the status here. */
-+	status = m->status;
-+out:
- 	spi_finalize_current_message(master);
--	return 0;
-+	return status;
- }
- 
- static int omap2_mcspi_master_setup(struct omap2_mcspi *mcspi)
--- 
-1.9.1
+>> I agree, that we need a long-term solution, but the way it is right =
+now
+>> in for-next/for-linux people think something is broken and will call=
+ it
+>> a regression or maybe an API change (because of a change in behaviou=
+r on
+>> the device-tree).
+>=20
+> The entire point of this change is to make it look like things are
+> broken because they are, in fact, broken.  We continue to support the=
+se
+> systems, we just complain loudly about them.
+
+Essentially you say: let us produce an error-message for some
+situation where there is NO way around making it work without
+an error message.
+
+>> But even with that change proposed to automatically register spidev =
+in
+>> the absence of a dedicated driver, this would basically drive the
+>> distributions for boards like the raspberry pi, beaglebone black or
+>> similar to change:
+>> compatiblity=3D"spidev";
+>> to:
+>> compatiblity=3D"spi,unknown_device";
+>=20
+>> The distribution does not know what people will connect, so they can
+>> not set the "right" value, so they have to use a dummy - and spidev
+>> is the "typical" dummy that works right now.
+>=20
+> The distributions should not be registering any devices at all, they'=
+ve
+> no idea if anything is there in the first place or if spidev is a
+> suitable way of controlling it - it may even be that the pin
+> configuration for SPI is totally unsuitable.  Users should be using
+> device tree overlays to instantiate whatever hardware they have fitte=
+d
+> to their system or there should be some other system which enumerates
+> connected modules (in the rare cases where that's viable), it was the
+> BeagleBone people who started the overlay work in the first place for
+> precisely this reason.
+
+OK, so how should someone deploy a RFM12B device correctly with
+device-tree?
+
+There exists no (official) kernel support, but several user-drivers tha=
+t
+make use of spidev.
+
+If I would define the following in my device-tree (overlay) as per your
+request:
+	compatiblity=3D=E2=80=9Choperf,rfm12b=E2=80=9D;
+
+then (as of now) no spidev would get loaded and I can not use a
+user-space driver that relies on spidev.
+
+Similar for a max187 ADC.
+
+Also note that the "beagle-bone people=E2=80=9D still provide device-tr=
+ees that
+explicitly set up compatiblity=3D=E2=80=9Cspidev=E2=80=9D - I just did =
+a quick check:
+/boot/dtbs/3.19.3-bone4/omap3-ha-lcd.dtb contains spidev.
 
 
 --

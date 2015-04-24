@@ -1,48 +1,47 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v1] spi: Kconfig: Add SOC_LS1021A to SPI_FSL_DSPI
- dependence
-Date: Fri, 24 Apr 2015 13:26:43 +0100
-Message-ID: <20150424122643.GO22845@sirena.org.uk>
-References: <1429872077-5407-1-git-send-email-haikun.wang@freescale.com>
+Subject: Re: [PATCH] spi: fsl-spi: fix devm_ioremap_resource() error case
+Date: Fri, 24 Apr 2015 13:38:26 +0100
+Message-ID: <20150424123826.GP22845@sirena.org.uk>
+References: <20150423121147.AFEA31A2439@localhost.localdomain>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="VnMXLNllzvDy3uAe"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Haikun Wang <haikun.wang-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="477QOTsP+opw3g0q"
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org
+To: Christophe Leroy <christophe.leroy-GgN8y9CXRhA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1429872077-5407-1-git-send-email-haikun.wang-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+In-Reply-To: <20150423121147.AFEA31A2439-bi+AKbBUZKY6gyzm1THtWbp2dZbC/Bob@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---VnMXLNllzvDy3uAe
+--477QOTsP+opw3g0q
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Apr 24, 2015 at 06:41:17PM +0800, Haikun Wang wrote:
-> LS1021A chip also has the DSPI module.
-> Add it to the dependence.
+On Thu, Apr 23, 2015 at 02:11:47PM +0200, Christophe Leroy wrote:
+> devm_ioremap_resource() doesn't return NULL but an ERR_PTR on error.
 
 Applied, thanks.
 
---VnMXLNllzvDy3uAe
+--477QOTsP+opw3g0q
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVOjaDAAoJECTWi3JdVIfQIC4H+gJHWvcGTglhKRxLa42LgPut
-2LwAXkOgrDhBtXnQ0gulH502IGjbyWXXJJKDVJUqTdzMhhVfwP+AnPpTnmlWGuHt
-qGtTmsClt03DsRNoDu3MTfEI1ykZ6Yg38s0wSBzJVesjRsMhNcGUqwaof/I8QyCB
-+BkUN30pte9ykhtTKTACVK9okYsobXWa5xF5gvBWYEgqrrZrtslajc42HubZZ2KV
-j2r5jsZzDcNGtiiv1B895qP4LH7MLLbKvz1yHuYWMm5jiVE3EYtu87T89NlIK2wC
-wFL+GV5TBX6x50VaVcFx9Fra4+avigJ0kzdomZXicOZxlce1OrkEzTaIdqLq7m8=
-=Ml5z
+iQEcBAEBCAAGBQJVOjlCAAoJECTWi3JdVIfQ7fAH/iQdoHinfc/AEHeKe+LNKid4
+pWTzbgxOl5ickly0B6s1KqERvcaSuU2nLqfk1m3P1WRw5MlUmM0ZkPZd9SWkP6jq
+rqWxKsXMRuaItgbv7ftHFB3GeLVFDwm32LZjwj3ONKzoUmSZvNfFgCAU8ijgAVsy
++uPUCFMh+YgJMHQMCzffiuhhNdAgcZ1I9YUb48aO1E3wQdRkPizgcjgVXr3dPDmB
+mG0HvboOe+xSwkJcg2k0BaxZuPwPfykDdQSEJUvR/0CibvUigZwe7/1wnBIJx+ei
+O4tmPhGQPlIMlKODcPCOqz7HtURmw5HYNtqM7qFWIAcgIWNwfn9zNEZ6wG2bruI=
+=gRmh
 -----END PGP SIGNATURE-----
 
---VnMXLNllzvDy3uAe--
+--477QOTsP+opw3g0q--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

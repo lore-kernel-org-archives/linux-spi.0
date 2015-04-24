@@ -1,55 +1,73 @@
-From: Alban Bedel <albeu@free.fr>
-Subject: [PATCH 4/4] spi: spi-ath79: Set the initial state of CS0
-Date: Fri, 24 Apr 2015 16:19:24 +0200
-Message-ID: <1429885164-28501-5-git-send-email-albeu@free.fr>
-References: <1429885164-28501-1-git-send-email-albeu@free.fr>
-Cc: Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Ian Campbell <ijc+devicetree@hellion.org.uk>,
-	Kumar Gala <galak@codeaurora.org>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Mark Brown <broonie@kernel.org>, Alban Bedel <albeu@free.fr>,
-	Gabor Juhos <juhosg@openwrt.org>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-To: linux-spi@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1429885164-28501-1-git-send-email-albeu@free.fr>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Sergei Shtylyov <sergei.shtylyov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH 1/4] devicetree: add binding documentation for the AR7100
+ SPI controller
+Date: Fri, 24 Apr 2015 20:37:38 +0300
+Message-ID: <553A7F62.80108@cogentembedded.com>
+References: <1429885164-28501-1-git-send-email-albeu@free.fr> <1429885164-28501-2-git-send-email-albeu@free.fr>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org
+To: Alban Bedel <albeu-GANU6spQydw@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1429885164-28501-2-git-send-email-albeu-GANU6spQydw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The internal chip select CS0 wasn't initialized properly to work with
-CS HIGH chips.
+Hello.
 
-Signed-off-by: Alban Bedel <albeu@free.fr>
----
- drivers/spi/spi-ath79.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+On 04/24/2015 05:19 PM, Alban Bedel wrote:
 
-diff --git a/drivers/spi/spi-ath79.c b/drivers/spi/spi-ath79.c
-index b37bedd..bf1f9b3 100644
---- a/drivers/spi/spi-ath79.c
-+++ b/drivers/spi/spi-ath79.c
-@@ -115,6 +115,7 @@ static void ath79_spi_disable(struct ath79_spi *sp)
- 
- static int ath79_spi_setup_cs(struct spi_device *spi)
- {
-+	struct ath79_spi *sp = ath79_spidev_to_sp(spi);
- 	int status;
- 
- 	if (spi->chip_select && !gpio_is_valid(spi->cs_gpio))
-@@ -132,6 +133,13 @@ static int ath79_spi_setup_cs(struct spi_device *spi)
- 
- 		status = gpio_request_one(spi->cs_gpio, flags,
- 					  dev_name(&spi->dev));
-+	} else {
-+		if (spi->mode & SPI_CS_HIGH)
-+			sp->ioc_base &= ~AR71XX_SPI_IOC_CS0;
-+		else
-+			sp->ioc_base |= AR71XX_SPI_IOC_CS0;
-+
-+		ath79_spi_wr(sp, AR71XX_SPI_REG_IOC, sp->ioc_base);
- 	}
- 
- 	return status;
--- 
-2.0.0
+> Signed-off-by: Alban Bedel <albeu-GANU6spQydw@public.gmane.org>
+> ---
+>   .../devicetree/bindings/spi/spi-ath79.txt          | 24 ++++++++++++++++++++++
+>   1 file changed, 24 insertions(+)
+>   create mode 100644 Documentation/devicetree/bindings/spi/spi-ath79.txt
+
+> diff --git a/Documentation/devicetree/bindings/spi/spi-ath79.txt b/Documentation/devicetree/bindings/spi/spi-ath79.txt
+> new file mode 100644
+> index 0000000..f1ad9c3
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/spi-ath79.txt
+> @@ -0,0 +1,24 @@
+> +Binding for Qualcomm Atheros AR7xxx/AR9xxx SPI controller
+> +
+> +Required properties:
+> +- compatible: has to be "qca,<soc-type>-spi", "qca,ar7100-spi" as fallback.
+> +- reg: Base address and size of the controllers memory area
+> +- clocks: phandle to the AHB clock.
+
+    s/to/of/?
+
+> +- clock-names: has to be "ahb".
+> +- #address-cells: <1>, as required by generic SPI binding.
+> +- #size-cells: <0>, also as required by generic SPI binding.
+> +
+> +Child nodes as per the generic SPI binding.
+> +
+> +Example:
+> +
+> +	spi@1F000000 {
+
+    All lowercase, please.
+
+> +		compatible = "qca,ar9132-spi", "qca,ar7100-spi";
+> +		reg = <0x1F000000 0x10>;
+
+    Likewise.
+
+[...]
+
+WBR, Sergei
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

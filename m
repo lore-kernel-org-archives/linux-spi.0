@@ -1,60 +1,58 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 0/4] spi: spi-ath79: Devicetree support and misc fixes
-Date: Fri, 24 Apr 2015 18:58:27 +0100
-Message-ID: <20150424175827.GE22845@sirena.org.uk>
-References: <1429885164-28501-1-git-send-email-albeu@free.fr>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi: fsl-espi: fix behaviour for full-duplex xfers
+Date: Fri, 24 Apr 2015 19:17:45 +0100
+Message-ID: <20150424181745.GG22845@sirena.org.uk>
+References: <1429111398-21444-1-git-send-email-jonatas.rech@datacom.ind.br>
+ <20150418125556.GR26185@sirena.org.uk>
+ <363371145.339730.1429715343024.JavaMail.zimbra@datacom.ind.br>
+ <20150422195746.GM22845@sirena.org.uk>
+ <20150423180622.GC12637@datacom.ind.br>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="i528gjSbuG1KhLiw"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
-	Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org
-To: Alban Bedel <albeu-GANU6spQydw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="uIEElZ5lEmatLCfT"
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Jonatas Rech <jonatas.rech@datacom.ind.br>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1429885164-28501-1-git-send-email-albeu-GANU6spQydw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <20150423180622.GC12637@datacom.ind.br>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---i528gjSbuG1KhLiw
+--uIEElZ5lEmatLCfT
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 24, 2015 at 04:19:20PM +0200, Alban Bedel wrote:
-> Hello all,
->=20
-> this serie add a DT support for the ATH79 SPI controller and fix a few
-> trivial bugs. While adding DT support we also remove the unused custom
-> controller data in favor of the generic GPIO based chip select.
+On Thu, Apr 23, 2015 at 03:06:22PM -0300, Jonatas Rech wrote:
 
-Applied, thanks.  Please use subject lines reflecting the style for the
-subsystem.
+> I agree, but please note that this came up while I was trying to fix the
+> full-duplex functionality, and it's a different problem. Fixing this would
+> impact protocol drivers, as stated earlier. It would take some time for me to
+> study other drivers and come up with the best solution for this driver plus
+> (at least) the m25p80, which supports the hardware I currently have access to.
 
---i528gjSbuG1KhLiw
+> I know this must be fixed, but wouldn't it be subject to a different patch?
+> Thanks in advance for the advice.
+
+The commit message says "this correction has exposed an inconsistency"
+which suggests that the problem was masked before this fix.  Did you
+mean to say that while fixing this you noticed a separate bug that's
+present anyway?
+
+--uIEElZ5lEmatLCfT
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVOoRDAAoJECTWi3JdVIfQif0H/0KKbqgnJDCivWhl36IofnCd
-HJ0tD5a71yuw1PM12plvUSuwc7DUAy+OxiyIgdsEQ34KAbPlsIFKIqmLNzfpRCpl
-x6KSl63VRSTfp3trZm6kgT6lzLJyCcq660yUEXMk+WOYjfl14DEscmcMLxWpClNY
-h6ZiAH4wGsJwJRTQmO3rhKMVeVLfGcbZ6iviRLtJSd6SHuvJN03IYz5mOd1LdCvI
-9xcx/Mnjyof5NEPZJvfU59fofz/SzFvMTJp3A08a16buxzf0q8cPBakPoGUd1VGp
-iOtoQkLl7EmSvk/yaFCoJxxu5Bae1OPm6c7+h5yQeQXSkQtTYflqQL4F2oKkns4=
-=evpm
+iQEcBAEBCAAGBQJVOojIAAoJECTWi3JdVIfQ2d8H/RQ3pr1M71aSUqJkwMNnHC5U
+ybabdFShQW8l439+/2QSzdAgaY394E/68E9gOT9BlIkY+ub7iEUrcJ+skh5P+At+
+1qmbRve0/7ya6fZcdPnIBRRY1DOCjn99ni9JA05YvCNRBtb3m11Rkn9ObplPyhoA
++QVKpDgEbCFpOnyX/nxpaAHkzN9EXr+DcSBxnGbBYTUBCRIm1SJ/po55qKTjvPsc
+XGXVirosOeeCtrXmEAbIB4I7cKgwdZl5lXOjX4HSF2ypdq2MNQL+Avj/ZWCyjxtn
+jZh5AhjK9lHBHFgPXdV9XiSXMCwpnlnRSkso8GxmpdbdvZAAN3gmIo+pt+dr0/Y=
+=wpu/
 -----END PGP SIGNATURE-----
 
---i528gjSbuG1KhLiw--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--uIEElZ5lEmatLCfT--

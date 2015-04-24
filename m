@@ -1,7 +1,7 @@
 From: Alban Bedel <albeu@free.fr>
-Subject: [PATCH 3/4] spi: spi-ath79: Use clk_prepare_enable and clk_disable_unprepare
-Date: Fri, 24 Apr 2015 16:19:23 +0200
-Message-ID: <1429885164-28501-4-git-send-email-albeu@free.fr>
+Subject: [PATCH 4/4] spi: spi-ath79: Set the initial state of CS0
+Date: Fri, 24 Apr 2015 16:19:24 +0200
+Message-ID: <1429885164-28501-5-git-send-email-albeu@free.fr>
 References: <1429885164-28501-1-git-send-email-albeu@free.fr>
 Cc: Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
 	Mark Rutland <mark.rutland@arm.com>,
@@ -17,45 +17,39 @@ In-Reply-To: <1429885164-28501-1-git-send-email-albeu@free.fr>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Clocks should be prepared and unprepared, fix this by using
-clk_prepare_enable() and clk_disable_unprepare() instead of
-clk_enable() and clk_disable().
+The internal chip select CS0 wasn't initialized properly to work with
+CS HIGH chips.
 
 Signed-off-by: Alban Bedel <albeu@free.fr>
 ---
- drivers/spi/spi-ath79.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/spi-ath79.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/drivers/spi/spi-ath79.c b/drivers/spi/spi-ath79.c
-index 239bc31..b37bedd 100644
+index b37bedd..bf1f9b3 100644
 --- a/drivers/spi/spi-ath79.c
 +++ b/drivers/spi/spi-ath79.c
-@@ -249,7 +249,7 @@ static int ath79_spi_probe(struct platform_device *pdev)
- 		goto err_put_master;
+@@ -115,6 +115,7 @@ static void ath79_spi_disable(struct ath79_spi *sp)
+ 
+ static int ath79_spi_setup_cs(struct spi_device *spi)
+ {
++	struct ath79_spi *sp = ath79_spidev_to_sp(spi);
+ 	int status;
+ 
+ 	if (spi->chip_select && !gpio_is_valid(spi->cs_gpio))
+@@ -132,6 +133,13 @@ static int ath79_spi_setup_cs(struct spi_device *spi)
+ 
+ 		status = gpio_request_one(spi->cs_gpio, flags,
+ 					  dev_name(&spi->dev));
++	} else {
++		if (spi->mode & SPI_CS_HIGH)
++			sp->ioc_base &= ~AR71XX_SPI_IOC_CS0;
++		else
++			sp->ioc_base |= AR71XX_SPI_IOC_CS0;
++
++		ath79_spi_wr(sp, AR71XX_SPI_REG_IOC, sp->ioc_base);
  	}
  
--	ret = clk_enable(sp->clk);
-+	ret = clk_prepare_enable(sp->clk);
- 	if (ret)
- 		goto err_put_master;
- 
-@@ -273,7 +273,7 @@ static int ath79_spi_probe(struct platform_device *pdev)
- err_disable:
- 	ath79_spi_disable(sp);
- err_clk_disable:
--	clk_disable(sp->clk);
-+	clk_disable_unprepare(sp->clk);
- err_put_master:
- 	spi_master_put(sp->bitbang.master);
- 
-@@ -286,7 +286,7 @@ static int ath79_spi_remove(struct platform_device *pdev)
- 
- 	spi_bitbang_stop(&sp->bitbang);
- 	ath79_spi_disable(sp);
--	clk_disable(sp->clk);
-+	clk_disable_unprepare(sp->clk);
- 	spi_master_put(sp->bitbang.master);
- 
- 	return 0;
+ 	return status;
 -- 
 2.0.0

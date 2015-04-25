@@ -1,62 +1,57 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: fsl-espi: fix behaviour for full-duplex xfers
-Date: Sat, 25 Apr 2015 14:01:24 +0100
-Message-ID: <20150425130124.GF31708@sirena.org.uk>
-References: <1429111398-21444-1-git-send-email-jonatas.rech@datacom.ind.br>
- <20150418125556.GR26185@sirena.org.uk>
- <363371145.339730.1429715343024.JavaMail.zimbra@datacom.ind.br>
- <20150422195746.GM22845@sirena.org.uk>
- <20150423180622.GC12637@datacom.ind.br>
- <20150424181745.GG22845@sirena.org.uk>
- <20150424200326.GA14443@datacom.ind.br>
+From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 3/3] ARM: sunxi: spi: use proper errno when
+ message is too long.
+Date: Sat, 25 Apr 2015 21:21:07 +0200
+Message-ID: <4c27d44b2bdd759424ce4a4b2e8f6abf5d5a6735.1430034797.git.hramrach@gmail.com>
+References: <cover.1430034797.git.hramrach@gmail.com>
+Reply-To: hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="XIiC+We3v3zHqZ6Z"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jonatas Rech <jonatas.rech-rCUF4CxDseZknzVnJbg3IA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20150424200326.GA14443-rCUF4CxDseZknzVnJbg3IA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+To: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+  Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+  linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+Return-path: <linux-sunxi+bncBCQMLUOX54MBBGF56KUQKGQEBHR2RIY-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+In-Reply-To: <cover.1430034797.git.hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <http://groups.google.com/group/linux-sunxi
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+ <http://groups.google.com/group/linux-sunxi/subscribe>
+List-Id: linux-spi.vger.kernel.org
 
+Signed-off-by: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi-sun4i.c | 2 +-
+ drivers/spi/spi-sun6i.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---XIiC+We3v3zHqZ6Z
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Fri, Apr 24, 2015 at 05:03:26PM -0300, Jonatas Rech wrote:
-> On Fri, Apr 24, 2015 at 07:17:45PM +0100, Mark Brown wrote:
-
-> > The commit message says "this correction has exposed an inconsistency"
-> > which suggests that the problem was masked before this fix.  Did you
-> > mean to say that while fixing this you noticed a separate bug that's
-> > present anyway?
-
-> Exactly. Besides fixing the full-duplex capability I reorganized things
-> inside the main loop so that anybody can spot where the extra bytes are
-> being sent, but the code works just the same as before in that respect.
-
-OK, please be clear when writing changelogs - it makes life easier.
-
---XIiC+We3v3zHqZ6Z
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVO5AjAAoJECTWi3JdVIfQ5uwH/AsR2TeDpgNGcG7oASpbx+X0
-nTMDnskjHZTJ8l3Wqz5VeFe7mL9wdJZmj7El1mBLlX+j5WT5WjJ4UJJgseEr+1aL
-Dbn8nhPH7In30UjRWugV9/LZJJ606VzabRnJ2BGq6cWBRg5fwnSXMl09JM8L3rjq
-qvN4SZMpgPfaNoqYWVUQ75G3TYeEYS+Kz+vyZnx/ixLDwegG9WdaI8ZNJcUPejtR
-0m/WhCMktt3MjcG+Eg9I4x5rco70HFMVZkJe8suir+6NfEGqDSZiPN4rZBrg59Wg
-qZSvyzlmkP/29W/4UfOb0G4mzqrrZS92UH/lquBKSzTABhijr3EijfB7r2nIIhY=
-=wxuZ
------END PGP SIGNATURE-----
-
---XIiC+We3v3zHqZ6Z--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
+index fbb0a4d..8238b4e 100644
+--- a/drivers/spi/spi-sun4i.c
++++ b/drivers/spi/spi-sun4i.c
+@@ -176,7 +176,7 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
+ 
+ 	/* We don't support transfer larger than the FIFO */
+ 	if (tfr->len > SUN4I_FIFO_DEPTH)
+-		return -EINVAL;
++		return -EMSGSIZE;
+ 
+ 	reinit_completion(&sspi->done);
+ 	sspi->tx_buf = tfr->tx_buf;
+diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
+index ac48f59..0f5dd91 100644
+--- a/drivers/spi/spi-sun6i.c
++++ b/drivers/spi/spi-sun6i.c
+@@ -166,7 +166,7 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
+ 
+ 	/* We don't support transfer larger than the FIFO */
+ 	if (tfr->len > SUN6I_FIFO_DEPTH)
+-		return -EINVAL;
++		return -EMSGSIZE;
+ 
+ 	reinit_completion(&sspi->done);
+ 	sspi->tx_buf = tfr->tx_buf;
+-- 
+2.1.4

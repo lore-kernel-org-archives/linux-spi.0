@@ -1,108 +1,109 @@
-From: Martin Sperl <kernel@martin.sperl.org>
+From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Subject: Re: [linux-sunxi] [PATCH 2/3] spidev: Add DT binding example.
-Date: Mon, 27 Apr 2015 18:25:26 +0200
-Message-ID: <CD7C1C3B-80B5-4627-94A4-2B83AAEC1DDB@martin.sperl.org>
-References: <20150426110144.GK22845@sirena.org.uk> <553CCABA.3090504@redhat.com> <12F80B18-7418-430E-94F7-5A20C133BA9A@martin.sperl.org> <CAOMqctR8MZ_r6HHEBWhgxpUsTaV=M7DfmnJ_VxTqjWu4KMBSwA@mail.gmail.com> <20150426125113.GF5627@lukather> <CAOMqctRbYoNG2c-5atBP3QvMKbEhOrAgxzK1QskA5k2TgHraFQ@mail.gmail.com> <20150427093618.GL22845@sirena.org.uk> <553E099C.4070208@redhat.com> <20150427112539.GR22845@sirena.org.uk> <553E4447.6080202@martin.sperl.org> <20150427152705.GU22845@sirena.org.uk>
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2098\))
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	Michal Suchanek <hramrach@gmail.com>,
-	Maxime Ripard <maxime.ripard@free-electrons.com>,
-	linux-sunxi <linux-sunxi@googlegroups.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	linux-doc <linux-doc@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <20150427152705.GU22845@sirena.org.uk>
-Sender: linux-doc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Date: Mon, 27 Apr 2015 19:30:36 +0200
+Message-ID: <20150427173036.GA10950@lukather>
+References: <cover.1430034797.git.hramrach@gmail.com>
+ <bb069283a5c2ccfbc05177f1ed41cabb1485796e.1430034797.git.hramrach@gmail.com>
+ <20150426103257.GJ22845@sirena.org.uk>
+ <CAOMqctR235uF+7kNGsLEGfrrAOQAYmw0pWgk6t8fZHNT7XsRuw@mail.gmail.com>
+ <20150426110144.GK22845@sirena.org.uk>
+ <553CCABA.3090504@redhat.com>
+ <12F80B18-7418-430E-94F7-5A20C133BA9A@martin.sperl.org>
+ <CAOMqctR8MZ_r6HHEBWhgxpUsTaV=M7DfmnJ_VxTqjWu4KMBSwA@mail.gmail.com>
+ <20150426125113.GF5627@lukather>
+ <20150427101601.GN22845@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="EVF5PPMfhYS0aIcm"
+Cc: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
+	Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>,
+	linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+	Jonathan Corbet <corbet-T1hC0tSOHrs@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-doc <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20150427101601.GN22845-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
-> On 27.04.2015, at 17:27, Mark Brown <broonie@kernel.org> wrote:
+--EVF5PPMfhYS0aIcm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Apr 27, 2015 at 11:16:01AM +0100, Mark Brown wrote:
+> On Sun, Apr 26, 2015 at 02:51:13PM +0200, Maxime Ripard wrote:
+> > On Sun, Apr 26, 2015 at 02:38:18PM +0200, Michal Suchanek wrote:
 >=20
+> > > >> I don't know if it's been suggested before, certainly nobody did t=
+he
+> > > >> work to make it happen.  I don't think I have a massive objection =
+in
+> > > >> principal.
 >=20
-> OK, so that is just a default overlay which is abusing the fact that =
-we
-> will bind to spidev without a DT compatible and when the binding is
-> undocumented (which also applies to other devices and buses sadly).
+> > Actually, I did it a year ago, and it looked at the time that it
+> > wasn't what should be done either.
 >=20
-> Unfortunately nobody ever mentioned this upstream and the feedback
-> upstream that listing spidev in a DT is a bad idea has been ignored.
-
-Maybe it should also have been documented as such in
-Documentation/spi/spidev or in Documentation/devicetree/bindings/spi/
-
-> The whole reason we're doing this in the first place is that we got s=
-ick
-> of telling people that using spidev in DTs like this was a bad idea.
-
-
-The only reference I found in my history of the spi-list is this email:
-> On 08.10.2014, at 22:05, Mark Brown <broonie@kernel.org> wrote:
+> > https://lkml.org/lkml/2014/4/28/612
 >=20
-> On Wed, Oct 08, 2014 at 02:27:08PM -0500, tthayer@opensource.altera.c=
-om wrote:
->=20
->> +			spidev@0 {
->> +				compatible =3D "spidev";
->> +				reg =3D <0>;	/* chip select */
->> +				spi-max-frequency =3D <100000000>;
->> +			};
->=20
-> No, if you're putting spidev into the DT that's broken - describe the
-> hardware, not the software you're using to control it.
+> lkml.org is being terrible as usual so I can't see half the thread (or
+> at least got fed up trying to get it to load)
 
+A part of it is also here:
+http://lkml.iu.edu/hypermail/linux/kernel/1405.0/00484.html
 
-And google found this patch from a little earlier:
-http://comments.gmane.org/gmane.linux.ports.arm.kernel/231050
+> but I think the discussion there petered out more than anything
+> else.
 
-So finding this piece of information on the =E2=80=9Cuse-policy=E2=80=9D=
- is quite hard
-- google finds lots of links where it is described as working that way.
+Maybe it did :)
 
-> It does sound like the people maintianing the u-boot fork for the Pi
-> need to talk to both u-boot upstream (nothing here is specific to the
-> Pi that I can see) and the kernel community a bit more.  I'd be a bit
-> worried that they may be relying on other things that just happen to
-> work without being intentional (and are therefore more vulnerable to
-> issues) and it's a bit depressing to see things like this stuck in a
-> fork where only a limited community can make use of them.
-Actually this functionality is not in u-boot, but in the firmware
-boot-loader itself, which can load the kernel (and the devicetree)
-without u-boot, but which can also load u-boot as an additional
-intermediate boot-stage.
+> Or was it the suggestion to make this something that the driver core
+> supported so that we didn't have to open code it for every bus?
 
->> The only thing that could possibly be better would be that
->> the user would define the "real" name of the device in the
->> device tree and spidev would bind to it if there is no driver
->> available (but that would require this "fallback" binding by
->> spidev in case of no driver).
->=20
-> Yes, that is exactly the solution I'd suggest - change the UI to prov=
-ide
-> a DT compatible to be used for the new device.  That would also have =
-the
-> benefit of meaning that users who have connected some device that doe=
-s
-> have a driver that works with a simple binding wouldn't need to write=
- an
-> overlay which seems like it should be useful.
+Probably. That's something I really haven't took the time to look at,
+and don't really plan on doing so.
 
-Well then why did you just make the system complain loudly and bringing
-problems to people instead of solving it in a usable manner that does n=
-ot
-require people to maintain an out of tree patch to work around that war=
-ning?
+I guess a good way forward would be to revive this patch, and wait for
+that generic way to happen.
 
-We still have the one-line warning about using the depreciated=20
-spi_master.transfer interface, but it is not such loud warning as this =
-one.
+What do you think of this?
 
-I guess the time spent discussing this could have been better spent
-implementing that solution instead.
+Maxime
 
-All we need is a volunteer to get that implemented.
+--=20
+Maxime Ripard, Free Electrons
+Embedded Linux, Kernel and Android engineering
+http://free-electrons.com
 
+--EVF5PPMfhYS0aIcm
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBAgAGBQJVPnI8AAoJEBx+YmzsjxAgMLEP/AuII2K8XmVq6wytiqgoytbR
+tbpvFYai2AP96jNTCsyg605eKRMtIVOMnqCtdToQBSWn1licBR5QdPnARKxScnUN
+AiZQGb7zsnvLybc1gSWw83Z3Iw1FKreDyqoTYDuZJ7fCM9fu0V9TfxkjouVa078u
+h1FC2ZLOmmOFR8rIanHzHrA4kaI0Xa9QV0h0pMUeJwZlZxfYWFqiBl5i7OnKdfJH
+05iT8tGuA8BO8Y43rwlKpzGAFOstVa97I7L9eiJRQTDJgGDtaUMLMNNxXDxWGIVY
+jrZxDA/+lnYXydlFPMYr/CabHV3Ixp7b23KlV8dZcWz+YeZuvmK7AvAo+HJ7Vt3M
+MNlAh0gzNeF/GqGMegPONqW8YXxBJ0UM+oRrZrecTLjdlMVXyNzDEVqTXGsWgBYm
+QaUcBFBwIv62XGpUDPkrh4Xq3K+RThOPte7ZgP3ShlDRoxFHMvvSwwwkUxUEWtL8
+9P+IfwZZJaqicv3sSHv4aQYyYkPXxtaw+nPw8oZ78FchLi/KL0hGcjGB5x7akDA+
+vZHPuUQY2fd4rFnKZl+2IVGwBF8orIWmBHDRRL+QoJubMVqPJLzIF3GhE5k0cVj3
+96PMyIU5xoOI5cmxck/E8uBbnF8+fFL6WSQH0XuxGLUe8AobJJ+nBA/qFHv214M0
+TxmVQYtpkORR64L+HjEj
+=iafU
+-----END PGP SIGNATURE-----
+
+--EVF5PPMfhYS0aIcm--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

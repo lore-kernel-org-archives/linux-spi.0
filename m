@@ -1,21 +1,33 @@
-From: Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Subject: Re: [PATCH 2/3] spidev: Add DT binding example.
-Date: Mon, 27 Apr 2015 12:09:36 +0200
-Message-ID: <553E0AE0.4010609@redhat.com>
-References: <cover.1430034797.git.hramrach@gmail.com> <bb069283a5c2ccfbc05177f1ed41cabb1485796e.1430034797.git.hramrach@gmail.com> <20150426103257.GJ22845@sirena.org.uk> <CAOMqctR235uF+7kNGsLEGfrrAOQAYmw0pWgk6t8fZHNT7XsRuw@mail.gmail.com> <20150426110144.GK22845@sirena.org.uk> <553CCABA.3090504@redhat.com> <12F80B18-7418-430E-94F7-5A20C133BA9A@martin.sperl.org> <CAOMqctR8MZ_r6HHEBWhgxpUsTaV=M7DfmnJ_VxTqjWu4KMBSwA@mail.gmail.com> <20150426125113.GF5627@lukather> <CAOMqctRbYoNG2c-5atBP3QvMKbEhOrAgxzK1QskA5k2TgHraFQ@mail.gmail.com> <20150427093618.GL22845@sirena.org.uk> <553E099C.4070208@redhat.com>
-Reply-To: hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org
+Date: Mon, 27 Apr 2015 12:05:37 +0200
+Message-ID: <20150427100537.GQ5627@lukather>
+References: <20150426110144.GK22845@sirena.org.uk>
+ <553CCABA.3090504@redhat.com>
+ <12F80B18-7418-430E-94F7-5A20C133BA9A@martin.sperl.org>
+ <CAOMqctR8MZ_r6HHEBWhgxpUsTaV=M7DfmnJ_VxTqjWu4KMBSwA@mail.gmail.com>
+ <20150426125113.GF5627@lukather>
+ <CAOMqctRbYoNG2c-5atBP3QvMKbEhOrAgxzK1QskA5k2TgHraFQ@mail.gmail.com>
+ <20150426143359.GI5627@lukather>
+ <553CF8F2.6070204@redhat.com>
+ <20150426154728.GK5627@lukather>
+ <CAOMqctRQYsphKxaZXUae0KqAE5SnYZN5M3iPPGw_PKnnuh0W1Q@mail.gmail.com>
+Reply-To: maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Cc: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
-        linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
-        Jonathan Corbet <corbet-T1hC0tSOHrs@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        linux-doc <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-sunxi+bncBDRZXY4CYYORB2MV7CUQKGQEH6HDJHI-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-In-Reply-To: <553E099C.4070208-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="ZqRzwd/9tauJXEMK"
+Cc: Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>,
+	Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+	Jonathan Corbet <corbet-T1hC0tSOHrs@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-doc <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-sunxi+bncBD2ZNBF5VYJRB6UV7CUQKGQEY6TUL7A-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAOMqctRQYsphKxaZXUae0KqAE5SnYZN5M3iPPGw_PKnnuh0W1Q-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
 List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
 List-Archive: <http://groups.google.com/group/linux-sunxi
@@ -25,54 +37,52 @@ List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39
  <http://groups.google.com/group/linux-sunxi/subscribe>
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+--ZqRzwd/9tauJXEMK
+Content-Type: text/plain; charset=UTF-8
+Content-Disposition: inline
 
-On 27-04-15 12:04, Hans de Goede wrote:
-> Hi Mark,
->
-> On 27-04-15 11:36, Mark Brown wrote:
->> On Sun, Apr 26, 2015 at 04:14:33PM +0200, Michal Suchanek wrote:
->>> On 26 April 2015 at 14:51, Maxime Ripard
->>
->>>> No, you add a compatible for the device that is connected to the bus
->>>> through that slot.
->>
->>> There is no device connected in the slot by design. The slot is there
->>> for connecting random stuff you find in your mailbox or other drawers
->>> and boxes.
->>
->> You should be using device tree overlays to describe what actually ended
->> up getting connected there.
->
-> Have you seen my mail about the raspberry pi use-case? Using dt-overlays
-> simply is not an acceptable answer there. There are legitimate use-cases
-> for a "generic spi bus" concept with the bus only being accessible via
-> spidev.
->
-> Blocking this use-case because you do not believe it is a valid use-case
-> is not going to help, this will just lead to the custom distros these
-> boards are shipping doing some ugly hack, which is not what we want
-> IMHO.
->
-> I hope that with the raspberry pi 2 the raspberry pi-s will eventually
-> go fully devicetree / multi-platform kernel so that they can be supported
-> ootb by distros which only want to ship a single multi-platform kernel
-> like Debian, but that does require us to solve problems like this one.
+On Mon, Apr 27, 2015 at 08:51:12AM +0200, Michal Suchanek wrote:
+> On 26 April 2015 at 17:47, Maxime Ripard
+> <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> wrote:
+> > On Sun, Apr 26, 2015 at 04:40:50PM +0200, Hans de Goede wrote:
+> >> Hi,
+> >>
+> >> I've a feeling everyone in this thread is ignoring the
+> >> raspberry pi use-case. Where the board is specifically
+> >> designed for educational purposes and used with lots of
+> >> peripherals which are usually programmed from userspace
+> >> using e.g. python bindings for i2c-dev or spidev, for
+> >> such a setup we really want spidev to be loaded on the
+> >> spibus by default and we really do not have a proper
+> >> compatible for a child device.
+> >
+> > I'm not sure we're ignoring it, it just is the exact same use case
+> > than the whole spidev use case: people want to write SPI userspace
+> > drivers, the rpi really is not special here, except maybe for its user
+> > space code base, but it really boils down to the same issue.
+> >
+> >> And no having to use per device devicetree overlays
+> >> for this is not the answer, this needs to be really
+> >> really easy. With pre device-tree kernels this just
+> >> works, we should be able to match that ease of use
+> >> with devicetree.
+> >
+> > We do agree on that. We repeatedly told that the DT was not a good
+> > solution, overlays or not, and this is exactly one of the reasons.
+> >
+> 
+> Ok, so how about skipping the bindings altogether.
+> 
+> Just instantiate a spidev for each SPI bus and each CS the SPI core
+> knows of once spidev is loaded.
 
-To expand a bit on this, as you know there is this whole maker movement
-thing going on, these are people using arduinos and raspberry pi-s and
-they expect things to be easy and just work. This is also a huge pool
-of potential new FOSS / Linux contributors. I believe that it is
-important that we cater to these people.
+Which is exactly what my patch did but didn't seem like good enough
+for you at the time...
 
-One day one of them may have a kernel related itch and decide to scratch
-it, do we work that person to then work on some weird (and often ugly)
-fork of the kernel, or do we want such boards to be running a pristine
-upstream kernel and have potential new contributors work on the upstream
-kernel and hopefully also engage with the upstream kernel community,
-where we can teach them our best practices which are often lacking in
-the various "fork" communities ?
+Maxime
 
-Regards,
-
-Hans
+-- 
+Maxime Ripard, Free Electrons
+Embedded Linux, Kernel and Android engineering
+http://free-electrons.com
+--ZqRzwd/9tauJXEMK--

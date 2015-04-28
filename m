@@ -1,102 +1,29 @@
-From: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 2/8] spi: sirf: request and free cs gpio in setup and
- cleanup callbacks
-Date: Tue, 28 Apr 2015 11:36:51 +0800
-Message-ID: <CAGsJ_4yhSFnzyZV6B3j90LyJbstsyBJHCnk=LZqVDsL_u8foPQ@mail.gmail.com>
-References: <20140906135735.GE2601@sirena.org.uk> <D031CA8D.21605%21cnbao@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>,
-	DL-SHA-WorkGroupLinux <workgroup.linux-kQvG35nSl+M@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Barry Song <Barry.Song-kQvG35nSl+M@public.gmane.org>,
-	Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, swingboard <swingboard-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <D031CA8D.21605%21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
-
->>
->>> > I'm not quite sure I understand the rationale here - as far as I can
->>> > tell this is making the GPIO request happen later not earlier so it's
->>> > not clear to me what the problem this is fixing in the existing code.
->>> > If the goal is to move the request around in the probe function why
->>>not
->>> > just move the existing code earlier in probe()?
->>
->>> As GPIO cs can be high or low validate and the used GPIO pin with
->>> default value may high or low,
->>> it is need do spi device's chipselect invalidation work in spi_setup,
->>> the patch purpose for it.
->>> master->cs_gpios only assigned after spi_bitbang_start and the
->>> function call spi_setup,
->>> if keep the existing code there will result gpio usage before gpio
->>>request.
->>> just move gpio request code in spi_sirfsoc_setup before gpio use.
->>
->>I'm still having a hard time understanding why pulling the code earlier
->>in probe isn't a better fix here.
->
-> Gpio is unknown before spi_bitbang_start(). Everything is done in the big
-> routine spi_bitbang_start(). It includes:
-> Get cs_gpios, extend spi devices, and setup cs to de-active.
-
-Mark, i'd like to re-call this patch. "pulling the code earlier in
-probe" is impossible based on current SPI core codes. because before
-spi master is registerred,
-cs_gpios is NULL. but once it is registered, cs_gpios are assigned in
-spi_register_master:
-
-1446 static int of_spi_register_master(struct spi_master *master)
-1447 {
-1448         int nb, i, *cs;
-1449         struct device_node *np = master->dev.of_node;
-1450
-1451         if (!np)
-1452                 return 0;
-1453
-1454         nb = of_gpio_named_count(np, "cs-gpios");
-1455         master->num_chipselect = max_t(int, nb, master->num_chipselect);
-1456
-1457         /* Return error only for an incorrectly formed cs-gpios property */
-1458         if (nb == 0 || nb == -ENOENT)
-1459                 return 0;
-1460         else if (nb < 0)
-1461                 return nb;
-1462
-1463         cs = devm_kzalloc(&master->dev,
-1464                           sizeof(int) * master->num_chipselect,
-1465                           GFP_KERNEL);
-1466         master->cs_gpios = cs;
-1467
-1468         if (!master->cs_gpios)
-1469                 return -ENOMEM;
-1470
-1471         for (i = 0; i < master->num_chipselect; i++)
-1472                 cs[i] = -ENOENT;
-1473
-1474         for (i = 0; i < nb; i++)
-1475                 cs[i] = of_get_named_gpio(np, "cs-gpios", i);
+From: Martin Sperl <martin@sperl.org>
+Subject: Re: [PATCH v2] spi: omap2-mcspi: Add support for GPIO chipselects
+Date: Tue, 28 Apr 2015 07:32:21 +0200
+Message-ID: <55B19D93-B930-4363-9D44-0E97B4B836BF@sperl.org>
+References: <1430106270-17142-1-git-send-email-mwelling@ieee.org> <20150427195550.GE22845@sirena.org.uk> <20150428012150.GA12713@deathray>
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2098\))
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 8BIT
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+To: Michael Welling <mwelling@ieee.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20150428012150.GA12713@deathray>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
-we can get cs_gpios earlier in probe(), but this will definitely
-reduplicated with SPI core.
+> On 28.04.2015, at 03:21, Michael Welling <mwelling@ieee.org> wrote:
+> If I were to attempt to convert the driver to use the core chipselect support,
+> how would I go about doing it?
+> 
+> Is there another driver that I can use for reference?
+You may look into this patch: e34ff011c70e5f4ef219141711142d5111ae6ebb
+for the spi-bcm2835 driver, which did the conversion to the new transfer_one
+interface (and framework based GPIO chipselects).
 
-and in the setup() stage, we need the CS to be de-active, so we need
-the cs_gpio. that means we have to move gpio_request codes earlier,
-but the current SPI core stop us from get ting gpio earlier than
-spi_bitbang_start() being called. it looks the setup() itself is the
-best place to get the cs.
-
-drivers/spi/spi-clps711x.c is doing cs_gpios earlier in probe(), but
-it is a non-OF driver, which will not have of_spi_register_master() to
-set cs_gpios.
-
-
--barry
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+For most parts all you have to do is take the contents of the loop over all the
+spi_transfers inside your master->transfer_one_message method and create a new
+method with it and assign it to master->transfer_one.

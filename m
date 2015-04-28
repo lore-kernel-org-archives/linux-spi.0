@@ -1,29 +1,39 @@
-From: Martin Sperl <martin@sperl.org>
-Subject: Re: [PATCH v2] spi: omap2-mcspi: Add support for GPIO chipselects
-Date: Tue, 28 Apr 2015 07:32:21 +0200
-Message-ID: <55B19D93-B930-4363-9D44-0E97B4B836BF@sperl.org>
-References: <1430106270-17142-1-git-send-email-mwelling@ieee.org> <20150427195550.GE22845@sirena.org.uk> <20150428012150.GA12713@deathray>
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2098\))
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 8BIT
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-To: Michael Welling <mwelling@ieee.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20150428012150.GA12713@deathray>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Cao Minh Hiep <cm-hiep@jinso.co.jp>
+Subject: [PATCH 0/3 v2] spi: Re-do correctly function name and 'ret' return value
+Date: Tue, 28 Apr 2015 14:55:48 +0900
+Message-ID: <1430200551-20708-1-git-send-email-cm-hiep@jinso.co.jp>
+Cc: broonie@kernel.org, linux-spi@vger.kernel.org,
+	kuninori.morimoto.gx@renesas.com, yoshihiro.shimoda.uh@renesas.com,
+	ryusuke.sakato.bx@renesas.com, linux-sh@vger.kernel.org
+To: geert+renesas@glider.be
+Return-path: <linux-sh-owner@vger.kernel.org>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+From: Hiep Cao Minh <cm-hiep@jinso.co.jp>
 
-> On 28.04.2015, at 03:21, Michael Welling <mwelling@ieee.org> wrote:
-> If I were to attempt to convert the driver to use the core chipselect support,
-> how would I go about doing it?
-> 
-> Is there another driver that I can use for reference?
-You may look into this patch: e34ff011c70e5f4ef219141711142d5111ae6ebb
-for the spi-bcm2835 driver, which did the conversion to the new transfer_one
-interface (and framework based GPIO chipselects).
+Hi Mark
+Hi Geert
 
-For most parts all you have to do is take the contents of the loop over all the
-spi_transfers inside your master->transfer_one_message method and create a new
-method with it and assign it to master->transfer_one.
+I have splitted the patch that I sent you last week in 3 separate patches.
+To re-do correctly function name and returning value.
+qspi_trigger_transfer_out_int function should be qspi_trigger_transfer_out_in
+without "t". 
+To reduce indentation and complex of code, drop "ret" then function 
+rspi_dma_check_then_transfer should be returned rspi_dma_transfer directly
+after checking error.
+And It just returns the value of qspi_trigger_transfer_out_in() in qspi_transfer_out_in().
+These patches has been tested at linux Upstream v4.0.0-10712-g27cf3a1 on Lager.
+Please consider the following patches for the Rcar-Gen2.
+
+Hiep Cao Minh (3):
+  spi: Re-do the returning value of rspi_dma_check_then_transfer
+  spi: modify the name of qspi_trigger_transfer_out_int function
+  spi: Re-do the returning value of qspi_transfer_out_in
+
+ drivers/spi/spi-rspi.c | 21 +++++++--------------
+ 1 file changed, 7 insertions(+), 14 deletions(-)
+
+-- 
+1.9.1
+

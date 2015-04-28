@@ -1,7 +1,7 @@
 From: Cao Minh Hiep <cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
-Subject: [PATCH 1/3] spi: Re-do the returning value of rspi_dma_check_then_transfer
-Date: Tue, 28 Apr 2015 14:55:49 +0900
-Message-ID: <1430200551-20708-2-git-send-email-cm-hiep@jinso.co.jp>
+Subject: [PATCH 2/3] spi: modify the name of qspi_trigger_transfer_out_int function
+Date: Tue, 28 Apr 2015 14:55:50 +0900
+Message-ID: <1430200551-20708-3-git-send-email-cm-hiep@jinso.co.jp>
 References: <1430200551-20708-1-git-send-email-cm-hiep@jinso.co.jp>
 Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org, yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org,
@@ -14,40 +14,36 @@ List-ID: <linux-spi.vger.kernel.org>
 
 From: Hiep Cao Minh <cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
 
-To reduce indentation and complex of code, insteeds of returning zero,
-the function rspi_dma_check_then_transfer should be returned
-rspi_dma_transfer directly after checking error.
+The name of "qspi_trigger_transfer_out_int" function should be
+"qspi_trigger_transfer_out_in" without "t".
 
 Signed-off-by: Hiep Cao Minh <cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
 ---
- drivers/spi/spi-rspi.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ drivers/spi/spi-rspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index 186924a..a17564a 100644
+index a17564a..3f65508 100644
 --- a/drivers/spi/spi-rspi.c
 +++ b/drivers/spi/spi-rspi.c
-@@ -665,15 +665,12 @@ static bool rspi_can_dma(struct spi_master *master, struct spi_device *spi,
- static int rspi_dma_check_then_transfer(struct rspi_data *rspi,
- 					 struct spi_transfer *xfer)
- {
--	if (rspi->master->can_dma && __rspi_can_dma(rspi, xfer)) {
--		/* rx_buf can be NULL on RSPI on SH in TX-only Mode */
--		int ret = rspi_dma_transfer(rspi, &xfer->tx_sg,
--					xfer->rx_buf ? &xfer->rx_sg : NULL);
--		if (ret != -EAGAIN)
--			return 0;
--	}
-+	if (!rspi->master->can_dma || !__rspi_can_dma(rspi, xfer)) {
-+		return -EAGAIN;
- 
--	return -EAGAIN;
-+	/* rx_buf can be NULL on RSPI on SH in TX-only Mode */
-+	return rspi_dma_transfer(rspi, &xfer->tx_sg,
-+					xfer->rx_buf ? &xfer->rx_sg : NULL);
+@@ -721,7 +721,7 @@ static int rspi_rz_transfer_one(struct spi_master *master,
+ 	return rspi_common_transfer(rspi, xfer);
  }
  
- static int rspi_common_transfer(struct rspi_data *rspi,
+-static int qspi_trigger_transfer_out_int(struct rspi_data *rspi, const u8 *tx,
++static int qspi_trigger_transfer_out_in(struct rspi_data *rspi, const u8 *tx,
+ 					u8 *rx, unsigned int len)
+ {
+ 	int i, n, ret;
+@@ -768,7 +768,7 @@ static int qspi_transfer_out_in(struct rspi_data *rspi,
+ 	if (ret != -EAGAIN)
+ 		return ret;
+ 
+-	ret = qspi_trigger_transfer_out_int(rspi, xfer->tx_buf,
++	ret = qspi_trigger_transfer_out_in(rspi, xfer->tx_buf,
+ 					    xfer->rx_buf, xfer->len);
+ 	if (ret < 0)
+ 		return ret;
 -- 
 1.9.1
 

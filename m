@@ -1,49 +1,75 @@
-From: Cao Minh Hiep <cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
-Subject: [PATCH 3/3] spi: Re-do the returning value of qspi_transfer_out_in
-Date: Tue, 28 Apr 2015 14:55:51 +0900
-Message-ID: <1430200551-20708-4-git-send-email-cm-hiep@jinso.co.jp>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH 1/3] spi: Re-do the returning value of rspi_dma_check_then_transfer
+Date: Tue, 28 Apr 2015 11:02:05 +0200
+Message-ID: <CAMuHMdU8fHW9SCHPTpjwQMfsQc7Qn3F29-P2tsi_j-4Pjp_QCg@mail.gmail.com>
 References: <1430200551-20708-1-git-send-email-cm-hiep@jinso.co.jp>
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org, yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org,
-	ryusuke.sakato.bx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1430200551-20708-1-git-send-email-cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+	<1430200551-20708-2-git-send-email-cm-hiep@jinso.co.jp>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
+	Mark Brown <broonie@kernel.org>,
+	linux-spi <linux-spi@vger.kernel.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Ryusuke Sakato <ryusuke.sakato.bx@renesas.com>,
+	Linux-sh list <linux-sh@vger.kernel.org>
+To: Cao Minh Hiep <cm-hiep@jinso.co.jp>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1430200551-20708-2-git-send-email-cm-hiep@jinso.co.jp>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Hiep Cao Minh <cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
+Hi Hiep-san,
 
-To reduce complex of code, drop "ret" then qspi_transfer_out_in function
-should be returned the value of "qspi_trigger_transfer_out_in" directly.
+On Tue, Apr 28, 2015 at 7:55 AM, Cao Minh Hiep <cm-hiep@jinso.co.jp> wrote:
+> To reduce indentation and complex of code, insteeds of returning zero,
+> the function rspi_dma_check_then_transfer should be returned
+> rspi_dma_transfer directly after checking error.
 
-Signed-off-by: Hiep Cao Minh <cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
----
- drivers/spi/spi-rspi.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+Thanks for the update!
 
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index 3f65508..4a2cdac 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -768,12 +768,8 @@ static int qspi_transfer_out_in(struct rspi_data *rspi,
- 	if (ret != -EAGAIN)
- 		return ret;
- 
--	ret = qspi_trigger_transfer_out_in(rspi, xfer->tx_buf,
-+	return qspi_trigger_transfer_out_in(rspi, xfer->tx_buf,
- 					    xfer->rx_buf, xfer->len);
--	if (ret < 0)
--		return ret;
--
--	return 0;
- }
- 
- static int qspi_transfer_out(struct rspi_data *rspi, struct spi_transfer *xfer)
+Unfortunately it doesn't compile...
+
+> --- a/drivers/spi/spi-rspi.c
+> +++ b/drivers/spi/spi-rspi.c
+> @@ -665,15 +665,12 @@ static bool rspi_can_dma(struct spi_master *master, struct spi_device *spi,
+>  static int rspi_dma_check_then_transfer(struct rspi_data *rspi,
+>                                          struct spi_transfer *xfer)
+>  {
+> -       if (rspi->master->can_dma && __rspi_can_dma(rspi, xfer)) {
+> -               /* rx_buf can be NULL on RSPI on SH in TX-only Mode */
+> -               int ret = rspi_dma_transfer(rspi, &xfer->tx_sg,
+> -                                       xfer->rx_buf ? &xfer->rx_sg : NULL);
+> -               if (ret != -EAGAIN)
+> -                       return 0;
+> -       }
+> +       if (!rspi->master->can_dma || !__rspi_can_dma(rspi, xfer)) {
+
+Superfluous opening curly brace.
+Please compile and run test your patches.
+Thanks!
+
+> +               return -EAGAIN;
+>
+> -       return -EAGAIN;
+> +       /* rx_buf can be NULL on RSPI on SH in TX-only Mode */
+> +       return rspi_dma_transfer(rspi, &xfer->tx_sg,
+> +                                       xfer->rx_buf ? &xfer->rx_sg : NULL);
+>  }
+>
+>  static int rspi_common_transfer(struct rspi_data *rspi,
+
+
+
+
 -- 
-1.9.1
+Gr{oetje,eeting}s,
+
+                        Geert
 
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

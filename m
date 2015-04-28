@@ -1,54 +1,57 @@
-From: Ezequiel Garcia <ezequiel.garcia-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH v2] spi: omap2-mcspi: Add support for GPIO chipselects
-Date: Tue, 28 Apr 2015 11:04:09 -0300
-Message-ID: <553F9359.2010901@imgtec.com>
-References: <1430106270-17142-1-git-send-email-mwelling@ieee.org> <20150427195550.GE22845@sirena.org.uk> <20150428012150.GA12713@deathray>
+From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [linux-sunxi] [PATCH 2/3] spidev: Add DT binding example.
+Date: Tue, 28 Apr 2015 16:11:17 +0200
+Message-ID: <CAOMqctTjbj0AoWcVJxc8PRX4LpOiDjhA5aXVEZQ1UQTnMC0Wxw@mail.gmail.com>
+References: <bb069283a5c2ccfbc05177f1ed41cabb1485796e.1430034797.git.hramrach@gmail.com>
+ <20150426103257.GJ22845@sirena.org.uk> <CAOMqctR235uF+7kNGsLEGfrrAOQAYmw0pWgk6t8fZHNT7XsRuw@mail.gmail.com>
+ <20150426110144.GK22845@sirena.org.uk> <553CCABA.3090504@redhat.com>
+ <12F80B18-7418-430E-94F7-5A20C133BA9A@martin.sperl.org> <CAOMqctR8MZ_r6HHEBWhgxpUsTaV=M7DfmnJ_VxTqjWu4KMBSwA@mail.gmail.com>
+ <20150426125113.GF5627@lukather> <20150427101601.GN22845@sirena.org.uk>
+ <20150427173036.GA10950@lukather> <20150427180728.GW22845@sirena.org.uk>
+ <cd282abf-898a-4f01-90a6-8bf2db160b8e@googlegroups.com> <CAOMqctRTFgnVEKDAx4roMcGOeGV35Dyz7oOsOa4jC-MKr9_xXg@mail.gmail.com>
+ <28a25eda-bba0-4a2e-9890-b3d3bef7ac7e@googlegroups.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Michael Welling <mwelling-EkmVulN54Sk@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+	Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>,
+	Jonathan Corbet <corbet-T1hC0tSOHrs@public.gmane.org>,
+	Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: "Eric D." <eric.dillmann-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150428012150.GA12713@deathray>
+In-Reply-To: <28a25eda-bba0-4a2e-9890-b3d3bef7ac7e-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 04/27/2015 10:21 PM, Michael Welling wrote:
-> On Mon, Apr 27, 2015 at 08:55:50PM +0100, Mark Brown wrote:
->> On Sun, Apr 26, 2015 at 10:44:30PM -0500, Michael Welling wrote:
->>
->>> +	if (gpio_is_valid(spi->cs_gpio)) {
->>> +		gpio_set_value(spi->cs_gpio, (cs_active) ?
->>> +			!!(spi->mode & SPI_CS_HIGH) :
->>> +			!(spi->mode & SPI_CS_HIGH));
->>> +	}
->>
->> Two problems here.  One is that the above logic statement is just not
->> readable (the repitition of hecks, the ternery operator, the
->> indentation...) and the other is that the core chipselect support
->> already handles GPIO chipselects so you should really be converting the
->> driver to use that.  At the very least the code needs to be legible
->> though.
-> 
-> Before I send another patch how does this look?
-> 
-> 	if (gpio_is_valid(spi->cs_gpio)) {
-> 		if (cs_active)
-> 			gpio_set_value(spi->cs_gpio, spi->mode & SPI_CS_HIGH);
-> 		else
-> 			gpio_set_value(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
-> 	}
-> 
-> If I were to attempt to convert the driver to use the core chipselect support,
-> how would I go about doing it?
-> 
-> Is there another driver that I can use for reference?
+On 28 April 2015 at 16:03, Eric D. <eric.dillmann-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> Hi,
+>
+> I give Maxime's patch a try and got 4 spidev devices :
+> /dev/spidev32766.[0-3]
+>
+> root@bpi:~# ls -lh /dev/spidev*
+> crw------- 1 root root 153, 0 Apr 28 15:52 /dev/spidev32766.0
+> crw------- 1 root root 153, 1 Apr 28 15:52 /dev/spidev32766.1
+> crw------- 1 root root 153, 2 Apr 28 15:52 /dev/spidev32766.2
+> crw------- 1 root root 153, 3 Apr 28 15:52 /dev/spidev32766.3
+>
+> Shouldn't they be numbered from like spidev0.[0-3].
+> Is this an udev problem ? any clues ?
 
-We've recently done that for spi-img-spfi.c.
+I don't know where the  32766 comes from but it's normal.
 
--- 
-Ezequiel
+It seems to be the same number every time for the same port.
+
+If you really wanted you could probably rename the device nodes with udev.
+
+Or with only one spi bus enabled /dev/spidev*.0 should work too.
+
+Thanks
+
+Michal
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,52 +1,78 @@
-From: "Eric D." <eric.dillmann-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 2/3] spidev: Add DT binding example.
-Date: Thu, 30 Apr 2015 07:03:57 -0700 (PDT)
-Message-ID: <b7b1aa1a-e562-438e-a9c9-8d1ec8552da5@googlegroups.com>
-References: <20150427173036.GA10950@lukather> <20150427180728.GW22845@sirena.org.uk>
- <cd282abf-898a-4f01-90a6-8bf2db160b8e@googlegroups.com> <CAOMqctRTFgnVEKDAx4roMcGOeGV35Dyz7oOsOa4jC-MKr9_xXg@mail.gmail.com>
- <20150428141630.GR22845@sirena.org.uk> <CAOMqctTNSgycy7K=ZMK9aaZGyybDT61e0Y6Fwf1jtoMbSVoNQQ@mail.gmail.com>
- <20150428171738.GY22845@sirena.org.uk> <CAOMqctSEAd-WeBRLabvDugN04XaqY6Y1UyO9UPLaTW9ce7t_rQ@mail.gmail.com>
- <20150429174059.GQ22845@sirena.org.uk> <CAOMqctQmpYmD0J9=o6FVjJhXBc8b+oGd7cNh5aH_fmgE3vk5+A@mail.gmail.com>
- <20150429180659.GT22845@sirena.org.uk> <CAOMqctSMeWvG6YsCFn5=wxS2nCBbMiiCKUNJh8oFsH1VZY4H-w@mail.gmail.com>
- <CAMuHMdXtL=-JWiXNbpwBEc+oMAVpBq1ShqZhFVKZRO_x9Xq4tA@mail.gmail.com>
- <CAOMqctQD8+bJevuOWRNx6LFfD_QXLGeNLqmVUhfsSdPrxyv6bQ@mail.gmail.com>
-Reply-To: eric.dillmann-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: spi: bcm2835: can_dma and scatter/gather question
+Date: Thu, 30 Apr 2015 20:26:26 +0100
+Message-ID: <20150430192626.GC22845@sirena.org.uk>
+References: <55420558.6030008@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----=_Part_8522_466906661.1430402637268"
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org,
-	eric.dillmann-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org,
-	maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org, corbet-T1hC0tSOHrs@public.gmane.org,
-	hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-Return-path: <linux-sunxi+bncBDD6NW6IFYIM33EIVICRUBHTBCLOW-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-In-Reply-To: <CAOMqctQD8+bJevuOWRNx6LFfD_QXLGeNLqmVUhfsSdPrxyv6bQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <http://groups.google.com/group/linux-sunxi
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
- <http://groups.google.com/group/linux-sunxi/subscribe>
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="r/KodJa4+DLyYymZ"
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <55420558.6030008-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-------=_Part_8522_466906661.1430402637268
-Content-Type: multipart/alternative;
-	boundary="----=_Part_8523_395005289.1430402637269"
 
-------=_Part_8523_395005289.1430402637269
-Content-Type: text/plain; charset=UTF-8
+--r/KodJa4+DLyYymZ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Hi,
+On Thu, Apr 30, 2015 at 12:35:04PM +0200, Martin Sperl wrote:
 
-I give Maxime's patch a try, but get divide by zero in kernel traces due to 
-spi max speed not being setted.
-I then tried declaring spidev in the DT, and my application just work's.
-Adding spi0 alias in DT give's me a beautyful /dev/spidev0.0, where 
-Maxime's was creating /dev/spidev0.[0-3] nodes.
+> The question is: can the spi-framework fullfill those requirements
+> as well? Otherwise there would be the need to add an additional
+> translation step inside the driver to translate those...
 
-Thanks
-Eric
-------=_Part_8523_395005289.1430402637269--
+You can see the code for yourself...  we're mostly not doing anything in
+the SPI code, we just throw a list of pages into a scatterlist but the
+actual mapping is done by the DMA mapping code which is free to do
+things like coalesce adjacent blocks.  If the hardware genuinely
+requires that the Tx and Rx scatterlists have entries of exactly the
+same length I'm not sure that's going to be reliably satisfied if memory
+gets fragmented.
 
-------=_Part_8522_466906661.1430402637268--
+> Maybe we need to make the use of the mapping code configurable
+> as well, or should such "custom" things go into prepare_message instead
+> without implementing can_dma?
+
+It sounds like the driver should just not DMA anything that isn't page
+aligned and 32 bit multiple, or special case the first non-aligned bits.
+I'd expect anything doing large DMAs to be trying to make them page
+aligned anyway.  A facility to provide an interface for cutting off the
+start and end of transfers for separate handling as PIO seems like a
+reasonable idea but I'm not immediately seeing a straightforward way to
+implement it, it seems like it might require most of the infrastructure
+we'd need in order to coalesce adjacent transfers in a message (which
+would be really nice to have).
+
+> One more thing: is there a helper to create a sg_table for
+> spi_message.is_dma_mapped==1?
+
+is_dma_mapped is legacy and should be going away rather than used in new
+code since just providing a single physical address really isn't enough,
+if we need something in future it'll be done with the scatterlist.
+
+--r/KodJa4+DLyYymZ
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVQoHhAAoJECTWi3JdVIfQptsH/2c5rSr9f0TXfVSDYl3o73Qs
+dXrNNAgjD0L6j4NfVEr3uv30Kg0egVrVpicCDW9BPPQs1Degmh9XIAs+b0wQVRLa
+8NJWBuJ6P6cvwDAhjq17dhMGeSqE3gZx8z5E5TBpwjRAJaQD8+XGkBl9OYzOhldU
+3IBwMj8JPYP1SR+GcVPLwIxpcdK6MlyzIHLJuzJ7vfNW5tX3qMuUuZO85z3yeWB0
+nTl/lXIfG2Uz1CmT6VMl8BgJHzbniyCyEwanalnkU17b1njQVzX4uPJAO077+V8n
+qFWwVKB0hKrz0dr2gZkDDhHoUt6+9s/9u5ftYGv2LHWia7sGAcAouwjwn++ZeNk=
+=ncH2
+-----END PGP SIGNATURE-----
+
+--r/KodJa4+DLyYymZ--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

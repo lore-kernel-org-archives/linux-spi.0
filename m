@@ -1,60 +1,77 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/8] spi: sirf: request and free cs gpio in setup and
- cleanup callbacks
-Date: Thu, 30 Apr 2015 11:16:53 +0100
-Message-ID: <20150430101653.GW22845@sirena.org.uk>
-References: <20140906135735.GE2601@sirena.org.uk>
- <D031CA8D.21605%21cnbao@gmail.com>
- <CAGsJ_4yhSFnzyZV6B3j90LyJbstsyBJHCnk=LZqVDsL_u8foPQ@mail.gmail.com>
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: spi: bcm2835: can_dma and scatter/gather question
+Date: Thu, 30 Apr 2015 12:35:04 +0200
+Message-ID: <55420558.6030008@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="oEZK72QTaj/2HSSF"
-Cc: swingboard <swingboard-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>,
-	DL-SHA-WorkGroupLinux <workgroup.linux-kQvG35nSl+M@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Barry Song <Barry.Song-kQvG35nSl+M@public.gmane.org>,
-	Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+To: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAGsJ_4yhSFnzyZV6B3j90LyJbstsyBJHCnk=LZqVDsL_u8foPQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+I am trying to implement dma now for the spi-bcm2835 driver
+and I have come accross a few implementation details for border
+cases that make things "complicated"...
 
---oEZK72QTaj/2HSSF
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Things are fine and simple as long as transfers-length of an individual
+entry in the scatter-gather-list is a multiple of 4 bytes.
 
-On Tue, Apr 28, 2015 at 11:36:51AM +0800, Barry Song wrote:
+Otherwise the bcm2835-SPI-HW requires that we reset(empty) the FIFO
+as the DMA is pushing 32 bits with every transfer - even if we are only
+interrested in 2 bytes.
 
-> Mark, i'd like to re-call this patch. "pulling the code earlier in
-> probe" is impossible based on current SPI core codes. because before
-> spi master is registerred,
-> cs_gpios is NULL. but once it is registered, cs_gpios are assigned in
-> spi_register_master:
+If this "reset" is not done then when the HW is enabled the next
+time those remaining bit will get shifted out automatically.
 
-I'm afraid I've forgotten what this patch is, sorry.  Can you resend
-please?
+On top of that this also means that in case we have multiple entries
+in the scatter/gather list we have to have RX and TX scater-gathers
+with identical length to make things work propperly.
 
---oEZK72QTaj/2HSSF
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Here one of those complex examples for 6kb tx and rx, where the
+buffers are adjacent to each other and are NOT aligned on 32 bit
+boundries.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+TX-scatter-gather list:
+Page=0 start=0x001 end=0xfff lenfth=0xfff
+Page=2 start=0x000 end=0x800 length=0x801
+RX-scatter-gather list:
+Page=2 start=0x801 end=0xfff length=0x7ff
+Page=4 start=0x000 end=0xfff length=0x1000
+Page=6 start=0x000 end=0x001 length=0x001
 
-iQEcBAEBCAAGBQJVQgEUAAoJECTWi3JdVIfQyZEH/3W8d4HYfq/ShuqnwcBtk/Q1
-u+qZUWf8pfcZUNpat4Pz7L5wjgjKuOujzO7KGnj0tvglZIwTQLAvoeMc+B4mZTLf
-uG2RcqSITV7mSE9aeIfYZKTpXZfxGDOe4w9uPgQHJV3rSCcWsWNBQLp9pE1J+QBo
-b/QIxwbo8y/ojJMRKkWEckVtwCx7kVbAxLhvyBxQPMykY3N0ejDw94+rJqgZqcJr
-aO9+NrWr8eL+/ec2Q9hbDNDsCzHuJ1/L+/U5hUZD5EeZW8tYZ2PYoAqgaAU1m5KU
-PQIe8bZtO1Mks7/CDdjzf3Ufcw+Tx79/xU0yWndi6YSmUvTz6o01vVgBC8YPkkc=
-=mhPI
------END PGP SIGNATURE-----
+(page is the phyical/dma_address page, [start,end] are (inclusive) offsets
+inside the page)
 
---oEZK72QTaj/2HSSF--
+For something like this to work we would need to split it like this:
+TX-scatter-gather list:
+Page=0 start=0x001 end=0x7ff lenfth=0x7ff
+Page=0 start=0x800 end=0xfff lenfth=0x800
+Page=2 start=0x000 end=0x7ff length=0x800
+Page=2 start=0x800 end=0x800 length=0x001
+RX-scatter-gather list:
+Page=2 start=0x801 end=0xfff length=0x7ff
+Page=4 start=0x000 end=0x7ff length=0x800
+Page=4 start=0x800 end=0xfff length=0x800
+Page=6 start=0x000 end=0x001 length=0x001
+
+note that this would require a FIFO reset after the first and last 
+transfer...
+
+The question is: can the spi-framework fullfill those requirements
+as well? Otherwise there would be the need to add an additional
+translation step inside the driver to translate those...
+
+Maybe we need to make the use of the mapping code configurable
+as well, or should such "custom" things go into prepare_message instead
+without implementing can_dma?
+
+One more thing: is there a helper to create a sg_table for
+spi_message.is_dma_mapped==1?
+
+Thanks, Martin
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,78 +1,70 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: spi: bcm2835: can_dma and scatter/gather question
-Date: Thu, 30 Apr 2015 20:26:26 +0100
-Message-ID: <20150430192626.GC22845@sirena.org.uk>
-References: <55420558.6030008@martin.sperl.org>
+Subject: Re: [PATCH 2/3] spidev: Add DT binding example.
+Date: Thu, 30 Apr 2015 20:58:29 +0100
+Message-ID: <20150430195829.GG22845@sirena.org.uk>
+References: <cd282abf-898a-4f01-90a6-8bf2db160b8e@googlegroups.com>
+ <CAOMqctRTFgnVEKDAx4roMcGOeGV35Dyz7oOsOa4jC-MKr9_xXg@mail.gmail.com>
+ <20150428141630.GR22845@sirena.org.uk>
+ <CAOMqctTNSgycy7K=ZMK9aaZGyybDT61e0Y6Fwf1jtoMbSVoNQQ@mail.gmail.com>
+ <20150428171738.GY22845@sirena.org.uk>
+ <CAOMqctSEAd-WeBRLabvDugN04XaqY6Y1UyO9UPLaTW9ce7t_rQ@mail.gmail.com>
+ <20150429174059.GQ22845@sirena.org.uk>
+ <CAOMqctQmpYmD0J9=o6FVjJhXBc8b+oGd7cNh5aH_fmgE3vk5+A@mail.gmail.com>
+ <20150429180659.GT22845@sirena.org.uk>
+ <CAOMqctSMeWvG6YsCFn5=wxS2nCBbMiiCKUNJh8oFsH1VZY4H-w@mail.gmail.com>
+Reply-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="r/KodJa4+DLyYymZ"
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="suYuRLWiGRtbsVTA"
+Cc: "Eric D." <eric.dillmann-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+	Jonathan Corbet <corbet-T1hC0tSOHrs@public.gmane.org>,
+	Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>,
+	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-sunxi+bncBDQ2L75W5QGBB4ESRKVAKGQEW4P2HWQ-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <55420558.6030008-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <CAOMqctSMeWvG6YsCFn5=wxS2nCBbMiiCKUNJh8oFsH1VZY4H-w-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <http://groups.google.com/group/linux-sunxi
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+ <http://groups.google.com/group/linux-sunxi/subscribe>
+List-Id: linux-spi.vger.kernel.org
 
-
---r/KodJa4+DLyYymZ
-Content-Type: text/plain; charset=us-ascii
+--suYuRLWiGRtbsVTA
+Content-Type: text/plain; charset=UTF-8
 Content-Disposition: inline
 
-On Thu, Apr 30, 2015 at 12:35:04PM +0200, Martin Sperl wrote:
+On Wed, Apr 29, 2015 at 08:37:24PM +0200, Michal Suchanek wrote:
+> On 29 April 2015 at 20:06, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
 
-> The question is: can the spi-framework fullfill those requirements
-> as well? Otherwise there would be the need to add an additional
-> translation step inside the driver to translate those...
+> > I think the rest of the thread had that covered - there's both adding
+> > the device IDs and Maxime's patch.
 
-You can see the code for yourself...  we're mostly not doing anything in
-the SPI code, we just throw a list of pages into a scatterlist but the
-actual mapping is done by the DMA mapping code which is free to do
-things like coalesce adjacent blocks.  If the hardware genuinely
-requires that the Tx and Rx scatterlists have entries of exactly the
-same length I'm not sure that's going to be reliably satisfied if memory
-gets fragmented.
+> And adding device IDs is unacceptable for users of devboards while
+> Maxime's patch is not accepted into the kernel.
 
-> Maybe we need to make the use of the mapping code configurable
-> as well, or should such "custom" things go into prepare_message instead
-> without implementing can_dma?
+> I am using a version of Maxime's patch myself right now. It does not
+> seem it's going to be include in the kernel any time soon, however.
 
-It sounds like the driver should just not DMA anything that isn't page
-aligned and 32 bit multiple, or special case the first non-aligned bits.
-I'd expect anything doing large DMAs to be trying to make them page
-aligned anyway.  A facility to provide an interface for cutting off the
-start and end of transfers for separate handling as PIO seems like a
-reasonable idea but I'm not immediately seeing a straightforward way to
-implement it, it seems like it might require most of the infrastructure
-we'd need in order to coalesce adjacent transfers in a message (which
-would be really nice to have).
+A big reason for that is that it's not in my inbox for me to review,
+these messages I flagged as unhelpful aren't going to help with that if
+only because I don't want to create the impression that such behaviour
+achieves results.
 
-> One more thing: is there a helper to create a sg_table for
-> spi_message.is_dma_mapped==1?
+> FWIW I added the ability to open any CS, even those claimed by kernel
+> drivers. This addresses any potential race of spidev binding before
+> the actual driver but has the potential to introduce some subtle bugs
+> when you open and reconfigure a CS used by a kernel driver or send
+> some commands that upset the device.
 
-is_dma_mapped is legacy and should be going away rather than used in new
-code since just providing a single physical address really isn't enough,
-if we need something in future it'll be done with the scatterlist.
-
---r/KodJa4+DLyYymZ
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVQoHhAAoJECTWi3JdVIfQptsH/2c5rSr9f0TXfVSDYl3o73Qs
-dXrNNAgjD0L6j4NfVEr3uv30Kg0egVrVpicCDW9BPPQs1Degmh9XIAs+b0wQVRLa
-8NJWBuJ6P6cvwDAhjq17dhMGeSqE3gZx8z5E5TBpwjRAJaQD8+XGkBl9OYzOhldU
-3IBwMj8JPYP1SR+GcVPLwIxpcdK6MlyzIHLJuzJ7vfNW5tX3qMuUuZO85z3yeWB0
-nTl/lXIfG2Uz1CmT6VMl8BgJHzbniyCyEwanalnkU17b1njQVzX4uPJAO077+V8n
-qFWwVKB0hKrz0dr2gZkDDhHoUt6+9s/9u5ftYGv2LHWia7sGAcAouwjwn++ZeNk=
-=ncH2
------END PGP SIGNATURE-----
-
---r/KodJa4+DLyYymZ--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+This doesn't seem like an obviously good idea - having userspace be able
+to interact with a device without a running kernel driver knowing about
+it doesn't seem like something that will end well.
+--suYuRLWiGRtbsVTA--

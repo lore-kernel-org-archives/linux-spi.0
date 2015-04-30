@@ -1,38 +1,39 @@
-From: Cao Minh Hiep <cm-hiep@jinso.co.jp>
-Subject: Re: [PATCH 3/3] spi: Re-do the returning value of qspi_transfer_out_in
-Date: Thu, 30 Apr 2015 09:28:05 +0900
-Message-ID: <55417715.7020005@jinso.co.jp>
-References: <1430200551-20708-1-git-send-email-cm-hiep@jinso.co.jp>	<1430200551-20708-4-git-send-email-cm-hiep@jinso.co.jp> <CAMuHMdVYnEiGaHzXFgH_pWmFRwWH91RQfm7RyS-XG9FvUTb_Mg@mail.gmail.com>
+From: Cao Minh Hiep <cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
+Subject: Re: [PATCH 1/3] spi: Re-do the returning value of rspi_dma_check_then_transfer
+Date: Thu, 30 Apr 2015 09:33:38 +0900
+Message-ID: <55417862.4010800@jinso.co.jp>
+References: <1430200551-20708-1-git-send-email-cm-hiep@jinso.co.jp> <1430200551-20708-2-git-send-email-cm-hiep@jinso.co.jp> <553F72F1.9010300@cogentembedded.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8;
-	format=flowed
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
-	Mark Brown <broonie@kernel.org>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Ryusuke Sakato <ryusuke.sakato.bx@renesas.com>,
-	Linux-sh list <linux-sh@vger.kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <CAMuHMdVYnEiGaHzXFgH_pWmFRwWH91RQfm7RyS-XG9FvUTb_Mg@mail.gmail.com>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org, yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org,
+	ryusuke.sakato.bx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Sergei Shtylyov <sergei.shtylyov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>,
+	geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <553F72F1.9010300-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
+
+Hi Sergei-san,
+
+>> To reduce indentation and complex of code, insteeds of returning zero,
+>
+>    Complexity?
+>
+
+>> the function rspi_dma_check_then_transfer should be returned
+>
+>    Returning? Or perhaps just "return", without "be"?
+>
+
+Thanks for pointing this out. I'll update it.
 
 
-On 2015=E5=B9=B404=E6=9C=8828=E6=97=A5 20:07, Geert Uytterhoeven wrote:
-> On Tue, Apr 28, 2015 at 7:55 AM, Cao Minh Hiep <cm-hiep@jinso.co.jp> =
-wrote:
->> From: Hiep Cao Minh <cm-hiep@jinso.co.jp>
->>
->> To reduce complex of code, drop "ret" then qspi_transfer_out_in func=
-tion
->> should be returned the value of "qspi_trigger_transfer_out_in" direc=
-tly.
->>
->> Signed-off-by: Hiep Cao Minh <cm-hiep@jinso.co.jp>
-> Acked-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Thanks,
+Hiep.
 
-
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

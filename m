@@ -1,42 +1,35 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH] spi: rb4xx: Fix checking return value of
- devm_ioremap_resource()
-Date: Thu, 30 Apr 2015 10:06:54 +0800
-Message-ID: <1430359614.2531.1.camel@ingics.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Bert Vermeulen <bert-Nh2F35Ii2RQ@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Cao Minh Hiep <cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
+Subject: [PATCH 0/1 v2] spi: Re-do the returning value of rspi_dma_check_then_transfer
+Date: Thu, 30 Apr 2015 11:12:11 +0900
+Message-ID: <1430359932-13245-1-git-send-email-cm-hiep@jinso.co.jp>
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org, yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org,
+	ryusuke.sakato.bx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-devm_ioremap_resource() returns ERR_PTR on failure.
+From: Hiep Cao Minh <cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
 
-Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
----
- drivers/spi/spi-rb4xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hi Mark
+Hi Geert
 
-diff --git a/drivers/spi/spi-rb4xx.c b/drivers/spi/spi-rb4xx.c
-index 50f49f3..3641d0e 100644
---- a/drivers/spi/spi-rb4xx.c
-+++ b/drivers/spi/spi-rb4xx.c
-@@ -145,7 +145,7 @@ static int rb4xx_spi_probe(struct platform_device *pdev)
- 
- 	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	spi_base = devm_ioremap_resource(&pdev->dev, r);
--	if (!spi_base)
-+	if (IS_ERR(spi_base))
- 		return PTR_ERR(spi_base);
- 
- 	master = spi_alloc_master(&pdev->dev, sizeof(*rbspi));
+This is version 2 of spi-Re-do-the-returning-value-of-rspi_dma_check_then_transfer patch.
+I have tested it at linux Upstream Linux-4.0.0-10713-g6e24fd1 on Lager and Koelsch.
+To reduce indentation and complexity of code, drop "ret" then function 
+rspi_dma_check_then_transfer should be returning rspi_dma_transfer directly
+after checking error.
+Please consider the following patch for the Rcar-Gen2.
+
+Hiep Cao Minh (1):
+  spi: Re-do the returning value of rspi_dma_check_then_transfer
+
+ drivers/spi/spi-rspi.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
+
 -- 
-2.1.0
-
-
+1.9.1
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

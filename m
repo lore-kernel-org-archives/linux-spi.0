@@ -1,37 +1,53 @@
-From: Cao Minh Hiep <cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
-Subject: [PATCH 0/1 v2] spi: Re-do the returning value of rspi_dma_check_then_transfer
-Date: Thu, 30 Apr 2015 11:12:11 +0900
-Message-ID: <1430359932-13245-1-git-send-email-cm-hiep@jinso.co.jp>
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org, yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org,
-	ryusuke.sakato.bx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Cao Minh Hiep <cm-hiep@jinso.co.jp>
+Subject: [PATCH 1/1 v2] spi: Re-do the returning value of rspi_dma_check_then_transfer
+Date: Thu, 30 Apr 2015 11:12:12 +0900
+Message-ID: <1430359932-13245-2-git-send-email-cm-hiep@jinso.co.jp>
+References: <1430359932-13245-1-git-send-email-cm-hiep@jinso.co.jp>
+Cc: broonie@kernel.org, linux-spi@vger.kernel.org,
+	kuninori.morimoto.gx@renesas.com, yoshihiro.shimoda.uh@renesas.com,
+	ryusuke.sakato.bx@renesas.com, linux-sh@vger.kernel.org
+To: geert+renesas@glider.be
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1430359932-13245-1-git-send-email-cm-hiep@jinso.co.jp>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Hiep Cao Minh <cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
+From: Hiep Cao Minh <cm-hiep@jinso.co.jp>
 
-Hi Mark
-Hi Geert
+To reduce indentation and complexity of code, insteeds of returning zero
+the function rspi_dma_check_then_transfer should return rspi_dma_transfer
+directly after checking error.
 
-This is version 2 of spi-Re-do-the-returning-value-of-rspi_dma_check_then_transfer patch.
-I have tested it at linux Upstream Linux-4.0.0-10713-g6e24fd1 on Lager and Koelsch.
-To reduce indentation and complexity of code, drop "ret" then function 
-rspi_dma_check_then_transfer should be returning rspi_dma_transfer directly
-after checking error.
-Please consider the following patch for the Rcar-Gen2.
-
-Hiep Cao Minh (1):
-  spi: Re-do the returning value of rspi_dma_check_then_transfer
-
+Signed-off-by: Hiep Cao Minh <cm-hiep@jinso.co.jp>
+---
  drivers/spi/spi-rspi.c | 13 +++++--------
  1 file changed, 5 insertions(+), 8 deletions(-)
 
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index 186924a..0061e28 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -665,15 +665,12 @@ static bool rspi_can_dma(struct spi_master *master, struct spi_device *spi,
+ static int rspi_dma_check_then_transfer(struct rspi_data *rspi,
+ 					 struct spi_transfer *xfer)
+ {
+-	if (rspi->master->can_dma && __rspi_can_dma(rspi, xfer)) {
+-		/* rx_buf can be NULL on RSPI on SH in TX-only Mode */
+-		int ret = rspi_dma_transfer(rspi, &xfer->tx_sg,
+-					xfer->rx_buf ? &xfer->rx_sg : NULL);
+-		if (ret != -EAGAIN)
+-			return 0;
+-	}
++	if (!rspi->master->can_dma || !__rspi_can_dma(rspi, xfer))
++		return -EAGAIN;
+ 
+-	return -EAGAIN;
++	/* rx_buf can be NULL on RSPI on SH in TX-only Mode */
++	return rspi_dma_transfer(rspi, &xfer->tx_sg,
++				xfer->rx_buf ? &xfer->rx_sg : NULL);
+ }
+ 
+ static int rspi_common_transfer(struct rspi_data *rspi,
 -- 
 1.9.1
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

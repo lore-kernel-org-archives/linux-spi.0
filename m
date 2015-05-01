@@ -1,47 +1,52 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 2/4] spi: rspi: Constify platform_device_id
-Date: Fri, 1 May 2015 17:37:58 +0100
-Message-ID: <20150501163758.GI22845@sirena.org.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 3/4] spi: s3c64xx: Constify platform_device_id
+Date: Fri, 1 May 2015 17:38:34 +0100
+Message-ID: <20150501163834.GJ22845@sirena.org.uk>
 References: <1430495047-31122-1-git-send-email-k.kozlowski.k@gmail.com>
- <1430495047-31122-2-git-send-email-k.kozlowski.k@gmail.com>
+ <1430495047-31122-3-git-send-email-k.kozlowski.k@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="S13E5aQrMqPdk4Os"
-Cc: Kukjin Kim <kgene@kernel.org>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org
-To: Krzysztof Kozlowski <k.kozlowski.k@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="UMzi0qLJJs/nSM1I"
+Cc: Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Krzysztof Kozlowski <k.kozlowski.k-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1430495047-31122-2-git-send-email-k.kozlowski.k@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1430495047-31122-3-git-send-email-k.kozlowski.k-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---S13E5aQrMqPdk4Os
+--UMzi0qLJJs/nSM1I
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Sat, May 02, 2015 at 12:44:05AM +0900, Krzysztof Kozlowski wrote:
+On Sat, May 02, 2015 at 12:44:06AM +0900, Krzysztof Kozlowski wrote:
+
 > The platform_device_id is not modified by the driver and core uses it as
 > const.
 
 Applied, thanks.
 
---S13E5aQrMqPdk4Os
+--UMzi0qLJJs/nSM1I
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVQ6vlAAoJECTWi3JdVIfQZ3IH/R8jKs68h/eWiIR885hfY40u
-oNlk8RsEEXwPcJSYzZGapK8MX/DzEAfPmlGK92Ea+D0TWtDpR92qboRlnsKOJ4we
-9xTkal3nbKU2tOinTnvHsiIOfyPLQHZLXTWAZtHrenEVjky+BJb1NaIHVpTXvEm0
-imuv67OEjF0BEfEGiUi7n+S2Up9SHUMvCWrdmfE4pxm4RMWiHIOYcwz6KXypNgzk
-9JDHbU3frgDNFbVXJdw8qf7yDY/FWhax8rX6yvXmcbI6Dt0239eHa+G++GUPSef3
-CCrzkch85P/KgS/+ikM2k25vULepumHgTPK125QdEF7sWsoxtk8v7iUH/WdyA0g=
-=Oq3N
+iQEcBAEBCAAGBQJVQ6wJAAoJECTWi3JdVIfQOncH/inA05+JDVMKigD4OvxyMuLH
+QnSd+LCpe0eMBQicrzE4aQJj47qGd503HtXnA6cm/8b6/05uzSPQgQUBLYjPge+E
+bbdS6KTRjBSQAlmDZz1dAMTiwuKlCKhdzz5eaiPoanPxJOzHJHMKyiMtBqjEFV08
+8Y5uemf68qrR2GVgCIrCJA0nyGSTpyMaW2iP1CZpOgC5zM4TMg10Oh9hnvWW1AKt
+xQU8L6t2eYI69NWQ3s9tEjZ4pP88rioYGNRfd8BFFCXUa1pu4CR4sQ02dsapvfom
+UZdTe/HgN+pTGBVm11nGNirVit2MyCFD4bOWQv+pv29Pjjz+mVMZGPlbWfYhbFo=
+=+uX0
 -----END PGP SIGNATURE-----
 
---S13E5aQrMqPdk4Os--
+--UMzi0qLJJs/nSM1I--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

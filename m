@@ -1,49 +1,46 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: rb4xx: Fix checking return value of
- devm_ioremap_resource()
-Date: Fri, 1 May 2015 17:36:02 +0100
-Message-ID: <20150501163602.GF22845@sirena.org.uk>
-References: <1430359614.2531.1.camel@ingics.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 1/4] spi: imx: Constify platform_device_id
+Date: Fri, 1 May 2015 17:37:35 +0100
+Message-ID: <20150501163735.GH22845@sirena.org.uk>
+References: <1430495047-31122-1-git-send-email-k.kozlowski.k@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="PA6I6Tux0r/NgvnF"
-Cc: Bert Vermeulen <bert-Nh2F35Ii2RQ@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="lzmAV/UDz8M1R67T"
+Cc: Kukjin Kim <kgene@kernel.org>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org
+To: Krzysztof Kozlowski <k.kozlowski.k@gmail.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1430359614.2531.1.camel-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1430495047-31122-1-git-send-email-k.kozlowski.k@gmail.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---PA6I6Tux0r/NgvnF
+--lzmAV/UDz8M1R67T
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Apr 30, 2015 at 10:06:54AM +0800, Axel Lin wrote:
-> devm_ioremap_resource() returns ERR_PTR on failure.
+On Sat, May 02, 2015 at 12:44:04AM +0900, Krzysztof Kozlowski wrote:
+> The platform_device_id is not modified by the driver and core uses it as
+> const.
 
 Applied, thanks.
 
---PA6I6Tux0r/NgvnF
+--lzmAV/UDz8M1R67T
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVQ6tyAAoJECTWi3JdVIfQekAH/jrnppivJUyyagBGMyNIqzUG
-ooZXFPHwVvU5YXKVgypImdDZMb3b0uLaRQFzqcVvB1J8FLUZ8Fwh9QcWxxq5bXDl
-FqJgLgJAbR3ycRSgDi4KCwBwIkrnJdJS7LcCLibvRWMi3ltmcFFxN3wI5BkTXh2H
-R1MhwqJKITAySBjije2Qt5zWm2H04Ez/UZIIawTmUxH6G6JqXlXVxSQMBdguDqyL
-zcsXmN12uyvVOj+uCqAnzuLbzH4lPBOyTu8zy2f6p0TPOFWUfxBWAZbuc5lOKQjs
-bFvvx0HXwOwjV1lD23Bkoz6jawFkf3AB4SzX1XsEJ3vY+qGlEx7s7NoJuyjt0Qk=
-=PRHL
+iQEcBAEBCAAGBQJVQ6vPAAoJECTWi3JdVIfQIj8H/ja69wEkubAD/4XVc9slGrx7
+lMP2hlRP3/aEWcBv5tcK85gLQbtOYDi4C5nM09Nt/Gfb62VMW8k2oVopla4XCZYF
+0AwWc5DOaVX+OwRz7/xkvalF1ZAMUrtxb0HjZFtq28dwKMm1TFPtcIvbGcbw7q6J
+4LxoyK4HUjvt8rlUuuffes9sEFIfIabZtLb8COoIiS2wUQDaf3L/+uzYDbawo3ja
+VlHJXhUMas4hqKwtqLQR2bvbE+0AxfDUX80EoPFVxGHbgtjGfbwleI+wS2sBlQuJ
+zbDoc84P4SVsyDs9jzbFaIHNOamsNJaCr9DfSs+J0jlBEe/Hix5yZ4YchMO54Zk=
+=nrP8
 -----END PGP SIGNATURE-----
 
---PA6I6Tux0r/NgvnF--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--lzmAV/UDz8M1R67T--

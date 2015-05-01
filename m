@@ -1,50 +1,74 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 4/4] spi: sh-msiof: Constify platform_device_id
-Date: Fri, 1 May 2015 17:41:57 +0100
-Message-ID: <20150501164157.GK22845@sirena.org.uk>
-References: <1430495047-31122-1-git-send-email-k.kozlowski.k@gmail.com>
- <1430495047-31122-4-git-send-email-k.kozlowski.k@gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="y+Fz16W+AXV+aTRW"
-Cc: Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Krzysztof Kozlowski <k.kozlowski.k-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: Re: [PATCH v2] dmaengine: bcm2835: Add slave dma support
+Date: Fri, 1 May 2015 23:07:33 +0200
+Message-ID: <DC1D0474-515B-4863-85FB-9E60FFA34829@martin.sperl.org>
+References: <1429355160-13657-1-git-send-email-noralf@tronnes.org>
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2098\))
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
+	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	jonathan-FnsA7b+Nu9XbIbC87yuRow@public.gmane.org,
+	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: =?utf-8?Q?Noralf_Tr=C3=B8nnes?= <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>,
+	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1430495047-31122-4-git-send-email-k.kozlowski.k-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1429355160-13657-1-git-send-email-noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Tests with the initial (and incomplete) version of the spi-bcm2835 driv=
+er=20
+with DMA transfer support show that the dma-engine works as expected wi=
+th=20
+this patch.
 
---y+Fz16W+AXV+aTRW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+There is one one observation:
 
-On Sat, May 02, 2015 at 12:44:07AM +0900, Krzysztof Kozlowski wrote:
-> The platform_device_id is not modified by the driver and core uses it as
-> const.
+> On 18.04.2015, at 13:06, Noralf Tr=C3=B8nnes <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org> wro=
+te:
+> +static struct dma_async_tx_descriptor *
+> +bcm2835_dma_prep_slave_sg(struct dma_chan *chan,
+> +			  struct scatterlist *sgl,
+> +			  unsigned int sg_len,
+> +			  enum dma_transfer_direction direction,
+> +			  unsigned long flags, void *context)
+> +{
+=2E..
+> +			/* Enable */
+> +			if (i =3D=3D sg_len - 1 && len - j <=3D max_size)
+> +				control_block->info |=3D BCM2835_DMA_INT_EN;
 
-Applied, thanks.
+The observation is that an interrupt is always triggered - even in the =
+case
+where flags does NOT have DMA_PREP_INTERRUPT set.
+This may not be necessary and avoid interrupts.
 
---y+Fz16W+AXV+aTRW
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+So maybe the above if clause should get extended by:
+   && (flags & DMA_PREP_INTERRUPT)
+to only trigger an interrupt when really requested.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+I am not sure if there are any side-effects because of this besides hav=
+ing the
+requirement on the client to run dmaengine_terminate_all() on that spec=
+ific dma
+channel without interrupts when the transfer is finished.
 
-iQEcBAEBCAAGBQJVQ6zUAAoJECTWi3JdVIfQHXMH/jHU8hRaOR7DUlJlWqeKLo2P
-HPxhaIPaSVFnrNsYhemwCHamrDj6MlCyUyfIZtwmUKEfAQ9P0eSGX9DG0E4kOabC
-RAAcvxV3d9pAdK8O0lFLS37BFs63Faa8pebUGkSOIxDm2m1j8FRRBbpqkWJFwgaF
-EYN7LzYq+2gHFPhGY5iYbexcndavli0asWu8NfR8HB1naioIVaxz2X8iLKNj1n6p
-pBvZRpkSqTQKR7+mPRAefbbj4qK3fFA3jjcD6zyYbvw+dHf/REo79v6SWzc72ZyG
-XpzTBnST/rITYv0JDA3Ne1RmUuzY8VSPbY9YpNPYZZ9mWN9lR3soDbYOaUquNGQ=
-=pdny
------END PGP SIGNATURE-----
+In the case of SPI we have TX feed the fifo - which finishes early - , =
+but we
+only need to the interrupt when RX finishes reading the fifo, which ind=
+icates
+that the SPI-transfer is fully finished.=20
+So having an interrupt on TX is not necessary for the process.
 
---y+Fz16W+AXV+aTRW--
+The same observations may also apply to bcm2835_dma_prep_dma_cyclic (wh=
+ich is
+outside of this patch provided by Noralf).
+
+Martin
+
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

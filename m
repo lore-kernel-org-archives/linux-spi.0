@@ -1,75 +1,44 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH v2] dmaengine: bcm2835: Add slave dma support
-Date: Fri, 1 May 2015 23:07:33 +0200
-Message-ID: <DC1D0474-515B-4863-85FB-9E60FFA34829@martin.sperl.org>
-References: <1429355160-13657-1-git-send-email-noralf@tronnes.org>
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2098\))
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	jonathan-FnsA7b+Nu9XbIbC87yuRow@public.gmane.org,
-	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: =?utf-8?Q?Noralf_Tr=C3=B8nnes?= <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1429355160-13657-1-git-send-email-noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Jane Wan <Jane.Wan@gainspeed.com>
+Subject: [PATCH] Fix an error that can cause fsl espi task blocked for more than 120 seconds
+Date: Fri, 1 May 2015 16:37:42 -0700
+Message-ID: <1430523462-12306-1-git-send-email-Jane.Wan@gainspeed.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+Cc: Jane Wan <Jane.Wan@gainspeed.com>
+To: <broonie@kernel.org>, <linux-spi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <Emilian.Medve@Freescale.com>,
+	<b48286@freescale.com>, <insop.song@gainspeed.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Tests with the initial (and incomplete) version of the spi-bcm2835 driv=
-er=20
-with DMA transfer support show that the dma-engine works as expected wi=
-th=20
-this patch.
+Incorrect condition is used in spin_event_timeout().  When the TX is done, the SPIE_NF bit in ESPI_SPIE register is set to 1 to indicate the Tx FIFO is not full.  If the bit is 0, it indicates the Tx FIFO is full.
 
-There is one one observation:
+Due to this error, if the Tx FIFO is full at the beginning, but becomes not full after handling the Rx FIFO (the SPIE_NF bit is set), the spin_event_timeout() returns with timeout occurred.  It causes the interrupt handler not to send completion notification to the thread that called wait_for_complete() waiting for the notification.
 
-> On 18.04.2015, at 13:06, Noralf Tr=C3=B8nnes <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org> wro=
-te:
-> +static struct dma_async_tx_descriptor *
-> +bcm2835_dma_prep_slave_sg(struct dma_chan *chan,
-> +			  struct scatterlist *sgl,
-> +			  unsigned int sg_len,
-> +			  enum dma_transfer_direction direction,
-> +			  unsigned long flags, void *context)
-> +{
-=2E..
-> +			/* Enable */
-> +			if (i =3D=3D sg_len - 1 && len - j <=3D max_size)
-> +				control_block->info |=3D BCM2835_DMA_INT_EN;
+Signed-off-by: Jane Wan <Jane.Wan@gainspeed.com>
+---
+ drivers/spi/spi-fsl-espi.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-The observation is that an interrupt is always triggered - even in the =
-case
-where flags does NOT have DMA_PREP_INTERRUPT set.
-This may not be necessary and avoid interrupts.
-
-So maybe the above if clause should get extended by:
-   && (flags & DMA_PREP_INTERRUPT)
-to only trigger an interrupt when really requested.
-
-I am not sure if there are any side-effects because of this besides hav=
-ing the
-requirement on the client to run dmaengine_terminate_all() on that spec=
-ific dma
-channel without interrupts when the transfer is finished.
-
-In the case of SPI we have TX feed the fifo - which finishes early - , =
-but we
-only need to the interrupt when RX finishes reading the fifo, which ind=
-icates
-that the SPI-transfer is fully finished.=20
-So having an interrupt on TX is not necessary for the process.
-
-The same observations may also apply to bcm2835_dma_prep_dma_cyclic (wh=
-ich is
-outside of this patch provided by Noralf).
-
-Martin
-
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index 9011e5d..333d5c2 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -551,9 +551,13 @@ void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
+ 
+ 		/* spin until TX is done */
+ 		ret = spin_event_timeout(((events = mpc8xxx_spi_read_reg(
+-				&reg_base->event)) & SPIE_NF) == 0, 1000, 0);
++				&reg_base->event)) & SPIE_NF), 1000, 0);
+ 		if (!ret) {
+ 			dev_err(mspi->dev, "tired waiting for SPIE_NF\n");
++
++			/* Clear the SPIE bits */
++			mpc8xxx_spi_write_reg(&reg_base->event, events);
++			complete(&mspi->done);
+ 			return;
+ 		}
+ 	}
+-- 
+1.7.9.5

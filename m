@@ -1,82 +1,128 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH 2/3] spidev: Add DT binding example.
-Date: Sun, 3 May 2015 12:02:13 +0200
-Message-ID: <CAMuHMdVyU4nOXna-+ThyCjaugGqVknuCHVzzoE-NuN6q3m_grw@mail.gmail.com>
-References: <cd282abf-898a-4f01-90a6-8bf2db160b8e@googlegroups.com>
-	<CAOMqctRTFgnVEKDAx4roMcGOeGV35Dyz7oOsOa4jC-MKr9_xXg@mail.gmail.com>
-	<20150428141630.GR22845@sirena.org.uk>
-	<CAOMqctTNSgycy7K=ZMK9aaZGyybDT61e0Y6Fwf1jtoMbSVoNQQ@mail.gmail.com>
-	<20150428171738.GY22845@sirena.org.uk>
-	<CAOMqctSEAd-WeBRLabvDugN04XaqY6Y1UyO9UPLaTW9ce7t_rQ@mail.gmail.com>
-	<20150429174059.GQ22845@sirena.org.uk>
-	<CAOMqctQmpYmD0J9=o6FVjJhXBc8b+oGd7cNh5aH_fmgE3vk5+A@mail.gmail.com>
-	<20150429180659.GT22845@sirena.org.uk>
-	<CAOMqctSMeWvG6YsCFn5=wxS2nCBbMiiCKUNJh8oFsH1VZY4H-w@mail.gmail.com>
-	<20150430195829.GG22845@sirena.org.uk>
-	<A92B1688-9A12-4462-BA02-AEEE197C0FF4@martin.sperl.org>
-Reply-To: geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"Eric D." <eric.dillmann-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
-	Jonathan Corbet <corbet-T1hC0tSOHrs@public.gmane.org>, Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Return-path: <linux-sunxi+bncBCQJP74GSUDRBJXES6VAKGQENJYQB7I-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-In-Reply-To: <A92B1688-9A12-4462-BA02-AEEE197C0FF4-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <http://groups.google.com/group/linux-sunxi
-List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
- <http://groups.google.com/group/linux-sunxi/subscribe>
-List-Id: linux-spi.vger.kernel.org
+From: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v2] spi: sirf: request and free cs gpio in setup and cleanup callbacks
+Date: Sun,  3 May 2015 10:30:12 +0000
+Message-ID: <1430649012-1694-1-git-send-email-21cnbao@gmail.com>
+Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, workgroup.linux-kQvG35nSl+M@public.gmane.org,
+	swingboard-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>,
+	Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Sun, May 3, 2015 at 11:01 AM, Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org> wro=
-te:
->> On 30.04.2015, at 21:58, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
->> A big reason for that is that it's not in my inbox for me to review,
->> these messages I flagged as unhelpful aren't going to help with that if
->> only because I don't want to create the impression that such behaviour
->> achieves results.
->
-> What about implementing it like this:
-> echo -n =E2=80=9Cspi32761.4=E2=80=9D > /sys/bus/spi/drivers/spidev/bind
->
-> Would this be an acceptable solution?
->
-> This is actually mentioned in Documentation/spi/spidev as a
-> possible option for the future - quote:
->
->> (Sysfs also supports userspace driven binding/unbinding of drivers to
->> devices.  That mechanism might be supported here in the future.)
->
-> Not sure why it does not work right now (but it works for =E2=80=9Creal=
-=E2=80=9D
-> device-drivers), but I guess it has to do with compatibility checks.
+From: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
 
-IIRC, PCI drivers support adding more compatible entries through /sysfs.
+move spi controller's gpio request work out from probe() to spi device
+register stage, so after spi device register spi controller can deactive
+device's gpio chipselect. old code can't do it because gpio request has
+not be done until device register is finised in spi_bitbang_start.
+and add cleanup function to free CS gpio.
 
-Gr{oetje,eeting}s,
+Signed-off-by: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
+Signed-off-by: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
+---
+ -v2: rebase on v4.1-rc1
 
-                        Geert
+ drivers/spi/spi-sirf.c | 55 +++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 37 insertions(+), 18 deletions(-)
+
+diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
+index a50ee9b..a69ccb7 100644
+--- a/drivers/spi/spi-sirf.c
++++ b/drivers/spi/spi-sirf.c
+@@ -631,14 +631,47 @@ spi_sirfsoc_setup_transfer(struct spi_device *spi, struct spi_transfer *t)
+ static int spi_sirfsoc_setup(struct spi_device *spi)
+ {
+ 	struct sirfsoc_spi *sspi;
++	int ret = 0;
+ 
+ 	sspi = spi_master_get_devdata(spi->master);
+ 
+ 	if (spi->cs_gpio == -ENOENT)
+ 		sspi->hw_cs = true;
+-	else
++	else {
+ 		sspi->hw_cs = false;
+-	return spi_sirfsoc_setup_transfer(spi, NULL);
++		if (!spi_get_ctldata(spi)) {
++			void *cs = kmalloc(sizeof(int), GFP_KERNEL);
++			if (!cs) {
++				ret = -ENOMEM;
++				goto exit;
++			}
++			ret = gpio_is_valid(spi->cs_gpio);
++			if (!ret) {
++				dev_err(&spi->dev, "no valid gpio\n");
++				ret = -ENOENT;
++				goto exit;
++			}
++			ret = gpio_request(spi->cs_gpio, DRIVER_NAME);
++			if (ret) {
++				dev_err(&spi->dev, "failed to request gpio\n");
++				goto exit;
++			}
++			spi_set_ctldata(spi, cs);
++		}
++	}
++	writel(readl(sspi->base + SIRFSOC_SPI_CTRL) | SIRFSOC_SPI_CS_IO_MODE,
++			sspi->base + SIRFSOC_SPI_CTRL);
++	spi_sirfsoc_chipselect(spi, BITBANG_CS_INACTIVE);
++exit:
++	return ret;
++}
++
++static void spi_sirfsoc_cleanup(struct spi_device *spi)
++{
++	if (spi_get_ctldata(spi)) {
++		gpio_free(spi->cs_gpio);
++		kfree(spi_get_ctldata(spi));
++	}
+ }
+ 
+ static int spi_sirfsoc_probe(struct platform_device *pdev)
+@@ -647,7 +680,7 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
+ 	struct spi_master *master;
+ 	struct resource *mem_res;
+ 	int irq;
+-	int i, ret;
++	int ret;
+ 
+ 	ret = device_reset(&pdev->dev);
+ 	if (ret) {
+@@ -685,6 +718,7 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
+ 	sspi->bitbang.setup_transfer = spi_sirfsoc_setup_transfer;
+ 	sspi->bitbang.txrx_bufs = spi_sirfsoc_transfer;
+ 	sspi->bitbang.master->setup = spi_sirfsoc_setup;
++	sspi->bitbang.master->cleanup = spi_sirfsoc_cleanup;
+ 	master->bus_num = pdev->id;
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST | SPI_CS_HIGH;
+ 	master->bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(12) |
+@@ -733,21 +767,6 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
+ 	ret = spi_bitbang_start(&sspi->bitbang);
+ 	if (ret)
+ 		goto free_dummypage;
+-	for (i = 0; master->cs_gpios && i < master->num_chipselect; i++) {
+-		if (master->cs_gpios[i] == -ENOENT)
+-			continue;
+-		if (!gpio_is_valid(master->cs_gpios[i])) {
+-			dev_err(&pdev->dev, "no valid gpio\n");
+-			ret = -EINVAL;
+-			goto free_dummypage;
+-		}
+-		ret = devm_gpio_request(&pdev->dev,
+-				master->cs_gpios[i], DRIVER_NAME);
+-		if (ret) {
+-			dev_err(&pdev->dev, "failed to request gpio\n");
+-			goto free_dummypage;
+-		}
+-	}
+ 	dev_info(&pdev->dev, "registerred, bus number = %d\n", master->bus_num);
+ 
+ 	return 0;
+-- 
+1.9.1
 
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
-
---=20
-You received this message because you are subscribed to the Google Groups "=
-linux-sunxi" group.
-To unsubscribe from this group and stop receiving emails from it, send an e=
-mail to linux-sunxi+unsubscribe-/JYPxA39Uh5TLH3MbocFF+G/Ez6ZCGd0@public.gmane.org
-For more options, visit https://groups.google.com/d/optout.
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,55 +1,42 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Subject: Re: [PATCH 1/2] spi: add spi_statistics framework
-Date: Mon, 4 May 2015 14:24:36 +0100
-Message-ID: <20150504132436.GX15510@sirena.org.uk>
-References: <1430741564-2849-1-git-send-email-kernel@martin.sperl.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="mu6rDKe19l+MneQx"
+Date: Mon, 4 May 2015 15:39:10 +0200
+Message-ID: <3BC3DB7A-8E03-45B5-BEB2-6E74B9597276@martin.sperl.org>
+References: <1430741564-2849-1-git-send-email-kernel@martin.sperl.org> <20150504132436.GX15510@sirena.org.uk>
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2098\))
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1430741564-2849-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <20150504132436.GX15510-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-
---mu6rDKe19l+MneQx
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, May 04, 2015 at 12:12:42PM +0000, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
-> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+> On 04.05.2015, at 15:24, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
 >=20
-> add spi_statistics to spi_master and spi_device
-> also add a missing "to_spi_master" method
->=20
-> Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+> Two problems here:
+> - This doesn't do what the subject line says it does (it's purely a
+>   modification to the header).
+> - This is two not obviously related changes in a single commit.
+Typically (i understood) you want things as separate patches, so I=20
+did split the API change from the implementation details:
 
-Two problems here:
- - This doesn't do what the subject line says it does (it's purely a
-   modification to the header).
- - This is two not obviously related changes in a single commit.
+Patch1/2 with the framework/API and the other with the implementation.
 
---mu6rDKe19l+MneQx
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Also the Patch2/2 requires the =E2=80=9Cto_spi_master=E2=80=9D method f=
+rom Patch1/2.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+You want now everything in a single patch or you want patch 1/2
+split into 2 distinct patches?
 
-iQEcBAEBCAAGBQJVR3MUAAoJECTWi3JdVIfQlgkH/36Lh/XSebvAa9/rAA/OTDy+
-lJq5lQAtlJmUGIh6FlHtBcLSubvY5VevCabN9PbLMdwj0BAcg9TbJshy9SmDXae0
-J6Cg/VvNb3zAQvljfVn3gfQM/Mc6kKEmhg2uinzqRuxNEE+mAcCLCZeRrffhxzu+
-n4UNvGCce4TpEasiykdPHo+BU+4csHmJQPTuRS2OSwarF+TTeBGOKBdjfkYBs0tA
-tDzolx3FKADoNcAxNMOUhJRDD/JJkQiw/1J9mw1GRExkcZ8/lK/5wKU3xAffxeEO
-QdswmCHdTjNj+siNQj+IHytbcT2IMEDAyw761LcFtbgmGJpq6D7uCynNSIhYn5Y=
-=d/Qo
------END PGP SIGNATURE-----
+Other things that you think needs change so that i can incorporate
+those as well prior to resubmitting?
 
---mu6rDKe19l+MneQx--
+thanks
+
+
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

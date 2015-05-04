@@ -1,93 +1,76 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH 2/2] spi: add statistics gathering and reporting methods
-Date: Mon, 4 May 2015 16:25:01 +0200
-Message-ID: <9A0ADDBC-5D5A-428F-B434-9CCB97505DCB@martin.sperl.org>
-References: <1430741564-2849-1-git-send-email-kernel@martin.sperl.org> <1430741564-2849-2-git-send-email-kernel@martin.sperl.org> <20150504134226.GY15510@sirena.org.uk>
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2098\))
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+Date: Mon, 4 May 2015 15:30:30 +0100
+Message-ID: <20150504143030.GE15510@sirena.org.uk>
+References: <1430741564-2849-1-git-send-email-kernel@martin.sperl.org>
+ <1430741564-2849-2-git-send-email-kernel@martin.sperl.org>
+ <20150504134226.GY15510@sirena.org.uk>
+ <9A0ADDBC-5D5A-428F-B434-9CCB97505DCB@martin.sperl.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="i6U+WTAJHBcf3BHs"
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150504134226.GY15510-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <9A0ADDBC-5D5A-428F-B434-9CCB97505DCB-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
-> On 04.05.2015, at 15:42, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> This is unsuitable for sysfs as it is, sysfs is strictly one value pe=
-r
-> file.  debugfs would be a more suitable place for a file like this, o=
-r
-> if they are going to go into sysfs they should go in as a directory o=
-f
-> files with one value per file like the network device statistics
-> directory.  I'm ambivalent about which is the best place, both have
-> their merits.
-that makes it much more complicated to add things per spi_master
-implementation (which was my original idea: have a framework that expos=
-es
-the distinct transfer modes of the spi-bcm2835 driver (polling, interru=
-pt
-and dma driven) and also to get some stats on how often we run into tho=
-se
-=E2=80=9Ccorner=E2=80=9D cases - that is also why I want to gather the =
-histogram
-statistics, as it may make it easier to understand the use cases of peo=
-ple
-who complain about =E2=80=9Cperformance=E2=80=9D in case they share tho=
-se infos=E2=80=A6
+--i6U+WTAJHBcf3BHs
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-In those cases a single file is the easiest to share, but that is the w=
-ay
-it is with sysfs...
+On Mon, May 04, 2015 at 04:25:01PM +0200, Martin Sperl wrote:
 
->=20
->> transfer-len-log2-histogram: 0 33 3 9 1 2 0 0 0 0 0 0 0 30 0 0 0
-> It would be more friendly to print this out as an actual histogram wi=
-th
-> pretty printing, that's definitely a debugfs thing though.
-I could make it more readable or - if split - run it with the same form=
-at
-as /sys/devices/virtual/block/ram0/stat - just multiple columns...
+> > It's a bit unclear to me that we need to collect the stats on both a
+> > per device and a per master basis, if we've got device statistics we can
+> > add up the various devices to get the master values easily enough when
+> > we need them.  It does mean that removing devices would discard some of
+> > the statistics but it's not clear to me that this is actually going to
+> > concern anyone.
 
-> It's a bit unclear to me that we need to collect the stats on both a
-> per device and a per master basis, if we've got device statistics we =
-can
-> add up the various devices to get the master values easily enough whe=
-n
-> we need them.  It does mean that removing devices would discard some =
-of
-> the statistics but it's not clear to me that this is actually going t=
-o
-> concern anyone.
->=20
-well - I found that it sometimes may help identify what device is respo=
-nsible
-for an issue on a mixed device bus.
+> well - I found that it sometimes may help identify what device is responsible
+> for an issue on a mixed device bus.
 
-> Do we really need the locked version with a separate lock?  I know
-> you're very concerned about performance for some of your applications
-> and the fact that we're going to be spending a lot of time taking a
-> separate spinlock (with interrupt disabling... ) seems like it's goin=
-g
-> to be adding overhead we could live without.
->=20
-I did not have it at first but was concerned that someone would complai=
-n
-about missing locking. That is why I have minimized the spinlock in the
-loop.
+We can do that by looking at the devices though?  I'm not clear what the
+master statistics are telling us?
 
-That is easy to remove again...
+> > Do we really need the locked version with a separate lock?  I know
+> > you're very concerned about performance for some of your applications
+> > and the fact that we're going to be spending a lot of time taking a
+> > separate spinlock (with interrupt disabling... ) seems like it's going
+> > to be adding overhead we could live without.
 
-> I can't help but feel that this would be a bit more legible without t=
-he
-> macro for adding to a field - just a function that takes the transfer
-> and a stats buffer to add to.
-just a bit more writing when counting twice=E2=80=A6
+> I did not have it at first but was concerned that someone would complain
+> about missing locking. That is why I have minimized the spinlock in the
+> loop.
 
-OK, so I will rework the patch looking into the above and will now put
-everything into one single patch...--
+> That is easy to remove again...
+
+I'm not saying don't lock, I'm asking if adding this spinlock is the
+best way of doing this.  We already lock the master most of the time,
+can we not continue using the same lock?
+
+--i6U+WTAJHBcf3BHs
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVR4KFAAoJECTWi3JdVIfQho8H/0e2MsLOBqRouLbfTEpOOD7T
+GnqHRaDhbr2zFfRr5ocQ8kWWKhf1B/nVMS8ocuBzLGyO6Pk/rQiCuwkcLaqU/o07
+GB5b4kVZ156RV7t9wcoBVJAm8B2Wt9A/7pRq+NxJOXtH2P2gZjyAQjHDsFYScNS4
+P36KqeP7Ei+vTpMdpNjxcDra9TDhtwn3FfaRMp/D+XYVeEeHDXrMxSdHR3jEk0OA
+A4povSUJmmLLTjNvCoA4ST9hsHZxTHclEqiwDPg//dqKh/iNCYW7CC+sWzzccCfn
+aCkahuH08lPnCguiLe20cQzVj8rUMu940E4du3yH+E3cg8v8ZetzfIao20cfn58=
+=9p29
+-----END PGP SIGNATURE-----
+
+--i6U+WTAJHBcf3BHs--
+--
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

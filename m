@@ -1,69 +1,138 @@
-From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 2/3] spidev: Add DT binding example.
-Date: Mon, 4 May 2015 12:42:03 +0200
-Message-ID: <CAOMqctQq=CLsXf-RCrtJq5H9skdO1y4mV9iM2pOk69+voMiS0g@mail.gmail.com>
-References: <20150428171738.GY22845@sirena.org.uk> <CAOMqctSEAd-WeBRLabvDugN04XaqY6Y1UyO9UPLaTW9ce7t_rQ@mail.gmail.com>
- <20150429174059.GQ22845@sirena.org.uk> <CAOMqctQmpYmD0J9=o6FVjJhXBc8b+oGd7cNh5aH_fmgE3vk5+A@mail.gmail.com>
- <20150429180659.GT22845@sirena.org.uk> <CAOMqctSMeWvG6YsCFn5=wxS2nCBbMiiCKUNJh8oFsH1VZY4H-w@mail.gmail.com>
- <20150430195829.GG22845@sirena.org.uk> <A92B1688-9A12-4462-BA02-AEEE197C0FF4@martin.sperl.org>
- <20150503095917.GQ22845@sirena.org.uk> <A1FB2CDB-6735-46B2-BB74-80F1B2033E23@martin.sperl.org>
- <20150504101207.GR22845@sirena.org.uk>
-Reply-To: hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>, "Eric D." <eric.dillmann-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>, Jonathan Corbet <corbet-T1hC0tSOHrs@public.gmane.org>,
-	Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-sunxi+bncBCQMLUOX54MBBJE2TWVAKGQEUM4YLBQ-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-In-Reply-To: <20150504101207.GR22845-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <http://groups.google.com/group/linux-sunxi
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
- <http://groups.google.com/group/linux-sunxi/subscribe>
-List-Id: linux-spi.vger.kernel.org
+From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
+Subject: [PATCH 1/2] spi: add spi_statistics framework
+Date: Mon,  4 May 2015 12:12:42 +0000
+Message-ID: <1430741564-2849-1-git-send-email-kernel@martin.sperl.org>
+Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 4 May 2015 at 12:12, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Sun, May 03, 2015 at 11:00:40PM +0200, Martin Sperl wrote:
->
->> I will investigate the fine details, but I fear we may need some
->> =E2=80=9Ccompatibility=E2=80=9D magic similar to =E2=80=9Cnew_id=E2=80=
-=9D in USB to make it work,
->> because it seems as if you can ONLY force a driver to bind if it
->> _is_ compatible...
->
-> I'm confused.  What would the point of the functionality be if not to
-> override the existing data, otherwise we'd already have bound the
-> driver?
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-Presumably you can swap different versions of a driver this way.
+add spi_statistics to spi_master and spi_device
+also add a missing "to_spi_master" method
 
-Many devices have two drivers in Linux (old and new) which are
-obviously both compatible.
+Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+---
+ include/linux/spi/spi.h |   65 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 65 insertions(+)
 
-Loading driver which is not compatible is something which you probably
-do not want to be done easily as much as sending random junk to SPI
-devices controlled by a kernel driver.
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index d673072..6898574d 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -31,6 +31,45 @@ struct dma_chan;
+ extern struct bus_type spi_bus_type;
+ 
+ /**
++ * struct spi_statistics - statistics for spi transfers
++ * @messages:      number of spi-messages handled
++ * @transfers:     number of spi_transfers handled
++ * @errors:        number of errors during spi_transfer
++ * @timedout:      number of timeouts during spi_transfer
++ *
++ * @spi_sync:      number of times spi_sync is used
++ * @spi_sync_immediate:
++ *                 number of times spi_sync is executed immediately
++ *                 in calling context without queuing and scheduling
++ * @spi_async:     number of times spi_async is used
++ *
++ * @bytes:         number of bytes transferred to/from device
++ * @bytes_tx:      number of bytes sent to device
++ * @bytes_rx:      number of bytes received from device
++ *
++ * @bytes_l2histo: histogram of bytes per spi_transfer (log2 with saturation)
++ */
++struct spi_statistics {
++	unsigned long messages;
++	unsigned long transfers;
++	unsigned long errors;
++	unsigned long timedout;
++
++	unsigned long spi_sync;
++	unsigned long spi_sync_immediate;
++	unsigned long spi_async;
++
++	unsigned long long bytes;
++	unsigned long long bytes_rx;
++	unsigned long long bytes_tx;
++
++	/* histogram of log2(size) between 0 and 65536 with saturation */
++#define SPI_STATISTICS_L2HISTO_SIZE 17
++	unsigned long bytes_l2histo[SPI_STATISTICS_L2HISTO_SIZE];
++
++};
++
++/**
+  * struct spi_device - Master side proxy for an SPI slave device
+  * @dev: Driver model representation of the device.
+  * @master: SPI controller used with the device.
+@@ -59,6 +98,7 @@ extern struct bus_type spi_bus_type;
+  *	for driver coldplugging, and in uevents used for hotplugging
+  * @cs_gpio: gpio number of the chipselect line (optional, -ENOENT when
+  *	when not using a GPIO line)
++ * @stats: the statistics for this device
+  *
+  * A @spi_device is used to interchange data between an SPI slave
+  * (usually a discrete chip) and CPU memory.
+@@ -98,6 +138,8 @@ struct spi_device {
+ 	char			modalias[SPI_NAME_SIZE];
+ 	int			cs_gpio;	/* chip select gpio */
+ 
++	struct spi_statistics	stats;
++
+ 	/*
+ 	 * likely need more hooks for more protocol options affecting how
+ 	 * the controller talks to each chip, like:
+@@ -301,6 +343,16 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
+  * @dummy_rx: dummy receive buffer for full-duplex devices
+  * @dummy_tx: dummy transmit buffer for full-duplex devices
+  *
++ * @stats: the statistics for this master
++ * @stats_spinlock: spinlock for stats locking
++ *                  (common lock for access to spi_master
++ *                  and spi_device stats structures)
++ * @show_stats: report extra data specific to this master/device
++ *                - spi can be null indicating statistics for the master
++ *                  should get reported
++ *                - returns number of bytes added to buffer
++ *                - spinlock is held while in this operation
++ *
+  * Each SPI master controller can communicate with one or more @spi_device
+  * children.  These make a small bus, sharing MOSI, MISO and SCK signals
+  * but not chip select signals.  Each device may be configured to use a
+@@ -452,6 +504,14 @@ struct spi_master {
+ 	/* gpio chip select */
+ 	int			*cs_gpios;
+ 
++	/* statistics reporting */
++	struct spi_statistics	stats;
++	spinlock_t		stats_spinlock;
++	ssize_t (*show_stats)(struct spi_master *master,
++			      struct spi_device *spi,
++			      char *buf,
++			      ssize_t buffer_size);
++
+ 	/* DMA channels for use with core dmaengine helpers */
+ 	struct dma_chan		*dma_tx;
+ 	struct dma_chan		*dma_rx;
+@@ -461,6 +521,11 @@ struct spi_master {
+ 	void			*dummy_tx;
+ };
+ 
++static inline struct spi_master *to_spi_master(struct device *dev)
++{
++	return dev ? container_of(dev, struct spi_master, dev) : NULL;
++}
++
+ static inline void *spi_master_get_devdata(struct spi_master *master)
+ {
+ 	return dev_get_drvdata(&master->dev);
+-- 
+1.7.10.4
 
-I am, of course, enjoying the ability to send some ID command to a
-flash memory which is technically controlled by a kernel driver when I
-physically replace the chip in the socket or the chip was not seated
-well to start with and I want to check that it's working without
-rebooting the board.
-
-Thanks
-
-Michal
-
---=20
-You received this message because you are subscribed to the Google Groups "=
-linux-sunxi" group.
-To unsubscribe from this group and stop receiving emails from it, send an e=
-mail to linux-sunxi+unsubscribe-/JYPxA39Uh5TLH3MbocFF+G/Ez6ZCGd0@public.gmane.org
-For more options, visit https://groups.google.com/d/optout.
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

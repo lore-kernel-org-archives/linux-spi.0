@@ -1,54 +1,55 @@
-From: Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH resend 1/5] spi: bcm2835: Add GPIOLIB dependency
-Date: Mon,  4 May 2015 15:30:45 -0700
-Message-ID: <1430778649-28126-2-git-send-email-linux@roeck-us.net>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH resend 1/5] spi: bcm2835: Add GPIOLIB dependency
+Date: Tue, 5 May 2015 00:34:21 +0100
+Message-ID: <20150504233421.GW22845@sirena.org.uk>
 References: <1430778649-28126-1-git-send-email-linux@roeck-us.net>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Martin Sperl <kernel@martin.sperl.org>,
-	linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>
-To: linux-kernel@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1430778649-28126-1-git-send-email-linux@roeck-us.net>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+ <1430778649-28126-2-git-send-email-linux@roeck-us.net>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="AxneKT3mNNwGaQeK"
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+	Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1430778649-28126-2-git-send-email-linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Fix:
 
-drivers/spi/spi-bcm2835.c: In function 'chip_match_name':
-drivers/spi/spi-bcm2835.c:356:21: error:
-			dereferencing pointer to incomplete type
-drivers/spi/spi-bcm2835.c: In function 'bcm2835_spi_setup':
-drivers/spi/spi-bcm2835.c:382:2: error:
-	`		implicit declaration of function 'gpiochip_find'
-drivers/spi/spi-bcm2835.c:387:21: error:
-			dereferencing pointer to incomplete type
+--AxneKT3mNNwGaQeK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-by adding the now mandatory GPIOLIB dependency.
+On Mon, May 04, 2015 at 03:30:45PM -0700, Guenter Roeck wrote:
+> Fix:
+>=20
+> drivers/spi/spi-bcm2835.c: In function 'chip_match_name':
+> drivers/spi/spi-bcm2835.c:356:21: error:
 
-Fixes: a30a555d7435 ("spi: bcm2835: transform native-cs to gpio-cs
-	on first spi_setup")
-Cc: Martin Sperl <kernel@martin.sperl.org>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
----
-Yes, I know, this patch is in -next. Please see this e-mail as gentle reminder
-to consider pushing it (or one of the other patches fixing the same problem)
-into mainline. 
+This duplicates a patch someone else sent.
 
- drivers/spi/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+--AxneKT3mNNwGaQeK
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 198f96b7fb45..a132180a9251 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -78,6 +78,7 @@ config SPI_ATMEL
- config SPI_BCM2835
- 	tristate "BCM2835 SPI controller"
- 	depends on ARCH_BCM2835 || COMPILE_TEST
-+	depends on GPIOLIB
- 	help
- 	  This selects a driver for the Broadcom BCM2835 SPI master.
- 
--- 
-2.1.0
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVSAH9AAoJECTWi3JdVIfQlm8H/j86HMUxi/eCT541pYEgn9xk
+C1J0FEw/5zSjy8E92RS9IjhpmisJ0v0+NY5yyUzR6ZNRHGkMVUajBI0ihGXz9TeJ
+o9rsyqup12BY7iETmT4oObz9tU3FXxeRrA25t03j9tETGYMgFqDb9Z6bZsq57Zgc
+YgdNBgYE/mPqlYQw/SCvja57RN9kgNvCNROeKkZrt/FNq2HZHqvefWyRcC6U+E1C
+AGCqym98Bbk5iuKgE5/ns4r9TVK+IlF8FxhFMWR85B81taRQmJGXLMTS8uHqYCPP
+fyh32F6zpY4s0xCY9jgdIMIzWNBG+ZVYOl0LbrfD8yUJrtJJ0xvmTIN3GZ4eFME=
+=U2Ln
+-----END PGP SIGNATURE-----
+
+--AxneKT3mNNwGaQeK--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

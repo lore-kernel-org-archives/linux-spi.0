@@ -1,59 +1,50 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH resend 1/5] spi: bcm2835: Add GPIOLIB dependency
-Date: Tue, 5 May 2015 12:40:14 +0100
-Message-ID: <20150505114014.GE22845@sirena.org.uk>
-References: <1430778649-28126-1-git-send-email-linux@roeck-us.net>
- <1430778649-28126-2-git-send-email-linux@roeck-us.net>
- <20150504233421.GW22845@sirena.org.uk>
- <55480894.3080200@roeck-us.net>
- <55482457.2020005@roeck-us.net>
- <20150505111646.GB22845@sirena.org.uk>
- <CAMuHMdXfW6ngPDNgzoe8FjNV9kC6YCo85C75umta5cC67WRVrg@mail.gmail.com>
+From: Jakub =?UTF-8?B?S2ljacWEc2tp?= <moorray3-5tc4TXWwyLM@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi: add statistics gathering and reporting methods
+Date: Tue, 5 May 2015 14:20:08 +0200
+Message-ID: <20150505142008.2087baac@north>
+References: <1430741564-2849-1-git-send-email-kernel@martin.sperl.org>
+	<1430741564-2849-2-git-send-email-kernel@martin.sperl.org>
+	<20150504134226.GY15510@sirena.org.uk>
+	<9A0ADDBC-5D5A-428F-B434-9CCB97505DCB@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="YYys6UPrTVF8px1s"
-Cc: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdXfW6ngPDNgzoe8FjNV9kC6YCo85C75umta5cC67WRVrg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <9A0ADDBC-5D5A-428F-B434-9CCB97505DCB-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Mon, 4 May 2015 16:25:01 +0200, Martin Sperl wrote:
+> > On 04.05.2015, at 15:42, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> > This is unsuitable for sysfs as it is, sysfs is strictly one value =
+per
+> > file.  debugfs would be a more suitable place for a file like this,=
+ or
+> > if they are going to go into sysfs they should go in as a directory=
+ of
+> > files with one value per file like the network device statistics
+> > directory.  I'm ambivalent about which is the best place, both have
+> > their merits. =20
+>
+> that makes it much more complicated to add things per spi_master
+> implementation (which was my original idea: have a framework that exp=
+oses
+> the distinct transfer modes of the spi-bcm2835 driver (polling, inter=
+rupt
+> and dma driven) and also to get some stats on how often we run into t=
+hose
+> =E2=80=9Ccorner=E2=80=9D cases - that is also why I want to gather th=
+e histogram
+> statistics, as it may make it easier to understand the use cases of p=
+eople
+> who complain about =E2=80=9Cperformance=E2=80=9D in case they share t=
+hose infos=E2=80=A6
 
---YYys6UPrTVF8px1s
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, May 05, 2015 at 01:32:12PM +0200, Geert Uytterhoeven wrote:
-
-> I think G=FCnter wants you to keep only the commit you will send to Linus
-> for v4.1-rc3, and remove the other commit.
-
-Yes, I know that's the *sensible* thing to do (hence why I was asking if
-he really meant what he asked for).
-
---YYys6UPrTVF8px1s
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVSKweAAoJECTWi3JdVIfQauAH/3+ga/z8lv3ymJRXsb1eAgkn
-DR3jI0aLhYRj461jS5AOjEH/VwcMDpxLQSnTxAz6XGHDsmVGNaY9IXDP8B3+qJhb
-0A9YNYg+EwxveEuX0Kkx7k8NXV9AAK2drcb+oCuzIBhmk36NUosNIGzBaFO2pT6E
-906VyiZgxiLQOYaiicUBolr39TFMXF8BtnuB8Ui0RFHqe/DG+A6sX6r32fCfxs9N
-n0egy16HjCgRik0HhusjUpRawnrYzcl5jELPYcEcPQAgwh2rOjcaKYkO+6k2RNnw
-l0ze6V5EZtRAwK4fFKtLRqRiWEEeIaihcu2xO6Yyg79vlux0CeIYpkLPQTBQU48=
-=pw8z
------END PGP SIGNATURE-----
-
---YYys6UPrTVF8px1s--
+You can also consider adding few strategically placed tracepoints. =20
+It saves the amount of kernel code necessary and is generally more
+flexible.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

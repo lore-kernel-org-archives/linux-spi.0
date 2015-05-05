@@ -1,64 +1,83 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Subject: Re: [PATCH resend 1/5] spi: bcm2835: Add GPIOLIB dependency
-Date: Tue, 5 May 2015 12:16:46 +0100
-Message-ID: <20150505111646.GB22845@sirena.org.uk>
+Date: Tue, 5 May 2015 13:32:12 +0200
+Message-ID: <CAMuHMdXfW6ngPDNgzoe8FjNV9kC6YCo85C75umta5cC67WRVrg@mail.gmail.com>
 References: <1430778649-28126-1-git-send-email-linux@roeck-us.net>
- <1430778649-28126-2-git-send-email-linux@roeck-us.net>
- <20150504233421.GW22845@sirena.org.uk>
- <55480894.3080200@roeck-us.net>
- <55482457.2020005@roeck-us.net>
+	<1430778649-28126-2-git-send-email-linux@roeck-us.net>
+	<20150504233421.GW22845@sirena.org.uk>
+	<55480894.3080200@roeck-us.net>
+	<55482457.2020005@roeck-us.net>
+	<20150505111646.GB22845@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="tRxlveiQ0HuQS2ZK"
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <55482457.2020005-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+In-Reply-To: <20150505111646.GB22845-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hi Mark,
 
---tRxlveiQ0HuQS2ZK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Tue, May 5, 2015 at 1:16 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Mon, May 04, 2015 at 07:00:55PM -0700, Guenter Roeck wrote:
+>> On 05/04/2015 05:02 PM, Guenter Roeck wrote:
+>
+>> >not that it matters, but this is the patch in linux-next.
+>
+>> >I am aware that several other patches have been submitted to fix th=
+e
+>> >problem (I think I have seen at least two); after all, I submitted =
+the
+>
+>> Follow-up: Since you accepted one of the other patches, please make =
+sure
+>> to remove my patch from your -next branch; otherwise we might end up
+>> with dual "depends on GPIOLIB".
+>
+> *sigh*  So, what you're asking me to do here is remove the one that's
+> actually been applied as a bugfix for Linus.  Are you *sure* that's w=
+hat
+> you think that's a good idea?
 
-On Mon, May 04, 2015 at 07:00:55PM -0700, Guenter Roeck wrote:
-> On 05/04/2015 05:02 PM, Guenter Roeck wrote:
+spi.git/for-next now has two fixes for the same issue, from him (April =
+13),
+and from Sato-san (May 4):
+  - 8844d0f1cb921f70c ("spi: bcm2835: Add GPIOLIB dependency")
+  - e0d58cdcaedd90e4 ("spi: bcm2835: depends GPIOLIB")
 
-> >not that it matters, but this is the patch in linux-next.
+Git merged them "nicely" when you merged 'spi/topic/bcm2835' into
+'spi-next', leading to this chunk in drivers/spi/Kconfig:
 
-> >I am aware that several other patches have been submitted to fix the
-> >problem (I think I have seen at least two); after all, I submitted the
+    config SPI_BCM2835
+            tristate "BCM2835 SPI controller"
+            depends on GPIOLIB
+            depends on ARCH_BCM2835 || COMPILE_TEST
+            depends on GPIOLIB
 
-> Follow-up: Since you accepted one of the other patches, please make sure
-> to remove my patch from your -next branch; otherwise we might end up
-> with dual "depends on GPIOLIB".
+I think G=C3=BCnter wants you to keep only the commit you will send to =
+Linus
+for v4.1-rc3, and remove the other commit.
 
-*sigh*  So, what you're asking me to do here is remove the one that's
-actually been applied as a bugfix for Linus.  Are you *sure* that's what
-you think that's a good idea?
+Thanks!
 
---tRxlveiQ0HuQS2ZK
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Gr{oetje,eeting}s,
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+                        Geert
 
-iQEcBAEBCAAGBQJVSKadAAoJECTWi3JdVIfQhx8H/2MZ2zyArdjTl6g6WJ46UKJN
-uQEFj8HQKYGEWQg1SlM2yuEAg9bdWGF8yGFue0YWX3pP63G6iDtHf6qeWjRq2QhC
-M/968jUxLQZGJaRTdBk9PBbyn5rdyKto+MC+DT/Tiqn4E174O9aGnCMfqnIr0Ibf
-VahSqWFFYUHywhb3o8icDH8zn8+9zhiimK2a3RkOSpCM1KfveOtbRTxlsF46rTJ2
-A5mFXQilyI3pi/p0txo34CI0duDxNbosavz9HORAUciA1Y58CXTWmocP84J6QbS/
-5LZHO5PrpJFckmHqnA/li5CCv1fWT1QlyZFgf7lc2SBDmKMpBCCDxyn0hHopnQw=
-=bpgZ
------END PGP SIGNATURE-----
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-=
+m68k.org
 
---tRxlveiQ0HuQS2ZK--
+In personal conversations with technical people, I call myself a hacker=
+=2E But
+when I'm talking to journalists I just say "programmer" or something li=
+ke that.
+                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,9 +1,9 @@
 From: Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH v2 08/17] gpio: locomo: implement per-pin irq handling
-Date: Wed, 6 May 2015 16:15:54 +0200
-Message-ID: <CACRpkdZt+rjzVSqXE6MDaY5S9gezeTu+2QWu31xKsg08TpXibw@mail.gmail.com>
+Subject: Re: [PATCH v2 13/17] ASoC: pxa: poodle: make use of new locomo GPIO interface
+Date: Wed, 6 May 2015 16:19:14 +0200
+Message-ID: <CACRpkdYDRA-qtotEqniqd6m=HetBgtX5r7gJoc9x4oA9mp9i8w@mail.gmail.com>
 References: <1430178954-11138-1-git-send-email-dbaryshkov@gmail.com>
-	<1430178954-11138-9-git-send-email-dbaryshkov@gmail.com>
+	<1430178954-11138-14-git-send-email-dbaryshkov@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Cc: Russell King <linux@arm.linux.org.uk>,
@@ -30,30 +30,20 @@ Cc: Russell King <linux@arm.linux.org.uk>,
 	"linux-leds@vger.kernel.or
 To: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
 Return-path: <linux-input-owner@vger.kernel.org>
-In-Reply-To: <1430178954-11138-9-git-send-email-dbaryshkov@gmail.com>
+In-Reply-To: <1430178954-11138-14-git-send-email-dbaryshkov@gmail.com>
 Sender: linux-input-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 On Tue, Apr 28, 2015 at 1:55 AM, Dmitry Eremin-Solenikov
 <dbaryshkov@gmail.com> wrote:
 
-> LoCoMo has a possibility to generate per-GPIO edge irqs. Support for
-> that was there in old locomo driver, got 'cleaned up' during old driver
-> IRQ cascading cleanup and is now reimplemented. It is expected that
-> SL-5500 (collie) will use locomo gpio irqs for mmc detection irq.
+> Since LoCoMo driver has been converted to provide proper gpiolib
+> interface, make poodle ASoC platform driver use gpiolib API.
 >
 > Signed-off-by: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
+> Acked-by: Mark Brown <broonie@kernel.org>
 
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-
-Assume this will also go through MFD.
-
-> +       irq_set_chained_handler(lg->irq, NULL);
-> +       irq_set_handler_data(lg->irq, NULL);
-
-Why is this needed? If the GPIOLIB_IRQCHIP code in
-gpiolib.c is not doing this then maybe it's the core code that
-needs fixing rather than having this in the driver.
 
 Yours,
 Linus Walleij

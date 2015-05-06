@@ -1,77 +1,57 @@
-From: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
-Subject: Re: [PATCH v2 08/17] gpio: locomo: implement per-pin irq handling
-Date: Wed, 6 May 2015 19:42:33 +0300
-Message-ID: <CALT56yNJutWTW5zsos+=Uh+BDvO4o_tqBEj+H621TncVK6eD_Q@mail.gmail.com>
-References: <1430178954-11138-1-git-send-email-dbaryshkov@gmail.com>
-	<1430178954-11138-9-git-send-email-dbaryshkov@gmail.com>
-	<CACRpkdZt+rjzVSqXE6MDaY5S9gezeTu+2QWu31xKsg08TpXibw@mail.gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2] spi: sirf: request and free cs gpio in setup and
+ cleanup callbacks
+Date: Wed, 6 May 2015 19:47:58 +0100
+Message-ID: <20150506184758.GG22845@sirena.org.uk>
+References: <1430649012-1694-1-git-send-email-21cnbao@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Russell King <linux@arm.linux.org.uk>,
-	Daniel Mack <daniel@zonque.org>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Alexandre Courbot <gnurou@gmail.com>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Bryan Wu <cooloney@gmail.com>,
-	Richard Purdie <rpurdie@rpsys.net>,
-	Samuel Ortiz <sameo@linux.intel.com>,
-	Lee Jones <lee.jones@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Jingoo Han <jg1.han@samsung.com>,
-	Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
-	Tomi Valkeinen <tomi.valkeinen@ti.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Andrea Adami <andrea.adami@gmail.com>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-	Linux Input <linux-input@vger.kernel.org>,
-	"linux-leds@vger.kernel.or
-To: Linus Walleij <linus.walleij@linaro.org>
-Return-path: <linux-gpio-owner@vger.kernel.org>
-In-Reply-To: <CACRpkdZt+rjzVSqXE6MDaY5S9gezeTu+2QWu31xKsg08TpXibw@mail.gmail.com>
-Sender: linux-gpio-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
-
-2015-05-06 17:15 GMT+03:00 Linus Walleij <linus.walleij@linaro.org>:
-> On Tue, Apr 28, 2015 at 1:55 AM, Dmitry Eremin-Solenikov
-> <dbaryshkov@gmail.com> wrote:
->
->> LoCoMo has a possibility to generate per-GPIO edge irqs. Support for
->> that was there in old locomo driver, got 'cleaned up' during old driver
->> IRQ cascading cleanup and is now reimplemented. It is expected that
->> SL-5500 (collie) will use locomo gpio irqs for mmc detection irq.
->>
->> Signed-off-by: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
->
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-
-Thanks for review of the patches.
-
-> Assume this will also go through MFD.
->
->> +       irq_set_chained_handler(lg->irq, NULL);
->> +       irq_set_handler_data(lg->irq, NULL);
->
-> Why is this needed? If the GPIOLIB_IRQCHIP code in
-> gpiolib.c is not doing this then maybe it's the core code that
-> needs fixing rather than having this in the driver.
-
-I have skimmed through the rest of drivers using
-gpiochip_set_chained_irqchip(). Indeed none of the drivers NULL
-the chained handled and handler data. However I couldn't locate
-the code where they would be cleared.
-
-Should I still send the patch fixing the GPIOLIB_IRQCHIP?
-
->
-> Yours,
-> Linus Walleij
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="zuNCxxYM0q4b3w2t"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	workgroup.linux-kQvG35nSl+M@public.gmane.org, swingboard-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>, Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
+To: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1430649012-1694-1-git-send-email-21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
+--zuNCxxYM0q4b3w2t
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
--- 
-With best wishes
-Dmitry
+On Sun, May 03, 2015 at 10:30:12AM +0000, Barry Song wrote:
+> From: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
+>=20
+> move spi controller's gpio request work out from probe() to spi device
+> register stage, so after spi device register spi controller can deactive
+> device's gpio chipselect. old code can't do it because gpio request has
+> not be done until device register is finised in spi_bitbang_start.
+> and add cleanup function to free CS gpio.
+
+Applied, thanks.
+
+--zuNCxxYM0q4b3w2t
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVSmHeAAoJECTWi3JdVIfQyxgH/2Vymqxlueg8yqhfOomZiOcB
+s2Dv/k5Bfz13LguYf7cJVQwpPyqvTSoO5aqxd6eJ3UB3b6tKLTa0xmIjkIdlVybf
+7VTFNPLjrksje4TfHZOs+y2sfGrP+XNhr3NUVtmA6lFO/zfqDFRibTOdDvgl/CPC
+mWaj/Fr3kjvXMCJY2M5l4POj7foYELjnlaa6AL3pFTEOFWjqnT1CA1Fv/Zm2V0zE
+jNGMDonDPFFa9z4rs3NdLORaK2t4hNH1NEipDSq034CgWcGjlnA0bcQIFHvHUc7B
+tqpXN3N9BbzN6qQZ5V5tIvZVfH3slqxRJF4xJDtOeuCDCKSLKnh1kow0gkn5x20=
+=9mNk
+-----END PGP SIGNATURE-----
+
+--zuNCxxYM0q4b3w2t--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

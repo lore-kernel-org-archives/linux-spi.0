@@ -1,51 +1,77 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 17/27] spi: Allow compile test of GPIO consumers if
- !GPIOLIB
-Date: Wed, 6 May 2015 16:21:20 +0100
-Message-ID: <20150506152120.GV22845@sirena.org.uk>
-References: <1430836404-15513-1-git-send-email-geert@linux-m68k.org>
- <1430843563-18615-1-git-send-email-geert@linux-m68k.org>
- <1430843563-18615-17-git-send-email-geert@linux-m68k.org>
+From: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
+Subject: Re: [PATCH v2 08/17] gpio: locomo: implement per-pin irq handling
+Date: Wed, 6 May 2015 19:42:33 +0300
+Message-ID: <CALT56yNJutWTW5zsos+=Uh+BDvO4o_tqBEj+H621TncVK6eD_Q@mail.gmail.com>
+References: <1430178954-11138-1-git-send-email-dbaryshkov@gmail.com>
+	<1430178954-11138-9-git-send-email-dbaryshkov@gmail.com>
+	<CACRpkdZt+rjzVSqXE6MDaY5S9gezeTu+2QWu31xKsg08TpXibw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="proJWJF/9RxP0DAH"
-Cc: Linus Walleij <linus.walleij@linaro.org>,
+Content-Type: text/plain; charset=UTF-8
+Cc: Russell King <linux@arm.linux.org.uk>,
+	Daniel Mack <daniel@zonque.org>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
 	Alexandre Courbot <gnurou@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1430843563-18615-17-git-send-email-geert@linux-m68k.org>
-Sender: linux-kernel-owner@vger.kernel.org
+	Wolfram Sang <wsa@the-dreams.de>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Bryan Wu <cooloney@gmail.com>,
+	Richard Purdie <rpurdie@rpsys.net>,
+	Samuel Ortiz <sameo@linux.intel.com>,
+	Lee Jones <lee.jones@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Jingoo Han <jg1.han@samsung.com>,
+	Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
+	Tomi Valkeinen <tomi.valkeinen@ti.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Andrea Adami <andrea.adami@gmail.com>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+	Linux Input <linux-input@vger.kernel.org>,
+	"linux-leds@vger.kernel.or
+To: Linus Walleij <linus.walleij@linaro.org>
+Return-path: <linux-gpio-owner@vger.kernel.org>
+In-Reply-To: <CACRpkdZt+rjzVSqXE6MDaY5S9gezeTu+2QWu31xKsg08TpXibw@mail.gmail.com>
+Sender: linux-gpio-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+2015-05-06 17:15 GMT+03:00 Linus Walleij <linus.walleij@linaro.org>:
+> On Tue, Apr 28, 2015 at 1:55 AM, Dmitry Eremin-Solenikov
+> <dbaryshkov@gmail.com> wrote:
+>
+>> LoCoMo has a possibility to generate per-GPIO edge irqs. Support for
+>> that was there in old locomo driver, got 'cleaned up' during old driver
+>> IRQ cascading cleanup and is now reimplemented. It is expected that
+>> SL-5500 (collie) will use locomo gpio irqs for mmc detection irq.
+>>
+>> Signed-off-by: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
+>
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
---proJWJF/9RxP0DAH
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Thanks for review of the patches.
 
-On Tue, May 05, 2015 at 06:32:33PM +0200, Geert Uytterhoeven wrote:
-> The GPIO subsystem provides dummy GPIO consumer functions if GPIOLIB is
-> not enabled. Hence drivers that depend on GPIOLIB, but use GPIO consumer
-> functionality only, can still be compiled if GPIOLIB is not enabled.
+> Assume this will also go through MFD.
+>
+>> +       irq_set_chained_handler(lg->irq, NULL);
+>> +       irq_set_handler_data(lg->irq, NULL);
+>
+> Why is this needed? If the GPIOLIB_IRQCHIP code in
+> gpiolib.c is not doing this then maybe it's the core code that
+> needs fixing rather than having this in the driver.
 
-Applied, thanks.
+I have skimmed through the rest of drivers using
+gpiochip_set_chained_irqchip(). Indeed none of the drivers NULL
+the chained handled and handler data. However I couldn't locate
+the code where they would be cleared.
 
---proJWJF/9RxP0DAH
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Should I still send the patch fixing the GPIOLIB_IRQCHIP?
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+>
+> Yours,
+> Linus Walleij
 
-iQEcBAEBCAAGBQJVSjFwAAoJECTWi3JdVIfQXaIH/2u0C+ddwO5SalPOpIoybOrT
-sVJQJOm3fzXY66QxbkKzz8v2XVwwS5C0wVhF1vxgbezS7BH40MJwNcpJkGax/S+m
-XmukYo9EwPjux+GOkbHA8ba2KLiYuqSLLD/pXRpcLFRISquZsH4XkMGh2ew+CbUW
-/EbvfXHJWHZN5k51mZ0jc6zWvGjiIf+FO99yjg79I9hauFUVmxNIMeH+0S7TRjWU
-/VLJwnpzUpJUrLCLmtFS7Co4dg6g6cCjSqsVuSDHD/Z8vLDvx4jfsf/G4Uhh8MWr
-1typ8T9D2gHequLAq25+JBvi3TyGI8DFdKO2UOWaEYdtDlNvYgOtBHJorEqIryU=
-=ujWS
------END PGP SIGNATURE-----
 
---proJWJF/9RxP0DAH--
+
+-- 
+With best wishes
+Dmitry

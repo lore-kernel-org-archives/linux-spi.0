@@ -1,57 +1,53 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH 1/2] spi: sirf: replace kmalloc by devm_kzalloc
-Date: Thu, 7 May 2015 09:25:02 +0200
-Message-ID: <CAMuHMdVcKHxasYAF07Cj=EshjOpKhQJnm9crfFPdUb01WzZsWg@mail.gmail.com>
+Date: Thu, 7 May 2015 10:41:51 +0100
+Message-ID: <20150507094151.GI22845@sirena.org.uk>
 References: <1430982791-8681-1-git-send-email-21cnbao@gmail.com>
+ <CAMuHMdVcKHxasYAF07Cj=EshjOpKhQJnm9crfFPdUb01WzZsWg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="Vkcg3CJmgV8j7eyn"
+Cc: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
 	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, workgroup.linux-kQvG35nSl+M@public.gmane.org,
 	Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>, Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
-To: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1430982791-8681-1-git-send-email-21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdVcKHxasYAF07Cj=EshjOpKhQJnm9crfFPdUb01WzZsWg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, May 7, 2015 at 9:13 AM, Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> From: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
->
-> Signed-off-by: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
-> Signed-off-by: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
-> ---
->  drivers/spi/spi-sirf.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
-> index a69ccb7..ae4bd11 100644
-> --- a/drivers/spi/spi-sirf.c
-> +++ b/drivers/spi/spi-sirf.c
-> @@ -758,7 +758,7 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
->         /* We are not using dummy delay between command and data */
->         writel(0, sspi->base + SIRFSOC_SPI_DUMMY_DELAY_CTL);
->
-> -       sspi->dummypage = kmalloc(2 * PAGE_SIZE, GFP_KERNEL);
-> +       sspi->dummypage = devm_kzalloc(&pdev->dev, 2 * PAGE_SIZE, GFP_KERNEL);
->         if (!sspi->dummypage) {
->                 ret = -ENOMEM;
->                 goto free_clk;
 
-What about setting SPI_MASTER_MUST_RX and/or SPI_MASTER_MUST_TX,
-and removing the dummy page instead, so the spi core will handle it for you?
+--Vkcg3CJmgV8j7eyn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Gr{oetje,eeting}s,
+On Thu, May 07, 2015 at 09:25:02AM +0200, Geert Uytterhoeven wrote:
 
-                        Geert
+> What about setting SPI_MASTER_MUST_RX and/or SPI_MASTER_MUST_TX,
+> and removing the dummy page instead, so the spi core will handle it for you?
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+Yes, that's what it's there for.
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+--Vkcg3CJmgV8j7eyn
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVSzNfAAoJECTWi3JdVIfQSzEH/1ybZDZsmMhl3EkJ+Wz06qky
++k17wLzYNNFeSYS05HP8Fj+kJr/Yu2I4JmgUscMuagmeNCrWMhkytCYivVFVeXyv
+hK7xguQP9A8ZS+LJAUidabozJuJiB5SiaNg2NlrZ/2C/j530dl0pBBFjrk+JgFGA
+9b/ujJfQbG0Q7QqYnI9VoOnKYuPLf/b0TJG4qbRTKtDE/1/lQ2S83M83qoAFq23L
+D6e7si2TeajiLUqZBHpjj7H6sv5JmpKy1RToNzlttW3uVCwxx8Pa5ulbbHBcpwQx
+wjq2/whE+0b5dRn7/yF1mxig97DoqzdnAIGiKA5S5aot3uhLTlcEQbivxgyCm1Q=
+=6UEz
+-----END PGP SIGNATURE-----
+
+--Vkcg3CJmgV8j7eyn--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

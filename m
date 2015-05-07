@@ -1,54 +1,74 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Mark Brown <broonie@kernel.org>
 Subject: Re: [PATCH 1/2] spi: sirf: replace kmalloc by devm_kzalloc
-Date: Thu, 7 May 2015 10:41:51 +0100
-Message-ID: <20150507094151.GI22845@sirena.org.uk>
+Date: Thu, 7 May 2015 10:46:39 +0100
+Message-ID: <20150507094639.GJ22845@sirena.org.uk>
 References: <1430982791-8681-1-git-send-email-21cnbao@gmail.com>
- <CAMuHMdVcKHxasYAF07Cj=EshjOpKhQJnm9crfFPdUb01WzZsWg@mail.gmail.com>
 Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============8225787863768158804=="
+Cc: Qipan Li <Qipan.Li@csr.com>, Barry Song <Baohua.Song@csr.com>,
+ workgroup.linux@csr.com, linux-arm-kernel@lists.infradead.org,
+ linux-spi@vger.kernel.org
+To: Barry Song <21cnbao@gmail.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1430982791-8681-1-git-send-email-21cnbao@gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
+
+
+--===============8225787863768158804==
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Vkcg3CJmgV8j7eyn"
-Cc: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, workgroup.linux-kQvG35nSl+M@public.gmane.org,
-	Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>, Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="NtRSAxJqMOGPBnPG"
 Content-Disposition: inline
-In-Reply-To: <CAMuHMdVcKHxasYAF07Cj=EshjOpKhQJnm9crfFPdUb01WzZsWg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
 
 
---Vkcg3CJmgV8j7eyn
+--NtRSAxJqMOGPBnPG
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 07, 2015 at 09:25:02AM +0200, Geert Uytterhoeven wrote:
+On Thu, May 07, 2015 at 07:13:10AM +0000, Barry Song wrote:
+> From: Qipan Li <Qipan.Li@csr.com>
+>=20
 
-> What about setting SPI_MASTER_MUST_RX and/or SPI_MASTER_MUST_TX,
-> and removing the dummy page instead, so the spi core will handle it for you?
+Applied since it's an improvement but please do update to use the core
+features like Geert suggested.
 
-Yes, that's what it's there for.
-
---Vkcg3CJmgV8j7eyn
+--NtRSAxJqMOGPBnPG
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVSzNfAAoJECTWi3JdVIfQSzEH/1ybZDZsmMhl3EkJ+Wz06qky
-+k17wLzYNNFeSYS05HP8Fj+kJr/Yu2I4JmgUscMuagmeNCrWMhkytCYivVFVeXyv
-hK7xguQP9A8ZS+LJAUidabozJuJiB5SiaNg2NlrZ/2C/j530dl0pBBFjrk+JgFGA
-9b/ujJfQbG0Q7QqYnI9VoOnKYuPLf/b0TJG4qbRTKtDE/1/lQ2S83M83qoAFq23L
-D6e7si2TeajiLUqZBHpjj7H6sv5JmpKy1RToNzlttW3uVCwxx8Pa5ulbbHBcpwQx
-wjq2/whE+0b5dRn7/yF1mxig97DoqzdnAIGiKA5S5aot3uhLTlcEQbivxgyCm1Q=
-=6UEz
+iQEcBAEBCAAGBQJVSzR+AAoJECTWi3JdVIfQdX8H/3XX69DFhXz6FkTPZ40853pk
+R0ZfxbCcPSvBs95EJOzRsE+mzr8g+zPEYiuBhFgIe9RQwR9BlwnvcEIXYX9/z8zF
+iEQARA36Pg5MgAybzP8Pk6CWd2bwJqSLa3GqL0jYtUB4XUb6xKHazCAK/m7+Lmk6
+HULRXzT0impk29qtfpS1d73mACUtSkm8FUAKTygo9OlV///c3BHMF4bEgMNTbzaI
+QqGgQjoZrTluQig5EQAaKeF+z8yXaHyzPG93w+k86RL63LFsUsnCJhjJTGojxo5r
+eOTdoeEmNVLCUTrY0zqradnLuql2+69QEDeOKFMtJSMREmeAa2/yhrD1oG4D3W0=
+=GLpz
 -----END PGP SIGNATURE-----
 
---Vkcg3CJmgV8j7eyn--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--NtRSAxJqMOGPBnPG--
+
+
+--===============8225787863768158804==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+linux-arm-kernel mailing list
+linux-arm-kernel@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+
+--===============8225787863768158804==--

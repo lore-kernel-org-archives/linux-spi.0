@@ -1,65 +1,67 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3] spi: omap2-mcspi: Add support for GPIO chipselects
-Date: Thu, 7 May 2015 20:56:58 +0100
-Message-ID: <20150507195658.GT22845@sirena.org.uk>
-References: <1430955472-11409-1-git-send-email-mwelling@ieee.org>
- <20150507185831.GQ22845@sirena.org.uk>
- <20150507192019.GA15112@deathray>
- <20150507192758.GR22845@sirena.org.uk>
- <20150507193851.GA15313@deathray>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="JFRr7CqTUjWuHVlW"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Michael Welling <mwelling-EkmVulN54Sk@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20150507193851.GA15313@deathray>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Alban Bedel <albeu-GANU6spQydw@public.gmane.org>
+Subject: [PATCH] devicetree: Misc fix for the AR7100 SPI controller binding
+Date: Thu,  7 May 2015 23:18:31 +0200
+Message-ID: <1431033511-30220-1-git-send-email-albeu@free.fr>
+References: <553A7F62.80108@cogentembedded.com>
+Cc: Sergei Shtylyov <sergei.shtylyov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org,
+	Alban Bedel <albeu-GANU6spQydw@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <553A7F62.80108-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
+Fix the clocks property documentation and use lower case for
+hex values in the example.
 
---JFRr7CqTUjWuHVlW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Alban Bedel <albeu-GANU6spQydw@public.gmane.org>
+---
 
-On Thu, May 07, 2015 at 02:38:52PM -0500, Michael Welling wrote:
-> On Thu, May 07, 2015 at 08:27:58PM +0100, Mark Brown wrote:
-> > On Thu, May 07, 2015 at 02:20:19PM -0500, Michael Welling wrote:
-> > > On Thu, May 07, 2015 at 07:58:31PM +0100, Mark Brown wrote:
+This patch can be applied as is or as a fixup to the original patch:
+"spi: spi-ath79: add binding documentation for the AR7100 SPI controller"
+or I can resend the whole patch/serie if that's preferable.
+---
+ Documentation/devicetree/bindings/spi/spi-ath79.txt | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-> > > I noticed a few oddities in the code when converting.
+diff --git a/Documentation/devicetree/bindings/spi/spi-ath79.txt b/Documentation/devicetree/bindings/spi/spi-ath79.txt
+index f1ad9c3..9c696fa 100644
+--- a/Documentation/devicetree/bindings/spi/spi-ath79.txt
++++ b/Documentation/devicetree/bindings/spi/spi-ath79.txt
+@@ -3,7 +3,7 @@ Binding for Qualcomm Atheros AR7xxx/AR9xxx SPI controller
+ Required properties:
+ - compatible: has to be "qca,<soc-type>-spi", "qca,ar7100-spi" as fallback.
+ - reg: Base address and size of the controllers memory area
+-- clocks: phandle to the AHB clock.
++- clocks: phandle of the AHB clock.
+ - clock-names: has to be "ahb".
+ - #address-cells: <1>, as required by generic SPI binding.
+ - #size-cells: <0>, also as required by generic SPI binding.
+@@ -12,9 +12,9 @@ Child nodes as per the generic SPI binding.
+ 
+ Example:
+ 
+-	spi@1F000000 {
++	spi@1f000000 {
+ 		compatible = "qca,ar9132-spi", "qca,ar7100-spi";
+-		reg = <0x1F000000 0x10>;
++		reg = <0x1f000000 0x10>;
+ 
+ 		clocks = <&pll 2>;
+ 		clock-names = "ahb";
+-- 
+2.0.0
 
-> > > For instance:
-> > > http://lxr.free-electrons.com/source/drivers/spi/spi-omap2-mcspi.c#L1225
-
-> > > What is the point of trying to print tx or rx given the if statement
-> > > insures that rx_buff and tx_buff are NULL?
-
-> > I expect it's just a buggy test.
-
-> Not sure I understand what you mean.
-
-I expect that the code is just being silly.
-
---JFRr7CqTUjWuHVlW
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVS8OJAAoJECTWi3JdVIfQAP0H/3fXtU43XN38UR7ytSfDpfHn
-BrLW/HE4coyeP+4UnH1VExcMn6OBobzsMbgQIDch+TCYzEk5IqX6Z1k1kq2Svi+I
-NSqDw5BGCEOzaH8meKfBDmALigEL2DqlTUBQ4+fxZmEGUn4DZ3LXyTosRLqz8R2J
-pm2Px7g45jKN8CwARhAX0ho4o+KTsbArAYBGPZnFL6jT188t4443QoydA1WyTXF0
-0o0VXZrllwW/0ALeJH1WQDD4fggxoV9k0N6dhErtGBWDyHEif/Ky2UeqqdCMz9Cf
-nwMcPWbrYk4MvQ2duaRUXNO+S4pJuCmDY7cF85neEvkGa5WgpRrY4k6oBir3l3Q=
-=rWEs
------END PGP SIGNATURE-----
-
---JFRr7CqTUjWuHVlW--
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

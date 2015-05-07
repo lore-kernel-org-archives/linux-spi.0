@@ -1,90 +1,55 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: sirf: add support for USP-based SPI
-Date: Thu, 7 May 2015 11:30:10 +0100
-Message-ID: <20150507103010.GK22845@sirena.org.uk>
-References: <1430982791-8681-1-git-send-email-21cnbao@gmail.com>
- <1430982791-8681-2-git-send-email-21cnbao@gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 1/1 v2] spi: Re-do the returning value of
+ rspi_dma_check_then_transfer
+Date: Thu, 7 May 2015 13:57:44 +0100
+Message-ID: <20150507125744.GX15510@sirena.org.uk>
+References: <1430359932-13245-1-git-send-email-cm-hiep@jinso.co.jp>
+ <1430359932-13245-2-git-send-email-cm-hiep@jinso.co.jp>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="z7+xBrcfEZZARtkx"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	workgroup.linux-kQvG35nSl+M@public.gmane.org, Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>,
-	Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
-To: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="kkHPdTSmtjV9vJ2x"
+Cc: geert+renesas@glider.be, linux-spi@vger.kernel.org,
+	kuninori.morimoto.gx@renesas.com, yoshihiro.shimoda.uh@renesas.com,
+	ryusuke.sakato.bx@renesas.com, linux-sh@vger.kernel.org
+To: Cao Minh Hiep <cm-hiep@jinso.co.jp>
+Return-path: <linux-sh-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1430982791-8681-2-git-send-email-21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1430359932-13245-2-git-send-email-cm-hiep@jinso.co.jp>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---z7+xBrcfEZZARtkx
+--kkHPdTSmtjV9vJ2x
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 07, 2015 at 07:13:11AM +0000, Barry Song wrote:
+On Thu, Apr 30, 2015 at 11:12:12AM +0900, Cao Minh Hiep wrote:
+> From: Hiep Cao Minh <cm-hiep@jinso.co.jp>
+>=20
+> To reduce indentation and complexity of code, insteeds of returning zero
+> the function rspi_dma_check_then_transfer should return rspi_dma_transfer
+> directly after checking error.
 
-This all looks mostly fine, there are a few comments below but they're
-all coding style things rather than anything else so should be easy
-enough to address.
+Applied, thanks.  Please use subject lines reflecting the style for the
+subsystem and don't send cover letters for single patches - if there's
+any content in there it's usually a sign that the changelog is not
+detailed enough.
 
-> +#define SIRFSOC_SPI_FIFO_LEVEL_MASK(s)	((s->spi_type =3D=3D SIRF_REAL_SP=
-I) ? \
-> +					0xFF : ((s->is_atlas7_usp =3D=3D 1) ? \
-> +					0x1FF : 0x7F))
-
-This pattern isn't very legible and isn't going to scale if there's more
-types added (eg, some new variant with a bigger FIFO).  Can you make
-these static inline functions with switch and if statements instead?  It
-looks like they should all fit into that pattern. =20
-
-It'd probably help make the patch easier to read if the changes to use
-these functions were added as separate patches - add the functions and
-convert everything to use them, then in a separate patch add the options
-for the new variants.
-
-> +	.spi_dummy_delay_ctrl	=3D 0x144,
-> +};
-> +struct sirf_spi_register sirf_usp_spi =3D {
-
-Can we have blank lines between the structs please?  Also the structs
-should be declared as static const so they're not in the global
-namespace.
-
-> +		if (sspi->spi_type =3D=3D SIRF_REAL_SPI) {
-> +			u32 regval =3D readl(sspi->base + spi_reg->spi_ctrl);
-> +
-> +			writel(regval, sspi->base + spi_reg->spi_ctrl);
-
-=2E..
-
-> +		} else {
-> +			u32 regval =3D readl(sspi->base +
-> +					spi_reg->usp_pin_io_data);
-
-Please write this as a switch statement so it's easier to handle an new
-variants.  Similarly for any other things that handle variants with if
-statements.
-
---z7+xBrcfEZZARtkx
+--kkHPdTSmtjV9vJ2x
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVSz6xAAoJECTWi3JdVIfQPzAH/RKJxTApFmRMGR9xurmRXobX
-SQ1XfcXtJYyDGqAc56vqNh/9TAqHYiTcs0787SgDE645Dytmk+507q3m2aZl79Dl
-gcBRa2D5HXnyer1l0DQkVuc1k21QBlCElgU8kBCv8uzHy3T4LAH1J7TvVYvOw+Wg
-/Wu45YkLctzQ3iaiR+mQ6987JsEyEJa601usKqm3CrrJ9cJhTz43naHBdFOP3Nyy
-Evt8AbH//Kqyn6tLnmgeGnAqPcyVfQZrPlbqtnwwyZ23+xpRf3Npb5hFP0brIJTv
-jLbyiWCCRKPjC7I8EIq0oKVXX7VxugJhi1/YEP0voHqMVxjhc847lQS7SMiRHlI=
-=Q5GN
+iQEcBAEBCAAGBQJVS2FHAAoJECTWi3JdVIfQ3k8H/0YNH5bwhcWTgqnzJV3k68Nu
+8/J5HI9Rt1dMLxrN/aZSfCm9TT3KlAeV/Qzr730LLiBrVpNdhiO8OfgoedoFMqGy
+37kROlRAtTWO7F+Wu0zi9XdGqqUqsKzcD9eTnog4AC12SSpSZ1Af/c8Ll/ZEU1yM
+6zI+UxTph05GmJACGzBHykil0FL+pHywki8W5TRapcHU6ltsh4zDCe6QI5kTpHUe
+8mGKp8FWIV2ANQJ/wKDzaI7hrIm/NugKra4cFye/ybwAdcx93VhqopD4nBum5Nqg
+PAd3sOymYPMNiNUj6YuiaZ3lWzotcOyqqPlLYP+iIbJjwIoWPH4Q/sj6spBetbs=
+=J08m
 -----END PGP SIGNATURE-----
 
---z7+xBrcfEZZARtkx--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--kkHPdTSmtjV9vJ2x--

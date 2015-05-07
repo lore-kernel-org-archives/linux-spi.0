@@ -1,74 +1,34 @@
-From: Mark Brown <broonie@kernel.org>
+From: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH 1/2] spi: sirf: replace kmalloc by devm_kzalloc
-Date: Thu, 7 May 2015 10:46:39 +0100
-Message-ID: <20150507094639.GJ22845@sirena.org.uk>
-References: <1430982791-8681-1-git-send-email-21cnbao@gmail.com>
+Date: Thu, 7 May 2015 18:00:25 +0800
+Message-ID: <CAGsJ_4ztxLPvbkg8MZJYSKAdu=zeCgGqOSMZo2q4bZkaZjMiyg@mail.gmail.com>
+References: <1430982791-8681-1-git-send-email-21cnbao@gmail.com> <20150507094639.GJ22845@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8225787863768158804=="
-Cc: Qipan Li <Qipan.Li@csr.com>, Barry Song <Baohua.Song@csr.com>,
- workgroup.linux@csr.com, linux-arm-kernel@lists.infradead.org,
- linux-spi@vger.kernel.org
-To: Barry Song <21cnbao@gmail.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1430982791-8681-1-git-send-email-21cnbao@gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	DL-SHA-WorkGroupLinux <workgroup.linux-kQvG35nSl+M@public.gmane.org>,
+	Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>, Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150507094639.GJ22845-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+2015-05-07 17:46 GMT+08:00 Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>:
+> On Thu, May 07, 2015 at 07:13:10AM +0000, Barry Song wrote:
+>> From: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
+>>
+>
+> Applied since it's an improvement but please do update to use the core
+> features like Geert suggested.
 
---===============8225787863768158804==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="NtRSAxJqMOGPBnPG"
-Content-Disposition: inline
+it looks like a good idea from Geert. we will have an incremental
+patch for this.
 
-
---NtRSAxJqMOGPBnPG
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, May 07, 2015 at 07:13:10AM +0000, Barry Song wrote:
-> From: Qipan Li <Qipan.Li@csr.com>
->=20
-
-Applied since it's an improvement but please do update to use the core
-features like Geert suggested.
-
---NtRSAxJqMOGPBnPG
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVSzR+AAoJECTWi3JdVIfQdX8H/3XX69DFhXz6FkTPZ40853pk
-R0ZfxbCcPSvBs95EJOzRsE+mzr8g+zPEYiuBhFgIe9RQwR9BlwnvcEIXYX9/z8zF
-iEQARA36Pg5MgAybzP8Pk6CWd2bwJqSLa3GqL0jYtUB4XUb6xKHazCAK/m7+Lmk6
-HULRXzT0impk29qtfpS1d73mACUtSkm8FUAKTygo9OlV///c3BHMF4bEgMNTbzaI
-QqGgQjoZrTluQig5EQAaKeF+z8yXaHyzPG93w+k86RL63LFsUsnCJhjJTGojxo5r
-eOTdoeEmNVLCUTrY0zqradnLuql2+69QEDeOKFMtJSMREmeAa2/yhrD1oG4D3W0=
-=GLpz
------END PGP SIGNATURE-----
-
---NtRSAxJqMOGPBnPG--
-
-
---===============8225787863768158804==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-linux-arm-kernel mailing list
-linux-arm-kernel@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-
---===============8225787863768158804==--
+-barry
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

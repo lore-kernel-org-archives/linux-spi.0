@@ -1,43 +1,38 @@
-From: Cao Minh Hiep <cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
-Subject: Re: [PATCH 1/1 v2] spi: Re-do the returning value of rspi_dma_check_then_transfer
-Date: Fri, 08 May 2015 10:35:03 +0900
-Message-ID: <554C12C7.4030302@jinso.co.jp>
-References: <1430359932-13245-1-git-send-email-cm-hiep@jinso.co.jp> <1430359932-13245-2-git-send-email-cm-hiep@jinso.co.jp> <20150507125744.GX15510@sirena.org.uk>
+From: <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Subject: Add Mediatek SPI driver
+Date: Fri, 8 May 2015 16:55:40 +0800
+Message-ID: <1431075343-7887-1-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
-	format=flowed
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org, yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org,
-	ryusuke.sakato.bx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150507125744.GX15510-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain
+Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Catalin Marinas <catalin.marinas-5wv7dgnIgG8@public.gmane.org>,
+	Will Deacon <will.deacon-5wv7dgnIgG8@public.gmane.org>,
+	Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>,
+	Eddie Huang <eddie.huang-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>,
+	Hongzhou Yang <hongzhou.yang-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<srv_heupstream-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+To: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Mark-san
-
-On 2015=E5=B9=B405=E6=9C=8807=E6=97=A5 21:57, Mark Brown wrote:
-> On Thu, Apr 30, 2015 at 11:12:12AM +0900, Cao Minh Hiep wrote:
->> From: Hiep Cao Minh <cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
->>
->> To reduce indentation and complexity of code, insteeds of returning =
-zero
->> the function rspi_dma_check_then_transfer should return rspi_dma_tra=
-nsfer
->> directly after checking error.
-> Applied, thanks.  Please use subject lines reflecting the style for t=
-he
-> subsystem and don't send cover letters for single patches - if there'=
-s
-> any content in there it's usually a sign that the changelog is not
-> detailed enough.
-Thank you!, I understood.
-
-Hiep.
+Mediatek SPI BUS controller has 3 hardware restrictions:
+1. Hw has the restriction that in one transfer, length must be a multiple of
+   1024, when it's greater than 1024bytes.
+2. Hw tx/rx have 4bytes aligned restriction.
+3. For MT8173 IC: RX must enable TX, then TX transfer dummy data; TX don't need
+   to enable RX.
+Some workarounds are done in SPI driver code base on v4.1-rc1.
 
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

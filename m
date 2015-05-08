@@ -1,76 +1,46 @@
-From: Jonathan Bell <jonathan-FnsA7b+Nu9XbIbC87yuRow@public.gmane.org>
-Subject: Re: [PATCH v2] dmaengine: bcm2835: Add slave dma support
-Date: Fri, 8 May 2015 12:20:00 +0100
-Message-ID: <554C9BE0.60205@raspberrypi.org>
-References: <1429355160-13657-1-git-send-email-noralf@tronnes.org>
- <DC1D0474-515B-4863-85FB-9E60FFA34829@martin.sperl.org>
- <554A69D5.90301@tronnes.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v4 1/2] spi: omap2-mcspi: Switch driver to use
+ transfer_one
+Date: Fri, 8 May 2015 17:59:46 +0100
+Message-ID: <20150508165946.GC2761@sirena.org.uk>
+References: <1431041814-24757-1-git-send-email-mwelling@ieee.org>
+ <1431041814-24757-2-git-send-email-mwelling@ieee.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
-Content-Transfer-Encoding: base64
-Cc: vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
- Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
- dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
-To: =?UTF-8?B?Tm9yYWxmIFRyw7hubmVz?= <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>, Martin Sperl
- <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <554A69D5.90301-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
-List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="sHrvAb52M6C8blB9"
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Michael Welling <mwelling@ieee.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1431041814-24757-2-git-send-email-mwelling@ieee.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gMDYvMDUvMjAxNSAyMDoyMSwgTm9yYWxmIFRyw7hubmVzIHdyb3RlOgo+Cj4gRGVuIDAxLjA1
-LjIwMTUgMjM6MDcsIHNrcmV2IE1hcnRpbiBTcGVybDoKPj4gVGVzdHMgd2l0aCB0aGUgaW5pdGlh
-bCAoYW5kIGluY29tcGxldGUpIHZlcnNpb24gb2YgdGhlIHNwaS1iY20yODM1IAo+PiBkcml2ZXIK
-Pj4gd2l0aCBETUEgdHJhbnNmZXIgc3VwcG9ydCBzaG93IHRoYXQgdGhlIGRtYS1lbmdpbmUgd29y
-a3MgYXMgZXhwZWN0ZWQgCj4+IHdpdGgKPj4gdGhpcyBwYXRjaC4KPj4KPj4gVGhlcmUgaXMgb25l
-IG9uZSBvYnNlcnZhdGlvbjoKPj4KPj4+IE9uIDE4LjA0LjIwMTUsIGF0IDEzOjA2LCBOb3JhbGYg
-VHLDuG5uZXMgPG5vcmFsZkB0cm9ubmVzLm9yZz4gd3JvdGU6Cj4+PiArc3RhdGljIHN0cnVjdCBk
-bWFfYXN5bmNfdHhfZGVzY3JpcHRvciAqCj4+PiArYmNtMjgzNV9kbWFfcHJlcF9zbGF2ZV9zZyhz
-dHJ1Y3QgZG1hX2NoYW4gKmNoYW4sCj4+PiArICAgICAgICAgICAgICBzdHJ1Y3Qgc2NhdHRlcmxp
-c3QgKnNnbCwKPj4+ICsgICAgICAgICAgICAgIHVuc2lnbmVkIGludCBzZ19sZW4sCj4+PiArICAg
-ICAgICAgICAgICBlbnVtIGRtYV90cmFuc2Zlcl9kaXJlY3Rpb24gZGlyZWN0aW9uLAo+Pj4gKyAg
-ICAgICAgICAgICAgdW5zaWduZWQgbG9uZyBmbGFncywgdm9pZCAqY29udGV4dCkKPj4+ICt7Cj4+
-IC4uLgo+Pj4gKyAgICAgICAgICAgIC8qIEVuYWJsZSAqLwo+Pj4gKyAgICAgICAgICAgIGlmIChp
-ID09IHNnX2xlbiAtIDEgJiYgbGVuIC0gaiA8PSBtYXhfc2l6ZSkKPj4+ICsgICAgICAgICAgICAg
-ICAgY29udHJvbF9ibG9jay0+aW5mbyB8PSBCQ00yODM1X0RNQV9JTlRfRU47Cj4+IFRoZSBvYnNl
-cnZhdGlvbiBpcyB0aGF0IGFuIGludGVycnVwdCBpcyBhbHdheXMgdHJpZ2dlcmVkIC0gZXZlbiBp
-biAKPj4gdGhlIGNhc2UKPj4gd2hlcmUgZmxhZ3MgZG9lcyBOT1QgaGF2ZSBETUFfUFJFUF9JTlRF
-UlJVUFQgc2V0Lgo+PiBUaGlzIG1heSBub3QgYmUgbmVjZXNzYXJ5IGFuZCBhdm9pZCBpbnRlcnJ1
-cHRzLgo+Pgo+PiBTbyBtYXliZSB0aGUgYWJvdmUgaWYgY2xhdXNlIHNob3VsZCBnZXQgZXh0ZW5k
-ZWQgYnk6Cj4+ICAgICAmJiAoZmxhZ3MgJiBETUFfUFJFUF9JTlRFUlJVUFQpCj4+IHRvIG9ubHkg
-dHJpZ2dlciBhbiBpbnRlcnJ1cHQgd2hlbiByZWFsbHkgcmVxdWVzdGVkLgo+Pgo+PiBJIGFtIG5v
-dCBzdXJlIGlmIHRoZXJlIGFyZSBhbnkgc2lkZS1lZmZlY3RzIGJlY2F1c2Ugb2YgdGhpcyBiZXNp
-ZGVzIAo+PiBoYXZpbmcgdGhlCj4+IHJlcXVpcmVtZW50IG9uIHRoZSBjbGllbnQgdG8gcnVuIGRt
-YWVuZ2luZV90ZXJtaW5hdGVfYWxsKCkgb24gdGhhdCAKPj4gc3BlY2lmaWMgZG1hCj4+IGNoYW5u
-ZWwgd2l0aG91dCBpbnRlcnJ1cHRzIHdoZW4gdGhlIHRyYW5zZmVyIGlzIGZpbmlzaGVkLgo+Pgo+
-PiBJbiB0aGUgY2FzZSBvZiBTUEkgd2UgaGF2ZSBUWCBmZWVkIHRoZSBmaWZvIC0gd2hpY2ggZmlu
-aXNoZXMgZWFybHkgLSAKPj4gLCBidXQgd2UKPj4gb25seSBuZWVkIHRvIHRoZSBpbnRlcnJ1cHQg
-d2hlbiBSWCBmaW5pc2hlcyByZWFkaW5nIHRoZSBmaWZvLCB3aGljaCAKPj4gaW5kaWNhdGVzCj4+
-IHRoYXQgdGhlIFNQSS10cmFuc2ZlciBpcyBmdWxseSBmaW5pc2hlZC4KPj4gU28gaGF2aW5nIGFu
-IGludGVycnVwdCBvbiBUWCBpcyBub3QgbmVjZXNzYXJ5IGZvciB0aGUgcHJvY2Vzcy4KPj4KPj4g
-VGhlIHNhbWUgb2JzZXJ2YXRpb25zIG1heSBhbHNvIGFwcGx5IHRvIGJjbTI4MzVfZG1hX3ByZXBf
-ZG1hX2N5Y2xpYyAKPj4gKHdoaWNoIGlzCj4+IG91dHNpZGUgb2YgdGhpcyBwYXRjaCBwcm92aWRl
-ZCBieSBOb3JhbGYpLgo+Cj4gSm9uYXRoYW4sIGNhbiB5b3UgY29tbWVudCBvbiB0aGlzPwo+Cj4K
-PiBOb3JhbGYuCj4KPgpJIGFncmVlIHRoYXQgdGhlIGludGVycnVwdCBnZW5lcmF0ZWQgd291bGQg
-YmUgc3B1cmlvdXMgLSBpbiB0aGUgY2FzZSAKd2hlcmUgaXQgaXMgbm90IHJlcXVpcmVkLgoKSG93
-ZXZlciBpZiB5b3UgZG8gJiYgKGZsYWdzICYgRE1BX1BSRVBfSU5URVJSVVBUKSB0aGVuIGFsbCB1
-c2VycyBvZiB0aGlzIApkcml2ZXIgbmVlZCB0byBleHBsaWNpdGx5IHNldCBpbnRlcnJ1cHQgZmxh
-Z3Mgd2hlbiBkb2luZyBhIApzY2F0dGVyLWdhdGhlciB0cmFuc2Zlci4gQXMgSSB1bmRlcnN0YW5k
-IGl0LCBjdXJyZW50bHkgdGhlIG9ubHkgdXBzdHJlYW0gCmNsaWVudCBvZiB0aGlzIGRyaXZlciBp
-cyB0aGUgSTJTIGRyaXZlciB3aGljaCBvbmx5IHVzZXMgY3ljbGljIGFueXdheS4KCk5vdCByZXF1
-aXJpbmcgYW4gaW50ZXJydXB0IG9uIGNvbXBsZXRpb24gaXMgYSBiaXQgb2YgYW4gZWRnZSBjYXNl
-IC0gdGhlIApkZWZhdWx0IGFtb25nIG90aGVyIGRtYWVuZ2luZSBkcml2ZXJzIGFwcGVhcnMgdG8g
-YmUgdG8gZW5hYmxlIGludGVycnVwdHMgCnVuY29uZGl0aW9uYWxseS4KCgoKCl9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmxpbnV4LXJwaS1rZXJuZWwgbWFp
-bGluZyBsaXN0CmxpbnV4LXJwaS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlz
-dHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LXJwaS1rZXJuZWwK
+
+--sHrvAb52M6C8blB9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Thu, May 07, 2015 at 06:36:53PM -0500, Michael Welling wrote:
+> Switches from transfer_one_message to transfer_one to prepare driver for
+> use of GPIO chip selects.
+
+Applied, thanks.
+
+--sHrvAb52M6C8blB9
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVTOuBAAoJECTWi3JdVIfQ9BYH/RnBi/RFtW4moHGpIUukvd5U
+/CEYXwS6QAmMjPOjxl6KoOvUaOVGToFBzzklbPoDgSUSMvjsdIQPaRNG0b/b7SJP
+RAoxJqItHrfT6V5x8rvsrcqd1gHrJnGw1dvqy6W+e5prT215FWXrWNpRZi4aR6fN
+efanbUVW/urnszydGWew3OlLNZ50edqdCnc2laSRgCO/Exjo9VBNyp+ap9l+MbHB
+i7XgQjRtw50LkM8ZQsm47TO8i3fuiDKV3HkbuwBudMANExRAXLchbUHeSxYJ/cAo
+yDTfFgWKHB80FLC7xz1XuBxi1s2uIH/PgENFbmorj8BfTfblDygJDo7zOI0zNsg=
+=vRRU
+-----END PGP SIGNATURE-----
+
+--sHrvAb52M6C8blB9--

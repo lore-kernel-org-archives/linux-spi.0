@@ -1,64 +1,61 @@
-From: Michael Welling <mwelling@ieee.org>
-Subject: [PATCH v2] spi: omap2-mcspi: Add gpio_request and init CS
-Date: Fri,  8 May 2015 13:31:01 -0500
-Message-ID: <1431109861-6853-1-git-send-email-mwelling@ieee.org>
-Cc: Michael Welling <mwelling@ieee.org>
-To: broonie@kernel.org, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] ARM: tegra: add "nor-jedec" flash compatible binding
+Date: Fri, 8 May 2015 11:43:17 -0700
+Message-ID: <20150508184317.GZ32500@ld-irv-0074>
+References: <1431066098-19821-1-git-send-email-zajec5@gmail.com>
+ <554CDD8C.7050000@wwwdotorg.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Alexandre Courbot <gnurou-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <554CDD8C.7050000-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-If GPIO chip select is specified, request the GPIO in the setup function
-and release it in the cleanup function.
+On Fri, May 08, 2015 at 10:00:12AM -0600, Stephen Warren wrote:
+> On 05/08/2015 12:21 AM, Rafa=C5=82 Mi=C5=82ecki wrote:
+> >Starting with commits
+> >8ff16cf ("Documentation: devicetree: m25p80: add "nor-jedec" binding=
+")
+> >1103b85 ("mtd: m25p80: bind to "nor-jedec" ID, for auto-detection")
+> >we have "nor-jedec" binding indicating support for JEDEC identificat=
+ion.
+>=20
+> The documentation looks quite incomplete. "nor-jedec" sounds like
+> it's intended to be something generic. As such, it should be
+> documented in e.g.
+> Documentation/devicetree/bindings/mtd/nor-jedec.txt, not buried in
+> one particular flash device's binding. If it's not intended to be
+> generic, why isn't the existing "winbond,w25q32dw" enough?
 
-Signed-off-by: Michael Welling <mwelling@ieee.org>
----
+It is generic, though there are plenty of additional manufacturer/devic=
+e
+pairs that could go on top of it. m25p80 was (one of?) the first
+supported, so the naming has been based on legacy, and we're in the
+process of unwinding a bit of that. If it helps, we could move the doc
+to .../mtd/spi-nor,nor-jedec.txt or something like that.
 
-v2: Adds gpio_free to cleanup function.
+> Equally, "nor-jedec" doesn't sound like the right name. It doesn't
+> differentiate between SPI and parallel NOR flash, which presumably
+> need different compatible values, since the programming model is
+> quite different, and the compatible value is supposed to
+> define/imply the SW-visible programming model.
 
-Broken out of patch series because the other patch in the series was applied.
-commit	b28cb9414db9f8e42ac18c9e360e4e99cda42489
+It's definitely for SPI only. There was much discussion about this a
+few months back. Somewhere along the way, it was mentioned that the
+context (SPI slave is a child of SPI master) would make this clear. I'm
+still not sure why we didn't end up with something more descriptive,
+though, like "spi-nor,nor-jedec".
 
-This patch applies on top of that one.
+I'm open to change, as this binding is new in 4.1-rc1.
 
- drivers/spi/spi-omap2-mcspi.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 3ac06ad..90cf7e7 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -35,6 +35,7 @@
- #include <linux/gcd.h>
- 
- #include <linux/spi/spi.h>
-+#include <linux/gpio.h>
- 
- #include <linux/platform_data/spi-omap2-mcspi.h>
- 
-@@ -1011,6 +1012,12 @@ static int omap2_mcspi_setup(struct spi_device *spi)
- 			return ret;
- 	}
- 
-+	if (gpio_is_valid(spi->cs_gpio)) {
-+		if (gpio_request(spi->cs_gpio, dev_name(&spi->dev)) == 0)
-+			gpio_direction_output(spi->cs_gpio,
-+			!(spi->mode & SPI_CS_HIGH));
-+	}
-+
- 	ret = pm_runtime_get_sync(mcspi->dev);
- 	if (ret < 0)
- 		return ret;
-@@ -1050,6 +1057,9 @@ static void omap2_mcspi_cleanup(struct spi_device *spi)
- 			mcspi_dma->dma_tx = NULL;
- 		}
- 	}
-+
-+	if (gpio_is_valid(spi->cs_gpio))
-+		gpio_free(spi->cs_gpio);
- }
- 
- static int omap2_mcspi_work_one(struct omap2_mcspi *mcspi,
--- 
-1.7.9.5
+Brian

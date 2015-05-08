@@ -1,36 +1,47 @@
-From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] ARM: tegra: add "nor-jedec" flash compatible binding
-Date: Fri, 8 May 2015 11:47:54 -0700
-Message-ID: <20150508184754.GA32500@ld-irv-0074>
-References: <1431066098-19821-1-git-send-email-zajec5@gmail.com>
- <554CDD8C.7050000@wwwdotorg.org>
- <20150508184317.GZ32500@ld-irv-0074>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2] spi: omap2-mcspi: Add gpio_request and init CS
+Date: Fri, 8 May 2015 19:55:20 +0100
+Message-ID: <20150508185520.GJ2761@sirena.org.uk>
+References: <1431109861-6853-1-git-send-email-mwelling@ieee.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Alexandre Courbot <gnurou-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
-	linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="liqSWPDvh3eyfZ9k"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Michael Welling <mwelling-EkmVulN54Sk@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20150508184317.GZ32500@ld-irv-0074>
+In-Reply-To: <1431109861-6853-1-git-send-email-mwelling-EkmVulN54Sk@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, May 08, 2015 at 11:43:17AM -0700, Brian Norris wrote:
-> I'm open to change, as this binding is new in 4.1-rc1.
 
-Though we'd need to make sure any change to "nor-jedec" gets applied to
-the shmobile platforms that have started using this string in
-linux-next.
+--liqSWPDvh3eyfZ9k
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Brian
+On Fri, May 08, 2015 at 01:31:01PM -0500, Michael Welling wrote:
+> If GPIO chip select is specified, request the GPIO in the setup function
+> and release it in the cleanup function.
+
+Applied, thanks.
+
+--liqSWPDvh3eyfZ9k
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVTQaYAAoJECTWi3JdVIfQwwAIAICU7unW+yAVyVyClZbyOyJP
+WhRRA7n4kd7URNHs9vbBoPzrG0rPl28KOnO3z0ZUcUJVyFShb3irw+LXKFf3GMJC
+qlDB/GBpYejyL2eN5R8Nj2UK5Z5/kJz+T8lgYgT2FFTmu0vJglphz7yKkkFS46FU
+N3DC6J2Q/6q3XLXBqN778OOoFjQUVCB2Wm9dg799kj+Bwbhrst2DWfMdPwA5b2b4
+rFhnnrji0+6DQfxxxyk2suND5BPdq2SFYB4sRlVrhut2CUfJpsHbvwZkiizwIFlG
+GbxaqhbLLY5Q0W3Az4EF29PR4yvUcYd74CjZMQsJ9QeMd5puwvJ8bvP1USV4MiA=
+=OSw2
+-----END PGP SIGNATURE-----
+
+--liqSWPDvh3eyfZ9k--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

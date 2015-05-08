@@ -1,52 +1,64 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v4 2/2] spi: omap2-mcspi: Add gpio_request and init CS
-Date: Fri, 8 May 2015 18:53:36 +0100
-Message-ID: <20150508175336.GH2761@sirena.org.uk>
-References: <1431041814-24757-1-git-send-email-mwelling@ieee.org>
- <1431041814-24757-3-git-send-email-mwelling@ieee.org>
- <20150508170916.GD2761@sirena.org.uk>
- <20150508173737.GA5991@deathray>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="gTtJ75FAzB1T2CN6"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Michael Welling <mwelling-EkmVulN54Sk@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20150508173737.GA5991@deathray>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Michael Welling <mwelling@ieee.org>
+Subject: [PATCH v2] spi: omap2-mcspi: Add gpio_request and init CS
+Date: Fri,  8 May 2015 13:31:01 -0500
+Message-ID: <1431109861-6853-1-git-send-email-mwelling@ieee.org>
+Cc: Michael Welling <mwelling@ieee.org>
+To: broonie@kernel.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+If GPIO chip select is specified, request the GPIO in the setup function
+and release it in the cleanup function.
 
---gTtJ75FAzB1T2CN6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Michael Welling <mwelling@ieee.org>
+---
 
-On Fri, May 08, 2015 at 12:37:37PM -0500, Michael Welling wrote:
+v2: Adds gpio_free to cleanup function.
 
-> It appears that the transfer_one patch got applied so how should I
-> provide the new version of this patch?
+Broken out of patch series because the other patch in the series was applied.
+commit	b28cb9414db9f8e42ac18c9e360e4e99cda42489
 
-Incrementally.
+This patch applies on top of that one.
 
---gTtJ75FAzB1T2CN6
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+ drivers/spi/spi-omap2-mcspi.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVTPgfAAoJECTWi3JdVIfQGp8H/R5arcA/ZZpNBtUkH9Dd+TjI
-Z/sH1iYyBPoKVHd8Qh0X3yp3fEd4rh62WblsOjUu8rmZh45lFSIwk6SHjHiVMdRe
-npyTRyUXz+Q4N4fQgi7ZR2qirkpHnsVYc/wTkMSPBjZkh3xMayTt1clxgUimY2AO
-zVuBCaYzGLxfAbCBRfRik7rSY/VAvyQ14tAAlRNQLQWuax/NKx2mbmuRqmjp7zpV
-Hlf4RUwdm6F6MrnAamrD0Ee8h03uvfMfUlXFLdR+43kyzCbs7Po1YDcvfToaJkP8
-P+y4dkUjavZT/KCU3VKGpi34PcS4ytum7nVFrQK2kUDRafr9SGw80b61Cq2TQD0=
-=TUcZ
------END PGP SIGNATURE-----
-
---gTtJ75FAzB1T2CN6--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 3ac06ad..90cf7e7 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -35,6 +35,7 @@
+ #include <linux/gcd.h>
+ 
+ #include <linux/spi/spi.h>
++#include <linux/gpio.h>
+ 
+ #include <linux/platform_data/spi-omap2-mcspi.h>
+ 
+@@ -1011,6 +1012,12 @@ static int omap2_mcspi_setup(struct spi_device *spi)
+ 			return ret;
+ 	}
+ 
++	if (gpio_is_valid(spi->cs_gpio)) {
++		if (gpio_request(spi->cs_gpio, dev_name(&spi->dev)) == 0)
++			gpio_direction_output(spi->cs_gpio,
++			!(spi->mode & SPI_CS_HIGH));
++	}
++
+ 	ret = pm_runtime_get_sync(mcspi->dev);
+ 	if (ret < 0)
+ 		return ret;
+@@ -1050,6 +1057,9 @@ static void omap2_mcspi_cleanup(struct spi_device *spi)
+ 			mcspi_dma->dma_tx = NULL;
+ 		}
+ 	}
++
++	if (gpio_is_valid(spi->cs_gpio))
++		gpio_free(spi->cs_gpio);
+ }
+ 
+ static int omap2_mcspi_work_one(struct omap2_mcspi *mcspi,
+-- 
+1.7.9.5

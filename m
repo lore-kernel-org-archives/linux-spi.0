@@ -1,63 +1,92 @@
-From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Subject: Re: [PATCH] ARM: tegra: add "nor-jedec" flash compatible binding
-Date: Fri, 8 May 2015 13:15:27 -0700
-Message-ID: <20150508201527.GC32500@ld-irv-0074>
+Date: Fri, 8 May 2015 22:57:32 +0200
+Message-ID: <CAMuHMdXeen3cU2bb8TXxxtdDjgMCU_FS1Yxdu1b-Tq2xE+x0ZA@mail.gmail.com>
 References: <1431066098-19821-1-git-send-email-zajec5@gmail.com>
- <554CDD8C.7050000@wwwdotorg.org>
- <20150508184317.GZ32500@ld-irv-0074>
- <554D1624.5030608@wwwdotorg.org>
+	<554CDD8C.7050000@wwwdotorg.org>
+	<20150508184317.GZ32500@ld-irv-0074>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
+	=?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Alexandre Courbot <gnurou-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <554D1624.5030608-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+	Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Linux-sh list <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150508184317.GZ32500@ld-irv-0074>
+Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-On Fri, May 08, 2015 at 02:01:40PM -0600, Stephen Warren wrote:
-> On 05/08/2015 12:43 PM, Brian Norris wrote:
-> >On Fri, May 08, 2015 at 10:00:12AM -0600, Stephen Warren wrote:
-> >>Equally, "nor-jedec" doesn't sound like the right name. It doesn't
-> >>differentiate between SPI and parallel NOR flash, which presumably
-> >>need different compatible values, since the programming model is
-> >>quite different, and the compatible value is supposed to
-> >>define/imply the SW-visible programming model.
-> >
-> >It's definitely for SPI only. There was much discussion about this a
-> >few months back. Somewhere along the way, it was mentioned that the
-> >context (SPI slave is a child of SPI master) would make this clear. I'm
-> >still not sure why we didn't end up with something more descriptive,
-> >though, like "spi-nor,nor-jedec".
-> >
-> >I'm open to change, as this binding is new in 4.1-rc1.
-> 
-> I don't believe compatible values should be interpreted according to
-> context; compatible value matching isn't implemented that way AFAIK,
-> and I'm not aware of any precedent for it to work that way.
+On Fri, May 8, 2015 at 8:43 PM, Brian Norris
+<computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> On Fri, May 08, 2015 at 10:00:12AM -0600, Stephen Warren wrote:
+>> On 05/08/2015 12:21 AM, Rafa=C5=82 Mi=C5=82ecki wrote:
+>> >Starting with commits
+>> >8ff16cf ("Documentation: devicetree: m25p80: add "nor-jedec" bindin=
+g")
+>> >1103b85 ("mtd: m25p80: bind to "nor-jedec" ID, for auto-detection")
+>> >we have "nor-jedec" binding indicating support for JEDEC identifica=
+tion.
+>>
+>> The documentation looks quite incomplete. "nor-jedec" sounds like
+>> it's intended to be something generic. As such, it should be
+>> documented in e.g.
+>> Documentation/devicetree/bindings/mtd/nor-jedec.txt, not buried in
+>> one particular flash device's binding. If it's not intended to be
+>> generic, why isn't the existing "winbond,w25q32dw" enough?
+>
+> It is generic, though there are plenty of additional manufacturer/dev=
+ice
+> pairs that could go on top of it. m25p80 was (one of?) the first
+> supported, so the naming has been based on legacy, and we're in the
+> process of unwinding a bit of that. If it helps, we could move the do=
+c
+> to .../mtd/spi-nor,nor-jedec.txt or something like that.
+>
+>> Equally, "nor-jedec" doesn't sound like the right name. It doesn't
+>> differentiate between SPI and parallel NOR flash, which presumably
+>> need different compatible values, since the programming model is
+>> quite different, and the compatible value is supposed to
+>> define/imply the SW-visible programming model.
+>
+> It's definitely for SPI only. There was much discussion about this a
+> few months back. Somewhere along the way, it was mentioned that the
+> context (SPI slave is a child of SPI master) would make this clear. I=
+'m
+> still not sure why we didn't end up with something more descriptive,
+> though, like "spi-nor,nor-jedec".
 
-For SPI slaves, they are always nested within their SPI master/bus node.
-The master driver chooses how to probe its children. So there is some
-context-sensitivity.
+What about "jedec,spi-nor"?
 
-> Did the discussion involve the core DT maintainers? If so, whatever
-> they decided can stick. Otherwise, the discussion should be rubn by
-> them.
+Is this "SERIAL FLASH DISCOVERABLE PARAMETERS (SFDP)"?
+https://www.jedec.org/standards-documents/docs/jesd216b
+(Don't have time to register with jedec now...)
 
-Yes. I never got an "ack", but Mark Rutland commented a few times and
-didn't seem to object to the name. e.g.:
+If yes, "jedec,sfdp"? "jedec,jesd216b"?
 
-http://lists.infradead.org/pipermail/linux-mtd/2015-March/058275.html
+> I'm open to change, as this binding is new in 4.1-rc1.
 
-Brian
+Indeed, as long as all users are fixed before 4.1 is released.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-=
+m68k.org
+
+In personal conversations with technical people, I call myself a hacker=
+=2E But
+when I'm talking to journalists I just say "programmer" or something li=
+ke that.
+                                -- Linus Torvalds

@@ -1,99 +1,74 @@
-From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] ARM: tegra: add "nor-jedec" flash compatible binding
-Date: Fri, 8 May 2015 14:34:14 -0700
-Message-ID: <20150508213414.GE32500@ld-irv-0074>
-References: <1431066098-19821-1-git-send-email-zajec5@gmail.com>
- <554CDD8C.7050000@wwwdotorg.org>
- <20150508184317.GZ32500@ld-irv-0074>
- <CAMuHMdXeen3cU2bb8TXxxtdDjgMCU_FS1Yxdu1b-Tq2xE+x0ZA@mail.gmail.com>
- <554D24DA.8060601@wwwdotorg.org>
-Mime-Version: 1.0
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: Re: spi: race in spi_finalize_current_message starting queue_kthread_work before the message is unmapped
+Date: Sat, 9 May 2015 08:40:12 +0200
+Message-ID: <352560EA-A323-449B-8F37-6066328D2081@martin.sperl.org>
+References: <8C375B28-1C09-4545-8A5B-78F6CD04102F@martin.sperl.org> <20150508221309.GK2761@sirena.org.uk>
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2098\))
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Alexandre Courbot <gnurou-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux-sh list <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Cc: linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	=?utf-8?Q?Noralf_Tr=C3=B8nnes?= <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <554D24DA.8060601-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+In-Reply-To: <20150508221309.GK2761-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, May 08, 2015 at 03:04:26PM -0600, Stephen Warren wrote:
-> On 05/08/2015 02:57 PM, Geert Uytterhoeven wrote:
-> >On Fri, May 8, 2015 at 8:43 PM, Brian Norris
-> ><computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> >>On Fri, May 08, 2015 at 10:00:12AM -0600, Stephen Warren wrote:
-> >>>On 05/08/2015 12:21 AM, Rafa=C5=82 Mi=C5=82ecki wrote:
-> >>>>Starting with commits
-> >>>>8ff16cf ("Documentation: devicetree: m25p80: add "nor-jedec" bind=
-ing")
-> >>>>1103b85 ("mtd: m25p80: bind to "nor-jedec" ID, for auto-detection=
-")
-> >>>>we have "nor-jedec" binding indicating support for JEDEC identifi=
-cation.
-> >>>
-> >>>The documentation looks quite incomplete. "nor-jedec" sounds like
-> >>>it's intended to be something generic. As such, it should be
-> >>>documented in e.g.
-> >>>Documentation/devicetree/bindings/mtd/nor-jedec.txt, not buried in
-> >>>one particular flash device's binding. If it's not intended to be
-> >>>generic, why isn't the existing "winbond,w25q32dw" enough?
-> >>
-> >>It is generic, though there are plenty of additional manufacturer/d=
-evice
-> >>pairs that could go on top of it. m25p80 was (one of?) the first
-> >>supported, so the naming has been based on legacy, and we're in the
-> >>process of unwinding a bit of that. If it helps, we could move the =
-doc
-> >>to .../mtd/spi-nor,nor-jedec.txt or something like that.
-> >>
-> >>>Equally, "nor-jedec" doesn't sound like the right name. It doesn't
-> >>>differentiate between SPI and parallel NOR flash, which presumably
-> >>>need different compatible values, since the programming model is
-> >>>quite different, and the compatible value is supposed to
-> >>>define/imply the SW-visible programming model.
-> >>
-> >>It's definitely for SPI only. There was much discussion about this =
-a
-> >>few months back. Somewhere along the way, it was mentioned that the
-> >>context (SPI slave is a child of SPI master) would make this clear.=
- I'm
-> >>still not sure why we didn't end up with something more descriptive=
-,
-> >>though, like "spi-nor,nor-jedec".
-> >
-> >What about "jedec,spi-nor"?
+
+> On 09.05.2015, at 00:13, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
 >=20
-> That seems unique enough to me, or the options below if they're
-> actually applicable.
+> On Fri, May 08, 2015 at 10:02:44PM +0200, Martin Sperl wrote:
+>=20
+>> Based on the findings by Noralf, the following solves the issue:
+>=20
+> Can you please post this upstream as a proper submission so I can rev=
+iew
+> and apply it (I'm not going to look at it properly right now, it's ju=
+st
+> gone 11pm, but at first glance it doesn't ring any alarm bells)?
+>=20
+>> Note that I am not sure about the locking, so I left unmap outside t=
+he
+>> lock for now.
+>=20
+> It needs to be, you can't do anything big like unmapping in a
+> non-sleeping context.
 
-That could be OK with me. If I can get the magic blessing from the DT
-folks, then I'll send patches to update everything.
+Well, right now it is not in a locking context but outside, so
+I wonder if it is really needed, but then for spi_finalize_current_mess=
+age
+it is not specified if it can also get run from interrupt context or no=
+t.
 
-> >Is this "SERIAL FLASH DISCOVERABLE PARAMETERS (SFDP)"?
-> >https://www.jedec.org/standards-documents/docs/jesd216b
-> >(Don't have time to register with jedec now...)
-> >
-> >If yes, "jedec,sfdp"? "jedec,jesd216b"?
+I will do something quick now, but I guess we should revisit the
+SPI_MASTER_MUST_RX/TX situation as there are some side-effects
+that may not be intended or performance friendly like:
 
-It's not SFDP. We're looking at SPI flash that are detected simply by
-the READ ID (9Fh) opcode. SFDP is on newer SPI flash which support the
-5Ah opcode, for reading a parameter table. (I'd like to support this
-soon, actually, and one of those sorts of strings might work.)
+* dummy_RX/TX get allocated/released even when can_dma returns false
+  should only run this =E2=80=9Cmapping if necessary. I guess that it i=
+s mostly
+  usefull for DMA transfers - PIO drivers typically implement this via
+  a simple if when tx/rx_buf is NULL.
+* dummy_tx/rx get allocated/released for every spi_message, which is
+  wasting CPU
+* we allocate spi_transfer->len bytes to this dummy buffer and with a
+  spi-transfer of 16MB this would try to allocate another 16MB - and po=
+ssibly
+  fail...
+  Here maybe a fixed allocated (and mapped) buffer of master->max_dma_l=
+en
+  could be helpfull that would get reused multiple times in the scatter=
+/gather
+  list to minimize the memory footprint.
+  Ideally there would be support for this inside dma-engine in the form=
+ of
+  a flag when calling dmaengine_prep_slave_sg to indicate that data com=
+es
+  from /dev/zero or goes to /dev/null, as some silicon dma-engines
+  (like bcm2835) supports such types of transfers in hardware.
 
-Brian
---
+Martin--
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

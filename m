@@ -1,101 +1,99 @@
-From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH] spi: fix race freeing dummy_tx/rx before it is unmapped
-Date: Sun, 10 May 2015 07:50:45 +0000
-Message-ID: <1431244245-2880-1-git-send-email-kernel@martin.sperl.org>
-References: <20150508221309.GK2761@sirena.org.uk>
+From: Zhiqiang Hou <B48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Subject: [PATCH 3/3] spi/fsl-espi: Add the 4Byte address width device support
+Date: Sun, 10 May 2015 22:47:33 +0800
+Message-ID: <1431269253-22890-3-git-send-email-B48286@freescale.com>
+References: <1431269253-22890-1-git-send-email-B48286@freescale.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-To: =?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain
+Cc: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <B21284-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Hou Zhiqiang <B48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150508221309.GK2761-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <1431269253-22890-1-git-send-email-B48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-=46rom: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+From: Hou Zhiqiang <B48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 
-=46ix a race (with some kernel configurations) where a queued
-master->pump_messages runs and frees dummy_tx/rx before
-spi_unmap_msg is running (or is finished).
+Get the address width information from the spi_message to correct the
+address to operate.
 
-This results in the following messages:
-  BUG: Bad page state in process
-  page:db7ba030 count:0 mapcount:0 mapping:  (null) index:0x0
-  flags: 0x200(arch_1)
-  page dumped because: PAGE_FLAGS_CHECK_AT_PREP flag set
-  ...
+when the one-time transfer length exceed the max limited length of eSPI
+controller 0xFFFF, for the subsequent transfer, the address to operate
+need to be corrected.
 
-Reported-by: Noralf Tr=C3=B8nnes <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>
-Suggested-by: Noralf Tr=C3=B8nnes <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>
-Tested-by: Noralf Tr=C3=B8nnes <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>
-
-Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Signed-off-by: Hou Zhiqiang <B48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 ---
- drivers/spi/spi.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 32 +++++++++++++++++++++++---------
+ 1 file changed, 23 insertions(+), 9 deletions(-)
 
-Note that I am not 100% sure if the spinlock is really needed to read
-cur_msg, but as it was there I left it as is and just moved the
-scheduling and assignments down after sg_unmap and unprepare_message.
-
-Noralf also sugested removing the first locking and my testing shows
-that I was unable to trigger any issues with locking removed for the
-assignemnt of mesg but there still may be a possibilty...
-
-Also note that if you leave cur_message =3D NULL assignement on top, th=
-en
-there is another race were other drivers submitting spi_messages and th=
-us
-triggering spi_pump while we still are cleaning up the old message.
-This is because pump_message stops if it finds cur_message to be still
-asigned.
-
-Tested with the following devices on the same bus and all active:
-* 2x mcp2515
-* 1x enc28j60
-* 1x fb_st7735r
-
-Communication on reporting/testing by Noralf can get reviewed at:
-https://github.com/raspberrypi/linux/issues/959#issuecomment-100391599 =
-and
-https://github.com/msperl/spi-bcm2835/issues/13#issuecomment-87210385
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 50910d8..d35c1a1 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -988,9 +988,6 @@ void spi_finalize_current_message(struct spi_master=
- *master)
-=20
- 	spin_lock_irqsave(&master->queue_lock, flags);
- 	mesg =3D master->cur_msg;
--	master->cur_msg =3D NULL;
--
--	queue_kthread_work(&master->kworker, &master->pump_messages);
- 	spin_unlock_irqrestore(&master->queue_lock, flags);
-=20
- 	spi_unmap_msg(master, mesg);
-@@ -1003,9 +1000,13 @@ void spi_finalize_current_message(struct spi_mas=
-ter *master)
- 		}
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index d0a73a0..59931d3 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -250,19 +250,31 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	return mpc8xxx_spi->count;
+ }
+ 
+-static inline void fsl_espi_addr2cmd(unsigned int addr, u8 *cmd)
++static inline void fsl_espi_addr2cmd(unsigned int addr, u8 *cmd, u8 addr_width)
+ {
+ 	if (cmd) {
+-		cmd[1] = (u8)(addr >> 16);
+-		cmd[2] = (u8)(addr >> 8);
+-		cmd[3] = (u8)(addr >> 0);
++		if (addr_width == 3) {
++			cmd[1] = (u8)(addr >> 16);
++			cmd[2] = (u8)(addr >> 8);
++			cmd[3] = (u8)(addr >> 0);
++		} else if (addr_width == 4) {
++			cmd[1] = (u8)(addr >> 24);
++			cmd[2] = (u8)(addr >> 16);
++			cmd[3] = (u8)(addr >> 8);
++			cmd[4] = (u8)(addr >> 0);
++		}
  	}
-=20
--	trace_spi_message_done(mesg);
--
-+	spin_lock_irqsave(&master->queue_lock, flags);
-+	master->cur_msg =3D NULL;
- 	master->cur_msg_prepared =3D false;
-+	queue_kthread_work(&master->kworker, &master->pump_messages);
-+	spin_unlock_irqrestore(&master->queue_lock, flags);
-+
-+	trace_spi_message_done(mesg);
-=20
- 	mesg->state =3D NULL;
- 	if (mesg->complete)
---=20
-1.7.10.4
+ }
+ 
+-static inline unsigned int fsl_espi_cmd2addr(u8 *cmd)
++static inline unsigned int fsl_espi_cmd2addr(u8 *cmd, u8 addr_width)
+ {
+-	if (cmd)
+-		return cmd[1] << 16 | cmd[2] << 8 | cmd[3] << 0;
++	if (cmd) {
++		if (addr_width == 3)
++			return cmd[1] << 16 | cmd[2] << 8 | cmd[3] << 0;
++		else if (addr_width == 4)
++			return cmd[1] << 24 | cmd[2] << 16
++				| cmd[3] << 8 | cmd[4] << 0;
++	}
+ 
+ 	return 0;
+ }
+@@ -367,7 +379,9 @@ static void fsl_espi_rw_trans(struct spi_message *m,
+ 	unsigned int trans_len;
+ 	unsigned int addr;
+ 	int i, pos, loop;
++	u8 addr_width;
+ 
++	addr_width = m->addr_width;
+ 	local_buf = kzalloc(SPCOM_TRANLEN_MAX, GFP_KERNEL);
+ 	if (!local_buf) {
+ 		espi_trans->status = -ENOMEM;
+@@ -388,9 +402,9 @@ static void fsl_espi_rw_trans(struct spi_message *m,
+ 		}
+ 
+ 		if (pos > 0) {
+-			addr = fsl_espi_cmd2addr(local_buf);
++			addr = fsl_espi_cmd2addr(local_buf, addr_width);
+ 			addr += pos;
+-			fsl_espi_addr2cmd(addr, local_buf);
++			fsl_espi_addr2cmd(addr, local_buf, addr_width);
+ 		}
+ 
+ 		espi_trans->n_tx = n_tx;
+-- 
+2.1.0.27.g96db324
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

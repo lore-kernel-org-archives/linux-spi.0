@@ -1,97 +1,42 @@
 From: Zhiqiang Hou <B48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: [PATCH 3/3] spi/fsl-espi: Add the 4Byte address width device support
-Date: Sun, 10 May 2015 22:47:33 +0800
-Message-ID: <1431269253-22890-3-git-send-email-B48286@freescale.com>
-References: <1431269253-22890-1-git-send-email-B48286@freescale.com>
+Subject: [PATCH 1/3] spi: Add addr_width field to struct spi_message
+Date: Sun, 10 May 2015 22:47:31 +0800
+Message-ID: <1431269253-22890-1-git-send-email-B48286@freescale.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Cc: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <B21284-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
 	Hou Zhiqiang <B48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1431269253-22890-1-git-send-email-B48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 From: Hou Zhiqiang <B48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 
-Get the address width information from the spi_message to correct the
-address to operate.
-
-when the one-time transfer length exceed the max limited length of eSPI
-controller 0xFFFF, for the subsequent transfer, the address to operate
-need to be corrected.
+Make SPI controller can get address width of the SPI device.
 
 Signed-off-by: Hou Zhiqiang <B48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
----
- drivers/spi/spi-fsl-espi.c | 32 +++++++++++++++++++++++---------
- 1 file changed, 23 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index d0a73a0..59931d3 100644
---- a/drivers/spi/spi-fsl-espi.c
-+++ b/drivers/spi/spi-fsl-espi.c
-@@ -250,19 +250,31 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
- 	return mpc8xxx_spi->count;
- }
+Based on git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git.
+Tested on T1040RDB and T2080RDB.
+---
+ include/linux/spi/spi.h | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index d673072..c9cef2c 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -682,6 +682,9 @@ struct spi_message {
+ 	unsigned		actual_length;
+ 	int			status;
  
--static inline void fsl_espi_addr2cmd(unsigned int addr, u8 *cmd)
-+static inline void fsl_espi_addr2cmd(unsigned int addr, u8 *cmd, u8 addr_width)
- {
- 	if (cmd) {
--		cmd[1] = (u8)(addr >> 16);
--		cmd[2] = (u8)(addr >> 8);
--		cmd[3] = (u8)(addr >> 0);
-+		if (addr_width == 3) {
-+			cmd[1] = (u8)(addr >> 16);
-+			cmd[2] = (u8)(addr >> 8);
-+			cmd[3] = (u8)(addr >> 0);
-+		} else if (addr_width == 4) {
-+			cmd[1] = (u8)(addr >> 24);
-+			cmd[2] = (u8)(addr >> 16);
-+			cmd[3] = (u8)(addr >> 8);
-+			cmd[4] = (u8)(addr >> 0);
-+		}
- 	}
- }
- 
--static inline unsigned int fsl_espi_cmd2addr(u8 *cmd)
-+static inline unsigned int fsl_espi_cmd2addr(u8 *cmd, u8 addr_width)
- {
--	if (cmd)
--		return cmd[1] << 16 | cmd[2] << 8 | cmd[3] << 0;
-+	if (cmd) {
-+		if (addr_width == 3)
-+			return cmd[1] << 16 | cmd[2] << 8 | cmd[3] << 0;
-+		else if (addr_width == 4)
-+			return cmd[1] << 24 | cmd[2] << 16
-+				| cmd[3] << 8 | cmd[4] << 0;
-+	}
- 
- 	return 0;
- }
-@@ -367,7 +379,9 @@ static void fsl_espi_rw_trans(struct spi_message *m,
- 	unsigned int trans_len;
- 	unsigned int addr;
- 	int i, pos, loop;
-+	u8 addr_width;
- 
-+	addr_width = m->addr_width;
- 	local_buf = kzalloc(SPCOM_TRANLEN_MAX, GFP_KERNEL);
- 	if (!local_buf) {
- 		espi_trans->status = -ENOMEM;
-@@ -388,9 +402,9 @@ static void fsl_espi_rw_trans(struct spi_message *m,
- 		}
- 
- 		if (pos > 0) {
--			addr = fsl_espi_cmd2addr(local_buf);
-+			addr = fsl_espi_cmd2addr(local_buf, addr_width);
- 			addr += pos;
--			fsl_espi_addr2cmd(addr, local_buf);
-+			fsl_espi_addr2cmd(addr, local_buf, addr_width);
- 		}
- 
- 		espi_trans->n_tx = n_tx;
++	/* deliver the address width of spi device to spi controller */
++	u8			addr_width;
++
+ 	/* for optional use by whatever driver currently owns the
+ 	 * spi_message ...  between calls to spi_async and then later
+ 	 * complete(), that's the spi_master controller driver.
 -- 
 2.1.0.27.g96db324
 

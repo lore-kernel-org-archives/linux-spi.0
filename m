@@ -1,115 +1,54 @@
-From: Nishanth Menon <nm@ti.com>
-Subject: Re: next-20150511 / omap2-mcspi: regression for sdp4430 boot
-Date: Mon, 11 May 2015 14:00:08 -0500
-Message-ID: <5550FC38.6020801@ti.com>
-References: <5550DDCB.8010303@ti.com> <20150511170742.GA6616@deathray>
- <5550F47C.1030902@ti.com> <20150511183032.GA8085@deathray>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-omap <linux-omap@vger.kernel.org>, Mark Brown <broonie@kernel.org>,
- linux-next <linux-next@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- linux-spi@vger.kernel.org
-To: Michael Welling <mwelling@ieee.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20150511183032.GA8085@deathray>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
-
-On 05/11/2015 01:30 PM, Michael Welling wrote:
-> On Mon, May 11, 2015 at 01:27:08PM -0500, Nishanth Menon wrote:
->> On 05/11/2015 12:07 PM, Michael Welling wrote:
->>> On Mon, May 11, 2015 at 11:50:19AM -0500, Nishanth Menon wrote:
->>>> Hi,
->>>>
->>>> SDP4430 uses a SPI based network chip ks8851.
->>>>
->>>> next-20150508:
->>>> https://github.com/nmenon/kernel-test-logs/blob/next-20150508/omap2plus_defconfig/sdp4430.txt
->>>>
->>>> However, next-20150511:
->>>> https://github.com/nmenon/kernel-test-logs/blob/next-20150511/omap2plus_defconfig/sdp4430.txt
->>>>
->>>
->>> I will look into this but it is going to be difficult to debug with access to the hardware.
->>> This is what I get for changing a driver that effects so many SoCs.
->>>
->>
->> Let me know if there is any test patch you'd want me to run. The board
->> is on a remote "board farm" which most of TI folks have access to as
->> well.. So, if you need anything run, just send out a debug patch OR a
->> potential fix and we can help try it out and provide logs back for
->> your debug.
-> 
-> Okay.
-> 
-> It looks like you revert the patches in the wrong order above.
-> 
-> The GPIO patch should apply after the transfer_one patch so it should
-> logically be reverted in the reverse order.
-> 
-Apologies on a slow response, was tracking another LPAE regression down.
-
-I did do that -> but logged it in reverse - unfortunately it seems to
-have caused a little more confusion :(. is there something else you'd
-like me to do?
-
-git log  next-20150508..next-20150511 drivers/spi
-Tells me:
-
-commit bc7f9bbc80bcc77745b3f54ec4e7103e3e142bb9
-Author: Michael Welling <mwelling@ieee.org>
-Date:   Fri May 8 13:31:01 2015 -0500
-
-    spi: omap2-mcspi: Add gpio_request and init CS
-
-    If GPIO chip select is specified, request the GPIO in the setup
-function
-    and release it in the cleanup function.
-
-    Signed-off-by: Michael Welling <mwelling@ieee.org>
-    Signed-off-by: Mark Brown <broonie@kernel.org>
-
-commit b28cb9414db9f8e42ac18c9e360e4e99cda42489
-Author: Michael Welling <mwelling@ieee.org>
-Date:   Thu May 7 18:36:53 2015 -0500
-
-    spi: omap2-mcspi: Switch driver to use transfer_one
-
-    Switches from transfer_one_message to transfer_one to prepare
-driver for
-    use of GPIO chip selects.
-
-    Signed-off-by: Michael Welling <mwelling@ieee.org>
-    Signed-off-by: Mark Brown <broonie@kernel.org>
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: Re: spi: race in spi_finalize_current_message starting queue_kthread_work before the message is unmapped
+Date: Mon, 11 May 2015 21:27:35 +0200
+Message-ID: <8F4019F0-7C56-4C9C-9193-A2A23B533165@martin.sperl.org>
+References: <8C375B28-1C09-4545-8A5B-78F6CD04102F@martin.sperl.org> <20150508221309.GK2761@sirena.org.uk> <352560EA-A323-449B-8F37-6066328D2081@martin.sperl.org> <20150511180016.GU3458@sirena.org.uk>
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2098\))
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	=?utf-8?Q?Noralf_Tr=C3=B8nnes?= <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150511180016.GU3458-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
+> On 11.05.2015, at 20:00, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+>=20
+>> * dummy_RX/TX get allocated/released even when can_dma returns false
+>>  should only run this =E2=80=9Cmapping if necessary. I guess that it=
+ is mostly
+>>  usefull for DMA transfers - PIO drivers typically implement this vi=
+a
+>>  a simple if when tx/rx_buf is NULL.
+>=20
+> No, it's supposed to be usable for PIO too - it can keep logic simple=
+r.
+but only slightly - it is a simple
+  (xfer->tx_buf) ? xfer->tx_buf[i] : 0
+so I do not see a huge difference.
 
-my tested git log looks as follows: (redid it just to be sure):
+> Indeed, just having a page that gets reused would be better.  I'm hop=
+ing
+> that someone who needs this will get around to optimizing it at some
+> point.
 
-a4617b41e04c Revert "spi: omap2-mcspi: Switch driver to use transfer_one"
-http://paste.ubuntu.org.cn/2595136
+I could possibly look into that, but it goes against the point you
+made above about PIO.
+Either we allocate the memory completely and make it work for PIO.
+Or we only create a scatter/gather list of the same page and leave
+tx_buf =3D=3D NULL.
 
-b49011271c7f Revert "spi: omap2-mcspi: Add gpio_request and init CS"
-http://paste.ubuntu.org.cn/2595142
+So unless we have a separate flag to say we only need it for DMA,
+then we have to keep the the current logic with allocation or we break
+other drivers.
 
+Martin
 
-012034602bd6 HACK: Makefile: Build a uImage with dtb already appended
-f17107cb8886 Add linux-next specific files for 20150511
-
-012034602bd6 commit is
-https://github.com/nmenon/linux-2.6-playground/commit/177f5f71b3f2 ->
-for legacy platforms needing uImage based booting.
-
--- 
-Regards,
-Nishanth Menon
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,75 +1,50 @@
-From: Michael Welling <mwelling@ieee.org>
-Subject: Re: next-20150511 / omap2-mcspi: regression for sdp4430 boot
-Date: Mon, 11 May 2015 12:07:42 -0500
-Message-ID: <20150511170742.GA6616@deathray>
-References: <5550DDCB.8010303@ti.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: pl022: Specify 'num-cs' property as required in
+ devicetree binding
+Date: Mon, 11 May 2015 18:22:52 +0100
+Message-ID: <20150511172252.GT3458@sirena.org.uk>
+References: <1431357618-6829-1-git-send-email-ezequiel@vanguardiasur.com.ar>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie@kernel.org>,
-	linux-omap <linux-omap@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	linux-next <linux-next@vger.kernel.org>,
-	linux-spi@vger.kernel.org
-To: Nishanth Menon <nm@ti.com>
-Return-path: <linux-next-owner@vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="FT/vNgDLxVq4t/AU"
+Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Ezequiel Garcia <ezequiel-30ULvvUtt6G51wMPkGsGjgyUoB5FGQPZ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <5550DDCB.8010303@ti.com>
-Sender: linux-next-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1431357618-6829-1-git-send-email-ezequiel-30ULvvUtt6G51wMPkGsGjgyUoB5FGQPZ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, May 11, 2015 at 11:50:19AM -0500, Nishanth Menon wrote:
-> Hi,
-> 
-> SDP4430 uses a SPI based network chip ks8851.
-> 
-> next-20150508:
-> https://github.com/nmenon/kernel-test-logs/blob/next-20150508/omap2plus_defconfig/sdp4430.txt
-> 
-> However, next-20150511:
-> https://github.com/nmenon/kernel-test-logs/blob/next-20150511/omap2plus_defconfig/sdp4430.txt
-> 
 
-I will look into this but it is going to be difficult to debug with access to the hardware.
-This is what I get for changing a driver that effects so many SoCs.
+--FT/vNgDLxVq4t/AU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> Generates infinite "ks8851 spi1.0: ks8851_irq: spi bus error" errors
-> and hangs the platform.
-> 
-> Bisected the issue down to the following two commits when reverted
-> allows the board to function:
-> 
-> 
-> commit b28cb9414db9f8e42ac18c9e360e4e99cda42489
-> Author: Michael Welling <mwelling@ieee.org>
-> Date:   Thu May 7 18:36:53 2015 -0500
-> 
->     spi: omap2-mcspi: Switch driver to use transfer_one
-> 
->     Switches from transfer_one_message to transfer_one to prepare
-> driver for
->     use of GPIO chip selects.
-> 
->     Signed-off-by: Michael Welling <mwelling@ieee.org>
->     Signed-off-by: Mark Brown <broonie@kernel.org>
-> 
-> Reverting this alone: http://paste.ubuntu.org.cn/2594735 (did not boot up)
-> 
-> commit bc7f9bbc80bcc77745b3f54ec4e7103e3e142bb9
-> Author: Michael Welling <mwelling@ieee.org>
-> Date:   Fri May 8 13:31:01 2015 -0500
-> 
->     spi: omap2-mcspi: Add gpio_request and init CS
-> 
->     If GPIO chip select is specified, request the GPIO in the setup
-> function
->     and release it in the cleanup function.
-> 
->     Signed-off-by: Michael Welling <mwelling@ieee.org>
->     Signed-off-by: Mark Brown <broonie@kernel.org>
-> 
-> Reverting this as well allowed boot.
-> 
-> -- 
-> Regards,
-> Nishanth Menon
+On Mon, May 11, 2015 at 12:20:18PM -0300, Ezequiel Garcia wrote:
+> Since commit 39a6ac11df65 ("spi/pl022: Devicetree support w/o platform data")
+> the 'num-cs' parameter cannot be passed through platform data when probing
+> with devicetree. Instead, it's a required devicetree property.
+
+Applied, thanks.
+
+--FT/vNgDLxVq4t/AU
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVUOVrAAoJECTWi3JdVIfQrEgH/jNw3DXiy2LDulPzANEC9+zv
+o4HAyUBvc6wabXRWJnHhIocAD/rt1LqxrKedaAN9syN8opNihAbprYlq5D/qYBkB
+2n4GsCG+OJ00JgYSyicmvanQgEbvFQ+aun3g2IH1/XGAmxEYan+DvpfItLAMXTnV
+DHJtY70GNBFwpiknXojV6q7IqJT38KYGPSzSUfkLiOb8y/Lt/nVUEWGRUFo8+bL+
+j0xlZ7D2oOEvgi15l+9TZLfiOAzzUpL9PYNSiFtslZ8VINmYOb2TQYNjxzTTvlzk
+YPOP15bhAl2t6LC34IiC+xJX7mUnORjjy45Uaj1I/UoMyb4XB95yc3UyVDXcZ3A=
+=MiF2
+-----END PGP SIGNATURE-----
+
+--FT/vNgDLxVq4t/AU--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,99 +1,100 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: spi: race in spi_finalize_current_message starting
- queue_kthread_work before the message is unmapped
-Date: Mon, 11 May 2015 19:00:16 +0100
-Message-ID: <20150511180016.GU3458@sirena.org.uk>
-References: <8C375B28-1C09-4545-8A5B-78F6CD04102F@martin.sperl.org>
- <20150508221309.GK2761@sirena.org.uk>
- <352560EA-A323-449B-8F37-6066328D2081@martin.sperl.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: [GIT PULL] SPI fixes for v4.1
+Date: Mon, 11 May 2015 19:18:20 +0100
+Message-ID: <20150511181820.GV3458@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="UC+RhZhEc8lcmajv"
-Cc: linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Noralf =?iso-8859-1?Q?Tr=F8nnes?= <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="hFEw+uh9kF5V6COn"
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <352560EA-A323-449B-8F37-6066328D2081-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---UC+RhZhEc8lcmajv
-Content-Type: text/plain; charset=utf-8
+--hFEw+uh9kF5V6COn
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Sat, May 09, 2015 at 08:40:12AM +0200, Martin Sperl wrote:
-> > On 09.05.2015, at 00:13, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> > On Fri, May 08, 2015 at 10:02:44PM +0200, Martin Sperl wrote:
+The following changes since commit 030bbdbf4c833bc69f502eae58498bc5572db736:
 
-> >> Note that I am not sure about the locking, so I left unmap outside the
-> >> lock for now.
+  Linux 4.1-rc3 (2015-05-10 15:12:29 -0700)
 
-> > It needs to be, you can't do anything big like unmapping in a
-> > non-sleeping context.
+are available in the git repository at:
 
-> Well, right now it is not in a locking context but outside, so
-> I wonder if it is really needed, but then for spi_finalize_current_message
-> it is not specified if it can also get run from interrupt context or not.
+  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v4.1-rc3
 
-I'm having a hard time following the above, sorry.  What is "it" here?
+for you to fetch changes up to c8b350424d1862619c311204290cd42bae4ebaa3:
 
-Ideally we do want to be able to finalize in any context, though as
-you've seen that's not true for all feature sets.  It's fixable if
-someone has a need though.
+  Merge remote-tracking branches 'spi/fix/fsl-cpm', 'spi/fix/fsl-dspi' and 'spi/fix/fsl-espi' into spi-linus (2015-05-11 17:29:49 +0100)
 
-> * dummy_RX/TX get allocated/released even when can_dma returns false
->   should only run this =E2=80=9Cmapping if necessary. I guess that it is =
-mostly
->   usefull for DMA transfers - PIO drivers typically implement this via
->   a simple if when tx/rx_buf is NULL.
+----------------------------------------------------------------
+spi: Fixes for v4.1
 
-No, it's supposed to be usable for PIO too - it can keep logic simpler.
+A number of driver specific fixes (including several missing
+dependencies for randconfig type cases) plus two core fixes.  One makes
+the setup_transfer() callback optional which unbreaks some drivers which
+had been merged with it omitted due to local versions of this patch and
+another ensures that we don't corrupt data by leaking internal dummy
+buffers to callers, causing the callers to think they allocated those
+buffers.
 
-> * dummy_tx/rx get allocated/released for every spi_message, which is
->   wasting CPU
+----------------------------------------------------------------
+Christophe Leroy (2):
+      spi: fsl-spi: use devm_ioremap_resource() to map parameter ram on CPM1
+      spi: fsl-spi: fix devm_ioremap_resource() error case
 
-Right, ideally we want to push that logic out so that the free happens
-when the controller goes idle.
+Fionn Cleary (1):
+      spi/omap2-mcpsi: Always call spi_finalize_current_message()
 
-> * we allocate spi_transfer->len bytes to this dummy buffer and with a
->   spi-transfer of 16MB this would try to allocate another 16MB - and poss=
-ibly
->   fail...
->   Here maybe a fixed allocated (and mapped) buffer of master->max_dma_len
->   could be helpfull that would get reused multiple times in the scatter/g=
-ather
->   list to minimize the memory footprint.
->   Ideally there would be support for this inside dma-engine in the form of
->   a flag when calling dmaengine_prep_slave_sg to indicate that data comes
->   from /dev/zero or goes to /dev/null, as some silicon dma-engines
->   (like bcm2835) supports such types of transfers in hardware.
+Guenter Roeck (1):
+      spi: bcm2835: Add GPIOLIB dependency
 
-Indeed, just having a page that gets reused would be better.  I'm hoping
-that someone who needs this will get around to optimizing it at some
-point.
+Haikun Wang (1):
+      spi: Kconfig: Add SOC_LS1021A to SPI_FSL_DSPI dependence
 
---UC+RhZhEc8lcmajv
+Jonatas Rech (1):
+      spi: fsl-espi: fix behaviour for full-duplex xfers
+
+Mark Brown (4):
+      Merge remote-tracking branch 'spi/fix/core' into spi-linus
+      Merge remote-tracking branches 'spi/fix/bcm2835', 'spi/fix/bcm2835-code', 'spi/fix/bitbang', 'spi/fix/fsl-cpm' and 'spi/fix/omap2-mcspi' into spi-linus
+      Merge tag 'spi-v4.1-rc1' into spi-linus
+      Merge remote-tracking branches 'spi/fix/fsl-cpm', 'spi/fix/fsl-dspi' and 'spi/fix/fsl-espi' into spi-linus
+
+Martin Sperl (1):
+      spi: bcm2835: change timeout of polling driver to 1s
+
+Pelle Nilsson (1):
+      spi: bitbang: Make setup_transfer() callback optional
+
+Robin Gong (1):
+      spi: check tx_buf and rx_buf in spi_unmap_msg
+
+ drivers/spi/Kconfig           |  3 ++-
+ drivers/spi/spi-bcm2835.c     |  5 ++---
+ drivers/spi/spi-bitbang.c     | 17 +++++++++-------
+ drivers/spi/spi-fsl-cpm.c     | 40 ++++++++++++++++++++++----------------
+ drivers/spi/spi-fsl-espi.c    | 45 +++++++++++++++++++++++++++++--------------
+ drivers/spi/spi-omap2-mcspi.c | 16 +++++++++++----
+ drivers/spi/spi.c             |  9 +++++++++
+ 7 files changed, 89 insertions(+), 46 deletions(-)
+
+--hFEw+uh9kF5V6COn
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVUO4vAAoJECTWi3JdVIfQbG4H/1N3yFzQm6PtBxFHBrRPQqJb
-JMUnNjCKYtCOPueBs5BJUKjdyCEOAzoMoIyxlnPTvd899fEPsLHuuHuRhs+raY4k
-y44SvnDOS99cYQ1JtXtrEX3m4roilPHbuukFoJXsajSHcFm+OdgxXBSo3VkM0aP5
-gOgTgGf+eqvN3aHyPWthmVukJP2zy8dnF0jNVntnGCcS48uuj4jEC7kDKooCB7/u
-UjcFek3wCvyVLqF3HfBQxUrzUGylSzzsgog60pjcjykGtwiq1OiI0tfVvaLEWUHA
-mX2bZ0UCs9LvlvG5aVuge5MqEdAxnm8+iyJiW6eucMKDajuCNspI8XfwAehPeXo=
-=H4LY
+iQEcBAEBCAAGBQJVUPJrAAoJECTWi3JdVIfQNGkH+weBFCEzqPgywHa0FLf4cZkk
+XfXD0ScZdP3tmig3qHo5HsnK9cT6cYilMr3pdIDZJ2ndEStOdDHhzJjDaJVYUh+t
+CwI/38gM+pFBRntwu16eoLpZai3K1FztLD00tuGCAGkbBTPnFMuEZKYDTD1o+vkH
+sugihBmogpHUYuNl/g4SrkwRUbLQgYvUgREvOQ3qnsQ/0NuYmEWoKiQDvxCP2Xwl
+BsydohaJLt+ZbE2+pxPxQ5dHDTUzJs51HnQQWi0fTUnRZ0nqOXqABHjaU/FZVFyb
+2DYnGsjpJfJADf1woHJgh2WI+yRxlZxDewrrm6xJElFDFqoxwJHpGdpIEiu1u3I=
+=Pn9i
 -----END PGP SIGNATURE-----
 
---UC+RhZhEc8lcmajv--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--hFEw+uh9kF5V6COn--

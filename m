@@ -1,57 +1,47 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: bcm2835: enable dma modes for transfers meeting
- certain conditions
-Date: Mon, 11 May 2015 19:24:48 +0100
-Message-ID: <20150511182448.GW3458@sirena.org.uk>
-References: <1431290849-11151-1-git-send-email-kernel@martin.sperl.org>
+From: Nishanth Menon <nm@ti.com>
+Subject: Re: next-20150511 / omap2-mcspi: regression for sdp4430 boot
+Date: Mon, 11 May 2015 13:27:08 -0500
+Message-ID: <5550F47C.1030902@ti.com>
+References: <5550DDCB.8010303@ti.com> <20150511170742.GA6616@deathray>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="RCcFxJ34+mAtH0DM"
-Cc: Noralf =?iso-8859-1?Q?Tr=F8nnes?= <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1431290849-11151-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie@kernel.org>,
+	linux-omap <linux-omap@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	linux-next <linux-next@vger.kernel.org>,
+	<linux-spi@vger.kernel.org>
+To: Michael Welling <mwelling@ieee.org>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <20150511170742.GA6616@deathray>
+Sender: linux-omap-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
+
+On 05/11/2015 12:07 PM, Michael Welling wrote:
+> On Mon, May 11, 2015 at 11:50:19AM -0500, Nishanth Menon wrote:
+>> Hi,
+>>
+>> SDP4430 uses a SPI based network chip ks8851.
+>>
+>> next-20150508:
+>> https://github.com/nmenon/kernel-test-logs/blob/next-20150508/omap2plus_defconfig/sdp4430.txt
+>>
+>> However, next-20150511:
+>> https://github.com/nmenon/kernel-test-logs/blob/next-20150511/omap2plus_defconfig/sdp4430.txt
+>>
+> 
+> I will look into this but it is going to be difficult to debug with access to the hardware.
+> This is what I get for changing a driver that effects so many SoCs.
+> 
+
+Let me know if there is any test patch you'd want me to run. The board
+is on a remote "board farm" which most of TI folks have access to as
+well.. So, if you need anything run, just send out a debug patch OR a
+potential fix and we can help try it out and provide logs back for
+your debug.
 
 
---RCcFxJ34+mAtH0DM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Sun, May 10, 2015 at 08:47:28PM +0000, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
-> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
->=20
-> Conditions per spi_transfer are:
-> * transfer.len >=3D 96 bytes (to avoid mapping overhead costs)
-> * transfer.len < 65536 bytes (limitaion by spi-hw block - could get exten=
-ded)
-
-Applied, thanks.
-
---RCcFxJ34+mAtH0DM
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVUPPwAAoJECTWi3JdVIfQAc8H/1XZkzIRxpfhtxFJCtYTVOo8
-+JzPaevm68LnD0j5wiaqzSeCGxzLSx1S11ggFw6sS5uHUg+ktplXO91cjk8dZaCM
-fyUaLAy7xBi7yirdEp867TTwC6If0YFf1h3yWcHyt4jCovf37l4LPTQud6veS9bW
-m1CIWSIWwgUqcOUwR4GUDUXq9V23rpaPAmuiF9dQ+MAVCK5aOeIpW6W8xNvmEOCL
-JPuDX7VF78s1aXCAKVNH4Y4wFV8KrvFyE0m4tyYYroeoLBUKrjENo5t0HnVwl1zl
-XP/dgk3TwY+be3RU+9AtKawq9wh9iYzkJ8AUrJpZmJq3KtBWJN5iJA7NxmhiXDQ=
-=KvSp
------END PGP SIGNATURE-----
-
---RCcFxJ34+mAtH0DM--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+-- 
+Regards,
+Nishanth Menon

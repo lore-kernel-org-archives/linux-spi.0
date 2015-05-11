@@ -1,50 +1,45 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: spidev: Remove unneeded variable
-Date: Mon, 11 May 2015 16:15:06 +0100
-Message-ID: <20150511151506.GH3458@sirena.org.uk>
-References: <1431187039-10573-1-git-send-email-festevam@gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="cW+P/jduATWpL925"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Ezequiel Garcia <ezequiel-30ULvvUtt6G51wMPkGsGjgyUoB5FGQPZ@public.gmane.org>
+Subject: [PATCH] spi: pl022: Specify 'num-cs' property as required in devicetree binding
+Date: Mon, 11 May 2015 12:20:18 -0300
+Message-ID: <1431357618-6829-1-git-send-email-ezequiel@vanguardiasur.com.ar>
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Ezequiel Garcia <ezequiel-30ULvvUtt6G51wMPkGsGjgyUoB5FGQPZ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1431187039-10573-1-git-send-email-festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Since commit 39a6ac11df65 ("spi/pl022: Devicetree support w/o platform data")
+the 'num-cs' parameter cannot be passed through platform data when probing
+with devicetree. Instead, it's a required devicetree property.
 
---cW+P/jduATWpL925
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Fix the binding documentation so the property is properly specified.
 
-On Sat, May 09, 2015 at 12:57:19PM -0300, Fabio Estevam wrote:
-> From: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
->=20
-> Remove unneeded variable used to store return value.
+Fixes: 39a6ac11df65 ("spi/pl022: Devicetree support w/o platform data")
+Signed-off-by: Ezequiel Garcia <ezequiel-30ULvvUtt6G51wMPkGsGjgyUoB5FGQPZ@public.gmane.org>
+---
+ Documentation/devicetree/bindings/spi/spi_pl022.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Applied, thanks.
+diff --git a/Documentation/devicetree/bindings/spi/spi_pl022.txt b/Documentation/devicetree/bindings/spi/spi_pl022.txt
+index 22ed679..4d1673c 100644
+--- a/Documentation/devicetree/bindings/spi/spi_pl022.txt
++++ b/Documentation/devicetree/bindings/spi/spi_pl022.txt
+@@ -4,9 +4,9 @@ Required properties:
+ - compatible : "arm,pl022", "arm,primecell"
+ - reg : Offset and length of the register set for the device
+ - interrupts : Should contain SPI controller interrupt
++- num-cs : total number of chipselects
+ 
+ Optional properties:
+-- num-cs : total number of chipselects
+ - cs-gpios : should specify GPIOs used for chipselects.
+   The gpios will be referred to as reg = <index> in the SPI child nodes.
+   If unspecified, a single SPI device without a chip select can be used.
+-- 
+2.3.3
 
---cW+P/jduATWpL925
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVUMd5AAoJECTWi3JdVIfQwIUH/1ZIWlL0/T5wRhAd5liouSXA
-9Q+b0AFc6Suldz4uXiH20gGNshu/g6Yp7ys/xBVakErJWxO+2zpzVJ4iI75DuWIz
-9nMxi4BuwKyNYv+fABXKtzF65Zik85aQEIhNDapfsORlpROh0yAfA23zcshB92nE
-tJHW6B+WlkDDIiwl6L/Wo++MTixXcwHVcnCBJiJdClpd8q7lWptS0WEhgjGjR/V6
-V8GJP9yrI0K5FscTXc7txigxEGruLj3EwMX8NF3GnMHOLkN7d/BNqKxtbRWYjpdN
-BugcyMYhij63l5xU29Cq1qd8A1XT679Xl90vPQLmOcW9AScMquOP9sJeAK+HboI=
-=gm8T
------END PGP SIGNATURE-----
-
---cW+P/jduATWpL925--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

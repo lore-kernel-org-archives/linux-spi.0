@@ -1,8 +1,8 @@
 From: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 1/2] ARM: dts: Add binding for Broadcom MSPI driver.
-Date: Tue, 12 May 2015 11:38:57 -0700
-Message-ID: <555248C1.2010203@gmail.com>
-References: <1431452293-16697-1-git-send-email-jonathar@broadcom.com> <1431452293-16697-2-git-send-email-jonathar@broadcom.com>
+Subject: Re: [PATCH 2/2] spi: bcm-mspi: Add support for Broadcom MSPI driver.
+Date: Tue, 12 May 2015 11:46:34 -0700
+Message-ID: <55524A8A.5070603@gmail.com>
+References: <1431452293-16697-1-git-send-email-jonathar@broadcom.com> <1431452293-16697-3-git-send-email-jonathar@broadcom.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
@@ -20,50 +20,20 @@ To: Jonathan Richardson <jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
 	Dmitry Torokhov <dtor-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
 	Anatol Pomazau <anatol-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1431452293-16697-2-git-send-email-jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <1431452293-16697-3-git-send-email-jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 On 12/05/15 10:38, Jonathan Richardson wrote:
-> 
-> Signed-off-by: Jonathan Richardson <jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-> ---
->  .../devicetree/bindings/spi/brcm,mspi-spi.txt      |   39 ++++++++++++++++++++
->  1 file changed, 39 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/spi/brcm,mspi-spi.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/brcm,mspi-spi.txt b/Documentation/devicetree/bindings/spi/brcm,mspi-spi.txt
-> new file mode 100644
-> index 0000000..e86a7a0
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/brcm,mspi-spi.txt
-> @@ -0,0 +1,39 @@
-> +Broadcom MSPI controller
-> +
-> +The Broadcom MSPI controller is a SPI controller found on various chips such
-> +as Cygnus.
-> +
-> +Required properties:
-> +- compatible: Must be "brcm,mspi-v0".
-> +
-> +- reg:  The first register is the physical base address of the MSPI controller.
-> +  The second register is the address of the MSPI interrupt control registers. It
-> +  is only required for chips that have a separate register set for extended
-> +  interrupt control. This is required for Cygnus.
+> The MSPI controller is a SPI controller found on various Broadcom
+> SoC's such as Cygnus.
 
-In which case we would want to mandate the use of a "reg-names"
-property, because there could be other kinds of controllers, such as the
-one found on BCM7xxx where we have the 3 "reg" units, the first one is
-the MSPI controller register range, while the two others are used for
-the Boot SPI portion of the controller to accelerate flash reads, so
-completely unrelated here.
+After adding an include/linux/io.h to fix the build error on the
+implicit readl/write declaration, plus some additional tweaking, this
+seems to detect a SPI flash correctly on BCM7xxx, however read transfers
+don't return correct data, I think I have an idea why though.
 
-Right now, using your driver on this Device Tree/configuration makes
-bcm_mspi request the second register range and mistakenly assuming this
-is the extended interrupt control register.
-
-You could argue that the BSPI portion should be a separate node, but
-even so, better be safe than sorry.
+Thanks!
 -- 
 Florian
 --

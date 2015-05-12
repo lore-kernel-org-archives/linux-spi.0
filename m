@@ -1,45 +1,78 @@
-From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Subject: Re: [PATCH] spi: bcm2835: enable dma modes for transfers meeting
- certain conditions
-Date: Mon, 11 May 2015 20:45:36 -0600
-Message-ID: <55516950.5070105@wwwdotorg.org>
-References: <1431290849-11151-1-git-send-email-kernel@martin.sperl.org> <20150511182448.GW3458@sirena.org.uk> <F47F6B62-3DC6-47C9-AD72-BE7DDABD3AE6@martin.sperl.org>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH 1/3] spi: Add addr_width field to struct spi_message
+Date: Tue, 12 May 2015 10:11:47 +0200
+Message-ID: <CAMuHMdUzkr6_evPD5y-gaH=rtEgyZ+bHAddD+UmpTssQXZry1g@mail.gmail.com>
+References: <1431269253-22890-1-git-send-email-B48286@freescale.com>
+	<CAMuHMdUakeDgLZ4hXe0DBu97Xx4eiC9K_Qfc-imkDBrDBXNs6A@mail.gmail.com>
+	<CY1PR0301MB0780A4057DBB4DEBC45A631F8BDA0@CY1PR0301MB0780.namprd03.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	=?windows-1252?Q?Noralf_Tr=F8nnes?= <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>,
-	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Hu Vincent <Mingkai.Hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+To: Hou Zhiqiang <B48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <F47F6B62-3DC6-47C9-AD72-BE7DDABD3AE6-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <CY1PR0301MB0780A4057DBB4DEBC45A631F8BDA0-YrwGdl+PljnwWZenWrSUgZwN6zqB+hSMnBOFsp37pqbUKgpGm//BTAC/G2K4zDHf@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 05/11/2015 01:38 PM, Martin Sperl wrote:
-> 
->> On 11.05.2015, at 20:24, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+Hi Zhiqiang,
+
+On Tue, May 12, 2015 at 10:06 AM, Hou Zhiqiang <B48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org> w=
+rote:
+>> From: geert.uytterhoeven-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org [mailto:geert.uytterhoeven@gmail.=
+com]
+>> On Behalf Of Geert Uytterhoeven
+>> Sent: 2015=E5=B9=B45=E6=9C=8811=E6=97=A5 15:43
+>> To: Hou Zhiqiang-B48286
+>> Cc: linux-spi; Mark Brown; Hu Mingkai-B21284
+>> Subject: Re: [PATCH 1/3] spi: Add addr_width field to struct spi_mes=
+sage
 >>
->> Applied, thanks.
-> 
-> Found one typo with the logic - it only does one specific
-> check for TX twice instead of for rx_buf and tx_buf:
-> 	if (((u32)tfr->tx_buf % 4 == 0) && ((u32)tfr->tx_buf % 4 == 0))
-> 
-> On top there have been some build-reports about SZ_4K not being defined
-> so I guess that there is an include <linux/sizes.h> missing.
-> 
-> as well as a warning about a pointer cast to u32 on 64 bit systems.
-> 	if (((u32)tfr->tx_buf % 4 == 0) && ((u32)tfr->tx_buf % 4 == 0))
-> 	if (((u32)tfr->rx_buf % SZ_4K) + tfr->len > SZ_4K) {
-> I assume fixable by using size_t instead of u32.
-> 
-> Do you want me to send a patch to fix those, or shall I resend the full
-> patch with those issues fixed?
+>> On Sun, May 10, 2015 at 4:47 PM, Zhiqiang Hou <B48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+>> wrote:
+>> > From: Hou Zhiqiang <B48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+>> >
+>> > Make SPI controller can get address width of the SPI device.
+>>
+>> What does "address wdith" mean? From your other patches, I infer it'=
+s
+>> either
+>> 24 or 32 bit addressing as used by nor-jedec ("m25p80").
+>> Why does the generic spi_message needs to have nor-jedec-specific fi=
+elds?
+>
+> Yes, the address width is the address width of spi flash.
+> The reason to add this nor-jedec-specific field to spi_message is the=
+ eSPI controller
+> of Freescale limits the MAX transaction length(TRANLEN) to 0x10000 ea=
+ch transaction, so if the
+> data size transferred exceed the TRANLEN, the eSPI controller can onl=
+y transfer data for
+> the first TRANLEN, and need to issue new write/read commands to compl=
+ete the remainders.
+> So, eSPI controller need getting the address width of spi flash, and =
+then calculate the
+> new address to initialize the new write/read commands.
 
-Since the patch has been applied, you'll need to send an incremental patch.
+Shouldn't this be handled by the m25p80 driver instead?
 
+I see spi_master has a max_dma_len field.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-=
+m68k.org
+
+In personal conversations with technical people, I call myself a hacker=
+=2E But
+when I'm talking to journalists I just say "programmer" or something li=
+ke that.
+                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,54 +1,79 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/3] spidev: Add DT binding example.
-Date: Tue, 12 May 2015 17:06:20 +0100
-Message-ID: <20150512160620.GC3066@sirena.org.uk>
-References: <CAOMqctR235uF+7kNGsLEGfrrAOQAYmw0pWgk6t8fZHNT7XsRuw@mail.gmail.com>
- <20150426110144.GK22845@sirena.org.uk>
- <553CCABA.3090504@redhat.com>
- <12F80B18-7418-430E-94F7-5A20C133BA9A@martin.sperl.org>
- <CAOMqctR8MZ_r6HHEBWhgxpUsTaV=M7DfmnJ_VxTqjWu4KMBSwA@mail.gmail.com>
- <20150426125113.GF5627@lukather>
- <20150427101601.GN22845@sirena.org.uk>
- <20150427173036.GA10950@lukather>
- <20150427180728.GW22845@sirena.org.uk>
- <20150512142759.GK10961@lukather>
-Reply-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Subject: Re: spi: race in spi_finalize_current_message starting
+ queue_kthread_work before the message is unmapped
+Date: Tue, 12 May 2015 17:50:53 +0100
+Message-ID: <20150512165053.GE3066@sirena.org.uk>
+References: <8C375B28-1C09-4545-8A5B-78F6CD04102F@martin.sperl.org>
+ <20150508221309.GK2761@sirena.org.uk>
+ <352560EA-A323-449B-8F37-6066328D2081@martin.sperl.org>
+ <20150511180016.GU3458@sirena.org.uk>
+ <8F4019F0-7C56-4C9C-9193-A2A23B533165@martin.sperl.org>
+ <20150512102034.GM2761@sirena.org.uk>
+ <5551ECF9.1050006@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="R+My9LyyhiUvIEro"
-Cc: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
-	Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>,
-	linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
-	Jonathan Corbet <corbet-T1hC0tSOHrs@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-doc <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Return-path: <linux-sunxi+bncBDQ2L75W5QGBBDOKZCVAKGQE2HTVEJA-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="gMR3gsNFwZpnI/Ts"
+Cc: linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	Noralf =?iso-8859-1?Q?Tr=F8nnes?= <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20150512142759.GK10961@lukather>
-List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <http://groups.google.com/group/linux-sunxi
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
- <http://groups.google.com/group/linux-sunxi/subscribe>
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <5551ECF9.1050006-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
---R+My9LyyhiUvIEro
-Content-Type: text/plain; charset=UTF-8
+
+--gMR3gsNFwZpnI/Ts
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, May 12, 2015 at 04:27:59PM +0200, Maxime Ripard wrote:
-> On Mon, Apr 27, 2015 at 07:07:28PM +0100, Mark Brown wrote:
+On Tue, May 12, 2015 at 02:07:21PM +0200, Martin Sperl wrote:
+> On 2015-05-12 12:20, Mark Brown wrote:
 
-> > Probably best, the Pi bootloader does make it a bit more important.
-> > Might also be worth speaking to Greg though.
+> >We essentially have that; anything looking at a DMA mapped transfer had
+> >better cope.
 
-> So, do you want me to resend that patch and discuss this directly
-> there (with Greg in Cc) ?
+> I believe you miss my point:
 
-Sounds like a good first step.
---R+My9LyyhiUvIEro--
+No, I don't.
+
+> a) with SPI_MASTER_MUST_ we will always allocate the buffer - we do not
+
+In the current implementation, we can always change that in the future.
+
+> And inside __spi_map_msg we can just add some code to create the simple
+> scatter-gather mapping using a single preallocated page - so something
+> along the lines (assuming that either tx_buf or rx_buf must be set):
+
+Yes, to repeat what I said earlier I'm hoping someone with a need for
+this will implement it.
+
+> So the extra flag seems to be to be a "safer" approach and it also
+> states more explicitly the needs of the driver.
+
+I think it's easier to either have drivers handle scatterlists or not
+rely on the flags for PIO and work harder if the code is looking
+complicated.
+
+--gMR3gsNFwZpnI/Ts
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVUi9tAAoJECTWi3JdVIfQ4I0H/3AdFtLBRsqkvmYhbJFlj3ib
+mhSvCqa+UWiKt1lkt7cRQVjUZHnfX00OlSPwP3QctVLPVkCy3uwZB5swI0nzoY8a
+w5Q5d1siPewftQO1nLsh3Jw7RYaBE/2KJoVniwYJpIvmPPbyAh2T0P2n3sVXo1m5
+96lzE164tVJdDgL7ot56XudSmD6CJBsV2hhBmxJSTW59jI2SIr2VRaodDpNFFjdg
+1/OaEGJbNKNieY0tIBt/XsZpUnmbEjFG/wd3JcLfWG+t8/SqkVdlu1VzM63gR2EA
+sWMz8rLrzAHfTZ36pricNl4IAisiik416xkItLCiZE5u3k7bGdLRRLA2cagWcd4=
+=V0T3
+-----END PGP SIGNATURE-----
+
+--gMR3gsNFwZpnI/Ts--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

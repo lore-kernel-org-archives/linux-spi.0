@@ -1,96 +1,121 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: spi: race in spi_finalize_current_message starting queue_kthread_work
- before the message is unmapped
-Date: Tue, 12 May 2015 14:07:21 +0200
-Message-ID: <5551ECF9.1050006@martin.sperl.org>
-References: <8C375B28-1C09-4545-8A5B-78F6CD04102F@martin.sperl.org> <20150508221309.GK2761@sirena.org.uk> <352560EA-A323-449B-8F37-6066328D2081@martin.sperl.org> <20150511180016.GU3458@sirena.org.uk> <8F4019F0-7C56-4C9C-9193-A2A23B533165@martin.sperl.org> <20150512102034.GM2761@sirena.org.uk>
+From: leilk liu <leilk.liu@mediatek.com>
+Subject: Re: [PATCH 2/3] spi: mediatek: Add spi bus for Mediatek MT8173
+Date: Tue, 12 May 2015 20:39:16 +0800
+Message-ID: <1431434356.2128.9.camel@mhfsdcap03>
+References: <1431075343-7887-1-git-send-email-leilk.liu@mediatek.com>
+	 <1431075343-7887-3-git-send-email-leilk.liu@mediatek.com>
+	 <20150508175306.GG2761@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Cc: linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	=?windows-1252?Q?Noralf_Tr=F8nnes?= <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150512102034.GM2761-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	"Kumar Gala" <galak@codeaurora.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will.deacon@arm.com>,
+	Eddie Huang <eddie.huang@mediatek.com>,
+	Hongzhou Yang <hongzhou.yang@mediatek.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>,
+	<linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
+	<srv_heupstream@mediatek.com>, Sascha Hauer <kernel@pengutronix.de>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20150508175306.GG2761@sirena.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On 2015-05-12 12:20, Mark Brown wrote:
-> We can tell if it's a DMA transfer - if it's a DMA transfer then using
-> anything except the SG list is a bit dodgy anyway since you're not
-> really supposed to have the CPU look at anything that's mapped for the
-> device (though it's generally fine if the device never actually DMAs).
->
->> So unless we have a separate flag to say we only need it for DMA,
->> then we have to keep the the current logic with allocation or we break
->> other drivers.
->
-> We essentially have that; anything looking at a DMA mapped transfer had
-> better cope.
+Thanks for your review.
 
-I believe you miss my point:
-a) with SPI_MASTER_MUST_ we will always allocate the buffer - we do not
-    take the result of can_dma into account when calculating the size.
-    This means we will allocate memory that is potentially too big for
-    what we really need (and it can even fail because it is too big
-    for the system to handle)
-b) a driver in PIO mode can run without SPI_MASTER_MUST_XX
-    but when can_dma returns true it needs a scatter-gather-list and
-    in that case it needs SPI_MASTER_MUST_ to be set, but the allocation
-    is not really needed - just a scatter/gather list that does the
-    transfer - there is no means for the driver to state this
-    requirement clearly.
+On Fri, 2015-05-08 at 18:53 +0100, Mark Brown wrote:
+> On Fri, May 08, 2015 at 04:55:42PM +0800, leilk.liu@mediatek.com wrote:
+> > From: Leilk Liu <leilk.liu@mediatek.com>
+> > 
+> > This patch adds basic spi bus for MT8173.
+> 
+> Please try to only CC relevant people on patches, you've got a very
+> broad CC list here and I'm not sure I understand why everyone is on it.
+> Sending people irrelevant patches adds to the volume of mail people have
+> to handle which takes time away from other things.
+> 
 
-That is why I was asking for an additional flag SPI_MASTER_MUST_DMAONLY
-to state that requirement.
+I use scripts/get_maintainer.pl on the patches and keep all maintainers.
+I'll further refine the list in the future.
 
-Then we can extend the if in spi_map_msg to:
-     if ((master->flags & (SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX)) &&
-         (! (master->flags & SPI_MASTER_MUST_DMAONLY)) {
+> > +config SPI_MT65XX
+> > +	tristate "MediaTek SPI controller"
+> > +	depends on ARCH_MEDIATEK || COMPILE_TEST
+> > +	select SPI_BITBANG
+> 
+> Unless your controller is geniunely bitbanging you shouldn't be using
+> the bitbang framework, modern drivers should implement set_cs() and
+> transfer_one() instead.  You should also be using the core helpers for
+> DMA mapping.
+> 
 
-and we save on the allocation when not needed.
+I will implement set_cs() and transfer_one() instead in next patch.
 
-And inside __spi_map_msg we can just add some code to create the simple
-scatter-gather mapping using a single preallocated page - so something
-along the lines (assuming that either tx_buf or rx_buf must be set):
-     if ((!xfer->tx_buf) && (master->flags & SPI_MASTER_MUST_TX)) {
-         ret = spi_map_null(master, tx_dev,
-                            &xfer->tx_sg, &xfer->rx_sg,
-			   DMA_TO_DEVICE);
-         if (ret != 0) {
-              spi_unmap_buf(master, rx_dev,
-                            &xfer->rx_sg, DMA_FROM_DEVICE);
-              return ret;
-         }
-     }
-     if ((!xfer->rx_buf) && (master->flags & SPI_MASTER_MUST_RX)) {
-         ret = spi_map_null(master, rx_dev,
-                            &xfer->rx_sg, &xfer->tx_sg,
-			   DMA_FROM_DEVICE);
-         if (ret != 0) {
-              spi_unmap_buf(master, tx_dev,
-                            &xfer->tx_sg, DMA_TO_DEVICE);
-              return ret;
-         }
-     }
+Could you tell me more details about "You should also be using the core
+helpers for DMA mapping"?
 
-Similarly we could also define 2 flags: SPI_MASTER_MUST_RX_SG and
-SPI_MASTER_MUST_TX_SG and be open for more different options for
-drivers.
+> The driver looks basically good other than this, it shouldn't be too
+> much work (and ought to save you some code) to refactor to the modern
+> interfaces.
+> 
+> > +#define IDLE 0
+> > +#define INPROGRESS 1
+> > +#define PAUSED 2
+> > +
+> > +#define PACKET_SIZE 1024
+> 
+> You should namespace the constants you're using to avoid clashes with
+> headers.
+> 
+> > +static const struct of_device_id mtk_spi_of_match[] = {
+> > +	{ .compatible = "mediatek,mt6589-spi", .data = (void *)COMPAT_MT6589},
+> > +	{ .compatible = "mediatek,mt8173-spi", .data = (void *)COMPAT_MT8173},
+> > +	{}
+> > +};
+> > +MODULE_DEVICE_TABLE(of, mtk_spi_of_match);
+> 
+> There were three compatible strings listed in the DT binding but only
+> two here.
+> 
 
-One potentially could merge the functionality of spi_map_msg and 
-__spi_map_message into one to achive something similar without the
-flag, but then this is a subtil change in the functionality which
-may break existing drivers with different expectations about what
-happens.
+MT6589 and MT8135 is compatible; 
+For MT8135 IC, it can use the follow way in dts to probe:
+  compatible = "mediatek,mt8135-spi", 
+	       "mediatek,mt6589-spi";
+And I test it's ok on MT8135 platform. So I add struct of_device_id
+mtk_spi_of_match like this in spi driver code.
 
-I see this last approach as the one with the highest risk of
-breaking existing drivers.
+> > +	/*set the software reset bit in SPI_CMD_REG.*/
+> 
+> /* Spaces please */
+> 
+> > +static unsigned long mtk_get_device_prop(struct platform_device *pdev)
+> > +{
+> > +	const struct of_device_id *match;
+> > +
+> > +	match = of_match_node(mtk_spi_of_match, pdev->dev.of_node);
+> > +	return (unsigned long)match->data;
+> > +}
+> 
+> This wrapper doesn't seem to be doing a lot and will crash if we somehow
+> manage to get the driver loaded without a match (eg, if someone tries to
+> instantiate as a regular platform device).
+> 
+> > +	ret = clk_prepare_enable(mdata->clk);
+> > +	if (ret < 0) {
+> > +		dev_err(&pdev->dev, "failed to enable clock (%d)\n", ret);
+> > +		goto err;
+> > +	}
+> 
+> I'd expect to see runtime PM callbacks to enable and disable this clock
+> in order to minimise power consumption.
 
-So the extra flag seems to be to be a "safer" approach and it also
-states more explicitly the needs of the driver.
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+In the case of other review comments, I will also fix them in next/OK.

@@ -1,69 +1,112 @@
-From: Hou Zhiqiang <B48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: RE: [PATCH 1/3] spi: Add addr_width field to struct spi_message
-Date: Tue, 12 May 2015 08:27:49 +0000
-Message-ID: <CY1PR0301MB078056CF0855A97334FD96458BDA0@CY1PR0301MB0780.namprd03.prod.outlook.com>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH 1/3] spi: Add addr_width field to struct spi_message
+Date: Tue, 12 May 2015 10:57:03 +0200
+Message-ID: <CAMuHMdXFY_W6Rd37rNeNUnztZ=8xUcZBS3=eLQwK52N6byGgBg@mail.gmail.com>
 References: <1431269253-22890-1-git-send-email-B48286@freescale.com>
 	<CAMuHMdUakeDgLZ4hXe0DBu97Xx4eiC9K_Qfc-imkDBrDBXNs6A@mail.gmail.com>
 	<CY1PR0301MB0780A4057DBB4DEBC45A631F8BDA0@CY1PR0301MB0780.namprd03.prod.outlook.com>
- <CAMuHMdUzkr6_evPD5y-gaH=rtEgyZ+bHAddD+UmpTssQXZry1g@mail.gmail.com>
+	<CAMuHMdUzkr6_evPD5y-gaH=rtEgyZ+bHAddD+UmpTssQXZry1g@mail.gmail.com>
+	<CY1PR0301MB078056CF0855A97334FD96458BDA0@CY1PR0301MB0780.namprd03.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Hu Vincent <Mingkai.Hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+To: Hou Zhiqiang <B48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAMuHMdUzkr6_evPD5y-gaH=rtEgyZ+bHAddD+UmpTssQXZry1g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-Language: en-US
+In-Reply-To: <CY1PR0301MB078056CF0855A97334FD96458BDA0-YrwGdl+PljnwWZenWrSUgZwN6zqB+hSMnBOFsp37pqbUKgpGm//BTAC/G2K4zDHf@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogZ2VlcnQudXl0dGVyaG9l
-dmVuQGdtYWlsLmNvbSBbbWFpbHRvOmdlZXJ0LnV5dHRlcmhvZXZlbkBnbWFpbC5jb21dDQo+IE9u
-IEJlaGFsZiBPZiBHZWVydCBVeXR0ZXJob2V2ZW4NCj4gU2VudDogMjAxNeW5tDXmnIgxMuaXpSAx
-NjoxMg0KPiBUbzogSG91IFpoaXFpYW5nLUI0ODI4Ng0KPiBDYzogbGludXgtc3BpOyBNYXJrIEJy
-b3duOyBIdSBNaW5na2FpLUIyMTI4NA0KPiBTdWJqZWN0OiBSZTogW1BBVENIIDEvM10gc3BpOiBB
-ZGQgYWRkcl93aWR0aCBmaWVsZCB0byBzdHJ1Y3Qgc3BpX21lc3NhZ2UNCj4gDQo+IEhpIFpoaXFp
-YW5nLA0KPiANCj4gT24gVHVlLCBNYXkgMTIsIDIwMTUgYXQgMTA6MDYgQU0sIEhvdSBaaGlxaWFu
-ZyA8QjQ4Mjg2QGZyZWVzY2FsZS5jb20+DQo+IHdyb3RlOg0KPiA+PiBGcm9tOiBnZWVydC51eXR0
-ZXJob2V2ZW5AZ21haWwuY29tDQo+ID4+IFttYWlsdG86Z2VlcnQudXl0dGVyaG9ldmVuQGdtYWls
-LmNvbV0NCj4gPj4gT24gQmVoYWxmIE9mIEdlZXJ0IFV5dHRlcmhvZXZlbg0KPiA+PiBTZW50OiAy
-MDE15bm0NeaciDEx5pelIDE1OjQzDQo+ID4+IFRvOiBIb3UgWmhpcWlhbmctQjQ4Mjg2DQo+ID4+
-IENjOiBsaW51eC1zcGk7IE1hcmsgQnJvd247IEh1IE1pbmdrYWktQjIxMjg0DQo+ID4+IFN1Ympl
-Y3Q6IFJlOiBbUEFUQ0ggMS8zXSBzcGk6IEFkZCBhZGRyX3dpZHRoIGZpZWxkIHRvIHN0cnVjdA0K
-PiA+PiBzcGlfbWVzc2FnZQ0KPiA+Pg0KPiA+PiBPbiBTdW4sIE1heSAxMCwgMjAxNSBhdCA0OjQ3
-IFBNLCBaaGlxaWFuZyBIb3UgPEI0ODI4NkBmcmVlc2NhbGUuY29tPg0KPiA+PiB3cm90ZToNCj4g
-Pj4gPiBGcm9tOiBIb3UgWmhpcWlhbmcgPEI0ODI4NkBmcmVlc2NhbGUuY29tPg0KPiA+PiA+DQo+
-ID4+ID4gTWFrZSBTUEkgY29udHJvbGxlciBjYW4gZ2V0IGFkZHJlc3Mgd2lkdGggb2YgdGhlIFNQ
-SSBkZXZpY2UuDQo+ID4+DQo+ID4+IFdoYXQgZG9lcyAiYWRkcmVzcyB3ZGl0aCIgbWVhbj8gRnJv
-bSB5b3VyIG90aGVyIHBhdGNoZXMsIEkgaW5mZXIgaXQncw0KPiA+PiBlaXRoZXINCj4gPj4gMjQg
-b3IgMzIgYml0IGFkZHJlc3NpbmcgYXMgdXNlZCBieSBub3ItamVkZWMgKCJtMjVwODAiKS4NCj4g
-Pj4gV2h5IGRvZXMgdGhlIGdlbmVyaWMgc3BpX21lc3NhZ2UgbmVlZHMgdG8gaGF2ZSBub3ItamVk
-ZWMtc3BlY2lmaWMNCj4gZmllbGRzPw0KPiA+DQo+ID4gWWVzLCB0aGUgYWRkcmVzcyB3aWR0aCBp
-cyB0aGUgYWRkcmVzcyB3aWR0aCBvZiBzcGkgZmxhc2guDQo+ID4gVGhlIHJlYXNvbiB0byBhZGQg
-dGhpcyBub3ItamVkZWMtc3BlY2lmaWMgZmllbGQgdG8gc3BpX21lc3NhZ2UgaXMgdGhlDQo+ID4g
-ZVNQSSBjb250cm9sbGVyIG9mIEZyZWVzY2FsZSBsaW1pdHMgdGhlIE1BWCB0cmFuc2FjdGlvbg0K
-PiA+IGxlbmd0aChUUkFOTEVOKSB0byAweDEwMDAwIGVhY2ggdHJhbnNhY3Rpb24sIHNvIGlmIHRo
-ZSBkYXRhIHNpemUNCj4gPiB0cmFuc2ZlcnJlZCBleGNlZWQgdGhlIFRSQU5MRU4sIHRoZSBlU1BJ
-IGNvbnRyb2xsZXIgY2FuIG9ubHkgdHJhbnNmZXINCj4gZGF0YSBmb3IgdGhlIGZpcnN0IFRSQU5M
-RU4sIGFuZCBuZWVkIHRvIGlzc3VlIG5ldyB3cml0ZS9yZWFkIGNvbW1hbmRzIHRvDQo+IGNvbXBs
-ZXRlIHRoZSByZW1haW5kZXJzLg0KPiA+IFNvLCBlU1BJIGNvbnRyb2xsZXIgbmVlZCBnZXR0aW5n
-IHRoZSBhZGRyZXNzIHdpZHRoIG9mIHNwaSBmbGFzaCwgYW5kDQo+ID4gdGhlbiBjYWxjdWxhdGUg
-dGhlIG5ldyBhZGRyZXNzIHRvIGluaXRpYWxpemUgdGhlIG5ldyB3cml0ZS9yZWFkDQo+IGNvbW1h
-bmRzLg0KPiANCj4gU2hvdWxkbid0IHRoaXMgYmUgaGFuZGxlZCBieSB0aGUgbTI1cDgwIGRyaXZl
-ciBpbnN0ZWFkPw0KPiANCj4gSSBzZWUgc3BpX21hc3RlciBoYXMgYSBtYXhfZG1hX2xlbiBmaWVs
-ZC4NCg0KTm8sIG9ubHkgdGhlIGVTUEkgY29udHJvbGxlciBuZWVkIHRvIGRvIHRoaXMsIGl0IGNh
-dXNlZCBieSB0aGUgZVNQSSBjb250cm9sbGVyJ3MNCmZlYXR1cmUgYW5kIG90aGVyIFNQSSBjb250
-cm9sbGVyIGhhdmUgbm90IHRoaXMgVFJBTkxFTiBsaW1pdC4NCkFuZCBpdCBoYXMgbm8gcmVsYXRp
-b24gd2l0aCBETUEuDQogDQo+IA0KPiBHcntvZXRqZSxlZXRpbmd9cywNCj4gDQo+ICAgICAgICAg
-ICAgICAgICAgICAgICAgIEdlZXJ0DQo+IA0KPiAtLQ0KPiBHZWVydCBVeXR0ZXJob2V2ZW4gLS0g
-VGhlcmUncyBsb3RzIG9mIExpbnV4IGJleW9uZCBpYTMyIC0tIGdlZXJ0QGxpbnV4LQ0KPiBtNjhr
-Lm9yZw0KPiANCj4gSW4gcGVyc29uYWwgY29udmVyc2F0aW9ucyB3aXRoIHRlY2huaWNhbCBwZW9w
-bGUsIEkgY2FsbCBteXNlbGYgYSBoYWNrZXIuDQo+IEJ1dCB3aGVuIEknbSB0YWxraW5nIHRvIGpv
-dXJuYWxpc3RzIEkganVzdCBzYXkgInByb2dyYW1tZXIiIG9yIHNvbWV0aGluZw0KPiBsaWtlIHRo
-YXQuDQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLS0gTGludXMgVG9ydmFsZHMN
-Cg==
+Hi Zhiqiang,
+
+On Tue, May 12, 2015 at 10:27 AM, Hou Zhiqiang <B48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org> w=
+rote:
+>> -----Original Message-----
+>> From: geert.uytterhoeven-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org [mailto:geert.uytterhoeven@gmail.=
+com]
+>> On Behalf Of Geert Uytterhoeven
+>> Sent: 2015=E5=B9=B45=E6=9C=8812=E6=97=A5 16:12
+>> To: Hou Zhiqiang-B48286
+>> Cc: linux-spi; Mark Brown; Hu Mingkai-B21284
+>> Subject: Re: [PATCH 1/3] spi: Add addr_width field to struct spi_mes=
+sage
+>>
+>> On Tue, May 12, 2015 at 10:06 AM, Hou Zhiqiang <B48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org=
+>
+>> wrote:
+>> >> From: geert.uytterhoeven-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+>> >> [mailto:geert.uytterhoeven-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org]
+>> >> On Behalf Of Geert Uytterhoeven
+>> >> Sent: 2015=E5=B9=B45=E6=9C=8811=E6=97=A5 15:43
+>> >> To: Hou Zhiqiang-B48286
+>> >> Cc: linux-spi; Mark Brown; Hu Mingkai-B21284
+>> >> Subject: Re: [PATCH 1/3] spi: Add addr_width field to struct
+>> >> spi_message
+>> >>
+>> >> On Sun, May 10, 2015 at 4:47 PM, Zhiqiang Hou <B48286@freescale.c=
+om>
+>> >> wrote:
+>> >> > From: Hou Zhiqiang <B48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+>> >> >
+>> >> > Make SPI controller can get address width of the SPI device.
+>> >>
+>> >> What does "address wdith" mean? From your other patches, I infer =
+it's
+>> >> either
+>> >> 24 or 32 bit addressing as used by nor-jedec ("m25p80").
+>> >> Why does the generic spi_message needs to have nor-jedec-specific
+>> fields?
+>> >
+>> > Yes, the address width is the address width of spi flash.
+>> > The reason to add this nor-jedec-specific field to spi_message is =
+the
+>> > eSPI controller of Freescale limits the MAX transaction
+>> > length(TRANLEN) to 0x10000 each transaction, so if the data size
+>> > transferred exceed the TRANLEN, the eSPI controller can only trans=
+fer
+>> data for the first TRANLEN, and need to issue new write/read command=
+s to
+>> complete the remainders.
+>> > So, eSPI controller need getting the address width of spi flash, a=
+nd
+>> > then calculate the new address to initialize the new write/read
+>> commands.
+>>
+>> Shouldn't this be handled by the m25p80 driver instead?
+>>
+>> I see spi_master has a max_dma_len field.
+>
+> No, only the eSPI controller need to do this, it caused by the eSPI c=
+ontroller's
+> feature and other SPI controller have not this TRANLEN limit.
+> And it has no relation with DMA.
+
+IC.
+
+Still, your doing m25p80-specific handling in your spi master driver.
+Worse, you cannot connect any other type of spi device to your spi cont=
+roller,
+right?
+
+So it looks like we need something like i2c_adapter_quirks, where spi m=
+asters
+can advertise their limitations?
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-=
+m68k.org
+
+In personal conversations with technical people, I call myself a hacker=
+=2E But
+when I'm talking to journalists I just say "programmer" or something li=
+ke that.
+                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

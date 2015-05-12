@@ -1,79 +1,45 @@
-From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] ARM: tegra: add "nor-jedec" flash compatible binding
-Date: Mon, 11 May 2015 15:46:46 -0700
-Message-ID: <20150511224646.GJ32500@ld-irv-0074>
-References: <1431066098-19821-1-git-send-email-zajec5@gmail.com>
- <554CDD8C.7050000@wwwdotorg.org>
- <20150508184317.GZ32500@ld-irv-0074>
- <CAMuHMdXeen3cU2bb8TXxxtdDjgMCU_FS1Yxdu1b-Tq2xE+x0ZA@mail.gmail.com>
- <554D24DA.8060601@wwwdotorg.org>
- <20150508213414.GE32500@ld-irv-0074>
+From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Subject: Re: [PATCH] spi: bcm2835: enable dma modes for transfers meeting
+ certain conditions
+Date: Mon, 11 May 2015 20:45:36 -0600
+Message-ID: <55516950.5070105@wwwdotorg.org>
+References: <1431290849-11151-1-git-send-email-kernel@martin.sperl.org> <20150511182448.GW3458@sirena.org.uk> <F47F6B62-3DC6-47C9-AD72-BE7DDABD3AE6@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Alexandre Courbot <gnurou-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux-sh list <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	=?windows-1252?Q?Noralf_Tr=F8nnes?= <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>,
+	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20150508213414.GE32500@ld-irv-0074>
+In-Reply-To: <F47F6B62-3DC6-47C9-AD72-BE7DDABD3AE6-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi DT maintainers,
-
-On Fri, May 08, 2015 at 02:34:14PM -0700, Brian Norris wrote:
-> On Fri, May 08, 2015 at 03:04:26PM -0600, Stephen Warren wrote:
-> > On 05/08/2015 02:57 PM, Geert Uytterhoeven wrote:
-> > >On Fri, May 8, 2015 at 8:43 PM, Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> > >>On Fri, May 08, 2015 at 10:00:12AM -0600, Stephen Warren wrote:
-> > >>>Equally, "nor-jedec" doesn't sound like the right name. It doesn't
-> > >>>differentiate between SPI and parallel NOR flash, which presumably
-> > >>>need different compatible values, since the programming model is
-> > >>>quite different, and the compatible value is supposed to
-> > >>>define/imply the SW-visible programming model.
-> > >>
-> > >>It's definitely for SPI only. There was much discussion about this a
-> > >>few months back. Somewhere along the way, it was mentioned that the
-> > >>context (SPI slave is a child of SPI master) would make this clear. I'm
-> > >>still not sure why we didn't end up with something more descriptive,
-> > >>though, like "spi-nor,nor-jedec".
-> > >
-> > >What about "jedec,spi-nor"?
-> > 
-> > That seems unique enough to me, or the options below if they're
-> > actually applicable.
+On 05/11/2015 01:38 PM, Martin Sperl wrote:
 > 
-> That could be OK with me. If I can get the magic blessing from the DT
-> folks, then I'll send patches to update everything.
+>> On 11.05.2015, at 20:24, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+>>
+>> Applied, thanks.
+> 
+> Found one typo with the logic - it only does one specific
+> check for TX twice instead of for rx_buf and tx_buf:
+> 	if (((u32)tfr->tx_buf % 4 == 0) && ((u32)tfr->tx_buf % 4 == 0))
+> 
+> On top there have been some build-reports about SZ_4K not being defined
+> so I guess that there is an include <linux/sizes.h> missing.
+> 
+> as well as a warning about a pointer cast to u32 on 64 bit systems.
+> 	if (((u32)tfr->tx_buf % 4 == 0) && ((u32)tfr->tx_buf % 4 == 0))
+> 	if (((u32)tfr->rx_buf % SZ_4K) + tfr->len > SZ_4K) {
+> I assume fixable by using size_t instead of u32.
+> 
+> Do you want me to send a patch to fix those, or shall I resend the full
+> patch with those issues fixed?
 
-Can I get an 'ack' for this change? We merged a binding for "nor-jedec"
-in 4.1-rc1, with review (but no explicit 'ack') from Mark, and a few
-DTS's are starting to use it. But we're now seeing objections, with a
-request to change this to "jedec,spi-nor". I don't care too much, but I
-can understand Stephen's point.
+Since the patch has been applied, you'll need to send an incremental patch.
 
-Anyway, I don't want to go through too many more patch cycles without an
-explicit ack here on the "jedec,spi-nor" binding (i.e.,
-s/nor-jedec/jedec,spi-nor/g). With an ack, then I can make sure the
-binding and current users get changed before 4.1 is minted, and prevent
-other ARM subarchitectures from pulling in the "wrong" binding for 4.2.
-
-Brian
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

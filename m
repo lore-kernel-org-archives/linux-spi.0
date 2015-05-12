@@ -1,139 +1,88 @@
-From: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
-Subject: Re: [PATCH v2 02/17] leds: port locomo leds driver to new locomo core
-Date: Tue, 12 May 2015 18:35:41 +0300
-Message-ID: <CALT56yNJWapNw1XLrzfbUDUz1LF_BB9DfF94H6GhbnBUEP80_w@mail.gmail.com>
-References: <1430178954-11138-1-git-send-email-dbaryshkov@gmail.com>
-	<1430178954-11138-3-git-send-email-dbaryshkov@gmail.com>
-	<554A2DB4.3020000@samsung.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 2/3] spi: mediatek: Add spi bus for Mediatek MT8173
+Date: Tue, 12 May 2015 17:05:40 +0100
+Message-ID: <20150512160540.GB3066@sirena.org.uk>
+References: <1431075343-7887-1-git-send-email-leilk.liu@mediatek.com>
+ <1431075343-7887-3-git-send-email-leilk.liu@mediatek.com>
+ <20150508175306.GG2761@sirena.org.uk>
+ <1431434356.2128.9.camel@mhfsdcap03>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Russell King <linux@arm.linux.org.uk>,
-	Daniel Mack <daniel@zonque.org>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Alexandre Courbot <gnurou@gmail.com>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Bryan Wu <cooloney@gmail.com>,
-	Richard Purdie <rpurdie@rpsys.net>,
-	Samuel Ortiz <sameo@linux.intel.com>,
-	Lee Jones <lee.jones@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Jingoo Han <jg1.han@samsung.com>,
-	Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
-	Tomi Valkeinen <tomi.valkeinen@ti.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Andrea Adami <andrea.adami@gmail.com>,
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	linux-i2c@vger.kernel.org,
-	linux-input <linux-input@vger.kernel.org>,
-	linux-leds <linux-leds@vger.kernel.or
-To: Jacek Anaszewski <j.anaszewski@samsung.com>
-Return-path: <linux-leds-owner@vger.kernel.org>
-In-Reply-To: <554A2DB4.3020000@samsung.com>
-Sender: linux-leds-owner@vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="ZfOjI3PrQbgiZnxM"
+Cc: Mark Rutland <mark.rutland@arm.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will.deacon@arm.com>,
+	Eddie Huang <eddie.huang@mediatek.com>,
+	Hongzhou Yang <hongzhou.yang@mediatek.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+	linux-mediatek@lists.infradead.org, srv_heupstream@mediatek.com,
+	Sascha Hauer <kernel@pengutronix.de>
+To: leilk liu <leilk.liu@mediatek.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1431434356.2128.9.camel@mhfsdcap03>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-2015-05-06 18:05 GMT+03:00 Jacek Anaszewski <j.anaszewski@samsung.com>:
-> On 04/28/2015 01:55 AM, Dmitry Eremin-Solenikov wrote:
->>
->> Adapt locomo leds driver to new locomo core setup.
->>
->> Signed-off-by: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
->> ---
->>   drivers/leds/Kconfig       |   1 -
->>   drivers/leds/leds-locomo.c | 119
->> +++++++++++++++++++++++----------------------
->>   2 files changed, 61 insertions(+), 59 deletions(-)
->>
->> diff --git a/drivers/leds/Kconfig b/drivers/leds/Kconfig
->> index 966b960..4b4650b 100644
->> --- a/drivers/leds/Kconfig
->> +++ b/drivers/leds/Kconfig
->> @@ -79,7 +79,6 @@ config LEDS_LM3642
->>   config LEDS_LOCOMO
->>         tristate "LED Support for Locomo device"
->>         depends on LEDS_CLASS
->> -       depends on SHARP_LOCOMO
->
->
-> Why do you remove this dependency?
 
-Because SHARP_LOCOMO is a Kconfig symbol for the old driver. New driver
-uses MFD_LOCOMO Kconfig entry. Also the driver now uses generic platform
-device and regmap interfaces, so there is no direct dependency on main
-LoCoMo driver. And the policy (IIRC) was not to have such dependencies.
+--ZfOjI3PrQbgiZnxM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->
->>         help
->>           This option enables support for the LEDs on Sharp Locomo.
->>           Zaurus models SL-5500 and SL-5600.
->> diff --git a/drivers/leds/leds-locomo.c b/drivers/leds/leds-locomo.c
->> index 80ba048..7fde812 100644
->> --- a/drivers/leds/leds-locomo.c
->> +++ b/drivers/leds/leds-locomo.c
->> @@ -9,89 +9,92 @@
->>    */
->>
->>   #include <linux/kernel.h>
->> -#include <linux/init.h>
->> -#include <linux/module.h>
->> -#include <linux/device.h>
->>   #include <linux/leds.h>
->> -
->> -#include <mach/hardware.h>
->> -#include <asm/hardware/locomo.h>
->> +#include <linux/module.h>
->> +#include <linux/platform_device.h>
->> +#include <linux/regmap.h>
->> +#include <linux/mfd/locomo.h>
->
->
-> Please keep alphabetical order.
+On Tue, May 12, 2015 at 08:39:16PM +0800, leilk liu wrote:
+> On Fri, 2015-05-08 at 18:53 +0100, Mark Brown wrote:
+> > On Fri, May 08, 2015 at 04:55:42PM +0800, leilk.liu@mediatek.com wrote:
 
-Ack
+> Could you tell me more details about "You should also be using the core
+> helpers for DMA mapping"?
 
->
->> +
->> +struct locomo_led {
->> +       struct led_classdev led;
->> +       struct regmap *regmap;
->> +       unsigned int reg;
->> +};
->>
->>   static void locomoled_brightness_set(struct led_classdev *led_cdev,
->> -                               enum led_brightness value, int offset)
->> +                               enum led_brightness value)
->>   {
->> -       struct locomo_dev *locomo_dev = LOCOMO_DEV(led_cdev->dev->parent);
->> -       unsigned long flags;
->> +       struct locomo_led *led = container_of(led_cdev, struct locomo_led,
->> led);
->>
->> -       local_irq_save(flags);
->> -       if (value)
->> -               locomo_writel(LOCOMO_LPT_TOFH, locomo_dev->mapbase +
->> offset);
->> -       else
->> -               locomo_writel(LOCOMO_LPT_TOFL, locomo_dev->mapbase +
->> offset);
->> -       local_irq_restore(flags);
->> +       regmap_write(led->regmap, led->reg,
->> +                       value ? LOCOMO_LPT_TOFH : LOCOMO_LPT_TOFL);
->>   }
->
->
-> Please use work queue for setting brightness. This is required for the
-> driver to be compatible with led triggers. You can refer to the
-> existing LED drivers on how to implement this.
+Implement can_dma() - look for drivers providing that for examples.
 
-Hmm. Why? The regmap here uses MMIO access, so it is atomic operation
-and doesn't need to be wrapped into work queue, does it?
+> > > +static const struct of_device_id mtk_spi_of_match[] =3D {
+> > > +	{ .compatible =3D "mediatek,mt6589-spi", .data =3D (void *)COMPAT_M=
+T6589},
+> > > +	{ .compatible =3D "mediatek,mt8173-spi", .data =3D (void *)COMPAT_M=
+T8173},
+> > > +	{}
+> > > +};
+> > > +MODULE_DEVICE_TABLE(of, mtk_spi_of_match);
 
+> > There were three compatible strings listed in the DT binding but only
+> > two here.
 
-[skipped]
+> MT6589 and MT8135 is compatible;=20
+> For MT8135 IC, it can use the follow way in dts to probe:
+>   compatible =3D "mediatek,mt8135-spi",=20
+> 	       "mediatek,mt6589-spi";
 
--- 
-With best wishes
-Dmitry
+> And I test it's ok on MT8135 platform. So I add struct of_device_id
+> mtk_spi_of_match like this in spi driver code.
+
+You should list all the compatibles documented in the binding here, if
+some of them are the same just have them map to a single constant.
+
+--ZfOjI3PrQbgiZnxM
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVUiTUAAoJECTWi3JdVIfQyRsH/RIfXC/axE4Vnj/fc10xN1sA
+ouHn1R2VNR2a22+BW2TiEV50STna+tHzOd/O3jbnLzt8PFwQhFzQEiWJnkm0l1ZP
+zi+fFz48mMUuCuzEuW5qKyyw6jI2zXrngAE3Pn/dDIbhxNQJOGmNxsZbShNF0Gf9
+3/KSrnI8lter1xWXJojNkfA8BYPy0PHDCECqIVBEWpd4BaOf0RKnZTeDUW3fU9ZB
+73zwIKWNCWvPjdx7igOPi2Th6fICK8wfVEW2ByR1pEEsHclbTCYAT08+jzzAU1Vp
+SP70datG78Pi/ttBJuh3fgZ9UCGy/pJjb0gnTj6gD+DCyuTrW62WIf/faTtT5NA=
+=2z4G
+-----END PGP SIGNATURE-----
+
+--ZfOjI3PrQbgiZnxM--

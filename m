@@ -1,56 +1,74 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/3] spi: Add addr_width field to struct spi_message
-Date: Tue, 12 May 2015 11:23:15 +0100
-Message-ID: <20150512102315.GO2761@sirena.org.uk>
-References: <1431269253-22890-1-git-send-email-B48286@freescale.com>
- <CAMuHMdUakeDgLZ4hXe0DBu97Xx4eiC9K_Qfc-imkDBrDBXNs6A@mail.gmail.com>
- <CY1PR0301MB0780A4057DBB4DEBC45A631F8BDA0@CY1PR0301MB0780.namprd03.prod.outlook.com>
- <CAMuHMdUzkr6_evPD5y-gaH=rtEgyZ+bHAddD+UmpTssQXZry1g@mail.gmail.com>
- <CY1PR0301MB078056CF0855A97334FD96458BDA0@CY1PR0301MB0780.namprd03.prod.outlook.com>
- <CAMuHMdXFY_W6Rd37rNeNUnztZ=8xUcZBS3=eLQwK52N6byGgBg@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="w6U88vdWm8UqIXvc"
-Cc: Hou Zhiqiang <B48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Hu Vincent <Mingkai.Hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
+Subject: [PATCH] spi: bcm2835: fix kbuild compile warnings/errors and a typo
+Date: Tue, 12 May 2015 10:32:08 +0000
+Message-ID: <1431426729-2154-1-git-send-email-kernel@martin.sperl.org>
+References: <55516950.5070105@wwwdotorg.org>
+Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
+	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Stephen Rothwell <sfr-3FnU+UHB4dNDw9hX6IcOSA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdXFY_W6Rd37rNeNUnztZ=8xUcZBS3=eLQwK52N6byGgBg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <55516950.5070105-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
---w6U88vdWm8UqIXvc
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+fixes several warnings/error emmitted by the kbuild system:
+* warn: cast from pointer to integer of different size
+  using size_t instead of u32
+* error: 'SZ_4K' undeclared
+  moved to PAGE_SIZE and PAGE_MASK instead
 
-On Tue, May 12, 2015 at 10:57:03AM +0200, Geert Uytterhoeven wrote:
+Review showed also a typo in the same code where tx_buff
+was checked twice instead of checking both rx and tx_buff.
 
-> So it looks like we need something like i2c_adapter_quirks, where spi masters
-> can advertise their limitations?
+Reported by: Stephen Rothwell <sfr-3FnU+UHB4dNDw9hX6IcOSA@public.gmane.org>
+Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+---
+ drivers/spi/spi-bcm2835.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-We already have some flags for features/limitations (mostly only used by
-the core) like _MUST_TX.
+diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+index 6ab43c8..ac1760e 100644
+--- a/drivers/spi/spi-bcm2835.c
++++ b/drivers/spi/spi-bcm2835.c
+@@ -20,6 +20,7 @@
+  * GNU General Public License for more details.
+  */
+ 
++#include <asm/page.h>
+ #include <linux/clk.h>
+ #include <linux/completion.h>
+ #include <linux/delay.h>
+@@ -378,18 +379,19 @@ static bool bcm2835_spi_can_dma(struct spi_master *master,
+ 	}
+ 
+ 	/* if we run rx/tx_buf with word aligned addresses then we are OK */
+-	if (((u32)tfr->tx_buf % 4 == 0) && ((u32)tfr->tx_buf % 4 == 0))
++	if ((((size_t)tfr->rx_buf & 3) == 0) &&
++	    (((size_t)tfr->tx_buf & 3) == 0))
+ 		return true;
+ 
+ 	/* otherwise we only allow transfers within the same page
+ 	 * to avoid wasting time on dma_mapping when it is not practical
+ 	 */
+-	if (((u32)tfr->tx_buf % SZ_4K) + tfr->len > SZ_4K) {
++	if (((size_t)tfr->tx_buf & PAGE_MASK) + tfr->len > PAGE_SIZE) {
+ 		dev_warn_once(&spi->dev,
+ 			      "Unaligned spi tx-transfer bridging page\n");
+ 		return false;
+ 	}
+-	if (((u32)tfr->rx_buf % SZ_4K) + tfr->len > SZ_4K) {
++	if (((size_t)tfr->rx_buf & PAGE_MASK) + tfr->len > PAGE_SIZE) {
+ 		dev_warn_once(&spi->dev,
+ 			      "Unaligned spi tx-transfer bridging page\n");
+ 		return false;
+-- 
+1.7.10.4
 
---w6U88vdWm8UqIXvc
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVUdSSAAoJECTWi3JdVIfQVtsH/29OfoRXrMJlj2mdt6cgwQhj
-NnKEA/bW5Fhk4K9+A941jCaSB3OHC/1FoKYC3eVKpHclrixA8cmuLvF4ptrUkfgE
-6A7xSRTi12eTFTyt5l3BZOqb/kEUat1whlKZRYF+p5H2SHL97SsAZ3mGT8ke2E91
-fJ4I00kErQpYVknVUlnoygQGff8AC4BEbsIzeyN5fPE+mdpNgV4/ko0iWrxoSeGs
-gDrfBMgL8V010K97wON5J58KP9tBBaSKQXUqcVKrdF9ATCRXa+qifzVEHdnbisGD
-yGfUTos4DD4iTpc+0wkt2MlJuUjzuTzw9nZb81QP+uRGfLl3FY+jr9ve6OfsJLE=
-=FBwp
------END PGP SIGNATURE-----
-
---w6U88vdWm8UqIXvc--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

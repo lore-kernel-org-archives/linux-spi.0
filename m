@@ -1,88 +1,54 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 2/3] spi: mediatek: Add spi bus for Mediatek MT8173
-Date: Tue, 12 May 2015 17:05:40 +0100
-Message-ID: <20150512160540.GB3066@sirena.org.uk>
-References: <1431075343-7887-1-git-send-email-leilk.liu@mediatek.com>
- <1431075343-7887-3-git-send-email-leilk.liu@mediatek.com>
- <20150508175306.GG2761@sirena.org.uk>
- <1431434356.2128.9.camel@mhfsdcap03>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 2/3] spidev: Add DT binding example.
+Date: Tue, 12 May 2015 17:06:20 +0100
+Message-ID: <20150512160620.GC3066@sirena.org.uk>
+References: <CAOMqctR235uF+7kNGsLEGfrrAOQAYmw0pWgk6t8fZHNT7XsRuw@mail.gmail.com>
+ <20150426110144.GK22845@sirena.org.uk>
+ <553CCABA.3090504@redhat.com>
+ <12F80B18-7418-430E-94F7-5A20C133BA9A@martin.sperl.org>
+ <CAOMqctR8MZ_r6HHEBWhgxpUsTaV=M7DfmnJ_VxTqjWu4KMBSwA@mail.gmail.com>
+ <20150426125113.GF5627@lukather>
+ <20150427101601.GN22845@sirena.org.uk>
+ <20150427173036.GA10950@lukather>
+ <20150427180728.GW22845@sirena.org.uk>
+ <20150512142759.GK10961@lukather>
+Reply-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="ZfOjI3PrQbgiZnxM"
-Cc: Mark Rutland <mark.rutland@arm.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Pawel Moll <pawel.moll@arm.com>,
-	Ian Campbell <ijc+devicetree@hellion.org.uk>,
-	Kumar Gala <galak@codeaurora.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will.deacon@arm.com>,
-	Eddie Huang <eddie.huang@mediatek.com>,
-	Hongzhou Yang <hongzhou.yang@mediatek.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-	linux-mediatek@lists.infradead.org, srv_heupstream@mediatek.com,
-	Sascha Hauer <kernel@pengutronix.de>
-To: leilk liu <leilk.liu@mediatek.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="R+My9LyyhiUvIEro"
+Cc: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
+	Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>,
+	linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+	Jonathan Corbet <corbet-T1hC0tSOHrs@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-doc <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Return-path: <linux-sunxi+bncBDQ2L75W5QGBBDOKZCVAKGQE2HTVEJA-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1431434356.2128.9.camel@mhfsdcap03>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <20150512142759.GK10961@lukather>
+List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <http://groups.google.com/group/linux-sunxi
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+ <http://groups.google.com/group/linux-sunxi/subscribe>
 List-Id: linux-spi.vger.kernel.org
 
-
---ZfOjI3PrQbgiZnxM
-Content-Type: text/plain; charset=us-ascii
+--R+My9LyyhiUvIEro
+Content-Type: text/plain; charset=UTF-8
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 12, 2015 at 08:39:16PM +0800, leilk liu wrote:
-> On Fri, 2015-05-08 at 18:53 +0100, Mark Brown wrote:
-> > On Fri, May 08, 2015 at 04:55:42PM +0800, leilk.liu@mediatek.com wrote:
+On Tue, May 12, 2015 at 04:27:59PM +0200, Maxime Ripard wrote:
+> On Mon, Apr 27, 2015 at 07:07:28PM +0100, Mark Brown wrote:
 
-> Could you tell me more details about "You should also be using the core
-> helpers for DMA mapping"?
+> > Probably best, the Pi bootloader does make it a bit more important.
+> > Might also be worth speaking to Greg though.
 
-Implement can_dma() - look for drivers providing that for examples.
+> So, do you want me to resend that patch and discuss this directly
+> there (with Greg in Cc) ?
 
-> > > +static const struct of_device_id mtk_spi_of_match[] =3D {
-> > > +	{ .compatible =3D "mediatek,mt6589-spi", .data =3D (void *)COMPAT_M=
-T6589},
-> > > +	{ .compatible =3D "mediatek,mt8173-spi", .data =3D (void *)COMPAT_M=
-T8173},
-> > > +	{}
-> > > +};
-> > > +MODULE_DEVICE_TABLE(of, mtk_spi_of_match);
-
-> > There were three compatible strings listed in the DT binding but only
-> > two here.
-
-> MT6589 and MT8135 is compatible;=20
-> For MT8135 IC, it can use the follow way in dts to probe:
->   compatible =3D "mediatek,mt8135-spi",=20
-> 	       "mediatek,mt6589-spi";
-
-> And I test it's ok on MT8135 platform. So I add struct of_device_id
-> mtk_spi_of_match like this in spi driver code.
-
-You should list all the compatibles documented in the binding here, if
-some of them are the same just have them map to a single constant.
-
---ZfOjI3PrQbgiZnxM
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVUiTUAAoJECTWi3JdVIfQyRsH/RIfXC/axE4Vnj/fc10xN1sA
-ouHn1R2VNR2a22+BW2TiEV50STna+tHzOd/O3jbnLzt8PFwQhFzQEiWJnkm0l1ZP
-zi+fFz48mMUuCuzEuW5qKyyw6jI2zXrngAE3Pn/dDIbhxNQJOGmNxsZbShNF0Gf9
-3/KSrnI8lter1xWXJojNkfA8BYPy0PHDCECqIVBEWpd4BaOf0RKnZTeDUW3fU9ZB
-73zwIKWNCWvPjdx7igOPi2Th6fICK8wfVEW2ByR1pEEsHclbTCYAT08+jzzAU1Vp
-SP70datG78Pi/ttBJuh3fgZ9UCGy/pJjb0gnTj6gD+DCyuTrW62WIf/faTtT5NA=
-=2z4G
------END PGP SIGNATURE-----
-
---ZfOjI3PrQbgiZnxM--
+Sounds like a good first step.
+--R+My9LyyhiUvIEro--

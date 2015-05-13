@@ -1,69 +1,62 @@
-From: pascal.huerst-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-Subject: [PATCH] spi: omap2-mcspi: Add calls for pinctrl state select
-Date: Wed, 13 May 2015 14:15:16 +0200
-Message-ID: <1431519316-30989-1-git-send-email-pascal.huerst@gmail.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Pascal Huerst <pascal.huerst-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v1] spi: spi-fsl-dspi: Enable TCF interrupt mode support
+Date: Wed, 13 May 2015 12:45:58 +0100
+Message-ID: <20150513114558.GL3066@sirena.org.uk>
+References: <1431351698-44015-1-git-send-email-haikun.wang@freescale.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="6T2vOV0TokPza8xG"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Haikun Wang <haikun.wang-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1431351698-44015-1-git-send-email-haikun.wang-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Pascal Huerst <pascal.huerst-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-This adds calls to pinctrl subsystem in order to switch pin states
-on suspend/resume if you provide a "sleep" state in DT.
+--6T2vOV0TokPza8xG
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-If no "sleep" state is provided in DT, these calls turn
-to NOPs, so we don't need error checking here.
+On Mon, May 11, 2015 at 09:41:38PM +0800, Haikun Wang wrote:
+> DSPI module has two optional interrupts when complete data transfer.
+> One is EOQ interrupt, the other one is TCF interrupt.
+> EOQ indicates a queue of data frame has been transmitted.
+> TCF indicates a frame has been transmitted.
+> This patch enable support TCF mode.
+> User can select expected mode from dts node.
+>=20
+> Signed-off-by: Haikun Wang <haikun.wang-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+> ---
+>  drivers/spi/spi-fsl-dspi.c | 175 +++++++++++++++++++++++++++++----------=
+------
+>  1 file changed, 112 insertions(+), 63 deletions(-)
 
-Signed-off-by: Pascal Huerst <pascal.huerst-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spi-omap2-mcspi.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+This is adding a DT binding without documenting it, all DT bindings need
+to be documented.  I'm also not clear why this is something the user
+would want to be able to select from DT - what is platform specific
+about this?  Shouldn't the driver just ensure that the most appropriate
+interrupt mode is used?
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 4df8942..424f8cd 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -24,6 +24,7 @@
- #include <linux/dma-mapping.h>
- #include <linux/dmaengine.h>
- #include <linux/omap-dma.h>
-+#include <linux/pinctrl/consumer.h>
- #include <linux/platform_device.h>
- #include <linux/err.h>
- #include <linux/clk.h>
-@@ -1502,14 +1503,27 @@ static int omap2_mcspi_resume(struct device *dev)
- 	}
- 	pm_runtime_mark_last_busy(mcspi->dev);
- 	pm_runtime_put_autosuspend(mcspi->dev);
-+
-+	pinctrl_pm_select_default_state(dev);
-+
-+	return 0;
-+}
-+
-+static int omap2_mcspi_suspend(struct device *dev)
-+{
-+	pinctrl_pm_select_sleep_state(dev);
-+
- 	return 0;
- }
-+
- #else
-+#define omap2_mcspi_suspend	NULL
- #define	omap2_mcspi_resume	NULL
- #endif
+--6T2vOV0TokPza8xG
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
- static const struct dev_pm_ops omap2_mcspi_pm_ops = {
- 	.resume = omap2_mcspi_resume,
-+	.suspend = omap2_mcspi_suspend,
- 	.runtime_resume	= omap_mcspi_runtime_resume,
- };
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
---
-2.1.0
+iQEcBAEBCAAGBQJVUzl2AAoJECTWi3JdVIfQpGIH+gJ7+OM4XosVYCeRFEeJIJFF
+kuKs4mnnVrrZcB+6IXzhCBIAahBdedopOz71JAWxXga6RcrTJX6XkCaeqva7I6Mb
+yxuhOsEFVoY5wxi824pKWNn3poHzVdY0PqXUsuz3HbALoBQPoIzF4EPMqtEcAsep
+GEBQFZhKVVyIAFfUn/xEF5jffVNIt5qCbsy1IOP1eKICFEToXvghmKZOc6yN1OXh
+cffMve6njdFKYwTcqo2KgiGdFrHot5UxpeUcAMljroUZrN/B7fnUCg6PA45gn36r
+5xGaxedFg08fZkG1pp2DGOoyMj407BeL5edf81BJicCusKTcgjdDblvtHYJo0us=
+=PqYX
+-----END PGP SIGNATURE-----
 
+--6T2vOV0TokPza8xG--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

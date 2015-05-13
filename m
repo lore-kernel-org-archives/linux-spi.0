@@ -1,29 +1,89 @@
-From: Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: spi: race in spi_finalize_current_message starting
- queue_kthread_work before the message is unmapped
-Date: Wed, 13 May 2015 08:52:28 +0100
-Message-ID: <20150513075228.GA3394@x1>
-References: <8C375B28-1C09-4545-8A5B-78F6CD04102F@martin.sperl.org>
- <3374181B-61BE-4DAA-9D92-68B43BEF3E1D@martin.sperl.org>
+From: Yingjoe Chen <yingjoe.chen-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Subject: Re: [PATCH 2/3] spi: mediatek: Add spi bus for Mediatek MT8173
+Date: Wed, 13 May 2015 17:26:06 +0800
+Message-ID: <1431509166.25254.12.camel@mtksdaap41>
+References: <1431075343-7887-1-git-send-email-leilk.liu@mediatek.com>
+	 <1431075343-7887-3-git-send-email-leilk.liu@mediatek.com>
+	 <20150508175306.GG2761@sirena.org.uk> <1431434356.2128.9.camel@mhfsdcap03>
+	 <20150512160540.GB3066@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Noralf =?iso-8859-1?Q?Tr=F8nnes?= <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>,
-	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <3374181B-61BE-4DAA-9D92-68B43BEF3E1D-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: leilk liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <srv_heupstream-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Hongzhou Yang <hongzhou.yang-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>,
+	Catalin Marinas <catalin.marinas-5wv7dgnIgG8@public.gmane.org>,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	"Will Deacon" <will.deacon-5wv7dgnIgG8@public.gmane.org>,
+	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	<linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Eddie Huang <eddie.huang-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150512160540.GB3066-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-> Forwarded to linux-spi as well for documentation, was only sent to linux-rpi-kernel.
-> Apologies.
+On Tue, 2015-05-12 at 17:05 +0100, Mark Brown wrote:
+> On Tue, May 12, 2015 at 08:39:16PM +0800, leilk liu wrote:
+<...>
+> > > > +static const struct of_device_id mtk_spi_of_match[] = {
+> > > > +	{ .compatible = "mediatek,mt6589-spi", .data = (void *)COMPAT_MT6589},
+> > > > +	{ .compatible = "mediatek,mt8173-spi", .data = (void *)COMPAT_MT8173},
+> > > > +	{}
+> > > > +};
+> > > > +MODULE_DEVICE_TABLE(of, mtk_spi_of_match);
+> 
+> > > There were three compatible strings listed in the DT binding but only
+> > > two here.
+> 
+> > MT6589 and MT8135 is compatible; 
+> > For MT8135 IC, it can use the follow way in dts to probe:
+> >   compatible = "mediatek,mt8135-spi", 
+> > 	       "mediatek,mt6589-spi";
+> 
+> > And I test it's ok on MT8135 platform. So I add struct of_device_id
+> > mtk_spi_of_match like this in spi driver code.
+> 
+> You should list all the compatibles documented in the binding here, if
+> some of them are the same just have them map to a single constant.
 
-FYI: You should always Cc LKML (and LAKML if ARM related) for upstream
-discussions.
+Hi Mark,
+
+Just for clarification. If we want to add spi support for a new soc, say
+mt8127, which we think is compatible to mt6589. Since it may turn out we
+need special handling for this soc latter, it is suggested to write
+compatible like this in mt8127.dtsi:
+
+   compatible = "mediatek,mt8127-spi",
+ 	        "mediatek,mt6589-spi";
+
+Device tree binding should list all possible compatible string in .dts,
+so we'll have to add that to binding as well.
+
+     - mediatek,mt6589-spi: for mt6589 platforms
++    - mediatek,mt8127-spi: for mt8127 platforms
+
+Then we'll also need to add this to source code to reflect this.
+
+	{ .compatible = "mediatek,mt6589-spi", .data = (void *)COMPAT_MT6589},
++	{ .compatible = "mediatek,mt8127-spi", .data = (void *)COMPAT_MT6589},
+
+This seems to introduce lots of trivial patches just to add a compatible
+device to me...
+
+Joe.C
+
+
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

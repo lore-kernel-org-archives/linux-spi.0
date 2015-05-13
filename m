@@ -1,148 +1,95 @@
-From: Jacek Anaszewski <j.anaszewski@samsung.com>
-Subject: Re: [PATCH v2 02/17] leds: port locomo leds driver to new locomo core
-Date: Wed, 13 May 2015 16:53:03 +0200
-Message-ID: <5553654F.4010608@samsung.com>
-References: <1430178954-11138-1-git-send-email-dbaryshkov@gmail.com>
- <1430178954-11138-3-git-send-email-dbaryshkov@gmail.com>
- <554A2DB4.3020000@samsung.com>
- <CALT56yNJWapNw1XLrzfbUDUz1LF_BB9DfF94H6GhbnBUEP80_w@mail.gmail.com>
- <555327EA.5060402@samsung.com>
- <CALT56yOJyZvWF9neC2A09Y_w1Ej41uwWvU=aOOM0idbzUkBiFQ@mail.gmail.com>
+From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi: Force the registration of the spidev devices
+Date: Wed, 13 May 2015 17:31:05 +0200
+Message-ID: <CAOMqctTd7xG6mwX9AojTH4uaGDY06xOgDFUP437VDiE0rp0sXA@mail.gmail.com>
+References: <1431462804-30467-1-git-send-email-maxime.ripard@free-electrons.com>
+ <20150513112604.GI3066@sirena.org.uk> <20150513125102.GA2628@lukather> <20150513143610.GT2761@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Russell King <linux@arm.linux.org.uk>,
-	Daniel Mack <daniel@zonque.org>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Alexandre Courbot <gnurou@gmail.com>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Bryan Wu <cooloney@gmail.com>,
-	Richard Purdie <rpurdie@rpsys.net>,
-	Samuel Ortiz <sameo@linux.intel.com>,
-	Lee Jones <lee.jones@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Jingoo Han <jg1.han@samsung.com>,
-	Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
-	Tomi Valkeinen <tomi.valkeinen@ti.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Andrea Adami <andrea.adami@gmail.com>,
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	linux-i2c@vger.kernel.org,
-	linux-input <linux-input@vger.kernel.org>,
-	linux-leds <linux-leds@vger.kernel.or
-To: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
-Return-path: <linux-input-owner@vger.kernel.org>
-In-reply-to: <CALT56yOJyZvWF9neC2A09Y_w1Ej41uwWvU=aOOM0idbzUkBiFQ@mail.gmail.com>
-Sender: linux-input-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Cc: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
+	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150513143610.GT2761-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 05/13/2015 04:14 PM, Dmitry Eremin-Solenikov wrote:
-> 2015-05-13 13:31 GMT+03:00 Jacek Anaszewski <j.anaszewski@samsung.com>:
->> On 05/12/2015 05:35 PM, Dmitry Eremin-Solenikov wrote:
->>>
->>> 2015-05-06 18:05 GMT+03:00 Jacek Anaszewski <j.anaszewski@samsung.com>:
->>>>
->>>> On 04/28/2015 01:55 AM, Dmitry Eremin-Solenikov wrote:
->>>>>
->>>>>
->>>>> Adapt locomo leds driver to new locomo core setup.
->>>>>
->>>>> Signed-off-by: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
->>>>> ---
->>>>>     drivers/leds/Kconfig       |   1 -
->>>>>     drivers/leds/leds-locomo.c | 119
->>>>> +++++++++++++++++++++++----------------------
->>>>>     2 files changed, 61 insertions(+), 59 deletions(-)
->>>>>
->>>>> diff --git a/drivers/leds/Kconfig b/drivers/leds/Kconfig
->>>>> index 966b960..4b4650b 100644
->>>>> --- a/drivers/leds/Kconfig
->>>>> +++ b/drivers/leds/Kconfig
->>>>> @@ -79,7 +79,6 @@ config LEDS_LM3642
->>>>>     config LEDS_LOCOMO
->>>>>           tristate "LED Support for Locomo device"
->>>>>           depends on LEDS_CLASS
->>>>> -       depends on SHARP_LOCOMO
->>>>
->>>>
->>>>
->>>> Why do you remove this dependency?
->>>
->>>
->>> Because SHARP_LOCOMO is a Kconfig symbol for the old driver. New driver
->>> uses MFD_LOCOMO Kconfig entry. Also the driver now uses generic platform
->>> device and regmap interfaces, so there is no direct dependency on main
->>> LoCoMo driver. And the policy (IIRC) was not to have such dependencies.
->>
->>
->> Ack. Shouldn't you also need "select REGMAP_MMIO" ?
+On 13 May 2015 at 16:36, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Wed, May 13, 2015 at 02:51:02PM +0200, Maxime Ripard wrote:
 >
-> No. Maybe I should add "select REGMAP" instead.
-
-REGMAP is enabled by default if REGMAP_MMIO is enabled. Having
-REGMAP_MMIO selected would also allow to notice at first glance which
-regmap backend is used. This would in turn provide a straightforward
-explanation on why brightness_set op is not delegated to work queue.
-
->>>>>    static void locomoled_brightness_set(struct led_classdev *led_cdev,
->>>>> -                               enum led_brightness value, int offset)
->>>>> +                               enum led_brightness value)
->>>>>     {
->>>>> -       struct locomo_dev *locomo_dev =
->>>>> LOCOMO_DEV(led_cdev->dev->parent);
->>>>> -       unsigned long flags;
->>>>> +       struct locomo_led *led = container_of(led_cdev, struct
->>>>> locomo_led,
->>>>> led);
->>>>>
->>>>> -       local_irq_save(flags);
->>>>> -       if (value)
->>>>> -               locomo_writel(LOCOMO_LPT_TOFH, locomo_dev->mapbase +
->>>>> offset);
->>>>> -       else
->>>>> -               locomo_writel(LOCOMO_LPT_TOFL, locomo_dev->mapbase +
->>>>> offset);
->>>>> -       local_irq_restore(flags);
->>>>> +       regmap_write(led->regmap, led->reg,
->>>>> +                       value ? LOCOMO_LPT_TOFH : LOCOMO_LPT_TOFL);
->>>>>     }
->>>>
->>>>
->>>>
->>>> Please use work queue for setting brightness. This is required for the
->>>> driver to be compatible with led triggers. You can refer to the
->>>> existing LED drivers on how to implement this.
->>>
->>>
->>> Hmm. Why? The regmap here uses MMIO access, so it is atomic operation
->>> and doesn't need to be wrapped into work queue, does it?
->>
->>
->> Triggers can call brightness_set op in the interrupt context, so it
->> cannot sleep. I see "map->lock(map->lock_arg)" in regmap_write, thus
->> I am inferring that it can sleep.
->>
->> I am not sure if regmap implements its 'lock' op when using MMIO.
->>
->> The best way to figure this out is turning "LED Timer Trigger" on
->> in the config and execute:
->>
->> echo "timer" > trigger
+>> I'd say we're also ok because if we delegate the device driving logic
+>> to userspace, we should expect it to know what it does to first drive
+>> the device properly, but also to open the right device for this.
 >
-> It works without any "might sleep/sleeping in atomic context" warnings.
+>> What's the worst that could happen in such a case? The data are output
+>> without any chipselect line being driven by the controller? Isn't that
+>> supposed to be ignored by the devices?
 >
-> Technically I'd agree with you. If I'm using regmaps, ideally I should not
-> depend on the exact backend and put working with it to the work queue.
-> However as this is a driver for quite old IP block, it is not used with
-> regmap backends other than MMIO, I'd deduce, it's ok to do things
-> in a more relaxed way and to call regmap_write even from atomic
-> contexts.
+> I'm more worried about the chip select line being connected to the
+> "make the board catch fire" signal or whatever (more realistically
+> causing us to drive against some other external component) if the extra
+> chip selects weren't pinmuxed away.
 
-Ack.
+They would not be pinmuxed away if
 
--- 
-Best Regards,
-Jacek Anaszewski
+1) they are unused by anything else and cs happens to be the default
+2) they are used by a device not in DT
+
+right?
+
+For the latter case we might want some way to disable unused
+chipselects as well as for the cosmetic issue of multitude of useless
+devices popping up.
+
+But you know, unused i2c bus can be also connected to "make the board
+catch fire" trace and nobody would notice until somebody has the great
+idea to probe it. Incidentally, both i2c and spi cs are active-low
+iirc.
+
+>> > This still leaves us in the situation where if we do know the device
+>> > that is connected we have to explicitly bind it in spidev which is
+>> > apparently unreasonably difficult for people.
+>
+>> You can still do that, but the point is that you don't have to.
+>
+> Right, but that's not what I'd expect to happen (and seems to make it
+> easier for people to not list things in the DT at all which doesn't seem
+> great).  If we're going to make it available by default I'd expect to be
+> able to use a userspace driver with anything that doesn't have a driver
+> bound rather than with devices that explicitly don't have any
+> identification.
+
+Remember that spidev can and is used for boards which have spi
+*CONNECTOR* to which you can connect some random gadget and use a
+userspace program to communicate with it.
+
+It is cool that you can load a dt overlay if the gadget happens to
+have a kernel driver.
+
+However, what identification do you write in the dt when there is no
+need to use a kernel driver at all?
+
+The option to create a node with 'spidev' compatible was rejected as broken.
+
+The option to add new compatible to the spidev driver every time you
+want to connect a new device was rejected as absurdly complex for end
+users who have a board with system already preinstalled because it
+requires adding the compatible in the spidev source and rebuilding the
+kernel.
+
+So this patch implements another option which is to bind spidev
+*always*. The configuration of the port is then not recorded in the DT
+and it's up to the user to visually check the port or apply other
+relevant heuristic and run the correct userspace application.
+
+Thanks
+
+Michal
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

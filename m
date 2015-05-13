@@ -1,78 +1,138 @@
-From: Yingjoe Chen <yingjoe.chen@mediatek.com>
-Subject: Re: [PATCH 2/3] spi: mediatek: Add spi bus for Mediatek MT8173
-Date: Wed, 13 May 2015 21:58:03 +0800
-Message-ID: <1431525483.25254.14.camel@mtksdaap41>
-References: <1431075343-7887-1-git-send-email-leilk.liu@mediatek.com>
-	 <1431075343-7887-3-git-send-email-leilk.liu@mediatek.com>
-	 <20150508175306.GG2761@sirena.org.uk> <1431434356.2128.9.camel@mhfsdcap03>
-	 <20150512160540.GB3066@sirena.org.uk>
-	 <1431509166.25254.12.camel@mtksdaap41>
-	 <20150513111051.GH3066@sirena.org.uk>
+From: Dmitry Eremin-Solenikov <dbaryshkov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v2 02/17] leds: port locomo leds driver to new locomo core
+Date: Wed, 13 May 2015 17:14:01 +0300
+Message-ID: <CALT56yOJyZvWF9neC2A09Y_w1Ej41uwWvU=aOOM0idbzUkBiFQ@mail.gmail.com>
+References: <1430178954-11138-1-git-send-email-dbaryshkov@gmail.com>
+	<1430178954-11138-3-git-send-email-dbaryshkov@gmail.com>
+	<554A2DB4.3020000@samsung.com>
+	<CALT56yNJWapNw1XLrzfbUDUz1LF_BB9DfF94H6GhbnBUEP80_w@mail.gmail.com>
+	<555327EA.5060402@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: leilk liu <leilk.liu@mediatek.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	<devicetree@vger.kernel.org>, <srv_heupstream@mediatek.com>,
-	Pawel Moll <pawel.moll@arm.com>,
-	Ian Campbell <ijc+devicetree@hellion.org.uk>,
-	Hongzhou Yang <hongzhou.yang@mediatek.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	"Will Deacon" <will.deacon@arm.com>,
-	<linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	<linux-mediatek@lists.infradead.org>,
-	Sascha Hauer <kernel@pengutronix.de>,
-	Kumar Gala <galak@codeaurora.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Eddie Huang <eddie.huang@mediatek.com>,
-	<linux-arm-kernel@lists.infradead.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20150513111051.GH3066@sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Cc: Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Alexandre Courbot <gnurou-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
+	Dmitry Torokhov <dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Bryan Wu <cooloney-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Richard Purdie <rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org>,
+	Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Jean-Christophe Plagniol-Villard <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>,
+	Tomi Valkeinen <tomi.valkeinen-l0cyMroinI0@public.gmane.org>,
+	Liam Girdwood <lgirdwood-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Andrea Adami <andrea.adami-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-arm-kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-input <linux-input-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-leds <linux-leds-u79uwXL29TaqPxH82wqD4g@public.gmane.org
+To: Jacek Anaszewski <j.anaszewski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <555327EA.5060402-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 2015-05-13 at 12:10 +0100, Mark Brown wrote:
-> On Wed, May 13, 2015 at 05:26:06PM +0800, Yingjoe Chen wrote:
-> > On Tue, 2015-05-12 at 17:05 +0100, Mark Brown wrote:
-> 
-> > > > > There were three compatible strings listed in the DT binding but only
-> > > > > two here.
-> 
-> > > > And I test it's ok on MT8135 platform. So I add struct of_device_id
-> > > > mtk_spi_of_match like this in spi driver code.
-> 
-> > > You should list all the compatibles documented in the binding here, if
-> > > some of them are the same just have them map to a single constant.
-> 
-> > Just for clarification. If we want to add spi support for a new soc, say
-> > mt8127, which we think is compatible to mt6589. Since it may turn out we
-> > need special handling for this soc latter, it is suggested to write
-> > compatible like this in mt8127.dtsi:
-> 
-> >    compatible = "mediatek,mt8127-spi",
-> >  	        "mediatek,mt6589-spi";
-> 
-> > Device tree binding should list all possible compatible string in .dts,
-> > so we'll have to add that to binding as well.
-> 
-> >      - mediatek,mt6589-spi: for mt6589 platforms
-> > +    - mediatek,mt8127-spi: for mt8127 platforms
-> 
-> > Then we'll also need to add this to source code to reflect this.
-> 
-> > 	{ .compatible = "mediatek,mt6589-spi", .data = (void *)COMPAT_MT6589},
-> > +	{ .compatible = "mediatek,mt8127-spi", .data = (void *)COMPAT_MT6589},
-> 
-> > This seems to introduce lots of trivial patches just to add a compatible
-> > device to me...
-> 
-> Yes, but that's how DT works and as you say these patches are all
-> trivial so it's not like they take any appreciable effort.
+2015-05-13 13:31 GMT+03:00 Jacek Anaszewski <j.anaszewski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>:
+> On 05/12/2015 05:35 PM, Dmitry Eremin-Solenikov wrote:
+>>
+>> 2015-05-06 18:05 GMT+03:00 Jacek Anaszewski <j.anaszewski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>:
+>>>
+>>> On 04/28/2015 01:55 AM, Dmitry Eremin-Solenikov wrote:
+>>>>
+>>>>
+>>>> Adapt locomo leds driver to new locomo core setup.
+>>>>
+>>>> Signed-off-by: Dmitry Eremin-Solenikov <dbaryshkov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+>>>> ---
+>>>>    drivers/leds/Kconfig       |   1 -
+>>>>    drivers/leds/leds-locomo.c | 119
+>>>> +++++++++++++++++++++++----------------------
+>>>>    2 files changed, 61 insertions(+), 59 deletions(-)
+>>>>
+>>>> diff --git a/drivers/leds/Kconfig b/drivers/leds/Kconfig
+>>>> index 966b960..4b4650b 100644
+>>>> --- a/drivers/leds/Kconfig
+>>>> +++ b/drivers/leds/Kconfig
+>>>> @@ -79,7 +79,6 @@ config LEDS_LM3642
+>>>>    config LEDS_LOCOMO
+>>>>          tristate "LED Support for Locomo device"
+>>>>          depends on LEDS_CLASS
+>>>> -       depends on SHARP_LOCOMO
+>>>
+>>>
+>>>
+>>> Why do you remove this dependency?
+>>
+>>
+>> Because SHARP_LOCOMO is a Kconfig symbol for the old driver. New driver
+>> uses MFD_LOCOMO Kconfig entry. Also the driver now uses generic platform
+>> device and regmap interfaces, so there is no direct dependency on main
+>> LoCoMo driver. And the policy (IIRC) was not to have such dependencies.
+>
+>
+> Ack. Shouldn't you also need "select REGMAP_MMIO" ?
 
-Yes, that's shouldn't be a big effort.
-Thanks for clarification.
+No. Maybe I should add "select REGMAP" instead.
 
-Joe.C
+>>>>   static void locomoled_brightness_set(struct led_classdev *led_cdev,
+>>>> -                               enum led_brightness value, int offset)
+>>>> +                               enum led_brightness value)
+>>>>    {
+>>>> -       struct locomo_dev *locomo_dev =
+>>>> LOCOMO_DEV(led_cdev->dev->parent);
+>>>> -       unsigned long flags;
+>>>> +       struct locomo_led *led = container_of(led_cdev, struct
+>>>> locomo_led,
+>>>> led);
+>>>>
+>>>> -       local_irq_save(flags);
+>>>> -       if (value)
+>>>> -               locomo_writel(LOCOMO_LPT_TOFH, locomo_dev->mapbase +
+>>>> offset);
+>>>> -       else
+>>>> -               locomo_writel(LOCOMO_LPT_TOFL, locomo_dev->mapbase +
+>>>> offset);
+>>>> -       local_irq_restore(flags);
+>>>> +       regmap_write(led->regmap, led->reg,
+>>>> +                       value ? LOCOMO_LPT_TOFH : LOCOMO_LPT_TOFL);
+>>>>    }
+>>>
+>>>
+>>>
+>>> Please use work queue for setting brightness. This is required for the
+>>> driver to be compatible with led triggers. You can refer to the
+>>> existing LED drivers on how to implement this.
+>>
+>>
+>> Hmm. Why? The regmap here uses MMIO access, so it is atomic operation
+>> and doesn't need to be wrapped into work queue, does it?
+>
+>
+> Triggers can call brightness_set op in the interrupt context, so it
+> cannot sleep. I see "map->lock(map->lock_arg)" in regmap_write, thus
+> I am inferring that it can sleep.
+>
+> I am not sure if regmap implements its 'lock' op when using MMIO.
+>
+> The best way to figure this out is turning "LED Timer Trigger" on
+> in the config and execute:
+>
+> echo "timer" > trigger
+
+It works without any "might sleep/sleeping in atomic context" warnings.
+
+Technically I'd agree with you. If I'm using regmaps, ideally I should not
+depend on the exact backend and put working with it to the work queue.
+However as this is a driver for quite old IP block, it is not used with
+regmap backends other than MMIO, I'd deduce, it's ok to do things
+in a more relaxed way and to call regmap_write even from atomic
+contexts.
+
+-- 
+With best wishes
+Dmitry

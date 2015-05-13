@@ -1,95 +1,58 @@
-From: Dmitry Torokhov <dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v2 02/17] leds: port locomo leds driver to new locomo core
-Date: Wed, 13 May 2015 09:42:48 -0700
-Message-ID: <20150513164248.GB11891@dtor-ws>
-References: <1430178954-11138-1-git-send-email-dbaryshkov@gmail.com>
- <1430178954-11138-3-git-send-email-dbaryshkov@gmail.com>
- <554A2DB4.3020000@samsung.com>
- <CALT56yNJWapNw1XLrzfbUDUz1LF_BB9DfF94H6GhbnBUEP80_w@mail.gmail.com>
- <555327EA.5060402@samsung.com>
- <CALT56yOJyZvWF9neC2A09Y_w1Ej41uwWvU=aOOM0idbzUkBiFQ@mail.gmail.com>
- <5553654F.4010608@samsung.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: Force the registration of the spidev devices
+Date: Wed, 13 May 2015 18:13:00 +0100
+Message-ID: <20150513171300.GD2761@sirena.org.uk>
+References: <1431462804-30467-1-git-send-email-maxime.ripard@free-electrons.com>
+ <20150513112604.GI3066@sirena.org.uk>
+ <20150513153740.GC11677@kroah.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Dmitry Eremin-Solenikov <dbaryshkov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Alexandre Courbot <gnurou-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
-	Bryan Wu <cooloney-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Richard Purdie <rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org>,
-	Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Jean-Christophe Plagniol-Villard <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>,
-	Tomi Valkeinen <tomi.valkeinen-l0cyMroinI0@public.gmane.org>,
-	Liam Girdwood <lgirdwood-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Andrea Adami <andrea.adami-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-arm-kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-input <linux-input-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-leds <linux-leds-u79uwXL29TZUIDd8j+nm9g@public.gmane.org
-To: Jacek Anaszewski <j.anaszewski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="zfZAIAilk/YNj2Pr"
+Cc: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
+	Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <5553654F.4010608-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <20150513153740.GC11677-U8xfFu+wG4EAvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, May 13, 2015 at 04:53:03PM +0200, Jacek Anaszewski wrote:
-> On 05/13/2015 04:14 PM, Dmitry Eremin-Solenikov wrote:
-> >2015-05-13 13:31 GMT+03:00 Jacek Anaszewski <j.anaszewski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>:
-> >>On 05/12/2015 05:35 PM, Dmitry Eremin-Solenikov wrote:
-> >>>
-> >>>2015-05-06 18:05 GMT+03:00 Jacek Anaszewski <j.anaszewski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>:
-> >>>>
-> >>>>On 04/28/2015 01:55 AM, Dmitry Eremin-Solenikov wrote:
-> >>>>>
-> >>>>>
-> >>>>>Adapt locomo leds driver to new locomo core setup.
-> >>>>>
-> >>>>>Signed-off-by: Dmitry Eremin-Solenikov <dbaryshkov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> >>>>>---
-> >>>>>    drivers/leds/Kconfig       |   1 -
-> >>>>>    drivers/leds/leds-locomo.c | 119
-> >>>>>+++++++++++++++++++++++----------------------
-> >>>>>    2 files changed, 61 insertions(+), 59 deletions(-)
-> >>>>>
-> >>>>>diff --git a/drivers/leds/Kconfig b/drivers/leds/Kconfig
-> >>>>>index 966b960..4b4650b 100644
-> >>>>>--- a/drivers/leds/Kconfig
-> >>>>>+++ b/drivers/leds/Kconfig
-> >>>>>@@ -79,7 +79,6 @@ config LEDS_LM3642
-> >>>>>    config LEDS_LOCOMO
-> >>>>>          tristate "LED Support for Locomo device"
-> >>>>>          depends on LEDS_CLASS
-> >>>>>-       depends on SHARP_LOCOMO
-> >>>>
-> >>>>
-> >>>>
-> >>>>Why do you remove this dependency?
-> >>>
-> >>>
-> >>>Because SHARP_LOCOMO is a Kconfig symbol for the old driver. New driver
-> >>>uses MFD_LOCOMO Kconfig entry. Also the driver now uses generic platform
-> >>>device and regmap interfaces, so there is no direct dependency on main
-> >>>LoCoMo driver. And the policy (IIRC) was not to have such dependencies.
-> >>
-> >>
-> >>Ack. Shouldn't you also need "select REGMAP_MMIO" ?
-> >
-> >No. Maybe I should add "select REGMAP" instead.
-> 
-> REGMAP is enabled by default if REGMAP_MMIO is enabled. Having
 
-That is unfortunately not how select works: it does not automatically
-select parents for the selected symbol.
+--zfZAIAilk/YNj2Pr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Thanks.
+On Wed, May 13, 2015 at 08:37:40AM -0700, Greg Kroah-Hartman wrote:
 
--- 
-Dmitry
+> You can easily bind drivers to devices today from userspace, why not
+> just use the built-in functionality you have today if you "know" that
+> there is no driver for this hardware.
+
+So, that was my original suggestion too but people were complaining that
+this wasn't a generally supported feature and requires specific support
+of some kind in the bus (which nobody posted a patch for).  I have to
+confess I didn't investigate too deeply myself.
+
+--zfZAIAilk/YNj2Pr
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVU4YbAAoJECTWi3JdVIfQkBIH/icM+QlwQBIqsC5uZTv3aBQN
+mn13EyneBNclFf8Hq1r4YBTmJGaHk0PrfrQjBCGodutHLpJB7OuMHOUpx/hDITZS
+cVTKU0csuDKDToXrMBBThRTxV7x5n17q/EhRiM2IBvMz0EuPWUoZ0A9yXSWTrBjV
+wrpgoHskKgENl1Js6cTV7yn2UL4Af5uReeScwoyEFnnqLAX7LcmVL2ULmsqXJDKl
+Pv80HKtBFS0TYS9DZ0Gee3XSwAqLISZktscrNlaSXpYxRGCAHjIKkSrbpzdH3tXn
+cQyPwJWWPE8P+6APrj+NaoPYBcGalS1JGgijrE8IJwAbeSnAKK3XQ34xrARmdVA=
+=FM7A
+-----END PGP SIGNATURE-----
+
+--zfZAIAilk/YNj2Pr--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,68 +1,53 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: Force the registration of the spidev devices
-Date: Wed, 13 May 2015 19:12:16 +0100
-Message-ID: <20150513181216.GH2761@sirena.org.uk>
-References: <1431462804-30467-1-git-send-email-maxime.ripard@free-electrons.com>
- <20150513112604.GI3066@sirena.org.uk>
- <20150513153740.GC11677@kroah.com>
- <20150513175034.GC4004@lukather>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: omap2-mcspi: Add calls for pinctrl state select
+Date: Wed, 13 May 2015 19:15:36 +0100
+Message-ID: <20150513181536.GI2761@sirena.org.uk>
+References: <1431519316-30989-1-git-send-email-pascal.huerst@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="G1IH56i3DES2a+WZ"
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>,
-	linux-spi@vger.kernel.org, Martin Sperl <kernel@martin.sperl.org>,
-	Michal Suchanek <hramrach@gmail.com>
-To: Maxime Ripard <maxime.ripard@free-electrons.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="+dJ5Ea9E9bxtHwvD"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: pascal.huerst-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20150513175034.GC4004@lukather>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1431519316-30989-1-git-send-email-pascal.huerst-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---G1IH56i3DES2a+WZ
+--+dJ5Ea9E9bxtHwvD
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, May 13, 2015 at 07:50:34PM +0200, Maxime Ripard wrote:
-> On Wed, May 13, 2015 at 08:37:40AM -0700, Greg Kroah-Hartman wrote:
+On Wed, May 13, 2015 at 02:15:16PM +0200, pascal.huerst-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org wrote:
 
-> > That doesn't really work.  I've been talking to the ACPI people about
-> > this, and the problem is "don't otherwise have a driver for" is an
-> > impossible thing to prove, as you never know when a driver is going to
-> > be loaded from userspace.
+> This adds calls to pinctrl subsystem in order to switch pin states
+> on suspend/resume if you provide a "sleep" state in DT.
 
-> > You can easily bind drivers to devices today from userspace, why not
-> > just use the built-in functionality you have today if you "know" that
-> > there is no driver for this hardware.
+> If no "sleep" state is provided in DT, these calls turn
+> to NOPs, so we don't need error checking here.
 
-> What we're really after here is that we want to have an spidev
-> instance when we don't even have a device.
+We should still be checking if we succesfully changed the state when
+there is a state provided shouldn't we?
 
-We do?
-
-> And since SPI isn't really doing any kind of hotplug, the only
-> situation that might be problematic is if we have the DT overlays
-> registering new devices.
-
-Well, we still have the driver loaded from userspace in the future
-situation as well - the hardware might be static but the software isn't.
-
---G1IH56i3DES2a+WZ
+--+dJ5Ea9E9bxtHwvD
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVU5P/AAoJECTWi3JdVIfQI0gH+gIhZ5tFQblEGnwukkU3Z2pQ
-ZSWi3Aq7r6jwT/Lk4lDvQoGKOodLlRmaWYOg4S94OvXQB/8CeA8lX0k7ORQUV9pC
-K/bKYV8lEVRWqC3D8g3FdG+GkSyYteKC2ljSG4Mi/Osm2A5RAdCIbeL26tSf4bDa
-KtUBdDJk38kskp8QYm6urmpGWIY9FYgF3Y/yyMjffKA97TSL6tBzpYu7LyA6fvVO
-sXXkmj4YzO5oVKzUK4GsVQm7sww3sW3MBtple9A8mRnZfKanPzFNvILdE1Y9Ij59
-8TeQzglXSKE5dnr/qMRSjvrEtNHAsjUGTH0wm8VxN3J80p6Y+J6MqO9Z1YR9gs8=
-=7bR0
+iQEcBAEBCAAGBQJVU5THAAoJECTWi3JdVIfQVAUH/iLOBXeEYMGC4Q0q903KJfOt
+aJFtbpkHFRQuvSi3mkSrNuD2fwMQDc2AET3/96jXT3VTq2T47Ut4mB8cKvxeiR+E
+HLe5oOrHl5cmwVLUGzC+bJcm354pCe2fv4Z9Ay63tTUdP5qcOx7GiJZj51TY0i8g
+Z/DKO871F50terPwYlH/EWXG89ErWl3YVuBcs0sHPqcgEdU4odHiVzskQCx8Mt3X
+dDNexMq4wyiPfZGZsbjvxdURXbAzmGp6jm5+9sdGYJXgt/hdyAN4WBgRjwcYHb3n
+m4YfDH/Fg73UZIKY6oMSp70wCcmEhDBQyJh79VTgPYIr89RpPWAjezhr1sxTtc4=
+=D9ug
 -----END PGP SIGNATURE-----
 
---G1IH56i3DES2a+WZ--
+--+dJ5Ea9E9bxtHwvD--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

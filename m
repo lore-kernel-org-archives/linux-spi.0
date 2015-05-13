@@ -1,214 +1,304 @@
-From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: Add option to bind spidev to all chipselects
-Date: 13 May 2015 09:34:41 -0000
-Message-ID: <20150513093441.80359.qmail@dec59.ruk.cuni.cz>
-References: <1431462804-30467-1-git-send-email-maxime.ripard@free-electrons.com>
-Cc: Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
-	Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1431462804-30467-1-git-send-email-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Lee Jones <lee.jones@linaro.org>
+Subject: Re: [PATCH v2 01/17] mfd: add new driver for Sharp LoCoMo
+Date: Wed, 13 May 2015 10:41:32 +0100
+Message-ID: <20150513094132.GE3394@x1>
+References: <1430178954-11138-1-git-send-email-dbaryshkov@gmail.com>
+ <1430178954-11138-2-git-send-email-dbaryshkov@gmail.com>
+ <20150428184525.GJ9169@x1>
+ <CALT56yP6FPhGRZFJZkyjjpqGJ6bofg+a1BTC9KcVAgpmt2htoA@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Russell King <linux@arm.linux.org.uk>,
+	Daniel Mack <daniel@zonque.org>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Alexandre Courbot <gnurou@gmail.com>,
+	Wolfram Sang <wsa@the-dreams.de>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Bryan Wu <cooloney@gmail.com>,
+	Richard Purdie <rpurdie@rpsys.net>,
+	Samuel Ortiz <sameo@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jingoo Han <jg1.han@samsung.com>,
+	Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
+	Tomi Valkeinen <tomi.valkeinen@ti.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Andrea Adami <andrea.adami@gmail.com>,
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+	linux-i2c@vger.kernel.org,
+	linux-input <linux-input@vger.kernel.org>,
+	linux-leds <linux-leds@vger.kernel.org>,
+	linux-spi <linux-spi@vger.kern
+To: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
+Return-path: <linux-gpio-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <CALT56yP6FPhGRZFJZkyjjpqGJ6bofg+a1BTC9KcVAgpmt2htoA@mail.gmail.com>
+Sender: linux-gpio-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Bypass the check if CS is in use for spidev devices if CONFIG_SPIDEV_SHADOW is
-set.  Rename spidev devices to avoid sysfs conflict.
+On Tue, 12 May 2015, Dmitry Eremin-Solenikov wrote:
 
-This allows dynamically loading SPI device overlays or communicating
-with SPI devices configured by a kernel driver from userspace.
+> 2015-04-28 21:45 GMT+03:00 Lee Jones <lee.jones@linaro.org>:
+> > On Tue, 28 Apr 2015, Dmitry Eremin-Solenikov wrote:
+> >
+> >> LoCoMo is a GA used on Sharp Zaurus SL-5x00. Current driver does h=
+as
+> >> several design issues (special bus instead of platform bus, doesn'=
+t use
+> >> mfd-core, etc).
+> >>
+> >> Implement 'core' parts of locomo support as an mfd driver.
+> >>
+> >> Signed-off-by: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
+> >> ---
+>=20
+> Thanks for the review. I agree (and have implemented) with most of
+> your comments.
+> However I have few questions. See below.
+>=20
+> >
+> >> +/* the following is the overall data for the locomo chip */
+> >> +struct locomo {
+> >> +     struct device *dev;
+> >> +     unsigned int irq;
+> >> +     spinlock_t lock;
+> >> +     struct irq_domain *domain;
+> >> +     struct regmap *regmap;
+> >> +};
+> >> +
+> >> +static struct resource locomo_kbd_resources[] =3D {
+> >> +     DEFINE_RES_IRQ(IRQ_LOCOMO_KEY),
+> >> +};
+> >> +
+> >> +static struct resource locomo_gpio_resources[] =3D {
+> >> +     DEFINE_RES_IRQ(IRQ_LOCOMO_GPIO),
+> >> +};
+> >> +
+> >> +/* Filled in locomo_probe() function. */
+> >> +static struct locomo_gpio_platform_data locomo_gpio_pdata;
+> >
+> > I'd prefer you didn't use globals for this.
+>=20
+> Just for platform data, or for all the structures?
 
-Signed-off-by: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/Kconfig     | 13 +++++++++
- drivers/spi/spi.c       | 74 ++++++++++++++++++++++++++++++++++---------------
- include/linux/spi/spi.h |  1 +
- 3 files changed, 65 insertions(+), 23 deletions(-)
+Just for this.  The remainder are standard.
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 198f96b..b477828 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -651,6 +651,19 @@ config SPI_SPIDEV
- 	  Note that this application programming interface is EXPERIMENTAL
- 	  and hence SUBJECT TO CHANGE WITHOUT NOTICE while it stabilizes.
- 
-+config SPIDEV_SHADOW
-+	depends on SPI_SPIDEV
-+	bool "Allow spidev access to configured SPI devices (DANGEROUS)"
-+	help
-+	  This creates a spidev device node for every chipselect.
-+
-+	  It is possible to access even SPI devices which are in use by a
-+	  kernel driver. This allows invoking features not in use by the kernel
-+	  or checking device state from userspace when the kernel driver fails.
-+
-+	  Sending out-of-order messages to the device or reconfiguring the
-+	  device might cause driver failure. DANGEROUS
-+
- config SPI_TLE62X0
- 	tristate "Infineon TLE62X0 (for power switching)"
- 	depends on SYSFS
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index e6ca46e..b48a0dc 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -254,16 +254,23 @@ struct spi_device *spi_alloc_device(struct spi_master *master)
- }
- EXPORT_SYMBOL_GPL(spi_alloc_device);
- 
--static void spi_dev_set_name(struct spi_device *spi)
-+static void spi_dev_set_name(struct spi_device *spi, const char * alias)
- {
- 	struct acpi_device *adev = ACPI_COMPANION(&spi->dev);
- 
- 	if (adev) {
--		dev_set_name(&spi->dev, "spi-%s", acpi_dev_name(adev));
-+		if (alias)
-+			dev_set_name(&spi->dev, "%s-%s", alias, acpi_dev_name(adev));
-+		else
-+			dev_set_name(&spi->dev, "spi-%s", acpi_dev_name(adev));
- 		return;
- 	}
- 
--	dev_set_name(&spi->dev, "%s.%u", dev_name(&spi->master->dev),
-+	if (alias)
-+		dev_set_name(&spi->dev, "%s%u.%u", alias, spi->master->bus_num,
-+		     spi->chip_select);
-+	else
-+		dev_set_name(&spi->dev, "%s.%u", dev_name(&spi->master->dev),
- 		     spi->chip_select);
- }
- 
-@@ -272,22 +279,25 @@ static int spi_dev_check(struct device *dev, void *data)
- 	struct spi_device *spi = to_spi_device(dev);
- 	struct spi_device *new_spi = data;
- 
--	if (spi->master == new_spi->master &&
--	    spi->chip_select == new_spi->chip_select)
-+	if (spi->master == new_spi->master
-+	    && spi->chip_select == new_spi->chip_select
-+#ifdef CONFIG_SPIDEV_SHADOW
-+	    && !spi->shadow && !new_spi->shadow
-+#endif
-+	    )
- 		return -EBUSY;
- 	return 0;
- }
- 
- /**
-- * spi_add_device - Add spi_device allocated with spi_alloc_device
-+ * spi_add_device_alias - Add spi_device allocated with spi_alloc_device
-+ * possibly even when device for the CS exists.
-  * @spi: spi_device to register
-+ * @alias: string used as device name prefix or NULL
-  *
-- * Companion function to spi_alloc_device.  Devices allocated with
-- * spi_alloc_device can be added onto the spi bus with this function.
-- *
-- * Returns 0 on success; negative errno on failure
-+ * See spi_add_device
-  */
--int spi_add_device(struct spi_device *spi)
-+static inline int spi_add_device_alias(struct spi_device *spi, const char * alias)
- {
- 	static DEFINE_MUTEX(spi_add_lock);
- 	struct spi_master *master = spi->master;
-@@ -303,7 +313,8 @@ int spi_add_device(struct spi_device *spi)
- 	}
- 
- 	/* Set the bus ID string */
--	spi_dev_set_name(spi);
-+	spi_dev_set_name(spi, alias);
-+	spi->shadow = !!alias;
- 
- 	/* We need to make sure there's no other device with this
- 	 * chipselect **BEFORE** we call setup(), else we'll trash
-@@ -321,15 +332,17 @@ int spi_add_device(struct spi_device *spi)
- 	if (master->cs_gpios)
- 		spi->cs_gpio = master->cs_gpios[spi->chip_select];
- 
--	/* Drivers may modify this initial i/o setup, but will
--	 * normally rely on the device being setup.  Devices
--	 * using SPI_CS_HIGH can't coexist well otherwise...
--	 */
--	status = spi_setup(spi);
--	if (status < 0) {
--		dev_err(dev, "can't setup %s, status %d\n",
--				dev_name(&spi->dev), status);
--		goto done;
-+	if (!alias) {
-+			/* Drivers may modify this initial i/o setup, but will
-+			 * normally rely on the device being setup.  Devices
-+			 * using SPI_CS_HIGH can't coexist well otherwise...
-+			 */
-+			status = spi_setup(spi);
-+			if (status < 0) {
-+					dev_err(dev, "can't setup %s, status %d\n",
-+						dev_name(&spi->dev), status);
-+					goto done;
-+			}
- 	}
- 
- 	/* Device may be bound to an active driver when this returns */
-@@ -344,6 +357,20 @@ done:
- 	mutex_unlock(&spi_add_lock);
- 	return status;
- }
-+
-+/**
-+ * spi_add_device - Add spi_device allocated with spi_alloc_device
-+ * @spi: spi_device to register
-+ *
-+ * Companion function to spi_alloc_device.  Devices allocated with
-+ * spi_alloc_device can be added onto the spi bus with this function.
-+ *
-+ * Returns 0 on success; negative errno on failure
-+ */
-+int spi_add_device(struct spi_device *spi)
-+{
-+	return spi_add_device_alias(spi, NULL);
-+}
- EXPORT_SYMBOL_GPL(spi_add_device);
- 
- /**
-@@ -1400,6 +1427,7 @@ static void spidev_register_devices(struct spi_master *master)
- 		spi->chip_select = i;
- 		strlcpy(spi->modalias, "spidev", sizeof(spi->modalias));
- 
-+#ifndef CONFIG_SPIDEV_SHADOW
- 		/*
- 		 * This is far from perfect since an addition might be
- 		 * done between here and the call to spi_add_device,
-@@ -1418,8 +1446,8 @@ static void spidev_register_devices(struct spi_master *master)
- 			spi_dev_put(spi);
- 			continue;
- 		}
--
--		if (spi_add_device(spi)) {
-+#endif /* CONFIG_SPIDEV_SHADOW */
-+		if (spi_add_device_alias(spi, "spidev")) {
- 			dev_err(&master->dev, "Couldn't add spidev device\n");
- 			spi_dev_put(spi);
- 		}
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index d673072..8368714 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -97,6 +97,7 @@ struct spi_device {
- 	void			*controller_data;
- 	char			modalias[SPI_NAME_SIZE];
- 	int			cs_gpio;	/* chip select gpio */
-+	int			shadow; /* ignore when determining if CS is in use */
- 
- 	/*
- 	 * likely need more hooks for more protocol options affecting how
--- 
-2.1.4
+> >> +static struct resource locomo_lt_resources[] =3D {
+> >> +     DEFINE_RES_IRQ(IRQ_LOCOMO_LT),
+> >> +};
+> >> +
+> >> +static struct resource locomo_spi_resources[] =3D {
+> >> +     DEFINE_RES_IRQ(IRQ_LOCOMO_SPI),
+> >> +};
+> >> +
+> >> +/* Filled in locomo_probe() function. */
+> >> +static struct locomo_lcd_platform_data locomo_lcd_pdata;
+> >> +
+> >> +static struct mfd_cell locomo_cells[] =3D {
+> >> +     {
+> >> +             .name =3D "locomo-kbd",
+> >> +             .resources =3D locomo_kbd_resources,
+> >> +             .num_resources =3D ARRAY_SIZE(locomo_kbd_resources),
+> >> +     },
+> >> +     {
+> >> +             .name =3D "locomo-gpio",
+> >> +             .resources =3D locomo_gpio_resources,
+> >> +             .num_resources =3D ARRAY_SIZE(locomo_gpio_resources)=
+,
+> >> +             .platform_data =3D &locomo_gpio_pdata,
+> >> +             .pdata_size =3D sizeof(locomo_gpio_pdata),
+> >> +     },
+> >> +     {
+> >> +             .name =3D "locomo-lt", /* Long time timer */
+> >> +             .resources =3D locomo_lt_resources,
+> >> +             .num_resources =3D ARRAY_SIZE(locomo_lt_resources),
+> >> +     },
+> >> +     {
+> >> +             .name =3D "locomo-spi",
+> >> +             .resources =3D locomo_spi_resources,
+> >> +             .num_resources =3D ARRAY_SIZE(locomo_spi_resources),
+> >> +     },
+> >> +     {
+> >> +             .name =3D "locomo-led",
+> >> +     },
+> >> +     {
+> >> +             .name =3D "locomo-backlight",
+> >> +     },
+> >
+> > Please make these:
+> >
+> >> +     { .name =3D "locomo-led" },
+> >> +     { .name =3D "locomo-backlight" },
+> >
+> > ... and put them at the bottom.
+>=20
+> They will be populated by of_compatible lines, so it makes little sen=
+se
+> to me. What about adding of compatibility lines to this patch?
 
+Also fine.
+
+Although if you assure me you will do it, you can add them separately.
+
+> >> +     while (1) {
+> >> +             regmap_read(lchip->regmap, LOCOMO_ICR, &req);
+> >> +             req &=3D 0x0f00;
+> >
+> > What is this magic number?  Please #define it.
+>=20
+> Adding comments to this function instead.
+
+Also acceptable.
+
+> >> +             if (!req)
+> >> +                     break;
+> >> +
+> >> +             irq =3D ffs(req) - 9;
+> >
+> > Minus another random number?  Either define it or enter a comment.
+> >
+> >> +#ifdef CONFIG_PM_SLEEP
+> >> +static int locomo_suspend(struct device *dev)
+> >> +{
+> >> +     struct locomo *lchip =3D dev_get_drvdata(dev);
+> >> +
+> >> +     /* AUDIO */
+> >
+> > WHY ARE YOU SHOUTING?  Ironic eh? ;)
+> >
+> >> +     regmap_write(lchip->regmap, LOCOMO_PAIF, 0x00);
+> >> +
+> >> +     /*
+> >> +      * Original code disabled the clock depending on leds settin=
+gs
+> >> +      * However we disable leds before suspend, thus it's safe
+> >> +      * to just assume this setting.
+> >> +      */
+> >> +     /* CLK32 off */
+> >> +     regmap_write(lchip->regmap, LOCOMO_C32K, 0x00);
+> >> +
+> >> +     /* 22MHz/24MHz clock off */
+> >> +     regmap_write(lchip->regmap, LOCOMO_ACC, 0x00);
+> >> +
+> >> +     return 0;
+> >> +}
+> >> +
+> >> +static int locomo_resume(struct device *dev)
+> >> +{
+> >> +     struct locomo *lchip =3D dev_get_drvdata(dev);
+> >
+> > Do audio and clk sort themselves out?
+>=20
+> PAIF and ACC registers are used only by audio parts of the device. Ho=
+wever
+> there is no current Linux driver for those parts. The registers are c=
+leared
+> in case the firmware has set something in them, but in future it will
+> be the task
+> of the audio driver to properly clear and restore them.
+>=20
+> >> +     regmap_write(lchip->regmap, LOCOMO_C32K, 0x00);
+> >> +
+> >> +     return 0;
+> >> +}
+> >> +
+>=20
+> [skipped]
+> >> +
+> >> +     if (pdata) {
+> >> +             locomo_gpio_pdata.gpio_base =3D pdata->gpio_base;
+> >> +             locomo_lcd_pdata.comadj =3D pdata->comadj;
+> >> +     } else {
+> >> +             locomo_gpio_pdata.gpio_base =3D -1;
+> >> +             locomo_lcd_pdata.comadj =3D 128;
+> >> +     }
+> >
+> > struct locomo_gpio_platform_data locomo_gpio_pdata;
+> >
+> > locomo_gpio_pdata =3D devm_kzalloc(<blah>);
+> >
+> > locomo_cells[GPIO].platform_data =3D locomo_gpio_pdata;
+>=20
+> I do not quite agree with you at this place. The passed platform_data
+> will be kmemdup()'ed inside platform core. So the whole struct will b=
+e
+> duplicated twice inside kmallocate'd memory. Ideally I'd like to drop
+> the whole platform_data busyness, but that requires switching to DTS
+> first.
+
+Sounds reasonable.
+
+> >> diff --git a/include/linux/mfd/locomo.h b/include/linux/mfd/locomo=
+=2Eh
+> >> new file mode 100644
+> >> index 0000000..6729767
+> >> --- /dev/null
+> >> +++ b/include/linux/mfd/locomo.h
+>=20
+> >> +/* MCS decoder for boot selecting */
+> >> +#define LOCOMO_MCSX0 0x10
+> >> +#define LOCOMO_MCSX1 0x14
+> >> +#define LOCOMO_MCSX2 0x18
+> >> +#define LOCOMO_MCSX3 0x1c
+> >
+> > These are pretty cryptic.  Any way of making them easier to identif=
+y.
+>=20
+> No way. The names are based on old Sharp code. The drivers do not use
+> them, but I'd like to still keep the registers for the reference purp=
+oses.
+
+So they are not used at all?  Then why do you want to keep them?
+
+> >> +struct locomo_gpio_platform_data {
+> >> +     unsigned int gpio_base;
+> >> +};
+> >
+> > A struct for a single int seems overkill.
+> >
+> >> +struct locomo_lcd_platform_data {
+> >> +     u8 comadj;
+> >> +};
+> >> +
+> >> +struct locomo_platform_data {
+> >> +     unsigned int gpio_base;
+> >> +     u8 comadj;
+> >> +};
+> >
+> > Why do you need to pass gpio_base twice?
+>=20
+> First: machine file -> core driver
+> Second: core driver -> gpio driver
+>=20
+> The other way to do the same would be:
+>=20
+> struct locomo_gpio_platform_data {
+>      unsigned int gpio_base;
+> };
+>=20
+> struct locomo_lcd_platform_data {
+>      u8 comadj;
+> };
+>=20
+> struct locomo_platform_data {
+>      struct locomo_gpio_platform_data gpio_pdata;
+>      struct locomo_lcd_platform_data lcd_pdata;
+> };
+>=20
+> And to assign pointers to the passed data in the mfd_cells
+> during locomo_probe. Does that look better to you?
+
+Bingo.
+
+--=20
+Lee Jones
+Linaro STMicroelectronics Landing Team Lead
+Linaro.org =E2=94=82 Open source software for ARM SoCs
+=46ollow Linaro: Facebook | Twitter | Blog
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To unsubscribe from this list: send the line "unsubscribe linux-gpio" i=
+n
+the body of a message to majordomo@vger.kernel.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

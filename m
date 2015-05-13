@@ -1,67 +1,58 @@
-From: Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>
+From: Mark Brown <broonie@kernel.org>
 Subject: Re: [PATCH] spi: Force the registration of the spidev devices
-Date: Wed, 13 May 2015 11:17:36 -0700
-Message-ID: <20150513181736.GC16811@kroah.com>
+Date: Wed, 13 May 2015 19:32:11 +0100
+Message-ID: <20150513183211.GK2761@sirena.org.uk>
 References: <1431462804-30467-1-git-send-email-maxime.ripard@free-electrons.com>
  <20150513112604.GI3066@sirena.org.uk>
  <20150513153740.GC11677@kroah.com>
- <20150513175034.GC4004@lukather>
+ <20150513171300.GD2761@sirena.org.uk>
+ <20150513172028.GA18303@kroah.com>
+ <20150513173922.GF2761@sirena.org.uk>
+ <20150513181631.GB16811@kroah.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
-	Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="/sFzBD2UPiMqxCFT"
+Cc: Maxime Ripard <maxime.ripard@free-electrons.com>,
+	linux-kernel@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>,
+	linux-spi@vger.kernel.org, Martin Sperl <kernel@martin.sperl.org>,
+	Michal Suchanek <hramrach@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20150513175034.GC4004@lukather>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <20150513181631.GB16811@kroah.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Wed, May 13, 2015 at 07:50:34PM +0200, Maxime Ripard wrote:
-> Hi Greg,
-> 
-> On Wed, May 13, 2015 at 08:37:40AM -0700, Greg Kroah-Hartman wrote:
-> > On Wed, May 13, 2015 at 12:26:04PM +0100, Mark Brown wrote:
-> > > On Tue, May 12, 2015 at 10:33:24PM +0200, Maxime Ripard wrote:
-> > > 
-> > > > While this is nicer than the DT solution because of its accurate hardware
-> > > > representation, it's still not perfect because you might not have access to the
-> > > > DT, or you might be driving a completely generic device (such as a
-> > > > microcontroller) that might be used for something else in a different
-> > > > context/board.
-> > > 
-> > > Greg, you're copied on this because this seems to be a generic problem
-> > > that should perhaps be solved at a driver model level - having a way to
-> > > bind userspace access to devices that we don't otherwise have a driver
-> > > for.  The subsystem could specify the UIO driver to use when no other
-> > > driver is available.
-> > 
-> > That doesn't really work.  I've been talking to the ACPI people about
-> > this, and the problem is "don't otherwise have a driver for" is an
-> > impossible thing to prove, as you never know when a driver is going to
-> > be loaded from userspace.
-> > 
-> > You can easily bind drivers to devices today from userspace, why not
-> > just use the built-in functionality you have today if you "know" that
-> > there is no driver for this hardware.
-> 
-> What we're really after here is that we want to have an spidev
-> instance when we don't even have a device.
 
-That's crazy, just create a device, things do not work without one.
+--/sFzBD2UPiMqxCFT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> And since SPI isn't really doing any kind of hotplug, the only
-> situation that might be problematic is if we have the DT overlays
-> registering new devices.
+On Wed, May 13, 2015 at 11:16:31AM -0700, Greg Kroah-Hartman wrote:
 
-I have no idea what this all is, sorry, patches would be good if you
-want to get your idea across.  Maybe it was sent early in this thread,
-but I can't seem to find one...
+> It should "just work" for all busses, but if you want to add a "new_id"
+> sysfs file, you need to add the logic for that to your bus.  It's the
+> bind/unbind files in the driver directories.
 
-greg k-h
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Oh, right.  For this to be useful here we'd need to implement a new_id
+file, bind and unbind don't do anything helpful here.  I think I'd have
+expected this to have a default implementation that non-enumerable buses
+could pick up.
+
+--/sFzBD2UPiMqxCFT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVU5iqAAoJECTWi3JdVIfQXn4H/RZmwErt3j7BC31/skDhFixo
+/RoLV/egZ7XJJAqeS4aLBbXMi2QTvyog5L2FHRiIBQoPYGnRzzGzgIkknNDikL+a
+g2NeuwcH8hShn1iUTLeGyEGZA3Zvw2FbRbHnA8KeFeFMxs5RgTauYM+M0pfV/FLp
+9eIMidzDA+hVvriwaFgNq9/EpSub7Kaq0ES+3mEYUb3UHXFY3seED5w9ypRwvTrO
+fCj9X1BSgJW5xLh2BltYq6vWhvbClq4WxBxTbTvl67Yadqb20t9TQTnFmkcqWIOK
++vGodas5r309m2sLjkKlpgZBpD0U2glWtzbBo8eGRwzAZaDFCEvSSgVLVzPt6vY=
+=Dahb
+-----END PGP SIGNATURE-----
+
+--/sFzBD2UPiMqxCFT--

@@ -1,82 +1,148 @@
-From: Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>
-Subject: Re: [PATCH] spi: Force the registration of the spidev devices
-Date: Wed, 13 May 2015 15:33:31 -0700
-Message-ID: <20150513223331.GA26748@kroah.com>
-References: <1431462804-30467-1-git-send-email-maxime.ripard@free-electrons.com>
- <20150513112604.GI3066@sirena.org.uk>
- <20150513153740.GC11677@kroah.com>
- <20150513175034.GC4004@lukather>
- <20150513181736.GC16811@kroah.com>
- <20150513192640.GF4004@lukather>
+From: Jonathan Richardson <jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi: bcm-mspi: Add support for Broadcom MSPI driver.
+Date: Wed, 13 May 2015 16:49:46 -0700
+Message-ID: <5553E31A.8060309@broadcom.com>
+References: <1431452293-16697-1-git-send-email-jonathar@broadcom.com> <1431452293-16697-3-git-send-email-jonathar@broadcom.com> <20150512191718.GW3066@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Hans de Goede <hdegoede-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
-	Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+Cc: Dmitry Torokhov <dtor-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
+	Anatol Pomazau <anatol-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
+	Scott Branden <sbranden-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	"Ian Campbell" <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	bcm-kernel-feedback-list <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20150513192640.GF4004@lukather>
+In-Reply-To: <20150512191718.GW3066-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, May 13, 2015 at 09:26:40PM +0200, Maxime Ripard wrote:
-> On Wed, May 13, 2015 at 11:17:36AM -0700, Greg Kroah-Hartman wrote:
-> > On Wed, May 13, 2015 at 07:50:34PM +0200, Maxime Ripard wrote:
-> > > Hi Greg,
-> > > 
-> > > On Wed, May 13, 2015 at 08:37:40AM -0700, Greg Kroah-Hartman wrote:
-> > > > On Wed, May 13, 2015 at 12:26:04PM +0100, Mark Brown wrote:
-> > > > > On Tue, May 12, 2015 at 10:33:24PM +0200, Maxime Ripard wrote:
-> > > > > 
-> > > > > > While this is nicer than the DT solution because of its accurate hardware
-> > > > > > representation, it's still not perfect because you might not have access to the
-> > > > > > DT, or you might be driving a completely generic device (such as a
-> > > > > > microcontroller) that might be used for something else in a different
-> > > > > > context/board.
-> > > > > 
-> > > > > Greg, you're copied on this because this seems to be a generic problem
-> > > > > that should perhaps be solved at a driver model level - having a way to
-> > > > > bind userspace access to devices that we don't otherwise have a driver
-> > > > > for.  The subsystem could specify the UIO driver to use when no other
-> > > > > driver is available.
-> > > > 
-> > > > That doesn't really work.  I've been talking to the ACPI people about
-> > > > this, and the problem is "don't otherwise have a driver for" is an
-> > > > impossible thing to prove, as you never know when a driver is going to
-> > > > be loaded from userspace.
-> > > > 
-> > > > You can easily bind drivers to devices today from userspace, why not
-> > > > just use the built-in functionality you have today if you "know" that
-> > > > there is no driver for this hardware.
-> > > 
-> > > What we're really after here is that we want to have an spidev
-> > > instance when we don't even have a device.
-> > 
-> > That's crazy, just create a device, things do not work without one.
+On 15-05-12 12:17 PM, Mark Brown wrote:
+> On Tue, May 12, 2015 at 10:38:13AM -0700, Jonathan Richardson wrote:
 > 
-> Our use case is this one: we want to export spidev files so that "dev
-> boards" with a header that allows to plug virtually anything on it
-> (Raspberry Pi, Cubieboards, Xplained, and all the likes) without
-> having to change the kernel and / or device tree.
+>> +	/* Wait for interrupt indicating transfer is complete. */
+>> +	if (!wait_for_completion_timeout(&mspi->xfer_done,
+>> +		msecs_to_jiffies(10))) {
+> 
+> What if we have a large transfer on a slow bus?
 
-You want to do that on a bus that is not self-describing or dynamic?
-I too want a pony.  Please go kick the hardware engineer who designed
-such a mess, we solved this problem 20+ years ago with "real" busses.
+I guess it depends on the reference clock frequency (as well as spbr)
+which we may not know because I made it optional. I could possibly
+calculate it. I'll look into this. I used the slowest possible spbr
+based on our ref clock frequency and tested large transfers which never
+timed out.
 
-> That would mean that if we plug something to that port, no device will
-> be created because the DT itself won't have that device declared in
-> the first place.
+> 
+>> +	while (bytes_processed < transfer->len) {
+> 
+>> +		/* Start transfer and wait until complete. */
+>> +		err = bcm_mspi_start_transfer(mspi, !last_slot, slot);
+>> +		if (err)
+>> +			return err;
+> 
+> This isn't really start_transfer() is it?  It's doing the entire
+> operation.
 
-Because you can't dynamically determine that something was plugged in,
-of course.
+Yes, the entire operation.
 
-> This patch is actually doing this: creating a new device for all the
-> chipselects that are not in use that will be bound to the spidev
-> driver.
+> 
+>> +		/* Delay requested amount before next transfer. */
+>> +		udelay(transfer->delay_usecs);
+>> +	}
+> 
+> This is buggy, it's applying the per-transfer delay every timme we fill
+> the FIFO.
 
-I have yet to see a patch...
+Thanks, I'll fix.
+> 
+>> +	/* The rx data will go into RXRAM0/1 + last tx length. */
+>> +	if (slot + 1 >= NUM_SLOTS)
+>> +		mspi->rx_slot = 0;
+>> +	else
+>> +		mspi->rx_slot = slot + 1;
+> 
+> How is this going to work for full duplex transfers if we had to fill
+> the FIFO more than once?
+
+See below, it's not.
+
+> 
+>> +static int bcm_mspi_transfer_one(struct spi_master *master,
+>> +	struct spi_device *spidev, struct spi_transfer *transfer)
+>> +{
+>> +	int err;
+>> +
+>> +	/* 8 bit transfers only are currently supported. */
+>> +	if (transfer->bits_per_word > 8)
+>> +		return -ENOTSUPP;
+> 
+> Tell the core what the device supports and it will check for you.
+> 
+>> +
+>> +	err = bcm_mspi_tx_data(master, spidev, transfer);
+>> +	if (err)
+>> +		return err;
+>> +
+>> +	err = bcm_mspi_rx_data(master, spidev, transfer);
+>> +	if (err)
+>> +		return err;
+>> +
+>> +	return 0;
+>> +}
+> 
+> I would expect the recieve and transmit operations to be running in
+> parallel, not executed one after another, given the need to keep
+> manually filling and draining the FIFOs.
+
+The driver was only written with NOR flash in mind as the slave. Since
+this is really just half duplex, it works, though it won't with a real
+full duplex slave. m25p80 never calls transfer_one with both tx and rx
+buffers. The rx bytes that we don't care about from a tx request are
+dropped.
+
+We don't have any full duplex slaves so it's a hard to test. I could
+possibly re-write this so that tx/rx is interleaved and that should be
+good for full duplex or close enough that it won't have to be completely
+overhauled should we ever connect a full duplex slave to it. Maybe I
+should do that. This came from a pre-existing driver that had the same
+limitation.
+
+> 
+>> +	struct spi_master *master;
+>> +	struct device *dev = &pdev->dev;
+>> +	int err;
+>> +	struct resource *res;
+>> +	unsigned int irq;
+>> +
+>> +	dev_info(dev, "Initializing BCM MSPI\n");
+> 
+> Don't spam the logs like this, there's no content in this message.
+> 
+>> +	master = spi_alloc_master(dev, sizeof(*data));
+>> +	if (!master) {
+> 
+> devm_spi_alloc_master().
+
+This doesn't exist but devm_spi_register_master() does which I used.
+
+> 
+>> +	/* Map base memory address. */
+>> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>> +	data->base = devm_ioremap_resource(dev, res);
+>> +	if (IS_ERR(data->base)) {
+>> +		dev_err(&pdev->dev, "unable to map base address\n");
+> 
+> devm_ioremap_resource() will complain for you.
+> 
+
+Thanks,
+Jon
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

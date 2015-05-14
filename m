@@ -1,66 +1,52 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 2/2] spi: bcm-mspi: Add support for Broadcom MSPI driver.
-Date: Thu, 14 May 2015 11:31:44 +0100
-Message-ID: <20150514103144.GO2761@sirena.org.uk>
-References: <1431452293-16697-1-git-send-email-jonathar@broadcom.com>
- <1431452293-16697-3-git-send-email-jonathar@broadcom.com>
- <20150512191718.GW3066@sirena.org.uk>
- <5553E31A.8060309@broadcom.com>
- <5553E9FA.4070708@broadcom.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="VjpKO6h983+pAmpQ"
-Cc: Jonathan Richardson <jonathar@broadcom.com>,
-	Dmitry Torokhov <dtor@google.com>,
-	Anatol Pomazau <anatol@google.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Pawel Moll <pawel.moll@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Ian Campbell <ijc+devicetree@hellion.org.uk>,
-	Kumar Gala <galak@codeaurora.org>,
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
-	devicetree@vger.kernel.org
-To: Scott Branden <sbranden@broadcom.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <5553E9FA.4070708@broadcom.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
-
-
---VjpKO6h983+pAmpQ
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: Re: [PATCH] spi: SPI_MASTER_MUST_* with scatter-gather only option and avoiding realloc
+Date: Thu, 14 May 2015 13:19:14 +0200
+Message-ID: <BF513C5A-6BB9-423C-9244-F65EEA5AA2DD@martin.sperl.org>
+References: <20150512165053.GE3066@sirena.org.uk> <1431597524-7907-1-git-send-email-kernel@martin.sperl.org>
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2098\))
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 7bit
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
+	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1431597524-7907-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, May 13, 2015 at 05:19:06PM -0700, Scott Branden wrote:
 
-> The purpose of this mspi interface is to connect to NOR flash.  There are
-> other SPI interfaces on the devices used to connect to other SPI devies.  We
-> don't have any need to support full duplex slaves on this port (NOR have any
-> hardware wired this way - pun realized after typing this).
+> On 14.05.2015, at 11:58, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
+> 
+> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+> 
+> Rewrite of spi_map_msg and spi_map_buf so that for SPI_MASTER_MUST_*:
+> * short transfers are handled by a page-sized buffer instead of
+>  reallocating and freeing memory (if smaller than PAGE_SIZE)
+> * with an extra set of flags allows to ONLY create a scatter/gather list
+>  that reuses the same page for all the transfers
+>  The scatter list produced is a match of the corresponding template
+>  scatter list (so tx-sg is the template for the rx-sg and vice versa)
+> 
+> It also fixes the insufficient cleanup in case __spi_map_msg returns
+> an error.
+> 
+> Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+> ---
 
-Chip vendors often say this sort of thing and then get surprised by what
-their users choose to do, and even if it only ever gets used with flash
-all it would take is some new flash command which can use full duplex
-for something.  Please write the code so it at least tries to handle
-full duplex operation, if you can't test it fully that's not the end of
-the world.  It doesn't look like it should be particularly difficult.
+Forgot to mention:
 
---VjpKO6h983+pAmpQ
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Tested on a raspberry pi with the following devices:
+* 2x mcp2515
+* 1x mmc_spi (with dma)
+* 1x enc28j60 (with dma)
+* 1x fb_st7735r (with dma)
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+The fbtft-device played all of the BigBuckBunny movie without any issues.
+The spi-ethernet card was able to transfer 64MB without hickups
+the fsck of the attached sd card worked flawlessly.
 
-iQEcBAEBCAAGBQJVVHmKAAoJECTWi3JdVIfQXecH/jQw7X3dDC47kUIwKGYUSwGN
-cDlDZ/td42IGqPfFFc6DCAp3LVPqSzYdWBgBIQWc92UEsAGRi4FJhNFB9usk/jzT
-KsXCn8d/99l/lct6zGWG0G4Incr+FVu7s2miZup0xlv8Qiu7hF0uF3zdlJ/MYSAK
-l5KpHWY6rolxT1BvYkhVxLYyJm5BXxpegzyS8DA7b1Aw9cSf8cu6EFfduScTLDH3
-wj6MZIMOUz6RID6nxiGCd7jmi3I4i+RHHwq9Me1ZT9hEe6sH7TtW3jGgTUhEhYMN
-/5+0purX147gYWHpaJ3LDlF/iej6Q7N9TKBOgffvfvNYMlsobbdHduZsomjJ4Jg=
-=+ui+
------END PGP SIGNATURE-----
-
---VjpKO6h983+pAmpQ--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,97 +1,46 @@
-From: Scott Branden <sbranden-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: bcm-mspi: Add support for Broadcom MSPI driver.
-Date: Wed, 13 May 2015 17:19:06 -0700
-Message-ID: <5553E9FA.4070708@broadcom.com>
-References: <1431452293-16697-1-git-send-email-jonathar@broadcom.com> <1431452293-16697-3-git-send-email-jonathar@broadcom.com> <20150512191718.GW3066@sirena.org.uk> <5553E31A.8060309@broadcom.com>
+From: Wang Haikun <Haikun.Wang-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Subject: Re: [PATCH v2 1/3] spi: spi-fsl-dspi: Enable TCF interrupt mode
+ support
+Date: Thu, 14 May 2015 02:26:53 +0000
+Message-ID: <BN1PR0301MB0612557038FAE3C4ADE5EE80F8D80@BN1PR0301MB0612.namprd03.prod.outlook.com>
+References: <1431511911-19376-1-git-send-email-haikun.wang@freescale.com>
+ <20150513181701.GJ2761@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Dmitry Torokhov <dtor-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
-	Anatol Pomazau <anatol-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	"Mark Rutland" <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	bcm-kernel-feedback-list <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Jonathan Richardson <jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <5553E31A.8060309-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Language: en-US
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Jon,
+On 5/14/2015 2:17 AM, Mark Brown wrote:
+> On Wed, May 13, 2015 at 06:11:51PM +0800, Haikun Wang wrote:
+>> DSPI module has two optional interrupts when complete data transfer.
+>> One is EOQ interrupt, the other one is TCF interrupt.
+>> EOQ indicates a queue of data frame has been transmitted.
+>> TCF indicates a frame has been transmitted.
+>> This patch enable support TCF mode.
+>> User can configure expected mode in dts node.
+>
+> Same feedback as before: why make this user selectable?
+"This is adding a DT binding without documenting it, all DT bindings need
+to be documented.  I'm also not clear why this is something the user
+would want to be able to select from DT - what is platform specific
+about this?  Shouldn't the driver just ensure that the most appropriate
+interrupt mode is used?"
 
-comment below for full-duplex operation.
+Yes, you are right. Platforms are different about this. Some platform 
+only can work in one of the interrupt mode due to silicon issue. So we 
+need support both of the two modes and chose the correct one in the dts 
+node.
 
-On 15-05-13 04:49 PM, Jonathan Richardson wrote:
-> On 15-05-12 12:17 PM, Mark Brown wrote:
->> On Tue, May 12, 2015 at 10:38:13AM -0700, Jonathan Richardson wrote:
->>
->>
->>> +	/* The rx data will go into RXRAM0/1 + last tx length. */
->>> +	if (slot + 1 >= NUM_SLOTS)
->>> +		mspi->rx_slot = 0;
->>> +	else
->>> +		mspi->rx_slot = slot + 1;
->>
->> How is this going to work for full duplex transfers if we had to fill
->> the FIFO more than once?
+I will send a patch updating the doc.
 >
-> See below, it's not.
->
->>
->>> +static int bcm_mspi_transfer_one(struct spi_master *master,
->>> +	struct spi_device *spidev, struct spi_transfer *transfer)
->>> +{
->>> +	int err;
->>> +
->>> +	/* 8 bit transfers only are currently supported. */
->>> +	if (transfer->bits_per_word > 8)
->>> +		return -ENOTSUPP;
->>
->> Tell the core what the device supports and it will check for you.
->>
->>> +
->>> +	err = bcm_mspi_tx_data(master, spidev, transfer);
->>> +	if (err)
->>> +		return err;
->>> +
->>> +	err = bcm_mspi_rx_data(master, spidev, transfer);
->>> +	if (err)
->>> +		return err;
->>> +
->>> +	return 0;
->>> +}
->>
->> I would expect the recieve and transmit operations to be running in
->> parallel, not executed one after another, given the need to keep
->> manually filling and draining the FIFOs.
->
-> The driver was only written with NOR flash in mind as the slave. Since
-> this is really just half duplex, it works, though it won't with a real
-> full duplex slave. m25p80 never calls transfer_one with both tx and rx
-> buffers. The rx bytes that we don't care about from a tx request are
-> dropped.
->
-> We don't have any full duplex slaves so it's a hard to test. I could
-> possibly re-write this so that tx/rx is interleaved and that should be
-> good for full duplex or close enough that it won't have to be completely
-> overhauled should we ever connect a full duplex slave to it. Maybe I
-> should do that. This came from a pre-existing driver that had the same
-> limitation.
->
->>
 
-The purpose of this mspi interface is to connect to NOR flash.  There 
-are other SPI interfaces on the devices used to connect to other SPI 
-devies.  We don't have any need to support full duplex slaves on this 
-port (NOR have any hardware wired this way - pun realized after typing 
-this).
+
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

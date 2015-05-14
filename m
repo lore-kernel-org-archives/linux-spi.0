@@ -1,106 +1,37 @@
-From: Jacek Anaszewski <j.anaszewski@samsung.com>
-Subject: Re: [PATCH v2 02/17] leds: port locomo leds driver to new locomo core
-Date: Thu, 14 May 2015 08:35:01 +0200
-Message-ID: <55544215.3010401@samsung.com>
-References: <1430178954-11138-1-git-send-email-dbaryshkov@gmail.com>
- <1430178954-11138-3-git-send-email-dbaryshkov@gmail.com>
- <554A2DB4.3020000@samsung.com>
- <CALT56yNJWapNw1XLrzfbUDUz1LF_BB9DfF94H6GhbnBUEP80_w@mail.gmail.com>
- <555327EA.5060402@samsung.com>
- <CALT56yOJyZvWF9neC2A09Y_w1Ej41uwWvU=aOOM0idbzUkBiFQ@mail.gmail.com>
- <5553654F.4010608@samsung.com> <20150513164248.GB11891@dtor-ws>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: Re: spi: race in spi_finalize_current_message starting queue_kthread_work before the message is unmapped
+Date: Thu, 14 May 2015 11:49:57 +0200
+Message-ID: <8B0C03C5-198F-4FB9-82FD-BB43074863C1@martin.sperl.org>
+References: <8C375B28-1C09-4545-8A5B-78F6CD04102F@martin.sperl.org> <20150508221309.GK2761@sirena.org.uk> <352560EA-A323-449B-8F37-6066328D2081@martin.sperl.org> <20150511180016.GU3458@sirena.org.uk> <8F4019F0-7C56-4C9C-9193-A2A23B533165@martin.sperl.org> <20150512102034.GM2761@sirena.org.uk> <5551ECF9.1050006@martin.sperl.org> <20150512165053.GE3066@sirena.org.uk>
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2098\))
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Cc: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>,
-	Russell King <linux@arm.linux.org.uk>,
-	Daniel Mack <daniel@zonque.org>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Alexandre Courbot <gnurou@gmail.com>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Bryan Wu <cooloney@gmail.com>,
-	Richard Purdie <rpurdie@rpsys.net>,
-	Samuel Ortiz <sameo@linux.intel.com>,
-	Lee Jones <lee.jones@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Jingoo Han <jg1.han@samsung.com>,
-	Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
-	Tomi Valkeinen <tomi.valkeinen@ti.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Andrea Adami <andrea.adami@gmail.com>,
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	linux-i2c@vger.kernel.org,
-	linux-input <linux-input@vger.kernel.org>,
-	linux-leds <linux-leds@vger.kernel
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Return-path: <linux-input-owner@vger.kernel.org>
-In-reply-to: <20150513164248.GB11891@dtor-ws>
-Sender: linux-input-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150512165053.GE3066-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 05/13/2015 06:42 PM, Dmitry Torokhov wrote:
-> On Wed, May 13, 2015 at 04:53:03PM +0200, Jacek Anaszewski wrote:
->> On 05/13/2015 04:14 PM, Dmitry Eremin-Solenikov wrote:
->>> 2015-05-13 13:31 GMT+03:00 Jacek Anaszewski <j.anaszewski@samsung.com>:
->>>> On 05/12/2015 05:35 PM, Dmitry Eremin-Solenikov wrote:
->>>>>
->>>>> 2015-05-06 18:05 GMT+03:00 Jacek Anaszewski <j.anaszewski@samsung.com>:
->>>>>>
->>>>>> On 04/28/2015 01:55 AM, Dmitry Eremin-Solenikov wrote:
->>>>>>>
->>>>>>>
->>>>>>> Adapt locomo leds driver to new locomo core setup.
->>>>>>>
->>>>>>> Signed-off-by: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
->>>>>>> ---
->>>>>>>     drivers/leds/Kconfig       |   1 -
->>>>>>>     drivers/leds/leds-locomo.c | 119
->>>>>>> +++++++++++++++++++++++----------------------
->>>>>>>     2 files changed, 61 insertions(+), 59 deletions(-)
->>>>>>>
->>>>>>> diff --git a/drivers/leds/Kconfig b/drivers/leds/Kconfig
->>>>>>> index 966b960..4b4650b 100644
->>>>>>> --- a/drivers/leds/Kconfig
->>>>>>> +++ b/drivers/leds/Kconfig
->>>>>>> @@ -79,7 +79,6 @@ config LEDS_LM3642
->>>>>>>     config LEDS_LOCOMO
->>>>>>>           tristate "LED Support for Locomo device"
->>>>>>>           depends on LEDS_CLASS
->>>>>>> -       depends on SHARP_LOCOMO
->>>>>>
->>>>>>
->>>>>>
->>>>>> Why do you remove this dependency?
->>>>>
->>>>>
->>>>> Because SHARP_LOCOMO is a Kconfig symbol for the old driver. New driver
->>>>> uses MFD_LOCOMO Kconfig entry. Also the driver now uses generic platform
->>>>> device and regmap interfaces, so there is no direct dependency on main
->>>>> LoCoMo driver. And the policy (IIRC) was not to have such dependencies.
->>>>
->>>>
->>>> Ack. Shouldn't you also need "select REGMAP_MMIO" ?
->>>
->>> No. Maybe I should add "select REGMAP" instead.
->>
->> REGMAP is enabled by default if REGMAP_MMIO is enabled. Having
->
-> That is unfortunately not how select works: it does not automatically
-> select parents for the selected symbol.
 
-Please look at config REGMAP declaration in the file
-drivers/base/regmap/Kconfig:
+> On 12.05.2015, at 18:50, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> 
+>> And inside __spi_map_msg we can just add some code to create the simple
+>> scatter-gather mapping using a single preallocated page - so something
+>> along the lines (assuming that either tx_buf or rx_buf must be set):
+> 
+> Yes, to repeat what I said earlier I'm hoping someone with a need for
+> this will implement it.
 
-config REGMAP
-         default y if (REGMAP_I2C || REGMAP_SPI || REGMAP_SPMI || 
-REGMAP_AC97 || REGMAP_MMIO || REGMAP_IRQ)
-         select LZO_COMPRESS
-         select LZO_DECOMPRESS
-         select IRQ_DOMAIN if REGMAP_IRQ
-         bool
+Actually I was asking these questions to have some guidelines what is
+acceptable and what is not for the implementation
 
--- 
-Best Regards,
-Jacek Anaszewski
+So, I got a patch now that works with all my test cases (tft-framebuffer
+device as well as enc28j60).
+
+Submitting it shortly for review.
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

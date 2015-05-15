@@ -1,53 +1,78 @@
-From: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: bcm-mspi: Add support for Broadcom MSPI driver.
-Date: Thu, 14 May 2015 14:43:14 -0700
-Message-ID: <555516F2.6080201@gmail.com>
-References: <1431452293-16697-1-git-send-email-jonathar@broadcom.com> <1431452293-16697-3-git-send-email-jonathar@broadcom.com> <20150512191718.GW3066@sirena.org.uk> <5553E31A.8060309@broadcom.com> <5553E9FA.4070708@broadcom.com> <20150514103144.GO2761@sirena.org.uk> <5554E715.7070203@broadcom.com> <20150514190823.GR2761@sirena.org.uk> <5554FDB4.50809@broadcom.com> <20150514201221.GX2761@sirena.org.uk>
+From: leilk liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Subject: Re: [PATCH 2/3] spi: mediatek: Add spi bus for Mediatek MT8173
+Date: Fri, 15 May 2015 15:38:42 +0800
+Message-ID: <1431675522.2128.13.camel@mhfsdcap03>
+References: <1431075343-7887-1-git-send-email-leilk.liu@mediatek.com>
+	 <1431075343-7887-3-git-send-email-leilk.liu@mediatek.com>
+	 <20150508175306.GG2761@sirena.org.uk> <1431434356.2128.9.camel@mhfsdcap03>
+	 <20150512160540.GB3066@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Cc: Scott Branden <sbranden-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Dmitry Torokhov <dtor-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
-	Anatol Pomazau <anatol-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
+Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
 	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	bcm-kernel-feedback-list <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Jonathan Richardson <jonathar-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+	"Kumar Gala" <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Catalin Marinas <catalin.marinas-5wv7dgnIgG8@public.gmane.org>,
+	Will Deacon <will.deacon-5wv7dgnIgG8@public.gmane.org>,
+	Eddie Huang <eddie.huang-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>,
+	Hongzhou Yang <hongzhou.yang-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<srv_heupstream-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>,
+	Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150514201221.GX2761-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <20150512160540.GB3066-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 14/05/15 13:12, Mark Brown wrote:
-> On Thu, May 14, 2015 at 12:55:32PM -0700, Jonathan Richardson wrote:
->> On 15-05-14 12:08 PM, Mark Brown wrote:
-> 
->>> All it takes is one hardware engineer who sees a SPI controller and a
->>> GPIO they can use for chip select; I wouldn't be so sure that nobody
->>> ever fixed this up locally (or happened to use a device that only needed
->>> single duplex).
-> 
->> Hi Mark. Would it help if we just set the flags to half duplex using
->> SPI_MASTER_HALF_DUPLEX when we register the master?
-> 
-> That would deal with the data corruption issues, yes.  Though it seems
-> like there are some people who want full duplex support here - I don't
-> know if any of them can point you at suitable hardware to test?
+Dear Mark,
 
-I am fine with having the driver supporting only half-duplex for now,
-considering that Jonathan and Scott have no peripheral to test
-full-duplex with.
+Thanks for your reply.
 
-Getting you platforms and test setups could take more time than needed
-so, let's proceed with the shortest path.
--- 
-Florian
+On Tue, 2015-05-12 at 17:05 +0100, Mark Brown wrote:
+> On Tue, May 12, 2015 at 08:39:16PM +0800, leilk liu wrote:
+> > On Fri, 2015-05-08 at 18:53 +0100, Mark Brown wrote:
+> > > On Fri, May 08, 2015 at 04:55:42PM +0800, leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org wrote:
+> 
+> > Could you tell me more details about "You should also be using the core
+> > helpers for DMA mapping"?
+> 
+> Implement can_dma() - look for drivers providing that for examples.
+> 
+
+MTK spi hardware uses the dmaengine in spi controller. According to
+datasheet, spi driver just need to enable dma register bit and write a
+physical address to relevant dma address register, so I think it may be
+complex while the driver supports can_dma.
+
+> > > > +static const struct of_device_id mtk_spi_of_match[] = {
+> > > > +	{ .compatible = "mediatek,mt6589-spi", .data = (void *)COMPAT_MT6589},
+> > > > +	{ .compatible = "mediatek,mt8173-spi", .data = (void *)COMPAT_MT8173},
+> > > > +	{}
+> > > > +};
+> > > > +MODULE_DEVICE_TABLE(of, mtk_spi_of_match);
+> 
+> > > There were three compatible strings listed in the DT binding but only
+> > > two here.
+> 
+> > MT6589 and MT8135 is compatible; 
+> > For MT8135 IC, it can use the follow way in dts to probe:
+> >   compatible = "mediatek,mt8135-spi", 
+> > 	       "mediatek,mt6589-spi";
+> 
+> > And I test it's ok on MT8135 platform. So I add struct of_device_id
+> > mtk_spi_of_match like this in spi driver code.
+> 
+> You should list all the compatibles documented in the binding here, if
+> some of them are the same just have them map to a single constant.
+
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

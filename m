@@ -1,140 +1,75 @@
-From: Maxime Ripard <maxime.ripard@free-electrons.com>
-Subject: Re: [PATCH] spi: Force the registration of the spidev devices
-Date: Fri, 15 May 2015 10:09:14 +0200
-Message-ID: <20150515080914.GU4004@lukather>
-References: <1431462804-30467-1-git-send-email-maxime.ripard@free-electrons.com>
- <20150513112604.GI3066@sirena.org.uk>
- <20150513153740.GC11677@kroah.com>
- <20150513175034.GC4004@lukather>
- <20150513181736.GC16811@kroah.com>
- <20150513192640.GF4004@lukather>
- <20150513223331.GA26748@kroah.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 2/3] spi: mediatek: Add spi bus for Mediatek MT8173
+Date: Fri, 15 May 2015 10:25:43 +0100
+Message-ID: <20150515092543.GY2761@sirena.org.uk>
+References: <1431075343-7887-1-git-send-email-leilk.liu@mediatek.com>
+ <1431075343-7887-3-git-send-email-leilk.liu@mediatek.com>
+ <20150508175306.GG2761@sirena.org.uk>
+ <1431434356.2128.9.camel@mhfsdcap03>
+ <20150512160540.GB3066@sirena.org.uk>
+ <1431675522.2128.13.camel@mhfsdcap03>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="FoibaoN3dya3u5fy"
-Cc: Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
-	Hans de Goede <hdegoede@redhat.com>,
-	linux-spi@vger.kernel.org, Martin Sperl <kernel@martin.sperl.org>,
-	Michal Suchanek <hramrach@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="3rA5Es2VluvhcIdy"
+Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Catalin Marinas <catalin.marinas-5wv7dgnIgG8@public.gmane.org>,
+	Will Deacon <will.deacon-5wv7dgnIgG8@public.gmane.org>,
+	Eddie Huang <eddie.huang-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>,
+	Hongzhou Yang <hongzhou.yang-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, srv_heupstream-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org,
+	Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+To: leilk liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20150513223331.GA26748@kroah.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1431675522.2128.13.camel@mhfsdcap03>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---FoibaoN3dya3u5fy
+--3rA5Es2VluvhcIdy
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 13, 2015 at 03:33:31PM -0700, Greg Kroah-Hartman wrote:
-> On Wed, May 13, 2015 at 09:26:40PM +0200, Maxime Ripard wrote:
-> > On Wed, May 13, 2015 at 11:17:36AM -0700, Greg Kroah-Hartman wrote:
-> > > On Wed, May 13, 2015 at 07:50:34PM +0200, Maxime Ripard wrote:
-> > > > Hi Greg,
-> > > >=20
-> > > > On Wed, May 13, 2015 at 08:37:40AM -0700, Greg Kroah-Hartman wrote:
-> > > > > On Wed, May 13, 2015 at 12:26:04PM +0100, Mark Brown wrote:
-> > > > > > On Tue, May 12, 2015 at 10:33:24PM +0200, Maxime Ripard wrote:
-> > > > > >=20
-> > > > > > > While this is nicer than the DT solution because of its accur=
-ate hardware
-> > > > > > > representation, it's still not perfect because you might not =
-have access to the
-> > > > > > > DT, or you might be driving a completely generic device (such=
- as a
-> > > > > > > microcontroller) that might be used for something else in a d=
-ifferent
-> > > > > > > context/board.
-> > > > > >=20
-> > > > > > Greg, you're copied on this because this seems to be a generic =
-problem
-> > > > > > that should perhaps be solved at a driver model level - having =
-a way to
-> > > > > > bind userspace access to devices that we don't otherwise have a=
- driver
-> > > > > > for.  The subsystem could specify the UIO driver to use when no=
- other
-> > > > > > driver is available.
-> > > > >=20
-> > > > > That doesn't really work.  I've been talking to the ACPI people a=
-bout
-> > > > > this, and the problem is "don't otherwise have a driver for" is an
-> > > > > impossible thing to prove, as you never know when a driver is goi=
-ng to
-> > > > > be loaded from userspace.
-> > > > >=20
-> > > > > You can easily bind drivers to devices today from userspace, why =
-not
-> > > > > just use the built-in functionality you have today if you "know" =
-that
-> > > > > there is no driver for this hardware.
-> > > >=20
-> > > > What we're really after here is that we want to have an spidev
-> > > > instance when we don't even have a device.
-> > >=20
-> > > That's crazy, just create a device, things do not work without one.
-> >=20
-> > Our use case is this one: we want to export spidev files so that "dev
-> > boards" with a header that allows to plug virtually anything on it
-> > (Raspberry Pi, Cubieboards, Xplained, and all the likes) without
-> > having to change the kernel and / or device tree.
->=20
-> You want to do that on a bus that is not self-describing or dynamic?
-> I too want a pony.  Please go kick the hardware engineer who designed
-> such a mess, we solved this problem 20+ years ago with "real" busses.
+On Fri, May 15, 2015 at 03:38:42PM +0800, leilk liu wrote:
+> On Tue, 2015-05-12 at 17:05 +0100, Mark Brown wrote:
 
-Well, we do have such ponies on some bus that don't have any kind of
-enumeration. i2cdev allows to do just that already. That would seem
-logical to have a similar behaviour for SPI.
+> > Implement can_dma() - look for drivers providing that for examples.
 
-> > That would mean that if we plug something to that port, no device will
-> > be created because the DT itself won't have that device declared in
-> > the first place.
->=20
-> Because you can't dynamically determine that something was plugged in,
-> of course.
+> MTK spi hardware uses the dmaengine in spi controller. According to
+> datasheet, spi driver just need to enable dma register bit and write a
+> physical address to relevant dma address register, so I think it may be
+> complex while the driver supports can_dma.
 
-Well.. Yeah.
+That's how a very large proportion of devices that work with DMA are
+done - why would this be complicated?  All can_dma() does is report if
+DMA is possible.
 
->=20
-> > This patch is actually doing this: creating a new device for all the
-> > chipselects that are not in use that will be bound to the spidev
-> > driver.
->=20
-> I have yet to see a patch...
-
-You were in Cc of that patch, which is the first message in this thread.
-
-Maxime
-
---=20
-Maxime Ripard, Free Electrons
-Embedded Linux, Kernel and Android engineering
-http://free-electrons.com
-
---FoibaoN3dya3u5fy
+--3rA5Es2VluvhcIdy
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
+Version: GnuPG v2
 
-iQIcBAEBAgAGBQJVVamqAAoJEBx+YmzsjxAgWOgP/iVKliVkr7kdOYLgXWwnILuj
-QtTWavOb+f5fFKr0/AZZrfggEqr1gNbsOVDiaIriyLoIm34TPVEE91rapHVKrjrw
-bdQCCMsZZAedQPXviDPBSCfNQi3dEq3aVAGhaTpWrpIDa7jYaK9jAhWFVp1o+zE2
-ml2FGFZioXBzytab4IFDHDVeEJYIcM7CUkUlzpa+lsEdwbsGRaTIUBTyKB///4l1
-Rpvj8eL7x4jsHLnqFrazePP5lTuWQih7ClEeyrB3KK96jZ7t2jklt1IPjLRKMyQ9
-GAwHmQoCpJZGFENas9uzB9nMxcaPx13GfO4oMSTT9X3YXNVyrqnrnGet6i/3+1fJ
-3SYxqljJFiLcfAw848W2XUOvd0fivTuDigQlHRyR6ebHD3eQ4mB7mM/iGR7XZo2v
-TRAYGM87eAtKW6fPeSjEtTuuJCtaQDKafjjUIYVNpn1o/G37/wyCWdIE+SMwWlkI
-ATVmQE6MwmwDbIoOZYxGezJNFphga3w8h1laNKC6EuryWVrNBQ9FQOdjaV69T52f
-WPaFV7C+oXTRvQ+3XGj3Wvb8l98dkE6sGB3769+0hsz3tgpRwXT98k+oMdyvxk5T
-IYefyDhPpmah65MLZcj1bf22n2FRs8aCuuT943sKDy6pQX8vCNhCV3U8tQR3tYj5
-e+jk88QdBuONnSmga4tR
-=eEs1
+iQEcBAEBCAAGBQJVVbuXAAoJECTWi3JdVIfQOM0H/1QA4VRmTcQKW4xIuJZwMWcE
+B1JVTfAeAvI8BVWMp6m3eEpTzQbGpbaZYqFKg+63AD7d1zUF76EGREVixnkojiS+
+6agjzTR0CX8wHReIbNP62GYdGL7gKGSgVNv847OcnbeALj20+QSfWvHS/QsbjHZN
++8/hIYtqYFQTviQhCKeOgqDTMtJ730id+HTabUfhjvL8IiB20N4H0QUMJZIl1aA0
+4ENqbLW7ROAiaCrdr+2UgD3AVUdYJUQLyt/tz7AHc/19YHw01T9MTjeTqSID7kI1
+//aaRtTQ8ftBncJl9JP6i8A5GiNaPbKTMatugVMbAPwWAa1HSeq3Fuq9s59MtWk=
+=xdg4
 -----END PGP SIGNATURE-----
 
---FoibaoN3dya3u5fy--
+--3rA5Es2VluvhcIdy--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,47 +1,125 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH v2] dmaengine: bcm2835: Add slave dma support
-Date: Sat, 16 May 2015 19:31:36 +0200
-Message-ID: <8352B3C1-D66A-4875-B38C-6C4593418E10@martin.sperl.org>
-References: <1429355160-13657-1-git-send-email-noralf@tronnes.org> <5552231A.9010503@tronnes.org>
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2098\))
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	=?utf-8?Q?Noralf_Tr=C3=B8nnes?= <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
-	jonathan-FnsA7b+Nu9XbIbC87yuRow@public.gmane.org,
-	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <5552231A.9010503-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
+Subject: [PATCH v3 00/17] new LoCoMo driver set
+Date: Sun, 17 May 2015 19:27:40 +0300
+Message-ID: <1431880077-26321-1-git-send-email-dbaryshkov@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+	linux-input@vger.kernel.org, linux-leds@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-fbdev@vger.kernel.org,
+	alsa-devel@alsa-project.org
+To: Russell King <linux@arm.linux.org.uk>,
+	Daniel Mack <daniel@zonque.org>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Alexandre Courbot <gnurou@gmail.com>,
+	Wolfram Sang <wsa@the-dreams.de>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Bryan Wu <cooloney@gmail.com>,
+	Richard Purdie <rpurdie@rpsys.net>,
+	Samuel Ortiz <sameo@linux.intel.com>,
+	Lee Jones <lee.jones@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Jingoo Han <jg1.han@samsung.com>,
+	Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
+	Tomi Valkeinen <tomi.valkeinen@ti.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Andrea Adami <andrea.adami@gmail.com>
+Return-path: <linux-gpio-owner@vger.kernel.org>
+Sender: linux-gpio-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+Sharp Zaurus SL-5500 and SL-5600 use special companion Gate Array.
+With this patchset I tried to modernise and restructure the LoCoMo drivers.
 
-> On 12.05.2015, at 17:58, Noralf Tr=C3=B8nnes <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org> wro=
-te:
->=20
-> Is there something missing for this patch to get accepted?
-> spi-bcm2835 has now DMA support that depends on this patch.
+* Use platform bus and mfd core code
+* Use GPIO API instead of custom locomo GPIO code
+* Use irqdomains to manage IRQs
+* Split mixed locomolcd driver to lcd and backlight parts
+* Implement IRQ handling in GPIO driver
+* Implement SPI driver used as a host for mmc_spi device to control SD cards
 
-As the spi-bcm2835.c patch using DMA (relying on this) has gone into
-spi/for-next (but so far without the DT changes to enable DMA mode)
-can we also get this dmaengine patch merged into for-next?
+Changes since V2:
+* Implemented most of review findings (lots of small changes)
+* Added comments where the review feedback was ignored
 
-Note that I played BigBuckBunny movie on my spi TFT for the last
-24 hours using DMA only and it works without any hickups using
-the V2 patch provided by Noralf - it transferred 24GB so far.
-I also did test it with spi-mmc and enc28j60 - all of which use DMA
-with different access pattern, so that test should be quite
-comprehensive.
+The following changes since commit b787f68c36d49bb1d9236f403813641efa74a031:
 
-Thanks,
-	Martin
+  Linux 4.1-rc1 (2015-04-26 17:59:10 -0700)
 
+are available in the git repository at:
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+  git://git.infradead.org/users/dbaryshkov/zaurus.git locomo-v3
+
+for you to fetch changes up to c7405f110836863287c505650ac2133fecabea7b:
+
+  ARM: drop old LoCoMo driver (2015-05-17 19:23:20 +0300)
+
+----------------------------------------------------------------
+Dmitry Eremin-Solenikov (17):
+      mfd: add new driver for Sharp LoCoMo
+      leds: port locomo leds driver to new locomo core
+      input: convert LoCoMo keyboard driver to use new locomo core
+      input: make LoCoMo keyboard driver support both poodle and collie
+      video: backlight: add new locomo backlight driver
+      video: lcd: add LoCoMo LCD driver
+      gpio: port LoCoMo gpio support from old driver
+      gpio: locomo: implement per-pin irq handling
+      spi: add locomo SPI driver
+      i2c: add locomo i2c driver
+      ARM: sa1100: make collie use new locomo drivers
+      ARM: sa1100: don't preallocate IRQ space for locomo
+      ASoC: pxa: poodle: make use of new locomo GPIO interface
+      ARM: pxa: poodle: use new LoCoMo driver
+      ARM: pxa: poodle: don't preallocate IRQ space for locomo
+      video: backlight: drop old locomo bl/lcd driver
+      ARM: drop old LoCoMo driver
+
+ arch/arm/common/Kconfig                    |   3 -
+ arch/arm/common/Makefile                   |   1 -
+ arch/arm/common/locomo.c                   | 914 -----------------------------
+ arch/arm/include/asm/hardware/locomo.h     | 221 -------
+ arch/arm/mach-pxa/Kconfig                  |   1 -
+ arch/arm/mach-pxa/include/mach/poodle.h    |   8 +-
+ arch/arm/mach-pxa/poodle.c                 |  58 +-
+ arch/arm/mach-sa1100/Kconfig               |   1 -
+ arch/arm/mach-sa1100/collie.c              | 213 +++++--
+ arch/arm/mach-sa1100/include/mach/collie.h |  16 +-
+ arch/arm/mach-sa1100/include/mach/irqs.h   |  19 +-
+ drivers/gpio/Kconfig                       |  13 +
+ drivers/gpio/Makefile                      |   1 +
+ drivers/gpio/gpio-locomo.c                 | 285 +++++++++
+ drivers/i2c/busses/Kconfig                 |  12 +
+ drivers/i2c/busses/Makefile                |   1 +
+ drivers/i2c/busses/i2c-locomo.c            | 135 +++++
+ drivers/input/keyboard/Kconfig             |   2 +-
+ drivers/input/keyboard/locomokbd.c         | 264 ++++-----
+ drivers/leds/Kconfig                       |   2 +-
+ drivers/leds/leds-locomo.c                 | 117 ++--
+ drivers/mfd/Kconfig                        |  10 +
+ drivers/mfd/Makefile                       |   1 +
+ drivers/mfd/locomo.c                       | 346 +++++++++++
+ drivers/spi/Kconfig                        |  10 +
+ drivers/spi/Makefile                       |   1 +
+ drivers/spi/spi-locomo.c                   | 332 +++++++++++
+ drivers/video/backlight/Kconfig            |  16 +-
+ drivers/video/backlight/Makefile           |   3 +-
+ drivers/video/backlight/locomo_bl.c        | 153 +++++
+ drivers/video/backlight/locomo_lcd.c       | 285 +++++++++
+ drivers/video/backlight/locomolcd.c        | 255 --------
+ include/linux/mfd/locomo.h                 | 167 ++++++
+ sound/soc/pxa/poodle.c                     |  52 +-
+ 34 files changed, 2216 insertions(+), 1702 deletions(-)
+ delete mode 100644 arch/arm/common/locomo.c
+ delete mode 100644 arch/arm/include/asm/hardware/locomo.h
+ create mode 100644 drivers/gpio/gpio-locomo.c
+ create mode 100644 drivers/i2c/busses/i2c-locomo.c
+ create mode 100644 drivers/mfd/locomo.c
+ create mode 100644 drivers/spi/spi-locomo.c
+ create mode 100644 drivers/video/backlight/locomo_bl.c
+ create mode 100644 drivers/video/backlight/locomo_lcd.c
+ delete mode 100644 drivers/video/backlight/locomolcd.c
+ create mode 100644 include/linux/mfd/locomo.h
+
+-- 
+With best wishes
+Dmitry
+

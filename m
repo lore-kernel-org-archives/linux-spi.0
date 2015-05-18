@@ -1,52 +1,36 @@
-From: Jacek Anaszewski <j.anaszewski@samsung.com>
-Subject: Re: [PATCH v3 02/17] leds: port locomo leds driver to new locomo core
-Date: Mon, 18 May 2015 10:37:51 +0200
-Message-ID: <5559A4DF.3010101@samsung.com>
-References: <1431880077-26321-1-git-send-email-dbaryshkov@gmail.com>
- <1431880077-26321-3-git-send-email-dbaryshkov@gmail.com>
+From: Pascal Huerst <pascal.huerst-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi: omap2-mcspi: Add calls for pinctrl state select
+Date: Mon, 18 May 2015 14:02:04 +0200
+Message-ID: <5559D4BC.6010606@gmail.com>
+References: <1431519316-30989-1-git-send-email-pascal.huerst@gmail.com> <20150513181536.GI2761@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 7bit
-Cc: Russell King <linux@arm.linux.org.uk>,
-	Daniel Mack <daniel@zonque.org>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Alexandre Courbot <gnurou@gmail.com>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Bryan Wu <cooloney@gmail.com>,
-	Richard Purdie <rpurdie@rpsys.net>,
-	Samuel Ortiz <sameo@linux.intel.com>,
-	Lee Jones <lee.jones@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Jingoo Han <jg1.han@samsung.com>,
-	Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
-	Tomi Valkeinen <tomi.valkeinen@ti.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Andrea Adami <andrea.adami@gmail.com>,
-	linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
-	linux-input@vger.kernel.org, linux-leds@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-fbdev@vger.kernel.org,
-	alsa-devel@alsa-project.org
-To: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
-Return-path: <linux-gpio-owner@vger.kernel.org>
-In-reply-to: <1431880077-26321-3-git-send-email-dbaryshkov@gmail.com>
-Sender: linux-gpio-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150513181536.GI2761-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Dmitry,
 
-On 05/17/2015 06:27 PM, Dmitry Eremin-Solenikov wrote:
-> Adapt locomo leds driver to new locomo core setup.
->
-> Signed-off-by: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
-> ---
->   drivers/leds/Kconfig       |   2 +-
->   drivers/leds/leds-locomo.c | 117 +++++++++++++++++++++++----------------------
->   2 files changed, 61 insertions(+), 58 deletions(-)
 
-Acked-by: Jacek Anaszewski <j.anaszewski@samsung.com>
+On 13.05.2015 20:15, Mark Brown wrote:
+> On Wed, May 13, 2015 at 02:15:16PM +0200, pascal.huerst-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org wrote:
+> 
+>> This adds calls to pinctrl subsystem in order to switch pin states
+>> on suspend/resume if you provide a "sleep" state in DT.
+> 
+>> If no "sleep" state is provided in DT, these calls turn
+>> to NOPs, so we don't need error checking here.
+> 
+> We should still be checking if we succesfully changed the state when
+> there is a state provided shouldn't we?
 
--- 
-Best Regards,
-Jacek Anaszewski
+I agree, but if I git grep for such calls, nobody seems to check the
+return values of these functions. Shall I add a check and print a
+message if the call fails?
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

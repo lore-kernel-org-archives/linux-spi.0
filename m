@@ -1,53 +1,55 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2] spi: sirf: add support for USP-based SPI
-Date: Tue, 19 May 2015 12:22:01 +0100
-Message-ID: <20150519112201.GH2761@sirena.org.uk>
-References: <1431602829-12428-1-git-send-email-21cnbao@gmail.com>
+Subject: Re: [PATCH] spi: omap2-mcspi: Add calls for pinctrl state select
+Date: Tue, 19 May 2015 13:12:25 +0100
+Message-ID: <20150519121225.GM2761@sirena.org.uk>
+References: <1431519316-30989-1-git-send-email-pascal.huerst@gmail.com>
+ <20150513181536.GI2761@sirena.org.uk>
+ <5559D4BC.6010606@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="FYec+JOmxp35b5JI"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	workgroup.linux-kQvG35nSl+M@public.gmane.org, Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>,
-	Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
-To: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="HanPD1JKBS04/nMk"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Pascal Huerst <pascal.huerst-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1431602829-12428-1-git-send-email-21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <5559D4BC.6010606-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---FYec+JOmxp35b5JI
+--HanPD1JKBS04/nMk
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 14, 2015 at 11:27:09AM +0000, Barry Song wrote:
-> From: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
->=20
-> USP is a general purpose serial port in SiRFSoC, which can work as SPI.
-> the most data flow of USP and pure SPI is same with main differences
-> in registers layout.
+On Mon, May 18, 2015 at 02:02:04PM +0200, Pascal Huerst wrote:
+> On 13.05.2015 20:15, Mark Brown wrote:
 
-This doesn't apply against current code, please check and resend.
+> > We should still be checking if we succesfully changed the state when
+> > there is a state provided shouldn't we?
 
---FYec+JOmxp35b5JI
+> I agree, but if I git grep for such calls, nobody seems to check the
+> return values of these functions. Shall I add a check and print a
+> message if the call fails?
+
+Yes, please.
+
+--HanPD1JKBS04/nMk
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVWxzYAAoJECTWi3JdVIfQRXoH/ROeeAZIJYJujEZk+mJKvrIs
-em69Iyd/+WtRLX9HjxQiL0PDW8Ge1KGmh/pAkteLxEWVpC/ShQDDkN03bczTpHfA
-R+PRm+gjoz3eKVmnDIzigES77G+kj86a5smJHr56mIS7LPku7mwrFo1ICY99CVmu
-QLMJB25Td2qCz8XyG90Av8m845M8Jka2Nlks7RyVdvy8osIWrSsmi1S2zB9wWvo/
-h0tSUiptIenTHiliAMvfp8eOrs5GXTIbrM34gDOX/Jdm9Ic8pjLY92Gs1+y8oTPj
-KLTei5EghRjFllqFe7EpQaOA5Vru9sYUtO4QSROSpXDI2orrjuq4IsBniY4TA/g=
-=S0iN
+iQEcBAEBCAAGBQJVWyioAAoJECTWi3JdVIfQnfUH/0pfhAxENzpjmFg5ldhq/qUp
+5xGqXbtXIRHC3HfuQYr8WHJz19iNUxcOkyQUM5BYTobjR+CfraqRmptvjBu1mN8W
+lhQm0lSdMyqbt4WYdpmn01ku4Yg91UKPtbqTvaYHJhfUbR7Kk/41lNFbROKV7isA
+swpsNLPfU16iFIKZua6YF8hg2dVdqW45xehzKo3Zcfgii7iBwww06y14Ccmb6ANY
+PTy4RuFqOhsKFitrne8qfjmtQ++yFGC/wmDFAVICoHzuK9vrk0OJ9oacr6Z/s+fa
+qqc4279Up91dxvrl8H8mm8dvtlVcNDmNPwpREd/pXf1+TzcnY8jI1d6W3lpQebM=
+=hK2t
 -----END PGP SIGNATURE-----
 
---FYec+JOmxp35b5JI--
+--HanPD1JKBS04/nMk--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

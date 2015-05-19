@@ -1,164 +1,189 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: SPI_MASTER_MUST_* with scatter-gather only option
- and avoiding realloc
-Date: Tue, 19 May 2015 13:46:32 +0100
-Message-ID: <20150519124632.GN2761@sirena.org.uk>
-References: <20150512165053.GE3066@sirena.org.uk>
- <1431597524-7907-1-git-send-email-kernel@martin.sperl.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="frrXvU3mT8dlRds5"
-Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: Re: [PATCH] spi: SPI_MASTER_MUST_* with scatter-gather only option and avoiding realloc
+Date: Tue, 19 May 2015 16:17:33 +0200
+Message-ID: <CA52E701-A9BF-45F1-AE2A-CD3E680CEAFC@martin.sperl.org>
+References: <20150512165053.GE3066@sirena.org.uk> <1431597524-7907-1-git-send-email-kernel@martin.sperl.org> <20150519124632.GN2761@sirena.org.uk>
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2098\))
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1431597524-7907-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <20150519124632.GN2761-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---frrXvU3mT8dlRds5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, May 14, 2015 at 09:58:44AM +0000, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
-> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+> On 19.05.2015, at 14:46, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
 >=20
-> Rewrite of spi_map_msg and spi_map_buf so that for SPI_MASTER_MUST_*:
+> Like I say I'm not entirely convinced we need the extra flags over ju=
+st
+> using can_dma().
+If you can tell me that:
+	(master->flags & (SPI_MASTER_MUST_TX | SPI_MASTER_MUST_RX)) &&
+	master->can_dma && master->can_dma(...)=20
+means that we do NOT need real memory allocated in the first place but
+we only expect a scatter list to be created=20
+and memory allocated in all other cases then that be it.
 
-This isn't just rewriting the internals, this is adding a completely new
-API with separate code, fixing a bug, optimising the existing API and
-adding a user of the new API.  I'd have expected all of that to be
-called out in the changelog and for it to be split out into several
-patches - especially the bug fix since that should go to Linus' tree and
-stable.
+I am just not convinced that this is necessarily true for all
+existing (or future) drivers.
 
-Like I say I'm not entirely convinced we need the extra flags over just
-using can_dma().
+During my discovery questions you mentioned that for some drivers
+it may not be as simple as
+  tx =3D (xfer->tx_buf) ? xfer->tx_buf[i] : 0;
 
-> It also fixes the insufficient cleanup in case __spi_map_msg returns
-> an error.
+So this =E2=80=9Cextension=E2=80=9D of the API is to avoid the potentia=
+l risk of
+breaking other drivers by making the above assumption (with
+additional calls to can_dma, which then we should start to cache)
 
-This should be a separate patch.
+>=20
+>> It also fixes the insufficient cleanup in case __spi_map_msg returns
+>> an error.
+>=20
+> This should be a separate patch.
 
-> diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-> index ac1760e..ac74456 100644
-> --- a/drivers/spi/spi-bcm2835.c
-> +++ b/drivers/spi/spi-bcm2835.c
-> @@ -463,7 +463,7 @@ void bcm2835_dma_init(struct spi_master *master, stru=
-ct device *dev)
->  	master->can_dma =3D bcm2835_spi_can_dma;
->  	master->max_dma_len =3D 65535; /* limitation by BCM2835_SPI_DLEN */
->  	/* need to do TX AND RX DMA, so we need dummy buffers */
-> -	master->flags =3D SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX;
-> +	master->flags =3D SPI_MASTER_MUST_RX_SG | SPI_MASTER_MUST_TX_SG;
-> =20
->  	return;
-> =20
+The problem is that this came up while developing the patch, so
+I left it in the patch, assuming there would be some feedback
+that requires another version of the patch...
 
-This is updating a specific driver to use the new API you're adding,
-this should be in a separate patch.
+> This is updating a specific driver to use the new API you're adding,
+> this should be in a separate patch.
 
->  #ifdef CONFIG_HAS_DMA
-> +static int spi_map_null(struct spi_master *master, struct device *dev,
-> +			struct sg_table *sgt,
-> +			struct sg_table *sgt_template,
-> +			void *buf,
-> +			enum dma_data_direction dir)
-> +{
+At one occasion I got scolded for separating things out into different
+patches (in that case api from implemetation), now the other way around=
+,
+but we can do that...
 
-It's not obvious to me what this is supposed to do and it looks awfully
-like it's duplicating the existing DMA mapping code (but if that's the
-case the existing code should be using this not duplicating it so I
-guess not).  I think it's supposed to be for creating a scatterlist that
-repeatedly reused the same dummy page but there's this template thing,
-it's getting a buffer passed in and...
+>=20
+>> #ifdef CONFIG_HAS_DMA
+>> +static int spi_map_null(struct spi_master *master, struct device *d=
+ev,
+>> +			struct sg_table *sgt,
+>> +			struct sg_table *sgt_template,
+>> +			void *buf,
+>> +			enum dma_data_direction dir)
+>> +{
+>=20
+> It's not obvious to me what this is supposed to do and it looks awful=
+ly
+> like it's duplicating the existing DMA mapping code (but if that's th=
+e
+> case the existing code should be using this not duplicating it so I
+> guess not).  I think it's supposed to be for creating a scatterlist t=
+hat
+> repeatedly reused the same dummy page but there's this template thing=
+,
+> it's getting a buffer passed in and=E2=80=A6
 
-> +	if (is_vmalloc_addr(buf)) {
-> +		vm_page =3D vmalloc_to_page(buf);
-> +		if (!vm_page) {
-> +			sg_free_table(sgt);
-> +			return -ENOMEM;
-> +		}
-> +		page_offset =3D offset_in_page(buf);
-> +	} else {
-> +		vm_page =3D NULL;
-> +		page_offset =3D 0;
-> +	}
+OK, so the idea is that this situation ONLY happens when we have either
+tx_buf or rx_buf for which we need to map the other transfer from a
+=E2=80=9Cdummy/null=E2=80=9D page.
 
-=2E..this is really weird for that case. =20
+So maybe instead of spi_map_null it should get called spi_map_dummy.
 
-I'd have expected to be allocating a scatterlist that transfers a
-specified length to/from a normal page sized kmalloc() buffer in which
-case we don't need to worry about vmalloc() or this template stuff.
+The template is there to create an (almost) identical scatter lists for
+both rx and tx (modulo PAGE_SIZE). So if we have a tx-scatter list of:
+4, 8, 4103 bytes, and we need to do a dummy transfer for rx, then the
+(basic) identical pattern of 4, 8, 4096, 7 would get created.
 
-> +		/*
-> +		 * handle the SPI_MASTER_MUST_*_SG
-> +		 * note that the situation with tx_buf and rx_buf both NULL
-> +		 * is checked and handled inside spi_transfer_one_message
-> +		 */
-> +		if ((!xfer->tx_buf) && (xfer->rx_buf) &&
-> +		    (master->flags & SPI_MASTER_MUST_TX_SG)) {
-> +			ret =3D spi_map_null(master, tx_dev,
-> +					   &xfer->tx_sg, &xfer->rx_sg,
-> +					   master->page_tx,
-> +					   DMA_TO_DEVICE);
-> +			if (ret !=3D 0) {
-> +				spi_unmap_buf(master, rx_dev, &xfer->rx_sg,
-> +					      DMA_FROM_DEVICE);
-> +				return ret;
-> +			}
-> +		}
+This kind avoids some restrictions that I have seen with the spi-bcm283=
+5
+hardware.
 
-Why does the transmit handling use a scatterlist allocated for receive
-(and vice versa)?  This goes back to the lack of clarity about what
-spi_map_null() is doing.
+As for replication - the code is similar in some aspects,
+but still serves a different purpose (especially with the templating).
 
->  		if (max_tx) {
-> -			tmp =3D krealloc(master->dummy_tx, max_tx,
-> -				       GFP_KERNEL | GFP_DMA);
-> -			if (!tmp)
-> -				return -ENOMEM;
-> -			master->dummy_tx =3D tmp;
-> -			memset(tmp, 0, max_tx);
-> +			if (max_tx > PAGE_SIZE) {
-> +				tmp_tx =3D krealloc(master->dummy_tx, max_tx,
-> +						  GFP_KERNEL | GFP_DMA);
-> +				if (!tmp_tx)
-> +					return -ENOMEM;
-> +				master->dummy_tx =3D tmp_tx;
-> +				memset(tmp_tx, 0, max_tx);
-> +			} else {
-> +				tmp_tx =3D master->page_tx;
-> +			}
+Adding all that into one would mean actually merging tx and rx cases
+into one piece of code, and I did not want to go that far.
+Keep what is working.
 
-This idea is fine but should be a separate patch.
+Also if we would do that then we should also add additional features
+like creating a list of scatter lists for some cases, when:
+* an individual dma transfer to the HW can only be < 65536 bytes in
+  length (the spi HW got a counter)
+* or when individual entries in the scatter list are not a multiple
+  of 4
+we would need to add multiple sg lists and handle each one separately.
+(again examples from spi-bcm2835)
 
-I'd expect it should be about as cheap to change the realloc to be the
-max of max_tx and PAGE_SIZE (the code was written on the basis that we'd
-basically get that behaviour from the allocator anyway most of the
-time though IIRC it will work in chunks smaller than a page) but this
-does save us the memset() on the transmit path which is handy.
+This would be a much bigger change.
 
---frrXvU3mT8dlRds5
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+>=20
+>> +	if (is_vmalloc_addr(buf)) {
+>> +		vm_page =3D vmalloc_to_page(buf);
+>> +		if (!vm_page) {
+>> +			sg_free_table(sgt);
+>> +			return -ENOMEM;
+>> +		}
+>> +		page_offset =3D offset_in_page(buf);
+>> +	} else {
+>> +		vm_page =3D NULL;
+>> +		page_offset =3D 0;
+>> +	}
+>=20
+> ...this is really weird for that case. =20
+>=20
+> I'd have expected to be allocating a scatterlist that transfers a
+> specified length to/from a normal page sized kmalloc() buffer in whic=
+h
+> case we don't need to worry about vmalloc() or this template stuff.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+vm_page actually serves as a flag what call should get used a little
+further down - sg_set_page (in case of not null) or sg_set_buf.
 
-iQEcBAEBCAAGBQJVWzCoAAoJECTWi3JdVIfQ/r4H/0D23g88WxBNHVE+IPficUki
-hKBVatrs7oUfTdptHv7UZkVU0usx8NfQLY6wHyQ3tgb5xhQnrA32FZepy9uDXfoW
-a2Zh+6TTmQAdPjZBw7muCBfvlOWsNHRl4xEzaV5vUlBM9hgiVGgANnz6PKrlshbK
-4/bS7q/pSmT0LCnlzC9+dR1QzouylvwURE+H8ohJhO91YQRfCwAL1pK5512GkQ0d
-9oYiHaaoHqwljvTfKGbe08Jrx1EQSZQYqlQZNlqWItuSc4ccg5w/va1fluiWuCPO
-YL7WdssiSbe+xmaJpfvL/b8j9VBc3sjFKbbVLHZypoY+5G6+TN0VPNvf/b5DMFw=
-=XLUx
------END PGP SIGNATURE-----
+This is there as I am not 100% sure that the allocation used as
+buffer is ALWAYS of the same identical type on _all_ platforms
+in all .config variants (and I want to avoid breaking things...
 
---frrXvU3mT8dlRds5--
+If you can tell me that it is always of one type (even when used
+early during kernel initialization), then we can remove that.
+
+> Why does the transmit handling use a scatterlist allocated for receiv=
+e
+> (and vice versa)?  This goes back to the lack of clarity about what
+> spi_map_null() is doing.
+
+See above about =E2=80=9Ctemplating"
+
+>=20
+>> 		if (max_tx) {
+>> -			tmp =3D krealloc(master->dummy_tx, max_tx,
+>> -				       GFP_KERNEL | GFP_DMA);
+>> -			if (!tmp)
+>> -				return -ENOMEM;
+>> -			master->dummy_tx =3D tmp;
+>> -			memset(tmp, 0, max_tx);
+>> +			if (max_tx > PAGE_SIZE) {
+>> +				tmp_tx =3D krealloc(master->dummy_tx, max_tx,
+>> +						  GFP_KERNEL | GFP_DMA);
+>> +				if (!tmp_tx)
+>> +					return -ENOMEM;
+>> +				master->dummy_tx =3D tmp_tx;
+>> +				memset(tmp_tx, 0, max_tx);
+>> +			} else {
+>> +				tmp_tx =3D master->page_tx;
+>> +			}
+>=20
+> This idea is fine but should be a separate patch.
+>=20
+> I'd expect it should be about as cheap to change the realloc to be th=
+e
+> max of max_tx and PAGE_SIZE (the code was written on the basis that w=
+e'd
+> basically get that behaviour from the allocator anyway most of the
+> time though IIRC it will work in chunks smaller than a page) but this
+> does save us the memset() on the transmit path which is handy.
+
+Well - this comes mostly from the fact that we now have a PAGE that
+is cleaned already (and we need it for mapping anyway), so=20
+just make use of it as long as the size is small enough, which
+probably happens in most cases.
+
+Martin
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

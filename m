@@ -1,58 +1,53 @@
-From: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
-Subject: Re: [PATCH v3 01/17] mfd: add new driver for Sharp LoCoMo
-Date: Tue, 19 May 2015 12:21:34 +0100
-Message-ID: <20150519112134.GD2067@n2100.arm.linux.org.uk>
-References: <1431880077-26321-1-git-send-email-dbaryshkov@gmail.com>
- <1431880077-26321-2-git-send-email-dbaryshkov@gmail.com>
- <20150519103828.GU22418@x1>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2] spi: sirf: add support for USP-based SPI
+Date: Tue, 19 May 2015 12:22:01 +0100
+Message-ID: <20150519112201.GH2761@sirena.org.uk>
+References: <1431602829-12428-1-git-send-email-21cnbao@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Dmitry Eremin-Solenikov <dbaryshkov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Alexandre Courbot <gnurou-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
-	Dmitry Torokhov <dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Bryan Wu <cooloney-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Richard Purdie <rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org>,
-	Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Jean-Christophe Plagniol-Villard <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>,
-	Tomi Valkeinen <tomi.valkeinen-l0cyMroinI0@public.gmane.org>,
-	Liam Girdwood <lgirdwood-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Andrea Adami <andrea.adami-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-input-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-leds-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-fbdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org
-To: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="FYec+JOmxp35b5JI"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	workgroup.linux-kQvG35nSl+M@public.gmane.org, Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>,
+	Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
+To: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20150519103828.GU22418@x1>
+In-Reply-To: <1431602829-12428-1-git-send-email-21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, May 19, 2015 at 11:38:28AM +0100, Lee Jones wrote:
-> On Sun, 17 May 2015, Dmitry Eremin-Solenikov wrote:
-> > +static void locomo_mask_irq(struct irq_data *d)
-> > +{
-> > +	struct locomo *ldev = irq_data_get_irq_chip_data(d);
-> > +	unsigned int mask = 0x0010 << d->hwirq;
-> 
-> This also needs defining.
-> 
-> Why not
->   BIT(d->hwirq + 1)
 
-I think your maths is off...
+--FYec+JOmxp35b5JI
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-0x0010 << d->hwirq != BIT(d->hwirq + 1)
+On Thu, May 14, 2015 at 11:27:09AM +0000, Barry Song wrote:
+> From: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
+>=20
+> USP is a general purpose serial port in SiRFSoC, which can work as SPI.
+> the most data flow of USP and pure SPI is same with main differences
+> in registers layout.
 
--- 
-FTTC broadband for 0.8mile line: currently at 10.5Mbps down 400kbps up
-according to speedtest.net.
+This doesn't apply against current code, please check and resend.
+
+--FYec+JOmxp35b5JI
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVWxzYAAoJECTWi3JdVIfQRXoH/ROeeAZIJYJujEZk+mJKvrIs
+em69Iyd/+WtRLX9HjxQiL0PDW8Ge1KGmh/pAkteLxEWVpC/ShQDDkN03bczTpHfA
+R+PRm+gjoz3eKVmnDIzigES77G+kj86a5smJHr56mIS7LPku7mwrFo1ICY99CVmu
+QLMJB25Td2qCz8XyG90Av8m845M8Jka2Nlks7RyVdvy8osIWrSsmi1S2zB9wWvo/
+h0tSUiptIenTHiliAMvfp8eOrs5GXTIbrM34gDOX/Jdm9Ic8pjLY92Gs1+y8oTPj
+KLTei5EghRjFllqFe7EpQaOA5Vru9sYUtO4QSROSpXDI2orrjuq4IsBniY4TA/g=
+=S0iN
+-----END PGP SIGNATURE-----
+
+--FYec+JOmxp35b5JI--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

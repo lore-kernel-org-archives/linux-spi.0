@@ -1,56 +1,79 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: omap2-mcspi: Add calls for pinctrl state select
-Date: Tue, 19 May 2015 13:12:25 +0100
-Message-ID: <20150519121225.GM2761@sirena.org.uk>
-References: <1431519316-30989-1-git-send-email-pascal.huerst@gmail.com>
- <20150513181536.GI2761@sirena.org.uk>
- <5559D4BC.6010606@gmail.com>
+From: Lee Jones <lee.jones@linaro.org>
+Subject: Re: [PATCH v3 01/17] mfd: add new driver for Sharp LoCoMo
+Date: Tue, 19 May 2015 13:33:14 +0100
+Message-ID: <20150519123314.GA3627@x1>
+References: <1431880077-26321-1-git-send-email-dbaryshkov@gmail.com>
+ <1431880077-26321-2-git-send-email-dbaryshkov@gmail.com>
+ <20150519103828.GU22418@x1>
+ <20150519112134.GD2067@n2100.arm.linux.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="HanPD1JKBS04/nMk"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Pascal Huerst <pascal.huerst-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>,
+	Daniel Mack <daniel@zonque.org>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Alexandre Courbot <gnurou@gmail.com>,
+	Wolfram Sang <wsa@the-dreams.de>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Bryan Wu <cooloney@gmail.com>,
+	Richard Purdie <rpurdie@rpsys.net>,
+	Samuel Ortiz <sameo@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jingoo Han <jg1.han@samsung.com>,
+	Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
+	Tomi Valkeinen <tomi.valkeinen@ti.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Andrea Adami <andrea.adami@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+	linux-input@vger.kernel.org, linux-leds@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-fbdev@vger.kernel.org,
+	alsa-devel@alsa-project.org
+To: Russell King - ARM Linux <linux@arm.linux.org.uk>
+Return-path: <linux-input-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <5559D4BC.6010606-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <20150519112134.GD2067@n2100.arm.linux.org.uk>
+Sender: linux-input-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+On Tue, 19 May 2015, Russell King - ARM Linux wrote:
 
---HanPD1JKBS04/nMk
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> On Tue, May 19, 2015 at 11:38:28AM +0100, Lee Jones wrote:
+> > On Sun, 17 May 2015, Dmitry Eremin-Solenikov wrote:
+> > > +static void locomo_mask_irq(struct irq_data *d)
+> > > +{
+> > > +	struct locomo *ldev =3D irq_data_get_irq_chip_data(d);
+> > > +	unsigned int mask =3D 0x0010 << d->hwirq;
+> >=20
+> > This also needs defining.
+> >=20
+> > Why not
+> >   BIT(d->hwirq + 1)
+>=20
+> I think your maths is off...
+>=20
+> 0x0010 << d->hwirq !=3D BIT(d->hwirq + 1)
 
-On Mon, May 18, 2015 at 02:02:04PM +0200, Pascal Huerst wrote:
-> On 13.05.2015 20:15, Mark Brown wrote:
+Ah, that's hex.  I was blinded by the 1's and 0's.  Doh!
 
-> > We should still be checking if we succesfully changed the state when
-> > there is a state provided shouldn't we?
+Thanks Russell.
 
-> I agree, but if I git grep for such calls, nobody seems to check the
-> return values of these functions. Shall I add a check and print a
-> message if the call fails?
+---
 
-Yes, please.
+Why not
+  BIT(d->hwirq + 4)
 
---HanPD1JKBS04/nMk
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+=2E.. with an explanation as to why you're skipping the first 4 bits?
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+/me hopes that maths is right now. :)
 
-iQEcBAEBCAAGBQJVWyioAAoJECTWi3JdVIfQnfUH/0pfhAxENzpjmFg5ldhq/qUp
-5xGqXbtXIRHC3HfuQYr8WHJz19iNUxcOkyQUM5BYTobjR+CfraqRmptvjBu1mN8W
-lhQm0lSdMyqbt4WYdpmn01ku4Yg91UKPtbqTvaYHJhfUbR7Kk/41lNFbROKV7isA
-swpsNLPfU16iFIKZua6YF8hg2dVdqW45xehzKo3Zcfgii7iBwww06y14Ccmb6ANY
-PTy4RuFqOhsKFitrne8qfjmtQ++yFGC/wmDFAVICoHzuK9vrk0OJ9oacr6Z/s+fa
-qqc4279Up91dxvrl8H8mm8dvtlVcNDmNPwpREd/pXf1+TzcnY8jI1d6W3lpQebM=
-=hK2t
------END PGP SIGNATURE-----
-
---HanPD1JKBS04/nMk--
+--=20
+Lee Jones
+Linaro STMicroelectronics Landing Team Lead
+Linaro.org =E2=94=82 Open source software for ARM SoCs
+=46ollow Linaro: Facebook | Twitter | Blog
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To unsubscribe from this list: send the line "unsubscribe linux-input" =
+in
+the body of a message to majordomo@vger.kernel.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

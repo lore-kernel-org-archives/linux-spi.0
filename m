@@ -1,36 +1,70 @@
-From: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v2] spi: sirf: add support for USP-based SPI
-Date: Tue, 19 May 2015 22:41:09 +0800
-Message-ID: <CAGsJ_4yTm_JE36iGNxw5sk4BaugfmwMLQQUFPX_kQrTamkX91Q@mail.gmail.com>
-References: <1431602829-12428-1-git-send-email-21cnbao@gmail.com> <20150519112201.GH2761@sirena.org.uk>
+From: Ranjit Waghmode <ranjit.waghmode@xilinx.com>
+Subject: [RFC PATCH 1/2] devicetree: Add devicetree bindings documentation for
+ ZynqMP GQSPI
+Date: Wed, 20 May 2015 12:57:50 +0530
+Message-ID: <1432106871-27232-1-git-send-email-ranjit.waghmode@xilinx.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	DL-SHA-WorkGroupLinux <workgroup.linux-kQvG35nSl+M@public.gmane.org>,
-	Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>, Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150519112201.GH2761-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: devicetree@vger.kernel.org, harinik@xilinx.com, Ranjit
+ Waghmode <ranjit.waghmode@xilinx.com>, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, punnaia@xilinx.com, ran27jit@gmail.com,
+ linux-arm-kernel@lists.infradead.org
+To: <robh+dt@kernel.org>, <pawel.moll@arm.com>, <mark.rutland@arm.com>,
+ <ijc+devicetree@hellion.org.uk>, <galak@codeaurora.org>,
+ <michal.simek@xilinx.com>, <soren.brinkmann@xilinx.com>, <broonie@kernel.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-2015-05-19 19:22 GMT+08:00 Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>:
-> On Thu, May 14, 2015 at 11:27:09AM +0000, Barry Song wrote:
->> From: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
->>
->> USP is a general purpose serial port in SiRFSoC, which can work as SPI.
->> the most data flow of USP and pure SPI is same with main differences
->> in registers layout.
->
-> This doesn't apply against current code, please check and resend.
+Add bindings documentation for GQSPI controller driver used by
+Zynq Ultrascale+ MPSoC
 
-sorry.
-i made a big mis-operation. right now i sent a new version to fix it.
+Signed-off-by: Ranjit Waghmode <ranjit.waghmode@xilinx.com>
+---
+ .../devicetree/bindings/spi/spi-zynqmp-qspi.txt    | 26 ++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-zynqmp-qspi.txt
 
--barry
+diff --git a/Documentation/devicetree/bindings/spi/spi-zynqmp-qspi.txt b/Documentation/devicetree/bindings/spi/spi-zynqmp-qspi.txt
+new file mode 100644
+index 0000000..cec6330
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-zynqmp-qspi.txt
+@@ -0,0 +1,26 @@
++Xilinx Zynq UltraScale+ MPSoC GQSPI controller Device Tree Bindings
++-------------------------------------------------------------------
++
++Required properties:
++- compatible		: Should be "xlnx,zynqmp-qspi-1.0".
++- reg			: Physical base address and size of GQSPI registers map.
++- interrupts		: Property with a value describing the interrupt
++			  number.
++- interrupt-parent	: Must be core interrupt controller.
++- clock-names		: List of input clock names - "ref_clk", "pclk"
++			  (See clock bindings for details).
++- clocks		: Clock phandles (see clock bindings for details).
++
++Optional properties:
++- num-cs		: Number of chip selects used.
++
++Example:
++	qspi: spi@ff0f0000 {
++		compatible = "xlnx,zynqmp-qspi-1.0";
++		clock-names = "ref_clk", "pclk";
++		clocks = <&misc_clk &misc_clk>;
++		interrupts = <0 15 4>;
++		interrupt-parent = <&gic>;
++		num-cs = <1>;
++		reg = <0x0 0xff0f0000 0x1000 0x0 0xc0000000 0x8000000>;
++	};
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+2.1.2

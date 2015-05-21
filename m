@@ -1,68 +1,44 @@
-From: Brian Norris <computersforpeace@gmail.com>
-Subject: Re: [PATCH 0/3] Using SPI NOR flah on sunxi.
-Date: Wed, 20 May 2015 16:54:47 -0700
-Message-ID: <20150520235447.GZ11598@ld-irv-0074>
-References: <cover.1430403750.git.hramrach@gmail.com>
- <OF23B05612.4290AF80-ONC1257E37.00589292-C1257E37.005AB106@rohde-schwarz.com>
- <CAOMqctRLnCJfVCYGjsmhORYNk+HCf07wwSXnZv4oqDxbaQqKGw@mail.gmail.com>
- <201504302034.36753.marex@denx.de>
+From: Michael Welling <mwelling-EkmVulN54Sk@public.gmane.org>
+Subject: Re: [PATCH] spi: omap2-mcspi: Fix native cs with new set_cs
+Date: Wed, 20 May 2015 21:07:09 -0500
+Message-ID: <20150521020709.GA14258@deathray>
+References: <1431452337-19280-1-git-send-email-mwelling@ieee.org>
+ <20150512191758.GX3066@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: Michal Suchanek <hramrach@gmail.com>,
-	Thomas.Betker@rohde-schwarz.com,
-	Alison Chaiken <alison_chaiken@mentor.com>,
-	Huang Shijie <b32955@freescale.com>,
-	"Bean Huo ????????? (beanhuo)" <beanhuo@micron.com>,
-	Ben Hutchings <ben@decadent.org.uk>,
-	devicetree <devicetree@vger.kernel.org>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Kumar Gala <galak@codeaurora.org>,
-	"grmoore@altera.com" <grmoore@altera.com>,
-	Ian Campbell <ijc+devicetree@hellion.org.uk>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	linux-mtd@lists.infradead.org,
-	linux-mtd <linux-mtd-bounces@lists.infradead.org>,
-	linux-sunxi <linux-sunxi@googlegroups.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Pawel Moll <pawel.moll@arm.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Rafa?? Mi??ecki <zajec5@gmail.com>, linux-spi@vger.kernel.org,
-	Mark Brown <broonie@kernel.o
-To: Marek Vasut <marex@denx.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Cc: linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-next-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <201504302034.36753.marex@denx.de>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <20150512191758.GX3066-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Apr 30, 2015 at 08:34:36PM +0200, Marek Vasut wrote:
-> On Thursday, April 30, 2015 at 06:56:18 PM, Michal Suchanek wrote:
-> > On 30 April 2015 at 18:30,  <Thomas.Betker@rohde-schwarz.com> wrote:
-> > > Hello Michal:
-> > >> I tried to connect a SPI NOR flash to my sunxi board and due to the
-> > > 
-> > > current
-> > > 
-> > >> sunxi SPI driver limitations it does not work.
-> > >> 
-> > >> The SPI driver returns an error when more than 64 bytes are
-> > >> transferred at once
-> > >> due to lack of DMA support.
-> > > 
-> > > Wouldn't it be easier to fix the SPI driver to handle transfers larger
-> > > than 64 bytes, filling and draining the FIFO multiple times if
-> > > neccessary? (As far as I can tell, most SPI drivers do this.)
-> > 
-> > Yes, the intent is to fix this by adding dma support to the driver,
-> > eventually.
-> > 
-> > The patch might be still useful for other hardware with developing SPI
-> > support.
+On Tue, May 12, 2015 at 08:17:58PM +0100, Mark Brown wrote:
+> On Tue, May 12, 2015 at 12:38:57PM -0500, Michael Welling wrote:
+> > GPIO chip select patch series appears to have broken the native chip select
+> > support. This patch pulls the manual native chip select toggling out of
+> > the transfer_one routine and adds a set_cs routine.
 > 
-> Please just fix the controller driver to correctly handle arbitrary transfer
-> lengths.
+> Applied, thanks
 
-Just noticed this. Yes, that would definitely be a better option!
+It appears that in haste, this fix for the native cs support broke
+the GPIO chip select support that I was originally shooting for.
 
-Brian
+[    2.653658] mcp23s08 spi1.1: TXS timed out
+[    2.657961] mcp23s08 spi1.1: SPI transfer failed: -5
+[    2.663305] spi_master spi1: failed to transfer one message from queue
+[    2.670172] mcp23s08 spi1.1: can't setup chip 64, --> -5
+[    2.675784] GPIO chip mcp23s08: gpiochip_unexport: status -19
+
+My guess is that the set_cs needs to be called even when toggling as GPIO.
+
+How should I handle this?
+
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

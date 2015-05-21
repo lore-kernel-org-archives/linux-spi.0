@@ -1,49 +1,37 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v1 2/3] spi: spi-fsl-dspi: Change the way of increasing
- spi_message->actual_length
-Date: Thu, 21 May 2015 21:55:49 +0100
-Message-ID: <20150521205549.GJ21577@sirena.org.uk>
-References: <1431511921-19548-1-git-send-email-haikun.wang@freescale.com>
+From: Michael Welling <mwelling@ieee.org>
+Subject: Re: [PATCH] spi: omap2-mcspi: Fix native cs with new set_cs
+Date: Thu, 21 May 2015 16:04:11 -0500
+Message-ID: <20150521210411.GA5406@deathray>
+References: <1431452337-19280-1-git-send-email-mwelling@ieee.org>
+ <20150512191758.GX3066@sirena.org.uk>
+ <20150521020709.GA14258@deathray>
+ <20150521101857.GR21577@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="XkdrZ7OMnakiJ6dL"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Haikun Wang <haikun.wang-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1431511921-19548-1-git-send-email-haikun.wang-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
-
-
---XkdrZ7OMnakiJ6dL
 Content-Type: text/plain; charset=us-ascii
+Cc: linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-next@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
+In-Reply-To: <20150521101857.GR21577@sirena.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Wed, May 13, 2015 at 06:12:01PM +0800, Haikun Wang wrote:
-> In current driver, we increase actual_length in the following way:
-> message->actual_length += dspi_xxx_transfer()
+On Thu, May 21, 2015 at 11:18:57AM +0100, Mark Brown wrote:
+> On Wed, May 20, 2015 at 09:07:09PM -0500, Michael Welling wrote:
+> 
+> > My guess is that the set_cs needs to be called even when toggling as GPIO.
+> 
+> > How should I handle this?
+> 
+> It shouldn't be part of a set_cs() operation but rather part of the main
+> transfer operation.
 
-This doesn't apply against current code, please check and resend.
 
---XkdrZ7OMnakiJ6dL
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Okay then this patch should be reverted.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Do you want to revert the patch and apply a new one or should I provide a
+patch that reverts the changes and fixes it all in one?
 
-iQEcBAEBCAAGBQJVXkZUAAoJECTWi3JdVIfQx3YH/0ib/tZ1FEZRICvLzY6o4350
-YSiF7CRq1zBPZDXU9aRrpZEXsd4FB0GmgiPnbRSWI43U+guK2ZvA2VReQWYSDLu+
-xriIWnNbO+6YLAVJJGHxHHfd+UhWaAKMLMA0jbkY1Boxf8tZ8RaUPBDj9tTzzPFT
-JwAIDDX+ojhKnNrBtGXDDQRKlYt66/h6KbfdzYIw+ulNXWyl5Zw+CdMxID45m2IZ
-/NpzYJxK6tt5JNkzL7xAQ8SUuVknQTl08sJegclGIVjzMls/llB0rwk/gy92deVK
-sNaSmBJmHUPO6wSMnIGPjxX/vgHKWcKY4aTQV1RpLAyVtAeJdN0GAdc91OC4Th4=
-=zWji
------END PGP SIGNATURE-----
-
---XkdrZ7OMnakiJ6dL--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Sorry for this mess.

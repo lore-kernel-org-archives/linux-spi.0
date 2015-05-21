@@ -1,7 +1,7 @@
 From: =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH] Documentation: dt: mtd: replace "nor-jedec" binding with "jedec,spi-nor"
-Date: Thu, 21 May 2015 11:47:11 +0200
-Message-ID: <CACna6rzO2h8Ohu1idnqw0j=Xi2o83x8oto=1ptBYW25GhmbAfg@mail.gmail.com>
+Date: Thu, 21 May 2015 11:57:07 +0200
+Message-ID: <CACna6rxL2uapNaAz2MAVApBAG2EYQ-8XYPDuDUy8jB3B0=f78A@mail.gmail.com>
 References: <20150515195541.GL11598@ld-irv-0074>
 	<20150518104501.GD3551@leverpostej>
 	<20150518183442.GR11598@ld-irv-0074>
@@ -101,7 +101,26 @@ sign
 >
 > Yes, that case is the final "else" branch above.
 
-Oh, I feel silly now. So I guess Brian's original patch was correct :|
+Or wait a second, I see the problem. So the last "else" branch does:
+flash_name =3D spi->modalias;
+which will result in flash_name getting "m25p80" which will result in
+passing "m25p80" model to spi-nor.
+
+So some sort of solution is to replace
+if (data && data->type)
+        flash_name =3D data->type;
+with
+if (data)
+        flash_name =3D data->type;
+which will allow platform stuff to *not* specify type and trigger auto
+(JEDEC RD ID) detection.
+
+The only minor problem is we will still need specifying
+spi_board_info.platform_data, but 99.9% of code does as it's requires
+for setting partitions anyway.
+
+Brian: so I think your initial patch was OK, sorry for all this noise :=
+|
 
 --=20
 Rafa=C5=82

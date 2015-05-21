@@ -1,56 +1,65 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] Fix an error that can cause fsl espi task blocked for
- more than 120 seconds
-Date: Thu, 21 May 2015 22:19:00 +0100
-Message-ID: <20150521211900.GO21577@sirena.org.uk>
-References: <1430523462-12306-1-git-send-email-Jane.Wan@gainspeed.com>
+From: Michael Welling <mwelling@ieee.org>
+Subject: Re: [PATCH] spi: omap2-mcspi: Fix native cs with new set_cs
+Date: Thu, 21 May 2015 18:48:33 -0500
+Message-ID: <20150521234832.GA1827@deathray>
+References: <1431452337-19280-1-git-send-email-mwelling@ieee.org>
+ <20150512191758.GX3066@sirena.org.uk>
+ <20150521020709.GA14258@deathray>
+ <20150521101857.GR21577@sirena.org.uk>
+ <20150521210411.GA5406@deathray>
+ <20150521211638.GN21577@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="4KXkm8CArhzjwJ+m"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Emilian.Medve-eDlz3WWmN0ll57MIdRCFDg@public.gmane.org, b48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org,
-	insop.song-X7+3OicCfH32eFz/2MeuCQ@public.gmane.org
-To: Jane Wan <Jane.Wan-X7+3OicCfH32eFz/2MeuCQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1430523462-12306-1-git-send-email-Jane.Wan-X7+3OicCfH32eFz/2MeuCQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
-
-
---4KXkm8CArhzjwJ+m
 Content-Type: text/plain; charset=us-ascii
+Cc: linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-next@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-omap-owner@vger.kernel.org>
 Content-Disposition: inline
+In-Reply-To: <20150521211638.GN21577@sirena.org.uk>
+Sender: linux-omap-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Fri, May 01, 2015 at 04:37:42PM -0700, Jane Wan wrote:
+On Thu, May 21, 2015 at 10:16:38PM +0100, Mark Brown wrote:
+> On Thu, May 21, 2015 at 04:04:11PM -0500, Michael Welling wrote:
+> 
+> > Do you want to revert the patch and apply a new one or should I provide a
+> > patch that reverts the changes and fixes it all in one?
+> 
+> Can you please send me separate revert and re-add patches, that's
+> probably going to be easier to review.
 
-> Incorrect condition is used in spin_event_timeout().  When the TX is
-> done, the SPIE_NF bit in ESPI_SPIE register is set to 1 to indicate
-> the Tx FIFO is not full.  If the bit is 0, it indicates the Tx FIFO is
-> full.
+So after reverting this patch I found there is a issue in that it is difficult
+to determine when a transfer is complete to properly drive the chipselect from
+within the transfer_one function.
 
-Applied, thanks.  Please submit patches in the format covered in
-SubmittingPatches - use subject lines matching the style for the
-subsysetem and keep commit message lines below 80 columns.
+Then I figured that we could handle the case when GPIOs are being used with
+some conditional calls to omap2_mcspi_set_cs in the omap2_mcspi_work_one
+function.
 
---4KXkm8CArhzjwJ+m
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Near the beginning of the function I added:
+	if (gpio_is_valid(spi->cs_gpio))
+		omap2_mcspi_set_cs(spi, 0);
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Near the end of the function I added:
+	if (gpio_is_valid(spi->cs_gpio))
+		omap2_mcspi_set_cs(spi, 1);
 
-iQEcBAEBCAAGBQJVXkvEAAoJECTWi3JdVIfQs3MH/3frYVIGOMEzKBhyoZW7wn5e
-QWsIsEBW0twsK2Ld9LyLIV7Fdm67YbwVev/sHsweWY1heLFe8OpLuKItP6xWk1oG
-ZSMRdXJzEsd/cY9PTAUAA3gZveefgADQEDbfgpUp7q9HZxHZVMvsgaG1Cy8BgzNE
-f8dxyaVZP3C1qsMtxBoTBJc2RipDvPSSH7rf1EtP9dupHiJl99EIdvdbXNEZT0l9
-m5zaf+PW93TykbA396A+u0lndmfSQsLzy3FkRgoROjZHeTRgjbmPXcfU5HrhNuTc
-Fa58Q9xuJJxpJcir0hCno19xPZjRbrwMUUWn5E29uIxVamQ4WpC29CJTkGbmL64=
-=mK0J
------END PGP SIGNATURE-----
+This makes GPIO chip select support work while leaving the native working
+as previous.
 
---4KXkm8CArhzjwJ+m--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Is this solution acceptible?
+
+In the process of reviewing the changes I found a few other things that
+should be changed as well.
+
+Here you will see a delay that is already handled by the core spi driver:
+https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git/tree/drivers/spi/spi-omap2-mcspi.c#n1166
+
+In the set_cs function the inversion of the enable that occurs in the
+core spi_set_cs function based on SPI_CS_HIGH needs to revert as the
+controller handles the inversion with OMAP2_MCSPI_CHCONF_EPOL bit in the
+CHCONF register.
+
+If you approve of the fix for the GPIO support, I will provide a patch
+series with all of these above mentioned fixes.

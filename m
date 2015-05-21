@@ -1,75 +1,68 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/3] MTD: spi-nor: check for short writes in spi_nor_write.
-Date: Thu, 21 May 2015 11:28:02 +0100
-Message-ID: <20150521102802.GS21577@sirena.org.uk>
-References: <cover.1430403750.git.hramrach@gmail.com>
- <50c40ef17ab6566f35ef5a4426bf23567f896db7.1430403750.git.hramrach@gmail.com>
- <20150520233835.GX11598@ld-irv-0074>
- <CAOMqctTYqDWL51twOuGi+oXONXQ4B2-2BkdJNSpzZAXshZUN6g@mail.gmail.com>
-Reply-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+From: Ranjit Abhimanyu Waghmode <ranjit.waghmode@xilinx.com>
+Subject: RE: [RFC PATCH 1/2] devicetree: Add devicetree bindings
+ documentation for ZynqMP GQSPI
+Date: Thu, 21 May 2015 12:42:23 +0000
+Message-ID: <7CFCFE83B8145347A1D424EC939F1C3CA6F1BC@XAP-PVEXMBX01.xlnx.xilinx.com>
+References: <1432106871-27232-1-git-send-email-ranjit.waghmode@xilinx.com>
+ <20150520143854.GU31550@xsjsorenbubuntu>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="oJFDFiWc3BlD0xT/"
-Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
-	Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Ben Hutchings <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>,
-	Alison Chaiken <alison_chaiken-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Bean Huo =?utf-8?B?6ZyN5paM5paMIChiZWFuaHVvKQ==?= <beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org>,
-	"grmoore-EIB2kfCEclfQT0dZR+AlfA@public.gmane.org" <grmoore-EIB2kfCEclfQT0dZR+AlfA@public.gmane.org>,
-	devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-sunxi+bncBDQ2L75W5QGBBRPG62VAKGQEUO35UFI-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAOMqctTYqDWL51twOuGi+oXONXQ4B2-2BkdJNSpzZAXshZUN6g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <http://groups.google.com/group/linux-sunxi
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
- <http://groups.google.com/group/linux-sunxi/subscribe>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "robh+dt@kernel.org" <robh+dt@kernel.org>,
+	"pawel.moll@arm.com" <pawel.moll@arm.com>,
+	"mark.rutland@arm.com" <mark.rutland@arm.com>,
+	"ijc+devicetree@hellion.org.uk" <ijc+devicetree@hellion.org.uk>,
+	"galak@codeaurora.org" <galak@codeaurora.org>,
+	Michal Simek <michals@xilinx.com>,
+	"broonie@kernel.org" <broonie@kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	Harini Katakam <harinik@xilinx.com>,
+	"Punnaiah Choudary Kalluri" <punnaia@xilinx.com>,
+	"ran27jit@gmail.com" <ran27jit@gmail.com>
+To: Soren Brinkmann <sorenb@xilinx.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20150520143854.GU31550@xsjsorenbubuntu>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---oJFDFiWc3BlD0xT/
-Content-Type: text/plain; charset=UTF-8
-Content-Disposition: inline
-
-On Thu, May 21, 2015 at 10:39:13AM +0200, Michal Suchanek wrote:
-> On 21 May 2015 at 01:38, Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-
-Why is this thread about SPI error handling CCed to quite so many
-people?
-
-> >> Check the amount of data actually written by the driver.
-
-> > I'm not sure if we should just reactively use the retlen, or if we
-> > should be communicating such a limitation via the SPI API. Thoughts?
-
-> Is there any driver that would break if the SPI master truncated
-> writes when the message is too long rather than returning an error an
-> refusing the transfer?
-
-Any such driver is buggy, the actual length transferred has always been
-a part of the SPI API.  We should probably expose limitations so clients
-can query in advance (we don't at the minute) but it'd be a while before
-clients could rely on that information being useful and it's still
-possible things can be truncated by error.
-
-With modern drivers using transfer_one() where we have control of the
-chip select we do also have the ability to add support to the core for
-chopping large transfers up into smaller ones that the hardware can
-handle transparently.  That won't for everything though since it depends
-on us being able to manually control the chip select which not all
-hardware can do.
---oJFDFiWc3BlD0xT/--
+SGkgU29yZW4sDQoNCk9uIFdlZCwgMjAxNS0wNS0yMCBhdCAxMjo1N1BNICswNTMwLCBSYW5qaXQg
+V2FnaG1vZGUgd3JvdGU6DQo+IEFkZCBiaW5kaW5ncyBkb2N1bWVudGF0aW9uIGZvciBHUVNQSSBj
+b250cm9sbGVyIGRyaXZlciB1c2VkIGJ5IFp5bnEgDQo+IFVsdHJhc2NhbGUrIE1QU29DDQo+IA0K
+PiBTaWduZWQtb2ZmLWJ5OiBSYW5qaXQgV2FnaG1vZGUgPHJhbmppdC53YWdobW9kZUB4aWxpbngu
+Y29tPg0KPiAtLS0NCj4gIC4uLi9kZXZpY2V0cmVlL2JpbmRpbmdzL3NwaS9zcGktenlucW1wLXFz
+cGkudHh0ICAgIHwgMjYgKysrKysrKysrKysrKysrKysrKysrKw0KPiAgMSBmaWxlIGNoYW5nZWQs
+IDI2IGluc2VydGlvbnMoKykNCj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCANCj4gRG9jdW1lbnRhdGlv
+bi9kZXZpY2V0cmVlL2JpbmRpbmdzL3NwaS9zcGktenlucW1wLXFzcGkudHh0DQo+IA0KPiBkaWZm
+IC0tZ2l0IGEvRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL3NwaS9zcGktenlucW1w
+LXFzcGkudHh0IA0KPiBiL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9zcGkvc3Bp
+LXp5bnFtcC1xc3BpLnR4dA0KPiBuZXcgZmlsZSBtb2RlIDEwMDY0NA0KPiBpbmRleCAwMDAwMDAw
+Li5jZWM2MzMwDQo+IC0tLSAvZGV2L251bGwNCj4gKysrIGIvRG9jdW1lbnRhdGlvbi9kZXZpY2V0
+cmVlL2JpbmRpbmdzL3NwaS9zcGktenlucW1wLXFzcGkudHh0DQo+IEBAIC0wLDAgKzEsMjYgQEAN
+Cj4gK1hpbGlueCBaeW5xIFVsdHJhU2NhbGUrIE1QU29DIEdRU1BJIGNvbnRyb2xsZXIgRGV2aWNl
+IFRyZWUgQmluZGluZ3MNCj4gKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCj4gKw0KPiArUmVxdWlyZWQgcHJvcGVydGll
+czoNCj4gKy0gY29tcGF0aWJsZQkJOiBTaG91bGQgYmUgInhsbngsenlucW1wLXFzcGktMS4wIi4N
+Cj4gKy0gcmVnCQkJOiBQaHlzaWNhbCBiYXNlIGFkZHJlc3MgYW5kIHNpemUgb2YgR1FTUEkgcmVn
+aXN0ZXJzIG1hcC4NCj4gKy0gaW50ZXJydXB0cwkJOiBQcm9wZXJ0eSB3aXRoIGEgdmFsdWUgZGVz
+Y3JpYmluZyB0aGUgaW50ZXJydXB0DQo+ICsJCQkgIG51bWJlci4NCj4gKy0gaW50ZXJydXB0LXBh
+cmVudAk6IE11c3QgYmUgY29yZSBpbnRlcnJ1cHQgY29udHJvbGxlci4NCj4gKy0gY2xvY2stbmFt
+ZXMJCTogTGlzdCBvZiBpbnB1dCBjbG9jayBuYW1lcyAtICJyZWZfY2xrIiwgInBjbGsiDQo+ICsJ
+CQkgIChTZWUgY2xvY2sgYmluZGluZ3MgZm9yIGRldGFpbHMpLg0KPiArLSBjbG9ja3MJCTogQ2xv
+Y2sgcGhhbmRsZXMgKHNlZSBjbG9jayBiaW5kaW5ncyBmb3IgZGV0YWlscykuDQo+ICsNCj4gK09w
+dGlvbmFsIHByb3BlcnRpZXM6DQo+ICstIG51bS1jcwkJOiBOdW1iZXIgb2YgY2hpcCBzZWxlY3Rz
+IHVzZWQuDQo+ICsNCj4gK0V4YW1wbGU6DQo+ICsJcXNwaTogc3BpQGZmMGYwMDAwIHsNCj4gKwkJ
+Y29tcGF0aWJsZSA9ICJ4bG54LHp5bnFtcC1xc3BpLTEuMCI7DQo+ICsJCWNsb2NrLW5hbWVzID0g
+InJlZl9jbGsiLCAicGNsayI7DQo+ICsJCWNsb2NrcyA9IDwmbWlzY19jbGsgJm1pc2NfY2xrPjsN
+Cj4gKwkJaW50ZXJydXB0cyA9IDwwIDE1IDQ+Ow0KPiArCQlpbnRlcnJ1cHQtcGFyZW50ID0gPCZn
+aWM+Ow0KPiArCQludW0tY3MgPSA8MT47DQo+ICsJCXJlZyA9IDwweDAgMHhmZjBmMDAwMCAweDEw
+MDAgMHgwIDB4YzAwMDAwMDAgMHg4MDAwMDAwPjsNCg0KSSBmaW5kIHRoaW5ncyBhIGxvdCBlYXNp
+ZXIgdG8gcmVhZCB3aGVuIHRoZXJlIGlzIHNvbWV0aGluZyBzZXBhcmF0aW5nIHRoZSBncm91cHMu
+IENvdWxkIHRoaXMgYmVjb21lOg0KCXJlZyA9IDwweDAgMHhmZjBmMDAwMCAweDEwMDA+LCA8MHgw
+IDB4YzAwMDAwMDAgMHg4MDAwMDAwPjsgPw0KDQpbUmFuaml0XTogSSB3aWxsIHRyeSB5b3VyIHN1
+Z2dlc3Rpb24gYW5kIHNlbmQgeW91IGluIHRoZSBuZXh0IHZlcnNpb24uDQoNClJlZ2FyZHMsDQpS
+YW5qaXQNCg==

@@ -1,134 +1,76 @@
-From: Harini Katakam <harinikatakamlinux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [RFC PATCH 2/2] spi: Add support for Zynq Ultrascale+ MPSoC GQSPI controller
-Date: Fri, 22 May 2015 20:43:54 +0530
-Message-ID: <CAFcVECJRqebzAjU+rfAtUQFG=7-KoE1GiXet5XJB-4D3i0or6A@mail.gmail.com>
-References: <1432106871-27232-1-git-send-email-ranjit.waghmode@xilinx.com>
-	<1432106871-27232-2-git-send-email-ranjit.waghmode@xilinx.com>
-	<20150522115854.GG21391@sirena.org.uk>
+From: Michael Welling <mwelling@ieee.org>
+Subject: Re: [PATCH] spi: omap2-mcspi: Fix native cs with new set_cs
+Date: Fri, 22 May 2015 10:31:57 -0500
+Message-ID: <20150522153157.GA12285@deathray>
+References: <1431452337-19280-1-git-send-email-mwelling@ieee.org>
+ <20150512191758.GX3066@sirena.org.uk>
+ <20150521020709.GA14258@deathray>
+ <20150521101857.GR21577@sirena.org.uk>
+ <20150521210411.GA5406@deathray>
+ <20150521211638.GN21577@sirena.org.uk>
+ <20150521234832.GA1827@deathray>
+ <20150522122544.GL21391@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Ranjit Waghmode <ranjit.waghmode-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	"ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org" <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	=?UTF-8?Q?S=C3=B6ren_Brinkmann?= <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Punnaiah Choudary Kalluri <punnaia-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	ran27jit-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150522115854.GG21391-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-next@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20150522122544.GL21391@sirena.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
-
-On Fri, May 22, 2015 at 5:28 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Wed, May 20, 2015 at 12:57:51PM +0530, Ranjit Waghmode wrote:
->
-> This looks pretty good overall but there are a few issues below from a
-> first read through.
->
->> +static void zynqmp_gqspi_selectflash(struct zynqmp_qspi *instanceptr,
->> +                                  u8 flashcs, u8 flashbus)
->
-> Is this a SPI controller or a flash controller?  It looks like it is
-> actually a SPI controller but the above is a bit worrying.
-
-It is a Quad SPI controller. SPI NOR flash devices are the most common
-interface. But we hope to keep this driver generic.
-The above function name is probably misleading; it can be renamed.
-
->
->> +{
->> +     /*
->> +      * Bus and CS lines selected here will be updated in the instance and
->> +      * used for subsequent GENFIFO entries during transfer.
->> +      */
->> +     /* Choose slave select line */
->
-> Coding style - at least a blank linne between the two comment blocks.
->
->> +     switch (flashcs) {
->> +     case GQSPI_SELECT_FLASH_CS_BOTH:
->> +             instanceptr->genfifocs = GQSPI_GENFIFO_CS_LOWER |
->> +                 GQSPI_GENFIFO_CS_UPPER;
->> +             break;
->> +     case GQSPI_SELECT_FLASH_CS_UPPER:
->> +             instanceptr->genfifocs = GQSPI_GENFIFO_CS_UPPER;
->> +             break;
->> +     case GQSPI_SELECT_FLASH_CS_LOWER:
->> +     default:
->> +             instanceptr->genfifocs = GQSPI_GENFIFO_CS_LOWER;
->> +     }
->
-> Why is there a default case here?  That's going to men we try to handle
-> any random chip select that gets passed in as pointing to this lower
-> device which doesn't seem right.  The fact that this is trying to handle
-> mirroring of the chip select to two devices is also raising alarm bells
-> here...
-
-This SPI controller has two CS lines and two data bus.
-Two devices can be connected to these and either the upper or the
-lower or both (Explained below) can be selected.
-
-When two flash devices are used, one of the HW configurations in
-which they can be connected is called "parallel" mode where they
-share the same CS but use separate 4 bit data bus each
-(essentially making it 8 bit bus width).
-Another configuration is "stacked" mode where the
-same 4 bit data bus is shared and lower or upper CS lines are
-used to select the flash.
-
-Nevertheless, we will deal with acceptable ways to add such features
-incrementally or maybe send an RFC separately.
-For the current patch (which is intended to support a single device),
-the above selection of "both" CS wont be necessary.
-@Ranjit, please remove it.
-
-<snip>
->> +static void zynqmp_qspi_chipselect(struct spi_device *qspi, bool is_high)
->> +{
->
->> +     if (is_high) {
->> +             /* Manually start the generic FIFO command */
->> +             zynqmp_gqspi_write(xqspi, GQSPI_CONFIG_OFST,
->> +                             zynqmp_gqspi_read(xqspi, GQSPI_CONFIG_OFST) |
->> +                             GQSPI_CFG_START_GEN_FIFO_MASK);
->
-> No, this is broken - setting the chip select should set the chip select,
-> it shouldn't have any impact on transfers.  Transfers should be started
-> in the transfer operations.
+On Fri, May 22, 2015 at 01:25:44PM +0100, Mark Brown wrote:
+> On Thu, May 21, 2015 at 06:48:33PM -0500, Michael Welling wrote:
+> 
+> > So after reverting this patch I found there is a issue in that it is difficult
+> > to determine when a transfer is complete to properly drive the chipselect from
+> > within the transfer_one function.
+> 
+> Is unprepare_message() a suitable place here?  I've got a feeling the
+> answer is no...
+> 
+> > Then I figured that we could handle the case when GPIOs are being used with
+> > some conditional calls to omap2_mcspi_set_cs in the omap2_mcspi_work_one
+> > function.
+> > 
+> > Near the beginning of the function I added:
+> > 	if (gpio_is_valid(spi->cs_gpio))
+> > 		omap2_mcspi_set_cs(spi, 0);
+> > 
+> > Near the end of the function I added:
+> > 	if (gpio_is_valid(spi->cs_gpio))
+> > 		omap2_mcspi_set_cs(spi, 1);
+> > 
+> > This makes GPIO chip select support work while leaving the native working
+> > as previous.
+> > 
+> > Is this solution acceptible?
+> 
+> I think that's probably OK as well, it's not ideal though (and risky if
+> the chip select is routed somewhere...).  
+> 
+> > In the process of reviewing the changes I found a few other things that
+> > should be changed as well.
+> 
+> Please send fixes for these as separate patches (ideally without any
+> dependency on your new work so we can send them to Linus as fixes).
 >
 
-This is the only way to assert the CS. It doesn't start transferring any data.
-The controller has a Generic FIFO. All operations to be performed on the
-bus have to be given in the form of any entry in this FIFO.
-The controller fetches each entry from the FIFO and performs the operations.
-And that includes asserting and de-asserting CS. There is no dedicated
-register bit to assert or de-assert the CS.
+Well actually these fixes are needed as the results of the first three patches
+pushed into next.
 
-The GEN FIFO entry has fields such as:
-- TX or RX
-- CS - lower/upper
-- data bus - lower/upper
-- bytecount
-- bus width - x1 or x2 or x4
-etc.
+When switching from transfer_one_message to tranfer_one I did not realize that
+the delay was handled in the core.
 
-@Ranjit It might be useful to describe the GENFIFO format in
-the driver at some appropriate place.
+When adding the set_cs function I did not notice that the enable was
+complemented by the core driver.
 
-Regards,
-Harini
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> > Here you will see a delay that is already handled by the core spi driver:
+> > https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git/tree/drivers/spi/spi-omap2-mcspi.c#n1166
+> 
+> I can't actually see that since I have no internet access right now!
+
+That's like a fish out of water.

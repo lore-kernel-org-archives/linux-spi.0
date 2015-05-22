@@ -1,94 +1,100 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: omap2-mcspi: Fix native cs with new set_cs
-Date: Fri, 22 May 2015 13:25:44 +0100
-Message-ID: <20150522122544.GL21391@sirena.org.uk>
-References: <1431452337-19280-1-git-send-email-mwelling@ieee.org>
- <20150512191758.GX3066@sirena.org.uk>
- <20150521020709.GA14258@deathray>
- <20150521101857.GR21577@sirena.org.uk>
- <20150521210411.GA5406@deathray>
- <20150521211638.GN21577@sirena.org.uk>
- <20150521234832.GA1827@deathray>
+Subject: Re: [PATCH] spi: SPI_MASTER_MUST_* with scatter-gather only option
+ and avoiding realloc
+Date: Fri, 22 May 2015 12:34:21 +0100
+Message-ID: <20150522113421.GE21391@sirena.org.uk>
+References: <20150512165053.GE3066@sirena.org.uk>
+ <1431597524-7907-1-git-send-email-kernel@martin.sperl.org>
+ <20150519124632.GN2761@sirena.org.uk>
+ <CA52E701-A9BF-45F1-AE2A-CD3E680CEAFC@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="DXIF1lRUlMsbZ3S1"
-Cc: linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-next-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Michael Welling <mwelling-EkmVulN54Sk@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="cPi+lWm09sJ+d57q"
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20150521234832.GA1827@deathray>
+In-Reply-To: <CA52E701-A9BF-45F1-AE2A-CD3E680CEAFC-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---DXIF1lRUlMsbZ3S1
+--cPi+lWm09sJ+d57q
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 21, 2015 at 06:48:33PM -0500, Michael Welling wrote:
+On Tue, May 19, 2015 at 04:17:33PM +0200, Martin Sperl wrote:
+> > On 19.05.2015, at 14:46, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
 
-> So after reverting this patch I found there is a issue in that it is diff=
-icult
-> to determine when a transfer is complete to properly drive the chipselect=
- from
-> within the transfer_one function.
+Quite a few process issues here which are rather annoying so I'm just
+going to ignore the technical content for now.
 
-Is unprepare_message() a suitable place here?  I've got a feeling the
-answer is no...
+> > Like I say I'm not entirely convinced we need the extra flags over just
+> > using can_dma().
 
-> Then I figured that we could handle the case when GPIOs are being used wi=
-th
-> some conditional calls to omap2_mcspi_set_cs in the omap2_mcspi_work_one
-> function.
->=20
-> Near the beginning of the function I added:
-> 	if (gpio_is_valid(spi->cs_gpio))
-> 		omap2_mcspi_set_cs(spi, 0);
->=20
-> Near the end of the function I added:
-> 	if (gpio_is_valid(spi->cs_gpio))
-> 		omap2_mcspi_set_cs(spi, 1);
->=20
-> This makes GPIO chip select support work while leaving the native working
-> as previous.
->=20
-> Is this solution acceptible?
+> If you can tell me that:
+> 	(master->flags & (SPI_MASTER_MUST_TX | SPI_MASTER_MUST_RX)) &&
+> 	master->can_dma && master->can_dma(...)=20
+> means that we do NOT need real memory allocated in the first place but
+> we only expect a scatter list to be created=20
+> and memory allocated in all other cases then that be it.
 
-I think that's probably OK as well, it's not ideal though (and risky if
-the chip select is routed somewhere...). =20
+I replied to your last mail on this in the other thread.
 
-> In the process of reviewing the changes I found a few other things that
-> should be changed as well.
+> >> It also fixes the insufficient cleanup in case __spi_map_msg returns
+> >> an error.
 
-Please send fixes for these as separate patches (ideally without any
-dependency on your new work so we can send them to Linus as fixes).
+> > This should be a separate patch.
 
-> Here you will see a delay that is already handled by the core spi driver:
-> https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git/tree/dri=
-vers/spi/spi-omap2-mcspi.c#n1166
+> The problem is that this came up while developing the patch, so
+> I left it in the patch, assuming there would be some feedback
+> that requires another version of the patch...
 
-I can't actually see that since I have no internet access right now!
+There is no barrier to creating a separate patch for unrelated
+improvments you happen to notice while working on an issue, it is
+something that is well supported by the tooling.  Not doing this
+guarantees that a resubmission will be required, means that reviewers
+have to review the same code multiple times (which takes their time) and
+means that it takes longer for other people to get the benefit of the
+change.
 
---DXIF1lRUlMsbZ3S1
+> > This is updating a specific driver to use the new API you're adding,
+> > this should be in a separate patch.
+
+> At one occasion I got scolded for separating things out into different
+> patches (in that case api from implemetation), now the other way around,
+> but we can do that...
+
+One patch per change as covered in SubmittingPatches.  Prototypes for a
+function with no implementation are not a separate change since they
+can't be used without the implementation also being added.  Changing a
+driver is a separate change to adding an API since people can use the
+API change even if they don't use that driver.
+
+Not doing this causes extra work for people, it makes review harder,
+causes resubmissions, and if the randomly mixed changes do end up
+getting applied somehow then it makes things like bisection and
+backporting harder.
+
+--cPi+lWm09sJ+d57q
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVXyBHAAoJECTWi3JdVIfQLXEH/A3tohzct0hl9M0gPaU0f38W
-Iz2AfUtTRKrYL/BISLzyCfNcAlai7eZmCgvlCq7VZ0oCDDTVoQyWRXSK7TeMkd56
-KbKvI91aY7McvciIEAwm6HoABFfX3PA8PsG1IP3V7NzaSsNQ8Kxffanv574+K42Z
-VvKgQ9ev3ln0nSUTtq+ZwqEzuUtH/oAHcn8WGuVqT48ApQN17ieapBKnpl4KId5h
-WHFyMweQq3XP9gPttW7qH1yMC74MNJeyL2kWB3Y501Ai/BGQZ2Ig2yZwodUMHbEr
-s/COrutw2gaDaKP1diAAUEv8rbQEVMqIx+P9csJo4Zk5wfulqE3iHszEuFlbrKc=
-=jhsf
+iQEcBAEBCAAGBQJVXxQ8AAoJECTWi3JdVIfQmMYH/iTihKKzbNn7+OH1RYyND1am
+XG/aJsGS5fqp769WImWjzzOsjeZinvqZt5lH2TSi8dU1ZWdVSFPpn4B2foy+M1Pa
+8ZDME5+tUNR0bAI00mEp1t3W2i/uoMZRH5EE7XNcxiZ93pXlyTwiwUKypCu+mPJ7
+5AzBN9AZ5cG6Ty7UDqIYK4zYQ/s/0sYhYoqplOAMjI90fRZM4XGjzwZboDtYT8Wf
+y9JJOm5Gj7hK86GAfUHKCEa3tvJVv7hmCf5Cwzz50dg+j1TX1dik15S7NQ9zRdxB
+AQuGOEA1/5A/96WBPj0QVwUZsnxfCs4U0ulS7gq9lmFCixSxDuCQVrY/YKolAOM=
+=CrDQ
 -----END PGP SIGNATURE-----
 
---DXIF1lRUlMsbZ3S1--
+--cPi+lWm09sJ+d57q--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

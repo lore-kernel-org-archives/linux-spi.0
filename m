@@ -1,68 +1,134 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH] spi: SPI_MASTER_MUST_* with scatter-gather only option and avoiding realloc
-Date: Fri, 22 May 2015 16:09:06 +0200
-Message-ID: <2B971A09-33E3-42BC-B13D-49B6DD3D2E7A@martin.sperl.org>
-References: <20150512165053.GE3066@sirena.org.uk> <1431597524-7907-1-git-send-email-kernel@martin.sperl.org> <20150519124632.GN2761@sirena.org.uk> <CA52E701-A9BF-45F1-AE2A-CD3E680CEAFC@martin.sperl.org> <20150522113421.GE21391@sirena.org.uk>
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2098\))
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+From: Harini Katakam <harinikatakamlinux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [RFC PATCH 2/2] spi: Add support for Zynq Ultrascale+ MPSoC GQSPI controller
+Date: Fri, 22 May 2015 20:43:54 +0530
+Message-ID: <CAFcVECJRqebzAjU+rfAtUQFG=7-KoE1GiXet5XJB-4D3i0or6A@mail.gmail.com>
+References: <1432106871-27232-1-git-send-email-ranjit.waghmode@xilinx.com>
+	<1432106871-27232-2-git-send-email-ranjit.waghmode@xilinx.com>
+	<20150522115854.GG21391@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: Ranjit Waghmode <ranjit.waghmode-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	"ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org" <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	=?UTF-8?Q?S=C3=B6ren_Brinkmann?= <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Punnaiah Choudary Kalluri <punnaia-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	ran27jit-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150522113421.GE21391-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150522115854.GG21391-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
+Hi Mark,
 
-> On 22.05.2015, at 13:34, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> 
-> Quite a few process issues here which are rather annoying so I'm just
-> going to ignore the technical content for now.
-> 
-Accepting those - thanks for the clarifications.
+On Fri, May 22, 2015 at 5:28 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Wed, May 20, 2015 at 12:57:51PM +0530, Ranjit Waghmode wrote:
+>
+> This looks pretty good overall but there are a few issues below from a
+> first read through.
+>
+>> +static void zynqmp_gqspi_selectflash(struct zynqmp_qspi *instanceptr,
+>> +                                  u8 flashcs, u8 flashbus)
+>
+> Is this a SPI controller or a flash controller?  It looks like it is
+> actually a SPI controller but the above is a bit worrying.
 
-> 
->> If you can tell me that:
->> 	(master->flags & (SPI_MASTER_MUST_TX | SPI_MASTER_MUST_RX)) &&
->> 	master->can_dma && master->can_dma(...) 
->> means that we do NOT need real memory allocated in the first place but
->> we only expect a scatter list to be created 
->> and memory allocated in all other cases then that be it.
-> 
-> I replied to your last mail on this in the other thread.
-Well - I will take that as a yes.
+It is a Quad SPI controller. SPI NOR flash devices are the most common
+interface. But we hope to keep this driver generic.
+The above function name is probably misleading; it can be renamed.
 
-With the logic based only on can_dma we still would be allocating memory
-for those cases where can_dma returns false - even if the driver only
-requires the scatter/gather list but would not require memory for those
-rx/tx_buf == NULL cases (which is the case for the spi-bcm2835).
+>
+>> +{
+>> +     /*
+>> +      * Bus and CS lines selected here will be updated in the instance and
+>> +      * used for subsequent GENFIFO entries during transfer.
+>> +      */
+>> +     /* Choose slave select line */
+>
+> Coding style - at least a blank linne between the two comment blocks.
+>
+>> +     switch (flashcs) {
+>> +     case GQSPI_SELECT_FLASH_CS_BOTH:
+>> +             instanceptr->genfifocs = GQSPI_GENFIFO_CS_LOWER |
+>> +                 GQSPI_GENFIFO_CS_UPPER;
+>> +             break;
+>> +     case GQSPI_SELECT_FLASH_CS_UPPER:
+>> +             instanceptr->genfifocs = GQSPI_GENFIFO_CS_UPPER;
+>> +             break;
+>> +     case GQSPI_SELECT_FLASH_CS_LOWER:
+>> +     default:
+>> +             instanceptr->genfifocs = GQSPI_GENFIFO_CS_LOWER;
+>> +     }
+>
+> Why is there a default case here?  That's going to men we try to handle
+> any random chip select that gets passed in as pointing to this lower
+> device which doesn't seem right.  The fact that this is trying to handle
+> mirroring of the chip select to two devices is also raising alarm bells
+> here...
 
-The extra flags solve that requirement cleanly.
+This SPI controller has two CS lines and two data bus.
+Two devices can be connected to these and either the upper or the
+lower or both (Explained below) can be selected.
 
-An alternative would be that we provide a spi_map_dummy function
-that the driver could call explicitly if it just needs the scatter_gather
-list for null-buffers and leave the master->flags = 0.
+When two flash devices are used, one of the HW configurations in
+which they can be connected is called "parallel" mode where they
+share the same CS but use separate 4 bit data bus each
+(essentially making it 8 bit bus width).
+Another configuration is "stacked" mode where the
+same 4 bit data bus is shared and lower or upper CS lines are
+used to select the flash.
 
-One other reasons was that with this logic we need to run can_dma several
-times in the process at different stages which is a waste of CPU-resources
-(especially as the compiler can not inline those function pointer calls).
+Nevertheless, we will deal with acceptable ways to add such features
+incrementally or maybe send an RFC separately.
+For the current patch (which is intended to support a single device),
+the above selection of "both" CS wont be necessary.
+@Ranjit, please remove it.
 
-To reduce that overhead, would it be acceptable if we add a field to
-spi_transfer (and possibly to spi_message) - say bool can_dma -  that is
-filled during the loop over all the transfers in __spi_validate?
+<snip>
+>> +static void zynqmp_qspi_chipselect(struct spi_device *qspi, bool is_high)
+>> +{
+>
+>> +     if (is_high) {
+>> +             /* Manually start the generic FIFO command */
+>> +             zynqmp_gqspi_write(xqspi, GQSPI_CONFIG_OFST,
+>> +                             zynqmp_gqspi_read(xqspi, GQSPI_CONFIG_OFST) |
+>> +                             GQSPI_CFG_START_GEN_FIFO_MASK);
+>
+> No, this is broken - setting the chip select should set the chip select,
+> it shouldn't have any impact on transfers.  Transfers should be started
+> in the transfer operations.
+>
 
-Essentially adding something like this to __spi_validate:
-	message->can_dma = false;
-	list_for_each_entry(xfer, &message->transfers, transfer_list) {
-		/* calculate can_dma once and cache it */
-		xfer->can_dma = master->can_dma ? master->can_dma(xfer) : false;
-		/* and set it also in the message itself */
-		message->can_dma |= xfer->can_dma
-	}
+This is the only way to assert the CS. It doesn't start transferring any data.
+The controller has a Generic FIFO. All operations to be performed on the
+bus have to be given in the form of any entry in this FIFO.
+The controller fetches each entry from the FIFO and performs the operations.
+And that includes asserting and de-asserting CS. There is no dedicated
+register bit to assert or de-assert the CS.
 
+The GEN FIFO entry has fields such as:
+- TX or RX
+- CS - lower/upper
+- data bus - lower/upper
+- bytecount
+- bus width - x1 or x2 or x4
+etc.
 
+@Ranjit It might be useful to describe the GENFIFO format in
+the driver at some appropriate place.
+
+Regards,
+Harini
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

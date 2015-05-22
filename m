@@ -1,226 +1,95 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [RFC PATCH 2/2] spi: Add support for Zynq Ultrascale+ MPSoC
- GQSPI controller
-Date: Fri, 22 May 2015 12:58:54 +0100
-Message-ID: <20150522115854.GG21391@sirena.org.uk>
-References: <1432106871-27232-1-git-send-email-ranjit.waghmode@xilinx.com>
- <1432106871-27232-2-git-send-email-ranjit.waghmode@xilinx.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: omap2-mcspi: Fix native cs with new set_cs
+Date: Fri, 22 May 2015 13:25:44 +0100
+Message-ID: <20150522122544.GL21391@sirena.org.uk>
+References: <1431452337-19280-1-git-send-email-mwelling@ieee.org>
+ <20150512191758.GX3066@sirena.org.uk>
+ <20150521020709.GA14258@deathray>
+ <20150521101857.GR21577@sirena.org.uk>
+ <20150521210411.GA5406@deathray>
+ <20150521211638.GN21577@sirena.org.uk>
+ <20150521234832.GA1827@deathray>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="gvF4niNJ+uBMJnEh"
-Cc: robh+dt@kernel.org, pawel.moll@arm.com, mark.rutland@arm.com,
-	ijc+devicetree@hellion.org.uk, galak@codeaurora.org,
-	michal.simek@xilinx.com, soren.brinkmann@xilinx.com,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	harinik@xilinx.com, punnaia@xilinx.com, ran27jit@gmail.com
-To: Ranjit Waghmode <ranjit.waghmode@xilinx.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="DXIF1lRUlMsbZ3S1"
+Cc: linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-next-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Michael Welling <mwelling-EkmVulN54Sk@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1432106871-27232-2-git-send-email-ranjit.waghmode@xilinx.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <20150521234832.GA1827@deathray>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---gvF4niNJ+uBMJnEh
+--DXIF1lRUlMsbZ3S1
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 20, 2015 at 12:57:51PM +0530, Ranjit Waghmode wrote:
+On Thu, May 21, 2015 at 06:48:33PM -0500, Michael Welling wrote:
 
-This looks pretty good overall but there are a few issues below from a
-first read through.
+> So after reverting this patch I found there is a issue in that it is diff=
+icult
+> to determine when a transfer is complete to properly drive the chipselect=
+ from
+> within the transfer_one function.
 
-> +static void zynqmp_gqspi_selectflash(struct zynqmp_qspi *instanceptr,
-> +				     u8 flashcs, u8 flashbus)
+Is unprepare_message() a suitable place here?  I've got a feeling the
+answer is no...
 
-Is this a SPI controller or a flash controller?  It looks like it is
-actually a SPI controller but the above is a bit worrying.
+> Then I figured that we could handle the case when GPIOs are being used wi=
+th
+> some conditional calls to omap2_mcspi_set_cs in the omap2_mcspi_work_one
+> function.
+>=20
+> Near the beginning of the function I added:
+> 	if (gpio_is_valid(spi->cs_gpio))
+> 		omap2_mcspi_set_cs(spi, 0);
+>=20
+> Near the end of the function I added:
+> 	if (gpio_is_valid(spi->cs_gpio))
+> 		omap2_mcspi_set_cs(spi, 1);
+>=20
+> This makes GPIO chip select support work while leaving the native working
+> as previous.
+>=20
+> Is this solution acceptible?
 
-> +{
-> +	/*
-> +	 * Bus and CS lines selected here will be updated in the instance and
-> +	 * used for subsequent GENFIFO entries during transfer.
-> +	 */
-> +	/* Choose slave select line */
+I think that's probably OK as well, it's not ideal though (and risky if
+the chip select is routed somewhere...). =20
 
-Coding style - at least a blank linne between the two comment blocks.
+> In the process of reviewing the changes I found a few other things that
+> should be changed as well.
 
-> +	switch (flashcs) {
-> +	case GQSPI_SELECT_FLASH_CS_BOTH:
-> +		instanceptr->genfifocs = GQSPI_GENFIFO_CS_LOWER |
-> +		    GQSPI_GENFIFO_CS_UPPER;
-> +		break;
-> +	case GQSPI_SELECT_FLASH_CS_UPPER:
-> +		instanceptr->genfifocs = GQSPI_GENFIFO_CS_UPPER;
-> +		break;
-> +	case GQSPI_SELECT_FLASH_CS_LOWER:
-> +	default:
-> +		instanceptr->genfifocs = GQSPI_GENFIFO_CS_LOWER;
-> +	}
+Please send fixes for these as separate patches (ideally without any
+dependency on your new work so we can send them to Linus as fixes).
 
-Why is there a default case here?  That's going to men we try to handle
-any random chip select that gets passed in as pointing to this lower
-device which doesn't seem right.  The fact that this is trying to handle
-mirroring of the chip select to two devices is also raising alarm bells
-here...
+> Here you will see a delay that is already handled by the core spi driver:
+> https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git/tree/dri=
+vers/spi/spi-omap2-mcspi.c#n1166
 
-> +/**
-> + * zynqmp_qspi_copy_read_data:	Copy data to RX buffer
-> + * @xqspi:	Pointer to the zynqmp_qspi structure
-> + * @data:	The 32 bit variable where data is stored
-> + * @size:	Number of bytes to be copied from data to RX buffer
-> + */
-> +static void zynqmp_qspi_copy_read_data(struct zynqmp_qspi *xqspi,
-> +				       u32 data, u8 size)
-> +{
-> +	memcpy(xqspi->rxbuf, ((u8 *) &data), size);
-> +	xqspi->rxbuf += size;
-> +	xqspi->bytes_to_receive -= size;
-> +}
+I can't actually see that since I have no internet access right now!
 
-This looks like there's some type abuse going on and is going to be
-broken for 64 bit systems - why are we passing pointers around as 32 bit
-unsigned values?
-
-> +static int zynqmp_prepare_transfer_hardware(struct spi_master *master)
-> +{
-> +	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
-> +
-> +	clk_enable(xqspi->refclk);
-> +	clk_enable(xqspi->pclk);
-
-Should be checking return codes here.
-
-> +static void zynqmp_qspi_chipselect(struct spi_device *qspi, bool is_high)
-> +{
-
-> +	if (is_high) {
-> +		/* Manually start the generic FIFO command */
-> +		zynqmp_gqspi_write(xqspi, GQSPI_CONFIG_OFST,
-> +				zynqmp_gqspi_read(xqspi, GQSPI_CONFIG_OFST) |
-> +				GQSPI_CFG_START_GEN_FIFO_MASK);
-
-No, this is broken - setting the chip select should set the chip select,
-it shouldn't have any impact on transfers.  Transfers should be started
-in the transfer operations.
-
-> +	/* If req_hz == 0, default to lowest speed */
-> +	while ((baud_rate_val < GQSPI_BAUD_DIV_MAX) &&
-> +	       (clk_get_rate(xqspi->refclk) /
-> +		(GQSPI_BAUD_DIV_SHIFT << baud_rate_val)) > req_hz)
-> +		baud_rate_val++;
-
-It'd be better to factor the clk_get_rate() out of the loop rather than
-repeatedly calling into the clock API.
-
-> + * Sets the operational mode of QSPI controller for the next QSPI transfer,
-> + * baud rate and divisor value to setup the requested qspi clock.
-> + *
-> + * Return:	0 Always
-> + */
-> +static int zynqmp_qspi_setup(struct spi_device *qspi)
-> +{
-> +	if (qspi->master->busy)
-> +		return -EBUSY;
-> +	return zynqmp_qspi_setup_transfer(qspi, NULL);
-> +}
-
-The setup() function shouldn't affect the hardwaer but _setup_transfer()
-does.  See spi-summary.
-
-> +static void zynqmp_qspi_filltxfifo(struct zynqmp_qspi *xqspi, int size)
-> +{
-> +	u32 count = 0;
-> +
-> +	while ((xqspi->bytes_to_transfer > 0) && (count < size)) {
-> +		writel(*((u32 *) xqspi->txbuf), xqspi->regs + GQSPI_TXD_OFST);
-> +		if (xqspi->bytes_to_transfer >= 4) {
-> +			xqspi->txbuf += 4;
-> +			xqspi->bytes_to_transfer -= 4;
-> +		} else {
-> +			xqspi->txbuf += xqspi->bytes_to_transfer;
-> +			xqspi->bytes_to_transfer = 0;
-> +		}
-> +		count++;
-> +	}
-> +}
-
-This doesn't appear to take any account of endianness which is
-especially alarming in the case where we're dealing with the final word
-and the casting here looks unsafe.  I'd expect to be using endanness
-annotated pointers with no need for casting.
-
-> + */
-> +static void zynqmp_process_dma_irq(struct zynqmp_qspi *xqspi)
-> +{
-> +	u32 config_reg, genfifoentry;
-> +
-> +	dma_unmap_single(xqspi->dev, xqspi->dma_addr,
-> +				xqspi->dma_rx_bytes, DMA_FROM_DEVICE);
-
-Don't manually do DMA mapping, let the core do it.  It looks like we
-need to enhance the core DMA mapping to support partial mapping of
-transfers here, this case where you're doing the tail of the transfer as
-PIO is a reasonable one (I'm a bit surprised we haven't run into it
-before to be honest).
-
-> +static inline u32 zynqmp_qspi_selectspimode(u8 spimode)
-> +{
-> +	u32 mask;
-> +
-> +	switch (spimode) {
-> +	case GQSPI_SELECT_MODE_DUALSPI:
-> +		mask = GQSPI_GENFIFO_MODE_DUALSPI;
-> +		break;
-> +	case GQSPI_SELECT_MODE_QUADSPI:
-> +		mask = GQSPI_GENFIFO_MODE_QUADSPI;
-> +		break;
-> +	case GQSPI_SELECT_MODE_SPI:
-> +	default:
-> +		mask = GQSPI_GENFIFO_MODE_SPI;
-> +	}
-
-Again this default case looks buggy.
-
-> +static int __maybe_unused zynqmp_qspi_suspend(struct device *dev)
-> +{
-> +	struct platform_device *pdev = container_of(dev,
-> +						    struct platform_device,
-> +						    dev);
-> +	struct spi_master *master = platform_get_drvdata(pdev);
-> +
-> +	spi_master_suspend(master);
-> +
-> +	zynqmp_unprepare_transfer_hardware(master);
-
-Why are you manually unpreparing the hardware here?  Obviously if the
-core has suspended it ought to have done this...
-
-> +	ret = of_property_read_u32(pdev->dev.of_node, "num-cs", &num_cs);
-> +	if (ret < 0)
-> +		master->num_chipselect = GQSPI_DEFAULT_NUM_CS;
-> +	else
-> +		master->num_chipselect = num_cs;
-
-Why is this selectable from DT?  I'm not seeing any code here which
-really validates chip select numbers or handles arbatrary chip select
-numbers...
-
---gvF4niNJ+uBMJnEh
+--DXIF1lRUlMsbZ3S1
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVXxn9AAoJECTWi3JdVIfQ4d0H/0G/uDg8S+hm671FkFM+BV0G
-K1e2jDA/d80OQiNhJS/m1fLd9ZsiYozhCqB2naU0S4fGlb5VHhsuvqmhJl6n3aSu
-LbHEVyCU9xa13E9g3UBKrBBPxatc+BV+NjzGzkFC3Hxtm23OdLyBCl0RtBackiLO
-si2DoedoJpq1XvWI7yHfEZxwqfoCT/5M3sK8VjFvefC7/LyY3en+C5mdMgsdObjm
-4oQxmkvqTtlPwLTjKsNTN31Rws+So9xNDeTAbht33jfqEW89QL+nWFgZ1xRa8Zgm
-Cff6FlVfx9h/ZvkGyyEIN/59yA1sgm9uZBfgUcZkEqVGBsa/hkUst/X0174xZpQ=
-=QxsA
+iQEcBAEBCAAGBQJVXyBHAAoJECTWi3JdVIfQLXEH/A3tohzct0hl9M0gPaU0f38W
+Iz2AfUtTRKrYL/BISLzyCfNcAlai7eZmCgvlCq7VZ0oCDDTVoQyWRXSK7TeMkd56
+KbKvI91aY7McvciIEAwm6HoABFfX3PA8PsG1IP3V7NzaSsNQ8Kxffanv574+K42Z
+VvKgQ9ev3ln0nSUTtq+ZwqEzuUtH/oAHcn8WGuVqT48ApQN17ieapBKnpl4KId5h
+WHFyMweQq3XP9gPttW7qH1yMC74MNJeyL2kWB3Y501Ai/BGQZ2Ig2yZwodUMHbEr
+s/COrutw2gaDaKP1diAAUEv8rbQEVMqIx+P9csJo4Zk5wfulqE3iHszEuFlbrKc=
+=jhsf
 -----END PGP SIGNATURE-----
 
---gvF4niNJ+uBMJnEh--
+--DXIF1lRUlMsbZ3S1--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

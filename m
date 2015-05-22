@@ -1,100 +1,67 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: SPI_MASTER_MUST_* with scatter-gather only option
- and avoiding realloc
-Date: Fri, 22 May 2015 12:34:21 +0100
-Message-ID: <20150522113421.GE21391@sirena.org.uk>
-References: <20150512165053.GE3066@sirena.org.uk>
- <1431597524-7907-1-git-send-email-kernel@martin.sperl.org>
- <20150519124632.GN2761@sirena.org.uk>
- <CA52E701-A9BF-45F1-AE2A-CD3E680CEAFC@martin.sperl.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="cPi+lWm09sJ+d57q"
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: Re: [PATCH] spi: SPI_MASTER_MUST_* with scatter-gather only option and avoiding realloc
+Date: Fri, 22 May 2015 16:09:06 +0200
+Message-ID: <2B971A09-33E3-42BC-B13D-49B6DD3D2E7A@martin.sperl.org>
+References: <20150512165053.GE3066@sirena.org.uk> <1431597524-7907-1-git-send-email-kernel@martin.sperl.org> <20150519124632.GN2761@sirena.org.uk> <CA52E701-A9BF-45F1-AE2A-CD3E680CEAFC@martin.sperl.org> <20150522113421.GE21391@sirena.org.uk>
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2098\))
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CA52E701-A9BF-45F1-AE2A-CD3E680CEAFC-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <20150522113421.GE21391-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---cPi+lWm09sJ+d57q
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On 22.05.2015, at 13:34, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> 
+> Quite a few process issues here which are rather annoying so I'm just
+> going to ignore the technical content for now.
+> 
+Accepting those - thanks for the clarifications.
 
-On Tue, May 19, 2015 at 04:17:33PM +0200, Martin Sperl wrote:
-> > On 19.05.2015, at 14:46, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> 
+>> If you can tell me that:
+>> 	(master->flags & (SPI_MASTER_MUST_TX | SPI_MASTER_MUST_RX)) &&
+>> 	master->can_dma && master->can_dma(...) 
+>> means that we do NOT need real memory allocated in the first place but
+>> we only expect a scatter list to be created 
+>> and memory allocated in all other cases then that be it.
+> 
+> I replied to your last mail on this in the other thread.
+Well - I will take that as a yes.
 
-Quite a few process issues here which are rather annoying so I'm just
-going to ignore the technical content for now.
+With the logic based only on can_dma we still would be allocating memory
+for those cases where can_dma returns false - even if the driver only
+requires the scatter/gather list but would not require memory for those
+rx/tx_buf == NULL cases (which is the case for the spi-bcm2835).
 
-> > Like I say I'm not entirely convinced we need the extra flags over just
-> > using can_dma().
+The extra flags solve that requirement cleanly.
 
-> If you can tell me that:
-> 	(master->flags & (SPI_MASTER_MUST_TX | SPI_MASTER_MUST_RX)) &&
-> 	master->can_dma && master->can_dma(...)=20
-> means that we do NOT need real memory allocated in the first place but
-> we only expect a scatter list to be created=20
-> and memory allocated in all other cases then that be it.
+An alternative would be that we provide a spi_map_dummy function
+that the driver could call explicitly if it just needs the scatter_gather
+list for null-buffers and leave the master->flags = 0.
 
-I replied to your last mail on this in the other thread.
+One other reasons was that with this logic we need to run can_dma several
+times in the process at different stages which is a waste of CPU-resources
+(especially as the compiler can not inline those function pointer calls).
 
-> >> It also fixes the insufficient cleanup in case __spi_map_msg returns
-> >> an error.
+To reduce that overhead, would it be acceptable if we add a field to
+spi_transfer (and possibly to spi_message) - say bool can_dma -  that is
+filled during the loop over all the transfers in __spi_validate?
 
-> > This should be a separate patch.
+Essentially adding something like this to __spi_validate:
+	message->can_dma = false;
+	list_for_each_entry(xfer, &message->transfers, transfer_list) {
+		/* calculate can_dma once and cache it */
+		xfer->can_dma = master->can_dma ? master->can_dma(xfer) : false;
+		/* and set it also in the message itself */
+		message->can_dma |= xfer->can_dma
+	}
 
-> The problem is that this came up while developing the patch, so
-> I left it in the patch, assuming there would be some feedback
-> that requires another version of the patch...
 
-There is no barrier to creating a separate patch for unrelated
-improvments you happen to notice while working on an issue, it is
-something that is well supported by the tooling.  Not doing this
-guarantees that a resubmission will be required, means that reviewers
-have to review the same code multiple times (which takes their time) and
-means that it takes longer for other people to get the benefit of the
-change.
-
-> > This is updating a specific driver to use the new API you're adding,
-> > this should be in a separate patch.
-
-> At one occasion I got scolded for separating things out into different
-> patches (in that case api from implemetation), now the other way around,
-> but we can do that...
-
-One patch per change as covered in SubmittingPatches.  Prototypes for a
-function with no implementation are not a separate change since they
-can't be used without the implementation also being added.  Changing a
-driver is a separate change to adding an API since people can use the
-API change even if they don't use that driver.
-
-Not doing this causes extra work for people, it makes review harder,
-causes resubmissions, and if the randomly mixed changes do end up
-getting applied somehow then it makes things like bisection and
-backporting harder.
-
---cPi+lWm09sJ+d57q
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVXxQ8AAoJECTWi3JdVIfQmMYH/iTihKKzbNn7+OH1RYyND1am
-XG/aJsGS5fqp769WImWjzzOsjeZinvqZt5lH2TSi8dU1ZWdVSFPpn4B2foy+M1Pa
-8ZDME5+tUNR0bAI00mEp1t3W2i/uoMZRH5EE7XNcxiZ93pXlyTwiwUKypCu+mPJ7
-5AzBN9AZ5cG6Ty7UDqIYK4zYQ/s/0sYhYoqplOAMjI90fRZM4XGjzwZboDtYT8Wf
-y9JJOm5Gj7hK86GAfUHKCEa3tvJVv7hmCf5Cwzz50dg+j1TX1dik15S7NQ9zRdxB
-AQuGOEA1/5A/96WBPj0QVwUZsnxfCs4U0ulS7gq9lmFCixSxDuCQVrY/YKolAOM=
-=CrDQ
------END PGP SIGNATURE-----
-
---cPi+lWm09sJ+d57q--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

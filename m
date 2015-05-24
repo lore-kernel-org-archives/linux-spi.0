@@ -1,52 +1,53 @@
-From: Nicholas Mc Guire <der.herr@hofr.at>
-Subject: Re: [PATCH 4/4] spi: omap2-mcspi: Handle error on gpio_request
-Date: Sun, 24 May 2015 10:13:07 +0200
-Message-ID: <20150524081307.GC17508@opentech.at>
-References: <20150522122544.GL21391@sirena.org.uk> <1432433625-23407-1-git-send-email-mwelling@ieee.org> <1432433625-23407-5-git-send-email-mwelling@ieee.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: broonie@kernel.org, linux-omap@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-next@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Michael Welling <mwelling@ieee.org>
-Return-path: <linux-next-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1432433625-23407-5-git-send-email-mwelling@ieee.org>
-Sender: linux-next-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
+Subject: [PATCH] spi: add missing cleanup in spi_map_msg on error
+Date: Sun, 24 May 2015 09:34:46 +0000
+Message-ID: <1432460086-2549-1-git-send-email-kernel@martin.sperl.org>
+References: <2B971A09-33E3-42BC-B13D-49B6DD3D2E7A@martin.sperl.org>
+Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <2B971A09-33E3-42BC-B13D-49B6DD3D2E7A-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Sat, 23 May 2015, Michael Welling wrote:
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-> If a valid GPIO is specified but cannot be requested by the driver, print a
-> message and error out of omap2_mcspi_setup.
-> 
-> Signed-off-by: Michael Welling <mwelling@ieee.org>
-> ---
->  drivers/spi/spi-omap2-mcspi.c |    9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-> index c4e21ad..5867384 100644
-> --- a/drivers/spi/spi-omap2-mcspi.c
-> +++ b/drivers/spi/spi-omap2-mcspi.c
-> @@ -1023,9 +1023,12 @@ static int omap2_mcspi_setup(struct spi_device *spi)
->  	}
->  
->  	if (gpio_is_valid(spi->cs_gpio)) {
-> -		if (gpio_request(spi->cs_gpio, dev_name(&spi->dev)) == 0)
-> -			gpio_direction_output(spi->cs_gpio,
-> -			!(spi->mode & SPI_CS_HIGH));
-> +		ret = gpio_request(spi->cs_gpio, dev_name(&spi->dev));
-> +		if (ret) {
-> +			dev_err(&spi->dev, "failed to request gpio\n");
-> +			return ret;
-> +		}
-> +		gpio_direction_output(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
->  	}
+Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+---
+ drivers/spi/spi.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-just wondering if the outer gpio_is_valid is actually needed as it seems
-gpio_request() is actually calling gpio_is_valid() anyway and would return
-non 0 if it were not,
+applies against for-next
 
-thx!
-hofrat
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index d35c1a1..a73d9e4 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -620,6 +620,7 @@ static int spi_map_msg(struct spi_master *master, struct spi_message *msg)
+ 	struct spi_transfer *xfer;
+ 	void *tmp;
+ 	unsigned int max_tx, max_rx;
++	int ret;
+ 
+ 	if (master->flags & (SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX)) {
+ 		max_tx = 0;
+@@ -662,7 +663,11 @@ static int spi_map_msg(struct spi_master *master, struct spi_message *msg)
+ 		}
+ 	}
+ 
+-	return __spi_map_msg(master, msg);
++	ret = __spi_map_msg(master, msg);
++	if (ret)
++		spi_unmap_msg(master, msg);
++
++	return ret;
+ }
+ 
+ /*
+-- 
+1.7.10.4
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

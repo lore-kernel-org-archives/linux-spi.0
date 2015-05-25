@@ -1,374 +1,118 @@
-From: Haikun Wang <haikun.wang-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: [PATCH v3] spi: spi-fsl-dspi: Enable TCF interrupt mode support
-Date: Mon, 25 May 2015 18:07:49 +0800
-Message-ID: <1432548469-12714-1-git-send-email-haikun.wang@freescale.com>
-Mime-Version: 1.0
-Content-Type: text/plain
-Cc: Haikun Wang <haikun.wang-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
+Subject: [PATCH v4 00/18] new MFD LoCoMo driver set
+Date: Mon, 25 May 2015 14:41:35 +0300
+Message-ID: <1432554113-26280-1-git-send-email-dbaryshkov@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+	linux-input@vger.kernel.org, linux-spi@vger.kernel.org,
+	alsa-devel@alsa-project.org
+To: Russell King <linux@arm.linux.org.uk>,
+	Daniel Mack <daniel@zonque.org>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Alexandre Courbot <gnurou@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Samuel Ortiz <sameo@linux.intel.com>,
+	Lee Jones <lee.jones@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Jingoo Han <jg1.han@samsung.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Andrea Adami <andrea.adami@gmail.com>
+Return-path: <linux-gpio-owner@vger.kernel.org>
+Sender: linux-gpio-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-DSPI module has two optional interrupts when complete data transfer.
-One is EOQ interrupt, the other one is TCF interrupt.
-EOQ indicates a queue of data frame has been transmitted.
-TCF indicates a frame has been transmitted.
-This patch enable support TCF mode.
-Driver binds a correct interrupt mode to every compatible string.
-User should use the correct compatible string in the dts node.
+Sharp Zaurus SL-5500 and SL-5600 use special companion Gate Array.
+With this patchset I tried to modernise and restructure the LoCoMo drivers.
 
-Signed-off-by: Haikun Wang <haikun.wang-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
----
+* Use platform bus and mfd core code
+* Use GPIO API instead of custom locomo GPIO code
+* Use irqdomains to manage IRQs
+* Split mixed locomolcd driver to lcd and backlight parts
+* Implement IRQ handling in GPIO driver
+* Implement SPI driver used as a host for mmc_spi device to control SD cards
 
-Changes in v3:
-- Using different compatible strings instead of a individual
-  property to select the interrupt mode
+Changes since v3:
+* Removed magic values in locomo irq handling code
+* Using mutex in locomokbd driver
+* Dropped empty locomokbd_remove
+* Small rearrangement of headers/comments/etc in core and input drivers
 
-Changes in v2:
-- Remove global variable g_actual_length
-- Add "dspi->dataflags &= ~TRAN_STATE_WORD_ODD_NUM" 
-  if dataflags has TRAN_STATE_WORD_ODD_NUM in IRQ handler
-- Move single byte chacking inside while loop in function dspi_eoq_write 
+The following changes since commit b787f68c36d49bb1d9236f403813641efa74a031:
 
-Changes in v1: None
- drivers/spi/spi-fsl-dspi.c | 214 +++++++++++++++++++++++++++++----------------
- 1 file changed, 139 insertions(+), 75 deletions(-)
+  Linux 4.1-rc1 (2015-04-26 17:59:10 -0700)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 5fe54cd..ce2062a 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -67,9 +67,11 @@
- 
- #define SPI_SR			0x2c
- #define SPI_SR_EOQF		0x10000000
-+#define SPI_SR_TCFQF		0x80000000
- 
- #define SPI_RSER		0x30
- #define SPI_RSER_EOQFE		0x10000000
-+#define SPI_RSER_TCFQE		0x80000000
- 
- #define SPI_PUSHR		0x34
- #define SPI_PUSHR_CONT		(1 << 31)
-@@ -108,6 +110,27 @@ struct chip_data {
- 	u16 void_write_data;
- };
- 
-+enum dspi_trans_mode {
-+	DSPI_EOQ_MODE = 0,
-+	DSPI_TCFQ_MODE,
-+};
-+
-+struct fsl_dspi_devtype_data {
-+	enum dspi_trans_mode trans_mode;
-+};
-+
-+static const struct fsl_dspi_devtype_data vf610_data = {
-+	.trans_mode = DSPI_EOQ_MODE,
-+};
-+
-+static const struct fsl_dspi_devtype_data ls1021a_v1_data = {
-+	.trans_mode = DSPI_TCFQ_MODE,
-+};
-+
-+static const struct fsl_dspi_devtype_data ls2085a_data = {
-+	.trans_mode = DSPI_TCFQ_MODE,
-+};
-+
- struct fsl_dspi {
- 	struct spi_master	*master;
- 	struct platform_device	*pdev;
-@@ -128,6 +151,7 @@ struct fsl_dspi {
- 	u8			cs;
- 	u16			void_write_data;
- 	u32			cs_change;
-+	struct fsl_dspi_devtype_data *devtype_data;
- 
- 	wait_queue_head_t	waitq;
- 	u32			waitflags;
-@@ -213,63 +237,61 @@ static void ns_delay_scale(char *psc, char *sc, int delay_ns,
- 	}
- }
- 
--static int dspi_transfer_write(struct fsl_dspi *dspi)
-+static u32 dspi_data_to_pushr(struct fsl_dspi *dspi, int tx_word)
- {
--	int tx_count = 0;
--	int tx_word;
- 	u16 d16;
--	u8  d8;
--	u32 dspi_pushr = 0;
--	int first = 1;
- 
--	tx_word = is_double_byte_mode(dspi);
-+	if (!(dspi->dataflags & TRAN_STATE_TX_VOID))
-+		d16 = tx_word ? *(u16 *)dspi->tx : *(u8 *)dspi->tx;
-+	else
-+		d16 = dspi->void_write_data;
- 
--	/* If we are in word mode, but only have a single byte to transfer
--	 * then switch to byte mode temporarily.  Will switch back at the
--	 * end of the transfer.
--	 */
--	if (tx_word && (dspi->len == 1)) {
--		dspi->dataflags |= TRAN_STATE_WORD_ODD_NUM;
--		regmap_update_bits(dspi->regmap, SPI_CTAR(dspi->cs),
--				SPI_FRAME_BITS_MASK, SPI_FRAME_BITS(8));
--		tx_word = 0;
--	}
-+	dspi->tx += tx_word + 1;
-+	dspi->len -= tx_word + 1;
- 
--	while (dspi->len && (tx_count < DSPI_FIFO_SIZE)) {
--		if (tx_word) {
--			if (dspi->len == 1)
--				break;
-+	return	SPI_PUSHR_TXDATA(d16) |
-+		SPI_PUSHR_PCS(dspi->cs) |
-+		SPI_PUSHR_CTAS(dspi->cs) |
-+		SPI_PUSHR_CONT;
-+}
- 
--			if (!(dspi->dataflags & TRAN_STATE_TX_VOID)) {
--				d16 = *(u16 *)dspi->tx;
--				dspi->tx += 2;
--			} else {
--				d16 = dspi->void_write_data;
--			}
-+static void dspi_data_from_popr(struct fsl_dspi *dspi, int rx_word)
-+{
-+	u16 d;
-+	unsigned int val;
- 
--			dspi_pushr = SPI_PUSHR_TXDATA(d16) |
--				SPI_PUSHR_PCS(dspi->cs) |
--				SPI_PUSHR_CTAS(dspi->cs) |
--				SPI_PUSHR_CONT;
-+	regmap_read(dspi->regmap, SPI_POPR, &val);
-+	d = SPI_POPR_RXDATA(val);
- 
--			dspi->len -= 2;
--		} else {
--			if (!(dspi->dataflags & TRAN_STATE_TX_VOID)) {
-+	if (!(dspi->dataflags & TRAN_STATE_RX_VOID))
-+		rx_word ? (*(u16 *)dspi->rx = d) : (*(u8 *)dspi->rx = d);
- 
--				d8 = *(u8 *)dspi->tx;
--				dspi->tx++;
--			} else {
--				d8 = (u8)dspi->void_write_data;
--			}
-+	dspi->rx += rx_word + 1;
-+}
- 
--			dspi_pushr = SPI_PUSHR_TXDATA(d8) |
--				SPI_PUSHR_PCS(dspi->cs) |
--				SPI_PUSHR_CTAS(dspi->cs) |
--				SPI_PUSHR_CONT;
-+static int dspi_eoq_write(struct fsl_dspi *dspi)
-+{
-+	int tx_count = 0;
-+	int tx_word;
-+	u32 dspi_pushr = 0;
-+	int first = 1;
- 
--			dspi->len--;
-+	tx_word = is_double_byte_mode(dspi);
-+
-+	while (dspi->len && (tx_count < DSPI_FIFO_SIZE)) {
-+		/* If we are in word mode, only have a single byte to transfer
-+		 * switch to byte mode temporarily.  Will switch back at the
-+		 * end of the transfer.
-+		 */
-+		if (tx_word && (dspi->len == 1)) {
-+			dspi->dataflags |= TRAN_STATE_WORD_ODD_NUM;
-+			regmap_update_bits(dspi->regmap, SPI_CTAR(dspi->cs),
-+					SPI_FRAME_BITS_MASK, SPI_FRAME_BITS(8));
-+			tx_word = 0;
- 		}
- 
-+		dspi_pushr = dspi_data_to_pushr(dspi, tx_word);
-+
- 		if (dspi->len == 0 || tx_count == DSPI_FIFO_SIZE - 1) {
- 			/* last transfer in the transfer */
- 			dspi_pushr |= SPI_PUSHR_EOQ;
-@@ -291,40 +313,55 @@ static int dspi_transfer_write(struct fsl_dspi *dspi)
- 	return tx_count * (tx_word + 1);
- }
- 
--static int dspi_transfer_read(struct fsl_dspi *dspi)
-+static int dspi_eoq_read(struct fsl_dspi *dspi)
- {
- 	int rx_count = 0;
- 	int rx_word = is_double_byte_mode(dspi);
--	u16 d;
- 
- 	while ((dspi->rx < dspi->rx_end)
- 			&& (rx_count < DSPI_FIFO_SIZE)) {
--		if (rx_word) {
--			unsigned int val;
-+		if (rx_word && (dspi->rx_end - dspi->rx) == 1)
-+			rx_word = 0;
- 
--			if ((dspi->rx_end - dspi->rx) == 1)
--				break;
-+		dspi_data_from_popr(dspi, rx_word);
-+		rx_count++;
-+	}
- 
--			regmap_read(dspi->regmap, SPI_POPR, &val);
--			d = SPI_POPR_RXDATA(val);
-+	return rx_count;
-+}
- 
--			if (!(dspi->dataflags & TRAN_STATE_RX_VOID))
--				*(u16 *)dspi->rx = d;
--			dspi->rx += 2;
-+static int dspi_tcfq_write(struct fsl_dspi *dspi)
-+{
-+	int tx_word;
-+	u32 dspi_pushr = 0;
- 
--		} else {
--			unsigned int val;
-+	tx_word = is_double_byte_mode(dspi);
- 
--			regmap_read(dspi->regmap, SPI_POPR, &val);
--			d = SPI_POPR_RXDATA(val);
--			if (!(dspi->dataflags & TRAN_STATE_RX_VOID))
--				*(u8 *)dspi->rx = d;
--			dspi->rx++;
--		}
--		rx_count++;
-+	if (tx_word && (dspi->len == 1)) {
-+		dspi->dataflags |= TRAN_STATE_WORD_ODD_NUM;
-+		regmap_update_bits(dspi->regmap, SPI_CTAR(dspi->cs),
-+				SPI_FRAME_BITS_MASK, SPI_FRAME_BITS(8));
-+		tx_word = 0;
- 	}
- 
--	return rx_count;
-+	dspi_pushr = dspi_data_to_pushr(dspi, tx_word);
-+
-+	if ((dspi->cs_change) && (!dspi->len))
-+		dspi_pushr &= ~SPI_PUSHR_CONT;
-+
-+	regmap_write(dspi->regmap, SPI_PUSHR, dspi_pushr);
-+
-+	return tx_word + 1;
-+}
-+
-+static void dspi_tcfq_read(struct fsl_dspi *dspi)
-+{
-+	int rx_word = is_double_byte_mode(dspi);
-+
-+	if (rx_word && (dspi->rx_end - dspi->rx) == 1)
-+		rx_word = 0;
-+
-+	dspi_data_from_popr(dspi, rx_word);
- }
- 
- static int dspi_transfer_one_message(struct spi_master *master,
-@@ -334,6 +371,7 @@ static int dspi_transfer_one_message(struct spi_master *master,
- 	struct spi_device *spi = message->spi;
- 	struct spi_transfer *transfer;
- 	int status = 0;
-+
- 	message->actual_length = 0;
- 
- 	list_for_each_entry(transfer, &message->transfers, transfer_list) {
-@@ -370,8 +408,13 @@ static int dspi_transfer_one_message(struct spi_master *master,
- 			regmap_write(dspi->regmap, SPI_CTAR(dspi->cs),
- 					dspi->cur_chip->ctar_val);
- 
--		regmap_write(dspi->regmap, SPI_RSER, SPI_RSER_EOQFE);
--		message->actual_length += dspi_transfer_write(dspi);
-+		if (dspi->devtype_data->trans_mode == DSPI_EOQ_MODE) {
-+			regmap_write(dspi->regmap, SPI_RSER, SPI_RSER_EOQFE);
-+			message->actual_length += dspi_eoq_write(dspi);
-+		} else if (dspi->devtype_data->trans_mode == DSPI_TCFQ_MODE) {
-+			regmap_write(dspi->regmap, SPI_RSER, SPI_RSER_TCFQE);
-+			message->actual_length += dspi_tcfq_write(dspi);
-+		}
- 
- 		if (wait_event_interruptible(dspi->waitq, dspi->waitflags))
- 			dev_err(&dspi->pdev->dev, "wait transfer complete fail!\n");
-@@ -460,27 +503,39 @@ static void dspi_cleanup(struct spi_device *spi)
- static irqreturn_t dspi_interrupt(int irq, void *dev_id)
- {
- 	struct fsl_dspi *dspi = (struct fsl_dspi *)dev_id;
--
- 	struct spi_message *msg = dspi->cur_msg;
- 
--	regmap_write(dspi->regmap, SPI_SR, SPI_SR_EOQF);
--	dspi_transfer_read(dspi);
-+	if (dspi->devtype_data->trans_mode == DSPI_EOQ_MODE) {
-+		regmap_write(dspi->regmap, SPI_SR, SPI_SR_EOQF);
-+		dspi_eoq_read(dspi);
-+	} else if (dspi->devtype_data->trans_mode == DSPI_TCFQ_MODE) {
-+		regmap_write(dspi->regmap, SPI_SR, SPI_SR_TCFQF);
-+		dspi_tcfq_read(dspi);
-+	}
- 
- 	if (!dspi->len) {
--		if (dspi->dataflags & TRAN_STATE_WORD_ODD_NUM)
-+		if (dspi->dataflags & TRAN_STATE_WORD_ODD_NUM) {
- 			regmap_update_bits(dspi->regmap, SPI_CTAR(dspi->cs),
- 			SPI_FRAME_BITS_MASK, SPI_FRAME_BITS(16));
-+			dspi->dataflags &= ~TRAN_STATE_WORD_ODD_NUM;
-+		}
- 
- 		dspi->waitflags = 1;
- 		wake_up_interruptible(&dspi->waitq);
--	} else
--		msg->actual_length += dspi_transfer_write(dspi);
--
-+	} else {
-+		if (dspi->devtype_data->trans_mode == DSPI_EOQ_MODE)
-+			msg->actual_length += dspi_eoq_write(dspi);
-+		else if (dspi->devtype_data->trans_mode == DSPI_TCFQ_MODE)
-+			msg->actual_length += dspi_tcfq_write(dspi);
-+	}
- 	return IRQ_HANDLED;
- }
- 
- static const struct of_device_id fsl_dspi_dt_ids[] = {
--	{ .compatible = "fsl,vf610-dspi", .data = NULL, },
-+	{ .compatible = "fsl,vf610-dspi", .data = (void *)&vf610_data, },
-+	{ .compatible = "fsl,ls1021a-v1.0-dspi",
-+		.data = (void *)&ls1021a_v1_data, },
-+	{ .compatible = "fsl,ls2085a-dspi", .data = (void *)&ls2085a_data, },
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, fsl_dspi_dt_ids);
-@@ -526,6 +581,8 @@ static int dspi_probe(struct platform_device *pdev)
- 	struct resource *res;
- 	void __iomem *base;
- 	int ret = 0, cs_num, bus_num;
-+	const struct of_device_id *of_id =
-+			of_match_device(fsl_dspi_dt_ids, &pdev->dev);
- 
- 	master = spi_alloc_master(&pdev->dev, sizeof(struct fsl_dspi));
- 	if (!master)
-@@ -559,6 +616,13 @@ static int dspi_probe(struct platform_device *pdev)
- 	}
- 	master->bus_num = bus_num;
- 
-+	dspi->devtype_data = (struct fsl_dspi_devtype_data *)of_id->data;
-+	if (!dspi->devtype_data) {
-+		dev_err(&pdev->dev, "can't get devtype_data\n");
-+		ret = -EFAULT;
-+		goto out_master_put;
-+	}
-+
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	base = devm_ioremap_resource(&pdev->dev, res);
- 	if (IS_ERR(base)) {
--- 
-2.1.0.27.g96db324
+are available in the git repository at:
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+  git://git.infradead.org/users/dbaryshkov/zaurus.git locomo-v4
+
+for you to fetch changes up to 7c8e8e05ca27a4ad82356eb57ad12a7ca39bfd95:
+
+  ARM: drop old LoCoMo driver (2015-05-25 14:29:23 +0300)
+
+----------------------------------------------------------------
+Dmitry Eremin-Solenikov (18):
+      mfd: add new driver for Sharp LoCoMo
+      leds: port locomo leds driver to new locomo core
+      input: convert LoCoMo keyboard driver to use new locomo core
+      input: locomokbd: differentiate between two Enter keys
+      input: make LoCoMo keyboard driver support both poodle and collie
+      video: backlight: add new locomo backlight driver
+      video: lcd: add LoCoMo LCD driver
+      gpio: port LoCoMo gpio support from old driver
+      gpio: locomo: implement per-pin irq handling
+      spi: add locomo SPI driver
+      i2c: add locomo i2c driver
+      ARM: sa1100: make collie use new locomo drivers
+      ARM: sa1100: don't preallocate IRQ space for locomo
+      ASoC: pxa: poodle: make use of new locomo GPIO interface
+      ARM: pxa: poodle: use new LoCoMo driver
+      ARM: pxa: poodle: don't preallocate IRQ space for locomo
+      video: backlight: drop old locomo bl/lcd driver
+      ARM: drop old LoCoMo driver
+
+ arch/arm/common/Kconfig                    |   3 -
+ arch/arm/common/Makefile                   |   1 -
+ arch/arm/common/locomo.c                   | 914 -----------------------------
+ arch/arm/include/asm/hardware/locomo.h     | 221 -------
+ arch/arm/mach-pxa/Kconfig                  |   1 -
+ arch/arm/mach-pxa/include/mach/poodle.h    |   8 +-
+ arch/arm/mach-pxa/poodle.c                 |  58 +-
+ arch/arm/mach-sa1100/Kconfig               |   1 -
+ arch/arm/mach-sa1100/collie.c              | 213 +++++--
+ arch/arm/mach-sa1100/include/mach/collie.h |  16 +-
+ arch/arm/mach-sa1100/include/mach/irqs.h   |  19 +-
+ drivers/gpio/Kconfig                       |  13 +
+ drivers/gpio/Makefile                      |   1 +
+ drivers/gpio/gpio-locomo.c                 | 285 +++++++++
+ drivers/i2c/busses/Kconfig                 |  12 +
+ drivers/i2c/busses/Makefile                |   1 +
+ drivers/i2c/busses/i2c-locomo.c            | 135 +++++
+ drivers/input/keyboard/Kconfig             |   2 +-
+ drivers/input/keyboard/locomokbd.c         | 262 ++++-----
+ drivers/leds/Kconfig                       |   2 +-
+ drivers/leds/leds-locomo.c                 | 117 ++--
+ drivers/mfd/Kconfig                        |  10 +
+ drivers/mfd/Makefile                       |   1 +
+ drivers/mfd/locomo.c                       | 336 +++++++++++
+ drivers/spi/Kconfig                        |  10 +
+ drivers/spi/Makefile                       |   1 +
+ drivers/spi/spi-locomo.c                   | 332 +++++++++++
+ drivers/video/backlight/Kconfig            |  16 +-
+ drivers/video/backlight/Makefile           |   3 +-
+ drivers/video/backlight/locomo_bl.c        | 153 +++++
+ drivers/video/backlight/locomo_lcd.c       | 285 +++++++++
+ drivers/video/backlight/locomolcd.c        | 255 --------
+ include/linux/mfd/locomo.h                 | 169 ++++++
+ sound/soc/pxa/poodle.c                     |  52 +-
+ 34 files changed, 2205 insertions(+), 1703 deletions(-)
+ delete mode 100644 arch/arm/common/locomo.c
+ delete mode 100644 arch/arm/include/asm/hardware/locomo.h
+ create mode 100644 drivers/gpio/gpio-locomo.c
+ create mode 100644 drivers/i2c/busses/i2c-locomo.c
+ create mode 100644 drivers/mfd/locomo.c
+ create mode 100644 drivers/spi/spi-locomo.c
+ create mode 100644 drivers/video/backlight/locomo_bl.c
+ create mode 100644 drivers/video/backlight/locomo_lcd.c
+ delete mode 100644 drivers/video/backlight/locomolcd.c
+ create mode 100644 include/linux/mfd/locomo.h
+

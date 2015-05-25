@@ -1,42 +1,51 @@
-From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH 4/4] spi: bcm2835: set SPI_MASTER_MUST_RX_SG/TX_SG flags
-Date: Mon, 25 May 2015 12:44:26 +0000
-Message-ID: <1432557867-2427-5-git-send-email-kernel@martin.sperl.org>
-References: <2B971A09-33E3-42BC-B13D-49B6DD3D2E7A@martin.sperl.org>
- <1432557867-2427-1-git-send-email-kernel@martin.sperl.org>
-Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 0/4] spi: omap2-mcspi: Fixes for recent updates
+Date: Mon, 25 May 2015 13:00:12 +0100
+Message-ID: <20150525120012.GH21391@sirena.org.uk>
+References: <20150522122544.GL21391@sirena.org.uk>
+ <1432433625-23407-1-git-send-email-mwelling@ieee.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="gX7DG0PufVj3JKBt"
+Cc: linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-next-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Michael Welling <mwelling-EkmVulN54Sk@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1432557867-2427-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1432433625-23407-1-git-send-email-mwelling-EkmVulN54Sk@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
----
- drivers/spi/spi-bcm2835.c |    2 ++
- 1 file changed, 2 insertions(+)
+--gX7DG0PufVj3JKBt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index bfcc436..e98db57 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -462,6 +462,8 @@ static void bcm2835_dma_init(struct spi_master *master, struct device *dev)
- 	/* all went well, so set can_dma */
- 	master->can_dma = bcm2835_spi_can_dma;
- 	master->max_dma_len = 65535; /* limitation by BCM2835_SPI_DLEN */
-+	/* need to do TX AND RX DMA, so we need scatter-gather lists */
-+	master->flags = SPI_MASTER_MUST_RX_SG | SPI_MASTER_MUST_TX_SG;
- 
- 	return;
- 
--- 
-1.7.10.4
+On Sat, May 23, 2015 at 09:13:41PM -0500, Michael Welling wrote:
+> The recent update of the OMAP2 McSPI driver left some unresolved issues.
+> These patches should take care them and again allow for GPIO chip selects
+> and native chip selects.
 
+Applied all, thanks.
+
+--gX7DG0PufVj3JKBt
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVYw7LAAoJECTWi3JdVIfQEb4H/3aLrFvnA/3E2vbMxqTyKDV7
+8vGlQbXVSuePP/Zvzy1EmTQoTwH0+GnJEDdbHek5EmFz6NSpQm0vcSIBRzsiC12H
+FZhoMcIpCSSw3OYNnYGgchrY3ekMzT2+/yQiQTsCo7xE/Mari4QMZp8NnvfqlgPT
+mXrDpO8VDduk5c8/l/N03En+ZeDVRTBEGdla7G8MO9Toea8Iuvt//tGq1gl+srXc
+r9WuB5ODoNBiOmjvFg6AeJfYI15fTS2UkY3c10nbur/Gzk+APD3nNIAQ4JdcXmbc
+l0yDJR21+gIB4qhCVbRjSPrFBdSh6JrPlyAzi0PnLKX10xhPHAozuTfOiSS8gaU=
+=1S5v
+-----END PGP SIGNATURE-----
+
+--gX7DG0PufVj3JKBt--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

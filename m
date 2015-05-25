@@ -1,51 +1,51 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 0/4] spi: omap2-mcspi: Fixes for recent updates
-Date: Mon, 25 May 2015 13:00:12 +0100
-Message-ID: <20150525120012.GH21391@sirena.org.uk>
-References: <20150522122544.GL21391@sirena.org.uk>
- <1432433625-23407-1-git-send-email-mwelling@ieee.org>
+Subject: Re: [PATCH V2] spi: add missing cleanup in spi_map_msg on error
+Date: Mon, 25 May 2015 14:05:52 +0100
+Message-ID: <20150525130552.GT21391@sirena.org.uk>
+References: <1432460086-2549-1-git-send-email-kernel@martin.sperl.org>
+ <1432548630-2202-1-git-send-email-kernel@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="gX7DG0PufVj3JKBt"
-Cc: linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-next-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Michael Welling <mwelling-EkmVulN54Sk@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="UNrMg7q4I5bA1PGX"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1432433625-23407-1-git-send-email-mwelling-EkmVulN54Sk@public.gmane.org>
+In-Reply-To: <1432548630-2202-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---gX7DG0PufVj3JKBt
+--UNrMg7q4I5bA1PGX
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Sat, May 23, 2015 at 09:13:41PM -0500, Michael Welling wrote:
-> The recent update of the OMAP2 McSPI driver left some unresolved issues.
-> These patches should take care them and again allow for GPIO chip selects
-> and native chip selects.
+On Mon, May 25, 2015 at 10:10:29AM +0000, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
+> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-Applied all, thanks.
+Please don't bury patches in reply to existing threads, and especially
+don't send streams of multiple new patches in reply to each other at
+once.  This makes it harder to spot new patches and confusing what's the
+current code intended for review, you end up with a jumbled mess of
+possibly related things some of which superceed each other.
 
---gX7DG0PufVj3JKBt
+--UNrMg7q4I5bA1PGX
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVYw7LAAoJECTWi3JdVIfQEb4H/3aLrFvnA/3E2vbMxqTyKDV7
-8vGlQbXVSuePP/Zvzy1EmTQoTwH0+GnJEDdbHek5EmFz6NSpQm0vcSIBRzsiC12H
-FZhoMcIpCSSw3OYNnYGgchrY3ekMzT2+/yQiQTsCo7xE/Mari4QMZp8NnvfqlgPT
-mXrDpO8VDduk5c8/l/N03En+ZeDVRTBEGdla7G8MO9Toea8Iuvt//tGq1gl+srXc
-r9WuB5ODoNBiOmjvFg6AeJfYI15fTS2UkY3c10nbur/Gzk+APD3nNIAQ4JdcXmbc
-l0yDJR21+gIB4qhCVbRjSPrFBdSh6JrPlyAzi0PnLKX10xhPHAozuTfOiSS8gaU=
-=1S5v
+iQEcBAEBCAAGBQJVYx4vAAoJECTWi3JdVIfQ2XIH/0oCI+6nvUgp1fRAQ0VOOyFa
+keLxjp9lMfgwJ2qNW6IbkJPQ7/+tRosVe+j0TgVLhAndTtVWjaZ6tEZQiWQv7Y11
+aS8VTBMFio6R/2z0AqCVgmTwGE4MyOF+kvaEiSyLm46TUUiHn7KLC7kPuAAY/or1
+wpBwODLno4zo98W4PcPcf3ygY8nZlFQlV1FCQnpGenhvlm0LICCNN4DyYMumG3G4
+VAc/fqVxA1mmy8ZWagN5jAarvsBob+68J7ilyPemMw4C274D0ZmbESsGeqWXy5/4
+raB3mrJfklQ4BiD0E17TarpGyNbmGQbOj/Kn+Udpghk2bTxxsTRcZCahGHFZ+Wk=
+=Cib4
 -----END PGP SIGNATURE-----
 
---gX7DG0PufVj3JKBt--
+--UNrMg7q4I5bA1PGX--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

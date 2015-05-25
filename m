@@ -1,185 +1,55 @@
-From: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
-Subject: [PATCH v4 15/18] ARM: pxa: poodle: use new LoCoMo driver
-Date: Mon, 25 May 2015 14:41:50 +0300
-Message-ID: <1432554113-26280-16-git-send-email-dbaryshkov@gmail.com>
-References: <1432554113-26280-1-git-send-email-dbaryshkov@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
-	linux-input@vger.kernel.org, linux-spi@vger.kernel.org,
-	alsa-devel@alsa-project.org
-To: Russell King <linux@arm.linux.org.uk>,
-	Daniel Mack <daniel@zonque.org>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Alexandre Courbot <gnurou@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Samuel Ortiz <sameo@linux.intel.com>,
-	Lee Jones <lee.jones@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Jingoo Han <jg1.han@samsung.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Andrea Adami <andrea.adami@gmail.com>
-Return-path: <linux-gpio-owner@vger.kernel.org>
-In-Reply-To: <1432554113-26280-1-git-send-email-dbaryshkov@gmail.com>
-Sender: linux-gpio-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
+Subject: [PATCH 0/4] dma map single page multiple times in sg_list
+Date: Mon, 25 May 2015 12:44:22 +0000
+Message-ID: <1432557867-2427-1-git-send-email-kernel@martin.sperl.org>
+References: <2B971A09-33E3-42BC-B13D-49B6DD3D2E7A@martin.sperl.org>
+Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
+	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <2B971A09-33E3-42BC-B13D-49B6DD3D2E7A-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Convert poodle to use new mfd-based LoCoMo driver.
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-Signed-off-by: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
----
- arch/arm/mach-pxa/Kconfig               |  1 -
- arch/arm/mach-pxa/include/mach/poodle.h |  6 ----
- arch/arm/mach-pxa/poodle.c              | 58 ++++++++++++++++++++++++++++++---
- 3 files changed, 54 insertions(+), 11 deletions(-)
+This patch series implements mapping a single page multiple times
+in the sg_list when rx/tx_buf == NULL.
 
-diff --git a/arch/arm/mach-pxa/Kconfig b/arch/arm/mach-pxa/Kconfig
-index 8896e71..a2756b0 100644
---- a/arch/arm/mach-pxa/Kconfig
-+++ b/arch/arm/mach-pxa/Kconfig
-@@ -481,7 +481,6 @@ config MACH_POODLE
- 	bool "Enable Sharp SL-5600 (Poodle) Support"
- 	depends on PXA_SHARPSL
- 	select PXA25x
--	select SHARP_LOCOMO
- 
- config MACH_CORGI
- 	bool "Enable Sharp SL-C700 (Corgi) Support"
-diff --git a/arch/arm/mach-pxa/include/mach/poodle.h b/arch/arm/mach-pxa/include/mach/poodle.h
-index b56b193..5905cf1 100644
---- a/arch/arm/mach-pxa/include/mach/poodle.h
-+++ b/arch/arm/mach-pxa/include/mach/poodle.h
-@@ -81,12 +81,6 @@
- #define POODLE_GPIO_L_LCLK	(POODLE_SCOOP_GPIO_BASE + 10)
- #define POODLE_GPIO_HS_OUT	(POODLE_SCOOP_GPIO_BASE + 11)
- 
--#define POODLE_LOCOMO_GPIO_AMP_ON      LOCOMO_GPIO(8)
--#define POODLE_LOCOMO_GPIO_MUTE_L      LOCOMO_GPIO(10)
--#define POODLE_LOCOMO_GPIO_MUTE_R      LOCOMO_GPIO(11)
--#define POODLE_LOCOMO_GPIO_232VCC_ON   LOCOMO_GPIO(12)
--#define POODLE_LOCOMO_GPIO_JK_B        LOCOMO_GPIO(13)
--
- #define POODLE_NR_IRQS		(IRQ_BOARD_START + 4)	/* 4 for LoCoMo */
- 
- extern struct platform_device poodle_locomo_device;
-diff --git a/arch/arm/mach-pxa/poodle.c b/arch/arm/mach-pxa/poodle.c
-index 195b112..0236ee8 100644
---- a/arch/arm/mach-pxa/poodle.c
-+++ b/arch/arm/mach-pxa/poodle.c
-@@ -23,6 +23,7 @@
- #include <linux/delay.h>
- #include <linux/mtd/physmap.h>
- #include <linux/gpio.h>
-+#include <linux/gpio/machine.h>
- #include <linux/i2c.h>
- #include <linux/i2c/pxa-i2c.h>
- #include <linux/regulator/machine.h>
-@@ -31,6 +32,8 @@
- #include <linux/spi/pxa2xx_spi.h>
- #include <linux/mtd/sharpsl.h>
- #include <linux/memblock.h>
-+#include <linux/iio/machine.h>
-+#include <linux/mfd/locomo.h>
- 
- #include <mach/hardware.h>
- #include <asm/mach-types.h>
-@@ -49,7 +52,6 @@
- #include <linux/platform_data/video-pxafb.h>
- 
- #include <asm/hardware/scoop.h>
--#include <asm/hardware/locomo.h>
- #include <asm/mach/sharpsl_param.h>
- 
- #include "generic.h"
-@@ -179,7 +181,8 @@ static struct resource locomo_resources[] = {
- };
- 
- static struct locomo_platform_data locomo_info = {
--	.irq_base	= IRQ_BOARD_START,
-+	.gpio_base	  = -1,
-+	.comadj	          = 118,
- };
- 
- struct platform_device poodle_locomo_device = {
-@@ -192,8 +195,6 @@ struct platform_device poodle_locomo_device = {
- 	},
- };
- 
--EXPORT_SYMBOL(poodle_locomo_device);
--
- #if defined(CONFIG_SPI_PXA2XX) || defined(CONFIG_SPI_PXA2XX_MODULE)
- static struct pxa2xx_spi_master poodle_spi_info = {
- 	.num_chipselect	= 1,
-@@ -424,6 +425,47 @@ static struct i2c_board_info __initdata poodle_i2c_devices[] = {
- 	{ I2C_BOARD_INFO("wm8731", 0x1b) },
- };
- 
-+static struct iio_map locomo_iio_map[] = {
-+	{
-+		.consumer_dev_name = "locomo-lcd.0",
-+		.consumer_channel = "comadj",
-+		.adc_channel_label = "CH0",
-+	},
-+	{ }
-+};
-+
-+static struct i2c_board_info locomo_i2c_devs[] __initdata = {
-+	{
-+		I2C_BOARD_INFO("m62332", 0x4e),
-+		.platform_data = locomo_iio_map,
-+	},
-+};
-+
-+static struct gpiod_lookup_table poodle_audio_gpios_table = {
-+	.dev_id = "poodle-audio",
-+	.table = {
-+		GPIO_LOOKUP("locomo-gpio", 10, "mute-l", GPIO_ACTIVE_LOW),
-+		GPIO_LOOKUP("locomo-gpio", 11, "mute-r", GPIO_ACTIVE_LOW),
-+		GPIO_LOOKUP("locomo-gpio", 8, "amp-on", GPIO_ACTIVE_LOW),
-+		{ },
-+	},
-+}, poodle_bl_gpios_table = {
-+	.dev_id = "locomo-backlight.0",
-+	.table = {
-+		GPIO_LOOKUP("locomo-gpio", 9, "flvr", GPIO_ACTIVE_HIGH),
-+		{ },
-+	},
-+}, poodle_lcd_gpios_table = {
-+	.dev_id = "locomo-lcd.0",
-+	.table = {
-+		GPIO_LOOKUP("locomo-gpio", 4, "VSHA", GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP("locomo-gpio", 5, "VSHD", GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP("locomo-gpio", 6, "Vee", GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP("locomo-gpio", 7, "MOD", GPIO_ACTIVE_HIGH),
-+		{ },
-+	},
-+};
-+
- static void poodle_poweroff(void)
- {
- 	pxa_restart(REBOOT_HARD, NULL);
-@@ -445,6 +487,13 @@ static void __init poodle_init(void)
- 
- 	platform_scoop_config = &poodle_pcmcia_config;
- 
-+	if (sharpsl_param.comadj != -1)
-+		locomo_info.comadj = sharpsl_param.comadj;
-+
-+	gpiod_add_lookup_table(&poodle_audio_gpios_table);
-+	gpiod_add_lookup_table(&poodle_bl_gpios_table);
-+	gpiod_add_lookup_table(&poodle_lcd_gpios_table);
-+
- 	ret = platform_add_devices(devices, ARRAY_SIZE(devices));
- 	if (ret)
- 		pr_warn("poodle: Unable to register LoCoMo device\n");
-@@ -455,6 +504,7 @@ static void __init poodle_init(void)
- 	pxa_set_ficp_info(&poodle_ficp_platform_data);
- 	pxa_set_i2c_info(NULL);
- 	i2c_register_board_info(0, ARRAY_AND_SIZE(poodle_i2c_devices));
-+	i2c_register_board_info(1, ARRAY_AND_SIZE(locomo_i2c_devs));
- 	poodle_init_spi();
- 	regulator_has_full_constraints();
- }
+The 1st patch makes this apply to all spi_transfers for which
+can_dma returns true, but this means it applies to all spi-masters
+with DMA support.
+
+To avoid this there is an api extension in the 3rd patch that allows
+drivers to state the requirement in spi_master.flags.
+
+spi-bcm2835 is converted to the new api in patches 2 and 4.
+
+Patch 3 and 4 are optional and reduce impact on drivers that do
+not need this feature by extending the API.
+
+All patches apply against for-next, but note that there will be a conflict
+if the patch "spi: add missing cleanup in spi_map_msg on error" is
+applied already.
+
+Martin Sperl (4):
+  spi: dma map a single page multiple times in sg_list for rx/tx_buf ==
+    NULL
+  spi: bcm2835: no longer requires SPI_MASTER_MUST_RX/TX
+  spi: add SPI_MASTER_MUST_*_SG to avoid unnecessary mapping of null
+    pages in sg_lists for masters that do not need it
+  spi: bcm2835: set SPI_MASTER_MUST_RX_SG/TX_SG flags
+
+ drivers/spi/spi-bcm2835.c |    4 ++--
+ drivers/spi/spi.c         |   40 +++++++++++++++++++++++++++++++++-------
+ include/linux/spi/spi.h   |    6 ++++++
+ 3 files changed, 41 insertions(+), 9 deletions(-)
+
 -- 
-2.1.4
-
+1.7.10.4
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

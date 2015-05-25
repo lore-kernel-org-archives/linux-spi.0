@@ -1,51 +1,57 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH V2] spi: add missing cleanup in spi_map_msg on error
-Date: Mon, 25 May 2015 14:05:52 +0100
-Message-ID: <20150525130552.GT21391@sirena.org.uk>
-References: <1432460086-2549-1-git-send-email-kernel@martin.sperl.org>
- <1432548630-2202-1-git-send-email-kernel@martin.sperl.org>
+Subject: Re: [PATCH spi 1/7] spi-tegra20-slink: remove duplicate check on
+ resource
+Date: Mon, 25 May 2015 15:08:06 +0100
+Message-ID: <20150525140806.GX21391@sirena.org.uk>
+References: <1413885950-24208-1-git-send-email-varkab@cdac.in>
+ <544F22C8.8040106@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="UNrMg7q4I5bA1PGX"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
+	protocol="application/pgp-signature"; boundary="ZlyDGGI/Hohreivc"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, "varkab-If5XQcfNmg0@public.gmane.org" <varkab-If5XQcfNmg0@public.gmane.org>
+To: Varka Bhadram <varkabhadram-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1432548630-2202-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <544F22C8.8040106-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---UNrMg7q4I5bA1PGX
+--ZlyDGGI/Hohreivc
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Mon, May 25, 2015 at 10:10:29AM +0000, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
-> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+On Tue, Oct 28, 2014 at 10:29:52AM +0530, Varka Bhadram wrote:
+> On 10/21/2014 03:35 PM, Varka Bhadram wrote:
+> >Sanity check on resource happening with devm_ioremap_resource().
 
-Please don't bury patches in reply to existing threads, and especially
-don't send streams of multiple new patches in reply to each other at
-once.  This makes it harder to spot new patches and confusing what's the
-current code intended for review, you end up with a jumbled mess of
-possibly related things some of which superceed each other.
+> >+
+> >  	spi_irq = platform_get_irq(pdev, 0);
+> >  	tspi->irq = spi_irq;
+> >  	ret = request_threaded_irq(tspi->irq, tegra_slink_isr,
 
---UNrMg7q4I5bA1PGX
+> Ping...
+
+Please don't send content free pings, and always send patches to
+maintainers as covered in SubmittingPatches.
+
+--ZlyDGGI/Hohreivc
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVYx4vAAoJECTWi3JdVIfQ2XIH/0oCI+6nvUgp1fRAQ0VOOyFa
-keLxjp9lMfgwJ2qNW6IbkJPQ7/+tRosVe+j0TgVLhAndTtVWjaZ6tEZQiWQv7Y11
-aS8VTBMFio6R/2z0AqCVgmTwGE4MyOF+kvaEiSyLm46TUUiHn7KLC7kPuAAY/or1
-wpBwODLno4zo98W4PcPcf3ygY8nZlFQlV1FCQnpGenhvlm0LICCNN4DyYMumG3G4
-VAc/fqVxA1mmy8ZWagN5jAarvsBob+68J7ilyPemMw4C274D0ZmbESsGeqWXy5/4
-raB3mrJfklQ4BiD0E17TarpGyNbmGQbOj/Kn+Udpghk2bTxxsTRcZCahGHFZ+Wk=
-=Cib4
+iQEcBAEBCAAGBQJVYyzGAAoJECTWi3JdVIfQgyEH/R9znbzrIRPKEnEXjQOiUrqI
+aEyf9sAXqpEQl5iByk1h/U8mlmH01V/pFzmyY1KQEztv0T/fOpghnVKr9ybX2p3A
+ggBOo42rRaE3kI3zewo4gHDFini76RJkZ4o6rzmpME2tFefRdNfViiZZayeGYiRl
+VG3yzYJ5TWS/eO3/FqsOKwVltaMqo+5dg6/JUC94Sh3C8RBr0CZd3LAgIFg+WbKJ
+4/Ai/40fuLMIpBZLf6/sW8E1eFbovv8sxNBvbz2VvvIDXI5ZmAIonfndkwY8thFV
+km0gtYgIJnbl4kEfAm/4EhXd4t2IeEXt77ZZlAa4N6QpnOTTqezADNGZ42eD9Vg=
+=hYks
 -----END PGP SIGNATURE-----
 
---UNrMg7q4I5bA1PGX--
+--ZlyDGGI/Hohreivc--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

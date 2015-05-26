@@ -1,25 +1,25 @@
-From: Gregory CLEMENT <gregory.clement@free-electrons.com>
-Subject: [PATCH 2/3] spi: orion: Fix extended baud rates for each Armada SoCs
-Date: Tue, 26 May 2015 11:44:43 +0200
-Message-ID: <1432633484-18758-3-git-send-email-gregory.clement@free-electrons.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 1/3] spi: orion: Fix maximum baud rates for Armada 370/XP
+Date: Tue, 26 May 2015 11:36:50 +0100
+Message-ID: <20150526103650.GM21577@sirena.org.uk>
 References: <1432633484-18758-1-git-send-email-gregory.clement@free-electrons.com>
+ <1432633484-18758-2-git-send-email-gregory.clement@free-electrons.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============1421285698391086533=="
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
+ Andrew Lunn <andrew@lunn.ch>, Jason Cooper <jason@lakedaemon.net>,
+ Tawfik Bayouk <tawfik@marvell.com>,
  Boris BREZILLON <boris.brezillon@free-electrons.com>,
- Tawfik Bayouk <tawfik@marvell.com>, devicetree@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, linux-spi@vger.kernel.org,
  Nadav Haklai <nadavh@marvell.com>, Lior Amsalem <alior@marvell.com>,
  Ezequiel Garcia <ezequiel.garcia@free-electrons.com>,
  Maxime Ripard <maxime.ripard@free-electrons.com>,
- linux-arm-kernel@lists.infradead.org
-To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
- linux-kernel@vger.kernel.org, Jason Cooper <jason@lakedaemon.net>,
- Andrew Lunn <andrew@lunn.ch>,
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
- Gregory CLEMENT <gregory.clement@free-electrons.com>
+ linux-arm-kernel@lists.infradead.org,
+ Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+To: Gregory CLEMENT <gregory.clement@free-electrons.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1432633484-18758-1-git-send-email-gregory.clement@free-electrons.com>
+In-Reply-To: <1432633484-18758-2-git-send-email-gregory.clement@free-electrons.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -31,116 +31,55 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-The commit df59fa7f4bca "spi: orion: support armada extended baud
-rates" made the assumptions that all the Armada SoCs supported the
-same maximum frequency. However, according the hardware datasheet, the
-maximum frequency supported by the Armada 370 SoC is tclk/4, for the
-Armada XP, Armada 38x and Armada 39x SoCs the limitation is 50MHz and
-for the Armada 375 it is tclk/15.
 
-This patch introduces new compatible strings to handle all these
-case. In order to be future proof a compatible was created for each
-SoC even if currently some SoCs seem using the same IP.
+--===============1421285698391086533==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="RzoDHZBRv7fez6cK"
+Content-Disposition: inline
 
-Signed-off-by: Gregory CLEMENT <gregory.clement@free-electrons.com>
----
- .../devicetree/bindings/spi/spi-orion.txt          |  8 +++-
- drivers/spi/spi-orion.c                            | 47 ++++++++++++++++++++--
- 2 files changed, 50 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-orion.txt b/Documentation/devicetree/bindings/spi/spi-orion.txt
-index 50c3a3de61c1..51d63df3d99d 100644
---- a/Documentation/devicetree/bindings/spi/spi-orion.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-orion.txt
-@@ -1,7 +1,13 @@
- Marvell Orion SPI device
- 
- Required properties:
--- compatible : should be "marvell,orion-spi" or "marvell,armada-370-spi".
-+- compatible : should be on of the following:
-+    - "marvell,orion-spi" for the Orion, mv78x00, Kirkwood and Dove SoCs
-+    - "marvell,armada-370-spi", for the Armada 370 SoCs
-+    - "marvell,armada-375-spi", for the Armada 375 SoCs
-+    - "marvell,armada-380-spi", for the Armada 38x SoCs
-+    - "marvell,armada-390-spi", for the Armada 38x SoCs
-+    - "marvell,armada-xp-spi", for the Armada XP SoCs
- - reg : offset and length of the register set for the device
- - cell-index : Which of multiple SPI controllers is this.
- Optional properties:
-diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-index ff97cabdaa81..8cad107a5b3f 100644
---- a/drivers/spi/spi-orion.c
-+++ b/drivers/spi/spi-orion.c
-@@ -391,7 +391,7 @@ static const struct orion_spi_dev orion_spi_dev_data = {
- 	.prescale_mask = ORION_SPI_CLK_PRESCALE_MASK,
- };
- 
--static const struct orion_spi_dev armada_spi_dev_data = {
-+static const struct orion_spi_dev armada_370_spi_dev_data = {
- 	.typ = ARMADA_SPI,
- 	.min_divisor = 4,
- 	.max_divisor = 1920,
-@@ -399,9 +399,46 @@ static const struct orion_spi_dev armada_spi_dev_data = {
- 	.prescale_mask = ARMADA_SPI_CLK_PRESCALE_MASK,
- };
- 
-+static const struct orion_spi_dev armada_xp_spi_dev_data = {
-+	.typ = ARMADA_SPI,
-+	.max_hz = 50000000,
-+	.max_divisor = 1920,
-+	.prescale_mask = ARMADA_SPI_CLK_PRESCALE_MASK,
-+};
-+
-+static const struct orion_spi_dev armada_375_spi_dev_data = {
-+	.typ = ARMADA_SPI,
-+	.min_divisor = 15,
-+	.max_divisor = 1920,
-+	.prescale_mask = ARMADA_SPI_CLK_PRESCALE_MASK,
-+};
-+
- static const struct of_device_id orion_spi_of_match_table[] = {
--	{ .compatible = "marvell,orion-spi", .data = &orion_spi_dev_data, },
--	{ .compatible = "marvell,armada-370-spi", .data = &armada_spi_dev_data, },
-+	{
-+		.compatible = "marvell,orion-spi",
-+		.data = &orion_spi_dev_data,
-+	},
-+	{
-+		.compatible = "marvell,armada-370-spi",
-+		.data = &armada_370_spi_dev_data,
-+	},
-+	{
-+		.compatible = "marvell,armada-375-spi",
-+		.data = &armada_375_spi_dev_data,
-+	},
-+	{
-+		.compatible = "marvell,armada-380-spi",
-+		.data = &armada_xp_spi_dev_data,
-+	},
-+	{
-+		.compatible = "marvell,armada-390-spi",
-+		.data = &armada_xp_spi_dev_data,
-+	},
-+	{
-+		.compatible = "marvell,armada-xp-spi",
-+		.data = &armada_xp_spi_dev_data,
-+	},
-+
- 	{}
- };
- MODULE_DEVICE_TABLE(of, orion_spi_of_match_table);
-@@ -473,9 +510,11 @@ static int orion_spi_probe(struct platform_device *pdev)
- 					"marvell,armada-370-spi"))
- 		master->max_speed_hz = min(devdata->max_hz,
- 				DIV_ROUND_UP(tclk_hz, devdata->min_divisor));
--	else
-+	else if (devdata->min_divisor)
- 		master->max_speed_hz =
- 			DIV_ROUND_UP(tclk_hz, devdata->min_divisor);
-+	else
-+		master->max_speed_hz = devdata->max_hz;
- 	master->min_speed_hz = DIV_ROUND_UP(tclk_hz, devdata->max_divisor);
- 
- 	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--- 
-2.1.0
+--RzoDHZBRv7fez6cK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Tue, May 26, 2015 at 11:44:42AM +0200, Gregory CLEMENT wrote:
+
+> Signed-off-by: Gregory CLEMENT <gregory.clement@free-electrons.com>
+> Reported-by: Kostya Porotchkin <kostap@marvell.com>
+> Cc: <stable@vger.kernel.org> #Fixes df59fa7f4bca
+
+Applied, but please format this stuff in a standard fashion - use a
+Fixes: tag to reference commits you're fixing.  This makes it easier for
+tooling to work with the information you're providing.
+
+--RzoDHZBRv7fez6cK
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVZEzBAAoJECTWi3JdVIfQ0YIH/AntfoJrPyRh9/Xt8Xh7L81m
+pL1JmYf81pDU/rpUtijQ1Z2jfHy+3OyedaE+r7mZ7YWTKTpKXT9yhtY94eHT1dSH
+ytIShvMSeCt/38tGJjRyHUb25rBRjqLliP2xyWXzWV+G67XDWLY6V5KLaXOgSXUI
+qcCXLkCOmM22OthRUUb+qkqGX9Znvnc9BpoBLSVCU/IzEdJhU+RBreSd8uFXoCaY
+I9gPd0C0H9vxoXu0NH2/s3vclAcfypHPX+8+A6zIaIb+lxa9g0daLWcsJhAOxLUQ
+/1a3x23JrrG3EV12OAGxMKTGM4L0yWRqoHLt/rX+IGbblMSx5BOmXTT0V/SLh04=
+=loyq
+-----END PGP SIGNATURE-----
+
+--RzoDHZBRv7fez6cK--
+
+
+--===============1421285698391086533==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+linux-arm-kernel mailing list
+linux-arm-kernel@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+
+--===============1421285698391086533==--

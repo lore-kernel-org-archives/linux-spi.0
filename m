@@ -1,52 +1,100 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: sirf: add the reset for USP-based SPI
-Date: Tue, 26 May 2015 11:38:55 +0100
-Message-ID: <20150526103855.GO21577@sirena.org.uk>
-References: <1432617694-15974-1-git-send-email-21cnbao@gmail.com>
+From: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Subject: [PATCH 00/13] dmaengine + omap drivers: support fro
+	deferred probing
+Date: Tue, 26 May 2015 16:25:55 +0300
+Message-ID: <1432646768-12532-1-git-send-email-peter.ujfalusi@ti.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="FCaxfLZdDTBfImim"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, workgroup.linux-kQvG35nSl+M@public.gmane.org,
-	Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>, Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
-To: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1432617694-15974-1-git-send-email-21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org,
+ linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-crypto@vger.kernel.org,
+ linux-serial@vger.kernel.org, dmaengine@vger.kernel.org,
+ dan.j.williams@intel.com, linux-omap@vger.kernel.org,
+ linux-media@vger.kernel.org
+To: <vinod.koul@intel.com>, <tony@atomide.com>
+Return-path: <alsa-devel-bounces@alsa-project.org>
+List-Unsubscribe: <http://mailman.alsa-project.org/mailman/options/alsa-devel>,
+ <mailto:alsa-devel-request@alsa-project.org?subject=unsubscribe>
+List-Archive: <http://mailman.alsa-project.org/pipermail/alsa-devel/>
+List-Post: <mailto:alsa-devel@alsa-project.org>
+List-Help: <mailto:alsa-devel-request@alsa-project.org?subject=help>
+List-Subscribe: <http://mailman.alsa-project.org/mailman/listinfo/alsa-devel>,
+ <mailto:alsa-devel-request@alsa-project.org?subject=subscribe>
+Errors-To: alsa-devel-bounces@alsa-project.org
+Sender: alsa-devel-bounces@alsa-project.org
+List-Id: linux-spi.vger.kernel.org
 
+Hi,
 
---FCaxfLZdDTBfImim
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Vinod: as I promised: https://lkml.org/lkml/2015/5/8/80
 
-On Tue, May 26, 2015 at 05:21:34AM +0000, Barry Song wrote:
-> From: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
->=20
-> USP-based SPI need a disable and enable, otherwise it doesn't work.
-> this patch adds it as HW initialization.
+With this series it is possible to put omap-dma or edma to even late_initcall
+and the drivers will figure out the load order fine(ish).
+We need to add dma_request_slave_channel_compat_reason() which is the equivalent
+of dma_request_slave_channel_compat() but returning with error codes in case of
+failure instead of NULL pointer.
+The rest of the series just converts the OMAP/daVinci drivers to use this new
+function to get the channel(s) and to handle the deferred probing.
 
-Applied, thanks.
+I did not moved the omap-dma, edma or ti-dma-crossbar from arch_initcall. If I
+do so UART will only comes up after the DMA driver is loaded since we are using,
+or going to use 8250 with DAM support. This delays the kernel messages. Other
+issue is the MMC/SD cards. On  board with eMMC and SD card slot the mmcblk0/1
+might get swapped due to different probe order for the MMC/SD drivers. For
+example in omap5-uevm:
+1. omap-dma in arch_initcall the SD card is mmcblk1 (4809c000.mmc) and eMMC is
+mmcblk0 (480b4000.mmc)
+2. omap-dma in late_initcall the SD card is mmcblk0 (4809c000.mmc) and eMMC is
+mmcblk1 (480b4000.mmc)
 
---FCaxfLZdDTBfImim
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Because in case 1 the 4809c000.mmc got deferred by missing regulator so
+480b4000.mmc got registered first. In case 2 both deferring because of DMA and
+at the end 4809c000.mmc get registered first. So far I have not found a way to
+bind mmcblk0/1 to a specific node...
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Regards,
+Peter
+---
+Peter Ujfalusi (13):
+  dmaengine: of_dma: Correct return code for
+    of_dma_request_slave_channel in case !CONFIG_OF
+  dmaengine: Introduce dma_request_slave_channel_compat_reason()
+  serial: 8250_dma: Support for deferred probing when requesting DMA
+    channels
+  mmc: omap_hsmmc: No need to check DMA channel validity at module
+    remove
+  mmc: omap_hsmmc: Support for deferred probing when requesting DMA
+    channels
+  mmc: omap: Support for deferred probing when requesting DMA channels
+  mmc: davinci_mmc: Support for deferred probing when requesting DMA
+    channels
+  crypto: omap-aes - Support for deferred probing when requesting DMA
+    channels
+  crypto: omap-des - Support for deferred probing when requesting DMA
+    channels
+  crypto: omap-sham - Support for deferred probing when requesting DMA
+    channel
+  spi: omap2-mcspi: Support for deferred probing when requesting DMA
+    channels
+  [media] omap3isp: Support for deferred probing when requesting DMA
+    channel
+  ASoC: omap-pcm: Switch to use
+    dma_request_slave_channel_compat_reason()
 
-iQEcBAEBCAAGBQJVZE0+AAoJECTWi3JdVIfQH14H/2cxcQBp71hHw2MalcqhMpbF
-yn+hdDBdrLG+dcnjZGnvquZoSUzcBtETB3k36yHcH6bE0P5D2HPJAQMvGR5xRWVy
-76rNGxlLS7Z1vfMwc1PXrV9QTpKwazIHiuqwEWB4aNw35ooZ8GSzz0nUltRE+URG
-ty2NJyk8u+WKCVSPOOorNJ3N4a5ty3Ua8VCc0ciB5BFiG02uSZ8gtbQlgj2UYXXe
-wzKZBIVNInUzwIUKcpavX/6c7Z65tKoE0A2fuCTn4ZmRS0Mm7fWe3CokNWsvUB3G
-IWq/lXIb++M21QR36uq65hS2lUJZxUHTNI8XmNt2PjjevcPsiO0LHaIc/oHXT7k=
-=O2qm
------END PGP SIGNATURE-----
+ drivers/crypto/omap-aes.c                 | 38 ++++++++++++++++---------------
+ drivers/crypto/omap-des.c                 | 38 ++++++++++++++++---------------
+ drivers/crypto/omap-sham.c                | 15 ++++++++----
+ drivers/media/platform/omap3isp/isphist.c | 12 +++++++---
+ drivers/mmc/host/davinci_mmc.c            | 26 ++++++++++++---------
+ drivers/mmc/host/omap.c                   | 20 ++++++++++++----
+ drivers/mmc/host/omap_hsmmc.c             | 28 ++++++++++-------------
+ drivers/spi/spi-omap2-mcspi.c             | 36 +++++++++++++++++------------
+ drivers/tty/serial/8250/8250_dma.c        | 18 +++++++--------
+ include/linux/dmaengine.h                 | 22 ++++++++++++++++++
+ include/linux/of_dma.h                    |  2 +-
+ sound/soc/omap/omap-pcm.c                 | 16 ++++++++-----
+ 12 files changed, 164 insertions(+), 107 deletions(-)
 
---FCaxfLZdDTBfImim--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+-- 
+2.3.5

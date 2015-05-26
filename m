@@ -1,82 +1,53 @@
-From: Gregory CLEMENT <gregory.clement@free-electrons.com>
-Subject: Re: [PATCH 2/3] spi: orion: Fix extended baud rates for each Armada
- SoCs
-Date: Tue, 26 May 2015 14:20:08 +0200
-Message-ID: <556464F8.1020707@free-electrons.com>
-References: <1432633484-18758-1-git-send-email-gregory.clement@free-electrons.com>
- <1432633484-18758-3-git-send-email-gregory.clement@free-electrons.com>
- <20150526120853.GB28523@lunn.ch>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: sirf: remove the allocation of dummypage
+Date: Tue, 26 May 2015 11:39:28 +0100
+Message-ID: <20150526103928.GP21577@sirena.org.uk>
+References: <1432617661-15901-1-git-send-email-21cnbao@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
- Boris BREZILLON <boris.brezillon@free-electrons.com>,
- Jason Cooper <jason@lakedaemon.net>, Tawfik Bayouk <tawfik@marvell.com>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org, Nadav Haklai <nadavh@marvell.com>,
- Lior Amsalem <alior@marvell.com>,
- Ezequiel Garcia <ezequiel.garcia@free-electrons.com>,
- Maxime Ripard <maxime.ripard@free-electrons.com>,
- linux-arm-kernel@lists.infradead.org,
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>, Mark Brown <broonie@kernel.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20150526120853.GB28523@lunn.ch>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
-
-Hi Andrew, Mark,
-
-On 26/05/2015 14:08, Andrew Lunn wrote:
->> --- a/Documentation/devicetree/bindings/spi/spi-orion.txt
->> +++ b/Documentation/devicetree/bindings/spi/spi-orion.txt
->> @@ -1,7 +1,13 @@
->>  Marvell Orion SPI device
->>  
->>  Required properties:
->> -- compatible : should be "marvell,orion-spi" or "marvell,armada-370-spi".
->> +- compatible : should be on of the following:
->> +    - "marvell,orion-spi" for the Orion, mv78x00, Kirkwood and Dove SoCs
->> +    - "marvell,armada-370-spi", for the Armada 370 SoCs
->> +    - "marvell,armada-375-spi", for the Armada 375 SoCs
->> +    - "marvell,armada-380-spi", for the Armada 38x SoCs
->> +    - "marvell,armada-390-spi", for the Armada 38x SoCs
-> 
-> Hi Gregory
-> 
-> Is that a typ0?
-
-yes it is! :/
-
-Mark do you want a new patch or do you prefer fixing the typo
-yourself ? it should be
-    - "marvell,armada-390-spi", for the Armada 39x SoCs
-instead of
-    - "marvell,armada-390-spi", for the Armada 38x SoCs
-
-s/38x/39x/ on this line.
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="Lqd80pEYgtNQwEzr"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, workgroup.linux-kQvG35nSl+M@public.gmane.org,
+	Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>,
+	Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+	Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
+To: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1432617661-15901-1-git-send-email-21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
-Thanks,
+--Lqd80pEYgtNQwEzr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Gregory
+On Tue, May 26, 2015 at 05:21:01AM +0000, Barry Song wrote:
+> From: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
+>=20
+> this job has been done by spi core.
 
+Applied, thanks.
 
-> 
->    Andrew
-> 
+--Lqd80pEYgtNQwEzr
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
--- 
-Gregory Clement, Free Electrons
-Kernel, drivers, real-time and embedded Linux
-development, consulting, training and support.
-http://free-electrons.com
+iQEcBAEBCAAGBQJVZE1gAAoJECTWi3JdVIfQxUkH/2BKUrQKhfUjpFYNWl44PG3e
+bVP4WyuLrppyjWDHL4xWAGPMjbLKOF82UL9A/1w0iwfxqFbNPl+ZylDKJI2OfkGV
+V5T7aS9+RRwQpo06lj6X4MeNaZHKUjDdGK8ozsZ/B/shynm88WNXONDqbuakc9G4
+PBWmTnhcR1P9muqw1FBv9cimBssNrI89jMEV4WDIj/GKG9gITfWKJuBEm9o4Zz7U
+dKfQ1dzV58KBySEBuIG5OQhwC0K0KsSA1qM4KMd3I6fN+cx7byRx84nZXdvQS+Ha
+s/io7ijltBcHDUCIIlvmeH5WEqOXjT+c4rQ/oepp3u8iQao6dGOwHemVH76dun8=
+=TT09
+-----END PGP SIGNATURE-----
+
+--Lqd80pEYgtNQwEzr--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,54 +1,66 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 13/13] ASoC: omap-pcm: Switch to use
- dma_request_slave_channel_compat_reason()
-Date: Wed, 27 May 2015 18:48:42 +0100
-Message-ID: <20150527174842.GL21577@sirena.org.uk>
-References: <1432646768-12532-1-git-send-email-peter.ujfalusi@ti.com>
- <1432646768-12532-14-git-send-email-peter.ujfalusi@ti.com>
+Subject: Re: [PATCH 2/3] spi: orion: Fix extended baud rates for each Armada
+ SoCs
+Date: Wed, 27 May 2015 19:39:08 +0100
+Message-ID: <20150527183908.GN21577@sirena.org.uk>
+References: <1432633484-18758-1-git-send-email-gregory.clement@free-electrons.com>
+ <1432633484-18758-3-git-send-email-gregory.clement@free-electrons.com>
+ <20150526120853.GB28523@lunn.ch>
+ <556464F8.1020707@free-electrons.com>
+ <20150527174547.GI21577@sirena.org.uk>
+ <55660343.9060200@free-electrons.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="nt+vFqn/aPO6zu0j"
-Cc: vinod.koul@intel.com, tony@atomide.com, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, dan.j.williams@intel.com,
-	dmaengine@vger.kernel.org, linux-serial@vger.kernel.org,
-	linux-omap@vger.kernel.org, linux-mmc@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-media@vger.kernel.org, alsa-devel@alsa-project.org,
-	Jarkko Nikula <jarkko.nikula@bitmer.com>,
-	Liam Girdwood <lgirdwood@gmail.com>
-To: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="cJGOKTRR6tUZnRC6"
+Cc: Andrew Lunn <andrew@lunn.ch>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Jason Cooper <jason@lakedaemon.net>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
+	Ezequiel Garcia <ezequiel.garcia@free-electrons.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Maxime Ripard <maxime.ripard@free-electrons.com>,
+	Boris BREZILLON <boris.brezillon@free-electrons.com>,
+	Lior Amsalem <alior@marvell.com>,
+	Tawfik Bayouk <tawfik@marvell.com>,
+	Nadav Haklai <nadavh@marvell.com>, devicetree@vger.kernel.org
+To: Gregory CLEMENT <gregory.clement@free-electrons.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1432646768-12532-14-git-send-email-peter.ujfalusi@ti.com>
-Sender: linux-omap-owner@vger.kernel.org
+In-Reply-To: <55660343.9060200@free-electrons.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---nt+vFqn/aPO6zu0j
+--cJGOKTRR6tUZnRC6
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, May 26, 2015 at 04:26:08PM +0300, Peter Ujfalusi wrote:
-> dmaengine provides a wrapper function to handle DT and non DT boots when
-> requesting DMA channel. Use that instead of checking for of_node in the
-> platform driver.
+On Wed, May 27, 2015 at 07:47:47PM +0200, Gregory CLEMENT wrote:
+> On 27/05/2015 19:45, Mark Brown wrote:
 
-Acked-by: Mark Brown <broonie@kernel.org>
+> > I fixed it up locally (in general it's easier to just send the patch
+> > though).
 
---nt+vFqn/aPO6zu0j
+> Thanks! And next time I will send a v2 then if it is easier for you.
+
+I'd say it's just easier in general - "can you please either fix this up
+locally or apply this patch" means that whatever the answer is it can be
+acted on immediately.
+
+--cJGOKTRR6tUZnRC6
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVZgN6AAoJECTWi3JdVIfQK9QH/0/yPag64vn/82FuyAK+qqjP
-yKDVu5pt9gu5mC9wK69tm9TyqijJ4MLRFLYvaiLfSFgchTZN2upb6fxCEZAlsLNX
-5VSso5EVNC3XAnP4Ong5EgAJluhf3X29RIc/TNinG426/0mPD0E9udZKpYDddxI9
-MSgLVt1UELbHdcXC2pESJWxu2AID0kvaGfPV99vH8U3qOAtyimM/Au/DpXaiji6m
-1XFlwGwNITHD0ZsjpkH39Q6MjQU2WItVL+Kr7m+4SrAo85jMvrP3MQ5Po6jlpx3s
-urUiv2OWG7FyRfnaJQcxLC+KeC5E9WgzkrqGbtjfwSDOQWNJMek0daZkIMoTo2Q=
-=pr+m
+iQEcBAEBCAAGBQJVZg9MAAoJECTWi3JdVIfQKVwH/39m3qgNUulvxJy/o8waXCbZ
+ZGMJXxbAJuX6pfsS7LE8Qrti9Sf896qboJuh/L6at6Kq97EKaVaKHFuXvb5cybg3
+fqfeF4MwaS8ZHr+Z7QOxeOw4ZL5CfNppYYBaJO9RjaT1kzOGoafmEXaJSIpMGnSW
+9zZRjtFwUWAembdNUPpALq4VqgKDDLDREguZNU2CY1w6ykkPUilFAYC55LDfQvMT
+Yg+UVVVJi8uuMc2kUh54++ecraMuqCjPwkLDAqddDcIebFixHIZjOrqm4Lk/8ioe
+7ywRcQyZKYmq87nfbGSe7fhRuAgsFVREFmly8w07DWXUt85pD7y/+hmHhqn9Phc=
+=jwq2
 -----END PGP SIGNATURE-----
 
---nt+vFqn/aPO6zu0j--
+--cJGOKTRR6tUZnRC6--

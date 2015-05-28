@@ -1,66 +1,62 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 2/3] spi: orion: Fix extended baud rates for each Armada
- SoCs
-Date: Wed, 27 May 2015 19:39:08 +0100
-Message-ID: <20150527183908.GN21577@sirena.org.uk>
-References: <1432633484-18758-1-git-send-email-gregory.clement@free-electrons.com>
- <1432633484-18758-3-git-send-email-gregory.clement@free-electrons.com>
- <20150526120853.GB28523@lunn.ch>
- <556464F8.1020707@free-electrons.com>
- <20150527174547.GI21577@sirena.org.uk>
- <55660343.9060200@free-electrons.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Subject: Re: [PATCH 04/13] mmc: omap_hsmmc: No need to check DMA channel
+ validity at module remove
+Date: Thu, 28 May 2015 09:20:18 +0200
+Message-ID: <CAPDyKFrOUOuctSMpx+RFixB_ub=d66YqXEsa7D78gyFeiGiNkQ@mail.gmail.com>
+References: <1432646768-12532-1-git-send-email-peter.ujfalusi@ti.com>
+	<1432646768-12532-5-git-send-email-peter.ujfalusi@ti.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="cJGOKTRR6tUZnRC6"
-Cc: Andrew Lunn <andrew@lunn.ch>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Jason Cooper <jason@lakedaemon.net>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
-	Ezequiel Garcia <ezequiel.garcia@free-electrons.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Maxime Ripard <maxime.ripard@free-electrons.com>,
-	Boris BREZILLON <boris.brezillon@free-electrons.com>,
-	Lior Amsalem <alior@marvell.com>,
-	Tawfik Bayouk <tawfik@marvell.com>,
-	Nadav Haklai <nadavh@marvell.com>, devicetree@vger.kernel.org
-To: Gregory CLEMENT <gregory.clement@free-electrons.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <55660343.9060200@free-electrons.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Cc: Vinod Koul <vinod.koul@intel.com>,
+	Tony Lindgren <tony@atomide.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	dmaengine@vger.kernel.org, linux-serial@vger.kernel.org,
+	linux-omap <linux-omap@vger.kernel.org>,
+	linux-mmc <linux-mmc@vger.kernel.org>,
+	linux-crypto@vger.kernel.org,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	linux-media@vger.kernel.org, alsa-devel@alsa-project.org
+To: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Return-path: <linux-media-owner@vger.kernel.org>
+In-Reply-To: <1432646768-12532-5-git-send-email-peter.ujfalusi@ti.com>
+Sender: linux-media-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On 26 May 2015 at 15:25, Peter Ujfalusi <peter.ujfalusi@ti.com> wrote:
+> The driver will not probe without valid DMA channels so no need to check
+> if they are valid when the module is removed.
+>
+> Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+> CC: Ulf Hansson <ulf.hansson@linaro.org>
 
---cJGOKTRR6tUZnRC6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-On Wed, May 27, 2015 at 07:47:47PM +0200, Gregory CLEMENT wrote:
-> On 27/05/2015 19:45, Mark Brown wrote:
+Kind regards
+Uffe
 
-> > I fixed it up locally (in general it's easier to just send the patch
-> > though).
-
-> Thanks! And next time I will send a v2 then if it is easier for you.
-
-I'd say it's just easier in general - "can you please either fix this up
-locally or apply this patch" means that whatever the answer is it can be
-acted on immediately.
-
---cJGOKTRR6tUZnRC6
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVZg9MAAoJECTWi3JdVIfQKVwH/39m3qgNUulvxJy/o8waXCbZ
-ZGMJXxbAJuX6pfsS7LE8Qrti9Sf896qboJuh/L6at6Kq97EKaVaKHFuXvb5cybg3
-fqfeF4MwaS8ZHr+Z7QOxeOw4ZL5CfNppYYBaJO9RjaT1kzOGoafmEXaJSIpMGnSW
-9zZRjtFwUWAembdNUPpALq4VqgKDDLDREguZNU2CY1w6ykkPUilFAYC55LDfQvMT
-Yg+UVVVJi8uuMc2kUh54++ecraMuqCjPwkLDAqddDcIebFixHIZjOrqm4Lk/8ioe
-7ywRcQyZKYmq87nfbGSe7fhRuAgsFVREFmly8w07DWXUt85pD7y/+hmHhqn9Phc=
-=jwq2
------END PGP SIGNATURE-----
-
---cJGOKTRR6tUZnRC6--
+> ---
+>  drivers/mmc/host/omap_hsmmc.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/mmc/host/omap_hsmmc.c b/drivers/mmc/host/omap_hsmmc.c
+> index 2cd828f42151..57bb85930f81 100644
+> --- a/drivers/mmc/host/omap_hsmmc.c
+> +++ b/drivers/mmc/host/omap_hsmmc.c
+> @@ -2190,10 +2190,8 @@ static int omap_hsmmc_remove(struct platform_device *pdev)
+>         if (host->use_reg)
+>                 omap_hsmmc_reg_put(host);
+>
+> -       if (host->tx_chan)
+> -               dma_release_channel(host->tx_chan);
+> -       if (host->rx_chan)
+> -               dma_release_channel(host->rx_chan);
+> +       dma_release_channel(host->tx_chan);
+> +       dma_release_channel(host->rx_chan);
+>
+>         pm_runtime_put_sync(host->dev);
+>         pm_runtime_disable(host->dev);
+> --
+> 2.3.5
+>

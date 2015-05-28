@@ -1,87 +1,70 @@
-From: Lee Jones <lee.jones@linaro.org>
-Subject: Re: [PATCH v4 01/18] mfd: add new driver for Sharp LoCoMo
-Date: Thu, 28 May 2015 12:58:23 +0100
-Message-ID: <20150528115823.GQ11677@x1>
-References: <1432554113-26280-1-git-send-email-dbaryshkov@gmail.com>
- <1432554113-26280-2-git-send-email-dbaryshkov@gmail.com>
- <20150527102756.GH11677@x1>
- <CALT56yO5Eu4Bk+_4sn2WgURh9YTsym9inWkvJftKUi_aLy5XXw@mail.gmail.com>
+From: Vladimir Toutain <vladimir.toutain-fH1jEIC6FHQGxqi+iOZjkhREYkPMEsUiUBSOeVevoDU@public.gmane.org>
+Subject: Re: ADS1256 SPI driver for Raspberry Pi
+Date: Thu, 28 May 2015 13:59:29 +0200 (CEST)
+Message-ID: <162943485.1254958.1432814369978.JavaMail.zimbra@pi.esisar.grenoble-inp.fr>
+References: <842050876.1117879.1432710132839.JavaMail.zimbra@pi.esisar.grenoble-inp.fr> <2048982407.1157847.1432726137134.JavaMail.zimbra@pi.esisar.grenoble-inp.fr> <1063EE3D-0A13-4EFB-B793-A7E8CD4B2879@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Russell King <linux@arm.linux.org.uk>,
-	Daniel Mack <daniel@zonque.org>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Alexandre Courbot <gnurou@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Samuel Ortiz <sameo@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jingoo Han <jg1.han@samsung.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Andrea Adami <andrea.adami@gmail.com>,
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	linux-input <linux-input@vger.kernel.org>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	"alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>
-To: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
-Return-path: <linux-gpio-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CALT56yO5Eu4Bk+_4sn2WgURh9YTsym9inWkvJftKUi_aLy5XXw@mail.gmail.com>
-Sender: linux-gpio-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1063EE3D-0A13-4EFB-B793-A7E8CD4B2879-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, 27 May 2015, Dmitry Eremin-Solenikov wrote:
+Thank you for your quick answer.
 
-> 2015-05-27 13:27 GMT+03:00 Lee Jones <lee.jones@linaro.org>:
-> > On Mon, 25 May 2015, Dmitry Eremin-Solenikov wrote:
-> >
-> >> LoCoMo is a GA used on Sharp Zaurus SL-5x00. Current driver does h=
-as
-> >> several design issues (special bus instead of platform bus, doesn'=
-t use
-> >> mfd-core, etc).
-> >>
-> >> Implement 'core' parts of locomo support as an mfd driver.
-> >>
-> >> Signed-off-by: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
-> >> ---
-> >
-> > These things are much easier to re-review if you keep a change-log
-> > here.
-> >
-> >>  drivers/mfd/Kconfig        |  10 ++
-> >>  drivers/mfd/Makefile       |   1 +
-> >>  drivers/mfd/locomo.c       | 336 ++++++++++++++++++++++++++++++++=
-+++++++++++++
-> >>  include/linux/mfd/locomo.h | 169 +++++++++++++++++++++++
-> >>  4 files changed, 516 insertions(+)
-> >>  create mode 100644 drivers/mfd/locomo.c
-> >>  create mode 100644 include/linux/mfd/locomo.h
-> >
-> > Looks good now though:
-> >   Acked-by: Lee Jones <lee.jones@linaro.org>
-> >
-> > How do you plan for this to be merged?
->=20
-> I'd like for this to be merged either through mfd tree or through the
-> arm-soc (or rmk's ARM) tree.
-> Some of the respective maintainers already gave their blessing for
-> this patchset to be merged
-> not through their subsystem trees.
+IIO drivers look like what I need to develop.=20
 
-I can take it through MFD.  Once you have all the required Acks,
-resubmit the set with them all applied with a note in the cover-letter
-to that affect and I'll apply.
+However I still have some questions:
 
---=20
-Lee Jones
-Linaro STMicroelectronics Landing Team Lead
-Linaro.org =E2=94=82 Open source software for ARM SoCs
-=46ollow Linaro: Facebook | Twitter | Blog
+    I found this driver https://github.com/raspberrypi/linux/blob/rpi-3=
+=2E18.y/drivers/iio/adc/ti-adc128s052.c and then tried to find the corr=
+esponding DT overlay without success.
+    . Is it then loaded just like a module? How does the subsystem know=
+ which GPIO pins are used by this driver?
+    . Is it correct to use
+           line 37     "ret =3D spi_write(adc->spi, &adc->buffer, 2);"
+      to send commands to the ADC by filling adc->buffer with these com=
+mands?
+
+Thanks,
+
+
+Vladimir TOUTAIN=20
+
+Promotion 2016 d=C3=A9partement IR=20
+Grenoble INP - Esisar
+
+----- Mail original -----
+De: "Martin Sperl" <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+=C3=80: "Vladimir Toutain" <vladimir.toutain-fH1jEIC6FHQGxqi+iOZjkhREYkPMEsUiUBSOeVevoDU@public.gmane.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Envoy=C3=A9: Mercredi 27 Mai 2015 15:02:36
+Objet: Re: ADS1256 SPI driver for Raspberry Pi
+
+> Any help would be much appreciated !
+
+You would probably want to look at the drivers in drivers/iio/adc=20
+(and the staging drivers in drivers/staging/iio/adc)
+and take one as an example for your development - maybe on is even
+sufficiently compatible to your ADS1256, so that you only need to
+extend the compatibility list.
+
+To activate it instead of the default spi-dev create a device-overlay
+similar to this one:
+https://github.com/raspberrypi/linux/blob/rpi-3.18.y/arch/arm/boot/dts/=
+ads7846-overlay.dts
+compile it and reference it in /boot/config.txt
+(here some more info on the overlays: https://www.raspberrypi.org/docum=
+entation/configuration/device-tree.md)
+
+As for how to use those drivers from user-space here an introduction
+to the iio framework (kernel and user-space):
+https://archive.fosdem.org/2012/schedule/event/693/127_iio-a-new-subsys=
+tem.pdf
 --
-To unsubscribe from this list: send the line "unsubscribe linux-gpio" i=
-n
-the body of a message to majordomo@vger.kernel.org
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

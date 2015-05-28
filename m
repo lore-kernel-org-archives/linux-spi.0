@@ -1,95 +1,134 @@
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Subject: Re: [PATCH 07/13] mmc: davinci_mmc: Support for deferred probing when
- requesting DMA channels
-Date: Thu, 28 May 2015 09:31:19 +0200
-Message-ID: <CAPDyKFpiHz9nePG0D5HzMkuBGcyt7340hWjjn1emqAKZGWoUnA@mail.gmail.com>
-References: <1432646768-12532-1-git-send-email-peter.ujfalusi@ti.com>
-	<1432646768-12532-8-git-send-email-peter.ujfalusi@ti.com>
+From: Ranjit Abhimanyu Waghmode <ranjit.waghmode-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Subject: RE: [RFC PATCH 2/2] spi: Add support for Zynq Ultrascale+ MPSoC
+ GQSPI controller
+Date: Thu, 28 May 2015 11:51:46 +0000
+Message-ID: <7CFCFE83B8145347A1D424EC939F1C3CA6FAD0@XAP-PVEXMBX01.xlnx.xilinx.com>
+References: <1432106871-27232-1-git-send-email-ranjit.waghmode@xilinx.com>
+ <1432106871-27232-2-git-send-email-ranjit.waghmode@xilinx.com>
+ <20150520145552.GV31550@xsjsorenbubuntu>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Vinod Koul <vinod.koul@intel.com>,
-	Tony Lindgren <tony@atomide.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	dmaengine@vger.kernel.org, linux-serial@vger.kernel.org,
-	linux-omap <linux-omap@vger.kernel.org>,
-	linux-mmc <linux-mmc@vger.kernel.org>,
-	linux-crypto@vger.kernel.org,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	linux-media@vger.kernel.org, alsa-devel@alsa-project.org
-To: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <1432646768-12532-8-git-send-email-peter.ujfalusi@ti.com>
-Sender: linux-omap-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"pawel.moll-5wv7dgnIgG8@public.gmane.org" <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	"mark.rutland-5wv7dgnIgG8@public.gmane.org" <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	"ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org" <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	"galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org" <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Michal Simek <michals-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	"broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Harini Katakam <harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	"Punnaiah Choudary Kalluri" <punnaia-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	"ran27jit-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <ran27jit-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Soren Brinkmann <sorenb-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150520145552.GV31550@xsjsorenbubuntu>
+Content-Language: en-US
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 26 May 2015 at 15:26, Peter Ujfalusi <peter.ujfalusi@ti.com> wrote:
-> Switch to use ma_request_slave_channel_compat_reason() to request the DMA
-> channels. Only fall back to pio mode if the error code returned is not
-> -EPROBE_DEFER, otherwise return from the probe with the -EPROBE_DEFER.
->
-> Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-> CC: Ulf Hansson <ulf.hansson@linaro.org>
-
-Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
-
-Kind regards
-Uffe
-
-> ---
->  drivers/mmc/host/davinci_mmc.c | 26 +++++++++++++++-----------
->  1 file changed, 15 insertions(+), 11 deletions(-)
->
-> diff --git a/drivers/mmc/host/davinci_mmc.c b/drivers/mmc/host/davinci_mmc.c
-> index b2b3f8bbfd8c..df81e4e2f662 100644
-> --- a/drivers/mmc/host/davinci_mmc.c
-> +++ b/drivers/mmc/host/davinci_mmc.c
-> @@ -530,20 +530,20 @@ static int __init davinci_acquire_dma_channels(struct mmc_davinci_host *host)
->         dma_cap_zero(mask);
->         dma_cap_set(DMA_SLAVE, mask);
->
-> -       host->dma_tx =
-> -               dma_request_slave_channel_compat(mask, edma_filter_fn,
-> -                               &host->txdma, mmc_dev(host->mmc), "tx");
-> -       if (!host->dma_tx) {
-> +       host->dma_tx = dma_request_slave_channel_compat_reason(mask,
-> +                               edma_filter_fn, &host->txdma,
-> +                               mmc_dev(host->mmc), "tx");
-> +       if (IS_ERR(host->dma_tx)) {
->                 dev_err(mmc_dev(host->mmc), "Can't get dma_tx channel\n");
-> -               return -ENODEV;
-> +               return PTR_ERR(host->dma_tx);
->         }
->
-> -       host->dma_rx =
-> -               dma_request_slave_channel_compat(mask, edma_filter_fn,
-> -                               &host->rxdma, mmc_dev(host->mmc), "rx");
-> -       if (!host->dma_rx) {
-> +       host->dma_rx = dma_request_slave_channel_compat_reason(mask,
-> +                               edma_filter_fn, &host->rxdma,
-> +                               mmc_dev(host->mmc), "rx");
-> +       if (IS_ERR(host->dma_rx)) {
->                 dev_err(mmc_dev(host->mmc), "Can't get dma_rx channel\n");
-> -               r = -ENODEV;
-> +               r = PTR_ERR(host->dma_rx);
->                 goto free_master_write;
->         }
->
-> @@ -1307,8 +1307,12 @@ static int __init davinci_mmcsd_probe(struct platform_device *pdev)
->         host->mmc_irq = irq;
->         host->sdio_irq = platform_get_irq(pdev, 1);
->
-> -       if (host->use_dma && davinci_acquire_dma_channels(host) != 0)
-> +       if (host->use_dma) {
-> +               ret = davinci_acquire_dma_channels(host);
-> +               if (ret == -EPROBE_DEFER)
-> +                       goto out;
->                 host->use_dma = 0;
-> +       }
->
->         /* REVISIT:  someday, support IRQ-driven card detection.  */
->         mmc->caps |= MMC_CAP_NEEDS_POLL;
-> --
-> 2.3.5
->
+SGkgU29yZW4sDQoNClNvcnJ5IGZvciBiZWluZyBsYXRlIGZvciB0aGlzIHJlcGx5IGFzIHRoaXMg
+dGhyZWFkIGlzIG1vdmVkIGEgc3RlcCBhaGVhZC4NCg0KT24gV2VkLCAyMDE1LTA1LTIwIGF0IDEy
+OjU3UE0gKzA1MzAsIFJhbmppdCBXYWdobW9kZSB3cm90ZToNCj4gVGhpcyBwYXRjaCBhZGRzIHN1
+cHBvcnQgZm9yIEdRU1BJIGNvbnRyb2xsZXIgZHJpdmVyIHVzZWQgYnkgWnlucSANCj4gVWx0cmFz
+Y2FsZSsgTVBTb0MNCj4gDQo+IFNpZ25lZC1vZmYtYnk6IFJhbmppdCBXYWdobW9kZSA8cmFuaml0
+LndhZ2htb2RlQHhpbGlueC5jb20+DQo+IC0tLQ0KWy4uLl0NCj4gKy8qKg0KPiArICogenlucW1w
+X2dxc3BpX3JlYWQ6CUZvciBHUVNQSSBjb250cm9sbGVyIHJlYWQgb3BlcmF0aW9uDQo+ICsgKiBA
+eHFzcGk6CVBvaW50ZXIgdG8gdGhlIHp5bnFtcF9xc3BpIHN0cnVjdHVyZQ0KPiArICogQG9mZnNl
+dDoJT2Zmc2V0IGZyb20gd2hlcmUgdG8gcmVhZA0KPiArICovDQo+ICtzdGF0aWMgdTMyIHp5bnFt
+cF9ncXNwaV9yZWFkKHN0cnVjdCB6eW5xbXBfcXNwaSAqeHFzcGksIHUzMiBvZmZzZXQpIHsNCj4g
+KwlyZXR1cm4gcmVhZGxfcmVsYXhlZCh4cXNwaS0+cmVncyArIG9mZnNldCk7IH0NCj4gKw0KPiAr
+LyoqDQo+ICsgKiB6eW5xbXBfZ3FzcGlfd3JpdGU6CUZvciBHUVNQSSBjb250cm9sbGVyIHdyaXRl
+IG9wZXJhdGlvbg0KPiArICogQHhxc3BpOglQb2ludGVyIHRvIHRoZSB6eW5xbXBfcXNwaSBzdHJ1
+Y3R1cmUNCj4gKyAqIEBvZmZzZXQ6CU9mZnNldCB3aGVyZSB0byB3cml0ZQ0KPiArICogQHZhbDoJ
+VmFsdWUgdG8gYmUgd3JpdHRlbg0KPiArICovDQo+ICtzdGF0aWMgaW5saW5lIHZvaWQgenlucW1w
+X2dxc3BpX3dyaXRlKHN0cnVjdCB6eW5xbXBfcXNwaSAqeHFzcGksIHUzMiBvZmZzZXQsDQo+ICsJ
+CQkJICAgICAgdTMyIHZhbCkNCj4gK3sNCj4gKwl3cml0ZWxfcmVsYXhlZCh2YWwsICh4cXNwaS0+
+cmVncyArIG9mZnNldCkpOyB9DQoNCndoeSBhcmUgeW91IHdyYXBwaW5nIChyZWFkbHx3cml0ZWwp
+X3JlbGF4ZWQ/DQoNClsuLi5dDQo+ICsvKioNCj4gKyAqIHp5bnFtcF9xc3BpX2NvcHlfcmVhZF9k
+YXRhOglDb3B5IGRhdGEgdG8gUlggYnVmZmVyDQo+ICsgKiBAeHFzcGk6CVBvaW50ZXIgdG8gdGhl
+IHp5bnFtcF9xc3BpIHN0cnVjdHVyZQ0KPiArICogQGRhdGE6CVRoZSAzMiBiaXQgdmFyaWFibGUg
+d2hlcmUgZGF0YSBpcyBzdG9yZWQNCj4gKyAqIEBzaXplOglOdW1iZXIgb2YgYnl0ZXMgdG8gYmUg
+Y29waWVkIGZyb20gZGF0YSB0byBSWCBidWZmZXINCj4gKyAqLw0KPiArc3RhdGljIHZvaWQgenlu
+cW1wX3FzcGlfY29weV9yZWFkX2RhdGEoc3RydWN0IHp5bnFtcF9xc3BpICp4cXNwaSwNCj4gKwkJ
+CQkgICAgICAgdTMyIGRhdGEsIHU4IHNpemUpDQo+ICt7DQo+ICsJbWVtY3B5KHhxc3BpLT5yeGJ1
+ZiwgKCh1OCAqKSAmZGF0YSksIHNpemUpOw0KDQpJcyB0aGlzIGNhc3QgcmVhbGx5IG5lZWRlZD8g
+SUlSQywgbWVtY3B5IHRha2VzICh2b2lkICopLiBUaGUgb3V0ZXIgcGFyZW50aGVzZXMgZm9yIHRo
+YXQgYXJndW1lbnQgYXJlIG5vdCBuZWVkZWQuDQpbUmFuaml0XSA6IHRha2VuIGNhcmUNCg0KPiAr
+CXhxc3BpLT5yeGJ1ZiArPSBzaXplOw0KPiArCXhxc3BpLT5ieXRlc190b19yZWNlaXZlIC09IHNp
+emU7DQo+ICt9DQo+ICsNCj4gKy8qKg0KPiArICogenlucW1wX3ByZXBhcmVfdHJhbnNmZXJfaGFy
+ZHdhcmU6CVByZXBhcmVzIGhhcmR3YXJlIGZvciB0cmFuc2Zlci4NCj4gKyAqIEBtYXN0ZXI6CVBv
+aW50ZXIgdG8gdGhlIHNwaV9tYXN0ZXIgc3RydWN0dXJlIHdoaWNoIHByb3ZpZGVzDQo+ICsgKgkJ
+aW5mb3JtYXRpb24gYWJvdXQgdGhlIGNvbnRyb2xsZXIuDQo+ICsgKg0KPiArICogVGhpcyBmdW5j
+dGlvbiBlbmFibGVzIFNQSSBtYXN0ZXIgY29udHJvbGxlci4NCj4gKyAqDQo+ICsgKiBSZXR1cm46
+CUFsd2F5cyAwDQo+ICsgKi8NCj4gK3N0YXRpYyBpbnQgenlucW1wX3ByZXBhcmVfdHJhbnNmZXJf
+aGFyZHdhcmUoc3RydWN0IHNwaV9tYXN0ZXIgDQo+ICsqbWFzdGVyKSB7DQo+ICsJc3RydWN0IHp5
+bnFtcF9xc3BpICp4cXNwaSA9IHNwaV9tYXN0ZXJfZ2V0X2RldmRhdGEobWFzdGVyKTsNCj4gKw0K
+PiArCWNsa19lbmFibGUoeHFzcGktPnJlZmNsayk7DQo+ICsJY2xrX2VuYWJsZSh4cXNwaS0+cGNs
+ayk7DQoNCkRpZCB5b3UgY29uc2lkZXIgdXNpbmcgcnVudGltZV9wbT8gVGhlbiB0aGlzIHdvdWxk
+IGp1c3QgYml0DQpwbV9ydW50aW1lX2dldF9zeW5jKC4uLikNCg0KPiArCXp5bnFtcF9ncXNwaV93
+cml0ZSh4cXNwaSwgR1FTUElfRU5fT0ZTVCwgR1FTUElfRU5fTUFTSyk7DQo+ICsJcmV0dXJuIDA7
+DQo+ICt9DQo+ICsNCj4gKy8qKg0KPiArICogenlucW1wX3VucHJlcGFyZV90cmFuc2Zlcl9oYXJk
+d2FyZToJUmVsYXhlcyBoYXJkd2FyZSBhZnRlciB0cmFuc2Zlcg0KPiArICogQG1hc3RlcjoJUG9p
+bnRlciB0byB0aGUgc3BpX21hc3RlciBzdHJ1Y3R1cmUgd2hpY2ggcHJvdmlkZXMNCj4gKyAqCQlp
+bmZvcm1hdGlvbiBhYm91dCB0aGUgY29udHJvbGxlci4NCj4gKyAqDQo+ICsgKiBUaGlzIGZ1bmN0
+aW9uIGRpc2FibGVzIHRoZSBTUEkgbWFzdGVyIGNvbnRyb2xsZXIuDQo+ICsgKg0KPiArICogUmV0
+dXJuOglBbHdheXMgMA0KPiArICovDQo+ICtzdGF0aWMgaW50IHp5bnFtcF91bnByZXBhcmVfdHJh
+bnNmZXJfaGFyZHdhcmUoc3RydWN0IHNwaV9tYXN0ZXIgDQo+ICsqbWFzdGVyKSB7DQo+ICsJc3Ry
+dWN0IHp5bnFtcF9xc3BpICp4cXNwaSA9IHNwaV9tYXN0ZXJfZ2V0X2RldmRhdGEobWFzdGVyKTsN
+Cj4gKw0KPiArCXp5bnFtcF9ncXNwaV93cml0ZSh4cXNwaSwgR1FTUElfRU5fT0ZTVCwgMHgwKTsN
+Cj4gKwljbGtfZGlzYWJsZSh4cXNwaS0+cmVmY2xrKTsNCj4gKwljbGtfZGlzYWJsZSh4cXNwaS0+
+cGNsayk7DQoNCmFuZCB0aGlzIHdvdWxkIGJlY29tZSBwbV9ydW50aW1lX3B1dCgpDQoNClsuLi5d
+DQo+ICsvKioNCj4gKyAqIHp5bnFtcF9xc3BpX2ZpbGx0eGZpZm86CUZpbGxzIHRoZSBUWCBGSUZP
+IGFzIGxvbmcgYXMgdGhlcmUgaXMgcm9vbSBpbg0KPiArICoJCQkJdGhlIEZJRk8gb3IgdGhlIGJ5
+dGVzIHJlcXVpcmVkIHRvIGJlDQo+ICsgKgkJCQl0cmFuc21pdHRlZC4NCj4gKyAqIEB4cXNwaToJ
+UG9pbnRlciB0byB0aGUgenlucW1wX3FzcGkgc3RydWN0dXJlDQo+ICsgKiBAc2l6ZToJTnVtYmVy
+IG9mIGJ5dGVzIHRvIGJlIGNvcGllZCBmcm9tIFRYIGJ1ZmZlciB0byBUWCBGSUZPDQo+ICsgKi8N
+Cj4gK3N0YXRpYyB2b2lkIHp5bnFtcF9xc3BpX2ZpbGx0eGZpZm8oc3RydWN0IHp5bnFtcF9xc3Bp
+ICp4cXNwaSwgaW50IA0KPiArc2l6ZSkgew0KPiArCXUzMiBjb3VudCA9IDA7DQo+ICsNCj4gKwl3
+aGlsZSAoKHhxc3BpLT5ieXRlc190b190cmFuc2ZlciA+IDApICYmIChjb3VudCA8IHNpemUpKSB7
+DQo+ICsJCXdyaXRlbCgqKCh1MzIgKikgeHFzcGktPnR4YnVmKSwgeHFzcGktPnJlZ3MgKyBHUVNQ
+SV9UWERfT0ZTVCk7DQoNCkhlcmUgdGhlIHdyaXRlbCB3cmFwcGVyIGlzIG5vdCB1c2VkLiBJcyB0
+aGVyZSBhIHJlYXNvbiwgdGhlbiBpdCB3b3VsZCBwcm9iYWJseSAgZGVzZXJ2ZSBhIGNvbW1lbnQu
+DQoNClsuLi5dDQo+ICsvKioNCj4gKyAqIHp5bnFtcF9wcm9jZXNzX2RtYV9pcnE6CUhhbmRsZXIg
+Zm9yIERNQSBkb25lIGludGVycnVwdCBvZiBRU1BJDQo+ICsgKgkJCQljb250cm9sbGVyDQo+ICsg
+KiBAeHFzcGk6CXp5bnFtcF9xc3BpIGluc3RhbmNlIHBvaW50ZXINCj4gKyAqDQo+ICsgKiBUaGlz
+IGZ1bmN0aW9uIGhhbmRsZXMgRE1BIGludGVycnVwdCBvbmx5Lg0KPiArICovDQo+ICtzdGF0aWMg
+dm9pZCB6eW5xbXBfcHJvY2Vzc19kbWFfaXJxKHN0cnVjdCB6eW5xbXBfcXNwaSAqeHFzcGkpIHsN
+Cj4gKwl1MzIgY29uZmlnX3JlZywgZ2VuZmlmb2VudHJ5Ow0KPiArDQo+ICsJZG1hX3VubWFwX3Np
+bmdsZSh4cXNwaS0+ZGV2LCB4cXNwaS0+ZG1hX2FkZHIsDQo+ICsJCQkJeHFzcGktPmRtYV9yeF9i
+eXRlcywgRE1BX0ZST01fREVWSUNFKTsNCj4gKwl4cXNwaS0+cnhidWYgKz0geHFzcGktPmRtYV9y
+eF9ieXRlczsNCj4gKwl4cXNwaS0+Ynl0ZXNfdG9fcmVjZWl2ZSAtPSB4cXNwaS0+ZG1hX3J4X2J5
+dGVzOw0KPiArCXhxc3BpLT5kbWFfcnhfYnl0ZXMgPSAwOw0KPiArDQo+ICsJLyogRGlzYWJsaW5n
+IHRoZSBETUEgaW50ZXJydXB0cyAqLw0KPiArCXdyaXRlbChHUVNQSV9RU1BJRE1BX0RTVF9JX0VO
+X0RPTkVfTUFTSywNCj4gKwkJCXhxc3BpLT5yZWdzICsgR1FTUElfUVNQSURNQV9EU1RfSV9ESVNf
+T0ZTVCk7DQo+ICsNCj4gKwlpZiAoeHFzcGktPmJ5dGVzX3RvX3JlY2VpdmUgPiAwKSB7DQo+ICsJ
+CS8qIFN3aXRjaCB0byBJTyBtb2RlLGZvciByZW1haW5pbmcgYnl0ZXMgdG8gcmVjZWl2ZSAqLw0K
+PiArCQljb25maWdfcmVnID0gcmVhZGwoeHFzcGktPnJlZ3MgKyBHUVNQSV9DT05GSUdfT0ZTVCk7
+DQo+ICsJCWNvbmZpZ19yZWcgJj0gfkdRU1BJX0NGR19NT0RFX0VOX01BU0s7DQo+ICsJCXdyaXRl
+bChjb25maWdfcmVnLCB4cXNwaS0+cmVncyArIEdRU1BJX0NPTkZJR19PRlNUKTsNCj4gKw0KPiAr
+CQkvKiBJbml0aWF0ZSB0aGUgdHJhbnNmZXIgb2YgcmVtYWluaW5nIGJ5dGVzICovDQo+ICsJCWdl
+bmZpZm9lbnRyeSA9IHhxc3BpLT5nZW5maWZvZW50cnk7DQo+ICsJCWdlbmZpZm9lbnRyeSB8PSB4
+cXNwaS0+Ynl0ZXNfdG9fcmVjZWl2ZTsNCj4gKwkJd3JpdGVsKGdlbmZpZm9lbnRyeSwNCj4gKwkJ
+CQl4cXNwaS0+cmVncyArIEdRU1BJX0dFTl9GSUZPX09GU1QpOw0KPiArDQo+ICsJCS8qIER1bW15
+IGdlbmVyaWMgRklGTyBlbnRyeSAqLw0KPiArCQl3cml0ZWwoMHgwLCB4cXNwaS0+cmVncyArIEdR
+U1BJX0dFTl9GSUZPX09GU1QpOw0KDQpub3QgdXNpbmcgd3JhcHBlcj8NCg0KPiArDQo+ICsJCS8q
+IE1hbnVhbCBzdGFydCAqLw0KPiArCQl6eW5xbXBfZ3FzcGlfd3JpdGUoeHFzcGksIEdRU1BJX0NP
+TkZJR19PRlNULA0KPiArCQkJKHJlYWRsKHhxc3BpLT5yZWdzICsgR1FTUElfQ09ORklHX09GU1Qp
+IHwNCg0Kbm90IHVzaW5nIHdyYXBwZXI/DQoNCk92ZXJhbGw6DQpUaGUgdXNhZ2Ugb2YgdGhvc2Ug
+cmVhZGwvd3JpdGVsIHdyYXBwZXJzIHNlZW1zIGluY29uc2lzdGVudCB0byBtZS4gSSB1c3VhbGx5
+IHByZWZlciBub3Qgd3JhcHBpbmcgdGhpbmdzIGxpa2UgdGhhdCBhdCBhbGwgYnV0IGF0IGxlYXN0
+IGl0IHNob3VsZCBiZSBjb25zaXN0ZW50Lg0KW1JhbmppdF06IFJlbW92aW5nIGFsbCBpbmNvbnNp
+c3RlbmNpZXMgYnkgdXNpbmcgd3JhcHBlciBmdW5jdGlvbiBldmVyeXdoZXJlLg0KDQpBbmQgSSBi
+ZWxpZXZlIHRoZSBoYW5kbGluZyBvZiBjbG9ja3Mgd291bGQgYmVuZWZpdCBmcm9tIHVzaW5nIG9m
+IHRoZSBydW50aW1lX3BtIGZyYW1ld29yay4NCltSYW5qaXRdOiBXaWxsIGFkZCBhYm92ZSBzdWdn
+ZXN0aW9uIGFuZCBzZW5kIG5leHQgdmVyc2lvbi4NCg0KVGhhbmtzICYgUmVnYXJkcywNClJhbmpp
+dCBXYWdobW9kZQ0K
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

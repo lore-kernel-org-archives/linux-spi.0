@@ -1,109 +1,85 @@
-From: Punnaiah Choudary Kalluri <punnaiah.choudary.kalluri-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-Subject: RE: [RFC PATCH 2/2] spi: Add support for Zynq Ultrascale+ MPSoC
- GQSPI controller
-Date: Thu, 28 May 2015 15:41:04 +0000
-Message-ID: <03CA77BA8AF6F1469AEDFBDA1322A7B7495AA317@XAP-PVEXMBX02.xlnx.xilinx.com>
-References: <1432106871-27232-1-git-send-email-ranjit.waghmode@xilinx.com>
- <1432106871-27232-2-git-send-email-ranjit.waghmode@xilinx.com>
- <20150522115854.GG21391@sirena.org.uk>
- <CAFcVECJRqebzAjU+rfAtUQFG=7-KoE1GiXet5XJB-4D3i0or6A@mail.gmail.com>
- <20150528150356.GA21577@sirena.org.uk>
+From: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
+Subject: Re: [PATCH v4 01/18] mfd: add new driver for Sharp LoCoMo
+Date: Thu, 28 May 2015 22:07:40 +0300
+Message-ID: <CALT56yPJ=Y7oq00PyRT4zguNcaetT=ozQ6nE8eknr9P2co9nxg@mail.gmail.com>
+References: <1432554113-26280-1-git-send-email-dbaryshkov@gmail.com>
+	<1432554113-26280-2-git-send-email-dbaryshkov@gmail.com>
+	<20150527102756.GH11677@x1>
+	<CALT56yO5Eu4Bk+_4sn2WgURh9YTsym9inWkvJftKUi_aLy5XXw@mail.gmail.com>
+	<20150528115823.GQ11677@x1>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: Ranjit Abhimanyu Waghmode <ranjitw-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	"ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org" <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	"Michal Simek" <michals-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	Soren Brinkmann <sorenb-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"ran27jit-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <ran27jit-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Harini Katakam <harinikatakamlinux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150528150356.GA21577-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Content-Language: en-US
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset=UTF-8
+Cc: Russell King <linux@arm.linux.org.uk>,
+	Daniel Mack <daniel@zonque.org>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Alexandre Courbot <gnurou@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Samuel Ortiz <sameo@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jingoo Han <jg1.han@samsung.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Andrea Adami <andrea.adami@gmail.com>,
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+	linux-input <linux-input@vger.kernel.org>,
+	linux-spi <linux-spi@vger.kernel.org>,
+	"alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>
+To: Lee Jones <lee.jones@linaro.org>
+Return-path: <linux-input-owner@vger.kernel.org>
+In-Reply-To: <20150528115823.GQ11677@x1>
+Sender: linux-input-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
+2015-05-28 14:58 GMT+03:00 Lee Jones <lee.jones@linaro.org>:
+> On Wed, 27 May 2015, Dmitry Eremin-Solenikov wrote:
+>
+>> 2015-05-27 13:27 GMT+03:00 Lee Jones <lee.jones@linaro.org>:
+>> > On Mon, 25 May 2015, Dmitry Eremin-Solenikov wrote:
+>> >
+>> >> LoCoMo is a GA used on Sharp Zaurus SL-5x00. Current driver does has
+>> >> several design issues (special bus instead of platform bus, doesn't use
+>> >> mfd-core, etc).
+>> >>
+>> >> Implement 'core' parts of locomo support as an mfd driver.
+>> >>
+>> >> Signed-off-by: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
+>> >> ---
+>> >
+>> > These things are much easier to re-review if you keep a change-log
+>> > here.
+>> >
+>> >>  drivers/mfd/Kconfig        |  10 ++
+>> >>  drivers/mfd/Makefile       |   1 +
+>> >>  drivers/mfd/locomo.c       | 336 +++++++++++++++++++++++++++++++++++++++++++++
+>> >>  include/linux/mfd/locomo.h | 169 +++++++++++++++++++++++
+>> >>  4 files changed, 516 insertions(+)
+>> >>  create mode 100644 drivers/mfd/locomo.c
+>> >>  create mode 100644 include/linux/mfd/locomo.h
+>> >
+>> > Looks good now though:
+>> >   Acked-by: Lee Jones <lee.jones@linaro.org>
+>> >
+>> > How do you plan for this to be merged?
+>>
+>> I'd like for this to be merged either through mfd tree or through the
+>> arm-soc (or rmk's ARM) tree.
+>> Some of the respective maintainers already gave their blessing for
+>> this patchset to be merged
+>> not through their subsystem trees.
+>
+> I can take it through MFD.  Once you have all the required Acks,
+> resubmit the set with them all applied with a note in the cover-letter
+> to that affect and I'll apply.
 
-> -----Original Message-----
-> From: Mark Brown [mailto:broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org]
-> Sent: Thursday, May 28, 2015 8:34 PM
-> To: Harini Katakam
-> Cc: Ranjit Abhimanyu Waghmode; Rob Herring; Pawel Moll; Mark Rutland;
-> ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org; Kumar Gala; Michal Simek; Soren Brinkmann;
-> devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org; linux-
-> kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; linux-spi; Punnaiah Choudary Kalluri;
-> ran27jit-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-> Subject: Re: [RFC PATCH 2/2] spi: Add support for Zynq Ultrascale+ MPSoC
-> GQSPI controller
-> 
-> On Fri, May 22, 2015 at 08:43:54PM +0530, Harini Katakam wrote:
-> > On Fri, May 22, 2015 at 5:28 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> > > On Wed, May 20, 2015 at 12:57:51PM +0530, Ranjit Waghmode wrote:
-> 
-> > > Why is there a default case here?  That's going to men we try to handle
-> > > any random chip select that gets passed in as pointing to this lower
-> > > device which doesn't seem right.  The fact that this is trying to handle
-> > > mirroring of the chip select to two devices is also raising alarm bells
-> > > here...
-> 
-> > This SPI controller has two CS lines and two data bus.
-> > Two devices can be connected to these and either the upper or the
-> > lower or both (Explained below) can be selected.
-> 
-> > When two flash devices are used, one of the HW configurations in
-> > which they can be connected is called "parallel" mode where they
-> 
-> I know what wiring chip selects in parallel is but that's not the
-> question - the question is about the handling of the default case.
+Thank you. This is what I still miss:
 
-Yes, we should not handle default case here. We will change this. 
+* Russell, could you please review sa1100 parts?
+* Jingoo, could you please review the backlight part?
+* Mark, same question for the updated SPI driver.
+* Linus, can I assume that yours 'Reviewed-by' mean
+  'Acked-by' for the GPIO-related parts?
 
-> 
-> > >> +static void zynqmp_qspi_chipselect(struct spi_device *qspi, bool
-> is_high)
-> > >> +{
-> 
-> > >> +     if (is_high) {
-> > >> +             /* Manually start the generic FIFO command */
-> > >> +             zynqmp_gqspi_write(xqspi, GQSPI_CONFIG_OFST,
-> > >> +                             zynqmp_gqspi_read(xqspi, GQSPI_CONFIG_OFST) |
-> > >> +                             GQSPI_CFG_START_GEN_FIFO_MASK);
-> 
-> > > No, this is broken - setting the chip select should set the chip select,
-> > > it shouldn't have any impact on transfers.  Transfers should be started
-> > > in the transfer operations.
-> 
-> > This is the only way to assert the CS. It doesn't start transferring any data.
-> 
-> OK, then you can't implement a separate set_cs() operation and shouldn't
-> be trying to do so.  This will break in multiple ways when the framework
-> tries to use the operations separately.  You probably need to implement
-> a single flat transfer() operation.
-
-As we said it will not start any data transfer. In order to set chip select (chip select only) we need to
-1. Frame a control word with following parameters like the chip select that we would like to set and hold time
- 2. Update the control word to fifo 
-
-To have a performance advantage (may be not trivial) we are executing this fifo entry along with the first
- Data transfer entry in transfer function so that we can avoid waiting for fifo empty in set_cs function.
-
- We will ensure CS assert by waiting till the fifo empty in set_cs function and justify the what the 
-Function supposed do.
-
-Regards,
-Punnaiah
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+-- 
+With best wishes
+Dmitry

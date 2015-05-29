@@ -1,85 +1,77 @@
-From: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
-Subject: Re: [PATCH v4 01/18] mfd: add new driver for Sharp LoCoMo
-Date: Thu, 28 May 2015 22:07:40 +0300
-Message-ID: <CALT56yPJ=Y7oq00PyRT4zguNcaetT=ozQ6nE8eknr9P2co9nxg@mail.gmail.com>
-References: <1432554113-26280-1-git-send-email-dbaryshkov@gmail.com>
-	<1432554113-26280-2-git-send-email-dbaryshkov@gmail.com>
-	<20150527102756.GH11677@x1>
-	<CALT56yO5Eu4Bk+_4sn2WgURh9YTsym9inWkvJftKUi_aLy5XXw@mail.gmail.com>
-	<20150528115823.GQ11677@x1>
+From: Vinod Koul <vinod.koul@intel.com>
+Subject: Re: [PATCH 02/13] dmaengine: Introduce
+ dma_request_slave_channel_compat_reason()
+Date: Fri, 29 May 2015 15:03:17 +0530
+Message-ID: <20150529093317.GF3140@localhost>
+References: <1432646768-12532-1-git-send-email-peter.ujfalusi@ti.com>
+ <1432646768-12532-3-git-send-email-peter.ujfalusi@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Russell King <linux@arm.linux.org.uk>,
-	Daniel Mack <daniel@zonque.org>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Alexandre Courbot <gnurou@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Samuel Ortiz <sameo@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jingoo Han <jg1.han@samsung.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Andrea Adami <andrea.adami@gmail.com>,
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	linux-input <linux-input@vger.kernel.org>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	"alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>
-To: Lee Jones <lee.jones@linaro.org>
-Return-path: <linux-input-owner@vger.kernel.org>
-In-Reply-To: <20150528115823.GQ11677@x1>
-Sender: linux-input-owner@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: tony@atomide.com, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, dan.j.williams@intel.com,
+	dmaengine@vger.kernel.org, linux-serial@vger.kernel.org,
+	linux-omap@vger.kernel.org, linux-mmc@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-media@vger.kernel.org, alsa-devel@alsa-project.org
+To: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Return-path: <linux-crypto-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1432646768-12532-3-git-send-email-peter.ujfalusi@ti.com>
+Sender: linux-crypto-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-2015-05-28 14:58 GMT+03:00 Lee Jones <lee.jones@linaro.org>:
-> On Wed, 27 May 2015, Dmitry Eremin-Solenikov wrote:
->
->> 2015-05-27 13:27 GMT+03:00 Lee Jones <lee.jones@linaro.org>:
->> > On Mon, 25 May 2015, Dmitry Eremin-Solenikov wrote:
->> >
->> >> LoCoMo is a GA used on Sharp Zaurus SL-5x00. Current driver does has
->> >> several design issues (special bus instead of platform bus, doesn't use
->> >> mfd-core, etc).
->> >>
->> >> Implement 'core' parts of locomo support as an mfd driver.
->> >>
->> >> Signed-off-by: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
->> >> ---
->> >
->> > These things are much easier to re-review if you keep a change-log
->> > here.
->> >
->> >>  drivers/mfd/Kconfig        |  10 ++
->> >>  drivers/mfd/Makefile       |   1 +
->> >>  drivers/mfd/locomo.c       | 336 +++++++++++++++++++++++++++++++++++++++++++++
->> >>  include/linux/mfd/locomo.h | 169 +++++++++++++++++++++++
->> >>  4 files changed, 516 insertions(+)
->> >>  create mode 100644 drivers/mfd/locomo.c
->> >>  create mode 100644 include/linux/mfd/locomo.h
->> >
->> > Looks good now though:
->> >   Acked-by: Lee Jones <lee.jones@linaro.org>
->> >
->> > How do you plan for this to be merged?
->>
->> I'd like for this to be merged either through mfd tree or through the
->> arm-soc (or rmk's ARM) tree.
->> Some of the respective maintainers already gave their blessing for
->> this patchset to be merged
->> not through their subsystem trees.
->
-> I can take it through MFD.  Once you have all the required Acks,
-> resubmit the set with them all applied with a note in the cover-letter
-> to that affect and I'll apply.
+On Tue, May 26, 2015 at 04:25:57PM +0300, Peter Ujfalusi wrote:
+> dma_request_slave_channel_compat() 'eats' up the returned error codes which
+> prevents drivers using the compat call to be able to do deferred probing.
+> 
+> The new wrapper is identical in functionality but it will return with error
+> code in case of failure and will pass the -EPROBE_DEFER to the caller in
+> case dma_request_slave_channel_reason() returned with it.
+This is okay but am worried about one more warpper, how about fixing
+dma_request_slave_channel_compat()
 
-Thank you. This is what I still miss:
-
-* Russell, could you please review sa1100 parts?
-* Jingoo, could you please review the backlight part?
-* Mark, same question for the updated SPI driver.
-* Linus, can I assume that yours 'Reviewed-by' mean
-  'Acked-by' for the GPIO-related parts?
 
 -- 
-With best wishes
-Dmitry
+~Vinod
+> 
+> Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+> ---
+>  include/linux/dmaengine.h | 22 ++++++++++++++++++++++
+>  1 file changed, 22 insertions(+)
+> 
+> diff --git a/include/linux/dmaengine.h b/include/linux/dmaengine.h
+> index abf63ceabef9..6c777394835c 100644
+> --- a/include/linux/dmaengine.h
+> +++ b/include/linux/dmaengine.h
+> @@ -1120,4 +1120,26 @@ static inline struct dma_chan
+>  
+>  	return __dma_request_channel(mask, fn, fn_param);
+>  }
+> +
+> +#define dma_request_slave_channel_compat_reason(mask, x, y, dev, name) \
+> +	__dma_request_slave_channel_compat_reason(&(mask), x, y, dev, name)
+> +
+> +static inline struct dma_chan
+> +*__dma_request_slave_channel_compat_reason(const dma_cap_mask_t *mask,
+> +				  dma_filter_fn fn, void *fn_param,
+> +				  struct device *dev, char *name)
+> +{
+> +	struct dma_chan *chan;
+> +
+> +	chan = dma_request_slave_channel_reason(dev, name);
+> +	/* Try via legacy API if not requesting for deferred probing */
+> +	if (IS_ERR(chan) && PTR_ERR(chan) != -EPROBE_DEFER)
+> +		chan = __dma_request_channel(mask, fn, fn_param);
+> +
+> +	if (!chan)
+> +		chan = ERR_PTR(-ENODEV);
+> +
+> +	return chan;
+> +}
+> +
+>  #endif /* DMAENGINE_H */
+> -- 
+> 2.3.5
+> 
+
+-- 

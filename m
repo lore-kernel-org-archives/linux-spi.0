@@ -1,110 +1,68 @@
-From: Baptiste Clenet <bapclenet-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: At86rf212B(driver at86rf230), Ralink MT7628, cs1 always high
-Date: Mon, 1 Jun 2015 09:52:52 +0200
-Message-ID: <CAPpUg6Pje9VEtsObsHkoEkzQ5LN+AEA8-6XBRKu00Q3AHWx7DQ@mail.gmail.com>
+From: Andrew Gabbasov <andrew_gabbasov-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: Fix per-page mapping of unaligned vmalloc-ed buffer
+Date: Mon, 1 Jun 2015 05:14:36 -0500
+Message-ID: <1433153676-18229-1-git-send-email-andrew_gabbasov@mentor.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain
+To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi,
+spi_map_buf() processes mapping of vmalloc-ed buffers in a special way,
+making mapping of every page separately. However, if the buffer is not
+aligned to page boundary (e.g. sub-array in a vmalloc-ed array), it
+fills the scatter table with page-size unaligned pieces, that cross
+page boundaries. This is incorrect and can, for example, cause memory
+corruption and various crashes when working with ubifs on spi-nor chips.
 
-I'm working on the board Ralink MT7628 with an Atmel AT86RF212B by SPI.
-I've configured the transceiver to be on cs1. I plugged cs from the
-transceiver to pin 6 of MT7628. Here is my .dts:
-palmbus@10000000 {
-  spi@b00 {
-      status = "okay";
+Fix this by using proper scatter table size and intra-page buffer lengths,
+so that the whole buffer splits into separate scatter table entries on
+page boundaries.
 
-      m25p80@0 {
-        #address-cells = <1>;
-        #size-cells = <1>;
-        compatible = "en25q64";
-        reg = <0 0>;
-        ...
-      };
+Signed-off-by: Andrew Gabbasov <andrew_gabbasov-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-      at86rf212@0 {
-          compatible = "atmel,at86rf212";
-          reg = <1>;
-          interrupts = <15 4>;
-          interrupt-parent = <&intc>;
-          reset-gpio = <&gpio0 16 1>;
-          sleep-gpio = <&gpio0 17 1>;
-          spi-max-frequency = <1000000>;
-      };
-  };
-};
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 50910d8..14016dc 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -477,7 +477,9 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
+ {
+ 	const bool vmalloced_buf = is_vmalloc_addr(buf);
+ 	const int desc_len = vmalloced_buf ? PAGE_SIZE : master->max_dma_len;
+-	const int sgs = DIV_ROUND_UP(len, desc_len);
++	const int sgs = DIV_ROUND_UP(vmalloced_buf ?
++					len + offset_in_page(buf) : len,
++				     desc_len);
+ 	struct page *vm_page;
+ 	void *sg_buf;
+ 	size_t min;
+@@ -488,9 +490,10 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
+ 		return ret;
+ 
+ 	for (i = 0; i < sgs; i++) {
+-		min = min_t(size_t, len, desc_len);
+ 
+ 		if (vmalloced_buf) {
++			min = min_t(size_t,
++				    len, desc_len - offset_in_page(buf));
+ 			vm_page = vmalloc_to_page(buf);
+ 			if (!vm_page) {
+ 				sg_free_table(sgt);
+@@ -499,6 +502,7 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
+ 			sg_set_page(&sgt->sgl[i], vm_page,
+ 				    min, offset_in_page(buf));
+ 		} else {
++			min = min_t(size_t, len, desc_len);
+ 			sg_buf = buf;
+ 			sg_set_buf(&sgt->sgl[i], sg_buf, min);
+ 		}
+-- 
+2.1.0
 
-Unfortunately, the spi driver for this board doesn't support two
-slaves (spi-mt7621.c)
-So I've edited spi-mt7621.c to allow two slaves on SPI master as follow:
-
-static void mt7621_spi_set_cs(struct spi_device *spi, int enable)
-{
-  struct mt7621_spi *rs = spidev_to_mt7621_spi(spi);
-  u32 polar = mt7621_spi_read(rs, MT7621_SPI_POLAR);
-
-  if (enable) {
-    if (spi->chip_select) {
-      polar |= 0x02;
-    } else {
-      polar |= 0x01;
-    }
-  } else {
-    if (spi->chip_select) {
-      polar &= ~0x02;
-    } else {
-      polar &= ~0x01;
-    }
-  }
-  mt7621_spi_write(rs, MT7621_SPI_POLAR, polar);
-}
-And updated the num-chipselect:
-master->num_chipselect = 2;
-
-
-Here is my dmesg | grep spi:
-[    0.440000] rt2880-pinmux pinctrl: found group selector 8 for spi
-[    0.440000] rt2880-pinmux pinctrl: request pin 7 (io7) for 10000b00.spi
-[    0.440000] rt2880-pinmux pinctrl: request pin 8 (io8) for 10000b00.spi
-[    0.440000] rt2880-pinmux pinctrl: request pin 9 (io9) for 10000b00.spi
-[    0.440000] rt2880-pinmux pinctrl: request pin 10 (io10) for 10000b00.spi
-[    0.440000] m25p80 spi32766.0: found w25q128, expected en25q64
-[    0.460000] m25p80 spi32766.0: w25q128 (16384 Kbytes)
-[    0.470000] m25p80 spi32766.0: using chunked io
-[    0.470000] 4 ofpart partitions found on MTD device spi32766.0
-[    0.490000] Creating 4 MTD partitions on "spi32766.0":
-[   11.830000] at86rf230 spi32766.1: Non-Atmel dev found (MAN_ID 00 00)
-[   11.840000] at86rf230: probe of spi32766.1 failed with error -22
-
-While looking at pin 6, it seems that it stays at high state instead
-of going up and down when we go through mt7621_spi_set_cs().
-
-Here we can see that pin 6 is not part of spi pins group. Well it is
-defined in spi_cs1 group.
->From the datasheet:
-5:4    SPI_CS1_MODE   SPI CS1 GPIO mode
-                                     2: REFCLK
-                                     1: GPIO
-                                     0: SPI CS1
-and SPI
-12     SPI_MODE           SPI GPIO mode
-                                     1: GPIO
-                                     0: SPI
-(from REG 10000060 GPIO1 MODE)
-I'm wondering if pinmux is well set?
-
-How may I be sure that this register is well configured? and gpio is
-correctly configured for that purpose? And how and where may
-I configure them?
-
-Feel free to ask questions if it doesn't make sense.
-
-Cheers,
-Baptiste
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

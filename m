@@ -1,57 +1,57 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 0/2 v3] spi: Re-do correctly function name and return
- value
-Date: Tue, 2 Jun 2015 14:59:32 +0100
-Message-ID: <20150602135932.GR14071@sirena.org.uk>
-References: <1432288777-7229-1-git-send-email-cm-hiep@jinso.co.jp>
+Subject: Re: [PATCH v1 2/3] spi: spi-fsl-dspi: Change the way of increasing
+ spi_message->actual_length
+Date: Tue, 2 Jun 2015 18:43:33 +0100
+Message-ID: <20150602174333.GA14071@sirena.org.uk>
+References: <1431511921-19548-1-git-send-email-haikun.wang@freescale.com>
+ <20150521205549.GJ21577@sirena.org.uk>
+ <BN1PR0301MB06121FF3CC7327990BA402DAF8CD0@BN1PR0301MB0612.namprd03.prod.outlook.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Lh1tzOZp3jg2TtWy"
-Cc: geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org, yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org,
-	ryusuke.sakato.bx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Cao Minh Hiep <cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="VmlJMtejgecKmNHY"
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Wang Haikun <Haikun.Wang-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1432288777-7229-1-git-send-email-cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
+In-Reply-To: <BN1PR0301MB06121FF3CC7327990BA402DAF8CD0-RQSpjbwlmjRE7VHr0KMBWpwN6zqB+hSMnBOFsp37pqbUKgpGm//BTAC/G2K4zDHf@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---Lh1tzOZp3jg2TtWy
+--VmlJMtejgecKmNHY
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, May 22, 2015 at 06:59:35PM +0900, Cao Minh Hiep wrote:
-> From: Hiep Cao Minh <cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
->=20
-> Hi Mark-san,
->=20
-> I added "Acked-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>" in two p=
-atches.
-> Please consider the following patches for the Rcar-Gen2.
+On Mon, May 25, 2015 at 10:18:42AM +0000, Wang Haikun wrote:
 
-Applied both, thanks.  Please use subject lines reflecting the style for
-the subsystem.
+> > This doesn't apply against current code, please check and resend.
 
---Lh1tzOZp3jg2TtWy
+> I am sorry I didn't put in words, this patch depends on my another patch=
+=20
+> "spi: spi-fsl-dspi: Enable TCF interrupt mode support".
+> Please review this after we get some progress on the previous one.
+
+Like I say you'll need to resubmit, the patch isn't in my incoming queue
+any more.
+
+--VmlJMtejgecKmNHY
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVbba+AAoJECTWi3JdVIfQh8EH/i33rmfyLsSr/cIXoGPgtbeE
-E4MNVREaclGoiOKHBjO4cv8QSqf1Zbd3MBfr4nm8Ks2AfCACQSRxNTrd1M4JSgD+
-RU9sSkeoj51BA4DvwvUANX59dwv8urZQz3XDfxP+vJVoD+sHigfiUcwsJga/1/r2
-dR+MfBaU04Rc8xzgBObFmuKElftmd9SH7EPZi+8YFrnGBfeyyHYTE4FKp4uTbKTR
-Dk765Dk9gwEcrSEACYL4e6IS2zUmBnFi6o08EWFvzHzB9W3SMyh10wko9SZr23tj
-Im8872/HyGwhfS8C9uCxXqeOA+XszAQjdDD8JuW3w+2fSIiLePlGWs2xnlsrExU=
-=WN1i
+iQEcBAEBCAAGBQJVbetEAAoJECTWi3JdVIfQyx0H/jprnULqUDgyi1OsgVk3EEk6
+KaBuxElPM4bBa6Dq4SRy08nFFSvdIR4Pf/CW2AWTNriVBx/S8CLgcf2kXCRNPoMY
+zNl2UK7NcwFdKSri+CiU/di8SuugdZ1m9wCLmHJLzBungnK9dC9ik1eORky+7j0E
+Psgvmn0M28b2XaMFPe/o+iHPW4l/Xc6ZGpJ9hQrOVHAuxvPy8p8uu1U6YgGmEkkk
+TEmCk2okDT1HHzknBAo0ItB2pESquFLCVtoPcjd70pYrYgd5dRMWzeWxXtRlO53A
+kwAB30nW+Ig3APCTjoxPveN7kZg27pjSZaGNwujuqXlIPW6VfkqgXSHSzYLOHoY=
+=aHDV
 -----END PGP SIGNATURE-----
 
---Lh1tzOZp3jg2TtWy--
+--VmlJMtejgecKmNHY--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

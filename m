@@ -1,49 +1,40 @@
-From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH 3/3] spi: pxa2xx: Make LPSS SPI general register optional
-Date: Wed,  3 Jun 2015 13:49:47 +0300
-Message-ID: <1433328587-20797-3-git-send-email-jarkko.nikula@linux.intel.com>
-References: <1433328587-20797-1-git-send-email-jarkko.nikula@linux.intel.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+Subject: Re: [PATCH] spi: expose spi_master and spi_device statistics via
+ sysfs
+Date: Wed, 03 Jun 2015 13:25:58 +0200
+Message-ID: <556EE446.3060407@metafoo.de>
+References: <1432574909-2326-1-git-send-email-kernel@martin.sperl.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+To: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1433328587-20797-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <1432574909-2326-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-General register located in LPSS SPI private register space is not found in
-upcoming Intel LPSS platforms. Access it conditionally depending is it
-defined in configuration.
+On 05/25/2015 07:28 PM, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
+> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+>
+> per spi-master statistics accessible as:
+>    /sys/class/spi_master/spi*/statistics/
+>
+> per spi-device statistics accessible via:
+>    /sys/class/spi_master/spi*/spi*.*/statistics/
+>
+> The following statistics are exposed as separate "files" inside
+> these directories:
+>    * messages		number of spi_messages
+>    * transfers		number of spi_transfers
+>    * bytes		number of bytes transferred
+>    * bytes_rx		number of bytes transmitted
+>    * bytes_tx		number of bytes received
+>    * bytes_histo		transferred bytes/spi_transfer histogram
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
----
- drivers/spi/spi-pxa2xx.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 174b88e44987..28d22206d6c8 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -240,9 +240,13 @@ static void lpss_ssp_setup(struct driver_data *drv_data)
- 	if (drv_data->master_info->enable_dma) {
- 		__lpss_ssp_write_priv(drv_data, config->reg_ssp, 1);
- 
--		value = __lpss_ssp_read_priv(drv_data, config->reg_general);
--		value |= GENERAL_REG_RXTO_HOLDOFF_DISABLE;
--		__lpss_ssp_write_priv(drv_data, config->reg_general, value);
-+		if (config->reg_general >= 0) {
-+			value = __lpss_ssp_read_priv(drv_data,
-+						     config->reg_general);
-+			value |= GENERAL_REG_RXTO_HOLDOFF_DISABLE;
-+			__lpss_ssp_write_priv(drv_data,
-+					      config->reg_general, value);
-+		}
- 	}
- }
- 
--- 
-2.1.4
-
+Having those kinds of stats in world readable files has serious security 
+implications as they can be used to implement side-channel attacks. They 
+should probably only be available in debugfs for root.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

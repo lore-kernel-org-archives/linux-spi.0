@@ -1,188 +1,207 @@
 From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH 1/3] spi: pxa2xx: Differentiate Intel LPSS types
-Date: Wed,  3 Jun 2015 13:49:45 +0300
-Message-ID: <1433328587-20797-1-git-send-email-jarkko.nikula@linux.intel.com>
+Subject: [PATCH 2/3] spi: pxa2xx: Prepare for new Intel LPSS SPI type
+Date: Wed,  3 Jun 2015 13:49:46 +0300
+Message-ID: <1433328587-20797-2-git-send-email-jarkko.nikula@linux.intel.com>
+References: <1433328587-20797-1-git-send-email-jarkko.nikula@linux.intel.com>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1433328587-20797-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Intel LPSS SPI properties differ between between platforms. Now private
-registers offset 0x400 or 0x800 is autodetected but there is need to
-support also other offset and handle a few other differences.
+Some of the Intel LPSS SPI properties will be different in upcoming
+platforms compared to existing Lynxpoint and BayTrail/Braswell. LPSS SPI
+private registers will be at different offset and there will be changes in
+individual registers and default FIFO thresholds too.
 
-Prepare for that by splitting the LPSS_SSP type into compatible hardware
-types and set it now based on PCI or ACPI ID. That type will be used to set
-properties that differ between current and upcoming platforms.
+Add configuration for these differences and use them in runtime based on
+LPSS SSP type. With this change private registers offset autodetection
+becomes needless.
 
 Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 ---
- drivers/spi/spi-pxa2xx-pci.c |  8 ++++----
- drivers/spi/spi-pxa2xx.c     | 44 ++++++++++++++++++++++++--------------------
- include/linux/pxa2xx_ssp.h   |  3 ++-
- 3 files changed, 30 insertions(+), 25 deletions(-)
+ drivers/spi/spi-pxa2xx.c   | 107 +++++++++++++++++++++++++--------------------
+ include/linux/pxa2xx_ssp.h |   2 +-
+ 2 files changed, 60 insertions(+), 49 deletions(-)
 
-diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
-index fa7399e84bbb..3cfd4357489a 100644
---- a/drivers/spi/spi-pxa2xx-pci.c
-+++ b/drivers/spi/spi-pxa2xx-pci.c
-@@ -62,7 +62,7 @@ static struct pxa_spi_info spi_info_configs[] = {
- 		.max_clk_rate = 3686400,
- 	},
- 	[PORT_BYT] = {
--		.type = LPSS_SSP,
-+		.type = LPSS_BYT_SSP,
- 		.port_id = 0,
- 		.num_chipselect = 1,
- 		.max_clk_rate = 50000000,
-@@ -70,7 +70,7 @@ static struct pxa_spi_info spi_info_configs[] = {
- 		.rx_param = &byt_rx_param,
- 	},
- 	[PORT_BSW0] = {
--		.type = LPSS_SSP,
-+		.type = LPSS_BYT_SSP,
- 		.port_id = 0,
- 		.num_chipselect = 1,
- 		.max_clk_rate = 50000000,
-@@ -78,7 +78,7 @@ static struct pxa_spi_info spi_info_configs[] = {
- 		.rx_param = &bsw0_rx_param,
- 	},
- 	[PORT_BSW1] = {
--		.type = LPSS_SSP,
-+		.type = LPSS_BYT_SSP,
- 		.port_id = 1,
- 		.num_chipselect = 1,
- 		.max_clk_rate = 50000000,
-@@ -86,7 +86,7 @@ static struct pxa_spi_info spi_info_configs[] = {
- 		.rx_param = &bsw1_rx_param,
- 	},
- 	[PORT_BSW2] = {
--		.type = LPSS_SSP,
-+		.type = LPSS_BYT_SSP,
- 		.port_id = 2,
- 		.num_chipselect = 1,
- 		.max_clk_rate = 50000000,
 diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index e3223ac75a7c..13ec36b1c9aa 100644
+index 13ec36b1c9aa..174b88e44987 100644
 --- a/drivers/spi/spi-pxa2xx.c
 +++ b/drivers/spi/spi-pxa2xx.c
-@@ -74,7 +74,8 @@ MODULE_ALIAS("platform:pxa2xx-spi");
+@@ -60,18 +60,51 @@ MODULE_ALIAS("platform:pxa2xx-spi");
+ 				| QUARK_X1000_SSCR1_TFT		\
+ 				| SSCR1_SPH | SSCR1_SPO | SSCR1_LBM)
  
+-#define LPSS_RX_THRESH_DFLT	64
+-#define LPSS_TX_LOTHRESH_DFLT	160
+-#define LPSS_TX_HITHRESH_DFLT	224
+-
+-/* Offset from drv_data->lpss_base */
+-#define GENERAL_REG		0x08
+ #define GENERAL_REG_RXTO_HOLDOFF_DISABLE BIT(24)
+-#define SSP_REG			0x0c
+-#define SPI_CS_CONTROL		0x18
+ #define SPI_CS_CONTROL_SW_MODE	BIT(0)
+ #define SPI_CS_CONTROL_CS_HIGH	BIT(1)
+ 
++struct lpss_config {
++	/* LPSS offset from drv_data->ioaddr */
++	unsigned offset;
++	/* Register offsets from drv_data->lpss_base or -1 */
++	int reg_general;
++	int reg_ssp;
++	int reg_cs_ctrl;
++	/* FIFO thresholds */
++	u32 rx_threshold;
++	u32 tx_threshold_lo;
++	u32 tx_threshold_hi;
++};
++
++/* Keep these sorted with enum pxa_ssp_type */
++static const struct lpss_config lpss_platforms[] = {
++	{	/* LPSS_LPT_SSP */
++		.offset = 0x800,
++		.reg_general = 0x08,
++		.reg_ssp = 0x0c,
++		.reg_cs_ctrl = 0x18,
++		.rx_threshold = 64,
++		.tx_threshold_lo = 160,
++		.tx_threshold_hi = 224,
++	},
++	{	/* LPSS_BYT_SSP */
++		.offset = 0x400,
++		.reg_general = 0x08,
++		.reg_ssp = 0x0c,
++		.reg_cs_ctrl = 0x18,
++		.rx_threshold = 64,
++		.tx_threshold_lo = 160,
++		.tx_threshold_hi = 224,
++	},
++};
++
++static inline const struct lpss_config
++*lpss_get_config(const struct driver_data *drv_data)
++{
++	return &lpss_platforms[drv_data->ssp_type - LPSS_LPT_SSP];
++}
++
  static bool is_lpss_ssp(const struct driver_data *drv_data)
  {
--	return drv_data->ssp_type == LPSS_SSP;
-+	return drv_data->ssp_type == LPSS_LPT_SSP ||
-+	       drv_data->ssp_type == LPSS_BYT_SSP;
+ 	return drv_data->ssp_type == LPSS_LPT_SSP ||
+@@ -193,63 +226,39 @@ static void __lpss_ssp_write_priv(struct driver_data *drv_data,
+  */
+ static void lpss_ssp_setup(struct driver_data *drv_data)
+ {
+-	unsigned offset = 0x400;
+-	u32 value, orig;
+-
+-	/*
+-	 * Perform auto-detection of the LPSS SSP private registers. They
+-	 * can be either at 1k or 2k offset from the base address.
+-	 */
+-	orig = readl(drv_data->ioaddr + offset + SPI_CS_CONTROL);
+-
+-	/* Test SPI_CS_CONTROL_SW_MODE bit enabling */
+-	value = orig | SPI_CS_CONTROL_SW_MODE;
+-	writel(value, drv_data->ioaddr + offset + SPI_CS_CONTROL);
+-	value = readl(drv_data->ioaddr + offset + SPI_CS_CONTROL);
+-	if (value != (orig | SPI_CS_CONTROL_SW_MODE)) {
+-		offset = 0x800;
+-		goto detection_done;
+-	}
+-
+-	orig = readl(drv_data->ioaddr + offset + SPI_CS_CONTROL);
+-
+-	/* Test SPI_CS_CONTROL_SW_MODE bit disabling */
+-	value = orig & ~SPI_CS_CONTROL_SW_MODE;
+-	writel(value, drv_data->ioaddr + offset + SPI_CS_CONTROL);
+-	value = readl(drv_data->ioaddr + offset + SPI_CS_CONTROL);
+-	if (value != (orig & ~SPI_CS_CONTROL_SW_MODE)) {
+-		offset = 0x800;
+-		goto detection_done;
+-	}
++	const struct lpss_config *config;
++	u32 value;
+ 
+-detection_done:
+-	/* Now set the LPSS base */
+-	drv_data->lpss_base = drv_data->ioaddr + offset;
++	config = lpss_get_config(drv_data);
++	drv_data->lpss_base = drv_data->ioaddr + config->offset;
+ 
+ 	/* Enable software chip select control */
+ 	value = SPI_CS_CONTROL_SW_MODE | SPI_CS_CONTROL_CS_HIGH;
+-	__lpss_ssp_write_priv(drv_data, SPI_CS_CONTROL, value);
++	__lpss_ssp_write_priv(drv_data, config->reg_cs_ctrl, value);
+ 
+ 	/* Enable multiblock DMA transfers */
+ 	if (drv_data->master_info->enable_dma) {
+-		__lpss_ssp_write_priv(drv_data, SSP_REG, 1);
++		__lpss_ssp_write_priv(drv_data, config->reg_ssp, 1);
+ 
+-		value = __lpss_ssp_read_priv(drv_data, GENERAL_REG);
++		value = __lpss_ssp_read_priv(drv_data, config->reg_general);
+ 		value |= GENERAL_REG_RXTO_HOLDOFF_DISABLE;
+-		__lpss_ssp_write_priv(drv_data, GENERAL_REG, value);
++		__lpss_ssp_write_priv(drv_data, config->reg_general, value);
+ 	}
  }
  
- static bool is_quark_x1000_ssp(const struct driver_data *drv_data)
-@@ -1079,22 +1080,18 @@ static int setup(struct spi_device *spi)
+ static void lpss_ssp_cs_control(struct driver_data *drv_data, bool enable)
+ {
++	const struct lpss_config *config;
+ 	u32 value;
+ 
+-	value = __lpss_ssp_read_priv(drv_data, SPI_CS_CONTROL);
++	config = lpss_get_config(drv_data);
++
++	value = __lpss_ssp_read_priv(drv_data, config->reg_cs_ctrl);
+ 	if (enable)
+ 		value &= ~SPI_CS_CONTROL_CS_HIGH;
+ 	else
+ 		value |= SPI_CS_CONTROL_CS_HIGH;
+-	__lpss_ssp_write_priv(drv_data, SPI_CS_CONTROL, value);
++	__lpss_ssp_write_priv(drv_data, config->reg_cs_ctrl, value);
+ }
+ 
+ static void cs_assert(struct driver_data *drv_data)
+@@ -1076,6 +1085,7 @@ static int setup(struct spi_device *spi)
+ {
+ 	struct pxa2xx_spi_chip *chip_info = NULL;
+ 	struct chip_data *chip;
++	const struct lpss_config *config;
+ 	struct driver_data *drv_data = spi_master_get_devdata(spi->master);
  	unsigned int clk_div;
  	uint tx_thres, tx_hi_thres, rx_thres;
- 
--	switch (drv_data->ssp_type) {
--	case QUARK_X1000_SSP:
-+	if (is_quark_x1000_ssp(drv_data)) {
- 		tx_thres = TX_THRESH_QUARK_X1000_DFLT;
+@@ -1085,9 +1095,10 @@ static int setup(struct spi_device *spi)
  		tx_hi_thres = 0;
  		rx_thres = RX_THRESH_QUARK_X1000_DFLT;
--		break;
--	case LPSS_SSP:
-+	} else if (is_lpss_ssp(drv_data)) {
- 		tx_thres = LPSS_TX_LOTHRESH_DFLT;
- 		tx_hi_thres = LPSS_TX_HITHRESH_DFLT;
- 		rx_thres = LPSS_RX_THRESH_DFLT;
--		break;
--	default:
-+	} else {
+ 	} else if (is_lpss_ssp(drv_data)) {
+-		tx_thres = LPSS_TX_LOTHRESH_DFLT;
+-		tx_hi_thres = LPSS_TX_HITHRESH_DFLT;
+-		rx_thres = LPSS_RX_THRESH_DFLT;
++		config = lpss_get_config(drv_data);
++		tx_thres = config->tx_threshold_lo;
++		tx_hi_thres = config->tx_threshold_hi;
++		rx_thres = config->rx_threshold;
+ 	} else {
  		tx_thres = TX_THRESH_DFLT;
  		tx_hi_thres = 0;
- 		rx_thres = RX_THRESH_DFLT;
--		break;
- 	}
- 
- 	/* Only alloc on first setup */
-@@ -1242,6 +1239,18 @@ static void cleanup(struct spi_device *spi)
- }
- 
- #ifdef CONFIG_ACPI
-+
-+static struct acpi_device_id pxa2xx_spi_acpi_match[] = {
-+	{ "INT33C0", LPSS_LPT_SSP },
-+	{ "INT33C1", LPSS_LPT_SSP },
-+	{ "INT3430", LPSS_LPT_SSP },
-+	{ "INT3431", LPSS_LPT_SSP },
-+	{ "80860F0E", LPSS_BYT_SSP },
-+	{ "8086228E", LPSS_BYT_SSP },
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(acpi, pxa2xx_spi_acpi_match);
-+
- static struct pxa2xx_spi_master *
- pxa2xx_spi_acpi_get_pdata(struct platform_device *pdev)
- {
-@@ -1249,12 +1258,17 @@ pxa2xx_spi_acpi_get_pdata(struct platform_device *pdev)
- 	struct acpi_device *adev;
- 	struct ssp_device *ssp;
- 	struct resource *res;
--	int devid;
-+	const struct acpi_device_id *id;
-+	int devid, type = SSP_UNDEFINED;
- 
- 	if (!ACPI_HANDLE(&pdev->dev) ||
- 	    acpi_bus_get_device(ACPI_HANDLE(&pdev->dev), &adev))
- 		return NULL;
- 
-+	id = acpi_match_device(pdev->dev.driver->acpi_match_table, &pdev->dev);
-+	if (id)
-+		type = (int)id->driver_data;
-+
- 	pdata = devm_kzalloc(&pdev->dev, sizeof(*pdata), GFP_KERNEL);
- 	if (!pdata)
- 		return NULL;
-@@ -1272,7 +1286,7 @@ pxa2xx_spi_acpi_get_pdata(struct platform_device *pdev)
- 
- 	ssp->clk = devm_clk_get(&pdev->dev, NULL);
- 	ssp->irq = platform_get_irq(pdev, 0);
--	ssp->type = LPSS_SSP;
-+	ssp->type = type;
- 	ssp->pdev = pdev;
- 
- 	ssp->port_id = -1;
-@@ -1285,16 +1299,6 @@ pxa2xx_spi_acpi_get_pdata(struct platform_device *pdev)
- 	return pdata;
- }
- 
--static struct acpi_device_id pxa2xx_spi_acpi_match[] = {
--	{ "INT33C0", 0 },
--	{ "INT33C1", 0 },
--	{ "INT3430", 0 },
--	{ "INT3431", 0 },
--	{ "80860F0E", 0 },
--	{ "8086228E", 0 },
--	{ },
--};
--MODULE_DEVICE_TABLE(acpi, pxa2xx_spi_acpi_match);
- #else
- static inline struct pxa2xx_spi_master *
- pxa2xx_spi_acpi_get_pdata(struct platform_device *pdev)
 diff --git a/include/linux/pxa2xx_ssp.h b/include/linux/pxa2xx_ssp.h
-index dab545bb66b3..95a4b3bd7a5c 100644
+index 95a4b3bd7a5c..0485bab061fd 100644
 --- a/include/linux/pxa2xx_ssp.h
 +++ b/include/linux/pxa2xx_ssp.h
-@@ -194,8 +194,9 @@ enum pxa_ssp_type {
- 	PXA168_SSP,
+@@ -195,7 +195,7 @@ enum pxa_ssp_type {
  	PXA910_SSP,
  	CE4100_SSP,
--	LPSS_SSP,
  	QUARK_X1000_SSP,
-+	LPSS_LPT_SSP,
-+	LPSS_BYT_SSP,
+-	LPSS_LPT_SSP,
++	LPSS_LPT_SSP, /* Keep LPSS types sorted with lpss_platforms[] */
+ 	LPSS_BYT_SSP,
  };
  
- struct ssp_device {
 -- 
 2.1.4
 

@@ -1,81 +1,50 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/3] spi: pxa2xx: Differentiate Intel LPSS types
-Date: Wed, 3 Jun 2015 15:39:09 +0100
-Message-ID: <20150603143909.GM14071@sirena.org.uk>
-References: <1433328587-20797-1-git-send-email-jarkko.nikula@linux.intel.com>
- <20150603121135.GH14071@sirena.org.uk>
- <556F0A34.9010506@linux.intel.com>
+From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH 04/11] mtd: ofpart: do not fail probe when no partitions exist
+Date: Thu, 4 Jun 2015 00:58:52 +0200
+Message-ID: <201506040058.52882.marex@denx.de>
+References: <cover.1433364398.git.hramrach@gmail.com> <36e315552c849a4d22ac0fcff7958f6ffcafb160.1433364398.git.hramrach@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="cs2w6Z3FJD+b2LjO"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Content-Type: Text/Plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Dan Williams <dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Han Xu <han.xu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
+	" =?utf-8?q?Rafa=C5=82?= =?utf-8?q?_Mi=C5=82ecki?="
+	<zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Alison Chaiken <alison_chaiken-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
+	Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Ben Hutchings <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>,
+	Knut Wohlrab <knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>,
+	"Bean Huo =?utf-8?q?=E9=9C=8D=E6=96=8C=E6=96=8C?= \(beanhuo\)"
+	<beanhuo@
+To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <556F0A34.9010506-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <36e315552c849a4d22ac0fcff7958f6ffcafb160.1433364398.git.hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Wednesday, June 03, 2015 at 11:26:40 PM, Michal Suchanek wrote:
+> On Exynos it is necessary to set SPI controller parameters that apply to
+> a SPI slave in a DT subnode of the slave device. The ofpart code returns
+> an error when there are subnodes of the SPI flash but no partitions are
+> found. Change this condition to a warning so that flash without
+> partitions can be accessed on Exynos.
 
---cs2w6Z3FJD+b2LjO
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I have to admit the rationale for this patch is not very clear to me, sorry.
+Can you please explain this a bit more ?
 
-On Wed, Jun 03, 2015 at 05:07:48PM +0300, Jarkko Nikula wrote:
-> On 06/03/2015 03:11 PM, Mark Brown wrote:
-
-> My idea to detect these newer platforms and set the type accordingly is to
-> check does the device have named resource "lpss_priv" in a code snip below
-
-> @@ -1299,6 +1319,13 @@ pxa2xx_spi_acpi_get_pdata(struct platform_device
-> *pdev)
->  	if (IS_ERR(ssp->mmio_base))
->  		return NULL;
->=20
-> +	if (platform_get_resource_byname(pdev, IORESOURCE_MEM, "lpss_priv")) {
-> +		type =3D LPSS_SPT_SSP;
-> +		pdata->tx_param =3D pdev->dev.parent;
-> +		pdata->rx_param =3D pdev->dev.parent;
-> +		pdata->dma_filter =3D pxa2xx_spi_idma_filter;
-> +	}
-> +
-
-Why not just pass some platform data?  The above seems like it's abusing
-the API a bit and might upset generic code.
-
->  	ssp->clk =3D devm_clk_get(&pdev->dev, NULL);
->  	ssp->irq =3D platform_get_irq(pdev, 0);
->  	ssp->type =3D type;
-
-> That made me thinking can I set the type to LPSS_SPT_SSP and needed DMA
-> filter directly when acpi_match_device() returns NULL. At quick look it
-> seems no any other platform device case than our new MFD registration ent=
-ers
-> here but have to look at more carefully.
-
-That might work too, checking for DT as well would help defensiveness
-though you'd have to watch out for board file registraitons too since
-I'm not sure all the PXA platforms were DTified.  Or just register the
-device with a different ID and use that?
-
---cs2w6Z3FJD+b2LjO
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVbxGNAAoJECTWi3JdVIfQwpYH/0veHjNfibKVRdnLb4evb6g0
-/Ir/ljTkY/5SpPMAxaQ7SSEhPyGy/pYqRKqNmpljgsffEPmVN4HlRAeVG6DyBa9l
-UPtd7MdpXZ7BLX1HvgX2FM8kKkiL5ksaaKVQsmtPMDE9uZiqZrQvVlq/tm6EIZGn
-w0/p0H/XUJHK5gPViP4C9Dh+7wpOVVK1Flpff8JJ09CWcO/tWeJoKvH7m12MafC/
-ouDWr+eIdr2n29GAmNwVWkuDokyYpi79wC9O1t51DHKXs7tR+J4IbTeHL41kzazg
-sDJeFCBQ/+0zd1DFGI0tAT0Y/pGtEA+ZZlEVqBjgnqehhyRbqcFJ4u5EnkBPnWc=
-=DxiD
------END PGP SIGNATURE-----
-
---cs2w6Z3FJD+b2LjO--
+Best regards,
+Marek Vasut
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

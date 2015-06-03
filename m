@@ -1,52 +1,50 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: expose spi_master and spi_device statistics via
- sysfs
-Date: Wed, 3 Jun 2015 12:53:19 +0100
-Message-ID: <20150603115319.GF14071@sirena.org.uk>
-References: <1432574909-2326-1-git-send-email-kernel@martin.sperl.org>
- <556EE446.3060407@metafoo.de>
+Subject: Re: [PATCH 2/3] spi: pxa2xx: Prepare for new Intel LPSS SPI type
+Date: Wed, 3 Jun 2015 13:14:35 +0100
+Message-ID: <20150603121435.GJ14071@sirena.org.uk>
+References: <1433328587-20797-1-git-send-email-jarkko.nikula@linux.intel.com>
+ <1433328587-20797-2-git-send-email-jarkko.nikula@linux.intel.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Hplhpi8yEJNNWiIl"
-Cc: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="M0++IvaR8xIqBMhe"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <556EE446.3060407-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+In-Reply-To: <1433328587-20797-2-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---Hplhpi8yEJNNWiIl
+--M0++IvaR8xIqBMhe
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Jun 03, 2015 at 01:25:58PM +0200, Lars-Peter Clausen wrote:
+On Wed, Jun 03, 2015 at 01:49:46PM +0300, Jarkko Nikula wrote:
+> Some of the Intel LPSS SPI properties will be different in upcoming
+> platforms compared to existing Lynxpoint and BayTrail/Braswell. LPSS SPI
+> private registers will be at different offset and there will be changes in
+> individual registers and default FIFO thresholds too.
 
-> Having those kinds of stats in world readable files has serious security
-> implications as they can be used to implement side-channel attacks. They
-> should probably only be available in debugfs for root.
+This looks good.
 
-We do get to control the permissions on sysfs files, though it's a bit
-more unusual to make things root only (and there is the histogram).
-
---Hplhpi8yEJNNWiIl
+--M0++IvaR8xIqBMhe
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVbuquAAoJECTWi3JdVIfQ3JEH/3CmjTlRH35IsP2I1u7swIPt
-TS+Tce02gwfbZEcqIB+2nfFQ7+F+7xG5BjGTCY7OQviHIhGE6B5AcxhfPcgPRA9R
-TNNaqSoLFfuU5jJbJ+dC9E7WIViekD+bOFq3LSjoawSKFzj8JIHJjFqm5Cd5Qsl7
-7b0MGr0cIVX7h9Fy+ZR+pT4Ryvfbv/zd6kF34gTkeXig1AmcGXRmvwOrngHl/RTz
-ow4DV4NV0KtO2WeSVxPrEEKhOkh3TFVQ439PzMw5vXJWUehwloRgwPJxCYExN6eX
-90qz62FLLdh4TIcd1sGDFdOfXio9IsjVMyhww7P8nYGtihDAc10OG+xLURPDENk=
-=op4Z
+iQEcBAEBCAAGBQJVbu+qAAoJECTWi3JdVIfQSzgIAIKwcQS6HYlYwM3Hg1ogEVcO
+ZmiGXibHxSfiaWjapsJMwpbQG3507u7cKAgFdSRr8xNkEaJatJSkkVeG5S68yjjw
+00EPZowg5eTMBOyZfejV9ASQ5VwRRXzOVcm3wflYBSN+74olChMzuNlyBmgNVEhj
+gWvwjqHeUi38tieuxgxfOz5dcjSoenvwcms0L6TzG3Op2ibfAFLHUNzdeLLObOfY
+NALIZqN8pGYvPIjJ913kPPU3IifvAjtwptqxjJLv+xXLT8iAapivvNnpKqC/BB/4
+cijIr5TcYKSGEoz9lfU1SIRqR8zhm4A7wCSD3bZV6FFEbiN0j49smZIZV7pwke0=
+=HA9/
 -----END PGP SIGNATURE-----
 
---Hplhpi8yEJNNWiIl--
+--M0++IvaR8xIqBMhe--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

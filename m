@@ -1,87 +1,182 @@
 From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [PATCH 1/3] spi: pxa2xx: Differentiate Intel LPSS types
-Date: Thu, 04 Jun 2015 16:54:50 +0300
-Message-ID: <557058AA.8020802@linux.intel.com>
-References: <1433328587-20797-1-git-send-email-jarkko.nikula@linux.intel.com> <20150603121135.GH14071@sirena.org.uk> <556F0A34.9010506@linux.intel.com> <20150603143909.GM14071@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: [PATCHv2 1/3] spi: pxa2xx: Differentiate Intel LPSS types
+Date: Thu,  4 Jun 2015 16:55:10 +0300
+Message-ID: <1433426112-19021-1-git-send-email-jarkko.nikula@linux.intel.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150603143909.GM14071-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 06/03/2015 05:39 PM, Mark Brown wrote:
-> On Wed, Jun 03, 2015 at 05:07:48PM +0300, Jarkko Nikula wrote:
->> On 06/03/2015 03:11 PM, Mark Brown wrote:
->
->> My idea to detect these newer platforms and set the type accordingly is to
->> check does the device have named resource "lpss_priv" in a code snip below
->
->> @@ -1299,6 +1319,13 @@ pxa2xx_spi_acpi_get_pdata(struct platform_device
->> *pdev)
->>   	if (IS_ERR(ssp->mmio_base))
->>   		return NULL;
->>
->> +	if (platform_get_resource_byname(pdev, IORESOURCE_MEM, "lpss_priv")) {
->> +		type = LPSS_SPT_SSP;
->> +		pdata->tx_param = pdev->dev.parent;
->> +		pdata->rx_param = pdev->dev.parent;
->> +		pdata->dma_filter = pxa2xx_spi_idma_filter;
->> +	}
->> +
->
-> Why not just pass some platform data?  The above seems like it's abusing
-> the API a bit and might upset generic code.
->
-I wanted to avoid that in order to keep MFD patch set and SPI changes 
-independent from each other from both build and runtime. It would also 
-need some code arrangements between pxa2xx_spi_probe() and 
-pxa2xx_spi_acpi_get_pdata() but that's a minor reason.
+Intel LPSS SPI properties differ between between platforms. Now private
+registers offset 0x400 or 0x800 is autodetected but there is need to
+support also other offset and handle a few other differences.
 
-Of course relying on "lpss_priv" is not fully future proof either but it 
-looks platform after Sunrisepoint won't need any extra type but just 
-looking at differences from device registers.
+Prepare for that by splitting the LPSS_SSP type into compatible hardware
+types and set it now based on PCI or ACPI ID. That type will be used to set
+properties that differ between current and upcoming platforms.
 
->>   	ssp->clk = devm_clk_get(&pdev->dev, NULL);
->>   	ssp->irq = platform_get_irq(pdev, 0);
->>   	ssp->type = type;
->
->> That made me thinking can I set the type to LPSS_SPT_SSP and needed DMA
->> filter directly when acpi_match_device() returns NULL. At quick look it
->> seems no any other platform device case than our new MFD registration enters
->> here but have to look at more carefully.
->
-> That might work too, checking for DT as well would help defensiveness
-> though you'd have to watch out for board file registraitons too since
-> I'm not sure all the PXA platforms were DTified.  Or just register the
-> device with a different ID and use that?
->
-Looks like all users are arch/arm/mach-pxa/ board files (no ACPI 
-handle), PCI enumarated that set platform data in pxa2xx_spi_pci_probe() 
-and ACPI matched devices in pxa2xx_spi_acpi_match[] (no platform data).
+Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+---
+ drivers/spi/spi-pxa2xx-pci.c |  8 ++++----
+ drivers/spi/spi-pxa2xx.c     | 44 ++++++++++++++++++++++++++++++--------------
+ include/linux/pxa2xx_ssp.h   |  3 ++-
+ 3 files changed, 36 insertions(+), 19 deletions(-)
 
-Messing with device ID doesn't look clear either as we need to match the 
-clock name and it's more clear to keep the host controller and DMA 
-instance IDs the same.
-
-I realized I really need to handle NULL from acpi_match_device() in this 
-patch. Assuming our MFD set is in the tree before adding the SPI 
-Sunrisepoint support. Then code gets through the ACPI_HANDLE() test in 
-pxa2xx_spi_acpi_get_pdata() (no platform data but ACPI companion is set 
-by the MFD core) and goes setting the enable_dma flag for instance.
-
-This is not fatal but pxa2xx_spi_dma_setup() picks up then the any first 
-available DMA channel because DMA filter function is not in place. It 
-obviously won't work since SPI is hard-wired to its integrated DMA so 
-transfers will be halted.
-
-I'll send version 2 in a minute.
-
+diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
+index fa7399e84bbb..3cfd4357489a 100644
+--- a/drivers/spi/spi-pxa2xx-pci.c
++++ b/drivers/spi/spi-pxa2xx-pci.c
+@@ -62,7 +62,7 @@ static struct pxa_spi_info spi_info_configs[] = {
+ 		.max_clk_rate = 3686400,
+ 	},
+ 	[PORT_BYT] = {
+-		.type = LPSS_SSP,
++		.type = LPSS_BYT_SSP,
+ 		.port_id = 0,
+ 		.num_chipselect = 1,
+ 		.max_clk_rate = 50000000,
+@@ -70,7 +70,7 @@ static struct pxa_spi_info spi_info_configs[] = {
+ 		.rx_param = &byt_rx_param,
+ 	},
+ 	[PORT_BSW0] = {
+-		.type = LPSS_SSP,
++		.type = LPSS_BYT_SSP,
+ 		.port_id = 0,
+ 		.num_chipselect = 1,
+ 		.max_clk_rate = 50000000,
+@@ -78,7 +78,7 @@ static struct pxa_spi_info spi_info_configs[] = {
+ 		.rx_param = &bsw0_rx_param,
+ 	},
+ 	[PORT_BSW1] = {
+-		.type = LPSS_SSP,
++		.type = LPSS_BYT_SSP,
+ 		.port_id = 1,
+ 		.num_chipselect = 1,
+ 		.max_clk_rate = 50000000,
+@@ -86,7 +86,7 @@ static struct pxa_spi_info spi_info_configs[] = {
+ 		.rx_param = &bsw1_rx_param,
+ 	},
+ 	[PORT_BSW2] = {
+-		.type = LPSS_SSP,
++		.type = LPSS_BYT_SSP,
+ 		.port_id = 2,
+ 		.num_chipselect = 1,
+ 		.max_clk_rate = 50000000,
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index e3223ac75a7c..a85b7496a3cd 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -74,7 +74,13 @@ MODULE_ALIAS("platform:pxa2xx-spi");
+ 
+ static bool is_lpss_ssp(const struct driver_data *drv_data)
+ {
+-	return drv_data->ssp_type == LPSS_SSP;
++	switch (drv_data->ssp_type) {
++	case LPSS_LPT_SSP:
++	case LPSS_BYT_SSP:
++		return true;
++	default:
++		return false;
++	}
+ }
+ 
+ static bool is_quark_x1000_ssp(const struct driver_data *drv_data)
+@@ -1085,7 +1091,8 @@ static int setup(struct spi_device *spi)
+ 		tx_hi_thres = 0;
+ 		rx_thres = RX_THRESH_QUARK_X1000_DFLT;
+ 		break;
+-	case LPSS_SSP:
++	case LPSS_LPT_SSP:
++	case LPSS_BYT_SSP:
+ 		tx_thres = LPSS_TX_LOTHRESH_DFLT;
+ 		tx_hi_thres = LPSS_TX_HITHRESH_DFLT;
+ 		rx_thres = LPSS_RX_THRESH_DFLT;
+@@ -1242,6 +1249,18 @@ static void cleanup(struct spi_device *spi)
+ }
+ 
+ #ifdef CONFIG_ACPI
++
++static struct acpi_device_id pxa2xx_spi_acpi_match[] = {
++	{ "INT33C0", LPSS_LPT_SSP },
++	{ "INT33C1", LPSS_LPT_SSP },
++	{ "INT3430", LPSS_LPT_SSP },
++	{ "INT3431", LPSS_LPT_SSP },
++	{ "80860F0E", LPSS_BYT_SSP },
++	{ "8086228E", LPSS_BYT_SSP },
++	{ },
++};
++MODULE_DEVICE_TABLE(acpi, pxa2xx_spi_acpi_match);
++
+ static struct pxa2xx_spi_master *
+ pxa2xx_spi_acpi_get_pdata(struct platform_device *pdev)
+ {
+@@ -1249,12 +1268,19 @@ pxa2xx_spi_acpi_get_pdata(struct platform_device *pdev)
+ 	struct acpi_device *adev;
+ 	struct ssp_device *ssp;
+ 	struct resource *res;
+-	int devid;
++	const struct acpi_device_id *id;
++	int devid, type;
+ 
+ 	if (!ACPI_HANDLE(&pdev->dev) ||
+ 	    acpi_bus_get_device(ACPI_HANDLE(&pdev->dev), &adev))
+ 		return NULL;
+ 
++	id = acpi_match_device(pdev->dev.driver->acpi_match_table, &pdev->dev);
++	if (id)
++		type = (int)id->driver_data;
++	else
++		return NULL;
++
+ 	pdata = devm_kzalloc(&pdev->dev, sizeof(*pdata), GFP_KERNEL);
+ 	if (!pdata)
+ 		return NULL;
+@@ -1272,7 +1298,7 @@ pxa2xx_spi_acpi_get_pdata(struct platform_device *pdev)
+ 
+ 	ssp->clk = devm_clk_get(&pdev->dev, NULL);
+ 	ssp->irq = platform_get_irq(pdev, 0);
+-	ssp->type = LPSS_SSP;
++	ssp->type = type;
+ 	ssp->pdev = pdev;
+ 
+ 	ssp->port_id = -1;
+@@ -1285,16 +1311,6 @@ pxa2xx_spi_acpi_get_pdata(struct platform_device *pdev)
+ 	return pdata;
+ }
+ 
+-static struct acpi_device_id pxa2xx_spi_acpi_match[] = {
+-	{ "INT33C0", 0 },
+-	{ "INT33C1", 0 },
+-	{ "INT3430", 0 },
+-	{ "INT3431", 0 },
+-	{ "80860F0E", 0 },
+-	{ "8086228E", 0 },
+-	{ },
+-};
+-MODULE_DEVICE_TABLE(acpi, pxa2xx_spi_acpi_match);
+ #else
+ static inline struct pxa2xx_spi_master *
+ pxa2xx_spi_acpi_get_pdata(struct platform_device *pdev)
+diff --git a/include/linux/pxa2xx_ssp.h b/include/linux/pxa2xx_ssp.h
+index dab545bb66b3..95a4b3bd7a5c 100644
+--- a/include/linux/pxa2xx_ssp.h
++++ b/include/linux/pxa2xx_ssp.h
+@@ -194,8 +194,9 @@ enum pxa_ssp_type {
+ 	PXA168_SSP,
+ 	PXA910_SSP,
+ 	CE4100_SSP,
+-	LPSS_SSP,
+ 	QUARK_X1000_SSP,
++	LPSS_LPT_SSP,
++	LPSS_BYT_SSP,
+ };
+ 
+ struct ssp_device {
 -- 
-Jarkko
+2.1.4
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

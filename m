@@ -1,73 +1,87 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 10/11] spi: add more debug prints in s3c64xx
-Date: Thu, 4 Jun 2015 11:56:53 +0100
-Message-ID: <20150604105653.GD14071@sirena.org.uk>
-References: <cover.1433364398.git.hramrach@gmail.com>
- <305830ebf9c0ae98c4f6e0ebbdec7414d6762b36.1433364398.git.hramrach@gmail.com>
- <20150604091634.GY14071@sirena.org.uk>
- <CAOMqctQxn6UY2DJ9Syp6Ay9SYKLgdU+8EjiTK_48-R3dZ8PcvA@mail.gmail.com>
- <20150604102621.GB14071@sirena.org.uk>
- <CAOMqctRFXWT3m8H4YBH0tzQAL3Y2NUs6XCo2LiF1R0Xz+iWUzw@mail.gmail.com>
+From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [PATCH 1/3] spi: pxa2xx: Differentiate Intel LPSS types
+Date: Thu, 04 Jun 2015 16:54:50 +0300
+Message-ID: <557058AA.8020802@linux.intel.com>
+References: <1433328587-20797-1-git-send-email-jarkko.nikula@linux.intel.com> <20150603121135.GH14071@sirena.org.uk> <556F0A34.9010506@linux.intel.com> <20150603143909.GM14071@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="jNp2UUAAd0DeWbgM"
-Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Dan Williams <dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Han Xu <han.xu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
-	Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
-	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Alison Chaiken <alison_chaiken-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
-	Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Ben Hutchings <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>,
-	Knut Wohlrab <knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>,
-	Bean Huo =?utf-8?B?6ZyN5paM5paMIChiZWFuaHVvKQ==?=
-	<beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org>, "grmoore-EIB2kfCEclfQT0dZR+AlfA@public.gmane.org" <g
-To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAOMqctRFXWT3m8H4YBH0tzQAL3Y2NUs6XCo2LiF1R0Xz+iWUzw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20150603143909.GM14071-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On 06/03/2015 05:39 PM, Mark Brown wrote:
+> On Wed, Jun 03, 2015 at 05:07:48PM +0300, Jarkko Nikula wrote:
+>> On 06/03/2015 03:11 PM, Mark Brown wrote:
+>
+>> My idea to detect these newer platforms and set the type accordingly is to
+>> check does the device have named resource "lpss_priv" in a code snip below
+>
+>> @@ -1299,6 +1319,13 @@ pxa2xx_spi_acpi_get_pdata(struct platform_device
+>> *pdev)
+>>   	if (IS_ERR(ssp->mmio_base))
+>>   		return NULL;
+>>
+>> +	if (platform_get_resource_byname(pdev, IORESOURCE_MEM, "lpss_priv")) {
+>> +		type = LPSS_SPT_SSP;
+>> +		pdata->tx_param = pdev->dev.parent;
+>> +		pdata->rx_param = pdev->dev.parent;
+>> +		pdata->dma_filter = pxa2xx_spi_idma_filter;
+>> +	}
+>> +
+>
+> Why not just pass some platform data?  The above seems like it's abusing
+> the API a bit and might upset generic code.
+>
+I wanted to avoid that in order to keep MFD patch set and SPI changes 
+independent from each other from both build and runtime. It would also 
+need some code arrangements between pxa2xx_spi_probe() and 
+pxa2xx_spi_acpi_get_pdata() but that's a minor reason.
 
---jNp2UUAAd0DeWbgM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Of course relying on "lpss_priv" is not fully future proof either but it 
+looks platform after Sunrisepoint won't need any extra type but just 
+looking at differences from device registers.
 
-On Thu, Jun 04, 2015 at 12:52:19PM +0200, Michal Suchanek wrote:
+>>   	ssp->clk = devm_clk_get(&pdev->dev, NULL);
+>>   	ssp->irq = platform_get_irq(pdev, 0);
+>>   	ssp->type = type;
+>
+>> That made me thinking can I set the type to LPSS_SPT_SSP and needed DMA
+>> filter directly when acpi_match_device() returns NULL. At quick look it
+>> seems no any other platform device case than our new MFD registration enters
+>> here but have to look at more carefully.
+>
+> That might work too, checking for DT as well would help defensiveness
+> though you'd have to watch out for board file registraitons too since
+> I'm not sure all the PXA platforms were DTified.  Or just register the
+> device with a different ID and use that?
+>
+Looks like all users are arch/arm/mach-pxa/ board files (no ACPI 
+handle), PCI enumarated that set platform data in pxa2xx_spi_pci_probe() 
+and ACPI matched devices in pxa2xx_spi_acpi_match[] (no platform data).
 
-> There is no code interdependency with the other patches so if it's
-> preferred I can send patches like this separately.
+Messing with device ID doesn't look clear either as we need to match the 
+clock name and it's more clear to keep the host controller and DMA 
+instance IDs the same.
 
-Yes, that's better practice.
+I realized I really need to handle NULL from acpi_match_device() in this 
+patch. Assuming our MFD set is in the tree before adding the SPI 
+Sunrisepoint support. Then code gets through the ACPI_HANDLE() test in 
+pxa2xx_spi_acpi_get_pdata() (no platform data but ACPI companion is set 
+by the MFD core) and goes setting the enable_dma flag for instance.
 
---jNp2UUAAd0DeWbgM
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+This is not fatal but pxa2xx_spi_dma_setup() picks up then the any first 
+available DMA channel because DMA filter function is not in place. It 
+obviously won't work since SPI is hard-wired to its integrated DMA so 
+transfers will be halted.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+I'll send version 2 in a minute.
 
-iQEcBAEBCAAGBQJVcC71AAoJECTWi3JdVIfQBj8H/2IDwTMKds4nyc0wJHt1b/zn
-r2Xjn1gr2EEPJL71yeJewRKgUFS3df/m3czmwxQ1bLcweAhoDVnHjDQ/DMB0Aqmh
-UYbI1tuqCf83hxyDqlNcKsxkZ4hvvtDHxNKQtsVU1LNGsVb+yHFMLDmtQktZtycF
-BjLTw15SNHyixdXHrMej+qZt+NjozC7Y38ff9jdo4AAp3B65yokISIVatc93S6iy
-wow+h4THuzm+DMrKCXaUwtkqx6kmTEZ1DaxXf8QcKkXyKTzXL1b1riP/0Q1vA+rT
-SYgloqyo4pbXTmiyQkOwhARysxqNBpuQ/mesUvlqIS+f60HvJvrTaVgzEIbokVk=
-=giwp
------END PGP SIGNATURE-----
-
---jNp2UUAAd0DeWbgM--
+-- 
+Jarkko
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

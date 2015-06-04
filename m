@@ -1,211 +1,106 @@
-From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCHv2 2/3] spi: pxa2xx: Prepare for new Intel LPSS SPI type
-Date: Thu,  4 Jun 2015 16:55:11 +0300
-Message-ID: <1433426112-19021-2-git-send-email-jarkko.nikula@linux.intel.com>
-References: <1433426112-19021-1-git-send-email-jarkko.nikula@linux.intel.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1433426112-19021-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Marek Vasut <marex@denx.de>
+Subject: Re: [PATCH 08/11] MTD: m25p80: Add option to limit SPI transfer size.
+Date: Thu, 4 Jun 2015 17:15:12 +0200
+Message-ID: <201506041715.12904.marex@denx.de>
+References: <cover.1433364398.git.hramrach@gmail.com> <201506040103.09555.marex@denx.de> <CAOMqctQeg0Sj1pGOQsK1nNB6=-H9koH_5nrXYBq_NKeVt369dw@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora.org>,
+	Russell King <linux@arm.linux.org.uk>,
+	Kukjin Kim <kgene@kernel.org>,
+	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+	Vinod Koul <vinod.koul@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Brian Norris <computersforpeace@gmail.com>,
+	Han Xu <han.xu@freescale.com>, Mark Brown <broonie@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	=?utf-8?q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>,
+	Alison Chaiken <alison_chaiken@mentor.com>,
+	Huang Shijie <b32955@freescale.com>,
+	Ben Hutchings <ben@decadent.org.uk>,
+	Knut Wohlrab <knut.wohlrab@de.bosch.com>,
+	"Bean Huo =?utf-8?q?=E9=9C=8D=E6=96=8C=E6=96=8C?= (beanhuo)"
+	<beanhuo@micron.com>, "grmoo
+To: Michal Suchanek <hramrach@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <CAOMqctQeg0Sj1pGOQsK1nNB6=-H9koH_5nrXYBq_NKeVt369dw@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Some of the Intel LPSS SPI properties will be different in upcoming
-platforms compared to existing Lynxpoint and BayTrail/Braswell. LPSS SPI
-private registers will be at different offset and there will be changes in
-individual registers and default FIFO thresholds too.
+On Thursday, June 04, 2015 at 06:31:45 AM, Michal Suchanek wrote:
+> On 4 June 2015 at 01:03, Marek Vasut <marex@denx.de> wrote:
+> > On Wednesday, June 03, 2015 at 11:26:41 PM, Michal Suchanek wrote:
+> >> On sunxi the SPI controller currently does not have DMA support and
+> >> fails any transfer larger than 63 bytes.
+> >> 
+> >> On Exynos the pl330 DMA controller fails any transfer larger than 64kb
+> >> when using slower speed like 40MHz and any transfer larger than 128bytes
+> >> when running at 133MHz.
+> > 
+> > This smells more like some corruption of the data on the bus or something
+> > even more obscure.
+> 
+> If the data was corrupted you would get corrupted data and not
+> transfer failure. AFAIK there is no checksum or anything. I actually
+> do get corrupted data when I use wrong feedback delay setting.
 
-Add configuration for these differences and use them in runtime based on
-LPSS SSP type. With this change private registers offset autodetection
-becomes needless.
+OK
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
----
- drivers/spi/spi-pxa2xx.c   | 107 +++++++++++++++++++++++++--------------------
- include/linux/pxa2xx_ssp.h |   2 +-
- 2 files changed, 60 insertions(+), 49 deletions(-)
+> >> The best thing is that in both cases the controller can just lock up and
+> >> never finish potentially leaving the hardware in unusable state.
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index a85b7496a3cd..3fec31dbf972 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -60,18 +60,51 @@ MODULE_ALIAS("platform:pxa2xx-spi");
- 				| QUARK_X1000_SSCR1_TFT		\
- 				| SSCR1_SPH | SSCR1_SPO | SSCR1_LBM)
- 
--#define LPSS_RX_THRESH_DFLT	64
--#define LPSS_TX_LOTHRESH_DFLT	160
--#define LPSS_TX_HITHRESH_DFLT	224
--
--/* Offset from drv_data->lpss_base */
--#define GENERAL_REG		0x08
- #define GENERAL_REG_RXTO_HOLDOFF_DISABLE BIT(24)
--#define SSP_REG			0x0c
--#define SPI_CS_CONTROL		0x18
- #define SPI_CS_CONTROL_SW_MODE	BIT(0)
- #define SPI_CS_CONTROL_CS_HIGH	BIT(1)
- 
-+struct lpss_config {
-+	/* LPSS offset from drv_data->ioaddr */
-+	unsigned offset;
-+	/* Register offsets from drv_data->lpss_base or -1 */
-+	int reg_general;
-+	int reg_ssp;
-+	int reg_cs_ctrl;
-+	/* FIFO thresholds */
-+	u32 rx_threshold;
-+	u32 tx_threshold_lo;
-+	u32 tx_threshold_hi;
-+};
-+
-+/* Keep these sorted with enum pxa_ssp_type */
-+static const struct lpss_config lpss_platforms[] = {
-+	{	/* LPSS_LPT_SSP */
-+		.offset = 0x800,
-+		.reg_general = 0x08,
-+		.reg_ssp = 0x0c,
-+		.reg_cs_ctrl = 0x18,
-+		.rx_threshold = 64,
-+		.tx_threshold_lo = 160,
-+		.tx_threshold_hi = 224,
-+	},
-+	{	/* LPSS_BYT_SSP */
-+		.offset = 0x400,
-+		.reg_general = 0x08,
-+		.reg_ssp = 0x0c,
-+		.reg_cs_ctrl = 0x18,
-+		.rx_threshold = 64,
-+		.tx_threshold_lo = 160,
-+		.tx_threshold_hi = 224,
-+	},
-+};
-+
-+static inline const struct lpss_config
-+*lpss_get_config(const struct driver_data *drv_data)
-+{
-+	return &lpss_platforms[drv_data->ssp_type - LPSS_LPT_SSP];
-+}
-+
- static bool is_lpss_ssp(const struct driver_data *drv_data)
- {
- 	switch (drv_data->ssp_type) {
-@@ -198,63 +231,39 @@ static void __lpss_ssp_write_priv(struct driver_data *drv_data,
-  */
- static void lpss_ssp_setup(struct driver_data *drv_data)
- {
--	unsigned offset = 0x400;
--	u32 value, orig;
--
--	/*
--	 * Perform auto-detection of the LPSS SSP private registers. They
--	 * can be either at 1k or 2k offset from the base address.
--	 */
--	orig = readl(drv_data->ioaddr + offset + SPI_CS_CONTROL);
--
--	/* Test SPI_CS_CONTROL_SW_MODE bit enabling */
--	value = orig | SPI_CS_CONTROL_SW_MODE;
--	writel(value, drv_data->ioaddr + offset + SPI_CS_CONTROL);
--	value = readl(drv_data->ioaddr + offset + SPI_CS_CONTROL);
--	if (value != (orig | SPI_CS_CONTROL_SW_MODE)) {
--		offset = 0x800;
--		goto detection_done;
--	}
--
--	orig = readl(drv_data->ioaddr + offset + SPI_CS_CONTROL);
--
--	/* Test SPI_CS_CONTROL_SW_MODE bit disabling */
--	value = orig & ~SPI_CS_CONTROL_SW_MODE;
--	writel(value, drv_data->ioaddr + offset + SPI_CS_CONTROL);
--	value = readl(drv_data->ioaddr + offset + SPI_CS_CONTROL);
--	if (value != (orig & ~SPI_CS_CONTROL_SW_MODE)) {
--		offset = 0x800;
--		goto detection_done;
--	}
-+	const struct lpss_config *config;
-+	u32 value;
- 
--detection_done:
--	/* Now set the LPSS base */
--	drv_data->lpss_base = drv_data->ioaddr + offset;
-+	config = lpss_get_config(drv_data);
-+	drv_data->lpss_base = drv_data->ioaddr + config->offset;
- 
- 	/* Enable software chip select control */
- 	value = SPI_CS_CONTROL_SW_MODE | SPI_CS_CONTROL_CS_HIGH;
--	__lpss_ssp_write_priv(drv_data, SPI_CS_CONTROL, value);
-+	__lpss_ssp_write_priv(drv_data, config->reg_cs_ctrl, value);
- 
- 	/* Enable multiblock DMA transfers */
- 	if (drv_data->master_info->enable_dma) {
--		__lpss_ssp_write_priv(drv_data, SSP_REG, 1);
-+		__lpss_ssp_write_priv(drv_data, config->reg_ssp, 1);
- 
--		value = __lpss_ssp_read_priv(drv_data, GENERAL_REG);
-+		value = __lpss_ssp_read_priv(drv_data, config->reg_general);
- 		value |= GENERAL_REG_RXTO_HOLDOFF_DISABLE;
--		__lpss_ssp_write_priv(drv_data, GENERAL_REG, value);
-+		__lpss_ssp_write_priv(drv_data, config->reg_general, value);
- 	}
- }
- 
- static void lpss_ssp_cs_control(struct driver_data *drv_data, bool enable)
- {
-+	const struct lpss_config *config;
- 	u32 value;
- 
--	value = __lpss_ssp_read_priv(drv_data, SPI_CS_CONTROL);
-+	config = lpss_get_config(drv_data);
-+
-+	value = __lpss_ssp_read_priv(drv_data, config->reg_cs_ctrl);
- 	if (enable)
- 		value &= ~SPI_CS_CONTROL_CS_HIGH;
- 	else
- 		value |= SPI_CS_CONTROL_CS_HIGH;
--	__lpss_ssp_write_priv(drv_data, SPI_CS_CONTROL, value);
-+	__lpss_ssp_write_priv(drv_data, config->reg_cs_ctrl, value);
- }
- 
- static void cs_assert(struct driver_data *drv_data)
-@@ -1081,6 +1090,7 @@ static int setup(struct spi_device *spi)
- {
- 	struct pxa2xx_spi_chip *chip_info = NULL;
- 	struct chip_data *chip;
-+	const struct lpss_config *config;
- 	struct driver_data *drv_data = spi_master_get_devdata(spi->master);
- 	unsigned int clk_div;
- 	uint tx_thres, tx_hi_thres, rx_thres;
-@@ -1093,9 +1103,10 @@ static int setup(struct spi_device *spi)
- 		break;
- 	case LPSS_LPT_SSP:
- 	case LPSS_BYT_SSP:
--		tx_thres = LPSS_TX_LOTHRESH_DFLT;
--		tx_hi_thres = LPSS_TX_HITHRESH_DFLT;
--		rx_thres = LPSS_RX_THRESH_DFLT;
-+		config = lpss_get_config(drv_data);
-+		tx_thres = config->tx_threshold_lo;
-+		tx_hi_thres = config->tx_threshold_hi;
-+		rx_thres = config->rx_threshold;
- 		break;
- 	default:
- 		tx_thres = TX_THRESH_DFLT;
-diff --git a/include/linux/pxa2xx_ssp.h b/include/linux/pxa2xx_ssp.h
-index 95a4b3bd7a5c..0485bab061fd 100644
---- a/include/linux/pxa2xx_ssp.h
-+++ b/include/linux/pxa2xx_ssp.h
-@@ -195,7 +195,7 @@ enum pxa_ssp_type {
- 	PXA910_SSP,
- 	CE4100_SSP,
- 	QUARK_X1000_SSP,
--	LPSS_LPT_SSP,
-+	LPSS_LPT_SSP, /* Keep LPSS types sorted with lpss_platforms[] */
- 	LPSS_BYT_SSP,
- };
- 
--- 
-2.1.4
+[...]
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> >> --- a/Documentation/devicetree/bindings/mtd/jedec,spi-nor.txt
+> >> +++ b/Documentation/devicetree/bindings/mtd/jedec,spi-nor.txt
+> >> 
+> >> @@ -19,6 +19,12 @@ Optional properties:
+> >>                     all chips and support for it can not be detected at
+> >> 
+> >> runtime. Refer to your chips' datasheet to check if this is supported by
+> >> your chip.
+> >> +- linux,max_tx_len : With some SPI controller drivers possible transfer
+> >> size is +                     limited. This may be hardware or driver
+> >> bug. +                     Transfer data in chunks no larger than this
+> >> value. +
+> >> 
+> >>                     Using this option may severely degrade performance
+> >>                     and
+> >> 
+> >> +                     possibly flash memory life when max_tx_len is
+> >> smaller than +                     flash page size (typically 256 bytes)
+> > 
+> > Will we need similar patch for all other SPI slave drivers, like SPI NAND
+> > ?
+> 
+> Probably. Some SPI slave drivers already do have similar option.
+
+So the SPI device drivers are implementing workarounds for buggy SPI hosts,
+even if those SPI devices themselves don't suffer from such limitations. Yes,
+this seems like the seriously wrong thing to do.
+
+> In general it cannot be expected that you can reliably transfer
+> arbitrarily large data over SPI it seems.
+
+This is what should be expected because this is how the bus is supposed
+to work in fact. You can transfer an arbitrary amount of data over SPI
+bus.
+
+If some driver has a limitation, it's that (bus, dma) driver which needs
+to implement a fix or a workaround.
+
+> However, if the nand driver transfers data a page at a time it should
+> be fine.
+
+... until someone issues multi-block read, in which case it all falls
+down like a house of cards. It is impossible to build a reliable system
+on "should" and similar assumptions ; the driver must be solid.
+
+Best regards,
+Marek Vasut

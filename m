@@ -1,86 +1,88 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Mark Brown <broonie@kernel.org>
 Subject: Re: [PATCH 10/11] spi: add more debug prints in s3c64xx
-Date: Thu, 4 Jun 2015 10:42:48 +0100
-Message-ID: <20150604094248.GA14071@sirena.org.uk>
+Date: Thu, 4 Jun 2015 11:26:21 +0100
+Message-ID: <20150604102621.GB14071@sirena.org.uk>
 References: <cover.1433364398.git.hramrach@gmail.com>
  <305830ebf9c0ae98c4f6e0ebbdec7414d6762b36.1433364398.git.hramrach@gmail.com>
  <20150604091634.GY14071@sirena.org.uk>
- <CAMuHMdWHPm6exq4O3CNvVuiZOgLHuxyCrR548BFmbOPikvNRLw@mail.gmail.com>
+ <CAOMqctQxn6UY2DJ9Syp6Ay9SYKLgdU+8EjiTK_48-R3dZ8PcvA@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="988dVgVOOB5COf1N"
-Cc: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Dan Williams <dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Han Xu <han.xu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
-	Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
-	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Alison Chaiken <alison_chaiken-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
-	Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Ben Hutchings <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>,
-	Knut Wohlrab <knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>,
+	protocol="application/pgp-signature"; boundary="d5L/0NH1d7AMGItx"
+Cc: Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora.org>,
+	Russell King <linux@arm.linux.org.uk>,
+	Kukjin Kim <kgene@kernel.org>,
+	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+	Vinod Koul <vinod.koul@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Brian Norris <computersforpeace@gmail.com>,
+	Han Xu <han.xu@freescale.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Marek Vasut <marex@denx.de>,
+	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+	Alison Chaiken <alison_chaiken@mentor.com>,
+	Huang Shijie <b32955@freescale.com>,
+	Ben Hutchings <ben@decadent.org.uk>,
+	Knut Wohlrab <knut.wohlrab@de.bosch.com>,
 	Bean Huo =?utf-8?B?6ZyN5paM5paMIChiZWFuaHVvKQ==?=
-	<bean
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	<beanhuo@micron.com>, "grmoore@altera.com" <g
+To: Michal Suchanek <hramrach@gmail.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CAMuHMdWHPm6exq4O3CNvVuiZOgLHuxyCrR548BFmbOPikvNRLw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+In-Reply-To: <CAOMqctQxn6UY2DJ9Syp6Ay9SYKLgdU+8EjiTK_48-R3dZ8PcvA@mail.gmail.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---988dVgVOOB5COf1N
+--d5L/0NH1d7AMGItx
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Jun 04, 2015 at 11:30:15AM +0200, Geert Uytterhoeven wrote:
-> On Thu, Jun 4, 2015 at 11:16 AM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> >> --- a/drivers/spi/spi-s3c64xx.c
-> >> +++ b/drivers/spi/spi-s3c64xx.c
-> >> @@ -18,6 +18,7 @@
-> >>  #include <linux/interrupt.h>
-> >>  #include <linux/delay.h>
-> >>  #include <linux/clk.h>
-> >> +#include <linux/clk-provider.h>
+On Thu, Jun 04, 2015 at 11:33:37AM +0200, Michal Suchanek wrote:
+> On 4 June 2015 at 11:16, Mark Brown <broonie@kernel.org> wrote:
 
-> > Whatever you're doing here this indicates that there's a very big
-> > abstraction problem going on.
+> > Also for this patch (which just adds some trace) there isn't any clear
+> > reason for it to be sent as part of the series at all, it doesn't help
+> > deliver the functionality and doesn't depend on the rest of the series.
 
-> I guess it's needed for __clk_get_name(), which can be avoided by using
-> the "%pC" printf format specifier instead.
+> I used this patch to add missing information to dmesg output so I
+> could diagnose the SPI failures so I think it is relevant.
 
-Right, or by adding an externally usable API - the point is that using
-internal functions in a client driver is a big red flag.
+The fact that you used this to debug problems is not relevant to any fix
+you might have developed for those problems; the fix can be explained
+without needing to know how you got there.  Similarly the debugging is
+hopefully useful in general without needing to know which particular
+problem prompted it's creation.
 
---988dVgVOOB5COf1N
+> To print a clock name you AFAICT need this header. I think this is an
+> abstraction problem in the clock framework. Fixing the abstraction
+> problem with clock framework would only grow the list of recipients
+> which is already so long you complain about it.
+
+This is a bit of a warning sign that the series isn't very focused.
+It's also just not good practice, sending patches with obvious problems
+(especially obvious problems that aren't clearly flagged up as something
+temporary) will frustrate reviewers and can often lead to other issues
+being obscured.
+
+--d5L/0NH1d7AMGItx
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVcB2YAAoJECTWi3JdVIfQO6EH/2yX1CkVIi3J13r7qH1fI02p
-U4vHVMtnfVXqaWbob/bIt1vn/L8D8L5ojQ5l5p6AoRrXkb9p3XwMOTV4no8JuS1/
-+F28Qy6+RFDcYGWcc8E5KvpNLWIreXEYx3J0NTvjtxzl1UIYHVs5RVlYflh2kmqj
-qn2Jsmy13TcGcohUAbQGFSG662iGeV+KdAsWwD2rql+awInCYJT1lwvUqkujEXJ9
-eM+MxZn8ZgEUWoqEBzfGDZaahs/ORdgx9XgAOwPsimAsqYbTeN95L6o90x/TL5ZM
-IG3t6XBCgGwIWNLz0T/WzYO2n1T3d8TOH+ShqGbtpmMvTpyZ4Rt/XruByI00BO8=
-=qp8l
+iQEcBAEBCAAGBQJVcCfMAAoJECTWi3JdVIfQUqUH/R+Nlv9ELNPw+tGGYlunfVzE
+pZJBF4wKZFs3MkZX1tctiv2eJjQv2qimy62Z1DUvmctXq2KEopZMgcQfWeQrgG0U
+qxsYrvENti7NSigt7sWJ4yOurV2QY4M8Xej14XCe0ss96W56U2XQ8vwvQhqrbbr4
++t1Pwd6Evw5aL9BJdm+KS87owraQ2wdz2bs6H3gouVwzZ1Xg3NPYNjV10BP8uzqn
+trwS8HwLAg49bjmD5NlChj2JQCrx+5b2fVyugeIhIK5pMvVLGaaVmzkQJW4pjcrb
+yK4U3jT4AuVhzaNaiMHBxBUC6HQvS/ZIJvmT10BdRdX+9JGEqOLzlakEvbVpw/Y=
+=BZSM
 -----END PGP SIGNATURE-----
 
---988dVgVOOB5COf1N--
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--d5L/0NH1d7AMGItx--

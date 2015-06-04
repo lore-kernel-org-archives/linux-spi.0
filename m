@@ -1,9 +1,9 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH 08/11] MTD: m25p80: Add option to limit SPI transfer size.
-Date: Thu, 4 Jun 2015 08:42:59 +0200
-Message-ID: <CAMuHMdVT2M7pPHDDHmoNF_zVXhz1PUm5PiYxDKcAjSAcfSDiZg@mail.gmail.com>
+From: Javier Martinez Canillas <javier-0uQlZySMnqxg9hUCZPvPmw@public.gmane.org>
+Subject: Re: [PATCH 01/11] ARM: dt: Add SPI CS on Samsung Snow board.
+Date: Thu, 4 Jun 2015 08:52:30 +0200
+Message-ID: <CABxcv==e1NzDHkZgNU=AH0cG=yj3Fbbnozp63z5niaE5qf3r6w@mail.gmail.com>
 References: <cover.1433364398.git.hramrach@gmail.com>
-	<8fc4b9f5291a509c4c35782a1337bf536f1019af.1433364398.git.hramrach@gmail.com>
+	<d47abe28c751b54b839d9340269a2c06a6e23a6c.1433364398.git.hramrach@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
@@ -28,72 +28,43 @@ Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Pawel Moll <p
 	=?UTF-8?B?QmVhbiBIdW8g6ZyN5paM5paMIChiZWFuaHVvKQ==?=
 	<beanhuo@
 To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <8fc4b9f5291a509c4c35782a1337bf536f1019af.1433364398.git.hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <d47abe28c751b54b839d9340269a2c06a6e23a6c.1433364398.git.hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
+
+Hello Michal,
 
 On Wed, Jun 3, 2015 at 11:26 PM, Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> On sunxi the SPI controller currently does not have DMA support and fails
-> any transfer larger than 63 bytes.
-
-This is a driver limitation, not a hardware limitation.
-
-> On Exynos the pl330 DMA controller fails any transfer larger than 64kb
-> when using slower speed like 40MHz and any transfer larger than 128bytes
-> when running at 133MHz.
-
-This may be a driver bug.
-
-> The best thing is that in both cases the controller can just lock up and
-> never finish potentially leaving the hardware in unusable state.
+> Although there is only one choice of chipselect it is necessary to
+> specify it. The driver cannot claim the gpio otherwise.
 >
-> So it is required that the m25p80 driver actively prevents doing
-> transfers that are too large for the current driver state on a
-> particular piece of hardware.
-
-OK.
-
 > Signed-off-by: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
->
-> --
->
-> Update commit message and documentation text.
 > ---
->  .../devicetree/bindings/mtd/jedec,spi-nor.txt      |  6 ++++++
->  drivers/mtd/devices/m25p80.c                       | 24 ++++++++++++++++++++--
->  2 files changed, 28 insertions(+), 2 deletions(-)
+>  arch/arm/boot/dts/exynos5250-snow.dts | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 >
-> diff --git a/Documentation/devicetree/bindings/mtd/jedec,spi-nor.txt b/Documentation/devicetree/bindings/mtd/jedec,spi-nor.txt
-> index 2bee681..4e63ae8 100644
-> --- a/Documentation/devicetree/bindings/mtd/jedec,spi-nor.txt
-> +++ b/Documentation/devicetree/bindings/mtd/jedec,spi-nor.txt
-> @@ -19,6 +19,12 @@ Optional properties:
->                     all chips and support for it can not be detected at runtime.
->                     Refer to your chips' datasheet to check if this is supported
->                     by your chip.
-> +- linux,max_tx_len : With some SPI controller drivers possible transfer size is
-> +                     limited. This may be hardware or driver bug.
-> +                     Transfer data in chunks no larger than this value.
-> +                     Using this option may severely degrade performance and
-> +                     possibly flash memory life when max_tx_len is smaller than
-> +                     flash page size (typically 256 bytes)
+> diff --git a/arch/arm/boot/dts/exynos5250-snow.dts b/arch/arm/boot/dts/exynos5250-snow.dts
+> index 1eca97e..1fa72cf 100644
+> --- a/arch/arm/boot/dts/exynos5250-snow.dts
+> +++ b/arch/arm/boot/dts/exynos5250-snow.dts
+> @@ -687,9 +687,10 @@
+>  };
+>
+>  &spi_1 {
+> -       status = "okay";
+>         samsung,spi-src-clk = <0>;
+>         num-cs = <1>;
+> +       cs-gpios = <&gpa2 5 0>;
+> +       status = "okay";
 
-DT describes the hardware, not buggy drivers.
+Why are you changing the position of the status property? AFAIK the
+convention is to have this property at the beginning of the device
+node.
 
-So IMHO this doesn't belong in DT, but it can be a field in struct spi_master.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
+Best regards,
+Javier
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,9 +1,9 @@
-From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 04/11] mtd: ofpart: do not fail probe when no partitions exist
-Date: Thu, 4 Jun 2015 06:54:00 +0200
-Message-ID: <CAOMqctTB2AYOQZUc9o-R4PF1DQ-HY0RfSw5T-T28r5uP2s=qZA@mail.gmail.com>
-References: <cover.1433364398.git.hramrach@gmail.com> <36e315552c849a4d22ac0fcff7958f6ffcafb160.1433364398.git.hramrach@gmail.com>
- <201506040058.52882.marex@denx.de>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH 08/11] MTD: m25p80: Add option to limit SPI transfer size.
+Date: Thu, 4 Jun 2015 08:42:59 +0200
+Message-ID: <CAMuHMdVT2M7pPHDDHmoNF_zVXhz1PUm5PiYxDKcAjSAcfSDiZg@mail.gmail.com>
+References: <cover.1433364398.git.hramrach@gmail.com>
+	<8fc4b9f5291a509c4c35782a1337bf536f1019af.1433364398.git.hramrach@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
@@ -19,74 +19,81 @@ Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Pawel Moll <p
 	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Han Xu <han.xu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
+	Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
 	=?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Alison Chaiken <alison_chaiken-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
 	Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
 	Ben Hutchings <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>,
 	Knut Wohlrab <knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>,
 	=?UTF-8?B?QmVhbiBIdW8g6ZyN5paM5paMIChiZWFuaHVvKQ==?=
-	<beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org>, "grmoore@altera.c
-To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <201506040058.52882.marex-ynQEQJNshbs@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+	<beanhuo@
+To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <8fc4b9f5291a509c4c35782a1337bf536f1019af.1433364398.git.hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-On 4 June 2015 at 00:58, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
-> On Wednesday, June 03, 2015 at 11:26:40 PM, Michal Suchanek wrote:
->> On Exynos it is necessary to set SPI controller parameters that apply to
->> a SPI slave in a DT subnode of the slave device. The ofpart code returns
->> an error when there are subnodes of the SPI flash but no partitions are
->> found. Change this condition to a warning so that flash without
->> partitions can be accessed on Exynos.
+On Wed, Jun 3, 2015 at 11:26 PM, Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> On sunxi the SPI controller currently does not have DMA support and fails
+> any transfer larger than 63 bytes.
+
+This is a driver limitation, not a hardware limitation.
+
+> On Exynos the pl330 DMA controller fails any transfer larger than 64kb
+> when using slower speed like 40MHz and any transfer larger than 128bytes
+> when running at 133MHz.
+
+This may be a driver bug.
+
+> The best thing is that in both cases the controller can just lock up and
+> never finish potentially leaving the hardware in unusable state.
 >
-> I have to admit the rationale for this patch is not very clear to me, sorry.
-> Can you please explain this a bit more ?
+> So it is required that the m25p80 driver actively prevents doing
+> transfers that are too large for the current driver state on a
+> particular piece of hardware.
 
-This is how the DT entry for SPI slave looks with s3c64xx:
-flash: m25p80@0 {
-        #address-cells = <1>;
-        #size-cells = <1>;
-        compatible = "jedec,spi-nor";
-        reg = <0>;
-        spi-max-frequency = <40000000>;
-        linux,max_tx_len = <65536>;
-        m25p,fast-read;
-        controller-data {
-            samsung,spi-feedback-delay = <0>;
-        };
-    };
+OK.
 
-this is example of flash partitions:
-flash@0 {
-        #address-cells = <1>;
-        #size-cells = <1>;
+> Signed-off-by: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+>
+> --
+>
+> Update commit message and documentation text.
+> ---
+>  .../devicetree/bindings/mtd/jedec,spi-nor.txt      |  6 ++++++
+>  drivers/mtd/devices/m25p80.c                       | 24 ++++++++++++++++++++--
+>  2 files changed, 28 insertions(+), 2 deletions(-)
+>
+> diff --git a/Documentation/devicetree/bindings/mtd/jedec,spi-nor.txt b/Documentation/devicetree/bindings/mtd/jedec,spi-nor.txt
+> index 2bee681..4e63ae8 100644
+> --- a/Documentation/devicetree/bindings/mtd/jedec,spi-nor.txt
+> +++ b/Documentation/devicetree/bindings/mtd/jedec,spi-nor.txt
+> @@ -19,6 +19,12 @@ Optional properties:
+>                     all chips and support for it can not be detected at runtime.
+>                     Refer to your chips' datasheet to check if this is supported
+>                     by your chip.
+> +- linux,max_tx_len : With some SPI controller drivers possible transfer size is
+> +                     limited. This may be hardware or driver bug.
+> +                     Transfer data in chunks no larger than this value.
+> +                     Using this option may severely degrade performance and
+> +                     possibly flash memory life when max_tx_len is smaller than
+> +                     flash page size (typically 256 bytes)
 
-        partition@0 {
-                label = "u-boot";
-                reg = <0x0000000 0x100000>;
-                read-only;
-        };
+DT describes the hardware, not buggy drivers.
 
-        uimage@100000 {
-                reg = <0x0100000 0x200000>;
-        };
-};
+So IMHO this doesn't belong in DT, but it can be a field in struct spi_master.
 
-The parser ignores any flash without subnodes and returns 0 (no
-partititon). When there is a subnode it assumes the flash is
-partitioned and tries to parse the subnodes as partitions. When there
-are subnodes and none parses as partition an error is returned. As
-shown above it is valid to have subnodes on unpartitioned flash.
+Gr{oetje,eeting}s,
 
-When an error is returned from a partition parser the mtdpart code
-passes on this error to the flash probe function and the proble of the
-flash fails.
+                        Geert
 
-Thanks
-
-Michal
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

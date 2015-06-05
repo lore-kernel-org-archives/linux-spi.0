@@ -1,49 +1,64 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCHv2 1/3] spi: pxa2xx: Differentiate Intel LPSS types
-Date: Fri, 5 Jun 2015 11:40:55 +0100
-Message-ID: <20150605104055.GT14071@sirena.org.uk>
-References: <1433426112-19021-1-git-send-email-jarkko.nikula@linux.intel.com>
+From: Ranjit Waghmode <ranjit.waghmode@xilinx.com>
+Subject: [LINUX RFC V2 1/2] devicetree: Add DT bindings documentation for Zynq Ultrascale+ MPSoC GQSPI controller
+Date: Fri, 5 Jun 2015 18:37:32 +0530
+Message-ID: <1433509653-15142-1-git-send-email-ranjit.waghmode@xilinx.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="y9n12KajPNdV/7DP"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1433426112-19021-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain
+Cc: <devicetree@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+	<harinik@xilinx.com>, <punnaia@xilinx.com>, <ran27jit@gmail.com>,
+	"Ranjit Waghmode" <ranjit.waghmode@xilinx.com>
+To: <robh+dt@kernel.org>, <pawel.moll@arm.com>, <mark.rutland@arm.com>,
+	<ijc+devicetree@hellion.org.uk>, <galak@codeaurora.org>,
+	<michal.simek@xilinx.com>, <soren.brinkmann@xilinx.com>,
+	<broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+Add bindings documentation for GQSPI controller driver used by
+Zynq Ultrascale+ MPSoC
 
---y9n12KajPNdV/7DP
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Ranjit Waghmode <ranjit.waghmode@xilinx.com>
+---
+No changes in v2
+---
+ .../devicetree/bindings/spi/spi-zynqmp-qspi.txt    | 26 ++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-zynqmp-qspi.txt
 
-On Thu, Jun 04, 2015 at 04:55:10PM +0300, Jarkko Nikula wrote:
-> Intel LPSS SPI properties differ between between platforms. Now private
-> registers offset 0x400 or 0x800 is autodetected but there is need to
-> support also other offset and handle a few other differences.
-
-Applied all, thanks.
-
---y9n12KajPNdV/7DP
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEbBAEBCAAGBQJVcXy2AAoJECTWi3JdVIfQ4+QH91kPMBJfDlocIFiVQpTqpkN4
-AlpoBD2qq7wA/aywrKo3CtBUrEQGe93u5zO3eWXQRw5d5SS7MEzXaGGmPQfwBqTx
-FUzofiA6qvkSxjv9nxIlHiEHlB75T8wjfzV/pTyWaQD7UtsB+zH/3gka8yxp6LzL
-oM4t77pN14qBIRioNLisnFRykLOoUmP/NCbRmnUtpS1j2s5nMcA+Bl3Zt9IDl+1E
-/pgqjaRcBJduivB7kBagDNouytnp3Z24/Q/ArSeYRitSu5woY9HksQoSzebMbFgp
-docMzIONhinx74tqLVJOX0zTnDxyD1PTM+3PBU+/QmgwXenk/H2SHE1NorpsPw==
-=+uo+
------END PGP SIGNATURE-----
-
---y9n12KajPNdV/7DP--
+diff --git a/Documentation/devicetree/bindings/spi/spi-zynqmp-qspi.txt b/Documentation/devicetree/bindings/spi/spi-zynqmp-qspi.txt
+new file mode 100644
+index 0000000..cec6330
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-zynqmp-qspi.txt
+@@ -0,0 +1,26 @@
++Xilinx Zynq UltraScale+ MPSoC GQSPI controller Device Tree Bindings
++-------------------------------------------------------------------
++
++Required properties:
++- compatible		: Should be "xlnx,zynqmp-qspi-1.0".
++- reg			: Physical base address and size of GQSPI registers map.
++- interrupts		: Property with a value describing the interrupt
++			  number.
++- interrupt-parent	: Must be core interrupt controller.
++- clock-names		: List of input clock names - "ref_clk", "pclk"
++			  (See clock bindings for details).
++- clocks		: Clock phandles (see clock bindings for details).
++
++Optional properties:
++- num-cs		: Number of chip selects used.
++
++Example:
++	qspi: spi@ff0f0000 {
++		compatible = "xlnx,zynqmp-qspi-1.0";
++		clock-names = "ref_clk", "pclk";
++		clocks = <&misc_clk &misc_clk>;
++		interrupts = <0 15 4>;
++		interrupt-parent = <&gic>;
++		num-cs = <1>;
++		reg = <0x0 0xff0f0000 0x1000 0x0 0xc0000000 0x8000000>;
++	};
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+2.1.2

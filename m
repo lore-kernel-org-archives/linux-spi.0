@@ -1,142 +1,74 @@
-From: Marek Vasut <marex@denx.de>
-Subject: Re: [PATCH 04/11] mtd: ofpart: do not fail probe when no partitions exist
-Date: Fri, 5 Jun 2015 16:13:09 +0200
-Message-ID: <201506051613.09187.marex@denx.de>
-References: <cover.1433364398.git.hramrach@gmail.com> <201506041728.50227.marex@denx.de> <CAOMqctQTxVZspcocDsNP6GzsRw5-0zPqkNScS8PzNvkFjBWatQ@mail.gmail.com>
+From: =?utf-8?B?U8O2cmVu?= Brinkmann <soren.brinkmann@xilinx.com>
+Subject: Re: [LINUX RFC V2 1/2] devicetree: Add DT bindings documentation for
+ Zynq Ultrascale+ MPSoC GQSPI controller
+Date: Fri, 5 Jun 2015 09:00:17 -0700
+Message-ID: <20150605160017.GA8863@xsjsorenbubuntu>
+References: <1433509653-15142-1-git-send-email-ranjit.waghmode@xilinx.com>
 Mime-Version: 1.0
-Content-Type: Text/Plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Ian Campbell <ijc+devicetree@hellion.org.uk>,
-	Kumar Gala <galak@codeaurora.org>,
-	Russell King <linux@arm.linux.org.uk>,
-	Kukjin Kim <kgene@kernel.org>,
-	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-	Vinod Koul <vinod.koul@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Brian Norris <computersforpeace@gmail.com>,
-	Han Xu <han.xu@freescale.com>, Mark Brown <broonie@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	=?utf-8?q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>,
-	Alison Chaiken <alison_chaiken@mentor.com>,
-	Huang Shijie <b32955@freescale.com>,
-	Ben Hutchings <ben@decadent.org.uk>,
-	Knut Wohlrab <knut.wohlrab@de.bosch.com>,
-	"Bean Huo =?utf-8?q?=E9=9C=8D=E6=96=8C=E6=96=8C?= (beanhuo)"
-	<beanhuo@micron.com>, "grmoo
-To: Michal Suchanek <hramrach@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: <robh+dt@kernel.org>, <pawel.moll@arm.com>, <mark.rutland@arm.com>,
+	<ijc+devicetree@hellion.org.uk>, <galak@codeaurora.org>,
+	<michal.simek@xilinx.com>, <broonie@kernel.org>,
+	<devicetree@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+	<harinik@xilinx.com>, <punnaia@xilinx.com>, <ran27jit@gmail.com>
+To: Ranjit Waghmode <ranjit.waghmode@xilinx.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAOMqctQTxVZspcocDsNP6GzsRw5-0zPqkNScS8PzNvkFjBWatQ@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1433509653-15142-1-git-send-email-ranjit.waghmode@xilinx.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thursday, June 04, 2015 at 05:40:58 PM, Michal Suchanek wrote:
-> On 4 June 2015 at 17:28, Marek Vasut <marex@denx.de> wrote:
-> > On Thursday, June 04, 2015 at 06:54:00 AM, Michal Suchanek wrote:
-> >> On 4 June 2015 at 00:58, Marek Vasut <marex@denx.de> wrote:
-> >> > On Wednesday, June 03, 2015 at 11:26:40 PM, Michal Suchanek wrote:
-> >> >> On Exynos it is necessary to set SPI controller parameters that apply
-> >> >> to a SPI slave in a DT subnode of the slave device. The ofpart code
-> >> >> returns an error when there are subnodes of the SPI flash but no
-> >> >> partitions are found. Change this condition to a warning so that
-> >> >> flash without partitions can be accessed on Exynos.
-> >> > 
-> >> > I have to admit the rationale for this patch is not very clear to me,
-> >> > sorry. Can you please explain this a bit more ?
-> >> 
-> >> This is how the DT entry for SPI slave looks with s3c64xx:
-> >> flash: m25p80@0 {
-> >> 
-> >>         #address-cells = <1>;
-> >>         #size-cells = <1>;
-> >>         compatible = "jedec,spi-nor";
-> >>         reg = <0>;
-> >>         spi-max-frequency = <40000000>;
-> >>         linux,max_tx_len = <65536>;
-> > 
-> > SIDENOTE: I thought this was actually added by your patch #8 in this
-> > series. The underscores in the name of the property are not really
-> > consistent with the rest of the names.
-> > 
-> >>         m25p,fast-read;
-> >>         controller-data {
-> >>         
-> >>             samsung,spi-feedback-delay = <0>;
-> >>         
-> >>         };
-> >>     
-> >>     };
-> >> 
-> >> this is example of flash partitions:
-> >> flash@0 {
-> >> 
-> >>         #address-cells = <1>;
-> >>         #size-cells = <1>;
-> >>         
-> >>         partition@0 {
-> >>         
-> >>                 label = "u-boot";
-> >>                 reg = <0x0000000 0x100000>;
-> >>                 read-only;
-> >>         
-> >>         };
-> >>         
-> >>         uimage@100000 {
-> >>         
-> >>                 reg = <0x0100000 0x200000>;
-> >>         
-> >>         };
-> >> 
-> >> };
-> >> 
-> >> The parser ignores any flash without subnodes and returns 0 (no
-> >> partititon). When there is a subnode it assumes the flash is
-> >> partitioned and tries to parse the subnodes as partitions. When there
-> >> are subnodes and none parses as partition an error is returned. As
-> >> shown above it is valid to have subnodes on unpartitioned flash.
-> >> 
-> >> When an error is returned from a partition parser the mtdpart code
-> >> passes on this error to the flash probe function and the proble of the
-> >> flash fails.
-> > 
-> > What does /proc/mtd tell you when you have no partitions defined
-> > in the DT ? It should provide you with the entire MTD device and
-> > the code shouldn't even try to parse any OF partitions, since you
-> > don't have any.
-> 
-> mtdinfo shows I have no mtd devices and the log shows that probe
-> failed unless I patch the kernel.
-> 
-> When there is *support* for of partitions the ofparser is run on mtd
-> probe. If it fails because it considers
-> 
-> >>         controller-data {
-> >>         
-> >>             samsung,spi-feedback-delay = <0>;
-> >>         
-> >>         };
-> 
-> an invalid partition and does not find any valid partition the probe fails.
+On Fri, 2015-06-05 at 06:37PM +0530, Ranjit Waghmode wrote:
+> Add bindings documentation for GQSPI controller driver used by
+> Zynq Ultrascale+ MPSoC
+>=20
+> Signed-off-by: Ranjit Waghmode <ranjit.waghmode@xilinx.com>
+> ---
+> No changes in v2
+> ---
+>  .../devicetree/bindings/spi/spi-zynqmp-qspi.txt    | 26 ++++++++++++=
+++++++++++
+>  1 file changed, 26 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/spi/spi-zynqmp-=
+qspi.txt
+>=20
+> diff --git a/Documentation/devicetree/bindings/spi/spi-zynqmp-qspi.tx=
+t b/Documentation/devicetree/bindings/spi/spi-zynqmp-qspi.txt
+> new file mode 100644
+> index 0000000..cec6330
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/spi-zynqmp-qspi.txt
+> @@ -0,0 +1,26 @@
+> +Xilinx Zynq UltraScale+ MPSoC GQSPI controller Device Tree Bindings
+> +-------------------------------------------------------------------
+> +
+> +Required properties:
+> +- compatible		: Should be "xlnx,zynqmp-qspi-1.0".
+> +- reg			: Physical base address and size of GQSPI registers map.
+> +- interrupts		: Property with a value describing the interrupt
+> +			  number.
+> +- interrupt-parent	: Must be core interrupt controller.
+> +- clock-names		: List of input clock names - "ref_clk", "pclk"
+> +			  (See clock bindings for details).
+> +- clocks		: Clock phandles (see clock bindings for details).
+> +
+> +Optional properties:
+> +- num-cs		: Number of chip selects used.
+> +
+> +Example:
+> +	qspi: spi@ff0f0000 {
+> +		compatible =3D "xlnx,zynqmp-qspi-1.0";
+> +		clock-names =3D "ref_clk", "pclk";
+> +		clocks =3D <&misc_clk &misc_clk>;
+> +		interrupts =3D <0 15 4>;
+> +		interrupt-parent =3D <&gic>;
+> +		num-cs =3D <1>;
+> +		reg =3D <0x0 0xff0f0000 0x1000 0x0 0xc0000000 0x8000000>;
 
-OK, now it has become clearer to me, thanks!
+Please make this
+  reg =3D <0x0 0xff0f0000 0x1000>, <0x0 0xc0000000 0x8000000>;
 
-> There are two problems here
-> 
-> 1) the above is not invalid. It just is not a partition. The parser
-> should not fail seeing this
-
-The parser should complain verbosely and ignore this I guess ?
-
-> 2) the mtd probe should not fail when a partition parser fails and
-> should present the unpartitioned device
-
-OK
-
-> Both are addressed in separate patches.
-> 
-> Thanks
-> 
-> Michal
+  	S=C3=B6ren

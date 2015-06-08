@@ -1,74 +1,48 @@
-From: Eddie Huang <eddie.huang-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCH 2/3] spi: mediatek: Add spi bus for Mediatek MT8173
-Date: Mon, 8 Jun 2015 18:15:46 +0800
-Message-ID: <1433758546.19786.16.camel@mtksdaap41>
-References: <1431075343-7887-1-git-send-email-leilk.liu@mediatek.com>
-	 <1431075343-7887-3-git-send-email-leilk.liu@mediatek.com>
-	 <20150508175306.GG2761@sirena.org.uk> <1431434356.2128.9.camel@mhfsdcap03>
-	 <20150512160540.GB3066@sirena.org.uk> <1431675522.2128.13.camel@mhfsdcap03>
-	 <20150515092543.GY2761@sirena.org.uk>
+From: Vinod Koul <vinod.koul@intel.com>
+Subject: Re: [PATCH 09/11] dma: pl330: fix wording in mcbufsz message
+Date: Mon, 8 Jun 2015 16:37:00 +0530
+Message-ID: <20150608110700.GI28601@localhost>
+References: <cover.1433364398.git.hramrach@gmail.com>
+ <14872fc6f86b7f4976d539b47a7899904cd954f6.1433364398.git.hramrach@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Leilk Liu =?UTF-8?Q?=28=E5=88=98=E7=A3=8A=29?=
-	<Leilk.Liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	"Kumar Gala" <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Catalin Marinas <catalin.marinas-5wv7dgnIgG8@public.gmane.org>,
-	Will Deacon <will.deacon-5wv7dgnIgG8@public.gmane.org>,
-	HongZhou Yang <hongzhou.yang-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	srv_heupstream <srv_heupstream-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>,
-	Sascha Hauer <kernel@pengutroni
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150515092543.GY2761-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>, linux-mtd@lists.infradead.org,
+ Alison Chaiken <alison_chaiken@mentor.com>,
+ Bean Huo =?utf-8?B?6ZyN5paM5paMIChiZWFuaHVvKQ==?= <beanhuo@micron.com>,
+ Marek Vasut <marex@denx.de>, linux-samsung-soc@vger.kernel.org,
+ Russell King <linux@arm.linux.org.uk>,
+ =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+ Kukjin Kim <kgene@kernel.org>, Ben Hutchings <ben@decadent.org.uk>,
+ devicetree@vger.kernel.org, Pawel Moll <pawel.moll@arm.com>,
+ Ian Campbell <ijc+devicetree@hellion.org.uk>,
+ Kumar Gala <galak@codeaurora.org>, Mark Brown <broonie@kernel.org>,
+ Dan Williams <dan.j.williams@intel.com>, linux-arm-kernel@lists.infradead.org,
+ "grmoore@altera.com" <grmoore@altera.com>, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, Huang Shijie <b32955@freesc
+To: Michal Suchanek <hramrach@gmail.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-Disposition: inline
+In-Reply-To: <14872fc6f86b7f4976d539b47a7899904cd954f6.1433364398.git.hramrach@gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
+On Wed, Jun 03, 2015 at 09:26:41PM +0000, Michal Suchanek wrote:
+> The kernel is not trying to increase mcbufsz. It suggests you should try
+> doing so. Also print the calculated required size of mcbufsz.
+pls use right subsystem name in the patches
 
-On Fri, 2015-05-15 at 17:25 +0800, Mark Brown wrote:
-> On Fri, May 15, 2015 at 03:38:42PM +0800, leilk liu wrote:
-> > On Tue, 2015-05-12 at 17:05 +0100, Mark Brown wrote:
-> 
-> > > Implement can_dma() - look for drivers providing that for examples.
-> 
-> > MTK spi hardware uses the dmaengine in spi controller. According to
-> > datasheet, spi driver just need to enable dma register bit and write a
-> > physical address to relevant dma address register, so I think it may be
-> > complex while the driver supports can_dma.
-> 
-> That's how a very large proportion of devices that work with DMA are
-> done - why would this be complicated?  All can_dma() does is report if
-> DMA is possible.
+I have applied this now
 
-In include/linux/spi/spi.h, it describes if can_dma() exists and returns
-true, dma_tx and dma_rx must be set.But Medaitek SPI controller has its
-own dma hardware, which means this dma resides in the same base address
-range with SPI controller, and only used by SPI, so we don't implement
-generic DMA driver, such that can't provide dma channel and assign to
-dmx_tx, dmx_rx parameter. We think it's strange to implement generic dma
-driver for dma that only used by specific hardware.Can we just provide
-can_dma() function and return false ? But I think it's a little odd that
-there actually has dma. So can we just skip can_dma() function let it be
-NULL ?
-
-Eddie
-Thanks
- 
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+-- 
+~Vinod

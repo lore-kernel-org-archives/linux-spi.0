@@ -1,77 +1,93 @@
-From: Ranjit Abhimanyu Waghmode <ranjit.waghmode-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-Subject: RE: [LINUX RFC V2 1/2] devicetree: Add DT bindings documentation
- for Zynq Ultrascale+ MPSoC GQSPI controller
-Date: Mon, 8 Jun 2015 12:59:23 +0000
-Message-ID: <7CFCFE83B8145347A1D424EC939F1C3CA7115F@XAP-PVEXMBX01.xlnx.xilinx.com>
-References: <1433509653-15142-1-git-send-email-ranjit.waghmode@xilinx.com>
- <20150605160017.GA8863@xsjsorenbubuntu>
+From: "Jingoo Han" <jingoohan1@gmail.com>
+Subject: Re: [PATCH v4 00/18] new MFD LoCoMo driver set
+Date: Mon, 8 Jun 2015 23:48:39 +0900
+Message-ID: <000001d0a1fa$39665c90$ac3315b0$@com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"pawel.moll-5wv7dgnIgG8@public.gmane.org" <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	"mark.rutland-5wv7dgnIgG8@public.gmane.org" <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	"ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org" <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	"galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org" <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Michal Simek <michals-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	"broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Harini Katakam <harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	"Punnaiah Choudary Kalluri" <punnaia-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	"ran27jit-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <ran27jit-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Soren Brinkmann <sorenb-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150605160017.GA8863@xsjsorenbubuntu>
-Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "'Lee Jones'" <lee.jones@linaro.org>,
+	"'Russell King'" <linux@arm.linux.org.uk>,
+	"'Daniel Mack'" <zonque@gmail.com>,
+	"'Robert Jarzmik'" <robert.jarzmik@free.fr>,
+	"'Linus Walleij'" <linus.walleij@linaro.org>,
+	"'Alexandre Courbot'" <acourbot@nvidia.com>,
+	"'Dmitry Torokhov'" <dmitry.torokhov@gmail.com>,
+	"'Samuel Ortiz'" <sameo@linux.intel.com>,
+	"'Mark Brown'" <broonie@linaro.org>,
+	"'Liam Girdwood'" <liam.r.girdwood@linux.intel.com>,
+	"'Andrea Adami'" <andrea.adami@gmail.com>,
+	<linux-arm-kernel@lists.infradead.org>,
+	<linux-gpio@vger.kernel.org>, <linux-input@vger.kernel.org>,
+	<linux-spi@vger.kernel.org>, <alsa-devel@alsa-project.org>
+To: "'Dmitry Eremin-Solenikov'" <dbaryshkov@gmail.com>
+Return-path: <linux-gpio-owner@vger.kernel.org>
+Content-Language: ko
+Sender: linux-gpio-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-SGkgU29yZW4sDQoNCj4gPiAgLi4uL2RldmljZXRyZWUvYmluZGluZ3Mvc3BpL3NwaS16eW5xbXAt
-cXNwaS50eHQgICAgfCAyNg0KPiArKysrKysrKysrKysrKysrKysrKysrDQo+ID4gIDEgZmlsZSBj
-aGFuZ2VkLCAyNiBpbnNlcnRpb25zKCspDQo+ID4gIGNyZWF0ZSBtb2RlIDEwMDY0NA0KPiA+IERv
-Y3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9zcGkvc3BpLXp5bnFtcC1xc3BpLnR4dA0K
-PiA+DQo+ID4gZGlmZiAtLWdpdCBhL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9z
-cGkvc3BpLXp5bnFtcC1xc3BpLnR4dA0KPiA+IGIvRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2Jp
-bmRpbmdzL3NwaS9zcGktenlucW1wLXFzcGkudHh0DQo+ID4gbmV3IGZpbGUgbW9kZSAxMDA2NDQN
-Cj4gPiBpbmRleCAwMDAwMDAwLi5jZWM2MzMwDQo+ID4gLS0tIC9kZXYvbnVsbA0KPiA+ICsrKyBi
-L0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9zcGkvc3BpLXp5bnFtcC1xc3BpLnR4
-dA0KPiA+IEBAIC0wLDAgKzEsMjYgQEANCj4gPiArWGlsaW54IFp5bnEgVWx0cmFTY2FsZSsgTVBT
-b0MgR1FTUEkgY29udHJvbGxlciBEZXZpY2UgVHJlZSBCaW5kaW5ncw0KPiA+ICstLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-DQo+ID4gKw0KPiA+ICtSZXF1aXJlZCBwcm9wZXJ0aWVzOg0KPiA+ICstIGNvbXBhdGlibGUgICAg
-ICAgICAgICAgICA6IFNob3VsZCBiZSAieGxueCx6eW5xbXAtcXNwaS0xLjAiLg0KPiA+ICstIHJl
-ZyAgICAgICAgICAgICAgICAgICAgICA6IFBoeXNpY2FsIGJhc2UgYWRkcmVzcyBhbmQgc2l6ZSBv
-ZiBHUVNQSSByZWdpc3RlcnMgbWFwLg0KPiA+ICstIGludGVycnVwdHMgICAgICAgICAgICAgICA6
-IFByb3BlcnR5IHdpdGggYSB2YWx1ZSBkZXNjcmliaW5nIHRoZSBpbnRlcnJ1cHQNCj4gPiArICAg
-ICAgICAgICAgICAgICAgICAgbnVtYmVyLg0KPiA+ICstIGludGVycnVwdC1wYXJlbnQgOiBNdXN0
-IGJlIGNvcmUgaW50ZXJydXB0IGNvbnRyb2xsZXIuDQo+ID4gKy0gY2xvY2stbmFtZXMgICAgICAg
-ICAgICAgIDogTGlzdCBvZiBpbnB1dCBjbG9jayBuYW1lcyAtICJyZWZfY2xrIiwgInBjbGsiDQo+
-ID4gKyAgICAgICAgICAgICAgICAgICAgIChTZWUgY2xvY2sgYmluZGluZ3MgZm9yIGRldGFpbHMp
-Lg0KPiA+ICstIGNsb2NrcyAgICAgICAgICAgOiBDbG9jayBwaGFuZGxlcyAoc2VlIGNsb2NrIGJp
-bmRpbmdzIGZvciBkZXRhaWxzKS4NCj4gPiArDQo+ID4gK09wdGlvbmFsIHByb3BlcnRpZXM6DQo+
-ID4gKy0gbnVtLWNzICAgICAgICAgICA6IE51bWJlciBvZiBjaGlwIHNlbGVjdHMgdXNlZC4NCj4g
-PiArDQo+ID4gK0V4YW1wbGU6DQo+ID4gKyAgIHFzcGk6IHNwaUBmZjBmMDAwMCB7DQo+ID4gKyAg
-ICAgICAgICAgY29tcGF0aWJsZSA9ICJ4bG54LHp5bnFtcC1xc3BpLTEuMCI7DQo+ID4gKyAgICAg
-ICAgICAgY2xvY2stbmFtZXMgPSAicmVmX2NsayIsICJwY2xrIjsNCj4gPiArICAgICAgICAgICBj
-bG9ja3MgPSA8Jm1pc2NfY2xrICZtaXNjX2Nsaz47DQo+ID4gKyAgICAgICAgICAgaW50ZXJydXB0
-cyA9IDwwIDE1IDQ+Ow0KPiA+ICsgICAgICAgICAgIGludGVycnVwdC1wYXJlbnQgPSA8JmdpYz47
-DQo+ID4gKyAgICAgICAgICAgbnVtLWNzID0gPDE+Ow0KPiA+ICsgICAgICAgICAgIHJlZyA9IDww
-eDAgMHhmZjBmMDAwMCAweDEwMDAgMHgwIDB4YzAwMDAwMDAgMHg4MDAwMDAwPjsNCj4NCj4gUGxl
-YXNlIG1ha2UgdGhpcw0KPiAgIHJlZyA9IDwweDAgMHhmZjBmMDAwMCAweDEwMDA+LCA8MHgwIDB4
-YzAwMDAwMDAgMHg4MDAwMDAwPjsNCj4NCg0KU29ycnkgZm9yIHRoaXMgbWlzcy4gV2lsbCB1cGRh
-dGUgaW4gbmV4dCB2ZXJzaW9uLg0KDQpSZWdhcmRzLA0KUmFuaml0IFdhZ2htb2RlLA0KcmFuaml0
-d0B4aWxpbnguY29tDQoNCg0KVGhpcyBlbWFpbCBhbmQgYW55IGF0dGFjaG1lbnRzIGFyZSBpbnRl
-bmRlZCBmb3IgdGhlIHNvbGUgdXNlIG9mIHRoZSBuYW1lZCByZWNpcGllbnQocykgYW5kIGNvbnRh
-aW4ocykgY29uZmlkZW50aWFsIGluZm9ybWF0aW9uIHRoYXQgbWF5IGJlIHByb3ByaWV0YXJ5LCBw
-cml2aWxlZ2VkIG9yIGNvcHlyaWdodGVkIHVuZGVyIGFwcGxpY2FibGUgbGF3LiBJZiB5b3UgYXJl
-IG5vdCB0aGUgaW50ZW5kZWQgcmVjaXBpZW50LCBkbyBub3QgcmVhZCwgY29weSwgb3IgZm9yd2Fy
-ZCB0aGlzIGVtYWlsIG1lc3NhZ2Ugb3IgYW55IGF0dGFjaG1lbnRzLiBEZWxldGUgdGhpcyBlbWFp
-bCBtZXNzYWdlIGFuZCBhbnkgYXR0YWNobWVudHMgaW1tZWRpYXRlbHkuDQoNCg==
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+On Thu, 28 May 2015 22:07:40 +0300, Dmitry Eremin-Solenikov wrote:
+>2015-05-28 14:58 GMT+03:00 Lee Jones wrote:
+>> On Wed, 27 May 2015, Dmitry Eremin-Solenikov wrote:
+>>
+>>> 2015-05-27 13:27 GMT+03:00 Lee Jones <lee.jones@xxxxxxxxxx>:
+>>> > On Mon, 25 May 2015, Dmitry Eremin-Solenikov wrote:
+>>> >
+>>> >> LoCoMo is a GA used on Sharp Zaurus SL-5x00. Current driver does has
+>>> >> several design issues (special bus instead of platform bus, doesn't use
+>>> >> mfd-core, etc).
+>>> >>
+>>> >> Implement 'core' parts of locomo support as an mfd driver.
+>>> >>
+>>> >> Signed-off-by: Dmitry Eremin-Solenikov <dbaryshkov@xxxxxxxxx>
+>>> >> ---
+>>> >
+>>> > These things are much easier to re-review if you keep a change-log
+>>> > here.
+>>> >
+>>> >>  drivers/mfd/Kconfig        |  10 ++
+>>> >>  drivers/mfd/Makefile       |   1 +
+>>> >>  drivers/mfd/locomo.c       | 336 +++++++++++++++++++++++++++++++++++++++++++++
+>>> >>  include/linux/mfd/locomo.h | 169 +++++++++++++++++++++++
+>>> >>  4 files changed, 516 insertions(+)
+>>> >>  create mode 100644 drivers/mfd/locomo.c
+>>> >>  create mode 100644 include/linux/mfd/locomo.h
+>>> >
+>>> > Looks good now though:
+>>> >   Acked-by: Lee Jones <lee.jones@xxxxxxxxxx>
+>>> >
+>>> > How do you plan for this to be merged?
+>>>
+>>> I'd like for this to be merged either through mfd tree or through the
+>>> arm-soc (or rmk's ARM) tree.
+>>> Some of the respective maintainers already gave their blessing for
+>>> this patchset to be merged
+>>> not through their subsystem trees.
+>>
+>> I can take it through MFD.  Once you have all the required Acks,
+>> resubmit the set with them all applied with a note in the cover-letter
+>> to that affect and I'll apply.
+>
+>Thank you. This is what I still miss:
+>
+>* Russell, could you please review sa1100 parts?
+>* Jingoo, could you please review the backlight part?
+
+For the following two patches,
+
+  [PATCH v4 06/18] video: backlight: add new locomo backlight driver
+  [PATCH v4 07/18] video: lcd: add LoCoMo LCD driver
+
+Acked-by: Jingoo Han <jingoohan1@gmail.com>
+
+Pleased send the patches to 'jingoohan1@gmail.com', instead of
+'jg1.han@samsung.com'.
+
+Best regards,
+Jingoo Han
+
+>* Mark, same question for the updated SPI driver.
+>* Linus, can I assume that yours 'Reviewed-by' mean
+>  'Acked-by' for the GPIO-related parts?
+
+

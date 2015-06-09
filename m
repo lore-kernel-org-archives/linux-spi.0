@@ -1,40 +1,156 @@
-From: Pascal Huerst <pascal.huerst-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi: omap2-mcspi: Add calls for pinctrl state select
-Date: Tue, 09 Jun 2015 13:16:33 +0200
-Message-ID: <5576CB11.7010905@gmail.com>
-References: <1431519316-30989-1-git-send-email-pascal.huerst@gmail.com> <20150513181536.GI2761@sirena.org.uk> <5559D4BC.6010606@gmail.com> <20150519121225.GM2761@sirena.org.uk>
+From: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v3 1/3] spi: atmel: add support for the internal chip-select of the spi controller
+Date: Tue, 9 Jun 2015 13:53:52 +0200
+Message-ID: <c05f4d9abfdabb62b3b3cfeb57a3f9c138b4e45d.1433850255.git.cyrille.pitchen@atmel.com>
+References: <cover.1433850255.git.cyrille.pitchen@atmel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150519121225.GM2761-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain
+Cc: <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	<pawel.moll-5wv7dgnIgG8@public.gmane.org>, <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	<ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+To: <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <cover.1433850255.git.cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-Hey Mark,
+This patch relies on the CSAAT (Chip Select Active After Transfer) feature
+introduced by the version 2 of the spi controller. This new mode allows to
+use properly the internal chip-select output pin of the spi controller
+instead of using external gpios. Consequently, the "cs-gpios" device-tree
+property becomes optional.
 
-On 19.05.2015 14:12, Mark Brown wrote:
-> On Mon, May 18, 2015 at 02:02:04PM +0200, Pascal Huerst wrote:
->> On 13.05.2015 20:15, Mark Brown wrote:
-> 
->>> We should still be checking if we succesfully changed the state when
->>> there is a state provided shouldn't we?
-> 
->> I agree, but if I git grep for such calls, nobody seems to check the
->> return values of these functions. Shall I add a check and print a
->> message if the call fails?
-> 
-> Yes, please.
+When the new CSAAT bit is set into the Chip Select Register, the internal
+chip-select output pin remains asserted till both the following conditions
+become true:
+- the LASTXFER bit is set into the Control Register (or the Transmit Data
+  Register)
+- the Transmit Data Register and its shift register are empty.
 
-Sorry for the late reply.
+WARNING: if the LASTXFER bit is set into the Control Register then new
+data are written into the Transmit Data Register fast enough to keep its
+shifter not empty, the chip-select output pin remains asserted. Only when
+the shifter becomes empty, the chip-select output pin is unasserted.
 
-There is already a message printed on failure in the subsystem. See:
-http://lxr.free-electrons.com/source/drivers/pinctrl/core.c#L1250
+When the CSAAT bit is clear in the Chip Select Register, the LASTXFER bit
+is ignored in both the Control Register and the Transmit Data Register.
+The internal chip-select output pin remains active as long as the Transmit
+Data Register or its shift register are not empty.
 
-So I don't see the need for another message, right?
+Signed-off-by: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi-atmel.c | 37 ++++++++++++++++++++++++++++---------
+ 1 file changed, 28 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index a2f40b1..aa7d202 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -246,6 +246,7 @@ struct atmel_spi {
+ 
+ 	bool			use_dma;
+ 	bool			use_pdc;
++	bool			use_cs_gpios;
+ 	/* dmaengine data */
+ 	struct atmel_spi_dma	dma;
+ 
+@@ -321,7 +322,8 @@ static void cs_activate(struct atmel_spi *as, struct spi_device *spi)
+ 		}
+ 
+ 		mr = spi_readl(as, MR);
+-		gpio_set_value(asd->npcs_pin, active);
++		if (as->use_cs_gpios)
++			gpio_set_value(asd->npcs_pin, active);
+ 	} else {
+ 		u32 cpol = (spi->mode & SPI_CPOL) ? SPI_BIT(CPOL) : 0;
+ 		int i;
+@@ -337,7 +339,7 @@ static void cs_activate(struct atmel_spi *as, struct spi_device *spi)
+ 
+ 		mr = spi_readl(as, MR);
+ 		mr = SPI_BFINS(PCS, ~(1 << spi->chip_select), mr);
+-		if (spi->chip_select != 0)
++		if (as->use_cs_gpios && spi->chip_select != 0)
+ 			gpio_set_value(asd->npcs_pin, active);
+ 		spi_writel(as, MR, mr);
+ 	}
+@@ -366,7 +368,9 @@ static void cs_deactivate(struct atmel_spi *as, struct spi_device *spi)
+ 			asd->npcs_pin, active ? " (low)" : "",
+ 			mr);
+ 
+-	if (atmel_spi_is_v2(as) || spi->chip_select != 0)
++	if (!as->use_cs_gpios)
++		spi_writel(as, CR, SPI_BIT(LASTXFER));
++	else if (atmel_spi_is_v2(as) || spi->chip_select != 0)
+ 		gpio_set_value(asd->npcs_pin, !active);
+ }
+ 
+@@ -996,6 +1000,8 @@ static int atmel_spi_setup(struct spi_device *spi)
+ 		csr |= SPI_BIT(CPOL);
+ 	if (!(spi->mode & SPI_CPHA))
+ 		csr |= SPI_BIT(NCPHA);
++	if (!as->use_cs_gpios)
++		csr |= SPI_BIT(CSAAT);
+ 
+ 	/* DLYBS is mostly irrelevant since we manage chipselect using GPIOs.
+ 	 *
+@@ -1009,7 +1015,9 @@ static int atmel_spi_setup(struct spi_device *spi)
+ 	/* chipselect must have been muxed as GPIO (e.g. in board setup) */
+ 	npcs_pin = (unsigned long)spi->controller_data;
+ 
+-	if (gpio_is_valid(spi->cs_gpio))
++	if (!as->use_cs_gpios)
++		npcs_pin = spi->chip_select;
++	else if (gpio_is_valid(spi->cs_gpio))
+ 		npcs_pin = spi->cs_gpio;
+ 
+ 	asd = spi->controller_state;
+@@ -1018,15 +1026,19 @@ static int atmel_spi_setup(struct spi_device *spi)
+ 		if (!asd)
+ 			return -ENOMEM;
+ 
+-		ret = gpio_request(npcs_pin, dev_name(&spi->dev));
+-		if (ret) {
+-			kfree(asd);
+-			return ret;
++		if (as->use_cs_gpios) {
++			ret = gpio_request(npcs_pin, dev_name(&spi->dev));
++			if (ret) {
++				kfree(asd);
++				return ret;
++			}
++
++			gpio_direction_output(npcs_pin,
++					      !(spi->mode & SPI_CS_HIGH));
+ 		}
+ 
+ 		asd->npcs_pin = npcs_pin;
+ 		spi->controller_state = asd;
+-		gpio_direction_output(npcs_pin, !(spi->mode & SPI_CS_HIGH));
+ 	}
+ 
+ 	asd->csr = csr;
+@@ -1338,6 +1350,13 @@ static int atmel_spi_probe(struct platform_device *pdev)
+ 
+ 	atmel_get_caps(as);
+ 
++	as->use_cs_gpios = true;
++	if (atmel_spi_is_v2(as) &&
++	    !of_get_property(pdev->dev.of_node, "cs-gpios", NULL)) {
++		as->use_cs_gpios = false;
++		master->num_chipselect = 4;
++	}
++
+ 	as->use_dma = false;
+ 	as->use_pdc = false;
+ 	if (as->caps.has_dma_support) {
+-- 
+1.8.2.2
+
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

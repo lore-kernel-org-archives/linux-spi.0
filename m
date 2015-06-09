@@ -1,226 +1,182 @@
-From: Haikun Wang <haikun.wang-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: [PATCH v2 2/2] spi: spi-fsl-dspi: Change the way of increasing spi_message->actual_length
-Date: Tue, 9 Jun 2015 19:45:37 +0800
-Message-ID: <1433850337-30713-1-git-send-email-haikun.wang@freescale.com>
+From: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v3 1/3] spi: atmel: add support for the internal chip-select
+ of the spi controller
+Date: Tue, 9 Jun 2015 14:15:09 +0200
+Message-ID: <5576D8CD.2090608@atmel.com>
+References: <cover.1433850255.git.cyrille.pitchen@atmel.com> <c05f4d9abfdabb62b3b3cfeb57a3f9c138b4e45d.1433850255.git.cyrille.pitchen@atmel.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Haikun Wang <haikun.wang-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	<pawel.moll-5wv7dgnIgG8@public.gmane.org>, <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	<ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+To: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <c05f4d9abfdabb62b3b3cfeb57a3f9c138b4e45d.1433850255.git.cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-In current driver, we increase actual_length in the following way:
-message->actual_length += dspi_xxx_transfer()
-It has two defects.
-First, transmitting maybe in process when the function call finished and
-we don't know the transmitting result in this moment.
-Secondly, the last sentence in function before returning is accessing the
-SPI register and trigger the data transmitting. If we enable interrupt,
-interrupt may be generated before function return and we also have the same
-sentence "message->actual_length += dspi_xxx_transfer()"
-in the IRQ handler.
-And usually dspi_xxx_transfer will trigger a new IRQ.
-The original dspi_xxx_transfer call may return when no new IRQ generate.
-This may mess the variable spi_message->actual_length.
-Now we increase the variable in the IRQ handler and only when we get the
-TCF or EOQ interrupt
-And we get the transmitted data length from the SPI transfer counter
-instead of the function return value.
+Le 09/06/2015 13:53, Cyrille Pitchen a =E9crit :
+> This patch relies on the CSAAT (Chip Select Active After Transfer) fe=
+ature
+> introduced by the version 2 of the spi controller. This new mode allo=
+ws to
+> use properly the internal chip-select output pin of the spi controlle=
+r
+> instead of using external gpios. Consequently, the "cs-gpios" device-=
+tree
+> property becomes optional.
+>=20
+> When the new CSAAT bit is set into the Chip Select Register, the inte=
+rnal
+> chip-select output pin remains asserted till both the following condi=
+tions
+> become true:
+> - the LASTXFER bit is set into the Control Register (or the Transmit =
+Data
+>   Register)
+> - the Transmit Data Register and its shift register are empty.
+>=20
+> WARNING: if the LASTXFER bit is set into the Control Register then ne=
+w
+> data are written into the Transmit Data Register fast enough to keep =
+its
+> shifter not empty, the chip-select output pin remains asserted. Only =
+when
+> the shifter becomes empty, the chip-select output pin is unasserted.
+>=20
+> When the CSAAT bit is clear in the Chip Select Register, the LASTXFER=
+ bit
+> is ignored in both the Control Register and the Transmit Data Registe=
+r.
+> The internal chip-select output pin remains active as long as the Tra=
+nsmit
+> Data Register or its shift register are not empty.
+>=20
+> Signed-off-by: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Acked-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 
-Signed-off-by: Haikun Wang <haikun.wang-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
----
+> ---
+>  drivers/spi/spi-atmel.c | 37 ++++++++++++++++++++++++++++---------
+>  1 file changed, 28 insertions(+), 9 deletions(-)
+>=20
+> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+> index a2f40b1..aa7d202 100644
+> --- a/drivers/spi/spi-atmel.c
+> +++ b/drivers/spi/spi-atmel.c
+> @@ -246,6 +246,7 @@ struct atmel_spi {
+> =20
+>  	bool			use_dma;
+>  	bool			use_pdc;
+> +	bool			use_cs_gpios;
+>  	/* dmaengine data */
+>  	struct atmel_spi_dma	dma;
+> =20
+> @@ -321,7 +322,8 @@ static void cs_activate(struct atmel_spi *as, str=
+uct spi_device *spi)
+>  		}
+> =20
+>  		mr =3D spi_readl(as, MR);
+> -		gpio_set_value(asd->npcs_pin, active);
+> +		if (as->use_cs_gpios)
+> +			gpio_set_value(asd->npcs_pin, active);
+>  	} else {
+>  		u32 cpol =3D (spi->mode & SPI_CPOL) ? SPI_BIT(CPOL) : 0;
+>  		int i;
+> @@ -337,7 +339,7 @@ static void cs_activate(struct atmel_spi *as, str=
+uct spi_device *spi)
+> =20
+>  		mr =3D spi_readl(as, MR);
+>  		mr =3D SPI_BFINS(PCS, ~(1 << spi->chip_select), mr);
+> -		if (spi->chip_select !=3D 0)
+> +		if (as->use_cs_gpios && spi->chip_select !=3D 0)
+>  			gpio_set_value(asd->npcs_pin, active);
+>  		spi_writel(as, MR, mr);
+>  	}
+> @@ -366,7 +368,9 @@ static void cs_deactivate(struct atmel_spi *as, s=
+truct spi_device *spi)
+>  			asd->npcs_pin, active ? " (low)" : "",
+>  			mr);
+> =20
+> -	if (atmel_spi_is_v2(as) || spi->chip_select !=3D 0)
+> +	if (!as->use_cs_gpios)
+> +		spi_writel(as, CR, SPI_BIT(LASTXFER));
+> +	else if (atmel_spi_is_v2(as) || spi->chip_select !=3D 0)
+>  		gpio_set_value(asd->npcs_pin, !active);
+>  }
+> =20
+> @@ -996,6 +1000,8 @@ static int atmel_spi_setup(struct spi_device *sp=
+i)
+>  		csr |=3D SPI_BIT(CPOL);
+>  	if (!(spi->mode & SPI_CPHA))
+>  		csr |=3D SPI_BIT(NCPHA);
+> +	if (!as->use_cs_gpios)
+> +		csr |=3D SPI_BIT(CSAAT);
+> =20
+>  	/* DLYBS is mostly irrelevant since we manage chipselect using GPIO=
+s.
+>  	 *
+> @@ -1009,7 +1015,9 @@ static int atmel_spi_setup(struct spi_device *s=
+pi)
+>  	/* chipselect must have been muxed as GPIO (e.g. in board setup) */
+>  	npcs_pin =3D (unsigned long)spi->controller_data;
+> =20
+> -	if (gpio_is_valid(spi->cs_gpio))
+> +	if (!as->use_cs_gpios)
+> +		npcs_pin =3D spi->chip_select;
+> +	else if (gpio_is_valid(spi->cs_gpio))
+>  		npcs_pin =3D spi->cs_gpio;
+> =20
+>  	asd =3D spi->controller_state;
+> @@ -1018,15 +1026,19 @@ static int atmel_spi_setup(struct spi_device =
+*spi)
+>  		if (!asd)
+>  			return -ENOMEM;
+> =20
+> -		ret =3D gpio_request(npcs_pin, dev_name(&spi->dev));
+> -		if (ret) {
+> -			kfree(asd);
+> -			return ret;
+> +		if (as->use_cs_gpios) {
+> +			ret =3D gpio_request(npcs_pin, dev_name(&spi->dev));
+> +			if (ret) {
+> +				kfree(asd);
+> +				return ret;
+> +			}
+> +
+> +			gpio_direction_output(npcs_pin,
+> +					      !(spi->mode & SPI_CS_HIGH));
+>  		}
+> =20
+>  		asd->npcs_pin =3D npcs_pin;
+>  		spi->controller_state =3D asd;
+> -		gpio_direction_output(npcs_pin, !(spi->mode & SPI_CS_HIGH));
+>  	}
+> =20
+>  	asd->csr =3D csr;
+> @@ -1338,6 +1350,13 @@ static int atmel_spi_probe(struct platform_dev=
+ice *pdev)
+> =20
+>  	atmel_get_caps(as);
+> =20
+> +	as->use_cs_gpios =3D true;
+> +	if (atmel_spi_is_v2(as) &&
+> +	    !of_get_property(pdev->dev.of_node, "cs-gpios", NULL)) {
+> +		as->use_cs_gpios =3D false;
+> +		master->num_chipselect =3D 4;
+> +	}
+> +
+>  	as->use_dma =3D false;
+>  	as->use_pdc =3D false;
+>  	if (as->caps.has_dma_support) {
+>=20
 
-Changes in v2:
-- rebase
 
-Changes in v1: None
- drivers/spi/spi-fsl-dspi.c | 101 ++++++++++++++++++++++++++++++---------------
- 1 file changed, 68 insertions(+), 33 deletions(-)
-
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 64e311a..706b10c 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -47,6 +47,7 @@
- #define SPI_MCR_CLR_RXF	(1 << 10)
- 
- #define SPI_TCR			0x08
-+#define SPI_TCR_GET_TCNT(x)	(((x) & 0xffff0000) >> 16)
- 
- #define SPI_CTAR(x)		(0x0c + (((x) & 0x3) * 4))
- #define SPI_CTAR_FMSZ(x)	(((x) & 0x0000000f) << 27)
-@@ -104,6 +105,8 @@
- #define SPI_CS_ASSERT		0x02
- #define SPI_CS_DROP		0x04
- 
-+#define SPI_TCR_TCNT_MAX	0x10000
-+
- struct chip_data {
- 	u32 mcr_val;
- 	u32 ctar_val;
-@@ -155,6 +158,8 @@ struct fsl_dspi {
- 
- 	wait_queue_head_t	waitq;
- 	u32			waitflags;
-+
-+	u32			spi_tcnt;
- };
- 
- static inline int is_double_byte_mode(struct fsl_dspi *dspi)
-@@ -274,7 +279,6 @@ static int dspi_eoq_write(struct fsl_dspi *dspi)
- 	int tx_count = 0;
- 	int tx_word;
- 	u32 dspi_pushr = 0;
--	int first = 1;
- 
- 	tx_word = is_double_byte_mode(dspi);
- 
-@@ -300,11 +304,6 @@ static int dspi_eoq_write(struct fsl_dspi *dspi)
- 		} else if (tx_word && (dspi->len == 1))
- 			dspi_pushr |= SPI_PUSHR_EOQ;
- 
--		if (first) {
--			first = 0;
--			dspi_pushr |= SPI_PUSHR_CTCNT; /* clear counter */
--		}
--
- 		regmap_write(dspi->regmap, SPI_PUSHR, dspi_pushr);
- 
- 		tx_count++;
-@@ -372,6 +371,10 @@ static int dspi_transfer_one_message(struct spi_master *master,
- 	struct spi_transfer *transfer;
- 	int status = 0;
- 	enum dspi_trans_mode trans_mode;
-+	u32 spi_tcr;
-+
-+	regmap_read(dspi->regmap, SPI_TCR, &spi_tcr);
-+	dspi->spi_tcnt = SPI_TCR_GET_TCNT(spi_tcr);
- 
- 	message->actual_length = 0;
- 
-@@ -413,11 +416,11 @@ static int dspi_transfer_one_message(struct spi_master *master,
- 		switch (trans_mode) {
- 		case DSPI_EOQ_MODE:
- 			regmap_write(dspi->regmap, SPI_RSER, SPI_RSER_EOQFE);
--			message->actual_length += dspi_eoq_write(dspi);
-+			dspi_eoq_write(dspi);
- 			break;
- 		case DSPI_TCFQ_MODE:
- 			regmap_write(dspi->regmap, SPI_RSER, SPI_RSER_TCFQE);
--			message->actual_length += dspi_tcfq_write(dspi);
-+			dspi_tcfq_write(dspi);
- 			break;
- 		default:
- 			dev_err(&dspi->pdev->dev, "unsupported trans_mode %u\n",
-@@ -516,47 +519,79 @@ static irqreturn_t dspi_interrupt(int irq, void *dev_id)
- 	struct fsl_dspi *dspi = (struct fsl_dspi *)dev_id;
- 	struct spi_message *msg = dspi->cur_msg;
- 	enum dspi_trans_mode trans_mode;
--	u32 spi_sr;
-+	u32 spi_sr, spi_tcr;
-+	u32 spi_tcnt, tcnt_diff;
-+	int tx_word;
- 
- 	regmap_read(dspi->regmap, SPI_SR, &spi_sr);
- 	regmap_write(dspi->regmap, SPI_SR, spi_sr);
- 
--	trans_mode = dspi->devtype_data->trans_mode;
--	switch (trans_mode) {
--	case DSPI_EOQ_MODE:
--		dspi_eoq_read(dspi);
--		break;
--	case DSPI_TCFQ_MODE:
--		dspi_tcfq_read(dspi);
--		break;
--	default:
--		dev_err(&dspi->pdev->dev, "unsupported trans_mode %u\n",
--			trans_mode);
--		return IRQ_HANDLED;
--	}
- 
--	if (!dspi->len) {
--		if (dspi->dataflags & TRAN_STATE_WORD_ODD_NUM) {
--			regmap_update_bits(dspi->regmap, SPI_CTAR(dspi->cs),
--			SPI_FRAME_BITS_MASK, SPI_FRAME_BITS(16));
--			dspi->dataflags &= ~TRAN_STATE_WORD_ODD_NUM;
--		}
-+	if (spi_sr & (SPI_SR_EOQF | SPI_SR_TCFQF)) {
-+		tx_word = is_double_byte_mode(dspi);
- 
--		dspi->waitflags = 1;
--		wake_up_interruptible(&dspi->waitq);
--	} else {
-+		regmap_read(dspi->regmap, SPI_TCR, &spi_tcr);
-+		spi_tcnt = SPI_TCR_GET_TCNT(spi_tcr);
-+		/*
-+		 * The width of SPI Transfer Counter in SPI_TCR is 16bits,
-+		 * so the max couner is 65535. When the counter reach 65535,
-+		 * it will wrap around, counter reset to zero.
-+		 * spi_tcnt my be less than dspi->spi_tcnt, it means the
-+		 * counter already wrapped around.
-+		 * SPI Transfer Counter is a counter of transmitted frames.
-+		 * The size of frame maybe two bytes.
-+		 */
-+		tcnt_diff = ((spi_tcnt + SPI_TCR_TCNT_MAX) - dspi->spi_tcnt)
-+			% SPI_TCR_TCNT_MAX;
-+		tcnt_diff *= (tx_word + 1);
-+		if (dspi->dataflags & TRAN_STATE_WORD_ODD_NUM)
-+			tcnt_diff--;
-+
-+		msg->actual_length += tcnt_diff;
-+
-+		dspi->spi_tcnt = spi_tcnt;
-+
-+		trans_mode = dspi->devtype_data->trans_mode;
- 		switch (trans_mode) {
- 		case DSPI_EOQ_MODE:
--			msg->actual_length += dspi_eoq_write(dspi);
-+			dspi_eoq_read(dspi);
- 			break;
- 		case DSPI_TCFQ_MODE:
--			msg->actual_length += dspi_tcfq_write(dspi);
-+			dspi_tcfq_read(dspi);
- 			break;
- 		default:
- 			dev_err(&dspi->pdev->dev, "unsupported trans_mode %u\n",
- 				trans_mode);
-+				return IRQ_HANDLED;
-+		}
-+
-+		if (!dspi->len) {
-+			if (dspi->dataflags & TRAN_STATE_WORD_ODD_NUM) {
-+				regmap_update_bits(dspi->regmap,
-+						   SPI_CTAR(dspi->cs),
-+						   SPI_FRAME_BITS_MASK,
-+						   SPI_FRAME_BITS(16));
-+				dspi->dataflags &= ~TRAN_STATE_WORD_ODD_NUM;
-+			}
-+
-+			dspi->waitflags = 1;
-+			wake_up_interruptible(&dspi->waitq);
-+		} else {
-+			switch (trans_mode) {
-+			case DSPI_EOQ_MODE:
-+				dspi_eoq_write(dspi);
-+				break;
-+			case DSPI_TCFQ_MODE:
-+				dspi_tcfq_write(dspi);
-+				break;
-+			default:
-+				dev_err(&dspi->pdev->dev,
-+					"unsupported trans_mode %u\n",
-+					trans_mode);
-+			}
- 		}
- 	}
-+
- 	return IRQ_HANDLED;
- }
- 
--- 
-2.1.0.27.g96db324
-
+--=20
+Nicolas Ferre
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

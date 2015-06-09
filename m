@@ -1,426 +1,414 @@
-From: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v3 3/3] spi: atmel: add support to FIFOs
-Date: Tue, 9 Jun 2015 13:53:54 +0200
-Message-ID: <bb9ae6c3a3567d4fae7689a31f771da6036661bd.1433850255.git.cyrille.pitchen@atmel.com>
-References: <cover.1433850255.git.cyrille.pitchen@atmel.com>
+From: Haikun Wang <haikun.wang-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Subject: [PATCH v4 1/2] spi: spi-fsl-dspi: Enable TCF interrupt mode support
+Date: Tue, 9 Jun 2015 19:45:27 +0800
+Message-ID: <1433850327-30529-1-git-send-email-haikun.wang@freescale.com>
 Mime-Version: 1.0
 Content-Type: text/plain
-Cc: <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	<pawel.moll-5wv7dgnIgG8@public.gmane.org>, <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	<ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-To: <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <cover.1433850255.git.cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Cc: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Haikun Wang <haikun.wang-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-To enable the FIFO feature a "atmel,fifo-size" attribute with a strictly
-positive value must be added into the node of the device-tree describing
-the spi controller.
+DSPI module has two optional interrupts when complete data transfer.
+One is EOQ interrupt, the other one is TCF interrupt.
+EOQ indicates a queue of data frame has been transmitted.
+TCF indicates a frame has been transmitted.
+This patch enable support TCF mode.
+Driver binds a correct interrupt mode to every compatible string.
+User should use the correct compatible string in the dts node.
 
-When FIFOs are enabled, the RX one is forced to operate in SINGLE data
-mode because this driver configures the spi controller as a master. In
-master mode only, the Received Data Register has an additionnal Peripheral
-Chip Select field, which prevents us from reading more than a single data
-at each register access.
-
-Besides, the TX FIFO operates in MULTIPLE data mode. However, even when a
-8bit data size is used, only two data by access could be written into the
-Transmit Data Register. Indeed the first data has to be written into the
-lowest 16 bits whereas the second data has to be written into the highest
-16 bits of the TDR. When DMA transfers are used to send data, we don't
-rework the transmit buffer to cope with this hardware limitation: the
-additional copies required to prepare a new input buffer suited to both
-the DMA controller and the spi controller would waste all the benefit of
-the DMA transfer. Instead, the DMA controller is configured to write only
-one data at time into the TDR.
-
-In pio mode, two data are written in the TDR in a single access.
-
-Signed-off-by: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Haikun Wang <haikun.wang-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 ---
- drivers/spi/spi-atmel.c | 255 ++++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 245 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index aa7d202..c9eca34 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -41,6 +41,8 @@
- #define SPI_CSR1				0x0034
- #define SPI_CSR2				0x0038
- #define SPI_CSR3				0x003c
-+#define SPI_FMR					0x0040
-+#define SPI_FLR					0x0044
- #define SPI_VERSION				0x00fc
- #define SPI_RPR					0x0100
- #define SPI_RCR					0x0104
-@@ -62,6 +64,14 @@
- #define SPI_SWRST_SIZE				1
- #define SPI_LASTXFER_OFFSET			24
- #define SPI_LASTXFER_SIZE			1
-+#define SPI_TXFCLR_OFFSET			16
-+#define SPI_TXFCLR_SIZE				1
-+#define SPI_RXFCLR_OFFSET			17
-+#define SPI_RXFCLR_SIZE				1
-+#define SPI_FIFOEN_OFFSET			30
-+#define SPI_FIFOEN_SIZE				1
-+#define SPI_FIFODIS_OFFSET			31
-+#define SPI_FIFODIS_SIZE			1
+Changes in v4:
+- Using switch between variants
+
+Changes in v3:
+- Using different compatible strings instead of a individual
+  property to select the interrupt mode
+
+Changes in v2:
+- Remove global variable g_actual_length
+- Add "dspi->dataflags &= ~TRAN_STATE_WORD_ODD_NUM" 
+  if dataflags has TRAN_STATE_WORD_ODD_NUM in IRQ handler
+- Move single byte chacking inside while loop in function dspi_eoq_write 
+
+Changes in v1: None
+ drivers/spi/spi-fsl-dspi.c | 245 +++++++++++++++++++++++++++++++--------------
+ 1 file changed, 169 insertions(+), 76 deletions(-)
+
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 5fe54cd..64e311a 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -67,9 +67,11 @@
  
- /* Bitfields in MR */
- #define SPI_MSTR_OFFSET				0
-@@ -114,6 +124,22 @@
- #define SPI_TXEMPTY_SIZE			1
- #define SPI_SPIENS_OFFSET			16
- #define SPI_SPIENS_SIZE				1
-+#define SPI_TXFEF_OFFSET			24
-+#define SPI_TXFEF_SIZE				1
-+#define SPI_TXFFF_OFFSET			25
-+#define SPI_TXFFF_SIZE				1
-+#define SPI_TXFTHF_OFFSET			26
-+#define SPI_TXFTHF_SIZE				1
-+#define SPI_RXFEF_OFFSET			27
-+#define SPI_RXFEF_SIZE				1
-+#define SPI_RXFFF_OFFSET			28
-+#define SPI_RXFFF_SIZE				1
-+#define SPI_RXFTHF_OFFSET			29
-+#define SPI_RXFTHF_SIZE				1
-+#define SPI_TXFPTEF_OFFSET			30
-+#define SPI_TXFPTEF_SIZE			1
-+#define SPI_RXFPTEF_OFFSET			31
-+#define SPI_RXFPTEF_SIZE			1
+ #define SPI_SR			0x2c
+ #define SPI_SR_EOQF		0x10000000
++#define SPI_SR_TCFQF		0x80000000
  
- /* Bitfields in CSR0 */
- #define SPI_CPOL_OFFSET				0
-@@ -157,6 +183,22 @@
- #define SPI_TXTDIS_OFFSET			9
- #define SPI_TXTDIS_SIZE				1
+ #define SPI_RSER		0x30
+ #define SPI_RSER_EOQFE		0x10000000
++#define SPI_RSER_TCFQE		0x80000000
  
-+/* Bitfields in FMR */
-+#define SPI_TXRDYM_OFFSET			0
-+#define SPI_TXRDYM_SIZE				2
-+#define SPI_RXRDYM_OFFSET			4
-+#define SPI_RXRDYM_SIZE				2
-+#define SPI_TXFTHRES_OFFSET			16
-+#define SPI_TXFTHRES_SIZE			6
-+#define SPI_RXFTHRES_OFFSET			24
-+#define SPI_RXFTHRES_SIZE			6
-+
-+/* Bitfields in FLR */
-+#define SPI_TXFL_OFFSET				0
-+#define SPI_TXFL_SIZE				6
-+#define SPI_RXFL_OFFSET				16
-+#define SPI_RXFL_SIZE				6
-+
- /* Constants for BITS */
- #define SPI_BITS_8_BPT				0
- #define SPI_BITS_9_BPT				1
-@@ -167,6 +209,9 @@
- #define SPI_BITS_14_BPT				6
- #define SPI_BITS_15_BPT				7
- #define SPI_BITS_16_BPT				8
-+#define SPI_ONE_DATA				0
-+#define SPI_TWO_DATA				1
-+#define SPI_FOUR_DATA				2
- 
- /* Bit manipulation macros */
- #define SPI_BIT(name) \
-@@ -185,11 +230,31 @@
- 	__raw_readl((port)->regs + SPI_##reg)
- #define spi_writel(port, reg, value) \
- 	__raw_writel((value), (port)->regs + SPI_##reg)
-+
-+#define spi_readw(port, reg) \
-+	__raw_readw((port)->regs + SPI_##reg)
-+#define spi_writew(port, reg, value) \
-+	__raw_writew((value), (port)->regs + SPI_##reg)
-+
-+#define spi_readb(port, reg) \
-+	__raw_readb((port)->regs + SPI_##reg)
-+#define spi_writeb(port, reg, value) \
-+	__raw_writeb((value), (port)->regs + SPI_##reg)
- #else
- #define spi_readl(port, reg) \
- 	readl_relaxed((port)->regs + SPI_##reg)
- #define spi_writel(port, reg, value) \
- 	writel_relaxed((value), (port)->regs + SPI_##reg)
-+
-+#define spi_readw(port, reg) \
-+	readw_relaxed((port)->regs + SPI_##reg)
-+#define spi_writew(port, reg, value) \
-+	writew_relaxed((value), (port)->regs + SPI_##reg)
-+
-+#define spi_readb(port, reg) \
-+	readb_relaxed((port)->regs + SPI_##reg)
-+#define spi_writeb(port, reg, value) \
-+	writeb_relaxed((value), (port)->regs + SPI_##reg)
- #endif
- /* use PIO for small transfers, avoiding DMA setup/teardown overhead and
-  * cache operations; better heuristics consider wordsize and bitrate.
-@@ -252,6 +317,8 @@ struct atmel_spi {
- 
- 	bool			keep_cs;
- 	bool			cs_active;
-+
-+	u32			fifo_size;
+ #define SPI_PUSHR		0x34
+ #define SPI_PUSHR_CONT		(1 << 31)
+@@ -108,6 +110,27 @@ struct chip_data {
+ 	u16 void_write_data;
  };
  
- /* Controller-specific per-slave state */
-@@ -410,6 +477,20 @@ static int atmel_spi_dma_slave_config(struct atmel_spi *as,
- 	slave_config->dst_maxburst = 1;
- 	slave_config->device_fc = false;
++enum dspi_trans_mode {
++	DSPI_EOQ_MODE = 0,
++	DSPI_TCFQ_MODE,
++};
++
++struct fsl_dspi_devtype_data {
++	enum dspi_trans_mode trans_mode;
++};
++
++static const struct fsl_dspi_devtype_data vf610_data = {
++	.trans_mode = DSPI_EOQ_MODE,
++};
++
++static const struct fsl_dspi_devtype_data ls1021a_v1_data = {
++	.trans_mode = DSPI_TCFQ_MODE,
++};
++
++static const struct fsl_dspi_devtype_data ls2085a_data = {
++	.trans_mode = DSPI_TCFQ_MODE,
++};
++
+ struct fsl_dspi {
+ 	struct spi_master	*master;
+ 	struct platform_device	*pdev;
+@@ -128,6 +151,7 @@ struct fsl_dspi {
+ 	u8			cs;
+ 	u16			void_write_data;
+ 	u32			cs_change;
++	struct fsl_dspi_devtype_data *devtype_data;
  
-+	/*
-+	 * This driver uses fixed peripheral select mode (PS bit set to '0' in
-+	 * the Mode Register).
-+	 * So according to the datasheet, when FIFOs are available (and
-+	 * enabled), the Transmit FIFO operates in Multiple Data Mode.
-+	 * In this mode, up to 2 data, not 4, can be written into the Transmit
-+	 * Data Register in a single access.
-+	 * However, the first data has to be written into the lowest 16 bits and
-+	 * the second data into the highest 16 bits of the Transmit
-+	 * Data Register. For 8bit data (the most frequent case), it would
-+	 * require to rework tx_buf so each data would actualy fit 16 bits.
-+	 * So we'd rather write only one data at the time. Hence the transmit
-+	 * path works the same whether FIFOs are available (and enabled) or not.
-+	 */
- 	slave_config->direction = DMA_MEM_TO_DEV;
- 	if (dmaengine_slave_config(as->dma.chan_tx, slave_config)) {
- 		dev_err(&as->pdev->dev,
-@@ -417,6 +498,14 @@ static int atmel_spi_dma_slave_config(struct atmel_spi *as,
- 		err = -EINVAL;
- 	}
- 
-+	/*
-+	 * This driver configures the spi controller for master mode (MSTR bit
-+	 * set to '1' in the Mode Register).
-+	 * So according to the datasheet, when FIFOs are available (and
-+	 * enabled), the Receive FIFO operates in Single Data Mode.
-+	 * So the receive path works the same whether FIFOs are available (and
-+	 * enabled) or not.
-+	 */
- 	slave_config->direction = DMA_DEV_TO_MEM;
- 	if (dmaengine_slave_config(as->dma.chan_rx, slave_config)) {
- 		dev_err(&as->pdev->dev,
-@@ -506,10 +595,10 @@ static void dma_callback(void *data)
- }
- 
- /*
-- * Next transfer using PIO.
-+ * Next transfer using PIO without FIFO.
-  */
--static void atmel_spi_next_xfer_pio(struct spi_master *master,
--				struct spi_transfer *xfer)
-+static void atmel_spi_next_xfer_single(struct spi_master *master,
-+				       struct spi_transfer *xfer)
- {
- 	struct atmel_spi	*as = spi_master_get_devdata(master);
- 	unsigned long xfer_pos = xfer->len - as->current_remaining_bytes;
-@@ -542,6 +631,99 @@ static void atmel_spi_next_xfer_pio(struct spi_master *master,
- }
- 
- /*
-+ * Next transfer using PIO with FIFO.
-+ */
-+static void atmel_spi_next_xfer_fifo(struct spi_master *master,
-+				     struct spi_transfer *xfer)
-+{
-+	struct atmel_spi *as = spi_master_get_devdata(master);
-+	u32 current_remaining_data, num_data;
-+	u32 offset = xfer->len - as->current_remaining_bytes;
-+	const u16 *words = (const u16 *)((u8 *)xfer->tx_buf + offset);
-+	const u8  *bytes = (const u8  *)((u8 *)xfer->tx_buf + offset);
-+	u16 td0, td1;
-+	u32 fifomr;
-+
-+	dev_vdbg(master->dev.parent, "atmel_spi_next_xfer_fifo\n");
-+
-+	/* Compute the number of data to transfer in the current iteration */
-+	current_remaining_data = ((xfer->bits_per_word > 8) ?
-+				  ((u32)as->current_remaining_bytes >> 1) :
-+				  (u32)as->current_remaining_bytes);
-+	num_data = min(current_remaining_data, as->fifo_size);
-+
-+	/* Flush RX and TX FIFOs */
-+	spi_writel(as, CR, SPI_BIT(RXFCLR) | SPI_BIT(TXFCLR));
-+	while (spi_readl(as, FLR))
-+		cpu_relax();
-+
-+	/* Set RX FIFO Threshold to the number of data to transfer */
-+	fifomr = spi_readl(as, FMR);
-+	spi_writel(as, FMR, SPI_BFINS(RXFTHRES, num_data, fifomr));
-+
-+	/* Clear FIFO flags in the Status Register, especially RXFTHF */
-+	(void)spi_readl(as, SR);
-+
-+	/* Fill TX FIFO */
-+	while (num_data >= 2) {
-+		if (xfer->tx_buf) {
-+			if (xfer->bits_per_word > 8) {
-+				td0 = *words++;
-+				td1 = *words++;
-+			} else {
-+				td0 = *bytes++;
-+				td1 = *bytes++;
-+			}
-+		} else {
-+			td0 = 0;
-+			td1 = 0;
-+		}
-+
-+		spi_writel(as, TDR, (td1 << 16) | td0);
-+		num_data -= 2;
-+	}
-+
-+	if (num_data) {
-+		if (xfer->tx_buf) {
-+			if (xfer->bits_per_word > 8)
-+				td0 = *words++;
-+			else
-+				td0 = *bytes++;
-+		} else {
-+			td0 = 0;
-+		}
-+
-+		spi_writew(as, TDR, td0);
-+		num_data--;
-+	}
-+
-+	dev_dbg(master->dev.parent,
-+		"  start fifo xfer %p: len %u tx %p rx %p bitpw %d\n",
-+		xfer, xfer->len, xfer->tx_buf, xfer->rx_buf,
-+		xfer->bits_per_word);
-+
-+	/*
-+	 * Enable RX FIFO Threshold Flag interrupt to be notified about
-+	 * transfer completion.
-+	 */
-+	spi_writel(as, IER, SPI_BIT(RXFTHF) | SPI_BIT(OVRES));
-+}
-+
-+/*
-+ * Next transfer using PIO.
-+ */
-+static void atmel_spi_next_xfer_pio(struct spi_master *master,
-+				    struct spi_transfer *xfer)
-+{
-+	struct atmel_spi *as = spi_master_get_devdata(master);
-+
-+	if (as->fifo_size)
-+		atmel_spi_next_xfer_fifo(master, xfer);
-+	else
-+		atmel_spi_next_xfer_single(master, xfer);
-+}
-+
-+/*
-  * Submit next transfer for DMA.
-  */
- static int atmel_spi_next_xfer_dma_submit(struct spi_master *master,
-@@ -843,13 +1025,8 @@ static void atmel_spi_disable_pdc_transfer(struct atmel_spi *as)
- 	spi_writel(as, PTCR, SPI_BIT(RXTDIS) | SPI_BIT(TXTDIS));
- }
- 
--/* Called from IRQ
-- *
-- * Must update "current_remaining_bytes" to keep track of data
-- * to transfer.
-- */
- static void
--atmel_spi_pump_pio_data(struct atmel_spi *as, struct spi_transfer *xfer)
-+atmel_spi_pump_single_data(struct atmel_spi *as, struct spi_transfer *xfer)
- {
- 	u8		*rxp;
- 	u16		*rxp16;
-@@ -876,6 +1053,57 @@ atmel_spi_pump_pio_data(struct atmel_spi *as, struct spi_transfer *xfer)
+ 	wait_queue_head_t	waitq;
+ 	u32			waitflags;
+@@ -213,63 +237,61 @@ static void ns_delay_scale(char *psc, char *sc, int delay_ns,
  	}
  }
  
-+static void
-+atmel_spi_pump_fifo_data(struct atmel_spi *as, struct spi_transfer *xfer)
-+{
-+	u32 fifolr = spi_readl(as, FLR);
-+	u32 num_bytes, num_data = SPI_BFEXT(RXFL, fifolr);
-+	u32 offset = xfer->len - as->current_remaining_bytes;
-+	u16 *words = (u16 *)((u8 *)xfer->rx_buf + offset);
-+	u8  *bytes = (u8  *)((u8 *)xfer->rx_buf + offset);
-+	u16 rd; /* RD field is the lowest 16 bits of RDR */
-+
-+	/* Update the number of remaining bytes to transfer */
-+	num_bytes = ((xfer->bits_per_word > 8) ?
-+		     (num_data << 1) :
-+		     num_data);
-+
-+	if (as->current_remaining_bytes > num_bytes)
-+		as->current_remaining_bytes -= num_bytes;
+-static int dspi_transfer_write(struct fsl_dspi *dspi)
++static u32 dspi_data_to_pushr(struct fsl_dspi *dspi, int tx_word)
+ {
+-	int tx_count = 0;
+-	int tx_word;
+ 	u16 d16;
+-	u8  d8;
+-	u32 dspi_pushr = 0;
+-	int first = 1;
+ 
+-	tx_word = is_double_byte_mode(dspi);
++	if (!(dspi->dataflags & TRAN_STATE_TX_VOID))
++		d16 = tx_word ? *(u16 *)dspi->tx : *(u8 *)dspi->tx;
 +	else
-+		as->current_remaining_bytes = 0;
++		d16 = dspi->void_write_data;
+ 
+-	/* If we are in word mode, but only have a single byte to transfer
+-	 * then switch to byte mode temporarily.  Will switch back at the
+-	 * end of the transfer.
+-	 */
+-	if (tx_word && (dspi->len == 1)) {
+-		dspi->dataflags |= TRAN_STATE_WORD_ODD_NUM;
+-		regmap_update_bits(dspi->regmap, SPI_CTAR(dspi->cs),
+-				SPI_FRAME_BITS_MASK, SPI_FRAME_BITS(8));
+-		tx_word = 0;
+-	}
++	dspi->tx += tx_word + 1;
++	dspi->len -= tx_word + 1;
+ 
+-	while (dspi->len && (tx_count < DSPI_FIFO_SIZE)) {
+-		if (tx_word) {
+-			if (dspi->len == 1)
+-				break;
++	return	SPI_PUSHR_TXDATA(d16) |
++		SPI_PUSHR_PCS(dspi->cs) |
++		SPI_PUSHR_CTAS(dspi->cs) |
++		SPI_PUSHR_CONT;
++}
+ 
+-			if (!(dspi->dataflags & TRAN_STATE_TX_VOID)) {
+-				d16 = *(u16 *)dspi->tx;
+-				dspi->tx += 2;
+-			} else {
+-				d16 = dspi->void_write_data;
+-			}
++static void dspi_data_from_popr(struct fsl_dspi *dspi, int rx_word)
++{
++	u16 d;
++	unsigned int val;
+ 
+-			dspi_pushr = SPI_PUSHR_TXDATA(d16) |
+-				SPI_PUSHR_PCS(dspi->cs) |
+-				SPI_PUSHR_CTAS(dspi->cs) |
+-				SPI_PUSHR_CONT;
++	regmap_read(dspi->regmap, SPI_POPR, &val);
++	d = SPI_POPR_RXDATA(val);
+ 
+-			dspi->len -= 2;
+-		} else {
+-			if (!(dspi->dataflags & TRAN_STATE_TX_VOID)) {
++	if (!(dspi->dataflags & TRAN_STATE_RX_VOID))
++		rx_word ? (*(u16 *)dspi->rx = d) : (*(u8 *)dspi->rx = d);
+ 
+-				d8 = *(u8 *)dspi->tx;
+-				dspi->tx++;
+-			} else {
+-				d8 = (u8)dspi->void_write_data;
+-			}
++	dspi->rx += rx_word + 1;
++}
+ 
+-			dspi_pushr = SPI_PUSHR_TXDATA(d8) |
+-				SPI_PUSHR_PCS(dspi->cs) |
+-				SPI_PUSHR_CTAS(dspi->cs) |
+-				SPI_PUSHR_CONT;
++static int dspi_eoq_write(struct fsl_dspi *dspi)
++{
++	int tx_count = 0;
++	int tx_word;
++	u32 dspi_pushr = 0;
++	int first = 1;
+ 
+-			dspi->len--;
++	tx_word = is_double_byte_mode(dspi);
 +
-+	/* Handle odd number of bytes when data are more than 8bit width */
-+	if (xfer->bits_per_word > 8)
-+		as->current_remaining_bytes &= ~0x1;
++	while (dspi->len && (tx_count < DSPI_FIFO_SIZE)) {
++		/* If we are in word mode, only have a single byte to transfer
++		 * switch to byte mode temporarily.  Will switch back at the
++		 * end of the transfer.
++		 */
++		if (tx_word && (dspi->len == 1)) {
++			dspi->dataflags |= TRAN_STATE_WORD_ODD_NUM;
++			regmap_update_bits(dspi->regmap, SPI_CTAR(dspi->cs),
++					SPI_FRAME_BITS_MASK, SPI_FRAME_BITS(8));
++			tx_word = 0;
+ 		}
+ 
++		dspi_pushr = dspi_data_to_pushr(dspi, tx_word);
 +
-+	/* Read data */
-+	while (num_data) {
-+		rd = spi_readl(as, RDR);
-+		if (xfer->rx_buf) {
-+			if (xfer->bits_per_word > 8)
-+				*words++ = rd;
-+			else
-+				*bytes++ = rd;
+ 		if (dspi->len == 0 || tx_count == DSPI_FIFO_SIZE - 1) {
+ 			/* last transfer in the transfer */
+ 			dspi_pushr |= SPI_PUSHR_EOQ;
+@@ -291,40 +313,55 @@ static int dspi_transfer_write(struct fsl_dspi *dspi)
+ 	return tx_count * (tx_word + 1);
+ }
+ 
+-static int dspi_transfer_read(struct fsl_dspi *dspi)
++static int dspi_eoq_read(struct fsl_dspi *dspi)
+ {
+ 	int rx_count = 0;
+ 	int rx_word = is_double_byte_mode(dspi);
+-	u16 d;
+ 
+ 	while ((dspi->rx < dspi->rx_end)
+ 			&& (rx_count < DSPI_FIFO_SIZE)) {
+-		if (rx_word) {
+-			unsigned int val;
++		if (rx_word && (dspi->rx_end - dspi->rx) == 1)
++			rx_word = 0;
+ 
+-			if ((dspi->rx_end - dspi->rx) == 1)
+-				break;
++		dspi_data_from_popr(dspi, rx_word);
++		rx_count++;
++	}
+ 
+-			regmap_read(dspi->regmap, SPI_POPR, &val);
+-			d = SPI_POPR_RXDATA(val);
++	return rx_count;
++}
+ 
+-			if (!(dspi->dataflags & TRAN_STATE_RX_VOID))
+-				*(u16 *)dspi->rx = d;
+-			dspi->rx += 2;
++static int dspi_tcfq_write(struct fsl_dspi *dspi)
++{
++	int tx_word;
++	u32 dspi_pushr = 0;
+ 
+-		} else {
+-			unsigned int val;
++	tx_word = is_double_byte_mode(dspi);
+ 
+-			regmap_read(dspi->regmap, SPI_POPR, &val);
+-			d = SPI_POPR_RXDATA(val);
+-			if (!(dspi->dataflags & TRAN_STATE_RX_VOID))
+-				*(u8 *)dspi->rx = d;
+-			dspi->rx++;
+-		}
+-		rx_count++;
++	if (tx_word && (dspi->len == 1)) {
++		dspi->dataflags |= TRAN_STATE_WORD_ODD_NUM;
++		regmap_update_bits(dspi->regmap, SPI_CTAR(dspi->cs),
++				SPI_FRAME_BITS_MASK, SPI_FRAME_BITS(8));
++		tx_word = 0;
+ 	}
+ 
+-	return rx_count;
++	dspi_pushr = dspi_data_to_pushr(dspi, tx_word);
++
++	if ((dspi->cs_change) && (!dspi->len))
++		dspi_pushr &= ~SPI_PUSHR_CONT;
++
++	regmap_write(dspi->regmap, SPI_PUSHR, dspi_pushr);
++
++	return tx_word + 1;
++}
++
++static void dspi_tcfq_read(struct fsl_dspi *dspi)
++{
++	int rx_word = is_double_byte_mode(dspi);
++
++	if (rx_word && (dspi->rx_end - dspi->rx) == 1)
++		rx_word = 0;
++
++	dspi_data_from_popr(dspi, rx_word);
+ }
+ 
+ static int dspi_transfer_one_message(struct spi_master *master,
+@@ -334,6 +371,8 @@ static int dspi_transfer_one_message(struct spi_master *master,
+ 	struct spi_device *spi = message->spi;
+ 	struct spi_transfer *transfer;
+ 	int status = 0;
++	enum dspi_trans_mode trans_mode;
++
+ 	message->actual_length = 0;
+ 
+ 	list_for_each_entry(transfer, &message->transfers, transfer_list) {
+@@ -370,8 +409,22 @@ static int dspi_transfer_one_message(struct spi_master *master,
+ 			regmap_write(dspi->regmap, SPI_CTAR(dspi->cs),
+ 					dspi->cur_chip->ctar_val);
+ 
+-		regmap_write(dspi->regmap, SPI_RSER, SPI_RSER_EOQFE);
+-		message->actual_length += dspi_transfer_write(dspi);
++		trans_mode = dspi->devtype_data->trans_mode;
++		switch (trans_mode) {
++		case DSPI_EOQ_MODE:
++			regmap_write(dspi->regmap, SPI_RSER, SPI_RSER_EOQFE);
++			message->actual_length += dspi_eoq_write(dspi);
++			break;
++		case DSPI_TCFQ_MODE:
++			regmap_write(dspi->regmap, SPI_RSER, SPI_RSER_TCFQE);
++			message->actual_length += dspi_tcfq_write(dspi);
++			break;
++		default:
++			dev_err(&dspi->pdev->dev, "unsupported trans_mode %u\n",
++				trans_mode);
++			status = -EINVAL;
++			goto out;
 +		}
-+		num_data--;
+ 
+ 		if (wait_event_interruptible(dspi->waitq, dspi->waitflags))
+ 			dev_err(&dspi->pdev->dev, "wait transfer complete fail!\n");
+@@ -381,6 +434,7 @@ static int dspi_transfer_one_message(struct spi_master *master,
+ 			udelay(transfer->delay_usecs);
+ 	}
+ 
++out:
+ 	message->status = status;
+ 	spi_finalize_current_message(master);
+ 
+@@ -460,27 +514,57 @@ static void dspi_cleanup(struct spi_device *spi)
+ static irqreturn_t dspi_interrupt(int irq, void *dev_id)
+ {
+ 	struct fsl_dspi *dspi = (struct fsl_dspi *)dev_id;
+-
+ 	struct spi_message *msg = dspi->cur_msg;
+-
+-	regmap_write(dspi->regmap, SPI_SR, SPI_SR_EOQF);
+-	dspi_transfer_read(dspi);
++	enum dspi_trans_mode trans_mode;
++	u32 spi_sr;
++
++	regmap_read(dspi->regmap, SPI_SR, &spi_sr);
++	regmap_write(dspi->regmap, SPI_SR, spi_sr);
++
++	trans_mode = dspi->devtype_data->trans_mode;
++	switch (trans_mode) {
++	case DSPI_EOQ_MODE:
++		dspi_eoq_read(dspi);
++		break;
++	case DSPI_TCFQ_MODE:
++		dspi_tcfq_read(dspi);
++		break;
++	default:
++		dev_err(&dspi->pdev->dev, "unsupported trans_mode %u\n",
++			trans_mode);
++		return IRQ_HANDLED;
 +	}
-+}
-+
-+/* Called from IRQ
-+ *
-+ * Must update "current_remaining_bytes" to keep track of data
-+ * to transfer.
-+ */
-+static void
-+atmel_spi_pump_pio_data(struct atmel_spi *as, struct spi_transfer *xfer)
-+{
-+	if (as->fifo_size)
-+		atmel_spi_pump_fifo_data(as, xfer);
-+	else
-+		atmel_spi_pump_single_data(as, xfer);
-+}
-+
- /* Interrupt
-  *
-  * No need for locking in this Interrupt handler: done_status is the
-@@ -916,7 +1144,7 @@ atmel_spi_pio_interrupt(int irq, void *dev_id)
  
- 		complete(&as->xfer_completion);
+ 	if (!dspi->len) {
+-		if (dspi->dataflags & TRAN_STATE_WORD_ODD_NUM)
++		if (dspi->dataflags & TRAN_STATE_WORD_ODD_NUM) {
+ 			regmap_update_bits(dspi->regmap, SPI_CTAR(dspi->cs),
+ 			SPI_FRAME_BITS_MASK, SPI_FRAME_BITS(16));
++			dspi->dataflags &= ~TRAN_STATE_WORD_ODD_NUM;
++		}
  
--	} else if (pending & SPI_BIT(RDRF)) {
-+	} else if (pending & (SPI_BIT(RDRF) | SPI_BIT(RXFTHF))) {
- 		atmel_spi_lock(as);
+ 		dspi->waitflags = 1;
+ 		wake_up_interruptible(&dspi->waitq);
+-	} else
+-		msg->actual_length += dspi_transfer_write(dspi);
+-
++	} else {
++		switch (trans_mode) {
++		case DSPI_EOQ_MODE:
++			msg->actual_length += dspi_eoq_write(dspi);
++			break;
++		case DSPI_TCFQ_MODE:
++			msg->actual_length += dspi_tcfq_write(dspi);
++			break;
++		default:
++			dev_err(&dspi->pdev->dev, "unsupported trans_mode %u\n",
++				trans_mode);
++		}
++	}
+ 	return IRQ_HANDLED;
+ }
  
- 		if (as->current_remaining_bytes) {
-@@ -1399,6 +1627,13 @@ static int atmel_spi_probe(struct platform_device *pdev)
- 		spi_writel(as, PTCR, SPI_BIT(RXTDIS) | SPI_BIT(TXTDIS));
- 	spi_writel(as, CR, SPI_BIT(SPIEN));
+ static const struct of_device_id fsl_dspi_dt_ids[] = {
+-	{ .compatible = "fsl,vf610-dspi", .data = NULL, },
++	{ .compatible = "fsl,vf610-dspi", .data = (void *)&vf610_data, },
++	{ .compatible = "fsl,ls1021a-v1.0-dspi",
++		.data = (void *)&ls1021a_v1_data, },
++	{ .compatible = "fsl,ls2085a-dspi", .data = (void *)&ls2085a_data, },
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, fsl_dspi_dt_ids);
+@@ -526,6 +610,8 @@ static int dspi_probe(struct platform_device *pdev)
+ 	struct resource *res;
+ 	void __iomem *base;
+ 	int ret = 0, cs_num, bus_num;
++	const struct of_device_id *of_id =
++			of_match_device(fsl_dspi_dt_ids, &pdev->dev);
  
-+	as->fifo_size = 0;
-+	if (!of_property_read_u32(pdev->dev.of_node, "atmel,fifo-size",
-+				  &as->fifo_size)) {
-+		dev_info(&pdev->dev, "Using FIFO (%u data)\n", as->fifo_size);
-+		spi_writel(as, CR, SPI_BIT(FIFOEN));
+ 	master = spi_alloc_master(&pdev->dev, sizeof(struct fsl_dspi));
+ 	if (!master)
+@@ -559,6 +645,13 @@ static int dspi_probe(struct platform_device *pdev)
+ 	}
+ 	master->bus_num = bus_num;
+ 
++	dspi->devtype_data = (struct fsl_dspi_devtype_data *)of_id->data;
++	if (!dspi->devtype_data) {
++		dev_err(&pdev->dev, "can't get devtype_data\n");
++		ret = -EFAULT;
++		goto out_master_put;
 +	}
 +
- 	/* go! */
- 	dev_info(&pdev->dev, "Atmel SPI Controller at 0x%08lx (irq %d)\n",
- 			(unsigned long)regs->start, irq);
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	base = devm_ioremap_resource(&pdev->dev, res);
+ 	if (IS_ERR(base)) {
 -- 
-1.8.2.2
+2.1.0.27.g96db324
 
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

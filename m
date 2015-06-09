@@ -1,59 +1,60 @@
 From: Cyrille Pitchen <cyrille.pitchen@atmel.com>
-Subject: [PATCH v3 0/3] spi: atmel: add support to FIFOs and the internal
- chip-select
-Date: Tue, 9 Jun 2015 13:53:51 +0200
-Message-ID: <cover.1433850255.git.cyrille.pitchen@atmel.com>
+Subject: [PATCH v3 2/3] spi: atmel: update DT bindings documentation
+Date: Tue, 9 Jun 2015 13:53:53 +0200
+Message-ID: <ce7c16faafaa24f5bb711115c0eea1f8992d08c3.1433850255.git.cyrille.pitchen@atmel.com>
+References: <cover.1433850255.git.cyrille.pitchen@atmel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: mark.rutland@arm.com, devicetree@vger.kernel.org, pawel.moll@arm.com,
- ijc+devicetree@hellion.org.uk, linux-kernel@vger.kernel.org,
- robh+dt@kernel.org, galak@codeaurora.org,
- Cyrille Pitchen <cyrille.pitchen@atmel.com>,
- linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain
+Cc: <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>,
+	<devicetree@vger.kernel.org>, <robh+dt@kernel.org>,
+	<pawel.moll@arm.com>, <mark.rutland@arm.com>,
+	<ijc+devicetree@hellion.org.uk>, <galak@codeaurora.org>,
+	Cyrille Pitchen <cyrille.pitchen@atmel.com>
 To: <nicolas.ferre@atmel.com>, <broonie@kernel.org>,
- <linux-spi@vger.kernel.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+	<linux-spi@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <cover.1433850255.git.cyrille.pitchen@atmel.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-ChangeLog
+- add new property "atmel,fifo-size"
+- change "cs-gpios" to optional for SPI controller version >= 2.
 
-v3:
-- replace "Alternative Command Mode" by "Chip Select Active After Transfer" in
-  the DT bindings documentation. The "Alternative Command Mode" is a feature of
-  the I2C controller.
-- rename somes "size" variables to "num_data" to ease the distinction between
-  the number of bytes and the number of data to transfer.
+Signed-off-by: Cyrille Pitchen <cyrille.pitchen@atmel.com>
+---
+ Documentation/devicetree/bindings/spi/spi_atmel.txt | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-v2:
-- read the Status Register to clear its RX FIFO Threshold Flag (RXFTHF) before
-  writing into the IER to enable the RXFTHF interrupt.
-- remove the reset of the FIFO Mode Register (FMR) at the end of transfers
-  because setting the RX FIFO Threshold to 0 also sets the RXFTHF bit in SR.
-- add a 3rd patch in the series to update the documentation of DT bindings.
-
-v1:
-This series of patches add support to features introduced by the Atmel sama5d2x
-SoC
-
-Cyrille Pitchen (3):
-  spi: atmel: add support for the internal chip-select of the spi
-    controller
-  spi: atmel: update DT bindings documentation
-  spi: atmel: add support to FIFOs
-
- .../devicetree/bindings/spi/spi_atmel.txt          |   8 +-
- drivers/spi/spi-atmel.c                            | 292 +++++++++++++++++++--
- 2 files changed, 280 insertions(+), 20 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/spi/spi_atmel.txt b/Documentation/devicetree/bindings/spi/spi_atmel.txt
+index 4f8184d..fb588b3 100644
+--- a/Documentation/devicetree/bindings/spi/spi_atmel.txt
++++ b/Documentation/devicetree/bindings/spi/spi_atmel.txt
+@@ -4,11 +4,16 @@ Required properties:
+ - compatible : should be "atmel,at91rm9200-spi".
+ - reg: Address and length of the register set for the device
+ - interrupts: Should contain spi interrupt
+-- cs-gpios: chipselects
++- cs-gpios: chipselects (optional for SPI controller version >= 2 with the
++  Chip Select Active After Transfer feature).
+ - clock-names: tuple listing input clock names.
+ 	Required elements: "spi_clk"
+ - clocks: phandles to input clocks.
+ 
++Optional properties:
++- atmel,fifo-size: maximum number of data the RX and TX FIFOs can store for FIFO
++  capable SPI controllers.
++
+ Example:
+ 
+ spi1: spi@fffcc000 {
+@@ -20,6 +25,7 @@ spi1: spi@fffcc000 {
+ 	clocks = <&spi1_clk>;
+ 	clock-names = "spi_clk";
+ 	cs-gpios = <&pioB 3 0>;
++	atmel,fifo-size = <32>;
+ 	status = "okay";
+ 
+ 	mmc-slot@0 {
 -- 
 1.8.2.2

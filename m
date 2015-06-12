@@ -1,88 +1,55 @@
-From: Vinod Koul <vinod.koul@intel.com>
-Subject: Re: [PATCH 02/13] dmaengine: Introduce
- dma_request_slave_channel_compat_reason()
-Date: Fri, 12 Jun 2015 18:28:37 +0530
-Message-ID: <20150612125837.GJ28601@localhost>
-References: <1432646768-12532-1-git-send-email-peter.ujfalusi@ti.com>
- <1432646768-12532-3-git-send-email-peter.ujfalusi@ti.com>
- <20150529093317.GF3140@localhost>
- <CAMuHMdVJ0h9qXxBWH9L2y4O2KLkEq12KW_6k8rTgi+Lux=C0gw@mail.gmail.com>
- <20150529101846.GG3140@localhost>
- <55687892.7050606@ti.com>
- <20150602125535.GS3140@localhost>
- <5570758E.6030302@ti.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/1] spi: fsl-dspi: Use pinctrl PM helpers
+Date: Fri, 12 Jun 2015 17:21:48 +0100
+Message-ID: <20150612162148.GD1921@sirena.org.uk>
+References: <1434103303-5120-1-git-send-email-mirza.krak@hostmobility.com>
+ <20150612102314.GB1921@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
-	Tony Lindgren <tony@atomide.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	dmaengine@vger.kernel.org,
-	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-	"linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-	Linux MMC List <linux-mmc@vger.kernel.org>,
-	linux-crypto@vger.kernel.org,
-	linux-spi <linux-spi@vger.kernel.org>,
-	Linux Media Mailing List <linux-media@vger.kernel.org>,
-	ALSA Development Mailing List <alsa-devel@alsa-project.org>
-To: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Return-path: <linux-crypto-owner@vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="3T9UM0G5oz8hnqz/"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mirza Krak <mirza.krak-3xdUHytR7SMQwY+2splSUA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <5570758E.6030302@ti.com>
-Sender: linux-crypto-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
-
-On Thu, Jun 04, 2015 at 06:58:06PM +0300, Peter Ujfalusi wrote:
-> Vinod,
-> 
-> On 06/02/2015 03:55 PM, Vinod Koul wrote:
-> > On Fri, May 29, 2015 at 05:32:50PM +0300, Peter Ujfalusi wrote:
-> >> On 05/29/2015 01:18 PM, Vinod Koul wrote:
-> >>> On Fri, May 29, 2015 at 11:42:27AM +0200, Geert Uytterhoeven wrote:
-> >>>> On Fri, May 29, 2015 at 11:33 AM, Vinod Koul <vinod.koul@intel.com> wrote:
-> >>>>> On Tue, May 26, 2015 at 04:25:57PM +0300, Peter Ujfalusi wrote:
-> >>>>>> dma_request_slave_channel_compat() 'eats' up the returned error codes which
-> >>>>>> prevents drivers using the compat call to be able to do deferred probing.
-> >>>>>>
-> >>>>>> The new wrapper is identical in functionality but it will return with error
-> >>>>>> code in case of failure and will pass the -EPROBE_DEFER to the caller in
-> >>>>>> case dma_request_slave_channel_reason() returned with it.
-> >>>>> This is okay but am worried about one more warpper, how about fixing
-> >>>>> dma_request_slave_channel_compat()
-> >>>>
-> >>>> Then all callers of dma_request_slave_channel_compat() have to be
-> >>>> modified to handle ERR_PTR first.
-> >>>>
-> >>>> The same is true for (the existing) dma_request_slave_channel_reason()
-> >>>> vs. dma_request_slave_channel().
-> >>> Good point, looking again, I think we should rather fix
-> >>> dma_request_slave_channel_reason() as it was expected to return err code and
-> >>> add new users. Anyway users of this API do expect the reason...
-> >>
-> >> Hrm, they are for different use.dma_request_slave_channel()/_reason() is for
-> >> drivers only working via DT or ACPI while
-> >> dma_request_slave_channel_compat()/_reason() is for drivers expected to run in
-> >> DT/ACPI or legacy mode as well.
-> >>
-> >> I added the dma_request_slave_channel_compat_reason() because OMAP/daVinci
-> >> drivers are using this to request channels - they need to support DT and
-> >> legacy mode.
-> > I think we should hide these things behind the API and do this behind the
-> > hood for ACPI/DT systems.
-> > 
-> > Also it makes sense to use right API and mark rest as depricated
-> 
-> So to convert the dma_request_slave_channel_compat() and not to create _reason
-> variant?
-> 
-> Or to have single API to request channel? The problem with that is that we
-> need different parameters for legacy and DT for example.
-Sorry this slipped thru
-
-Thinking about it again, I think we should coverge to two APIs and mark the
-legacy depracuated and look to convert folks and phase that out
+In-Reply-To: <20150612102314.GB1921-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
--- 
-~Vinod
+--3T9UM0G5oz8hnqz/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Jun 12, 2015 at 11:23:14AM +0100, Mark Brown wrote:
+> On Fri, Jun 12, 2015 at 12:01:43PM +0200, Mirza Krak wrote:
+> > From: Mirza Krak <mirza.krak-3xdUHytR7SMQwY+2splSUA@public.gmane.org>
+> >=20
+> > Add support for "sleep" state of pinctrl.
+>=20
+> Applied, thanks.
+
+=2E..and dropped because it caused build failures (due to a missing
+header, please fix that and resubmit).
+
+--3T9UM0G5oz8hnqz/
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVewcbAAoJECTWi3JdVIfQCXEH/0zq8eTI7pfcYeCDx2A7uiOD
+ewZg+Y2gt7cl5VqTdj7OYksf2yx5q4UADXmK8Ikq/Om5yPpqR8BhaS0QObZmLrsl
+GHEIR1xR4dzDRDmmS3X3+gPgrruAeiAig1kzLhYzY++NdhCYkclDEfgLu0cnqnmk
+HbnW0n6EkpEsZQQsGKHPxt0asnRgIvYl68PknlmcsSUx0Si8mBQbWMhPhpF6GUUF
+T0mEHG1k50l7olKcLbTpyY4oTWJpou0WwD+sDRTyYY8Ol6zC0MP1HOyo4Qyz+s5y
+5/Ka/34WLpllnby+bL5UY8TlCjMfQl1+Zfo15HuYfzVTaHmbYVN2S88XT4R4/uM=
+=nmZl
+-----END PGP SIGNATURE-----
+
+--3T9UM0G5oz8hnqz/--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

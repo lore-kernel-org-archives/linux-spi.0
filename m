@@ -1,53 +1,47 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [LINUX RFC v3 1/2] devicetree: Add DT bindings documentation for
- Zynq Ultrascale+ MPSoC GQSPI controller
-Date: Fri, 12 Jun 2015 18:33:50 +0100
-Message-ID: <20150612173350.GF1921@sirena.org.uk>
-References: <1433932701-5834-1-git-send-email-ranjit.waghmode@xilinx.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="HCPSlZ5G/9wfex/i"
-Cc: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, pawel.moll-5wv7dgnIgG8@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
-	ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org, galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org,
-	michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org, soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org, punnaia-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org, ran27jit-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-To: Ranjit Waghmode <ranjit.waghmode-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+From: Mathias Krause <minipli-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
+Subject: [PATCH] spi: spi-pxa2xx: Constify ACPI device ids
+Date: Sat, 13 Jun 2015 14:22:14 +0200
+Message-ID: <1434198134-8278-1-git-send-email-minipli@googlemail.com>
+Cc: "Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
+	Len Brown <lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mathias Krause <minipli-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>,
+	Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1433932701-5834-1-git-send-email-ranjit.waghmode-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Constify the ACPI device ID array, it doesn't need to be writable at
+runtime.
 
---HCPSlZ5G/9wfex/i
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Mathias Krause <minipli-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
+Cc: Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>
+Cc: Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>
+---
+This patch should go on top of spi.git#topic/pxa
 
-On Wed, Jun 10, 2015 at 04:08:20PM +0530, Ranjit Waghmode wrote:
-> Add bindings documentation for GQSPI controller driver used by
-> Zynq Ultrascale+ MPSoC
+ drivers/spi/spi-pxa2xx.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Applied both, thanks.
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index f97cd42fbc22..7293d6d875c5 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1265,7 +1265,7 @@ static void cleanup(struct spi_device *spi)
+ 
+ #ifdef CONFIG_ACPI
+ 
+-static struct acpi_device_id pxa2xx_spi_acpi_match[] = {
++static const struct acpi_device_id pxa2xx_spi_acpi_match[] = {
+ 	{ "INT33C0", LPSS_LPT_SSP },
+ 	{ "INT33C1", LPSS_LPT_SSP },
+ 	{ "INT3430", LPSS_LPT_SSP },
+-- 
+1.7.10.4
 
---HCPSlZ5G/9wfex/i
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVexf9AAoJECTWi3JdVIfQGHgH/0UCLhSR3/D5kQHEHSwOZpHE
-maEM1W2kvPhJydPeAx6IwAPSup0fcsTQ7U70Piae9bkIq1WlpnYgGyPSKtqAu3Bf
-l6kzlLyxxDrXBzKeldA2oZKxli/hTZK9tgpkzMClGICyH4H6kLOulTB2nrzFbBlW
-9zPxNAVPl6OMHZzADVO9mB1xQBUJOp2wgSjVWxOxvmU5zaGeP6AzfFQCIGbnfjxY
-TiTa3AqyApo8g7uUlGiYrN1iTUIGKjZ9VcU8NA1LDVWX4qR3U537IrCv632cKAJv
-E36wKxferVrWMV2SnhjuWgCKwOFAQUuxSOPuPdh25z/R2kMnBC5MUiKblkusF2c=
-=YY6f
------END PGP SIGNATURE-----
-
---HCPSlZ5G/9wfex/i--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

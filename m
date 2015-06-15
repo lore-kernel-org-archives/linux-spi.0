@@ -1,51 +1,47 @@
-From: Haikun Wang <haikun.wang-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: [PATCH 2/2] ARM: ls1021a: dtsi: Update 'dspi' node compatible string
-Date: Mon, 15 Jun 2015 19:49:15 +0800
-Message-ID: <1434368955-13470-1-git-send-email-haikun.wang@freescale.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: spi-fsl-dspi: Update DT binding documentation
+Date: Mon, 15 Jun 2015 14:20:50 +0100
+Message-ID: <20150615132050.GN18309@sirena.org.uk>
+References: <1434368941-13428-1-git-send-email-haikun.wang@freescale.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: Haikun Wang <haikun.wang-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="6yHiY5vv/BiPjcMt"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Haikun Wang <haikun.wang-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1434368941-13428-1-git-send-email-haikun.wang-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-DSPI driver has been updated and supports TCF interrupt type now.
-In the new driver we choose the interrupt type according the compatible
-string of the device node.
-This patch update the compatible string of DSPI of LS1021A in order to
-use the correct interrupt type.
 
-Signed-off-by: Haikun Wang <haikun.wang-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
----
- arch/arm/boot/dts/ls1021a.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+--6yHiY5vv/BiPjcMt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/arch/arm/boot/dts/ls1021a.dtsi b/arch/arm/boot/dts/ls1021a.dtsi
-index c70bb27..1b306c7 100644
---- a/arch/arm/boot/dts/ls1021a.dtsi
-+++ b/arch/arm/boot/dts/ls1021a.dtsi
-@@ -184,7 +184,7 @@
- 		};
- 
- 		dspi0: dspi@2100000 {
--			compatible = "fsl,vf610-dspi";
-+			compatible = "fsl,ls1021a-v1.0-dspi";
- 			#address-cells = <1>;
- 			#size-cells = <0>;
- 			reg = <0x0 0x2100000 0x0 0x10000>;
-@@ -197,7 +197,7 @@
- 		};
- 
- 		dspi1: dspi@2110000 {
--			compatible = "fsl,vf610-dspi";
-+			compatible = "fsl,ls1021a-v1.0-dspi";
- 			#address-cells = <1>;
- 			#size-cells = <0>;
- 			reg = <0x0 0x2110000 0x0 0x10000>;
--- 
-2.1.0.27.g96db324
+On Mon, Jun 15, 2015 at 07:49:01PM +0800, Haikun Wang wrote:
+> DSPI driver has been updated and support more compatible strings.
+> This patch update the DT binding documentation.
 
+Applied, thanks.
+
+--6yHiY5vv/BiPjcMt
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVftEvAAoJECTWi3JdVIfQtlkH/A5JBlbHQEvHyKiFzNqZnn6L
+esdt4v1A4FN2qVPNK5GpPkeeumAS4S04GcHwPZW1zUuVbnwYADih/V42C4prvubu
+ppJZ58p/vhEbIActPUJDHF9M3XT553uPmf7B2xiE72R80Uj18O97q+sCFbRRWqME
+A6GEa2HulzkBrFVJQ4NVNDlGVv8HRQLszXeEgvFVsXniL79P2JF9L+h9h44ADfp6
+HazgZLDYUcZJyJci0CP/CO6FIIKu27SvfgcAH1KqRKDCx1egyElpS10t9w9bcSRd
+mGoI89s/CLV5t3dJetPlbFFD8CAfE8AHFdPE6R2vkCyulvA2/G1bbU1EzFkKkBo=
+=2GYe
+-----END PGP SIGNATURE-----
+
+--6yHiY5vv/BiPjcMt--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

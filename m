@@ -1,77 +1,69 @@
-From: Yoshihiro Kaneko <ykaneko0929@gmail.com>
-Subject: [PATCH/RFC] spi: sh-msiof: Fix FIFO size to 64 word from 256 word
-Date: Mon, 15 Jun 2015 02:25:05 +0900
-Message-ID: <1434302705-31104-1-git-send-email-ykaneko0929@gmail.com>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
-	Mark Brown <broonie@kernel.org>,
-	Simon Horman <horms@verge.net.au>,
-	Magnus Damm <magnus.damm@gmail.com>, linux-sh@vger.kernel.org
-To: linux-spi@vger.kernel.org
-Return-path: <linux-sh-owner@vger.kernel.org>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Andrew Gabbasov <andrew_gabbasov-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: Fix per-page mapping of unaligned vmalloc-ed buffer
+Date: Mon, 15 Jun 2015 01:59:20 -0500
+Message-ID: <1434351560-29463-1-git-send-email-andrew_gabbasov@mentor.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Koji Matsuoka <koji.matsuoka.xm@renesas.com>
+spi_map_buf() processes mapping of vmalloc-ed buffers in a special way,
+making mapping of every page separately. However, if the buffer is not
+aligned to page boundary (e.g. sub-array in a vmalloc-ed array), it
+fills the scatter table with page-size unaligned pieces, that cross
+page boundaries. This is incorrect and can, for example, cause memory
+corruption and various crashes when working with ubifs on spi-nor chips.
 
-The upper limit of Tx/Rx FIFO size is 64 word by the
-specification of H/W. This patch corrects to 64 word from 256 word.
+Fix this by using proper scatter table size and intra-page buffer lengths,
+so that the whole buffer splits into separate scatter table entries on
+page boundaries.
 
-Signed-off-by: Koji Matsuoka <koji.matsuoka.xm@renesas.com>
-Signed-off-by: Yoshihiro Kaneko <ykaneko0929@gmail.com>
+Signed-off-by: Andrew Gabbasov <andrew_gabbasov-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 ---
+ drivers/spi/spi.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-This patch is based on the for-next branch of Mark Brown's spi tree.
-
- drivers/spi/spi-sh-msiof.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index d3370a6..a7629f8 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -48,8 +48,8 @@ struct sh_msiof_spi_priv {
- 	const struct sh_msiof_chipdata *chipdata;
- 	struct sh_msiof_spi_info *info;
- 	struct completion done;
--	int tx_fifo_size;
--	int rx_fifo_size;
-+	unsigned int tx_fifo_size;
-+	unsigned int rx_fifo_size;
- 	void *tx_dma_page;
- 	void *rx_dma_page;
- 	dma_addr_t tx_dma_addr;
-@@ -95,8 +95,6 @@ struct sh_msiof_spi_priv {
- #define MDR2_WDLEN1(i)	(((i) - 1) << 16) /* Word Count (1-64/256 (SH, A1))) */
- #define MDR2_GRPMASK1	0x00000001 /* Group Output Mask 1 (SH, A1) */
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 50910d8..14016dc 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -477,7 +477,9 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
+ {
+ 	const bool vmalloced_buf = is_vmalloc_addr(buf);
+ 	const int desc_len = vmalloced_buf ? PAGE_SIZE : master->max_dma_len;
+-	const int sgs = DIV_ROUND_UP(len, desc_len);
++	const int sgs = DIV_ROUND_UP(vmalloced_buf ?
++					len + offset_in_page(buf) : len,
++				     desc_len);
+ 	struct page *vm_page;
+ 	void *sg_buf;
+ 	size_t min;
+@@ -488,9 +490,10 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
+ 		return ret;
  
--#define MAX_WDLEN	256U
--
- /* TSCR and RSCR */
- #define SCR_BRPS_MASK	    0x1f00 /* Prescaler Setting (1-32) */
- #define SCR_BRPS(i)	(((i) - 1) << 8)
-@@ -850,7 +848,12 @@ static int sh_msiof_transfer_one(struct spi_master *master,
- 		 *  DMA supports 32-bit words only, hence pack 8-bit and 16-bit
- 		 *  words, with byte resp. word swapping.
- 		 */
--		unsigned int l = min(len, MAX_WDLEN * 4);
-+		unsigned int l = 0;
-+
-+		if (tx_buf)
-+			l = min(len, p->tx_fifo_size * 4);
-+		if (rx_buf)
-+			l = min(len, p->rx_fifo_size * 4);
+ 	for (i = 0; i < sgs; i++) {
+-		min = min_t(size_t, len, desc_len);
  
- 		if (bits <= 8) {
- 			if (l & 3)
-@@ -963,7 +966,7 @@ static const struct sh_msiof_chipdata sh_data = {
- 
- static const struct sh_msiof_chipdata r8a779x_data = {
- 	.tx_fifo_size = 64,
--	.rx_fifo_size = 256,
-+	.rx_fifo_size = 64,
- 	.master_flags = SPI_MASTER_MUST_TX,
- };
- 
+ 		if (vmalloced_buf) {
++			min = min_t(size_t,
++				    len, desc_len - offset_in_page(buf));
+ 			vm_page = vmalloc_to_page(buf);
+ 			if (!vm_page) {
+ 				sg_free_table(sgt);
+@@ -499,6 +502,7 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
+ 			sg_set_page(&sgt->sgl[i], vm_page,
+ 				    min, offset_in_page(buf));
+ 		} else {
++			min = min_t(size_t, len, desc_len);
+ 			sg_buf = buf;
+ 			sg_set_buf(&sgt->sgl[i], sg_buf, min);
+ 		}
 -- 
-1.9.1
+2.1.0
 
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

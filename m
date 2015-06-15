@@ -1,48 +1,77 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: spi-fsl-dspi: Update DT binding documentation
-Date: Mon, 15 Jun 2015 14:20:50 +0100
-Message-ID: <20150615132050.GN18309@sirena.org.uk>
-References: <1434368941-13428-1-git-send-email-haikun.wang@freescale.com>
+Subject: Re: [PATCH v3 2/3] spi: atmel: update DT bindings documentation
+Date: Mon, 15 Jun 2015 16:49:35 +0100
+Message-ID: <20150615154935.GT18309@sirena.org.uk>
+References: <cover.1433850255.git.cyrille.pitchen@atmel.com>
+ <ce7c16faafaa24f5bb711115c0eea1f8992d08c3.1433850255.git.cyrille.pitchen@atmel.com>
+ <20150609172531.GM14071@sirena.org.uk>
+ <5579B95F.9060307@atmel.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="6yHiY5vv/BiPjcMt"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Haikun Wang <haikun.wang-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="6axCafNXXMM8qu6Q"
+Cc: nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, pawel.moll-5wv7dgnIgG8@public.gmane.org,
+	mark.rutland-5wv7dgnIgG8@public.gmane.org, ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org,
+	galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org
+To: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1434368941-13428-1-git-send-email-haikun.wang-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <5579B95F.9060307-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
 
---6yHiY5vv/BiPjcMt
-Content-Type: text/plain; charset=us-ascii
+--6axCafNXXMM8qu6Q
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 15, 2015 at 07:49:01PM +0800, Haikun Wang wrote:
-> DSPI driver has been updated and support more compatible strings.
-> This patch update the DT binding documentation.
+On Thu, Jun 11, 2015 at 06:37:51PM +0200, Cyrille Pitchen wrote:
+> Le 09/06/2015 19:25, Mark Brown a =E9crit :
+> > On Tue, Jun 09, 2015 at 01:53:53PM +0200, Cyrille Pitchen wrote:
+> >> - add new property "atmel,fifo-size"
 
-Applied, thanks.
+> > Why is this a property and not something we know from the IP version?
 
---6yHiY5vv/BiPjcMt
+> Please be aware that the VERSION register can not be used to guess the
+> size of FIFOs. Indeed, for a given hardware version, the SPI controller
+> can be integrated on Atmel SoCs with different FIFO sizes. Also the
+> "atmel,fifo-size" property is optional as older SPI controllers don't
+> embed FIFO at all.
+
+=2E..
+
+> Finally, on a given SoC, there can be several instances of the SPI
+> controller with different FIFO sizes. This explain why we'd rather use a
+> dedicated DT property than use the "compatible" property.
+
+> I hope these pieces of information will help to clarify this point.
+> Of course, we are open to other suggestions.
+
+Ugh, what a wonderfully consistent hardware design :(  Please make it
+clear in the documentation what is going on here, this looks like an
+obvious bug in the DT binding - a very common pattern for bugs is to do
+version quirks like this as properties.
+
+--6axCafNXXMM8qu6Q
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVftEvAAoJECTWi3JdVIfQtlkH/A5JBlbHQEvHyKiFzNqZnn6L
-esdt4v1A4FN2qVPNK5GpPkeeumAS4S04GcHwPZW1zUuVbnwYADih/V42C4prvubu
-ppJZ58p/vhEbIActPUJDHF9M3XT553uPmf7B2xiE72R80Uj18O97q+sCFbRRWqME
-A6GEa2HulzkBrFVJQ4NVNDlGVv8HRQLszXeEgvFVsXniL79P2JF9L+h9h44ADfp6
-HazgZLDYUcZJyJci0CP/CO6FIIKu27SvfgcAH1KqRKDCx1egyElpS10t9w9bcSRd
-mGoI89s/CLV5t3dJetPlbFFD8CAfE8AHFdPE6R2vkCyulvA2/G1bbU1EzFkKkBo=
-=2GYe
+iQEcBAEBCAAGBQJVfvQPAAoJECTWi3JdVIfQDywH/RbQKXr2U2+f72kbeIxz56M1
+3mboyhxyFzn7whzNbyAefS1lWdIQvVCv841JHRuAgBJj8PSTwkLYFC5cOuQTe7Nh
+qEm9PnEA5gk0/W5WbxixprOR9llRw538bX4ad6XmKNORnSF7q9Ch+lx0bNV50v7+
+4mSu03rj7VmMgLwP6SpAA6BT9Eu707bSWMpUgavpgGWGfI7nXXlpdolYQ5PVfr04
+qM3Opabni7yTUi+YSMiR4J7mSzZnUbCroqtEkg4j/c7R2oTCHYrNF2N9mj8i8vRj
+q5W1yfc1cCIFFR/Yx2Twy4inrY5+ffKLR9YD3HcLGBIf68awPHGHMlVQXJBOFRE=
+=aZfm
 -----END PGP SIGNATURE-----
 
---6yHiY5vv/BiPjcMt--
+--6axCafNXXMM8qu6Q--
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

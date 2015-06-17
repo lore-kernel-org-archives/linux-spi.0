@@ -1,97 +1,103 @@
-From: Sifan Naeem <Sifan.Naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
-Subject: RE: [PATCH v2] spi: img-spfi: Same Edge bit set to double supported
- transfer speed
-Date: Wed, 17 Jun 2015 16:08:09 +0000
-Message-ID: <A0E307549471DA4DBAF2DE2DE6CBFB7E496197E8@hhmail02.hh.imgtec.org>
-References: <1434535262-7393-1-git-send-email-sifan.naeem@imgtec.com>
- <CAOiHx=ntO2tp7SjU7-f=1oxDa3FJZ6z4gxeu7ZBsUsaijpAK0g@mail.gmail.com>
- <A0E307549471DA4DBAF2DE2DE6CBFB7E4961964D@hhmail02.hh.imgtec.org>
- <CAOiHx=mibfR8nJALUe_9Sa98ypmPgbEE6UTQHmd9Jzb51V4wLg@mail.gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 2/3] spi: mediatek: Add spi bus for Mediatek MT8173
+Date: Wed, 17 Jun 2015 17:35:31 +0100
+Message-ID: <20150617163531.GU14071@sirena.org.uk>
+References: <1431675522.2128.13.camel@mhfsdcap03>
+ <20150515092543.GY2761@sirena.org.uk>
+ <1433758546.19786.16.camel@mtksdaap41>
+ <20150608175927.GO14071@sirena.org.uk>
+ <1433844321.16178.6.camel@mtksdaap41>
+ <20150609103951.GA14071@sirena.org.uk>
+ <1433923569.22080.1.camel@mtksdaap41>
+ <1434532083.19346.27.camel@mtksdaap41>
+ <20150617124758.GE3214@sirena.org.uk>
+ <1434550251.23617.38.camel@mtksdaap41>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Andrew Bresticker <abrestic-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-To: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAOiHx=mibfR8nJALUe_9Sa98ypmPgbEE6UTQHmd9Jzb51V4wLg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="TMj/TYF/hpk1GcbO"
+Cc: Leilk Liu =?utf-8?B?KOWImOejiik=?= <Leilk.Liu@mediatek.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will.deacon@arm.com>,
+	HongZhou Yang <hongzhou.yang@mediatek.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	"linux-mediatek@lists.infradead.org"
+	<linux-mediatek@lists.infradead.org>,
+	srv_heupstream <srv_heupstream@mediatek.com>
+To: Eddie Huang <eddie.huang@mediatek.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1434550251.23617.38.camel@mtksdaap41>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-SGkgSm9uYXMsDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSm9uYXMg
-R29yc2tpIFttYWlsdG86am9nb0BvcGVud3J0Lm9yZ10NCj4gU2VudDogMTcgSnVuZSAyMDE1IDE1
-OjMxDQo+IFRvOiBTaWZhbiBOYWVlbQ0KPiBDYzogTWFyayBCcm93bjsgbGludXgtc3BpQHZnZXIu
-a2VybmVsLm9yZzsgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsNCj4gQW5kcmV3IEJyZXN0
-aWNrZXINCj4gU3ViamVjdDogUmU6IFtQQVRDSCB2Ml0gc3BpOiBpbWctc3BmaTogU2FtZSBFZGdl
-IGJpdCBzZXQgdG8gZG91YmxlIHN1cHBvcnRlZA0KPiB0cmFuc2ZlciBzcGVlZA0KPiANCj4gSGks
-DQo+IA0KPiBPbiBXZWQsIEp1biAxNywgMjAxNSBhdCAzOjM2IFBNLCBTaWZhbiBOYWVlbSA8U2lm
-YW4uTmFlZW1AaW1ndGVjLmNvbT4NCj4gd3JvdGU6DQo+ID4gSGkgSm9uYXMsDQo+ID4NCj4gPj4g
-LS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gPj4gRnJvbTogSm9uYXMgR29yc2tpIFttYWls
-dG86am9nb0BvcGVud3J0Lm9yZ10NCj4gPj4gU2VudDogMTcgSnVuZSAyMDE1IDEzOjEyDQo+ID4+
-IFRvOiBTaWZhbiBOYWVlbQ0KPiA+PiBDYzogTWFyayBCcm93bjsgbGludXgtc3BpQHZnZXIua2Vy
-bmVsLm9yZzsNCj4gPj4gbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsgQW5kcmV3IEJyZXN0
-aWNrZXINCj4gPj4gU3ViamVjdDogUmU6IFtQQVRDSCB2Ml0gc3BpOiBpbWctc3BmaTogU2FtZSBF
-ZGdlIGJpdCBzZXQgdG8gZG91YmxlDQo+ID4+IHN1cHBvcnRlZCB0cmFuc2ZlciBzcGVlZA0KPiA+
-Pg0KPiA+PiBIaSwNCj4gPj4NCj4gPj4gT24gV2VkLCBKdW4gMTcsIDIwMTUgYXQgMTI6MDEgUE0s
-IFNpZmFuIE5hZWVtDQo+ID4+IDxzaWZhbi5uYWVlbUBpbWd0ZWMuY29tPg0KPiA+PiB3cm90ZToN
-Cj4gPj4gPiBTYW1lIGVkZ2UgYml0IHNldCBpbiBTUEZJIENvbnRyb2wgcmVnaXN0ZXIgdG8gZG91
-YmxlIHRoZSBzdXBwb3J0ZWQNCj4gPj4gPiBzcGZpIGNsb2NrIHNwZWVkLiBTZXR0aW5nIHRoaXMg
-Yml0IGluY3JlYXNlcyB0aGUgc3VwcG9ydGVkIHNwZmkNCj4gPj4gPiBmcmVxdWVuY3kgZnJvbSAx
-LzggdG8gMS80IG9mIHRoZSBjb3JlIGNsb2NrIGZyZXF1ZW5jeS4NCj4gPj4gPg0KPiA+PiA+IFdp
-dGhvdXQgdGhpcyBiaXQgc2V0IHRoZSBtYXhpbXVtIHNwZWVkIHN1cHBvcnRlZCB3YXMgMjVNSHog
-b24NCj4gPj4gPiBQaXN0YWNoaW8uDQo+ID4+ID4NCj4gPj4gPiBDaGFuZ2UtSWQ6IEkyNjc4MmVh
-ODhhYzM1NjdlNzJkYWMxMWU0NmM1YjVmNWY1MmM1ZTNkDQo+ID4+ID4gU2lnbmVkLW9mZi1ieTog
-U2lmYW4gTmFlZW0gPHNpZmFuLm5hZWVtQGltZ3RlYy5jb20+DQo+ID4+ID4gLS0tDQo+ID4+ID4g
-IGRyaXZlcnMvc3BpL3NwaS1pbWctc3BmaS5jIHwgICAgMiArKw0KPiA+PiA+ICAxIGZpbGUgY2hh
-bmdlZCwgMiBpbnNlcnRpb25zKCspDQo+ID4+ID4NCj4gPj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVy
-cy9zcGkvc3BpLWltZy1zcGZpLmMNCj4gPj4gPiBiL2RyaXZlcnMvc3BpL3NwaS1pbWctc3BmaS5j
-IGluZGV4IDc4OGUyYjEuLmFjY2U5MGEgMTAwNjQ0DQo+ID4+ID4gLS0tIGEvZHJpdmVycy9zcGkv
-c3BpLWltZy1zcGZpLmMNCj4gPj4gPiArKysgYi9kcml2ZXJzL3NwaS9zcGktaW1nLXNwZmkuYw0K
-PiA+PiA+IEBAIC00MCw2ICs0MCw3IEBADQo+ID4+ID4gICNkZWZpbmUgU1BGSV9DT05UUk9MX1NP
-RlRfUkVTRVQgICAgICAgICAgICAgICAgICAgICAgICBCSVQoMTEpDQo+ID4+ID4gICNkZWZpbmUg
-U1BGSV9DT05UUk9MX1NFTkRfRE1BICAgICAgICAgICAgICAgICAgQklUKDEwKQ0KPiA+PiA+ICAj
-ZGVmaW5lIFNQRklfQ09OVFJPTF9HRVRfRE1BICAgICAgICAgICAgICAgICAgIEJJVCg5KQ0KPiA+
-PiA+ICsjZGVmaW5lIFNQRklfQ09OVFJPTF9TRSAgICAgICAgICAgICAgICAgICAgICAgIEJJVCg4
-KQ0KPiA+PiA+ICAjZGVmaW5lIFNQRklfQ09OVFJPTF9UTU9ERV9TSElGVCAgICAgICAgICAgICAg
-IDUNCj4gPj4gPiAgI2RlZmluZSBTUEZJX0NPTlRST0xfVE1PREVfTUFTSyAgICAgICAgICAgICAg
-ICAgICAgICAgIDB4Nw0KPiA+PiA+ICAjZGVmaW5lIFNQRklfQ09OVFJPTF9UTU9ERV9TSU5HTEUg
-ICAgICAgICAgICAgIDANCj4gPj4gPiBAQCAtNDkxLDYgKzQ5Miw3IEBAIHN0YXRpYyB2b2lkIGlt
-Z19zcGZpX2NvbmZpZyhzdHJ1Y3Qgc3BpX21hc3Rlcg0KPiA+PiAqbWFzdGVyLCBzdHJ1Y3Qgc3Bp
-X2RldmljZSAqc3BpLA0KPiA+PiA+ICAgICAgICAgZWxzZSBpZiAoeGZlci0+dHhfbmJpdHMgPT0g
-U1BJX05CSVRTX1FVQUQgJiYNCj4gPj4gPiAgICAgICAgICAgICAgICAgIHhmZXItPnJ4X25iaXRz
-ID09IFNQSV9OQklUU19RVUFEKQ0KPiA+PiA+ICAgICAgICAgICAgICAgICB2YWwgfD0gU1BGSV9D
-T05UUk9MX1RNT0RFX1FVQUQgPDwNCj4gPj4gPiBTUEZJX0NPTlRST0xfVE1PREVfU0hJRlQ7DQo+
-ID4+ID4gKyAgICAgICB2YWwgfD0gU1BGSV9DT05UUk9MX1NFOw0KPiA+PiA+ICAgICAgICAgc3Bm
-aV93cml0ZWwoc3BmaSwgdmFsLCBTUEZJX0NPTlRST0wpOyAgfQ0KPiA+Pg0KPiA+PiBEb24ndCB5
-b3UgYWxzbyBuZWVkIHRvIHVwZGF0ZSBtYXN0ZXItPm1heF9zcGVlZF9oej8gQW5kIGlmIGl0IGRv
-dWJsZXMNCj4gPj4gdGhlIGNsb2NrIHNwZWVkLCBkb24ndCB5b3UgbmVlZCB0byByZWZsZWN0IHRo
-YXQgaW4gdGhlIGNhbGN1bGF0aW9uIGZvciB0aGUNCj4gZGV2aWRlcj8NCj4gPj4gQ3VycmVudGx5
-IGl0IGxvb2tzIGxpa2UgaXQgd291bGQganVzdCBjYXVzZSBhbGwgdHJhbnNmZXJzIHRvIGdvIHdp
-dGgNCj4gPj4gdGhlIGRvdWJsZWQgcmVxdWVzdGVkIHJhdGUuIEJ1dCBtYXliZSBJJ20gbWlzc2lu
-ZyBzb21ldGhpbmcuDQo+ID4+DQo+ID4gbWF4X3NwZWVkX2h6IGlzIGFscmVhZHkgc2V0IHRvIDEv
-NCAgb2YgdGhlIENvcmUgY2xvY2suIFNvIEkgZG9uJ3QgdGhpbmsgd2UNCj4gbmVlZCB0byBjaGFu
-Z2UgdGhhdC4NCj4gPiBJbiBQaXN0YWNoaW8gU29DIHRoZSBtYXggc3BlZWQgb2YgU1BGSSBibG9j
-ayBpcyBsaW1pdGVkIHRvIDEvNCBvZiB0aGUNCj4gPiBjb3JlIGNsb2NrIG9yIHRvIDUwTWh6LCB0
-byBhY2hpZXZlIHRoZXNlIHZhbHVlcyB0aGUgY2hhbmdlIHN1Z2dlc3RlZA0KPiA+IGluIHRoaXMg
-cGF0Y2ggc2hvdWxkIGhhdmUgYWx3YXlzIGJlZW4gc2V0LiBJbiB0aGUgZGV2aWNlIHRyZWUgbm9k
-ZSBmb3INCj4gPiBTUEZJIHdlIGhhdmUgdG8gbWVudGlvbiB0aGUgbGltaXQgb2YgNTBNaHogYXMg
-c3BpLW1heC1mcmVxdWVuY3kgPQ0KPiA+IDw1MDAwMDAwMD47DQo+IA0KPiBTbyBpdCBjYWxjdWxh
-dGVkIHRoZSB3cm9uZyBkaXZpc29yIGJlZm9yZSwgYW5kIHRoZSByZXN1bHRpbmcgc3BlZWQgd2Fz
-IGhhbGYgb2YNCj4gdGhhdCBhbmQgc2V0dGluZyB0aGlzIGJpdCBhY3R1YWxseSBmaXhlcyBpdD8g
-T3IgZG9lcyB0aGUgYmxvY2sganVzdCB0cmVhdCBzcGVlZHMgPg0KPiAyNSBNSHogYXMgMjUgTUh6
-IHdoZW4gdGhpcyBiaXQgaXMgc2V0PyBJJ20gc3RpbGwgdHJ5aW5nIHRvIHdyYXAgbXkgaGVhZCBh
-cm91bmQNCj4gdGhhdCBzZXR0aW5nIGEgc2luZ2xlIGJpdCBpbiBhIHJlZ2lzdGVyIGFsbG93cyBn
-b2luZyBmcm9tIDB+MjUgTUh6IHRvIDB+NTAgTUh6DQo+IHdpdGhvdXQgbmVlZGluZyB0byB1cGRh
-dGUgdGhlIGNhbGN1bGF0aW9uIG9mIHRoZSBkaXZpc29yLg0KPiANCg0KWWVzLCBpZiB0aGUgcmVx
-dWVzdGVkIHNwZWVkIGlzIDUwTWh6IHdpdGhvdXQgdGhlIFNFIGJpdCBzZXQsIHRoZSBkaXZpc29y
-IGNhbGN1bGF0ZWQgd291bGQgc3RpbGwgcmVxdWVzdCA1ME1oeiBmcm9tIHRoZSBzcGZpIGJsb2Nr
-LCB3aGljaCBpcyBjb3JyZWN0LCBidXQgdGhlIHRyYW5zZmVyIHdvdWxkIGZhaWwgYXMgU0UgYml0
-IGlzIG5vdCBzZXQgYW5kIHRoZSBtYXhpbXVtIHNwZWVkIHN1cHBvcnRlZCB3b3VsZCBiZSAyNU1o
-ei4NCg0KVGhhbmtzLA0KU2lmYW4NCj4gDQo+IFJlZ2FyZHMNCj4gSm9uYXMNCg==
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+
+--TMj/TYF/hpk1GcbO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Wed, Jun 17, 2015 at 10:10:51PM +0800, Eddie Huang wrote:
+
+> Our hardware limitation is: we don't have separate dma tx, rx channel
+> with transfer finish interrupt, only have spi trigger operation.So the
+> mediatek SPI dma full duplex operation steps are:
+> 1. Set TX DMA address.
+> 2. Set RX DMA address.
+> 3. Set length (this step assume TX, RX are the same size).
+> 4. Set TX DMA enable, RX DMA enable bit in spi config register. (not
+> trigger DMA, just told spi use dma)
+> 5. Trigger spi operations.
+> 6. Wait spi operations finish interrupt.
+
+Sure, that's what I understood.
+
+> If tx scatterlist per list data size are 128, 4096, 256. rx scatterlist
+> per list data size are 128, 4096, 256. So we need to go through above
+> steps three times. If tx scatterlists per list data size are 128, 4096,
+> 256. rx scatterlists per list data size are 256, 4096, 128. If we start
+> sending first entry, tx size is 128, rx size is 256, this will cause
+> hardware malfunction because tx, rx data length are not the same.
+
+> The solution I think is copy scatterlist data into one single buffer in
+> mediatek spi transfer function, but I think this is odd because
+> __spi_map_msg() map single buffer into scatterlist, then our driver map
+> scatterlist into single buffer again. I hope this explaination is more
+> clear than before.
+
+To repeat what I said in my last mail: there's no need to use the
+scatterlists as-is, your driver can do whatever set of DMA transfers it
+likes to keep the lengths of each transfer the same.  Attempting to
+linearise the transfers in memory isn't going to work unless you
+allocate physically contiguous memory (which could get painful) and will
+add substantial overhead.
+
+For example with your above example you could split the transfers up to
+be 128, 128, 3968, 128, 128.
+
+--TMj/TYF/hpk1GcbO
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVgaHQAAoJECTWi3JdVIfQAksH/jIeZwEfqVtwT6EEhUEl2nAf
+2mB4U8etaTNL8MrkztPeU3zQFQKlCJkoF+YGK4IypF1kToaUgLkDDpFf04aEEAdK
+E+jMMLgkCY2Ba1DJtxZ4FCnnSqLIcFIHmcnLPjtd2sU3UjAnPnFDctuzjCtlJy4V
+Oovc3xO9fEPznpo28DR2UFf/SZMjQntjS9Rj4aOn8EpPvA/A92r6TKiTY14JE0bn
+3RHpsQ17x9LReKEuv/rcnVZsB6ONqolEPMTmOxtRTEAJQvEQsj2F6+11d80kdj9g
+6icITaTDIF6yBwyzDQ5xiY6F23RW4w/aLBSFyslLZK3rQnYyJcyA0ecJbh3/C28=
+=vCVN
+-----END PGP SIGNATURE-----
+
+--TMj/TYF/hpk1GcbO--

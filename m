@@ -1,7 +1,7 @@
 From: Sifan Naeem <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH v2] spi: img-spfi: Same Edge bit set to double supported transfer speed
-Date: Wed, 17 Jun 2015 11:01:02 +0100
-Message-ID: <1434535262-7393-1-git-send-email-sifan.naeem@imgtec.com>
+Subject: [PATCH v3] spi: img-spfi: Same Edge bit set to double supported transfer speed
+Date: Wed, 17 Jun 2015 11:48:05 +0100
+Message-ID: <1434538085-8584-1-git-send-email-sifan.naeem@imgtec.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
@@ -18,9 +18,9 @@ frequency from 1/8 to 1/4 of the core clock frequency.
 Without this bit set the maximum speed supported was 25MHz on
 Pistachio.
 
-Change-Id: I26782ea88ac3567e72dac11e46c5b5f5f52c5e3d
 Signed-off-by: Sifan Naeem <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
 ---
+ changes from v2: Gerrit Change-Id removed from commit message
  drivers/spi/spi-img-spfi.c |    2 ++
  1 file changed, 2 insertions(+)
 

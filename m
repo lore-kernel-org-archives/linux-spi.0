@@ -1,65 +1,91 @@
-From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: Re: [PATCH v2] spi: img-spfi: Same Edge bit set to double supported
- transfer speed
-Date: Wed, 17 Jun 2015 14:12:15 +0200
-Message-ID: <CAOiHx=ntO2tp7SjU7-f=1oxDa3FJZ6z4gxeu7ZBsUsaijpAK0g@mail.gmail.com>
-References: <1434535262-7393-1-git-send-email-sifan.naeem@imgtec.com>
+From: Pavel Machek <pavel-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH 11/11] dt: Exynos: add Snow SPI NOR node.
+Date: Wed, 17 Jun 2015 14:19:20 +0200
+Message-ID: <20150617121920.GB20728@amd>
+References: <cover.1433364398.git.hramrach@gmail.com>
+ <3234c12c90eabbeeb6d33604a324231937e309ec.1433364398.git.hramrach@gmail.com>
+ <556FB222.2070406@samsung.com>
+ <201506041720.54666.marex@denx.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Andrew Bresticker <abrestic-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-To: Sifan Naeem <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Dan Williams <dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Han Xu <han.xu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
+	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Alison Chaiken <alison_chaiken-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
+	Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Ben Hutchings <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>,
+	Knut Wohlrab <knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>,
+	Bean Huo =?utf-8?B?6ZyN5paM5paMIChiZWFuaHVvKQ==?=
+	<b
+To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1434535262-7393-1-git-send-email-sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <201506041720.54666.marex-ynQEQJNshbs@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi,
+On Thu 2015-06-04 17:20:54, Marek Vasut wrote:
+> On Thursday, June 04, 2015 at 04:04:18 AM, Krzysztof Kozlowski wrote:
+> > On 04.06.2015 06:26, Michal Suchanek wrote:
+> > > The Snow has onboard SPI NOR flash which contains the bootloader.
+> > > 
+> > > Add DT node for this flash chip. The flash is rated 133MHz but the pl330
+> > > controller can transfer only up to 128 bytes at this speed so use more
+> > > conservative settings. Even at 40MHz pl330 can transfer at most 64k with
+> > > the current driver.
+> > > 
+> > > Signed-off-by: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> > > ---
+> > > 
+> > >  arch/arm/boot/dts/exynos5250-snow.dts | 12 ++++++++++++
+> > >  1 file changed, 12 insertions(+)
+> > > 
+> > > diff --git a/arch/arm/boot/dts/exynos5250-snow.dts
+> > > b/arch/arm/boot/dts/exynos5250-snow.dts index 1fa72cf..38e4cda 100644
+> > > --- a/arch/arm/boot/dts/exynos5250-snow.dts
+> > > +++ b/arch/arm/boot/dts/exynos5250-snow.dts
+> > > @@ -691,6 +691,18 @@
+> > > 
+> > >  	num-cs = <1>;
+> > >  	cs-gpios = <&gpa2 5 0>;
+> > >  	status = "okay";
+> > > 
+> > > +		flash: m25p80@0 {
+> > 
+> > The indentation looks odd. This should be at the same level as "status".
+> > 
+> > > +			#address-cells = <1>;
+> > > +			#size-cells = <1>;
+> > > +			compatible = "jedec,spi-nor";
+> > > +			reg = <0>;
+> > > +			spi-max-frequency = <40000000>;
+> > 
+> > So actually you wanted 133 MHz but as a workaround for DMA issue you use
+> > 40 MHz, right? Could you add here a small TODO note in comment about it?
+> 
+> I disagree. There is a problem, the problem should actually be analyzed and 
+> fixed, not just postponed with some TODO nonsense.
 
-On Wed, Jun 17, 2015 at 12:01 PM, Sifan Naeem <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org> wrote:
-> Same edge bit set in SPFI Control register to double the supported
-> spfi clock speed. Setting this bit increases the supported spfi
-> frequency from 1/8 to 1/4 of the core clock frequency.
->
-> Without this bit set the maximum speed supported was 25MHz on
-> Pistachio.
->
-> Change-Id: I26782ea88ac3567e72dac11e46c5b5f5f52c5e3d
-> Signed-off-by: Sifan Naeem <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
-> ---
->  drivers/spi/spi-img-spfi.c |    2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
-> index 788e2b1..acce90a 100644
-> --- a/drivers/spi/spi-img-spfi.c
-> +++ b/drivers/spi/spi-img-spfi.c
-> @@ -40,6 +40,7 @@
->  #define SPFI_CONTROL_SOFT_RESET                        BIT(11)
->  #define SPFI_CONTROL_SEND_DMA                  BIT(10)
->  #define SPFI_CONTROL_GET_DMA                   BIT(9)
-> +#define SPFI_CONTROL_SE                        BIT(8)
->  #define SPFI_CONTROL_TMODE_SHIFT               5
->  #define SPFI_CONTROL_TMODE_MASK                        0x7
->  #define SPFI_CONTROL_TMODE_SINGLE              0
-> @@ -491,6 +492,7 @@ static void img_spfi_config(struct spi_master *master, struct spi_device *spi,
->         else if (xfer->tx_nbits == SPI_NBITS_QUAD &&
->                  xfer->rx_nbits == SPI_NBITS_QUAD)
->                 val |= SPFI_CONTROL_TMODE_QUAD << SPFI_CONTROL_TMODE_SHIFT;
-> +       val |= SPFI_CONTROL_SE;
->         spfi_writel(spfi, val, SPFI_CONTROL);
->  }
-
-Don't you also need to update master->max_speed_hz? And if it doubles
-the clock speed, don't you need to reflect that in the calculation for
-the devider? Currently it looks like it would just cause all transfers
-to go with the doubled requested rate. But maybe I'm missing
-something.
-
-
-Regards
-Jonas
+Of course, that would be preferable if submitter has time. But OTOH
+slow SPI is probably better than no SPI at all, and debugging this can
+be nasty. I think that TODO is suitable.
+								Pavel
+-- 
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blog.html
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

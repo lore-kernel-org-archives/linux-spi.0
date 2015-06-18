@@ -1,26 +1,76 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: spi: bcm2835: driver for "auxiliar" spi1/spi2
-Date: Thu, 18 Jun 2015 11:45:34 +0200
-Message-ID: <5582933E.1050500@martin.sperl.org>
+From: Sifan Naeem <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: img-spfi: check for max speed supported by the spfi block
+Date: Thu, 18 Jun 2015 11:10:33 +0100
+Message-ID: <1434622233-15586-1-git-send-email-sifan.naeem@imgtec.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-To: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Content-Type: text/plain
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<abrestic-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Sifan Naeem <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Quick question: for the auxiliar spi1 and spi2 of the BCM2835 chipset
-should I create a separate driver - say spi-bcm2835aux.c - or incorporate
-it into the exising spi-bcm2835.c driver.
+Maximum speed supported by spfi is limited to 1/4 of the input clock.
+But in some SoCs the maximum speed supported by the spfi block can
+be limited to less than 1/4 of the input clock. In such cases we have
+to define the limit in the device tree so that the driver can pick
+it up.
 
-Note that the register set for the auxiliar spi devices is totally different
-so any code-overlap with the existing spi-bcm2835.c would be minimal.
+Signed-off-by: Sifan Naeem <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
+---
+ .../devicetree/bindings/spi/spi-img-spfi.txt       |    1 +
+ drivers/spi/spi-img-spfi.c                         |   15 +++++++++++++++
+ 2 files changed, 16 insertions(+)
 
-Any preferences?
+diff --git a/Documentation/devicetree/bindings/spi/spi-img-spfi.txt b/Documentation/devicetree/bindings/spi/spi-img-spfi.txt
+index e02fbf1..494db60 100644
+--- a/Documentation/devicetree/bindings/spi/spi-img-spfi.txt
++++ b/Documentation/devicetree/bindings/spi/spi-img-spfi.txt
+@@ -21,6 +21,7 @@ Required properties:
+ Optional properties:
+ - img,supports-quad-mode: Should be set if the interface supports quad mode
+   SPI transfers.
++- spfi-max-frequency: Maximum speed supported by the spfi block.
+ 
+ Example:
+ 
+diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
+index acce90a..1e8178f 100644
+--- a/drivers/spi/spi-img-spfi.c
++++ b/drivers/spi/spi-img-spfi.c
+@@ -548,6 +548,7 @@ static int img_spfi_probe(struct platform_device *pdev)
+ 	struct img_spfi *spfi;
+ 	struct resource *res;
+ 	int ret;
++	u32 max_speed_hz;
+ 
+ 	master = spi_alloc_master(&pdev->dev, sizeof(*spfi));
+ 	if (!master)
+@@ -612,6 +613,20 @@ static int img_spfi_probe(struct platform_device *pdev)
+ 	master->max_speed_hz = clk_get_rate(spfi->spfi_clk) / 4;
+ 	master->min_speed_hz = clk_get_rate(spfi->spfi_clk) / 512;
+ 
++	/*
++	 * Maximum speed supported by spfi is limited to the lower value
++	 * between 1/4 of the input clock or to "spfi-max-frequency"
++	 * defined in the device tree.
++	 * If no value is defined in the device tree assume the maximum
++	 * speed supported to be 1/4 of the input clock rate.
++	 */
++	if (!of_property_read_u32(spfi->dev->of_node, "spfi-max-frequency",
++				  &max_speed_hz))
++	{
++		if (master->max_speed_hz > max_speed_hz)
++			master->max_speed_hz = max_speed_hz;
++	}
++
+ 	master->setup = img_spfi_setup;
+ 	master->cleanup = img_spfi_cleanup;
+ 	master->transfer_one = img_spfi_transfer_one;
+-- 
+1.7.9.5
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

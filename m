@@ -1,46 +1,126 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: spi: bcm2835: driver for "auxiliar" spi1/spi2
-Date: Thu, 18 Jun 2015 13:37:11 +0200
-Message-ID: <5582AD67.9020503@martin.sperl.org>
-References: <5582933E.1050500@martin.sperl.org> <55829B18.4030609@tronnes.org> <20150618105848.GE14071@sirena.org.uk>
+From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Subject: Re: [PATCH v2] spi: img-spfi: Same Edge bit set to double supported
+ transfer speed
+Date: Thu, 18 Jun 2015 13:55:15 +0200
+Message-ID: <CAOiHx=nKf1tOMgTfY937eqg5qk0gZ4VtaOpPPhxCWsTc=PNmgQ@mail.gmail.com>
+References: <1434535262-7393-1-git-send-email-sifan.naeem@imgtec.com>
+ <CAOiHx=ntO2tp7SjU7-f=1oxDa3FJZ6z4gxeu7ZBsUsaijpAK0g@mail.gmail.com>
+ <A0E307549471DA4DBAF2DE2DE6CBFB7E4961964D@hhmail02.hh.imgtec.org>
+ <CAOiHx=mibfR8nJALUe_9Sa98ypmPgbEE6UTQHmd9Jzb51V4wLg@mail.gmail.com> <A0E307549471DA4DBAF2DE2DE6CBFB7E496197E8@hhmail02.hh.imgtec.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252;
-	format=flowed
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	=?windows-1252?Q?Noralf_Tr=F8nnes?= <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Andrew Bresticker <abrestic-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+To: Sifan Naeem <Sifan.Naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150618105848.GE14071-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <A0E307549471DA4DBAF2DE2DE6CBFB7E496197E8-brIQrgj5TFtJFJhlrACyRFBRoQTxkR7k@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 2015-06-18 12:58, Mark Brown wrote:
-> On Thu, Jun 18, 2015 at 12:19:04PM +0200, Noralf Tr=F8nnes wrote:
-> Linux supports shared interrupts perfectly fine, though it sounds lik=
-e
-> this is actually a cascaded interrupt (the demux is another interrupt
-> controller) which we also support just fine.
+Hi,
 
-So we need to move the route of using a cascaded demux interrupt handle=
-r
-for interrupt separation.
+On Wed, Jun 17, 2015 at 6:08 PM, Sifan Naeem <Sifan.Naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org> wrote:
+> Hi Jonas,
+>
+>> -----Original Message-----
+>> From: Jonas Gorski [mailto:jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org]
+>> Sent: 17 June 2015 15:31
+>> To: Sifan Naeem
+>> Cc: Mark Brown; linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org;
+>> Andrew Bresticker
+>> Subject: Re: [PATCH v2] spi: img-spfi: Same Edge bit set to double supported
+>> transfer speed
+>>
+>> Hi,
+>>
+>> On Wed, Jun 17, 2015 at 3:36 PM, Sifan Naeem <Sifan.Naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
+>> wrote:
+>> > Hi Jonas,
+>> >
+>> >> -----Original Message-----
+>> >> From: Jonas Gorski [mailto:jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org]
+>> >> Sent: 17 June 2015 13:12
+>> >> To: Sifan Naeem
+>> >> Cc: Mark Brown; linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org;
+>> >> linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; Andrew Bresticker
+>> >> Subject: Re: [PATCH v2] spi: img-spfi: Same Edge bit set to double
+>> >> supported transfer speed
+>> >>
+>> >> Hi,
+>> >>
+>> >> On Wed, Jun 17, 2015 at 12:01 PM, Sifan Naeem
+>> >> <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
+>> >> wrote:
+>> >> > Same edge bit set in SPFI Control register to double the supported
+>> >> > spfi clock speed. Setting this bit increases the supported spfi
+>> >> > frequency from 1/8 to 1/4 of the core clock frequency.
+>> >> >
+>> >> > Without this bit set the maximum speed supported was 25MHz on
+>> >> > Pistachio.
+>> >> >
+>> >> > Change-Id: I26782ea88ac3567e72dac11e46c5b5f5f52c5e3d
+>> >> > Signed-off-by: Sifan Naeem <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
+>> >> > ---
+>> >> >  drivers/spi/spi-img-spfi.c |    2 ++
+>> >> >  1 file changed, 2 insertions(+)
+>> >> >
+>> >> > diff --git a/drivers/spi/spi-img-spfi.c
+>> >> > b/drivers/spi/spi-img-spfi.c index 788e2b1..acce90a 100644
+>> >> > --- a/drivers/spi/spi-img-spfi.c
+>> >> > +++ b/drivers/spi/spi-img-spfi.c
+>> >> > @@ -40,6 +40,7 @@
+>> >> >  #define SPFI_CONTROL_SOFT_RESET                        BIT(11)
+>> >> >  #define SPFI_CONTROL_SEND_DMA                  BIT(10)
+>> >> >  #define SPFI_CONTROL_GET_DMA                   BIT(9)
+>> >> > +#define SPFI_CONTROL_SE                        BIT(8)
+>> >> >  #define SPFI_CONTROL_TMODE_SHIFT               5
+>> >> >  #define SPFI_CONTROL_TMODE_MASK                        0x7
+>> >> >  #define SPFI_CONTROL_TMODE_SINGLE              0
+>> >> > @@ -491,6 +492,7 @@ static void img_spfi_config(struct spi_master
+>> >> *master, struct spi_device *spi,
+>> >> >         else if (xfer->tx_nbits == SPI_NBITS_QUAD &&
+>> >> >                  xfer->rx_nbits == SPI_NBITS_QUAD)
+>> >> >                 val |= SPFI_CONTROL_TMODE_QUAD <<
+>> >> > SPFI_CONTROL_TMODE_SHIFT;
+>> >> > +       val |= SPFI_CONTROL_SE;
+>> >> >         spfi_writel(spfi, val, SPFI_CONTROL);  }
+>> >>
+>> >> Don't you also need to update master->max_speed_hz? And if it doubles
+>> >> the clock speed, don't you need to reflect that in the calculation for the
+>> devider?
+>> >> Currently it looks like it would just cause all transfers to go with
+>> >> the doubled requested rate. But maybe I'm missing something.
+>> >>
+>> > max_speed_hz is already set to 1/4  of the Core clock. So I don't think we
+>> need to change that.
+>> > In Pistachio SoC the max speed of SPFI block is limited to 1/4 of the
+>> > core clock or to 50Mhz, to achieve these values the change suggested
+>> > in this patch should have always been set. In the device tree node for
+>> > SPFI we have to mention the limit of 50Mhz as spi-max-frequency =
+>> > <50000000>;
+>>
+>> So it calculated the wrong divisor before, and the resulting speed was half of
+>> that and setting this bit actually fixes it? Or does the block just treat speeds >
+>> 25 MHz as 25 MHz when this bit is set? I'm still trying to wrap my head around
+>> that setting a single bit in a register allows going from 0~25 MHz to 0~50 MHz
+>> without needing to update the calculation of the divisor.
+>>
+>
+> Yes, if the requested speed is 50Mhz without the SE bit set, the divisor calculated would still request 50Mhz from the spfi block, which is correct, but the transfer would fail as SE bit is not set and the maximum speed supported would be 25Mhz.
 
-The other thing is: is there a "framework" to handle access to the
-the "enable" register shared by all three devices (spi1/spi2/uart1),
-or do we have to create a tiny module (aux-bcm2835 or similar) to
-serialize access to this register?
+So this is actually a bug fix, and it should be noted as such so that
+stable maintainers can properly decide to pick it up.
 
-=46or the moment I will start focusing on the implementation itself whi=
-le
-we can figure out the interrupt-controller configuration in DT in
-parallel...
+>From the original commit message it sounds like this is an enhancement
+that increases the max speed from 25 to 50 MHz, and not that speeds
+25~50 MHz are currently broken (i.e. transfers will fail) and require
+this to be set to work.
 
-We also should look into upstreaming the configuration of uart1 - even
-if only available on the compute board...
 
+Regards
+Jonas
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

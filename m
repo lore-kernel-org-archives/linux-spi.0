@@ -1,76 +1,53 @@
-From: Sifan Naeem <Sifan.Naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
-Subject: RE: [PATCH v3] spi: img-spfi: Same Edge bit set to double supported
- transfer speed
-Date: Thu, 18 Jun 2015 12:52:11 +0000
-Message-ID: <A0E307549471DA4DBAF2DE2DE6CBFB7E4961A865@hhmail02.hh.imgtec.org>
-References: <1434538085-8584-1-git-send-email-sifan.naeem@imgtec.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: Re: [PATCH] spi: expose spi_master and spi_device statistics via sysfs
+Date: Thu, 18 Jun 2015 14:54:35 +0200
+Message-ID: <B3BA7701-96E1-466A-90EA-121E2A85F851@martin.sperl.org>
+References: <1432574909-2326-1-git-send-email-kernel@martin.sperl.org> <556EE446.3060407@metafoo.de> <20150603115319.GF14071@sirena.org.uk> <8DBE5E2D-47ED-48D3-A185-82AF4831B0A2@martin.sperl.org>
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2098\))
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 8BIT
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"abrestic-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org" <abrestic-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-To: "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1434538085-8584-1-git-send-email-sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
-Content-Language: en-US
+In-Reply-To: <8DBE5E2D-47ED-48D3-A185-82AF4831B0A2-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Please ignore this patch. I have posted a new patch as a fix after the discussion with Jonas Gorski.
 
-https://patchwork.kernel.org/patch/6636761/ spi: img-spfi: fix support for speeds up to 1/4th input clock
+> On 04.06.2015, at 18:56, Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org> wrote:
+>> We do get to control the permissions on sysfs files, though it's a bit
+>> more unusual to make things root only (and there is the histogram).
+> 
+> I left histogram as a single file because I remember having seen a file in
+> /sys with similar semantics using multiple values (but I can not
+> remember which one).
 
-Thanks,
-Sifan
+Now that I am back here some examples from /sys which contain multiple values:
+/sys/devices/platform/soc/20980000.usb/pools:
+poolinfo - 0.1
+buffer-2048         0    0 2048  0
+buffer-512          0    0  512  0
+buffer-128          1   32  128  1
+buffer-32           0    0   32  0
 
-> -----Original Message-----
-> From: Sifan Naeem
-> Sent: 17 June 2015 11:48
-> To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-> Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org;
-> abrestic-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org; Sifan Naeem
-> Subject: [PATCH v3] spi: img-spfi: Same Edge bit set to double supported
-> transfer speed
-> 
-> Same edge bit set in SPFI Control register to double the supported spfi clock
-> speed. Setting this bit increases the supported spfi frequency from 1/8 to 1/4
-> of the core clock frequency.
-> 
-> Without this bit set the maximum speed supported was 25MHz on Pistachio.
-> 
-> Signed-off-by: Sifan Naeem <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
-> ---
->  changes from v2: Gerrit Change-Id removed from commit message
->  drivers/spi/spi-img-spfi.c |    2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c index
-> 788e2b1..acce90a 100644
-> --- a/drivers/spi/spi-img-spfi.c
-> +++ b/drivers/spi/spi-img-spfi.c
-> @@ -40,6 +40,7 @@
->  #define SPFI_CONTROL_SOFT_RESET			BIT(11)
->  #define SPFI_CONTROL_SEND_DMA			BIT(10)
->  #define SPFI_CONTROL_GET_DMA			BIT(9)
-> +#define SPFI_CONTROL_SE			BIT(8)
->  #define SPFI_CONTROL_TMODE_SHIFT		5
->  #define SPFI_CONTROL_TMODE_MASK			0x7
->  #define SPFI_CONTROL_TMODE_SINGLE		0
-> @@ -491,6 +492,7 @@ static void img_spfi_config(struct spi_master
-> *master, struct spi_device *spi,
->  	else if (xfer->tx_nbits == SPI_NBITS_QUAD &&
->  		 xfer->rx_nbits == SPI_NBITS_QUAD)
->  		val |= SPFI_CONTROL_TMODE_QUAD <<
-> SPFI_CONTROL_TMODE_SHIFT;
-> +	val |= SPFI_CONTROL_SE;
->  	spfi_writel(spfi, val, SPFI_CONTROL);
->  }
-> 
-> --
-> 1.7.9.5
+/sys/devices/platform/soc/20980000.usb/usb1/1-1/1-1.3/1-1.3:1.0/host0/target0:0:0/0:0:0:0/block/sda/sda1/stat:
+/sys/devices/platform/soc/20300000.sdhci/mmc_host/mmc0/mmc0:e624/block/mmcblk0/mmcblk0p1/stat:
+     425       56     3842      670        7        9      128     2080        0     1530     2750
 
---
+/sys/kernel/vmcoreinfo:
+85d84c 1024
+
+/sys/devices/platform/soc/20300000.sdhci/mmc_host/mmc0/mmc0:e624/block/mmcblk0/inflight:
+/sys/devices/platform/soc/20980000.usb/usb1/1-1/1-1.3/1-1.3:1.0/host0/target0:0:0/0:0:0:0/block/sda/sda1/inflight:
+       0        0
+
+So it is rare, but not totally uncommon - especially those block statistics.
+
+I can still remove the histogram or move it to separate files per bin
+(similar to /sys/kernel/slab/:t-*)
+
+What would you prefer so that I can fix the patch?--
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

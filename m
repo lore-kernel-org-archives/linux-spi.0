@@ -1,56 +1,59 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: spi: bcm2835: driver for "auxiliar" spi1/spi2
-Date: Thu, 18 Jun 2015 11:38:08 +0100
-Message-ID: <20150618103808.GD14071@sirena.org.uk>
+Date: Thu, 18 Jun 2015 11:58:48 +0100
+Message-ID: <20150618105848.GE14071@sirena.org.uk>
 References: <5582933E.1050500@martin.sperl.org>
+ <55829B18.4030609@tronnes.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="WFkhpfBSKA51eMK1"
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	protocol="application/pgp-signature"; boundary="NI/YJYXQ/j0wYS88"
+Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+To: Noralf =?iso-8859-1?Q?Tr=F8nnes?= <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <5582933E.1050500-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <55829B18.4030609-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---WFkhpfBSKA51eMK1
-Content-Type: text/plain; charset=us-ascii
+--NI/YJYXQ/j0wYS88
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 18, 2015 at 11:45:34AM +0200, Martin Sperl wrote:
-> Quick question: for the auxiliar spi1 and spi2 of the BCM2835 chipset
-> should I create a separate driver - say spi-bcm2835aux.c - or incorporate
-> it into the exising spi-bcm2835.c driver.
+On Thu, Jun 18, 2015 at 12:19:04PM +0200, Noralf Tr=F8nnes wrote:
 
-> Note that the register set for the auxiliar spi devices is totally different
-> so any code-overlap with the existing spi-bcm2835.c would be minimal.
+> There is also an aux mini uart that shares interrupt with spi1/2.
+> The AUXIRQ register determines the interrupt source. How should this
+> sharing be done? This uart is really only useful on the Compute Module
+> since it's pins overlap the pl011 uart pins on the other boards.
+> This is how the mini uart is used/setup downstream:
+> https://github.com/raspberrypi/linux/pull/1008
 
-> Any preferences?
+Linux supports shared interrupts perfectly fine, though it sounds like
+this is actually a cascaded interrupt (the demux is another interrupt
+controller) which we also support just fine.
 
-If there's no code overlap it should be a separate driver, your proposed
-name sounds good.
-
---WFkhpfBSKA51eMK1
+--NI/YJYXQ/j0wYS88
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVgp+PAAoJECTWi3JdVIfQ38YH/jRRca/OlVX7bvo6aqMrvAn6
-0BseKKVfnc7Dt7lH+37e5jnZcmirRZXM6zNFKK/9Y0RrYx5pS0BXOKkzk6+Fdg47
-s66hF/xr7PNuiBxfOHv+rRu4EOq/795bcLoGA2SnbtaeKfxRbPAMozs7emkOUGdd
-IFSVg5fzn+iV7yuN4Xu038gs6d4M4swZbxHrcaSKUSwSvhFU8Y++FgwQwD4fhXVk
-hTvSJhX31Z5/ShV4R+SXocnDHvLNMSx/RPc9E9K5H+V45upQiPNrVEvCLp4zd28O
-VcJiTVHtKsGXkitvbf7uB0RRn1ah3lfxNeF2Emy5npfaViQBimOz31OxmqiSNcU=
-=fttl
+iQEcBAEBCAAGBQJVgqRnAAoJECTWi3JdVIfQCpsH/RJpegEpLQmNW70ecUd4YEXW
+7xVwQfLJT7IbaGyrJNO656f1UMRVgTr+ScmCF+4E1yNgyXneR+52BHoTDzx0Wcyn
+Cp5FamU6gQ/CBIVQv28gKpLuzyypWoRqiBElfhqNZGUAt5hXXOTr2ru60j7FXY/O
+TcvtaTyfQwoFYSVohmjRqgiHE1W0LcGVYVHxmQqfhEqiImc7cBtRQbpr/SL7cEKy
+cF+ZMEF61ckRMNtiRZTP30HvrmJhDNL4T9viHhgjvudHYuL9Q88YXzs7ctIOvX9S
+3PyXUsKnNzsHnNSGwbwvzSnyeGq1YxdBS4+3gV4wRmXcN/CrQpUxQLiqZzdqTUY=
+=B70G
 -----END PGP SIGNATURE-----
 
---WFkhpfBSKA51eMK1--
+--NI/YJYXQ/j0wYS88--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,55 +1,57 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: expose spi_master and spi_device statistics via
- sysfs
-Date: Thu, 18 Jun 2015 14:49:18 +0100
-Message-ID: <20150618134918.GF14071@sirena.org.uk>
-References: <1432574909-2326-1-git-send-email-kernel@martin.sperl.org>
- <556EE446.3060407@metafoo.de>
- <20150603115319.GF14071@sirena.org.uk>
- <8DBE5E2D-47ED-48D3-A185-82AF4831B0A2@martin.sperl.org>
- <B3BA7701-96E1-466A-90EA-121E2A85F851@martin.sperl.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="s4QZEMnjKRGdPWeD"
-Cc: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+From: Michael van der Westhuizen <michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>
+Subject: [PATCH 0/2] spi: dw: Reintroduce optional 16 bit data register I/O
+Date: Fri, 19 Jun 2015 10:43:53 +0200
+Message-ID: <1434703435-25198-1-git-send-email-michael@smart-africa.com>
+Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Steffen Trumtrar <s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>,
+	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Michael van der Westhuizen <michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <B3BA7701-96E1-466A-90EA-121E2A85F851-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The commit dd11444327ce ("spi: dw-spi: Convert 16bit accesses to 32bit
+accesses") globally changed all register access in the dw_apb_ssi driver
+to 32 bit access, which breaks data register (FIFO) access on picoXcell
+platforms.
 
---s4QZEMnjKRGdPWeD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This series introduces a boolean to the core spi-dw driver to indicate
+to the core that 16 bit data register access is appropriate, implements
+the code that respects that flag and updates the dw-spi-mmio driver to
+allow setting this boolean from the device tree.
 
-On Thu, Jun 18, 2015 at 02:54:35PM +0200, Martin Sperl wrote:
+A binding documentation fix is included in this series.
 
-> Now that I am back here some examples from /sys which contain multiple values:
-> /sys/devices/platform/soc/20980000.usb/pools:
+Prior to applying this change the following error presents on
+a picoCell pc3x3 platform:
+  spi_master spi32766: interrupt_transfer: fifo overrun/underrun
+  m25p80 spi32766.0: error -5 reading 9f
+  m25p80: probe of spi32766.0 failed with error -5
 
-The fact that other people have broken the ABI doesn't mean it's a good
-idea to introduce further ABI breakage.
+With this series applied:
+  m25p80 spi32766.0: m25p40 (512 Kbytes)
 
---s4QZEMnjKRGdPWeD
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Michael van der Westhuizen (2):
+  dt: snps,dw-apb-ssi: Describe 16 bit data register usage limitations
+  spi: dw: Allow interface drivers to limit data I/O to word sizes
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+ Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt |  3 +++
+ drivers/spi/spi-dw-mmio.c                                 |  5 +++++
+ drivers/spi/spi-dw.c                                      | 13 +++++++++++--
+ drivers/spi/spi-dw.h                                      | 11 +++++++++++
+ 4 files changed, 30 insertions(+), 2 deletions(-)
 
-iQEcBAEBCAAGBQJVgsxdAAoJECTWi3JdVIfQeuEH/RETweu5Y3nWwnwMK5hVx/Tz
-sSY+6GBGG+o5TTOh0kzuYpJqE6Qo/4GQZHl1b5ZglydDUZOv698SIfcs893+9k1C
-rXBNv1rhFO332Jn/+nHdi6V8W6tBfvTZ2yY8KUlJ/Ip4462JHibd3MWv0UwHaYK4
-b/NzO0pOJ9rV1DSRet6OfObNvQ/PM+tdQSxe8si6d7EifUs2pP/ycC/M80AnAr0W
-KlEmNaY/zW+JYsyD9lKWdcaeG6iCK7NjotUQbbpRH78o8oKE1+4J2nS9epJfBjFY
-e4DwRklTJ8euYa+0EO+05QvAr/NdkB5bKaus2abvpTZlbuzfQQhmbg3PtEC3Vs4=
-=B4Yu
------END PGP SIGNATURE-----
+-- 
+2.1.4
 
---s4QZEMnjKRGdPWeD--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,109 +1,413 @@
-From: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Subject: Re: [PATCH 02/13] dmaengine: Introduce
- dma_request_slave_channel_compat_reason()
-Date: Mon, 22 Jun 2015 14:31:00 +0300
-Message-ID: <5587F1F4.1060905@ti.com>
-References: <1432646768-12532-1-git-send-email-peter.ujfalusi@ti.com>
- <1432646768-12532-3-git-send-email-peter.ujfalusi@ti.com>
- <20150529093317.GF3140@localhost>
- <CAMuHMdVJ0h9qXxBWH9L2y4O2KLkEq12KW_6k8rTgi+Lux=C0gw@mail.gmail.com>
- <20150529101846.GG3140@localhost> <55687892.7050606@ti.com>
- <20150602125535.GS3140@localhost> <5570758E.6030302@ti.com>
- <20150612125837.GJ28601@localhost>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
-Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- ALSA Development Mailing List <alsa-devel@alsa-project.org>,
- Tony Lindgren <tony@atomide.com>, Linux MMC List <linux-mmc@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- linux-spi <linux-spi@vger.kernel.org>,
- Geert Uytterhoeven <geert@linux-m68k.org>, linux-crypto@vger.kernel.org,
- "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
- dmaengine@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>,
- "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
- Linux Media Mailing List <linux-media@vger.kernel.org>
-To: Vinod Koul <vinod.koul@intel.com>
-Return-path: <alsa-devel-bounces@alsa-project.org>
-In-Reply-To: <20150612125837.GJ28601@localhost>
-List-Unsubscribe: <http://mailman.alsa-project.org/mailman/options/alsa-devel>,
- <mailto:alsa-devel-request@alsa-project.org?subject=unsubscribe>
-List-Archive: <http://mailman.alsa-project.org/pipermail/alsa-devel/>
-List-Post: <mailto:alsa-devel@alsa-project.org>
-List-Help: <mailto:alsa-devel-request@alsa-project.org?subject=help>
-List-Subscribe: <http://mailman.alsa-project.org/mailman/listinfo/alsa-devel>,
- <mailto:alsa-devel-request@alsa-project.org?subject=subscribe>
-Errors-To: alsa-devel-bounces@alsa-project.org
-Sender: alsa-devel-bounces@alsa-project.org
-List-Id: linux-spi.vger.kernel.org
+From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
+Subject: [PATCH V2] spi: expose spi_master and spi_device statistics via sysfs
+Date: Mon, 22 Jun 2015 13:00:36 +0000
+Message-ID: <1434978036-2353-1-git-send-email-kernel@martin.sperl.org>
+Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 06/12/2015 03:58 PM, Vinod Koul wrote:
-> Sorry this slipped thru
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-I was away for a week anyways ;)
+per spi-master statistics accessible as:
+  /sys/class/spi_master/spi*/statistics/*
 
-> Thinking about it again, I think we should coverge to two APIs and mark t=
-he
-> legacy depracuated and look to convert folks and phase that out
+per spi-device statistics accessible via:
+  /sys/class/spi_master/spi*/spi*.*/statistics/*
 
-Currently, w/o this series we have these APIs:
-/* to be used with DT/ACPI */
-dma_request_slave_channel(dev, name)		/* NULL on failure */
-dma_request_slave_channel_reason(dev, name)	/* error code on failure */
+The following statistics are exposed as separate "files" inside
+these directories:
+* messages              number of spi_messages
+* transfers             number of spi_transfers
+* bytes                 number of bytes transferred
+* bytes_rx              number of bytes transmitted
+* bytes_tx              number of bytes received
+* errors                number of errors encounterd
+* timedout              number of messages that have timed out
+* spi_async             number of spi_messages submitted using spi_async
+* spi_sync              number of spi_messages submitted using spi_sync
+* spi_sync_immediate    number of spi_messages submitted using spi_sync,
+                        that are handled immediately without a context switch
+                        to the spi_pump worker-thread
 
-/* Legacy mode only - no DT/ACPI lookup */
-dma_request_channel(mask, fn, fn_param) /* NULL on failure */
+Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+---
+ drivers/spi/spi.c       |  168 ++++++++++++++++++++++++++++++++++++++++++++++-
+ include/linux/spi/spi.h |   64 ++++++++++++++++++
+ 2 files changed, 229 insertions(+), 3 deletions(-)
 
-/* to be used with DT/ACPI or legacy boot */
-dma_request_slave_channel_compat(mask, fn, fn_param, dev, name)	/* NULL on
-failure */
+Changelog:
+  V1->V2: removal of transfer_histogram exporting multiple values in one file
+          - there is another patch that adds this in a one value per file
+            format
 
-To request _any_ channel to be used for memcpy one has to use
-dma_request_channel(mask, NULL, NULL);
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index cf8b91b..07476ca 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -67,11 +67,141 @@ modalias_show(struct device *dev, struct device_attribute *a, char *buf)
+ }
+ static DEVICE_ATTR_RO(modalias);
+ 
++#define SPI_STATISTICS_ATTRS(field, file)				\
++static ssize_t spi_master_##field##_show(struct device *dev,		\
++					 struct device_attribute *attr,	\
++					 char *buf)			\
++{									\
++	struct spi_master *master = container_of(dev,			\
++						 struct spi_master, dev); \
++	return spi_statistics_##field##_show(&master->statistics, buf);	\
++}									\
++static struct device_attribute dev_attr_spi_master_##field = {		\
++	.attr = { .name = file, .mode = S_IRUGO },			\
++	.show = spi_master_##field##_show,				\
++};									\
++static ssize_t spi_device_##field##_show(struct device *dev,		\
++					 struct device_attribute *attr,	\
++					char *buf)			\
++{									\
++	struct spi_device *spi = container_of(dev,			\
++					      struct spi_device, dev);	\
++	return spi_statistics_##field##_show(&spi->statistics, buf);	\
++}									\
++static struct device_attribute dev_attr_spi_device_##field = {		\
++	.attr = { .name = file, .mode = S_IRUGO },			\
++	.show = spi_device_##field##_show,				\
++}
++
++#define SPI_STATISTICS_SHOW_NAME(name, file, field, format_string)	\
++static ssize_t spi_statistics_##name##_show(struct spi_statistics *stat, \
++					    char *buf)			\
++{									\
++	unsigned long flags;						\
++	ssize_t len;							\
++	spin_lock_irqsave(&stat->lock, flags);				\
++	len = sprintf(buf, format_string, stat->field);			\
++	spin_unlock_irqrestore(&stat->lock, flags);			\
++	return len;							\
++}									\
++SPI_STATISTICS_ATTRS(name, file)
++
++#define SPI_STATISTICS_SHOW(field, format_string)			\
++	SPI_STATISTICS_SHOW_NAME(field, __stringify(field),		\
++				 field, format_string)
++
++SPI_STATISTICS_SHOW(messages, "%lu");
++SPI_STATISTICS_SHOW(transfers, "%lu");
++SPI_STATISTICS_SHOW(errors, "%lu");
++SPI_STATISTICS_SHOW(timedout, "%lu");
++
++SPI_STATISTICS_SHOW(spi_sync, "%lu");
++SPI_STATISTICS_SHOW(spi_sync_immediate, "%lu");
++SPI_STATISTICS_SHOW(spi_async, "%lu");
++
++SPI_STATISTICS_SHOW(bytes, "%llu");
++SPI_STATISTICS_SHOW(bytes_rx, "%llu");
++SPI_STATISTICS_SHOW(bytes_tx, "%llu");
++
+ static struct attribute *spi_dev_attrs[] = {
+ 	&dev_attr_modalias.attr,
+ 	NULL,
+ };
+-ATTRIBUTE_GROUPS(spi_dev);
++
++static const struct attribute_group spi_dev_group = {
++	.attrs  = spi_dev_attrs,
++};
++
++static struct attribute *spi_device_statistics_attrs[] = {
++	&dev_attr_spi_device_messages.attr,
++	&dev_attr_spi_device_transfers.attr,
++	&dev_attr_spi_device_errors.attr,
++	&dev_attr_spi_device_timedout.attr,
++	&dev_attr_spi_device_spi_sync.attr,
++	&dev_attr_spi_device_spi_sync_immediate.attr,
++	&dev_attr_spi_device_spi_async.attr,
++	&dev_attr_spi_device_bytes.attr,
++	&dev_attr_spi_device_bytes_rx.attr,
++	&dev_attr_spi_device_bytes_tx.attr,
++	NULL,
++};
++
++static const struct attribute_group spi_device_statistics_group = {
++	.name  = "statistics",
++	.attrs  = spi_device_statistics_attrs,
++};
++
++static const struct attribute_group *spi_dev_groups[] = {
++	&spi_dev_group,
++	&spi_device_statistics_group,
++	NULL,
++};
++
++static struct attribute *spi_master_statistics_attrs[] = {
++	&dev_attr_spi_master_messages.attr,
++	&dev_attr_spi_master_transfers.attr,
++	&dev_attr_spi_master_errors.attr,
++	&dev_attr_spi_master_timedout.attr,
++	&dev_attr_spi_master_spi_sync.attr,
++	&dev_attr_spi_master_spi_sync_immediate.attr,
++	&dev_attr_spi_master_spi_async.attr,
++	&dev_attr_spi_master_bytes.attr,
++	&dev_attr_spi_master_bytes_rx.attr,
++	&dev_attr_spi_master_bytes_tx.attr,
++	NULL,
++};
++
++static const struct attribute_group spi_master_statistics_group = {
++	.name  = "statistics",
++	.attrs  = spi_master_statistics_attrs,
++};
++
++static const struct attribute_group *spi_master_groups[] = {
++	&spi_master_statistics_group,
++	NULL,
++};
++
++void spi_statistics_add_transfer_stats(struct spi_statistics *stats,
++				       struct spi_transfer *xfer,
++				       struct spi_master *master)
++{
++	unsigned long flags;
++
++	spin_lock_irqsave(&stats->lock, flags);
++
++	stats->transfers++;
++
++	stats->bytes += xfer->len;
++	if ((xfer->tx_buf) &&
++	    (xfer->tx_buf != master->dummy_tx))
++		stats->bytes_tx += xfer->len;
++	if ((xfer->rx_buf) &&
++	    (xfer->rx_buf != master->dummy_rx))
++		stats->bytes_rx += xfer->len;
++
++	spin_unlock_irqrestore(&stats->lock, flags);
++}
++EXPORT_SYMBOL_GPL(spi_statistics_add_transfer_stats);
+ 
+ /* modalias support makes "modprobe $MODALIAS" new-style hotplug work,
+  * and the sysfs version makes coldplug work too.
+@@ -249,6 +379,9 @@ struct spi_device *spi_alloc_device(struct spi_master *master)
+ 	spi->dev.bus = &spi_bus_type;
+ 	spi->dev.release = spidev_release;
+ 	spi->cs_gpio = -ENOENT;
++
++	spin_lock_init(&spi->statistics.lock);
++
+ 	device_initialize(&spi->dev);
+ 	return spi;
+ }
+@@ -689,17 +822,29 @@ static int spi_transfer_one_message(struct spi_master *master,
+ 	bool keep_cs = false;
+ 	int ret = 0;
+ 	unsigned long ms = 1;
++	struct spi_statistics *statm = &master->statistics;
++	struct spi_statistics *stats = &msg->spi->statistics;
+ 
+ 	spi_set_cs(msg->spi, true);
+ 
++	SPI_STATISTICS_INCREMENT_FIELD(statm, messages);
++	SPI_STATISTICS_INCREMENT_FIELD(stats, messages);
++
+ 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+ 		trace_spi_transfer_start(msg, xfer);
+ 
++		spi_statistics_add_transfer_stats(statm, xfer, master);
++		spi_statistics_add_transfer_stats(stats, xfer, master);
++
+ 		if (xfer->tx_buf || xfer->rx_buf) {
+ 			reinit_completion(&master->xfer_completion);
+ 
+ 			ret = master->transfer_one(master, msg->spi, xfer);
+ 			if (ret < 0) {
++				SPI_STATISTICS_INCREMENT_FIELD(statm,
++							       errors);
++				SPI_STATISTICS_INCREMENT_FIELD(stats,
++							       errors);
+ 				dev_err(&msg->spi->dev,
+ 					"SPI transfer failed: %d\n", ret);
+ 				goto out;
+@@ -715,6 +860,10 @@ static int spi_transfer_one_message(struct spi_master *master,
+ 			}
+ 
+ 			if (ms == 0) {
++				SPI_STATISTICS_INCREMENT_FIELD(statm,
++							       timedout);
++				SPI_STATISTICS_INCREMENT_FIELD(stats,
++							       timedout);
+ 				dev_err(&msg->spi->dev,
+ 					"SPI transfer timed out\n");
+ 				msg->status = -ETIMEDOUT;
+@@ -1416,10 +1565,10 @@ static struct class spi_master_class = {
+ 	.name		= "spi_master",
+ 	.owner		= THIS_MODULE,
+ 	.dev_release	= spi_master_release,
++	.dev_groups	= spi_master_groups,
+ };
+ 
+ 
+-
+ /**
+  * spi_alloc_master - allocate SPI master controller
+  * @dev: the controller, possibly using the platform_bus
+@@ -1585,6 +1734,8 @@ int spi_register_master(struct spi_master *master)
+ 			goto done;
+ 		}
+ 	}
++	/* add statistics */
++	spin_lock_init(&master->statistics.lock);
+ 
+ 	mutex_lock(&board_lock);
+ 	list_add_tail(&master->list, &spi_master_list);
+@@ -1939,6 +2090,9 @@ static int __spi_async(struct spi_device *spi, struct spi_message *message)
+ 
+ 	message->spi = spi;
+ 
++	SPI_STATISTICS_INCREMENT_FIELD(&master->statistics, spi_async);
++	SPI_STATISTICS_INCREMENT_FIELD(&spi->statistics, spi_async);
++
+ 	trace_spi_message_submit(message);
+ 
+ 	return master->transfer(spi, message);
+@@ -2075,6 +2229,9 @@ static int __spi_sync(struct spi_device *spi, struct spi_message *message,
+ 	message->context = &done;
+ 	message->spi = spi;
+ 
++	SPI_STATISTICS_INCREMENT_FIELD(&master->statistics, spi_sync);
++	SPI_STATISTICS_INCREMENT_FIELD(&spi->statistics, spi_sync);
++
+ 	if (!bus_locked)
+ 		mutex_lock(&master->bus_lock_mutex);
+ 
+@@ -2102,8 +2259,13 @@ static int __spi_sync(struct spi_device *spi, struct spi_message *message,
+ 		/* Push out the messages in the calling context if we
+ 		 * can.
+ 		 */
+-		if (master->transfer == spi_queued_transfer)
++		if (master->transfer == spi_queued_transfer) {
++			SPI_STATISTICS_INCREMENT_FIELD(&master->statistics,
++						       spi_sync_immediate);
++			SPI_STATISTICS_INCREMENT_FIELD(&spi->statistics,
++						       spi_sync_immediate);
+ 			__spi_pump_messages(master, false);
++		}
+ 
+ 		wait_for_completion(&done);
+ 		status = message->status;
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index d673072..269e8af 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -23,6 +23,8 @@
+ #include <linux/scatterlist.h>
+ 
+ struct dma_chan;
++struct spi_master;
++struct spi_transfer;
+ 
+ /*
+  * INTERFACES between SPI master-side drivers and SPI infrastructure.
+@@ -31,6 +33,59 @@ struct dma_chan;
+ extern struct bus_type spi_bus_type;
+ 
+ /**
++ * struct spi_statistics - statistics for spi transfers
++ * @clock:         lock protecting this structure
++ *
++ * @messages:      number of spi-messages handled
++ * @transfers:     number of spi_transfers handled
++ * @errors:        number of errors during spi_transfer
++ * @timedout:      number of timeouts during spi_transfer
++ *
++ * @spi_sync:      number of times spi_sync is used
++ * @spi_sync_immediate:
++ *                 number of times spi_sync is executed immediately
++ *                 in calling context without queuing and scheduling
++ * @spi_async:     number of times spi_async is used
++ *
++ * @bytes:         number of bytes transferred to/from device
++ * @bytes_tx:      number of bytes sent to device
++ * @bytes_rx:      number of bytes received from device
++ *
++ */
++struct spi_statistics {
++	spinlock_t		lock; /* lock for the whole structure */
++
++	unsigned long		messages;
++	unsigned long		transfers;
++	unsigned long		errors;
++	unsigned long		timedout;
++
++	unsigned long		spi_sync;
++	unsigned long		spi_sync_immediate;
++	unsigned long		spi_async;
++
++	unsigned long long	bytes;
++	unsigned long long	bytes_rx;
++	unsigned long long	bytes_tx;
++
++};
++
++void spi_statistics_add_transfer_stats(struct spi_statistics *stats,
++				       struct spi_transfer *xfer,
++				       struct spi_master *master);
++
++#define SPI_STATISTICS_ADD_TO_FIELD(stats, field, count)	\
++	do {							\
++		unsigned long flags;				\
++		spin_lock_irqsave(&(stats)->lock, flags);	\
++		(stats)->field += count;			\
++		spin_unlock_irqrestore(&(stats)->lock, flags);	\
++	} while (0)
++
++#define SPI_STATISTICS_INCREMENT_FIELD(stats, field)	\
++	SPI_STATISTICS_ADD_TO_FIELD(stats, field, 1)
++
++/**
+  * struct spi_device - Master side proxy for an SPI slave device
+  * @dev: Driver model representation of the device.
+  * @master: SPI controller used with the device.
+@@ -60,6 +115,8 @@ extern struct bus_type spi_bus_type;
+  * @cs_gpio: gpio number of the chipselect line (optional, -ENOENT when
+  *	when not using a GPIO line)
+  *
++ * @statistics: statistics for the spi_device
++ *
+  * A @spi_device is used to interchange data between an SPI slave
+  * (usually a discrete chip) and CPU memory.
+  *
+@@ -98,6 +155,9 @@ struct spi_device {
+ 	char			modalias[SPI_NAME_SIZE];
+ 	int			cs_gpio;	/* chip select gpio */
+ 
++	/* the statistics */
++	struct spi_statistics	statistics;
++
+ 	/*
+ 	 * likely need more hooks for more protocol options affecting how
+ 	 * the controller talks to each chip, like:
+@@ -296,6 +356,7 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
+  * @cs_gpios: Array of GPIOs to use as chip select lines; one per CS
+  *	number. Any individual value may be -ENOENT for CS lines that
+  *	are not GPIOs (driven by the SPI controller itself).
++ * @statistics: statistics for the spi_master
+  * @dma_tx: DMA transmit channel
+  * @dma_rx: DMA receive channel
+  * @dummy_rx: dummy receive buffer for full-duplex devices
+@@ -452,6 +513,9 @@ struct spi_master {
+ 	/* gpio chip select */
+ 	int			*cs_gpios;
+ 
++	/* statistics */
++	struct spi_statistics	statistics;
++
+ 	/* DMA channels for use with core dmaengine helpers */
+ 	struct dma_chan		*dma_tx;
+ 	struct dma_chan		*dma_rx;
+-- 
+1.7.10.4
 
-If I did not missed something.
-
-As we need different types of parameters for DT/ACPI and legacy (non DT/ACPI
-lookup) and the good API names are already taken, we might need to settle:
-
-/* to be used with DT/ACPI */
-dma_request_slave_channel(dev, name) /* error code on failure */
-- Convert users to check IS_ERR_OR_NULL() instead against NULL
-- Mark dma_request_slave_channel_reason() deprecated and convert the curren=
-t users
-
-/* to be used with DT/ACPI or legacy boot */
-dma_request_slave_channel_compat(mask, fn, fn_param, dev, name) /* error co=
-de
-on failure */
-- Convert users to check IS_ERR_OR_NULL() instead against NULL
-- Do not try legacy mode if either OF or ACPI failed because of real error
-
-/* Legacy mode only - no DT/ACPI lookup */
-dma_request_channel_legacy(mask, fn, fn_param) /* error code on failure */
-- convert users of dma_request_channel()
-- mark dma_request_channel() deprecated
-
-/* to be used to get a channel for memcpy for example */
-dma_request_any_channel(mask) /* error code on failure */
-- Convert current dma_request_channel(mask, NULL, NULL) users
-I know, any of the other function could be prepared to handle this when
-parameters are missing, but it is a bit cleaner to have separate API for th=
-is.
-
-It would be nice to find another name for the
-dma_request_slave_channel_compat() so with the new name we could have chance
-to rearrange the parameters: (dev, name, mask, fn, fn_param)
-
-We would end up with the following APIs, all returning with error code on f=
-ailure:
-dma_request_slave_channel(dev, name);
-dma_request_channel_legacy(mask, fn, fn_param);
-dma_request_slave_channel_compat(mask, fn, fn_param, dev, name);
-dma_request_any_channel(mask);
-
-What do you think?
-
--- =
-
-P=E9ter
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in

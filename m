@@ -1,58 +1,109 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH] spi: expose spi_master and spi_device statistics via sysfs
-Date: Sat, 20 Jun 2015 17:24:56 +0200
-Message-ID: <D2E5B422-6D11-472D-9458-EDF2AEFD891D@martin.sperl.org>
-References: <1432574909-2326-1-git-send-email-kernel@martin.sperl.org> <556EE446.3060407@metafoo.de> <20150603115319.GF14071@sirena.org.uk> <8DBE5E2D-47ED-48D3-A185-82AF4831B0A2@martin.sperl.org> <B3BA7701-96E1-466A-90EA-121E2A85F851@martin.sperl.org> <20150618134918.GF14071@sirena.org.uk> <20150619113539.04a7fcf2@north> <20150619095346.GG14071@sirena.org.uk> <394B0003-AA2E-469F-AD9C-C291FAC60A94@martin.sperl.org> <20150619101046.GH14071@sirena.org.uk> <CAMuHMdUpGgQRD=pwywDE=nKK8p3CQoFFuRZduvXkttmc0dfRTA@mail.gmail.com>
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2098\))
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	=?utf-8?Q?Jakub_Kici=C5=84ski?= <moorray3-5tc4TXWwyLM@public.gmane.org>,
-	Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAMuHMdUpGgQRD=pwywDE=nKK8p3CQoFFuRZduvXkttmc0dfRTA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Subject: Re: [PATCH 02/13] dmaengine: Introduce
+ dma_request_slave_channel_compat_reason()
+Date: Mon, 22 Jun 2015 14:31:00 +0300
+Message-ID: <5587F1F4.1060905@ti.com>
+References: <1432646768-12532-1-git-send-email-peter.ujfalusi@ti.com>
+ <1432646768-12532-3-git-send-email-peter.ujfalusi@ti.com>
+ <20150529093317.GF3140@localhost>
+ <CAMuHMdVJ0h9qXxBWH9L2y4O2KLkEq12KW_6k8rTgi+Lux=C0gw@mail.gmail.com>
+ <20150529101846.GG3140@localhost> <55687892.7050606@ti.com>
+ <20150602125535.GS3140@localhost> <5570758E.6030302@ti.com>
+ <20150612125837.GJ28601@localhost>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
+Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ ALSA Development Mailing List <alsa-devel@alsa-project.org>,
+ Tony Lindgren <tony@atomide.com>, Linux MMC List <linux-mmc@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ linux-spi <linux-spi@vger.kernel.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, linux-crypto@vger.kernel.org,
+ "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+ dmaengine@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>,
+ "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+ Linux Media Mailing List <linux-media@vger.kernel.org>
+To: Vinod Koul <vinod.koul@intel.com>
+Return-path: <alsa-devel-bounces@alsa-project.org>
+In-Reply-To: <20150612125837.GJ28601@localhost>
+List-Unsubscribe: <http://mailman.alsa-project.org/mailman/options/alsa-devel>,
+ <mailto:alsa-devel-request@alsa-project.org?subject=unsubscribe>
+List-Archive: <http://mailman.alsa-project.org/pipermail/alsa-devel/>
+List-Post: <mailto:alsa-devel@alsa-project.org>
+List-Help: <mailto:alsa-devel-request@alsa-project.org?subject=help>
+List-Subscribe: <http://mailman.alsa-project.org/mailman/listinfo/alsa-devel>,
+ <mailto:alsa-devel-request@alsa-project.org?subject=subscribe>
+Errors-To: alsa-devel-bounces@alsa-project.org
+Sender: alsa-devel-bounces@alsa-project.org
+List-Id: linux-spi.vger.kernel.org
 
+On 06/12/2015 03:58 PM, Vinod Koul wrote:
+> Sorry this slipped thru
 
-> On 20.06.2015, at 14:10, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org> wr=
-ote:
-> Zero-prefixing the numbers in the filenames would make it a bit less =
-ugly
-> and auto-sorted=E2=80=A6
-a possibility
+I was away for a week anyways ;)
 
->> histogram as a histogram might be more helpful so people might be
->> happier with debugfs.
->=20
-> ... but indeed, quoting Documentation/filesystems/debugfs.txt:
->=20
-> "Unlike sysfs, which has strict one-value-per-file rules, debugfs has=
- no
-> rules at all."
->=20
-> So storing the whole histogram in a single file sounds like the logic=
-al
-> thing to me.
-The point with debugfs would be that we would need to start a
-=E2=80=9Cstructure=E2=80=9D in the framework that can get easily extend=
-ed, which obviously
-would need more thought, so that a driver can easily expose additional =
-data.
+> Thinking about it again, I think we should coverge to two APIs and mark t=
+he
+> legacy depracuated and look to convert folks and phase that out
 
-So something along the lines of:
-/sys/kernel/debug/spi/<bus>/*
-/sys/kernel/debug/spi/<bus>/<device>/*
+Currently, w/o this series we have these APIs:
+/* to be used with DT/ACPI */
+dma_request_slave_channel(dev, name)		/* NULL on failure */
+dma_request_slave_channel_reason(dev, name)	/* error code on failure */
 
-And with the right api we could make it easily extendable (much more ea=
-sily
-than with sysfs...)
+/* Legacy mode only - no DT/ACPI lookup */
+dma_request_channel(mask, fn, fn_param) /* NULL on failure */
 
-So what I would do I post a patch to expose those =E2=80=9Cbasics=E2=80=
-=9D via sysfs and then
-a patch to expose the histogram and potentially more via debugfs.
+/* to be used with DT/ACPI or legacy boot */
+dma_request_slave_channel_compat(mask, fn, fn_param, dev, name)	/* NULL on
+failure */
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To request _any_ channel to be used for memcpy one has to use
+dma_request_channel(mask, NULL, NULL);
+
+If I did not missed something.
+
+As we need different types of parameters for DT/ACPI and legacy (non DT/ACPI
+lookup) and the good API names are already taken, we might need to settle:
+
+/* to be used with DT/ACPI */
+dma_request_slave_channel(dev, name) /* error code on failure */
+- Convert users to check IS_ERR_OR_NULL() instead against NULL
+- Mark dma_request_slave_channel_reason() deprecated and convert the curren=
+t users
+
+/* to be used with DT/ACPI or legacy boot */
+dma_request_slave_channel_compat(mask, fn, fn_param, dev, name) /* error co=
+de
+on failure */
+- Convert users to check IS_ERR_OR_NULL() instead against NULL
+- Do not try legacy mode if either OF or ACPI failed because of real error
+
+/* Legacy mode only - no DT/ACPI lookup */
+dma_request_channel_legacy(mask, fn, fn_param) /* error code on failure */
+- convert users of dma_request_channel()
+- mark dma_request_channel() deprecated
+
+/* to be used to get a channel for memcpy for example */
+dma_request_any_channel(mask) /* error code on failure */
+- Convert current dma_request_channel(mask, NULL, NULL) users
+I know, any of the other function could be prepared to handle this when
+parameters are missing, but it is a bit cleaner to have separate API for th=
+is.
+
+It would be nice to find another name for the
+dma_request_slave_channel_compat() so with the new name we could have chance
+to rearrange the parameters: (dev, name, mask, fn, fn_param)
+
+We would end up with the following APIs, all returning with error code on f=
+ailure:
+dma_request_slave_channel(dev, name);
+dma_request_channel_legacy(mask, fn, fn_param);
+dma_request_slave_channel_compat(mask, fn, fn_param, dev, name);
+dma_request_any_channel(mask);
+
+What do you think?
+
+-- =
+
+P=E9ter

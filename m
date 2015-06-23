@@ -1,41 +1,50 @@
 From: Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH] spi: sh-msiof: Remove obsolete spi_r8a779x_msiof platform_device_id entries
-Date: Tue, 23 Jun 2015 15:02:44 +0200
-Message-ID: <1435064564-11877-1-git-send-email-geert+renesas@glider.be>
+Subject: [PATCH 2/2] spi: rspi: Make qspi_set_send_trigger() return "unsigned int"
+Date: Tue, 23 Jun 2015 15:04:29 +0200
+Message-ID: <1435064669-11969-2-git-send-email-geert+renesas@glider.be>
+References: <1435064669-11969-1-git-send-email-geert+renesas@glider.be>
 Cc: linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
 To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1435064669-11969-1-git-send-email-geert+renesas@glider.be>
 Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Since commit a483dcbfa21f919c ("ARM: shmobile: lager: Remove legacy
-board support"), R-Car Gen2 SoCs are only supported in generic DT-only
-ARM multi-platform builds.  The driver doesn't need to match platform
-devices by name anymore, hence remove the corresponding
-platform_device_id entry.
+qspi_set_send_trigger() returns an unsigned value, so make it return
+"unsigned int".
+Update the loop variables qspi_trigger_transfer_out_int() to match the
+above.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- drivers/spi/spi-sh-msiof.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/spi/spi-rspi.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index d3370a612d8432cf..118c652d88b570a5 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -1265,11 +1265,6 @@ static int sh_msiof_spi_remove(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index f368d8f3dce869bb..c5a03163028aec1f 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -383,7 +383,8 @@ static void qspi_update(const struct rspi_data *rspi, u8 mask, u8 val, u8 reg)
+ 	rspi_write8(rspi, data, reg);
+ }
  
- static const struct platform_device_id spi_driver_ids[] = {
- 	{ "spi_sh_msiof",	(kernel_ulong_t)&sh_data },
--	{ "spi_r8a7790_msiof",	(kernel_ulong_t)&r8a779x_data },
--	{ "spi_r8a7791_msiof",	(kernel_ulong_t)&r8a779x_data },
--	{ "spi_r8a7792_msiof",	(kernel_ulong_t)&r8a779x_data },
--	{ "spi_r8a7793_msiof",	(kernel_ulong_t)&r8a779x_data },
--	{ "spi_r8a7794_msiof",	(kernel_ulong_t)&r8a779x_data },
- 	{},
- };
- MODULE_DEVICE_TABLE(platform, spi_driver_ids);
+-static int qspi_set_send_trigger(struct rspi_data *rspi, unsigned int len)
++static unsigned int qspi_set_send_trigger(struct rspi_data *rspi,
++					  unsigned int len)
+ {
+ 	unsigned int n;
+ 
+@@ -724,7 +725,8 @@ static int rspi_rz_transfer_one(struct spi_master *master,
+ static int qspi_trigger_transfer_out_in(struct rspi_data *rspi, const u8 *tx,
+ 					u8 *rx, unsigned int len)
+ {
+-	int i, n, ret;
++	unsigned int i, n;
++	int ret;
+ 
+ 	while (len > 0) {
+ 		n = qspi_set_send_trigger(rspi, len);
 -- 
 1.9.1
 

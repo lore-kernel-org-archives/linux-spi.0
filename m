@@ -1,116 +1,66 @@
-From: Vinod Koul <vinod.koul@intel.com>
-Subject: Re: [PATCH 02/13] dmaengine: Introduce
- dma_request_slave_channel_compat_reason()
-Date: Wed, 24 Jun 2015 21:54:01 +0530
-Message-ID: <20150624162401.GP19530@localhost>
-References: <1432646768-12532-1-git-send-email-peter.ujfalusi@ti.com>
- <1432646768-12532-3-git-send-email-peter.ujfalusi@ti.com>
- <20150529093317.GF3140@localhost>
- <CAMuHMdVJ0h9qXxBWH9L2y4O2KLkEq12KW_6k8rTgi+Lux=C0gw@mail.gmail.com>
- <20150529101846.GG3140@localhost>
- <55687892.7050606@ti.com>
- <20150602125535.GS3140@localhost>
- <5570758E.6030302@ti.com>
- <20150612125837.GJ28601@localhost>
- <5587F1F4.1060905@ti.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
-	Tony Lindgren <tony@atomide.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	dmaengine@vger.kernel.org,
-	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-	"linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-	Linux MMC List <linux-mmc@vger.kernel.org>,
-	linux-crypto@vger.kernel.org,
-	linux-spi <linux-spi@vger.kernel.org>,
-	Linux Media Mailing List <linux-media@vger.kernel.org>,
-	ALSA Development Mailing List <alsa-devel@alsa-project.org>
-To: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Return-path: <linux-crypto-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <5587F1F4.1060905@ti.com>
-Sender: linux-crypto-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Michael van der Westhuizen <michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>
+Subject: [PATCH v2 0/2] spi: dw: Reintroduce optional 16 bit data register I/O
+Date: Wed, 24 Jun 2015 18:34:54 +0200
+Message-ID: <1435163696-14767-1-git-send-email-michael@smart-africa.com>
+References: <1434703435-25198-1-git-send-email-michael@smart-africa.com>
+Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Steffen Trumtrar <s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>,
+	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Michael van der Westhuizen <michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1434703435-25198-1-git-send-email-michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, Jun 22, 2015 at 02:31:00PM +0300, Peter Ujfalusi wrote:
-> On 06/12/2015 03:58 PM, Vinod Koul wrote:
-> > Sorry this slipped thru
-> 
-> I was away for a week anyways ;)
-> 
-> > Thinking about it again, I think we should coverge to two APIs and mark the
-> > legacy depracuated and look to convert folks and phase that out
-> 
-> Currently, w/o this series we have these APIs:
-> /* to be used with DT/ACPI */
-> dma_request_slave_channel(dev, name)		/* NULL on failure */
-> dma_request_slave_channel_reason(dev, name)	/* error code on failure */
-> 
-> /* Legacy mode only - no DT/ACPI lookup */
-> dma_request_channel(mask, fn, fn_param) /* NULL on failure */
-> 
-> /* to be used with DT/ACPI or legacy boot */
-> dma_request_slave_channel_compat(mask, fn, fn_param, dev, name)	/* NULL on
-> failure */
-> 
-> To request _any_ channel to be used for memcpy one has to use
-> dma_request_channel(mask, NULL, NULL);
-> 
-> If I did not missed something.
-I dont think so :)
+The commit dd11444327ce ("spi: dw-spi: Convert 16bit accesses to 32bit
+accesses") globally changed all register access in the dw_apb_ssi driver
+to 32 bit access, which breaks data register (FIFO) access on picoXcell
+platforms.
 
-> As we need different types of parameters for DT/ACPI and legacy (non DT/ACPI
-> lookup) and the good API names are already taken, we might need to settle:
-> 
-> /* to be used with DT/ACPI */
-> dma_request_slave_channel(dev, name) /* error code on failure */
-> - Convert users to check IS_ERR_OR_NULL() instead against NULL
-> - Mark dma_request_slave_channel_reason() deprecated and convert the current users
-> 
-> /* to be used with DT/ACPI or legacy boot */
-> dma_request_slave_channel_compat(mask, fn, fn_param, dev, name) /* error code
-> on failure */
-> - Convert users to check IS_ERR_OR_NULL() instead against NULL
-> - Do not try legacy mode if either OF or ACPI failed because of real error
-Should we keep the filter fn and an API for this, I am still not too sure
-about that part. Anyway users should be on DT/ACPI. if someone wants filter
-then let them use dma_request_channel()
+This series introduces a boolean to the core spi-dw driver to indicate
+to the core that 16 bit data register access is appropriate, implements
+the code that respects that flag and updates the dw-spi-mmio driver to
+allow setting this boolean from the device tree.
 
-> 
-> /* Legacy mode only - no DT/ACPI lookup */
-> dma_request_channel_legacy(mask, fn, fn_param) /* error code on failure */
-> - convert users of dma_request_channel()
-> - mark dma_request_channel() deprecated
-Why should we create a new API, how about marking dma_request_channel() as
-legacy and generic memcpy API and let other users be migrated?
-> 
-> /* to be used to get a channel for memcpy for example */
-> dma_request_any_channel(mask) /* error code on failure */
-> - Convert current dma_request_channel(mask, NULL, NULL) users
-> I know, any of the other function could be prepared to handle this when
-> parameters are missing, but it is a bit cleaner to have separate API for this.
-Though it has merits but adds another API. We cna have internal
-_dma_request_xxx API where parameters are missing and clean but to users
-single API might be a better idea
-> 
-> It would be nice to find another name for the
-> dma_request_slave_channel_compat() so with the new name we could have chance
-> to rearrange the parameters: (dev, name, mask, fn, fn_param)
-> 
-> We would end up with the following APIs, all returning with error code on failure:
-> dma_request_slave_channel(dev, name);
-> dma_request_channel_legacy(mask, fn, fn_param);
-> dma_request_slave_channel_compat(mask, fn, fn_param, dev, name);
-> dma_request_any_channel(mask);
-This is good idea but still we end up with 4 APIs. Why not just converge to
-two API, one legacy + memcpy + filer fn and one untimate API for slave?
+A binding documentation fix is included in this series.
 
-Internally we may have 4 APIs for cleaner handling...
+Prior to applying this change the following error presents on
+a picoCell pc3x3 platform:
+  spi_master spi32766: interrupt_transfer: fifo overrun/underrun
+  m25p80 spi32766.0: error -5 reading 9f
+  m25p80: probe of spi32766.0 failed with error -5
 
-Thoughts... ??
+With this series applied:
+  m25p80 spi32766.0: m25p40 (512 Kbytes)
+
+Changes in v2:
+  - Incorporate review feedback from Andy Shevchenko, reworking the
+    bindings to reflect common practice and adjusting the driver
+    to suit.
+  - Add a wrapper inline function for accessing the data register
+    using the configured with.
+
+Michael van der Westhuizen (2):
+  dt: snps,dw-apb-ssi: Document new I/O data register width property
+  spi: dw: Allow interface drivers to limit data I/O to word sizes
+
+ drivers/spi/spi-dw-mmio.c |  4 ++++
+ drivers/spi/spi-dw.c      |  4 ++--
+ drivers/spi/spi-dw.h      | 35 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 41 insertions(+), 2 deletions(-)
 
 -- 
-~Vinod
+2.1.4
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

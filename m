@@ -1,62 +1,181 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 1/2] spi: rspi: Remove obsolete rspi-rz
- platform_device_id entry
-Date: Wed, 24 Jun 2015 12:23:54 +0100
-Message-ID: <20150624112354.GH14071@sirena.org.uk>
-References: <1435064527-11786-1-git-send-email-geert+renesas@glider.be>
- <CAMuHMdWfttuYc6zDiWgzG=SoFWKw7Ghkx3pREmM1vQiANus_bg@mail.gmail.com>
- <CAMuHMdUS-4GjTu324g2qXBQnyeOmYBt7JLUo4AXjRjcZo6Bs2Q@mail.gmail.com>
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: dw: Allow interface drivers to limit data I/O
+ to word sizes
+Date: Wed, 24 Jun 2015 14:57:44 +0300
+Message-ID: <1435147064.10393.100.camel@linux.intel.com>
+References: <1434703435-25198-1-git-send-email-michael@smart-africa.com>
+	 <1434703435-25198-3-git-send-email-michael@smart-africa.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="eY62naQ+F4Ej99qO"
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	Linux-sh list <linux-sh@vger.kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdUS-4GjTu324g2qXBQnyeOmYBt7JLUo4AXjRjcZo6Bs2Q@mail.gmail.com>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Steffen Trumtrar <s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+To: Michael van der Westhuizen <michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1434703435-25198-3-git-send-email-michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
+
+On Fri, 2015-06-19 at 10:43 +0200, Michael van der Westhuizen wrote:
+> The commit dd11444327ce ("spi: dw-spi: Convert 16bit accesses to 
+> 32bit
+> accesses") changed all 16bit accesses in the DW_apb_ssi driver to 
+> 32bit.
+> This, unfortunately, breaks data register access on picoXcell, where 
+> the
+> DW IP needs data register accesses to be word accesses (all other
+> accesses appear to be OK).
+
+Thanks for the patch. My comments below.
+
+> 
+> This change introduces a new master variable to allow interface 
+> drivers
+> to specify that 16bit data transfer I/O is required.  This change 
+> also
+> introduces the ability to set this variable via device tree bindings 
+> in
+> the MMIO interface driver.
+> 
+> Before this change, on a picoXcell pc3x3:
+>  spi_master spi32766: interrupt_transfer: fifo overrun/underrun
+>  m25p80 spi32766.0: error -5 reading 9f
+>  m25p80: probe of spi32766.0 failed with error -5
+> 
+> After this change:
+>  m25p80 spi32766.0: m25p40 (512 Kbytes)
+> 
+
+Please, add Fixes: tag as well.
+
+> Signed-off-by: Michael van der Westhuizen <michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>
+> ---
+>  drivers/spi/spi-dw-mmio.c |  5 +++++
+>  drivers/spi/spi-dw.c      | 13 +++++++++++--
+>  drivers/spi/spi-dw.h      | 11 +++++++++++
+>  3 files changed, 27 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
+> index eb03e12..1397424 100644
+> --- a/drivers/spi/spi-dw-mmio.c
+> +++ b/drivers/spi/spi-dw-mmio.c
+> @@ -74,6 +74,11 @@ static int dw_spi_mmio_probe(struct 
+> platform_device *pdev)
+>  
+>  	dws->max_freq = clk_get_rate(dwsmmio->clk);
+>  
+> +	if (pdev->dev.of_node)
+> +		dws->data_io_16bit =
+
+I don't like "flexibility" in the  DeviceTree data base and thus I
+would prefer to see what we already have in naming there, i.e.
+reg-io-width = 2 or 4.
+
+> +			of_property_read_bool(pdev->dev.of_node,
+> +					      "snps,data-io-16bit");
+> +
+>  	num_cs = 4;
+>  
+>  	if (pdev->dev.of_node)
+> diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+> index 8d67d03..862b001 100644
+> --- a/drivers/spi/spi-dw.c
+> +++ b/drivers/spi/spi-dw.c
+> @@ -194,7 +194,12 @@ static void dw_writer(struct dw_spi *dws)
+>  			else
+>  				txw = *(u16 *)(dws->tx);
+>  		}
+> -		dw_writel(dws, DW_SPI_DR, txw);
+> +
+> +		if (dws->data_io_16bit)
+> +			dw_writew(dws, DW_SPI_DR, txw);
+> +		else
+> +			dw_writel(dws, DW_SPI_DR, txw);
+> +
+>  		dws->tx += dws->n_bytes;
+>  	}
+>  }
+> @@ -205,7 +210,11 @@ static void dw_reader(struct dw_spi *dws)
+>  	u16 rxw;
+>  
+>  	while (max--) {
+> -		rxw = dw_readl(dws, DW_SPI_DR);
+> +		if (dws->data_io_16bit)
+> +			rxw = dw_readw(dws, DW_SPI_DR);
+> +		else
+> +			rxw = dw_readl(dws, DW_SPI_DR);
+> +
+>  		/* Care rx only if the transfer's original "rx" is 
+> not null */
+>  		if (dws->rx_end - dws->len) {
+>  			if (dws->n_bytes == 1)
+> diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+> index 6c91391..ced276a 100644
+> --- a/drivers/spi/spi-dw.h
+> +++ b/drivers/spi/spi-dw.h
+> @@ -109,6 +109,7 @@ struct dw_spi {
+>  	u32			fifo_len;	/* depth of the FIFO 
+> buffer */
+>  	u32			max_freq;	/* max bus freq 
+> supported */
+>  
+> +	bool			data_io_16bit;	/* DR is only 16 
+> bits wide */
+>  	u16			bus_num;
+>  	u16			num_cs;		/* supported 
+> slave numbers */
+>  
+> @@ -145,11 +146,21 @@ static inline u32 dw_readl(struct dw_spi *dws, 
+> u32 offset)
+>  	return __raw_readl(dws->regs + offset);
+>  }
+>  
+> +static inline u16 dw_readw(struct dw_spi *dws, u32 offset)
+> +{
+> +	return __raw_readw(dws->regs + offset);
+> +}
+> +
+>  static inline void dw_writel(struct dw_spi *dws, u32 offset, u32 
+> val)
+>  {
+>  	__raw_writel(val, dws->regs + offset);
+>  }
+>  
+> +static inline void dw_writew(struct dw_spi *dws, u32 offset, u16 
+> val)
+> +{
+> +	__raw_writew(val, dws->regs + offset);
+> +}
+> +
+>  static inline void spi_enable_chip(struct dw_spi *dws, int enable)
+>  {
+>  	dw_writel(dws, DW_SPI_SSIENR, (enable ? 1 : 0));
+
+Regarding to above comment what about something like
+
+static inline u32 dw_read_reg(dws, offset)
+{
+ switch (reg_io_width)
+ case 2:
+  return dw_readw();
+ case 4:
+ default:
+  return dw_readl();
+}
 
 
---eY62naQ+F4Ej99qO
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Jun 24, 2015 at 11:19:09AM +0200, Geert Uytterhoeven wrote:
-
-> Unlike the sh_eth case, I don't get a warning if CONFIG_OF=3Dn, because
-> rspi_rz_ops is const. Not even with a picky gcc 4.1.2.
-
-OTOH what's 4.2 going to do, or clang... =20
-
-> > Please drop this one, will fix.
-
-> And unlike the sh_eth case, this cannot be fixed with one #ifdef without
-> restructuring the whole driver.
-
-> Hence inclined to withdraw my drop requst.
-> Mark, what do you think? Is this patch OK as-is?
-
-Given that it's only removing one line I'm not sure it's worth the
-effort.
-
---eY62naQ+F4Ej99qO
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVipNKAAoJECTWi3JdVIfQ+wUH/0JaXWpAice9Aor/29+bsjuk
-Zwo8GiP2iuMVUF3Kp0yCFc2cmdnQyi86GIpsTp317JIFePXLhbWbuAhD7FICpQ69
-EUWhDUJHfuY56s51QNYUM1FcNt4iTaG0YN2KQbwxShpyyhVfqbnwIe55d5+62I1p
-OApE3+a0ZY8EerBhUs5UHYcemlBYl30pbU4g9riNSVDvCj9wXL+qhNddDuLAfWqu
-j966MXRIimrCFggoXs9GBMg5cFj7e9goZG5TQS3MXQiNDn9vkdYdf6s5dIZvz44Z
-zesvcSW3UXOpHG8e0VS/bgfNPWrMfac6RSwz1O+GRMzQ6qmNy7H8PGUnsEXQjxk=
-=D6mr
------END PGP SIGNATURE-----
-
---eY62naQ+F4Ej99qO--
+-- 
+Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Intel Finland Oy
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

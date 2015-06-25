@@ -1,69 +1,47 @@
-From: Andrew Gabbasov <andrew_gabbasov-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH] spi: Fix per-page mapping of unaligned vmalloc-ed buffer
-Date: Thu, 25 Jun 2015 11:40:15 -0500
-Message-ID: <1435250415-9147-1-git-send-email-andrew_gabbasov@mentor.com>
+From: Jakub =?UTF-8?B?S2ljacWEc2tp?= <moorray3-5tc4TXWwyLM@public.gmane.org>
+Subject: Re: spi: bcm2835: driver for "auxiliar" spi1/spi2
+Date: Thu, 25 Jun 2015 19:42:19 +0200
+Message-ID: <20150625194219.4846221d@north>
+References: <5582933E.1050500@martin.sperl.org>
+	<55829B18.4030609@tronnes.org>
+	<20150618105848.GE14071@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Noralf =?UTF-8?B?VHLDuG5uZXM=?= <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>,
+	Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150618105848.GE14071-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-spi_map_buf() processes mapping of vmalloc-ed buffers in a special way,
-making mapping of every page separately. However, if the buffer is not
-aligned to page boundary (e.g. sub-array in a vmalloc-ed array), it
-fills the scatter table with page-size unaligned pieces, that cross
-page boundaries. This is incorrect and can, for example, cause memory
-corruption and various crashes when working with ubifs on spi-nor chips.
+On Thu, 18 Jun 2015 11:58:48 +0100, Mark Brown wrote:
+> On Thu, Jun 18, 2015 at 12:19:04PM +0200, Noralf Tr=C3=B8nnes wrote:
+>=20
+> > There is also an aux mini uart that shares interrupt with spi1/2.
+> > The AUXIRQ register determines the interrupt source. How should thi=
+s
+> > sharing be done? This uart is really only useful on the Compute Mod=
+ule
+> > since it's pins overlap the pl011 uart pins on the other boards.
+> > This is how the mini uart is used/setup downstream:
+> > https://github.com/raspberrypi/linux/pull/1008
+>=20
+> Linux supports shared interrupts perfectly fine, though it sounds lik=
+e
+> this is actually a cascaded interrupt (the demux is another interrupt
+> controller) which we also support just fine.
 
-Fix this by using proper scatter table size and intra-page buffer lengths,
-so that the whole buffer splits into separate scatter table entries on
-page boundaries.
-
-Signed-off-by: Andrew Gabbasov <andrew_gabbasov-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
----
- drivers/spi/spi.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 50910d8..14016dc 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -477,7 +477,9 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
- {
- 	const bool vmalloced_buf = is_vmalloc_addr(buf);
- 	const int desc_len = vmalloced_buf ? PAGE_SIZE : master->max_dma_len;
--	const int sgs = DIV_ROUND_UP(len, desc_len);
-+	const int sgs = DIV_ROUND_UP(vmalloced_buf ?
-+					len + offset_in_page(buf) : len,
-+				     desc_len);
- 	struct page *vm_page;
- 	void *sg_buf;
- 	size_t min;
-@@ -488,9 +490,10 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
- 		return ret;
- 
- 	for (i = 0; i < sgs; i++) {
--		min = min_t(size_t, len, desc_len);
- 
- 		if (vmalloced_buf) {
-+			min = min_t(size_t,
-+				    len, desc_len - offset_in_page(buf));
- 			vm_page = vmalloc_to_page(buf);
- 			if (!vm_page) {
- 				sg_free_table(sgt);
-@@ -499,6 +502,7 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
- 			sg_set_page(&sgt->sgl[i], vm_page,
- 				    min, offset_in_page(buf));
- 		} else {
-+			min = min_t(size_t, len, desc_len);
- 			sg_buf = buf;
- 			sg_set_buf(&sgt->sgl[i], sg_buf, min);
- 		}
--- 
-2.1.0
-
+Mark, could you give us a hint how to best go about this shared IRQ?
+I failed to find any generic interrupt controller.  I imagine there
+should be some fake irqchip we can instantiate from DT giving it a
+irq line and a memory address and it should provide us with 32(bit)
+demuxed irqs based on status of bits in specified memory location.
+Does this sound reasonable?  Does such fake irqchip driver exist?
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

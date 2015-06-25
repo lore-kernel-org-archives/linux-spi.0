@@ -1,69 +1,70 @@
-From: Andrew Gabbasov <andrew_gabbasov-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH] spi: Fix per-page mapping of unaligned vmalloc-ed buffer
-Date: Thu, 25 Jun 2015 11:08:36 -0500
-Message-ID: <1435248516-9081-1-git-send-email-andrew_gabbasov@mentor.com>
+From: Charles Keepax <ckeepax-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Subject: Re: Fwd: [alsa-devel] [PATCH 1/1] SPI : spi-pxa2xx : fix spi init
+	of WM510205 codec via ACPI (resend)
+Date: Thu, 25 Jun 2015 17:11:08 +0100
+Message-ID: <20150625161108.GF6321@opensource.wolfsonmicro.com>
+References: <CAKor6TfKws63jh6f3VzyYpmTffL4-DHWDTdJ6GSgDC08C5W=8w@mail.gmail.com> <20150625073618.GH827@lahna.fi.intel.com> <CAKor6TfxNW6UW6iX_FkRn2yZOHvdRHcsj6pKoKH-UWU51Bqvvg@mail.gmail.com> <20150625145853.GP14071@sirena.org.uk> <20150625154407.GE6321@opensource.wolfsonmicro.com> <20150625155612.GS14071@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Christian Hartmann <cornogle-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
+	dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org, mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
+	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+	Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20150625155612.GS14071-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-spi_map_buf() processes mapping of vmalloc-ed buffers in a special way,
-making mapping of every page separately. However, if the buffer is not
-aligned to page boundary (e.g. sub-array in a vmalloc-ed array), it
-fills the scatter table with page-size unaligned pieces, that cross
-page boundaries. This is incorrect and can, for example, cause memory
-corruption and various crashes when working with ubifs on spi-nor chips.
+On Thu, Jun 25, 2015 at 04:56:12PM +0100, Mark Brown wrote:
+> On Thu, Jun 25, 2015 at 04:44:07PM +0100, Charles Keepax wrote:
+> > On Thu, Jun 25, 2015 at 03:58:53PM +0100, Mark Brown wrote:
+> > > On Thu, Jun 25, 2015 at 02:18:23PM +0200, Christian Hartmann wrote:
+> 
+> > > >                 Name (_HID, "WM510205")  // _HID: Hardware ID
+> > > >                 Name (_CID, "WM510205")  // _CID: Compatible ID
+> > > >                 Name (_DDN, "Wolfson Microelectronics Audio WM5102")
+> 
+> > > Separately to the chip select discussion one thing to highlight here is
+> > > that for some reason the BIOS is listing the device as "WM510205" rather
+> > > than "WM5102" - do those extra numbers mean anything and does this mean
+> > > that WM50120[1-4] and possibly higher numbers are also valid?
+> 
+> > From my brief discussions with the Windows guys here on this
+> > basically those last two digits are being used to inform the
+> > Windows driver of use-case setup. So here it will set things up
+> > for whatever the Window's driver considers to be setup "5".
+> 
+> Yay for scalability and abstraction.
 
-Fix this by using proper scatter table size and intra-page buffer lengths,
-so that the whole buffer splits into separate scatter table entries on
-page boundaries.
+Well it certainly is abstract.
 
-Signed-off-by: Andrew Gabbasov <andrew_gabbasov-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
----
- drivers/spi/spi.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> > I think from the Linux side we can safely ignore those last two
+> > digits. I expect that all systems of the same make and model
+> > would report the same last two digits but that it might change
+> > between models if the Windows driver is expected to something
+> > differently for that model.
+> 
+> Well, we might want to consider using this to set our platform data
+> instead of the machine ID if people have just been copying a smallish
+> set of reference designs, it might might make for a slightly smaller set
+> of ID tables than the machine ID based stuff does.
+> 
+> Due to the way ACPI ID matching works we'll also need to add every
+> suffix individually to the table, we're looking for complete matches not
+> substring matches here.
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 50910d8..14016dc 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -477,7 +477,9 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
- {
- 	const bool vmalloced_buf = is_vmalloc_addr(buf);
- 	const int desc_len = vmalloced_buf ? PAGE_SIZE : master->max_dma_len;
--	const int sgs = DIV_ROUND_UP(len, desc_len);
-+	const int sgs = DIV_ROUND_UP(vmalloced_buf ?
-+					len + offset_in_page(buf) : len,
-+				     desc_len);
- 	struct page *vm_page;
- 	void *sg_buf;
- 	size_t min;
-@@ -488,9 +490,10 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
- 		return ret;
- 
- 	for (i = 0; i < sgs; i++) {
--		min = min_t(size_t, len, desc_len);
- 
- 		if (vmalloced_buf) {
-+			min = min_t(size_t,
-+				    len, desc_len - offset_in_page(buf));
- 			vm_page = vmalloc_to_page(buf);
- 			if (!vm_page) {
- 				sg_free_table(sgt);
-@@ -499,6 +502,7 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
- 			sg_set_page(&sgt->sgl[i], vm_page,
- 				    min, offset_in_page(buf));
- 		} else {
-+			min = min_t(size_t, len, desc_len);
- 			sg_buf = buf;
- 			sg_set_buf(&sgt->sgl[i], sg_buf, min);
- 		}
--- 
-2.1.0
+>From what I can gather currently yes every system has a different
+suffix so it should be fine to skip checking the machine ID and
+just use the ACPI ID to select the pdata.
 
+Thanks,
+Charles
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

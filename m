@@ -1,61 +1,98 @@
-From: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH 02/13] dmaengine: Introduce dma_request_slave_channel_compat_reason()
-Date: Thu, 25 Jun 2015 13:15:57 +0200
-Message-ID: <4970019.av0JOFIyTW@wuerfel>
-References: <1432646768-12532-1-git-send-email-peter.ujfalusi@ti.com> <5587F1F4.1060905@ti.com> <20150624162401.GP19530@localhost>
+From: Andrew Gabbasov <andrew_gabbasov-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+Subject: RE: [PATCH] spi: Fix per-page mapping of unaligned vmalloc-ed buffer
+Date: Thu, 25 Jun 2015 14:27:17 +0300
+Message-ID: <000001d0af39$e499dd70$adcd9850$@mentor.com>
+References: <1434351560-29463-1-git-send-email-andrew_gabbasov@mentor.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Tony Lindgren <tony@atomide.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	dmaengine@vger.kernel.org,
-	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-	"linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-	Linux MMC List <linux-mmc@vger.kernel.org>,
-	linux-crypto@vger.kernel.org,
-	linux-spi <linux-spi@vger.kernel.org>,
-	Linux Media Mailing List <linux-media@vger.kernel.org>,
-	ALSA Development Mailing List <alsa-devel@alsa-project.org>
-To: Vinod Koul <vinod.koul@intel.com>
-Return-path: <linux-crypto-owner@vger.kernel.org>
-In-Reply-To: <20150624162401.GP19530@localhost>
-Sender: linux-crypto-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Cc: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1434351560-29463-1-git-send-email-andrew_gabbasov-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+Content-Language: en-us
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Wednesday 24 June 2015 21:54:01 Vinod Koul wrote:
-> > It would be nice to find another name for the
-> > dma_request_slave_channel_compat() so with the new name we could have chance
-> > to rearrange the parameters: (dev, name, mask, fn, fn_param)
-> > 
-> > We would end up with the following APIs, all returning with error code on failure:
-> > dma_request_slave_channel(dev, name);
-> > dma_request_channel_legacy(mask, fn, fn_param);
-> > dma_request_slave_channel_compat(mask, fn, fn_param, dev, name);
-> > dma_request_any_channel(mask);
-> This is good idea but still we end up with 4 APIs. Why not just converge to
-> two API, one legacy + memcpy + filer fn and one untimate API for slave?
+> -----Original Message-----
+> From: Gabbasov, Andrew
+> Sent: Monday, June 15, 2015 9:59 AM
+> To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> Subject: [PATCH] spi: Fix per-page mapping of unaligned vmalloc-ed buffer
 > 
-> Internally we may have 4 APIs for cleaner handling...
+> spi_map_buf() processes mapping of vmalloc-ed buffers in a special way,
+making
+> mapping of every page separately. However, if the buffer is not aligned to
+page
+> boundary (e.g. sub-array in a vmalloc-ed array), it fills the scatter
+table with
+> page-size unaligned pieces, that cross page boundaries. This is incorrect
+and
+> can, for example, cause memory corruption and various crashes when working
+> with ubifs on spi-nor chips.
 > 
+> Fix this by using proper scatter table size and intra-page buffer lengths,
+so that
+> the whole buffer splits into separate scatter table entries on page
+boundaries.
+> 
+> Signed-off-by: Andrew Gabbasov <andrew_gabbasov-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+> ---
+>  drivers/spi/spi.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c index 50910d8..14016dc
+100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -477,7 +477,9 @@ static int spi_map_buf(struct spi_master *master,
+struct
+> device *dev,  {
+>  	const bool vmalloced_buf = is_vmalloc_addr(buf);
+>  	const int desc_len = vmalloced_buf ? PAGE_SIZE : master-
+> >max_dma_len;
+> -	const int sgs = DIV_ROUND_UP(len, desc_len);
+> +	const int sgs = DIV_ROUND_UP(vmalloced_buf ?
+> +					len + offset_in_page(buf) : len,
+> +				     desc_len);
+>  	struct page *vm_page;
+>  	void *sg_buf;
+>  	size_t min;
+> @@ -488,9 +490,10 @@ static int spi_map_buf(struct spi_master *master,
+> struct device *dev,
+>  		return ret;
+> 
+>  	for (i = 0; i < sgs; i++) {
+> -		min = min_t(size_t, len, desc_len);
+> 
+>  		if (vmalloced_buf) {
+> +			min = min_t(size_t,
+> +				    len, desc_len - offset_in_page(buf));
+>  			vm_page = vmalloc_to_page(buf);
+>  			if (!vm_page) {
+>  				sg_free_table(sgt);
+> @@ -499,6 +502,7 @@ static int spi_map_buf(struct spi_master *master,
+struct
+> device *dev,
+>  			sg_set_page(&sgt->sgl[i], vm_page,
+>  				    min, offset_in_page(buf));
+>  		} else {
+> +			min = min_t(size_t, len, desc_len);
+>  			sg_buf = buf;
+>  			sg_set_buf(&sgt->sgl[i], sg_buf, min);
+>  		}
+> --
+> 2.1.0
 
-Not sure if it's realistic, but I think it would be nice to have
-a way for converting the current slave drivers that use the
-mask/filter/param API to the dev/name based API. We should
-be able to do this by registering a lookup table from platform
-code that translates one to the other, like we do with the
-clkdev lookup to find a device clock based on a local identifier.
+Any opinion on this fix?
 
-The main downside of this is that it's a lot of work if we want
-to completely remove dma_request_channel() for slave drivers,
-but it could be done more gradually.
+Thanks.
 
-Another upside is that we could come up with a mechanism to
-avoid the link-time dependency on the filter-function that
-causes problems when that filter is defined in a loadable
-module for the dmaengine driver.
+Best regards,
+Andrew
 
-	Arnd
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

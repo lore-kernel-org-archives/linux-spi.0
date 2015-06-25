@@ -1,143 +1,77 @@
-From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: Fwd: [alsa-devel] [PATCH 1/1] SPI : spi-pxa2xx : fix spi init of
- WM510205 codec via ACPI (resend)
-Date: Thu, 25 Jun 2015 17:01:05 +0300
-Message-ID: <20150625140105.GP827@lahna.fi.intel.com>
-References: <CAKor6TfKws63jh6f3VzyYpmTffL4-DHWDTdJ6GSgDC08C5W=8w@mail.gmail.com>
- <20150625073618.GH827@lahna.fi.intel.com>
- <CAKor6TfxNW6UW6iX_FkRn2yZOHvdRHcsj6pKoKH-UWU51Bqvvg@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
-	dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-	Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
-To: Christian Hartmann <cornogle-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAKor6TfxNW6UW6iX_FkRn2yZOHvdRHcsj6pKoKH-UWU51Bqvvg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: bcm2835: add spi-bcm2835aux driver for the auxiliar spi1 and spi2
+Date: Thu, 25 Jun 2015 16:19:17 +0200
+Message-ID: <97C7561C-6D67-4F51-94BB-3B8D401D77A0@martin.sperl.org>
+References: <1434980408-4086-1-git-send-email-kernel@martin.sperl.org> <20150622165529.1b758b07@north> <E72B3D8C-EA1B-4B4C-8EAF-C14A5631882E@martin.sperl.org>
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2098\))
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	=?utf-8?Q?Jakub_Kici=C5=84ski?= <moorray3-5tc4TXWwyLM@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <E72B3D8C-EA1B-4B4C-8EAF-C14A5631882E-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-On Thu, Jun 25, 2015 at 02:18:23PM +0200, Christian Hartmann wrote:
-> Hi Mika, Dan et al.
-> 
-> @Dan : thank you, I will use get_maintainer.pl as of now.
-> 
-> @Mika: you mean I should prepare a new DSDT table and in this case
-> overwrite the SPI  value there with the 0 and load it (the DSDT table
-> ) into a custom kernel build ?? I will do this (cause all what I want
-> is to enable the codec and to hear sound)
+So what does it require to get this merged?
 
-I thought that you are developing a new system where you can affect the
-firmware/BIOS source.
+Rename of the module?
 
-Obviously this is not the case so you have close to zero possibility to
-get the vendor to fix the broken firmware :-/
+Thanks
 
-> currently I have in the extracted DSDT table from this device the SPI1
-> controller for the "AUDI" device as seen in this snippet :
-> 
->     Scope (_SB)
->     {
->         Device (LPEA)
->         {
->             Name (_ADR, Zero)  // _ADR: Address
->             Name (_HID, "80860F28" /* Intel SST Audio DSP */)  //
-> _HID: Hardware ID
->             Name (_CID, "80860F28" /* Intel SST Audio DSP */)  //
-> _CID: Compatible ID
->             Name (_DDN, "Intel(R) Low Power Audio Controller -
-> 80860F28")  // _DDN: DOS Device Name
->             Name (_SUB, "17AA7004")  // _SUB: Subsystem ID
->             Name (_UID, One)  // _UID: Unique ID
->             Name (_DEP, Package (0x01)  // _DEP: Dependencies
->             {
->                 ^SPI1.AUDI
->             })
->             Name (_PR0, Package (0x01)  // _PR0: Power Resources for D0
->             {
->                 PLPE
->             })
-> 
-> .... some lines later follows the AUDI device with
->             Device (AUDI)
->             {
->                 Name (_HID, "WM510205")  // _HID: Hardware ID
->                 Name (_CID, "WM510205")  // _CID: Compatible ID
->                 Name (_DDN, "Wolfson Microelectronics Audio WM5102")
-> // _DDN: DOS Device Name
->                 Method (_CRS, 0, NotSerialized)  // _CRS: Current
-> Resource Settings
->                 {
->                     Name (SBUF, ResourceTemplate ()
->                     {
->                         SpiSerialBus (0x0001, PolarityLow, FourWireMode, 0x08,
->                             ControllerInitiated, 0x007A1200, ClockPolarityLow,
->                             ClockPhaseFirst, "\\_SB.SPI1",
->                             0x00, ResourceConsumer, ,
->                             )
+> On 22.06.2015, at 17:26, Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org> wrote=
+:
+>=20
+>=20
+>> On 22.06.2015, at 16:55, Jakub Kici=C5=84ski <moorray3-5tc4TXWwyLM@public.gmane.org> wrote:
+>> As mentioned by Noralf UART1 is quite commonly used on Compute Modul=
+es.
+>> Proper driver - perhaps modelled as a bus - seems like a prerequisit=
+e
+>> for this work.  You are also not using IRQ mux in DT binding example
+>> which is very misleading.
+>=20
+> Well - there is no support far for uart1 in upstream as of now.
+> And I am not even sure if the compute module is supported as there
+> is no device tree available in upstream for that...
+>=20
+> So I have taken the simple route of using shared interrupts and provi=
+ding
+> a minimal framework to enable the spi1/spi2 hw blocks with proper loc=
+king.
+> And I have mentioned that it would need to get modified when uart1 su=
+pport
+> comes along.
+>=20
+> If you know of a better solution how to control this and that also
+> incorporates a patch to enable uart1, then please share it!
+>=20
+> Just modify the bcm2835aux_spi_enable/disable to use a different fram=
+ework
+> than just bcm2835_aux_modify_enable.
+>=20
+> The patch Noralf mentions only applies downstream and only sets the
+> enable-register during the boot sequence, so it would not impact the
+> solution as is.
+>=20
+>> Do we have any indication weather this AUX hardware is available on
+>> RPi2 as well?  IIRC bcm2836 differs only in CPU cores, peripherals
+>> remain identical.  Perhaps this driver could be used on RPi2 and
+>> naming it 283x would be more appropriate?
+>=20
+> I have not checked, but I would guess that it exists.
+>=20
+> As for naming: I have asked around and bcm2835aux seemed fine.
+> Also if we go that route we should start renaming ALL driver instance=
+s that
+> contain 2835.
 
-This is wrong as, like I said the Intel Baytrail SPI host controller
-only supports one native chipselect. 
-
->                         GpioInt (Edge, ActiveLow, ExclusiveAndWake,
-> PullNone, 0x0000,
->                             "\\_SB.GPO2", 0x00, ResourceConsumer, ,
->                             )
->                             {   // Pin list
->                                 0x0004
->                             }
->                         GpioIo (Exclusive, PullDefault, 0x0000,
-> 0x0000, IoRestrictionOutputOnly,
->                             "\\_SB.I2C7.PMIC", 0x00, ResourceConsumer, ,
->                             )
->                             {   // Pin list
->                                 0x0003
->                             }
->                         GpioIo (Exclusive, PullDefault, 0x0000,
-> 0x0000, IoRestrictionOutputOnly,
->                             "\\_SB.GPO1", 0x00, ResourceConsumer, ,
->                             )
->                             {   // Pin list
->                                 0x0017
->                             }
->                     })
->                     Return (SBUF) /* \_SB_.SPI1.AUDI._CRS.SBUF */
->                 }
-> ....
-> 
-> I t makes sense to me, to change the current value(s) in the DSDT and
-> I have read about it to use a custom DSDT table but I am not 100% sure
-> yet (until I have tested it).
-> 
-> If I understand you correct, than all I have to do is to change the
-> 'SPI1' string in this dsdt to SPI0 like
-> ^SPI1.AUDI to ^SPI0.AUDI and this block here
-> SpiSerialBus (0x0001, PolarityLow, FourWireMode, 0x08,
->                             ControllerInitiated, 0x007A1200, ClockPolarityLow,
->                             ClockPhaseFirst, "\\_SB.SPI1",
->                             0x00, ResourceConsumer, ,
-> 
-> becomes
-> SpiSerialBus (0x0000, PolarityLow, FourWireMode, 0x08,
->                             ControllerInitiated, 0x007A1200, ClockPolarityLow,
->                             ClockPhaseFirst, "\\_SB.SPI0",
->                             0x00, ResourceConsumer, ,
-
-Only change the chipselect above. \\SB.SPI1 is the host controller and
-that's probably correct.
-
-It is worth a try using the custom DSDT. If it brings you working audio
-then we need to figure out how to work this around in the kernel.
-
-BTW, does the audio work in Windows?
-
-I somehow suspect that it just ignores the chipselect in the SPI driver
-which might explain why it works (if it works, that is).
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" i=
+n
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

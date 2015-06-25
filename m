@@ -1,96 +1,35 @@
-From: Andrew Gabbasov <andrew_gabbasov-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
-Subject: RE: [PATCH] spi: Fix per-page mapping of unaligned vmalloc-ed buffer
-Date: Thu, 25 Jun 2015 14:27:17 +0300
-Message-ID: <000001d0af39$e499dd70$adcd9850$@mentor.com>
-References: <1434351560-29463-1-git-send-email-andrew_gabbasov@mentor.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+From: Jiri Prchal <jiri.prchal-cKCO0sOKHLPtwjQa/ONI9g@public.gmane.org>
+Subject: [PATCH] spi: spidev: add compatible value for LTC2488
+Date: Thu, 25 Jun 2015 13:44:19 +0200
+Message-ID: <26052734d7c05f1dadc7d8e62a4db01e8f19a0f8.1435232279.git.jiri.prchal@aksignal.cz>
+Cc: Jiri Prchal <jiri.prchal-cKCO0sOKHLPtwjQa/ONI9g@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1434351560-29463-1-git-send-email-andrew_gabbasov-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
-Content-Language: en-us
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-> -----Original Message-----
-> From: Gabbasov, Andrew
-> Sent: Monday, June 15, 2015 9:59 AM
-> To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> Subject: [PATCH] spi: Fix per-page mapping of unaligned vmalloc-ed buffer
-> 
-> spi_map_buf() processes mapping of vmalloc-ed buffers in a special way,
-making
-> mapping of every page separately. However, if the buffer is not aligned to
-page
-> boundary (e.g. sub-array in a vmalloc-ed array), it fills the scatter
-table with
-> page-size unaligned pieces, that cross page boundaries. This is incorrect
-and
-> can, for example, cause memory corruption and various crashes when working
-> with ubifs on spi-nor chips.
-> 
-> Fix this by using proper scatter table size and intra-page buffer lengths,
-so that
-> the whole buffer splits into separate scatter table entries on page
-boundaries.
-> 
-> Signed-off-by: Andrew Gabbasov <andrew_gabbasov-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
-> ---
->  drivers/spi/spi.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c index 50910d8..14016dc
-100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -477,7 +477,9 @@ static int spi_map_buf(struct spi_master *master,
-struct
-> device *dev,  {
->  	const bool vmalloced_buf = is_vmalloc_addr(buf);
->  	const int desc_len = vmalloced_buf ? PAGE_SIZE : master-
-> >max_dma_len;
-> -	const int sgs = DIV_ROUND_UP(len, desc_len);
-> +	const int sgs = DIV_ROUND_UP(vmalloced_buf ?
-> +					len + offset_in_page(buf) : len,
-> +				     desc_len);
->  	struct page *vm_page;
->  	void *sg_buf;
->  	size_t min;
-> @@ -488,9 +490,10 @@ static int spi_map_buf(struct spi_master *master,
-> struct device *dev,
->  		return ret;
-> 
->  	for (i = 0; i < sgs; i++) {
-> -		min = min_t(size_t, len, desc_len);
-> 
->  		if (vmalloced_buf) {
-> +			min = min_t(size_t,
-> +				    len, desc_len - offset_in_page(buf));
->  			vm_page = vmalloc_to_page(buf);
->  			if (!vm_page) {
->  				sg_free_table(sgt);
-> @@ -499,6 +502,7 @@ static int spi_map_buf(struct spi_master *master,
-struct
-> device *dev,
->  			sg_set_page(&sgt->sgl[i], vm_page,
->  				    min, offset_in_page(buf));
->  		} else {
-> +			min = min_t(size_t, len, desc_len);
->  			sg_buf = buf;
->  			sg_set_buf(&sgt->sgl[i], sg_buf, min);
->  		}
-> --
-> 2.1.0
+Since spidev is no more allowed to use in DT and is really loudly warned about
+it I'd like to add this compatible value.
+(Geert Uytterhoeven wrote: "Add the compatible value for your device to the
+spidev_dt_ids[] array in drivers/spi/spidev.c.")
+---
+ drivers/spi/spidev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Any opinion on this fix?
-
-Thanks.
-
-Best regards,
-Andrew
-
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 92c909e..9b7c77d 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -706,6 +706,7 @@ static struct class *spidev_class;
+ #ifdef CONFIG_OF
+ static const struct of_device_id spidev_dt_ids[] = {
+ 	{ .compatible = "rohm,dh2228fv" },
++	{ .compatible = "lineartechnology,ltc2488" },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, spidev_dt_ids);
+-- 
+1.9.1
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

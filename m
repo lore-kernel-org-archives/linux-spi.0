@@ -1,70 +1,70 @@
-From: Charles Keepax <ckeepax-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: Re: Fwd: [alsa-devel] [PATCH 1/1] SPI : spi-pxa2xx : fix spi init
-	of WM510205 codec via ACPI (resend)
-Date: Thu, 25 Jun 2015 17:11:08 +0100
-Message-ID: <20150625161108.GF6321@opensource.wolfsonmicro.com>
-References: <CAKor6TfKws63jh6f3VzyYpmTffL4-DHWDTdJ6GSgDC08C5W=8w@mail.gmail.com> <20150625073618.GH827@lahna.fi.intel.com> <CAKor6TfxNW6UW6iX_FkRn2yZOHvdRHcsj6pKoKH-UWU51Bqvvg@mail.gmail.com> <20150625145853.GP14071@sirena.org.uk> <20150625154407.GE6321@opensource.wolfsonmicro.com> <20150625155612.GS14071@sirena.org.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: Fix per-page mapping of unaligned vmalloc-ed buffer
+Date: Thu, 25 Jun 2015 17:12:13 +0100
+Message-ID: <20150625161213.GU14071@sirena.org.uk>
+References: <1434351560-29463-1-git-send-email-andrew_gabbasov@mentor.com>
+ <000001d0af39$e499dd70$adcd9850$@mentor.com>
+ <20150625140054.GM14071@sirena.org.uk>
+ <6C5EA58090A5ED459815C4D04C2B466FF82082B4@EU-MBX-03.mgc.mentorg.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Christian Hartmann <cornogle-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
-	dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org, mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-	Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="K30cfNVc8Txg/TJP"
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: "Gabbasov, Andrew" <Andrew_Gabbasov-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20150625155612.GS14071-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <6C5EA58090A5ED459815C4D04C2B466FF82082B4-Codg+kbhZ4/nlEkxMdpx1dQH9K4/4qFeAL8bYrjMMd8@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Jun 25, 2015 at 04:56:12PM +0100, Mark Brown wrote:
-> On Thu, Jun 25, 2015 at 04:44:07PM +0100, Charles Keepax wrote:
-> > On Thu, Jun 25, 2015 at 03:58:53PM +0100, Mark Brown wrote:
-> > > On Thu, Jun 25, 2015 at 02:18:23PM +0200, Christian Hartmann wrote:
-> 
-> > > >                 Name (_HID, "WM510205")  // _HID: Hardware ID
-> > > >                 Name (_CID, "WM510205")  // _CID: Compatible ID
-> > > >                 Name (_DDN, "Wolfson Microelectronics Audio WM5102")
-> 
-> > > Separately to the chip select discussion one thing to highlight here is
-> > > that for some reason the BIOS is listing the device as "WM510205" rather
-> > > than "WM5102" - do those extra numbers mean anything and does this mean
-> > > that WM50120[1-4] and possibly higher numbers are also valid?
-> 
-> > From my brief discussions with the Windows guys here on this
-> > basically those last two digits are being used to inform the
-> > Windows driver of use-case setup. So here it will set things up
-> > for whatever the Window's driver considers to be setup "5".
-> 
-> Yay for scalability and abstraction.
 
-Well it certainly is abstract.
+--K30cfNVc8Txg/TJP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> 
-> > I think from the Linux side we can safely ignore those last two
-> > digits. I expect that all systems of the same make and model
-> > would report the same last two digits but that it might change
-> > between models if the Windows driver is expected to something
-> > differently for that model.
-> 
-> Well, we might want to consider using this to set our platform data
-> instead of the machine ID if people have just been copying a smallish
-> set of reference designs, it might might make for a slightly smaller set
-> of ID tables than the machine ID based stuff does.
-> 
-> Due to the way ACPI ID matching works we'll also need to add every
-> suffix individually to the table, we're looking for complete matches not
-> substring matches here.
+On Thu, Jun 25, 2015 at 03:57:50PM +0000, Gabbasov, Andrew wrote:
+> > Please don't quote entire messages, it makes it hard to find any new
+> > content you have added.  If you want to submit a patch for inclusion in
+> > the kernel please follow the patch submission process in
+> > SubmittingPatches.
 
->From what I can gather currently yes every system has a different
-suffix so it should be fine to skip checking the machine ID and
-just use the ACPI ID to select the pdata.
+> I did. This patch was sent to linux-spi mailing list twice (June 1 and Ju=
+ne 15),
+> and only after getting no response I asked the maintainer. Sorry if it's =
+too early,
+> but I believe the existing bug should be fixed. I'll submit the patch onc=
+e more.
 
-Thanks,
-Charles
+SubmittingPatches says:
+
+| 5) Select the recipients for your patch.
+| ----------------------------------------
+|=20
+| You should always copy the appropriate subsystem maintainer(s) on any pat=
+ch
+| to code that they maintain; look through the MAINTAINERS file and the
+
+which you haven't done.  If you don't send patches to people they won't
+see them and can't review them.
+
+--K30cfNVc8Txg/TJP
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVjChdAAoJECTWi3JdVIfQ26kH/27q1WNBlntBVf911U/QxGBC
+RgnZea5iRt0DQrVUdf5Az0YE1j41EYFzYYjIMq6ojxtTSe54sY0bbgjf5ZieAW5D
+5YR45uX2GKgV8gYRH8jRYvd4hHaqQLSrR8LGywwPZvjJSI0QSnjPCYqvyJTrQB16
+9kPxjlOjLgUYTJQmT37u1UrZDBnWVaNVSmz4kSM8Maq6ABxbUWQUXazxXtalgSNb
+URgwS+hzqcB1mxAIgPc9ApMqRrizkOoic2hQGGHPX7zTM6W0gv/8levQiax9TDjg
+NNpcgjEuM5x/Iz/+tCG87ormXQr2kWXyTU+tuP+eAOCu+JM4g3xxG1eJH+a9jqI=
+=VzPg
+-----END PGP SIGNATURE-----
+
+--K30cfNVc8Txg/TJP--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

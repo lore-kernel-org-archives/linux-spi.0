@@ -1,74 +1,61 @@
-From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH V2] dt: brcm,bcm2835-aux-spi: add binding documentation for new spi-bcm2835aux
-Date: Thu, 25 Jun 2015 10:54:32 +0000
-Message-ID: <1435229673-2214-1-git-send-email-kernel@martin.sperl.org>
-Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-To: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	Stefan Wahren <info-saaNCTdWVBT7BZbvpMY5sg@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH 02/13] dmaengine: Introduce dma_request_slave_channel_compat_reason()
+Date: Thu, 25 Jun 2015 13:15:57 +0200
+Message-ID: <4970019.av0JOFIyTW@wuerfel>
+References: <1432646768-12532-1-git-send-email-peter.ujfalusi@ti.com> <5587F1F4.1060905@ti.com> <20150624162401.GP19530@localhost>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Tony Lindgren <tony@atomide.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	dmaengine@vger.kernel.org,
+	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+	"linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+	Linux MMC List <linux-mmc@vger.kernel.org>,
+	linux-crypto@vger.kernel.org,
+	linux-spi <linux-spi@vger.kernel.org>,
+	Linux Media Mailing List <linux-media@vger.kernel.org>,
+	ALSA Development Mailing List <alsa-devel@alsa-project.org>
+To: Vinod Koul <vinod.koul@intel.com>
+Return-path: <linux-crypto-owner@vger.kernel.org>
+In-Reply-To: <20150624162401.GP19530@localhost>
+Sender: linux-crypto-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+On Wednesday 24 June 2015 21:54:01 Vinod Koul wrote:
+> > It would be nice to find another name for the
+> > dma_request_slave_channel_compat() so with the new name we could have chance
+> > to rearrange the parameters: (dev, name, mask, fn, fn_param)
+> > 
+> > We would end up with the following APIs, all returning with error code on failure:
+> > dma_request_slave_channel(dev, name);
+> > dma_request_channel_legacy(mask, fn, fn_param);
+> > dma_request_slave_channel_compat(mask, fn, fn_param, dev, name);
+> > dma_request_any_channel(mask);
+> This is good idea but still we end up with 4 APIs. Why not just converge to
+> two API, one legacy + memcpy + filer fn and one untimate API for slave?
+> 
+> Internally we may have 4 APIs for cleaner handling...
+> 
 
-Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
----
- .../bindings/spi/brcm,bcm2835-aux-spi.txt          |   35 ++++++++++++++++++++
- 1 file changed, 35 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/brcm,bcm2835-aux-spi.txt
+Not sure if it's realistic, but I think it would be nice to have
+a way for converting the current slave drivers that use the
+mask/filter/param API to the dev/name based API. We should
+be able to do this by registering a lookup table from platform
+code that translates one to the other, like we do with the
+clkdev lookup to find a device clock based on a local identifier.
 
-Changelog:
-  V1 -> V2:	fixed typo
-		added cs-gpios
+The main downside of this is that it's a lot of work if we want
+to completely remove dma_request_channel() for slave drivers,
+but it could be done more gradually.
 
-diff --git a/Documentation/devicetree/bindings/spi/brcm,bcm2835-aux-spi.txt b/Documentation/devicetree/bindings/spi/brcm,bcm2835-aux-spi.txt
-new file mode 100644
-index 0000000..66f52d3
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/brcm,bcm2835-aux-spi.txt
-@@ -0,0 +1,35 @@
-+Broadcom BCM2835 auxiliar SPI1/2 controller
-+
-+The BCM2835 contains two forms of SPI master controller, one known simply as
-+SPI0, and the other known as the "Universal SPI Master"; part of the
-+auxiliary block. This binding applies to the SPI1/2 controller.
-+
-+Required properties:
-+- compatible: Should be "brcm,bcm2835-aux-spi".
-+- reg: Should contain register location and length for the spi block
-+       as well as for the common aux block control
-+- interrupts: Should contain shared interrupt of the aux block
-+- clocks: The clock feeding the SPI controller.
-+- cs-gpios: the cs-gpios (native cs is NOT supported)
-+
-+Example:
-+
-+spi1@7e215080 {
-+	compatible = "brcm,bcm2835-aux-spi";
-+	reg = <0x7e215080 0x40>, <0x7e215000 0x08>;
-+	interrupts = <1 29>;
-+	clocks = <&clk_spi>;
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	cs-gpios = <&gpio 18>, <&gpio 17>, <&gpio 16>;
-+};
-+
-+spi2@7e2150c0 {
-+	compatible = "brcm,bcm2835-aux-spi";
-+	reg = <0x7e2150c0 0x40>, <0x7e215000 0x08>;
-+	interrupts = <1 29>;
-+	clocks = <&clk_spi>;
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	cs-gpios = <&gpio 43>, <&gpio 44>, <&gpio 45>;
-+};
--- 
-1.7.10.4
+Another upside is that we could come up with a mechanism to
+avoid the link-time dependency on the filter-function that
+causes problems when that filter is defined in a loadable
+module for the dmaengine driver.
 
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+	Arnd

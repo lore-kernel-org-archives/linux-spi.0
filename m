@@ -1,14 +1,19 @@
-From: Pierre-Louis Bossart <pierre-louis.bossart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [alsa-devel] Fwd: [PATCH 1/1] SPI : spi-pxa2xx : fix spi init
- of WM510205 codec via ACPI (resend)
-Date: Fri, 26 Jun 2015 13:46:50 +0200
-Message-ID: <558D3BAA.3080700@linux.intel.com>
-References: <CAKor6TfKws63jh6f3VzyYpmTffL4-DHWDTdJ6GSgDC08C5W=8w@mail.gmail.com> <20150625073618.GH827@lahna.fi.intel.com> <CAKor6TfxNW6UW6iX_FkRn2yZOHvdRHcsj6pKoKH-UWU51Bqvvg@mail.gmail.com> <20150625145853.GP14071@sirena.org.uk> <20150625154407.GE6321@opensource.wolfsonmicro.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [alsa-devel] Fwd: [PATCH 1/1] SPI : spi-pxa2xx : fix spi init of
+ WM510205 codec via ACPI (resend)
+Date: Fri, 26 Jun 2015 12:58:23 +0100
+Message-ID: <20150626115823.GY14071@sirena.org.uk>
+References: <CAKor6TfKws63jh6f3VzyYpmTffL4-DHWDTdJ6GSgDC08C5W=8w@mail.gmail.com>
+ <20150625073618.GH827@lahna.fi.intel.com>
+ <CAKor6TfxNW6UW6iX_FkRn2yZOHvdRHcsj6pKoKH-UWU51Bqvvg@mail.gmail.com>
+ <20150625145853.GP14071@sirena.org.uk>
+ <20150625154407.GE6321@opensource.wolfsonmicro.com>
+ <558D3BAA.3080700@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252;
-	format=flowed
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="OIXtKW6WvMSdyEGO"
+Cc: Charles Keepax <ckeepax-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
 	Christian Hartmann <cornogle-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>,
 	mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
 	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
@@ -16,69 +21,53 @@ Cc: alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
 	Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
 	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
 	dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org
-To: Charles Keepax <ckeepax-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Pierre-Louis Bossart <pierre-louis.bossart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150625154407.GE6321-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <558D3BAA.3080700-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 6/25/15 5:44 PM, Charles Keepax wrote:
-> On Thu, Jun 25, 2015 at 03:58:53PM +0100, Mark Brown wrote:
->> On Thu, Jun 25, 2015 at 02:18:23PM +0200, Christian Hartmann wrote:
->>
->>>                  Name (_HID, "WM510205")  // _HID: Hardware ID
->>>                  Name (_CID, "WM510205")  // _CID: Compatible ID
->>>                  Name (_DDN, "Wolfson Microelectronics Audio WM5102=
-")
->>
->> Separately to the chip select discussion one thing to highlight here=
- is
->> that for some reason the BIOS is listing the device as "WM510205" ra=
-ther
->> than "WM5102" - do those extra numbers mean anything and does this m=
-ean
->> that WM50120[1-4] and possibly higher numbers are also valid?
->
->  From my brief discussions with the Windows guys here on this
-> basically those last two digits are being used to inform the
-> Windows driver of use-case setup. So here it will set things up
-> for whatever the Window's driver considers to be setup "5".
->
-> I think from the Linux side we can safely ignore those last two
-> digits. I expect that all systems of the same make and model
-> would report the same last two digits but that it might change
-> between models if the Windows driver is expected to something
-> differently for that model.
 
-Here's the summary of what a valid _HID  should look like. It took me a=
-=20
-couple of days to gather the rules from different sources, I hope it=20
-helps others figure things out.
--Pierre
+--OIXtKW6WvMSdyEGO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-_HID must be one of these forms:
-- "AAA####=94 or EisaID(=93AAA####=94) where A is an uppercase letter a=
-nd # is=20
-a hex digit. The AAA PNP Vendor ID consists of 3 characters, verified o=
-n
-http://www.uefi.org/sites/default/files/resources/PNPID_List.pdf
+On Fri, Jun 26, 2015 at 01:46:50PM +0200, Pierre-Louis Bossart wrote:
+> On 6/25/15 5:44 PM, Charles Keepax wrote:
 
-- "ACPI####=94 where # is a hex digit
+> >I think from the Linux side we can safely ignore those last two
+> >digits. I expect that all systems of the same make and model
+> >would report the same last two digits but that it might change
+> >between models if the Windows driver is expected to something
+> >differently for that model.
 
-- "NNNN####=94 where N is an uppercase letter or decimal digit (0-9) an=
-d #=20
-is a hex digit (ACPI 5.0).
-The NNNN Vendor ID can be
---> a PCI ID: 4 hex digits (0-9 and A-F), verified on
-https://www.pcisig.com/membership/vid_search/
---> or an ACPI ID: 4 characters, each character being either an=20
-uppercase letter (A-Z) or a numeral (0-9), verified on
-http://www.uefi.org/sites/default/files/resources/ACPIID_List.pdf
+> Here's the summary of what a valid _HID  should look like. It took me a
+> couple of days to gather the rules from different sources, I hope it helps
+> others figure things out.
 
+None of which really affact the matching that the kernel does since
+whatever form the string is generated in we need to do a full string
+match (nor do they correspond to what it seems the Wolfson drivers have
+invented but that's a separate issue).  Yay standards.
 
+--OIXtKW6WvMSdyEGO
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
+iQEcBAEBCAAGBQJVjT5fAAoJECTWi3JdVIfQDAMH/2fmCvcaglPFA4AP5Du3sPXD
+nkR1XdFuaMcZo4j+JcE35ejS33QcvB5ucKa50FqXHqRusN0EcYkoJZBjhbPVKliW
+cFAl61LDzzBH+UF11ZY93sydOsdtkCbD3g4wuJc4TYwKKF1Xk9kVdSxVpHWEh9kY
+ddjoxCsey3jeL3cLqvZbZSDDRlpWTwH+XfAvUewOlspkdD+Lyt5bFEtAFKdytdgx
+DoRyCPi9h3z58dq/VyYuAHZRqOp3kdHqxk4a9rsf31IkDXmGwTi8qVMjccKZwWwm
+lF0vdi+leUoQv0+NeZBGW9N9IQdW3EUBM4C8dUbCswn5kzeTuR9FNiaX6AzlWFY=
+=KPEr
+-----END PGP SIGNATURE-----
+
+--OIXtKW6WvMSdyEGO--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

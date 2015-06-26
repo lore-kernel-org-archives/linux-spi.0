@@ -1,47 +1,59 @@
-From: Jakub =?UTF-8?B?S2ljacWEc2tp?= <moorray3-5tc4TXWwyLM@public.gmane.org>
-Subject: Re: spi: bcm2835: driver for "auxiliar" spi1/spi2
-Date: Thu, 25 Jun 2015 19:42:19 +0200
-Message-ID: <20150625194219.4846221d@north>
-References: <5582933E.1050500@martin.sperl.org>
-	<55829B18.4030609@tronnes.org>
-	<20150618105848.GE14071@sirena.org.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: Fix per-page mapping of unaligned vmalloc-ed buffer
+Date: Fri, 26 Jun 2015 12:46:22 +0100
+Message-ID: <20150626114622.GW14071@sirena.org.uk>
+References: <1435250415-9147-1-git-send-email-andrew_gabbasov@mentor.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Noralf =?UTF-8?B?VHLDuG5uZXM=?= <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>,
-	Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="QpO1T/ITbdn+x1ew"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Andrew Gabbasov <andrew_gabbasov-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150618105848.GE14071-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1435250415-9147-1-git-send-email-andrew_gabbasov-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, 18 Jun 2015 11:58:48 +0100, Mark Brown wrote:
-> On Thu, Jun 18, 2015 at 12:19:04PM +0200, Noralf Tr=C3=B8nnes wrote:
->=20
-> > There is also an aux mini uart that shares interrupt with spi1/2.
-> > The AUXIRQ register determines the interrupt source. How should thi=
-s
-> > sharing be done? This uart is really only useful on the Compute Mod=
-ule
-> > since it's pins overlap the pl011 uart pins on the other boards.
-> > This is how the mini uart is used/setup downstream:
-> > https://github.com/raspberrypi/linux/pull/1008
->=20
-> Linux supports shared interrupts perfectly fine, though it sounds lik=
-e
-> this is actually a cascaded interrupt (the demux is another interrupt
-> controller) which we also support just fine.
 
-Mark, could you give us a hint how to best go about this shared IRQ?
-I failed to find any generic interrupt controller.  I imagine there
-should be some fake irqchip we can instantiate from DT giving it a
-irq line and a memory address and it should provide us with 32(bit)
-demuxed irqs based on status of bits in specified memory location.
-Does this sound reasonable?  Does such fake irqchip driver exist?
+--QpO1T/ITbdn+x1ew
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Thu, Jun 25, 2015 at 11:40:15AM -0500, Andrew Gabbasov wrote:
+> spi_map_buf() processes mapping of vmalloc-ed buffers in a special way,
+> making mapping of every page separately. However, if the buffer is not
+> aligned to page boundary (e.g. sub-array in a vmalloc-ed array), it
+> fills the scatter table with page-size unaligned pieces, that cross
+> page boundaries. This is incorrect and can, for example, cause memory
+> corruption and various crashes when working with ubifs on spi-nor chips.
+
+The caller is supposed to be providing us with aligned memory here.
+However it could be helpful to do this so...
+
+> -	const int sgs = DIV_ROUND_UP(len, desc_len);
+> +	const int sgs = DIV_ROUND_UP(vmalloced_buf ?
+> +					len + offset_in_page(buf) : len,
+> +				     desc_len);
+
+No, please write this legibly without the ternery operator.
+
+--QpO1T/ITbdn+x1ew
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVjTuNAAoJECTWi3JdVIfQpAsH/jM+s3Rdlzeol9GYI0uzRxPV
+U8Cqth7vd4uGDk/u309+L1EW/Jt3be6KCSNPhmad6NryTasyJw1+Py2d13pcTZVg
+DQClMfaHxh5FZmbAbTV+kawO0Lv7SjFdP9ND2/kqFg5nKlZKghuna4nNdj7FJyLd
+TtplDoUpUDr4+H6eb9yVU2DNE3P9WCozkSIOf9hC/K4kTmYea9r31nRg6e37rMUk
+jWssh6DCbWqBRL/WF+rxEJspi5gXmkbU3Q7DgLveyDopp8eJC1KWYVxt8Ul36+QO
+yvllzb/eRGBH/LAw9Jn27M3xsMTN/DNEZKsE4OLT5E4aHKu8QsVfHrl3mlJwRDQ=
+=c9Zz
+-----END PGP SIGNATURE-----
+
+--QpO1T/ITbdn+x1ew--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,62 +1,104 @@
-From: Ranjit Abhimanyu Waghmode <ranjit.waghmode@xilinx.com>
-Subject: RE: [PATCH] spi: SPI_ZYNQMP_GQSPI should depend on HAS_DMA
-Date: Mon, 29 Jun 2015 06:00:08 +0000
-Message-ID: <7CFCFE83B8145347A1D424EC939F1C3CA763F3@XAP-PVEXMBX01.xlnx.xilinx.com>
-References: <1435320432-4855-1-git-send-email-geert@linux-m68k.org>
+From: Christian Hartmann <cornogle-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
+Subject: Re: [alsa-devel] Fwd: [PATCH 1/1] SPI : spi-pxa2xx : fix spi init of
+ WM510205 codec via ACPI (resend)
+Date: Mon, 29 Jun 2015 09:27:17 +0200
+Message-ID: <CAKor6Tf20eC1WQSO=AV2b+XoB5Qv-2Oin_nrrTJUiDV4czxLjA@mail.gmail.com>
+References: <CAKor6TfKws63jh6f3VzyYpmTffL4-DHWDTdJ6GSgDC08C5W=8w@mail.gmail.com>
+	<20150625073618.GH827@lahna.fi.intel.com>
+	<CAKor6TfxNW6UW6iX_FkRn2yZOHvdRHcsj6pKoKH-UWU51Bqvvg@mail.gmail.com>
+	<20150625145853.GP14071@sirena.org.uk>
+	<20150625154407.GE6321@opensource.wolfsonmicro.com>
+	<558D3BAA.3080700@linux.intel.com>
+	<20150626115823.GY14071@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>,
-	Mark Brown <broonie@kernel.org>,
-	Michal Simek <michals@xilinx.com>,
-	Soren Brinkmann <sorenb@xilinx.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1435320432-4855-1-git-send-email-geert@linux-m68k.org>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Cc: Pierre-Louis Bossart <pierre-louis.bossart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Charles Keepax <ckeepax-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+	dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150626115823.GY14071-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Acked-by: Ranjit Waghmode <ranjitw@xilinx.com>
+Hi,
 
-> -----Original Message-----
-> From: Geert Uytterhoeven [mailto:geert@linux-m68k.org]
-> Sent: Friday, June 26, 2015 5:37 PM
-> To: Mark Brown; Ranjit Abhimanyu Waghmode
-> Cc: linux-spi@vger.kernel.org; linux-kernel@vger.kernel.org; Geert
-> Uytterhoeven
-> Subject: [PATCH] spi: SPI_ZYNQMP_GQSPI should depend on HAS_DMA
->
-> If NO_DMA=y:
->
->     ERROR: "dma_unmap_single" [drivers/spi/spi-zynqmp-gqspi.ko] undefined!
->     ERROR: "dma_mapping_error" [drivers/spi/spi-zynqmp-gqspi.ko] undefined!
->     ERROR: "dma_map_single" [drivers/spi/spi-zynqmp-gqspi.ko] undefined!
->
-> Add a dependency on HAS_DMA to fix this.
->
-> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> ---
->  drivers/spi/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig index
-> 1c0b261b66fcfdcb..b787b515bd73322b 100644
-> --- a/drivers/spi/Kconfig
-> +++ b/drivers/spi/Kconfig
-> @@ -618,7 +618,7 @@ config SPI_XTENSA_XTFPGA
->
->  config SPI_ZYNQMP_GQSPI
->       tristate "Xilinx ZynqMP GQSPI controller"
-> -     depends on SPI_MASTER
-> +     depends on SPI_MASTER && HAS_DMA
->       help
->         Enables Xilinx GQSPI controller driver for Zynq UltraScale+ MPSoC.
->
-> --
-> 1.9.1
+@all
+
+FYI: I can confirm that with the changed DSDT.dsl file and loading
+the new custom DSDT table, I do not need this patch mentioned above.
+
+So the patch is indeed only needed, as long as there is no
+BIOS (DSDT change by manufacturer) update available.
+
+In this case special case a custom DSDT table is loaded to
+ fix the by ACPI wrongly set of SPIController to  1, which must be 0.
+
+On the other hand I have now an tained kernel too :/ cause of the unset
+"Select only drivers that don't need compile-time external firmware" and
+ the ''Include Custom DSDT' options.
 
 
+The dmesg message seems to be the same as with the patch applied but
+with the current system DSDT table: here
 
-This email and any attachments are intended for the sole use of the named recipient(s) and contain(s) confidential information that may be proprietary, privileged or copyrighted under applicable law. If you are not the intended recipient, do not read, copy, or forward this email message or any attachments. Delete this email message and any attachments immediately.
+[    0.000000] Linux version 4.1.0.60-rc0
+(b23-/dWd7jAXU0ArCNBCT51S8nv7hrKZn54GTYPjME8WTGQ@public.gmane.org) (gcc version 4.8.3 20140911 (Red Hat
+4.8.3-9) (GCC) ) #199 SMP Fri Jun 26
+13:47:46 CEST 2015
+...
+[    0.000000] ACPI: Early table checksum verification disabled
+...
+[    5.916597] pxa2xx-spi 80860F0E:00: no DMA channels available, using PIO
+[    5.916733] pxa2xx-spi 80860F0E:00: registered master spi32766 (dynamic)
+[    5.926671] spi spi-WM510205:00: 8333333 Hz actual, PIO
+[    5.926681] spi spi-WM510205:00: setup mode 0, 8 bits/w, 8000000 Hz max --> 0
+[    5.926805] spi spi-WM510205:00: checking WM510205 with bmp180
+[    5.926812] spi spi-WM510205:00: checking WM510205 with bmp181
+[    5.926816] spi spi-WM510205:00: modalias WM510205 in id_table not
+found, returns NULL
+[    5.926843] arizona spi-WM510205:00: acpi_match_device() first,
+than via spi_get_device_id().
+[    5.926849] arizona spi-WM510205:00: matched ACPI ID and data
+[    5.926853] arizona spi-WM510205:00: using 1 as type for arizona audio codec
+[    5.926857] arizona spi-WM510205:00: regmap set to wm5102_spi
+[    5.927665] arizona spi-WM510205:00: arizona_spi_probe done, call
+and return of  arizona_dev_init
+[    5.927759] spi-WM510205:00 supply AVDD not found, using dummy regulator
+[    5.927782] spi-WM510205:00 supply DBVDD1 not found, using dummy regulator
+[    5.927801] spi-WM510205:00 supply DCVDD not found, using dummy regulator
+[    5.928958] arizona spi-WM510205:00: Unknown device ID: ffff
+[    5.929098] pxa2xx-spi 80860F0E:00: registered child spi-WM510205:00
+
+notice : some of these messages above are coming from local added dev_err();
+
+cheers
+chris
+
+
+2015-06-26 13:58 GMT+02:00 Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>:
+> On Fri, Jun 26, 2015 at 01:46:50PM +0200, Pierre-Louis Bossart wrote:
+>> On 6/25/15 5:44 PM, Charles Keepax wrote:
+>
+>> >I think from the Linux side we can safely ignore those last two
+>> >digits. I expect that all systems of the same make and model
+>> >would report the same last two digits but that it might change
+>> >between models if the Windows driver is expected to something
+>> >differently for that model.
+>
+>> Here's the summary of what a valid _HID  should look like. It took me a
+>> couple of days to gather the rules from different sources, I hope it helps
+>> others figure things out.
+>
+> None of which really affact the matching that the kernel does since
+> whatever form the string is generated in we need to do a full string
+> match (nor do they correspond to what it seems the Wolfson drivers have
+> invented but that's a separate issue).  Yay standards.
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

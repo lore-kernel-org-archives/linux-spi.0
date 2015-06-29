@@ -1,66 +1,77 @@
-From: Leilk Liu <leilk.liu@mediatek.com>
-Subject: [PATCH v2 2/4] dt-bindings: ARM: Mediatek: Document devicetree bindings for spi bus
-Date: Mon, 29 Jun 2015 21:04:28 +0800
-Message-ID: <1435583070-9600-3-git-send-email-leilk.liu@mediatek.com>
+From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Subject: [PATCH v2 1/4] spi: support spi without dma channel to use can_dma()
+Date: Mon, 29 Jun 2015 21:04:27 +0800
+Message-ID: <1435583070-9600-2-git-send-email-leilk.liu@mediatek.com>
 References: <1435583070-9600-1-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
 Content-Type: text/plain
-Cc: Mark Rutland <mark.rutland@arm.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>,
-	<linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
-	Leilk Liu <leilk.liu@mediatek.com>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1435583070-9600-1-git-send-email-leilk.liu@mediatek.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>,
+	Eddie Huang <eddie.huang-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1435583070-9600-1-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
+For spi without dma channel and use can_dma(), it can
+use master->dev for struct device.
+
+Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Signed-off-by: Eddie Huang <eddie.huang-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 ---
- .../devicetree/bindings/spi/spi-mt65xx.txt         | 32 ++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-mt65xx.txt
+ drivers/spi/spi.c | 22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
-new file mode 100644
-index 0000000..04c28fd
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
-@@ -0,0 +1,32 @@
-+MTK SPI device
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index d5d7d22..cfd76e9 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -539,8 +539,15 @@ static int __spi_map_msg(struct spi_master *master, struct spi_message *msg)
+ 	if (!master->can_dma)
+ 		return 0;
+ 
+-	tx_dev = master->dma_tx->device->dev;
+-	rx_dev = master->dma_rx->device->dev;
++	if (master->dma_tx)
++		tx_dev = master->dma_tx->device->dev;
++	else
++		tx_dev = &master->dev;
 +
-+Required properties:
-+- compatible: should be one of the following.
-+    - mediatek,mt8173-spi: for mt8173 platforms
-+    - mediatek,mt8135-spi: for mt8135 platforms
-+    - mediatek,mt6589-spi: for mt6589 platforms
++	if (master->dma_rx)
++		rx_dev = master->dma_rx->device->dev;
++	else
++		rx_dev = &master->dev;
+ 
+ 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+ 		if (!master->can_dma(master, msg->spi, xfer))
+@@ -579,8 +586,15 @@ static int spi_unmap_msg(struct spi_master *master, struct spi_message *msg)
+ 	if (!master->cur_msg_mapped || !master->can_dma)
+ 		return 0;
+ 
+-	tx_dev = master->dma_tx->device->dev;
+-	rx_dev = master->dma_rx->device->dev;
++	if (master->dma_tx)
++		tx_dev = master->dma_tx->device->dev;
++	else
++		tx_dev = &master->dev;
 +
-+- reg: Address and length of the register set for the device
-+
-+- interrupts: Should contain spi interrupt
-+
-+- clock-names: tuple listing input clock names.
-+	Required elements: "main"
-+
-+- clocks: phandles to input clocks.
-+
-+- pad-select: should specify spi pad used, only required for MT8173.
-+	This value should be 0~3.
-+
-+Example:
-+
-+- SoC Specific Portion:
-+spi: spi@1100a000 {
-+	compatible = "mediatek,mt8173-spi";
-+	reg = <0 0x1100a000 0 0x1000>;
-+	interrupts = <GIC_SPI 110 IRQ_TYPE_LEVEL_LOW>;
-+	clocks = <&pericfg PERI_SPI0>;
-+	clock-names = "main";
-+	pad-select = <1>;
-+	status = "disabled";
-+};
++	if (master->dma_rx)
++		rx_dev = master->dma_rx->device->dev;
++	else
++		rx_dev = &master->dev;
+ 
+ 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+ 		if (!master->can_dma(master, msg->spi, xfer))
 -- 
 1.8.1.1.dirty
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,77 +1,53 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [alsa-devel] Fwd: [PATCH 1/1] SPI : spi-pxa2xx : fix spi init of
- WM510205 codec via ACPI (resend)
-Date: Mon, 29 Jun 2015 11:22:06 +0100
-Message-ID: <20150629102206.GC11162@sirena.org.uk>
-References: <CAKor6TfKws63jh6f3VzyYpmTffL4-DHWDTdJ6GSgDC08C5W=8w@mail.gmail.com>
- <20150625073618.GH827@lahna.fi.intel.com>
- <CAKor6TfxNW6UW6iX_FkRn2yZOHvdRHcsj6pKoKH-UWU51Bqvvg@mail.gmail.com>
- <20150625145853.GP14071@sirena.org.uk>
- <20150625154407.GE6321@opensource.wolfsonmicro.com>
- <558D3BAA.3080700@linux.intel.com>
- <20150626115823.GY14071@sirena.org.uk>
- <CAKor6Tf20eC1WQSO=AV2b+XoB5Qv-2Oin_nrrTJUiDV4czxLjA@mail.gmail.com>
- <CAKor6TdzzAqG1yNtqkWftdvNo8_bxC=qnU+60rgiM=38qrJ2yQ@mail.gmail.com>
+From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Subject: [PATCH v2 0/4] Add Mediatek SPI bus driver
+Date: Mon, 29 Jun 2015 21:04:26 +0800
+Message-ID: <1435583070-9600-1-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="KDt/GgjP6HVcx58l"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
-	Pierre-Louis Bossart <pierre-louis.bossart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Charles Keepax <ckeepax-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-	dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org
-To: Christian Hartmann <cornogle-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAKor6TdzzAqG1yNtqkWftdvNo8_bxC=qnU+60rgiM=38qrJ2yQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain
+Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
+Mediatek SPI BUS controller has 3 hardware restrictions:
+1. Hw has the restriction that in one transfer, length must be a multiple of
+   1024, when it's greater than 1024bytes.
+2. Hw tx/rx have 4bytes aligned restriction.
+3. For MT8173 IC: RX must enable TX, then TX transfer dummy data; TX don't need
+   to enable RX.
+Some workarounds are done in SPI driver code base on v4.1-rc1.
 
---KDt/GgjP6HVcx58l
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Change in v2:
+1. Remove spi bitbang framwork, use can_dma() and transfer_one().
+2. Add PM functions.
+3. Fix Mark Brown review comment.
 
-On Mon, Jun 29, 2015 at 09:46:41AM +0200, Christian Hartmann wrote:
-> Hello,
+Leilk Liu (4):
+  spi: support spi without dma channel to use can_dma()
+  dt-bindings: ARM: Mediatek: Document devicetree bindings for spi bus
+  spi: mediatek: Add spi bus for Mediatek MT8173
+  arm64: dts: Add spi bus dts
 
-Please don't top post.
+ .../devicetree/bindings/spi/spi-mt65xx.txt         |  32 +
+ arch/arm64/boot/dts/mediatek/mt8173.dtsi           |   9 +
+ drivers/spi/Kconfig                                |   9 +
+ drivers/spi/Makefile                               |   1 +
+ drivers/spi/spi-mt65xx.c                           | 656 +++++++++++++++++++++
+ drivers/spi/spi.c                                  |  22 +-
+ 6 files changed, 725 insertions(+), 4 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-mt65xx.txt
+ create mode 100644 drivers/spi/spi-mt65xx.c
 
-> I have sent an email about the Bug in this firmware to lenovo.
-> So I can work on with thhe custom DSDT and will try again to get ACPI
-> working with the WM5102.
-
-> As soon as Lenovo has a new BIOS available, I will report that but for
-> the case their will not be a new BIOS update in the near future, what
-> should we do with the patch??
-> As some suggested, its a firmware bug workaround.
-
-We'll need to work around this, I wouldn't hold your breath on Lenovo
-fixing their BIOS and even if they do we really ought to support the
-shipped BIOS since not everyone is going to want to upgrade (or know to
-do that).
-
---KDt/GgjP6HVcx58l
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVkRxNAAoJECTWi3JdVIfQJXQH/2+gsGq/sSV1JpQmzX52pIxt
-udiYRb49rJh+oekeJzpD6fBnAbC+wk0eZd5ok8yDoaWu8kGeiAWRaz2ZRhKbMWLQ
-1KgKOK9RoDCeNQRYdhYMPQAWl8bv6zciXpyixQ70t+II9OuW8/t1TIsjNlJxE9jG
-n4Ne0mabeW8un+4ovsofsw1AK+yrRfFGqaJ8Ths8dXaZ/BgOOFf4t435y6YKoAco
-4rENSkgesUFDz3uX4f3JOJWFaQbaSxynUGaI7BtXdoHprwtgQjNRa7MCycst563V
-JKk56+TedK49qrv6S8Nh3bDOjE98/52Xyk6iTZo3/8UGXjIe+wOktgBltmAdxBo=
-=33en
------END PGP SIGNATURE-----
-
---KDt/GgjP6HVcx58l--
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+1.8.1.1.dirty
+
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

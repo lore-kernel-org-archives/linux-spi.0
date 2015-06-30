@@ -1,63 +1,61 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: bcm2835: add spi-bcm2835aux driver for the
- auxiliar spi1 and spi2
-Date: Tue, 30 Jun 2015 10:42:32 +0100
-Message-ID: <20150630094232.GM11162@sirena.org.uk>
-References: <1434980408-4086-1-git-send-email-kernel@martin.sperl.org>
- <20150622165529.1b758b07@north>
- <E72B3D8C-EA1B-4B4C-8EAF-C14A5631882E@martin.sperl.org>
- <97C7561C-6D67-4F51-94BB-3B8D401D77A0@martin.sperl.org>
+From: Charles Keepax <ckeepax-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Subject: Re: [alsa-devel] Fwd: [PATCH 1/1] SPI : spi-pxa2xx : fix spi init
+	of WM510205 codec via ACPI (resend)
+Date: Tue, 30 Jun 2015 11:34:04 +0100
+Message-ID: <20150630103404.GI6321@opensource.wolfsonmicro.com>
+References: <CAKor6TfKws63jh6f3VzyYpmTffL4-DHWDTdJ6GSgDC08C5W=8w@mail.gmail.com> <20150625073618.GH827@lahna.fi.intel.com> <CAKor6TfxNW6UW6iX_FkRn2yZOHvdRHcsj6pKoKH-UWU51Bqvvg@mail.gmail.com> <20150625145853.GP14071@sirena.org.uk> <20150625154407.GE6321@opensource.wolfsonmicro.com> <558D3BAA.3080700@linux.intel.com> <20150626115823.GY14071@sirena.org.uk> <CAKor6Tf20eC1WQSO=AV2b+XoB5Qv-2Oin_nrrTJUiDV4czxLjA@mail.gmail.com> <20150629094854.GB11162@sirena.org.uk> <CAKor6TdDPb2qOgdHbeX2w+yQa_ioDM5ak9bk+=jF+cKt_twiXw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="um2V5WpqCyd73IVb"
-Cc: Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Jakub =?utf-8?B?S2ljacWEc2tp?= <moorray3-5tc4TXWwyLM@public.gmane.org>
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
+	Pierre-Louis Bossart <pierre-louis.bossart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+	dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org
+To: Christian Hartmann <cornogle-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <97C7561C-6D67-4F51-94BB-3B8D401D77A0-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <CAKor6TdDPb2qOgdHbeX2w+yQa_ioDM5ak9bk+=jF+cKt_twiXw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Tue, Jun 30, 2015 at 09:14:37AM +0200, Christian Hartmann wrote:
+> Hi,
+> 
+> 
+> 2015-06-29 11:48 GMT+02:00 Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>:
+> > On Mon, Jun 29, 2015 at 09:27:17AM +0200, Christian Hartmann wrote:
+> >> [    5.927801] spi-WM510205:00 supply DCVDD not found, using dummy regulator
+> >> [    5.928958] arizona spi-WM510205:00: Unknown device ID: ffff
+> >> [    5.929098] pxa2xx-spi 80860F0E:00: registered child spi-WM510205:00
+> >
+> > The above is saying that SPI I/O to the device isn't working - the
+> > device ID is not being read back successfully.
+> 
+> Ok that is the next problem that must be solved.
+> I have yesterday made a patchset where I have added
+> the enum type 5, but as you said already,
+> that was not needed.
+> All what I see the same: : Unknown device ID: ffff
+> 
+> So where I have to look now or what can I do to let this device id
+> register correctly?
+> I hope the baytrail machine driver is easy peasy to add, but here I
+> stuck at the moment.
 
---um2V5WpqCyd73IVb
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+As I said in my other emails the next step is to work out what
+the reset and ldoena gpio's are. You won't be able to read the
+device ID until you have those setup. Unfortunately, finding the
+right GPIOs is likely to be a bit of a chore, I will see if I can
+find anything out from the Windows guys at this end.
 
-On Thu, Jun 25, 2015 at 04:19:17PM +0200, Martin Sperl wrote:
-> So what does it require to get this merged?
+Also can you check that the arizona-ldo1 regulator is built in I
+am surprised that is falling back to the dummy regulator.
 
-Don't top post.
-
-This looks relevant:
-
-> >> On 22.06.2015, at 16:55, Jakub Kici=C5=84ski <moorray3-5tc4TXWwyLM@public.gmane.org> wrote:
-> >> As mentioned by Noralf UART1 is quite commonly used on Compute Modules.
-> >> Proper driver - perhaps modelled as a bus - seems like a prerequisite
-> >> for this work.  You are also not using IRQ mux in DT binding example
-> >> which is very misleading.
-
---um2V5WpqCyd73IVb
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVkmSHAAoJECTWi3JdVIfQk8gH/1fvuSsjq7h/kj0PBkRKVXSw
-z2ixs8Wx7meucb7w3T+fVvaUJ5CTQIFGoA2nCRDDDupNkjMFraNnhhS5W2UFdnDy
-Z2ONmywiySMc3wfUl0MmXgz0ETF6Q9OwQ8DFsdQVsl7KnVvgW0TUWJo8DugX2hJD
-DFt/eImM6YrbIjAz2H4UatKb5xsoogpeImoT6eXxKCEPtrBxvOG/h+UPMWSFFyco
-BP3j7P6BT9rSElPObl47O0aCz30+78JlkZrd8vf8NEkEEyTiUiSmr5cFrTmSP9mO
-5nQmis/29NgnI/JotjSoKsp/lg5JaR7zlPPAzGJi1McVRlTtpNpz1toyFKDOpo0=
-=OWhC
------END PGP SIGNATURE-----
-
---um2V5WpqCyd73IVb--
+Thanks,
+Charles
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

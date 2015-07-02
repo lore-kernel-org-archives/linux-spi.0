@@ -1,87 +1,114 @@
-From: =?UTF-8?B?Tm9yYWxmIFRyw7hubmVz?= <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: bcm2835: add spi-bcm2835aux driver for the auxiliar
- spi1 and spi2
-Date: Wed, 01 Jul 2015 22:57:44 +0200
-Message-ID: <55945448.7010502@tronnes.org>
-References: <1434980408-4086-1-git-send-email-kernel@martin.sperl.org> <20150622165529.1b758b07@north> <E72B3D8C-EA1B-4B4C-8EAF-C14A5631882E@martin.sperl.org> <97C7561C-6D67-4F51-94BB-3B8D401D77A0@martin.sperl.org> <20150630094232.GM11162@sirena.org.uk> <6A2CCE70-5DAF-4E86-A0A4-F5E93FD1B540@martin.sperl.org>
+From: Daniel Kurtz <djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: Re: [PATCH v2 2/4] dt-bindings: ARM: Mediatek: Document devicetree
+ bindings for spi bus
+Date: Thu, 2 Jul 2015 11:04:55 +0800
+Message-ID: <CAGS+omBLNWUnNCt5XEAAqiCxzCZOsNQOXSK0ij13Wxro+Q9qLQ@mail.gmail.com>
+References: <1435583070-9600-1-git-send-email-leilk.liu@mediatek.com> <1435583070-9600-3-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8;
-	format=flowed
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	=?UTF-8?B?SmFrdWIgS2ljacWEc2tp?= <moorray3-5tc4TXWwyLM@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	"open list:OPEN FIRMWARE AND..." <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <6A2CCE70-5DAF-4E86-A0A4-F5E93FD1B540-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <1435583070-9600-3-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Mon, Jun 29, 2015 at 9:04 PM, Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org> wrote:
+> Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+> ---
+>  .../devicetree/bindings/spi/spi-mt65xx.txt         | 32 ++++++++++++++++++++++
+>  1 file changed, 32 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/spi/spi-mt65xx.txt
+>
+> diff --git a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
+> new file mode 100644
+> index 0000000..04c28fd
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
+> @@ -0,0 +1,32 @@
+> +MTK SPI device
+> +
+> +Required properties:
+> +- compatible: should be one of the following.
+> +    - mediatek,mt8173-spi: for mt8173 platforms
+> +    - mediatek,mt8135-spi: for mt8135 platforms
+> +    - mediatek,mt6589-spi: for mt6589 platforms
+> +
+> +- reg: Address and length of the register set for the device
+> +
+> +- interrupts: Should contain spi interrupt
+> +
+> +- clock-names: tuple listing input clock names.
+> +       Required elements: "main"
+> +
+> +- clocks: phandles to input clocks.
+> +
+> +- pad-select: should specify spi pad used, only required for MT8173.
+> +       This value should be 0~3.
+> +
+> +Example:
+> +
+> +- SoC Specific Portion:
+> +spi: spi@1100a000 {
+> +       compatible = "mediatek,mt8173-spi";
+> +       reg = <0 0x1100a000 0 0x1000>;
+> +       interrupts = <GIC_SPI 110 IRQ_TYPE_LEVEL_LOW>;
+> +       clocks = <&pericfg PERI_SPI0>;
 
-Den 01.07.2015 21:39, skrev Martin Sperl:
->> On 30.06.2015, at 19:42, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
->>
->> This looks relevant:
->>
->>>>> On 22.06.2015, at 16:55, Jakub Kici=C5=84ski <moorray3-5tc4TXWwyLM@public.gmane.org> wro=
-te:
->>>>> As mentioned by Noralf UART1 is quite commonly used on Compute Mo=
-dules.
->>>>> Proper driver - perhaps modelled as a bus - seems like a prerequi=
-site
->>>>> for this work.  You are also not using IRQ mux in DT binding exam=
-ple
->>>>> which is very misleading.
+CLK_PERI_SPI0
 
-[...]
+> +       clock-names = "main";
+> +       pad-select = <1>;
 
-> Finally asking for a recommendation with regards to using a bus
-> to arbitrate access to the enable register there was no feedback
-> how this could be get implemented...
+According to [0], a SPI bus should also specify
+address-cells/size-cells to allow SPI bus devices to specify a chip
+select.
+[0] Documentation/devicetree/bindings/spi/spi-bus.txt
 
-Maybe you can use drivers/mfd/syscon.c to enable shared access to the
-aux enable register. Then the spi driver could get the regmap with:
-aux_regmap =3D syscon_regmap_lookup_by_phandle(np, "syscon");
+- #address-cells  - number of cells required to define a chip select
+address on the SPI bus.
+- #size-cells     - should be zero.
 
-aux_syscon: aux_syscon@7e215000 {
-   compatible =3D "syscon";
-   reg =3D <0x7e215000 0x08>;
-};
-
-spi2@7e2150c0 {
-   compatible =3D "brcm,bcm2835-aux-spi";
-   reg =3D <0x7e2150c0 0x40>;
-   syscon =3D <&aux_syscon>;
-};
-
-So if someone later will add a Pi extension to the 8250 serial driver o=
-r
-enable the mini uart by some other means, they can use the syscon regma=
-p.
+The spi-bus document even describes how to mix "native" and gpio CS lines.
 
 
-About sharing the aux interrupt, could this be implemented in irq-bcm28=
-35
-as a Bank 3?
+I am still not sure what to do with the "pad-select" feature.
+Does "pad-select" just select one of 4 dedicated chip select lines?
+Or, does it also change which CK/MOSI/MISO lines are used?
 
-spi1@7e215080 {
-  compatible =3D "brcm,bcm2835-aux-spi";
-  reg =3D <0x7e215080 0x40>, <0x7e215000 0x08>;
-  interrupts =3D <3 1>;
-};
+Ideally, the same CK/MOSI/MISO signals are sent on all CK/MOSI/MISO
+lines enabled by pinctrl, and "pad-select" just chooses which CS_N
+line to use.
+In this case, we can use the SPI slave device reg value to select
+which CS_N to use for any given device.
+Furthermore, we can also support using additional cs-gpios.
 
-spi2@7e2150c0 {
-  compatible =3D "brcm,bcm2835-aux-spi";
-  reg =3D <0x7e2150c0 0x40>, <0x7e215000 0x08>;
-  interrupts =3D <3 2>;
-};
+However, if the pad-select also specifies which CK/MOSI/MISO pins are
+used for a given transaction, then supporting cs-gpios becomes a bit
+trickier, since the spi slave device would need to specify both which
+gpio-cs to use, as well as which SPI pad it is connected to.
 
-These are just a suggestions, I don't know if it is "the correct" way t=
-o=20
-do it.
+-Dan
 
+
+> +       status = "disabled";
+> +};
+> --
+> 1.8.1.1.dirty
+>
+>
+> _______________________________________________
+> Linux-mediatek mailing list
+> Linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+> http://lists.infradead.org/mailman/listinfo/linux-mediatek
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

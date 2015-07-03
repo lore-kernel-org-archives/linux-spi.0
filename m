@@ -1,65 +1,94 @@
-From: Stefan Wahren <info-saaNCTdWVBT7BZbvpMY5sg@public.gmane.org>
-Subject: Re: [PATCH V2] dt: brcm,bcm2835-aux-spi: add binding documentation
- for new spi-bcm2835aux
-Date: Thu, 02 Jul 2015 18:31:10 +0200
-Message-ID: <5595674E.1020201@lategoodbye.de>
-References: <1435229673-2214-1-git-send-email-kernel@martin.sperl.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15; format=flowed
-Content-Transfer-Encoding: 7bit
-To: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	Stefan Wahren <info-saaNCTdWVBT7BZbvpMY5sg@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: rspi: Drop variable "error" in qspi_trigger_transfer_out_in()" to the spi tree
+Date: Fri, 03 Jul 2015 15:10:58 +0100
+Message-ID: <E1ZB1gA-00028A-8h@finisterre>
+References: <1435064669-11969-1-git-send-email-geert+renesas@glider.be>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1435229673-2214-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <1435064669-11969-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Martin,
+The patch
 
-Am 25.06.2015 um 12:54 schrieb kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org:
-> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
->
-> Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-> ---
->   .../bindings/spi/brcm,bcm2835-aux-spi.txt          |   35 ++++++++++++++++++++
->   1 file changed, 35 insertions(+)
->   create mode 100644 Documentation/devicetree/bindings/spi/brcm,bcm2835-aux-spi.txt
->
-> Changelog:
->    V1 -> V2:	fixed typo
-> 		added cs-gpios
->
-> diff --git a/Documentation/devicetree/bindings/spi/brcm,bcm2835-aux-spi.txt b/Documentation/devicetree/bindings/spi/brcm,bcm2835-aux-spi.txt
-> new file mode 100644
-> index 0000000..66f52d3
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/brcm,bcm2835-aux-spi.txt
-> @@ -0,0 +1,35 @@
-> +Broadcom BCM2835 auxiliar SPI1/2 controller
-> +
-> +The BCM2835 contains two forms of SPI master controller, one known simply as
-> +SPI0, and the other known as the "Universal SPI Master"; part of the
-> +auxiliary block. This binding applies to the SPI1/2 controller.
-> +
-> +Required properties:
-> +- compatible: Should be "brcm,bcm2835-aux-spi".
-> +- reg: Should contain register location and length for the spi block
-> +       as well as for the common aux block control
-> +- interrupts: Should contain shared interrupt of the aux block
-> +- clocks: The clock feeding the SPI controller.
-> +- cs-gpios: the cs-gpios (native cs is NOT supported)
+   spi: rspi: Drop variable "error" in qspi_trigger_transfer_out_in()
 
-it would be nice to reference to spi-bus.txt here, just like the other 
-bindings does.
+has been applied to the spi tree at
 
-- cs-gpios: see spi-bus.txt (native chip-select is NOT supported)
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-Beside that try to get a feedback from the devicetree maintainers.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-Stefan
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 5d4db691ed978080435f4e5aad2ce707294a75b4 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Date: Tue, 23 Jun 2015 15:04:28 +0200
+Subject: [PATCH] spi: rspi: Drop variable "error" in
+ qspi_trigger_transfer_out_in()
+
+Just use "ret" instead, for consistency with other similar functions.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-rspi.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index f9189a0..9a71fa2 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -725,24 +725,23 @@ static int qspi_trigger_transfer_out_in(struct rspi_data *rspi, const u8 *tx,
+ 					u8 *rx, unsigned int len)
+ {
+ 	int i, n, ret;
+-	int error;
+ 
+ 	while (len > 0) {
+ 		n = qspi_set_send_trigger(rspi, len);
+ 		qspi_set_receive_trigger(rspi, len);
+ 		if (n == QSPI_BUFFER_SIZE) {
+-			error = rspi_wait_for_tx_empty(rspi);
+-			if (error < 0) {
++			ret = rspi_wait_for_tx_empty(rspi);
++			if (ret < 0) {
+ 				dev_err(&rspi->master->dev, "transmit timeout\n");
+-				return error;
++				return ret;
+ 			}
+ 			for (i = 0; i < n; i++)
+ 				rspi_write_data(rspi, *tx++);
+ 
+-			error = rspi_wait_for_rx_full(rspi);
+-			if (error < 0) {
++			ret = rspi_wait_for_rx_full(rspi);
++			if (ret < 0) {
+ 				dev_err(&rspi->master->dev, "receive timeout\n");
+-				return error;
++				return ret;
+ 			}
+ 			for (i = 0; i < n; i++)
+ 				*rx++ = rspi_read_data(rspi);
+-- 
+2.1.4
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

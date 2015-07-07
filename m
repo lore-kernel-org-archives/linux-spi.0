@@ -1,20 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: SPI_ZYNQMP_GQSPI should depend on HAS_DMA" to the spi tree
-Date: Tue, 07 Jul 2015 14:58:42 +0100
-Message-ID: <E1ZCTOU-0005kg-62@finisterre>
-References: <1435320432-4855-1-git-send-email-geert@linux-m68k.org>
+Subject: Applied "spi/rockchip: remove unnecessary memset of rockchip_spi" to the spi tree
+Date: Tue, 07 Jul 2015 14:58:48 +0100
+Message-ID: <E1ZCTOa-0005n1-5X@finisterre>
+References: <1435687447.27701.13.camel@ceres>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-	Ranjit Waghmode <ranjitw-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+To: Alexey Klimov <klimov.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1435320432-4855-1-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+In-Reply-To: <1435687447.27701.13.camel@ceres>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: SPI_ZYNQMP_GQSPI should depend on HAS_DMA
+   spi/rockchip: remove unnecessary memset of rockchip_spi
 
 has been applied to the spi tree at
 
@@ -39,39 +38,32 @@ to this mail.
 Thanks,
 Mark
 
->From 2e1c75f4d3ecf127032f2511aba76927a8703c1d Mon Sep 17 00:00:00 2001
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Date: Fri, 26 Jun 2015 14:07:12 +0200
-Subject: [PATCH] spi: SPI_ZYNQMP_GQSPI should depend on HAS_DMA
+>From 99622f56110ee8cbfe8ecf2dd5e666f67cf4bb97 Mon Sep 17 00:00:00 2001
+From: Alexey Klimov <klimov.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Tue, 30 Jun 2015 21:04:07 +0300
+Subject: [PATCH] spi/rockchip: remove unnecessary memset of rockchip_spi
 
-If NO_DMA=y:
+Memory for struct rockchip_spi is allocated by spi_alloc_master()
+using kzalloc() so it doesn't need to be set to 0 one more time.
 
-    ERROR: "dma_unmap_single" [drivers/spi/spi-zynqmp-gqspi.ko] undefined!
-    ERROR: "dma_mapping_error" [drivers/spi/spi-zynqmp-gqspi.ko] undefined!
-    ERROR: "dma_map_single" [drivers/spi/spi-zynqmp-gqspi.ko] undefined!
-
-Add a dependency on HAS_DMA to fix this.
-
-Signed-off-by: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Acked-by: Ranjit Waghmode <ranjitw-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Alexey Klimov <klimov.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-rockchip.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 0cae169..b0f30fb 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -612,7 +612,7 @@ config SPI_XTENSA_XTFPGA
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index 68e7efe..79a8bc4 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -645,7 +645,6 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, master);
  
- config SPI_ZYNQMP_GQSPI
- 	tristate "Xilinx ZynqMP GQSPI controller"
--	depends on SPI_MASTER
-+	depends on SPI_MASTER && HAS_DMA
- 	help
- 	  Enables Xilinx GQSPI controller driver for Zynq UltraScale+ MPSoC.
+ 	rs = spi_master_get_devdata(master);
+-	memset(rs, 0, sizeof(struct rockchip_spi));
  
+ 	/* Get basic io resource and map it */
+ 	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 -- 
 2.1.4
 

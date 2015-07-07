@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: img-spfi: check for max speed supported by the spfi block" to the spi tree
-Date: Tue, 07 Jul 2015 14:58:51 +0100
-Message-ID: <E1ZCTOd-0005oR-Hx@finisterre>
-References: <1434630432-10392-1-git-send-email-sifan.naeem@imgtec.com>
+Subject: Applied "spi: Fix per-page mapping of unaligned vmalloc-ed buffer" to the spi tree
+Date: Tue, 07 Jul 2015 14:58:50 +0100
+Message-ID: <E1ZCTOc-0005ny-Ez@finisterre>
+References: <1435679317-13431-1-git-send-email-andrew_gabbasov@mentor.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Sifan Naeem <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>,
+To: Andrew Gabbasov <andrew_gabbasov-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1434630432-10392-1-git-send-email-sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
+In-Reply-To: <1435679317-13431-1-git-send-email-andrew_gabbasov-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: img-spfi: check for max speed supported by the spfi block
+   spi: Fix per-page mapping of unaligned vmalloc-ed buffer
 
 has been applied to the spi tree at
 
@@ -38,70 +38,76 @@ to this mail.
 Thanks,
 Mark
 
->From 93e3a9e9993ef018522b7005d97d8124b7e73385 Mon Sep 17 00:00:00 2001
-From: Sifan Naeem <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
-Date: Thu, 18 Jun 2015 13:27:12 +0100
-Subject: [PATCH] spi: img-spfi: check for max speed supported by the spfi
- block
+>From 65598c13fd66c3b5eac16d5b8eacc704aa17ce40 Mon Sep 17 00:00:00 2001
+From: Andrew Gabbasov <andrew_gabbasov-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+Date: Tue, 30 Jun 2015 10:48:37 -0500
+Subject: [PATCH] spi: Fix per-page mapping of unaligned vmalloc-ed buffer
 
-Maximum speed supported by spfi is limited to 1/4 of the spfi clock.
+spi_map_buf() processes mapping of vmalloc-ed buffers in a special way,
+making mapping of every page separately. However, if the buffer is not
+aligned to page boundary (e.g. sub-array in a vmalloc-ed array), it
+fills the scatter table with page-size unaligned pieces, that cross
+page boundaries. This is incorrect and can, for example, cause memory
+corruption and various crashes when working with ubifs on spi-nor chips
+(though those drivers are themselves buggy in that they should be
+providing DMAable memory to the SPI framework).
 
-But in some SoCs the maximum speed supported by the spfi block can
-be limited to less than 1/4 of the spfi clock. In such cases we have
-to define the limit in the device tree so that the driver can pick
-it up.
+Fix this by using proper scatter table size and intra-page buffer lengths,
+so that the whole buffer splits into separate scatter table entries on
+page boundaries.
 
-Signed-off-by: Sifan Naeem <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Andrew Gabbasov <andrew_gabbasov-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- Documentation/devicetree/bindings/spi/spi-img-spfi.txt |  1 +
- drivers/spi/spi-img-spfi.c                             | 14 ++++++++++++++
- 2 files changed, 15 insertions(+)
+ drivers/spi/spi.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-img-spfi.txt b/Documentation/devicetree/bindings/spi/spi-img-spfi.txt
-index e02fbf1..494db60 100644
---- a/Documentation/devicetree/bindings/spi/spi-img-spfi.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-img-spfi.txt
-@@ -21,6 +21,7 @@ Required properties:
- Optional properties:
- - img,supports-quad-mode: Should be set if the interface supports quad mode
-   SPI transfers.
-+- spfi-max-frequency: Maximum speed supported by the spfi block.
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index cf8b91b..27e4f1f1 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -476,21 +476,30 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
+ 		       enum dma_data_direction dir)
+ {
+ 	const bool vmalloced_buf = is_vmalloc_addr(buf);
+-	const int desc_len = vmalloced_buf ? PAGE_SIZE : master->max_dma_len;
+-	const int sgs = DIV_ROUND_UP(len, desc_len);
++	int desc_len;
++	int sgs;
+ 	struct page *vm_page;
+ 	void *sg_buf;
+ 	size_t min;
+ 	int i, ret;
  
- Example:
- 
-diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
-index 788e2b1..f31d792 100644
---- a/drivers/spi/spi-img-spfi.c
-+++ b/drivers/spi/spi-img-spfi.c
-@@ -546,6 +546,7 @@ static int img_spfi_probe(struct platform_device *pdev)
- 	struct img_spfi *spfi;
- 	struct resource *res;
- 	int ret;
-+	u32 max_speed_hz;
- 
- 	master = spi_alloc_master(&pdev->dev, sizeof(*spfi));
- 	if (!master)
-@@ -610,6 +611,19 @@ static int img_spfi_probe(struct platform_device *pdev)
- 	master->max_speed_hz = clk_get_rate(spfi->spfi_clk) / 4;
- 	master->min_speed_hz = clk_get_rate(spfi->spfi_clk) / 512;
- 
-+	/*
-+	 * Maximum speed supported by spfi is limited to the lower value
-+	 * between 1/4 of the SPFI clock or to "spfi-max-frequency"
-+	 * defined in the device tree.
-+	 * If no value is defined in the device tree assume the maximum
-+	 * speed supported to be 1/4 of the SPFI clock.
-+	 */
-+	if (!of_property_read_u32(spfi->dev->of_node, "spfi-max-frequency",
-+				  &max_speed_hz)) {
-+		if (master->max_speed_hz > max_speed_hz)
-+			master->max_speed_hz = max_speed_hz;
++	if (vmalloced_buf) {
++		desc_len = PAGE_SIZE;
++		sgs = DIV_ROUND_UP(len + offset_in_page(buf), desc_len);
++	} else {
++		desc_len = master->max_dma_len;
++		sgs = DIV_ROUND_UP(len, desc_len);
 +	}
 +
- 	master->setup = img_spfi_setup;
- 	master->cleanup = img_spfi_cleanup;
- 	master->transfer_one = img_spfi_transfer_one;
+ 	ret = sg_alloc_table(sgt, sgs, GFP_KERNEL);
+ 	if (ret != 0)
+ 		return ret;
+ 
+ 	for (i = 0; i < sgs; i++) {
+-		min = min_t(size_t, len, desc_len);
+ 
+ 		if (vmalloced_buf) {
++			min = min_t(size_t,
++				    len, desc_len - offset_in_page(buf));
+ 			vm_page = vmalloc_to_page(buf);
+ 			if (!vm_page) {
+ 				sg_free_table(sgt);
+@@ -499,6 +508,7 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
+ 			sg_set_page(&sgt->sgl[i], vm_page,
+ 				    min, offset_in_page(buf));
+ 		} else {
++			min = min_t(size_t, len, desc_len);
+ 			sg_buf = buf;
+ 			sg_set_buf(&sgt->sgl[i], sg_buf, min);
+ 		}
 -- 
 2.1.4
 

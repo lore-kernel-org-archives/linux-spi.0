@@ -1,72 +1,87 @@
-From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: Re: [PATCH v2 2/4] dt-bindings: ARM: Mediatek: Document devicetree
- bindings for spi bus
-Date: Sun, 5 Jul 2015 18:55:18 +0200
-Message-ID: <CAOiHx=nLx14VTrm_buqbZX15Ry+YQnNfEmWuimUvk9_5zrgjng@mail.gmail.com>
-References: <1435583070-9600-1-git-send-email-leilk.liu@mediatek.com> <1435583070-9600-3-git-send-email-leilk.liu@mediatek.com>
+From: Christian Hartmann <cornogle-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
+Subject: Re: [alsa-devel] Fwd: [PATCH 1/1] SPI : spi-pxa2xx : fix spi init of
+ WM510205 codec via ACPI (resend)
+Date: Tue, 7 Jul 2015 09:06:25 +0200
+Message-ID: <CAKor6TdKk2OUz4o12RiQBSVZyhD=L4JpBJcYkGE=_6X+ZeQY_g@mail.gmail.com>
+References: <CAKor6TfKws63jh6f3VzyYpmTffL4-DHWDTdJ6GSgDC08C5W=8w@mail.gmail.com>
+	<20150625073618.GH827@lahna.fi.intel.com>
+	<CAKor6TfxNW6UW6iX_FkRn2yZOHvdRHcsj6pKoKH-UWU51Bqvvg@mail.gmail.com>
+	<20150625145853.GP14071@sirena.org.uk>
+	<20150625154407.GE6321@opensource.wolfsonmicro.com>
+	<558D3BAA.3080700@linux.intel.com>
+	<20150626115823.GY14071@sirena.org.uk>
+	<CAKor6Tf20eC1WQSO=AV2b+XoB5Qv-2Oin_nrrTJUiDV4czxLjA@mail.gmail.com>
+	<20150629094854.GB11162@sirena.org.uk>
+	<CAKor6TdDPb2qOgdHbeX2w+yQa_ioDM5ak9bk+=jF+cKt_twiXw@mail.gmail.com>
+	<20150630103404.GI6321@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
+	Pierre-Louis Bossart <pierre-louis.bossart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+	dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org
+To: Charles Keepax <ckeepax-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1435583070-9600-3-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <20150630103404.GI6321-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+2015-06-30 12:34 GMT+02:00 Charles Keepax <ckeepax-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>:
+> On Tue, Jun 30, 2015 at 09:14:37AM +0200, Christian Hartmann wrote:
+>> Hi,
+>>
+>>
+>> 2015-06-29 11:48 GMT+02:00 Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>:
+>> > On Mon, Jun 29, 2015 at 09:27:17AM +0200, Christian Hartmann wrote:
+>> >> [    5.927801] spi-WM510205:00 supply DCVDD not found, using dummy regulator
+>> >> [    5.928958] arizona spi-WM510205:00: Unknown device ID: ffff
+>> >> [    5.929098] pxa2xx-spi 80860F0E:00: registered child spi-WM510205:00
+>> >
+>> > The above is saying that SPI I/O to the device isn't working - the
+>> > device ID is not being read back successfully.
+>>
+>> Ok that is the next problem that must be solved.
+>> I have yesterday made a patchset where I have added
+>> the enum type 5, but as you said already,
+>> that was not needed.
+>> All what I see the same: : Unknown device ID: ffff
+>>
+>> So where I have to look now or what can I do to let this device id
+>> register correctly?
+>> I hope the baytrail machine driver is easy peasy to add, but here I
+>> stuck at the moment.
+>
+> As I said in my other emails the next step is to work out what
+> the reset and ldoena gpio's are. You won't be able to read the
+> device ID until you have those setup. Unfortunately, finding the
+> right GPIOs is likely to be a bit of a chore, I will see if I can
+> find anything out from the Windows guys at this end.
+>
+> Also can you check that the arizona-ldo1 regulator is built in I
+> am surprised that is falling back to the dummy regulator.
+>
+> Thanks,
+> Charles
+
 Hi,
 
-On Mon, Jun 29, 2015 at 3:04 PM, Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org> wrote:
-> Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-> ---
->  .../devicetree/bindings/spi/spi-mt65xx.txt         | 32 ++++++++++++++++++++++
->  1 file changed, 32 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/spi/spi-mt65xx.txt
->
-> diff --git a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
-> new file mode 100644
-> index 0000000..04c28fd
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
-> @@ -0,0 +1,32 @@
-> +MTK SPI device
+I just want to ask, if the windows guys have such infos about the
+gpios in question (reset,ldoena) and of course the irq details.
 
-"SPI device" lets me think "SPI slave device", not "SPI master
-controller", so maybe call it "MTK SPI Controller"?
+I am thinking actually to get a second device with Win installed, so
+that I can get more infos which I really need here.
+Anyway  I can also provide more infos here (if its not against valid laws :) )
+But indeeed I can need some hints where to put the pdata structure.
 
-> +
-> +Required properties:
-> +- compatible: should be one of the following.
-> +    - mediatek,mt8173-spi: for mt8173 platforms
-> +    - mediatek,mt8135-spi: for mt8135 platforms
-> +    - mediatek,mt6589-spi: for mt6589 platforms
-> +
-> +- reg: Address and length of the register set for the device
-> +
-> +- interrupts: Should contain spi interrupt
-> +
-> +- clock-names: tuple listing input clock names.
-> +       Required elements: "main"
-> +
-> +- clocks: phandles to input clocks.
-> +
-> +- pad-select: should specify spi pad used, only required for MT8173.
-> +       This value should be 0~3.
+I have some more questions that I want to ask/discuss later on irc -
+if its possible
 
-AFAIK device-specific non-generic properties should be
-vendor-prefixed, i.e. it should be "mediatek,pad-select", not just
-"pad-select".
-
-
-Regards
-Jonas
+cheers
+Chris
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

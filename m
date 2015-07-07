@@ -1,70 +1,80 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: spi: bcm2835: driver for "auxiliar" spi1/spi2
-Date: Tue, 7 Jul 2015 14:51:13 +0100
-Message-ID: <20150707135113.GP2887@sirena.org.uk>
-References: <5582933E.1050500@martin.sperl.org>
- <55829B18.4030609@tronnes.org>
- <20150618105848.GE14071@sirena.org.uk>
- <20150625194219.4846221d@north>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="hHiQ9nAwW5IGN2dL"
-Cc: Noralf =?iso-8859-1?Q?Tr=F8nnes?= <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>,
-	Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-To: Jakub =?utf-8?B?S2ljacWEc2tp?= <moorray3-5tc4TXWwyLM@public.gmane.org>
+Subject: Applied "spi: SPI_ZYNQMP_GQSPI should depend on HAS_DMA" to the spi tree
+Date: Tue, 07 Jul 2015 14:58:42 +0100
+Message-ID: <E1ZCTOU-0005kg-62@finisterre>
+References: <1435320432-4855-1-git-send-email-geert@linux-m68k.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+	Ranjit Waghmode <ranjitw-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20150625194219.4846221d@north>
+In-Reply-To: <1435320432-4855-1-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---hHiQ9nAwW5IGN2dL
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   spi: SPI_ZYNQMP_GQSPI should depend on HAS_DMA
 
-On Thu, Jun 25, 2015 at 07:42:19PM +0200, Jakub Kici=C5=84ski wrote:
-> On Thu, 18 Jun 2015 11:58:48 +0100, Mark Brown wrote:
+has been applied to the spi tree at
 
-> > Linux supports shared interrupts perfectly fine, though it sounds like
-> > this is actually a cascaded interrupt (the demux is another interrupt
-> > controller) which we also support just fine.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> Mark, could you give us a hint how to best go about this shared IRQ?
-> I failed to find any generic interrupt controller.  I imagine there
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-drivers/irqchip...
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-> should be some fake irqchip we can instantiate from DT giving it a
-> irq line and a memory address and it should provide us with 32(bit)
-> demuxed irqs based on status of bits in specified memory location.
-> Does this sound reasonable?  Does such fake irqchip driver exist?
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-IIRC there's some basic MMIO interrupt controller but I don't know off
-the top of my head where, if not it shouldn't be too hard to implement.
-It does sound sensible.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---hHiQ9nAwW5IGN2dL
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Thanks,
+Mark
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+>From 2e1c75f4d3ecf127032f2511aba76927a8703c1d Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Date: Fri, 26 Jun 2015 14:07:12 +0200
+Subject: [PATCH] spi: SPI_ZYNQMP_GQSPI should depend on HAS_DMA
 
-iQEcBAEBCAAGBQJVm9lRAAoJECTWi3JdVIfQKuQH/AtD15ZaS0UZ/22LpUlEHoV8
-mDZBmKwEg8hnAmEl8H2ycxOc9LB+nZuHtGi3zKYiX9b+Vcb55YkKM7iwy5o9LwRD
-Ftg7LTSnCBYegG36386BlOKKWZW9/A+v6s9WEQzz1s5YL/VXbfH/lPpBzLFz5JSK
-YvTFjASFFhtHOpowUoGRGvNDKW8cMKgvSAxaGSX2mA26qv1o/aliRZVRhcPkXTF5
-zv1HKFSbnaqiaAFemVnCfZwr35ujzn0eP678qp8mhV5yF+B6RVTSxUbCeUMQX6uz
-zb8n9u5U7pbi101L4GvYfvk/0UpqYkzML/pRBxmdBAXnr+CuajRzG5OCBB9bm0s=
-=7yLn
------END PGP SIGNATURE-----
+If NO_DMA=y:
 
---hHiQ9nAwW5IGN2dL--
+    ERROR: "dma_unmap_single" [drivers/spi/spi-zynqmp-gqspi.ko] undefined!
+    ERROR: "dma_mapping_error" [drivers/spi/spi-zynqmp-gqspi.ko] undefined!
+    ERROR: "dma_map_single" [drivers/spi/spi-zynqmp-gqspi.ko] undefined!
+
+Add a dependency on HAS_DMA to fix this.
+
+Signed-off-by: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Acked-by: Ranjit Waghmode <ranjitw-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 0cae169..b0f30fb 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -612,7 +612,7 @@ config SPI_XTENSA_XTFPGA
+ 
+ config SPI_ZYNQMP_GQSPI
+ 	tristate "Xilinx ZynqMP GQSPI controller"
+-	depends on SPI_MASTER
++	depends on SPI_MASTER && HAS_DMA
+ 	help
+ 	  Enables Xilinx GQSPI controller driver for Zynq UltraScale+ MPSoC.
+ 
+-- 
+2.1.4
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

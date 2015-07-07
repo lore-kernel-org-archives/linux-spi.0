@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi/s3c24xx: remove unnecessary memset of s3c24xx_spi" to the spi tree
-Date: Tue, 07 Jul 2015 14:58:49 +0100
-Message-ID: <E1ZCTOb-0005nU-EZ@finisterre>
-References: <1435687438.27701.12.camel@ceres>
+Subject: Applied "spi: img-spfi: check for max speed supported by the spfi block" to the spi tree
+Date: Tue, 07 Jul 2015 14:58:51 +0100
+Message-ID: <E1ZCTOd-0005oR-Hx@finisterre>
+References: <1434630432-10392-1-git-send-email-sifan.naeem@imgtec.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Alexey Klimov <klimov.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+To: Sifan Naeem <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1435687438.27701.12.camel@ceres>
+In-Reply-To: <1434630432-10392-1-git-send-email-sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi/s3c24xx: remove unnecessary memset of s3c24xx_spi
+   spi: img-spfi: check for max speed supported by the spfi block
 
 has been applied to the spi tree at
 
@@ -38,33 +38,70 @@ to this mail.
 Thanks,
 Mark
 
->From 385a9c8fccc0308dbd8182c57b29a95e01e29688 Mon Sep 17 00:00:00 2001
-From: Alexey Klimov <klimov.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Tue, 30 Jun 2015 21:03:58 +0300
-Subject: [PATCH] spi/s3c24xx: remove unnecessary memset of s3c24xx_spi
+>From 93e3a9e9993ef018522b7005d97d8124b7e73385 Mon Sep 17 00:00:00 2001
+From: Sifan Naeem <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
+Date: Thu, 18 Jun 2015 13:27:12 +0100
+Subject: [PATCH] spi: img-spfi: check for max speed supported by the spfi
+ block
 
-Memory for this struct is allocated by spi_alloc_master() using
-kzalloc() so it doesn't need to be set to 0 one more time.
+Maximum speed supported by spfi is limited to 1/4 of the spfi clock.
 
-Signed-off-by: Alexey Klimov <klimov.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Reviewed-by: Daniel Kurtz <djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+But in some SoCs the maximum speed supported by the spfi block can
+be limited to less than 1/4 of the spfi clock. In such cases we have
+to define the limit in the device tree so that the driver can pick
+it up.
+
+Signed-off-by: Sifan Naeem <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-s3c24xx.c | 1 -
- 1 file changed, 1 deletion(-)
+ Documentation/devicetree/bindings/spi/spi-img-spfi.txt |  1 +
+ drivers/spi/spi-img-spfi.c                             | 14 ++++++++++++++
+ 2 files changed, 15 insertions(+)
 
-diff --git a/drivers/spi/spi-s3c24xx.c b/drivers/spi/spi-s3c24xx.c
-index f747ca2..f36bc32 100644
---- a/drivers/spi/spi-s3c24xx.c
-+++ b/drivers/spi/spi-s3c24xx.c
-@@ -501,7 +501,6 @@ static int s3c24xx_spi_probe(struct platform_device *pdev)
- 	}
+diff --git a/Documentation/devicetree/bindings/spi/spi-img-spfi.txt b/Documentation/devicetree/bindings/spi/spi-img-spfi.txt
+index e02fbf1..494db60 100644
+--- a/Documentation/devicetree/bindings/spi/spi-img-spfi.txt
++++ b/Documentation/devicetree/bindings/spi/spi-img-spfi.txt
+@@ -21,6 +21,7 @@ Required properties:
+ Optional properties:
+ - img,supports-quad-mode: Should be set if the interface supports quad mode
+   SPI transfers.
++- spfi-max-frequency: Maximum speed supported by the spfi block.
  
- 	hw = spi_master_get_devdata(master);
--	memset(hw, 0, sizeof(struct s3c24xx_spi));
+ Example:
  
- 	hw->master = master;
- 	hw->pdata = pdata = dev_get_platdata(&pdev->dev);
+diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
+index 788e2b1..f31d792 100644
+--- a/drivers/spi/spi-img-spfi.c
++++ b/drivers/spi/spi-img-spfi.c
+@@ -546,6 +546,7 @@ static int img_spfi_probe(struct platform_device *pdev)
+ 	struct img_spfi *spfi;
+ 	struct resource *res;
+ 	int ret;
++	u32 max_speed_hz;
+ 
+ 	master = spi_alloc_master(&pdev->dev, sizeof(*spfi));
+ 	if (!master)
+@@ -610,6 +611,19 @@ static int img_spfi_probe(struct platform_device *pdev)
+ 	master->max_speed_hz = clk_get_rate(spfi->spfi_clk) / 4;
+ 	master->min_speed_hz = clk_get_rate(spfi->spfi_clk) / 512;
+ 
++	/*
++	 * Maximum speed supported by spfi is limited to the lower value
++	 * between 1/4 of the SPFI clock or to "spfi-max-frequency"
++	 * defined in the device tree.
++	 * If no value is defined in the device tree assume the maximum
++	 * speed supported to be 1/4 of the SPFI clock.
++	 */
++	if (!of_property_read_u32(spfi->dev->of_node, "spfi-max-frequency",
++				  &max_speed_hz)) {
++		if (master->max_speed_hz > max_speed_hz)
++			master->max_speed_hz = max_speed_hz;
++	}
++
+ 	master->setup = img_spfi_setup;
+ 	master->cleanup = img_spfi_cleanup;
+ 	master->transfer_one = img_spfi_transfer_one;
 -- 
 2.1.4
 

@@ -1,19 +1,20 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: Fix per-page mapping of unaligned vmalloc-ed buffer" to the spi tree
-Date: Tue, 07 Jul 2015 14:58:50 +0100
-Message-ID: <E1ZCTOc-0005ny-Ez@finisterre>
-References: <1435679317-13431-1-git-send-email-andrew_gabbasov@mentor.com>
+Subject: Applied "spi: zynq: missing break statement" to the spi tree
+Date: Tue, 07 Jul 2015 19:48:29 +0100
+Message-ID: <E1ZCXuv-0001wA-Ox@debutante>
+References: <20150624143133.GE1702@mwanda>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Andrew Gabbasov <andrew_gabbasov-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
+To: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>,
+	Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1435679317-13431-1-git-send-email-andrew_gabbasov-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+In-Reply-To: <20150624143133.GE1702@mwanda>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: Fix per-page mapping of unaligned vmalloc-ed buffer
+   spi: zynq: missing break statement
 
 has been applied to the spi tree at
 
@@ -38,76 +39,34 @@ to this mail.
 Thanks,
 Mark
 
->From 65598c13fd66c3b5eac16d5b8eacc704aa17ce40 Mon Sep 17 00:00:00 2001
-From: Andrew Gabbasov <andrew_gabbasov-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
-Date: Tue, 30 Jun 2015 10:48:37 -0500
-Subject: [PATCH] spi: Fix per-page mapping of unaligned vmalloc-ed buffer
+>From 861a481c5ede75bf31bc118f1f7f6d1f420182b5 Mon Sep 17 00:00:00 2001
+From: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Date: Wed, 24 Jun 2015 17:31:33 +0300
+Subject: [PATCH] spi: zynq: missing break statement
 
-spi_map_buf() processes mapping of vmalloc-ed buffers in a special way,
-making mapping of every page separately. However, if the buffer is not
-aligned to page boundary (e.g. sub-array in a vmalloc-ed array), it
-fills the scatter table with page-size unaligned pieces, that cross
-page boundaries. This is incorrect and can, for example, cause memory
-corruption and various crashes when working with ubifs on spi-nor chips
-(though those drivers are themselves buggy in that they should be
-providing DMAable memory to the SPI framework).
+There is a missing break statement here so selecting both only selects
+upper.
 
-Fix this by using proper scatter table size and intra-page buffer lengths,
-so that the whole buffer splits into separate scatter table entries on
-page boundaries.
-
-Signed-off-by: Andrew Gabbasov <andrew_gabbasov-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+Fixes: dfe11a11d523 ('spi: Add support for Zynq Ultrascale+ MPSoC GQSPI controller')
+Signed-off-by: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Acked-by: Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ drivers/spi/spi-zynqmp-gqspi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index cf8b91b..27e4f1f1 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -476,21 +476,30 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
- 		       enum dma_data_direction dir)
- {
- 	const bool vmalloced_buf = is_vmalloc_addr(buf);
--	const int desc_len = vmalloced_buf ? PAGE_SIZE : master->max_dma_len;
--	const int sgs = DIV_ROUND_UP(len, desc_len);
-+	int desc_len;
-+	int sgs;
- 	struct page *vm_page;
- 	void *sg_buf;
- 	size_t min;
- 	int i, ret;
- 
-+	if (vmalloced_buf) {
-+		desc_len = PAGE_SIZE;
-+		sgs = DIV_ROUND_UP(len + offset_in_page(buf), desc_len);
-+	} else {
-+		desc_len = master->max_dma_len;
-+		sgs = DIV_ROUND_UP(len, desc_len);
-+	}
-+
- 	ret = sg_alloc_table(sgt, sgs, GFP_KERNEL);
- 	if (ret != 0)
- 		return ret;
- 
- 	for (i = 0; i < sgs; i++) {
--		min = min_t(size_t, len, desc_len);
- 
- 		if (vmalloced_buf) {
-+			min = min_t(size_t,
-+				    len, desc_len - offset_in_page(buf));
- 			vm_page = vmalloc_to_page(buf);
- 			if (!vm_page) {
- 				sg_free_table(sgt);
-@@ -499,6 +508,7 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
- 			sg_set_page(&sgt->sgl[i], vm_page,
- 				    min, offset_in_page(buf));
- 		} else {
-+			min = min_t(size_t, len, desc_len);
- 			sg_buf = buf;
- 			sg_set_buf(&sgt->sgl[i], sg_buf, min);
- 		}
+diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
+index 87b20a511a6b..f23f36ebaf3d 100644
+--- a/drivers/spi/spi-zynqmp-gqspi.c
++++ b/drivers/spi/spi-zynqmp-gqspi.c
+@@ -214,6 +214,7 @@ static void zynqmp_gqspi_selectslave(struct zynqmp_qspi *instanceptr,
+ 	case GQSPI_SELECT_FLASH_CS_BOTH:
+ 		instanceptr->genfifocs = GQSPI_GENFIFO_CS_LOWER |
+ 			GQSPI_GENFIFO_CS_UPPER;
++		break;
+ 	case GQSPI_SELECT_FLASH_CS_UPPER:
+ 		instanceptr->genfifocs = GQSPI_GENFIFO_CS_UPPER;
+ 		break;
 -- 
 2.1.4
 

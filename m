@@ -1,19 +1,18 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi/rockchip: remove unnecessary memset of rockchip_spi" to the spi tree
-Date: Tue, 07 Jul 2015 14:58:48 +0100
-Message-ID: <E1ZCTOa-0005n1-5X@finisterre>
-References: <1435687447.27701.13.camel@ceres>
+Subject: Applied "spi: spidev: add compatible value for LTC2488" to the spi tree
+Date: Tue, 07 Jul 2015 14:58:43 +0100
+Message-ID: <E1ZCTOV-0005l9-HT@finisterre>
+References: <26052734d7c05f1dadc7d8e62a4db01e8f19a0f8.1435232279.git.jiri.prchal@aksignal.cz>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Alexey Klimov <klimov.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1435687447.27701.13.camel@ceres>
+In-Reply-To: <26052734d7c05f1dadc7d8e62a4db01e8f19a0f8.1435232279.git.jiri.prchal-cKCO0sOKHLPtwjQa/ONI9g@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi/rockchip: remove unnecessary memset of rockchip_spi
+   spi: spidev: add compatible value for LTC2488
 
 has been applied to the spi tree at
 
@@ -38,32 +37,33 @@ to this mail.
 Thanks,
 Mark
 
->From 99622f56110ee8cbfe8ecf2dd5e666f67cf4bb97 Mon Sep 17 00:00:00 2001
-From: Alexey Klimov <klimov.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Tue, 30 Jun 2015 21:04:07 +0300
-Subject: [PATCH] spi/rockchip: remove unnecessary memset of rockchip_spi
+>From 6fec919b61b66e7f92646a7bd6fada9850f5cedc Mon Sep 17 00:00:00 2001
+From: Jiri Prchal <jiri.prchal-cKCO0sOKHLPtwjQa/ONI9g@public.gmane.org>
+Date: Thu, 25 Jun 2015 13:44:19 +0200
+Subject: [PATCH] spi: spidev: add compatible value for LTC2488
 
-Memory for struct rockchip_spi is allocated by spi_alloc_master()
-using kzalloc() so it doesn't need to be set to 0 one more time.
+Since spidev is no more allowed to use in DT and is really loudly warned about
+it I'd like to add this compatible value.
+(Geert Uytterhoeven wrote: "Add the compatible value for your device to the
+spidev_dt_ids[] array in drivers/spi/spidev.c.")
 
-Signed-off-by: Alexey Klimov <klimov.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-rockchip.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/spi/spidev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 68e7efe..79a8bc4 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -645,7 +645,6 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, master);
- 
- 	rs = spi_master_get_devdata(master);
--	memset(rs, 0, sizeof(struct rockchip_spi));
- 
- 	/* Get basic io resource and map it */
- 	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index dd616ff..c7de641 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -693,6 +693,7 @@ static struct class *spidev_class;
+ #ifdef CONFIG_OF
+ static const struct of_device_id spidev_dt_ids[] = {
+ 	{ .compatible = "rohm,dh2228fv" },
++	{ .compatible = "lineartechnology,ltc2488" },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, spidev_dt_ids);
 -- 
 2.1.4
 

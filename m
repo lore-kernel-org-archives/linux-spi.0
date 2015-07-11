@@ -1,17 +1,20 @@
 From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Subject: Re: [PATCH V2] dt: brcm,bcm2835-aux-spi: add binding documentation
- for new spi-bcm2835aux
-Date: Fri, 10 Jul 2015 22:28:41 -0600
-Message-ID: <55A09B79.9040109@wwwdotorg.org>
-References: <1435229673-2214-1-git-send-email-kernel@martin.sperl.org>
+Subject: Re: [PATCH 1/2] spi: bcm2835: add spi-bcm2835aux driver for the
+ auxiliar spi1 and spi2
+Date: Fri, 10 Jul 2015 22:37:15 -0600
+Message-ID: <55A09D7B.4080501@wwwdotorg.org>
+References: <1434980408-4086-1-git-send-email-kernel@martin.sperl.org>
+ <20150622165529.1b758b07@north>
+ <E72B3D8C-EA1B-4B4C-8EAF-C14A5631882E@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+ =?UTF-8?B?SmFrdWIgS2ljacWEc2tp?= <moorray3-5tc4TXWwyLM@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
  Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <1435229673-2214-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <E72B3D8C-EA1B-4B4C-8EAF-C14A5631882E-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
  <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
@@ -23,29 +26,48 @@ Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BG
 Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 06/25/2015 04:54 AM, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
-> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-
-Patch description? I'd suggest deriving this from the first paragraph in
-the binding doc.
-
-> diff --git a/Documentation/devicetree/bindings/spi/brcm,bcm2835-aux-spi.txt b/Documentation/devicetree/bindings/spi/brcm,bcm2835-aux-spi.txt
-
-> +The BCM2835 contains two forms of SPI master controller, one known simply as
-> +SPI0, and the other known as the "Universal SPI Master"; part of the
-> +auxiliary block. This binding applies to the SPI1/2 controller.
-
-Rather than "SPI1/2", I'd say "this universal SPI master", since the
-description of the two types of controller doesn't mention that SPI1/2
-are the universal SPI master.
-
-> +- reg: Should contain register location and length for the spi block
-> +       as well as for the common aux block control
-
-Sharing a reg entry between multiple devices almost always turns out to
-be a mistake. At the very least, the drivers can't claim the region
-since regions can't be claimed multiple times. Is there any way to avoid
-this entirely?
-
-If not, perhaps you need to create a separate driver to manage the
-shared register block.
+T24gMDYvMjIvMjAxNSAwOToyNiBBTSwgTWFydGluIFNwZXJsIHdyb3RlOgo+PiBPbiAyMi4wNi4y
+MDE1LCBhdCAxNjo1NSwgSmFrdWIgS2ljacWEc2tpIDxtb29ycmF5M0B3cC5wbD4gd3JvdGU6Cj4+
+IEFzIG1lbnRpb25lZCBieSBOb3JhbGYgVUFSVDEgaXMgcXVpdGUgY29tbW9ubHkgdXNlZCBvbiBD
+b21wdXRlIE1vZHVsZXMuCj4+IFByb3BlciBkcml2ZXIgLSBwZXJoYXBzIG1vZGVsbGVkIGFzIGEg
+YnVzIC0gc2VlbXMgbGlrZSBhIHByZXJlcXVpc2l0ZQo+PiBmb3IgdGhpcyB3b3JrLiAgWW91IGFy
+ZSBhbHNvIG5vdCB1c2luZyBJUlEgbXV4IGluIERUIGJpbmRpbmcgZXhhbXBsZQo+PiB3aGljaCBp
+cyB2ZXJ5IG1pc2xlYWRpbmcuCj4gCj4gV2VsbCAtIHRoZXJlIGlzIG5vIHN1cHBvcnQgZmFyIGZv
+ciB1YXJ0MSBpbiB1cHN0cmVhbSBhcyBvZiBub3cuCj4gQW5kIEkgYW0gbm90IGV2ZW4gc3VyZSBp
+ZiB0aGUgY29tcHV0ZSBtb2R1bGUgaXMgc3VwcG9ydGVkIGFzIHRoZXJlCj4gaXMgbm8gZGV2aWNl
+IHRyZWUgYXZhaWxhYmxlIGluIHVwc3RyZWFtIGZvciB0aGF0Li4uCgpJSVJDIEkndmUgcnVuIHRo
+ZSBDTSB3aXRoIHRoZSBSUGkgQiBEVC4gSSd2ZSBiZWVuIG1lYW5pbmcgdG8gdXBzdHJlYW0KZXhw
+bGljaXQgRFRzIGZvciBhbGwgdGhlIHZhcmlvdXMgUlBpIG1vZGVscywgYnV0IGhhdmVuJ3QgbWFu
+YWdlIHRvIGdldAphcm91bmQgdG8gdGhhdCB5ZXQuCgo+IFNvIEkgaGF2ZSB0YWtlbiB0aGUgc2lt
+cGxlIHJvdXRlIG9mIHVzaW5nIHNoYXJlZCBpbnRlcnJ1cHRzIGFuZCBwcm92aWRpbmcKPiBhIG1p
+bmltYWwgZnJhbWV3b3JrIHRvIGVuYWJsZSB0aGUgc3BpMS9zcGkyIGh3IGJsb2NrcyB3aXRoIHBy
+b3BlciBsb2NraW5nLgo+IEFuZCBJIGhhdmUgbWVudGlvbmVkIHRoYXQgaXQgd291bGQgbmVlZCB0
+byBnZXQgbW9kaWZpZWQgd2hlbiB1YXJ0MSBzdXBwb3J0Cj4gY29tZXMgYWxvbmcuCj4gCj4gSWYg
+eW91IGtub3cgb2YgYSBiZXR0ZXIgc29sdXRpb24gaG93IHRvIGNvbnRyb2wgdGhpcyBhbmQgdGhh
+dCBhbHNvCj4gaW5jb3Jwb3JhdGVzIGEgcGF0Y2ggdG8gZW5hYmxlIHVhcnQxLCB0aGVuIHBsZWFz
+ZSBzaGFyZSBpdCEKCkkgaGF2ZW4ndCBsb29rZWQgYXQgdGhlIHJlZ2lzdGVycyB0byBiZSBzdXJl
+IG9mIHRoZSBzdHJ1Y3R1cmUgYW5kIGhlbmNlCmlmIHRoaXMgaXMgZ29vZCBhZHZpY2UsIGJ1dCBj
+cmVhdGluZyBhbiBJUlEgY29udHJvbGxlciBkcml2ZXIgZm9yIHRoZQphdXggcmVnaXN0ZXJzIChh
+cyBNYXJrIGludGltYXRlZCkgc291bmRzIGxpa2UgYSBnb29kIGlkZWEuCgo+IEp1c3QgbW9kaWZ5
+IHRoZSBiY20yODM1YXV4X3NwaV9lbmFibGUvZGlzYWJsZSB0byB1c2UgYSBkaWZmZXJlbnQgZnJh
+bWV3b3JrCj4gdGhhbiBqdXN0IGJjbTI4MzVfYXV4X21vZGlmeV9lbmFibGUuCj4gCj4gVGhlIHBh
+dGNoIE5vcmFsZiBtZW50aW9ucyBvbmx5IGFwcGxpZXMgZG93bnN0cmVhbSBhbmQgb25seSBzZXRz
+IHRoZQo+IGVuYWJsZS1yZWdpc3RlciBkdXJpbmcgdGhlIGJvb3Qgc2VxdWVuY2UsIHNvIGl0IHdv
+dWxkIG5vdCBpbXBhY3QgdGhlCj4gc29sdXRpb24gYXMgaXMuCj4gCj4+IERvIHdlIGhhdmUgYW55
+IGluZGljYXRpb24gd2VhdGhlciB0aGlzIEFVWCBoYXJkd2FyZSBpcyBhdmFpbGFibGUgb24KPj4g
+UlBpMiBhcyB3ZWxsPyAgSUlSQyBiY20yODM2IGRpZmZlcnMgb25seSBpbiBDUFUgY29yZXMsIHBl
+cmlwaGVyYWxzCj4+IHJlbWFpbiBpZGVudGljYWwuICBQZXJoYXBzIHRoaXMgZHJpdmVyIGNvdWxk
+IGJlIHVzZWQgb24gUlBpMiBhbmQKPj4gbmFtaW5nIGl0IDI4M3ggd291bGQgYmUgbW9yZSBhcHBy
+b3ByaWF0ZT8KPiAKPiBJIGhhdmUgbm90IGNoZWNrZWQsIGJ1dCBJIHdvdWxkIGd1ZXNzIHRoYXQg
+aXQgZXhpc3RzLgo+IAo+IEFzIGZvciBuYW1pbmc6IEkgaGF2ZSBhc2tlZCBhcm91bmQgYW5kIGJj
+bTI4MzVhdXggc2VlbWVkIGZpbmUuCj4gQWxzbyBpZiB3ZSBnbyB0aGF0IHJvdXRlIHdlIHNob3Vs
+ZCBzdGFydCByZW5hbWluZyBBTEwgZHJpdmVyIGluc3RhbmNlcyB0aGF0Cj4gY29udGFpbiAyODM1
+LgoKSSdkIHN1Z2dlc3QgbGVhdmluZyBuYW1lZCBhZnRlciB0aGUgImZpcnN0IiBjaGlwIHRoZSBk
+cml2ZXIgc3VwcG9ydHMsIGluCmEgc2ltaWxhciBmYXNoaW9uIHRvIGhvdyBEVCBjb21wYXRpYmxl
+IHZhbHVlcyB3b3JrLiBUaGVyZSdzIHplcm8gYmVuZWZpdApmcm9tIHJlbmFtaW5nIGV4aXN0aW5n
+IGRyaXZlcnMsIGFuZCBoYXZpbmcgbmV3IGRyaXZlcnMgY29udGludWUgd2l0aCB0aGUKZXhpc3Rp
+bmcgbmFtaW5nIGNvbnZlbnRpb24gd291bGQgbGVhdmUgZXZlcnl0aGluZyBuaWNlIGFuZCBjb25z
+aXN0ZW50LgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+CmxpbnV4LXJwaS1rZXJuZWwgbWFpbGluZyBsaXN0CmxpbnV4LXJwaS1rZXJuZWxAbGlzdHMuaW5m
+cmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xp
+bnV4LXJwaS1rZXJuZWwK

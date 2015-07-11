@@ -1,28 +1,17 @@
 From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 Subject: Re: [PATCH 1/2] spi: bcm2835: add spi-bcm2835aux driver for the
  auxiliar spi1 and spi2
-Date: Fri, 10 Jul 2015 22:41:06 -0600
-Message-ID: <55A09E62.9050005@wwwdotorg.org>
+Date: Fri, 10 Jul 2015 22:53:36 -0600
+Message-ID: <55A0A150.3060809@wwwdotorg.org>
 References: <1434980408-4086-1-git-send-email-kernel@martin.sperl.org>
- <20150622165529.1b758b07@north>
- <E72B3D8C-EA1B-4B4C-8EAF-C14A5631882E@martin.sperl.org>
- <97C7561C-6D67-4F51-94BB-3B8D401D77A0@martin.sperl.org>
- <20150630094232.GM11162@sirena.org.uk>
- <6A2CCE70-5DAF-4E86-A0A4-F5E93FD1B540@martin.sperl.org>
- <55945448.7010502@tronnes.org>
- <1400E1A3-43E1-4D0E-A54D-E5D668A4C516@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
- linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
- =?UTF-8?B?SmFrdWIgS2ljacWEc2tp?= <moorray3-5tc4TXWwyLM@public.gmane.org>,
- linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>, =?UTF-8?B?Tm9yYWxmIFRyw7hubmVz?=
- <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+ linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
 Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <1400E1A3-43E1-4D0E-A54D-E5D668A4C516-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <1434980408-4086-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
  <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
@@ -34,43 +23,75 @@ Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BG
 Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gMDcvMDQvMjAxNSAwNzoxNCBQTSwgTWFydGluIFNwZXJsIHdyb3RlOgo+IAo+PiBPbiAwMi4w
-Ny4yMDE1LCBhdCAwNjo1NywgTm9yYWxmIFRyw7hubmVzIDxub3JhbGZAdHJvbm5lcy5vcmc+IHdy
-b3RlOgo+Pgo+Pgo+PiBEZW4gMDEuMDcuMjAxNSAyMTozOSwgc2tyZXYgTWFydGluIFNwZXJsOgo+
-Pj4+IE9uIDMwLjA2LjIwMTUsIGF0IDE5OjQyLCBNYXJrIEJyb3duIDxicm9vbmllQGtlcm5lbC5v
-cmc+IHdyb3RlOgo+Pj4+Cj4+Pj4gVGhpcyBsb29rcyByZWxldmFudDoKPj4+Pgo+Pj4+Pj4+IE9u
-IDIyLjA2LjIwMTUsIGF0IDE2OjU1LCBKYWt1YiBLaWNpxYRza2kgPG1vb3JyYXkzQHdwLnBsPiB3
-cm90ZToKPj4+Pj4+PiBBcyBtZW50aW9uZWQgYnkgTm9yYWxmIFVBUlQxIGlzIHF1aXRlIGNvbW1v
-bmx5IHVzZWQgb24gQ29tcHV0ZSBNb2R1bGVzLgo+Pj4+Pj4+IFByb3BlciBkcml2ZXIgLSBwZXJo
-YXBzIG1vZGVsbGVkIGFzIGEgYnVzIC0gc2VlbXMgbGlrZSBhIHByZXJlcXVpc2l0ZQo+Pj4+Pj4+
-IGZvciB0aGlzIHdvcmsuICBZb3UgYXJlIGFsc28gbm90IHVzaW5nIElSUSBtdXggaW4gRFQgYmlu
-ZGluZyBleGFtcGxlCj4+Pj4+Pj4gd2hpY2ggaXMgdmVyeSBtaXNsZWFkaW5nLgo+Pgo+PiBbLi4u
-XQo+Pgo+Pj4gRmluYWxseSBhc2tpbmcgZm9yIGEgcmVjb21tZW5kYXRpb24gd2l0aCByZWdhcmRz
-IHRvIHVzaW5nIGEgYnVzCj4+PiB0byBhcmJpdHJhdGUgYWNjZXNzIHRvIHRoZSBlbmFibGUgcmVn
-aXN0ZXIgdGhlcmUgd2FzIG5vIGZlZWRiYWNrCj4+PiBob3cgdGhpcyBjb3VsZCBiZSBnZXQgaW1w
-bGVtZW50ZWQuLi4KPj4KPj4gTWF5YmUgeW91IGNhbiB1c2UgZHJpdmVycy9tZmQvc3lzY29uLmMg
-dG8gZW5hYmxlIHNoYXJlZCBhY2Nlc3MgdG8gdGhlCj4+IGF1eCBlbmFibGUgcmVnaXN0ZXIuIFRo
-ZW4gdGhlIHNwaSBkcml2ZXIgY291bGQgZ2V0IHRoZSByZWdtYXAgd2l0aDoKPj4gYXV4X3JlZ21h
-cCA9IHN5c2Nvbl9yZWdtYXBfbG9va3VwX2J5X3BoYW5kbGUobnAsICJzeXNjb24iKTsKPiAKPiBT
-ZWVtcyBhcyBpZiB5b3UgZm91bmQgYW4gYW5zd2VyIHRvIG15IG9yaWdpbmFsIHF1ZXN0aW9uIG9m
-IGlmCj4gdGhlcmUgaXMgYSBmcmFtZXdvcmsgdG8gaGFuZGxlIHRoaXMuCgpJJ2Qgc3VnZ2VzdCBh
-dm9pZGluZyBzeXNjb24uIElJVUMsIGl0IGp1c3QgZXhwb3NlcyByYXcgcmVnaXN0ZXIgSU8gZm9y
-CnRoZSBzaGFyZWQgcmVnaXN0ZXIgcmVnaW9uLCB3aGljaCBpcyB2ZXJ5ICJub24tc2VtYW50aWMi
-LCBoZW5jZQpjb21wbGV0ZWx5IGhpZGVzIHdoYXQgdGhlIHJlYXNvbiB0aGUgcmVnaXN0ZXJzIGFy
-ZSBiZWluZyB0b3VjaGVkLiBJJ2QKbXVjaCBwcmVmZXIgYSBjdXN0b20gZHJpdmVyIHdpdGggdXNl
-LWNhc2Utc3BlY2lmaWMgQVBJcy4gSWYgdGhlCnJlZ2lzdGVycyBpbXBsZW1lbnQgYW4gSVJRIG11
-eC9kZW11eCwgYW4gZXhwbGljaXQgSVJRIGNvbnRyb2xsZXIgZHJpdmVyCndvdWxkIGJlIG11Y2gg
-YmV0dGVyLgoKPj4gQWJvdXQgc2hhcmluZyB0aGUgYXV4IGludGVycnVwdCwgY291bGQgdGhpcyBi
-ZSBpbXBsZW1lbnRlZCBpbiBpcnEtYmNtMjgzNQo+PiBhcyBhIEJhbmsgMz8KPgo+IE9idmlvdXNs
-eSBpdCBjb3VsZCwgYnV0IHRoZSBxdWVzdGlvbiBpcyBpZiBpdCBpcyBub3QgbW9yZSBvdmVyaGVh
-ZCB0aGFuIHVzaW5nCj4gYSBzaGFyZWQgaW50ZXJydXB0IChyZXF1ZXN0aW5nIGFuIGludGVycnVw
-dCB3aXRoIHRoZSBzaGFyZWQgZmxhZyBzZXQpIGluIHRoZQo+IGZpcnN0IHBsYWNlIChsaWtlIHRo
-aXMgZHJpdmVyIGN1cnJlbnRseSBkb2VzIG9yIGkyYyBhbmQgVVNCIGRvKS4KCklJVUMsIHRoZXNl
-IHJlZ2lzdGVycyBhcmVuJ3QgcGFydCBvZiB0aGUgbWFpbiBJUlEgY29udHJvbGxlcidzIHJlZ2lz
-dGVyCnNldCwgYW5kIGhlbmNlIHNob3VsZG4ndCBiZSB0b3VjaGVkIGJ5IHRoZSBtYWluIElSUSBj
-b250cm9sbGVyIGRyaXZlci4KQ3JlYXRlIGEgc2VwYXJhdGUgZHJpdmVyIGZvciBlbnRpcmVseSBz
-ZXBhcmF0ZSBIVyBibG9ja3MvZnVuY3Rpb25hbGl0eS8uLi4KCj4gSSBhbSB3b3JraW5nIG9uIGEg
-bmV3IHZlcnNpb24gdG8gbWFrZSB1c2Ugb2Ygc3lzY29uLgoKOi0oCgoKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KbGludXgtcnBpLWtlcm5lbCBtYWlsaW5n
-IGxpc3QKbGludXgtcnBpLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5p
-bmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vbGludXgtcnBpLWtlcm5lbAo=
+On 06/22/2015 07:40 AM, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
+> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+> 
+> This driver does NOT make use of native chip-selects but uses the
+> generic cs-gpios facilities provided by the framework allowing for
+> more than 3 chip-selects.
+
+> diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
+
+> +/*
+> + * spi register defines
+> + *
+> + * note there is garbage in the "official" documentation,
+> + * so somedata taken from the file:
+> + *   brcm_usrlib/dag/vmcsx/vcinclude/bcm2708_chip/aux_io.h
+> + * inside of:
+> + *   http://www.broadcom.com/docs/support/videocore/Brcm_Android_ICS_Graphics_Stack.tar.gz
+> + */
+
+Hopefully the license of that tar file allows for that. I didn't look.
+
+> +DEFINE_SPINLOCK(__bcm2835_aux_lock);
+> +static void bcm2835_aux_modify_enable(struct bcm2835aux_spi *bs,
+> +				      u32 mask, u32 val)
+> +{
+> +	unsigned long flags;
+> +	u32 r;
+> +
+> +	spin_lock_irqsave(&__bcm2835_aux_lock, flags);
+> +
+> +	r = readl(bs->aux_regs + BCM2835_AUX_ENABLE);
+> +	r &= mask;
+> +	r |= val;
+> +	writel(r, bs->aux_regs + BCM2835_AUX_ENABLE);
+> +
+> +	spin_unlock_irqrestore(&__bcm2835_aux_lock, flags);
+> +}
+
+As mentioned elsewhere, I'd hope all the shared aux register
+manipulations can be pushed into a shared driver.
+
+> +static void bcm2835aux_spi_enable(struct bcm2835aux_spi *bs)
+> +{
+> +	/* identify the spi device - needed to activate the right HW-block */
+> +	u32 mask = (size_t)bs->regs & 0x00000040 ?
+> +		   BCM2835_AUX_BIT_SPI2 : BCM2835_AUX_BIT_SPI1;
+> +
+> +	bcm2835_aux_modify_enable(bs, ~mask, mask);
+> +}
+
+I expect that function will go away when my previous comment is
+resolved. If not, it'd be nice to encode the "ID" of the device into DT,
+so that the driver has no hard-coded idea of what register addresses
+exist; what happens when (a hypothetical) bcm2837 comes along with 3
+instances of this HW block?
+
+> +static int bcm2835aux_spi_remove(struct platform_device *pdev)
+> +{
+> +	struct spi_master *master = platform_get_drvdata(pdev);
+> +	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
+> +
+> +	/* Clear FIFOs, and disable the HW block */
+> +	clk_disable_unprepare(bs->clk);
+
+You probably want remove() to do things in the reverse order of probe().
+In particular, disable the clock after anything that could touch
+registers in the HW.
+
+> +	bcm2835aux_spi_reset_hw(bs);
+> +
+> +	/* disable HW block */
+> +	bcm2835aux_spi_disable(bs);

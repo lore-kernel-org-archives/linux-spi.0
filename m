@@ -1,97 +1,91 @@
-From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: bcm2835: add spi-bcm2835aux driver for the
- auxiliar spi1 and spi2
-Date: Fri, 10 Jul 2015 22:53:36 -0600
-Message-ID: <55A0A150.3060809@wwwdotorg.org>
-References: <1434980408-4086-1-git-send-email-kernel@martin.sperl.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
- linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <1434980408-4086-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
-List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
+Subject: [PATCH v3 2/2] dt: brcm,bcm2835-aux-spi: add binding documentation for new spi-bcm2835aux
+Date: Sun, 12 Jul 2015 01:13:36 +0000
+Message-ID: <1436663617-3056-2-git-send-email-kernel@martin.sperl.org>
+References: <1436663617-3056-1-git-send-email-kernel@martin.sperl.org>
+Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1436663617-3056-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 06/22/2015 07:40 AM, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
-> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-> 
-> This driver does NOT make use of native chip-selects but uses the
-> generic cs-gpios facilities provided by the framework allowing for
-> more than 3 chip-selects.
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-> diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
+Document the necessary device-tree bindings of the spi-bcm2835aux driver.
 
-> +/*
-> + * spi register defines
-> + *
-> + * note there is garbage in the "official" documentation,
-> + * so somedata taken from the file:
-> + *   brcm_usrlib/dag/vmcsx/vcinclude/bcm2708_chip/aux_io.h
-> + * inside of:
-> + *   http://www.broadcom.com/docs/support/videocore/Brcm_Android_ICS_Graphics_Stack.tar.gz
-> + */
+Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-Hopefully the license of that tar file allows for that. I didn't look.
+---
 
-> +DEFINE_SPINLOCK(__bcm2835_aux_lock);
-> +static void bcm2835_aux_modify_enable(struct bcm2835aux_spi *bs,
-> +				      u32 mask, u32 val)
-> +{
-> +	unsigned long flags;
-> +	u32 r;
-> +
-> +	spin_lock_irqsave(&__bcm2835_aux_lock, flags);
-> +
-> +	r = readl(bs->aux_regs + BCM2835_AUX_ENABLE);
-> +	r &= mask;
-> +	r |= val;
-> +	writel(r, bs->aux_regs + BCM2835_AUX_ENABLE);
-> +
-> +	spin_unlock_irqrestore(&__bcm2835_aux_lock, flags);
-> +}
+ .../bindings/spi/brcm,bcm2835-aux-spi.txt          |   46 ++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/brcm,bcm2835-aux-spi.txt
 
-As mentioned elsewhere, I'd hope all the shared aux register
-manipulations can be pushed into a shared driver.
+Changelog:
+    V1->V2:     fixed typo
+                added cs-gpios
+    V2->V3:     added reference to spi-bus in cs-gpios
+                added required additional config for syscon
 
-> +static void bcm2835aux_spi_enable(struct bcm2835aux_spi *bs)
-> +{
-> +	/* identify the spi device - needed to activate the right HW-block */
-> +	u32 mask = (size_t)bs->regs & 0x00000040 ?
-> +		   BCM2835_AUX_BIT_SPI2 : BCM2835_AUX_BIT_SPI1;
-> +
-> +	bcm2835_aux_modify_enable(bs, ~mask, mask);
-> +}
+diff --git a/Documentation/devicetree/bindings/spi/brcm,bcm2835-aux-spi.txt b/Documentation/devicetree/bindings/spi/brcm,bcm2835-aux-spi.txt
+new file mode 100644
+index 0000000..ce5f3be
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/brcm,bcm2835-aux-spi.txt
+@@ -0,0 +1,46 @@
++Broadcom BCM2835 auxiliar SPI1/2 controller
++
++The BCM2835 contains two forms of SPI master controller, one known simply as
++SPI0, and the other known as the "Universal SPI Master"; part of the
++auxiliary block. This binding applies to the SPI1/2 controller.
++
++Required properties:
++- compatible: Should be "brcm,bcm2835-aux-spi".
++- reg: Should contain register location and length for the spi block
++       as well as for the common aux block control
++- interrupts: Should contain shared interrupt of the aux block
++- clocks: The clock feeding the SPI controller.
++- cs-gpios: the cs-gpios (native cs is NOT supported)
++            see also spi-bus.txt
++- syscon: the syscon config entry to handle the shared
++          register access by multiple drivers
++
++Example:
++
++spi1@7e215080 {
++	compatible = "brcm,bcm2835-aux-spi";
++	reg = <0x7e215080 0x40>;
++	interrupts = <1 29>;
++	clocks = <&clk_spi>;
++	#address-cells = <1>;
++	#size-cells = <0>;
++	cs-gpios = <&gpio 18>, <&gpio 17>, <&gpio 16>;
++	syscon = <&aux_syscon>;
++};
++
++spi2@7e2150c0 {
++	compatible = "brcm,bcm2835-aux-spi";
++	reg = <0x7e2150c0 0x40>;
++	interrupts = <1 29>;
++	clocks = <&clk_spi>;
++	#address-cells = <1>;
++	#size-cells = <0>;
++	cs-gpios = <&gpio 43>, <&gpio 44>, <&gpio 45>;
++	syscon = <&aux_syscon>;
++};
++
++/* the necessary syscon config referenced above */
++aux_syscon: aux_syscon@0x7e215000 {
++	compatible = "syscon";
++	reg = <0x7e215000 0x08>;
++};
+--
+1.7.10.4
 
-I expect that function will go away when my previous comment is
-resolved. If not, it'd be nice to encode the "ID" of the device into DT,
-so that the driver has no hard-coded idea of what register addresses
-exist; what happens when (a hypothetical) bcm2837 comes along with 3
-instances of this HW block?
-
-> +static int bcm2835aux_spi_remove(struct platform_device *pdev)
-> +{
-> +	struct spi_master *master = platform_get_drvdata(pdev);
-> +	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
-> +
-> +	/* Clear FIFOs, and disable the HW block */
-> +	clk_disable_unprepare(bs->clk);
-
-You probably want remove() to do things in the reverse order of probe().
-In particular, disable the clock after anything that could touch
-registers in the HW.
-
-> +	bcm2835aux_spi_reset_hw(bs);
-> +
-> +	/* disable HW block */
-> +	bcm2835aux_spi_disable(bs);
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

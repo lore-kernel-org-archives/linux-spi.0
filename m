@@ -1,110 +1,77 @@
-From: Charles Keepax <ckeepax-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: Re: [alsa-devel] Fwd: [PATCH 1/1] SPI : spi-pxa2xx : fix spi init
-	of WM510205 codec via ACPI (resend)
-Date: Mon, 13 Jul 2015 10:53:59 +0100
-Message-ID: <20150713095359.GM16517@opensource.wolfsonmicro.com>
-References: <CAKor6TfxNW6UW6iX_FkRn2yZOHvdRHcsj6pKoKH-UWU51Bqvvg@mail.gmail.com> <20150625145853.GP14071@sirena.org.uk> <20150625154407.GE6321@opensource.wolfsonmicro.com> <558D3BAA.3080700@linux.intel.com> <20150626115823.GY14071@sirena.org.uk> <CAKor6Tf20eC1WQSO=AV2b+XoB5Qv-2Oin_nrrTJUiDV4czxLjA@mail.gmail.com> <20150629094854.GB11162@sirena.org.uk> <CAKor6TdDPb2qOgdHbeX2w+yQa_ioDM5ak9bk+=jF+cKt_twiXw@mail.gmail.com> <20150630103404.GI6321@opensource.wolfsonmicro.com> <CAKor6TdKk2OUz4o12RiQBSVZyhD=L4JpBJcYkGE=_6X+ZeQY_g@mail.gmail.com>
+From: Thomas.Betker@rohde-schwarz.com
+Subject: Re: [RFC PATCH 0/2] spi: add dual parallel & stacked mode support
+ in Zynq MPSoC GQSPI controller
+Date: Mon, 13 Jul 2015 12:04:54 +0200
+Message-ID: <OFDDDA0AA7.A583461A-ONC1257E81.0030FCED-C1257E81.003761EE@rohde-schwarz.com>
+References: <1436445895-25504-1-git-send-email-ranjit.waghmode@xilinx.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
-	Pierre-Louis Bossart <pierre-louis.bossart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-	dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org
-To: Christian Hartmann <cornogle-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAKor6TdKk2OUz4o12RiQBSVZyhD=L4JpBJcYkGE=_6X+ZeQY_g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-mtd <linux-mtd-bounces@lists.infradead.org>, harinik@xilinx.com,
+ marex@denx.de, ben@decadent.org.uk, zajec5@gmail.com,
+ linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, juhosg@openwrt.org,
+ broonie@kernel.org, linux-mtd@lists.infradead.org, soren.brinkmann@xilinx.com,
+ shijie.huang@intel.com, punnaia@xilinx.com, ran27jit@gmail.com,
+ computersforpeace@gmail.com, dwmw2@infradead.org, michal.simek@xilinx.com,
+ linux-arm-kernel@lists.infradead.org
+To: Ranjit Waghmode <ranjit.waghmode@xilinx.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1436445895-25504-1-git-send-email-ranjit.waghmode@xilinx.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-On Tue, Jul 07, 2015 at 09:06:25AM +0200, Christian Hartmann wrote:
-> 2015-06-30 12:34 GMT+02:00 Charles Keepax <ckeepax-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>:
-> > On Tue, Jun 30, 2015 at 09:14:37AM +0200, Christian Hartmann wrote:
-> >> Hi,
-> >>
-> >>
-> >> 2015-06-29 11:48 GMT+02:00 Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>:
-> >> > On Mon, Jun 29, 2015 at 09:27:17AM +0200, Christian Hartmann wrote:
-> >> >> [    5.927801] spi-WM510205:00 supply DCVDD not found, using dummy regulator
-> >> >> [    5.928958] arizona spi-WM510205:00: Unknown device ID: ffff
-> >> >> [    5.929098] pxa2xx-spi 80860F0E:00: registered child spi-WM510205:00
-> >> >
-> >> > The above is saying that SPI I/O to the device isn't working - the
-> >> > device ID is not being read back successfully.
-> >>
-> >> Ok that is the next problem that must be solved.
-> >> I have yesterday made a patchset where I have added
-> >> the enum type 5, but as you said already,
-> >> that was not needed.
-> >> All what I see the same: : Unknown device ID: ffff
-> >>
-> >> So where I have to look now or what can I do to let this device id
-> >> register correctly?
-> >> I hope the baytrail machine driver is easy peasy to add, but here I
-> >> stuck at the moment.
-> >
-> > As I said in my other emails the next step is to work out what
-> > the reset and ldoena gpio's are. You won't be able to read the
-> > device ID until you have those setup. Unfortunately, finding the
-> > right GPIOs is likely to be a bit of a chore, I will see if I can
-> > find anything out from the Windows guys at this end.
-> >
-> > Also can you check that the arizona-ldo1 regulator is built in I
-> > am surprised that is falling back to the dummy regulator.
-> >
-> > Thanks,
-> > Charles
+Hello Ranjit:
+
+> What is dual parallel mode?
+> ---------------------------
+> ZynqMP GQSPI controller supports Dual Parallel mode with following 
+> functionalities:
+> 1) Supporting two SPI flash memories operating in parallel. 8 I/O lines.
+> 2) Chip selects and clock are shared to both the flash devices
+> 3) This mode is targeted for faster read/write speed and also doubles 
+the size
+> 4) Commands/data can be transmitted/received from both the 
+devices(mirror),
+>    or only upper or only lower flash memory devices.
+> 5) Data arrangement:
+>    With stripe enabled,
+>    Even bytes i.e. 0, 2, 4,... are transmitted on Lower Data Bus
+>    Odd bytes i.e. 1, 3, 5,.. are transmitted on Upper Data Bus.
+
+In the dual-parallel configuration, odd and even _bits_ of each byte are 
+distributed over the flash chips; I am assuming this works just as in Zynq 
+QSPI (apparently, the TRM for ZynqMP isn't out yet).
+
+Striping seems to be a different mechanism, though. Can you explain it a 
+bit more? Also, the wording seems to indicate that it belongs to 
+dual-stacked rather than dual-parallel.
+
+> Suggestions on MTD layer support
+> --------------------------------
+> In order to add above two specified modes, we may required to get some
+> support from MTD layer.
 > 
-> Hi,
-> 
-> I just want to ask, if the windows guys have such infos about the
-> gpios in question (reset,ldoena) and of course the irq details.
-> 
-> I am thinking actually to get a second device with Win installed, so
-> that I can get more infos which I really need here.
-> Anyway  I can also provide more infos here (if its not against valid laws :) )
-> But indeeed I can need some hints where to put the pdata structure.
-> 
-> I have some more questions that I want to ask/discuss later on irc -
-> if its possible
-> 
-> cheers
-> Chris
+> I'm trying to list the dependencies as follows:
+> 1) Support for two flashes
+> 2) Enable/Disable data stripe as and when required.
+> 3) May need to update read_sr() to get status of both flashes
+> 4) May also need to update read_fsr() to get status of both flashes
+> 5) Adjustment of offset value based on the parallel/stacked mode 
+configuration
+> 6) Setting either parallel or stacked mode during the scan process.
+> 7) In case of stacked mode, is there a MTD concatenation support?
 
-Ok so it does indeed seem the information I got from the Windows
-team was not fully accurate last time. The IRQ pin, reset line
-and LDO enable are actually specified in ACPI. This block here
-has them:
+In addition to 5), the MTD driver using a dual-parallel QSPI flash has to
+5a) add padding at the start of data for unaligned addresses,
+5b) add padding at the end of data for unaligned lengths.
 
-GpioInt (Edge, ActiveLow, ExclusiveAndWake, PullNone, 0x0000,
-	 "\\_SB.GPO2", 0x00, ResourceConsumer, ,)
-{   // Pin list
-	0x0004
-}
-GpioIo (Exclusive, PullDefault, 0x0000, 0x0000, IoRestrictionOutputOnly,
-	"\\_SB.I2C7.PMIC", 0x00, ResourceConsumer, ,)
-{   // Pin list
-	0x0003
-}
-GpioIo (Exclusive, PullDefault, 0x0000, 0x0000, IoRestrictionOutputOnly,
-	"\\_SB.GPO1", 0x00, ResourceConsumer, ,)
-{   // Pin list
-	0x0017
-}
-
-The order here being:
-
-1) IRQ
-2) Reset GPIO
-3) LDOENA GPIO
-
-Thanks,
-Charles
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Best regards,
+Thomas Betker

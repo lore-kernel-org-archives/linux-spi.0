@@ -1,62 +1,41 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: bcm2835: add spi-bcm2835aux driver for the auxiliar spi1 and spi2
-Date: Sun, 12 Jul 2015 12:10:52 +1000
-Message-ID: <ECFBB7BF-1316-4565-B1F2-FB2651131882@martin.sperl.org>
-References: <1434980408-4086-1-git-send-email-kernel@martin.sperl.org> <55A0A150.3060809@wwwdotorg.org>
-Mime-Version: 1.0 (1.0)
-Content-Type: text/plain;
-	charset=us-ascii
-Content-Transfer-Encoding: 8BIT
-Cc: "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: Applied "regulator: da9210: Add optional interrupt support" to
+ the spi tree
+Date: Mon, 13 Jul 2015 10:11:25 +0200
+Message-ID: <CAMuHMdWCYunWEb5owPBBKbP3e=VyROk6+MtvpyG0dwXf=magxg@mail.gmail.com>
+References: <E1ZCTOX-0005m5-Lk@finisterre>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <55A0A150.3060809-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+In-Reply-To: <E1ZCTOX-0005m5-Lk@finisterre>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-I am on a business-trip right now, so I can not check the mailing list
-that often and my access to a rpi to develop is also limited hence
-the V3 patch set took some time to get out of the door and crossed
-the responses you had sent.
+Hi Mark,
 
-> On 11.07.2015, at 14:53, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org> wrote:
-> Hopefully the license of that tar file allows for that. I didn't look.
-Well, I just took the values from the released video driver for those values
-where doe documentation is obviously wrong - essentially clarifying
-the SPI_STAT register on page 25.
+On Tue, Jul 7, 2015 at 3:58 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> The patch
+>
+>    regulator: da9210: Add optional interrupt support
+>
+> has been applied to the spi tree at
 
-> As mentioned elsewhere, I'd hope all the shared aux register
-> manipulations can be pushed into a shared driver.
+That should have been "regulator/for-next", not "spi/for-next".
+Sorry for not noticing until I pulled both for-next branches.
 
-I just found this email after having sent the latest version of the patch
-that makes use of syscon/regmap to serialize access to the
- bcm2835_AUX_ENABLE register - that is all that it is really needed for.
+Gr{oetje,eeting}s,
 
->From my perspective it seems that a new driver just would produce
-more code (to maintain) for something that the syscon driver already
-provides. If someone starts to enable aux-uart, then it could go with
-a new framework, but that is still more code that needs to get maintained
-than just using syscon as that "shared" driver.
+                        Geert
 
-As for hardcoded ids, that may be the case, but I just wanted to keep
-Device tree as minimal as necessary...
-If we get to that situation then we can easily move that to some
-other logic...
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
 
-Finally with regards to interrupts: these are shared anyway so I
-wonder why we would want to write an extra irq chip driver when
-it works as is anyway.
-
-If someone thinks that is of a performance advantage then this
-extra layer of indirection could get written and we would only need
-to change the device-tree to use the new irq vectors instead.
-
-But we are really only talking about 2 drivers and 3 interrupt sources.
-
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

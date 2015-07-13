@@ -1,77 +1,71 @@
-From: Thomas.Betker@rohde-schwarz.com
-Subject: Re: [RFC PATCH 0/2] spi: add dual parallel & stacked mode support
- in Zynq MPSoC GQSPI controller
-Date: Mon, 13 Jul 2015 12:04:54 +0200
-Message-ID: <OFDDDA0AA7.A583461A-ONC1257E81.0030FCED-C1257E81.003761EE@rohde-schwarz.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [RFC PATCH 0/2] spi: add dual parallel & stacked mode support in
+ Zynq MPSoC GQSPI controller
+Date: Mon, 13 Jul 2015 15:59:07 +0100
+Message-ID: <20150713145907.GF11162@sirena.org.uk>
 References: <1436445895-25504-1-git-send-email-ranjit.waghmode@xilinx.com>
+ <559F824B.70409@topic.nl>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-mtd <linux-mtd-bounces@lists.infradead.org>, harinik@xilinx.com,
- marex@denx.de, ben@decadent.org.uk, zajec5@gmail.com,
- linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, juhosg@openwrt.org,
- broonie@kernel.org, linux-mtd@lists.infradead.org, soren.brinkmann@xilinx.com,
- shijie.huang@intel.com, punnaia@xilinx.com, ran27jit@gmail.com,
- computersforpeace@gmail.com, dwmw2@infradead.org, michal.simek@xilinx.com,
- linux-arm-kernel@lists.infradead.org
-To: Ranjit Waghmode <ranjit.waghmode@xilinx.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1436445895-25504-1-git-send-email-ranjit.waghmode@xilinx.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="kK9AL8AnBmMfbzhN"
+Cc: Ranjit Waghmode <ranjit.waghmode-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org, soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org,
+	dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org, computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	marex-ynQEQJNshbs@public.gmane.org, shijie.huang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org,
+	ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org, harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, punnaia-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org,
+	ran27jit-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Mike Looijmans <mike.looijmans-Oq418RWZeHk@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <559F824B.70409-Oq418RWZeHk@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hello Ranjit:
 
-> What is dual parallel mode?
-> ---------------------------
-> ZynqMP GQSPI controller supports Dual Parallel mode with following 
-> functionalities:
-> 1) Supporting two SPI flash memories operating in parallel. 8 I/O lines.
-> 2) Chip selects and clock are shared to both the flash devices
-> 3) This mode is targeted for faster read/write speed and also doubles 
-the size
-> 4) Commands/data can be transmitted/received from both the 
-devices(mirror),
->    or only upper or only lower flash memory devices.
-> 5) Data arrangement:
->    With stripe enabled,
->    Even bytes i.e. 0, 2, 4,... are transmitted on Lower Data Bus
->    Odd bytes i.e. 1, 3, 5,.. are transmitted on Upper Data Bus.
+--kK9AL8AnBmMfbzhN
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-In the dual-parallel configuration, odd and even _bits_ of each byte are 
-distributed over the flash chips; I am assuming this works just as in Zynq 
-QSPI (apparently, the TRM for ZynqMP isn't out yet).
+On Fri, Jul 10, 2015 at 10:28:59AM +0200, Mike Looijmans wrote:
+> =EF=BB=BFOn 09-07-15 14:44, Ranjit Waghmode wrote:
 
-Striping seems to be a different mechanism, though. Can you explain it a 
-bit more? Also, the wording seems to indicate that it belongs to 
-dual-stacked rather than dual-parallel.
+> >ZynqMP GQSPI controller supports stacked mode with following functionali=
+ties:
+> >1) The Generic Quad-SPI controller also supports two SPI flash memories
+> >    in a shared bus arrangement to reduce IO pin count.
+> >2) Separate chip select lines
+> >3) Shared I/O lines
+> >4) This mode is targeted for increasing the flash memory and no performa=
+nce
+> >    improvement when compared with single.
 
-> Suggestions on MTD layer support
-> --------------------------------
-> In order to add above two specified modes, we may required to get some
-> support from MTD layer.
-> 
-> I'm trying to list the dependencies as follows:
-> 1) Support for two flashes
-> 2) Enable/Disable data stripe as and when required.
-> 3) May need to update read_sr() to get status of both flashes
-> 4) May also need to update read_fsr() to get status of both flashes
-> 5) Adjustment of offset value based on the parallel/stacked mode 
-configuration
-> 6) Setting either parallel or stacked mode during the scan process.
-> 7) In case of stacked mode, is there a MTD concatenation support?
+> One could also model the stacked mode as having two distinct flash chips
+> with separate chip selects and shared lines.
 
-In addition to 5), the MTD driver using a dual-parallel QSPI flash has to
-5a) add padding at the start of data for unaligned addresses,
-5b) add padding at the end of data for unaligned lengths.
+Well, quite.  I'm confused about how the above differs from a just a SPI
+controller with two chip selects which is perfectly standard.
 
-Best regards,
-Thomas Betker
+--kK9AL8AnBmMfbzhN
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVo9I7AAoJECTWi3JdVIfQio4H/1o3jKiZR03QWE+n+6/R2X3E
+9Rgqw1W8K63XeTcpVnO0E5mLv+OQ4WdRg/8CvUExZxkOW5Wm+YGWNjTJ3xzedvtF
+JrgKNNa/a0U/w9xscFX+x9fhkL7oSVLRg/w3k5s/skDNtfhfGwplzJ5sOxz7jP/5
+0H5r6aTuLgchSWzUiSt2mZqwtHRMW0b5WLBR2gil9ez8LtaUZEozOw7wss+RPAH0
+MaFFrvC2kr+o+FyVaGfqEjxTWpOCAtEHbvrrfElx4AK7tiUFJ8FoGi+jNmjWA8f7
+AdSP+H2QHDkhHCSyGwFxCpAfP72U0fQXLS1EKXCcCQwBSc5jMvtfWSHV5EuuRME=
+=MTwl
+-----END PGP SIGNATURE-----
+
+--kK9AL8AnBmMfbzhN--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

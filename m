@@ -1,107 +1,75 @@
-From: Harini Katakam <harinikatakamlinux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [RFC PATCH 0/2] spi: add dual parallel & stacked mode support in
- Zynq MPSoC GQSPI controller
-Date: Tue, 14 Jul 2015 09:54:28 +0530
-Message-ID: <CAFcVEC+yqK37YjsrN_KZ2KrXydvg=Tx_ur9hhvM1g9kdfTCRVQ@mail.gmail.com>
-References: <1436445895-25504-1-git-send-email-ranjit.waghmode@xilinx.com>
-	<OFDDDA0AA7.A583461A-ONC1257E81.0030FCED-C1257E81.003761EE@rohde-schwarz.com>
+From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: bcm2835: add spi-bcm2835aux driver for the auxiliar
+ spi1 and spi2
+Date: Mon, 13 Jul 2015 22:56:02 -0600
+Message-ID: <55A49662.3000706@wwwdotorg.org>
+References: <1434980408-4086-1-git-send-email-kernel@martin.sperl.org> <55A0A150.3060809@wwwdotorg.org> <ECFBB7BF-1316-4565-B1F2-FB2651131882@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Ranjit Waghmode <ranjit.waghmode-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	linux-mtd <linux-mtd-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	=?UTF-8?B?TWFyZWsgVmHFoXV0?= <marex-ynQEQJNshbs@public.gmane.org>,
-	ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org, zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	=?UTF-8?Q?S=C3=B6ren_Brinkmann?= <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	shijie.huang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
-	Punnaiah Choudary Kalluri <punnaia-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	Ranjit Waghmode <ran27jit-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-	Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Thomas.Betker-Bf/A/FSCP0w3s4ca2cGeAgC/G2K4zDHf@public.gmane.org
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Cc: "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <OFDDDA0AA7.A583461A-ONC1257E81.0030FCED-C1257E81.003761EE-Bf/A/FSCP0w3s4ca2cGeAgC/G2K4zDHf@public.gmane.org>
+In-Reply-To: <ECFBB7BF-1316-4565-B1F2-FB2651131882-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Thomas,
+On 07/11/2015 08:10 PM, Martin Sperl wrote:
+> I am on a business-trip right now, so I can not check the mailing list
+> that often and my access to a rpi to develop is also limited hence
+> the V3 patch set took some time to get out of the door and crossed
+> the responses you had sent.
+> 
+>> On 11.07.2015, at 14:53, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org> wrote:
+>> Hopefully the license of that tar file allows for that. I didn't look.
+> Well, I just took the values from the released video driver for those values
+> where doe documentation is obviously wrong - essentially clarifying
+> the SPI_STAT register on page 25.
+> 
+>> As mentioned elsewhere, I'd hope all the shared aux register
+>> manipulations can be pushed into a shared driver.
+> 
+> I just found this email after having sent the latest version of the patch
+> that makes use of syscon/regmap to serialize access to the
+>  bcm2835_AUX_ENABLE register - that is all that it is really needed for.
+> 
+> From my perspective it seems that a new driver just would produce
+> more code (to maintain) for something that the syscon driver already
+> provides. If someone starts to enable aux-uart, then it could go with
+> a new framework, but that is still more code that needs to get maintained
+> than just using syscon as that "shared" driver.
+> 
+> As for hardcoded ids, that may be the case, but I just wanted to keep
+> Device tree as minimal as necessary...
+> If we get to that situation then we can easily move that to some
+> other logic...
+> 
+> Finally with regards to interrupts: these are shared anyway so I
+> wonder why we would want to write an extra irq chip driver when
+> it works as is anyway.
+> 
+> If someone thinks that is of a performance advantage then this
+> extra layer of indirection could get written and we would only need
+> to change the device-tree to use the new irq vectors instead.
+> 
+> But we are really only talking about 2 drivers and 3 interrupt sources.
 
-On Mon, Jul 13, 2015 at 3:34 PM,  <Thomas.Betker-Bf/A/FSCP0w3s4ca2cGeAgC/G2K4zDHf@public.gmane.org> wrote:
-> Hello Ranjit:
->
->> What is dual parallel mode?
->> ---------------------------
->> ZynqMP GQSPI controller supports Dual Parallel mode with following
->> functionalities:
->> 1) Supporting two SPI flash memories operating in parallel. 8 I/O lines.
->> 2) Chip selects and clock are shared to both the flash devices
->> 3) This mode is targeted for faster read/write speed and also doubles
-> the size
->> 4) Commands/data can be transmitted/received from both the
-> devices(mirror),
->>    or only upper or only lower flash memory devices.
->> 5) Data arrangement:
->>    With stripe enabled,
->>    Even bytes i.e. 0, 2, 4,... are transmitted on Lower Data Bus
->>    Odd bytes i.e. 1, 3, 5,.. are transmitted on Upper Data Bus.
->
-> In the dual-parallel configuration, odd and even _bits_ of each byte are
-> distributed over the flash chips; I am assuming this works just as in Zynq
-> QSPI (apparently, the TRM for ZynqMP isn't out yet).
->
-> Striping seems to be a different mechanism, though. Can you explain it a
-> bit more? Also, the wording seems to indicate that it belongs to
-> dual-stacked rather than dual-parallel.
+I don't care so much about the internal code details; anything there can
+be trivially changed. But please do make sure the DT correctly
+represents the HW by:
 
-This differs between Zynq and ZynqMP.
-Bytes are alternated between the two flash devices in ZynqMP.
-In Zynq, bits were alternated.
-This is dual parallel because both the chips can be selected at the same time
-and have two separate data bus connected. One of the two can be done:
-1. Enable Stripe - data bytes 0,2,4... to one flash and data bytes
-1,3,5.. to the other
-This is typically used for read and write memory operations.
-2. Disable Stripe (Mirror) - all the bytes are sent to both flash devices.
-This is typically used for control operations such as WriteEnable etc.
+* Having a separate DT node for each HW block (SPI controller, UART, and
+any shared interrupt mux/demux/controller/...)
 
->
->> Suggestions on MTD layer support
->> --------------------------------
->> In order to add above two specified modes, we may required to get some
->> support from MTD layer.
->>
->> I'm trying to list the dependencies as follows:
->> 1) Support for two flashes
->> 2) Enable/Disable data stripe as and when required.
->> 3) May need to update read_sr() to get status of both flashes
->> 4) May also need to update read_fsr() to get status of both flashes
->> 5) Adjustment of offset value based on the parallel/stacked mode
-> configuration
->> 6) Setting either parallel or stacked mode during the scan process.
->> 7) In case of stacked mode, is there a MTD concatenation support?
->
-> In addition to 5), the MTD driver using a dual-parallel QSPI flash has to
-> 5a) add padding at the start of data for unaligned addresses,
-> 5b) add padding at the end of data for unaligned lengths.
-
-In dual-parallel in ZynqMP, we no longer stripe bits, eliminating
-the need for padding unaligned lengths.
-
-Regards,
-Harini
-
->
-> Best regards,
-> Thomas Betker
->
-> ______________________________________________________
-> Linux MTD discussion mailing list
-> http://lists.infradead.org/mailman/listinfo/linux-mtd/
+* If e.g. the SPI controller driver is going to need to manipulate the
+"shared interrupt mux/demux/controller/...", there should be a phandle
+from the SPI controller node to the "shared interrupt
+mux/demux/controller/..." node, rather than listing the shared registers
+in each "client"'s reg property.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

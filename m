@@ -1,60 +1,54 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: mpc512x-psc: add support for Freescale MPC5125
-Date: Tue, 14 Jul 2015 10:54:42 +0100
-Message-ID: <20150714095442.GO11162@sirena.org.uk>
-References: <1436865596-9592-1-git-send-email-u.kleine-koenig@pengutronix.de>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="NRJnUXaAQEpDRr3z"
-Cc: Benjamin Herrenschmidt <benh-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>,
-	Paul Mackerras <paulus-eUNUBHrolfbYtjvyW6yDsg@public.gmane.org>,
-	Michael Ellerman <mpe-Gsx/Oe8HsFggBc27wqDAHg@public.gmane.org>,
-	linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
-	<u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: bcm2835: add spi-bcm2835aux driver for the auxiliar spi1 and spi2
+Date: Tue, 14 Jul 2015 22:39:20 +1000
+Message-ID: <2768BFA9-7FE9-4EDC-8692-AC3F070BD874@martin.sperl.org>
+References: <1434980408-4086-1-git-send-email-kernel@martin.sperl.org> <55A0A150.3060809@wwwdotorg.org> <ECFBB7BF-1316-4565-B1F2-FB2651131882@martin.sperl.org> <55A49662.3000706@wwwdotorg.org>
+Mime-Version: 1.0 (1.0)
+Content-Type: text/plain;
+	charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Cc: "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1436865596-9592-1-git-send-email-u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+In-Reply-To: <55A49662.3000706-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---NRJnUXaAQEpDRr3z
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On 14.07.2015, at 14:56, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org> wrote:
+> 
+> I don't care so much about the internal code details; anything there can
+> be trivially changed. But please do make sure the DT correctly
+> represents the HW by:
+> 
+> * Having a separate DT node for each HW block (SPI controller, UART, and
+> any shared interrupt mux/demux/controller/...)
 
-On Tue, Jul 14, 2015 at 11:19:56AM +0200, Uwe Kleine-K=F6nig wrote:
+That is what we have with the v3 patch:
+* spi1
+* spi2
+* syscon controlling the aux-enable register
+  (only used to enable/disable the hw block)
 
->  static const struct of_device_id mpc512x_psc_spi_of_match[] =3D {
-> -	{ .compatible =3D "fsl,mpc5121-psc-spi", },
-> +	{ .compatible =3D "fsl,mpc5121-psc-spi", .data =3D (void *)TYPE_MPC5121=
- },
-> +	{ .compatible =3D "fsl,mpc5125-psc-spi", .data =3D (void *)TYPE_MPC5125=
- },
->  	{},
+> * If e.g. the SPI controller driver is going to need to manipulate the
+> "shared interrupt mux/demux/controller/...", there should be a phandle
+> from the SPI controller node to the "shared interrupt
+> mux/demux/controller/..." node, rather than listing the shared registers
+> in each "client"'s reg property.
+That is not what is in the v3 release of the patch any longer.
 
-The code seems fine but this should update the binding document to
-include the new compatible string.
+Each of the above dt-nodes has their own (non-overlapping) register
+ranges and interrupts are enabled/disabled in the respective ranges
+for spi1/spi2. Also the status register of spi1/2 contain the
+corresponding flags for the reason of an interrupt - so no need
+to access any of the shared aux registers for that - hence the use
+of IRQF_SHARED.
 
---NRJnUXaAQEpDRr3z
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVpNxhAAoJECTWi3JdVIfQQ+oH/0seBIzXzOt9A+Sap/VyF8pm
-vqXxrsMwBRoqmTuT+VOu4+WvPI2bQ6ZlmecEyZf4yLWwPfBe/4g3H6mR2Vok2sGQ
-wvvBk9M9VkLlAURjG8AWQ+xERvN1JKMzzHwNmYdVuoLkE7PfMeAQTXpyVQrBjxAZ
-TTeKiiGH2jVoX37LucUTNVTltkX4kUJ5Cfuq/yRF7AgPtPE5HX3mdaA248VdXL0N
-RfvQSHKV9PYMiRXIZcKEXnAtbcfvjWVQqsnEaiHEIveGGOeMCHiGebij8SXM+YRP
-l8G8KXxCLBv7UC8EC4BfnEXPDu9EfbMZtGIhksAhOHHFKEm+KVeUlkTWZUp/sgA=
-=S+rD
------END PGP SIGNATURE-----
-
---NRJnUXaAQEpDRr3z--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,70 +1,93 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: mpc512x-psc: add support for Freescale MPC5125
-Date: Thu, 16 Jul 2015 14:32:59 +0100
-Message-ID: <20150716133259.GI4039@sirena.org.uk>
-References: <1436865596-9592-1-git-send-email-u.kleine-koenig@pengutronix.de>
- <20150714095442.GO11162@sirena.org.uk>
- <20150715074018.GD1426@pengutronix.de>
+From: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 0/7] add driver for Atmel QSPI controller
+Date: Thu, 16 Jul 2015 17:27:47 +0200
+Message-ID: <cover.1437059658.git.cyrille.pitchen@atmel.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="GBuTPvBEOL0MYPgd"
-Cc: Benjamin Herrenschmidt <benh-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Paul Mackerras <paulus-eUNUBHrolfbYtjvyW6yDsg@public.gmane.org>,
-	kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, Michael Ellerman <mpe-Gsx/Oe8HsFggBc27wqDAHg@public.gmane.org>,
-	linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
-	<u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Content-Type: text/plain
+Cc: <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	<pawel.moll-5wv7dgnIgG8@public.gmane.org>, <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	<ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	<linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+To: <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	<computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	<beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org>, <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, <marex-ynQEQJNshbs@public.gmane.org>,
+	<shijie.huang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20150715074018.GD1426-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hi all,
 
---GBuTPvBEOL0MYPgd
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+in order to be able to use Micron Quad SPI memories with the new Atmel QSPI
+controller I added a new set_protocol() callback into struct spi_nor.
+Indeed, once the quad I/O mode has been enabled on a Micron QSPI flash by
+clearing bit 7 in its Enhanced Volatile Configuration Register, this memory
+expects all the following commands to use the QSPI 4-4-4 protocol. So the
+QSPI controller needs to be notified about this protocol change before
+reading the Status register, 0x05 command sent by the
+spi_nor_wail_till_ready() function, in micron_quad_enable().
 
-On Wed, Jul 15, 2015 at 09:40:19AM +0200, Uwe Kleine-K=F6nig wrote:
-> On Tue, Jul 14, 2015 at 10:54:42AM +0100, Mark Brown wrote:
+Reading spi-nor.h, I saw an interesting struct spi_nor_xfer_cfg and its
+associated callbacks write_xfer() and read_xfer(). However these callbacks
+don't seem to be used at all for now. They look to have been designed to
+add QSPI support to the generic spi-nor framework. So before extending the
+framework with my own callback, I'd like to know whether I should have
+tried to used the read_xfer()/write_xfer() callbacks to join an already
+existing effort to add QSPI support.
+If so, I think either the read/write_reg() prototypes should be updated or
+new callbacks should be added for register reads/writes. As explained
+above, even for reading the Status register the QSPI 4-4-4 protocol must be
+used with Micron memories in quad I/O mode. So the framework has to find a
+way to tell the QSPI controller which protocol it should use.
 
-> > >  static const struct of_device_id mpc512x_psc_spi_of_match[] =3D {
-> > > -	{ .compatible =3D "fsl,mpc5121-psc-spi", },
-> > > +	{ .compatible =3D "fsl,mpc5121-psc-spi", .data =3D (void *)TYPE_MPC=
-5121 },
-> > > +	{ .compatible =3D "fsl,mpc5125-psc-spi", .data =3D (void *)TYPE_MPC=
-5125 },
-> > >  	{},
+So I'm interested in your comments! :)
 
-> > The code seems fine but this should update the binding document to
-> > include the new compatible string.
+Best Regards,
 
-> I don't find fsl,mpc5121-psc-spi documented either. The best I found is
-> ocumentation/devicetree/bindings/powerpc/fsl/mpc5121-psc.txt which
-> describes fsl,mpc5121-psc-uart and fsl,mpc5121-psc.
+Cyrille
 
-OK, then please add a basic binding document.  The point is that new
-bindings should be being documented, if people have been lax on this in
-the past that does involve a bit of cleanup.
+ChangeLog
 
---GBuTPvBEOL0MYPgd
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+v1:
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+This series of patches add support for the new Atmel QSPI controller
+embedded inside sama5d2x SoCs.
 
-iQEcBAEBCAAGBQJVp7KKAAoJECTWi3JdVIfQsDMH/iMvzcRjDtq+CnoSEV4F81Gn
-jAGVtfP1xIYXNFzslzb6v2GfzgPAso4XXh8zUdtPi52ECTCW8ezXyyOHqhrEngCh
-4VmOySSEAXHQbZA4keZ2eztIFC3Akv9IaFbhf8WmzPI6wL8X7IXXwxSvtka/bTjI
-h5Exya3UAPz11ZsD6XQsxPnQxQkc1w30z2gFcNCKWgb6MgDnCxvr8BLdLWdjruwj
-mKUDiu2idvj3qOE3EdTTRQiCArxZzrST8c2aLoH2s+kAqUz2Hh71y4sDwgmEU6BZ
-PsW39Lg8XByY7TKT5igVEPKcayO+QAZ/aGZBt0xJ86R4XTBgJ/Kbrsgbi+Paffg=
-=Jxih
------END PGP SIGNATURE-----
+These patches were first developped for linux-3.18-at91 and tested on a
+sama5d27 Xplained ultra board, which embeds a Micron n25q128a13 QSPI NOR
+flash memory. Then the series was adapted for mainline.
 
---GBuTPvBEOL0MYPgd--
+Cyrille Pitchen (7):
+  Documentation: mtd: add a DT property to set the number of dummy
+    cycles
+  mtd: spi-nor: notify (Q)SPI controller about protocol change
+  mtd: spi-nor: allow to tune the number of dummy cycles
+  Documentation: mtd: add a DT property to set the latency code of
+    Spansion memory
+  mtd: spi-nor: allow the set the latency code on Spansion memories
+  Documentation: atmel-quadspi: add binding file for Atmel QSPI driver
+  mtd: atmel-quadspi: add driver for Atmel QSPI controller
+
+ .../devicetree/bindings/mtd/atmel-quadspi.txt      |  29 +
+ .../devicetree/bindings/mtd/jedec,spi-nor.txt      |   6 +
+ .../devicetree/bindings/mtd/spansion-nor.txt       |  22 +
+ drivers/mtd/spi-nor/Kconfig                        |   7 +
+ drivers/mtd/spi-nor/Makefile                       |   1 +
+ drivers/mtd/spi-nor/atmel-quadspi.c                | 901 +++++++++++++++++++++
+ drivers/mtd/spi-nor/spi-nor.c                      | 160 +++-
+ include/linux/mtd/spi-nor.h                        |  15 +
+ 8 files changed, 1122 insertions(+), 19 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/mtd/atmel-quadspi.txt
+ create mode 100644 Documentation/devicetree/bindings/mtd/spansion-nor.txt
+ create mode 100644 drivers/mtd/spi-nor/atmel-quadspi.c
+
+-- 
+1.8.2.2
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

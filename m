@@ -1,118 +1,68 @@
 From: Cyrille Pitchen <cyrille.pitchen@atmel.com>
-Subject: [PATCH 2/7] mtd: spi-nor: notify (Q)SPI controller about protocol
- change
-Date: Thu, 16 Jul 2015 17:27:49 +0200
-Message-ID: <e70498c0193b04e2ea82eaabda0cddae0edfffb3.1437059658.git.cyrille.pitchen@atmel.com>
+Subject: [PATCH 4/7] Documentation: mtd: add a DT property to set the latency code of Spansion memory
+Date: Thu, 16 Jul 2015 17:27:51 +0200
+Message-ID: <398ca9f17bda638e05e97f258fb4e6d27ac828db.1437059658.git.cyrille.pitchen@atmel.com>
 References: <cover.1437059658.git.cyrille.pitchen@atmel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: mark.rutland@arm.com, devicetree@vger.kernel.org, pawel.moll@arm.com,
- ijc+devicetree@hellion.org.uk, linux-kernel@vger.kernel.org,
- robh+dt@kernel.org, linux-mtd@lists.infradead.org, galak@codeaurora.org,
- Cyrille Pitchen <cyrille.pitchen@atmel.com>,
- linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain
+Cc: <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>,
+	<devicetree@vger.kernel.org>, <robh+dt@kernel.org>,
+	<pawel.moll@arm.com>, <mark.rutland@arm.com>,
+	<ijc+devicetree@hellion.org.uk>, <galak@codeaurora.org>,
+	<linux-mtd@lists.infradead.org>,
+	Cyrille Pitchen <cyrille.pitchen@atmel.com>
 To: <nicolas.ferre@atmel.com>, <broonie@kernel.org>,
- <linux-spi@vger.kernel.org>, <dwmw2@infradead.org>,
- <computersforpeace@gmail.com>, <zajec5@gmail.com>, <beanhuo@micron.com>,
- <juhosg@openwrt.org>, <marex@denx.de>, <shijie.huang@intel.com>,
- <ben@decadent.org.uk>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+	<linux-spi@vger.kernel.org>, <dwmw2@infradead.org>,
+	<computersforpeace@gmail.com>, <zajec5@gmail.com>,
+	<beanhuo@micron.com>, <juhosg@openwrt.org>, <marex@denx.de>,
+	<shijie.huang@intel.com>, <ben@decadent.org.uk>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <cover.1437059658.git.cyrille.pitchen@atmel.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Once the Quad SPI mode has been enabled on a Micron flash memory, this
-device expects ALL the following commands to use the SPI 4-4-4 protocol.
-The (Q)SPI controller needs to be notified about the protocol change so it
-can adapt and keep on dialoging with the Micron memory.
+Both the SPI controller and the NOR flash memory need to agree on the
+number of dummy cycles to use for Fast Read commands. For Spansion
+memories, this number of dummy cycles is not given directly but through a
+so called "latency code".
+The latency code can be found into the memory datasheet and depends on the
+SPI clock frequency, the Fast Read op code and the Single/Dual Data Rate
+mode.
 
 Signed-off-by: Cyrille Pitchen <cyrille.pitchen@atmel.com>
 ---
- drivers/mtd/spi-nor/spi-nor.c | 17 +++++++++++++++++
- include/linux/mtd/spi-nor.h   | 13 +++++++++++++
- 2 files changed, 30 insertions(+)
+ .../devicetree/bindings/mtd/spansion-nor.txt       | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mtd/spansion-nor.txt
 
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index d78831b4422b..93627d4e6be8 100644
---- a/drivers/mtd/spi-nor/spi-nor.c
-+++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -163,6 +163,18 @@ static inline int write_disable(struct spi_nor *nor)
- 	return nor->write_reg(nor, SPINOR_OP_WRDI, NULL, 0, 0);
- }
- 
-+/*
-+ * Notify the (Q)SPI controller about the new protocol to be used.
-+ */
-+static inline int spi_nor_set_protocol(struct spi_nor *nor,
-+				       enum spi_protocol proto)
-+{
-+	if (nor->set_protocol)
-+		return nor->set_protocol(nor, proto);
+diff --git a/Documentation/devicetree/bindings/mtd/spansion-nor.txt b/Documentation/devicetree/bindings/mtd/spansion-nor.txt
+new file mode 100644
+index 000000000000..a55c62db0e6f
+--- /dev/null
++++ b/Documentation/devicetree/bindings/mtd/spansion-nor.txt
+@@ -0,0 +1,22 @@
++* Spansion NOR flash
 +
-+	return 0;
-+}
++Optional properties:
++- spansion,latency-code : Only used when the "m25p,num-dummy-cycles" property is
++                          set. The Spansion latency code tells the NOR flash
++                          memory the number of dummy cycles to expect for each
++                          Fast Read command. The value to be used is provided by
++                          tables in the memory datasheet and depends on the SPI
++                          clock frequency and on the Single/Dual Data Rate mode.
++                          Then the value of "m25p,num-dummy-cycles" property
++                          should match the (Fast) Read command to be used for
++                          the chosen latency code.
 +
- static inline struct spi_nor *mtd_to_spi_nor(struct mtd_info *mtd)
- {
- 	return mtd->priv;
-@@ -943,6 +955,11 @@ static int micron_quad_enable(struct spi_nor *nor)
- 		return ret;
- 	}
- 
-+	/* switch protocol to Quad CMD 4-4-4 */
-+	ret = spi_nor_set_protocol(nor, SPI_PROTO_4_4_4);
-+	if (ret)
-+		return ret;
++Example:
 +
- 	ret = spi_nor_wait_till_ready(nor);
- 	if (ret)
- 		return ret;
-diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
-index e5409524bb0a..1bf6f11310ef 100644
---- a/include/linux/mtd/spi-nor.h
-+++ b/include/linux/mtd/spi-nor.h
-@@ -87,6 +87,16 @@ enum read_mode {
- 	SPI_NOR_QUAD,
- };
- 
-+enum spi_protocol {
-+	SPI_PROTO_1_1_1,	/* SPI */
-+	SPI_PROTO_1_1_2,	/* Dual Output */
-+	SPI_PROTO_1_1_4,	/* Quad Output */
-+	SPI_PROTO_1_2_2,	/* Dual IO */
-+	SPI_PROTO_1_4_4,	/* Quad IO */
-+	SPI_PROTO_2_2_2,	/* Dual Command */
-+	SPI_PROTO_4_4_4,	/* Quad Command */
-+};
-+
- /**
-  * struct spi_nor_xfer_cfg - Structure for defining a Serial Flash transfer
-  * @wren:		command for "Write Enable", or 0x00 for not required
-@@ -149,6 +159,7 @@ enum spi_nor_option_flags {
-  *			read/write/erase/lock/unlock operations
-  * @read_xfer:		[OPTIONAL] the read fundamental primitive
-  * @write_xfer:		[OPTIONAL] the writefundamental primitive
-+ * @set_protocol:	[OPTIONAL] notify about protocol change
-  * @read_reg:		[DRIVER-SPECIFIC] read out the register
-  * @write_reg:		[DRIVER-SPECIFIC] write data to the register
-  * @read:		[DRIVER-SPECIFIC] read data from the SPI NOR
-@@ -185,6 +196,8 @@ struct spi_nor {
- 	int (*write_reg)(struct spi_nor *nor, u8 opcode, u8 *buf, int len,
- 			int write_enable);
- 
-+	int (*set_protocol)(struct spi_nor *nor, enum spi_protocol proto);
-+
- 	int (*read)(struct spi_nor *nor, loff_t from,
- 			size_t len, size_t *retlen, u_char *read_buf);
- 	void (*write)(struct spi_nor *nor, loff_t to,
++	m25p80@0 {
++		compatible = "spansion,s25fl512s";
++		reg = <0>;
++		spi-max-frequency = <104000000>;
++		m25p,num-dummy-cycles = <8>;
++		spansion,latency-code = <2>;
++	};
 -- 
 1.8.2.2

@@ -1,87 +1,72 @@
-From: Marek Vasut <marex@denx.de>
-Subject: Re: [PATCH 08/11] MTD: m25p80: Add option to limit SPI transfer size.
-Date: Thu, 16 Jul 2015 03:44:56 +0200
-Message-ID: <201507160344.56393.marex@denx.de>
-References: <cover.1433364398.git.hramrach@gmail.com> <201507151915.50677.marex@denx.de> <20150716011935.GB9033@localhost>
+From: Ranjit Abhimanyu Waghmode <ranjit.waghmode-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Subject: RE: [RFC PATCH 0/2] spi: add dual parallel & stacked mode support
+ in Zynq MPSoC GQSPI controller
+Date: Thu, 16 Jul 2015 07:27:34 +0000
+Message-ID: <7CFCFE83B8145347A1D424EC939F1C3CA7E758@XAP-PVEXMBX01.xlnx.xilinx.com>
+References: <1436445895-25504-1-git-send-email-ranjit.waghmode@xilinx.com>
+ <20150714164005.GE11162@sirena.org.uk>
+ <7CFCFE83B8145347A1D424EC939F1C3CA7E53D@XAP-PVEXMBX01.xlnx.xilinx.com>
+ <20150715160146.GS11162@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: Text/Plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: hramrach@gmail.com, Richard Cochran <richardcochran@gmail.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	MTD Maling List <linux-mtd@lists.infradead.org>,
-	Alison Chaiken <alison_chaiken@mentor.com>,
-	"Bean Huo =?utf-8?q?=E9=9C=8D=E6=96=8C=E6=96=8C?= (beanhuo)"
-	<beanhuo@micron.com>,
-	"linux-samsung-soc@vger.kernel.org"
-	<linux-samsung-soc@vger.kernel.org>,
-	Russell King <linux@arm.linux.org.uk>,
-	Vinod Koul <vinod.koul@intel.com>,
-	=?utf-8?q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>,
-	Kukjin Kim <kgene@kernel.org>,
-	Ben Hutchings <ben@decadent.org.uk>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	Pawel Moll <pawel.moll@arm.com>,
-	Ian Campbell <ijc+devicetree@hellion.org.uk>,
-	Kumar Gala <galak@codeaurora.org>,
-	Mark Brown <broon
-To: Brian Norris <computersforpeace@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20150716011935.GB9033@localhost>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Cc: Michal Simek <michals-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	Soren Brinkmann <sorenb-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	"dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org" <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	"computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"marex-ynQEQJNshbs@public.gmane.org" <marex-ynQEQJNshbs@public.gmane.org>,
+	"shijie.huang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org" <shijie.huang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	"juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org" <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
+	"ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org" <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>,
+	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Harini Katakam <harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	"Punnaiah Choudary Kalluri" <punnaia-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	"ran27jit-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <ran27jit-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150715160146.GS11162-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Language: en-US
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Thursday, July 16, 2015 at 03:19:35 AM, Brian Norris wrote:
-> On Wed, Jul 15, 2015 at 07:15:50PM +0200, Marek Vasut wrote:
-> > On Wednesday, July 15, 2015 at 05:59:46 PM, Brian Norris wrote:
-> > > 1. Fix up the SPI driver so that it knows how to break large SPI
-> > > transfers up into smaller segments that its constituent hardware (DMA
-> > > controllers, fast clocks, etc.) can handle.
+Hi Mark,
+
+> > > > What is stacked mode?
+> > > > ---------------------
+> > > > ZynqMP GQSPI controller supports stacked mode with following
+> > > functionalities:
+> > > > 1) The Generic Quad-SPI controller also supports two SPI flash memories
+> > > >    in a shared bus arrangement to reduce IO pin count.
+> > > > 2) Separate chip select lines
+> > > > 3) Shared I/O lines
+> > > > 4) This mode is targeted for increasing the flash memory and no
+> performance
+> > > >    improvement when compared with single.
 > 
-> BTW, Mark Brown already commented on this approach:
+> > > This is just a normal SPI controller from a SPI point of view.
 > 
-> http://lists.infradead.org/pipermail/linux-mtd/2015-May/059364.html
+> > How can we really represent the stacked mode in current configuration?
 > 
-> I quote:
-> | With modern drivers using transfer_one() where we have control of the
-> | chip select we do also have the ability to add support to the core for
-> | chopping large transfers up into smaller ones that the hardware can
-> | handle transparently.  That won't for everything though since it depends
-> | on us being able to manually control the chip select which not all
-> | hardware can do.
-> | 
-> > I think this might actually be easier -- just do a transfer where you
-> > don't toggle CS and just stops the clock at the last bit, then do another
-> > (multiple) transfers which don't toggle CS at all, then finally do a
-> > transfer which toggles a CS at the end.
-> 
-> Sounds OK to me. And as Mark noted, this could probably be done in the
-> core. I suppose Mark could suggest whether the most expedient path is to
-> hack the buggy driver to do this, or whether reworking the SPI core to
-> have the appropriate spi_master field(s) (and caveats) to support this.
+> In the same way as any other controller with two chip selects...  there are quite
+> a few other drivers that provide examples of this, you should look for one that
+> has hardware control similar to yours.
 
-Yep, agreed.
+Thanks Mark for your suggestion. But I have minor doubts.
 
-> > This should be pretty trivial
-> > to do and I think for example spi-mxs.c does this.
-> 
-> I don't think spi-mxs.c really does this; it chooses between PIO and DMA
-> based on length, but with either option, it runs through each SPI
-> transfer in one go. You might be confused by the fact that this driver
-> implements ->transfer_one_message instead of ->transfer_one, so it has
-> to loop through all transfers in the message.
+For an example take two flashes connected in stacked mode.
+For user it doesn't matter whether how many flashes are really connected. 
+There will be situation like, single partition is spread across two flashes (partition staring at the end of one flash and continued to the second flash). But it has to be shown contiguous to user.
+In this scenario, I am not clear how MTD layer will handle the case.
+It would be great if you could just put some light on it.
 
-It does chop up the DMA transfers between multiple runs of the DMA engine
-IIRC. But it does so within the driver, which apparently is not the way
-to go :)
-
-> (IIUC, spi-mxs.c could easily be rewritten to use ->transfer, and some
-> of that not-too-complicated boilerplate could be killed off.)
-
-Most likely, yes.
-
-Best regards,
-Marek Vasut
+Regards,
+Ranjit
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

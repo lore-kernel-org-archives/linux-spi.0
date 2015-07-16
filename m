@@ -1,68 +1,75 @@
-From: Cyrille Pitchen <cyrille.pitchen@atmel.com>
-Subject: [PATCH 4/7] Documentation: mtd: add a DT property to set the latency code of Spansion memory
-Date: Thu, 16 Jul 2015 17:27:51 +0200
-Message-ID: <398ca9f17bda638e05e97f258fb4e6d27ac828db.1437059658.git.cyrille.pitchen@atmel.com>
+From: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 6/7] Documentation: atmel-quadspi: add binding file for Atmel QSPI driver
+Date: Thu, 16 Jul 2015 17:27:53 +0200
+Message-ID: <f4bb1c68fcc19b3642110ab0ef9850d6eeca3112.1437059658.git.cyrille.pitchen@atmel.com>
 References: <cover.1437059658.git.cyrille.pitchen@atmel.com>
 Mime-Version: 1.0
 Content-Type: text/plain
-Cc: <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>,
-	<devicetree@vger.kernel.org>, <robh+dt@kernel.org>,
-	<pawel.moll@arm.com>, <mark.rutland@arm.com>,
-	<ijc+devicetree@hellion.org.uk>, <galak@codeaurora.org>,
-	<linux-mtd@lists.infradead.org>,
-	Cyrille Pitchen <cyrille.pitchen@atmel.com>
-To: <nicolas.ferre@atmel.com>, <broonie@kernel.org>,
-	<linux-spi@vger.kernel.org>, <dwmw2@infradead.org>,
-	<computersforpeace@gmail.com>, <zajec5@gmail.com>,
-	<beanhuo@micron.com>, <juhosg@openwrt.org>, <marex@denx.de>,
-	<shijie.huang@intel.com>, <ben@decadent.org.uk>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <cover.1437059658.git.cyrille.pitchen@atmel.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	<pawel.moll-5wv7dgnIgG8@public.gmane.org>, <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	<ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	<linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+To: <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	<computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	<beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org>, <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, <marex-ynQEQJNshbs@public.gmane.org>,
+	<shijie.huang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <cover.1437059658.git.cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Both the SPI controller and the NOR flash memory need to agree on the
-number of dummy cycles to use for Fast Read commands. For Spansion
-memories, this number of dummy cycles is not given directly but through a
-so called "latency code".
-The latency code can be found into the memory datasheet and depends on the
-SPI clock frequency, the Fast Read op code and the Single/Dual Data Rate
-mode.
+This patch documents the DT bindings for the driver of the Atmel QSPI
+controller embedded inside sama5d2x SoCs.
 
-Signed-off-by: Cyrille Pitchen <cyrille.pitchen@atmel.com>
+Signed-off-by: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 ---
- .../devicetree/bindings/mtd/spansion-nor.txt       | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/mtd/spansion-nor.txt
+ .../devicetree/bindings/mtd/atmel-quadspi.txt      | 29 ++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mtd/atmel-quadspi.txt
 
-diff --git a/Documentation/devicetree/bindings/mtd/spansion-nor.txt b/Documentation/devicetree/bindings/mtd/spansion-nor.txt
+diff --git a/Documentation/devicetree/bindings/mtd/atmel-quadspi.txt b/Documentation/devicetree/bindings/mtd/atmel-quadspi.txt
 new file mode 100644
-index 000000000000..a55c62db0e6f
+index 000000000000..a0d60ac7ae10
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/mtd/spansion-nor.txt
-@@ -0,0 +1,22 @@
-+* Spansion NOR flash
++++ b/Documentation/devicetree/bindings/mtd/atmel-quadspi.txt
+@@ -0,0 +1,29 @@
++* Atmel Quad Serial Peripheral Interface (QSPI)
 +
-+Optional properties:
-+- spansion,latency-code : Only used when the "m25p,num-dummy-cycles" property is
-+                          set. The Spansion latency code tells the NOR flash
-+                          memory the number of dummy cycles to expect for each
-+                          Fast Read command. The value to be used is provided by
-+                          tables in the memory datasheet and depends on the SPI
-+                          clock frequency and on the Single/Dual Data Rate mode.
-+                          Then the value of "m25p,num-dummy-cycles" property
-+                          should match the (Fast) Read command to be used for
-+                          the chosen latency code.
++Required properties:
++  - compatible : Should be "atmel,sama5d2-qspi"
++  - reg : the first contains the register location and length,
++          the second contains the memory mapping address and length
++  - interrupts : Should contain the interrupt for the device
++  - clocks : The clock needed by the QSPI controller
++  - #address-cells : should be 1
++  - #size-cells : should be 0
 +
 +Example:
 +
++qspi0: qspi@f0020000 {
++	compatible = "atmel,sama5d2-qspi";
++	reg = <0xf0020000 0x100>,
++	      <0xd0000000 0x08000000>;
++	interrupts = <52 IRQ_TYPE_LEVEL_HIGH 7>;
++	clocks = <&qspi0_clk>;
++	#address-cells = <1>;
++	#size-cells = <0>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_qspi0_default>;
++	status = "okay";
++
 +	m25p80@0 {
-+		compatible = "spansion,s25fl512s";
-+		reg = <0>;
-+		spi-max-frequency = <104000000>;
-+		m25p,num-dummy-cycles = <8>;
-+		spansion,latency-code = <2>;
++		...
 +	};
++};
 -- 
 1.8.2.2
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,75 +1,79 @@
-From: Sergei Shtylyov <sergei.shtylyov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH 6/7] Documentation: atmel-quadspi: add binding file for
- Atmel QSPI driver
-Date: Fri, 17 Jul 2015 14:44:46 +0300
-Message-ID: <55A8EAAE.6010506@cogentembedded.com>
-References: <cover.1437059658.git.cyrille.pitchen@atmel.com>
- <f4bb1c68fcc19b3642110ab0ef9850d6eeca3112.1437059658.git.cyrille.pitchen@atmel.com>
+From: Ranjit Abhimanyu Waghmode <ranjit.waghmode-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Subject: RE: [RFC PATCH 0/2] spi: add dual parallel & stacked mode support
+ in Zynq MPSoC GQSPI controller
+Date: Fri, 17 Jul 2015 12:03:48 +0000
+Message-ID: <7CFCFE83B8145347A1D424EC939F1C3CA7F18F@XAP-PVEXMBX01.xlnx.xilinx.com>
+References: <1436445895-25504-1-git-send-email-ranjit.waghmode@xilinx.com>
+ <20150714164005.GE11162@sirena.org.uk>
+ <7CFCFE83B8145347A1D424EC939F1C3CA7E53D@XAP-PVEXMBX01.xlnx.xilinx.com>
+ <20150715160146.GS11162@sirena.org.uk>
+ <7CFCFE83B8145347A1D424EC939F1C3CA7E758@XAP-PVEXMBX01.xlnx.xilinx.com>
+ <20150716085739.GT11162@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: mark.rutland-5wv7dgnIgG8@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	pawel.moll-5wv7dgnIgG8@public.gmane.org, ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org,
-	computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org,
-	juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org, marex-ynQEQJNshbs@public.gmane.org, shijie.huang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
-	ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Michal Simek <michals-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	"Soren Brinkmann" <sorenb-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	"dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org" <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	"computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"marex-ynQEQJNshbs@public.gmane.org" <marex-ynQEQJNshbs@public.gmane.org>,
+	"shijie.huang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org" <shijie.huang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	"juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org" <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
+	"ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org" <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>,
+	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Harini Katakam <harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	"Punnaiah Choudary Kalluri" <punnaia-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	"ran27jit-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <ran27jit-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: "dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org" <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	"computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <f4bb1c68fcc19b3642110ab0ef9850d6eeca3112.1437059658.git.cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <20150716085739.GT11162-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hello.
+Hi,
 
-On 7/16/2015 6:27 PM, Cyrille Pitchen wrote:
+> -----Original Message-----
+> From: Mark Brown [mailto:broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org]
+> Sent: Thursday, July 16, 2015 2:28 PM
+> To: Ranjit Abhimanyu Waghmode
+> Cc: Michal Simek; Soren Brinkmann; dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org;
+> computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org; zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org; marex-ynQEQJNshbs@public.gmane.org;
+> shijie.huang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org; juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org; ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org; linux-
+> mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org; linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; linux-arm-
+> kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org; linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; Harini Katakam;
+> Punnaiah Choudary Kalluri; ran27jit-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+> Subject: Re: [RFC PATCH 0/2] spi: add dual parallel & stacked mode support in
+> Zynq MPSoC GQSPI controller
+>
+> On Thu, Jul 16, 2015 at 07:27:34AM +0000, Ranjit Abhimanyu Waghmode wrote:
+>
+> > For an example take two flashes connected in stacked mode.
+> > For user it doesn't matter whether how many flashes are really connected.
+> > There will be situation like, single partition is spread across two flashes
+> (partition staring at the end of one flash and continued to the second flash). But
+> it has to be shown contiguous to user.
+> > In this scenario, I am not clear how MTD layer will handle the case.
+> > It would be great if you could just put some light on it.
+>
+> That's something for the MTD layer or possibly even a layer above it to worry
+> about - this situation is the same as we have with disks where we have md which
+> combines other devices, if something similar is needed for flash we should use a
+> similar pattern.
 
-> This patch documents the DT bindings for the driver of the Atmel QSPI
-> controller embedded inside sama5d2x SoCs.
+Kindly help in understanding, how can we represent the stacked mode and parallel mode changes in MTD layer?
 
-> Signed-off-by: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-> ---
->   .../devicetree/bindings/mtd/atmel-quadspi.txt      | 29 ++++++++++++++++++++++
->   1 file changed, 29 insertions(+)
->   create mode 100644 Documentation/devicetree/bindings/mtd/atmel-quadspi.txt
+Thanks & Regards,
+Ranjit
 
-> diff --git a/Documentation/devicetree/bindings/mtd/atmel-quadspi.txt b/Documentation/devicetree/bindings/mtd/atmel-quadspi.txt
-> new file mode 100644
-> index 000000000000..a0d60ac7ae10
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mtd/atmel-quadspi.txt
-> @@ -0,0 +1,29 @@
-> +* Atmel Quad Serial Peripheral Interface (QSPI)
-> +
-> +Required properties:
-> +  - compatible : Should be "atmel,sama5d2-qspi"
-> +  - reg : the first contains the register location and length,
-> +          the second contains the memory mapping address and length
-> +  - interrupts : Should contain the interrupt for the device
-> +  - clocks : The clock needed by the QSPI controller
-> +  - #address-cells : should be 1
-> +  - #size-cells : should be 0
-> +
-> +Example:
-> +
-> +qspi0: qspi@f0020000 {
 
-     Once again, the ePAPR standard tells up to call the node just "spi", not 
-"qspi".
-
-> +	compatible = "atmel,sama5d2-qspi";
-> +	reg = <0xf0020000 0x100>,
-> +	      <0xd0000000 0x08000000>;
-
-    Either you use the leading zeroes or you don't. :-)
-
-[...]
-
-MBR, Sergei
+This email and any attachments are intended for the sole use of the named recipient(s) and contain(s) confidential information that may be proprietary, privileged or copyrighted under applicable law. If you are not the intended recipient, do not read, copy, or forward this email message or any attachments. Delete this email message and any attachments immediately.
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

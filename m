@@ -1,81 +1,102 @@
-From: Ranjit Abhimanyu Waghmode <ranjit.waghmode-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-Subject: RE: [RFC PATCH 0/2] spi: add dual parallel & stacked mode support
- in Zynq MPSoC GQSPI controller
-Date: Fri, 17 Jul 2015 12:03:48 +0000
-Message-ID: <7CFCFE83B8145347A1D424EC939F1C3CA7F18F@XAP-PVEXMBX01.xlnx.xilinx.com>
-References: <1436445895-25504-1-git-send-email-ranjit.waghmode@xilinx.com>
- <20150714164005.GE11162@sirena.org.uk>
- <7CFCFE83B8145347A1D424EC939F1C3CA7E53D@XAP-PVEXMBX01.xlnx.xilinx.com>
- <20150715160146.GS11162@sirena.org.uk>
- <7CFCFE83B8145347A1D424EC939F1C3CA7E758@XAP-PVEXMBX01.xlnx.xilinx.com>
- <20150716085739.GT11162@sirena.org.uk>
+From: Michal Suchanek <hramrach@gmail.com>
+Subject: Re: [PATCH 08/11] MTD: m25p80: Add option to limit SPI transfer size.
+Date: Sun, 19 Jul 2015 21:01:34 +0200
+Message-ID: <CAOMqctTJEg7EauKfrqW-6rUQ-QOmtkTfkgOyz0rCuyh_-XrW5w@mail.gmail.com>
+References: <cover.1433364398.git.hramrach@gmail.com> <20150604171547.GA1530@localhost.localdomain>
+ <CAOMqctSCL9E-kCBryeaMvtssSP12RY=kyfPuwSYx9wc=Lv9kGQ@mail.gmail.com>
+ <201507151352.27689.marex@denx.de> <20150715155946.GB21362@localhost>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Michal Simek <michals-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	"Soren Brinkmann" <sorenb-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	"dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org" <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-	"computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"marex-ynQEQJNshbs@public.gmane.org" <marex-ynQEQJNshbs@public.gmane.org>,
-	"shijie.huang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org" <shijie.huang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	"juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org" <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
-	"ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org" <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>,
-	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Harini Katakam <harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	"Punnaiah Choudary Kalluri" <punnaia-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	"ran27jit-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <ran27jit-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: "dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org" <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-	"computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150716085739.GT11162-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Marek Vasut <marex@denx.de>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	MTD Maling List <linux-mtd@lists.infradead.org>,
+	Alison Chaiken <alison_chaiken@mentor.com>,
+	=?UTF-8?B?QmVhbiBIdW8g6ZyN5paM5paMIChiZWFuaHVvKQ==?=
+	<beanhuo@micron.com>,
+	"linux-samsung-soc@vger.kernel.org"
+	<linux-samsung-soc@vger.kernel.org>,
+	Russell King <linux@arm.linux.org.uk>,
+	Vinod Koul <vinod.koul@intel.com>,
+	=?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+	Kukjin Kim <kgene@kernel.org>,
+	Ben Hutchings <ben@decadent.org.uk>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora.org>,
+	Mark Brown <brooni
+To: Brian Norris <computersforpeace@gmail.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <20150715155946.GB21362@localhost>
+Sender: linux-samsung-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi,
+Hello,
 
-> -----Original Message-----
-> From: Mark Brown [mailto:broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org]
-> Sent: Thursday, July 16, 2015 2:28 PM
-> To: Ranjit Abhimanyu Waghmode
-> Cc: Michal Simek; Soren Brinkmann; dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org;
-> computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org; zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org; marex-ynQEQJNshbs@public.gmane.org;
-> shijie.huang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org; juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org; ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org; linux-
-> mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org; linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; linux-arm-
-> kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org; linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; Harini Katakam;
-> Punnaiah Choudary Kalluri; ran27jit-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-> Subject: Re: [RFC PATCH 0/2] spi: add dual parallel & stacked mode support in
-> Zynq MPSoC GQSPI controller
+On 15 July 2015 at 17:59, Brian Norris <computersforpeace@gmail.com> wrote:
+> Hi Michal,
 >
-> On Thu, Jul 16, 2015 at 07:27:34AM +0000, Ranjit Abhimanyu Waghmode wrote:
+> On Wed, Jul 15, 2015 at 01:52:27PM +0200, Marek Vasut wrote:
+>> The problem is, if you add a new DT binding, you'd have to support it
+>> forever, no matter how bad idea that binding turned out to be.
 >
-> > For an example take two flashes connected in stacked mode.
-> > For user it doesn't matter whether how many flashes are really connected.
-> > There will be situation like, single partition is spread across two flashes
-> (partition staring at the end of one flash and continued to the second flash). But
-> it has to be shown contiguous to user.
-> > In this scenario, I am not clear how MTD layer will handle the case.
-> > It would be great if you could just put some light on it.
+> Agreed, and a solid NAK to this patch. I could have sworn I gave such a
+> response when this was originally being discussed a month ago.
 >
-> That's something for the MTD layer or possibly even a layer above it to worry
-> about - this situation is the same as we have with disks where we have md which
-> combines other devices, if something similar is needed for flash we should use a
-> similar pattern.
+> AFAICT, you have one of two general approaches available to you:
+>
+> 1. Fix up the SPI driver so that it knows how to break large SPI
+> transfers up into smaller segments that its constituent hardware (DMA
+> controllers, fast clocks, etc.) can handle.
+>
+> 2. Utilize/create a parameter within the SPI subsystem to communicate
+> that the SPI master has a limited max transfer size (notably: NOT a
+> per-device DT property, but a SPI API property), and modify SPI device
+> drivers (like m25p80) to honor it. Mark Brown seemed open to this, and I
+> thought he suggested it somewhere.
 
-Kindly help in understanding, how can we represent the stacked mode and parallel mode changes in MTD layer?
+It is not known what exactly is limited here.
 
-Thanks & Regards,
-Ranjit
+It seems that the pl330 fails but it is not possible to transfer that
+much data over the spi bus in one go without the help of the pl330.
 
+With either approach the limit depends on the SPI transfer settings
+which are known the the SPI driver. The pl330 driver is oblivious to
+these because it just transfers data from one port to another port and
+has no idea that the port is wired to SPI in the SoC.
 
-This email and any attachments are intended for the sole use of the named recipient(s) and contain(s) confidential information that may be proprietary, privileged or copyrighted under applicable law. If you are not the intended recipient, do not read, copy, or forward this email message or any attachments. Delete this email message and any attachments immediately.
+On the other hand, AFAICT the SPI driver only allocates a DMA channel
+which it receives through DT binding and is oblivious to the fact the
+DMA channel lives on a pl330. It could probably determine that the
+channel is indeed driven by a pl330. I don't think it's a great idea
+to add device-specific handling to a generic dmaengine driver or a
+dmaengine-spiecific handling to a SPI driver.
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+It's technically possible to pass SPI transfer parameters to the
+dmaengine driver prior to transfer and the dmaengine could impose some
+limitation based on those parameters. However, generalising this to
+drivers other than SPI might be problematic. Should this interface
+also handle i2c parameters, VE parameters, audio parameters, ethernet
+parameters, etc?
+
+In the DT you have the information that this particular device is
+connected to a Samsung SPI controller connected to a pl330 dma engine.
+
+>
+> It is most definitely wrong to put this information solely in the slave
+> device DT (i.e., for the flash), when it is not a property of the flash
+> device at all. It's a property of the SPI master and/or its clocks and
+> DMA controllers.
+
+However, the clocks are set by the parameters of the device, not the
+parameters of the master. So the limitation applies for the master
+with the settings of the particular slave device. Different slave
+settings do impose different master limitations.
+
+Thanks
+
+Michal

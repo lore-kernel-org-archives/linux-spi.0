@@ -1,102 +1,94 @@
-From: Michal Suchanek <hramrach@gmail.com>
-Subject: Re: [PATCH 08/11] MTD: m25p80: Add option to limit SPI transfer size.
-Date: Sun, 19 Jul 2015 21:01:34 +0200
-Message-ID: <CAOMqctTJEg7EauKfrqW-6rUQ-QOmtkTfkgOyz0rCuyh_-XrW5w@mail.gmail.com>
-References: <cover.1433364398.git.hramrach@gmail.com> <20150604171547.GA1530@localhost.localdomain>
- <CAOMqctSCL9E-kCBryeaMvtssSP12RY=kyfPuwSYx9wc=Lv9kGQ@mail.gmail.com>
- <201507151352.27689.marex@denx.de> <20150715155946.GB21362@localhost>
+From: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 6/7] Documentation: atmel-quadspi: add binding file for
+ Atmel QSPI driver
+Date: Mon, 20 Jul 2015 10:54:05 +0200
+Message-ID: <55ACB72D.60506@atmel.com>
+References: <cover.1437059658.git.cyrille.pitchen@atmel.com> <f4bb1c68fcc19b3642110ab0ef9850d6eeca3112.1437059658.git.cyrille.pitchen@atmel.com> <55A8EAAE.6010506@cogentembedded.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Marek Vasut <marex@denx.de>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	MTD Maling List <linux-mtd@lists.infradead.org>,
-	Alison Chaiken <alison_chaiken@mentor.com>,
-	=?UTF-8?B?QmVhbiBIdW8g6ZyN5paM5paMIChiZWFuaHVvKQ==?=
-	<beanhuo@micron.com>,
-	"linux-samsung-soc@vger.kernel.org"
-	<linux-samsung-soc@vger.kernel.org>,
-	Russell King <linux@arm.linux.org.uk>,
-	Vinod Koul <vinod.koul@intel.com>,
-	=?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-	Kukjin Kim <kgene@kernel.org>,
-	Ben Hutchings <ben@decadent.org.uk>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	Pawel Moll <pawel.moll@arm.com>,
-	Ian Campbell <ijc+devicetree@hellion.org.uk>,
-	Kumar Gala <galak@codeaurora.org>,
-	Mark Brown <brooni
-To: Brian Norris <computersforpeace@gmail.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <20150715155946.GB21362@localhost>
-Sender: linux-samsung-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: <mark.rutland-5wv7dgnIgG8@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<pawel.moll-5wv7dgnIgG8@public.gmane.org>, <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	<linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Sergei Shtylyov <sergei.shtylyov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>,
+	<nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	<computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	<beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org>, <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, <marex-ynQEQJNshbs@public.gmane.org>,
+	<shijie.huang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <55A8EAAE.6010506-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hello,
+Hi Sergei,
 
-On 15 July 2015 at 17:59, Brian Norris <computersforpeace@gmail.com> wrote:
-> Hi Michal,
->
-> On Wed, Jul 15, 2015 at 01:52:27PM +0200, Marek Vasut wrote:
->> The problem is, if you add a new DT binding, you'd have to support it
->> forever, no matter how bad idea that binding turned out to be.
->
-> Agreed, and a solid NAK to this patch. I could have sworn I gave such a
-> response when this was originally being discussed a month ago.
->
-> AFAICT, you have one of two general approaches available to you:
->
-> 1. Fix up the SPI driver so that it knows how to break large SPI
-> transfers up into smaller segments that its constituent hardware (DMA
-> controllers, fast clocks, etc.) can handle.
->
-> 2. Utilize/create a parameter within the SPI subsystem to communicate
-> that the SPI master has a limited max transfer size (notably: NOT a
-> per-device DT property, but a SPI API property), and modify SPI device
-> drivers (like m25p80) to honor it. Mark Brown seemed open to this, and I
-> thought he suggested it somewhere.
+thanks for the review. For the next series I've removed all references =
+to
+"qspi" in the node example but the one from the compatible string.
+I've also removed the leading 0 in the size of the second memory region=
+=2E
 
-It is not known what exactly is limited here.
+Best Regards,
 
-It seems that the pl330 fails but it is not possible to transfer that
-much data over the spi bus in one go without the help of the pl330.
+Cyrille
 
-With either approach the limit depends on the SPI transfer settings
-which are known the the SPI driver. The pl330 driver is oblivious to
-these because it just transfers data from one port to another port and
-has no idea that the port is wired to SPI in the SoC.
+Le 17/07/2015 13:44, Sergei Shtylyov a =E9crit :
+> Hello.
+>=20
+> On 7/16/2015 6:27 PM, Cyrille Pitchen wrote:
+>=20
+>> This patch documents the DT bindings for the driver of the Atmel QSP=
+I
+>> controller embedded inside sama5d2x SoCs.
+>=20
+>> Signed-off-by: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+>> ---
+>>   .../devicetree/bindings/mtd/atmel-quadspi.txt      | 29 ++++++++++=
+++++++++++++
+>>   1 file changed, 29 insertions(+)
+>>   create mode 100644 Documentation/devicetree/bindings/mtd/atmel-qua=
+dspi.txt
+>=20
+>> diff --git a/Documentation/devicetree/bindings/mtd/atmel-quadspi.txt=
+ b/Documentation/devicetree/bindings/mtd/atmel-quadspi.txt
+>> new file mode 100644
+>> index 000000000000..a0d60ac7ae10
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/mtd/atmel-quadspi.txt
+>> @@ -0,0 +1,29 @@
+>> +* Atmel Quad Serial Peripheral Interface (QSPI)
+>> +
+>> +Required properties:
+>> +  - compatible : Should be "atmel,sama5d2-qspi"
+>> +  - reg : the first contains the register location and length,
+>> +          the second contains the memory mapping address and length
+>> +  - interrupts : Should contain the interrupt for the device
+>> +  - clocks : The clock needed by the QSPI controller
+>> +  - #address-cells : should be 1
+>> +  - #size-cells : should be 0
+>> +
+>> +Example:
+>> +
+>> +qspi0: qspi@f0020000 {
+>=20
+>     Once again, the ePAPR standard tells up to call the node just "sp=
+i", not "qspi".
+>=20
+>> +    compatible =3D "atmel,sama5d2-qspi";
+>> +    reg =3D <0xf0020000 0x100>,
+>> +          <0xd0000000 0x08000000>;
+>=20
+>    Either you use the leading zeroes or you don't. :-)
+>=20
+> [...]
+>=20
+> MBR, Sergei
+>=20
 
-On the other hand, AFAICT the SPI driver only allocates a DMA channel
-which it receives through DT binding and is oblivious to the fact the
-DMA channel lives on a pl330. It could probably determine that the
-channel is indeed driven by a pl330. I don't think it's a great idea
-to add device-specific handling to a generic dmaengine driver or a
-dmaengine-spiecific handling to a SPI driver.
-
-It's technically possible to pass SPI transfer parameters to the
-dmaengine driver prior to transfer and the dmaengine could impose some
-limitation based on those parameters. However, generalising this to
-drivers other than SPI might be problematic. Should this interface
-also handle i2c parameters, VE parameters, audio parameters, ethernet
-parameters, etc?
-
-In the DT you have the information that this particular device is
-connected to a Samsung SPI controller connected to a pl330 dma engine.
-
->
-> It is most definitely wrong to put this information solely in the slave
-> device DT (i.e., for the flash), when it is not a property of the flash
-> device at all. It's a property of the SPI master and/or its clocks and
-> DMA controllers.
-
-However, the clocks are set by the parameters of the device, not the
-parameters of the master. So the limitation applies for the master
-with the settings of the particular slave device. Different slave
-settings do impose different master limitations.
-
-Thanks
-
-Michal
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

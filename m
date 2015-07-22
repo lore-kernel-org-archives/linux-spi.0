@@ -1,70 +1,74 @@
-From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: bcm2835: add spi-bcm2835aux driver for the auxiliar
- spi1 and spi2
-Date: Tue, 21 Jul 2015 19:55:52 -0600
-Message-ID: <55AEF828.20908@wwwdotorg.org>
-References: <1434980408-4086-1-git-send-email-kernel@martin.sperl.org> <55A0A150.3060809@wwwdotorg.org> <ECFBB7BF-1316-4565-B1F2-FB2651131882@martin.sperl.org> <55A49662.3000706@wwwdotorg.org> <2768BFA9-7FE9-4EDC-8692-AC3F070BD874@martin.sperl.org>
+From: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 08/11] MTD: m25p80: Add option to limit SPI transfer size.
+Date: Wed, 22 Jul 2015 10:19:25 +0530
+Message-ID: <20150722044925.GN23525@localhost>
+References: <cover.1433364398.git.hramrach@gmail.com>
+ <20150604171547.GA1530@localhost.localdomain>
+ <CAOMqctSCL9E-kCBryeaMvtssSP12RY=kyfPuwSYx9wc=Lv9kGQ@mail.gmail.com>
+ <201507151352.27689.marex@denx.de>
+ <20150715155946.GB21362@localhost>
+ <CAOMqctTJEg7EauKfrqW-6rUQ-QOmtkTfkgOyz0rCuyh_-XrW5w@mail.gmail.com>
+ <20150721042932.GF23525@localhost>
+ <CAOMqctSzzUV1J8Vj03XJ3Y70R9ynVErP4RZVtbjarDcZ9JLnaw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <2768BFA9-7FE9-4EDC-8692-AC3F070BD874-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
+	Richard Cochran <richardcochran-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
+	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	Alison Chaiken <alison_chaiken-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
+	Bean Huo =?utf-8?B?6ZyN5paM5paMIChiZWFuaHVvKQ==?=
+	<beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org>,
+	"linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org"
+	<linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Ben Hutchings <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Mark Brown <
+To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAOMqctSzzUV1J8Vj03XJ3Y70R9ynVErP4RZVtbjarDcZ9JLnaw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-On 07/14/2015 06:39 AM, Martin Sperl wrote:
+On Tue, Jul 21, 2015 at 10:14:11AM +0200, Michal Suchanek wrote:
+> > Or alternatively we could publish the limitations of the channel using
+> > capabilities so SPI knows I have a dmaengine channel and it can transfer max N
+> > length transfers so would be able to break rather than guessing it or coding
+> > in DT. Yes it may come from DT but that should be dmaengine driver rather
+> > than client driver :)
+> >
+> > This can be done by dma_get_slave_caps(chan, &caps)
+> >
+> > And we add max_length as one more parameter to existing set
+> >
+> > Also all this could be handled in generic SPI-dmaengine layer so that
+> > individual drivers don't have to code it in
+> >
+> > Let me know if this idea is okay, I can push the dmaengine bits...
 > 
->> On 14.07.2015, at 14:56, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org> wrote:
->>
->> I don't care so much about the internal code details; anything there can
->> be trivially changed. But please do make sure the DT correctly
->> represents the HW by:
->>
->> * Having a separate DT node for each HW block (SPI controller, UART, and
->> any shared interrupt mux/demux/controller/...)
-> 
-> That is what we have with the v3 patch:
-> * spi1
-> * spi2
-> * syscon controlling the aux-enable register
->   (only used to enable/disable the hw block)
+> It would be ok if there was a fixed limit. However, the limit depends
+> on SPI slave settings. Presumably for other buses using the dmaengine
+> the limit would depend on the bus or slave settings as well. I do not
+> see a sane way of passing this all the way to the dmaengine driver.
+I don't see why this should be client (SPI) dependent. The max length
+supported is a dmaengine constraint, typically flowing from max
+blocks/length it can transfer. Know this limit can allow clients to split
+transfers.
 
-OK, having separate nodes is great.
-
-However, I'd like to see a "semantic" driver for the shared register
-region rather than a "syscon". IIUC, "syscon" simply provides a stylized
-way for one driver to touch some shared registers directly without any
-semantics. I'd strongly prefer to see a real driver inside Linux rather
-than something that just lets drivers fiddle with the shared registers
-willy nilly. Still, this aspect is an internal implementation detail
-inside the kernel that we can change without external impact later if we
-need.
-
-More concerning: The bcm283x HW doesn't implement a "syscon" module, but
-some semantic IP block. The DT should contain a real compatible value
-that describes what the HW block really is, not just "syscon". We could
-bind the syscon driver to this compatible value if we have to for now.
-
->> * If e.g. the SPI controller driver is going to need to manipulate the
->> "shared interrupt mux/demux/controller/...", there should be a phandle
->> from the SPI controller node to the "shared interrupt
->> mux/demux/controller/..." node, rather than listing the shared registers
->> in each "client"'s reg property.
-> That is not what is in the v3 release of the patch any longer.
-> 
-> Each of the above dt-nodes has their own (non-overlapping) register
-> ranges and interrupts are enabled/disabled in the respective ranges
-> for spi1/spi2. Also the status register of spi1/2 contain the
-> corresponding flags for the reason of an interrupt - so no need
-> to access any of the shared aux registers for that - hence the use
-> of IRQF_SHARED.
+-- 
+~Vinod
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

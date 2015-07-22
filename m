@@ -1,126 +1,91 @@
-From: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v2 2/5] Documentation: mtd: add a DT property to set the
- number of dummy cycles
-Date: Wed, 22 Jul 2015 18:59:21 +0200
-Message-ID: <55AFCBE9.2030700@atmel.com>
-References: <cover.1437569902.git.cyrille.pitchen@atmel.com> <8119e3b46b91e43c10466b2400c6938a113b1c02.1437569902.git.cyrille.pitchen@atmel.com> <201507221543.54761.marex@denx.de>
+From: Zhi Li <lznuaa@gmail.com>
+Subject: Re: [PATCH v2 03/10] mtd: spi-nor: add DDR quad read support
+Date: Wed, 22 Jul 2015 13:15:16 -0500
+Message-ID: <CAHrpEqQNSgkakXN8kAT1FwPv7Ou_ERkOTJrX-4Vmb=TogzsF2A@mail.gmail.com>
+References: <1398657227-20721-1-git-send-email-b32955@freescale.com>
+	<1398657227-20721-4-git-send-email-b32955@freescale.com>
+	<20140730050843.GE11952@brian-ubuntu>
+	<20140730064413.GA15547@shldeISGChi005.sh.intel.com>
+	<20140730074500.GF11952@brian-ubuntu>
+	<20140730104607.GQ17528@sirena.org.uk>
+	<20140802020617.GS3711@ld-irv-0074>
+	<CAMuHMdWxzKG1TTUVgYqfRP0Prp85HPwVxH7NQp7S-pNeLfFqjA@mail.gmail.com>
+	<20140804142507.GP30458@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-	<computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	<beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org>, <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
-	<shijie.huang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>,
-	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	<pawel.moll-5wv7dgnIgG8@public.gmane.org>, <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	<ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	<linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <201507221543.54761.marex-ynQEQJNshbs@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
+	=?UTF-8?B?TWFyZWsgVmHFoXV0?= <marex@denx.de>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	linux-spi <linux-spi@vger.kernel.org>,
+	Huang Shijie <b32955@freescale.com>,
+	MTD Maling List <linux-mtd@lists.infradead.org>,
+	Huang Shijie <shijie.huang@intel.com>,
+	Brian Norris <computersforpeace@gmail.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <20140804142507.GP30458@sirena.org.uk>
+Sender: linux-doc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Marek,
+On Mon, Aug 4, 2014 at 9:25 AM, Mark Brown <broonie@kernel.org> wrote:
+> On Sat, Aug 02, 2014 at 11:09:09AM +0200, Geert Uytterhoeven wrote:
+>> On Sat, Aug 2, 2014 at 4:06 AM, Brian Norris
+>> > On Wed, Jul 30, 2014 at 11:46:07AM +0100, Mark Brown wrote:
+>
+>> >> I don't know what DDR is in this context, sorry.
+>
+>> > I think it's just the ability to latch data on both the rising and
+>> > falling edges of the SPI clock. For SPI flash, it seems to be used for
+>> > the data portion of the opcode/address/data sequence.
+>
+>> > Yeah, I suppose it could be wedged in later if drivers/spi/ ever adopts
+>> > a solution.
+>
+>> I think this can just be another SPI_* spi_device.mode flag.
+>
+> Sounds like it yes - I was wondering if this might be one of the modes
+> with extra clock cycles that I've heard mentioned before which might be
+> a little more fun.
+>
+>> Do we need bindings for this in
+>> Documentation/devicetree/bindings/spi/spi-bus.txt?
+>> Unlike Quad SPI transfer support, this doesn't need special wiring, so DDR
+>> capability is an intrinsic property of the SPI slave, and the mode bit can just
+>> be set in the SPI slave driver, without any DT magic?
+>
+> Right, unless we run into things like board design issues causing
+> constraints this is something that can be enabled by the two drivers
+> without needing DT configuration.
 
-Le 22/07/2015 15:43, Marek Vasut a =E9crit :
-> On Wednesday, July 22, 2015 at 03:17:07 PM, Cyrille Pitchen wrote:
->> Depending on the SPI clock frequency, the Fast Read op code and the
->> Single/Dual Data Rate mode, the number of dummy cycles can be tuned =
-to
->> improve transfer speed.
->> The actual number of dummy cycles is specific for each memory model =
-and is
->> provided by the manufacturer thanks to the memory datasheet.
->>
->> Signed-off-by: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
->> ---
->>  Documentation/devicetree/bindings/mtd/jedec,spi-nor.txt | 6 ++++++
->>  1 file changed, 6 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/mtd/jedec,spi-nor.txt
->> b/Documentation/devicetree/bindings/mtd/jedec,spi-nor.txt index
->> 2bee68103b01..4387567d8024 100644
->> --- a/Documentation/devicetree/bindings/mtd/jedec,spi-nor.txt
->> +++ b/Documentation/devicetree/bindings/mtd/jedec,spi-nor.txt
->> @@ -19,6 +19,11 @@ Optional properties:
->>                     all chips and support for it can not be detected=
- at
->> runtime. Refer to your chips' datasheet to check if this is supporte=
-d by
->> your chip.
->> +- m25p,num-dummy-cycles : Set the number of dummy cycles for Fast R=
-ead
->> commands. +                          Depending on the manufacturer
->> additional dedicated +                          commands are sent to=
- the
->> flash memory so the +                          controller and the me=
-mory
->> can agree on the number of +                          dummy cycles t=
-o use.
->=20
-> Can't you just try negotiating this value at probe time, starting wit=
-h some
-> high value and see how low you can get with the negotiations ? This w=
-ay, you'd=20
-> be able to effectively auto-detect this value at probe-time.
->=20
-> I might be wrong though :)
->=20
-I don't know whether it would be reliable enough. It is the exact same =
-idea as
-for the latency code used by Spansion QSPI memories. Micron memories al=
-low to
-skip the step of converting the number of dummy cycles into a latency c=
-ode, you
-directly program the right number of dummy cycles into a Micron specifi=
-c
-register, the Volatile Configuration Register.
+All:
 
-However for both manufacturers the number of dummy cycles to use during=
- Fast=20
-Read commands is given though tables found into the memory datasheet. T=
-he
-number of dummy cycles depends on the Fast Read command, the SPI bus cl=
-ock
-frequency and the Single/Dual Data Rate mode.
+we plan resume this work.
+I need direction how go ahead further.
 
-It should be confirmed by Quad SPI memory manufacturers but since the n=
-umber of
-dummy cycles depends on the bus clock frequency, I guess the values pro=
-vided by
-the datasheets are recommendations. I think a too low value should not =
-be so
-easy to detect. For a given frequency one Fast Read command may succeed=
- whereas
-the same command with the very same number of dummy cycles might fail o=
-n the
-next try. To be honest, I'm not sure about the memory behavior in limit
-conditions so maybe the command will always succeed or always fail.
+I go through this email thread.
 
-Also we can't be sure the read data are valid if we don't write them fi=
-rst. So
-we would have to save the original data to restore them at the end of t=
-he
-probing. Writing data at each probe would also reduce the memory lifeti=
-me. We
-should also be aware of the bad blocks, which is more a job for upper l=
-ayers.
+The discussion focus on how to get dummy cycle information.
 
-It would be interesting to have some feedbacks from Micron, Spansion or=
- other
-QSPI memory manufacturer :)
+Shijie get it from DT.
 
-> Best regards,
-> Marek Vasut
->=20
-Best regards,
+Brain suggest get from CFI or map id table if I understand correct.
 
-Cyrille
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Accodring to spec
+http://www.spansion.com/Support/Datasheets/S25FL128S_256S_00.pdf
+
+Table 8.10
+
+Dummy cycle depend on frequency, read command.
+
+if information saved in driver, it will be huge table.
+
+>
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+>

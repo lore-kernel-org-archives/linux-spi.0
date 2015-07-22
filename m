@@ -1,142 +1,145 @@
-From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Marek Vasut <marex@denx.de>
 Subject: Re: [PATCH 08/11] MTD: m25p80: Add option to limit SPI transfer size.
-Date: Wed, 22 Jul 2015 10:38:14 +0200
-Message-ID: <CAOMqctTyHF1ciN3-0yg1smYJ5kbuwfT_kmavTL8ARuZ69wSgAg@mail.gmail.com>
-References: <cover.1433364398.git.hramrach@gmail.com> <201507220958.00231.marex@denx.de>
- <CAOMqctQ13JE+GHyj+hU4XL3Uz4+Yt_X6BFU=NO8jXcpRtzMyzQ@mail.gmail.com> <201507221024.05496.marex@denx.de>
+Date: Wed, 22 Jul 2015 11:01:56 +0200
+Message-ID: <201507221101.56441.marex@denx.de>
+References: <cover.1433364398.git.hramrach@gmail.com> <201507221024.05496.marex@denx.de> <CAOMqctTyHF1ciN3-0yg1smYJ5kbuwfT_kmavTL8ARuZ69wSgAg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Richard Cochran <richardcochran-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
-	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Alison Chaiken <alison_chaiken-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
-	=?UTF-8?B?QmVhbiBIdW8g6ZyN5paM5paMIChiZWFuaHVvKQ==?=
-	<beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org>,
-	"linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org"
-	<linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	=?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Ben Hutchings <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Mar
-To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <201507221024.05496.marex-ynQEQJNshbs@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: Text/Plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Vinod Koul <vinod.koul@intel.com>,
+	Brian Norris <computersforpeace@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	MTD Maling List <linux-mtd@lists.infradead.org>,
+	Alison Chaiken <alison_chaiken@mentor.com>,
+	"Bean Huo =?utf-8?q?=E9=9C=8D=E6=96=8C=E6=96=8C?= (beanhuo)"
+	<beanhuo@micron.com>,
+	"linux-samsung-soc@vger.kernel.org"
+	<linux-samsung-soc@vger.kernel.org>,
+	Russell King <linux@arm.linux.org.uk>,
+	=?utf-8?q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>,
+	Kukjin Kim <kgene@kernel.org>,
+	Ben Hutchings <ben@decadent.org.uk>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora
+To: Michal Suchanek <hramrach@gmail.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <CAOMqctTyHF1ciN3-0yg1smYJ5kbuwfT_kmavTL8ARuZ69wSgAg@mail.gmail.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On 22 July 2015 at 10:24, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
-> On Wednesday, July 22, 2015 at 10:18:04 AM, Michal Suchanek wrote:
->> On 22 July 2015 at 09:58, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
->> > On Wednesday, July 22, 2015 at 09:45:27 AM, Michal Suchanek wrote:
->> >> On 22 July 2015 at 09:33, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
->> >> > On Wednesday, July 22, 2015 at 09:30:54 AM, Michal Suchanek wrote:
->> >> >> On 22 July 2015 at 06:49, Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org> wrote:
->> >> >> > On Tue, Jul 21, 2015 at 10:14:11AM +0200, Michal Suchanek wrote:
->> >> >> >> > Or alternatively we could publish the limitations of the channel
->> >> >> >> > using capabilities so SPI knows I have a dmaengine channel and
->> >> >> >> > it can transfer max N length transfers so would be able to
->> >> >> >> > break rather than guessing it or coding in DT. Yes it may come
->> >> >> >> > from DT but that should be dmaengine driver rather than client
->> >> >> >> > driver :)
->> >> >> >> >
->> >> >> >> > This can be done by dma_get_slave_caps(chan, &caps)
->> >> >> >> >
->> >> >> >> > And we add max_length as one more parameter to existing set
->> >> >> >> >
->> >> >> >> > Also all this could be handled in generic SPI-dmaengine layer so
->> >> >> >> > that individual drivers don't have to code it in
->> >> >> >> >
->> >> >> >> > Let me know if this idea is okay, I can push the dmaengine
->> >> >> >> > bits...
->> >> >> >>
->> >> >> >> It would be ok if there was a fixed limit. However, the limit
->> >> >> >> depends on SPI slave settings. Presumably for other buses using
->> >> >> >> the dmaengine the limit would depend on the bus or slave settings
->> >> >> >> as well. I do not see a sane way of passing this all the way to
->> >> >> >> the dmaengine driver.
->> >> >> >
->> >> >> > I don't see why this should be client (SPI) dependent. The max
->> >> >> > length supported is a dmaengine constraint, typically flowing from
->> >> >> > max blocks/length it can transfer. Know this limit can allow
->> >> >> > clients to split transfers.
->> >> >>
->> >> >> In practice on the board I have the maximum transfer length before it
->> >> >> fails depends on SPI bus speed which is set up per slave. I did not
->> >> >> try searching the space of possible settings thorougly and settled
->> >> >> for a setting that gives reasonable speed and transfer length.
->> >> >
->> >> > This looks more like a signal integrity issue though.
->> >>
->> >> It certainly does on the surface. However, when wrong data is
->> >> delivered over the SPI bus (such as when I use wrong phase setting)
->> >> the SPI controller happily delivers wrong data over PIO.
->> >>
->> >> The failure I am seeing is that the pl330 DMA program which repeatedly
->> >> waits for data from the SPI controller never finishes the read loop
->> >> and does not signal the interrupt. It seems it also leaves some data
->> >> in a FIFO somewhere so next command on the flash returns garbage and
->> >> fails.
->> >
->> > I observed something similar on MXS (mx28) SPI block. Do you use mixed
->> > PIO/DMA mode perhaps ?
->>
->> The SPI driver uses PIO for short transfers and DMA for transfers
->> longer than the controller FIFO. This seems to be the standard way to
->> do things.It works flawlessly so long as submitting overly long DMA
->> programs is avoided.
->
-> Can you try doing JUST DMA, no PIO ? I remember seeing some bus synchronisation
-> issues when I did mixed PIO/DMA on the MXS and it was nasty to track down. Just
-> give pure DMA a go to see if the thing stabilizes somehow.
+On Wednesday, July 22, 2015 at 10:38:14 AM, Michal Suchanek wrote:
+> On 22 July 2015 at 10:24, Marek Vasut <marex@denx.de> wrote:
+> > On Wednesday, July 22, 2015 at 10:18:04 AM, Michal Suchanek wrote:
+> >> On 22 July 2015 at 09:58, Marek Vasut <marex@denx.de> wrote:
+> >> > On Wednesday, July 22, 2015 at 09:45:27 AM, Michal Suchanek wrote:
+> >> >> On 22 July 2015 at 09:33, Marek Vasut <marex@denx.de> wrote:
+> >> >> > On Wednesday, July 22, 2015 at 09:30:54 AM, Michal Suchanek wrote:
+> >> >> >> On 22 July 2015 at 06:49, Vinod Koul <vinod.koul@intel.com> wrote:
+> >> >> >> > On Tue, Jul 21, 2015 at 10:14:11AM +0200, Michal Suchanek wrote:
+> >> >> >> >> > Or alternatively we could publish the limitations of the
+> >> >> >> >> > channel using capabilities so SPI knows I have a dmaengine
+> >> >> >> >> > channel and it can transfer max N length transfers so would
+> >> >> >> >> > be able to break rather than guessing it or coding in DT.
+> >> >> >> >> > Yes it may come from DT but that should be dmaengine driver
+> >> >> >> >> > rather than client driver :)
+> >> >> >> >> > 
+> >> >> >> >> > This can be done by dma_get_slave_caps(chan, &caps)
+> >> >> >> >> > 
+> >> >> >> >> > And we add max_length as one more parameter to existing set
+> >> >> >> >> > 
+> >> >> >> >> > Also all this could be handled in generic SPI-dmaengine layer
+> >> >> >> >> > so that individual drivers don't have to code it in
+> >> >> >> >> > 
+> >> >> >> >> > Let me know if this idea is okay, I can push the dmaengine
+> >> >> >> >> > bits...
+> >> >> >> >> 
+> >> >> >> >> It would be ok if there was a fixed limit. However, the limit
+> >> >> >> >> depends on SPI slave settings. Presumably for other buses using
+> >> >> >> >> the dmaengine the limit would depend on the bus or slave
+> >> >> >> >> settings as well. I do not see a sane way of passing this all
+> >> >> >> >> the way to the dmaengine driver.
+> >> >> >> > 
+> >> >> >> > I don't see why this should be client (SPI) dependent. The max
+> >> >> >> > length supported is a dmaengine constraint, typically flowing
+> >> >> >> > from max blocks/length it can transfer. Know this limit can
+> >> >> >> > allow clients to split transfers.
+> >> >> >> 
+> >> >> >> In practice on the board I have the maximum transfer length before
+> >> >> >> it fails depends on SPI bus speed which is set up per slave. I
+> >> >> >> did not try searching the space of possible settings thorougly
+> >> >> >> and settled for a setting that gives reasonable speed and
+> >> >> >> transfer length.
+> >> >> > 
+> >> >> > This looks more like a signal integrity issue though.
+> >> >> 
+> >> >> It certainly does on the surface. However, when wrong data is
+> >> >> delivered over the SPI bus (such as when I use wrong phase setting)
+> >> >> the SPI controller happily delivers wrong data over PIO.
+> >> >> 
+> >> >> The failure I am seeing is that the pl330 DMA program which
+> >> >> repeatedly waits for data from the SPI controller never finishes the
+> >> >> read loop and does not signal the interrupt. It seems it also leaves
+> >> >> some data in a FIFO somewhere so next command on the flash returns
+> >> >> garbage and fails.
+> >> > 
+> >> > I observed something similar on MXS (mx28) SPI block. Do you use mixed
+> >> > PIO/DMA mode perhaps ?
+> >> 
+> >> The SPI driver uses PIO for short transfers and DMA for transfers
+> >> longer than the controller FIFO. This seems to be the standard way to
+> >> do things.It works flawlessly so long as submitting overly long DMA
+> >> programs is avoided.
+> > 
+> > Can you try doing JUST DMA, no PIO ? I remember seeing some bus
+> > synchronisation issues when I did mixed PIO/DMA on the MXS and it was
+> > nasty to track down. Just give pure DMA a go to see if the thing
+> > stabilizes somehow.
+> 
+> It's probably slower to set up DMA for 2-byte commands but it might
+> work nonetheless.
 
-It's probably slower to set up DMA for 2-byte commands but it might
-work nonetheless.
+It is, the overhead will be considerable. It might help the stability
+though. I'm really looking forward to the results!
 
-I will give it a go.
+> I will give it a go.
+> 
+> >> > Do you have the option to connect a bus analyzer?
+> >> > I can probably offer you some tools, I'm in Prague ...
+> >> 
+> >> The flash chip is accessible when removing the bottom cover. It is
+> >> VSOP8 package slightly lower than SOP8 so attaching clips to it might
+> >> be a bit problematic. That's the only accessible part. Everything
+> >> other than SPI is inside the SoC.
+> > 
+> > That might be doable, though you might want to try the above thing first.
+> > 
+> >> Since SPI has no verification whatsoever the chip might be completely
+> >> dead and you can still read fine all zeroes or all ones when
+> >> attempting a read from it. I observed this behaviour when I used a
+> >> flash chip in a socket and it was not firmly seated. It was with a
+> >> different SPI controller, though.
+> > 
+> > You should run into issues as soon as the SPI NOR framework tries to read
+> > status register, no ?
+> 
+> Yes, when the DMA transfer fails the next command fails due to garbage
+> lying around. However, you can unload the SPI NOR driver, load spidev
+> driver, and read enough garbage to empty the fifos. Then the flash
+> identifies as normal again and you can access it.
 
->
->> > Do you have the option to connect a bus analyzer?
->> > I can probably offer you some tools, I'm in Prague ...
->>
->> The flash chip is accessible when removing the bottom cover. It is
->> VSOP8 package slightly lower than SOP8 so attaching clips to it might
->> be a bit problematic. That's the only accessible part. Everything
->> other than SPI is inside the SoC.
->
-> That might be doable, though you might want to try the above thing first.
->
->> Since SPI has no verification whatsoever the chip might be completely
->> dead and you can still read fine all zeroes or all ones when
->> attempting a read from it. I observed this behaviour when I used a
->> flash chip in a socket and it was not firmly seated. It was with a
->> different SPI controller, though.
->
-> You should run into issues as soon as the SPI NOR framework tries to read
-> status register, no ?
+Yikes :(
 
-Yes, when the DMA transfer fails the next command fails due to garbage
-lying around. However, you can unload the SPI NOR driver, load spidev
-driver, and read enough garbage to empty the fifos. Then the flash
-identifies as normal again and you can access it.
-
-When the flash is not seated properly and acts autistic you get all
-0xff or all 0 back whatever you send to it, obvously. The
-identification by the SPI NOR driver fails then.
-
-Thanks
-
-Michal
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> When the flash is not seated properly and acts autistic you get all
+> 0xff or all 0 back whatever you send to it, obvously. The
+> identification by the SPI NOR driver fails then.
+> 
+> Thanks
+> 
+> Michal

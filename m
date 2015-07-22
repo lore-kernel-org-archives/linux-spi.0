@@ -1,67 +1,65 @@
-From: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>
-Subject: [RESEND][PATCH 4/4] ARM: dts: keystone: Add ti,keystone-spi for SPI
-Date: Wed, 22 Jul 2015 07:32:24 -0500
-Message-ID: <1437568344-18889-5-git-send-email-fcooper@ti.com>
-References: <1437568344-18889-1-git-send-email-fcooper@ti.com>
+From: Cyrille Pitchen <cyrille.pitchen@atmel.com>
+Subject: [PATCH v2 0/5] add driver for Atmel QSPI controller
+Date: Wed, 22 Jul 2015 15:17:05 +0200
+Message-ID: <cover.1437569902.git.cyrille.pitchen@atmel.com>
 Mime-Version: 1.0
 Content-Type: text/plain
-Cc: <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org>,
-	<linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	<ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	<pawel.moll-5wv7dgnIgG8@public.gmane.org>, <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	<linux-arm-kernel-xBCQruHUn5ppWr+L1FloEB2eb7JE58TQ@public.gmane.org>,
-	Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>
-To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <nsekhar-l0cyMroinI0@public.gmane.org>, <ssantosh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1437568344-18889-1-git-send-email-fcooper-l0cyMroinI0@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>,
+	<devicetree@vger.kernel.org>, <robh+dt@kernel.org>,
+	<pawel.moll@arm.com>, <mark.rutland@arm.com>,
+	<ijc+devicetree@hellion.org.uk>, <galak@codeaurora.org>,
+	<linux-mtd@lists.infradead.org>,
+	Cyrille Pitchen <cyrille.pitchen@atmel.com>
+To: <nicolas.ferre@atmel.com>, <broonie@kernel.org>,
+	<linux-spi@vger.kernel.org>, <dwmw2@infradead.org>,
+	<computersforpeace@gmail.com>, <zajec5@gmail.com>,
+	<beanhuo@micron.com>, <juhosg@openwrt.org>, <marex@denx.de>,
+	<shijie.huang@intel.com>, <ben@decadent.org.uk>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Add ti,keystone-spi to the compatible field for the SPI node. This new
-entry insures that the proper prescaler limit is used for keystone devices
+ChangeLog
 
-Signed-off-by: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>
----
- arch/arm/boot/dts/keystone.dtsi | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+v2:
+- remove the patches to set the "latency code" of Spansion QSPI memories
+  (support of Spansion memories may be submitted in later series).
+- rename "qspi" node into "spi" in the DT example to fit ePAPR standard.
+- remove the useless "qspi0" label from the DT node example.
+- remove the leading 0 from the size of the second memory region to make
+  it consistent with the size of the first memory region.
+- indent the DT bindings documentation to make it more readable.
+- remove the useless ".bus	= &platform_bus_type," line from the
+  platform driver definition.
 
-diff --git a/arch/arm/boot/dts/keystone.dtsi b/arch/arm/boot/dts/keystone.dtsi
-index c06542b..ea2e1cd 100644
---- a/arch/arm/boot/dts/keystone.dtsi
-+++ b/arch/arm/boot/dts/keystone.dtsi
-@@ -136,7 +136,7 @@
- 		};
- 
- 		spi0: spi@21000400 {
--			compatible = "ti,dm6441-spi";
-+			compatible = "ti,keystone-spi", "ti,dm6441-spi";
- 			reg = <0x21000400 0x200>;
- 			num-cs = <4>;
- 			ti,davinci-spi-intr-line = <0>;
-@@ -147,7 +147,7 @@
- 		};
- 
- 		spi1: spi@21000600 {
--			compatible = "ti,dm6441-spi";
-+			compatible = "ti,keystone-spi", "ti,dm6441-spi";
- 			reg = <0x21000600 0x200>;
- 			num-cs = <4>;
- 			ti,davinci-spi-intr-line = <0>;
-@@ -158,7 +158,7 @@
- 		};
- 
- 		spi2: spi@21000800 {
--			compatible = "ti,dm6441-spi";
-+			compatible = "ti,keystone-spi", "ti,dm6441-spi";
- 			reg = <0x21000800 0x200>;
- 			num-cs = <4>;
- 			ti,davinci-spi-intr-line = <0>;
+v1:
+
+This series of patches add support for the new Atmel QSPI controller
+embedded inside sama5d2x SoCs.
+
+These patches were first developped for linux-3.18-at91 and tested on a
+sama5d27 Xplained ultra board, which embeds a Micron n25q128a13 QSPI NOR
+flash memory. Then the series was adapted for mainline.
+
+Cyrille Pitchen (5):
+  mtd: spi-nor: notify (Q)SPI controller about protocol change
+  Documentation: mtd: add a DT property to set the number of dummy
+    cycles
+  mtd: spi-nor: allow to tune the number of dummy cycles
+  Documentation: atmel-quadspi: add binding file for Atmel QSPI driver
+  mtd: atmel-quadspi: add driver for Atmel QSPI controller
+
+ .../devicetree/bindings/mtd/atmel-quadspi.txt      |  29 +
+ .../devicetree/bindings/mtd/jedec,spi-nor.txt      |   6 +
+ drivers/mtd/spi-nor/Kconfig                        |   7 +
+ drivers/mtd/spi-nor/Makefile                       |   1 +
+ drivers/mtd/spi-nor/atmel-quadspi.c                | 900 +++++++++++++++++++++
+ drivers/mtd/spi-nor/spi-nor.c                      | 114 ++-
+ include/linux/mtd/spi-nor.h                        |  15 +
+ 7 files changed, 1053 insertions(+), 19 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/mtd/atmel-quadspi.txt
+ create mode 100644 drivers/mtd/spi-nor/atmel-quadspi.c
+
 -- 
-1.9.1
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+1.8.2.2

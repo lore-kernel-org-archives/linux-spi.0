@@ -1,7 +1,7 @@
 From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Subject: [PATCH v3 1/4] spi: support spi without dma channel to use can_dma()
-Date: Thu, 23 Jul 2015 17:10:40 +0800
-Message-ID: <1437642643-11966-2-git-send-email-leilk.liu@mediatek.com>
+Subject: [PATCH v3 4/4] arm64: dts: Add spi bus dts
+Date: Thu, 23 Jul 2015 17:10:43 +0800
+Message-ID: <1437642643-11966-5-git-send-email-leilk.liu@mediatek.com>
 References: <1437642643-11966-1-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -13,64 +13,64 @@ Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
 	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
 	Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <1437642643-11966-1-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-For spi without dma channel and use can_dma(), it can
-use master->dev for struct device.
+This patch adds MT8173 spi bus controllers into device tree.
 
-Change-Id: I5b320e1742767c2ea4368410fb49c6679e28af6b
+Change-Id: I70edf3e4a366d856499dc855b53d726ce4668a39
 Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 ---
- drivers/spi/spi.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8173.dtsi | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index cf8b91b..f725085 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -539,8 +539,15 @@ static int __spi_map_msg(struct spi_master *master, struct spi_message *msg)
- 	if (!master->can_dma)
- 		return 0;
- 
--	tx_dev = master->dma_tx->device->dev;
--	rx_dev = master->dma_rx->device->dev;
-+	if (master->dma_tx)
-+		tx_dev = master->dma_tx->device->dev;
-+	else
-+		tx_dev = &master->dev;
+diff --git a/arch/arm64/boot/dts/mediatek/mt8173.dtsi b/arch/arm64/boot/dts/mediatek/mt8173.dtsi
+index 359b8b6..a35a0e6 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8173.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8173.dtsi
+@@ -219,6 +219,15 @@
+ 					bias-disable;
+ 				};
+ 			};
 +
-+	if (master->dma_rx)
-+		rx_dev = master->dma_rx->device->dev;
-+	else
-+		rx_dev = &master->dev;
++			spi_pins_a: spi0 {
++				pins_spi {
++					pinmux = <MT8173_PIN_69_SPI_CK__FUNC_SPI_CK_0_>,
++						<MT8173_PIN_70_SPI_MI__FUNC_SPI_MI_0_>,
++						<MT8173_PIN_71_SPI_MO__FUNC_SPI_MO_0_>,
++						<MT8173_PIN_72_SPI_CS__FUNC_SPI_CS_0_>;
++				};
++			};
+ 		};
  
- 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
- 		if (!master->can_dma(master, msg->spi, xfer))
-@@ -579,8 +586,15 @@ static int __spi_unmap_msg(struct spi_master *master, struct spi_message *msg)
- 	if (!master->cur_msg_mapped || !master->can_dma)
- 		return 0;
+ 		scpsys: scpsys@10006000 {
+@@ -364,6 +373,20 @@
+ 			status = "disabled";
+ 		};
  
--	tx_dev = master->dma_tx->device->dev;
--	rx_dev = master->dma_rx->device->dev;
-+	if (master->dma_tx)
-+		tx_dev = master->dma_tx->device->dev;
-+	else
-+		tx_dev = &master->dev;
++		spi: spi@1100a000 {
++			compatible = "mediatek,mt8173-spi";
++			#address-cells = <1>;
++			#size-cells = <0>;
++			reg = <0 0x1100a000 0 0x1000>;
++			interrupts = <GIC_SPI 110 IRQ_TYPE_LEVEL_LOW>;
++			clocks = <&pericfg CLK_PERI_SPI0>;
++			clock-names = "main";
++			pinctrl-names = "default";
++			pinctrl-0 = <&spi_pins_a>;
++			pad-select = <0>;
++			status = "disabled";
++		};
 +
-+	if (master->dma_rx)
-+		rx_dev = master->dma_rx->device->dev;
-+	else
-+		rx_dev = &master->dev;
- 
- 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
- 		if (!master->can_dma(master, msg->spi, xfer))
+ 		i2c3: i2c3@11010000 {
+ 			compatible = "mediatek,mt8173-i2c";
+ 			reg = <0 0x11010000 0 0x70>,
 -- 
 1.8.1.1.dirty
 
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

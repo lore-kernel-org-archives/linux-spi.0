@@ -1,192 +1,52 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: davinci: Choose correct pre-scaler limit based on SOC" to the spi tree
-Date: Fri, 24 Jul 2015 18:29:20 +0100
-Message-ID: <E1ZIgme-0001J7-KG@debutante>
-References: <1436903127-6777-3-git-send-email-fcooper@ti.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1436903127-6777-3-git-send-email-fcooper-l0cyMroinI0@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v3 2/4] dt-bindings: ARM: Mediatek: Document devicetree
+ bindings for spi bus
+Date: Fri, 24 Jul 2015 18:34:46 +0100
+Message-ID: <20150724173446.GS11162@sirena.org.uk>
+References: <1437642643-11966-1-git-send-email-leilk.liu@mediatek.com>
+ <1437642643-11966-3-git-send-email-leilk.liu@mediatek.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="tEhStdZb4uHHcvbt"
+Cc: Mark Rutland <mark.rutland@arm.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+	linux-mediatek@lists.infradead.org
+To: Leilk Liu <leilk.liu@mediatek.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1437642643-11966-3-git-send-email-leilk.liu@mediatek.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-The patch
 
-   spi: davinci: Choose correct pre-scaler limit based on SOC
+--tEhStdZb4uHHcvbt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-has been applied to the spi tree at
+On Thu, Jul 23, 2015 at 05:10:41PM +0800, Leilk Liu wrote:
+> Change-Id: I6cadbf2e51d2cc4eacd518a24d5a9a1da93d4db5
+> Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+Please don't include noise like Change-Id in upstream commits and please
+use subject lines reflecting the style for the subsystem.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+--tEhStdZb4uHHcvbt
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+iQEcBAEBCAAGBQJVsnc1AAoJECTWi3JdVIfQcS4H/RtCqCU+j0B8j6piCFxox3A8
+44uznNQzA0AChxWYSwxFPA3Hs49AB+iO2jY+UVH6ZYFAKXEVHHLy7hi62pjpiskA
+74MTNEKvb75BqE9q8bYDTN5yLFtJKC7OOyXiiziQ9n4mcbHgBL/p4s1DVaBiOHJj
+j1PpYOGlfjUegxkJVOUnbDxM4yDb3w05/vTMdoF1v2imrnr7ei1la7pNgcFVm+2Y
+I5S6FfQr/2+AyRk/zaLIkpf/GnFHAywr7y5nQCd0Z1DpKtvzqUz+pFiieTgtqHNx
+li1k/zhOX504p4X002TaIMqJUfb7qYxMBgdYxg1oTaE7X9vrk4MbAbCzryXsJUA=
+=bG3V
+-----END PGP SIGNATURE-----
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From fa466c91970a0207d9384016cc7884a7f61834b6 Mon Sep 17 00:00:00 2001
-From: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>
-Date: Wed, 22 Jul 2015 07:32:22 -0500
-Subject: [PATCH] spi: davinci: Choose correct pre-scaler limit based on SOC
-
-Currently the pre-scaler limit is incorrect. The value differs slightly
-for various devices so a single value can't be used. Using the compatible
-field select the correct pre-scaler limit.
-
-Add new compatible field value for Keystone devices to support their
-unique pre-scaler limit value.
-
-Signed-off-by: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>
-Reviewed-by: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- .../devicetree/bindings/spi/spi-davinci.txt        |  2 +
- drivers/spi/spi-davinci.c                          | 43 ++++++++++++++++++----
- include/linux/platform_data/spi-davinci.h          |  1 +
- 3 files changed, 39 insertions(+), 7 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/spi/spi-davinci.txt b/Documentation/devicetree/bindings/spi/spi-davinci.txt
-index 12ecfe9e3599..d1e914adcf6e 100644
---- a/Documentation/devicetree/bindings/spi/spi-davinci.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-davinci.txt
-@@ -12,6 +12,8 @@ Required properties:
- - compatible:
- 	- "ti,dm6441-spi" for SPI used similar to that on DM644x SoC family
- 	- "ti,da830-spi" for SPI used similar to that on DA8xx SoC family
-+	- "ti,keystone-spi" for SPI used similar to that on Keystone2 SoC
-+		family
- - reg: Offset and length of SPI controller register space
- - num-cs: Number of chip selects. This includes internal as well as
- 	GPIO chip selects.
-diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index b4605c4158f4..3cf9faa6cc3f 100644
---- a/drivers/spi/spi-davinci.c
-+++ b/drivers/spi/spi-davinci.c
-@@ -139,6 +139,8 @@ struct davinci_spi {
- 	u32			(*get_tx)(struct davinci_spi *);
- 
- 	u8			*bytes_per_word;
-+
-+	u8			prescaler_limit;
- };
- 
- static struct davinci_spi_config davinci_spi_default_cfg;
-@@ -266,7 +268,7 @@ static inline int davinci_spi_get_prescale(struct davinci_spi *dspi,
- 	/* Subtract 1 to match what will be programmed into SPI register. */
- 	ret = DIV_ROUND_UP(clk_get_rate(dspi->clk), max_speed_hz) - 1;
- 
--	if (ret < 0 || ret > 255)
-+	if (ret < dspi->prescaler_limit || ret > 255)
- 		return -EINVAL;
- 
- 	return ret;
-@@ -833,13 +835,40 @@ rx_dma_failed:
- }
- 
- #if defined(CONFIG_OF)
-+
-+/* OF SPI data structure */
-+struct davinci_spi_of_data {
-+	u8	version;
-+	u8	prescaler_limit;
-+};
-+
-+static const struct davinci_spi_of_data dm6441_spi_data = {
-+	.version = SPI_VERSION_1,
-+	.prescaler_limit = 2,
-+};
-+
-+static const struct davinci_spi_of_data da830_spi_data = {
-+	.version = SPI_VERSION_2,
-+	.prescaler_limit = 2,
-+};
-+
-+static const struct davinci_spi_of_data keystone_spi_data = {
-+	.version = SPI_VERSION_1,
-+	.prescaler_limit = 0,
-+};
-+
- static const struct of_device_id davinci_spi_of_match[] = {
- 	{
- 		.compatible = "ti,dm6441-spi",
-+		.data = &dm6441_spi_data,
- 	},
- 	{
- 		.compatible = "ti,da830-spi",
--		.data = (void *)SPI_VERSION_2,
-+		.data = &da830_spi_data,
-+	},
-+	{
-+		.compatible = "ti,keystone-spi",
-+		.data = &keystone_spi_data,
- 	},
- 	{ },
- };
-@@ -858,21 +887,21 @@ static int spi_davinci_get_pdata(struct platform_device *pdev,
- 			struct davinci_spi *dspi)
- {
- 	struct device_node *node = pdev->dev.of_node;
-+	struct davinci_spi_of_data *spi_data;
- 	struct davinci_spi_platform_data *pdata;
- 	unsigned int num_cs, intr_line = 0;
- 	const struct of_device_id *match;
- 
- 	pdata = &dspi->pdata;
- 
--	pdata->version = SPI_VERSION_1;
- 	match = of_match_device(davinci_spi_of_match, &pdev->dev);
- 	if (!match)
- 		return -ENODEV;
- 
--	/* match data has the SPI version number for SPI_VERSION_2 */
--	if (match->data == (void *)SPI_VERSION_2)
--		pdata->version = SPI_VERSION_2;
-+	spi_data = (struct davinci_spi_of_data *)match->data;
- 
-+	pdata->version = spi_data->version;
-+	pdata->prescaler_limit = spi_data->prescaler_limit;
- 	/*
- 	 * default num_cs is 1 and all chipsel are internal to the chip
- 	 * indicated by chip_sel being NULL or cs_gpios being NULL or
-@@ -992,7 +1021,7 @@ static int davinci_spi_probe(struct platform_device *pdev)
- 
- 	dspi->bitbang.chipselect = davinci_spi_chipselect;
- 	dspi->bitbang.setup_transfer = davinci_spi_setup_transfer;
--
-+	dspi->prescaler_limit = pdata->prescaler_limit;
- 	dspi->version = pdata->version;
- 
- 	dspi->bitbang.flags = SPI_NO_CS | SPI_LSB_FIRST | SPI_LOOP;
-diff --git a/include/linux/platform_data/spi-davinci.h b/include/linux/platform_data/spi-davinci.h
-index 8dc2fa47a2aa..f4edcb03c40c 100644
---- a/include/linux/platform_data/spi-davinci.h
-+++ b/include/linux/platform_data/spi-davinci.h
-@@ -49,6 +49,7 @@ struct davinci_spi_platform_data {
- 	u8			num_chipselect;
- 	u8			intr_line;
- 	u8			*chip_sel;
-+	u8			prescaler_limit;
- 	bool			cshold_bug;
- 	enum dma_event_q	dma_event_q;
- };
--- 
-2.1.4
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--tEhStdZb4uHHcvbt--

@@ -1,84 +1,97 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [GIT PULL] spi fixes for v4.2
-Date: Fri, 24 Jul 2015 17:54:50 +0100
-Message-ID: <20150724165450.GO11162@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="bUZXtnY6La1DoU2p"
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Subject: Applied "spi: davinci: Set prescale value based on register value" to the spi tree
+Date: Fri, 24 Jul 2015 18:29:21 +0100
+Message-ID: <E1ZIgmf-0001Jb-JC@debutante>
+References: <1436903127-6777-2-git-send-email-fcooper@ti.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <1436903127-6777-2-git-send-email-fcooper-l0cyMroinI0@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---bUZXtnY6La1DoU2p
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: davinci: Set prescale value based on register value
 
-The following changes since commit 52721d9d3334c1cb1f76219a161084094ec634dc:
+has been applied to the spi tree at
 
-  Linux 4.2-rc3 (2015-07-19 14:45:02 -0700)
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-are available in the git repository at:
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v4.2-rc3
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-for you to fetch changes up to 0c38ec716cdc0397f5225047c33a3144da93f5d8:
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-  Merge remote-tracking branches 'spi/fix/gqspi', 'spi/fix/imx', 'spi/fix/mg-spfi' and 'spi/fix/spidev' into spi-linus (2015-07-24 16:19:50 +0100)
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-----------------------------------------------------------------
-spi: Fixes for v4.3
+Thanks,
+Mark
 
-A small collection of pretty much unremarkable driver specific fixes
-here plus the addition of a new device ID to spidev which requires no
-other code changes.
+>From bba732d86694f7217a41e83a2c1deb42ed9aa7fd Mon Sep 17 00:00:00 2001
+From: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>
+Date: Wed, 22 Jul 2015 07:32:21 -0500
+Subject: [PATCH] spi: davinci: Set prescale value based on register value
 
-----------------------------------------------------------------
-Dan Carpenter (1):
-      spi: zynq: missing break statement
+Within davinci_spi_get_prescale() the prescale has two meanings. First one
+being the calculated prescale value and then at the end translates it to the
+prescale value that will be written to the SPI register.
 
-Geert Uytterhoeven (1):
-      spi: SPI_ZYNQMP_GQSPI should depend on HAS_DMA
+At first glance this can be confusing especially when comparing the minimum
+prescale value against what is seen in the TRM.
 
-Jiri Prchal (1):
-      spi: spidev: add compatible value for LTC2488
+To simplify things make it clear that the calculated prescale value will always
+be based on the value that will be written into the SPI register.
 
-Mark Brown (1):
-      Merge remote-tracking branches 'spi/fix/gqspi', 'spi/fix/imx', 'spi/fix/mg-spfi' and 'spi/fix/spidev' into spi-linus
+Signed-off-by: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-davinci.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-Sascha Hauer (1):
-      spi: imx: Fix small DMA transfers
+diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+index 987afebea093..b4605c4158f4 100644
+--- a/drivers/spi/spi-davinci.c
++++ b/drivers/spi/spi-davinci.c
+@@ -255,7 +255,7 @@ static void davinci_spi_chipselect(struct spi_device *spi, int value)
+  * This function calculates the prescale value that generates a clock rate
+  * less than or equal to the specified maximum.
+  *
+- * Returns: calculated prescale - 1 for easy programming into SPI registers
++ * Returns: calculated prescale value for easy programming into SPI registers
+  * or negative error number if valid prescalar cannot be updated.
+  */
+ static inline int davinci_spi_get_prescale(struct davinci_spi *dspi,
+@@ -263,12 +263,13 @@ static inline int davinci_spi_get_prescale(struct davinci_spi *dspi,
+ {
+ 	int ret;
+ 
+-	ret = DIV_ROUND_UP(clk_get_rate(dspi->clk), max_speed_hz);
++	/* Subtract 1 to match what will be programmed into SPI register. */
++	ret = DIV_ROUND_UP(clk_get_rate(dspi->clk), max_speed_hz) - 1;
+ 
+-	if (ret < 1 || ret > 256)
++	if (ret < 0 || ret > 255)
+ 		return -EINVAL;
+ 
+-	return ret - 1;
++	return ret;
+ }
+ 
+ /**
+-- 
+2.1.4
 
-Sifan Naeem (1):
-      spi: img-spfi: fix support for speeds up to 1/4th input clock
-
- drivers/spi/Kconfig            | 2 +-
- drivers/spi/spi-img-spfi.c     | 2 ++
- drivers/spi/spi-imx.c          | 5 +++--
- drivers/spi/spi-zynqmp-gqspi.c | 1 +
- drivers/spi/spidev.c           | 1 +
- 5 files changed, 8 insertions(+), 3 deletions(-)
-
---bUZXtnY6La1DoU2p
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVsm3aAAoJECTWi3JdVIfQ7uoH/REcg56bRX7iM1sdu6xMu4hw
-45PHyqsdj/48XpWk0nHH+JgkM+xGOOrkUeQgLq4+/idLc1uvECxuX8ZCQ+u6XSii
-8UvDWF2NUoEGmfJ8QQErISs0TJK8W9p8BRfc0pSIns4A8prDUts542NMZj2wfTzs
-Mu3EeGUGd4EPDN/TWP/hFSUdAftmWqlbJv/bDPyzSa76xUtdLRAnA8jl/PKqgfAN
-UAdlTvScKDmHeR2McC3n7nTXKoF8B90tYLh5R8OaIX4P/CyB2RfnQO/BdxAV1Zoa
-qq78LvGS3BzIxq8IVTcU1oJpTbKerPkyiHFVOJMZC/AUeFiELwCwhM8jXK+XMPw=
-=I3ir
------END PGP SIGNATURE-----
-
---bUZXtnY6La1DoU2p--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

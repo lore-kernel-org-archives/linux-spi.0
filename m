@@ -1,77 +1,81 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: imx: Fix small DMA transfers" to the spi tree
-Date: Fri, 24 Jul 2015 16:09:12 +0100
-Message-ID: <E1ZIeb2-0004vh-Iz@debutante>
-References: <1437742868-23430-1-git-send-email-s.hauer@pengutronix.de>
-Cc: linux-spi@vger.kernel.org
-To: Sascha Hauer <s.hauer@pengutronix.de>, stable@vger.kernel.org,
-	Mark Brown <broonie@kernel.org>
-Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <1437742868-23430-1-git-send-email-s.hauer@pengutronix.de>
-Sender: stable-owner@vger.kernel.org
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [PATCH v2 0/2] spi: dw: Reintroduce optional 16 bit data
+ register I/O
+Date: Fri, 24 Jul 2015 18:30:12 +0300
+Message-ID: <1437751812.29746.74.camel@linux.intel.com>
+References: <1434703435-25198-1-git-send-email-michael@smart-africa.com>
+	 <1435163696-14767-1-git-send-email-michael@smart-africa.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Steffen Trumtrar <s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+To: Michael van der Westhuizen <michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1435163696-14767-1-git-send-email-michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+On Wed, 2015-06-24 at 18:34 +0200, Michael van der Westhuizen wrote:
+> The commit dd11444327ce ("spi: dw-spi: Convert 16bit accesses to 
+> 32bit
+> accesses") globally changed all register access in the dw_apb_ssi 
+> driver
+> to 32 bit access, which breaks data register (FIFO) access on 
+> picoXcell
+> platforms.
+> 
+> This series introduces a boolean to the core spi-dw driver to 
+> indicate
+> to the core that 16 bit data register access is appropriate, 
+> implements
+> the code that respects that flag and updates the dw-spi-mmio driver 
+> to
+> allow setting this boolean from the device tree.
+> 
+> A binding documentation fix is included in this series.
+> 
+> Prior to applying this change the following error presents on
+> a picoCell pc3x3 platform:
+>   spi_master spi32766: interrupt_transfer: fifo overrun/underrun
+>   m25p80 spi32766.0: error -5 reading 9f
+>   m25p80: probe of spi32766.0 failed with error -5
+> 
+> With this series applied:
+>   m25p80 spi32766.0: m25p40 (512 Kbytes)
 
-   spi: imx: Fix small DMA transfers
+Mark, what do you think about this? For me it looks okay.
 
-has been applied to the spi tree at
+> 
+> Changes in v2:
+>   - Incorporate review feedback from Andy Shevchenko, reworking the
+>     bindings to reflect common practice and adjusting the driver
+>     to suit.
+>   - Add a wrapper inline function for accessing the data register
+>     using the configured with.
+> 
+> Michael van der Westhuizen (2):
+>   dt: snps,dw-apb-ssi: Document new I/O data register width property
+>   spi: dw: Allow interface drivers to limit data I/O to word sizes
+> 
+>  drivers/spi/spi-dw-mmio.c |  4 ++++
+>  drivers/spi/spi-dw.c      |  4 ++--
+>  drivers/spi/spi-dw.h      | 35 +++++++++++++++++++++++++++++++++++
+>  3 files changed, 41 insertions(+), 2 deletions(-)
+> 
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From f6ee9b582d2db652497b73c1f117591dfb6d3a90 Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 24 Jul 2015 15:01:08 +0200
-Subject: [PATCH] spi: imx: Fix small DMA transfers
-
-DMA transfers must be greater than the watermark level size. spi_imx->rx_wml
-and spi_imx->tx_wml contain the watermark level in 32bit words whereas struct
-spi_transfer contains the transfer len in bytes. Fix the check if DMA is
-possible for a transfer accordingly. This fixes transfers with sizes between
-33 and 128 bytes for which previously was claimed that DMA is possible.
-
-Fixes: f62caccd12c17e4 (spi: spi-imx: add DMA support)
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-imx.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index eb7d3a6fb14c..f9deb84e4e55 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -201,8 +201,9 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
- {
- 	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
- 
--	if (spi_imx->dma_is_inited && (transfer->len > spi_imx->rx_wml)
--	    && (transfer->len > spi_imx->tx_wml))
-+	if (spi_imx->dma_is_inited
-+	    && transfer->len > spi_imx->rx_wml * sizeof(u32)
-+	    && transfer->len > spi_imx->tx_wml * sizeof(u32))
- 		return true;
- 	return false;
- }
 -- 
-2.1.4
+Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Intel Finland Oy
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,88 +1,88 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: bcm2835: add spi-bcm2835aux driver for the auxiliar spi1 and spi2
-Date: Fri, 24 Jul 2015 08:47:08 +0200
-Message-ID: <9005ABEC-C60A-4814-AD60-AD5BB09808F2@martin.sperl.org>
-References: <1434980408-4086-1-git-send-email-kernel@martin.sperl.org> <55A0A150.3060809@wwwdotorg.org> <ECFBB7BF-1316-4565-B1F2-FB2651131882@martin.sperl.org> <55A49662.3000706@wwwdotorg.org> <2768BFA9-7FE9-4EDC-8692-AC3F070BD874@martin.sperl.org> <55AEF828.20908@wwwdotorg.org> <0125992E-40F4-4702-8404-2943FF9A8788@martin.sperl.org> <55B1BA7A.1090104@wwwdotorg.org>
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2102\))
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <55B1BA7A.1090104-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Marek Vasut <marex@denx.de>
+Subject: Re: [PATCH 08/11] MTD: m25p80: Add option to limit SPI transfer size.
+Date: Fri, 24 Jul 2015 10:34:15 +0200
+Message-ID: <201507241034.15406.marex@denx.de>
+References: <cover.1433364398.git.hramrach@gmail.com> <CAOMqctRnh2RsUYiRr2-+wucaq5NArTNrzPpqdPs+ETrFe9UrZA@mail.gmail.com> <CAOMqctREShUrBR=aQM2Vc6MhVezCP9rnNfUNq=m2-GH_gbYxFw@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Vinod Koul <vinod.koul@intel.com>,
+	MTD Maling List <linux-mtd@lists.infradead.org>,
+	"linux-samsung-soc@vger.kernel.org"
+	<linux-samsung-soc@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-spi" <linux-spi@vger.kernel.org>,
+	dmaengine <dmaengine@vger.kernel.org>
+To: Michal Suchanek <hramrach@gmail.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <CAOMqctREShUrBR=aQM2Vc6MhVezCP9rnNfUNq=m2-GH_gbYxFw@mail.gmail.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+On Thursday, July 23, 2015 at 07:03:47 PM, Michal Suchanek wrote:
 
-> On 24.07.2015, at 06:09, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org> wrote=
-:
->=20
-> I think I'd expect the shared registers to be:
->=20
-> bcm2835aux: misc@0x7e215000 {
->    compatible =3D "brcm,bcm2835-aux";
->    reg =3D <0x7e215000 0x08>;
-> };
->=20
-> There are two 4-byte registers outside the UART/SPI blocks, and the
-> compatible value should reflect what the block is, not that Linux may
-> use a syscon driver to implement the driver for it.
->=20
-> In the client, I'd expect a more semantic naming for the reference;
-> something like:
->=20
-> 	brcm,aux =3D <&bcm2835aux 4>;
->=20
-> brcm, since it's a custom/vendor-specific property. aux is the name o=
-f
-> the object that's referenced. Packing the phandle and data together i=
-nto
-> a single property reduces the number of separate properties, and is a
-> typical thing to do in a client of a service in DT.
+Hi!
 
-So in the end you are saying we need a separate driver to get written
-(because of =91compatible =3D "brcm,bcm2835-aux=94;=92)
+[...]
 
-That is unless you would allow:
-compatible =3D compatible =3D "brcm,bcm2835-aux=94, =93syscon=94;
+> >>> It's probably slower to set up DMA for 2-byte commands but it might
+> >>> work nonetheless.
+> >> 
+> >> It is, the overhead will be considerable. It might help the stability
+> >> though. I'm really looking forward to the results!
+> > 
+> > Hello,
+> > 
+> > this does not quite work.
+> > 
+> > My test with spidev:
+> > 
+> > # ./spinor /dev/spidev1.0
+> > Sending 9f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+> > Received 00 ff c8 60 16 c8 60 16 c8 60 16 c8 60 16 c8 60
+> > Sending 90 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+> > Received 00 ff ff ff ff c8 15 c8 15 c8 15 c8 15 c8 15 c8
+> > Sending 9f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+> > Received 00 ff c8 60 16 c8 60 16 c8 60 16 c8 60 16 c8 60
+> > 
+> > I receive correct ID but spi-nor complains it does not know ID 00 c8 60.
+> > IIRC garbage should be sent only at the time command is transferred so
+> > only one byte of garbage should be received. Also the garbage tends to
+> > be the last state of the data output - all 0 or all 1.
+> > So it seems using DMA for all transfers including 1-byte commands
+> > results in (some?) received data getting an extra 00 prefix.
+> > 
+> > 
+> > I also managed to lock up the controller completely since there is
+> > some error passing the SPI speed somewhere :(
+> > 
+> > [ 1352.977530] spidev spi1.0: setup mode 0, 8 bits/w, 80000000 Hz max -->
+> > 0 [ 1352.977540] spidev spi1.0: spi mode 0
+> > [ 1352.977576] spidev spi1.0: setup mode 0, 8 bits/w, 80000000 Hz max -->
+> > 0 [ 1352.977582] spidev spi1.0: msb first
+> > [ 1352.977614] spidev spi1.0: setup mode 0, 8 bits/w, 80000000 Hz max -->
+> > 0 [ 1352.977620] spidev spi1.0: 0 bits per word
+> > [ 1352.977652] spidev spi1.0: setup mode 0, 8 bits/w, 2690588672 Hz max
+> > --> 0 [ 1352.977726] spi_master spi1: s3c64xx_spi_config: clk_from_cmu 1
+> > src_clk sclk_spi1 mode bpw 8
+> > [ 1352.977753] spi_master spi1: spi1.0 s3c64xx_spi_transfer_one: xfer
+> > bpw 8 speed -1604378624
+> > [ 1352.977760] spi_master spi1: s3c64xx_spi_config: clk_from_cmu 1
+> > src_clk sclk_spi1 mode bpw 8
+> > [ 1352.977781] spi_master spi1: spi1.0 s3c64xx_spi_transfer_one: using
+> > dma [ 1352.977797] dma-pl330 121b0000.pdma: setting up request on thread
+> > 1
+> 
+> Hmm, on a second thought it probably works as expected more or less.
+> 
+> The nonsensical value was passed from application and there is no
+> guard against that.
+> 
+> Since I don't do PIO the controller remains locked up indefinitely.
 
-If this is not acceptable, then where should such a driver go in the
-kernel tree?
-
-It would essentially implement the following:
-bcm2835aux_enable(dev, device-id);
-bcm2835aux_disable(dev, device-id);
-
-Which would just set/clean the bits in the register while holding a loc=
-k.
-
-As an alternative: maybe we could implement it as an IRQ driver
-and when the irq is requested for that device, then the HW-block gets
-enabled automatically (and disabled when released).
-
-That way we may not need to have a separate driver that would enable
-the uart1, but it would be sufficient to configure it as follows:
-
-uart1: uart@7e215040 {
-	compatible =3D "brcm,bcm2835-aux-uart", "ns16550";
-	reg =3D <0x7e215040 0x40>;
-	interrupts =3D <X 0>;
-	clock-frequency =3D <500000000>;
-	reg-shift =3D <2>;
-	no-loopback-test;
-	status =3D "disabled";
-};
-
-(taken from the foundation device-tree)
-
-Please clarify
-
-Thanks,
-Martin--
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+I have to admit, I don't quite understand the above. I also don't quite know
+what your spidev test does. Can you possibly just bind a regular SPI NOR driver 
+and run mtdtests to see if it is stable ?

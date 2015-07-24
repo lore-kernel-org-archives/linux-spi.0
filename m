@@ -1,62 +1,41 @@
-From: Lars Persson <lars.persson-VrBV9hrLPhE@public.gmane.org>
-Subject: Re: [PATCH] Revert "spi: bitbang: only toggle bitchanges"
-Date: Fri, 24 Jul 2015 13:48:00 +0200
-Message-ID: <1437738480.31818.5.camel@axis.com>
-References: <1437716236-12715-1-git-send-email-larper@axis.com>
-	 <20150724104419.GH11162@sirena.org.uk>
+From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
+Subject: Re: [RESEND][PATCH 2/4] spi: davinci: Choose correct pre-scaler limit
+ based on SOC
+Date: Fri, 24 Jul 2015 17:19:13 +0530
+Message-ID: <55B22639.9010204@ti.com>
+References: <1437568344-18889-1-git-send-email-fcooper@ti.com> <1437568344-18889-3-git-send-email-fcooper@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="windows-1252"
 Content-Transfer-Encoding: 7bit
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org" <m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150724104419.GH11162-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org>,
+	<linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	<ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	<pawel.moll-5wv7dgnIgG8@public.gmane.org>, <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	<linux-arm-kernel-xBCQruHUn5ppWr+L1FloEB2eb7JE58TQ@public.gmane.org>
+To: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	<ssantosh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1437568344-18889-3-git-send-email-fcooper-l0cyMroinI0@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-On Fri, 2015-07-24 at 12:44 +0200, Mark Brown wrote:
-> On Fri, Jul 24, 2015 at 07:37:16AM +0200, Lars Persson wrote:
-> > This reverts commit 232a5adc5199 ("spi: bitbang: only toggle
-> > bitchanges") because it breaks bitbanged SPI on our MIPS system. I
-> > found two problems with the patch:
-> > - oldbit must initially be computed from bit position 7, 15 or 31 of
-> >   word depending on the value of bits.
+On Wednesday 22 July 2015 06:02 PM, Franklin S Cooper Jr wrote:
+> Currently the pre-scaler limit is incorrect. The value differs slightly
+> for various devices so a single value can't be used. Using the compatible
+> field select the correct pre-scaler limit.
 > 
-> This might be a real issue but fixing it does not require a revert.
+> Add new compatible field value for Keystone devices to support their
+> unique pre-scaler limit value.
 > 
-> > - The optimization also does not eliminate consecutive ones because
-> >   the compare of 1<<31 and 1 will be false (a bool only takes values 0
-> >   or 1).
-> 
-> No, any non-zero value is true in C.  I assume you're talking about
-> this section of the diff:
-> 
-> > -		if ((flags & SPI_MASTER_NO_TX) == 0) {
-> > -			if ((word & (1 << 31)) != oldbit) {
-> > -				setmosi(spi, word & (1 << 31));
-> > -				oldbit = word & (1 << 31);
-> 
-> which looks fine - we see if the top bit is the same as the last top bit
-> we wrote, if it isn't we update the value output and record what we just
-> wrote.
+> Signed-off-by: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>
 
-No this is a misunderstanding about the semantics of the bool type.
-When assigning to the bool any non-zero value becomes 1.
-When comparing an integer against the bool, the bool is promoted to an
-integer.
+Reviewed-by: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
 
-If we previously transmitted a one, oldbit equals 1.
-If current bit is a one, then (word & (1 << 31)) equals 1<<31.
-
-((1<<31) != 1) is TRUE so we call setmosi again, hence no optimization
-for consecutive ones.
-
-Please do not mix bool and bitwise operations.
-
-- Lars
-
+Thanks,
+Sekhar
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

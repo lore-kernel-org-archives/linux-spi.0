@@ -1,68 +1,82 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] Revert "spi: bitbang: only toggle bitchanges"
-Date: Fri, 24 Jul 2015 11:44:19 +0100
-Message-ID: <20150724104419.GH11162@sirena.org.uk>
-References: <1437716236-12715-1-git-send-email-larper@axis.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [RFC PATCH 0/2] spi: add dual parallel & stacked mode support in
+ Zynq MPSoC GQSPI controller
+Date: Fri, 24 Jul 2015 11:52:09 +0100
+Message-ID: <20150724105209.GI11162@sirena.org.uk>
+References: <1436445895-25504-1-git-send-email-ranjit.waghmode@xilinx.com>
+ <20150714164005.GE11162@sirena.org.uk>
+ <7CFCFE83B8145347A1D424EC939F1C3CA7E53D@XAP-PVEXMBX01.xlnx.xilinx.com>
+ <20150715160146.GS11162@sirena.org.uk>
+ <7CFCFE83B8145347A1D424EC939F1C3CA7E758@XAP-PVEXMBX01.xlnx.xilinx.com>
+ <20150716085739.GT11162@sirena.org.uk>
+ <7CFCFE83B8145347A1D424EC939F1C3CA81D12@XAP-PVEXMBX01.xlnx.xilinx.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="SRANlrd+GMVhaYmh"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
-	Lars Persson <larper-VrBV9hrLPhE@public.gmane.org>
-To: Lars Persson <lars.persson-VrBV9hrLPhE@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="JUbEFkz87vQcUeYo"
+Cc: Michal Simek <michals@xilinx.com>,
+	Soren Brinkmann <sorenb@xilinx.com>,
+	"zajec5@gmail.com" <zajec5@gmail.com>,
+	"marex@denx.de" <marex@denx.de>,
+	"shijie.huang@intel.com" <shijie.huang@intel.com>,
+	"juhosg@openwrt.org" <juhosg@openwrt.org>,
+	"ben@decadent.org.uk" <ben@decadent.org.uk>,
+	"linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Harini Katakam <harinik@xilinx.com>,
+	Punnaiah Choudary Kalluri <punnaia@xilinx.com>,
+	"ran27jit@gmail.com" <ran27jit@gmail.com>,
+	"dwmw2@infradead.org" <dwmw2@infradead.org>,
+	"computersforpeace@gmail.com" <computersforpeace@gmail.com>
+To: Ranjit Abhimanyu Waghmode <ranjit.waghmode@xilinx.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1437716236-12715-1-git-send-email-larper-VrBV9hrLPhE@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <7CFCFE83B8145347A1D424EC939F1C3CA81D12@XAP-PVEXMBX01.xlnx.xilinx.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---SRANlrd+GMVhaYmh
+--JUbEFkz87vQcUeYo
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jul 24, 2015 at 07:37:16AM +0200, Lars Persson wrote:
-> This reverts commit 232a5adc5199 ("spi: bitbang: only toggle
-> bitchanges") because it breaks bitbanged SPI on our MIPS system. I
-> found two problems with the patch:
-> - oldbit must initially be computed from bit position 7, 15 or 31 of
->   word depending on the value of bits.
+On Fri, Jul 24, 2015 at 10:42:35AM +0000, Ranjit Abhimanyu Waghmode wrote:
 
-This might be a real issue but fixing it does not require a revert.
+As I think you've been asked before please fix your mail client to word
+wrap within paragraphs so your mails are more legible.
 
-> - The optimization also does not eliminate consecutive ones because
->   the compare of 1<<31 and 1 will be false (a bool only takes values 0
->   or 1).
+> To support the dual parallel mode in this controller, following minor
+> things can be added to the driver.
 
-No, any non-zero value is true in C.  I assume you're talking about
-this section of the diff:
+> 1) Controller needs to know in which mode it is working, then it's
+> obvious to set the appropriate flag for the same
+> 2) There are more than one chip selects, so need to set the same
+>=20
+> So kindly suggest your view on the above request.
 
-> -		if ((flags & SPI_MASTER_NO_TX) == 0) {
-> -			if ((word & (1 << 31)) != oldbit) {
-> -				setmosi(spi, word & (1 << 31));
-> -				oldbit = word & (1 << 31);
+I'm not entirely sure what you're asking here from the point of view of
+SPI, sorry - what exactly are you requesting?  If you want to add
+support for new SPI bus modes please go ahead and do that, you need to
+clearly document what any new modes you're adding are so that other
+people can understand them.
 
-which looks fine - we see if the top bit is the same as the last top bit
-we wrote, if it isn't we update the value output and record what we just
-wrote.
-
---SRANlrd+GMVhaYmh
+--JUbEFkz87vQcUeYo
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVshcDAAoJECTWi3JdVIfQM0UH/RXD9RGsqEPsHl/AVoxV9FWv
-AzRUv5TKwQMI80lHe8TYTNVDMfOFgiYqkgKD32i7LhIvpoXiaf9fOM2RICMWAPiV
-h7x9SyVNQdjTofVPYOndfVakix+6uyj/ylsCoTrProXjPXIFwc1fFT2HbnJU7WzF
-1PViCgfRm9o7Z27MbaRa8OKGSIp+0qLKnPLIAYWTBnIzzieBwo/95FjLlGpnmRLa
-dKe4gHn0Pe25y6Gzo/beKuRZdNRI22D9lX1gyinFpVnzdgJN50jOV3Kz7zFmGsuo
-ye4ZGVBYSJAKNrWqm/8V/KNirGvU5Nsy5IAuYlBoC2XNAyojeLjAy12/WiHpCCE=
-=duci
+iQEcBAEBCAAGBQJVshjYAAoJECTWi3JdVIfQrTwH/iGW8B+wWVA8yv3usL08Iand
+PDOjYuDmwKik1jA0tvglRXq8lnaGi36GYi241O77SMuadpwNC/pp7+oYzLULexUl
+feGMHfc0rCcvDRsNR/ovaHmPp+WGzu7dAmfonkh/+CYgCWnz+gdPVeL/6b2YlaKr
+a6CxDx+tHHJtrEF2bpEM7sn+ZCU2D8qJbMmG9TBlSpRL/Mhg3mpZwHeJhhMvnOOt
+UAab8dFIeKpyUT1yuQLvQCbI3Px3AXXK0AtQSCPHUXmGAgJ2v/MusF9KjWnLCn6X
+Gum78OqCUsMzuYNvLV0RJfTGGPr3Debkiv4UJpUNJn88OcViLbCd8CaBYEsiZ+M=
+=fYFJ
 -----END PGP SIGNATURE-----
 
---SRANlrd+GMVhaYmh--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--JUbEFkz87vQcUeYo--

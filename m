@@ -1,41 +1,37 @@
-From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
-Subject: Re: [RESEND][PATCH 2/4] spi: davinci: Choose correct pre-scaler limit
- based on SOC
-Date: Fri, 24 Jul 2015 17:19:13 +0530
-Message-ID: <55B22639.9010204@ti.com>
-References: <1437568344-18889-1-git-send-email-fcooper@ti.com> <1437568344-18889-3-git-send-email-fcooper@ti.com>
+From: Sekhar Nori <nsekhar@ti.com>
+Subject: Re: [RESEND][PATCH 3/4] ARM: davinci: Set proper SPI prescale limit
+ value
+Date: Fri, 24 Jul 2015 17:20:25 +0530
+Message-ID: <55B22681.3060000@ti.com>
+References: <1437568344-18889-1-git-send-email-fcooper@ti.com> <1437568344-18889-4-git-send-email-fcooper@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="windows-1252"
 Content-Transfer-Encoding: 7bit
-Cc: <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org>,
-	<linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	<ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	<pawel.moll-5wv7dgnIgG8@public.gmane.org>, <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	<linux-arm-kernel-xBCQruHUn5ppWr+L1FloEB2eb7JE58TQ@public.gmane.org>
-To: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	<ssantosh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1437568344-18889-3-git-send-email-fcooper-l0cyMroinI0@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>,
+	<linux-spi@vger.kernel.org>, <khilman@deeprootsystems.com>,
+	<linux@arm.linux.org.uk>, <galak@codeaurora.org>,
+	<ijc+devicetree@hellion.org.uk>, <mark.rutland@arm.com>,
+	<pawel.moll@arm.com>, <robh+dt@kernel.org>,
+	<linux-arm-kernel@list.infradead.org>
+To: Franklin S Cooper Jr <fcooper@ti.com>, <broonie@kernel.org>,
+	<ssantosh@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1437568344-18889-4-git-send-email-fcooper@ti.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 On Wednesday 22 July 2015 06:02 PM, Franklin S Cooper Jr wrote:
-> Currently the pre-scaler limit is incorrect. The value differs slightly
-> for various devices so a single value can't be used. Using the compatible
-> field select the correct pre-scaler limit.
+> SPI Davinci driver has been updated to allow SOCs to specify their minimum
+> prescale value. Update the various SOCs board files that use this driver with
+> their proper prescaler limit.
 > 
-> Add new compatible field value for Keystone devices to support their
-> unique pre-scaler limit value.
-> 
-> Signed-off-by: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>
+> Signed-off-by: Franklin S Cooper Jr <fcooper@ti.com>
 
-Reviewed-by: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
+Acked-by: Sekhar Nori <nsekhar@ti.com>
+
+in case Mark is okay to take it through his tree. It does not clash with
+anything else I have for mach-davinci.
 
 Thanks,
 Sekhar
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

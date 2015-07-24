@@ -1,64 +1,77 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] Revert "spi: bitbang: only toggle bitchanges"
-Date: Fri, 24 Jul 2015 15:50:36 +0100
-Message-ID: <20150724145036.GL11162@sirena.org.uk>
-References: <1437716236-12715-1-git-send-email-larper@axis.com>
- <20150724104419.GH11162@sirena.org.uk>
- <1437738480.31818.5.camel@axis.com>
- <55B227B2.9080205@metafoo.de>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Xd6meC5WbNV8N0zk"
-Cc: Lars Persson <lars.persson-VrBV9hrLPhE@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org" <m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-To: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <55B227B2.9080205-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: imx: Fix small DMA transfers" to the spi tree
+Date: Fri, 24 Jul 2015 16:09:12 +0100
+Message-ID: <E1ZIeb2-0004vh-Iz@debutante>
+References: <1437742868-23430-1-git-send-email-s.hauer@pengutronix.de>
+Cc: linux-spi@vger.kernel.org
+To: Sascha Hauer <s.hauer@pengutronix.de>, stable@vger.kernel.org,
+	Mark Brown <broonie@kernel.org>
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <1437742868-23430-1-git-send-email-s.hauer@pengutronix.de>
+Sender: stable-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---Xd6meC5WbNV8N0zk
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: imx: Fix small DMA transfers
 
-On Fri, Jul 24, 2015 at 01:55:30PM +0200, Lars-Peter Clausen wrote:
-> On 07/24/2015 01:48 PM, Lars Persson wrote:
+has been applied to the spi tree at
 
-> >No this is a misunderstanding about the semantics of the bool type.
-> >When assigning to the bool any non-zero value becomes 1.
-> >When comparing an integer against the bool, the bool is promoted to an
-> >integer.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> From the patch context alone it is not clear that oldbit is of type bool. I
-> think this is where the confusion came from. By just looking at the path
-> fragment itself you'd think that oldbit is a unsigned int given its usage
-> pattern. But it becomes obvious that the code wont work if you know oldbit
-> is a bool.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-...and obviously the clear intention is that it should be an unsigned
-integer so the appropriate thing to do is to fix that.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---Xd6meC5WbNV8N0zk
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-iQEcBAEBCAAGBQJVslC8AAoJECTWi3JdVIfQ9zsH/jGo2KQmoGk9TE/SVU3Se9wy
-CFbfS3ZgPVOAwJtUOhFdHlmlC1XEJ7506mgEYyYwxsVg+cH90Bnvzgn8/0xIWtOA
-P+Lve42qd49YpX9ZASH2yKFmto6ykiwZHf8dl/0njtHdb6oa/C9kRtWbBSsRIrPP
-Uu4IyrSoYy9gM1dNCkV7YuF2CLP7+qU/SECFSI51n0cYZR2StthFBikA7TSesCXi
-xj6WRJjaofIOMYTX8jdKNOuase6LERXnp3t9P+eo03S725fQfcP3hSikmBEPGH7m
-sVMPTAswyiVLkPYJsOy6xp+PrWf8o/ytyNxgFu0Qpt9RAewwVRMEk77cMNuba3M=
-=qqpI
------END PGP SIGNATURE-----
+Thanks,
+Mark
 
---Xd6meC5WbNV8N0zk--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+>From f6ee9b582d2db652497b73c1f117591dfb6d3a90 Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 24 Jul 2015 15:01:08 +0200
+Subject: [PATCH] spi: imx: Fix small DMA transfers
+
+DMA transfers must be greater than the watermark level size. spi_imx->rx_wml
+and spi_imx->tx_wml contain the watermark level in 32bit words whereas struct
+spi_transfer contains the transfer len in bytes. Fix the check if DMA is
+possible for a transfer accordingly. This fixes transfers with sizes between
+33 and 128 bytes for which previously was claimed that DMA is possible.
+
+Fixes: f62caccd12c17e4 (spi: spi-imx: add DMA support)
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-imx.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index eb7d3a6fb14c..f9deb84e4e55 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -201,8 +201,9 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+ {
+ 	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
+ 
+-	if (spi_imx->dma_is_inited && (transfer->len > spi_imx->rx_wml)
+-	    && (transfer->len > spi_imx->tx_wml))
++	if (spi_imx->dma_is_inited
++	    && transfer->len > spi_imx->rx_wml * sizeof(u32)
++	    && transfer->len > spi_imx->tx_wml * sizeof(u32))
+ 		return true;
+ 	return false;
+ }
+-- 
+2.1.4

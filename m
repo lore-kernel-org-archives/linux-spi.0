@@ -1,108 +1,62 @@
-From: Michal Suchanek <hramrach@gmail.com>
-Subject: Re: [PATCH 08/11] MTD: m25p80: Add option to limit SPI transfer size.
-Date: Fri, 24 Jul 2015 13:20:32 +0200
-Message-ID: <CAOMqctR-bGJVrfbEK39eodDeZ5Nzf-EXxrGZ9iC+C09Tic8_VA@mail.gmail.com>
-References: <cover.1433364398.git.hramrach@gmail.com> <CAOMqctRnh2RsUYiRr2-+wucaq5NArTNrzPpqdPs+ETrFe9UrZA@mail.gmail.com>
- <CAOMqctREShUrBR=aQM2Vc6MhVezCP9rnNfUNq=m2-GH_gbYxFw@mail.gmail.com> <201507241034.15406.marex@denx.de>
+From: Lars Persson <lars.persson-VrBV9hrLPhE@public.gmane.org>
+Subject: Re: [PATCH] Revert "spi: bitbang: only toggle bitchanges"
+Date: Fri, 24 Jul 2015 13:48:00 +0200
+Message-ID: <1437738480.31818.5.camel@axis.com>
+References: <1437716236-12715-1-git-send-email-larper@axis.com>
+	 <20150724104419.GH11162@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Vinod Koul <vinod.koul@intel.com>,
-	MTD Maling List <linux-mtd@lists.infradead.org>,
-	"linux-samsung-soc@vger.kernel.org"
-	<linux-samsung-soc@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	dmaengine <dmaengine@vger.kernel.org>
-To: Marek Vasut <marex@denx.de>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <201507241034.15406.marex@denx.de>
-Sender: linux-samsung-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org" <m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150724104419.GH11162-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 24 July 2015 at 10:34, Marek Vasut <marex@denx.de> wrote:
-> On Thursday, July 23, 2015 at 07:03:47 PM, Michal Suchanek wrote:
->
-> Hi!
->
-> [...]
->
->> >>> It's probably slower to set up DMA for 2-byte commands but it might
->> >>> work nonetheless.
->> >>
->> >> It is, the overhead will be considerable. It might help the stability
->> >> though. I'm really looking forward to the results!
->> >
->> > Hello,
->> >
->> > this does not quite work.
->> >
->> > My test with spidev:
->> >
->> > # ./spinor /dev/spidev1.0
->> > Sending 9f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->> > Received 00 ff c8 60 16 c8 60 16 c8 60 16 c8 60 16 c8 60
->> > Sending 90 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->> > Received 00 ff ff ff ff c8 15 c8 15 c8 15 c8 15 c8 15 c8
->> > Sending 9f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->> > Received 00 ff c8 60 16 c8 60 16 c8 60 16 c8 60 16 c8 60
->> >
->> > I receive correct ID but spi-nor complains it does not know ID 00 c8 60.
->> > IIRC garbage should be sent only at the time command is transferred so
->> > only one byte of garbage should be received. Also the garbage tends to
->> > be the last state of the data output - all 0 or all 1.
->> > So it seems using DMA for all transfers including 1-byte commands
->> > results in (some?) received data getting an extra 00 prefix.
->> >
->> >
->> > I also managed to lock up the controller completely since there is
->> > some error passing the SPI speed somewhere :(
->> >
->> > [ 1352.977530] spidev spi1.0: setup mode 0, 8 bits/w, 80000000 Hz max -->
->> > 0 [ 1352.977540] spidev spi1.0: spi mode 0
->> > [ 1352.977576] spidev spi1.0: setup mode 0, 8 bits/w, 80000000 Hz max -->
->> > 0 [ 1352.977582] spidev spi1.0: msb first
->> > [ 1352.977614] spidev spi1.0: setup mode 0, 8 bits/w, 80000000 Hz max -->
->> > 0 [ 1352.977620] spidev spi1.0: 0 bits per word
->> > [ 1352.977652] spidev spi1.0: setup mode 0, 8 bits/w, 2690588672 Hz max
->> > --> 0 [ 1352.977726] spi_master spi1: s3c64xx_spi_config: clk_from_cmu 1
->> > src_clk sclk_spi1 mode bpw 8
->> > [ 1352.977753] spi_master spi1: spi1.0 s3c64xx_spi_transfer_one: xfer
->> > bpw 8 speed -1604378624
->> > [ 1352.977760] spi_master spi1: s3c64xx_spi_config: clk_from_cmu 1
->> > src_clk sclk_spi1 mode bpw 8
->> > [ 1352.977781] spi_master spi1: spi1.0 s3c64xx_spi_transfer_one: using
->> > dma [ 1352.977797] dma-pl330 121b0000.pdma: setting up request on thread
->> > 1
->>
->> Hmm, on a second thought it probably works as expected more or less.
->>
->> The nonsensical value was passed from application and there is no
->> guard against that.
->>
->> Since I don't do PIO the controller remains locked up indefinitely.
->
-> I have to admit, I don't quite understand the above. I also don't quite know
-> what your spidev test does.
+On Fri, 2015-07-24 at 12:44 +0200, Mark Brown wrote:
+> On Fri, Jul 24, 2015 at 07:37:16AM +0200, Lars Persson wrote:
+> > This reverts commit 232a5adc5199 ("spi: bitbang: only toggle
+> > bitchanges") because it breaks bitbanged SPI on our MIPS system. I
+> > found two problems with the patch:
+> > - oldbit must initially be computed from bit position 7, 15 or 31 of
+> >   word depending on the value of bits.
+> 
+> This might be a real issue but fixing it does not require a revert.
+> 
+> > - The optimization also does not eliminate consecutive ones because
+> >   the compare of 1<<31 and 1 will be false (a bool only takes values 0
+> >   or 1).
+> 
+> No, any non-zero value is true in C.  I assume you're talking about
+> this section of the diff:
+> 
+> > -		if ((flags & SPI_MASTER_NO_TX) == 0) {
+> > -			if ((word & (1 << 31)) != oldbit) {
+> > -				setmosi(spi, word & (1 << 31));
+> > -				oldbit = word & (1 << 31);
+> 
+> which looks fine - we see if the top bit is the same as the last top bit
+> we wrote, if it isn't we update the value output and record what we just
+> wrote.
 
-It does a full duplex transfer sending what is printed and printing
-what is received.
+No this is a misunderstanding about the semantics of the bool type.
+When assigning to the bool any non-zero value becomes 1.
+When comparing an integer against the bool, the bool is promoted to an
+integer.
 
-> Can you possibly just bind a regular SPI NOR driver
-> and run mtdtests to see if it is stable ?
+If we previously transmitted a one, oldbit equals 1.
+If current bit is a one, then (word & (1 << 31)) equals 1<<31.
 
-I can if I use PIO for short transfers. Using DMA for all transfers
-results in the received data prefixed with 00 so the NOR flash
-identification fails. Admittedly I have no idea what the flash memory
-actually contains so if all DMA reads were always prefixed with 00 I
-could not tell. I vaguely recall reading the whole content and parsing
-the
+((1<<31) != 1) is TRUE so we call setmosi again, hence no optimization
+for consecutive ones.
 
-I can probably make the minimum length for DMA configurable so I can
-fall back to PIO when the controler locks up. It seems setting up a
-PIO transfer makes it work again.
+Please do not mix bool and bitwise operations.
 
-Thanks
+- Lars
 
-Michal
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

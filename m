@@ -1,88 +1,74 @@
-From: Marek Vasut <marex@denx.de>
-Subject: Re: [PATCH 08/11] MTD: m25p80: Add option to limit SPI transfer size.
-Date: Fri, 24 Jul 2015 10:34:15 +0200
-Message-ID: <201507241034.15406.marex@denx.de>
-References: <cover.1433364398.git.hramrach@gmail.com> <CAOMqctRnh2RsUYiRr2-+wucaq5NArTNrzPpqdPs+ETrFe9UrZA@mail.gmail.com> <CAOMqctREShUrBR=aQM2Vc6MhVezCP9rnNfUNq=m2-GH_gbYxFw@mail.gmail.com>
+From: Ranjit Abhimanyu Waghmode <ranjit.waghmode@xilinx.com>
+Subject: RE: [RFC PATCH 0/2] spi: add dual parallel & stacked mode support
+ in Zynq MPSoC GQSPI controller
+Date: Fri, 24 Jul 2015 10:42:35 +0000
+Message-ID: <7CFCFE83B8145347A1D424EC939F1C3CA81D12@XAP-PVEXMBX01.xlnx.xilinx.com>
+References: <1436445895-25504-1-git-send-email-ranjit.waghmode@xilinx.com>
+ <20150714164005.GE11162@sirena.org.uk>
+ <7CFCFE83B8145347A1D424EC939F1C3CA7E53D@XAP-PVEXMBX01.xlnx.xilinx.com>
+ <20150715160146.GS11162@sirena.org.uk>
+ <7CFCFE83B8145347A1D424EC939F1C3CA7E758@XAP-PVEXMBX01.xlnx.xilinx.com>
+ <20150716085739.GT11162@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: Text/Plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Vinod Koul <vinod.koul@intel.com>,
-	MTD Maling List <linux-mtd@lists.infradead.org>,
-	"linux-samsung-soc@vger.kernel.org"
-	<linux-samsung-soc@vger.kernel.org>,
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Cc: Mark Brown <broonie@kernel.org>, Michal Simek <michals@xilinx.com>,
+	Soren Brinkmann <sorenb@xilinx.com>,
+	"zajec5@gmail.com" <zajec5@gmail.com>,
+	"marex@denx.de" <marex@denx.de>,
+	"shijie.huang@intel.com" <shijie.huang@intel.com>,
+	"juhosg@openwrt.org" <juhosg@openwrt.org>,
+	"ben@decadent.org.uk" <ben@decadent.org.uk>,
+	"linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
 	"linux-arm-kernel@lists.infradead.org"
 	<linux-arm-kernel@lists.infradead.org>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-spi" <linux-spi@vger.kernel.org>,
-	dmaengine <dmaengine@vger.kernel.org>
-To: Michal Suchanek <hramrach@gmail.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <CAOMqctREShUrBR=aQM2Vc6MhVezCP9rnNfUNq=m2-GH_gbYxFw@mail.gmail.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+	Harini Katakam <harinik@xilinx.com>,
+	Punnaiah Choudary Kalluri <punnaia@xilinx.com>,
+	"ran27jit@gmail.com" <ran27jit@gmail.com>,
+	"dwmw2@infradead.org" <dwmw2@infradead.org>,
+	"computersforpeace@gmail.com" <computersforpeace@gmail.com>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thursday, July 23, 2015 at 07:03:47 PM, Michal Suchanek wrote:
+Hi Mark,
 
-Hi!
+> > > For an example take two flashes connected in stacked mode.
+> > > For user it doesn't matter whether how many flashes are really connected.
+> > > There will be situation like, single partition is spread across two
+> > > flashes
+> > (partition staring at the end of one flash and continued to the second
+> > flash). But it has to be shown contiguous to user.
+> > > In this scenario, I am not clear how MTD layer will handle the case.
+> > > It would be great if you could just put some light on it.
+> >
+> > That's something for the MTD layer or possibly even a layer above it
+> > to worry about - this situation is the same as we have with disks
+> > where we have md which combines other devices, if something similar is
+> > needed for flash we should use a similar pattern.
 
-[...]
+To support the dual parallel mode in this controller, following minor things can be added to the driver.
+1) Controller needs to know in which mode it is working, then it's obvious to set the appropriate flag for the same
+2) There are more than one chip selects, so need to set the same
 
-> >>> It's probably slower to set up DMA for 2-byte commands but it might
-> >>> work nonetheless.
-> >> 
-> >> It is, the overhead will be considerable. It might help the stability
-> >> though. I'm really looking forward to the results!
-> > 
-> > Hello,
-> > 
-> > this does not quite work.
-> > 
-> > My test with spidev:
-> > 
-> > # ./spinor /dev/spidev1.0
-> > Sending 9f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-> > Received 00 ff c8 60 16 c8 60 16 c8 60 16 c8 60 16 c8 60
-> > Sending 90 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-> > Received 00 ff ff ff ff c8 15 c8 15 c8 15 c8 15 c8 15 c8
-> > Sending 9f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-> > Received 00 ff c8 60 16 c8 60 16 c8 60 16 c8 60 16 c8 60
-> > 
-> > I receive correct ID but spi-nor complains it does not know ID 00 c8 60.
-> > IIRC garbage should be sent only at the time command is transferred so
-> > only one byte of garbage should be received. Also the garbage tends to
-> > be the last state of the data output - all 0 or all 1.
-> > So it seems using DMA for all transfers including 1-byte commands
-> > results in (some?) received data getting an extra 00 prefix.
-> > 
-> > 
-> > I also managed to lock up the controller completely since there is
-> > some error passing the SPI speed somewhere :(
-> > 
-> > [ 1352.977530] spidev spi1.0: setup mode 0, 8 bits/w, 80000000 Hz max -->
-> > 0 [ 1352.977540] spidev spi1.0: spi mode 0
-> > [ 1352.977576] spidev spi1.0: setup mode 0, 8 bits/w, 80000000 Hz max -->
-> > 0 [ 1352.977582] spidev spi1.0: msb first
-> > [ 1352.977614] spidev spi1.0: setup mode 0, 8 bits/w, 80000000 Hz max -->
-> > 0 [ 1352.977620] spidev spi1.0: 0 bits per word
-> > [ 1352.977652] spidev spi1.0: setup mode 0, 8 bits/w, 2690588672 Hz max
-> > --> 0 [ 1352.977726] spi_master spi1: s3c64xx_spi_config: clk_from_cmu 1
-> > src_clk sclk_spi1 mode bpw 8
-> > [ 1352.977753] spi_master spi1: spi1.0 s3c64xx_spi_transfer_one: xfer
-> > bpw 8 speed -1604378624
-> > [ 1352.977760] spi_master spi1: s3c64xx_spi_config: clk_from_cmu 1
-> > src_clk sclk_spi1 mode bpw 8
-> > [ 1352.977781] spi_master spi1: spi1.0 s3c64xx_spi_transfer_one: using
-> > dma [ 1352.977797] dma-pl330 121b0000.pdma: setting up request on thread
-> > 1
+And for supporting the same dual parallel mode, MTD layer may need to update for:
+1) Adding TWO_FLASH support
+2) Adding DATA_STRIPE support
+3) For reading array size needs to be doubled.
+4) Need to access even addresses. Basically address/2.
+
+So kindly suggest your view on the above request.
+
+Regards,
+Ranjit
+
 > 
-> Hmm, on a second thought it probably works as expected more or less.
+> Kindly help in understanding, how can we represent the stacked mode and
+> parallel mode changes in MTD layer?
 > 
-> The nonsensical value was passed from application and there is no
-> guard against that.
-> 
-> Since I don't do PIO the controller remains locked up indefinitely.
-
-I have to admit, I don't quite understand the above. I also don't quite know
-what your spidev test does. Can you possibly just bind a regular SPI NOR driver 
-and run mtdtests to see if it is stable ?
+> Thanks & Regards,
+> Ranjit

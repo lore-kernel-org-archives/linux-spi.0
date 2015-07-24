@@ -1,109 +1,99 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3 3/4] spi: mediatek: Add spi bus for Mediatek MT8173
-Date: Fri, 24 Jul 2015 18:49:22 +0100
-Message-ID: <20150724174922.GT11162@sirena.org.uk>
-References: <1437642643-11966-1-git-send-email-leilk.liu@mediatek.com>
- <1437642643-11966-4-git-send-email-leilk.liu@mediatek.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="fNOZNvBbfUx8KYZM"
-Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Subject: Applied "spi: support spi without dma channel to use can_dma()" to the spi tree
+Date: Fri, 24 Jul 2015 18:49:44 +0100
+Message-ID: <E1ZIh6O-0002zu-1C@debutante>
+References: <1435583070-9600-2-git-send-email-leilk.liu@mediatek.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1437642643-11966-4-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <1435583070-9600-2-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---fNOZNvBbfUx8KYZM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   spi: support spi without dma channel to use can_dma()
 
-On Thu, Jul 23, 2015 at 05:10:42PM +0800, Leilk Liu wrote:
+has been applied to the spi tree at
 
-This basically seems fine but there's a couple of issues that should be
-relatively easy to fix:
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> +	mdata->cur_transfer =3D xfer;
-> +	mtk_spi_prepare_transfer(master, xfer);
-> +	mtk_spi_setup_packet(master, xfer);
-> +
-> +	cnt =3D (xfer->len % 4) ? (xfer->len / 4 + 1) : (xfer->len / 4);
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-Please write this as an if statement for legibility.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-> +static bool mtk_spi_can_dma(struct spi_master *master,
-> +			    struct spi_device *spi,
-> +			    struct spi_transfer *xfer)
-> +{
-> +	struct mtk_spi *mdata =3D spi_master_get_devdata(master);
-> +
-> +	if (xfer->len > MTK_SPI_MAX_FIFO_SIZE)
-> +		mdata->use_dma =3D true;
-> +	else
-> +		mdata->use_dma =3D false;
-> +
-> +	return mdata->use_dma;
-> +}
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-This is broken since can_dma() can be called multiple transfers before
-actually doing a transfer (the current implementation loops over all
-transfers in a message before starting the message) - you can't store
-any local data.  The transfer_one() function should do another can_dma()
-check to decide if it can DMA, it shouldn't rely on driver global data. =20
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-> +	if (!mdata->use_dma) {
-> +		if (trans->rx_buf) {
+Thanks,
+Mark
 
-This should be a variable set when doing the transfer (or perhaps based
-on checking spi->cur_xfer with can_dma()).=20
+>From c37f45b5f1cdfcdc351d88950b32658c970582ca Mon Sep 17 00:00:00 2001
+From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Date: Thu, 23 Jul 2015 17:10:40 +0800
+Subject: [PATCH] spi: support spi without dma channel to use can_dma()
 
-> +			for (i =3D 0; i < trans->len; i++) {
-> +				if (i % 4 =3D=3D 0)
-> +					reg_val =3D
-> +					readl(mdata->base + SPI_RX_DATA_REG);
-> +				*((u8 *)(trans->rx_buf + i)) =3D
-> +					(reg_val >> ((i % 4) * 8)) & 0xff;
+For spi without dma channel and use can_dma(), it can
+use master->dev for struct device.
 
-This isn't the clearest code ever...  a comment would help.
+Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi.c | 22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
-> +	if (mdata->tx_sgl && (mdata->tx_sgl_len =3D=3D 0)) {
-> +		mdata->tx_sgl =3D sg_next(mdata->tx_sgl);
-> +		if (mdata->tx_sgl) {
-> +			trans->tx_dma =3D sg_dma_address(mdata->tx_sgl);
-> +			mdata->tx_sgl_len =3D sg_dma_len(mdata->tx_sgl);
-> +		}
-> +	}
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index cf8b91b23a76..f725085a5f07 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -539,8 +539,15 @@ static int __spi_map_msg(struct spi_master *master, struct spi_message *msg)
+ 	if (!master->can_dma)
+ 		return 0;
+ 
+-	tx_dev = master->dma_tx->device->dev;
+-	rx_dev = master->dma_rx->device->dev;
++	if (master->dma_tx)
++		tx_dev = master->dma_tx->device->dev;
++	else
++		tx_dev = &master->dev;
++
++	if (master->dma_rx)
++		rx_dev = master->dma_rx->device->dev;
++	else
++		rx_dev = &master->dev;
+ 
+ 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+ 		if (!master->can_dma(master, msg->spi, xfer))
+@@ -579,8 +586,15 @@ static int __spi_unmap_msg(struct spi_master *master, struct spi_message *msg)
+ 	if (!master->cur_msg_mapped || !master->can_dma)
+ 		return 0;
+ 
+-	tx_dev = master->dma_tx->device->dev;
+-	rx_dev = master->dma_rx->device->dev;
++	if (master->dma_tx)
++		tx_dev = master->dma_tx->device->dev;
++	else
++		tx_dev = &master->dev;
++
++	if (master->dma_rx)
++		rx_dev = master->dma_rx->device->dev;
++	else
++		rx_dev = &master->dev;
+ 
+ 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+ 		if (!master->can_dma(master, msg->spi, xfer))
+-- 
+2.1.4
 
-There's a *lot* of code in this interrupt handler, and a lot of it looks
-an awful lot like the contents of mtk_spi_dma_transfer() has been
-cut'n'pasted in.  The shared code should all be factored out into a
-function called from both places.
-
---fNOZNvBbfUx8KYZM
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVsnqhAAoJECTWi3JdVIfQCl8H/01bnBwUdNC9G0XaTE5e8keW
-tsObBdeG5x98z0txYDA8RKCn5h7kNUYJOnRtI+zd9nK+xLk5Ibyh4PIK17m3/RaI
-mZJtpkZPyY32l1KRgR1akNTBC1+y7moll1co4gdyHvkVAv2c13nugzj3TDK6ZYmt
-Km2NM9QJUWXljxVRvFCUaA5/nSJWJ4EPCgIlTG6pczq0VtzdcqBFiUhMOtFNB8C5
-1VTaNLnF2JwgIZH4Z+gZX/4PNnZSj3VeWAvFK/7aidGBaACzAOKwHOpwvtsuTOPt
-s5Z00bJlY0CzIrh00G9v4FdJqmcJMSs34z21iUIL/NoxltnE351dFqlX/cb2ah0=
-=c+JI
------END PGP SIGNATURE-----
-
---fNOZNvBbfUx8KYZM--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

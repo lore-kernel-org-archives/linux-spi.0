@@ -1,152 +1,92 @@
-From: Michal Suchanek <hramrach@gmail.com>
-Subject: Re: [PATCH 08/11] MTD: m25p80: Add option to limit SPI transfer size.
-Date: Thu, 23 Jul 2015 19:03:47 +0200
-Message-ID: <CAOMqctREShUrBR=aQM2Vc6MhVezCP9rnNfUNq=m2-GH_gbYxFw@mail.gmail.com>
-References: <cover.1433364398.git.hramrach@gmail.com> <201507221024.05496.marex@denx.de>
- <CAOMqctTyHF1ciN3-0yg1smYJ5kbuwfT_kmavTL8ARuZ69wSgAg@mail.gmail.com>
- <201507221101.56441.marex@denx.de> <CAOMqctRnh2RsUYiRr2-+wucaq5NArTNrzPpqdPs+ETrFe9UrZA@mail.gmail.com>
+From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: bcm2835: add spi-bcm2835aux driver for the auxiliar
+ spi1 and spi2
+Date: Thu, 23 Jul 2015 22:09:30 -0600
+Message-ID: <55B1BA7A.1090104@wwwdotorg.org>
+References: <1434980408-4086-1-git-send-email-kernel@martin.sperl.org> <55A0A150.3060809@wwwdotorg.org> <ECFBB7BF-1316-4565-B1F2-FB2651131882@martin.sperl.org> <55A49662.3000706@wwwdotorg.org> <2768BFA9-7FE9-4EDC-8692-AC3F070BD874@martin.sperl.org> <55AEF828.20908@wwwdotorg.org> <0125992E-40F4-4702-8404-2943FF9A8788@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Vinod Koul <vinod.koul@intel.com>,
-	MTD Maling List <linux-mtd@lists.infradead.org>,
-	"linux-samsung-soc@vger.kernel.org"
-	<linux-samsung-soc@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	dmaengine <dmaengine@vger.kernel.org>
-To: Marek Vasut <marex@denx.de>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <CAOMqctRnh2RsUYiRr2-+wucaq5NArTNrzPpqdPs+ETrFe9UrZA@mail.gmail.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Cc: "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <0125992E-40F4-4702-8404-2943FF9A8788-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 23 July 2015 at 18:46, Michal Suchanek <hramrach@gmail.com> wrote:
-> On 22 July 2015 at 11:01, Marek Vasut <marex@denx.de> wrote:
->> On Wednesday, July 22, 2015 at 10:38:14 AM, Michal Suchanek wrote:
->>> On 22 July 2015 at 10:24, Marek Vasut <marex@denx.de> wrote:
->>> > On Wednesday, July 22, 2015 at 10:18:04 AM, Michal Suchanek wrote:
->>> >> On 22 July 2015 at 09:58, Marek Vasut <marex@denx.de> wrote:
->>> >> > On Wednesday, July 22, 2015 at 09:45:27 AM, Michal Suchanek wrote:
->>> >> >> On 22 July 2015 at 09:33, Marek Vasut <marex@denx.de> wrote:
->>> >> >> > On Wednesday, July 22, 2015 at 09:30:54 AM, Michal Suchanek wrote:
->>> >> >> >> On 22 July 2015 at 06:49, Vinod Koul <vinod.koul@intel.com> wrote:
->>> >> >> >> > On Tue, Jul 21, 2015 at 10:14:11AM +0200, Michal Suchanek wrote:
->>> >> >> >> >> > Or alternatively we could publish the limitations of the
->>> >> >> >> >> > channel using capabilities so SPI knows I have a dmaengine
->>> >> >> >> >> > channel and it can transfer max N length transfers so would
->>> >> >> >> >> > be able to break rather than guessing it or coding in DT.
->>> >> >> >> >> > Yes it may come from DT but that should be dmaengine driver
->>> >> >> >> >> > rather than client driver :)
->>> >> >> >> >> >
->>> >> >> >> >> > This can be done by dma_get_slave_caps(chan, &caps)
->>> >> >> >> >> >
->>> >> >> >> >> > And we add max_length as one more parameter to existing set
->>> >> >> >> >> >
->>> >> >> >> >> > Also all this could be handled in generic SPI-dmaengine layer
->>> >> >> >> >> > so that individual drivers don't have to code it in
->>> >> >> >> >> >
->>> >> >> >> >> > Let me know if this idea is okay, I can push the dmaengine
->>> >> >> >> >> > bits...
->>> >> >> >> >>
->>> >> >> >> >> It would be ok if there was a fixed limit. However, the limit
->>> >> >> >> >> depends on SPI slave settings. Presumably for other buses using
->>> >> >> >> >> the dmaengine the limit would depend on the bus or slave
->>> >> >> >> >> settings as well. I do not see a sane way of passing this all
->>> >> >> >> >> the way to the dmaengine driver.
->>> >> >> >> >
->>> >> >> >> > I don't see why this should be client (SPI) dependent. The max
->>> >> >> >> > length supported is a dmaengine constraint, typically flowing
->>> >> >> >> > from max blocks/length it can transfer. Know this limit can
->>> >> >> >> > allow clients to split transfers.
->>> >> >> >>
->>> >> >> >> In practice on the board I have the maximum transfer length before
->>> >> >> >> it fails depends on SPI bus speed which is set up per slave. I
->>> >> >> >> did not try searching the space of possible settings thorougly
->>> >> >> >> and settled for a setting that gives reasonable speed and
->>> >> >> >> transfer length.
->>> >> >> >
->>> >> >> > This looks more like a signal integrity issue though.
->>> >> >>
->>> >> >> It certainly does on the surface. However, when wrong data is
->>> >> >> delivered over the SPI bus (such as when I use wrong phase setting)
->>> >> >> the SPI controller happily delivers wrong data over PIO.
->>> >> >>
->>> >> >> The failure I am seeing is that the pl330 DMA program which
->>> >> >> repeatedly waits for data from the SPI controller never finishes the
->>> >> >> read loop and does not signal the interrupt. It seems it also leaves
->>> >> >> some data in a FIFO somewhere so next command on the flash returns
->>> >> >> garbage and fails.
->>> >> >
->>> >> > I observed something similar on MXS (mx28) SPI block. Do you use mixed
->>> >> > PIO/DMA mode perhaps ?
->>> >>
->>> >> The SPI driver uses PIO for short transfers and DMA for transfers
->>> >> longer than the controller FIFO. This seems to be the standard way to
->>> >> do things.It works flawlessly so long as submitting overly long DMA
->>> >> programs is avoided.
->>> >
->>> > Can you try doing JUST DMA, no PIO ? I remember seeing some bus
->>> > synchronisation issues when I did mixed PIO/DMA on the MXS and it was
->>> > nasty to track down. Just give pure DMA a go to see if the thing
->>> > stabilizes somehow.
->>>
->>> It's probably slower to set up DMA for 2-byte commands but it might
->>> work nonetheless.
+On 07/22/2015 10:28 AM, Martin Sperl wrote:
+> 
+> 
+>> On 22.07.2015, at 03:55, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org> wrote:
 >>
->> It is, the overhead will be considerable. It might help the stability
->> though. I'm really looking forward to the results!
+>> However, I'd like to see a "semantic" driver for the shared register
+>> region rather than a "syscon". IIUC, "syscon" simply provides a stylized
+>> way for one driver to touch some shared registers directly without any
+>> semantics. I'd strongly prefer to see a real driver inside Linux rather
+>> than something that just lets drivers fiddle with the shared registers
+>> willy nilly. Still, this aspect is an internal implementation detail
+>> inside the kernel that we can change without external impact later if we
+>> need.
 >>
->
-> Hello,
->
-> this does not quite work.
->
-> My test with spidev:
->
-> # ./spinor /dev/spidev1.0
-> Sending 9f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-> Received 00 ff c8 60 16 c8 60 16 c8 60 16 c8 60 16 c8 60
-> Sending 90 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-> Received 00 ff ff ff ff c8 15 c8 15 c8 15 c8 15 c8 15 c8
-> Sending 9f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-> Received 00 ff c8 60 16 c8 60 16 c8 60 16 c8 60 16 c8 60
->
-> I receive correct ID but spi-nor complains it does not know ID 00 c8 60.
-> IIRC garbage should be sent only at the time command is transferred so
-> only one byte of garbage should be received. Also the garbage tends to
-> be the last state of the data output - all 0 or all 1.
-> So it seems using DMA for all transfers including 1-byte commands
-> results in (some?) received data getting an extra 00 prefix.
->
+>> More concerning: The bcm283x HW doesn't implement a "syscon" module, but
+>> some semantic IP block. The DT should contain a real compatible value
+>> that describes what the HW block really is, not just "syscon". We could
+>> bind the syscon driver to this compatible value if we have to for
+> 
+> So, do I understand you correctly that if we would call the node 
+> bcm2835aux_enable as syscon with only the enable bit field register in it 
+> and add a enable_reg (pointing to the above) and enable_reg_mask=2 or 4
+> to the spi1/2 nodes then it would be acceptable? 
+> 
+> Would look like this:
+> spi2@7e2150c0 {
+> +    compatible = "brcm,bcm2835-aux-spi";
+> +    reg = <0x7e2150c0 0x40>;
+> +    interrupts = <1 29>;
+> +    clocks = <&clk_spi>;
+> +    #address-cells = <1>;
+> +    #size-cells = <0>;
+> +    cs-gpios = <&gpio 43>, <&gpio 44>, <&gpio 45>;
+> +    enable_reg = <&bcm2835aux_enable>;
+> +    enable_reg_mask = 4;
+> +};
+> +
+> +/* the necessary syscon config referenced above */
+> +bcm2835aux_enable: bcm2835aux_enable@0x7e215004 {
+> +    compatible = "syscon";
+> +    reg = <0x7e215004 0x04>;
+> +};
+> 
+> 
+> The uart aux driver would use:
+> +    enable_reg = <&bcm2835aux_enable>;
+> +    enable_reg_mask = 1;
 
-> I also managed to lock up the controller completely since there is
-> some error passing the SPI speed somewhere :(
->
-> [ 1352.977530] spidev spi1.0: setup mode 0, 8 bits/w, 80000000 Hz max --> 0
-> [ 1352.977540] spidev spi1.0: spi mode 0
-> [ 1352.977576] spidev spi1.0: setup mode 0, 8 bits/w, 80000000 Hz max --> 0
-> [ 1352.977582] spidev spi1.0: msb first
-> [ 1352.977614] spidev spi1.0: setup mode 0, 8 bits/w, 80000000 Hz max --> 0
-> [ 1352.977620] spidev spi1.0: 0 bits per word
-> [ 1352.977652] spidev spi1.0: setup mode 0, 8 bits/w, 2690588672 Hz max --> 0
-> [ 1352.977726] spi_master spi1: s3c64xx_spi_config: clk_from_cmu 1
-> src_clk sclk_spi1 mode bpw 8
-> [ 1352.977753] spi_master spi1: spi1.0 s3c64xx_spi_transfer_one: xfer
-> bpw 8 speed -1604378624
-> [ 1352.977760] spi_master spi1: s3c64xx_spi_config: clk_from_cmu 1
-> src_clk sclk_spi1 mode bpw 8
-> [ 1352.977781] spi_master spi1: spi1.0 s3c64xx_spi_transfer_one: using dma
-> [ 1352.977797] dma-pl330 121b0000.pdma: setting up request on thread 1
+I think I'd expect the shared registers to be:
 
-Hmm, on a second thought it probably works as expected more or less.
+bcm2835aux: misc@0x7e215000 {
+    compatible = "brcm,bcm2835-aux";
+    reg = <0x7e215000 0x08>;
+};
 
-The nonsensical value was passed from application and there is no
-guard against that.
+There are two 4-byte registers outside the UART/SPI blocks, and the
+compatible value should reflect what the block is, not that Linux may
+use a syscon driver to implement the driver for it.
 
-Since I don't do PIO the controller remains locked up indefinitely.
+In the client, I'd expect a more semantic naming for the reference;
+something like:
 
-Thanks
+	brcm,aux = <&bcm2835aux 4>;
 
-Michal
+brcm, since it's a custom/vendor-specific property. aux is the name of
+the object that's referenced. Packing the phandle and data together into
+a single property reduces the number of separate properties, and is a
+typical thing to do in a client of a service in DT.
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

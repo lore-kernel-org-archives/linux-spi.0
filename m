@@ -1,64 +1,71 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 0/2] spi: dw: Reintroduce optional 16 bit data
- register I/O
-Date: Fri, 24 Jul 2015 16:37:04 +0100
-Message-ID: <20150724153704.GM11162@sirena.org.uk>
-References: <1434703435-25198-1-git-send-email-michael@smart-africa.com>
- <1435163696-14767-1-git-send-email-michael@smart-africa.com>
- <1437751812.29746.74.camel@linux.intel.com>
+Subject: Re: [PATCH] spi: omap2-mcspi: add runtime PM to set_cs()
+Date: Fri, 24 Jul 2015 17:39:46 +0100
+Message-ID: <20150724163946.GN11162@sirena.org.uk>
+References: <1437590769-14632-1-git-send-email-sre@kernel.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="UvsY/zkrzYLy0cwT"
-Cc: Michael van der Westhuizen <michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Steffen Trumtrar <s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="TA910QTX7AD8TylE"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Michael Welling <mwelling-EkmVulN54Sk@public.gmane.org>,
+	Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>
+To: Sebastian Reichel <sre-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1437751812.29746.74.camel-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <1437590769-14632-1-git-send-email-sre-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---UvsY/zkrzYLy0cwT
+--TA910QTX7AD8TylE
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jul 24, 2015 at 06:30:12PM +0300, Andy Shevchenko wrote:
-> On Wed, 2015-06-24 at 18:34 +0200, Michael van der Westhuizen wrote:
+On Wed, Jul 22, 2015 at 08:46:09PM +0200, Sebastian Reichel wrote:
+> Since commit ddcad7e9068eb omap2_mcspi_set_cs() is called without
+> runtime power management requested. Thus the below kernel oops may be
+> generated if a device is accessed after the runtime power management
+> timeout. This patch fixes the problem by requesting runtime power
+> management in omap2_mcspi_set_cs().
+>=20
+> [   13.933959] Unhandled fault: external abort on non-linefetch (0x1028) =
+at 0xfa09802c
+> [   13.940490] pgd =3D cfb38000
+> [   13.946594] [fa09802c] *pgd=3D48011452(bad)
+> [   13.952758] Internal error: : 1028 [#1] PREEMPT ARM
+> [   13.958862] Modules linked in: tsc2005(+) omap_sham twl4030_wdt omap_w=
+dt
+> [   13.965332] CPU: 0 PID: 183 Comm: modprobe Not tainted 4.2.0-rc1+ #363
+> [   13.971801] Hardware name: Nokia RX-51 board
+> [   13.978302] task: cf572300 ti: cb1f2000 task.ti: cb1f2000
+> [   13.984924] PC is at omap2_mcspi_set_cs+0x44/0x4c
+> [   13.991485] LR is at spi_set_cs+0x5c/0x60
 
-> > With this series applied:
-> >   m25p80 spi32766.0: m25p40 (512 Kbytes)
+Please don't paste entire backtraces into commit messages, they are very
+large and almost entirely noise (for example in this case the entire
+explanation is in the commit message itself).  If you feel a backtrace
+helps clarify things then please present an *edited* highlight of the
+relevant sections.
+present
 
-> Mark, what do you think about this? For me it looks okay.
-
-Please don't send content free pings, if you want me to review a patch
-please send me the patch.
-
---UvsY/zkrzYLy0cwT
+--TA910QTX7AD8TylE
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVslufAAoJECTWi3JdVIfQggYH/Rf1VBwWpETM1yQrY7hs+i4r
-L9xDtWm9pTqcPhqxCUr2OQZ2bvCdZyBx7SzNYOWuFGF1bSdGQjNjDiu5hi/r0yeC
-5rzCDHkMcV4JGwD4JpUCTrvRhpsiGldZUZl8jJBdLJiifDd6HNoUiVMvSck6kWiY
-mCwCu6yw9GEzrJzYW4Zwial6iKvdBDXAI3EzWcKHt8DhQZRzsiCZ4ZoLTikN6sTZ
-x/akdakDmMCO0SWG8mxbcyvUZGcvK5axPLESsTEiBhkJSgHRzxhLYyjoGyVZCMir
-2vOgo6bepHVxXwb51POSPPFsEPYuPHO5HaWICvNlbV+wW4IzxTp4W+A0EBUkBuY=
-=uK2k
+iQEcBAEBCAAGBQJVsmpRAAoJECTWi3JdVIfQ6ZQH/1cYJQE/fY4/OCRRu8Ey5nSc
+m9jwFnrTrSwp4eUqEiYQwa1Z7cXAVAWNd29M6k19PGYYRMGU0H5CqRlQX23kTFjk
+u9Rsk+yBXzpO2hon9xKfxrdTc2pn8Qlv6LGY1vHWBtKUdgcbI/9qn/PcgC/D8bTf
+subeq+9QB0LzUnzrwne71F31tmWjwTPIfOZ0E4Nqmz/MzdFPrqTtmjPUn2xs0OIW
+0IYRcBWsvvCT2YRiHDBSinfSm0R3bDLX8R5nHKEPg6FqPj/FSBcVq9HWrw3YxGRM
+h5vi2EU4eVMWg6dxiLVdMfMb2nkTgTF0FutjgiBJEmHPRwEhooqBLsJk4c9wxJA=
+=KCak
 -----END PGP SIGNATURE-----
 
---UvsY/zkrzYLy0cwT--
+--TA910QTX7AD8TylE--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

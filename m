@@ -1,37 +1,93 @@
-From: leilk liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCH v3 2/4] dt-bindings: ARM: Mediatek: Document devicetree
- bindings for spi bus
-Date: Mon, 27 Jul 2015 10:38:49 +0800
-Message-ID: <1437964729.24722.0.camel@mhfsdcap03>
+From: leilk liu <leilk.liu@mediatek.com>
+Subject: Re: [PATCH v3 3/4] spi: mediatek: Add spi bus for Mediatek MT8173
+Date: Mon, 27 Jul 2015 10:48:47 +0800
+Message-ID: <1437965327.24722.2.camel@mhfsdcap03>
 References: <1437642643-11966-1-git-send-email-leilk.liu@mediatek.com>
-	 <1437642643-11966-3-git-send-email-leilk.liu@mediatek.com>
-	 <20150724173446.GS11162@sirena.org.uk>
+	 <1437642643-11966-4-git-send-email-leilk.liu@mediatek.com>
+	 <20150724174922.GT11162@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150724173446.GS11162-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Mark Rutland <mark.rutland@arm.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>,
+	<linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20150724174922.GT11162@sirena.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, 2015-07-24 at 18:34 +0100, Mark Brown wrote:
-> On Thu, Jul 23, 2015 at 05:10:41PM +0800, Leilk Liu wrote:
-> > Change-Id: I6cadbf2e51d2cc4eacd518a24d5a9a1da93d4db5
-> > Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+On Fri, 2015-07-24 at 18:49 +0100, Mark Brown wrote:
+> On Thu, Jul 23, 2015 at 05:10:42PM +0800, Leilk Liu wrote:
 > 
-> Please don't include noise like Change-Id in upstream commits and please
-> use subject lines reflecting the style for the subsystem.
+> This basically seems fine but there's a couple of issues that should be
+> relatively easy to fix:
+> 
+> > +	mdata->cur_transfer = xfer;
+> > +	mtk_spi_prepare_transfer(master, xfer);
+> > +	mtk_spi_setup_packet(master, xfer);
+> > +
+> > +	cnt = (xfer->len % 4) ? (xfer->len / 4 + 1) : (xfer->len / 4);
+> 
+> Please write this as an if statement for legibility.
+> 
 
 OK, I'll fix it.
 
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> > +static bool mtk_spi_can_dma(struct spi_master *master,
+> > +			    struct spi_device *spi,
+> > +			    struct spi_transfer *xfer)
+> > +{
+> > +	struct mtk_spi *mdata = spi_master_get_devdata(master);
+> > +
+> > +	if (xfer->len > MTK_SPI_MAX_FIFO_SIZE)
+> > +		mdata->use_dma = true;
+> > +	else
+> > +		mdata->use_dma = false;
+> > +
+> > +	return mdata->use_dma;
+> > +}
+> 
+> This is broken since can_dma() can be called multiple transfers before
+> actually doing a transfer (the current implementation loops over all
+> transfers in a message before starting the message) - you can't store
+> any local data.  The transfer_one() function should do another can_dma()
+> check to decide if it can DMA, it shouldn't rely on driver global data.  
+> 
+
+OK, I'll fix it.
+
+> > +	if (!mdata->use_dma) {
+> > +		if (trans->rx_buf) {
+> 
+> This should be a variable set when doing the transfer (or perhaps based
+> on checking spi->cur_xfer with can_dma()). 
+> 
+> > +			for (i = 0; i < trans->len; i++) {
+> > +				if (i % 4 == 0)
+> > +					reg_val =
+> > +					readl(mdata->base + SPI_RX_DATA_REG);
+> > +				*((u8 *)(trans->rx_buf + i)) =
+> > +					(reg_val >> ((i % 4) * 8)) & 0xff;
+> 
+> This isn't the clearest code ever...  a comment would help.
+> 
+OK, I'll fix it.
+
+> > +	if (mdata->tx_sgl && (mdata->tx_sgl_len == 0)) {
+> > +		mdata->tx_sgl = sg_next(mdata->tx_sgl);
+> > +		if (mdata->tx_sgl) {
+> > +			trans->tx_dma = sg_dma_address(mdata->tx_sgl);
+> > +			mdata->tx_sgl_len = sg_dma_len(mdata->tx_sgl);
+> > +		}
+> > +	}
+> 
+> There's a *lot* of code in this interrupt handler, and a lot of it looks
+> an awful lot like the contents of mtk_spi_dma_transfer() has been
+> cut'n'pasted in.  The shared code should all be factored out into a
+> function called from both places.
+
+OK, I'll fix it.

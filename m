@@ -1,79 +1,67 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 0/2] spi: dw: Reintroduce optional 16 bit data
- register I/O
-Date: Mon, 27 Jul 2015 12:19:44 +0100
-Message-ID: <20150727111944.GW11162@sirena.org.uk>
-References: <1434703435-25198-1-git-send-email-michael@smart-africa.com>
- <1435163696-14767-1-git-send-email-michael@smart-africa.com>
- <1437751812.29746.74.camel@linux.intel.com>
- <20150724153704.GM11162@sirena.org.uk>
- <1437994691.29746.80.camel@linux.intel.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="MTX7jVBcmGa87v7U"
-Cc: Michael van der Westhuizen <michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+From: Michael van der Westhuizen <michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>
+Subject: [RESEND PATCH v2 0/2] spi: dw: Reintroduce optional 16 bit data register I/O
+Date: Mon, 27 Jul 2015 13:37:13 +0200
+Message-ID: <1437997035-3046-1-git-send-email-michael@smart-africa.com>
+References: <1435163696-14767-1-git-send-email-michael@smart-africa.com>
+Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	Steffen Trumtrar <s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
 	Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>,
+	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
 	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
 	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Michael van der Westhuizen <michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1437994691.29746.80.camel-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <1435163696-14767-1-git-send-email-michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The commit dd11444327ce ("spi: dw-spi: Convert 16bit accesses to 32bit
+accesses") globally changed all register access in the dw_apb_ssi driver
+to 32 bit access, which breaks data register (FIFO) access on picoXcell
+platforms.
 
---MTX7jVBcmGa87v7U
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This series introduces a boolean to the core spi-dw driver to indicate
+to the core that 16 bit data register access is appropriate, implements
+the code that respects that flag and updates the dw-spi-mmio driver to
+allow setting this boolean from the device tree.
 
-On Mon, Jul 27, 2015 at 01:58:11PM +0300, Andy Shevchenko wrote:
-> On Fri, 2015-07-24 at 16:37 +0100, Mark Brown wrote:
+A binding documentation fix is included in this series.
 
-> > Please don't send content free pings, if you want me to review a=20
-> > patch
-> > please send me the patch.
+Prior to applying this change the following error presents on
+a picoCell pc3x3 platform:
+  spi_master spi32766: interrupt_transfer: fifo overrun/underrun
+  m25p80 spi32766.0: error -5 reading 9f
+  m25p80: probe of spi32766.0 failed with error -5
 
-> Hmm=E2=80=A6 It's strange since patch series was sent to mailing list (Cc=
-'ed to
-> you) on 24.06 [1].
+With this series applied:
+  m25p80 spi32766.0: m25p40 (512 Kbytes)
 
-> [1]=20
-> https://www.mail-archive.com/linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org/msg05530.html
+(Resend requested by Mark Brown)
 
-> P.S. It has not mine authorship, though I can resend the series if
-> needed.
+Changes in v2:
+  - Incorporate review feedback from Andy Shevchenko, reworking the
+    bindings to reflect common practice and adjusting the driver
+    to suit.
+  - Add a wrapper inline function for accessing the data register
+    using the configured with.
 
-It's possible there was some discussion of the patch that made
-it look it needed a resubmit, or that it was buried as reply in the
-middle of discussion of some other patches (eg, a previous version).
-Either way to repeat what I said if you want me to review a patch please
-send me the patch.
+Michael van der Westhuizen (2):
+  dt: snps,dw-apb-ssi: Document new I/O data register width property
+  spi: dw: Allow interface drivers to limit data I/O to word sizes
 
---MTX7jVBcmGa87v7U
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+ drivers/spi/spi-dw-mmio.c |  4 ++++
+ drivers/spi/spi-dw.c      |  4 ++--
+ drivers/spi/spi-dw.h      | 35 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 41 insertions(+), 2 deletions(-)
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+-- 
+2.1.4
 
-iQEcBAEBCAAGBQJVthPPAAoJECTWi3JdVIfQ3MQH/2H/cwnDWWibABlqk1ABp0r5
-esadJhchaqQka5W9Gb+yWgQQA0fDG/Ri1E/AE6gNQ1bD6f4ZUsCHO2YYMBtv50Yc
-W6ROaFc1qOJY74t2uZQXB2qTv2QdJoJ3FjPF8Sr9owlm0UVSI7Iu/dKffl5lRsBW
-l/QQRXYrPlheXF6jSFNROxx+Yo2svLAzcDULrwgvEKbj1DBvDFOnAqjkE9kTSf5j
-Mm4WFPZIuSK8aMgNXdzyJkyjpExCVpWgMZjR3vRt5zb4pJ9KTUNLysT+fyp3Sszx
-odeWoF49DJeIT+9OmHh1WQOYV1X6c2zIREy3lhL0wmSyWsMc+evpLve84g5CGXk=
-=YPsL
------END PGP SIGNATURE-----
-
---MTX7jVBcmGa87v7U--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

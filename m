@@ -1,143 +1,60 @@
-From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 08/11] MTD: m25p80: Add option to limit SPI transfer size.
-Date: Mon, 27 Jul 2015 11:46:25 +0200
-Message-ID: <CAOMqctTsA5ZxBWFTzirqhQBoR2sO6B+uMFXWMHuSVb_EygCDvw@mail.gmail.com>
-References: <cover.1433364398.git.hramrach@gmail.com> <CAOMqctRnh2RsUYiRr2-+wucaq5NArTNrzPpqdPs+ETrFe9UrZA@mail.gmail.com>
- <CAOMqctREShUrBR=aQM2Vc6MhVezCP9rnNfUNq=m2-GH_gbYxFw@mail.gmail.com> <201507241034.15406.marex@denx.de>
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [PATCH v2 0/2] spi: dw: Reintroduce optional 16 bit data
+ register I/O
+Date: Mon, 27 Jul 2015 13:58:11 +0300
+Message-ID: <1437994691.29746.80.camel@linux.intel.com>
+References: <1434703435-25198-1-git-send-email-michael@smart-africa.com>
+	 <1435163696-14767-1-git-send-email-michael@smart-africa.com>
+	 <1437751812.29746.74.camel@linux.intel.com>
+	 <20150724153704.GM11162@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Cc: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org"
-	<linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	dmaengine <dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <201507241034.15406.marex-ynQEQJNshbs@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Michael van der Westhuizen <michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Steffen Trumtrar <s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150724153704.GM11162-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-On 24 July 2015 at 10:34, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
-> On Thursday, July 23, 2015 at 07:03:47 PM, Michal Suchanek wrote:
->
-> Hi!
->
-> [...]
->
->> >>> It's probably slower to set up DMA for 2-byte commands but it might
->> >>> work nonetheless.
->> >>
->> >> It is, the overhead will be considerable. It might help the stability
->> >> though. I'm really looking forward to the results!
->> >
->> > Hello,
->> >
->> > this does not quite work.
->> >
->> > My test with spidev:
->> >
->> > # ./spinor /dev/spidev1.0
->> > Sending 9f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->> > Received 00 ff c8 60 16 c8 60 16 c8 60 16 c8 60 16 c8 60
->> > Sending 90 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->> > Received 00 ff ff ff ff c8 15 c8 15 c8 15 c8 15 c8 15 c8
->> > Sending 9f 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->> > Received 00 ff c8 60 16 c8 60 16 c8 60 16 c8 60 16 c8 60
->> >
->> > I receive correct ID but spi-nor complains it does not know ID 00 c8 60.
->> > IIRC garbage should be sent only at the time command is transferred so
->> > only one byte of garbage should be received. Also the garbage tends to
->> > be the last state of the data output - all 0 or all 1.
->> > So it seems using DMA for all transfers including 1-byte commands
->> > results in (some?) received data getting an extra 00 prefix.
->> >
->> >
->> > I also managed to lock up the controller completely since there is
->> > some error passing the SPI speed somewhere :(
->> >
->> > [ 1352.977530] spidev spi1.0: setup mode 0, 8 bits/w, 80000000 Hz max -->
->> > 0 [ 1352.977540] spidev spi1.0: spi mode 0
->> > [ 1352.977576] spidev spi1.0: setup mode 0, 8 bits/w, 80000000 Hz max -->
->> > 0 [ 1352.977582] spidev spi1.0: msb first
->> > [ 1352.977614] spidev spi1.0: setup mode 0, 8 bits/w, 80000000 Hz max -->
->> > 0 [ 1352.977620] spidev spi1.0: 0 bits per word
->> > [ 1352.977652] spidev spi1.0: setup mode 0, 8 bits/w, 2690588672 Hz max
->> > --> 0 [ 1352.977726] spi_master spi1: s3c64xx_spi_config: clk_from_cmu 1
->> > src_clk sclk_spi1 mode bpw 8
->> > [ 1352.977753] spi_master spi1: spi1.0 s3c64xx_spi_transfer_one: xfer
->> > bpw 8 speed -1604378624
->> > [ 1352.977760] spi_master spi1: s3c64xx_spi_config: clk_from_cmu 1
->> > src_clk sclk_spi1 mode bpw 8
->> > [ 1352.977781] spi_master spi1: spi1.0 s3c64xx_spi_transfer_one: using
->> > dma [ 1352.977797] dma-pl330 121b0000.pdma: setting up request on thread
->> > 1
->>
->> Hmm, on a second thought it probably works as expected more or less.
->>
->> The nonsensical value was passed from application and there is no
->> guard against that.
->>
->> Since I don't do PIO the controller remains locked up indefinitely.
->
-> I have to admit, I don't quite understand the above. I also don't quite know
-> what your spidev test does. Can you possibly just bind a regular SPI NOR driver
-> and run mtdtests to see if it is stable ?
+On Fri, 2015-07-24 at 16:37 +0100, Mark Brown wrote:
+> On Fri, Jul 24, 2015 at 06:30:12PM +0300, Andy Shevchenko wrote:
+> > On Wed, 2015-06-24 at 18:34 +0200, Michael van der Westhuizen=20
+> > wrote:
+>=20
+> > > With this series applied:
+> > >   m25p80 spi32766.0: m25p40 (512 Kbytes)
+>=20
+> > Mark, what do you think about this? For me it looks okay.
+>=20
+> Please don't send content free pings, if you want me to review a=20
+> patch
+> please send me the patch.
 
-Ok, so here is some summary.
+Hmm=E2=80=A6 It's strange since patch series was sent to mailing list (=
+Cc'ed to
+you) on 24.06 [1].
 
-I have a NOR flash attached to a s3c64xx SPI controller with 64byte
-fifo and a pl330 dma controller.
+[1]=20
+https://www.mail-archive.com/linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org/msg05530.html
 
-Normally DMA controller is used for transfers that do not fit into the FIFO.
+P.S. It has not mine authorship, though I can resend the series if
+needed.
 
-I tried adding the flash memory ID to the spi-nor driver table and
-adding a DT node for it.
-
-The flash is rated at 120MHz so I used that speed but the ID was
-bit-shifted and identification failed. There is DT property
-samsung,spi-feedback-delay for addressing this and at 120MHz it must
-be 2 or 3 on this board. 40MHz works with default value 0.
-
-The next step after identification worked was to try reading the flash
-content. For this the DMA controller is used because data is
-transferred in blocks larger than 64 bytes. When reading the whole 4MB
-flash the transfer failed silently. I got a 4MB file of all ones or
-all zeroes.
-
-It turns out that
-
- - the pl330 locks up when transfering large amount of data.
-Specifically, the maximum power of 2 sized transfer at 120MHz is 128
-bytes and 64k at 40MHz. Transferring more than this results in the
-pl330 locking up and never signalling completion of the transfer. Data
-is left in FIFO which causes subsequent commands to fail since garbage
-is returned instead of command reply. Also subsequent read may cause
-I/O error or or return an empty page depending on the garbage around.
-
-- the I/O errors are not checked in spi-nor at all which leads to
-silent data corruption.
-
-On a suggestion that this may improve reliability I changed the
-s3c64xx driver to use DMA for all transfers. This caused
-identification to fail in spin-nor because the ID was prefixed with
-extra 00  byte. Testing with spidev confirmed that everything is
-prefixed with extra 00. Also when the DMA controller locked up no
-transfers were possible anymore. When DMA was not used for sending
-commands the controller would recover on next command. I made the
-option to always use DMA configurable and it turns out that the
-returned data is prefixed with 00 only when no transfer without DMA
-was ever made. Loading the spi-nor driver with the dma-only option off
-and then with dma-only option on results in correct operation. Only
-loading the dma-only driver first causes the 00 prefix.
-
-Thanks
-
-Michal
+--=20
+Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Intel Finland Oy
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" i=
+n
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

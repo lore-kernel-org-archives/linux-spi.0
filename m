@@ -1,101 +1,76 @@
-From: Ranjit Abhimanyu Waghmode <ranjit.waghmode@xilinx.com>
-Subject: RE: [RFC PATCH 0/2] spi: add dual parallel & stacked mode support
- in Zynq MPSoC GQSPI controller
-Date: Mon, 27 Jul 2015 13:55:56 +0000
-Message-ID: <7CFCFE83B8145347A1D424EC939F1C3C0148C95C@XAP-PVEXMBX01.xlnx.xilinx.com>
-References: <1436445895-25504-1-git-send-email-ranjit.waghmode@xilinx.com>
- <20150714164005.GE11162@sirena.org.uk>
- <7CFCFE83B8145347A1D424EC939F1C3CA7E53D@XAP-PVEXMBX01.xlnx.xilinx.com>
- <20150715160146.GS11162@sirena.org.uk>
- <7CFCFE83B8145347A1D424EC939F1C3CA7E758@XAP-PVEXMBX01.xlnx.xilinx.com>
- <20150716085739.GT11162@sirena.org.uk>
- <7CFCFE83B8145347A1D424EC939F1C3CA81D12@XAP-PVEXMBX01.xlnx.xilinx.com>
- <20150724105209.GI11162@sirena.org.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2 0/2] spi: dw: Reintroduce optional 16 bit data
+ register I/O
+Date: Mon, 27 Jul 2015 14:59:16 +0100
+Message-ID: <20150727135915.GY11162@sirena.org.uk>
+References: <1434703435-25198-1-git-send-email-michael@smart-africa.com>
+ <1435163696-14767-1-git-send-email-michael@smart-africa.com>
+ <1437751812.29746.74.camel@linux.intel.com>
+ <20150724153704.GM11162@sirena.org.uk>
+ <1437994691.29746.80.camel@linux.intel.com>
+ <20150727111944.GW11162@sirena.org.uk>
+ <CCC70BC0-E1D0-4C27-A44D-2D16ED9B3049@smart-africa.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "marex@denx.de" <marex@denx.de>, Harini Katakam <harinik@xilinx.com>,
- "dwmw2@infradead.org" <dwmw2@infradead.org>,
- "zajec5@gmail.com" <zajec5@gmail.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- "juhosg@openwrt.org" <juhosg@openwrt.org>, Michal Simek <michals@xilinx.com>,
- Soren Brinkmann <sorenb@xilinx.com>,
- Punnaiah Choudary Kalluri <punnaia@xilinx.com>,
- "shijie.huang@intel.com" <shijie.huang@intel.com>,
- "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
- "ran27jit@gmail.com" <ran27jit@gmail.com>,
- "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
- "ben@decadent.org.uk" <ben@decadent.org.uk>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20150724105209.GI11162@sirena.org.uk>
-Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="ihOCVMGS/Nm60Y8G"
+Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Steffen Trumtrar <s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+To: Michael van der Westhuizen <michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CCC70BC0-E1D0-4C27-A44D-2D16ED9B3049-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Mark,
 
-> -----Original Message-----
-> From: Mark Brown [mailto:broonie@kernel.org]
-> Sent: Friday, July 24, 2015 4:22 PM
-> To: Ranjit Abhimanyu Waghmode
-> Cc: Michal Simek; Soren Brinkmann; zajec5@gmail.com; marex@denx.de;
-> shijie.huang@intel.com; juhosg@openwrt.org; ben@decadent.org.uk; linux-
-> mtd@lists.infradead.org; linux-spi@vger.kernel.org; linux-arm-
-> kernel@lists.infradead.org; linux-kernel@vger.kernel.org; Harini Katakam;
-> Punnaiah Choudary Kalluri; ran27jit@gmail.com; dwmw2@infradead.org;
-> computersforpeace@gmail.com
-> Subject: Re: [RFC PATCH 0/2] spi: add dual parallel & stacked mode support in
-> Zynq MPSoC GQSPI controller
-> 
-> On Fri, Jul 24, 2015 at 10:42:35AM +0000, Ranjit Abhimanyu Waghmode wrote:
-> 
-> As I think you've been asked before please fix your mail client to word wrap
-> within paragraphs so your mails are more legible.
-> 
+--ihOCVMGS/Nm60Y8G
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Sorry about this, I did some changes but it's kind of broken. Will fix this.
+On Mon, Jul 27, 2015 at 01:38:57PM +0200, Michael van der Westhuizen wrote:
 
-> > To support the dual parallel mode in this controller, following minor
-> > things can be added to the driver.
-> 
-> > 1) Controller needs to know in which mode it is working, then it's
-> > obvious to set the appropriate flag for the same
-> > 2) There are more than one chip selects, so need to set the same
-> >
-> > So kindly suggest your view on the above request.
-> 
-> I'm not entirely sure what you're asking here from the point of view of SPI, sorry
-> - what exactly are you requesting?  If you want to add support for new SPI bus
-> modes please go ahead and do that, you need to clearly document what any
-> new modes you're adding are so that other people can understand them.
+> > It's possible there was some discussion of the patch that made
+> > it look it needed a resubmit, or that it was buried as reply in the
+> > middle of discussion of some other patches (eg, a previous version).
+> > Either way to repeat what I said if you want me to review a patch please
+> > send me the patch.
 
-Ok, my description was too short to get it completely.
+> I=E2=80=99ve just resent the series.
 
-For adding dual parallel mode support to current driver:
-Are following points enough? Or do you want to suggest something better on top of it?
+You've sent them as a reply in the middle of another thread which is
+something I just indicated above was a bad idea in the message you're
+replying to here (it's a great way to either make it hard to figure out
+what the current version of the code is or get your message deleted
+along with the rest of the thread) and you've decided to label them as
+[RESEND instead of [PATCH :(
 
-Driver:
-1) Controller needs to know in which mode it is working.
-2) As there are more than one chip selects, may need to add code for handling that as well.
+--ihOCVMGS/Nm60Y8G
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-MTD:
-1) Adding TWO_FLASH support
-2) Adding DATA_STRIPE support
-3) For reading array size needs to be doubled.
-4) Need to access even addresses. Basically address/2.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-Please suggest your view on above points.
+iQEcBAEBCAAGBQJVtjkzAAoJECTWi3JdVIfQg7wH/1Ft/NxC7Tb2tiiFWr1BOUNJ
+znZh2MT0Kh7ZPh0PqzlXnPicox/JL2l50i8KkT5EnRN6uf/4cZVYQvE2gcHIapzT
+WFcEzxgXnQgI4mIDP6YXwXq6BUFRmgH2SRiBoBouInAg+iV8Vs8Kbfe9bKEIaEId
+kMLJlBAZEcQ4SeDvmN/HCIlwCAeV9P6EHAIdaYTD6OGk1hzbgsQmUayTGo2amUbc
+GKAXXaF8bkWD+uoZjZoc83EoWQBYlh0nKJeKSRk8N6RGqys1mtICsaMb1jP9pMaV
+D41+nKGl/qrNhw+gBMgM8evT9CY7renUURONkE01TC3siEmlKzViyzSVIqU02YY=
+=Ear0
+-----END PGP SIGNATURE-----
 
-Regards,
-Ranjit
+--ihOCVMGS/Nm60Y8G--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

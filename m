@@ -1,59 +1,62 @@
-From: Sifan Naeem <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH 1/2] spi: img-spfi: check for timeout error before proceeding
-Date: Mon, 27 Jul 2015 13:11:15 +0100
-Message-ID: <1437999076-693-1-git-send-email-sifan.naeem@imgtec.com>
+From: Sifan Naeem <sifan.naeem@imgtec.com>
+Subject: [PATCH 2/2] spi: img-spfi: fix spfi_setup by removing gpio_request_one
+Date: Mon, 27 Jul 2015 13:11:16 +0100
+Message-ID: <1437999076-693-2-git-send-email-sifan.naeem@imgtec.com>
+References: <1437999076-693-1-git-send-email-sifan.naeem@imgtec.com>
 Mime-Version: 1.0
 Content-Type: text/plain
-Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <abrestic-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-	Sifan Naeem <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>,
-	"Stable kernel (v4.1)" <stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: <linux-spi@vger.kernel.org>, <abrestic@chromium.org>,
+	Sifan Naeem <sifan.naeem@imgtec.com>,
+	"Stable kernel (v4.1)" <stable@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <1437999076-693-1-git-send-email-sifan.naeem@imgtec.com>
+Sender: stable-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Calling spfi_wait_all_done is not required if the transfer has timed
-out before all data is transferred.
+spfi_setup may be called many times bye the spi framework, but
+gpio_request_one can only be called once without freeing, repeatedly
+calling gpio_request_one will cause an error to be thrown, which causes
+the request to spi_setup to be marked as failed.
 
-spfi_wait_all_done polls for Alldone interrupt which is triggered to
-mark the transfer as complete and to indicate it is now safe to issue
-a new transfer.
+We can simply use gpio_direction_output to set the direction of the
+gpio instead of gpio_request_one to put the gpio in to initial state,
+after which the spi framework can control the chipselect line via gpio
+using gpio_set_value.
 
 Fixes: 8c2c8c0 ("spi: img-spfi: Control CS lines with GPIO")
-Signed-off-by: Sifan Naeem <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
-Cc: Stable kernel (v4.1) <stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Signed-off-by: Sifan Naeem <sifan.naeem@imgtec.com>
+Cc: Stable kernel (v4.1) <stable@vger.kernel.org>
 ---
- drivers/spi/spi-img-spfi.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/spi/spi-img-spfi.c |   16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
-index 00f1ac3..f27d9d5 100644
+index f27d9d5..a7f3d6a 100644
 --- a/drivers/spi/spi-img-spfi.c
 +++ b/drivers/spi/spi-img-spfi.c
-@@ -267,15 +267,15 @@ static int img_spfi_start_pio(struct spi_master *master,
- 		cpu_relax();
- 	}
+@@ -442,13 +442,15 @@ static int img_spfi_setup(struct spi_device *spi)
+ {
+ 	int ret;
  
--	ret = spfi_wait_all_done(spfi);
--	if (ret < 0)
--		return ret;
+-	ret = gpio_request_one(spi->cs_gpio, (spi->mode & SPI_CS_HIGH) ?
+-			       GPIOF_OUT_INIT_LOW : GPIOF_OUT_INIT_HIGH,
+-			       dev_name(&spi->dev));
+-	if (ret)
+-		dev_err(&spi->dev, "can't request chipselect gpio %d\n",
+-				spi->cs_gpio);
 -
- 	if (rx_bytes > 0 || tx_bytes > 0) {
- 		dev_err(spfi->dev, "PIO transfer timed out\n");
- 		return -ETIMEDOUT;
- 	}
- 
-+	ret = spfi_wait_all_done(spfi);
-+	if (ret < 0)
-+		return ret;
++	if (gpio_is_valid(spi->cs_gpio)) {
++		int mode = ((spi->mode & SPI_CS_HIGH) ?
++			     GPIOF_OUT_INIT_LOW : GPIOF_OUT_INIT_HIGH);
 +
- 	return 0;
++		ret = gpio_direction_output(spi->cs_gpio, mode);
++		if (ret)
++			dev_err(&spi->dev, "chipselect gpio %d setup failed (%d)\n",
++				spi->cs_gpio, ret);
++	}
+ 	return ret;
  }
  
 -- 
 1.7.9.5
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

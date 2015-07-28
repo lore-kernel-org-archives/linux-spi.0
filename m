@@ -1,118 +1,93 @@
-From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 08/11] MTD: m25p80: Add option to limit SPI transfer size.
-Date: Mon, 27 Jul 2015 22:43:05 +0200
-Message-ID: <CAOMqctRPOv3_YZqS-g+SuuMT5UpOJMFs1OtBuZAhLR_SZnfTyw@mail.gmail.com>
-References: <cover.1433364398.git.hramrach@gmail.com> <201507241034.15406.marex@denx.de>
- <CAOMqctTsA5ZxBWFTzirqhQBoR2sO6B+uMFXWMHuSVb_EygCDvw@mail.gmail.com> <201507271943.32453.marex@denx.de>
+From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: bcm2835: add spi-bcm2835aux driver for the auxiliar
+ spi1 and spi2
+Date: Mon, 27 Jul 2015 20:51:06 -0600
+Message-ID: <55B6EE1A.2070605@wwwdotorg.org>
+References: <1434980408-4086-1-git-send-email-kernel@martin.sperl.org> <55A0A150.3060809@wwwdotorg.org> <ECFBB7BF-1316-4565-B1F2-FB2651131882@martin.sperl.org> <55A49662.3000706@wwwdotorg.org> <2768BFA9-7FE9-4EDC-8692-AC3F070BD874@martin.sperl.org> <55AEF828.20908@wwwdotorg.org> <0125992E-40F4-4702-8404-2943FF9A8788@martin.sperl.org> <55B1BA7A.1090104@wwwdotorg.org> <9005ABEC-C60A-4814-AD60-AD5BB09808F2@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org"
-	<linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	dmaengine <dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <201507271943.32453.marex-ynQEQJNshbs@public.gmane.org>
+In-Reply-To: <9005ABEC-C60A-4814-AD60-AD5BB09808F2-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 27 July 2015 at 19:43, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
-> On Monday, July 27, 2015 at 11:46:25 AM, Michal Suchanek wrote:
->> On 24 July 2015 at 10:34, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
->> > On Thursday, July 23, 2015 at 07:03:47 PM, Michal Suchanek wrote:
->> >
->> Ok, so here is some summary.
+On 07/24/2015 12:47 AM, Martin Sperl wrote:
+>=20
+>> On 24.07.2015, at 06:09, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org> wrot=
+e:
 >>
->> I have a NOR flash attached to a s3c64xx SPI controller with 64byte
->> fifo and a pl330 dma controller.
+>> I think I'd expect the shared registers to be:
 >>
->> Normally DMA controller is used for transfers that do not fit into the
->> FIFO.
+>> bcm2835aux: misc@0x7e215000 {
+>>    compatible =3D "brcm,bcm2835-aux";
+>>    reg =3D <0x7e215000 0x08>;
+>> };
 >>
->> I tried adding the flash memory ID to the spi-nor driver table and
->> adding a DT node for it.
+>> There are two 4-byte registers outside the UART/SPI blocks, and the
+>> compatible value should reflect what the block is, not that Linux ma=
+y
+>> use a syscon driver to implement the driver for it.
 >>
->> The flash is rated at 120MHz so I used that speed but the ID was
->> bit-shifted and identification failed. There is DT property
->> samsung,spi-feedback-delay for addressing this and at 120MHz it must
->> be 2 or 3 on this board. 40MHz works with default value 0.
+>> In the client, I'd expect a more semantic naming for the reference;
+>> something like:
 >>
->> The next step after identification worked was to try reading the flash
->> content. For this the DMA controller is used because data is
->> transferred in blocks larger than 64 bytes. When reading the whole 4MB
->> flash the transfer failed silently. I got a 4MB file of all ones or
->> all zeroes.
+>> 	brcm,aux =3D <&bcm2835aux 4>;
 >>
->> It turns out that
->>
->>  - the pl330 locks up when transfering large amount of data.
->> Specifically, the maximum power of 2 sized transfer at 120MHz is 128
->> bytes and 64k at 40MHz. Transferring more than this results in the
->> pl330 locking up and never signalling completion of the transfer.
->
-> Hypothesis:
-> I think this might just be that the controller didn't catch all the
-> inbound clock ticks and thus counted less inbound data than it was
-> set up to receive. The controller thus waits for more data.
+>> brcm, since it's a custom/vendor-specific property. aux is the name =
+of
+>> the object that's referenced. Packing the phandle and data together =
+into
+>> a single property reduces the number of separate properties, and is =
+a
+>> typical thing to do in a client of a service in DT.
+>=20
+> So in the end you are saying we need a separate driver to get written
+> (because of =91compatible =3D "brcm,bcm2835-aux=94;=92)
 
-The flash chip can transfer data as long as you keep the clock going,
-especially when you transfer 64k off a 4M flash.
+It's fine if some existing driver matches that compatible value.
 
-The read command is bound just by stopping the clock. There is always
-more data to be had.
+> That is unless you would allow:
+> compatible =3D compatible =3D "brcm,bcm2835-aux=94, =93syscon=94;
 
->
->> Data
->> is left in FIFO which causes subsequent commands to fail since garbage
->> is returned instead of command reply. Also subsequent read may cause
->> I/O error or or return an empty page depending on the garbage around.
->
-> So the driver for the DMA controller might need to be augmented to handle
-> this case -- add a timeout and in case DMA times out, drain the FIFO to
-> make sure subsequent transfers do not fail.
+"syscon" definitely shouldn't be in a DT.
 
-There is no way to add timeout in the DMA driver since it does not
-know the SPI clock.
+> If this is not acceptable, then where should such a driver go in the
+> kernel tree?
+>=20
+> It would essentially implement the following:
+> bcm2835aux_enable(dev, device-id);
+> bcm2835aux_disable(dev, device-id);
+>=20
+> Which would just set/clean the bits in the register while holding a l=
+ock.
 
-The timeout is handled by the SPI driver and it should be possible to
-augment it to drain the FIFO when DMA fails so long as FIFO level is
-readable somewhere.
+That sounds reasonable. I'd also expect a function that the client
+drivers could call during probe() to look up the device (and implement
+deferred probe) and another to release the reference during the client'=
+s
+remove().
 
->
->> - the I/O errors are not checked in spi-nor at all which leads to
->> silent data corruption.
->>
->> On a suggestion that this may improve reliability I changed the
->> s3c64xx driver to use DMA for all transfers. This caused
->> identification to fail in spin-nor because the ID was prefixed with
->> extra 00  byte. Testing with spidev confirmed that everything is
->> prefixed with extra 00.
->
-> The determinism of this is in fact excellent news.
->
->> Also when the DMA controller locked up no
->> transfers were possible anymore. When DMA was not used for sending
->> commands the controller would recover on next command. I made the
->> option to always use DMA configurable and it turns out that the
->> returned data is prefixed with 00 only when no transfer without DMA
->> was ever made. Loading the spi-nor driver with the dma-only option off
->> and then with dma-only option on results in correct operation. Only
->> loading the dma-only driver first causes the 00 prefix.
->
-> Can we conclude that the PIO codepath somehow programs a register somewhere
-> which gets rid of this 0x00 prefix ? If so, this should then also be part
-> of the DMA codepath, or even better, this should be set in probe() somewhere.
+> As an alternative: maybe we could implement it as an IRQ driver
+> and when the irq is requested for that device, then the HW-block gets
+> enabled automatically (and disabled when released).
 
-Yes, it looks like it.
+That seems a bit too implicit; there's no strict requirement that a
+driver for e.g. the SPI block has to use an interrupt; it's merely
+extremely likely.
 
-Thanks
+> That way we may not need to have a separate driver that would enable
+> the uart1, but it would be sufficient to configure it as follows:
 
-Michal
+Surely the IRQ driver would be a separate driver either way? The only
+difference is whether it exposes custom APIs, or does things as a
+side-effect of the existing IRQ API.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

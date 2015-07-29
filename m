@@ -1,101 +1,51 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: bcm2835: fix overflow in calculation of transfer time" to the spi tree
-Date: Wed, 29 Jul 2015 15:14:51 +0100
-Message-ID: <E1ZKS8B-0004nj-7g@finisterre>
-References: <1438155250-14476-1-git-send-email-kernel@martin.sperl.org>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Noralf Tronnes <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>,
-	Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: Re: [PATCH] spi: bcm2835: fix overflow in calculation of transfer time
+Date: Wed, 29 Jul 2015 16:31:41 +0200
+Message-ID: <0D1C5BFD-04A0-4074-8424-DE941B00F887@martin.sperl.org>
+References: <1438155250-14476-1-git-send-email-kernel@martin.sperl.org> <20150729140331.GC11082@sirena.org.uk>
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2102\))
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1438155250-14476-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <20150729140331.GC11082-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
 
-   spi: bcm2835: fix overflow in calculation of transfer time
+> On 29.07.2015, at 16:03, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+>=20
+> On Wed, Jul 29, 2015 at 07:34:10AM +0000, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wro=
+te:
+>> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+>>=20
+>> This resulted in the use of polling mode when other approaches
+>> (dma or interrupts) would have been more appropriate.
+>=20
+> Please describe the actual issue and how it's being fixed in the comm=
+it
+> message.  In this case the fix appears to be converting the timeout
+> variable to a long long which will make things better but obviously
+> isn't a complete fix for overflows - presumably the ideal thing here =
+is
+> to handle saturation better?
 
-has been applied to the spi tree at
+Will change the description of the commit and resubmit.
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+As for saturation I guess that nobody will ever run a spi-transfer
+of len=3D2049638230413 bytes (at which point it would wrap) which:
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+a) would take 4679 days to reach at 125MHz=20
+  (the max frequency of the bcm2835 SPI HW limit)
+b) would not fit spi_transfer->len (defined as unsigned)
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+So handling saturation is not an issue when using "long long=E2=80=9D
+in the context of this device.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From c020e378b2b388b712a40dce2da6d437d2b6e0e0 Mon Sep 17 00:00:00 2001
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Date: Wed, 29 Jul 2015 07:34:10 +0000
-Subject: [PATCH] spi: bcm2835: fix overflow in calculation of transfer time
-
-This resulted in the use of polling mode when other approaches
-(dma or interrupts) would have been more appropriate.
-
-Happened for transfers longer than 477 bytes.
-
-Reported-by: Noralf Tronnes <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>
-Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-bcm2835.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index 59705ab..767aa00 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -480,7 +480,7 @@ static int bcm2835_spi_transfer_one_poll(struct spi_master *master,
- 					 struct spi_device *spi,
- 					 struct spi_transfer *tfr,
- 					 u32 cs,
--					 unsigned long xfer_time_us)
-+					 unsigned long long xfer_time_us)
- {
- 	struct bcm2835_spi *bs = spi_master_get_devdata(master);
- 	unsigned long timeout;
-@@ -531,7 +531,8 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
- {
- 	struct bcm2835_spi *bs = spi_master_get_devdata(master);
- 	unsigned long spi_hz, clk_hz, cdiv;
--	unsigned long spi_used_hz, xfer_time_us;
-+	unsigned long spi_used_hz;
-+	unsigned long long xfer_time_us;
- 	u32 cs = bcm2835_rd(bs, BCM2835_SPI_CS);
- 
- 	/* set clock */
-@@ -575,9 +576,10 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
- 	bs->rx_len = tfr->len;
- 
- 	/* calculate the estimated time in us the transfer runs */
--	xfer_time_us = tfr->len
-+	xfer_time_us = (unsigned long long)tfr->len
- 		* 9 /* clocks/byte - SPI-HW waits 1 clock after each byte */
--		* 1000000 / spi_used_hz;
-+		* 1000000;
-+	do_div(xfer_time_us, spi_used_hz);
- 
- 	/* for short requests run polling*/
- 	if (xfer_time_us <= BCM2835_SPI_POLLING_LIMIT_US)
--- 
-2.1.4
-
---
+Martin--
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

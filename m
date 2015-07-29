@@ -1,55 +1,49 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 2/2] spi: s3c64xx: add more debug prints.
-Date: Tue, 28 Jul 2015 15:52:41 +0100
-Message-ID: <20150728145241.GE11162@sirena.org.uk>
-References: <cover.1438075797.git.hramrach@gmail.com>
- <8b628c8d38c4a01f5c4657a4213984d98789d757.1438075797.git.hramrach@gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="wTNU0LI7DBF44jvL"
-Cc: Kukjin Kim <kgene@kernel.org>,
-	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-To: Michal Suchanek <hramrach@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <8b628c8d38c4a01f5c4657a4213984d98789d757.1438075797.git.hramrach@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Lars Persson <lars.persson-VrBV9hrLPhE@public.gmane.org>
+Subject: [PATCH] spi: Fix regression in spi-bitbang-txrx.h
+Date: Wed, 29 Jul 2015 09:32:02 +0200
+Message-ID: <1438155122-2923-1-git-send-email-larper@axis.com>
+Cc: Lars Persson <larper-VrBV9hrLPhE@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+This patch fixes a regression introduced by commit 232a5adc5199 ("spi:
+bitbang: only toggle bitchanges"). The attempt to optimize writes of
+consecutive bit patterns broke most of the combinations of word size
+and SPI modes due to selecting the wrong bit as the MSB value.
 
---wTNU0LI7DBF44jvL
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Lars Persson <larper-VrBV9hrLPhE@public.gmane.org>
+---
+ drivers/spi/spi-bitbang-txrx.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-On Tue, Jul 28, 2015 at 09:37:03AM -0000, Michal Suchanek wrote:
-> The SPI transfers can mysteriously fail so add more debug prints about
-> SPI parameters set by the driver.
->=20
-> The hardware specific SPI driver is the only place where the programmed
-> SPI parameters are known so there is no other reasonable place for these
-> prints.
+diff --git a/drivers/spi/spi-bitbang-txrx.h b/drivers/spi/spi-bitbang-txrx.h
+index 06b34e5..47bb9b89 100644
+--- a/drivers/spi/spi-bitbang-txrx.h
++++ b/drivers/spi/spi-bitbang-txrx.h
+@@ -49,7 +49,7 @@ bitbang_txrx_be_cpha0(struct spi_device *spi,
+ {
+ 	/* if (cpol == 0) this is SPI_MODE_0; else this is SPI_MODE_2 */
+ 
+-	bool oldbit = !(word & 1);
++	u32 oldbit = (!(word & (1<<(bits-1)))) << 31;
+ 	/* clock starts at inactive polarity */
+ 	for (word <<= (32 - bits); likely(bits); bits--) {
+ 
+@@ -81,7 +81,7 @@ bitbang_txrx_be_cpha1(struct spi_device *spi,
+ {
+ 	/* if (cpol == 0) this is SPI_MODE_1; else this is SPI_MODE_3 */
+ 
+-	bool oldbit = !(word & (1 << 31));
++	u32 oldbit = (!(word & (1<<(bits-1)))) << 31;
+ 	/* clock starts at inactive polarity */
+ 	for (word <<= (32 - bits); likely(bits); bits--) {
+ 
+-- 
+2.1.4
 
-For timing things there should already be enough information in the
-trace points with better resolution.
-
---wTNU0LI7DBF44jvL
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVt5c4AAoJECTWi3JdVIfQZY8H/0gktAsH2ChHQ6TlFXf8dbQt
-oLuL051gnhc0Z1j6Tznh5ThbfAg7vZb9JulwWuuYIhU2jP6GGN3DUUsXIrO8PsnX
-KBhsdkwoioyAAx9Bxob2tDMrkPQATgHxt50pVp10YWMTp0757n8SBBr7eDOYwc+n
-PeG8MzFQuC7PU+zsW3PavTp+YPnjpdgntrBcQFnThNRPyJ/UrTrB1Dpx5HqRqe/R
-csKUFr1CGd90q0gJojumkI5FVccp7wIii3C+BtcZ0V4mGE5upFGi3SEFoOMgKaeW
-7M7jh3cfx8bfPoeg5ZBQwxult7vnK51+ToJYjiNNHWPEyJgdl4Ss0HO4wrov2aM=
-=4ZOu
------END PGP SIGNATURE-----
-
---wTNU0LI7DBF44jvL--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

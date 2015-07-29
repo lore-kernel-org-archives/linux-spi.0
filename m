@@ -1,19 +1,20 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: img-spfi: check for timeout error before proceeding" to the spi tree
-Date: Wed, 29 Jul 2015 15:14:59 +0100
-Message-ID: <E1ZKS8J-0004of-Nm@finisterre>
-References: <1437999076-693-1-git-send-email-sifan.naeem@imgtec.com>
-Cc: linux-spi@vger.kernel.org
-To: Sifan Naeem <sifan.naeem@imgtec.com>,
-	Mark Brown <broonie@kernel.org>, stable@vger.kernel.org
-Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <1437999076-693-1-git-send-email-sifan.naeem@imgtec.com>
-Sender: stable-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: bcm2835: fix overflow in calculation of transfer time" to the spi tree
+Date: Wed, 29 Jul 2015 15:14:51 +0100
+Message-ID: <E1ZKS8B-0004nj-7g@finisterre>
+References: <1438155250-14476-1-git-send-email-kernel@martin.sperl.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Noralf Tronnes <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>,
+	Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1438155250-14476-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: img-spfi: check for timeout error before proceeding
+   spi: bcm2835: fix overflow in calculation of transfer time
 
 has been applied to the spi tree at
 
@@ -38,50 +39,63 @@ to this mail.
 Thanks,
 Mark
 
->From 011710e2ab659c7ad6e5e554806414bd7a9508be Mon Sep 17 00:00:00 2001
-From: Sifan Naeem <sifan.naeem@imgtec.com>
-Date: Mon, 27 Jul 2015 13:11:15 +0100
-Subject: [PATCH] spi: img-spfi: check for timeout error before proceeding
+>From c020e378b2b388b712a40dce2da6d437d2b6e0e0 Mon Sep 17 00:00:00 2001
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Date: Wed, 29 Jul 2015 07:34:10 +0000
+Subject: [PATCH] spi: bcm2835: fix overflow in calculation of transfer time
 
-Calling spfi_wait_all_done is not required if the transfer has timed
-out before all data is transferred.
+This resulted in the use of polling mode when other approaches
+(dma or interrupts) would have been more appropriate.
 
-spfi_wait_all_done polls for Alldone interrupt which is triggered to
-mark the transfer as complete and to indicate it is now safe to issue
-a new transfer.
+Happened for transfers longer than 477 bytes.
 
-Fixes: 8c2c8c0 ("spi: img-spfi: Control CS lines with GPIO")
-Signed-off-by: Sifan Naeem <sifan.naeem@imgtec.com>
-Reviewed-by: Andrew Bresticker <abrestic@chromium.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
+Reported-by: Noralf Tronnes <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>
+Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-img-spfi.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/spi/spi-bcm2835.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
-index 788e2b1..83b9741 100644
---- a/drivers/spi/spi-img-spfi.c
-+++ b/drivers/spi/spi-img-spfi.c
-@@ -266,15 +266,15 @@ static int img_spfi_start_pio(struct spi_master *master,
- 		cpu_relax();
- 	}
+diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+index 59705ab..767aa00 100644
+--- a/drivers/spi/spi-bcm2835.c
++++ b/drivers/spi/spi-bcm2835.c
+@@ -480,7 +480,7 @@ static int bcm2835_spi_transfer_one_poll(struct spi_master *master,
+ 					 struct spi_device *spi,
+ 					 struct spi_transfer *tfr,
+ 					 u32 cs,
+-					 unsigned long xfer_time_us)
++					 unsigned long long xfer_time_us)
+ {
+ 	struct bcm2835_spi *bs = spi_master_get_devdata(master);
+ 	unsigned long timeout;
+@@ -531,7 +531,8 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
+ {
+ 	struct bcm2835_spi *bs = spi_master_get_devdata(master);
+ 	unsigned long spi_hz, clk_hz, cdiv;
+-	unsigned long spi_used_hz, xfer_time_us;
++	unsigned long spi_used_hz;
++	unsigned long long xfer_time_us;
+ 	u32 cs = bcm2835_rd(bs, BCM2835_SPI_CS);
  
--	ret = spfi_wait_all_done(spfi);
--	if (ret < 0)
--		return ret;
--
- 	if (rx_bytes > 0 || tx_bytes > 0) {
- 		dev_err(spfi->dev, "PIO transfer timed out\n");
- 		return -ETIMEDOUT;
- 	}
+ 	/* set clock */
+@@ -575,9 +576,10 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
+ 	bs->rx_len = tfr->len;
  
-+	ret = spfi_wait_all_done(spfi);
-+	if (ret < 0)
-+		return ret;
-+
- 	return 0;
- }
+ 	/* calculate the estimated time in us the transfer runs */
+-	xfer_time_us = tfr->len
++	xfer_time_us = (unsigned long long)tfr->len
+ 		* 9 /* clocks/byte - SPI-HW waits 1 clock after each byte */
+-		* 1000000 / spi_used_hz;
++		* 1000000;
++	do_div(xfer_time_us, spi_used_hz);
  
+ 	/* for short requests run polling*/
+ 	if (xfer_time_us <= BCM2835_SPI_POLLING_LIMIT_US)
 -- 
 2.1.4
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,74 +1,72 @@
-From: Sifan Naeem <Sifan.Naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
-Subject: RE: [PATCH 2/2] spi: img-spfi: fix spfi_setup by removing
- gpio_request_one
-Date: Wed, 29 Jul 2015 11:05:05 +0000
-Message-ID: <A0E307549471DA4DBAF2DE2DE6CBFB7E4966D9FF@hhmail02.hh.imgtec.org>
-References: <1437999076-693-1-git-send-email-sifan.naeem@imgtec.com>
- <1437999076-693-2-git-send-email-sifan.naeem@imgtec.com>
- <CAL1qeaHLn6-2QJkPjNCm3V-pVqBk09P2BP-Sp+gn1G4ZWpvkEw@mail.gmail.com>
- <20150727164015.GB11162@sirena.org.uk>
+From: Leilk Liu <leilk.liu@mediatek.com>
+Subject: [PATCH v4 1/3] dt-binding: spi: Mediatek: Document devicetree bindings for spi bus
+Date: Wed, 29 Jul 2015 19:04:32 +0800
+Message-ID: <1438167874-1305-2-git-send-email-leilk.liu@mediatek.com>
+References: <1438167874-1305-1-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"Stable kernel (v4.1)" <stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Andrew Bresticker <abrestic-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain
+Cc: Mark Rutland <mark.rutland@arm.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>,
+	<linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
+	Leilk Liu <leilk.liu@mediatek.com>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1438167874-1305-1-git-send-email-leilk.liu@mediatek.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Please find the new patch in http://marc.info/?l=linux-spi&m=143816718611912&w=2
+Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
+---
+ .../devicetree/bindings/spi/spi-mt65xx.txt         | 38 ++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-mt65xx.txt
 
-Thanks,
-Sifan
-
-> -----Original Message-----
-> From: Sifan Naeem
-> Sent: 27 July 2015 17:54
-> To: 'Mark Brown'; Andrew Bresticker
-> Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; Stable kernel (v4.1)
-> Subject: RE: [PATCH 2/2] spi: img-spfi: fix spfi_setup by removing
-> gpio_request_one
-> 
-> Thanks Mark, Andrew.
-> 
-> I'll rework this and submit a new patch.
-> 
-> Thanks,
-> Sifan
-> 
-> > -----Original Message-----
-> > From: Mark Brown [mailto:broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org]
-> > Sent: 27 July 2015 17:40
-> > To: Andrew Bresticker
-> > Cc: Sifan Naeem; linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; Stable kernel (v4.1)
-> > Subject: Re: [PATCH 2/2] spi: img-spfi: fix spfi_setup by removing
-> > gpio_request_one
-> >
-> > On Mon, Jul 27, 2015 at 09:34:41AM -0700, Andrew Bresticker wrote:
-> > > On Mon, Jul 27, 2015 at 5:11 AM, Sifan Naeem
-> > > <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
-> > wrote:
-> >
-> > > > spfi_setup may be called many times bye the spi framework, but
-> > > > gpio_request_one can only be called once without freeing,
-> > > > repeatedly calling gpio_request_one will cause an error to be
-> > > > thrown, which causes the request to spi_setup to be marked as failed.
-> >
-> > > > We can simply use gpio_direction_output to set the direction of
-> > > > the gpio instead of gpio_request_one to put the gpio in to initial
-> > > > state, after which the spi framework can control the chipselect
-> > > > line via gpio using gpio_set_value.
-> >
-> > > I don't think we want to leave the CS GPIOs un-requested.  Instead,
-> > > we could either request them all at probe() time (and then set
-> > > direction in setup()) or have a per-spi_device flag that indicates
-> > > whether or not the GPIO has been requested.
-> >
-> > Not requesting the GPIOs at all would just be a straight up bug.
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
+new file mode 100644
+index 0000000..f8005d6
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
+@@ -0,0 +1,38 @@
++MTK SPI device
++
++Required properties:
++- compatible: should be one of the following.
++    - mediatek,mt8173-spi: for mt8173 platforms
++    - mediatek,mt8135-spi: for mt8135 platforms
++    - mediatek,mt6589-spi: for mt6589 platforms
++
++- #address-cells: should be 1.
++
++- #size-cells: should be 0.
++
++- reg: Address and length of the register set for the device
++
++- interrupts: Should contain spi interrupt
++
++- clocks: phandles to input clocks.
++
++- clock-names: tuple listing input clock names.
++	Required elements: "main"
++
++- pad-select: should specify spi pad used, only required for MT8173.
++        This value should be 0~3.
++
++Example:
++
++- SoC Specific Portion:
++spi: spi@1100a000 {
++	compatible = "mediatek,mt8173-spi";
++	#address-cells = <1>;
++	#size-cells = <0>;
++	reg = <0 0x1100a000 0 0x1000>;
++	interrupts = <GIC_SPI 110 IRQ_TYPE_LEVEL_LOW>;
++	clocks = <&pericfg CLK_PERI_SPI0>;
++	clock-names = "main";
++	pad-select = <0>;
++	status = "disabled";
++};
+-- 
+1.8.1.1.dirty

@@ -1,127 +1,55 @@
-From: Sifan Naeem <Sifan.Naeem@imgtec.com>
-Subject: RE: [PATCH] spi: img-spfi: fix multiple calls to request gpio
-Date: Wed, 29 Jul 2015 11:00:13 +0000
-Message-ID: <A0E307549471DA4DBAF2DE2DE6CBFB7E4966D9F3@hhmail02.hh.imgtec.org>
-References: <1438166650-5302-1-git-send-email-sifan.naeem@imgtec.com>
+From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Subject: [PATCH v4 0/3] Add Mediatek SPI bus driver
+Date: Wed, 29 Jul 2015 19:04:31 +0800
+Message-ID: <1438167874-1305-1-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"abrestic@chromium.org" <abrestic@chromium.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <1438166650-5302-1-git-send-email-sifan.naeem@imgtec.com>
-Content-Language: en-US
-Sender: stable-owner@vger.kernel.org
+Content-Type: text/plain
+Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Please ignore this patch.
+Change in v4:
+1. fix Mark Brown review comment.
 
-Thanks,
-Sifan
+Change in v3:
+1. support fifo mode function.
+2. support any non-prime length transfer in dma mode.
+3. use interrupt to handle scatterlist.
+4. fix review comment.
 
-> -----Original Message-----
-> From: Sifan Naeem
-> Sent: 29 July 2015 11:44
-> To: Mark Brown
-> Cc: linux-spi@vger.kernel.org; abrestic@chromium.org;
-> stable@vger.kernel.org; Ezequiel Garcia; Sifan Naeem
-> Subject: [PATCH] spi: img-spfi: fix multiple calls to request gpio
-> 
-> spfi_setup may be called many times by the spi framework, but
-> gpio_request_one can only be called once without freeing, repeatedly calling
-> gpio_request_one will cause an error to be thrown, which causes the
-> request to spi_setup to be marked as failed.
-> 
-> We can have a per-spi_device flag that indicates whether or not the gpio has
-> been requested. If the gpio has already been requested use
-> gpio_direction_output to set the direction of the gpio.
-> 
-> Fixes: 8c2c8c03cdcb ("spi: img-spfi: Control CS lines with GPIO")
-> Signed-off-by: Sifan Naeem <sifan.naeem@imgtec.com>
-> Cc: <stable@vger.kernel.org> # 4.1+
-> ---
->  drivers/spi/spi-img-spfi.c |   50
-> ++++++++++++++++++++++++++++++++++++--------
->  1 file changed, 41 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c index
-> f27d9d5531b5..5dc57ee293e1 100644
-> --- a/drivers/spi/spi-img-spfi.c
-> +++ b/drivers/spi/spi-img-spfi.c
-> @@ -105,6 +105,10 @@ struct img_spfi {
->  	bool rx_dma_busy;
->  };
-> 
-> +struct img_spfi_device_data {
-> +    bool gpio_requested;
-> +};
-> +
->  static inline u32 spfi_readl(struct img_spfi *spfi, u32 reg)  {
->  	return readl(spfi->regs + reg);
-> @@ -441,20 +445,48 @@ static int img_spfi_unprepare(struct spi_master
-> *master,  static int img_spfi_setup(struct spi_device *spi)  {
->  	int ret;
-> -
-> -	ret = gpio_request_one(spi->cs_gpio, (spi->mode & SPI_CS_HIGH) ?
-> -			       GPIOF_OUT_INIT_LOW : GPIOF_OUT_INIT_HIGH,
-> -			       dev_name(&spi->dev));
-> -	if (ret)
-> -		dev_err(&spi->dev, "can't request chipselect gpio %d\n",
-> -				spi->cs_gpio);
-> -
-> +	struct img_spfi_device_data *spfi_data = spi_get_ctldata(spi);
-> +
-> +	if (!spfi_data) {
-> +		spfi_data = kzalloc(sizeof(*spfi_data), GFP_KERNEL);
-> +		if (!spfi_data)
-> +			return -ENOMEM;
-> +		spfi_data->gpio_requested = false;
-> +		spi_set_ctldata(spi, spfi_data);
-> +	}
-> +	if (!spfi_data->gpio_requested) {
-> +		ret = gpio_request_one(spi->cs_gpio, (spi->mode &
-> SPI_CS_HIGH) ?
-> +					   GPIOF_OUT_INIT_LOW :
-> GPIOF_OUT_INIT_HIGH,
-> +					   dev_name(&spi->dev));
-> +		if (ret)
-> +			dev_err(&spi->dev, "can't request chipselect gpio
-> %d\n",
-> +					spi->cs_gpio);
-> +		else
-> +			spfi_data->gpio_requested = true;
-> +	} else {
-> +		if (gpio_is_valid(spi->cs_gpio)) {
-> +			int mode = ((spi->mode & SPI_CS_HIGH) ?
-> +					 GPIOF_OUT_INIT_LOW :
-> GPIOF_OUT_INIT_HIGH);
-> +
-> +			ret = gpio_direction_output(spi->cs_gpio, mode);
-> +			if (ret)
-> +				dev_err(&spi->dev, "chipselect gpio %d
-> setup failed (%d)\n",
-> +					spi->cs_gpio, ret);
-> +		}
-> +	}
->  	return ret;
->  }
-> 
->  static void img_spfi_cleanup(struct spi_device *spi)  {
-> -	gpio_free(spi->cs_gpio);
-> +	struct img_spfi_device_data *spfi_data = spi_get_ctldata(spi);
-> +
-> +	if (spfi_data) {
-> +		if (spfi_data->gpio_requested)
-> +			gpio_free(spi->cs_gpio);
-> +		kfree(spfi_data);
-> +		spi_set_ctldata(spi, NULL);
-> +	}
->  }
-> 
->  static void img_spfi_config(struct spi_master *master, struct spi_device
-> *spi,
-> --
-> 1.7.9.5
+
+Change in v2:
+1. Remove spi bitbang framwork, use can_dma() and transfer_one().
+2. Add PM functions.
+3. Fix Mark Brown review comment.
+
+Leilk Liu (3):
+  dt-binding: spi: Mediatek: Document devicetree bindings for spi bus
+  spi: mediatek: Add spi bus for Mediatek MT8173
+  arm64: dts: Add spi bus dts
+
+ .../devicetree/bindings/spi/spi-mt65xx.txt         |  38 ++
+ arch/arm64/boot/dts/mediatek/mt8173.dtsi           |  23 +
+ drivers/spi/Kconfig                                |   9 +
+ drivers/spi/Makefile                               |   1 +
+ drivers/spi/spi-mt65xx.c                           | 732 +++++++++++++++++++++
+ include/linux/platform_data/spi-mt65xx.h           |  22 +
+ 6 files changed, 825 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-mt65xx.txt
+ create mode 100644 drivers/spi/spi-mt65xx.c
+ create mode 100644 include/linux/platform_data/spi-mt65xx.h
+
+--
+1.8.1.1.dirty
+
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

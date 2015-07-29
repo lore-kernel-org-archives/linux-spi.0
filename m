@@ -1,48 +1,47 @@
-From: Sifan Naeem <Sifan.Naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
-Subject: RE: [PATCH 2/2] spi: img-spfi: fix spfi_setup by removing
- gpio_request_one
-Date: Wed, 29 Jul 2015 12:43:06 +0000
-Message-ID: <A0E307549471DA4DBAF2DE2DE6CBFB7E4966DA48@hhmail02.hh.imgtec.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 1/2] spi: img-spfi: check for timeout error before
+ proceeding
+Date: Wed, 29 Jul 2015 14:53:15 +0100
+Message-ID: <20150729135315.GA11082@sirena.org.uk>
 References: <1437999076-693-1-git-send-email-sifan.naeem@imgtec.com>
- <1437999076-693-2-git-send-email-sifan.naeem@imgtec.com>
- <CAL1qeaHLn6-2QJkPjNCm3V-pVqBk09P2BP-Sp+gn1G4ZWpvkEw@mail.gmail.com>
- <20150727164015.GB11162@sirena.org.uk>
- <A0E307549471DA4DBAF2DE2DE6CBFB7E4966D9FF@hhmail02.hh.imgtec.org>
- <20150729122600.GB20130@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: Andrew Bresticker <abrestic-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"Stable kernel (v4.1)" <stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150729122600.GB20130-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="HcAYCG3uE/tztfnV"
+Cc: linux-spi@vger.kernel.org, abrestic@chromium.org,
+	"Stable kernel (v4.1)" <stable@vger.kernel.org>
+To: Sifan Naeem <sifan.naeem@imgtec.com>
+Return-path: <stable-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1437999076-693-1-git-send-email-sifan.naeem@imgtec.com>
+Sender: stable-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
 
-> On Wed, Jul 29, 2015 at 11:05:05AM +0000, Sifan Naeem wrote:
-> > Please find the new patch in
-> > http://marc.info/?l=linux-spi&m=143816718611912&w=2
-> >
-> > Thanks,
-> > Sifan
-> >
-> > > -----Original Message-----
-> 
-> Please don't top post and please submit patches using the normal process
-> documented in SubmittingPatches.
+--HcAYCG3uE/tztfnV
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Noted, I did submit the modified patch following the normal process, but as the patch title changed I mentioned it here.
+On Mon, Jul 27, 2015 at 01:11:15PM +0100, Sifan Naeem wrote:
 
-[PATCH v2] spi: img-spfi: fix multiple calls to request gpio
+> Fixes: 8c2c8c0 ("spi: img-spfi: Control CS lines with GPIO")
 
-Thanks,
-Sifan 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Please use at least 12 characters of the hash, six is likely to generate
+collisions on large repositories like Linux.
+
+--HcAYCG3uE/tztfnV
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVuNrLAAoJECTWi3JdVIfQHCAH/RJ6iRkJMGZInZUOsxgbJHSw
+9sMnQx+DLskXP2GWf6ax23O7MjWX8Vn1qjf59FNFG/l5fQOCPG2nQJWX8Zmg9zM5
+aJticzmMMRS+e4YgZ/nA4RmDU7916pa/Ua4FdyYj8OXK6WwRIj/eEeElUGYVappD
+QHDlinosMRGtHfZC8tAxxYfze6m0t6oRZIAIaBCLF547w7YoN3mUSZyCK5Nu/HSv
+OyRjNsLZfwth8rn9xy2BVd06S4K25XAR3IEHNO4KFWzKKiEv4l5RjLbUsg9MQIcA
+2LKTFxfw9CwMhjAX6hUzdqGjo+cmaGi1Ln7yeRNMucCBSEWOBYmtezOWw2vxOmw=
+=Pvy7
+-----END PGP SIGNATURE-----
+
+--HcAYCG3uE/tztfnV--

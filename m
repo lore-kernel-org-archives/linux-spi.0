@@ -1,57 +1,76 @@
-From: =?windows-1252?Q?Noralf_Tr=F8nnes?= <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: bcm2835: add spi-bcm2835aux driver for the auxiliar
- spi1 and spi2
-Date: Wed, 29 Jul 2015 19:25:00 +0200
-Message-ID: <55B90C6C.8070906@tronnes.org>
-References: <1434980408-4086-1-git-send-email-kernel@martin.sperl.org> <55A0A150.3060809@wwwdotorg.org> <ECFBB7BF-1316-4565-B1F2-FB2651131882@martin.sperl.org> <55A49662.3000706@wwwdotorg.org> <2768BFA9-7FE9-4EDC-8692-AC3F070BD874@martin.sperl.org> <55AEF828.20908@wwwdotorg.org> <0125992E-40F4-4702-8404-2943FF9A8788@martin.sperl.org> <55B1BA7A.1090104@wwwdotorg.org> <9005ABEC-C60A-4814-AD60-AD5BB09808F2@martin.sperl.org> <55B6EE1A.2070605@wwwdotorg.org> <836DA157-3072-441A-A160-E1FDBB119E88@martin.sperl.org> <55B75E07.1080104@martin.sperl.org> <55B9014C.7020105@lategoodbye.de>
+From: Michal Suchanek <hramrach@gmail.com>
+Subject: Re: [RFC PATCH 2/2] dt: spi: s3c64xx: add compatible to controller-data
+Date: Wed, 29 Jul 2015 20:21:34 +0200
+Message-ID: <CAOMqctQzh69RCQu8pK1EuuYkrZsh6mg34+YWJFzSvimcK3B0rA@mail.gmail.com>
+References: <cover.1438170519.git.hramrach@gmail.com> <557c1962448393b2a8736f26bfa2a3a5ba4aeb7a.1438170519.git.hramrach@gmail.com>
+ <20150729140046.GB11082@sirena.org.uk> <CAOMqctTZVET=U=2o65HpWSm4W660XZtYYbBND2k4u9CnfjfMhQ@mail.gmail.com>
+ <20150729171613.GI11162@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252;
-	format=flowed
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Stefan Wahren <info-saaNCTdWVBT7BZbvpMY5sg@public.gmane.org>,
-	Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <55B9014C.7020105-saaNCTdWVBT7BZbvpMY5sg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora.org>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Brian Norris <computersforpeace@gmail.com>,
+	Kukjin Kim <kgene@kernel.org>,
+	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+	Padmavathi Venna <padma.kvr@gmail.com>,
+	Boris BREZILLON <boris.brezillon@free-electrons.com>,
+	devicetree <devicetree@vger.kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	MTD Maling List <linux-mtd@lists.infradead.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
+	linux-spi <linux-spi@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <20150729171613.GI11162@sirena.org.uk>
+Sender: linux-samsung-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-
-Den 29.07.2015 18:37, skrev Stefan Wahren:
-> Hi Martin,
+On 29 July 2015 at 19:16, Mark Brown <broonie@kernel.org> wrote:
+> On Wed, Jul 29, 2015 at 06:19:24PM +0200, Michal Suchanek wrote:
+>> On 29 July 2015 at 16:00, Mark Brown <broonie@kernel.org> wrote:
 >
-> Am 28.07.2015 um 12:48 schrieb Martin Sperl:
->> On 28.07.2015 08:18, Martin Sperl wrote:
->>> Hi Stephen!
->>> But the bigger question you have not answered is: =93where should s=
-uch an
->>> auxiliar driver go in the kernel tree?=94 i.e. which directory?
->> One thing: could the "module" be a regulator?
->>
+>> > I can't tell from this commit message what the issue you're trying to
+>> > fix is, sorry.  Nodes without compatible strings are entirely normal and
+>> > don't need compatible strings.  It sounds like a bug in whatever other
+>> > driver is becoming confused.
 >
-> IMHO that won't be acceptable.
+>> The driver that gets confused is ofpart.
 >
-> How about a multifunction device driver (drivers/mfd)?
+>> The two-line patch to allow it to just ignore controller-data has been
+>> rejected on the basis that s3c64xx should use a compatible string
+>> because ofpart monopolizes all nodes without compatible which are
+>> children of a mtd device. Devicetrees containing such nodes that are
+>> not partitions are presumably invalid and should be rejected when
+>> ofpart is compiled into the kernel.
 >
-> Other candidates could be drivers/soc or drivers/misc.
+> That seems like an extremely limited binding, the normal thing here
+> would be to create a specifically named node to contain the collection
+> of subnodes like many PMICs do for their regulators.  As a fix I'd
+> suggest just silently ignoring nodes it can't understand, or printing a
+> warning if that's a serious issue.
 >
+>> >> +     if (!of_get_property(data_np, "compatible", NULL) ||
+>> >> +         strcmp(of_get_property(data_np, "compatible", NULL),
+>> >> +                "samsung,s3c-controller-data"))
+>> >> +             dev_err(&spi->dev, "child node 'controller-data' does not have correct compatible\n");
+>
+>> > This will break all existing users which is not acceptable for
+>> > mainline, we need to preserve compatibility with existing device trees.
+>
+>> It will not break anything. It will just spam dmesg.
+>
+> I'm confused - if all this change does is to spam dmesg then what's the
+> point?
 
-Could it be a power domain driver?
-Documentation/devicetree/bindings/power/power_domain.txt
+Presumably when your SPI NOR flash fails to probe this message will be
+just above and you will look into the binding doc and add the
+compatible.
 
-There are currently a deferred probing issue that might be a problem
-depending on the module linking order:
-https://lkml.org/lkml/2015/3/11/483
+Thanks
 
-
-Noralf.
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Michal

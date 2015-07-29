@@ -1,69 +1,106 @@
-From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH] spi: bcm2835: fix overflow in calculation of transfer time
-Date: Wed, 29 Jul 2015 07:34:10 +0000
-Message-ID: <1438155250-14476-1-git-send-email-kernel@martin.sperl.org>
-Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Sifan Naeem <sifan.naeem@imgtec.com>
+Subject: [PATCH] spi: img-spfi: fix multiple calls to request gpio
+Date: Wed, 29 Jul 2015 11:44:10 +0100
+Message-ID: <1438166650-5302-1-git-send-email-sifan.naeem@imgtec.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+Cc: <linux-spi@vger.kernel.org>, <abrestic@chromium.org>,
+	<stable@vger.kernel.org>,
+	Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
+	Sifan Naeem <sifan.naeem@imgtec.com>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <stable-owner@vger.kernel.org>
+Sender: stable-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+spfi_setup may be called many times by the spi framework, but
+gpio_request_one can only be called once without freeing, repeatedly
+calling gpio_request_one will cause an error to be thrown, which
+causes the request to spi_setup to be marked as failed.
 
-This resulted in the use of polling mode when other approaches
-(dma or interrupts) would have been more appropriate.
+We can have a per-spi_device flag that indicates whether or not the
+gpio has been requested. If the gpio has already been requested use
+gpio_direction_output to set the direction of the gpio.
 
-Happened for transfers longer than 477 bytes.
-
-Reported-by: Noralf Tronnes <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>
-Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Fixes: 8c2c8c03cdcb ("spi: img-spfi: Control CS lines with GPIO")
+Signed-off-by: Sifan Naeem <sifan.naeem@imgtec.com>
+Cc: <stable@vger.kernel.org> # 4.1+
 ---
- drivers/spi/spi-bcm2835.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/spi/spi-img-spfi.c |   50 ++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 41 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index c9357bb..e7874a6 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -480,7 +480,7 @@ static int bcm2835_spi_transfer_one_poll(struct spi_master *master,
- 					 struct spi_device *spi,
- 					 struct spi_transfer *tfr,
- 					 u32 cs,
--					 unsigned long xfer_time_us)
-+					 unsigned long long xfer_time_us)
+diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
+index f27d9d5531b5..5dc57ee293e1 100644
+--- a/drivers/spi/spi-img-spfi.c
++++ b/drivers/spi/spi-img-spfi.c
+@@ -105,6 +105,10 @@ struct img_spfi {
+ 	bool rx_dma_busy;
+ };
+ 
++struct img_spfi_device_data {
++    bool gpio_requested;
++};
++
+ static inline u32 spfi_readl(struct img_spfi *spfi, u32 reg)
  {
- 	struct bcm2835_spi *bs = spi_master_get_devdata(master);
- 	unsigned long timeout;
-@@ -531,7 +531,8 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
+ 	return readl(spfi->regs + reg);
+@@ -441,20 +445,48 @@ static int img_spfi_unprepare(struct spi_master *master,
+ static int img_spfi_setup(struct spi_device *spi)
  {
- 	struct bcm2835_spi *bs = spi_master_get_devdata(master);
- 	unsigned long spi_hz, clk_hz, cdiv;
--	unsigned long spi_used_hz, xfer_time_us;
-+	unsigned long spi_used_hz;
-+	unsigned long long xfer_time_us;
- 	u32 cs = bcm2835_rd(bs, BCM2835_SPI_CS);
+ 	int ret;
+-
+-	ret = gpio_request_one(spi->cs_gpio, (spi->mode & SPI_CS_HIGH) ?
+-			       GPIOF_OUT_INIT_LOW : GPIOF_OUT_INIT_HIGH,
+-			       dev_name(&spi->dev));
+-	if (ret)
+-		dev_err(&spi->dev, "can't request chipselect gpio %d\n",
+-				spi->cs_gpio);
+-
++	struct img_spfi_device_data *spfi_data = spi_get_ctldata(spi);
++
++	if (!spfi_data) {
++		spfi_data = kzalloc(sizeof(*spfi_data), GFP_KERNEL);
++		if (!spfi_data)
++			return -ENOMEM;
++		spfi_data->gpio_requested = false;
++		spi_set_ctldata(spi, spfi_data);
++	}
++	if (!spfi_data->gpio_requested) {
++		ret = gpio_request_one(spi->cs_gpio, (spi->mode & SPI_CS_HIGH) ?
++					   GPIOF_OUT_INIT_LOW : GPIOF_OUT_INIT_HIGH,
++					   dev_name(&spi->dev));
++		if (ret)
++			dev_err(&spi->dev, "can't request chipselect gpio %d\n",
++					spi->cs_gpio);
++		else
++			spfi_data->gpio_requested = true;
++	} else {
++		if (gpio_is_valid(spi->cs_gpio)) {
++			int mode = ((spi->mode & SPI_CS_HIGH) ?
++					 GPIOF_OUT_INIT_LOW : GPIOF_OUT_INIT_HIGH);
++
++			ret = gpio_direction_output(spi->cs_gpio, mode);
++			if (ret)
++				dev_err(&spi->dev, "chipselect gpio %d setup failed (%d)\n",
++					spi->cs_gpio, ret);
++		}
++	}
+ 	return ret;
+ }
  
- 	/* set clock */
-@@ -573,9 +574,10 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
- 	bs->rx_len = tfr->len;
+ static void img_spfi_cleanup(struct spi_device *spi)
+ {
+-	gpio_free(spi->cs_gpio);
++	struct img_spfi_device_data *spfi_data = spi_get_ctldata(spi);
++
++	if (spfi_data) {
++		if (spfi_data->gpio_requested)
++			gpio_free(spi->cs_gpio);
++		kfree(spfi_data);
++		spi_set_ctldata(spi, NULL);
++	}
+ }
  
- 	/* calculate the estimated time in us the transfer runs */
--	xfer_time_us = tfr->len
-+	xfer_time_us = (unsigned long long)tfr->len
- 		* 9 /* clocks/byte - SPI-HW waits 1 clock after each byte */
--		* 1000000 / spi_used_hz;
-+		* 1000000;
-+	do_div(xfer_time_us, spi_used_hz);
- 
- 	/* for short requests run polling*/
- 	if (xfer_time_us <= BCM2835_SPI_POLLING_LIMIT_US)
+ static void img_spfi_config(struct spi_master *master, struct spi_device *spi,
 -- 
-1.7.10.4
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+1.7.9.5

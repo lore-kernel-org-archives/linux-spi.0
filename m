@@ -1,19 +1,19 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: Fix regression in spi-bitbang-txrx.h" to the spi tree
-Date: Wed, 29 Jul 2015 15:14:52 +0100
-Message-ID: <E1ZKS8C-0004oC-Vk@finisterre>
-References: <1438155122-2923-1-git-send-email-larper@axis.com>
+Subject: Applied "spi: img-spfi: check for timeout error before proceeding" to the spi tree
+Date: Wed, 29 Jul 2015 15:14:59 +0100
+Message-ID: <E1ZKS8J-0004of-Nm@finisterre>
+References: <1437999076-693-1-git-send-email-sifan.naeem@imgtec.com>
 Cc: linux-spi@vger.kernel.org
-To: Lars Persson <larper@axis.com>, Mark Brown <broonie@kernel.org>,
-	stable@vger.kernel.org
+To: Sifan Naeem <sifan.naeem@imgtec.com>,
+	Mark Brown <broonie@kernel.org>, stable@vger.kernel.org
 Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <1438155122-2923-1-git-send-email-larper@axis.com>
+In-Reply-To: <1437999076-693-1-git-send-email-sifan.naeem@imgtec.com>
 Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: Fix regression in spi-bitbang-txrx.h
+   spi: img-spfi: check for timeout error before proceeding
 
 has been applied to the spi tree at
 
@@ -38,45 +38,50 @@ to this mail.
 Thanks,
 Mark
 
->From 26a67ec47a4c58fe79c6421c3dc3d697d322d2d6 Mon Sep 17 00:00:00 2001
-From: Lars Persson <lars.persson@axis.com>
-Date: Wed, 29 Jul 2015 09:32:02 +0200
-Subject: [PATCH] spi: Fix regression in spi-bitbang-txrx.h
+>From 011710e2ab659c7ad6e5e554806414bd7a9508be Mon Sep 17 00:00:00 2001
+From: Sifan Naeem <sifan.naeem@imgtec.com>
+Date: Mon, 27 Jul 2015 13:11:15 +0100
+Subject: [PATCH] spi: img-spfi: check for timeout error before proceeding
 
-This patch fixes a regression introduced by commit 232a5adc5199 ("spi:
-bitbang: only toggle bitchanges"). The attempt to optimize writes of
-consecutive bit patterns broke most of the combinations of word size
-and SPI modes due to selecting the wrong bit as the MSB value.
+Calling spfi_wait_all_done is not required if the transfer has timed
+out before all data is transferred.
 
-Fixes: 232a5adc5199 (spi: bitbang: only toggle bitchanges)
-Signed-off-by: Lars Persson <larper@axis.com>
+spfi_wait_all_done polls for Alldone interrupt which is triggered to
+mark the transfer as complete and to indicate it is now safe to issue
+a new transfer.
+
+Fixes: 8c2c8c0 ("spi: img-spfi: Control CS lines with GPIO")
+Signed-off-by: Sifan Naeem <sifan.naeem@imgtec.com>
+Reviewed-by: Andrew Bresticker <abrestic@chromium.org>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Cc: stable@vger.kernel.org
 ---
- drivers/spi/spi-bitbang-txrx.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-img-spfi.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-bitbang-txrx.h b/drivers/spi/spi-bitbang-txrx.h
-index 06b34e5..47bb9b89 100644
---- a/drivers/spi/spi-bitbang-txrx.h
-+++ b/drivers/spi/spi-bitbang-txrx.h
-@@ -49,7 +49,7 @@ bitbang_txrx_be_cpha0(struct spi_device *spi,
- {
- 	/* if (cpol == 0) this is SPI_MODE_0; else this is SPI_MODE_2 */
+diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
+index 788e2b1..83b9741 100644
+--- a/drivers/spi/spi-img-spfi.c
++++ b/drivers/spi/spi-img-spfi.c
+@@ -266,15 +266,15 @@ static int img_spfi_start_pio(struct spi_master *master,
+ 		cpu_relax();
+ 	}
  
--	bool oldbit = !(word & 1);
-+	u32 oldbit = (!(word & (1<<(bits-1)))) << 31;
- 	/* clock starts at inactive polarity */
- 	for (word <<= (32 - bits); likely(bits); bits--) {
+-	ret = spfi_wait_all_done(spfi);
+-	if (ret < 0)
+-		return ret;
+-
+ 	if (rx_bytes > 0 || tx_bytes > 0) {
+ 		dev_err(spfi->dev, "PIO transfer timed out\n");
+ 		return -ETIMEDOUT;
+ 	}
  
-@@ -81,7 +81,7 @@ bitbang_txrx_be_cpha1(struct spi_device *spi,
- {
- 	/* if (cpol == 0) this is SPI_MODE_1; else this is SPI_MODE_3 */
- 
--	bool oldbit = !(word & (1 << 31));
-+	u32 oldbit = (!(word & (1<<(bits-1)))) << 31;
- 	/* clock starts at inactive polarity */
- 	for (word <<= (32 - bits); likely(bits); bits--) {
++	ret = spfi_wait_all_done(spfi);
++	if (ret < 0)
++		return ret;
++
+ 	return 0;
+ }
  
 -- 
 2.1.4

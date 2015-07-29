@@ -1,55 +1,77 @@
-From: Stefan Wahren <info-saaNCTdWVBT7BZbvpMY5sg@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: bcm2835: add spi-bcm2835aux driver for the
- auxiliar spi1 and spi2
-Date: Wed, 29 Jul 2015 18:37:32 +0200
-Message-ID: <55B9014C.7020105@lategoodbye.de>
-References: <1434980408-4086-1-git-send-email-kernel@martin.sperl.org>
- <55A0A150.3060809@wwwdotorg.org>
- <ECFBB7BF-1316-4565-B1F2-FB2651131882@martin.sperl.org>
- <55A49662.3000706@wwwdotorg.org>
- <2768BFA9-7FE9-4EDC-8692-AC3F070BD874@martin.sperl.org>
- <55AEF828.20908@wwwdotorg.org>
- <0125992E-40F4-4702-8404-2943FF9A8788@martin.sperl.org>
- <55B1BA7A.1090104@wwwdotorg.org>
- <9005ABEC-C60A-4814-AD60-AD5BB09808F2@martin.sperl.org>
- <55B6EE1A.2070605@wwwdotorg.org>
- <836DA157-3072-441A-A160-E1FDBB119E88@martin.sperl.org>
- <55B75E07.1080104@martin.sperl.org>
+From: Brian Norris <computersforpeace@gmail.com>
+Subject: Re: [RFC PATCH 2/2] dt: spi: s3c64xx: add compatible to
+ controller-data
+Date: Wed, 29 Jul 2015 10:16:01 -0700
+Message-ID: <20150729171601.GT8876@google.com>
+References: <cover.1438170519.git.hramrach@gmail.com>
+ <557c1962448393b2a8736f26bfa2a3a5ba4aeb7a.1438170519.git.hramrach@gmail.com>
+ <20150729140046.GB11082@sirena.org.uk>
+ <CAOMqctTZVET=U=2o65HpWSm4W660XZtYYbBND2k4u9CnfjfMhQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252;
-	format=flowed
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <55B75E07.1080104-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora.org>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Kukjin Kim <kgene@kernel.org>,
+	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+	Padmavathi Venna <padma.kvr@gmail.com>,
+	Boris BREZILLON <boris.brezillon@free-electrons.com>,
+	devicetree <devicetree@vger.kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	MTD Maling List <linux-mtd@lists.infradead.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
+	linux-spi <linux-spi@vger.kernel.org>
+To: Michal Suchanek <hramrach@gmail.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <CAOMqctTZVET=U=2o65HpWSm4W660XZtYYbBND2k4u9CnfjfMhQ@mail.gmail.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Martin,
+On Wed, Jul 29, 2015 at 06:19:24PM +0200, Michal Suchanek wrote:
+> On 29 July 2015 at 16:00, Mark Brown <broonie@kernel.org> wrote:
+> > On Wed, Jul 29, 2015 at 12:19:57PM +0200, Michal Suchanek wrote:
+> >
+> > Please use subject lines matching the style for the subsytsem so people
+> > can spot that the patch is in some way relevant.
+> >
+> >> The controller-data subnode has no compatible. This can lead to other
+> >> drivers getting confused by it. Add a compatible to make devicetreee
+> >> unambiguous.
+> >
+> > I can't tell from this commit message what the issue you're trying to
+> > fix is, sorry.  Nodes without compatible strings are entirely normal and
+> > don't need compatible strings.  It sounds like a bug in whatever other
+> > driver is becoming confused.
+> 
+> The driver that gets confused is ofpart.
+> 
+> The two-line patch to allow it to just ignore controller-data has been
+> rejected on the basis that s3c64xx should use a compatible string
 
-Am 28.07.2015 um 12:48 schrieb Martin Sperl:
-> On 28.07.2015 08:18, Martin Sperl wrote:
->> Hi Stephen!
->> But the bigger question you have not answered is: =93where should su=
-ch an
->> auxiliar driver go in the kernel tree?=94 i.e. which directory?
-> One thing: could the "module" be a regulator?
->
+It wasn't outright rejected, but it was questioned.
 
-IMHO that won't be acceptable.
+> because ofpart monopolizes all nodes without compatible which are
+> children of a mtd device. Devicetrees containing such nodes that are
+> not partitions are presumably invalid and should be rejected when
+> ofpart is compiled into the kernel.
 
-How about a multifunction device driver (drivers/mfd)?
+That characterization is currently correct. I'm not a fan of what ofpart
+does in the first place; I'd really like it if its binding was written
+in a way that made it more precise, but we have to live with what we
+have.
 
-Other candidates could be drivers/soc or drivers/misc.
+I also didn't like that you were designing your system such that we were
+now keying off the fact that your node has no 'reg' property. This
+seemed awfully fragile. (Admittedly, so is ofpart.c.)
 
-Regards Stefan
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+All in all, if you have better suggestions, I'm all ears. (At first
+glance, I'm liking your patch 1 to help disambiguate both MTD partitions
+and the 'controller-data' node going forward.)
+
+Brian

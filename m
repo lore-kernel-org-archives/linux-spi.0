@@ -1,92 +1,62 @@
-From: Michal Suchanek <hramrach@gmail.com>
-Subject: [RFC PATCH 0/2] disambiguate s3c64xx controller-data and ofpart
- partition nodes
-Date: Wed, 29 Jul 2015 13:14:44 +0200
-Message-ID: <cover.1438168484.git.hramrach@gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi: img-spfi: fix spfi_setup by removing
+ gpio_request_one
+Date: Wed, 29 Jul 2015 13:26:00 +0100
+Message-ID: <20150729122600.GB20130@sirena.org.uk>
+References: <1437999076-693-1-git-send-email-sifan.naeem@imgtec.com>
+ <1437999076-693-2-git-send-email-sifan.naeem@imgtec.com>
+ <CAL1qeaHLn6-2QJkPjNCm3V-pVqBk09P2BP-Sp+gn1G4ZWpvkEw@mail.gmail.com>
+ <20150727164015.GB11162@sirena.org.uk>
+ <A0E307549471DA4DBAF2DE2DE6CBFB7E4966D9FF@hhmail02.hh.imgtec.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
- Mark Rutland <mark.rutland@arm.com>,
- Ian Campbell <ijc+devicetree@hellion.org.uk>,
- Kumar Gala <galak@codeaurora.org>, David Woodhouse <dwmw2@infradead.org>,
- Brian Norris <computersforpeace@gmail.com>, Kukjin Kim <kgene@kernel.org>,
- Krzysztof Kozlowski <k.kozlowski@samsung.com>,
- Mark Brown <broonie@kernel.org>, Michal Suchanek <hramrach@gmail.com>,
- Padmavathi Venna <padma.kvr@gmail.com>,
- Boris BREZILLON <boris.brezillon@free-electrons.com>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mtd@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="KFztAG8eRSV9hGtP"
+Cc: Andrew Bresticker <abrestic-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"Stable kernel (v4.1)" <stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Sifan Naeem <Sifan.Naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <A0E307549471DA4DBAF2DE2DE6CBFB7E4966D9FF-brIQrgj5TFtJFJhlrACyRFBRoQTxkR7k@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hello,
 
-the ofpart partition nodes and s3c64xx controller-data nodes are both subnodes
-of MTD SPI slaves such as spi-nor.
+--KFztAG8eRSV9hGtP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-When ofpart is compiled-in and no partitions are defined on a MTD SPI slave
-ofpart tries to parse the controller-data node, gets confused, mtd probe fails,
-and the mtd device is inaccessible.
+On Wed, Jul 29, 2015 at 11:05:05AM +0000, Sifan Naeem wrote:
+> Please find the new patch in http://marc.info/?l=3Dlinux-spi&m=3D14381671=
+8611912&w=3D2
+>=20
+> Thanks,
+> Sifan
+>=20
+> > -----Original Message-----
 
-ofpart claims all subnodes of mtd devices which have no compatible and when
-there is a subnode but no partitions are found it reports error which is then
-propagated to mtd probe.
+Please don't top post and please submit patches using the normal process
+documented in SubmittingPatches.
 
-A simple fix that turns the error into a warning was rejected on the basis that
-the ofpart parser could then accept invalid devicetree as fallback.
+--KFztAG8eRSV9hGtP
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-https://www.mail-archive.com/linux-kernel%40vger.kernel.org/msg941351.html
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-Firstly, the ofpart parser already does accept 'invalid' trees as fallback.
-Looking at the code it only requires that there is one mtd subnode that parses
-as partition and there can be arbitrary number of other nodes which were not
-understood. It only singles out the case when there are subnodes but none is
-understood as partition.
+iQEcBAEBCAAGBQJVuMZXAAoJECTWi3JdVIfQ8KMH/3uRO57oe6JENuYKDdmonBhm
+ZHEqrLrLT7zUqCGVu8YpqJeuFbg0XPL+Xdr3JlsWFeEAJQUM7/+XtrRxRIuERt5p
+l9dtIMpGvlEUkrJ6laMygsO6vdsRG4FB23RIBcokXNJ7GIYEqjDjoFjkiGyl2Xzv
+2y6wydBGVFYOG+0AfT/EsREWbn/SpropdLR4x56LQgW3xwUEzr4VR4gGDeepvdgu
+23JrIyskqLryjcyvPabv3GSDnT1THRyc3+/4vGAnAiHLldCpeEx7itRduzhfJdce
+kqXuuI31Qt6I59TuOKeReLpg6/sZGaNVBXldK/wb5RQQWHUJmtxjY35RudUi5Hg=
+=Yxki
+-----END PGP SIGNATURE-----
 
-Secondly, the fact that a devicetree node is not understood by a particular
-driver does not make it 'invalid'.
-
-In my view either it is acceptable that nodes without compatible property exist
-and then drivers using such nodes should be ready to gracefully handle nodes
-that do not have compatible property but are meant for another driver. The
-s3c64xx driver already does this but ofpart does not.
-
-On the other hand, if not using a compatible property is not acceptable then
-both drivers should use a compatible property to reserve their subnodes for
-themselves and avoid any conflict.
-
-Either way I would like the maintainers of the conflicting drivers to agree on
-where compatible property should be and where not so that compiling-in ofpart
-does not make valid MTD devices inaccessible.
-
-The patches are only for illustration and are not meant to be included
-anywhere. They are not tested and miss adding the properties to tens of binding
-docs and dts files.
-
-Thanks
-
-Michal
-
-Michal Suchanek (2):
-  dt: mtd: ofpart: use compatible for partitions
-  dt: spi: s3c64xx: add compatible to controller-data
-
- .../devicetree/bindings/mtd/partition.txt          |  7 +++++-
- .../devicetree/bindings/spi/spi-samsung.txt        |  3 +++
- drivers/mtd/ofpart.c                               | 26 +++++++++++++---------
- drivers/spi/spi-s3c64xx.c                          |  4 ++++
- 4 files changed, 29 insertions(+), 11 deletions(-)
-
--- 
-2.1.4
+--KFztAG8eRSV9hGtP--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

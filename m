@@ -1,57 +1,64 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: bcm2835: fix overflow in calculation of transfer
- time
-Date: Wed, 29 Jul 2015 15:03:31 +0100
-Message-ID: <20150729140331.GC11082@sirena.org.uk>
-References: <1438155250-14476-1-git-send-email-kernel@martin.sperl.org>
+From: Sifan Naeem <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH v2] spi: img-spfi: check for timeout error before proceeding
+Date: Wed, 29 Jul 2015 15:08:22 +0100
+Message-ID: <1438178902-17746-1-git-send-email-sifan.naeem@imgtec.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="V88s5gaDVPzZ0KCq"
-Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org
-To: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
+Content-Type: text/plain
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <abrestic-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	<stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Ezequiel Garcia <ezequiel-30ULvvUtt6G51wMPkGsGjgyUoB5FGQPZ@public.gmane.org>,
+	Sifan Naeem <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1438155250-14476-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Calling spfi_wait_all_done is not required if the transfer has timed
+out before all data is transferred.
 
---V88s5gaDVPzZ0KCq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+spfi_wait_all_done polls for Alldone interrupt which is triggered to
+mark the transfer as complete and to indicate it is now safe to issue
+a new transfer.
 
-On Wed, Jul 29, 2015 at 07:34:10AM +0000, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
-> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
->=20
-> This resulted in the use of polling mode when other approaches
-> (dma or interrupts) would have been more appropriate.
+Fixes: commit 8c2c8c03cdcb ("spi: img-spfi: Control CS lines with GPIO")
+Signed-off-by: Sifan Naeem <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
+Reviewed-by: Andrew Bresticker <abrestic-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Cc: Stable kernel (v4.1) <stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+---
+Changes from v1:
+	12 digit hash used.
+	Reviewed-by added.
 
-Please describe the actual issue and how it's being fixed in the commit
-message.  In this case the fix appears to be converting the timeout
-variable to a long long which will make things better but obviously
-isn't a complete fix for overflows - presumably the ideal thing here is
-to handle saturation better?
+ drivers/spi/spi-img-spfi.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---V88s5gaDVPzZ0KCq
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
+index 00f1ac3d6a18..f27d9d5531b5 100644
+--- a/drivers/spi/spi-img-spfi.c
++++ b/drivers/spi/spi-img-spfi.c
+@@ -267,15 +267,15 @@ static int img_spfi_start_pio(struct spi_master *master,
+ 		cpu_relax();
+ 	}
+ 
+-	ret = spfi_wait_all_done(spfi);
+-	if (ret < 0)
+-		return ret;
+-
+ 	if (rx_bytes > 0 || tx_bytes > 0) {
+ 		dev_err(spfi->dev, "PIO transfer timed out\n");
+ 		return -ETIMEDOUT;
+ 	}
+ 
++	ret = spfi_wait_all_done(spfi);
++	if (ret < 0)
++		return ret;
++
+ 	return 0;
+ }
+ 
+-- 
+1.7.9.5
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVuN0zAAoJECTWi3JdVIfQvyEH/A32+P3w1AfLO67iFMtbEElV
-HBCs2Iy1/jmj1cIcohe0prU4GaQXG6Y0TGy+p/PMj1TYklUYlMl/fgUBZovjh/Ar
-TBqtqwRUFNVF4eu4QWLTnSj3RwhmlJiVQJ77IOnOqY/O8eSjMg6+Aez0UZEdHxFb
-k1GeSmkyWwwSBlhsJNaqy/O1DAa0/+VS+OurOfRorfLvvMFOhUr03BMlJSDceBkO
-H3pM2r/xov4MIgNR8jZAircPETuKCfX8vmI/lLXmRNvoMHGJXJVcxqNOUueJShCi
-5PzhyAdsI8hFPgQpbnCVy1crwLmAqLyEcb2lGnTs4CpUQmS8fg2w/96Ae3p9NrU=
-=OfEu
------END PGP SIGNATURE-----
-
---V88s5gaDVPzZ0KCq--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

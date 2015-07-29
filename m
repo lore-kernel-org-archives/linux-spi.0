@@ -1,84 +1,67 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [RFC PATCH 2/2] dt: spi: s3c64xx: add compatible to
- controller-data
-Date: Wed, 29 Jul 2015 19:40:43 +0100
-Message-ID: <20150729184043.GL11162@sirena.org.uk>
-References: <cover.1438170519.git.hramrach@gmail.com>
- <557c1962448393b2a8736f26bfa2a3a5ba4aeb7a.1438170519.git.hramrach@gmail.com>
- <20150729140046.GB11082@sirena.org.uk>
- <CAOMqctTZVET=U=2o65HpWSm4W660XZtYYbBND2k4u9CnfjfMhQ@mail.gmail.com>
- <20150729171613.GI11162@sirena.org.uk>
- <CAOMqctQzh69RCQu8pK1EuuYkrZsh6mg34+YWJFzSvimcK3B0rA@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="akWijmsqBEgP5JG6"
-Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Padmavathi Venna <padma.kvr-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Boris BREZILLON <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	linux-samsung-soc <linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAOMqctQzh69RCQu8pK1EuuYkrZsh6mg34+YWJFzSvimcK3B0rA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: bcm2835: add spi-bcm2835aux driver for the auxiliar spi1 and spi2
+Date: Wed, 29 Jul 2015 23:16:15 +0200
+Message-ID: <C767C9AD-A9B5-428F-A207-D67269B380C6@martin.sperl.org>
+References: <1434980408-4086-1-git-send-email-kernel@martin.sperl.org> <55A0A150.3060809@wwwdotorg.org> <ECFBB7BF-1316-4565-B1F2-FB2651131882@martin.sperl.org> <55A49662.3000706@wwwdotorg.org> <2768BFA9-7FE9-4EDC-8692-AC3F070BD874@martin.sperl.org> <55AEF828.20908@wwwdotorg.org> <0125992E-40F4-4702-8404-2943FF9A8788@martin.sperl.org> <55B1BA7A.1090104@wwwdotorg.org> <9005ABEC-C60A-4814-AD60-AD5BB09808F2@martin.sperl.org> <55B6EE1A.2070605@wwwdotorg.org> <836DA157-3072-441A-A160-E1FDBB119E88@martin.sperl.org> <55B75E07.1080104@martin.sperl.org> <55B9014C.7020105@lategoodbye.de>
+Mime-Version: 1.0 (1.0)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Stefan Wahren <info-saaNCTdWVBT7BZbvpMY5sg@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <55B9014C.7020105-saaNCTdWVBT7BZbvpMY5sg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---akWijmsqBEgP5JG6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Wed, Jul 29, 2015 at 08:21:34PM +0200, Michal Suchanek wrote:
-> On 29 July 2015 at 19:16, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On 29.07.2015, at 18:37, Stefan Wahren <info-saaNCTdWVBT7BZbvpMY5sg@public.gmane.org> wrote:
+>=20
+> Hi Martin,
+>=20
+>> Am 28.07.2015 um 12:48 schrieb Martin Sperl:
+>>> On 28.07.2015 08:18, Martin Sperl wrote:
+>>> Hi Stephen!
+>>> But the bigger question you have not answered is: =E2=80=9Cwhere sh=
+ould such an
+>>> auxiliar driver go in the kernel tree?=E2=80=9D i.e. which director=
+y?
+>> One thing: could the "module" be a regulator?
+>=20
+> IMHO that won't be acceptable.
+Why would it not be acceptable?
 
-> >> It will not break anything. It will just spam dmesg.
+It provides all sorts of methods and you do not have to implement all o=
+f them.
+Enable and disable would be sufficient.
+On top it would be a generic interface.
 
-> > I'm confused - if all this change does is to spam dmesg then what's the
-> > point?
+Even the mcp251x can driver uses 2 of those to enable/disable  the cont=
+roller chip=20
+and the transceiver (and 2 dummy regulators if none are defined)=20
+There are also gpio regulators to switch a gpio to enable/disable a pow=
+er-supply.
 
-> Presumably when your SPI NOR flash fails to probe this message will be
-> just above and you will look into the binding doc and add the
-> compatible.
+So with all those features it should be fairly standard to be used for
+such things.
 
-If you're looking to add a warning message when the flash device fails
-to probe then add that in the flash driver when it detects an error,
-this will cause needless noise for everyone else using this controller
-purely to work around the broken binding.
+See here for a bit of documentation:
+http://lxr.free-electrons.com/source/Documentation/power/regulator/desi=
+gn.txt
+http://lxr.free-electrons.com/source/Documentation/power/regulator/cons=
+umer.txt
+(Especially point 2 about enable/disable)
 
-And like I say compatible really seems like it isn't an appropriate
-property here.
+> How about a multifunction device driver (drivers/mfd)?
+> Other candidates could be drivers/soc or drivers/misc.
+Also possible...
 
---akWijmsqBEgP5JG6
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVuR4qAAoJECTWi3JdVIfQw84H+gIG06W1d5C+xW+3hdwVcySH
-U+hKQACjqxbhWce28likOpb+KV3qC8Vqp4vRNYrfTgQbpJfnI4Sz/0q6UW28FL2y
-ybxkDt3/XMC9D4fWRodIDZYUxEm/76Z0/y1h0VAwXSHMS8bziwltgiTVMfpxRhPv
-yXOFjuhdMDHQcoTzj34vBpep1c6RT6ymMw0C0szqmElwDUvcMvh1GTidkDTTk/nQ
-o/IrC2dXrjQF12YpuwRPpth98ZR2b38WkVa/Fd/nyCTbvRWiwdAY7Yn3tBTD/Hns
-w1GsUiOys9kPykg/qeBOI5sLr/Y2GmYeYzz4hUdfENXDo3CCm2T62riqAjUfNng=
-=+uJe
------END PGP SIGNATURE-----
-
---akWijmsqBEgP5JG6--
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+Martin--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

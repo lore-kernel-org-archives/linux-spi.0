@@ -1,101 +1,197 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: bcm2835: add spi-bcm2835aux driver for the auxiliar spi1 and spi2
-Date: Thu, 30 Jul 2015 17:27:44 +0200
-Message-ID: <E9EEB426-95DE-4785-949C-6A402A25E115@martin.sperl.org>
-References: <1434980408-4086-1-git-send-email-kernel@martin.sperl.org> <55A0A150.3060809@wwwdotorg.org> <ECFBB7BF-1316-4565-B1F2-FB2651131882@martin.sperl.org> <55A49662.3000706@wwwdotorg.org> <2768BFA9-7FE9-4EDC-8692-AC3F070BD874@martin.sperl.org> <55AEF828.20908@wwwdotorg.org> <0125992E-40F4-4702-8404-2943FF9A8788@martin.sperl.org> <55B1BA7A.1090104@wwwdotorg.org> <9005ABEC-C60A-4814-AD60-AD5BB09808F2@martin.sperl.org> <55B6EE1A.2070605@wwwdotorg.org> <836DA157-3072-441A-A160-E1FDBB119E88@martin.sperl.org> <55B75E07.1080104@martin.sperl.org> <55B9014C.7020105@lategoodbye.de> <C767C9AD-A9B5-428F-A207-D67269B380C6@martin.sperl.org> <55B9B7EF.2070108@lategoodbye.de> <C2C16277-C6C1-4F86-BB88-580CF667EF24@martin.sperl.org> <97861F80-CF83-4FF2-B96E-CDFB1A8F4921@martin.sperl.org>
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2102\))
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Stefan Wahren <info-saaNCTdWVBT7BZbvpMY5sg@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <97861F80-CF83-4FF2-B96E-CDFB1A8F4921-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
+Subject: [PATCH 00/27] Export I2C and OF module aliases in missing drivers
+Date: Thu, 30 Jul 2015 18:18:25 +0200
+Message-ID: <1438273132-20926-1-git-send-email-javier@osg.samsung.com>
+Cc: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
+	alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-iio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-fbdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-leds-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Alexandre Belloni <alexandre.belloni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Chanwoo Choi <cw00.choi-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Tomi Valkeinen <tomi.valkeinen-l0cyMroinI0@public.gmane.org>,
+	lm-sensors-GZX6beZjE8VD60Wz+7aTrA@public.gmane.org, Sebastian Reichel <sre-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-input-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
+	Jean Delvare <jdelvare-IBi9RG/b67k@public.gmane.org>,
+	Jonathan Cameron <jic23-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, rtc-linux-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org,
+	linux-pm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mauro Carvalho Chehab <mchehab-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
+	Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>,
+	Benjamin Herrenschmidt <benh-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>,
+	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
+	Takashi Iwai <tiwai-IBi9RG/b67k@public.gmane.org>,
+	Liam Girdwood <lgirdw
+To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-usb-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-usb-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Hello,
 
-> On 30.07.2015, at 09:10, Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org> wrote=
-:
->> What about adding =E2=80=9Cbcrm,bcm2835-aux-enable=E2=80=9D to drive=
-rs/mfd/syscon.c
->> compatibility?
->>=20
->> That way we:
->> * have a clean dt that only represents hardware
->> * reuse existing code with minimal modifications
->> * minimal effort
->>=20
->> That would be a minimal patch to enable this, so we can ask if that =
-is
->> acceptable and if it is not then we can still think of something els=
-e,
->> which would be mostly replicating the bit-management portion of sysc=
-on.
->=20
-> that minimal patch extending compatibility of syscon and also includi=
-ng
-> the config portion for the kernel as well as the device tree would lo=
-ok
-> something like this (note that it is not tested yet):
+Short version:
 
-> --- a/drivers/mfd/syscon.c
-> +++ b/drivers/mfd/syscon.c
-> @@ -211,6 +211,12 @@ static int syscon_probe(struct platform_device *=
-pdev)
->        return 0;
-> }
->=20
-> +static const struct of_device_id syscon_match[] =3D {
-> +       { .compatible =3D "bcrm,bcm2835-aux-enable", },
-> +       {}
-> +};
-> +MODULE_DEVICE_TABLE(of, syscon_match);
-> +
-> static const struct platform_device_id syscon_ids[] =3D {
->        { "syscon", },
->        { }
+This series add the missing MODULE_DEVICE_TABLE() for OF and I2C tables
+to export that information so modules have the correct aliases built-in
+and autoloading works correctly.
 
-Unfortunately the above does not work with syscon, as it
-_explicitly_ requires a compatibility of =E2=80=9Csyscon=E2=80=9D:
+Longer version:
 
-        if (!of_device_is_compatible(np, "syscon"))
-                return ERR_PTR(-EINVAL);
+Currently it's mandatory for I2C drivers to have an I2C device ID table
+regardless if the device was registered using platform data or OF. This
+is because the I2C core needs an I2C device ID table for two reasons:
 
-So by the rational of device-tree representing only the
-hardware this driver should never get used because of this
-limitation
+1) Match the I2C client with a I2C device ID so a struct i2c_device_id
+   is passed to the I2C driver probe() function.
 
-Replicating syscon/regmap into a separate driver that has explicit
-compatibility of =E2=80=9Cbcrm, bcm2835-aux=E2=80=9D results in more th=
-an 162 lines
-of extra code (plus changes to Makefile and Kconfig)
+2) Export the module aliases from the I2C device ID table so userspace
+   can auto-load the correct module. This is because i2c_device_uevent
+   always reports a MODALIAS of the form i2c:<client->name>.
 
-So I wonder if it would not be acceptable to allow:
-  compatiblity =3D =E2=80=9Cbcrm,bcm2835-aux=E2=80=9D, =E2=80=9Csyscon=E2=
-=80=9D;
+Lee Jones posted a patch series [0] to solve 1) by allowing the I2C
+drivers to have a probe() function that does not get a i2c_device_id.
 
-and avoid an unnecessary extra driver which provides only
-the following functions:
+The problem is that his series didn't take into account 2) so if that
+was merged and the I2C ID table is removed from all the drivers that
+don't needed it, module auto-loading will break for those.
 
-void bcm2835aux_enable(struct bcm2835aux *aux, u32 mask);
-void bcm2835aux_disable(struct bcm2835aux *aux, u32 mask);
-struct bcm2835aux *bcm2835aux_lookup_by_phandle(
-	struct device_node *np,
-	const char *property);
+But even now there are many I2C drivers were module auto-loading is
+not working because of the fact that the I2C core always reports the
+MODALIAS as i2c:<client->name> and many developers didn't expect this.
 
-all of which are available almost identical in syscon/regmap.
+I've identified I2C drivers with 3 types of different issues:
 
-We can also try to discuss if a modification to syscon so that it
-also checks the =E2=80=9Cexplicit=E2=80=9D compatibility in the configu=
-red list.
+a) Those that have an i2c_table but are not exported. The match works
+   and the correct i2c_device_id is passed on probe but since the ID
+   table is not exported, module auto-load won't work.
 
-Martin--
-To unsubscribe from this list: send the line "unsubscribe devicetree" i=
-n
+b) Those that have a of_table but are not exported. This is currently
+   not an issue since even when the of_table is used to match the dev
+   with the driver, an OF modalias is not reported by the I2C core.
+   But if the I2C core is changed to report the MODALIAS of the form
+   of:N*T*C as it's made by other subsystems, then module auto-load
+   will break for these drivers.
+
+c) Those that don't have a of_table but should since are OF drivers
+   with DT bindings doc for them. Since the I2C core does not report
+   a OF modalias and since i2c_device_match() fallbacks to match the
+   device part of the compatible string with the I2C device ID table,
+   many OF drivers don't have an of_table to match. After all having
+   a I2C device ID table is mandatory so it works without a of_table.
+
+So, in order to not make mandatory to have a I2C device ID table, at
+least a) and b) needs to be addressed, this series does that.
+
+c) should be fixed too since it seems wrong that a driver with a DT
+binding document, does not have a OF table and export it to modules.
+
+Also stripping the vendor part from the compatible string to match
+with the I2C devices ID table and reporting only the device name to
+user-space doesn't seem to be correct. I've identified at least two
+drivers that have the same name on their I2C device ID table so the
+manufacturer prefix is important. But I've not tried to fix c) yet
+since that is not so easy to automate due drivers not having all the
+information (i.e: the device name can match a documented compatible
+string device part but without the vendor prefix is hard to tell).
+
+I split the changes so the patches in this series are independent and
+can be picked individually by subsystem maintainers. Patch #27 changes
+the logic of i2c_device_uevent() to report an OF modalias if the device
+was registered using OF. But this patch is included in the series only
+as an RFC for illustration purposes since changing that without fixing
+c) will break module auto-loading for the drivers of devices registered
+with OF but that don't have a of_match_table.
+
+Although arguably, those drivers were relying on the assumption that a
+MODALIAS=i2c:<foo> would always be reported even for the OF case which
+is not the true on other subsystems.
+
+[0]: https://lkml.org/lkml/2014/8/28/283
+
+Best regards,
+Javier
+
+
+Javier Martinez Canillas (27):
+  mfd: stw481x: Export I2C module alias information
+  spi: xcomm: Export I2C module alias information
+  iio: Export I2C module alias information in missing drivers
+  [media] Export I2C module alias information in missing drivers
+  macintosh: therm_windtunnel: Export I2C module alias information
+  misc: eeprom: Export I2C module alias information in missing drivers
+  Input: Export I2C module alias information in missing drivers
+  power: Export I2C module alias information in missing drivers
+  i2c: core: Export I2C module alias information in dummy driver
+  backlight: tosa: Export I2C module alias information
+  [media] staging: media: lirc: Export I2C module alias information
+  usb: phy: isp1301: Export I2C module alias information
+  ALSA: ppc: keywest: Export I2C module alias information
+  hwmon: (nct7904) Export I2C module alias information
+  regulator: fan53555: Export I2C module alias information
+  mfd: Export OF module alias information in missing drivers
+  iio: Export OF module alias information in missing drivers
+  hwmon: (g762) Export OF module alias information
+  extcon: Export OF module alias information in missing drivers
+  ASoC: Export OF module alias information in missing codec drivers
+  rtc: Export OF module alias information in missing drivers
+  macintosh: therm_windtunnel: Export OF module alias information
+  leds: Export OF module alias information in missing drivers
+  [media] smiapp: Export OF module alias information
+  Input: touchscreen - Export OF module alias information
+  regulator: isl9305: Export OF module alias information
+  i2c: (RFC, don't apply) report OF style modalias when probing using DT
+
+ drivers/extcon/extcon-rt8973a.c         | 1 +
+ drivers/extcon/extcon-sm5502.c          | 1 +
+ drivers/hwmon/g762.c                    | 1 +
+ drivers/hwmon/nct7904.c                 | 1 +
+ drivers/i2c/i2c-core.c                  | 9 +++++++++
+ drivers/iio/accel/mma8452.c             | 1 +
+ drivers/iio/accel/stk8312.c             | 1 +
+ drivers/iio/accel/stk8ba50.c            | 1 +
+ drivers/iio/light/cm32181.c             | 1 +
+ drivers/iio/light/cm3232.c              | 1 +
+ drivers/iio/light/cm36651.c             | 1 +
+ drivers/iio/light/gp2ap020a00f.c        | 1 +
+ drivers/iio/light/stk3310.c             | 1 +
+ drivers/input/misc/gp2ap002a00f.c       | 1 +
+ drivers/input/touchscreen/egalax_ts.c   | 1 +
+ drivers/input/touchscreen/goodix.c      | 1 +
+ drivers/input/touchscreen/mms114.c      | 1 +
+ drivers/leds/leds-pca963x.c             | 1 +
+ drivers/leds/leds-tca6507.c             | 1 +
+ drivers/macintosh/therm_windtunnel.c    | 2 ++
+ drivers/media/i2c/ir-kbd-i2c.c          | 1 +
+ drivers/media/i2c/s5k6a3.c              | 1 +
+ drivers/media/i2c/smiapp/smiapp-core.c  | 1 +
+ drivers/mfd/rt5033.c                    | 1 +
+ drivers/mfd/stw481x.c                   | 1 +
+ drivers/mfd/tps65217.c                  | 1 +
+ drivers/mfd/tps65218.c                  | 1 +
+ drivers/misc/eeprom/eeprom.c            | 1 +
+ drivers/misc/eeprom/max6875.c           | 1 +
+ drivers/power/bq24190_charger.c         | 1 +
+ drivers/power/rt5033_battery.c          | 2 +-
+ drivers/regulator/fan53555.c            | 1 +
+ drivers/regulator/isl9305.c             | 1 +
+ drivers/rtc/rtc-ab-b5ze-s3.c            | 1 +
+ drivers/rtc/rtc-isl12022.c              | 1 +
+ drivers/rtc/rtc-isl12057.c              | 1 +
+ drivers/spi/spi-xcomm.c                 | 1 +
+ drivers/staging/media/lirc/lirc_zilog.c | 1 +
+ drivers/usb/phy/phy-isp1301.c           | 1 +
+ drivers/video/backlight/tosa_bl.c       | 1 +
+ sound/ppc/keywest.c                     | 1 +
+ sound/soc/codecs/da9055.c               | 1 +
+ sound/soc/codecs/wm8510.c               | 1 +
+ sound/soc/codecs/wm8523.c               | 1 +
+ sound/soc/codecs/wm8580.c               | 1 +
+ 45 files changed, 54 insertions(+), 1 deletion(-)
+
+-- 
+2.4.3
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-usb" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

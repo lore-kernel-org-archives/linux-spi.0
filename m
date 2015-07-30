@@ -1,189 +1,101 @@
-From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH] spi: pxa2xx: Add support for Intel Sunrisepoint
-Date: Thu, 30 Jul 2015 16:30:07 +0300
-Message-ID: <1438263007-21451-1-git-send-email-jarkko.nikula@linux.intel.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: bcm2835: add spi-bcm2835aux driver for the auxiliar spi1 and spi2
+Date: Thu, 30 Jul 2015 17:27:44 +0200
+Message-ID: <E9EEB426-95DE-4785-949C-6A402A25E115@martin.sperl.org>
+References: <1434980408-4086-1-git-send-email-kernel@martin.sperl.org> <55A0A150.3060809@wwwdotorg.org> <ECFBB7BF-1316-4565-B1F2-FB2651131882@martin.sperl.org> <55A49662.3000706@wwwdotorg.org> <2768BFA9-7FE9-4EDC-8692-AC3F070BD874@martin.sperl.org> <55AEF828.20908@wwwdotorg.org> <0125992E-40F4-4702-8404-2943FF9A8788@martin.sperl.org> <55B1BA7A.1090104@wwwdotorg.org> <9005ABEC-C60A-4814-AD60-AD5BB09808F2@martin.sperl.org> <55B6EE1A.2070605@wwwdotorg.org> <836DA157-3072-441A-A160-E1FDBB119E88@martin.sperl.org> <55B75E07.1080104@martin.sperl.org> <55B9014C.7020105@lategoodbye.de> <C767C9AD-A9B5-428F-A207-D67269B380C6@martin.sperl.org> <55B9B7EF.2070108@lategoodbye.de> <C2C16277-C6C1-4F86-BB88-580CF667EF24@martin.sperl.org> <97861F80-CF83-4FF2-B96E-CDFB1A8F4921@martin.sperl.org>
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2102\))
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Stefan Wahren <info-saaNCTdWVBT7BZbvpMY5sg@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <97861F80-CF83-4FF2-B96E-CDFB1A8F4921-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-Major difference in LPSS SPI between Intel Sunrisepoint PCH and earlier
-platforms is an integrated DMA (iDMA) engine. iDMA is an IP that is private
-for each LPSS host controller (UART/SPI/I2C). Other differences are private
-register space offset, a few private registers that are in different
-location and FIFO thresholds.
 
-Intel Sunrisepoint LPSS SPI and iDMA devices are probed and registered in
-MFD layer as platform devices. Here these compound devices are detected by
-matching against known PCI IDs. This allows us to share
-pxa2xx_spi_acpi_get_pdata() for setting up the platform data instead of
-duplicating it in MFD part.
+> On 30.07.2015, at 09:10, Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org> wrote=
+:
+>> What about adding =E2=80=9Cbcrm,bcm2835-aux-enable=E2=80=9D to drive=
+rs/mfd/syscon.c
+>> compatibility?
+>>=20
+>> That way we:
+>> * have a clean dt that only represents hardware
+>> * reuse existing code with minimal modifications
+>> * minimal effort
+>>=20
+>> That would be a minimal patch to enable this, so we can ask if that =
+is
+>> acceptable and if it is not then we can still think of something els=
+e,
+>> which would be mostly replicating the bit-management portion of sysc=
+on.
+>=20
+> that minimal patch extending compatibility of syscon and also includi=
+ng
+> the config portion for the kernel as well as the device tree would lo=
+ok
+> something like this (note that it is not tested yet):
 
-This patch adds configuration for Intel Sunrisepoint LPSS SPI, above
-detection and DMA filter function that picks the DMA channel only from an
-associated iDMA block.
+> --- a/drivers/mfd/syscon.c
+> +++ b/drivers/mfd/syscon.c
+> @@ -211,6 +211,12 @@ static int syscon_probe(struct platform_device *=
+pdev)
+>        return 0;
+> }
+>=20
+> +static const struct of_device_id syscon_match[] =3D {
+> +       { .compatible =3D "bcrm,bcm2835-aux-enable", },
+> +       {}
+> +};
+> +MODULE_DEVICE_TABLE(of, syscon_match);
+> +
+> static const struct platform_device_id syscon_ids[] =3D {
+>        { "syscon", },
+>        { }
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
----
-I sent this as an don't push RFC a few weeks ago:
-http://www.spinics.net/lists/linux-spi/msg04435.html
-I'm resending this as now the MFD patchset that probe the device and iDMA
-driver are queued for Linux 4.3:
-http://marc.info/?l=linux-kernel&m=143807405316163&w=2
+Unfortunately the above does not work with syscon, as it
+_explicitly_ requires a compatibility of =E2=80=9Csyscon=E2=80=9D:
 
-This patch doesn't have build or runtime dependency to the above code but
-it didn't make sense to apply this into into spi.git before we knew those
-other pieces are accepted.
+        if (!of_device_is_compatible(np, "syscon"))
+                return ERR_PTR(-EINVAL);
 
-Core idea here is to match against known PCI IDs for getting the LPSS type
-and share the pxa2xx_spi_acpi_get_pdata() for setting up data for
-"pxa2xx-spi".
-It looked quite code duplication to construct platform data (which is
-struct pxa2xx_spi_master including struct ssp_device) in MFD part where
-actual need is just one integer.
----
- drivers/spi/spi-pxa2xx.c   | 59 ++++++++++++++++++++++++++++++++++++++++++----
- include/linux/pxa2xx_ssp.h |  1 +
- 2 files changed, 56 insertions(+), 4 deletions(-)
+So by the rational of device-tree representing only the
+hardware this driver should never get used because of this
+limitation
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 7293d6d875c5..2c9fa409d2bf 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -21,6 +21,7 @@
- #include <linux/err.h>
- #include <linux/interrupt.h>
- #include <linux/kernel.h>
-+#include <linux/pci.h>
- #include <linux/platform_device.h>
- #include <linux/spi/pxa2xx_spi.h>
- #include <linux/spi/spi.h>
-@@ -97,6 +98,15 @@ static const struct lpss_config lpss_platforms[] = {
- 		.tx_threshold_lo = 160,
- 		.tx_threshold_hi = 224,
- 	},
-+	{	/* LPSS_SPT_SSP */
-+		.offset = 0x200,
-+		.reg_general = -1,
-+		.reg_ssp = 0x20,
-+		.reg_cs_ctrl = 0x24,
-+		.rx_threshold = 1,
-+		.tx_threshold_lo = 32,
-+		.tx_threshold_hi = 56,
-+	},
- };
- 
- static inline const struct lpss_config
-@@ -110,6 +120,7 @@ static bool is_lpss_ssp(const struct driver_data *drv_data)
- 	switch (drv_data->ssp_type) {
- 	case LPSS_LPT_SSP:
- 	case LPSS_BYT_SSP:
-+	case LPSS_SPT_SSP:
- 		return true;
- 	default:
- 		return false;
-@@ -1107,6 +1118,7 @@ static int setup(struct spi_device *spi)
- 		break;
- 	case LPSS_LPT_SSP:
- 	case LPSS_BYT_SSP:
-+	case LPSS_SPT_SSP:
- 		config = lpss_get_config(drv_data);
- 		tx_thres = config->tx_threshold_lo;
- 		tx_hi_thres = config->tx_threshold_hi;
-@@ -1276,6 +1288,30 @@ static const struct acpi_device_id pxa2xx_spi_acpi_match[] = {
- };
- MODULE_DEVICE_TABLE(acpi, pxa2xx_spi_acpi_match);
- 
-+/*
-+ * PCI IDs of compound devices that integrate both host controller and private
-+ * integrated DMA engine. Please note these are not used in module
-+ * autoloading and probing in this module but matching the LPSS SSP type.
-+ */
-+static const struct pci_device_id pxa2xx_spi_pci_compound_match[] = {
-+	/* SPT-LP */
-+	{ PCI_VDEVICE(INTEL, 0x9d29), LPSS_SPT_SSP },
-+	{ PCI_VDEVICE(INTEL, 0x9d2a), LPSS_SPT_SSP },
-+	/* SPT-H */
-+	{ PCI_VDEVICE(INTEL, 0xa129), LPSS_SPT_SSP },
-+	{ PCI_VDEVICE(INTEL, 0xa12a), LPSS_SPT_SSP },
-+};
-+
-+static bool pxa2xx_spi_idma_filter(struct dma_chan *chan, void *param)
-+{
-+	struct device *dev = param;
-+
-+	if (dev != chan->device->dev->parent)
-+		return false;
-+
-+	return true;
-+}
-+
- static struct pxa2xx_spi_master *
- pxa2xx_spi_acpi_get_pdata(struct platform_device *pdev)
- {
-@@ -1283,16 +1319,25 @@ pxa2xx_spi_acpi_get_pdata(struct platform_device *pdev)
- 	struct acpi_device *adev;
- 	struct ssp_device *ssp;
- 	struct resource *res;
--	const struct acpi_device_id *id;
-+	const struct acpi_device_id *adev_id = NULL;
-+	const struct pci_device_id *pcidev_id = NULL;
- 	int devid, type;
- 
- 	if (!ACPI_HANDLE(&pdev->dev) ||
- 	    acpi_bus_get_device(ACPI_HANDLE(&pdev->dev), &adev))
- 		return NULL;
- 
--	id = acpi_match_device(pdev->dev.driver->acpi_match_table, &pdev->dev);
--	if (id)
--		type = (int)id->driver_data;
-+	if (dev_is_pci(pdev->dev.parent))
-+		pcidev_id = pci_match_id(pxa2xx_spi_pci_compound_match,
-+					 to_pci_dev(pdev->dev.parent));
-+	else
-+		adev_id = acpi_match_device(pdev->dev.driver->acpi_match_table,
-+					    &pdev->dev);
-+
-+	if (adev_id)
-+		type = (int)adev_id->driver_data;
-+	else if (pcidev_id)
-+		type = (int)pcidev_id->driver_data;
- 	else
- 		return NULL;
- 
-@@ -1311,6 +1356,12 @@ pxa2xx_spi_acpi_get_pdata(struct platform_device *pdev)
- 	if (IS_ERR(ssp->mmio_base))
- 		return NULL;
- 
-+	if (pcidev_id) {
-+		pdata->tx_param = pdev->dev.parent;
-+		pdata->rx_param = pdev->dev.parent;
-+		pdata->dma_filter = pxa2xx_spi_idma_filter;
-+	}
-+
- 	ssp->clk = devm_clk_get(&pdev->dev, NULL);
- 	ssp->irq = platform_get_irq(pdev, 0);
- 	ssp->type = type;
-diff --git a/include/linux/pxa2xx_ssp.h b/include/linux/pxa2xx_ssp.h
-index 0485bab061fd..92273776bce6 100644
---- a/include/linux/pxa2xx_ssp.h
-+++ b/include/linux/pxa2xx_ssp.h
-@@ -197,6 +197,7 @@ enum pxa_ssp_type {
- 	QUARK_X1000_SSP,
- 	LPSS_LPT_SSP, /* Keep LPSS types sorted with lpss_platforms[] */
- 	LPSS_BYT_SSP,
-+	LPSS_SPT_SSP,
- };
- 
- struct ssp_device {
--- 
-2.4.6
+Replicating syscon/regmap into a separate driver that has explicit
+compatibility of =E2=80=9Cbcrm, bcm2835-aux=E2=80=9D results in more th=
+an 162 lines
+of extra code (plus changes to Makefile and Kconfig)
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+So I wonder if it would not be acceptable to allow:
+  compatiblity =3D =E2=80=9Cbcrm,bcm2835-aux=E2=80=9D, =E2=80=9Csyscon=E2=
+=80=9D;
+
+and avoid an unnecessary extra driver which provides only
+the following functions:
+
+void bcm2835aux_enable(struct bcm2835aux *aux, u32 mask);
+void bcm2835aux_disable(struct bcm2835aux *aux, u32 mask);
+struct bcm2835aux *bcm2835aux_lookup_by_phandle(
+	struct device_node *np,
+	const char *property);
+
+all of which are available almost identical in syscon/regmap.
+
+We can also try to discuss if a modification to syscon so that it
+also checks the =E2=80=9Cexplicit=E2=80=9D compatibility in the configu=
+red list.
+
+Martin--
+To unsubscribe from this list: send the line "unsubscribe devicetree" i=
+n
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

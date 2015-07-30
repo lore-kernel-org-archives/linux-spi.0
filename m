@@ -1,95 +1,91 @@
-From: Javier Martinez Canillas <javier@osg.samsung.com>
-Subject: Re: [PATCH 00/27] Export I2C and OF module aliases in missing drivers
-Date: Thu, 30 Jul 2015 19:13:44 +0200
-Message-ID: <55BA5B48.1050005@osg.samsung.com>
-References: <1438273132-20926-1-git-send-email-javier@osg.samsung.com>
- <20150730163517.GA13165@dtor-ws> <20150730163708.GB13165@dtor-ws>
+From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Subject: Re: [PATCH v4 1/3] dt-binding: spi: Mediatek: Document devicetree
+ bindings for spi bus
+Date: Thu, 30 Jul 2015 21:27:33 +0200
+Message-ID: <CAOiHx=k_0vdE=_gYO7v+-dSNJ+OsxHAjoPNs0esRuOYo6gUcmA@mail.gmail.com>
+References: <1438167874-1305-1-git-send-email-leilk.liu@mediatek.com> <1438167874-1305-2-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
-	Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
-	linux-fbdev@vger.kernel.org, linux-i2c@vger.kernel.org,
-	linux-leds@vger.kernel.org,
-	Alexandre Belloni <alexandre.belloni@free-electrons.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	Tomi Valkeinen <tomi.valkeinen@ti.com>,
-	lm-sensors@lm-sensors.org, Sebastian Reichel <sre@kernel.org>,
-	linux-input@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jean Delvare <jdelvare@suse.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	linux-media@vger.kernel.org, rtc-linux@googlegroups.com,
-	linux-pm@vger.kernel.org,
-	Mauro Carvalho Chehab <mchehab@osg.samsung.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Takashi Iwai <tiwai@suse.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Sjoe
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Return-path: <linux-leds-owner@vger.kernel.org>
-In-Reply-To: <20150730163708.GB13165@dtor-ws>
-Sender: linux-leds-owner@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1438167874-1305-2-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello Dmitry,
+Hi,
 
-Thanks a lot for your feedback.
-
-On 07/30/2015 06:37 PM, Dmitry Torokhov wrote:
-> On Thu, Jul 30, 2015 at 09:35:17AM -0700, Dmitry Torokhov wrote:
->> Hi Javier,
->>
->> On Thu, Jul 30, 2015 at 06:18:25PM +0200, Javier Martinez Canillas wrote:
->>> Hello,
->>>
->>> Short version:
->>>
->>> This series add the missing MODULE_DEVICE_TABLE() for OF and I2C tables
->>> to export that information so modules have the correct aliases built-in
->>> and autoloading works correctly.
->>>
->>> Longer version:
->>>
->>> Currently it's mandatory for I2C drivers to have an I2C device ID table
->>> regardless if the device was registered using platform data or OF. This
->>> is because the I2C core needs an I2C device ID table for two reasons:
->>>
->>> 1) Match the I2C client with a I2C device ID so a struct i2c_device_id
->>>    is passed to the I2C driver probe() function.
->>>
->>> 2) Export the module aliases from the I2C device ID table so userspace
->>>    can auto-load the correct module. This is because i2c_device_uevent
->>>    always reports a MODALIAS of the form i2c:<client->name>.
->>
->> Why are we not fixing this? We emit specially carved uevent for
->> ACPI-based devices, why not the same for OF? Platform bus does this...
-> 
-> Ah, now I see the 27/27 patch. I think it is exactly what we need. And
-
-Yes, patch 27/27 is needed but the problem is as I explained before that
-there are drivers relying on the current behavior. The item c) in the list
-of issues that I mentioned. So those drivers need to be fixed before that
-patch is merged...
-
-> probably for SPI bus as well.
+On Wed, Jul 29, 2015 at 1:04 PM, Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org> wrote:
+> Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+> ---
+>  .../devicetree/bindings/spi/spi-mt65xx.txt         | 38 ++++++++++++++++++++++
+>  1 file changed, 38 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/spi/spi-mt65xx.txt
 >
+> diff --git a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
+> new file mode 100644
+> index 0000000..f8005d6
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
+> @@ -0,0 +1,38 @@
+> +MTK SPI device
 
-Yes, I didn't mention SPI because the cover letter became too long
-already but it does indeed have the same issue and I discussed this
-with  Mark already some time ago [0].
+You are calling it "MediaTek SPI controller" in the Kconfig entry, so
+you should call it that here as well.
 
-Once I2C uevent report is fixed, I plan to do the same for SPI.
+> +
+> +Required properties:
+> +- compatible: should be one of the following.
+> +    - mediatek,mt8173-spi: for mt8173 platforms
+> +    - mediatek,mt8135-spi: for mt8135 platforms
+> +    - mediatek,mt6589-spi: for mt6589 platforms
+> +
+> +- #address-cells: should be 1.
+> +
+> +- #size-cells: should be 0.
+> +
+> +- reg: Address and length of the register set for the device
+> +
+> +- interrupts: Should contain spi interrupt
+> +
+> +- clocks: phandles to input clocks.
+> +
+> +- clock-names: tuple listing input clock names.
+> +       Required elements: "main"
+> +
+> +- pad-select: should specify spi pad used, only required for MT8173.
+> +        This value should be 0~3.
 
-> Thanks.
-> 
+As already commented on the v3, this is a vendor property, and must
+have a vendor prefix, so it must be called "mediatek,pad-select".
 
-[0]: https://lkml.org/lkml/2014/9/11/458
+> +
+> +Example:
+> +
+> +- SoC Specific Portion:
+> +spi: spi@1100a000 {
+> +       compatible = "mediatek,mt8173-spi";
+> +       #address-cells = <1>;
+> +       #size-cells = <0>;
+> +       reg = <0 0x1100a000 0 0x1000>;
+> +       interrupts = <GIC_SPI 110 IRQ_TYPE_LEVEL_LOW>;
+> +       clocks = <&pericfg CLK_PERI_SPI0>;
+> +       clock-names = "main";
+> +       pad-select = <0>;
+> +       status = "disabled";
+> +};
 
-Best regards,
--- 
-Javier Martinez Canillas
-Open Source Group
-Samsung Research America
+
+Jonas
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

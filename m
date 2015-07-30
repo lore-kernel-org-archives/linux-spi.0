@@ -1,137 +1,112 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: bcm2835: add spi-bcm2835aux driver for the auxiliar spi1 and spi2
-Date: Thu, 30 Jul 2015 09:10:55 +0200
-Message-ID: <97861F80-CF83-4FF2-B96E-CDFB1A8F4921@martin.sperl.org>
-References: <1434980408-4086-1-git-send-email-kernel@martin.sperl.org> <55A0A150.3060809@wwwdotorg.org> <ECFBB7BF-1316-4565-B1F2-FB2651131882@martin.sperl.org> <55A49662.3000706@wwwdotorg.org> <2768BFA9-7FE9-4EDC-8692-AC3F070BD874@martin.sperl.org> <55AEF828.20908@wwwdotorg.org> <0125992E-40F4-4702-8404-2943FF9A8788@martin.sperl.org> <55B1BA7A.1090104@wwwdotorg.org> <9005ABEC-C60A-4814-AD60-AD5BB09808F2@martin.sperl.org> <55B6EE1A.2070605@wwwdotorg.org> <836DA157-3072-441A-A160-E1FDBB119E88@martin.sperl.org> <55B75E07.1080104@martin.sperl.org> <55B9014C.7020105@lategoodbye.de> <C767C9AD-A9B5-428F-A207-D67269B380C6@martin.sperl.org> <55B9B7EF.2070108@lategoodbye.de> <C2C16277-C6C1-4F86-BB88-580CF667EF24@martin.sperl.org>
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2102\))
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Stefan Wahren <info-saaNCTdWVBT7BZbvpMY5sg@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <C2C16277-C6C1-4F86-BB88-580CF667EF24-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Boris Brezillon <boris.brezillon@free-electrons.com>
+Subject: Re: [RFC PATCH 2/2] dt: spi: s3c64xx: add compatible to
+ controller-data
+Date: Thu, 30 Jul 2015 09:50:51 +0200
+Message-ID: <20150730095051.06eff8b1@bbrezillon>
+References: <cover.1438170519.git.hramrach@gmail.com>
+	<557c1962448393b2a8736f26bfa2a3a5ba4aeb7a.1438170519.git.hramrach@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8BIT
+Cc: Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora.org>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Brian Norris <computersforpeace@gmail.com>,
+	Kukjin Kim <kgene@kernel.org>,
+	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+	Mark Brown <broonie@kernel.org>,
+	Padmavathi Venna <padma.kvr@gmail.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mtd@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org
+To: Michal Suchanek <hramrach@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <557c1962448393b2a8736f26bfa2a3a5ba4aeb7a.1438170519.git.hramrach@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+Hi Michal,
 
-Hi Stefan!
+On Wed, 29 Jul 2015 12:19:57 +0200
+Michal Suchanek <hramrach@gmail.com> wrote:
 
-> On 30.07.2015, at 08:45, Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org> wrote=
-:
->=20
-> I am just trying to find a solution that will get accepted with the m=
-inimum
-> number of reposts/rewrites to avoid frustration, but nobody has an an=
-swer
-> which api we really should use.
->=20
-> The problem is that we have DT and we have code and as we only want H=
-W
-> being represented in the device tree we need something =E2=80=9Csensi=
-ble=E2=80=9D.
->=20
-> What about adding =E2=80=9Cbcrm,bcm2835-aux-enable=E2=80=9D to driver=
-s/mfd/syscon.c
-> compatibility?
->=20
-> That way we:
-> * have a clean dt that only represents hardware
-> * reuse existing code with minimal modifications
-> * minimal effort
->=20
-> That would be a minimal patch to enable this, so we can ask if that i=
-s
-> acceptable and if it is not then we can still think of something else=
-,
-> which would be mostly replicating the bit-management portion of sysco=
-n.
+> The controller-data subnode has no compatible. This can lead to other
+> drivers getting confused by it. Add a compatible to make devicetreee
+> unambiguous.
+> 
+> Signed-off-by: Michal Suchanek <hramrach@gmail.com>
+> ---
+>  Documentation/devicetree/bindings/spi/spi-samsung.txt | 3 +++
+>  drivers/spi/spi-s3c64xx.c                             | 4 ++++
+>  2 files changed, 7 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/spi-samsung.txt b/Documentation/devicetree/bindings/spi/spi-samsung.txt
+> index 6dbdeb3..b1e98d1 100644
+> --- a/Documentation/devicetree/bindings/spi/spi-samsung.txt
+> +++ b/Documentation/devicetree/bindings/spi/spi-samsung.txt
+> @@ -92,16 +92,19 @@ Example:
+>  			spi-max-frequency = <10000>;
+>  
+>  			controller-data {
+> +				compatible = "samsung,s3c-controller-data";
 
-that minimal patch extending compatibility of syscon and also including
-the config portion for the kernel as well as the device tree would look
-something like this (note that it is not tested yet):
+AFAIK compatible should (as much as possible :-)) only be used to encode
+HW type, and here you're using it to expose what you want to do with
+your data in Linux.
 
-diff --git a/arch/arm/boot/dts/bcm2835.dtsi b/arch/arm/boot/dts/bcm2835=
-=2Edtsi
-index 301c73f..bde42ce 100644
---- a/arch/arm/boot/dts/bcm2835.dtsi
-+++ b/arch/arm/boot/dts/bcm2835.dtsi
-@@ -158,6 +158,11 @@
-                arm-pmu {
-                        compatible =3D "arm,arm1176-pmu";
-                };
+>  				samsung,spi-feedback-delay = <0>;
+>  			};
+>  
+>  			partition@0 {
+> +				compatible = "linux,ofpart-partition";
+
+Ditto.
+
+Since you have to patch your DTs anyway, how about putting your
+partitions in a subnode and patch the ofpart code to parse this subnode
+if it is present (see the following patch).
+
+Best Regards,
+
+Boris
+
+--- >8 ---
+
+>From e342860932bda3a6354a0a6e17540db5c85a14e0 Mon Sep 17 00:00:00 2001
+From: Boris Brezillon <boris.brezillon@free-electrons.com>
+Date: Thu, 30 Jul 2015 09:44:07 +0200
+Subject: [PATCH] mtd: ofpart: search for a partitions node
+
+The DT partition parser currently assumes the parition definitions are
+directly stored in the MTD device node, but sometime this device node
+contains other child nodes used to store device specific information.
+
+Search for a partitions subnode containing the partition definitions,
+if it is not there, parse the definitions in the device node.
+
+Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
+---
+ drivers/mtd/ofpart.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/mtd/ofpart.c b/drivers/mtd/ofpart.c
+index 8a06cfb..ba52b88 100644
+--- a/drivers/mtd/ofpart.c
++++ b/drivers/mtd/ofpart.c
+@@ -38,7 +38,10 @@ static int parse_ofpart_partitions(struct mtd_info *master,
+ 	if (!data)
+ 		return 0;
+ 
+-	node = data->of_node;
++	node = of_get_child_by_name(data->of_node, "partitions");
++	if (!node)
++		node = data->of_node;
 +
-+               aux-enable: aux-enable@0x7e215004 {
-+                       compatible =3D "bcrm,bcm2835-aux-enable";
-+                       reg =3D <0x7e215004 0x04>;
-+               };
-        };
-
-        clocks {
-diff --git a/arch/arm/mach-bcm/Kconfig b/arch/arm/mach-bcm/Kconfig
-index 0ac9e4b3..e32ceea 100644
---- a/arch/arm/mach-bcm/Kconfig
-+++ b/arch/arm/mach-bcm/Kconfig
-@@ -116,6 +116,7 @@ config ARCH_BCM2835
-        select CLKSRC_OF
-        select PINCTRL
-        select PINCTRL_BCM2835
-+       select MFD_SYSCON
-        help
-          This enables support for the Broadcom BCM2835 SoC. This SoC i=
-s
-          used in the Raspberry Pi and Roku 2 devices.
-diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-index 176bf0f..49cdd37 100644
---- a/drivers/mfd/syscon.c
-+++ b/drivers/mfd/syscon.c
-@@ -211,6 +211,12 @@ static int syscon_probe(struct platform_device *pd=
-ev)
-        return 0;
- }
-
-+static const struct of_device_id syscon_match[] =3D {
-+       { .compatible =3D "bcrm,bcm2835-aux-enable", },
-+       {}
-+};
-+MODULE_DEVICE_TABLE(of, syscon_match);
-+
- static const struct platform_device_id syscon_ids[] =3D {
-        { "syscon", },
-        { }
-@@ -219,6 +225,7 @@ static const struct platform_device_id syscon_ids[]=
- =3D {
- static struct platform_driver syscon_driver =3D {
-        .driver =3D {
-                .name =3D "syscon",
-+               .of_match_table =3D syscon_match,
-        },
-        .probe          =3D syscon_probe,
-        .id_table       =3D syscon_ids,
-
-(please ignore the tabs converted to spaces for now introduced by copy/=
-paste)
-
-Then what would be missing is the config of the spi/uart devices
-that would require a property in the device-tree like:
-	bcrm,aux-enable =3D <&aux-enable 1 /* bitmask for device */>;
-
-which then would be used by the respective drivers like this:
-enable:
-  regmap_update_bits(bs->aux_enable, 0,
-		     bs->aux_enable_mask, bs->aux_enable_mask);
-disable:
-  regmap_update_bits(bs->aux_enable, 0,
-		     bs->aux_enable_mask, 0);
-
-Is this something that you would accept?
-
-Thanks,
-	Martin--
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+ 	if (!node)
+ 		return 0;
+ 
+-- 
+1.9.1

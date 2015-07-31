@@ -1,45 +1,45 @@
-From: Colin King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
-Subject: [PATCH] spi: spidev: fix inconsistent indenting
-Date: Fri, 31 Jul 2015 13:42:29 +0100
-Message-ID: <1438346549-24389-1-git-send-email-colin.king@canonical.com>
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Sekhar Nori <nsekhar@ti.com>
+Subject: Re: [RFC PATCH 4/5] ARM: dts: DRA7: Add memory map region entries
+ for qspi
+Date: Fri, 31 Jul 2015 19:18:20 +0530
+Message-ID: <55BB7CA4.1020300@ti.com>
+References: <1438072876-16338-1-git-send-email-vigneshr@ti.com> <1438072876-16338-5-git-send-email-vigneshr@ti.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+Cc: Huang Shijie <b32955@freescale.com>, <linux-omap@vger.kernel.org>,
+	<devicetree@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
+	<linux-spi@vger.kernel.org>
+To: Vignesh R <vigneshr@ti.com>, Mark Brown <broonie@kernel.org>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Brian Norris <computersforpeace@gmail.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Russell King <linux@arm.linux.org.uk>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1438072876-16338-5-git-send-email-vigneshr@ti.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Colin Ian King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
+On Tuesday 28 July 2015 02:11 PM, Vignesh R wrote:
+> Add qspi memory mapped region entries for DRA7xx based SoCs.
+> 
+> Signed-off-by: Vignesh R <vigneshr@ti.com>
+> ---
+>  arch/arm/boot/dts/am4372.dtsi | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/boot/dts/am4372.dtsi b/arch/arm/boot/dts/am4372.dtsi
+> index ade28c790f4b..5317a0f24ab9 100644
+> --- a/arch/arm/boot/dts/am4372.dtsi
+> +++ b/arch/arm/boot/dts/am4372.dtsi
 
-Fix inconsistent indenting in spidev_open, no functional change.
+The patch talks about DRA7x in subject and description but you modify
+AM437x here. You have got commit text mixed up between 4/5 and 5/5.
 
-Signed-off-by: Colin Ian King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
----
- drivers/spi/spidev.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Probably not the kind of feedback you are looking for an RFC, but since
+I noticed it..
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index c7de641..a76c559 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -602,11 +602,11 @@ static int spidev_open(struct inode *inode, struct file *filp)
- 	if (!spidev->tx_buffer) {
- 		spidev->tx_buffer = kmalloc(bufsiz, GFP_KERNEL);
- 		if (!spidev->tx_buffer) {
--				dev_dbg(&spidev->spi->dev, "open/ENOMEM\n");
--				status = -ENOMEM;
-+			dev_dbg(&spidev->spi->dev, "open/ENOMEM\n");
-+			status = -ENOMEM;
- 			goto err_find_dev;
--			}
- 		}
-+	}
- 
- 	if (!spidev->rx_buffer) {
- 		spidev->rx_buffer = kmalloc(bufsiz, GFP_KERNEL);
--- 
-2.5.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Thanks,
+Sekhar

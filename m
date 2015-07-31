@@ -1,83 +1,87 @@
-From: Stefan Wahren <info-saaNCTdWVBT7BZbvpMY5sg@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: bcm2835: add spi-bcm2835aux driver for the
- auxiliar spi1 and spi2
-Date: Fri, 31 Jul 2015 20:42:22 +0200
-Message-ID: <55BBC18E.4070405@lategoodbye.de>
-References: <1434980408-4086-1-git-send-email-kernel@martin.sperl.org>
- <55A0A150.3060809@wwwdotorg.org>
- <ECFBB7BF-1316-4565-B1F2-FB2651131882@martin.sperl.org>
- <55A49662.3000706@wwwdotorg.org>
- <2768BFA9-7FE9-4EDC-8692-AC3F070BD874@martin.sperl.org>
- <55AEF828.20908@wwwdotorg.org>
- <0125992E-40F4-4702-8404-2943FF9A8788@martin.sperl.org>
- <55B1BA7A.1090104@wwwdotorg.org>
- <9005ABEC-C60A-4814-AD60-AD5BB09808F2@martin.sperl.org>
- <55B6EE1A.2070605@wwwdotorg.org>
- <836DA157-3072-441A-A160-E1FDBB119E88@martin.sperl.org>
- <55B75E07.1080104@martin.sperl.org> <55B9014C.7020105@lategoodbye.de>
- <C767C9AD-A9B5-428F-A207-D67269B380C6@martin.sperl.org>
- <55B9B7EF.2070108@lategoodbye.de>
- <C2C16277-C6C1-4F86-BB88-580CF667EF24@martin.sperl.org>
- <97861F80-CF83-4FF2-B96E-CDFB1A8F4921@martin.sperl.org>
- <E9EEB426-95DE-4785-949C-6A402A25E115@martin.sperl.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [RFC PATCH 1/5] spi: introduce flag for memory mapped read
+Date: Fri, 31 Jul 2015 19:17:45 +0100
+Message-ID: <20150731181745.GM20873@sirena.org.uk>
+References: <1438072876-16338-1-git-send-email-vigneshr@ti.com>
+ <1438072876-16338-2-git-send-email-vigneshr@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8;
-	format=flowed
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <E9EEB426-95DE-4785-949C-6A402A25E115-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/mixed; boundary="===============3341315158122503325=="
+Cc: devicetree@vger.kernel.org, Brian Norris <computersforpeace@gmail.com>,
+ Russell King <linux@arm.linux.org.uk>, Tony Lindgren <tony@atomide.com>,
+ linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+ Huang Shijie <b32955@freescale.com>, linux-mtd@lists.infradead.org,
+ linux-omap@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>,
+ linux-arm-kernel@lists.infradead.org
+To: Vignesh R <vigneshr@ti.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1438072876-16338-2-git-send-email-vigneshr@ti.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Martin,
 
-Am 30.07.2015 um 17:27 schrieb Martin Sperl:
->
-> [...]
->
-> Replicating syscon/regmap into a separate driver that has explicit
-> compatibility of =E2=80=9Cbcrm, bcm2835-aux=E2=80=9D results in more =
-than 162 lines
-> of extra code (plus changes to Makefile and Kconfig)
->
-> So I wonder if it would not be acceptable to allow:
->    compatiblity =3D =E2=80=9Cbcrm,bcm2835-aux=E2=80=9D, =E2=80=9Csysc=
-on=E2=80=9D;
->
-> and avoid an unnecessary extra driver which provides only
-> the following functions:
->
-> void bcm2835aux_enable(struct bcm2835aux *aux, u32 mask);
-> void bcm2835aux_disable(struct bcm2835aux *aux, u32 mask);
-> struct bcm2835aux *bcm2835aux_lookup_by_phandle(
-> 	struct device_node *np,
-> 	const char *property);
->
-> all of which are available almost identical in syscon/regmap.
->
-> We can also try to discuss if a modification to syscon so that it
-> also checks the =E2=80=9Cexplicit=E2=80=9D compatibility in the confi=
-gured list.
->
-> Martin
->
+--===============3341315158122503325==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="00sTfE/IIAT5d2r5"
+Content-Disposition: inline
 
-syscon is hardware independent, which is used by many platforms. It=20
-won't be a good idea to change that only to safe some extra code.
 
-Please think of the benefits of a separate driver for aux peripheral
-like extensibility in the near future (e.g. power management).
+--00sTfE/IIAT5d2r5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Stefan
+On Tue, Jul 28, 2015 at 02:11:12PM +0530, Vignesh R wrote:
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> Introduce use_mmap_read field in spi_message struct. This can be set by
+> mtd devices (m25p80) to indicate to spi-master (ti-qspi) to perform
+> memory mapped read. This helps to distinguish whether the spi-message is
+> from mtd layer(hence mmap read is possible) or by other spi devices.
+
+Based on this description and...
+
+> + * @use_mmap_mode: Indicate to spi master to perform memory mapped
+> + *	read if possible.
+
+...the internal documentation I unable to tell what is meant by "perform
+a memory mapped read", at least to the extent where it is visible
+outside of the driver.  This means we can't really use this as a generic
+API since other people won't be able to tell what it does.
+
+--00sTfE/IIAT5d2r5
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVu7vIAAoJECTWi3JdVIfQfrcH/0pJFX98izm/xHRxCwsEfEd3
+J1YH0uS6BbvZ4CEpe6XuitCyh6Fl7YRTq1LRSQ1Gy7drdZSrajyJcgdTNI8CO81L
+qDZ2xasU9Fuqo4r/oOozKS1WG8op3jRtpVxAnajm2A0vMqA6YQLdK28F46dggDWQ
+opCortabqzzgp/3/fgNSxpPmIeEW+IwO4yGeIvr3Sz05krSdYcTZTmgFSCgfdKVP
+m/K4bURA0/J483komR39SeYaVccYkeyvz8jfvlPSK+sIGDc3hMQ4Q7dQqhNIU4ol
+Yo+xShyIgcyUTVM3NRTxgYfAWCDgXgPlfCvDUTo3oxsVERcjQBQ8WkuKDLHqatk=
+=x6wY
+-----END PGP SIGNATURE-----
+
+--00sTfE/IIAT5d2r5--
+
+
+--===============3341315158122503325==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+linux-arm-kernel mailing list
+linux-arm-kernel@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+
+--===============3341315158122503325==--

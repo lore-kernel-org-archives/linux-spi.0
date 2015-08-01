@@ -1,54 +1,79 @@
-From: Brian Norris <computersforpeace@gmail.com>
-Subject: Re: [RFC PATCH 4/5] ARM: dts: DRA7: Add memory map region entries
- for qspi
-Date: Fri, 31 Jul 2015 14:28:47 -0700
-Message-ID: <20150731212847.GH10676@google.com>
-References: <1438072876-16338-1-git-send-email-vigneshr@ti.com>
- <1438072876-16338-5-git-send-email-vigneshr@ti.com>
+From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: bcm2835: add spi-bcm2835aux driver for the auxiliar
+ spi1 and spi2
+Date: Fri, 31 Jul 2015 20:51:44 -0600
+Message-ID: <55BC3440.5000407@wwwdotorg.org>
+References: <1434980408-4086-1-git-send-email-kernel@martin.sperl.org> <55A0A150.3060809@wwwdotorg.org> <ECFBB7BF-1316-4565-B1F2-FB2651131882@martin.sperl.org> <55A49662.3000706@wwwdotorg.org> <2768BFA9-7FE9-4EDC-8692-AC3F070BD874@martin.sperl.org> <55AEF828.20908@wwwdotorg.org> <0125992E-40F4-4702-8404-2943FF9A8788@martin.sperl.org> <55B1BA7A.1090104@wwwdotorg.org> <9005ABEC-C60A-4814-AD60-AD5BB09808F2@martin.sperl.org> <55B6EE1A.2070605@wwwdotorg.org> <836DA157-3072-441A-A160-E1FDBB119E88@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie@kernel.org>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Tony Lindgren <tony@atomide.com>,
-	Russell King <linux@arm.linux.org.uk>,
-	Huang Shijie <b32955@freescale.com>,
-	linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org
-To: Vignesh R <vigneshr@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1438072876-16338-5-git-send-email-vigneshr@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <836DA157-3072-441A-A160-E1FDBB119E88-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Jul 28, 2015 at 02:11:15PM +0530, Vignesh R wrote:
-> Add qspi memory mapped region entries for DRA7xx based SoCs.
-> 
-> Signed-off-by: Vignesh R <vigneshr@ti.com>
-> ---
->  arch/arm/boot/dts/am4372.dtsi | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/boot/dts/am4372.dtsi b/arch/arm/boot/dts/am4372.dtsi
-> index ade28c790f4b..5317a0f24ab9 100644
-> --- a/arch/arm/boot/dts/am4372.dtsi
-> +++ b/arch/arm/boot/dts/am4372.dtsi
-> @@ -902,7 +902,9 @@
->  
->  		qspi: qspi@47900000 {
->  			compatible = "ti,am4372-qspi";
-> -			reg = <0x47900000 0x100>;
-> +			reg = <0x47900000 0x100>,
-> +			      <0x30000000 0x3ffffff>;
+On 07/28/2015 12:18 AM, Martin Sperl wrote:
+> Hi Stephen!
+>=20
+>> On 28.07.2015, at 04:51, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org> wrot=
+e:
+>>
+>>
+>>> If this is not acceptable, then where should such a driver go in th=
+e
+>>> kernel tree?
+>>>
+>>> It would essentially implement the following:
+>>> bcm2835aux_enable(dev, device-id);
+>>> bcm2835aux_disable(dev, device-id);
+>>>
+>>> Which would just set/clean the bits in the register while holding a=
+ lock.
+>>
+>> That sounds reasonable. I'd also expect a function that the client
+>> drivers could call during probe() to look up the device (and impleme=
+nt
+>> deferred probe) and another to release the reference during the clie=
+nt's
+>> remove().
+>
+> But the bigger question you have not answered is: =93where should suc=
+h an
+> auxiliar driver go in the kernel tree?=94 i.e. which directory?
 
-Are you sure this region is 1 byte shy of 64MB in length? Same question
-for patch 5.
+drivers/soc seems made for this.
 
-> +			reg-names = "qspi_base", "qspi_mmap";
->  			#address-cells = <1>;
->  			#size-cells = <0>;
->  			ti,hwmods = "qspi";
-> -- 
-> 2.4.6
-> 
+> I really do not want to implement it and then get told: =93that shoul=
+d not
+> go here=94 - been thru too many iterations already=85
+>
+> Also I am not sure I understood the =93defer=94 thingy.
+> I thought of actually implementing only 2 functions to use during pro=
+be
+> and removal:
+> * bcm2835aux_enable(dev)
+> * bcm2835aux_disable(dev)
+>=20
+> Both would pick up the =93bcrm,aux=94 property from the device tree (=
+as per=20
+> =93bcrm,aux =3D <&bcm2835aux 4>=94) and set the enable register accor=
+dingly
+> holding a lock.
+
+That'd probably be fine. The important thing is to get the DT right
+since that's an ABI. The implementation can be refactored/rewritten at
+will later provided the right info is in the DT.
+
+If you go this route, deferred probe isn't relevant.
+
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" i=
+n
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,38 +1,75 @@
-From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: bcm2835: add spi-bcm2835aux driver for the auxiliar
- spi1 and spi2
-Date: Fri, 31 Jul 2015 20:55:59 -0600
-Message-ID: <55BC353F.1000906@wwwdotorg.org>
-References: <1434980408-4086-1-git-send-email-kernel@martin.sperl.org> <55A0A150.3060809@wwwdotorg.org> <ECFBB7BF-1316-4565-B1F2-FB2651131882@martin.sperl.org> <55A49662.3000706@wwwdotorg.org> <2768BFA9-7FE9-4EDC-8692-AC3F070BD874@martin.sperl.org> <55AEF828.20908@wwwdotorg.org> <0125992E-40F4-4702-8404-2943FF9A8788@martin.sperl.org> <55B1BA7A.1090104@wwwdotorg.org> <9005ABEC-C60A-4814-AD60-AD5BB09808F2@martin.sperl.org> <55B6EE1A.2070605@wwwdotorg.org> <836DA157-3072-441A-A160-E1FDBB119E88@martin.sperl.org> <55B75E07.1080104@martin.sperl.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: xcomm: Export I2C module alias information" to the spi tree
+Date: Sat, 01 Aug 2015 12:18:58 +0100
+Message-ID: <E1ZLUoc-0008Sn-VY@finisterre>
+References: <1438273132-20926-3-git-send-email-javier@osg.samsung.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <55B75E07.1080104-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <1438273132-20926-3-git-send-email-javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 07/28/2015 04:48 AM, Martin Sperl wrote:
-> On 28.07.2015 08:18, Martin Sperl wrote:
->> Hi Stephen!
->> But the bigger question you have not answered is: =93where should su=
-ch an
->> auxiliar driver go in the kernel tree?=94 i.e. which directory?
->
-> One thing: could the "module" be a regulator?
+The patch
 
-The HW docs aren't very detailed on this point, but they certainly don'=
-t
-state that these bits control a regulator (or power domain as mentioned
-later in the thread). I guess it's possible, but it feels like an
-assumption to me. The HW modules seem small enough that it doesn't feel
-likely anyone would have bothered with power-gating them.
+   spi: xcomm: Export I2C module alias information
+
+has been applied to the spi tree at
+
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 98c7863c36bdf20c07e38d8bea5261902b52f98d Mon Sep 17 00:00:00 2001
+From: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
+Date: Thu, 30 Jul 2015 18:18:27 +0200
+Subject: [PATCH] spi: xcomm: Export I2C module alias information
+
+The I2C core always reports the MODALIAS uevent as "i2c:<client name"
+regardless if the driver was matched using the I2C id_table or the
+of_match_table. So the driver needs to export the I2C table and this
+be built into the module or udev won't have the necessary information
+to auto load the correct module when the device is added.
+
+Signed-off-by: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-xcomm.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/spi/spi-xcomm.c b/drivers/spi/spi-xcomm.c
+index d0561a8..3c28e24 100644
+--- a/drivers/spi/spi-xcomm.c
++++ b/drivers/spi/spi-xcomm.c
+@@ -237,6 +237,7 @@ static const struct i2c_device_id spi_xcomm_ids[] = {
+ 	{ "spi-xcomm" },
+ 	{ },
+ };
++MODULE_DEVICE_TABLE(i2c, spi_xcomm_ids);
+ 
+ static struct i2c_driver spi_xcomm_driver = {
+ 	.driver = {
+-- 
+2.1.4
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

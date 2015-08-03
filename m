@@ -1,50 +1,88 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: spi-pxa2xx: Remove unused legacy PXA DMA API
- channel numbers
-Date: Mon, 3 Aug 2015 17:14:13 +0100
-Message-ID: <20150803161413.GY20873@sirena.org.uk>
+Subject: Applied "spi: spi-pxa2xx: Remove unused legacy PXA DMA API channel numbers" to the spi tree
+Date: Mon, 03 Aug 2015 17:14:36 +0100
+Message-ID: <E1ZMINo-0003Sn-V6@finisterre>
 References: <1438598472-1145-1-git-send-email-jarkko.nikula@linux.intel.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="fBT78PV5vI5fyuAn"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
 In-Reply-To: <1438598472-1145-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---fBT78PV5vI5fyuAn
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: spi-pxa2xx: Remove unused legacy PXA DMA API channel numbers
 
-On Mon, Aug 03, 2015 at 01:41:11PM +0300, Jarkko Nikula wrote:
-> These became unused by the commit 6356437e65c2
-> ("spi: spi-pxa2xx: remove legacy PXA DMA bits").
+has been applied to the spi tree at
 
-This doesn't apply against current code, please check and resend.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
---fBT78PV5vI5fyuAn
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEcBAEBCAAGBQJVv5NVAAoJECTWi3JdVIfQMTsH/1aXTL/m0WaQMiUxn+5HZfhh
-EZmJ8Ih45flnFQ2ndxxJFhvDxBm6P6dDgkhoAtQRvfMELmjEN1lPIYURoxOKGAX7
-at1tzbqHx75xI5dYvxpiYWAKJO/yeY+WLkuLj6z4W8ixCkk9jKJcKRuduiyckPmM
-budAPpVCQu+pYd7G27u/rfyHJrG1e/TzvbInRnMeHOR1EHi/Rjh+WZLtAr+obQeP
-4bTFYYdAzBq3Rnd0ieESMj9CAq0jccbOl5b0a5ZVpeGSZk1UZ9oSQ2ZN5f/G29mj
-i5OlERb6dbOd4GfP6C+Q8zQ4BUOZoUDqJCP06ikCB7HloeizLqts2n3Xz6BEUbs=
-=BCGg
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---fBT78PV5vI5fyuAn--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From f47da2400e8828eda2ed4208fb312031f8b7d2ae Mon Sep 17 00:00:00 2001
+From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Date: Mon, 3 Aug 2015 13:41:11 +0300
+Subject: [PATCH] spi: spi-pxa2xx: Remove unused legacy PXA DMA API channel
+ numbers
+
+These became unused by the commit 6356437e65c2
+("spi: spi-pxa2xx: remove legacy PXA DMA bits").
+
+Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-pxa2xx.c | 2 --
+ drivers/spi/spi-pxa2xx.h | 2 --
+ 2 files changed, 4 deletions(-)
+
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 2c9fa40..e924710 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1475,8 +1475,6 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	/* Setup DMA if requested */
+-	drv_data->tx_channel = -1;
+-	drv_data->rx_channel = -1;
+ 	if (platform_info->enable_dma) {
+ 		status = pxa2xx_spi_dma_setup(drv_data);
+ 		if (status) {
+diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
+index 9f01e9c..3b69c46 100644
+--- a/drivers/spi/spi-pxa2xx.h
++++ b/drivers/spi/spi-pxa2xx.h
+@@ -37,8 +37,6 @@ struct driver_data {
+ 	struct pxa2xx_spi_master *master_info;
+ 
+ 	/* PXA private DMA setup stuff */
+-	int rx_channel;
+-	int tx_channel;
+ 	u32 *null_dma_buf;
+ 
+ 	/* SSP register addresses */
+-- 
+2.1.4
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

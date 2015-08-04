@@ -1,50 +1,58 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 3/3] spi: s3c24xx: Convert spinlock to mutex
-Date: Tue, 4 Aug 2015 12:00:41 +0100
-Message-ID: <20150804110040.GJ20873@sirena.org.uk>
-References: <1438668598-6678-1-git-send-email-drinkcat@chromium.org>
- <1438668598-6678-3-git-send-email-drinkcat@chromium.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: bcm2835: set up spi-mode before asserting cs-gpio
+Date: Tue, 4 Aug 2015 12:08:59 +0100
+Message-ID: <20150804110859.GK20873@sirena.org.uk>
+References: <1438092193-31799-1-git-send-email-kernel@martin.sperl.org>
+ <55C0902B.2040006@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="0jdOO2+ODOkP2/E4"
-Cc: Kukjin Kim <kgene@kernel.org>,
-	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org
-To: Nicolas Boichat <drinkcat@chromium.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="k2+Bt23KD9VIuFWa"
+Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	TeNoralf =?iso-8859-1?Q?Tr=F8nnes?= <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1438668598-6678-3-git-send-email-drinkcat@chromium.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <55C0902B.2040006-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---0jdOO2+ODOkP2/E4
+--k2+Bt23KD9VIuFWa
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 04, 2015 at 02:09:58PM +0800, Nicolas Boichat wrote:
-> bitbang->lock is now a mutex: replace spinlock function calls
-> by mutex functions.
+On Tue, Aug 04, 2015 at 12:12:59PM +0200, Martin Sperl wrote:
+> Any feedback on this patch? Can this get merged?
+>=20
+> Noralf (via private communication) has confirmed that with
+> this patch his fbtft device (which uses spi-cpol and spi-cpha)
+> works.
 
-This would need to be combined with the first patch, individual patches
-shouldn't break the build.
+> On 28.07.2015 16:03, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
 
---0jdOO2+ODOkP2/E4
+Please don't top post or send content free pings, and please allow a
+reasonable time for review - you only posted this last week.
+
+--k2+Bt23KD9VIuFWa
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVwJtYAAoJECTWi3JdVIfQC8kH/2iNlibPE9skwDYxz5SJFihv
-LkqReZIo75iqJB3+321ZtzMMyd0Xq7iDUc6OHoYKc54ZyBFd23wNVE2VuSeWqOqm
-mGGApPru/FtDv2SCYUw2aUjL4zekVKEk0pjMTvy+n5BrVyCY/7jAw6M3jfi82WB3
-BKr8jA6ZYOT7vRRYOyEH52GEgp1ywNi/BzIeOSzqd4gMVvurusxNLDz7cbZ0oCC4
-bwkxKQCbIeweLzNgc93+U1PhwIj+mCQTKt6+0qERPS80LixKiEkJOamV8QhsdXqY
-iziz9I0AOJTBeTDcsIGKssSG1oPo8tQPDIoQ/Xr5f5DNinv1c/jofpIX/uPiiYY=
-=VyIA
+iQEcBAEBCAAGBQJVwJ1LAAoJECTWi3JdVIfQa5gH/RGLPLsHIeNEM9XYtB/H+4P3
+ltFMTl04gOgjUmII2wqWGUuywN2sc+7Sp2EeDV81nVHEwgUhqet607uYtrCGhQEM
+l5zyGTzs4PMgW5vMX465skfcuGAb3s5eKr8He6n3lXqmg6pvM12BrjYidSqLqLzl
+ej2fGCgGt90MgG73fspxC43UUtV0FpiAlpR0/ZXkFUujLc7vMlQcr6VVtKqT1icV
+n4TAtX5QYiyxhdzPngbs7+29TnY8YWxprdqczFGjWKAiO1j1ErIYsX+pNMGiereT
+Q+M9zfKEwfSgQof/qv5ey2gFt8WBCStHxoan4gQPoiVRjYjPG0moNHQe3oNF49c=
+=Ni68
 -----END PGP SIGNATURE-----
 
---0jdOO2+ODOkP2/E4--
+--k2+Bt23KD9VIuFWa--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

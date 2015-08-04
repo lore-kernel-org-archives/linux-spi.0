@@ -1,117 +1,83 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH] spi: bcm2835: set up spi-mode before asserting cs-gpio
-Date: Tue, 04 Aug 2015 12:12:59 +0200
-Message-ID: <55C0902B.2040006@martin.sperl.org>
-References: <1438092193-31799-1-git-send-email-kernel@martin.sperl.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 1/3] spi: bitbang: Replace spinlock by mutex when calling
+ chipselect
+Date: Tue, 4 Aug 2015 11:59:57 +0100
+Message-ID: <20150804105957.GI20873@sirena.org.uk>
+References: <1438668598-6678-1-git-send-email-drinkcat@chromium.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	=?windows-1252?Q?TeNoralf_Tr=F8n?= =?windows-1252?Q?nes?=
-	<noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1438092193-31799-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="jnCIwN96y15MEy/K"
+Cc: Kukjin Kim <kgene@kernel.org>,
+	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org
+To: Nicolas Boichat <drinkcat@chromium.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1438668598-6678-1-git-send-email-drinkcat@chromium.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Any feedback on this patch? Can this get merged?
 
-Noralf (via private communication) has confirmed that with
-this patch his fbtft device (which uses spi-cpol and spi-cpha)
-works.
+--jnCIwN96y15MEy/K
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Thanks,
-	Martin
+On Tue, Aug 04, 2015 at 02:09:56PM +0800, Nicolas Boichat wrote:
+> Enabling CONFIG_DEBUG_ATOMIC_SLEEP in kernel configuration, we get
+> this warning in spi_gpio_setup:
+> [    1.177747] BUG: sleeping function called from invalid context at drivers/gpio/gpiolib.c:1431
+> [    1.190182] in_atomic(): 1, irqs_disabled(): 128, pid: 1, name: swapper/0
+> [    1.196922] 3 locks held by swapper/0/1:
 
-On 28.07.2015 16:03, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
-> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
->
-> When using reverse polarity for clock (spi-cpol) on a device
-> the clock line gets altered after chip-select has been asserted
-> resulting in an additional clock beat, which confuses hardware.
->
-> This did not show when using native-CS, as the same register
-> is used to control cs as well as polarity, so the changes came
-> into effect at the same time. Unfortunately this is not true
-> with gpio-cs.
->
-> To avoid this situation this patch moves the setup of polarity
-> (spi-cpol and spi-cpha) outside of the chip-select into
-> prepare_message, which is run prior to asserting chip-select.
->
-> Also fixes resetting 3-wire mode after use of rx-mode, so that
-> a 3-Wire sequence TX, RX, TX works as well (right now it runs
-> TX, RX, RX instead)
->
-> Reported-by: Noralf Tronnes <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>
-> Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-> ---
->   drivers/spi/spi-bcm2835.c |   28 +++++++++++++++++++++++-----
->   1 file changed, 23 insertions(+), 5 deletions(-)
->
-> See also the images for the effect that this patch has on the signals:
-> https://github.com/raspberrypi/linux/pull/1077#issuecomment-125484500
->
-> diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-> index 59705ab..c9357bb 100644
-> --- a/drivers/spi/spi-bcm2835.c
-> +++ b/drivers/spi/spi-bcm2835.c
-> @@ -553,13 +553,11 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
->   	spi_used_hz = cdiv ? (clk_hz / cdiv) : (clk_hz / 65536);
->   	bcm2835_wr(bs, BCM2835_SPI_CLK, cdiv);
->
-> -	/* handle all the modes */
-> +	/* handle all the 3-wire mode */
->   	if ((spi->mode & SPI_3WIRE) && (tfr->rx_buf))
->   		cs |= BCM2835_SPI_CS_REN;
-> -	if (spi->mode & SPI_CPOL)
-> -		cs |= BCM2835_SPI_CS_CPOL;
-> -	if (spi->mode & SPI_CPHA)
-> -		cs |= BCM2835_SPI_CS_CPHA;
-> +	else
-> +		cs &= ~BCM2835_SPI_CS_REN;
->
->   	/* for gpio_cs set dummy CS so that no HW-CS get changed
->   	 * we can not run this in bcm2835_spi_set_cs, as it does
-> @@ -592,6 +590,25 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
->   	return bcm2835_spi_transfer_one_irq(master, spi, tfr, cs);
->   }
->
-> +static int bcm2835_spi_prepare_message(struct spi_master *master,
-> +				       struct spi_message *msg)
-> +{
-> +	struct spi_device *spi = msg->spi;
-> +	struct bcm2835_spi *bs = spi_master_get_devdata(master);
-> +	u32 cs = bcm2835_rd(bs, BCM2835_SPI_CS);
-> +
-> +	cs &= ~(BCM2835_SPI_CS_CPOL | BCM2835_SPI_CS_CPHA);
-> +
-> +	if (spi->mode & SPI_CPOL)
-> +		cs |= BCM2835_SPI_CS_CPOL;
-> +	if (spi->mode & SPI_CPHA)
-> +		cs |= BCM2835_SPI_CS_CPHA;
-> +
-> +	bcm2835_wr(bs, BCM2835_SPI_CS, cs);
-> +
-> +	return 0;
-> +}
-> +
->   static void bcm2835_spi_handle_err(struct spi_master *master,
->   				   struct spi_message *msg)
->   {
-> @@ -739,6 +756,7 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
->   	master->set_cs = bcm2835_spi_set_cs;
->   	master->transfer_one = bcm2835_spi_transfer_one;
->   	master->handle_err = bcm2835_spi_handle_err;
-> +	master->prepare_message = bcm2835_spi_prepare_message;
->   	master->dev.of_node = pdev->dev.of_node;
->
->   	bs = spi_master_get_devdata(master);
->
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Please don't include entire stack traces in commit logs, they're
+enormous and overwhelm the actual content (like here where the trace is
+much bigger than the actual commit message).  If you feel the
+information from the trace adds something please present *edited*
+highlights instead.
+
+> Actually, I'm not sure if I understand the existing code: why are we not
+> waiting for busy to go down to 0, then call chipselect, instead of not calling
+> it at all if the bus happens to be busy when we setup the device? With the
+> current approach, it would be easy to just use an unconditional mutex_lock.
+
+We shouldn't be blocking waiting for the bus to become free, that's not
+how the interface works.
+
+> Also, is it harmful to deactivate the newly setup device in spi_bitbang_setup,
+> even if the bus is busy with another device? chipselect should be independent
+> for each device (or is it not?). So I'm not clear why we need any locking at
+> all...
+
+If you assert chip select on one device while another device is still
+being interacted with then the new device will see the traffic for the
+old device and become confused.
+
+> Anyway, this patch series does not change the existing behaviour, applies on
+> top of broonie-sound/for-next, and, along with the 2 follow-up patches, was
+> compile-tested on x86-64/arm (allyesconfig) and ppc44x (defconfig+SPI driver),
+> and runtime-tested on an arm platform.
+
+I'm not seeing enough analysis in the commit log of what's being locked
+and why - I don't fully understand what the busy stuff is for either
+(not that I've looked at the code in detail just now) but I think that's
+going to be the key thing here.
+
+--jnCIwN96y15MEy/K
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVwJssAAoJECTWi3JdVIfQAqYH/RKeT+aD3Cl6banO6m/y0zfv
+C3Ihg+mZu7ffdzN6tvJ92jCLqzdZyQPnfxhW1l1ed/YsgU6O6EIQqlPEDbCz+VeW
+v9JXkp+TA0nZJWxHKaE4XxDhThq7mR33KmkvegqN/L0nGc0S6EsGv4+Z9O0EOUSL
+Bt/jBgedOYwy8I/Fng5lp3Gvm1WMrXhazm8k5PTxpovkIy6gJCmq2r0VYdyifR+d
+1QBhmK16ksOZT7wZRaUc+6ancmDQR5ONwnmWdmK/x/vtwDdjpN0m697YYVPlc/p2
+KbxpQj0jRwxKyrTCYsHEXLoQiUeaMDuOUqB87eQ784T/nozFyV8kxAng3r1rImE=
+=EQST
+-----END PGP SIGNATURE-----
+
+--jnCIwN96y15MEy/K--

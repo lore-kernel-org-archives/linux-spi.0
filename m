@@ -1,61 +1,116 @@
 From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: Additional SPI-master parameters per SPI-Device in device-tree
-Date: Tue, 04 Aug 2015 12:09:52 +0200
-Message-ID: <55C08F70.5070303@martin.sperl.org>
-References: <55C05E18.600@martin.sperl.org> <20150804095443.GH20873@sirena.org.uk>
+Subject: Re: [PATCH] spi: bcm2835: set up spi-mode before asserting cs-gpio
+Date: Tue, 04 Aug 2015 12:12:59 +0200
+Message-ID: <55C0902B.2040006@martin.sperl.org>
+References: <1438092193-31799-1-git-send-email-kernel@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
+	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	=?windows-1252?Q?TeNoralf_Tr=F8n?= =?windows-1252?Q?nes?=
+	<noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150804095443.GH20873-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <1438092193-31799-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 04.08.2015 11:54, Mark Brown wrote:
-> On Tue, Aug 04, 2015 at 08:39:20AM +0200, Martin Sperl wrote:
->> Examples for the spi-bcm2835 master for example could be:
->> * set minimum transfer size for dma to something else but the default
->>     (of 96 bytes - setting for something high would disable it)
->> * change polling transfer limits (i.e disable it)
+Any feedback on this patch? Can this get merged?
+
+Noralf (via private communication) has confirmed that with
+this patch his fbtft device (which uses spi-cpol and spi-cpha)
+works.
+
+Thanks,
+	Martin
+
+On 28.07.2015 16:03, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
+> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 >
-> Why would these things be configured in the device tree in the first
-> place?  They don't look like things that should be device tree
-> properties, they look like something the kernel should figure out at
-> runtime - the system tuning may change as the kernel evolves or
-> depending on userspace needs.
-
-Sometimes it may be necessary to define different values than the
-"kernel" thinks may be necessary (hardcoded).
-
-We just had one issue with fbtft devices where it would have been
-nice to change those values on a per device basis (even if it was
-just for some testing to see why it was behaving badly
-- see the still un-merged patch:
-"spi: bcm2835: set up spi-mode before asserting cs-gpio").
-
-So I first thought of adding it as a module parameter for the driver
-and then exposing it via sysfs for modification, but now I think it
-might be even more beneficial to "tune" the parameters per device.
-
-Say for fbtft devices to use DMA for any xfer-size above 4 bytes.
-But that policy may not apply to the corresponding touch screen device
-also connected to the same SPI bus.
-
-But then - I now come to realize - that this "dt-property" idea
-may again break the "philosophy" of "device-tree only contains
-a description of the HW".
-
-So maybe a per device sysfs approach together with udev-rules to
-change those settings may be the better approach.
-
-But even those may require those device registration hooks I had
-mentioned.
-
-So I was wondering what was feasible/acceptable.
-
-Martin
+> When using reverse polarity for clock (spi-cpol) on a device
+> the clock line gets altered after chip-select has been asserted
+> resulting in an additional clock beat, which confuses hardware.
+>
+> This did not show when using native-CS, as the same register
+> is used to control cs as well as polarity, so the changes came
+> into effect at the same time. Unfortunately this is not true
+> with gpio-cs.
+>
+> To avoid this situation this patch moves the setup of polarity
+> (spi-cpol and spi-cpha) outside of the chip-select into
+> prepare_message, which is run prior to asserting chip-select.
+>
+> Also fixes resetting 3-wire mode after use of rx-mode, so that
+> a 3-Wire sequence TX, RX, TX works as well (right now it runs
+> TX, RX, RX instead)
+>
+> Reported-by: Noralf Tronnes <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>
+> Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+> ---
+>   drivers/spi/spi-bcm2835.c |   28 +++++++++++++++++++++++-----
+>   1 file changed, 23 insertions(+), 5 deletions(-)
+>
+> See also the images for the effect that this patch has on the signals:
+> https://github.com/raspberrypi/linux/pull/1077#issuecomment-125484500
+>
+> diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+> index 59705ab..c9357bb 100644
+> --- a/drivers/spi/spi-bcm2835.c
+> +++ b/drivers/spi/spi-bcm2835.c
+> @@ -553,13 +553,11 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
+>   	spi_used_hz = cdiv ? (clk_hz / cdiv) : (clk_hz / 65536);
+>   	bcm2835_wr(bs, BCM2835_SPI_CLK, cdiv);
+>
+> -	/* handle all the modes */
+> +	/* handle all the 3-wire mode */
+>   	if ((spi->mode & SPI_3WIRE) && (tfr->rx_buf))
+>   		cs |= BCM2835_SPI_CS_REN;
+> -	if (spi->mode & SPI_CPOL)
+> -		cs |= BCM2835_SPI_CS_CPOL;
+> -	if (spi->mode & SPI_CPHA)
+> -		cs |= BCM2835_SPI_CS_CPHA;
+> +	else
+> +		cs &= ~BCM2835_SPI_CS_REN;
+>
+>   	/* for gpio_cs set dummy CS so that no HW-CS get changed
+>   	 * we can not run this in bcm2835_spi_set_cs, as it does
+> @@ -592,6 +590,25 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
+>   	return bcm2835_spi_transfer_one_irq(master, spi, tfr, cs);
+>   }
+>
+> +static int bcm2835_spi_prepare_message(struct spi_master *master,
+> +				       struct spi_message *msg)
+> +{
+> +	struct spi_device *spi = msg->spi;
+> +	struct bcm2835_spi *bs = spi_master_get_devdata(master);
+> +	u32 cs = bcm2835_rd(bs, BCM2835_SPI_CS);
+> +
+> +	cs &= ~(BCM2835_SPI_CS_CPOL | BCM2835_SPI_CS_CPHA);
+> +
+> +	if (spi->mode & SPI_CPOL)
+> +		cs |= BCM2835_SPI_CS_CPOL;
+> +	if (spi->mode & SPI_CPHA)
+> +		cs |= BCM2835_SPI_CS_CPHA;
+> +
+> +	bcm2835_wr(bs, BCM2835_SPI_CS, cs);
+> +
+> +	return 0;
+> +}
+> +
+>   static void bcm2835_spi_handle_err(struct spi_master *master,
+>   				   struct spi_message *msg)
+>   {
+> @@ -739,6 +756,7 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
+>   	master->set_cs = bcm2835_spi_set_cs;
+>   	master->transfer_one = bcm2835_spi_transfer_one;
+>   	master->handle_err = bcm2835_spi_handle_err;
+> +	master->prepare_message = bcm2835_spi_prepare_message;
+>   	master->dev.of_node = pdev->dev.of_node;
+>
+>   	bs = spi_master_get_devdata(master);
+>
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

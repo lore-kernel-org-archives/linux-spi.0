@@ -1,99 +1,75 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: spi-pxa2xx: Remove unused legacy null dma buffer and allocation for it" to the spi tree
-Date: Wed, 05 Aug 2015 10:53:42 +0100
-Message-ID: <E1ZMvOI-0001hO-Tc@finisterre>
-References: <1438598472-1145-2-git-send-email-jarkko.nikula@linux.intel.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1438598472-1145-2-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Bert Vermeulen <bert@biot.com>
+Subject: Re: [PATCH v3] nand: Add NAND driver for Mikrotik RB4xx series boards
+Date: Wed, 05 Aug 2015 12:02:00 +0200
+Message-ID: <55C1DF18.4090800@biot.com>
+References: <1431689631-7217-1-git-send-email-bert@biot.com>
+ <20150721202904.GK24125@google.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Arnd Bergmann <arnd@arndb.de>, linux-spi@vger.kernel.org,
+ linux-gpio@vger.kernel.org, linux-mtd@lists.infradead.org,
+ fransklaver@gmail.com, dwmw2@infradead.org
+To: Brian Norris <computersforpeace@gmail.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20150721202904.GK24125@google.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-The patch
+On 07/21/2015 10:29 PM, Brian Norris wrote:
 
-   spi: spi-pxa2xx: Remove unused legacy null dma buffer and allocation for it
+>> +static struct spi_driver rb4xx_cpld_driver = {
+>> +	.probe = rb4xx_cpld_probe,
+>> +	.remove = rb4xx_cpld_remove,
+>> +	.driver = {
+>> +		.name = "rb4xx-cpld",
+>> +		.owner = THIS_MODULE,
+>> +	},
+>> +};
+> 
+> I feel some deja vu here (did I make this comment before?); why do you
+> need to embed both a SPI and a platform driver here? It appears that the
+> NAND controller actually sits on the SPI bus, so this really is not a
+> platform driver; it's a SPI driver. Can you just kill off all the
+> platform_driver stuff and merge the probe functions?
+> 
+> Or if I'm missing something big, please do enlighten.
 
-has been applied to the spi tree at
+This driver was specifically refused by the SPI subsystem maintainer:
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+  http://www.linux-mips.org/archives/linux-mips/2015-03/msg00422.html
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+He suggested the MFD subsystem, where it was also refused:
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+  http://lkml.iu.edu/hypermail/linux/kernel/1504.0/03162.html
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+Andy Shevchenko suggested drivers/misc, so I mailed Arnd Bergmann and asked
+if he would accept it there.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+Arnd took a good look at the driver and suggested the MTD/NAND subsystem.
+This is after all a driver for a NAND chip controller. The controller just
+happens to reside in a CPLD with custom firmware, which is controlled via
+SPI and has some GPIO controller functionality thrown in.
 
-Thanks,
-Mark
+I realize it's an odd hardware setup, and I can't fix that, but this really
+does seem to be the best place for it.
 
->From 757fe8d514a9bab55156dfb2c4a03e56ba96a028 Mon Sep 17 00:00:00 2001
-From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Wed, 5 Aug 2015 10:04:05 +0300
-Subject: [PATCH] spi: spi-pxa2xx: Remove unused legacy null dma buffer and
- allocation for it
+I can deal with your other comments on the patch, but I'd really like some
+agreement on where this driver will be accepted first. I've come full circle
+with getting referred back to the SPI subsystem.
 
-Remove null_dma_buf variable and extra allocation for it. It is not needed
-since commit 6356437e65c2 ("spi: spi-pxa2xx: remove legacy PXA DMA bits").
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-pxa2xx.c | 4 +---
- drivers/spi/spi-pxa2xx.h | 3 ---
- 2 files changed, 1 insertion(+), 6 deletions(-)
-
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 246ffab..fdd79197 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1414,8 +1414,7 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
- 		return -ENODEV;
- 	}
- 
--	/* Allocate master with space for drv_data and null dma buffer */
--	master = spi_alloc_master(dev, sizeof(struct driver_data) + 16);
-+	master = spi_alloc_master(dev, sizeof(struct driver_data));
- 	if (!master) {
- 		dev_err(&pdev->dev, "cannot alloc spi_master\n");
- 		pxa_ssp_free(ssp);
-@@ -1442,7 +1441,6 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
- 	master->auto_runtime_pm = true;
- 
- 	drv_data->ssp_type = ssp->type;
--	drv_data->null_dma_buf = (u32 *)PTR_ALIGN(&drv_data[1], DMA_ALIGNMENT);
- 
- 	drv_data->ioaddr = ssp->mmio_base;
- 	drv_data->ssdr_physical = ssp->phys_base + SSDR;
-diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
-index 3b69c46..0a9b639 100644
---- a/drivers/spi/spi-pxa2xx.h
-+++ b/drivers/spi/spi-pxa2xx.h
-@@ -36,9 +36,6 @@ struct driver_data {
- 	/* PXA hookup */
- 	struct pxa2xx_spi_master *master_info;
- 
--	/* PXA private DMA setup stuff */
--	u32 *null_dma_buf;
--
- 	/* SSP register addresses */
- 	void __iomem *ioaddr;
- 	u32 ssdr_physical;
 -- 
-2.1.4
+Bert Vermeulen        bert@biot.com          email/xmpp
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

@@ -1,83 +1,93 @@
-From: Nicolas Boichat <drinkcat@chromium.org>
-Subject: Re: [PATCH 1/3] spi: bitbang: Replace spinlock by mutex when calling chipselect
-Date: Wed, 5 Aug 2015 18:24:05 +0800
-Message-ID: <CANMq1KB2zxPPCbxh4K-REUgp-83s=MPcGRjz-p1fK1PQMzyLdw@mail.gmail.com>
-References: <1438668598-6678-1-git-send-email-drinkcat@chromium.org>
-	<20150804105957.GI20873@sirena.org.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [RFC PATCH 1/5] spi: introduce flag for memory mapped read
+Date: Wed, 5 Aug 2015 12:50:13 +0100
+Message-ID: <20150805115013.GJ20873@sirena.org.uk>
+References: <1438072876-16338-1-git-send-email-vigneshr@ti.com>
+ <1438072876-16338-2-git-send-email-vigneshr@ti.com>
+ <20150731181745.GM20873@sirena.org.uk>
+ <55BEF4AF.5090704@ti.com>
+ <20150804155148.GR20873@sirena.org.uk>
+ <55C0FD98.1090107@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Kukjin Kim <kgene@kernel.org>,
-	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <20150804105957.GI20873@sirena.org.uk>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="s+oWWcayER+yiG5Z"
+Cc: David Woodhouse <dwmw2@infradead.org>,
+	Brian Norris <computersforpeace@gmail.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Russell King <linux@arm.linux.org.uk>,
+	Huang Shijie <b32955@freescale.com>,
+	linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org
+To: "R, Vignesh" <vigneshr@ti.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <55C0FD98.1090107@ti.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Aug 4, 2015 at 6:59 PM, Mark Brown <broonie@kernel.org> wrote:
-> On Tue, Aug 04, 2015 at 02:09:56PM +0800, Nicolas Boichat wrote:
-[snip]
->> Actually, I'm not sure if I understand the existing code: why are we not
->> waiting for busy to go down to 0, then call chipselect, instead of not calling
->> it at all if the bus happens to be busy when we setup the device? With the
->> current approach, it would be easy to just use an unconditional mutex_lock.
->
-> We shouldn't be blocking waiting for the bus to become free, that's not
-> how the interface works.
 
-Noted.
+--s+oWWcayER+yiG5Z
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
->> Also, is it harmful to deactivate the newly setup device in spi_bitbang_setup,
->> even if the bus is busy with another device? chipselect should be independent
->> for each device (or is it not?). So I'm not clear why we need any locking at
->> all...
->
-> If you assert chip select on one device while another device is still
-> being interacted with then the new device will see the traffic for the
-> old device and become confused.
+On Tue, Aug 04, 2015 at 11:29:52PM +0530, R, Vignesh wrote:
+> On 8/4/2015 9:21 PM, Mark Brown wrote:
+> > On Mon, Aug 03, 2015 at 10:27:19AM +0530, Vignesh R wrote:
 
-Here in spi_bitbang_setup, we do:
-bitbang->chipselect(spi, BITBANG_CS_INACTIVE);
-That is, we make sure that the current device is _not_ selected.
+> > I still can't tell from the above what this interface is supposed to do.
+> > It sounds like the use of memory mapped mode is supposed to be
+> > transparent to users, it should just affect how the controller interacts
+> > with the hardware, but if that's the case why do we need to expose it to
+> > users at all?  Shouldn't the driver just use memory mapped mode if it's
+> > faster?
 
-Looking a bit more into this, the issue here is that some drivers use
-chipselect to chip select individual devices separately, while, on
-others, the above command unselects all devices (which is a bad idea
-if the bus is currently transferring data...). So, in short, it's
-probably better not to touch this code.
+> 2. SFI_MM_IF(SPI memory mapped interface): The SFI_MM_IF block only
+> allows reading and writing to an SPI flash device only. Used to speed up
+> flash reads. It _cannot_ be used to communicate with non flash devices.
+> Now, the spi_message that ti-qspi receives in transfer_one() callback
+> can be from mtd device(in which case SFI_MM_IF can be used) or from any
+> other non flash SPI device (in which case SFI_MM_IF must not be used
+> instead SPI_CORE is to be used) but there is no way(is there?) to
+> distinguish where spi_message is from. Therefore I introduced flag
+> (use_mmap_mode) to struct spi_message. mtd driver will set flag to true,
+> this helps the ti-qspi driver to determine that the user is flash device
+> and thus can do read via SFI_MM_IF. If this flag is not set then the
+> user is assumed to be non flash SPI driver and will use SPI_CORE block
+> to communicate.
 
->> Anyway, this patch series does not change the existing behaviour, applies on
->> top of broonie-sound/for-next, and, along with the 2 follow-up patches, was
->> compile-tested on x86-64/arm (allyesconfig) and ppc44x (defconfig+SPI driver),
->> and runtime-tested on an arm platform.
->
-> I'm not seeing enough analysis in the commit log of what's being locked
-> and why - I don't fully understand what the busy stuff is for either
-> (not that I've looked at the code in detail just now) but I think that's
-> going to be the key thing here.
+So if you're trying to do this you need to document it adequately so
+that other people can understand what it is supposed to do and how to
+use and implement it.  People can't really tell how the interface is
+supposed to work based on what was in the patch and the above isn't
+really helping.  For example, how does this change or restrict what the
+contents of the spi_message are?
 
-Regarding deleting prepare/unprepare and moving the lock into transfer_one.
+> On the whole, I just need a way to determine that the user is a flash
+> device in order to switch to memory mapped interface.
 
-spi.c:__spi_pump_messages, which calls these functions, does the following:
- - If no more messages need to be sent, call unprepare_transfer_hardware
- - If messages need to be sent:
-   + call prepare_transfer_hardware
-   + call prepare_message (NULL for bitbang)
-   + call transfer_one_message
+As far as I can tell you want to set a per spi_message flag saying that
+the message is a flash read command?  If that's what this is trying to
+do then why do you need to set the flag at all?  If the message is in a
+clearly defined format and it's more efficient to use this mmap mode
+then surely the driver can just recognise that the format is approprate
+and switch into mmap mode without being explicitly told - I'm not clear
+what the flag adds here.
 
-I don't think it makes a big difference if we set busy (or hold a
-mutex) in prepare/unprepare, or we just do it in transfer_one_message,
-since chipselect is only set in transfer_one_message, and is
-deselected at the end of the function anyway (in most cases, and if
-it's not, it will be selected again at the next transfer anyway).
+--s+oWWcayER+yiG5Z
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-Anyway, the "safer" way to fix this would be to keep the
-prepare/unprepare functions, busy variable, and just protect it with a
-mutex instead of a spinlock...
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-Thanks.
+iQEcBAEBCAAGBQJVwfh0AAoJECTWi3JdVIfQsVoH/ijzfz90BinO96BW5ivE2U/Y
+Mj2uaLVQxBNLnZ3KJhwwiH8jqVHZcxsaJd1Gps10fI3mmTuBCQF6X2Qx4UQ0HABE
+ZKZsYFyXGJ7uHr5OUmTwqQFCJrsig0xJiB/Ii4GnseERnbi2GY+xI+iz8LS29gLa
+WviPqvCnK1/GKTTsC2Kz8rU4QSwCGdoE+cfsPw7x8guvptzXyhHLlvkChLIiPW6G
+7TANH0gUFPplziwl+A+JopsZNZpGq+Qx7u7Yl+85aYjgT60fHltHgSYXQWDXuU4l
+SjgAaSlcI9tDLVsYzd1kd0vn+px2tJtio++Uc0XdJplEGnWyyFOoOB+4Bdpdytk=
+=YStL
+-----END PGP SIGNATURE-----
 
-Best,
+--s+oWWcayER+yiG5Z--

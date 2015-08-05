@@ -1,75 +1,83 @@
-From: Bert Vermeulen <bert@biot.com>
-Subject: Re: [PATCH v3] nand: Add NAND driver for Mikrotik RB4xx series boards
-Date: Wed, 05 Aug 2015 12:02:00 +0200
-Message-ID: <55C1DF18.4090800@biot.com>
-References: <1431689631-7217-1-git-send-email-bert@biot.com>
- <20150721202904.GK24125@google.com>
+From: Nicolas Boichat <drinkcat@chromium.org>
+Subject: Re: [PATCH 1/3] spi: bitbang: Replace spinlock by mutex when calling chipselect
+Date: Wed, 5 Aug 2015 18:24:05 +0800
+Message-ID: <CANMq1KB2zxPPCbxh4K-REUgp-83s=MPcGRjz-p1fK1PQMzyLdw@mail.gmail.com>
+References: <1438668598-6678-1-git-send-email-drinkcat@chromium.org>
+	<20150804105957.GI20873@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Arnd Bergmann <arnd@arndb.de>, linux-spi@vger.kernel.org,
- linux-gpio@vger.kernel.org, linux-mtd@lists.infradead.org,
- fransklaver@gmail.com, dwmw2@infradead.org
-To: Brian Norris <computersforpeace@gmail.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20150721202904.GK24125@google.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: text/plain; charset=UTF-8
+Cc: Kukjin Kim <kgene@kernel.org>,
+	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <20150804105957.GI20873@sirena.org.uk>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 07/21/2015 10:29 PM, Brian Norris wrote:
+On Tue, Aug 4, 2015 at 6:59 PM, Mark Brown <broonie@kernel.org> wrote:
+> On Tue, Aug 04, 2015 at 02:09:56PM +0800, Nicolas Boichat wrote:
+[snip]
+>> Actually, I'm not sure if I understand the existing code: why are we not
+>> waiting for busy to go down to 0, then call chipselect, instead of not calling
+>> it at all if the bus happens to be busy when we setup the device? With the
+>> current approach, it would be easy to just use an unconditional mutex_lock.
+>
+> We shouldn't be blocking waiting for the bus to become free, that's not
+> how the interface works.
 
->> +static struct spi_driver rb4xx_cpld_driver = {
->> +	.probe = rb4xx_cpld_probe,
->> +	.remove = rb4xx_cpld_remove,
->> +	.driver = {
->> +		.name = "rb4xx-cpld",
->> +		.owner = THIS_MODULE,
->> +	},
->> +};
-> 
-> I feel some deja vu here (did I make this comment before?); why do you
-> need to embed both a SPI and a platform driver here? It appears that the
-> NAND controller actually sits on the SPI bus, so this really is not a
-> platform driver; it's a SPI driver. Can you just kill off all the
-> platform_driver stuff and merge the probe functions?
-> 
-> Or if I'm missing something big, please do enlighten.
+Noted.
 
-This driver was specifically refused by the SPI subsystem maintainer:
+>> Also, is it harmful to deactivate the newly setup device in spi_bitbang_setup,
+>> even if the bus is busy with another device? chipselect should be independent
+>> for each device (or is it not?). So I'm not clear why we need any locking at
+>> all...
+>
+> If you assert chip select on one device while another device is still
+> being interacted with then the new device will see the traffic for the
+> old device and become confused.
 
-  http://www.linux-mips.org/archives/linux-mips/2015-03/msg00422.html
+Here in spi_bitbang_setup, we do:
+bitbang->chipselect(spi, BITBANG_CS_INACTIVE);
+That is, we make sure that the current device is _not_ selected.
 
-He suggested the MFD subsystem, where it was also refused:
+Looking a bit more into this, the issue here is that some drivers use
+chipselect to chip select individual devices separately, while, on
+others, the above command unselects all devices (which is a bad idea
+if the bus is currently transferring data...). So, in short, it's
+probably better not to touch this code.
 
-  http://lkml.iu.edu/hypermail/linux/kernel/1504.0/03162.html
+>> Anyway, this patch series does not change the existing behaviour, applies on
+>> top of broonie-sound/for-next, and, along with the 2 follow-up patches, was
+>> compile-tested on x86-64/arm (allyesconfig) and ppc44x (defconfig+SPI driver),
+>> and runtime-tested on an arm platform.
+>
+> I'm not seeing enough analysis in the commit log of what's being locked
+> and why - I don't fully understand what the busy stuff is for either
+> (not that I've looked at the code in detail just now) but I think that's
+> going to be the key thing here.
 
-Andy Shevchenko suggested drivers/misc, so I mailed Arnd Bergmann and asked
-if he would accept it there.
+Regarding deleting prepare/unprepare and moving the lock into transfer_one.
 
-Arnd took a good look at the driver and suggested the MTD/NAND subsystem.
-This is after all a driver for a NAND chip controller. The controller just
-happens to reside in a CPLD with custom firmware, which is controlled via
-SPI and has some GPIO controller functionality thrown in.
+spi.c:__spi_pump_messages, which calls these functions, does the following:
+ - If no more messages need to be sent, call unprepare_transfer_hardware
+ - If messages need to be sent:
+   + call prepare_transfer_hardware
+   + call prepare_message (NULL for bitbang)
+   + call transfer_one_message
 
-I realize it's an odd hardware setup, and I can't fix that, but this really
-does seem to be the best place for it.
+I don't think it makes a big difference if we set busy (or hold a
+mutex) in prepare/unprepare, or we just do it in transfer_one_message,
+since chipselect is only set in transfer_one_message, and is
+deselected at the end of the function anyway (in most cases, and if
+it's not, it will be selected again at the next transfer anyway).
 
-I can deal with your other comments on the patch, but I'd really like some
-agreement on where this driver will be accepted first. I've come full circle
-with getting referred back to the SPI subsystem.
+Anyway, the "safer" way to fix this would be to keep the
+prepare/unprepare functions, busy variable, and just protect it with a
+mutex instead of a spinlock...
 
+Thanks.
 
--- 
-Bert Vermeulen        bert@biot.com          email/xmpp
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+Best,

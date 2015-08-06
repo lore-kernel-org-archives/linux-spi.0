@@ -1,61 +1,95 @@
-From: leilk liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCH v4 1/3] dt-binding: spi: Mediatek: Document devicetree
- bindings for spi bus
-Date: Thu, 6 Aug 2015 09:45:40 +0800
-Message-ID: <1438825540.2163.5.camel@mhfsdcap03>
-References: <1438167874-1305-1-git-send-email-leilk.liu@mediatek.com>
-	 <1438167874-1305-2-git-send-email-leilk.liu@mediatek.com>
-	 <20150804174226.GE20873@sirena.org.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [RFC PATCH 1/5] spi: introduce flag for memory mapped read
+Date: Thu, 6 Aug 2015 10:02:02 +0100
+Message-ID: <20150806090202.GO20873@sirena.org.uk>
+References: <1438072876-16338-1-git-send-email-vigneshr@ti.com>
+ <1438072876-16338-2-git-send-email-vigneshr@ti.com>
+ <20150731181745.GM20873@sirena.org.uk>
+ <55BEF4AF.5090704@ti.com>
+ <20150804155148.GR20873@sirena.org.uk>
+ <55C0FD98.1090107@ti.com>
+ <20150805115013.GJ20873@sirena.org.uk>
+ <CAOMqctQXwcHyiWBwtugSDSE_k65qrNfrwnhjQMDJkLoJMmGzUw@mail.gmail.com>
+ <20150805124412.GN20873@sirena.org.uk>
+ <CAOMqctS9Y5FxpUCCJew6+cnjH5iTvbzkH3g-8yrXs4OuS2pSGA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150804174226.GE20873-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
-
-On Tue, 2015-08-04 at 18:42 +0100, Mark Brown wrote:
-> On Wed, Jul 29, 2015 at 07:04:32PM +0800, Leilk Liu wrote:
-> > Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-> 
-> Please use subject lines reflecting the style for the subsystem so
-> people can spot if patches are relevant to them.
-> 
-
-OK, I will change the title to "spi: Mediatek: Document devicetree
-bindings for spi bus".
-
-> > +- clocks: phandles to input clocks.
-> > +
-> > +- clock-names: tuple listing input clock names.
-> > +	Required elements: "main"
-> 
-> ...and there are no optional values?
-> 
-
-clock tree provides some source clocks, CLK_PERI_SPI0 is the default
-one. I will support optional values on the next version.
-
-> > +- pad-select: should specify spi pad used, only required for MT8173.
-> > +        This value should be 0~3.
-> 
-> What do the values 0-3 mean?  I guess it's the value for some register
-> or other part of the device, the binding should say so people can go and
-> check the datasheet, schematic or whatever to figure out what to set.
-> 
-> This property should be optional, not required
-
-OK, I will explain what the values 0-3 mean.
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="kVEG7nX9o2Fku/dg"
+Cc: "R, Vignesh" <vigneshr@ti.com>,
+	devicetree <devicetree@vger.kernel.org>,
+	Brian Norris <computersforpeace@gmail.com>,
+	Russell King <linux@arm.linux.org.uk>,
+	Tony Lindgren <tony@atomide.com>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	linux-spi <linux-spi@vger.kernel.org>,
+	Huang Shijie <b32955@freescale.com>,
+	MTD Maling List <linux-mtd@lists.infradead.org>,
+	linux-omap@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>
+To: Michal Suchanek <hramrach@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <CAOMqctS9Y5FxpUCCJew6+cnjH5iTvbzkH3g-8yrXs4OuS2pSGA@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--kVEG7nX9o2Fku/dg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Wed, Aug 05, 2015 at 02:56:09PM +0200, Michal Suchanek wrote:
+> On 5 August 2015 at 14:44, Mark Brown <broonie@kernel.org> wrote:
+> > On Wed, Aug 05, 2015 at 02:40:01PM +0200, Michal Suchanek wrote:
+
+> >> I don't think sending 03 or other random byte as the first byte of a
+> >> SPI transfer can be used as reliable detection that we are talking to
+> >> a SPI flash memory.
+
+> > Why care - if something is physically in the same format as a flash read
+> > command how would a device be able to tell that it wasn't actually a
+> > flash read command?  The signals sent on the bus are going to be
+> > identical anyway.
+
+> Not only must the command be the same but also the response must be tha same.
+
+What difference would that make?  The caller is sending a single SPI
+operation and this is a user visible thing...
+
+> The flash chip responds by sending arbitrary amount of data. Given
+> that transfer_one gets only the part that sends the read command and
+> the part to do the actual read may or may not follow this is getting a
+> bit hairy. Add in dummy bytes due to fast-read lag and page write
+> wrap-around and you get something that you definitely do not want
+> unless you are really sure that there is a flash memory on the other
+> end of the wire.
+
+So if you're doing this you may have a good reason to implement
+transfer_one_message() instead.  Or perhaps implement it in the core and
+provide operations to do the map and unmap.  And of course if this sort
+of requirement exists that's an obvious thing that must be documented
+in the interfaces but isn't.
+
+We need a lot more thought about the interface here, the lack of any
+explanation of what the interface is supposed to be and the fact that
+all questions about it are being answered in terms of describing the
+specific system are both a bit worrying.
+
+--kVEG7nX9o2Fku/dg
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJVwyKGAAoJECTWi3JdVIfQiYUH/0VIEkVZqyLsAeTxJFMAWxLp
+c7/RgUO0oBGWWp8OJrAT+IRDVgEJ7Nu5nSNtKch8jwSwtsIi1QeGYIcFUFsbEA8V
+fzGkMtp2/hnABtD2qciCc2r5AkJdB1rcbrFMqyVes8dbW3Otq9z9fu8K12x59FJr
+2y2X6o5pqdrQPL6vH0GmUodWs28Rc0t5qsWbiXPm08k5TF27hEOF2O/0EKBNsDjS
+JIiVrqdybHfKjEF8nZCadt/MUlClpG3j/PCZlu9XFs1yKMFALIbbwfgQ1kF8N/Sh
+XVVhR02v16wmIecRjiPt7S23RhPspqkRiX6KtEJMNug0Rhs3w+5+T2c+tvQL1IE=
+=S1cX
+-----END PGP SIGNATURE-----
+
+--kVEG7nX9o2Fku/dg--

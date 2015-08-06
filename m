@@ -1,59 +1,75 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH] spi: img-spfi: fix kbuild test robot warning
-Date: Thu, 6 Aug 2015 13:42:12 +0200
-Message-ID: <CAMuHMdWPKrqh+VHFQu3mTODYzBmZ5Hh_eJyWwCPKRdiR3uGQYg@mail.gmail.com>
-References: <1438853581-17154-1-git-send-email-sifan.naeem@imgtec.com>
-	<20150806112828.GU20873@sirena.org.uk>
+From: Michal Suchanek <hramrach@gmail.com>
+Subject: Re: [RFC PATCH 1/5] spi: introduce flag for memory mapped read
+Date: Thu, 6 Aug 2015 13:42:32 +0200
+Message-ID: <CAOMqctQKc6f5Mbe_CSd-ghguUfZvf6v_BRvYxQJVqPne73iESA@mail.gmail.com>
+References: <20150731181745.GM20873@sirena.org.uk> <55BEF4AF.5090704@ti.com>
+ <20150804155148.GR20873@sirena.org.uk> <55C0FD98.1090107@ti.com>
+ <20150805115013.GJ20873@sirena.org.uk> <CAOMqctQXwcHyiWBwtugSDSE_k65qrNfrwnhjQMDJkLoJMmGzUw@mail.gmail.com>
+ <20150805124412.GN20873@sirena.org.uk> <CAOMqctS9Y5FxpUCCJew6+cnjH5iTvbzkH3g-8yrXs4OuS2pSGA@mail.gmail.com>
+ <20150806090202.GO20873@sirena.org.uk> <CAOMqctQZRZ4zG_yYy=CeX3DX4NVNWN1COP4Q-2YvMun9xYOA7g@mail.gmail.com>
+ <20150806112353.GT20873@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Cc: Sifan Naeem <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150806112828.GU20873-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: "R, Vignesh" <vigneshr@ti.com>,
+	devicetree <devicetree@vger.kernel.org>,
+	Brian Norris <computersforpeace@gmail.com>,
+	Russell King <linux@arm.linux.org.uk>,
+	Tony Lindgren <tony@atomide.com>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	linux-spi <linux-spi@vger.kernel.org>,
+	Huang Shijie <b32955@freescale.com>,
+	MTD Maling List <linux-mtd@lists.infradead.org>,
+	linux-omap@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20150806112353.GT20873@sirena.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Thu, Aug 6, 2015 at 1:28 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Thu, Aug 06, 2015 at 10:33:01AM +0100, Sifan Naeem wrote:
->> drivers/spi/spi-img-spfi.c: In function 'img_spfi_setup':
->> drivers/spi/spi-img-spfi.c:446: warning: 'ret' may be used
->> uninitialized in this function.
->>
->> Fixes: commit b03ba9e314c1 ("spi: img-spfi: fix multiple calls to request gpio")
->> Signed-off-by: Sifan Naeem <sifan.naeem-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
+On 6 August 2015 at 13:23, Mark Brown <broonie@kernel.org> wrote:
+> On Thu, Aug 06, 2015 at 12:01:37PM +0200, Michal Suchanek wrote:
 >
-> This isn't a good commit message:
+>> However, I am familiar m25p80.c and as I understand it the controller
+>> is basically supposed to implement m25p80.c in hardware when this flag
+>> is set.
 >
->>  static int img_spfi_setup(struct spi_device *spi)
->>  {
->> -     int ret;
->> +     int ret = -EINVAL;
+> But what in concrete terms is that supposed to mean?  It's currently
+> just an essentially undocumented flag on a message rather than something
+> operating at the level of a flash chip.  That's pretty much where
+> Russell's comments come from.
 >
-> You're just assigning a return value so that the compiler can't tell if
-> we've missed anything, that's often a sign of just papering over the
-> cracks without understanding the problem - for example there may be a
-> missing else case in some error path that the compiler was trying to
-> tell you about where other cleanup is needed.  The changelog should say
-> what the problem was and why the change solves it sensibly.
+>> If I was using m25p80.c to talk to anything but an actual flash chip
+>> it would get me quite worried.
+>
+> Sure, but at the end of the day it's just emitting standard SPI messages
+> which don't know anything about flash.  If those messages are a sensible
+> interface here then why bother with the flag, we can just pattern match
+> on the format of the message.  If that doesn't work then probably this
+> isn't a great interface and a separate, application specific interface
+> makes more sense.
 
-I'll bite...
+The messages are sensible interface for communicating with a device
+that interprets a particular part of the mesasge as address and
+another particular part of the message as command and sends same
+amount of junk before reply as the flash chip would. If your device
+happens to send reply immediately part of it is trashed. If it happens
+to interpret address differently the data ends up in random part of
+your memory. So no, that is not something you can autodetect.
 
-It's not 100% clear to me -EINVAL is the right value.
-Perhaps it should be 0?
-Or the check for gpio_is_valid() should be removed?
+At the end of the day you have valid SPI messages but the m25p80 layer
+adds interpretation to those messages which may not always give
+correct result.
 
-Gr{oetje,eeting}s,
+On the other hand, if you ever get to m25p80 or spi-nor you can assume
+any message you send goes to a flash chip and insist that the
+controller uses the flash-specific interface.
 
-                        Geert
+If there is possibility of connecting different kind of devices to
+multiple chipselects on the same master then you probably want to
+select this option per message or per slave.
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+Thanks
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Michal

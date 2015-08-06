@@ -1,111 +1,130 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [RFC PATCH 1/5] spi: introduce flag for memory mapped read
-Date: Thu, 6 Aug 2015 19:20:29 +0100
-Message-ID: <20150806182029.GD20873@sirena.org.uk>
-References: <20150804155148.GR20873@sirena.org.uk>
- <55C0FD98.1090107@ti.com>
- <20150805115013.GJ20873@sirena.org.uk>
- <CAOMqctQXwcHyiWBwtugSDSE_k65qrNfrwnhjQMDJkLoJMmGzUw@mail.gmail.com>
- <20150805124412.GN20873@sirena.org.uk>
- <CAOMqctS9Y5FxpUCCJew6+cnjH5iTvbzkH3g-8yrXs4OuS2pSGA@mail.gmail.com>
- <20150806090202.GO20873@sirena.org.uk>
- <CAOMqctQZRZ4zG_yYy=CeX3DX4NVNWN1COP4Q-2YvMun9xYOA7g@mail.gmail.com>
- <20150806102225.GI7576@n2100.arm.linux.org.uk>
- <55C35233.2000105@ti.com>
+From: "Hermann Kraus" <hermr2d2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v2] spi: spi-sun4i, spi-sun6i: Fix bit rate calculation
+Date: Thu, 06 Aug 2015 22:51:10 +0200
+Message-ID: <op.x2yr7kbcltbbtz@localhost>
+References: <op.x2pmc5kiltbbtz@localhost>
+ <20150804171931.GZ20873@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="/WOH3aHYQbLswZnX"
-Cc: Russell King - ARM Linux <linux@arm.linux.org.uk>,
-	Michal Suchanek <hramrach@gmail.com>,
-	devicetree <devicetree@vger.kernel.org>,
-	Brian Norris <computersforpeace@gmail.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	Huang Shijie <b32955@freescale.com>,
-	MTD Maling List <linux-mtd@lists.infradead.org>,
-	linux-omap@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>
-To: Vignesh R <vigneshr@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <55C35233.2000105@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=utf-8; format=flowed; delsp=yes
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	"Maxime Ripard" <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+To: "Mark Brown" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150804171931.GZ20873-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
+
+Use requested bit rate instead of maximum possible and correctly calculate
+the divider.
+
+There are two different maximum bitrates. "max_speed_hz" which is the
+maximum for a given SPI device and "speed_hz" in "struct spi_transfer"
+which is the rate used for this transfer. "speed_hz" must always be
+used as the actual transfer rate.
+The divider must be calculated by calling ilog2 only once, because this
+function truncates the fractional part. Calling it twice increases
+the error so much that certain bit rates which are available from the
+hardware can't be reached by the kernel.
+The result of this calculation must be checked to fit into the register
+size instead of being truncated silently.
+
+Signed-off-by: Hermann Kraus <hermr2d2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+
+Changes to v1: Unconditionally use tfr->speed_hz as requested by Mark  
+Brown.
 
 
---/WOH3aHYQbLswZnX
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+  drivers/spi/spi-sun4i.c | 15 +++++++++++----
+  drivers/spi/spi-sun6i.c | 15 +++++++++++----
+  2 files changed, 22 insertions(+), 8 deletions(-)
 
-On Thu, Aug 06, 2015 at 05:55:23PM +0530, Vignesh R wrote:
+diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
+index fbb0a4d..729d70b 100644
+--- a/drivers/spi/spi-sun4i.c
++++ b/drivers/spi/spi-sun4i.c
+@@ -229,8 +229,8 @@ static int sun4i_spi_transfer_one(struct spi_master  
+*master,
 
-> 1.Write to flash config register via config port to switch to QUAD MODE
-> (or any mode that flash supports).
-> 2. Populate QSPI_SPI_SETUP_REGx with flash read command, number of
-> address bytes to use and dummy bytes required.
+  	/* Ensure that we have a parent clock fast enough */
+  	mclk_rate = clk_get_rate(sspi->mclk);
+-	if (mclk_rate < (2 * spi->max_speed_hz)) {
+-		clk_set_rate(sspi->mclk, 2 * spi->max_speed_hz);
++	if (mclk_rate < (2 * tfr->speed_hz)) {
++		clk_set_rate(sspi->mclk, 2 * tfr->speed_hz);
+  		mclk_rate = clk_get_rate(sspi->mclk);
+  	}
 
-These things being constant for a given flash?
+@@ -248,14 +248,21 @@ static int sun4i_spi_transfer_one(struct spi_master  
+*master,
+  	 * First try CDR2, and if we can't reach the expected
+  	 * frequency, fall back to CDR1.
+  	 */
+-	div = mclk_rate / (2 * spi->max_speed_hz);
++	div = mclk_rate / (2 * tfr->speed_hz);
+  	if (div <= (SUN4I_CLK_CTL_CDR2_MASK + 1)) {
+  		if (div > 0)
+  			div--;
 
-> 3. Switch to memory mapped port by writing to QSPI_SPI_SWITCH_REG.
-> 4. Now, its possible to perform read from 0x5C000000 to 0x5FFFFFFF using
-> memcpy. The qspi controller hardware will communicate over SPI bus and
-> get the data. This data is directly sent to RAM via SoC's interconnect.
+  		reg = SUN4I_CLK_CTL_CDR2(div) | SUN4I_CLK_CTL_DRS;
+  	} else {
+-		div = ilog2(mclk_rate) - ilog2(spi->max_speed_hz);
++		/* ilog2 truncates the fractional part. Therefore we don't
++		 * subtract 1 from the result. */
++		div = ilog2(mclk_rate / tfr->speed_hz + 1);
++		if (div & ~SUN4I_CLK_CTL_CDR1_MASK) {
++			/* Can't reach low enough bit rate. */
++			ret = -EINVAL;
++			goto out;
++		}
+  		reg = SUN4I_CLK_CTL_CDR1(div);
+  	}
 
-Presumably if it's done via memcpy() it won't go direct to RAM but
-rather be bounced through the CPU which is a bit interesting for
-performance (it might help, but it does mean that there's a core stalled
-waiting for the flash which might not be the best use of resources if
-there's other things it can be getting on with).  With DMA it'd be a
-direct to memory transfer though.
+diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
+index ac48f59..2d3dcda 100644
+--- a/drivers/spi/spi-sun6i.c
++++ b/drivers/spi/spi-sun6i.c
+@@ -217,8 +217,8 @@ static int sun6i_spi_transfer_one(struct spi_master  
+*master,
 
-> Advantages of memory mapped port are: improved read performance,
-> MEM_TO_MEM DMA support can be added (ti-qspi hardware as such does not
-> provide DMA events).
+  	/* Ensure that we have a parent clock fast enough */
+  	mclk_rate = clk_get_rate(sspi->mclk);
+-	if (mclk_rate < (2 * spi->max_speed_hz)) {
+-		clk_set_rate(sspi->mclk, 2 * spi->max_speed_hz);
++	if (mclk_rate < (2 * tfr->speed_hz)) {
++		clk_set_rate(sspi->mclk, 2 * tfr->speed_hz);
+  		mclk_rate = clk_get_rate(sspi->mclk);
+  	}
 
-DMA would definitely help here.
+@@ -236,14 +236,21 @@ static int sun6i_spi_transfer_one(struct spi_master  
+*master,
+  	 * First try CDR2, and if we can't reach the expected
+  	 * frequency, fall back to CDR1.
+  	 */
+-	div = mclk_rate / (2 * spi->max_speed_hz);
++	div = mclk_rate / (2 * tfr->speed_hz);
+  	if (div <= (SUN6I_CLK_CTL_CDR2_MASK + 1)) {
+  		if (div > 0)
+  			div--;
 
-> I just need to know whether the user that requested the transfer is
-> m25p80 driver. If yes, ti-qspi driver can take advantage of memory
-> mapped interface, else just use config port to access SPI bus directly.
+  		reg = SUN6I_CLK_CTL_CDR2(div) | SUN6I_CLK_CTL_DRS;
+  	} else {
+-		div = ilog2(mclk_rate) - ilog2(spi->max_speed_hz);
++		/* ilog2 truncates the fractional part. Therefore we don't
++		 * subtract 1 from the result. */
++		div = ilog2(mclk_rate / tfr->speed_hz + 1);
++		if (div & ~SUN6I_CLK_CTL_CDR1_MASK) {
++			/* Can't reach low enough bit rate. */
++			ret = -EINVAL;
++			goto out;
++		}
+  		reg = SUN6I_CLK_CTL_CDR1(div);
+  	}
 
-You don't *really* care if it's that specific user so much as that it's
-that particular pattern.
-
-> Writing separate driver based on spi-nor framework to interface with
-> m25p80 is not an option because, I would lose the ability to interface
-> with non-flash devices.
-
-You could, however, expose an explicit flash mapping interface for this
-functionality.  That does seem like it's going to be an awful lot easier=20
-and help with keeping things like DMA support out of the driver and in
-the core (which would be useful if there's other controllers with the
-same functionality, I seem to recall that there are).
-
-> The spi_message that is received in transfer_one_message() is too
-> generic to imply the slave device that is on the other side of the wire.
-> IMO, the read command does not imply that the slave is m25p80 flash
-> (besides the read opcodes vary across vendors of m25p80 and across modes).
-
-Again, it doesn't matter if it's actually a read command only that it's
-got a compatible format on the bus.
-
---/WOH3aHYQbLswZnX
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVw6VsAAoJECTWi3JdVIfQo5kH/jhi48J/GzyKzpi6siPcw1Zf
-9XvGK+lnjE0cifv7vsMLqlSe5q+MHcBGFo0v2HJ3sGsNX2nROE7soj8TiLroee22
-k6GYn0+k/5pNHEQ3eGjkOElD/GCmGGkSQkRkuvJDjj2gfsaQ2Qs2uH5jl6bkTdgM
-9rNYnFJf/tVf1Ct4mQpjXuDJqX22+NZmE5HpWt7nnmZz/+WrUAqFuQfSaSoG7AVD
-HCHBYHrj13/p5L5XfcMsTX+jHqsfuMVCJRhGtyfOOmzD/ftZczg8XNmp3KBRg3vd
-k6/sGgTqhcV7uJDqlCxbhc/6nWddP9LuPG7CeadvSxNz+DXoh992m9BnKikv0UE=
-=lR6+
------END PGP SIGNATURE-----
-
---/WOH3aHYQbLswZnX--
+-- 
+2.1.4
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

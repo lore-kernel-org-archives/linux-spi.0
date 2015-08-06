@@ -1,21 +1,17 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [RFC PATCH 1/5] spi: introduce flag for memory mapped read
-Date: Thu, 6 Aug 2015 17:46:56 +0100
-Message-ID: <20150806164656.GY20873@sirena.org.uk>
-References: <55C0FD98.1090107@ti.com>
- <20150805115013.GJ20873@sirena.org.uk>
- <CAOMqctQXwcHyiWBwtugSDSE_k65qrNfrwnhjQMDJkLoJMmGzUw@mail.gmail.com>
- <20150805124412.GN20873@sirena.org.uk>
- <CAOMqctS9Y5FxpUCCJew6+cnjH5iTvbzkH3g-8yrXs4OuS2pSGA@mail.gmail.com>
- <20150806090202.GO20873@sirena.org.uk>
- <CAOMqctQZRZ4zG_yYy=CeX3DX4NVNWN1COP4Q-2YvMun9xYOA7g@mail.gmail.com>
- <20150806102225.GI7576@n2100.arm.linux.org.uk>
- <55C35233.2000105@ti.com>
- <20150806135129.GJ7576@n2100.arm.linux.org.uk>
+Date: Thu, 6 Aug 2015 20:20:02 +0200
+Message-ID: <CAOMqctTisUv4YcSSojKadotX5XAB4Ro0bxT4Wn9tRP=Jyc0iqw@mail.gmail.com>
+References: <20150804155148.GR20873@sirena.org.uk> <55C0FD98.1090107@ti.com>
+ <20150805115013.GJ20873@sirena.org.uk> <CAOMqctQXwcHyiWBwtugSDSE_k65qrNfrwnhjQMDJkLoJMmGzUw@mail.gmail.com>
+ <20150805124412.GN20873@sirena.org.uk> <CAOMqctS9Y5FxpUCCJew6+cnjH5iTvbzkH3g-8yrXs4OuS2pSGA@mail.gmail.com>
+ <20150806090202.GO20873@sirena.org.uk> <CAOMqctQZRZ4zG_yYy=CeX3DX4NVNWN1COP4Q-2YvMun9xYOA7g@mail.gmail.com>
+ <20150806102225.GI7576@n2100.arm.linux.org.uk> <55C35233.2000105@ti.com>
+ <20150806135129.GJ7576@n2100.arm.linux.org.uk> <CAMuHMdWWDwZ=ziGQXFCnOX8pErXpsEi533J73_Hh=sEqq4hR6Q@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="pwuPNfS0paSTjpGn"
-Cc: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>, Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+Content-Type: text/plain; charset=UTF-8
+Cc: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
@@ -23,101 +19,94 @@ Cc: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>, Michal Suchanek <hramrach
 	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
 	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	"linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
 	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
 	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20150806135129.GJ7576-l+eeeJia6m9vn6HldHNs0ANdhmdF6hFW@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CAMuHMdWWDwZ=ziGQXFCnOX8pErXpsEi533J73_Hh=sEqq4hR6Q-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+On 6 August 2015 at 18:14, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org> wrote:
+> On Thu, Aug 6, 2015 at 3:51 PM, Russell King - ARM Linux
+> <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org> wrote:
+>> On Thu, Aug 06, 2015 at 05:55:23PM +0530, Vignesh R wrote:
+>>> On the whole following are my requirements:
+>>> 1. to be able to communicate with non -flash SPI devices via config port
+>>> ( this functionality is supported by current driver, I dont want to
+>>> break it). Or pump any spi_message on to SPI bus directly.
+>>> 2. take advantage of memory mapped port in order to increase read
+>>> throughput( and use dma in future) when the slave is a m25p80 type flash.
+>>> 3. handle m25p80 as well as other slave on multiple chipselects.
+>>>
+>>> I just need to know whether the user that requested the transfer is
+>>> m25p80 driver. If yes, ti-qspi driver can take advantage of memory
+>>> mapped interface, else just use config port to access SPI bus directly.
+>>
+>> The problem with this approach is that it's an abomination.  It's adding
+>> a SPI-user specific hack which is detected by a specific driver.  That's
+>> really not sane - what happens when we have lots of these kinds of "I'm
+>> an X SPI-user" with drivers detecting that?  It's not maintainable in the
+>> long term.
+>>
+>> Yes, your requirements _today_ seem simple and easy, but you're only
+>> thinking about today, not tomorrow when you've moved on and someone else
+>> has to maintain the mess left behind (or delete it from mainline because
+>> they're sick of dealing with a hack.)
+>>
+>>> The spi_message that is received in transfer_one_message() is too
+>>> generic to imply the slave device that is on the other side of the wire.
+>>> IMO, the read command does not imply that the slave is m25p80 flash
+>>> (besides the read opcodes vary across vendors of m25p80 and across modes).
+>>
+>> I can see both sides of the argument.
+>>
+>> Mark is saying: if the SPI driver detects that the message to be transmitted
+>> is a read command followed by the appropriate number of dummy bytes, and
+>> then the data being read _and_ it's using quad-mode access, and the hardware
+>> generates _exactly_ that in hardware using the memory mapped mode, there is
+>> no reason _not_ to use the hardware to achieve that SPI transaction.  The
+>> bus activity will be identical to what happens when the SPI controller is
+>> used manually to achieve that bus sequence.
+>>
+>> You're saying: but the documentation says you can't use it for anything
+>> except m25p80.  If you look at 24.5.4.1.2, it tells you what the SFI
+>> generates on the bus, which is:
+>>
+>> 1. CS active
+>> 2. Read command byte sent
+>> 3. 1-4 address bytes sent
+>> 4. 0-3 dummy bytes sent
+>> 5. data bytes read from bus
+>> 6. CS inactive
+>>
+>> So, Mark's point is "if we can detect a transaction which fits _that_
+>> bus activity, there's no reason not to use this acceleration for the
+>> transaction."
+>>
+>> What you're failing to counter with is: we don't have enough information
+>> in the SPI driver to know how many dummy bytes there are between the
+>> address bytes and the data read from the bus.
+>
+> Irrespective of the dummy bytes.
+> What if the spi device is not a FLASH ROM, but some other device,
+> which receives a data packet that accidentally looks like an m25p80 READ
+> command?
+>
 
---pwuPNfS0paSTjpGn
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Presumably the driver would interpret some random part of the message
+as address and map the reply in your address space at that address
+from the flash mmap base.
 
-On Thu, Aug 06, 2015 at 02:51:29PM +0100, Russell King - ARM Linux wrote:
+If you happen to overflow the flash memory mmap space the behaviour
+will probably not be well defined.
 
-> The M25P80 driver just appends additional bytes to the message to
-> achieve this:
->=20
->         struct m25p *flash =3D nor->priv;
->         unsigned int dummy =3D nor->read_dummy;
->=20
->         /* convert the dummy cycles to the number of bytes */
->         dummy /=3D 8;
->=20
->         flash->command[0] =3D nor->read_opcode;
->         m25p_addr2cmd(nor, from, flash->command);
->=20
->         t[0].tx_buf =3D flash->command;
->         t[0].len =3D m25p_cmdsz(nor) + dummy;
->         spi_message_add_tail(&t[0], &m);
+Thanks
 
-> The reason that the number of dummy bytes can't be detected is because
-> it's all hidden in the first transaction as the total number of bytes to
-> be transmitted - and the dummy bytes are uninitialised, so you can't
-> make any assumptions what value they are.  There is no way for the SPI
-> driver to know whether these dummy bytes are dummy bytes or whether they
-> have an effect on the targetted device.
-
-We *could* (as you suggest below) indicate dummy transfers by having a
-separate transfer which omits the transmit buffers though I'd expect
-that normally that is going to be a small performance hit if interpreted
-directly so we need to think what to do there.  We do get other devices
-sending dummy bytes, it's sometimes a requirement for high speed
-register access to give settling time for the device, so other things
-would get some milage from it.
-
-> What may make more sense from the SPI point of view is to communicate to
-> all SPI drivers how many dummy bytes are to be transferred.  I'm not fully
-> up on SPI, but maybe something like this:
-
-> 	t[0].tx_buf =3D flash->command;
-> 	t[0].len =3D m25p_cmdsz(nor);
-> 	spi_message_add_tail(&t[0], &m);
-> 	t[1].tx_buf =3D dummy_buffer;
-> 	t[1].len =3D dummy;
-> 	t[1].dummy =3D 1;
-> 	spi_message_add_tail(&t[1], &m);
-
-> This way, we're describing the transfer to the SPI core, and explicitly
-> indicating that there are some dummy bytes.  The SPI driver can then
-> tell that these are dummy bytes, and if the SPI message consists of:
-
-That'd work as well, my first thought would to use NULL as a dummy
-buffer pointer and let the core substitute in data for the drivers.  We
-currently insist on having at least one buffer but that's fixable.
-
-> This would not be a hack to the SPI code: we're describing to the SPI
-> code what we want to achieve in terms of the activity on the bus, and
-> providing that level of description then allows the SPI driver to make
-> informed decisions on whether it can handle the transfer using some
-> non-standard feature.
-
-Yup.
-
---pwuPNfS0paSTjpGn
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJVw49/AAoJECTWi3JdVIfQ1F0H/0r3XHXrg83DWGFZidmiKHIM
-3RTAuQQspERwEFOCDEKHJr2h7ZcZsusPTQcOK5IwadiaQL9izDyeDoeDswABr99Z
-FBVKKa9S1KlLZrlT3NmfOftQpCXTmX9CG9N8mBqgqVQdrJ7IS2bn3Kn4ztFCMhsT
-6OyjWIkL4y2hKnHDSedaB/CK0K219yS2bL+D6S1EkTrTk8nEU3OQOaRFbHPknCCO
-9VN0dF4/n70OqvYQYEgJ4yr7w+13TZu/gINRpzJ8kCon6JmrgGbNFydYGWNf61p0
-naxSlkptfPEOGyrkv19VaIE9LnlbKWjP5+DV3i8iwg7PdRy9AM25Bo8KXYQDQCU=
-=bduc
------END PGP SIGNATURE-----
-
---pwuPNfS0paSTjpGn--
+Michal
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

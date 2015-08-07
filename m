@@ -1,102 +1,37 @@
-From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
 Subject: Re: [RFC PATCH 1/5] spi: introduce flag for memory mapped read
-Date: Fri, 7 Aug 2015 09:38:48 +0200
-Message-ID: <CAOMqctRBW230fA4AEhK7MyqkZY==6ENNNHE-LVm7-mHKA_VzRw@mail.gmail.com>
-References: <20150805115013.GJ20873@sirena.org.uk> <CAOMqctQXwcHyiWBwtugSDSE_k65qrNfrwnhjQMDJkLoJMmGzUw@mail.gmail.com>
- <20150805124412.GN20873@sirena.org.uk> <CAOMqctS9Y5FxpUCCJew6+cnjH5iTvbzkH3g-8yrXs4OuS2pSGA@mail.gmail.com>
- <20150806090202.GO20873@sirena.org.uk> <CAOMqctQZRZ4zG_yYy=CeX3DX4NVNWN1COP4Q-2YvMun9xYOA7g@mail.gmail.com>
- <20150806102225.GI7576@n2100.arm.linux.org.uk> <55C35233.2000105@ti.com>
- <20150806135129.GJ7576@n2100.arm.linux.org.uk> <CAMuHMdWWDwZ=ziGQXFCnOX8pErXpsEi533J73_Hh=sEqq4hR6Q@mail.gmail.com>
- <20150806213340.GK7576@n2100.arm.linux.org.uk>
+Date: Fri, 07 Aug 2015 10:25:40 +0200
+Message-ID: <55C46B84.3010304@sperl.org>
+References: <20150805115013.GJ20873@sirena.org.uk> <CAOMqctQXwcHyiWBwtugSDSE_k65qrNfrwnhjQMDJkLoJMmGzUw@mail.gmail.com> <20150805124412.GN20873@sirena.org.uk> <CAOMqctS9Y5FxpUCCJew6+cnjH5iTvbzkH3g-8yrXs4OuS2pSGA@mail.gmail.com> <20150806090202.GO20873@sirena.org.uk> <CAOMqctQZRZ4zG_yYy=CeX3DX4NVNWN1COP4Q-2YvMun9xYOA7g@mail.gmail.com> <20150806102225.GI7576@n2100.arm.linux.org.uk> <55C35233.2000105@ti.com> <20150806135129.GJ7576@n2100.arm.linux.org.uk> <CAMuHMdWWDwZ=ziGQXFCnOX8pErXpsEi533J73_Hh=sEqq4hR6Q@mail.gmail.com> <20150806213340.GK7576@n2100.arm.linux.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-	Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>, Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
 	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
 	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
 	"linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
 	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
 	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
+To: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20150806213340.GK7576-l+eeeJia6m9vn6HldHNs0ANdhmdF6hFW@public.gmane.org>
 Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 6 August 2015 at 23:33, Russell King - ARM Linux
-<linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org> wrote:
+On 8/6/2015 23:33, Russell King - ARM Linux wrote:
 > On Thu, Aug 06, 2015 at 06:14:00PM +0200, Geert Uytterhoeven wrote:
->> On Thu, Aug 6, 2015 at 3:51 PM, Russell King - ARM Linux
->> <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org> wrote:
->> > On Thu, Aug 06, 2015 at 05:55:23PM +0530, Vignesh R wrote:
->> >> On the whole following are my requirements:
->> >> 1. to be able to communicate with non -flash SPI devices via config port
->> >> ( this functionality is supported by current driver, I dont want to
->> >> break it). Or pump any spi_message on to SPI bus directly.
->> >> 2. take advantage of memory mapped port in order to increase read
->> >> throughput( and use dma in future) when the slave is a m25p80 type flash.
->> >> 3. handle m25p80 as well as other slave on multiple chipselects.
->> >>
->> >> I just need to know whether the user that requested the transfer is
->> >> m25p80 driver. If yes, ti-qspi driver can take advantage of memory
->> >> mapped interface, else just use config port to access SPI bus directly.
->> >
->> > The problem with this approach is that it's an abomination.  It's adding
->> > a SPI-user specific hack which is detected by a specific driver.  That's
->> > really not sane - what happens when we have lots of these kinds of "I'm
->> > an X SPI-user" with drivers detecting that?  It's not maintainable in the
->> > long term.
->> >
->> > Yes, your requirements _today_ seem simple and easy, but you're only
->> > thinking about today, not tomorrow when you've moved on and someone else
->> > has to maintain the mess left behind (or delete it from mainline because
->> > they're sick of dealing with a hack.)
->> >
->> >> The spi_message that is received in transfer_one_message() is too
->> >> generic to imply the slave device that is on the other side of the wire.
->> >> IMO, the read command does not imply that the slave is m25p80 flash
->> >> (besides the read opcodes vary across vendors of m25p80 and across modes).
->> >
->> > I can see both sides of the argument.
->> >
->> > Mark is saying: if the SPI driver detects that the message to be transmitted
->> > is a read command followed by the appropriate number of dummy bytes, and
->> > then the data being read _and_ it's using quad-mode access, and the hardware
->> > generates _exactly_ that in hardware using the memory mapped mode, there is
->> > no reason _not_ to use the hardware to achieve that SPI transaction.  The
->> > bus activity will be identical to what happens when the SPI controller is
->> > used manually to achieve that bus sequence.
->> >
->> > You're saying: but the documentation says you can't use it for anything
->> > except m25p80.  If you look at 24.5.4.1.2, it tells you what the SFI
->> > generates on the bus, which is:
->> >
->> > 1. CS active
->> > 2. Read command byte sent
->> > 3. 1-4 address bytes sent
->> > 4. 0-3 dummy bytes sent
->> > 5. data bytes read from bus
->> > 6. CS inactive
->> >
->> > So, Mark's point is "if we can detect a transaction which fits _that_
->> > bus activity, there's no reason not to use this acceleration for the
->> > transaction."
->> >
->> > What you're failing to counter with is: we don't have enough information
->> > in the SPI driver to know how many dummy bytes there are between the
->> > address bytes and the data read from the bus.
 >>
 >> Irrespective of the dummy bytes.
 >> What if the spi device is not a FLASH ROM, but some other device,
 >> which receives a data packet that accidentally looks like an m25p80 READ
 >> command?
->
 > Well, for the most part it looks like it should still work, but there
 > could be a gotcha, but first, let's get rid of a myth there.
 >
@@ -108,7 +43,29 @@ On 6 August 2015 at 23:33, Russell King - ARM Linux
 > that using it with SPI NOR devices which do not use the M25P80 read
 > command value is intended.
 >
-...
+>
+> The SFI is a state machine based translator which sits behind the SPI
+> interface (look at the manual).  It sequence sthe SPI bus through a
+> series of standard SPI states which happen to be the states I detailed
+> above.
+>
+> Now, the first byte of the SFI-generated SPI message can be programmed
+> to any 8 bit value.  So the first byte of the SPI message is totally
+> under software control.  The next one to four bytes which comprise the
+> "address" can be controlled to by deciding where in the memory map to
+> start reading from.  Hence, the value of those bytes is also totally
+> under software control.  The number of dummy bytes can be programmed
+> too.  So far so good.
+>
+> So, if we know that we have a SPI message which says "send 0x01 0x20
+> 0x30, send one dummy byte, read 32 bytes", if we program the SFI to
+> send a read command as 0x01, program an address length of 2 bytes
+> with one dummy byte, and then read the next 32 bytes at the appropriate
+> offset in the memory mapping to cause the next two bytes to be 0x20,
+> 0x30, then what we end up with on the bus is:
+>
+> 	send 0x01, 0x20, 0x30
+> 	send one dummy byte
 >
 > That much is good, but now is the problem - how does the SFI know that
 > we're going to require to read 32 bytes?  I think the answer to that
@@ -121,33 +78,107 @@ On 6 August 2015 at 23:33, Russell King - ARM Linux
 > So, I'm now on the side of not parsing commands in the SPI driver, and
 > back on the idea that this needs to be handled in some other manner
 > which doesn't involve polluting the SPI core with flag-hacks.
+>
+So I see 2 distinct options:
 
-OK, so we can agree that using this hardware acceleration for any kind
-of transfer indiscriminately is not a very good idea.
+Have the nor driver modified to run SPI commands and then ask the
+SPI framework (and driver) to switch into mmap mode:
 
-Now since the description is clearer it's obvious that ti-qspi cannot
-work fully mmapped as fsl-qspi does because the setup has to be done
-over normal spi access and using non-m25p80 devices on the same bus is
-a requirement.
+Would probably look something like this inside the nor driver:
+    /* lock spi bus for other activities */
+    spi_bus_lock(spi);
+    /* send the "configuration" for mmap */
+    t[0].tx_buf = flash->command;
+    t[0].len = m25p_cmdsz(nor);
+    spi_message_add_tail(&t[0], &m);
+    t[1].tx_buf = dummy_buffer;
+    t[1].len = dummy;
+    spi_message_add_tail(&t[1], &m);
+    spi_sync(spi, &m);
+    /* switch to mmap mode */
+    spi->mode |= SPI_MMAP;
+    spi_setup(spi);
+    /* run the mmapped transfers bypassing the spi-layer */
+    memcpy(...)
+    /* open questions here: which address range
+     * and how to detect if transfer is done
+*/
+/* restore back to "normal" mode */
+    spi->mode &= ~SPI_MMAP;
+    spi_setup(spi);
+    /* unlock spi bus for other activities */
+    spi_bus_unlock(spi);
 
-The place where it is known if a transfer can use the mmap access is m25p80.c
+The downside is that it requires modification in several places
+(nor-framework, spi-framework plus the driver) and it would not
+be generic enough...
 
-So my suggestion is
+IMO such a situation is feasible if we only got a single device
+on the spi-bus, but leaves a lot of questions open...
+Alternatively we could create an additional api.
 
- - add a new method for spi master that gets the read opcode, dummy
-length, address, address length, buffer, buffer length and performs
-read from the flash memory in a hardware-specific way
+On the other end of spectrum could be a solution where the
+spi-master driverwould have the opportunity to query the
+device-tree for specific propertiesduring the spi_add_device
+phase - in this case querying the followingproperty in the
+device-tree:
+   spi-master-XXX,use-mmap-cmd-mode = <0x08 0x38>;
+to implement mmap-mode for commands 0x08 and 0x38.
 
-- add a check in m25p80.c that the master supports this feature and if
-so use it (eg check that the method is non-null)
+Maybe we would want to also encode the number of address bytes
+to send per command without hardcoding those values explicitly:
+so maybe something like:
+   spi-master-XXX,use-mmap-cmd-mode = <0x08 2> <0x38 3>;
 
-Presumably if some new SPI controllers with similar feature are
-supported in the future they can use the same inteface because you
-pass on everything the m25p80 read knows.
+Obviously these would need to get documented in the bindings
+documentation of that driver.
 
-Thanks
+Alternatively we could also introduce generic alternate modes
+for the driver(similar to GPIO - ALT modes), but that would be
+less transparent and more hard-coded...
 
-Michal
+In the end this would mean that from the nor framework side
+therewould be no change at all - it still would be issuing
+something like this:
+    /* send the "normal" block read command */
+    t[0].tx_buf = flash->command;
+    /* note that the address would be encoded here */
+    t[0].len = m25p_cmdsz(nor);
+    spi_message_add_tail(&t[0], &m);
+    /* dummy bytes could also get added to the above transfer */
+    t[1].tx_buf = dummy_buffer;
+    t[1].len = dummy;
+    spi_message_add_tail(&t[1], &m);
+    /* the real transfer */
+    t[2].rx_buf = read_buffer;
+    t[2].len = transfer_size;
+    spi_message_add_tail(&t[2], &m);
+    spi_sync(spi, &m);
+
+On the spi-master side the driver would need to run:
+*  if the spi-message (in this case the first byte) matches
+    the "allowed" command pattern:
+   * "setup" device in normal mode preparing the transfer engine
+   * mode-switch to "mmapped" mode
+   * copy via mmapped mode (via DMA to avoid blocking the CPU?)
+   * return to "normal" mode
+* else
+   * run in "normal" spi mode.
+(obviously it would be a bit more complicated that that).
+
+Note that a discussion in regards to spi-master methods called
+duringspi_add_device has just come up a few days ago in a
+slightly differentcontext - forcing to always/never use DMA mode
+for a specific spi-device on the bus (as well as tuning other
+parameters per device).
+
+Obviously the additional properties should describe required
+HW behaviour and not tune the driver parameters - sys should be
+used for those, but also for implementing those sys parameters we
+would need those above "hooks"...
+
+Just an idea.
+
 --
 To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,8 +1,8 @@
 From: kbuild test robot <fengguang.wu@intel.com>
-Subject: [PATCH spi] spi: mediatek: mtk_spi_driver can be static
+Subject: [spi:topic/mtk 2/2] drivers/spi/spi-mt65xx.c:362:24: sparse:
+ incorrect type in argument 1 (different base types)
 Date: Fri, 7 Aug 2015 22:33:11 +0800
-Message-ID: <20150807143311.GA44461@lkp-nex05>
-References: <201508072245.3TStW9QR%fengguang.wu@intel.com>
+Message-ID: <201508072245.3TStW9QR%fengguang.wu@intel.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Cc: kbuild-all@01.org, Mark Brown <broonie@kernel.org>,
@@ -10,26 +10,59 @@ Cc: kbuild-all@01.org, Mark Brown <broonie@kernel.org>,
 To: Leilk Liu <leilk.liu@mediatek.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <201508072245.3TStW9QR%fengguang.wu@intel.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+tree:   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi topic/mtk
+head:   a568231f463225eb31593f71446a267a03ae0528
+commit: a568231f463225eb31593f71446a267a03ae0528 [2/2] spi: mediatek: Add spi bus for Mediatek MT8173
+reproduce:
+  # apt-get install sparse
+  git checkout a568231f463225eb31593f71446a267a03ae0528
+  make ARCH=x86_64 allmodconfig
+  make C=1 CF=-D__CHECK_ENDIAN__
 
-Signed-off-by: Fengguang Wu <fengguang.wu@intel.com>
+
+sparse warnings: (new ones prefixed by >>)
+
+>> drivers/spi/spi-mt65xx.c:362:24: sparse: incorrect type in argument 1 (different base types)
+   drivers/spi/spi-mt65xx.c:362:24:    expected unsigned int [unsigned] val
+   drivers/spi/spi-mt65xx.c:362:24:    got restricted __le32 [usertype] <noident>
+   drivers/spi/spi-mt65xx.c:364:24: sparse: incorrect type in argument 1 (different base types)
+   drivers/spi/spi-mt65xx.c:364:24:    expected unsigned int [unsigned] val
+   drivers/spi/spi-mt65xx.c:364:24:    got restricted __le32 [usertype] <noident>
+>> drivers/spi/spi-mt65xx.c:734:24: sparse: symbol 'mtk_spi_driver' was not declared. Should it be static?
+
+Please review and possibly fold the followup patch.
+
+vim +362 drivers/spi/spi-mt65xx.c
+
+   346			mult_delta = mtk_spi_get_mult_delta(mdata->tx_sgl_len);
+   347			mdata->xfer_len = mdata->tx_sgl_len - mult_delta;
+   348			mdata->tx_sgl_len = mult_delta;
+   349		} else if (mdata->rx_sgl_len) {
+   350			mult_delta = mtk_spi_get_mult_delta(mdata->rx_sgl_len);
+   351			mdata->xfer_len = mdata->rx_sgl_len - mult_delta;
+   352			mdata->rx_sgl_len = mult_delta;
+   353		}
+   354	}
+   355	
+   356	static void mtk_spi_setup_dma_addr(struct spi_master *master,
+   357					   struct spi_transfer *xfer)
+   358	{
+   359		struct mtk_spi *mdata = spi_master_get_devdata(master);
+   360	
+   361		if (mdata->tx_sgl)
+ > 362			writel(cpu_to_le32(xfer->tx_dma), mdata->base + SPI_TX_SRC_REG);
+   363		if (mdata->rx_sgl)
+   364			writel(cpu_to_le32(xfer->rx_dma), mdata->base + SPI_RX_DST_REG);
+   365	}
+   366	
+   367	static int mtk_spi_fifo_transfer(struct spi_master *master,
+   368					 struct spi_device *spi,
+   369					 struct spi_transfer *xfer)
+   370	{
+
 ---
- spi-mt65xx.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 4676b01..e62d304 100644
---- a/drivers/spi/spi-mt65xx.c
-+++ b/drivers/spi/spi-mt65xx.c
-@@ -731,7 +731,7 @@ static const struct dev_pm_ops mtk_spi_pm = {
- 			   mtk_spi_runtime_resume, NULL)
- };
- 
--struct platform_driver mtk_spi_driver = {
-+static struct platform_driver mtk_spi_driver = {
- 	.driver = {
- 		.name = "mtk-spi",
- 		.pm	= &mtk_spi_pm,
+0-DAY kernel test infrastructure                Open Source Technology Center
+https://lists.01.org/pipermail/kbuild-all                   Intel Corporation

@@ -1,68 +1,71 @@
-From: kbuild test robot <fengguang.wu@intel.com>
-Subject: [spi:topic/mtk 2/2] drivers/spi/spi-mt65xx.c:362:24: sparse:
- incorrect type in argument 1 (different base types)
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: mediatek: mtk_spi_driver can be static" to the spi tree
+Date: Fri, 07 Aug 2015 17:35:48 +0100
+Message-ID: <E1ZNkcW-000816-4i@finisterre>
+References: <20150807143311.GA44461@lkp-nex05>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Fengguang Wu <fengguang.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150807143311.GA44461@lkp-nex05>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
+
+The patch
+
+   spi: mediatek: mtk_spi_driver can be static
+
+has been applied to the spi tree at
+
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 4299aaaa5da01f46f9186c4bb958200cf9c73532 Mon Sep 17 00:00:00 2001
+From: kbuild test robot <fengguang.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Date: Fri, 7 Aug 2015 22:33:11 +0800
-Message-ID: <201508072245.3TStW9QR%fengguang.wu@intel.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: kbuild-all@01.org, Mark Brown <broonie@kernel.org>,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Leilk Liu <leilk.liu@mediatek.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Subject: [PATCH] spi: mediatek: mtk_spi_driver can be static
 
-tree:   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi topic/mtk
-head:   a568231f463225eb31593f71446a267a03ae0528
-commit: a568231f463225eb31593f71446a267a03ae0528 [2/2] spi: mediatek: Add spi bus for Mediatek MT8173
-reproduce:
-  # apt-get install sparse
-  git checkout a568231f463225eb31593f71446a267a03ae0528
-  make ARCH=x86_64 allmodconfig
-  make C=1 CF=-D__CHECK_ENDIAN__
-
-
-sparse warnings: (new ones prefixed by >>)
-
->> drivers/spi/spi-mt65xx.c:362:24: sparse: incorrect type in argument 1 (different base types)
-   drivers/spi/spi-mt65xx.c:362:24:    expected unsigned int [unsigned] val
-   drivers/spi/spi-mt65xx.c:362:24:    got restricted __le32 [usertype] <noident>
-   drivers/spi/spi-mt65xx.c:364:24: sparse: incorrect type in argument 1 (different base types)
-   drivers/spi/spi-mt65xx.c:364:24:    expected unsigned int [unsigned] val
-   drivers/spi/spi-mt65xx.c:364:24:    got restricted __le32 [usertype] <noident>
->> drivers/spi/spi-mt65xx.c:734:24: sparse: symbol 'mtk_spi_driver' was not declared. Should it be static?
-
-Please review and possibly fold the followup patch.
-
-vim +362 drivers/spi/spi-mt65xx.c
-
-   346			mult_delta = mtk_spi_get_mult_delta(mdata->tx_sgl_len);
-   347			mdata->xfer_len = mdata->tx_sgl_len - mult_delta;
-   348			mdata->tx_sgl_len = mult_delta;
-   349		} else if (mdata->rx_sgl_len) {
-   350			mult_delta = mtk_spi_get_mult_delta(mdata->rx_sgl_len);
-   351			mdata->xfer_len = mdata->rx_sgl_len - mult_delta;
-   352			mdata->rx_sgl_len = mult_delta;
-   353		}
-   354	}
-   355	
-   356	static void mtk_spi_setup_dma_addr(struct spi_master *master,
-   357					   struct spi_transfer *xfer)
-   358	{
-   359		struct mtk_spi *mdata = spi_master_get_devdata(master);
-   360	
-   361		if (mdata->tx_sgl)
- > 362			writel(cpu_to_le32(xfer->tx_dma), mdata->base + SPI_TX_SRC_REG);
-   363		if (mdata->rx_sgl)
-   364			writel(cpu_to_le32(xfer->rx_dma), mdata->base + SPI_RX_DST_REG);
-   365	}
-   366	
-   367	static int mtk_spi_fifo_transfer(struct spi_master *master,
-   368					 struct spi_device *spi,
-   369					 struct spi_transfer *xfer)
-   370	{
-
+Signed-off-by: Fengguang Wu <fengguang.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
-0-DAY kernel test infrastructure                Open Source Technology Center
-https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
+ drivers/spi/spi-mt65xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index 4676b01..e62d304 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -731,7 +731,7 @@ static const struct dev_pm_ops mtk_spi_pm = {
+ 			   mtk_spi_runtime_resume, NULL)
+ };
+ 
+-struct platform_driver mtk_spi_driver = {
++static struct platform_driver mtk_spi_driver = {
+ 	.driver = {
+ 		.name = "mtk-spi",
+ 		.pm	= &mtk_spi_pm,
+-- 
+2.5.0
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

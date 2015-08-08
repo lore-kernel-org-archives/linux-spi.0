@@ -1,71 +1,49 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: mediatek: mtk_spi_driver can be static" to the spi tree
-Date: Fri, 07 Aug 2015 17:35:48 +0100
-Message-ID: <E1ZNkcW-000816-4i@finisterre>
-References: <20150807143311.GA44461@lkp-nex05>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Fengguang Wu <fengguang.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150807143311.GA44461@lkp-nex05>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Olliver Schinagl <oliver-dxLnbx3+1qmEVqv0pETR8A@public.gmane.org>
+Subject: [PATCH v6] ARM: sun4i: spi: Allow transfers larger than
+ FIFO size
+Date: Sat,  8 Aug 2015 21:41:51 +0200
+Message-ID: <1439062912-4405-1-git-send-email-oliver@schinagl.nl>
+Reply-To: oliver-dxLnbx3+1qmEVqv0pETR8A@public.gmane.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: Olliver Schinagl <oliver+list-dxLnbx3+1qmEVqv0pETR8A@public.gmane.org>,
+	dev-3kdeTeqwOZ9EV1b7eY7vFQ@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Olliver Schinagl <oliver-dxLnbx3+1qmEVqv0pETR8A@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Return-path: <linux-sunxi+bncBDC2JNWXZAJBBCNXTGXAKGQE6JRADII-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <http://groups.google.com/group/linux-sunxi
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+ <http://groups.google.com/group/linux-sunxi/subscribe>
+List-Id: linux-spi.vger.kernel.org
 
-The patch
+Alexandru sent this patch over a year and a half ago, and I believe several
+tree's have been carrying it since. We've been using this patch on an
+Olimex OLinuxIno Lime1 and Lime2 using the mmc-spi driver to access SD cards
+without problems. So bumping this and adding my
 
-   spi: mediatek: mtk_spi_driver can be static
+Tested-by: Olliver Schinagl <oliver-dxLnbx3+1qmEVqv0pETR8A@public.gmane.org>
 
-has been applied to the spi tree at
+Changes from v5as warned by checkpatch. No functional changes.
+ * Added some newlines to make checkpatch happy. No functional changes.
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+Changes from v4:
+ * use min3() instead of two if statements in sun4i_spi_fill_fifo()
+ * fix trivial whitespace issue in if statement in sun4i_spi_handler()
+ * use consistent style in assigning 'reg' in the added functions.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+Alexandru Gagniuc (1):
+  ARM: sun4i: spi: Allow transfers larger than FIFO size
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+ drivers/spi/spi-sun4i.c | 76 +++++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 67 insertions(+), 9 deletions(-)
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 4299aaaa5da01f46f9186c4bb958200cf9c73532 Mon Sep 17 00:00:00 2001
-From: kbuild test robot <fengguang.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Date: Fri, 7 Aug 2015 22:33:11 +0800
-Subject: [PATCH] spi: mediatek: mtk_spi_driver can be static
-
-Signed-off-by: Fengguang Wu <fengguang.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-mt65xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 4676b01..e62d304 100644
---- a/drivers/spi/spi-mt65xx.c
-+++ b/drivers/spi/spi-mt65xx.c
-@@ -731,7 +731,7 @@ static const struct dev_pm_ops mtk_spi_pm = {
- 			   mtk_spi_runtime_resume, NULL)
- };
- 
--struct platform_driver mtk_spi_driver = {
-+static struct platform_driver mtk_spi_driver = {
- 	.driver = {
- 		.name = "mtk-spi",
- 		.pm	= &mtk_spi_pm,
 -- 
-2.5.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+2.1.4

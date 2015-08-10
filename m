@@ -1,202 +1,134 @@
-From: Olliver Schinagl <oliver-dxLnbx3+1qmEVqv0pETR8A@public.gmane.org>
-Subject: [PATCH v6] ARM: sun4i: spi: Allow transfers larger than
- FIFO size
-Date: Sat,  8 Aug 2015 21:41:52 +0200
-Message-ID: <1439062912-4405-2-git-send-email-oliver@schinagl.nl>
-References: <1439062912-4405-1-git-send-email-oliver@schinagl.nl>
-Reply-To: oliver-dxLnbx3+1qmEVqv0pETR8A@public.gmane.org
+From: Christian Hartmann <cornogle@googlemail.com>
+Subject: Re: Fwd: [PATCH 1/1] SPI : spi-pxa2xx : fix spi init
+ of WM510205 codec via ACPI (resend)
+Date: Mon, 10 Aug 2015 09:00:50 +0200
+Message-ID: <CAKor6Tcof3PA3JGD2=4X8mtSak8ka9BVD2L4zdYC4M1yEYEXjg@mail.gmail.com>
+References: <20150629094854.GB11162@sirena.org.uk>
+ <CAKor6TdDPb2qOgdHbeX2w+yQa_ioDM5ak9bk+=jF+cKt_twiXw@mail.gmail.com>
+ <20150630103404.GI6321@opensource.wolfsonmicro.com>
+ <CAKor6TdKk2OUz4o12RiQBSVZyhD=L4JpBJcYkGE=_6X+ZeQY_g@mail.gmail.com>
+ <20150713095359.GM16517@opensource.wolfsonmicro.com>
+ <CAKor6Td83zgOS+iHGHGhFW4n26H=tC-QQDuzaHHfybhLeH-jvw@mail.gmail.com>
+ <CAKor6TdheYM73aqti362bOnP2GZmX60uuDY5v2eow1vqO9tcKw@mail.gmail.com>
+ <20150715081224.GN16517@opensource.wolfsonmicro.com>
+ <20150715091709.GK11162@sirena.org.uk>
+ <CAKor6TcSc7n=Rd9NJAf-6cYXr50Z62cbcsbuaEutRMPAiM=2NQ@mail.gmail.com>
+ <20150717085434.GO16517@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Olliver Schinagl <oliver+list-dxLnbx3+1qmEVqv0pETR8A@public.gmane.org>,
-	dev-3kdeTeqwOZ9EV1b7eY7vFQ@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Alexandru Gagniuc <mr.nuke.me-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Olliver Schinagl <o.schinagl-U3FVU11NWA554TAoqtyWWQ@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Return-path: <linux-sunxi+bncBDC2JNWXZAJBBDVXTGXAKGQEXOUY3RY-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-In-Reply-To: <1439062912-4405-1-git-send-email-oliver-dxLnbx3+1qmEVqv0pETR8A@public.gmane.org>
-List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <http://groups.google.com/group/linux-sunxi
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
- <http://groups.google.com/group/linux-sunxi/subscribe>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: alsa-devel@alsa-project.org, mika.westerberg@linux.intel.com,
+ Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+ Haojian Zhuang <haojian.zhuang@gmail.com>, linux-spi@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>, jarkko.nikula@linux.intel.com,
+ Daniel Mack <daniel@zonque.org>, Robert Jarzmik <robert.jarzmik@free.fr>,
+ dan.carpenter@oracle.com
+To: Charles Keepax <ckeepax@opensource.wolfsonmicro.com>
+Return-path: <alsa-devel-bounces@alsa-project.org>
+In-Reply-To: <20150717085434.GO16517@opensource.wolfsonmicro.com>
+List-Unsubscribe: <http://mailman.alsa-project.org/mailman/options/alsa-devel>,
+ <mailto:alsa-devel-request@alsa-project.org?subject=unsubscribe>
+List-Archive: <http://mailman.alsa-project.org/pipermail/alsa-devel/>
+List-Post: <mailto:alsa-devel@alsa-project.org>
+List-Help: <mailto:alsa-devel-request@alsa-project.org?subject=help>
+List-Subscribe: <http://mailman.alsa-project.org/mailman/listinfo/alsa-devel>,
+ <mailto:alsa-devel-request@alsa-project.org?subject=subscribe>
+Errors-To: alsa-devel-bounces@alsa-project.org
+Sender: alsa-devel-bounces@alsa-project.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Alexandru Gagniuc <mr.nuke.me-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Hi,
 
-SPI transfers were limited to one FIFO depth, which is 64 bytes.
-This was an artificial limitation, however, as the hardware can handle
-much larger bursts. To accommodate this, we enable the interrupt when
-the Rx FIFO is 3/4 full, and drain the FIFO within the interrupt
-handler. The 3/4 ratio was chosen arbitrarily, with the intention to
-reduce the potential number of interrupts.
+> That implies the pdata is not set for the device when you are
+> entering arizona_dev_init, also might be worth checking if it is
+> calling the stub version of the full version (basically is
+> CONFIG_OF turned on).
+# CONFIG_OF is not set here, so the current code as in arizona_dev_init()
 
-Since the SUN4I_CTL_TP bit is set, the hardware will pause
-transmission whenever the FIFO is full, so there is no risk of losing
-data if we can't service the interrupt in time.
+...
+if (dev_get_platdata(arizona->dev,0)) {
+/* currently not working... */
+else
+ arizona_of_get_core_pdata(arizona);
 
-For the Tx side, enable and use the Tx FIFO 3/4 empty interrupt to
-replenish the FIFO on large SPI bursts. This requires more care in
-when the interrupt is left enabled, as this interrupt will continually
-trigger when the FIFO is less than 1/4 full, even though we
-acknowledge it.
+which returns only '0' in this case  because the config option
+CONFIG_OF is disabled.
 
-Signed-off-by: Alexandru Gagniuc <mr.nuke.me-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Acked-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Signed-off-by: Olliver Schinagl <o.schinagl-U3FVU11NWA554TAoqtyWWQ@public.gmane.org>
----
- drivers/spi/spi-sun4i.c | 76 +++++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 67 insertions(+), 9 deletions(-)
+Today I am back at this device and I have changed the above function
+(arizona_of_get_core_pdata) where I set
+currently the pdata with its values for the arizona type = WM5102.
 
-diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
-index fbb0a4d..9a30e49 100644
---- a/drivers/spi/spi-sun4i.c
-+++ b/drivers/spi/spi-sun4i.c
-@@ -46,6 +46,8 @@
- #define SUN4I_CTL_TP				BIT(18)
- 
- #define SUN4I_INT_CTL_REG		0x0c
-+#define SUN4I_INT_CTL_RF_F34			BIT(4)
-+#define SUN4I_INT_CTL_TF_E34			BIT(12)
- #define SUN4I_INT_CTL_TC			BIT(16)
- 
- #define SUN4I_INT_STA_REG		0x10
-@@ -61,11 +63,14 @@
- #define SUN4I_CLK_CTL_CDR1(div)			(((div) & SUN4I_CLK_CTL_CDR1_MASK) << 8)
- #define SUN4I_CLK_CTL_DRS			BIT(12)
- 
-+#define SUN4I_MAX_XFER_SIZE			0xffffff
-+
- #define SUN4I_BURST_CNT_REG		0x20
--#define SUN4I_BURST_CNT(cnt)			((cnt) & 0xffffff)
-+#define SUN4I_BURST_CNT(cnt)			((cnt) & SUN4I_MAX_XFER_SIZE)
- 
- #define SUN4I_XMIT_CNT_REG		0x24
--#define SUN4I_XMIT_CNT(cnt)			((cnt) & 0xffffff)
-+#define SUN4I_XMIT_CNT(cnt)			((cnt) & SUN4I_MAX_XFER_SIZE)
-+
- 
- #define SUN4I_FIFO_STA_REG		0x28
- #define SUN4I_FIFO_STA_RF_CNT_MASK		0x7f
-@@ -96,6 +101,31 @@ static inline void sun4i_spi_write(struct sun4i_spi *sspi, u32 reg, u32 value)
- 	writel(value, sspi->base_addr + reg);
- }
- 
-+static inline u32 sun4i_spi_get_tx_fifo_count(struct sun4i_spi *sspi)
-+{
-+	u32 reg = sun4i_spi_read(sspi, SUN4I_FIFO_STA_REG);
-+
-+	reg >>= SUN4I_FIFO_STA_TF_CNT_BITS;
-+
-+	return reg & SUN4I_FIFO_STA_TF_CNT_MASK;
-+}
-+
-+static inline void sun4i_spi_enable_interrupt(struct sun4i_spi *sspi, u32 mask)
-+{
-+	u32 reg = sun4i_spi_read(sspi, SUN4I_INT_CTL_REG);
-+
-+	reg |= mask;
-+	sun4i_spi_write(sspi, SUN4I_INT_CTL_REG, reg);
-+}
-+
-+static inline void sun4i_spi_disable_interrupt(struct sun4i_spi *sspi, u32 mask)
-+{
-+	u32 reg = sun4i_spi_read(sspi, SUN4I_INT_CTL_REG);
-+
-+	reg &= ~mask;
-+	sun4i_spi_write(sspi, SUN4I_INT_CTL_REG, reg);
-+}
-+
- static inline void sun4i_spi_drain_fifo(struct sun4i_spi *sspi, int len)
- {
- 	u32 reg, cnt;
-@@ -118,10 +148,13 @@ static inline void sun4i_spi_drain_fifo(struct sun4i_spi *sspi, int len)
- 
- static inline void sun4i_spi_fill_fifo(struct sun4i_spi *sspi, int len)
- {
-+	u32 cnt;
- 	u8 byte;
- 
--	if (len > sspi->len)
--		len = sspi->len;
-+	/* See how much data we can fit */
-+	cnt = SUN4I_FIFO_DEPTH - sun4i_spi_get_tx_fifo_count(sspi);
-+
-+	len = min3(len, (int)cnt, sspi->len);
- 
- 	while (len--) {
- 		byte = sspi->tx_buf ? *sspi->tx_buf++ : 0;
-@@ -174,8 +207,8 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
- 	int ret = 0;
- 	u32 reg;
- 
--	/* We don't support transfer larger than the FIFO */
--	if (tfr->len > SUN4I_FIFO_DEPTH)
-+	/* This is the maximum SPI burst size supported by the hardware */
-+	if (tfr->len > SUN4I_MAX_XFER_SIZE)
- 		return -EINVAL;
- 
- 	reinit_completion(&sspi->done);
-@@ -273,7 +306,11 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
- 	sun4i_spi_fill_fifo(sspi, SUN4I_FIFO_DEPTH);
- 
- 	/* Enable the interrupts */
--	sun4i_spi_write(sspi, SUN4I_INT_CTL_REG, SUN4I_INT_CTL_TC);
-+	sun4i_spi_enable_interrupt(sspi, SUN4I_INT_CTL_TC |
-+					 SUN4I_INT_CTL_RF_F34);
-+	/* Only enable Tx FIFO interrupt if we really need it */
-+	if (tx_len > SUN4I_FIFO_DEPTH)
-+		sun4i_spi_enable_interrupt(sspi, SUN4I_INT_CTL_TF_E34);
- 
- 	/* Start the transfer */
- 	reg = sun4i_spi_read(sspi, SUN4I_CTL_REG);
-@@ -286,8 +323,6 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
- 		goto out;
- 	}
- 
--	sun4i_spi_drain_fifo(sspi, SUN4I_FIFO_DEPTH);
--
- out:
- 	sun4i_spi_write(sspi, SUN4I_INT_CTL_REG, 0);
- 
-@@ -302,10 +337,33 @@ static irqreturn_t sun4i_spi_handler(int irq, void *dev_id)
- 	/* Transfer complete */
- 	if (status & SUN4I_INT_CTL_TC) {
- 		sun4i_spi_write(sspi, SUN4I_INT_STA_REG, SUN4I_INT_CTL_TC);
-+		sun4i_spi_drain_fifo(sspi, SUN4I_FIFO_DEPTH);
- 		complete(&sspi->done);
- 		return IRQ_HANDLED;
- 	}
- 
-+	/* Receive FIFO 3/4 full */
-+	if (status & SUN4I_INT_CTL_RF_F34) {
-+		sun4i_spi_drain_fifo(sspi, SUN4I_FIFO_DEPTH);
-+		/* Only clear the interrupt _after_ draining the FIFO */
-+		sun4i_spi_write(sspi, SUN4I_INT_STA_REG, SUN4I_INT_CTL_RF_F34);
-+		return IRQ_HANDLED;
-+	}
-+
-+	/* Transmit FIFO 3/4 empty */
-+	if (status & SUN4I_INT_CTL_TF_E34) {
-+		sun4i_spi_fill_fifo(sspi, SUN4I_FIFO_DEPTH);
-+
-+		if (!sspi->len)
-+			/* nothing left to transmit */
-+			sun4i_spi_disable_interrupt(sspi, SUN4I_INT_CTL_TF_E34);
-+
-+		/* Only clear the interrupt _after_ re-seeding the FIFO */
-+		sun4i_spi_write(sspi, SUN4I_INT_STA_REG, SUN4I_INT_CTL_TF_E34);
-+
-+		return IRQ_HANDLED;
-+	}
-+
- 	return IRQ_NONE;
- }
- 
--- 
-2.1.4
+So the pdata is at the moment hardcoded, that is not the way I want to
+go on, but
+it seems the code works so far, except the LDO1 makes trouble with the
+current GPIO value 0x17 (extracted from dsdt.dsl as seen above).
+
+[    5.790655] systemd-journald[434]: Received request to flush
+runtime journal from PID 1
+[    7.263225] pxa2xx-spi 80860F0E:00: no DMA channels available, using PIO
+[    7.263339] pxa2xx-spi 80860F0E:00: registered master spi32766 (dynamic)
+[    7.263482] spi spi-WM510205:00: 8333333 Hz actual, PIO
+[    7.263490] spi spi-WM510205:00: setup mode 0, 8 bits/w, 8000000 Hz max --> 0
+[    7.263551] spi spi-WM510205:00: checking WM510205 with bmp180
+[    7.263557] spi spi-WM510205:00: checking WM510205 with bmp181
+[    7.263562] spi spi-WM510205:00: modalias WM510205 in id_table not
+found, returns NULL
+[    7.263610] arizona spi-WM510205:00: acpi_match_device() first,
+than via spi_get_device_id().
+[    7.263617] arizona spi-WM510205:00: matched ACPI ID and data
+[    7.263621] arizona spi-WM510205:00: using 1 as type for arizona audio codec
+[    7.263625] arizona spi-WM510205:00: regmap set to wm5102_spi
+[    7.264424] arizona spi-WM510205:00: spi_irq = -1
+[    7.264432] arizona spi-WM510205:00: arizona_irq = -1
+[    7.264436] arizona spi-WM510205:00: arizona_spi_probe done, call
+and return of  arizona_dev_init
+[    7.264440] arizona spi-WM510205:00: dev_set_drvdata done for 1
+[    7.264445] arizona spi-WM510205:00: arizona_of_get_core_pdata for 1
+[    7.264450] arizona spi-WM510205:00: regcache_cache_only for 1 set
+[    7.264454] arizona spi-WM510205:00: added wm5102_core_supplies for 1
+[    7.269430] LDO1: Failed to request enable GPIO23: -517
+[    7.269506] arizona spi-WM510205:00: Failed to register LDO1 supply: -517
+[    7.289191] spi-WM510205:00 supply AVDD not found, using dummy regulator
+[    7.289246] spi-WM510205:00 supply DBVDD1 not found, using dummy regulator
+[    7.289366] spi-WM510205:00 supply DCVDD not found, using dummy regulator
+[    7.289415] arizona spi-WM510205:00: Failed to request /RESET: -517
+[    7.289690] pxa2xx-spi 80860F0E:00: registered child spi-WM510205:00
+
+... arizona spi-wm510202 tries to init the device 2 times again ....
+
+side-note: added a lot of dev_err to see whats going on, so the most
+messages are not in master, only in my local branch (today its
+4.2.0-rc6)
+
+Instead of hardcoding and finding the correct GPIOs by Try&Error I
+want as mentioned above already by Charles Keepax, to pull them from
+ACPI.
+
+currently I am not using the the gpiolib.h and its functions to get
+the named and relevant GPIOs in question,
+failing yet searching for examples which fits into the arizona mfd code easily.
+
+I saw the drivers/gpio/gpio-arizona.h, which is also not using the
+gpiolib.h, too.also it is not clear to me, if I should use
+gpio-arizona at all (or extend it for using it with the wm5102).
+
+
+zitat from Charles:
+
+"I suspect we still have some issues with the GPIO lookups, I
+suspect we want to actually pull them from ACPI rather than
+putting them into the pdata, as I don't know if the number will
+translate directly over."
+
+What I have understand today :  the three values (irq_gpio, reset,
+ldoena) have different 'parents' as seen in the dsdt.dsl
+irq_gpio = _SB.GPO2 -> 0x0004
+reset = _SB.I2C7.PMIC
+
+Looking in other wmXXXX drivers how they get and set there gpios, but
+nothing found what I can adapt or reuse here at the moment.
+
+Does anybody has a clue??
+
+cheers
+chris

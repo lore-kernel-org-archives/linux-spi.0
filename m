@@ -1,19 +1,20 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: atmel: remove useless include" to the spi tree
-Date: Tue, 11 Aug 2015 17:28:10 +0100
-Message-ID: <E1ZPCPK-0005JS-Id@finisterre>
-References: <1439216887-11985-1-git-send-email-alexandre.belloni@free-electrons.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Alexandre Belloni <alexandre.belloni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1439216887-11985-1-git-send-email-alexandre.belloni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: orion: On a38x, implement "50MHZ SPI AC timing" Erratum No. FE-9144572" to the spi tree
+Date: Tue, 11 Aug 2015 17:28:07 +0100
+Message-ID: <E1ZPCPH-0005I3-9S@finisterre>
+References: <1439287127-3782-1-git-send-email-gregory.clement@free-electrons.com>
+Cc: linux-spi@vger.kernel.org
+To: Nadav Haklai <nadavh@marvell.com>,
+	Gregory CLEMENT <gregory.clement@free-electrons.com>,
+	Mark Brown <broonie@kernel.org>, stable@vger.kernel.org
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <1439287127-3782-1-git-send-email-gregory.clement@free-electrons.com>
+Sender: stable-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: atmel: remove useless include
+   spi: orion: On a38x, implement "50MHZ SPI AC timing" Erratum No. FE-9144572
 
 has been applied to the spi tree at
 
@@ -38,36 +39,135 @@ to this mail.
 Thanks,
 Mark
 
->From bdbbd38106c9f72c569be18314f68387e384536c Mon Sep 17 00:00:00 2001
-From: Alexandre Belloni <alexandre.belloni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Date: Mon, 10 Aug 2015 16:28:07 +0200
-Subject: [PATCH] spi: atmel: remove useless include
+>From 38d6211e8565af5855385825a4fdc7261eb3740e Mon Sep 17 00:00:00 2001
+From: Nadav Haklai <nadavh@marvell.com>
+Date: Tue, 11 Aug 2015 11:58:47 +0200
+Subject: [PATCH] spi: orion: On a38x, implement "50MHZ SPI AC timing" Erratum
+ No. FE-9144572
 
-Definitions from linux/platform_data/atmel.h are not used, remove the
-include.
+Description:
+On Armada 38x, the device SPI interface supports frequencies of up to
+50 MHz. However, due to this erratum, when the device core clock is
+250 MHz and the SPI interfaces is configured for 50MHz SPI clock and
+CPOL=CPHA=1, there might occur data corruption on reads from the SPI
+device.
 
-Signed-off-by: Alexandre Belloni <alexandre.belloni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Workaround:
+Work in one of the following configurations:
+1. Set CPOL=CPHA=0 in "SPI Interface Configuration Register".
+2. Set TMISO_SAMPLE value to 0x2 in "SPI Timing Parameters 1 Register"
+before setting the interface.
+
+[gregory.clement@free-electrons.com}: port to v4.2-rc, use
+is_errata_50mhz_ac instead of using a new ARMADA_380_SPI spi type.
+
+Signed-off-by: Nadav Haklai <nadavh@marvell.com>
+Signed-off-by: Gregory CLEMENT <gregory.clement@free-electrons.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
 ---
- drivers/spi/spi-atmel.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/spi/spi-orion.c | 54 ++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 53 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index c9eca34..bf9ed38 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -19,7 +19,6 @@
- #include <linux/interrupt.h>
- #include <linux/spi/spi.h>
- #include <linux/slab.h>
--#include <linux/platform_data/atmel.h>
- #include <linux/platform_data/dma-atmel.h>
- #include <linux/of.h>
+diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
+index 8cad107..a87cfd4 100644
+--- a/drivers/spi/spi-orion.c
++++ b/drivers/spi/spi-orion.c
+@@ -41,6 +41,11 @@
+ #define ORION_SPI_DATA_OUT_REG		0x08
+ #define ORION_SPI_DATA_IN_REG		0x0c
+ #define ORION_SPI_INT_CAUSE_REG		0x10
++#define ORION_SPI_TIMING_PARAMS_REG	0x18
++
++#define ORION_SPI_TMISO_SAMPLE_MASK	(0x3 << 6)
++#define ORION_SPI_TMISO_SAMPLE_1	(1 << 6)
++#define ORION_SPI_TMISO_SAMPLE_2	(2 << 6)
  
+ #define ORION_SPI_MODE_CPOL		(1 << 11)
+ #define ORION_SPI_MODE_CPHA		(1 << 12)
+@@ -70,6 +75,7 @@ struct orion_spi_dev {
+ 	unsigned int		min_divisor;
+ 	unsigned int		max_divisor;
+ 	u32			prescale_mask;
++	bool			is_errata_50mhz_ac;
+ };
+ 
+ struct orion_spi {
+@@ -195,6 +201,41 @@ orion_spi_mode_set(struct spi_device *spi)
+ 	writel(reg, spi_reg(orion_spi, ORION_SPI_IF_CONFIG_REG));
+ }
+ 
++static void
++orion_spi_50mhz_ac_timing_erratum(struct spi_device *spi, unsigned int speed)
++{
++	u32 reg;
++	struct orion_spi *orion_spi;
++
++	orion_spi = spi_master_get_devdata(spi->master);
++
++	/*
++	 * Erratum description: (Erratum NO. FE-9144572) The device
++	 * SPI interface supports frequencies of up to 50 MHz.
++	 * However, due to this erratum, when the device core clock is
++	 * 250 MHz and the SPI interfaces is configured for 50MHz SPI
++	 * clock and CPOL=CPHA=1 there might occur data corruption on
++	 * reads from the SPI device.
++	 * Erratum Workaround:
++	 * Work in one of the following configurations:
++	 * 1. Set CPOL=CPHA=0 in "SPI Interface Configuration
++	 * Register".
++	 * 2. Set TMISO_SAMPLE value to 0x2 in "SPI Timing Parameters 1
++	 * Register" before setting the interface.
++	 */
++	reg = readl(spi_reg(orion_spi, ORION_SPI_TIMING_PARAMS_REG));
++	reg &= ~ORION_SPI_TMISO_SAMPLE_MASK;
++
++	if (clk_get_rate(orion_spi->clk) == 250000000 &&
++			speed == 50000000 && spi->mode & SPI_CPOL &&
++			spi->mode & SPI_CPHA)
++		reg |= ORION_SPI_TMISO_SAMPLE_2;
++	else
++		reg |= ORION_SPI_TMISO_SAMPLE_1; /* This is the default value */
++
++	writel(reg, spi_reg(orion_spi, ORION_SPI_TIMING_PARAMS_REG));
++}
++
+ /*
+  * called only when no transfer is active on the bus
+  */
+@@ -216,6 +257,9 @@ orion_spi_setup_transfer(struct spi_device *spi, struct spi_transfer *t)
+ 
+ 	orion_spi_mode_set(spi);
+ 
++	if (orion_spi->devdata->is_errata_50mhz_ac)
++		orion_spi_50mhz_ac_timing_erratum(spi, speed);
++
+ 	rc = orion_spi_baudrate_set(spi, speed);
+ 	if (rc)
+ 		return rc;
+@@ -413,6 +457,14 @@ static const struct orion_spi_dev armada_375_spi_dev_data = {
+ 	.prescale_mask = ARMADA_SPI_CLK_PRESCALE_MASK,
+ };
+ 
++static const struct orion_spi_dev armada_380_spi_dev_data = {
++	.typ = ARMADA_SPI,
++	.max_hz = 50000000,
++	.max_divisor = 1920,
++	.prescale_mask = ARMADA_SPI_CLK_PRESCALE_MASK,
++	.is_errata_50mhz_ac = true,
++};
++
+ static const struct of_device_id orion_spi_of_match_table[] = {
+ 	{
+ 		.compatible = "marvell,orion-spi",
+@@ -428,7 +480,7 @@ static const struct of_device_id orion_spi_of_match_table[] = {
+ 	},
+ 	{
+ 		.compatible = "marvell,armada-380-spi",
+-		.data = &armada_xp_spi_dev_data,
++		.data = &armada_380_spi_dev_data,
+ 	},
+ 	{
+ 		.compatible = "marvell,armada-390-spi",
 -- 
 2.5.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

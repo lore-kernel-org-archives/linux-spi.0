@@ -1,18 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: mediatek: fix endian warnings" to the spi tree
-Date: Tue, 11 Aug 2015 17:28:08 +0100
-Message-ID: <E1ZPCPI-0005IW-Dk@finisterre>
-References: <1439289789-29026-1-git-send-email-leilk.liu@mediatek.com>
+Subject: Applied "spi: atmel: remove useless include" to the spi tree
+Date: Tue, 11 Aug 2015 17:28:10 +0100
+Message-ID: <E1ZPCPK-0005JS-Id@finisterre>
+References: <1439216887-11985-1-git-send-email-alexandre.belloni@free-electrons.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Alexandre Belloni <alexandre.belloni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1439289789-29026-1-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <1439216887-11985-1-git-send-email-alexandre.belloni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: mediatek: fix endian warnings
+   spi: atmel: remove useless include
 
 has been applied to the spi tree at
 
@@ -37,43 +38,32 @@ to this mail.
 Thanks,
 Mark
 
->From 7abc01b346e67534cc0307544e563e5497280296 Mon Sep 17 00:00:00 2001
-From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Date: Tue, 11 Aug 2015 18:43:09 +0800
-Subject: [PATCH] spi: mediatek: fix endian warnings
+>From bdbbd38106c9f72c569be18314f68387e384536c Mon Sep 17 00:00:00 2001
+From: Alexandre Belloni <alexandre.belloni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Date: Mon, 10 Aug 2015 16:28:07 +0200
+Subject: [PATCH] spi: atmel: remove useless include
 
-This patch fixes endian warnings detected by sparse:
-- sparse: incorrect type in argument 1 (different base types)
-	  expected unsigned int [unsigned] val
-	  got restricted __le32 [usertype] <noident>
-- sparse: incorrect type in argument 1 (different base types)
-	  expected unsigned int [unsigned] val
-	  got restricted __le32 [usertype] <noident>
+Definitions from linux/platform_data/atmel.h are not used, remove the
+include.
 
-Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Signed-off-by: Alexandre Belloni <alexandre.belloni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-mt65xx.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/spi/spi-atmel.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 08da77e..2c41dcf 100644
---- a/drivers/spi/spi-mt65xx.c
-+++ b/drivers/spi/spi-mt65xx.c
-@@ -359,9 +359,11 @@ static void mtk_spi_setup_dma_addr(struct spi_master *master,
- 	struct mtk_spi *mdata = spi_master_get_devdata(master);
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index c9eca34..bf9ed38 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -19,7 +19,6 @@
+ #include <linux/interrupt.h>
+ #include <linux/spi/spi.h>
+ #include <linux/slab.h>
+-#include <linux/platform_data/atmel.h>
+ #include <linux/platform_data/dma-atmel.h>
+ #include <linux/of.h>
  
- 	if (mdata->tx_sgl)
--		writel(cpu_to_le32(xfer->tx_dma), mdata->base + SPI_TX_SRC_REG);
-+		writel((__force u32)cpu_to_le32(xfer->tx_dma),
-+		       mdata->base + SPI_TX_SRC_REG);
- 	if (mdata->rx_sgl)
--		writel(cpu_to_le32(xfer->rx_dma), mdata->base + SPI_RX_DST_REG);
-+		writel((__force u32)cpu_to_le32(xfer->rx_dma),
-+		       mdata->base + SPI_RX_DST_REG);
- }
- 
- static int mtk_spi_fifo_transfer(struct spi_master *master,
 -- 
 2.5.0
 

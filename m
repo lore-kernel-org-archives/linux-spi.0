@@ -1,55 +1,84 @@
-From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
-Subject: Re: [RESEND][PATCH 3/4] ARM: davinci: Set proper SPI prescale limit
- value
-Date: Tue, 11 Aug 2015 12:28:21 +0530
-Message-ID: <55C99D0D.9050605@ti.com>
-References: <1437568344-18889-1-git-send-email-fcooper@ti.com> <1437568344-18889-4-git-send-email-fcooper@ti.com> <55B22681.3060000@ti.com> <55C9380D.1060802@ti.com>
+From: =?UTF-8?q?Stefan=20Br=C3=BCns?= <stefan.bruens-vA1bhqPz9FBZXbeN9DUtxg@public.gmane.org>
+Subject: [PATCH 1/2] spi: check bits_per_word in spi_setup
+Date: Tue, 11 Aug 2015 09:27:50 +0200
+Message-ID: <41739b54-a3a7-4210-aab6-272186fbf94b@HUB2.rwth-ad.de>
+References: <1439278071-21110-1-git-send-email-stefan.bruens@rwth-aachen.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Cc: "Franklin S Cooper Jr." <fcooper-l0cyMroinI0@public.gmane.org>,
-	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org>,
-	<linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	<ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	<pawel.moll-5wv7dgnIgG8@public.gmane.org>, <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	<linux-arm-kernel-xBCQruHUn5ppWr+L1FloEB2eb7JE58TQ@public.gmane.org>, <ssantosh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: =?UTF-8?q?Stefan=20Br=C3=BCns?= <stefan.bruens-vA1bhqPz9FBZXbeN9DUtxg@public.gmane.org>
+To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <55C9380D.1060802-l0cyMroinI0@public.gmane.org>
+In-Reply-To: <1439278071-21110-1-git-send-email-stefan.bruens-vA1bhqPz9FBZXbeN9DUtxg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tuesday 11 August 2015 05:17 AM, Franklin S Cooper Jr. wrote:
-> 
-> 
-> On 07/24/2015 06:50 AM, Sekhar Nori wrote:
->> On Wednesday 22 July 2015 06:02 PM, Franklin S Cooper Jr wrote:
->>> SPI Davinci driver has been updated to allow SOCs to specify their minimum
->>> prescale value. Update the various SOCs board files that use this driver with
->>> their proper prescaler limit.
->>>
->>> Signed-off-by: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>
->> Acked-by: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
->>
->> in case Mark is okay to take it through his tree. It does not clash with
->> anything else I have for mach-davinci.
->>
->> Thanks,
->> Sekhar
->>
-> ping. Patches 1 and 2 have already been pulled into Mark's spi tree and are currently in in linux-next.
+This allows drivers for devices connected via SPI to check if the
+controller supports a given bits_per_word value during setup.
+Currently any BPW value is accepted durings setup, and transfers
+are rejected later.
 
-Mark, can you apply this patch to your tree as well? Thats the preferred
-route for me.
+Signed-off-by: Stefan Br=C3=BCns <stefan.bruens-vA1bhqPz9FBZXbeN9DUtxg@public.gmane.org>
+---
+ drivers/spi/spi.c | 27 +++++++++++++++++++--------
+ 1 file changed, 19 insertions(+), 8 deletions(-)
 
-If thats not an option for you, can you confirm that the topic/davinci
-branch of your spi tree is an immutable commit I can base my pull
-request to ARM-SoC on?
-
-Thanks,
-Sekhar
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index cf8b91b..98aaa31 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1740,6 +1740,20 @@ EXPORT_SYMBOL_GPL(spi_busnum_to_master);
+  * other core methods are currently defined as inline functions.
+  */
+=20
++static int __spi_validate_bits_per_word(struct spi_master *master, u8 =
+bits_per_word)
++{
++	if (master->bits_per_word_mask) {
++		/* Only 32 bits fit in the mask */
++		if (bits_per_word > 32)
++			return -EINVAL;
++		if (!(master->bits_per_word_mask &
++				SPI_BPW_MASK(bits_per_word)))
++			return -EINVAL;
++	}
++
++	return 0;
++}
++
+ /**
+  * spi_setup - setup SPI mode and clock rate
+  * @spi: the device whose settings are being modified
+@@ -1798,6 +1812,9 @@ int spi_setup(struct spi_device *spi)
+ 	if (!spi->bits_per_word)
+ 		spi->bits_per_word =3D 8;
+=20
++	if (__spi_validate_bits_per_word(spi->master, spi->bits_per_word))
++		return -EINVAL;
++
+ 	if (!spi->max_speed_hz)
+ 		spi->max_speed_hz =3D spi->master->max_speed_hz;
+=20
+@@ -1865,14 +1882,8 @@ static int __spi_validate(struct spi_device *spi=
+, struct spi_message *message)
+ 		    xfer->speed_hz > master->max_speed_hz)
+ 			xfer->speed_hz =3D master->max_speed_hz;
+=20
+-		if (master->bits_per_word_mask) {
+-			/* Only 32 bits fit in the mask */
+-			if (xfer->bits_per_word > 32)
+-				return -EINVAL;
+-			if (!(master->bits_per_word_mask &
+-					BIT(xfer->bits_per_word - 1)))
+-				return -EINVAL;
+-		}
++		if (__spi_validate_bits_per_word(master, xfer->bits_per_word))
++			return -EINVAL;
+=20
+ 		/*
+ 		 * SPI transfer length should be multiple of SPI word size
+--=20
+2.1.4
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

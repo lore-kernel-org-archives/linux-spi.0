@@ -1,65 +1,52 @@
-From: Jonas Gorski <jogo@openwrt.org>
-Subject: Re: [PATCH] spi: Mediatek: fix endian warnings
-Date: Wed, 12 Aug 2015 16:45:25 +0200
-Message-ID: <CAOiHx=mrDhxkMd5WVTpayyyxXHUDRTELubErynN3qd-v5qpCfw@mail.gmail.com>
-References: <1439289789-29026-1-git-send-email-leilk.liu@mediatek.com>
+From: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
+Subject: [PATCH] spi/spi-xilinx: Fix mixed poll/irq mode
+Date: Wed, 12 Aug 2015 18:04:04 +0200
+Message-ID: <1439395444-25599-1-git-send-email-ricardo.ribalda@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, linux-spi@vger.kernel.org,
-	linux-mediatek@lists.infradead.org
-To: Leilk Liu <leilk.liu@mediatek.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1439289789-29026-1-git-send-email-leilk.liu@mediatek.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
+To: Mark Brown <broonie@kernel.org>, Michal Simek <michal.simek@xilinx.com>,
+ =?UTF-8?q?S=C3=B6ren=20Brinkmann?= <soren.brinkmann@xilinx.com>,
+ linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+Once the module process a transfer in irq mode, the next poll transfer
+will not work because the transmitter is left in inhibited state.
 
-On Tue, Aug 11, 2015 at 12:43 PM, Leilk Liu <leilk.liu@mediatek.com> wrote:
-> This patch fixes endian warnings detected by sparse:
-> - sparse: incorrect type in argument 1 (different base types)
->           expected unsigned int [unsigned] val
->           got restricted __le32 [usertype] <noident>
-> - sparse: incorrect type in argument 1 (different base types)
->           expected unsigned int [unsigned] val
->           got restricted __le32 [usertype] <noident>
+Fixes: 22417352f6b7f623 (Use polling mode on small transfers)
+Reported-by: Edward Kigwana <ekigwana@scires.com>
+Signed-off-by: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
+---
+ drivers/spi/spi-xilinx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-This doesn't "fix" the warning, it only hides the warning and leaves
-the actual issue unfixed.
-
->
-> Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
-> ---
->  drivers/spi/spi-mt65xx.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-> index 4676b01..ae645fa 100644
-> --- a/drivers/spi/spi-mt65xx.c
-> +++ b/drivers/spi/spi-mt65xx.c
-> @@ -359,9 +359,11 @@ static void mtk_spi_setup_dma_addr(struct spi_master *master,
->         struct mtk_spi *mdata = spi_master_get_devdata(master);
->
->         if (mdata->tx_sgl)
-> -               writel(cpu_to_le32(xfer->tx_dma), mdata->base + SPI_TX_SRC_REG);
-> +               writel((__force u32)cpu_to_le32(xfer->tx_dma),
-> +                      mdata->base + SPI_TX_SRC_REG);
->         if (mdata->rx_sgl)
-> -               writel(cpu_to_le32(xfer->rx_dma), mdata->base + SPI_RX_DST_REG);
-> +               writel((__force u32)cpu_to_le32(xfer->rx_dma),
-> +                      mdata->base + SPI_RX_DST_REG);
-
-The issue here is that writel already does a cpu_to_le32 conversion,
-so the extra cpu_to_le32 calls are actually bogus and need to be
-removed. Else it will do a double conversion on big endian systems,
-resulting in the data being written in big endian.
-
-
-Jonas
+diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
+index 133f53a9c1d4..7abf6792cc11 100644
+--- a/drivers/spi/spi-xilinx.c
++++ b/drivers/spi/spi-xilinx.c
+@@ -302,8 +302,10 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 		remaining_words -= n_words;
+ 	}
+ 
+-	if (use_irq)
++	if (use_irq) {
+ 		xspi->write_fn(0, xspi->regs + XIPIF_V123B_DGIER_OFFSET);
++		xspi->write_fn(cr, xspi->regs + XSPI_CR_OFFSET);
++	}
+ 
+ 	return t->len;
+ }
+-- 
+2.5.0

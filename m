@@ -1,56 +1,51 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: Mediatek: fix endian warnings
-Date: Thu, 13 Aug 2015 10:19:53 +0100
-Message-ID: <20150813091953.GM10748@sirena.org.uk>
-References: <1439289789-29026-1-git-send-email-leilk.liu@mediatek.com>
- <CAOiHx=mrDhxkMd5WVTpayyyxXHUDRTELubErynN3qd-v5qpCfw@mail.gmail.com>
- <1439431919.21454.13.camel@mhfsdcap03>
+From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Subject: [PATCH] spi: Mediatek: fixup cpu_to_le32 incorrect usage
+Date: Thu, 13 Aug 2015 20:06:41 +0800
+Message-ID: <1439467601-10209-1-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="zhjhOMouxCL2qD2w"
-Cc: Jonas Gorski <jogo@openwrt.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, linux-spi@vger.kernel.org,
-	linux-mediatek@lists.infradead.org
-To: lei liu <leilk.liu@mediatek.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1439431919.21454.13.camel@mhfsdcap03>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain
+Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+writel() already does a cpu_to_le32 conversion, so
+remove cpu_to_le32().
 
---zhjhOMouxCL2qD2w
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+---
+ drivers/spi/spi-mt65xx.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-On Thu, Aug 13, 2015 at 10:11:59AM +0800, lei liu wrote:
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index ae645fa..519f50c 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -359,11 +359,9 @@ static void mtk_spi_setup_dma_addr(struct spi_master *master,
+ 	struct mtk_spi *mdata = spi_master_get_devdata(master);
+ 
+ 	if (mdata->tx_sgl)
+-		writel((__force u32)cpu_to_le32(xfer->tx_dma),
+-		       mdata->base + SPI_TX_SRC_REG);
++		writel(xfer->tx_dma, mdata->base + SPI_TX_SRC_REG);
+ 	if (mdata->rx_sgl)
+-		writel((__force u32)cpu_to_le32(xfer->rx_dma),
+-		       mdata->base + SPI_RX_DST_REG);
++		writel(xfer->rx_dma, mdata->base + SPI_RX_DST_REG);
+ }
+ 
+ static int mtk_spi_fifo_transfer(struct spi_master *master,
+-- 
+1.8.1.1.dirty
 
->  This patch is applied, should I append a new patch or you rollback it?
-> Thanks.
-
-Please send an incremental patch on top of what's applied and don't top
-post.
-
---zhjhOMouxCL2qD2w
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEbBAEBCAAGBQJVzGEzAAoJECTWi3JdVIfQZgUH93mP8FgYmDSllIAi2EhBP4ws
-bh2KsNBHJZn772/bqpDp0KTr5c0B6AipUqfYq9yzz+rG4mA9kC1tem7azhGz3p3u
-qu5XPfKPsegMDcD0kGsBMmcjDvO6/JFviY9DZYVRXnfVtLIqPZSsjHnZEEHEsHRs
-rWWtJ9ZIkjhazuvcxrhdIZCWrL82cbHf6RlNDmUpH3ESMIQRI1ET9hU+MMR6bvGy
-p7sRixQBzoWCDPerAx7vw/YnHMh4aX6IbNu7CtYAXBueLT/1LtPGsMgTfndYbWwr
-7zKIyefddnoZ/gRwLttM//iOxrV6dAW6CT5Lf6UtbkWzi8rdAqT1bIccJsJuxw==
-=5qP7
------END PGP SIGNATURE-----
-
---zhjhOMouxCL2qD2w--
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

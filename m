@@ -1,74 +1,59 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: s3c64xx: print fifo size on probe." to the spi tree
-Date: Fri, 14 Aug 2015 01:01:08 +0100
-Message-ID: <E1ZQ2Qm-0003QN-CM@finisterre>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Christian Hartmann <cornogle-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
+Subject: Re: [alsa-devel] Fwd: [PATCH 1/1] SPI : spi-pxa2xx : fix spi init of
+ WM510205 codec via ACPI (resend)
+Date: Fri, 14 Aug 2015 12:08:31 +0200
+Message-ID: <CAKor6TdKrQrvXTPU=fzL9LTCBbyc9WAbLnYdObY+Wu73g1w6Fg@mail.gmail.com>
+References: <CAKor6TdheYM73aqti362bOnP2GZmX60uuDY5v2eow1vqO9tcKw@mail.gmail.com>
+	<20150715081224.GN16517@opensource.wolfsonmicro.com>
+	<20150715091709.GK11162@sirena.org.uk>
+	<CAKor6TcSc7n=Rd9NJAf-6cYXr50Z62cbcsbuaEutRMPAiM=2NQ@mail.gmail.com>
+	<20150717085434.GO16517@opensource.wolfsonmicro.com>
+	<CAKor6Tcof3PA3JGD2=4X8mtSak8ka9BVD2L4zdYC4M1yEYEXjg@mail.gmail.com>
+	<CAKor6TdLkGZbARmV1CfqUiguH8HAD+oC8VSsH_OkNQ6E-7YVAw@mail.gmail.com>
+	<20150810081001.GG25225@opensource.wolfsonmicro.com>
+	<20150810083540.GE1540@lahna.fi.intel.com>
+	<CAKor6Tc26kKG-7ytxBjT41S1h4eORoeTg_T=nZ4dZGM1H0gAMQ@mail.gmail.com>
+	<20150810140207.GB1541@lahna.fi.intel.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: Charles Keepax <ckeepax-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
+	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+	Pierre-Louis Bossart <pierre-louis.bossart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
+	dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>
+To: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: 
+In-Reply-To: <20150810140207.GB1541-3PARRvDOhMZrdx17CPfAsdBPR1lH4CV8@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+2015-08-10 16:02 GMT+02:00 Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>:
+> On Mon, Aug 10, 2015 at 03:48:31PM +0200, Christian Hartmann wrote:
+>> > You should use devm_gpiod_get() and friends. If you do not have
+>> > corresponding Linux device node, then it is fwnode_get_named_gpiod().
+>>
+>> It seems the fwnode_get_named_gpiod() function will be used in my case,
+>> but how can I get the fwnode??
 
-   spi: s3c64xx: print fifo size on probe.
+I am trying to use devm_gpiod_get now
+but before I have to add the gpios via the mapping as decscribed in
+the consumer documentation
+>
+> There is acpi_fwnode_handle() in include/acpi/acpi_bus.h. However, if
+> you have Linux device available you should really use devm_gpio_*
+> functions instead.
+Hi,
 
-has been applied to the spi tree at
+I am actually stucking to get the ACPI handle via
+handle = ACPI_HANDLE(&arizona->dev)
+it complaints about dev->fwnode
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+I am looking to get it working with acpi_fwnode_handle() at the moment
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From ed425dcf6afa2b206f6da7d7ec6a62501172b5c0 Mon Sep 17 00:00:00 2001
-From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Fri, 24 Jul 2015 17:36:49 +0200
-Subject: [PATCH] spi: s3c64xx: print fifo size on probe.
-
-Printing the FIFO depth does not add much noise in the log and can be useful
-for debugging transfer issues.
-
-Signed-off-by: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-s3c64xx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 2a8c513..cd1cfac 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -1191,8 +1191,8 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 
- 	dev_dbg(&pdev->dev, "Samsung SoC SPI Driver loaded for Bus SPI-%d with %d Slaves attached\n",
- 					sdd->port_id, master->num_chipselect);
--	dev_dbg(&pdev->dev, "\tIOmem=[%pR]\tDMA=[Rx-%d, Tx-%d]\n",
--					mem_res,
-+	dev_dbg(&pdev->dev, "\tIOmem=[%pR]\tFIFO %dbytes\tDMA=[Rx-%d, Tx-%d]\n",
-+					mem_res, (FIFO_LVL_MASK(sdd) >> 1) + 1,
- 					sdd->rx_dma.dmach, sdd->tx_dma.dmach);
- 
- 	return 0;
--- 
-2.5.0
-
+cheers
+chris
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

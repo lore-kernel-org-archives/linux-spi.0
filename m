@@ -1,20 +1,18 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: bcm2835: fix overflow in calculation of transfer time" to the spi tree
-Date: Fri, 14 Aug 2015 01:01:06 +0100
-Message-ID: <E1ZQ2Qk-0003PP-7H@finisterre>
-References: <1438155250-14476-1-git-send-email-kernel@martin.sperl.org>
+Subject: Applied "spi: s3c64xx: print fifo size on probe." to the spi tree
+Date: Fri, 14 Aug 2015 01:01:08 +0100
+Message-ID: <E1ZQ2Qm-0003QN-CM@finisterre>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Noralf Tronnes <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>,
-	Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
+To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1438155250-14476-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: 
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: bcm2835: fix overflow in calculation of transfer time
+   spi: s3c64xx: print fifo size on probe.
 
 has been applied to the spi tree at
 
@@ -39,59 +37,35 @@ to this mail.
 Thanks,
 Mark
 
->From 0122a5183088e3117bb9c8fbe248914efb502f3f Mon Sep 17 00:00:00 2001
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Date: Wed, 29 Jul 2015 07:34:10 +0000
-Subject: [PATCH] spi: bcm2835: fix overflow in calculation of transfer time
+>From ed425dcf6afa2b206f6da7d7ec6a62501172b5c0 Mon Sep 17 00:00:00 2001
+From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Fri, 24 Jul 2015 17:36:49 +0200
+Subject: [PATCH] spi: s3c64xx: print fifo size on probe.
 
-This resulted in the use of polling mode when other approaches
-(dma or interrupts) would have been more appropriate.
+Printing the FIFO depth does not add much noise in the log and can be useful
+for debugging transfer issues.
 
-Happened for transfers longer than 477 bytes.
-
-Reported-by: Noralf Tronnes <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>
-Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Signed-off-by: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-bcm2835.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/spi/spi-s3c64xx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index c9357bb..e7874a6 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -480,7 +480,7 @@ static int bcm2835_spi_transfer_one_poll(struct spi_master *master,
- 					 struct spi_device *spi,
- 					 struct spi_transfer *tfr,
- 					 u32 cs,
--					 unsigned long xfer_time_us)
-+					 unsigned long long xfer_time_us)
- {
- 	struct bcm2835_spi *bs = spi_master_get_devdata(master);
- 	unsigned long timeout;
-@@ -531,7 +531,8 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
- {
- 	struct bcm2835_spi *bs = spi_master_get_devdata(master);
- 	unsigned long spi_hz, clk_hz, cdiv;
--	unsigned long spi_used_hz, xfer_time_us;
-+	unsigned long spi_used_hz;
-+	unsigned long long xfer_time_us;
- 	u32 cs = bcm2835_rd(bs, BCM2835_SPI_CS);
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 2a8c513..cd1cfac 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -1191,8 +1191,8 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
  
- 	/* set clock */
-@@ -573,9 +574,10 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
- 	bs->rx_len = tfr->len;
+ 	dev_dbg(&pdev->dev, "Samsung SoC SPI Driver loaded for Bus SPI-%d with %d Slaves attached\n",
+ 					sdd->port_id, master->num_chipselect);
+-	dev_dbg(&pdev->dev, "\tIOmem=[%pR]\tDMA=[Rx-%d, Tx-%d]\n",
+-					mem_res,
++	dev_dbg(&pdev->dev, "\tIOmem=[%pR]\tFIFO %dbytes\tDMA=[Rx-%d, Tx-%d]\n",
++					mem_res, (FIFO_LVL_MASK(sdd) >> 1) + 1,
+ 					sdd->rx_dma.dmach, sdd->tx_dma.dmach);
  
- 	/* calculate the estimated time in us the transfer runs */
--	xfer_time_us = tfr->len
-+	xfer_time_us = (unsigned long long)tfr->len
- 		* 9 /* clocks/byte - SPI-HW waits 1 clock after each byte */
--		* 1000000 / spi_used_hz;
-+		* 1000000;
-+	do_div(xfer_time_us, spi_used_hz);
- 
- 	/* for short requests run polling*/
- 	if (xfer_time_us <= BCM2835_SPI_POLLING_LIMIT_US)
+ 	return 0;
 -- 
 2.5.0
 

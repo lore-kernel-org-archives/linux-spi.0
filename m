@@ -1,51 +1,62 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 1/3] spi: bitbang: Replace spinlock by mutex when calling
- chipselect
-Date: Fri, 14 Aug 2015 20:19:20 +0100
-Message-ID: <20150814191920.GK10748@sirena.org.uk>
-References: <CANMq1KB2zxPPCbxh4K-REUgp-83s=MPcGRjz-p1fK1PQMzyLdw@mail.gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: imx: fix ecspi mode setup
+Date: Fri, 14 Aug 2015 20:30:15 +0100
+Message-ID: <20150814193015.GN10748@sirena.org.uk>
+References: <1436880205-25023-1-git-send-email-qxovxp@gmail.com>
+ <20150714134934.GV11162@sirena.org.uk>
+ <CAN8RqkDrc9sqsbv360yuu7cN3dg527vEomu+FakqnkbTgGZtzQ@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="m699nQIRt8EJjqXo"
-Cc: Kukjin Kim <kgene@kernel.org>,
-	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org
-To: Nicolas Boichat <drinkcat@chromium.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="FAVlh7XA/4iOdtaa"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Andrew Kuksov <qxovxp-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CANMq1KB2zxPPCbxh4K-REUgp-83s=MPcGRjz-p1fK1PQMzyLdw@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <CAN8RqkDrc9sqsbv360yuu7cN3dg527vEomu+FakqnkbTgGZtzQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---m699nQIRt8EJjqXo
+--FAVlh7XA/4iOdtaa
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Aug 05, 2015 at 06:24:05PM +0800, Nicolas Boichat wrote:
+On Tue, Jul 14, 2015 at 07:06:36PM +0300, Andrew Kuksov wrote:
+> >> Fixed problem with setting spi mode 0 or 1 after setting mode 2 or 3
 
-> Anyway, the "safer" way to fix this would be to keep the
-> prepare/unprepare functions, busy variable, and just protect it with a
-> mutex instead of a spinlock...
+> > What is the problem and how does this change fix it (this information
+> > should be in the changelog)?
 
-OK, that seems reasonable.
+> SPI_MODE_0 and SPI_MODE_1 requires clock low when inactive. SPI_MODE_2
+> and SPI_MODE_3 requires clk high when inactive.
+> Currently driver can just set bits in fields SCLK_PHA (SPI Clock/Data
+> Phase Control), SCLK_POL (SPI Clock Polarity Control),
+> SCLK_CTL (controls the inactive state of SCLK) ans SS_POL (SPI SS
+> Polarity Select) of ECSPIx_CONFIGREG register.
+> This patch allows driver to clear corresponding bits in these fields.
 
---m699nQIRt8EJjqXo
+Please provide a patch with a changelog more like this...
+
+--FAVlh7XA/4iOdtaa
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJVzj83AAoJECTWi3JdVIfQWuUH/19SfPqefeJoOALciub7mK2U
-r23lPEHb1/6LVTG3s4dCMe0plCO8fob2XZKnAOHDbo289jCCZAy8Sa8a3S99fa6L
-6rphlxrPXRKPD//6b2crahJWRvFer4gFt2+HZsdg/NNBu97ugkcUkORArVKKXNDu
-R4e6JGyPLgRaxOxHt62XkQjvzqtSmiSCsxxxadCkUu/wzy4TCPM/YTnhaW6SzGJh
-bSPo++svP+f9S3lQKVAVSwHoAphRn96JjTUvSGcW2r4CHDQQG3rki5tXlFHiHJIw
-j1x+45g5IPHmj/3hfVLc6RjCOGknNq1wpiicXsY9BWU8dwHLXbUf0N3X0M6YzQ8=
-=Wqn0
+iQEcBAEBCAAGBQJVzkHGAAoJECTWi3JdVIfQdq4IAITE5F5Wsm++PcQiCRBNmg8j
+V25fCw6ofSPZBYRwc4faJvd8RVz138lDjynzIxK5aQUTiabdNMC+nn3zsngfh0iG
+5t7wh7gp5M06hre16m4amwSXtTl+uG3l9dwZt1yJ0qGutSvCZsk74GM+vI0ds+/1
+Zxi79evkoAsYMMGEWaQYY7HWBWMjZ3rbaK6+qxn16l8D8Z35E816+UelGSzd/cQw
+EbI/wDYX3DhQFW3RLpgo/KlflppBMTnRCcs5yVgMhRPZKrnRFJ1knLW7whyXIpIH
+MrR8dj1AT3DYLo5+uvXEYd92mgeGyH06miSR12HxLR/2wr/CymlrXjMumzxhMU8=
+=hitE
 -----END PGP SIGNATURE-----
 
---m699nQIRt8EJjqXo--
+--FAVlh7XA/4iOdtaa--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,63 +1,74 @@
-From: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi/spi-xilinx: Fix spurious IRQ ACK on irq mode
-Date: Thu, 13 Aug 2015 16:09:28 +0200
-Message-ID: <1439474968-10260-1-git-send-email-ricardo.ribalda@gmail.com>
-Cc: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	=?UTF-8?q?S=C3=B6ren=20Brinkmann?= <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: Mediatek: fixup cpu_to_le32 incorrect usage" to the spi tree
+Date: Fri, 14 Aug 2015 01:01:03 +0100
+Message-ID: <E1ZQ2Qh-0003OT-S4@finisterre>
+References: <1439467601-10209-1-git-send-email-leilk.liu@mediatek.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1439467601-10209-1-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The ACK of an inexistent IRQ can trigger an spurious IRQ that breaks the
-txrx logic. This has been observed on axi_quad_spi:3.2 core.
+The patch
 
-This patch only ACKs IRQs that have not been Acknowledge jet.
+   spi: Mediatek: fixup cpu_to_le32 incorrect usage
 
-Reported-by: Edward Kigwana <ekigwana-UV7F5/lgMp/QT0dZR+AlfA@public.gmane.org>
-Tested-by: Edward Kigwana <ekigwana-UV7F5/lgMp/QT0dZR+AlfA@public.gmane.org>
-Signed-off-by: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+has been applied to the spi tree at
+
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 39ba928f8b34720b60c68d4c1bb274ae219ab39e Mon Sep 17 00:00:00 2001
+From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Date: Thu, 13 Aug 2015 20:06:41 +0800
+Subject: [PATCH] spi: Mediatek: fixup cpu_to_le32 incorrect usage
+
+writel() already does a cpu_to_le32 conversion, so
+remove cpu_to_le32().
+
+Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-xilinx.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/spi/spi-mt65xx.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-index 7abf6792cc11..a339c1e9997a 100644
---- a/drivers/spi/spi-xilinx.c
-+++ b/drivers/spi/spi-xilinx.c
-@@ -249,19 +249,23 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
- 	xspi->tx_ptr = t->tx_buf;
- 	xspi->rx_ptr = t->rx_buf;
- 	remaining_words = t->len / xspi->bytes_per_word;
--	reinit_completion(&xspi->done);
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index 2c41dcf..62baaad 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -359,11 +359,9 @@ static void mtk_spi_setup_dma_addr(struct spi_master *master,
+ 	struct mtk_spi *mdata = spi_master_get_devdata(master);
  
- 	if (xspi->irq >= 0 &&  remaining_words > xspi->buffer_size) {
-+		u32 isr;
- 		use_irq = true;
--		xspi->write_fn(XSPI_INTR_TX_EMPTY,
--				xspi->regs + XIPIF_V123B_IISR_OFFSET);
--		/* Enable the global IPIF interrupt */
--		xspi->write_fn(XIPIF_V123B_GINTR_ENABLE,
--				xspi->regs + XIPIF_V123B_DGIER_OFFSET);
- 		/* Inhibit irq to avoid spurious irqs on tx_empty*/
- 		cr = xspi->read_fn(xspi->regs + XSPI_CR_OFFSET);
- 		xspi->write_fn(cr | XSPI_CR_TRANS_INHIBIT,
- 			       xspi->regs + XSPI_CR_OFFSET);
-+		/* ACK old irqs (if any) */
-+		isr = xspi->read_fn(xspi->regs + XIPIF_V123B_IISR_OFFSET);
-+		if (isr)
-+			xspi->write_fn(isr,
-+				       xspi->regs + XIPIF_V123B_IISR_OFFSET);
-+		/* Enable the global IPIF interrupt */
-+		xspi->write_fn(XIPIF_V123B_GINTR_ENABLE,
-+				xspi->regs + XIPIF_V123B_DGIER_OFFSET);
-+		reinit_completion(&xspi->done);
- 	}
+ 	if (mdata->tx_sgl)
+-		writel((__force u32)cpu_to_le32(xfer->tx_dma),
+-		       mdata->base + SPI_TX_SRC_REG);
++		writel(xfer->tx_dma, mdata->base + SPI_TX_SRC_REG);
+ 	if (mdata->rx_sgl)
+-		writel((__force u32)cpu_to_le32(xfer->rx_dma),
+-		       mdata->base + SPI_RX_DST_REG);
++		writel(xfer->rx_dma, mdata->base + SPI_RX_DST_REG);
+ }
  
- 	while (remaining_words) {
+ static int mtk_spi_fifo_transfer(struct spi_master *master,
 -- 
 2.5.0
 

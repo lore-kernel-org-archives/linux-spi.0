@@ -1,18 +1,20 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: Mediatek: fixup cpu_to_le32 incorrect usage" to the spi tree
-Date: Fri, 14 Aug 2015 01:01:03 +0100
-Message-ID: <E1ZQ2Qh-0003OT-S4@finisterre>
-References: <1439467601-10209-1-git-send-email-leilk.liu@mediatek.com>
+Subject: Applied "spi/spi-xilinx: Fix mixed poll/irq mode" to the spi tree
+Date: Fri, 14 Aug 2015 01:01:05 +0100
+Message-ID: <E1ZQ2Qj-0003Ow-07@finisterre>
+References: <1439395444-25599-1-git-send-email-ricardo.ribalda@gmail.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Edward Kigwana <ekigwana-UV7F5/lgMp/QT0dZR+AlfA@public.gmane.org>,
+	Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1439467601-10209-1-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <1439395444-25599-1-git-send-email-ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: Mediatek: fixup cpu_to_le32 incorrect usage
+   spi/spi-xilinx: Fix mixed poll/irq mode
 
 has been applied to the spi tree at
 
@@ -37,38 +39,39 @@ to this mail.
 Thanks,
 Mark
 
->From 39ba928f8b34720b60c68d4c1bb274ae219ab39e Mon Sep 17 00:00:00 2001
-From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Date: Thu, 13 Aug 2015 20:06:41 +0800
-Subject: [PATCH] spi: Mediatek: fixup cpu_to_le32 incorrect usage
+>From 16ea9b8ac45bf11d48af6013283e141e8ed86348 Mon Sep 17 00:00:00 2001
+From: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Wed, 12 Aug 2015 18:04:04 +0200
+Subject: [PATCH] spi/spi-xilinx: Fix mixed poll/irq mode
 
-writel() already does a cpu_to_le32 conversion, so
-remove cpu_to_le32().
+Once the module process a transfer in irq mode, the next poll transfer
+will not work because the transmitter is left in inhibited state.
 
-Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Fixes: 22417352f6b7f623 (Use polling mode on small transfers)
+Reported-by: Edward Kigwana <ekigwana-UV7F5/lgMp/QT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 ---
- drivers/spi/spi-mt65xx.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/spi/spi-xilinx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 2c41dcf..62baaad 100644
---- a/drivers/spi/spi-mt65xx.c
-+++ b/drivers/spi/spi-mt65xx.c
-@@ -359,11 +359,9 @@ static void mtk_spi_setup_dma_addr(struct spi_master *master,
- 	struct mtk_spi *mdata = spi_master_get_devdata(master);
+diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
+index 133f53a..7abf679 100644
+--- a/drivers/spi/spi-xilinx.c
++++ b/drivers/spi/spi-xilinx.c
+@@ -302,8 +302,10 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 		remaining_words -= n_words;
+ 	}
  
- 	if (mdata->tx_sgl)
--		writel((__force u32)cpu_to_le32(xfer->tx_dma),
--		       mdata->base + SPI_TX_SRC_REG);
-+		writel(xfer->tx_dma, mdata->base + SPI_TX_SRC_REG);
- 	if (mdata->rx_sgl)
--		writel((__force u32)cpu_to_le32(xfer->rx_dma),
--		       mdata->base + SPI_RX_DST_REG);
-+		writel(xfer->rx_dma, mdata->base + SPI_RX_DST_REG);
+-	if (use_irq)
++	if (use_irq) {
+ 		xspi->write_fn(0, xspi->regs + XIPIF_V123B_DGIER_OFFSET);
++		xspi->write_fn(cr, xspi->regs + XSPI_CR_OFFSET);
++	}
+ 
+ 	return t->len;
  }
- 
- static int mtk_spi_fifo_transfer(struct spi_master *master,
 -- 
 2.5.0
 

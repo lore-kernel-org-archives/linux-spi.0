@@ -1,20 +1,20 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "ARM: davinci: Set proper SPI prescale limit value" to the spi tree
-Date: Sat, 15 Aug 2015 09:22:52 -0700
-Message-ID: <E1ZQeEO-0007af-2t@finisterre>
-References: <1436903127-6777-4-git-send-email-fcooper@ti.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>,
-	Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1436903127-6777-4-git-send-email-fcooper-l0cyMroinI0@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: sh-msiof: Fix FIFO size to 64 word from 256 word" to the spi tree
+Date: Sat, 15 Aug 2015 09:22:53 -0700
+Message-ID: <E1ZQeEP-0007b7-51@finisterre>
+References: <1434302705-31104-1-git-send-email-ykaneko0929@gmail.com>
+Cc: linux-spi@vger.kernel.org
+To: Koji Matsuoka <koji.matsuoka.xm@renesas.com>,
+	Yoshihiro Kaneko <ykaneko0929@gmail.com>,
+	Mark Brown <broonie@kernel.org>, stable@vger.kernel.org
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <1434302705-31104-1-git-send-email-ykaneko0929@gmail.com>
+Sender: stable-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   ARM: davinci: Set proper SPI prescale limit value
+   spi: sh-msiof: Fix FIFO size to 64 word from 256 word
 
 has been applied to the spi tree at
 
@@ -39,70 +39,68 @@ to this mail.
 Thanks,
 Mark
 
->From 1b0838b5a794456ca36ce02b405bd7bcc85bfba0 Mon Sep 17 00:00:00 2001
-From: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>
-Date: Wed, 12 Aug 2015 08:26:19 -0500
-Subject: [PATCH] ARM: davinci: Set proper SPI prescale limit value
+>From 8ed545ee4d491d6f2762024524842fe029c4ae86 Mon Sep 17 00:00:00 2001
+From: Koji Matsuoka <koji.matsuoka.xm@renesas.com>
+Date: Mon, 15 Jun 2015 02:25:05 +0900
+Subject: [PATCH] spi: sh-msiof: Fix FIFO size to 64 word from 256 word
 
-SPI Davinci driver has been updated to allow SOCs to specify their minimum
-prescale value. Update the various SOCs board files that use this driver with
-their proper prescaler limit.
+The upper limit of Tx/Rx FIFO size is 64 word by the
+specification of H/W. This patch corrects to 64 word from 256 word.
 
-Acked-by: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
-Signed-off-by: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Koji Matsuoka <koji.matsuoka.xm@renesas.com>
+Signed-off-by: Yoshihiro Kaneko <ykaneko0929@gmail.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
 ---
- arch/arm/mach-davinci/devices-da8xx.c | 2 ++
- arch/arm/mach-davinci/dm355.c         | 1 +
- arch/arm/mach-davinci/dm365.c         | 1 +
- 3 files changed, 4 insertions(+)
+ drivers/spi/spi-sh-msiof.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/mach-davinci/devices-da8xx.c b/arch/arm/mach-davinci/devices-da8xx.c
-index ddfdd82..29e08aa 100644
---- a/arch/arm/mach-davinci/devices-da8xx.c
-+++ b/arch/arm/mach-davinci/devices-da8xx.c
-@@ -1010,11 +1010,13 @@ static struct davinci_spi_platform_data da8xx_spi_pdata[] = {
- 		.version	= SPI_VERSION_2,
- 		.intr_line	= 1,
- 		.dma_event_q	= EVENTQ_0,
-+		.prescaler_limit = 2,
- 	},
- 	[1] = {
- 		.version	= SPI_VERSION_2,
- 		.intr_line	= 1,
- 		.dma_event_q	= EVENTQ_0,
-+		.prescaler_limit = 2,
- 	},
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 118c652..a7934ab 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -48,8 +48,8 @@ struct sh_msiof_spi_priv {
+ 	const struct sh_msiof_chipdata *chipdata;
+ 	struct sh_msiof_spi_info *info;
+ 	struct completion done;
+-	int tx_fifo_size;
+-	int rx_fifo_size;
++	unsigned int tx_fifo_size;
++	unsigned int rx_fifo_size;
+ 	void *tx_dma_page;
+ 	void *rx_dma_page;
+ 	dma_addr_t tx_dma_addr;
+@@ -95,8 +95,6 @@ struct sh_msiof_spi_priv {
+ #define MDR2_WDLEN1(i)	(((i) - 1) << 16) /* Word Count (1-64/256 (SH, A1))) */
+ #define MDR2_GRPMASK1	0x00000001 /* Group Output Mask 1 (SH, A1) */
+ 
+-#define MAX_WDLEN	256U
+-
+ /* TSCR and RSCR */
+ #define SCR_BRPS_MASK	    0x1f00 /* Prescaler Setting (1-32) */
+ #define SCR_BRPS(i)	(((i) - 1) << 8)
+@@ -850,7 +848,12 @@ static int sh_msiof_transfer_one(struct spi_master *master,
+ 		 *  DMA supports 32-bit words only, hence pack 8-bit and 16-bit
+ 		 *  words, with byte resp. word swapping.
+ 		 */
+-		unsigned int l = min(len, MAX_WDLEN * 4);
++		unsigned int l = 0;
++
++		if (tx_buf)
++			l = min(len, p->tx_fifo_size * 4);
++		if (rx_buf)
++			l = min(len, p->rx_fifo_size * 4);
+ 
+ 		if (bits <= 8) {
+ 			if (l & 3)
+@@ -963,7 +966,7 @@ static const struct sh_msiof_chipdata sh_data = {
+ 
+ static const struct sh_msiof_chipdata r8a779x_data = {
+ 	.tx_fifo_size = 64,
+-	.rx_fifo_size = 256,
++	.rx_fifo_size = 64,
+ 	.master_flags = SPI_MASTER_MUST_TX,
  };
  
-diff --git a/arch/arm/mach-davinci/dm355.c b/arch/arm/mach-davinci/dm355.c
-index 9cbeda7..567dc56 100644
---- a/arch/arm/mach-davinci/dm355.c
-+++ b/arch/arm/mach-davinci/dm355.c
-@@ -411,6 +411,7 @@ static struct davinci_spi_platform_data dm355_spi0_pdata = {
- 	.num_chipselect = 2,
- 	.cshold_bug	= true,
- 	.dma_event_q	= EVENTQ_1,
-+	.prescaler_limit = 1,
- };
- static struct platform_device dm355_spi0_device = {
- 	.name = "spi_davinci",
-diff --git a/arch/arm/mach-davinci/dm365.c b/arch/arm/mach-davinci/dm365.c
-index e3a3c54..6a890a8 100644
---- a/arch/arm/mach-davinci/dm365.c
-+++ b/arch/arm/mach-davinci/dm365.c
-@@ -646,6 +646,7 @@ static struct davinci_spi_platform_data dm365_spi0_pdata = {
- 	.version 	= SPI_VERSION_1,
- 	.num_chipselect = 2,
- 	.dma_event_q	= EVENTQ_3,
-+	.prescaler_limit = 1,
- };
- 
- static struct resource dm365_spi0_resources[] = {
 -- 
 2.5.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

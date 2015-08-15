@@ -1,54 +1,81 @@
-From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Subject: Re: [PATCH] spi: Mediatek: fix endian warnings
-Date: Sat, 15 Aug 2015 22:17:15 +0200
-Message-ID: <4559739.Ziakvog9nM@wuerfel>
-References: <1439289789-29026-1-git-send-email-leilk.liu@mediatek.com>
- <1871097.B3YgX5rNy0@wuerfel>
+From: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH] spi: Mediatek: fixup cpu_to_le32 incorrect usage
+Date: Sat, 15 Aug 2015 22:46:14 +0200
+Message-ID: <3523801.O835HG5rEa@wuerfel>
+References: <1439467601-10209-1-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
- Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
- linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
- linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
- linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Return-path: <linux-mediatek-bounces+glpam-linux-mediatek=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <1871097.B3YgX5rNy0@wuerfel>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mediatek>,
- <mailto:linux-mediatek-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mediatek/>
-List-Post: <mailto:linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-mediatek-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mediatek>,
- <mailto:linux-mediatek-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "Linux-mediatek" <linux-mediatek-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-mediatek-bounces+glpam-linux-mediatek=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Content-Transfer-Encoding: 7Bit
+Cc: Leilk Liu <leilk.liu@mediatek.com>,
+	Mark Brown <broonie@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	devicetree@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
+	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	Matthias Brugger <matthias.bgg@gmail.com>
+To: linux-arm-kernel@lists.infradead.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1439467601-10209-1-git-send-email-leilk.liu@mediatek.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Saturday 15 August 2015 22:16:03 Arnd Bergmann wrote:
-> On Tuesday 11 August 2015 18:43:09 Leilk Liu wrote:
-> > @@ -359,9 +359,11 @@ static void mtk_spi_setup_dma_addr(struct spi_master *master,
-> >         struct mtk_spi *mdata = spi_master_get_devdata(master);
-> >  
-> >         if (mdata->tx_sgl)
-> > -               writel(cpu_to_le32(xfer->tx_dma), mdata->base + SPI_TX_SRC_REG);
-> > +               writel((__force u32)cpu_to_le32(xfer->tx_dma),
-> > +                      mdata->base + SPI_TX_SRC_REG);
-> >         if (mdata->rx_sgl)
-> > -               writel(cpu_to_le32(xfer->rx_dma), mdata->base + SPI_RX_DST_REG);
-> > +               writel((__force u32)cpu_to_le32(xfer->rx_dma),
-> > +                      mdata->base + SPI_RX_DST_REG);
-> >  }
-> > 
+On Thursday 13 August 2015 20:06:41 Leilk Liu wrote:
+> diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+> index ae645fa..519f50c 100644
+> --- a/drivers/spi/spi-mt65xx.c
+> +++ b/drivers/spi/spi-mt65xx.c
+> @@ -359,11 +359,9 @@ static void mtk_spi_setup_dma_addr(struct spi_master *master,
+>         struct mtk_spi *mdata = spi_master_get_devdata(master);
+>  
+>         if (mdata->tx_sgl)
+> -               writel((__force u32)cpu_to_le32(xfer->tx_dma),
+> -                      mdata->base + SPI_TX_SRC_REG);
+> +               writel(xfer->tx_dma, mdata->base + SPI_TX_SRC_REG);
+>         if (mdata->rx_sgl)
+> -               writel((__force u32)cpu_to_le32(xfer->rx_dma),
+> -                      mdata->base + SPI_RX_DST_REG);
+> +               writel(xfer->rx_dma, mdata->base + SPI_RX_DST_REG);
+>  }
+>  
+>  static int mtk_spi_fifo_transfer(struct spi_master *master,
+> -- 
 > 
-> This looks wrong: writel takes a CPU-endian argument, so the value returned
-> from cpu_to_le32() is not appropriate.
-> 
-> The warning is correct, and you have to remove the cpu_to_le32() conversion
-> in order to get the driver to behave correctly when the kernel is built
-> as big-endian.
 
-Nevermind, I now saw the issue has already been raised.
+This change looks good, but after I've briefly looked at the current driver,
+I found at least one more location that looks like an endianess bug:
+
+
++static int mtk_spi_fifo_transfer(struct spi_master *master,
++                                struct spi_device *spi,
++                                struct spi_transfer *xfer)
++{
+...
++
++       for (i = 0; i < cnt; i++)
++               writel(*((u32 *)xfer->tx_buf + i),
++                      mdata->base + SPI_TX_DATA_REG);
++
++       mtk_spi_enable_transfer(master);
++
++       return 1;
++}
+
+Here, you write data into a FIFO register using an accessor that converts
+to little-endian. In contrast, the DMA based accessor apparently has
+no byte swap, so most likely one of the two is broken on big-endian
+systems. My guess is that the look above is wrong, and you need to
+use iowrite32_rep() instead, so you always write into the FIFO in
+the byte stream order (first byte to last byte) rather than swapping
+32-bit entities.
+
+The other suspicious part is this:
+
++       reg_val |= (chip_config->tx_endian << SPI_CMD_TX_ENDIAN_OFFSET);
++       reg_val |= (chip_config->rx_endian << SPI_CMD_RX_ENDIAN_OFFSET);
+
+It's not clear what the tx_endian/rx_endian bits refer to and why you
+can't just always set the register interface to little-endian. If it's
+set to big-endian, you probably need to add more byte swaps in the
+driver.
 
 	Arnd

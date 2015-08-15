@@ -1,21 +1,20 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi/spi-xilinx: Fix spurious IRQ ACK on irq mode" to the spi tree
-Date: Sat, 15 Aug 2015 09:22:55 -0700
-Message-ID: <E1ZQeER-0007cG-47@finisterre>
-References: <1439474968-10260-1-git-send-email-ricardo.ribalda@gmail.com>
-Cc: linux-spi@vger.kernel.org
-To: Edward Kigwana <ekigwana@scires.com>,
-	Edward Kigwana <ekigwana@scires.com>,
-	Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>,
-	Mark Brown <broonie@kernel.org>, stable@vger.kernel.org
-Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <1439474968-10260-1-git-send-email-ricardo.ribalda@gmail.com>
-Sender: stable-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: bcm2835: set up spi-mode before asserting cs-gpio" to the spi tree
+Date: Sat, 15 Aug 2015 09:22:54 -0700
+Message-ID: <E1ZQeEQ-0007bk-4u@finisterre>
+References: <1438092193-31799-1-git-send-email-kernel@martin.sperl.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Noralf Tronnes <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>,
+	Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1438092193-31799-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi/spi-xilinx: Fix spurious IRQ ACK on irq mode
+   spi: bcm2835: set up spi-mode before asserting cs-gpio
 
 has been applied to the spi tree at
 
@@ -40,58 +39,94 @@ to this mail.
 Thanks,
 Mark
 
->From 74346841e6f5df5f7b83d5904435d273c507dba6 Mon Sep 17 00:00:00 2001
-From: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
-Date: Thu, 13 Aug 2015 16:09:28 +0200
-Subject: [PATCH] spi/spi-xilinx: Fix spurious IRQ ACK on irq mode
+>From ca861dd0c5e36c4a2cf454049a45a961c855290a Mon Sep 17 00:00:00 2001
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Date: Tue, 28 Jul 2015 14:03:12 +0000
+Subject: [PATCH] spi: bcm2835: set up spi-mode before asserting cs-gpio
 
-The ACK of an inexistent IRQ can trigger an spurious IRQ that breaks the
-txrx logic. This has been observed on axi_quad_spi:3.2 core.
+When using reverse polarity for clock (spi-cpol) on a device
+the clock line gets altered after chip-select has been asserted
+resulting in an additional clock beat, which confuses hardware.
 
-This patch only ACKs IRQs that have not been Acknowledge jet.
+This did not show when using native-CS, as the same register
+is used to control cs as well as polarity, so the changes came
+into effect at the same time. Unfortunately this is not true
+with gpio-cs.
 
-Reported-by: Edward Kigwana <ekigwana@scires.com>
-Tested-by: Edward Kigwana <ekigwana@scires.com>
-Signed-off-by: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
+To avoid this situation this patch moves the setup of polarity
+(spi-cpol and spi-cpha) outside of the chip-select into
+prepare_message, which is run prior to asserting chip-select.
+
+Also fixes resetting 3-wire mode after use of rx-mode, so that
+a 3-Wire sequence TX, RX, TX works as well (right now it runs
+TX, RX, RX instead)
+
+Reported-by: Noralf Tronnes <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>
+Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-xilinx.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/spi/spi-bcm2835.c | 28 +++++++++++++++++++++++-----
+ 1 file changed, 23 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-index 7abf679..a339c1e 100644
---- a/drivers/spi/spi-xilinx.c
-+++ b/drivers/spi/spi-xilinx.c
-@@ -249,19 +249,23 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
- 	xspi->tx_ptr = t->tx_buf;
- 	xspi->rx_ptr = t->rx_buf;
- 	remaining_words = t->len / xspi->bytes_per_word;
--	reinit_completion(&xspi->done);
+diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+index 59705ab..c9357bb 100644
+--- a/drivers/spi/spi-bcm2835.c
++++ b/drivers/spi/spi-bcm2835.c
+@@ -553,13 +553,11 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
+ 	spi_used_hz = cdiv ? (clk_hz / cdiv) : (clk_hz / 65536);
+ 	bcm2835_wr(bs, BCM2835_SPI_CLK, cdiv);
  
- 	if (xspi->irq >= 0 &&  remaining_words > xspi->buffer_size) {
-+		u32 isr;
- 		use_irq = true;
--		xspi->write_fn(XSPI_INTR_TX_EMPTY,
--				xspi->regs + XIPIF_V123B_IISR_OFFSET);
--		/* Enable the global IPIF interrupt */
--		xspi->write_fn(XIPIF_V123B_GINTR_ENABLE,
--				xspi->regs + XIPIF_V123B_DGIER_OFFSET);
- 		/* Inhibit irq to avoid spurious irqs on tx_empty*/
- 		cr = xspi->read_fn(xspi->regs + XSPI_CR_OFFSET);
- 		xspi->write_fn(cr | XSPI_CR_TRANS_INHIBIT,
- 			       xspi->regs + XSPI_CR_OFFSET);
-+		/* ACK old irqs (if any) */
-+		isr = xspi->read_fn(xspi->regs + XIPIF_V123B_IISR_OFFSET);
-+		if (isr)
-+			xspi->write_fn(isr,
-+				       xspi->regs + XIPIF_V123B_IISR_OFFSET);
-+		/* Enable the global IPIF interrupt */
-+		xspi->write_fn(XIPIF_V123B_GINTR_ENABLE,
-+				xspi->regs + XIPIF_V123B_DGIER_OFFSET);
-+		reinit_completion(&xspi->done);
- 	}
+-	/* handle all the modes */
++	/* handle all the 3-wire mode */
+ 	if ((spi->mode & SPI_3WIRE) && (tfr->rx_buf))
+ 		cs |= BCM2835_SPI_CS_REN;
+-	if (spi->mode & SPI_CPOL)
+-		cs |= BCM2835_SPI_CS_CPOL;
+-	if (spi->mode & SPI_CPHA)
+-		cs |= BCM2835_SPI_CS_CPHA;
++	else
++		cs &= ~BCM2835_SPI_CS_REN;
  
- 	while (remaining_words) {
+ 	/* for gpio_cs set dummy CS so that no HW-CS get changed
+ 	 * we can not run this in bcm2835_spi_set_cs, as it does
+@@ -592,6 +590,25 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
+ 	return bcm2835_spi_transfer_one_irq(master, spi, tfr, cs);
+ }
+ 
++static int bcm2835_spi_prepare_message(struct spi_master *master,
++				       struct spi_message *msg)
++{
++	struct spi_device *spi = msg->spi;
++	struct bcm2835_spi *bs = spi_master_get_devdata(master);
++	u32 cs = bcm2835_rd(bs, BCM2835_SPI_CS);
++
++	cs &= ~(BCM2835_SPI_CS_CPOL | BCM2835_SPI_CS_CPHA);
++
++	if (spi->mode & SPI_CPOL)
++		cs |= BCM2835_SPI_CS_CPOL;
++	if (spi->mode & SPI_CPHA)
++		cs |= BCM2835_SPI_CS_CPHA;
++
++	bcm2835_wr(bs, BCM2835_SPI_CS, cs);
++
++	return 0;
++}
++
+ static void bcm2835_spi_handle_err(struct spi_master *master,
+ 				   struct spi_message *msg)
+ {
+@@ -739,6 +756,7 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
+ 	master->set_cs = bcm2835_spi_set_cs;
+ 	master->transfer_one = bcm2835_spi_transfer_one;
+ 	master->handle_err = bcm2835_spi_handle_err;
++	master->prepare_message = bcm2835_spi_prepare_message;
+ 	master->dev.of_node = pdev->dev.of_node;
+ 
+ 	bs = spi_master_get_devdata(master);
 -- 
 2.5.0
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

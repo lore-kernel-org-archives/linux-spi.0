@@ -1,55 +1,50 @@
-From: Stefan Bruens <stefan.bruens-vA1bhqPz9FBZXbeN9DUtxg@public.gmane.org>
-Subject: Re: [PATCH 0/2] Fix displays requiring 9 bit transfers on RPi
-Date: Sat, 15 Aug 2015 20:30:57 +0200
-Message-ID: <1671586.bJufufmcUN@pebbles.site>
-References: <1439278071-21110-1-git-send-email-stefan.bruens@rwth-aachen.de>
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Subject: Re: [PATCH] spi: Mediatek: fix endian warnings
+Date: Sat, 15 Aug 2015 22:16:03 +0200
+Message-ID: <1871097.B3YgX5rNy0@wuerfel>
+References: <1439289789-29026-1-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1439278071-21110-1-git-send-email-stefan.bruens-vA1bhqPz9FBZXbeN9DUtxg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+ Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+ linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+ linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+ linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Return-path: <linux-mediatek-bounces+glpam-linux-mediatek=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+In-Reply-To: <1439289789-29026-1-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mediatek>,
+ <mailto:linux-mediatek-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mediatek/>
+List-Post: <mailto:linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+List-Help: <mailto:linux-mediatek-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mediatek>,
+ <mailto:linux-mediatek-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
+Sender: "Linux-mediatek" <linux-mediatek-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Errors-To: linux-mediatek-bounces+glpam-linux-mediatek=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi,
+On Tuesday 11 August 2015 18:43:09 Leilk Liu wrote:
+> @@ -359,9 +359,11 @@ static void mtk_spi_setup_dma_addr(struct spi_master *master,
+>         struct mtk_spi *mdata = spi_master_get_devdata(master);
+>  
+>         if (mdata->tx_sgl)
+> -               writel(cpu_to_le32(xfer->tx_dma), mdata->base + SPI_TX_SRC_REG);
+> +               writel((__force u32)cpu_to_le32(xfer->tx_dma),
+> +                      mdata->base + SPI_TX_SRC_REG);
+>         if (mdata->rx_sgl)
+> -               writel(cpu_to_le32(xfer->rx_dma), mdata->base + SPI_RX_DST_REG);
+> +               writel((__force u32)cpu_to_le32(xfer->rx_dma),
+> +                      mdata->base + SPI_RX_DST_REG);
+>  }
+> 
 
-any comments on these two patches?
+This looks wrong: writel takes a CPU-endian argument, so the value returned
+from cpu_to_le32() is not appropriate.
 
-Kind regards,
+The warning is correct, and you have to remove the cpu_to_le32() conversion
+in order to get the driver to behave correctly when the kernel is built
+as big-endian.
 
-Stefan
-
-On Tuesday 11 August 2015 09:27:49 you wrote:
-> Some displays need 9 bit long SPI transfers (Command/Data flag plus
-> 8 bit data). FBTFT has emulation code in case the controller only
-> supports 8 bit transfers, but this is only used if the controller
-> setup function report an error if bits_per_word is set to 9.
->=20
-> Report unsupported bits_per_word settings in spi_setup Currently the
-> SPI core only checks bits_per_word on transfer, but not on setup.
->=20
-> Replace invocations of master->setup(...) with spi_setup(...).
->=20
-> Tested on RPi B with an Ilitek9341 based TFT display in 9 bit mode.
->=20
-> Stefan Br=FCns (2):
->   spi: check bits_per_word in spi_setup
->   staging/fbtft: use spi_setup instead of direct call to master->setu=
-p
->=20
->  drivers/spi/spi.c                    | 27 +++++++++++++++++++-------=
--
->  drivers/staging/fbtft/fb_watterott.c |  4 ++--
->  drivers/staging/fbtft/fbtft-core.c   |  4 ++--
->  drivers/staging/fbtft/flexfb.c       |  4 ++--
->  4 files changed, 25 insertions(+), 14 deletions(-)
-
---=20
-Stefan Br=FCns  /  Bergstra=DFe 21  /  52062 Aachen
-home: +49 241 53809034     mobile: +49 151 50412019
-work: +49 2405 49936-424
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+	Arnd

@@ -1,81 +1,77 @@
-From: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH] spi: Mediatek: fixup cpu_to_le32 incorrect usage
-Date: Sat, 15 Aug 2015 22:46:14 +0200
-Message-ID: <3523801.O835HG5rEa@wuerfel>
-References: <1439467601-10209-1-git-send-email-leilk.liu@mediatek.com>
+From: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
+Subject: Re: [PATCH] spi: Mediatek: fix endian warnings
+Date: Sun, 16 Aug 2015 15:06:39 +0100
+Message-ID: <20150816140639.GE7557@n2100.arm.linux.org.uk>
+References: <1439289789-29026-1-git-send-email-leilk.liu@mediatek.com>
+ <1871097.B3YgX5rNy0@wuerfel>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: Leilk Liu <leilk.liu@mediatek.com>,
-	Mark Brown <broonie@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	devicetree@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	Matthias Brugger <matthias.bgg@gmail.com>
-To: linux-arm-kernel@lists.infradead.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1439467601-10209-1-git-send-email-leilk.liu@mediatek.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1871097.B3YgX5rNy0@wuerfel>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Thursday 13 August 2015 20:06:41 Leilk Liu wrote:
-> diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-> index ae645fa..519f50c 100644
-> --- a/drivers/spi/spi-mt65xx.c
-> +++ b/drivers/spi/spi-mt65xx.c
-> @@ -359,11 +359,9 @@ static void mtk_spi_setup_dma_addr(struct spi_master *master,
->         struct mtk_spi *mdata = spi_master_get_devdata(master);
->  
->         if (mdata->tx_sgl)
-> -               writel((__force u32)cpu_to_le32(xfer->tx_dma),
-> -                      mdata->base + SPI_TX_SRC_REG);
-> +               writel(xfer->tx_dma, mdata->base + SPI_TX_SRC_REG);
->         if (mdata->rx_sgl)
-> -               writel((__force u32)cpu_to_le32(xfer->rx_dma),
-> -                      mdata->base + SPI_RX_DST_REG);
-> +               writel(xfer->rx_dma, mdata->base + SPI_RX_DST_REG);
->  }
->  
->  static int mtk_spi_fifo_transfer(struct spi_master *master,
-> -- 
+On Sat, Aug 15, 2015 at 10:16:03PM +0200, Arnd Bergmann wrote:
+> On Tuesday 11 August 2015 18:43:09 Leilk Liu wrote:
+> > @@ -359,9 +359,11 @@ static void mtk_spi_setup_dma_addr(struct spi_master *master,
+> >         struct mtk_spi *mdata = spi_master_get_devdata(master);
+> >  
+> >         if (mdata->tx_sgl)
+> > -               writel(cpu_to_le32(xfer->tx_dma), mdata->base + SPI_TX_SRC_REG);
+> > +               writel((__force u32)cpu_to_le32(xfer->tx_dma),
+> > +                      mdata->base + SPI_TX_SRC_REG);
+> >         if (mdata->rx_sgl)
+> > -               writel(cpu_to_le32(xfer->rx_dma), mdata->base + SPI_RX_DST_REG);
+> > +               writel((__force u32)cpu_to_le32(xfer->rx_dma),
+> > +                      mdata->base + SPI_RX_DST_REG);
+> >  }
+> > 
 > 
+> This looks wrong: writel takes a CPU-endian argument, so the value returned
+> from cpu_to_le32() is not appropriate.
+> 
+> The warning is correct, and you have to remove the cpu_to_le32() conversion
+> in order to get the driver to behave correctly when the kernel is built
+> as big-endian.
 
-This change looks good, but after I've briefly looked at the current driver,
-I found at least one more location that looks like an endianess bug:
+Indeed, it's about time people started thinking more about the warnings
+and why we have coded things in the way we have.
 
+Look people.  cpu_to_le32() takes a value in the CPU endian, and
+converts it to a little endian 32-bit number.  See, the clue is in
+the name.
 
-+static int mtk_spi_fifo_transfer(struct spi_master *master,
-+                                struct spi_device *spi,
-+                                struct spi_transfer *xfer)
-+{
-...
-+
-+       for (i = 0; i < cnt; i++)
-+               writel(*((u32 *)xfer->tx_buf + i),
-+                      mdata->base + SPI_TX_DATA_REG);
-+
-+       mtk_spi_enable_transfer(master);
-+
-+       return 1;
-+}
+All writel() implementations take a CPU number and write it in little
+endian format.  Hence, writel() almost always uses cpu_to_le32()
+internally.
 
-Here, you write data into a FIFO register using an accessor that converts
-to little-endian. In contrast, the DMA based accessor apparently has
-no byte swap, so most likely one of the two is broken on big-endian
-systems. My guess is that the look above is wrong, and you need to
-use iowrite32_rep() instead, so you always write into the FIFO in
-the byte stream order (first byte to last byte) rather than swapping
-32-bit entities.
+Now think about what you're saying with "cpu_to_le32(cpu_to_le32())".
+It's utter rubbish, total crap.  It's wrong no matter which way you
+look at it.
 
-The other suspicious part is this:
+We have le32_to_cpu() which does what it says on the tin.  Same with
+be32_to_cpu() and cpu_to_be32().
 
-+       reg_val |= (chip_config->tx_endian << SPI_CMD_TX_ENDIAN_OFFSET);
-+       reg_val |= (chip_config->rx_endian << SPI_CMD_RX_ENDIAN_OFFSET);
+Don't hack around this stuff with __force.  If you're having to use
+__force to get rid of a warning here, you _ARE_ doing something wrong,
+no questions about that.  __force in driver code is a definite sign
+that you are doing something wrong.  Don't do it.  Ask the question
+if you think you need it.
 
-It's not clear what the tx_endian/rx_endian bits refer to and why you
-can't just always set the register interface to little-endian. If it's
-set to big-endian, you probably need to add more byte swaps in the
-driver.
-
-	Arnd
+-- 
+FTTC broadband for 0.8mile line: currently at 10.5Mbps down 400kbps up
+according to speedtest.net.
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

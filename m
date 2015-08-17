@@ -1,77 +1,60 @@
-From: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH] spi: Mediatek: fix endian warnings
-Date: Sun, 16 Aug 2015 15:06:39 +0100
-Message-ID: <20150816140639.GE7557@n2100.arm.linux.org.uk>
+Date: Sun, 16 Aug 2015 20:30:47 -0700
+Message-ID: <20150817033047.GM10748@sirena.org.uk>
 References: <1439289789-29026-1-git-send-email-leilk.liu@mediatek.com>
  <1871097.B3YgX5rNy0@wuerfel>
+ <20150816140639.GE7557@n2100.arm.linux.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="jvwwc3lboJHenLjr"
+Cc: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>,
 	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
 	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
 	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1871097.B3YgX5rNy0@wuerfel>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <20150816140639.GE7557-l+eeeJia6m9vn6HldHNs0ANdhmdF6hFW@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-On Sat, Aug 15, 2015 at 10:16:03PM +0200, Arnd Bergmann wrote:
-> On Tuesday 11 August 2015 18:43:09 Leilk Liu wrote:
-> > @@ -359,9 +359,11 @@ static void mtk_spi_setup_dma_addr(struct spi_master *master,
-> >         struct mtk_spi *mdata = spi_master_get_devdata(master);
-> >  
-> >         if (mdata->tx_sgl)
-> > -               writel(cpu_to_le32(xfer->tx_dma), mdata->base + SPI_TX_SRC_REG);
-> > +               writel((__force u32)cpu_to_le32(xfer->tx_dma),
-> > +                      mdata->base + SPI_TX_SRC_REG);
-> >         if (mdata->rx_sgl)
-> > -               writel(cpu_to_le32(xfer->rx_dma), mdata->base + SPI_RX_DST_REG);
-> > +               writel((__force u32)cpu_to_le32(xfer->rx_dma),
-> > +                      mdata->base + SPI_RX_DST_REG);
-> >  }
-> > 
-> 
-> This looks wrong: writel takes a CPU-endian argument, so the value returned
-> from cpu_to_le32() is not appropriate.
-> 
-> The warning is correct, and you have to remove the cpu_to_le32() conversion
-> in order to get the driver to behave correctly when the kernel is built
-> as big-endian.
 
-Indeed, it's about time people started thinking more about the warnings
-and why we have coded things in the way we have.
+--jvwwc3lboJHenLjr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Look people.  cpu_to_le32() takes a value in the CPU endian, and
-converts it to a little endian 32-bit number.  See, the clue is in
-the name.
+On Sun, Aug 16, 2015 at 03:06:39PM +0100, Russell King - ARM Linux wrote:
 
-All writel() implementations take a CPU number and write it in little
-endian format.  Hence, writel() almost always uses cpu_to_le32()
-internally.
+> All writel() implementations take a CPU number and write it in little
+> endian format.  Hence, writel() almost always uses cpu_to_le32()
+> internally.
 
-Now think about what you're saying with "cpu_to_le32(cpu_to_le32())".
-It's utter rubbish, total crap.  It's wrong no matter which way you
-look at it.
+I think the reason this keeps coming up is that people aren't expecting
+writel() to be doing endianness conversion, it's easy to get caught out
+by it.
 
-We have le32_to_cpu() which does what it says on the tin.  Same with
-be32_to_cpu() and cpu_to_be32().
+--jvwwc3lboJHenLjr
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-Don't hack around this stuff with __force.  If you're having to use
-__force to get rid of a warning here, you _ARE_ doing something wrong,
-no questions about that.  __force in driver code is a definite sign
-that you are doing something wrong.  Don't do it.  Ask the question
-if you think you need it.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
--- 
-FTTC broadband for 0.8mile line: currently at 10.5Mbps down 400kbps up
-according to speedtest.net.
+iQEcBAEBCAAGBQJV0VViAAoJECTWi3JdVIfQx5QH/jLWJxe/sJWv1Wr/womw+fEJ
+yssGpSdtxY8i7EL5o8PTPGPRk40C3ciLmzqCLjm8O7EmKxh1cRnNmkhaadLbE10I
+xroHJM9jct4t+fnnFVlpp8vL13rP9+i3QKfdxSL1yPYpKQh3cHAB8xbJk6EDRiZY
+KcrbsZ4eSpv7W2fIbfeFulMRrmx3AVNXpwRldMXFia0Cp3UUFnUNPPPPxIrq18b+
+MItZdtJKEMuQl38HRvPr1rckJZ/+WTLv7Gg6xCFIq8DgOI0mbk9z2NtSWLWUDB/y
+tdWVTWEjHtx7CZ1mhm7i7hV1Oa5yqsY+JhBJt3Ix6Ae+LA/0O4HLVSfPpYguJ6s=
+=RpzB
+-----END PGP SIGNATURE-----
+
+--jvwwc3lboJHenLjr--
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

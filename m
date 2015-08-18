@@ -1,162 +1,57 @@
-From: Michael van der Westhuizen <michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>
-Subject: [PATCH v3 2/2] spi: dw: Allow interface drivers to limit data I/O to word sizes
-Date: Tue, 18 Aug 2015 22:21:53 +0200
-Message-ID: <1439929313-4948-3-git-send-email-michael@smart-africa.com>
-References: <1439929313-4948-1-git-send-email-michael@smart-africa.com>
-Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Steffen Trumtrar <s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>,
-	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Michael van der Westhuizen <michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: =?iso-8859-1?Q?Br=FCns=2C_Stefan?= <Stefan.Bruens-vA1bhqPz9FBZXbeN9DUtxg@public.gmane.org>
+Subject: Re: [PATCH 0/2] Fix displays requiring 9 bit transfers on RPi
+Date: Tue, 18 Aug 2015 20:41:55 +0000
+Message-ID: <2396767.SsPboNIpj6@sbruens-linux>
+References: <1439278071-21110-1-git-send-email-stefan.bruens@rwth-aachen.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+To: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1439929313-4948-1-git-send-email-michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>
+In-Reply-To: <1439278071-21110-1-git-send-email-stefan.bruens-vA1bhqPz9FBZXbeN9DUtxg@public.gmane.org>
+Content-Language: en-US
+Content-ID: <C23630BA022A734F86669CBC9C9DF7D8-KnNo0XtUZUuELgA04lAiVw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The commit dd11444327ce ("spi: dw-spi: Convert 16bit accesses to 32bit
-accesses") changed all 16bit accesses in the DW_apb_ssi driver to 32bit.
-This, unfortunately, breaks data register access on picoXcell, where the
-DW IP needs data register accesses to be word accesses (all other
-accesses appear to be OK).
+Hi,
 
-This change introduces a new master variable to allow interface drivers
-to specify that 16bit data transfer I/O is required.  This change also
-introduces the ability to set this variable via device tree bindings in
-the MMIO interface driver.  Both the core and the MMIO interface driver
-default to the current 32bit behaviour.
+any comments on these two patches, please?
 
-Before this change, on a picoXcell pc3x3:
- spi_master spi32766: interrupt_transfer: fifo overrun/underrun
- m25p80 spi32766.0: error -5 reading 9f
- m25p80: probe of spi32766.0 failed with error -5
+Kind regards,
 
-After this change:
- m25p80 spi32766.0: m25p40 (512 Kbytes)
+Stefan
 
-Fixes: dd11444327ce ("spi: dw-spi: Convert 16bit accesses to 32bit accesses")
-Signed-off-by: Michael van der Westhuizen <michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>
----
-Changes in v3:
-  - Rename the DT property as requested by Rob Herring.
 
-Changes in v2:
-  - Incorporate review feedback from Andy Shevchenko
-    - Rework the DT bindings to accept an I/O register width as a
-      number of bytes rather than using a boolean spefifying the
-      width preference to be 16 bits.
-    - Add data register access wrapper functions and use them when
-      reading and writing the data register.
+On Tuesday, August 11, 2015 09:27:49 you wrote:
+> Some displays need 9 bit long SPI transfers (Command/Data flag plus
+> 8 bit data). FBTFT has emulation code in case the controller only
+> supports 8 bit transfers, but this is only used if the controller
+> setup function report an error if bits_per_word is set to 9.
+>=20
+> Report unsupported bits_per_word settings in spi_setup Currently the
+> SPI core only checks bits_per_word on transfer, but not on setup.
+>=20
+> Replace invocations of master->setup(...) with spi_setup(...).
+>=20
+> Tested on RPi B with an Ilitek9341 based TFT display in 9 bit mode.
+>=20
+> Stefan Br=FCns (2):
+>   spi: check bits_per_word in spi_setup
+>   staging/fbtft: use spi_setup instead of direct call to master->setu=
+p
+>=20
+>  drivers/spi/spi.c                    | 27 +++++++++++++++++++-------=
+-
+>  drivers/staging/fbtft/fb_watterott.c |  4 ++--
+>  drivers/staging/fbtft/fbtft-core.c   |  4 ++--
+>  drivers/staging/fbtft/flexfb.c       |  4 ++--
+>  4 files changed, 25 insertions(+), 14 deletions(-)
 
- drivers/spi/spi-dw-mmio.c |  3 +++
- drivers/spi/spi-dw.c      |  4 ++--
- drivers/spi/spi-dw.h      | 35 +++++++++++++++++++++++++++++++++++
- 3 files changed, 40 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
-index eb03e12..7edede6 100644
---- a/drivers/spi/spi-dw-mmio.c
-+++ b/drivers/spi/spi-dw-mmio.c
-@@ -74,6 +74,9 @@ static int dw_spi_mmio_probe(struct platform_device *pdev)
- 
- 	dws->max_freq = clk_get_rate(dwsmmio->clk);
- 
-+	of_property_read_u32(pdev->dev.of_node, "reg-io-width",
-+			     &dws->reg_io_width);
-+
- 	num_cs = 4;
- 
- 	if (pdev->dev.of_node)
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index 8d67d03..4fbfcdc 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -194,7 +194,7 @@ static void dw_writer(struct dw_spi *dws)
- 			else
- 				txw = *(u16 *)(dws->tx);
- 		}
--		dw_writel(dws, DW_SPI_DR, txw);
-+		dw_write_io_reg(dws, DW_SPI_DR, txw);
- 		dws->tx += dws->n_bytes;
- 	}
- }
-@@ -205,7 +205,7 @@ static void dw_reader(struct dw_spi *dws)
- 	u16 rxw;
- 
- 	while (max--) {
--		rxw = dw_readl(dws, DW_SPI_DR);
-+		rxw = dw_read_io_reg(dws, DW_SPI_DR);
- 		/* Care rx only if the transfer's original "rx" is not null */
- 		if (dws->rx_end - dws->len) {
- 			if (dws->n_bytes == 1)
-diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index 6c91391..b75ed32 100644
---- a/drivers/spi/spi-dw.h
-+++ b/drivers/spi/spi-dw.h
-@@ -109,6 +109,7 @@ struct dw_spi {
- 	u32			fifo_len;	/* depth of the FIFO buffer */
- 	u32			max_freq;	/* max bus freq supported */
- 
-+	u32			reg_io_width;	/* DR I/O width in bytes */
- 	u16			bus_num;
- 	u16			num_cs;		/* supported slave numbers */
- 
-@@ -145,11 +146,45 @@ static inline u32 dw_readl(struct dw_spi *dws, u32 offset)
- 	return __raw_readl(dws->regs + offset);
- }
- 
-+static inline u16 dw_readw(struct dw_spi *dws, u32 offset)
-+{
-+	return __raw_readw(dws->regs + offset);
-+}
-+
- static inline void dw_writel(struct dw_spi *dws, u32 offset, u32 val)
- {
- 	__raw_writel(val, dws->regs + offset);
- }
- 
-+static inline void dw_writew(struct dw_spi *dws, u32 offset, u16 val)
-+{
-+	__raw_writew(val, dws->regs + offset);
-+}
-+
-+static inline u32 dw_read_io_reg(struct dw_spi *dws, u32 offset)
-+{
-+	switch (dws->reg_io_width) {
-+	case 2:
-+		return dw_readw(dws, offset);
-+	case 4:
-+	default:
-+		return dw_readl(dws, offset);
-+	}
-+}
-+
-+static inline void dw_write_io_reg(struct dw_spi *dws, u32 offset, u32 val)
-+{
-+	switch (dws->reg_io_width) {
-+	case 2:
-+		dw_writew(dws, offset, val);
-+		break;
-+	case 4:
-+	default:
-+		dw_writel(dws, offset, val);
-+		break;
-+	}
-+}
-+
- static inline void spi_enable_chip(struct dw_spi *dws, int enable)
- {
- 	dw_writel(dws, DW_SPI_SSIENR, (enable ? 1 : 0));
--- 
-2.1.4
-
---
+--=20
+Stefan Br=FCns  /  Bergstra=DFe 21  /  52062 Aachen
+home: +49 241 53809034     mobile: +49 151 50412019
+work: +49 2405 49936-424--
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,104 +1,65 @@
-From: lei liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCH] spi: mediatek: fix spi incorrect endian usage and
- remove redundant clock
-Date: Tue, 18 Aug 2015 21:14:29 +0800
-Message-ID: <1439903669.30929.2.camel@mhfsdcap03>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: mediatek: fix spi incorrect endian usage and remove
+ redundant clock
+Date: Tue, 18 Aug 2015 09:07:49 -0700
+Message-ID: <20150818160749.GJ10748@sirena.org.uk>
 References: <1439895231-17778-1-git-send-email-leilk.liu@mediatek.com>
-	 <CAOiHx=nBOtm3c7QQpA-SSxXzJGjUEJQBtR9CynoeqsXRoz4fRg@mail.gmail.com>
+ <CAOiHx=nBOtm3c7QQpA-SSxXzJGjUEJQBtR9CynoeqsXRoz4fRg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="vRyMahX6VF+pdQvX"
+Cc: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>,
 	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
 	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
 	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 To: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
 In-Reply-To: <CAOiHx=nBOtm3c7QQpA-SSxXzJGjUEJQBtR9CynoeqsXRoz4fRg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, 2015-08-18 at 14:19 +0200, Jonas Gorski wrote:
-> Hi,
-> 
-> On Tue, Aug 18, 2015 at 12:53 PM, Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org> wrote:
-> > This patch fixes incorrect endian usage, removes redundant
-> > clock in prepare_hardware/unprepare_hardware and revises
-> > coding styles.
-> >
-> > Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-> >
-> > ---
-> > Change in this patch:
-> > 1. fix incorrect endian usage on big-endian system.
-> > 2. delete redundant clock in prepare/unprepare_hardware.
-> > 3. revise coding styles.
-> 
+
+--vRyMahX6VF+pdQvX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Tue, Aug 18, 2015 at 02:19:54PM +0200, Jonas Gorski wrote:
+
 > The usual philosophy is to have one change per patch, so this might be
 > better as three patches. But this is Mark's call. Since the driver
 > isn't yet in Linus' tree, it might be a-ok to mix style improvements
 > and actual fixes, but as soon as it landed in Linus' tree you need to
 > keep them separate, so fixes can be easily backported.
-> 
 
-OK, I'll divide this patch to three patches on next version.
+This isn't just about making the fixes easy to backport, it's also about
+making the patch reviewable and understandable.  When many changes are
+included in one patch it makes it harder to tell what any one part of
+the patch is intended to do.  As Jonas has identified several bugs
+you'll need to resend anyway, please split the series up.
 
-> Regarding the content ...
-> 
-> > ---
-> >  drivers/spi/spi-mt65xx.c                 | 163 +++++++++++++------------------
-> >  include/linux/platform_data/spi-mt65xx.h |   2 -
-> >  2 files changed, 69 insertions(+), 96 deletions(-)
-> >
-> > diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-> > index 519f50c..a9da887 100644
-> > --- a/drivers/spi/spi-mt65xx.c
-> > +++ b/drivers/spi/spi-mt65xx.c
-> > @@ -694,6 +662,7 @@ static int mtk_spi_resume(struct device *dev)
-> >         if (!pm_runtime_suspended(dev)) {
-> >                 ret = clk_prepare_enable(mdata->spi_clk);
-> >                 if (ret < 0)
-> > +                       dev_err(dev, "failed to enable spi_clk (%d)\n", ret);
-> >                         return ret;
-> 
-> You need to add braces here, else the "return ret" isn't covered by
-> the if () anymore and you always return at this place.
-> 
-Yes.I'll fix it.
+--vRyMahX6VF+pdQvX
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-> >         }
-> >
-> > @@ -720,8 +689,14 @@ static int mtk_spi_runtime_resume(struct device *dev)
-> >  {
-> >         struct spi_master *master = dev_get_drvdata(dev);
-> >         struct mtk_spi *mdata = spi_master_get_devdata(master);
-> > +       int ret;
-> > +
-> > +       ret = clk_prepare_enable(mdata->spi_clk);
-> > +       if (ret < 0)
-> > +               dev_err(dev, "failed to enable spi_clk (%d)\n", ret);
-> > +               return ret;
-> 
-> Same here. Although at least here it should be harmless, as
-> clk_prepare_enable doesn't return > 0.
-> 
-Yes.I'll fix it too.
-> >
-> > -       return clk_prepare_enable(mdata->spi_clk);
-> > +       return 0;
-> >  }
-> >  #endif /* CONFIG_PM */
-> >
-> 
-> 
-> Jonas
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
+iQEcBAEBCAAGBQJV01hRAAoJECTWi3JdVIfQz6cH/3DNlew2DvZ1/HnluOiIknH0
+ivLgO+u6Dkj7OaYiR/pbG1fFiElH/C+iVV7aveAfaZPnhXZhipoPYnt6JXS8G5v9
+Df1oDua6shcoiC+KooEaZ9FnWHCDjQxiZCILYhP+ROVXogsQ0kSOMFLBFYVgEf2N
+e+ReqHuG5kncZ4l5U/ClnSbjaEPJXg/0+g2ZU5VSM/Rm2MWA62yvF5CaLgm5jVCQ
+MfhIU+mnqRAc/TYV4CRysPO1KY9gdSTVMpePxnXq+XXZ1sGiVeL3TM40YPSiJFGu
+5m9yMnd2Nn0DV5Ij6VsuyVFfqHElgmiPKsjftvmukyejAuVPywFJTdRU0k8XCHQ=
+=iN/G
+-----END PGP SIGNATURE-----
 
+--vRyMahX6VF+pdQvX--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,65 +1,66 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: mediatek: fix spi incorrect endian usage and remove
- redundant clock
-Date: Tue, 18 Aug 2015 09:07:49 -0700
-Message-ID: <20150818160749.GJ10748@sirena.org.uk>
-References: <1439895231-17778-1-git-send-email-leilk.liu@mediatek.com>
- <CAOiHx=nBOtm3c7QQpA-SSxXzJGjUEJQBtR9CynoeqsXRoz4fRg@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="vRyMahX6VF+pdQvX"
-Cc: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>,
+From: Michael van der Westhuizen <michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>
+Subject: [PATCH v3 0/2] spi: dw: Reintroduce optional 16 bit data register I/O
+Date: Tue, 18 Aug 2015 22:21:51 +0200
+Message-ID: <1439929313-4948-1-git-send-email-michael@smart-africa.com>
+Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Steffen Trumtrar <s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>,
+	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
 	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Michael van der Westhuizen <michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAOiHx=nBOtm3c7QQpA-SSxXzJGjUEJQBtR9CynoeqsXRoz4fRg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The commit dd11444327ce ("spi: dw-spi: Convert 16bit accesses to 32bit
+accesses") globally changed all register access in the dw_apb_ssi driver
+to 32 bit access, which breaks data register (FIFO) access on picoXcell
+platforms.
 
---vRyMahX6VF+pdQvX
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This series introduces a variable to the core spi-dw driver to indicate
+to the core that either 16 or 32 bit data register access is appropriate,
+with the code defaulting to the current 32 bit behaviour.
 
-On Tue, Aug 18, 2015 at 02:19:54PM +0200, Jonas Gorski wrote:
+The dw-spi-mmio driver is updated to support optionally setting this
+variable from the device tree and the binding documentation is updated.
 
-> The usual philosophy is to have one change per patch, so this might be
-> better as three patches. But this is Mark's call. Since the driver
-> isn't yet in Linus' tree, it might be a-ok to mix style improvements
-> and actual fixes, but as soon as it landed in Linus' tree you need to
-> keep them separate, so fixes can be easily backported.
+Prior to applying this change the following error presents on
+a picoXcell pc3x3 platform:
+  spi_master spi32766: interrupt_transfer: fifo overrun/underrun
+  m25p80 spi32766.0: error -5 reading 9f
+  m25p80: probe of spi32766.0 failed with error -5
 
-This isn't just about making the fixes easy to backport, it's also about
-making the patch reviewable and understandable.  When many changes are
-included in one patch it makes it harder to tell what any one part of
-the patch is intended to do.  As Jonas has identified several bugs
-you'll need to resend anyway, please split the series up.
+With this series applied:
+  m25p80 spi32766.0: m25p40 (512 Kbytes)
 
---vRyMahX6VF+pdQvX
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Changes in v3:
+  - Rename the DT property as requested by Rob Herring.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Changes in v2:
+  - Incorporate review feedback from Andy Shevchenko, reworking the
+    bindings to reflect common practice and adjusting the driver
+    to suit.
+  - Add a wrapper inline function for accessing the data register
+    using the configured with.
 
-iQEcBAEBCAAGBQJV01hRAAoJECTWi3JdVIfQz6cH/3DNlew2DvZ1/HnluOiIknH0
-ivLgO+u6Dkj7OaYiR/pbG1fFiElH/C+iVV7aveAfaZPnhXZhipoPYnt6JXS8G5v9
-Df1oDua6shcoiC+KooEaZ9FnWHCDjQxiZCILYhP+ROVXogsQ0kSOMFLBFYVgEf2N
-e+ReqHuG5kncZ4l5U/ClnSbjaEPJXg/0+g2ZU5VSM/Rm2MWA62yvF5CaLgm5jVCQ
-MfhIU+mnqRAc/TYV4CRysPO1KY9gdSTVMpePxnXq+XXZ1sGiVeL3TM40YPSiJFGu
-5m9yMnd2Nn0DV5Ij6VsuyVFfqHElgmiPKsjftvmukyejAuVPywFJTdRU0k8XCHQ=
-=iN/G
------END PGP SIGNATURE-----
+Michael van der Westhuizen (2):
+  dt: snps,dw-apb-ssi: Document new I/O data register width property
+  spi: dw: Allow interface drivers to limit data I/O to word sizes
 
---vRyMahX6VF+pdQvX--
+ drivers/spi/spi-dw-mmio.c |  3 +++
+ drivers/spi/spi-dw.c      |  4 ++--
+ drivers/spi/spi-dw.h      | 35 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 40 insertions(+), 2 deletions(-)
+
+-- 
+2.1.4
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

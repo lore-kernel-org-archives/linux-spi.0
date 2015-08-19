@@ -1,78 +1,229 @@
-From: <kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-Subject: [PATCH 2/2] spi: Add DT bindings documentation for Netlogic XLP SPI controller
-Date: Wed, 19 Aug 2015 10:39:17 +0530
-Message-ID: <1439960957-4213-3-git-send-email-kamlakant.patel@broadcom.com>
-References: <1439960957-4213-1-git-send-email-kamlakant.patel@broadcom.com>
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 1/3] spi: s3c64xx: simplify probe function by using local
+ variable for &pdev->dev
+Date: Wed, 19 Aug 2015 07:18:31 +0200
+Message-ID: <55D411A7.8060900@gmail.com>
+References: <55D39E07.9040700@gmail.com> <55D3C618.1000305@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: Kamlakant Patel <kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Jonathan Corbet <corbet-T1hC0tSOHrs@public.gmane.org>,
-	<linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1439960957-4213-1-git-send-email-kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <55D3C618.1000305-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Kamlakant Patel <kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+Am 19.08.2015 um 01:56 schrieb Krzysztof Kozlowski:
+> On 19.08.2015 06:05, Heiner Kallweit wrote:
+>> Simplify the probe function by replacing all occurrences of &pdev->dev
+>> with a local variable.
+>>
+>> Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+>> ---
+>>  drivers/spi/spi-s3c64xx.c | 58 +++++++++++++++++++++++------------------------
+>>  1 file changed, 29 insertions(+), 29 deletions(-)
+> 
+> I don't see simplification here (the same number of insertions as
+> deletions, code is exactly the same). &pdev->dev is a common pattern in
+> most of platform drivers.
+Right, &pdev->dev is a common pattern. I consider the new version better as we
+really have a lot of occurrences of &pdev->dev. It reduces complexity in several lines
+and might save a few CPU cycles in case the compiler can't hold &pdev->dev in a register
+all the time.
+Of course your mileage might vary. If you think it's good as it is I'm also fine with it.
 
-Add DT bindings documentation for SPI controller driver used by
-Netlogic XLP MIPS64 SoCs.
-
-Signed-off-by: Kamlakant Patel <kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
----
- Documentation/devicetree/bindings/spi/spi-xlp.txt |   40 +++++++++++++++++++++
- 1 files changed, 40 insertions(+), 0 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-xlp.txt
-
-diff --git a/Documentation/devicetree/bindings/spi/spi-xlp.txt b/Documentation/devicetree/bindings/spi/spi-xlp.txt
-new file mode 100644
-index 0000000..a8bbca3
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-xlp.txt
-@@ -0,0 +1,40 @@
-+SPI Master controller for Netlogic XLP MIPS64 SOCs
-+==================================================
-+
-+Currently this SPI controller driver is supported for the following
-+Netlogic XLP SoCs:
-+	XLP832, XLP316, XLP208, XLP980, XLP532
-+
-+Required properties:
-+- compatible	: Should be "netlogic,xlp832-spi".
-+- #address-cell	: Number of cells required to define a chip select address
-+		  on the SPI bus.
-+- #size-cells	: Should be zero.
-+- reg:		: Should contain register location and length.
-+- interrupts	: Interrupt number used by this controller.
-+- interrupt-parent: Phandle of the parent interrupt controller.
-+- clock-frequency : [OPTIONAL] Input clock frequency to the SPI block in Hz.
-+		    Default is 133333333 Hz.
-+
-+SPI slave nodes must be children of the SPI master node and can contain
-+properties described in Documentation/devicetree/bindings/spi/spi-bus.txt.
-+
-+Example:
-+
-+	spi: xlp_spi@3a100 {
-+		compatible = "netlogic,xlp832-spi";
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		reg = <0 0x3a100 0x100>;
-+		clock-frequency = <133333333>;
-+		interrupts = <34>;
-+		interrupt-parent = <&pic>;
-+
-+		spi_nor@1 {
-+			compatible = "spansion,s25sl12801";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			reg = <1>;	/* Chip Select */
-+			spi-max-frequency = <40000000>;
-+		};
-+};
--- 
-1.7.1
+Rgds, Heiner
+> 
+> Best regards,
+> Krzysztof
+> 
+> 
+>>
+>> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+>> index cd1cfac..c4d3b06 100644
+>> --- a/drivers/spi/spi-s3c64xx.c
+>> +++ b/drivers/spi/spi-s3c64xx.c
+>> @@ -1024,39 +1024,39 @@ static inline struct s3c64xx_spi_port_config *s3c64xx_spi_get_port_config(
+>>  
+>>  static int s3c64xx_spi_probe(struct platform_device *pdev)
+>>  {
+>> +	struct device *dev = &pdev->dev;
+>>  	struct resource	*mem_res;
+>>  	struct resource	*res;
+>>  	struct s3c64xx_spi_driver_data *sdd;
+>> -	struct s3c64xx_spi_info *sci = dev_get_platdata(&pdev->dev);
+>> +	struct s3c64xx_spi_info *sci = dev_get_platdata(dev);
+>>  	struct spi_master *master;
+>>  	int ret, irq;
+>>  	char clk_name[16];
+>>  
+>> -	if (!sci && pdev->dev.of_node) {
+>> -		sci = s3c64xx_spi_parse_dt(&pdev->dev);
+>> +	if (!sci && dev->of_node) {
+>> +		sci = s3c64xx_spi_parse_dt(dev);
+>>  		if (IS_ERR(sci))
+>>  			return PTR_ERR(sci);
+>>  	}
+>>  
+>>  	if (!sci) {
+>> -		dev_err(&pdev->dev, "platform_data missing!\n");
+>> +		dev_err(dev, "platform_data missing!\n");
+>>  		return -ENODEV;
+>>  	}
+>>  
+>>  	mem_res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>>  	if (mem_res == NULL) {
+>> -		dev_err(&pdev->dev, "Unable to get SPI MEM resource\n");
+>> +		dev_err(dev, "Unable to get SPI MEM resource\n");
+>>  		return -ENXIO;
+>>  	}
+>>  
+>>  	irq = platform_get_irq(pdev, 0);
+>>  	if (irq < 0) {
+>> -		dev_warn(&pdev->dev, "Failed to get IRQ: %d\n", irq);
+>> +		dev_warn(dev, "Failed to get IRQ: %d\n", irq);
+>>  		return irq;
+>>  	}
+>>  
+>> -	master = spi_alloc_master(&pdev->dev,
+>> -				sizeof(struct s3c64xx_spi_driver_data));
+>> +	master = spi_alloc_master(dev, sizeof(struct s3c64xx_spi_driver_data));
+>>  	if (master == NULL) {
+>>  		dev_err(&pdev->dev, "Unable to allocate SPI Master\n");
+>>  		return -ENOMEM;
+>> @@ -1071,9 +1071,9 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+>>  	sdd->pdev = pdev;
+>>  	sdd->sfr_start = mem_res->start;
+>>  	if (pdev->dev.of_node) {
+>> -		ret = of_alias_get_id(pdev->dev.of_node, "spi");
+>> +		ret = of_alias_get_id(dev->of_node, "spi");
+>>  		if (ret < 0) {
+>> -			dev_err(&pdev->dev, "failed to get alias id, errno %d\n",
+>> +			dev_err(dev, "failed to get alias id, errno %d\n",
+>>  				ret);
+>>  			goto err0;
+>>  		}
+>> @@ -1087,14 +1087,14 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+>>  	if (!sdd->pdev->dev.of_node) {
+>>  		res = platform_get_resource(pdev, IORESOURCE_DMA,  0);
+>>  		if (!res) {
+>> -			dev_warn(&pdev->dev, "Unable to get SPI tx dma resource. Switching to poll mode\n");
+>> +			dev_warn(dev, "Unable to get SPI tx dma resource. Switching to poll mode\n");
+>>  			sdd->port_conf->quirks = S3C64XX_SPI_QUIRK_POLL;
+>>  		} else
+>>  			sdd->tx_dma.dmach = res->start;
+>>  
+>>  		res = platform_get_resource(pdev, IORESOURCE_DMA,  1);
+>>  		if (!res) {
+>> -			dev_warn(&pdev->dev, "Unable to get SPI rx dma resource. Switching to poll mode\n");
+>> +			dev_warn(dev, "Unable to get SPI rx dma resource. Switching to poll mode\n");
+>>  			sdd->port_conf->quirks = S3C64XX_SPI_QUIRK_POLL;
+>>  		} else
+>>  			sdd->rx_dma.dmach = res->start;
+>> @@ -1103,7 +1103,7 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+>>  	sdd->tx_dma.direction = DMA_MEM_TO_DEV;
+>>  	sdd->rx_dma.direction = DMA_DEV_TO_MEM;
+>>  
+>> -	master->dev.of_node = pdev->dev.of_node;
+>> +	master->dev.of_node = dev->of_node;
+>>  	master->bus_num = sdd->port_id;
+>>  	master->setup = s3c64xx_spi_setup;
+>>  	master->cleanup = s3c64xx_spi_cleanup;
+>> @@ -1121,43 +1121,43 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+>>  	if (!is_polling(sdd))
+>>  		master->can_dma = s3c64xx_spi_can_dma;
+>>  
+>> -	sdd->regs = devm_ioremap_resource(&pdev->dev, mem_res);
+>> +	sdd->regs = devm_ioremap_resource(dev, mem_res);
+>>  	if (IS_ERR(sdd->regs)) {
+>>  		ret = PTR_ERR(sdd->regs);
+>>  		goto err0;
+>>  	}
+>>  
+>>  	if (sci->cfg_gpio && sci->cfg_gpio()) {
+>> -		dev_err(&pdev->dev, "Unable to config gpio\n");
+>> +		dev_err(dev, "Unable to config gpio\n");
+>>  		ret = -EBUSY;
+>>  		goto err0;
+>>  	}
+>>  
+>>  	/* Setup clocks */
+>> -	sdd->clk = devm_clk_get(&pdev->dev, "spi");
+>> +	sdd->clk = devm_clk_get(dev, "spi");
+>>  	if (IS_ERR(sdd->clk)) {
+>> -		dev_err(&pdev->dev, "Unable to acquire clock 'spi'\n");
+>> +		dev_err(dev, "Unable to acquire clock 'spi'\n");
+>>  		ret = PTR_ERR(sdd->clk);
+>>  		goto err0;
+>>  	}
+>>  
+>>  	if (clk_prepare_enable(sdd->clk)) {
+>> -		dev_err(&pdev->dev, "Couldn't enable clock 'spi'\n");
+>> +		dev_err(dev, "Couldn't enable clock 'spi'\n");
+>>  		ret = -EBUSY;
+>>  		goto err0;
+>>  	}
+>>  
+>>  	sprintf(clk_name, "spi_busclk%d", sci->src_clk_nr);
+>> -	sdd->src_clk = devm_clk_get(&pdev->dev, clk_name);
+>> +	sdd->src_clk = devm_clk_get(dev, clk_name);
+>>  	if (IS_ERR(sdd->src_clk)) {
+>> -		dev_err(&pdev->dev,
+>> +		dev_err(dev,
+>>  			"Unable to acquire clock '%s'\n", clk_name);
+>>  		ret = PTR_ERR(sdd->src_clk);
+>>  		goto err2;
+>>  	}
+>>  
+>>  	if (clk_prepare_enable(sdd->src_clk)) {
+>> -		dev_err(&pdev->dev, "Couldn't enable clock '%s'\n", clk_name);
+>> +		dev_err(dev, "Couldn't enable clock '%s'\n", clk_name);
+>>  		ret = -EBUSY;
+>>  		goto err2;
+>>  	}
+>> @@ -1168,10 +1168,10 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+>>  	spin_lock_init(&sdd->lock);
+>>  	init_completion(&sdd->xfer_completion);
+>>  
+>> -	ret = devm_request_irq(&pdev->dev, irq, s3c64xx_spi_irq, 0,
+>> +	ret = devm_request_irq(dev, irq, s3c64xx_spi_irq, 0,
+>>  				"spi-s3c64xx", sdd);
+>>  	if (ret != 0) {
+>> -		dev_err(&pdev->dev, "Failed to request IRQ %d: %d\n",
+>> +		dev_err(dev, "Failed to request IRQ %d: %d\n",
+>>  			irq, ret);
+>>  		goto err3;
+>>  	}
+>> @@ -1180,18 +1180,18 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+>>  	       S3C64XX_SPI_INT_TX_OVERRUN_EN | S3C64XX_SPI_INT_TX_UNDERRUN_EN,
+>>  	       sdd->regs + S3C64XX_SPI_INT_EN);
+>>  
+>> -	pm_runtime_set_active(&pdev->dev);
+>> -	pm_runtime_enable(&pdev->dev);
+>> +	pm_runtime_set_active(dev);
+>> +	pm_runtime_enable(dev);
+>>  
+>> -	ret = devm_spi_register_master(&pdev->dev, master);
+>> +	ret = devm_spi_register_master(dev, master);
+>>  	if (ret != 0) {
+>> -		dev_err(&pdev->dev, "cannot register SPI master: %d\n", ret);
+>> +		dev_err(dev, "cannot register SPI master: %d\n", ret);
+>>  		goto err3;
+>>  	}
+>>  
+>> -	dev_dbg(&pdev->dev, "Samsung SoC SPI Driver loaded for Bus SPI-%d with %d Slaves attached\n",
+>> +	dev_dbg(dev, "Samsung SoC SPI Driver loaded for Bus SPI-%d with %d Slaves attached\n",
+>>  					sdd->port_id, master->num_chipselect);
+>> -	dev_dbg(&pdev->dev, "\tIOmem=[%pR]\tFIFO %dbytes\tDMA=[Rx-%d, Tx-%d]\n",
+>> +	dev_dbg(dev, "\tIOmem=[%pR]\tFIFO %dbytes\tDMA=[Rx-%d, Tx-%d]\n",
+>>  					mem_res, (FIFO_LVL_MASK(sdd) >> 1) + 1,
+>>  					sdd->rx_dma.dmach, sdd->tx_dma.dmach);
+>>  
+>>
+> 
+> 
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

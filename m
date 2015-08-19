@@ -1,8 +1,8 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 1/3] spi: s3c64xx: fix runtime PM handling if registering
- the driver fails
-Date: Wed, 19 Aug 2015 22:00:41 +0200
-Message-ID: <55D4E069.70903@gmail.com>
+Subject: [PATCH 2/3] spi: s3c64xx: extend driver to make full use of runtime
+ PM autosuspend
+Date: Wed, 19 Aug 2015 21:54:52 +0200
+Message-ID: <55D4DF0C.8080104@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
@@ -13,37 +13,65 @@ Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-If registering the driver fails take care that runtime PM is properly
-cleaned up.
+Extend the driver to make full use of runtime PM autosuspend.
+Before only the SPI core was instructed to use autosuspend
+by setting master->auto_runtime_pm. Nevertheless due to the missing
+pm_runtime_use_autosuspend call autosuspend wasn't active.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-s3c64xx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/spi/spi-s3c64xx.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index cd1cfac..8a6ab88 100644
+index 8a6ab88..8365c88 100644
 --- a/drivers/spi/spi-s3c64xx.c
 +++ b/drivers/spi/spi-s3c64xx.c
-@@ -1186,7 +1186,7 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 	ret = devm_spi_register_master(&pdev->dev, master);
- 	if (ret != 0) {
- 		dev_err(&pdev->dev, "cannot register SPI master: %d\n", ret);
--		goto err3;
-+		goto err4;
+@@ -32,6 +32,7 @@
+ #define MAX_SPI_PORTS		6
+ #define S3C64XX_SPI_QUIRK_POLL		(1 << 0)
+ #define S3C64XX_SPI_QUIRK_CS_AUTO	(1 << 1)
++#define AUTOSUSPEND_TIMEOUT	2000
+ 
+ /* Registers and bit-fields */
+ 
+@@ -859,13 +860,15 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
+ 		}
  	}
  
- 	dev_dbg(&pdev->dev, "Samsung SoC SPI Driver loaded for Bus SPI-%d with %d Slaves attached\n",
-@@ -1197,6 +1197,9 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 
+-	pm_runtime_put(&sdd->pdev->dev);
++	pm_runtime_mark_last_busy(&sdd->pdev->dev);
++	pm_runtime_put_autosuspend(&sdd->pdev->dev);
+ 	if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_CS_AUTO))
+ 		writel(S3C64XX_SPI_SLAVE_SIG_INACT, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
  	return 0;
  
-+err4:
-+	pm_runtime_disable(&pdev->dev);
-+	pm_runtime_set_suspended(&pdev->dev);
- err3:
- 	clk_disable_unprepare(sdd->src_clk);
- err2:
+ setup_exit:
+-	pm_runtime_put(&sdd->pdev->dev);
++	pm_runtime_mark_last_busy(&sdd->pdev->dev);
++	pm_runtime_put_autosuspend(&sdd->pdev->dev);
+ 	/* setup() returns with device de-selected */
+ 	if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_CS_AUTO))
+ 		writel(S3C64XX_SPI_SLAVE_SIG_INACT, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
+@@ -1180,6 +1183,8 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+ 	       S3C64XX_SPI_INT_TX_OVERRUN_EN | S3C64XX_SPI_INT_TX_UNDERRUN_EN,
+ 	       sdd->regs + S3C64XX_SPI_INT_EN);
+ 
++	pm_runtime_set_autosuspend_delay(&pdev->dev, AUTOSUSPEND_TIMEOUT);
++	pm_runtime_use_autosuspend(&pdev->dev);
+ 	pm_runtime_set_active(&pdev->dev);
+ 	pm_runtime_enable(&pdev->dev);
+ 
+@@ -1195,6 +1200,9 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+ 					mem_res, (FIFO_LVL_MASK(sdd) >> 1) + 1,
+ 					sdd->rx_dma.dmach, sdd->tx_dma.dmach);
+ 
++	pm_runtime_mark_last_busy(&pdev->dev);
++	pm_runtime_autosuspend(&pdev->dev);
++
+ 	return 0;
+ 
+ err4:
 -- 
 2.5.0
 

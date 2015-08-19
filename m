@@ -1,108 +1,188 @@
-From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 2/3] spi: s3c64xx: fix runtime PM handling
-Date: Wed, 19 Aug 2015 07:54:20 +0200
-Message-ID: <55D41A0C.2060107@gmail.com>
-References: <55D39E41.8010908@gmail.com> <55D3CF4B.5060208@samsung.com>
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [PATCH v3 2/2] spi: dw: Allow interface drivers to limit data
+ I/O to word sizes
+Date: Wed, 19 Aug 2015 11:51:06 +0300
+Message-ID: <1439974266.23314.8.camel@linux.intel.com>
+References: <1439929313-4948-1-git-send-email-michael@smart-africa.com>
+	 <1439929313-4948-3-git-send-email-michael@smart-africa.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Steffen Trumtrar <s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+To: Michael van der Westhuizen <michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <55D3CF4B.5060208-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+In-Reply-To: <1439929313-4948-3-git-send-email-michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Am 19.08.2015 um 02:35 schrieb Krzysztof Kozlowski:
-> On 19.08.2015 06:06, Heiner Kallweit wrote:
->> The patch fixes / extends the runtime PM handling.
->> - Currently the driver instructs the SPI core to use auto-suspend
->>   but doesn't configure it. Add the necessary calls and let it
->>   autosuspend after probe.
+On Tue, 2015-08-18 at 22:21 +0200, Michael van der Westhuizen wrote:
+> The commit dd11444327ce ("spi: dw-spi: Convert 16bit accesses to 
+> 32bit
+> accesses") changed all 16bit accesses in the DW_apb_ssi driver to 
+> 32bit.
+> This, unfortunately, breaks data register access on picoXcell, where 
+> the
+> DW IP needs data register accesses to be word accesses (all other
+> accesses appear to be OK).
 > 
-> After quick look at the driver I think it does not use autosuspend
-> fully. It just sets master->auto_runtime_pm (so the core code will use
-> autosuspend) but its own calls to pm_runtime_put() are regular ones.
-> Shouldn't this be enhanced as well?
-Right, the pm_runtime_put calls in s3c64xx_spi_setup should be
-replaced as well. Will provide an updated patch.
+> This change introduces a new master variable to allow interface 
+> drivers
+> to specify that 16bit data transfer I/O is required.  This change 
+> also
+> introduces the ability to set this variable via device tree bindings 
+> in
+> the MMIO interface driver.  Both the core and the MMIO interface 
+> driver
+> default to the current 32bit behaviour.
 > 
->> - In case the driver registration fails runtime PM needs to be
->>   properly disabled.
->>
->> Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
->> ---
->>  drivers/spi/spi-s3c64xx.c | 11 ++++++++++-
->>  1 file changed, 10 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
->> index c4d3b06..15a6de1 100644
->> --- a/drivers/spi/spi-s3c64xx.c
->> +++ b/drivers/spi/spi-s3c64xx.c
->> @@ -32,6 +32,7 @@
->>  #define MAX_SPI_PORTS		6
->>  #define S3C64XX_SPI_QUIRK_POLL		(1 << 0)
->>  #define S3C64XX_SPI_QUIRK_CS_AUTO	(1 << 1)
->> +#define AUTOSUSPEND_TIMEOUT     2000
->>  
->>  /* Registers and bit-fields */
->>  
->> @@ -1180,13 +1181,15 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
->>  	       S3C64XX_SPI_INT_TX_OVERRUN_EN | S3C64XX_SPI_INT_TX_UNDERRUN_EN,
->>  	       sdd->regs + S3C64XX_SPI_INT_EN);
->>  
->> +	pm_runtime_set_autosuspend_delay(dev, AUTOSUSPEND_TIMEOUT);
->> +	pm_runtime_use_autosuspend(dev);
->>  	pm_runtime_set_active(dev);
->>  	pm_runtime_enable(dev);
->>  
->>  	ret = devm_spi_register_master(dev, master);
->>  	if (ret != 0) {
->>  		dev_err(dev, "cannot register SPI master: %d\n", ret);
->> -		goto err3;
->> +		goto err4;
->>  	}
->>  
->>  	dev_dbg(dev, "Samsung SoC SPI Driver loaded for Bus SPI-%d with %d Slaves attached\n",
->> @@ -1195,8 +1198,14 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
->>  					mem_res, (FIFO_LVL_MASK(sdd) >> 1) + 1,
->>  					sdd->rx_dma.dmach, sdd->tx_dma.dmach);
->>  
->> +	pm_runtime_mark_last_busy(dev);
->> +	pm_runtime_autosuspend(dev);
+> Before this change, on a picoXcell pc3x3:
+>  spi_master spi32766: interrupt_transfer: fifo overrun/underrun
+>  m25p80 spi32766.0: error -5 reading 9f
+>  m25p80: probe of spi32766.0 failed with error -5
 > 
-> There is a high chance that device will be suspended already at this
-> point because pm_runtime_put() in setup. In most cases (when SPI is
-> started) this won't do anything so we are back at first of my questions
-> - shouldn't you update pm_runtime_put() calls?
-Yes, these calls should be updated.
-> 
-> Additionally (which is not related to your patch) shouldn't we
-> pm_runtime_get() at some point in probe() to be sure that it won't be
-> suspended to early?
-Not 100% sure at this moment, I will check.
-> 
->> +
->>  	return 0;
->>  
->> +err4:
->> +	pm_runtime_disable(dev);
->> +	pm_runtime_set_suspended(dev);
-> 
-> Please separate fixes from enhancements into different patches.
-OK, will do so.
-> 
-> Best regards,
-> Krzysztof
-> 
->>  err3:
->>  	clk_disable_unprepare(sdd->src_clk);
->>  err2:
->>
-> 
-> 
+> After this change:
+>  m25p80 spi32766.0: m25p40 (512 Kbytes)
 
+Reviewed-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+
+> 
+> Fixes: dd11444327ce ("spi: dw-spi: Convert 16bit accesses to 32bit 
+> accesses")
+> Signed-off-by: Michael van der Westhuizen <michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>
+> ---
+> Changes in v3:
+>   - Rename the DT property as requested by Rob Herring.
+> 
+> Changes in v2:
+>   - Incorporate review feedback from Andy Shevchenko
+>     - Rework the DT bindings to accept an I/O register width as a
+>       number of bytes rather than using a boolean spefifying the
+>       width preference to be 16 bits.
+>     - Add data register access wrapper functions and use them when
+>       reading and writing the data register.
+> 
+>  drivers/spi/spi-dw-mmio.c |  3 +++
+>  drivers/spi/spi-dw.c      |  4 ++--
+>  drivers/spi/spi-dw.h      | 35 +++++++++++++++++++++++++++++++++++
+>  3 files changed, 40 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
+> index eb03e12..7edede6 100644
+> --- a/drivers/spi/spi-dw-mmio.c
+> +++ b/drivers/spi/spi-dw-mmio.c
+> @@ -74,6 +74,9 @@ static int dw_spi_mmio_probe(struct platform_device 
+> *pdev)
+>  
+>  	dws->max_freq = clk_get_rate(dwsmmio->clk);
+>  
+> +	of_property_read_u32(pdev->dev.of_node, "reg-io-width",
+> +			     &dws->reg_io_width);
+> +
+>  	num_cs = 4;
+>  
+>  	if (pdev->dev.of_node)
+> diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+> index 8d67d03..4fbfcdc 100644
+> --- a/drivers/spi/spi-dw.c
+> +++ b/drivers/spi/spi-dw.c
+> @@ -194,7 +194,7 @@ static void dw_writer(struct dw_spi *dws)
+>  			else
+>  				txw = *(u16 *)(dws->tx);
+>  		}
+> -		dw_writel(dws, DW_SPI_DR, txw);
+> +		dw_write_io_reg(dws, DW_SPI_DR, txw);
+>  		dws->tx += dws->n_bytes;
+>  	}
+>  }
+> @@ -205,7 +205,7 @@ static void dw_reader(struct dw_spi *dws)
+>  	u16 rxw;
+>  
+>  	while (max--) {
+> -		rxw = dw_readl(dws, DW_SPI_DR);
+> +		rxw = dw_read_io_reg(dws, DW_SPI_DR);
+>  		/* Care rx only if the transfer's original "rx" is 
+> not null */
+>  		if (dws->rx_end - dws->len) {
+>  			if (dws->n_bytes == 1)
+> diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+> index 6c91391..b75ed32 100644
+> --- a/drivers/spi/spi-dw.h
+> +++ b/drivers/spi/spi-dw.h
+> @@ -109,6 +109,7 @@ struct dw_spi {
+>  	u32			fifo_len;	/* depth of the FIFO 
+> buffer */
+>  	u32			max_freq;	/* max bus freq 
+> supported */
+>  
+> +	u32			reg_io_width;	/* DR I/O width in 
+> bytes */
+>  	u16			bus_num;
+>  	u16			num_cs;		/* supported 
+> slave numbers */
+>  
+> @@ -145,11 +146,45 @@ static inline u32 dw_readl(struct dw_spi *dws, 
+> u32 offset)
+>  	return __raw_readl(dws->regs + offset);
+>  }
+>  
+> +static inline u16 dw_readw(struct dw_spi *dws, u32 offset)
+> +{
+> +	return __raw_readw(dws->regs + offset);
+> +}
+> +
+>  static inline void dw_writel(struct dw_spi *dws, u32 offset, u32 
+> val)
+>  {
+>  	__raw_writel(val, dws->regs + offset);
+>  }
+>  
+> +static inline void dw_writew(struct dw_spi *dws, u32 offset, u16 
+> val)
+> +{
+> +	__raw_writew(val, dws->regs + offset);
+> +}
+> +
+> +static inline u32 dw_read_io_reg(struct dw_spi *dws, u32 offset)
+> +{
+> +	switch (dws->reg_io_width) {
+> +	case 2:
+> +		return dw_readw(dws, offset);
+> +	case 4:
+> +	default:
+> +		return dw_readl(dws, offset);
+> +	}
+> +}
+> +
+> +static inline void dw_write_io_reg(struct dw_spi *dws, u32 offset, 
+> u32 val)
+> +{
+> +	switch (dws->reg_io_width) {
+> +	case 2:
+> +		dw_writew(dws, offset, val);
+> +		break;
+> +	case 4:
+> +	default:
+> +		dw_writel(dws, offset, val);
+> +		break;
+> +	}
+> +}
+> +
+>  static inline void spi_enable_chip(struct dw_spi *dws, int enable)
+>  {
+>  	dw_writel(dws, DW_SPI_SSIENR, (enable ? 1 : 0));
+
+-- 
+Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Intel Finland Oy
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

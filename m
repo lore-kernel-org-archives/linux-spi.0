@@ -1,231 +1,85 @@
-From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 1/3] spi: s3c64xx: simplify probe function by using local
- variable for &pdev->dev
-Date: Wed, 19 Aug 2015 07:18:31 +0200
-Message-ID: <55D411A7.8060900@gmail.com>
-References: <55D39E07.9040700@gmail.com> <55D3C618.1000305@samsung.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
+Subject: Re: [PATCH 3/3] spi: s3c64xx: simplify suspend/resume handlers
+Date: Wed, 19 Aug 2015 07:55:55 +0200
+Message-ID: <55D41A6B.8010505@gmail.com>
+References: <55D39EB9.2090001@gmail.com> <55D3D7D8.3080705@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <55D3C618.1000305-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+To: Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+	linux-samsung-soc@vger.kernel.org
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <55D3D7D8.3080705@samsung.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Am 19.08.2015 um 01:56 schrieb Krzysztof Kozlowski:
-> On 19.08.2015 06:05, Heiner Kallweit wrote:
->> Simplify the probe function by replacing all occurrences of &pdev->dev
->> with a local variable.
+Am 19.08.2015 um 03:11 schrieb Krzysztof Kozlowski:
+> On 19.08.2015 06:08, Heiner Kallweit wrote:
+>> The runtime PM handlers take care of enabling / disabling the clock.
+>> Therefore use them to simplify the suspend / resume handlers.
 >>
->> Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
->> ---
->>  drivers/spi/spi-s3c64xx.c | 58 +++++++++++++++++++++++------------------------
->>  1 file changed, 29 insertions(+), 29 deletions(-)
+>> pm_runtime_suspend/resume internally check whether suspending/resuming
+>> is possible and return 1 in case PM state is suspended/active already.
+>>
+>> Currently there also seems to be a bug in the resume handler
+>> as suspend as well as resume check for !pm_runtime_disabled(dev).
 > 
-> I don't see simplification here (the same number of insertions as
-> deletions, code is exactly the same). &pdev->dev is a common pattern in
-> most of platform drivers.
-Right, &pdev->dev is a common pattern. I consider the new version better as we
-really have a lot of occurrences of &pdev->dev. It reduces complexity in several lines
-and might save a few CPU cycles in case the compiler can't hold &pdev->dev in a register
-all the time.
-Of course your mileage might vary. If you think it's good as it is I'm also fine with it.
+> Actually currently there is a bug because PM runtime is not disabled and
+> concurrent runtime suspends/resumes can happen.
+> 
+>>
+>> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+>> ---
+>>  drivers/spi/spi-s3c64xx.c | 15 +++++++--------
+>>  1 file changed, 7 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+>> index 15a6de1..78a6f04 100644
+>> --- a/drivers/spi/spi-s3c64xx.c
+>> +++ b/drivers/spi/spi-s3c64xx.c
+>> @@ -1242,10 +1242,9 @@ static int s3c64xx_spi_suspend(struct device *dev)
+>>  	if (ret)
+>>  		return ret;
+>>  
+>> -	if (!pm_runtime_suspended(dev)) {
+>> -		clk_disable_unprepare(sdd->clk);
+>> -		clk_disable_unprepare(sdd->src_clk);
+>> -	}
+>> +	ret = pm_runtime_suspend(dev);
+> 
+> I think you need pm_runtime_force_suspend() instead. Same for resume.
+You're right. Will update the patch.
 
-Rgds, Heiner
+Regards, Heiner
 > 
 > Best regards,
 > Krzysztof
 > 
-> 
->>
->> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
->> index cd1cfac..c4d3b06 100644
->> --- a/drivers/spi/spi-s3c64xx.c
->> +++ b/drivers/spi/spi-s3c64xx.c
->> @@ -1024,39 +1024,39 @@ static inline struct s3c64xx_spi_port_config *s3c64xx_spi_get_port_config(
+>> +	if (ret < 0)
+>> +		return ret;
 >>  
->>  static int s3c64xx_spi_probe(struct platform_device *pdev)
->>  {
->> +	struct device *dev = &pdev->dev;
->>  	struct resource	*mem_res;
->>  	struct resource	*res;
->>  	struct s3c64xx_spi_driver_data *sdd;
->> -	struct s3c64xx_spi_info *sci = dev_get_platdata(&pdev->dev);
->> +	struct s3c64xx_spi_info *sci = dev_get_platdata(dev);
->>  	struct spi_master *master;
->>  	int ret, irq;
->>  	char clk_name[16];
+>>  	sdd->cur_speed = 0; /* Output Clock is stopped */
 >>  
->> -	if (!sci && pdev->dev.of_node) {
->> -		sci = s3c64xx_spi_parse_dt(&pdev->dev);
->> +	if (!sci && dev->of_node) {
->> +		sci = s3c64xx_spi_parse_dt(dev);
->>  		if (IS_ERR(sci))
->>  			return PTR_ERR(sci);
->>  	}
+>> @@ -1257,14 +1256,14 @@ static int s3c64xx_spi_resume(struct device *dev)
+>>  	struct spi_master *master = dev_get_drvdata(dev);
+>>  	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
+>>  	struct s3c64xx_spi_info *sci = sdd->cntrlr_info;
+>> +	int ret;
 >>  
->>  	if (!sci) {
->> -		dev_err(&pdev->dev, "platform_data missing!\n");
->> +		dev_err(dev, "platform_data missing!\n");
->>  		return -ENODEV;
->>  	}
+>>  	if (sci->cfg_gpio)
+>>  		sci->cfg_gpio();
 >>  
->>  	mem_res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->>  	if (mem_res == NULL) {
->> -		dev_err(&pdev->dev, "Unable to get SPI MEM resource\n");
->> +		dev_err(dev, "Unable to get SPI MEM resource\n");
->>  		return -ENXIO;
->>  	}
+>> -	if (!pm_runtime_suspended(dev)) {
+>> -		clk_prepare_enable(sdd->src_clk);
+>> -		clk_prepare_enable(sdd->clk);
+>> -	}
+>> +	ret = pm_runtime_resume(dev);
+>> +	if (ret < 0)
+>> +		return ret;
 >>  
->>  	irq = platform_get_irq(pdev, 0);
->>  	if (irq < 0) {
->> -		dev_warn(&pdev->dev, "Failed to get IRQ: %d\n", irq);
->> +		dev_warn(dev, "Failed to get IRQ: %d\n", irq);
->>  		return irq;
->>  	}
->>  
->> -	master = spi_alloc_master(&pdev->dev,
->> -				sizeof(struct s3c64xx_spi_driver_data));
->> +	master = spi_alloc_master(dev, sizeof(struct s3c64xx_spi_driver_data));
->>  	if (master == NULL) {
->>  		dev_err(&pdev->dev, "Unable to allocate SPI Master\n");
->>  		return -ENOMEM;
->> @@ -1071,9 +1071,9 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
->>  	sdd->pdev = pdev;
->>  	sdd->sfr_start = mem_res->start;
->>  	if (pdev->dev.of_node) {
->> -		ret = of_alias_get_id(pdev->dev.of_node, "spi");
->> +		ret = of_alias_get_id(dev->of_node, "spi");
->>  		if (ret < 0) {
->> -			dev_err(&pdev->dev, "failed to get alias id, errno %d\n",
->> +			dev_err(dev, "failed to get alias id, errno %d\n",
->>  				ret);
->>  			goto err0;
->>  		}
->> @@ -1087,14 +1087,14 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
->>  	if (!sdd->pdev->dev.of_node) {
->>  		res = platform_get_resource(pdev, IORESOURCE_DMA,  0);
->>  		if (!res) {
->> -			dev_warn(&pdev->dev, "Unable to get SPI tx dma resource. Switching to poll mode\n");
->> +			dev_warn(dev, "Unable to get SPI tx dma resource. Switching to poll mode\n");
->>  			sdd->port_conf->quirks = S3C64XX_SPI_QUIRK_POLL;
->>  		} else
->>  			sdd->tx_dma.dmach = res->start;
->>  
->>  		res = platform_get_resource(pdev, IORESOURCE_DMA,  1);
->>  		if (!res) {
->> -			dev_warn(&pdev->dev, "Unable to get SPI rx dma resource. Switching to poll mode\n");
->> +			dev_warn(dev, "Unable to get SPI rx dma resource. Switching to poll mode\n");
->>  			sdd->port_conf->quirks = S3C64XX_SPI_QUIRK_POLL;
->>  		} else
->>  			sdd->rx_dma.dmach = res->start;
->> @@ -1103,7 +1103,7 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
->>  	sdd->tx_dma.direction = DMA_MEM_TO_DEV;
->>  	sdd->rx_dma.direction = DMA_DEV_TO_MEM;
->>  
->> -	master->dev.of_node = pdev->dev.of_node;
->> +	master->dev.of_node = dev->of_node;
->>  	master->bus_num = sdd->port_id;
->>  	master->setup = s3c64xx_spi_setup;
->>  	master->cleanup = s3c64xx_spi_cleanup;
->> @@ -1121,43 +1121,43 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
->>  	if (!is_polling(sdd))
->>  		master->can_dma = s3c64xx_spi_can_dma;
->>  
->> -	sdd->regs = devm_ioremap_resource(&pdev->dev, mem_res);
->> +	sdd->regs = devm_ioremap_resource(dev, mem_res);
->>  	if (IS_ERR(sdd->regs)) {
->>  		ret = PTR_ERR(sdd->regs);
->>  		goto err0;
->>  	}
->>  
->>  	if (sci->cfg_gpio && sci->cfg_gpio()) {
->> -		dev_err(&pdev->dev, "Unable to config gpio\n");
->> +		dev_err(dev, "Unable to config gpio\n");
->>  		ret = -EBUSY;
->>  		goto err0;
->>  	}
->>  
->>  	/* Setup clocks */
->> -	sdd->clk = devm_clk_get(&pdev->dev, "spi");
->> +	sdd->clk = devm_clk_get(dev, "spi");
->>  	if (IS_ERR(sdd->clk)) {
->> -		dev_err(&pdev->dev, "Unable to acquire clock 'spi'\n");
->> +		dev_err(dev, "Unable to acquire clock 'spi'\n");
->>  		ret = PTR_ERR(sdd->clk);
->>  		goto err0;
->>  	}
->>  
->>  	if (clk_prepare_enable(sdd->clk)) {
->> -		dev_err(&pdev->dev, "Couldn't enable clock 'spi'\n");
->> +		dev_err(dev, "Couldn't enable clock 'spi'\n");
->>  		ret = -EBUSY;
->>  		goto err0;
->>  	}
->>  
->>  	sprintf(clk_name, "spi_busclk%d", sci->src_clk_nr);
->> -	sdd->src_clk = devm_clk_get(&pdev->dev, clk_name);
->> +	sdd->src_clk = devm_clk_get(dev, clk_name);
->>  	if (IS_ERR(sdd->src_clk)) {
->> -		dev_err(&pdev->dev,
->> +		dev_err(dev,
->>  			"Unable to acquire clock '%s'\n", clk_name);
->>  		ret = PTR_ERR(sdd->src_clk);
->>  		goto err2;
->>  	}
->>  
->>  	if (clk_prepare_enable(sdd->src_clk)) {
->> -		dev_err(&pdev->dev, "Couldn't enable clock '%s'\n", clk_name);
->> +		dev_err(dev, "Couldn't enable clock '%s'\n", clk_name);
->>  		ret = -EBUSY;
->>  		goto err2;
->>  	}
->> @@ -1168,10 +1168,10 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
->>  	spin_lock_init(&sdd->lock);
->>  	init_completion(&sdd->xfer_completion);
->>  
->> -	ret = devm_request_irq(&pdev->dev, irq, s3c64xx_spi_irq, 0,
->> +	ret = devm_request_irq(dev, irq, s3c64xx_spi_irq, 0,
->>  				"spi-s3c64xx", sdd);
->>  	if (ret != 0) {
->> -		dev_err(&pdev->dev, "Failed to request IRQ %d: %d\n",
->> +		dev_err(dev, "Failed to request IRQ %d: %d\n",
->>  			irq, ret);
->>  		goto err3;
->>  	}
->> @@ -1180,18 +1180,18 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
->>  	       S3C64XX_SPI_INT_TX_OVERRUN_EN | S3C64XX_SPI_INT_TX_UNDERRUN_EN,
->>  	       sdd->regs + S3C64XX_SPI_INT_EN);
->>  
->> -	pm_runtime_set_active(&pdev->dev);
->> -	pm_runtime_enable(&pdev->dev);
->> +	pm_runtime_set_active(dev);
->> +	pm_runtime_enable(dev);
->>  
->> -	ret = devm_spi_register_master(&pdev->dev, master);
->> +	ret = devm_spi_register_master(dev, master);
->>  	if (ret != 0) {
->> -		dev_err(&pdev->dev, "cannot register SPI master: %d\n", ret);
->> +		dev_err(dev, "cannot register SPI master: %d\n", ret);
->>  		goto err3;
->>  	}
->>  
->> -	dev_dbg(&pdev->dev, "Samsung SoC SPI Driver loaded for Bus SPI-%d with %d Slaves attached\n",
->> +	dev_dbg(dev, "Samsung SoC SPI Driver loaded for Bus SPI-%d with %d Slaves attached\n",
->>  					sdd->port_id, master->num_chipselect);
->> -	dev_dbg(&pdev->dev, "\tIOmem=[%pR]\tFIFO %dbytes\tDMA=[Rx-%d, Tx-%d]\n",
->> +	dev_dbg(dev, "\tIOmem=[%pR]\tFIFO %dbytes\tDMA=[Rx-%d, Tx-%d]\n",
->>  					mem_res, (FIFO_LVL_MASK(sdd) >> 1) + 1,
->>  					sdd->rx_dma.dmach, sdd->tx_dma.dmach);
+>>  	s3c64xx_spi_hwinit(sdd, sdd->port_id);
 >>  
 >>
 > 
 > 
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

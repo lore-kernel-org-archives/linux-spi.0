@@ -1,57 +1,103 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 3/3] spi: mediatek: fix spi incorrect endian usage
-Date: Wed, 19 Aug 2015 10:26:26 -0700
-Message-ID: <20150819172626.GV10748@sirena.org.uk>
-References: <1439955478-2733-1-git-send-email-leilk.liu@mediatek.com>
- <1439955478-2733-4-git-send-email-leilk.liu@mediatek.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="D7NAS2w8UwTm8YEa"
-Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1439955478-2733-4-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Subject: Applied "spi: mediatek: remove redundant clock in prepare_hardware/unprepare_hardware" to the spi tree
+Date: Wed, 19 Aug 2015 10:27:35 -0700
+Message-ID: <E1ZS79D-0001xh-7v@finisterre>
+References: <1439955478-2733-3-git-send-email-leilk.liu@mediatek.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1439955478-2733-3-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---D7NAS2w8UwTm8YEa
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: mediatek: remove redundant clock in prepare_hardware/unprepare_hardware
 
-On Wed, Aug 19, 2015 at 11:37:58AM +0800, Leilk Liu wrote:
-> TX_ENDIAN/RX_ENDIAN bits define whether to reverse the endian
-> order of the data DMA from/to memory. The endian order should
-> keep the same with cpu endian.
+has been applied to the spi tree at
 
-This doesn't apply, probably because it depends on your stylistic
-changes patch - this is an example of the issues I was mentioning with
-stylistic changes getting in the waty of fixes :(
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
---D7NAS2w8UwTm8YEa
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEcBAEBCAAGBQJV1Lw9AAoJECTWi3JdVIfQLI4H/1GLBPDiEigCLfVZ1wvQdxf/
-HzcqaSmFryw1IDmnLV1qt0s40T6VDsPOFfO1f+tFZeKd3zNZ0BYjgYiysf178SFj
-ZBvUZWC2aIQVouWXJh6Y/SLV45L2EYKdmci7ZNH5ylag/u0pmJlCVsaIjb9SfImq
-vNBA8FoJE7nNYpTvxd3bZLG8VJQIy8rDviKcAxnmsNswqgMtirnE1VAMftYuVuVd
-3NsiSlitYEdyKbU18hI5njm8j987NsdZC9gpVKlC1VzTS/gXxX67xuj15C7wu6Io
-+Lp31atq2vxhYNTaXQw52Gfn117odMHBL/YsfEInMJZHnaFUtrWlSABgvhcNk0Q=
-=gKBx
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---D7NAS2w8UwTm8YEa--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From c5e5cd28d7c5a18d6da6575957dd0c5243ac3e7b Mon Sep 17 00:00:00 2001
+From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Date: Wed, 19 Aug 2015 11:37:57 +0800
+Subject: [PATCH] spi: mediatek: remove redundant clock in
+ prepare_hardware/unprepare_hardware
+
+clock in prepare_hardware/unprepare_hardware is redundant
+with pm_runtime, so remove them.
+
+Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-mt65xx.c | 17 -----------------
+ 1 file changed, 17 deletions(-)
+
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index 62baaad..546d70c 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -186,13 +186,6 @@ static int mtk_spi_prepare_hardware(struct spi_master *master)
+ 	struct spi_transfer *trans;
+ 	struct mtk_spi *mdata = spi_master_get_devdata(master);
+ 	struct spi_message *msg = master->cur_msg;
+-	int ret;
+-
+-	ret = clk_prepare_enable(mdata->spi_clk);
+-	if (ret < 0) {
+-		dev_err(&master->dev, "failed to enable clock (%d)\n", ret);
+-		return ret;
+-	}
+ 
+ 	trans = list_first_entry(&msg->transfers, struct spi_transfer,
+ 				 transfer_list);
+@@ -201,15 +194,6 @@ static int mtk_spi_prepare_hardware(struct spi_master *master)
+ 		mtk_spi_reset(mdata);
+ 	}
+ 
+-	return ret;
+-}
+-
+-static int mtk_spi_unprepare_hardware(struct spi_master *master)
+-{
+-	struct mtk_spi *mdata = spi_master_get_devdata(master);
+-
+-	clk_disable_unprepare(mdata->spi_clk);
+-
+ 	return 0;
+ }
+ 
+@@ -541,7 +525,6 @@ static int mtk_spi_probe(struct platform_device *pdev)
+ 
+ 	master->set_cs = mtk_spi_set_cs;
+ 	master->prepare_transfer_hardware = mtk_spi_prepare_hardware;
+-	master->unprepare_transfer_hardware = mtk_spi_unprepare_hardware;
+ 	master->prepare_message = mtk_spi_prepare_message;
+ 	master->transfer_one = mtk_spi_transfer_one;
+ 	master->can_dma = mtk_spi_can_dma;
+-- 
+2.5.0
+
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

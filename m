@@ -1,51 +1,69 @@
-From: Brian Norris <computersforpeace@gmail.com>
-Subject: Re: [PATCH 00/18] Export SPI and OF module aliases in missing drivers
-Date: Thu, 20 Aug 2015 14:11:52 -0700
-Message-ID: <20150820211152.GI74600@google.com>
-References: <1440054451-1223-1-git-send-email-javier@osg.samsung.com>
+From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH 1/9] spi: sunxi: fix transfer timeout
+Date: Thu, 20 Aug 2015 23:18:50 +0200
+Message-ID: <20150820211850.GI30520@lukather>
+References: <cover.1440080122.git.hramrach@gmail.com>
+ <0e0b52774a48ddb71dc8095b66942451cd31ff7d.1440080122.git.hramrach@gmail.com>
+ <20150820184132.GO12027@sirena.org.uk>
+ <20150820193433.GH30520@lukather>
+ <20150820210830.GS12027@sirena.org.uk>
+Reply-To: maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-kernel@vger.kernel.org, Andrzej Hajda <a.hajda@samsung.com>,
-	linux-fbdev@vger.kernel.org,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	linux-iio@vger.kernel.org, linux-wireless@vger.kernel.org,
-	Lee Jones <lee.jones@linaro.org>,
-	Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
-	linux-mtd@lists.infradead.org,
-	Lauro Ramos Venancio <lauro.venancio@openbossa.org>,
-	=?iso-8859-1?Q?S=F8ren?= Andersen <san@rosetechnology.dk>,
-	devel@driverdev.osuosl.org, Randy Dunlap <rdunlap@infradead.org>,
-	Masanari Iida <standby24x7@gmail.com>,
-	Jiri Kosina <jkosina@suse.cz>,
-	Devendra Naga <devendra.aaru@gmail.com>,
-	Tomi Valkeinen <tomi.valkeinen@ti.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
-	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Aloisio Almeida Jr <aloisio.almeida@openbossa.org>,
-	Jonathan Cameron <jic23@kernel
-To: Javier Martinez Canillas <javier@osg.samsung.com>
-Return-path: <netdev-owner@vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="yBd94+RIx/Fx7UDH"
+Cc: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-sunxi+bncBD2ZNBF5VYJRBPEI3GXAKGQECMN44JI-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1440054451-1223-1-git-send-email-javier@osg.samsung.com>
-Sender: netdev-owner@vger.kernel.org
+In-Reply-To: <20150820210830.GS12027-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <http://groups.google.com/group/linux-sunxi
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+ <http://groups.google.com/group/linux-sunxi/subscribe>
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Aug 20, 2015 at 09:07:13AM +0200, Javier Martinez Canillas wrote:
-> Patches #1 and #2 solves a), patches #3 to #8 solves b) and patches
+--yBd94+RIx/Fx7UDH
+Content-Type: text/plain; charset=UTF-8
+Content-Disposition: inline
 
-^^^ I'm dying to know how this sentence ends :)
+On Thu, Aug 20, 2015 at 02:08:30PM -0700, Mark Brown wrote:
+> On Thu, Aug 20, 2015 at 09:34:33PM +0200, Maxime Ripard wrote:
+> > On Thu, Aug 20, 2015 at 11:41:32AM -0700, Mark Brown wrote:
+> > > On Thu, Aug 20, 2015 at 02:19:45PM -0000, Michal Suchanek wrote:
+> 
+> > > >  drivers/spi/spi-sun4i.c | 10 +++++++++-
+> > > >  drivers/spi/spi-sun6i.c | 10 +++++++++-
+> 
+> > > Are we *sure* we can't work on merging these drivers :(
+> 
+> > Those are two different IPs, that don't really share anything but
+> > their author...
+> 
+> I seem to be seeing a number of changes like this one which make
+> apparently very similar modifications to both.  Perhaps there is more
+> core usage that should be happening instead?
 
-> Patch #18 changes the logic of spi_uevent() to report an OF modalias if
-> the device was registered using OF. But this patch is included in the
-> series only as an RFC for illustration purposes since changing that
-> without first applying all the other patches in this series, will break
-> module autoloading for the drivers of devices registered using OF but
-> that lacks an of_match_table. I'll repost patch #18 once all the patches
-> in this series have landed.
+Yeah, because I wrote the two at the same time, and they share the
+same flaws. But that doesn't really mean that you can share anything
+at the driver level. And I'm not really sure that we can do much more
+at the framework level either, except maybe handling the timeout
+directly (but then the drivers would have to handle the recovering
+after a timeout too).
 
-On a more productive note, the patches I've looked at look good to me.
-The missing aliases are a problem enough that should be fixed (i.e.,
-part (b)). I'll leave the SPI framework changes to others to comment on.
+Maxime
 
-Brian
+-- 
+Maxime Ripard, Free Electrons
+Embedded Linux, Kernel and Android engineering
+http://free-electrons.com
+--yBd94+RIx/Fx7UDH--

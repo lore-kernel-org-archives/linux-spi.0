@@ -1,92 +1,53 @@
-From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v3] nand: Add NAND driver for Mikrotik RB4xx series boards
-Date: Thu, 20 Aug 2015 15:31:05 -0700
-Message-ID: <20150820223105.GB81844@google.com>
-References: <1431689631-7217-1-git-send-email-bert@biot.com>
- <20150721202904.GK24125@google.com>
- <55C1DF18.4090800@biot.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: Applied "spi: sunxi: fix transfer timeout" to the spi tree
+Date: Thu, 20 Aug 2015 16:20:23 -0700
+Message-ID: <20150820232023.GY12027@sirena.org.uk>
+References: <E1ZSX2x-0001y5-Q5@finisterre>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org, fransklaver-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-To: Bert Vermeulen <bert-Nh2F35Ii2RQ@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="bIBSTgLWjO5xMb20"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <55C1DF18.4090800-Nh2F35Ii2RQ@public.gmane.org>
+In-Reply-To: <E1ZSX2x-0001y5-Q5@finisterre>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Aug 05, 2015 at 12:02:00PM +0200, Bert Vermeulen wrote:
-> On 07/21/2015 10:29 PM, Brian Norris wrote:
-> 
-> >> +static struct spi_driver rb4xx_cpld_driver = {
-> >> +	.probe = rb4xx_cpld_probe,
-> >> +	.remove = rb4xx_cpld_remove,
-> >> +	.driver = {
-> >> +		.name = "rb4xx-cpld",
-> >> +		.owner = THIS_MODULE,
-> >> +	},
-> >> +};
-> > 
-> > I feel some deja vu here (did I make this comment before?); why do you
-> > need to embed both a SPI and a platform driver here? It appears that the
-> > NAND controller actually sits on the SPI bus, so this really is not a
-> > platform driver; it's a SPI driver. Can you just kill off all the
-> > platform_driver stuff and merge the probe functions?
-> > 
-> > Or if I'm missing something big, please do enlighten.
-> 
-> This driver was specifically refused by the SPI subsystem maintainer:
-> 
->   http://www.linux-mips.org/archives/linux-mips/2015-03/msg00422.html
 
-We're speaking past each other here a bit: I was recommending a SPI
-*device* driver, not a host controller driver [1]. (This device is
-definitely not a SPI controller!)
+--bIBSTgLWjO5xMb20
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> He suggested the MFD subsystem, where it was also refused:
-> 
->   http://lkml.iu.edu/hypermail/linux/kernel/1504.0/03162.html
+On Thu, Aug 20, 2015 at 02:06:51PM -0700, Mark Brown wrote:
+> The patch
+>=20
+>    spi: sunxi: fix transfer timeout
+>=20
+> has been applied to the spi tree at
+>=20
+>    git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git=20
 
-I honestly can't straighten out what the definition of an MFD is, so I
-can't blame you for getting that one "wrong."
+=2E..and reverted since it broke the build.
 
-> Andy Shevchenko suggested drivers/misc, so I mailed Arnd Bergmann and asked
-> if he would accept it there.
-> 
-> Arnd took a good look at the driver and suggested the MTD/NAND subsystem.
-> This is after all a driver for a NAND chip controller. The controller just
-> happens to reside in a CPLD with custom firmware, which is controlled via
-> SPI and has some GPIO controller functionality thrown in.
+--bIBSTgLWjO5xMb20
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-I think Arnd was right, from the looks of it. I don't mind the GPIO
-controller functionality thrown in, as long as someone from linux-gpio
-can review that part. I just minded the structure of the driver itself,
-in which you register both a platfrom and a spi driver
-(spi_register_driver() and module_platform_driver()).
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-AFAICT, the driver structure and your above comment suggest that the
-entire device essentially sits on the SPI bus (not the platform bus), so
-it seems like it can all be initialized behind module_spi_driver().
+iQEcBAEBCAAGBQJV1mC2AAoJECTWi3JdVIfQY5oH/0eYhvyJRfPOfezctosWW2vk
+zahsIv4yOYB+KQfht2q01o5qODF5IUu1WbSS38rBeyj3KeOzsvXe6OsY+8aJwAvF
+a2pvTR4XD1Ja2OPob2xB1mLzmnBanJiskHvz38Ii2/P6dWNG7fQEJQuvwJDqoxyW
+8RPi6358sKadDX9uJZAJCAVhSYbW5HfQNE4I1IfWJUT100V9wXXCjQyb1/fj6ISm
+p4DMSsGWIunIMWD+HzzwNSfqeAJxUrVxXnE2rKl2kpICXGZUD8/UvSUxJHhPT5CT
+8WNqmNaBJQrKw1qe1kD+v2vQP/BO9uw0F9zYuWJshHctPFzxg2mvTW9Nmjqay6A=
+=ANkw
+-----END PGP SIGNATURE-----
 
-> I realize it's an odd hardware setup, and I can't fix that, but this really
-> does seem to be the best place for it.
-> 
-> I can deal with your other comments on the patch, but I'd really like some
-> agreement on where this driver will be accepted first. I've come full circle
-> with getting referred back to the SPI subsystem.
-
-Sorry again for the confusion. To be clear, I'm *not* suggesting sending
-this back to the SPI subsystem.
-
-Brian
-
-[1] I guess the SPI documentation (Documentation/spi/spi-summary) calls
-    these "controller" vs. "protocol" drivers; your driver is a
-    "protocol" driver and can find a home wherever that protocol makes
-    sense. In this case, you're mostly doing NAND flash, therefore it
-    goes in drivers/mtd/.
+--bIBSTgLWjO5xMb20--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

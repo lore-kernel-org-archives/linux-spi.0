@@ -1,66 +1,130 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 4/4] spi: mediatek: revise coding style
-Date: Thu, 20 Aug 2015 11:17:52 -0700
-Message-ID: <20150820181752.GH12027@sirena.org.uk>
-References: <1440062349-25513-1-git-send-email-leilk.liu@mediatek.com>
- <1440062349-25513-5-git-send-email-leilk.liu@mediatek.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="dDnEQgWzhgf+8aPe"
-Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1440062349-25513-5-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Subject: Applied "spi: mediatek: use BIT() to instead of SPI_CMD_*_OFFSET" to the spi tree
+Date: Thu, 20 Aug 2015 11:34:32 -0700
+Message-ID: <E1ZSUfY-00008D-Uh@finisterre>
+References: <1440062349-25513-4-git-send-email-leilk.liu@mediatek.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1440062349-25513-4-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---dDnEQgWzhgf+8aPe
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: mediatek: use BIT() to instead of SPI_CMD_*_OFFSET
 
-On Thu, Aug 20, 2015 at 05:19:09PM +0800, Leilk Liu wrote:
-> This patch revises littery coding style according to comments.
+has been applied to the spi tree at
 
-I can't understand this commit log, sorry - what are the comments that
-are being addressed?
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> -	reg_val |= (((high_time - 1) & 0xff) << SPI_CFG0_SCK_HIGH_OFFSET);
-> -	reg_val |= (((low_time - 1) & 0xff) << SPI_CFG0_SCK_LOW_OFFSET);
-> -	reg_val |= (((holdtime - 1) & 0xff) << SPI_CFG0_CS_HOLD_OFFSET);
-> -	reg_val |= (((setuptime - 1) & 0xff) << SPI_CFG0_CS_SETUP_OFFSET);
-> +	reg_val |= (((sck_time - 1) & 0xff) << SPI_CFG0_SCK_HIGH_OFFSET);
-> +	reg_val |= (((sck_time - 1) & 0xff) << SPI_CFG0_SCK_LOW_OFFSET);
-> +	reg_val |= (((cs_time - 1) & 0xff) << SPI_CFG0_CS_HOLD_OFFSET);
-> +	reg_val |= (((cs_time - 1) & 0xff) << SPI_CFG0_CS_SETUP_OFFSET);
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-This isn't a coding style change this is (I think) renaming a bunch of
-variables for some reason.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---dDnEQgWzhgf+8aPe
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-iQEcBAEBCAAGBQJV1hnPAAoJECTWi3JdVIfQWHcH/A2n4Ej3jYZ0ewdd4kjaiqoD
-xh6Wa5FqJEMDr+R/kJJtwQs2tb9Ch5j15P/xYQGeYiyhOqX5HiePrYpV4Vvn5j7n
-hS8LlJkaj5EgB6CKqQ2diN6+tcf/61mjF+tiU+BoWyJA6HN0SjHNQOtvYmolvawI
-Iim2vtjIW7UtUq/3r7V8zidi0f5HEb9xZCBrbUmq0adrJmxOLKmhEo8F4ONwWOGk
-77vwGgMeTpYAQGBpMKb3ga6BmcdLf+UzVDilHcr6xFXWhcEF+xcpvM6UR0WyxHJ+
-peECbSrsTLHnOTehnapOh8esDShgABz66YuqF14/CsMrpMtSooTnJZXgTNRs38E=
-=HL3K
------END PGP SIGNATURE-----
+Thanks,
+Mark
 
---dDnEQgWzhgf+8aPe--
+>From a71d6ea6d3ec3e8ba4220370f29531903e3bc153 Mon Sep 17 00:00:00 2001
+From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Date: Thu, 20 Aug 2015 17:19:08 +0800
+Subject: [PATCH] spi: mediatek: use BIT() to instead of SPI_CMD_*_OFFSET
+
+This patch removes SPI_CMD_*_OFFSET defines, and uses the BIT(x)
+defines instead.
+
+Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-mt65xx.c | 37 ++++++++++++++++++++-----------------
+ 1 file changed, 20 insertions(+), 17 deletions(-)
+
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index 55d1c3e..516b4ed 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -48,15 +48,8 @@
+ #define SPI_CFG1_PACKET_LOOP_MASK         0xff00
+ #define SPI_CFG1_PACKET_LENGTH_MASK       0x3ff0000
+ 
+-#define SPI_CMD_ACT_OFFSET                0
+-#define SPI_CMD_RESUME_OFFSET             1
+-#define SPI_CMD_CPHA_OFFSET               8
+-#define SPI_CMD_CPOL_OFFSET               9
+-#define SPI_CMD_TXMSBF_OFFSET             12
+-#define SPI_CMD_RXMSBF_OFFSET             13
+-#define SPI_CMD_RX_ENDIAN_OFFSET          14
+-#define SPI_CMD_TX_ENDIAN_OFFSET          15
+-
++#define SPI_CMD_ACT                  BIT(0)
++#define SPI_CMD_RESUME               BIT(1)
+ #define SPI_CMD_RST                  BIT(2)
+ #define SPI_CMD_PAUSE_EN             BIT(4)
+ #define SPI_CMD_DEASSERT             BIT(5)
+@@ -143,9 +136,14 @@ static void mtk_spi_config(struct mtk_spi *mdata,
+ 	reg_val = readl(mdata->base + SPI_CMD_REG);
+ 
+ 	/* set the mlsbx and mlsbtx */
+-	reg_val &= ~(SPI_CMD_TXMSBF | SPI_CMD_RXMSBF);
+-	reg_val |= (chip_config->tx_mlsb << SPI_CMD_TXMSBF_OFFSET);
+-	reg_val |= (chip_config->rx_mlsb << SPI_CMD_RXMSBF_OFFSET);
++	if (chip_config->tx_mlsb)
++		reg_val |= SPI_CMD_TXMSBF;
++	else
++		reg_val &= ~SPI_CMD_TXMSBF;
++	if (chip_config->rx_mlsb)
++		reg_val |= SPI_CMD_RXMSBF;
++	else
++		reg_val &= ~SPI_CMD_RXMSBF;
+ 
+ 	/* set the tx/rx endian */
+ #ifdef __LITTLE_ENDIAN
+@@ -201,9 +199,14 @@ static int mtk_spi_prepare_message(struct spi_master *master,
+ 	cpol = spi->mode & SPI_CPOL ? 1 : 0;
+ 
+ 	reg_val = readl(mdata->base + SPI_CMD_REG);
+-	reg_val &= ~(SPI_CMD_CPHA | SPI_CMD_CPOL);
+-	reg_val |= (cpha << SPI_CMD_CPHA_OFFSET);
+-	reg_val |= (cpol << SPI_CMD_CPOL_OFFSET);
++	if (cpha)
++		reg_val |= SPI_CMD_CPHA;
++	else
++		reg_val &= ~SPI_CMD_CPHA;
++	if (cpol)
++		reg_val |= SPI_CMD_CPOL;
++	else
++		reg_val &= ~SPI_CMD_CPOL;
+ 	writel(reg_val, mdata->base + SPI_CMD_REG);
+ 
+ 	chip_config = spi->controller_data;
+@@ -282,9 +285,9 @@ static void mtk_spi_enable_transfer(struct spi_master *master)
+ 
+ 	cmd = readl(mdata->base + SPI_CMD_REG);
+ 	if (mdata->state == MTK_SPI_IDLE)
+-		cmd |= 1 << SPI_CMD_ACT_OFFSET;
++		cmd |= SPI_CMD_ACT;
+ 	else
+-		cmd |= 1 << SPI_CMD_RESUME_OFFSET;
++		cmd |= SPI_CMD_RESUME;
+ 	writel(cmd, mdata->base + SPI_CMD_REG);
+ }
+ 
+-- 
+2.5.0
+
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

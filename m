@@ -1,55 +1,66 @@
-From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 1/4 RESEND] spi: s3c64xx: clean up runtime PM if driver registration
- fails
-Date: Thu, 20 Aug 2015 22:02:23 +0200
-Message-ID: <55D6324F.7070601@gmail.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
+Subject: [PATCH 3/4 RESEND] spi: s3c64xx: simplify suspend / resume handlers
+Date: Thu, 20 Aug 2015 22:07:18 +0200
+Message-ID: <55D63376.5070607@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Cc: linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: linux-samsung-soc@vger.kernel.org,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+To: Krzysztof Kozlowski <k.kozlowski@samsung.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+Sender: linux-samsung-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Fix missing runtime PM cleanup if driver registration fails.
+The runtime PM suspend / resume handlers take care of the enabling/
+disabling the clocks already. Therefore replace the duplicated
+clock handling with pm_runtime_force_suspend/resume.
 
-Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
 ---
 Changed:
-- Separated fix from added functionality
+- Replaced pm_runtime_suspend/resume calls with their
+  .._force_.. equivalents.
 
- drivers/spi/spi-s3c64xx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/spi/spi-s3c64xx.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index cd1cfac..8a6ab88 100644
+index edeac06..735b7f5 100644
 --- a/drivers/spi/spi-s3c64xx.c
 +++ b/drivers/spi/spi-s3c64xx.c
-@@ -1186,7 +1186,7 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 	ret = devm_spi_register_master(&pdev->dev, master);
- 	if (ret != 0) {
- 		dev_err(&pdev->dev, "cannot register SPI master: %d\n", ret);
--		goto err3;
-+		goto err4;
- 	}
+@@ -1246,10 +1246,9 @@ static int s3c64xx_spi_suspend(struct device *dev)
+ 	if (ret)
+ 		return ret;
  
- 	dev_dbg(&pdev->dev, "Samsung SoC SPI Driver loaded for Bus SPI-%d with %d Slaves attached\n",
-@@ -1197,6 +1197,9 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+-	if (!pm_runtime_suspended(dev)) {
+-		clk_disable_unprepare(sdd->clk);
+-		clk_disable_unprepare(sdd->src_clk);
+-	}
++	ret = pm_runtime_force_suspend(dev);
++	if (ret < 0)
++		return ret;
  
- 	return 0;
+ 	sdd->cur_speed = 0; /* Output Clock is stopped */
  
-+err4:
-+	pm_runtime_disable(&pdev->dev);
-+	pm_runtime_set_suspended(&pdev->dev);
- err3:
- 	clk_disable_unprepare(sdd->src_clk);
- err2:
+@@ -1261,14 +1260,14 @@ static int s3c64xx_spi_resume(struct device *dev)
+ 	struct spi_master *master = dev_get_drvdata(dev);
+ 	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
+ 	struct s3c64xx_spi_info *sci = sdd->cntrlr_info;
++	int ret;
+ 
+ 	if (sci->cfg_gpio)
+ 		sci->cfg_gpio();
+ 
+-	if (!pm_runtime_suspended(dev)) {
+-		clk_prepare_enable(sdd->src_clk);
+-		clk_prepare_enable(sdd->clk);
+-	}
++	ret = pm_runtime_force_resume(dev);
++	if (ret < 0)
++		return ret;
+ 
+ 	s3c64xx_spi_hwinit(sdd, sdd->port_id);
+ 
 -- 
 2.5.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

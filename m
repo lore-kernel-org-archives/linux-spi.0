@@ -1,74 +1,93 @@
-From: Javier Martinez Canillas <javier@osg.samsung.com>
-Subject: Re: [PATCH 00/18] Export SPI and OF module aliases in missing drivers
-Date: Thu, 20 Aug 2015 23:50:50 +0200
-Message-ID: <55D64BBA.7070802@osg.samsung.com>
-References: <1440054451-1223-1-git-send-email-javier@osg.samsung.com>
- <20150820211152.GI74600@google.com>
+From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v3] nand: Add NAND driver for Mikrotik RB4xx series boards
+Date: Thu, 20 Aug 2015 15:31:05 -0700
+Message-ID: <20150820223105.GB81844@google.com>
+References: <1431689631-7217-1-git-send-email-bert@biot.com>
+ <20150721202904.GK24125@google.com>
+ <55C1DF18.4090800@biot.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-fbdev@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-mmc@vger.kernel.org, Krzysztof Kozlowski <k.kozlowski@samsung.com>,
- Adrian Hunter <adrian.hunter@intel.com>, Andrzej Hajda <a.hajda@samsung.com>,
- netdev@vger.kernel.org, linux-mtd@lists.infradead.org,
- Peter Meerwald <pmeerw@pmeerw.net>, Lee Jones <lee.jones@linaro.org>,
- Aloisio Almeida Jr <aloisio.almeida@openbossa.org>, devel@driverdev.osuosl.org,
- Lars-Peter Clausen <lars@metafoo.de>, Stephen Warren <swarren@nvidia.com>,
- Samuel Ortiz <sameo@linux.intel.com>,
- =?UTF-8?Q?S=c3=b8ren_Andersen?= <san@rosetechnology.dk>,
- Andrea Galbusera <gizero@gmail.com>, Antonio Borneo <borneo.antonio@gmail.com>,
- Tomi Valkeinen <tomi.valkeinen@ti.com>, Ulf Hansson <ulf.hansson@linaro.org>,
- Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
- linux-media@vger.kernel.org, Michael Hennerich <Michael.Hennerich@analog.com>,
- Mauro
-To: Brian Norris <computersforpeace@gmail.com>
-Return-path: <driverdev-devel-bounces@linuxdriverproject.org>
-In-Reply-To: <20150820211152.GI74600@google.com>
-List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/driverdev-devel>,
- <mailto:driverdev-devel-request@linuxdriverproject.org?subject=unsubscribe>
-List-Archive: <http://driverdev.linuxdriverproject.org/pipermail/driverdev-devel/>
-List-Post: <mailto:driverdev-devel@linuxdriverproject.org>
-List-Help: <mailto:driverdev-devel-request@linuxdriverproject.org?subject=help>
-List-Subscribe: <http://driverdev.linuxdriverproject.org/mailman/listinfo/driverdev-devel>,
- <mailto:driverdev-devel-request@linuxdriverproject.org?subject=subscribe>
-Errors-To: driverdev-devel-bounces@linuxdriverproject.org
-Sender: "devel" <driverdev-devel-bounces@linuxdriverproject.org>
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org, fransklaver-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+To: Bert Vermeulen <bert-Nh2F35Ii2RQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <55C1DF18.4090800-Nh2F35Ii2RQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hello Brian,
-
-On 08/20/2015 11:11 PM, Brian Norris wrote:
-> On Thu, Aug 20, 2015 at 09:07:13AM +0200, Javier Martinez Canillas wrote:
->> Patches #1 and #2 solves a), patches #3 to #8 solves b) and patches
+On Wed, Aug 05, 2015 at 12:02:00PM +0200, Bert Vermeulen wrote:
+> On 07/21/2015 10:29 PM, Brian Norris wrote:
 > 
-> ^^^ I'm dying to know how this sentence ends :)
->
-
-Sigh, I did some last minute restructuring of the cover letter and
-seems I missed a sentence. I meant to said:
-
-"and patches #9 to #17 solves c)."
- 
->> Patch #18 changes the logic of spi_uevent() to report an OF modalias if
->> the device was registered using OF. But this patch is included in the
->> series only as an RFC for illustration purposes since changing that
->> without first applying all the other patches in this series, will break
->> module autoloading for the drivers of devices registered using OF but
->> that lacks an of_match_table. I'll repost patch #18 once all the patches
->> in this series have landed.
+> >> +static struct spi_driver rb4xx_cpld_driver = {
+> >> +	.probe = rb4xx_cpld_probe,
+> >> +	.remove = rb4xx_cpld_remove,
+> >> +	.driver = {
+> >> +		.name = "rb4xx-cpld",
+> >> +		.owner = THIS_MODULE,
+> >> +	},
+> >> +};
+> > 
+> > I feel some deja vu here (did I make this comment before?); why do you
+> > need to embed both a SPI and a platform driver here? It appears that the
+> > NAND controller actually sits on the SPI bus, so this really is not a
+> > platform driver; it's a SPI driver. Can you just kill off all the
+> > platform_driver stuff and merge the probe functions?
+> > 
+> > Or if I'm missing something big, please do enlighten.
 > 
-> On a more productive note, the patches I've looked at look good to me.
-> The missing aliases are a problem enough that should be fixed (i.e.,
-> part (b)). I'll leave the SPI framework changes to others to comment on.
->
-
-Great, thanks a lot for your feedback.
- 
-> Brian
+> This driver was specifically refused by the SPI subsystem maintainer:
 > 
+>   http://www.linux-mips.org/archives/linux-mips/2015-03/msg00422.html
 
-Best regards,
--- 
-Javier Martinez Canillas
-Open Source Group
-Samsung Research America
+We're speaking past each other here a bit: I was recommending a SPI
+*device* driver, not a host controller driver [1]. (This device is
+definitely not a SPI controller!)
+
+> He suggested the MFD subsystem, where it was also refused:
+> 
+>   http://lkml.iu.edu/hypermail/linux/kernel/1504.0/03162.html
+
+I honestly can't straighten out what the definition of an MFD is, so I
+can't blame you for getting that one "wrong."
+
+> Andy Shevchenko suggested drivers/misc, so I mailed Arnd Bergmann and asked
+> if he would accept it there.
+> 
+> Arnd took a good look at the driver and suggested the MTD/NAND subsystem.
+> This is after all a driver for a NAND chip controller. The controller just
+> happens to reside in a CPLD with custom firmware, which is controlled via
+> SPI and has some GPIO controller functionality thrown in.
+
+I think Arnd was right, from the looks of it. I don't mind the GPIO
+controller functionality thrown in, as long as someone from linux-gpio
+can review that part. I just minded the structure of the driver itself,
+in which you register both a platfrom and a spi driver
+(spi_register_driver() and module_platform_driver()).
+
+AFAICT, the driver structure and your above comment suggest that the
+entire device essentially sits on the SPI bus (not the platform bus), so
+it seems like it can all be initialized behind module_spi_driver().
+
+> I realize it's an odd hardware setup, and I can't fix that, but this really
+> does seem to be the best place for it.
+> 
+> I can deal with your other comments on the patch, but I'd really like some
+> agreement on where this driver will be accepted first. I've come full circle
+> with getting referred back to the SPI subsystem.
+
+Sorry again for the confusion. To be clear, I'm *not* suggesting sending
+this back to the SPI subsystem.
+
+Brian
+
+[1] I guess the SPI documentation (Documentation/spi/spi-summary) calls
+    these "controller" vs. "protocol" drivers; your driver is a
+    "protocol" driver and can find a home wherever that protocol makes
+    sense. In this case, you're mostly doing NAND flash, therefore it
+    goes in drivers/mtd/.
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

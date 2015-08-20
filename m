@@ -1,57 +1,119 @@
-From: Heiner Kallweit <hkallweit1@gmail.com>
-Subject: [PATCH 4/4 RESEND] spi: s3c64xx: replace clock disabling with runtime
- PM suspend call in remove function
-Date: Thu, 20 Aug 2015 22:11:03 +0200
-Message-ID: <55D63457.5060901@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: linux-samsung-soc@vger.kernel.org,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
-To: Krzysztof Kozlowski <k.kozlowski@samsung.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: sunxi: fix transfer timeout" to the spi tree
+Date: Thu, 20 Aug 2015 14:06:51 -0700
+Message-ID: <E1ZSX2x-0001y5-Q5@finisterre>
+Cc: linux-spi@vger.kernel.org
+To: Michal Suchanek <hramrach@gmail.com>,
+	Mark Brown <broonie@kernel.org>, stable@vger.kernel.org
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: 
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Simplify s3c64xx_spi_remove by replacing the clock disabling with calling
-runtime PM suspend which does the same.
-Waking up the device if it was suspended wouldn't be strictly needed
-for this driver but using pm_runtime_get_sync is cleaner and makes
-s3c64xx_spi_remove more consistent with the runtime PM handling in
-s3c64xx_spi_setup.
+The patch
 
-pm_runtime_force_suspend does most of the work for us:
-disabling the clocks, disabling runtime PM and setting it to
-"suspended" state.
+   spi: sunxi: fix transfer timeout
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+has been applied to the spi tree at
+
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 63d53d153b62a1d0fb6e95a8936e43ba09ff7beb Mon Sep 17 00:00:00 2001
+From: Michal Suchanek <hramrach@gmail.com>
+Date: Thu, 20 Aug 2015 14:19:45 +0000
+Subject: [PATCH] spi: sunxi: fix transfer timeout
+
+The trasfer timeout is fixed at 1000 ms. Reading a 4Mbyte flash over
+1MHz SPI bus takes way longer than that. Calculate the timeout from the
+actual time the transfer is supposed to take and multiply by 2 for good
+measure.
+
+Signed-off-by: Michal Suchanek <hramrach@gmail.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
 ---
-Changed:
-- Added to the patch set
+ drivers/spi/spi-sun4i.c | 10 +++++++++-
+ drivers/spi/spi-sun6i.c | 10 +++++++++-
+ 2 files changed, 18 insertions(+), 2 deletions(-)
 
- drivers/spi/spi-s3c64xx.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 735b7f5..4a91a6c 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -1225,13 +1225,12 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
- 	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
- 	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
+diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
+index fbb0a4d..48532ec 100644
+--- a/drivers/spi/spi-sun4i.c
++++ b/drivers/spi/spi-sun4i.c
+@@ -170,6 +170,7 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
+ {
+ 	struct sun4i_spi *sspi = spi_master_get_devdata(master);
+ 	unsigned int mclk_rate, div, timeout;
++	unsigned int start, end, tx_time;
+ 	unsigned int tx_len = 0;
+ 	int ret = 0;
+ 	u32 reg;
+@@ -279,9 +280,16 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
+ 	reg = sun4i_spi_read(sspi, SUN4I_CTL_REG);
+ 	sun4i_spi_write(sspi, SUN4I_CTL_REG, reg | SUN4I_CTL_XCH);
  
--	pm_runtime_disable(&pdev->dev);
-+	pm_runtime_get_sync(&pdev->dev);
++	tx_time = max_t(int, tfr->len * 8 * 2 / (speed / 1000), 100);
++	start = jiffies;
+ 	timeout = wait_for_completion_timeout(&sspi->done,
+-					      msecs_to_jiffies(1000));
++					      msecs_to_jiffies(tx_time));
++	end = jiffies;
+ 	if (!timeout) {
++		dev_warn(&master->dev,
++			 "%s: timeout transferring %u bytes@%iHz for %i(%i)ms",
++			 dev_name(&spi->dev), tfr->len, speed,
++			 jiffies_to_msecs(end - start), tx_time);
+ 		ret = -ETIMEDOUT;
+ 		goto out;
+ 	}
+diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
+index ac48f59..3d0f66c 100644
+--- a/drivers/spi/spi-sun6i.c
++++ b/drivers/spi/spi-sun6i.c
+@@ -162,6 +162,7 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
+ 	unsigned int mclk_rate, div, timeout;
+ 	unsigned int tx_len = 0;
+ 	int ret = 0;
++	unsigned int start, end, tx_time;
+ 	u32 reg;
  
- 	writel(0, sdd->regs + S3C64XX_SPI_INT_EN);
+ 	/* We don't support transfer larger than the FIFO */
+@@ -269,9 +270,16 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
+ 	reg = sun6i_spi_read(sspi, SUN6I_TFR_CTL_REG);
+ 	sun6i_spi_write(sspi, SUN6I_TFR_CTL_REG, reg | SUN6I_TFR_CTL_XCH);
  
--	clk_disable_unprepare(sdd->src_clk);
--
--	clk_disable_unprepare(sdd->clk);
-+	pm_runtime_put_noidle(&pdev->dev);
-+	pm_runtime_force_suspend(&pdev->dev);
- 
- 	return 0;
- }
++	tx_time = max_t(int, tfr->len * 8 * 2 / (speed / 1000), 100);
++	start = jiffies;
+ 	timeout = wait_for_completion_timeout(&sspi->done,
+-					      msecs_to_jiffies(1000));
++					      msecs_to_jiffies(tx_time));
++	end = jiffies;
+ 	if (!timeout) {
++		dev_warn(&master->dev,
++			 "%s: timeout transferring %u bytes@%iHz for %i(%i)ms",
++			 dev_name(&spi->dev), tfr->len, speed,
++			 jiffies_to_msecs(end - start), tx_time);
+ 		ret = -ETIMEDOUT;
+ 		goto out;
+ 	}
 -- 
 2.5.0

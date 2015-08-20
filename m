@@ -1,138 +1,113 @@
-From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [alsa-devel] Fwd: [PATCH 1/1] SPI : spi-pxa2xx : fix spi init of
- WM510205 codec via ACPI (resend)
-Date: Thu, 20 Aug 2015 12:45:42 +0300
-Message-ID: <20150820094542.GC30005@lahna.fi.intel.com>
-References: <CAKor6Tcof3PA3JGD2=4X8mtSak8ka9BVD2L4zdYC4M1yEYEXjg@mail.gmail.com>
- <CAKor6TdLkGZbARmV1CfqUiguH8HAD+oC8VSsH_OkNQ6E-7YVAw@mail.gmail.com>
- <20150810081001.GG25225@opensource.wolfsonmicro.com>
- <20150810083540.GE1540@lahna.fi.intel.com>
- <CAKor6Tc26kKG-7ytxBjT41S1h4eORoeTg_T=nZ4dZGM1H0gAMQ@mail.gmail.com>
- <20150810140207.GB1541@lahna.fi.intel.com>
- <CAKor6TdKrQrvXTPU=fzL9LTCBbyc9WAbLnYdObY+Wu73g1w6Fg@mail.gmail.com>
- <CAKor6Tep1jjOnoPn7e5Djird3RVDNP8Gjcb8HOKO6g-_R5++VQ@mail.gmail.com>
- <20150819134328.GU1552@lahna.fi.intel.com>
- <CAKor6Tc6RDW+2uuX2yMszk3O69=6QTPdd+emC-m_Cro67VPR8g@mail.gmail.com>
+From: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH] spi: ti-qspi: use 128 bit transfer mode for writing to flash
+Date: Thu, 20 Aug 2015 16:00:59 +0530
+Message-ID: <1440066659-5356-1-git-send-email-vigneshr@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Charles Keepax <ckeepax-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-	Pierre-Louis Bossart <pierre-louis.bossart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
-	dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>
-To: Christian Hartmann <cornogle-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
+Content-Type: text/plain
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAKor6Tc6RDW+2uuX2yMszk3O69=6QTPdd+emC-m_Cro67VPR8g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Aug 20, 2015 at 11:38:13AM +0200, Christian Hartmann wrote:
-> Hi again,
-> 
-> >> in  arizona-spi I try to map these GPIOs, which I want to get in
-> >> arizona-core: arizona_dev_init
-> >>
-> >> diff --git a/drivers/mfd/arizona-spi.c b/drivers/mfd/arizona-spi.c
-> >> index 1e845f6..52872a0 100644
-> >> --- a/drivers/mfd/arizona-spi.c
-> >> +++ b/drivers/mfd/arizona-spi.c
-> >> @@ -18,28 +18,58 @@
-> >>  #include <linux/slab.h>
-> >>  #include <linux/spi/spi.h>
-> >>  #include <linux/of.h>
-> >> +#include <linux/acpi.h>
-> >>
-> >>  #include <linux/mfd/arizona/core.h>
-> >>
-> >>  #include "arizona.h"
-> >>
-> >> +const struct acpi_gpio_params reset_gpio = { 1, 0, false};
-> >> +const struct acpi_gpio_params ldoena_gpio = { 2, 0, false};
-> >> +
-> >> +const struct acpi_gpio_mapping arizona_acpi_gpios[] = {
-> >> +       { "reset_gpio", &reset_gpio, 1,},
-> >> +       { "ldoena_gpio", &ldoena_gpio, 1},
-> >
-> > The correct names are "reset-gpios" and "ldoena-gpios". If you call
-> >
-> >         reset = devm_gpiod_get_optional(arizona->dev, "reset", GPIOD_OUT_LOW);
-> >
-> > GPIO core will look for "reset-gpios" and then "reset-gpio" not
-> > "reset_gpio" so it will not find the mapping.
-> 
-> yes you are right, I had fixed it yesterday by changing the names.
-> 
-> +const struct acpi_gpio_params reset_gpios = { 1, 0, false};
-> +const struct acpi_gpio_params ldoena_gpios = { 2, 0, false};
-> +
-> +const struct acpi_gpio_mapping arizona_acpi_gpios[] = {
-> +       { "reset-gpios", &reset_gpios, 1,},
-> +       { "ldoena-gpios", &ldoena_gpios, 1},
-> +       { },
-> +};
-> 
-> 
-> 
-> Today I can see that the mapping is working as seen below.
-> But for unknown reasons I got wrong values read
-> via devm_gpiod_get_optional() in the arizona_dev_init ->
-> arizona_of_get_core_pdata()
-> 
-> [    6.387993] pxa2xx-spi 80860F0E:00: no DMA channels available, using PIO
-> [    6.389258] pxa2xx-spi 80860F0E:00: registered master spi32766 (dynamic)
-> [    6.389416] spi spi-WM510205:00: 8333333 Hz actual, PIO
-> [    6.389424] spi spi-WM510205:00: setup mode 0, 8 bits/w, 8000000 Hz max --> 0
-> [    6.389567] spi spi-WM510205:00: checking WM510205 with bmp180
-> [    6.389574] spi spi-WM510205:00: checking WM510205 with bmp181
-> [    6.389578] spi spi-WM510205:00: modalias WM510205 in id_table not
-> found, returns NULL
-> [    6.405723] arizona spi-WM510205:00: arizona_acpi_get_type(), than
-> via spi_get_device_id().
-> [    6.405735] arizona spi-WM510205:00: arizona_acpi_get_type matched
-> [    6.405740] arizona spi-WM510205:00: using 1 as type for arizona audio codec
-> [    6.405744] arizona spi-WM510205:00: regmap set to wm5102_spi
-> [    6.406557] arizona spi-WM510205:00: spi_irq = -1
-> [    6.406565] arizona spi-WM510205:00: acpi_dev_add_driver_gpios
-> arizona_acpi_gpios added done, 0
-> [    6.406569] arizona spi-WM510205:00: arizona_spi_probe done,
-> calling arizona_dev_init
-> [    6.406574] arizona spi-WM510205:00: dev_set_drvdata done for 1
-> [    6.406580] arizona spi-WM510205:00: GPIO lookup for consumer reset
-> [    6.406585] arizona spi-WM510205:00: using ACPI for GPIO lookup
-> [    6.406590] acpi WM510205:00: GPIO: looking up reset-gpios
-> [    6.406597] acpi WM510205:00: GPIO: _DSD returned WM510205:00 3 1 0 0
-> [    6.406673] acpi WM510205:00: GPIO: looking up 0 in _CRS
-> [    6.406724] arizona spi-WM510205:00: GPIO lookup for consumer ldoena
-> [    6.406729] arizona spi-WM510205:00: using ACPI for GPIO lookup
-> [    6.406733] acpi WM510205:00: GPIO: looking up ldoena-gpios
-> [    6.406739] acpi WM510205:00: GPIO: _DSD returned WM510205:00 3 2 0 0
-> [    6.406790] acpi WM510205:00: GPIO: looking up 0 in _CRS
-> [    6.406844] arizona spi-WM510205:00: arizona_of_get_core_pdata
-> (ACPI) using irq_gpio GPIO = 146
-> [    6.406850] arizona spi-WM510205:00: arizona_of_get_core_pdata
-> (ACPI) using ldoena GPIO =  -185173228
-> [    6.406855] arizona spi-WM510205:00: arizona_of_get_core_pdata
-> (ACPI) using reset GPIO =  -184741840
-> [    6.406859] arizona spi-WM510205:00: arizona_of_get_core_pdata for 1
-> [    6.406864] arizona spi-WM510205:00: regcache_cache_only for 1 set
-> [    6.406868] arizona spi-WM510205:00: added wm5102_core_supplies for 1
-> [    6.407100] spi-WM510205:00 supply AVDD not found, using dummy regulator
-> [    6.407131] spi-WM510205:00 supply DBVDD1 not found, using dummy regulator
-> [    6.407162] LDO1: supplied by regulator-dummy
-> [    6.407214] ------------[ cut here ]------------
-> [    6.407226] WARNING: CPU: 0 PID: 472 at drivers/gpio/gpiolib.c:86
-> gpio_to_desc+0xbb/0xd0()
-> 
-> 
-> did I cast the values wrong?
+TI QSPI has four 32 bit data regsiters which can be used to transfer 16
+bytes of data at once. The register group QSPI_SPI_DATA_REG_3,
+QSPI_SPI_DATA_REG_2, QSPI_SPI_DATA_REG_1 and QSPI_SPI_DATA_REG is
+treated as a single 128-bit word for shifting data in and out. The bit
+at QSPI_SPI_DATA_REG_3[31] position is the first bit to be shifted out
+in case of 128 bit transfer mode. Therefore the first byte to be written
+to flash should be at QSPI_SPI_DATA_REG_3[31-25] position.
+Instead of writing 1 byte at a time when interacting with spi-nor flash,
+make use of all the four registers so that 16 bytes can be transferred
+in one go. This reduces number of register writes and Word Complete
+interrupts for a given transfer message size, thereby increasing the
+write performance.
 
-devm_gpiod_get_optional() returns GPIO descriptor which should not be
-cast to anything else. If you want to get the numberic value for
-logging purposes you can call desc_to_gpio(desc) for the returned
-descriptor.
+Without this patch the raw flash write speed is ~100KB/s, with this
+patch the write speed increases to ~400 kB/s on DRA74 EVM.
+
+Signed-off-by: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+---
+ drivers/spi/spi-ti-qspi.c | 34 ++++++++++++++++++++++++++++++----
+ 1 file changed, 30 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+index 45844a227c5e..f4cea6834fad 100644
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -96,6 +96,8 @@ struct ti_qspi {
+ #define QSPI_INVAL			(4 << 16)
+ #define QSPI_WC_CMD_INT_EN			(1 << 14)
+ #define QSPI_FLEN(n)			((n - 1) << 0)
++#define QSPI_WLEN_MAX_BITS		128
++#define QSPI_WLEN_MAX_BYTES		16
+ 
+ /* STATUS REGISTER */
+ #define BUSY				0x01
+@@ -224,14 +226,16 @@ static inline u32 qspi_is_busy(struct ti_qspi *qspi)
+ 
+ static int qspi_write_msg(struct ti_qspi *qspi, struct spi_transfer *t)
+ {
+-	int wlen, count;
++	int wlen, count, xfer_len;
+ 	unsigned int cmd;
+ 	const u8 *txbuf;
++	u32 data;
+ 
+ 	txbuf = t->tx_buf;
+ 	cmd = qspi->cmd | QSPI_WR_SNGL;
+ 	count = t->len;
+ 	wlen = t->bits_per_word >> 3;	/* in bytes */
++	xfer_len = wlen;
+ 
+ 	while (count) {
+ 		if (qspi_is_busy(qspi))
+@@ -241,7 +245,29 @@ static int qspi_write_msg(struct ti_qspi *qspi, struct spi_transfer *t)
+ 		case 1:
+ 			dev_dbg(qspi->dev, "tx cmd %08x dc %08x data %02x\n",
+ 					cmd, qspi->dc, *txbuf);
+-			writeb(*txbuf, qspi->base + QSPI_SPI_DATA_REG);
++			if (count >= QSPI_WLEN_MAX_BYTES) {
++				u32 *txp = (u32 *)txbuf;
++
++				data = cpu_to_be32(*txp++);
++				writel(data, qspi->base +
++				       QSPI_SPI_DATA_REG_3);
++				data = cpu_to_be32(*txp++);
++				writel(data, qspi->base +
++				       QSPI_SPI_DATA_REG_2);
++				data = cpu_to_be32(*txp++);
++				writel(data, qspi->base +
++				       QSPI_SPI_DATA_REG_1);
++				data = cpu_to_be32(*txp++);
++				writel(data, qspi->base +
++				       QSPI_SPI_DATA_REG);
++				xfer_len = QSPI_WLEN_MAX_BYTES;
++				cmd |= QSPI_WLEN(QSPI_WLEN_MAX_BITS);
++			} else {
++				writeb(*txbuf, qspi->base + QSPI_SPI_DATA_REG);
++				cmd = qspi->cmd | QSPI_WR_SNGL;
++				xfer_len = wlen;
++				cmd |= QSPI_WLEN(wlen);
++			}
+ 			break;
+ 		case 2:
+ 			dev_dbg(qspi->dev, "tx cmd %08x dc %08x data %04x\n",
+@@ -261,8 +287,8 @@ static int qspi_write_msg(struct ti_qspi *qspi, struct spi_transfer *t)
+ 			dev_err(qspi->dev, "write timed out\n");
+ 			return -ETIMEDOUT;
+ 		}
+-		txbuf += wlen;
+-		count -= wlen;
++		txbuf += xfer_len;
++		count -= xfer_len;
+ 	}
+ 
+ 	return 0;
+-- 
+2.5.0
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,152 +1,71 @@
-From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH 7/9] ARM: dts: sun5i: add SPI pins on A13
- and A10s
-Date: Thu, 20 Aug 2015 17:00:57 +0200
-Message-ID: <20150820150057.GY30520@lukather>
-References: <cover.1440080122.git.hramrach@gmail.com>
- <90730047894f6ec84cd70062a27b7085c2016260.1440080122.git.hramrach@gmail.com>
-Reply-To: maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi: ti-qspi: use 128 bit transfer mode for writing to
+ flash
+Date: Thu, 20 Aug 2015 10:55:14 -0700
+Message-ID: <20150820175514.GG12027@sirena.org.uk>
+References: <1440066659-5356-1-git-send-email-vigneshr@ti.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="vavxEBoGuREFpPEl"
-Cc: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-sunxi+bncBD2ZNBF5VYJRBK6X26XAKGQEYV2ULIQ-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="bFsKbPszpzYNtEU6"
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org
+To: Vignesh R <vigneshr@ti.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <90730047894f6ec84cd70062a27b7085c2016260.1440080122.git.hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <http://groups.google.com/group/linux-sunxi
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
- <http://groups.google.com/group/linux-sunxi/subscribe>
+In-Reply-To: <1440066659-5356-1-git-send-email-vigneshr@ti.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---vavxEBoGuREFpPEl
-Content-Type: text/plain; charset=UTF-8
+
+--bFsKbPszpzYNtEU6
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Aug 20, 2015 at 02:19:47PM -0000, Michal Suchanek wrote:
-> According to datasheet some pins are available on A10s only while others
-> are shared with A13.
-> 
-> Signed-off-by: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> ---
-> This time add all spi pins and make the CS pins separate as is seen with
-> current sun4i DTs
-> ---
->  arch/arm/boot/dts/sun5i-a10s.dtsi | 21 +++++++++++++++++
->  arch/arm/boot/dts/sun5i.dtsi      | 49 +++++++++++++++++++++++++++++++++++++++
->  2 files changed, 70 insertions(+)
-> 
-> diff --git a/arch/arm/boot/dts/sun5i-a10s.dtsi b/arch/arm/boot/dts/sun5i-a10s.dtsi
-> index f11efb7..d9610fa 100644
-> --- a/arch/arm/boot/dts/sun5i-a10s.dtsi
-> +++ b/arch/arm/boot/dts/sun5i-a10s.dtsi
-> @@ -201,6 +201,27 @@
->  		allwinner,drive = <SUN4I_PINCTRL_30_MA>;
->  		allwinner,pull = <SUN4I_PINCTRL_NO_PULL>;
->  	};
-> +
-> +	spi1_cs1_pins_a: spi1_cs1@0 {
-> +		allwinner,pins = "PG13";
-> +		allwinner,function = "spi1";
-> +		allwinner,drive = <SUN4I_PINCTRL_10_MA>;
-> +		allwinner,pull = <SUN4I_PINCTRL_NO_PULL>;
-> +	};
-> +
-> +	spi2_pins_a: spi2@0 {
-> +		allwinner,pins = "PB12", "PB13", "PB14";
-> +		allwinner,function = "spi1";
-> +		allwinner,drive = <SUN4I_PINCTRL_10_MA>;
-> +		allwinner,pull = <SUN4I_PINCTRL_NO_PULL>;
-> +	};
-> +
-> +	spi2_cs0_pins_a: spi2_cs0@0 {
-> +		allwinner,pins = "PB11";
-> +		allwinner,function = "spi1";
-> +		allwinner,drive = <SUN4I_PINCTRL_10_MA>;
-> +		allwinner,pull = <SUN4I_PINCTRL_NO_PULL>;
-> +	};
+On Thu, Aug 20, 2015 at 04:00:59PM +0530, Vignesh R wrote:
 
-spi2 nodes with spi1 function ??? How can that even work?
+> -			writeb(*txbuf, qspi->base + QSPI_SPI_DATA_REG);
+> +			if (count >= QSPI_WLEN_MAX_BYTES) {
+> +				u32 *txp = (u32 *)txbuf;
+> +
+> +				data = cpu_to_be32(*txp++);
+> +				writel(data, qspi->base +
+> +				       QSPI_SPI_DATA_REG_3);
+> +				data = cpu_to_be32(*txp++);
+> +				writel(data, qspi->base +
+> +				       QSPI_SPI_DATA_REG_2);
+> +				data = cpu_to_be32(*txp++);
+> +				writel(data, qspi->base +
+> +				       QSPI_SPI_DATA_REG_1);
+> +				data = cpu_to_be32(*txp++);
+> +				writel(data, qspi->base +
+> +				       QSPI_SPI_DATA_REG);
+> +				xfer_len = QSPI_WLEN_MAX_BYTES;
+> +				cmd |= QSPI_WLEN(QSPI_WLEN_MAX_BITS);
+> +			} else {
+> +				writeb(*txbuf, qspi->base + QSPI_SPI_DATA_REG);
+> +				cmd = qspi->cmd | QSPI_WR_SNGL;
+> +				xfer_len = wlen;
+> +				cmd |= QSPI_WLEN(wlen);
+> +			}
 
->  };
->  
->  &sram_a {
-> diff --git a/arch/arm/boot/dts/sun5i.dtsi b/arch/arm/boot/dts/sun5i.dtsi
-> index 54b0978..7d32d49 100644
-> --- a/arch/arm/boot/dts/sun5i.dtsi
-> +++ b/arch/arm/boot/dts/sun5i.dtsi
-> @@ -516,6 +516,55 @@
->  				allwinner,drive = <SUN4I_PINCTRL_30_MA>;
->  				allwinner,pull = <SUN4I_PINCTRL_PULL_UP>;
->  			};
-> +
-> +			spi0_pins_a: spi0@0 {
-> +				allwinner,pins = "PC00", "PC01", "PC02";
-> +				allwinner,function = "spi0";
-> +				allwinner,drive = <SUN4I_PINCTRL_10_MA>;
-> +				allwinner,pull = <SUN4I_PINCTRL_NO_PULL>;
-> +			};
-> +
-> +			spi0_cs0_pins_a: spi0_cs0@0 {
-> +				allwinner,pins = "PC03";
-> +				allwinner,function = "spi0";
-> +				allwinner,drive = <SUN4I_PINCTRL_10_MA>;
-> +				allwinner,pull = <SUN4I_PINCTRL_NO_PULL>;
-> +			};
-> +
-> +			spi1_pins_a: spi1@0 {
-> +				allwinner,pins = "PG10", "PG11", "PG12";
-> +				allwinner,function = "spi1";
-> +				allwinner,drive = <SUN4I_PINCTRL_10_MA>;
-> +				allwinner,pull = <SUN4I_PINCTRL_NO_PULL>;
-> +			};
-> +
-> +			spi1_cs0_pins_a: spi1_cs0@0 {
-> +				allwinner,pins = "PG09";
-> +				allwinner,function = "spi1";
-> +				allwinner,drive = <SUN4I_PINCTRL_10_MA>;
-> +				allwinner,pull = <SUN4I_PINCTRL_NO_PULL>;
-> +			};
-> +
-> +			spi2_pins_b: spi2@1 {
-> +				allwinner,pins = "PE01", "PE02", "PE03";
-> +				allwinner,function = "spi2";
-> +				allwinner,drive = <SUN4I_PINCTRL_10_MA>;
-> +				allwinner,pull = <SUN4I_PINCTRL_NO_PULL>;
-> +			};
-> +
-> +			spi2_cs0_pins_b: spi2_cs1@1 {
-> +				allwinner,pins = "PE00";
-> +				allwinner,function = "spi2";
-> +				allwinner,drive = <SUN4I_PINCTRL_10_MA>;
-> +				allwinner,pull = <SUN4I_PINCTRL_NO_PULL>;
-> +			};
-> +
-> +			spi2_cs1_pins_a: spi2_cs1@0 {
-> +				allwinner,pins = "PB10";
-> +				allwinner,function = "spi2";
-> +				allwinner,drive = <SUN4I_PINCTRL_10_MA>;
-> +				allwinner,pull = <SUN4I_PINCTRL_NO_PULL>;
-> +			};
+It's a bit sad that this isn't able to do a Duff's device type thing and
+only kicks in for the full 128 bit FIFO size, it looks like it could do
+any number of words.
 
-Please only add the pins you intend to use.
+--bFsKbPszpzYNtEU6
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-Maxime
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
--- 
-Maxime Ripard, Free Electrons
-Embedded Linux, Kernel and Android engineering
-http://free-electrons.com
---vavxEBoGuREFpPEl--
+iQEcBAEBCAAGBQJV1hSCAAoJECTWi3JdVIfQRXYH/iI7LZuKRZcpcs1MGs/YjXEU
+09E7wf8vNwRKaa+X3j2hTFiZi9deXyBeYzHYIrFpAbSyI33vZeF4P5IoEmRUMG6s
+zrVfh9KLl23Lrl5lCbx1ZeJ+0R9GrBQFPtR28U+bCjnvrexMD3oSKQ9u06Mmu3Hw
+YndZK2VK9j2wc4BiBJUYVOjbDSUY25CcaNIzrjpRcERuwHj+IYPe4fsSJL6jrQEW
+mwZ/XqpH4xDCr9BQ0SzSZ1YhLrNswXvvAy/fBQHUCqFmAE8B/mhic4Gs9UQ4sRQF
+V4rD4FgGuUC329w7tg4r4mvVtKN8I0e5+ZnAI8VpSK9K7dDBhTc3LQAUhCBW6iM=
+=o2kQ
+-----END PGP SIGNATURE-----
+
+--bFsKbPszpzYNtEU6--

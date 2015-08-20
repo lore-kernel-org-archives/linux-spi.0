@@ -1,71 +1,67 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: ti-qspi: use 128 bit transfer mode for writing to
- flash
-Date: Thu, 20 Aug 2015 10:55:14 -0700
-Message-ID: <20150820175514.GG12027@sirena.org.uk>
-References: <1440066659-5356-1-git-send-email-vigneshr@ti.com>
+From: Vaishali Thakkar <vthakkar1994-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: bcm53xx: Adjust devm usage
+Date: Thu, 20 Aug 2015 23:28:38 +0530
+Message-ID: <20150820175838.GA4895@localhost>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="bFsKbPszpzYNtEU6"
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org
-To: Vignesh R <vigneshr@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1440066659-5356-1-git-send-email-vigneshr@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
-
-
---bFsKbPszpzYNtEU6
 Content-Type: text/plain; charset=us-ascii
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Aug 20, 2015 at 04:00:59PM +0530, Vignesh R wrote:
+Remove use of spi_unregister_master in remove function as
+devm_spi_register_master in probe function automatically
+handles it. To be compatible with the change, use direct
+return instead of goto and remove unnedded label out.
 
-> -			writeb(*txbuf, qspi->base + QSPI_SPI_DATA_REG);
-> +			if (count >= QSPI_WLEN_MAX_BYTES) {
-> +				u32 *txp = (u32 *)txbuf;
-> +
-> +				data = cpu_to_be32(*txp++);
-> +				writel(data, qspi->base +
-> +				       QSPI_SPI_DATA_REG_3);
-> +				data = cpu_to_be32(*txp++);
-> +				writel(data, qspi->base +
-> +				       QSPI_SPI_DATA_REG_2);
-> +				data = cpu_to_be32(*txp++);
-> +				writel(data, qspi->base +
-> +				       QSPI_SPI_DATA_REG_1);
-> +				data = cpu_to_be32(*txp++);
-> +				writel(data, qspi->base +
-> +				       QSPI_SPI_DATA_REG);
-> +				xfer_len = QSPI_WLEN_MAX_BYTES;
-> +				cmd |= QSPI_WLEN(QSPI_WLEN_MAX_BITS);
-> +			} else {
-> +				writeb(*txbuf, qspi->base + QSPI_SPI_DATA_REG);
-> +				cmd = qspi->cmd | QSPI_WR_SNGL;
-> +				xfer_len = wlen;
-> +				cmd |= QSPI_WLEN(wlen);
-> +			}
+Also, remove bcm53xxspi_bcma_remove as it is now redundant.
 
-It's a bit sad that this isn't able to do a Duff's device type thing and
-only kicks in for the full 128 bit FIFO size, it looks like it could do
-any number of words.
+Signed-off-by: Vaishali Thakkar <vthakkar1994-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi-bcm53xx.c | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
---bFsKbPszpzYNtEU6
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+diff --git a/drivers/spi/spi-bcm53xx.c b/drivers/spi/spi-bcm53xx.c
+index 1520554..cc3f938 100644
+--- a/drivers/spi/spi-bcm53xx.c
++++ b/drivers/spi/spi-bcm53xx.c
+@@ -247,28 +247,19 @@ static int bcm53xxspi_bcma_probe(struct bcma_device *core)
+ 	if (err) {
+ 		spi_master_put(master);
+ 		bcma_set_drvdata(core, NULL);
+-		goto out;
++		return err;
+ 	}
+ 
+ 	/* Broadcom SoCs (at least with the CC rev 42) use SPI for flash only */
+ 	spi_new_device(master, &bcm53xx_info);
+ 
+-out:
+-	return err;
+-}
+-
+-static void bcm53xxspi_bcma_remove(struct bcma_device *core)
+-{
+-	struct bcm53xxspi *b53spi = bcma_get_drvdata(core);
+-
+-	spi_unregister_master(b53spi->master);
++	return 0;
+ }
+ 
+ static struct bcma_driver bcm53xxspi_bcma_driver = {
+ 	.name		= KBUILD_MODNAME,
+ 	.id_table	= bcm53xxspi_bcma_tbl,
+ 	.probe		= bcm53xxspi_bcma_probe,
+-	.remove		= bcm53xxspi_bcma_remove,
+ };
+ 
+ /**************************************************
+-- 
+1.9.1
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJV1hSCAAoJECTWi3JdVIfQRXYH/iI7LZuKRZcpcs1MGs/YjXEU
-09E7wf8vNwRKaa+X3j2hTFiZi9deXyBeYzHYIrFpAbSyI33vZeF4P5IoEmRUMG6s
-zrVfh9KLl23Lrl5lCbx1ZeJ+0R9GrBQFPtR28U+bCjnvrexMD3oSKQ9u06Mmu3Hw
-YndZK2VK9j2wc4BiBJUYVOjbDSUY25CcaNIzrjpRcERuwHj+IYPe4fsSJL6jrQEW
-mwZ/XqpH4xDCr9BQ0SzSZ1YhLrNswXvvAy/fBQHUCqFmAE8B/mhic4Gs9UQ4sRQF
-V4rD4FgGuUC329w7tg4r4mvVtKN8I0e5+ZnAI8VpSK9K7dDBhTc3LQAUhCBW6iM=
-=o2kQ
------END PGP SIGNATURE-----
-
---bFsKbPszpzYNtEU6--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

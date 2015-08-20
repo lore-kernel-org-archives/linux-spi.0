@@ -1,18 +1,18 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: ti-qspi: use 128 bit transfer mode where possible" to the spi tree
-Date: Thu, 20 Aug 2015 11:34:35 -0700
-Message-ID: <E1ZSUfb-00009h-UC@finisterre>
-References: <1440066659-5356-1-git-send-email-vigneshr@ti.com>
+Subject: Applied "spi: mediatek: fix spi incorrect endian usage" to the spi tree
+Date: Thu, 20 Aug 2015 11:34:34 -0700
+Message-ID: <E1ZSUfa-00009E-Tl@finisterre>
+References: <1440062349-25513-2-git-send-email-leilk.liu@mediatek.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1440066659-5356-1-git-send-email-vigneshr-l0cyMroinI0@public.gmane.org>
+In-Reply-To: <1440062349-25513-2-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: ti-qspi: use 128 bit transfer mode where possible
+   spi: mediatek: fix spi incorrect endian usage
 
 has been applied to the spi tree at
 
@@ -37,106 +37,119 @@ to this mail.
 Thanks,
 Mark
 
->From f682c4ffd25a19594d21987c19a69fa123242eb7 Mon Sep 17 00:00:00 2001
-From: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
-Date: Thu, 20 Aug 2015 16:00:59 +0530
-Subject: [PATCH] spi: ti-qspi: use 128 bit transfer mode where possible
+>From 44f636da4e71e0c73d6e29d0319a8954ce3f247a Mon Sep 17 00:00:00 2001
+From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Date: Thu, 20 Aug 2015 17:19:06 +0800
+Subject: [PATCH] spi: mediatek: fix spi incorrect endian usage
 
-TI QSPI has four 32 bit data regsiters which can be used to transfer 16
-bytes of data at once. The register group QSPI_SPI_DATA_REG_3,
-QSPI_SPI_DATA_REG_2, QSPI_SPI_DATA_REG_1 and QSPI_SPI_DATA_REG is
-treated as a single 128-bit word for shifting data in and out. The bit
-at QSPI_SPI_DATA_REG_3[31] position is the first bit to be shifted out
-in case of 128 bit transfer mode. Therefore the first byte to be written
-to flash should be at QSPI_SPI_DATA_REG_3[31-25] position.
-Instead of writing 1 byte at a time when interacting with spi-nor flash,
-make use of all the four registers so that 16 bytes can be transferred
-in one go. This reduces number of register writes and Word Complete
-interrupts for a given transfer message size, thereby increasing the
-write performance.
+TX_ENDIAN/RX_ENDIAN bits define whether to reverse the endian
+order of the data DMA from/to memory. The endian order should
+keep the same with cpu endian.
 
-Without this patch the raw flash write speed is ~100KB/s, with this
-patch the write speed increases to ~400 kB/s on DRA74 EVM.
-
-Signed-off-by: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-ti-qspi.c | 34 ++++++++++++++++++++++++++++++----
- 1 file changed, 30 insertions(+), 4 deletions(-)
+ drivers/spi/spi-mt65xx.c                 | 38 ++++++++++++++------------------
+ include/linux/platform_data/spi-mt65xx.h |  2 --
+ 2 files changed, 16 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
-index 5c06168..aa6d284 100644
---- a/drivers/spi/spi-ti-qspi.c
-+++ b/drivers/spi/spi-ti-qspi.c
-@@ -99,6 +99,8 @@ struct ti_qspi {
- #define QSPI_INVAL			(4 << 16)
- #define QSPI_WC_CMD_INT_EN			(1 << 14)
- #define QSPI_FLEN(n)			((n - 1) << 0)
-+#define QSPI_WLEN_MAX_BITS		128
-+#define QSPI_WLEN_MAX_BYTES		16
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index 546d70c..2eda2d1 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -122,8 +122,6 @@ static const struct mtk_spi_compatible mt8173_compat = {
+ static const struct mtk_chip_config mtk_default_chip_info = {
+ 	.rx_mlsb = 1,
+ 	.tx_mlsb = 1,
+-	.tx_endian = 0,
+-	.rx_endian = 0,
+ };
  
- /* STATUS REGISTER */
- #define BUSY				0x01
-@@ -217,14 +219,16 @@ static inline u32 qspi_is_busy(struct ti_qspi *qspi)
+ static const struct of_device_id mtk_spi_of_match[] = {
+@@ -161,9 +159,13 @@ static void mtk_spi_config(struct mtk_spi *mdata,
+ 	reg_val |= (chip_config->rx_mlsb << SPI_CMD_RXMSBF_OFFSET);
  
- static int qspi_write_msg(struct ti_qspi *qspi, struct spi_transfer *t)
+ 	/* set the tx/rx endian */
+-	reg_val &= ~(SPI_CMD_TX_ENDIAN | SPI_CMD_RX_ENDIAN);
+-	reg_val |= (chip_config->tx_endian << SPI_CMD_TX_ENDIAN_OFFSET);
+-	reg_val |= (chip_config->rx_endian << SPI_CMD_RX_ENDIAN_OFFSET);
++#ifdef __LITTLE_ENDIAN
++	reg_val &= ~SPI_CMD_TX_ENDIAN;
++	reg_val &= ~SPI_CMD_RX_ENDIAN;
++#else
++	reg_val |= SPI_CMD_TX_ENDIAN;
++	reg_val |= SPI_CMD_RX_ENDIAN;
++#endif
+ 
+ 	/* set finish and pause interrupt always enable */
+ 	reg_val |= SPI_CMD_FINISH_IE | SPI_CMD_PAUSE_EN;
+@@ -352,7 +354,7 @@ static int mtk_spi_fifo_transfer(struct spi_master *master,
+ 				 struct spi_device *spi,
+ 				 struct spi_transfer *xfer)
  {
--	int wlen, count;
-+	int wlen, count, xfer_len;
- 	unsigned int cmd;
- 	const u8 *txbuf;
-+	u32 data;
+-	int cnt, i;
++	int cnt;
+ 	struct mtk_spi *mdata = spi_master_get_devdata(master);
  
- 	txbuf = t->tx_buf;
- 	cmd = qspi->cmd | QSPI_WR_SNGL;
- 	count = t->len;
- 	wlen = t->bits_per_word >> 3;	/* in bytes */
-+	xfer_len = wlen;
+ 	mdata->cur_transfer = xfer;
+@@ -364,10 +366,7 @@ static int mtk_spi_fifo_transfer(struct spi_master *master,
+ 		cnt = xfer->len / 4 + 1;
+ 	else
+ 		cnt = xfer->len / 4;
+-
+-	for (i = 0; i < cnt; i++)
+-		writel(*((u32 *)xfer->tx_buf + i),
+-		       mdata->base + SPI_TX_DATA_REG);
++	iowrite32_rep(mdata->base + SPI_TX_DATA_REG, xfer->tx_buf, cnt);
  
- 	while (count) {
- 		if (qspi_is_busy(qspi))
-@@ -234,7 +238,29 @@ static int qspi_write_msg(struct ti_qspi *qspi, struct spi_transfer *t)
- 		case 1:
- 			dev_dbg(qspi->dev, "tx cmd %08x dc %08x data %02x\n",
- 					cmd, qspi->dc, *txbuf);
--			writeb(*txbuf, qspi->base + QSPI_SPI_DATA_REG);
-+			if (count >= QSPI_WLEN_MAX_BYTES) {
-+				u32 *txp = (u32 *)txbuf;
-+
-+				data = cpu_to_be32(*txp++);
-+				writel(data, qspi->base +
-+				       QSPI_SPI_DATA_REG_3);
-+				data = cpu_to_be32(*txp++);
-+				writel(data, qspi->base +
-+				       QSPI_SPI_DATA_REG_2);
-+				data = cpu_to_be32(*txp++);
-+				writel(data, qspi->base +
-+				       QSPI_SPI_DATA_REG_1);
-+				data = cpu_to_be32(*txp++);
-+				writel(data, qspi->base +
-+				       QSPI_SPI_DATA_REG);
-+				xfer_len = QSPI_WLEN_MAX_BYTES;
-+				cmd |= QSPI_WLEN(QSPI_WLEN_MAX_BITS);
-+			} else {
-+				writeb(*txbuf, qspi->base + QSPI_SPI_DATA_REG);
-+				cmd = qspi->cmd | QSPI_WR_SNGL;
-+				xfer_len = wlen;
-+				cmd |= QSPI_WLEN(wlen);
-+			}
- 			break;
- 		case 2:
- 			dev_dbg(qspi->dev, "tx cmd %08x dc %08x data %04x\n",
-@@ -254,8 +280,8 @@ static int qspi_write_msg(struct ti_qspi *qspi, struct spi_transfer *t)
- 			dev_err(qspi->dev, "write timed out\n");
- 			return -ETIMEDOUT;
+ 	mtk_spi_enable_transfer(master);
+ 
+@@ -437,7 +436,7 @@ static bool mtk_spi_can_dma(struct spi_master *master,
+ 
+ static irqreturn_t mtk_spi_interrupt(int irq, void *dev_id)
+ {
+-	u32 cmd, reg_val, i;
++	u32 cmd, reg_val, cnt;
+ 	struct spi_master *master = dev_id;
+ 	struct mtk_spi *mdata = spi_master_get_devdata(master);
+ 	struct spi_transfer *trans = mdata->cur_transfer;
+@@ -449,18 +448,13 @@ static irqreturn_t mtk_spi_interrupt(int irq, void *dev_id)
+ 		mdata->state = MTK_SPI_IDLE;
+ 
+ 	if (!master->can_dma(master, master->cur_msg->spi, trans)) {
+-		/* xfer len is not N*4 bytes every time in a transfer,
+-		 * but SPI_RX_DATA_REG must reads 4 bytes once,
+-		 * so rx buffer byte by byte.
+-		 */
+ 		if (trans->rx_buf) {
+-			for (i = 0; i < mdata->xfer_len; i++) {
+-				if (i % 4 == 0)
+-					reg_val =
+-					readl(mdata->base + SPI_RX_DATA_REG);
+-				*((u8 *)(trans->rx_buf + i)) =
+-					(reg_val >> ((i % 4) * 8)) & 0xff;
+-			}
++			if (mdata->xfer_len % 4)
++				cnt = mdata->xfer_len / 4 + 1;
++			else
++				cnt = mdata->xfer_len / 4;
++			ioread32_rep(mdata->base + SPI_RX_DATA_REG,
++				     trans->rx_buf, cnt);
  		}
--		txbuf += wlen;
--		count -= wlen;
-+		txbuf += xfer_len;
-+		count -= xfer_len;
- 	}
- 
- 	return 0;
+ 		spi_finalize_current_transfer(master);
+ 		return IRQ_HANDLED;
+diff --git a/include/linux/platform_data/spi-mt65xx.h b/include/linux/platform_data/spi-mt65xx.h
+index 7512255..54b0448 100644
+--- a/include/linux/platform_data/spi-mt65xx.h
++++ b/include/linux/platform_data/spi-mt65xx.h
+@@ -16,7 +16,5 @@
+ struct mtk_chip_config {
+ 	u32 tx_mlsb;
+ 	u32 rx_mlsb;
+-	u32 tx_endian;
+-	u32 rx_endian;
+ };
+ #endif
 -- 
 2.5.0
 

@@ -1,57 +1,43 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 18/18] spi: (RFC, don't apply) report OF style modalias
- when probing using DT
-Date: Thu, 20 Aug 2015 11:36:34 -0700
-Message-ID: <20150820183634.GN12027@sirena.org.uk>
-References: <1440054451-1223-1-git-send-email-javier@osg.samsung.com>
- <1440054451-1223-19-git-send-email-javier@osg.samsung.com>
+Subject: Re: [PATCH 1/9] spi: sunxi: fix transfer timeout
+Date: Thu, 20 Aug 2015 11:41:32 -0700
+Message-ID: <20150820184132.GO12027@sirena.org.uk>
+References: <cover.1440080122.git.hramrach@gmail.com>
+ <0e0b52774a48ddb71dc8095b66942451cd31ff7d.1440080122.git.hramrach@gmail.com>
+Reply-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="FX+Db2fp7WJhXKrW"
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Javier Martinez Canillas <javier.martinez-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="NKtYx2Ppz7d1tORf"
+Cc: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-sunxi+bncBDQ2L75W5QGBB2563CXAKGQE3ZD4XUY-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1440054451-1223-19-git-send-email-javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <0e0b52774a48ddb71dc8095b66942451cd31ff7d.1440080122.git.hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <http://groups.google.com/group/linux-sunxi
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+ <http://groups.google.com/group/linux-sunxi/subscribe>
+List-Id: linux-spi.vger.kernel.org
 
-
---FX+Db2fp7WJhXKrW
-Content-Type: text/plain; charset=us-ascii
+--NKtYx2Ppz7d1tORf
+Content-Type: text/plain; charset=UTF-8
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 20, 2015 at 09:07:31AM +0200, Javier Martinez Canillas wrote:
-> From: Javier Martinez Canillas <javier.martinez-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>
->=20
-> An SPI driver that supports both OF and legacy platforms, will have
-> both an OF and SPI ID table. This means that when built as a module,
-> the aliases will be filled from both tables, e.g:
+On Thu, Aug 20, 2015 at 02:19:45PM -0000, Michal Suchanek wrote:
 
-This is tagged as something that can't be applied but you've not
-explained why it can't be applied or what comments might be useful :(
+>  drivers/spi/spi-sun4i.c | 10 +++++++++-
+>  drivers/spi/spi-sun6i.c | 10 +++++++++-
 
---FX+Db2fp7WJhXKrW
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJV1h4xAAoJECTWi3JdVIfQWQ4H/3pcnIVJhYNDBko1XGJVvzPn
-RaHqaNrUIs3iyiBrtIUf3jJddmq7j9El3S42EInXaxh7PqveLiGep771/+bD3x+7
-LASGg1LKM2EIRYwNb0tnTx/gyWcuJ23g7eXwM4xEuUfcdjsKkg7xEyFRc+OusfjZ
-e0JjyDjGAITJuGkj0SiYYMRB2amu8Yx4g2VXOmvSJaGS5S9BcbqgI2bz3rZRa0af
-E7YC8mfd3fAXoaM+NXTZb4TEFaISeG8N9NYuhKSE2T3GbggbvVaF7EOu/VyfPUs/
-vWJm0Pgb3o/cJXH1coXDaVzvNVzrIO8aDvbITsRJx1cpDcr2fb1TU1eVFiDRnJo=
-=Ridd
------END PGP SIGNATURE-----
-
---FX+Db2fp7WJhXKrW--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Are we *sure* we can't work on merging these drivers :(
+--NKtYx2Ppz7d1tORf--

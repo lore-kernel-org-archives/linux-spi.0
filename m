@@ -1,13 +1,14 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/9] spi: sunxi: fix transfer timeout
-Date: Thu, 20 Aug 2015 11:41:32 -0700
-Message-ID: <20150820184132.GO12027@sirena.org.uk>
+Subject: Re: [PATCH 3/9] spi: sunxi: check that transfer speed
+ is non-zero
+Date: Thu, 20 Aug 2015 11:45:04 -0700
+Message-ID: <20150820184504.GP12027@sirena.org.uk>
 References: <cover.1440080122.git.hramrach@gmail.com>
- <0e0b52774a48ddb71dc8095b66942451cd31ff7d.1440080122.git.hramrach@gmail.com>
+ <3688fab67e7cdc7bcbff73dfd6b0fcdcc4e79eb6.1440080122.git.hramrach@gmail.com>
 Reply-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="NKtYx2Ppz7d1tORf"
+	protocol="application/pgp-signature"; boundary="MWF3YmTHhoLNIVQC"
 Cc: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
 	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
@@ -18,9 +19,9 @@ Cc: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org, Rob Herring <robh+dt-Dg
 	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-sunxi+bncBDQ2L75W5QGBB2563CXAKGQE3ZD4XUY-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+Return-path: <linux-sunxi+bncBDQ2L75W5QGBBOWA3CXAKGQEJPSUL6A-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <0e0b52774a48ddb71dc8095b66942451cd31ff7d.1440080122.git.hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <3688fab67e7cdc7bcbff73dfd6b0fcdcc4e79eb6.1440080122.git.hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
 List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
 List-Archive: <http://groups.google.com/group/linux-sunxi
@@ -30,14 +31,15 @@ List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39
  <http://groups.google.com/group/linux-sunxi/subscribe>
 List-Id: linux-spi.vger.kernel.org
 
---NKtYx2Ppz7d1tORf
+--MWF3YmTHhoLNIVQC
 Content-Type: text/plain; charset=UTF-8
 Content-Disposition: inline
 
-On Thu, Aug 20, 2015 at 02:19:45PM -0000, Michal Suchanek wrote:
+On Thu, Aug 20, 2015 at 02:19:46PM -0000, Michal Suchanek wrote:
+> When the maximum transfer speed is not set for a SPI slave the value
+> remains 0 and the code in sunxi SPI divides by it. Use an arbitrary
+> speed instead in that case.
 
->  drivers/spi/spi-sun4i.c | 10 +++++++++-
->  drivers/spi/spi-sun6i.c | 10 +++++++++-
-
-Are we *sure* we can't work on merging these drivers :(
---NKtYx2Ppz7d1tORf--
+You should always be using the transfer speed that is defined per
+transfer, the core will ensure that this is always set.
+--MWF3YmTHhoLNIVQC--

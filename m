@@ -1,18 +1,18 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: mediatek: use BIT() to instead of SPI_CMD_*_OFFSET" to the spi tree
-Date: Thu, 20 Aug 2015 11:34:32 -0700
-Message-ID: <E1ZSUfY-00008D-Uh@finisterre>
-References: <1440062349-25513-4-git-send-email-leilk.liu@mediatek.com>
+Subject: Applied "spi: medaitek: revise quirks compatibility style" to the spi tree
+Date: Thu, 20 Aug 2015 11:34:33 -0700
+Message-ID: <E1ZSUfZ-00008j-Tx@finisterre>
+References: <1440062349-25513-3-git-send-email-leilk.liu@mediatek.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1440062349-25513-4-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <1440062349-25513-3-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: mediatek: use BIT() to instead of SPI_CMD_*_OFFSET
+   spi: medaitek: revise quirks compatibility style
 
 has been applied to the spi tree at
 
@@ -37,90 +37,70 @@ to this mail.
 Thanks,
 Mark
 
->From a71d6ea6d3ec3e8ba4220370f29531903e3bc153 Mon Sep 17 00:00:00 2001
+>From af57937e862370c14b7d71d15d969593ffca1ba8 Mon Sep 17 00:00:00 2001
 From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Date: Thu, 20 Aug 2015 17:19:08 +0800
-Subject: [PATCH] spi: mediatek: use BIT() to instead of SPI_CMD_*_OFFSET
+Date: Thu, 20 Aug 2015 17:19:07 +0800
+Subject: [PATCH] spi: medaitek: revise quirks compatibility style
 
-This patch removes SPI_CMD_*_OFFSET defines, and uses the BIT(x)
-defines instead.
+The quirks are true/false, so define these as bool.
 
 Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-mt65xx.c | 37 ++++++++++++++++++++-----------------
- 1 file changed, 20 insertions(+), 17 deletions(-)
+ drivers/spi/spi-mt65xx.c | 25 +++++++------------------
+ 1 file changed, 7 insertions(+), 18 deletions(-)
 
 diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 55d1c3e..516b4ed 100644
+index 2eda2d1..55d1c3e 100644
 --- a/drivers/spi/spi-mt65xx.c
 +++ b/drivers/spi/spi-mt65xx.c
-@@ -48,15 +48,8 @@
- #define SPI_CFG1_PACKET_LOOP_MASK         0xff00
- #define SPI_CFG1_PACKET_LENGTH_MASK       0x3ff0000
+@@ -71,10 +71,6 @@
+ #define SPI_CMD_FINISH_IE            BIT(16)
+ #define SPI_CMD_PAUSE_IE             BIT(17)
  
--#define SPI_CMD_ACT_OFFSET                0
--#define SPI_CMD_RESUME_OFFSET             1
--#define SPI_CMD_CPHA_OFFSET               8
--#define SPI_CMD_CPOL_OFFSET               9
--#define SPI_CMD_TXMSBF_OFFSET             12
--#define SPI_CMD_RXMSBF_OFFSET             13
--#define SPI_CMD_RX_ENDIAN_OFFSET          14
--#define SPI_CMD_TX_ENDIAN_OFFSET          15
+-#define MTK_SPI_QUIRK_PAD_SELECT 1
+-/* Must explicitly send dummy Tx bytes to do Rx only transfer */
+-#define MTK_SPI_QUIRK_MUST_TX 1
 -
-+#define SPI_CMD_ACT                  BIT(0)
-+#define SPI_CMD_RESUME               BIT(1)
- #define SPI_CMD_RST                  BIT(2)
- #define SPI_CMD_PAUSE_EN             BIT(4)
- #define SPI_CMD_DEASSERT             BIT(5)
-@@ -143,9 +136,14 @@ static void mtk_spi_config(struct mtk_spi *mdata,
- 	reg_val = readl(mdata->base + SPI_CMD_REG);
+ #define MT8173_SPI_MAX_PAD_SEL 3
  
- 	/* set the mlsbx and mlsbtx */
--	reg_val &= ~(SPI_CMD_TXMSBF | SPI_CMD_RXMSBF);
--	reg_val |= (chip_config->tx_mlsb << SPI_CMD_TXMSBF_OFFSET);
--	reg_val |= (chip_config->rx_mlsb << SPI_CMD_RXMSBF_OFFSET);
-+	if (chip_config->tx_mlsb)
-+		reg_val |= SPI_CMD_TXMSBF;
-+	else
-+		reg_val &= ~SPI_CMD_TXMSBF;
-+	if (chip_config->rx_mlsb)
-+		reg_val |= SPI_CMD_RXMSBF;
-+	else
-+		reg_val &= ~SPI_CMD_RXMSBF;
+ #define MTK_SPI_IDLE 0
+@@ -84,8 +80,9 @@
+ #define MTK_SPI_PACKET_SIZE 1024
  
- 	/* set the tx/rx endian */
- #ifdef __LITTLE_ENDIAN
-@@ -201,9 +199,14 @@ static int mtk_spi_prepare_message(struct spi_master *master,
- 	cpol = spi->mode & SPI_CPOL ? 1 : 0;
+ struct mtk_spi_compatible {
+-	u32 need_pad_sel;
+-	u32 must_tx;
++	bool need_pad_sel;
++	/* Must explicitly send dummy Tx bytes to do Rx only transfer */
++	bool must_tx;
+ };
  
- 	reg_val = readl(mdata->base + SPI_CMD_REG);
--	reg_val &= ~(SPI_CMD_CPHA | SPI_CMD_CPOL);
--	reg_val |= (cpha << SPI_CMD_CPHA_OFFSET);
--	reg_val |= (cpol << SPI_CMD_CPOL_OFFSET);
-+	if (cpha)
-+		reg_val |= SPI_CMD_CPHA;
-+	else
-+		reg_val &= ~SPI_CMD_CPHA;
-+	if (cpol)
-+		reg_val |= SPI_CMD_CPOL;
-+	else
-+		reg_val &= ~SPI_CMD_CPOL;
- 	writel(reg_val, mdata->base + SPI_CMD_REG);
+ struct mtk_spi {
+@@ -100,19 +97,11 @@ struct mtk_spi {
+ 	const struct mtk_spi_compatible *dev_comp;
+ };
  
- 	chip_config = spi->controller_data;
-@@ -282,9 +285,9 @@ static void mtk_spi_enable_transfer(struct spi_master *master)
+-static const struct mtk_spi_compatible mt6589_compat = {
+-	.need_pad_sel = 0,
+-	.must_tx = 0,
+-};
+-
+-static const struct mtk_spi_compatible mt8135_compat = {
+-	.need_pad_sel = 0,
+-	.must_tx = 0,
+-};
+-
++static const struct mtk_spi_compatible mt6589_compat;
++static const struct mtk_spi_compatible mt8135_compat;
+ static const struct mtk_spi_compatible mt8173_compat = {
+-	.need_pad_sel = MTK_SPI_QUIRK_PAD_SELECT,
+-	.must_tx = MTK_SPI_QUIRK_MUST_TX,
++	.need_pad_sel = true,
++	.must_tx = true,
+ };
  
- 	cmd = readl(mdata->base + SPI_CMD_REG);
- 	if (mdata->state == MTK_SPI_IDLE)
--		cmd |= 1 << SPI_CMD_ACT_OFFSET;
-+		cmd |= SPI_CMD_ACT;
- 	else
--		cmd |= 1 << SPI_CMD_RESUME_OFFSET;
-+		cmd |= SPI_CMD_RESUME;
- 	writel(cmd, mdata->base + SPI_CMD_REG);
- }
- 
+ /*
 -- 
 2.5.0
 

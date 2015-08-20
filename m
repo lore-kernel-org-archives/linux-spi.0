@@ -1,18 +1,18 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: medaitek: revise quirks compatibility style" to the spi tree
-Date: Thu, 20 Aug 2015 11:34:33 -0700
-Message-ID: <E1ZSUfZ-00008j-Tx@finisterre>
-References: <1440062349-25513-3-git-send-email-leilk.liu@mediatek.com>
+Subject: Applied "spi: ti-qspi: use 128 bit transfer mode where possible" to the spi tree
+Date: Thu, 20 Aug 2015 11:34:35 -0700
+Message-ID: <E1ZSUfb-00009h-UC@finisterre>
+References: <1440066659-5356-1-git-send-email-vigneshr@ti.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1440062349-25513-3-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <1440066659-5356-1-git-send-email-vigneshr-l0cyMroinI0@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: medaitek: revise quirks compatibility style
+   spi: ti-qspi: use 128 bit transfer mode where possible
 
 has been applied to the spi tree at
 
@@ -37,70 +37,106 @@ to this mail.
 Thanks,
 Mark
 
->From af57937e862370c14b7d71d15d969593ffca1ba8 Mon Sep 17 00:00:00 2001
-From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Date: Thu, 20 Aug 2015 17:19:07 +0800
-Subject: [PATCH] spi: medaitek: revise quirks compatibility style
+>From f682c4ffd25a19594d21987c19a69fa123242eb7 Mon Sep 17 00:00:00 2001
+From: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+Date: Thu, 20 Aug 2015 16:00:59 +0530
+Subject: [PATCH] spi: ti-qspi: use 128 bit transfer mode where possible
 
-The quirks are true/false, so define these as bool.
+TI QSPI has four 32 bit data regsiters which can be used to transfer 16
+bytes of data at once. The register group QSPI_SPI_DATA_REG_3,
+QSPI_SPI_DATA_REG_2, QSPI_SPI_DATA_REG_1 and QSPI_SPI_DATA_REG is
+treated as a single 128-bit word for shifting data in and out. The bit
+at QSPI_SPI_DATA_REG_3[31] position is the first bit to be shifted out
+in case of 128 bit transfer mode. Therefore the first byte to be written
+to flash should be at QSPI_SPI_DATA_REG_3[31-25] position.
+Instead of writing 1 byte at a time when interacting with spi-nor flash,
+make use of all the four registers so that 16 bytes can be transferred
+in one go. This reduces number of register writes and Word Complete
+interrupts for a given transfer message size, thereby increasing the
+write performance.
 
-Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Without this patch the raw flash write speed is ~100KB/s, with this
+patch the write speed increases to ~400 kB/s on DRA74 EVM.
+
+Signed-off-by: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-mt65xx.c | 25 +++++++------------------
- 1 file changed, 7 insertions(+), 18 deletions(-)
+ drivers/spi/spi-ti-qspi.c | 34 ++++++++++++++++++++++++++++++----
+ 1 file changed, 30 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 2eda2d1..55d1c3e 100644
---- a/drivers/spi/spi-mt65xx.c
-+++ b/drivers/spi/spi-mt65xx.c
-@@ -71,10 +71,6 @@
- #define SPI_CMD_FINISH_IE            BIT(16)
- #define SPI_CMD_PAUSE_IE             BIT(17)
+diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+index 5c06168..aa6d284 100644
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -99,6 +99,8 @@ struct ti_qspi {
+ #define QSPI_INVAL			(4 << 16)
+ #define QSPI_WC_CMD_INT_EN			(1 << 14)
+ #define QSPI_FLEN(n)			((n - 1) << 0)
++#define QSPI_WLEN_MAX_BITS		128
++#define QSPI_WLEN_MAX_BYTES		16
  
--#define MTK_SPI_QUIRK_PAD_SELECT 1
--/* Must explicitly send dummy Tx bytes to do Rx only transfer */
--#define MTK_SPI_QUIRK_MUST_TX 1
--
- #define MT8173_SPI_MAX_PAD_SEL 3
+ /* STATUS REGISTER */
+ #define BUSY				0x01
+@@ -217,14 +219,16 @@ static inline u32 qspi_is_busy(struct ti_qspi *qspi)
  
- #define MTK_SPI_IDLE 0
-@@ -84,8 +80,9 @@
- #define MTK_SPI_PACKET_SIZE 1024
+ static int qspi_write_msg(struct ti_qspi *qspi, struct spi_transfer *t)
+ {
+-	int wlen, count;
++	int wlen, count, xfer_len;
+ 	unsigned int cmd;
+ 	const u8 *txbuf;
++	u32 data;
  
- struct mtk_spi_compatible {
--	u32 need_pad_sel;
--	u32 must_tx;
-+	bool need_pad_sel;
-+	/* Must explicitly send dummy Tx bytes to do Rx only transfer */
-+	bool must_tx;
- };
+ 	txbuf = t->tx_buf;
+ 	cmd = qspi->cmd | QSPI_WR_SNGL;
+ 	count = t->len;
+ 	wlen = t->bits_per_word >> 3;	/* in bytes */
++	xfer_len = wlen;
  
- struct mtk_spi {
-@@ -100,19 +97,11 @@ struct mtk_spi {
- 	const struct mtk_spi_compatible *dev_comp;
- };
+ 	while (count) {
+ 		if (qspi_is_busy(qspi))
+@@ -234,7 +238,29 @@ static int qspi_write_msg(struct ti_qspi *qspi, struct spi_transfer *t)
+ 		case 1:
+ 			dev_dbg(qspi->dev, "tx cmd %08x dc %08x data %02x\n",
+ 					cmd, qspi->dc, *txbuf);
+-			writeb(*txbuf, qspi->base + QSPI_SPI_DATA_REG);
++			if (count >= QSPI_WLEN_MAX_BYTES) {
++				u32 *txp = (u32 *)txbuf;
++
++				data = cpu_to_be32(*txp++);
++				writel(data, qspi->base +
++				       QSPI_SPI_DATA_REG_3);
++				data = cpu_to_be32(*txp++);
++				writel(data, qspi->base +
++				       QSPI_SPI_DATA_REG_2);
++				data = cpu_to_be32(*txp++);
++				writel(data, qspi->base +
++				       QSPI_SPI_DATA_REG_1);
++				data = cpu_to_be32(*txp++);
++				writel(data, qspi->base +
++				       QSPI_SPI_DATA_REG);
++				xfer_len = QSPI_WLEN_MAX_BYTES;
++				cmd |= QSPI_WLEN(QSPI_WLEN_MAX_BITS);
++			} else {
++				writeb(*txbuf, qspi->base + QSPI_SPI_DATA_REG);
++				cmd = qspi->cmd | QSPI_WR_SNGL;
++				xfer_len = wlen;
++				cmd |= QSPI_WLEN(wlen);
++			}
+ 			break;
+ 		case 2:
+ 			dev_dbg(qspi->dev, "tx cmd %08x dc %08x data %04x\n",
+@@ -254,8 +280,8 @@ static int qspi_write_msg(struct ti_qspi *qspi, struct spi_transfer *t)
+ 			dev_err(qspi->dev, "write timed out\n");
+ 			return -ETIMEDOUT;
+ 		}
+-		txbuf += wlen;
+-		count -= wlen;
++		txbuf += xfer_len;
++		count -= xfer_len;
+ 	}
  
--static const struct mtk_spi_compatible mt6589_compat = {
--	.need_pad_sel = 0,
--	.must_tx = 0,
--};
--
--static const struct mtk_spi_compatible mt8135_compat = {
--	.need_pad_sel = 0,
--	.must_tx = 0,
--};
--
-+static const struct mtk_spi_compatible mt6589_compat;
-+static const struct mtk_spi_compatible mt8135_compat;
- static const struct mtk_spi_compatible mt8173_compat = {
--	.need_pad_sel = MTK_SPI_QUIRK_PAD_SELECT,
--	.must_tx = MTK_SPI_QUIRK_MUST_TX,
-+	.need_pad_sel = true,
-+	.must_tx = true,
- };
- 
- /*
+ 	return 0;
 -- 
 2.5.0
 

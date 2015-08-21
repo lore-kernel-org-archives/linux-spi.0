@@ -1,87 +1,69 @@
-From: Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: [PATCH 3/4 RESEND] spi: s3c64xx: simplify suspend / resume handlers
-Date: Fri, 21 Aug 2015 10:05:15 +0900
-Message-ID: <55D6794B.60800@samsung.com>
-References: <55D63376.5070607@gmail.com>
+From: Krzysztof Kozlowski <k.kozlowski@samsung.com>
+Subject: Re: [PATCH 4/4 RESEND] spi: s3c64xx: replace clock disabling with
+ runtime PM suspend call in remove function
+Date: Fri, 21 Aug 2015 10:17:07 +0900
+Message-ID: <55D67C13.8000909@samsung.com>
+References: <55D63457.5060901@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Cc: linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-reply-to: <55D63376.5070607-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: linux-samsung-soc@vger.kernel.org,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-reply-to: <55D63457.5060901@gmail.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On 21.08.2015 05:07, Heiner Kallweit wrote:
-> The runtime PM suspend / resume handlers take care of the enabling/
-> disabling the clocks already. Therefore replace the duplicated
-> clock handling with pm_runtime_force_suspend/resume.
+On 21.08.2015 05:11, Heiner Kallweit wrote:
+> Simplify s3c64xx_spi_remove by replacing the clock disabling with calling
+> runtime PM suspend which does the same.
+> Waking up the device if it was suspended wouldn't be strictly needed
+> for this driver but using pm_runtime_get_sync is cleaner and makes
+> s3c64xx_spi_remove more consistent with the runtime PM handling in
+> s3c64xx_spi_setup.
 > 
-> Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> pm_runtime_force_suspend does most of the work for us:
+> disabling the clocks, disabling runtime PM and setting it to
+> "suspended" state.
+> 
+> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
 > ---
 > Changed:
-> - Replaced pm_runtime_suspend/resume calls with their
->   .._force_.. equivalents.
+> - Added to the patch set
 > 
->  drivers/spi/spi-s3c64xx.c | 15 +++++++--------
->  1 file changed, 7 insertions(+), 8 deletions(-)
+>  drivers/spi/spi-s3c64xx.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
 > 
 > diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-> index edeac06..735b7f5 100644
+> index 735b7f5..4a91a6c 100644
 > --- a/drivers/spi/spi-s3c64xx.c
 > +++ b/drivers/spi/spi-s3c64xx.c
-> @@ -1246,10 +1246,9 @@ static int s3c64xx_spi_suspend(struct device *dev)
->  	if (ret)
->  		return ret;
->  
-> -	if (!pm_runtime_suspended(dev)) {
-> -		clk_disable_unprepare(sdd->clk);
-> -		clk_disable_unprepare(sdd->src_clk);
-> -	}
-> +	ret = pm_runtime_force_suspend(dev);
-> +	if (ret < 0)
-> +		return ret;
->  
->  	sdd->cur_speed = 0; /* Output Clock is stopped */
->  
-> @@ -1261,14 +1260,14 @@ static int s3c64xx_spi_resume(struct device *dev)
->  	struct spi_master *master = dev_get_drvdata(dev);
+> @@ -1225,13 +1225,12 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
+>  	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
 >  	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
->  	struct s3c64xx_spi_info *sci = sdd->cntrlr_info;
-> +	int ret;
 >  
->  	if (sci->cfg_gpio)
->  		sci->cfg_gpio();
+> -	pm_runtime_disable(&pdev->dev);
+> +	pm_runtime_get_sync(&pdev->dev);
 >  
-> -	if (!pm_runtime_suspended(dev)) {
-> -		clk_prepare_enable(sdd->src_clk);
-> -		clk_prepare_enable(sdd->clk);
-> -	}
-> +	ret = pm_runtime_force_resume(dev);
-> +	if (ret < 0)
-> +		return ret;
+>  	writel(0, sdd->regs + S3C64XX_SPI_INT_EN);
+>  
+> -	clk_disable_unprepare(sdd->src_clk);
+> -
+> -	clk_disable_unprepare(sdd->clk);
+> +	pm_runtime_put_noidle(&pdev->dev);
+> +	pm_runtime_force_suspend(&pdev->dev);
+>  
+>  	return 0;
+>  }
 
-The logic of resume is changed.
-Previously if device was runtime suspended when sleeping then clocks
-would not be enabled during system resume.
-Now device is always runtime suspended before and always runtime resumed
-after. So this is different... but I think it's right approach with
-current PM model:
+The get+put_noidle looks good. But replacing this with
+pm_runtime_force_suspend() does not.
 
-Reviewed-by: Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+The device is going to be removed so we do not want to do anything with
+it any more. We do not want to suspend it. Probably this would work fine
+but it is not intuitive. I think it's better to just:
+get(), disable(), set_suspended(), put_noidle()
 
 Best regards,
 Krzysztof
-
-
->  
->  	s3c64xx_spi_hwinit(sdd, sdd->port_id);
->  
-> 
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

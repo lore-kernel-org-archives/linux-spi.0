@@ -1,18 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: Fall back to master maximum speed if no slave speed specified" to the spi tree
-Date: Fri, 21 Aug 2015 10:24:17 -0700
-Message-ID: <E1ZSq37-0004xr-Pt@finisterre>
-References: <1440175235-9677-1-git-send-email-broonie@kernel.org>
+Subject: Applied "dt: snps,dw-apb-ssi: Document new I/O data register width property" to the spi tree
+Date: Fri, 21 Aug 2015 10:26:03 -0700
+Message-ID: <E1ZSq4p-0005W0-Ax@finisterre>
+References: <1439929313-4948-2-git-send-email-michael@smart-africa.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Michael van der Westhuizen <michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1440175235-9677-1-git-send-email-broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+In-Reply-To: <1439929313-4948-2-git-send-email-michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: Fall back to master maximum speed if no slave speed specified
+   dt: snps,dw-apb-ssi: Document new I/O data register width property
 
 has been applied to the spi tree at
 
@@ -37,34 +38,38 @@ to this mail.
 Thanks,
 Mark
 
->From 7dc9fbc342deb2e2658ebdecb5ffd7ff57945a66 Mon Sep 17 00:00:00 2001
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Date: Thu, 20 Aug 2015 11:52:18 -0700
-Subject: [PATCH] spi: Fall back to master maximum speed if no slave speed
- specified
+>From 4b226fbde68b8bfb66452067523a677b8e6492fa Mon Sep 17 00:00:00 2001
+From: Michael van der Westhuizen <michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>
+Date: Tue, 18 Aug 2015 22:21:52 +0200
+Subject: [PATCH] dt: snps,dw-apb-ssi: Document new I/O data register width
+ property
 
-If a slave appears with no maximum transfer speed specified fall back to
-using the maximum for the master instead.  It's questionable if we
-should let slaves do this but let's be defensive.
+This change documents a new property for the snps,dw-apb-ssi device,
+allowing an implementer to specify either four byte or two bytes
+access to the SPI controller data register.
 
+This supports a change that unbreaks this driver on picoXcell
+platforms.
+
+Signed-off-by: Michael van der Westhuizen <michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi.c | 2 ++
+ Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index cf8b91b..637d892 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1860,6 +1860,8 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
+diff --git a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
+index bd99193..204b311 100644
+--- a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
++++ b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
+@@ -10,6 +10,8 @@ Required properties:
+ Optional properties:
+ - cs-gpios : Specifies the gpio pis to be used for chipselects.
+ - num-cs : The number of chipselects. If omitted, this will default to 4.
++- reg-io-width : The I/O register width (in bytes) implemented by this
++  device.  Supported values are 2 or 4 (the default).
  
- 		if (!xfer->speed_hz)
- 			xfer->speed_hz = spi->max_speed_hz;
-+		if (!xfer->speed_hz)
-+			xfer->speed_hz = master->max_speed_hz;
+ Child nodes as per the generic SPI binding.
  
- 		if (master->max_speed_hz &&
- 		    xfer->speed_hz > master->max_speed_hz)
 -- 
 2.5.0
 

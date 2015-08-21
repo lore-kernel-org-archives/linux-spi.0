@@ -1,78 +1,63 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 18/18] spi: (RFC, don't apply) report OF style modalias
- when probing using DT
-Date: Fri, 21 Aug 2015 10:29:31 -0700
-Message-ID: <20150821172931.GK12027@sirena.org.uk>
-References: <1440054451-1223-1-git-send-email-javier@osg.samsung.com>
- <1440054451-1223-19-git-send-email-javier@osg.samsung.com>
- <20150820183634.GN12027@sirena.org.uk>
- <20150820210822.GH74600@google.com>
- <55D64A65.7030905@osg.samsung.com>
- <20150820232517.GZ12027@sirena.org.uk>
- <55D666F4.2080801@osg.samsung.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
+Subject: [PATCH 4/4 RESEND v2] spi: s3c64xx: replace clock disabling with
+ runtime PM suspend call in remove function
+Date: Fri, 21 Aug 2015 19:35:08 +0200
+Message-ID: <55D7614C.6040309@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="yruHGtsrg8HLSUpe"
-Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Javier Martinez Canillas <javier.martinez-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <55D666F4.2080801-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: linux-samsung-soc@vger.kernel.org,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+To: Krzysztof Kozlowski <k.kozlowski@samsung.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+Sender: linux-samsung-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+Simplify s3c64xx_spi_remove by replacing the clock disabling with calling
+runtime PM suspend which does the same.
+Waking up the device if it was suspended wouldn't be strictly needed
+for this driver but using pm_runtime_get_sync is cleaner and makes
+s3c64xx_spi_remove more consistent with the runtime PM handling in
+s3c64xx_spi_setup.
 
---yruHGtsrg8HLSUpe
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+pm_runtime_force_suspend does most of the work for us:
+disabling the clocks, disabling runtime PM and setting it to
+"suspended" state.
 
-On Fri, Aug 21, 2015 at 01:47:00AM +0200, Javier Martinez Canillas wrote:
-> On 08/21/2015 01:25 AM, Mark Brown wrote:
-> > On Thu, Aug 20, 2015 at 11:45:09PM +0200, Javier Martinez Canillas wrote:
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+---
+Changed:
+- Added to the patch set
+v2:
+- Don't use runtime_pm_force_suspend. Technically it works but it's not
+  intuitive as we don't intend to suspend here.
 
-> >>> IOW, it's labeled as such mostly for safety, since it has quite a few
-> >>> distributed dependencies.
+ drivers/spi/spi-s3c64xx.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-> > Are there really only 17 drivers that are missing an explict of_table?
-> > That seems like a low number.
-
-> In fact the 17 patches are the combination of the SPI drivers that:
-
-> a) Have a .id_table but not a MODULE_DEVICE_TABLE(spi,...)
-> b) Have a .of_match_table but no a MODULE_DEVICE_TABLE(of,...)
-> c) Don't have a .of_match_table but have a DT binding document
-
-> Maybe there are more SPI drivers out there that only have a .id_table
-> and don't have a .of_match_table nor a DT binding doc. But in that case
-> there isn't too much I can do since I've no information that these are
-> drivers are actually used in systems booted with OF.
-
-We could at the very least scan through the in tree DTs.  There does
-seem to be a substantial overlap between systems that often don't use
-modular kernels but could and systems where people are using the I2C
-and SPI ID mapping shims.
-
---yruHGtsrg8HLSUpe
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJV11/6AAoJECTWi3JdVIfQeaMH/j4RkMt5AWFuuGckUO7+k8u8
-pm6BjBybJctgdDkx5UZSXM0TXE49cVpXcZze+D//hfmR1BDbzZ1Yy2ChCWHhnUs3
-xetevjM4h7ESNsnlUzlYO5bpPRvQ9Ymb3cHCO0V9rjQhjkRGLOmFiNUEit4MPcJq
-h4cG7tvdp1fHLZiNrIJ+NUwgNoXx0pdhh3ipaVC3wDJntIIsuOSPYknO+8GDXGXm
-0FGC8LcRE5TuZBH+cUNu95xAw/AlTPABT8QEVpjdIaIPN0OkEQ8xBxWO2027vJuO
-4wPj4jYqjeydNrPdFHqU5T2SH7dL89lWtkdkAggcyAU42WPWNtC7saZ+cVYj9KY=
-=yvX3
------END PGP SIGNATURE-----
-
---yruHGtsrg8HLSUpe--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 4e5931c..dee82e1 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -1225,7 +1225,7 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
+ 	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
+ 	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
+ 
+-	pm_runtime_disable(&pdev->dev);
++	pm_runtime_get_sync(&pdev->dev);
+ 
+ 	writel(0, sdd->regs + S3C64XX_SPI_INT_EN);
+ 
+@@ -1233,6 +1233,10 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
+ 
+ 	clk_disable_unprepare(sdd->clk);
+ 
++	pm_runtime_put_noidle(&pdev->dev);
++	pm_runtime_disable(&pdev->dev);
++	pm_runtime_set_suspended(&pdev->dev);
++
+ 	return 0;
+ }
+ 
+-- 
+2.5.0

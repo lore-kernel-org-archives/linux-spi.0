@@ -1,176 +1,77 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: dw: Allow interface drivers to limit data I/O to word sizes" to the spi tree
-Date: Fri, 21 Aug 2015 10:26:03 -0700
-Message-ID: <E1ZSq4p-0005VX-2Q@finisterre>
-References: <1439929313-4948-3-git-send-email-michael@smart-africa.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Michael van der Westhuizen <michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 18/18] spi: (RFC, don't apply) report OF style modalias
+ when probing using DT
+Date: Fri, 21 Aug 2015 10:29:31 -0700
+Message-ID: <20150821172931.GK12027@sirena.org.uk>
+References: <1440054451-1223-1-git-send-email-javier@osg.samsung.com>
+ <1440054451-1223-19-git-send-email-javier@osg.samsung.com>
+ <20150820183634.GN12027@sirena.org.uk>
+ <20150820210822.GH74600@google.com>
+ <55D64A65.7030905@osg.samsung.com>
+ <20150820232517.GZ12027@sirena.org.uk>
+ <55D666F4.2080801@osg.samsung.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="yruHGtsrg8HLSUpe"
+Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Javier Martinez Canillas <javier.martinez-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1439929313-4948-3-git-send-email-michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <55D666F4.2080801-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
 
-   spi: dw: Allow interface drivers to limit data I/O to word sizes
+--yruHGtsrg8HLSUpe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-has been applied to the spi tree at
+On Fri, Aug 21, 2015 at 01:47:00AM +0200, Javier Martinez Canillas wrote:
+> On 08/21/2015 01:25 AM, Mark Brown wrote:
+> > On Thu, Aug 20, 2015 at 11:45:09PM +0200, Javier Martinez Canillas wrote:
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+> >>> IOW, it's labeled as such mostly for safety, since it has quite a few
+> >>> distributed dependencies.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+> > Are there really only 17 drivers that are missing an explict of_table?
+> > That seems like a low number.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+> In fact the 17 patches are the combination of the SPI drivers that:
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+> a) Have a .id_table but not a MODULE_DEVICE_TABLE(spi,...)
+> b) Have a .of_match_table but no a MODULE_DEVICE_TABLE(of,...)
+> c) Don't have a .of_match_table but have a DT binding document
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+> Maybe there are more SPI drivers out there that only have a .id_table
+> and don't have a .of_match_table nor a DT binding doc. But in that case
+> there isn't too much I can do since I've no information that these are
+> drivers are actually used in systems booted with OF.
 
-Thanks,
-Mark
+We could at the very least scan through the in tree DTs.  There does
+seem to be a substantial overlap between systems that often don't use
+modular kernels but could and systems where people are using the I2C
+and SPI ID mapping shims.
 
->From c4fe57f76269dbb2af135071513f260ca40229a3 Mon Sep 17 00:00:00 2001
-From: Michael van der Westhuizen <michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>
-Date: Tue, 18 Aug 2015 22:21:53 +0200
-Subject: [PATCH] spi: dw: Allow interface drivers to limit data I/O to word
- sizes
+--yruHGtsrg8HLSUpe
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-The commit dd11444327ce ("spi: dw-spi: Convert 16bit accesses to 32bit
-accesses") changed all 16bit accesses in the DW_apb_ssi driver to 32bit.
-This, unfortunately, breaks data register access on picoXcell, where the
-DW IP needs data register accesses to be word accesses (all other
-accesses appear to be OK).
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-This change introduces a new master variable to allow interface drivers
-to specify that 16bit data transfer I/O is required.  This change also
-introduces the ability to set this variable via device tree bindings in
-the MMIO interface driver.  Both the core and the MMIO interface driver
-default to the current 32bit behaviour.
+iQEcBAEBCAAGBQJV11/6AAoJECTWi3JdVIfQeaMH/j4RkMt5AWFuuGckUO7+k8u8
+pm6BjBybJctgdDkx5UZSXM0TXE49cVpXcZze+D//hfmR1BDbzZ1Yy2ChCWHhnUs3
+xetevjM4h7ESNsnlUzlYO5bpPRvQ9Ymb3cHCO0V9rjQhjkRGLOmFiNUEit4MPcJq
+h4cG7tvdp1fHLZiNrIJ+NUwgNoXx0pdhh3ipaVC3wDJntIIsuOSPYknO+8GDXGXm
+0FGC8LcRE5TuZBH+cUNu95xAw/AlTPABT8QEVpjdIaIPN0OkEQ8xBxWO2027vJuO
+4wPj4jYqjeydNrPdFHqU5T2SH7dL89lWtkdkAggcyAU42WPWNtC7saZ+cVYj9KY=
+=yvX3
+-----END PGP SIGNATURE-----
 
-Before this change, on a picoXcell pc3x3:
- spi_master spi32766: interrupt_transfer: fifo overrun/underrun
- m25p80 spi32766.0: error -5 reading 9f
- m25p80: probe of spi32766.0 failed with error -5
-
-After this change:
- m25p80 spi32766.0: m25p40 (512 Kbytes)
-
-Fixes: dd11444327ce ("spi: dw-spi: Convert 16bit accesses to 32bit accesses")
-Signed-off-by: Michael van der Westhuizen <michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-dw-mmio.c |  3 +++
- drivers/spi/spi-dw.c      |  4 ++--
- drivers/spi/spi-dw.h      | 35 +++++++++++++++++++++++++++++++++++
- 3 files changed, 40 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
-index eb03e12..7edede6 100644
---- a/drivers/spi/spi-dw-mmio.c
-+++ b/drivers/spi/spi-dw-mmio.c
-@@ -74,6 +74,9 @@ static int dw_spi_mmio_probe(struct platform_device *pdev)
- 
- 	dws->max_freq = clk_get_rate(dwsmmio->clk);
- 
-+	of_property_read_u32(pdev->dev.of_node, "reg-io-width",
-+			     &dws->reg_io_width);
-+
- 	num_cs = 4;
- 
- 	if (pdev->dev.of_node)
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index 8d67d03..4fbfcdc 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -194,7 +194,7 @@ static void dw_writer(struct dw_spi *dws)
- 			else
- 				txw = *(u16 *)(dws->tx);
- 		}
--		dw_writel(dws, DW_SPI_DR, txw);
-+		dw_write_io_reg(dws, DW_SPI_DR, txw);
- 		dws->tx += dws->n_bytes;
- 	}
- }
-@@ -205,7 +205,7 @@ static void dw_reader(struct dw_spi *dws)
- 	u16 rxw;
- 
- 	while (max--) {
--		rxw = dw_readl(dws, DW_SPI_DR);
-+		rxw = dw_read_io_reg(dws, DW_SPI_DR);
- 		/* Care rx only if the transfer's original "rx" is not null */
- 		if (dws->rx_end - dws->len) {
- 			if (dws->n_bytes == 1)
-diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index 6c91391..b75ed32 100644
---- a/drivers/spi/spi-dw.h
-+++ b/drivers/spi/spi-dw.h
-@@ -109,6 +109,7 @@ struct dw_spi {
- 	u32			fifo_len;	/* depth of the FIFO buffer */
- 	u32			max_freq;	/* max bus freq supported */
- 
-+	u32			reg_io_width;	/* DR I/O width in bytes */
- 	u16			bus_num;
- 	u16			num_cs;		/* supported slave numbers */
- 
-@@ -145,11 +146,45 @@ static inline u32 dw_readl(struct dw_spi *dws, u32 offset)
- 	return __raw_readl(dws->regs + offset);
- }
- 
-+static inline u16 dw_readw(struct dw_spi *dws, u32 offset)
-+{
-+	return __raw_readw(dws->regs + offset);
-+}
-+
- static inline void dw_writel(struct dw_spi *dws, u32 offset, u32 val)
- {
- 	__raw_writel(val, dws->regs + offset);
- }
- 
-+static inline void dw_writew(struct dw_spi *dws, u32 offset, u16 val)
-+{
-+	__raw_writew(val, dws->regs + offset);
-+}
-+
-+static inline u32 dw_read_io_reg(struct dw_spi *dws, u32 offset)
-+{
-+	switch (dws->reg_io_width) {
-+	case 2:
-+		return dw_readw(dws, offset);
-+	case 4:
-+	default:
-+		return dw_readl(dws, offset);
-+	}
-+}
-+
-+static inline void dw_write_io_reg(struct dw_spi *dws, u32 offset, u32 val)
-+{
-+	switch (dws->reg_io_width) {
-+	case 2:
-+		dw_writew(dws, offset, val);
-+		break;
-+	case 4:
-+	default:
-+		dw_writel(dws, offset, val);
-+		break;
-+	}
-+}
-+
- static inline void spi_enable_chip(struct dw_spi *dws, int enable)
- {
- 	dw_writel(dws, DW_SPI_SSIENR, (enable ? 1 : 0));
--- 
-2.5.0
-
+--yruHGtsrg8HLSUpe--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,78 +1,63 @@
-From: Javier Martinez Canillas <javier@osg.samsung.com>
-Subject: Re: [PATCH 18/18] spi: (RFC, don't apply) report OF style modalias
- when probing using DT
-Date: Fri, 21 Aug 2015 01:47:00 +0200
-Message-ID: <55D666F4.2080801@osg.samsung.com>
-References: <1440054451-1223-1-git-send-email-javier@osg.samsung.com>
- <1440054451-1223-19-git-send-email-javier@osg.samsung.com>
- <20150820183634.GN12027@sirena.org.uk> <20150820210822.GH74600@google.com>
- <55D64A65.7030905@osg.samsung.com> <20150820232517.GZ12027@sirena.org.uk>
+From: Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Subject: Re: [PATCH 1/4 RESEND] spi: s3c64xx: clean up runtime PM if driver
+ registration fails
+Date: Fri, 21 Aug 2015 09:57:54 +0900
+Message-ID: <55D67792.20000@samsung.com>
+References: <55D6324F.7070601@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Cc: Brian Norris <computersforpeace@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	Javier Martinez Canillas <javier.martinez@collabora.co.uk>,
-	linux-spi@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20150820232517.GZ12027@sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-reply-to: <55D6324F.7070601-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hello Mark,
+On 21.08.2015 05:02, Heiner Kallweit wrote:
+> Fix missing runtime PM cleanup if driver registration fails.
+> 
+> Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> ---
+> Changed:
+> - Separated fix from added functionality
+> 
+>  drivers/spi/spi-s3c64xx.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
 
-On 08/21/2015 01:25 AM, Mark Brown wrote:
-> On Thu, Aug 20, 2015 at 11:45:09PM +0200, Javier Martinez Canillas wrote:
->> On 08/20/2015 11:08 PM, Brian Norris wrote:
-> 
->>>> This is tagged as something that can't be applied but you've not
->>>> explained why it can't be applied or what comments might be useful :(
-> 
->> As Brian pointed out it was in the cover letter so I thought it would
->> just be duplicated information. But you are right, I should had added
->> a brief note as well just to make the patch self contained.
-> 
-> Right, a big part of what I was looking for was something about why this
-> is an incompatible change in the changelog so that once it gets applied
-> someone with out of tree code which gets broken can see what happens.
-
-Yes, you are absolutely right. When I finally post this as a proper
-patch I'll make sure to have a big NOTE so people can track module
-autoload issues for OF drivers down to this commit.
-
-> Plus...
-> 
->>> I believe that's mostly addressed in the cover letter [1].
-> 
->>>   Patch #18 changes the logic of spi_uevent() to report an OF modalias
->>>   if the device was registered using OF. But this patch is included in
->>>   the series only as an RFC for illustration purposes since changing
->>>   that without first applying all the other patches in this series, will
->>>   break module autoloading for the drivers of devices registered using
->>>   OF but that lacks an of_match_table. I'll repost patch #18 once all
->>>   the patches in this series have landed.
-> 
->>> IOW, it's labeled as such mostly for safety, since it has quite a few
->>> distributed dependencies.
-> 
-> Are there really only 17 drivers that are missing an explict of_table?
-> That seems like a low number.
->
-
-In fact the 17 patches are the combination of the SPI drivers that:
-
-a) Have a .id_table but not a MODULE_DEVICE_TABLE(spi,...)
-b) Have a .of_match_table but no a MODULE_DEVICE_TABLE(of,...)
-c) Don't have a .of_match_table but have a DT binding document
-
-Maybe there are more SPI drivers out there that only have a .id_table
-and don't have a .of_match_table nor a DT binding doc. But in that case
-there isn't too much I can do since I've no information that these are
-drivers are actually used in systems booted with OF.
+Looks good, thanks:
+Reviewed-by: Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 
 Best regards,
--- 
-Javier Martinez Canillas
-Open Source Group
-Samsung Research America
+Krzysztof
+
+> 
+> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+> index cd1cfac..8a6ab88 100644
+> --- a/drivers/spi/spi-s3c64xx.c
+> +++ b/drivers/spi/spi-s3c64xx.c
+> @@ -1186,7 +1186,7 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+>  	ret = devm_spi_register_master(&pdev->dev, master);
+>  	if (ret != 0) {
+>  		dev_err(&pdev->dev, "cannot register SPI master: %d\n", ret);
+> -		goto err3;
+> +		goto err4;
+>  	}
+>  
+>  	dev_dbg(&pdev->dev, "Samsung SoC SPI Driver loaded for Bus SPI-%d with %d Slaves attached\n",
+> @@ -1197,6 +1197,9 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+>  
+>  	return 0;
+>  
+> +err4:
+> +	pm_runtime_disable(&pdev->dev);
+> +	pm_runtime_set_suspended(&pdev->dev);
+>  err3:
+>  	clk_disable_unprepare(sdd->src_clk);
+>  err2:
+> 
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

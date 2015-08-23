@@ -1,9 +1,9 @@
 From: Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: [PATCH 2/4 RESEND v2] spi: s3c64xx: extend driver to make full
- use of runtime PM autosuspend
-Date: Sun, 23 Aug 2015 12:39:37 +0900
-Message-ID: <55D94079.6000307@samsung.com>
-References: <55D76003.8070608@gmail.com>
+Subject: Re: [PATCH 4/4 RESEND v2] spi: s3c64xx: replace clock disabling with
+ runtime PM suspend call in remove function
+Date: Sun, 23 Aug 2015 12:41:25 +0900
+Message-ID: <55D940E5.4030901@samsung.com>
+References: <55D7614C.6040309@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
@@ -11,35 +11,37 @@ Cc: linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <55D76003.8070608-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <55D7614C.6040309-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-W dniu 22.08.2015 o 02:29, Heiner Kallweit pisze:
-> Extend the driver to make full use of runtime PM autosuspend.
-> Before only the SPI core was instructed to use autosuspend
-> by setting master->auto_runtime_pm. Nevertheless due to the missing
-> pm_runtime_use_autosuspend call autosuspend wasn't active.
+W dniu 22.08.2015 o 02:35, Heiner Kallweit pisze:
+> Simplify s3c64xx_spi_remove by replacing the clock disabling with calling
+> runtime PM suspend which does the same.
+> Waking up the device if it was suspended wouldn't be strictly needed
+> for this driver but using pm_runtime_get_sync is cleaner and makes
+> s3c64xx_spi_remove more consistent with the runtime PM handling in
+> s3c64xx_spi_setup.
+> 
+> pm_runtime_force_suspend does most of the work for us:
+> disabling the clocks, disabling runtime PM and setting it to
+> "suspended" state.
 > 
 > Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 > ---
 > Changed:
-> - Let driver autosuspend also after leaving s3c64xx_spi_setup
-> - Enable runtime PM earlier in s3c64xx_spi_probe and prevent
->   suspending in the relevant part of probe
+> - Added to the patch set
 > v2:
-> - Don't init runtime PM before the driver has a reference to the clocks
+> - Don't use runtime_pm_force_suspend. Technically it works but it's not
+>   intuitive as we don't intend to suspend here.
 > 
->  drivers/spi/spi-s3c64xx.c | 26 ++++++++++++++++++--------
->  1 file changed, 18 insertions(+), 8 deletions(-)
-
-Looks good to me now:
+>  drivers/spi/spi-s3c64xx.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
 
 Reviewed-by: Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 
 Best regards,
 Krzysztof
-
 
 
 --

@@ -1,8 +1,7 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 1/3] spi: fsl-(e)spi: migrate to using devm_ functions to
- simplify cleanup
-Date: Sun, 23 Aug 2015 14:20:58 +0200
-Message-ID: <55D9BAAA.7060401@gmail.com>
+Subject: [PATCH 2/3] spi: fsl-(e)spi: simplify cleanup code
+Date: Sun, 23 Aug 2015 14:21:53 +0200
+Message-ID: <55D9BAE1.1030306@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
@@ -12,152 +11,140 @@ Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Migrate fsl-espi and fsl-spi to using the managed devm_ functions
-for resource handling. This simplifies the cleanup.
+Now that most cleanup is done automatically the remove functions
+can be significantly simplified.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 16 ++++++----------
- drivers/spi/spi-fsl-lib.c  |  4 ----
- drivers/spi/spi-fsl-spi.c  | 22 +++++++++-------------
- 3 files changed, 15 insertions(+), 27 deletions(-)
+ drivers/spi/spi-fsl-espi.c |  7 +------
+ drivers/spi/spi-fsl-lib.c  | 15 ---------------
+ drivers/spi/spi-fsl-lib.h  |  3 ---
+ drivers/spi/spi-fsl-spi.c  | 18 +++++++-----------
+ 4 files changed, 8 insertions(+), 35 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index d3f05a0..bfd6259 100644
+index bfd6259..fdd85be 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -606,7 +606,6 @@ static irqreturn_t fsl_espi_irq(s32 irq, void *context_data)
- 
- static void fsl_espi_remove(struct mpc8xxx_spi *mspi)
- {
--	iounmap(mspi->reg_base);
+@@ -604,10 +604,6 @@ static irqreturn_t fsl_espi_irq(s32 irq, void *context_data)
+ 	return ret;
  }
  
+-static void fsl_espi_remove(struct mpc8xxx_spi *mspi)
+-{
+-}
+-
  static int fsl_espi_suspend(struct spi_master *master)
-@@ -673,7 +672,8 @@ static struct spi_master * fsl_espi_probe(struct device *dev,
+ {
+ 	struct mpc8xxx_spi *mpc8xxx_spi;
+@@ -670,7 +666,6 @@ static struct spi_master * fsl_espi_probe(struct device *dev,
+ 	master->unprepare_transfer_hardware = fsl_espi_suspend;
+ 
  	mpc8xxx_spi = spi_master_get_devdata(master);
- 	mpc8xxx_spi->spi_remove = fsl_espi_remove;
+-	mpc8xxx_spi->spi_remove = fsl_espi_remove;
  
--	mpc8xxx_spi->reg_base = ioremap(mem->start, resource_size(mem));
-+	mpc8xxx_spi->reg_base = devm_ioremap(dev, mem->start,
-+					     resource_size(mem));
- 	if (!mpc8xxx_spi->reg_base) {
- 		ret = -ENOMEM;
- 		goto err_probe;
-@@ -682,10 +682,10 @@ static struct spi_master * fsl_espi_probe(struct device *dev,
- 	reg_base = mpc8xxx_spi->reg_base;
+ 	mpc8xxx_spi->reg_base = devm_ioremap(dev, mem->start,
+ 					     resource_size(mem));
+@@ -805,7 +800,7 @@ err:
  
- 	/* Register for SPI Interrupt */
--	ret = request_irq(mpc8xxx_spi->irq, fsl_espi_irq,
-+	ret = devm_request_irq(dev, mpc8xxx_spi->irq, fsl_espi_irq,
- 			  0, "fsl_espi", mpc8xxx_spi);
- 	if (ret)
--		goto free_irq;
-+		goto err_probe;
+ static int of_fsl_espi_remove(struct platform_device *dev)
+ {
+-	return mpc8xxx_spi_remove(&dev->dev);
++	return 0;
+ }
  
- 	if (mpc8xxx_spi->flags & SPI_QE_CPU_MODE) {
- 		mpc8xxx_spi->rx_shift = 16;
-@@ -731,18 +731,14 @@ static struct spi_master * fsl_espi_probe(struct device *dev,
- 
- 	mpc8xxx_spi_write_reg(&reg_base->mode, regval);
- 
--	ret = spi_register_master(master);
-+	ret = devm_spi_register_master(dev, master);
- 	if (ret < 0)
--		goto unreg_master;
-+		goto err_probe;
- 
- 	dev_info(dev, "at 0x%p (irq = %d)\n", reg_base, mpc8xxx_spi->irq);
- 
- 	return master;
- 
--unreg_master:
--	free_irq(mpc8xxx_spi->irq, mpc8xxx_spi);
--free_irq:
--	iounmap(mpc8xxx_spi->reg_base);
- err_probe:
- 	spi_master_put(master);
- err:
+ #ifdef CONFIG_PM_SLEEP
 diff --git a/drivers/spi/spi-fsl-lib.c b/drivers/spi/spi-fsl-lib.c
-index cb35d2f..e50fd06 100644
+index e50fd06..1e43412 100644
 --- a/drivers/spi/spi-fsl-lib.c
 +++ b/drivers/spi/spi-fsl-lib.c
-@@ -122,10 +122,6 @@ int mpc8xxx_spi_remove(struct device *dev)
- 	master = dev_get_drvdata(dev);
- 	mpc8xxx_spi = spi_master_get_devdata(master);
+@@ -114,21 +114,6 @@ void mpc8xxx_spi_probe(struct device *dev, struct resource *mem,
+ }
+ EXPORT_SYMBOL_GPL(mpc8xxx_spi_probe);
  
--	spi_unregister_master(master);
+-int mpc8xxx_spi_remove(struct device *dev)
+-{
+-	struct mpc8xxx_spi *mpc8xxx_spi;
+-	struct spi_master *master;
 -
--	free_irq(mpc8xxx_spi->irq, mpc8xxx_spi);
+-	master = dev_get_drvdata(dev);
+-	mpc8xxx_spi = spi_master_get_devdata(master);
 -
- 	if (mpc8xxx_spi->spi_remove)
- 		mpc8xxx_spi->spi_remove(mpc8xxx_spi);
+-	if (mpc8xxx_spi->spi_remove)
+-		mpc8xxx_spi->spi_remove(mpc8xxx_spi);
+-
+-	return 0;
+-}
+-EXPORT_SYMBOL_GPL(mpc8xxx_spi_remove);
+-
+ int of_mpc8xxx_spi_probe(struct platform_device *ofdev)
+ {
+ 	struct device *dev = &ofdev->dev;
+diff --git a/drivers/spi/spi-fsl-lib.h b/drivers/spi/spi-fsl-lib.h
+index 1326a39..84f5dcb 100644
+--- a/drivers/spi/spi-fsl-lib.h
++++ b/drivers/spi/spi-fsl-lib.h
+@@ -54,9 +54,6 @@ struct mpc8xxx_spi {
+ 	void (*get_rx) (u32 rx_data, struct mpc8xxx_spi *);
+ 	u32(*get_tx) (struct mpc8xxx_spi *);
+ 
+-	/* hooks for different controller driver */
+-	void (*spi_remove) (struct mpc8xxx_spi *mspi);
+-
+ 	unsigned int count;
+ 	unsigned int irq;
  
 diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
-index 60c5907..fbbab60 100644
+index fbbab60..b487dab 100644
 --- a/drivers/spi/spi-fsl-spi.c
 +++ b/drivers/spi/spi-fsl-spi.c
-@@ -561,7 +561,6 @@ static irqreturn_t fsl_spi_irq(s32 irq, void *context_data)
- 
- static void fsl_spi_remove(struct mpc8xxx_spi *mspi)
- {
--	iounmap(mspi->reg_base);
- 	fsl_spi_cpm_free(mspi);
+@@ -559,11 +559,6 @@ static irqreturn_t fsl_spi_irq(s32 irq, void *context_data)
+ 	return ret;
  }
  
-@@ -639,10 +638,11 @@ static struct spi_master * fsl_spi_probe(struct device *dev,
- 	if (ret)
- 		goto err_cpm_init;
+-static void fsl_spi_remove(struct mpc8xxx_spi *mspi)
+-{
+-	fsl_spi_cpm_free(mspi);
+-}
+-
+ static void fsl_spi_grlib_cs_control(struct spi_device *spi, bool on)
+ {
+ 	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
+@@ -630,7 +625,6 @@ static struct spi_master * fsl_spi_probe(struct device *dev,
+ 	master->transfer_one_message = fsl_spi_do_one_msg;
  
--	mpc8xxx_spi->reg_base = ioremap(mem->start, resource_size(mem));
-+	mpc8xxx_spi->reg_base = devm_ioremap(dev, mem->start,
-+					     resource_size(mem));
- 	if (mpc8xxx_spi->reg_base == NULL) {
- 		ret = -ENOMEM;
--		goto err_ioremap;
-+		goto err_probe;
- 	}
+ 	mpc8xxx_spi = spi_master_get_devdata(master);
+-	mpc8xxx_spi->spi_remove = fsl_spi_remove;
+ 	mpc8xxx_spi->max_bits_per_word = 32;
+ 	mpc8xxx_spi->type = fsl_spi_get_type(dev);
  
- 	if (mpc8xxx_spi->type == TYPE_GRLIB)
-@@ -661,11 +661,11 @@ static struct spi_master * fsl_spi_probe(struct device *dev,
- 					&mpc8xxx_spi->tx_shift, 8, 1);
+@@ -862,11 +856,8 @@ static int of_fsl_spi_remove(struct platform_device *ofdev)
+ {
+ 	struct spi_master *master = platform_get_drvdata(ofdev);
+ 	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(master);
+-	int ret;
  
- 	/* Register for SPI Interrupt */
--	ret = request_irq(mpc8xxx_spi->irq, fsl_spi_irq,
--			  0, "fsl_spi", mpc8xxx_spi);
-+	ret = devm_request_irq(dev, mpc8xxx_spi->irq, fsl_spi_irq,
-+			       0, "fsl_spi", mpc8xxx_spi);
+-	ret = mpc8xxx_spi_remove(&ofdev->dev);
+-	if (ret)
+-		return ret;
++	fsl_spi_cpm_free(mpc8xxx_spi);
+ 	if (mpc8xxx_spi->type == TYPE_FSL)
+ 		of_fsl_spi_free_chipselects(&ofdev->dev);
+ 	return 0;
+@@ -912,7 +903,12 @@ static int plat_mpc8xxx_spi_probe(struct platform_device *pdev)
  
- 	if (ret != 0)
--		goto free_irq;
-+		goto err_probe;
+ static int plat_mpc8xxx_spi_remove(struct platform_device *pdev)
+ {
+-	return mpc8xxx_spi_remove(&pdev->dev);
++	struct spi_master *master = platform_get_drvdata(pdev);
++	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(master);
++
++	fsl_spi_cpm_free(mpc8xxx_spi);
++
++	return 0;
+ }
  
- 	reg_base = mpc8xxx_spi->reg_base;
- 
-@@ -686,20 +686,16 @@ static struct spi_master * fsl_spi_probe(struct device *dev,
- 
- 	mpc8xxx_spi_write_reg(&reg_base->mode, regval);
- 
--	ret = spi_register_master(master);
-+	ret = devm_spi_register_master(dev, master);
- 	if (ret < 0)
--		goto unreg_master;
-+		goto err_probe;
- 
- 	dev_info(dev, "at 0x%p (irq = %d), %s mode\n", reg_base,
- 		 mpc8xxx_spi->irq, mpc8xxx_spi_strmode(mpc8xxx_spi->flags));
- 
- 	return master;
- 
--unreg_master:
--	free_irq(mpc8xxx_spi->irq, mpc8xxx_spi);
--free_irq:
--	iounmap(mpc8xxx_spi->reg_base);
--err_ioremap:
-+err_probe:
- 	fsl_spi_cpm_free(mpc8xxx_spi);
- err_cpm_init:
- 	spi_master_put(master);
+ MODULE_ALIAS("platform:mpc8xxx_spi");
 -- 
 2.5.0
 

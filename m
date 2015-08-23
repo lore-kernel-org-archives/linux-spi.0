@@ -1,114 +1,85 @@
-From: =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>
-Subject: Re: [PATCH 2/2 RESEND] staging/fbtft: use spi_setup instead of direct
- call to master->setup
-Date: Sun, 23 Aug 2015 17:32:02 +0200
-Message-ID: <55D9E772.9070106@tronnes.org>
-References: <1440338791-30841-1-git-send-email-stefan.bruens@rwth-aachen.de>
- <4787d5ed-b810-4d3e-b1bc-3a6db745d444@HUB2.rwth-ad.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8;
-	format=flowed
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: =?UTF-8?Q?Stefan_Br=c3=bcns?= <stefan.bruens-vA1bhqPz9FBZXbeN9DUtxg@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Subject: [PATCH] spi/bcm63xx-hsspi: add support for dual spi read/write
+Date: Sun, 23 Aug 2015 22:38:42 +0200
+Message-ID: <1440362322-32523-1-git-send-email-jogo@openwrt.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Kevin Cernekee <cernekee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <4787d5ed-b810-4d3e-b1bc-3a6db745d444-nCK4yPIUxYSnzeKPzzZwVg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Stefan,
+Add support for dual read/writes on spi-bcm63xx-hsspi. This has been
+tested with a s25fl129p1 dual read capable spi flash, with a nice speed
+improvement:
 
-fbtft lives in staging/fbtft not drivers/spi, so you need to send it to=
-=20
-the correct list:
-devel-gWbeCf7V1WCQmaza687I9mD2FQJk+8+b@public.gmane.org
+serial read:
 
-See https://github.com/notro/fbtft/wiki/Development
+root@OpenWrt:/# time dd if=/dev/mtd4 of=/dev/null bs=8192
+2032+0 records in
+2032+0 records out
+real    0m 4.39s
+user    0m 0.00s
+sys     0m 1.55s
 
+dual read:
 
-Noralf.
+root@OpenWrt:/# time dd if=/dev/mtd4 of=/dev/null bs=8192
+2032+0 records in
+2032+0 records out
+real    0m 3.09s
+user    0m 0.00s
+sys     0m 1.56s
 
-Den 23.08.2015 16:06, skrev Stefan Br=C3=BCns:
-> Avoid a crash, as master->setup may be NULL (e.g. xilinx controller).
-> Even if master->setup is set, spi_setup does several compatibility/
-> sanity checks which should not be skipped (fixes problems with
-> displays/controllers needing emulation for bits_per_word =3D 9).
->
-> Signed-off-by: Stefan Br=C3=BCns <stefan.bruens-vA1bhqPz9FBZXbeN9DUtxg@public.gmane.org>
-> ---
->   drivers/staging/fbtft/fb_watterott.c | 4 ++--
->   drivers/staging/fbtft/fbtft-core.c   | 4 ++--
->   drivers/staging/fbtft/flexfb.c       | 4 ++--
->   3 files changed, 6 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/staging/fbtft/fb_watterott.c b/drivers/staging/f=
-btft/fb_watterott.c
-> index 88fb2c0..8eae6ef 100644
-> --- a/drivers/staging/fbtft/fb_watterott.c
-> +++ b/drivers/staging/fbtft/fb_watterott.c
-> @@ -169,7 +169,7 @@ static int init_display(struct fbtft_par *par)
->   	/* enable SPI interface by having CS and MOSI low during reset */
->   	save_mode =3D par->spi->mode;
->   	par->spi->mode |=3D SPI_CS_HIGH;
-> -	ret =3D par->spi->master->setup(par->spi); /* set CS inactive low *=
-/
-> +	ret =3D spi_setup(par->spi); /* set CS inactive low */
->   	if (ret) {
->   		dev_err(par->info->device, "Could not set SPI_CS_HIGH\n");
->   		return ret;
-> @@ -180,7 +180,7 @@ static int init_display(struct fbtft_par *par)
->   	par->fbtftops.reset(par);
->   	mdelay(1000);
->   	par->spi->mode =3D save_mode;
-> -	ret =3D par->spi->master->setup(par->spi);
-> +	ret =3D spi_setup(par->spi);
->   	if (ret) {
->   		dev_err(par->info->device, "Could not restore SPI mode\n");
->   		return ret;
-> diff --git a/drivers/staging/fbtft/fbtft-core.c b/drivers/staging/fbt=
-ft/fbtft-core.c
-> index 9cc8141..ba08da3 100644
-> --- a/drivers/staging/fbtft/fbtft-core.c
-> +++ b/drivers/staging/fbtft/fbtft-core.c
-> @@ -1434,12 +1434,12 @@ int fbtft_probe_common(struct fbtft_display *=
-display,
->   	/* 9-bit SPI setup */
->   	if (par->spi && display->buswidth =3D=3D 9) {
->   		par->spi->bits_per_word =3D 9;
-> -		ret =3D par->spi->master->setup(par->spi);
-> +		ret =3D spi_setup(par->spi);
->   		if (ret) {
->   			dev_warn(&par->spi->dev,
->   				"9-bit SPI not available, emulating using 8-bit.\n");
->   			par->spi->bits_per_word =3D 8;
-> -			ret =3D par->spi->master->setup(par->spi);
-> +			ret =3D spi_setup(par->spi);
->   			if (ret)
->   				goto out_release;
->   			/* allocate buffer with room for dc bits */
-> diff --git a/drivers/staging/fbtft/flexfb.c b/drivers/staging/fbtft/f=
-lexfb.c
-> index 2c4ce07..fecf486 100644
-> --- a/drivers/staging/fbtft/flexfb.c
-> +++ b/drivers/staging/fbtft/flexfb.c
-> @@ -440,12 +440,12 @@ static int flexfb_probe_common(struct spi_devic=
-e *sdev,
->   			par->fbtftops.write_register =3D fbtft_write_reg8_bus9;
->   			par->fbtftops.write_vmem =3D fbtft_write_vmem16_bus9;
->   			sdev->bits_per_word =3D 9;
-> -			ret =3D sdev->master->setup(sdev);
-> +			ret =3D spi_setup(sdev);
->   			if (ret) {
->   				dev_warn(dev,
->   					"9-bit SPI not available, emulating using 8-bit.\n");
->   				sdev->bits_per_word =3D 8;
-> -				ret =3D sdev->master->setup(sdev);
-> +				ret =3D spi_setup(sdev);
->   				if (ret)
->   					goto out_release;
->   				/* allocate buffer with room for dc bits */
+Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+---
+ drivers/spi/spi-bcm63xx-hsspi.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
+diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
+index f5ca6dc..ebd047f 100644
+--- a/drivers/spi/spi-bcm63xx-hsspi.c
++++ b/drivers/spi/spi-bcm63xx-hsspi.c
+@@ -76,6 +76,7 @@
+ #define HSSPI_FIFO_REG(x)			(0x200 + (x) * 0x200)
+ 
+ 
++#define HSSPI_OP_MULTIBIT			BIT(11)
+ #define HSSPI_OP_CODE_SHIFT			13
+ #define HSSPI_OP_SLEEP				(0 << HSSPI_OP_CODE_SHIFT)
+ #define HSSPI_OP_READ_WRITE			(1 << HSSPI_OP_CODE_SHIFT)
+@@ -168,12 +169,15 @@ static int bcm63xx_hsspi_do_txrx(struct spi_device *spi, struct spi_transfer *t)
+ 	else if (rx)
+ 		opcode = HSSPI_OP_READ;
+ 
++	if ((opcode == HSSPI_OP_READ && t->rx_nbits == SPI_NBITS_DUAL) ||
++	    (opcode == HSSPI_OP_WRITE && t->tx_nbits == SPI_NBITS_DUAL))
++		opcode |= HSSPI_OP_MULTIBIT;
++
+ 	if (opcode != HSSPI_OP_READ)
+ 		step_size -= HSSPI_OPCODE_LEN;
+ 
+-	__raw_writel(0 << MODE_CTRL_PREPENDBYTE_CNT_SHIFT |
+-		     2 << MODE_CTRL_MULTIDATA_WR_STRT_SHIFT |
+-		     2 << MODE_CTRL_MULTIDATA_RD_STRT_SHIFT | 0xff,
++	__raw_writel(1 << MODE_CTRL_MULTIDATA_WR_SIZE_SHIFT |
++		     1 << MODE_CTRL_MULTIDATA_RD_SIZE_SHIFT | 0xff,
+ 		     bs->regs + HSSPI_PROFILE_MODE_CTRL_REG(chip_select));
+ 
+ 	while (pending > 0) {
+@@ -374,7 +378,8 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+ 	master->num_chipselect = 8;
+ 	master->setup = bcm63xx_hsspi_setup;
+ 	master->transfer_one_message = bcm63xx_hsspi_transfer_one;
+-	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
++	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH |
++			    SPI_RX_DUAL | SPI_TX_DUAL;
+ 	master->bits_per_word_mask = SPI_BPW_MASK(8);
+ 	master->auto_runtime_pm = true;
+ 
+-- 
+2.1.4
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

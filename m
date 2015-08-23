@@ -1,69 +1,48 @@
-From: Heiner Kallweit <hkallweit1@gmail.com>
-Subject: [PATCH 3/4 RESEND v2] spi: s3c64xx: simplify suspend / resume handlers
-Date: Fri, 21 Aug 2015 19:31:54 +0200
-Message-ID: <55D7608A.7010800@gmail.com>
+From: Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Subject: Re: [PATCH 2/4 RESEND v2] spi: s3c64xx: extend driver to make full
+ use of runtime PM autosuspend
+Date: Sun, 23 Aug 2015 12:39:37 +0900
+Message-ID: <55D94079.6000307@samsung.com>
+References: <55D76003.8070608@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Cc: linux-samsung-soc@vger.kernel.org,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
-To: Krzysztof Kozlowski <k.kozlowski@samsung.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-Sender: linux-samsung-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <55D76003.8070608-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The runtime PM suspend / resume handlers take care of the enabling/
-disabling the clocks already. Therefore replace the duplicated
-clock handling with pm_runtime_force_suspend/resume.
+W dniu 22.08.2015 o 02:29, Heiner Kallweit pisze:
+> Extend the driver to make full use of runtime PM autosuspend.
+> Before only the SPI core was instructed to use autosuspend
+> by setting master->auto_runtime_pm. Nevertheless due to the missing
+> pm_runtime_use_autosuspend call autosuspend wasn't active.
+> 
+> Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> ---
+> Changed:
+> - Let driver autosuspend also after leaving s3c64xx_spi_setup
+> - Enable runtime PM earlier in s3c64xx_spi_probe and prevent
+>   suspending in the relevant part of probe
+> v2:
+> - Don't init runtime PM before the driver has a reference to the clocks
+> 
+>  drivers/spi/spi-s3c64xx.c | 26 ++++++++++++++++++--------
+>  1 file changed, 18 insertions(+), 8 deletions(-)
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
----
-Changed:
-- Replaced pm_runtime_suspend/resume calls with their
-  .._force_.. equivalents.
-v2:
-- Added "Reviewed-by"
+Looks good to me now:
 
- drivers/spi/spi-s3c64xx.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+Reviewed-by: Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index edeac06..735b7f5 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -1246,10 +1246,9 @@ static int s3c64xx_spi_suspend(struct device *dev)
- 	if (ret)
- 		return ret;
- 
--	if (!pm_runtime_suspended(dev)) {
--		clk_disable_unprepare(sdd->clk);
--		clk_disable_unprepare(sdd->src_clk);
--	}
-+	ret = pm_runtime_force_suspend(dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	sdd->cur_speed = 0; /* Output Clock is stopped */
- 
-@@ -1261,14 +1260,14 @@ static int s3c64xx_spi_resume(struct device *dev)
- 	struct spi_master *master = dev_get_drvdata(dev);
- 	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
- 	struct s3c64xx_spi_info *sci = sdd->cntrlr_info;
-+	int ret;
- 
- 	if (sci->cfg_gpio)
- 		sci->cfg_gpio();
- 
--	if (!pm_runtime_suspended(dev)) {
--		clk_prepare_enable(sdd->src_clk);
--		clk_prepare_enable(sdd->clk);
--	}
-+	ret = pm_runtime_force_resume(dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	s3c64xx_spi_hwinit(sdd, sdd->port_id);
- 
--- 
-2.5.0
+Best regards,
+Krzysztof
+
+
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

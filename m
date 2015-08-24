@@ -1,289 +1,75 @@
-From: kernel@martin.sperl.org
-Subject: [PATCH v4 1/5] soc: bcm2835: auxiliar devices enable infrastructure
-Date: Mon, 24 Aug 2015 08:40:04 +0000
-Message-ID: <1440405608-3995-2-git-send-email-kernel@martin.sperl.org>
-References: <1440405608-3995-1-git-send-email-kernel@martin.sperl.org>
-Cc: Martin Sperl <kernel@martin.sperl.org>
-To: Stephen Warren <swarren@wwwdotorg.org>, Lee Jones <lee@kernel.org>,
-	Russell King <linux@arm.linux.org.uk>,
-	Mark Brown <broonie@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	devicetree@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-spi@vger.kernel.org,
-	Ian Campbell <ijc+devicetree@hellion.org.uk>,
-	Rob Herring <robh+dt@kernel.org>,
-	Pawel Moll <pawel.moll@arm.com>,
-	Kumar Gala <galak@codeaurora.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1440405608-3995-1-git-send-email-kernel@martin.sperl.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Charles Keepax <ckeepax@opensource.wolfsonmicro.com>
+Subject: Re: Fwd: [PATCH 1/1] SPI : spi-pxa2xx : fix spi init
+ of WM510205 codec via ACPI (resend)
+Date: Mon, 24 Aug 2015 09:51:40 +0100
+Message-ID: <20150824085140.GA5647@ck-lbox>
+References: <CAKor6TdKrQrvXTPU=fzL9LTCBbyc9WAbLnYdObY+Wu73g1w6Fg@mail.gmail.com>
+ <CAKor6Tep1jjOnoPn7e5Djird3RVDNP8Gjcb8HOKO6g-_R5++VQ@mail.gmail.com>
+ <20150819134328.GU1552@lahna.fi.intel.com>
+ <CAKor6Tc6RDW+2uuX2yMszk3O69=6QTPdd+emC-m_Cro67VPR8g@mail.gmail.com>
+ <20150820094542.GC30005@lahna.fi.intel.com>
+ <CAKor6Te-DSDxx711-EQi=fw46nNPGnQNqhj-+6upBxhOOp5XvA@mail.gmail.com>
+ <20150820115845.GF30005@lahna.fi.intel.com>
+ <CAKor6Teq=Aoa6WYkTEVpjBPsWziL-o5FzQHxJWOMeaTrMzXpMg@mail.gmail.com>
+ <20150821074310.GM30005@lahna.fi.intel.com>
+ <CAKor6TeJp4ti6_QVCEpz0x7c2NwvUiS5wq_=_WDjM3B7T4=1Yg@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: alsa-devel@alsa-project.org,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+ Haojian Zhuang <haojian.zhuang@gmail.com>, linux-spi@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>, jarkko.nikula@linux.intel.com,
+ Daniel Mack <daniel@zonque.org>, Robert Jarzmik <robert.jarzmik@free.fr>,
+ dan.carpenter@oracle.com
+To: Christian Hartmann <cornogle@googlemail.com>
+Return-path: <alsa-devel-bounces@alsa-project.org>
+Content-Disposition: inline
+In-Reply-To: <CAKor6TeJp4ti6_QVCEpz0x7c2NwvUiS5wq_=_WDjM3B7T4=1Yg@mail.gmail.com>
+List-Unsubscribe: <http://mailman.alsa-project.org/mailman/options/alsa-devel>,
+ <mailto:alsa-devel-request@alsa-project.org?subject=unsubscribe>
+List-Archive: <http://mailman.alsa-project.org/pipermail/alsa-devel/>
+List-Post: <mailto:alsa-devel@alsa-project.org>
+List-Help: <mailto:alsa-devel-request@alsa-project.org?subject=help>
+List-Subscribe: <http://mailman.alsa-project.org/mailman/listinfo/alsa-devel>,
+ <mailto:alsa-devel-request@alsa-project.org?subject=subscribe>
+Errors-To: alsa-devel-bounces@alsa-project.org
+Sender: alsa-devel-bounces@alsa-project.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Martin Sperl <kernel@martin.sperl.org>
+On Fri, Aug 21, 2015 at 02:09:46PM +0200, Christian Hartmann wrote:
+> Hi
+> 
+> 2015-08-21 9:43 GMT+02:00 Mika Westerberg <mika.westerberg@linux.intel.com>:
+> > So please drop the code in 1) to be able to request the GPIO in the
+> > driver.
+> 
+> [    6.129664] spi spi-WM510205:00: 8333333 Hz actual, PIO
+> [    6.129675] spi spi-WM510205:00: setup mode 0, 8 bits/w, 8000000 Hz max --> 0
+> [    6.129759] spi spi-WM510205:00: checking WM510205 with bmp180
+> [    6.129765] spi spi-WM510205:00: checking WM510205 with bmp181
+> [    6.129797] spi spi-WM510205:00: modalias WM510205 in id_table not
+> found, returns NULL
+> [    6.129825] arizona spi-WM510205:00: arizona_acpi_get_type(), than
+> via spi_get_device_id().
+> [    6.129831] arizona spi-WM510205:00: arizona_acpi_get_type matched
+> [    6.129836] arizona spi-WM510205:00: using 1 as type for arizona audio codec
+> [    6.129840] arizona spi-WM510205:00: regmap set to wm5102_spi
+> [    6.130630] arizona spi-WM510205:00: spi_irq = -1
+> [    6.130638] arizona spi-WM510205:00: acpi_dev_add_driver_gpios
+> [    6.144806] arizona spi-WM510205:00: found device ID: ffff
+> [    6.175352] arizona spi-WM510205:00: Unknown device ID ffff
+> [    6.175584] pxa2xx-spi 80860F0E:00: registered child spi-WM510205:00
+> [    6.177870] sst-acpi 80860F28:00: No matching ASoC machine driver found
+> 
+> as you said, I removed the code in 1) so the EBUSY error is gone.
+> 
+> What is with the spi_irq = -1 ?? is this a problem here?
 
-The bcm2835 SOC contains 3 auxiliar devices (spi1, spi2 and uart1)
-that all are enabled via a shared register.
+The IRQ needs pulled from the ACPI as well, having no IRQ
+specified will not interfer with basic functionality of the
+driver but will become a problem eventually.
 
-To serialize access to this shared register this soc-driver
-is created that implements:
-  bcm2835aux_enable(struct device *dev, const char *property);
-  bcm2835aux_disable(struct device *dev, const char *property);
-
-Which will read the property from the device tree of the device
-and enable/disable that specific device as per device tree.
-
-First use of this api will be spi-bcm2835aux.
-
-Signed-off-by: Martin Sperl <kernel@martin.sperl.org>
----
- drivers/soc/Kconfig                 |    1 +
- drivers/soc/Makefile                |    1 +
- drivers/soc/bcm/Kconfig             |   11 +++
- drivers/soc/bcm/Makefile            |    1 +
- drivers/soc/bcm/bcm2835-aux.c       |  154 +++++++++++++++++++++++++++++++++++
- include/linux/soc/bcm/bcm2835-aux.h |   23 ++++++
- 6 files changed, 191 insertions(+)
- create mode 100644 drivers/soc/bcm/Kconfig
- create mode 100644 drivers/soc/bcm/Makefile
- create mode 100644 drivers/soc/bcm/bcm2835-aux.c
- create mode 100644 include/linux/soc/bcm/bcm2835-aux.h
-
-diff --git a/drivers/soc/Kconfig b/drivers/soc/Kconfig
-index 96ddecb..5506e39 100644
---- a/drivers/soc/Kconfig
-+++ b/drivers/soc/Kconfig
-@@ -1,5 +1,6 @@
- menu "SOC (System On Chip) specific Drivers"
-
-+source "drivers/soc/bcm/Kconfig"
- source "drivers/soc/mediatek/Kconfig"
- source "drivers/soc/qcom/Kconfig"
- source "drivers/soc/sunxi/Kconfig"
-diff --git a/drivers/soc/Makefile b/drivers/soc/Makefile
-index 7dc7c0d..c5744e1 100644
---- a/drivers/soc/Makefile
-+++ b/drivers/soc/Makefile
-@@ -2,6 +2,7 @@
- # Makefile for the Linux Kernel SOC specific device drivers.
- #
-
-+obj-$(CONFIG_ARCH_BCM)		+= bcm/
- obj-$(CONFIG_ARCH_MEDIATEK)	+= mediatek/
- obj-$(CONFIG_ARCH_QCOM)		+= qcom/
- obj-$(CONFIG_ARCH_SUNXI)	+= sunxi/
-diff --git a/drivers/soc/bcm/Kconfig b/drivers/soc/bcm/Kconfig
-new file mode 100644
-index 0000000..b0af34b3
---- /dev/null
-+++ b/drivers/soc/bcm/Kconfig
-@@ -0,0 +1,11 @@
-+#
-+# Broadcom SoC drivers
-+#
-+config SOC_BCM2835_AUX
-+	tristate "Broadcom BCM2835 aux"
-+	depends on OF
-+	depends on ARCH_BCM2835 || COMPILE_TEST
-+
-+	help
-+	  Support to enable/disable the BCM2835 auxiliar
-+	  devices spi1, spi2, uart1
-diff --git a/drivers/soc/bcm/Makefile b/drivers/soc/bcm/Makefile
-new file mode 100644
-index 0000000..370a872
---- /dev/null
-+++ b/drivers/soc/bcm/Makefile
-@@ -0,0 +1 @@
-+obj-$(CONFIG_SOC_BCM2835_AUX) += bcm2835-aux.o
-diff --git a/drivers/soc/bcm/bcm2835-aux.c b/drivers/soc/bcm/bcm2835-aux.c
-new file mode 100644
-index 0000000..887508d
---- /dev/null
-+++ b/drivers/soc/bcm/bcm2835-aux.c
-@@ -0,0 +1,154 @@
-+/*
-+ * bcm2835-aux
-+ *
-+ * Copyright (C) 2015 Martin Sperl
-+ *
-+ * Author: Martin Sperl <kernel@martin.sperl.org>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ */
-+
-+#include <linux/device.h>
-+#include <linux/err.h>
-+#include <linux/io.h>
-+#include <linux/soc/bcm/bcm2835-aux.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
-+#include <linux/slab.h>
-+#include <linux/spinlock.h>
-+
-+static DEFINE_SPINLOCK(bcm2835aux_lock);
-+
-+static struct platform_driver bcm2835aux_driver;
-+
-+static int bcm2835aux_dev_match(struct device *dev, void *data)
-+{
-+	struct device_node *dn = data;
-+
-+	return (dev->of_node == dn) ? 1 : 0;
-+}
-+
-+static void *bcm2835aux_find_base(struct device *dev, const char *property)
-+{
-+	struct device *found = NULL;
-+	struct device_node *np;
-+
-+	/* get the phandle of the device */
-+	np = of_parse_phandle(dev->of_node, property, 0);
-+	if (!np) {
-+		dev_err(dev, "missing property %s\n", property);
-+		return ERR_PTR(-ENODEV);
-+	}
-+
-+	/* now find the device it points to */
-+	found = driver_find_device(&bcm2835aux_driver.driver, NULL,
-+				   np, bcm2835aux_dev_match);
-+	if (!found) {
-+		dev_err(dev, "device for phandle of %s not found\n",
-+			property);
-+		return ERR_PTR(-ENODEV);
-+	}
-+
-+	/* now we got the device, so return the pointer */
-+	return dev_get_drvdata(found);
-+}
-+
-+static u32 bcm2835aux_find_mask(struct device *dev, const char *property)
-+{
-+	int err;
-+	u32 mask;
-+
-+	err = of_property_read_u32_index(dev->of_node, property, 1, &mask);
-+	if (err) {
-+		dev_err(dev, "missing argument to %s: %d\n",
-+			property, err);
-+		return 0;
-+	}
-+
-+	return mask;
-+}
-+
-+static int bcm2835aux_bitset(struct device *dev, const char *property,
-+			     bool set)
-+{
-+	u32 v, mask;
-+	unsigned long flags;
-+	void __iomem *base;
-+
-+	/* find the device */
-+	base = bcm2835aux_find_base(dev, property);
-+	if (IS_ERR(base))
-+		return PTR_ERR(base);
-+
-+	/* and extract the mask */
-+	mask = bcm2835aux_find_mask(dev, property);
-+	if (!mask)
-+		return -ENOENT;
-+
-+	spin_lock_irqsave(&bcm2835aux_lock, flags);
-+
-+	v = readl(base);
-+	if (set)
-+		v |= mask;
-+	else
-+		v &= ~mask;
-+
-+	writel(v, base);
-+
-+	spin_unlock_irqrestore(&bcm2835aux_lock, flags);
-+
-+	return 0;
-+}
-+
-+int bcm2835aux_enable(struct device *dev, const char *property)
-+{
-+	return bcm2835aux_bitset(dev, property, true);
-+}
-+EXPORT_SYMBOL_GPL(bcm2835aux_enable);
-+
-+int bcm2835aux_disable(struct device *dev, const char *property)
-+{
-+	return bcm2835aux_bitset(dev, property, false);
-+}
-+EXPORT_SYMBOL_GPL(bcm2835aux_disable);
-+
-+static int bcm2835aux_probe(struct platform_device *pdev)
-+{
-+	struct resource *res;
-+	void __iomem *base;
-+
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!res)
-+		return -ENOENT;
-+
-+	base = devm_ioremap_resource(&pdev->dev, res);
-+	if (IS_ERR(base))
-+		return PTR_ERR(base);
-+
-+	platform_set_drvdata(pdev, base);
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id bcm2835aux_match[] = {
-+	{ .compatible = "brcm,bcm2835-aux", },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, bcm2835aux_match);
-+
-+static struct platform_driver bcm2835aux_driver = {
-+	.driver = {
-+		.name           = "bcm2835-aux",
-+		.of_match_table	= bcm2835aux_match,
-+	},
-+	.probe			= bcm2835aux_probe,
-+};
-+module_platform_driver(bcm2835aux_driver);
-+
-+MODULE_DESCRIPTION("enable/disable driver for aux-spi1/spi2/uart1 on Broadcom BCM2835");
-+MODULE_AUTHOR("Martin Sperl <kernel@martin.sperl.org>");
-+MODULE_LICENSE("GPL v2");
-diff --git a/include/linux/soc/bcm/bcm2835-aux.h b/include/linux/soc/bcm/bcm2835-aux.h
-new file mode 100644
-index 0000000..17a64c6
---- /dev/null
-+++ b/include/linux/soc/bcm/bcm2835-aux.h
-@@ -0,0 +1,23 @@
-+/*
-+ * Copyright (C) 2015 Martin Sperl
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#ifndef __BCM2835_AUX_H__
-+#define __BCM2835_AUX_H__
-+
-+struct device;
-+
-+int bcm2835aux_enable(struct device *dev, const char *property);
-+int bcm2835aux_disable(struct device *dev, const char *property);
-+
-+#endif
---
-1.7.10.4
+Thanks,
+Charles

@@ -1,87 +1,45 @@
-From: Christian Hartmann <cornogle@googlemail.com>
-Subject: Re: Fwd: [PATCH 1/1] SPI : spi-pxa2xx : fix spi init
- of WM510205 codec via ACPI (resend)
-Date: Mon, 24 Aug 2015 15:25:57 +0200
-Message-ID: <CAKor6TcRWgn-Z+Va0JKCBqxVA9HBSLMR_vh-z8MSBZebn9kDVg@mail.gmail.com>
-References: <CAKor6TdKrQrvXTPU=fzL9LTCBbyc9WAbLnYdObY+Wu73g1w6Fg@mail.gmail.com>
- <CAKor6Tep1jjOnoPn7e5Djird3RVDNP8Gjcb8HOKO6g-_R5++VQ@mail.gmail.com>
- <20150819134328.GU1552@lahna.fi.intel.com>
- <CAKor6Tc6RDW+2uuX2yMszk3O69=6QTPdd+emC-m_Cro67VPR8g@mail.gmail.com>
- <20150820094542.GC30005@lahna.fi.intel.com>
- <CAKor6Te-DSDxx711-EQi=fw46nNPGnQNqhj-+6upBxhOOp5XvA@mail.gmail.com>
- <20150820115845.GF30005@lahna.fi.intel.com>
- <CAKor6Teq=Aoa6WYkTEVpjBPsWziL-o5FzQHxJWOMeaTrMzXpMg@mail.gmail.com>
- <20150821074310.GM30005@lahna.fi.intel.com>
- <CAKor6TeJp4ti6_QVCEpz0x7c2NwvUiS5wq_=_WDjM3B7T4=1Yg@mail.gmail.com>
- <20150824085140.GA5647@ck-lbox>
+From: "Franklin S Cooper Jr." <fcooper-l0cyMroinI0@public.gmane.org>
+Subject: Re: [RESEND][PATCH 4/4] ARM: dts: keystone: Add ti,keystone-spi for
+ SPI
+Date: Mon, 24 Aug 2015 08:36:05 -0500
+Message-ID: <55DB1DC5.7060607@ti.com>
+References: <1437568344-18889-1-git-send-email-fcooper@ti.com> <1437568344-18889-5-git-send-email-fcooper@ti.com> <55AFC207.3050100@oracle.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Cc: alsa-devel@alsa-project.org,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
- Haojian Zhuang <haojian.zhuang@gmail.com>, linux-spi@vger.kernel.org,
- Mark Brown <broonie@kernel.org>, jarkko.nikula@linux.intel.com,
- Daniel Mack <daniel@zonque.org>, Robert Jarzmik <robert.jarzmik@free.fr>,
- dan.carpenter@oracle.com
-To: Charles Keepax <ckeepax@opensource.wolfsonmicro.com>
-Return-path: <alsa-devel-bounces@alsa-project.org>
-In-Reply-To: <20150824085140.GA5647@ck-lbox>
-List-Unsubscribe: <http://mailman.alsa-project.org/mailman/options/alsa-devel>,
- <mailto:alsa-devel-request@alsa-project.org?subject=unsubscribe>
-List-Archive: <http://mailman.alsa-project.org/pipermail/alsa-devel/>
-List-Post: <mailto:alsa-devel@alsa-project.org>
-List-Help: <mailto:alsa-devel-request@alsa-project.org?subject=help>
-List-Subscribe: <http://mailman.alsa-project.org/mailman/listinfo/alsa-devel>,
- <mailto:alsa-devel-request@alsa-project.org?subject=subscribe>
-Errors-To: alsa-devel-bounces@alsa-project.org
-Sender: alsa-devel-bounces@alsa-project.org
-List-Id: linux-spi.vger.kernel.org
+Cc: <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org>,
+	<linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	<ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	<pawel.moll-5wv7dgnIgG8@public.gmane.org>, <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	<linux-arm-kernel-xBCQruHUn5ppWr+L1FloEB2eb7JE58TQ@public.gmane.org>
+To: santosh shilimkar <santosh.shilimkar-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>,
+	<broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <nsekhar-l0cyMroinI0@public.gmane.org>, <ssantosh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <55AFC207.3050100-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi,
+Hi Santosh,
 
-2015-08-24 10:51 GMT+02:00 Charles Keepax <ckeepax@opensource.wolfsonmicro.com>:
->> What is with the spi_irq = -1 ?? is this a problem here?
+All the patches except this one are in linux-next.
+
+On 07/22/2015 11:17 AM, santosh shilimkar wrote:
+> On 7/22/2015 5:32 AM, Franklin S Cooper Jr wrote:
+>> Add ti,keystone-spi to the compatible field for the SPI node. This new
+>> entry insures that the proper prescaler limit is used for keystone devices
+>>
+>> Signed-off-by: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>
+>> ---
+> Once the binding and driver makes it, I can pick this up.
+> Keep me posted. Thanks !!
 >
-> The IRQ needs pulled from the ACPI as well, having no IRQ
-> specified will not interfer with basic functionality of the
-> driver but will become a problem eventually.
+> Regards,
+> Santosh
 >
-> Thanks,
-> Charles
 
-ok, I will have an eye on it these days for the IRQ.
-For me its looking that the pxa2xx does not have an irq yet,
-nor an dma channel (thats should be fine, as I understand it correctly)
-
-actually I cleanup and want to rework / begin with a new v2 patch
-series, but first it should drive this chip  before beginning with a
-v2 patch.
-
-one more question: the function devm_gpio_request_one() which is used
-here to request "arizona /RESET"
-
-<code in arizona-core.c>
-
-/* Start out with /RESET low to put the chip into reset */
-ret = devm_gpio_request_one(arizona->dev, arizona->pdata.reset,
-GPIOF_DIR_OUT | GPIOF_INIT_LOW,
-"arizona /RESET");
-</code>
-
-the string arizona /RESET, where is this documented, where can I find
-it? It fails here, and my question is, is this string correct at all
-for my case? Should it be called only "reset" in my case??
-
-All I have found is:
-Documentation/devicetree/bindings/mfd/arizona.txt:  - wlf,reset : GPIO
-specifier for the GPIO controlling /RESET
-
-in devres.c its documented as a label only:
-@label: a literal description string of this GPIO
-
-I am curios about the answers, anyway I will change it, it looks
-faulty (but do not know why exactly at all :) )
-
-cheers
-chris
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,76 +1,88 @@
-From: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
-Subject: Re: [PATCH 18/18] spi: (RFC, don't apply) report OF style modalias
- when probing using DT
-Date: Mon, 24 Aug 2015 10:00:15 +0200
-Message-ID: <55DACF0F.2000505@osg.samsung.com>
-References: <1440054451-1223-1-git-send-email-javier@osg.samsung.com>
- <1440054451-1223-19-git-send-email-javier@osg.samsung.com>
- <20150820183634.GN12027@sirena.org.uk> <20150820210822.GH74600@google.com>
- <55D64A65.7030905@osg.samsung.com> <20150820232517.GZ12027@sirena.org.uk>
- <55D666F4.2080801@osg.samsung.com> <20150821172931.GK12027@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Javier Martinez Canillas <javier.martinez-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150821172931.GK12027-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
+Subject: [PATCH v4 0/5] bcm2835: auxiliar device support for spi
+Date: Mon, 24 Aug 2015 08:40:03 +0000
+Message-ID: <1440405608-3995-1-git-send-email-kernel@martin.sperl.org>
+Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-Hello Mark,
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-On 08/21/2015 07:29 PM, Mark Brown wrote:
-> On Fri, Aug 21, 2015 at 01:47:00AM +0200, Javier Martinez Canillas wrote:
->> On 08/21/2015 01:25 AM, Mark Brown wrote:
->>> On Thu, Aug 20, 2015 at 11:45:09PM +0200, Javier Martinez Canillas wrote:
-> 
->>>>> IOW, it's labeled as such mostly for safety, since it has quite a few
->>>>> distributed dependencies.
-> 
->>> Are there really only 17 drivers that are missing an explict of_table?
->>> That seems like a low number.
-> 
->> In fact the 17 patches are the combination of the SPI drivers that:
-> 
->> a) Have a .id_table but not a MODULE_DEVICE_TABLE(spi,...)
->> b) Have a .of_match_table but no a MODULE_DEVICE_TABLE(of,...)
->> c) Don't have a .of_match_table but have a DT binding document
-> 
->> Maybe there are more SPI drivers out there that only have a .id_table
->> and don't have a .of_match_table nor a DT binding doc. But in that case
->> there isn't too much I can do since I've no information that these are
->> drivers are actually used in systems booted with OF.
-> 
-> We could at the very least scan through the in tree DTs.  There does
-> seem to be a substantial overlap between systems that often don't use
-> modular kernels but could and systems where people are using the I2C
-> and SPI ID mapping shims.
-> 
+The BCM2835 contains 3 auxiliar devices:
+* spi1
+* spi2
+* uart1
 
-My script does this but didn't find any matches.
+All of those 3 devices are enabled/disabled via a shared register,
+which is set by default to be disabled.
 
-Basically what I do is for drivers with no OF table, to take the name field
-from the spi_device_id in the SPI id table and see if one of these are used
-as a compatible string either in a DTS or mentioned in a DT binding.
+Access to this register needs to get serialized.
 
-I found some matches in DT bindings which are the type c) issue but none
-used in an in tree DTS.
+So fter several iterations of discussions with the following idea:
+* syscon - device tree should describe HW not drivers to use -
+           'compatiblity = "brcm,bcm2835-aux-enable", "syscon";'
+           is not acceptable
+* regulator - it is not necessarily a regulator or a power gate
+              that is implemented in HW, so it is not valid to use
+              this framework
 
-But that doesn't mean that there could be drivers with no OF table, no DT
-binding and with out-of-tree DTS that are using compatible = "bar" instead
-compatible = "foo,bar" and relying on SPI matching using the SPI device id
-table as a fallback. But I guess these should be fixed for module autoload.
+The recommendation was made to create a new minimal API in soc
+just for access to this shared enable/disable register.
 
-Best regards,
--- 
-Javier Martinez Canillas
-Open Source Group
-Samsung Research America
+This patch-series implements:
+* the bcm2835-auxiliar device enable/disable api in soc.
+* the bcm2835-auxiliar spi device driver
+
+The uart1 device driver (ns16550 based) is not implemented so far
+but should be using the same API.
+
+Martin Sperl (5):
+  soc: bcm2835: auxiliar devices enable infrastructure
+  ARM: bcm2835: add DT for the bcm2835 auxiliar devices
+  dt/bindings: bcm2835: add binding documentation for bcm2835-aux
+  spi: bcm2835: new driver implementing auxiliar spi1/spi2 on the
+    bcm2835 soc
+  dt/bindings: bcm2835: Add binding documentation for auxiliar spi
+    devices
+
+ .../bindings/soc/bcm/brcm,bcm2835-aux.txt          |   27 ++
+ .../bindings/spi/brcm,bcm2835-aux-spi.txt          |   61 +++
+ arch/arm/boot/dts/bcm2835.dtsi                     |   37 ++
+ arch/arm/configs/bcm2835_defconfig                 |    1 +
+ drivers/soc/Kconfig                                |    1 +
+ drivers/soc/Makefile                               |    1 +
+ drivers/soc/bcm/Kconfig                            |   11 +
+ drivers/soc/bcm/Makefile                           |    1 +
+ drivers/soc/bcm/bcm2835-aux.c                      |  154 ++++++
+ drivers/spi/Kconfig                                |   12 +
+ drivers/spi/Makefile                               |    1 +
+ drivers/spi/spi-bcm2835aux.c                       |  506 ++++++++++++++++++++
+ include/linux/soc/bcm/bcm2835-aux.h                |   23 +
+ 13 files changed, 836 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/soc/bcm/brcm,bcm2835-aux.txt
+ create mode 100644 Documentation/devicetree/bindings/spi/brcm,bcm2835-aux-spi.txt
+ create mode 100644 drivers/soc/bcm/Kconfig
+ create mode 100644 drivers/soc/bcm/Makefile
+ create mode 100644 drivers/soc/bcm/bcm2835-aux.c
+ create mode 100644 drivers/spi/spi-bcm2835aux.c
+ create mode 100644 include/linux/soc/bcm/bcm2835-aux.h
+
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+1.7.10.4
+
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

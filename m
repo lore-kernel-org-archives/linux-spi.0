@@ -1,176 +1,142 @@
-From: Marek Vasut <marex@denx.de>
-Subject: Re: [PATCH linux-next v4 3/5] mtd: spi-nor: allow to tune the number of dummy cycles
-Date: Mon, 24 Aug 2015 12:48:17 +0200
-Message-ID: <201508241248.17466.marex@denx.de>
-References: <cover.1440410236.git.cyrille.pitchen@atmel.com> <b0d8470fdd46e89ef692e27dc2600b880c1d5dde.1440410236.git.cyrille.pitchen@atmel.com>
+From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH linux-next v4 5/5] mtd: atmel-quadspi: add driver for Atmel QSPI controller
+Date: Mon, 24 Aug 2015 13:03:51 +0200
+Message-ID: <201508241303.52066.marex@denx.de>
+References: <cover.1440410236.git.cyrille.pitchen@atmel.com> <bf368fc101f38db231131b69eff0863210f2b01c.1440410236.git.cyrille.pitchen@atmel.com>
 Mime-Version: 1.0
 Content-Type: Text/Plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: nicolas.ferre@atmel.com, broonie@kernel.org,
-	linux-spi@vger.kernel.org, dwmw2@infradead.org,
-	computersforpeace@gmail.com, zajec5@gmail.com, beanhuo@micron.com,
-	juhosg@openwrt.org, shijie.huang@intel.com, ben@decadent.org.uk,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org, robh+dt@kernel.org, pawel.moll@arm.com,
-	mark.rutland@arm.com, ijc+devicetree@hellion.org.uk,
-	galak@codeaurora.org, linux-mtd@lists.infradead.org
-To: Cyrille Pitchen <cyrille.pitchen@atmel.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <b0d8470fdd46e89ef692e27dc2600b880c1d5dde.1440410236.git.cyrille.pitchen@atmel.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org,
+	computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org,
+	juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org, shijie.huang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, pawel.moll-5wv7dgnIgG8@public.gmane.org,
+	mark.rutland-5wv7dgnIgG8@public.gmane.org, ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org,
+	galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <bf368fc101f38db231131b69eff0863210f2b01c.1440410236.git.cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Monday, August 24, 2015 at 12:13:58 PM, Cyrille Pitchen wrote:
-> The number of dummy cycles used during Fast Read commands can be reduced
-> to improve transfer performances. Each manufacturer has a dedicated set of
-> registers to provide the memory with the exact number of dummy cycles it
-> should expect. Both the memory and the (Q)SPI controller must agree on
-> this number of dummy cycles.
+On Monday, August 24, 2015 at 12:14:00 PM, Cyrille Pitchen wrote:
+> This driver add support to the new Atmel QSPI controller embedded into
+> sama5d2x SoCs. It expects a NOR memory to be connected to the QSPI
+> controller.
 > 
-> The number of dummy cycles can be found into the memory datasheet and
-> mostly depends on the SPI clock frequency, the Fast Read op code and the
-> Single/Dual Data Rate mode.
-> 
-> Probing JEDEC Serial Flash Discoverable Parameters (SFDP) tables would
-> only provide the driver with a high enough number of dummy cycles for each
-> Fast Read command to be used for all clock frequencies: this solution
-> would not be optimized.
-> 
-> Signed-off-by: Cyrille Pitchen <cyrille.pitchen@atmel.com>
+> Signed-off-by: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+> Acked-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 
-Hi!
+Hi,
 
->  drivers/mtd/spi-nor/spi-nor.c | 97
-> ++++++++++++++++++++++++++++++++++--------- include/linux/mtd/spi-nor.h  
-> |  2 +
->  2 files changed, 80 insertions(+), 19 deletions(-)
-> 
-> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-> index e2a6029dc056..869e098a6841 100644
-> --- a/drivers/mtd/spi-nor/spi-nor.c
-> +++ b/drivers/mtd/spi-nor/spi-nor.c
-> @@ -119,24 +119,6 @@ static int read_cr(struct spi_nor *nor)
->  }
-> 
->  /*
-> - * Dummy Cycle calculation for different type of read.
-> - * It can be used to support more commands with
-> - * different dummy cycle requirements.
-> - */
-> -static inline int spi_nor_read_dummy_cycles(struct spi_nor *nor)
-> -{
-> -	switch (nor->flash_read) {
-> -	case SPI_NOR_FAST:
-> -	case SPI_NOR_DUAL:
-> -	case SPI_NOR_QUAD:
-> -		return 8;
-> -	case SPI_NOR_NORMAL:
-> -		return 0;
-> -	}
-> -	return 0;
-> -}
+[...]
 
-You can probably just soup up this function so that it sets the
-nor->read_dummy, no ?
+> +/* Register access macros */
 
-> -/*
->   * Write status register 1 byte
->   * Returns negative if error occurred.
->   */
-> @@ -1012,6 +994,81 @@ static int set_quad_mode(struct spi_nor *nor, struct
-> flash_info *info) }
->  }
-> 
-> +static int micron_set_dummy_cycles(struct spi_nor *nor)
+These are functions, not macros :)
+
+btw is there any reason for these ? I'd say, just put the read*() and
+write*() functions directly into the code and be done with it, it is
+much less confusing.
+
+Also, why do you use the _relaxed() versions of the functions ?
+
+> +static inline u32 qspi_readl(struct atmel_qspi *aq, u32 reg)
 > +{
-> +	int ret;
-> +	u8 val, mask;
-> +
-> +	/* read the Volatile Configuration Register (VCR) */
-
-NIT: If this is a sentence, start it with capital letter and end it with 
-fullstop :)
-
-> +	ret = nor->read_reg(nor, SPINOR_OP_RD_VCR, &val, 1);
-> +	if (ret < 0) {
-> +		dev_err(nor->dev, "error %d reading VCR\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	write_enable(nor);
-> +
-> +	/* update the number of dummy into the VCR */
-
-DTTO
-
-> +	mask = GENMASK(7, 4);
-> +	val &= ~mask;
-> +	val |= (nor->read_dummy << 4) & mask;
-> +	ret = nor->write_reg(nor, SPINOR_OP_WR_VCR, &val, 1, 0);
-> +	if (ret < 0) {
-> +		dev_err(nor->dev, "error while writing VCR register\n");
-> +		return ret;
-> +	}
-> +
-> +	ret = spi_nor_wait_till_ready(nor);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return 0;
+> +	return readl_relaxed(aq->regs + reg);
 > +}
 > +
-> +/*
-> + * Dummy Cycle calculation for different type of read.
-> + * It can be used to support more commands with
-> + * different dummy cycle requirements.
-> + */
-> +static int spi_nor_read_dummy_cycles(struct spi_nor *nor,
-> +				     const struct flash_info *info)
+> +static inline void qspi_writel(struct atmel_qspi *aq, u32 reg, u32 value)
 > +{
-> +	struct device_node *np = nor->dev->of_node;
-> +	u32 num_dummy_cycles;
+> +	writel_relaxed(value, aq->regs + reg);
+> +}
 > +
-> +	if (np && !of_property_read_u32(np, "m25p,num-dummy-cycles",
-> +					&num_dummy_cycles)) {
-> +		nor->read_dummy = num_dummy_cycles;
+> +static inline u16 qspi_readw(struct atmel_qspi *aq, u32 reg)
+> +{
+> +	return readw_relaxed(aq->regs + reg);
+> +}
 > +
-> +		/*
-> +		 * This switch block might be moved after the if...then...else
-> +		 * statement but it was not tested with all Spansion or Micron
-> +		 * memories.
-> +		 * Now the "m25p,num-dummy-cycles" property needs to be
-> +		 * explicitly set in the device tree so the switch statement is
-> +		 * executed. This should avoid unwanted side effects and keep
-> +		 * backward compatibility.
-> +		 */
-> +		switch (JEDEC_MFR(info)) {
-> +		case CFI_MFR_ST:
-> +			return micron_set_dummy_cycles(nor);
-> +		default:
-
-If you do have m25p,num-dummy-cycles set for non-micron flash, you have a 
-problem here I believe.
-
-> +			break;
-> +		}
-> +	} else {
-
-The solution would be to drop this else {} bit here, so that if you fail in
-the DT-based configuration, you fall back to this old behavior. What do you 
-think please ? :)
-
-> +		switch (nor->flash_read) {
-> +		case SPI_NOR_FAST:
-> +		case SPI_NOR_DUAL:
-> +		case SPI_NOR_QUAD:
-> +			nor->read_dummy = 8;
-> +		case SPI_NOR_NORMAL:
-> +			nor->read_dummy = 0;
-> +		}
-> +	}
+> +static inline void qspi_writew(struct atmel_qspi *aq, u32 reg, u16 value)
+> +{
+> +	writew_relaxed(value, aq->regs + reg);
+> +}
 > +
-> +	return 0;
+> +static inline u8 qspi_readb(struct atmel_qspi *aq, u32 reg)
+> +{
+> +	return readb_relaxed(aq->regs + reg);
+> +}
+> +
+> +static inline void qspi_writeb(struct atmel_qspi *aq, u32 reg, u8 value)
+> +{
+> +	writeb_relaxed(value, aq->regs + reg);
 > +}
 
 [...]
+
+> +static int atmel_qspi_run_command(struct atmel_qspi *aq,
+> +				  const struct atmel_qspi_command *cmd)
+> +{
+> +	u32 iar, icr, ifr, sr;
+> +	int err = 0;
+> +
+> +	iar = 0;
+> +	icr = 0;
+> +	ifr = aq->ifr_width | cmd->ifr_tfrtyp;
+> +
+> +	/* Compute instruction parameters */
+> +	if (cmd->enable.bits.instruction) {
+> +		icr |= QSPI_ICR_INST(cmd->instruction);
+> +		ifr |= QSPI_IFR_INSTEN;
+> +	}
+> +
+> +	/* Compute address parameters */
+> +	switch (cmd->enable.bits.address) {
+> +	case 4:
+> +		ifr |= QSPI_IFR_ADDRL;
+> +		/*break;*/ /* fallback to the 24bit address case */
+
+What's this commented out bit of code for ? :-)
+
+> +	case 3:
+> +		iar = (cmd->enable.bits.data) ? 0 : cmd->address;
+> +		ifr |= QSPI_IFR_ADDREN;
+> +		break;
+> +	case 0:
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+
+[...]
+
+> +no_data:
+> +	/* Poll INSTRuction End status */
+> +	sr = qspi_readl(aq, QSPI_SR);
+> +	if (sr & QSPI_SR_INSTRE)
+> +		return err;
+> +
+> +	/* Wait for INSTRuction End interrupt */
+> +	init_completion(&aq->completion);
+
+You should use reinit_completion() in the code. init_completion()
+should be used only in the probe() function and nowhere else.
+
+> +	aq->pending = 0;
+> +	qspi_writel(aq, QSPI_IER, QSPI_SR_INSTRE);
+> +	if (!wait_for_completion_timeout(&aq->completion,
+> +					 msecs_to_jiffies(1000)))
+> +		err = -ETIMEDOUT;
+> +	qspi_writel(aq, QSPI_IDR, QSPI_SR_INSTRE);
+> +
+> +	return err;
+> +}
+
+[...]
+
+Hope this helps :)
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

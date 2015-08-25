@@ -1,18 +1,18 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: mediatek: add linux/io.h include file" to the spi tree
-Date: Tue, 25 Aug 2015 18:50:10 +0100
-Message-ID: <E1ZUIMM-0005PY-6Q@debutante>
-References: <1440387918-22191-2-git-send-email-leilk.liu@mediatek.com>
+Subject: Applied "spi: mediatek: add PM clk_prepare_enable fail flow" to the spi tree
+Date: Tue, 25 Aug 2015 18:50:08 +0100
+Message-ID: <E1ZUIMK-0005OS-CM@debutante>
+References: <1440387918-22191-4-git-send-email-leilk.liu@mediatek.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1440387918-22191-2-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <1440387918-22191-4-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: mediatek: add linux/io.h include file
+   spi: mediatek: add PM clk_prepare_enable fail flow
 
 has been applied to the spi tree at
 
@@ -37,32 +37,52 @@ to this mail.
 Thanks,
 Mark
 
->From dd69a0a69c9ee3e09da7f3771c1aa420e49464ce Mon Sep 17 00:00:00 2001
+>From 13da5a0b72ea66c74483966ff91718ae0a9c0703 Mon Sep 17 00:00:00 2001
 From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Date: Mon, 24 Aug 2015 11:45:15 +0800
-Subject: [PATCH] spi: mediatek: add linux/io.h include file
+Date: Mon, 24 Aug 2015 11:45:17 +0800
+Subject: [PATCH] spi: mediatek: add PM clk_prepare_enable fail flow
 
-mediatek spi driver uses readl/writel, so add linux/io.h,
-even so it's implicitly imported by spi/spi.h
+This patch adds PM clk_prepare_enable fail flow.
 
 Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-mt65xx.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-mt65xx.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 516b4ed757e5..46d14772c0cc 100644
+index 81b75b94145c..14112a5e63b9 100644
 --- a/drivers/spi/spi-mt65xx.c
 +++ b/drivers/spi/spi-mt65xx.c
-@@ -16,6 +16,7 @@
- #include <linux/device.h>
- #include <linux/err.h>
- #include <linux/interrupt.h>
-+#include <linux/io.h>
- #include <linux/ioport.h>
- #include <linux/module.h>
- #include <linux/of.h>
+@@ -665,8 +665,10 @@ static int mtk_spi_resume(struct device *dev)
+ 
+ 	if (!pm_runtime_suspended(dev)) {
+ 		ret = clk_prepare_enable(mdata->spi_clk);
+-		if (ret < 0)
++		if (ret < 0) {
++			dev_err(dev, "failed to enable spi_clk (%d)\n", ret);
+ 			return ret;
++		}
+ 	}
+ 
+ 	ret = spi_master_resume(master);
+@@ -692,8 +694,15 @@ static int mtk_spi_runtime_resume(struct device *dev)
+ {
+ 	struct spi_master *master = dev_get_drvdata(dev);
+ 	struct mtk_spi *mdata = spi_master_get_devdata(master);
++	int ret;
++
++	ret = clk_prepare_enable(mdata->spi_clk);
++	if (ret < 0) {
++		dev_err(dev, "failed to enable spi_clk (%d)\n", ret);
++		return ret;
++	}
+ 
+-	return clk_prepare_enable(mdata->spi_clk);
++	return 0;
+ }
+ #endif /* CONFIG_PM */
+ 
 -- 
 2.5.0
 

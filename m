@@ -1,18 +1,18 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: mediatek: add PM clk_prepare_enable fail flow" to the spi tree
-Date: Tue, 25 Aug 2015 18:50:08 +0100
-Message-ID: <E1ZUIMK-0005OS-CM@debutante>
-References: <1440387918-22191-4-git-send-email-leilk.liu@mediatek.com>
+Subject: Applied "spi: mediatek: replace *_time name" to the spi tree
+Date: Tue, 25 Aug 2015 18:50:07 +0100
+Message-ID: <E1ZUIMJ-0005Nz-FL@debutante>
+References: <1440387918-22191-5-git-send-email-leilk.liu@mediatek.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1440387918-22191-4-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <1440387918-22191-5-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: mediatek: add PM clk_prepare_enable fail flow
+   spi: mediatek: replace *_time name
 
 has been applied to the spi tree at
 
@@ -37,51 +37,61 @@ to this mail.
 Thanks,
 Mark
 
->From 13da5a0b72ea66c74483966ff91718ae0a9c0703 Mon Sep 17 00:00:00 2001
+>From 2ce0acf5673e7ee82506e69109876e037e4a64be Mon Sep 17 00:00:00 2001
 From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Date: Mon, 24 Aug 2015 11:45:17 +0800
-Subject: [PATCH] spi: mediatek: add PM clk_prepare_enable fail flow
+Date: Mon, 24 Aug 2015 11:45:18 +0800
+Subject: [PATCH] spi: mediatek: replace *_time name
 
-This patch adds PM clk_prepare_enable fail flow.
+This patch replaces *_time name in mtk_spi_prepare_transfer().
 
 Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-mt65xx.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/spi/spi-mt65xx.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 81b75b94145c..14112a5e63b9 100644
+index 14112a5e63b9..c1e96d3b7030 100644
 --- a/drivers/spi/spi-mt65xx.c
 +++ b/drivers/spi/spi-mt65xx.c
-@@ -665,8 +665,10 @@ static int mtk_spi_resume(struct device *dev)
- 
- 	if (!pm_runtime_suspended(dev)) {
- 		ret = clk_prepare_enable(mdata->spi_clk);
--		if (ret < 0)
-+		if (ret < 0) {
-+			dev_err(dev, "failed to enable spi_clk (%d)\n", ret);
- 			return ret;
-+		}
- 	}
- 
- 	ret = spi_master_resume(master);
-@@ -692,8 +694,15 @@ static int mtk_spi_runtime_resume(struct device *dev)
+@@ -238,8 +238,7 @@ static void mtk_spi_set_cs(struct spi_device *spi, bool enable)
+ static void mtk_spi_prepare_transfer(struct spi_master *master,
+ 				     struct spi_transfer *xfer)
  {
- 	struct spi_master *master = dev_get_drvdata(dev);
+-	u32 spi_clk_hz, div, high_time, low_time, holdtime,
+-	    setuptime, cs_idletime, reg_val = 0;
++	u32 spi_clk_hz, div, sck_time, cs_time, reg_val = 0;
  	struct mtk_spi *mdata = spi_master_get_devdata(master);
-+	int ret;
-+
-+	ret = clk_prepare_enable(mdata->spi_clk);
-+	if (ret < 0) {
-+		dev_err(dev, "failed to enable spi_clk (%d)\n", ret);
-+		return ret;
-+	}
  
--	return clk_prepare_enable(mdata->spi_clk);
-+	return 0;
+ 	spi_clk_hz = clk_get_rate(mdata->spi_clk);
+@@ -248,21 +247,18 @@ static void mtk_spi_prepare_transfer(struct spi_master *master,
+ 	else
+ 		div = 1;
+ 
+-	high_time = (div + 1) / 2;
+-	low_time = (div + 1) / 2;
+-	holdtime = (div + 1) / 2 * 2;
+-	setuptime = (div + 1) / 2 * 2;
+-	cs_idletime = (div + 1) / 2 * 2;
++	sck_time = (div + 1) / 2;
++	cs_time = sck_time * 2;
+ 
+-	reg_val |= (((high_time - 1) & 0xff) << SPI_CFG0_SCK_HIGH_OFFSET);
+-	reg_val |= (((low_time - 1) & 0xff) << SPI_CFG0_SCK_LOW_OFFSET);
+-	reg_val |= (((holdtime - 1) & 0xff) << SPI_CFG0_CS_HOLD_OFFSET);
+-	reg_val |= (((setuptime - 1) & 0xff) << SPI_CFG0_CS_SETUP_OFFSET);
++	reg_val |= (((sck_time - 1) & 0xff) << SPI_CFG0_SCK_HIGH_OFFSET);
++	reg_val |= (((sck_time - 1) & 0xff) << SPI_CFG0_SCK_LOW_OFFSET);
++	reg_val |= (((cs_time - 1) & 0xff) << SPI_CFG0_CS_HOLD_OFFSET);
++	reg_val |= (((cs_time - 1) & 0xff) << SPI_CFG0_CS_SETUP_OFFSET);
+ 	writel(reg_val, mdata->base + SPI_CFG0_REG);
+ 
+ 	reg_val = readl(mdata->base + SPI_CFG1_REG);
+ 	reg_val &= ~SPI_CFG1_CS_IDLE_MASK;
+-	reg_val |= (((cs_idletime - 1) & 0xff) << SPI_CFG1_CS_IDLE_OFFSET);
++	reg_val |= (((cs_time - 1) & 0xff) << SPI_CFG1_CS_IDLE_OFFSET);
+ 	writel(reg_val, mdata->base + SPI_CFG1_REG);
  }
- #endif /* CONFIG_PM */
  
 -- 
 2.5.0

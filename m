@@ -1,96 +1,81 @@
-From: =?iso-2022-jp?B?QmVhbiBIdW8gGyRCcDlJTElMGyhCIChiZWFuaHVvKQ==?=
-	<beanhuo@micron.com>
-Subject: RE: [PATCH linux-next v4 5/5] mtd: atmel-quadspi: add driver for
- Atmel QSPI controller
-Date: Tue, 25 Aug 2015 01:44:57 +0000
-Message-ID: <A765B125120D1346A63912DDE6D8B6310BF47A26@NTXXIAMBX02.xacn.micron.com>
-References: <cover.1440410236.git.cyrille.pitchen@atmel.com>
- <bf368fc101f38db231131b69eff0863210f2b01c.1440410236.git.cyrille.pitchen@atmel.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [alsa-devel] Fwd: [PATCH 1/1] SPI : spi-pxa2xx : fix spi init of
+ WM510205 codec via ACPI (resend)
+Date: Tue, 25 Aug 2015 07:21:57 +0100
+Message-ID: <20150825062157.GB27431@sirena.org.uk>
+References: <20150819134328.GU1552@lahna.fi.intel.com>
+ <CAKor6Tc6RDW+2uuX2yMszk3O69=6QTPdd+emC-m_Cro67VPR8g@mail.gmail.com>
+ <20150820094542.GC30005@lahna.fi.intel.com>
+ <CAKor6Te-DSDxx711-EQi=fw46nNPGnQNqhj-+6upBxhOOp5XvA@mail.gmail.com>
+ <20150820115845.GF30005@lahna.fi.intel.com>
+ <CAKor6Teq=Aoa6WYkTEVpjBPsWziL-o5FzQHxJWOMeaTrMzXpMg@mail.gmail.com>
+ <20150821074310.GM30005@lahna.fi.intel.com>
+ <CAKor6TeJp4ti6_QVCEpz0x7c2NwvUiS5wq_=_WDjM3B7T4=1Yg@mail.gmail.com>
+ <20150824085140.GA5647@ck-lbox>
+ <CAKor6TcRWgn-Z+Va0JKCBqxVA9HBSLMR_vh-z8MSBZebn9kDVg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-2022-jp"
-Content-Transfer-Encoding: 8BIT
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"robh+dt@kernel.org" <robh+dt@kernel.org>,
-	"pawel.moll@arm.com" <pawel.moll@arm.com>,
-	"mark.rutland@arm.com" <mark.rutland@arm.com>,
-	"ijc+devicetree@hellion.org.uk" <ijc+devicetree@hellion.org.uk>,
-	"galak@codeaurora.org" <galak@codeaurora.org>,
-	"linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>
-To: Cyrille Pitchen <cyrille.pitchen@atmel.com>,
-	"nicolas.ferre@atmel.com" <nicolas.ferre@atmel.com>,
-	"broonie@kernel.org" <broonie@kernel.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"dwmw2@infradead.org" <dwmw2@infradead.org>,
-	"computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-	"zajec5@gmail.com" <zajec5@gmail.com>,
-	"juhosg@openwrt.org" <juhosg@openwrt.org>,
-	"marex@denx.de" <marex@denx.de>,
-	"shijie.huang@intel.com" <shijie.huang@intel.com>,
-	"ben@decadent.org.uk" <ben@decadent.org.uk>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <bf368fc101f38db231131b69eff0863210f2b01c.1440410236.git.cyrille.pitchen@atmel.com>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="oLBj+sq0vYjzfsbl"
+Cc: Charles Keepax <ckeepax-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
+	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+	Pierre-Louis Bossart <pierre-louis.bossart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
+	dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>
+To: Christian Hartmann <cornogle-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAKor6TcRWgn-Z+Va0JKCBqxVA9HBSLMR_vh-z8MSBZebn9kDVg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
->+	nor->read_reg = atmel_qspi_read_reg;
->+	nor->write_reg = atmel_qspi_write_reg;
->+	nor->read = atmel_qspi_read;
->+	nor->write = atmel_qspi_write;
->+	nor->erase = atmel_qspi_erase;
->+	nor->set_protocol = atmel_qspi_set_protocol;
+--oLBj+sq0vYjzfsbl
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-This is very good, the structure of spi_nor should add a hook function to notify spi controller 
-That spi nor transfer protocol already changed.
+On Mon, Aug 24, 2015 at 03:25:57PM +0200, Christian Hartmann wrote:
 
->+
->+	if (of_modalias_node(child, modalias, sizeof(modalias)) < 0) {
->+		err = -ENODEV;
->+		goto release_channel;
->+	}
->+
->+	err = of_property_read_u32(child, "spi-max-frequency", &aq->clk_rate);
->+	if (err < 0)
->+		goto release_channel;
->+
->+	err = atmel_qspi_init(aq);
->+	if (err)
->+		goto release_channel;
->+
->+	nor->dev->of_node = child;
->+	err = spi_nor_scan(nor, modalias, SPI_NOR_QUAD);
->		goto release_channel;
->+
+> /* Start out with /RESET low to put the chip into reset */
+> ret = devm_gpio_request_one(arizona->dev, arizona->pdata.reset,
+> GPIOF_DIR_OUT | GPIOF_INIT_LOW,
+> "arizona /RESET");
+> </code>
 
+> the string arizona /RESET, where is this documented, where can I find
+> it? It fails here, and my question is, is this string correct at all
+> for my case? Should it be called only "reset" in my case??
 
-.......
+That string is documentation - it's used purely for display purposes,
+which is what this...
 
->static inline struct spi_nor *mtd_to_spi_nor(struct mtd_info *mtd)  {
- 	return mtd->priv;
->@@ -944,6 +960,11 @@ static int micron_quad_enable(struct spi_nor *nor)
->		return ret;
-> 	}
-> 
->+	/* switch protocol to Quad CMD 4-4-4 */
->+	ret = spi_nor_set_protocol(nor, SPI_PROTO_4_4_4);
->+	if (ret)
->+		return ret;
->+
+> in devres.c its documented as a label only:
+> @label: a literal description string of this GPIO
 
-This make sense,from spi nor side,once its protocol being changed,
-Mtd layer must notify this status to spi nor controller immediately,
-And spi nor controller also should re-adjust its protocol.
-Otherwise, following reading SR operation will fail. 
+...says.  In cases like this looking at the code is often helpful (you
+can see exactly how the string gets used...) but obviously patches to
+improve the doumentation are welcome.
 
->
-> 	ret = spi_nor_wait_till_ready(nor);
-> 	if (ret)
-> 		return ret;
+--oLBj+sq0vYjzfsbl
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-If my ack has any value in here, feel free to add it.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-Acked-by: Bean Huo <beanhuo@micron.com>
+iQEcBAEBCAAGBQJV3AmFAAoJECTWi3JdVIfQ3AcH/R7EIgsWQtaFWfgcAA2JbB7X
+4x8beSU8p5UEe7ibm0J5hwOtxytwZnjWGiwwiiODE+XEodnP1wT9LeWDnAwNeLLd
+rWl+nDp+KJz/PHwQNtey9Rm/q/ZEgzHzcVi6drpT2Mgsa/uv6VjvEmcOpkSoFd+K
+fcM1XV1dulWdE8fl2/V6EGcTo+B0bZy8sxgswWiHoSn0DDcJVaHyffAXdvrF+4A2
+GEPPGLkqlvyk95tNIH440XsbU9B+aBLYQ92DbxEo/76o4YkaYWJYqGlGigxD5JST
+YF3M3dhNiveJLwaH8fLP4m2r1ZWrIadXDXA4dupiCJgbcMpJtyWq+PIc0ZSD/xo=
+=b1rD
+-----END PGP SIGNATURE-----
+
+--oLBj+sq0vYjzfsbl--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

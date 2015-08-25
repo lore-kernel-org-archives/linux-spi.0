@@ -1,108 +1,81 @@
-From: Cyrille Pitchen <cyrille.pitchen@atmel.com>
+From: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH linux-next v4 5/5] mtd: atmel-quadspi: add driver for
  Atmel QSPI controller
-Date: Tue, 25 Aug 2015 12:17:37 +0200
-Message-ID: <55DC40C1.3050405@atmel.com>
-References: <cover.1440410236.git.cyrille.pitchen@atmel.com> <bf368fc101f38db231131b69eff0863210f2b01c.1440410236.git.cyrille.pitchen@atmel.com> <201508241303.52066.marex@denx.de>
+Date: Tue, 25 Aug 2015 12:21:06 +0200
+Message-ID: <55DC4192.6060906@atmel.com>
+References: <cover.1440410236.git.cyrille.pitchen@atmel.com> <201508241303.52066.marex@denx.de> <55DB4EA6.9090807@atmel.com> <201508241945.33577.marex@denx.de> <CAOiHx=kExyKAoGW4ciWHHxGNosNR0VdvHHrSqeo7RH1rNOXgig@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: <nicolas.ferre@atmel.com>, <broonie@kernel.org>,
-	<linux-spi@vger.kernel.org>, <dwmw2@infradead.org>,
-	<computersforpeace@gmail.com>, <zajec5@gmail.com>,
-	<beanhuo@micron.com>, <juhosg@openwrt.org>,
-	<shijie.huang@intel.com>, <ben@decadent.org.uk>,
-	<linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>,
-	<devicetree@vger.kernel.org>, <robh+dt@kernel.org>,
-	<pawel.moll@arm.com>, <mark.rutland@arm.com>,
-	<ijc+devicetree@hellion.org.uk>, <galak@codeaurora.org>,
-	<linux-mtd@lists.infradead.org>
-To: Marek Vasut <marex@denx.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <201508241303.52066.marex@denx.de>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Ben Hutchings <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	=?UTF-8?B?UmFmYcWCIE1pxYJl?= =?UTF-8?B?Y2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	<nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"Kumar Gala" <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"Bean Huo (beanhuo)" <beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org>
+To: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CAOiHx=kExyKAoGW4ciWHHxGNosNR0VdvHHrSqeo7RH1rNOXgig-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Marek,
-
-Le 24/08/2015 13:03, Marek Vasut a =E9crit :
-> On Monday, August 24, 2015 at 12:14:00 PM, Cyrille Pitchen wrote:
->> This driver add support to the new Atmel QSPI controller embedded in=
-to
->> sama5d2x SoCs. It expects a NOR memory to be connected to the QSPI
->> controller.
+Le 25/08/2015 11:46, Jonas Gorski a =C3=A9crit :
+> On Mon, Aug 24, 2015 at 7:45 PM, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
+>> On Monday, August 24, 2015 at 07:04:38 PM, Cyrille Pitchen wrote:
+>>> Hi Marek,
 >>
->> Signed-off-by: Cyrille Pitchen <cyrille.pitchen@atmel.com>
->> Acked-by: Nicolas Ferre <nicolas.ferre@atmel.com>
+>> Hi!
+>>
+>>> Le 24/08/2015 13:03, Marek Vasut a =C3=A9crit :
+>>>> On Monday, August 24, 2015 at 12:14:00 PM, Cyrille Pitchen wrote:
+>>>>> This driver add support to the new Atmel QSPI controller embedded=
+ into
+>>>>> sama5d2x SoCs. It expects a NOR memory to be connected to the QSP=
+I
+>>>>> controller.
+>>
+>> [...]
+>>
+>>>>> +  /* Compute address parameters */
+>>>>> +  switch (cmd->enable.bits.address) {
+>>>>> +  case 4:
+>>>>> +          ifr |=3D QSPI_IFR_ADDRL;
+>>>>> +          /*break;*/ /* fallback to the 24bit address case */
+>>>>
+>>>> What's this commented out bit of code for ? :-)
+>>>
+>>> I just wanted to stress out there was no missing "break;".
+>>> I've reworded the comment to:
+>>> /* No "break" on purpose: fallback to the 24bit address case. */
+>>
+>> Oh, the address is in bytes . I see, yes, it makes sense to be more
+>> explicit here about the purpose of the fallback. I think this change
+>> in the comment will make it easier for everyone who comes back in a
+>> few years and reads this code.
 >=20
-> Hi,
+> I think you are looking for the term "(switch case) fallthrough", not
+> "fallback". "Fallback" makes it sound like there is something missing=
+,
+> or an invalid state.
 >=20
-> [...]
 >=20
->> +/* Register access macros */
->=20
-> These are functions, not macros :)
->=20
-> btw is there any reason for these ? I'd say, just put the read*() and
-> write*() functions directly into the code and be done with it, it is
-> much less confusing.
-
-If you don't mind, I'd rather keep some of these inline functions. I ha=
-ve
-no strong justification, it's more a personal taste: it makes lines
-shorter as it avoids the need to add "->regs + ".
-Also it makes the code consistent with other Atmel drivers which alread=
-y
-use such wrappers.
-
-However I'll fix the comment and remove the byte and word versions, whi=
-ch
-are not used. So only qspi_readl() and qspi_writel() are left.
-
-Does it sound good to you?
-
->=20
-> Also, why do you use the _relaxed() versions of the functions ?
->=20
->> +static inline u32 qspi_readl(struct atmel_qspi *aq, u32 reg)
->> +{
->> +	return readl_relaxed(aq->regs + reg);
->> +}
->> +
->> +static inline void qspi_writel(struct atmel_qspi *aq, u32 reg, u32 =
-value)
->> +{
->> +	writel_relaxed(value, aq->regs + reg);
->> +}
->> +
->> +static inline u16 qspi_readw(struct atmel_qspi *aq, u32 reg)
->> +{
->> +	return readw_relaxed(aq->regs + reg);
->> +}
->> +
->> +static inline void qspi_writew(struct atmel_qspi *aq, u32 reg, u16 =
-value)
->> +{
->> +	writew_relaxed(value, aq->regs + reg);
->> +}
->> +
->> +static inline u8 qspi_readb(struct atmel_qspi *aq, u32 reg)
->> +{
->> +	return readb_relaxed(aq->regs + reg);
->> +}
->> +
->> +static inline void qspi_writeb(struct atmel_qspi *aq, u32 reg, u8 v=
-alue)
->> +{
->> +	writeb_relaxed(value, aq->regs + reg);
->> +}
->=20
-> [...]
->=20
-> Hope this helps :)
+> Jonas
 >=20
 
-Best regards,
-
-Cyrille
+will be modified in the next series, thanks for the review!
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

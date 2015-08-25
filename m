@@ -1,111 +1,96 @@
-From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH linux-next v4 5/5] mtd: atmel-quadspi: add driver for Atmel QSPI controller
-Date: Mon, 24 Aug 2015 19:45:33 +0200
-Message-ID: <201508241945.33577.marex@denx.de>
-References: <cover.1440410236.git.cyrille.pitchen@atmel.com> <201508241303.52066.marex@denx.de> <55DB4EA6.9090807@atmel.com>
+From: =?iso-2022-jp?B?QmVhbiBIdW8gGyRCcDlJTElMGyhCIChiZWFuaHVvKQ==?=
+	<beanhuo@micron.com>
+Subject: RE: [PATCH linux-next v4 5/5] mtd: atmel-quadspi: add driver for
+ Atmel QSPI controller
+Date: Tue, 25 Aug 2015 01:44:57 +0000
+Message-ID: <A765B125120D1346A63912DDE6D8B6310BF47A26@NTXXIAMBX02.xacn.micron.com>
+References: <cover.1440410236.git.cyrille.pitchen@atmel.com>
+ <bf368fc101f38db231131b69eff0863210f2b01c.1440410236.git.cyrille.pitchen@atmel.com>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org,
-	computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org,
-	juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, pawel.moll-5wv7dgnIgG8@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
-	ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org, galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>, ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <55DB4EA6.9090807-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="iso-2022-jp"
+Content-Transfer-Encoding: 8BIT
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"robh+dt@kernel.org" <robh+dt@kernel.org>,
+	"pawel.moll@arm.com" <pawel.moll@arm.com>,
+	"mark.rutland@arm.com" <mark.rutland@arm.com>,
+	"ijc+devicetree@hellion.org.uk" <ijc+devicetree@hellion.org.uk>,
+	"galak@codeaurora.org" <galak@codeaurora.org>,
+	"linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>
+To: Cyrille Pitchen <cyrille.pitchen@atmel.com>,
+	"nicolas.ferre@atmel.com" <nicolas.ferre@atmel.com>,
+	"broonie@kernel.org" <broonie@kernel.org>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	"dwmw2@infradead.org" <dwmw2@infradead.org>,
+	"computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+	"zajec5@gmail.com" <zajec5@gmail.com>,
+	"juhosg@openwrt.org" <juhosg@openwrt.org>,
+	"marex@denx.de" <marex@denx.de>,
+	"shijie.huang@intel.com" <shijie.huang@intel.com>,
+	"ben@decadent.org.uk" <ben@decadent.org.uk>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <bf368fc101f38db231131b69eff0863210f2b01c.1440410236.git.cyrille.pitchen@atmel.com>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Monday, August 24, 2015 at 07:04:38 PM, Cyrille Pitchen wrote:
-> Hi Marek,
 
-Hi!
+>+	nor->read_reg = atmel_qspi_read_reg;
+>+	nor->write_reg = atmel_qspi_write_reg;
+>+	nor->read = atmel_qspi_read;
+>+	nor->write = atmel_qspi_write;
+>+	nor->erase = atmel_qspi_erase;
+>+	nor->set_protocol = atmel_qspi_set_protocol;
 
-> Le 24/08/2015 13:03, Marek Vasut a =E9crit :
-> > On Monday, August 24, 2015 at 12:14:00 PM, Cyrille Pitchen wrote:
-> >> This driver add support to the new Atmel QSPI controller embedded =
-into
-> >> sama5d2x SoCs. It expects a NOR memory to be connected to the QSPI
-> >> controller.
+This is very good, the structure of spi_nor should add a hook function to notify spi controller 
+That spi nor transfer protocol already changed.
 
-[...]
+>+
+>+	if (of_modalias_node(child, modalias, sizeof(modalias)) < 0) {
+>+		err = -ENODEV;
+>+		goto release_channel;
+>+	}
+>+
+>+	err = of_property_read_u32(child, "spi-max-frequency", &aq->clk_rate);
+>+	if (err < 0)
+>+		goto release_channel;
+>+
+>+	err = atmel_qspi_init(aq);
+>+	if (err)
+>+		goto release_channel;
+>+
+>+	nor->dev->of_node = child;
+>+	err = spi_nor_scan(nor, modalias, SPI_NOR_QUAD);
+>		goto release_channel;
+>+
 
-> >> +	/* Compute address parameters */
-> >> +	switch (cmd->enable.bits.address) {
-> >> +	case 4:
-> >> +		ifr |=3D QSPI_IFR_ADDRL;
-> >> +		/*break;*/ /* fallback to the 24bit address case */
-> >=20
-> > What's this commented out bit of code for ? :-)
->=20
-> I just wanted to stress out there was no missing "break;".
-> I've reworded the comment to:
-> /* No "break" on purpose: fallback to the 24bit address case. */
 
-Oh, the address is in bytes . I see, yes, it makes sense to be more
-explicit here about the purpose of the fallback. I think this change
-in the comment will make it easier for everyone who comes back in a
-few years and reads this code.
+.......
 
-> >> +	case 3:
-> >> +		iar =3D (cmd->enable.bits.data) ? 0 : cmd->address;
-> >> +		ifr |=3D QSPI_IFR_ADDREN;
-> >> +		break;
-> >> +	case 0:
-> >> +		break;
-> >> +	default:
-> >> +		return -EINVAL;
-> >> +	}
-> >=20
-> > [...]
-> >=20
-> >> +no_data:
-> >> +	/* Poll INSTRuction End status */
-> >> +	sr =3D qspi_readl(aq, QSPI_SR);
-> >> +	if (sr & QSPI_SR_INSTRE)
-> >> +		return err;
-> >> +
-> >> +	/* Wait for INSTRuction End interrupt */
-> >> +	init_completion(&aq->completion);
-> >=20
-> > You should use reinit_completion() in the code. init_completion()
-> > should be used only in the probe() function and nowhere else.
->=20
-> Alright. In the next version I'll rename the "completion" member of
-> struct atmel_qspi into "cmd_completion". Also I'll add another
-> dma_completion member in this very same structure to replace the loca=
-l
-> "struct completion completion" in atmel_qspi_run_dma_transfer().
->=20
-> Then I'll call init_completion() on both cmd_completion and dma_compl=
-etion
-> only from atmel_qspi_probe() and reinit_completion() elsewhere.
->=20
-> >> +	aq->pending =3D 0;
-> >> +	qspi_writel(aq, QSPI_IER, QSPI_SR_INSTRE);
-> >> +	if (!wait_for_completion_timeout(&aq->completion,
-> >> +					 msecs_to_jiffies(1000)))
-> >> +		err =3D -ETIMEDOUT;
-> >> +	qspi_writel(aq, QSPI_IDR, QSPI_SR_INSTRE);
-> >> +
-> >> +	return err;
-> >> +}
-> >=20
-> > [...]
-> >=20
-> > Hope this helps :)
->=20
-> Indeed, it does! I still work on the next version of this series to t=
-ake
-> all your comments into account.
+>static inline struct spi_nor *mtd_to_spi_nor(struct mtd_info *mtd)  {
+ 	return mtd->priv;
+>@@ -944,6 +960,11 @@ static int micron_quad_enable(struct spi_nor *nor)
+>		return ret;
+> 	}
+> 
+>+	/* switch protocol to Quad CMD 4-4-4 */
+>+	ret = spi_nor_set_protocol(nor, SPI_PROTO_4_4_4);
+>+	if (ret)
+>+		return ret;
+>+
 
-Thanks :)
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" i=
-n
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+This make sense,from spi nor side,once its protocol being changed,
+Mtd layer must notify this status to spi nor controller immediately,
+And spi nor controller also should re-adjust its protocol.
+Otherwise, following reading SR operation will fail. 
+
+>
+> 	ret = spi_nor_wait_till_ready(nor);
+> 	if (ret)
+> 		return ret;
+
+If my ack has any value in here, feel free to add it.
+
+Acked-by: Bean Huo <beanhuo@micron.com>

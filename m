@@ -1,7 +1,8 @@
 From: Ranjit Waghmode <ranjit.waghmode-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-Subject: [LINUX RFC v2 0/4] spi: add dual parallel mode support in Zynq MPSoC GQSPI controller
-Date: Wed, 26 Aug 2015 11:56:03 +0530
-Message-ID: <1440570367-22569-1-git-send-email-ranjit.waghmode@xilinx.com>
+Subject: [LINUX RFC v2 1/4] spi: add support of two chip selects & data stripe
+Date: Wed, 26 Aug 2015 11:56:04 +0530
+Message-ID: <1440570367-22569-2-git-send-email-ranjit.waghmode@xilinx.com>
+References: <1440570367-22569-1-git-send-email-ranjit.waghmode@xilinx.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Cc: <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
@@ -15,62 +16,76 @@ To: <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>, <computersforpeace-Re5JQEeQ
 	<knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>, <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
 	<beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1440570367-22569-1-git-send-email-ranjit.waghmode-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-This series adds dual parallel mode support for Zynq Ultrascale+
-MPSoC GQSPI controller driver.
+To support dual parallel mode operation of ZynqMP GQSPI controller
+following API's are added inside the core:
 
-What is dual parallel mode?
----------------------------
-ZynqMP GQSPI controller supports Dual Parallel mode with following functionalities:
-1) Supporting two SPI flash memories operating in parallel. 8 I/O lines.
-2) Chip selects and clock are shared to both the flash devices
-3) This mode is targeted for faster read/write speed and also doubles the size
-4) Commands/data can be transmitted/received from both the devices(mirror),
-   or only upper or only lower flash memory devices.
-5) Data arrangement:
-   With stripe enabled,
-   Even bytes i.e. 0, 2, 4,... are transmitted on Lower Data Bus
-   Odd bytes i.e. 1, 3, 5,.. are transmitted on Upper Data Bus.
+- Added API to support two chip selects:
 
-This series also updated MTD layer files for adding parallel mode support.
+  Dual parallel mode supports two SPI flash memories operating in
+  parallel i.e 8 I/O lines.
+  Chip selects and clock are shared to both the flash devices.
+  So newly added API will help in enabling both the chips.
 
-1) Added Support for two flashes
-2) Support to enable/disable data stripe as and when required.
-3) Added required parameters to spi_nor structure. Initialized all
-   added parameters in spi_nor_scan()
-4) Added support for dual parallel in spi_nor_read/write/erase functions by:
-   a) Increasing page_size, sector_size, erase_size and toatal flash size
-      as and when required.
-   b) Dividing address by 2
-   c) Updating spi->master->flags for qspi driver to change CS
-5) Updated read_sr() to get status of both flashes
-6) Also updated read_fsr() to get status of both flashes
+- Added API to support data stripe feature:
 
-These all are very high level changes and expected to make an idea clear.
-Comments and suggestions are always welcomed
+  with data stripe enabled,
+  even bytes i.e. 0, 2, 4,... are transmitted on lower data bus
+  odd bytes i.e. 1, 3, 5,.. are transmitted on upper data bus.
 
+Signed-off-by: Ranjit Waghmode <ranjit.waghmode-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
 ---
 V2 Changes:
-a) Splitted patches based on logical changes
-b) Added error handling for newly added APIs in SPI core
+- Added error handling condition for newly added features
 ---
+ drivers/spi/spi.c       |  8 ++++++++
+ include/linux/spi/spi.h | 11 +++++++++++
+ 2 files changed, 19 insertions(+)
 
-Ranjit Waghmode (4):
-  spi: add support of two chip selects & data stripe
-  mtd: add spi_device instance to spi_nor struct
-  spi-nor: add dual parallel mode support
-  spi: zynqmp: gqspi: add support for dual parallel mode configuration
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index cf8b91b..22e8e7f 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1828,6 +1828,14 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
+ 	if (list_empty(&message->transfers))
+ 		return -EINVAL;
 
- drivers/mtd/devices/m25p80.c   |  1 +
- drivers/mtd/spi-nor/spi-nor.c  | 91 +++++++++++++++++++++++++++++++++---------
- drivers/spi/spi-zynqmp-gqspi.c | 24 ++++++++++-
- drivers/spi/spi.c              |  8 ++++
- include/linux/mtd/spi-nor.h    |  3 ++
- include/linux/spi/spi.h        | 11 +++++
- 6 files changed, 118 insertions(+), 20 deletions(-)
++	/*
++	 * Data stripe option is selected if and only if when
++	 * two chips are enabled
++	 */
++	if ((master->flags & SPI_MASTER_DATA_STRIPE)
++		&& !(master->flags & SPI_MASTER_BOTH_CS))
++			return -EINVAL;
++
+ 	/* Half-duplex links include original MicroWire, and ones with
+ 	 * only one data pin like SPI_3WIRE (switches direction) or where
+ 	 * either MOSI or MISO is missing.  They can also be caused by
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index d673072..53d3bc6 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -355,6 +355,17 @@ struct spi_master {
+ #define SPI_MASTER_NO_TX	BIT(2)		/* can't do buffer write */
+ #define SPI_MASTER_MUST_RX      BIT(3)		/* requires rx */
+ #define SPI_MASTER_MUST_TX      BIT(4)		/* requires tx */
++	/* Controller may support data stripe feature when more than one
++	 * chips are present.
++	 * Setting data stripe will send data in following manner:
++	 * -> even bytes i.e. 0, 2, 4,... are transmitted on lower data bus
++	 * -> odd bytes i.e. 1, 3, 5,.. are transmitted on upper data bus
++	 */
++#define SPI_MASTER_DATA_STRIPE		BIT(7)		/* support data stripe */
++	/* Controller may support more than one chip.
++	 * This flag will enable that feature.
++	 */
++#define SPI_MASTER_BOTH_CS		BIT(8)		/* enable both chips */
 
+ 	/* lock and mutex for SPI bus locking */
+ 	spinlock_t		bus_lock_spinlock;
 --
 2.1.2
 

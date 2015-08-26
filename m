@@ -1,51 +1,70 @@
-From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [alsa-devel] Fwd: [PATCH 1/1] SPI : spi-pxa2xx : fix spi init of
- WM510205 codec via ACPI (resend)
-Date: Wed, 26 Aug 2015 13:01:55 +0300
-Message-ID: <20150826100155.GA1513@lahna.fi.intel.com>
-References: <CAKor6Te-DSDxx711-EQi=fw46nNPGnQNqhj-+6upBxhOOp5XvA@mail.gmail.com>
- <20150820115845.GF30005@lahna.fi.intel.com>
- <CAKor6Teq=Aoa6WYkTEVpjBPsWziL-o5FzQHxJWOMeaTrMzXpMg@mail.gmail.com>
- <20150821074310.GM30005@lahna.fi.intel.com>
- <CAKor6TeJp4ti6_QVCEpz0x7c2NwvUiS5wq_=_WDjM3B7T4=1Yg@mail.gmail.com>
- <20150824085140.GA5647@ck-lbox>
- <CAKor6TcRWgn-Z+Va0JKCBqxVA9HBSLMR_vh-z8MSBZebn9kDVg@mail.gmail.com>
- <20150825062157.GB27431@sirena.org.uk>
- <CAKor6Tf_8J4DVrVRShw2ked-zJzmP6G1P1i=vTcbzWX-J1H6dQ@mail.gmail.com>
- <CAKor6TfpWuhTG6dfARdHmXEb+bLpm5Q6Z-A0g60VPD2fCWHbOg@mail.gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi: Add DT bindings documentation for Netlogic XLP
+ SPI controller
+Date: Wed, 26 Aug 2015 11:22:48 +0100
+Message-ID: <20150826102248.GN12878@sirena.org.uk>
+References: <1439960957-4213-1-git-send-email-kamlakant.patel@broadcom.com>
+ <1439960957-4213-3-git-send-email-kamlakant.patel@broadcom.com>
+ <20150819175304.GX10748@sirena.org.uk>
+ <20150826054301.GB10532@patelk@broadcom.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Charles Keepax <ckeepax-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-	Pierre-Louis Bossart <pierre-louis.bossart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
-	dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>
-To: Christian Hartmann <cornogle-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="LvAn5G4Ewe70kJ1i"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jonathan Corbet <corbet-T1hC0tSOHrs@public.gmane.org>,
+	linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, jchandra-dY08KVG/lbpWk0Htik3J/w@public.gmane.org
+To: Kamlakant Patel <kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CAKor6TfpWuhTG6dfARdHmXEb+bLpm5Q6Z-A0g60VPD2fCWHbOg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20150826054301.GB10532@patelk-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Aug 26, 2015 at 10:58:06AM +0200, Christian Hartmann wrote:
-> Question about the spi-irq to clarify it for me: does this spi irq
-> device belongs to the arizona child (the wm5102) or is this irq only
-> of the spi master ? I much as I understand, this irq is from the spi
-> master, the arizona spi child , the wm510205, has another irq ,
-> attachted at the irq_gpio - I am right so far??
 
-The master should already have IRQ. This is about assigning IRQ for the
-SPI childe device.
+--LvAn5G4Ewe70kJ1i
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-You probably want to do same to SPI core that was done for I2C:
+On Wed, Aug 26, 2015 at 11:13:01AM +0530, Kamlakant Patel wrote:
+> On Wed, Aug 19, 2015 at 10:53:04AM -0700, Mark Brown wrote:
+> > On Wed, Aug 19, 2015 at 10:39:17AM +0530, kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org wrote:
 
-845c877009cf014b9 ("i2c / ACPI: Assign IRQ for devices that have GpioInt automatically")
+> > > +- clock-frequency : [OPTIONAL] Input clock frequency to the SPI block in Hz.
+> > > +		    Default is 133333333 Hz.
 
-Then it will automatically assign first found GpioInt to the SPI device
-in question.
+> > I would expect this to be specifying the input clock to the block via
+> > the standard clock binding rather than just hard coding a number in
+> > here.  This means the binding will continue to work for more complex
+> > sysetems with programmable clocks and is generally more standard.  SoCs
+> > can still specify hard coded fixed frequency clocks as fixed clocks in
+> > the DT.
+
+> We don't have our clock framework upstream yet, and don't have
+> of_clk_init hook for Netlogic XLP platform to use fixed-clock. I will
+> update the driver and dts to use standard clock framework but for now we
+> will continue using "clock-frequency" and will update when clock framework
+> is upstream.
+
+No, you should leave it out - DT bindings are supposed to be permanent
+so we don't want to have temporary bindings that are expected to be
+removed quickly.
+
+--LvAn5G4Ewe70kJ1i
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJV3ZN3AAoJECTWi3JdVIfQ+TgH/RZ+Dtb+9QbwdS4luC41B6az
+KorO6kjqpTBbH18fFzpx68PHQz7nJOb6a7UGpWDXswXMTj1xOtfOdU12891q1NjR
+chHAMVRYzt4ssQfAQNtos0stfp0I0a2k0fzrf5zkyKCBQsNUd1YZSe9D9Y1gQb45
+mlPy7OWR9sA2hwiHBLaEriLj9wMtNwm+hj+c4n9ymLS/zGAdv8RM1e8pqMGU5K5W
+i1Sc/cY9x6ipsbCoJOmMPeCB4U6OZqiDXA6HmCZdz7Yn9/XYYIa7LpZ06742ia76
+TwhlkJ/eple4HqNIJX9S60YqYayZNk1iSZc9wfGxsbTe7iIl6oZvD6NsyCDzntg=
+=ZQU+
+-----END PGP SIGNATURE-----
+
+--LvAn5G4Ewe70kJ1i--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

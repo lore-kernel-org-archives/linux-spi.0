@@ -1,54 +1,90 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/3] spi: fsl-(e)spi: simplify cleanup code
-Date: Wed, 26 Aug 2015 11:58:57 +0100
-Message-ID: <20150826105857.GQ12878@sirena.org.uk>
-References: <55D9BAE1.1030306@gmail.com>
- <20150825174508.GF12878@sirena.org.uk>
- <55DCCDD7.5030307@gmail.com>
+From: Jagan Teki <jteki@openedev.com>
+Subject: Re: [LINUX RFC v2 0/4] spi: add dual parallel mode support in Zynq
+ MPSoC GQSPI controller
+Date: Wed, 26 Aug 2015 17:49:59 +0530
+Message-ID: <CAD6G_RQhWBsUTZNBB44W98Fjzw82H_D_E9nY0aDWezj729mkoA@mail.gmail.com>
+References: <1440570367-22569-1-git-send-email-ranjit.waghmode@xilinx.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="MXxcbiX/Q4+iy5U7"
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <55DCCDD7.5030307-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: David Woodhouse <dwmw2@infradead.org>,
+	Brian Norris <computersforpeace@gmail.com>, broonie@kernel.org,
+	Michal Simek <michal.simek@xilinx.com>,
+	Soren Brinkmann <soren.brinkmann@xilinx.com>, zajec5@gmail.com,
+	ben@decadent.org.uk, =?UTF-8?B?TWFyZWsgVmHFoXV0?= <marex@denx.de>,
+	Huang Shijie <b32955@freescale.com>, knut.wohlrab@de.bosch.com,
+	juhosg@openwrt.org, beanhuo@micron.com,
+	"linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	linux-spi@vger.kernel.org,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, harinik@xilinx.com,
+	punnaia@xilinx.com
+To: Ranjit Waghmode <ranjit.waghmode@xilinx.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1440570367-22569-1-git-send-email-ranjit.waghmode@xilinx.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+On 26 August 2015 at 11:56, Ranjit Waghmode <ranjit.waghmode@xilinx.com> wrote:
+> This series adds dual parallel mode support for Zynq Ultrascale+
+> MPSoC GQSPI controller driver.
+>
+> What is dual parallel mode?
+> ---------------------------
+> ZynqMP GQSPI controller supports Dual Parallel mode with following functionalities:
+> 1) Supporting two SPI flash memories operating in parallel. 8 I/O lines.
+> 2) Chip selects and clock are shared to both the flash devices
+> 3) This mode is targeted for faster read/write speed and also doubles the size
+> 4) Commands/data can be transmitted/received from both the devices(mirror),
+>    or only upper or only lower flash memory devices.
+> 5) Data arrangement:
+>    With stripe enabled,
+>    Even bytes i.e. 0, 2, 4,... are transmitted on Lower Data Bus
+>    Odd bytes i.e. 1, 3, 5,.. are transmitted on Upper Data Bus.
+>
+> This series also updated MTD layer files for adding parallel mode support.
+>
+> 1) Added Support for two flashes
+> 2) Support to enable/disable data stripe as and when required.
+> 3) Added required parameters to spi_nor structure. Initialized all
+>    added parameters in spi_nor_scan()
+> 4) Added support for dual parallel in spi_nor_read/write/erase functions by:
+>    a) Increasing page_size, sector_size, erase_size and toatal flash size
+>       as and when required.
+>    b) Dividing address by 2
+>    c) Updating spi->master->flags for qspi driver to change CS
+> 5) Updated read_sr() to get status of both flashes
+> 6) Also updated read_fsr() to get status of both flashes
+>
+> These all are very high level changes and expected to make an idea clear.
+> Comments and suggestions are always welcomed
+>
+> ---
+> V2 Changes:
+> a) Splitted patches based on logical changes
+> b) Added error handling for newly added APIs in SPI core
+> ---
+>
+> Ranjit Waghmode (4):
+>   spi: add support of two chip selects & data stripe
+>   mtd: add spi_device instance to spi_nor struct
+>   spi-nor: add dual parallel mode support
+>   spi: zynqmp: gqspi: add support for dual parallel mode configuration
 
---MXxcbiX/Q4+iy5U7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+I don't find any previous discussion about way to inform flash
+dual-ness into spi-nor
+from spi drivers.
 
-On Tue, Aug 25, 2015 at 10:19:35PM +0200, Heiner Kallweit wrote:
-> Am 25.08.2015 um 19:45 schrieb Mark Brown:
+Here is my idea, probably others may think same.
+Informing dual_flash from drivers/spi through flags or any other mode
+bits is not a better approach as dual flash feature is specific to
+spi-nor flash controller (controller specially designed for spi-nor
+flash not the generic spi controller).  So if the driver sits on
+drivers/mtd/spi-nor/ (ex: fsl-quadspi.c), may be we can inform flash
+specific things to spi-nor as it's not touching generic spi stack in
+Linux. But there is a defined-drawback if the driver is moved to
+drivers/mtd/spi-nor ie it can't use spi core API's at-all.
 
-> > You should be able to remove empty functions like this one.
-
-> In patch 3 a call to pm_runtime_disable is added to this function.
-> Therefore I don't remove it in patch 2. Fine with you?
-
-No, just re-add it when you add users.
-
---MXxcbiX/Q4+iy5U7
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJV3ZvwAAoJECTWi3JdVIfQh5AH/1YKsK+vzUlX19NUPX+i5iNT
-jYxNr7PFUt0fEGl6EjSjnL0evKAfRpv3Lxy0JjP2iQ/nsu9Zaqki/kIAw1ET+hht
-bPSIPsKSj6BCAEK54Sw/3Ch6KawkF5UcCBNVR8d/u9ovJGIODoI8N4SkDie3XPU2
-/bEEekHCBoGHrHlX05VPcnHyDuHaAQ/CvWN0Y7qalJA7on5JQvw9bLkyXrWjT1gC
-gR7PYVyXmLmoC8BnEFo7uIYkI4hCvvgIQNSUd8B3l8ex3kRqqnKrv6F3VdD2avoV
-yzV8d8MWmLEIEF8ptgCL2il/BP6L3LmpPIiAIZpL7UjcIJ85GGtD3WtJ04xOFJc=
-=dJIK
------END PGP SIGNATURE-----
-
---MXxcbiX/Q4+iy5U7--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+thanks!
+-- 
+Jagan | openedev.

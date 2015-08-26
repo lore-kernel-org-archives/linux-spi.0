@@ -1,8 +1,7 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v2 1/3] spi: fsl-(e)spi: migrate to using devm_ functions
- to simplify cleanup
-Date: Wed, 26 Aug 2015 21:21:50 +0200
-Message-ID: <55DE11CE.7090508@gmail.com>
+Subject: [PATCH v2 3/3] spi: fsl-espi: add runtime PM
+Date: Wed, 26 Aug 2015 21:21:55 +0200
+Message-ID: <55DE11D3.400@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
@@ -12,163 +11,209 @@ Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Migrate fsl-espi and fsl-spi to using the managed devm_ functions
-for resource handling. This simplifies the cleanup.
+Add runtime PM and use autosuspend instead of suspending the
+SPI controller after each transfer.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
 v2:
-- changed devm_ioremap to devm_ioremap_resource
-- remove fsl_espi_remove as it would be empty afterwards
+- rebased
 
- drivers/spi/spi-fsl-espi.c | 20 +++++---------------
- drivers/spi/spi-fsl-lib.c  |  4 ----
- drivers/spi/spi-fsl-spi.c  | 21 ++++++++-------------
- 3 files changed, 13 insertions(+), 32 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 71 +++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 54 insertions(+), 17 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index d3f05a0..f35eb2c 100644
+index fe54e57..db82c87 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -604,11 +604,6 @@ static irqreturn_t fsl_espi_irq(s32 irq, void *context_data)
+@@ -21,6 +21,7 @@
+ #include <linux/of_platform.h>
+ #include <linux/platform_device.h>
+ #include <linux/spi/spi.h>
++#include <linux/pm_runtime.h>
+ #include <sysdev/fsl_soc.h>
+ 
+ #include "spi-fsl-lib.h"
+@@ -85,6 +86,8 @@ struct fsl_espi_transfer {
+ #define SPCOM_TRANLEN(x)	((x) << 0)
+ #define	SPCOM_TRANLEN_MAX	0xFFFF	/* Max transaction length */
+ 
++#define AUTOSUSPEND_TIMEOUT 2000
++
+ static void fsl_espi_change_mode(struct spi_device *spi)
+ {
+ 	struct mpc8xxx_spi *mspi = spi_master_get_devdata(spi->master);
+@@ -485,6 +488,8 @@ static int fsl_espi_setup(struct spi_device *spi)
+ 	mpc8xxx_spi = spi_master_get_devdata(spi->master);
+ 	reg_base = mpc8xxx_spi->reg_base;
+ 
++	pm_runtime_get_sync(mpc8xxx_spi->dev);
++
+ 	hw_mode = cs->hw_mode; /* Save original settings */
+ 	cs->hw_mode = mpc8xxx_spi_read_reg(
+ 			&reg_base->csmode[spi->chip_select]);
+@@ -507,6 +512,10 @@ static int fsl_espi_setup(struct spi_device *spi)
+ 	mpc8xxx_spi_write_reg(&reg_base->mode, loop_mode);
+ 
+ 	retval = fsl_espi_setup_transfer(spi, NULL);
++
++	pm_runtime_mark_last_busy(mpc8xxx_spi->dev);
++	pm_runtime_put_autosuspend(mpc8xxx_spi->dev);
++
+ 	if (retval < 0) {
+ 		cs->hw_mode = hw_mode; /* Restore settings */
+ 		return retval;
+@@ -604,15 +613,14 @@ static irqreturn_t fsl_espi_irq(s32 irq, void *context_data)
  	return ret;
  }
  
--static void fsl_espi_remove(struct mpc8xxx_spi *mspi)
--{
--	iounmap(mspi->reg_base);
--}
--
- static int fsl_espi_suspend(struct spi_master *master)
+-static int fsl_espi_suspend(struct spi_master *master)
++#ifdef CONFIG_PM
++static int fsl_espi_runtime_suspend(struct device *dev)
  {
- 	struct mpc8xxx_spi *mpc8xxx_spi;
-@@ -671,9 +666,8 @@ static struct spi_master * fsl_espi_probe(struct device *dev,
- 	master->unprepare_transfer_hardware = fsl_espi_suspend;
+-	struct mpc8xxx_spi *mpc8xxx_spi;
+-	struct fsl_espi_reg *reg_base;
++	struct spi_master *master = dev_get_drvdata(dev);
++	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(master);
++	struct fsl_espi_reg *reg_base = mpc8xxx_spi->reg_base;
+ 	u32 regval;
+ 
+-	mpc8xxx_spi = spi_master_get_devdata(master);
+-	reg_base = mpc8xxx_spi->reg_base;
+-
+ 	regval = mpc8xxx_spi_read_reg(&reg_base->mode);
+ 	regval &= ~SPMODE_ENABLE;
+ 	mpc8xxx_spi_write_reg(&reg_base->mode, regval);
+@@ -620,21 +628,20 @@ static int fsl_espi_suspend(struct spi_master *master)
+ 	return 0;
+ }
+ 
+-static int fsl_espi_resume(struct spi_master *master)
++static int fsl_espi_runtime_resume(struct device *dev)
+ {
+-	struct mpc8xxx_spi *mpc8xxx_spi;
+-	struct fsl_espi_reg *reg_base;
++	struct spi_master *master = dev_get_drvdata(dev);
++	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(master);
++	struct fsl_espi_reg *reg_base = mpc8xxx_spi->reg_base;
+ 	u32 regval;
+ 
+-	mpc8xxx_spi = spi_master_get_devdata(master);
+-	reg_base = mpc8xxx_spi->reg_base;
+-
+ 	regval = mpc8xxx_spi_read_reg(&reg_base->mode);
+ 	regval |= SPMODE_ENABLE;
+ 	mpc8xxx_spi_write_reg(&reg_base->mode, regval);
+ 
+ 	return 0;
+ }
++#endif
+ 
+ static struct spi_master * fsl_espi_probe(struct device *dev,
+ 		struct resource *mem, unsigned int irq)
+@@ -662,8 +669,7 @@ static struct spi_master * fsl_espi_probe(struct device *dev,
+ 	master->setup = fsl_espi_setup;
+ 	master->cleanup = fsl_espi_cleanup;
+ 	master->transfer_one_message = fsl_espi_do_one_msg;
+-	master->prepare_transfer_hardware = fsl_espi_resume;
+-	master->unprepare_transfer_hardware = fsl_espi_suspend;
++	master->auto_runtime_pm = true;
  
  	mpc8xxx_spi = spi_master_get_devdata(master);
--	mpc8xxx_spi->spi_remove = fsl_espi_remove;
  
--	mpc8xxx_spi->reg_base = ioremap(mem->start, resource_size(mem));
-+	mpc8xxx_spi->reg_base = devm_ioremap_resource(dev, mem);
- 	if (!mpc8xxx_spi->reg_base) {
- 		ret = -ENOMEM;
- 		goto err_probe;
-@@ -682,10 +676,10 @@ static struct spi_master * fsl_espi_probe(struct device *dev,
- 	reg_base = mpc8xxx_spi->reg_base;
- 
- 	/* Register for SPI Interrupt */
--	ret = request_irq(mpc8xxx_spi->irq, fsl_espi_irq,
-+	ret = devm_request_irq(dev, mpc8xxx_spi->irq, fsl_espi_irq,
- 			  0, "fsl_espi", mpc8xxx_spi);
- 	if (ret)
--		goto free_irq;
-+		goto err_probe;
- 
- 	if (mpc8xxx_spi->flags & SPI_QE_CPU_MODE) {
- 		mpc8xxx_spi->rx_shift = 16;
-@@ -731,18 +725,14 @@ static struct spi_master * fsl_espi_probe(struct device *dev,
+@@ -725,14 +731,27 @@ static struct spi_master * fsl_espi_probe(struct device *dev,
  
  	mpc8xxx_spi_write_reg(&reg_base->mode, regval);
  
--	ret = spi_register_master(master);
-+	ret = devm_spi_register_master(dev, master);
++	pm_runtime_set_autosuspend_delay(dev, AUTOSUSPEND_TIMEOUT);
++	pm_runtime_use_autosuspend(dev);
++	pm_runtime_set_active(dev);
++	pm_runtime_enable(dev);
++	pm_runtime_get_sync(dev);
++
+ 	ret = devm_spi_register_master(dev, master);
  	if (ret < 0)
--		goto unreg_master;
-+		goto err_probe;
+-		goto err_probe;
++		goto err_pm;
  
  	dev_info(dev, "at 0x%p (irq = %d)\n", reg_base, mpc8xxx_spi->irq);
  
++	pm_runtime_mark_last_busy(dev);
++	pm_runtime_put_autosuspend(dev);
++
  	return master;
  
--unreg_master:
--	free_irq(mpc8xxx_spi->irq, mpc8xxx_spi);
--free_irq:
--	iounmap(mpc8xxx_spi->reg_base);
++err_pm:
++	pm_runtime_put_noidle(dev);
++	pm_runtime_disable(dev);
++	pm_runtime_set_suspended(dev);
  err_probe:
  	spi_master_put(master);
  err:
-diff --git a/drivers/spi/spi-fsl-lib.c b/drivers/spi/spi-fsl-lib.c
-index cb35d2f..e50fd06 100644
---- a/drivers/spi/spi-fsl-lib.c
-+++ b/drivers/spi/spi-fsl-lib.c
-@@ -122,10 +122,6 @@ int mpc8xxx_spi_remove(struct device *dev)
- 	master = dev_get_drvdata(dev);
- 	mpc8xxx_spi = spi_master_get_devdata(master);
- 
--	spi_unregister_master(master);
--
--	free_irq(mpc8xxx_spi->irq, mpc8xxx_spi);
--
- 	if (mpc8xxx_spi->spi_remove)
- 		mpc8xxx_spi->spi_remove(mpc8xxx_spi);
- 
-diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
-index 60c5907..8bfbe9e 100644
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -561,7 +561,6 @@ static irqreturn_t fsl_spi_irq(s32 irq, void *context_data)
- 
- static void fsl_spi_remove(struct mpc8xxx_spi *mspi)
- {
--	iounmap(mspi->reg_base);
- 	fsl_spi_cpm_free(mspi);
+@@ -797,6 +816,13 @@ err:
+ 	return ret;
  }
  
-@@ -639,10 +638,10 @@ static struct spi_master * fsl_spi_probe(struct device *dev,
- 	if (ret)
- 		goto err_cpm_init;
- 
--	mpc8xxx_spi->reg_base = ioremap(mem->start, resource_size(mem));
-+	mpc8xxx_spi->reg_base = devm_ioremap_resource(dev, mem);
- 	if (mpc8xxx_spi->reg_base == NULL) {
- 		ret = -ENOMEM;
--		goto err_ioremap;
-+		goto err_probe;
++static int of_fsl_espi_remove(struct platform_device *dev)
++{
++	pm_runtime_disable(&dev->dev);
++
++	return 0;
++}
++
+ #ifdef CONFIG_PM_SLEEP
+ static int of_fsl_espi_suspend(struct device *dev)
+ {
+@@ -809,7 +835,11 @@ static int of_fsl_espi_suspend(struct device *dev)
+ 		return ret;
  	}
  
- 	if (mpc8xxx_spi->type == TYPE_GRLIB)
-@@ -661,11 +660,11 @@ static struct spi_master * fsl_spi_probe(struct device *dev,
- 					&mpc8xxx_spi->tx_shift, 8, 1);
+-	return fsl_espi_suspend(master);
++	ret = pm_runtime_force_suspend(dev);
++	if (ret < 0)
++		return ret;
++
++	return 0;
+ }
  
- 	/* Register for SPI Interrupt */
--	ret = request_irq(mpc8xxx_spi->irq, fsl_spi_irq,
--			  0, "fsl_spi", mpc8xxx_spi);
-+	ret = devm_request_irq(dev, mpc8xxx_spi->irq, fsl_spi_irq,
-+			       0, "fsl_spi", mpc8xxx_spi);
+ static int of_fsl_espi_resume(struct device *dev)
+@@ -819,7 +849,7 @@ static int of_fsl_espi_resume(struct device *dev)
+ 	struct mpc8xxx_spi *mpc8xxx_spi;
+ 	struct fsl_espi_reg *reg_base;
+ 	u32 regval;
+-	int i;
++	int i, ret;
  
- 	if (ret != 0)
--		goto free_irq;
-+		goto err_probe;
- 
+ 	mpc8xxx_spi = spi_master_get_devdata(master);
  	reg_base = mpc8xxx_spi->reg_base;
- 
-@@ -686,20 +685,16 @@ static struct spi_master * fsl_spi_probe(struct device *dev,
+@@ -839,11 +869,17 @@ static int of_fsl_espi_resume(struct device *dev)
  
  	mpc8xxx_spi_write_reg(&reg_base->mode, regval);
  
--	ret = spi_register_master(master);
-+	ret = devm_spi_register_master(dev, master);
- 	if (ret < 0)
--		goto unreg_master;
-+		goto err_probe;
++	ret = pm_runtime_force_resume(dev);
++	if (ret < 0)
++		return ret;
++
+ 	return spi_master_resume(master);
+ }
+ #endif /* CONFIG_PM_SLEEP */
  
- 	dev_info(dev, "at 0x%p (irq = %d), %s mode\n", reg_base,
- 		 mpc8xxx_spi->irq, mpc8xxx_spi_strmode(mpc8xxx_spi->flags));
+ static const struct dev_pm_ops espi_pm = {
++	SET_RUNTIME_PM_OPS(fsl_espi_runtime_suspend,
++			   fsl_espi_runtime_resume, NULL)
+ 	SET_SYSTEM_SLEEP_PM_OPS(of_fsl_espi_suspend, of_fsl_espi_resume)
+ };
  
- 	return master;
+@@ -860,6 +896,7 @@ static struct platform_driver fsl_espi_driver = {
+ 		.pm = &espi_pm,
+ 	},
+ 	.probe		= of_fsl_espi_probe,
++	.remove		= of_fsl_espi_remove,
+ };
+ module_platform_driver(fsl_espi_driver);
  
--unreg_master:
--	free_irq(mpc8xxx_spi->irq, mpc8xxx_spi);
--free_irq:
--	iounmap(mpc8xxx_spi->reg_base);
--err_ioremap:
-+err_probe:
- 	fsl_spi_cpm_free(mpc8xxx_spi);
- err_cpm_init:
- 	spi_master_put(master);
 -- 
 2.5.0
-
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

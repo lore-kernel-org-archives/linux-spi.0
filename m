@@ -1,49 +1,117 @@
-From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH linux-next v5 3/5] mtd: spi-nor: allow to tune the number of dummy cycles
-Date: Wed, 26 Aug 2015 16:39:02 +0200
-Message-ID: <201508261639.02377.marex@denx.de>
-References: <cover.1440580764.git.cyrille.pitchen@atmel.com> <4324f398c0e69e3057e7da6a1a3e0328b44f224f.1440580764.git.cyrille.pitchen@atmel.com>
+From: punnaiah choudary kalluri <punnaia-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Subject: Re: [LINUX RFC v2 0/4] spi: add dual parallel mode support in Zynq
+ MPSoC GQSPI controller
+Date: Wed, 26 Aug 2015 21:02:02 +0530
+Message-ID: <CAGnW=BZtsVtT+Z7gTq5jybXsHWp+RNpjc6ckk6-MXWxAS7u8Mw@mail.gmail.com>
+References: <1440570367-22569-1-git-send-email-ranjit.waghmode@xilinx.com>
+	<CAD6G_RQhWBsUTZNBB44W98Fjzw82H_D_E9nY0aDWezj729mkoA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: Text/Plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org,
-	computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org,
-	juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org, shijie.huang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, pawel.moll-5wv7dgnIgG8@public.gmane.org,
-	mark.rutland-5wv7dgnIgG8@public.gmane.org, ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org,
-	galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <4324f398c0e69e3057e7da6a1a3e0328b44f224f.1440580764.git.cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Cc: Ranjit Waghmode <ranjit.waghmode-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	Soren Brinkmann <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>, zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org, =?UTF-8?B?TWFyZWsgVmHFoXV0?= <marex-ynQEQJNshbs@public.gmane.org>,
+	Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org,
+	juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org, beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org,
+	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org
+To: Jagan Teki <jteki-oRp2ZoJdM/RWk0Htik3J/w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CAD6G_RQhWBsUTZNBB44W98Fjzw82H_D_E9nY0aDWezj729mkoA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Wednesday, August 26, 2015 at 02:30:25 PM, Cyrille Pitchen wrote:
-> The number of dummy cycles used during Fast Read commands can be reduced
-> to improve transfer performances. Each manufacturer has a dedicated set of
-> registers to provide the memory with the exact number of dummy cycles it
-> should expect. Both the memory and the (Q)SPI controller must agree on
-> this number of dummy cycles.
-> 
-> The number of dummy cycles can be found into the memory datasheet and
-> mostly depends on the SPI clock frequency, the Fast Read op code and the
-> Single/Dual Data Rate mode.
-> 
-> Probing JEDEC Serial Flash Discoverable Parameters (SFDP) tables would
-> only provide the driver with a high enough number of dummy cycles for each
-> Fast Read command to be used for all clock frequencies: this solution
-> would not be optimized.
-> 
-> Signed-off-by: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+On Wed, Aug 26, 2015 at 5:49 PM, Jagan Teki <jteki-oRp2ZoJdM/RWk0Htik3J/w@public.gmane.org> wrote:
+> On 26 August 2015 at 11:56, Ranjit Waghmode <ranjit.waghmode-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org> wrote:
+>> This series adds dual parallel mode support for Zynq Ultrascale+
+>> MPSoC GQSPI controller driver.
+>>
+>> What is dual parallel mode?
+>> ---------------------------
+>> ZynqMP GQSPI controller supports Dual Parallel mode with following functionalities:
+>> 1) Supporting two SPI flash memories operating in parallel. 8 I/O lines.
+>> 2) Chip selects and clock are shared to both the flash devices
+>> 3) This mode is targeted for faster read/write speed and also doubles the size
+>> 4) Commands/data can be transmitted/received from both the devices(mirror),
+>>    or only upper or only lower flash memory devices.
+>> 5) Data arrangement:
+>>    With stripe enabled,
+>>    Even bytes i.e. 0, 2, 4,... are transmitted on Lower Data Bus
+>>    Odd bytes i.e. 1, 3, 5,.. are transmitted on Upper Data Bus.
+>>
+>> This series also updated MTD layer files for adding parallel mode support.
+>>
+>> 1) Added Support for two flashes
+>> 2) Support to enable/disable data stripe as and when required.
+>> 3) Added required parameters to spi_nor structure. Initialized all
+>>    added parameters in spi_nor_scan()
+>> 4) Added support for dual parallel in spi_nor_read/write/erase functions by:
+>>    a) Increasing page_size, sector_size, erase_size and toatal flash size
+>>       as and when required.
+>>    b) Dividing address by 2
+>>    c) Updating spi->master->flags for qspi driver to change CS
+>> 5) Updated read_sr() to get status of both flashes
+>> 6) Also updated read_fsr() to get status of both flashes
+>>
+>> These all are very high level changes and expected to make an idea clear.
+>> Comments and suggestions are always welcomed
+>>
+>> ---
+>> V2 Changes:
+>> a) Splitted patches based on logical changes
+>> b) Added error handling for newly added APIs in SPI core
+>> ---
+>>
+>> Ranjit Waghmode (4):
+>>   spi: add support of two chip selects & data stripe
+>>   mtd: add spi_device instance to spi_nor struct
+>>   spi-nor: add dual parallel mode support
+>>   spi: zynqmp: gqspi: add support for dual parallel mode configuration
+>
+> I don't find any previous discussion about way to inform flash
+> dual-ness into spi-nor
+> from spi drivers.
+>
+> Here is my idea, probably others may think same.
+> Informing dual_flash from drivers/spi through flags or any other mode
+> bits is not a better approach as dual flash feature is specific to
+> spi-nor flash controller (controller specially designed for spi-nor
+> flash not the generic spi controller).  So if the driver sits on
+> drivers/mtd/spi-nor/ (ex: fsl-quadspi.c), may be we can inform flash
+> specific things to spi-nor as it's not touching generic spi stack in
+> Linux. But there is a defined-drawback if the driver is moved to
+> drivers/mtd/spi-nor ie it can't use spi core API's at-all.
 
-Acked-by: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Xilinx GQSPI is a generic quad spi controller. The primary goal is to support
+Generic/Future command sequences and Future NOR/NAND flash devices.
+This core can also be used for legacy SPI devices. Due to the generic nature
+of the core, software can generate any command sequence. It also has additional
+features like parallel and stacked configurations to double the data
+rate and size.
+Accessing spi-nor flash device is one particular use case and like
+that there will be
+many. So, we decided to keep this driver in generic spi framework and
+that is the ideal
+thing to do for the GQSPI controller.
 
-Best regards,
-Marek Vasut
+Regards,
+Punnaiah
+
+>
+> thanks!
+> --
+> Jagan | openedev.
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
+> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> Please read the FAQ at  http://www.tux.org/lkml/
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

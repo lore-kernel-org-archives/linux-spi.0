@@ -1,132 +1,50 @@
-From: Brian Hutchinson <b.hutchman-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Not really following Mark Brown's spidev patch
-Date: Tue, 25 Aug 2015 17:53:54 -0400
-Message-ID: <CAFZh4h8D=rGwjG7eRGPyC3QP6Cj-4kHe3N7MhMELQNWgv76VhQ@mail.gmail.com>
+From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Subject: Re: [PATCH v4 3/5] dt/bindings: bcm2835: add binding documentation
+ for bcm2835-aux
+Date: Tue, 25 Aug 2015 19:44:51 -0600
+Message-ID: <55DD1A13.7010705@wwwdotorg.org>
+References: <1440405608-3995-1-git-send-email-kernel@martin.sperl.org> <1440405608-3995-4-git-send-email-kernel@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Cc: Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+To: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1440405608-3995-4-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-I know I'm slow, but I'm not quite understanding the gist of this patch:
-http://www.spinics.net/lists/linux-spi/msg03301.html
+On 08/24/2015 02:40 AM, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
+> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-I'm on a DM816x which has 4 McSPI channels.  In a TI 2.6.37 kernel,
-our board file configured spidev as in:
+Patch description?
 
-struct spi_board_info __initdata ti816x_spi_slave_info[] = {
-//    {
-//        .modalias    = "m25p80",
-//        .platform_data    = &ti816x_spi_flash,
-//        .irq        = -1,
-//        .max_speed_hz    = 75000000,
-//        .bus_num    = 1,
-//        .chip_select    = 0,
-//    },
-    {
-        .modalias    = "spidev",
-        .platform_data    = NULL,
-        .irq            = -1,
-        .max_speed_hz    = 100000,
-        .bus_num        = 1,
-        .chip_select    = 0,
-    },
-    {
-        .modalias    = "spidev",
-        .platform_data    = NULL,
-        .irq            = -1,
-        .max_speed_hz    = 100000,
-        .bus_num        = 1,
-        .chip_select    = 1,
-    },
-    {
-        .modalias    = "spidev",
-        .platform_data    = NULL,
-        .irq            = -1,
-        .max_speed_hz    = 100000,
-    .bus_num        = 1,
-    .chip_select    = 2,
-},
-    {
-        .modalias    = "spidev",
-        .platform_data    = NULL,
-        .irq        = -1,
-        .max_speed_hz    = 100000,
-        .bus_num    = 1,
-        .chip_select    = 3,
-    },
-};
+> diff --git a/Documentation/devicetree/bindings/soc/bcm/brcm,bcm2835-aux.txt b/Documentation/devicetree/bindings/soc/bcm/brcm,bcm2835-aux.txt
 
-The above resulted in us having the following devices:
+> +Required properties:
+> +- compatible: Should be "brcm,bcm2835-aux".
+> +- reg: Should contain register location and length for the
+> +       enable register
 
-root@beaglebone:/dev# ls -al spi*
-crw------- 1 root root 153, 0 Jan  1  1970 spidev1.0
-crw------- 1 root root 153, 1 Jan  1  1970 spidev1.1
-crw------- 1 root root 153, 2 Jan  1  1970 spidev1.2
-crw------- 1 root root 153, 3 Jan  1  1970 spidev1.3
-root@beaglebone:/dev#
+As I mentioned before, why not all the aux registers (that aren't part
+of a sub-device like SPI).
 
-Now we have a 4.2 kernel with device tree support and I'm trying to
-get the same spidev devices to show up that our application uses and I
-can't figure out what the right thing to do is.
+> +Example:
+> +
+> +aux_enable: aux_enable@0x7e215004 {
+> +	compatible = "bcrm,bcm2835-aux";
+> +	reg = <0x7e215004 0x04>;
 
-I see beagleboard code and other examples that looked like they worked
-and existed before this patch and led me to believe that I needed
-something like this in my .dts in addition to enabling spidev in my
-.config:
-
-&mcspi1 {
-    pinctrl-names = "default";
-    pinctrl-0 = <&mcspi1_pins>;
-
-    spidev@0
-        compatible = "spidev";
-        spi-max-frequency = <100000>;
-        reg = <0>;
-        #address-cells = <1>;
-        #size-cells = <1>;
-    };
-
-    spidev@1
-        compatible = "spidev";
-        spi-max-frequency = <100000>;
-        reg = <1>;
-        #address-cells = <1>;
-        #size-cells = <1>;
-    };
-
-    spidev@2
-        compatible = "spidev";
-        spi-max-frequency = <100000>;
-        reg = <2>;
-        #address-cells = <1>;
-        #size-cells = <1>;
-    };
-
-    spidev@3
-        compatible = "spidev";
-        spi-max-frequency = <100000>;
-        reg = <3>;
-        #address-cells = <1>;
-        #size-cells = <1>;
-    };
-
-};
-
-... but no matter what I try I get hit with the nasty warning from
-this patch.  I've read the discussion and see the id table but I'm not
-sure what I need to put in it.
-
-I'm a simple guy and don't understand all the ins & outs of this .dts
-stuff yet ... I just want my 4 spidev devices to show up again and
-work.  As it is now, they show up with tons of dmesg warnings but only
-the first spidev device actually works, the others don't work and I'm
-not sure if it is related to my .dts or not.
-
-Regards,
-
-Brian
+I'd expect that to be <0x7e215000 0x8>;
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

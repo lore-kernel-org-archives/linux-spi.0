@@ -1,35 +1,32 @@
-From: Marek Vasut <marex@denx.de>
-Subject: Re: [PATCH linux-next v5 5/5] mtd: atmel-quadspi: add driver for Atmel QSPI controller
-Date: Wed, 26 Aug 2015 18:26:15 +0200
-Message-ID: <201508261826.15668.marex@denx.de>
-References: <cover.1440580764.git.cyrille.pitchen@atmel.com> <a4f28764a2561106a91d1896e3ec21d0a88f2037.1440580764.git.cyrille.pitchen@atmel.com>
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 2/3] spi: fsl-(e)spi: simplify cleanup code
+Date: Wed, 26 Aug 2015 19:56:45 +0200
+Message-ID: <55DDFDDD.8050508@gmail.com>
+References: <55D9BAE1.1030306@gmail.com> <20150825174508.GF12878@sirena.org.uk> <55DCCDD7.5030307@gmail.com> <20150826105857.GQ12878@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: Text/Plain;
-  charset="us-ascii"
+Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 7bit
-Cc: nicolas.ferre@atmel.com, broonie@kernel.org,
-	linux-spi@vger.kernel.org, dwmw2@infradead.org,
-	computersforpeace@gmail.com, zajec5@gmail.com, beanhuo@micron.com,
-	juhosg@openwrt.org, shijie.huang@intel.com, ben@decadent.org.uk,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org, robh+dt@kernel.org, pawel.moll@arm.com,
-	mark.rutland@arm.com, ijc+devicetree@hellion.org.uk,
-	galak@codeaurora.org, linux-mtd@lists.infradead.org
-To: Cyrille Pitchen <cyrille.pitchen@atmel.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <a4f28764a2561106a91d1896e3ec21d0a88f2037.1440580764.git.cyrille.pitchen@atmel.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150826105857.GQ12878-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Wednesday, August 26, 2015 at 02:30:27 PM, Cyrille Pitchen wrote:
-> This driver add support to the new Atmel QSPI controller embedded into
-> sama5d2x SoCs. It expects a NOR memory to be connected to the QSPI
-> controller.
+Am 26.08.2015 um 12:58 schrieb Mark Brown:
+> On Tue, Aug 25, 2015 at 10:19:35PM +0200, Heiner Kallweit wrote:
+>> Am 25.08.2015 um 19:45 schrieb Mark Brown:
 > 
-> Signed-off-by: Cyrille Pitchen <cyrille.pitchen@atmel.com>
-> Acked-by: Nicolas Ferre <nicolas.ferre@atmel.com>
+>>> You should be able to remove empty functions like this one.
+> 
+>> In patch 3 a call to pm_runtime_disable is added to this function.
+>> Therefore I don't remove it in patch 2. Fine with you?
+> 
+> No, just re-add it when you add users.
+> 
+OK, I will consider this when sending v2 of the patch series.
 
-Acked-by: Marek Vasut <marex@denx.de>
-
-Best regards,
-Marek Vasut
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

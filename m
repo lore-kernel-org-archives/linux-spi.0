@@ -1,124 +1,187 @@
 From: Cyrille Pitchen <cyrille.pitchen@atmel.com>
-Subject: [PATCH linux-next v5 1/5] mtd: spi-nor: notify (Q)SPI controller
- about protocol change
-Date: Wed, 26 Aug 2015 14:30:23 +0200
-Message-ID: <464fce12d75a5ba2105456cfd0a385b2d40305ba.1440580764.git.cyrille.pitchen@atmel.com>
+Subject: [PATCH linux-next v5 3/5] mtd: spi-nor: allow to tune the number of dummy cycles
+Date: Wed, 26 Aug 2015 14:30:25 +0200
+Message-ID: <4324f398c0e69e3057e7da6a1a3e0328b44f224f.1440580764.git.cyrille.pitchen@atmel.com>
 References: <cover.1440580764.git.cyrille.pitchen@atmel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: mark.rutland@arm.com, devicetree@vger.kernel.org, pawel.moll@arm.com,
- ijc+devicetree@hellion.org.uk, linux-kernel@vger.kernel.org,
- robh+dt@kernel.org, linux-mtd@lists.infradead.org, galak@codeaurora.org,
- Cyrille Pitchen <cyrille.pitchen@atmel.com>,
- linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain
+Cc: <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>,
+	<devicetree@vger.kernel.org>, <robh+dt@kernel.org>,
+	<pawel.moll@arm.com>, <mark.rutland@arm.com>,
+	<ijc+devicetree@hellion.org.uk>, <galak@codeaurora.org>,
+	<linux-mtd@lists.infradead.org>,
+	Cyrille Pitchen <cyrille.pitchen@atmel.com>
 To: <nicolas.ferre@atmel.com>, <broonie@kernel.org>,
- <linux-spi@vger.kernel.org>, <dwmw2@infradead.org>,
- <computersforpeace@gmail.com>, <zajec5@gmail.com>, <beanhuo@micron.com>,
- <juhosg@openwrt.org>, <marex@denx.de>, <shijie.huang@intel.com>,
- <ben@decadent.org.uk>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+	<linux-spi@vger.kernel.org>, <dwmw2@infradead.org>,
+	<computersforpeace@gmail.com>, <zajec5@gmail.com>,
+	<beanhuo@micron.com>, <juhosg@openwrt.org>, <marex@denx.de>,
+	<shijie.huang@intel.com>, <ben@decadent.org.uk>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <cover.1440580764.git.cyrille.pitchen@atmel.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Once the Quad SPI mode has been enabled on a Micron flash memory, this
-device expects ALL the following commands to use the SPI 4-4-4 protocol.
-The (Q)SPI controller needs to be notified about the protocol change so it
-can adapt and keep on dialoging with the Micron memory.
+The number of dummy cycles used during Fast Read commands can be reduced
+to improve transfer performances. Each manufacturer has a dedicated set of
+registers to provide the memory with the exact number of dummy cycles it
+should expect. Both the memory and the (Q)SPI controller must agree on
+this number of dummy cycles.
+
+The number of dummy cycles can be found into the memory datasheet and
+mostly depends on the SPI clock frequency, the Fast Read op code and the
+Single/Dual Data Rate mode.
+
+Probing JEDEC Serial Flash Discoverable Parameters (SFDP) tables would
+only provide the driver with a high enough number of dummy cycles for each
+Fast Read command to be used for all clock frequencies: this solution
+would not be optimized.
 
 Signed-off-by: Cyrille Pitchen <cyrille.pitchen@atmel.com>
-Acked-by: Marek Vasut <marex@denx.de>
-Acked-by: Bean Huo <beanhuo@micron.com>
 ---
- drivers/mtd/spi-nor/spi-nor.c | 21 +++++++++++++++++++++
- include/linux/mtd/spi-nor.h   | 13 +++++++++++++
- 2 files changed, 34 insertions(+)
+ drivers/mtd/spi-nor/spi-nor.c | 102 ++++++++++++++++++++++++++++++++++--------
+ include/linux/mtd/spi-nor.h   |   2 +
+ 2 files changed, 85 insertions(+), 19 deletions(-)
 
 diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index c27d427fead4..c8810313a752 100644
+index c8810313a752..46d6e02f7560 100644
 --- a/drivers/mtd/spi-nor/spi-nor.c
 +++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -165,6 +165,22 @@ static inline int write_disable(struct spi_nor *nor)
- 	return nor->write_reg(nor, SPINOR_OP_WRDI, NULL, 0, 0);
+@@ -121,24 +121,6 @@ static int read_cr(struct spi_nor *nor)
  }
  
-+/*
-+ * Let the spi-nor framework notify lower layers, especially the driver of the
-+ * (Q)SPI controller, about the new protocol to be used. Indeed, once the
-+ * spi-nor framework has sent manufacturer specific commands to a memory to
-+ * enable its Quad SPI mode, it should immediately after tell the QSPI
-+ * controller to use the very same Quad SPI protocol as expected by the memory.
-+ */
-+static inline int spi_nor_set_protocol(struct spi_nor *nor,
-+				       enum spi_protocol proto)
+ /*
+- * Dummy Cycle calculation for different type of read.
+- * It can be used to support more commands with
+- * different dummy cycle requirements.
+- */
+-static inline int spi_nor_read_dummy_cycles(struct spi_nor *nor)
+-{
+-	switch (nor->flash_read) {
+-	case SPI_NOR_FAST:
+-	case SPI_NOR_DUAL:
+-	case SPI_NOR_QUAD:
+-		return 8;
+-	case SPI_NOR_NORMAL:
+-		return 0;
+-	}
+-	return 0;
+-}
+-
+-/*
+  * Write status register 1 byte
+  * Returns negative if error occurred.
+  */
+@@ -1008,6 +990,86 @@ static int set_quad_mode(struct spi_nor *nor, const struct flash_info *info)
+ 	}
+ }
+ 
++static int micron_set_dummy_cycles(struct spi_nor *nor)
 +{
-+	if (nor->set_protocol)
-+		return nor->set_protocol(nor, proto);
++	int ret;
++	u8 val, mask;
++
++	/* Read the Volatile Configuration Register (VCR). */
++	ret = nor->read_reg(nor, SPINOR_OP_RD_VCR, &val, 1);
++	if (ret < 0) {
++		dev_err(nor->dev, "error %d reading VCR\n", ret);
++		return ret;
++	}
++
++	write_enable(nor);
++
++	/* Update the number of dummy into the VCR. */
++	mask = GENMASK(7, 4);
++	val &= ~mask;
++	val |= (nor->read_dummy << 4) & mask;
++	ret = nor->write_reg(nor, SPINOR_OP_WR_VCR, &val, 1, 0);
++	if (ret < 0) {
++		dev_err(nor->dev, "error while writing VCR register\n");
++		return ret;
++	}
++
++	ret = spi_nor_wait_till_ready(nor);
++	if (ret)
++		return ret;
 +
 +	return 0;
 +}
 +
- static inline struct spi_nor *mtd_to_spi_nor(struct mtd_info *mtd)
++/*
++ * Dummy Cycle calculation for different type of read.
++ * It can be used to support more commands with
++ * different dummy cycle requirements.
++ */
++static int spi_nor_read_dummy_cycles(struct spi_nor *nor,
++				     const struct flash_info *info)
++{
++	struct device_node *np = nor->dev->of_node;
++	struct device *dev = nor->dev;
++	u32 num_dummy_cycles;
++
++	if (np && !of_property_read_u32(np, "m25p,num-dummy-cycles",
++					&num_dummy_cycles)) {
++		nor->read_dummy = num_dummy_cycles;
++
++		/*
++		 * This switch block might be moved at the end of the function,
++		 * once nor->read_dummy has been set, but it was not tested with
++		 * all Micron memories.
++		 * Now the "m25p,num-dummy-cycles" property needs to be
++		 * explicitly set in the device tree so the switch statement is
++		 * executed. This should avoid unwanted side effects and keep
++		 * backward compatibility.
++		 */
++		switch (JEDEC_MFR(info)) {
++		case CFI_MFR_ST:
++			return micron_set_dummy_cycles(nor);
++		default:
++			dev_warn(dev,
++				 "Tuning of the number of dummy cycles is not implemented for spi-nor of this manufacturer,\n"
++				 "ignoring the DT property value and falling back to the framework default settings.\n");
++			break;
++		}
++	}
++
++	/* Fallback to legacy code. */
++	switch (nor->flash_read) {
++	case SPI_NOR_FAST:
++	case SPI_NOR_DUAL:
++	case SPI_NOR_QUAD:
++		nor->read_dummy = 8;
++	case SPI_NOR_NORMAL:
++		nor->read_dummy = 0;
++	}
++
++	return 0;
++}
++
+ static int spi_nor_check(struct spi_nor *nor)
  {
- 	return mtd->priv;
-@@ -940,6 +956,11 @@ static int micron_quad_enable(struct spi_nor *nor)
- 		return ret;
+ 	if (!nor->dev || !nor->read || !nor->write ||
+@@ -1208,7 +1270,9 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
+ 		nor->addr_width = 3;
  	}
  
-+	/* switch protocol to Quad CMD 4-4-4 */
-+	ret = spi_nor_set_protocol(nor, SPI_PROTO_4_4_4);
+-	nor->read_dummy = spi_nor_read_dummy_cycles(nor);
++	ret = spi_nor_read_dummy_cycles(nor, info);
 +	if (ret)
 +		return ret;
-+
- 	ret = spi_nor_wait_till_ready(nor);
- 	if (ret)
- 		return ret;
+ 
+ 	dev_info(dev, "%s (%lld Kbytes)\n", info->name,
+ 			(long long)mtd->size >> 10);
 diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
-index e5409524bb0a..1bf6f11310ef 100644
+index 1bf6f11310ef..e03a4c4053d3 100644
 --- a/include/linux/mtd/spi-nor.h
 +++ b/include/linux/mtd/spi-nor.h
-@@ -87,6 +87,16 @@ enum read_mode {
- 	SPI_NOR_QUAD,
- };
+@@ -59,6 +59,8 @@
+ /* Used for Micron flashes only. */
+ #define SPINOR_OP_RD_EVCR      0x65    /* Read EVCR register */
+ #define SPINOR_OP_WD_EVCR      0x61    /* Write EVCR register */
++#define SPINOR_OP_RD_VCR	0x85	/* Read VCR register */
++#define SPINOR_OP_WR_VCR	0x81	/* Write VCR register */
  
-+enum spi_protocol {
-+	SPI_PROTO_1_1_1,	/* SPI */
-+	SPI_PROTO_1_1_2,	/* Dual Output */
-+	SPI_PROTO_1_1_4,	/* Quad Output */
-+	SPI_PROTO_1_2_2,	/* Dual IO */
-+	SPI_PROTO_1_4_4,	/* Quad IO */
-+	SPI_PROTO_2_2_2,	/* Dual Command */
-+	SPI_PROTO_4_4_4,	/* Quad Command */
-+};
-+
- /**
-  * struct spi_nor_xfer_cfg - Structure for defining a Serial Flash transfer
-  * @wren:		command for "Write Enable", or 0x00 for not required
-@@ -149,6 +159,7 @@ enum spi_nor_option_flags {
-  *			read/write/erase/lock/unlock operations
-  * @read_xfer:		[OPTIONAL] the read fundamental primitive
-  * @write_xfer:		[OPTIONAL] the writefundamental primitive
-+ * @set_protocol:	[OPTIONAL] notify about protocol change
-  * @read_reg:		[DRIVER-SPECIFIC] read out the register
-  * @write_reg:		[DRIVER-SPECIFIC] write data to the register
-  * @read:		[DRIVER-SPECIFIC] read data from the SPI NOR
-@@ -185,6 +196,8 @@ struct spi_nor {
- 	int (*write_reg)(struct spi_nor *nor, u8 opcode, u8 *buf, int len,
- 			int write_enable);
- 
-+	int (*set_protocol)(struct spi_nor *nor, enum spi_protocol proto);
-+
- 	int (*read)(struct spi_nor *nor, loff_t from,
- 			size_t len, size_t *retlen, u_char *read_buf);
- 	void (*write)(struct spi_nor *nor, loff_t to,
+ /* Status Register bits. */
+ #define SR_WIP			1	/* Write in progress */
 -- 
 1.8.2.2

@@ -1,61 +1,64 @@
-From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Subject: Re: [PATCH v4 4/5] spi: bcm2835: new driver implementing auxiliar
- spi1/spi2 on the bcm2835 soc
-Date: Tue, 25 Aug 2015 19:56:31 -0600
-Message-ID: <55DD1CCF.4080808@wwwdotorg.org>
-References: <1440405608-3995-1-git-send-email-kernel@martin.sperl.org> <1440405608-3995-5-git-send-email-kernel@martin.sperl.org>
+From: Ranjit Waghmode <ranjit.waghmode-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Subject: [LINUX RFC v2 2/4] mtd: add spi_device instance to spi_nor struct
+Date: Wed, 26 Aug 2015 11:56:05 +0530
+Message-ID: <1440570367-22569-3-git-send-email-ranjit.waghmode@xilinx.com>
+References: <1440570367-22569-1-git-send-email-ranjit.waghmode@xilinx.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-To: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1440405608-3995-5-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain
+Cc: <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	<punnaia-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>, Ranjit Waghmode <ranjit.waghmode-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+To: <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>, <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	<broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	<soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>, <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	<ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>, <marex-ynQEQJNshbs@public.gmane.org>, <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	<knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>, <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
+	<beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1440570367-22569-1-git-send-email-ranjit.waghmode-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 08/24/2015 02:40 AM, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
-> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+This patch adds struct spi_device instacne to the spi_nor structure
 
-Patch description?
+Signed-off-by: Ranjit Waghmode <ranjit.waghmode-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+---
+V2 Changes:
+This is new patch, basically splitted on request of Mark Brown
+---
+ drivers/mtd/devices/m25p80.c | 1 +
+ include/linux/mtd/spi-nor.h  | 1 +
+ 2 files changed, 2 insertions(+)
 
->  arch/arm/configs/bcm2835_defconfig |    1 +
->  drivers/spi/Kconfig                |   12 +
->  drivers/spi/Makefile               |    1 +
->  drivers/spi/spi-bcm2835aux.c       |  506 ++++++++++++++++++++++++++++++++++++
+diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+index d313f948b..174ed0f 100644
+--- a/drivers/mtd/devices/m25p80.c
++++ b/drivers/mtd/devices/m25p80.c
+@@ -207,6 +207,7 @@ static int m25p_probe(struct spi_device *spi)
+ 	spi_set_drvdata(spi, flash);
+ 	flash->mtd.priv = nor;
+ 	flash->spi = spi;
++	nor->spi = spi;
 
-A change to the defconfig would be applied by the RPi maintainers, and a
-change to drivers/spi by the SPI maintainers. Those need to be in
-different patches.
-
-> diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
-
-> +static int bcm2835aux_spi_probe(struct platform_device *pdev)
-
-> +	clk_prepare_enable(bs->clk);
-
-Error checking?
-
-> +	/* enable HW block */
-> +	bcm2835aux_enable(&pdev->dev, ENABLE_PROPERTY);
-
-The return value needs to be error-checked, so that deferred probe can
-work, and so other kinds of errors can be detected. Wasn't this correct
-in a previous patch version?
-
-Note that I didn't review any code besides probe(), remove() and the
-driver boiler-plate that refers to those functions.
+ 	if (spi->mode & SPI_RX_QUAD)
+ 		mode = SPI_NOR_QUAD;
+diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
+index e540952..1705dc3 100644
+--- a/include/linux/mtd/spi-nor.h
++++ b/include/linux/mtd/spi-nor.h
+@@ -163,6 +163,7 @@ struct spi_nor {
+ 	struct mtd_info		*mtd;
+ 	struct mutex		lock;
+ 	struct device		*dev;
++	struct spi_device	*spi;
+ 	u32			page_size;
+ 	u8			addr_width;
+ 	u8			erase_opcode;
+--
+2.1.2
 
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

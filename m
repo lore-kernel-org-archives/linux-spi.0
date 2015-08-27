@@ -1,72 +1,105 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [alsa-devel] Fwd: [PATCH 1/1] SPI : spi-pxa2xx : fix spi init of
- WM510205 codec via ACPI (resend)
-Date: Thu, 27 Aug 2015 15:56:14 +0100
-Message-ID: <20150827145614.GC5313@sirena.org.uk>
-References: <20150821074310.GM30005@lahna.fi.intel.com>
- <CAKor6TeJp4ti6_QVCEpz0x7c2NwvUiS5wq_=_WDjM3B7T4=1Yg@mail.gmail.com>
- <20150824085140.GA5647@ck-lbox>
- <CAKor6TcRWgn-Z+Va0JKCBqxVA9HBSLMR_vh-z8MSBZebn9kDVg@mail.gmail.com>
- <20150825062157.GB27431@sirena.org.uk>
- <CAKor6Tf_8J4DVrVRShw2ked-zJzmP6G1P1i=vTcbzWX-J1H6dQ@mail.gmail.com>
- <CAKor6TfpWuhTG6dfARdHmXEb+bLpm5Q6Z-A0g60VPD2fCWHbOg@mail.gmail.com>
- <20150826100155.GA1513@lahna.fi.intel.com>
- <CAKor6TeH32hd0QUCPowzrjp54iJjGKiJ8jVT994y2O29dfk=QA@mail.gmail.com>
- <20150827115914.GF28428@lahna.fi.intel.com>
+From: Brian Hutchinson <b.hutchman-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: Not really following Mark Brown's spidev patch
+Date: Thu, 27 Aug 2015 14:42:01 -0400
+Message-ID: <CAFZh4h9-adeYvE-oeOvfqsRURn7g+=LKGjHWyJ+FkpmF_ujt+Q@mail.gmail.com>
+References: <CAFZh4h8D=rGwjG7eRGPyC3QP6Cj-4kHe3N7MhMELQNWgv76VhQ@mail.gmail.com>
+	<CAMuHMdW1qTzcqeyt=9Xt9X5xOKySzZfCnZHE1ozhm-=9P_5diw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Sr1nOIr3CvdE5hEN"
-Cc: Christian Hartmann <cornogle-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>,
-	Charles Keepax <ckeepax-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-	Pierre-Louis Bossart <pierre-louis.bossart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
-	dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>
-To: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20150827115914.GF28428-3PARRvDOhMZrdx17CPfAsdBPR1lH4CV8@public.gmane.org>
+In-Reply-To: <CAMuHMdW1qTzcqeyt=9Xt9X5xOKySzZfCnZHE1ozhm-=9P_5diw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hi Mr. Geert board man!  Good to hear from you.  Do you have any new
+cool projects in the works?
 
---Sr1nOIr3CvdE5hEN
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Thu, Aug 27, 2015 at 7:24 AM, Geert Uytterhoeven
+<geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org> wrote:
+> Hi Brian,
+>
+> On Tue, Aug 25, 2015 at 11:53 PM, Brian Hutchinson <b.hutchman-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>> &mcspi1 {
+>>     pinctrl-names = "default";
+>>     pinctrl-0 = <&mcspi1_pins>;
+>>
+>>     spidev@0
+>
+> Missing opening curly brace
 
-On Thu, Aug 27, 2015 at 02:59:14PM +0300, Mika Westerberg wrote:
-> On Thu, Aug 27, 2015 at 01:44:45PM +0200, Christian Hartmann wrote:
+You got me, I coppied from an email and not actual code (I was away
+from the machine that had the real code on it at the time I sent
+this).
 
-> > drivers/gpio/gpio-arizona.c
-> > and drivers/extcon/extcon-arizona.c
+>
+>>         compatible = "spidev";
+>
+> The "compatible" value should match the real SPI slave that is connected.
+> After that, you can may add that value to drivers/spi/spidev.c if no other
+> driver exists.
 
-> > I have already CONFIG_GPIO_ARIZONA=y, but it does not be used at all.
-> > Is it save to ignore ?? Or should I use them as well ??
+This is where I kind of get confused ... I thought it was pretty much
+a given that if you are using spidev it's because you DON'T have a
+slave device driver so you are using the generic API which is the
+whole point of spidev.  So it's OK for me to just make up a node
+called "ti,my-spidev" in my .dts and place that also in the spidev ID
+array?  That appears to work after trying it but I'm rather upset that
+I have to modify code (spidev.c) to put this name in there when
+"spidev" had been OK for years.  This almost sounds like a
+philosophical or holy war debate.  I guess it's just me but I thought
+the point of device trees is to have one kernel image for different
+flavors of hardware but now I have to modify spidev.c any time I have
+variant hardware?  OK, off soap box now ;)
 
-> If the SPI device interrupt is connected to arizona GPIO pin, then you
-> probably need that.
+>
+>>         spi-max-frequency = <100000>;
+>>         reg = <0>;
+>>         #address-cells = <1>;
+>>         #size-cells = <1>;
+>
+> Why do you need these two properties?
 
-I can't see how that would work, the interrupt output isn't a GPIO.
+Because it looked cool!  Being serious now, I found some working
+examples and just copied what they did.   It looks to me like this can
+be reduced or normalized quite a bit but at the time I was just trying
+to get something to work and get that hideous error to go away and
+wasn't quite understanding what Mark was saying about the ID or 'why'
+it was necessary.  We made up an ID and put it in the spidev ID array
+and that gets rid of the warning but I don't see any good examples
+that would allow me to know what my &mcspi1 node should look like (in
+light of this patch I'm talking about) given what the old board file
+entry looked like (the board file snipit I provided).  In Linux 4.2, I
+searched the .dts files looking for examples and I see several
+existing .dts files that look like what I was trying to do ...
+imx28-tx28.dts, spear1310-evb.dts, tegra30-apalis-eval.dts,
+tegra30-colibri-eval-v3.dts.
 
---Sr1nOIr3CvdE5hEN
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+The very first example I found was
+http://elinux.org/BeagleBone_Black_Enable_SPIDEV but that kind of
+threw me because it uses compatible = "linux,spidev" but yet when I
+searched the kernel code I could not find a binding for "linux,spidev"
+so I got pretty confused on how to go about even getting spidev to
+work like I used to have it working in 2.6.37.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Regards,
 
-iQEcBAEBCAAGBQJV3yUOAAoJECTWi3JdVIfQcOYH/0Dh0WJT54ydA4NrA4ibU1Y9
-IDY7RM1WeGqadcF+dwwF+JYsDsH9XbAwc74RuOf5stnJCC6okY7gHgvjoMTkcksa
-7zGsZ3e1qEs27BQ3/aQPqon/iR13MNPGTsuQsk4c9UhNfouKe4CwE0LzUi45l1qH
-J9TykBySd9xXK2nz+ODdGo44swzGPErhvUO8niPjyWvRz/JjAsvC8BPTjX/qgdfI
-witQmJ/TRgeKn1yDSKWHn+aiTW6T1bb/PVn4D2Ea+wy/SLzd2DNXUzFsGSxC9If9
-D9MgZt+3rszsDH6SasBZSBVjKwo/vS97w7v1LUdPKJwEyIe05/xLhrdVnP4/sGo=
-=9gnX
------END PGP SIGNATURE-----
+Brian
 
---Sr1nOIr3CvdE5hEN--
+>
+>>     };
+>
+> Gr{oetje,eeting}s,
+>
+>                         Geert
+>
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+>
+> In personal conversations with technical people, I call myself a hacker. But
+> when I'm talking to journalists I just say "programmer" or something like that.
+>                                 -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,202 +1,53 @@
-From: Jagan Teki <jteki-oRp2ZoJdM/RWk0Htik3J/w@public.gmane.org>
-Subject: Re: [LINUX RFC v2 0/4] spi: add dual parallel mode support in Zynq
- MPSoC GQSPI controller
-Date: Thu, 27 Aug 2015 15:45:43 +0530
-Message-ID: <CAD6G_RR+QnuK++KvztYo+68sb7yQqwM7qg-X7bybCYaBN+nAGQ@mail.gmail.com>
-References: <1440570367-22569-1-git-send-email-ranjit.waghmode@xilinx.com>
-	<CAD6G_RQhWBsUTZNBB44W98Fjzw82H_D_E9nY0aDWezj729mkoA@mail.gmail.com>
-	<CAGnW=BZtsVtT+Z7gTq5jybXsHWp+RNpjc6ckk6-MXWxAS7u8Mw@mail.gmail.com>
-	<CAD6G_RTCQ5Fzjgxz+-3oMDAyUTg6UFAqvpEPQzJ9maSTZ3Nc_g@mail.gmail.com>
-	<CAGnW=BZ80B_2kzZVULhZvEXFs+_GXkGbu8mii1eFp3MySvA8aA@mail.gmail.com>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: Not really following Mark Brown's spidev patch
+Date: Thu, 27 Aug 2015 13:24:55 +0200
+Message-ID: <CAMuHMdW1qTzcqeyt=9Xt9X5xOKySzZfCnZHE1ozhm-=9P_5diw@mail.gmail.com>
+References: <CAFZh4h8D=rGwjG7eRGPyC3QP6Cj-4kHe3N7MhMELQNWgv76VhQ@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Cc: =?UTF-8?B?TWFyZWsgVmHFoXV0?= <marex-ynQEQJNshbs@public.gmane.org>, harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org,
-	Ranjit Waghmode <ranjit.waghmode-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
-	Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Soren Brinkmann <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org,
-	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org, David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org
-To: punnaiah choudary kalluri <punnaia-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Brian Hutchinson <b.hutchman-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAGnW=BZ80B_2kzZVULhZvEXFs+_GXkGbu8mii1eFp3MySvA8aA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <CAFZh4h8D=rGwjG7eRGPyC3QP6Cj-4kHe3N7MhMELQNWgv76VhQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 27 August 2015 at 14:18, punnaiah choudary kalluri
-<punnaia-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org> wrote:
-> On Thu, Aug 27, 2015 at 11:53 AM, Jagan Teki <jteki-oRp2ZoJdM/RWk0Htik3J/w@public.gmane.org> wrote:
->> On 26 August 2015 at 21:02, punnaiah choudary kalluri
->> <punnaia-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org> wrote:
->>> On Wed, Aug 26, 2015 at 5:49 PM, Jagan Teki <jteki-oRp2ZoJdM/RWk0Htik3J/w@public.gmane.org> wrote:
->>>> On 26 August 2015 at 11:56, Ranjit Waghmode <ranjit.waghmode-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org> wrote:
->>>>> This series adds dual parallel mode support for Zynq Ultrascale+
->>>>> MPSoC GQSPI controller driver.
->>>>>
->>>>> What is dual parallel mode?
->>>>> ---------------------------
->>>>> ZynqMP GQSPI controller supports Dual Parallel mode with following functionalities:
->>>>> 1) Supporting two SPI flash memories operating in parallel. 8 I/O lines.
->>>>> 2) Chip selects and clock are shared to both the flash devices
->>>>> 3) This mode is targeted for faster read/write speed and also doubles the size
->>>>> 4) Commands/data can be transmitted/received from both the devices(mirror),
->>>>>    or only upper or only lower flash memory devices.
->>>>> 5) Data arrangement:
->>>>>    With stripe enabled,
->>>>>    Even bytes i.e. 0, 2, 4,... are transmitted on Lower Data Bus
->>>>>    Odd bytes i.e. 1, 3, 5,.. are transmitted on Upper Data Bus.
-> <snip>
->>>> I don't find any previous discussion about way to inform flash
->>>> dual-ness into spi-nor
->>>> from spi drivers.
->>>>
->>>> Here is my idea, probably others may think same.
->>>> Informing dual_flash from drivers/spi through flags or any other mode
->>>> bits is not a better approach as dual flash feature is specific to
->>>> spi-nor flash controller (controller specially designed for spi-nor
->>>> flash not the generic spi controller).  So if the driver sits on
->>>> drivers/mtd/spi-nor/ (ex: fsl-quadspi.c), may be we can inform flash
->>>> specific things to spi-nor as it's not touching generic spi stack in
->>>> Linux. But there is a defined-drawback if the driver is moved to
->>>> drivers/mtd/spi-nor ie it can't use spi core API's at-all.
->>>
->>> Xilinx GQSPI is a generic quad spi controller. The primary goal is to support
->>> Generic/Future command sequences and Future NOR/NAND flash devices.
->>> This core can also be used for legacy SPI devices. Due to the generic nature
->>> of the core, software can generate any command sequence. It also has additional
->>> features like parallel and stacked configurations to double the data
->>> rate and size.
->>> Accessing spi-nor flash device is one particular use case and like
->>> that there will be
->>> many. So, we decided to keep this driver in generic spi framework and
->>> that is the ideal
->>> thing to do for the GQSPI controller.
->>
->> Yes, I understand the generic nature of the GQSPI and it's good to
->> have all-in-one like generic spi, spi-nor and spi-nand and more
->> together, but Linux stacks were implemented in such a way to support
->> the each type of controller with connected slaves separably for better
->> handling.
+Hi Brian,
+
+On Tue, Aug 25, 2015 at 11:53 PM, Brian Hutchinson <b.hutchman-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> &mcspi1 {
+>     pinctrl-names = "default";
+>     pinctrl-0 = <&mcspi1_pins>;
 >
-> True and this is the reason we have controller drivers and protocol drivers.
-> GQSPI is the controller driver and spi-nor and spi-nand are the
-> protocol drivers.
->
->>
->> Currently GQSPI driver is added in drivers/spi as it supports generic
->> spi nature and now it enhanced more through flags for supporting
->> spi-nor, what if we add spi-nand support for the same controller? do
->> we add one more driver in spi-nand framework (drivers/mtd/spi-nand -
->> an on going implementation)? My only observation here is even if the
->> controller is more generic to support more number of device classes,
->> and adding same driver and populate the slave stuff through flags or
->> different kind of mechanism to different driver stack, this is not a
->> better approach I thought.
->
-> Just to clear, dual parallel( 2 CS and 8 IO lines) is not only specific
-> to flash parts, one can use for any other custom streaming protocols
-> I would say exporting dual parallel connection to protocol drivers is
-> something like depicting the spi bus topology to the protocol layer.
+>     spidev@0
 
-So dual parallel may not used for spi-nor flash it can also used other
-spi slaves that's what your saying is it?
+Missing opening curly brace
 
->
-> AFAIK, spi-nor and spi-nand are protocol drivers for accessing the
-> nor and nand flash devices sitting on the spi bus using the spi
-> controller driver.
+>         compatible = "spidev";
 
-Yes, I do agree with your point, but though driver stacks are
-different with same kind of bus here, I'm trying to spit the GQSPI
-into 3 different controller drivers as Linux understand it and fit on
-to Linux stack with out disturbing the generic-ness.
+The "compatible" value should match the real SPI slave that is connected.
+After that, you can may add that value to drivers/spi/spidev.c if no other
+driver exists.
 
-Assumption is GQSPI shall split to various platform_drivers (if each
-platform driver treated as a controller) thought it made up of  spi
-bus.
+>         spi-max-frequency = <100000>;
+>         reg = <0>;
+>         #address-cells = <1>;
+>         #size-cells = <1>;
 
->>
->> Based on the above comments, there is an approach to handle this
->> support and I'm not 100% sure whether this fits or not but we
->> implemented the same -  this is "probing child devices from parent"
->> (there was a discussion with Arnd earlier wrt this, but I'm unable to
->> get the mailing thread)
->>
->> Added Arnd (probably will give more inputs or corrections)
->>
->> Let me explain how we implemented on our design.
->> We have PCIe controller that support basic root complex handling, dma
->> and controller hotplug (not in-build pcie hp) and ideally we need to
->> write driver for handling root complex on drivers/pci/host and one
->> hotplug driver in drivers/pci and one more driver in drivers/dma for
->> handling pcie dma stuff. And some pcie calls need to navigate from
->> root complex driver to dma and hotplug driver that means there is call
->> transition from driver/pci to driver/dma which is absolutely not a
->> good approach (spi to spi-nor and spi-nand transition - in GQSPI case)
->>
->> So the implementation we follow is like there is a pcie root complex
->> driver(probably generic spi driver in drivers/spi/*) and inside probe
->> we have register platform_device for hotplug (spi-nor) and dma
->> (spi-nand) and the dma driver in drivers/dma and hotplug driver in
->> driver/pci/ are platform drivers which is of legacy binding (not with
->> dts) so there should be a common dts for root complex driver
->> (drivers/spi/*) and individual child driver need to take those while
->> registering platform_device.
->>
->> example pseudo:
->>
->> drivers/dma/dma-child2.c
->>
->> Legacy platform_driver binding and handling dma future as normal dma
->> driver, spi-nand in your case
->>
->> drivers/pci/hotplug/hp-child1.c
->>
->> Legacy platform_driver binding and handling hotplug future as normal
->> hotplug driver, spi-nor in your case.
->>
->> drivers/pci/host/rc-parent-pci.c
->>
->> static int rc_parent_pcie_probe_bridge(struct platform_device *pdev)
->> {
->>    // Generic rc handling (genric spi stuff)
->>
->>    // Hotplug handling (spi-nor)
->>    - platform_device_alloc
->>    - assign need resources
->>    - register pdev using platform_device_add
->>
->>     // DMA handling (spi-nand)
->>    - same as above
->> }
->>
->> static const struct of_device_id rc_parent_pcie_match_table[] = {
->>         {.compatible = "abc,rc-parent",},
->>         {},
->> };
->>
->> static struct platform_driver rc_parent_pcie_driver = {
->>         .driver = {
->>                    .name = "rc-parent",
->>                    .of_match_table = of_match_ptr(rc_parent_pcie_match_table),
->>         },
->>         .probe = rc_parent_pcie_probe_bridge,
->> };
->> module_platform_driver(rc_parent_pcie_driver);
->>
->> I couldn't find any driver mainlined wrt this design, think more on
->> GQSPI front, whether this design fits well or not.
+Why do you need these two properties?
 
-thanks!
--- 
-Jagan | openedev.
+>     };
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,220 +1,197 @@
-From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v2 3/3] spi: fsl-espi: add runtime PM
-Date: Wed, 26 Aug 2015 21:21:55 +0200
-Message-ID: <55DE11D3.400@gmail.com>
+From: Jagan Teki <jteki-oRp2ZoJdM/RWk0Htik3J/w@public.gmane.org>
+Subject: Re: [LINUX RFC v2 0/4] spi: add dual parallel mode support in Zynq
+ MPSoC GQSPI controller
+Date: Thu, 27 Aug 2015 11:53:16 +0530
+Message-ID: <CAD6G_RTCQ5Fzjgxz+-3oMDAyUTg6UFAqvpEPQzJ9maSTZ3Nc_g@mail.gmail.com>
+References: <1440570367-22569-1-git-send-email-ranjit.waghmode@xilinx.com>
+	<CAD6G_RQhWBsUTZNBB44W98Fjzw82H_D_E9nY0aDWezj729mkoA@mail.gmail.com>
+	<CAGnW=BZtsVtT+Z7gTq5jybXsHWp+RNpjc6ckk6-MXWxAS7u8Mw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: =?UTF-8?B?TWFyZWsgVmHFoXV0?= <marex-ynQEQJNshbs@public.gmane.org>, harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org,
+	zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org, ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org,
+	Ranjit Waghmode <ranjit.waghmode-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org,
+	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	Soren Brinkmann <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+To: punnaiah choudary kalluri <punnaia-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CAGnW=BZtsVtT+Z7gTq5jybXsHWp+RNpjc6ckk6-MXWxAS7u8Mw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Add runtime PM and use autosuspend instead of suspending the
-SPI controller after each transfer.
+On 26 August 2015 at 21:02, punnaiah choudary kalluri
+<punnaia-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org> wrote:
+> On Wed, Aug 26, 2015 at 5:49 PM, Jagan Teki <jteki-oRp2ZoJdM/RWk0Htik3J/w@public.gmane.org> wrote:
+>> On 26 August 2015 at 11:56, Ranjit Waghmode <ranjit.waghmode-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org> wrote:
+>>> This series adds dual parallel mode support for Zynq Ultrascale+
+>>> MPSoC GQSPI controller driver.
+>>>
+>>> What is dual parallel mode?
+>>> ---------------------------
+>>> ZynqMP GQSPI controller supports Dual Parallel mode with following functionalities:
+>>> 1) Supporting two SPI flash memories operating in parallel. 8 I/O lines.
+>>> 2) Chip selects and clock are shared to both the flash devices
+>>> 3) This mode is targeted for faster read/write speed and also doubles the size
+>>> 4) Commands/data can be transmitted/received from both the devices(mirror),
+>>>    or only upper or only lower flash memory devices.
+>>> 5) Data arrangement:
+>>>    With stripe enabled,
+>>>    Even bytes i.e. 0, 2, 4,... are transmitted on Lower Data Bus
+>>>    Odd bytes i.e. 1, 3, 5,.. are transmitted on Upper Data Bus.
+>>>
+>>> This series also updated MTD layer files for adding parallel mode support.
+>>>
+>>> 1) Added Support for two flashes
+>>> 2) Support to enable/disable data stripe as and when required.
+>>> 3) Added required parameters to spi_nor structure. Initialized all
+>>>    added parameters in spi_nor_scan()
+>>> 4) Added support for dual parallel in spi_nor_read/write/erase functions by:
+>>>    a) Increasing page_size, sector_size, erase_size and toatal flash size
+>>>       as and when required.
+>>>    b) Dividing address by 2
+>>>    c) Updating spi->master->flags for qspi driver to change CS
+>>> 5) Updated read_sr() to get status of both flashes
+>>> 6) Also updated read_fsr() to get status of both flashes
+>>>
+>>> These all are very high level changes and expected to make an idea clear.
+>>> Comments and suggestions are always welcomed
+>>>
+>>> ---
+>>> V2 Changes:
+>>> a) Splitted patches based on logical changes
+>>> b) Added error handling for newly added APIs in SPI core
+>>> ---
+>>>
+>>> Ranjit Waghmode (4):
+>>>   spi: add support of two chip selects & data stripe
+>>>   mtd: add spi_device instance to spi_nor struct
+>>>   spi-nor: add dual parallel mode support
+>>>   spi: zynqmp: gqspi: add support for dual parallel mode configuration
+>>
+>> I don't find any previous discussion about way to inform flash
+>> dual-ness into spi-nor
+>> from spi drivers.
+>>
+>> Here is my idea, probably others may think same.
+>> Informing dual_flash from drivers/spi through flags or any other mode
+>> bits is not a better approach as dual flash feature is specific to
+>> spi-nor flash controller (controller specially designed for spi-nor
+>> flash not the generic spi controller).  So if the driver sits on
+>> drivers/mtd/spi-nor/ (ex: fsl-quadspi.c), may be we can inform flash
+>> specific things to spi-nor as it's not touching generic spi stack in
+>> Linux. But there is a defined-drawback if the driver is moved to
+>> drivers/mtd/spi-nor ie it can't use spi core API's at-all.
+>
+> Xilinx GQSPI is a generic quad spi controller. The primary goal is to support
+> Generic/Future command sequences and Future NOR/NAND flash devices.
+> This core can also be used for legacy SPI devices. Due to the generic nature
+> of the core, software can generate any command sequence. It also has additional
+> features like parallel and stacked configurations to double the data
+> rate and size.
+> Accessing spi-nor flash device is one particular use case and like
+> that there will be
+> many. So, we decided to keep this driver in generic spi framework and
+> that is the ideal
+> thing to do for the GQSPI controller.
 
-Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
-v2:
-- rebased
+Yes, I understand the generic nature of the GQSPI and it's good to
+have all-in-one like generic spi, spi-nor and spi-nand and more
+together, but Linux stacks were implemented in such a way to support
+the each type of controller with connected slaves separably for better
+handling.
 
- drivers/spi/spi-fsl-espi.c | 71 +++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 54 insertions(+), 17 deletions(-)
+Currently GQSPI driver is added in drivers/spi as it supports generic
+spi nature and now it enhanced more through flags for supporting
+spi-nor, what if we add spi-nand support for the same controller? do
+we add one more driver in spi-nand framework (drivers/mtd/spi-nand -
+an on going implementation)? My only observation here is even if the
+controller is more generic to support more number of device classes,
+and adding same driver and populate the slave stuff through flags or
+different kind of mechanism to different driver stack, this is not a
+better approach I thought.
 
-diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index fe54e57..db82c87 100644
---- a/drivers/spi/spi-fsl-espi.c
-+++ b/drivers/spi/spi-fsl-espi.c
-@@ -21,6 +21,7 @@
- #include <linux/of_platform.h>
- #include <linux/platform_device.h>
- #include <linux/spi/spi.h>
-+#include <linux/pm_runtime.h>
- #include <sysdev/fsl_soc.h>
- 
- #include "spi-fsl-lib.h"
-@@ -85,6 +86,8 @@ struct fsl_espi_transfer {
- #define SPCOM_TRANLEN(x)	((x) << 0)
- #define	SPCOM_TRANLEN_MAX	0xFFFF	/* Max transaction length */
- 
-+#define AUTOSUSPEND_TIMEOUT 2000
-+
- static void fsl_espi_change_mode(struct spi_device *spi)
- {
- 	struct mpc8xxx_spi *mspi = spi_master_get_devdata(spi->master);
-@@ -485,6 +488,8 @@ static int fsl_espi_setup(struct spi_device *spi)
- 	mpc8xxx_spi = spi_master_get_devdata(spi->master);
- 	reg_base = mpc8xxx_spi->reg_base;
- 
-+	pm_runtime_get_sync(mpc8xxx_spi->dev);
-+
- 	hw_mode = cs->hw_mode; /* Save original settings */
- 	cs->hw_mode = mpc8xxx_spi_read_reg(
- 			&reg_base->csmode[spi->chip_select]);
-@@ -507,6 +512,10 @@ static int fsl_espi_setup(struct spi_device *spi)
- 	mpc8xxx_spi_write_reg(&reg_base->mode, loop_mode);
- 
- 	retval = fsl_espi_setup_transfer(spi, NULL);
-+
-+	pm_runtime_mark_last_busy(mpc8xxx_spi->dev);
-+	pm_runtime_put_autosuspend(mpc8xxx_spi->dev);
-+
- 	if (retval < 0) {
- 		cs->hw_mode = hw_mode; /* Restore settings */
- 		return retval;
-@@ -604,15 +613,14 @@ static irqreturn_t fsl_espi_irq(s32 irq, void *context_data)
- 	return ret;
- }
- 
--static int fsl_espi_suspend(struct spi_master *master)
-+#ifdef CONFIG_PM
-+static int fsl_espi_runtime_suspend(struct device *dev)
- {
--	struct mpc8xxx_spi *mpc8xxx_spi;
--	struct fsl_espi_reg *reg_base;
-+	struct spi_master *master = dev_get_drvdata(dev);
-+	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(master);
-+	struct fsl_espi_reg *reg_base = mpc8xxx_spi->reg_base;
- 	u32 regval;
- 
--	mpc8xxx_spi = spi_master_get_devdata(master);
--	reg_base = mpc8xxx_spi->reg_base;
--
- 	regval = mpc8xxx_spi_read_reg(&reg_base->mode);
- 	regval &= ~SPMODE_ENABLE;
- 	mpc8xxx_spi_write_reg(&reg_base->mode, regval);
-@@ -620,21 +628,20 @@ static int fsl_espi_suspend(struct spi_master *master)
- 	return 0;
- }
- 
--static int fsl_espi_resume(struct spi_master *master)
-+static int fsl_espi_runtime_resume(struct device *dev)
- {
--	struct mpc8xxx_spi *mpc8xxx_spi;
--	struct fsl_espi_reg *reg_base;
-+	struct spi_master *master = dev_get_drvdata(dev);
-+	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(master);
-+	struct fsl_espi_reg *reg_base = mpc8xxx_spi->reg_base;
- 	u32 regval;
- 
--	mpc8xxx_spi = spi_master_get_devdata(master);
--	reg_base = mpc8xxx_spi->reg_base;
--
- 	regval = mpc8xxx_spi_read_reg(&reg_base->mode);
- 	regval |= SPMODE_ENABLE;
- 	mpc8xxx_spi_write_reg(&reg_base->mode, regval);
- 
- 	return 0;
- }
-+#endif
- 
- static struct spi_master * fsl_espi_probe(struct device *dev,
- 		struct resource *mem, unsigned int irq)
-@@ -662,8 +669,7 @@ static struct spi_master * fsl_espi_probe(struct device *dev,
- 	master->setup = fsl_espi_setup;
- 	master->cleanup = fsl_espi_cleanup;
- 	master->transfer_one_message = fsl_espi_do_one_msg;
--	master->prepare_transfer_hardware = fsl_espi_resume;
--	master->unprepare_transfer_hardware = fsl_espi_suspend;
-+	master->auto_runtime_pm = true;
- 
- 	mpc8xxx_spi = spi_master_get_devdata(master);
- 
-@@ -725,14 +731,27 @@ static struct spi_master * fsl_espi_probe(struct device *dev,
- 
- 	mpc8xxx_spi_write_reg(&reg_base->mode, regval);
- 
-+	pm_runtime_set_autosuspend_delay(dev, AUTOSUSPEND_TIMEOUT);
-+	pm_runtime_use_autosuspend(dev);
-+	pm_runtime_set_active(dev);
-+	pm_runtime_enable(dev);
-+	pm_runtime_get_sync(dev);
-+
- 	ret = devm_spi_register_master(dev, master);
- 	if (ret < 0)
--		goto err_probe;
-+		goto err_pm;
- 
- 	dev_info(dev, "at 0x%p (irq = %d)\n", reg_base, mpc8xxx_spi->irq);
- 
-+	pm_runtime_mark_last_busy(dev);
-+	pm_runtime_put_autosuspend(dev);
-+
- 	return master;
- 
-+err_pm:
-+	pm_runtime_put_noidle(dev);
-+	pm_runtime_disable(dev);
-+	pm_runtime_set_suspended(dev);
- err_probe:
- 	spi_master_put(master);
- err:
-@@ -797,6 +816,13 @@ err:
- 	return ret;
- }
- 
-+static int of_fsl_espi_remove(struct platform_device *dev)
-+{
-+	pm_runtime_disable(&dev->dev);
-+
-+	return 0;
-+}
-+
- #ifdef CONFIG_PM_SLEEP
- static int of_fsl_espi_suspend(struct device *dev)
- {
-@@ -809,7 +835,11 @@ static int of_fsl_espi_suspend(struct device *dev)
- 		return ret;
- 	}
- 
--	return fsl_espi_suspend(master);
-+	ret = pm_runtime_force_suspend(dev);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
- }
- 
- static int of_fsl_espi_resume(struct device *dev)
-@@ -819,7 +849,7 @@ static int of_fsl_espi_resume(struct device *dev)
- 	struct mpc8xxx_spi *mpc8xxx_spi;
- 	struct fsl_espi_reg *reg_base;
- 	u32 regval;
--	int i;
-+	int i, ret;
- 
- 	mpc8xxx_spi = spi_master_get_devdata(master);
- 	reg_base = mpc8xxx_spi->reg_base;
-@@ -839,11 +869,17 @@ static int of_fsl_espi_resume(struct device *dev)
- 
- 	mpc8xxx_spi_write_reg(&reg_base->mode, regval);
- 
-+	ret = pm_runtime_force_resume(dev);
-+	if (ret < 0)
-+		return ret;
-+
- 	return spi_master_resume(master);
- }
- #endif /* CONFIG_PM_SLEEP */
- 
- static const struct dev_pm_ops espi_pm = {
-+	SET_RUNTIME_PM_OPS(fsl_espi_runtime_suspend,
-+			   fsl_espi_runtime_resume, NULL)
- 	SET_SYSTEM_SLEEP_PM_OPS(of_fsl_espi_suspend, of_fsl_espi_resume)
- };
- 
-@@ -860,6 +896,7 @@ static struct platform_driver fsl_espi_driver = {
- 		.pm = &espi_pm,
- 	},
- 	.probe		= of_fsl_espi_probe,
-+	.remove		= of_fsl_espi_remove,
- };
- module_platform_driver(fsl_espi_driver);
- 
+Based on the above comments, there is an approach to handle this
+support and I'm not 100% sure whether this fits or not but we
+implemented the same -  this is "probing child devices from parent"
+(there was a discussion with Arnd earlier wrt this, but I'm unable to
+get the mailing thread)
+
+Added Arnd (probably will give more inputs or corrections)
+
+Let me explain how we implemented on our design.
+We have PCIe controller that support basic root complex handling, dma
+and controller hotplug (not in-build pcie hp) and ideally we need to
+write driver for handling root complex on drivers/pci/host and one
+hotplug driver in drivers/pci and one more driver in drivers/dma for
+handling pcie dma stuff. And some pcie calls need to navigate from
+root complex driver to dma and hotplug driver that means there is call
+transition from driver/pci to driver/dma which is absolutely not a
+good approach (spi to spi-nor and spi-nand transition - in GQSPI case)
+
+So the implementation we follow is like there is a pcie root complex
+driver(probably generic spi driver in drivers/spi/*) and inside probe
+we have register platform_device for hotplug (spi-nor) and dma
+(spi-nand) and the dma driver in drivers/dma and hotplug driver in
+driver/pci/ are platform drivers which is of legacy binding (not with
+dts) so there should be a common dts for root complex driver
+(drivers/spi/*) and individual child driver need to take those while
+registering platform_device.
+
+example pseudo:
+
+drivers/dma/dma-child2.c
+
+Legacy platform_driver binding and handling dma future as normal dma
+driver, spi-nand in your case
+
+drivers/pci/hotplug/hp-child1.c
+
+Legacy platform_driver binding and handling hotplug future as normal
+hotplug driver, spi-nor in your case.
+
+drivers/pci/host/rc-parent-pci.c
+
+static int rc_parent_pcie_probe_bridge(struct platform_device *pdev)
+{
+   // Generic rc handling (genric spi stuff)
+
+   // Hotplug handling (spi-nor)
+   - platform_device_alloc
+   - assign need resources
+   - register pdev using platform_device_add
+
+    // DMA handling (spi-nand)
+   - same as above
+}
+
+static const struct of_device_id rc_parent_pcie_match_table[] = {
+        {.compatible = "abc,rc-parent",},
+        {},
+};
+
+static struct platform_driver rc_parent_pcie_driver = {
+        .driver = {
+                   .name = "rc-parent",
+                   .of_match_table = of_match_ptr(rc_parent_pcie_match_table),
+        },
+        .probe = rc_parent_pcie_probe_bridge,
+};
+module_platform_driver(rc_parent_pcie_driver);
+
+I couldn't find any driver mainlined wrt this design, think more on
+GQSPI front, whether this design fits well or not.
+
+thanks!
 -- 
-2.5.0
-
+Jagan | openedev.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

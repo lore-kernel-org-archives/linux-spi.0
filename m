@@ -1,59 +1,58 @@
-From: Christian Hartmann <cornogle-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
-Subject: Re: [alsa-devel] Fwd: [PATCH 1/1] SPI : spi-pxa2xx : fix spi init of
- WM510205 codec via ACPI (resend)
-Date: Fri, 28 Aug 2015 09:22:37 +0200
-Message-ID: <CAKor6TfExEsvG1O6PgNdCPOwE_PC77pu66=x5g2CtvvVN7MbZg@mail.gmail.com>
-References: <CAKor6Te-DSDxx711-EQi=fw46nNPGnQNqhj-+6upBxhOOp5XvA@mail.gmail.com>
-	<20150820115845.GF30005@lahna.fi.intel.com>
-	<CAKor6Teq=Aoa6WYkTEVpjBPsWziL-o5FzQHxJWOMeaTrMzXpMg@mail.gmail.com>
-	<20150821074310.GM30005@lahna.fi.intel.com>
-	<CAKor6TeJp4ti6_QVCEpz0x7c2NwvUiS5wq_=_WDjM3B7T4=1Yg@mail.gmail.com>
-	<20150824085140.GA5647@ck-lbox>
-	<CAKor6TcRWgn-Z+Va0JKCBqxVA9HBSLMR_vh-z8MSBZebn9kDVg@mail.gmail.com>
-	<20150825062157.GB27431@sirena.org.uk>
-	<CAKor6Tf_8J4DVrVRShw2ked-zJzmP6G1P1i=vTcbzWX-J1H6dQ@mail.gmail.com>
-	<CAKor6TfpWuhTG6dfARdHmXEb+bLpm5Q6Z-A0g60VPD2fCWHbOg@mail.gmail.com>
-	<20150826091312.GA19411@ck-lbox>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: Not really following Mark Brown's spidev patch
+Date: Fri, 28 Aug 2015 09:53:27 +0200
+Message-ID: <CAMuHMdWCOz4GO+anX1VsT3BnGGFEJbeXYF4NRzM0DHtAVWV0hA@mail.gmail.com>
+References: <CAFZh4h8D=rGwjG7eRGPyC3QP6Cj-4kHe3N7MhMELQNWgv76VhQ@mail.gmail.com>
+	<CAMuHMdW1qTzcqeyt=9Xt9X5xOKySzZfCnZHE1ozhm-=9P_5diw@mail.gmail.com>
+	<CAFZh4h9-adeYvE-oeOvfqsRURn7g+=LKGjHWyJ+FkpmF_ujt+Q@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Cc: alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Pierre-Louis Bossart <pierre-louis.bossart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-	dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org
-To: Charles Keepax <ckeepax-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Brian Hutchinson <b.hutchman-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150826091312.GA19411@ck-lbox>
+In-Reply-To: <CAFZh4h9-adeYvE-oeOvfqsRURn7g+=LKGjHWyJ+FkpmF_ujt+Q-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Mika,
-hi,
+Hi Brian,
 
-
-2015-08-26 11:13 GMT+02:00 Charles Keepax <ckeepax-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>:
->  4) The chip select needs to be active.
+On Thu, Aug 27, 2015 at 8:42 PM, Brian Hutchinson <b.hutchman-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>>>         compatible = "spidev";
+>>
+>> The "compatible" value should match the real SPI slave that is connected.
+>> After that, you can may add that value to drivers/spi/spidev.c if no other
+>> driver exists.
 >
-> It seems very likely that 1) is already taken care of, so I
-> probalby won't spend too much time worrying about that. It looks
-> like we are getting a valid GPIO for the reset (2) and LDOENA (3),
-> so it feels like those are probably ok. I guess this leaves the
-> SPI config as the next place to investigate, are there other
-> devices on the SPI that you can talk to that might at least
-> verify the SPI is working? Also might be worth trying to look at
-> how the chip selects are done perhaps that is not happening for
-> some reason?
+> This is where I kind of get confused ... I thought it was pretty much
+> a given that if you are using spidev it's because you DON'T have a
+> slave device driver so you are using the generic API which is the
+> whole point of spidev.  So it's OK for me to just make up a node
 
-ok, that seems logical .
-And no I cannot prove or check other devices, I just learned a lot in
-the past three month about
-this (driver, spi, gpio, acpi, dsdt etc. ) at all.
+Yes, you want to use spidev because you don't have a driver.
+Still, you have an actual named SPI slave connected to the SPI bus,
+right?
 
-cheers
-chris
+> called "ti,my-spidev" in my .dts and place that also in the spidev ID
+> array?  That appears to work after trying it but I'm rather upset that
+
+I doubt "ti,my-spidev" is the real name of your SPI slave device?
+
+> I have to modify code (spidev.c) to put this name in there when
+> "spidev" had been OK for years.  This almost sounds like a
+
+I think we do need a way to add compatible entries to spidev dynamically,
+cfr. how PCI IDs can be added to an existing driver through sysfs.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

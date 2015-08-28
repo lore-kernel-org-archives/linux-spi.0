@@ -1,127 +1,250 @@
-From: Christian Hartmann <cornogle-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
-Subject: Fwd: [alsa-devel] Fwd: [PATCH 1/1] SPI : spi-pxa2xx : fix spi init of
- WM510205 codec via ACPI (resend)
-Date: Fri, 28 Aug 2015 11:50:54 +0200
-Message-ID: <CAKor6TfW4reRz3m-xkCr_ZUfHQkfqT3q+S7JCpO-9F+k1QW38g@mail.gmail.com>
-References: <20150821074310.GM30005@lahna.fi.intel.com>
-	<CAKor6TeJp4ti6_QVCEpz0x7c2NwvUiS5wq_=_WDjM3B7T4=1Yg@mail.gmail.com>
-	<20150824085140.GA5647@ck-lbox>
-	<CAKor6TcRWgn-Z+Va0JKCBqxVA9HBSLMR_vh-z8MSBZebn9kDVg@mail.gmail.com>
-	<20150825062157.GB27431@sirena.org.uk>
-	<CAKor6Tf_8J4DVrVRShw2ked-zJzmP6G1P1i=vTcbzWX-J1H6dQ@mail.gmail.com>
-	<CAKor6TfpWuhTG6dfARdHmXEb+bLpm5Q6Z-A0g60VPD2fCWHbOg@mail.gmail.com>
-	<20150826100155.GA1513@lahna.fi.intel.com>
-	<CAKor6TeH32hd0QUCPowzrjp54iJjGKiJ8jVT994y2O29dfk=QA@mail.gmail.com>
-	<20150827115914.GF28428@lahna.fi.intel.com>
-	<20150827145614.GC5313@sirena.org.uk>
-	<CAKor6Tf8kB0WPXLTBFmCzUJkMVEDu-xTEyw0-_NZvBdFSyQSFA@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Pierre-Louis Bossart <pierre-louis.bossart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-	dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org
-To: Charles Keepax <ckeepax-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: fsl-espi: add runtime PM" to the spi tree
+Date: Fri, 28 Aug 2015 18:46:27 +0100
+Message-ID: <E1ZVNjP-0007Op-RT@finisterre>
+References: <55DE11D3.400@gmail.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAKor6Tf8kB0WPXLTBFmCzUJkMVEDu-xTEyw0-_NZvBdFSyQSFA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <55DE11D3.400-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi,
+The patch
 
-this is a resend with all recipients in cc now
+   spi: fsl-espi: add runtime PM
 
+has been applied to the spi tree at
 
----------- Forwarded message ----------
-From: Christian Hartmann <cornogle-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
-Date: 2015-08-28 9:41 GMT+02:00
-Subject: Re: [alsa-devel] Fwd: [PATCH 1/1] SPI : spi-pxa2xx : fix spi
-init of WM510205 codec via ACPI (resend)
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-hi Mark et al.,
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-2015-08-27 16:56 GMT+02:00 Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>:
-> I can't see how that would work, the interrupt output isn't a GPIO.
+Thanks,
+Mark
 
-yes I think also that this is the GPIO pin number.
-I am not familiar with the interrupt handling, have again to look (in
-other drivers or similar), to understand how things should work, never
-done that before.
+>From e9abb4db8d108624c293f06dce06b2978e626a13 Mon Sep 17 00:00:00 2001
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Wed, 26 Aug 2015 21:21:55 +0200
+Subject: [PATCH] spi: fsl-espi: add runtime PM
 
-I have added three dev_info() into spi-pxa2xx pxa2xx_spi_probe() to
-found out more whats wrong with the slave/master:
+Add runtime PM and use autosuspend instead of suspending the
+SPI controller after each transfer.
 
-commit 4b6ff73610deef478e53b958a02617f024bbef22
-Author: Christian Hartmann <cornogle-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
-Date:   Thu Aug 27 14:51:48 2015 +0200
+Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-fsl-espi.c | 71 +++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 54 insertions(+), 17 deletions(-)
 
-    spi/spi-pxa2xx.c : added three new dev_infos, which prints irq,
-bus_num and num_chipselect
-
-    Signed-off-by: Christian Hartmann <cornogle-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
-
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 6d795a5..cf02094 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1389,6 +1389,9 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
-        master->unprepare_transfer_hardware = pxa2xx_spi_unprepare_transfer;
-        master->auto_runtime_pm = true;
-
-+       dev_info(&pdev->dev, "bus_num = %d\n",master->bus_num);
-+       dev_info(&pdev->dev, "num_chipselect = %d\n",master->num_chipselect);
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index fe54e57..db82c87 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -21,6 +21,7 @@
+ #include <linux/of_platform.h>
+ #include <linux/platform_device.h>
+ #include <linux/spi/spi.h>
++#include <linux/pm_runtime.h>
+ #include <sysdev/fsl_soc.h>
+ 
+ #include "spi-fsl-lib.h"
+@@ -85,6 +86,8 @@ struct fsl_espi_transfer {
+ #define SPCOM_TRANLEN(x)	((x) << 0)
+ #define	SPCOM_TRANLEN_MAX	0xFFFF	/* Max transaction length */
+ 
++#define AUTOSUSPEND_TIMEOUT 2000
 +
-        drv_data->ssp_type = ssp->type;
-        drv_data->null_dma_buf = (u32 *)PTR_ALIGN(&drv_data[1], DMA_ALIGNMENT);
-
-@@ -1423,6 +1426,8 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
-
-        }
-
-+       dev_info(&pdev->dev, "IRQ %d\n", ssp->irq);
+ static void fsl_espi_change_mode(struct spi_device *spi)
+ {
+ 	struct mpc8xxx_spi *mspi = spi_master_get_devdata(spi->master);
+@@ -485,6 +488,8 @@ static int fsl_espi_setup(struct spi_device *spi)
+ 	mpc8xxx_spi = spi_master_get_devdata(spi->master);
+ 	reg_base = mpc8xxx_spi->reg_base;
+ 
++	pm_runtime_get_sync(mpc8xxx_spi->dev);
 +
-        /* Setup DMA if requested */
-        drv_data->tx_channel = -1;
-        drv_data->rx_channel = -1;
+ 	hw_mode = cs->hw_mode; /* Save original settings */
+ 	cs->hw_mode = mpc8xxx_spi_read_reg(
+ 			&reg_base->csmode[spi->chip_select]);
+@@ -507,6 +512,10 @@ static int fsl_espi_setup(struct spi_device *spi)
+ 	mpc8xxx_spi_write_reg(&reg_base->mode, loop_mode);
+ 
+ 	retval = fsl_espi_setup_transfer(spi, NULL);
++
++	pm_runtime_mark_last_busy(mpc8xxx_spi->dev);
++	pm_runtime_put_autosuspend(mpc8xxx_spi->dev);
++
+ 	if (retval < 0) {
+ 		cs->hw_mode = hw_mode; /* Restore settings */
+ 		return retval;
+@@ -604,15 +613,14 @@ static irqreturn_t fsl_espi_irq(s32 irq, void *context_data)
+ 	return ret;
+ }
+ 
+-static int fsl_espi_suspend(struct spi_master *master)
++#ifdef CONFIG_PM
++static int fsl_espi_runtime_suspend(struct device *dev)
+ {
+-	struct mpc8xxx_spi *mpc8xxx_spi;
+-	struct fsl_espi_reg *reg_base;
++	struct spi_master *master = dev_get_drvdata(dev);
++	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(master);
++	struct fsl_espi_reg *reg_base = mpc8xxx_spi->reg_base;
+ 	u32 regval;
+ 
+-	mpc8xxx_spi = spi_master_get_devdata(master);
+-	reg_base = mpc8xxx_spi->reg_base;
+-
+ 	regval = mpc8xxx_spi_read_reg(&reg_base->mode);
+ 	regval &= ~SPMODE_ENABLE;
+ 	mpc8xxx_spi_write_reg(&reg_base->mode, regval);
+@@ -620,21 +628,20 @@ static int fsl_espi_suspend(struct spi_master *master)
+ 	return 0;
+ }
+ 
+-static int fsl_espi_resume(struct spi_master *master)
++static int fsl_espi_runtime_resume(struct device *dev)
+ {
+-	struct mpc8xxx_spi *mpc8xxx_spi;
+-	struct fsl_espi_reg *reg_base;
++	struct spi_master *master = dev_get_drvdata(dev);
++	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(master);
++	struct fsl_espi_reg *reg_base = mpc8xxx_spi->reg_base;
+ 	u32 regval;
+ 
+-	mpc8xxx_spi = spi_master_get_devdata(master);
+-	reg_base = mpc8xxx_spi->reg_base;
+-
+ 	regval = mpc8xxx_spi_read_reg(&reg_base->mode);
+ 	regval |= SPMODE_ENABLE;
+ 	mpc8xxx_spi_write_reg(&reg_base->mode, regval);
+ 
+ 	return 0;
+ }
++#endif
+ 
+ static struct spi_master * fsl_espi_probe(struct device *dev,
+ 		struct resource *mem, unsigned int irq)
+@@ -662,8 +669,7 @@ static struct spi_master * fsl_espi_probe(struct device *dev,
+ 	master->setup = fsl_espi_setup;
+ 	master->cleanup = fsl_espi_cleanup;
+ 	master->transfer_one_message = fsl_espi_do_one_msg;
+-	master->prepare_transfer_hardware = fsl_espi_resume;
+-	master->unprepare_transfer_hardware = fsl_espi_suspend;
++	master->auto_runtime_pm = true;
+ 
+ 	mpc8xxx_spi = spi_master_get_devdata(master);
+ 
+@@ -725,14 +731,27 @@ static struct spi_master * fsl_espi_probe(struct device *dev,
+ 
+ 	mpc8xxx_spi_write_reg(&reg_base->mode, regval);
+ 
++	pm_runtime_set_autosuspend_delay(dev, AUTOSUSPEND_TIMEOUT);
++	pm_runtime_use_autosuspend(dev);
++	pm_runtime_set_active(dev);
++	pm_runtime_enable(dev);
++	pm_runtime_get_sync(dev);
++
+ 	ret = devm_spi_register_master(dev, master);
+ 	if (ret < 0)
+-		goto err_probe;
++		goto err_pm;
+ 
+ 	dev_info(dev, "at 0x%p (irq = %d)\n", reg_base, mpc8xxx_spi->irq);
+ 
++	pm_runtime_mark_last_busy(dev);
++	pm_runtime_put_autosuspend(dev);
++
+ 	return master;
+ 
++err_pm:
++	pm_runtime_put_noidle(dev);
++	pm_runtime_disable(dev);
++	pm_runtime_set_suspended(dev);
+ err_probe:
+ 	spi_master_put(master);
+ err:
+@@ -797,6 +816,13 @@ err:
+ 	return ret;
+ }
+ 
++static int of_fsl_espi_remove(struct platform_device *dev)
++{
++	pm_runtime_disable(&dev->dev);
++
++	return 0;
++}
++
+ #ifdef CONFIG_PM_SLEEP
+ static int of_fsl_espi_suspend(struct device *dev)
+ {
+@@ -809,7 +835,11 @@ static int of_fsl_espi_suspend(struct device *dev)
+ 		return ret;
+ 	}
+ 
+-	return fsl_espi_suspend(master);
++	ret = pm_runtime_force_suspend(dev);
++	if (ret < 0)
++		return ret;
++
++	return 0;
+ }
+ 
+ static int of_fsl_espi_resume(struct device *dev)
+@@ -819,7 +849,7 @@ static int of_fsl_espi_resume(struct device *dev)
+ 	struct mpc8xxx_spi *mpc8xxx_spi;
+ 	struct fsl_espi_reg *reg_base;
+ 	u32 regval;
+-	int i;
++	int i, ret;
+ 
+ 	mpc8xxx_spi = spi_master_get_devdata(master);
+ 	reg_base = mpc8xxx_spi->reg_base;
+@@ -839,11 +869,17 @@ static int of_fsl_espi_resume(struct device *dev)
+ 
+ 	mpc8xxx_spi_write_reg(&reg_base->mode, regval);
+ 
++	ret = pm_runtime_force_resume(dev);
++	if (ret < 0)
++		return ret;
++
+ 	return spi_master_resume(master);
+ }
+ #endif /* CONFIG_PM_SLEEP */
+ 
+ static const struct dev_pm_ops espi_pm = {
++	SET_RUNTIME_PM_OPS(fsl_espi_runtime_suspend,
++			   fsl_espi_runtime_resume, NULL)
+ 	SET_SYSTEM_SLEEP_PM_OPS(of_fsl_espi_suspend, of_fsl_espi_resume)
+ };
+ 
+@@ -860,6 +896,7 @@ static struct platform_driver fsl_espi_driver = {
+ 		.pm = &espi_pm,
+ 	},
+ 	.probe		= of_fsl_espi_probe,
++	.remove		= of_fsl_espi_remove,
+ };
+ module_platform_driver(fsl_espi_driver);
+ 
+-- 
+2.5.0
 
-
- and thats what I got:
-
-[    6.182903] pxa2xx-spi 80860F0E:00: bus_num = -1
-[    6.182909] pxa2xx-spi 80860F0E:00: num_chipselect = 2
-[    6.182928] pxa2xx-spi 80860F0E:00: IRQ 194
-[    6.183049] pxa2xx-spi 80860F0E:00: no DMA channels available, using PIO
-[    6.183111] pxa2xx-spi 80860F0E:00: registered master spi32766 (dynamic)
-[    6.192761] spi spi-WM510205:00: 8333333 Hz actual, PIO
-.... the rest of the dmesg is currently the same....
-
-
-Q:  this thread is about the patch for the pxa2xx-spi where the
-num_chipselect was raised by one to so that the slave connects here at
-all. otherwise the cs1 >= max will be hit.
-Do you think the bus_number is ok ?
-And shouldn't it be set the cs1=0 and num_chipselect=1  ??
-
-The DSDT has wrongly SPI=1 as chipselect,  either the firmware (DSDT)
-must be updated or a correct patch enables the spi master/slave init
-here.
-
-I hope or expect that when the spi slave will be init correctly, that
-the device would also work.
-The ACPI stuff is already done here, and I am running out of time.
-
-In the last resort I have to give up or have to do that at night :)
-
-cheers
-chris
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,81 +1,75 @@
-From: walter harms <wharms@bfs.de>
-Subject: Re: [PATCH 2/2] spi: spi-ep93xx: change PTR_ERR argument
-Date: Sun, 30 Aug 2015 20:31:42 +0200
-Message-ID: <55E34C0E.5000702@bfs.de>
-References: <1440957911-7687-1-git-send-email-Julia.Lawall@lip6.fr> <1440957911-7687-3-git-send-email-Julia.Lawall@lip6.fr>
-Reply-To: wharms@bfs.de
+From: Julia Lawall <julia.lawall@lip6.fr>
+Subject: [PATCH 2/2 v2] spi: spi-ep93xx: fix PTR_ERR problem
+Date: Sun, 30 Aug 2015 22:10:15 +0200 (CEST)
+Message-ID: <alpine.DEB.2.02.1508302209040.2062@localhost6.localdomain6>
+References: <1440957911-7687-1-git-send-email-Julia.Lawall@lip6.fr> <1440957911-7687-3-git-send-email-Julia.Lawall@lip6.fr> <55E34C0E.5000702@bfs.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Cc: Mark Brown <broonie@kernel.org>, kernel-janitors@vger.kernel.org,
 	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Julia Lawall <Julia.Lawall@lip6.fr>
+To: walter harms <wharms@bfs.de>
 Return-path: <kernel-janitors-owner@vger.kernel.org>
-In-Reply-To: <1440957911-7687-3-git-send-email-Julia.Lawall@lip6.fr>
+In-Reply-To: <55E34C0E.5000702@bfs.de>
 Sender: kernel-janitors-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Move initialization of msg->status up over the call to dev_err, in both
+calls to ep93xx_spi_dma_prepare, and change the reference in the call to
+dev_err to msg->status, to both fix the wrong argument to PTR_ERR in the
+second case and to make the dev_err line a little shorter.  This required
+furthermore replacing %ld by %d, since msg->status is an integer.
 
+The semantic match that finds the PTR_ERR problem is as follows:
+(http://coccinelle.lip6.fr/)
 
-Am 30.08.2015 20:05, schrieb Julia Lawall:
-> Apply PTR_ERR to the value that was recently assigned.
-> 
-> The semantic match that finds this problem is as follows:
-> (http://coccinelle.lip6.fr/)
-> 
-> // <smpl>
-> @@
-> expression x,y;
-> @@
-> 
-> if (IS_ERR(x) || ...) {
->   ... when any
->       when != IS_ERR(...)
-> (
->    PTR_ERR(x)
-> |
-> *  PTR_ERR(y)
-> )
->   ... when any
-> }
-> // </smpl>
-> 
-> Signed-off-by: Julia Lawall <Julia.Lawall@lip6.fr>
-> 
-> ---
->  drivers/spi/spi-ep93xx.c |    3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
-> index bb00be8..1a7696c 100644
-> --- a/drivers/spi/spi-ep93xx.c
-> +++ b/drivers/spi/spi-ep93xx.c
-> @@ -567,7 +567,8 @@ static void ep93xx_spi_dma_transfer(struct ep93xx_spi *espi)
->  	txd = ep93xx_spi_dma_prepare(espi, DMA_MEM_TO_DEV);
->  	if (IS_ERR(txd)) {
->  		ep93xx_spi_dma_finish(espi, DMA_DEV_TO_MEM);
-> -		dev_err(&espi->pdev->dev, "DMA TX failed: %ld\n", PTR_ERR(rxd));
-> +		dev_err(&espi->pdev->dev, "DMA TX failed: %ld\n",
-> +			PTR_ERR(txd));
->  		msg->status = PTR_ERR(txd);
->  		return;
->  	}
->
+// <smpl>
+@@
+expression x,y;
+@@
 
-I improve readability i would suggest:
+if (IS_ERR(x) || ...) {
+  ... when any
+      when != IS_ERR(...)
+(
+   PTR_ERR(x)
+|
+*  PTR_ERR(y)
+)
+  ... when any
+}
+// </smpl>
 
-ep93xx_spi_dma_finish(espi, DMA_DEV_TO_MEM);
-msg->status = PTR_ERR(txd);
-dev_err(&espi->pdev->dev, "DMA TX failed: %ld\n",msg->status):
-return;
+Reorganizations at the suggestion of Walter Harms.
 
+Signed-off-by: Julia Lawall <Julia.Lawall@lip6.fr>
 
-just my 2 cents,
+---
+v2: Reorganize the code, to solve the problem in a way that makes the
+resulting code simpler.
 
-re,
- wh
-> --
-> To unsubscribe from this list: send the line "unsubscribe kernel-janitors" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> 
+ drivers/spi/spi-ep93xx.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
+index bb00be8..73d0df6 100644
+--- a/drivers/spi/spi-ep93xx.c
++++ b/drivers/spi/spi-ep93xx.c
+@@ -559,16 +559,16 @@ static void ep93xx_spi_dma_transfer(struct ep93xx_spi *espi)
+ 
+ 	rxd = ep93xx_spi_dma_prepare(espi, DMA_DEV_TO_MEM);
+ 	if (IS_ERR(rxd)) {
+-		dev_err(&espi->pdev->dev, "DMA RX failed: %ld\n", PTR_ERR(rxd));
+ 		msg->status = PTR_ERR(rxd);
++		dev_err(&espi->pdev->dev, "DMA RX failed: %d\n", msg->status);
+ 		return;
+ 	}
+ 
+ 	txd = ep93xx_spi_dma_prepare(espi, DMA_MEM_TO_DEV);
+ 	if (IS_ERR(txd)) {
+ 		ep93xx_spi_dma_finish(espi, DMA_DEV_TO_MEM);
+-		dev_err(&espi->pdev->dev, "DMA TX failed: %ld\n", PTR_ERR(rxd));
+ 		msg->status = PTR_ERR(txd);
++		dev_err(&espi->pdev->dev, "DMA TX failed: %d\n", msg->status);
+ 		return;
+ 	}
+ 

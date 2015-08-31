@@ -1,18 +1,18 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: Mediatek: Document devicetree bindings update for spi bus" to the spi tree
-Date: Mon, 31 Aug 2015 15:28:31 +0100
-Message-ID: <E1ZWQ4V-0000KI-0w@finisterre>
-References: <1441027138-16458-4-git-send-email-leilk.liu@mediatek.com>
+Subject: Applied "spi: mediatek: fix spi clock usage error" to the spi tree
+Date: Mon, 31 Aug 2015 15:28:33 +0100
+Message-ID: <E1ZWQ4X-0000LA-E0@finisterre>
+References: <1441027138-16458-3-git-send-email-leilk.liu@mediatek.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1441027138-16458-4-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <1441027138-16458-3-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: Mediatek: Document devicetree bindings update for spi bus
+   spi: mediatek: fix spi clock usage error
 
 has been applied to the spi tree at
 
@@ -37,61 +37,76 @@ to this mail.
 Thanks,
 Mark
 
->From 3d4fe182003bcde778e29e84c14c0c4bb70a452e Mon Sep 17 00:00:00 2001
+>From adcbcfea15d62fab5ba40ac28f9d2a590cc5e5e8 Mon Sep 17 00:00:00 2001
 From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Date: Mon, 31 Aug 2015 21:18:58 +0800
-Subject: [PATCH] spi: Mediatek: Document devicetree bindings update for spi
- bus
+Date: Mon, 31 Aug 2015 21:18:57 +0800
+Subject: [PATCH] spi: mediatek: fix spi clock usage error
 
-This patch updates spi bindings, fixs clock usage description.
+spi clock manages flow:
+  CLK_TOP_SYSPLL3_D2 ---> CLK_TOP_SPI_SEL ---> CLK_PERI_SPI0
+     (source clock)           (clock mux)       (clock gate)
+spi driver should choose source clock by clock mux, then enable
+clock gate.
 
 Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- Documentation/devicetree/bindings/spi/spi-mt65xx.txt | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/spi/spi-mt65xx.c | 23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
-index dcefc43..6160ffb 100644
---- a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
-@@ -15,17 +15,18 @@ Required properties:
- - interrupts: Should contain spi interrupt
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index b609b1c..6fbb5e5 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -85,7 +85,7 @@ struct mtk_spi {
+ 	void __iomem *base;
+ 	u32 state;
+ 	u32 pad_sel;
+-	struct clk *spi_clk, *parent_clk;
++	struct clk *parent_clk, *sel_clk, *spi_clk;
+ 	struct spi_transfer *cur_transfer;
+ 	u32 xfer_len;
+ 	struct scatterlist *tx_sgl, *rx_sgl;
+@@ -576,17 +576,24 @@ static int mtk_spi_probe(struct platform_device *pdev)
+ 		goto err_put_master;
+ 	}
  
- - clocks: phandles to input clocks.
--  The first should be <&topckgen CLK_TOP_SPI_SEL>.
--  The second should be one of the following.
-+  The first should be one of the following. It's PLL.
-    -  <&clk26m>: specify parent clock 26MHZ.
-    -  <&topckgen CLK_TOP_SYSPLL3_D2>: specify parent clock 109MHZ.
- 				      It's the default one.
-    -  <&topckgen CLK_TOP_SYSPLL4_D2>: specify parent clock 78MHZ.
-    -  <&topckgen CLK_TOP_UNIVPLL2_D4>: specify parent clock 104MHZ.
-    -  <&topckgen CLK_TOP_UNIVPLL1_D8>: specify parent clock 78MHZ.
-+  The second should be <&topckgen CLK_TOP_SPI_SEL>. It's clock mux.
-+  The third is <&pericfg CLK_PERI_SPI0>. It's clock gate.
- 
--- clock-names: shall be "spi-clk" for the controller clock, and
--  "parent-clk" for the parent clock.
-+- clock-names: shall be "parent-clk" for the parent clock, "sel-clk" for the
-+  muxes clock, and "spi-clk" for the clock gate.
- 
- Optional properties:
- - mediatek,pad-select: specify which pins group(ck/mi/mo/cs) spi
-@@ -44,8 +45,11 @@ spi: spi@1100a000 {
- 	#size-cells = <0>;
- 	reg = <0 0x1100a000 0 0x1000>;
- 	interrupts = <GIC_SPI 110 IRQ_TYPE_LEVEL_LOW>;
--	clocks = <&topckgen CLK_TOP_SPI_SEL>, <&topckgen CLK_TOP_SYSPLL3_D2>;
--	clock-names = "spi-clk", "parent-clk";
-+	clocks = <&topckgen CLK_TOP_SYSPLL3_D2>,
-+		 <&topckgen CLK_TOP_SPI_SEL>,
-+		 <&pericfg CLK_PERI_SPI0>;
-+	clock-names = "parent-clk", "sel-clk", "spi-clk";
+-	mdata->spi_clk = devm_clk_get(&pdev->dev, "spi-clk");
+-	if (IS_ERR(mdata->spi_clk)) {
++	mdata->parent_clk = devm_clk_get(&pdev->dev, "parent-clk");
++	if (IS_ERR(mdata->parent_clk)) {
++		ret = PTR_ERR(mdata->parent_clk);
++		dev_err(&pdev->dev, "failed to get parent-clk: %d\n", ret);
++		goto err_put_master;
++	}
 +
- 	mediatek,pad-select = <0>;
- 	status = "disabled";
- };
++	mdata->sel_clk = devm_clk_get(&pdev->dev, "sel-clk");
++	if (IS_ERR(mdata->sel_clk)) {
+ 		ret = PTR_ERR(mdata->spi_clk);
+-		dev_err(&pdev->dev, "failed to get spi-clk: %d\n", ret);
++		dev_err(&pdev->dev, "failed to get sel-clk: %d\n", ret);
+ 		goto err_put_master;
+ 	}
+ 
+-	mdata->parent_clk = devm_clk_get(&pdev->dev, "parent-clk");
+-	if (IS_ERR(mdata->parent_clk)) {
++	mdata->spi_clk = devm_clk_get(&pdev->dev, "spi-clk");
++	if (IS_ERR(mdata->spi_clk)) {
+ 		ret = PTR_ERR(mdata->parent_clk);
+-		dev_err(&pdev->dev, "failed to get parent-clk: %d\n", ret);
++		dev_err(&pdev->dev, "failed to get spi-clk: %d\n", ret);
+ 		goto err_put_master;
+ 	}
+ 
+@@ -596,7 +603,7 @@ static int mtk_spi_probe(struct platform_device *pdev)
+ 		goto err_put_master;
+ 	}
+ 
+-	ret = clk_set_parent(mdata->spi_clk, mdata->parent_clk);
++	ret = clk_set_parent(mdata->sel_clk, mdata->parent_clk);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "failed to clk_set_parent (%d)\n", ret);
+ 		goto err_disable_clk;
 -- 
 2.5.0
 

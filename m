@@ -1,43 +1,70 @@
-From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Subject: [PATCH 0/3] Fix Mediatek SPI bus driver clock usage error
-Date: Mon, 31 Aug 2015 21:18:55 +0800
-Message-ID: <1441027138-16458-1-git-send-email-leilk.liu@mediatek.com>
+From: Leilk Liu <leilk.liu@mediatek.com>
+Subject: [PATCH 3/3] spi: Mediatek: Document devicetree bindings update for spi bus
+Date: Mon, 31 Aug 2015 21:18:58 +0800
+Message-ID: <1441027138-16458-4-git-send-email-leilk.liu@mediatek.com>
+References: <1441027138-16458-1-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
 Content-Type: text/plain
-Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Mark Rutland <mark.rutland@arm.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>,
+	<linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
+	Leilk Liu <leilk.liu@mediatek.com>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1441027138-16458-1-git-send-email-leilk.liu@mediatek.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+This patch updates spi bindings, fixs clock usage description.
 
-This series are based on 4.2-rc1 and provide three patches
-to fix mediatek spi driver clock usage error.
+Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
+---
+ Documentation/devicetree/bindings/spi/spi-mt65xx.txt | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-spi clock manages flow:
-  CLK_TOP_SYSPLL3_D2 ---> CLK_TOP_SPI_SEL ---> CLK_PERI_SPI0
-    (source clock)           (clock mux)       (clock gate)
-spi driver should choose source clock by clock mux, then enable clock gate.
-
-Leilk Liu (3):
-  spi: mediatek: remove clk_disable_unprepare()
-  spi: mediatek: fix spi clock usage error
-  spi: Mediatek: Document devicetree bindings update for spi bus
-
- .../devicetree/bindings/spi/spi-mt65xx.txt         | 16 +++++++++------
- drivers/spi/spi-mt65xx.c                           | 24 ++++++++++++++--------
- 2 files changed, 25 insertions(+), 15 deletions(-)
-
---
+diff --git a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
+index dcefc43..6160ffb 100644
+--- a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
++++ b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
+@@ -15,17 +15,18 @@ Required properties:
+ - interrupts: Should contain spi interrupt
+ 
+ - clocks: phandles to input clocks.
+-  The first should be <&topckgen CLK_TOP_SPI_SEL>.
+-  The second should be one of the following.
++  The first should be one of the following. It's PLL.
+    -  <&clk26m>: specify parent clock 26MHZ.
+    -  <&topckgen CLK_TOP_SYSPLL3_D2>: specify parent clock 109MHZ.
+ 				      It's the default one.
+    -  <&topckgen CLK_TOP_SYSPLL4_D2>: specify parent clock 78MHZ.
+    -  <&topckgen CLK_TOP_UNIVPLL2_D4>: specify parent clock 104MHZ.
+    -  <&topckgen CLK_TOP_UNIVPLL1_D8>: specify parent clock 78MHZ.
++  The second should be <&topckgen CLK_TOP_SPI_SEL>. It's clock mux.
++  The third is <&pericfg CLK_PERI_SPI0>. It's clock gate.
+ 
+-- clock-names: shall be "spi-clk" for the controller clock, and
+-  "parent-clk" for the parent clock.
++- clock-names: shall be "parent-clk" for the parent clock, "sel-clk" for the
++  muxes clock, and "spi-clk" for the clock gate.
+ 
+ Optional properties:
+ - mediatek,pad-select: specify which pins group(ck/mi/mo/cs) spi
+@@ -44,8 +45,11 @@ spi: spi@1100a000 {
+ 	#size-cells = <0>;
+ 	reg = <0 0x1100a000 0 0x1000>;
+ 	interrupts = <GIC_SPI 110 IRQ_TYPE_LEVEL_LOW>;
+-	clocks = <&topckgen CLK_TOP_SPI_SEL>, <&topckgen CLK_TOP_SYSPLL3_D2>;
+-	clock-names = "spi-clk", "parent-clk";
++	clocks = <&topckgen CLK_TOP_SYSPLL3_D2>,
++		 <&topckgen CLK_TOP_SPI_SEL>,
++		 <&pericfg CLK_PERI_SPI0>;
++	clock-names = "parent-clk", "sel-clk", "spi-clk";
++
+ 	mediatek,pad-select = <0>;
+ 	status = "disabled";
+ };
+-- 
 1.8.1.1.dirty
-
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,84 +1,47 @@
-From: Leilk Liu <leilk.liu@mediatek.com>
-Subject: [PATCH v7] arm64: dts: Add spi bus dts
-Date: Mon, 31 Aug 2015 21:44:19 +0800
-Message-ID: <1441028659-19068-1-git-send-email-leilk.liu@mediatek.com>
+From: Michael Welling <mwelling-EkmVulN54Sk@public.gmane.org>
+Subject: Re: [PATCH] spi: omap2-mcspi: add runtime PM to set_cs()
+Date: Mon, 31 Aug 2015 08:46:46 -0500
+Message-ID: <20150831134645.GA11095@deathstar>
+References: <1437590769-14632-1-git-send-email-sre@kernel.org>
+ <20150724163946.GN11162@sirena.org.uk>
+ <55E31701.7050807@bitmer.com>
+ <20150830164444.GA22471@deathstar>
+ <20150831085355.GF12027@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: Mark Brown <broonie@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>,
-	<linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
-	Leilk Liu <leilk.liu@mediatek.com>
-To: Matthias Brugger <matthias.bgg@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Jarkko Nikula <jarkko.nikula-FVTvWyuFUl3QT0dZR+AlfA@public.gmane.org>,
+	Sebastian Reichel <sre-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20150831085355.GF12027-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-This patch adds MT8173 spi bus controllers into device tree.
+On Mon, Aug 31, 2015 at 09:53:55AM +0100, Mark Brown wrote:
+> On Sun, Aug 30, 2015 at 11:44:45AM -0500, Michael Welling wrote:
+> 
+> > The patch is currently sitting in linux-next.
+> 
+> > Not sure why it wasn't merged with 4.2.0-rc8.
+> 
+> You didn't indicate that it was a bug fix for Linus rather than a fix
+> for recent development :(
 
-Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
----
-Change in this patch:
-1. fix spi clock flow usage error.
----
- arch/arm64/boot/dts/mediatek/mt8173-evb.dts | 18 ++++++++++++++++++
- arch/arm64/boot/dts/mediatek/mt8173.dtsi    | 13 +++++++++++++
- 2 files changed, 31 insertions(+)
+Sorry, I did not know that it was my responsibility.
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8173-evb.dts b/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
-index 4be66ca..811cb76 100644
---- a/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
-@@ -387,6 +387,24 @@
- 	};
- };
- 
-+&pio {
-+	spi_pins_a: spi0 {
-+		pins_spi {
-+			pinmux = <MT8173_PIN_69_SPI_CK__FUNC_SPI_CK_0_>,
-+				<MT8173_PIN_70_SPI_MI__FUNC_SPI_MI_0_>,
-+				<MT8173_PIN_71_SPI_MO__FUNC_SPI_MO_0_>,
-+				<MT8173_PIN_72_SPI_CS__FUNC_SPI_CS_0_>;
-+		};
-+	};
-+};
-+
-+&spi {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&spi_pins_a>;
-+	mediatek,pad-select = <0>;
-+	status = "okay";
-+};
-+
- &uart0 {
- 	status = "okay";
- };
-diff --git a/arch/arm64/boot/dts/mediatek/mt8173.dtsi b/arch/arm64/boot/dts/mediatek/mt8173.dtsi
-index d18ee42..fcb4860 100644
---- a/arch/arm64/boot/dts/mediatek/mt8173.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8173.dtsi
-@@ -365,6 +365,19 @@
- 			status = "disabled";
- 		};
- 
-+		spi: spi@1100a000 {
-+			compatible = "mediatek,mt8173-spi";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			reg = <0 0x1100a000 0 0x1000>;
-+			interrupts = <GIC_SPI 110 IRQ_TYPE_LEVEL_LOW>;
-+			clocks = <&topckgen CLK_TOP_SYSPLL3_D2>,
-+				 <&topckgen CLK_TOP_SPI_SEL>,
-+				 <&pericfg CLK_PERI_SPI0>;
-+			clock-names = "parent-clk", "sel-clk", "spi-clk";
-+			status = "disabled";
-+		};
-+
- 		i2c3: i2c3@11010000 {
- 			compatible = "mediatek,mt8173-i2c";
- 			reg = <0 0x11010000 0 0x70>,
--- 
-1.8.1.1.dirty
+How do I indicate this for future reference?
+
+The patch that Sebastian sent said the following:
+"
+Michael also tested the patch, but have not explicitly written an
+Tested-By, so you may want to wait for feedback from him. The patch
+should be sent for 4.2-rc, which introduced the regression.
+"
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

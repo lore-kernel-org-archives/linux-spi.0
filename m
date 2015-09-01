@@ -1,54 +1,64 @@
-From: Tan Jui Nee <jui.nee.tan-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: spi-pxa2xx: Check status register to determine if SSSR_TINT is disabled
-Date: Tue,  1 Sep 2015 10:22:51 +0800
-Message-ID: <1441074171-23265-1-git-send-email-jui.nee.tan@intel.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: ARM: pxa: build error in arch/arm/plat-pxa/ssp.c
+Date: Tue, 01 Sep 2015 09:36:04 +0300
+Message-ID: <55E54754.1060002@linux.intel.com>
+References: <1441073073.12012.3.camel@ingics.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+	Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1441073073.12012.3.camel-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: "Tan, Jui Nee" <jui.nee.tan-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Hi
 
-On Intel Baytrail, there is case when interrupt handler get called, no SPI
-message is captured. The RX FIFO is indeed empty when RX timeout pending
-interrupt (SSSR_TINT) happens.
+Adding linux-spi and Mark Brown.
 
-Use the BIOS version where both HSUART and SPI are on the same IRQ. Both
-drivers are using IRQF_SHARED when calling the request_irq function. When
-running two separate and independent SPI and HSUART application that
-generate data traffic on both components, user will see messages like
-below on the console:
+On 09/01/2015 05:04 AM, Axel Lin wrote:
+>    CC [M]  arch/arm/plat-pxa/ssp.o
+> arch/arm/plat-pxa/ssp.c:110:52: error: 'LPSS_SSP' undeclared here (not in a function)
+> scripts/Makefile.build:264: recipe for target 'arch/arm/plat-pxa/ssp.o' failed
+> make[1]: *** [arch/arm/plat-pxa/ssp.o] Error 1
+> Makefile:965: recipe for target 'arch/arm/plat-pxa' failed
+> make: *** [arch/arm/plat-pxa] Error 2
+>
+>
+> The build error is introduced by:
+> commit 03fbf488cece461468d3abb795f5e5f055e00040
+> Author: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+> Date:   Thu Jun 4 16:55:10 2015 +0300
+>
+>      spi: pxa2xx: Differentiate Intel LPSS types
+>
+I obviously didn't do tree wide grep for LPSS_SSP and pxa3xx_defconfig 
+don't reveal it without setting CONFIG_USE_OF. Sorry about that.
 
-  pxa2xx-spi pxa2xx-spi.0: bad message state in interrupt handler
+No I'm pondering how to fix this. I see these bindings are added by the 
+commit a6e56c28a178 ("ARM: pxa: ssp: add DT bindings") but some of the 
+types are not used anywhere. For instance PXA168_SSP or PXA910_SSP. Then 
+PXA3xx_SSP is used in sound/soc/pxa/pxa-ssp.c and CE4100_SSP in 
+drivers/spi/spi-pxa2xx.c (where LPSS_SSP was used too before 
+differentiating it).
 
-This commit will fix this by first checking Receiver Time-out Interrupt,
-if it is disabled, ignore the request and return without servicing.
+What I'm wondering is this binding below correct in 
+arch/arm/plat-pxa/ssp.c? LPSS_SSP was meant to be for Intel Intel Low 
+Power Subsystem SPI.
 
-Signed-off-by: Tan, Jui Nee <jui.nee.tan-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spi-pxa2xx.c | 4 ++++
- 1 file changed, 4 insertions(+)
+"{ .compatible = "mrvl,lpss-ssp",	.data = (void *) LPSS_SSP }"
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index fdd79197..a8ef38e 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -654,6 +654,10 @@ static irqreturn_t ssp_int(int irq, void *dev_id)
- 	if (!(sccr1_reg & SSCR1_TIE))
- 		mask &= ~SSSR_TFS;
- 
-+	/* Ignore RX timeout interrupt if it is disabled */
-+	if (!(sccr1_reg & SSCR1_TINTE))
-+		mask &= ~SSSR_TINT;
-+
- 	if (!(status & mask))
- 		return IRQ_NONE;
- 
+Mika, Daniel: do you know is there any change there is a Marvell PXA 
+platform compatible with Intel LPSS or is above binding bogus?
+
 -- 
-1.9.3
-
+Jarkko
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

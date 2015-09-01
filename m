@@ -1,64 +1,128 @@
-From: Christian Hartmann <cornogle-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
-Subject: Re: [alsa-devel] Fwd: [PATCH 1/1] SPI : spi-pxa2xx : fix spi init of
- WM510205 codec via ACPI (resend)
-Date: Tue, 1 Sep 2015 11:45:31 +0200
-Message-ID: <CAKor6Tf7_Hiyc1v_TGvdVAU+G84Gp+KgKeSGi8EQJRoq9rhMuw@mail.gmail.com>
-References: <20150821074310.GM30005@lahna.fi.intel.com>
-	<CAKor6TeJp4ti6_QVCEpz0x7c2NwvUiS5wq_=_WDjM3B7T4=1Yg@mail.gmail.com>
-	<20150824085140.GA5647@ck-lbox>
-	<CAKor6TcRWgn-Z+Va0JKCBqxVA9HBSLMR_vh-z8MSBZebn9kDVg@mail.gmail.com>
-	<20150825062157.GB27431@sirena.org.uk>
-	<CAKor6Tf_8J4DVrVRShw2ked-zJzmP6G1P1i=vTcbzWX-J1H6dQ@mail.gmail.com>
-	<CAKor6TfpWuhTG6dfARdHmXEb+bLpm5Q6Z-A0g60VPD2fCWHbOg@mail.gmail.com>
-	<20150826100155.GA1513@lahna.fi.intel.com>
-	<CAKor6TeH32hd0QUCPowzrjp54iJjGKiJ8jVT994y2O29dfk=QA@mail.gmail.com>
-	<20150827115914.GF28428@lahna.fi.intel.com>
-	<20150827145614.GC5313@sirena.org.uk>
-	<CAKor6Tf8kB0WPXLTBFmCzUJkMVEDu-xTEyw0-_NZvBdFSyQSFA@mail.gmail.com>
-	<CAKor6TfW4reRz3m-xkCr_ZUfHQkfqT3q+S7JCpO-9F+k1QW38g@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Pierre-Louis Bossart <pierre-louis.bossart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-	dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org
-To: Charles Keepax <ckeepax-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+From: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Subject: [PATCH v3 0/9] Fix broken DMAFLUSHP on Rockchips platform
+Date: Tue,  1 Sep 2015 17:56:21 +0800
+Message-ID: <1441101381-1329-1-git-send-email-shawn.lin@rock-chips.com>
+Cc: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	Olof Johansson <olofj-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
+	Sonny Rao <sonnyrao-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	Addy Ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>, dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+To: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
+	Jaroslav Kysela <perex-/Fr2/VpizcU@public.gmane.org>,
+	Takashi Iwai <tiwai-IBi9RG/b67k@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAKor6TfW4reRz3m-xkCr_ZUfHQkfqT3q+S7JCpO-9F+k1QW38g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-hi
 
-2015-08-28 11:50 GMT+02:00 Christian Hartmann <cornogle-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>:
->
->  and thats what I got:
->
-> [    6.182903] pxa2xx-spi 80860F0E:00: bus_num = -1
-> [    6.182909] pxa2xx-spi 80860F0E:00: num_chipselect = 2
-> [    6.182928] pxa2xx-spi 80860F0E:00: IRQ 194
-> [    6.183049] pxa2xx-spi 80860F0E:00: no DMA channels available, using PIO
-> [    6.183111] pxa2xx-spi 80860F0E:00: registered master spi32766 (dynamic)
-> [    6.192761] spi spi-WM510205:00: 8333333 Hz actual, PIO
-> .... the rest of the dmesg is currently the same....
->
->
-> Q:  this thread is about the patch for the pxa2xx-spi where the
-> num_chipselect was raised by one to so that the slave connects here at
-> all. otherwise the cs1 >= max will be hit.
-> Do you think the bus_number is ok ?
-> And shouldn't it be set the cs1=0 and num_chipselect=1  ??
+The purpose of the DMAFLUSHP instruction:
+- Tell the peripheral to clear its status and control registers.
+- Send a message to the peripheral to resend its level status.
 
-What is with the bus_num ? where can I find the correct one ?
-I have no working example, is it possible to find the right settings
-only via a windows installation??
+There are 3 timings described in PL330 Technical Reference Manual:
+- Timing 1: Burst request, can work well without DMAFLUSHP.
+- Timing 2: Single and burst request, DMAC will ignore the single
+	    transfer request. This timing happens if there are single
+	    and burst request.
+- Timing 3: Single transfers for a burst request, DMAC should signals
+	    datype to request the peripheral to flush the contents of
+	    any control registers. This timing happens if there is
+	    not enough MFIFO to places the burst data.
 
-cheers
-chris
+A peripheral may signal a DMA request during the execution of
+DMAFLUSHP instruction, that cause DMA request being ignored by DMAC.
+
+But DMAC and all peripherals on RK3X SoCs DO NOT support DMAFLUSHP.
+It can't send a message to the peripheral to resend DMA request,
+and the peripheral can't acknowledge a flush request from DMAC.
+So all DMA requests should NOT be ignored by DMAC, and DMAC will not
+notify the peripheral to flush.
+
+To fix this problem, we need:
+- Do NOT execute DMAFLUSHP instruction.
+- Timing 2 and timing 3 should not happen.
+
+Because on RK3X SoCs, there are 6 or below  channels and 32 MFIFO depth
+for DMAC_BUS, and 8 channels and 64 MFIFO depth for DMAC_PERI, it is
+impossible to hit the timing 3 if burst length is equal or less than 4.
+
+Since the request type signal by the peripheral can only be set by
+software. We can set Rockchip Soc's GRF_PERIDMAC_CON0[2:1] to select single
+or burst request, if it is set b01,  all of the peripharals will signal a brust
+request. So the timing 2 will not happen, too.
+
+So DMAC on RK3X can support single or burst transfer, but can't support
+mixed transfer.
+
+Because burst transfer is more efficient than single transfer, this is
+confirmed by our ASIC team, who strongly suggest to use burst transfer.
+And this is confirmed by Addy's test on RK3288-Pink2 board, the speed of
+spi flash burst transfer will increase about two times than single transfer.
+Also, I have tested dw_mmc with pl330 on RK3188 platform to double confirm
+the result. That means burst transfer is reansonable.
+
+So we need a quirk not to execute DMAFLUSHP instruction and to use burst
+transfer.
+
+Note:
+- The Rockchip Soc default value of GRF_PERIDMAC_CON0[2:1] is b01. To
+  support brust transfer, these bits should not be changed in bootloader.
+
+
+Changes in v3:
+- add more rockchip drivers' changes in this patchset
+- add Reviewed-by: Sonny Rao <sonnyrao-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+
+Changes in v2:
+- amend the author
+- reorder the patches suggested by Doug
+- add Reviewed-by: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org> for
+  rk3288.dtsi patch and arm-pl330.txt patch
+- amend Olof's mail address
+
+Changes in v1:
+- rename broken-no-flushp to "arm,pl330-broken-no-flushp" suggested
+  by Krzysztof.
+- add From original author.
+- remove Sunny's tag
+
+Addy Ke (3):
+  DMA: pl330: add quirk for broken no flushp
+  ARM: dts: Add arm,pl330-broken-no-flushp quirk for rk3288 platform
+  spi: rockchip: modify DMA max burst to 1
+
+Boojin Kim (1):
+  DMA: pl330: support burst mode for dev-to-mem and mem-to-dev transmit
+
+Shawn Lin (4):
+  Documentation: arm-pl330: add description of
+    arm,pl330-broken-no-flushp
+  Documentation: spi-rockchip: add description of
+    rockchip,spi-broken-burst-len
+  Documentation: rockchip-i2s: add description of
+    rockchip,i2s-broken-burst-len
+  ARM: dts: Add arm,pl330-broken-no-flushp quirk for rk3xxx platform
+
+Yiwei Cai (1):
+  ASoC: rockchip_i2s: modify DMA max burst to 1
+
+ .../devicetree/bindings/dma/arm-pl330.txt          |   1 +
+ .../devicetree/bindings/sound/rockchip-i2s.txt     |   4 +
+ .../devicetree/bindings/spi/spi-rockchip.txt       |   3 +-
+ arch/arm/boot/dts/rk3288.dtsi                      |   7 ++
+ arch/arm/boot/dts/rk3xxx.dtsi                      |   5 +
+ drivers/dma/pl330.c                                | 101 +++++++++++++++------
+ drivers/spi/spi-rockchip.c                         |  16 +++-
+ sound/soc/rockchip/rockchip_i2s.c                  |  10 +-
+ 8 files changed, 113 insertions(+), 34 deletions(-)
+
+-- 
+2.3.7
+
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

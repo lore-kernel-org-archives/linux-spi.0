@@ -1,54 +1,59 @@
-From: Shawn Lin <shawn.lin@rock-chips.com>
-Subject: [PATCH v3 2/9] Documentation: arm-pl330: add description of arm,pl330-broken-no-flushp
-Date: Tue,  1 Sep 2015 17:57:09 +0800
-Message-ID: <1441101429-1424-1-git-send-email-shawn.lin@rock-chips.com>
+From: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Subject: [PATCH v3 3/9] Documentation: spi-rockchip: add description of rockchip,spi-broken-burst-len
+Date: Tue,  1 Sep 2015 17:57:19 +0800
+Message-ID: <1441101439-1465-1-git-send-email-shawn.lin@rock-chips.com>
 References: <1441101381-1329-1-git-send-email-shawn.lin@rock-chips.com>
-Cc: Doug Anderson <dianders@chromium.org>,
-	Olof Johansson <olofj@google.com>,
-	Sonny Rao <sonnyrao@chromium.org>,
-	Addy Ke <addy.ke@rock-chips.com>, dmaengine@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org, alsa-devel@alsa-project.org,
-	linux-spi@vger.kernel.org, Shawn Lin <shawn.lin@rock-chips.com>
-To: Vinod Koul <vinod.koul@intel.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>, Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1441101381-1329-1-git-send-email-shawn.lin@rock-chips.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	Olof Johansson <olofj-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
+	Sonny Rao <sonnyrao-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	Addy Ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>, dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
+	Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>
+To: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
+	Jaroslav Kysela <perex-/Fr2/VpizcU@public.gmane.org>,
+	Takashi Iwai <tiwai-IBi9RG/b67k@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1441101381-1329-1-git-send-email-shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-
-Reviewed-by: Doug Anderson <dianders@chromium.org>
-Reviewed-by: Sonny Rao <sonnyrao@chromium.org>
+Signed-off-by: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+cc: Addy Ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+cc: Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>
+cc: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+cc: Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>
+cc: Sonny Rao <sonnyrao-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 ---
 
-Changes in v3:
-- add Reviewed-by: Sonny Rao <sonnyrao@chromium.org>
+Changes in v3: None
+Changes in v2: None
+Changes in v1: None
 
-Changes in v2:
-- add Reviewed-by: Doug Anderson <dianders@chromium.org>
+ Documentation/devicetree/bindings/spi/spi-rockchip.txt | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Changes in v1:
-- rename broken-no-flushp to "arm,pl330-broken-no-flushp" suggested
-  by Krzysztof.
-
- Documentation/devicetree/bindings/dma/arm-pl330.txt | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/Documentation/devicetree/bindings/dma/arm-pl330.txt b/Documentation/devicetree/bindings/dma/arm-pl330.txt
-index 2675658..db7e226 100644
---- a/Documentation/devicetree/bindings/dma/arm-pl330.txt
-+++ b/Documentation/devicetree/bindings/dma/arm-pl330.txt
-@@ -15,6 +15,7 @@ Optional properties:
-     cells in the dmas property of client device.
-   - dma-channels: contains the total number of DMA channels supported by the DMAC
-   - dma-requests: contains the total number of DMA requests supported by the DMAC
-+  - arm,pl330-broken-no-flushp: quirk for avoiding to execute DMAFLUSHP
+diff --git a/Documentation/devicetree/bindings/spi/spi-rockchip.txt b/Documentation/devicetree/bindings/spi/spi-rockchip.txt
+index 0c491bd..2256610 100644
+--- a/Documentation/devicetree/bindings/spi/spi-rockchip.txt
++++ b/Documentation/devicetree/bindings/spi/spi-rockchip.txt
+@@ -27,7 +27,8 @@ Optional Properties:
+ - rx-sample-delay-ns: nanoseconds to delay after the SCLK edge before sampling
+ 		Rx data (may need to be fine tuned for high capacitance lines).
+ 		No delay (0) by default.
+-
++- rockchip,spi-broken-burst-len: quirk for broken burst len on Rockchip platform.
++			Add this property will force driver to set burst ONE.
  
  Example:
  
 -- 
 2.3.7
+
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

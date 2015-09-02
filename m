@@ -1,91 +1,89 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: spi-pxa2xx: Check status register to determine if SSSR_TINT is disabled" to the spi tree
-Date: Wed, 02 Sep 2015 13:12:16 +0100
-Message-ID: <E1ZX6tk-0003bH-8g@debutante>
-References: <1441074171-23265-1-git-send-email-jui.nee.tan@intel.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Tan Jui Nee <jui.nee.tan-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Ranjit Abhimanyu Waghmode <ranjit.waghmode-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Subject: RE: [LINUX RFC v2 0/4] spi: add dual parallel mode support in Zynq
+ MPSoC GQSPI controller
+Date: Wed, 2 Sep 2015 17:12:14 +0000
+Message-ID: <7CFCFE83B8145347A1D424EC939F1C3C014AFF00@XAP-PVEXMBX01.xlnx.xilinx.com>
+References: <1440570367-22569-1-git-send-email-ranjit.waghmode@xilinx.com>
+ <201508260856.22258.marex@denx.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Cc: "dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org" <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	"computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Michal Simek <michals-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	Soren Brinkmann <sorenb-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	"zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org" <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>,
+	"b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org" <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	"knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org" <knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>,
+	"juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org" <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
+	"beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org" <beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org>,
+	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	Harini Katakam <harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	Punnaiah Choudary Kalluri <punnaia-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1441074171-23265-1-git-send-email-jui.nee.tan-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <201508260856.22258.marex-ynQEQJNshbs@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+Hi Marek,
 
-   spi: spi-pxa2xx: Check status register to determine if SSSR_TINT is disabled
+> -----Original Message-----
+> From: Marek Vasut [mailto:marex-ynQEQJNshbs@public.gmane.org]
+> Sent: Wednesday, August 26, 2015 12:26 PM
+> To: Ranjit Abhimanyu Waghmode
+> Cc: dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org; computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org;
+> broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org; Michal Simek; Soren Brinkmann; zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org;
+> ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org; b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org; knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org;
+> juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org; beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org; linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org;
+> linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; linux-arm-
+> kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org; Harini Katakam; Punnaiah Choudary Kalluri
+> Subject: Re: [LINUX RFC v2 0/4] spi: add dual parallel mode support in Zynq
+> MPSoC GQSPI controller
+> 
+> On Wednesday, August 26, 2015 at 08:26:03 AM, Ranjit Waghmode wrote:
+> > This series adds dual parallel mode support for Zynq Ultrascale+ MPSoC
+> > GQSPI controller driver.
+> >
+> > What is dual parallel mode?
+> > ---------------------------
+> > ZynqMP GQSPI controller supports Dual Parallel mode with following
+> > functionalities: 1) Supporting two SPI flash memories operating in
+> > parallel. 8 I/O lines. 2) Chip selects and clock are shared to both
+> > the flash devices
+> > 3) This mode is targeted for faster read/write speed and also doubles
+> > the size 4) Commands/data can be transmitted/received from both the
+> > devices(mirror), or only upper or only lower flash memory devices.
+> > 5) Data arrangement:
+> >    With stripe enabled,
+> >    Even bytes i.e. 0, 2, 4,... are transmitted on Lower Data Bus
+> >    Odd bytes i.e. 1, 3, 5,.. are transmitted on Upper Data Bus.
+> 
+> This might be a dumb question, but why don't you just treat this as an SPI NOR
+> flash with 8-bit bus ?
 
-has been applied to the spi tree at
+In case of dual parallel configuration of this controller there are different modes like single, dual and quad mode.
+Whatever you are suggesting would fit only in the case of Quad mode operation as both buses would have 4 lines each.
+In case of single mode of parallel configuration, there would be two buses; but the line on each bus would one. So altogether there will be two lines.
+And in case of dual mode of parallel configuration each bus will be having two lines. So altogether 4 lines will be there.
+So keeping 8 lines would not support above two modes of parallel configuration correctly.
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+Logically it is a single flash with 8 IO lines but physically it's a two flash devices and each has 4 IO lines. 
+So, in this case, read and write addresses should be always even and minimum data that can be accessed is 2 bytes.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+Regards,
+Ranjit
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 02bc933ebb59208f42c2e6305b2c17fd306f695d Mon Sep 17 00:00:00 2001
-From: "Tan, Jui Nee" <jui.nee.tan-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Date: Tue, 1 Sep 2015 10:22:51 +0800
-Subject: [PATCH] spi: spi-pxa2xx: Check status register to determine if
- SSSR_TINT is disabled
-
-On Intel Baytrail, there is case when interrupt handler get called, no SPI
-message is captured. The RX FIFO is indeed empty when RX timeout pending
-interrupt (SSSR_TINT) happens.
-
-Use the BIOS version where both HSUART and SPI are on the same IRQ. Both
-drivers are using IRQF_SHARED when calling the request_irq function. When
-running two separate and independent SPI and HSUART application that
-generate data traffic on both components, user will see messages like
-below on the console:
-
-  pxa2xx-spi pxa2xx-spi.0: bad message state in interrupt handler
-
-This commit will fix this by first checking Receiver Time-out Interrupt,
-if it is disabled, ignore the request and return without servicing.
-
-Signed-off-by: Tan, Jui Nee <jui.nee.tan-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Acked-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
----
- drivers/spi/spi-pxa2xx.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 7293d6d875c5..8e4b1a7c37ce 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -643,6 +643,10 @@ static irqreturn_t ssp_int(int irq, void *dev_id)
- 	if (!(sccr1_reg & SSCR1_TIE))
- 		mask &= ~SSSR_TFS;
- 
-+	/* Ignore RX timeout interrupt if it is disabled */
-+	if (!(sccr1_reg & SSCR1_TINTE))
-+		mask &= ~SSSR_TINT;
-+
- 	if (!(status & mask))
- 		return IRQ_NONE;
- 
--- 
-2.5.0
-
+> 
+> Best regards,
+> Marek Vasut
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

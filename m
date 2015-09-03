@@ -1,67 +1,119 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3 8/9] spi: rockchip: modify DMA max burst to 1
-Date: Thu, 3 Sep 2015 13:54:29 +0100
-Message-ID: <20150903125429.GA12027@sirena.org.uk>
-References: <1441101381-1329-1-git-send-email-shawn.lin@rock-chips.com>
- <1441101524-1700-1-git-send-email-shawn.lin@rock-chips.com>
+From: Ranjit Abhimanyu Waghmode <ranjit.waghmode-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Subject: RE: [LINUX RFC v2 0/4] spi: add dual parallel mode support in Zynq
+ MPSoC GQSPI controller
+Date: Thu, 3 Sep 2015 13:25:00 +0000
+Message-ID: <7CFCFE83B8145347A1D424EC939F1C3C014B08B2@XAP-PVEXMBX01.xlnx.xilinx.com>
+References: <1440570367-22569-1-git-send-email-ranjit.waghmode@xilinx.com>
+ <201508260856.22258.marex@denx.de>
+ <7CFCFE83B8145347A1D424EC939F1C3C014AFF00@XAP-PVEXMBX01.xlnx.xilinx.com>
+ <201509022056.09635.marex@denx.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="5EhqeiticJwWsSCK"
-Cc: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
-	Jaroslav Kysela <perex-/Fr2/VpizcU@public.gmane.org>,
-	Takashi Iwai <tiwai-IBi9RG/b67k@public.gmane.org>,
-	Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-	Olof Johansson <olofj-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
-	Sonny Rao <sonnyrao-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-	Addy Ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>, dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>
-To: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Cc: "dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org" <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	"computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Michal Simek <michals-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	Soren Brinkmann <sorenb-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	"zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org" <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>,
+	"b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org" <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	"knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org" <knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>,
+	"juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org" <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
+	"beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org" <beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org>,
+	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	Harini Katakam <harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	Punnaiah Choudary Kalluri <punnaia-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1441101524-1700-1-git-send-email-shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+In-Reply-To: <201509022056.09635.marex-ynQEQJNshbs@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hi,
 
---5EhqeiticJwWsSCK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Tue, Sep 01, 2015 at 05:58:44PM +0800, Shawn Lin wrote:
-
-> Generic dma controller on Rockchips' platform cannot support
-> DMAFLUSHP instruction which make dma to flush the req of non-aligned
-> or non-multiple of what we need. That will cause an unrecoverable
-> dma bus error. The saftest way is to set dma max burst to 1.
-
-If this is a quirk of the DMA controller why is it being fixed with a
-property specific to the SPI controller?  Can't the DMA controller just
-override the burst size?
-
-> +#define ROCKCHIP_SPI_BORKEN_BURST_LEN (1<<0) /* broken burst len*/
-
-This is misspelt.
-
---5EhqeiticJwWsSCK
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJV6EMFAAoJECTWi3JdVIfQ12EH/3J2qry3k16pYz7vDs0aG4y+
-zC9BSz7ESW5CXlymQT4CP4cPG+6qEgp0/stwWCHq5ew3q5NkC+NFUleIN/4njiau
-uNfyRwnUC7ovudKV4dNSSYTGazrghmM8+0CLg8GME7k4Dsk29N6F83CgGzqGJsak
-hQRBtT8ssEbUrIySiu53qUZZ9ddDU/wWrRS48FOfcjd8SkfOhHHf5ZoZ2lJ9ry9q
-U1d+HHUqGccmUNWzCIFbm646soEUkxeojQchNngQ3TTRdY7oCoO9lPA/NNKcwrCX
-sU7vJMG/r3qkp5WwLsjAy9IshTPl3Jhwh+aOILUznPditIEwcWeTYAo79sSyRa4=
-=MdEO
------END PGP SIGNATURE-----
-
---5EhqeiticJwWsSCK--
+> -----Original Message-----
+> From: Marek Vasut [mailto:marex-ynQEQJNshbs@public.gmane.org]
+> Sent: Thursday, September 03, 2015 12:26 AM
+> To: Ranjit Abhimanyu Waghmode
+> Cc: dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org; computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org;
+> broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org; Michal Simek; Soren Brinkmann; zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org;
+> ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org; b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org; knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org;
+> juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org; beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org; linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org;
+> linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; linux-arm-
+> kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org; Harini Katakam; Punnaiah Choudary Kalluri
+> Subject: Re: [LINUX RFC v2 0/4] spi: add dual parallel mode support in Zynq
+> MPSoC GQSPI controller
+> 
+> On Wednesday, September 02, 2015 at 07:12:14 PM, Ranjit Abhimanyu
+> Waghmode
+> wrote:
+> > Hi Marek,
+> >
+> > > -----Original Message-----
+> > > From: Marek Vasut [mailto:marex-ynQEQJNshbs@public.gmane.org]
+> > > Sent: Wednesday, August 26, 2015 12:26 PM
+> > > To: Ranjit Abhimanyu Waghmode
+> > > Cc: dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org; computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org;
+> > > broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org; Michal Simek; Soren Brinkmann; zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org;
+> > > ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org; b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org;
+> > > knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org; juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org;
+> beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org;
+> > > linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org; linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org;
+> > > linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; linux-arm- kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org;
+> > > Harini Katakam; Punnaiah Choudary Kalluri
+> > > Subject: Re: [LINUX RFC v2 0/4] spi: add dual parallel mode support
+> > > in Zynq MPSoC GQSPI controller
+> > >
+> > > On Wednesday, August 26, 2015 at 08:26:03 AM, Ranjit Waghmode wrote:
+> > > > This series adds dual parallel mode support for Zynq Ultrascale+
+> > > > MPSoC GQSPI controller driver.
+> > > >
+> > > > What is dual parallel mode?
+> > > > ---------------------------
+> > > > ZynqMP GQSPI controller supports Dual Parallel mode with following
+> > > > functionalities: 1) Supporting two SPI flash memories operating in
+> > > > parallel. 8 I/O lines. 2) Chip selects and clock are shared to
+> > > > both the flash devices
+> > > > 3) This mode is targeted for faster read/write speed and also
+> > > > doubles the size 4) Commands/data can be transmitted/received from
+> > > > both the devices(mirror), or only upper or only lower flash memory
+> devices.
+> > > >
+> > > > 5) Data arrangement:
+> > > >    With stripe enabled,
+> > > >    Even bytes i.e. 0, 2, 4,... are transmitted on Lower Data Bus
+> > > >    Odd bytes i.e. 1, 3, 5,.. are transmitted on Upper Data Bus.
+> > >
+> > > This might be a dumb question, but why don't you just treat this as
+> > > an SPI NOR flash with 8-bit bus ?
+> >
+> > In case of dual parallel configuration of this controller there are
+> > different modes like single, dual and quad mode. Whatever you are
+> > suggesting would fit only in the case of Quad mode operation as both
+> > buses would have 4 lines each. In case of single mode of parallel
+> > configuration, there would be two buses; but the line on each bus
+> > would one. So altogether there will be two lines. And in case of dual
+> > mode of parallel configuration each bus will be having two lines. So
+> > altogether 4 lines will be there. So keeping 8 lines would not support
+> > above two modes of parallel configuration correctly.
+> >
+> > Logically it is a single flash with 8 IO lines but physically it's a
+> > two flash devices and each has 4 IO lines. So, in this case, read and
+> > write addresses should be always even and minimum data that can be
+> > accessed is 2 bytes.
+> 
+> Oh, I see what the issue is now. It has to do with configuring the flash into
+> correct bus-width mode, right ?
+Yes.
+> 
+> Best regards,
+> Marek Vasut
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

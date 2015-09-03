@@ -1,69 +1,67 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [LINUX RFC v2 1/4] spi: add support of two chip selects & data
- stripe
-Date: Thu, 3 Sep 2015 13:12:32 +0100
-Message-ID: <20150903121232.GW12027@sirena.org.uk>
-References: <1440570367-22569-1-git-send-email-ranjit.waghmode@xilinx.com>
- <1440570367-22569-2-git-send-email-ranjit.waghmode@xilinx.com>
+Subject: Re: [PATCH v3 8/9] spi: rockchip: modify DMA max burst to 1
+Date: Thu, 3 Sep 2015 13:54:29 +0100
+Message-ID: <20150903125429.GA12027@sirena.org.uk>
+References: <1441101381-1329-1-git-send-email-shawn.lin@rock-chips.com>
+ <1441101524-1700-1-git-send-email-shawn.lin@rock-chips.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="0DzvS/R5x22MwsQI"
-Cc: dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org, computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org, soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org,
-	zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org, marex-ynQEQJNshbs@public.gmane.org,
-	b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org, knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org,
-	juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org, beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org, punnaia-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org
-To: Ranjit Waghmode <ranjit.waghmode-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="5EhqeiticJwWsSCK"
+Cc: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
+	Jaroslav Kysela <perex-/Fr2/VpizcU@public.gmane.org>,
+	Takashi Iwai <tiwai-IBi9RG/b67k@public.gmane.org>,
+	Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	Olof Johansson <olofj-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
+	Sonny Rao <sonnyrao-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	Addy Ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>, dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>
+To: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1440570367-22569-2-git-send-email-ranjit.waghmode-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+In-Reply-To: <1441101524-1700-1-git-send-email-shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---0DzvS/R5x22MwsQI
+--5EhqeiticJwWsSCK
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Aug 26, 2015 at 11:56:04AM +0530, Ranjit Waghmode wrote:
+On Tue, Sep 01, 2015 at 05:58:44PM +0800, Shawn Lin wrote:
 
-> To support dual parallel mode operation of ZynqMP GQSPI controller
-> following API's are added inside the core:
+> Generic dma controller on Rockchips' platform cannot support
+> DMAFLUSHP instruction which make dma to flush the req of non-aligned
+> or non-multiple of what we need. That will cause an unrecoverable
+> dma bus error. The saftest way is to set dma max burst to 1.
 
-As covered in SubmittingPatches please try to make each patch a single
-change rather than having multiple separate changes in one commit.
+If this is a quirk of the DMA controller why is it being fixed with a
+property specific to the SPI controller?  Can't the DMA controller just
+override the burst size?
 
-> +	/* Controller may support more than one chip.
-> +	 * This flag will enable that feature.
-> +	 */
-> +#define SPI_MASTER_BOTH_CS		BIT(8)		/* enable both chips */
+> +#define ROCKCHIP_SPI_BORKEN_BURST_LEN (1<<0) /* broken burst len*/
 
-This isn't saying that the controller supports more than one chip, it's
-saying that the controller supports asserting more than one chip select
-at once which isn't the same thing.  I'm also not entirely sure that
-this makes sense as a separate feature to the data striping one - I'm
-struggling to think of a way to use this sensibly separately to that.
+This is misspelt.
 
---0DzvS/R5x22MwsQI
+--5EhqeiticJwWsSCK
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJV6DkwAAoJECTWi3JdVIfQXYgH/10ooGEfIRwg3+RXxCX4cCXQ
-9tZHzQ8/VXSmmnYOZk5t7sGeX4V9+KxegIv7qYfF5xo6axxM7nR5YVsytqbFmxg6
-U+RGTxUM3kTvgD6xSELunChkj4/TQo2WpNxUekG06ei7KW/fTHvp/LjpfhMvm9oO
-Kyz9u7CU7Jw4IqxhjFOiy+zP6lWCE2Qqh5mThX9YvxFt8q4CDZRzI/ITlOVCnT4R
-Cck5fqSeRIZtaNUjZJz4f7+ZSrNt/TqoFxRmfyoEgf7XUAiw1ZmBX7NqfMbgzOEX
-msplicMkoGRWtgvS2MTX4eAL22pvbnuFZOq1YKyOLc5uxboB+lgIaz8jVeVDbkU=
-=fCrY
+iQEcBAEBCAAGBQJV6EMFAAoJECTWi3JdVIfQ12EH/3J2qry3k16pYz7vDs0aG4y+
+zC9BSz7ESW5CXlymQT4CP4cPG+6qEgp0/stwWCHq5ew3q5NkC+NFUleIN/4njiau
+uNfyRwnUC7ovudKV4dNSSYTGazrghmM8+0CLg8GME7k4Dsk29N6F83CgGzqGJsak
+hQRBtT8ssEbUrIySiu53qUZZ9ddDU/wWrRS48FOfcjd8SkfOhHHf5ZoZ2lJ9ry9q
+U1d+HHUqGccmUNWzCIFbm646soEUkxeojQchNngQ3TTRdY7oCoO9lPA/NNKcwrCX
+sU7vJMG/r3qkp5WwLsjAy9IshTPl3Jhwh+aOILUznPditIEwcWeTYAo79sSyRa4=
+=MdEO
 -----END PGP SIGNATURE-----
 
---0DzvS/R5x22MwsQI--
+--5EhqeiticJwWsSCK--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

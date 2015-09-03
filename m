@@ -1,7 +1,8 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 3/4 RESEND v2] spi: s3c64xx: simplify suspend / resume handlers
-Date: Thu, 03 Sep 2015 22:40:11 +0200
-Message-ID: <55E8B02B.8000905@gmail.com>
+Subject: [PATCH 4/4 RESEND v2] spi: s3c64xx: replace clock disabling with
+ runtime PM suspend call in remove function
+Date: Thu, 03 Sep 2015 22:40:53 +0200
+Message-ID: <55E8B055.5040102@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
@@ -12,58 +13,52 @@ Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The runtime PM suspend / resume handlers take care of the enabling/
-disabling the clocks already. Therefore replace the duplicated
-clock handling with pm_runtime_force_suspend/resume.
+Simplify s3c64xx_spi_remove by replacing the clock disabling with calling
+runtime PM suspend which does the same.
+Waking up the device if it was suspended wouldn't be strictly needed
+for this driver but using pm_runtime_get_sync is cleaner and makes
+s3c64xx_spi_remove more consistent with the runtime PM handling in
+s3c64xx_spi_setup.
+
+pm_runtime_force_suspend does most of the work for us:
+disabling the clocks, disabling runtime PM and setting it to
+"suspended" state.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Reviewed-by: Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
 Changed:
-- Replaced pm_runtime_suspend/resume calls with their
-  .._force_.. equivalents.
+- Added to the patch set
 v2:
-- Added "Reviewed-by"
+- Don't use runtime_pm_force_suspend. Technically it works but it's not
+  intuitive as we don't intend to suspend here.
 
- drivers/spi/spi-s3c64xx.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/spi/spi-s3c64xx.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index edeac06..735b7f5 100644
+index 4e5931c..dee82e1 100644
 --- a/drivers/spi/spi-s3c64xx.c
 +++ b/drivers/spi/spi-s3c64xx.c
-@@ -1246,10 +1246,9 @@ static int s3c64xx_spi_suspend(struct device *dev)
- 	if (ret)
- 		return ret;
- 
--	if (!pm_runtime_suspended(dev)) {
--		clk_disable_unprepare(sdd->clk);
--		clk_disable_unprepare(sdd->src_clk);
--	}
-+	ret = pm_runtime_force_suspend(dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	sdd->cur_speed = 0; /* Output Clock is stopped */
- 
-@@ -1261,14 +1260,14 @@ static int s3c64xx_spi_resume(struct device *dev)
- 	struct spi_master *master = dev_get_drvdata(dev);
+@@ -1225,7 +1225,7 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
+ 	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
  	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
- 	struct s3c64xx_spi_info *sci = sdd->cntrlr_info;
-+	int ret;
  
- 	if (sci->cfg_gpio)
- 		sci->cfg_gpio();
+-	pm_runtime_disable(&pdev->dev);
++	pm_runtime_get_sync(&pdev->dev);
  
--	if (!pm_runtime_suspended(dev)) {
--		clk_prepare_enable(sdd->src_clk);
--		clk_prepare_enable(sdd->clk);
--	}
-+	ret = pm_runtime_force_resume(dev);
-+	if (ret < 0)
-+		return ret;
+ 	writel(0, sdd->regs + S3C64XX_SPI_INT_EN);
  
- 	s3c64xx_spi_hwinit(sdd, sdd->port_id);
+@@ -1233,6 +1233,10 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
+ 
+ 	clk_disable_unprepare(sdd->clk);
+ 
++	pm_runtime_put_noidle(&pdev->dev);
++	pm_runtime_disable(&pdev->dev);
++	pm_runtime_set_suspended(&pdev->dev);
++
+ 	return 0;
+ }
  
 -- 
 2.5.0

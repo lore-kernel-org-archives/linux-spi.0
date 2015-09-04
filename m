@@ -1,96 +1,44 @@
-From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH v5 6/6] dt/bindings: bcm2835: Add binding documentation for auxiliar spi devices
-Date: Fri,  4 Sep 2015 09:41:50 +0000
-Message-ID: <1441359711-2800-7-git-send-email-kernel@martin.sperl.org>
+From: kernel@martin.sperl.org
+Subject: [PATCH v5 5/6] ARM: bcm2835: enable building of spi-bcm2835aux driver in default config
+Date: Fri,  4 Sep 2015 09:41:49 +0000
+Message-ID: <1441359711-2800-6-git-send-email-kernel@martin.sperl.org>
 References: <1441359711-2800-1-git-send-email-kernel@martin.sperl.org>
-Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1441359711-2800-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Martin Sperl <kernel@martin.sperl.org>
+To: Stephen Warren <swarren@wwwdotorg.org>, Lee Jones <lee@kernel.org>,
+	Russell King <linux@arm.linux.org.uk>,
+	Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora.org>, devicetree@vger.kernel.org,
+	linux-rpi-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1441359711-2800-1-git-send-email-kernel@martin.sperl.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+From: Martin Sperl <kernel@martin.sperl.org>
 
-add binding documentation
+Added spi-bcm2835aux to default config
 
-Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Signed-off-by: Martin Sperl <kernel@martin.sperl.org>
 ---
- .../bindings/spi/brcm,bcm2835-aux-spi.txt          |   47 ++++++++++++++++++++
- 1 file changed, 47 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/brcm,bcm2835-aux-spi.txt
+ arch/arm/configs/bcm2835_defconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
-Changelog:
-	v4->v5: fixed wording for reg
-		removed reference to syscon
-		removed documentation on typical GPIO config
-
-diff --git a/Documentation/devicetree/bindings/spi/brcm,bcm2835-aux-spi.txt b/Documentation/devicetree/bindings/spi/brcm,bcm2835-aux-spi.txt
-new file mode 100644
-index 0000000..3ade499
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/brcm,bcm2835-aux-spi.txt
-@@ -0,0 +1,47 @@
-+Broadcom BCM2835 auxiliar SPI1/2 controller
-+
-+The BCM2835 contains two forms of SPI master controller, one known simply as
-+SPI0, and the other known as the "Universal SPI Master"; part of the
-+auxiliary block. This binding applies to the SPI1/2 controller.
-+
-+Required properties:
-+- compatible: Should be "brcm,bcm2835-aux-spi".
-+- reg: Should contain register location and length for the spi block
-+- interrupts: Should contain shared interrupt of the aux block
-+- clocks: The clock feeding the SPI controller.
-+- cs-gpios: the cs-gpios (native cs is NOT supported)
-+	    see also spi-bus.txt
-+- bcrm,aux-enable: the bcrm,bcm2835-aux-enable config entry to handle
-+		  enabling/disabling of the spi1/spi2/uart1 HW block
-+		  second "argument" is the mask to apply to the
-+		  enable register
-+
-+Example:
-+
-+spi1@7e215080 {
-+	compatible = "brcm,bcm2835-aux-spi";
-+	reg = <0x7e215080 0x40>;
-+	interrupts = <1 29>;
-+	clocks = <&clk_spi>;
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	cs-gpios = <&gpio 18>, <&gpio 17>, <&gpio 16>;
-+	bcrm,aux-enable = <&aux_enable 2>;
-+};
-+
-+spi2@7e2150c0 {
-+	compatible = "brcm,bcm2835-aux-spi";
-+	reg = <0x7e2150c0 0x40>;
-+	interrupts = <1 29>;
-+	clocks = <&clk_spi>;
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	cs-gpios = <&gpio 43>, <&gpio 44>, <&gpio 45>;
-+	bcrm,aux-enable = <&aux_enable 4>;
-+};
-+
-+/* the necessary bcm2835 aux-enable referenced above */
-+aux_enable: aux_enable@0x7e215004 {
-+	compatible = "bcrm,bcm2835-aux";
-+	reg = <0x7e215004 0x04>;
-+};
+diff --git a/arch/arm/configs/bcm2835_defconfig b/arch/arm/configs/bcm2835_defconfig
+index 31cb073..a205c8b 100644
+--- a/arch/arm/configs/bcm2835_defconfig
++++ b/arch/arm/configs/bcm2835_defconfig
+@@ -75,6 +75,7 @@ CONFIG_I2C_CHARDEV=y
+ CONFIG_I2C_BCM2835=y
+ CONFIG_SPI=y
+ CONFIG_SPI_BCM2835=y
++CONFIG_SPI_BCM2835AUX=y
+ CONFIG_GPIO_SYSFS=y
+ # CONFIG_HWMON is not set
+ CONFIG_FB=y
 --
 1.7.10.4
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

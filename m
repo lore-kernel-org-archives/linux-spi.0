@@ -1,92 +1,66 @@
-From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH v5 0/6] bcm2835: auxiliar device support for spi
-Date: Fri,  4 Sep 2015 09:41:44 +0000
-Message-ID: <1441359711-2800-1-git-send-email-kernel@martin.sperl.org>
-Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: kernel@martin.sperl.org
+Subject: [PATCH v5 3/6] dt/bindings: bcm2835: add binding documentation for bcm2835-aux
+Date: Fri,  4 Sep 2015 09:41:47 +0000
+Message-ID: <1441359711-2800-4-git-send-email-kernel@martin.sperl.org>
+References: <1441359711-2800-1-git-send-email-kernel@martin.sperl.org>
+Cc: Martin Sperl <kernel@martin.sperl.org>
+To: Stephen Warren <swarren@wwwdotorg.org>, Lee Jones <lee@kernel.org>,
+	Russell King <linux@arm.linux.org.uk>,
+	Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora.org>, devicetree@vger.kernel.org,
+	linux-rpi-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1441359711-2800-1-git-send-email-kernel@martin.sperl.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+From: Martin Sperl <kernel@martin.sperl.org>
 
-The BCM2835 contains 3 auxiliar devices:
-* spi1
-* spi2
-* uart1
+add binding documentation
 
-All of those 3 devices are enabled/disabled via a shared register,
-which is set by default to be disabled.
-
-Access to this register needs to get serialized.
-
-So after several iterations of discussions with the following ideas:
-* syscon - device tree should describe HW not drivers to use -
-           'compatiblity = "brcm,bcm2835-aux-enable", "syscon";'
-           is not acceptable
-* regulator - it is not necessarily a regulator or a power gate
-              that is implemented in HW, so it is not valid to use
-              this framework
-
-The recommendation was made to create a new minimal API in soc
-just for access to this shared enable/disable register.
-
-This patch-series implements:
-* the bcm2835-auxiliar device enable/disable api in soc.
-* the bcm2835-auxiliar spi device driver
-
-The uart1 device driver (ns16550 based) is not implemented so far
-but would be using the same API.
-
-Both spi and uart drivers can run with shared interrupts,
-so there is no need for an interrupt-controller to get implemented.
-
-Martin Sperl (6):
-  soc: bcm2835: auxiliar devices enable infrastructure
-  ARM: bcm2835: add DT for the bcm2835 auxiliar devices
-  dt/bindings: bcm2835: add binding documentation for bcm2835-aux
-  spi: bcm2835: new driver implementing auxiliar spi1/spi2 on the
-    bcm2835 soc
-  ARM: bcm2835: enable building of spi-bcm2835aux driver in default
-    config
-  dt/bindings: bcm2835: Add binding documentation for auxiliar spi
-    devices
-
- .../bindings/soc/bcm/brcm,bcm2835-aux.txt          |   27 +
- .../bindings/spi/brcm,bcm2835-aux-spi.txt          |   47 ++
- arch/arm/boot/dts/bcm2835.dtsi                     |   37 ++
- arch/arm/configs/bcm2835_defconfig                 |    1 +
- drivers/soc/Kconfig                                |    1 +
- drivers/soc/Makefile                               |    1 +
- drivers/soc/bcm/Kconfig                            |   11 +
- drivers/soc/bcm/Makefile                           |    1 +
- drivers/soc/bcm/bcm2835-aux.c                      |  154 ++++++
- drivers/spi/Kconfig                                |   12 +
- drivers/spi/Makefile                               |    1 +
- drivers/spi/spi-bcm2835aux.c                       |  514 ++++++++++++++++++++
- include/linux/soc/bcm/bcm2835-aux.h                |   23 +
- 13 files changed, 830 insertions(+)
+Signed-off-by: Martin Sperl <kernel@martin.sperl.org>
+---
+ .../bindings/soc/bcm/brcm,bcm2835-aux.txt          |   27 ++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/soc/bcm/brcm,bcm2835-aux.txt
- create mode 100644 Documentation/devicetree/bindings/spi/brcm,bcm2835-aux-spi.txt
- create mode 100644 drivers/soc/bcm/Kconfig
- create mode 100644 drivers/soc/bcm/Makefile
- create mode 100644 drivers/soc/bcm/bcm2835-aux.c
- create mode 100644 drivers/spi/spi-bcm2835aux.c
- create mode 100644 include/linux/soc/bcm/bcm2835-aux.h
 
+diff --git a/Documentation/devicetree/bindings/soc/bcm/brcm,bcm2835-aux.txt b/Documentation/devicetree/bindings/soc/bcm/brcm,bcm2835-aux.txt
+new file mode 100644
+index 0000000..8b79cf3
+--- /dev/null
++++ b/Documentation/devicetree/bindings/soc/bcm/brcm,bcm2835-aux.txt
+@@ -0,0 +1,27 @@
++Broadcom BCM2835 auxiliar device enable register
++
++the BCM2835 contains 3 auxiliar devices (spi1/spi2/uart1)
++which need to get enabled via a shared register.
++
++Required properties:
++- compatible: Should be "brcm,bcm2835-aux".
++- reg: Should contain register location and length for the
++       enable register
++
++Example:
++
++aux_enable: aux_enable@0x7e215004 {
++	compatible = "bcrm,bcm2835-aux";
++	reg = <0x7e215004 0x04>;
++};
++
++Typically used in the respective auxiliar device descriptions
++like this:
++
++uart1: uart@7e215040 {
++	...
++	brcm,aux-enable = <&aux_enable 1>;
++	...
++};
++
++The name of the property can be device/driver specific.
 --
 1.7.10.4
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

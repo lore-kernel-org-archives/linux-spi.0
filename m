@@ -1,49 +1,54 @@
-From: Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
-Subject: Re: [LINUX RFC v2 1/4] spi: add support of two chip selects & data stripe
-Date: Fri, 4 Sep 2015 17:48:59 +0200
-Message-ID: <D536C243-E8B3-492A-87C8-DE1CFF0DD278@sperl.org>
-References: <1440570367-22569-1-git-send-email-ranjit.waghmode@xilinx.com> <1440570367-22569-2-git-send-email-ranjit.waghmode@xilinx.com> <20150903121232.GW12027@sirena.org.uk> <E4C1DE94-773C-498F-9CD5-639FBEEE3139@sperl.org> <20150904153718.GO5313@sirena.org.uk>
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2104\))
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Cc: Ranjit Waghmode <ranjit.waghmode-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>, dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org,
-	computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org,
-	soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org, zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org,
-	marex-ynQEQJNshbs@public.gmane.org, b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org, knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org,
-	juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org, beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org, punnaia-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150904153718.GO5313-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+Subject: Re: [PATCH] ARM: pxa: ssp: Fix build error by removing originally incorrect DT binding
+Date: Fri, 04 Sep 2015 21:14:03 +0200
+Message-ID: <87pp1yxais.fsf@belgarion.home>
+References: <1441208649-6192-1-git-send-email-jarkko.nikula@bitmer.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	Mark Brown <broonie@kernel.org>,
+	Russell King <linux@arm.linux.org.uk>,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Axel Lin <axel.lin@ingics.com>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	stable@vger.kernel.org
+To: Jarkko Nikula <jarkko.nikula@bitmer.com>
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <1441208649-6192-1-git-send-email-jarkko.nikula@bitmer.com>
+	(Jarkko Nikula's message of "Wed, 2 Sep 2015 18:44:09 +0300")
+Sender: stable-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+Jarkko Nikula <jarkko.nikula@bitmer.com> writes:
 
-> On 04.09.2015, at 17:37, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> 
-> On Fri, Sep 04, 2015 at 02:35:52PM +0200, Martin Sperl wrote:
->>> On 03.09.2015, at 14:12, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> 
->>> This isn't saying that the controller supports more than one chip, it's
->>> saying that the controller supports asserting more than one chip select
->>> at once which isn't the same thing.  I'm also not entirely sure that
->>> this makes sense as a separate feature to the data striping one - I'm
->>> struggling to think of a way to use this sensibly separately to that.
-> 
->> Well - there is one use-case that I can think of:
->> fbtft has the requirement for some devices to control a GPIO to
->> differentiate between command and data getting transferred
->> - sort of 9 bit.
-> 
-> That's another thing again, isn't it?  It's one device switching between
-> two different control interfaces at runtime rather than two devices
-> controlled in lockstep.
+> From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+>
+> Commit 03fbf488cece ("spi: pxa2xx: Differentiate Intel LPSS types") caused
+> build error here because it removed the type LPSS_SSP and I didn't notice
+> the type was used here too.
+>
+> I believe commit a6e56c28a178 ("ARM: pxa: ssp: add DT bindings") added it
+> accidentally by copying all enum pxa_ssp_type types from
+> include/linux/pxa2xx_ssp.h even LPSS_SSP was for Intel LPSS SPI devices.
+>
+> Fix the build error by removing this incorrect binding.
+>
+> Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+> Reported-by: Axel Lin <axel.lin@ingics.com>
+> Cc: stable@vger.kernel.org # 4.2
+> ---
+> Sorry if you got this twice today. I had email problems today and this patch
+> didn't go through to at least some of recipients. Resending from other my
+> another address.
 
-I agree, but there may be a solution that can handle both, so I wanted
-to mention it.
+I'll take it through pxa tree, and I'll add this :
+Fixes: 03fbf488cece ("spi: pxa2xx: Differentiate Intel LPSS types")
+
+Up to my understanding this is the tag stable tree will use to know which kernel
+version this patch should be applied to.
+
+Cheers.
+
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Robert

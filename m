@@ -1,72 +1,65 @@
-From: Shawn Lin <shawn.lin@rock-chips.com>
-Subject: Re: [PATCH v3 8/9] spi: rockchip: modify DMA max burst
-	to 1
-Date: Fri, 4 Sep 2015 08:03:26 +0800
-Message-ID: <55E8DFCE.5040504@rock-chips.com>
-References: <1441101381-1329-1-git-send-email-shawn.lin@rock-chips.com>
- <1441101524-1700-1-git-send-email-shawn.lin@rock-chips.com>
- <20150903125429.GA12027@sirena.org.uk> <55E84E17.2090409@rock-chips.com>
- <20150903174502.GI5313@sirena.org.uk>
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Subject: [PATCH] ARM: pxa: ssp: Fix build error by removing originally
+ incorrect DT binding
+Date: Fri,  4 Sep 2015 11:05:40 +0300
+Message-ID: <1441353940-9262-1-git-send-email-jarkko.nikula@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Addy Ke <addy.ke@rock-chips.com>, Heiko Stuebner <heiko@sntech.de>,
- alsa-devel@alsa-project.org, Vinod Koul <vinod.koul@intel.com>,
- Sonny Rao <sonnyrao@chromium.org>, shawn.lin@rock-chips.com,
- Olof Johansson <olof@lixom.net>, linux-spi@vger.kernel.org,
- Takashi Iwai <tiwai@suse.com>, Doug Anderson <dianders@chromium.org>,
- linux-rockchip@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- dmaengine@vger.kernel.org, Olof Johansson <olofj@google.com>,
- linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <alsa-devel-bounces@alsa-project.org>
-In-Reply-To: <20150903174502.GI5313@sirena.org.uk>
-List-Unsubscribe: <http://mailman.alsa-project.org/mailman/options/alsa-devel>,
- <mailto:alsa-devel-request@alsa-project.org?subject=unsubscribe>
-List-Archive: <http://mailman.alsa-project.org/pipermail/alsa-devel/>
-List-Post: <mailto:alsa-devel@alsa-project.org>
-List-Help: <mailto:alsa-devel-request@alsa-project.org?subject=help>
-List-Subscribe: <http://mailman.alsa-project.org/mailman/listinfo/alsa-devel>,
- <mailto:alsa-devel-request@alsa-project.org?subject=subscribe>
-Errors-To: alsa-devel-bounces@alsa-project.org
-Sender: alsa-devel-bounces@alsa-project.org
+Cc: Russell King <linux@arm.linux.org.uk>,
+ Haojian Zhuang <haojian.zhuang@gmail.com>, linux-spi@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>, Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+ stable@vger.kernel.org, Robert Jarzmik <robert.jarzmik@free.fr>,
+ Daniel Mack <daniel@zonque.org>
+To: linux-arm-kernel@lists.infradead.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On 2015/9/4 1:45, Mark Brown wrote:
-> On Thu, Sep 03, 2015 at 09:41:43PM +0800, Shawn Lin wrote:
->> On 2015/9/3 20:54, Mark Brown wrote:
->
->>> If this is a quirk of the DMA controller why is it being fixed with a
->>> property specific to the SPI controller?  Can't the DMA controller just
->>> override the burst size?
->
->> Cool...that's a good question. Actually DMA controller can't do that since
->> block peripheral controller(e.g sd/emmc, they always access data by
->> block-512Bytes.) can't meet the case. So It's hard for dma controller know
->> who is the caller, and what should be done.
->
-> You could take a guess based on request size, but that's going to be a
-> bit error prone I imagine.
->
+Commit 03fbf488cece ("spi: pxa2xx: Differentiate Intel LPSS types") caused
+build error here because it removed the type LPSS_SSP and I didn't notice
+the type was used here too.
 
-yes, not always cover all cases.
+I believe commit a6e56c28a178 ("ARM: pxa: ssp: add DT bindings") added it
+accidentally by copying all enum pxa_ssp_type types from
+include/linux/pxa2xx_ssp.h even LPSS_SSP was for Intel LPSS SPI devices.
 
->> The only thing dma controller can do is avoid to execute DMAFLUSHP on its
->> own. But how about peripheral controller trigger non-multiple access? So
->> that's what I mentioned on covery letter that we should do "broken things"
->> for both dma controller and some peripherals.
->
-> The other thing it could do is provide the information out via some
-> internal Linux API which the drivers could query instead of directly
-> having a DT property in each client driver.  That way at least the DT
-> only needs the quirk in one place even if the clients need to handle it
-> individually.
+Fix the build error by removing this incorrect binding.
 
-Good idea. Thanks, Mark.
+Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Reported-by: Axel Lin <axel.lin@ingics.com>
+Cc: <stable@vger.kernel.org> # 4.2
+---
+Sorry if you got this multiple times day before yesterday. I had problems
+with two addresses bouncing back without any obvious errors in the
+git send-email command or those failing addresses and linux-spi archive
+didn't show the patch either.
 
->
+I'm surrounding now the stable@vger.kernel.org by angled brackets because I
+think that was the problem here as the "# 4.2" got added into address.
+---
+ arch/arm/plat-pxa/ssp.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-
+diff --git a/arch/arm/plat-pxa/ssp.c b/arch/arm/plat-pxa/ssp.c
+index ad9529cc4203..daa1a65f2eb7 100644
+--- a/arch/arm/plat-pxa/ssp.c
++++ b/arch/arm/plat-pxa/ssp.c
+@@ -107,7 +107,6 @@ static const struct of_device_id pxa_ssp_of_ids[] = {
+ 	{ .compatible = "mvrl,pxa168-ssp",	.data = (void *) PXA168_SSP },
+ 	{ .compatible = "mrvl,pxa910-ssp",	.data = (void *) PXA910_SSP },
+ 	{ .compatible = "mrvl,ce4100-ssp",	.data = (void *) CE4100_SSP },
+-	{ .compatible = "mrvl,lpss-ssp",	.data = (void *) LPSS_SSP },
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(of, pxa_ssp_of_ids);
 -- 
-Best Regards
-Shawn Lin
+2.5.1

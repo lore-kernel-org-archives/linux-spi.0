@@ -1,45 +1,77 @@
-From: Martin Sperl <kernel@martin.sperl.org>
-Subject: Re: [PATCH v4 3/5] dt/bindings: bcm2835: add binding documentation for bcm2835-aux
-Date: Fri, 4 Sep 2015 10:26:21 +0200
-Message-ID: <9D45476C-88E2-4F76-AB55-9D0C7194E29C@martin.sperl.org>
-References: <1440405608-3995-1-git-send-email-kernel@martin.sperl.org> <1440405608-3995-4-git-send-email-kernel@martin.sperl.org> <55DD1A13.7010705@wwwdotorg.org>
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2104\))
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: Lee Jones <lee@kernel.org>, Russell King <linux@arm.linux.org.uk>,
-	Mark Brown <broonie@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	devicetree@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-spi@vger.kernel.org,
-	Ian Campbell <ijc+devicetree@hellion.org.uk>,
-	Rob Herring <robh+dt@kernel.org>,
-	Pawel Moll <pawel.moll@arm.com>,
-	Kumar Gala <galak@codeaurora.org>
-To: Stephen Warren <swarren@wwwdotorg.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <55DD1A13.7010705@wwwdotorg.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH 4/5] ARM: dts: DRA7: add entry for qspi mmap region
+Date: Fri, 4 Sep 2015 14:00:01 +0530
+Message-ID: <1441355402-6837-5-git-send-email-vigneshr@ti.com>
+References: <1441355402-6837-1-git-send-email-vigneshr@ti.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+Cc: <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+To: Benoit Cousson <bcousson-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
+	Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1441355402-6837-1-git-send-email-vigneshr-l0cyMroinI0@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Add qspi memory mapped region entries for DRA7xx based SoCs. Also,
+update the binding documents for the controller to document this change.
 
-> On 26.08.2015, at 03:44, Stephen Warren <swarren@wwwdotorg.org> wrote:
-> 
-> On 08/24/2015 02:40 AM, kernel@martin.sperl.org wrote:
-> 
->> +Example:
->> +
->> +aux_enable: aux_enable@0x7e215004 {
->> +	compatible = "bcrm,bcm2835-aux";
->> +	reg = <0x7e215004 0x04>;
-> 
-> I'd expect that to be <0x7e215000 0x8>;
+Signed-off-by: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+---
+ Documentation/devicetree/bindings/spi/ti_qspi.txt | 13 +++++++++++++
+ arch/arm/boot/dts/dra7.dtsi                       |  6 ++++--
+ 2 files changed, 17 insertions(+), 2 deletions(-)
 
-The reason is that we just handle enable with this driver,
-which just requires access to the 0x7e215004 register.
+diff --git a/Documentation/devicetree/bindings/spi/ti_qspi.txt b/Documentation/devicetree/bindings/spi/ti_qspi.txt
+index 601a360531a5..f05dd631bef1 100644
+--- a/Documentation/devicetree/bindings/spi/ti_qspi.txt
++++ b/Documentation/devicetree/bindings/spi/ti_qspi.txt
+@@ -26,3 +26,16 @@ qspi: qspi@4b300000 {
+ 	spi-max-frequency = <25000000>;
+ 	ti,hwmods = "qspi";
+ };
++
++For dra7xx:
++qspi: qspi@4b300000 {
++	compatible = "ti,dra7xxx-qspi";
++	reg = <0x4b300000 0x100>, <0x4a002558 0x4>,
++	      <0x5c000000 0x4000000>;
++	reg-names = "qspi_base", "qspi_ctrlmod",
++		    "qspi_mmap";
++	#address-cells = <1>;
++	#size-cells = <0>;
++	spi-max-frequency = <48000000>;
++	ti,hwmods = "qspi";
++};
+diff --git a/arch/arm/boot/dts/dra7.dtsi b/arch/arm/boot/dts/dra7.dtsi
+index 1e29ccf77ea2..f6798d6ecd60 100644
+--- a/arch/arm/boot/dts/dra7.dtsi
++++ b/arch/arm/boot/dts/dra7.dtsi
+@@ -1103,8 +1103,10 @@
+ 
+ 		qspi: qspi@4b300000 {
+ 			compatible = "ti,dra7xxx-qspi";
+-			reg = <0x4b300000 0x100>;
+-			reg-names = "qspi_base";
++			reg = <0x4b300000 0x100>, <0x4a002558 0x4>,
++			      <0x5c000000 0x4000000>;
++			reg-names = "qspi_base", "qspi_ctrlmod",
++				    "qspi_mmap";
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+ 			ti,hwmods = "qspi";
+-- 
+2.5.1
 
-The 0x7e215000 register (interrupt mask) could be used by a
-cascaded interrupt-controller, but as the spi and uart drivers
-can run with shared interrupts this is not a necessity.
-
-Martin
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

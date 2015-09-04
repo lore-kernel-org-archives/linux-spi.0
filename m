@@ -1,54 +1,72 @@
-From: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
-Subject: [PATCH] spi: mediatek: fix wrong error return value on probe
-Date: Fri,  4 Sep 2015 00:50:56 +0200
-Message-ID: <1441320656-8666-1-git-send-email-javier@osg.samsung.com>
-Cc: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Shawn Lin <shawn.lin@rock-chips.com>
+Subject: Re: [PATCH v3 8/9] spi: rockchip: modify DMA max burst
+	to 1
+Date: Fri, 4 Sep 2015 08:03:26 +0800
+Message-ID: <55E8DFCE.5040504@rock-chips.com>
+References: <1441101381-1329-1-git-send-email-shawn.lin@rock-chips.com>
+ <1441101524-1700-1-git-send-email-shawn.lin@rock-chips.com>
+ <20150903125429.GA12027@sirena.org.uk> <55E84E17.2090409@rock-chips.com>
+ <20150903174502.GI5313@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Transfer-Encoding: 7bit
+Cc: Addy Ke <addy.ke@rock-chips.com>, Heiko Stuebner <heiko@sntech.de>,
+ alsa-devel@alsa-project.org, Vinod Koul <vinod.koul@intel.com>,
+ Sonny Rao <sonnyrao@chromium.org>, shawn.lin@rock-chips.com,
+ Olof Johansson <olof@lixom.net>, linux-spi@vger.kernel.org,
+ Takashi Iwai <tiwai@suse.com>, Doug Anderson <dianders@chromium.org>,
+ linux-rockchip@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ dmaengine@vger.kernel.org, Olof Johansson <olofj@google.com>,
+ linux-kernel@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <alsa-devel-bounces@alsa-project.org>
+In-Reply-To: <20150903174502.GI5313@sirena.org.uk>
+List-Unsubscribe: <http://mailman.alsa-project.org/mailman/options/alsa-devel>,
+ <mailto:alsa-devel-request@alsa-project.org?subject=unsubscribe>
+List-Archive: <http://mailman.alsa-project.org/pipermail/alsa-devel/>
+List-Post: <mailto:alsa-devel@alsa-project.org>
+List-Help: <mailto:alsa-devel-request@alsa-project.org?subject=help>
+List-Subscribe: <http://mailman.alsa-project.org/mailman/listinfo/alsa-devel>,
+ <mailto:alsa-devel-request@alsa-project.org?subject=subscribe>
+Errors-To: alsa-devel-bounces@alsa-project.org
+Sender: alsa-devel-bounces@alsa-project.org
+List-Id: linux-spi.vger.kernel.org
 
-Commit adcbcfea15d62 ("spi: mediatek: fix spi clock usage error")
-added a new sel_clk but introduced bugs in the error paths since
-the wrong struct clk pointers are passed to PTR_ERR().
+On 2015/9/4 1:45, Mark Brown wrote:
+> On Thu, Sep 03, 2015 at 09:41:43PM +0800, Shawn Lin wrote:
+>> On 2015/9/3 20:54, Mark Brown wrote:
+>
+>>> If this is a quirk of the DMA controller why is it being fixed with a
+>>> property specific to the SPI controller?  Can't the DMA controller just
+>>> override the burst size?
+>
+>> Cool...that's a good question. Actually DMA controller can't do that since
+>> block peripheral controller(e.g sd/emmc, they always access data by
+>> block-512Bytes.) can't meet the case. So It's hard for dma controller know
+>> who is the caller, and what should be done.
+>
+> You could take a guess based on request size, but that's going to be a
+> bit error prone I imagine.
+>
 
-Fixes: adcbcfea15d62 ("spi: mediatek: fix spi clock usage error")
-Signed-off-by: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
+yes, not always cover all cases.
 
----
+>> The only thing dma controller can do is avoid to execute DMAFLUSHP on its
+>> own. But how about peripheral controller trigger non-multiple access? So
+>> that's what I mentioned on covery letter that we should do "broken things"
+>> for both dma controller and some peripherals.
+>
+> The other thing it could do is provide the information out via some
+> internal Linux API which the drivers could query instead of directly
+> having a DT property in each client driver.  That way at least the DT
+> only needs the quirk in one place even if the clients need to handle it
+> individually.
 
- drivers/spi/spi-mt65xx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Good idea. Thanks, Mark.
 
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 6fbb5e5132b0..e9839a4e0175 100644
---- a/drivers/spi/spi-mt65xx.c
-+++ b/drivers/spi/spi-mt65xx.c
-@@ -585,14 +585,14 @@ static int mtk_spi_probe(struct platform_device *pdev)
- 
- 	mdata->sel_clk = devm_clk_get(&pdev->dev, "sel-clk");
- 	if (IS_ERR(mdata->sel_clk)) {
--		ret = PTR_ERR(mdata->spi_clk);
-+		ret = PTR_ERR(mdata->sel_clk);
- 		dev_err(&pdev->dev, "failed to get sel-clk: %d\n", ret);
- 		goto err_put_master;
- 	}
- 
- 	mdata->spi_clk = devm_clk_get(&pdev->dev, "spi-clk");
- 	if (IS_ERR(mdata->spi_clk)) {
--		ret = PTR_ERR(mdata->parent_clk);
-+		ret = PTR_ERR(mdata->spi_clk);
- 		dev_err(&pdev->dev, "failed to get spi-clk: %d\n", ret);
- 		goto err_put_master;
- 	}
+>
+
+
 -- 
-2.4.3
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Best Regards
+Shawn Lin

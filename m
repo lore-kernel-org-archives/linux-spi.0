@@ -1,54 +1,59 @@
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-Subject: Re: [PATCH] ARM: pxa: ssp: Fix build error by removing originally incorrect DT binding
-Date: Fri, 04 Sep 2015 21:14:03 +0200
-Message-ID: <87pp1yxais.fsf@belgarion.home>
-References: <1441208649-6192-1-git-send-email-jarkko.nikula@bitmer.com>
-Mime-Version: 1.0
-Content-Type: text/plain
-Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	Mark Brown <broonie@kernel.org>,
-	Russell King <linux@arm.linux.org.uk>,
-	Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Axel Lin <axel.lin@ingics.com>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	stable@vger.kernel.org
-To: Jarkko Nikula <jarkko.nikula@bitmer.com>
-Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <1441208649-6192-1-git-send-email-jarkko.nikula@bitmer.com>
-	(Jarkko Nikula's message of "Wed, 2 Sep 2015 18:44:09 +0300")
-Sender: stable-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Alexey Klimov <alexey.klimov-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: [PATCH RESEND 1/1] Revert "spi/doc: spi_master_put must be followed up by kfree"
+Date: Sun,  6 Sep 2015 01:46:54 +0300
+Message-ID: <1441493214-12994-1-git-send-email-alexey.klimov@linaro.org>
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
+	klimov.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, Alexey Klimov <alexey.klimov-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Uwe Kleine-Koenig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+To: linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Jarkko Nikula <jarkko.nikula@bitmer.com> writes:
+From: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
 
-> From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
->
-> Commit 03fbf488cece ("spi: pxa2xx: Differentiate Intel LPSS types") caused
-> build error here because it removed the type LPSS_SSP and I didn't notice
-> the type was used here too.
->
-> I believe commit a6e56c28a178 ("ARM: pxa: ssp: add DT bindings") added it
-> accidentally by copying all enum pxa_ssp_type types from
-> include/linux/pxa2xx_ssp.h even LPSS_SSP was for Intel LPSS SPI devices.
->
-> Fix the build error by removing this incorrect binding.
->
-> Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-> Reported-by: Axel Lin <axel.lin@ingics.com>
-> Cc: stable@vger.kernel.org # 4.2
-> ---
-> Sorry if you got this twice today. I had email problems today and this patch
-> didn't go through to at least some of recipients. Resending from other my
-> another address.
+Actually, spi_master_put() after spi_alloc_master() must _not_ be followed
+by kfree(). The memory is already freed with the call to spi_master_put()
+through spi_master_class, which registers a release function. Calling both
+spi_master_put() and kfree() results in often nasty (and delayed) crashes
+elsewhere in the kernel, often in the networking stack.
 
-I'll take it through pxa tree, and I'll add this :
-Fixes: 03fbf488cece ("spi: pxa2xx: Differentiate Intel LPSS types")
+This reverts commit eb4af0f5349235df2e4a5057a72fc8962d00308a.
 
-Up to my understanding this is the tag stable tree will use to know which kernel
-version this patch should be applied to.
+Link to patch and concerns: https://lkml.org/lkml/2012/9/3/269
+or
+http://lkml.iu.edu/hypermail/linux/kernel/1209.0/00790.html
 
-Cheers.
+Alexey Klimov: This revert becomes valid after
+94c69f765f1b4a658d96905ec59928e3e3e07e6a when spi-imx.c
+has been fixed and there is no need to call kfree() so comment
+for spi_alloc_master() should be fixed.
+
+Cc: Uwe Kleine-Koenig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Signed-off-by: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+Signed-off-by: Alexey Klimov <alexey.klimov-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 3abb390..a5f53de 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1610,8 +1610,7 @@ static struct class spi_master_class = {
+  *
+  * The caller is responsible for assigning the bus number and initializing
+  * the master's methods before calling spi_register_master(); and (after errors
+- * adding the device) calling spi_master_put() and kfree() to prevent a memory
+- * leak.
++ * adding the device) calling spi_master_put() to prevent a memory leak.
+  */
+ struct spi_master *spi_alloc_master(struct device *dev, unsigned size)
+ {
+-- 
+2.1.4
 
 --
-Robert
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

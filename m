@@ -1,58 +1,36 @@
 From: Alexey Klimov <alexey.klimov-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: [PATCH RESEND 1/1] Revert "spi/doc: spi_master_put must be followed up by kfree"
-Date: Sun,  6 Sep 2015 01:46:54 +0300
-Message-ID: <1441493214-12994-1-git-send-email-alexey.klimov@linaro.org>
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
-	klimov.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, Alexey Klimov <alexey.klimov-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+Subject: [PATCH RESEND 0/1] Revert "spi/doc: spi_master_put must be followed
+ up by kfree"
+Date: Sun, 6 Sep 2015 01:47:21 +0300
+Message-ID: <CAP_9M6973VAtM6WkP7gkzDMnJbRxmmmiCCuSxMU-_aQm4YQZbg@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: Alexey Klimov <klimov.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	Uwe Kleine-Koenig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-To: linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+To: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+Hi all,
 
-Actually, spi_master_put() after spi_alloc_master() must _not_ be followed
-by kfree(). The memory is already freed with the call to spi_master_put()
-through spi_master_class, which registers a release function. Calling both
-spi_master_put() and kfree() results in often nasty (and delayed) crashes
-elsewhere in the kernel, often in the networking stack.
+During review of new SPI drivers I tried to understand connection
+between comment "calling spi_master_put() and kfree() to prevent a
+memory leak" for spi_alloc_master() in spi.c and why no driver calls
+kfree() on error path. Looks like Uwe added this comment and later I
+found patch from Guenter that reverted this comment but spi-imx.c was
+not fixed for that time. Later in 2013 spi-imx was fixed. Is it
+correct time right now to fix comment?
 
-This reverts commit eb4af0f5349235df2e4a5057a72fc8962d00308a.
+I tried to save authorship of patch from Guenter, added field "From"
+and kept signed-off-by and cc. I hope i did it correctly in patch
+(sorry for possible inconvenience).
+Also marked it as RESEND since it's resend of original patch from 2012 year.
 
-Link to patch and concerns: https://lkml.org/lkml/2012/9/3/269
-or
-http://lkml.iu.edu/hypermail/linux/kernel/1209.0/00790.html
-
-Alexey Klimov: This revert becomes valid after
-94c69f765f1b4a658d96905ec59928e3e3e07e6a when spi-imx.c
-has been fixed and there is no need to call kfree() so comment
-for spi_alloc_master() should be fixed.
-
-Cc: Uwe Kleine-Koenig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Signed-off-by: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
-Signed-off-by: Alexey Klimov <alexey.klimov-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 3abb390..a5f53de 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1610,8 +1610,7 @@ static struct class spi_master_class = {
-  *
-  * The caller is responsible for assigning the bus number and initializing
-  * the master's methods before calling spi_register_master(); and (after errors
-- * adding the device) calling spi_master_put() and kfree() to prevent a memory
-- * leak.
-+ * adding the device) calling spi_master_put() to prevent a memory leak.
-  */
- struct spi_master *spi_alloc_master(struct device *dev, unsigned size)
- {
--- 
-2.1.4
-
+Best regards,
+Alexey Klimov
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

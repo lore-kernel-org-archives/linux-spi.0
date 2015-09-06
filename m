@@ -1,57 +1,59 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH RESEND 1/1] Revert "spi/doc: spi_master_put must be
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH RESEND 0/1] Revert "spi/doc: spi_master_put must be
  followed up by kfree"
-Date: Sun, 6 Sep 2015 01:04:33 +0100
-Message-ID: <20150906000433.GQ5313@sirena.org.uk>
-References: <1441493214-12994-1-git-send-email-alexey.klimov@linaro.org>
+Date: Sun, 6 Sep 2015 01:06:40 +0100
+Message-ID: <20150906000640.GR5313@sirena.org.uk>
+References: <CAP_9M6973VAtM6WkP7gkzDMnJbRxmmmiCCuSxMU-_aQm4YQZbg@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="FntOJnOOIM0rA1zI"
-Cc: linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
-	klimov.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	Uwe Kleine-Koenig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-To: Alexey Klimov <alexey.klimov-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="vdyjigDobekge4RG"
+Cc: Guenter Roeck <linux@roeck-us.net>, linux-spi@vger.kernel.org,
+	Alexey Klimov <klimov.linux@gmail.com>, djkurtz@chromium.org,
+	linux-kernel@vger.kernel.org,
+	Uwe Kleine-Koenig <u.kleine-koenig@pengutronix.de>
+To: Alexey Klimov <alexey.klimov@linaro.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1441493214-12994-1-git-send-email-alexey.klimov-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <CAP_9M6973VAtM6WkP7gkzDMnJbRxmmmiCCuSxMU-_aQm4YQZbg@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---FntOJnOOIM0rA1zI
+--vdyjigDobekge4RG
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Sun, Sep 06, 2015 at 01:46:54AM +0300, Alexey Klimov wrote:
-> From: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
->=20
-> Actually, spi_master_put() after spi_alloc_master() must _not_ be followed
+On Sun, Sep 06, 2015 at 01:47:21AM +0300, Alexey Klimov wrote:
 
-Please use subject lines matching the style for the subsystem and please
-don't put noise like RESEND in the subject line, especially if the patch
-isn't actually being resent.  Both these things make it easier to scan
-incoming mail for relevant and important patches.
+> During review of new SPI drivers I tried to understand connection
+> between comment "calling spi_master_put() and kfree() to prevent a
+> memory leak" for spi_alloc_master() in spi.c and why no driver calls
+> kfree() on error path. Looks like Uwe added this comment and later I
+> found patch from Guenter that reverted this comment but spi-imx.c was
+> not fixed for that time. Later in 2013 spi-imx was fixed. Is it
+> correct time right now to fix comment?
 
---FntOJnOOIM0rA1zI
+I'm sorry but I'm not clear what you're talking about here as there's
+missing context...  where is this comment you're talking about?
+
+In general please don't send cover letters for single patches, either
+add the content to the commit message or put it after the --- if it's
+administrative stuff (like SubmittingPatches says).
+
+--vdyjigDobekge4RG
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJV64MQAAoJECTWi3JdVIfQ1YIH/1I4hmIj6rg/2SoSPhvd4yi2
-k5qesVMMr4QEuj74jfYDPhXicpKD0CJD6f8t0YlD87c9/66BnlUKbEqtJgiyCvXM
-IkHm08IyfJGb0qPLk4OWmmT1sqCp7GB/I4npPLjbChB1I9M1GHmi2FgdTgJP4WOF
-K1f58Yc2zMhWBf5RjqaC0m0f6PVtGKBz0ZhDDitTCFo6RQsg2p1m5pWLJX46Umb9
-Mx7qtCt+FojfG+DYrNvFoAS52tagjHJfMnD6WBYLYEerABCHMXX9/oOAbujqm6hS
-cFuUe7H0dOJAlP+sXZSEfYU7IPRBht1JNcDb2khVantT2eLZppsXKM1SHzzmIr0=
-=z3Np
+iQEcBAEBCAAGBQJV64OQAAoJECTWi3JdVIfQmKkH/3H59ZjJp9XUwxvauFDP4Ggu
+uSwScizn7fz1VpT6f/ubq8sCKeic+W2+QKqAbA6ww9XdebxJX6Ffa29f4WJwqeSS
+CxaAUlzHTGsMJzSfCRrWKW8MxDWDDGhq5J8RYHwCrXSgdFW+OmzBgnv3/T33yewr
+V/M23N043pjbFlHZessoWiad5+SDKmjobrUJZdZ9xf5GTOBb03KmKkhhXff87bP7
+OaJcgthzKfxkQJy1uZMtPgyTVdcVKT6nsTvBXOPptvu+FfZO9thqnT3Ap79zfpTu
+FH/hTii8c2GbM4jZKCbJMd8/84SyKsfeqOnw6jVeTBffXKT2VIrYlnboQt6IQl0=
+=FCWK
 -----END PGP SIGNATURE-----
 
---FntOJnOOIM0rA1zI--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--vdyjigDobekge4RG--

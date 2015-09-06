@@ -1,95 +1,70 @@
-From: Shawn Lin <shawn.lin@rock-chips.com>
-Subject: [PATCH v4 08/10] spi: rockchip: modify DMA max burst to 1
-Date: Sun,  6 Sep 2015 09:13:06 +0800
-Message-ID: <1441501986-14034-1-git-send-email-shawn.lin@rock-chips.com>
+From: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Subject: [PATCH v4 07/10] DMA: pl330: implement dmaengine_get_quirks hook
+Date: Sun,  6 Sep 2015 09:12:55 +0800
+Message-ID: <1441501975-13993-1-git-send-email-shawn.lin@rock-chips.com>
 References: <1441501881-13700-1-git-send-email-shawn.lin@rock-chips.com>
-Cc: Doug Anderson <dianders@chromium.org>,
-	Olof Johansson <olofj@google.com>,
-	Sonny Rao <sonnyrao@chromium.org>,
-	Addy Ke <addy.ke@rock-chips.com>, dmaengine@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org, alsa-devel@alsa-project.org,
-	linux-spi@vger.kernel.org, Shawn Lin <shawn.lin@rock-chips.com>,
-	Olof Johansson <olof@lixom.net>
-To: Vinod Koul <vinod.koul@intel.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>, Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1441501881-13700-1-git-send-email-shawn.lin@rock-chips.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	Olof Johansson <olofj-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
+	Sonny Rao <sonnyrao-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	Addy Ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>, dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+To: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
+	Jaroslav Kysela <perex-/Fr2/VpizcU@public.gmane.org>,
+	Takashi Iwai <tiwai-IBi9RG/b67k@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1441501881-13700-1-git-send-email-shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Addy Ke <addy.ke@rock-chips.com>
+By adding this function, slave device can query quirks
+from pl330 if they need special settings for dmaengine.
 
-Generic dma controller on Rockchips' platform cannot support
-DMAFLUSHP instruction which make dma to flush the req of non-aligned
-or non-multiple of what we need. That will cause an unrecoverable
-dma bus error. The saftest way is to set dma max burst to 1.
-
-Signed-off-by: Addy ke <addy.ke@rock-chips.com>
-Fixes: 64e36824b32b06 ("spi/rockchip: add driver for Rockchip...")
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-cc: Heiko Stuebner <heiko@sntech.de>
-cc: Olof Johansson <olof@lixom.net>
-cc: Doug Anderson <dianders@chromium.org>
-cc: Sonny Rao <sonnyrao@chromium.org>
+Signed-off-by: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
 ---
 
-Changes in v4:
-- use dmaengine_get_quirks to get quirks
-
+Changes in v4: None
 Changes in v3: None
 Changes in v2: None
 Changes in v1: None
 
- drivers/spi/spi-rockchip.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/dma/pl330.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 68e7efe..89dd3d8 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -199,6 +199,8 @@ struct rockchip_spi {
- 	struct sg_table rx_sg;
- 	struct rockchip_spi_dma_data dma_rx;
- 	struct rockchip_spi_dma_data dma_tx;
-+	int dma_quirk;
-+#define ROCKCHIP_SPI_BROKEN_BURST_LEN (1<<0) /* broken burst len*/
- };
+diff --git a/drivers/dma/pl330.c b/drivers/dma/pl330.c
+index 3b9b426..bf01d24 100644
+--- a/drivers/dma/pl330.c
++++ b/drivers/dma/pl330.c
+@@ -2156,6 +2156,14 @@ static int pl330_config(struct dma_chan *chan,
+ 	return 0;
+ }
  
- static inline void spi_enable_chip(struct rockchip_spi *rs, int enable)
-@@ -449,7 +451,10 @@ static void rockchip_spi_prepare_dma(struct rockchip_spi *rs)
- 		rxconf.direction = rs->dma_rx.direction;
- 		rxconf.src_addr = rs->dma_rx.addr;
- 		rxconf.src_addr_width = rs->n_bytes;
--		rxconf.src_maxburst = rs->n_bytes;
-+		if (rs->dma_quirk == ROCKCHIP_SPI_BROKEN_BURST_LEN)
-+			rxconf.src_maxburst = 1;
-+		else
-+			rxconf.src_maxburst = 4;
- 		dmaengine_slave_config(rs->dma_rx.ch, &rxconf);
- 
- 		rxdesc = dmaengine_prep_slave_sg(
-@@ -466,7 +471,10 @@ static void rockchip_spi_prepare_dma(struct rockchip_spi *rs)
- 		txconf.direction = rs->dma_tx.direction;
- 		txconf.dst_addr = rs->dma_tx.addr;
- 		txconf.dst_addr_width = rs->n_bytes;
--		txconf.dst_maxburst = rs->n_bytes;
-+		if (rs->dma_quirk == ROCKCHIP_SPI_BROKEN_BURST_LEN)
-+			txconf.dst_maxburst = 1;
-+		else
-+			txconf.dst_maxburst = 4;
- 		dmaengine_slave_config(rs->dma_tx.ch, &txconf);
- 
- 		txdesc = dmaengine_prep_slave_sg(
-@@ -731,6 +739,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 	}
- 
- 	if (rs->dma_tx.ch && rs->dma_rx.ch) {
-+		rs->dma_quirk = dmaengine_get_quirks(rs->dma_rx.ch);
- 		rs->dma_tx.addr = (dma_addr_t)(mem->start + ROCKCHIP_SPI_TXDR);
- 		rs->dma_rx.addr = (dma_addr_t)(mem->start + ROCKCHIP_SPI_RXDR);
- 		rs->dma_tx.direction = DMA_MEM_TO_DEV;
++static int pl330_quirks(struct dma_chan *chan)
++{
++	struct dma_pl330_chan *pch = to_pchan(chan);
++	struct pl330_dmac *pl330 = pch->dmac;
++
++	return pl330->quirks;
++}
++
+ static int pl330_terminate_all(struct dma_chan *chan)
+ {
+ 	struct dma_pl330_chan *pch = to_pchan(chan);
+@@ -2928,6 +2936,7 @@ pl330_probe(struct amba_device *adev, const struct amba_id *id)
+ 	pd->device_tx_status = pl330_tx_status;
+ 	pd->device_prep_slave_sg = pl330_prep_slave_sg;
+ 	pd->device_config = pl330_config;
++	pd->device_get_quirks = pl330_quirks;
+ 	pd->device_pause = pl330_pause;
+ 	pd->device_terminate_all = pl330_terminate_all;
+ 	pd->device_issue_pending = pl330_issue_pending;
 -- 
 2.3.7
+
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

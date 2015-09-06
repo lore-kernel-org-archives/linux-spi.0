@@ -1,55 +1,133 @@
-From: Alexey Klimov <klimov.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH RESEND 0/1] Revert "spi/doc: spi_master_put must be
- followed up by kfree"
-Date: Sun, 6 Sep 2015 03:22:43 +0300
-Message-ID: <CALW4P+KEsLAhQDHrMt-4Nw5Tb57cLp99T_uAdTpcQBX8_i1uSA@mail.gmail.com>
-References: <CAP_9M6973VAtM6WkP7gkzDMnJbRxmmmiCCuSxMU-_aQm4YQZbg@mail.gmail.com>
-	<20150906000640.GR5313@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Alexey Klimov <alexey.klimov-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Uwe Kleine-Koenig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Subject: [PATCH v4 0/10] Fix broken DMAFLUSHP on Rockchips platform
+Date: Sun,  6 Sep 2015 09:11:21 +0800
+Message-ID: <1441501881-13700-1-git-send-email-shawn.lin@rock-chips.com>
+Cc: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	Olof Johansson <olofj-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
+	Sonny Rao <sonnyrao-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	Addy Ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>, dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+To: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
+	Jaroslav Kysela <perex-/Fr2/VpizcU@public.gmane.org>,
+	Takashi Iwai <tiwai-IBi9RG/b67k@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150906000640.GR5313-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Sun, Sep 6, 2015 at 3:06 AM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Sun, Sep 06, 2015 at 01:47:21AM +0300, Alexey Klimov wrote:
->
->> During review of new SPI drivers I tried to understand connection
->> between comment "calling spi_master_put() and kfree() to prevent a
->> memory leak" for spi_alloc_master() in spi.c and why no driver calls
->> kfree() on error path. Looks like Uwe added this comment and later I
->> found patch from Guenter that reverted this comment but spi-imx.c was
->> not fixed for that time. Later in 2013 spi-imx was fixed. Is it
->> correct time right now to fix comment?
->
-> I'm sorry but I'm not clear what you're talking about here as there's
-> missing context...  where is this comment you're talking about?
->
-> In general please don't send cover letters for single patches, either
-> add the content to the commit message or put it after the --- if it's
-> administrative stuff (like SubmittingPatches says).
 
-Okay, understand (about formatting of subject, RESEND noise and no
-cover letter for single patches). Just never send reverts before
-(especially when it's re-send from 2012 year).
-It's easy to see comment in patch with subject: [PATCH RESEND 1/1]
-Revert "spi/doc: spi_master_put must be followed up by kfree"
-It's in drivers/spi/spi.c, line 1440 in tag v4.2 released ~ 5 days
-ago. Comment for function spi_alloc_master().
+The purpose of the DMAFLUSHP instruction:
+- Tell the peripheral to clear its status and control registers.
+- Send a message to the peripheral to resend its level status.
 
-Sorry. Right now I see how I screwed up. Should I re-send it as single
-patch with all info included (marking as RESEND)?
+There are 3 timings described in PL330 Technical Reference Manual:
+- Timing 1: Burst request, can work well without DMAFLUSHP.
+- Timing 2: Single and burst request, DMAC will ignore the single
+	    transfer request. This timing happens if there are single
+	    and burst request.
+- Timing 3: Single transfers for a burst request, DMAC should signals
+	    datype to request the peripheral to flush the contents of
+	    any control registers. This timing happens if there is
+	    not enough MFIFO to places the burst data.
+
+A peripheral may signal a DMA request during the execution of
+DMAFLUSHP instruction, that cause DMA request being ignored by DMAC.
+
+But DMAC and all peripherals on RK3X SoCs DO NOT support DMAFLUSHP.
+It can't send a message to the peripheral to resend DMA request,
+and the peripheral can't acknowledge a flush request from DMAC.
+So all DMA requests should NOT be ignored by DMAC, and DMAC will not
+notify the peripheral to flush.
+
+To fix this problem, we need:
+- Do NOT execute DMAFLUSHP instruction.
+- Timing 2 and timing 3 should not happen.
+
+Because on RK3X SoCs, there are 6 or below  channels and 32 MFIFO depth
+for DMAC_BUS, and 8 channels and 64 MFIFO depth for DMAC_PERI, it is
+impossible to hit the timing 3 if burst length is equal or less than 4.
+
+Since the request type signal by the peripheral can only be set by
+software. We can set Rockchip Soc's GRF_PERIDMAC_CON0[2:1] to select single
+or burst request, if it is set b01,  all of the peripharals will signal a brust
+request. So the timing 2 will not happen, too.
+
+So DMAC on RK3X can support single or burst transfer, but can't support
+mixed transfer.
+
+Because burst transfer is more efficient than single transfer, this is
+confirmed by our ASIC team, who strongly suggest to use burst transfer.
+And this is confirmed by Addy's test on RK3288-Pink2 board, the speed of
+spi flash burst transfer will increase about two times than single transfer.
+Also, I have tested dw_mmc with pl330 on RK3188 platform to double confirm
+the result. That means burst transfer is reansonable.
+
+So we need a quirk not to execute DMAFLUSHP instruction and to use burst
+transfer.
+
+Note:
+- The Rockchip Soc default value of GRF_PERIDMAC_CON0[2:1] is b01. To
+  support brust transfer, these bits should not be changed in bootloader.
+
+
+Changes in v4:
+- remove spi & i2s dts changes and query quirk from dmaengine API
+  suggeseted by Mark Brown.
+- fix typo
+- Add dmaengine_get_quirk hook and implement it for pl330
+
+Changes in v3:
+- add more rockchip drivers' changes in this patchset
+- add Reviewed-by: Sonny Rao <sonnyrao-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+
+Changes in v2:
+- amend the author
+- reorder the patches suggested by Doug
+- add Reviewed-by: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org> for
+  rk3288.dtsi patch and arm-pl330.txt patch
+- amend Olof's mail address
+
+Changes in v1:
+- rename broken-no-flushp to "arm,pl330-broken-no-flushp" suggested
+  by Krzysztof.
+- add From original author.
+- remove Sunny's tag
+
+Addy Ke (3):
+  DMA: pl330: add quirk for broken no flushp
+  ARM: dts: Add arm,pl330-broken-no-flushp quirk for rk3288 platform
+  spi: rockchip: modify DMA max burst to 1
+
+Boojin Kim (1):
+  DMA: pl330: support burst mode for dev-to-mem and mem-to-dev transmit
+
+Shawn Lin (5):
+  Documentation: arm-pl330: add description of
+    arm,pl330-broken-no-flushp
+  ARM: dts: Add arm,pl330-broken-no-flushp quirk for rk3xxx platform
+  dmaengine: add API for getting dma controller's quirk
+  DMA: pl330: implement dmaengine_get_quirks hook
+  snd: dmaengine-pcm: add snd_dmaengine_pcm_get_quirks interface
+
+Yiwei Cai (1):
+  ASoC: rockchip_i2s: modify DMA max burst to 1
+
+ .../devicetree/bindings/dma/arm-pl330.txt          |   1 +
+ arch/arm/boot/dts/rk3288.dtsi                      |   3 +
+ arch/arm/boot/dts/rk3xxx.dtsi                      |   3 +
+ drivers/dma/pl330.c                                | 110 +++++++++++++++------
+ drivers/spi/spi-rockchip.c                         |  13 ++-
+ include/linux/dmaengine.h                          |   9 ++
+ sound/soc/rockchip/rockchip_i2s.c                  |  16 ++-
+ sound/soc/soc-generic-dmaengine-pcm.c              |  24 +++++
+ 8 files changed, 147 insertions(+), 32 deletions(-)
 
 -- 
-Best regards,
-Klimov Alexey
+2.3.7
+
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

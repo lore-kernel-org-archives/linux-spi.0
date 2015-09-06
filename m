@@ -1,87 +1,56 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: Fix documentation of spi_alloc_master()" to the spi tree
-Date: Sun, 06 Sep 2015 01:09:12 +0100
-Message-ID: <E1ZYNWC-0007Qk-Qy@debutante>
-References: <1346703986-7849-1-git-send-email-linux@roeck-us.net>
-Cc: linux-spi@vger.kernel.org
-To: Guenter Roeck <linux@roeck-us.net>,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Mark Brown <broonie@kernel.org>, stable@vger.kernel.org
-Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <1346703986-7849-1-git-send-email-linux@roeck-us.net>
-Sender: stable-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Alexey Klimov <klimov.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH RESEND 0/1] Revert "spi/doc: spi_master_put must be
+ followed up by kfree"
+Date: Sun, 6 Sep 2015 03:22:43 +0300
+Message-ID: <CALW4P+KEsLAhQDHrMt-4Nw5Tb57cLp99T_uAdTpcQBX8_i1uSA@mail.gmail.com>
+References: <CAP_9M6973VAtM6WkP7gkzDMnJbRxmmmiCCuSxMU-_aQm4YQZbg@mail.gmail.com>
+	<20150906000640.GR5313@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: Alexey Klimov <alexey.klimov-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
+	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Uwe Kleine-Koenig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150906000640.GR5313-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+On Sun, Sep 6, 2015 at 3:06 AM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Sun, Sep 06, 2015 at 01:47:21AM +0300, Alexey Klimov wrote:
+>
+>> During review of new SPI drivers I tried to understand connection
+>> between comment "calling spi_master_put() and kfree() to prevent a
+>> memory leak" for spi_alloc_master() in spi.c and why no driver calls
+>> kfree() on error path. Looks like Uwe added this comment and later I
+>> found patch from Guenter that reverted this comment but spi-imx.c was
+>> not fixed for that time. Later in 2013 spi-imx was fixed. Is it
+>> correct time right now to fix comment?
+>
+> I'm sorry but I'm not clear what you're talking about here as there's
+> missing context...  where is this comment you're talking about?
+>
+> In general please don't send cover letters for single patches, either
+> add the content to the commit message or put it after the --- if it's
+> administrative stuff (like SubmittingPatches says).
 
-   spi: Fix documentation of spi_alloc_master()
+Okay, understand (about formatting of subject, RESEND noise and no
+cover letter for single patches). Just never send reverts before
+(especially when it's re-send from 2012 year).
+It's easy to see comment in patch with subject: [PATCH RESEND 1/1]
+Revert "spi/doc: spi_master_put must be followed up by kfree"
+It's in drivers/spi/spi.c, line 1440 in tag v4.2 released ~ 5 days
+ago. Comment for function spi_alloc_master().
 
-has been applied to the spi tree at
+Sorry. Right now I see how I screwed up. Should I re-send it as single
+patch with all info included (marking as RESEND)?
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From a394d635193b641f2c86ead5ada5b115d57c51f8 Mon Sep 17 00:00:00 2001
-From: Guenter Roeck <linux@roeck-us.net>
-Date: Sun, 6 Sep 2015 01:46:54 +0300
-Subject: [PATCH] spi: Fix documentation of spi_alloc_master()
-
-Actually, spi_master_put() after spi_alloc_master() must _not_ be followed
-by kfree(). The memory is already freed with the call to spi_master_put()
-through spi_master_class, which registers a release function. Calling both
-spi_master_put() and kfree() results in often nasty (and delayed) crashes
-elsewhere in the kernel, often in the networking stack.
-
-This reverts commit eb4af0f5349235df2e4a5057a72fc8962d00308a.
-
-Link to patch and concerns: https://lkml.org/lkml/2012/9/3/269
-or
-http://lkml.iu.edu/hypermail/linux/kernel/1209.0/00790.html
-
-Alexey Klimov: This revert becomes valid after
-94c69f765f1b4a658d96905ec59928e3e3e07e6a when spi-imx.c
-has been fixed and there is no need to call kfree() so comment
-for spi_alloc_master() should be fixed.
-
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
----
- drivers/spi/spi.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index cf8b91b23a76..9ce2f156d382 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1437,8 +1437,7 @@ static struct class spi_master_class = {
-  *
-  * The caller is responsible for assigning the bus number and initializing
-  * the master's methods before calling spi_register_master(); and (after errors
-- * adding the device) calling spi_master_put() and kfree() to prevent a memory
-- * leak.
-+ * adding the device) calling spi_master_put() to prevent a memory leak.
-  */
- struct spi_master *spi_alloc_master(struct device *dev, unsigned size)
- {
 -- 
-2.5.0
+Best regards,
+Klimov Alexey
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

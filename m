@@ -1,55 +1,67 @@
-From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Subject: Re: [PATCH] ARM: pxa: ssp: Fix build error by removing originally
- incorrect DT binding
-Date: Mon, 07 Sep 2015 10:24:41 +0300
-Message-ID: <55ED3BB9.8040202@linux.intel.com>
-References: <1441208649-6192-1-git-send-email-jarkko.nikula@bitmer.com> <87pp1yxais.fsf@belgarion.home>
+From: Christian Hartmann <cornogle-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
+Subject: Re: [alsa-devel] Fwd: [PATCH 1/1] SPI : spi-pxa2xx : fix spi init of
+ WM510205 codec via ACPI (resend)
+Date: Mon, 7 Sep 2015 09:58:22 +0200
+Message-ID: <CAKor6TfhaHfqkmz-dogJ6dEUe06QFv-ee7uPOLiEGSTh3ibkhQ@mail.gmail.com>
+References: <CAKor6TfpWuhTG6dfARdHmXEb+bLpm5Q6Z-A0g60VPD2fCWHbOg@mail.gmail.com>
+	<20150826100155.GA1513@lahna.fi.intel.com>
+	<CAKor6TeH32hd0QUCPowzrjp54iJjGKiJ8jVT994y2O29dfk=QA@mail.gmail.com>
+	<20150827115914.GF28428@lahna.fi.intel.com>
+	<20150827145614.GC5313@sirena.org.uk>
+	<CAKor6Tf8kB0WPXLTBFmCzUJkMVEDu-xTEyw0-_NZvBdFSyQSFA@mail.gmail.com>
+	<CAKor6TfW4reRz3m-xkCr_ZUfHQkfqT3q+S7JCpO-9F+k1QW38g@mail.gmail.com>
+	<CAKor6Tf7_Hiyc1v_TGvdVAU+G84Gp+KgKeSGi8EQJRoq9rhMuw@mail.gmail.com>
+	<20150902081334.GB15505@ck-lbox>
+	<CAKor6TdaRqi0+a0ZHkdJngE2LPKHk0PUFrdQQ2-x59cxUa8cXA@mail.gmail.com>
+	<20150904143434.GA1514@edi-sw-dsktp001.ad.cirrus.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	Mark Brown <broonie@kernel.org>,
-	Russell King <linux@arm.linux.org.uk>,
-	Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Axel Lin <axel.lin@ingics.com>, stable@vger.kernel.org
-To: Robert Jarzmik <robert.jarzmik@free.fr>,
-	Jarkko Nikula <jarkko.nikula@bitmer.com>
-Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <87pp1yxais.fsf@belgarion.home>
-Sender: stable-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Cc: alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
+	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Pierre-Louis Bossart <pierre-louis.bossart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+	dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org
+To: Charles Keepax <ckeepax-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150904143434.GA1514-ARjQNJ2nNhTg0ogRn3sK4gTTu0opVTaCmpATvIKMPHk@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 09/04/2015 10:14 PM, Robert Jarzmik wrote:
-> Jarkko Nikula <jarkko.nikula@bitmer.com> writes:
->
->> From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
->>
->> Commit 03fbf488cece ("spi: pxa2xx: Differentiate Intel LPSS types") caused
->> build error here because it removed the type LPSS_SSP and I didn't notice
->> the type was used here too.
->>
->> I believe commit a6e56c28a178 ("ARM: pxa: ssp: add DT bindings") added it
->> accidentally by copying all enum pxa_ssp_type types from
->> include/linux/pxa2xx_ssp.h even LPSS_SSP was for Intel LPSS SPI devices.
->>
->> Fix the build error by removing this incorrect binding.
->>
->> Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
->> Reported-by: Axel Lin <axel.lin@ingics.com>
->> Cc: stable@vger.kernel.org # 4.2
->> ---
->> Sorry if you got this twice today. I had email problems today and this patch
->> didn't go through to at least some of recipients. Resending from other my
->> another address.
->
-> I'll take it through pxa tree, and I'll add this :
-> Fixes: 03fbf488cece ("spi: pxa2xx: Differentiate Intel LPSS types")
->
-> Up to my understanding this is the tag stable tree will use to know which kernel
-> version this patch should be applied to.
->
-Thanks for noticing. I added it and resent the patch as v2.
+Hello,
 
--- 
-Jarkko
+2015-09-04 16:34 GMT+02:00 Charles Keepax <ckeepax-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>:
+> Not entirely unexpected I guess, but certainly my gut feel here
+> is that this is a problem with the chip selects. I guess really
+> trying to find any available documentation on the AP/SPI and
+what do you mean with AP ?
+
+I have googled and found some technical datasheets and
+developer documentation about the marvell pxa27 under this link/webpage
+http://www.marvell.com/application-processors/pxa-family/
+
+I also asked lenovo about datasheets (not the short brief productsheet) to get
+facts about it. But again,  I do not think that lenovo will ever
+support me in this case.
+if I got some datasheets and if its not against laws etc I will report it here.
+
+> tearing apart the SPI driver are the next steps from here. But
+> afraid I don't really have any great ideas for diving much
+> deeper. I will try to chase the Windows guys here again and see
+That would be nice, hope they got some glues.
+
+> if I can gain any clues from them but I don't really know at what
+> level these things are abstracted in Windows and thus if they can
+> really help us much.
+>
+> Thanks,
+> Charles
+
+Thanks,
+Chris
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

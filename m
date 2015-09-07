@@ -1,71 +1,50 @@
-From: Shawn Lin <shawn.lin@rock-chips.com>
-Subject: [PATCH v4 09/10] snd: dmaengine-pcm: add snd_dmaengine_pcm_get_quirks interface
-Date: Sun,  6 Sep 2015 09:13:16 +0800
-Message-ID: <1441501996-14075-1-git-send-email-shawn.lin@rock-chips.com>
-References: <1441501881-13700-1-git-send-email-shawn.lin@rock-chips.com>
-Cc: Doug Anderson <dianders@chromium.org>,
-	Olof Johansson <olofj@google.com>,
-	Sonny Rao <sonnyrao@chromium.org>,
-	Addy Ke <addy.ke@rock-chips.com>, dmaengine@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org, alsa-devel@alsa-project.org,
-	linux-spi@vger.kernel.org, Shawn Lin <shawn.lin@rock-chips.com>
-To: Vinod Koul <vinod.koul@intel.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>, Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1441501881-13700-1-git-send-email-shawn.lin@rock-chips.com>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Subject: [PATCH v2] ARM: pxa: ssp: Fix build error by removing originally incorrect DT binding
+Date: Mon,  7 Sep 2015 10:23:01 +0300
+Message-ID: <1441610581-11434-1-git-send-email-jarkko.nikula@linux.intel.com>
+Cc: linux-spi@vger.kernel.org, Russell King <linux@arm.linux.org.uk>,
+	Mark Brown <broonie@kernel.org>,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	<stable@vger.kernel.org>
+To: linux-arm-kernel@lists.infradead.org
+Return-path: <stable-owner@vger.kernel.org>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add snd_dmaengine_pcm_get_quirks for I2S devices to query
-dma controller's quirks if they need it to make special workaround
-due to broken dma controller design
+Commit 03fbf488cece ("spi: pxa2xx: Differentiate Intel LPSS types") caused
+build error here because it removed the type LPSS_SSP and I didn't notice
+the type was used here too.
 
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+I believe commit a6e56c28a178 ("ARM: pxa: ssp: add DT bindings") added it
+accidentally by copying all enum pxa_ssp_type types from
+include/linux/pxa2xx_ssp.h even LPSS_SSP was for Intel LPSS SPI devices.
+
+Fix the build error by removing this incorrect binding.
+
+Fixes: 03fbf488cece ("spi: pxa2xx: Differentiate Intel LPSS types")
+Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Reported-by: Axel Lin <axel.lin@ingics.com>
+Cc: <stable@vger.kernel.org> # 4.2
 ---
+v2: Added Fixes tag suggested by Robert Jarzmik
+---
+ arch/arm/plat-pxa/ssp.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Changes in v4: None
-Changes in v3: None
-Changes in v2: None
-Changes in v1: None
-
- sound/soc/soc-generic-dmaengine-pcm.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
-
-diff --git a/sound/soc/soc-generic-dmaengine-pcm.c b/sound/soc/soc-generic-dmaengine-pcm.c
-index 6fd1906..42136005 100644
---- a/sound/soc/soc-generic-dmaengine-pcm.c
-+++ b/sound/soc/soc-generic-dmaengine-pcm.c
-@@ -466,4 +466,28 @@ void snd_dmaengine_pcm_unregister(struct device *dev)
- }
- EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_unregister);
- 
-+
-+/**
-+ * snd_dmaengine_pcm_get_quirks - Get dmaengine quirks based PCM device
-+ * @dev: Parent device the PCM was register with
-+ */
-+int snd_dmaengine_pcm_get_quirks(struct device *dev)
-+{
-+	struct snd_soc_platform *platform;
-+	struct dmaengine_pcm *pcm;
-+	int ret = -ENODEV;
-+
-+	platform = snd_soc_lookup_platform(dev);
-+	if (!platform)
-+		return ret;
-+
-+	pcm = soc_platform_to_pcm(platform);
-+
-+	if (pcm->chan)
-+		ret = dmaengine_get_quirks(pcm->chan[0]);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_get_quirks);
-+
- MODULE_LICENSE("GPL");
+diff --git a/arch/arm/plat-pxa/ssp.c b/arch/arm/plat-pxa/ssp.c
+index ad9529cc4203..daa1a65f2eb7 100644
+--- a/arch/arm/plat-pxa/ssp.c
++++ b/arch/arm/plat-pxa/ssp.c
+@@ -107,7 +107,6 @@ static const struct of_device_id pxa_ssp_of_ids[] = {
+ 	{ .compatible = "mvrl,pxa168-ssp",	.data = (void *) PXA168_SSP },
+ 	{ .compatible = "mrvl,pxa910-ssp",	.data = (void *) PXA910_SSP },
+ 	{ .compatible = "mrvl,ce4100-ssp",	.data = (void *) CE4100_SSP },
+-	{ .compatible = "mrvl,lpss-ssp",	.data = (void *) LPSS_SSP },
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(of, pxa_ssp_of_ids);
 -- 
-2.3.7
+2.5.1

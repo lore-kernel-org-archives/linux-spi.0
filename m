@@ -1,99 +1,45 @@
-From: Nicolas Boichat <drinkcat@chromium.org>
-Subject: Re: [PATCH v7] arm64: dts: Add spi bus dts
-Date: Tue, 8 Sep 2015 16:59:05 +0800
-Message-ID: <CANMq1KBhg4j15=ik7F2MwgmyAQZgSz3QYWLivOhd8ZFuDfjHGA@mail.gmail.com>
-References: <1441028659-19068-1-git-send-email-leilk.liu@mediatek.com>
+From: =?UTF-8?B?SmnFmcOtIFByY2hhbA==?= <jiri.prchal-cKCO0sOKHLPtwjQa/ONI9g@public.gmane.org>
+Subject: [BUG] atmel: spi: scheduling while atomic
+Date: Tue, 8 Sep 2015 14:17:42 +0200
+Message-ID: <55EED1E6.7000902@aksignal.cz>
+Reply-To: jiri.prchal-cKCO0sOKHLPtwjQa/ONI9g@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Matthias Brugger <matthias.bgg@gmail.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	devicetree@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	Mark Brown <broonie@kernel.org>,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org
-To: Leilk Liu <leilk.liu@mediatek.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1441028659-19068-1-git-send-email-leilk.liu@mediatek.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: "Ferre, Nicolas" <Nicolas.FERRE-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, Aug 31, 2015 at 9:44 PM, Leilk Liu <leilk.liu@mediatek.com> wrote:
-> This patch adds MT8173 spi bus controllers into device tree.
+Hi,
+again I discovered a problem when I access devices on SPI. It appears if I access one device pretty often (about once at 
+second) and the error message appears about 3 times a hour. Nevertheless it works correctly.
+I thing it's in kernels 3.17 and 3.18 maybe even longer, now I have 3.18.21.
 
-The corresponding SPI driver has already been merged in
-git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git .
-
-> Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
-
-Reviewed-and-Tested-by: Nicolas Boichat <drinkcat@chromium.org>
-
-> ---
-> Change in this patch:
-> 1. fix spi clock flow usage error.
-> ---
->  arch/arm64/boot/dts/mediatek/mt8173-evb.dts | 18 ++++++++++++++++++
->  arch/arm64/boot/dts/mediatek/mt8173.dtsi    | 13 +++++++++++++
->  2 files changed, 31 insertions(+)
->
-> diff --git a/arch/arm64/boot/dts/mediatek/mt8173-evb.dts b/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
-> index 4be66ca..811cb76 100644
-> --- a/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
-> +++ b/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
-> @@ -387,6 +387,24 @@
->         };
->  };
->
-> +&pio {
-> +       spi_pins_a: spi0 {
-> +               pins_spi {
-> +                       pinmux = <MT8173_PIN_69_SPI_CK__FUNC_SPI_CK_0_>,
-> +                               <MT8173_PIN_70_SPI_MI__FUNC_SPI_MI_0_>,
-> +                               <MT8173_PIN_71_SPI_MO__FUNC_SPI_MO_0_>,
-> +                               <MT8173_PIN_72_SPI_CS__FUNC_SPI_CS_0_>;
-> +               };
-> +       };
-> +};
-> +
-> +&spi {
-> +       pinctrl-names = "default";
-> +       pinctrl-0 = <&spi_pins_a>;
-> +       mediatek,pad-select = <0>;
-> +       status = "okay";
-> +};
-> +
->  &uart0 {
->         status = "okay";
->  };
-> diff --git a/arch/arm64/boot/dts/mediatek/mt8173.dtsi b/arch/arm64/boot/dts/mediatek/mt8173.dtsi
-> index d18ee42..fcb4860 100644
-> --- a/arch/arm64/boot/dts/mediatek/mt8173.dtsi
-> +++ b/arch/arm64/boot/dts/mediatek/mt8173.dtsi
-> @@ -365,6 +365,19 @@
->                         status = "disabled";
->                 };
->
-> +               spi: spi@1100a000 {
-> +                       compatible = "mediatek,mt8173-spi";
-> +                       #address-cells = <1>;
-> +                       #size-cells = <0>;
-> +                       reg = <0 0x1100a000 0 0x1000>;
-> +                       interrupts = <GIC_SPI 110 IRQ_TYPE_LEVEL_LOW>;
-> +                       clocks = <&topckgen CLK_TOP_SYSPLL3_D2>,
-> +                                <&topckgen CLK_TOP_SPI_SEL>,
-> +                                <&pericfg CLK_PERI_SPI0>;
-> +                       clock-names = "parent-clk", "sel-clk", "spi-clk";
-> +                       status = "disabled";
-> +               };
-> +
->                 i2c3: i2c3@11010000 {
->                         compatible = "mediatek,mt8173-i2c";
->                         reg = <0 0x11010000 0 0x70>,
-> --
-> 1.8.1.1.dirty
->
->
-> _______________________________________________
-> Linux-mediatek mailing list
-> Linux-mediatek@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-mediatek
+...
+[10176.960000] BUG: scheduling while atomic: spi0/401/0x00000002
+[10176.960000] Modules linked in:
+[10176.960000] Preemption disabled at:[<  (null)>]   (null)
+[10176.960000]
+[10176.960000] CPU: 0 PID: 401 Comm: spi0 Tainted: G        W      3.18.21_cpm9g25 #2
+[10176.960000] [<c000eef4>] (unwind_backtrace) from [<c000c558>] (show_stack+0x20/0x24)
+[10176.960000] [<c000c558>] (show_stack) from [<c04a214c>] (dump_stack+0x20/0x28)
+[10176.960000] [<c04a214c>] (dump_stack) from [<c049fc74>] (__schedule_bug+0x88/0xac)
+[10176.960000] [<c049fc74>] (__schedule_bug) from [<c04a3488>] (__schedule+0x68/0x508)
+[10176.960000] [<c04a3488>] (__schedule) from [<c04a3ae0>] (schedule+0xa0/0xa4)
+[10176.960000] [<c04a3ae0>] (schedule) from [<c04a3cac>] (schedule_preempt_disabled+0x20/0x2c)
+[10176.960000] [<c04a3cac>] (schedule_preempt_disabled) from [<c04a5684>] (__mutex_lock_slowpath+0xe8/0x17c)
+[10176.960000] [<c04a5684>] (__mutex_lock_slowpath) from [<c04a5758>] (mutex_lock+0x40/0x44)
+[10176.960000] [<c04a5758>] (mutex_lock) from [<c039086c>] (clk_prepare_lock+0x58/0xf4)
+[10176.960000] [<c039086c>] (clk_prepare_lock) from [<c0391808>] (clk_get_rate+0x1c/0x54)
+[10176.960000] [<c0391808>] (clk_get_rate) from [<c0311c60>] (atmel_spi_transfer_one_message+0x264/0x9ec)
+[10176.960000] [<c0311c60>] (atmel_spi_transfer_one_message) from [<c030f428>] (spi_pump_messages+0x5cc/0x5f0)
+[10176.960000] [<c030f428>] (spi_pump_messages) from [<c003541c>] (kthread_worker_fn+0x140/0x1ac)
+[10176.960000] [<c003541c>] (kthread_worker_fn) from [<c00355c4>] (kthread+0xd4/0xe8)
+[10176.960000] [<c00355c4>] (kthread) from [<c0009798>] (ret_from_fork+0x14/0x20)
+...
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

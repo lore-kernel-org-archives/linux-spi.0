@@ -1,7 +1,7 @@
 From: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH linux-next v6 2/8] mtd: spi-nor: remove unused read_xfer/write_xfer hooks
-Date: Wed, 9 Sep 2015 15:24:12 +0200
-Message-ID: <fbc96099fe24c14a858d29ab6df62d1f2b9bdfeb.1441803609.git.cyrille.pitchen@atmel.com>
+Subject: [PATCH linux-next v6 4/8] mtd: spi-nor: use optimized commands for read/write/erase operations
+Date: Wed, 9 Sep 2015 15:24:14 +0200
+Message-ID: <3a917bbb1408e89239255a780bf991e5511f5535.1441803609.git.cyrille.pitchen@atmel.com>
 References: <cover.1441803609.git.cyrille.pitchen@atmel.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -17,94 +17,251 @@ To: <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>, <broonie-DgEjT+Ai2y
 	<computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	<beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org>, <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, <marex-ynQEQJNshbs@public.gmane.org>,
 	<ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <cover.1441803609.git.cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-struct spi_nor_xfer_cfg and read_xfer/write_xfer hooks were never used by
-any driver. Do some cleanup by removing them.
+The op codes used by the spi-nor framework are now tuned depending on the
+memory manufacturer.
 
 Signed-off-by: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 ---
- include/linux/mtd/spi-nor.h | 35 -----------------------------------
- 1 file changed, 35 deletions(-)
+ drivers/mtd/spi-nor/spi-nor.c | 156 +++++++++++++++++++++++++++++++++++-------
+ include/linux/mtd/spi-nor.h   |   6 ++
+ 2 files changed, 138 insertions(+), 24 deletions(-)
 
+diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+index 4b36aada3f4c..820a2177ed5e 100644
+--- a/drivers/mtd/spi-nor/spi-nor.c
++++ b/drivers/mtd/spi-nor/spi-nor.c
+@@ -193,6 +193,8 @@ static inline int set_4byte(struct spi_nor *nor, const struct flash_info *info,
+ 			write_disable(nor);
+ 
+ 		return status;
++	case CFI_MFR_AMD:
++		return 0;
+ 	default:
+ 		/* Spansion style */
+ 		nor->cmd_buf[0] = enable << 7;
+@@ -945,7 +947,7 @@ static int spansion_quad_enable(struct spi_nor *nor)
+ 	}
+ 
+ 	/* set read/write protocols */
+-	nor->read_proto = SPI_PROTO_1_1_4;
++	nor->read_proto = SPI_PROTO_1_4_4;
+ 	nor->write_proto = SPI_PROTO_1_1_4;
+ 
+ 	return 0;
+@@ -1059,7 +1061,7 @@ static int set_dual_mode(struct spi_nor *nor, const struct flash_info *info)
+ 		return status;
+ 	case CFI_MFR_MACRONIX:
+ 	case CFI_MFR_AMD:
+-		nor->read_proto = SPI_PROTO_1_1_2;
++		nor->read_proto = SPI_PROTO_1_2_2;
+ 		break;
+ 	default:
+ 		break;
+@@ -1068,6 +1070,130 @@ static int set_dual_mode(struct spi_nor *nor, const struct flash_info *info)
+ 	return 0;
+ }
+ 
++static void macronix_set_commands(struct spi_nor *nor)
++{
++	switch (nor->flash_read) {
++	case SPI_NOR_QUAD: /* QPI mode */
++		nor->read_opcode = SPINOR_OP_READ_1_4_4;
++		break;
++
++	case SPI_NOR_DUAL:
++		nor->read_opcode = SPINOR_OP_READ_1_2_2;
++		break;
++
++	case SPI_NOR_FAST:
++		nor->read_opcode = SPINOR_OP_READ_FAST;
++		break;
++
++	case SPI_NOR_NORMAL:
++	default:
++		nor->read_opcode = SPINOR_OP_READ;
++		break;
++	}
++
++	nor->program_opcode = SPINOR_OP_PP;
++}
++
++static void micron_set_commands(struct spi_nor *nor)
++{
++	switch (nor->flash_read) {
++	case SPI_NOR_QUAD: /* Quad I/O operations */
++		nor->read_opcode = SPINOR_OP_READ_1_4_4;
++		break;
++
++	case SPI_NOR_DUAL: /* Dual I/O operations */
++		nor->read_opcode = SPINOR_OP_READ_1_2_2;
++		break;
++
++	case SPI_NOR_FAST:
++		nor->read_opcode = SPINOR_OP_READ_FAST;
++		break;
++
++	case SPI_NOR_NORMAL:
++	default:
++		nor->read_opcode = SPINOR_OP_READ;
++		break;
++	}
++
++	nor->program_opcode = SPINOR_OP_PP;
++}
++
++static void spansion_set_commands(struct spi_nor *nor,
++				  const struct flash_info *info)
++{
++	bool addr_4byte = (nor->addr_width == 4);
++	struct mtd_info *mtd = nor->mtd;
++
++	switch (nor->flash_read) {
++	case SPI_NOR_QUAD:
++		if (addr_4byte) {
++			nor->read_opcode = SPINOR_OP_READ4_1_4_4;
++			nor->program_opcode = SPINOR_OP_PP_4B_1_1_4;
++		} else {
++			nor->read_opcode = SPINOR_OP_READ_1_4_4;
++			nor->program_opcode = SPINOR_OP_PP_1_1_4;
++		}
++		break;
++
++	case SPI_NOR_DUAL:
++		if (addr_4byte) {
++			nor->read_opcode = SPINOR_OP_READ4_1_2_2;
++			nor->program_opcode = SPINOR_OP_PP_4B;
++		} else {
++			nor->read_opcode = SPINOR_OP_READ_1_2_2;
++			nor->program_opcode = SPINOR_OP_PP;
++		}
++		break;
++
++	case SPI_NOR_FAST:
++		if (addr_4byte) {
++			nor->read_opcode = SPINOR_OP_READ4_FAST;
++			nor->program_opcode = SPINOR_OP_PP_4B;
++		} else {
++			nor->read_opcode = SPINOR_OP_READ_FAST;
++			nor->program_opcode = SPINOR_OP_PP;
++		}
++		break;
++
++	case SPI_NOR_NORMAL:
++	default:
++		if (addr_4byte) {
++			nor->read_opcode = SPINOR_OP_READ4;
++			nor->program_opcode = SPINOR_OP_PP_4B;
++		} else {
++			nor->read_opcode = SPINOR_OP_READ;
++			nor->program_opcode = SPINOR_OP_PP;
++		}
++		break;
++	}
++
++	if (addr_4byte) {
++		nor->erase_opcode = SPINOR_OP_SE_4B;
++		mtd->erasesize = info->sector_size;
++	}
++}
++
++static void tune_manufacturer_commands(struct spi_nor *nor,
++				       const struct flash_info *info)
++{
++	switch (JEDEC_MFR(info)) {
++	case CFI_MFR_MACRONIX:
++		macronix_set_commands(nor);
++		break;
++
++	case CFI_MFR_ST:
++		micron_set_commands(nor);
++		break;
++
++	case CFI_MFR_AMD:
++		spansion_set_commands(nor, info);
++		break;
++
++	default:
++		break;
++	}
++}
++
+ static int spi_nor_check(struct spi_nor *nor)
+ {
+ 	if (!nor->dev || !nor->read || !nor->write ||
+@@ -1253,32 +1379,14 @@ int spi_nor_scan(struct spi_nor *nor, const char *name, enum read_mode mode)
+ 	else if (mtd->size > 0x1000000) {
+ 		/* enable 4-byte addressing if the device exceeds 16MiB */
+ 		nor->addr_width = 4;
+-		if (JEDEC_MFR(info) == CFI_MFR_AMD) {
+-			/* Dedicated 4-byte command set */
+-			switch (nor->flash_read) {
+-			case SPI_NOR_QUAD:
+-				nor->read_opcode = SPINOR_OP_READ4_1_1_4;
+-				break;
+-			case SPI_NOR_DUAL:
+-				nor->read_opcode = SPINOR_OP_READ4_1_1_2;
+-				break;
+-			case SPI_NOR_FAST:
+-				nor->read_opcode = SPINOR_OP_READ4_FAST;
+-				break;
+-			case SPI_NOR_NORMAL:
+-				nor->read_opcode = SPINOR_OP_READ4;
+-				break;
+-			}
+-			nor->program_opcode = SPINOR_OP_PP_4B;
+-			/* No small sector erase for 4-byte command set */
+-			nor->erase_opcode = SPINOR_OP_SE_4B;
+-			mtd->erasesize = info->sector_size;
+-		} else
+-			set_4byte(nor, info, 1);
++		set_4byte(nor, info, 1);
+ 	} else {
+ 		nor->addr_width = 3;
+ 	}
+ 
++	/* Tune read, page program and erase commands */
++	tune_manufacturer_commands(nor, info);
++
+ 	nor->read_dummy = spi_nor_read_dummy_cycles(nor);
+ 
+ 	dev_info(dev, "%s (%lld Kbytes)\n", info->name,
 diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
-index 66a5f144728a..08e405cbb6af 100644
+index ce81b0e2cb37..f13cd2cb3ac5 100644
 --- a/include/linux/mtd/spi-nor.h
 +++ b/include/linux/mtd/spi-nor.h
-@@ -98,33 +98,6 @@ enum spi_protocol {
- 	SPI_PROTO_4_4_4,	/* Quad Command */
- };
+@@ -25,8 +25,11 @@
+ #define SPINOR_OP_READ		0x03	/* Read data bytes (low frequency) */
+ #define SPINOR_OP_READ_FAST	0x0b	/* Read data bytes (high frequency) */
+ #define SPINOR_OP_READ_1_1_2	0x3b	/* Read data bytes (Dual SPI) */
++#define SPINOR_OP_READ_1_2_2	0xbb	/* Read data bytes (Dual SPI) */
+ #define SPINOR_OP_READ_1_1_4	0x6b	/* Read data bytes (Quad SPI) */
++#define SPINOR_OP_READ_1_4_4	0xeb	/* Read data bytes (Quad SPI) */
+ #define SPINOR_OP_PP		0x02	/* Page program (up to 256 bytes) */
++#define SPINOR_OP_PP_1_1_4	0x32	/* Page program (up to 256 bytes) */
+ #define SPINOR_OP_BE_4K		0x20	/* Erase 4KiB block */
+ #define SPINOR_OP_BE_4K_PMC	0xd7	/* Erase 4KiB block on PMC chips */
+ #define SPINOR_OP_BE_32K	0x52	/* Erase 32KiB block */
+@@ -40,8 +43,11 @@
+ #define SPINOR_OP_READ4		0x13	/* Read data bytes (low frequency) */
+ #define SPINOR_OP_READ4_FAST	0x0c	/* Read data bytes (high frequency) */
+ #define SPINOR_OP_READ4_1_1_2	0x3c	/* Read data bytes (Dual SPI) */
++#define SPINOR_OP_READ4_1_2_2	0xbc	/* Read data bytes (Dual SPI) */
+ #define SPINOR_OP_READ4_1_1_4	0x6c	/* Read data bytes (Quad SPI) */
++#define SPINOR_OP_READ4_1_4_4	0xec	/* Read data bytes (Quad SPI) */
+ #define SPINOR_OP_PP_4B		0x12	/* Page program (up to 256 bytes) */
++#define SPINOR_OP_PP_4B_1_1_4	0x34	/* Page Program (up to 512 bytes) */
+ #define SPINOR_OP_SE_4B		0xdc	/* Sector erase (usually 64KiB) */
  
--/**
-- * struct spi_nor_xfer_cfg - Structure for defining a Serial Flash transfer
-- * @wren:		command for "Write Enable", or 0x00 for not required
-- * @cmd:		command for operation
-- * @cmd_pins:		number of pins to send @cmd (1, 2, 4)
-- * @addr:		address for operation
-- * @addr_pins:		number of pins to send @addr (1, 2, 4)
-- * @addr_width:		number of address bytes
-- *			(3,4, or 0 for address not required)
-- * @mode:		mode data
-- * @mode_pins:		number of pins to send @mode (1, 2, 4)
-- * @mode_cycles:	number of mode cycles (0 for mode not required)
-- * @dummy_cycles:	number of dummy cycles (0 for dummy not required)
-- */
--struct spi_nor_xfer_cfg {
--	u8		wren;
--	u8		cmd;
--	u8		cmd_pins;
--	u32		addr;
--	u8		addr_pins;
--	u8		addr_width;
--	u8		mode;
--	u8		mode_pins;
--	u8		mode_cycles;
--	u8		dummy_cycles;
--};
--
- #define SPI_NOR_MAX_CMD_SIZE	8
- enum spi_nor_ops {
- 	SPI_NOR_OPS_READ = 0,
-@@ -152,7 +125,6 @@ enum spi_nor_option_flags {
-  * @flash_read:		the mode of the read
-  * @sst_write_second:	used by the SST write operation
-  * @flags:		flag options for the current SPI-NOR (SNOR_F_*)
-- * @cfg:		used by the read_xfer/write_xfer
-  * @erase_proto:	the SPI protocol used by erase operations
-  * @read_proto:		the SPI protocol used by read operations
-  * @write_proto:	the SPI protocol used by write operations
-@@ -162,8 +134,6 @@ enum spi_nor_option_flags {
-  *			read/write/erase/lock/unlock operations
-  * @unprepare:		[OPTIONAL] do some post work after the
-  *			read/write/erase/lock/unlock operations
-- * @read_xfer:		[OPTIONAL] the read fundamental primitive
-- * @write_xfer:		[OPTIONAL] the writefundamental primitive
-  * @read_reg:		[DRIVER-SPECIFIC] read out the register
-  * @write_reg:		[DRIVER-SPECIFIC] write data to the register
-  * @read:		[DRIVER-SPECIFIC] read data from the SPI NOR
-@@ -191,15 +161,10 @@ struct spi_nor {
- 	enum read_mode		flash_read;
- 	bool			sst_write_second;
- 	u32			flags;
--	struct spi_nor_xfer_cfg	cfg;
- 	u8			cmd_buf[SPI_NOR_MAX_CMD_SIZE];
- 
- 	int (*prepare)(struct spi_nor *nor, enum spi_nor_ops ops);
- 	void (*unprepare)(struct spi_nor *nor, enum spi_nor_ops ops);
--	int (*read_xfer)(struct spi_nor *nor, struct spi_nor_xfer_cfg *cfg,
--			 u8 *buf, size_t len);
--	int (*write_xfer)(struct spi_nor *nor, struct spi_nor_xfer_cfg *cfg,
--			  u8 *buf, size_t len);
- 	int (*read_reg)(struct spi_nor *nor, u8 opcode, u8 *buf, int len);
- 	int (*write_reg)(struct spi_nor *nor, u8 opcode, u8 *buf, int len,
- 			int write_enable);
+ /* Used for SST flashes only. */
 -- 
 1.8.2.2
 
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

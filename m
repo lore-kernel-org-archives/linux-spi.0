@@ -1,126 +1,81 @@
-From: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH linux-next v6 1/8] mtd: spi-nor: read JEDEC ID with
- multiple I/O protocols
-Date: Wed, 9 Sep 2015 17:55:22 +0200
-Message-ID: <55F0566A.7060501@atmel.com>
-References: <cover.1441803609.git.cyrille.pitchen@atmel.com>
- <735e22efa25f6529bf8ed4a709c18a719176714b.1441803609.git.cyrille.pitchen@atmel.com>
- <201509091559.40948.marex@denx.de>
+From: Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>
+Subject: Re: [PATCH v5 0/6] bcm2835: auxiliar device support for spi
+Date: Wed, 09 Sep 2015 11:27:24 -0700
+Message-ID: <878u8fcusz.fsf@eliezer.anholt.net>
+References: <1441359711-2800-1-git-send-email-kernel@martin.sperl.org> <87h9n4weg8.fsf@eliezer.anholt.net> <2757852.TDqE8OEVr2@ws-stein>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-	<computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	<beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org>, <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>,
-	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	<pawel.moll-5wv7dgnIgG8@public.gmane.org>, <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	<ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	<linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Content-Type: multipart/signed; boundary="=-=-=";
+	micalg=pgp-sha512; protocol="application/pgp-signature"
+Cc: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
+	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Alexander Stein <alexanders83-S0/GAf8tV78@public.gmane.org>,
+	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <201509091559.40948.marex-ynQEQJNshbs@public.gmane.org>
+In-Reply-To: <2757852.TDqE8OEVr2@ws-stein>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Marek,
+--=-=-=
+Content-Type: text/plain
 
-Le 09/09/2015 15:59, Marek Vasut a =E9crit :
-> On Wednesday, September 09, 2015 at 03:24:11 PM, Cyrille Pitchen wrot=
-e:
->> When their quad or dual I/O mode is enabled, Micron and Macronix spi=
--nor
->> memories don't reply to the regular Read ID (0x9f) command. Instead =
-they
->> reply to a new dedicated command Read ID Multiple I/O (0xaf).
->>
->> If the Read ID (0x9f) command fails (the read ID is all 1's or all 0=
-'s),
->> then the Read ID Multiple I/O (0xaf) is used, first with SPI 4-4-4 p=
-rotocol
->> (supported by both Micron and Macronix memories), lately with SPI-2-=
-2-2
->> protocol (supported only by Micron memories).
->>
->> Signed-off-by: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
->> ---
->>  drivers/mtd/spi-nor/spi-nor.c | 28 +++++++++++++++++++++++++++-
->>  include/linux/mtd/spi-nor.h   | 23 +++++++++++++++++++++--
->>  2 files changed, 48 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi=
--nor.c
->> index f59aedfe1462..80a0db078aaa 100644
->> --- a/drivers/mtd/spi-nor/spi-nor.c
->> +++ b/drivers/mtd/spi-nor/spi-nor.c
->> @@ -703,8 +703,9 @@ static const struct flash_info spi_nor_ids[] =3D=
- {
->>
->>  static const struct flash_info *spi_nor_read_id(struct spi_nor *nor=
-)
->>  {
->> -	int			tmp;
->> +	int			i, tmp;
->>  	u8			id[SPI_NOR_MAX_ID_LEN];
->> +	enum spi_protocol	proto[2] =3D {SPI_PROTO_4_4_4, SPI_PROTO_2_2_2};
->>  	const struct flash_info	*info;
->>
->>  	tmp =3D nor->read_reg(nor, SPINOR_OP_RDID, id, SPI_NOR_MAX_ID_LEN)=
-;
->> @@ -713,6 +714,25 @@ static const struct flash_info *spi_nor_read_id=
-(struct
->> spi_nor *nor) return ERR_PTR(tmp);
->>  	}
->>
->> +	/* Special case for Micron/Macronix qspi nor. */
->> +	for (i =3D 0; i < ARRAY_SIZE(proto); ++i) {
->> +		if (!((id[0] =3D=3D 0xff && id[1] =3D=3D 0xff && id[2] =3D=3D 0xf=
-f) ||
->> +		      (id[0] =3D=3D 0x00 && id[1] =3D=3D 0x00 && id[2] =3D=3D 0x0=
-0)))
->> +			break;
->> +
->> +		nor->erase_proto =3D proto[i];
->> +		nor->read_proto =3D proto[i];
->> +		nor->write_proto =3D proto[i];
->> +		nor->reg_proto =3D proto[i];
->> +		tmp =3D nor->read_reg(nor, SPINOR_OP_MIO_RDID,
->> +				    id, SPI_NOR_MAX_ID_LEN);
->> +		if (tmp < 0) {
->> +			dev_dbg(nor->dev,
->> +				" error %d reading JEDEC ID (MULTI IO)\n", tmp);
->=20
-> Don't you have one space too much in front of the " error" ?
->=20
+Alexander Stein <alexanders83-S0/GAf8tV78@public.gmane.org> writes:
 
-Probably, I've just copied and pasted the dev_dbg() message few lines a=
-bove when
-the regular SPINOR_OP_RDID fails, then appended the "(MULTI IO)" string=
- to make
-think consistent but I don't mind removing the leading space.
+> Hi,
+> On Tuesday 08 September 2015 18:48:07, Eric Anholt wrote:
+>> I finally had a chance to sit down and look at what the hardware's doing
+>> with the enable bit (also, I've read a whole lot more of the hardware
+>> now, so I'm a lot faster at answering questions like this).  The enable
+>> bits are a clock gate off of the VPU clock.
+>
+> Are any hardware documents about such things available (in public)?
 
-	tmp =3D nor->read_reg(nor, SPINOR_OP_RDID, id, SPI_NOR_MAX_ID_LEN);
-	if (tmp < 0) {
-		dev_dbg(nor->dev, " error %d reading JEDEC ID\n", tmp);
-		return ERR_PTR(tmp);
-	}
+Nope, I just went through the HDL to see how things were routed.
 
->> +			return ERR_PTR(tmp);
->> +		}
->> +	}
->> +
->>  	for (tmp =3D 0; tmp < ARRAY_SIZE(spi_nor_ids) - 1; tmp++) {
->>  		info =3D &spi_nor_ids[tmp];
->>  		if (info->id_len) {
->=20
-> [...]
->=20
+>> I knocked together the enable bits as a clock gate driver, since I'd
+>> just written very similar code for the audio domain clock driver (and I
+>> assume you are grumpy about how much time you've spent on this one
+>> stupid register).  It's up at
+>> https://github.com/anholt/linux/tree/bcm2835-clock-aux and I can submit
+>> it if you like the result.  I've compile tested it only, but I'm hoping
+>> you could just drop your aux SPI driver on top of it and have things
+>> work.
+>
+> IMHO line 45 (https://github.com/anholt/linux/commit/facb4ba917a1b9f6c2ee0cea7d529acf55f584dd#diff-1b6f753c132811b3f6d70f5b31866950R45) should be like this
+>> onecell->clks = kzalloc(sizeof(*onecell->clks) * BCM2835_AUX_CLOCK_COUNT, GFP_KERNEL);
+> or you will only allocate a single struct clk*.
 
-Best Regards,
+Thanks, that was a bug in my other clock driver, too!
 
-Cyrille
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBCgAGBQJV8HoMAAoJELXWKTbR/J7o2xEP/3R/27Yktr7ibuVDVEo/GE7z
+5Zio4/u9EX9yE4FTj6g3UrroTAFHvKzxNZjd8EbgCnTYfuIuYA+Aa0+S/pEUWKf7
+8WXNvL4LIbuHB2XfdGf//Gf4LD3he+/0YFMlnVAqK3A/jAMUDn4ptbZqloNgwnK1
+YmgTN34dzWpS/D4TH1ScOJlJNaZc9ta9C8fX0T2AiOYCj0BsLiv9Rb37aR6/ZP8C
+BHfk7zr1jmr/0NTY9d6locWS+xk/BxEbBMnhDCIthYZ6n8/Cjb+91vtntNRDIQJA
+4ndBQ0j6p99HlROA37Y1a8Qp8GAiW7Xjrcyu8YQo6nq9w0LpUtPJjPuUIjAUMPNX
+4a1mES+QrumvPjt9FQ+HmAa6+7ucep3crsvDBro+JzGfINU3GwNF4b++tP1VcwuU
+UDqrUfcxpdBCn9YeHYowycHMNOJtAM/r1THcK6e/KJFL7haMIJvDWOmFK9HQP4c9
+M457lQwpbpUy1/ncbV7j3gF2tSAizTnGval8sStcSJztjRnn7wwEIbC/Lcy4KpBI
+B3gmy/wF9eabmxmevw4DQ8V9k04nAB8ykrThFhDSLcYyZUOWx4R6wi8i7tW05a4v
+2tlVZrnz3XxjGAbVk4CiDvY+qMWmRaEW2lOb1Q/UuQUMB4gzvWyUaMaYr8g/Vh1O
+hzNIyMd6Sx+1KDMWTci0
+=CBKP
+-----END PGP SIGNATURE-----
+--=-=-=--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

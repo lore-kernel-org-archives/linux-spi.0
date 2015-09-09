@@ -1,7 +1,7 @@
 From: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH linux-next v6 5/8] Documentation: mtd: add a DT property to set the number of dummy cycles
-Date: Wed, 9 Sep 2015 15:24:15 +0200
-Message-ID: <3eea24f2102a0ba12135ae2d03499a72e74f4818.1441803609.git.cyrille.pitchen@atmel.com>
+Subject: [PATCH linux-next v6 7/8] Documentation: atmel-quadspi: add binding file for Atmel QSPI driver
+Date: Wed, 9 Sep 2015 15:24:17 +0200
+Message-ID: <231d12345119617846d105d053788f3d5000545e.1441803609.git.cyrille.pitchen@atmel.com>
 References: <cover.1441803609.git.cyrille.pitchen@atmel.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -22,39 +22,53 @@ In-Reply-To: <cover.1441803609.git.cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Depending on the SPI clock frequency, the Fast Read op code and the
-Single/Dual Data Rate mode, the number of dummy cycles can be tuned to
-improve transfer speed.
-The actual number of dummy cycles is specific for each memory model and is
-provided by the manufacturer thanks to the memory datasheet.
+This patch documents the DT bindings for the driver of the Atmel QSPI
+controller embedded inside sama5d2x SoCs.
 
 Signed-off-by: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Acked-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Acked-by: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- Documentation/devicetree/bindings/mtd/jedec,spi-nor.txt | 6 ++++++
- 1 file changed, 6 insertions(+)
+ .../devicetree/bindings/mtd/atmel-quadspi.txt      | 29 ++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mtd/atmel-quadspi.txt
 
-diff --git a/Documentation/devicetree/bindings/mtd/jedec,spi-nor.txt b/Documentation/devicetree/bindings/mtd/jedec,spi-nor.txt
-index 2bee68103b01..4387567d8024 100644
---- a/Documentation/devicetree/bindings/mtd/jedec,spi-nor.txt
-+++ b/Documentation/devicetree/bindings/mtd/jedec,spi-nor.txt
-@@ -19,6 +19,11 @@ Optional properties:
-                    all chips and support for it can not be detected at runtime.
-                    Refer to your chips' datasheet to check if this is supported
-                    by your chip.
-+- m25p,num-dummy-cycles : Set the number of dummy cycles for Fast Read commands.
-+                          Depending on the manufacturer additional dedicated
-+                          commands are sent to the flash memory so the
-+                          controller and the memory can agree on the number of
-+                          dummy cycles to use.
- 
- Example:
- 
-@@ -29,4 +34,5 @@ Example:
- 		reg = <0>;
- 		spi-max-frequency = <40000000>;
- 		m25p,fast-read;
-+		m25p,num-dummy-cycles = <8>;
- 	};
+diff --git a/Documentation/devicetree/bindings/mtd/atmel-quadspi.txt b/Documentation/devicetree/bindings/mtd/atmel-quadspi.txt
+new file mode 100644
+index 000000000000..0b8d545bb198
+--- /dev/null
++++ b/Documentation/devicetree/bindings/mtd/atmel-quadspi.txt
+@@ -0,0 +1,29 @@
++* Atmel Quad Serial Peripheral Interface (QSPI)
++
++Required properties:
++- compatible:     should be "atmel,sama5d2-qspi"
++- reg:            the first contains the register location and length,
++                  the second contains the memory mapping address and length
++- interrupts:     should contain the interrupt for the device
++- clocks:         the phandle of the clock needed by the QSPI controller
++- #address-cells: should be <1>
++- #size-cells:    should be <0>
++
++Example:
++
++spi@f0020000 {
++	compatible = "atmel,sama5d2-qspi";
++	reg = <0xf0020000 0x100>,
++	      <0xd0000000 0x8000000>;
++	interrupts = <52 IRQ_TYPE_LEVEL_HIGH 7>;
++	clocks = <&spi0_clk>;
++	#address-cells = <1>;
++	#size-cells = <0>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_spi0_default>;
++	status = "okay";
++
++	m25p80@0 {
++		...
++	};
++};
 -- 
 1.8.2.2
 

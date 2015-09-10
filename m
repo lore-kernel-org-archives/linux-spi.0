@@ -1,8 +1,8 @@
 From: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi/bcm63xx: document device tree bindings
-Date: Thu, 10 Sep 2015 12:17:40 -0700
-Message-ID: <55F1D754.9000101@openwrt.org>
-References: <1441898975-22540-1-git-send-email-jogo@openwrt.org> <1441898975-22540-2-git-send-email-jogo@openwrt.org>
+Subject: Re: [PATCH 2/2] spi/bcm63xx: add support for probing through devicetree
+Date: Thu, 10 Sep 2015 12:19:39 -0700
+Message-ID: <55F1D7CB.9020804@openwrt.org>
+References: <1441898975-22540-1-git-send-email-jogo@openwrt.org> <1441898975-22540-3-git-send-email-jogo@openwrt.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
@@ -14,64 +14,132 @@ Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <r
 To: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1441898975-22540-2-git-send-email-jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+In-Reply-To: <1441898975-22540-3-git-send-email-jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 On 10/09/15 08:29, Jonas Gorski wrote:
-> Add documentation for the bindings of the low speed SPI controller found
-> on most bcm63xx SoCs.
+> Add required binding support to probe through device tree.
 > 
-> Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-> ---
->  .../devicetree/bindings/spi/spi-bcm63xx.txt        | 33 ++++++++++++++++++++++
->  1 file changed, 33 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/spi/spi-bcm63xx.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-bcm63xx.txt b/Documentation/devicetree/bindings/spi/spi-bcm63xx.txt
-> new file mode 100644
-> index 0000000..1a60bb9
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/spi-bcm63xx.txt
-> @@ -0,0 +1,33 @@
-> +Binding for Broadcom BCM6348/BCM6358 SPI controller
-> +
-> +Required properties:
-> +- compatible: must contain one of "brcm,bcm6348-spi", "brcm,bcm6458-spi".
+> Use the compatible instead of the resource size for identifiying the
+> block type, and allow reducing the number of cs lines through OF.
 
-Typo, the second compatible should "brcm,bcm6358-spi", other than that:
+This looks good to me, since this builds on top of your other 6 patches,
+the end-result might be different, especially if we end-up using
+platform_device_id as suggested. Other than that:
 
 Reviewed-by: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-> +- reg: Base address and size of the controllers memory area.
-> +- interrupts: Interrupt for the SPI block.
-> +- clocks: phandle of the SPI clock.
-> +- clock-names: has to be "spi".
-> +- #address-cells: <1>, as required by generic SPI binding.
-> +- #size-cells: <0>, also as required by generic SPI binding.
+Thanks for doing this!
+
+> 
+> Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+> ---
+>  drivers/spi/spi-bcm63xx.c | 56 +++++++++++++++++++++++++++++++++++------------
+>  1 file changed, 42 insertions(+), 14 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+> index 42f33bc..ec094b1 100644
+> --- a/drivers/spi/spi-bcm63xx.c
+> +++ b/drivers/spi/spi-bcm63xx.c
+> @@ -26,6 +26,7 @@
+>  #include <linux/completion.h>
+>  #include <linux/err.h>
+>  #include <linux/pm_runtime.h>
+> +#include <linux/of.h>
+>  
+>  /* BCM 6338/6348 SPI core */
+>  #define SPI_6348_RSET_SIZE		64
+> @@ -465,6 +466,12 @@ static const unsigned long bcm6358_spi_reg_offsets[] = {
+>  	[SPI_MSG_DATA_SIZE]	= SPI_6358_MSG_DATA_SIZE,
+>  };
+>  
+> +static const struct of_device_id bcm63xx_spi_of_match[] = {
+> +	{ .compatible = "brcm,bcm6348-spi", .data = &bcm6348_spi_reg_offsets },
+> +	{ .compatible = "brcm,bcm6358-spi", .data = &bcm6358_spi_reg_offsets },
+> +	{ },
+> +};
 > +
-> +Optional properties:
-> +- num-cs: some controllers have less than 8 cs signals. Defaults to 8
-> +  if absent.
+>  static int bcm63xx_spi_probe(struct platform_device *pdev)
+>  {
+>  	struct resource *r;
+> @@ -474,6 +481,7 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
+>  	struct clk *clk;
+>  	struct bcm63xx_spi *bs;
+>  	int ret;
+> +	u32 num_cs = BCM63XX_SPI_MAX_CS;
+>  
+>  	irq = platform_get_irq(pdev, 0);
+>  	if (irq < 0) {
+> @@ -516,27 +524,46 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
+>  		goto out_err;
+>  	}
+>  
+> -	master->bus_num = BCM63XX_SPI_BUS_NUM;
+> -	master->num_chipselect = BCM63XX_SPI_MAX_CS;
+>  	master->transfer_one_message = bcm63xx_spi_transfer_one;
+>  	master->mode_bits = MODEBITS;
+>  	master->bits_per_word_mask = SPI_BPW_MASK(8);
+>  	master->auto_runtime_pm = true;
+>  
+> -	switch (resource_size(r)) {
+> -	case SPI_6348_RSET_SIZE:
+> -		bs->reg_offsets = bcm6348_spi_reg_offsets;
+> -		break;
+> -	case SPI_6358_RSET_SIZE:
+> -		bs->reg_offsets = bcm6358_spi_reg_offsets;
+> -		break;
+> -	default:
+> -		ret = -EINVAL;
+> -		dev_err(dev, "unsupported register size: %i\n",
+> -			resource_size(r));
+> -		goto out_err;
+> +	if (dev->of_node) {
+> +		const struct of_device_id *match;
 > +
-> +Child nodes as per the generic SPI binding.
+> +		match = of_match_node(bcm63xx_spi_of_match, dev->of_node);
+> +		if (!match) {
+> +			ret = -EINVAL;
+> +			goto out_err;
+> +		}
+> +		bs->reg_offsets = match->data;
+> +		master->dev.of_node = dev->of_node;
+> +		of_property_read_u32(dev->of_node, "num-cs", &num_cs);
+> +		if (num_cs > BCM63XX_SPI_MAX_CS) {
+> +			dev_warn(dev, "unsupported number of cs (%i), reducing to 8\n",
+> +				 num_cs);
+> +			num_cs = BCM63XX_SPI_MAX_CS;
+> +		}
+> +	} else {
+> +		master->bus_num = BCM63XX_SPI_BUS_NUM;
 > +
-> +Example:
-> +
-> +	spi@10000800 {
-> +		compatible = "brcm,bcm6368-spi", "brcm,bcm6358-spi";
-> +		reg = <0x10000800 0x70c>;
-> +
-> +		interrupts = <1>;
-> +
-> +		clocks = <&clkctl 9>;
-> +		clock-names = "spi";
-> +
-> +		num-cs = <5>;
-> +
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +	};
+> +		switch (resource_size(r)) {
+> +		case SPI_6348_RSET_SIZE:
+> +			bs->reg_offsets = bcm6348_spi_reg_offsets;
+> +			break;
+> +		case SPI_6358_RSET_SIZE:
+> +			bs->reg_offsets = bcm6358_spi_reg_offsets;
+> +			break;
+> +		default:
+> +			ret = -EINVAL;
+> +			dev_err(dev, "unsupported register size: %i\n",
+> +				resource_size(r));
+> +			goto out_err;
+> +		}
+>  	}
+>  
+> +	master->num_chipselect = num_cs;
+>  	bs->msg_type_shift = bs->reg_offsets[SPI_MSG_TYPE_SHIFT];
+>  	bs->msg_ctl_width = bs->reg_offsets[SPI_MSG_CTL_WIDTH];
+>  	bs->fifo_size = bs->reg_offsets[SPI_MSG_DATA_SIZE];
+> @@ -621,6 +648,7 @@ static struct platform_driver bcm63xx_spi_driver = {
+>  	.driver = {
+>  		.name	= "bcm63xx-spi",
+>  		.pm	= &bcm63xx_spi_pm_ops,
+> +		.of_match_table = bcm63xx_spi_of_match,
+>  	},
+>  	.probe		= bcm63xx_spi_probe,
+>  	.remove		= bcm63xx_spi_remove,
 > 
 
 --

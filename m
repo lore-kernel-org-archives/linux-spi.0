@@ -1,8 +1,7 @@
 From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: [PATCH 1/2] spi/bcm63xx: document device tree bindings
-Date: Thu, 10 Sep 2015 17:29:34 +0200
-Message-ID: <1441898975-22540-2-git-send-email-jogo@openwrt.org>
-References: <1441898975-22540-1-git-send-email-jogo@openwrt.org>
+Subject: [PATCH 0/2] spi/bcm63xx: add device tree support
+Date: Thu, 10 Sep 2015 17:29:33 +0200
+Message-ID: <1441898975-22540-1-git-send-email-jogo@openwrt.org>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
 	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
@@ -11,58 +10,22 @@ Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <r
 	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1441898975-22540-1-git-send-email-jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Add documentation for the bindings of the low speed SPI controller found
-on most bcm63xx SoCs.
+Add support for probing spi-bcm63xx through device tree.
 
-Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
----
- .../devicetree/bindings/spi/spi-bcm63xx.txt        | 33 ++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+Depends on "spi/bcm63xx: cleanup and decouple from arch code".
+
+Jonas Gorski (2):
+  spi/bcm63xx: document device tree bindings
+  spi/bcm63xx: add support for probing through devicetree
+
+ .../devicetree/bindings/spi/spi-bcm63xx.txt        | 33 +++++++++++++
+ drivers/spi/spi-bcm63xx.c                          | 56 ++++++++++++++++------
+ 2 files changed, 75 insertions(+), 14 deletions(-)
  create mode 100644 Documentation/devicetree/bindings/spi/spi-bcm63xx.txt
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-bcm63xx.txt b/Documentation/devicetree/bindings/spi/spi-bcm63xx.txt
-new file mode 100644
-index 0000000..1a60bb9
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-bcm63xx.txt
-@@ -0,0 +1,33 @@
-+Binding for Broadcom BCM6348/BCM6358 SPI controller
-+
-+Required properties:
-+- compatible: must contain one of "brcm,bcm6348-spi", "brcm,bcm6458-spi".
-+- reg: Base address and size of the controllers memory area.
-+- interrupts: Interrupt for the SPI block.
-+- clocks: phandle of the SPI clock.
-+- clock-names: has to be "spi".
-+- #address-cells: <1>, as required by generic SPI binding.
-+- #size-cells: <0>, also as required by generic SPI binding.
-+
-+Optional properties:
-+- num-cs: some controllers have less than 8 cs signals. Defaults to 8
-+  if absent.
-+
-+Child nodes as per the generic SPI binding.
-+
-+Example:
-+
-+	spi@10000800 {
-+		compatible = "brcm,bcm6368-spi", "brcm,bcm6358-spi";
-+		reg = <0x10000800 0x70c>;
-+
-+		interrupts = <1>;
-+
-+		clocks = <&clkctl 9>;
-+		clock-names = "spi";
-+
-+		num-cs = <5>;
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+	};
 -- 
 2.1.4
 --

@@ -1,32 +1,45 @@
 From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: [PATCH 0/6] spi/bcm63xx: cleanup and decouple from arch code
-Date: Thu, 10 Sep 2015 16:11:38 +0200
-Message-ID: <1441894304-22316-1-git-send-email-jogo@openwrt.org>
+Subject: [PATCH 3/6] spi/bcm63xx: hardcode busnum to 0
+Date: Thu, 10 Sep 2015 16:11:41 +0200
+Message-ID: <1441894304-22316-4-git-send-email-jogo@openwrt.org>
+References: <1441894304-22316-1-git-send-email-jogo@openwrt.org>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1441894304-22316-1-git-send-email-jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-This patchset decouples spi-bcm63xx from any arch code to allow building
-it for more than MIPS/BCM63XX as well as allow compile testing it on any
-arch/platform.
+We always pass 0 as the spi bus number, so we might as well hard code
+it.
 
-Based on for-next, obviously 4.4 material.
+Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+---
+ drivers/spi/spi-bcm63xx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Jonas Gorski (6):
-  spi/bcm63xx: remove unused rx_tail variable
-  spi/bcm63xx: always use a fixed number of CS
-  spi/bcm63xx: hardcode busnum to 0
-  spi/bcm63xx: replace custom io accessors with standard ones
-  spi/bcm63xx: move register definitions into the driver
-  spi/bcm63xx: move message control word description to register offsets
-
- drivers/spi/Kconfig       |   2 +-
- drivers/spi/spi-bcm63xx.c | 195 +++++++++++++++++++++++++++++++++++++++++-----
- 2 files changed, 176 insertions(+), 21 deletions(-)
-
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index a997c64..c1364a8 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -32,6 +32,7 @@
+ #define BCM63XX_SPI_MAX_PREPEND		15
+ 
+ #define BCM63XX_SPI_MAX_CS		8
++#define BCM63XX_SPI_BUS_NUM		0
+ 
+ struct bcm63xx_spi {
+ 	struct completion	done;
+@@ -369,7 +370,7 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
+ 		goto out_err;
+ 	}
+ 
+-	master->bus_num = pdata->bus_num;
++	master->bus_num = BCM63XX_SPI_BUS_NUM;
+ 	master->num_chipselect = BCM63XX_SPI_MAX_CS;
+ 	master->transfer_one_message = bcm63xx_spi_transfer_one;
+ 	master->mode_bits = MODEBITS;
 -- 
 2.1.4
 --

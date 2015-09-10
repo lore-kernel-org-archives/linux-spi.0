@@ -1,38 +1,68 @@
 From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: [PATCH 1/6] spi/bcm63xx: remove unused rx_tail variable
-Date: Thu, 10 Sep 2015 16:11:39 +0200
-Message-ID: <1441894304-22316-2-git-send-email-jogo@openwrt.org>
-References: <1441894304-22316-1-git-send-email-jogo@openwrt.org>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+Subject: [PATCH 1/2] spi/bcm63xx: document device tree bindings
+Date: Thu, 10 Sep 2015 17:29:34 +0200
+Message-ID: <1441898975-22540-2-git-send-email-jogo@openwrt.org>
+References: <1441898975-22540-1-git-send-email-jogo@openwrt.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
 	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1441894304-22316-1-git-send-email-jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+In-Reply-To: <1441898975-22540-1-git-send-email-jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Fixes the following warning:
-drivers/spi/spi-bcm63xx.c:125:5: warning: unused variable 'rx_tail' [-Wunused-variable]
-  u8 rx_tail;
-     ^
+Add documentation for the bindings of the low speed SPI controller found
+on most bcm63xx SoCs.
 
 Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 ---
- drivers/spi/spi-bcm63xx.c | 1 -
- 1 file changed, 1 deletion(-)
+ .../devicetree/bindings/spi/spi-bcm63xx.txt        | 33 ++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-bcm63xx.txt
 
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index e73e2b05..2b908db 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -122,7 +122,6 @@ static int bcm63xx_txrx_bufs(struct spi_device *spi, struct spi_transfer *first,
- 	struct bcm63xx_spi *bs = spi_master_get_devdata(spi->master);
- 	u16 msg_ctl;
- 	u16 cmd;
--	u8 rx_tail;
- 	unsigned int i, timeout = 0, prepend_len = 0, len = 0;
- 	struct spi_transfer *t = first;
- 	bool do_rx = false;
+diff --git a/Documentation/devicetree/bindings/spi/spi-bcm63xx.txt b/Documentation/devicetree/bindings/spi/spi-bcm63xx.txt
+new file mode 100644
+index 0000000..1a60bb9
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-bcm63xx.txt
+@@ -0,0 +1,33 @@
++Binding for Broadcom BCM6348/BCM6358 SPI controller
++
++Required properties:
++- compatible: must contain one of "brcm,bcm6348-spi", "brcm,bcm6458-spi".
++- reg: Base address and size of the controllers memory area.
++- interrupts: Interrupt for the SPI block.
++- clocks: phandle of the SPI clock.
++- clock-names: has to be "spi".
++- #address-cells: <1>, as required by generic SPI binding.
++- #size-cells: <0>, also as required by generic SPI binding.
++
++Optional properties:
++- num-cs: some controllers have less than 8 cs signals. Defaults to 8
++  if absent.
++
++Child nodes as per the generic SPI binding.
++
++Example:
++
++	spi@10000800 {
++		compatible = "brcm,bcm6368-spi", "brcm,bcm6358-spi";
++		reg = <0x10000800 0x70c>;
++
++		interrupts = <1>;
++
++		clocks = <&clkctl 9>;
++		clock-names = "spi";
++
++		num-cs = <5>;
++
++		#address-cells = <1>;
++		#size-cells = <0>;
++	};
 -- 
 2.1.4
 --

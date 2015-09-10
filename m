@@ -1,63 +1,100 @@
-From: Jonas Gorski <jogo@openwrt.org>
-Subject: Re: [PATCH linux-next v6 4/8] mtd: spi-nor: use optimized commands
- for read/write/erase operations
-Date: Thu, 10 Sep 2015 12:28:39 +0200
-Message-ID: <CAOiHx=mBNYx-DSmbXT0W0M0qVnftu6Sp2=Qn5JhZctyOuK3g2w@mail.gmail.com>
-References: <cover.1441803609.git.cyrille.pitchen@atmel.com> <3a917bbb1408e89239255a780bf991e5511f5535.1441803609.git.cyrille.pitchen@atmel.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: atmel: remove warning when !CONFIG_PM_SLEEP" to the spi tree
+Date: Thu, 10 Sep 2015 11:36:00 +0100
+Message-ID: <E1ZZzCy-0008Pj-9w@finisterre>
+References: <1441873192-18511-1-git-send-email-alexandre.belloni@free-electrons.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: nicolas.ferre@atmel.com, Mark Brown <broonie@kernel.org>,
-	linux-spi@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>,
-	Brian Norris <computersforpeace@gmail.com>,
-	=?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-	"Bean Huo (beanhuo)" <beanhuo@micron.com>,
-	Gabor Juhos <juhosg@openwrt.org>,
-	=?UTF-8?B?TWFyZWsgVmHFoXV0?= <marex@denx.de>,
-	Ben Hutchings <ben@decadent.org.uk>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Pawel Moll <pawel.moll@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Ian Campbell <ijc+devicetree@hellion.org.uk>,
-	Kumar Gala <galak@codeaurora.org>,
-	MTD Maling List <linux-mtd@lists.infradead.org>
-To: Cyrille Pitchen <cyrille.pitchen@atmel.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <3a917bbb1408e89239255a780bf991e5511f5535.1441803609.git.cyrille.pitchen@atmel.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: TEXT/PLAIN; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Alexandre Belloni <alexandre.belloni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1441873192-18511-1-git-send-email-alexandre.belloni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Sep 9, 2015 at 3:24 PM, Cyrille Pitchen
-<cyrille.pitchen@atmel.com> wrote:
-> The op codes used by the spi-nor framework are now tuned depending on the
-> memory manufacturer.
->
-> Signed-off-by: Cyrille Pitchen <cyrille.pitchen@atmel.com>
+The patch
 
-To be honest, I'm not sure if it's worth it using the dual/quad I/O
-commands on spansion, as they have different dummy cycle requirements
-than the fast/dual/quad reads.
+   spi: atmel: remove warning when !CONFIG_PM_SLEEP
 
-E.g. on S25FL128S, Fast/dual/quad is fine with 8 dummy cycles up to
-104 MHz, but Quad I/O needs 1 cycle for <= 50 MHz, 4 for <= 90 MHz,
-and 5 for <= 104 MHz. Which means we would need a lot more logic in
-there or setting it from dts, and for existing users already using
-dual/quad mode this would break it. And for m25p80 it would mean to
-split the cmd + address into two transfers, all to save 20~30 clock
-cycles, which will likely be dwarfed by the savings of the
-dual/quadness of the data.
+has been applied to the spi tree at
 
-Apart from the fact that I would assume many spi-controllers will have
-problems with dummy cycles that aren't a multiple of 8, and would
-therefore require bitshifting the data when reading, which will
-definitely eat up any time savings from the dual/quad written address.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git=20
 
-And for the quad program command the datasheet says it only has any
-performance improvement if running at less than 12 MHz, so probably
-not much to gain for most users.
+All being well this means that it will be integrated into the linux-nex=
+t
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted. =20
 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems an=
+d
+send followup patches addressing any issues that are reported if needed=
+=2E
 
-Jonas
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+=46rom d630526d0aa6acc0868dae892b1febda72029a3e Mon Sep 17 00:00:00 200=
+1
+=46rom: Alexandre Belloni <alexandre.belloni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Date: Thu, 10 Sep 2015 10:19:52 +0200
+Subject: [PATCH] spi: atmel: remove warning when !CONFIG_PM_SLEEP
+MIME-Version: 1.0
+Content-Type: text/plain; charset=3DUTF-8
+Content-Transfer-Encoding: 8bit
+
+When CONFIG_PM is defined but not CONFIG_PM_SLEEP (this happens when
+CONFIG_SUSPEND is not defined), there is the following warning:
+
+drivers/spi/spi-atmel.c:1723:12: warning: =E2=80=98atmel_spi_suspend=E2=
+=80=99 defined but not used [-Wunused-function]
+drivers/spi/spi-atmel.c:1741:12: warning: =E2=80=98atmel_spi_resume=E2=80=
+=99 defined but not used [-Wunused-function]
+
+Enclose both atmel_spi_suspend and atmel_spi_resume in #ifdef
+CONFIG_PM_SLEEP/#endif to solve that.
+
+Signed-off-by: Alexandre Belloni <alexandre.belloni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-atmel.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index c9eca34..709fb6f 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -1721,6 +1721,7 @@ static int atmel_spi_runtime_resume(struct device=
+ *dev)
+ 	return clk_prepare_enable(as->clk);
+ }
+=20
++#ifdef CONFIG_PM_SLEEP
+ static int atmel_spi_suspend(struct device *dev)
+ {
+ 	struct spi_master *master =3D dev_get_drvdata(dev);
+@@ -1757,6 +1758,7 @@ static int atmel_spi_resume(struct device *dev)
+=20
+ 	return ret;
+ }
++#endif
+=20
+ static const struct dev_pm_ops atmel_spi_pm_ops =3D {
+ 	SET_SYSTEM_SLEEP_PM_OPS(atmel_spi_suspend, atmel_spi_resume)
+--=20
+2.5.0
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,61 +1,72 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: spidev: fix possible NULL dereference
-Date: Fri, 11 Sep 2015 13:25:13 +0100
-Message-ID: <20150911122513.GT12027@sirena.org.uk>
-References: <1441883893-20596-1-git-send-email-sudipm.mukherjee@gmail.com>
- <55F2C4F4.3090704@linux.intel.com>
+From: Shawn Lin <shawn.lin@rock-chips.com>
+Subject: Re: [PATCH v4 10/10] ASoC: rockchip_i2s: modify DMA max burst to 1
+Date: Fri, 11 Sep 2015 20:31:16 +0800
+Message-ID: <55F2C994.4040007@rock-chips.com>
+References: <1441501881-13700-1-git-send-email-shawn.lin@rock-chips.com>
+ <1441502008-14116-1-git-send-email-shawn.lin@rock-chips.com>
+ <20150911115331.GM12027@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="eYwrjeFR5b5I2bsF"
-Cc: Sudip Mukherjee <sudipm.mukherjee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <55F2C4F4.3090704-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8;
+	format=flowed
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: shawn.lin@rock-chips.com, Vinod Koul <vinod.koul@intel.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Doug Anderson <dianders@chromium.org>,
+	Olof Johansson <olofj@google.com>,
+	Sonny Rao <sonnyrao@chromium.org>,
+	Addy Ke <addy.ke@rock-chips.com>, dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org, alsa-devel@alsa-project.org,
+	linux-spi@vger.kernel.org, Yiwei Cai <cain.cai@rock-chips.com>,
+	Jianqun Xu <xjq@rock-chips.com>,
+	Olof Johansson <olof@lixom.net>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20150911115331.GM12027@sirena.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
+
+=E5=9C=A8 2015/9/11 19:53, Mark Brown =E5=86=99=E9=81=93:
+> On Sun, Sep 06, 2015 at 09:13:28AM +0800, Shawn Lin wrote:
+>
+>> @@ -460,7 +463,6 @@ static int rockchip_i2s_probe(struct platform_de=
+vice *pdev)
+>>   	i2s->playback_dma_data.addr =3D res->start + I2S_TXDR;
+>>   	i2s->playback_dma_data.addr_width =3D DMA_SLAVE_BUSWIDTH_4_BYTES;
+>>   	i2s->playback_dma_data.maxburst =3D 4;
+>> -
+>>   	i2s->capture_dma_data.addr =3D res->start + I2S_RXDR;
+>>   	i2s->capture_dma_data.addr_width =3D DMA_SLAVE_BUSWIDTH_4_BYTES;
+>>   	i2s->capture_dma_data.maxburst =3D 4;
+>
+> This random whitespace change shouldn't be in here.
+
+yes, sorry for this bit.
+
+>
+>> @@ -489,6 +491,18 @@ static int rockchip_i2s_probe(struct platform_d=
+evice *pdev)
+>>   		goto err_pcm_register;
+>>   	}
+>>
+>> +	dma_quirk =3D snd_dmaengine_pcm_get_quirks(&pdev->dev);
+>> +	if (dma_quirk =3D=3D ROCKCHIP_I2S_BROKEN_BURST_LEN) {
+>> +		/*
+>
+> I'd expect this to be a switch statement given the way this is writte=
+n.
+
+Ahh.. agreed, but we don't expect more quriks for this driver.  =EF=BC=9A=
+=EF=BC=89)))
+Will be done for the next version.
+
+Thanks.
+
+>
 
 
---eYwrjeFR5b5I2bsF
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Fri, Sep 11, 2015 at 03:11:32PM +0300, Jarkko Nikula wrote:
-
-> Actually this fixes a *real* NULL dereference case but it is not related to
-> normal open/close life cycle of spidev. It requires that spidev is kept open
-> when SPI master is removed.
-
-> spidev->spi is set to NULL in spidev_remove() and it is called before
-> spidev_release() in case master is removed while spidev is in use
-
-> It would be good to update this to commit log, add a tag below and Cc
-> <stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-
-> Fixes: 9169051617df ("spi: spidev: Don't mangle max_speed_hz in underlying
-> spi device")
-
-The patch was already applied :(
-
---eYwrjeFR5b5I2bsF
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJV8sgoAAoJECTWi3JdVIfQXwQH/2P4lB56Wdq0SR0Cjd/oUR0X
-fdeB0JkEebpEpIq1PcOArBjaqUvbNz/pClefAxTglZGpUR6pq8BvmWWJ4Mhinvmc
-Scy3oixD2QNgheurfeBdyX+diMCuXbRpRAi0fiZ8pL3iG3JHVjsbOs6LuYHNWLOT
-8jHjxckKmtP/3Le8wcUOzXI1AKsWBP+hRFX8D5wHukpLtwwGiJWjzwUbwAltsq8s
-daPJK5GMKZupzqkOwen5sZtg6ncIxTbr/XeqcQrbPutXuFaPVm1I/Xt7aiEEi5Nt
-jCYojFAh1r5L8l+cMsWDz5ocUVHfpH5goDKiHwD2gqxfRRwAztsMRK9NrPbvSMU=
-=9B6H
------END PGP SIGNATURE-----
-
---eYwrjeFR5b5I2bsF--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--=20
+Best Regards
+Shawn Lin

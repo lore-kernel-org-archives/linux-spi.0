@@ -1,7 +1,7 @@
 From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH v6 1/4] dt/bindings: bcm2835: spi: add bindings for the bcm2835 auxiliary spi devices
-Date: Fri, 11 Sep 2015 11:22:03 +0000
-Message-ID: <1441970527-2403-2-git-send-email-kernel@martin.sperl.org>
+Subject: [PATCH v6 3/4] spi: bcm2835: add the auxiliary spi1 and spi2 to the device tree
+Date: Fri, 11 Sep 2015 11:22:05 +0000
+Message-ID: <1441970527-2403-4-git-send-email-kernel@martin.sperl.org>
 References: <1441970527-2403-1-git-send-email-kernel@martin.sperl.org>
 Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
@@ -16,75 +16,65 @@ To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <r
 	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	eEric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <1441970527-2403-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
 From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-This defines the spi1 and spi2 devices in the device-tree.
+This enables the use of the auxiliary spi1 and spi2 devices
+on the bcm2835 SOC.
+
+Note that this requires the use of the new clk-bcm2835-aux to work.
 
 Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 ---
- .../bindings/spi/brcm,bcm2835-aux-spi.txt          |   38 ++++++++++++++++++++
- 1 file changed, 38 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/brcm,bcm2835-aux-spi.txt
+ arch/arm/boot/dts/bcm2835.dtsi |   21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-Changelog:
-	v4->v5: fixed wording for reg
-		removed reference to syscon
-		removed documentation on typical GPIO config
-	v5->v6:	move to clk-bcm2835-aux clock driver
+diff --git a/arch/arm/boot/dts/bcm2835.dtsi b/arch/arm/boot/dts/bcm2835.dtsi
+index 7c37956..3f5a7f1 100644
+--- a/arch/arm/boot/dts/bcm2835.dtsi
++++ b/arch/arm/boot/dts/bcm2835.dtsi
+@@ -1,5 +1,6 @@
+ #include <dt-bindings/pinctrl/bcm2835.h>
+ #include <dt-bindings/clock/bcm2835.h>
++#include <dt-bindings/clock/bcm2835-aux.h>
+ #include "skeleton.dtsi"
 
-diff --git a/Documentation/devicetree/bindings/spi/brcm,bcm2835-aux-spi.txt b/Documentation/devicetree/bindings/spi/brcm,bcm2835-aux-spi.txt
-new file mode 100644
-index 0000000..9887b07
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/brcm,bcm2835-aux-spi.txt
-@@ -0,0 +1,38 @@
-+Broadcom BCM2835 auxiliar SPI1/2 controller
+ / {
+@@ -183,6 +184,26 @@
+ 		arm-pmu {
+ 			compatible = "arm,arm1176-pmu";
+ 		};
 +
-+The BCM2835 contains two forms of SPI master controller, one known simply as
-+SPI0, and the other known as the "Universal SPI Master"; part of the
-+auxiliary block. This binding applies to the SPI1/2 controller.
++		spi1: spi@7e215080 {
++			compatible = "brcm,bcm2835-aux-spi";
++			reg = <0x7e215080 0x40>;
++			interrupts = <1 29>;
++			clocks = <&aux_clocks BCM2835_AUX_CLOCK_SPI1>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++			status = "disabled";
++		};
 +
-+Required properties:
-+- compatible: Should be "brcm,bcm2835-aux-spi".
-+- reg: Should contain register location and length for the spi block
-+- interrupts: Should contain shared interrupt of the aux block
-+- clocks: The clock feeding the SPI controller - needs to
-+	  point to the auxiliar clock driver of the bcm2835,
-+	  as this clock will enable the output gate for the specific
-+	  clock.
-+- cs-gpios: the cs-gpios (native cs is NOT supported)
-+	    see also spi-bus.txt
-+
-+Example:
-+
-+spi1@7e215080 {
-+	compatible = "brcm,bcm2835-aux-spi";
-+	reg = <0x7e215080 0x40>;
-+	interrupts = <1 29>;
-+	clocks = <&aux_clocks BCM2835_AUX_CLOCK_SPI1>;
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	cs-gpios = <&gpio 18>, <&gpio 17>, <&gpio 16>;
-+};
-+
-+spi2@7e2150c0 {
-+	compatible = "brcm,bcm2835-aux-spi";
-+	reg = <0x7e2150c0 0x40>;
-+	interrupts = <1 29>;
-+	clocks = <&aux_clocks BCM2835_AUX_CLOCK_SPI2>;
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	cs-gpios = <&gpio 43>, <&gpio 44>, <&gpio 45>;
-+};
++		spi2: spi@7e2150c0 {
++			compatible = "brcm,bcm2835-aux-spi";
++			reg = <0x7e2150c0 0x40>;
++			interrupts = <1 29>;
++			clocks = <&aux_clocks BCM2835_AUX_CLOCK_SPI2>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++			status = "disabled";
++		};
+ 	};
+
+ 	clocks {
 --
 1.7.10.4
 
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

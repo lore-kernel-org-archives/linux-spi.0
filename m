@@ -1,147 +1,79 @@
-From: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi/bcm63xx: add support for probing through devicetree
-Date: Thu, 10 Sep 2015 12:19:39 -0700
-Message-ID: <55F1D7CB.9020804@openwrt.org>
-References: <1441898975-22540-1-git-send-email-jogo@openwrt.org> <1441898975-22540-3-git-send-email-jogo@openwrt.org>
+From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Subject: Re: [PATCH 5/6] spi/bcm63xx: move register definitions into the driver
+Date: Fri, 11 Sep 2015 12:27:02 +0200
+Message-ID: <CAOiHx=mXBnfMx1SO+iG=BB6038c99YS8MkM8Nn-itHOoHzAJiQ@mail.gmail.com>
+References: <1441894304-22316-1-git-send-email-jogo@openwrt.org>
+ <1441894304-22316-6-git-send-email-jogo@openwrt.org> <55F1D5AC.5020407@openwrt.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-To: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1441898975-22540-3-git-send-email-jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+In-Reply-To: <55F1D5AC.5020407-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 10/09/15 08:29, Jonas Gorski wrote:
-> Add required binding support to probe through device tree.
-> 
-> Use the compatible instead of the resource size for identifiying the
-> block type, and allow reducing the number of cs lines through OF.
+Hi,
 
-This looks good to me, since this builds on top of your other 6 patches,
-the end-result might be different, especially if we end-up using
-platform_device_id as suggested. Other than that:
+On Thu, Sep 10, 2015 at 9:10 PM, Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org> wrote:
+> On 10/09/15 07:11, Jonas Gorski wrote:
+>> Move all register definitions and structs into the driver. This allows
+>> us dropping the platform_data struct and drop any arch specific
+>> includes.
+>>
+>> Since we now have full control over the message width, we can drop the
+>> size check, which was broken anyway, since it never set ret to any error
+>> code.
+>>
+>> Also since we now have no arch depedendent resources, we can now allow
+>> compiling it for any arch, hidding behind COMPILE_TEST.
+>>
+>> Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+>> ---
+>
+> [snip]
+>
+>> +     switch (resource_size(r)) {
+>> +     case SPI_6348_RSET_SIZE:
+>> +             bs->reg_offsets = bcm6348_spi_reg_offsets;
+>> +             bs->msg_type_shift = SPI_6348_MSG_TYPE_SHIFT;
+>> +             bs->msg_ctl_width = SPI_6348_MSG_CTL_WIDTH;
+>> +             bs->fifo_size = SPI_6348_MSG_DATA_SIZE;
+>> +             break;
+>> +     case SPI_6358_RSET_SIZE:
+>> +             bs->reg_offsets = bcm6358_spi_reg_offsets;
+>> +             bs->msg_type_shift = SPI_6358_MSG_TYPE_SHIFT;
+>> +             bs->msg_ctl_width = SPI_6358_MSG_CTL_WIDTH;
+>> +             bs->fifo_size = SPI_6358_MSG_DATA_SIZE;
+>>               break;
+>
+> This is a little fragile, I would rather create more specialized
+> platform_id names, like "bcm6348-spi" and "bcm6358-spi", very much like
+> what the FEC driver does, such that:
+>
+> - you could directly pass this information as part of an additional
+> structure which specializes the instance of the driver
+> - the conversion to Device Tree in your other patches would make this
+> more natural or nearly identical
+>
+> What do you think?
 
-Reviewed-by: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Can we even associate more than one name with a driver? Else I would
+need to split this driver into two, and that sounds like a lot more
+work for IMHO not much gain, and a lot more opportunities to
+accidentially break things ;-)
 
-Thanks for doing this!
+I'm also trying to not touch arch stuff, to keep the changes local to
+spi (easier merging). Apart from that, this is the legacy platform
+device registration route where we know exactly which values to
+expect, and the device tree path won't go there, so I would think this
+is okay for devices where we have full control over this (i.e. within
+the kernel).
 
-> 
-> Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-> ---
->  drivers/spi/spi-bcm63xx.c | 56 +++++++++++++++++++++++++++++++++++------------
->  1 file changed, 42 insertions(+), 14 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-> index 42f33bc..ec094b1 100644
-> --- a/drivers/spi/spi-bcm63xx.c
-> +++ b/drivers/spi/spi-bcm63xx.c
-> @@ -26,6 +26,7 @@
->  #include <linux/completion.h>
->  #include <linux/err.h>
->  #include <linux/pm_runtime.h>
-> +#include <linux/of.h>
->  
->  /* BCM 6338/6348 SPI core */
->  #define SPI_6348_RSET_SIZE		64
-> @@ -465,6 +466,12 @@ static const unsigned long bcm6358_spi_reg_offsets[] = {
->  	[SPI_MSG_DATA_SIZE]	= SPI_6358_MSG_DATA_SIZE,
->  };
->  
-> +static const struct of_device_id bcm63xx_spi_of_match[] = {
-> +	{ .compatible = "brcm,bcm6348-spi", .data = &bcm6348_spi_reg_offsets },
-> +	{ .compatible = "brcm,bcm6358-spi", .data = &bcm6358_spi_reg_offsets },
-> +	{ },
-> +};
-> +
->  static int bcm63xx_spi_probe(struct platform_device *pdev)
->  {
->  	struct resource *r;
-> @@ -474,6 +481,7 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
->  	struct clk *clk;
->  	struct bcm63xx_spi *bs;
->  	int ret;
-> +	u32 num_cs = BCM63XX_SPI_MAX_CS;
->  
->  	irq = platform_get_irq(pdev, 0);
->  	if (irq < 0) {
-> @@ -516,27 +524,46 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
->  		goto out_err;
->  	}
->  
-> -	master->bus_num = BCM63XX_SPI_BUS_NUM;
-> -	master->num_chipselect = BCM63XX_SPI_MAX_CS;
->  	master->transfer_one_message = bcm63xx_spi_transfer_one;
->  	master->mode_bits = MODEBITS;
->  	master->bits_per_word_mask = SPI_BPW_MASK(8);
->  	master->auto_runtime_pm = true;
->  
-> -	switch (resource_size(r)) {
-> -	case SPI_6348_RSET_SIZE:
-> -		bs->reg_offsets = bcm6348_spi_reg_offsets;
-> -		break;
-> -	case SPI_6358_RSET_SIZE:
-> -		bs->reg_offsets = bcm6358_spi_reg_offsets;
-> -		break;
-> -	default:
-> -		ret = -EINVAL;
-> -		dev_err(dev, "unsupported register size: %i\n",
-> -			resource_size(r));
-> -		goto out_err;
-> +	if (dev->of_node) {
-> +		const struct of_device_id *match;
-> +
-> +		match = of_match_node(bcm63xx_spi_of_match, dev->of_node);
-> +		if (!match) {
-> +			ret = -EINVAL;
-> +			goto out_err;
-> +		}
-> +		bs->reg_offsets = match->data;
-> +		master->dev.of_node = dev->of_node;
-> +		of_property_read_u32(dev->of_node, "num-cs", &num_cs);
-> +		if (num_cs > BCM63XX_SPI_MAX_CS) {
-> +			dev_warn(dev, "unsupported number of cs (%i), reducing to 8\n",
-> +				 num_cs);
-> +			num_cs = BCM63XX_SPI_MAX_CS;
-> +		}
-> +	} else {
-> +		master->bus_num = BCM63XX_SPI_BUS_NUM;
-> +
-> +		switch (resource_size(r)) {
-> +		case SPI_6348_RSET_SIZE:
-> +			bs->reg_offsets = bcm6348_spi_reg_offsets;
-> +			break;
-> +		case SPI_6358_RSET_SIZE:
-> +			bs->reg_offsets = bcm6358_spi_reg_offsets;
-> +			break;
-> +		default:
-> +			ret = -EINVAL;
-> +			dev_err(dev, "unsupported register size: %i\n",
-> +				resource_size(r));
-> +			goto out_err;
-> +		}
->  	}
->  
-> +	master->num_chipselect = num_cs;
->  	bs->msg_type_shift = bs->reg_offsets[SPI_MSG_TYPE_SHIFT];
->  	bs->msg_ctl_width = bs->reg_offsets[SPI_MSG_CTL_WIDTH];
->  	bs->fifo_size = bs->reg_offsets[SPI_MSG_DATA_SIZE];
-> @@ -621,6 +648,7 @@ static struct platform_driver bcm63xx_spi_driver = {
->  	.driver = {
->  		.name	= "bcm63xx-spi",
->  		.pm	= &bcm63xx_spi_pm_ops,
-> +		.of_match_table = bcm63xx_spi_of_match,
->  	},
->  	.probe		= bcm63xx_spi_probe,
->  	.remove		= bcm63xx_spi_remove,
-> 
+Of course if mark says I should do it I will.
 
+
+Jonas
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

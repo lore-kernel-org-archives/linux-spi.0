@@ -1,72 +1,123 @@
-From: Shawn Lin <shawn.lin@rock-chips.com>
-Subject: Re: [PATCH v4 10/10] ASoC: rockchip_i2s: modify DMA max burst to 1
-Date: Fri, 11 Sep 2015 20:31:16 +0800
-Message-ID: <55F2C994.4040007@rock-chips.com>
-References: <1441501881-13700-1-git-send-email-shawn.lin@rock-chips.com>
- <1441502008-14116-1-git-send-email-shawn.lin@rock-chips.com>
- <20150911115331.GM12027@sirena.org.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [LINUX RFC v2 1/4] spi: add support of two chip selects & data
+ stripe
+Date: Fri, 11 Sep 2015 13:36:44 +0100
+Message-ID: <20150911123644.GU12027@sirena.org.uk>
+References: <1440570367-22569-1-git-send-email-ranjit.waghmode@xilinx.com>
+ <1440570367-22569-2-git-send-email-ranjit.waghmode@xilinx.com>
+ <20150903121232.GW12027@sirena.org.uk>
+ <7CFCFE83B8145347A1D424EC939F1C3C014B0D67@XAP-PVEXMBX01.xlnx.xilinx.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
-	format=flowed
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: shawn.lin@rock-chips.com, Vinod Koul <vinod.koul@intel.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Doug Anderson <dianders@chromium.org>,
-	Olof Johansson <olofj@google.com>,
-	Sonny Rao <sonnyrao@chromium.org>,
-	Addy Ke <addy.ke@rock-chips.com>, dmaengine@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org, alsa-devel@alsa-project.org,
-	linux-spi@vger.kernel.org, Yiwei Cai <cain.cai@rock-chips.com>,
-	Jianqun Xu <xjq@rock-chips.com>,
-	Olof Johansson <olof@lixom.net>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20150911115331.GM12027@sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============4118145437264234143=="
+Cc: "marex@denx.de" <marex@denx.de>, Harini Katakam <harinik@xilinx.com>,
+ "juhosg@openwrt.org" <juhosg@openwrt.org>,
+ "dwmw2@infradead.org" <dwmw2@infradead.org>,
+ "zajec5@gmail.com" <zajec5@gmail.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ Punnaiah Choudary Kalluri <punnaia@xilinx.com>,
+ "b32955@freescale.com" <b32955@freescale.com>,
+ Michal Simek <michals@xilinx.com>, Soren Brinkmann <sorenb@xilinx.com>,
+ "knut.wohlrab@de.bosch.com" <knut.wohlrab@de.bosch.com>,
+ "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+ "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+ "ben@decadent.org.uk" <ben@decadent.org.uk>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ "beanhuo@micron.com" <beanhuo@micron.com>
+To: Ranjit Abhimanyu Waghmode <ranjit.waghmode@xilinx.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <7CFCFE83B8145347A1D424EC939F1C3C014B0D67@XAP-PVEXMBX01.xlnx.xilinx.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-=E5=9C=A8 2015/9/11 19:53, Mark Brown =E5=86=99=E9=81=93:
-> On Sun, Sep 06, 2015 at 09:13:28AM +0800, Shawn Lin wrote:
->
->> @@ -460,7 +463,6 @@ static int rockchip_i2s_probe(struct platform_de=
-vice *pdev)
->>   	i2s->playback_dma_data.addr =3D res->start + I2S_TXDR;
->>   	i2s->playback_dma_data.addr_width =3D DMA_SLAVE_BUSWIDTH_4_BYTES;
->>   	i2s->playback_dma_data.maxburst =3D 4;
->> -
->>   	i2s->capture_dma_data.addr =3D res->start + I2S_RXDR;
->>   	i2s->capture_dma_data.addr_width =3D DMA_SLAVE_BUSWIDTH_4_BYTES;
->>   	i2s->capture_dma_data.maxburst =3D 4;
->
-> This random whitespace change shouldn't be in here.
 
-yes, sorry for this bit.
-
->
->> @@ -489,6 +491,18 @@ static int rockchip_i2s_probe(struct platform_d=
-evice *pdev)
->>   		goto err_pcm_register;
->>   	}
->>
->> +	dma_quirk =3D snd_dmaengine_pcm_get_quirks(&pdev->dev);
->> +	if (dma_quirk =3D=3D ROCKCHIP_I2S_BROKEN_BURST_LEN) {
->> +		/*
->
-> I'd expect this to be a switch statement given the way this is writte=
-n.
-
-Ahh.. agreed, but we don't expect more quriks for this driver.  =EF=BC=9A=
-=EF=BC=89)))
-Will be done for the next version.
-
-Thanks.
-
->
+--===============4118145437264234143==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="6xYB43uKmzPz9Vks"
+Content-Disposition: inline
 
 
---=20
-Best Regards
-Shawn Lin
+--6xYB43uKmzPz9Vks
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Fri, Sep 04, 2015 at 12:02:21PM +0000, Ranjit Abhimanyu Waghmode wrote:
+
+Please fix your mail client to word wrap within paragraphs and to quote
+text without reflowing it - your messages are very hard to read.
+
+> > > +	/* Controller may support more than one chip.
+> > > +	 * This flag will enable that feature.
+> > > +	 */
+> > > +#define SPI_MASTER_BOTH_CS		BIT(8)		/* enable both
+> > chips */
+
+> > This isn't saying that the controller supports more than one chip, it's saying that
+> > the controller supports asserting more than one chip select at once which isn't
+> > the same thing.  I'm also not entirely sure that this makes sense as a separate
+> > feature to the data striping one - I'm struggling to think of a way to use this
+> > sensibly separately to that.
+
+> If the SPI controller is having more than one chip select and the data lines are distributed equally.
+> And also there is requirement to activate all the chip selects in one go.
+
+I'm not sure I understand the above, sorry.  At least not in so far as
+how it relates to my concerns, especially the fact that the comment says
+this enables support for more than one chip which is obviously a basic
+SPI feature.
+
+> Now we can consider following use cases:
+
+> Suppose we need to send the same data to multiple slaves of same kind:
+> Here the application need not to do individual slave access for writing, instead it can send data to all the devices in one go.
+
+That's a *very* specific application which will only work for write only
+devices - I'd be surprised if such systems actually had distinct chip
+select lines at the CPU level.
+
+> Let's take another case where application is trying to send data in such a way that first nibble of the byte will got to the one slave and the second nibble of the byte will go to the other slave:
+> Here data in slave devices can be organized by taking advantage of above topology along with the support in hardware.
+
+But do such devices actually exist?  I can imagine systems that might be
+able to do that but I'd be very surprised to see anyone practically
+designing them, they're going to be quite hard to use.
+
+--6xYB43uKmzPz9Vks
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJV8srbAAoJECTWi3JdVIfQKV0IAIYnFyMNEwRSV8ipMno8H5mV
+CSLkkClaKIX1akfHdpUtAJesZQQHjDtMh7HGKM8YrTePbs++6Xo0NT9wCoIk7c/K
+ussnNoOSBD3O9t2kn2jXjuCugQPntLz1lKD2H2+M9ZIG9yiaZjlaLXj8kDMN8x/K
+E8CjkoC9KRRdpqhWcziTkuCFVZStWlCyceOeDRg6gPTb0+g+Y5WdwPhEzSUDepxy
+G/X8aFFxDN5yojbwbUPhOp6DxU3hYFoqbBo86kwoiaNRj0GGwz8gy8bkE8BqTy1s
+GV3/2aLu/rYBP46bTcED+tzY+at2tJu5D8rFM3+Xv4xoTNeImDjfMkBcd3grMj0=
+=qBbK
+-----END PGP SIGNATURE-----
+
+--6xYB43uKmzPz9Vks--
+
+
+--===============4118145437264234143==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+linux-arm-kernel mailing list
+linux-arm-kernel@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+
+--===============4118145437264234143==--

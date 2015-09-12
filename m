@@ -1,7 +1,7 @@
 From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: [PATCH V2 3/6] spi/bcm63xx: hardcode busnum to 0
-Date: Sat, 12 Sep 2015 18:07:00 +0200
-Message-ID: <1442074023-29840-4-git-send-email-jogo@openwrt.org>
+Subject: [PATCH V2 4/6] spi/bcm63xx: replace custom io accessors with standard ones
+Date: Sat, 12 Sep 2015 18:07:01 +0200
+Message-ID: <1442074023-29840-5-git-send-email-jogo@openwrt.org>
 References: <1442074023-29840-1-git-send-email-jogo@openwrt.org>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>, florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org
@@ -11,67 +11,59 @@ In-Reply-To: <1442074023-29840-1-git-send-email-jogo-p3rKhJxN3npAfugRpC6u6w@publ
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-We always pass 0 as the spi bus number, so we might as well hard code
-it.
+Replace all bcm_read* with (io)read. Due to this block following
+system endianness, make sure we match that.
 
 Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 ---
-v1 -> v2
- * remove the platform data member as well.
+v1 -> v2:
+ * Use the right guard and io*be.
 
- arch/mips/bcm63xx/dev-spi.c                          | 4 +---
- arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h | 1 -
- drivers/spi/spi-bcm63xx.c                            | 3 ++-
- 3 files changed, 3 insertions(+), 5 deletions(-)
+ drivers/spi/spi-bcm63xx.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/bcm63xx/dev-spi.c b/arch/mips/bcm63xx/dev-spi.c
-index 438df08..b475bc1 100644
---- a/arch/mips/bcm63xx/dev-spi.c
-+++ b/arch/mips/bcm63xx/dev-spi.c
-@@ -53,9 +53,7 @@ static struct resource spi_resources[] = {
- 	},
- };
- 
--static struct bcm63xx_spi_pdata spi_pdata = {
--	.bus_num		= 0,
--};
-+static struct bcm63xx_spi_pdata spi_pdata;
- 
- static struct platform_device bcm63xx_spi_device = {
- 	.name		= "bcm63xx-spi",
-diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
-index 40dab9d..07c6098 100644
---- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
-+++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
-@@ -11,7 +11,6 @@ struct bcm63xx_spi_pdata {
- 	unsigned int	fifo_size;
- 	unsigned int	msg_type_shift;
- 	unsigned int	msg_ctl_width;
--	int		bus_num;
- };
- 
- enum bcm63xx_regs_spi {
 diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index a997c64..c1364a8 100644
+index c1364a8..461891f 100644
 --- a/drivers/spi/spi-bcm63xx.c
 +++ b/drivers/spi/spi-bcm63xx.c
-@@ -32,6 +32,7 @@
- #define BCM63XX_SPI_MAX_PREPEND		15
+@@ -56,25 +56,33 @@ struct bcm63xx_spi {
+ static inline u8 bcm_spi_readb(struct bcm63xx_spi *bs,
+ 				unsigned int offset)
+ {
+-	return bcm_readb(bs->regs + bcm63xx_spireg(offset));
++	return readb(bs->regs + bcm63xx_spireg(offset));
+ }
  
- #define BCM63XX_SPI_MAX_CS		8
-+#define BCM63XX_SPI_BUS_NUM		0
+ static inline u16 bcm_spi_readw(struct bcm63xx_spi *bs,
+ 				unsigned int offset)
+ {
+-	return bcm_readw(bs->regs + bcm63xx_spireg(offset));
++#ifdef CONFIG_CPU_BIG_ENDIAN
++	return ioread16be(bs->regs + bcm63xx_spireg(offset));
++#else
++	return readw(bs->regs + bcm63xx_spireg(offset));
++#endif
+ }
  
- struct bcm63xx_spi {
- 	struct completion	done;
-@@ -369,7 +370,7 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
- 		goto out_err;
- 	}
+ static inline void bcm_spi_writeb(struct bcm63xx_spi *bs,
+ 				  u8 value, unsigned int offset)
+ {
+-	bcm_writeb(value, bs->regs + bcm63xx_spireg(offset));
++	writeb(value, bs->regs + bcm63xx_spireg(offset));
+ }
  
--	master->bus_num = pdata->bus_num;
-+	master->bus_num = BCM63XX_SPI_BUS_NUM;
- 	master->num_chipselect = BCM63XX_SPI_MAX_CS;
- 	master->transfer_one_message = bcm63xx_spi_transfer_one;
- 	master->mode_bits = MODEBITS;
+ static inline void bcm_spi_writew(struct bcm63xx_spi *bs,
+ 				  u16 value, unsigned int offset)
+ {
+-	bcm_writew(value, bs->regs + bcm63xx_spireg(offset));
++#ifdef CONFIG_CPU_BIG_ENDIAN
++	iowrite16be(value, bs->regs + bcm63xx_spireg(offset));
++#else
++	writew(value, bs->regs + bcm63xx_spireg(offset));
++#endif
+ }
+ 
+ static const unsigned bcm63xx_spi_freq_table[SPI_CLK_MASK][2] = {
 -- 
 2.1.4
 --

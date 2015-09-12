@@ -1,47 +1,45 @@
-From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: [PATCH V2 0/6] spi/bcm63xx: cleanup and decouple from arch code
-Date: Sat, 12 Sep 2015 18:06:57 +0200
-Message-ID: <1442074023-29840-1-git-send-email-jogo@openwrt.org>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>, florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Jonas Gorski <jogo@openwrt.org>
+Subject: [PATCH V2 1/6] spi/bcm63xx: remove unused rx_tail variable
+Date: Sat, 12 Sep 2015 18:06:58 +0200
+Message-ID: <1442074023-29840-2-git-send-email-jogo@openwrt.org>
+References: <1442074023-29840-1-git-send-email-jogo@openwrt.org>
+Cc: Mark Brown <broonie@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>, florian@openwrt.org
+To: linux-spi@vger.kernel.org, linux-mips@linux-mips.org
+Return-path: <linux-mips-bounce@linux-mips.org>
+In-Reply-To: <1442074023-29840-1-git-send-email-jogo@openwrt.org>
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+List-Id: linux-spi.vger.kernel.org
 
-This patchset decouples spi-bcm63xx from any arch code to allow building
-it for more than MIPS/BCM63XX as well as allow compile testing it on any
-arch/platform.
+Fixes the following warning:
+drivers/spi/spi-bcm63xx.c:125:5: warning: unused variable 'rx_tail' [-Wunused-variable]
+  u8 rx_tail;
+     ^
 
-Since the main target of this patch is the spi driver, it should
-probably go through the spi tree.
+Signed-off-by: Jonas Gorski <jogo@openwrt.org>
+---
+ drivers/spi/spi-bcm63xx.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Changes v1 -> v2:
-
-* Use device name instead of register size for identifying core
-  version.
-* Since we now touch arch/mips, drop the rest as well.
-* Fix big endian detection.
-* Reorder the patches so the move of the register definitions is the
-  last step.
-
-Jonas Gorski (6):
-  spi/bcm63xx: remove unused rx_tail variable
-  spi/bcm63xx: always use a fixed number of CS
-  spi/bcm63xx: hardcode busnum to 0
-  spi/bcm63xx: replace custom io accessors with standard ones
-  spi/bcm63xx: move message control word description to register offsets
-  spi/bcm63xx: move register definitions into the driver
-
- arch/mips/bcm63xx/dev-spi.c                        |  42 +----
- .../include/asm/mach-bcm63xx/bcm63xx_dev_spi.h     |  44 -----
- drivers/spi/Kconfig                                |   2 +-
- drivers/spi/spi-bcm63xx.c                          | 210 ++++++++++++++++++---
- 4 files changed, 188 insertions(+), 110 deletions(-)
-
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index e73e2b05..2b908db 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -122,7 +122,6 @@ static int bcm63xx_txrx_bufs(struct spi_device *spi, struct spi_transfer *first,
+ 	struct bcm63xx_spi *bs = spi_master_get_devdata(spi->master);
+ 	u16 msg_ctl;
+ 	u16 cmd;
+-	u8 rx_tail;
+ 	unsigned int i, timeout = 0, prepend_len = 0, len = 0;
+ 	struct spi_transfer *t = first;
+ 	bool do_rx = false;
 -- 
 2.1.4
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

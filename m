@@ -1,53 +1,47 @@
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-Subject: Re: [PATCH v2] ARM: pxa: ssp: Fix build error by removing originally
- incorrect DT binding
-Date: Sat, 12 Sep 2015 15:43:09 +0200
-Message-ID: <87zj0rsqhe.fsf@belgarion.home>
-References: <1441610581-11434-1-git-send-email-jarkko.nikula@linux.intel.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Russell King <linux@arm.linux.org.uk>,
- Haojian Zhuang <haojian.zhuang@gmail.com>, linux-spi@vger.kernel.org,
- Mark Brown <broonie@kernel.org>, linux-arm-kernel@lists.infradead.org,
- stable@vger.kernel.org, Daniel Mack <daniel@zonque.org>
-To: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1441610581-11434-1-git-send-email-jarkko.nikula@linux.intel.com>
- (Jarkko Nikula's message of "Mon, 7 Sep 2015 10:23:01 +0300")
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Subject: [PATCH V2 0/6] spi/bcm63xx: cleanup and decouple from arch code
+Date: Sat, 12 Sep 2015 18:06:57 +0200
+Message-ID: <1442074023-29840-1-git-send-email-jogo@openwrt.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>, florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Jarkko Nikula <jarkko.nikula@linux.intel.com> writes:
+This patchset decouples spi-bcm63xx from any arch code to allow building
+it for more than MIPS/BCM63XX as well as allow compile testing it on any
+arch/platform.
 
-> Commit 03fbf488cece ("spi: pxa2xx: Differentiate Intel LPSS types") caused
-> build error here because it removed the type LPSS_SSP and I didn't notice
-> the type was used here too.
->
-> I believe commit a6e56c28a178 ("ARM: pxa: ssp: add DT bindings") added it
-> accidentally by copying all enum pxa_ssp_type types from
-> include/linux/pxa2xx_ssp.h even LPSS_SSP was for Intel LPSS SPI devices.
->
-> Fix the build error by removing this incorrect binding.
->
-> Fixes: 03fbf488cece ("spi: pxa2xx: Differentiate Intel LPSS types")
-> Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-> Reported-by: Axel Lin <axel.lin@ingics.com>
-> Cc: <stable@vger.kernel.org> # 4.2
-> ---
-> v2: Added Fixes tag suggested by Robert Jarzmik
+Since the main target of this patch is the spi driver, it should
+probably go through the spi tree.
 
-Queued into pxa/fixes, thanks.
+Changes v1 -> v2:
 
-Cheers.
+* Use device name instead of register size for identifying core
+  version.
+* Since we now touch arch/mips, drop the rest as well.
+* Fix big endian detection.
+* Reorder the patches so the move of the register definitions is the
+  last step.
 
+Jonas Gorski (6):
+  spi/bcm63xx: remove unused rx_tail variable
+  spi/bcm63xx: always use a fixed number of CS
+  spi/bcm63xx: hardcode busnum to 0
+  spi/bcm63xx: replace custom io accessors with standard ones
+  spi/bcm63xx: move message control word description to register offsets
+  spi/bcm63xx: move register definitions into the driver
+
+ arch/mips/bcm63xx/dev-spi.c                        |  42 +----
+ .../include/asm/mach-bcm63xx/bcm63xx_dev_spi.h     |  44 -----
+ drivers/spi/Kconfig                                |   2 +-
+ drivers/spi/spi-bcm63xx.c                          | 210 ++++++++++++++++++---
+ 4 files changed, 188 insertions(+), 110 deletions(-)
+
+-- 
+2.1.4
 --
-Robert
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: s3c64xx: replace clock disabling with runtime PM suspend call in remove function" to the spi tree
-Date: Mon, 14 Sep 2015 19:54:34 +0100
-Message-ID: <E1ZbYte-0002LK-St@finisterre>
-References: <55D7614C.6040309@gmail.com>
+Subject: Applied "spi: s3c64xx: simplify suspend / resume handlers" to the spi tree
+Date: Mon, 14 Sep 2015 19:54:37 +0100
+Message-ID: <E1ZbYth-0002Ln-Qv@finisterre>
+References: <55D4E049.3090009@gmail.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <55D7614C.6040309-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <55D4E049.3090009-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: s3c64xx: replace clock disabling with runtime PM suspend call in remove function
+   spi: s3c64xx: simplify suspend / resume handlers
 
 has been applied to the spi tree at
 
@@ -38,53 +38,58 @@ to this mail.
 Thanks,
 Mark
 
->From 8ebe9d163e93e10458f3fd7522f29f9149e58632 Mon Sep 17 00:00:00 2001
+>From 4fcd9b9e06d43b93d00bf02c767d578e7cf8b25c Mon Sep 17 00:00:00 2001
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Thu, 3 Sep 2015 22:40:53 +0200
-Subject: [PATCH] spi: s3c64xx: replace clock disabling with runtime PM suspend
- call in remove function
+Date: Thu, 3 Sep 2015 22:40:11 +0200
+Subject: [PATCH] spi: s3c64xx: simplify suspend / resume handlers
 
-Simplify s3c64xx_spi_remove by replacing the clock disabling with calling
-runtime PM suspend which does the same.
-Waking up the device if it was suspended wouldn't be strictly needed
-for this driver but using pm_runtime_get_sync is cleaner and makes
-s3c64xx_spi_remove more consistent with the runtime PM handling in
-s3c64xx_spi_setup.
-
-pm_runtime_force_suspend does most of the work for us:
-disabling the clocks, disabling runtime PM and setting it to
-"suspended" state.
+The runtime PM suspend / resume handlers take care of the enabling/
+disabling the clocks already. Therefore replace the duplicated
+clock handling with pm_runtime_force_suspend/resume.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Reviewed-by: Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-s3c64xx.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/spi/spi-s3c64xx.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 4e5931c..dee82e1 100644
+index d117fa6..4e5931c 100644
 --- a/drivers/spi/spi-s3c64xx.c
 +++ b/drivers/spi/spi-s3c64xx.c
-@@ -1225,7 +1225,7 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
- 	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
+@@ -1246,10 +1246,9 @@ static int s3c64xx_spi_suspend(struct device *dev)
+ 	if (ret)
+ 		return ret;
+ 
+-	if (!pm_runtime_suspended(dev)) {
+-		clk_disable_unprepare(sdd->clk);
+-		clk_disable_unprepare(sdd->src_clk);
+-	}
++	ret = pm_runtime_force_suspend(dev);
++	if (ret < 0)
++		return ret;
+ 
+ 	sdd->cur_speed = 0; /* Output Clock is stopped */
+ 
+@@ -1261,14 +1260,14 @@ static int s3c64xx_spi_resume(struct device *dev)
+ 	struct spi_master *master = dev_get_drvdata(dev);
  	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
+ 	struct s3c64xx_spi_info *sci = sdd->cntrlr_info;
++	int ret;
  
--	pm_runtime_disable(&pdev->dev);
-+	pm_runtime_get_sync(&pdev->dev);
+ 	if (sci->cfg_gpio)
+ 		sci->cfg_gpio();
  
- 	writel(0, sdd->regs + S3C64XX_SPI_INT_EN);
+-	if (!pm_runtime_suspended(dev)) {
+-		clk_prepare_enable(sdd->src_clk);
+-		clk_prepare_enable(sdd->clk);
+-	}
++	ret = pm_runtime_force_resume(dev);
++	if (ret < 0)
++		return ret;
  
-@@ -1233,6 +1233,10 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
- 
- 	clk_disable_unprepare(sdd->clk);
- 
-+	pm_runtime_put_noidle(&pdev->dev);
-+	pm_runtime_disable(&pdev->dev);
-+	pm_runtime_set_suspended(&pdev->dev);
-+
- 	return 0;
- }
+ 	s3c64xx_spi_hwinit(sdd, sdd->port_id);
  
 -- 
 2.5.0

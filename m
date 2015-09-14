@@ -1,51 +1,90 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/4 RESEND v2] spi: s3c64xx: clean up runtime PM if
- driver registration fails
-Date: Mon, 14 Sep 2015 18:58:05 +0100
-Message-ID: <20150914175805.GZ12027@sirena.org.uk>
-References: <55E8AFD6.2030107@gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 2/5] spi: spi-ti-qspi: add mmap mode read support
+Date: Mon, 14 Sep 2015 19:26:00 +0100
+Message-ID: <20150914182600.GC12027@sirena.org.uk>
+References: <1441355402-6837-1-git-send-email-vigneshr@ti.com>
+ <1441355402-6837-3-git-send-email-vigneshr@ti.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="RJctCcHBI8aUAyUP"
-Cc: Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="hr8bQwfI8oPfWpHR"
+Cc: Benoit Cousson <bcousson@baylibre.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Russell King <linux@arm.linux.org.uk>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Brian Norris <computersforpeace@gmail.com>, hramrach@gmail.com,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org
+To: Vignesh R <vigneshr@ti.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <55E8AFD6.2030107-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1441355402-6837-3-git-send-email-vigneshr@ti.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---RJctCcHBI8aUAyUP
+--hr8bQwfI8oPfWpHR
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Sep 03, 2015 at 10:38:46PM +0200, Heiner Kallweit wrote:
+On Fri, Sep 04, 2015 at 01:59:59PM +0530, Vignesh R wrote:
 
-> Fix missing runtime PM cleanup if driver registration fails.
+> +static int ti_qspi_spi_mtd_mmap_read(struct  spi_device *spi,
+> +				     loff_t from, size_t len,
+> +				     size_t *retlen, u_char *buf,
+> +				     u8 read_opcode, u8 addr_width,
+> +				     u8 dummy_bytes)
+> +{
+> +	struct ti_qspi *qspi = spi_master_get_devdata(spi->master);
+> +	int ret = 0;
+> +
+> +	spi_bus_lock(qspi->master);
 
-Applied all, but please don't put noise like RESEND in the subject lines
-especially if it's not actually a resend :(
+I suspect I'm going to see the answer to this in another patch but the
+fact that we're having to take this lock in a driver when it's an op the
+core should be calling.
 
---RJctCcHBI8aUAyUP
+> +	ret = pm_runtime_get_sync(qspi->dev);
+> +	if (ret < 0) {
+> +		dev_err(qspi->dev, "pm_runtime_get_sync() failed\n");
+> +		return ret;
+> +	}
+
+This would be better outside the lock, there's no need to have the lock
+before we power on and this fixes the fact that you don't release the
+lock here.
+
+> +	memcpy(buf, (__force void *)(qspi->mmap_base + from), len);
+
+The fact that you're having to cast here should be a warning that
+there's someting wrong here.  I think you're looking for
+memcpy_fromio().
+
+> @@ -479,6 +576,7 @@ static int ti_qspi_probe(struct platform_device *pdev)
+>  	master->setup = ti_qspi_setup;
+>  	master->auto_runtime_pm = true;
+>  	master->transfer_one_message = ti_qspi_start_transfer_one;
+> +	master->spi_mtd_mmap_read = ti_qspi_spi_mtd_mmap_read;
+>  	master->dev.of_node = pdev->dev.of_node;
+>  	master->bits_per_word_mask = SPI_BPW_MASK(32) | SPI_BPW_MASK(16) |
+>  				     SPI_BPW_MASK(8);
+
+Don't we need to map a resource somewhere?
+
+--hr8bQwfI8oPfWpHR
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJV9wqsAAoJECTWi3JdVIfQnYcH+gMZtQjooDPaOR0hNt66URcR
-1Awud03FcaYOlC+GMxBILD1wiDxPKNMjCB7wtJjjUhzAdXpH7dw337NA5gcxy94V
-EtzdXUToajAAvm01oBJEMZcAfsfrX+ZEHq+UpSNks3VUB014AKDR5WcAMC4Jm4kf
-YzY3uPOa3+Y8nAMyNrzlp2zMeZnSscd+zHKxIQAMogrY5F6feCC0N25IvtLqoW0J
-85HepwUKk+HEZBTUahsNlallTv8a3UwAwFcAuLAMlyRlh+7FpeU9YKawohIIthQY
-ftaS+FhRj33nyzrqmi4e7d63PfEm3+BnDlhcrNI6taT3zwEv9FGZ83ONaE+MGks=
-=pwEo
+iQEcBAEBCAAGBQJV9xE3AAoJECTWi3JdVIfQfbIH/jkoRH8R/Fd2x7/W2yvrG7Q2
+V/kCmfMV3VnopEYY2NrjsdUNdxqi+vObifrhOytPmF9nRbKWU7m52WQjTSMCoWbQ
+PdaRXdJN0Jbpx7iEmCjXPefTjekiYJ/Tk6S4N/Scr/GC6ekEuiA8kPos9Y6nNhtc
+XWsdcPDOhQBLLmD6OHI5OQ+sg2THAbTsHRMjr2KlSq2wR64kaj2zAOTRMx7n2P1z
+h3NWJF57RuhNIsT+34bg55Y5pS4mr5T7d0gAS/QME0Ej1NvH9Wv/1I1UVqm5qjyL
+HRDgbrMZpKFukWivMMx2FHriuYZs7rNYPFXI/x++sunI7/5NWxyirdO7RvrzuDc=
+=gYMN
 -----END PGP SIGNATURE-----
 
---RJctCcHBI8aUAyUP--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--hr8bQwfI8oPfWpHR--

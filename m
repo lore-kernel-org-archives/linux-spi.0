@@ -1,18 +1,18 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi/bcm63xx: remove unused rx_tail variable" to the spi tree
-Date: Mon, 14 Sep 2015 19:54:31 +0100
-Message-ID: <E1ZbYtb-0002Kp-WC@finisterre>
-References: <1441894304-22316-2-git-send-email-jogo@openwrt.org>
+Subject: Applied "spi/bcm63xx: always use a fixed number of CS" to the spi tree
+Date: Mon, 14 Sep 2015 19:54:30 +0100
+Message-ID: <E1ZbYta-0002KM-FL@finisterre>
+References: <1441894304-22316-3-git-send-email-jogo@openwrt.org>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1441894304-22316-2-git-send-email-jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+In-Reply-To: <1441894304-22316-3-git-send-email-jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi/bcm63xx: remove unused rx_tail variable
+   spi/bcm63xx: always use a fixed number of CS
 
 has been applied to the spi tree at
 
@@ -37,34 +37,42 @@ to this mail.
 Thanks,
 Mark
 
->From 2bdf5151a3a9224d622f1f2bdd20f56bad5d2505 Mon Sep 17 00:00:00 2001
+>From 65059997306901f4da1f5168db65de8225d5d04c Mon Sep 17 00:00:00 2001
 From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Date: Thu, 10 Sep 2015 16:11:39 +0200
-Subject: [PATCH] spi/bcm63xx: remove unused rx_tail variable
+Date: Thu, 10 Sep 2015 16:11:40 +0200
+Subject: [PATCH] spi/bcm63xx: always use a fixed number of CS
 
-Fixes the following warning:
-drivers/spi/spi-bcm63xx.c:125:5: warning: unused variable 'rx_tail' [-Wunused-variable]
-  u8 rx_tail;
-     ^
+We always pass 8 for the number of chip selects, so we can as well
+hardcode it to this number.
 
 Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-bcm63xx.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/spi/spi-bcm63xx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index e73e2b05..2b908db 100644
+index 2b908db..a997c64 100644
 --- a/drivers/spi/spi-bcm63xx.c
 +++ b/drivers/spi/spi-bcm63xx.c
-@@ -122,7 +122,6 @@ static int bcm63xx_txrx_bufs(struct spi_device *spi, struct spi_transfer *first,
- 	struct bcm63xx_spi *bs = spi_master_get_devdata(spi->master);
- 	u16 msg_ctl;
- 	u16 cmd;
--	u8 rx_tail;
- 	unsigned int i, timeout = 0, prepend_len = 0, len = 0;
- 	struct spi_transfer *t = first;
- 	bool do_rx = false;
+@@ -31,6 +31,8 @@
+ 
+ #define BCM63XX_SPI_MAX_PREPEND		15
+ 
++#define BCM63XX_SPI_MAX_CS		8
++
+ struct bcm63xx_spi {
+ 	struct completion	done;
+ 
+@@ -368,7 +370,7 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	master->bus_num = pdata->bus_num;
+-	master->num_chipselect = pdata->num_chipselect;
++	master->num_chipselect = BCM63XX_SPI_MAX_CS;
+ 	master->transfer_one_message = bcm63xx_spi_transfer_one;
+ 	master->mode_bits = MODEBITS;
+ 	master->bits_per_word_mask = SPI_BPW_MASK(8);
 -- 
 2.5.0
 

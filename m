@@ -1,7 +1,7 @@
 From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH 06/16] spi: au1550: Simplify au1550_spi_setupxfer()
-Date: Tue, 15 Sep 2015 16:26:18 +0300
-Message-ID: <1442323588-29642-6-git-send-email-jarkko.nikula@linux.intel.com>
+Subject: [PATCH 08/16] spi: omap-uwire: Remove needless bits_per_word and speed_hz tests
+Date: Tue, 15 Sep 2015 16:26:20 +0300
+Message-ID: <1442323588-29642-8-git-send-email-jarkko.nikula@linux.intel.com>
 References: <1442323588-29642-1-git-send-email-jarkko.nikula@linux.intel.com>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
@@ -19,38 +19,40 @@ List-ID: <linux-spi.vger.kernel.org>
 
 SPI core validates both bits_per_word and speed_hz transfer parameters and
 defaults to spi->bits_per_word and spi->max_speed_hz in case these per
-transfer parameters are not set. This can simplify a little the
-au1550_spi_setupxfer() as there is need to check only for valid
-"struct spi_transfer" pointer.
+transfer parameters are not set. This allows to remove two needless tests
+from uwire_txrx() and uwire_setup_transfer().
 
 Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 ---
- drivers/spi/spi-au1550.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/spi/spi-omap-uwire.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-au1550.c b/drivers/spi/spi-au1550.c
-index f45e085c01a6..afd239d6dec1 100644
---- a/drivers/spi/spi-au1550.c
-+++ b/drivers/spi/spi-au1550.c
-@@ -233,13 +233,12 @@ static int au1550_spi_setupxfer(struct spi_device *spi, struct spi_transfer *t)
- 	unsigned bpw, hz;
- 	u32 cfg, stat;
+diff --git a/drivers/spi/spi-omap-uwire.c b/drivers/spi/spi-omap-uwire.c
+index 55576db31549..ce8dbdbce312 100644
+--- a/drivers/spi/spi-omap-uwire.c
++++ b/drivers/spi/spi-omap-uwire.c
+@@ -205,7 +205,7 @@ static void uwire_chipselect(struct spi_device *spi, int value)
+ static int uwire_txrx(struct spi_device *spi, struct spi_transfer *t)
+ {
+ 	unsigned	len = t->len;
+-	unsigned	bits = t->bits_per_word ? : spi->bits_per_word;
++	unsigned	bits = t->bits_per_word;
+ 	unsigned	bytes;
+ 	u16		val, w;
+ 	int		status = 0;
+@@ -344,9 +344,10 @@ static int uwire_setup_transfer(struct spi_device *spi, struct spi_transfer *t)
+ 	/* assume it's already enabled */
+ 	rate = clk_get_rate(uwire->ck);
  
--	bpw = spi->bits_per_word;
 -	hz = spi->max_speed_hz;
- 	if (t) {
--		if (t->bits_per_word)
--			bpw = t->bits_per_word;
--		if (t->speed_hz)
--			hz = t->speed_hz;
-+		bpw = t->bits_per_word;
-+		hz = t->speed_hz;
-+	} else {
-+		bpw = spi->bits_per_word;
+-	if (t != NULL && t->speed_hz)
++	if (t != NULL)
+ 		hz = t->speed_hz;
++	else
 +		hz = spi->max_speed_hz;
- 	}
  
- 	if (!hz)
+ 	if (!hz) {
+ 		pr_debug("%s: zero speed?\n", dev_name(&spi->dev));
 -- 
 2.5.1
 

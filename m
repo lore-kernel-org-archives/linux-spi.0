@@ -1,7 +1,7 @@
 From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH 14/16] spi: pxa2xx: Remove two variables from struct chip_data
-Date: Tue, 15 Sep 2015 16:26:26 +0300
-Message-ID: <1442323588-29642-14-git-send-email-jarkko.nikula@linux.intel.com>
+Subject: [PATCH 11/16] spi: dw: Remove needless if statements
+Date: Tue, 15 Sep 2015 16:26:23 +0300
+Message-ID: <1442323588-29642-11-git-send-email-jarkko.nikula@linux.intel.com>
 References: <1442323588-29642-1-git-send-email-jarkko.nikula@linux.intel.com>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
@@ -17,69 +17,73 @@ In-Reply-To: <1442323588-29642-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-There is no need to carry spi->max_speed_hz and spi->bits_per_word from
-setup() in "struct chip_data" since pump_transfers() will anyway take the
-transfer parameters from "struct spi_transfer". This is since SPI core
-validates both bits_per_word and speed_hz transfer parameters and defaults
-to spi->bits_per_word and spi->max_speed_hz in case these per transfer
-parameters are not set.
+SPI core validates both bits_per_word and speed_hz transfer parameters and
+defaults to spi->bits_per_word and spi->max_speed_hz in case these per
+transfer parameters are not set. This allows to remove related if
+statements as they evaluate always to true and reduce indentation.
 
 Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 ---
- drivers/spi/spi-pxa2xx.c | 12 ++----------
- drivers/spi/spi-pxa2xx.h |  2 --
- 2 files changed, 2 insertions(+), 12 deletions(-)
+ drivers/spi/spi-dw.c | 41 ++++++++++++++++++-----------------------
+ 1 file changed, 18 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index a8ef38ebb9c9..40862f589277 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -925,14 +925,8 @@ static void pump_transfers(unsigned long data)
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index 4fbfcdc5cb24..2b5d736465c9 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -309,34 +309,29 @@ static int dw_spi_transfer_one(struct spi_master *master,
  	cr0 = chip->cr0;
- 	if (transfer->speed_hz || transfer->bits_per_word) {
  
--		bits = chip->bits_per_word;
+ 	/* Handle per transfer options for bpw and speed */
+-	if (transfer->speed_hz) {
 -		speed = chip->speed_hz;
--
--		if (transfer->speed_hz)
--			speed = transfer->speed_hz;
--
--		if (transfer->bits_per_word)
--			bits = transfer->bits_per_word;
-+		bits = transfer->bits_per_word;
++	speed = chip->speed_hz;
++	if ((transfer->speed_hz != speed) || !chip->clk_div) {
 +		speed = transfer->speed_hz;
  
- 		clk_div = pxa2xx_ssp_get_clk_div(drv_data, chip, speed);
+-		if ((transfer->speed_hz != speed) || !chip->clk_div) {
+-			speed = transfer->speed_hz;
++		/* clk_div doesn't support odd number */
++		clk_div = (dws->max_freq / speed + 1) & 0xfffe;
  
-@@ -1204,7 +1198,6 @@ static int setup(struct spi_device *spi)
+-			/* clk_div doesn't support odd number */
+-			clk_div = (dws->max_freq / speed + 1) & 0xfffe;
++		chip->speed_hz = speed;
++		chip->clk_div = clk_div;
+ 
+-			chip->speed_hz = speed;
+-			chip->clk_div = clk_div;
+-
+-			spi_set_clk(dws, chip->clk_div);
+-		}
++		spi_set_clk(dws, chip->clk_div);
  	}
- 
- 	clk_div = pxa2xx_ssp_get_clk_div(drv_data, chip, spi->max_speed_hz);
--	chip->speed_hz = spi->max_speed_hz;
- 
- 	chip->cr0 = pxa2xx_configure_sscr0(drv_data, clk_div,
- 					   spi->bits_per_word);
-@@ -1255,7 +1248,6 @@ static int setup(struct spi_device *spi)
- 		chip->read = u32_reader;
- 		chip->write = u32_writer;
+-	if (transfer->bits_per_word) {
+-		if (transfer->bits_per_word == 8) {
+-			dws->n_bytes = 1;
+-			dws->dma_width = 1;
+-		} else if (transfer->bits_per_word == 16) {
+-			dws->n_bytes = 2;
+-			dws->dma_width = 2;
+-		}
+-		cr0 = (transfer->bits_per_word - 1)
+-			| (chip->type << SPI_FRF_OFFSET)
+-			| (spi->mode << SPI_MODE_OFFSET)
+-			| (chip->tmode << SPI_TMOD_OFFSET);
++	if (transfer->bits_per_word == 8) {
++		dws->n_bytes = 1;
++		dws->dma_width = 1;
++	} else if (transfer->bits_per_word == 16) {
++		dws->n_bytes = 2;
++		dws->dma_width = 2;
  	}
--	chip->bits_per_word = spi->bits_per_word;
++	cr0 = (transfer->bits_per_word - 1)
++		| (chip->type << SPI_FRF_OFFSET)
++		| (spi->mode << SPI_MODE_OFFSET)
++		| (chip->tmode << SPI_TMOD_OFFSET);
  
- 	spi_set_ctldata(spi, chip);
- 
-diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
-index 0a9b6390a817..0875e985b90d 100644
---- a/drivers/spi/spi-pxa2xx.h
-+++ b/drivers/spi/spi-pxa2xx.h
-@@ -98,8 +98,6 @@ struct chip_data {
- 	u16 lpss_rx_threshold;
- 	u16 lpss_tx_threshold;
- 	u8 enable_dma;
--	u8 bits_per_word;
--	u32 speed_hz;
- 	union {
- 		int gpio_cs;
- 		unsigned int frm;
+ 	/*
+ 	 * Adjust transfer mode if necessary. Requires platform dependent
 -- 
 2.5.1
 

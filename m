@@ -1,8 +1,7 @@
 From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH 02/16] spi: s3c64xx: Use transfer speed unconditionally
-Date: Tue, 15 Sep 2015 16:26:14 +0300
-Message-ID: <1442323588-29642-2-git-send-email-jarkko.nikula@linux.intel.com>
-References: <1442323588-29642-1-git-send-email-jarkko.nikula@linux.intel.com>
+Subject: [PATCH 01/16] spi: txx9: Use transfer speed unconditionally
+Date: Tue, 15 Sep 2015 16:26:13 +0300
+Message-ID: <1442323588-29642-1-git-send-email-jarkko.nikula@linux.intel.com>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
 	Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
@@ -13,7 +12,6 @@ Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1442323588-29642-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
@@ -22,22 +20,22 @@ case the transfer speed is not set.
 
 Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 ---
- drivers/spi/spi-s3c64xx.c | 2 +-
+ drivers/spi/spi-txx9.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index dee82e1ae65d..8e86e7f6663a 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -683,7 +683,7 @@ static int s3c64xx_spi_transfer_one(struct spi_master *master,
+diff --git a/drivers/spi/spi-txx9.c b/drivers/spi/spi-txx9.c
+index 9190124b6d90..d69f8f8f3fa6 100644
+--- a/drivers/spi/spi-txx9.c
++++ b/drivers/spi/spi-txx9.c
+@@ -181,7 +181,7 @@ static void txx9spi_work_one(struct txx9spi *c, struct spi_message *m)
+ 		u32 data;
+ 		unsigned int len = t->len;
+ 		unsigned int wsize;
+-		u32 speed_hz = t->speed_hz ? : spi->max_speed_hz;
++		u32 speed_hz = t->speed_hz;
+ 		u8 bits_per_word = t->bits_per_word;
  
- 	/* Only BPW and Speed may change across transfers */
- 	bpw = xfer->bits_per_word;
--	speed = xfer->speed_hz ? : spi->max_speed_hz;
-+	speed = xfer->speed_hz;
- 
- 	if (bpw != sdd->cur_bpw || speed != sdd->cur_speed) {
- 		sdd->cur_bpw = bpw;
+ 		wsize = bits_per_word >> 3; /* in bytes */
 -- 
 2.5.1
 

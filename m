@@ -1,7 +1,7 @@
 From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH 16/16] spi: pxa2xx: Remove cr0 variable from struct chip_data
-Date: Tue, 15 Sep 2015 16:26:28 +0300
-Message-ID: <1442323588-29642-16-git-send-email-jarkko.nikula@linux.intel.com>
+Subject: [PATCH 09/16] spi: omap-100k: Rely on validations done by spi core
+Date: Tue, 15 Sep 2015 16:26:21 +0300
+Message-ID: <1442323588-29642-9-git-send-email-jarkko.nikula@linux.intel.com>
 References: <1442323588-29642-1-git-send-email-jarkko.nikula@linux.intel.com>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
@@ -17,78 +17,81 @@ In-Reply-To: <1442323588-29642-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-There hasn't been need to carry chip->cr0 after SPI core started to
-validate speed_hz and bits_per_word transfer parameters. That effectively
-caused that pump_transfers() always recalculated it and practically
-chip->cr0 is used locally in setup() for debug prints only.
+SPI core validates both bits_per_word and speed_hz transfer parameters and
+defaults to spi->bits_per_word and spi->max_speed_hz in case these per
+transfer parameters are not set.
+
+This allows to remove a few if statements around per transfer bits_per_word
+and speed_hz tests as they evaluate always to true.
+
+Also defaulting word_len to 8 is needless since spi_setup() has already
+made sure spi->bits_per_word is 8 in case it is not set.
 
 Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 ---
- drivers/spi/spi-pxa2xx.c | 10 ++++------
- drivers/spi/spi-pxa2xx.h |  1 -
- 2 files changed, 4 insertions(+), 7 deletions(-)
+ drivers/spi/spi-omap-100k.c | 26 ++++++++------------------
+ 1 file changed, 8 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 3948e6deb0f1..7a4cb07a5f47 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1105,6 +1105,7 @@ static int setup(struct spi_device *spi)
- 	struct driver_data *drv_data = spi_master_get_devdata(spi->master);
- 	unsigned int clk_div;
- 	uint tx_thres, tx_hi_thres, rx_thres;
-+	u32 cr0;
+diff --git a/drivers/spi/spi-omap-100k.c b/drivers/spi/spi-omap-100k.c
+index 35b332dacb13..76a8425be227 100644
+--- a/drivers/spi/spi-omap-100k.c
++++ b/drivers/spi/spi-omap-100k.c
+@@ -244,12 +244,12 @@ static int omap1_spi100k_setup_transfer(struct spi_device *spi,
+ {
+ 	struct omap1_spi100k *spi100k = spi_master_get_devdata(spi->master);
+ 	struct omap1_spi100k_cs *cs = spi->controller_state;
+-	u8 word_len = spi->bits_per_word;
++	u8 word_len;
  
- 	switch (drv_data->ssp_type) {
- 	case QUARK_X1000_SSP:
-@@ -1197,8 +1198,6 @@ static int setup(struct spi_device *spi)
+-	if (t != NULL && t->bits_per_word)
++	if (t != NULL)
+ 		word_len = t->bits_per_word;
+-	if (!word_len)
+-		word_len = 8;
++	else
++		word_len = spi->bits_per_word;
  
- 	clk_div = pxa2xx_ssp_get_clk_div(drv_data, chip, spi->max_speed_hz);
+ 	if (spi->bits_per_word > 32)
+ 		return -EINVAL;
+@@ -302,7 +302,6 @@ static int omap1_spi100k_transfer_one_message(struct spi_master *master,
+ 	struct spi_device *spi = m->spi;
+ 	struct spi_transfer *t = NULL;
+ 	int cs_active = 0;
+-	int par_override = 0;
+ 	int status = 0;
  
--	chip->cr0 = pxa2xx_configure_sscr0(drv_data, clk_div,
--					   spi->bits_per_word);
- 	switch (drv_data->ssp_type) {
- 	case QUARK_X1000_SSP:
- 		chip->threshold = (QUARK_X1000_SSCR1_RxTresh(rx_thres)
-@@ -1220,15 +1219,16 @@ static int setup(struct spi_device *spi)
- 		chip->cr1 |= SSCR1_LBM;
+ 	list_for_each_entry(t, &m->transfers, transfer_list) {
+@@ -310,14 +309,9 @@ static int omap1_spi100k_transfer_one_message(struct spi_master *master,
+ 			status = -EINVAL;
+ 			break;
+ 		}
+-		if (par_override || t->speed_hz || t->bits_per_word) {
+-			par_override = 1;
+-			status = omap1_spi100k_setup_transfer(spi, t);
+-			if (status < 0)
+-				break;
+-			if (!t->speed_hz && !t->bits_per_word)
+-				par_override = 0;
+-		}
++		status = omap1_spi100k_setup_transfer(spi, t);
++		if (status < 0)
++			break;
  
- 	/* NOTE:  PXA25x_SSP _could_ use external clocking ... */
-+	cr0 = pxa2xx_configure_sscr0(drv_data, clk_div, spi->bits_per_word);
- 	if (!pxa25x_ssp_comp(drv_data))
- 		dev_dbg(&spi->dev, "%ld Hz actual, %s\n",
- 			drv_data->max_clk_rate
--				/ (1 + ((chip->cr0 & SSCR0_SCR(0xfff)) >> 8)),
-+				/ (1 + ((cr0 & SSCR0_SCR(0xfff)) >> 8)),
- 			chip->enable_dma ? "DMA" : "PIO");
- 	else
- 		dev_dbg(&spi->dev, "%ld Hz actual, %s\n",
- 			drv_data->max_clk_rate / 2
--				/ (1 + ((chip->cr0 & SSCR0_SCR(0x0ff)) >> 8)),
-+				/ (1 + ((cr0 & SSCR0_SCR(0x0ff)) >> 8)),
- 			chip->enable_dma ? "DMA" : "PIO");
+ 		if (!cs_active) {
+ 			omap1_spi100k_force_cs(spi100k, 1);
+@@ -347,11 +341,7 @@ static int omap1_spi100k_transfer_one_message(struct spi_master *master,
+ 		}
+ 	}
  
- 	if (spi->bits_per_word <= 8) {
-@@ -1240,8 +1240,6 @@ static int setup(struct spi_device *spi)
- 		chip->read = u16_reader;
- 		chip->write = u16_writer;
- 	} else if (spi->bits_per_word <= 32) {
--		if (!is_quark_x1000_ssp(drv_data))
--			chip->cr0 |= SSCR0_EDSS;
- 		chip->n_bytes = 4;
- 		chip->read = u32_reader;
- 		chip->write = u32_writer;
-diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
-index 0875e985b90d..b91bda26bfa8 100644
---- a/drivers/spi/spi-pxa2xx.h
-+++ b/drivers/spi/spi-pxa2xx.h
-@@ -86,7 +86,6 @@ struct driver_data {
- };
+-	/* Restore defaults if they were overriden */
+-	if (par_override) {
+-		par_override = 0;
+-		status = omap1_spi100k_setup_transfer(spi, NULL);
+-	}
++	status = omap1_spi100k_setup_transfer(spi, NULL);
  
- struct chip_data {
--	u32 cr0;
- 	u32 cr1;
- 	u32 dds_rate;
- 	u32 psp;
+ 	if (cs_active)
+ 		omap1_spi100k_force_cs(spi100k, 0);
 -- 
 2.5.1
 

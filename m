@@ -1,7 +1,7 @@
 From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH 03/16] spi: octeon: Use transfer speed unconditionally
-Date: Tue, 15 Sep 2015 16:26:15 +0300
-Message-ID: <1442323588-29642-3-git-send-email-jarkko.nikula@linux.intel.com>
+Subject: [PATCH 07/16] spi: mpc512x: Call mpc512x_psc_spi_transfer_setup() unconditionally
+Date: Tue, 15 Sep 2015 16:26:19 +0300
+Message-ID: <1442323588-29642-7-git-send-email-jarkko.nikula@linux.intel.com>
 References: <1442323588-29642-1-git-send-email-jarkko.nikula@linux.intel.com>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
@@ -17,27 +17,34 @@ In-Reply-To: <1442323588-29642-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-SPI core validates the transfer speed and defaults to spi->max_speed_hz in
-case the transfer speed is not set.
+SPI core validates both bits_per_word and speed_hz transfer parameters and
+thus the if statement here is needless as it will always call the
+mpc512x_psc_spi_transfer_setup().
 
 Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 ---
- drivers/spi/spi-octeon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-mpc512x-psc.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-octeon.c b/drivers/spi/spi-octeon.c
-index e99d6a93d394..07e4ce8273df 100644
---- a/drivers/spi/spi-octeon.c
-+++ b/drivers/spi/spi-octeon.c
-@@ -65,7 +65,7 @@ static int octeon_spi_do_transfer(struct octeon_spi *p,
- 	cpha = mode & SPI_CPHA;
- 	cpol = mode & SPI_CPOL;
+diff --git a/drivers/spi/spi-mpc512x-psc.c b/drivers/spi/spi-mpc512x-psc.c
+index 1e75341689a6..c3ec46cd9f91 100644
+--- a/drivers/spi/spi-mpc512x-psc.c
++++ b/drivers/spi/spi-mpc512x-psc.c
+@@ -302,11 +302,9 @@ static int mpc512x_psc_spi_msg_xfer(struct spi_master *master,
+ 	cs_change = 1;
+ 	status = 0;
+ 	list_for_each_entry(t, &m->transfers, transfer_list) {
+-		if (t->bits_per_word || t->speed_hz) {
+-			status = mpc512x_psc_spi_transfer_setup(spi, t);
+-			if (status < 0)
+-				break;
+-		}
++		status = mpc512x_psc_spi_transfer_setup(spi, t);
++		if (status < 0)
++			break;
  
--	speed_hz = xfer->speed_hz ? : spi->max_speed_hz;
-+	speed_hz = xfer->speed_hz;
- 
- 	clkdiv = octeon_get_io_clock_rate() / (2 * speed_hz);
- 
+ 		if (cs_change)
+ 			mpc512x_psc_spi_activate_cs(spi);
 -- 
 2.5.1
 

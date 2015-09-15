@@ -1,40 +1,42 @@
-From: Javier Martinez Canillas <javier@osg.samsung.com>
-Subject: Re: [PATCH] spi: mediatek: fix wrong error return value on probe
-Date: Tue, 15 Sep 2015 13:49:11 +0200
-Message-ID: <55F805B7.7020706@osg.samsung.com>
-References: <1441320656-8666-1-git-send-email-javier@osg.samsung.com>
- <20150914183925.GG12027@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	linux-arm-kernel@lists.infradead.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20150914183925.GG12027@sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Geliang Tang <geliangtang-9Onoh4P/yGk@public.gmane.org>
+Subject: [PATCH] spi: fix kernel-doc warnings in spi.h
+Date: Tue, 15 Sep 2015 04:59:21 -0700
+Message-ID: <2ecb1dfb30cbac1fdd4e1884de40af896bf5975b.1442346538.git.geliangtang@163.com>
+Cc: Geliang Tang <geliangtang-9Onoh4P/yGk@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hello Mark,
+Fix the following 'make htmldocs' warnings:
 
-On 09/14/2015 08:39 PM, Mark Brown wrote:
-> On Fri, Sep 04, 2015 at 12:50:56AM +0200, Javier Martinez Canillas wrote:
->> Commit adcbcfea15d62 ("spi: mediatek: fix spi clock usage error")
->> added a new sel_clk but introduced bugs in the error paths since
->> the wrong struct clk pointers are passed to PTR_ERR().
-> 
-> This doesn't apply against current code, please check and resend.
-> 
+  .//include/linux/spi/spi.h:71: warning: No description found for parameter 'lock'
+  .//include/linux/spi/spi.h:71: warning: Excess struct/union/enum/typedef member 'clock' description in 'spi_statistics'
 
-Which branch should I use as a baseline then? The patch applies cleanly
-on both today's linux-next (next-20150915) and your for-linus branch:
+Signed-off-by: Geliang Tang <geliangtang-9Onoh4P/yGk@public.gmane.org>
+---
+ include/linux/spi/spi.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-https://git.kernel.org/cgit/linux/kernel/git/broonie/spi.git/log/?h=for-linus
-
-Best regards,
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 269e8af..6b00f18 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -34,7 +34,7 @@ extern struct bus_type spi_bus_type;
+ 
+ /**
+  * struct spi_statistics - statistics for spi transfers
+- * @clock:         lock protecting this structure
++ * @lock:          lock protecting this structure
+  *
+  * @messages:      number of spi-messages handled
+  * @transfers:     number of spi_transfers handled
 -- 
-Javier Martinez Canillas
-Open Source Group
-Samsung Research America
+1.9.1
+
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

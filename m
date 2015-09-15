@@ -1,7 +1,7 @@
 From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH 05/16] spi: spi-bfin5xx: Calculate transfer speed unconditionally
-Date: Tue, 15 Sep 2015 16:26:17 +0300
-Message-ID: <1442323588-29642-5-git-send-email-jarkko.nikula@linux.intel.com>
+Subject: [PATCH 04/16] spi: bfin-sport: Calculate transfer speed unconditionally
+Date: Tue, 15 Sep 2015 16:26:16 +0300
+Message-ID: <1442323588-29642-4-git-send-email-jarkko.nikula@linux.intel.com>
 References: <1442323588-29642-1-git-send-email-jarkko.nikula@linux.intel.com>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
@@ -22,34 +22,33 @@ case the transfer speed is not set so code here won't use the
 chip->baud value (which is derived from spi->max_speed_hz).
 
 Please note driver uses chip->baud at the beginning of message transmission
-by calling the bfin_spi_restore_state() but then programs per transfer
-speed in bfin_spi_pump_transfers(). I'm not familiar with the HW so I don't
-know would it be possible to remove chip->baud completely by either using
-constant value in bfin_spi_restore_state() or by removing the baud register
-write there.
+by calling the bfin_sport_spi_restore_state() but then programs per
+transfer speed in bfin_sport_spi_pump_transfers(). I'm not familiar with
+the HW so I don't know would it be possible to remove chip->baud completely
+by either using constant value in bfin_sport_spi_restore_state() or by
+removing the tclkdiv register write there.
 
 Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 ---
- drivers/spi/spi-bfin5xx.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/spi/spi-bfin-sport.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-bfin5xx.c b/drivers/spi/spi-bfin5xx.c
-index a3d65b4f4944..1e91325bf39c 100644
---- a/drivers/spi/spi-bfin5xx.c
-+++ b/drivers/spi/spi-bfin5xx.c
-@@ -661,11 +661,7 @@ static void bfin_spi_pump_transfers(unsigned long data)
- 	message->state = RUNNING_STATE;
- 	dma_config = 0;
+diff --git a/drivers/spi/spi-bfin-sport.c b/drivers/spi/spi-bfin-sport.c
+index a78693189f45..6c967555a56a 100644
+--- a/drivers/spi/spi-bfin-sport.c
++++ b/drivers/spi/spi-bfin-sport.c
+@@ -352,10 +352,7 @@ bfin_sport_spi_pump_transfers(unsigned long data)
+ 	transfer = drv_data->cur_transfer;
+ 	chip = drv_data->cur_chip;
  
--	/* Speed setup (surely valid because already checked) */
 -	if (transfer->speed_hz)
--		bfin_write(&drv_data->regs->baud, hz_to_spi_baud(transfer->speed_hz));
+-		transfer_speed = bfin_sport_hz_to_spi_baud(transfer->speed_hz);
 -	else
--		bfin_write(&drv_data->regs->baud, chip->baud);
-+	bfin_write(&drv_data->regs->baud, hz_to_spi_baud(transfer->speed_hz));
+-		transfer_speed = chip->baud;
++	transfer_speed = bfin_sport_hz_to_spi_baud(transfer->speed_hz);
+ 	bfin_write(&drv_data->regs->tclkdiv, transfer_speed);
+ 	SSYNC();
  
- 	bfin_write(&drv_data->regs->stat, BIT_STAT_CLR);
- 	bfin_spi_cs_active(drv_data, chip);
 -- 
 2.5.1
 

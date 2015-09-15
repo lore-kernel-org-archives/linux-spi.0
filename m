@@ -1,89 +1,44 @@
-From: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 10/16] spi: atmel: Remove needless bits_per_word and
- speed_hz tests
-Date: Tue, 15 Sep 2015 15:54:30 +0200
-Message-ID: <55F82316.4060707@atmel.com>
-References: <1442323588-29642-1-git-send-email-jarkko.nikula@linux.intel.com>
- <1442323588-29642-10-git-send-email-jarkko.nikula@linux.intel.com>
+From: =?UTF-8?B?SmnFmcOtIFByY2hhbA==?= <jiri.prchal-cKCO0sOKHLPtwjQa/ONI9g@public.gmane.org>
+Subject: resend [BUG] atmel: spi: scheduling while atomic
+Date: Tue, 15 Sep 2015 16:10:16 +0200
+Message-ID: <55F826C8.7090304@aksignal.cz>
+Reply-To: jiri.prchal-cKCO0sOKHLPtwjQa/ONI9g@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-	"Haojian Zhuang" <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-	Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: "Ferre, Nicolas" <Nicolas.FERRE-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1442323588-29642-10-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Le 15/09/2015 15:26, Jarkko Nikula a =E9crit :
-> SPI core validates both bits_per_word and speed_hz transfer parameter=
-s and
-> defaults to spi->bits_per_word and spi->max_speed_hz in case these pe=
-r
-> transfer parameters are not set. This makes possible to remove two if
-> statements and remove one code block that is never executed.
->=20
-> Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Hi,
+again I discovered a problem when I access devices on SPI. It appears if I access one device pretty often (about once at 
+second) and the error message appears about 3 times a hour. Nevertheless it works correctly.
+I thing it's in kernels 3.17 and 3.18 maybe even longer, now I have 3.18.21.
 
-It seems okay:
-Acked-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-
-> ---
->  drivers/spi/spi-atmel.c | 21 ++++++---------------
->  1 file changed, 6 insertions(+), 15 deletions(-)
->=20
-> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-> index 63318e2afba1..41e37a6a1368 100644
-> --- a/drivers/spi/spi-atmel.c
-> +++ b/drivers/spi/spi-atmel.c
-> @@ -871,14 +871,7 @@ static int atmel_spi_set_xfer_speed(struct atmel=
-_spi *as,
->  	 * Calculate the lowest divider that satisfies the
->  	 * constraint, assuming div32/fdiv/mbz =3D=3D 0.
->  	 */
-> -	if (xfer->speed_hz)
-> -		scbr =3D DIV_ROUND_UP(bus_hz, xfer->speed_hz);
-> -	else
-> -		/*
-> -		 * This can happend if max_speed is null.
-> -		 * In this case, we set the lowest possible speed
-> -		 */
-> -		scbr =3D 0xff;
-> +	scbr =3D DIV_ROUND_UP(bus_hz, xfer->speed_hz);
-> =20
->  	/*
->  	 * If the resulting divider doesn't fit into the
-> @@ -1300,14 +1293,12 @@ static int atmel_spi_one_transfer(struct spi_=
-master *master,
->  		return -EINVAL;
->  	}
-> =20
-> -	if (xfer->bits_per_word) {
-> -		asd =3D spi->controller_state;
-> -		bits =3D (asd->csr >> 4) & 0xf;
-> -		if (bits !=3D xfer->bits_per_word - 8) {
-> -			dev_dbg(&spi->dev,
-> +	asd =3D spi->controller_state;
-> +	bits =3D (asd->csr >> 4) & 0xf;
-> +	if (bits !=3D xfer->bits_per_word - 8) {
-> +		dev_dbg(&spi->dev,
->  			"you can't yet change bits_per_word in transfers\n");
-> -			return -ENOPROTOOPT;
-> -		}
-> +		return -ENOPROTOOPT;
->  	}
-> =20
->  	/*
->=20
-
-
---=20
-Nicolas Ferre
+...
+[10176.960000] BUG: scheduling while atomic: spi0/401/0x00000002
+[10176.960000] Modules linked in:
+[10176.960000] Preemption disabled at:[<  (null)>]   (null)
+[10176.960000]
+[10176.960000] CPU: 0 PID: 401 Comm: spi0 Tainted: G        W      3.18.21_cpm9g25 #2
+[10176.960000] [<c000eef4>] (unwind_backtrace) from [<c000c558>] (show_stack+0x20/0x24)
+[10176.960000] [<c000c558>] (show_stack) from [<c04a214c>] (dump_stack+0x20/0x28)
+[10176.960000] [<c04a214c>] (dump_stack) from [<c049fc74>] (__schedule_bug+0x88/0xac)
+[10176.960000] [<c049fc74>] (__schedule_bug) from [<c04a3488>] (__schedule+0x68/0x508)
+[10176.960000] [<c04a3488>] (__schedule) from [<c04a3ae0>] (schedule+0xa0/0xa4)
+[10176.960000] [<c04a3ae0>] (schedule) from [<c04a3cac>] (schedule_preempt_disabled+0x20/0x2c)
+[10176.960000] [<c04a3cac>] (schedule_preempt_disabled) from [<c04a5684>] (__mutex_lock_slowpath+0xe8/0x17c)
+[10176.960000] [<c04a5684>] (__mutex_lock_slowpath) from [<c04a5758>] (mutex_lock+0x40/0x44)
+[10176.960000] [<c04a5758>] (mutex_lock) from [<c039086c>] (clk_prepare_lock+0x58/0xf4)
+[10176.960000] [<c039086c>] (clk_prepare_lock) from [<c0391808>] (clk_get_rate+0x1c/0x54)
+[10176.960000] [<c0391808>] (clk_get_rate) from [<c0311c60>] (atmel_spi_transfer_one_message+0x264/0x9ec)
+[10176.960000] [<c0311c60>] (atmel_spi_transfer_one_message) from [<c030f428>] (spi_pump_messages+0x5cc/0x5f0)
+[10176.960000] [<c030f428>] (spi_pump_messages) from [<c003541c>] (kthread_worker_fn+0x140/0x1ac)
+[10176.960000] [<c003541c>] (kthread_worker_fn) from [<c00355c4>] (kthread+0xd4/0xe8)
+[10176.960000] [<c00355c4>] (kthread) from [<c0009798>] (ret_from_fork+0x14/0x20)
+...
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

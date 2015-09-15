@@ -1,7 +1,7 @@
 From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH 04/16] spi: bfin-sport: Calculate transfer speed unconditionally
-Date: Tue, 15 Sep 2015 16:26:16 +0300
-Message-ID: <1442323588-29642-4-git-send-email-jarkko.nikula@linux.intel.com>
+Subject: [PATCH 06/16] spi: au1550: Simplify au1550_spi_setupxfer()
+Date: Tue, 15 Sep 2015 16:26:18 +0300
+Message-ID: <1442323588-29642-6-git-send-email-jarkko.nikula@linux.intel.com>
 References: <1442323588-29642-1-git-send-email-jarkko.nikula@linux.intel.com>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
@@ -17,38 +17,40 @@ In-Reply-To: <1442323588-29642-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-SPI core validates the transfer speed and defaults to spi->max_speed_hz in
-case the transfer speed is not set so code here won't use the
-chip->baud value (which is derived from spi->max_speed_hz).
-
-Please note driver uses chip->baud at the beginning of message transmission
-by calling the bfin_sport_spi_restore_state() but then programs per
-transfer speed in bfin_sport_spi_pump_transfers(). I'm not familiar with
-the HW so I don't know would it be possible to remove chip->baud completely
-by either using constant value in bfin_sport_spi_restore_state() or by
-removing the tclkdiv register write there.
+SPI core validates both bits_per_word and speed_hz transfer parameters and
+defaults to spi->bits_per_word and spi->max_speed_hz in case these per
+transfer parameters are not set. This can simplify a little the
+au1550_spi_setupxfer() as there is need to check only for valid
+"struct spi_transfer" pointer.
 
 Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 ---
- drivers/spi/spi-bfin-sport.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/spi/spi-au1550.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/spi/spi-bfin-sport.c b/drivers/spi/spi-bfin-sport.c
-index a78693189f45..6c967555a56a 100644
---- a/drivers/spi/spi-bfin-sport.c
-+++ b/drivers/spi/spi-bfin-sport.c
-@@ -352,10 +352,7 @@ bfin_sport_spi_pump_transfers(unsigned long data)
- 	transfer = drv_data->cur_transfer;
- 	chip = drv_data->cur_chip;
+diff --git a/drivers/spi/spi-au1550.c b/drivers/spi/spi-au1550.c
+index f45e085c01a6..afd239d6dec1 100644
+--- a/drivers/spi/spi-au1550.c
++++ b/drivers/spi/spi-au1550.c
+@@ -233,13 +233,12 @@ static int au1550_spi_setupxfer(struct spi_device *spi, struct spi_transfer *t)
+ 	unsigned bpw, hz;
+ 	u32 cfg, stat;
  
--	if (transfer->speed_hz)
--		transfer_speed = bfin_sport_hz_to_spi_baud(transfer->speed_hz);
--	else
--		transfer_speed = chip->baud;
-+	transfer_speed = bfin_sport_hz_to_spi_baud(transfer->speed_hz);
- 	bfin_write(&drv_data->regs->tclkdiv, transfer_speed);
- 	SSYNC();
+-	bpw = spi->bits_per_word;
+-	hz = spi->max_speed_hz;
+ 	if (t) {
+-		if (t->bits_per_word)
+-			bpw = t->bits_per_word;
+-		if (t->speed_hz)
+-			hz = t->speed_hz;
++		bpw = t->bits_per_word;
++		hz = t->speed_hz;
++	} else {
++		bpw = spi->bits_per_word;
++		hz = spi->max_speed_hz;
+ 	}
  
+ 	if (!hz)
 -- 
 2.5.1
 

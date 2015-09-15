@@ -1,7 +1,7 @@
 From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH 12/16] spi: dw: Remove test for non-zero spi->max_speed_hz
-Date: Tue, 15 Sep 2015 16:26:24 +0300
-Message-ID: <1442323588-29642-12-git-send-email-jarkko.nikula@linux.intel.com>
+Subject: [PATCH 15/16] spi: pxa2xx: Remove if statement that is always true in pump_transfers()
+Date: Tue, 15 Sep 2015 16:26:27 +0300
+Message-ID: <1442323588-29642-15-git-send-email-jarkko.nikula@linux.intel.com>
 References: <1442323588-29642-1-git-send-email-jarkko.nikula@linux.intel.com>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
@@ -17,33 +17,109 @@ In-Reply-To: <1442323588-29642-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Test for non-zero spi->max_speed_hz in dw_spi_setup() looks needless as
-spi_setup() defaults to master->max_speed_hz in case it is not set. This
-drivers sets the master->max_speed_hz based on max_freq data passed to it
-via dw_spi_add_host() call. I suppose things have already fallen apart if
-dw_spi_mmio_probe() or spi_pci_probe() ever passes zero max_freq.
+This is continuation to previous commit by separating unindentation from
+variable removal done in previous commit. As said SPI core have validated
+both the speed_hz and bits_per_word and the if statement here evaluates
+always to true.
+
+Remove the test and unindent the code block accordingly. While at it remove
+also needless "cr0 = chip->cr0" as cr0 will be overwritten anyway and fix
+block comment style.
 
 Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 ---
- drivers/spi/spi-dw.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/spi/spi-pxa2xx.c | 76 +++++++++++++++++++++++-------------------------
+ 1 file changed, 37 insertions(+), 39 deletions(-)
 
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index 2b5d736465c9..1153d36ec8a6 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -448,11 +448,6 @@ static int dw_spi_setup(struct spi_device *spi)
- 	}
- 	chip->bits_per_word = spi->bits_per_word;
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 40862f589277..3948e6deb0f1 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -922,47 +922,45 @@ static void pump_transfers(unsigned long data)
+ 	drv_data->read = drv_data->rx ? chip->read : null_reader;
  
--	if (!spi->max_speed_hz) {
--		dev_err(&spi->dev, "No max speed HZ parameter\n");
--		return -EINVAL;
--	}
+ 	/* Change speed and bit per word on a per transfer */
+-	cr0 = chip->cr0;
+-	if (transfer->speed_hz || transfer->bits_per_word) {
 -
- 	chip->tmode = 0; /* Tx & Rx */
- 	/* Default SPI mode is SCPOL = 0, SCPH = 0 */
- 	chip->cr0 = (chip->bits_per_word - 1)
+-		bits = transfer->bits_per_word;
+-		speed = transfer->speed_hz;
+-
+-		clk_div = pxa2xx_ssp_get_clk_div(drv_data, chip, speed);
+-
+-		if (bits <= 8) {
+-			drv_data->n_bytes = 1;
+-			drv_data->read = drv_data->read != null_reader ?
+-						u8_reader : null_reader;
+-			drv_data->write = drv_data->write != null_writer ?
+-						u8_writer : null_writer;
+-		} else if (bits <= 16) {
+-			drv_data->n_bytes = 2;
+-			drv_data->read = drv_data->read != null_reader ?
+-						u16_reader : null_reader;
+-			drv_data->write = drv_data->write != null_writer ?
+-						u16_writer : null_writer;
+-		} else if (bits <= 32) {
+-			drv_data->n_bytes = 4;
+-			drv_data->read = drv_data->read != null_reader ?
+-						u32_reader : null_reader;
+-			drv_data->write = drv_data->write != null_writer ?
+-						u32_writer : null_writer;
+-		}
+-		/* if bits/word is changed in dma mode, then must check the
+-		 * thresholds and burst also */
+-		if (chip->enable_dma) {
+-			if (pxa2xx_spi_set_dma_burst_and_threshold(chip,
+-							message->spi,
+-							bits, &dma_burst,
+-							&dma_thresh))
+-				dev_warn_ratelimited(&message->spi->dev,
+-						     "pump_transfers: DMA burst size reduced to match bits_per_word\n");
+-		}
+-
+-		cr0 = pxa2xx_configure_sscr0(drv_data, clk_div, bits);
++	bits = transfer->bits_per_word;
++	speed = transfer->speed_hz;
++
++	clk_div = pxa2xx_ssp_get_clk_div(drv_data, chip, speed);
++
++	if (bits <= 8) {
++		drv_data->n_bytes = 1;
++		drv_data->read = drv_data->read != null_reader ?
++					u8_reader : null_reader;
++		drv_data->write = drv_data->write != null_writer ?
++					u8_writer : null_writer;
++	} else if (bits <= 16) {
++		drv_data->n_bytes = 2;
++		drv_data->read = drv_data->read != null_reader ?
++					u16_reader : null_reader;
++		drv_data->write = drv_data->write != null_writer ?
++					u16_writer : null_writer;
++	} else if (bits <= 32) {
++		drv_data->n_bytes = 4;
++		drv_data->read = drv_data->read != null_reader ?
++					u32_reader : null_reader;
++		drv_data->write = drv_data->write != null_writer ?
++					u32_writer : null_writer;
++	}
++	/*
++	 * if bits/word is changed in dma mode, then must check the
++	 * thresholds and burst also
++	 */
++	if (chip->enable_dma) {
++		if (pxa2xx_spi_set_dma_burst_and_threshold(chip,
++						message->spi,
++						bits, &dma_burst,
++						&dma_thresh))
++			dev_warn_ratelimited(&message->spi->dev,
++					     "pump_transfers: DMA burst size reduced to match bits_per_word\n");
+ 	}
+ 
++	cr0 = pxa2xx_configure_sscr0(drv_data, clk_div, bits);
++
+ 	message->state = RUNNING_STATE;
+ 
+ 	drv_data->dma_mapped = 0;
 -- 
 2.5.1
 

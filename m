@@ -1,7 +1,7 @@
 From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH 13/16] spi: spi-fsl-dspi: Remove duplicated register write
-Date: Tue, 15 Sep 2015 16:26:25 +0300
-Message-ID: <1442323588-29642-13-git-send-email-jarkko.nikula@linux.intel.com>
+Subject: [PATCH 10/16] spi: atmel: Remove needless bits_per_word and speed_hz tests
+Date: Tue, 15 Sep 2015 16:26:22 +0300
+Message-ID: <1442323588-29642-10-git-send-email-jarkko.nikula@linux.intel.com>
 References: <1442323588-29642-1-git-send-email-jarkko.nikula@linux.intel.com>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
@@ -17,32 +17,56 @@ In-Reply-To: <1442323588-29642-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-SPI core makes sure that transfer speed is always set so code here writes
-the same register with the same value twice. Code has been doing this from
-the beginning.
-
-This looks to me some sort of copy paste error so I'm removing the second
-write. If this is not the case we can bring it back with a comment.
+SPI core validates both bits_per_word and speed_hz transfer parameters and
+defaults to spi->bits_per_word and spi->max_speed_hz in case these per
+transfer parameters are not set. This makes possible to remove two if
+statements and remove one code block that is never executed.
 
 Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/spi/spi-atmel.c | 21 ++++++---------------
+ 1 file changed, 6 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 86bcdd68c1fe..59a11437db70 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -409,9 +409,6 @@ static int dspi_transfer_one_message(struct spi_master *master,
- 				SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF);
- 		regmap_write(dspi->regmap, SPI_CTAR(dspi->cs),
- 				dspi->cur_chip->ctar_val);
--		if (transfer->speed_hz)
--			regmap_write(dspi->regmap, SPI_CTAR(dspi->cs),
--					dspi->cur_chip->ctar_val);
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index 63318e2afba1..41e37a6a1368 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -871,14 +871,7 @@ static int atmel_spi_set_xfer_speed(struct atmel_spi *as,
+ 	 * Calculate the lowest divider that satisfies the
+ 	 * constraint, assuming div32/fdiv/mbz == 0.
+ 	 */
+-	if (xfer->speed_hz)
+-		scbr = DIV_ROUND_UP(bus_hz, xfer->speed_hz);
+-	else
+-		/*
+-		 * This can happend if max_speed is null.
+-		 * In this case, we set the lowest possible speed
+-		 */
+-		scbr = 0xff;
++	scbr = DIV_ROUND_UP(bus_hz, xfer->speed_hz);
  
- 		trans_mode = dspi->devtype_data->trans_mode;
- 		switch (trans_mode) {
+ 	/*
+ 	 * If the resulting divider doesn't fit into the
+@@ -1300,14 +1293,12 @@ static int atmel_spi_one_transfer(struct spi_master *master,
+ 		return -EINVAL;
+ 	}
+ 
+-	if (xfer->bits_per_word) {
+-		asd = spi->controller_state;
+-		bits = (asd->csr >> 4) & 0xf;
+-		if (bits != xfer->bits_per_word - 8) {
+-			dev_dbg(&spi->dev,
++	asd = spi->controller_state;
++	bits = (asd->csr >> 4) & 0xf;
++	if (bits != xfer->bits_per_word - 8) {
++		dev_dbg(&spi->dev,
+ 			"you can't yet change bits_per_word in transfers\n");
+-			return -ENOPROTOOPT;
+-		}
++		return -ENOPROTOOPT;
+ 	}
+ 
+ 	/*
 -- 
 2.5.1
 

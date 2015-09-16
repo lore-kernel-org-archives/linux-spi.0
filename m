@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: s3c64xx: Use transfer speed unconditionally" to the spi tree
-Date: Wed, 16 Sep 2015 21:02:11 +0100
-Message-ID: <E1ZcIuB-00083F-Iy@finisterre>
-References: <1442323588-29642-2-git-send-email-jarkko.nikula@linux.intel.com>
+Subject: Applied "spi: oc-tiny: Use of_property_read_u32 instead of open-coding it" to the spi tree
+Date: Wed, 16 Sep 2015 21:02:15 +0100
+Message-ID: <E1ZcIuF-000858-PW@finisterre>
+References: <1441799753-27183-1-git-send-email-tklauser@distanz.ch>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+To: Tobias Klauser <tklauser-93Khv+1bN0NyDzI6CaY1VQ@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1442323588-29642-2-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <1441799753-27183-1-git-send-email-tklauser-93Khv+1bN0NyDzI6CaY1VQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: s3c64xx: Use transfer speed unconditionally
+   spi: oc-tiny: Use of_property_read_u32 instead of open-coding it
 
 has been applied to the spi tree at
 
@@ -38,33 +38,53 @@ to this mail.
 Thanks,
 Mark
 
->From 88d4a7440e51754bd44f58fe1f8c6e6fe050e929 Mon Sep 17 00:00:00 2001
-From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Tue, 15 Sep 2015 16:26:14 +0300
-Subject: [PATCH] spi: s3c64xx: Use transfer speed unconditionally
+>From 45a3e771085d16c95eb54f8009d795941b21fb28 Mon Sep 17 00:00:00 2001
+From: Tobias Klauser <tklauser-93Khv+1bN0NyDzI6CaY1VQ@public.gmane.org>
+Date: Wed, 9 Sep 2015 13:55:53 +0200
+Subject: [PATCH] spi: oc-tiny: Use of_property_read_u32 instead of open-coding
+ it
 
-SPI core validates the transfer speed and defaults to spi->max_speed_hz in
-case the transfer speed is not set.
+Use of_property_read_u32 instead of of_get_property with return value
+checks and endianness conversion.
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Signed-off-by: Tobias Klauser <tklauser-93Khv+1bN0NyDzI6CaY1VQ@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-s3c64xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-oc-tiny.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index dee82e1..8e86e7f 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -683,7 +683,7 @@ static int s3c64xx_spi_transfer_one(struct spi_master *master,
+diff --git a/drivers/spi/spi-oc-tiny.c b/drivers/spi/spi-oc-tiny.c
+index 76656a7..b591128 100644
+--- a/drivers/spi/spi-oc-tiny.c
++++ b/drivers/spi/spi-oc-tiny.c
+@@ -207,8 +207,7 @@ static int tiny_spi_of_probe(struct platform_device *pdev)
+ 	struct tiny_spi *hw = platform_get_drvdata(pdev);
+ 	struct device_node *np = pdev->dev.of_node;
+ 	unsigned int i;
+-	const __be32 *val;
+-	int len;
++	u32 val;
  
- 	/* Only BPW and Speed may change across transfers */
- 	bpw = xfer->bits_per_word;
--	speed = xfer->speed_hz ? : spi->max_speed_hz;
-+	speed = xfer->speed_hz;
- 
- 	if (bpw != sdd->cur_bpw || speed != sdd->cur_speed) {
- 		sdd->cur_bpw = bpw;
+ 	if (!np)
+ 		return 0;
+@@ -226,13 +225,10 @@ static int tiny_spi_of_probe(struct platform_device *pdev)
+ 			return -ENODEV;
+ 	}
+ 	hw->bitbang.master->dev.of_node = pdev->dev.of_node;
+-	val = of_get_property(pdev->dev.of_node,
+-			      "clock-frequency", &len);
+-	if (val && len >= sizeof(__be32))
+-		hw->freq = be32_to_cpup(val);
+-	val = of_get_property(pdev->dev.of_node, "baud-width", &len);
+-	if (val && len >= sizeof(__be32))
+-		hw->baudwidth = be32_to_cpup(val);
++	if (!of_property_read_u32(np, "clock-frequency", &val))
++		hw->freq = val;
++	if (!of_property_read_u32(np, "baud-width", &val))
++		hw->baudwidth = val;
+ 	return 0;
+ }
+ #else /* !CONFIG_OF */
 -- 
 2.5.0
 

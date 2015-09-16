@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: txx9: Use transfer speed unconditionally" to the spi tree
-Date: Wed, 16 Sep 2015 21:02:12 +0100
-Message-ID: <E1ZcIuC-00083i-ND@finisterre>
-References: <1442323588-29642-1-git-send-email-jarkko.nikula@linux.intel.com>
+Subject: Applied "spi: bcm53xx: Adjust devm usage" to the spi tree
+Date: Wed, 16 Sep 2015 21:02:16 +0100
+Message-ID: <E1ZcIuG-00085b-V2@finisterre>
+References: <20150820175838.GA4895@localhost>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+To: Vaishali Thakkar <vthakkar1994-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1442323588-29642-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <20150820175838.GA4895@localhost>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: txx9: Use transfer speed unconditionally
+   spi: bcm53xx: Adjust devm usage
 
 has been applied to the spi tree at
 
@@ -38,33 +38,59 @@ to this mail.
 Thanks,
 Mark
 
->From fc306de9b54e94a2949fee452741c00259d7dd4a Mon Sep 17 00:00:00 2001
-From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Tue, 15 Sep 2015 16:26:13 +0300
-Subject: [PATCH] spi: txx9: Use transfer speed unconditionally
+>From 6774eea6d7a61616384743b218cf77f322e060d9 Mon Sep 17 00:00:00 2001
+From: Vaishali Thakkar <vthakkar1994-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Thu, 20 Aug 2015 23:28:38 +0530
+Subject: [PATCH] spi: bcm53xx: Adjust devm usage
 
-SPI core validates the transfer speed and defaults to spi->max_speed_hz in
-case the transfer speed is not set.
+Remove use of spi_unregister_master in remove function as
+devm_spi_register_master in probe function automatically
+handles it. To be compatible with the change, use direct
+return instead of goto and remove unnedded label out.
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Also, remove bcm53xxspi_bcma_remove as it is now redundant.
+
+Signed-off-by: Vaishali Thakkar <vthakkar1994-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-txx9.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-bcm53xx.c | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/spi/spi-txx9.c b/drivers/spi/spi-txx9.c
-index 9190124..d69f8f8 100644
---- a/drivers/spi/spi-txx9.c
-+++ b/drivers/spi/spi-txx9.c
-@@ -181,7 +181,7 @@ static void txx9spi_work_one(struct txx9spi *c, struct spi_message *m)
- 		u32 data;
- 		unsigned int len = t->len;
- 		unsigned int wsize;
--		u32 speed_hz = t->speed_hz ? : spi->max_speed_hz;
-+		u32 speed_hz = t->speed_hz;
- 		u8 bits_per_word = t->bits_per_word;
+diff --git a/drivers/spi/spi-bcm53xx.c b/drivers/spi/spi-bcm53xx.c
+index 1520554..cc3f938 100644
+--- a/drivers/spi/spi-bcm53xx.c
++++ b/drivers/spi/spi-bcm53xx.c
+@@ -247,28 +247,19 @@ static int bcm53xxspi_bcma_probe(struct bcma_device *core)
+ 	if (err) {
+ 		spi_master_put(master);
+ 		bcma_set_drvdata(core, NULL);
+-		goto out;
++		return err;
+ 	}
  
- 		wsize = bits_per_word >> 3; /* in bytes */
+ 	/* Broadcom SoCs (at least with the CC rev 42) use SPI for flash only */
+ 	spi_new_device(master, &bcm53xx_info);
+ 
+-out:
+-	return err;
+-}
+-
+-static void bcm53xxspi_bcma_remove(struct bcma_device *core)
+-{
+-	struct bcm53xxspi *b53spi = bcma_get_drvdata(core);
+-
+-	spi_unregister_master(b53spi->master);
++	return 0;
+ }
+ 
+ static struct bcma_driver bcm53xxspi_bcma_driver = {
+ 	.name		= KBUILD_MODNAME,
+ 	.id_table	= bcm53xxspi_bcma_tbl,
+ 	.probe		= bcm53xxspi_bcma_probe,
+-	.remove		= bcm53xxspi_bcma_remove,
+ };
+ 
+ /**************************************************
 -- 
 2.5.0
 

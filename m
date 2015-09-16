@@ -1,56 +1,85 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 01/16] spi: txx9: Use transfer speed unconditionally
-Date: Wed, 16 Sep 2015 20:52:37 +0100
-Message-ID: <20150916195237.GS12027@sirena.org.uk>
-References: <1442323588-29642-1-git-send-email-jarkko.nikula@linux.intel.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="mCHMtb9bRkCkp66g"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-	Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Applied "spi: spi-bfin5xx: Calculate transfer speed unconditionally" to the spi tree
+Date: Wed, 16 Sep 2015 21:02:08 +0100
+Message-ID: <E1ZcIu8-00081q-53@finisterre>
+References: <1442323588-29642-5-git-send-email-jarkko.nikula@linux.intel.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1442323588-29642-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <1442323588-29642-5-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---mCHMtb9bRkCkp66g
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: spi-bfin5xx: Calculate transfer speed unconditionally
 
-On Tue, Sep 15, 2015 at 04:26:13PM +0300, Jarkko Nikula wrote:
-> SPI core validates the transfer speed and defaults to spi->max_speed_hz in
-> case the transfer speed is not set.
+has been applied to the spi tree at
 
-Please don't send large collections of unrelated changes as a single
-series - this isn't one change done to a lot of drivers, this is a bunch
-of unrelated changes.  Having things grouped into a patch series affects
-how they get handled and reviewed, if this is misleading it can get in
-the way (eg, not reading patches after one that has problems).
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
---mCHMtb9bRkCkp66g
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEcBAEBCAAGBQJV+ciEAAoJECTWi3JdVIfQRSEH/0qZv4yiyOg98wTPEa/h8RDH
-PuP25zLxxpnyzCGRv5G+gpuVh9fixFW7UPPfkOlhI2KqPidF5dNVyiLJr51WZZp6
-M2PzkOUjFKA3eclQWRl/WX3SnCE4In0Df/vkEoDkDEAKvVp/3KJNRpc34luUnSk4
-qJAUKYntEk18ogtF8xii3IKF7ej2K69vRxlVrUi4LkPpTfRUs1iRSXLIfQ+n4E20
-5jIwCrNMjvM+6qWey1lUNh3Ffv81eWP8Q7Jth9FfPIPlt3VHVXG5OsXnHEDzQmna
-tNCRhxLsw+MlKXDRllPbB7yaXUA/+OEK7N+wu73hyDwhqtuTo5pzGs8zOWWsMWE=
-=QV4S
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---mCHMtb9bRkCkp66g--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 95a8fde23ef426aeee579bc99f35dc854e711225 Mon Sep 17 00:00:00 2001
+From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Date: Tue, 15 Sep 2015 16:26:17 +0300
+Subject: [PATCH] spi: spi-bfin5xx: Calculate transfer speed unconditionally
+
+SPI core validates the transfer speed and defaults to spi->max_speed_hz in
+case the transfer speed is not set so code here won't use the
+chip->baud value (which is derived from spi->max_speed_hz).
+
+Please note driver uses chip->baud at the beginning of message transmission
+by calling the bfin_spi_restore_state() but then programs per transfer
+speed in bfin_spi_pump_transfers(). I'm not familiar with the HW so I don't
+know would it be possible to remove chip->baud completely by either using
+constant value in bfin_spi_restore_state() or by removing the baud register
+write there.
+
+Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-bfin5xx.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
+
+diff --git a/drivers/spi/spi-bfin5xx.c b/drivers/spi/spi-bfin5xx.c
+index a3d65b4..1e91325 100644
+--- a/drivers/spi/spi-bfin5xx.c
++++ b/drivers/spi/spi-bfin5xx.c
+@@ -661,11 +661,7 @@ static void bfin_spi_pump_transfers(unsigned long data)
+ 	message->state = RUNNING_STATE;
+ 	dma_config = 0;
+ 
+-	/* Speed setup (surely valid because already checked) */
+-	if (transfer->speed_hz)
+-		bfin_write(&drv_data->regs->baud, hz_to_spi_baud(transfer->speed_hz));
+-	else
+-		bfin_write(&drv_data->regs->baud, chip->baud);
++	bfin_write(&drv_data->regs->baud, hz_to_spi_baud(transfer->speed_hz));
+ 
+ 	bfin_write(&drv_data->regs->stat, BIT_STAT_CLR);
+ 	bfin_spi_cs_active(drv_data, chip);
+-- 
+2.5.0
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

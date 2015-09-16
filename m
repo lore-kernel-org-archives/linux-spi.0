@@ -1,85 +1,57 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v5 10/10] ASoC: rockchip_i2s: modify DMA max burst to 1
-Date: Wed, 16 Sep 2015 20:22:09 +0100
-Message-ID: <20150916192209.GN12027@sirena.org.uk>
-References: <1442187923-5736-1-git-send-email-shawn.lin@rock-chips.com>
- <1442188182-6181-1-git-send-email-shawn.lin@rock-chips.com>
+Subject: Re: [PATCH 01/16] spi: txx9: Use transfer speed unconditionally
+Date: Wed, 16 Sep 2015 20:52:37 +0100
+Message-ID: <20150916195237.GS12027@sirena.org.uk>
+References: <1442323588-29642-1-git-send-email-jarkko.nikula@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2237829752277140351=="
-Cc: Addy Ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>, Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
- alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org, linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
- Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
- Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
- Takashi Iwai <tiwai-IBi9RG/b67k@public.gmane.org>, Yiwei Cai <cain.cai-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
- Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
- Jianqun Xu <xjq-TNX95d0MmH7DzftRWevZcw@public.gmane.org>, Jaroslav Kysela <perex-/Fr2/VpizcU@public.gmane.org>,
- Olof Johansson <olofj-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>, Sonny Rao <sonnyrao-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
- linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Return-path: <linux-rockchip-bounces+glpar-linux-rockchip=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <1442188182-6181-1-git-send-email-shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rockchip>,
- <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rockchip/>
-List-Post: <mailto:linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rockchip>,
- <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "Linux-rockchip" <linux-rockchip-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-rockchip-bounces+glpar-linux-rockchip=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
-
-
---===============2237829752277140351==
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="aj68N5rnBpm/Ladk"
+	protocol="application/pgp-signature"; boundary="mCHMtb9bRkCkp66g"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+	Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+	Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
+In-Reply-To: <1442323588-29642-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---aj68N5rnBpm/Ladk
+--mCHMtb9bRkCkp66g
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Mon, Sep 14, 2015 at 07:49:42AM +0800, Shawn Lin wrote:
+On Tue, Sep 15, 2015 at 04:26:13PM +0300, Jarkko Nikula wrote:
+> SPI core validates the transfer speed and defaults to spi->max_speed_hz in
+> case the transfer speed is not set.
 
-> +	default:
-> +		dev_info(&pdev->dev, "Default no dma_quirk!\n");
-> +		break;
-> +	}
+Please don't send large collections of unrelated changes as a single
+series - this isn't one change done to a lot of drivers, this is a bunch
+of unrelated changes.  Having things grouped into a patch series affects
+how they get handled and reviewed, if this is misleading it can get in
+the way (eg, not reading patches after one that has problems).
 
-Probably printing a message when not using the quirk is a bit noisy
-(hopefully future devices will fix this!).  Otherwise
-
-Acked-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-
---aj68N5rnBpm/Ladk
+--mCHMtb9bRkCkp66g
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJV+cFgAAoJECTWi3JdVIfQC9AH/3JFxsm2/XrJ9OsHMR3e2gRz
-JsTWeO3MgbMTPXE6SzP76GpnT4ecoiEhliYFk/Hga5u4PaYfz91V2aCMzShIwSY5
-bRa9oGCGl4WhIYWyawDDgLKnMj+Q6pOokqQU/dAf3Rw9p4A+8Znemmbb4SxOAIXD
-rk5UtGlAtmapn9JIyWaLTExTe5LczKTU6wAHiekZVhF7q8Wahd+8u1wRZF/QDAdW
-ohzs1gm8qNQhie3tYy/CMgM4QhaMIhjFA9B+3sxtRopnHjyryYnnoBqJPmdeepRs
-CTjqxko9KRv2ov83PrTblWESlreMTpYuuZS2YPEafhgPv/ZCnj1BRZAtvB5kiYo=
-=Dbng
+iQEcBAEBCAAGBQJV+ciEAAoJECTWi3JdVIfQRSEH/0qZv4yiyOg98wTPEa/h8RDH
+PuP25zLxxpnyzCGRv5G+gpuVh9fixFW7UPPfkOlhI2KqPidF5dNVyiLJr51WZZp6
+M2PzkOUjFKA3eclQWRl/WX3SnCE4In0Df/vkEoDkDEAKvVp/3KJNRpc34luUnSk4
+qJAUKYntEk18ogtF8xii3IKF7ej2K69vRxlVrUi4LkPpTfRUs1iRSXLIfQ+n4E20
+5jIwCrNMjvM+6qWey1lUNh3Ffv81eWP8Q7Jth9FfPIPlt3VHVXG5OsXnHEDzQmna
+tNCRhxLsw+MlKXDRllPbB7yaXUA/+OEK7N+wu73hyDwhqtuTo5pzGs8zOWWsMWE=
+=QV4S
 -----END PGP SIGNATURE-----
 
---aj68N5rnBpm/Ladk--
-
-
---===============2237829752277140351==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-Linux-rockchip mailing list
-Linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-http://lists.infradead.org/mailman/listinfo/linux-rockchip
-
---===============2237829752277140351==--
+--mCHMtb9bRkCkp66g--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,119 +1,85 @@
-From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 1/5] spi: introduce mmap read support for spi flash devices
-Date: Wed, 16 Sep 2015 17:30:36 +0200
-Message-ID: <CAOMqctRWCkVg8gthkkkgg7_6=c00SORNx7_6_NperxXfgGf5xA@mail.gmail.com>
-References: <1441355402-6837-1-git-send-email-vigneshr@ti.com>
- <1441355402-6837-2-git-send-email-vigneshr@ti.com> <CAD6G_RT8Q+Uyp1ZjzHf54Tno1wHm0SmLKEwRAe2gkdp772FD9A@mail.gmail.com>
- <20150914183553.GE12027@sirena.org.uk> <CAD6G_RQOazkS7KHrG75wgMXx1cH_pKjx43Mve6fz1qOJGPpq9w@mail.gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v5 10/10] ASoC: rockchip_i2s: modify DMA max burst to 1
+Date: Wed, 16 Sep 2015 20:22:09 +0100
+Message-ID: <20150916192209.GN12027@sirena.org.uk>
+References: <1442187923-5736-1-git-send-email-shawn.lin@rock-chips.com>
+ <1442188182-6181-1-git-send-email-shawn.lin@rock-chips.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>, Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Benoit Cousson <bcousson-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
-	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Jagan Teki <jteki-oRp2ZoJdM/RWk0Htik3J/w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAD6G_RQOazkS7KHrG75wgMXx1cH_pKjx43Mve6fz1qOJGPpq9w-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/mixed; boundary="===============2237829752277140351=="
+Cc: Addy Ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>, Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
+ alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org, linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+ Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+ Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+ Takashi Iwai <tiwai-IBi9RG/b67k@public.gmane.org>, Yiwei Cai <cain.cai-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
+ Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+ Jianqun Xu <xjq-TNX95d0MmH7DzftRWevZcw@public.gmane.org>, Jaroslav Kysela <perex-/Fr2/VpizcU@public.gmane.org>,
+ Olof Johansson <olofj-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>, Sonny Rao <sonnyrao-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+ linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Return-path: <linux-rockchip-bounces+glpar-linux-rockchip=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+In-Reply-To: <1442188182-6181-1-git-send-email-shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rockchip>,
+ <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-rockchip/>
+List-Post: <mailto:linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+List-Help: <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rockchip>,
+ <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
+Sender: "Linux-rockchip" <linux-rockchip-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Errors-To: linux-rockchip-bounces+glpar-linux-rockchip=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-On 16 September 2015 at 14:46, Jagan Teki <jteki-oRp2ZoJdM/RWk0Htik3J/w@public.gmane.org> wrote:
-> On 15 September 2015 at 00:05, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
->> On Fri, Sep 04, 2015 at 04:55:33PM +0530, Jagan Teki wrote:
->>> On 4 September 2015 at 13:59, Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org> wrote:
->>
->>> > + * @spi_mtd_mmap_read: some spi-controller hardwares provide memory
->>> > + *                     mapped interface to communicate with mtd flashes.
->>> > + *                     For this, spi  controller needs to know flash
->>> > + *                     memory settings like read command to use, dummy
->>> > + *                     bytes and address width. Once these settings are
->>> > + *                     populated in hardware registers, any read
->>> > + *                     accesses to flash's memory map region(as defined
->>> > + *                     by SoC) through memcpy or mem-to-mem DMA copy
->>> > + *                     will be handled by controller hardware. The
->>> > + *                     hardware will automatically generate spi signals
->>> > + *                     required to read data from flash and present it
->>> > + *                     to CPU or DMA. SPI master drivers can use this
->>> > + *                     callback to implement memory mapped read
->>> > + *                     interface. Flash driver (like m25p80) requests
->>> > + *                     memory mapped read via this method. The interface
->>> > + *                     should  only be used mtd flashes and cannot be
->>> > + *                     used with other spi devices.
->>
->> This comment is *way* too verbose - probably you just need up to the
->> "Once" here.
->>
->>> > +       int (*spi_mtd_mmap_read)(struct  spi_device *spi,
->>> > +                                loff_t from, size_t len, size_t *retlen,
->>> > +                                u_char *buf, u8 read_opcode,
->>> > +                                u8 addr_width, u8 dummy_bytes);
->>
->>> This looks un-manageable to know spi core or master knows what are the
->>> command or opcode used by spi-nor flash and also I think mmap support
->>> seems to be flash related or any justification this is spi bus
->>> master/controller feature?
->>
->> There seem to be a reasonable number of SPI controllers out there which
->> have as an extension the ability to do memory mapped reads but are
->> otherwise perfectly normal SPI controllers and which rely on that for
->> everything except reads.
->
-> This is true, but exposing direct spi-nor arguments or features like
-> read_opcode, addr_width or dummy_byte to spi layer isn't fine? because
-> for spi layer there is a spi to flash transition mtd m25p80.c is there
-> to handle is it?
 
-For the TI SPI controller this is programmable. So instead of
-composing a SPI message that sends the opcode (and address and dummy
-bytes) you set the opcode in a controller register and then perform
-the memory read which sends the configured opcode to the flash memory.
-So this needs to be exposed in an API which the m25p80 driver can use.
+--===============2237829752277140351==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="aj68N5rnBpm/Ladk"
+Content-Disposition: inline
 
-On 16 September 2015 at 12:08, Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org> wrote:
->
->
-> On 09/15/2015 12:07 AM, Mark Brown wrote:
->> On Fri, Sep 04, 2015 at 01:59:58PM +0530, Vignesh R wrote:
->>> In addition to providing direct access to SPI bus, some spi controller
->>> hardwares (like ti-qspi) provide special memory mapped port
->>> to accesses SPI flash devices in order to increase read performance.
->>> This means the controller can automatically send the SPI signals
->>> required to read data from the SPI flash device.
->>
->> Sorry, also meant to say here: as I kind of indicated in response to the
->> flash patch I'd expect to see the SPI core know something about this and
->> export an API for this which is integrated with things like the existing
->> message queue.
->>
->
->
-> Adding an API to SPI core makes sense to me. This can take care of spi
-> bus locking and runtime pm.
-> But, I didn't get how to integrate with existing message queue. Memory
-> mapped read by-passes message queue of SPI core. Could you please
-> explain a bit more on integrating with message queue? Did you mean
-> locking the existing message queue when memory mapped read is being
-> requested?
 
-Presumably when you have a function in SPI core for this it takes the
-same lock transfer_one does so either you do mmap transfer or normal
-SPI transfer. You can probably manually sync on transfer completion in
-a driver that uses both normal SPI messages and mmap transfer - which
-m25p80 does anyway.
+--aj68N5rnBpm/Ladk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Thanks
+On Mon, Sep 14, 2015 at 07:49:42AM +0800, Shawn Lin wrote:
 
-Michal
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> +	default:
+> +		dev_info(&pdev->dev, "Default no dma_quirk!\n");
+> +		break;
+> +	}
+
+Probably printing a message when not using the quirk is a bit noisy
+(hopefully future devices will fix this!).  Otherwise
+
+Acked-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+
+--aj68N5rnBpm/Ladk
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJV+cFgAAoJECTWi3JdVIfQC9AH/3JFxsm2/XrJ9OsHMR3e2gRz
+JsTWeO3MgbMTPXE6SzP76GpnT4ecoiEhliYFk/Hga5u4PaYfz91V2aCMzShIwSY5
+bRa9oGCGl4WhIYWyawDDgLKnMj+Q6pOokqQU/dAf3Rw9p4A+8Znemmbb4SxOAIXD
+rk5UtGlAtmapn9JIyWaLTExTe5LczKTU6wAHiekZVhF7q8Wahd+8u1wRZF/QDAdW
+ohzs1gm8qNQhie3tYy/CMgM4QhaMIhjFA9B+3sxtRopnHjyryYnnoBqJPmdeepRs
+CTjqxko9KRv2ov83PrTblWESlreMTpYuuZS2YPEafhgPv/ZCnj1BRZAtvB5kiYo=
+=Dbng
+-----END PGP SIGNATURE-----
+
+--aj68N5rnBpm/Ladk--
+
+
+--===============2237829752277140351==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+Linux-rockchip mailing list
+Linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+http://lists.infradead.org/mailman/listinfo/linux-rockchip
+
+--===============2237829752277140351==--

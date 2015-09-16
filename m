@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: mediatek: fix wrong error return value on probe" to the spi tree
-Date: Wed, 16 Sep 2015 21:02:13 +0100
-Message-ID: <E1ZcIuD-00084B-Mu@finisterre>
-References: <1441320656-8666-1-git-send-email-javier@osg.samsung.com>
+Subject: Applied "spi: octeon: Use transfer speed unconditionally" to the spi tree
+Date: Wed, 16 Sep 2015 21:02:10 +0100
+Message-ID: <E1ZcIuA-00082m-JX@finisterre>
+References: <1442323588-29642-3-git-send-email-jarkko.nikula@linux.intel.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
+To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1441320656-8666-1-git-send-email-javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
+In-Reply-To: <1442323588-29642-3-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: mediatek: fix wrong error return value on probe
+   spi: octeon: Use transfer speed unconditionally
 
 has been applied to the spi tree at
 
@@ -38,43 +38,33 @@ to this mail.
 Thanks,
 Mark
 
->From e26d15f735f570a1178c3bba4d85e6f58e098fdd Mon Sep 17 00:00:00 2001
-From: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
-Date: Tue, 15 Sep 2015 14:46:45 +0200
-Subject: [PATCH] spi: mediatek: fix wrong error return value on probe
+>From 8cf3af32902d14f6a0fbc4ad9a3025d9e7d4701b Mon Sep 17 00:00:00 2001
+From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Date: Tue, 15 Sep 2015 16:26:15 +0300
+Subject: [PATCH] spi: octeon: Use transfer speed unconditionally
 
-Commit adcbcfea15d62 ("spi: mediatek: fix spi clock usage error")
-added a new sel_clk but introduced bugs in the error paths since
-the wrong struct clk pointers are passed to PTR_ERR().
+SPI core validates the transfer speed and defaults to spi->max_speed_hz in
+case the transfer speed is not set.
 
-Fixes: adcbcfea15d62 ("spi: mediatek: fix spi clock usage error")
-Signed-off-by: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
+Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-mt65xx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-octeon.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 6fbb5e5..e9839a4 100644
---- a/drivers/spi/spi-mt65xx.c
-+++ b/drivers/spi/spi-mt65xx.c
-@@ -585,14 +585,14 @@ static int mtk_spi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-octeon.c b/drivers/spi/spi-octeon.c
+index e99d6a9..07e4ce8 100644
+--- a/drivers/spi/spi-octeon.c
++++ b/drivers/spi/spi-octeon.c
+@@ -65,7 +65,7 @@ static int octeon_spi_do_transfer(struct octeon_spi *p,
+ 	cpha = mode & SPI_CPHA;
+ 	cpol = mode & SPI_CPOL;
  
- 	mdata->sel_clk = devm_clk_get(&pdev->dev, "sel-clk");
- 	if (IS_ERR(mdata->sel_clk)) {
--		ret = PTR_ERR(mdata->spi_clk);
-+		ret = PTR_ERR(mdata->sel_clk);
- 		dev_err(&pdev->dev, "failed to get sel-clk: %d\n", ret);
- 		goto err_put_master;
- 	}
+-	speed_hz = xfer->speed_hz ? : spi->max_speed_hz;
++	speed_hz = xfer->speed_hz;
  
- 	mdata->spi_clk = devm_clk_get(&pdev->dev, "spi-clk");
- 	if (IS_ERR(mdata->spi_clk)) {
--		ret = PTR_ERR(mdata->parent_clk);
-+		ret = PTR_ERR(mdata->spi_clk);
- 		dev_err(&pdev->dev, "failed to get spi-clk: %d\n", ret);
- 		goto err_put_master;
- 	}
+ 	clkdiv = octeon_get_io_clock_rate() / (2 * speed_hz);
+ 
 -- 
 2.5.0
 

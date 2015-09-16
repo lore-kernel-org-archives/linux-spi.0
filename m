@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: oc-tiny: Use of_property_read_u32 instead of open-coding it" to the spi tree
-Date: Wed, 16 Sep 2015 21:02:15 +0100
-Message-ID: <E1ZcIuF-000858-PW@finisterre>
-References: <1441799753-27183-1-git-send-email-tklauser@distanz.ch>
+Subject: Applied "spi: txx9: Use transfer speed unconditionally" to the spi tree
+Date: Wed, 16 Sep 2015 21:02:12 +0100
+Message-ID: <E1ZcIuC-00083i-ND@finisterre>
+References: <1442323588-29642-1-git-send-email-jarkko.nikula@linux.intel.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Tobias Klauser <tklauser-93Khv+1bN0NyDzI6CaY1VQ@public.gmane.org>,
+To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1441799753-27183-1-git-send-email-tklauser-93Khv+1bN0NyDzI6CaY1VQ@public.gmane.org>
+In-Reply-To: <1442323588-29642-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: oc-tiny: Use of_property_read_u32 instead of open-coding it
+   spi: txx9: Use transfer speed unconditionally
 
 has been applied to the spi tree at
 
@@ -38,53 +38,33 @@ to this mail.
 Thanks,
 Mark
 
->From 45a3e771085d16c95eb54f8009d795941b21fb28 Mon Sep 17 00:00:00 2001
-From: Tobias Klauser <tklauser-93Khv+1bN0NyDzI6CaY1VQ@public.gmane.org>
-Date: Wed, 9 Sep 2015 13:55:53 +0200
-Subject: [PATCH] spi: oc-tiny: Use of_property_read_u32 instead of open-coding
- it
+>From fc306de9b54e94a2949fee452741c00259d7dd4a Mon Sep 17 00:00:00 2001
+From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Date: Tue, 15 Sep 2015 16:26:13 +0300
+Subject: [PATCH] spi: txx9: Use transfer speed unconditionally
 
-Use of_property_read_u32 instead of of_get_property with return value
-checks and endianness conversion.
+SPI core validates the transfer speed and defaults to spi->max_speed_hz in
+case the transfer speed is not set.
 
-Signed-off-by: Tobias Klauser <tklauser-93Khv+1bN0NyDzI6CaY1VQ@public.gmane.org>
+Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-oc-tiny.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ drivers/spi/spi-txx9.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-oc-tiny.c b/drivers/spi/spi-oc-tiny.c
-index 76656a7..b591128 100644
---- a/drivers/spi/spi-oc-tiny.c
-+++ b/drivers/spi/spi-oc-tiny.c
-@@ -207,8 +207,7 @@ static int tiny_spi_of_probe(struct platform_device *pdev)
- 	struct tiny_spi *hw = platform_get_drvdata(pdev);
- 	struct device_node *np = pdev->dev.of_node;
- 	unsigned int i;
--	const __be32 *val;
--	int len;
-+	u32 val;
+diff --git a/drivers/spi/spi-txx9.c b/drivers/spi/spi-txx9.c
+index 9190124..d69f8f8 100644
+--- a/drivers/spi/spi-txx9.c
++++ b/drivers/spi/spi-txx9.c
+@@ -181,7 +181,7 @@ static void txx9spi_work_one(struct txx9spi *c, struct spi_message *m)
+ 		u32 data;
+ 		unsigned int len = t->len;
+ 		unsigned int wsize;
+-		u32 speed_hz = t->speed_hz ? : spi->max_speed_hz;
++		u32 speed_hz = t->speed_hz;
+ 		u8 bits_per_word = t->bits_per_word;
  
- 	if (!np)
- 		return 0;
-@@ -226,13 +225,10 @@ static int tiny_spi_of_probe(struct platform_device *pdev)
- 			return -ENODEV;
- 	}
- 	hw->bitbang.master->dev.of_node = pdev->dev.of_node;
--	val = of_get_property(pdev->dev.of_node,
--			      "clock-frequency", &len);
--	if (val && len >= sizeof(__be32))
--		hw->freq = be32_to_cpup(val);
--	val = of_get_property(pdev->dev.of_node, "baud-width", &len);
--	if (val && len >= sizeof(__be32))
--		hw->baudwidth = be32_to_cpup(val);
-+	if (!of_property_read_u32(np, "clock-frequency", &val))
-+		hw->freq = val;
-+	if (!of_property_read_u32(np, "baud-width", &val))
-+		hw->baudwidth = val;
- 	return 0;
- }
- #else /* !CONFIG_OF */
+ 		wsize = bits_per_word >> 3; /* in bytes */
 -- 
 2.5.0
 

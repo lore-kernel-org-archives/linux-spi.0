@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: bfin-sport: Calculate transfer speed unconditionally" to the spi tree
-Date: Wed, 16 Sep 2015 21:02:09 +0100
-Message-ID: <E1ZcIu9-00082J-CC@finisterre>
-References: <1442323588-29642-4-git-send-email-jarkko.nikula@linux.intel.com>
+Subject: Applied "spi: au1550: Simplify au1550_spi_setupxfer()" to the spi tree
+Date: Wed, 16 Sep 2015 21:02:06 +0100
+Message-ID: <E1ZcIu6-00081N-Vm@finisterre>
+References: <1442323588-29642-6-git-send-email-jarkko.nikula@linux.intel.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1442323588-29642-4-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <1442323588-29642-6-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: bfin-sport: Calculate transfer speed unconditionally
+   spi: au1550: Simplify au1550_spi_setupxfer()
 
 has been applied to the spi tree at
 
@@ -38,44 +38,46 @@ to this mail.
 Thanks,
 Mark
 
->From 57b48ab49b7a9ac5ff94402ade2ccb5d63579816 Mon Sep 17 00:00:00 2001
+>From 0beb0a6da8896da14287b1caa77596057690901a Mon Sep 17 00:00:00 2001
 From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Tue, 15 Sep 2015 16:26:16 +0300
-Subject: [PATCH] spi: bfin-sport: Calculate transfer speed unconditionally
+Date: Tue, 15 Sep 2015 16:26:18 +0300
+Subject: [PATCH] spi: au1550: Simplify au1550_spi_setupxfer()
 
-SPI core validates the transfer speed and defaults to spi->max_speed_hz in
-case the transfer speed is not set so code here won't use the
-chip->baud value (which is derived from spi->max_speed_hz).
-
-Please note driver uses chip->baud at the beginning of message transmission
-by calling the bfin_sport_spi_restore_state() but then programs per
-transfer speed in bfin_sport_spi_pump_transfers(). I'm not familiar with
-the HW so I don't know would it be possible to remove chip->baud completely
-by either using constant value in bfin_sport_spi_restore_state() or by
-removing the tclkdiv register write there.
+SPI core validates both bits_per_word and speed_hz transfer parameters and
+defaults to spi->bits_per_word and spi->max_speed_hz in case these per
+transfer parameters are not set. This can simplify a little the
+au1550_spi_setupxfer() as there is need to check only for valid
+"struct spi_transfer" pointer.
 
 Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-bfin-sport.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/spi/spi-au1550.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/spi/spi-bfin-sport.c b/drivers/spi/spi-bfin-sport.c
-index a786931..6c96755 100644
---- a/drivers/spi/spi-bfin-sport.c
-+++ b/drivers/spi/spi-bfin-sport.c
-@@ -352,10 +352,7 @@ bfin_sport_spi_pump_transfers(unsigned long data)
- 	transfer = drv_data->cur_transfer;
- 	chip = drv_data->cur_chip;
+diff --git a/drivers/spi/spi-au1550.c b/drivers/spi/spi-au1550.c
+index f45e085..afd239d 100644
+--- a/drivers/spi/spi-au1550.c
++++ b/drivers/spi/spi-au1550.c
+@@ -233,13 +233,12 @@ static int au1550_spi_setupxfer(struct spi_device *spi, struct spi_transfer *t)
+ 	unsigned bpw, hz;
+ 	u32 cfg, stat;
  
--	if (transfer->speed_hz)
--		transfer_speed = bfin_sport_hz_to_spi_baud(transfer->speed_hz);
--	else
--		transfer_speed = chip->baud;
-+	transfer_speed = bfin_sport_hz_to_spi_baud(transfer->speed_hz);
- 	bfin_write(&drv_data->regs->tclkdiv, transfer_speed);
- 	SSYNC();
+-	bpw = spi->bits_per_word;
+-	hz = spi->max_speed_hz;
+ 	if (t) {
+-		if (t->bits_per_word)
+-			bpw = t->bits_per_word;
+-		if (t->speed_hz)
+-			hz = t->speed_hz;
++		bpw = t->bits_per_word;
++		hz = t->speed_hz;
++	} else {
++		bpw = spi->bits_per_word;
++		hz = spi->max_speed_hz;
+ 	}
  
+ 	if (!hz)
 -- 
 2.5.0
 

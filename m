@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: bcm53xx: Adjust devm usage" to the spi tree
-Date: Wed, 16 Sep 2015 21:02:16 +0100
-Message-ID: <E1ZcIuG-00085b-V2@finisterre>
-References: <20150820175838.GA4895@localhost>
+Subject: Applied "spi: bfin-sport: Calculate transfer speed unconditionally" to the spi tree
+Date: Wed, 16 Sep 2015 21:02:09 +0100
+Message-ID: <E1ZcIu9-00082J-CC@finisterre>
+References: <1442323588-29642-4-git-send-email-jarkko.nikula@linux.intel.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Vaishali Thakkar <vthakkar1994-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20150820175838.GA4895@localhost>
+In-Reply-To: <1442323588-29642-4-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: bcm53xx: Adjust devm usage
+   spi: bfin-sport: Calculate transfer speed unconditionally
 
 has been applied to the spi tree at
 
@@ -38,59 +38,44 @@ to this mail.
 Thanks,
 Mark
 
->From 6774eea6d7a61616384743b218cf77f322e060d9 Mon Sep 17 00:00:00 2001
-From: Vaishali Thakkar <vthakkar1994-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Thu, 20 Aug 2015 23:28:38 +0530
-Subject: [PATCH] spi: bcm53xx: Adjust devm usage
+>From 57b48ab49b7a9ac5ff94402ade2ccb5d63579816 Mon Sep 17 00:00:00 2001
+From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Date: Tue, 15 Sep 2015 16:26:16 +0300
+Subject: [PATCH] spi: bfin-sport: Calculate transfer speed unconditionally
 
-Remove use of spi_unregister_master in remove function as
-devm_spi_register_master in probe function automatically
-handles it. To be compatible with the change, use direct
-return instead of goto and remove unnedded label out.
+SPI core validates the transfer speed and defaults to spi->max_speed_hz in
+case the transfer speed is not set so code here won't use the
+chip->baud value (which is derived from spi->max_speed_hz).
 
-Also, remove bcm53xxspi_bcma_remove as it is now redundant.
+Please note driver uses chip->baud at the beginning of message transmission
+by calling the bfin_sport_spi_restore_state() but then programs per
+transfer speed in bfin_sport_spi_pump_transfers(). I'm not familiar with
+the HW so I don't know would it be possible to remove chip->baud completely
+by either using constant value in bfin_sport_spi_restore_state() or by
+removing the tclkdiv register write there.
 
-Signed-off-by: Vaishali Thakkar <vthakkar1994-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-bcm53xx.c | 13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
+ drivers/spi/spi-bfin-sport.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm53xx.c b/drivers/spi/spi-bcm53xx.c
-index 1520554..cc3f938 100644
---- a/drivers/spi/spi-bcm53xx.c
-+++ b/drivers/spi/spi-bcm53xx.c
-@@ -247,28 +247,19 @@ static int bcm53xxspi_bcma_probe(struct bcma_device *core)
- 	if (err) {
- 		spi_master_put(master);
- 		bcma_set_drvdata(core, NULL);
--		goto out;
-+		return err;
- 	}
+diff --git a/drivers/spi/spi-bfin-sport.c b/drivers/spi/spi-bfin-sport.c
+index a786931..6c96755 100644
+--- a/drivers/spi/spi-bfin-sport.c
++++ b/drivers/spi/spi-bfin-sport.c
+@@ -352,10 +352,7 @@ bfin_sport_spi_pump_transfers(unsigned long data)
+ 	transfer = drv_data->cur_transfer;
+ 	chip = drv_data->cur_chip;
  
- 	/* Broadcom SoCs (at least with the CC rev 42) use SPI for flash only */
- 	spi_new_device(master, &bcm53xx_info);
+-	if (transfer->speed_hz)
+-		transfer_speed = bfin_sport_hz_to_spi_baud(transfer->speed_hz);
+-	else
+-		transfer_speed = chip->baud;
++	transfer_speed = bfin_sport_hz_to_spi_baud(transfer->speed_hz);
+ 	bfin_write(&drv_data->regs->tclkdiv, transfer_speed);
+ 	SSYNC();
  
--out:
--	return err;
--}
--
--static void bcm53xxspi_bcma_remove(struct bcma_device *core)
--{
--	struct bcm53xxspi *b53spi = bcma_get_drvdata(core);
--
--	spi_unregister_master(b53spi->master);
-+	return 0;
- }
- 
- static struct bcma_driver bcm53xxspi_bcma_driver = {
- 	.name		= KBUILD_MODNAME,
- 	.id_table	= bcm53xxspi_bcma_tbl,
- 	.probe		= bcm53xxspi_bcma_probe,
--	.remove		= bcm53xxspi_bcma_remove,
- };
- 
- /**************************************************
 -- 
 2.5.0
 

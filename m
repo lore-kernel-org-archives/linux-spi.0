@@ -1,19 +1,18 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: spi-bfin5xx: Calculate transfer speed unconditionally" to the spi tree
-Date: Wed, 16 Sep 2015 21:02:08 +0100
-Message-ID: <E1ZcIu8-00081q-53@finisterre>
-References: <1442323588-29642-5-git-send-email-jarkko.nikula@linux.intel.com>
+Subject: Applied "spi: fix kernel-doc warnings in spi.h" to the spi tree
+Date: Wed, 16 Sep 2015 21:02:14 +0100
+Message-ID: <E1ZcIuE-00084f-Og@finisterre>
+References: <2ecb1dfb30cbac1fdd4e1884de40af896bf5975b.1442346538.git.geliangtang@163.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Geliang Tang <geliangtang-9Onoh4P/yGk@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1442323588-29642-5-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <2ecb1dfb30cbac1fdd4e1884de40af896bf5975b.1442346538.git.geliangtang-9Onoh4P/yGk@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: spi-bfin5xx: Calculate transfer speed unconditionally
+   spi: fix kernel-doc warnings in spi.h
 
 has been applied to the spi tree at
 
@@ -38,45 +37,35 @@ to this mail.
 Thanks,
 Mark
 
->From 95a8fde23ef426aeee579bc99f35dc854e711225 Mon Sep 17 00:00:00 2001
-From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Tue, 15 Sep 2015 16:26:17 +0300
-Subject: [PATCH] spi: spi-bfin5xx: Calculate transfer speed unconditionally
+>From 0243ed44ad4a25dbd2e92ad97e5e12a1a6c72d6c Mon Sep 17 00:00:00 2001
+From: Geliang Tang <geliangtang-9Onoh4P/yGk@public.gmane.org>
+Date: Tue, 15 Sep 2015 04:59:21 -0700
+Subject: [PATCH] spi: fix kernel-doc warnings in spi.h
 
-SPI core validates the transfer speed and defaults to spi->max_speed_hz in
-case the transfer speed is not set so code here won't use the
-chip->baud value (which is derived from spi->max_speed_hz).
+Fix the following 'make htmldocs' warnings:
 
-Please note driver uses chip->baud at the beginning of message transmission
-by calling the bfin_spi_restore_state() but then programs per transfer
-speed in bfin_spi_pump_transfers(). I'm not familiar with the HW so I don't
-know would it be possible to remove chip->baud completely by either using
-constant value in bfin_spi_restore_state() or by removing the baud register
-write there.
+  .//include/linux/spi/spi.h:71: warning: No description found for parameter 'lock'
+  .//include/linux/spi/spi.h:71: warning: Excess struct/union/enum/typedef member 'clock' description in 'spi_statistics'
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Signed-off-by: Geliang Tang <geliangtang-9Onoh4P/yGk@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-bfin5xx.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ include/linux/spi/spi.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-bfin5xx.c b/drivers/spi/spi-bfin5xx.c
-index a3d65b4..1e91325 100644
---- a/drivers/spi/spi-bfin5xx.c
-+++ b/drivers/spi/spi-bfin5xx.c
-@@ -661,11 +661,7 @@ static void bfin_spi_pump_transfers(unsigned long data)
- 	message->state = RUNNING_STATE;
- 	dma_config = 0;
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 269e8af..6b00f18 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -34,7 +34,7 @@ extern struct bus_type spi_bus_type;
  
--	/* Speed setup (surely valid because already checked) */
--	if (transfer->speed_hz)
--		bfin_write(&drv_data->regs->baud, hz_to_spi_baud(transfer->speed_hz));
--	else
--		bfin_write(&drv_data->regs->baud, chip->baud);
-+	bfin_write(&drv_data->regs->baud, hz_to_spi_baud(transfer->speed_hz));
- 
- 	bfin_write(&drv_data->regs->stat, BIT_STAT_CLR);
- 	bfin_spi_cs_active(drv_data, chip);
+ /**
+  * struct spi_statistics - statistics for spi transfers
+- * @clock:         lock protecting this structure
++ * @lock:          lock protecting this structure
+  *
+  * @messages:      number of spi-messages handled
+  * @transfers:     number of spi_transfers handled
 -- 
 2.5.0
 

@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pxa2xx: Remove if statement that is always true in pump_transfers()" to the spi tree
-Date: Thu, 17 Sep 2015 18:37:05 +0100
-Message-ID: <E1Zcd7J-0006U2-Cu@finisterre>
-References: <1442323588-29642-15-git-send-email-jarkko.nikula@linux.intel.com>
+Subject: Applied "spi: pxa2xx: Remove cr0 variable from struct chip_data" to the spi tree
+Date: Thu, 17 Sep 2015 18:37:04 +0100
+Message-ID: <E1Zcd7I-0006TZ-CD@finisterre>
+References: <1442323588-29642-16-git-send-email-jarkko.nikula@linux.intel.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1442323588-29642-15-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <1442323588-29642-16-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: pxa2xx: Remove if statement that is always true in pump_transfers()
+   spi: pxa2xx: Remove cr0 variable from struct chip_data
 
 has been applied to the spi tree at
 
@@ -38,116 +38,84 @@ to this mail.
 Thanks,
 Mark
 
->From 196b0e2cf2373f43d7b0e8c1a63e9d528c06e1df Mon Sep 17 00:00:00 2001
+>From b69d42b5c44bcfc1c73fe185d4644487f1bd3193 Mon Sep 17 00:00:00 2001
 From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Tue, 15 Sep 2015 16:26:27 +0300
-Subject: [PATCH] spi: pxa2xx: Remove if statement that is always true in
- pump_transfers()
+Date: Tue, 15 Sep 2015 16:26:28 +0300
+Subject: [PATCH] spi: pxa2xx: Remove cr0 variable from struct chip_data
 
-This is continuation to previous commit by separating unindentation from
-variable removal done in previous commit. As said SPI core have validated
-both the speed_hz and bits_per_word and the if statement here evaluates
-always to true.
-
-Remove the test and unindent the code block accordingly. While at it remove
-also needless "cr0 = chip->cr0" as cr0 will be overwritten anyway and fix
-block comment style.
+There hasn't been need to carry chip->cr0 after SPI core started to
+validate speed_hz and bits_per_word transfer parameters. That effectively
+caused that pump_transfers() always recalculated it and practically
+chip->cr0 is used locally in setup() for debug prints only.
 
 Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-pxa2xx.c | 76 +++++++++++++++++++++++-------------------------
- 1 file changed, 37 insertions(+), 39 deletions(-)
+ drivers/spi/spi-pxa2xx.c | 10 ++++------
+ drivers/spi/spi-pxa2xx.h |  1 -
+ 2 files changed, 4 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index dc6f3f1..ebafd53 100644
+index ebafd53..a25bc1d 100644
 --- a/drivers/spi/spi-pxa2xx.c
 +++ b/drivers/spi/spi-pxa2xx.c
-@@ -918,47 +918,45 @@ static void pump_transfers(unsigned long data)
- 	drv_data->read = drv_data->rx ? chip->read : null_reader;
+@@ -1101,6 +1101,7 @@ static int setup(struct spi_device *spi)
+ 	struct driver_data *drv_data = spi_master_get_devdata(spi->master);
+ 	unsigned int clk_div;
+ 	uint tx_thres, tx_hi_thres, rx_thres;
++	u32 cr0;
  
- 	/* Change speed and bit per word on a per transfer */
--	cr0 = chip->cr0;
--	if (transfer->speed_hz || transfer->bits_per_word) {
--
--		bits = transfer->bits_per_word;
--		speed = transfer->speed_hz;
--
--		clk_div = pxa2xx_ssp_get_clk_div(drv_data, chip, speed);
--
--		if (bits <= 8) {
--			drv_data->n_bytes = 1;
--			drv_data->read = drv_data->read != null_reader ?
--						u8_reader : null_reader;
--			drv_data->write = drv_data->write != null_writer ?
--						u8_writer : null_writer;
--		} else if (bits <= 16) {
--			drv_data->n_bytes = 2;
--			drv_data->read = drv_data->read != null_reader ?
--						u16_reader : null_reader;
--			drv_data->write = drv_data->write != null_writer ?
--						u16_writer : null_writer;
--		} else if (bits <= 32) {
--			drv_data->n_bytes = 4;
--			drv_data->read = drv_data->read != null_reader ?
--						u32_reader : null_reader;
--			drv_data->write = drv_data->write != null_writer ?
--						u32_writer : null_writer;
--		}
--		/* if bits/word is changed in dma mode, then must check the
--		 * thresholds and burst also */
--		if (chip->enable_dma) {
--			if (pxa2xx_spi_set_dma_burst_and_threshold(chip,
--							message->spi,
--							bits, &dma_burst,
--							&dma_thresh))
--				dev_warn_ratelimited(&message->spi->dev,
--						     "pump_transfers: DMA burst size reduced to match bits_per_word\n");
--		}
--
--		cr0 = pxa2xx_configure_sscr0(drv_data, clk_div, bits);
-+	bits = transfer->bits_per_word;
-+	speed = transfer->speed_hz;
-+
-+	clk_div = pxa2xx_ssp_get_clk_div(drv_data, chip, speed);
-+
-+	if (bits <= 8) {
-+		drv_data->n_bytes = 1;
-+		drv_data->read = drv_data->read != null_reader ?
-+					u8_reader : null_reader;
-+		drv_data->write = drv_data->write != null_writer ?
-+					u8_writer : null_writer;
-+	} else if (bits <= 16) {
-+		drv_data->n_bytes = 2;
-+		drv_data->read = drv_data->read != null_reader ?
-+					u16_reader : null_reader;
-+		drv_data->write = drv_data->write != null_writer ?
-+					u16_writer : null_writer;
-+	} else if (bits <= 32) {
-+		drv_data->n_bytes = 4;
-+		drv_data->read = drv_data->read != null_reader ?
-+					u32_reader : null_reader;
-+		drv_data->write = drv_data->write != null_writer ?
-+					u32_writer : null_writer;
-+	}
-+	/*
-+	 * if bits/word is changed in dma mode, then must check the
-+	 * thresholds and burst also
-+	 */
-+	if (chip->enable_dma) {
-+		if (pxa2xx_spi_set_dma_burst_and_threshold(chip,
-+						message->spi,
-+						bits, &dma_burst,
-+						&dma_thresh))
-+			dev_warn_ratelimited(&message->spi->dev,
-+					     "pump_transfers: DMA burst size reduced to match bits_per_word\n");
- 	}
+ 	switch (drv_data->ssp_type) {
+ 	case QUARK_X1000_SSP:
+@@ -1193,8 +1194,6 @@ static int setup(struct spi_device *spi)
  
-+	cr0 = pxa2xx_configure_sscr0(drv_data, clk_div, bits);
-+
- 	message->state = RUNNING_STATE;
+ 	clk_div = pxa2xx_ssp_get_clk_div(drv_data, chip, spi->max_speed_hz);
  
- 	drv_data->dma_mapped = 0;
+-	chip->cr0 = pxa2xx_configure_sscr0(drv_data, clk_div,
+-					   spi->bits_per_word);
+ 	switch (drv_data->ssp_type) {
+ 	case QUARK_X1000_SSP:
+ 		chip->threshold = (QUARK_X1000_SSCR1_RxTresh(rx_thres)
+@@ -1216,15 +1215,16 @@ static int setup(struct spi_device *spi)
+ 		chip->cr1 |= SSCR1_LBM;
+ 
+ 	/* NOTE:  PXA25x_SSP _could_ use external clocking ... */
++	cr0 = pxa2xx_configure_sscr0(drv_data, clk_div, spi->bits_per_word);
+ 	if (!pxa25x_ssp_comp(drv_data))
+ 		dev_dbg(&spi->dev, "%ld Hz actual, %s\n",
+ 			drv_data->max_clk_rate
+-				/ (1 + ((chip->cr0 & SSCR0_SCR(0xfff)) >> 8)),
++				/ (1 + ((cr0 & SSCR0_SCR(0xfff)) >> 8)),
+ 			chip->enable_dma ? "DMA" : "PIO");
+ 	else
+ 		dev_dbg(&spi->dev, "%ld Hz actual, %s\n",
+ 			drv_data->max_clk_rate / 2
+-				/ (1 + ((chip->cr0 & SSCR0_SCR(0x0ff)) >> 8)),
++				/ (1 + ((cr0 & SSCR0_SCR(0x0ff)) >> 8)),
+ 			chip->enable_dma ? "DMA" : "PIO");
+ 
+ 	if (spi->bits_per_word <= 8) {
+@@ -1236,8 +1236,6 @@ static int setup(struct spi_device *spi)
+ 		chip->read = u16_reader;
+ 		chip->write = u16_writer;
+ 	} else if (spi->bits_per_word <= 32) {
+-		if (!is_quark_x1000_ssp(drv_data))
+-			chip->cr0 |= SSCR0_EDSS;
+ 		chip->n_bytes = 4;
+ 		chip->read = u32_reader;
+ 		chip->write = u32_writer;
+diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
+index 0875e98..b91bda2 100644
+--- a/drivers/spi/spi-pxa2xx.h
++++ b/drivers/spi/spi-pxa2xx.h
+@@ -86,7 +86,6 @@ struct driver_data {
+ };
+ 
+ struct chip_data {
+-	u32 cr0;
+ 	u32 cr1;
+ 	u32 dds_rate;
+ 	u32 psp;
 -- 
 2.5.0
 

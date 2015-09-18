@@ -1,48 +1,26 @@
-From: Vignesh R <vigneshr@ti.com>
-Subject: Re: [PATCH 1/5] spi: introduce mmap read support for spi flash
- devices
-Date: Fri, 18 Sep 2015 17:40:30 +0530
-Message-ID: <55FBFF36.8050905@ti.com>
-References: <1441355402-6837-1-git-send-email-vigneshr@ti.com>
- <1441355402-6837-2-git-send-email-vigneshr@ti.com>
- <20150914183744.GF12027@sirena.org.uk> <55F93F89.7060708@ti.com>
- <20150916105647.GK11268@sirena.org.uk>
+From: Jean-Michel Hautbois <jean-michel.hautbois@veo-labs.com>
+Subject: spi-imx: wait_for_completion should timeout even in non-DMA transfer cases
+Date: Fri, 18 Sep 2015 14:38:27 +0200
+Message-ID: <CAH-u=81E2RnMvm2UZxUasCSf6hMQtiMO9Y1VcNiy0pFR6Uy6vg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-Cc: Benoit Cousson <bcousson@baylibre.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Russell King <linux@arm.linux.org.uk>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Brian Norris <computersforpeace@gmail.com>,
-	<hramrach@gmail.com>, <devicetree@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>,
-	<linux-mtd@lists.infradead.org>, <linux-spi@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-spi@vger.kernel.org,
+	linux-kernel <linux-kernel@vger.kernel.org>
 To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20150916105647.GK11268@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi,
 
+I am wondering why in spi-imx the spi_imx_pio_transfer() function is
+calling wait_for_completion() and not wait_for_completion_timeout() as
+in the spi_imx_dma_transfer() one.
+I can't see a good reason for this, maybe should it be calculated
+based on the spi clock and transfer->len, or at least be the same as
+IMX_DMA_TIMEOUT which is 3 seconds ?
+If you want it, I have a patch, just tell me if you are interested and
+if you prefer a calculated timeout or even something else ?
 
-On 09/16/2015 04:26 PM, Mark Brown wrote:
-> On Wed, Sep 16, 2015 at 03:38:09PM +0530, Vignesh R wrote:
-> 
->> But, I didn't get how to integrate with existing message queue. Memory
->> mapped read by-passes message queue of SPI core. Could you please
->> explain a bit more on integrating with message queue? Did you mean
->> locking the existing message queue when memory mapped read is being
->> requested?
-> 
-> Yes, and also making sure that we don't everything gets processed in
-> order so memory mapped requests come after any commands needed to set
-> them up and don't starve other work.
-> 
-
-Ok, thanks for the clarification!
-
--- 
-Regards
-Vignesh
+Thanks,
+JM

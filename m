@@ -1,58 +1,40 @@
-From: Matthias Brugger <matthias.bgg@gmail.com>
-Subject: Re: [RESEND PATCH] spi: mediatek: fix wrong error return value on probe
-Date: Fri, 18 Sep 2015 23:04:54 +0200
-Message-ID: <2905291.oz4bWkMeg3@ubix>
-References: <1442321205-30869-1-git-send-email-javier@osg.samsung.com>
+From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH linux-next 1/4] mtd: spi-nor: remove unused read_xfer/write_xfer hooks
+Date: Sat, 19 Sep 2015 05:08:55 +0200
+Message-ID: <201509190508.55496.marex@denx.de>
+References: <cover.1442590224.git.cyrille.pitchen@atmel.com> <719ad7cc8bf6df151dd799cd4f13292fd9471079.1442590224.git.cyrille.pitchen@atmel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-	linux-spi@vger.kernel.org, linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org
-To: Javier Martinez Canillas <javier@osg.samsung.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1442321205-30869-1-git-send-email-javier@osg.samsung.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: Text/Plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org,
+	computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org,
+	juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org, ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org, jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org,
+	jteki-oRp2ZoJdM/RWk0Htik3J/w@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, pawel.moll-5wv7dgnIgG8@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
+	ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org, galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <719ad7cc8bf6df151dd799cd4f13292fd9471079.1442590224.git.cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tuesday, September 15, 2015 02:46:45 PM Javier Martinez Canillas wrote:
-> Commit adcbcfea15d62 ("spi: mediatek: fix spi clock usage error")
-> added a new sel_clk but introduced bugs in the error paths since
-> the wrong struct clk pointers are passed to PTR_ERR().
+On Friday, September 18, 2015 at 05:49:25 PM, Cyrille Pitchen wrote:
+> struct spi_nor_xfer_cfg and read_xfer/write_xfer hooks were never used by
+> any driver. Do some cleanup by removing them.
 > 
-> Fixes: adcbcfea15d62 ("spi: mediatek: fix spi clock usage error")
-> Signed-off-by: Javier Martinez Canillas <javier@osg.samsung.com>
-> 
+> Signed-off-by: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 
-Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
+Right, if this will ever be needed, it can be re-added.
 
-> ---
-> Patch based on git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git
-> branch fix/mediatek but also applies cleanly to branch for-linus.
-> 
-> It's the exact same patch than before so I don't know what went wrong.
-> 
->  drivers/spi/spi-mt65xx.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-> index 6fbb5e5132b0..e9839a4e0175 100644
-> --- a/drivers/spi/spi-mt65xx.c
-> +++ b/drivers/spi/spi-mt65xx.c
-> @@ -585,14 +585,14 @@ static int mtk_spi_probe(struct platform_device *pdev)
-> 
->  	mdata->sel_clk = devm_clk_get(&pdev->dev, "sel-clk");
->  	if (IS_ERR(mdata->sel_clk)) {
-> -		ret = PTR_ERR(mdata->spi_clk);
-> +		ret = PTR_ERR(mdata->sel_clk);
->  		dev_err(&pdev->dev, "failed to get sel-clk: %d\n", ret);
->  		goto err_put_master;
->  	}
-> 
->  	mdata->spi_clk = devm_clk_get(&pdev->dev, "spi-clk");
->  	if (IS_ERR(mdata->spi_clk)) {
-> -		ret = PTR_ERR(mdata->parent_clk);
-> +		ret = PTR_ERR(mdata->spi_clk);
->  		dev_err(&pdev->dev, "failed to get spi-clk: %d\n", ret);
->  		goto err_put_master;
->  	}
+Reviewed-by: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+
+Best regards,
+Marek Vasut
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

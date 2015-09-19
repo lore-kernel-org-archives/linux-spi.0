@@ -1,182 +1,53 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: add transfer histogram statistics via sysfs" to the spi tree
-Date: Sat, 19 Sep 2015 17:13:16 -0700
-Message-ID: <E1ZdSFo-0004DK-I8@finisterre>
-References: <1434978124-2396-1-git-send-email-kernel@martin.sperl.org>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1434978124-2396-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] ARM: pxa: Remove unused clock_enable field from struct
+ pxa2xx_spi_master
+Date: Sat, 19 Sep 2015 07:47:31 -0700
+Message-ID: <20150919144731.GO12027@sirena.org.uk>
+References: <1442560481-26008-1-git-send-email-jarkko.nikula@linux.intel.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="ILYFnOLy4m9XaNPx"
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+	Russell King <linux@arm.linux.org.uk>,
+	Philipp Zabel <philipp.zabel@gmail.com>,
+	Paul Parsons <lost.distance@yahoo.com>,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Marek Vasut <marek.vasut@gmail.com>
+To: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1442560481-26008-1-git-send-email-jarkko.nikula@linux.intel.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-The patch
 
-   spi: add transfer histogram statistics via sysfs
+--ILYFnOLy4m9XaNPx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-has been applied to the spi tree at
+On Fri, Sep 18, 2015 at 10:14:41AM +0300, Jarkko Nikula wrote:
+> Use for struct pxa2xx_spi_master clock_enable field was removed years ago
+> from the pxa2xx-spi driver by the commit 2f1a74e5a2de ("[ARM] pxa: make
+> pxa2xx_spi driver use ssp_request()/ssp_free()").
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+Acked-by: Mark Brown <broonie@kernel.org>
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+--ILYFnOLy4m9XaNPx
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+iQEcBAEBCAAGBQJV/XWDAAoJECTWi3JdVIfQCOcH/A1wkTYys/rOPuXB89QT7oyS
+rccwwSPLIherHrVUdzmo+xiYPEzHaHzwUzuv1RB63qYFstRAlDGuh+UnTD2nxW5y
+lnLH8zHLHA2XM6SNrXsVz7ECoBI7v7EXF6TER5Xf8BRCNR+n5vi9GbJOwMAi2fRm
+7bHnD74uQP+OWpSjuT92dpq01tvd+8YCMzkM1pJhgT4NLXL2z5e84FO7260gwKcL
+7CVC/jDHIOGt+XWSvsuM3/Qq8hWsTv4qIt/k/Wp5Fasj7AetbH9H8C0dMkKzazWt
+3hwOR/ySyA1c6WFgEaEDOx9USNSNPxcmhXfKeKL67uFIDGVPSRPdB6PoYjGD8jg=
+=ikcI
+-----END PGP SIGNATURE-----
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 6b7bc0618ff1a333d2265131b124e966335d5dee Mon Sep 17 00:00:00 2001
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Date: Mon, 22 Jun 2015 13:02:04 +0000
-Subject: [PATCH] spi: add transfer histogram statistics via sysfs
-
-report transfer sizes as a histogram via the following files:
-  /sys/class/spi_master/spi*/statistics/transfer_bytes_histo_*
-  /sys/class/spi_master/spi*/spi*.*/statistics/transfer_bytes_histo_*
-
-Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi.c       | 61 +++++++++++++++++++++++++++++++++++++++++++++++++
- include/linux/spi/spi.h |  4 ++++
- 2 files changed, 65 insertions(+)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 3abb390..73face0 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -123,6 +123,28 @@ SPI_STATISTICS_SHOW(bytes, "%llu");
- SPI_STATISTICS_SHOW(bytes_rx, "%llu");
- SPI_STATISTICS_SHOW(bytes_tx, "%llu");
- 
-+#define SPI_STATISTICS_TRANSFER_BYTES_HISTO(index, number)		\
-+	SPI_STATISTICS_SHOW_NAME(transfer_bytes_histo##index,		\
-+				 "transfer_bytes_histo_" number,	\
-+				 transfer_bytes_histo[index],  "%lu")
-+SPI_STATISTICS_TRANSFER_BYTES_HISTO(0,  "0-1");
-+SPI_STATISTICS_TRANSFER_BYTES_HISTO(1,  "2-3");
-+SPI_STATISTICS_TRANSFER_BYTES_HISTO(2,  "4-7");
-+SPI_STATISTICS_TRANSFER_BYTES_HISTO(3,  "8-15");
-+SPI_STATISTICS_TRANSFER_BYTES_HISTO(4,  "16-31");
-+SPI_STATISTICS_TRANSFER_BYTES_HISTO(5,  "32-63");
-+SPI_STATISTICS_TRANSFER_BYTES_HISTO(6,  "64-127");
-+SPI_STATISTICS_TRANSFER_BYTES_HISTO(7,  "128-255");
-+SPI_STATISTICS_TRANSFER_BYTES_HISTO(8,  "256-511");
-+SPI_STATISTICS_TRANSFER_BYTES_HISTO(9,  "512-1023");
-+SPI_STATISTICS_TRANSFER_BYTES_HISTO(10, "1024-2047");
-+SPI_STATISTICS_TRANSFER_BYTES_HISTO(11, "2048-4095");
-+SPI_STATISTICS_TRANSFER_BYTES_HISTO(12, "4096-8191");
-+SPI_STATISTICS_TRANSFER_BYTES_HISTO(13, "8192-16383");
-+SPI_STATISTICS_TRANSFER_BYTES_HISTO(14, "16384-32767");
-+SPI_STATISTICS_TRANSFER_BYTES_HISTO(15, "32768-65535");
-+SPI_STATISTICS_TRANSFER_BYTES_HISTO(16, "65536+");
-+
- static struct attribute *spi_dev_attrs[] = {
- 	&dev_attr_modalias.attr,
- 	NULL,
-@@ -143,6 +165,23 @@ static struct attribute *spi_device_statistics_attrs[] = {
- 	&dev_attr_spi_device_bytes.attr,
- 	&dev_attr_spi_device_bytes_rx.attr,
- 	&dev_attr_spi_device_bytes_tx.attr,
-+	&dev_attr_spi_device_transfer_bytes_histo0.attr,
-+	&dev_attr_spi_device_transfer_bytes_histo1.attr,
-+	&dev_attr_spi_device_transfer_bytes_histo2.attr,
-+	&dev_attr_spi_device_transfer_bytes_histo3.attr,
-+	&dev_attr_spi_device_transfer_bytes_histo4.attr,
-+	&dev_attr_spi_device_transfer_bytes_histo5.attr,
-+	&dev_attr_spi_device_transfer_bytes_histo6.attr,
-+	&dev_attr_spi_device_transfer_bytes_histo7.attr,
-+	&dev_attr_spi_device_transfer_bytes_histo8.attr,
-+	&dev_attr_spi_device_transfer_bytes_histo9.attr,
-+	&dev_attr_spi_device_transfer_bytes_histo10.attr,
-+	&dev_attr_spi_device_transfer_bytes_histo11.attr,
-+	&dev_attr_spi_device_transfer_bytes_histo12.attr,
-+	&dev_attr_spi_device_transfer_bytes_histo13.attr,
-+	&dev_attr_spi_device_transfer_bytes_histo14.attr,
-+	&dev_attr_spi_device_transfer_bytes_histo15.attr,
-+	&dev_attr_spi_device_transfer_bytes_histo16.attr,
- 	NULL,
- };
- 
-@@ -168,6 +207,23 @@ static struct attribute *spi_master_statistics_attrs[] = {
- 	&dev_attr_spi_master_bytes.attr,
- 	&dev_attr_spi_master_bytes_rx.attr,
- 	&dev_attr_spi_master_bytes_tx.attr,
-+	&dev_attr_spi_master_transfer_bytes_histo0.attr,
-+	&dev_attr_spi_master_transfer_bytes_histo1.attr,
-+	&dev_attr_spi_master_transfer_bytes_histo2.attr,
-+	&dev_attr_spi_master_transfer_bytes_histo3.attr,
-+	&dev_attr_spi_master_transfer_bytes_histo4.attr,
-+	&dev_attr_spi_master_transfer_bytes_histo5.attr,
-+	&dev_attr_spi_master_transfer_bytes_histo6.attr,
-+	&dev_attr_spi_master_transfer_bytes_histo7.attr,
-+	&dev_attr_spi_master_transfer_bytes_histo8.attr,
-+	&dev_attr_spi_master_transfer_bytes_histo9.attr,
-+	&dev_attr_spi_master_transfer_bytes_histo10.attr,
-+	&dev_attr_spi_master_transfer_bytes_histo11.attr,
-+	&dev_attr_spi_master_transfer_bytes_histo12.attr,
-+	&dev_attr_spi_master_transfer_bytes_histo13.attr,
-+	&dev_attr_spi_master_transfer_bytes_histo14.attr,
-+	&dev_attr_spi_master_transfer_bytes_histo15.attr,
-+	&dev_attr_spi_master_transfer_bytes_histo16.attr,
- 	NULL,
- };
- 
-@@ -186,10 +242,15 @@ void spi_statistics_add_transfer_stats(struct spi_statistics *stats,
- 				       struct spi_master *master)
- {
- 	unsigned long flags;
-+	int l2len = min(fls(xfer->len), SPI_STATISTICS_HISTO_SIZE) - 1;
-+
-+	if (l2len < 0)
-+		l2len = 0;
- 
- 	spin_lock_irqsave(&stats->lock, flags);
- 
- 	stats->transfers++;
-+	stats->transfer_bytes_histo[l2len]++;
- 
- 	stats->bytes += xfer->len;
- 	if ((xfer->tx_buf) &&
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 269e8af..5b6fdc4 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -51,6 +51,8 @@ extern struct bus_type spi_bus_type;
-  * @bytes_tx:      number of bytes sent to device
-  * @bytes_rx:      number of bytes received from device
-  *
-+ * @transfer_bytes_histo:
-+ *                 transfer bytes histogramm
-  */
- struct spi_statistics {
- 	spinlock_t		lock; /* lock for the whole structure */
-@@ -68,6 +70,8 @@ struct spi_statistics {
- 	unsigned long long	bytes_rx;
- 	unsigned long long	bytes_tx;
- 
-+#define SPI_STATISTICS_HISTO_SIZE 17
-+	unsigned long transfer_bytes_histo[SPI_STATISTICS_HISTO_SIZE];
- };
- 
- void spi_statistics_add_transfer_stats(struct spi_statistics *stats,
--- 
-2.5.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--ILYFnOLy4m9XaNPx--

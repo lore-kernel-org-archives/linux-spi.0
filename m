@@ -1,55 +1,42 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: spi-imx: wait_for_completion should timeout even in non-DMA
- transfer cases
-Date: Sat, 19 Sep 2015 10:56:14 -0700
-Message-ID: <20150919175614.GM30445@sirena.org.uk>
-References: <CAH-u=81E2RnMvm2UZxUasCSf6hMQtiMO9Y1VcNiy0pFR6Uy6vg@mail.gmail.com>
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+Subject: Re: [PATCH] ARM: pxa: Remove unused clock_enable field from struct pxa2xx_spi_master
+Date: Sun, 20 Sep 2015 19:36:23 +0200
+Message-ID: <87k2rlq9go.fsf@belgarion.home>
+References: <1442560481-26008-1-git-send-email-jarkko.nikula@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="TxukmIqg3MmZ0Kmh"
-Cc: linux-spi@vger.kernel.org,
-	linux-kernel <linux-kernel@vger.kernel.org>
-To: Jean-Michel Hautbois <jean-michel.hautbois@veo-labs.com>
+Content-Type: text/plain
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+	Russell King <linux@arm.linux.org.uk>,
+	Mark Brown <broonie@kernel.org>,
+	Philipp Zabel <philipp.zabel@gmail.com>,
+	Paul Parsons <lost.distance@yahoo.com>,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Marek Vasut <marek.vasut@gmail.com>
+To: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAH-u=81E2RnMvm2UZxUasCSf6hMQtiMO9Y1VcNiy0pFR6Uy6vg@mail.gmail.com>
+In-Reply-To: <1442560481-26008-1-git-send-email-jarkko.nikula@linux.intel.com>
+	(Jarkko Nikula's message of "Fri, 18 Sep 2015 10:14:41 +0300")
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Jarkko Nikula <jarkko.nikula@linux.intel.com> writes:
 
---TxukmIqg3MmZ0Kmh
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Use for struct pxa2xx_spi_master clock_enable field was removed years ago
+> from the pxa2xx-spi driver by the commit 2f1a74e5a2de ("[ARM] pxa: make
+> pxa2xx_spi driver use ssp_request()/ssp_free()").
+>
+> Therefore remove it from structure definition, documentation and from
+> couple affected board files.
+>
+> Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+> ---
+> I propose this to be merged via ARM tree. I don't see we would need to do
+> other SPI related changes to struct pxa2xx_spi_master in near future (knock
+> on wood).
+I'll take that through the pxa/for-next tree in a couple of days, thanks.
 
-On Fri, Sep 18, 2015 at 02:38:27PM +0200, Jean-Michel Hautbois wrote:
-> Hi,
->=20
-> I am wondering why in spi-imx the spi_imx_pio_transfer() function is
-> calling wait_for_completion() and not wait_for_completion_timeout() as
-> in the spi_imx_dma_transfer() one.
-> I can't see a good reason for this, maybe should it be calculated
-> based on the spi clock and transfer->len, or at least be the same as
-> IMX_DMA_TIMEOUT which is 3 seconds ?
-> If you want it, I have a patch, just tell me if you are interested and
-> if you prefer a calculated timeout or even something else ?
+Cheers.
 
-A calculated timeout is probably best.
-
---TxukmIqg3MmZ0Kmh
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJV/aG+AAoJECTWi3JdVIfQd4oH/0RnrjDp8viTo7YCTvao6Eub
-fHylLNUfBFYTZA5NToaeEoLqFGle1IvT7fB/EL5B7jHOgkzRWo7oR+6XUlFSA7pv
-r4a5tkcW4o2jrxJgFJw7vBgYQ8Qb3BV1RHwNoevi8fJBhNGh0Va+xI4F8RakkXSm
-sZPepyI57D/NrSTSN8JRZsHHfaD8VD01QrA/DYSedCFOUybFo3sKTBDz5LArhQ1i
-KsFd8BMKkCw/FewqiQMm8i14kO7PT/gkv0o5AI3q/+IJ/mjy64eUBQh4jKFfxdD7
-aC01N1Npj58zEsFe5gttmpddkSUPVPMF5qO0JVz6oOthJe3NgMniD09O2hEPfDY=
-=gNni
------END PGP SIGNATURE-----
-
---TxukmIqg3MmZ0Kmh--
+--
+Robert

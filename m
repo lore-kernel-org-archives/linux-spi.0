@@ -1,49 +1,47 @@
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-Subject: Re: [PATCH v2] ARM: pxa: ssp: Fix build error by removing originally incorrect DT binding
-Date: Mon, 21 Sep 2015 11:03:18 +0200
-Message-ID: <87fv28qh49.fsf@belgarion.home>
-References: <1441610581-11434-1-git-send-email-jarkko.nikula@linux.intel.com>
-	<87zj0rsqhe.fsf@belgarion.home> <55FFB643.1080208@linux.intel.com>
+From: Jean-Michel Hautbois <jean-michel.hautbois-JiVWUdsMzBtWk0Htik3J/w@public.gmane.org>
+Subject: Re: spi-imx: wait_for_completion should timeout even in non-DMA
+ transfer cases
+Date: Mon, 21 Sep 2015 11:08:55 +0200
+Message-ID: <CAH-u=816w-uGmWt-sf2AqahRL2j7RBCah8JAKOCXFFnvVdMzhw@mail.gmail.com>
+References: <CAH-u=81E2RnMvm2UZxUasCSf6hMQtiMO9Y1VcNiy0pFR6Uy6vg@mail.gmail.com>
+ <20150919175614.GM30445@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-	Russell King <linux@arm.linux.org.uk>,
-	Mark Brown <broonie@kernel.org>,
-	Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	stable@vger.kernel.org
-To: Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Olof Johansson <olof@lixom.net>, Arnd Bergmann <arnd@arndb.de>,
-	Kevin Hilman <khilman@linaro.org>,
-	Vinod Koul <vinod.koul@intel.com>
-Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <55FFB643.1080208@linux.intel.com> (Jarkko Nikula's message of
-	"Mon, 21 Sep 2015 10:48:19 +0300")
-Sender: stable-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20150919175614.GM30445-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Jarkko Nikula <jarkko.nikula@linux.intel.com> writes:
-
-> Hi
+2015-09-19 19:56 GMT+02:00 Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>:
+> On Fri, Sep 18, 2015 at 02:38:27PM +0200, Jean-Michel Hautbois wrote:
+>> Hi,
+>>
+>> I am wondering why in spi-imx the spi_imx_pio_transfer() function is
+>> calling wait_for_completion() and not wait_for_completion_timeout() =
+as
+>> in the spi_imx_dma_transfer() one.
+>> I can't see a good reason for this, maybe should it be calculated
+>> based on the spi clock and transfer->len, or at least be the same as
+>> IMX_DMA_TIMEOUT which is 3 seconds ?
+>> If you want it, I have a patch, just tell me if you are interested a=
+nd
+>> if you prefer a calculated timeout or even something else ?
 >
-> On 09/12/2015 04:43 PM, Robert Jarzmik wrote:
->> Jarkko Nikula <jarkko.nikula@linux.intel.com> writes:
->>
->>> Commit 03fbf488cece ("spi: pxa2xx: Differentiate Intel LPSS types") caused
->>> build error here because it removed the type LPSS_SSP and I didn't notice
->>> the type was used here too.
->> Queued into pxa/fixes, thanks.
->>
-> Gentle reminder, is this going to 4.3-rc3?
-It is going into v4.3.
+> A calculated timeout is probably best.
 
-Now knowing if it is v4.3-rc3 is another story, as currently the pxa platform is
-broken because of a dmaengine regression. And if the necessary fix is not
-applied through dmaengine tree (by lack of time from Vinod), I'll want to carry
-it through my tree, which is the reason why I have not made the pull request
-yet.
+Well, it depends...
+If you have a 20MHz clock, then you can transfer a byte in 4=C2=B5s.
+As most of the time pio_transfer is used for 8 to 32 bytes max, it
+would be irrelevant to use such a small timeout.
+I can obviously do it, but not sure if using a small (say, 100ms)
+timeout would not be better.
 
-Cheers.
-
--- 
-Robert
+JM
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

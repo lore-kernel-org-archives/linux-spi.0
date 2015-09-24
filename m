@@ -1,62 +1,69 @@
-From: Andrzej Hajda <a.hajda-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 02/19] spi: davinci: fix handling platform_get_irq result
-Date: Thu, 24 Sep 2015 16:00:10 +0200
-Message-ID: <1443103227-25612-3-git-send-email-a.hajda@samsung.com>
-References: <1443103227-25612-1-git-send-email-a.hajda@samsung.com>
-Cc: Andrzej Hajda <a.hajda-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Bartlomiej Zolnierkiewicz <b.zolnierkie-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Marek Szyprowski <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-reply-to: <1443103227-25612-1-git-send-email-a.hajda-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: Applied "spi: atmel: Remove needless bits_per_word
+ and speed_hz tests" to the asoc tree
+Date: Thu, 24 Sep 2015 10:18:39 -0700
+Message-ID: <20150924171839.GZ30445@sirena.org.uk>
+References: <E1Zcd6t-0006J1-P7@finisterre> <5603E774.6020702@linux.intel.com>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============3024178278413615862=="
+Cc: alsa-devel@alsa-project.org, Nicolas Ferre <nicolas.ferre@atmel.com>,
+ linux-spi@vger.kernel.org
+To: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Return-path: <alsa-devel-bounces@alsa-project.org>
+In-Reply-To: <5603E774.6020702@linux.intel.com>
+List-Unsubscribe: <http://mailman.alsa-project.org/mailman/options/alsa-devel>,
+ <mailto:alsa-devel-request@alsa-project.org?subject=unsubscribe>
+List-Archive: <http://mailman.alsa-project.org/pipermail/alsa-devel/>
+List-Post: <mailto:alsa-devel@alsa-project.org>
+List-Help: <mailto:alsa-devel-request@alsa-project.org?subject=help>
+List-Subscribe: <http://mailman.alsa-project.org/mailman/listinfo/alsa-devel>,
+ <mailto:alsa-devel-request@alsa-project.org?subject=subscribe>
+Errors-To: alsa-devel-bounces@alsa-project.org
+Sender: alsa-devel-bounces@alsa-project.org
+List-Id: linux-spi.vger.kernel.org
 
-The function can return negative value.
 
-The problem has been detected using proposed semantic patch
-scripts/coccinelle/tests/assign_signed_to_unsigned.cocci [1].
+--===============3024178278413615862==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="kpwIYr1TmOiRZuUu"
+Content-Disposition: inline
 
-[1]: http://permalink.gmane.org/gmane.linux.kernel/2046107
 
-Signed-off-by: Andrzej Hajda <a.hajda-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
----
-Hi,
+--kpwIYr1TmOiRZuUu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-To avoid problems with too many mail recipients I have sent whole
-patchset only to LKML. Anyway patches have no dependencies.
+On Thu, Sep 24, 2015 at 03:07:16PM +0300, Jarkko Nikula wrote:
 
-Regards
-Andrzej
----
- drivers/spi/spi-davinci.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+> Did this one get lost? I don't find commit id above either from spi.git or
+> sound.git (I guess sound.git was accidental). Other patches from the patch
+> set are in spi.git and I can resend this if needed.
 
-diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index 3cf9faa..a85d863 100644
---- a/drivers/spi/spi-davinci.c
-+++ b/drivers/spi/spi-davinci.c
-@@ -992,11 +992,12 @@ static int davinci_spi_probe(struct platform_device *pdev)
- 		goto free_master;
- 	}
- 
--	dspi->irq = platform_get_irq(pdev, 0);
--	if (dspi->irq <= 0) {
-+	ret = platform_get_irq(pdev, 0);
-+	if (ret == 0)
- 		ret = -EINVAL;
-+	if (ret < 0)
- 		goto free_master;
--	}
-+	dspi->irq = ret;
- 
- 	ret = devm_request_threaded_irq(&pdev->dev, dspi->irq, davinci_spi_irq,
- 				dummy_thread_fn, 0, dev_name(&pdev->dev), dspi);
--- 
-1.9.1
+Please resend any patches you think are missing in my tree.
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--kpwIYr1TmOiRZuUu
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJWBDBuAAoJECTWi3JdVIfQZLkH/3k3xxWeP49lxjtxkkBRDzhn
+FO48oYWHcVsukK6C6vNgY7rUJV79fey0BfH6k5ACWdpeO2bgh7RYITQmGoErjWKv
+VRBqsj3AUfRczQgakFIow/ifvR2YB5WWHSTcFot76mQ6q+1gdRca5kq/cq4wUFUH
+jQVskONDQee2VJO5Zr4lXXCDMHG3PBr32vHOc74qQFb8zn5oEqP/v7O4I2IvqcDx
+Thph+cU+eEBMwhsI7/g5UWH4L2vmzGNqnkFFQ984lq/bADt5ypoWntf5UzQovEa6
+6WuyI5DdjX43cYZ1wlovj6wRuczCGqLRn/OG6CnYO2hUO/azxKy4PTIoD0aeAjo=
+=99N5
+-----END PGP SIGNATURE-----
+
+--kpwIYr1TmOiRZuUu--
+
+--===============3024178278413615862==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+
+--===============3024178278413615862==--

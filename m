@@ -1,19 +1,20 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: davinci: fix handling platform_get_irq result" to the spi tree
-Date: Fri, 25 Sep 2015 11:09:44 -0700
-Message-ID: <E1ZfXRI-0002vQ-KC@finisterre>
-References: <1443103227-25612-3-git-send-email-a.hajda@samsung.com>
+Subject: Applied "spi: atmel: Remove needless bits_per_word and speed_hz tests" to the spi tree
+Date: Fri, 25 Sep 2015 11:09:45 -0700
+Message-ID: <E1ZfXRJ-0002w4-Pf@finisterre>
+References: <1442323588-29642-10-git-send-email-jarkko.nikula@linux.intel.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Andrzej Hajda <a.hajda-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1443103227-25612-3-git-send-email-a.hajda-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+In-Reply-To: <1442323588-29642-10-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: davinci: fix handling platform_get_irq result
+   spi: atmel: Remove needless bits_per_word and speed_hz tests
 
 has been applied to the spi tree at
 
@@ -38,44 +39,63 @@ to this mail.
 Thanks,
 Mark
 
->From 8494cdea2223b66491df1264619e2205b4487913 Mon Sep 17 00:00:00 2001
-From: Andrzej Hajda <a.hajda-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Date: Thu, 24 Sep 2015 16:00:10 +0200
-Subject: [PATCH] spi: davinci: fix handling platform_get_irq result
+>From e8646580cc9a6ae24ab3d05f90e71334f50cdedf Mon Sep 17 00:00:00 2001
+From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Date: Fri, 25 Sep 2015 09:03:01 +0300
+Subject: [PATCH] spi: atmel: Remove needless bits_per_word and speed_hz tests
 
-The function can return negative value.
+SPI core validates both bits_per_word and speed_hz transfer parameters and
+defaults to spi->bits_per_word and spi->max_speed_hz in case these per
+transfer parameters are not set. This makes possible to remove two if
+statements and remove one code block that is never executed.
 
-The problem has been detected using proposed semantic patch
-scripts/coccinelle/tests/assign_signed_to_unsigned.cocci [1].
-
-[1]: http://permalink.gmane.org/gmane.linux.kernel/2046107
-
-Signed-off-by: Andrzej Hajda <a.hajda-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Acked-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-davinci.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/spi/spi-atmel.c | 21 ++++++---------------
+ 1 file changed, 6 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index 3cf9faa..a85d863 100644
---- a/drivers/spi/spi-davinci.c
-+++ b/drivers/spi/spi-davinci.c
-@@ -992,11 +992,12 @@ static int davinci_spi_probe(struct platform_device *pdev)
- 		goto free_master;
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index bf9ed38..1cc1f1e 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -871,14 +871,7 @@ static int atmel_spi_set_xfer_speed(struct atmel_spi *as,
+ 	 * Calculate the lowest divider that satisfies the
+ 	 * constraint, assuming div32/fdiv/mbz == 0.
+ 	 */
+-	if (xfer->speed_hz)
+-		scbr = DIV_ROUND_UP(bus_hz, xfer->speed_hz);
+-	else
+-		/*
+-		 * This can happend if max_speed is null.
+-		 * In this case, we set the lowest possible speed
+-		 */
+-		scbr = 0xff;
++	scbr = DIV_ROUND_UP(bus_hz, xfer->speed_hz);
+ 
+ 	/*
+ 	 * If the resulting divider doesn't fit into the
+@@ -1300,14 +1293,12 @@ static int atmel_spi_one_transfer(struct spi_master *master,
+ 		return -EINVAL;
  	}
  
--	dspi->irq = platform_get_irq(pdev, 0);
--	if (dspi->irq <= 0) {
-+	ret = platform_get_irq(pdev, 0);
-+	if (ret == 0)
- 		ret = -EINVAL;
-+	if (ret < 0)
- 		goto free_master;
--	}
-+	dspi->irq = ret;
+-	if (xfer->bits_per_word) {
+-		asd = spi->controller_state;
+-		bits = (asd->csr >> 4) & 0xf;
+-		if (bits != xfer->bits_per_word - 8) {
+-			dev_dbg(&spi->dev,
++	asd = spi->controller_state;
++	bits = (asd->csr >> 4) & 0xf;
++	if (bits != xfer->bits_per_word - 8) {
++		dev_dbg(&spi->dev,
+ 			"you can't yet change bits_per_word in transfers\n");
+-			return -ENOPROTOOPT;
+-		}
++		return -ENOPROTOOPT;
+ 	}
  
- 	ret = devm_request_threaded_irq(&pdev->dev, dspi->irq, davinci_spi_irq,
- 				dummy_thread_fn, 0, dev_name(&pdev->dev), dspi);
+ 	/*
 -- 
 2.5.0
 

@@ -1,105 +1,50 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: atmel: Remove needless bits_per_word and speed_hz tests" to the spi tree
-Date: Fri, 25 Sep 2015 11:09:45 -0700
-Message-ID: <E1ZfXRJ-0002w4-Pf@finisterre>
-References: <1442323588-29642-10-git-send-email-jarkko.nikula@linux.intel.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1442323588-29642-10-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Subject: Re: [PATCH 2/2] spi: pxa2xx: Use ACPI_COMPANION() instead of acpi_bus_get_device()
+Date: Sat, 26 Sep 2015 01:56:09 +0200
+Message-ID: <4840826.juYE1IZ9q9@vostro.rjw.lan>
+References: <1443166038-31658-1-git-send-email-jarkko.nikula@linux.intel.com> <1443166038-31658-2-git-send-email-jarkko.nikula@linux.intel.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7Bit
+Cc: linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+	linux-acpi@vger.kernel.org, Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>
+To: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Return-path: <linux-acpi-owner@vger.kernel.org>
+In-Reply-To: <1443166038-31658-2-git-send-email-jarkko.nikula@linux.intel.com>
+Sender: linux-acpi-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-The patch
+On Friday, September 25, 2015 10:27:18 AM Jarkko Nikula wrote:
+> Get pointer to the struct acpi_device by using ACPI_COMPANION() macro. This
+> is more efficient than using ACPI_HANDLE() and acpi_bus_get_device().
+> 
+> Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 
-   spi: atmel: Remove needless bits_per_word and speed_hz tests
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-has been applied to the spi tree at
+> ---
+>  drivers/spi/spi-pxa2xx.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+> index 36cbb0f10856..6f834e5b0547 100644
+> --- a/drivers/spi/spi-pxa2xx.c
+> +++ b/drivers/spi/spi-pxa2xx.c
+> @@ -1316,8 +1316,8 @@ pxa2xx_spi_acpi_get_pdata(struct platform_device *pdev)
+>  	const struct pci_device_id *pcidev_id = NULL;
+>  	int devid, type;
+>  
+> -	if (!ACPI_HANDLE(&pdev->dev) ||
+> -	    acpi_bus_get_device(ACPI_HANDLE(&pdev->dev), &adev))
+> +	adev = ACPI_COMPANION(&pdev->dev);
+> +	if (!adev)
+>  		return NULL;
+>  
+>  	if (dev_is_pci(pdev->dev.parent))
+> 
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From e8646580cc9a6ae24ab3d05f90e71334f50cdedf Mon Sep 17 00:00:00 2001
-From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Fri, 25 Sep 2015 09:03:01 +0300
-Subject: [PATCH] spi: atmel: Remove needless bits_per_word and speed_hz tests
-
-SPI core validates both bits_per_word and speed_hz transfer parameters and
-defaults to spi->bits_per_word and spi->max_speed_hz in case these per
-transfer parameters are not set. This makes possible to remove two if
-statements and remove one code block that is never executed.
-
-Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Acked-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-atmel.c | 21 ++++++---------------
- 1 file changed, 6 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index bf9ed38..1cc1f1e 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -871,14 +871,7 @@ static int atmel_spi_set_xfer_speed(struct atmel_spi *as,
- 	 * Calculate the lowest divider that satisfies the
- 	 * constraint, assuming div32/fdiv/mbz == 0.
- 	 */
--	if (xfer->speed_hz)
--		scbr = DIV_ROUND_UP(bus_hz, xfer->speed_hz);
--	else
--		/*
--		 * This can happend if max_speed is null.
--		 * In this case, we set the lowest possible speed
--		 */
--		scbr = 0xff;
-+	scbr = DIV_ROUND_UP(bus_hz, xfer->speed_hz);
- 
- 	/*
- 	 * If the resulting divider doesn't fit into the
-@@ -1300,14 +1293,12 @@ static int atmel_spi_one_transfer(struct spi_master *master,
- 		return -EINVAL;
- 	}
- 
--	if (xfer->bits_per_word) {
--		asd = spi->controller_state;
--		bits = (asd->csr >> 4) & 0xf;
--		if (bits != xfer->bits_per_word - 8) {
--			dev_dbg(&spi->dev,
-+	asd = spi->controller_state;
-+	bits = (asd->csr >> 4) & 0xf;
-+	if (bits != xfer->bits_per_word - 8) {
-+		dev_dbg(&spi->dev,
- 			"you can't yet change bits_per_word in transfers\n");
--			return -ENOPROTOOPT;
--		}
-+		return -ENOPROTOOPT;
- 	}
- 
- 	/*
 -- 
-2.5.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+I speak only for myself.
+Rafael J. Wysocki, Intel Open Source Technology Center.

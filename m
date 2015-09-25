@@ -1,7 +1,8 @@
 From: Anton Bondarenko <anton_bondarenko@mentor.com>
-Subject: [PATCH v2 6/8] spi: imx: return error from dma channel request
-Date: Fri, 25 Sep 2015 19:57:13 +0200
-Message-ID: <2d4cc8c07de8e90b76763d2c40aea57c598ee1a1.1442923630.git.anton_bondarenko@mentor.com>
+Subject: [PATCH v2 5/8] spi: imx: Add support for loopback for ECSPI
+ controllers
+Date: Fri, 25 Sep 2015 19:57:12 +0200
+Message-ID: <ca96561d8010acf587a93d0f357774bf77efbe16.1442923630.git.anton_bondarenko@mentor.com>
 References: <cover.1442923630.git.anton_bondarenko@mentor.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -23,49 +24,76 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On SDMA initialization return exactly the same error, which is
-reported by dma_request_slave_channel_reason(), it is a preceding
-change to defer SPI DMA initialization, if SDMA module is not yet
-available.
+Support for ECSPI loopback for IMX51,IMX53 and IMX6Q using TEST register.
 
-Signed-off-by: Vladimir Zapolskiy <vladimir_zapolskiy@mentor.com>
+Signed-off-by: Mohsin Kazmi <mohsin_kazmi@mentor.com>
 Signed-off-by: Anton Bondarenko <anton_bondarenko@mentor.com>
 ---
- drivers/spi/spi-imx.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ drivers/spi/spi-imx.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 4b3c16e..44d3cf0 100644
+index 41c9cef..4b3c16e 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -929,18 +929,20 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
- 	spi_imx->wml = spi_imx_get_fifosize(spi_imx) / 2;
+@@ -265,6 +265,9 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+ #define MX51_ECSPI_STAT		0x18
+ #define MX51_ECSPI_STAT_RR		(1 <<  3)
  
- 	/* Prepare for TX DMA: */
--	master->dma_tx = dma_request_slave_channel(dev, "tx");
--	if (!master->dma_tx) {
--		dev_err(dev, "cannot get the TX DMA channel!\n");
--		ret = -EINVAL;
-+	master->dma_tx = dma_request_slave_channel_reason(dev, "tx");
-+	if (IS_ERR(master->dma_tx)) {
-+		dev_info(dev, "cannot get the TX DMA channel!\n");
-+		ret = PTR_ERR(master->dma_tx);
-+		master->dma_tx = NULL;
- 		goto err;
- 	}
++#define MX51_ECSPI_TEST			0x20
++#define MX51_ECSPI_LOOP			BIT(31)
++
+ /* MX51 eCSPI */
+ static unsigned int mx51_ecspi_clkdiv(unsigned int fin, unsigned int fspi,
+ 				      unsigned int *fres)
+@@ -338,6 +341,7 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
+ 	u32 ctrl = MX51_ECSPI_CTRL_ENABLE, dma = 0;
+ 	u32 cfg = readl(spi_imx->base + MX51_ECSPI_CONFIG);
+ 	u32 delay;
++	u32 lpb = 0;
  
- 	/* Prepare for RX : */
--	master->dma_rx = dma_request_slave_channel(dev, "rx");
--	if (!master->dma_rx) {
--		dev_dbg(dev, "cannot get the DMA channel.\n");
--		ret = -EINVAL;
-+	master->dma_rx = dma_request_slave_channel_reason(dev, "rx");
-+	if (IS_ERR(master->dma_rx)) {
-+		dev_info(dev, "cannot get the DMA channel.\n");
-+		ret = PTR_ERR(master->dma_rx);
-+		master->dma_rx = NULL;
- 		goto err;
- 	}
+ 	/*
+ 	 * The hardware seems to have a race condition when changing modes. The
+@@ -370,8 +374,12 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
+ 	if (config->mode & SPI_CS_HIGH)
+ 		cfg |= MX51_ECSPI_CONFIG_SSBPOL(config->cs);
  
++	if (config->mode & SPI_LOOP)
++		lpb |= MX51_ECSPI_LOOP;
++
+ 	writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
+ 	writel(cfg, spi_imx->base + MX51_ECSPI_CONFIG);
++	writel(lpb, spi_imx->base + MX51_ECSPI_TEST);
+ 
+ 	/*
+ 	 * Wait until the changes in the configuration register CONFIGREG
+@@ -1252,6 +1260,9 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 	spi_imx = spi_master_get_devdata(master);
+ 	spi_imx->bitbang.master = master;
+ 
++	spi_imx->devtype_data = of_id ? of_id->data :
++		(struct spi_imx_devtype_data *)pdev->id_entry->driver_data;
++
+ 	for (i = 0; i < master->num_chipselect; i++) {
+ 		int cs_gpio = of_get_named_gpio(np, "cs-gpios", i);
+ 		if (!gpio_is_valid(cs_gpio) && mxc_platform_info)
+@@ -1276,12 +1287,13 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 	spi_imx->bitbang.master->cleanup = spi_imx_cleanup;
+ 	spi_imx->bitbang.master->prepare_message = spi_imx_prepare_message;
+ 	spi_imx->bitbang.master->unprepare_message = spi_imx_unprepare_message;
+-	spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
++	spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA |
++				SPI_CS_HIGH;
+ 
+-	init_completion(&spi_imx->xfer_done);
++	if (is_imx5x_ecspi(spi_imx))
++		spi_imx->bitbang.master->mode_bits |= SPI_LOOP;
+ 
+-	spi_imx->devtype_data = of_id ? of_id->data :
+-		(struct spi_imx_devtype_data *) pdev->id_entry->driver_data;
++	init_completion(&spi_imx->xfer_done);
+ 
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	spi_imx->base = devm_ioremap_resource(&pdev->dev, res);
 -- 
 2.5.2

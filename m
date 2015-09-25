@@ -1,42 +1,137 @@
-From: Anton Bondarenko <anton_bondarenko-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH v2 0/8] Improvements for SPI IMX driver for Freescale IMX53 and IMX6 families
-Date: Fri, 25 Sep 2015 19:57:07 +0200
-Message-ID: <cover.1442923630.git.anton_bondarenko@mentor.com>
+From: Anton Bondarenko <anton_bondarenko@mentor.com>
+Subject: [PATCH v2 4/8] spi: imx: add selection for iMX53 and iMX6 controller
+ type
+Date: Fri, 25 Sep 2015 19:57:11 +0200
+Message-ID: <7bd3057a58125575154fe7d8642a887efe27b469.1442923630.git.anton_bondarenko@mentor.com>
+References: <cover.1442923630.git.anton_bondarenko@mentor.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
-	<muzaffar_mahmood-aV4p89LCB337vf0t80Q1PNBPR1lH4CV8@public.gmane.org>,
-	<vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>, <b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: muzaffar_mahmood@relay1.mentorg.com, jiada_wang@mentor.com,
+ b38343@freescale.com, linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, vladimir_zapolskiy@mentor.com
+To: <broonie@kernel.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <cover.1442923630.git.anton_bondarenko@mentor.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-A number of patches to impove or add the implementation
-for the spi-imx driver related to Freescale IMX53 and IMX6.
-It would also possible some of patches can be applied for other
-Freescale controllers using spi-imx driver but could not be tested
-due to lack of hardware.
+ECSPI contorller for iMX53 and iMX6 has few hardware issues in slave
+mode and (32*n+1) SPI word size handling comparing to iMX51.
+The change add possibility to detect the SPI controller is use and apply
+workarounds/limitations.
+Documentation for device tree bindings updated
 
-Anton Bondarenko (8):
-  spi: imx: Fix DMA transfer
-  spi: imx: replace fixed timeout with calculated one
-  spi: imx: add support for all SPI word width for DMA transfer
-  spi: imx: add selection for iMX53 and iMX6 controller type
-  spi: imx: Add support for loopback for ECSPI controllers
-  spi: imx: return error from dma channel request
-  spi: imx: defer spi initialization, if DMA engine is pending
-  spi: imx: Add support for SPI Slave mode for imx53 and imx6 chips
+Signed-off-by: Anton Bondarenko <anton_bondarenko@mentor.com>
+---
+ .../devicetree/bindings/spi/fsl-imx-cspi.txt       |  2 ++
+ drivers/spi/spi-imx.c                              | 36 ++++++++++++++++++++--
+ 2 files changed, 35 insertions(+), 3 deletions(-)
 
- .../devicetree/bindings/spi/fsl-imx-cspi.txt       |   3 +
- drivers/spi/spi-imx.c                              | 486 ++++++++++++++++-----
- 2 files changed, 388 insertions(+), 101 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+index 523341a..425485f 100644
+--- a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
++++ b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+@@ -9,6 +9,8 @@ Required properties:
+   - "fsl,imx31-cspi" for SPI compatible with the one integrated on i.MX31
+   - "fsl,imx35-cspi" for SPI compatible with the one integrated on i.MX35
+   - "fsl,imx51-ecspi" for SPI compatible with the one integrated on i.MX51
++  - "fsl,imx53-ecspi" for SPI compatible with the one integrated on i.MX53
++  - "fsl,imx6q-ecspi" for SPI compatible with the one integrated on i.MX6 family
+ - reg : Offset and length of the register set for the device
+ - interrupts : Should contain CSPI/eCSPI interrupt
+ - fsl,spi-num-chipselects : Contains the number of the chipselect
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index d9b730d..41c9cef 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -72,7 +72,8 @@ enum spi_imx_devtype {
+ 	IMX27_CSPI,
+ 	IMX31_CSPI,
+ 	IMX35_CSPI,	/* CSPI on all i.mx except above */
+-	IMX51_ECSPI,	/* ECSPI on i.mx51 and later */
++	IMX51_ECSPI,	/* ECSPI on i.mx51 */
++	IMX53_ECSPI,	/* ECSPI on i.mx53 and later */
+ };
+ 
+ struct spi_imx_data;
+@@ -129,9 +130,20 @@ static inline int is_imx35_cspi(struct spi_imx_data *d)
+ 	return d->devtype_data->devtype == IMX35_CSPI;
+ }
+ 
++static inline int is_imx53_ecspi(struct spi_imx_data *d)
++{
++	return d->devtype_data->devtype == IMX53_ECSPI;
++}
++
++static inline int is_imx5x_ecspi(struct spi_imx_data *d)
++{
++	return d->devtype_data->devtype == IMX51_ECSPI ||
++	       d->devtype_data->devtype == IMX53_ECSPI;
++}
++
+ static inline unsigned spi_imx_get_fifosize(struct spi_imx_data *d)
+ {
+-	return (d->devtype_data->devtype == IMX51_ECSPI) ? 64 : 8;
++	return is_imx5x_ecspi(d) ? 64 : 8;
+ }
+ 
+ #define MXC_SPI_BUF_RX(type)						\
+@@ -680,6 +692,16 @@ static struct spi_imx_devtype_data imx51_ecspi_devtype_data = {
+ 	.devtype = IMX51_ECSPI,
+ };
+ 
++static struct spi_imx_devtype_data imx53_ecspi_devtype_data = {
++	/* i.mx53 and later ecspi shares the functions with i.mx51 one */
++	.intctrl = mx51_ecspi_intctrl,
++	.config = mx51_ecspi_config,
++	.trigger = mx51_ecspi_trigger,
++	.rx_available = mx51_ecspi_rx_available,
++	.reset = mx51_ecspi_reset,
++	.devtype = IMX53_ECSPI,
++};
++
+ static const struct platform_device_id spi_imx_devtype[] = {
+ 	{
+ 		.name = "imx1-cspi",
+@@ -697,6 +719,12 @@ static const struct platform_device_id spi_imx_devtype[] = {
+ 		.name = "imx35-cspi",
+ 		.driver_data = (kernel_ulong_t) &imx35_cspi_devtype_data,
+ 	}, {
++		.name = "imx53-ecspi",
++		.driver_data = (kernel_ulong_t)&imx53_ecspi_devtype_data,
++	}, {
++		.name = "imx6q-ecspi",
++		.driver_data = (kernel_ulong_t)&imx53_ecspi_devtype_data,
++	}, {
+ 		.name = "imx51-ecspi",
+ 		.driver_data = (kernel_ulong_t) &imx51_ecspi_devtype_data,
+ 	}, {
+@@ -710,6 +738,8 @@ static const struct of_device_id spi_imx_dt_ids[] = {
+ 	{ .compatible = "fsl,imx27-cspi", .data = &imx27_cspi_devtype_data, },
+ 	{ .compatible = "fsl,imx31-cspi", .data = &imx31_cspi_devtype_data, },
+ 	{ .compatible = "fsl,imx35-cspi", .data = &imx35_cspi_devtype_data, },
++	{ .compatible = "fsl,imx53-ecspi", .data = &imx53_ecspi_devtype_data, },
++	{ .compatible = "fsl,imx6q-ecspi", .data = &imx53_ecspi_devtype_data, },
+ 	{ .compatible = "fsl,imx51-ecspi", .data = &imx51_ecspi_devtype_data, },
+ 	{ /* sentinel */ }
+ };
+@@ -1299,7 +1329,7 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 	 * Only validated on i.mx6 now, can remove the constrain if validated on
+ 	 * other chips.
+ 	 */
+-	if (spi_imx->devtype_data == &imx51_ecspi_devtype_data &&
++	if (is_imx5x_ecspi(spi_imx) &&
+ 	    spi_imx_sdma_init(&pdev->dev, spi_imx, master))
+ 		dev_err(&pdev->dev, "dma setup error,use pio instead\n");
+ 
 -- 
 2.5.2
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

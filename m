@@ -1,70 +1,42 @@
-From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH RESEND] spi: atmel: Remove needless bits_per_word and speed_hz tests
-Date: Fri, 25 Sep 2015 09:03:01 +0300
-Message-ID: <1443160981-15608-1-git-send-email-jarkko.nikula@linux.intel.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Subject: [PATCH 2/2] spi: pxa2xx: Use ACPI_COMPANION() instead of acpi_bus_get_device()
+Date: Fri, 25 Sep 2015 10:27:18 +0300
+Message-ID: <1443166038-31658-2-git-send-email-jarkko.nikula@linux.intel.com>
+References: <1443166038-31658-1-git-send-email-jarkko.nikula@linux.intel.com>
+Cc: Mark Brown <broonie@kernel.org>, linux-acpi@vger.kernel.org,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>
+To: linux-spi@vger.kernel.org
+Return-path: <linux-acpi-owner@vger.kernel.org>
+In-Reply-To: <1443166038-31658-1-git-send-email-jarkko.nikula@linux.intel.com>
+Sender: linux-acpi-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-SPI core validates both bits_per_word and speed_hz transfer parameters and
-defaults to spi->bits_per_word and spi->max_speed_hz in case these per
-transfer parameters are not set. This makes possible to remove two if
-statements and remove one code block that is never executed.
+Get pointer to the struct acpi_device by using ACPI_COMPANION() macro. This
+is more efficient than using ACPI_HANDLE() and acpi_bus_get_device().
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Acked-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 ---
- drivers/spi/spi-atmel.c | 21 ++++++---------------
- 1 file changed, 6 insertions(+), 15 deletions(-)
+ drivers/spi/spi-pxa2xx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 63318e2afba1..41e37a6a1368 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -871,14 +871,7 @@ static int atmel_spi_set_xfer_speed(struct atmel_spi *as,
- 	 * Calculate the lowest divider that satisfies the
- 	 * constraint, assuming div32/fdiv/mbz == 0.
- 	 */
--	if (xfer->speed_hz)
--		scbr = DIV_ROUND_UP(bus_hz, xfer->speed_hz);
--	else
--		/*
--		 * This can happend if max_speed is null.
--		 * In this case, we set the lowest possible speed
--		 */
--		scbr = 0xff;
-+	scbr = DIV_ROUND_UP(bus_hz, xfer->speed_hz);
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 36cbb0f10856..6f834e5b0547 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1316,8 +1316,8 @@ pxa2xx_spi_acpi_get_pdata(struct platform_device *pdev)
+ 	const struct pci_device_id *pcidev_id = NULL;
+ 	int devid, type;
  
- 	/*
- 	 * If the resulting divider doesn't fit into the
-@@ -1300,14 +1293,12 @@ static int atmel_spi_one_transfer(struct spi_master *master,
- 		return -EINVAL;
- 	}
+-	if (!ACPI_HANDLE(&pdev->dev) ||
+-	    acpi_bus_get_device(ACPI_HANDLE(&pdev->dev), &adev))
++	adev = ACPI_COMPANION(&pdev->dev);
++	if (!adev)
+ 		return NULL;
  
--	if (xfer->bits_per_word) {
--		asd = spi->controller_state;
--		bits = (asd->csr >> 4) & 0xf;
--		if (bits != xfer->bits_per_word - 8) {
--			dev_dbg(&spi->dev,
-+	asd = spi->controller_state;
-+	bits = (asd->csr >> 4) & 0xf;
-+	if (bits != xfer->bits_per_word - 8) {
-+		dev_dbg(&spi->dev,
- 			"you can't yet change bits_per_word in transfers\n");
--			return -ENOPROTOOPT;
--		}
-+		return -ENOPROTOOPT;
- 	}
- 
- 	/*
+ 	if (dev_is_pci(pdev->dev.parent))
 -- 
 2.5.3
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

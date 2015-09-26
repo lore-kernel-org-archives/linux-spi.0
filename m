@@ -1,40 +1,46 @@
-From: Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: pxa2xx: Set the max_speed_hz of the master
-Date: Sat, 26 Sep 2015 11:23:26 +0200
-Message-ID: <877fndo7ox.fsf@belgarion.home>
-References: <1443166038-31658-1-git-send-email-jarkko.nikula@linux.intel.com>
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+Subject: Re: [PATCH] ARM: pxa: Remove unused clock_enable field from struct pxa2xx_spi_master
+Date: Sat, 26 Sep 2015 21:47:53 +0200
+Message-ID: <87io6xezdi.fsf@belgarion.home>
+References: <1442560481-26008-1-git-send-email-jarkko.nikula@linux.intel.com>
+	<87k2rlq9go.fsf@belgarion.home>
 Mime-Version: 1.0
 Content-Type: text/plain
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1443166038-31658-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-	(Jarkko Nikula's message of "Fri, 25 Sep 2015 10:27:17 +0300")
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+	Russell King <linux@arm.linux.org.uk>,
+	Mark Brown <broonie@kernel.org>,
+	Philipp Zabel <philipp.zabel@gmail.com>,
+	Paul Parsons <lost.distance@yahoo.com>,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Marek Vasut <marek.vasut@gmail.com>
+To: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <87k2rlq9go.fsf@belgarion.home> (Robert Jarzmik's message of
+	"Sun, 20 Sep 2015 19:36:23 +0200")
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org> writes:
+Robert Jarzmik <robert.jarzmik@free.fr> writes:
 
-> Carry input clock of the controller in max_speed_hz of struct spi_master
-> instead of in own driver data. They mean the same thing and more over now
-> the max_speed_hz is not even set here.
+> Jarkko Nikula <jarkko.nikula@linux.intel.com> writes:
 >
-> As an added bonus this allows SPI core to validate that transfer speed is
-> not beyond the maximum input clock. This is not a problem in spi-pxa2xx as
-> the driver doesn't use transfer speed parameter directly but via input
-> clock divider calculation which will top at divide by one. However it's
-> better to validate speed before passing it here.
->
-> Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Acked-by: Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>
+>> Use for struct pxa2xx_spi_master clock_enable field was removed years ago
+>> from the pxa2xx-spi driver by the commit 2f1a74e5a2de ("[ARM] pxa: make
+>> pxa2xx_spi driver use ssp_request()/ssp_free()").
+>>
+>> Therefore remove it from structure definition, documentation and from
+>> couple affected board files.
+>>
+>> Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+>> ---
+>> I propose this to be merged via ARM tree. I don't see we would need to do
+>> other SPI related changes to struct pxa2xx_spi_master in near future (knock
+>> on wood).
+> I'll take that through the pxa/for-next tree in a couple of days, thanks.
+Queued in pxa/for-next, thanks.
 
 Cheers.
 
---
+-- 
 Robert
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

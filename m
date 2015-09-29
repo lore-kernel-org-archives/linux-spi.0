@@ -1,61 +1,76 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH linux-next 0/4] mtd: spi-nor: fix Quad SPI memory support
-Date: Tue, 29 Sep 2015 16:31:06 +0100
-Message-ID: <20150929153106.GW30445@sirena.org.uk>
-References: <cover.1442590224.git.cyrille.pitchen@atmel.com>
- <56094A49.7000304@atmel.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="oMQ/0Eds4GFUZehv"
-Cc: nicolas.ferre@atmel.com, linux-spi@vger.kernel.org,
-	dwmw2@infradead.org, computersforpeace@gmail.com, zajec5@gmail.com,
-	beanhuo@micron.com, juhosg@openwrt.org, marex@denx.de,
-	ben@decadent.org.uk, jogo@openwrt.org, jteki@openedev.com,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org, robh+dt@kernel.org, pawel.moll@arm.com,
-	mark.rutland@arm.com, ijc+devicetree@hellion.org.uk,
-	galak@codeaurora.org, linux-mtd@lists.infradead.org
-To: Cyrille Pitchen <cyrille.pitchen@atmel.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <56094A49.7000304@atmel.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: sh-msiof: Match renesas,rx-fifo-size in DT bindings doc with driver" to the spi tree
+Date: Tue, 29 Sep 2015 19:05:12 +0100
+Message-ID: <E1ZgzH6-0003iN-Gm@finisterre>
+References: <1443446883-4189-1-git-send-email-geert+renesas@glider.be>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1443446883-4189-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---oMQ/0Eds4GFUZehv
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   spi: sh-msiof: Match renesas,rx-fifo-size in DT bindings doc with driver
 
-On Mon, Sep 28, 2015 at 04:10:17PM +0200, Cyrille Pitchen wrote:
-> Hi all,
+has been applied to the spi tree at
 
-Please don't top post. =20
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> Brian, Mark, Marek, with this series I've removed the Atmel QSPI controll=
-er
-> driver to focus only on the common spi-nor framework. I will send a dedic=
-ated
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-I'm deleting most of these threads unread unless there is some specific
-mention of SPI in the subject line of a patch.  I don't really have much
-to contribute on the flash-specific portions of the discussion.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---oMQ/0Eds4GFUZehv
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-iQEcBAEBCAAGBQJWCq65AAoJECTWi3JdVIfQieMH/0zZ4ItML4gAii0CbDNiRdlj
-od6ON0VXLIiGbmBPgbEiLLbyXSQA2axdJUjwxu90zuq9cQbLgE5IUtqsgsPwpenO
-wwKJzAvSx4RQ22dv3xNOM/9eneebDxvrXzSl8TnKg1bw/xRdW0E9KizObbiR5B14
-SmdSqYb/SJQAkZLY67yuD87BD57h8kjXABKRG9f66YmPWUz816eXA0ajK8U5XkFM
-kyuBE6TqykhY5YJwpFFFUWg79etx8W++QLK2anYQUGT7pfgwXToZgh/PqA+3ccSp
-oq4GBm9wypO9t024fANETxdHJTvMwmbZW/PycPU8X+qtXnkd4yMhPPNKtkeB/Wk=
-=AWh0
------END PGP SIGNATURE-----
+Thanks,
+Mark
 
---oMQ/0Eds4GFUZehv--
+>From eb8d0ac4afd8b15ac88f8a50342b32774ff881ed Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Date: Mon, 28 Sep 2015 15:28:03 +0200
+Subject: [PATCH] spi: sh-msiof: Match renesas,rx-fifo-size in DT bindings doc
+ with driver
+
+Commit fe78d0b7691c0274 ("spi: sh-msiof: Fix FIFO size to 64 word from
+256 word") changed the default RX FIFO size on R-Car Gen2 SoCs in the
+driver code, but forgot to update the DT bindings documentation.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ Documentation/devicetree/bindings/spi/sh-msiof.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Documentation/devicetree/bindings/spi/sh-msiof.txt b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+index 8f77144..705075d 100644
+--- a/Documentation/devicetree/bindings/spi/sh-msiof.txt
++++ b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+@@ -51,7 +51,7 @@ Optional properties, deprecated for soctype-specific bindings:
+ - renesas,tx-fifo-size : Overrides the default tx fifo size given in words
+ 			 (default is 64)
+ - renesas,rx-fifo-size : Overrides the default rx fifo size given in words
+-			 (default is 64, or 256 on R-Car Gen2)
++			 (default is 64)
+ 
+ Pinctrl properties might be needed, too.  See
+ Documentation/devicetree/bindings/pinctrl/renesas,*.
+-- 
+2.5.0
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

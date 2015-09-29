@@ -1,62 +1,61 @@
-From: Charles Keepax <ckeepax@opensource.wolfsonmicro.com>
-Subject: Re: Fwd: [PATCH 1/1] SPI : spi-pxa2xx : fix spi init
- of WM510205 codec via ACPI (resend)
-Date: Tue, 29 Sep 2015 08:57:15 +0100
-Message-ID: <20150929075715.GG5432@ck-lbox>
-References: <20150827145614.GC5313@sirena.org.uk>
- <CAKor6Tf8kB0WPXLTBFmCzUJkMVEDu-xTEyw0-_NZvBdFSyQSFA@mail.gmail.com>
- <CAKor6TfW4reRz3m-xkCr_ZUfHQkfqT3q+S7JCpO-9F+k1QW38g@mail.gmail.com>
- <CAKor6Tf7_Hiyc1v_TGvdVAU+G84Gp+KgKeSGi8EQJRoq9rhMuw@mail.gmail.com>
- <20150902081334.GB15505@ck-lbox>
- <CAKor6TdaRqi0+a0ZHkdJngE2LPKHk0PUFrdQQ2-x59cxUa8cXA@mail.gmail.com>
- <20150904143434.GA1514@edi-sw-dsktp001.ad.cirrus.com>
- <CAKor6TfhaHfqkmz-dogJ6dEUe06QFv-ee7uPOLiEGSTh3ibkhQ@mail.gmail.com>
- <20150928090852.GF5432@ck-lbox>
- <CAKor6Tc7pb_BnkZwhXDQ1+yMvC+YwXS3LO=5snZO65E8vsUgVw@mail.gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH linux-next 0/4] mtd: spi-nor: fix Quad SPI memory support
+Date: Tue, 29 Sep 2015 16:31:06 +0100
+Message-ID: <20150929153106.GW30445@sirena.org.uk>
+References: <cover.1442590224.git.cyrille.pitchen@atmel.com>
+ <56094A49.7000304@atmel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: alsa-devel@alsa-project.org, Robert Jarzmik <robert.jarzmik@free.fr>,
- Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
- Haojian Zhuang <haojian.zhuang@gmail.com>, linux-spi@vger.kernel.org,
- Mark Brown <broonie@kernel.org>, jarkko.nikula@linux.intel.com,
- dan.carpenter@oracle.com, Mika Westerberg <mika.westerberg@linux.intel.com>,
- Daniel Mack <daniel@zonque.org>
-To: Christian Hartmann <cornogle@googlemail.com>
-Return-path: <alsa-devel-bounces@alsa-project.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="oMQ/0Eds4GFUZehv"
+Cc: nicolas.ferre@atmel.com, linux-spi@vger.kernel.org,
+	dwmw2@infradead.org, computersforpeace@gmail.com, zajec5@gmail.com,
+	beanhuo@micron.com, juhosg@openwrt.org, marex@denx.de,
+	ben@decadent.org.uk, jogo@openwrt.org, jteki@openedev.com,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org, robh+dt@kernel.org, pawel.moll@arm.com,
+	mark.rutland@arm.com, ijc+devicetree@hellion.org.uk,
+	galak@codeaurora.org, linux-mtd@lists.infradead.org
+To: Cyrille Pitchen <cyrille.pitchen@atmel.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CAKor6Tc7pb_BnkZwhXDQ1+yMvC+YwXS3LO=5snZO65E8vsUgVw@mail.gmail.com>
-List-Unsubscribe: <http://mailman.alsa-project.org/mailman/options/alsa-devel>,
- <mailto:alsa-devel-request@alsa-project.org?subject=unsubscribe>
-List-Archive: <http://mailman.alsa-project.org/pipermail/alsa-devel/>
-List-Post: <mailto:alsa-devel@alsa-project.org>
-List-Help: <mailto:alsa-devel-request@alsa-project.org?subject=help>
-List-Subscribe: <http://mailman.alsa-project.org/mailman/listinfo/alsa-devel>,
- <mailto:alsa-devel-request@alsa-project.org?subject=subscribe>
-Errors-To: alsa-devel-bounces@alsa-project.org
-Sender: alsa-devel-bounces@alsa-project.org
+In-Reply-To: <56094A49.7000304@atmel.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Sep 29, 2015 at 09:48:45AM +0200, Christian Hartmann wrote:
-> Hi,
-> 
-> 
-> > Ok no major hints from them, they do have a 10 inch version of
-> > the same tablet lying around though so I will get them to post
-> > that up and have a look see if I can figure anything out.
-> >
-> nice to hear, I am stuck at reading the chip registers ID value
-> correctly at the moment.
-> 
-> > If you had anywhere I can pull in what you have done already that
-> > would be handy.
-> I have no such public or secure repo setup yet, time to do that.
-> in that case with the wm510205 branched from torvalds/master, what do
-> you prefer or
-> is it okay, if I make an repo on github for it ??
 
-Yeah branched of Linus's tree is probably best and shoving it on
-github works for me.
+--oMQ/0Eds4GFUZehv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks,
-Charles
+On Mon, Sep 28, 2015 at 04:10:17PM +0200, Cyrille Pitchen wrote:
+> Hi all,
+
+Please don't top post. =20
+
+> Brian, Mark, Marek, with this series I've removed the Atmel QSPI controll=
+er
+> driver to focus only on the common spi-nor framework. I will send a dedic=
+ated
+
+I'm deleting most of these threads unread unless there is some specific
+mention of SPI in the subject line of a patch.  I don't really have much
+to contribute on the flash-specific portions of the discussion.
+
+--oMQ/0Eds4GFUZehv
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJWCq65AAoJECTWi3JdVIfQieMH/0zZ4ItML4gAii0CbDNiRdlj
+od6ON0VXLIiGbmBPgbEiLLbyXSQA2axdJUjwxu90zuq9cQbLgE5IUtqsgsPwpenO
+wwKJzAvSx4RQ22dv3xNOM/9eneebDxvrXzSl8TnKg1bw/xRdW0E9KizObbiR5B14
+SmdSqYb/SJQAkZLY67yuD87BD57h8kjXABKRG9f66YmPWUz816eXA0ajK8U5XkFM
+kyuBE6TqykhY5YJwpFFFUWg79etx8W++QLK2anYQUGT7pfgwXToZgh/PqA+3ccSp
+oq4GBm9wypO9t024fANETxdHJTvMwmbZW/PycPU8X+qtXnkd4yMhPPNKtkeB/Wk=
+=AWh0
+-----END PGP SIGNATURE-----
+
+--oMQ/0Eds4GFUZehv--

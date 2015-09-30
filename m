@@ -1,67 +1,65 @@
 From: Robin Gong <b38343@freescale.com>
-Subject: Re: [PATCH v2 6/8] spi: imx: return error from dma channel request
-Date: Wed, 30 Sep 2015 16:51:59 +0800
-Message-ID: <20150930085158.GF2709@shlinux2>
+Subject: Re: [PATCH v2 7/8] spi: imx: defer spi initialization, if DMA engine
+ is pending
+Date: Wed, 30 Sep 2015 16:54:59 +0800
+Message-ID: <20150930085458.GG2709@shlinux2>
 References: <cover.1442923630.git.anton_bondarenko@mentor.com>
- <2d4cc8c07de8e90b76763d2c40aea57c598ee1a1.1442923630.git.anton_bondarenko@mentor.com>
+ <42b82309e539e8a5523dca5364846c472ab9dcee.1442923630.git.anton_bondarenko@mentor.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Cc: <broonie@kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-spi@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <jiada_wang@mentor.com>,
-	<muzaffar_mahmood@relay1.mentorg.com>,
-	<vladimir_zapolskiy@mentor.com>
+Content-Transfer-Encoding: 7bit
+Cc: muzaffar_mahmood@relay1.mentorg.com, jiada_wang@mentor.com,
+ linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, broonie@kernel.org,
+ vladimir_zapolskiy@mentor.com, linux-arm-kernel@lists.infradead.org
 To: Anton Bondarenko <anton_bondarenko@mentor.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
 Content-Disposition: inline
-In-Reply-To: <2d4cc8c07de8e90b76763d2c40aea57c598ee1a1.1442923630.git.anton_bondarenko@mentor.com>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <42b82309e539e8a5523dca5364846c472ab9dcee.1442923630.git.anton_bondarenko@mentor.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Sep 25, 2015 at 07:57:13PM +0200, Anton Bondarenko wrote:
-> On SDMA initialization return exactly the same error, which is
-> reported by dma_request_slave_channel_reason(), it is a preceding
-> change to defer SPI DMA initialization, if SDMA module is not yet
-> available.
+On Fri, Sep 25, 2015 at 07:57:14PM +0200, Anton Bondarenko wrote:
+> If SPI device supports DMA mode, but DMA controller is not yet
+> available due to e.g. a delay in the corresponding kernel module
+> initialization, retry to initialize SPI driver later on instead of
+> falling back into PIO only mode.
 > 
 > Signed-off-by: Vladimir Zapolskiy <vladimir_zapolskiy@mentor.com>
 > Signed-off-by: Anton Bondarenko <anton_bondarenko@mentor.com>
 > ---
->  drivers/spi/spi-imx.c | 18 ++++++++++--------
->  1 file changed, 10 insertions(+), 8 deletions(-)
+>  drivers/spi/spi-imx.c | 12 +++++++++---
+>  1 file changed, 9 insertions(+), 3 deletions(-)
 > 
 > diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-> index 4b3c16e..44d3cf0 100644
+> index 44d3cf0..1bf0739a 100644
 > --- a/drivers/spi/spi-imx.c
 > +++ b/drivers/spi/spi-imx.c
-> @@ -929,18 +929,20 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
->  	spi_imx->wml = spi_imx_get_fifosize(spi_imx) / 2;
+> @@ -1343,9 +1343,15 @@ static int spi_imx_probe(struct platform_device *pdev)
+>  	 * Only validated on i.mx6 now, can remove the constrain if validated on
+>  	 * other chips.
+>  	 */
+> -	if (is_imx5x_ecspi(spi_imx) &&
+> -	    spi_imx_sdma_init(&pdev->dev, spi_imx, master))
+> -		dev_err(&pdev->dev, "dma setup error,use pio instead\n");
+> +	if (is_imx5x_ecspi(spi_imx)) {
+> +		ret = spi_imx_sdma_init(&pdev->dev, spi_imx, master);
+> +		if (ret == -EPROBE_DEFER)
+> +			goto out_clk_put;
+> +
+> +		if (ret < 0)
+> +			dev_err(&pdev->dev, "dma setup error %d, use pio\n",
+> +				ret);
+> +	}
 >  
->  	/* Prepare for TX DMA: */
-> -	master->dma_tx = dma_request_slave_channel(dev, "tx");
-> -	if (!master->dma_tx) {
-> -		dev_err(dev, "cannot get the TX DMA channel!\n");
-> -		ret = -EINVAL;
-> +	master->dma_tx = dma_request_slave_channel_reason(dev, "tx");
-> +	if (IS_ERR(master->dma_tx)) {
-> +		dev_info(dev, "cannot get the TX DMA channel!\n");
-> +		ret = PTR_ERR(master->dma_tx);
-> +		master->dma_tx = NULL;
->  		goto err;
->  	}
->  
->  	/* Prepare for RX : */
-> -	master->dma_rx = dma_request_slave_channel(dev, "rx");
-> -	if (!master->dma_rx) {
-> -		dev_dbg(dev, "cannot get the DMA channel.\n");
-> -		ret = -EINVAL;
-> +	master->dma_rx = dma_request_slave_channel_reason(dev, "rx");
-> +	if (IS_ERR(master->dma_rx)) {
-> +		dev_info(dev, "cannot get the DMA channel.\n");
-> +		ret = PTR_ERR(master->dma_rx);
-> +		master->dma_rx = NULL;
->  		goto err;
->  	}
+>  	spi_imx->devtype_data->reset(spi_imx);
 >  
 > -- 
 > 2.5.2

@@ -1,50 +1,83 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: bitbang: switch to the generic implementation
- of transfer_one_message
-Date: Wed, 30 Sep 2015 19:12:16 +0100
-Message-ID: <20150930181216.GQ15635@sirena.org.uk>
-References: <560AFF89.5000907@gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="r/w8vo2lxBmCPGjQ"
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Applied "spi: ath79: simplify iomem resource mapping" to the spi tree
+Date: Wed, 30 Sep 2015 20:33:51 +0100
+Message-ID: <E1ZhN8R-0006ie-PU@finisterre>
+References: <56081DA7.4040305@gmail.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <560AFF89.5000907-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <56081DA7.4040305-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---r/w8vo2lxBmCPGjQ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: ath79: simplify iomem resource mapping
 
-On Tue, Sep 29, 2015 at 11:15:53PM +0200, Heiner Kallweit wrote:
-> Change the bitbang driver to use the generic implementation of
-> transfer_one_message. This simplifies the bitbang driver code and
-> provides benefits like the statistics in the generic implementation.
+has been applied to the spi tree at
 
-Sorry, I actually have patch 1 but they weren't threaded together so got
-separated by some other mail in my inbox.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
---r/w8vo2lxBmCPGjQ
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEcBAEBCAAGBQJWDCX/AAoJECTWi3JdVIfQjtQH/RYv7/2Q41xwzVRYdJPWdP/3
-FRUJpqU5GuDeSyvTEjZTJdEufQAViGaPjh9qXDhFbzjp8x1c6ZiftyV91sjVk5Ak
-NZflbbGg88gXuaC5D8gUsIg1yr0M97W96Q6kyyBe6lcaMzz+O37Iapzk8SZXfx3A
-lOrKkkZ3VOYCvf9BVDCZGFg+CLiTf7rVHnmh24K54vGaaEFTA2UIzwBjC7LlDHg6
-Wvb0F35BtPWLaLGpFlvQJRvy4RzPXkmykgbUavWSBf4Yht540BIUoupzaFhfKX9t
-MRcTj5ZvU57YdWdvYe9PWx4oGIKN7j6/968oHlHeMrpxMuzeo4p9DaLdF6upoWU=
-=3+Vm
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---r/w8vo2lxBmCPGjQ--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From b7a2a1c0b67283442a06fcc679cba0683914f794 Mon Sep 17 00:00:00 2001
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Sun, 27 Sep 2015 18:47:35 +0200
+Subject: [PATCH] spi: ath79: simplify iomem resource mapping
+
+Simplify the code by switching from devm_ioremap to devm_ioremap_resource.
+Checking the result of platform_get_resource is not needed as
+devm_ioremap_resource checks the provided resource argument for NULL.
+
+Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-ath79.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/spi/spi-ath79.c b/drivers/spi/spi-ath79.c
+index bf1f9b3..6165bf21 100644
+--- a/drivers/spi/spi-ath79.c
++++ b/drivers/spi/spi-ath79.c
+@@ -240,14 +240,9 @@ static int ath79_spi_probe(struct platform_device *pdev)
+ 	sp->bitbang.flags = SPI_CS_HIGH;
+ 
+ 	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (r == NULL) {
+-		ret = -ENOENT;
+-		goto err_put_master;
+-	}
+-
+-	sp->base = devm_ioremap(&pdev->dev, r->start, resource_size(r));
+-	if (!sp->base) {
+-		ret = -ENXIO;
++	sp->base = devm_ioremap_resource(&pdev->dev, r);
++	if (IS_ERR(sp->base)) {
++		ret = PTR_ERR(sp->base);
+ 		goto err_put_master;
+ 	}
+ 
+-- 
+2.5.0
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

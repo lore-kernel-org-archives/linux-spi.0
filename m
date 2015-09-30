@@ -1,66 +1,51 @@
-From: Robin Gong <b38343@freescale.com>
-Subject: Re: [PATCH v2 7/8] spi: imx: defer spi initialization, if DMA engine
- is pending
-Date: Wed, 30 Sep 2015 16:54:59 +0800
-Message-ID: <20150930085458.GG2709@shlinux2>
-References: <cover.1442923630.git.anton_bondarenko@mentor.com>
- <42b82309e539e8a5523dca5364846c472ab9dcee.1442923630.git.anton_bondarenko@mentor.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi: bitbang: switch to the generic implementation
+ of transfer_one_message
+Date: Wed, 30 Sep 2015 19:10:37 +0100
+Message-ID: <20150930181036.GO15635@sirena.org.uk>
+References: <560AFF89.5000907@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: muzaffar_mahmood@relay1.mentorg.com, jiada_wang@mentor.com,
- linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, broonie@kernel.org,
- vladimir_zapolskiy@mentor.com, linux-arm-kernel@lists.infradead.org
-To: Anton Bondarenko <anton_bondarenko@mentor.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="lBqJz4CGKwlWe7/k"
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <42b82309e539e8a5523dca5364846c472ab9dcee.1442923630.git.anton_bondarenko@mentor.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <560AFF89.5000907-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, Sep 25, 2015 at 07:57:14PM +0200, Anton Bondarenko wrote:
-> If SPI device supports DMA mode, but DMA controller is not yet
-> available due to e.g. a delay in the corresponding kernel module
-> initialization, retry to initialize SPI driver later on instead of
-> falling back into PIO only mode.
-> 
-> Signed-off-by: Vladimir Zapolskiy <vladimir_zapolskiy@mentor.com>
-> Signed-off-by: Anton Bondarenko <anton_bondarenko@mentor.com>
-> ---
->  drivers/spi/spi-imx.c | 12 +++++++++---
->  1 file changed, 9 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-> index 44d3cf0..1bf0739a 100644
-> --- a/drivers/spi/spi-imx.c
-> +++ b/drivers/spi/spi-imx.c
-> @@ -1343,9 +1343,15 @@ static int spi_imx_probe(struct platform_device *pdev)
->  	 * Only validated on i.mx6 now, can remove the constrain if validated on
->  	 * other chips.
->  	 */
-> -	if (is_imx5x_ecspi(spi_imx) &&
-> -	    spi_imx_sdma_init(&pdev->dev, spi_imx, master))
-> -		dev_err(&pdev->dev, "dma setup error,use pio instead\n");
-> +	if (is_imx5x_ecspi(spi_imx)) {
-> +		ret = spi_imx_sdma_init(&pdev->dev, spi_imx, master);
-> +		if (ret == -EPROBE_DEFER)
-> +			goto out_clk_put;
-> +
-> +		if (ret < 0)
-> +			dev_err(&pdev->dev, "dma setup error %d, use pio\n",
-> +				ret);
-> +	}
->  
->  	spi_imx->devtype_data->reset(spi_imx);
->  
-> -- 
-> 2.5.2
-> 
+
+--lBqJz4CGKwlWe7/k
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Tue, Sep 29, 2015 at 11:15:53PM +0200, Heiner Kallweit wrote:
+> Change the bitbang driver to use the generic implementation of
+> transfer_one_message. This simplifies the bitbang driver code and
+> provides benefits like the statistics in the generic implementation.
+
+I'm missing patch 1 and/or a cover letter here - what is it and what are
+the dependencies?
+
+--lBqJz4CGKwlWe7/k
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJWDCWcAAoJECTWi3JdVIfQqPQH/jdRwHrq+EsvmWYajRIqexFa
+7rqBqu/4u2X3I1yndCBVCwcsPHOm6n5UvKi5v65Iz7r74V2H6ab9yQ55+USE9B+7
+yVMXOwiZyGfp1eivL68Ifwe7690cfKCeOVvvVW5jwkb9W/as83y/0Rr+3ZnXxO0s
+9WI/qIF04eoTSfJUiqhH2+WU5hE6WRozMhUxoeIJpUq6qZ0pN7FauxwtsiyCM8mQ
+Uh3HpPEONHsq+jVJSvQALDct+/ulubUq3FBi3IenNFVf3k4afb6qm/4nO6ZTc0WB
+XoDKU0fk68Z5IZywfFNpexJ2CU7GJsFSKhq83J/SHgFPl3PATmnWdclApOWOsRk=
+=R3FT
+-----END PGP SIGNATURE-----
+
+--lBqJz4CGKwlWe7/k--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

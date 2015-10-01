@@ -1,94 +1,80 @@
-From: "Bondarenko, Anton" <Anton_Bondarenko@mentor.com>
-Subject: Re: [PATCH v2 3/8] spi: imx: add support for all SPI word width for
- DMA transfer
-Date: Thu, 1 Oct 2015 00:34:54 +0000
-Message-ID: <04376A3D786BD947B28569C998A374A62E280E21@NA-MBX-02.mgc.mentorg.com>
-References: <cover.1442923630.git.anton_bondarenko@mentor.com>
- <f8844a7a52ab44f00e7b6a1c3ce55d72d7999514.1442923630.git.anton_bondarenko@mentor.com>
- <20150930083539.GD2709@shlinux2>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "Wang, Jiada \(ESD\)" <Jiada_Wang@mentor.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- "broonie@kernel.org" <broonie@kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "Zapolskiy, Vladimir" <Vladimir_Zapolskiy@mentor.com>
-To: Robin Gong <b38343@freescale.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20150930083539.GD2709@shlinux2>
-Content-Language: en-US
-Content-ID: <A8F0878773AB8A42854F643C5F1D9B65@mentor.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH] spi: pxa2xx: Remove empty function pxa2xx_spi_dma_resume()
+Date: Thu,  1 Oct 2015 18:23:18 +0300
+Message-ID: <1443712998-39637-1-git-send-email-mika.westerberg@linux.intel.com>
+Cc: Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 30.09.2015 10:35, Robin Gong wrote:
-> On Fri, Sep 25, 2015 at 07:57:10PM +0200, Anton Bondarenko wrote:
->> @@ -91,11 +91,15 @@ struct spi_imx_data {
->>  
->>  	struct completion xfer_done;
->>  	void __iomem *base;
->> +	unsigned long base_phys;
->> +
->>  	struct clk *clk_per;
->>  	struct clk *clk_ipg;
->>  	unsigned long spi_clk;
->>  	unsigned int spi_bus_clk;
->>  
->> +	unsigned int bpw_w;
->> +
-> It's better to change bytes_per_word for clear understanding,since bpw in spi means
-> bits_per_word...
-Agree. Fixed in V3
->>  	unsigned int count;
->>  	void (*tx)(struct spi_imx_data *);
->>  	void (*rx)(struct spi_imx_data *);
->> @@ -201,9 +205,13 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
->>  			 struct spi_transfer *transfer)
->>  {
->>  	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
->> +	unsigned int bpw_w = transfer->bits_per_word;
->>  
->> -	if (spi_imx->dma_is_inited &&
->> -	    (transfer->len > spi_imx->wml * sizeof(u32)))
->> +	if (!bpw_w)
->> +		bpw_w = spi->bits_per_word;
->> +
->> +	bpw_w = DIV_ROUND_UP(bpw_w, 8);
->> +	if (spi_imx->dma_is_inited && (transfer->len > spi_imx->wml * bpw_w))
-> Please remove bpw_w here as I talked in the first patch.
-As explained in patch1 we need to use SPI word size in calculation to decide 
-if we want to go with DMA or PIO mode. Just a short example:
-We need to transfer 24 SPI words with BPW == 32. This will take ~ 24 PIO writes
-to FIFO (and same for reads). But transfer->len will be 24*4=96 bytes.
-WML is 32 SPI words. The decision will be incorrect if we do not take into account
-SPI bits per word.  
->>  		return true;
->>  	return false;
->>  }
->> @@ -1007,7 +1058,8 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
->>  					    DMA_FROM_DEVICE);
->>  
->>  			spi_imx->rx_buf = pio_buffer;
->> -			spi_imx->txfifo = left;
->> +			spi_imx->txfifo = DIV_ROUND_UP(left, spi_imx->bpw_w);
->> +
-> Looks not enough here, you have to set 'spi_imx->rx' per the right bpw.
-What do you mean? We have had bpw_w == 1 before so 
-spi_imx->txfifo = DIV_ROUND_UP(left, spi_imx->bpw_w);
-is equivalent to
-spi_imx->txfifo = left;
-Now we could have bpw_w equal to 2 or 4 also. txfifo is number of SPI words
-and not number of bytes.
->>  			reinit_completion(&spi_imx->xfer_done);
->>  
->>  			spi_imx->devtype_data->intctrl(spi_imx, MXC_INT_TCEN);
+This was leftover from the legacy pxa2xx DMA implementation and not needed
+anymore so remove it.
+
+Signed-off-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+---
+ drivers/spi/spi-pxa2xx-dma.c | 4 ----
+ drivers/spi/spi-pxa2xx.c     | 2 --
+ drivers/spi/spi-pxa2xx.h     | 2 --
+ 3 files changed, 8 deletions(-)
+
+diff --git a/drivers/spi/spi-pxa2xx-dma.c b/drivers/spi/spi-pxa2xx-dma.c
+index 66a173939be8..bd8b369a343c 100644
+--- a/drivers/spi/spi-pxa2xx-dma.c
++++ b/drivers/spi/spi-pxa2xx-dma.c
+@@ -344,10 +344,6 @@ void pxa2xx_spi_dma_release(struct driver_data *drv_data)
+ 	}
+ }
+ 
+-void pxa2xx_spi_dma_resume(struct driver_data *drv_data)
+-{
+-}
+-
+ int pxa2xx_spi_set_dma_burst_and_threshold(struct chip_data *chip,
+ 					   struct spi_device *spi,
+ 					   u8 bits_per_word, u32 *burst_code,
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index a8ef38ebb9c9..0b10f97d04b4 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1614,8 +1614,6 @@ static int pxa2xx_spi_resume(struct device *dev)
+ 	struct ssp_device *ssp = drv_data->ssp;
+ 	int status = 0;
+ 
+-	pxa2xx_spi_dma_resume(drv_data);
+-
+ 	/* Enable the SSP clock */
+ 	if (!pm_runtime_suspended(dev))
+ 		clk_prepare_enable(ssp->clk);
+diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
+index 0a9b6390a817..0d3dde6d54f5 100644
+--- a/drivers/spi/spi-pxa2xx.h
++++ b/drivers/spi/spi-pxa2xx.h
+@@ -175,7 +175,6 @@ extern int pxa2xx_spi_dma_prepare(struct driver_data *drv_data, u32 dma_burst);
+ extern void pxa2xx_spi_dma_start(struct driver_data *drv_data);
+ extern int pxa2xx_spi_dma_setup(struct driver_data *drv_data);
+ extern void pxa2xx_spi_dma_release(struct driver_data *drv_data);
+-extern void pxa2xx_spi_dma_resume(struct driver_data *drv_data);
+ extern int pxa2xx_spi_set_dma_burst_and_threshold(struct chip_data *chip,
+ 						  struct spi_device *spi,
+ 						  u8 bits_per_word,
+@@ -196,7 +195,6 @@ static inline int pxa2xx_spi_dma_setup(struct driver_data *drv_data)
+ 	return 0;
+ }
+ static inline void pxa2xx_spi_dma_release(struct driver_data *drv_data) {}
+-static inline void pxa2xx_spi_dma_resume(struct driver_data *drv_data) {}
+ static inline int pxa2xx_spi_set_dma_burst_and_threshold(struct chip_data *chip,
+ 							 struct spi_device *spi,
+ 							 u8 bits_per_word,
+-- 
+2.5.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

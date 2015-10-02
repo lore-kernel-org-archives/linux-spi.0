@@ -1,33 +1,39 @@
-From: Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>
-Subject: Re: [PATCH] spi: pxa2xx: Remove empty function pxa2xx_spi_dma_resume()
-Date: Thu, 01 Oct 2015 19:58:04 +0200
-Message-ID: <87y4fmcvyr.fsf@belgarion.home>
-References: <1443712998-39637-1-git-send-email-mika.westerberg@linux.intel.com>
-Mime-Version: 1.0
-Content-Type: text/plain
+From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH] spi: pxa2xx: Remove unused psp member variable from struct chip_data
+Date: Fri,  2 Oct 2015 16:52:27 +0300
+Message-ID: <1443793947-22609-1-git-send-email-jarkko.nikula@linux.intel.com>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
 	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1443712998-39637-1-git-send-email-mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-	(Mika Westerberg's message of "Thu, 1 Oct 2015 18:23:18 +0300")
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org> writes:
+It is not used since commit 8d94cc50aa4f ("[PATCH] spi: stabilize PIO mode
+transfers on PXA2xx systems").
 
-> This was leftover from the legacy pxa2xx DMA implementation and not needed
-> anymore so remove it.
->
-> Signed-off-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Acked-by: Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>
+Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+---
+ drivers/spi/spi-pxa2xx.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-Cheers.
+diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
+index 514cf971707c..58efa98313aa 100644
+--- a/drivers/spi/spi-pxa2xx.h
++++ b/drivers/spi/spi-pxa2xx.h
+@@ -85,7 +85,6 @@ struct driver_data {
+ struct chip_data {
+ 	u32 cr1;
+ 	u32 dds_rate;
+-	u32 psp;
+ 	u32 timeout;
+ 	u8 n_bytes;
+ 	u32 dma_burst_size;
+-- 
+2.5.3
 
---
-Robert
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

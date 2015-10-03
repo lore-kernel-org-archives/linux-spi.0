@@ -1,60 +1,35 @@
-From: Jakub =?UTF-8?B?S2ljacWEc2tp?= <moorray3-5tc4TXWwyLM@public.gmane.org>
-Subject: Re: [PATCH v2 1/2] sc16is7xx: Prevent TX buffer overrun, prevent
- crash
-Date: Sat, 3 Oct 2015 19:52:57 +0100
-Message-ID: <20151003195257.41864d89@laptop>
-References: <53467079.FOLVyveiGt@r90b40zn>
-	<8914018.PpSVth2cIK@r90b40zn>
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: m25p80: Commit "allow arbitrary OF matching for "jedec,spi-nor""
+ breaks module autoloading
+Date: Sat, 3 Oct 2015 22:41:59 +0200
+Message-ID: <56103D97.60906@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Cc: <linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Jon Ringle <jringle-gkqdKIIuv0Hby3iVrkZq2A@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Florian Achleitner <achleitner.florian-JpyZg0bqyNJBDgjK7y7TUQ@public.gmane.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <8914018.PpSVth2cIK@r90b40zn>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, 30 Sep 2015 16:09:44 +0200, Florian Achleitner wrote:
-> If the chip wrongly reports a TX FIFO space, bigger than the driver's
-> buffer, it runs over and destroys the struct sc16is7xx_port, its
-> struct kworker, and very likely a lot more.
-> For us, this lead to the immediate crash of the driver's kworker thread.
-> 
-> Prevent a buffer overrun by adding a length check.
-> 
-> Signed-off-by: Florian Achleitner <achleitner.florian-JpyZg0bqyNJBDgjK7y7TUQ@public.gmane.org>
+Seems like commit 43163022927b6e7d202a7e6f939c3f392465494d
+(allow arbitrary OF matching for "jedec,spi-nor") broke autoloading
+of the m25p80 module.
+MODALIAS is "spi:spi-nor" and removing "spi-nor" as device alias
+prevents module autoloading.
 
-Hi Florian!
+Of course we could revert the removal of the "spi-nor" device alias.
+However it might be better to switch to DT-based matching for
+DT-configured devices.
 
-Thanks a lot for the submission.  Would you mind digging a little
-deeper into this problem?  I think the root cause is that the SPI
-read fails for some reason and our driver does not handle that
-properly, i.e. we don't read 255, it's just a random/failure value.
-Unfortunatelly I don't have any boards with this chip any more to
-do any tests or development myself, so it's on you ;)
+Adding a call to of_device_uevent_modalias to spi_uevent in spi.c
+solved the issue for me, drawback however is that just the first
+"compatible" value is used as modalias. In case of m25p80 this means
+that "jedec,spi-nor" has to be the first "compatible" value.
+This constraint might be too strict ..
 
-This driver initially supported only I2C and in I2C regmap code if
-the read fails we will always get a zero value.  Therefore we felt
-free to ignore in sc16is7xx_port_read() the return value of
-regmap_read().
-
-Could you please run your tests again and see if perhaps the read is
-failing?  In that case we should zero the return value from
-sc16is7xx_port_read().
-
-I think from this thread: 
-https://lkml.org/lkml/2008/2/20/271
-we can assume that zero-length writes are a valid use-case for SPI 
-and if so could you please test the driver for your SPI controller?
-Perhaps the zero-length check should be placed in the SPI controller
-driver?
-
-I am OK with adding the sanity checks but lets first get to the bottom
-of this!
-
-Thanks!
+Having said that I'm not sure what could be a better way to fix
+the issue than just re-introducing the "spi-nor" device alias.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

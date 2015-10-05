@@ -1,66 +1,103 @@
-From: Christian Hartmann <cornogle@googlemail.com>
-Subject: Re: Fwd: [PATCH 1/1] SPI : spi-pxa2xx : fix spi init
- of WM510205 codec via ACPI (resend)
-Date: Mon, 5 Oct 2015 12:54:08 +0200
-Message-ID: <CAKor6TcqFquYu_1K07GoYpwkA2PA7-3OVO0_kCpJpmgKSJxMYw@mail.gmail.com>
-References: <20150827145614.GC5313@sirena.org.uk>
- <CAKor6Tf8kB0WPXLTBFmCzUJkMVEDu-xTEyw0-_NZvBdFSyQSFA@mail.gmail.com>
- <CAKor6TfW4reRz3m-xkCr_ZUfHQkfqT3q+S7JCpO-9F+k1QW38g@mail.gmail.com>
- <CAKor6Tf7_Hiyc1v_TGvdVAU+G84Gp+KgKeSGi8EQJRoq9rhMuw@mail.gmail.com>
- <20150902081334.GB15505@ck-lbox>
- <CAKor6TdaRqi0+a0ZHkdJngE2LPKHk0PUFrdQQ2-x59cxUa8cXA@mail.gmail.com>
- <20150904143434.GA1514@edi-sw-dsktp001.ad.cirrus.com>
- <CAKor6TfhaHfqkmz-dogJ6dEUe06QFv-ee7uPOLiEGSTh3ibkhQ@mail.gmail.com>
- <20150928090852.GF5432@ck-lbox>
- <CAKor6Tc7pb_BnkZwhXDQ1+yMvC+YwXS3LO=5snZO65E8vsUgVw@mail.gmail.com>
- <20150929075715.GG5432@ck-lbox>
+From: Florian Achleitner <achleitner.florian-JpyZg0bqyNJBDgjK7y7TUQ@public.gmane.org>
+Subject: Re: [PATCH v2 1/2] sc16is7xx: Prevent TX buffer overrun, prevent crash
+Date: Mon, 5 Oct 2015 14:34:01 +0200
+Message-ID: <1553770.pceUAxXUCu@r90b40zn>
+References: <53467079.FOLVyveiGt@r90b40zn> <8914018.PpSVth2cIK@r90b40zn> <20151003195257.41864d89@laptop>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: alsa-devel@alsa-project.org, Robert Jarzmik <robert.jarzmik@free.fr>,
- Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
- Haojian Zhuang <haojian.zhuang@gmail.com>, linux-spi@vger.kernel.org,
- Mark Brown <broonie@kernel.org>, jarkko.nikula@linux.intel.com,
- dan.carpenter@oracle.com, Mika Westerberg <mika.westerberg@linux.intel.com>,
- Daniel Mack <daniel@zonque.org>
-To: Charles Keepax <ckeepax@opensource.wolfsonmicro.com>
-Return-path: <alsa-devel-bounces@alsa-project.org>
-In-Reply-To: <20150929075715.GG5432@ck-lbox>
-List-Unsubscribe: <http://mailman.alsa-project.org/mailman/options/alsa-devel>,
- <mailto:alsa-devel-request@alsa-project.org?subject=unsubscribe>
-List-Archive: <http://mailman.alsa-project.org/pipermail/alsa-devel/>
-List-Post: <mailto:alsa-devel@alsa-project.org>
-List-Help: <mailto:alsa-devel-request@alsa-project.org?subject=help>
-List-Subscribe: <http://mailman.alsa-project.org/mailman/listinfo/alsa-devel>,
- <mailto:alsa-devel-request@alsa-project.org?subject=subscribe>
-Errors-To: alsa-devel-bounces@alsa-project.org
-Sender: alsa-devel-bounces@alsa-project.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: <linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Jon Ringle <jringle-gkqdKIIuv0Hby3iVrkZq2A@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Jakub =?utf-8?B?S2ljacWEc2tp?= <moorray3-5tc4TXWwyLM@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20151003195257.41864d89@laptop>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-> Yeah branched of Linus's tree is probably best and shoving it on
-> github works for me.
->
-> Thanks,
-> Charles
+Hi Jakub!
 
-wow, I had already a github account for some years, but not used it yet.
+On Saturday 03 October 2015 19:52:57 Jakub Kici=C5=84ski wrote:
+> Hi Florian!
+>=20
+> Thanks a lot for the submission.  Would you mind digging a little
+> deeper into this problem?  I think the root cause is that the SPI
+> read fails for some reason and our driver does not handle that
+> properly, i.e. we don't read 255, it's just a random/failure value.
+> Unfortunatelly I don't have any boards with this chip any more to
+> do any tests or development myself, so it's on you ;)
 
-I just forked torvalds/linux now and I have to re-apply my patches
-into the github workflow.
+No problem, the board is still on the desk :)
 
-Anyway, I give you the url, where you can find the patches I made.
-I will update the repository today.
+> This driver initially supported only I2C and in I2C regmap code if
+> the read fails we will always get a zero value.  Therefore we felt
+> free to ignore in sc16is7xx_port_read() the return value of
+> regmap_read().
+>=20
+> Could you please run your tests again and see if perhaps the read is
+> failing?  In that case we should zero the return value from
+> sc16is7xx_port_read().
 
-I actually clone the linux repo. In the next steps I create a yoga851f
-branch , will apply the patches
-and will push them soon back to github.
+I added a dev_err in *_port_read,write,update and *_fifo_read,write. No=
+ regmap=20
+function returned an error in my test, but the 255 read value is still =
+there.
 
-The URL will be:
-https://github.com/cornbob/linux
+> I think from this thread:
+> https://lkml.org/lkml/2008/2/20/271
+> we can assume that zero-length writes are a valid use-case for SPI
+> and if so could you please test the driver for your SPI controller?
+> Perhaps the zero-length check should be placed in the SPI controller
+> driver?
 
-Overview under:
-https://github.com/cornbob
+I digged a little deeper and did some measurements to support my idea.
+I think the reason for the 255 read is that the chip does not support t=
+he zero=20
+length write.=20
 
+The chip's SPI interface defines two sorts of frames. One for normal re=
+gister=20
+access, which is essentially an address followed by one byte of data, e=
+ither=20
+read or written.
 
-cheers
-chris
+The second type is for accessing the fifo. It has an address and two by=
+tes of=20
+data, by definition.=20
+
+If the master now issues a zero length write, it sends only the address=
+ byte,=20
+but the chip will expect two following data bytes, which do not arrive.=
+=20
+Instead it will consume the following frame. When this frame is the tx =
+fifo=20
+level read, the chip will not drive its SO line (still expecting a fifo=
+=20
+write), and the master reads 255. Now two bytes were clocked, and they =
+are=20
+back in sync. However, the value is crap.
+
+If my theorie is true, we would also have to make sure, that fifo acces=
+s is=20
+always two bytes to keep it synced. I will check this, and craft anothe=
+r=20
+patch, if neccessary.
+
+>=20
+> I am OK with adding the sanity checks but lets first get to the botto=
+m
+> of this!
+
+I agree. I split the patch in two parts, because I would vote for patch=
+ 1/2=20
+unconditionally, to prevent buffer overruns, whatever happens.=20
+And then, use patch 2/2 only if it is the right solution.
+>=20
+> Thanks!
+
+Thanks,
+=46lorian
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

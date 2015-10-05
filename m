@@ -1,79 +1,66 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] sc16is7xx: null ptr check
-Date: Mon, 5 Oct 2015 09:10:04 +0100
-Message-ID: <20151005081004.GG12635@sirena.org.uk>
-References: <1441015287-14240-1-git-send-email-sean.nyekjaer@prevas.dk>
- <20151004202316.GV3982@pengutronix.de>
- <56120E09.7060702@prevas.dk>
- <20151005063127.GX3982@pengutronix.de>
+From: Christian Hartmann <cornogle@googlemail.com>
+Subject: Re: Fwd: [PATCH 1/1] SPI : spi-pxa2xx : fix spi init
+ of WM510205 codec via ACPI (resend)
+Date: Mon, 5 Oct 2015 12:54:08 +0200
+Message-ID: <CAKor6TcqFquYu_1K07GoYpwkA2PA7-3OVO0_kCpJpmgKSJxMYw@mail.gmail.com>
+References: <20150827145614.GC5313@sirena.org.uk>
+ <CAKor6Tf8kB0WPXLTBFmCzUJkMVEDu-xTEyw0-_NZvBdFSyQSFA@mail.gmail.com>
+ <CAKor6TfW4reRz3m-xkCr_ZUfHQkfqT3q+S7JCpO-9F+k1QW38g@mail.gmail.com>
+ <CAKor6Tf7_Hiyc1v_TGvdVAU+G84Gp+KgKeSGi8EQJRoq9rhMuw@mail.gmail.com>
+ <20150902081334.GB15505@ck-lbox>
+ <CAKor6TdaRqi0+a0ZHkdJngE2LPKHk0PUFrdQQ2-x59cxUa8cXA@mail.gmail.com>
+ <20150904143434.GA1514@edi-sw-dsktp001.ad.cirrus.com>
+ <CAKor6TfhaHfqkmz-dogJ6dEUe06QFv-ee7uPOLiEGSTh3ibkhQ@mail.gmail.com>
+ <20150928090852.GF5432@ck-lbox>
+ <CAKor6Tc7pb_BnkZwhXDQ1+yMvC+YwXS3LO=5snZO65E8vsUgVw@mail.gmail.com>
+ <20150929075715.GG5432@ck-lbox>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="wQkw7DhpL9hyPo7K"
-Cc: Sean =?iso-8859-1?Q?Nyekj=E6r?= <sean.nyekjaer-rjjw5hvvQKZaa/9Udqfwiw@public.gmane.org>,
-	linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
-	<u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20151005063127.GX3982-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: alsa-devel@alsa-project.org, Robert Jarzmik <robert.jarzmik@free.fr>,
+ Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+ Haojian Zhuang <haojian.zhuang@gmail.com>, linux-spi@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>, jarkko.nikula@linux.intel.com,
+ dan.carpenter@oracle.com, Mika Westerberg <mika.westerberg@linux.intel.com>,
+ Daniel Mack <daniel@zonque.org>
+To: Charles Keepax <ckeepax@opensource.wolfsonmicro.com>
+Return-path: <alsa-devel-bounces@alsa-project.org>
+In-Reply-To: <20150929075715.GG5432@ck-lbox>
+List-Unsubscribe: <http://mailman.alsa-project.org/mailman/options/alsa-devel>,
+ <mailto:alsa-devel-request@alsa-project.org?subject=unsubscribe>
+List-Archive: <http://mailman.alsa-project.org/pipermail/alsa-devel/>
+List-Post: <mailto:alsa-devel@alsa-project.org>
+List-Help: <mailto:alsa-devel-request@alsa-project.org?subject=help>
+List-Subscribe: <http://mailman.alsa-project.org/mailman/listinfo/alsa-devel>,
+ <mailto:alsa-devel-request@alsa-project.org?subject=subscribe>
+Errors-To: alsa-devel-bounces@alsa-project.org
+Sender: alsa-devel-bounces@alsa-project.org
+List-Id: linux-spi.vger.kernel.org
+
+> Yeah branched of Linus's tree is probably best and shoving it on
+> github works for me.
+>
+> Thanks,
+> Charles
+
+wow, I had already a github account for some years, but not used it yet.
+
+I just forked torvalds/linux now and I have to re-apply my patches
+into the github workflow.
+
+Anyway, I give you the url, where you can find the patches I made.
+I will update the repository today.
+
+I actually clone the linux repo. In the next steps I create a yoga851f
+branch , will apply the patches
+and will push them soon back to github.
+
+The URL will be:
+https://github.com/cornbob/linux
+
+Overview under:
+https://github.com/cornbob
 
 
---wQkw7DhpL9hyPo7K
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, Oct 05, 2015 at 08:31:28AM +0200, Uwe Kleine-K=F6nig wrote:
-
-> So in the broken case the device in question was bound to the
-> sc16is7xx driver because the compatible name was matched by the
-> id_table and not the of_match_table. My first thought was that in this
-> case the spi_device's dev->of_node should not be set, but after having
-> thought a bit more I think this is right.
-
-Yes, it's intended behaviour - the DT is buggy here.
-
-> But the .probe routine could be a tad more clever here:
-
-> 	devtype =3D of_device_get_match_data(&spi->dev);
-> 	if (!devtype) {
-> 		const struct spi_device_id *id_entry =3D spi_get_device_id(spi);
->=20
-> 		/* Do I need to check id_entry being !=3D NULL here? */
-> 		devtype =3D (struct sc16is7xx_devtype *)id_entry->driver_data;
-> 		flags =3D IRQF_TRIGGER_FALLING;
-> 	}
-
-That's pretty much a requirement - the driver should work no matter
-which binding method gets used, OF only drivers aren't great practice at
-the best of times and for off-SoC devices like this one it's definitely
-not appropriate.
-
-> Apart from that using "flags =3D IRQF_TRIGGER_FALLING" iff the device was
-> probed via spi_id_table is strange.
-
-That seems like an obvious bug.
-
---wQkw7DhpL9hyPo7K
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJWEjBXAAoJECTWi3JdVIfQiIcH/i9tDKu+ht4ADXo8+nn4Ufc6
-VH2/QYSu+R65fEZUk4fie0+FUQ7gFRLRt4866zk4VBNTYOekG7mcO9PQMDLY5I6G
-rxe2TBptXmicg1yC2jiDfFSr2Gg7lO+hb5iICbKpJzQ1u+bavpPjZtE2l6nFgnDM
-+ABb1ogM0z3yyFAwE6RA5Bj98IzXltbZaFJlzLR1j+Ku8yF2uI/aRookTqaihMQl
-L2J6iWf+V4MYv+WIrpCuBDwh1E8ef08iN8P75kvM7M5kTRsPGKTjI0+TTVrY1y9W
-ZpK+yJbkjLDjtxWUiSULZviPqepHsgoMwoyIlFPL0NfTvlzxf8iBKpXl5PpDZ3E=
-=RlCL
------END PGP SIGNATURE-----
-
---wQkw7DhpL9hyPo7K--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+cheers
+chris

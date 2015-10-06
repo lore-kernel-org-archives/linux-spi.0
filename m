@@ -1,82 +1,135 @@
-From: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Subject: Re: [PATCH v5 06/10] dmaengine: add API for getting dma controller's
- quirk
-Date: Tue, 6 Oct 2015 17:21:13 +0800
-Message-ID: <56139289.7000005@rock-chips.com>
-References: <1442187923-5736-1-git-send-email-shawn.lin@rock-chips.com>
- <1442188139-6017-1-git-send-email-shawn.lin@rock-chips.com>
- <20151005153746.GG13501@vkoul-mobl.iind.intel.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v6 2/4] spi: bcm2835: add bcm2835 auxiliary spi device
+ driver
+Date: Tue, 6 Oct 2015 12:23:20 +0100
+Message-ID: <20151006112320.GP12635@sirena.org.uk>
+References: <1441970527-2403-1-git-send-email-kernel@martin.sperl.org>
+ <1441970527-2403-3-git-send-email-kernel@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org, Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
-	Jaroslav Kysela <perex-/Fr2/VpizcU@public.gmane.org>,
-	Takashi Iwai <tiwai-IBi9RG/b67k@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-	Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>,
-	Sonny Rao <sonnyrao-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-	Addy Ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>, dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="4t0ONBuCiVxn5iiM"
+Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
+	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Lubomir Rintel <lkundrak-NGH9Lh4a5iE@public.gmane.org>, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	eEric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>
+To: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20151005153746.GG13501-bQVUxfxUtC13uc1i7fC1zK2pdiUAq4bhAL8bYrjMMd8@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1441970527-2403-3-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Vinod,
 
-On 2015/10/5 23:37, Vinod Koul wrote:
-> On Mon, Sep 14, 2015 at 07:48:59AM +0800, Shawn Lin wrote:
->> Add dmaengine_get_quirks API for peripheral devices to query
->> quirks if they need it to make special workaround due to broken
->> dma controller design.
->>
->> Signed-off-by: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
->> ---
->>
->> Changes in v5: None
->> Changes in v4: None
->> Changes in v3: None
->> Changes in v2: None
->> Changes in v1: None
->>
->>   include/linux/dmaengine.h | 9 +++++++++
->>   1 file changed, 9 insertions(+)
->>
->> diff --git a/include/linux/dmaengine.h b/include/linux/dmaengine.h
->> index e2f5eb4..5174ca4 100644
->> --- a/include/linux/dmaengine.h
->> +++ b/include/linux/dmaengine.h
->> @@ -704,6 +704,7 @@ struct dma_device {
->>
->>   	int (*device_config)(struct dma_chan *chan,
->>   			     struct dma_slave_config *config);
->> +	int (*device_get_quirks)(struct dma_chan *chan);
->
-> And why do we want to expose this to users? THis doesnt seem right!
->
+--4t0ONBuCiVxn5iiM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Basically I agree not to expose dma's quirk to slave controllers...But, 
-the fact I mentioned on cover letter explain the reasons why I have to 
-let slave controllers know that they are working with a broken dma. It's 
-a dilemma that if we don't want that to be exposed(let slave 
-controllers' driver get the info via a API), we have to add broken quirk 
-for all of them ,here and there, which seems to be a disaster:(
+On Fri, Sep 11, 2015 at 11:22:04AM +0000, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
 
-I would appreciate it if you could give me some suggestions at your 
-earliest convenience. :)
+> +	bs->irq =3D irq_of_parse_and_map(pdev->dev.of_node, 0);
+> +	if (bs->irq <=3D 0) {
+> +		dev_err(&pdev->dev, "could not get IRQ: %d\n", bs->irq);
+> +		err =3D bs->irq ? bs->irq : -ENODEV;
+> +		goto out_master_put;
+> +	}
 
-> A quirk may exists but should be handled inside the controller driver and do
-> appropriate action. You don't tell users or expect them to handle these
->
+Why are we using this unusual DT specific API here?  I'd expect to see
+just use platform_get_irq() here and this seems to be the only DT
+dependency in the driver.=20
 
+> +	err =3D devm_request_irq(&pdev->dev, bs->irq,
+> +			       bcm2835aux_spi_interrupt,
+> +			       IRQF_SHARED,
+> +			       dev_name(&pdev->dev), master);
+> +	if (err) {
+> +		dev_err(&pdev->dev, "could not request IRQ: %d\n", err);
+> +		goto out_clk_disable;
+> +	}
+> +
+> +	/* reset SPI-HW block */
+> +	bcm2835aux_spi_reset_hw(bs);
 
--- 
-Best Regards
-Shawn Lin
+I'd expect to request the IRQ after we reset the hardware in order to
+ensure that the hardware is in a known good state=20
 
+> +
+> +	err =3D devm_spi_register_master(&pdev->dev, master);
+> +	if (err) {
+> +		dev_err(&pdev->dev, "could not register SPI master: %d\n", err);
+> +		goto out_clk_disable;
+> +	}
+> +
+> +	return 0;
+> +
+> +out_clk_disable:
+> +	clk_disable_unprepare(bs->clk);
+> +out_master_put:
+> +	spi_master_put(master);
+> +	return err;
+> +}
+> +
+> +static int bcm2835aux_spi_remove(struct platform_device *pdev)
+> +{
+> +	struct spi_master *master =3D platform_get_drvdata(pdev);
+> +	struct bcm2835aux_spi *bs =3D spi_master_get_devdata(master);
+> +
+> +	bcm2835aux_spi_reset_hw(bs);
+> +
+> +	/* disable the HW block by releasing the clock */
+> +	clk_disable_unprepare(bs->clk);
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct of_device_id bcm2835aux_spi_match[] =3D {
+> +	{ .compatible =3D "brcm,bcm2835-aux-spi", },
+> +	{}
+> +};
+> +MODULE_DEVICE_TABLE(of, bcm2835aux_spi_match);
+> +
+> +static struct platform_driver bcm2835aux_spi_driver =3D {
+> +	.driver		=3D {
+> +		.name		=3D "spi-bcm2835aux",
+> +		.of_match_table	=3D bcm2835aux_spi_match,
+> +	},
+> +	.probe		=3D bcm2835aux_spi_probe,
+> +	.remove		=3D bcm2835aux_spi_remove,
+> +};
+> +module_platform_driver(bcm2835aux_spi_driver);
+> +
+> +MODULE_DESCRIPTION("SPI controller driver for Broadcom BCM2835 aux");
+> +MODULE_AUTHOR("Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>");
+> +MODULE_LICENSE("GPL v2");
+> --
+> 1.7.10.4
+>=20
+>=20
+
+--4t0ONBuCiVxn5iiM
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJWE68nAAoJECTWi3JdVIfQ/qgH/2PcUYVXb6ISydKbZ0v7az9W
+pKY20xfna4nsQ1a67IgF1vGf/swO8sPp/DgMHn0FsVGktymIr3v0tNWMQ9PeaSht
+KuW76VJquLoOpM8nQU6DxsqzfrIgqcGaOboS9CMZeB/go7EZjeaHwa2e5WILjNK3
+oBVugSSjYHNVkf+11fCLfqM9Ka86kwoZ1ZHKqB6bjPRcwb0knuBztkgOi8pPoXgy
+GFLQLj2euvwBvMeqJcIwSmND6PUw4ynI4VFSZiE67Lc93B55CqSKd4OZSOAb8D6Q
+MbbKhcEcuyPoYmmvqDbM6mBAU03XpoW0EYIu6zZ8yPREIbgRR9musy5Qc6Hy0mY=
+=1T6T
+-----END PGP SIGNATURE-----
+
+--4t0ONBuCiVxn5iiM--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

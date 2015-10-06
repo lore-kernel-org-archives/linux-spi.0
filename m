@@ -1,59 +1,57 @@
-From: Vinod Koul <vinod.koul@intel.com>
-Subject: Re: [PATCH v5 06/10] dmaengine: add API for getting dma controller's
- quirk
-Date: Mon, 5 Oct 2015 16:37:47 +0100
-Message-ID: <20151005153746.GG13501@vkoul-mobl.iind.intel.com>
-References: <1442187923-5736-1-git-send-email-shawn.lin@rock-chips.com>
- <1442188139-6017-1-git-send-email-shawn.lin@rock-chips.com>
+From: Florian Achleitner <achleitner.florian-JpyZg0bqyNJBDgjK7y7TUQ@public.gmane.org>
+Subject: Re: [PATCH v2 1/2] sc16is7xx: Prevent TX buffer overrun, prevent crash
+Date: Tue, 6 Oct 2015 10:41:46 +0200
+Message-ID: <2151687.RJUYUNn8g7@r90b40zn>
+References: <53467079.FOLVyveiGt@r90b40zn> <20151003195257.41864d89@laptop> <1553770.pceUAxXUCu@r90b40zn>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Heiko Stuebner <heiko@sntech.de>, Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>, Mark Brown <broonie@kernel.org>,
-	Doug Anderson <dianders@chromium.org>,
-	Olof Johansson <olofj@lixom.net>,
-	Sonny Rao <sonnyrao@chromium.org>,
-	Addy Ke <addy.ke@rock-chips.com>, dmaengine@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org, alsa-devel@alsa-project.org,
-	linux-spi@vger.kernel.org
-To: Shawn Lin <shawn.lin@rock-chips.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1442188139-6017-1-git-send-email-shawn.lin@rock-chips.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: <linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Jon Ringle <jringle-gkqdKIIuv0Hby3iVrkZq2A@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Jakub =?utf-8?B?S2ljacWEc2tp?= <moorray3-5tc4TXWwyLM@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1553770.pceUAxXUCu@r90b40zn>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, Sep 14, 2015 at 07:48:59AM +0800, Shawn Lin wrote:
-> Add dmaengine_get_quirks API for peripheral devices to query
-> quirks if they need it to make special workaround due to broken
-> dma controller design.
-> 
-> Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-> ---
-> 
-> Changes in v5: None
-> Changes in v4: None
-> Changes in v3: None
-> Changes in v2: None
-> Changes in v1: None
-> 
->  include/linux/dmaengine.h | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/include/linux/dmaengine.h b/include/linux/dmaengine.h
-> index e2f5eb4..5174ca4 100644
-> --- a/include/linux/dmaengine.h
-> +++ b/include/linux/dmaengine.h
-> @@ -704,6 +704,7 @@ struct dma_device {
->  
->  	int (*device_config)(struct dma_chan *chan,
->  			     struct dma_slave_config *config);
-> +	int (*device_get_quirks)(struct dma_chan *chan);
+Hi,
 
-And why do we want to expose this to users? THis doesnt seem right!
+some news.
+On Monday 05 October 2015 14:34:01 Florian Achleitner wrote:
+> I digged a little deeper and did some measurements to support my idea.
+> I think the reason for the 255 read is that the chip does not support the
+> zero length write.
+> 
+> The chip's SPI interface defines two sorts of frames. One for normal
+> register access, which is essentially an address followed by one byte of
+> data, either read or written.
+> 
+> The second type is for accessing the fifo. It has an address and two bytes
+> of data, by definition.
+> 
+> If the master now issues a zero length write, it sends only the address
+> byte, but the chip will expect two following data bytes, which do not
+> arrive. Instead it will consume the following frame. When this frame is the
+> tx fifo level read, the chip will not drive its SO line (still expecting a
+> fifo write), and the master reads 255. Now two bytes were clocked, and they
+> are back in sync. However, the value is crap.
+> 
+> If my theorie is true, we would also have to make sure, that fifo access is
+> always two bytes to keep it synced. I will check this, and craft another
+> patch, if neccessary.
 
-A quirk may exists but should be handled inside the controller driver and do
-appropriate action. You don't tell users or expect them to handle these
+My theorie is wrong with fifo frame lengths. Actually, they can be be of 
+arbitrary length and the SPI chip select (CS) terminates a frame. Thus, the 
+complete fifo can be filled at once, and single bytes can be written, as well.
 
--- 
-~Vinod
+However, a zero-length write seems to confuse the chip. If I prevent it, 
+everything works.
+
+As already mentioned, all regmap operations return success.
+
+Florian
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

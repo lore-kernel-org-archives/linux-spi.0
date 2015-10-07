@@ -1,605 +1,80 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: bcm2835aux: add bcm2835 auxiliary spi device driver" to the spi tree
-Date: Wed, 07 Oct 2015 11:43:28 +0100
-Message-ID: <E1ZjmC0-00055b-Mi@finisterre>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
-	Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v6 2/4] spi: bcm2835: add bcm2835 auxiliary spi device
+ driver
+Date: Wed, 7 Oct 2015 11:41:21 +0100
+Message-ID: <20151007104121.GG12635@sirena.org.uk>
+References: <1441970527-2403-1-git-send-email-kernel@martin.sperl.org>
+ <1441970527-2403-3-git-send-email-kernel@martin.sperl.org>
+ <20151006112320.GP12635@sirena.org.uk>
+ <5613B2A2.9020309@martin.sperl.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="scyazgeAM+HHl7kc"
+Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
+	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Lubomir Rintel <lkundrak-NGH9Lh4a5iE@public.gmane.org>, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	eEric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: 
+Content-Disposition: inline
+In-Reply-To: <5613B2A2.9020309-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
 
-   spi: bcm2835aux: add bcm2835 auxiliary spi device driver
+--scyazgeAM+HHl7kc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-has been applied to the spi tree at
+On Tue, Oct 06, 2015 at 01:38:10PM +0200, Martin Sperl wrote:
+> On 06.10.2015 13:23, Mark Brown wrote:
+> >On Fri, Sep 11, 2015 at 11:22:04AM +0000, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+> >>+	bs->irq =3D irq_of_parse_and_map(pdev->dev.of_node, 0);
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+> >Why are we using this unusual DT specific API here?  I'd expect to see
+> >just use platform_get_irq() here and this seems to be the only DT
+> >dependency in the driver.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+> I copied it from spi-bcm2835.c, where it is also used in exactly that
+> fashion.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+> You want me to move to your recommended api instead for both drivers?
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+> >I'd expect to request the IRQ after we reset the hardware in order to
+> >ensure that the hardware is in a known good state
+>=20
+> Same copy/paste in this case - i can change the order for both
+> drivers if you want.
 
-Thanks,
-Mark
+Yes, that'd be better.  I'll just apply this now and you can send
+followup patches fixing these for both drivers.
 
->From 1ea29b39f4c812ece2f936065a0a3d6fe44a263e Mon Sep 17 00:00:00 2001
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Date: Fri, 11 Sep 2015 11:22:04 +0000
-Subject: [PATCH] spi: bcm2835aux: add bcm2835 auxiliary spi device driver
+--scyazgeAM+HHl7kc
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-The bcm2835 has 2 auxiliary spi bus masters spi1 and spi2.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-This implements the driver to enable these devices.
+iQEbBAEBCAAGBQJWFPbQAAoJECTWi3JdVIfQh04H90mG9uDCQxivIi2xX+bDwEYM
+jyI4ePar3YMDM2hqXzdt5pNLEPuscZkxiwWCBlxAnwxFMB7lWpSoj8sPzKF0kAeL
+Aq6nkXLM7GOIbWzBO2IGiw4GU/8YnDBLSsStsosao/+XAxsA0YKccFRBL7FFe9Mf
+DvJpn9sKCCf0fLltL+4iibUUBKRHrfkLqSnDgz4J/fCN6PqjTnLc+UR1+2TwC3q8
+LsTMAma+b8AoNfOyxxvL9/FYl2vMN2I4734WlVmJnxwvOP7iibjU77ZrsrbSxfLp
+buFJImLlER4cNywAgTTyubwhY70r+5VkowQk9Z904V1HcFE6ucHJ+cNysEdtDQ==
+=SnDA
+-----END PGP SIGNATURE-----
 
-The driver does not implement native chip-selects but uses
-the aribtrary GPIO-chip-selects provided by the spi-chipselect.
-
-Note that this driver relies on the fact that
-the clock is implemented by the clk-bcm2835-aux driver,
-which enables/disables the HW block when requesting/releasing
-the clock.
-
-Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Acked-by: Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/Kconfig          |  11 +
- drivers/spi/Makefile         |   1 +
- drivers/spi/spi-bcm2835aux.c | 493 +++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 505 insertions(+)
- create mode 100644 drivers/spi/spi-bcm2835aux.c
-
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 4887f31..26b8605 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -88,6 +88,17 @@ config SPI_BCM2835
- 	  is for the regular SPI controller. Slave mode operation is not also
- 	  not supported.
- 
-+config SPI_BCM2835AUX
-+	tristate "BCM2835 SPI auxiliary controller"
-+	depends on ARCH_BCM2835 || COMPILE_TEST
-+	depends on GPIOLIB
-+	help
-+	  This selects a driver for the Broadcom BCM2835 SPI aux master.
-+
-+	  The BCM2835 contains two types of SPI master controller; the
-+	  "universal SPI master", and the regular SPI controller.
-+	  This driver is for the universal/auxiliary SPI controller.
-+
- config SPI_BFIN5XX
- 	tristate "SPI controller driver for ADI Blackfin5xx"
- 	depends on BLACKFIN && !BF60x
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index 6a7f6f9..31fb7fb 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -15,6 +15,7 @@ obj-$(CONFIG_SPI_ATMEL)			+= spi-atmel.o
- obj-$(CONFIG_SPI_ATH79)			+= spi-ath79.o
- obj-$(CONFIG_SPI_AU1550)		+= spi-au1550.o
- obj-$(CONFIG_SPI_BCM2835)		+= spi-bcm2835.o
-+obj-$(CONFIG_SPI_BCM2835AUX)		+= spi-bcm2835aux.o
- obj-$(CONFIG_SPI_BCM53XX)		+= spi-bcm53xx.o
- obj-$(CONFIG_SPI_BCM63XX)		+= spi-bcm63xx.o
- obj-$(CONFIG_SPI_BCM63XX_HSSPI)		+= spi-bcm63xx-hsspi.o
-diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
-new file mode 100644
-index 0000000..f92b4a6
---- /dev/null
-+++ b/drivers/spi/spi-bcm2835aux.c
-@@ -0,0 +1,493 @@
-+/*
-+ * Driver for Broadcom BCM2835 auxiliary SPI Controllers
-+ *
-+ * the driver does not rely on the native chipselects at all
-+ * but only uses the gpio type chipselects
-+ *
-+ * Based on: spi-bcm2835.c
-+ *
-+ * Copyright (C) 2015 Martin Sperl
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#include <linux/clk.h>
-+#include <linux/completion.h>
-+#include <linux/delay.h>
-+#include <linux/err.h>
-+#include <linux/interrupt.h>
-+#include <linux/io.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/of_address.h>
-+#include <linux/of_device.h>
-+#include <linux/of_gpio.h>
-+#include <linux/of_irq.h>
-+#include <linux/regmap.h>
-+#include <linux/spi/spi.h>
-+#include <linux/spinlock.h>
-+
-+/*
-+ * spi register defines
-+ *
-+ * note there is garbage in the "official" documentation,
-+ * so some data is taken from the file:
-+ *   brcm_usrlib/dag/vmcsx/vcinclude/bcm2708_chip/aux_io.h
-+ * inside of:
-+ *   http://www.broadcom.com/docs/support/videocore/Brcm_Android_ICS_Graphics_Stack.tar.gz
-+ */
-+
-+/* SPI register offsets */
-+#define BCM2835_AUX_SPI_CNTL0	0x00
-+#define BCM2835_AUX_SPI_CNTL1	0x04
-+#define BCM2835_AUX_SPI_STAT	0x08
-+#define BCM2835_AUX_SPI_PEEK	0x0C
-+#define BCM2835_AUX_SPI_IO	0x20
-+#define BCM2835_AUX_SPI_TXHOLD	0x30
-+
-+/* Bitfields in CNTL0 */
-+#define BCM2835_AUX_SPI_CNTL0_SPEED	0xFFF00000
-+#define BCM2835_AUX_SPI_CNTL0_SPEED_MAX	0xFFF
-+#define BCM2835_AUX_SPI_CNTL0_SPEED_SHIFT	20
-+#define BCM2835_AUX_SPI_CNTL0_CS	0x000E0000
-+#define BCM2835_AUX_SPI_CNTL0_POSTINPUT	0x00010000
-+#define BCM2835_AUX_SPI_CNTL0_VAR_CS	0x00008000
-+#define BCM2835_AUX_SPI_CNTL0_VAR_WIDTH	0x00004000
-+#define BCM2835_AUX_SPI_CNTL0_DOUTHOLD	0x00003000
-+#define BCM2835_AUX_SPI_CNTL0_ENABLE	0x00000800
-+#define BCM2835_AUX_SPI_CNTL0_CPHA_IN	0x00000400
-+#define BCM2835_AUX_SPI_CNTL0_CLEARFIFO	0x00000200
-+#define BCM2835_AUX_SPI_CNTL0_CPHA_OUT	0x00000100
-+#define BCM2835_AUX_SPI_CNTL0_CPOL	0x00000080
-+#define BCM2835_AUX_SPI_CNTL0_MSBF_OUT	0x00000040
-+#define BCM2835_AUX_SPI_CNTL0_SHIFTLEN	0x0000003F
-+
-+/* Bitfields in CNTL1 */
-+#define BCM2835_AUX_SPI_CNTL1_CSHIGH	0x00000700
-+#define BCM2835_AUX_SPI_CNTL1_IDLE	0x00000080
-+#define BCM2835_AUX_SPI_CNTL1_TXEMPTY	0x00000040
-+#define BCM2835_AUX_SPI_CNTL1_MSBF_IN	0x00000002
-+#define BCM2835_AUX_SPI_CNTL1_KEEP_IN	0x00000001
-+
-+/* Bitfields in STAT */
-+#define BCM2835_AUX_SPI_STAT_TX_LVL	0xFF000000
-+#define BCM2835_AUX_SPI_STAT_RX_LVL	0x00FF0000
-+#define BCM2835_AUX_SPI_STAT_TX_FULL	0x00000400
-+#define BCM2835_AUX_SPI_STAT_TX_EMPTY	0x00000200
-+#define BCM2835_AUX_SPI_STAT_RX_FULL	0x00000100
-+#define BCM2835_AUX_SPI_STAT_RX_EMPTY	0x00000080
-+#define BCM2835_AUX_SPI_STAT_BUSY	0x00000040
-+#define BCM2835_AUX_SPI_STAT_BITCOUNT	0x0000003F
-+
-+/* timeout values */
-+#define BCM2835_AUX_SPI_POLLING_LIMIT_US	30
-+#define BCM2835_AUX_SPI_POLLING_JIFFIES		2
-+
-+#define BCM2835_AUX_SPI_MODE_BITS (SPI_CPOL | SPI_CPHA | SPI_CS_HIGH \
-+				  | SPI_NO_CS)
-+
-+struct bcm2835aux_spi {
-+	void __iomem *regs;
-+	struct clk *clk;
-+	int irq;
-+	u32 cntl[2];
-+	const u8 *tx_buf;
-+	u8 *rx_buf;
-+	int tx_len;
-+	int rx_len;
-+};
-+
-+static inline u32 bcm2835aux_rd(struct bcm2835aux_spi *bs, unsigned reg)
-+{
-+	return readl(bs->regs + reg);
-+}
-+
-+static inline void bcm2835aux_wr(struct bcm2835aux_spi *bs, unsigned reg,
-+				 u32 val)
-+{
-+	writel(val, bs->regs + reg);
-+}
-+
-+static inline void bcm2835aux_rd_fifo(struct bcm2835aux_spi *bs)
-+{
-+	u32 data;
-+	int i;
-+	int count = min(bs->rx_len, 3);
-+
-+	data = bcm2835aux_rd(bs, BCM2835_AUX_SPI_IO);
-+	if (bs->rx_buf) {
-+		for (i = 0; i < count; i++)
-+			*bs->rx_buf++ = (data >> (8 * (2 - i))) & 0xff;
-+	}
-+	bs->rx_len -= count;
-+}
-+
-+static inline void bcm2835aux_wr_fifo(struct bcm2835aux_spi *bs)
-+{
-+	u32 data;
-+	u8 byte;
-+	int count;
-+	int i;
-+
-+	/* gather up to 3 bytes to write to the FIFO */
-+	count = min(bs->tx_len, 3);
-+	data = 0;
-+	for (i = 0; i < count; i++) {
-+		byte = bs->tx_buf ? *bs->tx_buf++ : 0;
-+		data |= byte << (8 * (2 - i));
-+	}
-+
-+	/* and set the variable bit-length */
-+	data |= (count * 8) << 24;
-+
-+	/* and decrement length */
-+	bs->tx_len -= count;
-+
-+	/* write to the correct TX-register */
-+	if (bs->tx_len)
-+		bcm2835aux_wr(bs, BCM2835_AUX_SPI_TXHOLD, data);
-+	else
-+		bcm2835aux_wr(bs, BCM2835_AUX_SPI_IO, data);
-+}
-+
-+static void bcm2835aux_spi_reset_hw(struct bcm2835aux_spi *bs)
-+{
-+	/* disable spi clearing fifo and interrupts */
-+	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL1, 0);
-+	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL0,
-+		      BCM2835_AUX_SPI_CNTL0_CLEARFIFO);
-+}
-+
-+static irqreturn_t bcm2835aux_spi_interrupt(int irq, void *dev_id)
-+{
-+	struct spi_master *master = dev_id;
-+	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
-+	irqreturn_t ret = IRQ_NONE;
-+
-+	/* check if we have data to read */
-+	while (bs->rx_len &&
-+	       (!(bcm2835aux_rd(bs, BCM2835_AUX_SPI_STAT) &
-+		  BCM2835_AUX_SPI_STAT_RX_EMPTY))) {
-+		bcm2835aux_rd_fifo(bs);
-+		ret = IRQ_HANDLED;
-+	}
-+
-+	/* check if we have data to write */
-+	while (bs->tx_len &&
-+	       (!(bcm2835aux_rd(bs, BCM2835_AUX_SPI_STAT) &
-+		  BCM2835_AUX_SPI_STAT_TX_FULL))) {
-+		bcm2835aux_wr_fifo(bs);
-+		ret = IRQ_HANDLED;
-+	}
-+
-+	/* and check if we have reached "done" */
-+	while (bs->rx_len &&
-+	       (!(bcm2835aux_rd(bs, BCM2835_AUX_SPI_STAT) &
-+		  BCM2835_AUX_SPI_STAT_BUSY))) {
-+		bcm2835aux_rd_fifo(bs);
-+		ret = IRQ_HANDLED;
-+	}
-+
-+	/* and if rx_len is 0 then wake up completion and disable spi */
-+	if (!bs->rx_len) {
-+		bcm2835aux_spi_reset_hw(bs);
-+		complete(&master->xfer_completion);
-+	}
-+
-+	/* and return */
-+	return ret;
-+}
-+
-+static int __bcm2835aux_spi_transfer_one_irq(struct spi_master *master,
-+					     struct spi_device *spi,
-+					     struct spi_transfer *tfr)
-+{
-+	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
-+
-+	/* enable interrupts */
-+	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL1, bs->cntl[1] |
-+		BCM2835_AUX_SPI_CNTL1_TXEMPTY |
-+		BCM2835_AUX_SPI_CNTL1_IDLE);
-+
-+	/* and wait for finish... */
-+	return 1;
-+}
-+
-+static int bcm2835aux_spi_transfer_one_irq(struct spi_master *master,
-+					   struct spi_device *spi,
-+					   struct spi_transfer *tfr)
-+{
-+	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
-+
-+	/* fill in registers and fifos before enabling interrupts */
-+	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL1, bs->cntl[1]);
-+	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL0, bs->cntl[0]);
-+
-+	/* fill in tx fifo with data before enabling interrupts */
-+	while ((bs->tx_len) &&
-+	       (!(bcm2835aux_rd(bs, BCM2835_AUX_SPI_STAT) &
-+		  BCM2835_AUX_SPI_STAT_TX_FULL))) {
-+		bcm2835aux_wr_fifo(bs);
-+	}
-+
-+	/* now run the interrupt mode */
-+	return __bcm2835aux_spi_transfer_one_irq(master, spi, tfr);
-+}
-+
-+static int bcm2835aux_spi_transfer_one_poll(struct spi_master *master,
-+					    struct spi_device *spi,
-+					    struct spi_transfer *tfr,
-+					    unsigned long xfer_time_us)
-+{
-+	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
-+	unsigned long timeout;
-+	u32 stat;
-+
-+	/* configure spi */
-+	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL1, bs->cntl[1]);
-+	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL0, bs->cntl[0]);
-+
-+	/* set the timeout */
-+	timeout = jiffies + BCM2835_AUX_SPI_POLLING_JIFFIES;
-+
-+	/* loop until finished the transfer */
-+	while (bs->rx_len) {
-+		/* read status */
-+		stat = bcm2835aux_rd(bs, BCM2835_AUX_SPI_STAT);
-+
-+		/* fill in tx fifo with remaining data */
-+		if ((bs->tx_len) && (!(stat & BCM2835_AUX_SPI_STAT_TX_FULL))) {
-+			bcm2835aux_wr_fifo(bs);
-+			continue;
-+		}
-+
-+		/* read data from fifo for both cases */
-+		if (!(stat & BCM2835_AUX_SPI_STAT_RX_EMPTY)) {
-+			bcm2835aux_rd_fifo(bs);
-+			continue;
-+		}
-+		if (!(stat & BCM2835_AUX_SPI_STAT_BUSY)) {
-+			bcm2835aux_rd_fifo(bs);
-+			continue;
-+		}
-+
-+		/* there is still data pending to read check the timeout */
-+		if (bs->rx_len && time_after(jiffies, timeout)) {
-+			dev_dbg_ratelimited(&spi->dev,
-+					    "timeout period reached: jiffies: %lu remaining tx/rx: %d/%d - falling back to interrupt mode\n",
-+					    jiffies - timeout,
-+					    bs->tx_len, bs->rx_len);
-+			/* forward to interrupt handler */
-+			return __bcm2835aux_spi_transfer_one_irq(master,
-+							       spi, tfr);
-+		}
-+	}
-+
-+	/* Transfer complete - reset SPI HW */
-+	bcm2835aux_spi_reset_hw(bs);
-+
-+	/* and return without waiting for completion */
-+	return 0;
-+}
-+
-+static int bcm2835aux_spi_transfer_one(struct spi_master *master,
-+				       struct spi_device *spi,
-+				       struct spi_transfer *tfr)
-+{
-+	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
-+	unsigned long spi_hz, clk_hz, speed;
-+	unsigned long spi_used_hz, xfer_time_us;
-+
-+	/* calculate the registers to handle
-+	 *
-+	 * note that we use the variable data mode, which
-+	 * is not optimal for longer transfers as we waste registers
-+	 * resulting (potentially) in more interrupts when transferring
-+	 * more than 12 bytes
-+	 */
-+	bs->cntl[0] = BCM2835_AUX_SPI_CNTL0_ENABLE |
-+		      BCM2835_AUX_SPI_CNTL0_VAR_WIDTH |
-+		      BCM2835_AUX_SPI_CNTL0_MSBF_OUT;
-+	bs->cntl[1] = BCM2835_AUX_SPI_CNTL1_MSBF_IN;
-+
-+	/* set clock */
-+	spi_hz = tfr->speed_hz;
-+	clk_hz = clk_get_rate(bs->clk);
-+
-+	if (spi_hz >= clk_hz / 2) {
-+		speed = 0;
-+	} else if (spi_hz) {
-+		speed = DIV_ROUND_UP(clk_hz, 2 * spi_hz) - 1;
-+		if (speed >  BCM2835_AUX_SPI_CNTL0_SPEED_MAX)
-+			speed = BCM2835_AUX_SPI_CNTL0_SPEED_MAX;
-+	} else { /* the slowest we can go */
-+		speed = BCM2835_AUX_SPI_CNTL0_SPEED_MAX;
-+	}
-+	bs->cntl[0] |= speed << BCM2835_AUX_SPI_CNTL0_SPEED_SHIFT;
-+
-+	spi_used_hz = clk_hz / (2 * (speed + 1));
-+
-+	/* handle all the modes */
-+	if (spi->mode & SPI_CPOL)
-+		bs->cntl[0] |= BCM2835_AUX_SPI_CNTL0_CPOL;
-+	if (spi->mode & SPI_CPHA)
-+		bs->cntl[0] |= BCM2835_AUX_SPI_CNTL0_CPHA_OUT |
-+			       BCM2835_AUX_SPI_CNTL0_CPHA_IN;
-+
-+	/* set transmit buffers and length */
-+	bs->tx_buf = tfr->tx_buf;
-+	bs->rx_buf = tfr->rx_buf;
-+	bs->tx_len = tfr->len;
-+	bs->rx_len = tfr->len;
-+
-+	/* calculate the estimated time in us the transfer runs */
-+	xfer_time_us = tfr->len
-+		* 9 /* clocks/byte - SPI-HW waits 1 clock after each byte */
-+		* 1000000 / spi_used_hz;
-+
-+	/* run in polling mode for short transfers */
-+	if (xfer_time_us < BCM2835_AUX_SPI_POLLING_LIMIT_US)
-+		return bcm2835aux_spi_transfer_one_poll(master, spi, tfr,
-+							xfer_time_us);
-+
-+	/* run in interrupt mode for all others */
-+	return bcm2835aux_spi_transfer_one_irq(master, spi, tfr);
-+}
-+
-+static void bcm2835aux_spi_handle_err(struct spi_master *master,
-+				      struct spi_message *msg)
-+{
-+	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
-+
-+	bcm2835aux_spi_reset_hw(bs);
-+}
-+
-+static int bcm2835aux_spi_probe(struct platform_device *pdev)
-+{
-+	struct spi_master *master;
-+	struct bcm2835aux_spi *bs;
-+	struct resource *res;
-+	unsigned long clk_hz;
-+	int err;
-+
-+	master = spi_alloc_master(&pdev->dev, sizeof(*bs));
-+	if (!master) {
-+		dev_err(&pdev->dev, "spi_alloc_master() failed\n");
-+		return -ENOMEM;
-+	}
-+
-+	platform_set_drvdata(pdev, master);
-+	master->mode_bits = BCM2835_AUX_SPI_MODE_BITS;
-+	master->bits_per_word_mask = SPI_BPW_MASK(8);
-+	master->num_chipselect = -1;
-+	master->transfer_one = bcm2835aux_spi_transfer_one;
-+	master->handle_err = bcm2835aux_spi_handle_err;
-+	master->dev.of_node = pdev->dev.of_node;
-+
-+	bs = spi_master_get_devdata(master);
-+
-+	/* the main area */
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	bs->regs = devm_ioremap_resource(&pdev->dev, res);
-+	if (IS_ERR(bs->regs)) {
-+		err = PTR_ERR(bs->regs);
-+		goto out_master_put;
-+	}
-+
-+	bs->clk = devm_clk_get(&pdev->dev, NULL);
-+	if ((!bs->clk) || (IS_ERR(bs->clk))) {
-+		err = PTR_ERR(bs->clk);
-+		dev_err(&pdev->dev, "could not get clk: %d\n", err);
-+		goto out_master_put;
-+	}
-+
-+	bs->irq = irq_of_parse_and_map(pdev->dev.of_node, 0);
-+	if (bs->irq <= 0) {
-+		dev_err(&pdev->dev, "could not get IRQ: %d\n", bs->irq);
-+		err = bs->irq ? bs->irq : -ENODEV;
-+		goto out_master_put;
-+	}
-+
-+	/* this also enables the HW block */
-+	err = clk_prepare_enable(bs->clk);
-+	if (err) {
-+		dev_err(&pdev->dev, "could not prepare clock: %d\n", err);
-+		goto out_master_put;
-+	}
-+
-+	/* just checking if the clock returns a sane value */
-+	clk_hz = clk_get_rate(bs->clk);
-+	if (!clk_hz) {
-+		dev_err(&pdev->dev, "clock returns 0 Hz\n");
-+		err = -ENODEV;
-+		goto out_clk_disable;
-+	}
-+
-+	err = devm_request_irq(&pdev->dev, bs->irq,
-+			       bcm2835aux_spi_interrupt,
-+			       IRQF_SHARED,
-+			       dev_name(&pdev->dev), master);
-+	if (err) {
-+		dev_err(&pdev->dev, "could not request IRQ: %d\n", err);
-+		goto out_clk_disable;
-+	}
-+
-+	/* reset SPI-HW block */
-+	bcm2835aux_spi_reset_hw(bs);
-+
-+	err = devm_spi_register_master(&pdev->dev, master);
-+	if (err) {
-+		dev_err(&pdev->dev, "could not register SPI master: %d\n", err);
-+		goto out_clk_disable;
-+	}
-+
-+	return 0;
-+
-+out_clk_disable:
-+	clk_disable_unprepare(bs->clk);
-+out_master_put:
-+	spi_master_put(master);
-+	return err;
-+}
-+
-+static int bcm2835aux_spi_remove(struct platform_device *pdev)
-+{
-+	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
-+
-+	bcm2835aux_spi_reset_hw(bs);
-+
-+	/* disable the HW block by releasing the clock */
-+	clk_disable_unprepare(bs->clk);
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id bcm2835aux_spi_match[] = {
-+	{ .compatible = "brcm,bcm2835-aux-spi", },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, bcm2835aux_spi_match);
-+
-+static struct platform_driver bcm2835aux_spi_driver = {
-+	.driver		= {
-+		.name		= "spi-bcm2835aux",
-+		.of_match_table	= bcm2835aux_spi_match,
-+	},
-+	.probe		= bcm2835aux_spi_probe,
-+	.remove		= bcm2835aux_spi_remove,
-+};
-+module_platform_driver(bcm2835aux_spi_driver);
-+
-+MODULE_DESCRIPTION("SPI controller driver for Broadcom BCM2835 aux");
-+MODULE_AUTHOR("Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>");
-+MODULE_LICENSE("GPL v2");
--- 
-2.5.0
-
+--scyazgeAM+HHl7kc--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

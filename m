@@ -1,80 +1,72 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v6 2/4] spi: bcm2835: add bcm2835 auxiliary spi device
- driver
-Date: Wed, 7 Oct 2015 11:41:21 +0100
-Message-ID: <20151007104121.GG12635@sirena.org.uk>
-References: <1441970527-2403-1-git-send-email-kernel@martin.sperl.org>
- <1441970527-2403-3-git-send-email-kernel@martin.sperl.org>
- <20151006112320.GP12635@sirena.org.uk>
- <5613B2A2.9020309@martin.sperl.org>
+Subject: [GIT PULL] spi fixes for v4.3
+Date: Wed, 7 Oct 2015 11:56:38 +0100
+Message-ID: <20151007105638.GH12635@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="scyazgeAM+HHl7kc"
-Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Lubomir Rintel <lkundrak-NGH9Lh4a5iE@public.gmane.org>, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	eEric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="3hIvOD7G0d3u+a8M"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <5613B2A2.9020309-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---scyazgeAM+HHl7kc
+--3hIvOD7G0d3u+a8M
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 06, 2015 at 01:38:10PM +0200, Martin Sperl wrote:
-> On 06.10.2015 13:23, Mark Brown wrote:
-> >On Fri, Sep 11, 2015 at 11:22:04AM +0000, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
+The following changes since commit 049e6dde7e57f0054fdc49102e7ef4830c698b46:
 
-> >>+	bs->irq =3D irq_of_parse_and_map(pdev->dev.of_node, 0);
+  Linux 4.3-rc4 (2015-10-04 16:57:17 +0100)
 
-> >Why are we using this unusual DT specific API here?  I'd expect to see
-> >just use platform_get_irq() here and this seems to be the only DT
-> >dependency in the driver.
+are available in the git repository at:
 
-> I copied it from spi-bcm2835.c, where it is also used in exactly that
-> fashion.
+  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v4.3-rc4
 
-> You want me to move to your recommended api instead for both drivers?
+for you to fetch changes up to c2c80bdb9e91b412ea68f6dcc49c5d7b91e0b930:
 
-> >I'd expect to request the IRQ after we reset the hardware in order to
-> >ensure that the hardware is in a known good state
->=20
-> Same copy/paste in this case - i can change the order for both
-> drivers if you want.
+  Merge remote-tracking branches 'spi/fix/davinci' and 'spi/fix/sh-msiof' into spi-linus (2015-10-07 11:43:39 +0100)
 
-Yes, that'd be better.  I'll just apply this now and you can send
-followup patches fixing these for both drivers.
+----------------------------------------------------------------
+spi: Fixes for v4.3
 
---scyazgeAM+HHl7kc
+A couple of very minor fixes, one for error handling in the Davinci
+driver probe function and another making the Renesas sh-msiof DT binding
+documentation correspond to what's actually implemented.
+
+----------------------------------------------------------------
+Andrzej Hajda (1):
+      spi: davinci: fix handling platform_get_irq result
+
+Geert Uytterhoeven (1):
+      spi: sh-msiof: Match renesas,rx-fifo-size in DT bindings doc with driver
+
+Mark Brown (1):
+      Merge remote-tracking branches 'spi/fix/davinci' and 'spi/fix/sh-msiof' into spi-linus
+
+ Documentation/devicetree/bindings/spi/sh-msiof.txt | 2 +-
+ drivers/spi/spi-davinci.c                          | 7 ++++---
+ 2 files changed, 5 insertions(+), 4 deletions(-)
+
+--3hIvOD7G0d3u+a8M
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEbBAEBCAAGBQJWFPbQAAoJECTWi3JdVIfQh04H90mG9uDCQxivIi2xX+bDwEYM
-jyI4ePar3YMDM2hqXzdt5pNLEPuscZkxiwWCBlxAnwxFMB7lWpSoj8sPzKF0kAeL
-Aq6nkXLM7GOIbWzBO2IGiw4GU/8YnDBLSsStsosao/+XAxsA0YKccFRBL7FFe9Mf
-DvJpn9sKCCf0fLltL+4iibUUBKRHrfkLqSnDgz4J/fCN6PqjTnLc+UR1+2TwC3q8
-LsTMAma+b8AoNfOyxxvL9/FYl2vMN2I4734WlVmJnxwvOP7iibjU77ZrsrbSxfLp
-buFJImLlER4cNywAgTTyubwhY70r+5VkowQk9Z904V1HcFE6ucHJ+cNysEdtDQ==
-=SnDA
+iQEcBAEBCAAGBQJWFPplAAoJECTWi3JdVIfQnkEH/j2DAccJibiUclgxC//2Jp7b
+giQWE9MFZLysLjjIZLkWQl7H/okt0Fb7Kf4jgvI8ahwxGqF6IVFmT5xFDdp65Ie1
+MUaI8dL3fNZvG8n4j7iKhqK8qfVyRR92OVKSzMX0zm8S5pchmroO6mm9o8tdKCHZ
+nCAGShRtMjM6VeRL6LycsG6UclgJs1T+uXSmG6/rHmq82pb4Jv/vVCqsDrtwp7V9
+H0R9ELCUNlM+NeJfXM70pvG0NorTMGNkGWlnt3RBsznrH+EmCYNsLDuvjPHjifBS
+ILAqj6BvI7SwHaCE8ahFrxk6sltnY3DGsVxZeLCmQXIbBW/ZAqohOLAciCntH8U=
+=INLd
 -----END PGP SIGNATURE-----
 
---scyazgeAM+HHl7kc--
+--3hIvOD7G0d3u+a8M--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

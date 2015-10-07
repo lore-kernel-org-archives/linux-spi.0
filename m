@@ -1,72 +1,61 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [GIT PULL] spi fixes for v4.3
-Date: Wed, 7 Oct 2015 11:56:38 +0100
-Message-ID: <20151007105638.GH12635@sirena.org.uk>
+From: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v5 06/10] dmaengine: add API for getting dma controller's
+ quirk
+Date: Wed, 7 Oct 2015 15:32:06 +0100
+Message-ID: <20151007143205.GG3320@vkoul-mobl.iind.intel.com>
+References: <1442187923-5736-1-git-send-email-shawn.lin@rock-chips.com>
+ <1442188139-6017-1-git-send-email-shawn.lin@rock-chips.com>
+ <20151005153746.GG13501@vkoul-mobl.iind.intel.com>
+ <56139289.7000005@rock-chips.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="3hIvOD7G0d3u+a8M"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>, Jaroslav Kysela <perex-/Fr2/VpizcU@public.gmane.org>,
+	Takashi Iwai <tiwai-IBi9RG/b67k@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>,
+	Sonny Rao <sonnyrao-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	Addy Ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>, dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
+In-Reply-To: <56139289.7000005-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Tue, Oct 06, 2015 at 05:21:13PM +0800, Shawn Lin wrote:
 
---3hIvOD7G0d3u+a8M
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> >>+	int (*device_get_quirks)(struct dma_chan *chan);
+> >
+> >And why do we want to expose this to users? THis doesnt seem right!
+> >
+> 
+> Basically I agree not to expose dma's quirk to slave controllers...But, the
+> fact I mentioned on cover letter explain the reasons why I have to let slave
+> controllers know that they are working with a broken dma. It's a dilemma
+> that if we don't want that to be exposed(let slave controllers' driver get
+> the info via a API), we have to add broken quirk for all of them ,here and
+> there, which seems to be a disaster:(
+> 
+> I would appreciate it if you could give me some suggestions at your earliest
+> convenience. :)
+> 
+> >A quirk may exists but should be handled inside the controller driver and do
+> >appropriate action. You don't tell users or expect them to handle these
+> >
+I laready gave one re-read the above lines.
 
-The following changes since commit 049e6dde7e57f0054fdc49102e7ef4830c698b46:
+Anyway I went ahead and read the usage. You are setting the slave parameters
+for this. I can see two ways:
+1. Have the quirk to driver and based on quirk reset the slave settings when
+they are set by client.
+2. Put this in DT and set the dma properties based on these quirks and let
+driver and cleint be agnostic to it
 
-  Linux 4.3-rc4 (2015-10-04 16:57:17 +0100)
-
-are available in the git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v4.3-rc4
-
-for you to fetch changes up to c2c80bdb9e91b412ea68f6dcc49c5d7b91e0b930:
-
-  Merge remote-tracking branches 'spi/fix/davinci' and 'spi/fix/sh-msiof' into spi-linus (2015-10-07 11:43:39 +0100)
-
-----------------------------------------------------------------
-spi: Fixes for v4.3
-
-A couple of very minor fixes, one for error handling in the Davinci
-driver probe function and another making the Renesas sh-msiof DT binding
-documentation correspond to what's actually implemented.
-
-----------------------------------------------------------------
-Andrzej Hajda (1):
-      spi: davinci: fix handling platform_get_irq result
-
-Geert Uytterhoeven (1):
-      spi: sh-msiof: Match renesas,rx-fifo-size in DT bindings doc with driver
-
-Mark Brown (1):
-      Merge remote-tracking branches 'spi/fix/davinci' and 'spi/fix/sh-msiof' into spi-linus
-
- Documentation/devicetree/bindings/spi/sh-msiof.txt | 2 +-
- drivers/spi/spi-davinci.c                          | 7 ++++---
- 2 files changed, 5 insertions(+), 4 deletions(-)
-
---3hIvOD7G0d3u+a8M
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJWFPplAAoJECTWi3JdVIfQnkEH/j2DAccJibiUclgxC//2Jp7b
-giQWE9MFZLysLjjIZLkWQl7H/okt0Fb7Kf4jgvI8ahwxGqF6IVFmT5xFDdp65Ie1
-MUaI8dL3fNZvG8n4j7iKhqK8qfVyRR92OVKSzMX0zm8S5pchmroO6mm9o8tdKCHZ
-nCAGShRtMjM6VeRL6LycsG6UclgJs1T+uXSmG6/rHmq82pb4Jv/vVCqsDrtwp7V9
-H0R9ELCUNlM+NeJfXM70pvG0NorTMGNkGWlnt3RBsznrH+EmCYNsLDuvjPHjifBS
-ILAqj6BvI7SwHaCE8ahFrxk6sltnY3DGsVxZeLCmQXIbBW/ZAqohOLAciCntH8U=
-=INLd
------END PGP SIGNATURE-----
-
---3hIvOD7G0d3u+a8M--
+-- 
+~Vinod
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

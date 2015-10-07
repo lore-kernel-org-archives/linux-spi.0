@@ -1,61 +1,107 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] misc: eeprom: at25: add Cypress FRAM functionality
-Date: Tue, 6 Oct 2015 15:40:48 +0100
-Message-ID: <20151006144048.GS12635@sirena.org.uk>
-References: <c7beacd629a47a0bd5023353378a3eda4d7d0f89.1444139729.git.jiri.prchal@aksignal.cz>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="tCskcS2bjfK01Pum"
-Cc: linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org, nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org
-To: Jiri Prchal <jiri.prchal-cKCO0sOKHLPtwjQa/ONI9g@public.gmane.org>
+Subject: Applied "spi: bcm2835aux: spi: add bindings for the bcm2835 auxiliary spi devices" to the spi tree
+Date: Wed, 07 Oct 2015 11:43:31 +0100
+Message-ID: <E1ZjmC3-000562-R0@finisterre>
+References: <1441970527-2403-2-git-send-email-kernel@martin.sperl.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
+	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <c7beacd629a47a0bd5023353378a3eda4d7d0f89.1444139729.git.jiri.prchal-cKCO0sOKHLPtwjQa/ONI9g@public.gmane.org>
+In-Reply-To: <1441970527-2403-2-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---tCskcS2bjfK01Pum
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: bcm2835aux: spi: add bindings for the bcm2835 auxiliary spi devices
 
-On Tue, Oct 06, 2015 at 04:01:32PM +0200, Jiri Prchal wrote:
-> This patch adds functionality for Cypress FRAMs on SPI bus, such as FM25V05,
-> FM25V10 etc.
+has been applied to the spi tree at
 
-I'm not entirely sure why I got CCed on this?
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> +	mutex_lock(&at25->lock);
-> +
-> +	status = spi_sync(at25->spi, &m);
-> +	dev_dbg(&at25->spi->dev,
-> +		"read %Zd bytes of ID --> %d\n",
-> +	 FM25_ID_LEN, (int) status);
-> +
-> +	mutex_unlock(&at25->lock);
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-There is no point in holding a lock around spi_sync(), the SPI framework
-has locking which will ensure spi_sync() and spi_async() calls will be
-serialised.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---tCskcS2bjfK01Pum
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-iQEcBAEBCAAGBQJWE91vAAoJECTWi3JdVIfQXWEIAIL3/C5ZmgcvCOMOkTiFLxfi
-o22iChNQrXLBrLKa1CYotn0KSIxPnQDR/xSaJMX+vg6i5VsOPa6UamqVsf6f4lJE
-tY7K7tKrqXp8InmUT5qyTrkDQUv8VhSOYVMbCtAIci0A/RPXXdI922slwMf27OcF
-zMSndF6krXKIur6W2EZ/tluBwOUuWnyHwNmrCK35A3AfU2Fm8Fa/GVw7JpT/h665
-/zJxcHG0X2KO61q8L7RXvI3O/yUptKJZChrSrXbRDxeSvJ4qj4XePKhUbvtEpYeh
-mUdDvAm3GRWAvP8Y/DNv6QJYP62/pPTuU96JV7gkhvjd/rrLIkyDeQTFQCVQMeE=
-=/8gr
------END PGP SIGNATURE-----
+Thanks,
+Mark
 
---tCskcS2bjfK01Pum--
+>From 541cf5de027b7e9afe3a8f0ce205d2ccc02ac3fe Mon Sep 17 00:00:00 2001
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Date: Fri, 11 Sep 2015 11:22:03 +0000
+Subject: [PATCH] spi: bcm2835aux: spi: add bindings for the bcm2835 auxiliary
+ spi devices
+
+This defines the spi1 and spi2 devices in the device-tree.
+
+Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Acked-by: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ .../bindings/spi/brcm,bcm2835-aux-spi.txt          | 38 ++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/brcm,bcm2835-aux-spi.txt
+
+diff --git a/Documentation/devicetree/bindings/spi/brcm,bcm2835-aux-spi.txt b/Documentation/devicetree/bindings/spi/brcm,bcm2835-aux-spi.txt
+new file mode 100644
+index 0000000..9887b07
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/brcm,bcm2835-aux-spi.txt
+@@ -0,0 +1,38 @@
++Broadcom BCM2835 auxiliar SPI1/2 controller
++
++The BCM2835 contains two forms of SPI master controller, one known simply as
++SPI0, and the other known as the "Universal SPI Master"; part of the
++auxiliary block. This binding applies to the SPI1/2 controller.
++
++Required properties:
++- compatible: Should be "brcm,bcm2835-aux-spi".
++- reg: Should contain register location and length for the spi block
++- interrupts: Should contain shared interrupt of the aux block
++- clocks: The clock feeding the SPI controller - needs to
++	  point to the auxiliar clock driver of the bcm2835,
++	  as this clock will enable the output gate for the specific
++	  clock.
++- cs-gpios: the cs-gpios (native cs is NOT supported)
++	    see also spi-bus.txt
++
++Example:
++
++spi1@7e215080 {
++	compatible = "brcm,bcm2835-aux-spi";
++	reg = <0x7e215080 0x40>;
++	interrupts = <1 29>;
++	clocks = <&aux_clocks BCM2835_AUX_CLOCK_SPI1>;
++	#address-cells = <1>;
++	#size-cells = <0>;
++	cs-gpios = <&gpio 18>, <&gpio 17>, <&gpio 16>;
++};
++
++spi2@7e2150c0 {
++	compatible = "brcm,bcm2835-aux-spi";
++	reg = <0x7e2150c0 0x40>;
++	interrupts = <1 29>;
++	clocks = <&aux_clocks BCM2835_AUX_CLOCK_SPI2>;
++	#address-cells = <1>;
++	#size-cells = <0>;
++	cs-gpios = <&gpio 43>, <&gpio 44>, <&gpio 45>;
++};
+-- 
+2.5.0
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

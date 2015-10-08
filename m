@@ -1,99 +1,66 @@
-From: Robin Gong <b38343@freescale.com>
-Subject: Re: [PATCH v2 3/8] spi: imx: add support for all SPI word width for
- DMA transfer
-Date: Thu, 8 Oct 2015 17:51:03 +0800
-Message-ID: <20151008095102.GC6101@shlinux2>
-References: <cover.1442923630.git.anton_bondarenko@mentor.com>
- <f8844a7a52ab44f00e7b6a1c3ce55d72d7999514.1442923630.git.anton_bondarenko@mentor.com>
- <20150930083539.GD2709@shlinux2>
- <04376A3D786BD947B28569C998A374A62E280E21@NA-MBX-02.mgc.mentorg.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "Wang, Jiada \(ESD\)" <Jiada_Wang@mentor.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- "broonie@kernel.org" <broonie@kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "Zapolskiy, Vladimir" <Vladimir_Zapolskiy@mentor.com>
-To: "Bondarenko, Anton" <Anton_Bondarenko@mentor.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-Content-Disposition: inline
-In-Reply-To: <04376A3D786BD947B28569C998A374A62E280E21@NA-MBX-02.mgc.mentorg.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH 1/1] spi-pxa2xx: choose closest lower speed
+Date: Thu,  8 Oct 2015 14:43:13 +0300
+Message-ID: <1444304593-14669-1-git-send-email-andriy.shevchenko@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Oct 01, 2015 at 12:34:54AM +0000, Bondarenko, Anton wrote:
-> On 30.09.2015 10:35, Robin Gong wrote:
-> > On Fri, Sep 25, 2015 at 07:57:10PM +0200, Anton Bondarenko wrote:
-> >> @@ -91,11 +91,15 @@ struct spi_imx_data {
-> >>  
-> >>  	struct completion xfer_done;
-> >>  	void __iomem *base;
-> >> +	unsigned long base_phys;
-> >> +
-> >>  	struct clk *clk_per;
-> >>  	struct clk *clk_ipg;
-> >>  	unsigned long spi_clk;
-> >>  	unsigned int spi_bus_clk;
-> >>  
-> >> +	unsigned int bpw_w;
-> >> +
-> > It's better to change bytes_per_word for clear understanding,since bpw in spi means
-> > bits_per_word...
-> Agree. Fixed in V3
-> >>  	unsigned int count;
-> >>  	void (*tx)(struct spi_imx_data *);
-> >>  	void (*rx)(struct spi_imx_data *);
-> >> @@ -201,9 +205,13 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
-> >>  			 struct spi_transfer *transfer)
-> >>  {
-> >>  	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
-> >> +	unsigned int bpw_w = transfer->bits_per_word;
-> >>  
-> >> -	if (spi_imx->dma_is_inited &&
-> >> -	    (transfer->len > spi_imx->wml * sizeof(u32)))
-> >> +	if (!bpw_w)
-> >> +		bpw_w = spi->bits_per_word;
-> >> +
-> >> +	bpw_w = DIV_ROUND_UP(bpw_w, 8);
-> >> +	if (spi_imx->dma_is_inited && (transfer->len > spi_imx->wml * bpw_w))
-> > Please remove bpw_w here as I talked in the first patch.
-> As explained in patch1 we need to use SPI word size in calculation to decide 
-> if we want to go with DMA or PIO mode. Just a short example:
-> We need to transfer 24 SPI words with BPW == 32. This will take ~ 24 PIO writes
-> to FIFO (and same for reads). But transfer->len will be 24*4=96 bytes.
-> WML is 32 SPI words. The decision will be incorrect if we do not take into account
-> SPI bits per word. 
-Yes, you are right, but I'm thinking so many 'DIV_ROUND_UP()'in your patch to
-get bpw, can you centralize it or just use the 'bpw_w' in 'struct spi_imx_data'?
-> >>  		return true;
-> >>  	return false;
-> >>  }
-> >> @@ -1007,7 +1058,8 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
-> >>  					    DMA_FROM_DEVICE);
-> >>  
-> >>  			spi_imx->rx_buf = pio_buffer;
-> >> -			spi_imx->txfifo = left;
-> >> +			spi_imx->txfifo = DIV_ROUND_UP(left, spi_imx->bpw_w);
-> >> +
-> > Looks not enough here, you have to set 'spi_imx->rx' per the right bpw.
-> What do you mean? We have had bpw_w == 1 before so 
-> spi_imx->txfifo = DIV_ROUND_UP(left, spi_imx->bpw_w);
-> is equivalent to
-> spi_imx->txfifo = left;
-> Now we could have bpw_w equal to 2 or 4 also. txfifo is number of SPI words
-> and not number of bytes.
-Sorry, please ignore this comment, since 'spi_imx->rx' will be correctly set
-per the right bpw in spi_imx_setupxfer whatever in DMA or PIO mode.
-> >>  			reinit_completion(&spi_imx->xfer_done);
-> >>  
-> >>  			spi_imx->devtype_data->intctrl(spi_imx, MXC_INT_TCEN);
+As per discussion [1] the best choice is to set closest speed which is not
+going over the asked one.
+
+Do the same approach for Intel Quark boards.
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+---
+ drivers/spi/spi-pxa2xx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index dee5b38..82493c2 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -734,7 +734,7 @@ static unsigned int quark_x1000_get_clk_div(int rate, u32 *dds)
+ 	mul = (1 << 24) >> 1;
+ 
+ 	/* Calculate initial quot */
+-	q1 = DIV_ROUND_CLOSEST(fref1, rate);
++	q1 = DIV_ROUND_UP(fref1, rate);
+ 
+ 	/* Scale q1 if it's too big */
+ 	if (q1 > 256) {
+@@ -759,7 +759,7 @@ static unsigned int quark_x1000_get_clk_div(int rate, u32 *dds)
+ 
+ 	/* Case 2 */
+ 
+-	q2 = DIV_ROUND_CLOSEST(fref2, rate);
++	q2 = DIV_ROUND_UP(fref2, rate);
+ 	r2 = abs(fref2 / q2 - rate);
+ 
+ 	/*
+@@ -778,13 +778,13 @@ static unsigned int quark_x1000_get_clk_div(int rate, u32 *dds)
+ 		mul = (1 << 24) * 2 / 5;
+ 	}
+ 
+-	/* Check case 3 only If the divisor is big enough */
++	/* Check case 3 only if the divisor is big enough */
+ 	if (fref / rate >= 80) {
+ 		u64 fssp;
+ 		u32 m;
+ 
+ 		/* Calculate initial quot */
+-		q1 = DIV_ROUND_CLOSEST(fref, rate);
++		q1 = DIV_ROUND_UP(fref, rate);
+ 		m = (1 << 24) / q1;
+ 
+ 		/* Get the remainder */
+-- 
+2.5.3
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

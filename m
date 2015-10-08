@@ -1,246 +1,80 @@
-From: Robin Gong <b38343@freescale.com>
-Subject: Re: [PATCH v2 1/8] spi: imx: Fix DMA transfer
-Date: Thu, 8 Oct 2015 17:19:53 +0800
-Message-ID: <20151008091951.GA6101@shlinux2>
+From: Robin Gong <b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Subject: Re: [PATCH v2 5/8] spi: imx: Add support for loopback for ECSPI
+ controllers
+Date: Thu, 8 Oct 2015 17:28:28 +0800
+Message-ID: <20151008092827.GB6101@shlinux2>
 References: <cover.1442923630.git.anton_bondarenko@mentor.com>
- <d61ed8cc9e13b0890e6243135c613edea1234698.1442923630.git.anton_bondarenko@mentor.com>
- <20150930082341.GB2709@shlinux2>
- <04376A3D786BD947B28569C998A374A62E280DD6@NA-MBX-02.mgc.mentorg.com>
+ <ca96561d8010acf587a93d0f357774bf77efbe16.1442923630.git.anton_bondarenko@mentor.com>
+ <20150930084219.GE2709@shlinux2>
+ <04376A3D786BD947B28569C998A374A62E280E0F@NA-MBX-02.mgc.mentorg.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "Wang, Jiada \(ESD\)" <Jiada_Wang@mentor.com>,
- "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- "broonie@kernel.org" <broonie@kernel.org>, "Zapolskiy,
- Vladimir" <Vladimir_Zapolskiy@mentor.com>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-To: "Bondarenko, Anton" <Anton_Bondarenko@mentor.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Cc: "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"Wang, Jiada (ESD)" <Jiada_Wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
+	"Zapolskiy, Vladimir" <Vladimir_Zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+To: "Bondarenko, Anton" <Anton_Bondarenko-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <04376A3D786BD947B28569C998A374A62E280DD6@NA-MBX-02.mgc.mentorg.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <04376A3D786BD947B28569C998A374A62E280E0F-0dz9ie/QGrkPOGHby5MvPNQH9K4/4qFeAL8bYrjMMd8@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Oct 01, 2015 at 12:02:41AM +0000, Bondarenko, Anton wrote:
-> >> @@ -201,9 +202,8 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
-> >>  {
-> >>  	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
+On Thu, Oct 01, 2015 at 12:16:49AM +0000, Bondarenko, Anton wrote:
+> On 30.09.2015 10:42, Robin Gong wrote:
+> > On Fri, Sep 25, 2015 at 07:57:12PM +0200, Anton Bondarenko wrote:
+> >> @@ -370,8 +374,12 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
+> >>  	if (config->mode & SPI_CS_HIGH)
+> >>  		cfg |= MX51_ECSPI_CONFIG_SSBPOL(config->cs);
 > >>  
-> >> -	if (spi_imx->dma_is_inited
-> >> -	    && transfer->len > spi_imx->rx_wml * sizeof(u32)
-> >> -	    && transfer->len > spi_imx->tx_wml * sizeof(u32))
-> >> +	if (spi_imx->dma_is_inited &&
-> >> +	    (transfer->len > spi_imx->wml * sizeof(u32)))
-> > Add Sascha in the loop. I don't think "* sizeof(u32)", since even 1 byte data
-> > will consume one position of 32bit FIFO Thus if here
-> > spi_imx->wml = spi_imx_get_fifosize(spi_imx) / 2 = 32, the threshold value
-> > which judge DMA mode used or not should be 32 not 32 * 4.
-> > Of course, it will not cause any function break since both DMA and PIO can work
-> > ,but I think we'd better correct it.
-> I agree, in case of 1 byte SPI word we do not need to multiply by 4.
-> But for 16 bit and 32 bit SPI words it's necessary. This part is
-> addressed in patch 3.
-> I could remove "* sizeof(u32)" for now.
-I still think don't need *sizeof(u32) even for 16bit and 32bit, whatever bits
-used as one spi word(<32bits), one spi word consume one position of SPI FIFO
-(32bit).
-> >>  		return true;
-> >>  	return false;
-> >>  }
-> >> @@ -369,19 +374,10 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
-> >>  	 * and enable DMA request.
-> >>  	 */
-> >>  	if (spi_imx->dma_is_inited) {
-> >> -		dma = readl(spi_imx->base + MX51_ECSPI_DMA);
-> >> -
-> >> -		spi_imx->rxt_wml = spi_imx_get_fifosize(spi_imx) / 2;
-> >> -		rx_wml_cfg = spi_imx->rx_wml << MX51_ECSPI_DMA_RX_WML_OFFSET;
-> >> -		tx_wml_cfg = spi_imx->tx_wml << MX51_ECSPI_DMA_TX_WML_OFFSET;
-> >> -		rxt_wml_cfg = spi_imx->rxt_wml << MX51_ECSPI_DMA_RXT_WML_OFFSET;
-> >> -		dma = (dma & ~MX51_ECSPI_DMA_TX_WML_MASK
-> >> -			   & ~MX51_ECSPI_DMA_RX_WML_MASK
-> >> -			   & ~MX51_ECSPI_DMA_RXT_WML_MASK)
-> >> -			   | rx_wml_cfg | tx_wml_cfg | rxt_wml_cfg
-> >> -			   |(1 << MX51_ECSPI_DMA_TEDEN_OFFSET)
-> >> -			   |(1 << MX51_ECSPI_DMA_RXDEN_OFFSET)
-> >> -			   |(1 << MX51_ECSPI_DMA_RXTDEN_OFFSET);
-> >> +		dma = (spi_imx->wml - 1) << MX51_ECSPI_DMA_RX_WML_OFFSET
-> >> +		      | (spi_imx->wml - 1) << MX51_ECSPI_DMA_TX_WML_OFFSET
-> >> +		      | (1 << MX51_ECSPI_DMA_TEDEN_OFFSET)
-> >> +		      | (1 << MX51_ECSPI_DMA_RXDEN_OFFSET);
-> > Please set tx threshold as 0 as your v1 patch if I remember right, as our
-> > internal tree done:
-> > http://git.freescale.com/git/cgit.cgi/imx/linux-2.6-imx.git/commit/drivers/spi/spi-imx.c?h=imx_3.14.28_7d_alpha&id=2e7615e2f399e39c58dd31f84a31f7c2592da7e7
-> Will be fixed in V3 patchset
-> >>  
-> >>  		writel(dma, spi_imx->base + MX51_ECSPI_DMA);
-> >>  	}
-> >> @@ -825,6 +821,8 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
-> >>  	if (of_machine_is_compatible("fsl,imx6dl"))
-> >>  		return 0;
-> >>  
-> >> +	spi_imx->wml = spi_imx_get_fifosize(spi_imx) / 2;
+> >> +	if (config->mode & SPI_LOOP)
+> >> +		lpb |= MX51_ECSPI_LOOP;
 > >> +
-> >>  	/* Prepare for TX DMA: */
-> >>  	master->dma_tx = dma_request_slave_channel(dev, "tx");
-> >>  	if (!master->dma_tx) {
-> >> @@ -836,7 +834,8 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
-> >>  	slave_config.direction = DMA_MEM_TO_DEV;
-> >>  	slave_config.dst_addr = res->start + MXC_CSPITXDATA;
-> >>  	slave_config.dst_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
-> >> -	slave_config.dst_maxburst = spi_imx_get_fifosize(spi_imx) / 2;
-> >> +	slave_config.dst_maxburst = spi_imx_get_fifosize(spi_imx)
-> >> +					- spi_imx->wml;
-> > slave_config.dst_maxburst = spi_imx->wml;?
+> >>  	writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
+> >>  	writel(cfg, spi_imx->base + MX51_ECSPI_CONFIG);
+> >> +	writel(lpb, spi_imx->base + MX51_ECSPI_TEST);
+> > It's better write this MX51_ECSPI_TEST only in LOOP mode.
+> LOOP mode can be set dynamically. This mean we should be able to set and clear the flag.
+> Currently only LOOP flag is used. I did not find any problems with writing 0 in the rest
+> fields of TEST register.
+Yes, I know writing 0 is harmless, but we never need to touch this register if
+SPI_LOOP flags not set, I'd like below:
+	if (config->mode & SPI_LOOP) {
+		lpb |= MX51_ECSPI_LOOP;
+		writel(lgb, spi_imx->base + MX51_ECSPI_TEST);
+	}
+
+> >>  
+> >>  	/*
+> >>  	 * Wait until the changes in the configuration register CONFIGREG
+> >> @@ -1276,12 +1287,13 @@ static int spi_imx_probe(struct platform_device *pdev)
+> >>  	spi_imx->bitbang.master->cleanup = spi_imx_cleanup;
+> >>  	spi_imx->bitbang.master->prepare_message = spi_imx_prepare_message;
+> >>  	spi_imx->bitbang.master->unprepare_message = spi_imx_unprepare_message;
+> >> -	spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+> >> +	spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA |
+> >> +				SPI_CS_HIGH;
+> > Any change?
 > Will be fixed in V3
-> >>  	ret = dmaengine_slave_config(master->dma_tx, &slave_config);
-> >>  	if (ret) {
-> >>  		dev_err(dev, "error in TX dma configuration.\n");
-> >> @@ -854,7 +853,8 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
-> >>  	slave_config.direction = DMA_DEV_TO_MEM;
-> >>  	slave_config.src_addr = res->start + MXC_CSPIRXDATA;
-> >>  	slave_config.src_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
-> >> -	slave_config.src_maxburst = spi_imx_get_fifosize(spi_imx) / 2;
-> >> +	slave_config.src_maxburst = spi_imx_get_fifosize(spi_imx)
-> >> +					- spi_imx->wml;
-> > slave_config.src_maxburst = spi_imx->wml;?
-> Will be fixed in V3
-> >>  	ret = dmaengine_slave_config(master->dma_rx, &slave_config);
-> >>  	if (ret) {
-> >>  		dev_err(dev, "error in RX dma configuration.\n");
-> >> @@ -867,8 +867,6 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
-> >>  	master->max_dma_len = MAX_SDMA_BD_BYTES;
-> >>  	spi_imx->bitbang.master->flags = SPI_MASTER_MUST_RX |
-> >>  					 SPI_MASTER_MUST_TX;
-> >> -	spi_imx->tx_wml = spi_imx_get_fifosize(spi_imx) / 2;
-> >> -	spi_imx->rx_wml = spi_imx_get_fifosize(spi_imx) / 2;
-> >>  	spi_imx->dma_is_inited = 1;
 > >>  
-> >>  	return 0;
-> >> @@ -897,8 +895,7 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
-> >>  	struct dma_async_tx_descriptor *desc_tx = NULL, *desc_rx = NULL;
-> >>  	int ret;
-> >>  	unsigned long timeout;
-> >> -	u32 dma;
-> >> -	int left;
-> >> +	const int left = transfer->len % spi_imx->wml;
-> >>  	struct spi_master *master = spi_imx->bitbang.master;
-> >>  	struct sg_table *tx = &transfer->tx_sg, *rx = &transfer->rx_sg;
+> >> -	init_completion(&spi_imx->xfer_done);
+> >> +	if (is_imx5x_ecspi(spi_imx))
+> >> +		spi_imx->bitbang.master->mode_bits |= SPI_LOOP;
 > >>  
-> >> @@ -915,9 +912,23 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
-> >>  	}
+> >> -	spi_imx->devtype_data = of_id ? of_id->data :
+> >> -		(struct spi_imx_devtype_data *) pdev->id_entry->driver_data;
+> >> +	init_completion(&spi_imx->xfer_done);
 > >>  
-> >>  	if (rx) {
-> >> +		/* Cut RX data tail */
-> >> +		const unsigned int old_nents = rx->nents;
-> >> +
-> >> +		WARN_ON(sg_dma_len(&rx->sgl[rx->nents - 1]) < left);
-> >> +		sg_dma_len(&rx->sgl[rx->nents - 1]) -= left;
-> >> +		if (sg_dma_len(&rx->sgl[rx->nents - 1]) == 0)
-> >> +			--rx->nents;
-> >> +
-> >>  		desc_rx = dmaengine_prep_slave_sg(master->dma_rx,
-> >>  					rx->sgl, rx->nents, DMA_DEV_TO_MEM,
-> >>  					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
-> >> +
-> >> +		/* Restore old SG table state */
-> >> +		if (old_nents > rx->nents)
-> >> +			++rx->nents;
-> >> +		sg_dma_len(&rx->sgl[rx->nents - 1]) += left;
-> >> +
-> >>  		if (!desc_rx)
-> >>  			goto no_dma;
-> >>  
-> >> @@ -932,17 +943,10 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
-> >>  	/* Trigger the cspi module. */
-> >>  	spi_imx->dma_finished = 0;
-> >>  
-> >> -	dma = readl(spi_imx->base + MX51_ECSPI_DMA);
-> >> -	dma = dma & (~MX51_ECSPI_DMA_RXT_WML_MASK);
-> >> -	/* Change RX_DMA_LENGTH trigger dma fetch tail data */
-> >> -	left = transfer->len % spi_imx->rxt_wml;
-> >> -	if (left)
-> >> -		writel(dma | (left << MX51_ECSPI_DMA_RXT_WML_OFFSET),
-> >> -				spi_imx->base + MX51_ECSPI_DMA);
-> >> +	dma_async_issue_pending(master->dma_rx);
-> >> +	dma_async_issue_pending(master->dma_tx);
-> >>  	spi_imx->devtype_data->trigger(spi_imx);
-> >>  
-> >> -	dma_async_issue_pending(master->dma_tx);
-> >> -	dma_async_issue_pending(master->dma_rx);
-> > why change the sequence of issue_pending and trigger? I don't think need to do so.
-> The reason for order change for TX/RX requests is avoiding buffer
-> overflow for RX. This will happen if our code will be interrupted after
-> SPI HW and TX DMA started. This mean we will sent TX data, but there is
-> no one to consume RX data. So RX DMA should start before TX DMA.
-> On other hand TX DMA should start work earlier to fill buffer before SPI
-> HW starts pushing data out. This will give us a small performance bonus.
-> Not a big one, but still something for free.
-> >>  	/* Wait SDMA to finish the data transfer.*/
-> >>  	timeout = wait_for_completion_timeout(&spi_imx->dma_tx_completion,
-> >>  						IMX_DMA_TIMEOUT);
-> >> @@ -951,6 +955,7 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
-> >>  			dev_driver_string(&master->dev),
-> >>  			dev_name(&master->dev));
-> >>  		dmaengine_terminate_all(master->dma_tx);
-> >> +		dmaengine_terminate_all(master->dma_rx);
-> >>  	} else {
-> >>  		timeout = wait_for_completion_timeout(
-> >>  				&spi_imx->dma_rx_completion, IMX_DMA_TIMEOUT);
-> >> @@ -960,10 +965,32 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
-> >>  				dev_name(&master->dev));
-> >>  			spi_imx->devtype_data->reset(spi_imx);
-> >>  			dmaengine_terminate_all(master->dma_rx);
-> >> +		} else if (left) {
-> >> +			void *pio_buffer = transfer->rx_buf
-> >> +						+ (transfer->len - left);
-> >> +
-> >> +			dma_sync_sg_for_cpu(master->dma_rx->device->dev,
-> >> +					    rx->sgl, rx->nents,
-> >> +					    DMA_FROM_DEVICE);
-> > Only the last entry needed:
-> > dma_sync_sg_for_cpu(master->dma_rx->device->dev,
-> > 			rx->sgl[rx->nents - 1], 1,
-> > 			DMA_FROM_DEVICE);
-> Agree. Will be fixed in V3
-> >> +
-> >> +			spi_imx->rx_buf = pio_buffer;
-> >> +			spi_imx->txfifo = left;
-> >> +			reinit_completion(&spi_imx->xfer_done);
-> >> +
-> >> +			spi_imx->devtype_data->intctrl(spi_imx, MXC_INT_TCEN);
-> >> +
-> >> +			timeout = wait_for_completion_timeout(
-> >> +					&spi_imx->xfer_done, IMX_DMA_TIMEOUT);
-> >> +			if (!timeout) {
-> >> +				pr_warn("%s %s: I/O Error in RX tail\n",
-> >> +					dev_driver_string(&master->dev),
-> >> +					dev_name(&master->dev));
-> >> +			}
-> >> +
-> >> +			dmac_flush_range(pio_buffer, pio_buffer + left);
-> The line above causing build error in some configurations. Replacing it
-> with dma_sync_sg call similar to previous one, but with
-> >> +			outer_flush_range(virt_to_phys(pio_buffer),
-> >> +					  virt_to_phys(pio_buffer) + left);
-> >>  		}
-> >> -		writel(dma |
-> >> -		       spi_imx->rxt_wml << MX51_ECSPI_DMA_RXT_WML_OFFSET,
-> >> -		       spi_imx->base + MX51_ECSPI_DMA);
-> >>  	}
-> >>  
-> >>  	spi_imx->dma_finished = 1;
+> >>  	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> >>  	spi_imx->base = devm_ioremap_resource(&pdev->dev, res);
 > >> -- 
 > >> 2.5.2
 > >>
 > 
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

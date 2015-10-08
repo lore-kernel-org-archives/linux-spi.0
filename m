@@ -1,11 +1,11 @@
 From: Neil Armstrong <narmstrong@baylibre.com>
-Subject: McSPI hangs with cs_change after "Switch driver to use transfer_one"
- change
-Date: Thu, 8 Oct 2015 14:54:50 +0100
-Message-ID: <561675AA.4010505@baylibre.com>
+Subject: [RFC PATCH] spi: omap2-mcspi: disable other channels CHCONF_FORCE in
+ prepare_message
+Date: Thu, 8 Oct 2015 16:45:00 +0200
+Message-ID: <5616816C.9020904@baylibre.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org, Michael Welling <mwelling@ieee.org>,
 	Fionn Cleary <clearyf@tcd.ie>,
@@ -16,46 +16,72 @@ Return-path: <linux-kernel-owner@vger.kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi All,
+Since the "Switch driver to use transfer_one" change, the cs_change
+behavior has changed and a channel chip select can still be
+asserted when changing channel from a previous last transfer in s
+message having the cs_change attribute.
 
-I'm in a use case where I use cs_change on McSPI channel 3 on a single transfer Full-Duplex message, then I transfer a single full duplex message without cs_change on channel 1.
+Since there is no sense having multiple chip select being asserted at the
+same time, disable all the remaining forces chip selects in a the
+prepare_message called right before a spi_transfer_one_message call.
 
-Here is a better representation :
--- 1 transfer message cs_change=1
-cs3 : set_cs(0)
-cs3 : full-duplex transfer
-cs3 : transfer ok
--- 1 transfer message cs_change=1
-cs3 : set_cs(0)
-cs3 : full-duplex transfer
-cs3 : transfer ok
-...
--- 1 transfer message cs_change=1
-cs3 : set_cs(0)
-cs3 : full-duplex transfer
-cs3 : transfer ok
--- 1 transfer message cs_change=1
-cs1 : set_cs(0)
-cs1 : full-duplex transfer
-cs1 : RXS timed out
-cs1 : set_cs(1)
+This is also a bug fix found in the McSPI into a DM8168 SoC, hanging
+all the other channels transfers when a CHCONF_FORCE is present.
 
-Then "RXS timed out" on each non-cs3 transfers.
+Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
+---
+ drivers/spi/spi-omap2-mcspi.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-The previous behavior of cs_change was :
-- between transfers, unassert CS and re-assert-it for the following transfer
-- between messages, unassert CS
+This is a patch RFC following the bug report :
+'McSPI hangs with cs_change after "Switch driver to use transfer_one" change'
+http://permalink.gmane.org/gmane.linux.kernel/2056841
 
-The new behaviour inherited from the SPI core spi_transfer_one_message function :
-- between transfers, unassert CS and re-assert-it for the following transfer
-- between messages, leave CS asserted
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 3d09e0b..db1b655 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -1217,6 +1217,33 @@ out:
+ 	return status;
+ }
 
-We tried disabling the DMA, and the FIFO, but the behavior was actually the same, only reverting back before the "Switch driver to use transfer_one" fixed the issue.
-
-Then actually disabling the cs_change corrected the issue. It may be why the original driver ignored the "leave it on after last xfer" hint.
-
-The problem is : how can we disable this hint since it is managed in SPI core spi_transfer_one_message ?
-
-A solution will be to track down the current asserted CS and unassert it them when the active channel changes.
-
-Neil
++static int omap2_mcspi_prepare_message(struct spi_master *master,
++				       struct spi_message *msg)
++{
++	struct omap2_mcspi	*mcspi = spi_master_get_devdata(master);
++	struct omap2_mcspi_regs	*ctx = &mcspi->ctx;
++	struct omap2_mcspi_cs	*cs;
++
++	/* Only a single channel can have the FORCE bit enabled
++	 * in its chconf0 register.
++	 * Scan all channels and disable them.
++	 * A FORCE can remain from a last transfer having cs_change enabled
++	 */
++
++	/* Ignore message */
++	(void)msg;
++
++	list_for_each_entry(cs, &ctx->cs, node) {
++		if ((cs->chconf0 & OMAP2_MCSPI_CHCONF_FORCE)) {
++			cs->chconf0 &= ~OMAP2_MCSPI_CHCONF_FORCE;
++			writel_relaxed(cs->chconf0,
++					cs->base + OMAP2_MCSPI_CHCONF0);
++		}
++	}
++
++	return 0;
++}
++
+ static int omap2_mcspi_transfer_one(struct spi_master *master,
+ 		struct spi_device *spi, struct spi_transfer *t)
+ {
+@@ -1344,6 +1371,7 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
+ 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
+ 	master->setup = omap2_mcspi_setup;
+ 	master->auto_runtime_pm = true;
++	master->prepare_message = omap2_mcspi_prepare_message;
+ 	master->transfer_one = omap2_mcspi_transfer_one;
+ 	master->set_cs = omap2_mcspi_set_cs;
+ 	master->cleanup = omap2_mcspi_cleanup;
+-- 
+1.9.1

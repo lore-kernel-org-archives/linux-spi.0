@@ -1,118 +1,107 @@
-From: Michael Welling <mwelling@ieee.org>
-Subject: Re: [PATCH v2] spi: omap2-mcspi: disable other channels CHCONF_FORCE
- in prepare_message
-Date: Fri, 9 Oct 2015 10:45:25 -0500
-Message-ID: <20151009154525.GB1114@deathstar>
-References: <5617C57D.9080902@baylibre.com>
- <20151009152622.GA1114@deathstar>
- <5617DD56.1070608@baylibre.com>
+From: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+Subject: Re: [PATCH v2 4/4] spi: spi-coldfire-qspi: enable RuntimePM before
+ registering to the core
+Date: Fri, 9 Oct 2015 19:27:29 +0100
+Message-ID: <20151009182729.GA1544@katana>
+References: <1444383567-18113-1-git-send-email-wsa@the-dreams.de>
+ <1444383567-18113-4-git-send-email-wsa@the-dreams.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Fionn Cleary <clearyf@tcd.ie>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Sebastian Reichel <sre@kernel.org>
-To: Neil Armstrong <narmstrong@baylibre.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="xHFwDpU9dbj6ez1V"
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <5617DD56.1070608@baylibre.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1444383567-18113-4-git-send-email-wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, Oct 09, 2015 at 05:29:26PM +0200, Neil Armstrong wrote:
-> On 10/09/2015 05:26 PM, Michael Welling wrote:
-> > On Fri, Oct 09, 2015 at 03:47:41PM +0200, Neil Armstrong wrote:
-> >> Since the "Switch driver to use transfer_one" change, the cs_change
-> >> behavior has changed and a channel chip select can still be
-> >> asserted when changing channel from a previous last transfer in a
-> >> message having the cs_change attribute.
-> >>
-> >> Since there is no sense having multiple chip select being asserted at the
-> >> same time, disable all the remaining forced chip selects in a the
-> >> prepare_message called right before a spi_transfer_one_message call.
-> >> It ignores the current channel configuration in order to keep the
-> >> possibility to leave the chip select asserted between messages.
-> >>
-> >> It fixes this bug on a DM8168 SoC ES2.1 Soc and an OMAP4 ES2.1 SoC.
-> >> It was hanging all the other channels transfers when a CHCONF_FORCE
-> >> is present on the wrong channel.
-> >>
-> >> Fixes: b28cb9414db9 ("spi: omap2-mcspi: Switch driver to use transfer_one")
-> >> Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
-> >> ---
-> >>  drivers/spi/spi-omap2-mcspi.c | 28 ++++++++++++++++++++++++++++
-> >>  1 file changed, 28 insertions(+)
-> >>
-> >> Test code can be found on :
-> >> http://pastebin.com/0SrqbGP7
-> >>
-> >> Before patch :
-> >> # ./test_spi
-> >> cs_change_command() start
-> >> spidev1.3 ioctl success
-> >> no_dma_command() start
-> >> [   59.790069] spidev spi1.1: TXS timed out
-> >> spidev1.1 ioctl success
-> >> cs_change_command() start
-> >> [   60.798736] spidev spi1.3: RXS timed out
-> >> spidev1.3 ioctl success
-> >> no_dma_command() start
-> >> [   61.802032] spidev spi1.1: TXS timed out
-> >> spidev1.1 ioctl success
-> >> cs_change_command() start
-> >> [   62.807525] spidev spi1.3: RXS timed out
-> >> spidev1.3 ioctl success
-> >> no_dma_command() start
-> >> [   63.812042] spidev spi1.1: TXS timed out
-> >> spidev1.1 ioctl success
-> >> ...
-> >>
-> >> After Patch :
-> >> # ./test_spi
-> >> cs_change_command() start
-> >> spidev1.3 ioctl success
-> >> no_dma_command() start
-> >> spidev1.1 ioctl success
-> >> cs_change_command() start
-> >> spidev1.3 ioctl success
-> >> no_dma_command() start
-> >> spidev1.1 ioctl success
-> >> cs_change_command() start
-> >> spidev1.3 ioctl success
-> >> ...
-> >>
-> >> v2: uses msg to leave asserted chip select for the current channel
-> >>
-> >> This is a patch RFC following the bug report :
-> >> 'McSPI hangs with cs_change after "Switch driver to use transfer_one" change'
-> >> http://permalink.gmane.org/gmane.linux.kernel/2056841
-> >>
-> >> diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-> >> index 3d09e0b..1f8903d 100644
-> >> --- a/drivers/spi/spi-omap2-mcspi.c
-> >> +++ b/drivers/spi/spi-omap2-mcspi.c
-> >> @@ -1217,6 +1217,33 @@ out:
-> >>  	return status;
-> >>  }
-> >>
-> >> +static int omap2_mcspi_prepare_message(struct spi_master *master,
-> >> +				       struct spi_message *msg)
-> >> +{
-> >> +	struct omap2_mcspi	*mcspi = spi_master_get_devdata(master);
-> >> +	struct omap2_mcspi_regs	*ctx = &mcspi->ctx;
-> >> +	struct omap2_mcspi_cs	*cs;
-> >> +
-> > 
-> > Do we need the pm_runtime_get_sync code here?
-> > See previous commit.
-> > 
-> 
-> I checked and prepare_message is only called after pm_rumtime_get_sync in __spi_pump_messages()
 
-Okay, I see it now.
+--xHFwDpU9dbj6ez1V
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Michael Welling <mwelling@ieee.org>
+On Fri, Oct 09, 2015 at 10:39:27AM +0100, Wolfram Sang wrote:
+> From: Wolfram Sang <wsa+renesas-jBu1N2QxHDJrcw3mvpCnnVaTQe2KTcn/@public.gmane.org>
+>=20
+> The core may register clients attached to this master which may use
+> funtionality from the master. So, RuntimePM must be enabled before, other=
+wise
+> this will fail.
+>=20
+> Signed-off-by: Wolfram Sang <wsa+renesas-jBu1N2QxHDJrcw3mvpCnnVaTQe2KTcn/@public.gmane.org>
 
-> 
-> Neil
+V2 adds disabling runtime_pm in the error path. There are no
+dependencies. Patches 1-3 do the same for I2C drivers. I generated this
+series from a branch and sent out as is; probably I should have sent the
+SPI one individually.
+
+Thanks,
+
+   Wolfram
+
+> ---
+>  drivers/spi/spi-coldfire-qspi.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/spi/spi-coldfire-qspi.c b/drivers/spi/spi-coldfire-q=
+spi.c
+> index 688956ff5095c2..23f6fffd75e111 100644
+> --- a/drivers/spi/spi-coldfire-qspi.c
+> +++ b/drivers/spi/spi-coldfire-qspi.c
+> @@ -420,19 +420,20 @@ static int mcfqspi_probe(struct platform_device *pd=
+ev)
+>  	master->auto_runtime_pm =3D true;
+> =20
+>  	platform_set_drvdata(pdev, master);
+> +	pm_runtime_enable(&pdev->dev);
+> =20
+>  	status =3D devm_spi_register_master(&pdev->dev, master);
+>  	if (status) {
+>  		dev_dbg(&pdev->dev, "spi_register_master failed\n");
+>  		goto fail2;
+>  	}
+> -	pm_runtime_enable(&pdev->dev);
+> =20
+>  	dev_info(&pdev->dev, "Coldfire QSPI bus driver\n");
+> =20
+>  	return 0;
+> =20
+>  fail2:
+> +	pm_runtime_disable(&pdev->dev);
+>  	mcfqspi_cs_teardown(mcfqspi);
+>  fail1:
+>  	clk_disable(mcfqspi->clk);
+> --=20
+> 2.1.4
+>=20
+
+--xHFwDpU9dbj6ez1V
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBAgAGBQJWGAcQAAoJEBQN5MwUoCm2MXIQAJCong40bv32EU0OI42lSCrL
+8jpG2LE+p/ve5ABKEmsJkiwx22Uy46AAIqiyel0NqKb++uyIFdjNRldjd4iEAudg
+QCql8R8iHQw/zOl8jwmL5ic7sNY36gteQnbqI3bfSTv+CEqstOLD2BMZYDYIbyhU
+TOobxm8sLpywhRDk7bKRG2NqVj60DMFcBE6wH6nJ67iw6RNwloRiJmgYr4D+gS4V
+2TL/rB9KV/GzX67mYuIw5tAA2wkTniC5h51t/Bvr88z7vSk4J0bo9okU3bCTK9yo
+fRcE22rFu0uYaBrBL3w+WKZg6KiZ2wGHsoVIYh0zMFEQqhmCSZjzXMjCeuVzb7zw
+p0gTJrLY2oOmTrtvvvpsk1gp/l1ylqCu19JLpkIC0lhPG6Qe4BB4cEF9gUFwat0T
+IXIOI+gH84X7UzG2DeVGotgZdxelTcSnGm3RLtaeR/llvl7VZQm+BrXPrtXXcKhy
+OqMsFvQ0YyYOKaWX915V+WCjTJ6wzQ9/JErFt0HTKNZ4D4oZ/8d2eKWtdWqWnW+l
+bdPbDg+DOdJS/gM68TxvMcck8fZz+Qa+oNok28wNMijKdbXciwEtv/Vhwnwialr5
+FgMjSviuueKLBW+73GK1PbpzLBnJvQFSp/yyO1GKwViAkqv3FaXQqtkzhbvGIzMm
++yWCZrrrM0hcRO+KMgTA
+=2t4r
+-----END PGP SIGNATURE-----
+
+--xHFwDpU9dbj6ez1V--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

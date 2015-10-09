@@ -1,52 +1,102 @@
-From: Wolfram Sang <wsa@the-dreams.de>
-Subject: [PATCH v2 4/4] spi: spi-coldfire-qspi: enable RuntimePM before registering to the core
-Date: Fri,  9 Oct 2015 10:39:27 +0100
-Message-ID: <1444383567-18113-4-git-send-email-wsa@the-dreams.de>
-References: <1444383567-18113-1-git-send-email-wsa@the-dreams.de>
-Cc: Wolfram Sang <wsa@the-dreams.de>, Mark Brown <broonie@kernel.org>,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: linux-sh@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1444383567-18113-1-git-send-email-wsa@the-dreams.de>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Subject: Re: [PATCH v5 06/10] dmaengine: add API for getting dma controller's
+ quirk
+Date: Fri, 9 Oct 2015 19:23:40 +0800
+Message-ID: <5617A3BC.3050401@rock-chips.com>
+References: <1442187923-5736-1-git-send-email-shawn.lin@rock-chips.com>
+ <1442188139-6017-1-git-send-email-shawn.lin@rock-chips.com>
+ <20151005153746.GG13501@vkoul-mobl.iind.intel.com>
+ <56139289.7000005@rock-chips.com>
+ <20151007143205.GG3320@vkoul-mobl.iind.intel.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Transfer-Encoding: 7bit
+Cc: Addy Ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>, Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
+ alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org, linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+ linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org,
+ linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+ Takashi Iwai <tiwai-IBi9RG/b67k@public.gmane.org>, dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+ Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>,
+ Jaroslav Kysela <perex-/Fr2/VpizcU@public.gmane.org>, Sonny Rao <sonnyrao-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+ linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-rockchip-bounces+glpar-linux-rockchip=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+In-Reply-To: <20151007143205.GG3320-bQVUxfxUtC13uc1i7fC1zK2pdiUAq4bhAL8bYrjMMd8@public.gmane.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rockchip>,
+ <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-rockchip/>
+List-Post: <mailto:linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+List-Help: <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rockchip>,
+ <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
+Sender: "Linux-rockchip" <linux-rockchip-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Errors-To: linux-rockchip-bounces+glpar-linux-rockchip=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+On 2015/10/7 22:32, Vinod Koul wrote:
+> On Tue, Oct 06, 2015 at 05:21:13PM +0800, Shawn Lin wrote:
+>
+>>>> +	int (*device_get_quirks)(struct dma_chan *chan);
+>>>
+>>> And why do we want to expose this to users? THis doesnt seem right!
+>>>
+>>
+>> Basically I agree not to expose dma's quirk to slave controllers...But, the
+>> fact I mentioned on cover letter explain the reasons why I have to let slave
+>> controllers know that they are working with a broken dma. It's a dilemma
+>> that if we don't want that to be exposed(let slave controllers' driver get
+>> the info via a API), we have to add broken quirk for all of them ,here and
+>> there, which seems to be a disaster:(
+>>
+>> I would appreciate it if you could give me some suggestions at your earliest
+>> convenience. :)
+>>
+>>> A quirk may exists but should be handled inside the controller driver and do
+>>> appropriate action. You don't tell users or expect them to handle these
+>>>
+> I laready gave one re-read the above lines.
+>
+> Anyway I went ahead and read the usage. You are setting the slave parameters
+> for this. I can see two ways:
+> 1. Have the quirk to driver and based on quirk reset the slave settings when
+> they are set by client.
+> 2. Put this in DT and set the dma properties based on these quirks and let
+> driver and cleint be agnostic to it
 
-The core may register clients attached to this master which may use
-funtionality from the master. So, RuntimePM must be enabled before, otherwise
-this will fail.
++Mark Brown
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
----
- drivers/spi/spi-coldfire-qspi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Thanks for these.
 
-diff --git a/drivers/spi/spi-coldfire-qspi.c b/drivers/spi/spi-coldfire-qspi.c
-index 688956ff5095c2..23f6fffd75e111 100644
---- a/drivers/spi/spi-coldfire-qspi.c
-+++ b/drivers/spi/spi-coldfire-qspi.c
-@@ -420,19 +420,20 @@ static int mcfqspi_probe(struct platform_device *pdev)
- 	master->auto_runtime_pm = true;
- 
- 	platform_set_drvdata(pdev, master);
-+	pm_runtime_enable(&pdev->dev);
- 
- 	status = devm_spi_register_master(&pdev->dev, master);
- 	if (status) {
- 		dev_dbg(&pdev->dev, "spi_register_master failed\n");
- 		goto fail2;
- 	}
--	pm_runtime_enable(&pdev->dev);
- 
- 	dev_info(&pdev->dev, "Coldfire QSPI bus driver\n");
- 
- 	return 0;
- 
- fail2:
-+	pm_runtime_disable(&pdev->dev);
- 	mcfqspi_cs_teardown(mcfqspi);
- fail1:
- 	clk_disable(mcfqspi->clk);
+The first one is hard for dma to distinguish "broken 
+slave"(I2S/SPI/UART..) from the unbroken ones(block devices like 
+mmc/SFC...). If all clients are broken for that, it's easy to reset the 
+slave parameters in dma driver. Unfortunately, not always, at least for 
+rockchips' Socs.
+
+And before V4, I did pass quirks to clents from DT, but Mark thought we 
+should avoid to get it from dt. Anyway, now I think about it again,
+
+(1) dma drivers doesn't know the users who should use limited burst and 
+who won't. That make it's impossible for dma drivers to handle it alone 
+or expose new API of burst capabilities to clients.
+(2) It's inappropriate to expose quirks to clients.
+
+so the only way I can see is to make some tricks from DT.
+I would prefer to add "burst limit" property for the broken slaves 
+instead of quirks for them which I did before V4.
+
+Something like:
+
+&spi{
+max-burst-len=<1>;
+}
+
+How about?
+:)
+
+>
+
+
 -- 
-2.1.4
+Best Regards
+Shawn Lin

@@ -1,58 +1,53 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [RFC PATCH] spi: omap2-mcspi: disable other channels
- CHCONF_FORCE in prepare_message
-Date: Fri, 9 Oct 2015 12:38:10 +0100
-Message-ID: <20151009113810.GD1542@sirena.org.uk>
-References: <5616816C.9020904@baylibre.com>
- <20151008152105.GA13157@deathstar>
+Subject: Re: [PATCH 4/4] spi: spi-coldfire-qspi: enable RuntimePM before
+ registering to the core
+Date: Fri, 9 Oct 2015 12:31:08 +0100
+Message-ID: <20151009113108.GA1542@sirena.org.uk>
+References: <1444373693-2372-1-git-send-email-wsa@the-dreams.de>
+ <1444373693-2372-4-git-send-email-wsa@the-dreams.de>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="RYJh/3oyKhIjGcML"
-Cc: Neil Armstrong <narmstrong@baylibre.com>,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Fionn Cleary <clearyf@tcd.ie>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Sebastian Reichel <sre@kernel.org>
-To: Michael Welling <mwelling@ieee.org>
+	protocol="application/pgp-signature"; boundary="EVF5PPMfhYS0aIcm"
+Cc: linux-sh@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+To: Wolfram Sang <wsa@the-dreams.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20151008152105.GA13157@deathstar>
+In-Reply-To: <1444373693-2372-4-git-send-email-wsa@the-dreams.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---RYJh/3oyKhIjGcML
+--EVF5PPMfhYS0aIcm
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 08, 2015 at 10:21:05AM -0500, Michael Welling wrote:
-> On Thu, Oct 08, 2015 at 04:45:00PM +0200, Neil Armstrong wrote:
+On Fri, Oct 09, 2015 at 07:54:53AM +0100, Wolfram Sang wrote:
+> From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+>=20
+> The core may register clients attached to this master which may use
+> funtionality from the master. So, RuntimePM must be enabled before, other=
+wise
+> this will fail.
 
-> What is the point of doing this void cast below?
-> Avoiding compiler warning perhaps?
-> Perhaps you can __maybe_unused for the variable instead?
+I'm missing patches 1-3 and the cover letter - what's going on with
+dependencies here?
 
-> > +	/* Ignore message */
-> > +	(void)msg;
-
-You shouldn't need it at all, but yes if there is a good reason to mark
-something as unused the above annotation is better.
-
---RYJh/3oyKhIjGcML
+--EVF5PPMfhYS0aIcm
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJWF6ceAAoJECTWi3JdVIfQhu0H/1FDpvUzRN/1RKPDcCx6I7j4
-cfhgRobdgd8tMVOuY/ibbXZlxwvFfRBTpyINHiYaqQ4WwZY0FRW9m/l+8YDdPPVg
-BUUQKWleYl8wFnzKsn7S8dI5+8An42YNBCLHDSI6uMfcEmpQOIkPlyEqvzk9TxJI
-o0R2Hx8vozKlW5XPAnIJie+mf6mqcp3Ywc+zRfgU8puq+RTVwnZ2XWGZ+yhe0AvG
-uMtdTVpg/V5+2cFQBNLR8Fd2HCNu63McTkjrie4iBblDsXTnq3DR4umc0lyU8HM1
-fO27Hx3ipmo92QLDhClNh5itH2H+5kF05cXNqVv46C1c+9XnSks3zpGpVSKGjw0=
-=Gj0y
+iQEcBAEBCAAGBQJWF6V4AAoJECTWi3JdVIfQkK8H/1WjOx33gPtzJpaObrl7XB59
+y4XjcBpM4mfE+u41PlO+l8BFyen0rZVMxBW9tRaL5Ol39i9k2R4zEtdYp5nltlAd
+jRfdv4Y10MelWG1X+vZCBEQDYL4EqaD3GASoYlvvDXJcjdZlmfuko4ZfdA4Jxl4f
+5CT5aQU4/Yyes872cFuZYb32+hqH3DJebbgQF1ucTCFZwhw30ErwPHCo5e+uT0lY
+v4EMCq2+PNlhfP0aMihmB6iwoAg5uRlABuza2ZrSwwRZS2xq6IQ+8NL+PKarGShH
+kWGFLhWbd2vUhhGNtycsPCqoy7Bo4PF1iUFshrzUMrxehD10phja1Aokf7BxcW0=
+=vcm3
 -----END PGP SIGNATURE-----
 
---RYJh/3oyKhIjGcML--
+--EVF5PPMfhYS0aIcm--

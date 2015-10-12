@@ -1,19 +1,18 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: spi-coldfire-qspi: enable RuntimePM before registering to the core" to the spi tree
-Date: Mon, 12 Oct 2015 17:59:36 +0100
-Message-ID: <E1ZlgRk-00053J-5C@finisterre>
-References: <1444383567-18113-4-git-send-email-wsa@the-dreams.de>
+Subject: Applied "spi/bcm63xx: move message control word description to register offsets" to the spi tree
+Date: Mon, 12 Oct 2015 17:59:34 +0100
+Message-ID: <E1ZlgRi-00052F-1v@finisterre>
+References: <1444645463-20915-3-git-send-email-jogo@openwrt.org>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Wolfram Sang <wsa+renesas-jBu1N2QxHDJrcw3mvpCnnVaTQe2KTcn/@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1444383567-18113-4-git-send-email-wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+In-Reply-To: <1444645463-20915-3-git-send-email-jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: spi-coldfire-qspi: enable RuntimePM before registering to the core
+   spi/bcm63xx: move message control word description to register offsets
 
 has been applied to the spi tree at
 
@@ -38,48 +37,143 @@ to this mail.
 Thanks,
 Mark
 
->From f9b841af4c1c3c3b7ce3552ab5ee5d9c430e9c29 Mon Sep 17 00:00:00 2001
-From: Wolfram Sang <wsa+renesas-jBu1N2QxHDJrcw3mvpCnnVaTQe2KTcn/@public.gmane.org>
-Date: Fri, 9 Oct 2015 10:39:27 +0100
-Subject: [PATCH] spi: spi-coldfire-qspi: enable RuntimePM before registering
- to the core
+>From f13a5e8a856cda0626da316d853a71952f14b1d7 Mon Sep 17 00:00:00 2001
+From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Date: Mon, 12 Oct 2015 12:24:22 +0200
+Subject: [PATCH] spi/bcm63xx: move message control word description to
+ register offsets
 
-The core may register clients attached to this master which may use
-funtionality from the master. So, RuntimePM must be enabled before, otherwise
-this will fail.
+Make the message control word parameters part of the register offsets
+array so we have them all in one struct.
 
-Signed-off-by: Wolfram Sang <wsa+renesas-jBu1N2QxHDJrcw3mvpCnnVaTQe2KTcn/@public.gmane.org>
+Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-coldfire-qspi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/mips/bcm63xx/dev-spi.c                          | 20 ++------------------
+ arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h | 16 +++++++---------
+ drivers/spi/spi-bcm63xx.c                            |  7 +++----
+ 3 files changed, 12 insertions(+), 31 deletions(-)
 
-diff --git a/drivers/spi/spi-coldfire-qspi.c b/drivers/spi/spi-coldfire-qspi.c
-index 688956ff..23f6fff 100644
---- a/drivers/spi/spi-coldfire-qspi.c
-+++ b/drivers/spi/spi-coldfire-qspi.c
-@@ -420,19 +420,20 @@ static int mcfqspi_probe(struct platform_device *pdev)
+diff --git a/arch/mips/bcm63xx/dev-spi.c b/arch/mips/bcm63xx/dev-spi.c
+index ad448e4..b212256 100644
+--- a/arch/mips/bcm63xx/dev-spi.c
++++ b/arch/mips/bcm63xx/dev-spi.c
+@@ -53,19 +53,11 @@ static struct resource spi_resources[] = {
+ 	},
+ };
+ 
+-static struct bcm63xx_spi_pdata spi_pdata = {
+-	.bus_num		= 0,
+-	.num_chipselect		= 8,
+-};
+-
+ static struct platform_device bcm63xx_spi_device = {
+ 	.name		= "bcm63xx-spi",
+ 	.id		= -1,
+ 	.num_resources	= ARRAY_SIZE(spi_resources),
+ 	.resource	= spi_resources,
+-	.dev		= {
+-		.platform_data = &spi_pdata,
+-	},
+ };
+ 
+ int __init bcm63xx_spi_register(void)
+@@ -77,20 +69,12 @@ int __init bcm63xx_spi_register(void)
+ 	spi_resources[0].end = spi_resources[0].start;
+ 	spi_resources[1].start = bcm63xx_get_irq_number(IRQ_SPI);
+ 
+-	if (BCMCPU_IS_6338() || BCMCPU_IS_6348()) {
++	if (BCMCPU_IS_6338() || BCMCPU_IS_6348())
+ 		spi_resources[0].end += BCM_6348_RSET_SPI_SIZE - 1;
+-		spi_pdata.fifo_size = SPI_6348_MSG_DATA_SIZE;
+-		spi_pdata.msg_type_shift = SPI_6348_MSG_TYPE_SHIFT;
+-		spi_pdata.msg_ctl_width = SPI_6348_MSG_CTL_WIDTH;
+-	}
+ 
+ 	if (BCMCPU_IS_3368() || BCMCPU_IS_6358() || BCMCPU_IS_6362() ||
+-		BCMCPU_IS_6368()) {
++		BCMCPU_IS_6368())
+ 		spi_resources[0].end += BCM_6358_RSET_SPI_SIZE - 1;
+-		spi_pdata.fifo_size = SPI_6358_MSG_DATA_SIZE;
+-		spi_pdata.msg_type_shift = SPI_6358_MSG_TYPE_SHIFT;
+-		spi_pdata.msg_ctl_width = SPI_6358_MSG_CTL_WIDTH;
+-	}
+ 
+ 	bcm63xx_spi_regs_init();
+ 
+diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
+index 2573765..1d121fd 100644
+--- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
++++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
+@@ -7,14 +7,6 @@
+ 
+ int __init bcm63xx_spi_register(void);
+ 
+-struct bcm63xx_spi_pdata {
+-	unsigned int	fifo_size;
+-	unsigned int	msg_type_shift;
+-	unsigned int	msg_ctl_width;
+-	int		bus_num;
+-	int		num_chipselect;
+-};
+-
+ enum bcm63xx_regs_spi {
+ 	SPI_CMD,
+ 	SPI_INT_STATUS,
+@@ -28,6 +20,9 @@ enum bcm63xx_regs_spi {
+ 	SPI_MSG_CTL,
+ 	SPI_MSG_DATA,
+ 	SPI_RX_DATA,
++	SPI_MSG_TYPE_SHIFT,
++	SPI_MSG_CTL_WIDTH,
++	SPI_MSG_DATA_SIZE,
+ };
+ 
+ #define __GEN_SPI_REGS_TABLE(__cpu)					\
+@@ -42,7 +37,10 @@ enum bcm63xx_regs_spi {
+ 	[SPI_RX_TAIL]		= SPI_## __cpu ##_RX_TAIL,		\
+ 	[SPI_MSG_CTL]		= SPI_## __cpu ##_MSG_CTL,		\
+ 	[SPI_MSG_DATA]		= SPI_## __cpu ##_MSG_DATA,		\
+-	[SPI_RX_DATA]		= SPI_## __cpu ##_RX_DATA,
++	[SPI_RX_DATA]		= SPI_## __cpu ##_RX_DATA,		\
++	[SPI_MSG_TYPE_SHIFT]	= SPI_## __cpu ##_MSG_TYPE_SHIFT,	\
++	[SPI_MSG_CTL_WIDTH]	= SPI_## __cpu ##_MSG_CTL_WIDTH,	\
++	[SPI_MSG_DATA_SIZE]	= SPI_## __cpu ##_MSG_DATA_SIZE,
+ 
+ static inline unsigned long bcm63xx_spireg(enum bcm63xx_regs_spi reg)
+ {
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index 461891f..b3da044 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -329,7 +329,6 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
+ {
+ 	struct resource *r;
+ 	struct device *dev = &pdev->dev;
+-	struct bcm63xx_spi_pdata *pdata = dev_get_platdata(&pdev->dev);
+ 	int irq;
+ 	struct spi_master *master;
+ 	struct clk *clk;
+@@ -369,7 +368,7 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
+ 
+ 	bs->irq = irq;
+ 	bs->clk = clk;
+-	bs->fifo_size = pdata->fifo_size;
++	bs->fifo_size = bcm63xx_spireg(SPI_MSG_DATA_SIZE);
+ 
+ 	ret = devm_request_irq(&pdev->dev, irq, bcm63xx_spi_interrupt, 0,
+ 							pdev->name, master);
+@@ -384,8 +383,8 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
+ 	master->mode_bits = MODEBITS;
+ 	master->bits_per_word_mask = SPI_BPW_MASK(8);
  	master->auto_runtime_pm = true;
+-	bs->msg_type_shift = pdata->msg_type_shift;
+-	bs->msg_ctl_width = pdata->msg_ctl_width;
++	bs->msg_type_shift = bcm63xx_spireg(SPI_MSG_TYPE_SHIFT);
++	bs->msg_ctl_width = bcm63xx_spireg(SPI_MSG_CTL_WIDTH);
+ 	bs->tx_io = (u8 *)(bs->regs + bcm63xx_spireg(SPI_MSG_DATA));
+ 	bs->rx_io = (const u8 *)(bs->regs + bcm63xx_spireg(SPI_RX_DATA));
  
- 	platform_set_drvdata(pdev, master);
-+	pm_runtime_enable(&pdev->dev);
- 
- 	status = devm_spi_register_master(&pdev->dev, master);
- 	if (status) {
- 		dev_dbg(&pdev->dev, "spi_register_master failed\n");
- 		goto fail2;
- 	}
--	pm_runtime_enable(&pdev->dev);
- 
- 	dev_info(&pdev->dev, "Coldfire QSPI bus driver\n");
- 
- 	return 0;
- 
- fail2:
-+	pm_runtime_disable(&pdev->dev);
- 	mcfqspi_cs_teardown(mcfqspi);
- fail1:
- 	clk_disable(mcfqspi->clk);
 -- 
 2.5.0
 

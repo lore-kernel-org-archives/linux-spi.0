@@ -1,18 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi/bcm63xx: fix standard accessors and compile guard" to the spi tree
-Date: Mon, 12 Oct 2015 17:59:35 +0100
-Message-ID: <E1ZlgRj-00052q-22@finisterre>
-References: <1444645463-20915-2-git-send-email-jogo@openwrt.org>
+Subject: Applied "spi: spi-coldfire-qspi: enable RuntimePM before registering to the core" to the spi tree
+Date: Mon, 12 Oct 2015 17:59:36 +0100
+Message-ID: <E1ZlgRk-00053J-5C@finisterre>
+References: <1444383567-18113-4-git-send-email-wsa@the-dreams.de>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Wolfram Sang <wsa+renesas-jBu1N2QxHDJrcw3mvpCnnVaTQe2KTcn/@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1444645463-20915-2-git-send-email-jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+In-Reply-To: <1444383567-18113-4-git-send-email-wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi/bcm63xx: fix standard accessors and compile guard
+   spi: spi-coldfire-qspi: enable RuntimePM before registering to the core
 
 has been applied to the spi tree at
 
@@ -37,46 +38,48 @@ to this mail.
 Thanks,
 Mark
 
->From 682b5280bf00c0618606ecb26cf4a9342d5e282e Mon Sep 17 00:00:00 2001
-From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Date: Mon, 12 Oct 2015 12:24:21 +0200
-Subject: [PATCH] spi/bcm63xx: fix standard accessors and compile guard
+>From f9b841af4c1c3c3b7ce3552ab5ee5d9c430e9c29 Mon Sep 17 00:00:00 2001
+From: Wolfram Sang <wsa+renesas-jBu1N2QxHDJrcw3mvpCnnVaTQe2KTcn/@public.gmane.org>
+Date: Fri, 9 Oct 2015 10:39:27 +0100
+Subject: [PATCH] spi: spi-coldfire-qspi: enable RuntimePM before registering
+ to the core
 
-Use the correct guard CONFIG_CPU_BIG_ENDIAN and the *be accessors to
-follow native endianness on big endian systems.
+The core may register clients attached to this master which may use
+funtionality from the master. So, RuntimePM must be enabled before, otherwise
+this will fail.
 
-Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Signed-off-by: Wolfram Sang <wsa+renesas-jBu1N2QxHDJrcw3mvpCnnVaTQe2KTcn/@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-bcm63xx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/spi/spi-coldfire-qspi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index ef05387..461891f 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -62,8 +62,8 @@ static inline u8 bcm_spi_readb(struct bcm63xx_spi *bs,
- static inline u16 bcm_spi_readw(struct bcm63xx_spi *bs,
- 				unsigned int offset)
- {
--#ifdef CONFIG_BIG_ENDIAN
--	return ioread16(bs->regs + bcm63xx_spireg(offset));
-+#ifdef CONFIG_CPU_BIG_ENDIAN
-+	return ioread16be(bs->regs + bcm63xx_spireg(offset));
- #else
- 	return readw(bs->regs + bcm63xx_spireg(offset));
- #endif
-@@ -78,8 +78,8 @@ static inline void bcm_spi_writeb(struct bcm63xx_spi *bs,
- static inline void bcm_spi_writew(struct bcm63xx_spi *bs,
- 				  u16 value, unsigned int offset)
- {
--#ifdef CONFIG_BIG_ENDIAN
--	iowrite16(value, bs->regs + bcm63xx_spireg(offset));
-+#ifdef CONFIG_CPU_BIG_ENDIAN
-+	iowrite16be(value, bs->regs + bcm63xx_spireg(offset));
- #else
- 	writew(value, bs->regs + bcm63xx_spireg(offset));
- #endif
+diff --git a/drivers/spi/spi-coldfire-qspi.c b/drivers/spi/spi-coldfire-qspi.c
+index 688956ff..23f6fff 100644
+--- a/drivers/spi/spi-coldfire-qspi.c
++++ b/drivers/spi/spi-coldfire-qspi.c
+@@ -420,19 +420,20 @@ static int mcfqspi_probe(struct platform_device *pdev)
+ 	master->auto_runtime_pm = true;
+ 
+ 	platform_set_drvdata(pdev, master);
++	pm_runtime_enable(&pdev->dev);
+ 
+ 	status = devm_spi_register_master(&pdev->dev, master);
+ 	if (status) {
+ 		dev_dbg(&pdev->dev, "spi_register_master failed\n");
+ 		goto fail2;
+ 	}
+-	pm_runtime_enable(&pdev->dev);
+ 
+ 	dev_info(&pdev->dev, "Coldfire QSPI bus driver\n");
+ 
+ 	return 0;
+ 
+ fail2:
++	pm_runtime_disable(&pdev->dev);
+ 	mcfqspi_cs_teardown(mcfqspi);
+ fail1:
+ 	clk_disable(mcfqspi->clk);
 -- 
 2.5.0
 

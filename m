@@ -1,18 +1,21 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi/bcm63xx: move message control word description to register offsets" to the spi tree
-Date: Mon, 12 Oct 2015 17:59:34 +0100
-Message-ID: <E1ZlgRi-00052F-1v@finisterre>
-References: <1444645463-20915-3-git-send-email-jogo@openwrt.org>
+Subject: Applied "spi: Map SPI OF client IRQ at probe time" to the spi tree
+Date: Mon, 12 Oct 2015 17:59:33 +0100
+Message-ID: <E1ZlgRh-00051m-1m@finisterre>
+References: <1444401955-25200-1-git-send-email-jonathanh@nvidia.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+	Tomeu Vizoso <tomeu.vizoso-ZGY8ohtN/8qB+jHODAdFcQ@public.gmane.org>,
+	Jon Hunter <jonathanh-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1444645463-20915-3-git-send-email-jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+In-Reply-To: <1444401955-25200-1-git-send-email-jonathanh-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi/bcm63xx: move message control word description to register offsets
+   spi: Map SPI OF client IRQ at probe time
 
 has been applied to the spi tree at
 
@@ -37,143 +40,72 @@ to this mail.
 Thanks,
 Mark
 
->From f13a5e8a856cda0626da316d853a71952f14b1d7 Mon Sep 17 00:00:00 2001
-From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Date: Mon, 12 Oct 2015 12:24:22 +0200
-Subject: [PATCH] spi/bcm63xx: move message control word description to
- register offsets
+>From 44af7927316e83eb8865933f7c836dcc85f8eb74 Mon Sep 17 00:00:00 2001
+From: Jon Hunter <jonathanh-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Date: Fri, 9 Oct 2015 15:45:55 +0100
+Subject: [PATCH] spi: Map SPI OF client IRQ at probe time
 
-Make the message control word parameters part of the register offsets
-array so we have them all in one struct.
+Currently the IRQs for SPI client devices, registered via device-tree,
+are mapped when the client devices are registered. If the corresponding
+irq-chip has not been probed yet, then the probing of the client device
+will fail and will not be retried. Resolve this by mapping the IRQ at
+probe time and allow the probe to be deferred if the IRQ is not yet
+available.
 
-Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+If of_irq_get() returns an error that is not -EPROBE_DEFER, then assume
+that the SPI client does not have an IRQ and set the IRQ number to zero
+(which is equivalent to irq_of_parse_and_map()).
+
+This is based on some inputs from Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>.
+
+Cc: Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Cc: Tomeu Vizoso <tomeu.vizoso-ZGY8ohtN/8qB+jHODAdFcQ@public.gmane.org>
+Signed-off-by: Jon Hunter <jonathanh-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- arch/mips/bcm63xx/dev-spi.c                          | 20 ++------------------
- arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h | 16 +++++++---------
- drivers/spi/spi-bcm63xx.c                            |  7 +++----
- 3 files changed, 12 insertions(+), 31 deletions(-)
+ drivers/spi/spi.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/bcm63xx/dev-spi.c b/arch/mips/bcm63xx/dev-spi.c
-index ad448e4..b212256 100644
---- a/arch/mips/bcm63xx/dev-spi.c
-+++ b/arch/mips/bcm63xx/dev-spi.c
-@@ -53,19 +53,11 @@ static struct resource spi_resources[] = {
- 	},
- };
- 
--static struct bcm63xx_spi_pdata spi_pdata = {
--	.bus_num		= 0,
--	.num_chipselect		= 8,
--};
--
- static struct platform_device bcm63xx_spi_device = {
- 	.name		= "bcm63xx-spi",
- 	.id		= -1,
- 	.num_resources	= ARRAY_SIZE(spi_resources),
- 	.resource	= spi_resources,
--	.dev		= {
--		.platform_data = &spi_pdata,
--	},
- };
- 
- int __init bcm63xx_spi_register(void)
-@@ -77,20 +69,12 @@ int __init bcm63xx_spi_register(void)
- 	spi_resources[0].end = spi_resources[0].start;
- 	spi_resources[1].start = bcm63xx_get_irq_number(IRQ_SPI);
- 
--	if (BCMCPU_IS_6338() || BCMCPU_IS_6348()) {
-+	if (BCMCPU_IS_6338() || BCMCPU_IS_6348())
- 		spi_resources[0].end += BCM_6348_RSET_SPI_SIZE - 1;
--		spi_pdata.fifo_size = SPI_6348_MSG_DATA_SIZE;
--		spi_pdata.msg_type_shift = SPI_6348_MSG_TYPE_SHIFT;
--		spi_pdata.msg_ctl_width = SPI_6348_MSG_CTL_WIDTH;
--	}
- 
- 	if (BCMCPU_IS_3368() || BCMCPU_IS_6358() || BCMCPU_IS_6362() ||
--		BCMCPU_IS_6368()) {
-+		BCMCPU_IS_6368())
- 		spi_resources[0].end += BCM_6358_RSET_SPI_SIZE - 1;
--		spi_pdata.fifo_size = SPI_6358_MSG_DATA_SIZE;
--		spi_pdata.msg_type_shift = SPI_6358_MSG_TYPE_SHIFT;
--		spi_pdata.msg_ctl_width = SPI_6358_MSG_CTL_WIDTH;
--	}
- 
- 	bcm63xx_spi_regs_init();
- 
-diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
-index 2573765..1d121fd 100644
---- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
-+++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
-@@ -7,14 +7,6 @@
- 
- int __init bcm63xx_spi_register(void);
- 
--struct bcm63xx_spi_pdata {
--	unsigned int	fifo_size;
--	unsigned int	msg_type_shift;
--	unsigned int	msg_ctl_width;
--	int		bus_num;
--	int		num_chipselect;
--};
--
- enum bcm63xx_regs_spi {
- 	SPI_CMD,
- 	SPI_INT_STATUS,
-@@ -28,6 +20,9 @@ enum bcm63xx_regs_spi {
- 	SPI_MSG_CTL,
- 	SPI_MSG_DATA,
- 	SPI_RX_DATA,
-+	SPI_MSG_TYPE_SHIFT,
-+	SPI_MSG_CTL_WIDTH,
-+	SPI_MSG_DATA_SIZE,
- };
- 
- #define __GEN_SPI_REGS_TABLE(__cpu)					\
-@@ -42,7 +37,10 @@ enum bcm63xx_regs_spi {
- 	[SPI_RX_TAIL]		= SPI_## __cpu ##_RX_TAIL,		\
- 	[SPI_MSG_CTL]		= SPI_## __cpu ##_MSG_CTL,		\
- 	[SPI_MSG_DATA]		= SPI_## __cpu ##_MSG_DATA,		\
--	[SPI_RX_DATA]		= SPI_## __cpu ##_RX_DATA,
-+	[SPI_RX_DATA]		= SPI_## __cpu ##_RX_DATA,		\
-+	[SPI_MSG_TYPE_SHIFT]	= SPI_## __cpu ##_MSG_TYPE_SHIFT,	\
-+	[SPI_MSG_CTL_WIDTH]	= SPI_## __cpu ##_MSG_CTL_WIDTH,	\
-+	[SPI_MSG_DATA_SIZE]	= SPI_## __cpu ##_MSG_DATA_SIZE,
- 
- static inline unsigned long bcm63xx_spireg(enum bcm63xx_regs_spi reg)
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 3abb390..40c9afa 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -270,15 +270,24 @@ EXPORT_SYMBOL_GPL(spi_bus_type);
+ static int spi_drv_probe(struct device *dev)
  {
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index 461891f..b3da044 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -329,7 +329,6 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
- {
- 	struct resource *r;
- 	struct device *dev = &pdev->dev;
--	struct bcm63xx_spi_pdata *pdata = dev_get_platdata(&pdev->dev);
- 	int irq;
- 	struct spi_master *master;
- 	struct clk *clk;
-@@ -369,7 +368,7 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
+ 	const struct spi_driver		*sdrv = to_spi_driver(dev->driver);
++	struct spi_device		*spi = to_spi_device(dev);
+ 	int ret;
  
- 	bs->irq = irq;
- 	bs->clk = clk;
--	bs->fifo_size = pdata->fifo_size;
-+	bs->fifo_size = bcm63xx_spireg(SPI_MSG_DATA_SIZE);
+ 	ret = of_clk_set_defaults(dev->of_node, false);
+ 	if (ret)
+ 		return ret;
  
- 	ret = devm_request_irq(&pdev->dev, irq, bcm63xx_spi_interrupt, 0,
- 							pdev->name, master);
-@@ -384,8 +383,8 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
- 	master->mode_bits = MODEBITS;
- 	master->bits_per_word_mask = SPI_BPW_MASK(8);
- 	master->auto_runtime_pm = true;
--	bs->msg_type_shift = pdata->msg_type_shift;
--	bs->msg_ctl_width = pdata->msg_ctl_width;
-+	bs->msg_type_shift = bcm63xx_spireg(SPI_MSG_TYPE_SHIFT);
-+	bs->msg_ctl_width = bcm63xx_spireg(SPI_MSG_CTL_WIDTH);
- 	bs->tx_io = (u8 *)(bs->regs + bcm63xx_spireg(SPI_MSG_DATA));
- 	bs->rx_io = (const u8 *)(bs->regs + bcm63xx_spireg(SPI_RX_DATA));
++	if (dev->of_node) {
++		spi->irq = of_irq_get(dev->of_node, 0);
++		if (spi->irq == -EPROBE_DEFER)
++			return -EPROBE_DEFER;
++		if (spi->irq < 0)
++			spi->irq = 0;
++	}
++
+ 	ret = dev_pm_domain_attach(dev, true);
+ 	if (ret != -EPROBE_DEFER) {
+-		ret = sdrv->probe(to_spi_device(dev));
++		ret = sdrv->probe(spi);
+ 		if (ret)
+ 			dev_pm_domain_detach(dev, true);
+ 	}
+@@ -1433,9 +1442,6 @@ of_register_spi_device(struct spi_master *master, struct device_node *nc)
+ 	}
+ 	spi->max_speed_hz = value;
  
+-	/* IRQ */
+-	spi->irq = irq_of_parse_and_map(nc, 0);
+-
+ 	/* Store a pointer to the node in the device structure */
+ 	of_node_get(nc);
+ 	spi->dev.of_node = nc;
 -- 
 2.5.0
 

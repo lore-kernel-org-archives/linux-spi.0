@@ -1,48 +1,85 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/1] spi-pxa2xx: choose closest lower speed
-Date: Mon, 12 Oct 2015 17:50:54 +0100
-Message-ID: <20151012165054.GL4238@sirena.org.uk>
-References: <1444304593-14669-1-git-send-email-andriy.shevchenko@linux.intel.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="W4pDZ/VvazBYHhxQ"
-Cc: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Applied "spi/bcm63xx: fix standard accessors and compile guard" to the spi tree
+Date: Mon, 12 Oct 2015 17:59:35 +0100
+Message-ID: <E1ZlgRj-00052q-22@finisterre>
+References: <1444645463-20915-2-git-send-email-jogo@openwrt.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1444304593-14669-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <1444645463-20915-2-git-send-email-jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---W4pDZ/VvazBYHhxQ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi/bcm63xx: fix standard accessors and compile guard
 
-On Thu, Oct 08, 2015 at 02:43:13PM +0300, Andy Shevchenko wrote:
-> As per discussion [1] the best choice is to set closest speed which is not
-> going over the asked one.
+has been applied to the spi tree at
 
-You've not provided this footnote.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
---W4pDZ/VvazBYHhxQ
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEcBAEBCAAGBQJWG+TtAAoJECTWi3JdVIfQOUgH/R+ztvD118kQ3aL+4Go0txWa
-DUXarA0EAJ2biGFHr3DvWkJxFVv5sJZeAjiK7H/uMUKy6k3UjkVvaZ4gMW2I5Wsk
-UAlUWM1cHNCdqKqouKGbFY0Q1jtbmb9zqCtlge3cwAAmApXEZFVTOdRaIieykSzC
-ITR50E/8lew4aAxSHmsX9b/B4dqmUJ/lQt/ST0kWMtfme22wGIjNFjZCH6nXlU4E
-qWCwzVdpY7D2/JHXyWgve/NQlLhlBsrAEkq6FPXaQfheUbADqn17bWZfBVUMPuZU
-Cyi9LD2X9ybKv/27rWW6VU5+HorN+IdUJHrxEjK1lu6r9LQ6BiMnEXAhs3/KCSE=
-=93ET
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---W4pDZ/VvazBYHhxQ--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 682b5280bf00c0618606ecb26cf4a9342d5e282e Mon Sep 17 00:00:00 2001
+From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Date: Mon, 12 Oct 2015 12:24:21 +0200
+Subject: [PATCH] spi/bcm63xx: fix standard accessors and compile guard
+
+Use the correct guard CONFIG_CPU_BIG_ENDIAN and the *be accessors to
+follow native endianness on big endian systems.
+
+Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-bcm63xx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index ef05387..461891f 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -62,8 +62,8 @@ static inline u8 bcm_spi_readb(struct bcm63xx_spi *bs,
+ static inline u16 bcm_spi_readw(struct bcm63xx_spi *bs,
+ 				unsigned int offset)
+ {
+-#ifdef CONFIG_BIG_ENDIAN
+-	return ioread16(bs->regs + bcm63xx_spireg(offset));
++#ifdef CONFIG_CPU_BIG_ENDIAN
++	return ioread16be(bs->regs + bcm63xx_spireg(offset));
+ #else
+ 	return readw(bs->regs + bcm63xx_spireg(offset));
+ #endif
+@@ -78,8 +78,8 @@ static inline void bcm_spi_writeb(struct bcm63xx_spi *bs,
+ static inline void bcm_spi_writew(struct bcm63xx_spi *bs,
+ 				  u16 value, unsigned int offset)
+ {
+-#ifdef CONFIG_BIG_ENDIAN
+-	iowrite16(value, bs->regs + bcm63xx_spireg(offset));
++#ifdef CONFIG_CPU_BIG_ENDIAN
++	iowrite16be(value, bs->regs + bcm63xx_spireg(offset));
+ #else
+ 	writew(value, bs->regs + bcm63xx_spireg(offset));
+ #endif
+-- 
+2.5.0
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

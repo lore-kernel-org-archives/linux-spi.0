@@ -1,69 +1,46 @@
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH v2 1/1] spi-pxa2xx: choose closest lower speed
-Date: Tue, 13 Oct 2015 17:09:14 +0300
-Message-ID: <1444745354-85940-1-git-send-email-andriy.shevchenko@linux.intel.com>
-Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"Puustinen, Ismo" <ismo.puustinen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Andreas Ziegler <andreas.ziegler@fau.de>
+Subject: Re: spi/bcm63xx: fix standard accessors and compile guard
+Date: Tue, 13 Oct 2015 21:30:41 +0200
+Message-ID: <561D5BE1.2040109@fau.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Valentin Rothberg <rothberg@cs.fau.de>,
+	Paul Bolle <pebolle@tiscali.nl>
+To: Jonas Gorski <jogo@openwrt.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-As per discussion [1] the best choice is to set closest speed which is not
-going over the asked one.
+Hi Jonas,
 
-Do the same approach for Intel Quark boards.
+your patch "spi/bcm63xx: fix standard accessors and compile guard"
+showed up as commit 682b5280bf00 in linux-next today (that is,
+next-20151013). I noticed it because we (a research group from
+Erlangen[0]) are running daily checks on linux-next.
 
-[1] http://www.spinics.net/lists/linux-spi/msg03389.html
+Your commit fixes two #ifdef statements in drivers/spi/spi-bcm63xx.c
+which involve CONFIG_CPU_BIG_ENDIAN.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
----
- drivers/spi/spi-pxa2xx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+>From the Makefile at drivers/spi/Makefile (line 20), we can see that the
+file can only be built when CONFIG_SPI_BCM63XX is set. In the
+corresponding Kconfig file (drivers/spi/Kconfig, line 137),
+CONFIG_SPI_BCM63XX is defined to depend on CONFIG_BCM63XX. The latter is
+defined in arch/mips/Kconfig (line 199), and selects
+CONFIG_SYS_SUPPORTS_BIG_ENDIAN (but not CONFIG_SYS_SUPPORTS_LITTLE_ENDIAN).
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index dee5b38..82493c2 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -734,7 +734,7 @@ static unsigned int quark_x1000_get_clk_div(int rate, u32 *dds)
- 	mul = (1 << 24) >> 1;
- 
- 	/* Calculate initial quot */
--	q1 = DIV_ROUND_CLOSEST(fref1, rate);
-+	q1 = DIV_ROUND_UP(fref1, rate);
- 
- 	/* Scale q1 if it's too big */
- 	if (q1 > 256) {
-@@ -759,7 +759,7 @@ static unsigned int quark_x1000_get_clk_div(int rate, u32 *dds)
- 
- 	/* Case 2 */
- 
--	q2 = DIV_ROUND_CLOSEST(fref2, rate);
-+	q2 = DIV_ROUND_UP(fref2, rate);
- 	r2 = abs(fref2 / q2 - rate);
- 
- 	/*
-@@ -778,13 +778,13 @@ static unsigned int quark_x1000_get_clk_div(int rate, u32 *dds)
- 		mul = (1 << 24) * 2 / 5;
- 	}
- 
--	/* Check case 3 only If the divisor is big enough */
-+	/* Check case 3 only if the divisor is big enough */
- 	if (fref / rate >= 80) {
- 		u64 fssp;
- 		u32 m;
- 
- 		/* Calculate initial quot */
--		q1 = DIV_ROUND_CLOSEST(fref, rate);
-+		q1 = DIV_ROUND_UP(fref, rate);
- 		m = (1 << 24) / q1;
- 
- 		/* Get the remainder */
--- 
-2.5.3
+Finally, CONFIG_CPU_BIG_ENDIAN (at arch/mips/Kconfig, line 1136) depends
+on CONFIG_SYS_SUPPORTS_BIG_ENDIAN, which means that if the source file
+is to be compiled, CONFIG_CPU_BIG_ENDIAN is the only possible selection
+in the endianness choice. Hence, the #ifdefs are unnecessary and could
+possibly be removed.
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Is this correct, or am I missing something?
+
+Best regards,
+
+Andreas
+
+[0] https://cados.cs.fau.de

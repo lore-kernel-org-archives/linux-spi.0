@@ -1,30 +1,69 @@
-From: "Franklin S Cooper Jr." <fcooper@ti.com>
-Subject: Re: [RFC] spi: Switch call order of spi master setup and spi_set_cs
-Date: Tue, 13 Oct 2015 09:03:21 -0500
-Message-ID: <561D0F29.5090001@ti.com>
-References: <1444683671-15570-1-git-send-email-fcooper@ti.com>
- <20151013121047.GD14956@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-	<nsekhar@ti.com>, <ssantosh@kernel.org>, <iivanov@mm-sol.com>,
-	<m-karicheri2@ti.com>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20151013121047.GD14956@sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH v2 1/1] spi-pxa2xx: choose closest lower speed
+Date: Tue, 13 Oct 2015 17:09:14 +0300
+Message-ID: <1444745354-85940-1-git-send-email-andriy.shevchenko@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"Puustinen, Ismo" <ismo.puustinen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+As per discussion [1] the best choice is to set closest speed which is not
+going over the asked one.
 
+Do the same approach for Intel Quark boards.
 
-On 10/13/2015 07:10 AM, Mark Brown wrote:
-> On Mon, Oct 12, 2015 at 04:01:10PM -0500, Franklin S Cooper Jr wrote:
->> Keystone 2 devices currently fail to boot in linux-next after the
->> below commit was applied:
-> Please don't send cover letters for single patches, if there is anything
-> that needs saying put it in the changelog of the patch or after the ---
-> if it's administrative stuff.  This reduces mail volume and ensures that
-> any important information is recorded in the changelog rather than being
-> lost.
-Sorry about that. Will do next time.
+[1] http://www.spinics.net/lists/linux-spi/msg03389.html
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+---
+ drivers/spi/spi-pxa2xx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index dee5b38..82493c2 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -734,7 +734,7 @@ static unsigned int quark_x1000_get_clk_div(int rate, u32 *dds)
+ 	mul = (1 << 24) >> 1;
+ 
+ 	/* Calculate initial quot */
+-	q1 = DIV_ROUND_CLOSEST(fref1, rate);
++	q1 = DIV_ROUND_UP(fref1, rate);
+ 
+ 	/* Scale q1 if it's too big */
+ 	if (q1 > 256) {
+@@ -759,7 +759,7 @@ static unsigned int quark_x1000_get_clk_div(int rate, u32 *dds)
+ 
+ 	/* Case 2 */
+ 
+-	q2 = DIV_ROUND_CLOSEST(fref2, rate);
++	q2 = DIV_ROUND_UP(fref2, rate);
+ 	r2 = abs(fref2 / q2 - rate);
+ 
+ 	/*
+@@ -778,13 +778,13 @@ static unsigned int quark_x1000_get_clk_div(int rate, u32 *dds)
+ 		mul = (1 << 24) * 2 / 5;
+ 	}
+ 
+-	/* Check case 3 only If the divisor is big enough */
++	/* Check case 3 only if the divisor is big enough */
+ 	if (fref / rate >= 80) {
+ 		u64 fssp;
+ 		u32 m;
+ 
+ 		/* Calculate initial quot */
+-		q1 = DIV_ROUND_CLOSEST(fref, rate);
++		q1 = DIV_ROUND_UP(fref, rate);
+ 		m = (1 << 24) / q1;
+ 
+ 		/* Get the remainder */
+-- 
+2.5.3
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

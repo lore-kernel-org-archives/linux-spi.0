@@ -1,117 +1,71 @@
-From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Subject: [PATCH 2/5] spi: mediatek: remove mtk_spi_config
-Date: Wed, 14 Oct 2015 11:23:32 +0800
-Message-ID: <1444793015-30359-3-git-send-email-leilk.liu@mediatek.com>
+From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: [PATCH 5/5] arm64: dts: spi bus dts support multiple devices
+Date: Wed, 14 Oct 2015 07:58:09 +0200
+Message-ID: <20151014055809.GN7858@pengutronix.de>
 References: <1444793015-30359-1-git-send-email-leilk.liu@mediatek.com>
+ <1444793015-30359-6-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
- Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
- linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
- linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
- linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-mediatek-bounces+glpam-linux-mediatek=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <1444793015-30359-1-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mediatek>,
- <mailto:linux-mediatek-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mediatek/>
-List-Post: <mailto:linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-mediatek-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mediatek>,
- <mailto:linux-mediatek-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "Linux-mediatek" <linux-mediatek-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-mediatek-bounces+glpam-linux-mediatek=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1444793015-30359-6-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-mtk_spi_config() and mtk_spi_prepare_message() both initialize
-spi register, so remove mtk_spi_config() and init all register
-in mtk_spi_prepare_message().
+On Wed, Oct 14, 2015 at 11:23:35AM +0800, Leilk Liu wrote:
+> This patch support multiple devices for MT8173.
 
-Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
----
- drivers/spi/spi-mt65xx.c | 59 +++++++++++++++++++++---------------------------
- 1 file changed, 26 insertions(+), 33 deletions(-)
+The subject of this patch and also the above sentence should contain the
+board name this patch is changing so that the reader knows this is about
+a single board, and not arm64 in general.
 
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index ecb6c58..7bd84c8 100755
---- a/drivers/spi/spi-mt65xx.c
-+++ b/drivers/spi/spi-mt65xx.c
-@@ -131,10 +131,34 @@ static void mtk_spi_reset(struct mtk_spi *mdata)
- 	writel(reg_val, mdata->base + SPI_CMD_REG);
- }
- 
--static void mtk_spi_config(struct mtk_spi *mdata,
--			   struct mtk_chip_config *chip_config)
-+static int mtk_spi_prepare_message(struct spi_master *master,
-+				   struct spi_message *msg)
- {
-+	u16 cpha, cpol;
- 	u32 reg_val;
-+	struct mtk_chip_config *chip_config;
-+	struct spi_device *spi = msg->spi;
-+	struct mtk_spi *mdata = spi_master_get_devdata(master);
-+
-+	cpha = spi->mode & SPI_CPHA ? 1 : 0;
-+	cpol = spi->mode & SPI_CPOL ? 1 : 0;
-+
-+	chip_config = spi->controller_data;
-+	if (!chip_config) {
-+		chip_config = (void *)&mtk_default_chip_info;
-+		spi->controller_data = chip_config;
-+	}
-+
-+	reg_val = readl(mdata->base + SPI_CMD_REG);
-+	if (cpha)
-+		reg_val |= SPI_CMD_CPHA;
-+	else
-+		reg_val &= ~SPI_CMD_CPHA;
-+	if (cpol)
-+		reg_val |= SPI_CMD_CPOL;
-+	else
-+		reg_val &= ~SPI_CMD_CPOL;
-+	writel(reg_val, mdata->base + SPI_CMD_REG);
- 
- 	reg_val = readl(mdata->base + SPI_CMD_REG);
- 
-@@ -171,37 +195,6 @@ static void mtk_spi_config(struct mtk_spi *mdata,
- 	/* pad select */
- 	if (mdata->dev_comp->need_pad_sel)
- 		writel(mdata->pad_sel, mdata->base + SPI_PAD_SEL_REG);
--}
--
--static int mtk_spi_prepare_message(struct spi_master *master,
--				   struct spi_message *msg)
--{
--	u32 reg_val;
--	u8 cpha, cpol;
--	struct mtk_chip_config *chip_config;
--	struct spi_device *spi = msg->spi;
--	struct mtk_spi *mdata = spi_master_get_devdata(master);
--
--	cpha = spi->mode & SPI_CPHA ? 1 : 0;
--	cpol = spi->mode & SPI_CPOL ? 1 : 0;
--
--	reg_val = readl(mdata->base + SPI_CMD_REG);
--	if (cpha)
--		reg_val |= SPI_CMD_CPHA;
--	else
--		reg_val &= ~SPI_CMD_CPHA;
--	if (cpol)
--		reg_val |= SPI_CMD_CPOL;
--	else
--		reg_val &= ~SPI_CMD_CPOL;
--	writel(reg_val, mdata->base + SPI_CMD_REG);
--
--	chip_config = spi->controller_data;
--	if (!chip_config) {
--		chip_config = (void *)&mtk_default_chip_info;
--		spi->controller_data = chip_config;
--	}
--	mtk_spi_config(mdata, chip_config);
- 
- 	return 0;
- }
+Sascha
+
+> 
+> Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+> ---
+>  arch/arm64/boot/dts/mediatek/mt8173-evb.dts | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/boot/dts/mediatek/mt8173-evb.dts b/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
+> index 04b38ed..1c8c407 100644
+> --- a/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
+> +++ b/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
+> @@ -194,7 +194,7 @@
+>  			pinmux = <MT8173_PIN_69_SPI_CK__FUNC_SPI_CK_0_>,
+>  				<MT8173_PIN_70_SPI_MI__FUNC_SPI_MI_0_>,
+>  				<MT8173_PIN_71_SPI_MO__FUNC_SPI_MO_0_>,
+> -				<MT8173_PIN_72_SPI_CS__FUNC_SPI_CS_0_>;
+> +				<MT8173_PIN_72_SPI_CS__FUNC_GPIO72>;
+>  		};
+>  	};
+>  };
+> @@ -399,6 +399,7 @@
+>  &spi {
+>  	pinctrl-names = "default";
+>  	pinctrl-0 = <&spi_pins_a>;
+> +	cs-gpios = <&pio 72 0>;
+>  	mediatek,pad-select = <0>;
+>  	status = "okay";
+>  };
+> -- 
+> 1.8.1.1.dirty
+> 
+> 
+
 -- 
-1.8.1.1.dirty
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

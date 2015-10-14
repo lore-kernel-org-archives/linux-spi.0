@@ -1,46 +1,37 @@
 From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH 1/1] spi: core: propagate return code of __spi_validate_bits_per_word()
-Date: Wed, 14 Oct 2015 22:43:07 +0300
-Message-ID: <1444851787-38604-1-git-send-email-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 00/10] spi: dw: bug fix and clean up series
+Date: Wed, 14 Oct 2015 23:12:15 +0300
+Message-ID: <1444853545-59868-1-git-send-email-andriy.shevchenko@linux.intel.com>
 Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Propagate the actual return code of __spi_validate_bits_per_word() in
-spi_setup().
+The first patch is a regression fix, second one a little fix(no need to
+backport). The rest is clean up part, in particularly follow up to what
+previously Jarkko started.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
----
- drivers/spi/spi.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+The driver has been tested on Intel MID platform in DMA and PIO modes.
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 58db324..e900164 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2017,7 +2017,7 @@ static int __spi_validate_bits_per_word(struct spi_master *master, u8 bits_per_w
- int spi_setup(struct spi_device *spi)
- {
- 	unsigned	bad_bits, ugly_bits;
--	int		status = 0;
-+	int		status;
- 
- 	/* check mode to prevent that DUAL and QUAD set at the same time
- 	 */
-@@ -2054,8 +2054,9 @@ int spi_setup(struct spi_device *spi)
- 	if (!spi->bits_per_word)
- 		spi->bits_per_word = 8;
- 
--	if (__spi_validate_bits_per_word(spi->master, spi->bits_per_word))
--		return -EINVAL;
-+	status = __spi_validate_bits_per_word(spi->master, spi->bits_per_word);
-+	if (status)
-+		return status;
- 
- 	if (!spi->max_speed_hz)
- 		spi->max_speed_hz = spi->master->max_speed_hz;
+Andy Shevchenko (10):
+  spi: dw: explicitly free IRQ handler in dw_spi_remove_host()
+  spi: dw: use plain struct device * at earlier ->probe()
+  spi: dw: remove unneeded cr0 member of struct chip_data
+  spi: dw: remove a NULL check when call ->remove()
+  spi: dw: remove bits_per_word member of struct chip_data
+  spi: dw: eliminate speed variable in ->transfer_one()
+  spi: dw: eliminate unused threshold variables
+  spi: dw: introduce spi_shutdown_chip()
+  spi: dw-pci: remove unused pdev member from struct dw_spi_pci
+  spi: dw-mmio: convert to unified device property API
+
+ drivers/spi/spi-dw-mmio.c |  7 +++--
+ drivers/spi/spi-dw-pci.c  | 29 +++++++-------------
+ drivers/spi/spi-dw.c      | 68 +++++++++++++----------------------------------
+ drivers/spi/spi-dw.h      |  6 +++++
+ 4 files changed, 37 insertions(+), 73 deletions(-)
+
 -- 
 2.5.3
 

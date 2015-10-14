@@ -1,68 +1,83 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [RFC PATCH] spi: omap2-mcspi: disable other channels
- CHCONF_FORCE in prepare_message
-Date: Wed, 14 Oct 2015 11:56:59 +0100
-Message-ID: <20151014105659.GU14956@sirena.org.uk>
-References: <5616816C.9020904@baylibre.com>
- <20151008152105.GA13157@deathstar>
- <20151009113810.GD1542@sirena.org.uk>
- <20151009142451.GA25376@deathstar>
+From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [RFC][PATCH] spi: Setup the master controller driver before
+ setting the chipselect
+Date: Wed, 14 Oct 2015 14:08:12 +0300
+Message-ID: <CAHp75VdTtZks8RA7tjiAnBUipVa5SL7YdTftzqY264G__+4yQQ@mail.gmail.com>
+References: <1444683671-15570-1-git-send-email-fcooper@ti.com>
+	<1444683671-15570-2-git-send-email-fcooper@ti.com>
+	<32A34513-E312-40FD-9390-B080A85822B7@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="qa1NXTiqN6KSzHv0"
-Cc: Neil Armstrong <narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Fionn Cleary <clearyf-/Zw1syy4LHg@public.gmane.org>,
-	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
-	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Sebastian Reichel <sre-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Michael Welling <mwelling-EkmVulN54Sk@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>, ssantosh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	"Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>, m-karicheri2-l0cyMroinI0@public.gmane.org
+To: "Ivan T. Ivanov" <iivanov.xz-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20151009142451.GA25376@deathstar>
+In-Reply-To: <32A34513-E312-40FD-9390-B080A85822B7-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
++Cc: Jarkko to see from spi-pxa2xx prospective
 
---qa1NXTiqN6KSzHv0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Wed, Oct 14, 2015 at 12:47 PM, Ivan T. Ivanov <iivanov.xz-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> Adding Andy.
+>
+>
+>> On Oct 13, 2015, at 12:01 AM, Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org> wrote:
+>>
+>> Some devices depend on the master controller driver setup function being
+>> called before calling any chipselect functions.
+>>
+>> Insure that this is done otherwise uninitialized structures may be
+>> accessed causing a kernel panic.
 
-On Fri, Oct 09, 2015 at 09:24:51AM -0500, Michael Welling wrote:
-> On Fri, Oct 09, 2015 at 12:38:10PM +0100, Mark Brown wrote:
-> > On Thu, Oct 08, 2015 at 10:21:05AM -0500, Michael Welling wrote:
-> > > On Thu, Oct 08, 2015 at 04:45:00PM +0200, Neil Armstrong wrote:
+As far as I understand my concern should be about spi-dw driver.
 
-> > > What is the point of doing this void cast below?
-> > > Avoiding compiler warning perhaps?
-> > > Perhaps you can __maybe_unused for the variable instead?
+So, I have just tested yesterday's linux-next with and without
+proposed patch. Works for me:
+Tested-by: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-> > > > +	/* Ignore message */
-> > > > +	(void)msg;
+>>
+>> Signed-off-by: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>
+>> ---
+>> drivers/spi/spi.c | 4 ++--
+>> 1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+>> index 38006cc..9374d82 100644
+>> --- a/drivers/spi/spi.c
+>> +++ b/drivers/spi/spi.c
+>> @@ -2053,11 +2053,11 @@ int spi_setup(struct spi_device *spi)
+>>       if (!spi->max_speed_hz)
+>>               spi->max_speed_hz = spi->master->max_speed_hz;
+>>
+>> -     spi_set_cs(spi, false);
+>> -
+>>       if (spi->master->setup)
+>>               status = spi->master->setup(spi);
+>>
+>> +     spi_set_cs(spi, false);
+>> +
+>>       dev_dbg(&spi->dev, "setup mode %d, %s%s%s%s%u bits/w, %u Hz max --> %d\n",
+>>                       (int) (spi->mode & (SPI_CPOL | SPI_CPHA)),
+>>                       (spi->mode & SPI_CS_HIGH) ? "cs_high, " : "",
+>> --
+>> 2.6.1
+>>
+>> --
+>> To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+>> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+>> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+>
 
-> > You shouldn't need it at all, but yes if there is a good reason to mark
-> > something as unused the above annotation is better.
 
-> Which one?
 
-__maybe_unused.
-
---qa1NXTiqN6KSzHv0
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJWHjT7AAoJECTWi3JdVIfQ4c0H/30Ifkg0CLxBPxkYNQOurf8c
-ORL+JKikloHu3gKvzYBwz1kJyPpcUXSZQbf6JWPtNXku4mObq9S2ubpaDRv3oUfV
-d4J8vvCKe1BSvIScmMro/+yGkfx2Md9+DE1Pe2WG2iUm/LvLpSUzGFbYXajsgLAe
-/fo9jQT+WDOTREpOCJ37PhHfXt+8DNiR5+XKYQ1KNeL7briKj1saZZjaxFMeKuAt
-dbVZc8qAPYmKnAzSdVNWw2lEKWdNy+3oURfk8AcSMSJlFbxqLw05jjmoy/8Dw9P+
-yRbg6I/PGceKVbTp/WSZhmX/uC3i1pQfg3zUmdf0kx5d+WJQW6pfX1YXPlvuqwM=
-=MpAa
------END PGP SIGNATURE-----
-
---qa1NXTiqN6KSzHv0--
+-- 
+With Best Regards,
+Andy Shevchenko
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

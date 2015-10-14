@@ -1,46 +1,48 @@
-From: Andreas Ziegler <andreas.ziegler@fau.de>
-Subject: Re: spi/bcm63xx: fix standard accessors and compile guard
-Date: Tue, 13 Oct 2015 21:30:41 +0200
-Message-ID: <561D5BE1.2040109@fau.de>
+From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Subject: [PATCH 0/5] mt8173 spi multiple devices support
+Date: Wed, 14 Oct 2015 11:23:30 +0800
+Message-ID: <1444793015-30359-1-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Valentin Rothberg <rothberg@cs.fau.de>,
-	Paul Bolle <pebolle@tiscali.nl>
-To: Jonas Gorski <jogo@openwrt.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain
+Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Jonas,
+This series are based on 4.3-rc1 and provide 5 patches to support
+mt8173 spi multiple devices.
 
-your patch "spi/bcm63xx: fix standard accessors and compile guard"
-showed up as commit 682b5280bf00 in linux-next today (that is,
-next-20151013). I noticed it because we (a research group from
-Erlangen[0]) are running daily checks on linux-next.
+Change in this series:
+1. update document to add cs-gpio;
+2. remove mtk_spi_config function;
+3. move controller_data to master->setup;
+4. add mt8173 spi multiple devices support;
+5. update dts to add cs-gpio and modify cs pin to gpio function.
 
-Your commit fixes two #ifdef statements in drivers/spi/spi-bcm63xx.c
-which involve CONFIG_CPU_BIG_ENDIAN.
+Leilk Liu (5):
+  dt-binding: spi: Mediatek: Update document devicetree bindings to
+    support multiple devices
+  spi: mediatek: remove mtk_spi_config
+  spi: mediatek: handle controller_data in mtk_spi_setup
+  spi: mediatek: mt8173 spi multiple devices support
+  arm64: dts: spi bus dts support multiple devices
 
->From the Makefile at drivers/spi/Makefile (line 20), we can see that the
-file can only be built when CONFIG_SPI_BCM63XX is set. In the
-corresponding Kconfig file (drivers/spi/Kconfig, line 137),
-CONFIG_SPI_BCM63XX is defined to depend on CONFIG_BCM63XX. The latter is
-defined in arch/mips/Kconfig (line 199), and selects
-CONFIG_SYS_SUPPORTS_BIG_ENDIAN (but not CONFIG_SYS_SUPPORTS_LITTLE_ENDIAN).
+ .../devicetree/bindings/spi/spi-mt65xx.txt         |   8 +-
+ arch/arm64/boot/dts/mediatek/mt8173-evb.dts        |   3 +-
+ drivers/spi/spi-mt65xx.c                           | 129 +++++++++++++--------
+ 3 files changed, 91 insertions(+), 49 deletions(-)
+ mode change 100755 => 100644 drivers/spi/spi-mt65xx.c
 
-Finally, CONFIG_CPU_BIG_ENDIAN (at arch/mips/Kconfig, line 1136) depends
-on CONFIG_SYS_SUPPORTS_BIG_ENDIAN, which means that if the source file
-is to be compiled, CONFIG_CPU_BIG_ENDIAN is the only possible selection
-in the endianness choice. Hence, the #ifdefs are unnecessary and could
-possibly be removed.
+--
+1.8.1.1.dirty
 
-Is this correct, or am I missing something?
-
-Best regards,
-
-Andreas
-
-[0] https://cados.cs.fau.de
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

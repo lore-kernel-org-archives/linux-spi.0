@@ -1,79 +1,83 @@
-From: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Subject: Re: [alsa-devel] [PATCH v5 06/10] dmaengine: add API for getting dma
- controller's quirk
-Date: Wed, 14 Oct 2015 22:33:06 +0800
-Message-ID: <561E67A2.7080602@rock-chips.com>
-References: <1442187923-5736-1-git-send-email-shawn.lin@rock-chips.com>
- <1442188139-6017-1-git-send-email-shawn.lin@rock-chips.com>
- <20151005153746.GG13501@vkoul-mobl.iind.intel.com>
- <56139289.7000005@rock-chips.com> <561629D6.9010702@metafoo.de>
- <20151014105310.GQ27370@localhost>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org, Addy Ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-	Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>, alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
-	linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-	Takashi Iwai <tiwai-IBi9RG/b67k@public.gmane.org>, dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>,
-	Sonny Rao <sonnyrao-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20151014105310.GQ27370@localhost>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Luis de Bethencourt <luisbg@osg.samsung.com>
+Subject: [PATCH] spi: kconfig: When possible, compile drivers with COMPILE_TEST
+Date: Wed, 14 Oct 2015 18:41:50 +0100
+Message-ID: <1444844510-13035-1-git-send-email-luisbg@osg.samsung.com>
+Cc: broonie@kernel.org, linux-spi@vger.kernel.org,
+	javier@osg.samsung.com,
+	Luis de Bethencourt <luisbg@osg.samsung.com>
+To: linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On 2015/10/14 18:53, Vinod Koul wrote:
-> On Thu, Oct 08, 2015 at 10:31:18AM +0200, Lars-Peter Clausen wrote:
->>> Basically I agree not to expose dma's quirk to slave controllers...But, the
->>> fact I mentioned on cover letter explain the reasons why I have to let slave
->>> controllers know that they are working with a broken dma. It's a dilemma
->>> that if we don't want that to be exposed(let slave controllers' driver get
->>> the info via a API), we have t add broken quirk for all of them ,here and
->>> there, which seems to be a disaster:(
->>
->> The problem with this API is that it transports values with device specific
->> meanings over a generic API. Which is generally speaking not a good idea
->> because the consumer witch is supposed to be generic suddenly needs to know
->> which provider it is talking to.
->>
->> A better solution in this case typically is either introduce a generic API
->> with generic values or a custom API with custom values, but don't mix the two.
->>
->>>
->>> I would appreciate it if you could give me some suggestions at your earliest
->>> convenience. :)
->>
->> In this case I think the best way to handle this is not quirks, but rather
->> expose the actual maximum burst size using the DMA capabilities API. Since
->> supporting only a certain burst depth is not really a quirk. All hardware
->> has a limit for this and for some it might be larger or smaller than for
->> others and it might be the same IP core but the maximum size depends on some
->> IP core parameters. So this should be discoverable.
->
-> yes that makes more sense than adding quirks, exposing the right values
-> which should be a readable property for driver will ensure it works on
-> system with/without quirks
+These drivers only have runtime but no build time dependencies, so they can
+be built for testing purposes if the Kconfig COMPILE_TEST option is enabled.
 
-Sorry for late response in this thread.
+This is useful to have more build coverage and make sure that drivers are
+not affected by changes that could cause build regressions.
 
-Right, we can expose max-burst to clients by dma_slave_caps instead of 
-quirks. I will try it and send v6 ASAP.
+Signed-off-by: Luis de Bethencourt <luisbg@osg.samsung.com>
+---
+ drivers/spi/Kconfig | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-Thanks Lars and Vinod.
-
->
-
-
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 26b8605..585d0cb 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -128,7 +128,7 @@ config SPI_AU1550
+ 
+ config SPI_BCM53XX
+ 	tristate "Broadcom BCM53xx SPI controller"
+-	depends on ARCH_BCM_5301X
++	depends on ARCH_BCM_5301X || COMPILE_TEST
+ 	depends on BCMA_POSSIBLE
+ 	select BCMA
+ 	help
+@@ -192,7 +192,7 @@ config SPI_COLDFIRE_QSPI
+ 
+ config SPI_DAVINCI
+ 	tristate "Texas Instruments DaVinci/DA8x/OMAP-L/AM1x SoC SPI controller"
+-	depends on ARCH_DAVINCI || ARCH_KEYSTONE
++	depends on ARCH_DAVINCI || ARCH_KEYSTONE || COMPILE_TEST
+ 	select SPI_BITBANG
+ 	help
+ 	  SPI master controller for DaVinci/DA8x/OMAP-L/AM1x SPI modules.
+@@ -209,7 +209,7 @@ config SPI_DLN2
+ 
+ config SPI_EFM32
+ 	tristate "EFM32 SPI controller"
+-	depends on OF && ARM && (ARCH_EFM32 || COMPILE_TEST)
++	depends on OF && (ARM && ARCH_EFM32) || COMPILE_TEST
+ 	select SPI_BITBANG
+ 	help
+ 	  Driver for the spi controller found on Energy Micro's EFM32 SoCs.
+@@ -370,7 +370,7 @@ config SPI_OMAP_UWIRE
+ config SPI_OMAP24XX
+ 	tristate "McSPI driver for OMAP"
+ 	depends on HAS_DMA
+-	depends on ARM || ARM64 || AVR32 || HEXAGON || MIPS || SUPERH
++	depends on ARM || ARM64 || AVR32 || HEXAGON || MIPS || SUPERH || COMPILE_TEST
+ 	depends on ARCH_OMAP2PLUS || COMPILE_TEST
+ 	help
+ 	  SPI master controller for OMAP24XX and later Multichannel SPI
+@@ -488,7 +488,7 @@ config SPI_S3C24XX_FIQ
+ 
+ config SPI_S3C64XX
+ 	tristate "Samsung S3C64XX series type SPI"
+-	depends on (PLAT_SAMSUNG || ARCH_EXYNOS)
++	depends on (PLAT_SAMSUNG || ARCH_EXYNOS) || COMPILE_TEST
+ 	help
+ 	  SPI driver for Samsung S3C64XX and newer SoCs.
+ 
+@@ -533,7 +533,7 @@ config SPI_SIRF
+ 
+ config SPI_ST_SSC4
+ 	tristate "STMicroelectronics SPI SSC-based driver"
+-	depends on ARCH_STI
++	depends on ARCH_STI || COMPILE_TEST
+ 	help
+ 	  STMicroelectronics SoCs support for SPI. If you say yes to
+ 	  this option, support will be included for the SSC driven SPI.
 -- 
-Best Regards
-Shawn Lin
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+2.5.1

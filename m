@@ -1,7 +1,7 @@
 From: Shawn Lin <shawn.lin@rock-chips.com>
-Subject: [PATCH v6 04/10] ARM: dts: Add arm,pl330-broken-no-flushp quirk for rk3288 platform
-Date: Thu, 15 Oct 2015 09:35:43 +0800
-Message-ID: <1444872943-2341-1-git-send-email-shawn.lin@rock-chips.com>
+Subject: [PATCH v6 06/10] DMA: dmaengine: expose max burst capability to clients
+Date: Thu, 15 Oct 2015 09:36:04 +0800
+Message-ID: <1444872964-2425-1-git-send-email-shawn.lin@rock-chips.com>
 References: <1444872865-2169-1-git-send-email-shawn.lin@rock-chips.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>,
 	Doug Anderson <dianders@chromium.org>,
@@ -21,68 +21,73 @@ In-Reply-To: <1444872865-2169-1-git-send-email-shawn.lin@rock-chips.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Addy Ke <addy.ke@rock-chips.com>
+This patch add max_burst to dma_get_slave_caps for clients
+to get the burst capability of slave dma controller.
 
-Pl330 integrated in rk3288 platform doesn't support
-DMAFLUSHP function. So we add arm,pl330-broken-no-flushp quirk
-for it.
-
-Signed-off-by: Addy Ke <addy.ke@rock-chips.com>
 Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-cc: Heiko Stuebner <heiko@sntech.de>
-cc: Olof Johansson <olof@lixom.net>
-cc: Sonny Rao <sonnyrao@chromium.org>
 
-Reviewed-by: Doug Anderson <dianders@chromium.org>
-Reviewed-by: Sonny Rao <sonnyrao@chromium.org>
 ---
 
-Changes in v6: None
+Changes in v6:
+- remove expose quirk and add dma max_burst caps for clients
+
 Changes in v5: None
 Changes in v4: None
-Changes in v3:
-- add Reviewed-by: Sonny Rao <sonnyrao@chromium.org>
+Changes in v3: None
+Changes in v2: None
+Changes in v1: None
 
-Changes in v2:
-- amend the author
-- add Reviewed-by: Doug Anderson <dianders@chromium.org>
-- amend Olof's mail address
+ drivers/dma/dmaengine.c   | 1 +
+ include/linux/dmaengine.h | 4 ++++
+ 2 files changed, 5 insertions(+)
 
-Changes in v1:
-- rename broken-no-flushp to "arm,pl330-broken-no-flushp" suggested
-  by Krzysztof.
-- remove Sunny's tag
-
- arch/arm/boot/dts/rk3288.dtsi | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/arch/arm/boot/dts/rk3288.dtsi b/arch/arm/boot/dts/rk3288.dtsi
-index 906e938..6978ff6 100644
---- a/arch/arm/boot/dts/rk3288.dtsi
-+++ b/arch/arm/boot/dts/rk3288.dtsi
-@@ -145,6 +145,7 @@
- 			#dma-cells = <1>;
- 			clocks = <&cru ACLK_DMAC2>;
- 			clock-names = "apb_pclk";
-+			arm,pl330-broken-no-flushp;
- 		};
+diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
+index 3ecec14..1ccf64b 100644
+--- a/drivers/dma/dmaengine.c
++++ b/drivers/dma/dmaengine.c
+@@ -492,6 +492,7 @@ int dma_get_slave_caps(struct dma_chan *chan, struct dma_slave_caps *caps)
+ 	caps->src_addr_widths = device->src_addr_widths;
+ 	caps->dst_addr_widths = device->dst_addr_widths;
+ 	caps->directions = device->directions;
++	caps->max_burst = device->max_burst;
+ 	caps->residue_granularity = device->residue_granularity;
  
- 		dmac_bus_ns: dma-controller@ff600000 {
-@@ -156,6 +157,7 @@
- 			clocks = <&cru ACLK_DMAC1>;
- 			clock-names = "apb_pclk";
- 			status = "disabled";
-+			arm,pl330-broken-no-flushp;
- 		};
+ 	/*
+diff --git a/include/linux/dmaengine.h b/include/linux/dmaengine.h
+index 7ea9184..b6bc79e 100644
+--- a/include/linux/dmaengine.h
++++ b/include/linux/dmaengine.h
+@@ -401,6 +401,7 @@ enum dma_residue_granularity {
+  * 	since the enum dma_transfer_direction is not defined as bits for each
+  * 	type of direction, the dma controller should fill (1 << <TYPE>) and same
+  * 	should be checked by controller as well
++ * @max_burst: max burst capability per-transfer
+  * @cmd_pause: true, if pause and thereby resume is supported
+  * @cmd_terminate: true, if terminate cmd is supported
+  * @residue_granularity: granularity of the reported transfer residue
+@@ -411,6 +412,7 @@ struct dma_slave_caps {
+ 	u32 src_addr_widths;
+ 	u32 dst_addr_widths;
+ 	u32 directions;
++	u32 max_burst;
+ 	bool cmd_pause;
+ 	bool cmd_terminate;
+ 	enum dma_residue_granularity residue_granularity;
+@@ -627,6 +629,7 @@ enum dmaengine_alignment {
+  * 	the enum dma_transfer_direction is not defined as bits for
+  * 	each type of direction, the dma controller should fill (1 <<
+  * 	<TYPE>) and same should be checked by controller as well
++ * @max_burst: max burst capability per-transfer
+  * @residue_granularity: granularity of the transfer residue reported
+  *	by tx_status
+  * @device_alloc_chan_resources: allocate resources and return the
+@@ -680,6 +683,7 @@ struct dma_device {
+ 	u32 src_addr_widths;
+ 	u32 dst_addr_widths;
+ 	u32 directions;
++	u32 max_burst;
+ 	enum dma_residue_granularity residue_granularity;
  
- 		dmac_bus_s: dma-controller@ffb20000 {
-@@ -166,6 +168,7 @@
- 			#dma-cells = <1>;
- 			clocks = <&cru ACLK_DMAC1>;
- 			clock-names = "apb_pclk";
-+			arm,pl330-broken-no-flushp;
- 		};
- 	};
- 
+ 	int (*device_alloc_chan_resources)(struct dma_chan *chan);
 -- 
 2.3.7

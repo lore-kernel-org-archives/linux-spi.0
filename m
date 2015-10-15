@@ -1,7 +1,7 @@
 From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH] spi: bcm2835: change initialization order and switch to platform_get_irq
-Date: Thu, 15 Oct 2015 10:09:11 +0000
-Message-ID: <1444903752-9180-1-git-send-email-kernel@martin.sperl.org>
+Subject: [PATCH] spi: bcm2835aux: change initialization order and switch to platform_get_irq
+Date: Thu, 15 Oct 2015 10:10:20 +0000
+Message-ID: <1444903820-9223-1-git-send-email-kernel@martin.sperl.org>
 Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
@@ -21,14 +21,14 @@ Also the use of irq_of_parse_and_map is replaced by platform_get_irq.
 
 Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 ---
- drivers/spi/spi-bcm2835.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/spi/spi-bcm2835aux.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index 3e8eeb2..cf04960 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -777,7 +777,7 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
+index f92b4a6..1a1b58c 100644
+--- a/drivers/spi/spi-bcm2835aux.c
++++ b/drivers/spi/spi-bcm2835aux.c
+@@ -410,7 +410,7 @@ static int bcm2835aux_spi_probe(struct platform_device *pdev)
  		goto out_master_put;
  	}
  
@@ -37,28 +37,22 @@ index 3e8eeb2..cf04960 100644
  	if (bs->irq <= 0) {
  		dev_err(&pdev->dev, "could not get IRQ: %d\n", bs->irq);
  		err = bs->irq ? bs->irq : -ENODEV;
-@@ -786,6 +786,12 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
- 
- 	clk_prepare_enable(bs->clk);
- 
-+	bcm2835_dma_init(master, &pdev->dev);
-+
-+	/* initialise the hardware with the default polarities */
-+	bcm2835_wr(bs, BCM2835_SPI_CS,
-+		   BCM2835_SPI_CS_CLEAR_RX | BCM2835_SPI_CS_CLEAR_TX);
-+
- 	err = devm_request_irq(&pdev->dev, bs->irq, bcm2835_spi_interrupt, 0,
- 			       dev_name(&pdev->dev), master);
- 	if (err) {
-@@ -793,12 +799,6 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
+@@ -432,6 +432,9 @@ static int bcm2835aux_spi_probe(struct platform_device *pdev)
  		goto out_clk_disable;
  	}
  
--	bcm2835_dma_init(master, &pdev->dev);
--
--	/* initialise the hardware with the default polarities */
--	bcm2835_wr(bs, BCM2835_SPI_CS,
--		   BCM2835_SPI_CS_CLEAR_RX | BCM2835_SPI_CS_CLEAR_TX);
++	/* reset SPI-HW block */
++	bcm2835aux_spi_reset_hw(bs);
++
+ 	err = devm_request_irq(&pdev->dev, bs->irq,
+ 			       bcm2835aux_spi_interrupt,
+ 			       IRQF_SHARED,
+@@ -441,9 +444,6 @@ static int bcm2835aux_spi_probe(struct platform_device *pdev)
+ 		goto out_clk_disable;
+ 	}
+ 
+-	/* reset SPI-HW block */
+-	bcm2835aux_spi_reset_hw(bs);
 -
  	err = devm_spi_register_master(&pdev->dev, master);
  	if (err) {

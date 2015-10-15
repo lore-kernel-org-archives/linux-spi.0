@@ -1,85 +1,103 @@
-From: Jianqun Xu <jay.xu-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Subject: Re: [PATCH v6 10/10] ASoC: rockchip_i2s: modify DMA max burst to 1
-Date: Thu, 15 Oct 2015 18:47:26 +0800
-Message-ID: <561F843E.8040803@rock-chips.com>
-References: <1444872865-2169-1-git-send-email-shawn.lin@rock-chips.com>
- <1444873008-2589-1-git-send-email-shawn.lin@rock-chips.com>
- <561F6990.7080809@metafoo.de>
+From: "Franklin S Cooper Jr." <fcooper-l0cyMroinI0@public.gmane.org>
+Subject: Re: [RFC][PATCH] spi: Setup the master controller driver before
+ setting the chipselect
+Date: Thu, 15 Oct 2015 15:50:55 -0500
+Message-ID: <562011AF.5040306@ti.com>
+References: <1444683671-15570-1-git-send-email-fcooper@ti.com>
+ <1444683671-15570-2-git-send-email-fcooper@ti.com>
+ <32A34513-E312-40FD-9390-B080A85822B7@gmail.com>
+ <CAHp75VdTtZks8RA7tjiAnBUipVa5SL7YdTftzqY264G__+4yQQ@mail.gmail.com>
+ <CAFSsGVtXP_Jd+CxvxfWCLXT_f+Tgv5SSZAbnBciqfr_BQMEZhA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
-	format=flowed
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-	Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>,
-	Sonny Rao <sonnyrao-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-	Addy Ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-	Boojin Kim <boojin.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>, dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Yiwei Cai <cain.cai-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-	Jianqun Xu <xjq-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-To: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>,
-	Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-	Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
-	Jaroslav Kysela <perex-/Fr2/VpizcU@public.gmane.org>,
-	Takashi Iwai <tiwai-IBi9RG/b67k@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: "Ivan T. Ivanov" <iivanov.xz-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>,
+	<ssantosh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>,
+	<m-karicheri2-l0cyMroinI0@public.gmane.org>, Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <561F6990.7080809-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+In-Reply-To: <CAFSsGVtXP_Jd+CxvxfWCLXT_f+Tgv5SSZAbnBciqfr_BQMEZhA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-=E5=9C=A8 2015=E5=B9=B410=E6=9C=8815=E6=97=A5 16:53, Lars-Peter Clausen=
- =E5=86=99=E9=81=93:
-> On 10/15/2015 03:36 AM, Shawn Lin wrote:
-> [...]
->> +
->> +	if (snd_dmaengine_pcm_get_caps(&pdev->dev, &dma_caps) =3D=3D 0) {
->> +		if (dma_caps.max_burst > 4) {
->> +			i2s->playback_dma_data.maxburst =3D 4;
->> +			i2s->capture_dma_data.maxburst =3D 4;
->> +		} else {
->> +			i2s->playback_dma_data.maxburst =3D 1;
->> +			i2s->capture_dma_data.maxburst =3D 1;
-> So this is what this is all about? I though you might have to program=
- some
-> FIFO threshold registers in the peripheral itself.
->
-> But it seems all this does is to read the maximum burst length from t=
-he DMA
-> controller only to tell the DMA controller that this is the maximum b=
-urst
-> length it should use. That seems rather unnecessary.
->
-> The maxburst field of the dma_data indicates the maximum burst length=
- that
-> the audio peripheral can handle. Typically this is the number of samp=
-les the
-> audio FIFO can receive without overflowing after sending the DMA requ=
-est
-> signal. Since as the name suggests this is the maximum burst size the=
- DMA
-> controller is free to choose a burst size smaller than this when writ=
-ing
-> data to the peripheral.
->
-> So in your case instead of introducing all these facilities to query =
-the
-> maximum burst size it should be OK to simply reduce the burst size in=
- the
-> DMA controller itself when it gets a request with a burst size larger=
- than
-> it can handle, or is there a reason why this is not possible?
-Agree with Lars, it's better to fix on DMA driver side since issue=20
-caused by dma-controller instead of i2s controller
->
-> - Lars
->
->
->
 
---=20
-Jianqun Xu | Software engineer | 18750760928
+
+
+On 10/14/2015 06:45 AM, Heiner Kallweit wrote:
+> On Wed, Oct 14, 2015 at 1:08 PM, Andy Shevchenko
+> <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>> +Cc: Jarkko to see from spi-pxa2xx prospective
+>>
+>> On Wed, Oct 14, 2015 at 12:47 PM, Ivan T. Ivanov <iivanov.xz-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>>> Adding Andy.
+>>>
+>>>
+>>>> On Oct 13, 2015, at 12:01 AM, Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org> wrote:
+>>>>
+>>>> Some devices depend on the master controller driver setup function being
+>>>> called before calling any chipselect functions.
+>>>>
+>>>> Insure that this is done otherwise uninitialized structures may be
+>>>> accessed causing a kernel panic.
+>> As far as I understand my concern should be about spi-dw driver.
+>>
+>> So, I have just tested yesterday's linux-next with and without
+>> proposed patch. Works for me:
+>> Tested-by: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+>>
+>>>> Signed-off-by: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>
+>>>> ---
+>>>> drivers/spi/spi.c | 4 ++--
+>>>> 1 file changed, 2 insertions(+), 2 deletions(-)
+>>>>
+>>>> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+>>>> index 38006cc..9374d82 100644
+>>>> --- a/drivers/spi/spi.c
+>>>> +++ b/drivers/spi/spi.c
+>>>> @@ -2053,11 +2053,11 @@ int spi_setup(struct spi_device *spi)
+>>>>       if (!spi->max_speed_hz)
+>>>>               spi->max_speed_hz = spi->master->max_speed_hz;
+>>>>
+>>>> -     spi_set_cs(spi, false);
+>>>> -
+>>>>       if (spi->master->setup)
+>>>>               status = spi->master->setup(spi);
+>>>>
+>>>> +     spi_set_cs(spi, false);
+>>>> +
+>>>>       dev_dbg(&spi->dev, "setup mode %d, %s%s%s%s%u bits/w, %u Hz max --> %d\n",
+>>>>                       (int) (spi->mode & (SPI_CPOL | SPI_CPHA)),
+>>>>                       (spi->mode & SPI_CS_HIGH) ? "cs_high, " : "",
+>>>> --
+>>>> 2.6.1
+>>>>
+>>>> --
+>>>> To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+>>>> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+>>>> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+>>
+>>
+>> --
+>> With Best Regards,
+>> Andy Shevchenko
+>> --
+>> To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+>> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+>> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> The recent change to the bitbang driver leads to the the set_cs hook
+> of spi_master being set
+> now for all drivers using the bitbang layer. This hook is called also
+> from spi_setup and therefore
+> one possible side effect is issues with bitbang drivers implementing
+> the chipselect hook of
+> spi_bitbang with a dependency on the master being set up before.
+> The proposed patch looks good to me.
+> There should be no impact on drivers not using bitbang.
+Thank all. Since nothing obvious seems wrong with this patch I will resend this patch without the RFC.
 
 
 --

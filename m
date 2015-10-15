@@ -1,73 +1,105 @@
-From: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Subject: [PATCH v6 07/10] DMA: pl330: add max burst for dmaengine
-Date: Thu, 15 Oct 2015 09:36:14 +0800
-Message-ID: <1444872974-2466-1-git-send-email-shawn.lin@rock-chips.com>
+From: Shawn Lin <shawn.lin@rock-chips.com>
+Subject: [PATCH v6 10/10] ASoC: rockchip_i2s: modify DMA max burst to 1
+Date: Thu, 15 Oct 2015 09:36:48 +0800
+Message-ID: <1444873008-2589-1-git-send-email-shawn.lin@rock-chips.com>
 References: <1444872865-2169-1-git-send-email-shawn.lin@rock-chips.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Addy Ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>, Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>,
- alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org, Boojin Kim <boojin.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
- Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>, Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
- linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
- Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>, linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
- linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Sonny Rao <sonnyrao-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
- linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
- Jaroslav Kysela <perex-/Fr2/VpizcU@public.gmane.org>, Takashi Iwai <tiwai-IBi9RG/b67k@public.gmane.org>,
- Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-rockchip-bounces+glpar-linux-rockchip=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <1444872865-2169-1-git-send-email-shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rockchip>,
- <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rockchip/>
-List-Post: <mailto:linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rockchip>,
- <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "Linux-rockchip" <linux-rockchip-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-rockchip-bounces+glpar-linux-rockchip=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Doug Anderson <dianders@chromium.org>,
+	Olof Johansson <olof@lixom.net>,
+	Sonny Rao <sonnyrao@chromium.org>,
+	Addy Ke <addy.ke@rock-chips.com>,
+	Boojin Kim <boojin.kim@samsung.com>, dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org, alsa-devel@alsa-project.org,
+	linux-spi@vger.kernel.org, Yiwei Cai <cain.cai@rock-chips.com>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Jianqun Xu <xjq@rock-chips.com>
+To: Vinod Koul <vinod.koul@intel.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>, Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1444872865-2169-1-git-send-email-shawn.lin@rock-chips.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch add max burst capability for dmaengine and
-limit burst capability to one for PL330_QUIRK_BROKEN_NO_FLUSHP
+From: Yiwei Cai <cain.cai@rock-chips.com>
 
-Signed-off-by: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Test with command -
+arecord -D hw:0,0 /tmp/a.wav, there are the error dump:
+dma-pl330 ffb20000.dma-controller: fill_queue:2251 Bad Desc(7)
 
+This error is happening when no a multiple of burst size * burst
+length are coming in. The root cause is pl330 dma controller on
+Rockchips' platform cannot support DMAFLUSHP instruction which make
+dma to flush the req of non-aligned or non-multiple of what we set
+before. The saftest way is to set dma max burst to 1.
+
+Signed-off-by: Yiwei Cai <cain.cai@rock-chips.com>
+Fixes: 4495c89fc ("ASoC: add driver for Rockchip RK3xxx I2S")
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+cc: Addy Ke <addy.ke@rock-chips.com>
+cc: Jianqun Xu <xjq@rock-chips.com>
+cc: Heiko Stuebner <heiko@sntech.de>
+cc: Olof Johansson <olof@lixom.net>
+cc: Doug Anderson <dianders@chromium.org>
+cc: Sonny Rao <sonnyrao@chromium.org>
+
+Acked-by: Mark Brown <broonie@kernel.org>
 ---
 
 Changes in v6:
-- remove expose quirks and add max_burst for dmaengine
+- remove quirks and get dma caps in order to limit burst
 
-Changes in v5: None
+Changes in v5:
+- use switch statement for dma_quirk's manipulation
+
 Changes in v4: None
 Changes in v3: None
 Changes in v2: None
 Changes in v1: None
 
- drivers/dma/pl330.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/rockchip/rockchip_i2s.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/dma/pl330.c b/drivers/dma/pl330.c
-index 008408d..1b0453b 100644
---- a/drivers/dma/pl330.c
-+++ b/drivers/dma/pl330.c
-@@ -33,6 +33,7 @@
- #define PL330_MAX_CHAN		8
- #define PL330_MAX_IRQS		32
- #define PL330_MAX_PERI		32
-+#define PL330_MAX_BURST         16
+diff --git a/sound/soc/rockchip/rockchip_i2s.c b/sound/soc/rockchip/rockchip_i2s.c
+index b936102..f00200a 100644
+--- a/sound/soc/rockchip/rockchip_i2s.c
++++ b/sound/soc/rockchip/rockchip_i2s.c
+@@ -418,6 +418,7 @@ static int rockchip_i2s_probe(struct platform_device *pdev)
+ 	struct rk_i2s_dev *i2s;
+ 	struct resource *res;
+ 	void __iomem *regs;
++	struct dma_slave_caps *dma_caps;
+ 	int ret;
  
- #define PL330_QUIRK_BROKEN_NO_FLUSHP BIT(0)
+ 	i2s = devm_kzalloc(&pdev->dev, sizeof(*i2s), GFP_KERNEL);
+@@ -459,11 +460,24 @@ static int rockchip_i2s_probe(struct platform_device *pdev)
  
-@@ -2938,6 +2939,8 @@ pl330_probe(struct amba_device *adev, const struct amba_id *id)
- 	pd->dst_addr_widths = PL330_DMA_BUSWIDTHS;
- 	pd->directions = BIT(DMA_DEV_TO_MEM) | BIT(DMA_MEM_TO_DEV);
- 	pd->residue_granularity = DMA_RESIDUE_GRANULARITY_SEGMENT;
-+	pd->max_burst = ((pl330->quirks & PL330_QUIRK_BROKEN_NO_FLUSHP) ?
-+			 1 : PL330_MAX_BURST);
+ 	i2s->playback_dma_data.addr = res->start + I2S_TXDR;
+ 	i2s->playback_dma_data.addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
+-	i2s->playback_dma_data.maxburst = 4;
  
- 	ret = dma_async_device_register(pd);
- 	if (ret) {
+ 	i2s->capture_dma_data.addr = res->start + I2S_RXDR;
+ 	i2s->capture_dma_data.addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
+-	i2s->capture_dma_data.maxburst = 4;
++
++	if (snd_dmaengine_pcm_get_caps(&pdev->dev, &dma_caps) == 0) {
++		if (dma_caps.max_burst > 4) {
++			i2s->playback_dma_data.maxburst = 4;
++			i2s->capture_dma_data.maxburst = 4;
++		} else {
++			i2s->playback_dma_data.maxburst = 1;
++			i2s->capture_dma_data.maxburst = 1;
++		}
++	} else {
++		i2s->playback_dma_data.maxburst = 1;
++		i2s->capture_dma_data.maxburst = 1;
++		dev_info(&pdev->dev,
++			 "Can't get dma caps, default limit maxburst to 1.\n");
++	}
+ 
+ 	i2s->dev = &pdev->dev;
+ 	dev_set_drvdata(&pdev->dev, i2s);
 -- 
 2.3.7

@@ -1,105 +1,87 @@
-From: Shawn Lin <shawn.lin@rock-chips.com>
-Subject: [PATCH v6 10/10] ASoC: rockchip_i2s: modify DMA max burst to 1
-Date: Thu, 15 Oct 2015 09:36:48 +0800
-Message-ID: <1444873008-2589-1-git-send-email-shawn.lin@rock-chips.com>
+From: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Subject: [PATCH v6 09/10] snd: dmaengine-pcm: add snd_dmaengine_pcm_get_caps
+ interface
+Date: Thu, 15 Oct 2015 09:36:38 +0800
+Message-ID: <1444872998-2548-1-git-send-email-shawn.lin@rock-chips.com>
 References: <1444872865-2169-1-git-send-email-shawn.lin@rock-chips.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Doug Anderson <dianders@chromium.org>,
-	Olof Johansson <olof@lixom.net>,
-	Sonny Rao <sonnyrao@chromium.org>,
-	Addy Ke <addy.ke@rock-chips.com>,
-	Boojin Kim <boojin.kim@samsung.com>, dmaengine@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org, alsa-devel@alsa-project.org,
-	linux-spi@vger.kernel.org, Yiwei Cai <cain.cai@rock-chips.com>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Jianqun Xu <xjq@rock-chips.com>
-To: Vinod Koul <vinod.koul@intel.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>, Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1444872865-2169-1-git-send-email-shawn.lin@rock-chips.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Addy Ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>, Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>,
+ alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org, Boojin Kim <boojin.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+ Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>, Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+ linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+ Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>, linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+ linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Sonny Rao <sonnyrao-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+ linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
+ Jaroslav Kysela <perex-/Fr2/VpizcU@public.gmane.org>, Takashi Iwai <tiwai-IBi9RG/b67k@public.gmane.org>,
+ Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-rockchip-bounces+glpar-linux-rockchip=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+In-Reply-To: <1444872865-2169-1-git-send-email-shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rockchip>,
+ <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-rockchip/>
+List-Post: <mailto:linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+List-Help: <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rockchip>,
+ <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
+Sender: "Linux-rockchip" <linux-rockchip-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Errors-To: linux-rockchip-bounces+glpar-linux-rockchip=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Yiwei Cai <cain.cai@rock-chips.com>
+Add snd_dmaengine_pcm_get_caps for I2S devices to query
+dma controller's caps if they need it to make special limitation
+due to specific dma controller design
 
-Test with command -
-arecord -D hw:0,0 /tmp/a.wav, there are the error dump:
-dma-pl330 ffb20000.dma-controller: fill_queue:2251 Bad Desc(7)
+Signed-off-by: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
 
-This error is happening when no a multiple of burst size * burst
-length are coming in. The root cause is pl330 dma controller on
-Rockchips' platform cannot support DMAFLUSHP instruction which make
-dma to flush the req of non-aligned or non-multiple of what we set
-before. The saftest way is to set dma max burst to 1.
-
-Signed-off-by: Yiwei Cai <cain.cai@rock-chips.com>
-Fixes: 4495c89fc ("ASoC: add driver for Rockchip RK3xxx I2S")
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-cc: Addy Ke <addy.ke@rock-chips.com>
-cc: Jianqun Xu <xjq@rock-chips.com>
-cc: Heiko Stuebner <heiko@sntech.de>
-cc: Olof Johansson <olof@lixom.net>
-cc: Doug Anderson <dianders@chromium.org>
-cc: Sonny Rao <sonnyrao@chromium.org>
-
-Acked-by: Mark Brown <broonie@kernel.org>
 ---
 
 Changes in v6:
-- remove quirks and get dma caps in order to limit burst
+- remove get quirks and add get slave caps
 
-Changes in v5:
-- use switch statement for dma_quirk's manipulation
-
+Changes in v5: None
 Changes in v4: None
 Changes in v3: None
 Changes in v2: None
 Changes in v1: None
 
- sound/soc/rockchip/rockchip_i2s.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ sound/soc/soc-generic-dmaengine-pcm.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/sound/soc/rockchip/rockchip_i2s.c b/sound/soc/rockchip/rockchip_i2s.c
-index b936102..f00200a 100644
---- a/sound/soc/rockchip/rockchip_i2s.c
-+++ b/sound/soc/rockchip/rockchip_i2s.c
-@@ -418,6 +418,7 @@ static int rockchip_i2s_probe(struct platform_device *pdev)
- 	struct rk_i2s_dev *i2s;
- 	struct resource *res;
- 	void __iomem *regs;
-+	struct dma_slave_caps *dma_caps;
- 	int ret;
+diff --git a/sound/soc/soc-generic-dmaengine-pcm.c b/sound/soc/soc-generic-dmaengine-pcm.c
+index 6fd1906..225c933 100644
+--- a/sound/soc/soc-generic-dmaengine-pcm.c
++++ b/sound/soc/soc-generic-dmaengine-pcm.c
+@@ -466,4 +466,28 @@ void snd_dmaengine_pcm_unregister(struct device *dev)
+ }
+ EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_unregister);
  
- 	i2s = devm_kzalloc(&pdev->dev, sizeof(*i2s), GFP_KERNEL);
-@@ -459,11 +460,24 @@ static int rockchip_i2s_probe(struct platform_device *pdev)
- 
- 	i2s->playback_dma_data.addr = res->start + I2S_TXDR;
- 	i2s->playback_dma_data.addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
--	i2s->playback_dma_data.maxburst = 4;
- 
- 	i2s->capture_dma_data.addr = res->start + I2S_RXDR;
- 	i2s->capture_dma_data.addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
--	i2s->capture_dma_data.maxburst = 4;
 +
-+	if (snd_dmaengine_pcm_get_caps(&pdev->dev, &dma_caps) == 0) {
-+		if (dma_caps.max_burst > 4) {
-+			i2s->playback_dma_data.maxburst = 4;
-+			i2s->capture_dma_data.maxburst = 4;
-+		} else {
-+			i2s->playback_dma_data.maxburst = 1;
-+			i2s->capture_dma_data.maxburst = 1;
-+		}
-+	} else {
-+		i2s->playback_dma_data.maxburst = 1;
-+		i2s->capture_dma_data.maxburst = 1;
-+		dev_info(&pdev->dev,
-+			 "Can't get dma caps, default limit maxburst to 1.\n");
-+	}
- 
- 	i2s->dev = &pdev->dev;
- 	dev_set_drvdata(&pdev->dev, i2s);
++/**
++ * snd_dmaengine_pcm_get_caps - Get slave dma caps based PCM device
++ * @dev: Parent device the PCM was register with
++ */
++int snd_dmaengine_pcm_get_caps(struct device *dev, struct dma_slave_caps *caps)
++{
++	struct snd_soc_platform *platform;
++	struct dmaengine_pcm *pcm;
++	int ret = -ENODEV;
++
++	platform = snd_soc_lookup_platform(dev);
++	if (!platform)
++		return ret;
++
++	pcm = soc_platform_to_pcm(platform);
++
++	if (pcm->chan)
++		ret = dma_get_slave_caps(pcm->chan[0], caps);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(snd_dmaengine_pcm_get_caps);
++
+ MODULE_LICENSE("GPL");
 -- 
 2.3.7

@@ -1,70 +1,66 @@
-From: Luis de Bethencourt <luisbg@osg.samsung.com>
-Subject: [PATCH] spi: davinci: use spi->cs_gpio directly
-Date: Fri, 16 Oct 2015 16:22:07 +0100
-Message-ID: <1445008927-23264-1-git-send-email-luisbg@osg.samsung.com>
-Cc: broonie@kernel.org, linux-spi@vger.kernel.org,
-	geert@linux-m68k.org, Luis de Bethencourt <luisbg@osg.samsung.com>
-To: linux-kernel@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH v2] spi: Setup the master controller driver before setting the chipselect
+Date: Fri, 16 Oct 2015 10:29:03 -0500
+Message-ID: <1445009343-28307-1-git-send-email-fcooper@ti.com>
+Cc: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>
+To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, nsekhar-l0cyMroinI0@public.gmane.org, ssantosh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org, m-karicheri2-l0cyMroinI0@public.gmane.org, iivanov.xz-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
+	hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Use spi->cs_gpio directly to remove the following build warning:
-drivers/spi/spi-davinci.c:219:6: warning: 'gpio' may be used uninitialized in this function
+SPI controllers may need to be properly setup before chip selects
+can be used. Therefore, wait until the spi controller has a chance
+to perform their setup procedure before trying to use the chip
+select.
 
-Signed-off-by: Luis de Bethencourt <luisbg@osg.samsung.com>
-Suggested-by: Geert Uytterhoeven <geert@linux-m68k.org>
+This also insures that the chip selects pins are in a good
+state before asseting them which otherwise may cause confusion.
+
+Signed-off-by: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>
 ---
+Keystone 2 devices currently fail to boot in linux-next after the
+below commit was applied:
 
-Hi,
+spi: bitbang: switch to the generic implementation of transfer_one_message
+commit: 0037686596832572bbca05ab168d9884d7d704c1
 
-The warning and suggestion can be seen here:
-https://lkml.org/lkml/2015/10/15/909
+This patch allows Keystone 2 devices to boot again in linux-next.
 
-Thanks,
-Luis
+Tested this patch on K2E evm and am437 starterkit which both have SPI
+devices to insure regressions aren't seen.
 
- drivers/spi/spi-davinci.c | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+V2 Changes:
+Update commit message.
 
-diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index a85d863..7d3af3e 100644
---- a/drivers/spi/spi-davinci.c
-+++ b/drivers/spi/spi-davinci.c
-@@ -215,18 +215,10 @@ static void davinci_spi_chipselect(struct spi_device *spi, int value)
- 	struct davinci_spi_config *spicfg = spi->controller_data;
- 	u8 chip_sel = spi->chip_select;
- 	u16 spidat1 = CS_DEFAULT;
--	bool gpio_chipsel = false;
--	int gpio;
+ drivers/spi/spi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 4c638f3..9d5525a 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2059,11 +2059,11 @@ int spi_setup(struct spi_device *spi)
+ 	if (!spi->max_speed_hz)
+ 		spi->max_speed_hz = spi->master->max_speed_hz;
  
- 	dspi = spi_master_get_devdata(spi->master);
- 	pdata = &dspi->pdata;
- 
--	if (spi->cs_gpio >= 0) {
--		/* SPI core parse and update master->cs_gpio */
--		gpio_chipsel = true;
--		gpio = spi->cs_gpio;
--	}
+-	spi_set_cs(spi, false);
 -
- 	/* program delay transfers if tx_delay is non zero */
- 	if (spicfg->wdelay)
- 		spidat1 |= SPIDAT1_WDEL;
-@@ -235,11 +227,12 @@ static void davinci_spi_chipselect(struct spi_device *spi, int value)
- 	 * Board specific chip select logic decides the polarity and cs
- 	 * line for the controller
- 	 */
--	if (gpio_chipsel) {
-+	if (spi->cs_gpio >= 0) {
- 		if (value == BITBANG_CS_ACTIVE)
--			gpio_set_value(gpio, spi->mode & SPI_CS_HIGH);
-+			gpio_set_value(spi->cs_gpio, spi->mode & SPI_CS_HIGH);
- 		else
--			gpio_set_value(gpio, !(spi->mode & SPI_CS_HIGH));
-+			gpio_set_value(spi->cs_gpio,
-+				!(spi->mode & SPI_CS_HIGH));
- 	} else {
- 		if (value == BITBANG_CS_ACTIVE) {
- 			spidat1 |= SPIDAT1_CSHOLD_MASK;
+ 	if (spi->master->setup)
+ 		status = spi->master->setup(spi);
+ 
++	spi_set_cs(spi, false);
++
+ 	dev_dbg(&spi->dev, "setup mode %d, %s%s%s%s%u bits/w, %u Hz max --> %d\n",
+ 			(int) (spi->mode & (SPI_CPOL | SPI_CPHA)),
+ 			(spi->mode & SPI_CS_HIGH) ? "cs_high, " : "",
 -- 
-2.5.1
+2.6.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

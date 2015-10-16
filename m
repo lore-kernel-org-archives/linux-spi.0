@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: bcm2835: change initialization order and switch to platform_get_irq" to the spi tree
-Date: Fri, 16 Oct 2015 17:41:29 +0100
-Message-ID: <E1Zn84P-0008IZ-Px@debutante>
-References: <1444903752-9180-1-git-send-email-kernel@martin.sperl.org>
+Subject: Applied "spi: core: propagate return code of __spi_validate_bits_per_word()" to the spi tree
+Date: Fri, 16 Oct 2015 17:41:26 +0100
+Message-ID: <E1Zn84M-0008HA-QP@debutante>
+References: <1444851787-38604-1-git-send-email-andriy.shevchenko@linux.intel.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
+To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1444903752-9180-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <1444851787-38604-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: bcm2835: change initialization order and switch to platform_get_irq
+   spi: core: propagate return code of __spi_validate_bits_per_word()
 
 has been applied to the spi tree at
 
@@ -38,62 +38,46 @@ to this mail.
 Thanks,
 Mark
 
->From ddf0e1c20d8b72c409e4c954002069445babc762 Mon Sep 17 00:00:00 2001
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Date: Thu, 15 Oct 2015 10:09:11 +0000
-Subject: [PATCH] spi: bcm2835: change initialization order and switch to
- platform_get_irq
+>From 5ab8d262122bc951b308e51cdcc55bc67b1f5fdb Mon Sep 17 00:00:00 2001
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Date: Wed, 14 Oct 2015 22:43:07 +0300
+Subject: [PATCH] spi: core: propagate return code of
+ __spi_validate_bits_per_word()
 
-Change the initialization order of the HW so that the interrupt
-is only requested after the HW is initialized
+Propagate the actual return code of __spi_validate_bits_per_word() in
+spi_setup().
 
-Also the use of irq_of_parse_and_map is replaced by platform_get_irq.
-
-Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-bcm2835.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/spi/spi.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index e7874a6171ec..370822e4669f 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -777,7 +777,7 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
- 		goto out_master_put;
- 	}
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 40c9afac047f..64c1aedde481 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1956,7 +1956,7 @@ static int __spi_validate_bits_per_word(struct spi_master *master, u8 bits_per_w
+ int spi_setup(struct spi_device *spi)
+ {
+ 	unsigned	bad_bits, ugly_bits;
+-	int		status = 0;
++	int		status;
  
--	bs->irq = irq_of_parse_and_map(pdev->dev.of_node, 0);
-+	bs->irq = platform_get_irq(pdev, 0);
- 	if (bs->irq <= 0) {
- 		dev_err(&pdev->dev, "could not get IRQ: %d\n", bs->irq);
- 		err = bs->irq ? bs->irq : -ENODEV;
-@@ -786,6 +786,12 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
+ 	/* check mode to prevent that DUAL and QUAD set at the same time
+ 	 */
+@@ -1993,8 +1993,9 @@ int spi_setup(struct spi_device *spi)
+ 	if (!spi->bits_per_word)
+ 		spi->bits_per_word = 8;
  
- 	clk_prepare_enable(bs->clk);
+-	if (__spi_validate_bits_per_word(spi->master, spi->bits_per_word))
+-		return -EINVAL;
++	status = __spi_validate_bits_per_word(spi->master, spi->bits_per_word);
++	if (status)
++		return status;
  
-+	bcm2835_dma_init(master, &pdev->dev);
-+
-+	/* initialise the hardware with the default polarities */
-+	bcm2835_wr(bs, BCM2835_SPI_CS,
-+		   BCM2835_SPI_CS_CLEAR_RX | BCM2835_SPI_CS_CLEAR_TX);
-+
- 	err = devm_request_irq(&pdev->dev, bs->irq, bcm2835_spi_interrupt, 0,
- 			       dev_name(&pdev->dev), master);
- 	if (err) {
-@@ -793,12 +799,6 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
- 		goto out_clk_disable;
- 	}
- 
--	bcm2835_dma_init(master, &pdev->dev);
--
--	/* initialise the hardware with the default polarities */
--	bcm2835_wr(bs, BCM2835_SPI_CS,
--		   BCM2835_SPI_CS_CLEAR_RX | BCM2835_SPI_CS_CLEAR_TX);
--
- 	err = devm_spi_register_master(&pdev->dev, master);
- 	if (err) {
- 		dev_err(&pdev->dev, "could not register SPI master: %d\n", err);
+ 	if (!spi->max_speed_hz)
+ 		spi->max_speed_hz = spi->master->max_speed_hz;
 -- 
 2.6.1
 

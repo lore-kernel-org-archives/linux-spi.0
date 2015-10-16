@@ -1,46 +1,56 @@
-From: "Franklin S Cooper Jr." <fcooper-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH] spi: Setup the master controller driver before setting
- the chipselect
-Date: Fri, 16 Oct 2015 09:27:50 -0500
-Message-ID: <56210966.3040501@ti.com>
-References: <1444942305-24038-1-git-send-email-fcooper@ti.com>
- <20151016102846.GJ14956@sirena.org.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: bcm2835: change initialization order and switch to
+ platform_get_irq
+Date: Fri, 16 Oct 2015 15:35:13 +0100
+Message-ID: <20151016143513.GN14956@sirena.org.uk>
+References: <1444903752-9180-1-git-send-email-kernel@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<nsekhar-l0cyMroinI0@public.gmane.org>, <ssantosh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>,
-	<m-karicheri2-l0cyMroinI0@public.gmane.org>, <iivanov.xz-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	<andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	<hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="3LbzE+0aVzOo6fIw"
+Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20151016102846.GJ14956-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1444903752-9180-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
+--3LbzE+0aVzOo6fIw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 10/16/2015 05:28 AM, Mark Brown wrote:
-> On Thu, Oct 15, 2015 at 03:51:45PM -0500, Franklin S Cooper Jr wrote:
->> Some devices depend on the master controller driver setup function being
->> called before calling any chipselect functions.
->>
->> Insure that this is done otherwise uninitialized structures may be
->> accessed causing a kernel panic.
-> I think this is a sensible change but can we please have a better
-> changelog - why is this the best thing to do rather than fixing the
-> driver to not crash?  There are a bunch of good reasons to do the master
-> setup before asserting chip select but a driver crashing isn't one of
-> them, it's not clear that this isn't a bug in the driver.
-Mark,
-Makes sense. How about something like this?
+On Thu, Oct 15, 2015 at 10:09:11AM +0000, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
+> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+>=20
+> Change the initialization order of the HW so that the interrupt
+> is only requested after the HW is initialized
+>=20
+> Also the use of irq_of_parse_and_map is replaced by platform_get_irq.
 
-SPI controllers may need to be properly setup before chip selects
-can be used. Therefore, wait until the spi controller has a chance
-to perform their setup procedure before trying to use the chip
-select.
+Thanks for doing this, but as I keep saying please send one change per
+patch since it makes review and applying much easier.
 
+--3LbzE+0aVzOo6fIw
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJWIQshAAoJECTWi3JdVIfQ/U0H/A37E8hTxhYvRXsfnuSmKrdL
+c1vdmX3owQQU+CTz9lPUcD1A+nd4SCHLqoqlNPrlxRFM+OJvfNIdDSLeBE/1GUUz
+uh0iQDBbJ3j8wCk1cWcoQxmdJCD3ar4I8K9cDrm/ObFykifAlMCjz6fduzRtiqXs
+8J6Tc7slHQZYYEV7UMPT6qsn1UhABKLG+An7BRmIbBwcNr00Emf11LepinTbO2FG
+WfS/lAGYgTBqzszF7pClZWBIH5l3vF8YU/K64XGvgrMfT5VpAPtZ3JGOsY7rObLB
+jWiAP7RFg0QJPHWCyunsE0mC6oZtVmPRQwwzOMvSVaFZfJC7VktkRHwRBIBbx54=
+=1aE+
+-----END PGP SIGNATURE-----
+
+--3LbzE+0aVzOo6fIw--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

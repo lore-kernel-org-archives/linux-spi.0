@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: davinci: use spi->cs_gpio directly" to the spi tree
-Date: Fri, 16 Oct 2015 19:11:08 +0100
-Message-ID: <E1Zn9TA-0003Di-CI@debutante>
-References: <1445008927-23264-1-git-send-email-luisbg@osg.samsung.com>
+Subject: Applied "spi: pxa2xx: choose closest lower speed" to the spi tree
+Date: Fri, 16 Oct 2015 19:11:10 +0100
+Message-ID: <E1Zn9TC-0003Ee-6p@debutante>
+References: <1444304593-14669-1-git-send-email-andriy.shevchenko@linux.intel.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Luis de Bethencourt <luisbg-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
+To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1445008927-23264-1-git-send-email-luisbg-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
+In-Reply-To: <1444304593-14669-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: davinci: use spi->cs_gpio directly
+   spi: pxa2xx: choose closest lower speed
 
 has been applied to the spi tree at
 
@@ -38,60 +38,62 @@ to this mail.
 Thanks,
 Mark
 
->From 8cae0424787ba02987a6f3a6117f31f6a77260dc Mon Sep 17 00:00:00 2001
-From: Luis de Bethencourt <luisbg-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
-Date: Fri, 16 Oct 2015 16:22:07 +0100
-Subject: [PATCH] spi: davinci: use spi->cs_gpio directly
+>From 3ad48062233f32a8dd2649403f5afc076710f86b Mon Sep 17 00:00:00 2001
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Date: Tue, 13 Oct 2015 17:09:14 +0300
+Subject: [PATCH] spi: pxa2xx: choose closest lower speed
 
-Use spi->cs_gpio directly to remove the following build warning:
-drivers/spi/spi-davinci.c:219:6: warning: 'gpio' may be used uninitialized in this function
+As per discussion [1] the best choice is to set closest speed which is not
+going over the asked one.
 
-Signed-off-by: Luis de Bethencourt <luisbg-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
-Suggested-by: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Do the same approach for Intel Quark boards.
+
+[1] http://www.spinics.net/lists/linux-spi/msg03389.html
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-davinci.c | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ drivers/spi/spi-pxa2xx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index 3cf9faa6cc3f..8e2ddd1147aa 100644
---- a/drivers/spi/spi-davinci.c
-+++ b/drivers/spi/spi-davinci.c
-@@ -215,18 +215,10 @@ static void davinci_spi_chipselect(struct spi_device *spi, int value)
- 	struct davinci_spi_config *spicfg = spi->controller_data;
- 	u8 chip_sel = spi->chip_select;
- 	u16 spidat1 = CS_DEFAULT;
--	bool gpio_chipsel = false;
--	int gpio;
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 22b473ebf607..158967a10bec 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -730,7 +730,7 @@ static unsigned int quark_x1000_get_clk_div(int rate, u32 *dds)
+ 	mul = (1 << 24) >> 1;
  
- 	dspi = spi_master_get_devdata(spi->master);
- 	pdata = &dspi->pdata;
+ 	/* Calculate initial quot */
+-	q1 = DIV_ROUND_CLOSEST(fref1, rate);
++	q1 = DIV_ROUND_UP(fref1, rate);
  
--	if (spi->cs_gpio >= 0) {
--		/* SPI core parse and update master->cs_gpio */
--		gpio_chipsel = true;
--		gpio = spi->cs_gpio;
--	}
--
- 	/* program delay transfers if tx_delay is non zero */
- 	if (spicfg->wdelay)
- 		spidat1 |= SPIDAT1_WDEL;
-@@ -235,11 +227,12 @@ static void davinci_spi_chipselect(struct spi_device *spi, int value)
- 	 * Board specific chip select logic decides the polarity and cs
- 	 * line for the controller
- 	 */
--	if (gpio_chipsel) {
-+	if (spi->cs_gpio >= 0) {
- 		if (value == BITBANG_CS_ACTIVE)
--			gpio_set_value(gpio, spi->mode & SPI_CS_HIGH);
-+			gpio_set_value(spi->cs_gpio, spi->mode & SPI_CS_HIGH);
- 		else
--			gpio_set_value(gpio, !(spi->mode & SPI_CS_HIGH));
-+			gpio_set_value(spi->cs_gpio,
-+				!(spi->mode & SPI_CS_HIGH));
- 	} else {
- 		if (value == BITBANG_CS_ACTIVE) {
- 			spidat1 |= SPIDAT1_CSHOLD_MASK;
+ 	/* Scale q1 if it's too big */
+ 	if (q1 > 256) {
+@@ -755,7 +755,7 @@ static unsigned int quark_x1000_get_clk_div(int rate, u32 *dds)
+ 
+ 	/* Case 2 */
+ 
+-	q2 = DIV_ROUND_CLOSEST(fref2, rate);
++	q2 = DIV_ROUND_UP(fref2, rate);
+ 	r2 = abs(fref2 / q2 - rate);
+ 
+ 	/*
+@@ -774,13 +774,13 @@ static unsigned int quark_x1000_get_clk_div(int rate, u32 *dds)
+ 		mul = (1 << 24) * 2 / 5;
+ 	}
+ 
+-	/* Check case 3 only If the divisor is big enough */
++	/* Check case 3 only if the divisor is big enough */
+ 	if (fref / rate >= 80) {
+ 		u64 fssp;
+ 		u32 m;
+ 
+ 		/* Calculate initial quot */
+-		q1 = DIV_ROUND_CLOSEST(fref, rate);
++		q1 = DIV_ROUND_UP(fref, rate);
+ 		m = (1 << 24) / q1;
+ 
+ 		/* Get the remainder */
 -- 
 2.6.1
 

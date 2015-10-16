@@ -1,46 +1,193 @@
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH v2] spi: Setup the master controller driver before setting
- the chipselect
-Date: Fri, 16 Oct 2015 18:55:21 +0300
-Message-ID: <CAHp75VchYayRsvsjPoM9YphcjMajfvYuDrLcLrTiADVn8LU=8A@mail.gmail.com>
-References: <1445009343-28307-1-git-send-email-fcooper@ti.com>
-	<CAHp75VdexZWSEEM8xjYEx9WU4dbrNrXeczvBpyKcRKn-qMN=-g@mail.gmail.com>
-	<56211C0F.4090102@ti.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-	Sekhar Nori <nsekhar@ti.com>, ssantosh@kernel.org,
-	"Ivan T. Ivanov" <iivanov@mm-sol.com>, m-karicheri2@ti.com,
-	"Ivan T. Ivanov" <iivanov.xz@gmail.com>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	hkallweit1@gmail.com
-To: "Franklin S Cooper Jr." <fcooper@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <56211C0F.4090102@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: bcm2835aux: fixed bad data on longer transfers" to the spi tree
+Date: Fri, 16 Oct 2015 17:41:28 +0100
+Message-ID: <E1Zn84O-0008I6-QO@debutante>
+References: <1445005040-7230-1-git-send-email-kernel@martin.sperl.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Georgii Staroselskii <georgii.staroselskii-ykq1EQPRTsMAvxtiuMwx3w@public.gmane.org>,
+	Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1445005040-7230-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, Oct 16, 2015 at 6:47 PM, Franklin S Cooper Jr. <fcooper@ti.com> wrote:
->
->
-> On 10/16/2015 10:45 AM, Andy Shevchenko wrote:
->> On Fri, Oct 16, 2015 at 6:29 PM, Franklin S Cooper Jr <fcooper@ti.com> wrote:
->>> SPI controllers may need to be properly setup before chip selects
->>> can be used. Therefore, wait until the spi controller has a chance
->>> to perform their setup procedure before trying to use the chip
->>> select.
->>>
->>> This also insures that the chip selects pins are in a good
->>> state before asseting them which otherwise may cause confusion.
->>>
->>> Signed-off-by: Franklin S Cooper Jr <fcooper@ti.com>
->> Does it mean I have to test it again?
-> Oops sorry. No the patch hasn't changed. I can shoot a v3 with your tested by included.
+The patch
 
-Whatever Mark prefers.
+   spi: bcm2835aux: fixed bad data on longer transfers
 
+has been applied to the spi tree at
 
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 72aac02b3730fa0e2e1ccab57712a94400344f8a Mon Sep 17 00:00:00 2001
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Date: Fri, 16 Oct 2015 14:17:19 +0000
+Subject: [PATCH] spi: bcm2835aux: fixed bad data on longer transfers
+
+There are strange issues with the auxiliary spi device that result
+in "lost" data in the RX path if the fifo is filled by too much
+(even though the status register is checked if new data can get filled
+in).
+
+This has been observed primarily for the interrupt case.
+Polling works fine, probably because the RX fifo is pulled immediately
+when in the tight polling loop.
+
+For that reason we have to limit the pending bytes to less than 15
+when filling the fifo in interrupt mode.
+
+There also was an issue returning the "wrong" last 1/2 bytes
+of a transfer when the transfer is not a multiple of 3 bytes.
+(this impacted polling and interrupt modes)
+
+Also fixed an overflow in the estimation of the transfer time used
+to decide if we run in interrupt or polling mode (found with the
+spi-bcm2835.c driver originally).
+
+Reported-by: Georgii Staroselskii <georgii.staroselskii-ykq1EQPRTsMAvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-bcm2835aux.c | 43 +++++++++++++++++++++++++++++++------------
+ 1 file changed, 31 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
+index f92b4a69fffa..05d2d6eb7bfa 100644
+--- a/drivers/spi/spi-bcm2835aux.c
++++ b/drivers/spi/spi-bcm2835aux.c
+@@ -104,6 +104,7 @@ struct bcm2835aux_spi {
+ 	u8 *rx_buf;
+ 	int tx_len;
+ 	int rx_len;
++	int pending;
+ };
+ 
+ static inline u32 bcm2835aux_rd(struct bcm2835aux_spi *bs, unsigned reg)
+@@ -120,15 +121,27 @@ static inline void bcm2835aux_wr(struct bcm2835aux_spi *bs, unsigned reg,
+ static inline void bcm2835aux_rd_fifo(struct bcm2835aux_spi *bs)
+ {
+ 	u32 data;
+-	int i;
+ 	int count = min(bs->rx_len, 3);
+ 
+ 	data = bcm2835aux_rd(bs, BCM2835_AUX_SPI_IO);
+ 	if (bs->rx_buf) {
+-		for (i = 0; i < count; i++)
+-			*bs->rx_buf++ = (data >> (8 * (2 - i))) & 0xff;
++		switch (count) {
++		case 4:
++			*bs->rx_buf++ = (data >> 24) & 0xff;
++			/* fallthrough */
++		case 3:
++			*bs->rx_buf++ = (data >> 16) & 0xff;
++			/* fallthrough */
++		case 2:
++			*bs->rx_buf++ = (data >> 8) & 0xff;
++			/* fallthrough */
++		case 1:
++			*bs->rx_buf++ = (data >> 0) & 0xff;
++			/* fallthrough - no default */
++		}
+ 	}
+ 	bs->rx_len -= count;
++	bs->pending -= count;
+ }
+ 
+ static inline void bcm2835aux_wr_fifo(struct bcm2835aux_spi *bs)
+@@ -151,6 +164,7 @@ static inline void bcm2835aux_wr_fifo(struct bcm2835aux_spi *bs)
+ 
+ 	/* and decrement length */
+ 	bs->tx_len -= count;
++	bs->pending += count;
+ 
+ 	/* write to the correct TX-register */
+ 	if (bs->tx_len)
+@@ -183,6 +197,7 @@ static irqreturn_t bcm2835aux_spi_interrupt(int irq, void *dev_id)
+ 
+ 	/* check if we have data to write */
+ 	while (bs->tx_len &&
++	       (bs->pending < 12) &&
+ 	       (!(bcm2835aux_rd(bs, BCM2835_AUX_SPI_STAT) &
+ 		  BCM2835_AUX_SPI_STAT_TX_FULL))) {
+ 		bcm2835aux_wr_fifo(bs);
+@@ -234,6 +249,7 @@ static int bcm2835aux_spi_transfer_one_irq(struct spi_master *master,
+ 
+ 	/* fill in tx fifo with data before enabling interrupts */
+ 	while ((bs->tx_len) &&
++	       (bs->pending < 12) &&
+ 	       (!(bcm2835aux_rd(bs, BCM2835_AUX_SPI_STAT) &
+ 		  BCM2835_AUX_SPI_STAT_TX_FULL))) {
+ 		bcm2835aux_wr_fifo(bs);
+@@ -245,8 +261,7 @@ static int bcm2835aux_spi_transfer_one_irq(struct spi_master *master,
+ 
+ static int bcm2835aux_spi_transfer_one_poll(struct spi_master *master,
+ 					    struct spi_device *spi,
+-					    struct spi_transfer *tfr,
+-					    unsigned long xfer_time_us)
++					struct spi_transfer *tfr)
+ {
+ 	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
+ 	unsigned long timeout;
+@@ -305,7 +320,8 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *master,
+ {
+ 	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
+ 	unsigned long spi_hz, clk_hz, speed;
+-	unsigned long spi_used_hz, xfer_time_us;
++	unsigned long spi_used_hz;
++	unsigned long long xfer_time_us;
+ 
+ 	/* calculate the registers to handle
+ 	 *
+@@ -348,16 +364,19 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *master,
+ 	bs->rx_buf = tfr->rx_buf;
+ 	bs->tx_len = tfr->len;
+ 	bs->rx_len = tfr->len;
++	bs->pending = 0;
+ 
+-	/* calculate the estimated time in us the transfer runs */
+-	xfer_time_us = tfr->len
+-		* 9 /* clocks/byte - SPI-HW waits 1 clock after each byte */
+-		* 1000000 / spi_used_hz;
++	/* calculate the estimated time in us the transfer runs
++	 * note that there are are 2 idle clocks after each
++	 * chunk getting transferred - in our case the chunk size
++	 * is 3 bytes, so we approximate this by 9 bits/byte
++	 */
++	xfer_time_us = tfr->len * 9 * 1000000;
++	do_div(xfer_time_us, spi_used_hz);
+ 
+ 	/* run in polling mode for short transfers */
+ 	if (xfer_time_us < BCM2835_AUX_SPI_POLLING_LIMIT_US)
+-		return bcm2835aux_spi_transfer_one_poll(master, spi, tfr,
+-							xfer_time_us);
++		return bcm2835aux_spi_transfer_one_poll(master, spi, tfr);
+ 
+ 	/* run in interrupt mode for all others */
+ 	return bcm2835aux_spi_transfer_one_irq(master, spi, tfr);
 -- 
-With Best Regards,
-Andy Shevchenko
+2.6.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,102 +1,112 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pxa2xx: choose closest lower speed" to the spi tree
-Date: Fri, 16 Oct 2015 19:11:10 +0100
-Message-ID: <E1Zn9TC-0003Ee-6p@debutante>
-References: <1444304593-14669-1-git-send-email-andriy.shevchenko@linux.intel.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+From: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi-atmel.c: fix DMA for bits_per_word > 8
+Date: Mon, 19 Oct 2015 18:01:38 +0200
+Message-ID: <562513E2.4090303@atmel.com>
+References: <CALnQHM3WxNDV3xzJwRfGRVTMYL1mo44VbBb2YawZVUzn0CzFfA@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: SPI SUBSYSTEM <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: David Mosberger <davidm-haPfTeumbwasTnJN9+BGXg@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1444304593-14669-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <CALnQHM3WxNDV3xzJwRfGRVTMYL1mo44VbBb2YawZVUzn0CzFfA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+David,
 
-   spi: pxa2xx: choose closest lower speed
+It seems that your email client is doing funny things with the source
+code whitespace. Anyway, I can deal with this and re-format your patch:
+no problem. For later patches I advice you to use "git format-patch"
+command.
 
-has been applied to the spi tree at
+Still, see comments below...
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+Le 13/10/2015 00:32, David Mosberger a =C3=A9crit :
+> I need the patch below to make DMA work in spi-atmel.c when bits_per_=
+word > 8.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+A little bit more explanation would be good.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+>   --david
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+I would need your "Signed-off-by:" tag.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+> --=20
+> eGauge Systems LLC, http://egauge.net/, 1.877-EGAUGE1, fax 720.545.97=
+68
+>=20
+> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+> index 04e48e5..7bb361a 100644
+> --- a/drivers/spi/spi-atmel.c
+> +++ b/drivers/spi/spi-atmel.c
+> @@ -711,6 +711,7 @@ static void atmel_spi_next_xfer_pio(struct
+> spi_master *master,
+>   * Submit next transfer for DMA.
+>   */
+>  static int atmel_spi_next_xfer_dma_submit(struct spi_master *master,
+> +  struct spi_message *msg,
+>   struct spi_transfer *xfer,
+>   u32 *plen)
+>  {
+> @@ -721,7 +722,7 @@ static int atmel_spi_next_xfer_dma_submit(struct
+> spi_master *master,
+>   struct dma_async_tx_descriptor *txdesc;
+>   struct dma_slave_config slave_config;
+>   dma_cookie_t cookie;
+> - u32 len =3D *plen;
+> + u32 len =3D *plen, bpw;
+>=20
+>   dev_vdbg(master->dev.parent, "atmel_spi_next_xfer_dma_submit\n");
+>=20
+> @@ -758,7 +759,11 @@ static int atmel_spi_next_xfer_dma_submit(struct
+> spi_master *master,
+>=20
+>   *plen =3D len;
+>=20
+> - if (atmel_spi_dma_slave_config(as, &slave_config, 8))
+> + bpw =3D xfer->bits_per_word;
+> + if (!bpw)
 
-Thanks,
-Mark
+I assume that xfer->bits_per_word must be filled with the proper value.
+So why do you need this test and de additional assignment below? Does i=
+t
+come from a bad experience with the "xfer->bits_per_word" value being e=
+mpty?
 
->From 3ad48062233f32a8dd2649403f5afc076710f86b Mon Sep 17 00:00:00 2001
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Tue, 13 Oct 2015 17:09:14 +0300
-Subject: [PATCH] spi: pxa2xx: choose closest lower speed
+> + bpw =3D msg->spi->bits_per_word;
+> +
+> + if (atmel_spi_dma_slave_config(as, &slave_config, bpw))
 
-As per discussion [1] the best choice is to set closest speed which is not
-going over the asked one.
+I may have called bpw variable as "bits" like elsewhere in this driver:
+it's a detail though.
 
-Do the same approach for Intel Quark boards.
+>   goto err_exit;
+>=20
+>   /* Send both scatterlists */
+> @@ -1316,8 +1321,8 @@ static int atmel_spi_one_transfer(struct
+> spi_master *master,
+>   atmel_spi_pdc_next_xfer(master, msg, xfer);
+>   } else if (atmel_spi_use_dma(as, xfer)) {
+>   len =3D as->current_remaining_bytes;
+> - ret =3D atmel_spi_next_xfer_dma_submit(master,
+> - xfer, &len);
+> + ret =3D atmel_spi_next_xfer_dma_submit(master, msg,
+> +     xfer, &len);
+>   if (ret) {
+>   dev_err(&spi->dev,
+>   "unable to use DMA, fallback to PIO\n");
 
-[1] http://www.spinics.net/lists/linux-spi/msg03389.html
+Ok, the patch seems reasonable. So, can you please answer my main
+question and give me the permission to add your "Signed-off-by:" tag or
+re-send me a more standard patch...
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-pxa2xx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 22b473ebf607..158967a10bec 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -730,7 +730,7 @@ static unsigned int quark_x1000_get_clk_div(int rate, u32 *dds)
- 	mul = (1 << 24) >> 1;
- 
- 	/* Calculate initial quot */
--	q1 = DIV_ROUND_CLOSEST(fref1, rate);
-+	q1 = DIV_ROUND_UP(fref1, rate);
- 
- 	/* Scale q1 if it's too big */
- 	if (q1 > 256) {
-@@ -755,7 +755,7 @@ static unsigned int quark_x1000_get_clk_div(int rate, u32 *dds)
- 
- 	/* Case 2 */
- 
--	q2 = DIV_ROUND_CLOSEST(fref2, rate);
-+	q2 = DIV_ROUND_UP(fref2, rate);
- 	r2 = abs(fref2 / q2 - rate);
- 
- 	/*
-@@ -774,13 +774,13 @@ static unsigned int quark_x1000_get_clk_div(int rate, u32 *dds)
- 		mul = (1 << 24) * 2 / 5;
- 	}
- 
--	/* Check case 3 only If the divisor is big enough */
-+	/* Check case 3 only if the divisor is big enough */
- 	if (fref / rate >= 80) {
- 		u64 fssp;
- 		u32 m;
- 
- 		/* Calculate initial quot */
--		q1 = DIV_ROUND_CLOSEST(fref, rate);
-+		q1 = DIV_ROUND_UP(fref, rate);
- 		m = (1 << 24) / q1;
- 
- 		/* Get the remainder */
--- 
-2.6.1
-
+Thanks a lot for your work on this driver David.
+Best regards,
+--=20
+Nicolas Ferre
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

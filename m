@@ -1,60 +1,53 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi-atmel.c: fix DMA for bits_per_word > 8
-Date: Mon, 19 Oct 2015 17:07:16 +0100
-Message-ID: <20151019160716.GE32054@sirena.org.uk>
-References: <CALnQHM3WxNDV3xzJwRfGRVTMYL1mo44VbBb2YawZVUzn0CzFfA@mail.gmail.com>
- <562513E2.4090303@atmel.com>
+Subject: Re: [PATCH 0/5] mt8173 spi multiple devices support
+Date: Mon, 19 Oct 2015 20:27:13 +0100
+Message-ID: <20151019192713.GR32054@sirena.org.uk>
+References: <1444793015-30359-1-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="qOrJKOH36bD5yhNe"
-Cc: David Mosberger <davidm-haPfTeumbwasTnJN9+BGXg@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
-	SPI SUBSYSTEM <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="3XZQkxCYp0f/VEFS"
+Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <562513E2.4090303-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1444793015-30359-1-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---qOrJKOH36bD5yhNe
+--3XZQkxCYp0f/VEFS
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Mon, Oct 19, 2015 at 06:01:38PM +0200, Nicolas Ferre wrote:
+On Wed, Oct 14, 2015 at 11:23:30AM +0800, Leilk Liu wrote:
+> This series are based on 4.3-rc1 and provide 5 patches to support
+> mt8173 spi multiple devices.
 
-> > - xfer, &len);
-> > + ret = atmel_spi_next_xfer_dma_submit(master, msg,
-> > +     xfer, &len);
-> >   if (ret) {
-> >   dev_err(&spi->dev,
-> >   "unable to use DMA, fallback to PIO\n");
+This doesn't apply against current code, please check and resend.  Also
+note that it looks like you've got the execute bit set on some of the
+files.  The code itself looks fine.
 
-> Ok, the patch seems reasonable. So, can you please answer my main
-> question and give me the permission to add your "Signed-off-by:" tag or
-> re-send me a more standard patch...
-
-> Thanks a lot for your work on this driver David.
-
-Please also remember to CC subsysetm maintainers on patches...
-
---qOrJKOH36bD5yhNe
+--3XZQkxCYp0f/VEFS
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJWJRU0AAoJECTWi3JdVIfQGTUH/0vbQILE2K95u9/lB/7eJTrA
-0LXBvyR14GL0MRxeeYqYskpqhTIRpAVBdimGj/NB4KxNVqlfqbXcX53CSmpC4OfH
-LG93aZ+6JEMd5LhNGi1PrVg0pu0zkwWhZeSKiniZ06+iAGWpOjyZI8DKG7XZtqFk
-siv66bqsXKAbInunslZP7F3EFrQ83VevxOCaAXnkE9ZprG/fInsUx/xJiqBSGOGm
-ks8TzYF8thc2dxaQbH7VnBebCicuCS/fW5Vf31f1dTu0Jlvi0gOEVQocyYC0PZop
-PdN7NzkYRIfcD4aJH3fqquMdFiXw2y9ikcVETV5NBDfOLIosBOUs53YSrKRID9I=
-=u8Lq
+iQEcBAEBCAAGBQJWJUQQAAoJECTWi3JdVIfQRawH/1YU3tNYjifQ4QL5Meas0iex
++uLsg4TcjldUo9GRacr1zIgp17wzMT9tHWLrc5yFLdQYT0MtWHCCqvpLrXk4X+ze
+B83IG57pvIl5Bz7mF0Ln5i4//32TDn0g5GctfSyZcsihFyQ54xH3Fn/godpdiQYI
+Bmfle2cu5y4WV4M9jvpGDnISKP1ogkf9b8U+fbt/Gs7gJFJYVipGurdDJNk0syq6
+TAeuLy2aW2ADybBYmlUQyynxHMm633GWbdEGI2FcTI/DanBZ5maZ+5kONoGAN02j
+32Vw6lshQ3qYKgE2jjgi94WHCfNzPXBOXMGMT7U3syNhkv905LGuBON4KeEBW18=
+=2dfF
 -----END PGP SIGNATURE-----
 
---qOrJKOH36bD5yhNe--
+--3XZQkxCYp0f/VEFS--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: dw-pci: remove unused pdev member from struct dw_spi_pci" to the spi tree
-Date: Mon, 19 Oct 2015 20:43:26 +0100
-Message-ID: <E1ZoGL8-0002Jr-2u@debutante>
-References: <1444853545-59868-10-git-send-email-andriy.shevchenko@linux.intel.com>
+Subject: Applied "spi: dw: introduce spi_shutdown_chip()" to the spi tree
+Date: Mon, 19 Oct 2015 20:43:27 +0100
+Message-ID: <E1ZoGL9-0002KK-0Q@debutante>
+References: <1444853545-59868-9-git-send-email-andriy.shevchenko@linux.intel.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1444853545-59868-10-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <1444853545-59868-9-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: dw-pci: remove unused pdev member from struct dw_spi_pci
+   spi: dw: introduce spi_shutdown_chip()
 
 has been applied to the spi tree at
 
@@ -38,112 +38,70 @@ to this mail.
 Thanks,
 Mark
 
->From 1c2df965387f9a5a657a644bab5a1b5b535365b2 Mon Sep 17 00:00:00 2001
+>From 1cc3f141f0cb5a822cdef30fb1d92ae6f4176bfa Mon Sep 17 00:00:00 2001
 From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Wed, 14 Oct 2015 23:12:24 +0300
-Subject: [PATCH] spi: dw-pci: remove unused pdev member from struct dw_spi_pci
+Date: Wed, 14 Oct 2015 23:12:23 +0300
+Subject: [PATCH] spi: dw: introduce spi_shutdown_chip()
 
-The pdev member is not used anywhere, thus remove it. Moreover struct
-dw_spi_pci becomes an equivalent of struct dw_spi and therefore remove entire
-struct dw_spi_pci.
+This helper disables SPI controller and sets clock to 0.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-dw-pci.c | 29 +++++++++--------------------
- 1 file changed, 9 insertions(+), 20 deletions(-)
+ drivers/spi/spi-dw.c | 13 ++++++-------
+ drivers/spi/spi-dw.h |  6 ++++++
+ 2 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-dw-pci.c b/drivers/spi/spi-dw-pci.c
-index 6d331e0db331..332ccb0539a7 100644
---- a/drivers/spi/spi-dw-pci.c
-+++ b/drivers/spi/spi-dw-pci.c
-@@ -23,11 +23,6 @@
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index c8e7715097e7..a730c353d3bf 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -546,22 +546,21 @@ void dw_spi_remove_host(struct dw_spi *dws)
  
- #define DRIVER_NAME "dw_spi_pci"
+ 	if (dws->dma_ops && dws->dma_ops->dma_exit)
+ 		dws->dma_ops->dma_exit(dws);
+-	spi_enable_chip(dws, 0);
+-	/* Disable clk */
+-	spi_set_clk(dws, 0);
++
++	spi_shutdown_chip(dws);
+ }
+ EXPORT_SYMBOL_GPL(dw_spi_remove_host);
  
--struct dw_spi_pci {
--	struct pci_dev	*pdev;
--	struct dw_spi	dws;
--};
--
- struct spi_pci_desc {
- 	int	(*setup)(struct dw_spi *);
- 	u16	num_cs;
-@@ -48,7 +43,6 @@ static struct spi_pci_desc spi_pci_mid_desc_2 = {
- 
- static int spi_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ int dw_spi_suspend_host(struct dw_spi *dws)
  {
--	struct dw_spi_pci *dwpci;
- 	struct dw_spi *dws;
- 	struct spi_pci_desc *desc = (struct spi_pci_desc *)ent->driver_data;
- 	int pci_bar = 0;
-@@ -58,14 +52,10 @@ static int spi_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+-	int ret = 0;
++	int ret;
+ 
+ 	ret = spi_master_suspend(dws->master);
  	if (ret)
  		return ret;
+-	spi_enable_chip(dws, 0);
+-	spi_set_clk(dws, 0);
+-	return ret;
++
++	spi_shutdown_chip(dws);
++	return 0;
+ }
+ EXPORT_SYMBOL_GPL(dw_spi_suspend_host);
  
--	dwpci = devm_kzalloc(&pdev->dev, sizeof(struct dw_spi_pci),
--			GFP_KERNEL);
--	if (!dwpci)
-+	dws = devm_kzalloc(&pdev->dev, sizeof(*dws), GFP_KERNEL);
-+	if (!dws)
- 		return -ENOMEM;
- 
--	dwpci->pdev = pdev;
--	dws = &dwpci->dws;
--
- 	/* Get basic io resource and map it */
- 	dws->paddr = pci_resource_start(pdev, pci_bar);
- 
-@@ -74,7 +64,6 @@ static int spi_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		return ret;
- 
- 	dws->regs = pcim_iomap_table(pdev)[pci_bar];
--
- 	dws->irq = pdev->irq;
- 
- 	/*
-@@ -99,7 +88,7 @@ static int spi_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		return ret;
- 
- 	/* PCI hook and SPI hook use the same drv data */
--	pci_set_drvdata(pdev, dwpci);
-+	pci_set_drvdata(pdev, dws);
- 
- 	dev_info(&pdev->dev, "found PCI SPI controller(ID: %04x:%04x)\n",
- 		pdev->vendor, pdev->device);
-@@ -109,26 +98,26 @@ static int spi_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 
- static void spi_pci_remove(struct pci_dev *pdev)
- {
--	struct dw_spi_pci *dwpci = pci_get_drvdata(pdev);
-+	struct dw_spi *dws = pci_get_drvdata(pdev);
- 
--	dw_spi_remove_host(&dwpci->dws);
-+	dw_spi_remove_host(dws);
+diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+index b75ed327d5a2..35589a270468 100644
+--- a/drivers/spi/spi-dw.h
++++ b/drivers/spi/spi-dw.h
+@@ -225,6 +225,12 @@ static inline void spi_reset_chip(struct dw_spi *dws)
+ 	spi_enable_chip(dws, 1);
  }
  
- #ifdef CONFIG_PM_SLEEP
- static int spi_suspend(struct device *dev)
- {
- 	struct pci_dev *pdev = to_pci_dev(dev);
--	struct dw_spi_pci *dwpci = pci_get_drvdata(pdev);
-+	struct dw_spi *dws = pci_get_drvdata(pdev);
- 
--	return dw_spi_suspend_host(&dwpci->dws);
-+	return dw_spi_suspend_host(dws);
- }
- 
- static int spi_resume(struct device *dev)
- {
- 	struct pci_dev *pdev = to_pci_dev(dev);
--	struct dw_spi_pci *dwpci = pci_get_drvdata(pdev);
-+	struct dw_spi *dws = pci_get_drvdata(pdev);
- 
--	return dw_spi_resume_host(&dwpci->dws);
-+	return dw_spi_resume_host(dws);
- }
- #endif
- 
++static inline void spi_shutdown_chip(struct dw_spi *dws)
++{
++	spi_enable_chip(dws, 0);
++	spi_set_clk(dws, 0);
++}
++
+ /*
+  * Each SPI slave device to work with dw_api controller should
+  * has such a structure claiming its working mode (poll or PIO/DMA),
 -- 
 2.6.1
 

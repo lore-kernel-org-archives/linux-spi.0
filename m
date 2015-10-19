@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: dw: introduce spi_shutdown_chip()" to the spi tree
+Subject: Applied "spi: dw: eliminate unused threshold variables" to the spi tree
 Date: Mon, 19 Oct 2015 20:43:27 +0100
-Message-ID: <E1ZoGL9-0002KK-0Q@debutante>
-References: <1444853545-59868-9-git-send-email-andriy.shevchenko@linux.intel.com>
+Message-ID: <E1ZoGL9-0002Ko-TV@debutante>
+References: <1444853545-59868-8-git-send-email-andriy.shevchenko@linux.intel.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1444853545-59868-9-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <1444853545-59868-8-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: dw: introduce spi_shutdown_chip()
+   spi: dw: eliminate unused threshold variables
 
 has been applied to the spi tree at
 
@@ -38,70 +38,42 @@ to this mail.
 Thanks,
 Mark
 
->From 1cc3f141f0cb5a822cdef30fb1d92ae6f4176bfa Mon Sep 17 00:00:00 2001
+>From d53c0ef319eb5ceb5a089ff3050a2e6808c9adb9 Mon Sep 17 00:00:00 2001
 From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Wed, 14 Oct 2015 23:12:23 +0300
-Subject: [PATCH] spi: dw: introduce spi_shutdown_chip()
+Date: Wed, 14 Oct 2015 23:12:22 +0300
+Subject: [PATCH] spi: dw: eliminate unused threshold variables
 
-This helper disables SPI controller and sets clock to 0.
+The tx_threshold and rx_threshold variables are not used anywhere. Remove them.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-dw.c | 13 ++++++-------
- drivers/spi/spi-dw.h |  6 ++++++
- 2 files changed, 12 insertions(+), 7 deletions(-)
+ drivers/spi/spi-dw.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
 diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index c8e7715097e7..a730c353d3bf 100644
+index a6fd7cfa1b40..c8e7715097e7 100644
 --- a/drivers/spi/spi-dw.c
 +++ b/drivers/spi/spi-dw.c
-@@ -546,22 +546,21 @@ void dw_spi_remove_host(struct dw_spi *dws)
+@@ -36,8 +36,6 @@ struct chip_data {
  
- 	if (dws->dma_ops && dws->dma_ops->dma_exit)
- 		dws->dma_ops->dma_exit(dws);
--	spi_enable_chip(dws, 0);
--	/* Disable clk */
--	spi_set_clk(dws, 0);
-+
-+	spi_shutdown_chip(dws);
- }
- EXPORT_SYMBOL_GPL(dw_spi_remove_host);
+ 	u8 poll_mode;		/* 1 means use poll mode */
  
- int dw_spi_suspend_host(struct dw_spi *dws)
- {
--	int ret = 0;
-+	int ret;
+-	u32 rx_threshold;
+-	u32 tx_threshold;
+ 	u8 enable_dma;
+ 	u16 clk_div;		/* baud rate divider */
+ 	u32 speed_hz;		/* baud rate */
+@@ -425,9 +423,6 @@ static int dw_spi_setup(struct spi_device *spi)
  
- 	ret = spi_master_suspend(dws->master);
- 	if (ret)
- 		return ret;
--	spi_enable_chip(dws, 0);
--	spi_set_clk(dws, 0);
--	return ret;
-+
-+	spi_shutdown_chip(dws);
-+	return 0;
- }
- EXPORT_SYMBOL_GPL(dw_spi_suspend_host);
+ 		chip->poll_mode = chip_info->poll_mode;
+ 		chip->type = chip_info->type;
+-
+-		chip->rx_threshold = 0;
+-		chip->tx_threshold = 0;
+ 	}
  
-diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index b75ed327d5a2..35589a270468 100644
---- a/drivers/spi/spi-dw.h
-+++ b/drivers/spi/spi-dw.h
-@@ -225,6 +225,12 @@ static inline void spi_reset_chip(struct dw_spi *dws)
- 	spi_enable_chip(dws, 1);
- }
- 
-+static inline void spi_shutdown_chip(struct dw_spi *dws)
-+{
-+	spi_enable_chip(dws, 0);
-+	spi_set_clk(dws, 0);
-+}
-+
- /*
-  * Each SPI slave device to work with dw_api controller should
-  * has such a structure claiming its working mode (poll or PIO/DMA),
+ 	chip->tmode = 0; /* Tx & Rx */
 -- 
 2.6.1
 

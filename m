@@ -1,56 +1,49 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: atmel: Fix DMA-setup for transfers with more than 8
- bits per word.
-Date: Tue, 20 Oct 2015 11:27:26 +0100
-Message-ID: <20151020102726.GX32054@sirena.org.uk>
+From: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: [RESEND PATCH] spi: atmel: Fix DMA-setup for transfers with more than 8 bits per word
+Date: Tue, 20 Oct 2015 14:26:47 +0200
+Message-ID: <1445344007-18706-1-git-send-email-nicolas.ferre@atmel.com>
 References: <1445288084-31805-1-git-send-email-davidm@egauge.net>
- <562615E1.4030407@atmel.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="/T7Ys/vy2qfZwzBO"
-Cc: David Mosberger-Tang <davidm-haPfTeumbwasTnJN9+BGXg@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org
-To: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain
+Cc: <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+	Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <davidm-haPfTeumbwasTnJN9+BGXg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <562615E1.4030407-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1445288084-31805-1-git-send-email-davidm-haPfTeumbwasTnJN9+BGXg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+From: David Mosberger-Tang <davidm-haPfTeumbwasTnJN9+BGXg@public.gmane.org>
 
---/T7Ys/vy2qfZwzBO
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The DMA-slave configuration depends on the whether <= 8 or > 8 bits
+are transferred per word, so we need to call
+atmel_spi_dma_slave_config() with the correct value.
 
-On Tue, Oct 20, 2015 at 12:22:25PM +0200, Nicolas Ferre wrote:
+Signed-off-by: David Mosberger <davidm-haPfTeumbwasTnJN9+BGXg@public.gmane.org>
+Signed-off-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi-atmel.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-> Thanks for having rewritten this patch! It's much more simple like this ;-)
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index 1cc1f1e0d17f..0b6e5ecbc752 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -773,7 +773,8 @@ static int atmel_spi_next_xfer_dma_submit(struct spi_master *master,
+ 
+ 	*plen = len;
+ 
+-	if (atmel_spi_dma_slave_config(as, &slave_config, 8))
++	if (atmel_spi_dma_slave_config(as, &slave_config,
++				       xfer->bits_per_word))
+ 		goto err_exit;
+ 
+ 	/* Send both scatterlists */
+-- 
+2.1.3
 
-> Acked-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-
-> For Mark, here is the patchwork entry which can be handy:
-> https://patchwork.kernel.org/patch/7439931/
-
-No, please submit the patch via e-mail as covered in SubmittingPatches
-and as I said yesterday.
-
---/T7Ys/vy2qfZwzBO
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJWJhcNAAoJECTWi3JdVIfQaB4H/2WeZfmzvfCZgIjXq3xwA5OU
-JyDn+bRsIOjT6iL7FYMuqz0XMMozvEifPxkbvSwbmFdc6f1DxzDRjyCjXiBVSvFT
-iMOH8nJVbcL+2HymsQi9+DjWOnRBGL4lzJzfycXyROf4y1IedUF6PFDp1ZcnFuOU
-4Tc2zgABxkH+KATeL2kxDsZR0uZQCY8MeIVhoc6viQloeQMA/jwN1TanBvvhPSy3
-kWYIPcunrsoEzx5DvLL4idlPp1UUEVCseWPL8Z4/wHwlflvCJNnRHb74s/dTsqKO
-g9jxAWpMgag6+4e2x+zIjwLDetwWFdhl3sjC0oRbZ9hhOQj0XB0St647kmzf3jo=
-=FdzD
------END PGP SIGNATURE-----
-
---/T7Ys/vy2qfZwzBO--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

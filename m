@@ -1,73 +1,60 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: dw: remove a NULL check when call ->remove()" to the spi tree
-Date: Tue, 20 Oct 2015 20:32:39 +0100
-Message-ID: <E1ZoceF-0003kk-Jv@debutante>
-References: <1445332301-15126-3-git-send-email-andriy.shevchenko@linux.intel.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v2 1/8] spi: imx: Fix DMA transfer
+Date: Wed, 21 Oct 2015 01:03:55 +0200
+Message-ID: <5626C85B.2090707@gmail.com>
+References: <cover.1442923630.git.anton_bondarenko@mentor.com>
+ <d61ed8cc9e13b0890e6243135c613edea1234698.1442923630.git.anton_bondarenko@mentor.com>
+ <20150930082341.GB2709@shlinux2>
+ <04376A3D786BD947B28569C998A374A62E280DD6@NA-MBX-02.mgc.mentorg.com>
+ <20151008091951.GA6101@shlinux2>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: "s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org" <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	"broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"Wang, Jiada (ESD)" <Jiada_Wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
+	"Zapolskiy, Vladimir" <Vladimir_Zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+To: Robin Gong <b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1445332301-15126-3-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <20151008091951.GA6101@shlinux2>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+On 08.10.2015 11:19, Robin Gong wrote:
+> On Thu, Oct 01, 2015 at 12:02:41AM +0000, Bondarenko, Anton wrote:
+>>>> @@ -201,9 +202,8 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+>>>>   {
+>>>>   	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
+>>>>
+>>>> -	if (spi_imx->dma_is_inited
+>>>> -	    && transfer->len > spi_imx->rx_wml * sizeof(u32)
+>>>> -	    && transfer->len > spi_imx->tx_wml * sizeof(u32))
+>>>> +	if (spi_imx->dma_is_inited &&
+>>>> +	    (transfer->len > spi_imx->wml * sizeof(u32)))
+>>> Add Sascha in the loop. I don't think "* sizeof(u32)", since even 1 byte data
+>>> will consume one position of 32bit FIFO Thus if here
+>>> spi_imx->wml = spi_imx_get_fifosize(spi_imx) / 2 = 32, the threshold value
+>>> which judge DMA mode used or not should be 32 not 32 * 4.
+>>> Of course, it will not cause any function break since both DMA and PIO can work
+>>> ,but I think we'd better correct it.
+>> I agree, in case of 1 byte SPI word we do not need to multiply by 4.
+>> But for 16 bit and 32 bit SPI words it's necessary. This part is
+>> addressed in patch 3.
+>> I could remove "* sizeof(u32)" for now.
+> I still think don't need *sizeof(u32) even for 16bit and 32bit, whatever bits
+> used as one spi word(<32bits), one spi word consume one position of SPI FIFO
+> (32bit).
+Will be removed in V3 for this patch.
+>>>>   		return true;
+>>>>   	return false;
+>>>>   }
 
-   spi: dw: remove a NULL check when call ->remove()
-
-has been applied to the spi tree at
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From f4aaa1c8a5c0e0a3fc565360df83965f3918c874 Mon Sep 17 00:00:00 2001
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Tue, 20 Oct 2015 12:11:41 +0300
-Subject: [PATCH] spi: dw: remove a NULL check when call ->remove()
-
-Currently all users aware about calling dw_spi_remove_host() with properly set
-parameter. Remove unneeded check.
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-dw.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index 221ff97557a3..cc2e98037afd 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -540,8 +540,6 @@ EXPORT_SYMBOL_GPL(dw_spi_add_host);
- 
- void dw_spi_remove_host(struct dw_spi *dws)
- {
--	if (!dws)
--		return;
- 	dw_spi_debugfs_remove(dws);
- 
- 	if (dws->dma_ops && dws->dma_ops->dma_exit)
--- 
-2.6.1
-
+Regards,
+Anton
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

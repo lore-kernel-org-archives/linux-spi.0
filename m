@@ -1,36 +1,61 @@
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH v1 1/1] spi: core: use gpio_is_valid() helper
-Date: Tue, 20 Oct 2015 12:28:29 +0300
-Message-ID: <1445333309-15436-1-git-send-email-andriy.shevchenko@linux.intel.com>
-Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi: atmel: Fix DMA-setup for transfers with more than 8
+ bits per word.
+Date: Tue, 20 Oct 2015 12:22:25 +0200
+Message-ID: <562615E1.4030407@atmel.com>
+References: <1445288084-31805-1-git-send-email-davidm@egauge.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+To: David Mosberger-Tang <davidm-haPfTeumbwasTnJN9+BGXg@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1445288084-31805-1-git-send-email-davidm-haPfTeumbwasTnJN9+BGXg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Check if GPIO pin is valid by API helper function.
+Le 19/10/2015 22:54, David Mosberger-Tang a =E9crit :
+> The DMA-slave configuration depends on the whether <=3D 8 or > 8 bits
+> are transferred per word, so we need to call
+> atmel_spi_dma_slave_config() with the correct value.
+>=20
+> Signed-off-by: David Mosberger <davidm-haPfTeumbwasTnJN9+BGXg@public.gmane.org>
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
----
- drivers/spi/spi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks for having rewritten this patch! It's much more simple like this=
+ ;-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index e900164..33836ee8 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -668,7 +668,7 @@ static void spi_set_cs(struct spi_device *spi, bool enable)
- 	if (spi->mode & SPI_CS_HIGH)
- 		enable = !enable;
- 
--	if (spi->cs_gpio >= 0)
-+	if (gpio_is_valid(spi->cs_gpio))
- 		gpio_set_value(spi->cs_gpio, !enable);
- 	else if (spi->master->set_cs)
- 		spi->master->set_cs(spi, !enable);
--- 
-2.6.1
+Acked-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 
+=46or Mark, here is the patchwork entry which can be handy:
+https://patchwork.kernel.org/patch/7439931/
+
+Best regards,
+
+> ---
+>  drivers/spi/spi-atmel.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+> index 04e48e5..855cc56 100644
+> --- a/drivers/spi/spi-atmel.c
+> +++ b/drivers/spi/spi-atmel.c
+> @@ -758,7 +758,8 @@ static int atmel_spi_next_xfer_dma_submit(struct =
+spi_master *master,
+> =20
+>  	*plen =3D len;
+> =20
+> -	if (atmel_spi_dma_slave_config(as, &slave_config, 8))
+> +	if (atmel_spi_dma_slave_config(as, &slave_config,
+> +				       xfer->bits_per_word))
+>  		goto err_exit;
+> =20
+>  	/* Send both scatterlists */
+>=20
+
+
+--=20
+Nicolas Ferre
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,89 +1,32 @@
-From: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
-Subject: Re: [PATCH v2 3/8] spi: imx: add support for all SPI word width for
- DMA transfer
-Date: Wed, 21 Oct 2015 01:28:37 +0200
-Message-ID: <5626CE25.8040706@gmail.com>
-References: <cover.1442923630.git.anton_bondarenko@mentor.com>
- <f8844a7a52ab44f00e7b6a1c3ce55d72d7999514.1442923630.git.anton_bondarenko@mentor.com>
- <20150930083539.GD2709@shlinux2>
- <04376A3D786BD947B28569C998A374A62E280E21@NA-MBX-02.mgc.mentorg.com>
- <20151008095102.GC6101@shlinux2>
+From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Subject: Re: [PATCH] spi: bcm2835aux: change initialization order and switch
+ to platform_get_irq
+Date: Tue, 20 Oct 2015 20:33:38 -0600
+Message-ID: <5626F982.4060102@wwwdotorg.org>
+References: <1444903820-9223-1-git-send-email-kernel@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 7bit
-Cc: "broonie@kernel.org" <broonie@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"Wang, Jiada (ESD)" <Jiada_Wang@mentor.com>,
-	"Zapolskiy, Vladimir" <Vladimir_Zapolskiy@mentor.com>
-To: Robin Gong <b38343@freescale.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20151008095102.GC6101@shlinux2>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1444903820-9223-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+On 10/15/2015 04:10 AM, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
+> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+> 
+> Change the initialization order of the HW so that the interrupt
+> is only requested after the HW is initialized
+> 
+> Also the use of irq_of_parse_and_map is replaced by platform_get_irq.
 
-
-On 08.10.2015 11:51, Robin Gong wrote:
-> On Thu, Oct 01, 2015 at 12:34:54AM +0000, Bondarenko, Anton wrote:
->> On 30.09.2015 10:35, Robin Gong wrote:
->>> On Fri, Sep 25, 2015 at 07:57:10PM +0200, Anton Bondarenko wrote:
->>>> @@ -91,11 +91,15 @@ struct spi_imx_data {
->>>>
->>>>   	struct completion xfer_done;
->>>>   	void __iomem *base;
->>>> +	unsigned long base_phys;
->>>> +
->>>>   	struct clk *clk_per;
->>>>   	struct clk *clk_ipg;
->>>>   	unsigned long spi_clk;
->>>>   	unsigned int spi_bus_clk;
->>>>
->>>> +	unsigned int bpw_w;
->>>> +
->>> It's better to change bytes_per_word for clear understanding,since bpw in spi means
->>> bits_per_word...
->> Agree. Fixed in V3
->>>>   	unsigned int count;
->>>>   	void (*tx)(struct spi_imx_data *);
->>>>   	void (*rx)(struct spi_imx_data *);
->>>> @@ -201,9 +205,13 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
->>>>   			 struct spi_transfer *transfer)
->>>>   {
->>>>   	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
->>>> +	unsigned int bpw_w = transfer->bits_per_word;
->>>>
->>>> -	if (spi_imx->dma_is_inited &&
->>>> -	    (transfer->len > spi_imx->wml * sizeof(u32)))
->>>> +	if (!bpw_w)
->>>> +		bpw_w = spi->bits_per_word;
->>>> +
->>>> +	bpw_w = DIV_ROUND_UP(bpw_w, 8);
->>>> +	if (spi_imx->dma_is_inited && (transfer->len > spi_imx->wml * bpw_w))
->>> Please remove bpw_w here as I talked in the first patch.
->> As explained in patch1 we need to use SPI word size in calculation to decide
->> if we want to go with DMA or PIO mode. Just a short example:
->> We need to transfer 24 SPI words with BPW == 32. This will take ~ 24 PIO writes
->> to FIFO (and same for reads). But transfer->len will be 24*4=96 bytes.
->> WML is 32 SPI words. The decision will be incorrect if we do not take into account
->> SPI bits per word.
-> Yes, you are right, but I'm thinking so many 'DIV_ROUND_UP()'in your patch to
-> get bpw, can you centralize it or just use the 'bpw_w' in 'struct spi_imx_data'?
-We can't use bpw_w from spi_imx_data because this is external callback 
-for SPI core and driver does not know the purpose of this call. We also 
-can't update current bpw_w for the same reason.
-
-I'll add a function like this:
-int spi_imx_get_bytes_per_word(int bpw)
-{
-     return DIV_ROUND_UP(bpw, BITS_PER_BYTE);
-}
-
->>>>   		return true;
->>>>   	return false;
->>>>   }
-
-Regards,
-Anton
+Looks innocuous.
+Acked-by: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

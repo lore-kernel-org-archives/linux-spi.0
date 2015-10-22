@@ -1,62 +1,77 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: imx: fix ecspi mode setup
-Date: Fri, 23 Oct 2015 02:08:47 +0900
-Message-ID: <20151022170847.GA29919@sirena.org.uk>
-References: <1436880205-25023-1-git-send-email-qxovxp@gmail.com>
- <20150714134934.GV11162@sirena.org.uk>
- <CAN8RqkDrc9sqsbv360yuu7cN3dg527vEomu+FakqnkbTgGZtzQ@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="cWoXeonUoKmBZSoM"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Andrew Kuksov <qxovxp-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Applied "spi: pxa2xx: Align a few defines" to the spi tree
+Date: Fri, 23 Oct 2015 08:57:16 +0900
+Message-ID: <E1ZpPjQ-0002yX-3X@finisterre>
+References: <1445521485-2029-5-git-send-email-jarkko.nikula@linux.intel.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAN8RqkDrc9sqsbv360yuu7cN3dg527vEomu+FakqnkbTgGZtzQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <1445521485-2029-5-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---cWoXeonUoKmBZSoM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: pxa2xx: Align a few defines
 
-On Tue, Jul 14, 2015 at 07:06:36PM +0300, Andrew Kuksov wrote:
-> >> Fixed problem with setting spi mode 0 or 1 after setting mode 2 or 3
+has been applied to the spi tree at
 
-> > What is the problem and how does this change fix it (this information
-> > should be in the changelog)?
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> SPI_MODE_0 and SPI_MODE_1 requires clock low when inactive. SPI_MODE_2
-> and SPI_MODE_3 requires clk high when inactive.
-> Currently driver can just set bits in fields SCLK_PHA (SPI Clock/Data
-> Phase Control), SCLK_POL (SPI Clock Polarity Control),
-> SCLK_CTL (controls the inactive state of SCLK) ans SS_POL (SPI SS
-> Polarity Select) of ECSPIx_CONFIGREG register.
-> This patch allows driver to clear corresponding bits in these fields.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-OK...  when I was asking for this to be in the changelog what I meant
-was that you should send a new patch with a changelog including the
-relevant description.  I've done that by hand now.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---cWoXeonUoKmBZSoM
-Content-Type: application/pgp-signature; name="signature.asc"
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-iQEcBAEBCAAGBQJWKRgeAAoJECTWi3JdVIfQ4xEH/1mySCdz7tYzrkDKF8/oqP9j
-L2/dZlJg7z3WOG7QKyo4tDoYFUfm5nm3ETMhyoCeUZYC/y/u5egH7Nxawikv6Pka
-r6im+vyJsQfe7o3O3c2bKqRFX2xruTaDaWY7l+PCLtKpXAvtuXHKnkB582JlVtXC
-y9IYrLMbw2gzijbh8gP8Ujx7Yxz5EDa2vwiMPjNg3CYQXi+JsvHOsCI/y3bwgC3z
-MJM6tepRCdjzjyKLYwlIhPDlKbxqj0RPovK492dGej5oKGAsMvJD6b0BHgoLlTjp
-rlrhT2FyH1iMId4Rm7082ncIys8yPRXijUwr7socHPdzVDF4LsyRH+ReWPtBn70=
-=6meu
------END PGP SIGNATURE-----
+Thanks,
+Mark
 
---cWoXeonUoKmBZSoM--
+>From ceb941afa5c38dae8e273089266c412d362c7963 Mon Sep 17 00:00:00 2001
+From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Date: Thu, 22 Oct 2015 16:44:43 +0300
+Subject: [PATCH] spi: pxa2xx: Align a few defines
+
+Add more indentation to define lines for making them aligned with the
+longest one. They would look messy after adding more long defines.
+
+Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-pxa2xx.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 4dc5660..0f6a6c8 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -61,9 +61,9 @@ MODULE_ALIAS("platform:pxa2xx-spi");
+ 				| QUARK_X1000_SSCR1_TFT		\
+ 				| SSCR1_SPH | SSCR1_SPO | SSCR1_LBM)
+ 
+-#define GENERAL_REG_RXTO_HOLDOFF_DISABLE BIT(24)
+-#define SPI_CS_CONTROL_SW_MODE	BIT(0)
+-#define SPI_CS_CONTROL_CS_HIGH	BIT(1)
++#define GENERAL_REG_RXTO_HOLDOFF_DISABLE	BIT(24)
++#define SPI_CS_CONTROL_SW_MODE			BIT(0)
++#define SPI_CS_CONTROL_CS_HIGH			BIT(1)
+ 
+ struct lpss_config {
+ 	/* LPSS offset from drv_data->ioaddr */
+-- 
+2.6.1
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

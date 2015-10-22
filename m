@@ -1,21 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pxa2xx: Convert unique ID string of ACPI device as unsigned integer" to the spi tree
-Date: Fri, 23 Oct 2015 08:57:20 +0900
-Message-ID: <E1ZpPjU-0002zc-5X@finisterre>
-References: <1445521485-2029-3-git-send-email-jarkko.nikula@linux.intel.com>
+Subject: Applied "spi: pxa2xx: Save other reg_cs_ctrl bits when configuring chip select" to the spi tree
+Date: Fri, 23 Oct 2015 08:57:18 +0900
+Message-ID: <E1ZpPjS-0002z4-7x@finisterre>
+References: <1445521485-2029-4-git-send-email-jarkko.nikula@linux.intel.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1445521485-2029-3-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <1445521485-2029-4-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: pxa2xx: Convert unique ID string of ACPI device as unsigned integer
+   spi: pxa2xx: Save other reg_cs_ctrl bits when configuring chip select
 
 has been applied to the spi tree at
 
@@ -40,49 +38,38 @@ to this mail.
 Thanks,
 Mark
 
->From 3b8b6d05942ef5dd952674e7420600f762166e22 Mon Sep 17 00:00:00 2001
+>From 0e8972187971ac6c29a9e5899fa6c555c739237c Mon Sep 17 00:00:00 2001
 From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Thu, 22 Oct 2015 16:44:41 +0300
-Subject: [PATCH] spi: pxa2xx: Convert unique ID string of ACPI device as
- unsigned integer
+Date: Thu, 22 Oct 2015 16:44:42 +0300
+Subject: [PATCH] spi: pxa2xx: Save other reg_cs_ctrl bits when configuring
+ chip select
 
-Andy noticed numeric unique device ID is unsigned integer so convert it
-using kstrtouint(). Actually integer in ACPI 2.0 and later is 64 bits
-litte-endian unsigned integer but quite certainly having so big value here
-would mean something extra than just the SPI bus number so it won't hurt to
-assume only lower 32 bits carry the bus number for now.
+Upcoming Intel platforms use LPSS SPI_CS_CONTROL register bits 15:12 for
+configuring the chip select polarities. Touch only chip select SW mode and
+state bits when enabling the software chip select control in order to not
+clear any other bits in the register.
 
 Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Cc: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-pxa2xx.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/spi/spi-pxa2xx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 4fddc2a..db9016b 100644
+index db9016b..4dc5660 100644
 --- a/drivers/spi/spi-pxa2xx.c
 +++ b/drivers/spi/spi-pxa2xx.c
-@@ -1305,7 +1305,8 @@ pxa2xx_spi_acpi_get_pdata(struct platform_device *pdev)
- 	struct resource *res;
- 	const struct acpi_device_id *adev_id = NULL;
- 	const struct pci_device_id *pcidev_id = NULL;
--	int devid, type;
-+	unsigned int devid;
-+	int type;
+@@ -249,7 +249,9 @@ static void lpss_ssp_setup(struct driver_data *drv_data)
+ 	drv_data->lpss_base = drv_data->ioaddr + config->offset;
  
- 	adev = ACPI_COMPANION(&pdev->dev);
- 	if (!adev)
-@@ -1352,7 +1353,7 @@ pxa2xx_spi_acpi_get_pdata(struct platform_device *pdev)
- 	ssp->pdev = pdev;
+ 	/* Enable software chip select control */
+-	value = SPI_CS_CONTROL_SW_MODE | SPI_CS_CONTROL_CS_HIGH;
++	value = __lpss_ssp_read_priv(drv_data, config->reg_cs_ctrl);
++	value &= ~(SPI_CS_CONTROL_SW_MODE | SPI_CS_CONTROL_CS_HIGH);
++	value |= SPI_CS_CONTROL_SW_MODE | SPI_CS_CONTROL_CS_HIGH;
+ 	__lpss_ssp_write_priv(drv_data, config->reg_cs_ctrl, value);
  
- 	ssp->port_id = -1;
--	if (adev->pnp.unique_id && !kstrtoint(adev->pnp.unique_id, 0, &devid))
-+	if (adev->pnp.unique_id && !kstrtouint(adev->pnp.unique_id, 0, &devid))
- 		ssp->port_id = devid;
- 
- 	pdata->num_chipselect = 1;
+ 	/* Enable multiblock DMA transfers */
 -- 
 2.6.1
 

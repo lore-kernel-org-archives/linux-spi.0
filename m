@@ -1,212 +1,121 @@
-From: Javier Martinez Canillas <javier@osg.samsung.com>
-Subject: [PATCH 2/2] spi: fix kernel-doc warnings about missing return desc in spi.c
-Date: Thu, 22 Oct 2015 18:59:23 +0200
-Message-ID: <1445533163-3366-3-git-send-email-javier@osg.samsung.com>
-References: <1445533163-3366-1-git-send-email-javier@osg.samsung.com>
-Cc: Javier Martinez Canillas <javier@osg.samsung.com>,
-	Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
-To: linux-kernel@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1445533163-3366-1-git-send-email-javier@osg.samsung.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: omap2-mcspi: disable other channels CHCONF_FORCE in prepare_message" to the spi tree
+Date: Fri, 23 Oct 2015 08:10:58 +0900
+Message-ID: <E1ZpP0c-0000Lp-2a@finisterre>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Neil Armstrong <narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: 
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-When building docs with make htmldocs, warnings about not having
-a description for the return value are reported, i.e:
+The patch
 
-warning: No description found for return value of 'spi_register_driver'
+   spi: omap2-mcspi: disable other channels CHCONF_FORCE in prepare_message
 
-Fix these by following the kernel-doc conventions explained in
-Documentation/kernel-doc-nano-HOWTO.txt.
+has been applied to the spi tree at
 
-Signed-off-by: Javier Martinez Canillas <javier@osg.samsung.com>
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 468a32082b04c7febccfcd55b06ecbc438fcddcc Mon Sep 17 00:00:00 2001
+From: Neil Armstrong <narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Date: Fri, 9 Oct 2015 15:47:41 +0200
+Subject: [PATCH] spi: omap2-mcspi: disable other channels CHCONF_FORCE in
+ prepare_message
+
+Since the "Switch driver to use transfer_one" change, the cs_change
+behavior has changed and a channel chip select can still be
+asserted when changing channel from a previous last transfer in a
+message having the cs_change attribute.
+
+Since there is no sense having multiple chip select being asserted at the
+same time, disable all the remaining forced chip selects in a the
+prepare_message called right before a spi_transfer_one_message call.
+It ignores the current channel configuration in order to keep the
+possibility to leave the chip select asserted between messages.
+
+It fixes this bug on a DM8168 SoC ES2.1 Soc and an OMAP4 ES2.1 SoC.
+It was hanging all the other channels transfers when a CHCONF_FORCE
+is present on the wrong channel.
+
+Fixes: b28cb9414db9 ("spi: omap2-mcspi: Switch driver to use transfer_one")
+Signed-off-by: Neil Armstrong <narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Reviewed-by: Michael Welling <mwelling-EkmVulN54Sk@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
+ drivers/spi/spi-omap2-mcspi.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
- drivers/spi/spi.c | 41 ++++++++++++++++++++++++++++++++---------
- 1 file changed, 32 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 482725597ef3..9b968cff3e6e 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -378,6 +378,8 @@ static void spi_drv_shutdown(struct device *dev)
-  * spi_register_driver - register a SPI driver
-  * @sdrv: the driver to register
-  * Context: can sleep
-+ *
-+ * Return: zero on success, else a negative error code.
-  */
- int spi_register_driver(struct spi_driver *sdrv)
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 3d09e0b..1f8903d 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -1217,6 +1217,33 @@ out:
+ 	return status;
+ }
+ 
++static int omap2_mcspi_prepare_message(struct spi_master *master,
++				       struct spi_message *msg)
++{
++	struct omap2_mcspi	*mcspi = spi_master_get_devdata(master);
++	struct omap2_mcspi_regs	*ctx = &mcspi->ctx;
++	struct omap2_mcspi_cs	*cs;
++
++	/* Only a single channel can have the FORCE bit enabled
++	 * in its chconf0 register.
++	 * Scan all channels and disable them except the current one.
++	 * A FORCE can remain from a last transfer having cs_change enabled
++	 */
++	list_for_each_entry(cs, &ctx->cs, node) {
++		if (msg->spi->controller_state == cs)
++			continue;
++
++		if ((cs->chconf0 & OMAP2_MCSPI_CHCONF_FORCE)) {
++			cs->chconf0 &= ~OMAP2_MCSPI_CHCONF_FORCE;
++			writel_relaxed(cs->chconf0,
++					cs->base + OMAP2_MCSPI_CHCONF0);
++			readl_relaxed(cs->base + OMAP2_MCSPI_CHCONF0);
++		}
++	}
++
++	return 0;
++}
++
+ static int omap2_mcspi_transfer_one(struct spi_master *master,
+ 		struct spi_device *spi, struct spi_transfer *t)
  {
-@@ -429,7 +431,7 @@ static DEFINE_MUTEX(board_lock);
-  * needs to discard the spi_device without adding it, then it should
-  * call spi_dev_put() on it.
-  *
-- * Returns a pointer to the new device, or NULL.
-+ * Return: a pointer to the new device, or NULL.
-  */
- struct spi_device *spi_alloc_device(struct spi_master *master)
- {
-@@ -488,7 +490,7 @@ static int spi_dev_check(struct device *dev, void *data)
-  * Companion function to spi_alloc_device.  Devices allocated with
-  * spi_alloc_device can be added onto the spi bus with this function.
-  *
-- * Returns 0 on success; negative errno on failure
-+ * Return: 0 on success; negative errno on failure
-  */
- int spi_add_device(struct spi_device *spi)
- {
-@@ -561,7 +563,7 @@ EXPORT_SYMBOL_GPL(spi_add_device);
-  * this is exported so that for example a USB or parport based adapter
-  * driver could add devices (which it would learn about out-of-band).
-  *
-- * Returns the new device, or NULL.
-+ * Return: the new device, or NULL.
-  */
- struct spi_device *spi_new_device(struct spi_master *master,
- 				  struct spi_board_info *chip)
-@@ -633,6 +635,8 @@ static void spi_match_master_to_boardinfo(struct spi_master *master,
-  *
-  * The board info passed can safely be __initdata ... but be careful of
-  * any embedded pointers (platform_data, etc), they're copied as-is.
-+ *
-+ * Return: zero on success, else a negative error code.
-  */
- int spi_register_board_info(struct spi_board_info const *info, unsigned n)
- {
-@@ -1210,6 +1214,8 @@ static int spi_init_queue(struct spi_master *master)
-  *
-  * If there are more messages in the queue, the next message is returned from
-  * this call.
-+ *
-+ * Return: the next message in the queue, else NULL if the queue is empty.
-  */
- struct spi_message *spi_get_next_queued_message(struct spi_master *master)
- {
-@@ -1373,6 +1379,8 @@ static int __spi_queued_transfer(struct spi_device *spi,
-  * spi_queued_transfer - transfer function for queued transfers
-  * @spi: spi device which is requesting transfer
-  * @msg: spi message which is to handled is queued to driver queue
-+ *
-+ * Return: zero on success, else a negative error code.
-  */
- static int spi_queued_transfer(struct spi_device *spi, struct spi_message *msg)
- {
-@@ -1672,12 +1680,13 @@ static struct class spi_master_class = {
-  * only ones directly touching chip registers.  It's how they allocate
-  * an spi_master structure, prior to calling spi_register_master().
-  *
-- * This must be called from context that can sleep.  It returns the SPI
-- * master structure on success, else NULL.
-+ * This must be called from context that can sleep.
-  *
-  * The caller is responsible for assigning the bus number and initializing
-  * the master's methods before calling spi_register_master(); and (after errors
-  * adding the device) calling spi_master_put() to prevent a memory leak.
-+ *
-+ * Return: the SPI master structure on success, else NULL.
-  */
- struct spi_master *spi_alloc_master(struct device *dev, unsigned size)
- {
-@@ -1761,6 +1770,8 @@ static int of_spi_register_master(struct spi_master *master)
-  * success, else a negative error code (dropping the master's refcount).
-  * After a successful return, the caller is responsible for calling
-  * spi_unregister_master().
-+ *
-+ * Return: zero on success, else a negative error code.
-  */
- int spi_register_master(struct spi_master *master)
- {
-@@ -1854,6 +1865,8 @@ static void devm_spi_unregister(struct device *dev, void *res)
-  *
-  * Register a SPI device as with spi_register_master() which will
-  * automatically be unregister
-+ *
-+ * Return: zero on success, else a negative error code.
-  */
- int devm_spi_register_master(struct device *dev, struct spi_master *master)
- {
-@@ -1959,6 +1972,8 @@ static int __spi_master_match(struct device *dev, const void *data)
-  * arch init time.  It returns a refcounted pointer to the relevant
-  * spi_master (which the caller must release), or NULL if there is
-  * no such master registered.
-+ *
-+ * Return: the SPI master structure on success, else NULL.
-  */
- struct spi_master *spi_busnum_to_master(u16 bus_num)
- {
-@@ -2012,6 +2027,8 @@ static int __spi_validate_bits_per_word(struct spi_master *master, u8 bits_per_w
-  * that the underlying controller or its driver does not support.  For
-  * example, not all hardware supports wire transfers using nine bit words,
-  * LSB-first wire encoding, or active-high chipselects.
-+ *
-+ * Return: zero on success, else a negative error code.
-  */
- int spi_setup(struct spi_device *spi)
- {
-@@ -2230,6 +2247,8 @@ static int __spi_async(struct spi_device *spi, struct spi_message *message)
-  * no other spi_message queued to that device will be processed.
-  * (This rule applies equally to all the synchronous transfer calls,
-  * which are wrappers around this core asynchronous primitive.)
-+ *
-+ * Return: zero on success, else a negative error code.
-  */
- int spi_async(struct spi_device *spi, struct spi_message *message)
- {
-@@ -2282,6 +2301,8 @@ EXPORT_SYMBOL_GPL(spi_async);
-  * no other spi_message queued to that device will be processed.
-  * (This rule applies equally to all the synchronous transfer calls,
-  * which are wrappers around this core asynchronous primitive.)
-+ *
-+ * Return: zero on success, else a negative error code.
-  */
- int spi_async_locked(struct spi_device *spi, struct spi_message *message)
- {
-@@ -2397,7 +2418,7 @@ static int __spi_sync(struct spi_device *spi, struct spi_message *message,
-  * Also, the caller is guaranteeing that the memory associated with the
-  * message will not be freed before this call returns.
-  *
-- * It returns zero on success, else a negative error code.
-+ * Return: zero on success, else a negative error code.
-  */
- int spi_sync(struct spi_device *spi, struct spi_message *message)
- {
-@@ -2419,7 +2440,7 @@ EXPORT_SYMBOL_GPL(spi_sync);
-  * SPI bus. It has to be preceded by a spi_bus_lock call. The SPI bus must
-  * be released by a spi_bus_unlock call when the exclusive access is over.
-  *
-- * It returns zero on success, else a negative error code.
-+ * Return: zero on success, else a negative error code.
-  */
- int spi_sync_locked(struct spi_device *spi, struct spi_message *message)
- {
-@@ -2440,7 +2461,7 @@ EXPORT_SYMBOL_GPL(spi_sync_locked);
-  * exclusive access is over. Data transfer must be done by spi_sync_locked
-  * and spi_async_locked calls when the SPI bus lock is held.
-  *
-- * It returns zero on success, else a negative error code.
-+ * Return: always zero.
-  */
- int spi_bus_lock(struct spi_master *master)
- {
-@@ -2469,7 +2490,7 @@ EXPORT_SYMBOL_GPL(spi_bus_lock);
-  * This call releases an SPI bus lock previously obtained by an spi_bus_lock
-  * call.
-  *
-- * It returns zero on success, else a negative error code.
-+ * Return: always zero.
-  */
- int spi_bus_unlock(struct spi_master *master)
- {
-@@ -2504,6 +2525,8 @@ static u8	*buf;
-  * portable code should never use this for more than 32 bytes.
-  * Performance-sensitive or bulk transfer code should instead use
-  * spi_{async,sync}() calls with dma-safe buffers.
-+ *
-+ * Return: zero on success, else a negative error code.
-  */
- int spi_write_then_read(struct spi_device *spi,
- 		const void *txbuf, unsigned n_tx,
+@@ -1344,6 +1371,7 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
+ 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
+ 	master->setup = omap2_mcspi_setup;
+ 	master->auto_runtime_pm = true;
++	master->prepare_message = omap2_mcspi_prepare_message;
+ 	master->transfer_one = omap2_mcspi_transfer_one;
+ 	master->set_cs = omap2_mcspi_set_cs;
+ 	master->cleanup = omap2_mcspi_cleanup;
 -- 
-2.4.3
+2.6.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

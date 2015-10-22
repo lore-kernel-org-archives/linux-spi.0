@@ -1,18 +1,19 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: omap2-mcspi: disable other channels CHCONF_FORCE in prepare_message" to the spi tree
-Date: Fri, 23 Oct 2015 08:10:58 +0900
-Message-ID: <E1ZpP0c-0000Lp-2a@finisterre>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Neil Armstrong <narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: dw: explicitly free IRQ handler in dw_spi_remove_host()" to the spi tree
+Date: Fri, 23 Oct 2015 08:11:01 +0900
+Message-ID: <E1ZpP0f-0000MP-5w@finisterre>
+Cc: linux-spi@vger.kernel.org
+To: stable@vger.kernel.org,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>
+Return-path: <stable-owner@vger.kernel.org>
 In-Reply-To: 
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Sender: stable-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: omap2-mcspi: disable other channels CHCONF_FORCE in prepare_message
+   spi: dw: explicitly free IRQ handler in dw_spi_remove_host()
 
 has been applied to the spi tree at
 
@@ -37,85 +38,70 @@ to this mail.
 Thanks,
 Mark
 
->From 468a32082b04c7febccfcd55b06ecbc438fcddcc Mon Sep 17 00:00:00 2001
-From: Neil Armstrong <narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-Date: Fri, 9 Oct 2015 15:47:41 +0200
-Subject: [PATCH] spi: omap2-mcspi: disable other channels CHCONF_FORCE in
- prepare_message
+>From 9f89566dac9ad776ad4d919922e99d799731e513 Mon Sep 17 00:00:00 2001
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Date: Tue, 20 Oct 2015 11:39:36 +0300
+Subject: [PATCH] spi: dw: explicitly free IRQ handler in dw_spi_remove_host()
 
-Since the "Switch driver to use transfer_one" change, the cs_change
-behavior has changed and a channel chip select can still be
-asserted when changing channel from a previous last transfer in a
-message having the cs_change attribute.
+The following warning occurs when DW SPI is compiled as a module and it's a PCI
+device. On the removal stage pcibios_free_irq() is called earlier than
+free_irq() due to the latter is called at managed resources free strage.
 
-Since there is no sense having multiple chip select being asserted at the
-same time, disable all the remaining forced chip selects in a the
-prepare_message called right before a spi_transfer_one_message call.
-It ignores the current channel configuration in order to keep the
-possibility to leave the chip select asserted between messages.
+------------[ cut here ]------------
+WARNING: CPU: 1 PID: 1003 at /home/andy/prj/linux/fs/proc/generic.c:575 remove_proc_entry+0x118/0x150()
+remove_proc_entry: removing non-empty directory 'irq/38', leaking at least 'dw_spi1'
+Modules linked in: spi_dw_midpci(-) spi_dw [last unloaded: dw_dmac_core]
+CPU: 1 PID: 1003 Comm: modprobe Not tainted 4.3.0-rc5-next-20151013+ #32
+ 00000000 00000000 f5535d70 c12dc220 f5535db0 f5535da0 c104e912 c198a6bc
+ f5535dcc 000003eb c198a638 0000023f c11b4098 c11b4098 f54f1ec8 f54f1ea0
+ f642ba20 f5535db8 c104e96e 00000009 f5535db0 c198a6bc f5535dcc f5535df0
+Call Trace:
+ [<c12dc220>] dump_stack+0x41/0x61
+ [<c104e912>] warn_slowpath_common+0x82/0xb0
+ [<c11b4098>] ? remove_proc_entry+0x118/0x150
+ [<c11b4098>] ? remove_proc_entry+0x118/0x150
+ [<c104e96e>] warn_slowpath_fmt+0x2e/0x30
+ [<c11b4098>] remove_proc_entry+0x118/0x150
+ [<c109b96a>] unregister_irq_proc+0xaa/0xc0
+ [<c109575e>] free_desc+0x1e/0x60
+ [<c10957d2>] irq_free_descs+0x32/0x70
+ [<c109b1a0>] irq_domain_free_irqs+0x120/0x150
+ [<c1039e8c>] mp_unmap_irq+0x5c/0x60
+ [<c16277b0>] intel_mid_pci_irq_disable+0x20/0x40
+ [<c1627c7f>] pcibios_free_irq+0xf/0x20
+ [<c13189f2>] pci_device_remove+0x52/0xb0
+ [<c13f6367>] __device_release_driver+0x77/0x100
+ [<c13f6da7>] driver_detach+0x87/0x90
+ [<c13f5eaa>] bus_remove_driver+0x4a/0xc0
+ [<c128bf0d>] ? selinux_capable+0xd/0x10
+ [<c13f7483>] driver_unregister+0x23/0x60
+ [<c10bad8a>] ? find_module_all+0x5a/0x80
+ [<c1317413>] pci_unregister_driver+0x13/0x60
+ [<f80ac654>] dw_spi_driver_exit+0xd/0xf [spi_dw_midpci]
+ [<c10bce9a>] SyS_delete_module+0x17a/0x210
 
-It fixes this bug on a DM8168 SoC ES2.1 Soc and an OMAP4 ES2.1 SoC.
-It was hanging all the other channels transfers when a CHCONF_FORCE
-is present on the wrong channel.
+Explicitly call free_irq() at removal stage of the DW SPI driver.
 
-Fixes: b28cb9414db9 ("spi: omap2-mcspi: Switch driver to use transfer_one")
-Signed-off-by: Neil Armstrong <narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-Reviewed-by: Michael Welling <mwelling-EkmVulN54Sk@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Fixes: 04f421e7b0b1 (spi: dw: use managed resources)
+Cc: stable@vger.kernel.org
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-omap2-mcspi.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ drivers/spi/spi-dw.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 3d09e0b..1f8903d 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1217,6 +1217,33 @@ out:
- 	return status;
- }
- 
-+static int omap2_mcspi_prepare_message(struct spi_master *master,
-+				       struct spi_message *msg)
-+{
-+	struct omap2_mcspi	*mcspi = spi_master_get_devdata(master);
-+	struct omap2_mcspi_regs	*ctx = &mcspi->ctx;
-+	struct omap2_mcspi_cs	*cs;
-+
-+	/* Only a single channel can have the FORCE bit enabled
-+	 * in its chconf0 register.
-+	 * Scan all channels and disable them except the current one.
-+	 * A FORCE can remain from a last transfer having cs_change enabled
-+	 */
-+	list_for_each_entry(cs, &ctx->cs, node) {
-+		if (msg->spi->controller_state == cs)
-+			continue;
-+
-+		if ((cs->chconf0 & OMAP2_MCSPI_CHCONF_FORCE)) {
-+			cs->chconf0 &= ~OMAP2_MCSPI_CHCONF_FORCE;
-+			writel_relaxed(cs->chconf0,
-+					cs->base + OMAP2_MCSPI_CHCONF0);
-+			readl_relaxed(cs->base + OMAP2_MCSPI_CHCONF0);
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- static int omap2_mcspi_transfer_one(struct spi_master *master,
- 		struct spi_device *spi, struct spi_transfer *t)
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index cc2e980..ad66bc5 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -542,6 +542,8 @@ void dw_spi_remove_host(struct dw_spi *dws)
  {
-@@ -1344,6 +1371,7 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
- 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
- 	master->setup = omap2_mcspi_setup;
- 	master->auto_runtime_pm = true;
-+	master->prepare_message = omap2_mcspi_prepare_message;
- 	master->transfer_one = omap2_mcspi_transfer_one;
- 	master->set_cs = omap2_mcspi_set_cs;
- 	master->cleanup = omap2_mcspi_cleanup;
+ 	dw_spi_debugfs_remove(dws);
+ 
++	free_irq(dws->irq, dws->master);
++
+ 	if (dws->dma_ops && dws->dma_ops->dma_exit)
+ 		dws->dma_ops->dma_exit(dws);
+ 
 -- 
 2.6.1
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

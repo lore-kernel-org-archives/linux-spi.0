@@ -1,69 +1,56 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: core: use gpio_is_valid() helper" to the spi tree
-Date: Wed, 21 Oct 2015 13:34:56 +0100
-Message-ID: <E1ZosbY-00048c-O2@finisterre>
-References: <1445333309-15436-1-git-send-email-andriy.shevchenko@linux.intel.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH 3/7] spi: pxa2xx: Convert unique ID string of ACPI device as unsigned integer
+Date: Thu, 22 Oct 2015 16:44:41 +0300
+Message-ID: <1445521485-2029-3-git-send-email-jarkko.nikula@linux.intel.com>
+References: <1445521485-2029-1-git-send-email-jarkko.nikula@linux.intel.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1445333309-15436-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <1445521485-2029-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+Andy noticed numeric unique device ID is unsigned integer so convert it
+using kstrtouint(). Actually integer in ACPI 2.0 and later is 64 bits
+litte-endian unsigned integer but quite certainly having so big value here
+would mean something extra than just the SPI bus number so it won't hurt to
+assume only lower 32 bits carry the bus number for now.
 
-   spi: core: use gpio_is_valid() helper
-
-has been applied to the spi tree at
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 243f07be2423efe0b17e8ffafc9a36dad50406d3 Mon Sep 17 00:00:00 2001
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Tue, 20 Oct 2015 12:28:29 +0300
-Subject: [PATCH] spi: core: use gpio_is_valid() helper
-
-Check if GPIO pin is valid by API helper function.
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Cc: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 ---
- drivers/spi/spi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-pxa2xx.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 64c1aed..9136f30 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -606,7 +606,7 @@ static void spi_set_cs(struct spi_device *spi, bool enable)
- 	if (spi->mode & SPI_CS_HIGH)
- 		enable = !enable;
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index e02ea46168eb..48fdcb6a7f79 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1309,7 +1309,8 @@ pxa2xx_spi_acpi_get_pdata(struct platform_device *pdev)
+ 	struct resource *res;
+ 	const struct acpi_device_id *adev_id = NULL;
+ 	const struct pci_device_id *pcidev_id = NULL;
+-	int devid, type;
++	unsigned int devid;
++	int type;
  
--	if (spi->cs_gpio >= 0)
-+	if (gpio_is_valid(spi->cs_gpio))
- 		gpio_set_value(spi->cs_gpio, !enable);
- 	else if (spi->master->set_cs)
- 		spi->master->set_cs(spi, !enable);
+ 	adev = ACPI_COMPANION(&pdev->dev);
+ 	if (!adev)
+@@ -1356,7 +1357,7 @@ pxa2xx_spi_acpi_get_pdata(struct platform_device *pdev)
+ 	ssp->pdev = pdev;
+ 
+ 	ssp->port_id = -1;
+-	if (adev->pnp.unique_id && !kstrtoint(adev->pnp.unique_id, 0, &devid))
++	if (adev->pnp.unique_id && !kstrtouint(adev->pnp.unique_id, 0, &devid))
+ 		ssp->port_id = devid;
+ 
+ 	pdata->num_chipselect = 1;
 -- 
 2.6.1
 

@@ -1,44 +1,152 @@
-From: "Shevchenko, Andriy" <andriy.shevchenko-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: Re: Applied "spi: dw: explicitly free IRQ handler in
- dw_spi_remove_host()" to the spi tree
-Date: Fri, 23 Oct 2015 16:30:50 +0000
-Message-ID: <1445617849.22669.66.camel@intel.com>
-References: <E1ZpP0f-0000MP-5w@finisterre>
-	 <1445586058.22669.55.camel@linux.intel.com>
-	 <20151023161810.GH29919@sirena.org.uk>
-	 <1445617533.22669.64.camel@linux.intel.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: fix kernel-doc warnings about missing return desc in spi.h" to the spi tree
+Date: Sat, 24 Oct 2015 02:47:58 +0900
+Message-ID: <E1ZpgRa-0006fh-W4@finisterre>
+References: <1445533163-3366-2-git-send-email-javier@osg.samsung.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1445617533.22669.64.camel-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Content-Language: en-US
-Content-ID: <F45342EE34DA4F4799D34B4BCB3BF96C-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1445533163-3366-2-git-send-email-javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-T24gRnJpLCAyMDE1LTEwLTIzIGF0IDE5OjI1ICswMzAwLCBBbmR5IFNoZXZjaGVua28gd3JvdGU6
-DQo+IE9uIFNhdCwgMjAxNS0xMC0yNCBhdCAwMToxOCArMDkwMCwgTWFyayBCcm93biB3cm90ZToN
-Cj4gPiBPbiBGcmksIE9jdCAyMywgMjAxNSBhdCAxMDo0MDo1OEFNICswMzAwLCBBbmR5IFNoZXZj
-aGVua28gd3JvdGU6DQo+ID4gPiBPbiBGcmksIDIwMTUtMTAtMjMgYXQgMDg6MTEgKzA5MDAsIE1h
-cmsgQnJvd24gd3JvdGU6DQoNCj4gPiA+ID4gQXJlIHlvdSBzYXlpbmcgdGhhdCB5b3UgaGF2ZSBy
-ZWFsaXNlZCB0aGF0IHlvdXIgcGF0Y2ggaXMgYnJva2VuDQo+ID4gc2luY2UNCj4gPiBzZW5kaW5n
-IGl0P8KgwqBJJ3ZlIGRyb3BwZWQgdGhpcyBjb21taXQuLi4NCg0KSnVzdCBjaGVja2VkIHVwZGF0
-ZWQgdG9waWMvZHcgYnJhbmNoLg0KSXQnaXMgY29ycmVjdCByaWdodCBub3chDQoNCkkgaGF2ZSBu
-byBpZGVhIGZyb20gd2hpY2ggcG9pbnQgdGhlIG90aGVyIGNvbW1pdCBhcHBlYXJlZCAoSSBkaWRu
-J3QNCnNlbmQgYSBzdWNoKS4NCg0KLS0gDQpBbmR5IFNoZXZjaGVua28gPGFuZHJpeS5zaGV2Y2hl
-bmtvQGludGVsLmNvbT4NCkludGVsIEZpbmxhbmQgT3kNCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpJbnRlbCBGaW5s
-YW5kIE95ClJlZ2lzdGVyZWQgQWRkcmVzczogUEwgMjgxLCAwMDE4MSBIZWxzaW5raSAKQnVzaW5l
-c3MgSWRlbnRpdHkgQ29kZTogMDM1NzYwNiAtIDQgCkRvbWljaWxlZCBpbiBIZWxzaW5raSAKClRo
-aXMgZS1tYWlsIGFuZCBhbnkgYXR0YWNobWVudHMgbWF5IGNvbnRhaW4gY29uZmlkZW50aWFsIG1h
-dGVyaWFsIGZvcgp0aGUgc29sZSB1c2Ugb2YgdGhlIGludGVuZGVkIHJlY2lwaWVudChzKS4gQW55
-IHJldmlldyBvciBkaXN0cmlidXRpb24KYnkgb3RoZXJzIGlzIHN0cmljdGx5IHByb2hpYml0ZWQu
-IElmIHlvdSBhcmUgbm90IHRoZSBpbnRlbmRlZApyZWNpcGllbnQsIHBsZWFzZSBjb250YWN0IHRo
-ZSBzZW5kZXIgYW5kIGRlbGV0ZSBhbGwgY29waWVzLgo=
+The patch
+
+   spi: fix kernel-doc warnings about missing return desc in spi.h
+
+has been applied to the spi tree at
+
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From a1fdeaa71c95e5c6eba40245f84f762202dc69bb Mon Sep 17 00:00:00 2001
+From: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
+Date: Thu, 22 Oct 2015 18:59:22 +0200
+Subject: [PATCH] spi: fix kernel-doc warnings about missing return desc in
+ spi.h
+
+When building docs with make htmldocs, warnings about not having
+a description for the return value are reported, i.e:
+
+warning: No description found for return value of 'spi_write'
+
+Fix these by following the kernel-doc conventions explained in
+Documentation/kernel-doc-nano-HOWTO.txt.
+
+Signed-off-by: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ include/linux/spi/spi.h | 34 ++++++++++++++++++++--------------
+ 1 file changed, 20 insertions(+), 14 deletions(-)
+
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index e1f2177..635bff6 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -847,8 +847,10 @@ extern int spi_bus_unlock(struct spi_master *master);
+  * @len: data buffer size
+  * Context: can sleep
+  *
+- * This writes the buffer and returns zero or a negative error code.
++ * This function writes the buffer @buf.
+  * Callable only from contexts that can sleep.
++ *
++ * Return: zero on success, else a negative error code.
+  */
+ static inline int
+ spi_write(struct spi_device *spi, const void *buf, size_t len)
+@@ -871,8 +873,10 @@ spi_write(struct spi_device *spi, const void *buf, size_t len)
+  * @len: data buffer size
+  * Context: can sleep
+  *
+- * This reads the buffer and returns zero or a negative error code.
++ * This function reads the buffer @buf.
+  * Callable only from contexts that can sleep.
++ *
++ * Return: zero on success, else a negative error code.
+  */
+ static inline int
+ spi_read(struct spi_device *spi, void *buf, size_t len)
+@@ -899,7 +903,7 @@ spi_read(struct spi_device *spi, void *buf, size_t len)
+  *
+  * For more specific semantics see spi_sync().
+  *
+- * It returns zero on success, else a negative error code.
++ * Return: Return: zero on success, else a negative error code.
+  */
+ static inline int
+ spi_sync_transfer(struct spi_device *spi, struct spi_transfer *xfers,
+@@ -923,9 +927,10 @@ extern int spi_write_then_read(struct spi_device *spi,
+  * @cmd: command to be written before data is read back
+  * Context: can sleep
+  *
+- * This returns the (unsigned) eight bit number returned by the
+- * device, or else a negative error code.  Callable only from
+- * contexts that can sleep.
++ * Callable only from contexts that can sleep.
++ *
++ * Return: the (unsigned) eight bit number returned by the
++ * device, or else a negative error code.
+  */
+ static inline ssize_t spi_w8r8(struct spi_device *spi, u8 cmd)
+ {
+@@ -944,12 +949,13 @@ static inline ssize_t spi_w8r8(struct spi_device *spi, u8 cmd)
+  * @cmd: command to be written before data is read back
+  * Context: can sleep
+  *
+- * This returns the (unsigned) sixteen bit number returned by the
+- * device, or else a negative error code.  Callable only from
+- * contexts that can sleep.
+- *
+  * The number is returned in wire-order, which is at least sometimes
+  * big-endian.
++ *
++ * Callable only from contexts that can sleep.
++ *
++ * Return: the (unsigned) sixteen bit number returned by the
++ * device, or else a negative error code.
+  */
+ static inline ssize_t spi_w8r16(struct spi_device *spi, u8 cmd)
+ {
+@@ -968,13 +974,13 @@ static inline ssize_t spi_w8r16(struct spi_device *spi, u8 cmd)
+  * @cmd: command to be written before data is read back
+  * Context: can sleep
+  *
+- * This returns the (unsigned) sixteen bit number returned by the device in cpu
+- * endianness, or else a negative error code. Callable only from contexts that
+- * can sleep.
+- *
+  * This function is similar to spi_w8r16, with the exception that it will
+  * convert the read 16 bit data word from big-endian to native endianness.
+  *
++ * Callable only from contexts that can sleep.
++ *
++ * Return: the (unsigned) sixteen bit number returned by the device in cpu
++ * endianness, or else a negative error code.
+  */
+ static inline ssize_t spi_w8r16be(struct spi_device *spi, u8 cmd)
+ 
+-- 
+2.6.1
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

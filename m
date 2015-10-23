@@ -1,62 +1,82 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Subject: Re: Applied "spi: dw: explicitly free IRQ handler in
  dw_spi_remove_host()" to the spi tree
-Date: Sat, 24 Oct 2015 01:18:10 +0900
-Message-ID: <20151023161810.GH29919@sirena.org.uk>
+Date: Fri, 23 Oct 2015 19:25:33 +0300
+Message-ID: <1445617533.22669.64.camel@linux.intel.com>
 References: <E1ZpP0f-0000MP-5w@finisterre>
- <1445586058.22669.55.camel@linux.intel.com>
+	 <1445586058.22669.55.camel@linux.intel.com>
+	 <20151023161810.GH29919@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="9jHkwA2TBA/ec6v+"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 Cc: stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1445586058.22669.55.camel-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <20151023161810.GH29919-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Sat, 2015-10-24 at 01:18 +0900, Mark Brown wrote:
+> On Fri, Oct 23, 2015 at 10:40:58AM +0300, Andy Shevchenko wrote:
+> > On Fri, 2015-10-23 at 08:11 +0900, Mark Brown wrote:
+> > > The patch
+>=20
+> > > =C2=A0=C2=A0=C2=A0spi: dw: explicitly free IRQ handler in dw_spi_=
+remove_host()
+>=20
+> > This one seems incomplete.
+>=20
+> > Yes, we already have a fix=C2=A002f20387e1bc in your tree.
+>=20
+> This *appears* to be the same commit you are following up on (please
+> always include human readable descriptions)
 
---9jHkwA2TBA/ec6v+
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This commit (9f89566) is a redundancy made by mistake.
 
-On Fri, Oct 23, 2015 at 10:40:58AM +0300, Andy Shevchenko wrote:
-> On Fri, 2015-10-23 at 08:11 +0900, Mark Brown wrote:
-> > The patch
+>=20
+> > This makes free_irq() call duplicate.
 
-> > =A0=A0=A0spi: dw: explicitly free IRQ handler in dw_spi_remove_host()
+Currently in your for-next branch
 
-> This one seems incomplete.
+void dw_spi_remove_host(struct dw_spi *dws)
+{
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0dw_spi_debugfs_remove(d=
+ws);
 
-> Yes, we already have a fix=A002f20387e1bc in your tree.
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0free_irq(dws->irq, dws-=
+>master);
+^^^ (1)
 
-This *appears* to be the same commit you are following up on (please
-always include human readable descriptions)
 
-> This makes free_irq() call duplicate. Please, remove it from your tree
-> or do the revert.
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (dws->dma_ops && dws=
+->dma_ops->dma_exit)
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0dws->dma_ops->dma_exit(dws);
 
-Are you saying that you have realised that your patch is broken since
-sending it?  I've dropped this commit...
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0spi_shutdown_chip(dws);
 
---9jHkwA2TBA/ec6v+
-Content-Type: application/pgp-signature; name="signature.asc"
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0free_irq(dws->irq, dws-=
+>master);
+^^^ (2)
+}
+EXPORT_SYMBOL_GPL(dw_spi_remove_host);
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+> >  Please, remove it from your tree
+> > or do the revert.
+>=20
+> Are you saying that you have realised that your patch is broken since
+> sending it?=C2=A0=C2=A0I've dropped this commit...
 
-iQEcBAEBCAAGBQJWKl3BAAoJECTWi3JdVIfQJg0H/1QUvf9+18j6rOL2EOEhWMKy
-3cXluDQwfRNOY0du1BESnDm9nnySsmJ8hkdOQiZhZZFw6/lTswBqsXKuS4fql3/v
-vwwpWkK7WjbLYPUNLL0IgWVm5zJIkiOC1Wr3glv/VmdOsDWpCy9/iNdYYveca1xA
-JPc7rZ01VLfpsOwA2fjs0oJb0OiMraXRZ7NEPiW7nWwFhlzDTS7BGuIXsDTzN0vT
-7NkJgcihh/2mvqouBCA2kW1NfBdwaniCBg8uMvnGp+g18yCsPzU98cnrVUk967hC
-gVOy3izaNn7tXRL1bthR9UH8JxNJOyiOElxgzPAay2ZVcw2HyPneHDUFyO1gVtc=
-=iVvz
------END PGP SIGNATURE-----
+No, the commit=C2=A002f20387e1bc is rightful and should be present in t=
+he
+tree.
 
---9jHkwA2TBA/ec6v+--
+P.S. Commit IDs as they appear in your for-next branch of SPI tree.
+
+--=20
+Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Intel Finland Oy
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

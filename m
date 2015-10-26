@@ -1,51 +1,57 @@
-From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Subject: [PATCH v2 0/5] mt8173 spi multiple devices support
-Date: Mon, 26 Oct 2015 16:09:40 +0800
-Message-ID: <1445846985-26229-1-git-send-email-leilk.liu@mediatek.com>
+From: Leilk Liu <leilk.liu@mediatek.com>
+Subject: [PATCH v2 1/5] dt-binding: spi: Mediatek: Update document devicetree bindings to support multiple devices
+Date: Mon, 26 Oct 2015 16:09:41 +0800
+Message-ID: <1445846985-26229-2-git-send-email-leilk.liu@mediatek.com>
+References: <1445846985-26229-1-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
 Content-Type: text/plain
-Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>,
+	<linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
+	Leilk Liu <leilk.liu@mediatek.com>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1445846985-26229-1-git-send-email-leilk.liu@mediatek.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-This series are based on 4.3-rc1 and provide 5 patches to support
-mt8173 spi multiple devices.
+This patch updates document devicetree bindings
+to support multiple devices.
 
-Change in v2:
-1. add mt8173 board name on patch 5/5 subject.
-2. fix this series merge conflict.
+Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
+---
+ Documentation/devicetree/bindings/spi/spi-mt65xx.txt | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-Change in v1:
-1. update document to add cs-gpio;
-2. remove mtk_spi_config function;
-3. move controller_data to master->setup;
-4. add mt8173 spi multiple devices support;
-5. update dts to add cs-gpio and modify cs pin to gpio function.
-
-Leilk Liu (5):
-  dt-binding: spi: Mediatek: Update document devicetree bindings to
-    support multiple devices
-  spi: mediatek: remove mtk_spi_config
-  spi: mediatek: handle controller_data in mtk_spi_setup
-  spi: mediatek: mt8173 spi multiple devices support
-  arm64: dts: mt8173: spi bus dts support multiple devices
-
- .../devicetree/bindings/spi/spi-mt65xx.txt         |   9 +-
- arch/arm64/boot/dts/mediatek/mt8173-evb.dts        |   3 +-
- drivers/spi/spi-mt65xx.c                           | 129 +++++++++++++--------
- 3 files changed, 91 insertions(+), 50 deletions(-)
-
---
+diff --git a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
+index 6160ffb..ce363c923f 100644
+--- a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
++++ b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
+@@ -29,8 +29,11 @@ Required properties:
+   muxes clock, and "spi-clk" for the clock gate.
+ 
+ Optional properties:
++-cs-gpios: see spi-bus.txt, only required for MT8173.
++
+ - mediatek,pad-select: specify which pins group(ck/mi/mo/cs) spi
+-  controller used, this value should be 0~3, only required for MT8173.
++  controller used. This is a array, the element value should be 0~3,
++  only required for MT8173.
+     0: specify GPIO69,70,71,72 for spi pins.
+     1: specify GPIO102,103,104,105 for spi pins.
+     2: specify GPIO128,129,130,131 for spi pins.
+@@ -49,7 +52,7 @@ spi: spi@1100a000 {
+ 		 <&topckgen CLK_TOP_SPI_SEL>,
+ 		 <&pericfg CLK_PERI_SPI0>;
+ 	clock-names = "parent-clk", "sel-clk", "spi-clk";
+-
+-	mediatek,pad-select = <0>;
++	cs-gpios = <&pio 105 GPIO_ACTIVE_LOW>, <&pio 72 GPIO_ACTIVE_LOW>;
++	mediatek,pad-select = <1>, <0>;
+ 	status = "disabled";
+ };
+-- 
 1.8.1.1.dirty
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

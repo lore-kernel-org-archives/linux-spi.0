@@ -1,7 +1,7 @@
 From: Leilk Liu <leilk.liu@mediatek.com>
-Subject: [PATCH v2 3/5] spi: mediatek: handle controller_data in mtk_spi_setup
-Date: Mon, 26 Oct 2015 16:09:43 +0800
-Message-ID: <1445846985-26229-4-git-send-email-leilk.liu@mediatek.com>
+Subject: [PATCH v2 5/5] arm64: dts: mt8173: spi bus dts support multiple devices
+Date: Mon, 26 Oct 2015 16:09:45 +0800
+Message-ID: <1445846985-26229-6-git-send-email-leilk.liu@mediatek.com>
 References: <1445846985-26229-1-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -18,63 +18,33 @@ In-Reply-To: <1445846985-26229-1-git-send-email-leilk.liu@mediatek.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-controller_data is related with device, so move to master->setup
-function.
+This patch support multiple devices for MT8173 board.
 
 Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
 ---
- drivers/spi/spi-mt65xx.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8173-evb.dts | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 7bd84c8..406695a 100644
---- a/drivers/spi/spi-mt65xx.c
-+++ b/drivers/spi/spi-mt65xx.c
-@@ -136,19 +136,13 @@ static int mtk_spi_prepare_message(struct spi_master *master,
- {
- 	u16 cpha, cpol;
- 	u32 reg_val;
--	struct mtk_chip_config *chip_config;
- 	struct spi_device *spi = msg->spi;
-+	struct mtk_chip_config *chip_config = spi->controller_data;
- 	struct mtk_spi *mdata = spi_master_get_devdata(master);
- 
- 	cpha = spi->mode & SPI_CPHA ? 1 : 0;
- 	cpol = spi->mode & SPI_CPOL ? 1 : 0;
- 
--	chip_config = spi->controller_data;
--	if (!chip_config) {
--		chip_config = (void *)&mtk_default_chip_info;
--		spi->controller_data = chip_config;
--	}
--
- 	reg_val = readl(mdata->base + SPI_CMD_REG);
- 	if (cpha)
- 		reg_val |= SPI_CMD_CPHA;
-@@ -406,6 +400,16 @@ static bool mtk_spi_can_dma(struct spi_master *master,
- 	return xfer->len > MTK_SPI_MAX_FIFO_SIZE;
- }
- 
-+static int mtk_spi_setup(struct spi_device *spi)
-+{
-+	struct mtk_spi *mdata = spi_master_get_devdata(spi->master);
-+
-+	if (!spi->controller_data)
-+		spi->controller_data = (void *)&mtk_default_chip_info;
-+
-+	return 0;
-+}
-+
- static irqreturn_t mtk_spi_interrupt(int irq, void *dev_id)
- {
- 	u32 cmd, reg_val, cnt;
-@@ -493,6 +497,7 @@ static int mtk_spi_probe(struct platform_device *pdev)
- 	master->prepare_message = mtk_spi_prepare_message;
- 	master->transfer_one = mtk_spi_transfer_one;
- 	master->can_dma = mtk_spi_can_dma;
-+	master->setup = mtk_spi_setup;
- 
- 	of_id = of_match_node(mtk_spi_of_match, pdev->dev.of_node);
- 	if (!of_id) {
+diff --git a/arch/arm64/boot/dts/mediatek/mt8173-evb.dts b/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
+index 811cb76..e7a4416 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
++++ b/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
+@@ -393,7 +393,7 @@
+ 			pinmux = <MT8173_PIN_69_SPI_CK__FUNC_SPI_CK_0_>,
+ 				<MT8173_PIN_70_SPI_MI__FUNC_SPI_MI_0_>,
+ 				<MT8173_PIN_71_SPI_MO__FUNC_SPI_MO_0_>,
+-				<MT8173_PIN_72_SPI_CS__FUNC_SPI_CS_0_>;
++				<MT8173_PIN_72_SPI_CS__FUNC_GPIO72>;
+ 		};
+ 	};
+ };
+@@ -401,6 +401,7 @@
+ &spi {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&spi_pins_a>;
++	cs-gpios = <&pio 72 0>;
+ 	mediatek,pad-select = <0>;
+ 	status = "okay";
+ };
 -- 
 1.8.1.1.dirty

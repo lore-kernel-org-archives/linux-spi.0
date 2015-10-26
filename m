@@ -1,108 +1,163 @@
-From: Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>
-Subject: Re: [PATCH 6/7] spi: pxa2xx: Add support for multiple LPSS chip select signals
-Date: Sun, 25 Oct 2015 13:02:14 +0100
-Message-ID: <87bnbnkvg9.fsf@belgarion.home>
-References: <1445521485-2029-1-git-send-email-jarkko.nikula@linux.intel.com>
-	<1445521485-2029-6-git-send-email-jarkko.nikula@linux.intel.com>
+From: Jiada Wang <jiada_wang@mentor.com>
+Subject: Re: [PATCH v2 4/8] spi: imx: add selection for iMX53 and iMX6
+ controller type
+Date: Mon, 26 Oct 2015 12:26:01 +0900
+Message-ID: <562D9D49.50605@mentor.com>
+References: <E1ZqY3A-0004Mt-KH@feisty.vs19.net>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1445521485-2029-6-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-	(Jarkko Nikula's message of "Thu, 22 Oct 2015 16:44:44 +0300")
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Transfer-Encoding: 7bit
+Cc: muzaffar_mahmood@relay1.mentorg.com, jiada_wang@mentor.com,
+ b38343@freescale.com, linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+ broonie@kernel.org, linux-arm-kernel@lists.infradead.org,
+ vladimir_zapolskiy@mentor.com
+To: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <E1ZqY3A-0004Mt-KH@feisty.vs19.net>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org> writes:
+Hello
 
-> LPSS SPI devices in a successor of Intel Sunrisepoint can have up to 4 chip
-                   is ?
-> selects per port. SPI capabilities register bits 12:9 tell which are
-> enabled. For simplicity we assume chip selects are enabled one after
-> another without disabled chip selects between. For instance CS0 | CS1 | CS2
-> but not CS0 | CS1 | CS3.
+> Subject: [PATCH v2 4/8] spi: imx: add selection for iMX53 and iMX6 controller type
 >
-> This patch adds support for detecting the number of enabled chip selects
-> and adds output control to those LPSS SPI ports that have more than one
-> chip select signal.
+> ECSPI contorller for iMX53 and iMX6 has few hardware issues in slave
+> mode and (32*n+1) SPI word size handling comparing to iMX51.
+> The change add possibility to detect the SPI controller is use and apply
+> workarounds/limitations.
+> Documentation for device tree bindings updated
 >
-> Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+> Signed-off-by: Anton Bondarenko <anton_bondarenko@mentor.com>
 > ---
->  drivers/spi/spi-pxa2xx.c | 48 +++++++++++++++++++++++++++++++++++++++++++-----
->  1 file changed, 43 insertions(+), 5 deletions(-)
+>   .../devicetree/bindings/spi/fsl-imx-cspi.txt       |  2 ++
+>   drivers/spi/spi-imx.c                              | 36 ++++++++++++++++++++--
+>   2 files changed, 35 insertions(+), 3 deletions(-)
 >
-> diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-> index 672963653d3b..6851649d1b15 100644
-> --- a/drivers/spi/spi-pxa2xx.c
-> +++ b/drivers/spi/spi-pxa2xx.c
-> @@ -13,6 +13,7 @@
->   * GNU General Public License for more details.
->   */
->  
-> +#include <linux/bitops.h>
->  #include <linux/init.h>
->  #include <linux/module.h>
->  #include <linux/device.h>
-> @@ -64,6 +65,10 @@ MODULE_ALIAS("platform:pxa2xx-spi");
->  #define GENERAL_REG_RXTO_HOLDOFF_DISABLE	BIT(24)
->  #define SPI_CS_CONTROL_SW_MODE			BIT(0)
->  #define SPI_CS_CONTROL_CS_HIGH			BIT(1)
+> diff --git a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+> index 523341a..425485f 100644
+> --- a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+> +++ b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+> @@ -9,6 +9,8 @@ Required properties:
+>     - "fsl,imx31-cspi" for SPI compatible with the one integrated on i.MX31
+>     - "fsl,imx35-cspi" for SPI compatible with the one integrated on i.MX35
+>     - "fsl,imx51-ecspi" for SPI compatible with the one integrated on i.MX51
+> +  - "fsl,imx53-ecspi" for SPI compatible with the one integrated on i.MX53
+> +  - "fsl,imx6q-ecspi" for SPI compatible with the one integrated on i.MX6 family
+>   - reg : Offset and length of the register set for the device
+>   - interrupts : Should contain CSPI/eCSPI interrupt
+>   - fsl,spi-num-chipselects : Contains the number of the chipselect
+> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+> index d9b730d..41c9cef 100644
+> --- a/drivers/spi/spi-imx.c
+> +++ b/drivers/spi/spi-imx.c
+> @@ -72,7 +72,8 @@ enum spi_imx_devtype {
+>   	IMX27_CSPI,
+>   	IMX31_CSPI,
+>   	IMX35_CSPI,	/* CSPI on all i.mx except above */
+> -	IMX51_ECSPI,	/* ECSPI on i.mx51 and later */
+> +	IMX51_ECSPI,	/* ECSPI on i.mx51 */
+> +	IMX53_ECSPI,	/* ECSPI on i.mx53 and later */
+>   };
+>
+>   struct spi_imx_data;
+> @@ -129,9 +130,20 @@ static inline int is_imx35_cspi(struct spi_imx_data *d)
+>   	return d->devtype_data->devtype == IMX35_CSPI;
+>   }
+>
+> +static inline int is_imx53_ecspi(struct spi_imx_data *d)
+> +{
+> +	return d->devtype_data->devtype == IMX53_ECSPI;
+> +}
+> +
+> +static inline int is_imx5x_ecspi(struct spi_imx_data *d)
+> +{
+> +	return d->devtype_data->devtype == IMX51_ECSPI ||
+> +	       d->devtype_data->devtype == IMX53_ECSPI;
+> +}
+> +
+>   static inline unsigned spi_imx_get_fifosize(struct spi_imx_data *d)
+>   {
+> -	return (d->devtype_data->devtype == IMX51_ECSPI) ? 64 : 8;
+> +	return is_imx5x_ecspi(d) ? 64 : 8;
+>   }
+>
+>   #define MXC_SPI_BUF_RX(type)						\
+> @@ -680,6 +692,16 @@ static struct spi_imx_devtype_data imx51_ecspi_devtype_data = {
+>   	.devtype = IMX51_ECSPI,
+>   };
+>
+> +static struct spi_imx_devtype_data imx53_ecspi_devtype_data = {
+> +	/* i.mx53 and later ecspi shares the functions with i.mx51 one */
+> +	.intctrl = mx51_ecspi_intctrl,
+> +	.config = mx51_ecspi_config,
+> +	.trigger = mx51_ecspi_trigger,
+> +	.rx_available = mx51_ecspi_rx_available,
+> +	.reset = mx51_ecspi_reset,
+> +	.devtype = IMX53_ECSPI,
+> +};
+> +
+>   static const struct platform_device_id spi_imx_devtype[] = {
+>   	{
+>   		.name = "imx1-cspi",
+> @@ -697,6 +719,12 @@ static const struct platform_device_id spi_imx_devtype[] = {
+>   		.name = "imx35-cspi",
+>   		.driver_data = (kernel_ulong_t) &imx35_cspi_devtype_data,
+>   	}, {
+> +		.name = "imx53-ecspi",
+> +		.driver_data = (kernel_ulong_t)&imx53_ecspi_devtype_data,
+> +	}, {
+> +		.name = "imx6q-ecspi",
+> +		.driver_data = (kernel_ulong_t)&imx53_ecspi_devtype_data,
+> +	}, {
+>   		.name = "imx51-ecspi",
+>   		.driver_data = (kernel_ulong_t) &imx51_ecspi_devtype_data,
+>   	}, {
+> @@ -710,6 +738,8 @@ static const struct of_device_id spi_imx_dt_ids[] = {
+>   	{ .compatible = "fsl,imx27-cspi", .data = &imx27_cspi_devtype_data, },
+>   	{ .compatible = "fsl,imx31-cspi", .data = &imx31_cspi_devtype_data, },
+>   	{ .compatible = "fsl,imx35-cspi", .data = &imx35_cspi_devtype_data, },
+> +	{ .compatible = "fsl,imx53-ecspi", .data = &imx53_ecspi_devtype_data, },
+> +	{ .compatible = "fsl,imx6q-ecspi", .data = &imx53_ecspi_devtype_data, },
+>   	{ .compatible = "fsl,imx51-ecspi", .data = &imx51_ecspi_devtype_data, },
+>   	{ /* sentinel */ }
+>   };
+> @@ -1299,7 +1329,7 @@ static int spi_imx_probe(struct platform_device *pdev)
+>   	 * Only validated on i.mx6 now, can remove the constrain if validated on
+>   	 * other chips.
+>   	 */
+> -	if (spi_imx->devtype_data == &imx51_ecspi_devtype_data &&
+> +	if (is_imx5x_ecspi(spi_imx) &&
+>   	    spi_imx_sdma_init(&pdev->dev, spi_imx, master))
+>   		dev_err(&pdev->dev, "dma setup error,use pio instead\n");
+>
+>
 
-> +#define SPI_CS_CONTROL_CS_SEL_SHIFT		8
-> +#define SPI_CS_CONTROL_CS_SEL_MASK		(3 << SPI_CS_CONTROL_CS_SEL_SHIFT)
-> +#define SPI_CAPS_CS_EN_SHIFT			9
-> +#define SPI_CAPS_CS_EN_MASK			(0xf << SPI_CAPS_CS_EN_SHIFT)
-This is intel specific, not pxa oriented, right ?
-If so, I'd like to have it namespaced, with LPSS or whatever you see fit.
+With this patch, there will still be issues with SPI controller on imx6 
+soc other than imx6q,
+for example SPI controller on imx6sl has compatibility
+"compatible = "fsl,imx6sl-ecspi", "fsl,imx51-ecspi";"
 
-> @@ -103,6 +111,7 @@ static const struct lpss_config lpss_platforms[] = {
->  		.reg_general = -1,
->  		.reg_ssp = 0x20,
->  		.reg_cs_ctrl = 0x24,
-> +		.reg_capabilities = 0xfc,
-Immediate value ? I suppose a defines usage was not possible here ?
+So I would suggest to update device-tree file,
+for example
+imx53.dtsi
+"fsl,imx53-ecspi", "fsl,imx51-ecspi"; -> "fsl,imx53-ecspi";
+imx6qdl.dtsi
+compatible = "fsl,imx6q-ecspi", "fsl,imx51-ecspi"; -> compatible = 
+"fsl,imx6q-ecspi", "fsl,imx53-ecspi";
+imx6sl.dtsi
+compatible = "fsl,imx6sl-ecspi", "fsl,imx51-ecspi"; -> compatible = 
+"fsl,imx6sl-ecspi", "fsl,imx53-ecspi";
+etc...
+by doing this, then only compatible string "fsl,imx53-ecspi" need to be
+added in driver code.
 
-> @@ -271,15 +280,34 @@ static void lpss_ssp_setup(struct driver_data *drv_data)
->  static void lpss_ssp_cs_control(struct driver_data *drv_data, bool enable)
->  {
->  	const struct lpss_config *config;
-> -	u32 value;
-> +	u32 value, cs;
->  
->  	config = lpss_get_config(drv_data);
->  
->  	value = __lpss_ssp_read_priv(drv_data, config->reg_cs_ctrl);
-> -	if (enable)
-> +	if (enable) {
-> +		cs = drv_data->cur_msg->spi->chip_select;
-> +		cs <<= SPI_CS_CONTROL_CS_SEL_SHIFT;
-> +		if (cs != (value & SPI_CS_CONTROL_CS_SEL_MASK)) {
-> +			/*
-> +			 * When switching another chip select output active
-> +			 * the output must be selected first and wait 2 ssp_clk
-> +			 * cycles before changing state to active. Otherwise
-> +			 * a short glitch will occur on the previous chip
-> +			 * select since output select is latched but state
-> +			 * control is not.
-> +			 */
-> +			value &= ~SPI_CS_CONTROL_CS_SEL_MASK;
-> +			value |= cs;
-> +			__lpss_ssp_write_priv(drv_data,
-> +					      config->reg_cs_ctrl, value);
-> +			ndelay(1000000000 /
-> +			       (drv_data->master->max_speed_hz / 2));
-That ndelay() looks weird, why delay and not sleep ?
-And wouldn't that be targeted at another patch ? If I got it right, this patch
-deals with capabilites, not chip select timings, doesn't it ?
-
-Cheers.
-
--- 
-Robert
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Thanks,
+Jiada

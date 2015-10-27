@@ -1,138 +1,56 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: mediatek: remove mtk_spi_config" to the spi tree
-Date: Tue, 27 Oct 2015 13:50:13 +0900
-Message-ID: <E1ZqwD7-00057t-5w@finisterre>
-References: <1444793015-30359-3-git-send-email-leilk.liu@mediatek.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: "Franklin S Cooper Jr." <fcooper-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH v2] spi: Setup the master controller driver before setting
+ the chipselect
+Date: Tue, 27 Oct 2015 07:22:51 -0500
+Message-ID: <562F6C9B.6010607@ti.com>
+References: <1445009343-28307-1-git-send-email-fcooper@ti.com>
+ <CAHp75VdexZWSEEM8xjYEx9WU4dbrNrXeczvBpyKcRKn-qMN=-g@mail.gmail.com>
+ <56211C0F.4090102@ti.com>
+ <CAHp75VchYayRsvsjPoM9YphcjMajfvYuDrLcLrTiADVn8LU=8A@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>, <ssantosh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>, <m-karicheri2-l0cyMroinI0@public.gmane.org>,
+	"Ivan T. Ivanov" <iivanov.xz-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	<hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1444793015-30359-3-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <CAHp75VchYayRsvsjPoM9YphcjMajfvYuDrLcLrTiADVn8LU=8A-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
 
-   spi: mediatek: remove mtk_spi_config
 
-has been applied to the spi tree at
+On 10/16/2015 10:55 AM, Andy Shevchenko wrote:
+> On Fri, Oct 16, 2015 at 6:47 PM, Franklin S Cooper Jr. <fcooper-l0cyMroinI0@public.gmane.org> wrote:
+>>
+>> On 10/16/2015 10:45 AM, Andy Shevchenko wrote:
+>>> On Fri, Oct 16, 2015 at 6:29 PM, Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org> wrote:
+>>>> SPI controllers may need to be properly setup before chip selects
+>>>> can be used. Therefore, wait until the spi controller has a chance
+>>>> to perform their setup procedure before trying to use the chip
+>>>> select.
+>>>>
+>>>> This also insures that the chip selects pins are in a good
+>>>> state before asseting them which otherwise may cause confusion.
+>>>>
+>>>> Signed-off-by: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>
+>>> Does it mean I have to test it again?
+>> Oops sorry. No the patch hasn't changed. I can shoot a v3 with your tested by included.
+> Whatever Mark prefers.
+Hi Mark,
+I don't see that you pulled this patch into your topic/core branch just yet. Would you prefer
+for me to shoot a v3 with Andy's tested by or will you just add it when your ready to
+pull it in?
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 79b5d3f24dcec547ea5db7d2e0b557a36f92b16b Mon Sep 17 00:00:00 2001
-From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Date: Mon, 26 Oct 2015 16:09:41 +0800
-Subject: [PATCH] spi: mediatek: remove mtk_spi_config
-
-mtk_spi_config() and mtk_spi_prepare_message() both initialize
-spi register, so remove mtk_spi_config() and init all register
-in mtk_spi_prepare_message().
-
-Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-mt65xx.c | 59 +++++++++++++++++++++---------------------------
- 1 file changed, 26 insertions(+), 33 deletions(-)
-
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index ecb6c58..7bd84c8 100644
---- a/drivers/spi/spi-mt65xx.c
-+++ b/drivers/spi/spi-mt65xx.c
-@@ -131,10 +131,34 @@ static void mtk_spi_reset(struct mtk_spi *mdata)
- 	writel(reg_val, mdata->base + SPI_CMD_REG);
- }
- 
--static void mtk_spi_config(struct mtk_spi *mdata,
--			   struct mtk_chip_config *chip_config)
-+static int mtk_spi_prepare_message(struct spi_master *master,
-+				   struct spi_message *msg)
- {
-+	u16 cpha, cpol;
- 	u32 reg_val;
-+	struct mtk_chip_config *chip_config;
-+	struct spi_device *spi = msg->spi;
-+	struct mtk_spi *mdata = spi_master_get_devdata(master);
-+
-+	cpha = spi->mode & SPI_CPHA ? 1 : 0;
-+	cpol = spi->mode & SPI_CPOL ? 1 : 0;
-+
-+	chip_config = spi->controller_data;
-+	if (!chip_config) {
-+		chip_config = (void *)&mtk_default_chip_info;
-+		spi->controller_data = chip_config;
-+	}
-+
-+	reg_val = readl(mdata->base + SPI_CMD_REG);
-+	if (cpha)
-+		reg_val |= SPI_CMD_CPHA;
-+	else
-+		reg_val &= ~SPI_CMD_CPHA;
-+	if (cpol)
-+		reg_val |= SPI_CMD_CPOL;
-+	else
-+		reg_val &= ~SPI_CMD_CPOL;
-+	writel(reg_val, mdata->base + SPI_CMD_REG);
- 
- 	reg_val = readl(mdata->base + SPI_CMD_REG);
- 
-@@ -171,37 +195,6 @@ static void mtk_spi_config(struct mtk_spi *mdata,
- 	/* pad select */
- 	if (mdata->dev_comp->need_pad_sel)
- 		writel(mdata->pad_sel, mdata->base + SPI_PAD_SEL_REG);
--}
--
--static int mtk_spi_prepare_message(struct spi_master *master,
--				   struct spi_message *msg)
--{
--	u32 reg_val;
--	u8 cpha, cpol;
--	struct mtk_chip_config *chip_config;
--	struct spi_device *spi = msg->spi;
--	struct mtk_spi *mdata = spi_master_get_devdata(master);
--
--	cpha = spi->mode & SPI_CPHA ? 1 : 0;
--	cpol = spi->mode & SPI_CPOL ? 1 : 0;
--
--	reg_val = readl(mdata->base + SPI_CMD_REG);
--	if (cpha)
--		reg_val |= SPI_CMD_CPHA;
--	else
--		reg_val &= ~SPI_CMD_CPHA;
--	if (cpol)
--		reg_val |= SPI_CMD_CPOL;
--	else
--		reg_val &= ~SPI_CMD_CPOL;
--	writel(reg_val, mdata->base + SPI_CMD_REG);
--
--	chip_config = spi->controller_data;
--	if (!chip_config) {
--		chip_config = (void *)&mtk_default_chip_info;
--		spi->controller_data = chip_config;
--	}
--	mtk_spi_config(mdata, chip_config);
- 
- 	return 0;
- }
--- 
-2.6.1
+Without this patch several of our boards don't boot in linux-next so if there is anything you
+need for me to do please let me know.
+>
+>
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

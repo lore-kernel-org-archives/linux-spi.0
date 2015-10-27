@@ -1,81 +1,37 @@
-From: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH v2] spi: Setup the master controller driver before setting
- the chipselect
-Date: Tue, 27 Oct 2015 15:34:04 +0200
-Message-ID: <562F7D4C.4080005@ti.com>
-References: <1445009343-28307-1-git-send-email-fcooper@ti.com>
- <CAHp75VdexZWSEEM8xjYEx9WU4dbrNrXeczvBpyKcRKn-qMN=-g@mail.gmail.com>
- <56211C0F.4090102@ti.com>
- <CAHp75VchYayRsvsjPoM9YphcjMajfvYuDrLcLrTiADVn8LU=8A@mail.gmail.com>
- <562F6C9B.6010607@ti.com> <562F7801.3090508@ti.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>, <ssantosh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>, <m-karicheri2-l0cyMroinI0@public.gmane.org>,
-	"Ivan T. Ivanov" <iivanov.xz-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	<hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Ivan Khoronzhuk <ivan.khoronzhuk-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: "Franklin S Cooper Jr." <fcooper-l0cyMroinI0@public.gmane.org>,
-	Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH v1 1/1] spi: dw: replace magic constant by DW_SPI_DR
+Date: Tue, 27 Oct 2015 17:48:16 +0200
+Message-ID: <1445960896-118379-1-git-send-email-andriy.shevchenko@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <562F7801.3090508-l0cyMroinI0@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 10/27/2015 03:11 PM, Grygorii Strashko wrote:
-> On 10/27/2015 02:22 PM, Franklin S Cooper Jr. wrote:
->>
->>
->> On 10/16/2015 10:55 AM, Andy Shevchenko wrote:
->>> On Fri, Oct 16, 2015 at 6:47 PM, Franklin S Cooper Jr.
->>> <fcooper-l0cyMroinI0@public.gmane.org> wrote:
->>>>
->>>> On 10/16/2015 10:45 AM, Andy Shevchenko wrote:
->>>>> On Fri, Oct 16, 2015 at 6:29 PM, Franklin S Cooper Jr
->>>>> <fcooper-l0cyMroinI0@public.gmane.org> wrote:
->>>>>> SPI controllers may need to be properly setup before chip selects
->>>>>> can be used. Therefore, wait until the spi controller has a chance
->>>>>> to perform their setup procedure before trying to use the chip
->>>>>> select.
->>>>>>
->>>>>> This also insures that the chip selects pins are in a good
->>>>>> state before asseting them which otherwise may cause confusion.
->>>>>>
->>>>>> Signed-off-by: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>
->>>>> Does it mean I have to test it again?
->>>> Oops sorry. No the patch hasn't changed. I can shoot a v3 with your
->>>> tested by included.
->>> Whatever Mark prefers.
->> Hi Mark,
->> I don't see that you pulled this patch into your topic/core branch
->> just yet. Would you prefer
->> for me to shoot a v3 with Andy's tested by or will you just add it
->> when your ready to
->> pull it in?
->>
->> Without this patch several of our boards don't boot in linux-next so
->> if there is anything you
->> need for me to do please let me know.
->>>
->>>
->>
->
-> Boot tested on K2HK:
->
-> Tested-by: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
-> Tested-by: Ivan Khoronzhuk <ivan.khoronzhuk-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
->
+The offset 0x60 is the offset of the data register defined as DW_SPI_DR in the
+header file. Use it.
 
-Sry, Fix Ivan's e-mail
-Tested-by: Ivan Khoronzhuk <ivan.khoronzhuk-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+---
+ drivers/spi/spi-dw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index cc2e980..882cd66 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -483,7 +483,7 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
+ 	dws->master = master;
+ 	dws->type = SSI_MOTO_SPI;
+ 	dws->dma_inited = 0;
+-	dws->dma_addr = (dma_addr_t)(dws->paddr + 0x60);
++	dws->dma_addr = (dma_addr_t)(dws->paddr + DW_SPI_DR);
+ 	snprintf(dws->name, sizeof(dws->name), "dw_spi%d", dws->bus_num);
+ 
+ 	ret = request_irq(dws->irq, dw_spi_irq, IRQF_SHARED, dws->name, master);
 -- 
-regards,
--grygorii
+2.6.1
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

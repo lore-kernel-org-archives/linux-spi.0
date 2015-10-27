@@ -1,18 +1,18 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: mediatek: handle controller_data in mtk_spi_setup" to the spi tree
-Date: Tue, 27 Oct 2015 13:50:06 +0900
-Message-ID: <E1ZqwD0-00057N-GI@finisterre>
-References: <1444793015-30359-4-git-send-email-leilk.liu@mediatek.com>
+Subject: Applied "spi: mediatek: Update document devicetree bindings to support multiple devices" to the spi tree
+Date: Tue, 27 Oct 2015 13:50:14 +0900
+Message-ID: <E1ZqwD8-00058M-Hr@finisterre>
+References: <1445846985-26229-2-git-send-email-leilk.liu@mediatek.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1444793015-30359-4-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <1445846985-26229-2-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: mediatek: handle controller_data in mtk_spi_setup
+   spi: mediatek: Update document devicetree bindings to support multiple devices
 
 has been applied to the spi tree at
 
@@ -37,70 +37,48 @@ to this mail.
 Thanks,
 Mark
 
->From 58a984c79a68d508ccfccf4b82c0eaf7f487c399 Mon Sep 17 00:00:00 2001
+>From eca3a1ee8dd7ec5819bd77d598044eb6ecdf4495 Mon Sep 17 00:00:00 2001
 From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Date: Mon, 26 Oct 2015 16:09:43 +0800
-Subject: [PATCH] spi: mediatek: handle controller_data in mtk_spi_setup
+Date: Mon, 26 Oct 2015 16:09:41 +0800
+Subject: [PATCH] spi: mediatek: Update document devicetree bindings to support
+ multiple devices
 
-controller_data is related with device, so move to master->setup
-function.
+This patch updates document devicetree bindings
+to support multiple devices.
 
 Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-mt65xx.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ Documentation/devicetree/bindings/spi/spi-mt65xx.txt | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 7bd84c8..406695a 100644
---- a/drivers/spi/spi-mt65xx.c
-+++ b/drivers/spi/spi-mt65xx.c
-@@ -136,19 +136,13 @@ static int mtk_spi_prepare_message(struct spi_master *master,
- {
- 	u16 cpha, cpol;
- 	u32 reg_val;
--	struct mtk_chip_config *chip_config;
- 	struct spi_device *spi = msg->spi;
-+	struct mtk_chip_config *chip_config = spi->controller_data;
- 	struct mtk_spi *mdata = spi_master_get_devdata(master);
+diff --git a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
+index 6160ffb..ce363c923f 100644
+--- a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
++++ b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
+@@ -29,8 +29,11 @@ Required properties:
+   muxes clock, and "spi-clk" for the clock gate.
  
- 	cpha = spi->mode & SPI_CPHA ? 1 : 0;
- 	cpol = spi->mode & SPI_CPOL ? 1 : 0;
- 
--	chip_config = spi->controller_data;
--	if (!chip_config) {
--		chip_config = (void *)&mtk_default_chip_info;
--		spi->controller_data = chip_config;
--	}
+ Optional properties:
++-cs-gpios: see spi-bus.txt, only required for MT8173.
++
+ - mediatek,pad-select: specify which pins group(ck/mi/mo/cs) spi
+-  controller used, this value should be 0~3, only required for MT8173.
++  controller used. This is a array, the element value should be 0~3,
++  only required for MT8173.
+     0: specify GPIO69,70,71,72 for spi pins.
+     1: specify GPIO102,103,104,105 for spi pins.
+     2: specify GPIO128,129,130,131 for spi pins.
+@@ -49,7 +52,7 @@ spi: spi@1100a000 {
+ 		 <&topckgen CLK_TOP_SPI_SEL>,
+ 		 <&pericfg CLK_PERI_SPI0>;
+ 	clock-names = "parent-clk", "sel-clk", "spi-clk";
 -
- 	reg_val = readl(mdata->base + SPI_CMD_REG);
- 	if (cpha)
- 		reg_val |= SPI_CMD_CPHA;
-@@ -406,6 +400,16 @@ static bool mtk_spi_can_dma(struct spi_master *master,
- 	return xfer->len > MTK_SPI_MAX_FIFO_SIZE;
- }
- 
-+static int mtk_spi_setup(struct spi_device *spi)
-+{
-+	struct mtk_spi *mdata = spi_master_get_devdata(spi->master);
-+
-+	if (!spi->controller_data)
-+		spi->controller_data = (void *)&mtk_default_chip_info;
-+
-+	return 0;
-+}
-+
- static irqreturn_t mtk_spi_interrupt(int irq, void *dev_id)
- {
- 	u32 cmd, reg_val, cnt;
-@@ -493,6 +497,7 @@ static int mtk_spi_probe(struct platform_device *pdev)
- 	master->prepare_message = mtk_spi_prepare_message;
- 	master->transfer_one = mtk_spi_transfer_one;
- 	master->can_dma = mtk_spi_can_dma;
-+	master->setup = mtk_spi_setup;
- 
- 	of_id = of_match_node(mtk_spi_of_match, pdev->dev.of_node);
- 	if (!of_id) {
+-	mediatek,pad-select = <0>;
++	cs-gpios = <&pio 105 GPIO_ACTIVE_LOW>, <&pio 72 GPIO_ACTIVE_LOW>;
++	mediatek,pad-select = <1>, <0>;
+ 	status = "disabled";
+ };
 -- 
 2.6.1
 

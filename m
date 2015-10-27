@@ -1,107 +1,191 @@
-From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [PATCH 6/7] spi: pxa2xx: Add support for multiple LPSS chip select
- signals
-Date: Mon, 26 Oct 2015 11:35:04 +0200
-Message-ID: <562DF3C8.1060401@linux.intel.com>
-References: <1445521485-2029-1-git-send-email-jarkko.nikula@linux.intel.com>	<1445521485-2029-6-git-send-email-jarkko.nikula@linux.intel.com> <87bnbnkvg9.fsf@belgarion.home>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: mediatek: mt8173 spi multiple devices support" to the spi tree
+Date: Tue, 27 Oct 2015 13:50:04 +0900
+Message-ID: <E1ZqwCy-00056u-U0@finisterre>
+References: <1444793015-30359-5-git-send-email-leilk.liu@mediatek.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <87bnbnkvg9.fsf-4ty26DBLk+jEm7gnYqmdkQ@public.gmane.org>
+In-Reply-To: <1444793015-30359-5-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 10/25/2015 02:02 PM, Robert Jarzmik wrote:
-> Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org> writes:
->
->> LPSS SPI devices in a successor of Intel Sunrisepoint can have up to 4 chip
->                     is ?
+The patch
 
-Intel Low Power Subsystem SPI host controller(s) after Sunrisepoint can 
-have multiple chip selects. I'll clarify this since patch 7/7 outdates 
-the comment by adding support for two variants.
+   spi: mediatek: mt8173 spi multiple devices support
 
->> @@ -64,6 +65,10 @@ MODULE_ALIAS("platform:pxa2xx-spi");
->>   #define GENERAL_REG_RXTO_HOLDOFF_DISABLE	BIT(24)
->>   #define SPI_CS_CONTROL_SW_MODE			BIT(0)
->>   #define SPI_CS_CONTROL_CS_HIGH			BIT(1)
->
->> +#define SPI_CS_CONTROL_CS_SEL_SHIFT		8
->> +#define SPI_CS_CONTROL_CS_SEL_MASK		(3 << SPI_CS_CONTROL_CS_SEL_SHIFT)
->> +#define SPI_CAPS_CS_EN_SHIFT			9
->> +#define SPI_CAPS_CS_EN_MASK			(0xf << SPI_CAPS_CS_EN_SHIFT)
-> This is intel specific, not pxa oriented, right ?
-> If so, I'd like to have it namespaced, with LPSS or whatever you see fit.
->
-Good point. I'll check also couple other existing defines as they are 
-LPSS specific.
+has been applied to the spi tree at
 
->> @@ -103,6 +111,7 @@ static const struct lpss_config lpss_platforms[] = {
->>   		.reg_general = -1,
->>   		.reg_ssp = 0x20,
->>   		.reg_cs_ctrl = 0x24,
->> +		.reg_capabilities = 0xfc,
-> Immediate value ? I suppose a defines usage was not possible here ?
->
-I removed register defines for these three registers earlier when code 
-started accessing registers using this configuration data. There are 
-differences in these registers between platforms and it didn't look much 
-clearer to have separate defines for them.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
->> @@ -271,15 +280,34 @@ static void lpss_ssp_setup(struct driver_data *drv_data)
->>   static void lpss_ssp_cs_control(struct driver_data *drv_data, bool enable)
->>   {
->>   	const struct lpss_config *config;
->> -	u32 value;
->> +	u32 value, cs;
->>
->>   	config = lpss_get_config(drv_data);
->>
->>   	value = __lpss_ssp_read_priv(drv_data, config->reg_cs_ctrl);
->> -	if (enable)
->> +	if (enable) {
->> +		cs = drv_data->cur_msg->spi->chip_select;
->> +		cs <<= SPI_CS_CONTROL_CS_SEL_SHIFT;
->> +		if (cs != (value & SPI_CS_CONTROL_CS_SEL_MASK)) {
->> +			/*
->> +			 * When switching another chip select output active
->> +			 * the output must be selected first and wait 2 ssp_clk
->> +			 * cycles before changing state to active. Otherwise
->> +			 * a short glitch will occur on the previous chip
->> +			 * select since output select is latched but state
->> +			 * control is not.
->> +			 */
->> +			value &= ~SPI_CS_CONTROL_CS_SEL_MASK;
->> +			value |= cs;
->> +			__lpss_ssp_write_priv(drv_data,
->> +					      config->reg_cs_ctrl, value);
->> +			ndelay(1000000000 /
->> +			       (drv_data->master->max_speed_hz / 2));
-> That ndelay() looks weird, why delay and not sleep ?
-> And wouldn't that be targeted at another patch ? If I got it right, this patch
-> deals with capabilites, not chip select timings, doesn't it ?
->
-Typically we are seeing input clock of SSP being around a few or tens of 
-megahertz so sleep instead of <1 us delay would slow down the transfers 
-needlessly.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-That said, we may have a need to change this to use delay or sleep 
-conditionally later. Andy has been looking at changing input clock 
-according to transfer speed which means that needed delay can be up to 
-milliseconds if we use really low transfer speed.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Actually this patch deals with output control and number of chip select 
-detection. Maybe it calls for two patches. Output control prepares for 
-multiple chip selects and detection adds actual support for them.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 37457607ecaffe56718a0e423548edeb3d4a11b7 Mon Sep 17 00:00:00 2001
+From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Date: Mon, 26 Oct 2015 16:09:44 +0800
+Subject: [PATCH] spi: mediatek: mt8173 spi multiple devices support
+
+mt8173 IC spi HW has 4 gpio group, it's possible to support
+max <= 4 slave devices, even mtk spi HW is not congruent to spi core.
+1. When a device do a spi_message transfer, spi HW should know
+   which pad-group this device is on, and then writes pad-select
+   register.
+2. Mtk pad-select register just selects which MISO pin HW will
+   receive data. For example, pad-select=1(select spi1 pins), HW just
+   receives data from spi1 MISO, but it still send waveform to all 4
+   group cs/clk/mosi. If cs pin in other groups is still spi mode,
+   after spi1 is selected(by active cs pin), devices on other group
+   will also be selected.
+
+Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-mt65xx.c | 65 ++++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 52 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index 406695a..563954a 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -20,6 +20,7 @@
+ #include <linux/ioport.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
++#include <linux/of_gpio.h>
+ #include <linux/platform_device.h>
+ #include <linux/platform_data/spi-mt65xx.h>
+ #include <linux/pm_runtime.h>
+@@ -84,7 +85,8 @@ struct mtk_spi_compatible {
+ struct mtk_spi {
+ 	void __iomem *base;
+ 	u32 state;
+-	u32 pad_sel;
++	int pad_num;
++	u32 *pad_sel;
+ 	struct clk *parent_clk, *sel_clk, *spi_clk;
+ 	struct spi_transfer *cur_transfer;
+ 	u32 xfer_len;
+@@ -188,7 +190,8 @@ static int mtk_spi_prepare_message(struct spi_master *master,
+ 
+ 	/* pad select */
+ 	if (mdata->dev_comp->need_pad_sel)
+-		writel(mdata->pad_sel, mdata->base + SPI_PAD_SEL_REG);
++		writel(mdata->pad_sel[spi->chip_select],
++		       mdata->base + SPI_PAD_SEL_REG);
+ 
+ 	return 0;
+ }
+@@ -407,6 +410,9 @@ static int mtk_spi_setup(struct spi_device *spi)
+ 	if (!spi->controller_data)
+ 		spi->controller_data = (void *)&mtk_default_chip_info;
+ 
++	if (mdata->dev_comp->need_pad_sel)
++		gpio_direction_output(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
++
+ 	return 0;
+ }
+ 
+@@ -481,7 +487,7 @@ static int mtk_spi_probe(struct platform_device *pdev)
+ 	struct mtk_spi *mdata;
+ 	const struct of_device_id *of_id;
+ 	struct resource *res;
+-	int irq, ret;
++	int i, irq, ret;
+ 
+ 	master = spi_alloc_master(&pdev->dev, sizeof(*mdata));
+ 	if (!master) {
+@@ -512,21 +518,34 @@ static int mtk_spi_probe(struct platform_device *pdev)
+ 		master->flags = SPI_MASTER_MUST_TX;
+ 
+ 	if (mdata->dev_comp->need_pad_sel) {
+-		ret = of_property_read_u32(pdev->dev.of_node,
+-					   "mediatek,pad-select",
+-					   &mdata->pad_sel);
+-		if (ret) {
+-			dev_err(&pdev->dev, "failed to read pad select: %d\n",
+-				ret);
++		mdata->pad_num = of_property_count_u32_elems(
++			pdev->dev.of_node,
++			"mediatek,pad-select");
++		if (mdata->pad_num < 0) {
++			dev_err(&pdev->dev,
++				"No 'mediatek,pad-select' property\n");
++			ret = -EINVAL;
+ 			goto err_put_master;
+ 		}
+ 
+-		if (mdata->pad_sel > MT8173_SPI_MAX_PAD_SEL) {
+-			dev_err(&pdev->dev, "wrong pad-select: %u\n",
+-				mdata->pad_sel);
+-			ret = -EINVAL;
++		mdata->pad_sel = devm_kmalloc_array(&pdev->dev, mdata->pad_num,
++						    sizeof(u32), GFP_KERNEL);
++		if (!mdata->pad_sel) {
++			ret = -ENOMEM;
+ 			goto err_put_master;
+ 		}
++
++		for (i = 0; i < mdata->pad_num; i++) {
++			of_property_read_u32_index(pdev->dev.of_node,
++						   "mediatek,pad-select",
++						   i, &mdata->pad_sel[i]);
++			if (mdata->pad_sel[i] > MT8173_SPI_MAX_PAD_SEL) {
++				dev_err(&pdev->dev, "wrong pad-sel[%d]: %u\n",
++					i, mdata->pad_sel[i]);
++				ret = -EINVAL;
++				goto err_put_master;
++			}
++		}
+ 	}
+ 
+ 	platform_set_drvdata(pdev, master);
+@@ -604,6 +623,26 @@ static int mtk_spi_probe(struct platform_device *pdev)
+ 		goto err_put_master;
+ 	}
+ 
++	if (mdata->dev_comp->need_pad_sel) {
++		if (mdata->pad_num != master->num_chipselect) {
++			dev_err(&pdev->dev,
++				"pad_num does not match num_chipselect(%d != %d)\n",
++				mdata->pad_num, master->num_chipselect);
++			ret = -EINVAL;
++			goto err_put_master;
++		}
++
++		for (i = 0; i < master->num_chipselect; i++) {
++			ret = devm_gpio_request(&pdev->dev, master->cs_gpios[i],
++						dev_name(&pdev->dev));
++			if (ret) {
++				dev_err(&pdev->dev,
++					"can't get CS GPIO %i\n", i);
++				goto err_put_master;
++			}
++		}
++	}
++
+ 	return 0;
+ 
+ err_disable_clk:
 -- 
-Jarkko
+2.6.1
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

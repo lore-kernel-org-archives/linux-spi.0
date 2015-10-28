@@ -1,67 +1,88 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2] spi: Setup the master controller driver before
- setting the chipselect
-Date: Wed, 28 Oct 2015 09:33:23 +0900
-Message-ID: <20151028003323.GV28319@sirena.org.uk>
-References: <1445009343-28307-1-git-send-email-fcooper@ti.com>
- <CAHp75VdexZWSEEM8xjYEx9WU4dbrNrXeczvBpyKcRKn-qMN=-g@mail.gmail.com>
- <56211C0F.4090102@ti.com>
- <CAHp75VchYayRsvsjPoM9YphcjMajfvYuDrLcLrTiADVn8LU=8A@mail.gmail.com>
- <562F6C9B.6010607@ti.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="H5pgEA8DvTwLpheO"
-Cc: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>,
-	ssantosh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>,
-	m-karicheri2-l0cyMroinI0@public.gmane.org, "Ivan T. Ivanov" <iivanov.xz-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-To: "Franklin S Cooper Jr." <fcooper-l0cyMroinI0@public.gmane.org>
+Subject: Applied "spi: Setup the master controller driver before setting the chipselect" to the spi tree
+Date: Wed, 28 Oct 2015 09:52:28 +0900
+Message-ID: <E1ZrEya-0008Rg-Nw@finisterre>
+References: <1444683671-15570-2-git-send-email-fcooper@ti.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>,
+	Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>,
+	Ivan Khoronzhuk <ivan.khoronzhuk-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <562F6C9B.6010607-l0cyMroinI0@public.gmane.org>
+In-Reply-To: <1444683671-15570-2-git-send-email-fcooper-l0cyMroinI0@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---H5pgEA8DvTwLpheO
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: Setup the master controller driver before setting the chipselect
 
-On Tue, Oct 27, 2015 at 07:22:51AM -0500, Franklin S Cooper Jr. wrote:
+has been applied to the spi tree at
 
-> I don't see that you pulled this patch into your topic/core branch just yet. Would you prefer
-> for me to shoot a v3 with Andy's tested by or will you just add it when your ready to
-> pull it in?
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-Please fix your mail client to word wrap within paragraphs at something
-substantially less than 80 columns.  Doing this makes your messages much
-easier to read and reply to.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-Please don't send content free pings.  If your patch has been lost then
-you will need to resend it, if your patch is waiting to be handled then
-at best your message is likely to be threaded in with the original
-thread and therefore not seen.  Either way a content free ping just adds
-to mail volume rather than helping.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---H5pgEA8DvTwLpheO
-Content-Type: application/pgp-signature; name="signature.asc"
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-iQEcBAEBCAAGBQJWMBfTAAoJECTWi3JdVIfQiq0H/A6ppeziyMPclCrW+8x0pQ4d
-Rt1YbqJ/faPfhZxGJzNp00ta614MASzIROQl4XAo0bjfCs+NskJeDLlC8RWVZ6bL
-dUmCL6UD7ThH6FTZlbgXIaRgMkYTiasHXDnDDn47mlma792CN26TrLX6APs261jc
-AxMghl/enfWSzjk2hzoSpyvf8r6gnd4PAdK2y/yvxsNx3djAUHPAV9lqi9bxRtUQ
-7FQkokj4xxxKM2mYDC9DwkGQWeOo9E8qYntTcKxKIl/vxbS3IYCIHS1wm3xesyzJ
-QQ3880HMAdTp53c9gSRyheL6CDUVJ4G5h8WDuTZ9zaBMtzEgQiePUfk62T3nMxA=
-=Vk3Q
------END PGP SIGNATURE-----
+Thanks,
+Mark
 
---H5pgEA8DvTwLpheO--
+>From abeedb0159eec42c52a28fc44457164f71aa12a9 Mon Sep 17 00:00:00 2001
+From: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>
+Date: Fri, 16 Oct 2015 10:29:03 -0500
+Subject: [PATCH] spi: Setup the master controller driver before setting the
+ chipselect
+
+SPI controllers may need to be properly setup before chip selects
+can be used. Therefore, wait until the spi controller has a chance
+to perform their setup procedure before trying to use the chip
+select.
+
+This also insures that the chip selects pins are in a good
+state before asseting them which otherwise may cause confusion.
+
+Signed-off-by: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>
+Tested-by: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
+Tested-by: Ivan Khoronzhuk <ivan.khoronzhuk-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 3abb390..7b528b0 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1993,11 +1993,11 @@ int spi_setup(struct spi_device *spi)
+ 	if (!spi->max_speed_hz)
+ 		spi->max_speed_hz = spi->master->max_speed_hz;
+ 
+-	spi_set_cs(spi, false);
+-
+ 	if (spi->master->setup)
+ 		status = spi->master->setup(spi);
+ 
++	spi_set_cs(spi, false);
++
+ 	dev_dbg(&spi->dev, "setup mode %d, %s%s%s%s%u bits/w, %u Hz max --> %d\n",
+ 			(int) (spi->mode & (SPI_CPOL | SPI_CPHA)),
+ 			(spi->mode & SPI_CS_HIGH) ? "cs_high, " : "",
+-- 
+2.6.1
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

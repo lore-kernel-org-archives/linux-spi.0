@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/5] spi: pxa2xx: Add output control for multiple Intel LPSS chip selects
-Date: Fri, 30 Oct 2015 11:20:48 +0900
-Message-ID: <E1ZrzJA-0001qh-D3@finisterre>
-References: <1446038023-8819-2-git-send-email-jarkko.nikula@linux.intel.com>
+Subject: Re: [PATCH 7/7] spi: pxa2xx: Add support for Intel Broxton
+Date: Fri, 30 Oct 2015 11:20:43 +0900
+Message-ID: <E1ZrzJ5-0001pT-Bo@finisterre>
+References: <1445521485-2029-7-git-send-email-jarkko.nikula@linux.intel.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1446038023-8819-2-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <1445521485-2029-7-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: pxa2xx: Add output control for multiple Intel LPSS chip selects
+   spi: pxa2xx: Add support for Intel Broxton
 
 has been applied to the spi tree at
 
@@ -38,75 +38,86 @@ to this mail.
 Thanks,
 Mark
 
->From d0283eb2dbc11ec08375fdf6a436e96d25b3a593 Mon Sep 17 00:00:00 2001
+>From b7c08cf85c9a3a4b05474b7acacc9fbce8fb3eaf Mon Sep 17 00:00:00 2001
 From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Wed, 28 Oct 2015 15:13:40 +0200
-Subject: [PATCH] spi: pxa2xx: Add output control for multiple Intel LPSS chip
- selects
+Date: Wed, 28 Oct 2015 15:13:42 +0200
+Subject: [PATCH] spi: pxa2xx: Add support for Intel Broxton
 
-Intel LPSS SPI host controllers in upcoming Intel platforms can have up
-to 4 chip selects per port. Extend chip select control in
-lpss_ssp_cs_control() by adding a code that selects the active chip
-select output prior to changing the state. Detection for number of
-enabled chip select signals will be added by another patch.
+LPSS SPI in Intel Broxton is otherwise the same than in Intel Sunrisepoint
+but it supports up to four chip selects per port and has different FIFO
+thresholds. Patch adds support for two Broxton SoC variants.
 
 Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-pxa2xx.c | 27 ++++++++++++++++++++++++---
- 1 file changed, 24 insertions(+), 3 deletions(-)
+ drivers/spi/spi-pxa2xx.c   | 20 ++++++++++++++++++++
+ include/linux/pxa2xx_ssp.h |  1 +
+ 2 files changed, 21 insertions(+)
 
 diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 9060aee..040f6bb 100644
+index a5c2dce..f759c08 100644
 --- a/drivers/spi/spi-pxa2xx.c
 +++ b/drivers/spi/spi-pxa2xx.c
-@@ -64,6 +64,8 @@ MODULE_ALIAS("platform:pxa2xx-spi");
- #define LPSS_GENERAL_REG_RXTO_HOLDOFF_DISABLE	BIT(24)
- #define LPSS_CS_CONTROL_SW_MODE			BIT(0)
- #define LPSS_CS_CONTROL_CS_HIGH			BIT(1)
-+#define LPSS_CS_CONTROL_CS_SEL_SHIFT		8
-+#define LPSS_CS_CONTROL_CS_SEL_MASK		(3 << LPSS_CS_CONTROL_CS_SEL_SHIFT)
+@@ -116,6 +116,16 @@ static const struct lpss_config lpss_platforms[] = {
+ 		.tx_threshold_lo = 32,
+ 		.tx_threshold_hi = 56,
+ 	},
++	{	/* LPSS_BXT_SSP */
++		.offset = 0x200,
++		.reg_general = -1,
++		.reg_ssp = 0x20,
++		.reg_cs_ctrl = 0x24,
++		.reg_capabilities = 0xfc,
++		.rx_threshold = 1,
++		.tx_threshold_lo = 16,
++		.tx_threshold_hi = 48,
++	},
+ };
  
- struct lpss_config {
- 	/* LPSS offset from drv_data->ioaddr */
-@@ -271,15 +273,34 @@ static void lpss_ssp_setup(struct driver_data *drv_data)
- static void lpss_ssp_cs_control(struct driver_data *drv_data, bool enable)
- {
- 	const struct lpss_config *config;
--	u32 value;
-+	u32 value, cs;
+ static inline const struct lpss_config
+@@ -130,6 +140,7 @@ static bool is_lpss_ssp(const struct driver_data *drv_data)
+ 	case LPSS_LPT_SSP:
+ 	case LPSS_BYT_SSP:
+ 	case LPSS_SPT_SSP:
++	case LPSS_BXT_SSP:
+ 		return true;
+ 	default:
+ 		return false;
+@@ -1152,6 +1163,7 @@ static int setup(struct spi_device *spi)
+ 	case LPSS_LPT_SSP:
+ 	case LPSS_BYT_SSP:
+ 	case LPSS_SPT_SSP:
++	case LPSS_BXT_SSP:
+ 		config = lpss_get_config(drv_data);
+ 		tx_thres = config->tx_threshold_lo;
+ 		tx_hi_thres = config->tx_threshold_hi;
+@@ -1313,6 +1325,14 @@ static const struct pci_device_id pxa2xx_spi_pci_compound_match[] = {
+ 	/* SPT-H */
+ 	{ PCI_VDEVICE(INTEL, 0xa129), LPSS_SPT_SSP },
+ 	{ PCI_VDEVICE(INTEL, 0xa12a), LPSS_SPT_SSP },
++	/* BXT */
++	{ PCI_VDEVICE(INTEL, 0x0ac2), LPSS_BXT_SSP },
++	{ PCI_VDEVICE(INTEL, 0x0ac4), LPSS_BXT_SSP },
++	{ PCI_VDEVICE(INTEL, 0x0ac6), LPSS_BXT_SSP },
++	/* APL */
++	{ PCI_VDEVICE(INTEL, 0x5ac2), LPSS_BXT_SSP },
++	{ PCI_VDEVICE(INTEL, 0x5ac4), LPSS_BXT_SSP },
++	{ PCI_VDEVICE(INTEL, 0x5ac6), LPSS_BXT_SSP },
+ 	{ },
+ };
  
- 	config = lpss_get_config(drv_data);
+diff --git a/include/linux/pxa2xx_ssp.h b/include/linux/pxa2xx_ssp.h
+index 92273776..c2f2574 100644
+--- a/include/linux/pxa2xx_ssp.h
++++ b/include/linux/pxa2xx_ssp.h
+@@ -198,6 +198,7 @@ enum pxa_ssp_type {
+ 	LPSS_LPT_SSP, /* Keep LPSS types sorted with lpss_platforms[] */
+ 	LPSS_BYT_SSP,
+ 	LPSS_SPT_SSP,
++	LPSS_BXT_SSP,
+ };
  
- 	value = __lpss_ssp_read_priv(drv_data, config->reg_cs_ctrl);
--	if (enable)
-+	if (enable) {
-+		cs = drv_data->cur_msg->spi->chip_select;
-+		cs <<= LPSS_CS_CONTROL_CS_SEL_SHIFT;
-+		if (cs != (value & LPSS_CS_CONTROL_CS_SEL_MASK)) {
-+			/*
-+			 * When switching another chip select output active
-+			 * the output must be selected first and wait 2 ssp_clk
-+			 * cycles before changing state to active. Otherwise
-+			 * a short glitch will occur on the previous chip
-+			 * select since output select is latched but state
-+			 * control is not.
-+			 */
-+			value &= ~LPSS_CS_CONTROL_CS_SEL_MASK;
-+			value |= cs;
-+			__lpss_ssp_write_priv(drv_data,
-+					      config->reg_cs_ctrl, value);
-+			ndelay(1000000000 /
-+			       (drv_data->master->max_speed_hz / 2));
-+		}
- 		value &= ~LPSS_CS_CONTROL_CS_HIGH;
--	else
-+	} else {
- 		value |= LPSS_CS_CONTROL_CS_HIGH;
-+	}
- 	__lpss_ssp_write_priv(drv_data, config->reg_cs_ctrl, value);
- }
- 
+ struct ssp_device {
 -- 
 2.6.1
 

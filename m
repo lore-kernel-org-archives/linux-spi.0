@@ -1,20 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "- filename      : spi-ti-qspi-improve---remove-callback.patch
-Date: Fri, 30 Oct 2015 10:43:40 +0900
-Message-ID: <E1ZryjE-0000Ct-GT@finisterre>
+Subject: Re: [PATCH 2/5] spi: pxa2xx: Add output control for multiple Intel LPSS chip selects
+Date: Fri, 30 Oct 2015 11:20:48 +0900
+Message-ID: <E1ZrzJA-0001qh-D3@finisterre>
+References: <1446038023-8819-2-git-send-email-jarkko.nikula@linux.intel.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Felipe Balbi <balbi-l0cyMroinI0@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1446038023-8819-2-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-- name          : spi: ti-qspi: improve ->remove() callback" to the spi tree
-In-Reply-To:  <1446127050-5957-1-git-send-email-balbi-l0cyMroinI0@public.gmane.org>
-
 The patch
 
-   - filename      : spi-ti-qspi-improve---remove-callback.patch
-- name          : spi: ti-qspi: improve ->remove() callback
+   spi: pxa2xx: Add output control for multiple Intel LPSS chip selects
 
 has been applied to the spi tree at
 
@@ -39,43 +38,75 @@ to this mail.
 Thanks,
 Mark
 
->From e6b5140b706689a38aaeabd9de8fb3e1531cf9cb Mon Sep 17 00:00:00 2001
-From: Felipe Balbi <balbi-l0cyMroinI0@public.gmane.org>
-Date: Thu, 29 Oct 2015 08:57:30 -0500
-Subject: [PATCH] spi: ti-qspi: improve ->remove() callback
+>From d0283eb2dbc11ec08375fdf6a436e96d25b3a593 Mon Sep 17 00:00:00 2001
+From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Date: Wed, 28 Oct 2015 15:13:40 +0200
+Subject: [PATCH] spi: pxa2xx: Add output control for multiple Intel LPSS chip
+ selects
 
-there's no need to call pm_runtime_get_sync()
-followed by pm_runtime_put(). We should, instead,
-just call pm_runtime_put_sync() and pm_runtime_disable().
+Intel LPSS SPI host controllers in upcoming Intel platforms can have up
+to 4 chip selects per port. Extend chip select control in
+lpss_ssp_cs_control() by adding a code that selects the active chip
+select output prior to changing the state. Detection for number of
+enabled chip select signals will be added by another patch.
 
-Signed-off-by: Felipe Balbi <balbi-l0cyMroinI0@public.gmane.org>
+Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-ti-qspi.c | 11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+ drivers/spi/spi-pxa2xx.c | 27 ++++++++++++++++++++++++---
+ 1 file changed, 24 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
-index 89cf0c8..432bcc3 100644
---- a/drivers/spi/spi-ti-qspi.c
-+++ b/drivers/spi/spi-ti-qspi.c
-@@ -555,16 +555,7 @@ free_master:
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 9060aee..040f6bb 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -64,6 +64,8 @@ MODULE_ALIAS("platform:pxa2xx-spi");
+ #define LPSS_GENERAL_REG_RXTO_HOLDOFF_DISABLE	BIT(24)
+ #define LPSS_CS_CONTROL_SW_MODE			BIT(0)
+ #define LPSS_CS_CONTROL_CS_HIGH			BIT(1)
++#define LPSS_CS_CONTROL_CS_SEL_SHIFT		8
++#define LPSS_CS_CONTROL_CS_SEL_MASK		(3 << LPSS_CS_CONTROL_CS_SEL_SHIFT)
  
- static int ti_qspi_remove(struct platform_device *pdev)
+ struct lpss_config {
+ 	/* LPSS offset from drv_data->ioaddr */
+@@ -271,15 +273,34 @@ static void lpss_ssp_setup(struct driver_data *drv_data)
+ static void lpss_ssp_cs_control(struct driver_data *drv_data, bool enable)
  {
--	struct ti_qspi *qspi = platform_get_drvdata(pdev);
--	int ret;
--
--	ret = pm_runtime_get_sync(qspi->dev);
--	if (ret < 0) {
--		dev_err(qspi->dev, "pm_runtime_get_sync() failed\n");
--		return ret;
--	}
--
--	pm_runtime_put(qspi->dev);
-+	pm_runtime_put_sync(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
+ 	const struct lpss_config *config;
+-	u32 value;
++	u32 value, cs;
  
- 	return 0;
+ 	config = lpss_get_config(drv_data);
+ 
+ 	value = __lpss_ssp_read_priv(drv_data, config->reg_cs_ctrl);
+-	if (enable)
++	if (enable) {
++		cs = drv_data->cur_msg->spi->chip_select;
++		cs <<= LPSS_CS_CONTROL_CS_SEL_SHIFT;
++		if (cs != (value & LPSS_CS_CONTROL_CS_SEL_MASK)) {
++			/*
++			 * When switching another chip select output active
++			 * the output must be selected first and wait 2 ssp_clk
++			 * cycles before changing state to active. Otherwise
++			 * a short glitch will occur on the previous chip
++			 * select since output select is latched but state
++			 * control is not.
++			 */
++			value &= ~LPSS_CS_CONTROL_CS_SEL_MASK;
++			value |= cs;
++			__lpss_ssp_write_priv(drv_data,
++					      config->reg_cs_ctrl, value);
++			ndelay(1000000000 /
++			       (drv_data->master->max_speed_hz / 2));
++		}
+ 		value &= ~LPSS_CS_CONTROL_CS_HIGH;
+-	else
++	} else {
+ 		value |= LPSS_CS_CONTROL_CS_HIGH;
++	}
+ 	__lpss_ssp_write_priv(drv_data, config->reg_cs_ctrl, value);
+ }
+ 
 -- 
 2.6.1
 

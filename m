@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/5] spi: pxa2xx: Use LPSS prefix for defines that are Intel LPSS specific
-Date: Fri, 30 Oct 2015 11:20:50 +0900
-Message-ID: <E1ZrzJC-0001rE-Lx@finisterre>
-References: <1446038023-8819-1-git-send-email-jarkko.nikula@linux.intel.com>
+Subject: Re: [PATCH 3/5] spi: pxa2xx: Detect number of enabled Intel LPSS SPI chip select signals
+Date: Fri, 30 Oct 2015 11:20:46 +0900
+Message-ID: <E1ZrzJ8-0001q0-5d@finisterre>
+References: <1446038023-8819-3-git-send-email-jarkko.nikula@linux.intel.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1446038023-8819-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <1446038023-8819-3-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: pxa2xx: Use LPSS prefix for defines that are Intel LPSS specific
+   spi: pxa2xx: Detect number of enabled Intel LPSS SPI chip select signals
 
 has been applied to the spi tree at
 
@@ -38,71 +38,115 @@ to this mail.
 Thanks,
 Mark
 
->From 624ea72ebddc1f61d32c9e6265f8d6f6dacd26d6 Mon Sep 17 00:00:00 2001
+>From 8b136baa5892f25bba0373d6eb0f5f84efc93986 Mon Sep 17 00:00:00 2001
 From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Wed, 28 Oct 2015 15:13:39 +0200
-Subject: [PATCH] spi: pxa2xx: Use LPSS prefix for defines that are Intel LPSS
- specific
+Date: Wed, 28 Oct 2015 15:13:41 +0200
+Subject: [PATCH] spi: pxa2xx: Detect number of enabled Intel LPSS SPI chip
+ select signals
 
-Rename a few defines that are specific to Intel LPSS SPI private
-registers with LPSS prefix. It makes easier to distinguish them from
-common defines.
+SPI capabilities register located in private registers space of newer
+Intel LPSS SPI host controllers tell in register bits 12:9 which chip
+select signals are enabled.
 
-Suggested-by: Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>
+Use that information for detecting the number of chip selects. For
+simplicity we assume chip selects are enabled one after another without
+disabled chip selects between. For instance CS0 | CS1 | CS2 but not
+CS0 | CS1 | CS3.
+
 Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-pxa2xx.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/spi/spi-pxa2xx.c | 22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 0f6a6c8..9060aee 100644
+index 040f6bb..a5c2dce 100644
 --- a/drivers/spi/spi-pxa2xx.c
 +++ b/drivers/spi/spi-pxa2xx.c
-@@ -61,9 +61,9 @@ MODULE_ALIAS("platform:pxa2xx-spi");
- 				| QUARK_X1000_SSCR1_TFT		\
- 				| SSCR1_SPH | SSCR1_SPO | SSCR1_LBM)
+@@ -13,6 +13,7 @@
+  * GNU General Public License for more details.
+  */
  
--#define GENERAL_REG_RXTO_HOLDOFF_DISABLE	BIT(24)
--#define SPI_CS_CONTROL_SW_MODE			BIT(0)
--#define SPI_CS_CONTROL_CS_HIGH			BIT(1)
-+#define LPSS_GENERAL_REG_RXTO_HOLDOFF_DISABLE	BIT(24)
-+#define LPSS_CS_CONTROL_SW_MODE			BIT(0)
-+#define LPSS_CS_CONTROL_CS_HIGH			BIT(1)
++#include <linux/bitops.h>
+ #include <linux/init.h>
+ #include <linux/module.h>
+ #include <linux/device.h>
+@@ -66,6 +67,8 @@ MODULE_ALIAS("platform:pxa2xx-spi");
+ #define LPSS_CS_CONTROL_CS_HIGH			BIT(1)
+ #define LPSS_CS_CONTROL_CS_SEL_SHIFT		8
+ #define LPSS_CS_CONTROL_CS_SEL_MASK		(3 << LPSS_CS_CONTROL_CS_SEL_SHIFT)
++#define LPSS_CAPS_CS_EN_SHIFT			9
++#define LPSS_CAPS_CS_EN_MASK			(0xf << LPSS_CAPS_CS_EN_SHIFT)
  
  struct lpss_config {
  	/* LPSS offset from drv_data->ioaddr */
-@@ -250,8 +250,8 @@ static void lpss_ssp_setup(struct driver_data *drv_data)
+@@ -74,6 +77,7 @@ struct lpss_config {
+ 	int reg_general;
+ 	int reg_ssp;
+ 	int reg_cs_ctrl;
++	int reg_capabilities;
+ 	/* FIFO thresholds */
+ 	u32 rx_threshold;
+ 	u32 tx_threshold_lo;
+@@ -87,6 +91,7 @@ static const struct lpss_config lpss_platforms[] = {
+ 		.reg_general = 0x08,
+ 		.reg_ssp = 0x0c,
+ 		.reg_cs_ctrl = 0x18,
++		.reg_capabilities = -1,
+ 		.rx_threshold = 64,
+ 		.tx_threshold_lo = 160,
+ 		.tx_threshold_hi = 224,
+@@ -96,6 +101,7 @@ static const struct lpss_config lpss_platforms[] = {
+ 		.reg_general = 0x08,
+ 		.reg_ssp = 0x0c,
+ 		.reg_cs_ctrl = 0x18,
++		.reg_capabilities = -1,
+ 		.rx_threshold = 64,
+ 		.tx_threshold_lo = 160,
+ 		.tx_threshold_hi = 224,
+@@ -105,6 +111,7 @@ static const struct lpss_config lpss_platforms[] = {
+ 		.reg_general = -1,
+ 		.reg_ssp = 0x20,
+ 		.reg_cs_ctrl = 0x24,
++		.reg_capabilities = 0xfc,
+ 		.rx_threshold = 1,
+ 		.tx_threshold_lo = 32,
+ 		.tx_threshold_hi = 56,
+@@ -1400,6 +1407,7 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+ 	struct spi_master *master;
+ 	struct driver_data *drv_data;
+ 	struct ssp_device *ssp;
++	const struct lpss_config *config;
+ 	int status;
+ 	u32 tmp;
  
- 	/* Enable software chip select control */
- 	value = __lpss_ssp_read_priv(drv_data, config->reg_cs_ctrl);
--	value &= ~(SPI_CS_CONTROL_SW_MODE | SPI_CS_CONTROL_CS_HIGH);
--	value |= SPI_CS_CONTROL_SW_MODE | SPI_CS_CONTROL_CS_HIGH;
-+	value &= ~(LPSS_CS_CONTROL_SW_MODE | LPSS_CS_CONTROL_CS_HIGH);
-+	value |= LPSS_CS_CONTROL_SW_MODE | LPSS_CS_CONTROL_CS_HIGH;
- 	__lpss_ssp_write_priv(drv_data, config->reg_cs_ctrl, value);
+@@ -1439,7 +1447,6 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LOOP;
  
- 	/* Enable multiblock DMA transfers */
-@@ -261,7 +261,7 @@ static void lpss_ssp_setup(struct driver_data *drv_data)
- 		if (config->reg_general >= 0) {
- 			value = __lpss_ssp_read_priv(drv_data,
- 						     config->reg_general);
--			value |= GENERAL_REG_RXTO_HOLDOFF_DISABLE;
-+			value |= LPSS_GENERAL_REG_RXTO_HOLDOFF_DISABLE;
- 			__lpss_ssp_write_priv(drv_data,
- 					      config->reg_general, value);
- 		}
-@@ -277,9 +277,9 @@ static void lpss_ssp_cs_control(struct driver_data *drv_data, bool enable)
+ 	master->bus_num = ssp->port_id;
+-	master->num_chipselect = platform_info->num_chipselect;
+ 	master->dma_alignment = DMA_ALIGNMENT;
+ 	master->cleanup = cleanup;
+ 	master->setup = setup;
+@@ -1525,6 +1532,19 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+ 	if (is_lpss_ssp(drv_data))
+ 		lpss_ssp_setup(drv_data);
  
- 	value = __lpss_ssp_read_priv(drv_data, config->reg_cs_ctrl);
- 	if (enable)
--		value &= ~SPI_CS_CONTROL_CS_HIGH;
-+		value &= ~LPSS_CS_CONTROL_CS_HIGH;
- 	else
--		value |= SPI_CS_CONTROL_CS_HIGH;
-+		value |= LPSS_CS_CONTROL_CS_HIGH;
- 	__lpss_ssp_write_priv(drv_data, config->reg_cs_ctrl, value);
- }
++	if (is_lpss_ssp(drv_data)) {
++		lpss_ssp_setup(drv_data);
++		config = lpss_get_config(drv_data);
++		if (config->reg_capabilities >= 0) {
++			tmp = __lpss_ssp_read_priv(drv_data,
++						   config->reg_capabilities);
++			tmp &= LPSS_CAPS_CS_EN_MASK;
++			tmp >>= LPSS_CAPS_CS_EN_SHIFT;
++			platform_info->num_chipselect = ffz(tmp);
++		}
++	}
++	master->num_chipselect = platform_info->num_chipselect;
++
+ 	tasklet_init(&drv_data->pump_transfers, pump_transfers,
+ 		     (unsigned long)drv_data);
  
 -- 
 2.6.1

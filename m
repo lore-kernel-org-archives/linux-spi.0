@@ -1,20 +1,20 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "- filename      : spi-Add-DSPI-support-for-layerscape-family.patch
-Date: Fri, 30 Oct 2015 10:43:38 +0900
-Message-ID: <E1ZryjC-0000CO-8H@finisterre>
+Subject: Applied "- filename      : spi-ti-qspi-improve---remove-callback.patch
+Date: Fri, 30 Oct 2015 10:43:40 +0900
+Message-ID: <E1ZryjE-0000Ct-GT@finisterre>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Yuan Yao <yao.yuan-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Felipe Balbi <balbi-l0cyMroinI0@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-- name          : spi: Add DSPI support for layerscape family" to the spi tree
-In-Reply-To:  <1446025319-44125-1-git-send-email-yao.yuan-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+- name          : spi: ti-qspi: improve ->remove() callback" to the spi tree
+In-Reply-To:  <1446127050-5957-1-git-send-email-balbi-l0cyMroinI0@public.gmane.org>
 
 The patch
 
-   - filename      : spi-Add-DSPI-support-for-layerscape-family.patch
-- name          : spi: Add DSPI support for layerscape family
+   - filename      : spi-ti-qspi-improve---remove-callback.patch
+- name          : spi: ti-qspi: improve ->remove() callback
 
 has been applied to the spi tree at
 
@@ -39,33 +39,43 @@ to this mail.
 Thanks,
 Mark
 
->From 5a60adafb95263d63dfaaf7168680c4b7e50b370 Mon Sep 17 00:00:00 2001
-From: Yuan Yao <yao.yuan-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Date: Wed, 28 Oct 2015 17:41:59 +0800
-Subject: [PATCH] spi: Add DSPI support for layerscape family
+>From e6b5140b706689a38aaeabd9de8fb3e1531cf9cb Mon Sep 17 00:00:00 2001
+From: Felipe Balbi <balbi-l0cyMroinI0@public.gmane.org>
+Date: Thu, 29 Oct 2015 08:57:30 -0500
+Subject: [PATCH] spi: ti-qspi: improve ->remove() callback
 
-LS1043a and LS2080A in the Layerscape family also support DSPI, make
-DSPI selectable for these hardwares.
+there's no need to call pm_runtime_get_sync()
+followed by pm_runtime_put(). We should, instead,
+just call pm_runtime_put_sync() and pm_runtime_disable().
 
-Signed-off-by: Yuan Yao <yao.yuan-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Signed-off-by: Felipe Balbi <balbi-l0cyMroinI0@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-ti-qspi.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 4887f31..bb41bd5 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -304,7 +304,7 @@ config SPI_FSL_SPI
- config SPI_FSL_DSPI
- 	tristate "Freescale DSPI controller"
- 	select REGMAP_MMIO
--	depends on SOC_VF610 || SOC_LS1021A || COMPILE_TEST
-+	depends on SOC_VF610 || SOC_LS1021A || ARCH_LAYERSCAPE || COMPILE_TEST
- 	help
- 	  This enables support for the Freescale DSPI controller in master
- 	  mode. VF610 platform uses the controller.
+diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+index 89cf0c8..432bcc3 100644
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -555,16 +555,7 @@ free_master:
+ 
+ static int ti_qspi_remove(struct platform_device *pdev)
+ {
+-	struct ti_qspi *qspi = platform_get_drvdata(pdev);
+-	int ret;
+-
+-	ret = pm_runtime_get_sync(qspi->dev);
+-	if (ret < 0) {
+-		dev_err(qspi->dev, "pm_runtime_get_sync() failed\n");
+-		return ret;
+-	}
+-
+-	pm_runtime_put(qspi->dev);
++	pm_runtime_put_sync(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+ 
+ 	return 0;
 -- 
 2.6.1
 

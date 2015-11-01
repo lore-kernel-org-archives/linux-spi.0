@@ -1,7 +1,7 @@
 From: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v3 4/7] spi: imx: add function to check for IMX51 family controller
-Date: Sun,  1 Nov 2015 15:41:38 +0100
-Message-ID: <1446388901-6073-5-git-send-email-anton.bondarenko.sama@gmail.com>
+Subject: [PATCH v3 6/7] spi: imx: return error from dma channel request
+Date: Sun,  1 Nov 2015 15:41:40 +0100
+Message-ID: <1446388901-6073-7-git-send-email-anton.bondarenko.sama@gmail.com>
 References: <1446388901-6073-1-git-send-email-anton.bondarenko.sama@gmail.com>
 Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
@@ -15,42 +15,49 @@ List-ID: <linux-spi.vger.kernel.org>
 
 From: Anton Bondarenko <anton_bondarenko-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 
-Similar to other controller type checks add check function for
-IMX51. This also includes IMX53 and IMX6.
+On SDMA initialization return exactly the same error, which is
+reported by dma_request_slave_channel_reason(), it is a preceding
+change to defer SPI DMA initialization, if SDMA module is not yet
+available.
 
+Signed-off-by: Vladimir Zapolskiy <vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 Signed-off-by: Anton Bondarenko <anton_bondarenko-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 ---
- drivers/spi/spi-imx.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/spi/spi-imx.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 06f52c3..48fdfa1 100644
+index dc492e2..6035ddd 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -127,9 +127,14 @@ static inline int is_imx35_cspi(struct spi_imx_data *d)
- 	return d->devtype_data->devtype == IMX35_CSPI;
- }
+@@ -923,18 +923,20 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
+ 	spi_imx->wml = spi_imx_get_fifosize(spi_imx) / 2;
  
-+static inline int is_imx51_ecspi(struct spi_imx_data *d)
-+{
-+	return d->devtype_data->devtype == IMX51_ECSPI;
-+}
-+
- static inline unsigned spi_imx_get_fifosize(struct spi_imx_data *d)
- {
--	return (d->devtype_data->devtype == IMX51_ECSPI) ? 64 : 8;
-+	return is_imx51_ecspi(d) ? 64 : 8;
- }
+ 	/* Prepare for TX DMA: */
+-	master->dma_tx = dma_request_slave_channel(dev, "tx");
+-	if (!master->dma_tx) {
+-		dev_err(dev, "cannot get the TX DMA channel!\n");
+-		ret = -EINVAL;
++	master->dma_tx = dma_request_slave_channel_reason(dev, "tx");
++	if (IS_ERR(master->dma_tx)) {
++		dev_info(dev, "cannot get the TX DMA channel!\n");
++		ret = PTR_ERR(master->dma_tx);
++		master->dma_tx = NULL;
+ 		goto err;
+ 	}
  
- #define MXC_SPI_BUF_RX(type)						\
-@@ -1334,7 +1339,7 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	 * Only validated on i.mx6 now, can remove the constrain if validated on
- 	 * other chips.
- 	 */
--	if (spi_imx->devtype_data == &imx51_ecspi_devtype_data &&
-+	if (is_imx51_ecspi(spi_imx) &&
- 	    spi_imx_sdma_init(&pdev->dev, spi_imx, master))
- 		dev_err(&pdev->dev, "dma setup error,use pio instead\n");
+ 	/* Prepare for RX : */
+-	master->dma_rx = dma_request_slave_channel(dev, "rx");
+-	if (!master->dma_rx) {
+-		dev_dbg(dev, "cannot get the DMA channel.\n");
+-		ret = -EINVAL;
++	master->dma_rx = dma_request_slave_channel_reason(dev, "rx");
++	if (IS_ERR(master->dma_rx)) {
++		dev_info(dev, "cannot get the DMA channel.\n");
++		ret = PTR_ERR(master->dma_rx);
++		master->dma_rx = NULL;
+ 		goto err;
+ 	}
  
 -- 
 2.6.2

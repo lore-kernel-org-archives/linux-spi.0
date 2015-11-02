@@ -1,86 +1,51 @@
-From: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
-Subject: [PATCH v3 5/7] spi: imx: Add support for loopback for ECSPI controllers
-Date: Sun,  1 Nov 2015 15:41:39 +0100
-Message-ID: <1446388901-6073-6-git-send-email-anton.bondarenko.sama@gmail.com>
-References: <1446388901-6073-1-git-send-email-anton.bondarenko.sama@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	vladimir_zapolskiy@mentor.com, jiada_wang@mentor.com,
-	s.hauer@pengutronix.de
-To: broonie@kernel.org, b38343@freescale.com
+From: Marek Vasut <marex@denx.de>
+Subject: Re: [PATCH linux-next 0/4] mtd: spi-nor: fix Quad SPI memory support
+Date: Mon, 2 Nov 2015 02:07:56 +0100
+Message-ID: <201511020207.57031.marex@denx.de>
+References: <cover.1442590224.git.cyrille.pitchen@atmel.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: nicolas.ferre@atmel.com, broonie@kernel.org,
+	linux-spi@vger.kernel.org, dwmw2@infradead.org,
+	computersforpeace@gmail.com, zajec5@gmail.com, beanhuo@micron.com,
+	juhosg@openwrt.org, ben@decadent.org.uk, jogo@openwrt.org,
+	jteki@openedev.com, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	robh+dt@kernel.org, pawel.moll@arm.com, mark.rutland@arm.com,
+	ijc+devicetree@hellion.org.uk, galak@codeaurora.org,
+	linux-mtd@lists.infradead.org
+To: Cyrille Pitchen <cyrille.pitchen@atmel.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1446388901-6073-1-git-send-email-anton.bondarenko.sama@gmail.com>
+In-Reply-To: <cover.1442590224.git.cyrille.pitchen@atmel.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Anton Bondarenko <anton_bondarenko@mentor.com>
+On Friday, September 18, 2015 at 05:49:24 PM, Cyrille Pitchen wrote:
+> Hi all,
 
-Support for ECSPI loopback for IMX51,IMX53 and IMX6Q using TEST register.
+Hi!
 
-Signed-off-by: Mohsin Kazmi <mohsin_kazmi@mentor.com>
-Signed-off-by: Anton Bondarenko <anton_bondarenko@mentor.com>
----
- drivers/spi/spi-imx.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+> this series of patches fixes the QSPI support mostly for Micron and
+> Macronix memories. There are also some updates for Spansion memories.
+> There are also many comments to explain the implementation choices based
+> on the datasheets from memory manufacturers.
+> 
+> The series was backported to a at91-4.1 kernel then tested on a sama5d2
+> xplained board, which embeds a at25df321a memory on a SPI controller and
+> a Micron n25q128a13 QSPI memory on the new Atmel QSPI controller.
+> 
+> The at25 memory was used to check non regression on the m25p80 driver
+> whereas the Micron memory was used to test the fixes of the spi-nor
+> framework. The driver for the Atmel QSPI controller will be sent in a
+> dedicated series.
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 48fdfa1..dc492e2 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -270,6 +270,9 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
- #define MX51_ECSPI_STAT		0x18
- #define MX51_ECSPI_STAT_RR		(1 <<  3)
- 
-+#define MX51_ECSPI_TEST			0x20
-+#define MX51_ECSPI_LOOP			BIT(31)
-+
- /* MX51 eCSPI */
- static unsigned int mx51_ecspi_clkdiv(unsigned int fin, unsigned int fspi,
- 				      unsigned int *fres)
-@@ -343,6 +346,7 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
- 	u32 ctrl = MX51_ECSPI_CTRL_ENABLE, dma = 0;
- 	u32 cfg = readl(spi_imx->base + MX51_ECSPI_CONFIG);
- 	u32 delay;
-+	u32 lpb = 0;
- 
- 	/*
- 	 * The hardware seems to have a race condition when changing modes. The
-@@ -385,6 +389,12 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
- 	writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
- 	writel(cfg, spi_imx->base + MX51_ECSPI_CONFIG);
- 
-+	if (config->mode & SPI_LOOP)
-+		lpb |= MX51_ECSPI_LOOP;
-+
-+	if ((readl(spi_imx->base + MX51_ECSPI_TEST) & MX51_ECSPI_LOOP) != lpb)
-+		writel(lpb, spi_imx->base + MX51_ECSPI_TEST);
-+
- 	/*
- 	 * Wait until the changes in the configuration register CONFIGREG
- 	 * propagate into the hardware. It takes exactly one tick of the
-@@ -1262,6 +1272,9 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	spi_imx = spi_master_get_devdata(master);
- 	spi_imx->bitbang.master = master;
- 
-+	spi_imx->devtype_data = of_id ? of_id->data :
-+		(struct spi_imx_devtype_data *)pdev->id_entry->driver_data;
-+
- 	for (i = 0; i < master->num_chipselect; i++) {
- 		int cs_gpio = of_get_named_gpio(np, "cs-gpios", i);
- 		if (!gpio_is_valid(cs_gpio) && mxc_platform_info)
-@@ -1288,10 +1301,10 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	spi_imx->bitbang.master->unprepare_message = spi_imx_unprepare_message;
- 	spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
- 
--	init_completion(&spi_imx->xfer_done);
-+	if (is_imx51_ecspi(spi_imx))
-+		spi_imx->bitbang.master->mode_bits |= SPI_LOOP;
- 
--	spi_imx->devtype_data = of_id ? of_id->data :
--		(struct spi_imx_devtype_data *) pdev->id_entry->driver_data;
-+	init_completion(&spi_imx->xfer_done);
- 
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	spi_imx->base = devm_ioremap_resource(&pdev->dev, res);
--- 
-2.6.2
+Are there any news on this patch series? I'd like to use that for my own
+QSPI driver (the Cadence one), so I'd like to check on the status. Are you
+still working on this please ?
+
+Thanks!
+
+Best regards,
+Marek Vasut

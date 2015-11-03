@@ -1,92 +1,290 @@
-From: Felipe Balbi <balbi-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH] spi: ti-qspi: improve ->remove() callback
-Date: Mon, 2 Nov 2015 13:25:54 -0600
-Message-ID: <87lhagnqyl.fsf@saruman.tx.rr.com>
-References: <1446127050-5957-1-git-send-email-balbi@ti.com> <563778B8.9060109@ti.com> <87bnbcctsk.fsf@saruman.tx.rr.com> <56378492.702@ti.com> <87si4oo07n.fsf@saruman.tx.rr.com> <5637B74D.5040807@ti.com>
+From: Robin Gong <b38343@freescale.com>
+Subject: Re: [PATCH v3 1/7] spi: imx: Fix DMA transfer
+Date: Tue, 3 Nov 2015 15:08:40 +0800
+Message-ID: <20151103070837.GA15428@shlinux2>
+References: <1446388901-6073-1-git-send-email-anton.bondarenko.sama@gmail.com>
+ <1446388901-6073-2-git-send-email-anton.bondarenko.sama@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-="; micalg=pgp-sha1;
-	protocol="application/pgp-signature"
-Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <5637B74D.5040807-l0cyMroinI0@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Cc: <broonie@kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-spi@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>,
+	<vladimir_zapolskiy@mentor.com>, <jiada_wang@mentor.com>,
+	<s.hauer@pengutronix.de>
+To: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1446388901-6073-2-git-send-email-anton.bondarenko.sama@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
---=-=-=
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-
-
-Hi,
-
-Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org> writes:
-> On 11/02/2015 06:06 PM, Felipe Balbi wrote:
->>=20
->> hi,
->>=20
->> Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org> writes:
->>> On 11/02/2015 05:20 PM, Felipe Balbi wrote:
->>>> Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org> writes:
->>>>
->>>>> On 10/29/2015 03:57 PM, Felipe Balbi wrote:
->>>>>> there's no need to call pm_runtime_get_sync()
->>>>>> followed by pm_runtime_put(). We should, instead,
->>>>>> just call pm_runtime_put_sync() and pm_runtime_disable().
->>>>>
->>>>> Sry, but why do we need to call pm_runtime_put[_sync]() here?
->>>>>
->>>>> My be just pm_runtime_disable() will be ok?
->>>>
->>>> and disable with unbalanced pm_runtime_get() ?
->>>>
->>>
->>> Which one is unbalanced pm_runtime_get()?
->>> There are no  pm_runtime_get() in probe, so there you are
->>> going to introduce unbalanced pm_runtime_put_sync() actually :(
->>=20
->> look at ti_qspi_setup(). I _do_ see, however, that it calls
->> pm_runtime_put_autosuspend() in the same function; what happens if
->> driver is removed after ti_qspi_setup() runs but before
->> put_autosuspend() has time to actually run ?
->>=20
->
-> Seems nothing :) If I understand code in __device_release_driver()
-> right: the .remove() callback will be called after
-> pm_runtime_put_sync() and device should be disabled at this moment.
->
-> Also, note that ti_qspi_setup() will be called for each SPI device
-> attached to SPI master and further PM management of SPI master is
-> performed by SPI core from __spi_pump_messages().
-
-all right, do you want to send a patch fixing it ?
-
-=2D-=20
-balbi
-
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJWN7jDAAoJEIaOsuA1yqRELkMP/ip4cNFTA+5o0q1gCxF0YvVz
-UMZHCJmttB9BY/X6HpNeKNo18JE25bIR0uCoyH3uv2MiIHH4C2uAsthkEE+OY1id
-lyW/i7/G/6LYJtamsIvIllDA40nLyeOGXbKS+Q/Xa/Ibv4JYvFWtfDlLzMBxUPs0
-oLjtCPsORRV8RCOttfHE34c1fGT6dbcgHqk+hSPfhTUHuZHlcKyAwgMJMQY+ZQGF
-T4ZfBIOX7PAeAj5CJGURkpdKlI3zJto4LDgPyi1NAGNnPw60nldMj1cqyqzcyfwE
-tS/lRuivUm6LJXh143G4rPXIuU2GQEWnXQGo2GlCtmkMkNXglN1S+2tcbGKoPrB2
-nbJZyYcwnmwVfUYvybt0JPkOYB+18jtH+/nI0wBUoJynLJFhzXcvovi4YR1yphgX
-8zgWIzP8bmVUe/aWDOfiwwjGoXVdp4o68aTSyhK4ulmxsSol1eFM0GB10d04Htm/
-Xck8HVb6K+OlJJNlB4otu2HuFbS0q3/f3Mzl51wSqGDPJyqgdlE2poCYtR8Mgx/4
-mPg+b51JTdxqjdl7dH4NVQnnK0JPaGiPpb9lGVO+b9sYKuRl8r9uKLWDGuWtAYV8
-oESlBh9AX6PSeEGk0+FIxidhGIxSCFHa5bfP3Q2TALbsAy9oyDc3qPx9VEhuwAIA
-/CMnxgk9T7FiaUhN5hZF
-=Yks2
------END PGP SIGNATURE-----
---=-=-=--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+On Sun, Nov 01, 2015 at 03:41:35PM +0100, Anton Bondarenko wrote:
+> From: Anton Bondarenko <anton_bondarenko@mentor.com>
+> 
+> RX DMA tail data handling doesn't work correctly in many cases with
+> current implementation. It happens because SPI core was setup
+> to generates both RX watermark level and RX DATA TAIL events
+> incorrectly. SPI transfer triggering for DMA also done in wrong way.
+> 
+> SPI client wants to transfer 70 words for example. The old DMA
+> implementation setup RX DATA TAIL equal 6 words. In this case
+> RX DMA event will be generated after 6 words read from RX FIFO.
+> The garbage can be read out from RX FIFO because SPI HW does
+> not receive all required words to trigger RX watermark event.
+> 
+> New implementation change handling of RX data tail. DMA is used to process
+> all TX data and only full chunks of RX data with size aligned to FIFO/2.
+> Driver is waiting until both TX and RX DMA transaction done and all
+> TX data are pushed out. At that moment there is only RX data tail in
+> the RX FIFO. This data read out using PIO.
+> 
+> Transfer triggering changed to avoid RX data loss.
+> 
+> Signed-off-by: Anton Bondarenko <anton_bondarenko@mentor.com>
+> ---
+>  drivers/spi/spi-imx.c | 115 +++++++++++++++++++++++++++++++++-----------------
+>  1 file changed, 76 insertions(+), 39 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+> index 0e5723a..bd7b721 100644
+> --- a/drivers/spi/spi-imx.c
+> +++ b/drivers/spi/spi-imx.c
+> @@ -53,6 +53,7 @@
+>  /* generic defines to abstract from the different register layouts */
+>  #define MXC_INT_RR	(1 << 0) /* Receive data ready interrupt */
+>  #define MXC_INT_TE	(1 << 1) /* Transmit FIFO empty interrupt */
+> +#define MXC_INT_TCEN	BIT(7)   /* Transfer complete */
+>  
+>  /* The maximum  bytes that a sdma BD can transfer.*/
+>  #define MAX_SDMA_BD_BYTES  (1 << 15)
+> @@ -104,9 +105,7 @@ struct spi_imx_data {
+>  	unsigned int dma_is_inited;
+>  	unsigned int dma_finished;
+>  	bool usedma;
+> -	u32 rx_wml;
+> -	u32 tx_wml;
+> -	u32 rxt_wml;
+> +	u32 wml;
+>  	struct completion dma_rx_completion;
+>  	struct completion dma_tx_completion;
+>  
+> @@ -201,9 +200,7 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+>  {
+>  	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
+>  
+> -	if (spi_imx->dma_is_inited
+> -	    && transfer->len > spi_imx->rx_wml * sizeof(u32)
+> -	    && transfer->len > spi_imx->tx_wml * sizeof(u32))
+> +	if (spi_imx->dma_is_inited && transfer->len > spi_imx->wml)
+>  		return true;
+>  	return false;
+>  }
+> @@ -228,6 +225,7 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+>  #define MX51_ECSPI_INT		0x10
+>  #define MX51_ECSPI_INT_TEEN		(1 <<  0)
+>  #define MX51_ECSPI_INT_RREN		(1 <<  3)
+> +#define MX51_ECSPI_INT_TCEN		BIT(7)
+>  
+>  #define MX51_ECSPI_DMA      0x14
+>  #define MX51_ECSPI_DMA_TX_WML_OFFSET	0
+> @@ -292,6 +290,9 @@ static void __maybe_unused mx51_ecspi_intctrl(struct spi_imx_data *spi_imx, int
+>  	if (enable & MXC_INT_RR)
+>  		val |= MX51_ECSPI_INT_RREN;
+>  
+> +	if (enable & MXC_INT_TCEN)
+> +		val |= MX51_ECSPI_INT_TCEN;
+> +
+>  	writel(val, spi_imx->base + MX51_ECSPI_INT);
+>  }
+>  
+> @@ -311,8 +312,9 @@ static void __maybe_unused mx51_ecspi_trigger(struct spi_imx_data *spi_imx)
+>  static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
+>  		struct spi_imx_config *config)
+>  {
+> -	u32 ctrl = MX51_ECSPI_CTRL_ENABLE, cfg = 0, dma = 0;
+> -	u32 tx_wml_cfg, rx_wml_cfg, rxt_wml_cfg;
+> +	u32 ctrl = MX51_ECSPI_CTRL_ENABLE, dma = 0;
+> +	u32 cfg = readl(spi_imx->base + MX51_ECSPI_CONFIG);
+> +
+>  	u32 clk = config->speed_hz, delay;
+>  
+>  	/*
+> @@ -376,19 +378,9 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
+>  	 * and enable DMA request.
+>  	 */
+>  	if (spi_imx->dma_is_inited) {
+> -		dma = readl(spi_imx->base + MX51_ECSPI_DMA);
+> -
+> -		spi_imx->rxt_wml = spi_imx_get_fifosize(spi_imx) / 2;
+> -		rx_wml_cfg = spi_imx->rx_wml << MX51_ECSPI_DMA_RX_WML_OFFSET;
+> -		tx_wml_cfg = spi_imx->tx_wml << MX51_ECSPI_DMA_TX_WML_OFFSET;
+> -		rxt_wml_cfg = spi_imx->rxt_wml << MX51_ECSPI_DMA_RXT_WML_OFFSET;
+> -		dma = (dma & ~MX51_ECSPI_DMA_TX_WML_MASK
+> -			   & ~MX51_ECSPI_DMA_RX_WML_MASK
+> -			   & ~MX51_ECSPI_DMA_RXT_WML_MASK)
+> -			   | rx_wml_cfg | tx_wml_cfg | rxt_wml_cfg
+> -			   |(1 << MX51_ECSPI_DMA_TEDEN_OFFSET)
+> -			   |(1 << MX51_ECSPI_DMA_RXDEN_OFFSET)
+> -			   |(1 << MX51_ECSPI_DMA_RXTDEN_OFFSET);
+> +		dma = (spi_imx->wml - 1) << MX51_ECSPI_DMA_RX_WML_OFFSET
+> +		      | (1 << MX51_ECSPI_DMA_TEDEN_OFFSET)
+> +		      | (1 << MX51_ECSPI_DMA_RXDEN_OFFSET);
+>  
+>  		writel(dma, spi_imx->base + MX51_ECSPI_DMA);
+>  	}
+> @@ -832,6 +824,8 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
+>  	if (of_machine_is_compatible("fsl,imx6dl"))
+>  		return 0;
+>  
+> +	spi_imx->wml = spi_imx_get_fifosize(spi_imx) / 2;
+> +
+>  	/* Prepare for TX DMA: */
+>  	master->dma_tx = dma_request_slave_channel(dev, "tx");
+>  	if (!master->dma_tx) {
+> @@ -843,7 +837,7 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
+>  	slave_config.direction = DMA_MEM_TO_DEV;
+>  	slave_config.dst_addr = res->start + MXC_CSPITXDATA;
+>  	slave_config.dst_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
+> -	slave_config.dst_maxburst = spi_imx_get_fifosize(spi_imx) / 2;
+> +	slave_config.dst_maxburst = spi_imx->wml;
+>  	ret = dmaengine_slave_config(master->dma_tx, &slave_config);
+>  	if (ret) {
+>  		dev_err(dev, "error in TX dma configuration.\n");
+> @@ -861,7 +855,7 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
+>  	slave_config.direction = DMA_DEV_TO_MEM;
+>  	slave_config.src_addr = res->start + MXC_CSPIRXDATA;
+>  	slave_config.src_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
+> -	slave_config.src_maxburst = spi_imx_get_fifosize(spi_imx) / 2;
+> +	slave_config.src_maxburst = spi_imx->wml;
+>  	ret = dmaengine_slave_config(master->dma_rx, &slave_config);
+>  	if (ret) {
+>  		dev_err(dev, "error in RX dma configuration.\n");
+> @@ -874,8 +868,6 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
+>  	master->max_dma_len = MAX_SDMA_BD_BYTES;
+>  	spi_imx->bitbang.master->flags = SPI_MASTER_MUST_RX |
+>  					 SPI_MASTER_MUST_TX;
+> -	spi_imx->tx_wml = spi_imx_get_fifosize(spi_imx) / 2;
+> -	spi_imx->rx_wml = spi_imx_get_fifosize(spi_imx) / 2;
+>  	spi_imx->dma_is_inited = 1;
+>  
+>  	return 0;
+> @@ -904,8 +896,7 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+>  	struct dma_async_tx_descriptor *desc_tx = NULL, *desc_rx = NULL;
+>  	int ret;
+>  	unsigned long timeout;
+> -	u32 dma;
+> -	int left;
+> +	const int left = transfer->len % spi_imx->wml;
+>  	struct spi_master *master = spi_imx->bitbang.master;
+>  	struct sg_table *tx = &transfer->tx_sg, *rx = &transfer->rx_sg;
+>  
+> @@ -922,9 +913,23 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+>  	}
+>  
+>  	if (rx) {
+> +		/* Cut RX data tail */
+> +		const unsigned int old_nents = rx->nents;
+> +
+> +		WARN_ON(sg_dma_len(&rx->sgl[rx->nents - 1]) < left);
+> +		sg_dma_len(&rx->sgl[rx->nents - 1]) -= left;
+> +		if (sg_dma_len(&rx->sgl[rx->nents - 1]) == 0)
+> +			--rx->nents;
+> +
+>  		desc_rx = dmaengine_prep_slave_sg(master->dma_rx,
+>  					rx->sgl, rx->nents, DMA_DEV_TO_MEM,
+>  					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+> +
+> +		/* Restore old SG table state */
+> +		if (old_nents > rx->nents)
+> +			++rx->nents;
+> +		sg_dma_len(&rx->sgl[rx->nents - 1]) += left;
+> +
+>  		if (!desc_rx)
+>  			goto no_dma;
+>  
+> @@ -939,17 +944,18 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+>  	/* Trigger the cspi module. */
+>  	spi_imx->dma_finished = 0;
+>  
+> -	dma = readl(spi_imx->base + MX51_ECSPI_DMA);
+> -	dma = dma & (~MX51_ECSPI_DMA_RXT_WML_MASK);
+> -	/* Change RX_DMA_LENGTH trigger dma fetch tail data */
+> -	left = transfer->len % spi_imx->rxt_wml;
+> -	if (left)
+> -		writel(dma | (left << MX51_ECSPI_DMA_RXT_WML_OFFSET),
+> -				spi_imx->base + MX51_ECSPI_DMA);
+> +	/*
+> +	 * Set these order to avoid potential RX overflow. The overflow may
+> +	 * happen if we enable SPI HW before starting RX DMA due to rescheduling
+> +	 * for another task and/or interrupt.
+> +	 * So RX DMA enabled first to make sure data would be read out from FIFO
+> +	 * ASAP. TX DMA enabled next to start filling TX FIFO with new data.
+> +	 * And finaly SPI HW enabled to start actual data transfer.
+> +	 */
+> +	dma_async_issue_pending(master->dma_rx);
+> +	dma_async_issue_pending(master->dma_tx);
+>  	spi_imx->devtype_data->trigger(spi_imx);
+>  
+> -	dma_async_issue_pending(master->dma_tx);
+> -	dma_async_issue_pending(master->dma_rx);
+>  	/* Wait SDMA to finish the data transfer.*/
+>  	timeout = wait_for_completion_timeout(&spi_imx->dma_tx_completion,
+>  						IMX_DMA_TIMEOUT);
+> @@ -958,6 +964,7 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+>  			dev_driver_string(&master->dev),
+>  			dev_name(&master->dev));
+>  		dmaengine_terminate_all(master->dma_tx);
+> +		dmaengine_terminate_all(master->dma_rx);
+>  	} else {
+>  		timeout = wait_for_completion_timeout(
+>  				&spi_imx->dma_rx_completion, IMX_DMA_TIMEOUT);
+> @@ -967,10 +974,40 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+>  				dev_name(&master->dev));
+>  			spi_imx->devtype_data->reset(spi_imx);
+>  			dmaengine_terminate_all(master->dma_rx);
+> +		} else if (left) {
+> +			void *pio_buffer = transfer->rx_buf
+> +						+ (transfer->len - left);
+> +
+> +			dma_sync_sg_for_cpu(master->dma_rx->device->dev,
+> +					    &rx->sgl[rx->nents - 1], 1,
+> +					    DMA_FROM_DEVICE);
+> +
+> +			spi_imx->rx_buf = pio_buffer;
+> +			spi_imx->txfifo = left;
+> +			reinit_completion(&spi_imx->xfer_done);
+> +
+> +			spi_imx->devtype_data->intctrl(spi_imx, MXC_INT_TCEN);
+> +
+> +			timeout = wait_for_completion_timeout(
+> +					&spi_imx->xfer_done, IMX_DMA_TIMEOUT);
+> +			if (!timeout) {
+> +				pr_warn("%s %s: I/O Error in RX tail\n",
+> +					dev_driver_string(&master->dev),
+> +					dev_name(&master->dev));
+> +			}
+> +
+> +			/*
+> +			 * WARNING: this call will cause DMA debug complains
+> +			 * about wrong combination of DMA direction and sync
+> +			 * function. But we must use it to make sure the data
+> +			 * read by PIO mode will be cleared from CPU cache.
+> +			 * Otherwise SPI core will invalidate it during unmap of
+> +			 * SG buffers.
+> +			 */
+> +			dma_sync_sg_for_device(master->dma_rx->device->dev,
+> +					       &rx->sgl[rx->nents - 1], 1,
+> +					       DMA_TO_DEVICE);
+I think the above dma_sync_sg_for_cpu for reading the last sgl by PIO mode is
+enough, that move the right data into rx_buf which map by SPI core. And why
+'DMA_TO_DEVICE' for rx here?
+>  		}
+> -		writel(dma |
+> -		       spi_imx->rxt_wml << MX51_ECSPI_DMA_RXT_WML_OFFSET,
+> -		       spi_imx->base + MX51_ECSPI_DMA);
+>  	}
+>  
+>  	spi_imx->dma_finished = 1;
+> -- 
+> 2.6.2
+> 

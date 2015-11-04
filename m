@@ -1,60 +1,111 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 2/5] spi: spi-ti-qspi: add mmap mode read support
-Date: Wed, 4 Nov 2015 14:41:12 +0000
-Message-ID: <20151104144112.GJ1717@sirena.org.uk>
-References: <1446545174-14193-1-git-send-email-vigneshr@ti.com>
- <1446545174-14193-3-git-send-email-vigneshr@ti.com>
+From: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v3 1/7] spi: imx: Fix DMA transfer
+Date: Wed, 4 Nov 2015 22:03:47 +0100
+Message-ID: <563A72B3.9010105@gmail.com>
+References: <1446388901-6073-1-git-send-email-anton.bondarenko.sama@gmail.com>
+ <1446388901-6073-2-git-send-email-anton.bondarenko.sama@gmail.com>
+ <20151103070837.GA15428@shlinux2>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="J2uG6jHjFLimDtBY"
-Cc: Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
-	Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org, jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org,
+	s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+To: Robin Gong <b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1446545174-14193-3-git-send-email-vigneshr-l0cyMroinI0@public.gmane.org>
+In-Reply-To: <20151103070837.GA15428@shlinux2>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---J2uG6jHjFLimDtBY
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Tue, Nov 03, 2015 at 03:36:11PM +0530, Vignesh R wrote:
+On 03.11.2015 08:08, Robin Gong wrote:
+> On Sun, Nov 01, 2015 at 03:41:35PM +0100, Anton Bondarenko wrote:
+>> From: Anton Bondarenko <anton_bondarenko-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+>>
+>> RX DMA tail data handling doesn't work correctly in many cases with
+>> current implementation. It happens because SPI core was setup
+>> to generates both RX watermark level and RX DATA TAIL events
+>> incorrectly. SPI transfer triggering for DMA also done in wrong way.
+>>
+>> SPI client wants to transfer 70 words for example. The old DMA
+>> implementation setup RX DATA TAIL equal 6 words. In this case
+>> RX DMA event will be generated after 6 words read from RX FIFO.
+>> The garbage can be read out from RX FIFO because SPI HW does
+>> not receive all required words to trigger RX watermark event.
+>>
+>> New implementation change handling of RX data tail. DMA is used to process
+>> all TX data and only full chunks of RX data with size aligned to FIFO/2.
+>> Driver is waiting until both TX and RX DMA transaction done and all
+>> TX data are pushed out. At that moment there is only RX data tail in
+>> the RX FIFO. This data read out using PIO.
+>>
+>> Transfer triggering changed to avoid RX data loss.
+>>
+>> Signed-off-by: Anton Bondarenko <anton_bondarenko-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+>> ---
+>>   drivers/spi/spi-imx.c | 115 +++++++++++++++++++++++++++++++++-----------------
+>>   1 file changed, 76 insertions(+), 39 deletions(-)
+>>
+>> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+>> @@ -967,10 +974,40 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+>>   				dev_name(&master->dev));
+>>   			spi_imx->devtype_data->reset(spi_imx);
+>>   			dmaengine_terminate_all(master->dma_rx);
+>> +		} else if (left) {
+>> +			void *pio_buffer = transfer->rx_buf
+>> +						+ (transfer->len - left);
+>> +
+>> +			dma_sync_sg_for_cpu(master->dma_rx->device->dev,
+>> +					    &rx->sgl[rx->nents - 1], 1,
+>> +					    DMA_FROM_DEVICE);
+>> +
+>> +			spi_imx->rx_buf = pio_buffer;
+>> +			spi_imx->txfifo = left;
+>> +			reinit_completion(&spi_imx->xfer_done);
+>> +
+>> +			spi_imx->devtype_data->intctrl(spi_imx, MXC_INT_TCEN);
+>> +
+>> +			timeout = wait_for_completion_timeout(
+>> +					&spi_imx->xfer_done, IMX_DMA_TIMEOUT);
+>> +			if (!timeout) {
+>> +				pr_warn("%s %s: I/O Error in RX tail\n",
+>> +					dev_driver_string(&master->dev),
+>> +					dev_name(&master->dev));
+>> +			}
+>> +
+>> +			/*
+>> +			 * WARNING: this call will cause DMA debug complains
+>> +			 * about wrong combination of DMA direction and sync
+>> +			 * function. But we must use it to make sure the data
+>> +			 * read by PIO mode will be cleared from CPU cache.
+>> +			 * Otherwise SPI core will invalidate it during unmap of
+>> +			 * SG buffers.
+>> +			 */
+>> +			dma_sync_sg_for_device(master->dma_rx->device->dev,
+>> +					       &rx->sgl[rx->nents - 1], 1,
+>> +					       DMA_TO_DEVICE);
+> I think the above dma_sync_sg_for_cpu for reading the last sgl by PIO mode is
+> enough, that move the right data into rx_buf which map by SPI core. And why
+> 'DMA_TO_DEVICE' for rx here?
+Actually this is described in comments above the call. So after writing 
+data tail by CPU we must ensure cache content is flushed to RAM. 
+Otherwise SPI core during dma_unmap will invalidate data in the CPU 
+cache and we loose our data tail. I'm able to reproduce this very fast 
+during 20-30 SPI transactions.
+Hope this make things clearer.
 
-> +	ti_qspi_enable_memory_map(spi);
-> +	ti_qspi_setup_mmap_read(spi, read_opcode, addr_width,
-> +				dummy_bytes);
-> +	memcpy_fromio(buf, qspi->mmap_base + from, len);
-> +	*retlen = len;
-> +	ti_qspi_disable_memory_map(spi);
-
-We'll be constantly enabling and disabling memory mapping with this.
-I'm not sure that's a meaningful cost given that it doesn't actually
-remap anything but rather just switches hardware modes, we can always
-optimise it later if it is.
-
---J2uG6jHjFLimDtBY
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJWOhkHAAoJECTWi3JdVIfQrmcH/RSv12IrXq3lgkOLUxuYhAZj
-YOjt8j86vy59wUu+5W/9xdgcAnrL3mOWhJowkBCgY6108OkKhlgxBgnvmqGbQu8V
-Qu2sKe4sPQp/rnajAKPL8epEjegIkeE3mumUKN9tbKxraf8uVVS7thibwPPY0qwm
-m/OFxiu6+9RLHJ+Q1iBXHDV7ePbJU+eRl6+BKaWYMjHfgW9gw8ktZFX6hjnTG0vC
-6FcOCp1kdcgOn5GDwUthIyQOzHqtLv7qL+SkSLEeMdFG12FPyX5sN/k/c0WakBIw
-qC2rWHcTTfRHy/o1XZ/oM6osCtkRBaglWeUpXXVg5KTMZHgONyume4GHLMIVAAc=
-=vwZN
------END PGP SIGNATURE-----
-
---J2uG6jHjFLimDtBY--
+>>   		}
+>> -		writel(dma |
+>> -		       spi_imx->rxt_wml << MX51_ECSPI_DMA_RXT_WML_OFFSET,
+>> -		       spi_imx->base + MX51_ECSPI_DMA);
+>>   	}
+>>
+>>   	spi_imx->dma_finished = 1;
+>> --
+>> 2.6.2
+>>
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

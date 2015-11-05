@@ -1,84 +1,56 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 4/5] ARM: dts: DRA7: add entry for qspi mmap region
-Date: Thu, 5 Nov 2015 10:36:58 -0600
-Message-ID: <20151105163658.GA28885@rob-hp-laptop>
-References: <1446545174-14193-1-git-send-email-vigneshr@ti.com>
- <1446545174-14193-5-git-send-email-vigneshr@ti.com>
+From: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v3 1/7] spi: imx: Fix DMA transfer
+Date: Thu, 5 Nov 2015 17:51:09 +0100
+Message-ID: <563B88FD.8050702@gmail.com>
+References: <1446388901-6073-1-git-send-email-anton.bondarenko.sama@gmail.com>
+ <1446388901-6073-2-git-send-email-anton.bondarenko.sama@gmail.com>
+ <20151105083422.GH8526@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
-	Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org, jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org
+To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1446545174-14193-5-git-send-email-vigneshr-l0cyMroinI0@public.gmane.org>
+In-Reply-To: <20151105083422.GH8526-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Nov 03, 2015 at 03:36:13PM +0530, Vignesh R wrote:
-> Add qspi memory mapped region entries for DRA7xx based SoCs. Also,
-> update the binding documents for the controller to document this change.
-> 
-> Signed-off-by: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+On 05.11.2015 09:34, Sascha Hauer wrote:
+> On Sun, Nov 01, 2015 at 03:41:35PM +0100, Anton Bondarenko wrote:
+>> From: Anton Bondarenko <anton_bondarenko-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+>>
+>> RX DMA tail data handling doesn't work correctly in many cases with
+>> current implementation. It happens because SPI core was setup
+>> to generates both RX watermark level and RX DATA TAIL events
+>> incorrectly. SPI transfer triggering for DMA also done in wrong way.
+>>
+>> SPI client wants to transfer 70 words for example. The old DMA
+>> implementation setup RX DATA TAIL equal 6 words. In this case
+>> RX DMA event will be generated after 6 words read from RX FIFO.
+>> The garbage can be read out from RX FIFO because SPI HW does
+>> not receive all required words to trigger RX watermark event.
+>>
+>> New implementation change handling of RX data tail. DMA is used to process
+>> all TX data and only full chunks of RX data with size aligned to FIFO/2.
+>> Driver is waiting until both TX and RX DMA transaction done and all
+>> TX data are pushed out. At that moment there is only RX data tail in
+>> the RX FIFO. This data read out using PIO.
+>
+> Have you looked at the RX_DMA_LENGTH and RXTDEN fields of the DMA
+> register? These seem to be for handling the remaining bytes of a DMA
+> transfer which do not reach the watermark level. From reading the
+> documentation I haven't really understood how it works though.
+>
+> Sascha
+>
 
-You don't really need an example for every possibility, but
+A lot of times. Current implementation is trying to use it, but works 
+incorrectly if length % WML != 0 (which means RX_DMA_LENGTH == 0).
 
-Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-
-> ---
->  Documentation/devicetree/bindings/spi/ti_qspi.txt | 13 +++++++++++++
->  arch/arm/boot/dts/dra7.dtsi                       |  6 ++++--
->  2 files changed, 17 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/ti_qspi.txt b/Documentation/devicetree/bindings/spi/ti_qspi.txt
-> index 601a360531a5..f05dd631bef1 100644
-> --- a/Documentation/devicetree/bindings/spi/ti_qspi.txt
-> +++ b/Documentation/devicetree/bindings/spi/ti_qspi.txt
-> @@ -26,3 +26,16 @@ qspi: qspi@4b300000 {
->  	spi-max-frequency = <25000000>;
->  	ti,hwmods = "qspi";
->  };
-> +
-> +For dra7xx:
-> +qspi: qspi@4b300000 {
-> +	compatible = "ti,dra7xxx-qspi";
-> +	reg = <0x4b300000 0x100>, <0x4a002558 0x4>,
-> +	      <0x5c000000 0x4000000>;
-> +	reg-names = "qspi_base", "qspi_ctrlmod",
-> +		    "qspi_mmap";
-> +	#address-cells = <1>;
-> +	#size-cells = <0>;
-> +	spi-max-frequency = <48000000>;
-> +	ti,hwmods = "qspi";
-> +};
-> diff --git a/arch/arm/boot/dts/dra7.dtsi b/arch/arm/boot/dts/dra7.dtsi
-> index e289c706d27d..13c2f10ec217 100644
-> --- a/arch/arm/boot/dts/dra7.dtsi
-> +++ b/arch/arm/boot/dts/dra7.dtsi
-> @@ -1108,8 +1108,10 @@
->  
->  		qspi: qspi@4b300000 {
->  			compatible = "ti,dra7xxx-qspi";
-> -			reg = <0x4b300000 0x100>;
-> -			reg-names = "qspi_base";
-> +			reg = <0x4b300000 0x100>, <0x4a002558 0x4>,
-> +			      <0x5c000000 0x4000000>;
-> +			reg-names = "qspi_base", "qspi_ctrlmod",
-> +				    "qspi_mmap";
->  			#address-cells = <1>;
->  			#size-cells = <0>;
->  			ti,hwmods = "qspi";
-> -- 
-> 2.6.2
-> 
-> --
-> To unsubscribe from this list: send the line "unsubscribe devicetree" in
-> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Regards, Anton
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,57 +1,85 @@
-From: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
-Subject: Re: [PATCH v3 7/7] spi: imx: defer spi initialization, if DMA engine
- is pending
-Date: Thu, 5 Nov 2015 17:18:31 +0100
-Message-ID: <563B8157.9030104@gmail.com>
-References: <1446388901-6073-1-git-send-email-anton.bondarenko.sama@gmail.com>
- <1446388901-6073-8-git-send-email-anton.bondarenko.sama@gmail.com>
- <20151105085926.GK8526@pengutronix.de>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2 4/5] ARM: dts: DRA7: add entry for qspi mmap region
+Date: Thu, 5 Nov 2015 10:36:58 -0600
+Message-ID: <20151105163658.GA28885@rob-hp-laptop>
+References: <1446545174-14193-1-git-send-email-vigneshr@ti.com>
+ <1446545174-14193-5-git-send-email-vigneshr@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: broonie@kernel.org, b38343@freescale.com,
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	vladimir_zapolskiy@mentor.com, jiada_wang@mentor.com
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20151105085926.GK8526@pengutronix.de>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
+	Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1446545174-14193-5-git-send-email-vigneshr-l0cyMroinI0@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 05.11.2015 09:59, Sascha Hauer wrote:
-> On Sun, Nov 01, 2015 at 03:41:41PM +0100, Anton Bondarenko wrote:
->> From: Anton Bondarenko <anton_bondarenko@mentor.com>
->>
->> If SPI device supports DMA mode, but DMA controller is not yet
->> available due to e.g. a delay in the corresponding kernel module
->> initialization, retry to initialize SPI driver later on instead of
->> falling back into PIO only mode.
->>
->> Signed-off-by: Vladimir Zapolskiy <vladimir_zapolskiy@mentor.com>
->> Signed-off-by: Anton Bondarenko <anton_bondarenko@mentor.com>
->
-> Ok, so 6/7 is only part of the deferral story. Maybe squash the two
-> patches into one?
->
-> Sascha
+On Tue, Nov 03, 2015 at 03:36:13PM +0530, Vignesh R wrote:
+> Add qspi memory mapped region entries for DRA7xx based SoCs. Also,
+> update the binding documents for the controller to document this change.
+> 
+> Signed-off-by: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
 
-I would like to keep these two changes separately since I have a small 
-concern about this exact change.
+You don't really need an example for every possibility, but
 
-Let's assume such scenario:
-- ECSPI configured to use DMA in device tree and DMA controller 
-description specified. But there is no driver for this controller in kernel.
-In this case dmaengine will always return -EDEFER and driver postpone 
-spi-imx initialization. So finally there will be no SPI support even in 
-PIO mode.
-Or for example spi-imx will be compiled into kernel, but DMA controller 
-driver will be on SPI-NOR based rootfs.
+Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 
-So the question is "Should we allow user to use incorrect combination of 
-kernel configuration and DTS and work at least with some limitation?" Or 
-should we try to guarantee device tree file requirement to use DMA.
-
-Any thoughts?
-
-Regards, Anton
+> ---
+>  Documentation/devicetree/bindings/spi/ti_qspi.txt | 13 +++++++++++++
+>  arch/arm/boot/dts/dra7.dtsi                       |  6 ++++--
+>  2 files changed, 17 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/ti_qspi.txt b/Documentation/devicetree/bindings/spi/ti_qspi.txt
+> index 601a360531a5..f05dd631bef1 100644
+> --- a/Documentation/devicetree/bindings/spi/ti_qspi.txt
+> +++ b/Documentation/devicetree/bindings/spi/ti_qspi.txt
+> @@ -26,3 +26,16 @@ qspi: qspi@4b300000 {
+>  	spi-max-frequency = <25000000>;
+>  	ti,hwmods = "qspi";
+>  };
+> +
+> +For dra7xx:
+> +qspi: qspi@4b300000 {
+> +	compatible = "ti,dra7xxx-qspi";
+> +	reg = <0x4b300000 0x100>, <0x4a002558 0x4>,
+> +	      <0x5c000000 0x4000000>;
+> +	reg-names = "qspi_base", "qspi_ctrlmod",
+> +		    "qspi_mmap";
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +	spi-max-frequency = <48000000>;
+> +	ti,hwmods = "qspi";
+> +};
+> diff --git a/arch/arm/boot/dts/dra7.dtsi b/arch/arm/boot/dts/dra7.dtsi
+> index e289c706d27d..13c2f10ec217 100644
+> --- a/arch/arm/boot/dts/dra7.dtsi
+> +++ b/arch/arm/boot/dts/dra7.dtsi
+> @@ -1108,8 +1108,10 @@
+>  
+>  		qspi: qspi@4b300000 {
+>  			compatible = "ti,dra7xxx-qspi";
+> -			reg = <0x4b300000 0x100>;
+> -			reg-names = "qspi_base";
+> +			reg = <0x4b300000 0x100>, <0x4a002558 0x4>,
+> +			      <0x5c000000 0x4000000>;
+> +			reg-names = "qspi_base", "qspi_ctrlmod",
+> +				    "qspi_mmap";
+>  			#address-cells = <1>;
+>  			#size-cells = <0>;
+>  			ti,hwmods = "qspi";
+> -- 
+> 2.6.2
+> 
+> --
+> To unsubscribe from this list: send the line "unsubscribe devicetree" in
+> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

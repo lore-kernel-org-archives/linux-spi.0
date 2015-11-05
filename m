@@ -1,43 +1,73 @@
-From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: Re: [PATCH v3 6/7] spi: imx: return error from dma channel request
-Date: Thu, 5 Nov 2015 09:56:37 +0100
-Message-ID: <20151105085637.GJ8526@pengutronix.de>
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH v3 7/7] spi: imx: defer spi initialization, if DMA engine
+ is pending
+Date: Thu, 5 Nov 2015 09:59:26 +0100
+Message-ID: <20151105085926.GK8526@pengutronix.de>
 References: <1446388901-6073-1-git-send-email-anton.bondarenko.sama@gmail.com>
- <1446388901-6073-7-git-send-email-anton.bondarenko.sama@gmail.com>
+ <1446388901-6073-8-git-send-email-anton.bondarenko.sama@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org, jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org
-To: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: broonie@kernel.org, b38343@freescale.com,
+	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	vladimir_zapolskiy@mentor.com, jiada_wang@mentor.com
+To: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1446388901-6073-7-git-send-email-anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1446388901-6073-8-git-send-email-anton.bondarenko.sama@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Sun, Nov 01, 2015 at 03:41:40PM +0100, Anton Bondarenko wrote:
-> From: Anton Bondarenko <anton_bondarenko-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+On Sun, Nov 01, 2015 at 03:41:41PM +0100, Anton Bondarenko wrote:
+> From: Anton Bondarenko <anton_bondarenko@mentor.com>
 > 
-> On SDMA initialization return exactly the same error, which is
-> reported by dma_request_slave_channel_reason(), it is a preceding
-> change to defer SPI DMA initialization, if SDMA module is not yet
-> available.
+> If SPI device supports DMA mode, but DMA controller is not yet
+> available due to e.g. a delay in the corresponding kernel module
+> initialization, retry to initialize SPI driver later on instead of
+> falling back into PIO only mode.
+> 
+> Signed-off-by: Vladimir Zapolskiy <vladimir_zapolskiy@mentor.com>
+> Signed-off-by: Anton Bondarenko <anton_bondarenko@mentor.com>
 
-Maybe something like: "fix probe deferral when dmaengine is not yet
-available" in the subject line will better express that this is a patch
-that should be applied ASAP. Also you can move this up to the front of
-the series when resending.
+Ok, so 6/7 is only part of the deferral story. Maybe squash the two
+patches into one?
 
 Sascha
+
+> ---
+>  drivers/spi/spi-imx.c | 12 +++++++++---
+>  1 file changed, 9 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+> index 6035ddd..d2ea731 100644
+> --- a/drivers/spi/spi-imx.c
+> +++ b/drivers/spi/spi-imx.c
+> @@ -1354,9 +1354,15 @@ static int spi_imx_probe(struct platform_device *pdev)
+>  	 * Only validated on i.mx6 now, can remove the constrain if validated on
+>  	 * other chips.
+>  	 */
+> -	if (is_imx51_ecspi(spi_imx) &&
+> -	    spi_imx_sdma_init(&pdev->dev, spi_imx, master))
+> -		dev_err(&pdev->dev, "dma setup error,use pio instead\n");
+> +	if (is_imx51_ecspi(spi_imx)) {
+> +		ret = spi_imx_sdma_init(&pdev->dev, spi_imx, master);
+> +		if (ret == -EPROBE_DEFER)
+> +			goto out_clk_put;
+> +
+> +		if (ret < 0)
+> +			dev_err(&pdev->dev, "dma setup error %d, use pio\n",
+> +				ret);
+> +	}
+>  
+>  	spi_imx->devtype_data->reset(spi_imx);
+>  
+> -- 
+> 2.6.2
+> 
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

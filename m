@@ -1,10 +1,11 @@
 From: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
-Subject: Re: [PATCH v3 6/7] spi: imx: return error from dma channel request
-Date: Thu, 5 Nov 2015 17:00:28 +0100
-Message-ID: <563B7D1C.7010105@gmail.com>
+Subject: Re: [PATCH v3 7/7] spi: imx: defer spi initialization, if DMA engine
+ is pending
+Date: Thu, 5 Nov 2015 17:18:31 +0100
+Message-ID: <563B8157.9030104@gmail.com>
 References: <1446388901-6073-1-git-send-email-anton.bondarenko.sama@gmail.com>
- <1446388901-6073-7-git-send-email-anton.bondarenko.sama@gmail.com>
- <20151105085637.GJ8526@pengutronix.de>
+ <1446388901-6073-8-git-send-email-anton.bondarenko.sama@gmail.com>
+ <20151105085926.GK8526@pengutronix.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Transfer-Encoding: 7bit
@@ -14,31 +15,43 @@ Cc: broonie@kernel.org, b38343@freescale.com,
 	vladimir_zapolskiy@mentor.com, jiada_wang@mentor.com
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20151105085637.GJ8526@pengutronix.de>
+In-Reply-To: <20151105085926.GK8526@pengutronix.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 05.11.2015 09:56, Sascha Hauer wrote:
-> On Sun, Nov 01, 2015 at 03:41:40PM +0100, Anton Bondarenko wrote:
+On 05.11.2015 09:59, Sascha Hauer wrote:
+> On Sun, Nov 01, 2015 at 03:41:41PM +0100, Anton Bondarenko wrote:
 >> From: Anton Bondarenko <anton_bondarenko@mentor.com>
 >>
->> On SDMA initialization return exactly the same error, which is
->> reported by dma_request_slave_channel_reason(), it is a preceding
->> change to defer SPI DMA initialization, if SDMA module is not yet
->> available.
+>> If SPI device supports DMA mode, but DMA controller is not yet
+>> available due to e.g. a delay in the corresponding kernel module
+>> initialization, retry to initialize SPI driver later on instead of
+>> falling back into PIO only mode.
+>>
+>> Signed-off-by: Vladimir Zapolskiy <vladimir_zapolskiy@mentor.com>
+>> Signed-off-by: Anton Bondarenko <anton_bondarenko@mentor.com>
 >
-> Maybe something like: "fix probe deferral when dmaengine is not yet
-> available" in the subject line will better express that this is a patch
-> that should be applied ASAP. Also you can move this up to the front of
-> the series when resending.
+> Ok, so 6/7 is only part of the deferral story. Maybe squash the two
+> patches into one?
 >
 > Sascha
->
 
-This patch itself does not implement deferral for spi-imx if dmaengine 
-not ready. The patch targets 2 things: give a bit more detailed error 
-information of SPI dma slave channel initialization error and provide a 
-basis for the next patch ([PATCH v3 7/7] spi: imx: defer spi 
-initialization, if DMA engine is pending).
+I would like to keep these two changes separately since I have a small 
+concern about this exact change.
+
+Let's assume such scenario:
+- ECSPI configured to use DMA in device tree and DMA controller 
+description specified. But there is no driver for this controller in kernel.
+In this case dmaengine will always return -EDEFER and driver postpone 
+spi-imx initialization. So finally there will be no SPI support even in 
+PIO mode.
+Or for example spi-imx will be compiled into kernel, but DMA controller 
+driver will be on SPI-NOR based rootfs.
+
+So the question is "Should we allow user to use incorrect combination of 
+kernel configuration and DTS and work at least with some limitation?" Or 
+should we try to guarantee device tree file requirement to use DMA.
+
+Any thoughts?
 
 Regards, Anton

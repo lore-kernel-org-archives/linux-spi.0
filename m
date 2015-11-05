@@ -1,55 +1,51 @@
-From: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH v2 2/5] spi: spi-ti-qspi: add mmap mode read support
-Date: Thu, 5 Nov 2015 11:46:09 +0530
-Message-ID: <563AF429.1000406@ti.com>
-References: <1446545174-14193-1-git-send-email-vigneshr@ti.com>
- <1446545174-14193-3-git-send-email-vigneshr@ti.com>
- <20151104144112.GJ1717@sirena.org.uk>
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH v3 1/7] spi: imx: Fix DMA transfer
+Date: Thu, 5 Nov 2015 09:34:22 +0100
+Message-ID: <20151105083422.GH8526@pengutronix.de>
+References: <1446388901-6073-1-git-send-email-anton.bondarenko.sama@gmail.com>
+ <1446388901-6073-2-git-send-email-anton.bondarenko.sama@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-Cc: Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
-	Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20151104144112.GJ1717-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: broonie@kernel.org, b38343@freescale.com,
+	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	vladimir_zapolskiy@mentor.com, jiada_wang@mentor.com
+To: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1446388901-6073-2-git-send-email-anton.bondarenko.sama@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-
-
-On 11/04/2015 08:11 PM, Mark Brown wrote:
-> On Tue, Nov 03, 2015 at 03:36:11PM +0530, Vignesh R wrote:
+On Sun, Nov 01, 2015 at 03:41:35PM +0100, Anton Bondarenko wrote:
+> From: Anton Bondarenko <anton_bondarenko@mentor.com>
 > 
->> +	ti_qspi_enable_memory_map(spi);
->> +	ti_qspi_setup_mmap_read(spi, read_opcode, addr_width,
->> +				dummy_bytes);
->> +	memcpy_fromio(buf, qspi->mmap_base + from, len);
->> +	*retlen = len;
->> +	ti_qspi_disable_memory_map(spi);
+> RX DMA tail data handling doesn't work correctly in many cases with
+> current implementation. It happens because SPI core was setup
+> to generates both RX watermark level and RX DATA TAIL events
+> incorrectly. SPI transfer triggering for DMA also done in wrong way.
 > 
-> We'll be constantly enabling and disabling memory mapping with this.
-> I'm not sure that's a meaningful cost given that it doesn't actually
-> remap anything but rather just switches hardware modes, we can always
-> optimise it later if it is.
+> SPI client wants to transfer 70 words for example. The old DMA
+> implementation setup RX DATA TAIL equal 6 words. In this case
+> RX DMA event will be generated after 6 words read from RX FIFO.
+> The garbage can be read out from RX FIFO because SPI HW does
+> not receive all required words to trigger RX watermark event.
 > 
+> New implementation change handling of RX data tail. DMA is used to process
+> all TX data and only full chunks of RX data with size aligned to FIFO/2.
+> Driver is waiting until both TX and RX DMA transaction done and all
+> TX data are pushed out. At that moment there is only RX data tail in
+> the RX FIFO. This data read out using PIO.
 
-Hmm, I will move the ti_qspi_disable_memory_map() call to
-ti_qspi_start_transfer_one(), so that mmap mode is disabled only when
-normal SPI bus transfer is requested. Further, "mmap_enabled" status
-flag can be used to determine whether mode switch is required or not.
-This should help to overcome enabling and disabling memory mapping
-between successive mmap read requests.
+Have you looked at the RX_DMA_LENGTH and RXTDEN fields of the DMA
+register? These seem to be for handling the remaining bytes of a DMA
+transfer which do not reach the watermark level. From reading the
+documentation I haven't really understood how it works though.
+
+Sascha
 
 -- 
-Regards
-Vignesh
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |

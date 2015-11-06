@@ -1,88 +1,125 @@
-From: Felipe Balbi <balbi@ti.com>
-Subject: Re: [PATCH v2 5/5] ARM: dts: AM4372: add entry for qspi mmap region
-Date: Thu, 5 Nov 2015 23:14:39 -0600
-Message-ID: <878u6b1zgg.fsf@saruman.tx.rr.com>
-References: <1446545174-14193-1-git-send-email-vigneshr@ti.com> <1446545174-14193-6-git-send-email-vigneshr@ti.com> <20151105235124.GA2805@rob-hp-laptop>
+From: Masahiro Yamada <yamada.masahiro-uWyLwvC0a2jby3iVrkZq2A@public.gmane.org>
+Subject: Re: [RFC PATCH 0/7] reset: make RESET_CONTROLLER a select'ed option
+Date: Fri, 6 Nov 2015 14:58:04 +0900
+Message-ID: <CAK7LNARjtTXUNQFDtcqtxUo0c49h_kfNCf-2WZUEFXmttZoFyA@mail.gmail.com>
+References: <1446722128-11961-1-git-send-email-yamada.masahiro@socionext.com>
+	<3770393.BLNOaUSB5Q@wuerfel>
 Mime-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-="; micalg=pgp-sha1;
-	protocol="application/pgp-signature"
-Cc: Mark Brown <broonie@kernel.org>, Tony Lindgren <tony@atomide.com>,
-	Michal Suchanek <hramrach@gmail.com>,
-	Russell King <linux@arm.linux.org.uk>,
-	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-omap@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>,
-	<linux-mtd@lists.infradead.org>, <linux-spi@vger.kernel.org>
-To: Rob Herring <robh@kernel.org>, Vignesh R <vigneshr@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20151105235124.GA2805@rob-hp-laptop>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-arm-kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, kernel-F5mvAk5X5gdBDgjK7y7TUQ@public.gmane.org,
+	David Airlie <airlied-cv59FeDIM0c@public.gmane.org>,
+	Catalin Marinas <catalin.marinas-5wv7dgnIgG8@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Will Deacon <will.deacon-5wv7dgnIgG8@public.gmane.org>,
+	dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org,
+	Patrice Chotard <patrice.chotard-qxv4g6HH51o@public.gmane.org>,
+	Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Benjamin Gaignard <benjamin.gaignard-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
+	Alexandre Courbot <gnurou-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Daniel Lezcano <daniel.lezcano-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	"open list:ARM/Rockchip SoC..." <linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>,
+	Mark Yao <mark.yao-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
+	=?UTF-8?Q?Terje_Bergstr=C3=B6m?= <tbergstrom-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+	Sebastian Hesselbarth <sebastian.hesselbarth-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	Stephen
+To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <3770393.BLNOaUSB5Q@wuerfel>
+Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---=-=-=
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+Hi Arnd,
 
 
-Hi,
 
-Rob Herring <robh@kernel.org> writes:
-> On Tue, Nov 03, 2015 at 03:36:14PM +0530, Vignesh R wrote:
->> Add qspi memory mapped region entries for AM43xx based SoCs. Also,
->> update the binding documents for the controller to document this change.
->>=20
->> Signed-off-by: Vignesh R <vigneshr@ti.com>
+2015-11-05 23:49 GMT+09:00 Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>:
+> On Thursday 05 November 2015 20:15:21 Masahiro Yamada wrote:
+>> When I was implementing a new reset controller for my SoCs,
+>> I struggled to make my sub-menu shown under the reset
+>> controller menu.
+>> I noticed the Kconfig in reset sub-system are screwed up due to two
+>> config options (ARCH_HAS_RESET_CONTROLLER and RESET_CONTROLLER).
+>>
+>> I think only the former should be select'ed by relevant SoCs,
+>> but in fact the latter is also select'ed here and there.
+>> Mixing "select" to a user-configurable option is a mess.
+>>
+>> Finally, I started to wonder whether it could be more simpler?
+>>
+>> The first patch drops ARCH_HAS_RESET_CONTROLLER.
+>> RESET_CONTROLLER should be directly selected by SoCs.
+>>
+>> The rest of this series are minor clean ups in other
+>> sub-systems.
+>> I can postpone them if changes over cross sub-systems
+>> are not preferred.
 >
-> Acked-by: Rob Herring <robh@kernel.org>
+> Thanks a lot for picking up this topic! It has been annoying me
+> for a while and I have submitted an experimental patch some time
+> ago, but not finished it myself.
 >
->> ---
->>  Documentation/devicetree/bindings/spi/ti_qspi.txt | 5 +++--
->>  arch/arm/boot/dts/am4372.dtsi                     | 4 +++-
->>  2 files changed, 6 insertions(+), 3 deletions(-)
->>=20
->> diff --git a/Documentation/devicetree/bindings/spi/ti_qspi.txt b/Documen=
-tation/devicetree/bindings/spi/ti_qspi.txt
->> index f05dd631bef1..05488970060b 100644
->> --- a/Documentation/devicetree/bindings/spi/ti_qspi.txt
->> +++ b/Documentation/devicetree/bindings/spi/ti_qspi.txt
->> @@ -17,9 +17,10 @@ Recommended properties:
->>=20=20
->>  Example:
->>=20=20
->> +For am4372:
->>  qspi: qspi@4b300000 {
->> -	compatible =3D "ti,dra7xxx-qspi";
->> -	reg =3D <0x47900000 0x100>, <0x30000000 0x3ffffff>;
->> +	compatible =3D "ti,am4372-qspi";
->> +	reg =3D <0x47900000 0x100>, <0x30000000 0x4000000>;
->>  	reg-names =3D "qspi_base", "qspi_mmap";
->>  	#address-cells =3D <1>;
->>  	#size-cells =3D <0>;
+> For some reason, I only see a subset of your patches here (patch 1, 4 and 6),
+> so I don't know exactly what you did.
 
-and how does the user for this look like ? Don't you need to give this a
-proper 'ranges' binding ?
+All the patches CCed linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+so you can dig into LKML log or the following patchwork
+https://patchwork.kernel.org/project/LKML/list/
 
-=2D-=20
-balbi
 
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
 
-iQIcBAEBAgAGBQJWPDdAAAoJEIaOsuA1yqREHKEP/R4PUJz+OIvfv6uTsS8vm6Kx
-PBgXBM1N4IcswdRVUHKvm5Zhg8QG+B4PukBdM2Va5kzle2wM3FzBrkx3wedem2Oh
-dUR+56Y8u7+3Iz6pqp0/NhHFGw/8kZdmSAIOaKjt/Q5kDIwWYksA3hZ/6iMRzZ7C
-i6pbSrKRQNCpeyxdL75F6sCfiA9yl1LomWekzZ2/lVzPVCD8Qr7m6xgy6Gu4F+SJ
-/2fjmr3e3x640t9eaqzn2IdQqV9dxjk6AgW/ym1Rq712LAyU+iETYU9zSsRDKdr1
-z1o7Zm6eCXgOVw85nGxdCBwAxzq3JVev5qF6VgMHLUwyUu5NeXFTrUWBil0BB5Or
-6kKCNEVZUWjtacs4EC+03QrAKaEJEyzsMRi2D25X3DALz4hHa5mOhZL1VGeUMlT/
-uvr388oSZfpahC/r5M7GZar+HH+ykz+7g7/qXGTmFeB7cLob8Of3O4MTG46gtT2B
-jFOO47Rg58jN2DYkjQMihZYU6z+R8ZopWR7Lde576XnhBUJYfJna9evT/EKYrPBa
-BCczWGyrCC9NvGutN7Oyv3r/nYd8s1chxyR93U3zTBeWGoLlKV1bRgbY6dEV+I4p
-w6J8p/2HqjrmzAfMLEpogf6u5wxY24ms7d+4Z3wPjmJT3na5l11dywXif8CG/ogN
-LaEsTgEbXyqjE7XxL8yt
-=Vw+s
------END PGP SIGNATURE-----
---=-=-=--
+> For reference, you can find
+> my original patch below. Please check if I did things that your
+> series doesn't do, and whether those are still needed.
+
+Thanks.
+
+Yours looks mostly nice, and this work is worth continuing.
+(I am pleased to review it when you submit the next version.)
+
+I have some comments.
+
+[1]
+Why is ARCH_HAS_RESET_CONTROLLER select'ed by
+ARCH_MULTIPLATFORM, but not by others?
+This seems weird.
+
+We do not have such options like
+  ARCH_HAS_PINCTRL,  ARCH_HAS_COMMON_CLK...
+
+
+[2]
+The difference is that yours is adding per-driver options such as
+RESET_SOCFPGA, RESET_BERLIN, etc.
+I think this is a good idea.
+
+But, I notice lowlevel drivers select RESET_CONTROLLER,
+for example, RESET_SOCFPGA select RESET_CONTROLLER.
+
+We generally do the opposite in other subsystems, I think.
+
+
+For example, the whole of clk menu is guarded by "depends on COMMON_CLK".
+
+menu "Common Clock Framework"
+         depends on COMMON_CLK
+
+     <bunch of low-level drivers>
+
+endmenu
+
+
+Likewise for pinctrl.
+
+
+
+
+
+-- 
+Best Regards
+Masahiro Yamada

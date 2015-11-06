@@ -1,65 +1,64 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [RFC PATCH 2/7] spi: sunxi: remove redundant "depends on
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [RFC PATCH 3/7] spi: tegra: remove redundant "depends on
  RESET_CONTROLLER"
-Date: Fri, 6 Nov 2015 10:21:53 +0000
-Message-ID: <20151106102153.GW18409@sirena.org.uk>
+Date: Fri, 6 Nov 2015 10:22:37 +0000
+Message-ID: <20151106102237.GX18409@sirena.org.uk>
 References: <1446722128-11961-1-git-send-email-yamada.masahiro@socionext.com>
- <1446722128-11961-3-git-send-email-yamada.masahiro@socionext.com>
- <20151105112847.GA18409@sirena.org.uk>
- <CAK7LNAQsFTKhnUCUVkZXudjKjPc9rbA8ERWeq4hw8RqPnbRihA@mail.gmail.com>
- <20151105122038.GF18409@sirena.org.uk>
- <CAK7LNASkXUb-S-MzmaA6KxJbnAPKnLbYvH8KtHPb=fzUrPK2ng@mail.gmail.com>
- <20151105150529.GN18409@sirena.org.uk>
- <CAK7LNASRqcXsyNdjJZSmfzCRCH9xc+moy_7bgeiis3T47tCMyA@mail.gmail.com>
+ <1446722128-11961-4-git-send-email-yamada.masahiro@socionext.com>
+ <20151105115030.GB18409@sirena.org.uk>
+ <CAK7LNAR6Mx4+E-8W5weSN2MyAgkMy6MFMxRQEDvrDftCW92ixw@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="7kW37LRKoI6fR2de"
-Cc: Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Philipp Zabel <p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Masahiro Yamada <yamada.masahiro-uWyLwvC0a2jby3iVrkZq2A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="Weqbz6OltVu8XOAh"
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	linux-spi@vger.kernel.org
+To: Masahiro Yamada <yamada.masahiro@socionext.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CAK7LNASRqcXsyNdjJZSmfzCRCH9xc+moy_7bgeiis3T47tCMyA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <CAK7LNAR6Mx4+E-8W5weSN2MyAgkMy6MFMxRQEDvrDftCW92ixw@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---7kW37LRKoI6fR2de
+--Weqbz6OltVu8XOAh
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Nov 06, 2015 at 03:00:04PM +0900, Masahiro Yamada wrote:
-> 2015-11-06 0:05 GMT+09:00 Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>:
+On Fri, Nov 06, 2015 at 03:02:57PM +0900, Masahiro Yamada wrote:
+> 2015-11-05 20:50 GMT+09:00 Mark Brown <broonie@kernel.org>:
+> > On Thu, Nov 05, 2015 at 08:15:24PM +0900, Masahiro Yamada wrote:
+> >> ARCH_TEGRA selects RESET_CONTROLLER.
+> >> The dependency "depends on RESET_CONTROLLER" is already met.
 
-> > Your changelog needs to say this clearly, right now what it's saying
-> > clearly doesn't correspond to what the change does.
+> >>       tristate "NVIDIA Tegra114 SPI Controller"
+> >>       depends on (ARCH_TEGRA && TEGRA20_APB_DMA) || COMPILE_TEST
+> >> -     depends on RESET_CONTROLLER && HAS_DMA
+> >> +     depends on HAS_DMA
 
-> OK.
+> > Again, this driver doesn't depend on ARCH_TEGRA.
 
-> This series is RFC and my main focus in on the 1/7.
-> I will wait for more comments against the first one.
+> How come?
 
-You didn't send that patch to most of the recipients so I've no idea
-what that is...
+> Sorry, I have not been tracking this sub-system,
+> so I do not get the "Again".
 
---7kW37LRKoI6fR2de
+It's the same issue as your previous patch - there's an || COMPILE_TEST
+in there.
+
+--Weqbz6OltVu8XOAh
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJWPH9AAAoJECTWi3JdVIfQgxMH/idq+2yWjWeziOx8VwmBSoXD
-wFBozrKVaau4I6SntFT46zDB20NheR17UQdTIWiBw9TIE+OXhEDJio/NWYH3P5ZH
-1CzmrKU2hlUVjNfdGQAMIIhPXL10tlq3IBcRPcr5hFJfe90ljjBxIkKGgoz3E+2h
-EvgA5u9bPS6deb3t8rjHYmMyzfUrM9O4phC9wtq+dEpYB4hsTTFGLIb+89w0fIcQ
-M+ADvgv1LKP/IO5ethSjf5Te3CBH2ZjE1B4Di5rumeZJq8kc4bTvY/HPJMHid+qh
-d9SF6EP7psF+WhKOgrOjYzjgQB71LZulV+M5YK/GlHrAZ5LrNBR1g73cawa21ng=
-=col7
+iQEcBAEBCAAGBQJWPH9sAAoJECTWi3JdVIfQnogH/A0PKsHEPvf1ISM9tCP0IVrK
+7IoFMNKmEoQxCqFeesoBhPTLFKcpov4qkqNKn5uBykq5bO/AjlbCiVF4VJ+5jMz1
+xyrqHp3KhwOwFs6HO0QngDuZRq0SCVL5HXvAYqkHBgZ8W6Cx0LDHE9SR5ZVC/gcP
+qYBH4dp6RsIxBZu9/GpMibRFZCfT2dIFVYcbBO7sl8Gr3UqpCsSUkl6kbHi5Gyxd
+il0I1npTTnOXn7Ow+DiN4UDzqblQBQ2VpuuvYHn2dIiEOiukXUz5xjiegnJ0sYf3
+Kmv65MKGMjOt+d6ki8holWhAHiyG19wtVDdKZk2M1raXGsGhDVB5Kj3rqBH4fQ0=
+=VFyR
 -----END PGP SIGNATURE-----
 
---7kW37LRKoI6fR2de--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--Weqbz6OltVu8XOAh--

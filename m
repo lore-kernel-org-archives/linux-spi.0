@@ -1,14 +1,10 @@
 From: Masahiro Yamada <yamada.masahiro-uWyLwvC0a2jby3iVrkZq2A@public.gmane.org>
-Subject: Re: [RFC PATCH 2/7] spi: sunxi: remove redundant "depends on RESET_CONTROLLER"
-Date: Fri, 6 Nov 2015 15:00:04 +0900
-Message-ID: <CAK7LNASRqcXsyNdjJZSmfzCRCH9xc+moy_7bgeiis3T47tCMyA@mail.gmail.com>
+Subject: Re: [RFC PATCH 3/7] spi: tegra: remove redundant "depends on RESET_CONTROLLER"
+Date: Fri, 6 Nov 2015 15:02:57 +0900
+Message-ID: <CAK7LNAR6Mx4+E-8W5weSN2MyAgkMy6MFMxRQEDvrDftCW92ixw@mail.gmail.com>
 References: <1446722128-11961-1-git-send-email-yamada.masahiro@socionext.com>
-	<1446722128-11961-3-git-send-email-yamada.masahiro@socionext.com>
-	<20151105112847.GA18409@sirena.org.uk>
-	<CAK7LNAQsFTKhnUCUVkZXudjKjPc9rbA8ERWeq4hw8RqPnbRihA@mail.gmail.com>
-	<20151105122038.GF18409@sirena.org.uk>
-	<CAK7LNASkXUb-S-MzmaA6KxJbnAPKnLbYvH8KtHPb=fzUrPK2ng@mail.gmail.com>
-	<20151105150529.GN18409@sirena.org.uk>
+	<1446722128-11961-4-git-send-email-yamada.masahiro@socionext.com>
+	<20151105115030.GB18409@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Cc: Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
@@ -16,26 +12,33 @@ Cc: Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20151105150529.GN18409-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <20151105115030.GB18409-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-2015-11-06 0:05 GMT+09:00 Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>:
-> On Thu, Nov 05, 2015 at 09:32:15PM +0900, Masahiro Yamada wrote:
+2015-11-05 20:50 GMT+09:00 Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>:
+> On Thu, Nov 05, 2015 at 08:15:24PM +0900, Masahiro Yamada wrote:
+>> ARCH_TEGRA selects RESET_CONTROLLER.
+>> The dependency "depends on RESET_CONTROLLER" is already met.
 >
->> For compile test, right, "depends on RESET_CONTROLLER" is
->> redundant in the first place.
+>>       tristate "NVIDIA Tegra114 SPI Controller"
+>>       depends on (ARCH_TEGRA && TEGRA20_APB_DMA) || COMPILE_TEST
+>> -     depends on RESET_CONTROLLER && HAS_DMA
+>> +     depends on HAS_DMA
 >
->> For run-time on real SoCs,the driver failed at the following point
->> without the reset-controller sub-system.
->
-> Your changelog needs to say this clearly, right now what it's saying
-> clearly doesn't correspond to what the change does.
+> Again, this driver doesn't depend on ARCH_TEGRA.
 
-OK.
+How come?
 
-This series is RFC and my main focus in on the 1/7.
-I will wait for more comments against the first one.
+Sorry, I have not been tracking this sub-system,
+so I do not get the "Again".
+
+
+The prompt says "NVIDIA Tegra114 SPI Controller".
+
+It sounds natural for me that this driver depends on ARCH_TEGRA.
+No?
+
 
 
 -- 

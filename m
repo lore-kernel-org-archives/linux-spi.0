@@ -1,78 +1,80 @@
-From: Vignesh R <vigneshr@ti.com>
-Subject: Re: [PATCH v2 5/5] ARM: dts: AM4372: add entry for qspi mmap region
-Date: Fri, 6 Nov 2015 17:51:10 +0530
-Message-ID: <563C9B36.3010107@ti.com>
-References: <1446545174-14193-1-git-send-email-vigneshr@ti.com>
- <1446545174-14193-6-git-send-email-vigneshr@ti.com>
- <20151105235124.GA2805@rob-hp-laptop> <878u6b1zgg.fsf@saruman.tx.rr.com>
+From: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: sun4i: allow transfers to set transmission speed
+Date: Sat,  7 Nov 2015 23:41:05 +0100
+Message-ID: <1446936065-15868-1-git-send-email-mweseloh42@gmail.com>
+Reply-To: mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie@kernel.org>, Tony Lindgren <tony@atomide.com>,
-	Michal Suchanek <hramrach@gmail.com>,
-	Russell King <linux@arm.linux.org.uk>,
-	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-omap@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>,
-	<linux-mtd@lists.infradead.org>, <linux-spi@vger.kernel.org>
-To: Felipe Balbi <balbi@ti.com>, Rob Herring <robh@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <878u6b1zgg.fsf@saruman.tx.rr.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org,
+	Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Return-path: <linux-sunxi+bncBDFO74UEV4IRBIH47GYQKGQEZ6KDO7A-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <http://groups.google.com/group/linux-sunxi
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+ <http://groups.google.com/group/linux-sunxi/subscribe>
 List-Id: linux-spi.vger.kernel.org
 
+Allow transfers to set the transmission speed, only fall back to
+board max_speed_hz if requested speed is not set or invalid.
 
+Signed-off-by: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi-sun4i.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-On 11/06/2015 10:44 AM, Felipe Balbi wrote:
-> 
-> Hi,
-> 
-> Rob Herring <robh@kernel.org> writes:
->> On Tue, Nov 03, 2015 at 03:36:14PM +0530, Vignesh R wrote:
->>> Add qspi memory mapped region entries for AM43xx based SoCs. Also,
->>> update the binding documents for the controller to document this change.
->>>
->>> Signed-off-by: Vignesh R <vigneshr@ti.com>
->>
->> Acked-by: Rob Herring <robh@kernel.org>
->>
->>> ---
->>>  Documentation/devicetree/bindings/spi/ti_qspi.txt | 5 +++--
->>>  arch/arm/boot/dts/am4372.dtsi                     | 4 +++-
->>>  2 files changed, 6 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/Documentation/devicetree/bindings/spi/ti_qspi.txt b/Documentation/devicetree/bindings/spi/ti_qspi.txt
->>> index f05dd631bef1..05488970060b 100644
->>> --- a/Documentation/devicetree/bindings/spi/ti_qspi.txt
->>> +++ b/Documentation/devicetree/bindings/spi/ti_qspi.txt
->>> @@ -17,9 +17,10 @@ Recommended properties:
->>>  
->>>  Example:
->>>  
->>> +For am4372:
->>>  qspi: qspi@4b300000 {
->>> -	compatible = "ti,dra7xxx-qspi";
->>> -	reg = <0x47900000 0x100>, <0x30000000 0x3ffffff>;
->>> +	compatible = "ti,am4372-qspi";
->>> +	reg = <0x47900000 0x100>, <0x30000000 0x4000000>;
->>>  	reg-names = "qspi_base", "qspi_mmap";
->>>  	#address-cells = <1>;
->>>  	#size-cells = <0>;
-> 
-> and how does the user for this look like ? Don't you need to give this a
-> proper 'ranges' binding ?
-> 
-
-
-There are no other users of qspi_mmap region except ti-qspi driver itself:
-In probe:
-	res_mmap = platform_get_resource_byname(pdev,
-			IORESOURCE_MEM, "qspi_mmap");
-	qspi->mmap_base = devm_ioremap_resource(&pdev->dev, res_mmap);
-
-and for reading from mmap region:
-	memcpy_fromio(buf, qspi->mmap_base + from, len);
-
+diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
+index fbb0a4d..0630691 100644
+--- a/drivers/spi/spi-sun4i.c
++++ b/drivers/spi/spi-sun4i.c
+@@ -173,6 +173,7 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
+ 	unsigned int tx_len = 0;
+ 	int ret = 0;
+ 	u32 reg;
++	u32 speed;
+ 
+ 	/* We don't support transfer larger than the FIFO */
+ 	if (tfr->len > SUN4I_FIFO_DEPTH)
+@@ -227,10 +228,16 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
+ 
+ 	sun4i_spi_write(sspi, SUN4I_CTL_REG, reg);
+ 
++	/* Transfer speed setup with fallback to board max_speed_hz */
++	if (tfr->speed_hz > 0 && tfr->speed_hz <= spi->max_speed_hz)
++		speed = tfr->speed_hz;
++	else
++		speed = spi->max_speed_hz;
++
+ 	/* Ensure that we have a parent clock fast enough */
+ 	mclk_rate = clk_get_rate(sspi->mclk);
+-	if (mclk_rate < (2 * spi->max_speed_hz)) {
+-		clk_set_rate(sspi->mclk, 2 * spi->max_speed_hz);
++	if (mclk_rate < (2 * speed)) {
++		clk_set_rate(sspi->mclk, 2 * speed);
+ 		mclk_rate = clk_get_rate(sspi->mclk);
+ 	}
+ 
+@@ -248,14 +255,14 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
+ 	 * First try CDR2, and if we can't reach the expected
+ 	 * frequency, fall back to CDR1.
+ 	 */
+-	div = mclk_rate / (2 * spi->max_speed_hz);
++	div = mclk_rate / (2 * speed);
+ 	if (div <= (SUN4I_CLK_CTL_CDR2_MASK + 1)) {
+ 		if (div > 0)
+ 			div--;
+ 
+ 		reg = SUN4I_CLK_CTL_CDR2(div) | SUN4I_CLK_CTL_DRS;
+ 	} else {
+-		div = ilog2(mclk_rate) - ilog2(spi->max_speed_hz);
++		div = ilog2(mclk_rate) - ilog2(speed);
+ 		reg = SUN4I_CLK_CTL_CDR1(div);
+ 	}
+ 
 -- 
-Regards
-Vignesh
+1.9.1

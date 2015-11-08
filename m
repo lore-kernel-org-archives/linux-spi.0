@@ -1,21 +1,19 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: sun4i: allow transfers to set
+From: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v2] spi: sun4i: allow transfers to set
  transmission speed
-Date: Sun, 8 Nov 2015 10:44:28 +0000
-Message-ID: <20151108104428.GD6746@sirena.org.uk>
-References: <1446936065-15868-1-git-send-email-mweseloh42@gmail.com>
- <20151108093515.GB6746@sirena.org.uk>
- <CAGNoLaNR8av48D7T4XNt9KcdDuD0xYiC2O3f8qCSK8K5CntCCg@mail.gmail.com>
-Reply-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Date: Sun,  8 Nov 2015 12:03:23 +0100
+Message-ID: <1446980603-27435-1-git-send-email-mweseloh42@gmail.com>
+References: <CAGNoLaMc5s1tufp+RPGRmyHKejkdgFgbz9Gc+RU2KXHByZJM5Q@mail.gmail.com>
+Reply-To: mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="tEFtbjk+mNEviIIX"
-Cc: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-To: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-sunxi+bncBDQ2L75W5QGBBHOP7SYQKGQEW3AZ5UY-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAGNoLaNR8av48D7T4XNt9KcdDuD0xYiC2O3f8qCSK8K5CntCCg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org,
+	Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Return-path: <linux-sunxi+bncBDFO74UEV4IRBDGY7SYQKGQE26MC43I-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+In-Reply-To: <CAGNoLaMc5s1tufp+RPGRmyHKejkdgFgbz9Gc+RU2KXHByZJM5Q-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
 List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
 List-Archive: <http://groups.google.com/group/linux-sunxi
@@ -25,28 +23,84 @@ List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39
  <http://groups.google.com/group/linux-sunxi/subscribe>
 List-Id: linux-spi.vger.kernel.org
 
---tEFtbjk+mNEviIIX
-Content-Type: text/plain; charset=UTF-8
-Content-Disposition: inline
+Allow transfers to set the transmission speed rather than using the
+device max_speed_hz value. The SPI core makes sure that the speed_hz
+value is always set on the transfer.
 
-On Sun, Nov 08, 2015 at 11:13:33AM +0100, Marcus Weseloh wrote:
-> 2015-11-08 10:35 GMT+01:00 Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>:
+Signed-off-by: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+Changes from v1:
+  * Remove fallback to spi->max_speed_hz and sanity checks (as requested
+    by Mark Brown)
+  * Also patch identical code in sun6i-spi.c
+---
+ drivers/spi/spi-sun4i.c | 8 ++++----
+ drivers/spi/spi-sun6i.c | 8 ++++----
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-> > This is not needed, the core will always ensure that the transfer speed
-> > is set per on each transfer.
-
-> Ah, so we could always use tfr->speed_hz and completely ignore the
-> spi->max_speed_hz for the clock calculations, correct?
-
-Yes.
-
-> I did notice however, that the SPI system doesn't validate the
-> speed_hz value. So if I leave out the above quoted sanity checking,
-> then tfr->speed_hz could also contain values like -400, which trips up
-> the spi system in such a way that I could only repair with a reboot. I
-> was testing this with spidev... so maybe spidev should be patched to
-> check the speed value for validity?
-
-No, why would it make sense to have this validation in spidev - it's
-just one SPI device.  It's better to add the validation to the SPI core.
---tEFtbjk+mNEviIIX--
+diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
+index fbb0a4d..f60a6d6 100644
+--- a/drivers/spi/spi-sun4i.c
++++ b/drivers/spi/spi-sun4i.c
+@@ -229,8 +229,8 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
+ 
+ 	/* Ensure that we have a parent clock fast enough */
+ 	mclk_rate = clk_get_rate(sspi->mclk);
+-	if (mclk_rate < (2 * spi->max_speed_hz)) {
+-		clk_set_rate(sspi->mclk, 2 * spi->max_speed_hz);
++	if (mclk_rate < (2 * tfr->speed_hz)) {
++		clk_set_rate(sspi->mclk, 2 * tfr->speed_hz);
+ 		mclk_rate = clk_get_rate(sspi->mclk);
+ 	}
+ 
+@@ -248,14 +248,14 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
+ 	 * First try CDR2, and if we can't reach the expected
+ 	 * frequency, fall back to CDR1.
+ 	 */
+-	div = mclk_rate / (2 * spi->max_speed_hz);
++	div = mclk_rate / (2 * tfr->speed_hz);
+ 	if (div <= (SUN4I_CLK_CTL_CDR2_MASK + 1)) {
+ 		if (div > 0)
+ 			div--;
+ 
+ 		reg = SUN4I_CLK_CTL_CDR2(div) | SUN4I_CLK_CTL_DRS;
+ 	} else {
+-		div = ilog2(mclk_rate) - ilog2(spi->max_speed_hz);
++		div = ilog2(mclk_rate) - ilog2(tfr->speed_hz);
+ 		reg = SUN4I_CLK_CTL_CDR1(div);
+ 	}
+ 
+diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
+index ac48f59..42e2c4b 100644
+--- a/drivers/spi/spi-sun6i.c
++++ b/drivers/spi/spi-sun6i.c
+@@ -217,8 +217,8 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
+ 
+ 	/* Ensure that we have a parent clock fast enough */
+ 	mclk_rate = clk_get_rate(sspi->mclk);
+-	if (mclk_rate < (2 * spi->max_speed_hz)) {
+-		clk_set_rate(sspi->mclk, 2 * spi->max_speed_hz);
++	if (mclk_rate < (2 * tfr->speed_hz)) {
++		clk_set_rate(sspi->mclk, 2 * tfr->speed_hz);
+ 		mclk_rate = clk_get_rate(sspi->mclk);
+ 	}
+ 
+@@ -236,14 +236,14 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
+ 	 * First try CDR2, and if we can't reach the expected
+ 	 * frequency, fall back to CDR1.
+ 	 */
+-	div = mclk_rate / (2 * spi->max_speed_hz);
++	div = mclk_rate / (2 * tfr->speed_hz);
+ 	if (div <= (SUN6I_CLK_CTL_CDR2_MASK + 1)) {
+ 		if (div > 0)
+ 			div--;
+ 
+ 		reg = SUN6I_CLK_CTL_CDR2(div) | SUN6I_CLK_CTL_DRS;
+ 	} else {
+-		div = ilog2(mclk_rate) - ilog2(spi->max_speed_hz);
++		div = ilog2(mclk_rate) - ilog2(tfr->speed_hz);
+ 		reg = SUN6I_CLK_CTL_CDR1(div);
+ 	}
+ 
+-- 
+1.9.1

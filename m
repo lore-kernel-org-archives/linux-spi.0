@@ -1,106 +1,89 @@
-From: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v2] spi: sun4i: allow transfers to set
- transmission speed
-Date: Sun,  8 Nov 2015 12:03:23 +0100
-Message-ID: <1446980603-27435-1-git-send-email-mweseloh42@gmail.com>
-References: <CAGNoLaMc5s1tufp+RPGRmyHKejkdgFgbz9Gc+RU2KXHByZJM5Q@mail.gmail.com>
-Reply-To: mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: Nicolas Boichat <drinkcat-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: [PATCH v2] spi: mediatek: single device does not require cs_gpios
+Date: Mon,  9 Nov 2015 12:14:51 +0800
+Message-ID: <1447042491-1199-1-git-send-email-drinkcat@chromium.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org,
-	Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Return-path: <linux-sunxi+bncBDFO74UEV4IRBDGY7SYQKGQE26MC43I-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-In-Reply-To: <CAGNoLaMc5s1tufp+RPGRmyHKejkdgFgbz9Gc+RU2KXHByZJM5Q-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <http://groups.google.com/group/linux-sunxi
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
- <http://groups.google.com/group/linux-sunxi/subscribe>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+ linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+ Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+ linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-mediatek-bounces+glpam-linux-mediatek=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mediatek>,
+ <mailto:linux-mediatek-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mediatek/>
+List-Post: <mailto:linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+List-Help: <mailto:linux-mediatek-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mediatek>,
+ <mailto:linux-mediatek-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
+Sender: "Linux-mediatek" <linux-mediatek-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Errors-To: linux-mediatek-bounces+glpam-linux-mediatek=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Allow transfers to set the transmission speed rather than using the
-device max_speed_hz value. The SPI core makes sure that the speed_hz
-value is always set on the transfer.
+When only one device is present, it is not necessary to specify
+cs_gpios, as the CS line can be controlled by the hardware
+module.
 
-Signed-off-by: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
-Changes from v1:
-  * Remove fallback to spi->max_speed_hz and sanity checks (as requested
-    by Mark Brown)
-  * Also patch identical code in sun6i-spi.c
----
- drivers/spi/spi-sun4i.c | 8 ++++----
- drivers/spi/spi-sun6i.c | 8 ++++----
- 2 files changed, 8 insertions(+), 8 deletions(-)
+Without this patch, older device tree bindings used before
+37457607 "spi: mediatek: mt8173 spi multiple devices support"
+would cause a panic on boot. This fixes the crash, and
+re-introduces backward compatibility.
 
-diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
-index fbb0a4d..f60a6d6 100644
---- a/drivers/spi/spi-sun4i.c
-+++ b/drivers/spi/spi-sun4i.c
-@@ -229,8 +229,8 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
+Signed-off-by: Nicolas Boichat <drinkcat-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+---
+
+v2: Use gpio_is_valid()
+
+Applies on top of broonie/spi.git/for-next.
+
+ drivers/spi/spi-mt65xx.c | 26 ++++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index 563954a..7840067 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -410,7 +410,7 @@ static int mtk_spi_setup(struct spi_device *spi)
+ 	if (!spi->controller_data)
+ 		spi->controller_data = (void *)&mtk_default_chip_info;
  
- 	/* Ensure that we have a parent clock fast enough */
- 	mclk_rate = clk_get_rate(sspi->mclk);
--	if (mclk_rate < (2 * spi->max_speed_hz)) {
--		clk_set_rate(sspi->mclk, 2 * spi->max_speed_hz);
-+	if (mclk_rate < (2 * tfr->speed_hz)) {
-+		clk_set_rate(sspi->mclk, 2 * tfr->speed_hz);
- 		mclk_rate = clk_get_rate(sspi->mclk);
+-	if (mdata->dev_comp->need_pad_sel)
++	if (mdata->dev_comp->need_pad_sel && gpio_is_valid(spi->cs_gpio))
+ 		gpio_direction_output(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
+ 
+ 	return 0;
+@@ -632,13 +632,23 @@ static int mtk_spi_probe(struct platform_device *pdev)
+ 			goto err_put_master;
+ 		}
+ 
+-		for (i = 0; i < master->num_chipselect; i++) {
+-			ret = devm_gpio_request(&pdev->dev, master->cs_gpios[i],
+-						dev_name(&pdev->dev));
+-			if (ret) {
+-				dev_err(&pdev->dev,
+-					"can't get CS GPIO %i\n", i);
+-				goto err_put_master;
++		if (!master->cs_gpios && master->num_chipselect > 1) {
++			dev_err(&pdev->dev,
++				"cs_gpios not specified and num_chipselect > 1\n");
++			ret = -EINVAL;
++			goto err_put_master;
++		}
++
++		if (master->cs_gpios) {
++			for (i = 0; i < master->num_chipselect; i++) {
++				ret = devm_gpio_request(&pdev->dev,
++							master->cs_gpios[i],
++							dev_name(&pdev->dev));
++				if (ret) {
++					dev_err(&pdev->dev,
++						"can't get CS GPIO %i\n", i);
++					goto err_put_master;
++				}
+ 			}
+ 		}
  	}
- 
-@@ -248,14 +248,14 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
- 	 * First try CDR2, and if we can't reach the expected
- 	 * frequency, fall back to CDR1.
- 	 */
--	div = mclk_rate / (2 * spi->max_speed_hz);
-+	div = mclk_rate / (2 * tfr->speed_hz);
- 	if (div <= (SUN4I_CLK_CTL_CDR2_MASK + 1)) {
- 		if (div > 0)
- 			div--;
- 
- 		reg = SUN4I_CLK_CTL_CDR2(div) | SUN4I_CLK_CTL_DRS;
- 	} else {
--		div = ilog2(mclk_rate) - ilog2(spi->max_speed_hz);
-+		div = ilog2(mclk_rate) - ilog2(tfr->speed_hz);
- 		reg = SUN4I_CLK_CTL_CDR1(div);
- 	}
- 
-diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
-index ac48f59..42e2c4b 100644
---- a/drivers/spi/spi-sun6i.c
-+++ b/drivers/spi/spi-sun6i.c
-@@ -217,8 +217,8 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
- 
- 	/* Ensure that we have a parent clock fast enough */
- 	mclk_rate = clk_get_rate(sspi->mclk);
--	if (mclk_rate < (2 * spi->max_speed_hz)) {
--		clk_set_rate(sspi->mclk, 2 * spi->max_speed_hz);
-+	if (mclk_rate < (2 * tfr->speed_hz)) {
-+		clk_set_rate(sspi->mclk, 2 * tfr->speed_hz);
- 		mclk_rate = clk_get_rate(sspi->mclk);
- 	}
- 
-@@ -236,14 +236,14 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
- 	 * First try CDR2, and if we can't reach the expected
- 	 * frequency, fall back to CDR1.
- 	 */
--	div = mclk_rate / (2 * spi->max_speed_hz);
-+	div = mclk_rate / (2 * tfr->speed_hz);
- 	if (div <= (SUN6I_CLK_CTL_CDR2_MASK + 1)) {
- 		if (div > 0)
- 			div--;
- 
- 		reg = SUN6I_CLK_CTL_CDR2(div) | SUN6I_CLK_CTL_DRS;
- 	} else {
--		div = ilog2(mclk_rate) - ilog2(spi->max_speed_hz);
-+		div = ilog2(mclk_rate) - ilog2(tfr->speed_hz);
- 		reg = SUN6I_CLK_CTL_CDR1(div);
- 	}
- 
 -- 
-1.9.1
+2.6.0.rc2.230.g3dd15c0

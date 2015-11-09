@@ -1,89 +1,171 @@
-From: Nicolas Boichat <drinkcat-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v2] spi: mediatek: single device does not require cs_gpios
-Date: Mon,  9 Nov 2015 12:14:51 +0800
-Message-ID: <1447042491-1199-1-git-send-email-drinkcat@chromium.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
- linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
- Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
- linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-mediatek-bounces+glpam-linux-mediatek=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mediatek>,
- <mailto:linux-mediatek-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mediatek/>
-List-Post: <mailto:linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-mediatek-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mediatek>,
- <mailto:linux-mediatek-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "Linux-mediatek" <linux-mediatek-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-mediatek-bounces+glpam-linux-mediatek=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+From: Nicolas Boichat <drinkcat@chromium.org>
+Subject: [PATCH v2] mfd: cros ec: Lock the SPI bus while holding chipselect
+Date: Mon,  9 Nov 2015 12:25:50 +0800
+Message-ID: <1447043150-4806-1-git-send-email-drinkcat@chromium.org>
+Cc: linux-kernel@vger.kernel.org,
+	Javier Martinez Canillas <javier@osg.samsung.com>,
+	Olof Johansson <olof@lixom.net>, dianders@chromium.org,
+	rspangler@chromium.org, gwendal@chromium.org,
+	linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>
+To: Lee Jones <lee.jones@linaro.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-When only one device is present, it is not necessary to specify
-cs_gpios, as the CS line can be controlled by the hardware
-module.
+cros_ec_cmd_xfer_spi and cros_ec_pkt_xfer_spi generally work like
+this:
+ - Pull CS down (active), wait a bit, then send a command
+ - Wait for response (multiple requests)
+ - Wait a while, pull CS up (inactive)
 
-Without this patch, older device tree bindings used before
-37457607 "spi: mediatek: mt8173 spi multiple devices support"
-would cause a panic on boot. This fixes the crash, and
-re-introduces backward compatibility.
+These operations, individually, lock the SPI bus, but there is
+nothing preventing the SPI framework from interleaving messages
+intended for other devices as the bus is unlocked in between.
 
-Signed-off-by: Nicolas Boichat <drinkcat-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+This is a problem as the EC expects CS to be held low for the
+whole duration.
+
+Solution: Lock the SPI bus during the whole transaction, to make
+sure that no other messages can be interleaved.
+
+Signed-off-by: Nicolas Boichat <drinkcat@chromium.org>
 ---
 
-v2: Use gpio_is_valid()
+v2: Move bus_unlock earlier in the functions.
 
-Applies on top of broonie/spi.git/for-next.
+Applies on top on linux-next/master (20151109)
 
- drivers/spi/spi-mt65xx.c | 26 ++++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+ drivers/mfd/cros_ec_spi.c | 41 +++++++++++++++++++++++++++++------------
+ 1 file changed, 29 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 563954a..7840067 100644
---- a/drivers/spi/spi-mt65xx.c
-+++ b/drivers/spi/spi-mt65xx.c
-@@ -410,7 +410,7 @@ static int mtk_spi_setup(struct spi_device *spi)
- 	if (!spi->controller_data)
- 		spi->controller_data = (void *)&mtk_default_chip_info;
+diff --git a/drivers/mfd/cros_ec_spi.c b/drivers/mfd/cros_ec_spi.c
+index 6a0f6ec..d538284 100644
+--- a/drivers/mfd/cros_ec_spi.c
++++ b/drivers/mfd/cros_ec_spi.c
+@@ -97,6 +97,11 @@ static void debug_packet(struct device *dev, const char *name, u8 *ptr,
+ #endif
+ }
  
--	if (mdata->dev_comp->need_pad_sel)
-+	if (mdata->dev_comp->need_pad_sel && gpio_is_valid(spi->cs_gpio))
- 		gpio_direction_output(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
++/**
++ * terminate_request - turn off CS
++ *
++ * Requires spi bus to be locked.
++ */
+ static int terminate_request(struct cros_ec_device *ec_dev)
+ {
+ 	struct cros_ec_spi *ec_spi = ec_dev->priv;
+@@ -113,7 +118,7 @@ static int terminate_request(struct cros_ec_device *ec_dev)
+ 	trans.delay_usecs = ec_spi->end_of_msg_delay;
+ 	spi_message_add_tail(&trans, &msg);
  
- 	return 0;
-@@ -632,13 +632,23 @@ static int mtk_spi_probe(struct platform_device *pdev)
- 			goto err_put_master;
- 		}
+-	ret = spi_sync(ec_spi->spi, &msg);
++	ret = spi_sync_locked(ec_spi->spi, &msg);
  
--		for (i = 0; i < master->num_chipselect; i++) {
--			ret = devm_gpio_request(&pdev->dev, master->cs_gpios[i],
--						dev_name(&pdev->dev));
--			if (ret) {
--				dev_err(&pdev->dev,
--					"can't get CS GPIO %i\n", i);
--				goto err_put_master;
-+		if (!master->cs_gpios && master->num_chipselect > 1) {
-+			dev_err(&pdev->dev,
-+				"cs_gpios not specified and num_chipselect > 1\n");
-+			ret = -EINVAL;
-+			goto err_put_master;
-+		}
-+
-+		if (master->cs_gpios) {
-+			for (i = 0; i < master->num_chipselect; i++) {
-+				ret = devm_gpio_request(&pdev->dev,
-+							master->cs_gpios[i],
-+							dev_name(&pdev->dev));
-+				if (ret) {
-+					dev_err(&pdev->dev,
-+						"can't get CS GPIO %i\n", i);
-+					goto err_put_master;
-+				}
- 			}
- 		}
+ 	/* Reset end-of-response timer */
+ 	ec_spi->last_transfer_ns = ktime_get_ns();
+@@ -130,6 +135,8 @@ static int terminate_request(struct cros_ec_device *ec_dev)
+  * receive_n_bytes - receive n bytes from the EC.
+  *
+  * Assumes buf is a pointer into the ec_dev->din buffer
++ *
++ * Requires spi bus to be locked.
+  */
+ static int receive_n_bytes(struct cros_ec_device *ec_dev, u8 *buf, int n)
+ {
+@@ -147,7 +154,7 @@ static int receive_n_bytes(struct cros_ec_device *ec_dev, u8 *buf, int n)
+ 
+ 	spi_message_init(&msg);
+ 	spi_message_add_tail(&trans, &msg);
+-	ret = spi_sync(ec_spi->spi, &msg);
++	ret = spi_sync_locked(ec_spi->spi, &msg);
+ 	if (ret < 0)
+ 		dev_err(ec_dev->dev, "spi transfer failed: %d\n", ret);
+ 
+@@ -163,6 +170,8 @@ static int receive_n_bytes(struct cros_ec_device *ec_dev, u8 *buf, int n)
+  *
+  * The received data is placed into ec_dev->din.
+  *
++ * Requires spi bus to be locked.
++ *
+  * @ec_dev: ChromeOS EC device
+  * @need_len: Number of message bytes we need to read
+  */
+@@ -272,6 +281,8 @@ static int cros_ec_spi_receive_packet(struct cros_ec_device *ec_dev,
+  *
+  * The received data is placed into ec_dev->din.
+  *
++ * Requires spi bus to be locked.
++ *
+  * @ec_dev: ChromeOS EC device
+  * @need_len: Number of message bytes we need to read
+  */
+@@ -391,10 +402,10 @@ static int cros_ec_pkt_xfer_spi(struct cros_ec_device *ec_dev,
  	}
+ 
+ 	rx_buf = kzalloc(len, GFP_KERNEL);
+-	if (!rx_buf) {
+-		ret = -ENOMEM;
+-		goto exit;
+-	}
++	if (!rx_buf)
++		return -ENOMEM;
++
++	spi_bus_lock(ec_spi->spi->master);
+ 
+ 	/*
+ 	 * Leave a gap between CS assertion and clocking of data to allow the
+@@ -414,7 +425,7 @@ static int cros_ec_pkt_xfer_spi(struct cros_ec_device *ec_dev,
+ 	trans.len = len;
+ 	trans.cs_change = 1;
+ 	spi_message_add_tail(&trans, &msg);
+-	ret = spi_sync(ec_spi->spi, &msg);
++	ret = spi_sync_locked(ec_spi->spi, &msg);
+ 
+ 	/* Get the response */
+ 	if (!ret) {
+@@ -440,6 +451,9 @@ static int cros_ec_pkt_xfer_spi(struct cros_ec_device *ec_dev,
+ 	}
+ 
+ 	final_ret = terminate_request(ec_dev);
++
++	spi_bus_unlock(ec_spi->spi->master);
++
+ 	if (!ret)
+ 		ret = final_ret;
+ 	if (ret < 0)
+@@ -520,10 +534,10 @@ static int cros_ec_cmd_xfer_spi(struct cros_ec_device *ec_dev,
+ 	}
+ 
+ 	rx_buf = kzalloc(len, GFP_KERNEL);
+-	if (!rx_buf) {
+-		ret = -ENOMEM;
+-		goto exit;
+-	}
++	if (!rx_buf)
++		return -ENOMEM;
++
++	spi_bus_lock(ec_spi->spi->master);
+ 
+ 	/* Transmit phase - send our message */
+ 	debug_packet(ec_dev->dev, "out", ec_dev->dout, len);
+@@ -534,7 +548,7 @@ static int cros_ec_cmd_xfer_spi(struct cros_ec_device *ec_dev,
+ 	trans.cs_change = 1;
+ 	spi_message_init(&msg);
+ 	spi_message_add_tail(&trans, &msg);
+-	ret = spi_sync(ec_spi->spi, &msg);
++	ret = spi_sync_locked(ec_spi->spi, &msg);
+ 
+ 	/* Get the response */
+ 	if (!ret) {
+@@ -560,6 +574,9 @@ static int cros_ec_cmd_xfer_spi(struct cros_ec_device *ec_dev,
+ 	}
+ 
+ 	final_ret = terminate_request(ec_dev);
++
++	spi_bus_unlock(ec_spi->spi->master);
++
+ 	if (!ret)
+ 		ret = final_ret;
+ 	if (ret < 0)
 -- 
 2.6.0.rc2.230.g3dd15c0

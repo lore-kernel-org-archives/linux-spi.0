@@ -1,200 +1,111 @@
-From: Vignesh R <vigneshr@ti.com>
-Subject: [PATCH v3 2/5] spi: spi-ti-qspi: add mmap mode read support
-Date: Tue, 10 Nov 2015 10:59:56 +0530
-Message-ID: <1447133399-25658-3-git-send-email-vigneshr@ti.com>
-References: <1447133399-25658-1-git-send-email-vigneshr@ti.com>
+From: Peter Ujfalusi <peter.ujfalusi-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH 12/13] [media] omap3isp: Support for deferred probing when
+ requesting DMA channel
+Date: Tue, 10 Nov 2015 09:56:17 +0200
+Message-ID: <5641A321.2070209@ti.com>
+References: <1432646768-12532-1-git-send-email-peter.ujfalusi@ti.com>
+ <1432646768-12532-13-git-send-email-peter.ujfalusi@ti.com>
+ <11319647.puY9n5DpsR@avalon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Michal Suchanek <hramrach@gmail.com>, Russell King <linux@arm.linux.org.uk>,
- Vignesh R <vigneshr@ti.com>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-mtd@lists.infradead.org, linux-omap@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-To: Mark Brown <broonie@kernel.org>, Tony Lindgren <tony@atomide.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1447133399-25658-1-git-send-email-vigneshr@ti.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
+	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, <dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-crypto-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org>,
+	Mauro Carvalho Chehab <mchehab-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
+To: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <11319647.puY9n5DpsR@avalon>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-ti-qspi controller provides mmap port to read data from SPI flashes.
-mmap port is enabled in QSPI_SPI_SWITCH_REG. ctrl module register may
-also need to be accessed for some SoCs. The QSPI_SPI_SETUP_REGx needs to
-be populated with flash specific information like read opcode, read
-mode(quad, dual, normal), address width and dummy bytes. Once,
-controller is in mmap mode, the whole flash memory is available as a
-memory region at SoC specific address. This region can be accessed using
-normal memcpy() (or mem-to-mem dma copy). The ti-qspi controller hardware
-will internally communicate with SPI flash over SPI bus and get the
-requested data.
+Hi Laurent,
 
-Implement spi_mtd_mmap_read() callback to support mmap read over SPI
-flash devices. With this, the read throughput increases from ~100kB/s to
-~2.5 MB/s.
+On 11/09/2015 09:50 PM, Laurent Pinchart wrote:
+> Hi Peter,
+>=20
+> Thank you for the patch.
+>=20
+> What happened to this patch series ? It looks like=20
+> dma_request_slave_channel_compat_reason() isn't in mainline, so I can=
+'t apply=20
+> this patch.
+>=20
+> I'll mark this patch as deferred in patchwork, please resubmit it if =
+you=20
+> resubmit the series
 
-Signed-off-by: Vignesh R <vigneshr@ti.com>
----
+The original series - containing this patch - generated a bit of discus=
+sion
+and it seams that I will need to do bigger change in the dmaengine API
+compared to this.
+I think this patch can be dropped as the dmaengine changes will not go =
+in as
+they were.
 
-v3:
- * optimize enable/disable of mmap mode
+(and by the look of it the issue you're trying to fix
+> still exists, so it would be nice if you could get it eventually fixe=
+d).
 
- drivers/spi/spi-ti-qspi.c | 99 +++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 95 insertions(+), 4 deletions(-)
+Yes, the issue still valid for the OMAP/DaVinci driver the series was t=
+ouching.
 
-diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
-index 64318fcfacf2..295c11f48440 100644
---- a/drivers/spi/spi-ti-qspi.c
-+++ b/drivers/spi/spi-ti-qspi.c
-@@ -56,6 +56,7 @@ struct ti_qspi {
- 	u32 dc;
- 
- 	bool ctrl_mod;
-+	bool mmap_enabled;
- };
- 
- #define QSPI_PID			(0x0)
-@@ -65,11 +66,8 @@ struct ti_qspi {
- #define QSPI_SPI_CMD_REG		(0x48)
- #define QSPI_SPI_STATUS_REG		(0x4c)
- #define QSPI_SPI_DATA_REG		(0x50)
--#define QSPI_SPI_SETUP0_REG		(0x54)
-+#define QSPI_SPI_SETUP_REG(n)		((0x54 + 4 * n))
- #define QSPI_SPI_SWITCH_REG		(0x64)
--#define QSPI_SPI_SETUP1_REG		(0x58)
--#define QSPI_SPI_SETUP2_REG		(0x5c)
--#define QSPI_SPI_SETUP3_REG		(0x60)
- #define QSPI_SPI_DATA_REG_1		(0x68)
- #define QSPI_SPI_DATA_REG_2		(0x6c)
- #define QSPI_SPI_DATA_REG_3		(0x70)
-@@ -109,6 +107,16 @@ struct ti_qspi {
- 
- #define QSPI_AUTOSUSPEND_TIMEOUT         2000
- 
-+#define MEM_CS_EN(n)			((n + 1) << 8)
-+
-+#define MM_SWITCH			0x1
-+
-+#define QSPI_SETUP_RD_NORMAL		(0x0 << 12)
-+#define QSPI_SETUP_RD_DUAL		(0x1 << 12)
-+#define QSPI_SETUP_RD_QUAD		(0x3 << 12)
-+#define QSPI_SETUP_ADDR_SHIFT		8
-+#define QSPI_SETUP_DUMMY_SHIFT		10
-+
- static inline unsigned long ti_qspi_read(struct ti_qspi *qspi,
- 		unsigned long reg)
- {
-@@ -366,6 +374,84 @@ static int qspi_transfer_msg(struct ti_qspi *qspi, struct spi_transfer *t)
- 	return 0;
- }
- 
-+static void ti_qspi_enable_memory_map(struct spi_device *spi)
-+{
-+	struct ti_qspi  *qspi = spi_master_get_devdata(spi->master);
-+	u32 val;
-+
-+	ti_qspi_write(qspi, MM_SWITCH, QSPI_SPI_SWITCH_REG);
-+	if (qspi->ctrl_mod) {
-+		val = readl(qspi->ctrl_base);
-+		val |= MEM_CS_EN(spi->chip_select);
-+		writel(val, qspi->ctrl_base);
-+		/* dummy readl to ensure bus sync */
-+		readl(qspi->ctrl_base);
-+	}
-+	qspi->mmap_enabled = true;
-+}
-+
-+static void ti_qspi_disable_memory_map(struct spi_device *spi)
-+{
-+	struct ti_qspi  *qspi = spi_master_get_devdata(spi->master);
-+	u32 val;
-+
-+	ti_qspi_write(qspi, 0, QSPI_SPI_SWITCH_REG);
-+	if (qspi->ctrl_mod) {
-+		val = readl(qspi->ctrl_base);
-+		val &= ~MEM_CS_EN(spi->chip_select);
-+		writel(val, qspi->ctrl_base);
-+	}
-+	qspi->mmap_enabled = false;
-+}
-+
-+static void ti_qspi_setup_mmap_read(struct spi_device *spi,
-+				    u8 read_opcode, u8 addr_width,
-+				    u8 dummy_bytes)
-+{
-+	struct ti_qspi  *qspi = spi_master_get_devdata(spi->master);
-+	u32 mode = spi->mode & (SPI_RX_DUAL | SPI_RX_QUAD);
-+	u32 memval = read_opcode;
-+
-+	switch (mode) {
-+	case SPI_RX_QUAD:
-+		memval |= QSPI_SETUP_RD_QUAD;
-+		break;
-+	case SPI_RX_DUAL:
-+		memval |= QSPI_SETUP_RD_DUAL;
-+		break;
-+	default:
-+		memval |= QSPI_SETUP_RD_NORMAL;
-+		break;
-+	}
-+	memval |= ((addr_width - 1) << QSPI_SETUP_ADDR_SHIFT |
-+		   dummy_bytes << QSPI_SETUP_DUMMY_SHIFT);
-+	ti_qspi_write(qspi, memval,
-+		      QSPI_SPI_SETUP_REG(spi->chip_select));
-+}
-+
-+static int ti_qspi_spi_mtd_mmap_read(struct  spi_device *spi,
-+				     loff_t from, size_t len,
-+				     size_t *retlen, u_char *buf,
-+				     u8 read_opcode, u8 addr_width,
-+				     u8 dummy_bytes)
-+{
-+	struct ti_qspi *qspi = spi_master_get_devdata(spi->master);
-+	int ret = 0;
-+
-+	mutex_lock(&qspi->list_lock);
-+
-+	if (!qspi->mmap_enabled)
-+		ti_qspi_enable_memory_map(spi);
-+	ti_qspi_setup_mmap_read(spi, read_opcode, addr_width,
-+				dummy_bytes);
-+	memcpy_fromio(buf, qspi->mmap_base + from, len);
-+	*retlen = len;
-+
-+	mutex_unlock(&qspi->list_lock);
-+
-+	return ret;
-+}
-+
- static int ti_qspi_start_transfer_one(struct spi_master *master,
- 		struct spi_message *m)
- {
-@@ -398,6 +484,9 @@ static int ti_qspi_start_transfer_one(struct spi_master *master,
- 
- 	mutex_lock(&qspi->list_lock);
- 
-+	if (qspi->mmap_enabled)
-+		ti_qspi_disable_memory_map(spi);
-+
- 	list_for_each_entry(t, &m->transfers, transfer_list) {
- 		qspi->cmd |= QSPI_WLEN(t->bits_per_word);
- 
-@@ -526,7 +615,9 @@ static int ti_qspi_probe(struct platform_device *pdev)
- 			ret = PTR_ERR(qspi->mmap_base);
- 			goto free_master;
- 		}
-+		master->spi_mtd_mmap_read = ti_qspi_spi_mtd_mmap_read;
- 	}
-+	qspi->mmap_enabled = false;
- 
- 	qspi->fclk = devm_clk_get(&pdev->dev, "fck");
- 	if (IS_ERR(qspi->fclk)) {
--- 
-2.6.3
+I will try to send a new series in the coming weeks.
+
+Thanks,
+P=E9ter
+>=20
+> On Tuesday 26 May 2015 16:26:07 Peter Ujfalusi wrote:
+>> Switch to use ma_request_slave_channel_compat_reason() to request th=
+e DMA
+>> channel. Only fall back to pio mode if the error code returned is no=
+t
+>> -EPROBE_DEFER, otherwise return from the probe with the -EPROBE_DEFE=
+R.
+>>
+>> Signed-off-by: Peter Ujfalusi <peter.ujfalusi-l0cyMroinI0@public.gmane.org>
+>> CC: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+>> CC: Mauro Carvalho Chehab <mchehab-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
+>> ---
+>>  drivers/media/platform/omap3isp/isphist.c | 12 +++++++++---
+>>  1 file changed, 9 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/media/platform/omap3isp/isphist.c
+>> b/drivers/media/platform/omap3isp/isphist.c index
+>> 7138b043a4aa..e690ca13af0e 100644
+>> --- a/drivers/media/platform/omap3isp/isphist.c
+>> +++ b/drivers/media/platform/omap3isp/isphist.c
+>> @@ -499,14 +499,20 @@ int omap3isp_hist_init(struct isp_device *isp)
+>>  		if (res)
+>>  			sig =3D res->start;
+>>
+>> -		hist->dma_ch =3D dma_request_slave_channel_compat(mask,
+>> +		hist->dma_ch =3D dma_request_slave_channel_compat_reason(mask,
+>>  				omap_dma_filter_fn, &sig, isp->dev, "hist");
+>> -		if (!hist->dma_ch)
+>> +		if (IS_ERR(hist->dma_ch)) {
+>> +			ret =3D PTR_ERR(hist->dma_ch);
+>> +			if (ret =3D=3D -EPROBE_DEFER)
+>> +				return ret;
+>> +
+>> +			hist->dma_ch =3D NULL;
+>>  			dev_warn(isp->dev,
+>>  				 "hist: DMA channel request failed, using PIO\n");
+>> -		else
+>> +		} else {
+>>  			dev_dbg(isp->dev, "hist: using DMA channel %s\n",
+>>  				dma_chan_name(hist->dma_ch));
+>> +		}
+>>  	}
+>>
+>>  	hist->ops =3D &hist_ops;
+>=20
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

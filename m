@@ -1,80 +1,71 @@
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: Re: [PATCH 12/13] [media] omap3isp: Support for deferred probing when requesting DMA channel
-Date: Mon, 09 Nov 2015 21:50:12 +0200
-Message-ID: <11319647.puY9n5DpsR@avalon>
-References: <1432646768-12532-1-git-send-email-peter.ujfalusi@ti.com> <1432646768-12532-13-git-send-email-peter.ujfalusi@ti.com>
+From: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH v3 0/5] Add memory mapped read support for ti-qspi
+Date: Tue, 10 Nov 2015 10:59:54 +0530
+Message-ID: <1447133399-25658-1-git-send-email-vigneshr@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: vinod.koul@intel.com, tony@atomide.com, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, dan.j.williams@intel.com,
-	dmaengine@vger.kernel.org, linux-serial@vger.kernel.org,
-	linux-omap@vger.kernel.org, linux-mmc@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-media@vger.kernel.org, alsa-devel@alsa-project.org,
-	Mauro Carvalho Chehab <mchehab@osg.samsung.com>
-To: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Return-path: <linux-mmc-owner@vger.kernel.org>
-In-Reply-To: <1432646768-12532-13-git-send-email-peter.ujfalusi@ti.com>
-Sender: linux-mmc-owner@vger.kernel.org
+Content-Type: text/plain
+Cc: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Peter,
 
-Thank you for the patch.
+Changes since v2:
+Remove mmap_lock_mutex.
+Optimize enable/disable of mmap mode.
 
-What happened to this patch series ? It looks like 
-dma_request_slave_channel_compat_reason() isn't in mainline, so I can't apply 
-this patch.
+Changes since v1:
+Introduce API in SPI core that MTD flash driver can call for mmap read
+instead of directly calling spi-master driver callback. This API makes
+sure that SPI core msg queue is locked during mmap transfers.
+v1: https://lkml.org/lkml/2015/9/4/103
 
-I'll mark this patch as deferred in patchwork, please resubmit it if you 
-resubmit the series (and by the look of it the issue you're trying to fix 
-still exists, so it would be nice if you could get it eventually fixed).
 
-On Tuesday 26 May 2015 16:26:07 Peter Ujfalusi wrote:
-> Switch to use ma_request_slave_channel_compat_reason() to request the DMA
-> channel. Only fall back to pio mode if the error code returned is not
-> -EPROBE_DEFER, otherwise return from the probe with the -EPROBE_DEFER.
-> 
-> Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-> CC: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> CC: Mauro Carvalho Chehab <mchehab@osg.samsung.com>
-> ---
->  drivers/media/platform/omap3isp/isphist.c | 12 +++++++++---
->  1 file changed, 9 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/media/platform/omap3isp/isphist.c
-> b/drivers/media/platform/omap3isp/isphist.c index
-> 7138b043a4aa..e690ca13af0e 100644
-> --- a/drivers/media/platform/omap3isp/isphist.c
-> +++ b/drivers/media/platform/omap3isp/isphist.c
-> @@ -499,14 +499,20 @@ int omap3isp_hist_init(struct isp_device *isp)
->  		if (res)
->  			sig = res->start;
-> 
-> -		hist->dma_ch = dma_request_slave_channel_compat(mask,
-> +		hist->dma_ch = dma_request_slave_channel_compat_reason(mask,
->  				omap_dma_filter_fn, &sig, isp->dev, "hist");
-> -		if (!hist->dma_ch)
-> +		if (IS_ERR(hist->dma_ch)) {
-> +			ret = PTR_ERR(hist->dma_ch);
-> +			if (ret == -EPROBE_DEFER)
-> +				return ret;
-> +
-> +			hist->dma_ch = NULL;
->  			dev_warn(isp->dev,
->  				 "hist: DMA channel request failed, using PIO\n");
-> -		else
-> +		} else {
->  			dev_dbg(isp->dev, "hist: using DMA channel %s\n",
->  				dma_chan_name(hist->dma_ch));
-> +		}
->  	}
-> 
->  	hist->ops = &hist_ops;
+Cover letter:
+
+This patch series adds support for memory mapped read port of ti-qspi.
+ti-qspi has a special memory mapped port through which SPI flash
+memories can be accessed directly via SoC specific memory region.
+
+First patch adds a method to pass flash specific information like read
+opcode, dummy bytes etc and to request mmap read. Second patch
+implements mmap read method in ti-qspi driver. Patch 3 adapts m25p80 to
+use mmap read method before trying normal SPI transfer. Patch 4 and 5
+add memory map region DT entries for DRA7xx and AM43xx SoCs.
+
+This patch series is based on the discussions here:
+http://www.spinics.net/lists/linux-spi/msg04796.html
+
+Tested on DRA74 EVM and AM437x-SK.
+Read performance increases from ~100kB/s to ~2.5MB/s.
+
+Vignesh R (5):
+  spi: introduce mmap read support for spi flash devices
+  spi: spi-ti-qspi: add mmap mode read support
+  mtd: devices: m25p80: add support for mmap read request
+  ARM: dts: DRA7: add entry for qspi mmap region
+  ARM: dts: AM4372: add entry for qspi mmap region
+
+ Documentation/devicetree/bindings/spi/ti_qspi.txt | 19 ++++-
+ arch/arm/boot/dts/am4372.dtsi                     |  4 +-
+ arch/arm/boot/dts/dra7.dtsi                       |  7 +-
+ drivers/mtd/devices/m25p80.c                      |  5 ++
+ drivers/spi/spi-ti-qspi.c                         | 99 ++++++++++++++++++++++-
+ drivers/spi/spi.c                                 | 34 ++++++++
+ include/linux/spi/spi.h                           | 20 +++++
+ 7 files changed, 179 insertions(+), 9 deletions(-)
 
 -- 
-Regards,
+2.6.3
 
-Laurent Pinchart
-
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

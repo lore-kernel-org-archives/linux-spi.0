@@ -1,61 +1,61 @@
-From: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: Re: [PATCH] spi: bcm63xx: use correct format string for printing
- a resource
-Date: Thu, 12 Nov 2015 10:40:19 -0800
-Message-ID: <5644DD13.9070206@openwrt.org>
-References: <8442314.JjGyK1Sa3M@wuerfel>
+From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: m25p80: Commit "allow arbitrary OF matching for "jedec,spi-nor""
+ breaks module autoloading
+Date: Thu, 12 Nov 2015 10:59:26 -0800
+Message-ID: <20151112185926.GC8456@google.com>
+References: <56104E88.3040807@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
+	Dmitry Torokhov <dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <8442314.JjGyK1Sa3M@wuerfel>
+Content-Disposition: inline
+In-Reply-To: <56104E88.3040807-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 12/11/15 08:44, Arnd Bergmann wrote:
-> With a 64-bit resource_size_t, we get a build warning on bcm63xx_spi_probe:
-> 
-> drivers/spi/spi-bcm63xx.c:565:16: warning: format '%x' expects argument of type 'unsigned int', but argument 3 has type 'resource_size_t {aka long long unsigned int}' [-Wformat=]
-> 
-> As we are printing a resource, we can just use the %pr format
-> specifier that pretty-prints the address and avoids the warning.
-> 
-> Signed-off-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
++ others
 
-Acked-by: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+On Sat, Oct 03, 2015 at 11:54:16PM +0200, Heiner Kallweit wrote:
+> Seems like commit 43163022927b6e7d202a7e6f939c3f392465494d
+> (allow arbitrary OF matching for "jedec,spi-nor") broke autoloading
+> of the m25p80 module.
+> MODALIAS is "spi:spi-nor" and removing "spi-nor" as device alias
+> prevents module autoloading.
+> 
+> Of course we could revert the removal of the "spi-nor" device alias.
+> However it might be better to switch to DT-based matching for
+> DT-configured devices.
+> 
+> Adding a call to of_device_uevent_modalias to spi_uevent in spi.c
+> solved the issue for me, drawback however is that just the first
+> "compatible" value is used as modalias. In case of m25p80 this means
+> that "jedec,spi-nor" has to be the first "compatible" value.
+> This constraint might be too strict ..
+> 
+> Having said that I'm not sure what could be a better way to fix
+> the issue than just re-introducing the "spi-nor" device alias.
 
-Thanks
+Is this [1] getting fixed in SPI any time soon? Looks like there was
+some progress [2], but AFAICT it's not completed.
 
-> ---
-> Found on arm multi_v7_defconfig with LPAE
-> 
-> diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-> index 06858e04ec59..bf9a610e5b89 100644
-> --- a/drivers/spi/spi-bcm63xx.c
-> +++ b/drivers/spi/spi-bcm63xx.c
-> @@ -562,8 +562,8 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
->  		goto out_clk_disable;
->  	}
->  
-> -	dev_info(dev, "at 0x%08x (irq %d, FIFOs size %d)\n",
-> -		 r->start, irq, bs->fifo_size);
-> +	dev_info(dev, "at %pr (irq %d, FIFOs size %d)\n",
-> +		 r, irq, bs->fifo_size);
->  
->  	return 0;
->  
-> 
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-> 
+I'd just like to know what the way forward here should be for m25p80.
+Really, "jedec,spi-nor" never autoloaded modules very reliably because
+of the SPI core constaints. So I'm not sure I'd consider this a
+regression, and I might be OK waiting around if it'll be fixed in a
+reasonable time frame.
 
+FWIW, I can do testing if somebody's tackling this still. Just CC me.
+
+Regards,
+Brian
+
+[1] https://lkml.org/lkml/2014/9/11/458
+[2] https://lkml.org/lkml/2015/8/20/109
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

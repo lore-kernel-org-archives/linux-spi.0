@@ -1,79 +1,47 @@
-From: Vignesh R <vigneshr@ti.com>
-Subject: Re: [PATCH v3 1/5] spi: introduce mmap read support for spi flash
- devices
-Date: Thu, 12 Nov 2015 10:02:56 +0530
-Message-ID: <56441678.6040504@ti.com>
-References: <1447133399-25658-1-git-send-email-vigneshr@ti.com>
- <1447133399-25658-2-git-send-email-vigneshr@ti.com>
- <20151111192441.GG12143@google.com>
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Subject: [PATCH] spi: bcm63xx: use correct format string for printing a resource
+Date: Thu, 12 Nov 2015 17:44:34 +0100
+Message-ID: <8442314.JjGyK1Sa3M@wuerfel>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie@kernel.org>, Tony Lindgren <tony@atomide.com>,
-	Rob Herring <robh@kernel.org>,
-	Michal Suchanek <hramrach@gmail.com>,
-	Russell King <linux@arm.linux.org.uk>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-	"linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, Marek Vasut <marex@denx.de>
-To: Brian Norris <computersforpeace@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20151111192441.GG12143@google.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
+	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Brian,
+With a 64-bit resource_size_t, we get a build warning on bcm63xx_spi_probe:
 
-On 11/12/2015 12:54 AM, Brian Norris wrote:
-> In addition to my other comments:
-> 
+drivers/spi/spi-bcm63xx.c:565:16: warning: format '%x' expects argument of type 'unsigned int', but argument 3 has type 'resource_size_t {aka long long unsigned int}' [-Wformat=]
 
-[...]
+As we are printing a resource, we can just use the %pr format
+specifier that pretty-prints the address and avoids the warning.
 
->> +	int (*spi_mtd_mmap_read)(struct  spi_device *spi,
->> +				 loff_t from, size_t len,
->> +				 size_t *retlen, u_char *buf,
->> +				 u8 read_opcode, u8 addr_width,
->> +				 u8 dummy_bytes);
-> 
-> This is seeming to be a longer and longer list of arguments. I know MTD
-> has a bad habit of long argument lists (which then cause a ton of
-> unnecessary churn when things need changed in the API), but perhaps we
-> can limit the damage to the SPI layer. Perhaps this deserves a struct to
-> encapsulate all the flash read arguments? Like:
-> 
-> struct spi_flash_read_message {
-> 	loff_t from;
-> 	size_t len;
-> 	size_t *retlen;
-> 	void *buf;
-> 	u8 read_opcode;
-> 	u8 addr_width;
-> 	u8 dummy_bits;
-> 	// additional fields to describe rx_nbits for opcode/addr/data
-> };
-> 
-> struct spi_master {
-> 	...
-> 	int (*spi_flash_read)(struct spi_device *spi,
-> 			      struct spi_flash_message *msg);
-> };
+Signed-off-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+---
+Found on arm multi_v7_defconfig with LPAE
 
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index 06858e04ec59..bf9a610e5b89 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -562,8 +562,8 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
+ 		goto out_clk_disable;
+ 	}
+ 
+-	dev_info(dev, "at 0x%08x (irq %d, FIFOs size %d)\n",
+-		 r->start, irq, bs->fifo_size);
++	dev_info(dev, "at %pr (irq %d, FIFOs size %d)\n",
++		 r, irq, bs->fifo_size);
+ 
+ 	return 0;
+ 
 
-Yeah.. I think struct encapsulation helps, this can also be used to pass
-sg lists for dma in future. I will rework the series with your
-suggestion to include nbits for opcode/addr/data.
-Also, will add validation logic (similar to __spi_validate()) to check
-whether master supports dual/quad mode for opcode/addr/data. I am
-planning to add this validation code to spi_flash_read_validate(in place
-of spi_mmap_read_supported())
-Thanks!
-
-
--- 
-Regards
-Vignesh
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,71 +1,68 @@
-From: Mike Looijmans <mike.looijmans@topic.nl>
-Subject: Re: [PATCH v3 1/5] spi: introduce mmap read support for spi flash
- devices
-Date: Fri, 13 Nov 2015 15:06:55 +0100
-Message-ID: <5645EE7F.5040101@topic.nl>
-References: <1447133399-25658-1-git-send-email-vigneshr@ti.com>
- <1447133399-25658-2-git-send-email-vigneshr@ti.com>
- <20151110232341.GU12143@google.com> <5642E546.3040806@ti.com>
+From: Vegard Nossum <vegard.nossum-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Subject: spidev locking ("spi: spidev: fix possible NULL dereference")
+Date: Fri, 13 Nov 2015 16:13:44 +0100
+Message-ID: <5645FE28.3070501@oracle.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
-Content-Transfer-Encoding: base64
-Cc: devicetree@vger.kernel.org, Michal Suchanek <hramrach@gmail.com>,
- Russell King <linux@arm.linux.org.uk>, Tony Lindgren <tony@atomide.com>,
- linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
- Mark Brown <broonie@kernel.org>, linux-mtd@lists.infradead.org,
- linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-To: "R, Vignesh" <vigneshr@ti.com>, Brian Norris <computersforpeace@gmail.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <5642E546.3040806@ti.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Sudip Mukherjee <sudip-ofJRbWXBVFamYgehrs7/Lw@public.gmane.org>,
+	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-77u/T24gMTEtMTEtMTUgMDc6NTAsIFIsIFZpZ25lc2ggd3JvdGU6Cj4gSGkgQnJhaW4sCj4KPiBP
-biAxMS8xMS8yMDE1IDQ6NTMgQU0sIEJyaWFuIE5vcnJpcyB3cm90ZToKPj4gSGkgVmlnbmVzaCwK
-Li4uCgo+PiBBbHNvLCB0aGlzIEFQSSBkb2Vzbid0IGFjdHVhbGx5IGhhdmUgYW55dGhpbmcgdG8g
-ZG8gd2l0aCBtZW1vcnkgbWFwcGluZy4KPj4gSXQgaGFzIHRvIGRvIHdpdGggdGhlIGRlIGZhY3Rv
-IHN0YW5kYXJkIGZsYXNoIHByb3RvY29sLiBTbyBJIGRvbid0IHRoaW5rCj4+IG1tYXAgYmVsb25n
-cyBpbiB0aGUgbmFtZTsgaXQgc2hvdWxkIGJlIHNvbWV0aGluZyBhYm91dCBmbGFzaC4gKEkga25v
-dyBvZgo+PiBhdCBsZWFzdCBvbmUgb3RoZXIgY29udHJvbGxlciB0aGF0IGNvdWxkIHByb2JhYmx5
-IHVzZSB0aGlzIEFQSSwgZXhjcGV0Cj4+IGl0IGRvZXNuJ3QgdXNlIG1lbW9yeSBtYXBwaW5nIHRv
-IGFjY29tcGxpc2ggdGhlIGFjY2VsZXJhdGVkIGZsYXNoIHJlYWQuKQoKVGhlIFp5bnEgaGFzIGEg
-c2ltaWxhciB3YXkgb2YgYWNjZXNzaW5nIFFTUEkgZmxhc2ggdGhyb3VnaCBhIG1lbW9yeSBtYXAu
-IFRoZSAKbWVtb3J5IHdpbmRvdyBpcyBvbmx5IDE2TUIsIHNvIHNvbWUgZm9ybSBvZiBwYWdpbmcg
-d291bGQgYmUgbmVlZGVkLgoKSXQncyB3aHkgSSBoYXZlIGJlZW4gZm9sbG93aW5nIHRoaXMgdGhy
-ZWFkIHdpdGggZ3JlYXQgaW50ZXJlc3QsIHNpbmNlIHRoZSBRU1BJIApwZXJmb3JtYW5jZSBvbiB0
-aGUgWnlucSBpcyB3YXkgYmVsb3cgd2hhdCBpdCBjb3VsZCBwb3RlbnRpYWxseSBiZS4KCj4gQXMg
-ZmFyIGFzIFRJIFFTUEkgY29udHJvbGxlciBpcyBjb25jZXJuZWQsIHRoZSBhY2NlbGVyYXRlZCBy
-ZWFkIGhhcHBlbnMKPiB2aWEgbW1hcCBwb3J0IHdoZXJlYnkgYSBwcmVkZWZpbmVkIG1lbW9yeSBh
-ZGRyZXNzIHNwYWNlIG9mIFNvQyBpcwo+IGV4cG9zZWQgYXMgUVNQSSBtbWFwIHJlZ2lvbi4gVGhp
-cyByZWdpb24gY2FuIGJlIGFjY2Vzc2VkIGxpa2Ugbm9ybWFsCj4gUkFNKHZpYSBtZW1jcHkoKSkg
-YW5kIHRoZSBRU1BJIGNvbnRyb2xsZXIgaW50ZXJmYWNlIHRha2VzIGNhcmUgb2YKPiBmZXRjaGlu
-ZyBkYXRhIGZyb20gZmxhc2ggb24gU1BJIGJ1cyBhdXRvbWF0aWNhbGx5IGhlbmNlLCBJIG5hbWVk
-IGl0IGFzCj4gYWJvdmUuIEJ1dCwgSSBoYXZlIG5vIGhhcmQgZmVlbGluZ3MgaWYgaXQgbmVlZHMg
-dG8gYmUgZ2VuZXJhbGl6ZWQgdG8KPiBzcGlfbXRkX3JlYWQoKSBvciBzb21ldGhpbmcgZWxzZS4K
-Ckkga25vdyB0aGF0IG9uIHRoZSBaeW5xLCB5b3UgY2FuIGV2ZW4gbGV0IHRoZSBETUEgY29udHJv
-bGxlciBhY2Nlc3MgdGhlIFFTUEkgCmZsYXNoIHZpYSB0aGlzIG1lbW9yeSBtYXBwaW5nLiBUaGUg
-UVNQSSBjb250cm9sbGVyIGl0c2VsZiBkb2Vzbid0IHN1cHBvcnQgYW55IApETUEgYXQgYWxsLgoK
-SWYgc29tZXRoaW5nIHNpbWlsYXIgYXBwbGllcyB0byB0aGUgVEkgcGxhdGZvcm0gKG1vc3Qgb2Yg
-dGhlIFRJIHByb2NzIGhhdmUgCm5pY2UgRE1BIGNvbnRyb2xsZXJzKSBvbmUgY291bGQgZ28gb25l
-IHN0ZXAgZnVydGhlciBhbmQgaW1wbGVtZW50IGEgZ2VuZXJpYyAKRE1BLXRocm91Z2gtbW1hcCBh
-Y2Nlc3MgdG8gUVNQSSBmbGFzaC4KCk1pa2UuCgoKS2luZCByZWdhcmRzLAoKTWlrZSBMb29pam1h
-bnMKU3lzdGVtIEV4cGVydAoKVE9QSUMgRW1iZWRkZWQgUHJvZHVjdHMKRWluZGhvdmVuc2V3ZWcg
-MzItQywgTkwtNTY4MyBLSCBCZXN0ClBvc3RidXMgNDQwLCBOTC01NjgwIEFLIEJlc3QKVGVsZWZv
-b246ICszMSAoMCkgNDk5IDMzIDY5IDc5ClRlbGVmYXg6ICszMSAoMCkgNDk5IDMzIDY5IDcwCkUt
-bWFpbDogbWlrZS5sb29pam1hbnNAdG9waWNwcm9kdWN0cy5jb20KV2Vic2l0ZTogd3d3LnRvcGlj
-cHJvZHVjdHMuY29tCgpQbGVhc2UgY29uc2lkZXIgdGhlIGVudmlyb25tZW50IGJlZm9yZSBwcmlu
-dGluZyB0aGlzIGUtbWFpbAoKVmlzaXQgdXMgYXQgOiBBZXJvc3BhY2UgRWxlY3RyaWNhbCBTeXN0
-ZW1zIEV4cG8gRXVyb3BlIHdoaWNoIHdpbGwgYmUgaGVsZCBmcm9tIDE3LjExLjIwMTUgdGlsbCAx
-OS4xMS4yMDE1LCBGaW5kb3JmZnN0cmFzc2UgMTAxIEJyZW1lbiwgR2VybWFueSwgSGFsbCA1LCBz
-dGFuZCBudW1iZXIgQzY1Cmh0dHA6Ly93d3cuYWVzZXhwby5ldQoKCgpfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpsaW51eC1hcm0ta2VybmVsIG1haWxpbmcg
-bGlzdApsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
-ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9saW51eC1hcm0ta2VybmVsCg==
+Hi,
+
+I was reviewing some stable commits and came across this, which might
+not be wrong, but looks weird in any case:
+
+commit a56166134ad739e7448332e2af2aac59a0b6a385
+Author: Sudip Mukherjee <sudipm.mukherjee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date:   Thu Sep 10 16:48:13 2015 +0530
+
+     spi: spidev: fix possible NULL dereference
+
+The "weird" part is this:
+
+-               spidev->speed_hz = spidev->spi->max_speed_hz;
++               if (spidev->spi)
++                       spidev->speed_hz = spidev->spi->max_speed_hz;
+
+                 /* ... after we unbound from the underlying device? */
+                 spin_lock_irq(&spidev->spi_lock);
+                 dofree = (spidev->spi == NULL);
+                 spin_unlock_irq(&spidev->spi_lock);
+
+It would seem strange that the second spidev->spi read requires a
+spinlock, but the first one doesn't.
+
+spidev_remove() potentially sets spidev->spi to NULL, and this happens
+with the spidev->spi_lock taken, but without the device_list_lock mutex,
+and spidev_release() only takes the device_list_lock mutex for the
+spidev->spi dereference above, so presumably it is possible for a new
+caller to set spidev->spi to NULL while spidev_release() is in progress.
+
+I think it would be great if somebody who knows the code could have a
+look into this to see if there is indeed a problem, and there could be
+some comments added to the code to explain
+
+1) why it is (not?) okay to check spidev->spi without the spinlock there,
+
+2) why the ->spi_lock is not taken inside the device_list_lock mutex in
+spidev_remove(),
+
+3) what are the potential interactions between spidev_release() and
+spidev_remove(), if any,
+
+to make it easier to review the code in the future.
+
+Thanks,
+
+
+Vegard
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

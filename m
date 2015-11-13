@@ -1,62 +1,71 @@
-From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: m25p80: Commit "allow arbitrary OF matching for "jedec,spi-nor""
- breaks module autoloading
-Date: Thu, 12 Nov 2015 10:59:26 -0800
-Message-ID: <20151112185926.GC8456@google.com>
-References: <56104E88.3040807@gmail.com>
+From: Mike Looijmans <mike.looijmans@topic.nl>
+Subject: Re: [PATCH v3 1/5] spi: introduce mmap read support for spi flash
+ devices
+Date: Fri, 13 Nov 2015 15:06:55 +0100
+Message-ID: <5645EE7F.5040101@topic.nl>
+References: <1447133399-25658-1-git-send-email-vigneshr@ti.com>
+ <1447133399-25658-2-git-send-email-vigneshr@ti.com>
+ <20151110232341.GU12143@google.com> <5642E546.3040806@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
-	Dmitry Torokhov <dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <56104E88.3040807-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Transfer-Encoding: base64
+Cc: devicetree@vger.kernel.org, Michal Suchanek <hramrach@gmail.com>,
+ Russell King <linux@arm.linux.org.uk>, Tony Lindgren <tony@atomide.com>,
+ linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>, linux-mtd@lists.infradead.org,
+ linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+To: "R, Vignesh" <vigneshr@ti.com>, Brian Norris <computersforpeace@gmail.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <5642E546.3040806@ti.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-+ others
-
-On Sat, Oct 03, 2015 at 11:54:16PM +0200, Heiner Kallweit wrote:
-> Seems like commit 43163022927b6e7d202a7e6f939c3f392465494d
-> (allow arbitrary OF matching for "jedec,spi-nor") broke autoloading
-> of the m25p80 module.
-> MODALIAS is "spi:spi-nor" and removing "spi-nor" as device alias
-> prevents module autoloading.
-> 
-> Of course we could revert the removal of the "spi-nor" device alias.
-> However it might be better to switch to DT-based matching for
-> DT-configured devices.
-> 
-> Adding a call to of_device_uevent_modalias to spi_uevent in spi.c
-> solved the issue for me, drawback however is that just the first
-> "compatible" value is used as modalias. In case of m25p80 this means
-> that "jedec,spi-nor" has to be the first "compatible" value.
-> This constraint might be too strict ..
-> 
-> Having said that I'm not sure what could be a better way to fix
-> the issue than just re-introducing the "spi-nor" device alias.
-
-Is this [1] getting fixed in SPI any time soon? Looks like there was
-some progress [2], but AFAICT it's not completed.
-
-I'd just like to know what the way forward here should be for m25p80.
-Really, "jedec,spi-nor" never autoloaded modules very reliably because
-of the SPI core constaints. So I'm not sure I'd consider this a
-regression, and I might be OK waiting around if it'll be fixed in a
-reasonable time frame.
-
-FWIW, I can do testing if somebody's tackling this still. Just CC me.
-
-Regards,
-Brian
-
-[1] https://lkml.org/lkml/2014/9/11/458
-[2] https://lkml.org/lkml/2015/8/20/109
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+77u/T24gMTEtMTEtMTUgMDc6NTAsIFIsIFZpZ25lc2ggd3JvdGU6Cj4gSGkgQnJhaW4sCj4KPiBP
+biAxMS8xMS8yMDE1IDQ6NTMgQU0sIEJyaWFuIE5vcnJpcyB3cm90ZToKPj4gSGkgVmlnbmVzaCwK
+Li4uCgo+PiBBbHNvLCB0aGlzIEFQSSBkb2Vzbid0IGFjdHVhbGx5IGhhdmUgYW55dGhpbmcgdG8g
+ZG8gd2l0aCBtZW1vcnkgbWFwcGluZy4KPj4gSXQgaGFzIHRvIGRvIHdpdGggdGhlIGRlIGZhY3Rv
+IHN0YW5kYXJkIGZsYXNoIHByb3RvY29sLiBTbyBJIGRvbid0IHRoaW5rCj4+IG1tYXAgYmVsb25n
+cyBpbiB0aGUgbmFtZTsgaXQgc2hvdWxkIGJlIHNvbWV0aGluZyBhYm91dCBmbGFzaC4gKEkga25v
+dyBvZgo+PiBhdCBsZWFzdCBvbmUgb3RoZXIgY29udHJvbGxlciB0aGF0IGNvdWxkIHByb2JhYmx5
+IHVzZSB0aGlzIEFQSSwgZXhjcGV0Cj4+IGl0IGRvZXNuJ3QgdXNlIG1lbW9yeSBtYXBwaW5nIHRv
+IGFjY29tcGxpc2ggdGhlIGFjY2VsZXJhdGVkIGZsYXNoIHJlYWQuKQoKVGhlIFp5bnEgaGFzIGEg
+c2ltaWxhciB3YXkgb2YgYWNjZXNzaW5nIFFTUEkgZmxhc2ggdGhyb3VnaCBhIG1lbW9yeSBtYXAu
+IFRoZSAKbWVtb3J5IHdpbmRvdyBpcyBvbmx5IDE2TUIsIHNvIHNvbWUgZm9ybSBvZiBwYWdpbmcg
+d291bGQgYmUgbmVlZGVkLgoKSXQncyB3aHkgSSBoYXZlIGJlZW4gZm9sbG93aW5nIHRoaXMgdGhy
+ZWFkIHdpdGggZ3JlYXQgaW50ZXJlc3QsIHNpbmNlIHRoZSBRU1BJIApwZXJmb3JtYW5jZSBvbiB0
+aGUgWnlucSBpcyB3YXkgYmVsb3cgd2hhdCBpdCBjb3VsZCBwb3RlbnRpYWxseSBiZS4KCj4gQXMg
+ZmFyIGFzIFRJIFFTUEkgY29udHJvbGxlciBpcyBjb25jZXJuZWQsIHRoZSBhY2NlbGVyYXRlZCBy
+ZWFkIGhhcHBlbnMKPiB2aWEgbW1hcCBwb3J0IHdoZXJlYnkgYSBwcmVkZWZpbmVkIG1lbW9yeSBh
+ZGRyZXNzIHNwYWNlIG9mIFNvQyBpcwo+IGV4cG9zZWQgYXMgUVNQSSBtbWFwIHJlZ2lvbi4gVGhp
+cyByZWdpb24gY2FuIGJlIGFjY2Vzc2VkIGxpa2Ugbm9ybWFsCj4gUkFNKHZpYSBtZW1jcHkoKSkg
+YW5kIHRoZSBRU1BJIGNvbnRyb2xsZXIgaW50ZXJmYWNlIHRha2VzIGNhcmUgb2YKPiBmZXRjaGlu
+ZyBkYXRhIGZyb20gZmxhc2ggb24gU1BJIGJ1cyBhdXRvbWF0aWNhbGx5IGhlbmNlLCBJIG5hbWVk
+IGl0IGFzCj4gYWJvdmUuIEJ1dCwgSSBoYXZlIG5vIGhhcmQgZmVlbGluZ3MgaWYgaXQgbmVlZHMg
+dG8gYmUgZ2VuZXJhbGl6ZWQgdG8KPiBzcGlfbXRkX3JlYWQoKSBvciBzb21ldGhpbmcgZWxzZS4K
+Ckkga25vdyB0aGF0IG9uIHRoZSBaeW5xLCB5b3UgY2FuIGV2ZW4gbGV0IHRoZSBETUEgY29udHJv
+bGxlciBhY2Nlc3MgdGhlIFFTUEkgCmZsYXNoIHZpYSB0aGlzIG1lbW9yeSBtYXBwaW5nLiBUaGUg
+UVNQSSBjb250cm9sbGVyIGl0c2VsZiBkb2Vzbid0IHN1cHBvcnQgYW55IApETUEgYXQgYWxsLgoK
+SWYgc29tZXRoaW5nIHNpbWlsYXIgYXBwbGllcyB0byB0aGUgVEkgcGxhdGZvcm0gKG1vc3Qgb2Yg
+dGhlIFRJIHByb2NzIGhhdmUgCm5pY2UgRE1BIGNvbnRyb2xsZXJzKSBvbmUgY291bGQgZ28gb25l
+IHN0ZXAgZnVydGhlciBhbmQgaW1wbGVtZW50IGEgZ2VuZXJpYyAKRE1BLXRocm91Z2gtbW1hcCBh
+Y2Nlc3MgdG8gUVNQSSBmbGFzaC4KCk1pa2UuCgoKS2luZCByZWdhcmRzLAoKTWlrZSBMb29pam1h
+bnMKU3lzdGVtIEV4cGVydAoKVE9QSUMgRW1iZWRkZWQgUHJvZHVjdHMKRWluZGhvdmVuc2V3ZWcg
+MzItQywgTkwtNTY4MyBLSCBCZXN0ClBvc3RidXMgNDQwLCBOTC01NjgwIEFLIEJlc3QKVGVsZWZv
+b246ICszMSAoMCkgNDk5IDMzIDY5IDc5ClRlbGVmYXg6ICszMSAoMCkgNDk5IDMzIDY5IDcwCkUt
+bWFpbDogbWlrZS5sb29pam1hbnNAdG9waWNwcm9kdWN0cy5jb20KV2Vic2l0ZTogd3d3LnRvcGlj
+cHJvZHVjdHMuY29tCgpQbGVhc2UgY29uc2lkZXIgdGhlIGVudmlyb25tZW50IGJlZm9yZSBwcmlu
+dGluZyB0aGlzIGUtbWFpbAoKVmlzaXQgdXMgYXQgOiBBZXJvc3BhY2UgRWxlY3RyaWNhbCBTeXN0
+ZW1zIEV4cG8gRXVyb3BlIHdoaWNoIHdpbGwgYmUgaGVsZCBmcm9tIDE3LjExLjIwMTUgdGlsbCAx
+OS4xMS4yMDE1LCBGaW5kb3JmZnN0cmFzc2UgMTAxIEJyZW1lbiwgR2VybWFueSwgSGFsbCA1LCBz
+dGFuZCBudW1iZXIgQzY1Cmh0dHA6Ly93d3cuYWVzZXhwby5ldQoKCgpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpsaW51eC1hcm0ta2VybmVsIG1haWxpbmcg
+bGlzdApsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
+ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9saW51eC1hcm0ta2VybmVsCg==

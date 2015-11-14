@@ -1,50 +1,96 @@
 From: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v3 6/7] spi: imx: return error from dma channel request
-Date: Sat, 14 Nov 2015 11:05:31 +0100
-Message-ID: <5647076B.3080709@gmail.com>
+Subject: Re: [PATCH v3 5/7] spi: imx: Add support for loopback for ECSPI
+ controllers
+Date: Sat, 14 Nov 2015 11:06:13 +0100
+Message-ID: <56470795.8090602@gmail.com>
 References: <1446388901-6073-1-git-send-email-anton.bondarenko.sama@gmail.com>
- <1446388901-6073-7-git-send-email-anton.bondarenko.sama@gmail.com>
- <20151105085637.GJ8526@pengutronix.de> <563B7D1C.7010105@gmail.com>
+ <1446388901-6073-6-git-send-email-anton.bondarenko.sama@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org, jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org
-To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+	vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org, jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org,
+	s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <563B7D1C.7010105-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1446388901-6073-6-git-send-email-anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
 
-On 05.11.2015 17:00, Anton Bondarenko wrote:
-> On 05.11.2015 09:56, Sascha Hauer wrote:
->> On Sun, Nov 01, 2015 at 03:41:40PM +0100, Anton Bondarenko wrote:
->>> From: Anton Bondarenko <anton_bondarenko-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
->>>
->>> On SDMA initialization return exactly the same error, which is
->>> reported by dma_request_slave_channel_reason(), it is a preceding
->>> change to defer SPI DMA initialization, if SDMA module is not yet
->>> available.
->>
->> Maybe something like: "fix probe deferral when dmaengine is not yet
->> available" in the subject line will better express that this is a patch
->> that should be applied ASAP. Also you can move this up to the front of
->> the series when resending.
->>
->> Sascha
->>
+On 01.11.2015 15:41, Anton Bondarenko wrote:
+> From: Anton Bondarenko <anton_bondarenko-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 >
-> This patch itself does not implement deferral for spi-imx if dmaengine
-> not ready. The patch targets 2 things: give a bit more detailed error
-> information of SPI dma slave channel initialization error and provide a
-> basis for the next patch ([PATCH v3 7/7] spi: imx: defer spi
-> initialization, if DMA engine is pending).
+> Support for ECSPI loopback for IMX51,IMX53 and IMX6Q using TEST register.
 >
-> Regards, Anton
+> Signed-off-by: Mohsin Kazmi <mohsin_kazmi-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+> Signed-off-by: Anton Bondarenko <anton_bondarenko-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+> ---
+>   drivers/spi/spi-imx.c | 19 ++++++++++++++++---
+>   1 file changed, 16 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+> index 48fdfa1..dc492e2 100644
+> --- a/drivers/spi/spi-imx.c
+> +++ b/drivers/spi/spi-imx.c
+> @@ -270,6 +270,9 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+>   #define MX51_ECSPI_STAT		0x18
+>   #define MX51_ECSPI_STAT_RR		(1 <<  3)
+>
+> +#define MX51_ECSPI_TEST			0x20
+> +#define MX51_ECSPI_LOOP			BIT(31)
+> +
+>   /* MX51 eCSPI */
+>   static unsigned int mx51_ecspi_clkdiv(unsigned int fin, unsigned int fspi,
+>   				      unsigned int *fres)
+> @@ -343,6 +346,7 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
+>   	u32 ctrl = MX51_ECSPI_CTRL_ENABLE, dma = 0;
+>   	u32 cfg = readl(spi_imx->base + MX51_ECSPI_CONFIG);
+>   	u32 delay;
+> +	u32 lpb = 0;
+>
+>   	/*
+>   	 * The hardware seems to have a race condition when changing modes. The
+> @@ -385,6 +389,12 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
+>   	writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
+>   	writel(cfg, spi_imx->base + MX51_ECSPI_CONFIG);
+>
+> +	if (config->mode & SPI_LOOP)
+> +		lpb |= MX51_ECSPI_LOOP;
+> +
+> +	if ((readl(spi_imx->base + MX51_ECSPI_TEST) & MX51_ECSPI_LOOP) != lpb)
+> +		writel(lpb, spi_imx->base + MX51_ECSPI_TEST);
+> +
+>   	/*
+>   	 * Wait until the changes in the configuration register CONFIGREG
+>   	 * propagate into the hardware. It takes exactly one tick of the
+> @@ -1262,6 +1272,9 @@ static int spi_imx_probe(struct platform_device *pdev)
+>   	spi_imx = spi_master_get_devdata(master);
+>   	spi_imx->bitbang.master = master;
+>
+> +	spi_imx->devtype_data = of_id ? of_id->data :
+> +		(struct spi_imx_devtype_data *)pdev->id_entry->driver_data;
+> +
+>   	for (i = 0; i < master->num_chipselect; i++) {
+>   		int cs_gpio = of_get_named_gpio(np, "cs-gpios", i);
+>   		if (!gpio_is_valid(cs_gpio) && mxc_platform_info)
+> @@ -1288,10 +1301,10 @@ static int spi_imx_probe(struct platform_device *pdev)
+>   	spi_imx->bitbang.master->unprepare_message = spi_imx_unprepare_message;
+>   	spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+>
+> -	init_completion(&spi_imx->xfer_done);
+> +	if (is_imx51_ecspi(spi_imx))
+> +		spi_imx->bitbang.master->mode_bits |= SPI_LOOP;
+>
+> -	spi_imx->devtype_data = of_id ? of_id->data :
+> -		(struct spi_imx_devtype_data *) pdev->id_entry->driver_data;
+> +	init_completion(&spi_imx->xfer_done);
+>
+>   	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>   	spi_imx->base = devm_ioremap_resource(&pdev->dev, res);
+>
 
 Does anyone has other comments regarding this commit?
 

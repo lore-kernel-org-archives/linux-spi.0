@@ -1,94 +1,64 @@
-From: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
-Subject: Re: [PATCH v3 2/7] spi: imx: replace fixed timeout with calculated
- one
-Date: Sat, 14 Nov 2015 11:01:53 +0100
-Message-ID: <56470691.4020607@gmail.com>
+From: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v3 1/7] spi: imx: Fix DMA transfer
+Date: Sat, 14 Nov 2015 11:02:58 +0100
+Message-ID: <564706D2.5050607@gmail.com>
 References: <1446388901-6073-1-git-send-email-anton.bondarenko.sama@gmail.com>
- <1446388901-6073-3-git-send-email-anton.bondarenko.sama@gmail.com>
- <20151105084723.GI8526@pengutronix.de> <56425176.9060805@gmail.com>
- <20151111081215.GQ8526@pengutronix.de>
+ <1446388901-6073-2-git-send-email-anton.bondarenko.sama@gmail.com>
+ <20151105083422.GH8526@pengutronix.de> <563B88FD.8050702@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: broonie@kernel.org, b38343@freescale.com,
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	vladimir_zapolskiy@mentor.com, jiada_wang@mentor.com
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20151111081215.GQ8526@pengutronix.de>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org, jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org
+To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <563B88FD.8050702-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
-On 11.11.2015 09:12, Sascha Hauer wrote:
-> On Tue, Nov 10, 2015 at 09:20:06PM +0100, Anton Bondarenko wrote:
->>
->>
->> On 05.11.2015 09:47, Sascha Hauer wrote:
->>>> @@ -890,12 +891,40 @@ static void spi_imx_dma_tx_callback(void *cookie)
->>>>   	complete(&spi_imx->dma_tx_completion);
->>>>   }
->>>>
->>>> +static int spi_imx_calculate_timeout(struct spi_imx_data *spi_imx, int size)
->>>> +{
->>>> +	unsigned long coef1 = 1;
->>>> +	unsigned long coef2 = MSEC_PER_SEC;
->>>> +	unsigned long timeout = 0;
->>>> +
->>>> +	/* Swap coeficients to avoid div by 0 */
->>>> +	if (spi_imx->spi_bus_clk < MSEC_PER_SEC) {
->>>> +		coef1 = MSEC_PER_SEC;
->>>> +		coef2 = 1;
->>>> +	}
->>>> +
->>>> +	/* Time with actual data transfer */
->>>> +	timeout += DIV_ROUND_UP(8 * size * coef1,
->>>> +				spi_imx->spi_bus_clk / coef2);
->>>> +
->>>> +	/* Take CS change delay related to HW */
->>>> +	timeout += DIV_ROUND_UP((size - 1) * 4 * coef1,
->>>> +				spi_imx->spi_bus_clk / coef2);
->>>> +
->>>> +	/* Add extra second for scheduler related activities */
->>>> +	timeout += MSEC_PER_SEC;
->>>> +
->>>> +	/* Double calculated timeout */
->>>> +	return msecs_to_jiffies(2 * timeout);
->>>> +}
+On 05.11.2015 17:51, Anton Bondarenko wrote:
+> On 05.11.2015 09:34, Sascha Hauer wrote:
+>> On Sun, Nov 01, 2015 at 03:41:35PM +0100, Anton Bondarenko wrote:
+>>> From: Anton Bondarenko <anton_bondarenko-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 >>>
->>> I think you can simplify this function to:
+>>> RX DMA tail data handling doesn't work correctly in many cases with
+>>> current implementation. It happens because SPI core was setup
+>>> to generates both RX watermark level and RX DATA TAIL events
+>>> incorrectly. SPI transfer triggering for DMA also done in wrong way.
 >>>
->>> 	timeout = size * 8 / spi_imx->spi_bus_clk;
->>> 	timeout += 2;
+>>> SPI client wants to transfer 70 words for example. The old DMA
+>>> implementation setup RX DATA TAIL equal 6 words. In this case
+>>> RX DMA event will be generated after 6 words read from RX FIFO.
+>>> The garbage can be read out from RX FIFO because SPI HW does
+>>> not receive all required words to trigger RX watermark event.
 >>>
->>> 	return msecs_to_jiffies(timeout * MSEC_PER_SEC);
->>>
->>> The rationale is that when size * 8 / spi_imx->spi_bus_clk is 0 then we
->>> can add another second and be fine. No need to calculate this more
->>> accurate, in the end it's important to catch the timeout. If we do this
->>> one or two seconds too late doesn't matter.
->>>
->>> Sascha
->>>
+>>> New implementation change handling of RX data tail. DMA is used to
+>>> process
+>>> all TX data and only full chunks of RX data with size aligned to FIFO/2.
+>>> Driver is waiting until both TX and RX DMA transaction done and all
+>>> TX data are pushed out. At that moment there is only RX data tail in
+>>> the RX FIFO. This data read out using PIO.
 >>
->> Sascha,
+>> Have you looked at the RX_DMA_LENGTH and RXTDEN fields of the DMA
+>> register? These seem to be for handling the remaining bytes of a DMA
+>> transfer which do not reach the watermark level. From reading the
+>> documentation I haven't really understood how it works though.
 >>
->> What about something like this:
->> 	timeout = size * (8 + 4) / spi_imx->spi_bus_clk;
->> 	timeout += 2;
+>> Sascha
 >>
->> 	return msecs_to_jiffies(2 * timeout * MSEC_PER_SEC);
->>
->> I think we still need to take into account 4 CLKs between each burst.
 >
-> Fine with me.
+> A lot of times. Current implementation is trying to use it, but works
+> incorrectly if length % WML != 0 (which means RX_DMA_LENGTH == 0).
 >
-> Sascha
->
->
+> Regards, Anton
 
-Tested new implementation successfully. Will be V4 patchset. Does anyone 
-has other comments regarding this commit?
+Does anyone has other comments regarding this commit?
 
 Regards, Anton
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

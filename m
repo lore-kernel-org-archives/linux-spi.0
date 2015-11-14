@@ -1,101 +1,67 @@
-From: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v3 5/7] spi: imx: Add support for loopback for ECSPI
- controllers
-Date: Sat, 14 Nov 2015 11:06:13 +0100
-Message-ID: <56470795.8090602@gmail.com>
+From: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
+Subject: Re: [PATCH v3 4/7] spi: imx: add function to check for IMX51 family
+ controller
+Date: Sat, 14 Nov 2015 11:06:27 +0100
+Message-ID: <564707A3.1070209@gmail.com>
 References: <1446388901-6073-1-git-send-email-anton.bondarenko.sama@gmail.com>
- <1446388901-6073-6-git-send-email-anton.bondarenko.sama@gmail.com>
+ <1446388901-6073-5-git-send-email-anton.bondarenko.sama@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org, jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org,
-	s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1446388901-6073-6-git-send-email-anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	vladimir_zapolskiy@mentor.com, jiada_wang@mentor.com,
+	s.hauer@pengutronix.de
+To: broonie@kernel.org, b38343@freescale.com
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1446388901-6073-5-git-send-email-anton.bondarenko.sama@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
 
 On 01.11.2015 15:41, Anton Bondarenko wrote:
-> From: Anton Bondarenko <anton_bondarenko-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+> From: Anton Bondarenko <anton_bondarenko@mentor.com>
 >
-> Support for ECSPI loopback for IMX51,IMX53 and IMX6Q using TEST register.
+> Similar to other controller type checks add check function for
+> IMX51. This also includes IMX53 and IMX6.
 >
-> Signed-off-by: Mohsin Kazmi <mohsin_kazmi-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
-> Signed-off-by: Anton Bondarenko <anton_bondarenko-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+> Signed-off-by: Anton Bondarenko <anton_bondarenko@mentor.com>
 > ---
->   drivers/spi/spi-imx.c | 19 ++++++++++++++++---
->   1 file changed, 16 insertions(+), 3 deletions(-)
+>   drivers/spi/spi-imx.c | 9 +++++++--
+>   1 file changed, 7 insertions(+), 2 deletions(-)
 >
 > diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-> index 48fdfa1..dc492e2 100644
+> index 06f52c3..48fdfa1 100644
 > --- a/drivers/spi/spi-imx.c
 > +++ b/drivers/spi/spi-imx.c
-> @@ -270,6 +270,9 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
->   #define MX51_ECSPI_STAT		0x18
->   #define MX51_ECSPI_STAT_RR		(1 <<  3)
+> @@ -127,9 +127,14 @@ static inline int is_imx35_cspi(struct spi_imx_data *d)
+>   	return d->devtype_data->devtype == IMX35_CSPI;
+>   }
 >
-> +#define MX51_ECSPI_TEST			0x20
-> +#define MX51_ECSPI_LOOP			BIT(31)
+> +static inline int is_imx51_ecspi(struct spi_imx_data *d)
+> +{
+> +	return d->devtype_data->devtype == IMX51_ECSPI;
+> +}
 > +
->   /* MX51 eCSPI */
->   static unsigned int mx51_ecspi_clkdiv(unsigned int fin, unsigned int fspi,
->   				      unsigned int *fres)
-> @@ -343,6 +346,7 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
->   	u32 ctrl = MX51_ECSPI_CTRL_ENABLE, dma = 0;
->   	u32 cfg = readl(spi_imx->base + MX51_ECSPI_CONFIG);
->   	u32 delay;
-> +	u32 lpb = 0;
+>   static inline unsigned spi_imx_get_fifosize(struct spi_imx_data *d)
+>   {
+> -	return (d->devtype_data->devtype == IMX51_ECSPI) ? 64 : 8;
+> +	return is_imx51_ecspi(d) ? 64 : 8;
+>   }
 >
->   	/*
->   	 * The hardware seems to have a race condition when changing modes. The
-> @@ -385,6 +389,12 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
->   	writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
->   	writel(cfg, spi_imx->base + MX51_ECSPI_CONFIG);
+>   #define MXC_SPI_BUF_RX(type)						\
+> @@ -1334,7 +1339,7 @@ static int spi_imx_probe(struct platform_device *pdev)
+>   	 * Only validated on i.mx6 now, can remove the constrain if validated on
+>   	 * other chips.
+>   	 */
+> -	if (spi_imx->devtype_data == &imx51_ecspi_devtype_data &&
+> +	if (is_imx51_ecspi(spi_imx) &&
+>   	    spi_imx_sdma_init(&pdev->dev, spi_imx, master))
+>   		dev_err(&pdev->dev, "dma setup error,use pio instead\n");
 >
-> +	if (config->mode & SPI_LOOP)
-> +		lpb |= MX51_ECSPI_LOOP;
-> +
-> +	if ((readl(spi_imx->base + MX51_ECSPI_TEST) & MX51_ECSPI_LOOP) != lpb)
-> +		writel(lpb, spi_imx->base + MX51_ECSPI_TEST);
-> +
->   	/*
->   	 * Wait until the changes in the configuration register CONFIGREG
->   	 * propagate into the hardware. It takes exactly one tick of the
-> @@ -1262,6 +1272,9 @@ static int spi_imx_probe(struct platform_device *pdev)
->   	spi_imx = spi_master_get_devdata(master);
->   	spi_imx->bitbang.master = master;
->
-> +	spi_imx->devtype_data = of_id ? of_id->data :
-> +		(struct spi_imx_devtype_data *)pdev->id_entry->driver_data;
-> +
->   	for (i = 0; i < master->num_chipselect; i++) {
->   		int cs_gpio = of_get_named_gpio(np, "cs-gpios", i);
->   		if (!gpio_is_valid(cs_gpio) && mxc_platform_info)
-> @@ -1288,10 +1301,10 @@ static int spi_imx_probe(struct platform_device *pdev)
->   	spi_imx->bitbang.master->unprepare_message = spi_imx_unprepare_message;
->   	spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
->
-> -	init_completion(&spi_imx->xfer_done);
-> +	if (is_imx51_ecspi(spi_imx))
-> +		spi_imx->bitbang.master->mode_bits |= SPI_LOOP;
->
-> -	spi_imx->devtype_data = of_id ? of_id->data :
-> -		(struct spi_imx_devtype_data *) pdev->id_entry->driver_data;
-> +	init_completion(&spi_imx->xfer_done);
->
->   	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->   	spi_imx->base = devm_ioremap_resource(&pdev->dev, res);
 >
 
 Does anyone has other comments regarding this commit?
 
 Regards, Anton
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,69 +1,112 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: spi: OF module autoloading is still broken
-Date: Mon, 16 Nov 2015 17:51:12 +0000
-Message-ID: <20151116175112.GH31303@sirena.org.uk>
-References: <56104E88.3040807@gmail.com>
- <20151112185926.GC8456@google.com>
- <20151113194031.GI8456@google.com>
- <20151113221228.GT12392@sirena.org.uk>
- <20151113225113.GJ8456@google.com>
- <20151113231410.GV12392@sirena.org.uk>
- <20151113234857.GK8456@google.com>
- <20151116135342.GD31303@sirena.org.uk>
- <564A11D9.80109@osg.samsung.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="/Gk0KcsbyUMelFU1"
-Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Dmitry Torokhov <dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
+Subject: Applied "spi: mediatek: single device does not require cs_gpios" to the spi tree
+Date: Mon, 16 Nov 2015 17:51:59 +0000
+Message-ID: <E1ZyNwd-0006sN-H7@debutante>
+References: <1447042491-1199-1-git-send-email-drinkcat@chromium.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Nicolas Boichat <drinkcat-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <564A11D9.80109-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
+In-Reply-To: <1447042491-1199-1-git-send-email-drinkcat-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---/Gk0KcsbyUMelFU1
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: mediatek: single device does not require cs_gpios
 
-On Mon, Nov 16, 2015 at 02:26:49PM -0300, Javier Martinez Canillas wrote:
-> On 11/16/2015 10:53 AM, Mark Brown wrote:
+has been applied to the spi tree at
 
-> > What I don't really understand here is why we've decided to push all
-> > this stuff into the subsystems, it seems like if we're managing to do
-> > the matching based on the compatible we really ought to be able to have
-> > the core figure out the uevents for us too.  I need to go have a look at
-> > that...
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> There is already a set of generic OF uevents that are reported by the core
-> but IIUC those are not used by udev. Please take a look to of_device_uevent()
-> in drivers/of/device.c and dev_uevent() that calls it in drivers/base/core.c.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-I know what the current situation is, my point is that I don't
-understand why we would choose to do that ("What I don't really
-understand here...").
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---/Gk0KcsbyUMelFU1
-Content-Type: application/pgp-signature; name="signature.asc"
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-iQEcBAEBCAAGBQJWShePAAoJECTWi3JdVIfQbwcH/RmG3l7Uiejndi/d+ERkmgeb
-rUF+Bm5IgbBKjhLqPK4J0qbAYGf+bKgNCXTm2Nmw9PFkdnWOcQO7DPODeszWdKR8
-YyH87j5Pgbvjlcp254flVfJRKwJ+mybSxD7Q6/WRNYNACVMVMLz99JldcB5rSJPp
-q6jxtahYSb0WDbcAMs/7CMWXgzAp+sqS4Am4NKl9ftKVvsxsEvLetAswmV69pBLD
-VyWaJnQTMgowxVtHvalfEQKXXMCjifab4a+0E9Ab6huOdMdvXtgjP66GTNPveJkv
-DTbqGxQ+iGYDjeiHqt0G3MJOgAmOcUCMg2ELe908uzy+hDG0pgESrJL/q+AtX3s=
-=QBjS
------END PGP SIGNATURE-----
+Thanks,
+Mark
 
---/Gk0KcsbyUMelFU1--
+>From 98c8dccf2b2771fb622d449b2ec1604fc5d260e5 Mon Sep 17 00:00:00 2001
+From: Nicolas Boichat <drinkcat-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Date: Mon, 9 Nov 2015 12:14:51 +0800
+Subject: [PATCH] spi: mediatek: single device does not require cs_gpios
+
+When only one device is present, it is not necessary to specify
+cs_gpios, as the CS line can be controlled by the hardware
+module.
+
+Without this patch, older device tree bindings used before
+37457607 "spi: mediatek: mt8173 spi multiple devices support"
+would cause a panic on boot. This fixes the crash, and
+re-introduces backward compatibility.
+
+Signed-off-by: Nicolas Boichat <drinkcat-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Acked-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-mt65xx.c | 26 ++++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index 563954a61424..7840067062a8 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -410,7 +410,7 @@ static int mtk_spi_setup(struct spi_device *spi)
+ 	if (!spi->controller_data)
+ 		spi->controller_data = (void *)&mtk_default_chip_info;
+ 
+-	if (mdata->dev_comp->need_pad_sel)
++	if (mdata->dev_comp->need_pad_sel && gpio_is_valid(spi->cs_gpio))
+ 		gpio_direction_output(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
+ 
+ 	return 0;
+@@ -632,13 +632,23 @@ static int mtk_spi_probe(struct platform_device *pdev)
+ 			goto err_put_master;
+ 		}
+ 
+-		for (i = 0; i < master->num_chipselect; i++) {
+-			ret = devm_gpio_request(&pdev->dev, master->cs_gpios[i],
+-						dev_name(&pdev->dev));
+-			if (ret) {
+-				dev_err(&pdev->dev,
+-					"can't get CS GPIO %i\n", i);
+-				goto err_put_master;
++		if (!master->cs_gpios && master->num_chipselect > 1) {
++			dev_err(&pdev->dev,
++				"cs_gpios not specified and num_chipselect > 1\n");
++			ret = -EINVAL;
++			goto err_put_master;
++		}
++
++		if (master->cs_gpios) {
++			for (i = 0; i < master->num_chipselect; i++) {
++				ret = devm_gpio_request(&pdev->dev,
++							master->cs_gpios[i],
++							dev_name(&pdev->dev));
++				if (ret) {
++					dev_err(&pdev->dev,
++						"can't get CS GPIO %i\n", i);
++					goto err_put_master;
++				}
+ 			}
+ 		}
+ 	}
+-- 
+2.6.2
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

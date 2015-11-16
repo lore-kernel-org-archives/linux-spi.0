@@ -1,104 +1,63 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi/bcm63xx: Move default clock configuration to kill compiler warning" to the spi tree
-Date: Mon, 16 Nov 2015 17:52:00 +0000
-Message-ID: <E1ZyNwe-0006sq-E8@debutante>
-References: <1447061330-19152-1-git-send-email-geert@linux-m68k.org>
+From: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
+Subject: Re: spi: OF module autoloading is still broken
+Date: Mon, 16 Nov 2015 14:57:47 -0300
+Message-ID: <564A191B.3040004@osg.samsung.com>
+References: <56104E88.3040807@gmail.com> <20151112185926.GC8456@google.com>
+ <20151113194031.GI8456@google.com> <20151113221228.GT12392@sirena.org.uk>
+ <20151113225113.GJ8456@google.com> <20151113231410.GV12392@sirena.org.uk>
+ <20151113234857.GK8456@google.com> <564A101F.9090807@osg.samsung.com>
+ <20151116174942.GG31303@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=ISO-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Dmitry Torokhov <dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1447061330-19152-1-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+In-Reply-To: <20151116174942.GG31303-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+Hello Mark,
 
-   spi/bcm63xx: Move default clock configuration to kill compiler warni=
-ng
+On 11/16/2015 02:49 PM, Mark Brown wrote:
+> On Mon, Nov 16, 2015 at 02:19:27PM -0300, Javier Martinez Canillas wrote:
+>> On 11/13/2015 08:48 PM, Brian Norris wrote:
+> 
+>>> (I believe I avoided this in the first place for mostly-aesthetic
+>>> reasons; technically this allows people to put garbage in their DT, like
+>>> "garbage,spi-nor". It's unclear whether "garbage" becomes part of the
+>>> mythical DT ABI [1].)
+> 
+>> I don't believe your examples are part of the mythical DT ABI. What I
+>> understand is that an ABI is whatever is documented in the DT binding
+>> docs but the only document that mentions the m25p80 is:
+> 
+>> Documentation/devicetree/bindings/mtd/jedec,spi-nor.txt
+> 
+> Not really, in practice an ABI is something that people notice breaking.
+> This means that if enough people ship an undocumented ABI (or it goes
+> into important enough products) it's just as good as something that's
+> documented, perhaps better than something that's documented and nobody
+> ever uses as an ABI.
+> 
 
-has been applied to the spi tree at
+I see, fair enough. Let's see what Brian say about the spi-nor case and
+I'll also post my RFC patch but as a proper patch and adding the comments
+you asked me later today.
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git=20
+It would be unfortunate if the SPI drivers would have as a requirement to
+always have an SPI device ID table even for OF-only IPs but I don't think
+that is that bad either.
 
-All being well this means that it will be integrated into the linux-nex=
-t
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted. =20
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems an=
-d
-send followup patches addressing any issues that are reported if needed=
-=2E
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
-=46rom 4dde99bd32fc3f61f7c2b602a78f1627a118e450 Mon Sep 17 00:00:00 200=
-1
-=46rom: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Date: Mon, 9 Nov 2015 10:28:50 +0100
-Subject: [PATCH] spi/bcm63xx: Move default clock configuration to kill
- compiler warning
-MIME-Version: 1.0
-Content-Type: text/plain; charset=3DUTF-8
-Content-Transfer-Encoding: 8bit
-
-drivers/spi/spi-bcm63xx.c: In function =E2=80=98bcm63xx_spi_setup_trans=
-fer=E2=80=99:
-drivers/spi/spi-bcm63xx.c:207: warning: =E2=80=98clk_cfg=E2=80=99 may b=
-e used uninitialized in this function
-
-While this is a false positive, it can easily be avoided by selecting
-the default clock configuration first.
-
-Signed-off-by: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-bcm63xx.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index 06858e04ec59..cc8e1513d167 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -207,6 +207,9 @@ static void bcm63xx_spi_setup_transfer(struct spi_d=
-evice *spi,
- 	u8 clk_cfg, reg;
- 	int i;
-=20
-+	/* Default to lowest clock configuration */
-+	clk_cfg =3D SPI_CLK_0_391MHZ;
-+
- 	/* Find the closest clock configuration */
- 	for (i =3D 0; i < SPI_CLK_MASK; i++) {
- 		if (t->speed_hz >=3D bcm63xx_spi_freq_table[i][0]) {
-@@ -215,10 +218,6 @@ static void bcm63xx_spi_setup_transfer(struct spi_=
-device *spi,
- 		}
- 	}
-=20
--	/* No matching configuration found, default to lowest */
--	if (i =3D=3D SPI_CLK_MASK)
--		clk_cfg =3D SPI_CLK_0_391MHZ;
--
- 	/* clear existing clock configuration bits of the register */
- 	reg =3D bcm_spi_readb(bs, SPI_CLK_CFG);
- 	reg &=3D ~SPI_CLK_MASK;
---=20
-2.6.2
-
+Best regards,
+-- 
+Javier Martinez Canillas
+Open Source Group
+Samsung Research America
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

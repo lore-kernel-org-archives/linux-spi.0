@@ -1,12 +1,12 @@
 From: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
 Subject: Re: spi: OF module autoloading is still broken
-Date: Mon, 16 Nov 2015 14:57:47 -0300
-Message-ID: <564A191B.3040004@osg.samsung.com>
+Date: Mon, 16 Nov 2015 15:00:23 -0300
+Message-ID: <564A19B7.7000802@osg.samsung.com>
 References: <56104E88.3040807@gmail.com> <20151112185926.GC8456@google.com>
  <20151113194031.GI8456@google.com> <20151113221228.GT12392@sirena.org.uk>
  <20151113225113.GJ8456@google.com> <20151113231410.GV12392@sirena.org.uk>
- <20151113234857.GK8456@google.com> <564A101F.9090807@osg.samsung.com>
- <20151116174942.GG31303@sirena.org.uk>
+ <20151113234857.GK8456@google.com> <20151116135342.GD31303@sirena.org.uk>
+ <564A11D9.80109@osg.samsung.com> <20151116175112.GH31303@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 7bit
@@ -17,41 +17,32 @@ Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20151116174942.GG31303-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <20151116175112.GH31303-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 Hello Mark,
 
-On 11/16/2015 02:49 PM, Mark Brown wrote:
-> On Mon, Nov 16, 2015 at 02:19:27PM -0300, Javier Martinez Canillas wrote:
->> On 11/13/2015 08:48 PM, Brian Norris wrote:
+On 11/16/2015 02:51 PM, Mark Brown wrote:
+> On Mon, Nov 16, 2015 at 02:26:49PM -0300, Javier Martinez Canillas wrote:
+>> On 11/16/2015 10:53 AM, Mark Brown wrote:
 > 
->>> (I believe I avoided this in the first place for mostly-aesthetic
->>> reasons; technically this allows people to put garbage in their DT, like
->>> "garbage,spi-nor". It's unclear whether "garbage" becomes part of the
->>> mythical DT ABI [1].)
+>>> What I don't really understand here is why we've decided to push all
+>>> this stuff into the subsystems, it seems like if we're managing to do
+>>> the matching based on the compatible we really ought to be able to have
+>>> the core figure out the uevents for us too.  I need to go have a look at
+>>> that...
 > 
->> I don't believe your examples are part of the mythical DT ABI. What I
->> understand is that an ABI is whatever is documented in the DT binding
->> docs but the only document that mentions the m25p80 is:
+>> There is already a set of generic OF uevents that are reported by the core
+>> but IIUC those are not used by udev. Please take a look to of_device_uevent()
+>> in drivers/of/device.c and dev_uevent() that calls it in drivers/base/core.c.
 > 
->> Documentation/devicetree/bindings/mtd/jedec,spi-nor.txt
-> 
-> Not really, in practice an ABI is something that people notice breaking.
-> This means that if enough people ship an undocumented ABI (or it goes
-> into important enough products) it's just as good as something that's
-> documented, perhaps better than something that's documented and nobody
-> ever uses as an ABI.
+> I know what the current situation is, my point is that I don't
+> understand why we would choose to do that ("What I don't really
+> understand here...").
 > 
 
-I see, fair enough. Let's see what Brian say about the spi-nor case and
-I'll also post my RFC patch but as a proper patch and adding the comments
-you asked me later today.
-
-It would be unfortunate if the SPI drivers would have as a requirement to
-always have an SPI device ID table even for OF-only IPs but I don't think
-that is that bad either.
+Got it, sorry for misunderstanding you. I also don't know the answer FWIW.
 
 Best regards,
 -- 

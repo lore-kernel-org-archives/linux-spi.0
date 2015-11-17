@@ -1,56 +1,47 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/8] Documentation/spi/spidev_test.c: use one rx buffer
-Date: Tue, 17 Nov 2015 17:41:56 +0000
-Message-ID: <20151117174156.GX31303@sirena.org.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 2/8] Documentation/spi/spidev_test.c: clean up input_tx
+Date: Tue, 17 Nov 2015 17:43:33 +0000
+Message-ID: <20151117174333.GY31303@sirena.org.uk>
 References: <cover.1447773299.git.stillcompiling@gmail.com>
- <2f17ae29e75967b4522b080c275b907622e1d353.1447773299.git.stillcompiling@gmail.com>
+ <7f2139b27013d77993c6bc2b0a6c94fab01add98.1447773299.git.stillcompiling@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="OtXN0xDA1zr/oUEL"
-Cc: Jonathan Corbet <corbet-T1hC0tSOHrs@public.gmane.org>,
-	Adrian Remonda <adrianremonda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Joshua Clayton <stillcompiling-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="apSYfA7d5AHMku3c"
+Cc: Jonathan Corbet <corbet@lwn.net>,
+	Adrian Remonda <adrianremonda@gmail.com>,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org
+To: Joshua Clayton <stillcompiling@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <2f17ae29e75967b4522b080c275b907622e1d353.1447773299.git.stillcompiling-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <7f2139b27013d77993c6bc2b0a6c94fab01add98.1447773299.git.stillcompiling@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---OtXN0xDA1zr/oUEL
+--apSYfA7d5AHMku3c
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Nov 17, 2015 at 07:24:21AM -0800, Joshua Clayton wrote:
+On Tue, Nov 17, 2015 at 07:24:22AM -0800, Joshua Clayton wrote:
+> Put input from string into its own function.
 
-> default_rx and rx are needlessly different.
-> Use one buffer, local to transmit()
+Again, why are we doing this?  I'm having a hard time seeing what the
+gain is, the amount of code being moved is tiny.
 
-Why?  This isn't what I'd expect from black boxing the API, from a
-userspace point of view the transfer is atomic and in an ideal world
-we'd be able to do direct to/from memory transfers rather than memcpy()
-into kernel space which means that userspace should assume the transfers
-are going on simultaneously even if they don't currently.
-
---OtXN0xDA1zr/oUEL
+--apSYfA7d5AHMku3c
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJWS2bjAAoJECTWi3JdVIfQJXcH/1xtb1soGkkp/U0p9wpfckQZ
-Y91S4gmigfDDDjtlQqI+IXXYGVL6AAj43qR3lHUBhFerq7VMrcY1+FmI4Zwew+BS
-u34ToY0epv3IqChDS/BYryuRPIEHeTkeAMDCqyIpA+zuqOnfLnyu2QdlnBXdSrmZ
-rrmvadVZnsdxYlH3/toN01op/rzvv3y0A9YlvnHQ3mGsOvbUbqt38r77ECatFJn1
-Zz85/38rGJVeyNf9OmXB6GkIg+zbC/qs+TFcTgKX12mH9NYYDeq+F3cW5si9i1KG
-srkH9UM1+FezOwucaobEaZpX0x38taOWPkR9CL4s/8pYG2HPo0ocI3ta2zxyMsA=
-=WUfe
+iQEcBAEBCAAGBQJWS2dEAAoJECTWi3JdVIfQhi4H/3gmd4tqcUxjfwPTSE0Gn429
+9FEJvFADV9BtV793Iobxpsh9i8aC83UhpzJesYS2mrxMk8inEu+CZhPM/zk2UfEa
+AqC+4UnFNrnhnMUzEtwfpVRkVO3aW397fF+2NXWmW31Ks9/2/1IWFjclvLiq88YP
+ui+fzQAXUXcjMpCs68zSVAiiukW2//j/gthkHMjxEjtFvGt/JJKNQBlpPE7hGGhI
+QDnF3hjgnERyxjRjp7UxGQjBmgJIxyloLRYGA7hh3/08JhPCEMdlYNBbyuE/LdZB
+8XqZuAYOGkkURrUz7QIXgLG/izJKwFln/AsO/eVTiFHvO7jAckKqMmpZRK+QsNM=
+=ZcDf
 -----END PGP SIGNATURE-----
 
---OtXN0xDA1zr/oUEL--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--apSYfA7d5AHMku3c--

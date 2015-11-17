@@ -1,37 +1,35 @@
-From: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi: sun4i: allow transfers to set transmission speed
-Date: Tue, 17 Nov 2015 16:50:54 +0100
-Message-ID: <CAGNoLaPnbfKP+aQpWaNuWC7YQTe33wpezJxSv4KHSeuiaDY9TQ@mail.gmail.com>
-References: <1446936065-15868-1-git-send-email-mweseloh42@gmail.com>
+From: Joshua Clayton <stillcompiling@gmail.com>
+Subject: Re: [PATCH 0/8] spi: Add file i/o to spidev_test
+Date: Tue, 17 Nov 2015 08:15:45 -0800
+Message-ID: <2760715.DGIOLUoqL9@jclayton-pc>
+References: <cover.1447773299.git.stillcompiling@gmail.com> <20151117153746.GS31303@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
-	Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1446936065-15868-1-git-send-email-mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: Mark Brown <broonie@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Adrian Remonda <adrianremonda@gmail.com>,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org
+To: linux-arm-kernel@lists.infradead.org
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <20151117153746.GS31303@sirena.org.uk>
+Sender: linux-doc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Mark, Maxime,
+On Tuesday, November 17, 2015 03:37:46 PM Mark Brown wrote:
+> On Tue, Nov 17, 2015 at 07:24:20AM -0800, Joshua Clayton wrote:
+> 
+> >   Documentation/spi/spidev_test.c: use one rx buffer
+> >   Documentation/spi/spidev_test.c: clean up input_tx
+> >   Documentation/spi/spidev_test.c: accept input from a file
+> >   Documentation/spi/spidev_test.c: output to a file
+> >   Documentation/spi/spidev_test.c: check error
+> >   Documentation/spi/spidev_test.c: fix whitespace
+> 
+> Please use subjct lines reflecting the style for the subsystem.
+OK. Will do.
+Assuming "spi: spidev_test: yadda..." 
+It was a bit unclear due to the location of the file.
 
-2015-11-07 23:41 GMT+01:00 Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>:
-> Allow transfers to set the transmission speed, only fall back to
-> board max_speed_hz if requested speed is not set or invalid.
->
-> Signed-off-by: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> ---
->  drivers/spi/spi-sun4i.c | 15 +++++++++++----
->  1 file changed, 11 insertions(+), 4 deletions(-)
-
-Just a quick follow-up: is there anything else I need to do to push
-this patch along? Or do I just need to be more patient?
-
-Best regards,
-
-  Marcus
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+-- 
+~Joshua Clayton

@@ -1,54 +1,43 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 8/8] spi: Move spi code from Documentation to tools
-Date: Tue, 17 Nov 2015 18:11:17 +0000
-Message-ID: <20151117181117.GA31303@sirena.org.uk>
-References: <cover.1447773299.git.stillcompiling@gmail.com>
- <7f1a4995f0e48b738d3aa4f4d8ddd210a0ae2b24.1447773299.git.stillcompiling@gmail.com>
+From: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi: sun4i: allow transfers to set transmission speed
+Date: Tue, 17 Nov 2015 19:14:14 +0100
+Message-ID: <CAGNoLaOOycx7GTcT9r+L0wKkgsn4+NH7sk56mOZYisz36TFz-Q@mail.gmail.com>
+References: <1446936065-15868-1-git-send-email-mweseloh42@gmail.com>
+	<CAGNoLaPnbfKP+aQpWaNuWC7YQTe33wpezJxSv4KHSeuiaDY9TQ@mail.gmail.com>
+	<20151117165747.GV31303@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="d6nDKxlhctiV7bVq"
-Cc: Jonathan Corbet <corbet-T1hC0tSOHrs@public.gmane.org>,
-	Adrian Remonda <adrianremonda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Joshua Clayton <stillcompiling-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <7f1a4995f0e48b738d3aa4f4d8ddd210a0ae2b24.1447773299.git.stillcompiling-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <20151117165747.GV31303-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hi Mark,
 
---d6nDKxlhctiV7bVq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+2015-11-17 17:57 GMT+01:00 Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>:
+>> Just a quick follow-up: is there anything else I need to do to push
+>> this patch along? Or do I just need to be more patient?
+>
+> I don't have this patch, presumably there were review comments that I
+> was expecting to see some action on.
 
-On Tue, Nov 17, 2015 at 07:24:28AM -0800, Joshua Clayton wrote:
-> Jon Corbet requested this code moved with the last changeset,
-> https://lkml.org/lkml/2015/3/1/144,
-> but the patch was not applied because it missed the Makefile.
-> Moved spidev_test, spidev_fdx and their Makefile infrastructure.
+Sorry, the mail I was quoting was actually the first version of the
+patch, which you did comment on.  I had sent a v2 patch addressing
+your comments, sent on the 8th of November, 12:08 CET:
+http://marc.info/?l=linux-spi&m=144698062222607&w=2
 
-Trivial moves like this should generally come early rather than
-later in the series so that they are easier to apply, as this is at the
-end of the series it depends on the entire series.
+Looks like I make a mistake when git send-email asked me for the
+message id that this second version refers to. The linux-spi mailing
+list didn't pick up on the reference and created a new thread for
+it...
 
---d6nDKxlhctiV7bVq
-Content-Type: application/pgp-signature; name="signature.asc"
+Best regards,
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJWS23EAAoJECTWi3JdVIfQxrsH/1ZZ+pJHD1fBWeJKtYYS1EJC
-f+lXS4vf7cv6ESEOIdnJp4xAEHGA692iUY+x5AqwsCpa2TxReVYO/ac4IyjvCQNV
-4s9cvf43hfESUY7CGXXefCCtC7Dc+QG3mQ8hPmal+RJbRSjeEjW/6+npmSXuqoIa
-AZbV3OEzVNvi1qhDGDNT4v8jZW4+wt9AyCOYbKEKuYO8wonvqi0zz4LOovhzLYAV
-i6wRPcBsFcTVPQRwyqEt6SI18dSaSl7aTP972fDZr7px3i05u7ehochw9tCLvH8S
-KWc+Ck8xNoahNpk9JE2eL2xO9Bi9laGMOXyAm1bRFG+IEXeue77Dcjd8s4lei1k=
-=21vk
------END PGP SIGNATURE-----
-
---d6nDKxlhctiV7bVq--
+    Marcus
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

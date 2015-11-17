@@ -1,47 +1,68 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: sun4i: allow transfers to set
- transmission speed
-Date: Tue, 17 Nov 2015 22:49:31 +0000
-Message-ID: <20151117224931.GF31303@sirena.org.uk>
-References: <1446936065-15868-1-git-send-email-mweseloh42@gmail.com>
- <CAGNoLaPnbfKP+aQpWaNuWC7YQTe33wpezJxSv4KHSeuiaDY9TQ@mail.gmail.com>
- <20151117165747.GV31303@sirena.org.uk>
- <CAGNoLaOOycx7GTcT9r+L0wKkgsn4+NH7sk56mOZYisz36TFz-Q@mail.gmail.com>
- <20151117183446.GB31303@sirena.org.uk>
- <CAGNoLaPADM=+vMG8CXii27ann+6ORvNzqDmhhLUPy1ohfpBLNg@mail.gmail.com>
-Reply-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Subject: Re: [PATCH 2/8] Documentation/spi/spidev_test.c: clean up input_tx
+Date: Tue, 17 Nov 2015 22:52:00 +0000
+Message-ID: <20151117225200.GG31303@sirena.org.uk>
+References: <cover.1447773299.git.stillcompiling@gmail.com>
+ <7f2139b27013d77993c6bc2b0a6c94fab01add98.1447773299.git.stillcompiling@gmail.com>
+ <20151117174333.GY31303@sirena.org.uk>
+ <5345436.HCqatbevmx@jclayton-pc>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="iBipwI8N6cjWJAiJ"
-Cc: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-To: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-sunxi+bncBDQ2L75W5QGBBBG6V2ZAKGQEFX3DGLA-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="evOcBaiMpN7OEvsd"
+Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Jonathan Corbet <corbet-T1hC0tSOHrs@public.gmane.org>,
+	Adrian Remonda <adrianremonda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Joshua Clayton <stillcompiling-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CAGNoLaPADM=+vMG8CXii27ann+6ORvNzqDmhhLUPy1ohfpBLNg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <http://groups.google.com/group/linux-sunxi
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
- <http://groups.google.com/group/linux-sunxi/subscribe>
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <5345436.HCqatbevmx@jclayton-pc>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
---iBipwI8N6cjWJAiJ
-Content-Type: text/plain; charset=UTF-8
+
+--evOcBaiMpN7OEvsd
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 17, 2015 at 11:06:54PM +0100, Marcus Weseloh wrote:
+On Tue, Nov 17, 2015 at 11:21:12AM -0800, Joshua Clayton wrote:
 
-> OK, message received and understood. Please accept my apologies! This
-> is my first code-changing contribution to mainline and I really was
-> unsure if the second version of the patch came through alright. I
-> guess I was spoiled by your very quick responses and review of the
-> first version, so I got worried when I didn't hear anything for a few
-> days. I'll be more patient in the future.
+Please fix your mail client to word wrap within paragraphs at something
+substantially less than 80 columns.  Doing this makes your messages much
+easier to read and reply to.
 
-I'd probably have been quicker but the merge window was open until
-Sunday so I've not been applying anything.
---iBipwI8N6cjWJAiJ--
+> It takes some clutter out of main() whose scope is limited to that little=
+ block of code,=20
+> and because in the next patch we add another (larger)function to the if/e=
+lse block.
+
+> I don't know if it is valid to say "look at the next commit" for justific=
+ation, but
+> That is the reason.
+
+That's totally fine - just say that it's to support future changes in
+this area.  It's good to split out mechanical changes like this from the
+more complex changes, you just need to say why they're happening.
+
+--evOcBaiMpN7OEvsd
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJWS6+QAAoJECTWi3JdVIfQK3gH/j4r+L97rMWJifWz880RJpGL
+5WAfFpq4A2Exo1pc6BwOwaO6TJ/JvVtv7LCX1cv0hXxDlPBaLdYADNxpwVpPknrL
+JcXm8R5SqRwN//SYt4x9xIKjL6ePdsNdTV9OucDqH+efClObPbEbSPBaQp3Xu/G9
+0LCdOEKEpXWtYnBCJ/+dmPdmBLuYRc6GYgfb0xb0iOS+tQDl+gK/JTaHwsU0HZ2I
+yilmDZG4e8KtnAfnbTpTga7yRfg1rxHVwz6TQ+flkBy0GJhGUIrYZJ3wKAfUqcgB
+i/YrStNSkkXRBYeeUA0RKoYl3coCvVn5UfJSZX5C9bKykOc88wkWibNxEGrjaw8=
+=70UV
+-----END PGP SIGNATURE-----
+
+--evOcBaiMpN7OEvsd--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

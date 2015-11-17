@@ -1,42 +1,37 @@
 From: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH] [media] move media platform data to linux/platform_data/media
-Date: Tue, 17 Nov 2015 10:23:37 +0100
-Message-ID: <7319142.Cp8MurgLWk@wuerfel>
-References: <4d99e49726942dc4d6a6ee1debf6665b2b47908b.1447751746.git.mchehab@osg.samsung.com>
+Subject: Re: [PATCH] SPI: s3c64xx: pass DMA arguments in platform data
+Date: Tue, 17 Nov 2015 11:33:45 +0100
+Message-ID: <16591294.iqvGkiFfez@wuerfel>
+References: <8391350.6B0EUH1WXO@wuerfel>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7Bit
-Cc: Mauro Carvalho Chehab <mchehab@osg.samsung.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Xiubo Li <Xiubo.Lee@gmail.com>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Sergey Lapin <slapin@ossfans.org>, Timur Tabi <timur@tabi.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Tomas Cech <sleep_walker@suse.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Markus Elfring <elfring@users.sourceforge.net>,
-	Harald Welte <laforge@openezx.org>,
-	openezx-devel@lists.openezx.org,
-	Russell King <linux@arm.linux.org.uk>,
-	Vinod Koul <vinod.koul@intel.com>,
-	Takashi Iwai <tiwai@suse.com>,
-	Tomi Valkeinen <tomi.valkeinen@ti.com>,
-	linux-serial@vger.kernel.org, Jiri Slaby <jslaby@suse.com>,
-	Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
-	Daniel Ribeiro <drwyrm@gmail.com>,
-	Linux Media Mailing List <linux-media@vger.kernel.org>,
-	Fabio Estevam <fabio.estevam@freescale.com>,
-	Philipp Zabel <
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+	Kukjin Kim <kgene@kernel.org>
 To: linux-arm-kernel@lists.infradead.org
-Return-path: <linux-media-owner@vger.kernel.org>
-In-Reply-To: <4d99e49726942dc4d6a6ee1debf6665b2b47908b.1447751746.git.mchehab@osg.samsung.com>
-Sender: linux-media-owner@vger.kernel.org
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <8391350.6B0EUH1WXO@wuerfel>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tuesday 17 November 2015 07:15:59 Mauro Carvalho Chehab wrote:
-> Now that media has its own subdirectory inside platform_data,
-> let's move the headers that are already there to such subdir.
+On Monday 16 November 2015 17:00:21 Arnd Bergmann wrote:
+> The s3c64xx platform data already contains a pointer to the
+> DMA filter function, but not to the associated data.
 > 
+> This simplifies the code and makes it more generic by
+> passing the data along with the filter function like
+> we do for other drivers.
 > 
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+While rebasing the ASoC patches, I realized that they are not independent
+of this one, which I did on top of the others.
+
+None of them are urgent, so if the maintainers all agree that we want them,
+I can wait another merge window with this one. Alternatively, I could
+rework the patches to avoid the dependency, or we could merge them
+all through the samsung git tree in order.
+
+	Arnd

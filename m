@@ -1,74 +1,51 @@
-From: Joshua Clayton <stillcompiling@gmail.com>
-Subject: [PATCH 2/8] Documentation/spi/spidev_test.c: clean up input_tx
-Date: Tue, 17 Nov 2015 07:24:22 -0800
-Message-ID: <7f2139b27013d77993c6bc2b0a6c94fab01add98.1447773299.git.stillcompiling@gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 0/8] spi: Add file i/o to spidev_test
+Date: Tue, 17 Nov 2015 15:37:46 +0000
+Message-ID: <20151117153746.GS31303@sirena.org.uk>
 References: <cover.1447773299.git.stillcompiling@gmail.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="vEk28Nl/eckWL8CC"
 Cc: Jonathan Corbet <corbet@lwn.net>,
 	Adrian Remonda <adrianremonda@gmail.com>,
 	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org,
-	Joshua Clayton <stillcompiling@gmail.com>
-To: Mark Brown <broonie@kernel.org>
+	linux-spi@vger.kernel.org
+To: Joshua Clayton <stillcompiling@gmail.com>
 Return-path: <linux-doc-owner@vger.kernel.org>
+Content-Disposition: inline
 In-Reply-To: <cover.1447773299.git.stillcompiling@gmail.com>
-In-Reply-To: <cover.1447773299.git.stillcompiling@gmail.com>
-References: <cover.1447773299.git.stillcompiling@gmail.com>
 Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Put input from string into its own function.
 
-Signed-off-by: Joshua Clayton <stillcompiling@gmail.com>
----
- Documentation/spi/spidev_test.c | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+--vEk28Nl/eckWL8CC
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/Documentation/spi/spidev_test.c b/Documentation/spi/spidev_test.c
-index dfe8f47..1ed9110 100644
---- a/Documentation/spi/spidev_test.c
-+++ b/Documentation/spi/spidev_test.c
-@@ -249,12 +249,20 @@ static void parse_opts(int argc, char *argv[])
- 	}
- }
- 
-+static void transfer_escaped_string(int fd, char *str)
-+{
-+	size_t size = strlen(str + 1);
-+	uint8_t *tx = malloc(size);
-+
-+	size = unescape((char *)tx, str, size);
-+	transfer(fd, tx, size);
-+	free(tx);
-+}
-+
- int main(int argc, char *argv[])
- {
- 	int ret = 0;
- 	int fd;
--	uint8_t *tx;
--	int size;
- 
- 	parse_opts(argc, argv);
- 
-@@ -299,15 +307,10 @@ int main(int argc, char *argv[])
- 	printf("bits per word: %d\n", bits);
- 	printf("max speed: %d Hz (%d KHz)\n", speed, speed/1000);
- 
--	if (input_tx) {
--		size = strlen(input_tx+1);
--		tx = malloc(size);
--		size = unescape((char *)tx, input_tx, size);
--		transfer(fd, tx, size);
--		free(tx);
--	} else {
-+	if (input_tx)
-+		transfer_escaped_string(fd, input_tx);
-+	else
- 		transfer(fd, default_tx, sizeof(default_tx));
--	}
- 
- 	close(fd);
- 
--- 
-2.5.0
+On Tue, Nov 17, 2015 at 07:24:20AM -0800, Joshua Clayton wrote:
 
+>   Documentation/spi/spidev_test.c: use one rx buffer
+>   Documentation/spi/spidev_test.c: clean up input_tx
+>   Documentation/spi/spidev_test.c: accept input from a file
+>   Documentation/spi/spidev_test.c: output to a file
+>   Documentation/spi/spidev_test.c: check error
+>   Documentation/spi/spidev_test.c: fix whitespace
+
+Please use subjct lines reflecting the style for the subsystem.
+
+--vEk28Nl/eckWL8CC
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJWS0nJAAoJECTWi3JdVIfQXaoH/0icK49Uoo6HhvRqKLYZsxEc
+K0eGtSAhFPUyaqLi9gGc6dikWOLLmYHnxVHFW0mh9Set26L/F0svjsiORTjTRJ7X
+1dXs/C13Bp/35qAKr9Ovn4BNWwcBR10sSfiGpYTiTy+zBQCXgwHtQ1fFfJT8Uh1b
+Y2fOYuw1Cm4bU8PS3BbbItYe+29HH0fGFdy/iz/Iyth4/jxus6o37m6i+0fWb/sj
+NL0DOcxPugNRAKY71ddbVgVTjutim7TQIZtHpC+/rZU4JpKjR2z3XWcGIuKxXPF0
+7HszEaD3cizLT5UTp3a2pVMlaFpO9gVuvY3YtL+qyjAW13/+UFCX879xSPcOyxQ=
+=Xm7N
+-----END PGP SIGNATURE-----
+
+--vEk28Nl/eckWL8CC--

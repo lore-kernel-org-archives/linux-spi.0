@@ -1,201 +1,36 @@
-From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Subject: [PATCH v2] SPI: s3c64xx: pass DMA arguments in platform data
-Date: Tue, 17 Nov 2015 16:48:58 +0100
-Message-ID: <4634371.Kl2EUjoTtJ@wuerfel>
-References: <8391350.6B0EUH1WXO@wuerfel>
+From: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi: sun4i: allow transfers to set transmission speed
+Date: Tue, 17 Nov 2015 16:50:54 +0100
+Message-ID: <CAGNoLaPnbfKP+aQpWaNuWC7YQTe33wpezJxSv4KHSeuiaDY9TQ@mail.gmail.com>
+References: <1446936065-15868-1-git-send-email-mweseloh42@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset=UTF-8
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+	linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+	Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <8391350.6B0EUH1WXO@wuerfel>
+In-Reply-To: <1446936065-15868-1-git-send-email-mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The s3c64xx platform data already contains a pointer to the
-DMA filter function, but not to the associated data.
+Hi Mark, Maxime,
 
-This simplifies the code and makes it more generic by
-passing the data along with the filter function like
-we do for other drivers.
+2015-11-07 23:41 GMT+01:00 Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>:
+> Allow transfers to set the transmission speed, only fall back to
+> board max_speed_hz if requested speed is not set or invalid.
+>
+> Signed-off-by: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> ---
+>  drivers/spi/spi-sun4i.c | 15 +++++++++++----
+>  1 file changed, 11 insertions(+), 4 deletions(-)
 
-Signed-off-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
----
-This version is now independent of the ASoC changes.
+Just a quick follow-up: is there anything else I need to do to push
+this patch along? Or do I just need to be more patient?
 
-diff --git a/arch/arm/plat-samsung/devs.c b/arch/arm/plat-samsung/devs.c
-index a9d535ffdfaa..9a3c090d2427 100644
---- a/arch/arm/plat-samsung/devs.c
-+++ b/arch/arm/plat-samsung/devs.c
-@@ -1105,9 +1105,7 @@ struct platform_device s3c_device_wdt = {
- #ifdef CONFIG_S3C64XX_DEV_SPI0
- static struct resource s3c64xx_spi0_resource[] = {
- 	[0] = DEFINE_RES_MEM(S3C_PA_SPI0, SZ_256),
--	[1] = DEFINE_RES_DMA(DMACH_SPI0_TX),
--	[2] = DEFINE_RES_DMA(DMACH_SPI0_RX),
--	[3] = DEFINE_RES_IRQ(IRQ_SPI0),
-+	[1] = DEFINE_RES_IRQ(IRQ_SPI0),
- };
- 
- struct platform_device s3c64xx_device_spi0 = {
-@@ -1135,11 +1133,13 @@ void __init s3c64xx_spi0_set_platdata(int (*cfg_gpio)(void), int src_clk_nr,
- 	pd.num_cs = num_cs;
- 	pd.src_clk_nr = src_clk_nr;
- 	pd.cfg_gpio = (cfg_gpio) ? cfg_gpio : s3c64xx_spi0_cfg_gpio;
--#if defined(CONFIG_PL330_DMA)
--	pd.filter = pl330_filter;
--#elif defined(CONFIG_S3C64XX_PL080)
-+#if defined(CONFIG_S3C64XX_PL080)
-+	pd.dma_tx = (void *)DMACH_SPI0_TX;
-+	pd.dma_rx = (void *)DMACH_SPI0_RX;
- 	pd.filter = pl08x_filter_id;
- #elif defined(CONFIG_S3C24XX_DMAC)
-+	pd.dma_tx = (void *)DMACH_SPI0_TX;
-+	pd.dma_rx = (void *)DMACH_SPI0_RX;
- 	pd.filter = s3c24xx_dma_filter;
- #endif
- 
-@@ -1150,9 +1150,7 @@ void __init s3c64xx_spi0_set_platdata(int (*cfg_gpio)(void), int src_clk_nr,
- #ifdef CONFIG_S3C64XX_DEV_SPI1
- static struct resource s3c64xx_spi1_resource[] = {
- 	[0] = DEFINE_RES_MEM(S3C_PA_SPI1, SZ_256),
--	[1] = DEFINE_RES_DMA(DMACH_SPI1_TX),
--	[2] = DEFINE_RES_DMA(DMACH_SPI1_RX),
--	[3] = DEFINE_RES_IRQ(IRQ_SPI1),
-+	[1] = DEFINE_RES_IRQ(IRQ_SPI1),
- };
- 
- struct platform_device s3c64xx_device_spi1 = {
-@@ -1180,9 +1178,9 @@ void __init s3c64xx_spi1_set_platdata(int (*cfg_gpio)(void), int src_clk_nr,
- 	pd.num_cs = num_cs;
- 	pd.src_clk_nr = src_clk_nr;
- 	pd.cfg_gpio = (cfg_gpio) ? cfg_gpio : s3c64xx_spi1_cfg_gpio;
--#if defined(CONFIG_PL330_DMA)
--	pd.filter = pl330_filter;
--#elif defined(CONFIG_S3C64XX_PL080)
-+#if defined(CONFIG_S3C64XX_PL080)
-+	pd.dma_tx = (void *)DMACH_SPI1_TX;
-+	pd.dma_rx = (void *)DMACH_SPI1_RX;
- 	pd.filter = pl08x_filter_id;
- #endif
- 
-@@ -1193,9 +1191,7 @@ void __init s3c64xx_spi1_set_platdata(int (*cfg_gpio)(void), int src_clk_nr,
- #ifdef CONFIG_S3C64XX_DEV_SPI2
- static struct resource s3c64xx_spi2_resource[] = {
- 	[0] = DEFINE_RES_MEM(S3C_PA_SPI2, SZ_256),
--	[1] = DEFINE_RES_DMA(DMACH_SPI2_TX),
--	[2] = DEFINE_RES_DMA(DMACH_SPI2_RX),
--	[3] = DEFINE_RES_IRQ(IRQ_SPI2),
-+	[1] = DEFINE_RES_IRQ(IRQ_SPI2),
- };
- 
- struct platform_device s3c64xx_device_spi2 = {
-@@ -1223,9 +1219,9 @@ void __init s3c64xx_spi2_set_platdata(int (*cfg_gpio)(void), int src_clk_nr,
- 	pd.num_cs = num_cs;
- 	pd.src_clk_nr = src_clk_nr;
- 	pd.cfg_gpio = (cfg_gpio) ? cfg_gpio : s3c64xx_spi2_cfg_gpio;
--#if defined(CONFIG_PL330_DMA)
--	pd.filter = pl330_filter;
--#elif defined(CONFIG_S3C64XX_PL080)
-+#if defined(CONFIG_S3C64XX_PL080)
-+	pd.dma_tx = (void *)DMACH_SPI2_TX;
-+	pd.dma_rx = (void *)DMACH_SPI2_RX;
- 	pd.filter = pl08x_filter_id;
- #endif
- 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 8e86e7f6663a..8b7499623957 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -133,7 +133,6 @@
- struct s3c64xx_spi_dma_data {
- 	struct dma_chan *ch;
- 	enum dma_transfer_direction direction;
--	unsigned int dmach;
- };
- 
- /**
-@@ -325,7 +324,7 @@ static int s3c64xx_spi_prepare_transfer(struct spi_master *spi)
- 
- 		/* Acquire DMA channels */
- 		sdd->rx_dma.ch = dma_request_slave_channel_compat(mask, filter,
--				   (void *)(long)sdd->rx_dma.dmach, dev, "rx");
-+				   sdd->cntrlr_info->dma_rx, dev, "rx");
- 		if (!sdd->rx_dma.ch) {
- 			dev_err(dev, "Failed to get RX DMA channel\n");
- 			ret = -EBUSY;
-@@ -334,7 +333,7 @@ static int s3c64xx_spi_prepare_transfer(struct spi_master *spi)
- 		spi->dma_rx = sdd->rx_dma.ch;
- 
- 		sdd->tx_dma.ch = dma_request_slave_channel_compat(mask, filter,
--				   (void *)(long)sdd->tx_dma.dmach, dev, "tx");
-+				   sdd->cntrlr_info->dma_tx, dev, "tx");
- 		if (!sdd->tx_dma.ch) {
- 			dev_err(dev, "Failed to get TX DMA channel\n");
- 			ret = -EBUSY;
-@@ -1028,7 +1027,6 @@ static inline struct s3c64xx_spi_port_config *s3c64xx_spi_get_port_config(
- static int s3c64xx_spi_probe(struct platform_device *pdev)
- {
- 	struct resource	*mem_res;
--	struct resource	*res;
- 	struct s3c64xx_spi_driver_data *sdd;
- 	struct s3c64xx_spi_info *sci = dev_get_platdata(&pdev->dev);
- 	struct spi_master *master;
-@@ -1087,20 +1085,9 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 
- 	sdd->cur_bpw = 8;
- 
--	if (!sdd->pdev->dev.of_node) {
--		res = platform_get_resource(pdev, IORESOURCE_DMA,  0);
--		if (!res) {
--			dev_warn(&pdev->dev, "Unable to get SPI tx dma resource. Switching to poll mode\n");
--			sdd->port_conf->quirks = S3C64XX_SPI_QUIRK_POLL;
--		} else
--			sdd->tx_dma.dmach = res->start;
--
--		res = platform_get_resource(pdev, IORESOURCE_DMA,  1);
--		if (!res) {
--			dev_warn(&pdev->dev, "Unable to get SPI rx dma resource. Switching to poll mode\n");
--			sdd->port_conf->quirks = S3C64XX_SPI_QUIRK_POLL;
--		} else
--			sdd->rx_dma.dmach = res->start;
-+	if (sci && (!sci->dma_tx || !sci->dma_rx)) {
-+		dev_warn(&pdev->dev, "Unable to get SPI tx data. Switching to poll mode\n");
-+		sdd->port_conf->quirks = S3C64XX_SPI_QUIRK_POLL;
- 	}
- 
- 	sdd->tx_dma.direction = DMA_MEM_TO_DEV;
-@@ -1197,9 +1184,10 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 
- 	dev_dbg(&pdev->dev, "Samsung SoC SPI Driver loaded for Bus SPI-%d with %d Slaves attached\n",
- 					sdd->port_id, master->num_chipselect);
--	dev_dbg(&pdev->dev, "\tIOmem=[%pR]\tFIFO %dbytes\tDMA=[Rx-%d, Tx-%d]\n",
-+	dev_dbg(&pdev->dev, "\tIOmem=[%pR]\tFIFO %dbytes\tDMA=[Rx-%p, Tx-%p]\n",
- 					mem_res, (FIFO_LVL_MASK(sdd) >> 1) + 1,
--					sdd->rx_dma.dmach, sdd->tx_dma.dmach);
-+					sdd->cntrlr_info->dma_rx,
-+					sdd->cntrlr_info->dma_tx);
- 
- 	pm_runtime_mark_last_busy(&pdev->dev);
- 	pm_runtime_put_autosuspend(&pdev->dev);
-diff --git a/include/linux/platform_data/spi-s3c64xx.h b/include/linux/platform_data/spi-s3c64xx.h
-index d3889b98a1a1..fb5625bcca9a 100644
---- a/include/linux/platform_data/spi-s3c64xx.h
-+++ b/include/linux/platform_data/spi-s3c64xx.h
-@@ -40,6 +40,8 @@ struct s3c64xx_spi_info {
- 	int num_cs;
- 	int (*cfg_gpio)(void);
- 	dma_filter_fn filter;
-+	void *dma_tx;
-+	void *dma_rx;
- };
- 
- /**
+Best regards,
 
+  Marcus
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,63 +1,62 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: sun4i: allow transfers to set transmission speed
-Date: Tue, 17 Nov 2015 18:34:46 +0000
-Message-ID: <20151117183446.GB31303@sirena.org.uk>
-References: <1446936065-15868-1-git-send-email-mweseloh42@gmail.com>
- <CAGNoLaPnbfKP+aQpWaNuWC7YQTe33wpezJxSv4KHSeuiaDY9TQ@mail.gmail.com>
- <20151117165747.GV31303@sirena.org.uk>
- <CAGNoLaOOycx7GTcT9r+L0wKkgsn4+NH7sk56mOZYisz36TFz-Q@mail.gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 3/8] Documentation/spi/spidev_test.c: accept input from a
+ file
+Date: Tue, 17 Nov 2015 18:46:27 +0000
+Message-ID: <20151117184627.GC31303@sirena.org.uk>
+References: <cover.1447773299.git.stillcompiling@gmail.com>
+ <d90d749776cf562bc9922aff5e97cb911a77b22b.1447773299.git.stillcompiling@gmail.com>
+ <564B716E.5020605@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="C311HLcnHV2CzHlo"
-Cc: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-To: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="Ro1PRY3Rtw8g7IwX"
+Cc: Joshua Clayton <stillcompiling@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Adrian Remonda <adrianremonda@gmail.com>,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org
+To: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
+Return-path: <linux-doc-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CAGNoLaOOycx7GTcT9r+L0wKkgsn4+NH7sk56mOZYisz36TFz-Q-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <564B716E.5020605@gmail.com>
+Sender: linux-doc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---C311HLcnHV2CzHlo
+--Ro1PRY3Rtw8g7IwX
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 17, 2015 at 07:14:14PM +0100, Marcus Weseloh wrote:
+On Tue, Nov 17, 2015 at 07:26:54PM +0100, Anton Bondarenko wrote:
+> On 17.11.2015 16:24, Joshua Clayton wrote:
 
-> Sorry, the mail I was quoting was actually the first version of the
-> patch, which you did comment on.  I had sent a v2 patch addressing
-> your comments, sent on the 8th of November, 12:08 CET:
-> http://marc.info/?l=3Dlinux-spi&m=3D144698062222607&w=3D2
+> >+	if (sb.st_size > 4096)
+> >+		pabort("input file exceeds spidev's 4k limit");
 
-I have a form letter I usually send for this:
+> This is not a true. IIRC PAGE_SIZE is the default buffer size for spidev,
+> but can be changed using bufsiz module parameter.
+> Just 'insmod spidev bufsiz=X', where X is number of bytes.
 
-Please don't send content free pings and please allow a reasonable time
-for review.  People get busy, go on holiday, attend conferences and so=20
-on so unless there is some reason for urgency (like critical bug fixes)
-please allow at least a couple of weeks for review.  Sending content
-free pings just adds to the mail volume (if they are seen at all) and if=20
-something has gone wrong you'll have to resend the patches anyway.
+Right, there's also various options for changing PAGE_SIZE on some
+architectures.  I was going to go and check what we actually do here but
+in general it does seem better to just let the kernel worry about
+validating things like this - it needs to do that anyway and it means
+that if someone improves the kernel code to accept larger buffers then
+the tool will automatically be able to use them instead of requiring
+people to remember to separately update the tool.
 
---C311HLcnHV2CzHlo
+--Ro1PRY3Rtw8g7IwX
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJWS3NGAAoJECTWi3JdVIfQ4BwH/171VJi5R3eyE3TpFo8fYPSK
-m3Cxt7O1Y2qWyEbWVfntJLg6RI7nE9Hz3dWGGYWIC1ZQTPh7wCFuH63DPcIsI/aK
-dRmhfgmRXle9BHi4gIHmDPiHyItL6nOL1YUJZgKxrKYz+MZJ9ld3ykUHPOW/obl9
-OegbH2NJ4RWtr+hm3xGAhJRnrAVoBYzejc2A6IDIxlHt0S95Q2D93Ae6zbzB/AUR
-vHHk4LAvhXgRnE9G7XvZOfPHMBo8ExL/JmHB+MdG/WcU+OrZTwPpK3imEPF15iwo
-JtBXaC7BOdyCU2YyuVcLPpsiSGpy6El/cyDqD4FaDO/d5EwnHsOYf2zG+9ixaeQ=
-=xAQm
+iQEcBAEBCAAGBQJWS3YCAAoJECTWi3JdVIfQ5cwH/03NtgsAaODQWGkSBdvdwEeE
+LwNu60Ugkbrm84t43aT2AW5sgKRFWhpkIzzxjGJem9Dm0Imv2s8jFNWfwemdSjzC
+Cvm0eUYjcMRyfBVL6yQtEcquAXk9mUrIQdiB7vaIhGZ6+6S8H50E5/nurbBG8V5N
+71r2ul6yqBNG9EzsltD1ErLa89LF650kQXwA6aklZNhby5SBxOKsKu0Qq7hqWLZE
+4yrmU5AZr/2sQfzmbdF5vb801j1ZiU+/bHk1KMGbT98uIS8dp5LdBV4ZGJt0vQpZ
+8/weAaE+Ln7orWNF0aniZQUncORMKA/Wyctq8Y8l458wtbBhVf3lliSjS/KyfwI=
+=HsA1
 -----END PGP SIGNATURE-----
 
---C311HLcnHV2CzHlo--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--Ro1PRY3Rtw8g7IwX--

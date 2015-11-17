@@ -1,67 +1,56 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 0/8] spi: Add file i/o to spidev_test
-Date: Tue, 17 Nov 2015 16:53:28 +0000
-Message-ID: <20151117165328.GT31303@sirena.org.uk>
-References: <cover.1447773299.git.stillcompiling@gmail.com>
- <20151117153746.GS31303@sirena.org.uk>
- <2760715.DGIOLUoqL9@jclayton-pc>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: sun4i: allow transfers to set transmission speed
+Date: Tue, 17 Nov 2015 16:57:47 +0000
+Message-ID: <20151117165747.GV31303@sirena.org.uk>
+References: <1446936065-15868-1-git-send-email-mweseloh42@gmail.com>
+ <CAGNoLaPnbfKP+aQpWaNuWC7YQTe33wpezJxSv4KHSeuiaDY9TQ@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="nDmTXYS4kVhtHHfR"
-Cc: linux-arm-kernel@lists.infradead.org,
-	Jonathan Corbet <corbet@lwn.net>,
-	Adrian Remonda <adrianremonda@gmail.com>,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org
-To: Joshua Clayton <stillcompiling@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="D2rVImvqWGvKULsk"
+Cc: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+To: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <2760715.DGIOLUoqL9@jclayton-pc>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <CAGNoLaPnbfKP+aQpWaNuWC7YQTe33wpezJxSv4KHSeuiaDY9TQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---nDmTXYS4kVhtHHfR
+--D2rVImvqWGvKULsk
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 17, 2015 at 08:15:45AM -0800, Joshua Clayton wrote:
-> On Tuesday, November 17, 2015 03:37:46 PM Mark Brown wrote:
-> > On Tue, Nov 17, 2015 at 07:24:20AM -0800, Joshua Clayton wrote:
+On Tue, Nov 17, 2015 at 04:50:54PM +0100, Marcus Weseloh wrote:
+> 2015-11-07 23:41 GMT+01:00 Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>:
 
-> > >   Documentation/spi/spidev_test.c: use one rx buffer
-> > >   Documentation/spi/spidev_test.c: clean up input_tx
-> > >   Documentation/spi/spidev_test.c: accept input from a file
-> > >   Documentation/spi/spidev_test.c: output to a file
-> > >   Documentation/spi/spidev_test.c: check error
-> > >   Documentation/spi/spidev_test.c: fix whitespace
+> > Allow transfers to set the transmission speed, only fall back to
+> > board max_speed_hz if requested speed is not set or invalid.
 
-> > Please use subjct lines reflecting the style for the subsystem.
+> Just a quick follow-up: is there anything else I need to do to push
+> this patch along? Or do I just need to be more patient?
 
-> OK. Will do.
-> Assuming "spi: spidev_test: yadda..."=20
+I don't have this patch, presumably there were review comments that I
+was expecting to see some action on.
 
-Something like that.
-
-> It was a bit unclear due to the location of the file.
-
-It's not really the location that you should be focusing on, it's other
-commits in the file.
-
---nDmTXYS4kVhtHHfR
+--D2rVImvqWGvKULsk
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJWS1uHAAoJECTWi3JdVIfQLDUH/1E9AnPKjh4geL3RQlOZ4zCk
-YWe9Z2Axlnb7Gcr6ldatE3HqsSBKbJOQHPLk2TJlvNvzpD5JwJRiOT/eHoFJvVaD
-zk6h+WxKSNxnuHJUSboSrpQ6IPDhBHwsMZ+CFSo63tlTId7dGxC53kKkKQV+X77g
-uwEImDEt+0f6HLQLM9s1scvLSfvRlq4CttcNONWVQ59DfY31s1ur/Hv2UlgWuHnG
-oaKbQM4gMEZhV0lrrGMH1BJyOA8jjAx7B/+fJQeQWk6OxUcIpUK7VtSfldwNF7A1
-nS1P5caRIcDH2CIDqIQkIYSflwsimsXDVxq5paJwoXgdsJKksHF+jBX5RHjdfPU=
-=J2gl
+iQEcBAEBCAAGBQJWS1yKAAoJECTWi3JdVIfQFjgH/jCu/1sran6AJZADfrRZofX2
+2M4Q+7NY3QKvdV6JzzvmSRlcF9/cS7slI1NfDos9OYEN53P3hceGcxnLJBI47sZO
+kbvyfZxxkxEd7g5MUsnsAvyeE+ceIyTDotzZ/KO4bSJ23iICK9zuUIlpXRq5L1wV
+ScChTBOcwEUXnNMUUigUHjMPzVOuI0YGPe1yBrSyiMNFL2eIKPWPeH3SVFD75jnv
+vqsVBZLHIJY8t+Aiuz1dlh81U0rmJb15qPHpGN9mgGQs3H2vuSLN7KQU0+sVuewz
+RXRYTisEIaL2ga7goK4S2uqHPEYE2zKq39Nh1jfCnrBnb6jGFOVHR2GMBNg5Y1c=
+=KB16
 -----END PGP SIGNATURE-----
 
---nDmTXYS4kVhtHHfR--
+--D2rVImvqWGvKULsk--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

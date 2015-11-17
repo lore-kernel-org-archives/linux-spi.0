@@ -1,76 +1,86 @@
-From: Brian Norris <computersforpeace@gmail.com>
-Subject: Re: [PATCH v3 1/5] spi: introduce mmap read support for spi flash
- devices
-Date: Tue, 17 Nov 2015 09:48:56 -0800
-Message-ID: <20151117174856.GB8456@google.com>
-References: <1447133399-25658-1-git-send-email-vigneshr@ti.com>
- <1447133399-25658-2-git-send-email-vigneshr@ti.com>
- <20151110232341.GU12143@google.com>
- <5642E546.3040806@ti.com>
- <20151111072041.GA13174@localhost>
- <56460A4D.30303@atmel.com>
- <564AC9FD.6090909@ti.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 7/8] tools/Makefile: minor whitespace cleanup
+Date: Tue, 17 Nov 2015 18:09:24 +0000
+Message-ID: <20151117180924.GZ31303@sirena.org.uk>
+References: <cover.1447773299.git.stillcompiling@gmail.com>
+ <155366ac799345f42c8c342609ffa11b2df529b0.1447773299.git.stillcompiling@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Cyrille Pitchen <cyrille.pitchen@atmel.com>,
-	Marek Vasut <marex@denx.de>,
-	Michal Suchanek <hramrach@gmail.com>,
-	Russell King <linux@arm.linux.org.uk>,
-	devicetree@vger.kernel.org, Tony Lindgren <tony@atomide.com>,
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	Mark Brown <broonie@kernel.org>, linux-mtd@lists.infradead.org,
-	linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-To: Vignesh R <vigneshr@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="8M+BMcg+0CmQ2H7L"
+Cc: Jonathan Corbet <corbet-T1hC0tSOHrs@public.gmane.org>,
+	Adrian Remonda <adrianremonda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Joshua Clayton <stillcompiling-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <564AC9FD.6090909@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <155366ac799345f42c8c342609ffa11b2df529b0.1447773299.git.stillcompiling-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi,
 
-On Tue, Nov 17, 2015 at 12:02:29PM +0530, Vignesh R wrote:
-> On 11/13/2015 09:35 PM, Cyrille Pitchen wrote:
-> > 
-> > In September I've sent a series of patches to enhance the support of QSPI flash
-> > memories. Patch 4 was dedicated to the m25p80 driver and set the
-> > rx_nbits / tx_nbits fields of spi_transfer struct(s) in order to configure the
-> > number of I/O lines independently for the opcode, address and data parts.
-> > The work was done for m25p80_read() but also for _read_reg(), _write_reg() and
-> > _write().
-> > The patched m25p80 driver was then tested with an at25 memory to check non-
-> > regression.
-> > 
-> > This series of patches also added 4 enum spi_protocol fields inside struct
-> > spi_nor so the spi-nor framework can tell the (Q)SPI controller driver what SPI
-> > protocol should be use for erase, read, write and register read/write
-> > operations, depending on the memory manufacturer and the command opcode.
-> > This was done to better support Micron, Spansion and Macronix QSPI memories.
-> > 
-> > I have tested the series with Micron QSPI memories and Atmel QSPI controller
-> > and I guess Marek also tested it on his side with Spansion QSPI memories and
-> > another QSPI controller.
-> > 
-> > So if it can help other developers to develop QSPI controller drivers, the
-> > series is still available there:
-> > 
-> > for the whole series:
-> > http://lists.infradead.org/pipermail/linux-arm-kernel/2015-September/371170.html
-> > 
-> > for patch 4 (depends on patch 2 for enum spi_protocol):
-> > http://lists.infradead.org/pipermail/linux-arm-kernel/2015-September/371173.html
-> > 
-> 
-> Should I rebase my next version on top of above patches by Cyrille or
-> shall I post on top of 4.4-rc1?
+--8M+BMcg+0CmQ2H7L
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I'm sorry to say I really haven't had the time to review that properly.
-I'm also not sure it is a true dependency for your series, as you're
-tackling different pieces of the puzzle. So it's mostly just a conflict,
-not a real direct help.
+On Tue, Nov 17, 2015 at 07:24:27AM -0800, Joshua Clayton wrote:
+> Signed-off-by: Joshua Clayton <stillcompiling-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> ---
+>  tools/Makefile | 37 ++++++++++++++++++++++++++++++-------
+>  1 file changed, 30 insertions(+), 7 deletions(-)
+>=20
+> diff --git a/tools/Makefile b/tools/Makefile
+> index 9a617ad..428fb4d 100644
+> --- a/tools/Makefile
+> +++ b/tools/Makefile
+> @@ -80,10 +80,21 @@ turbostat_install x86_energy_perf_policy_install:
+>  tmon_install:
+>  	$(call descend,thermal/$(@:_install=3D),install)
+> =20
+> -install: acpi_install cgroup_install cpupower_install hv_install firewir=
+e_install lguest_install \
+> -		perf_install selftests_install turbostat_install usb_install \
+> -		virtio_install vm_install net_install x86_energy_perf_policy_install \
+> -	tmon
+> +install: acpi_install \
+> +		cgroup_install \
+> +		cpupower_install \
+> +		hv_install \
+> +		firewire_install \
+> +		lguest_install \
+> +		perf_install \
+> +		selftests_install \
+> +		tmon \
+> +		turbostat_install \
+> +		usb_install \
+> +		virtio_install \
+> +		vm_install \
+> +		net_install \
+> +		x86_energy_perf_policy_install
 
-So unless I'm misunderstanding, I'd suggest submitting MTD stuff against
-the latest l2-mtd.git (or linux-next.git; l2-mtd.git is included there),
-and I'll let you know if conflicts come up that need fixing.
+This isn't a whitespace cleanup, this is a substantial reindentation of
+the file :(  Please ensure your changelogs are accurate and in general
+try to avoid mixing this sort of invasive stylistic change in with other
+patch serieses, it reduces the potential for conflicts.
 
-Brian
+--8M+BMcg+0CmQ2H7L
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJWS21UAAoJECTWi3JdVIfQxCAH/AmX9MPAGq+lttd7YxAFVIXl
+paQEcn1+dVusm1s7H79u9kUeT/ySBmfo+pvvnJUqTXUA3wwJxn2IHyQzD5J4RI0/
+ED2qqEOpmXKiZv6X2xYF8KbE1IqMaWZ/7Osdhowib49ULOTNMKwhbxiiA7LHmp86
+DUOaE9+bOjXg4Xv8K/xVTz9cFZ8eofvkrZXvNvsp9QrktIWPbLrM6xI1bYs8ooS/
+G18Uiqp5yhseEfNVou6h3pOIWjJKx7kg18SR+KbgHCJ1xSWXG0MmDcB0AUTRm2MS
+Y89SHfjghBgCLgU4DZrD5qGVUHwz4JOk+k2mUItoeKFR1bKHse4ua2ib3ZLxOjA=
+=9qe1
+-----END PGP SIGNATURE-----
+
+--8M+BMcg+0CmQ2H7L--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

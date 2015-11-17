@@ -1,8 +1,8 @@
 From: Joshua Clayton <stillcompiling-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 1/8] Documentation/spi/spidev_test.c: use one rx buffer
-Date: Tue, 17 Nov 2015 10:58:54 -0800
-Message-ID: <2858640.EtAPBOce2G@jclayton-pc>
-References: <cover.1447773299.git.stillcompiling@gmail.com> <2f17ae29e75967b4522b080c275b907622e1d353.1447773299.git.stillcompiling@gmail.com> <20151117174156.GX31303@sirena.org.uk>
+Subject: Re: [PATCH 2/8] Documentation/spi/spidev_test.c: clean up input_tx
+Date: Tue, 17 Nov 2015 11:21:12 -0800
+Message-ID: <5345436.HCqatbevmx@jclayton-pc>
+References: <cover.1447773299.git.stillcompiling@gmail.com> <7f2139b27013d77993c6bc2b0a6c94fab01add98.1447773299.git.stillcompiling@gmail.com> <20151117174333.GY31303@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7Bit
@@ -12,28 +12,24 @@ Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Jonathan Corbe
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20151117174156.GX31303-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <20151117174333.GY31303-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tuesday, November 17, 2015 05:41:56 PM Mark Brown wrote:
-> On Tue, Nov 17, 2015 at 07:24:21AM -0800, Joshua Clayton wrote:
+On Tuesday, November 17, 2015 05:43:33 PM Mark Brown wrote:
+> On Tue, Nov 17, 2015 at 07:24:22AM -0800, Joshua Clayton wrote:
+> > Put input from string into its own function.
 > 
-> > default_rx and rx are needlessly different.
-> > Use one buffer, local to transmit()
-> 
-> Why?  This isn't what I'd expect from black boxing the API, from a
-> userspace point of view the transfer is atomic and in an ideal world
-> we'd be able to do direct to/from memory transfers rather than memcpy()
-> into kernel space which means that userspace should assume the transfers
-> are going on simultaneously even if they don't currently.
+> Again, why are we doing this?  I'm having a hard time seeing what the
+> gain is, the amount of code being moved is tiny.
 
-The important thing here was to get rid of the default_rx buffer.
-I just noticed that the output can be set up completely within the scope
-of the transmit function, since the operands are global. But I would be
-just as happy to set it up at the top level. I'll change this in V2
+It takes some clutter out of main() whose scope is limited to that little block of code, 
+and because in the next patch we add another (larger)function to the if/else block.
 
---
+I don't know if it is valid to say "look at the next commit" for justification, but
+That is the reason.
+
+-- 
 ~Joshua Clayton
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

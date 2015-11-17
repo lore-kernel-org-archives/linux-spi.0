@@ -1,100 +1,72 @@
-From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: spi: OF module autoloading is still broken
-Date: Mon, 16 Nov 2015 13:51:44 -0800
-Message-ID: <20151116215144.GQ8456@google.com>
-References: <20151113194031.GI8456@google.com>
- <20151113221228.GT12392@sirena.org.uk>
- <20151113225113.GJ8456@google.com>
- <20151113231410.GV12392@sirena.org.uk>
- <20151113234857.GK8456@google.com>
- <564A101F.9090807@osg.samsung.com>
- <20151116192434.GO8456@google.com>
- <564A35EB.5080008@osg.samsung.com>
- <20151116204702.GP8456@google.com>
- <564A4B66.6090107@osg.samsung.com>
+From: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH v3 1/5] spi: introduce mmap read support for spi flash
+ devices
+Date: Tue, 17 Nov 2015 12:02:29 +0530
+Message-ID: <564AC9FD.6090909@ti.com>
+References: <1447133399-25658-1-git-send-email-vigneshr@ti.com>
+ <1447133399-25658-2-git-send-email-vigneshr@ti.com>
+ <20151110232341.GU12143@google.com> <5642E546.3040806@ti.com>
+ <20151111072041.GA13174@localhost> <56460A4D.30303@atmel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Dmitry Torokhov <dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+Cc: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
+	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	<linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <564A4B66.6090107-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
+In-Reply-To: <56460A4D.30303-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Javier,
+Hi Brian,
 
-On Mon, Nov 16, 2015 at 06:32:22PM -0300, Javier Martinez Canillas wrote:
-> On 11/16/2015 05:47 PM, Brian Norris wrote:
-> > On Mon, Nov 16, 2015 at 05:00:43PM -0300, Javier Martinez Canillas wrote:
-> >> Now that I think about it, there is another issue and is that today spi:foo
-> >> defines a namespace while changing to of: will make the namespace flat so
-> >> a platform driver that has the same vendor and model will have the same
-> >> modalias.
-> >>
-> >> IOW, for board files will be platform:bar and i2c:bar while for OF will be
-> >> of:NfooT<NULL>Cfoo,bar in both cases. I wonder if we should reuse the type
-> >> for that and store the subsystem prefix there. What do you think?
-> > 
-> > I'm not sure I understand all the issues here to be able to comment
-> > properly. But I bet someone else might.
-> > 
-> > (For me, it might help if you had a more concrete example to speak of.)
-> >
+On 11/13/2015 09:35 PM, Cyrille Pitchen wrote:
+
+[...]
+
 > 
-> From a quick look I couldn't find a real example (that doesn't mean there
-> isn't one) but I'll make one just to explain the problem.
+> In September I've sent a series of patches to enhance the support of QSPI flash
+> memories. Patch 4 was dedicated to the m25p80 driver and set the
+> rx_nbits / tx_nbits fields of spi_transfer struct(s) in order to configure the
+> number of I/O lines independently for the opcode, address and data parts.
+> The work was done for m25p80_read() but also for _read_reg(), _write_reg() and
+> _write().
+> The patched m25p80 driver was then tested with an at25 memory to check non-
+> regression.
 > 
-> Let's suppose you have 3 different IP's blocks (i.e: pmics) from the same
-> vendor. The IP's are quite similar but only differ in that use a different
-> bus to communicate with the SoC.
-
-Ah, I thought that's what you might have meant, but then I reread enough
-times that I confused myself. I think my first understanding was correct
-:)
-
-> So you could have a core driver and transport drivers for SPI and I2C.
+> This series of patches also added 4 enum spi_protocol fields inside struct
+> spi_nor so the spi-nor framework can tell the (Q)SPI controller driver what SPI
+> protocol should be use for erase, read, write and register read/write
+> operations, depending on the memory manufacturer and the command opcode.
+> This was done to better support Micron, Spansion and Macronix QSPI memories.
 > 
-> So currently you could use the not too creative compatible strings compatible
-> string "acme,my-pmic" in all the drivers and is not a problem because the SPI
-> and I2C subsystem will always report the MODALIAS uevent as:
+> I have tested the series with Micron QSPI memories and Atmel QSPI controller
+> and I guess Marek also tested it on his side with Spansion QSPI memories and
+> another QSPI controller.
 > 
-> MODALIAS=i2c:my-pmic and MODALIAS=spi:my-pmic
+> So if it can help other developers to develop QSPI controller drivers, the
+> series is still available there:
 > 
-> so as far as there is a "my-pmic" entry in the SPI and I2C id tables, module
-> autoload will work and the match will also work since that happens per bus_type.
+> for the whole series:
+> http://lists.infradead.org/pipermail/linux-arm-kernel/2015-September/371170.html
 > 
-> But if SPI and I2C are migrated to OF modalias reporting, then both I2C and SPI
-> will report (assuming the device node is called pmic in both cases):
+> for patch 4 (depends on patch 2 for enum spi_protocol):
+> http://lists.infradead.org/pipermail/linux-arm-kernel/2015-September/371173.html
 > 
-> MODALIAS=of:NpmicT<NULL>Cacme,my-pmic
-> 
-> That's what I meant when said that the modalias namespace is flat in the case of
-> OF but is separated in the case of board files and the current implementation.
 
-Thanks for the additional explanation.
+Should I rebase my next version on top of above patches by Cyrille or
+shall I post on top of 4.4-rc1?
 
-> What currently the drivers are doing is to name the model my-pmic-{i2c,spi,etc}
-> but I think that the subsystem information should be explicitly present in the
-> OF modalias information as it is for legacy device registration.
-
-Lest someone else wonder whether this is theoretical or not, I'll save
-them the work in pointing at an example: "st,st33zp24". See:
-
-Documentation/devicetree/bindings/security/tpm/st33zp24-*.txt
-
-and the code is in drivers/char/tpm/st33zp24/, sharing the same core
-library, suggesting that the devices really are the same except simply
-the bus.
-
-In my limited opinion, then, it seems like a good idea to still try to
-separate the bus namespaces when reporting module-loading information.
-
-Brian
+-- 
+Regards
+Vignesh
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

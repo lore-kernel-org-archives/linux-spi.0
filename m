@@ -1,40 +1,63 @@
-From: Joshua Clayton <stillcompiling-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 3/8] Documentation/spi/spidev_test.c: accept input from a file
-Date: Tue, 17 Nov 2015 11:28:29 -0800
-Message-ID: <5345438.ORMdKP6N7u@jclayton-pc>
-References: <cover.1447773299.git.stillcompiling@gmail.com> <d90d749776cf562bc9922aff5e97cb911a77b22b.1447773299.git.stillcompiling@gmail.com> <564B716E.5020605@gmail.com>
+From: Joshua Clayton <stillcompiling@gmail.com>
+Subject: Re: [PATCH 7/8] tools/Makefile: minor whitespace cleanup
+Date: Tue, 17 Nov 2015 11:41:53 -0800
+Message-ID: <1991766.ZT1k1WV0Gv@jclayton-pc>
+References: <cover.1447773299.git.stillcompiling@gmail.com> <155366ac799345f42c8c342609ffa11b2df529b0.1447773299.git.stillcompiling@gmail.com> <20151117180924.GZ31303@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7Bit
-Cc: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <564B716E.5020605-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Adrian Remonda <adrianremonda@gmail.com>,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org
+To: linux-arm-kernel@lists.infradead.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20151117180924.GZ31303@sirena.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Tuesday, November 17, 2015 07:26:54 PM Anton Bondarenko wrote:
-> On 17.11.2015 16:24, Joshua Clayton wrote:
-> > +	if (sb.st_size > 4096)
-> > +		pabort("input file exceeds spidev's 4k limit");
-> This is not a true. IIRC PAGE_SIZE is the default buffer size for 
-> spidev, but can be changed using bufsiz module parameter.
-> Just 'insmod spidev bufsiz=X', where X is number of bytes.
-
-You are right. I will drop this. As Mark suggests.
-The ioctl gives a nice error code if the buffer is too big.
-
-...
-> > +	tx = malloc(sb.st_size);
-> It would be good to check new allocations for fail.
-
-I will add a check for this. 
+On Tuesday, November 17, 2015 06:09:24 PM Mark Brown wrote:
+> On Tue, Nov 17, 2015 at 07:24:27AM -0800, Joshua Clayton wrote:
+> > Signed-off-by: Joshua Clayton <stillcompiling@gmail.com>
+> > ---
+> >  tools/Makefile | 37 ++++++++++++++++++++++++++++++-------
+> >  1 file changed, 30 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/tools/Makefile b/tools/Makefile
+> > index 9a617ad..428fb4d 100644
+> > --- a/tools/Makefile
+> > +++ b/tools/Makefile
+> > @@ -80,10 +80,21 @@ turbostat_install x86_energy_perf_policy_install:
+> >  tmon_install:
+> >  	$(call descend,thermal/$(@:_install=),install)
+> >  
+> > -install: acpi_install cgroup_install cpupower_install hv_install firewire_install lguest_install \
+> > -		perf_install selftests_install turbostat_install usb_install \
+> > -		virtio_install vm_install net_install x86_energy_perf_policy_install \
+> > -	tmon
+> > +install: acpi_install \
+> > +		cgroup_install \
+> > +		cpupower_install \
+> > +		hv_install \
+> > +		firewire_install \
+> > +		lguest_install \
+> > +		perf_install \
+> > +		selftests_install \
+> > +		tmon \
+> > +		turbostat_install \
+> > +		usb_install \
+> > +		virtio_install \
+> > +		vm_install \
+> > +		net_install \
+> > +		x86_energy_perf_policy_install
+> 
+> This isn't a whitespace cleanup, this is a substantial reindentation of
+> the file :(  Please ensure your changelogs are accurate and in general
+> try to avoid mixing this sort of invasive stylistic change in with other
+> patch serieses, it reduces the potential for conflicts.
+Um.
+Inability to resist Makefile cleanup is a weakness of mine. 
+It is a tangent from the rest of the series so I'll drop it.
 
 -- 
 ~Joshua Clayton
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

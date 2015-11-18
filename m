@@ -1,126 +1,98 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: sun4i: allow transfers to set transmission speed" to the spi tree
-Date: Wed, 18 Nov 2015 18:47:23 +0000
-Message-ID: <E1Zz7lL-0001TT-Oh@debutante>
-References: <1446980603-27435-1-git-send-email-mweseloh42@gmail.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
+Subject: Re: spi: OF module autoloading is still broken
+Date: Wed, 18 Nov 2015 17:07:14 -0300
+Message-ID: <564CDA72.8030800@osg.samsung.com>
+References: <56104E88.3040807@gmail.com> <20151112185926.GC8456@google.com>
+ <20151113194031.GI8456@google.com> <20151113221228.GT12392@sirena.org.uk>
+ <20151113225113.GJ8456@google.com> <20151113231410.GV12392@sirena.org.uk>
+ <20151113234857.GK8456@google.com> <564A101F.9090807@osg.samsung.com>
+ <20151116192434.GO8456@google.com> <564A35EB.5080008@osg.samsung.com>
+ <20151116204702.GP8456@google.com> <564A4B66.6090107@osg.samsung.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Dmitry Torokhov <dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1446980603-27435-1-git-send-email-mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <564A4B66.6090107-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+Hello Brian and Mark,
 
-   spi: sun4i: allow transfers to set transmission speed
+On 11/16/2015 06:32 PM, Javier Martinez Canillas wrote:
+> On 11/16/2015 05:47 PM, Brian Norris wrote:
+>> On Mon, Nov 16, 2015 at 05:00:43PM -0300, Javier Martinez Canillas wrote:
+>>> On 11/16/2015 04:24 PM, Brian Norris wrote:
 
-has been applied to the spi tree at
+[snip]
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+>>>> I don't think you have problems only with bad FDTs. I think you have a
+>>>> problem with perfectly valid DTs.
+>>>>
+>>>
+>>> Agreed, I wonder if spi_uevent() shouldn't be changed to report both the
+>>> OF and old SPI modaliases to avoid breaking a lot of drivers but at the
+>>> same time allowing DT-only drivers to not need an SPI ID table.
+>>
+>> That's the solution I imagined, though I haven't tested it yet. I don't
+>> see much precedent for reporting multiple modaliases, so there could be
+>> some kind of ABI issues around that too.
+>>
+> 
+> Ok, I'm glad that we agree. This definitely needs to be discussed with more
+> people. I'll re-spin my patch and post a v2 reporting multiple modaliases
+> tomorrow after testing.
+> 
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+So I had some time today to test this approach but unfortunately it seems
+this workaround will not be possible because AFAICT kmod only takes into
+account the last MODALIAS reported as a uevent. I still have to check the
+kmod source code but that's my conclusion from trying to report both aliases.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+When looking at the uevent sysfs entry for the device, I see that both aliases
+are reported but if only a OF alias is built into the module, then kmod does
+not auto load the module unless the OF MODALIAS is the last one reported, i.e:
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+# grep MODALIAS /sys/devices/platform/12d40000.spi/spi_master/spi2/spi2.0/uevent
+MODALIAS=spi:cros-ec-spi
+MODALIAS=of:Ncros-ecT<NULL>Cgoogle,cros-ec-spi
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+# modinfo cros_ec_spi | grep alias
+alias:          of:N*T*Cgoogle,cros-ec-spi*
 
-Thanks,
-Mark
+If I invert the order on which the uevent are reported, then the module is
+not autoloaded, i.e:
 
->From 47284e3e0f3c427c93f8583549b6c938e8a18015 Mon Sep 17 00:00:00 2001
-From: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Sun, 8 Nov 2015 12:03:23 +0100
-Subject: [PATCH] spi: sun4i: allow transfers to set transmission speed
+# grep MODALIAS /sys/devices/platform/12d40000.spi/spi_master/spi2/spi2.0/uevent
+MODALIAS=of:Ncros-ecT<NULL>Cgoogle,cros-ec-spi
+MODALIAS=spi:cros-ec-spi
 
-Allow transfers to set the transmission speed rather than using the
-device max_speed_hz value. The SPI core makes sure that the speed_hz
-value is always set on the transfer.
+# modinfo cros_ec_spi | grep alias
+alias:          of:N*T*Cgoogle,cros-ec-spi*
 
-Signed-off-by: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-sun4i.c | 8 ++++----
- drivers/spi/spi-sun6i.c | 8 ++++----
- 2 files changed, 8 insertions(+), 8 deletions(-)
+In this case only is loaded if the module has a spi:<alias>, i.e:
 
-diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
-index fbb0a4d74e91..f60a6d634d61 100644
---- a/drivers/spi/spi-sun4i.c
-+++ b/drivers/spi/spi-sun4i.c
-@@ -229,8 +229,8 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
- 
- 	/* Ensure that we have a parent clock fast enough */
- 	mclk_rate = clk_get_rate(sspi->mclk);
--	if (mclk_rate < (2 * spi->max_speed_hz)) {
--		clk_set_rate(sspi->mclk, 2 * spi->max_speed_hz);
-+	if (mclk_rate < (2 * tfr->speed_hz)) {
-+		clk_set_rate(sspi->mclk, 2 * tfr->speed_hz);
- 		mclk_rate = clk_get_rate(sspi->mclk);
- 	}
- 
-@@ -248,14 +248,14 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
- 	 * First try CDR2, and if we can't reach the expected
- 	 * frequency, fall back to CDR1.
- 	 */
--	div = mclk_rate / (2 * spi->max_speed_hz);
-+	div = mclk_rate / (2 * tfr->speed_hz);
- 	if (div <= (SUN4I_CLK_CTL_CDR2_MASK + 1)) {
- 		if (div > 0)
- 			div--;
- 
- 		reg = SUN4I_CLK_CTL_CDR2(div) | SUN4I_CLK_CTL_DRS;
- 	} else {
--		div = ilog2(mclk_rate) - ilog2(spi->max_speed_hz);
-+		div = ilog2(mclk_rate) - ilog2(tfr->speed_hz);
- 		reg = SUN4I_CLK_CTL_CDR1(div);
- 	}
- 
-diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
-index ac48f59705a8..42e2c4bd690a 100644
---- a/drivers/spi/spi-sun6i.c
-+++ b/drivers/spi/spi-sun6i.c
-@@ -217,8 +217,8 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
- 
- 	/* Ensure that we have a parent clock fast enough */
- 	mclk_rate = clk_get_rate(sspi->mclk);
--	if (mclk_rate < (2 * spi->max_speed_hz)) {
--		clk_set_rate(sspi->mclk, 2 * spi->max_speed_hz);
-+	if (mclk_rate < (2 * tfr->speed_hz)) {
-+		clk_set_rate(sspi->mclk, 2 * tfr->speed_hz);
- 		mclk_rate = clk_get_rate(sspi->mclk);
- 	}
- 
-@@ -236,14 +236,14 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
- 	 * First try CDR2, and if we can't reach the expected
- 	 * frequency, fall back to CDR1.
- 	 */
--	div = mclk_rate / (2 * spi->max_speed_hz);
-+	div = mclk_rate / (2 * tfr->speed_hz);
- 	if (div <= (SUN6I_CLK_CTL_CDR2_MASK + 1)) {
- 		if (div > 0)
- 			div--;
- 
- 		reg = SUN6I_CLK_CTL_CDR2(div) | SUN6I_CLK_CTL_DRS;
- 	} else {
--		div = ilog2(mclk_rate) - ilog2(spi->max_speed_hz);
-+		div = ilog2(mclk_rate) - ilog2(tfr->speed_hz);
- 		reg = SUN6I_CLK_CTL_CDR1(div);
- 	}
- 
+# modinfo cros_ec_spi | grep alias
+alias:          of:N*T*Cgoogle,cros-ec-spi*
+alias:          spi:cros-ec-spi
+
+IOW, even when is possible to report more than one MODALIAS, user-space seems
+to only use the last one reported so using both don't work.
+
+Of course kmod can be changed to check for more than one MODALIAS but since
+the kernel should not break old user-space, the fact that a single MODALIAS
+was reported seems to be an ABI now due how is used.
+
+Best regards,
 -- 
-2.6.2
-
+Javier Martinez Canillas
+Open Source Group
+Samsung Research America
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

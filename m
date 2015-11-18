@@ -1,18 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: s3c64xx: pass DMA arguments in platform data" to the spi tree
-Date: Wed, 18 Nov 2015 18:09:59 +0000
-Message-ID: <E1Zz7B9-0000T7-Br@debutante>
-References: <3835977.ZFLKtOk346@wuerfel>
+Subject: Applied "spi: sun4i: allow transfers to set transmission speed" to the spi tree
+Date: Wed, 18 Nov 2015 18:47:23 +0000
+Message-ID: <E1Zz7lL-0001TT-Oh@debutante>
+References: <1446980603-27435-1-git-send-email-mweseloh42@gmail.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <3835977.ZFLKtOk346@wuerfel>
+In-Reply-To: <1446980603-27435-1-git-send-email-mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: s3c64xx: pass DMA arguments in platform data
+   spi: sun4i: allow transfers to set transmission speed
 
 has been applied to the spi tree at
 
@@ -37,184 +38,86 @@ to this mail.
 Thanks,
 Mark
 
->From a0067db36a2f9733a2e956a44ef8145e6a809bdb Mon Sep 17 00:00:00 2001
-From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Date: Wed, 18 Nov 2015 15:21:32 +0100
-Subject: [PATCH] spi: s3c64xx: pass DMA arguments in platform data
+>From 47284e3e0f3c427c93f8583549b6c938e8a18015 Mon Sep 17 00:00:00 2001
+From: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Sun, 8 Nov 2015 12:03:23 +0100
+Subject: [PATCH] spi: sun4i: allow transfers to set transmission speed
 
-The s3c64xx platform data already contains a pointer to the
-DMA filter function, but not to the associated data.
+Allow transfers to set the transmission speed rather than using the
+device max_speed_hz value. The SPI core makes sure that the speed_hz
+value is always set on the transfer.
 
-This simplifies the code and makes it more generic by
-passing the data along with the filter function like
-we do for other drivers.
-
-Signed-off-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Signed-off-by: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- arch/arm/plat-samsung/devs.c              | 19 ++++++++++---------
- drivers/spi/spi-s3c64xx.c                 | 27 +++++++--------------------
- include/linux/platform_data/spi-s3c64xx.h |  2 ++
- 3 files changed, 19 insertions(+), 29 deletions(-)
+ drivers/spi/spi-sun4i.c | 8 ++++----
+ drivers/spi/spi-sun6i.c | 8 ++++----
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm/plat-samsung/devs.c b/arch/arm/plat-samsung/devs.c
-index 82074625de5c..4c64ece1a308 100644
---- a/arch/arm/plat-samsung/devs.c
-+++ b/arch/arm/plat-samsung/devs.c
-@@ -1100,9 +1100,7 @@ struct platform_device s3c_device_wdt = {
- #ifdef CONFIG_S3C64XX_DEV_SPI0
- static struct resource s3c64xx_spi0_resource[] = {
- 	[0] = DEFINE_RES_MEM(S3C_PA_SPI0, SZ_256),
--	[1] = DEFINE_RES_DMA(DMACH_SPI0_TX),
--	[2] = DEFINE_RES_DMA(DMACH_SPI0_RX),
--	[3] = DEFINE_RES_IRQ(IRQ_SPI0),
-+	[1] = DEFINE_RES_IRQ(IRQ_SPI0),
- };
+diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
+index fbb0a4d74e91..f60a6d634d61 100644
+--- a/drivers/spi/spi-sun4i.c
++++ b/drivers/spi/spi-sun4i.c
+@@ -229,8 +229,8 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
  
- struct platform_device s3c64xx_device_spi0 = {
-@@ -1130,6 +1128,8 @@ void __init s3c64xx_spi0_set_platdata(int (*cfg_gpio)(void), int src_clk_nr,
- 	pd.num_cs = num_cs;
- 	pd.src_clk_nr = src_clk_nr;
- 	pd.cfg_gpio = (cfg_gpio) ? cfg_gpio : s3c64xx_spi0_cfg_gpio;
-+	pd.dma_tx = (void *)DMACH_SPI0_TX;
-+	pd.dma_rx = (void *)DMACH_SPI0_RX;
- #if defined(CONFIG_PL330_DMA)
- 	pd.filter = pl330_filter;
- #elif defined(CONFIG_S3C64XX_PL080)
-@@ -1145,9 +1145,7 @@ void __init s3c64xx_spi0_set_platdata(int (*cfg_gpio)(void), int src_clk_nr,
- #ifdef CONFIG_S3C64XX_DEV_SPI1
- static struct resource s3c64xx_spi1_resource[] = {
- 	[0] = DEFINE_RES_MEM(S3C_PA_SPI1, SZ_256),
--	[1] = DEFINE_RES_DMA(DMACH_SPI1_TX),
--	[2] = DEFINE_RES_DMA(DMACH_SPI1_RX),
--	[3] = DEFINE_RES_IRQ(IRQ_SPI1),
-+	[1] = DEFINE_RES_IRQ(IRQ_SPI1),
- };
- 
- struct platform_device s3c64xx_device_spi1 = {
-@@ -1175,12 +1173,15 @@ void __init s3c64xx_spi1_set_platdata(int (*cfg_gpio)(void), int src_clk_nr,
- 	pd.num_cs = num_cs;
- 	pd.src_clk_nr = src_clk_nr;
- 	pd.cfg_gpio = (cfg_gpio) ? cfg_gpio : s3c64xx_spi1_cfg_gpio;
-+	pd.dma_tx = (void *)DMACH_SPI1_TX;
-+	pd.dma_rx = (void *)DMACH_SPI1_RX;
- #if defined(CONFIG_PL330_DMA)
- 	pd.filter = pl330_filter;
- #elif defined(CONFIG_S3C64XX_PL080)
- 	pd.filter = pl08x_filter_id;
- #endif
- 
-+
- 	s3c_set_platdata(&pd, sizeof(pd), &s3c64xx_device_spi1);
- }
- #endif /* CONFIG_S3C64XX_DEV_SPI1 */
-@@ -1188,9 +1189,7 @@ void __init s3c64xx_spi1_set_platdata(int (*cfg_gpio)(void), int src_clk_nr,
- #ifdef CONFIG_S3C64XX_DEV_SPI2
- static struct resource s3c64xx_spi2_resource[] = {
- 	[0] = DEFINE_RES_MEM(S3C_PA_SPI2, SZ_256),
--	[1] = DEFINE_RES_DMA(DMACH_SPI2_TX),
--	[2] = DEFINE_RES_DMA(DMACH_SPI2_RX),
--	[3] = DEFINE_RES_IRQ(IRQ_SPI2),
-+	[1] = DEFINE_RES_IRQ(IRQ_SPI2),
- };
- 
- struct platform_device s3c64xx_device_spi2 = {
-@@ -1218,6 +1217,8 @@ void __init s3c64xx_spi2_set_platdata(int (*cfg_gpio)(void), int src_clk_nr,
- 	pd.num_cs = num_cs;
- 	pd.src_clk_nr = src_clk_nr;
- 	pd.cfg_gpio = (cfg_gpio) ? cfg_gpio : s3c64xx_spi2_cfg_gpio;
-+	pd.dma_tx = (void *)DMACH_SPI2_TX;
-+	pd.dma_rx = (void *)DMACH_SPI2_RX;
- #if defined(CONFIG_PL330_DMA)
- 	pd.filter = pl330_filter;
- #elif defined(CONFIG_S3C64XX_PL080)
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 8e86e7f6663a..b954c5444cca 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -133,7 +133,6 @@
- struct s3c64xx_spi_dma_data {
- 	struct dma_chan *ch;
- 	enum dma_transfer_direction direction;
--	unsigned int dmach;
- };
- 
- /**
-@@ -325,7 +324,7 @@ static int s3c64xx_spi_prepare_transfer(struct spi_master *spi)
- 
- 		/* Acquire DMA channels */
- 		sdd->rx_dma.ch = dma_request_slave_channel_compat(mask, filter,
--				   (void *)(long)sdd->rx_dma.dmach, dev, "rx");
-+				   sdd->cntrlr_info->dma_rx, dev, "rx");
- 		if (!sdd->rx_dma.ch) {
- 			dev_err(dev, "Failed to get RX DMA channel\n");
- 			ret = -EBUSY;
-@@ -334,7 +333,7 @@ static int s3c64xx_spi_prepare_transfer(struct spi_master *spi)
- 		spi->dma_rx = sdd->rx_dma.ch;
- 
- 		sdd->tx_dma.ch = dma_request_slave_channel_compat(mask, filter,
--				   (void *)(long)sdd->tx_dma.dmach, dev, "tx");
-+				   sdd->cntrlr_info->dma_tx, dev, "tx");
- 		if (!sdd->tx_dma.ch) {
- 			dev_err(dev, "Failed to get TX DMA channel\n");
- 			ret = -EBUSY;
-@@ -1028,7 +1027,6 @@ static inline struct s3c64xx_spi_port_config *s3c64xx_spi_get_port_config(
- static int s3c64xx_spi_probe(struct platform_device *pdev)
- {
- 	struct resource	*mem_res;
--	struct resource	*res;
- 	struct s3c64xx_spi_driver_data *sdd;
- 	struct s3c64xx_spi_info *sci = dev_get_platdata(&pdev->dev);
- 	struct spi_master *master;
-@@ -1087,20 +1085,9 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 
- 	sdd->cur_bpw = 8;
- 
--	if (!sdd->pdev->dev.of_node) {
--		res = platform_get_resource(pdev, IORESOURCE_DMA,  0);
--		if (!res) {
--			dev_warn(&pdev->dev, "Unable to get SPI tx dma resource. Switching to poll mode\n");
--			sdd->port_conf->quirks = S3C64XX_SPI_QUIRK_POLL;
--		} else
--			sdd->tx_dma.dmach = res->start;
--
--		res = platform_get_resource(pdev, IORESOURCE_DMA,  1);
--		if (!res) {
--			dev_warn(&pdev->dev, "Unable to get SPI rx dma resource. Switching to poll mode\n");
--			sdd->port_conf->quirks = S3C64XX_SPI_QUIRK_POLL;
--		} else
--			sdd->rx_dma.dmach = res->start;
-+	if (!sdd->pdev->dev.of_node && (!sci->dma_tx || !sci->dma_rx)) {
-+		dev_warn(&pdev->dev, "Unable to get SPI tx/rx DMA data. Switching to poll mode\n");
-+		sdd->port_conf->quirks = S3C64XX_SPI_QUIRK_POLL;
+ 	/* Ensure that we have a parent clock fast enough */
+ 	mclk_rate = clk_get_rate(sspi->mclk);
+-	if (mclk_rate < (2 * spi->max_speed_hz)) {
+-		clk_set_rate(sspi->mclk, 2 * spi->max_speed_hz);
++	if (mclk_rate < (2 * tfr->speed_hz)) {
++		clk_set_rate(sspi->mclk, 2 * tfr->speed_hz);
+ 		mclk_rate = clk_get_rate(sspi->mclk);
  	}
  
- 	sdd->tx_dma.direction = DMA_MEM_TO_DEV;
-@@ -1197,9 +1184,9 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+@@ -248,14 +248,14 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
+ 	 * First try CDR2, and if we can't reach the expected
+ 	 * frequency, fall back to CDR1.
+ 	 */
+-	div = mclk_rate / (2 * spi->max_speed_hz);
++	div = mclk_rate / (2 * tfr->speed_hz);
+ 	if (div <= (SUN4I_CLK_CTL_CDR2_MASK + 1)) {
+ 		if (div > 0)
+ 			div--;
  
- 	dev_dbg(&pdev->dev, "Samsung SoC SPI Driver loaded for Bus SPI-%d with %d Slaves attached\n",
- 					sdd->port_id, master->num_chipselect);
--	dev_dbg(&pdev->dev, "\tIOmem=[%pR]\tFIFO %dbytes\tDMA=[Rx-%d, Tx-%d]\n",
-+	dev_dbg(&pdev->dev, "\tIOmem=[%pR]\tFIFO %dbytes\tDMA=[Rx-%p, Tx-%p]\n",
- 					mem_res, (FIFO_LVL_MASK(sdd) >> 1) + 1,
--					sdd->rx_dma.dmach, sdd->tx_dma.dmach);
-+					sci->dma_rx, sci->dma_tx);
+ 		reg = SUN4I_CLK_CTL_CDR2(div) | SUN4I_CLK_CTL_DRS;
+ 	} else {
+-		div = ilog2(mclk_rate) - ilog2(spi->max_speed_hz);
++		div = ilog2(mclk_rate) - ilog2(tfr->speed_hz);
+ 		reg = SUN4I_CLK_CTL_CDR1(div);
+ 	}
  
- 	pm_runtime_mark_last_busy(&pdev->dev);
- 	pm_runtime_put_autosuspend(&pdev->dev);
-diff --git a/include/linux/platform_data/spi-s3c64xx.h b/include/linux/platform_data/spi-s3c64xx.h
-index d3889b98a1a1..fb5625bcca9a 100644
---- a/include/linux/platform_data/spi-s3c64xx.h
-+++ b/include/linux/platform_data/spi-s3c64xx.h
-@@ -40,6 +40,8 @@ struct s3c64xx_spi_info {
- 	int num_cs;
- 	int (*cfg_gpio)(void);
- 	dma_filter_fn filter;
-+	void *dma_tx;
-+	void *dma_rx;
- };
+diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
+index ac48f59705a8..42e2c4bd690a 100644
+--- a/drivers/spi/spi-sun6i.c
++++ b/drivers/spi/spi-sun6i.c
+@@ -217,8 +217,8 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
  
- /**
+ 	/* Ensure that we have a parent clock fast enough */
+ 	mclk_rate = clk_get_rate(sspi->mclk);
+-	if (mclk_rate < (2 * spi->max_speed_hz)) {
+-		clk_set_rate(sspi->mclk, 2 * spi->max_speed_hz);
++	if (mclk_rate < (2 * tfr->speed_hz)) {
++		clk_set_rate(sspi->mclk, 2 * tfr->speed_hz);
+ 		mclk_rate = clk_get_rate(sspi->mclk);
+ 	}
+ 
+@@ -236,14 +236,14 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
+ 	 * First try CDR2, and if we can't reach the expected
+ 	 * frequency, fall back to CDR1.
+ 	 */
+-	div = mclk_rate / (2 * spi->max_speed_hz);
++	div = mclk_rate / (2 * tfr->speed_hz);
+ 	if (div <= (SUN6I_CLK_CTL_CDR2_MASK + 1)) {
+ 		if (div > 0)
+ 			div--;
+ 
+ 		reg = SUN6I_CLK_CTL_CDR2(div) | SUN6I_CLK_CTL_DRS;
+ 	} else {
+-		div = ilog2(mclk_rate) - ilog2(spi->max_speed_hz);
++		div = ilog2(mclk_rate) - ilog2(tfr->speed_hz);
+ 		reg = SUN6I_CLK_CTL_CDR1(div);
+ 	}
+ 
 -- 
 2.6.2
 

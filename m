@@ -1,61 +1,86 @@
-From: Joshua Clayton <stillcompiling-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v2 0/6] spi: Add file i/o to spidev_test
-Date: Wed, 18 Nov 2015 14:30:36 -0800
-Message-ID: <cover.1447880230.git.stillcompiling@gmail.com>
-References: <2760715.DGIOLUoqL9@jclayton-pc>
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Joshua Clayton <stillcompiling-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <2760715.DGIOLUoqL9@jclayton-pc>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Joshua Clayton <stillcompiling@gmail.com>
+Subject: [PATCH v2 2/6] spi: spidev_test: transfer_escaped_string function
+Date: Wed, 18 Nov 2015 14:30:38 -0800
+Message-ID: <b0719c2739aabcd9894e85d82cbae21fcf83df3a.1447880230.git.stillcompiling@gmail.com>
+References: <cover.1447880230.git.stillcompiling@gmail.com>
+Cc: linux-kernel@vger.kernel.org,
+	Anton Bondarenko <anton.bondarenko.sama@gmail.com>,
+	Joshua Clayton <stillcompiling@gmail.com>
+To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <cover.1447880230.git.stillcompiling@gmail.com>
+In-Reply-To: <cover.1447880230.git.stillcompiling@gmail.com>
+References: <cover.1447880230.git.stillcompiling@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Add to spidev_test, the ability to read from and write to a file.
-Clean up code along the way.
-As I finished, I found that a request has been made to move
-spidev_test from Documentation to tools, so I did that as well.
+Move the input_tx code into its own small function.
+This cleans up some variables from main() that are used only here.
+While we are at it, check malloc calls instead of assuming they succeed.
 
-Thanks to Mark Brown and Anton Bodarenko for feedback on v1
+Signed-off-by: Joshua Clayton <stillcompiling@gmail.com>
+---
+ tools/spi/spidev_test.c | 36 +++++++++++++++++++++++-------------
+ 1 file changed, 23 insertions(+), 13 deletions(-)
 
-v2 Changes:
-- Move spidev_test to tools in the first commit instead of the last.
-- Drop the patch that formats tools/Makefile
-- Drop the patch that changes rx to a local variable in transfer()
-- Check the result of malloc everywhere it is called.
-- Change all the patch subjects to spi: spidev_test
-- Removed a check of the spi transfer buffer size, in favor of
-    letting the kernel give an error in the ioctl if too big.
-
-Joshua Clayton (6):
-  spi: Move spi code from Documentation to tools
-  spi: spidev_test: transfer_escaped_string function
-  spi: spidev_test: accept input from a file
-  spi: spidev_test: output to a file
-  spi: spidev_test: check error
-  spi: spidev_test: fix whitespace
-
- Documentation/Makefile          |   2 +-
- Documentation/spi/Makefile      |   8 -
- Documentation/spi/spidev_fdx.c  | 158 ----------------
- Documentation/spi/spidev_test.c | 318 --------------------------------
- tools/Makefile                  |   7 +-
- tools/spi/Makefile              |   4 +
- tools/spi/spidev_fdx.c          | 158 ++++++++++++++++
- tools/spi/spidev_test.c         | 399 ++++++++++++++++++++++++++++++++++++++++
- 8 files changed, 566 insertions(+), 488 deletions(-)
- delete mode 100644 Documentation/spi/Makefile
- delete mode 100644 Documentation/spi/spidev_fdx.c
- delete mode 100644 Documentation/spi/spidev_test.c
- create mode 100644 tools/spi/Makefile
- create mode 100644 tools/spi/spidev_fdx.c
- create mode 100644 tools/spi/spidev_test.c
-
+diff --git a/tools/spi/spidev_test.c b/tools/spi/spidev_test.c
+index 135b3f5..f9d2957 100644
+--- a/tools/spi/spidev_test.c
++++ b/tools/spi/spidev_test.c
+@@ -249,13 +249,30 @@ static void parse_opts(int argc, char *argv[])
+ 	}
+ }
+ 
++static void transfer_escaped_string(int fd, char *str)
++{
++	size_t size = strlen(str + 1);
++	uint8_t *tx;
++	uint8_t *rx;
++
++	tx = malloc(size);
++	if (!tx)
++		pabort("can't allocate tx buffer");
++
++	rx = malloc(size);
++	if (!rx)
++		pabort("can't allocate rx buffer");
++
++	size = unescape((char *)tx, str, size);
++	transfer(fd, tx, rx, size);
++	free(rx);
++	free(tx);
++}
++
+ int main(int argc, char *argv[])
+ {
+ 	int ret = 0;
+ 	int fd;
+-	uint8_t *tx;
+-	uint8_t *rx;
+-	int size;
+ 
+ 	parse_opts(argc, argv);
+ 
+@@ -300,17 +317,10 @@ int main(int argc, char *argv[])
+ 	printf("bits per word: %d\n", bits);
+ 	printf("max speed: %d Hz (%d KHz)\n", speed, speed/1000);
+ 
+-	if (input_tx) {
+-		size = strlen(input_tx+1);
+-		tx = malloc(size);
+-		rx = malloc(size);
+-		size = unescape((char *)tx, input_tx, size);
+-		transfer(fd, tx, rx, size);
+-		free(rx);
+-		free(tx);
+-	} else {
++	if (input_tx)
++		transfer_escaped_string(fd, input_tx);
++	else
+ 		transfer(fd, default_tx, default_rx, sizeof(default_tx));
+-	}
+ 
+ 	close(fd);
+ 
 -- 
 2.5.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,67 +1,69 @@
-From: pascal.huerst-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-Subject: [PATCH v2] spi: omap2-mcspi: Add calls for pinctrl state select
-Date: Thu, 19 Nov 2015 16:18:28 +0100
-Message-ID: <1447946308-2003-1-git-send-email-pascal.huerst@gmail.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Pascal Huerst <pascal.huerst-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: dts: sun4i: Add support for inter-word
+ wait cycles
+Date: Thu, 19 Nov 2015 16:53:41 +0100
+Message-ID: <1447948422-4915-1-git-send-email-mweseloh42@gmail.com>
+Reply-To: mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+Return-path: <linux-sunxi+bncBDFO74UEV4IRBDXBW6ZAKGQEHKJESLI-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <http://groups.google.com/group/linux-sunxi
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+ <http://groups.google.com/group/linux-sunxi/subscribe>
+List-Id: linux-spi.vger.kernel.org
 
-From: Pascal Huerst <pascal.huerst-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Hi all,
 
-This adds calls to pinctrl subsystem in order to switch pin states
-on suspend/resume if you provide a "sleep" state in DT.
+the Allwinner A10/A20 SPI module supports an option to configure a number of
+clock periods to wait between each word ("SPI Wait Clock Register" in the A20
+manual). This is a very useful option if talking to devices which specify a
+minimum amount of inter-word wait time.
 
-If no "sleep" state is provided in DT, these calls turn
-to NOPs.
+I initially tried to find a way to let SPI protocol drivers specify this
+option, but I couldn't find a mechanism to pass additional options to the spi
+master. So I took the spi-davinci driver as an example (it implements a very
+similiar functionality) and added a new devicetree property.
 
-Signed-off-by: Pascal Huerst <pascal.huerst-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spi-omap2-mcspi.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+While testing this patch I noticed that the SPI module always adds a constant
+3 clock cycles to the number set in the Wait Clock Register. That number stays
+constant across many different baud rates, so I documented it in the
+devicetree binding file.
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 3d09e0b..2c099c5 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -24,6 +24,7 @@
- #include <linux/dma-mapping.h>
- #include <linux/dmaengine.h>
- #include <linux/omap-dma.h>
-+#include <linux/pinctrl/consumer.h>
- #include <linux/platform_device.h>
- #include <linux/err.h>
- #include <linux/clk.h>
-@@ -1508,14 +1509,23 @@ static int omap2_mcspi_resume(struct device *dev)
- 	}
- 	pm_runtime_mark_last_busy(mcspi->dev);
- 	pm_runtime_put_autosuspend(mcspi->dev);
--	return 0;
-+
-+	return pinctrl_pm_select_default_state(dev);
-+}
-+
-+static int omap2_mcspi_suspend(struct device *dev)
-+{
-+	return pinctrl_pm_select_sleep_state(dev);
- }
-+
- #else
-+#define omap2_mcspi_suspend	NULL
- #define	omap2_mcspi_resume	NULL
- #endif
+One thing I am unsure of is the device example in the binding
+documentation.  I used "example,dummy" as compatible... is this acceptable or
+should I use a device/compatible that actually exists somewhere?
 
- static const struct dev_pm_ops omap2_mcspi_pm_ops = {
- 	.resume = omap2_mcspi_resume,
-+	.suspend = omap2_mcspi_suspend,
- 	.runtime_resume	= omap_mcspi_runtime_resume,
- };
+Oh... and should I split binding documentation and code changing patch?
 
---
-2.4.3
+Best regards,
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+  Marcus
+
+
+Marcus Weseloh (1):
+  spi: dts: sun4i: Add support for inter-word wait cycles using the SPI
+    Wait Clock Register
+
+ Documentation/devicetree/bindings/spi/spi-sun4i.txt | 11 +++++++++++
+ drivers/spi/spi-sun4i.c                             |  7 +++++++
+ 2 files changed, 18 insertions(+)
+
+-- 
+1.9.1

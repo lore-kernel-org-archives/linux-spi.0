@@ -1,63 +1,94 @@
-From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: RfC: Handle SPI controller limitations like maximum message
- length
-Date: Wed, 18 Nov 2015 23:50:00 +0100
-Message-ID: <564D0098.4030107@gmail.com>
-References: <564CEB61.2000601@gmail.com>
- <20151118215755.GL31303@sirena.org.uk>
+From: Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Subject: Re: [PATCH v3] SPI: s3c64xx: pass DMA arguments in platform data
+Date: Thu, 19 Nov 2015 09:57:40 +0900
+Message-ID: <564D1E84.6070808@samsung.com>
+References: <3835977.ZFLKtOk346@wuerfel>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 7bit
-Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20151118215755.GL31303-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-reply-to: <3835977.ZFLKtOk346@wuerfel>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Am 18.11.2015 um 22:57 schrieb Mark Brown:
-> On Wed, Nov 18, 2015 at 10:19:29PM +0100, Heiner Kallweit wrote:
->> There have been few discussions in the past about how to handle SPI controller
->> limitations like max message length. However they don't seem to have resulted
->> in accepted patches yet.
+On 18.11.2015 23:21, Arnd Bergmann wrote:
+> The s3c64xx platform data already contains a pointer to the
+> DMA filter function, but not to the associated data.
 > 
-> No, they've resulted in people writing code.  We've got a bunch of
-> things in the spi_master struct like the limits on speeds and bits per
-> word.
+> This simplifies the code and makes it more generic by
+> passing the data along with the filter function like
+> we do for other drivers.
 > 
-Sure, I'm aware of this. To you it might sound obvious to handle such
-limitations in the SPI core, however there have been several attempts
-to deal with such limitations in controller or protocol drivers.
+> Signed-off-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+> ---
+> v3: leave pl330 support in place. this is not needed any more, but this
+>     patch should not remove it. We will however need to come back to
+>     this for multiplatform support, so a combined s3c64xx+s5p gets the
+>     right filter function
+> v3: fix bug in probe function that caused the DT case to use polling mode
+> v2: This version is now independent of the ASoC changes.
+> 
+> diff --git a/arch/arm/plat-samsung/devs.c b/arch/arm/plat-samsung/devs.c
+> index 07a5a6e6dcaa..b53d4ff3befb 100644
+> --- a/arch/arm/plat-samsung/devs.c
+> +++ b/arch/arm/plat-samsung/devs.c
+> @@ -1105,9 +1105,7 @@ struct platform_device s3c_device_wdt = {
+>  #ifdef CONFIG_S3C64XX_DEV_SPI0
+>  static struct resource s3c64xx_spi0_resource[] = {
+>  	[0] = DEFINE_RES_MEM(S3C_PA_SPI0, SZ_256),
+> -	[1] = DEFINE_RES_DMA(DMACH_SPI0_TX),
+> -	[2] = DEFINE_RES_DMA(DMACH_SPI0_RX),
+> -	[3] = DEFINE_RES_IRQ(IRQ_SPI0),
+> +	[1] = DEFINE_RES_IRQ(IRQ_SPI0),
+>  };
+>  
+>  struct platform_device s3c64xx_device_spi0 = {
+> @@ -1135,6 +1133,8 @@ void __init s3c64xx_spi0_set_platdata(int (*cfg_gpio)(void), int src_clk_nr,
+>  	pd.num_cs = num_cs;
+>  	pd.src_clk_nr = src_clk_nr;
+>  	pd.cfg_gpio = (cfg_gpio) ? cfg_gpio : s3c64xx_spi0_cfg_gpio;
+> +	pd.dma_tx = (void *)DMACH_SPI0_TX;
+> +	pd.dma_rx = (void *)DMACH_SPI0_RX;
+>  #if defined(CONFIG_PL330_DMA)
+>  	pd.filter = pl330_filter;
+>  #elif defined(CONFIG_S3C64XX_PL080)
+> @@ -1150,9 +1150,7 @@ void __init s3c64xx_spi0_set_platdata(int (*cfg_gpio)(void), int src_clk_nr,
+>  #ifdef CONFIG_S3C64XX_DEV_SPI1
+>  static struct resource s3c64xx_spi1_resource[] = {
+>  	[0] = DEFINE_RES_MEM(S3C_PA_SPI1, SZ_256),
+> -	[1] = DEFINE_RES_DMA(DMACH_SPI1_TX),
+> -	[2] = DEFINE_RES_DMA(DMACH_SPI1_RX),
+> -	[3] = DEFINE_RES_IRQ(IRQ_SPI1),
+> +	[1] = DEFINE_RES_IRQ(IRQ_SPI1),
+>  };
+>  
+>  struct platform_device s3c64xx_device_spi1 = {
+> @@ -1180,12 +1178,15 @@ void __init s3c64xx_spi1_set_platdata(int (*cfg_gpio)(void), int src_clk_nr,
+>  	pd.num_cs = num_cs;
+>  	pd.src_clk_nr = src_clk_nr;
+>  	pd.cfg_gpio = (cfg_gpio) ? cfg_gpio : s3c64xx_spi1_cfg_gpio;
+> +	pd.dma_tx = (void *)DMACH_SPI1_TX;
+> +	pd.dma_rx = (void *)DMACH_SPI1_RX;
+>  #if defined(CONFIG_PL330_DMA)
+>  	pd.filter = pl330_filter;
+>  #elif defined(CONFIG_S3C64XX_PL080)
+>  	pd.filter = pl08x_filter_id;
+>  #endif
+>  
+> +
 
->> Maybe a better approach would be to introduce a new member of spi_master
->> dealing with controller limitations.
-> 
-> That's what we've been doing...
-> 
-Primary addressees of my comment were users of the SPI core trying to deal
-in their own code with things which might be better dealt with in the core.
-Again, for you it's obvious ..
-Just one more comment:
-In case there should be more need to reflect such limitations in spi_master
-it might be good to encapsulate them in a separate struct instead of adding
-more such members to spi_master directly.
+That empty line is not needed here.
 
->> I also add an example how a protocol driver could use this extension.
->> Appreciate any comment.
->>
->>
->> diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
->> index 269e8af..8a27c66 100644
-> 
-> Please don't send patches without a signoff, see SubmittingPatches.
-> 
-It wasn't meant to be actual patches, therefore I omitted some stuff
-and didn't use [PATCH] in the subject.
-It was meant just to be code snippets providing a little more detail.
+Rest is good so with removal of this empty line:
 
-Thanks for the comment anyway.
+Reviewed-by: Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+
+Best regards,
+Krzysztof
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

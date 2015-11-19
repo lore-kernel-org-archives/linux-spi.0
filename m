@@ -1,85 +1,149 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: RfC: Handle SPI controller limitations like maximum message
- length
-Date: Thu, 19 Nov 2015 11:40:57 +0000
-Message-ID: <20151119114057.GN31303@sirena.org.uk>
-References: <564CEB61.2000601@gmail.com>
- <20151118215755.GL31303@sirena.org.uk>
- <564D0098.4030107@gmail.com>
+From: Javier Martinez Canillas <javier@osg.samsung.com>
+Subject: Re: spi: OF module autoloading is still broken
+Date: Thu, 19 Nov 2015 09:47:18 -0300
+Message-ID: <564DC4D6.2010506@osg.samsung.com>
+References: <56104E88.3040807@gmail.com> <20151112185926.GC8456@google.com>
+ <20151113194031.GI8456@google.com> <20151113221228.GT12392@sirena.org.uk>
+ <20151113225113.GJ8456@google.com> <20151113231410.GV12392@sirena.org.uk>
+ <20151113234857.GK8456@google.com> <564A101F.9090807@osg.samsung.com>
+ <20151116192434.GO8456@google.com> <564A35EB.5080008@osg.samsung.com>
+ <20151116204702.GP8456@google.com> <564A4B66.6090107@osg.samsung.com>
+ <564CDA72.8030800@osg.samsung.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="oWj5HoUXCVjyUFuT"
-Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <564D0098.4030107-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	linux-mtd@lists.infradead.org,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Brian Norris <computersforpeace@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <564CDA72.8030800@osg.samsung.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+Hello,
 
---oWj5HoUXCVjyUFuT
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On 11/18/2015 05:07 PM, Javier Martinez Canillas wrote:
+> Hello Brian and Mark,
+> 
+> On 11/16/2015 06:32 PM, Javier Martinez Canillas wrote:
+>> On 11/16/2015 05:47 PM, Brian Norris wrote:
+>>> On Mon, Nov 16, 2015 at 05:00:43PM -0300, Javier Martinez Canillas wrote:
+>>>> On 11/16/2015 04:24 PM, Brian Norris wrote:
+> 
+> [snip]
+> 
+>>>>> I don't think you have problems only with bad FDTs. I think you have a
+>>>>> problem with perfectly valid DTs.
+>>>>>
+>>>>
+>>>> Agreed, I wonder if spi_uevent() shouldn't be changed to report both the
+>>>> OF and old SPI modaliases to avoid breaking a lot of drivers but at the
+>>>> same time allowing DT-only drivers to not need an SPI ID table.
+>>>
+>>> That's the solution I imagined, though I haven't tested it yet. I don't
+>>> see much precedent for reporting multiple modaliases, so there could be
+>>> some kind of ABI issues around that too.
+>>>
+>>
+>> Ok, I'm glad that we agree. This definitely needs to be discussed with more
+>> people. I'll re-spin my patch and post a v2 reporting multiple modaliases
+>> tomorrow after testing.
+>>
+> 
+> So I had some time today to test this approach but unfortunately it seems
+> this workaround will not be possible because AFAICT kmod only takes into
+> account the last MODALIAS reported as a uevent. I still have to check the
+> kmod source code but that's my conclusion from trying to report both aliases.
+>
 
-On Wed, Nov 18, 2015 at 11:50:00PM +0100, Heiner Kallweit wrote:
-> Am 18.11.2015 um 22:57 schrieb Mark Brown:
-> > On Wed, Nov 18, 2015 at 10:19:29PM +0100, Heiner Kallweit wrote:
+I dig a little more on this and is udev and not kmod that can't cope with
+more than one MODALIAS, kmod just use the alias that udev tells it to use.
 
-> >> There have been few discussions in the past about how to handle SPI controller
-> >> limitations like max message length. However they don't seem to have resulted
-> >> in accepted patches yet.
+1) OF modalias reported after SPI modalias
+------------------------------------------
 
-> > No, they've resulted in people writing code.  We've got a bunch of
-> > things in the spi_master struct like the limits on speeds and bits per
-> > word.
+cat /sys/devices/platform/12d40000.spi/spi_master/spi2/spi2.0/uevent
+DRIVER=cros-ec-spi
+OF_NAME=cros-ec
+OF_FULLNAME=/spi@12d40000/cros-ec@0
+OF_COMPATIBLE_0=google,cros-ec-spi
+OF_COMPATIBLE_N=1
+MODALIAS=spi:cros-ec-spi
+MODALIAS=of:Ncros-ecT<NULL>Cgoogle,cros-ec-spi
 
-> Sure, I'm aware of this. To you it might sound obvious to handle such
-> limitations in the SPI core, however there have been several attempts
-> to deal with such limitations in controller or protocol drivers.
+udevadm test /sys/devices/platform/12d40000.spi/spi_master/spi2/spi2.0
+ACTION=add
+DEVPATH=/devices/platform/12d40000.spi/spi_master/spi2/spi2.0
+DRIVER=cros-ec-spi
+MODALIAS=of:Ncros-ecT<NULL>Cgoogle,cros-ec-spi
+OF_COMPATIBLE_0=google,cros-ec-spi
+OF_COMPATIBLE_N=1
+OF_FULLNAME=/spi@12d40000/cros-ec@0
+OF_NAME=cros-ec
+SUBSYSTEM=spi
+USEC_INITIALIZED=52732787
+run: 'kmod load of:Ncros-ecT<NULL>Cgoogle,cros-ec-spi'
 
-They're documented using terms like "limits" and "constraints" - it's
-hard to see what we're missing there.
+2) SPI modalias reported after OF modalias
+------------------------------------------
 
-> >> Maybe a better approach would be to introduce a new member of spi_master
-> >> dealing with controller limitations.
+cat /sys/devices/platform/12d40000.spi/spi_master/spi2/spi2.0/uevent
+DRIVER=cros-ec-spi
+OF_NAME=cros-ec
+OF_FULLNAME=/spi@12d40000/cros-ec@0
+OF_COMPATIBLE_0=google,cros-ec-spi
+OF_COMPATIBLE_N=1
+MODALIAS=of:Ncros-ecT<NULL>Cgoogle,cros-ec-spi
+MODALIAS=spi:cros-ec-spi
 
-> > That's what we've been doing...
+udevadm test /sys/devices/platform/12d40000.spi/spi_master/spi2/spi2.0
+ACTION=add
+DEVPATH=/devices/platform/12d40000.spi/spi_master/spi2/spi2.0
+DRIVER=cros-ec-spi
+MODALIAS=spi:cros-ec-spi
+OF_COMPATIBLE_0=google,cros-ec-spi
+OF_COMPATIBLE_N=1
+OF_FULLNAME=/spi@12d40000/cros-ec@0
+OF_NAME=cros-ec
+SUBSYSTEM=spi
+USEC_INITIALIZED=288316488
+run: 'kmod load spi:cros-ec-spi'
 
-> Primary addressees of my comment were users of the SPI core trying to deal
-> in their own code with things which might be better dealt with in the core.
+So as you can see: 'kmod load $modalias' is only called for the last modalias.
+ 
+> 
+> IOW, even when is possible to report more than one MODALIAS, user-space seems
+> to only use the last one reported so using both don't work.
+> 
+> Of course kmod can be changed to check for more than one MODALIAS but since
+> the kernel should not break old user-space, the fact that a single MODALIAS
+> was reported seems to be an ABI now due how is used.
+>
 
-Well, we do to the extent we can do anything useful in the core we have
-code to deal with them - we constrain clocks and we have error checking
-for the bits per word settings for example.
+So I think our options are:
 
-> In case there should be more need to reflect such limitations in spi_master
-> it might be good to encapsulate them in a separate struct instead of adding
-> more such members to spi_master directly.
+a) Not change spi_uevent() to report an OF modalias and make a requirement
+to have a spi_device_id table even for OF-only to have autoload working.
 
-It's going to be annoying to move everything over and TBH I'm not sure
-it really helps much.  This is honestly the first time I can recall
-anyone expressing any confusion here.
+Regardless of the option, SPI ID tables should be present in drivers so
+these are supported in non-OF platforms as Mark said.
 
---oWj5HoUXCVjyUFuT
-Content-Type: application/pgp-signature; name="signature.asc"
+b) Make sure that all OF drivers have a complete OF table with all entries
+in the SPI ID table before spi_uevent() is modified to report OF modaliases.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+My preference would be b) so the same table (OF or SPI ID) can be used for
+alias filling that match reported modalias and driver to device matching
+and will also be aligned with what other subsystems do.
 
-iQEcBAEBCAAGBQJWTbVIAAoJECTWi3JdVIfQ+D4H/1Kvzg/gVzQiCTCMkuXmX3HA
-d/V6dCj5lqpx/tvVRAm94e35qgwFIjZKX68py8Dlsseg0PBe13JR2KzS0eVnXsFj
-EjUPQdhSkytEZU9BZ5eKP7RgrjiBM9rSIuBaubJIx2YDQds/gB4u31uToWIZnrTN
-PSCxEUlrIKXjX+UzqVrrNEPSqD0+ZnEYfdxg2xcqcJH0puVupSLcruNlnCAtMP5T
-1CKo+gVJ2aGhugRAlb2A60Aux0VTRX3lMhQQkkmhtoBPrHuGvZ3UV8gh6fISg3kG
-KQTT27vlDu8TOBeeL6IfU9OOwvquB8L9TNxyqXrauD6U6SbWEy2LUYzL1sW78Do=
-=/0Pl
------END PGP SIGNATURE-----
+I'll check my script to see why the drivers/mtd/devices/m25p80.c was not
+found, likely because the entries in the spi_device_id table weren't in
+the DT binding doc before.
 
---oWj5HoUXCVjyUFuT--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Best regards,
+-- 
+Javier Martinez Canillas
+Open Source Group
+Samsung Research America

@@ -1,67 +1,82 @@
-From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: RfC: Handle SPI controller limitations like maximum message length
-Date: Fri, 20 Nov 2015 13:56:21 +0100
-Message-ID: <CAOMqctQo58yCfzU3u=u3N0zNfhQph2Pw2vnrxsVvAEXi5n2HRw@mail.gmail.com>
-References: <564CEB61.2000601@gmail.com>
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Subject: Re: [PATCH 02/13] dmaengine: Introduce dma_request_slave_channel_compat_reason()
+Date: Fri, 20 Nov 2015 14:48:20 +0100
+Message-ID: <5158930.I1IPZa4jtW@wuerfel>
+References: <1432646768-12532-1-git-send-email-peter.ujfalusi@ti.com> <6118451.vaLZWOZEF5@wuerfel> <564F1773.9030006@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+	Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Dan Williams <dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-crypto-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Linux Media Mailing List <linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	ALSA Development Mailing List <alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org>
+To: Peter Ujfalusi <peter.ujfalusi-l0cyMroinI0@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <564CEB61.2000601-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <564F1773.9030006-l0cyMroinI0@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hello,
+On Friday 20 November 2015 14:52:03 Peter Ujfalusi wrote:
+> 
+> >> For legacy the filter function is pretty much needed to handle the differences
+> >> between the platforms as not all of them does the filtering in a same way. So
+> >> the first type of map would be feasible IMHO.
+> > 
+> > It certainly makes the transition to a map table much easier.
+> 
+> And the aim anyway is to convert everything to DT, right?
 
-On 18 November 2015 at 22:19, Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> There have been few discussions in the past about how to handle SPI controller
-> limitations like max message length. However they don't seem to have resulted
-> in accepted patches yet.
-> I also stumbled across this topic because I own a device using Freescale's
-> ESPI which has a 64K message size limitation.
->
-> At least one agreed fact is that silently assembling chunks in protocol
-> drivers is not the preferred approach.
->
-> Maybe a better approach would be to introduce a new member of spi_master
-> dealing with controller limitations.
-> My issue is just the message size limitation but most likely there are more
-> and different limitations in other controllers.
->
+We won't be able to do that. Some architectures (avr32 and sh for instance)
+use the dmaengine API but will likely never support DT. On ARM, at
+least sa1100 is in the same category, probably also ep93xx and portions
+of pxa, omap1 and davinci.
 
-There are multiple sides to this problem.
+> > int dmam_register_platform_map(struct device *dev, dma_filter_fn filter, struct dma_chan_map *map)
+> > {
+> >       struct dma_map_list *list = kmalloc(sizeof(*list), GFP_KERNEL);
+> > 
+> >       if (!list)
+> >               return -ENOMEM;
+> > 
+> >       list->dev = dev;
+> >       list->filter = filter;
+> >       list->map = map;
+> > 
+> >       mutex_lock(&dma_map_mutex);
+> >       list_add(&dma_map_list, &list->node);
+> >       mutex_unlock(&dma_map_mutex);
+> > }
+> > 
+> > Now we can completely remove the dependency on the filter function definition
+> > from platform code and slave drivers.
+> 
+> Sounds feasible for OMAP and daVinci and for others as well. I think 
+> I would go with this if someone asks my opinion 
 
-The first is the nature of the limitation of the driver. I was dealing
-with a driver that can transfer up to 63 bytes because it has 64byte
-fifo and the hardware locks up when it's full. The limitation is only
-due to the driver cutting way too many corners. There is dmaengine
-support available for the platform which has been merged recently so
-the driver can use DMA for arbitrarily long transfers. Even without
-DMA there is possibility to to drive CS manually and compose multiple
-transfers into single logical message or whatever.
+Ok.
 
-Either way, the limit of 63 bytes is very low and would actually cause
-problems with many device drivers so it was agreed that fixing the
-master one way or another is desirable.
+> The core change to add the new API + the dma_map support should be pretty
+> straight forward. It can live alongside with the old API and we can phase out
+> the users of the old one.
+> The legacy support would need more time since we need to modify the arch codes
+> and the corresponding DMA drivers to get the map registered, but after that
+> the remaining drivers can be converted to use the new API.
 
-64k limit on the other hand is something more usable from driver
-writer standpoint and some banked mmap access to flash memories would
-have similar granularity.
+Right. It's not urgent and as long as we agree on the overall approach, we can
+always do the platform support first and wait for the following merge window
+before moving over the slave drivers.
 
-I would also like to point out that the limit depends on the transfer
-settings. For example, a SPI controller can have no limit on transfer
-size but when accessing a flash memory through mmap interface the mmap
-window limits the amount of data you can transfer at once. This
-particular case may be fixable by moving the mmap window transparently
-inside the driver.
-
-Thanks
-
-Michal
+	Arnd
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,61 +1,64 @@
 From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/4] spi: mediatek: remove unrequired description
-Date: Fri, 20 Nov 2015 08:20:13 -0600
-Message-ID: <20151120142013.GA498@rob-hp-laptop>
-References: <1447986080-31410-1-git-send-email-leilk.liu@mediatek.com>
- <1447986080-31410-2-git-send-email-leilk.liu@mediatek.com>
+Subject: Re: [PATCH] spi: dts: sun4i: Add support for inter-word
+ wait cycles using the SPI Wait Clock Register
+Date: Fri, 20 Nov 2015 10:03:46 -0600
+Message-ID: <20151120160346.GA21921@rob-hp-laptop>
+References: <1447948422-4915-1-git-send-email-mweseloh42@gmail.com>
+ <1447948422-4915-2-git-send-email-mweseloh42@gmail.com>
+Reply-To: robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
 	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-sunxi+bncBDJIP47K7MERB3UIXWZAKGQEIGPG5PY-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1447986080-31410-2-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+In-Reply-To: <1447948422-4915-2-git-send-email-mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <http://groups.google.com/group/linux-sunxi
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+ <http://groups.google.com/group/linux-sunxi/subscribe>
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Nov 20, 2015 at 10:21:17AM +0800, Leilk Liu wrote:
-> cs-gpios isn't required with patch "spi: mediatek: single
-> device does not require cs_gpios", so modify the description.
+On Thu, Nov 19, 2015 at 04:53:42PM +0100, Marcus Weseloh wrote:
+> Adds support and documentation for a new slave device property
+> "sun4i,spi-wdelay" that allows to set the SPI Wait Clock Register per
+> device / transfer. The SPI hardware will wait the specified amount of
+> SPI clock periods (plus a constant 3 clock periods) before transmitting
+> the next word.
 > 
-> Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-
-This could use a better subject. Try to make subjects specific enough 
-they would only ever apply to the change.
-
-Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-
+> The constant additional 3 clock periods are not documented by the vendor
+> and have been determined by analyzing the generated waveforms across
+> many different transmission speeds.
+> 
+> Signed-off-by: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 > ---
->  .../devicetree/bindings/spi/spi-mt65xx.txt         |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  Documentation/devicetree/bindings/spi/spi-sun4i.txt | 11 +++++++++++
+>  drivers/spi/spi-sun4i.c                             |  7 +++++++
+>  2 files changed, 18 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
-> index fba8334..60a183c 100644
-> --- a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
-> +++ b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
-> @@ -29,7 +29,7 @@ Required properties:
->    muxes clock, and "spi-clk" for the clock gate.
+> diff --git a/Documentation/devicetree/bindings/spi/spi-sun4i.txt b/Documentation/devicetree/bindings/spi/spi-sun4i.txt
+> index de827f5..9c4d723 100644
+> --- a/Documentation/devicetree/bindings/spi/spi-sun4i.txt
+> +++ b/Documentation/devicetree/bindings/spi/spi-sun4i.txt
+> @@ -10,6 +10,10 @@ Required properties:
+>    - "mod": the parent module clock
+>  - clock-names: Must contain the clock names described just above
 >  
->  Optional properties:
-> --cs-gpios: see spi-bus.txt, only required for MT8173.
-> +-cs-gpios: see spi-bus.txt.
->  
->  - mediatek,pad-select: specify which pins group(ck/mi/mo/cs) spi
->    controller used. This is an array, the element value should be 0~3,
-> -- 
-> 1.7.9.5
-> 
-> --
-> To unsubscribe from this list: send the line "unsubscribe devicetree" in
-> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> +Optional properties for slave devices:
+> +- sun4i,spi-wdelay : delay between transmission of words, specified in number
+> +  of SPI clock periods (actual delay is wdelay + 3 clock periods)
+
+Seems like a common property to me. For a common one, it should be the 
+actual delay and the driver needs to subtract the 3 clock periods here.
+
+Rob

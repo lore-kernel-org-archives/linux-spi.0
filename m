@@ -1,156 +1,212 @@
-From: Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
-Subject: Re: RfC: Handle SPI controller limitations like maximum message length
-Date: Fri, 20 Nov 2015 11:18:42 +0100
-Message-ID: <9CDADBED-FD18-4635-82A9-5AB14C9ABCAE@sperl.org>
-References: <564CEB61.2000601@gmail.com> <20151118215755.GL31303@sirena.org.uk> <564D0098.4030107@gmail.com> <20151119114057.GN31303@sirena.org.uk> <F224F5F3-FAD5-47FE-9419-39E53BCBB8C6@sperl.org> <20151119171538.GO31303@sirena.org.uk>
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2104\))
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20151119171538.GO31303-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Subject: Re: [PATCH 02/13] dmaengine: Introduce
+ dma_request_slave_channel_compat_reason()
+Date: Fri, 20 Nov 2015 12:25:06 +0200
+Message-ID: <564EF502.6040708@ti.com>
+References: <1432646768-12532-1-git-send-email-peter.ujfalusi@ti.com>
+ <6358656.jIv3GGCCXu@wuerfel> <564DA5AE.3060608@ti.com>
+ <4533695.7ZVFN1S94o@wuerfel>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
+Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ ALSA Development Mailing List <alsa-devel@alsa-project.org>,
+ Vinod Koul <vinod.koul@intel.com>, Linux MMC List <linux-mmc@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ linux-spi <linux-spi@vger.kernel.org>, Tony Lindgren <tony@atomide.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, linux-crypto@vger.kernel.org,
+ "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+ dmaengine@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>,
+ "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+ Linux Media Mailing List <linux-media@vger.kernel.org>
+To: Arnd Bergmann <arnd@arndb.de>
+Return-path: <alsa-devel-bounces@alsa-project.org>
+In-Reply-To: <4533695.7ZVFN1S94o@wuerfel>
+List-Unsubscribe: <http://mailman.alsa-project.org/mailman/options/alsa-devel>,
+ <mailto:alsa-devel-request@alsa-project.org?subject=unsubscribe>
+List-Archive: <http://mailman.alsa-project.org/pipermail/alsa-devel/>
+List-Post: <mailto:alsa-devel@alsa-project.org>
+List-Help: <mailto:alsa-devel-request@alsa-project.org?subject=help>
+List-Subscribe: <http://mailman.alsa-project.org/mailman/listinfo/alsa-devel>,
+ <mailto:alsa-devel-request@alsa-project.org?subject=subscribe>
+Errors-To: alsa-devel-bounces@alsa-project.org
+Sender: alsa-devel-bounces@alsa-project.org
+List-Id: linux-spi.vger.kernel.org
 
+On 11/19/2015 01:25 PM, Arnd Bergmann wrote:
+>> If we have two main APIs, one to request slave channels and one to get a=
+ny
+>> channel with given capability
+>> dma_request_slave_channel(NULL, NULL, &mask, fn, fn_param); /* Legacy sl=
+ave */
+>> dma_request_slave_channel(dev, name, NULL, NULL, NULL); /* DT/ACPI, curr=
+ent
+>>                                                            slave */
+>> dma_request_slave_channel(dev, name, &mask, fn, fn_param); /* current co=
+mpat*/
+>>
+>> This way we can omit the mask also in cases when the client only want to=
+ get
+>> DMA_SLAVE, we can just build up the mask within the function. If the mas=
+k is
+>> provided we would copy the bits from the provided mask, so for example i=
+f you
+>> want to have DMA_SLAVE+DMA_CYCLIC, the driver only needs to pass DMA_CYC=
+LIC,
+>> the DMA_SLAVE is going to be set anyways.
+> =
 
-> On 19.11.2015, at 18:15, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
->=20
->> I am in the progress of writing a (minimal) spi-core extension, that=
- would allow=20
->> a spi_master to have a prepare_message function that would call some=
- =E2=80=9Cmessage
->> translation functions=E2=80=9D.
->=20
->> The ones I have currently come up with are:
->> int spi_split_transfer_alignment(struct spi_message *msg, int alignm=
-ent);
->> int spi_split_transfer_maxsize(struct spi_message *msg, size_t max_s=
-ize);
->=20
-> Please don't do things this way, please make this more data driven -
-> have the drivers declare their capabilities so the core can just do
-> these things based on those flags rather than requiring active code i=
-n
-> drivers.  This keeps the code central which in turn helps keep things
-> maintainable.
->=20
+> I think it's more logical here to have mask=3DNULL mean that we want DMA_=
+SLAVE,
+> but otherwise pass the full mask as DMA_SLAVE|DMA_CYCLIC etc.
 
-Well - I was thinking about starting with this approach for simplicity.
+Yep, could be, while I would write the core part to set the DMA_SLAVE
+unconditionally anyways. If the API say it is dma_request_slavechan() it is
+expected to get channel which is capable of DMA_SLAVE.
 
-Making it automatic/data-driven by just defining limits that the core
-can then handle transparently is something that could come as a next
-step.
+>> dma_request_channel(mask); /* memcpy. etc, non slave mostly */
+>>
+>> Not sure how to name this as reusing existing (good, descriptive) functi=
+on
+>> names would mean changes all over the kernel to start off this.
+>>
+>> Not used and
+>> request_dma_channel(); /* as _irq/_mem_region/_resource, etc */
+>> request_dma();
+>> dma_channel_request();
+> =
 
-Also the bus master driver knows what its limitations are, so putting
-them inside prepare_message seems reasonable to me - that is unless
-you really have spi_device drivers that would handle those as separate
-facts and not refuse to work.
+> dma_request_slavechan();
+> dma_request_slave();
+> dma_request_mask();
 
+Let me think aloud here a bit...
+1. To request slave channel which will return you the channel your device is
+bind via DT/ACPI or the platform map table you propose later:
 
-So I wonder how much difference it makes:
-int driver_prepare_message (struct spi_master *master,=20
-                            struct spi_message *msg)
-{
-  int ret;
+dma_request_chan(struct device *dev, const char *name);
 
-  if (ret =3D spi_split_transfer_alignment(msg, 4))
-	ret ret;
-  if (ret =3D spi_split_transfer_maxsize(msg, 65534))
-	ret ret
-  return 0;
-}
+2. To request a channel (any channel) matching with the capabilities the
+driver needs, like memcpy, memset, etc:
 
-driver_probe() {
-  ...
-  master->prepare_message =3D driver_prepare_message;
-  ...
-}
+#define dma_request_chan_by_mask(mask) __dma_request_chan_by_mask(&(mask))
+__dma_request_chan_by_mask(const dma_cap_mask_t *mask);
 
-or:
-driver_probe() {
-  ...
-  master->transfer_alignment =3D 4;
-  master->max_transfer_size =3D 65534;=20
-  ...
-}
+I think the dma_request_chan() does not need mask to be passed, since via t=
+his
+we request a specific channel which has been defined/set by DT/ACPI or the
+lookup map. We could add a mask parameter which could be used to sanity che=
+ck
+the channel we got against the capabilities the driver needs from the chann=
+el.
+We currently do this in the drivers where the author wanted to make sure th=
+at
+the channel is capable of what it should be capable.
 
-both work, but parametrizing may become a pain when more
-limitations start to get created.
+So two API to request channel:
+struct dma_chan *dma_request_chan(struct device *dev, const char *name);
+struct dma_chan *dma_request_chan_by_mask(const dma_cap_mask_t *mask);
 
-In my example when looking at the situation where we only care for
-alignment when the transfer is valid for DMA (PIO does not care).
+Both will return with the valid channel pointer or in case of failure with
+ERR_PTR().
 
-so you would need to add something like:
-  master->transfer_alignment_min_size =3D 96;
+We need to go through the code in regards to return codes also to have sane
+mapping.
 
-to handle such =E2=80=9Cextra=E2=80=9D requirements for the spi_master.
-(Sometimes ordering of =E2=80=9Crules=E2=80=9D may be important as well=
-)
+> =
 
-So the function inside the core we could then look like this:
+>> All in all, not sure which way would be better...
+> =
 
-int spi_core_prepare_message (struct spi_master *master,=20
-                              struct spi_message *msg)
-{
-  int ret;
+> I think I would prefer the simplest API to have only the dev+name
+> arguments, as we tend to move that way for all platforms anyway, and it
+> seems silly to have all drivers pass three NULL arguments all the time.
+> At the moment, there are 139 references to dma_request_slave_channel_*
+> in the kernel, and only 46 of them are dma_request_slave_channel_compat.
+> Out of those 46, a couple can already be converted back to use
+> dma_request_slave_channel() because the platform now only supports
+> devicetree based boots and will not go back to platform data.
+> =
 
-  if (master->transfer_alignment) {
-    ret =3D spi_split_transfer_alignment(msg,
-				       master->transfer_alignment,
-				       master->transfer_alignment_min_size);
-    if (ret)
-      ret ret;
-  }
+> How about something like
+> =
 
-  if (master->transfer_alignment) {
-    ret =3D spi_split_transfer_maxsize(msg,
-				     master->max_transfer_size);
-    if (ret)
-      ret ret;
-  }
-  return 0
-}
+> extern struct dma_chan *
+> __dma_request_chan(struct device *dev, const char *name,
+> 		    const dma_cap_mask_t *mask, dma_filter_fn fn, void *fn_param);
+> =
 
-Something like the above I envision as a second step,
-but first start to make it work...
+> static inline struct dma_chan *
+> dma_request_slavechan(struct device *dev, const char *name)
+> {
+> 	return __dma_request_chan(dev, name, NULL, NULL, NULL);
+> }
+> =
 
->> I guess this is a more transparent approach that does not require th=
-e
->> individual device drivers to query the spi_master about limitations
->> and replicate code in several drivers - also there is no maintenance=
- cost on
->> individual device drivers to track when there is a new limitation in=
-troduced.
->=20
-> You've got this back to front - drivers are responsible for initialis=
-ing
-> the master when they instantiate it.  There's nothing stopping them
-> using the data if they have variants to handle but they shouldn't be
-> speculatively looking at it on the off chance there's some limit.
+> static inline struct dma_chan *
+> dma_request_chan(const dma_cap_mask_t *mask)
+> {
+> 	return __dma_request_chan(NULL, NULL, mask, NULL, NULL);
+> }
+> =
 
-I wonder if such a variant-construct does not create more headaches in
-the long run as each spi_driver wanting to do something =E2=80=9Csometh=
-ing=E2=80=9D
-special would then need to get updated for any additional constraint=E2=
-=80=A6
+> That way the vast majority of drivers can use one of the two nice interfa=
+ces
+> and the rest can be converted to use __dma_request_chan().
+> =
 
-It seems as if we would need then to add 2 kinds of constraints:
-* ones that may be of interest to spi_device to avoid unfavourable=20
-  situations created by the core implementation (max_transfer_sizes)
-* ones that are handled by spi-core
-  (like the alignment constraints)
+> On a related topic, we had in the past considered providing a way for
+> platform code to register a lookup table of some sort, to associate
+> a device/name pair with a configuration. That would let us use the
+> simplified dma_request_slavechan(dev, name) pair everywhere. We could
+> use the same method that we have for clk_register_clkdevs() or
+> pinctrl_register_map().
+> =
 
+> Something like either
+> =
 
-Martin
+> static struct dma_chan_map myplatform_dma_map[] =3D {
+> 	{ .devname =3D "omap-aes0", .slave =3D "tx", .filter =3D omap_dma_filter=
+_fn, .arg =3D (void *)65, },
+> 	{ .devname =3D "omap-aes0", .slave =3D "rx", .filter =3D omap_dma_filter=
+_fn, .arg =3D (void *)66, },
+> };
+> =
 
+> or
+> =
 
+> static struct dma_chan_map myplatform_dma_map[] =3D {
+> 	{ .devname =3D "omap-aes0", .slave =3D "tx", .master =3D "omap-dma-engin=
+e0", .req =3D 65, },
+> 	{ .devname =3D "omap-aes0", .slave =3D "rx", .master =3D "omap-dma-engin=
+e0", .req =3D 66, },
 
+sa11x0-dma expects the fn_param as string :o
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> };
+
+Basically we are deprecating the use of IORESOURCE_DMA?
+
+For legacy the filter function is pretty much needed to handle the differen=
+ces
+between the platforms as not all of them does the filtering in a same way. =
+So
+the first type of map would be feasible IMHO.
+
+> we could even allow a combination of the two, so the simple case just spe=
+cifies
+> master and req number, which requires changes to the dmaengine driver, bu=
+t we could
+> also do a mass-conversion to the .filter/.arg variant.
+
+This will get rid of the need for the fn and fn_param parameters when
+requesting dma channel, but it will not get rid of the exported function fr=
+om
+the dma engine drivers since in arch code we need to have visibility to the
+filter_fn.
+
+-- =
+
+P=E9ter

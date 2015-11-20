@@ -1,83 +1,64 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pxa2xx: Remove redundant call to lpss_ssp_setup() in probe" to the spi tree
-Date: Fri, 20 Nov 2015 18:20:47 +0000
-Message-ID: <E1ZzqIh-00041w-4X@debutante>
-References: <1448020521-94914-1-git-send-email-mika.westerberg@linux.intel.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Aaron Lu <aaron.lu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: RfC: Handle SPI controller limitations like maximum message
+ length
+Date: Fri, 20 Nov 2015 19:59:37 +0100
+Message-ID: <564F6D99.8090203@gmail.com>
+References: <564CEB61.2000601@gmail.com> <20151120000226.GP64635@google.com>
+ <564EC4E0.90602@gmail.com>
+ <CAFSsGVsJBi6yPin7X9MCS8LD6nygjynfgDgFicjojkm0rOJSJw@mail.gmail.com>
+ <20151120123540.GC1929@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org
+To: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1448020521-94914-1-git-send-email-mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <20151120123540.GC1929-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+Am 20.11.2015 um 13:35 schrieb Mark Brown:
+> On Fri, Nov 20, 2015 at 11:06:47AM +0100, Heiner Kallweit wrote:
+>> On Fri, Nov 20, 2015 at 7:59 AM, Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> 
+>>> It would be sufficient if it's a valid case that spi_master returns 0
+>>> and an actual_length < requested_length as this is some kind of error
+>>> situation.
+> 
+>> I had one more look at the SPI core and e.g. spi_write_then_read
+>> calls spi_sync w/o checking actual_length afterwards.
+>> This can mean the discussed case is not valid, however it also could be
+>> simply a bug.
+> 
+> We can't assume that users of spi_write_then_read() will cope with a
+> restarted transfer - the usual use case is things like register I/O
+> where restarting a partial transfer wouldn't produce the desired result
+> so it's just a plain error for users of that interface.  Anything that
+> is able to cope needs to be using the core API directly.
+> 
+>> If the discussed case is valid a clear hint to all users of spi_sync and
+>> friends should be added that the caller can not rely on status code 0
+>> only but must check actual_length to verify that the complete message
+>> was transferred.
+> 
+> You'll get an error on truncation.  It may be possible to recover.
+> 
+OK, I interpret this as:
+Controller drivers shall return 0 only if the complete message was
+transferred successfully.
+If  a controller driver returns an error it has the option to set
+actual_length to what was transferred successfully.
 
-   spi: pxa2xx: Remove redundant call to lpss_ssp_setup() in probe
+This means we can't use patch 4 from Michal because it bails out as soon
+as the underlying SPI transfer returns an error.
 
-has been applied to the spi tree at
+Instead something like the spi-nor patch I sent on Oct 6th would be needed:
+[PATCH] mtd: spi-nor: handle controller driver limitations in spi_nor_read
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From d599af65fda384b5e91780485f243c9f2d3e757d Mon Sep 17 00:00:00 2001
-From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Fri, 20 Nov 2015 13:55:21 +0200
-Subject: [PATCH] spi: pxa2xx: Remove redundant call to lpss_ssp_setup() in
- probe
-
-Commit 8b136baa5892 ("spi: pxa2xx: Detect number of enabled Intel LPSS SPI
-chip select signals") added a block where lpss_ssp_setup() gets called
-again for Intel LPSS SPI host controllers before checking number of chip
-selects from the capabilities register.
-
-There is no point in calling the function twice in probe so remove the
-first call.
-
-Reported-by: Aaron Lu <aaron.lu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Acked-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-pxa2xx.c | 3 ---
- 1 file changed, 3 deletions(-)
-
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index b25dc71b0ea9..ab9914ad8365 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1567,9 +1567,6 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
- 	if (!is_quark_x1000_ssp(drv_data))
- 		pxa2xx_spi_write(drv_data, SSPSP, 0);
- 
--	if (is_lpss_ssp(drv_data))
--		lpss_ssp_setup(drv_data);
--
- 	if (is_lpss_ssp(drv_data)) {
- 		lpss_ssp_setup(drv_data);
- 		config = lpss_get_config(drv_data);
--- 
-2.6.2
+It loops over nor->read and ignores errors as long as at least something
+was read.
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

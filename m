@@ -1,43 +1,89 @@
-From: Leilk Liu <leilk.liu@mediatek.com>
-Subject: [PATCH 3/4] spi: mediatek: remove needless pair of writel()/readl()
-Date: Fri, 20 Nov 2015 10:21:18 +0800
-Message-ID: <1447986080-31410-3-git-send-email-leilk.liu@mediatek.com>
-References: <1447986080-31410-1-git-send-email-leilk.liu@mediatek.com>
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: RfC: Handle SPI controller limitations like maximum message
+ length
+Date: Fri, 20 Nov 2015 07:59:44 +0100
+Message-ID: <564EC4E0.90602@gmail.com>
+References: <564CEB61.2000601@gmail.com> <20151120000226.GP64635@google.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: Mark Rutland <mark.rutland@arm.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>,
-	<linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
-	Leilk Liu <leilk.liu@mediatek.com>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1447986080-31410-1-git-send-email-leilk.liu@mediatek.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org
+To: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20151120000226.GP64635-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-It's not need to re-read and re-write SPI_CMD_REG, so remove it.
+Am 20.11.2015 um 01:02 schrieb Brian Norris:
+> On Wed, Nov 18, 2015 at 10:19:29PM +0100, Heiner Kallweit wrote:
+>> There have been few discussions in the past about how to handle SPI controller
+>> limitations like max message length. However they don't seem to have resulted
+>> in accepted patches yet.
+>> I also stumbled across this topic because I own a device using Freescale's
+>> ESPI which has a 64K message size limitation.
+>>
+>> At least one agreed fact is that silently assembling chunks in protocol
+>> drivers is not the preferred approach.
+> 
+> Hmm, are you referring to this sort of approach [1], where the
+> spi_message::acutal_length informs the spi_nor layer that the transfer
+> was truncated?
+> 
+> [1] [PATCH v4 7/7] mtd: spi-nor: add read loop
+>     http://lists.infradead.org/pipermail/linux-mtd/2015-August/061062.html
+> 
+>> Maybe a better approach would be to introduce a new member of spi_master
+>> dealing with controller limitations.
+>> My issue is just the message size limitation but most likely there are more
+>> and different limitations in other controllers.
+>>
+>> I'd introduce a struct spi_controller_restrictions and add a member to spi_master
+>> pointing to such a struct. Then a controller driver could do something like this:
+>>
+>> static const struct spi_controller_restrictions fsl_espi_restrictions = {
+>> 	.max_msg_size	= 0xffff,
+>> };
+>>
+>> master->restrictions = &fsl_espi_restrictions;
+> 
+> OK, so I think Mark suggested we not move to a 'restrictions' struct,
+> but otherwise it doesn't sound like he's opposed to this.
+> 
+That's how I read his comments too.
 
-Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
----
- drivers/spi/spi-mt65xx.c |    3 ---
- 1 file changed, 3 deletions(-)
+>> I also add an example how a protocol driver could use this extension.
+>> Appreciate any comment.
+> 
+> One question I have: is it necessary to push the handling out into the
+> protocol driver? I feel like I've seen a partial answer to this: the
+> 'actual_legnth' return field suggests that the protocol driver already
+> has to deal with shorter-than-desired transfers.
+> 
+> Then I have another one: is the 'actual_length' field really
+> insufficient? For instance, is it non-kosher for a spi_master to just
+> cutoff the message at (for instance) 64K, and expect the protocol
+> driver to handle that (e.g., with Michal's patch from [1])? And if that
+> is kosher, then is there a good reason for the protocol driver to know
+> the exact maximum for its spi_master?
+> 
+It would be sufficient if it's a valid case that spi_master returns 0
+and an actual_length < requested_length as this is some kind of error
+situation.
+I could also fully understand if spi_master doesn't return 0 but
+-EMSGSIZE in such a case.
+And the suggested patch would bail out of the chunk-assembling loop
+once it get's an error from the SPI transfer
+(after applying patch 2 of the series which introduces checking
+the return code of the spi_sync call in m25p80_read).
 
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 7840067..6c1a96e 100644
---- a/drivers/spi/spi-mt65xx.c
-+++ b/drivers/spi/spi-mt65xx.c
-@@ -154,9 +154,6 @@ static int mtk_spi_prepare_message(struct spi_master *master,
- 		reg_val |= SPI_CMD_CPOL;
- 	else
- 		reg_val &= ~SPI_CMD_CPOL;
--	writel(reg_val, mdata->base + SPI_CMD_REG);
--
--	reg_val = readl(mdata->base + SPI_CMD_REG);
- 
- 	/* set the mlsbx and mlsbtx */
- 	if (chip_config->tx_mlsb)
--- 
-1.7.9.5
+> [snip example]
+> 
+> Brian
+> 
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

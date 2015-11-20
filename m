@@ -1,53 +1,103 @@
-From: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi: dts: sun4i: Add support for inter-word
- wait cycles using the SPI Wait Clock Register
-Date: Fri, 20 Nov 2015 09:45:48 +0100
-Message-ID: <CAGNoLaNhD73N5_1_NbkvRFnwNqO5ehQBTyeCEgzFVgWCrJZmWQ@mail.gmail.com>
-References: <1447948422-4915-1-git-send-email-mweseloh42@gmail.com>
-	<1447948422-4915-2-git-send-email-mweseloh42@gmail.com>
-	<CAGRGNgWQLE5h03+4shLmqD6iW_p=L-i3ewdLb8ndWpxGHWh4rQ@mail.gmail.com>
-Reply-To: mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: RfC: Handle SPI controller limitations like maximum message length
+Date: Fri, 20 Nov 2015 11:06:47 +0100
+Message-ID: <CAFSsGVsJBi6yPin7X9MCS8LD6nygjynfgDgFicjojkm0rOJSJw@mail.gmail.com>
+References: <564CEB61.2000601@gmail.com>
+	<20151120000226.GP64635@google.com>
+	<564EC4E0.90602@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Cc: linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>, Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"Mailing List, Arm" <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Julian Calaby <julian.calaby-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-sunxi+bncBDFO74UEV4IRBPF3XOZAKGQE35XEEUA-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-In-Reply-To: <CAGRGNgWQLE5h03+4shLmqD6iW_p=L-i3ewdLb8ndWpxGHWh4rQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <http://groups.google.com/group/linux-sunxi
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
- <http://groups.google.com/group/linux-sunxi/subscribe>
-List-Id: linux-spi.vger.kernel.org
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org
+To: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <564EC4E0.90602-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Julian,
-
-2015-11-19 23:59 GMT+01:00 Julian Calaby <julian.calaby-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>:
-> Should you possibly hide the 3 clock periods from the user?
+On Fri, Nov 20, 2015 at 7:59 AM, Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> Am 20.11.2015 um 01:02 schrieb Brian Norris:
+>> On Wed, Nov 18, 2015 at 10:19:29PM +0100, Heiner Kallweit wrote:
+>>> There have been few discussions in the past about how to handle SPI controller
+>>> limitations like max message length. However they don't seem to have resulted
+>>> in accepted patches yet.
+>>> I also stumbled across this topic because I own a device using Freescale's
+>>> ESPI which has a 64K message size limitation.
+>>>
+>>> At least one agreed fact is that silently assembling chunks in protocol
+>>> drivers is not the preferred approach.
+>>
+>> Hmm, are you referring to this sort of approach [1], where the
+>> spi_message::acutal_length informs the spi_nor layer that the transfer
+>> was truncated?
+>>
+>> [1] [PATCH v4 7/7] mtd: spi-nor: add read loop
+>>     http://lists.infradead.org/pipermail/linux-mtd/2015-August/061062.html
+>>
+>>> Maybe a better approach would be to introduce a new member of spi_master
+>>> dealing with controller limitations.
+>>> My issue is just the message size limitation but most likely there are more
+>>> and different limitations in other controllers.
+>>>
+>>> I'd introduce a struct spi_controller_restrictions and add a member to spi_master
+>>> pointing to such a struct. Then a controller driver could do something like this:
+>>>
+>>> static const struct spi_controller_restrictions fsl_espi_restrictions = {
+>>>      .max_msg_size   = 0xffff,
+>>> };
+>>>
+>>> master->restrictions = &fsl_espi_restrictions;
+>>
+>> OK, so I think Mark suggested we not move to a 'restrictions' struct,
+>> but otherwise it doesn't sound like he's opposed to this.
+>>
+> That's how I read his comments too.
 >
-> I.e. they set whatever they want for the wdelay, we set it to the
-> closest number we can that's greater or equal to what they ask for.
+>>> I also add an example how a protocol driver could use this extension.
+>>> Appreciate any comment.
+>>
+>> One question I have: is it necessary to push the handling out into the
+>> protocol driver? I feel like I've seen a partial answer to this: the
+>> 'actual_legnth' return field suggests that the protocol driver already
+>> has to deal with shorter-than-desired transfers.
+>>
+>> Then I have another one: is the 'actual_length' field really
+>> insufficient? For instance, is it non-kosher for a spi_master to just
+>> cutoff the message at (for instance) 64K, and expect the protocol
+>> driver to handle that (e.g., with Michal's patch from [1])? And if that
+>> is kosher, then is there a good reason for the protocol driver to know
+>> the exact maximum for its spi_master?
+>>
+> It would be sufficient if it's a valid case that spi_master returns 0
+> and an actual_length < requested_length as this is some kind of error
+> situation.
 
-That's a good idea and much better than having to remember to subtract
-3 cycles from the desired wait time!
+I had one more look at the SPI core and e.g. spi_write_then_read
+calls spi_sync w/o checking actual_length afterwards.
+This can mean the discussed case is not valid, however it also could be
+simply a bug.
 
-But it would mean that this magic number becomes part of the driver
-code. I have found no official documentation that mentions those
-additional cycles. While I have checked many different transmission
-speeds using both CDR1 and CDR2 divider configurations, there is still
-the possibility that the behaviour changes with weird SPI module
-configurations... And I've only tested it on A20 hardware. So it would
-be great if somebody else with access to A10 hardware and an
-oscilloscope could check if we have a consistent 3 cycle overhead.
+If the discussed case is valid a clear hint to all users of spi_sync and
+friends should be added that the caller can not rely on status code 0
+only but must check actual_length to verify that the complete message
+was transferred.
 
-Cheers,
+It would be good to hear Mark's opinion on this.
 
-   Marcus
+> I could also fully understand if spi_master doesn't return 0 but
+> -EMSGSIZE in such a case.
+> And the suggested patch would bail out of the chunk-assembling loop
+> once it get's an error from the SPI transfer
+> (after applying patch 2 of the series which introduces checking
+> the return code of the spi_sync call in m25p80_read).
+>
+>> [snip example]
+>>
+>> Brian
+>>
+>
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

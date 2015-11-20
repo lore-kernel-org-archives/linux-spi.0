@@ -1,63 +1,57 @@
-From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 02/13] dmaengine: Introduce dma_request_slave_channel_compat_reason()
-Date: Fri, 20 Nov 2015 16:08:47 +0200
-Message-ID: <CAHp75VcEb1OP=mTQEAuQ6G_RswPCfvG4UzcFG+NBfJxABZVBcA@mail.gmail.com>
-References: <1432646768-12532-1-git-send-email-peter.ujfalusi@ti.com>
-	<4533695.7ZVFN1S94o@wuerfel>
-	<564EF502.6040708@ti.com>
-	<6118451.vaLZWOZEF5@wuerfel>
-	<CAHp75VdoHqPMNGFfz4mPhX+Lw+vxgiyqFS8j5+kQ9Z9CHt=OTA@mail.gmail.com>
-	<564F1253.4000800@ti.com>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/4] spi: mediatek: update document devicetree bindings
+ to fix syntax error
+Date: Fri, 20 Nov 2015 08:17:25 -0600
+Message-ID: <20151120141725.GA31912@rob-hp-laptop>
+References: <1447986080-31410-1-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-	Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Dan Williams <dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	dmaengine <dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-crypto <linux-crypto-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux Media Mailing List <linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	ALSA Development Mailing List <alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org>
-To: Peter Ujfalusi <peter.ujfalusi-l0cyMroinI0@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <564F1253.4000800-l0cyMroinI0@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1447986080-31410-1-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, Nov 20, 2015 at 2:30 PM, Peter Ujfalusi <peter.ujfalusi-l0cyMroinI0@public.gmane.org> wrote:
-> On 11/20/2015 02:24 PM, Andy Shevchenko wrote:
->> On Fri, Nov 20, 2015 at 12:58 PM, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org> wrote:
->>> On Friday 20 November 2015 12:25:06 Peter Ujfalusi wrote:
->>>> On 11/19/2015 01:25 PM, Arnd Bergmann wrote:
->>
->>> Another idea would be to remove the filter function from struct dma_chan_map
->>> and pass the map through platform data
->>
->> Why not unified device properties?
->
-> Is this some Windows/ACPI feature?
+On Fri, Nov 20, 2015 at 10:21:16AM +0800, Leilk Liu wrote:
+> This patch updates document devicetree bindings
+> to fix syntax error.
+> 
+> Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 
-Nope.
+Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 
-Check drivers/base/property.c
-
-> Quick search gives mostly MSDN and
-> Windows10 related links.
->
-> We only need dma_chan_map for platforms which has not been converted to DT and
-> still using legacy boot. Or platforms which can still boot in legacy mode. In
-> DT/ACPI mode we do not need this map at all.
-
-
--- 
-With Best Regards,
-Andy Shevchenko
+> ---
+>  .../devicetree/bindings/spi/spi-mt65xx.txt         |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
+> index ce363c923f..fba8334 100644
+> --- a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
+> +++ b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
+> @@ -32,7 +32,7 @@ Optional properties:
+>  -cs-gpios: see spi-bus.txt, only required for MT8173.
+>  
+>  - mediatek,pad-select: specify which pins group(ck/mi/mo/cs) spi
+> -  controller used. This is a array, the element value should be 0~3,
+> +  controller used. This is an array, the element value should be 0~3,
+>    only required for MT8173.
+>      0: specify GPIO69,70,71,72 for spi pins.
+>      1: specify GPIO102,103,104,105 for spi pins.
+> -- 
+> 1.7.9.5
+> 
+> --
+> To unsubscribe from this list: send the line "unsubscribe devicetree" in
+> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

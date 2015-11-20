@@ -1,59 +1,70 @@
-From: Peter Ujfalusi <peter.ujfalusi-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH 02/13] dmaengine: Introduce
- dma_request_slave_channel_compat_reason()
-Date: Fri, 20 Nov 2015 14:30:11 +0200
-Message-ID: <564F1253.4000800@ti.com>
-References: <1432646768-12532-1-git-send-email-peter.ujfalusi@ti.com>
- <4533695.7ZVFN1S94o@wuerfel> <564EF502.6040708@ti.com>
- <6118451.vaLZWOZEF5@wuerfel>
- <CAHp75VdoHqPMNGFfz4mPhX+Lw+vxgiyqFS8j5+kQ9Z9CHt=OTA@mail.gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: RfC: Handle SPI controller limitations like maximum message
+ length
+Date: Fri, 20 Nov 2015 12:31:23 +0000
+Message-ID: <20151120123123.GB1929@sirena.org.uk>
+References: <564CEB61.2000601@gmail.com>
+ <20151120000226.GP64635@google.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-	Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Dan Williams <dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	dmaengine <dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-crypto <linux-crypto-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux Media Mailing List <linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	ALSA Development Mailing List <alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org>
-To: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="uZ3hkaAS1mZxFaxD"
+Cc: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org
+To: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAHp75VdoHqPMNGFfz4mPhX+Lw+vxgiyqFS8j5+kQ9Z9CHt=OTA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20151120000226.GP64635-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 11/20/2015 02:24 PM, Andy Shevchenko wrote:
-> On Fri, Nov 20, 2015 at 12:58 PM, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org> wrote=
-:
->> On Friday 20 November 2015 12:25:06 Peter Ujfalusi wrote:
->>> On 11/19/2015 01:25 PM, Arnd Bergmann wrote:
->=20
->> Another idea would be to remove the filter function from struct dma_=
-chan_map
->> and pass the map through platform data
->=20
-> Why not unified device properties?
 
-Is this some Windows/ACPI feature? Quick search gives mostly MSDN and
-Windows10 related links.
+--uZ3hkaAS1mZxFaxD
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-We only need dma_chan_map for platforms which has not been converted to=
- DT and
-still using legacy boot. Or platforms which can still boot in legacy mo=
-de. In
-DT/ACPI mode we do not need this map at all.
+On Thu, Nov 19, 2015 at 04:02:26PM -0800, Brian Norris wrote:
+> On Wed, Nov 18, 2015 at 10:19:29PM +0100, Heiner Kallweit wrote:
 
---=20
-P=C3=A9ter
+> > I also add an example how a protocol driver could use this extension.
+> > Appreciate any comment.
+
+> One question I have: is it necessary to push the handling out into the
+> protocol driver? I feel like I've seen a partial answer to this: the
+> 'actual_legnth' return field suggests that the protocol driver already
+> has to deal with shorter-than-desired transfers.
+
+It should be possible to use actual_length if the hardware doesn't mind
+the transfer being curtailed unexpectedly.
+
+> Then I have another one: is the 'actual_length' field really
+> insufficient? For instance, is it non-kosher for a spi_master to just
+> cutoff the message at (for instance) 64K, and expect the protocol
+> driver to handle that (e.g., with Michal's patch from [1])? And if that
+> is kosher, then is there a good reason for the protocol driver to know
+> the exact maximum for its spi_master?
+
+It really depends if the hardware is able to cope with the error
+handling (and ideally the SPI core will be able to transparently split
+the transfer up into chunks the controller can cope with anyway).
+
+--uZ3hkaAS1mZxFaxD
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJWTxKaAAoJECTWi3JdVIfQwCYH+wZOY+oLa+AY/juLNWZA587T
+Ovr6Qp8O7bpN4gwW58D03SeKXQBsc2Yht8Tqvuzd08rtc5sncMvlVsxNo0O7gK3E
+mj/nTyR6ShA9WHzXp68533GG0ys4EmYfvj4agqzEHolOH8JJr+0i9jp11pMRDhvf
+0t5koZCFv0tEYCC2P/q3AIcyXdi1h8791wtFK/EAZqpBzh3KHNmfqHWkQP7sIixR
+VAmd+r2kA0rmaiemMCwmDr6lsKA6E2do1GbtypB+3U2UzBZJDjhj6bg4bmXrP3VB
+2Eq330kXlw7WaeBpD2GtVD8Z+kQVZqt1qjB+gKQ2kRNWHodxT3MyVkKA81k/tqg=
+=WFGH
+-----END PGP SIGNATURE-----
+
+--uZ3hkaAS1mZxFaxD--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

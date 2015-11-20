@@ -1,67 +1,56 @@
-From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [PATCH] spi: pxa2xx: Remove redundant call to lpss_ssp_setup() in
- probe
-Date: Fri, 20 Nov 2015 15:52:31 +0200
-Message-ID: <564F259F.6050108@linux.intel.com>
-References: <1448020521-94914-1-git-send-email-mika.westerberg@linux.intel.com>
- <564F0EB1.8020306@linux.intel.com>
+From: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi: dts: sun4i: Add support for inter-word
+ wait cycles using the SPI Wait Clock Register
+Date: Fri, 20 Nov 2015 14:56:34 +0100
+Message-ID: <CAGNoLaOOz2ACtS5iRUxjOknisMHm2Ow3OVsLkqpWuNU4J-9v-A@mail.gmail.com>
+References: <1447948422-4915-1-git-send-email-mweseloh42@gmail.com>
+	<1447948422-4915-2-git-send-email-mweseloh42@gmail.com>
+	<CAGRGNgWQLE5h03+4shLmqD6iW_p=L-i3ewdLb8ndWpxGHWh4rQ@mail.gmail.com>
+	<CAGNoLaNhD73N5_1_NbkvRFnwNqO5ehQBTyeCEgzFVgWCrJZmWQ@mail.gmail.com>
+	<CAGRGNgV0kOkye-Zu4WGQKgGim7N2HB9rAFJ3HNQS89Rr6_WexQ@mail.gmail.com>
+Reply-To: mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Aaron Lu <aaron.lu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <564F0EB1.8020306-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>, Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"Mailing List, Arm" <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Julian Calaby <julian.calaby-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-sunxi+bncBDFO74UEV4IRBE6NXSZAKGQEQZ3BOQI-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+In-Reply-To: <CAGRGNgV0kOkye-Zu4WGQKgGim7N2HB9rAFJ3HNQS89Rr6_WexQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <http://groups.google.com/group/linux-sunxi
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+ <http://groups.google.com/group/linux-sunxi/subscribe>
+List-Id: linux-spi.vger.kernel.org
 
-On 11/20/2015 02:14 PM, Jarkko Nikula wrote:
-> On 11/20/2015 01:55 PM, Mika Westerberg wrote:
->> Commit 8b136baa5892 ("spi: pxa2xx: Detect number of enabled Intel LPSS
->> SPI
->> chip select signals") added a block where lpss_ssp_setup() gets called
->> again for Intel LPSS SPI host controllers before checking number of chip
->> selects from the capabilities register.
->>
->> There is no point in calling the function twice in probe so remove the
->> first call.
->>
->> Reported-by: Aaron Lu <aaron.lu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
->> Signed-off-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
->> ---
->>   drivers/spi/spi-pxa2xx.c | 3 ---
->>   1 file changed, 3 deletions(-)
->>
->> diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
->> index b25dc71b0ea9..ab9914ad8365 100644
->> --- a/drivers/spi/spi-pxa2xx.c
->> +++ b/drivers/spi/spi-pxa2xx.c
->> @@ -1567,9 +1567,6 @@ static int pxa2xx_spi_probe(struct
->> platform_device *pdev)
->>       if (!is_quark_x1000_ssp(drv_data))
->>           pxa2xx_spi_write(drv_data, SSPSP, 0);
->>
->> -    if (is_lpss_ssp(drv_data))
->> -        lpss_ssp_setup(drv_data);
->> -
->>       if (is_lpss_ssp(drv_data)) {
->>           lpss_ssp_setup(drv_data);
->>           config = lpss_get_config(drv_data);
->
-> Right, obvious, I just ponder why I was blind to see this myself when I
-> split the original patch.
->
-> Acked-by: Jarkko Nikula <jarkko.nikula-FVTvWyuFUl3QT0dZR+AlfA@public.gmane.org>
+Hi Julien,
 
-Another blind copy-paste. Right ack below. Sorry the noise.
+2015-11-20 11:12 GMT+01:00 Julian Calaby <julian.calaby-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>:
+> Having magic numbers is kind-of a drivers' job.
 
-Acked-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Yes, of course. What I meant was that I didn't feel comfortable to
+include this magic number in driver code because I'm not 100% sure if
+it is correct across all SPI configurations and SoCs that this driver
+supports (A10 / A20).
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> (and the wdelay should
+> arguably be a core-spi thing, not a sunxi thing, but that's a separate
+> discussion)
+
+I've been thinking about that, but it seemed to big a change to
+attempt with my limited kernel hacking experience.
+
+Mark, do you think we should rather talk about adding support for
+options like this delay to spi-core? Or would it be OK to add it to
+the sun4i driver and possibly refactor later?
+
+Cheers,
+
+  Marcus

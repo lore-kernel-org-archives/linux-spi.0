@@ -1,48 +1,43 @@
-From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Subject: [PATCH 2/4] spi: mediatek: remove unrequired description
-Date: Fri, 20 Nov 2015 10:21:17 +0800
-Message-ID: <1447986080-31410-2-git-send-email-leilk.liu@mediatek.com>
+From: Leilk Liu <leilk.liu@mediatek.com>
+Subject: [PATCH 3/4] spi: mediatek: remove needless pair of writel()/readl()
+Date: Fri, 20 Nov 2015 10:21:18 +0800
+Message-ID: <1447986080-31410-3-git-send-email-leilk.liu@mediatek.com>
 References: <1447986080-31410-1-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
 Content-Type: text/plain
-Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1447986080-31410-1-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Mark Rutland <mark.rutland@arm.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>,
+	<linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
+	Leilk Liu <leilk.liu@mediatek.com>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1447986080-31410-1-git-send-email-leilk.liu@mediatek.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-cs-gpios isn't required with patch "spi: mediatek: single
-device does not require cs_gpios", so modify the description.
+It's not need to re-read and re-write SPI_CMD_REG, so remove it.
 
-Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
 ---
- .../devicetree/bindings/spi/spi-mt65xx.txt         |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-mt65xx.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
-index fba8334..60a183c 100644
---- a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
-@@ -29,7 +29,7 @@ Required properties:
-   muxes clock, and "spi-clk" for the clock gate.
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index 7840067..6c1a96e 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -154,9 +154,6 @@ static int mtk_spi_prepare_message(struct spi_master *master,
+ 		reg_val |= SPI_CMD_CPOL;
+ 	else
+ 		reg_val &= ~SPI_CMD_CPOL;
+-	writel(reg_val, mdata->base + SPI_CMD_REG);
+-
+-	reg_val = readl(mdata->base + SPI_CMD_REG);
  
- Optional properties:
---cs-gpios: see spi-bus.txt, only required for MT8173.
-+-cs-gpios: see spi-bus.txt.
- 
- - mediatek,pad-select: specify which pins group(ck/mi/mo/cs) spi
-   controller used. This is an array, the element value should be 0~3,
+ 	/* set the mlsbx and mlsbtx */
+ 	if (chip_config->tx_mlsb)
 -- 
 1.7.9.5
-
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

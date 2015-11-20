@@ -1,72 +1,61 @@
 From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: RfC: Handle SPI controller limitations like maximum message
  length
-Date: Thu, 19 Nov 2015 16:02:26 -0800
-Message-ID: <20151120000226.GP64635@google.com>
+Date: Thu, 19 Nov 2015 16:07:46 -0800
+Message-ID: <20151120000746.GQ64635@google.com>
 References: <564CEB61.2000601@gmail.com>
+ <20151118215755.GL31303@sirena.org.uk>
+ <564D0098.4030107@gmail.com>
+ <20151119114057.GN31303@sirena.org.uk>
+ <F224F5F3-FAD5-47FE-9419-39E53BCBB8C6@sperl.org>
+ <20151119171538.GO31303@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org
-To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>,
+	Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <564CEB61.2000601-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <20151119171538.GO31303-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Nov 18, 2015 at 10:19:29PM +0100, Heiner Kallweit wrote:
-> There have been few discussions in the past about how to handle SPI controller
-> limitations like max message length. However they don't seem to have resulted
-> in accepted patches yet.
-> I also stumbled across this topic because I own a device using Freescale's
-> ESPI which has a 64K message size limitation.
-> 
-> At least one agreed fact is that silently assembling chunks in protocol
-> drivers is not the preferred approach.
+On Thu, Nov 19, 2015 at 05:15:38PM +0000, Mark Brown wrote:
+> On Thu, Nov 19, 2015 at 04:00:45PM +0100, Martin Sperl wrote:
+> > On the bcm2835 there are also some =E2=80=9Climitations=E2=80=9D (w=
+hen transfers are not aligned
+> > to word, transfers>65535 can=E2=80=99t DMA) which we work around ri=
+ght now inefficiently.
+>=20
+> Alignment is a general issue which all clients should be trying to
+> ensure as a matter of course - never mind individual blocks of hardwa=
+re,
+> some common CPU architectures suffer noticable penalties from unalign=
+ed
+> accesses so it's just generally good practice to try to avoid them.
+>=20
+> You shouldn't be doing anything about transfer size limitations in yo=
+ur
+> driver, if you have this restriction you should be adding code to the
+> core and just flagging the limit in your driver.
 
-Hmm, are you referring to this sort of approach [1], where the
-spi_message::acutal_length informs the spi_nor layer that the transfer
-was truncated?
+So for transfer size limitations, are you speaking of the same thing as
+Heiner (who began this post mentioning *message* size limitations)? I
+read a difference between the two, where a transfer size limitation
+might mean that one could improve the SPI core to just split transfers
+up into multiple sub-transfers, and still complete the whole
+spi_message (and therefore the protocol driver has less to worry about)=
+=2E
+But if we're talking about spi_message limitations, then this would be
+more exposed to the protocol driver.
 
-[1] [PATCH v4 7/7] mtd: spi-nor: add read loop
-    http://lists.infradead.org/pipermail/linux-mtd/2015-August/061062.html
+Or maybe I'm just reading this all wrong and am confused. Please
+enlighten.
 
-> Maybe a better approach would be to introduce a new member of spi_master
-> dealing with controller limitations.
-> My issue is just the message size limitation but most likely there are more
-> and different limitations in other controllers.
-> 
-> I'd introduce a struct spi_controller_restrictions and add a member to spi_master
-> pointing to such a struct. Then a controller driver could do something like this:
-> 
-> static const struct spi_controller_restrictions fsl_espi_restrictions = {
-> 	.max_msg_size	= 0xffff,
-> };
-> 
-> master->restrictions = &fsl_espi_restrictions;
-
-OK, so I think Mark suggested we not move to a 'restrictions' struct,
-but otherwise it doesn't sound like he's opposed to this.
-
-> I also add an example how a protocol driver could use this extension.
-> Appreciate any comment.
-
-One question I have: is it necessary to push the handling out into the
-protocol driver? I feel like I've seen a partial answer to this: the
-'actual_legnth' return field suggests that the protocol driver already
-has to deal with shorter-than-desired transfers.
-
-Then I have another one: is the 'actual_length' field really
-insufficient? For instance, is it non-kosher for a spi_master to just
-cutoff the message at (for instance) 64K, and expect the protocol
-driver to handle that (e.g., with Michal's patch from [1])? And if that
-is kosher, then is there a good reason for the protocol driver to know
-the exact maximum for its spi_master?
-
-[snip example]
-
+Regards,
 Brian
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

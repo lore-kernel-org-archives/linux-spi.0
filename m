@@ -1,69 +1,81 @@
 From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: RfC: Handle SPI controller limitations like maximum message
  length
-Date: Fri, 20 Nov 2015 15:07:43 -0800
-Message-ID: <20151120230743.GZ64635@google.com>
+Date: Fri, 20 Nov 2015 15:22:11 -0800
+Message-ID: <20151120232211.GA64635@google.com>
 References: <564CEB61.2000601@gmail.com>
- <CAOMqctQo58yCfzU3u=u3N0zNfhQph2Pw2vnrxsVvAEXi5n2HRw@mail.gmail.com>
+ <20151120000226.GP64635@google.com>
+ <564EC4E0.90602@gmail.com>
+ <CAFSsGVsJBi6yPin7X9MCS8LD6nygjynfgDgFicjojkm0rOJSJw@mail.gmail.com>
+ <20151120123540.GC1929@sirena.org.uk>
+ <564F6D99.8090203@gmail.com>
+ <CAOMqctTt=78C4m2jjMb9mRBOkoZ5uZ4neVm0NS39iNO8otn=dA@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Cc: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
 To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CAOMqctQo58yCfzU3u=u3N0zNfhQph2Pw2vnrxsVvAEXi5n2HRw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <CAOMqctTt=78C4m2jjMb9mRBOkoZ5uZ4neVm0NS39iNO8otn=dA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Michal,
+On Fri, Nov 20, 2015 at 08:05:48PM +0100, Michal Suchanek wrote:
+> On 20 November 2015 at 19:59, Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> > Am 20.11.2015 um 13:35 schrieb Mark Brown:
+> >> On Fri, Nov 20, 2015 at 11:06:47AM +0100, Heiner Kallweit wrote:
+> >>> If the discussed case is valid a clear hint to all users of spi_sync and
+> >>> friends should be added that the caller can not rely on status code 0
+> >>> only but must check actual_length to verify that the complete message
+> >>> was transferred.
+> >>
+> >> You'll get an error on truncation.  It may be possible to recover.
+> >>
+> > OK, I interpret this as:
+> > Controller drivers shall return 0 only if the complete message was
+> > transferred successfully.
+> > If  a controller driver returns an error it has the option to set
+> > actual_length to what was transferred successfully.
+> >
+> > This means we can't use patch 4 from Michal because it bails out as soon
+> > as the underlying SPI transfer returns an error.
 
-On Fri, Nov 20, 2015 at 01:56:21PM +0100, Michal Suchanek wrote:
-> I was dealing
-> with a driver that can transfer up to 63 bytes because it has 64byte
-> fifo and the hardware locks up when it's full. The limitation is only
-> due to the driver cutting way too many corners. There is dmaengine
-> support available for the platform which has been merged recently so
-> the driver can use DMA for arbitrarily long transfers. Even without
-> DMA there is possibility to to drive CS manually and compose multiple
-> transfers into single logical message or whatever.
+Right (although you meant patch 7).
+
+> > Instead something like the spi-nor patch I sent on Oct 6th would be needed:
+> > [PATCH] mtd: spi-nor: handle controller driver limitations in spi_nor_read
+
+I don't think your patch is good either...
+
+> > It loops over nor->read and ignores errors as long as at least something
+> > was read.
+> >
 > 
-> Either way, the limit of 63 bytes is very low and would actually cause
-> problems with many device drivers so it was agreed that fixing the
-> master one way or another is desirable.
+> I don't think ignoring errors in general is good idea.
 
-Thanks for clarifying what your underlying SPI driver/controller
-limitations are. I've probably heard this before, but it's hard to keep
-track. This helps me review your MTD/SPI-NOR patches better.
+...for this reason, at least.
 
-All in all, I believe this is not acceptable for SPI NOR. Even if things
-"mostly work" by limiting messages to 64 (or 63) bytes, I don't think
-they are good in the long run, since the flash may respond differently
-to sub-256-byte writes than to 256+ byte writes. I mentioned some of
-this in reply to your other patches, but I think a SPI NOR driver would
-just have to reject you if you can't even transfer one flash page of
-data.
+> If it's desirable that a partial transfer is reported as error then a
+> particular error value should be defined for this case and drivers
+> that can continue the transfer in a driver-specific way (such as
+> spi-nor) can check for this error and handle it appropriately and pass
+> through any other error.
 
-> 64k limit on the other hand is something more usable from driver
-> writer standpoint and some banked mmap access to flash memories would
-> have similar granularity.
+Based on Mark's further comments (and my own intuition), I'd rather not
+try to interpret different error codes to mean "truncated but keep
+going" vs. "truncated for other reason, stop now", unless we really have
+to.
 
-Right.
+I think if we do what Heiner was proposing from the beginning -- expose
+a reasonable max SPI message length -- then I think we'll cover the bulk
+of what we want. SPI NOR drivers can then try "small enough" transfers,
+and if we see any errors, those are unexpected, and we abort.
 
-> I would also like to point out that the limit depends on the transfer
-> settings. For example, a SPI controller can have no limit on transfer
-> size but when accessing a flash memory through mmap interface the mmap
-> window limits the amount of data you can transfer at once. This
-> particular case may be fixable by moving the mmap window transparently
-> inside the driver.
-
-Hmm, I'm not sure I have much opinion on that one without having a
-non-theoretical case. It seems like it'd be best if the SPI master
-driver can work as best as it can to respect a single reasonable "max
-mesage size", even if that means choosing the lowest common denominator
-of all limitations.
+Sound OK?
 
 Brian
 --

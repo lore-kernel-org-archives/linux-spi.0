@@ -1,7 +1,8 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 0/3] spi: mtd: Handle HW message length restrictions
-Date: Sat, 21 Nov 2015 23:59:15 +0100
-Message-ID: <5650F743.9050500@gmail.com>
+Subject: [PATCH 3/3] spi: fsl-espi: make use of max_msg_size in spi_master to
+ handle HW restrictions
+Date: Sun, 22 Nov 2015 00:11:02 +0100
+Message-ID: <5650FA06.40607@gmail.com>
 References: <564CEB61.2000601@gmail.com>
  <20151118215755.GL31303@sirena.org.uk> <564D0098.4030107@gmail.com>
  <20151119114057.GN31303@sirena.org.uk>
@@ -26,19 +27,26 @@ In-Reply-To: <CAOMqctR=UDEPbgJDY3YvxpbVEEp4t6ajkyv=cVAZp2fLBNBanA-JsoAwUIsXosN+B
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Based on the ongoing discussion how to handle HW restrictions
-like max SPI message size this is a new proposal.
+Propagate the 64K message size limitation allowing client drivers
+to deal properly with this limitation.
 
-Heiner Kallweit (3):
-  spi: core: add max_msg_size to spi_master
-  mtd: m25p80: handle HW message size restrictions
-  spi: fsl-espi: make use of max_msg_size in spi_master to handle HW restrictions
+Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi-fsl-espi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
- drivers/mtd/devices/m25p80.c | 39 ++++++++++++++++++++++++++++++++++-----
- drivers/spi/spi-fsl-espi.c   |  1 +
- include/linux/spi/spi.h      |  4 ++++
- 3 files changed, 39 insertions(+), 5 deletions(-)
-
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index c27124a..773bbab 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -670,6 +670,7 @@ static struct spi_master * fsl_espi_probe(struct device *dev,
+ 	master->cleanup = fsl_espi_cleanup;
+ 	master->transfer_one_message = fsl_espi_do_one_msg;
+ 	master->auto_runtime_pm = true;
++	master->max_msg_size = SPCOM_TRANLEN_MAX;
+ 
+ 	mpc8xxx_spi = spi_master_get_devdata(master);
+ 
 -- 
 2.6.2
 

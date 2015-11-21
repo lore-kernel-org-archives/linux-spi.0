@@ -1,89 +1,99 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: RfC: Handle SPI controller limitations like maximum message
- length
-Date: Sat, 21 Nov 2015 23:53:09 +0100
-Message-ID: <5650F5D5.2040901@gmail.com>
-References: <564CEB61.2000601@gmail.com> <20151120000226.GP64635@google.com>
- <564EC4E0.90602@gmail.com>
- <CAFSsGVsJBi6yPin7X9MCS8LD6nygjynfgDgFicjojkm0rOJSJw@mail.gmail.com>
- <20151120123540.GC1929@sirena.org.uk> <564F6D99.8090203@gmail.com>
- <CAOMqctTt=78C4m2jjMb9mRBOkoZ5uZ4neVm0NS39iNO8otn=dA@mail.gmail.com>
- <20151120232211.GA64635@google.com>
+Subject: [PATCH 2/3] mtd: m25p80: handle HW message size restrictions
+Date: Sun, 22 Nov 2015 00:08:02 +0100
+Message-ID: <5650F952.2060409@gmail.com>
+References: <564CEB61.2000601@gmail.com>
+ <20151118215755.GL31303@sirena.org.uk> <564D0098.4030107@gmail.com>
+ <20151119114057.GN31303@sirena.org.uk>
+ <F224F5F3-FAD5-47FE-9419-39E53BCBB8C6@sperl.org>
+ <20151119171538.GO31303@sirena.org.uk>
+ <9CDADBED-FD18-4635-82A9-5AB14C9ABCAE@sperl.org>
+ <20151120120502.GT31303@sirena.org.uk>
+ <08871ECD-52DF-4CBF-AF3D-4C3A442C008A@sperl.org>
+ <20151121134946.GI26072@sirena.org.uk> <56507B3B.4080608@gmail.com>
+ <CAOMqctR=UDEPbgJDY3YvxpbVEEp4t6ajkyv=cVAZp2fLBNBanA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+Cc: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>,
 	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
-To: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20151120232211.GA64635-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>
+In-Reply-To: <CAOMqctR=UDEPbgJDY3YvxpbVEEp4t6ajkyv=cVAZp2fLBNBanA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Am 21.11.2015 um 00:22 schrieb Brian Norris:
-> On Fri, Nov 20, 2015 at 08:05:48PM +0100, Michal Suchanek wrote:
->> On 20 November 2015 at 19:59, Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
->>> Am 20.11.2015 um 13:35 schrieb Mark Brown:
->>>> On Fri, Nov 20, 2015 at 11:06:47AM +0100, Heiner Kallweit wrote:
->>>>> If the discussed case is valid a clear hint to all users of spi_sync and
->>>>> friends should be added that the caller can not rely on status code 0
->>>>> only but must check actual_length to verify that the complete message
->>>>> was transferred.
->>>>
->>>> You'll get an error on truncation.  It may be possible to recover.
->>>>
->>> OK, I interpret this as:
->>> Controller drivers shall return 0 only if the complete message was
->>> transferred successfully.
->>> If  a controller driver returns an error it has the option to set
->>> actual_length to what was transferred successfully.
->>>
->>> This means we can't use patch 4 from Michal because it bails out as soon
->>> as the underlying SPI transfer returns an error.
-> 
-> Right (although you meant patch 7).
-> 
->>> Instead something like the spi-nor patch I sent on Oct 6th would be needed:
->>> [PATCH] mtd: spi-nor: handle controller driver limitations in spi_nor_read
-> 
-> I don't think your patch is good either...
-> 
->>> It loops over nor->read and ignores errors as long as at least something
->>> was read.
->>>
->>
->> I don't think ignoring errors in general is good idea.
-> 
-> ...for this reason, at least.
-> 
->> If it's desirable that a partial transfer is reported as error then a
->> particular error value should be defined for this case and drivers
->> that can continue the transfer in a driver-specific way (such as
->> spi-nor) can check for this error and handle it appropriately and pass
->> through any other error.
-> 
-> Based on Mark's further comments (and my own intuition), I'd rather not
-> try to interpret different error codes to mean "truncated but keep
-> going" vs. "truncated for other reason, stop now", unless we really have
-> to.
-> 
-> I think if we do what Heiner was proposing from the beginning -- expose
-> a reasonable max SPI message length -- then I think we'll cover the bulk
-> of what we want. SPI NOR drivers can then try "small enough" transfers,
-> and if we see any errors, those are unexpected, and we abort.
+Extend m25p80_read allowing to read in chunks in case the
+SPI HW has a max supported message size.
 
-Based on what was discussed so far I'll submit a patch series as basis
-for further discussion.
+Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/mtd/devices/m25p80.c | 39 ++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 34 insertions(+), 5 deletions(-)
 
-Heiner
-> 
-> Sound OK?
-> 
-> Brian
-> 
+diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+index c9c3b7f..df4c510 100644
+--- a/drivers/mtd/devices/m25p80.c
++++ b/drivers/mtd/devices/m25p80.c
+@@ -115,11 +115,7 @@ static inline unsigned int m25p80_rx_nbits(struct spi_nor *nor)
+ 	}
+ }
+ 
+-/*
+- * Read an address range from the nor chip.  The address range
+- * may be any size provided it is within the physical boundaries.
+- */
+-static int m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
++static int _m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
+ 			size_t *retlen, u_char *buf)
+ {
+ 	struct m25p *flash = nor->priv;
+@@ -153,6 +149,39 @@ static int m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
+ }
+ 
+ /*
++ * Read an address range from the nor chip.  The address range
++ * may be any size provided it is within the physical boundaries.
++ */
++static int m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
++                       size_t *retlen, u_char *buf)
++{
++	struct m25p *flash = nor->priv;
++	size_t cmd_len, xfer_len, max_len;
++	int ret = 0;
++
++	/* convert the dummy cycles to the number of bytes */
++	cmd_len = m25p_cmdsz(nor) + nor->read_dummy / 8;
++
++	max_len = flash->spi->master->max_msg_size ?: SIZE_MAX;
++
++	if (unlikely(max_len < cmd_len))
++		return -EINVAL;
++
++	max_len -= cmd_len;
++
++	while (len) {
++		xfer_len = min(len, max_len);
++		ret = _m25p80_read(nor, from, xfer_len, retlen, buf);
++		if (ret < 0)
++			break;
++		from += xfer_len;
++		len -= xfer_len;
++	}
++
++	return ret;
++}
++
++/*
+  * board specific setup should have ensured the SPI clock used here
+  * matches what the READ command supports, at least until this driver
+  * understands FAST_READ (for clocks over 25 MHz).
+-- 
+2.6.2
+
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

@@ -1,7 +1,7 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 2/3] mtd: m25p80: handle HW message size restrictions
-Date: Sun, 22 Nov 2015 00:08:02 +0100
-Message-ID: <5650F952.2060409@gmail.com>
+Subject: [PATCH 0/3] spi: mtd: Handle HW message length restrictions
+Date: Sat, 21 Nov 2015 23:59:15 +0100
+Message-ID: <5650F743.9050500@gmail.com>
 References: <564CEB61.2000601@gmail.com>
  <20151118215755.GL31303@sirena.org.uk> <564D0098.4030107@gmail.com>
  <20151119114057.GN31303@sirena.org.uk>
@@ -26,71 +26,19 @@ In-Reply-To: <CAOMqctR=UDEPbgJDY3YvxpbVEEp4t6ajkyv=cVAZp2fLBNBanA-JsoAwUIsXosN+B
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Extend m25p80_read allowing to read in chunks in case the
-SPI HW has a max supported message size.
+Based on the ongoing discussion how to handle HW restrictions
+like max SPI message size this is a new proposal.
 
-Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
+Heiner Kallweit (3):
+  spi: core: add max_msg_size to spi_master
+  mtd: m25p80: handle HW message size restrictions
+  spi: fsl-espi: make use of max_msg_size in spi_master to handle HW restrictions
+
  drivers/mtd/devices/m25p80.c | 39 ++++++++++++++++++++++++++++++++++-----
- 1 file changed, 34 insertions(+), 5 deletions(-)
+ drivers/spi/spi-fsl-espi.c   |  1 +
+ include/linux/spi/spi.h      |  4 ++++
+ 3 files changed, 39 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
-index c9c3b7f..df4c510 100644
---- a/drivers/mtd/devices/m25p80.c
-+++ b/drivers/mtd/devices/m25p80.c
-@@ -115,11 +115,7 @@ static inline unsigned int m25p80_rx_nbits(struct spi_nor *nor)
- 	}
- }
- 
--/*
-- * Read an address range from the nor chip.  The address range
-- * may be any size provided it is within the physical boundaries.
-- */
--static int m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
-+static int _m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
- 			size_t *retlen, u_char *buf)
- {
- 	struct m25p *flash = nor->priv;
-@@ -153,6 +149,39 @@ static int m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
- }
- 
- /*
-+ * Read an address range from the nor chip.  The address range
-+ * may be any size provided it is within the physical boundaries.
-+ */
-+static int m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
-+                       size_t *retlen, u_char *buf)
-+{
-+	struct m25p *flash = nor->priv;
-+	size_t cmd_len, xfer_len, max_len;
-+	int ret = 0;
-+
-+	/* convert the dummy cycles to the number of bytes */
-+	cmd_len = m25p_cmdsz(nor) + nor->read_dummy / 8;
-+
-+	max_len = flash->spi->master->max_msg_size ?: SIZE_MAX;
-+
-+	if (unlikely(max_len < cmd_len))
-+		return -EINVAL;
-+
-+	max_len -= cmd_len;
-+
-+	while (len) {
-+		xfer_len = min(len, max_len);
-+		ret = _m25p80_read(nor, from, xfer_len, retlen, buf);
-+		if (ret < 0)
-+			break;
-+		from += xfer_len;
-+		len -= xfer_len;
-+	}
-+
-+	return ret;
-+}
-+
-+/*
-  * board specific setup should have ensured the SPI clock used here
-  * matches what the READ command supports, at least until this driver
-  * understands FAST_READ (for clocks over 25 MHz).
 -- 
 2.6.2
 

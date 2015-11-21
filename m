@@ -1,8 +1,7 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 3/3] spi: fsl-espi: make use of max_msg_size in spi_master to
- handle HW restrictions
-Date: Sun, 22 Nov 2015 00:11:02 +0100
-Message-ID: <5650FA06.40607@gmail.com>
+Subject: [PATCH 1/3] spi: core: add max_msg_size to spi_master
+Date: Sun, 22 Nov 2015 00:01:40 +0100
+Message-ID: <5650F7D4.1090209@gmail.com>
 References: <564CEB61.2000601@gmail.com>
  <20151118215755.GL31303@sirena.org.uk> <564D0098.4030107@gmail.com>
  <20151119114057.GN31303@sirena.org.uk>
@@ -27,26 +26,36 @@ In-Reply-To: <CAOMqctR=UDEPbgJDY3YvxpbVEEp4t6ajkyv=cVAZp2fLBNBanA-JsoAwUIsXosN+B
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Propagate the 64K message size limitation allowing client drivers
-to deal properly with this limitation.
+Add a member to spi_master allowing to better handle
+SPI chips with a message size HW limit.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/spi/spi.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index c27124a..773bbab 100644
---- a/drivers/spi/spi-fsl-espi.c
-+++ b/drivers/spi/spi-fsl-espi.c
-@@ -670,6 +670,7 @@ static struct spi_master * fsl_espi_probe(struct device *dev,
- 	master->cleanup = fsl_espi_cleanup;
- 	master->transfer_one_message = fsl_espi_do_one_msg;
- 	master->auto_runtime_pm = true;
-+	master->max_msg_size = SPCOM_TRANLEN_MAX;
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index cce80e6..23e259b 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -302,6 +302,7 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
+  *	and it's up to the individual driver to perform any validation.
+  * @min_speed_hz: Lowest supported transfer speed
+  * @max_speed_hz: Highest supported transfer speed
++ * @max_msg_size: maximum message size
+  * @flags: other constraints relevant to this driver
+  * @bus_lock_spinlock: spinlock for SPI bus locking
+  * @bus_lock_mutex: mutex for SPI bus locking
+@@ -417,6 +418,9 @@ struct spi_master {
+ 	u32			min_speed_hz;
+ 	u32			max_speed_hz;
  
- 	mpc8xxx_spi = spi_master_get_devdata(master);
- 
++	/* maximum message size */
++	size_t			max_msg_size;
++
+ 	/* other constraints relevant to this driver */
+ 	u16			flags;
+ #define SPI_MASTER_HALF_DUPLEX	BIT(0)		/* can't do full duplex */
 -- 
 2.6.2
 

@@ -1,105 +1,73 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: RfC: Handle SPI controller limitations like maximum message
- length
-Date: Sat, 21 Nov 2015 13:49:46 +0000
-Message-ID: <20151121134946.GI26072@sirena.org.uk>
-References: <564CEB61.2000601@gmail.com>
- <20151118215755.GL31303@sirena.org.uk>
- <564D0098.4030107@gmail.com>
- <20151119114057.GN31303@sirena.org.uk>
- <F224F5F3-FAD5-47FE-9419-39E53BCBB8C6@sperl.org>
- <20151119171538.GO31303@sirena.org.uk>
- <9CDADBED-FD18-4635-82A9-5AB14C9ABCAE@sperl.org>
- <20151120120502.GT31303@sirena.org.uk>
- <08871ECD-52DF-4CBF-AF3D-4C3A442C008A@sperl.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="6b3yLyRKT1M6kiA0"
-Cc: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
+Subject: Applied "spi: mediatek: remove needless pair of writel()/readl()" to the spi tree
+Date: Sat, 21 Nov 2015 14:03:29 +0000
+Message-ID: <E1a08lF-0001Hm-RN@finisterre>
+References: <1447986080-31410-3-git-send-email-leilk.liu@mediatek.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <08871ECD-52DF-4CBF-AF3D-4C3A442C008A-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
+In-Reply-To: <1447986080-31410-3-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---6b3yLyRKT1M6kiA0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   spi: mediatek: remove needless pair of writel()/readl()
 
-On Fri, Nov 20, 2015 at 01:56:13PM +0100, Martin Sperl wrote:
+has been applied to the spi tree at
 
-> > Every line of code that's in a driver that could be in the core is a
-> > maintainence burden, people will want to start doing things like
-> > combining functions in fun ways and if we want to try to do things like
-> > figure out if we can coalesce adjacent transfers in the core (which we
-> > really ought to) it won't know what the limitations that exist are.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> this =E2=80=9Ccolaesce=E2=80=9D of transfers into one could be one of tho=
-se=20
-> =E2=80=9Ctransformation=E2=80=9D I am talking about - and this one would =
-be implemented
-> in core making certain assumptions (like starting on a page, ...)
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-Why would we want to force that assumption?  It massively reduces the
-utility for DMA controllers that don't have such limitations.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-> >> I wonder if such a variant-construct does not create more headaches in
-> >> the long run as each spi_driver wanting to do something =E2=80=9Csomet=
-hing=E2=80=9D
-> >> special would then need to get updated for any additional constraint=
-=E2=80=A6
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-> > I'm sorry but I don't understand what you mean here.  However we
-> > implement things anything that wants to know about constraints is going
-> > to need to be updated to use them.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-> That is what I want to avoid if possible - the one thing that may come
-> handy (at least from my perspective) could be to give some hints to
-> make optimal use of the HW
-> Say:
-> * preferred alignment on X byte boundry
-> * preferred max spi_transfer.length
+Thanks,
+Mark
 
-> All the other possible constraints parameters should be opaque to=20
-> a spi_device driver, so I would not want to include those inside the
-> spi_master structure, as _then_ these get used.
+>From 4c3dbd35d4369ddb0f0e26dd329a6aab870703e2 Mon Sep 17 00:00:00 2001
+From: "leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org" <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Date: Fri, 20 Nov 2015 10:21:18 +0800
+Subject: [PATCH] spi: mediatek: remove needless pair of writel()/readl()
 
-You're conflating two unrelated design decisions here.  Yes, it's
-unfortunate that the SPI API was written to allow client drivers to see
-the master structure but that doesn't mean that converting data into
-code is a good idea, that's still a bad pattern independently of the
-visibility issue.
+It's not need to re-read and re-write SPI_CMD_REG, so remove it.
 
-> Also the =E2=80=9Crestrictions=E2=80=9D on the spi HW need to get defined=
- inside the
-> driver, so there will not be a new =E2=80=9Crestriction=E2=80=9D that app=
-lies to
-> an existing piece of HW just because we incorporate new options.
+Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Reviewed-by: Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-mt65xx.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-That's what I was saying?
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index 563954a..2b3fcb8 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -154,9 +154,6 @@ static int mtk_spi_prepare_message(struct spi_master *master,
+ 		reg_val |= SPI_CMD_CPOL;
+ 	else
+ 		reg_val &= ~SPI_CMD_CPOL;
+-	writel(reg_val, mdata->base + SPI_CMD_REG);
+-
+-	reg_val = readl(mdata->base + SPI_CMD_REG);
+ 
+ 	/* set the mlsbx and mlsbtx */
+ 	if (chip_config->tx_mlsb)
+-- 
+2.6.1
 
---6b3yLyRKT1M6kiA0
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJWUHZ5AAoJECTWi3JdVIfQXI0H/jXDo8oNREzJHNDjafAAurcs
-DNTRCHy5wq74vvkYwPRtCVUN8kmUeow7yx7N7krEYE+KIBD94tyw/IEGjDkSOOgi
-O1pLV/NMh/ZFVmpzx5rqgRHPlMOv+zb6MU3q9oiR8zPsmSL549lTbCkvt6KkwWdn
-HE/z++efWlY7I4+BNU18NWuqrHBe4b1LpF5c2dzqL5/AgfsezypAltbeSXHJ5/kE
-khqyAh66lNW+OlwjP1Zj8vKw+F3hrZBYN8rzYeX2R3TCKLyqeLdF+6cyWJLVXJUn
-DMKGJJJuTenx4euZ8tfVQ8fEjDuev0nVJPiMygDm8wwOo7Ecyv3Sqy3QMRfGE7Q=
-=wKEn
------END PGP SIGNATURE-----
-
---6b3yLyRKT1M6kiA0--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

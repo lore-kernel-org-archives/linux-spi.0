@@ -1,18 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: mediatek: remove needless pair of writel()/readl()" to the spi tree
-Date: Sat, 21 Nov 2015 14:03:29 +0000
-Message-ID: <E1a08lF-0001Hm-RN@finisterre>
-References: <1447986080-31410-3-git-send-email-leilk.liu@mediatek.com>
+Subject: Applied "spi: mediatek: update document devicetree bindings to fix syntax error" to the spi tree
+Date: Sat, 21 Nov 2015 14:03:36 +0000
+Message-ID: <E1a08lM-0001Ii-TP@finisterre>
+References: <1447986080-31410-1-git-send-email-leilk.liu@mediatek.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1447986080-31410-3-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <1447986080-31410-1-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: mediatek: remove needless pair of writel()/readl()
+   spi: mediatek: update document devicetree bindings to fix syntax error
 
 has been applied to the spi tree at
 
@@ -37,34 +38,35 @@ to this mail.
 Thanks,
 Mark
 
->From 4c3dbd35d4369ddb0f0e26dd329a6aab870703e2 Mon Sep 17 00:00:00 2001
+>From fbdb5d78ce7085966eb958ce8e003b1f8c2aaad4 Mon Sep 17 00:00:00 2001
 From: "leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org" <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Date: Fri, 20 Nov 2015 10:21:18 +0800
-Subject: [PATCH] spi: mediatek: remove needless pair of writel()/readl()
+Date: Fri, 20 Nov 2015 10:21:16 +0800
+Subject: [PATCH] spi: mediatek: update document devicetree bindings to fix
+ syntax error
 
-It's not need to re-read and re-write SPI_CMD_REG, so remove it.
+This patch updates document devicetree bindings
+to fix syntax error.
 
 Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Reviewed-by: Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-mt65xx.c | 3 ---
- 1 file changed, 3 deletions(-)
+ Documentation/devicetree/bindings/spi/spi-mt65xx.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 563954a..2b3fcb8 100644
---- a/drivers/spi/spi-mt65xx.c
-+++ b/drivers/spi/spi-mt65xx.c
-@@ -154,9 +154,6 @@ static int mtk_spi_prepare_message(struct spi_master *master,
- 		reg_val |= SPI_CMD_CPOL;
- 	else
- 		reg_val &= ~SPI_CMD_CPOL;
--	writel(reg_val, mdata->base + SPI_CMD_REG);
--
--	reg_val = readl(mdata->base + SPI_CMD_REG);
+diff --git a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
+index ce363c923f..fba8334 100644
+--- a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
++++ b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
+@@ -32,7 +32,7 @@ Optional properties:
+ -cs-gpios: see spi-bus.txt, only required for MT8173.
  
- 	/* set the mlsbx and mlsbtx */
- 	if (chip_config->tx_mlsb)
+ - mediatek,pad-select: specify which pins group(ck/mi/mo/cs) spi
+-  controller used. This is a array, the element value should be 0~3,
++  controller used. This is an array, the element value should be 0~3,
+   only required for MT8173.
+     0: specify GPIO69,70,71,72 for spi pins.
+     1: specify GPIO102,103,104,105 for spi pins.
 -- 
 2.6.1
 

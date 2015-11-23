@@ -1,123 +1,87 @@
-From: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH] spi/spi-xilinx: Use a cached copy of CR register
-Date: Mon, 23 Nov 2015 11:11:20 +0530
-Message-ID: <1448257280-15717-1-git-send-email-shubhraj@xilinx.com>
+From: Rabin Vincent <rabin.vincent-VrBV9hrLPhE@public.gmane.org>
+Subject: [PATCH] spi: pl022: handle EPROBE_DEFER for dma
+Date: Mon, 23 Nov 2015 08:13:45 +0100
+Message-ID: <1448262825-19710-1-git-send-email-rabin.vincent@axis.com>
 Mime-Version: 1.0
 Content-Type: text/plain
-Cc: <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>, <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	<anirudh-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>, Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Rabin Vincent <rabinv-VrBV9hrLPhE@public.gmane.org>
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The Control register is written by the driver.
-Use a cached copy of the register so that the reads
-thereafter can use the variable instead of the register read.
+Handle EPROBE_DEFER explicitly so that we ensure that we get the DMA
+channel specified in the device tree, instead of depending on the DMA
+controller getting probed before us.
 
-Signed-off-by: Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Rabin Vincent <rabin.vincent-VrBV9hrLPhE@public.gmane.org>
 ---
- drivers/spi/spi-xilinx.c |   34 +++++++++++++++++++---------------
- 1 files changed, 19 insertions(+), 15 deletions(-)
+ drivers/spi/spi-pl022.c |   28 ++++++++++++++++++++++------
+ 1 file changed, 22 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-index 3009121..73f4453 100644
---- a/drivers/spi/spi-xilinx.c
-+++ b/drivers/spi/spi-xilinx.c
-@@ -91,6 +91,7 @@ struct xilinx_spi {
- 	u8 bytes_per_word;
- 	int buffer_size;	/* buffer size in words */
- 	u32 cs_inactive;	/* Level of the CS pins when inactive*/
-+	u32 cr;			/* Control Register*/
- 	unsigned int (*read_fn)(void __iomem *);
- 	void (*write_fn)(u32, void __iomem *);
- };
-@@ -180,15 +181,15 @@ static void xspi_init_hw(struct xilinx_spi *xspi)
- 	xspi->write_fn(0xffff, regs_base + XSPI_SSR_OFFSET);
- 	/* Disable the transmitter, enable Manual Slave Select Assertion,
- 	 * put SPI controller into master mode, and enable it */
--	xspi->write_fn(XSPI_CR_MANUAL_SSELECT |	XSPI_CR_MASTER_MODE |
--		XSPI_CR_ENABLE | XSPI_CR_TXFIFO_RESET |	XSPI_CR_RXFIFO_RESET,
--		regs_base + XSPI_CR_OFFSET);
-+	xspi->cr = XSPI_CR_MANUAL_SSELECT | XSPI_CR_MASTER_MODE |
-+		XSPI_CR_ENABLE | XSPI_CR_TXFIFO_RESET |	XSPI_CR_RXFIFO_RESET;
-+	xspi->write_fn(xspi->cr, regs_base + XSPI_CR_OFFSET);
-+	xspi->cr = xspi->read_fn(xspi->regs + XSPI_CR_OFFSET);
- }
- 
- static void xilinx_spi_chipselect(struct spi_device *spi, int is_on)
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index 94af806..5e5fd77 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -1171,19 +1171,31 @@ err_no_rxchan:
+ static int pl022_dma_autoprobe(struct pl022 *pl022)
  {
- 	struct xilinx_spi *xspi = spi_master_get_devdata(spi->master);
--	u16 cr;
- 	u32 cs;
+ 	struct device *dev = &pl022->adev->dev;
++	struct dma_chan *chan;
++	int err;
  
- 	if (is_on == BITBANG_CS_INACTIVE) {
-@@ -198,16 +199,16 @@ static void xilinx_spi_chipselect(struct spi_device *spi, int is_on)
- 	}
+ 	/* automatically configure DMA channels from platform, normally using DT */
+-	pl022->dma_rx_channel = dma_request_slave_channel(dev, "rx");
+-	if (!pl022->dma_rx_channel)
++	chan = dma_request_slave_channel_reason(dev, "rx");
++	if (IS_ERR(chan)) {
++		err = PTR_ERR(chan);
+ 		goto err_no_rxchan;
++	}
++
++	pl022->dma_rx_channel = chan;
  
- 	/* Set the SPI clock phase and polarity */
--	cr = xspi->read_fn(xspi->regs + XSPI_CR_OFFSET)	& ~XSPI_CR_MODE_MASK;
-+	xspi->cr &=  ~XSPI_CR_MODE_MASK;
- 	if (spi->mode & SPI_CPHA)
--		cr |= XSPI_CR_CPHA;
-+		xspi->cr |= XSPI_CR_CPHA;
- 	if (spi->mode & SPI_CPOL)
--		cr |= XSPI_CR_CPOL;
-+		xspi->cr |= XSPI_CR_CPOL;
- 	if (spi->mode & SPI_LSB_FIRST)
--		cr |= XSPI_CR_LSB_FIRST;
-+		xspi->cr |= XSPI_CR_LSB_FIRST;
- 	if (spi->mode & SPI_LOOP)
--		cr |= XSPI_CR_LOOP;
--	xspi->write_fn(cr, xspi->regs + XSPI_CR_OFFSET);
-+		xspi->cr |= XSPI_CR_LOOP;
-+	xspi->write_fn(xspi->cr, xspi->regs + XSPI_CR_OFFSET);
+-	pl022->dma_tx_channel = dma_request_slave_channel(dev, "tx");
+-	if (!pl022->dma_tx_channel)
++	chan = dma_request_slave_channel_reason(dev, "tx");
++	if (IS_ERR(chan)) {
++		err = PTR_ERR(chan);
+ 		goto err_no_txchan;
++	}
++
++	pl022->dma_tx_channel = chan;
  
- 	/* We do not check spi->max_speed_hz here as the SPI clock
- 	 * frequency is not software programmable (the IP block design
-@@ -254,7 +255,8 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
- 		u32 isr;
- 		use_irq = true;
- 		/* Inhibit irq to avoid spurious irqs on tx_empty*/
--		cr = xspi->read_fn(xspi->regs + XSPI_CR_OFFSET);
-+		cr = xspi->cr;
-+		xspi->cr = cr | XSPI_CR_TRANS_INHIBIT;
- 		xspi->write_fn(cr | XSPI_CR_TRANS_INHIBIT,
- 			       xspi->regs + XSPI_CR_OFFSET);
- 		/* ACK old irqs (if any) */
-@@ -283,7 +285,8 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
- 		 */
+ 	pl022->dummypage = kmalloc(PAGE_SIZE, GFP_KERNEL);
+-	if (!pl022->dummypage)
++	if (!pl022->dummypage) {
++		err = -ENOMEM;
+ 		goto err_no_dummypage;
++	}
  
- 		if (use_irq) {
--			xspi->write_fn(cr, xspi->regs + XSPI_CR_OFFSET);
-+			xspi->cr = cr;
-+			xspi->write_fn(xspi->cr, xspi->regs + XSPI_CR_OFFSET);
- 			wait_for_completion(&xspi->done);
- 			/* A transmit has just completed. Process received data
- 			 * and check for more data to transmit. Always inhibit
-@@ -291,8 +294,8 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
- 			 * register/FIFO, or make sure it is stopped if we're
- 			 * done.
- 			 */
--			xspi->write_fn(cr | XSPI_CR_TRANS_INHIBIT,
--				       xspi->regs + XSPI_CR_OFFSET);
-+			xspi->cr = xspi->cr | XSPI_CR_TRANS_INHIBIT;
-+			xspi->write_fn(xspi->cr, xspi->regs + XSPI_CR_OFFSET);
- 			sr = XSPI_SR_TX_EMPTY_MASK;
- 		} else
- 			sr = xspi->read_fn(xspi->regs + XSPI_SR_OFFSET);
-@@ -318,7 +321,8 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	return 0;
  
- 	if (use_irq) {
- 		xspi->write_fn(0, xspi->regs + XIPIF_V123B_DGIER_OFFSET);
--		xspi->write_fn(cr, xspi->regs + XSPI_CR_OFFSET);
-+		xspi->cr = cr;
-+		xspi->write_fn(xspi->cr, xspi->regs + XSPI_CR_OFFSET);
- 	}
+@@ -1194,7 +1206,7 @@ err_no_txchan:
+ 	dma_release_channel(pl022->dma_rx_channel);
+ 	pl022->dma_rx_channel = NULL;
+ err_no_rxchan:
+-	return -ENODEV;
++	return err;
+ }
+ 		
+ static void terminate_dma(struct pl022 *pl022)
+@@ -2236,6 +2248,10 @@ static int pl022_probe(struct amba_device *adev, const struct amba_id *id)
  
- 	return t->len;
+ 	/* Get DMA channels, try autoconfiguration first */
+ 	status = pl022_dma_autoprobe(pl022);
++	if (status == -EPROBE_DEFER) {
++		dev_dbg(dev, "deferring probe to get DMA channel\n");
++		goto err_no_irq;
++	}
+ 
+ 	/* If that failed, use channels from platform_info */
+ 	if (status == 0)
 -- 
-1.7.1
+1.7.10.4
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

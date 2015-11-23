@@ -1,81 +1,125 @@
-From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH] spi: dts: sun4i: Add support for inter-word
- wait cycles using the SPI Wait Clock Register
-Date: Sun, 22 Nov 2015 20:45:56 +0100
-Message-ID: <20151122194556.GO32142@lukather>
-References: <1447948422-4915-1-git-send-email-mweseloh42@gmail.com>
- <1447948422-4915-2-git-send-email-mweseloh42@gmail.com>
- <CAGRGNgWQLE5h03+4shLmqD6iW_p=L-i3ewdLb8ndWpxGHWh4rQ@mail.gmail.com>
- <CAGNoLaNhD73N5_1_NbkvRFnwNqO5ehQBTyeCEgzFVgWCrJZmWQ@mail.gmail.com>
- <CAGRGNgV0kOkye-Zu4WGQKgGim7N2HB9rAFJ3HNQS89Rr6_WexQ@mail.gmail.com>
- <CAGNoLaOOz2ACtS5iRUxjOknisMHm2Ow3OVsLkqpWuNU4J-9v-A@mail.gmail.com>
- <20151120161246.GB21921@rob-hp-laptop>
- <CAGNoLaPLXOmObXgW0YsN8giM1WCRDn7MieTBcKOE5sjXbjg0GA@mail.gmail.com>
-Reply-To: maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org
+From: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi/spi-xilinx: Use a cached copy of CR register
+Date: Mon, 23 Nov 2015 11:11:20 +0530
+Message-ID: <1448257280-15717-1-git-send-email-shubhraj@xilinx.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="8QM4kKE+nfbBA4vJ"
-Cc: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Julian Calaby <julian.calaby-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"Mailing List, Arm" <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-sunxi+bncBD2ZNBF5VYJRB5VWZCZAKGQECS5BZUQ-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAGNoLaPLXOmObXgW0YsN8giM1WCRDn7MieTBcKOE5sjXbjg0GA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <http://groups.google.com/group/linux-sunxi
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
- <http://groups.google.com/group/linux-sunxi/subscribe>
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain
+Cc: <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>, <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	<anirudh-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>, Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
---8QM4kKE+nfbBA4vJ
-Content-Type: text/plain; charset=UTF-8
-Content-Disposition: inline
+The Control register is written by the driver.
+Use a cached copy of the register so that the reads
+thereafter can use the variable instead of the register read.
 
-Hi,
+Signed-off-by: Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi-xilinx.c |   34 +++++++++++++++++++---------------
+ 1 files changed, 19 insertions(+), 15 deletions(-)
 
-On Fri, Nov 20, 2015 at 05:45:48PM +0100, Marcus Weseloh wrote:
-> 2015-11-20 17:12 GMT+01:00 Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>:
-> > On Fri, Nov 20, 2015 at 02:56:34PM +0100, Marcus Weseloh wrote:
-> >> > (and the wdelay should
-> >> > arguably be a core-spi thing, not a sunxi thing, but that's a separate
-> >> > discussion)
-> >>
-> >> I've been thinking about that, but it seemed to big a change to
-> >> attempt with my limited kernel hacking experience.
-> >
-> > It is not any bigger. You just need to document it in the core binding.
-> > It would still be read by the drivers using it.
-> 
-> Julien, Rob: thanks for your comments! Ok, I will make the following changes:
-> 
-> - remove "sun4i,spi-wdelay" from the sun4i binding and add the
-> property to the spi-bus.txt binding instead
-> - remove the comment about the additional 3 cycles from the documentation
-> - modfy the spi-sun4i driver to take care of the minimum 3 cycle period
-> 
-> Does that sound right?
-> 
-> And maybe I could also use a more descriptive name for the property,
-> maybe "spi-word-wait-cycles"?
-
-I don't think it should be in a clock-rate dependant unit. Using micro
-or nano-seconds would be more appropriate I guess.
-
-Maxime
-
+diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
+index 3009121..73f4453 100644
+--- a/drivers/spi/spi-xilinx.c
++++ b/drivers/spi/spi-xilinx.c
+@@ -91,6 +91,7 @@ struct xilinx_spi {
+ 	u8 bytes_per_word;
+ 	int buffer_size;	/* buffer size in words */
+ 	u32 cs_inactive;	/* Level of the CS pins when inactive*/
++	u32 cr;			/* Control Register*/
+ 	unsigned int (*read_fn)(void __iomem *);
+ 	void (*write_fn)(u32, void __iomem *);
+ };
+@@ -180,15 +181,15 @@ static void xspi_init_hw(struct xilinx_spi *xspi)
+ 	xspi->write_fn(0xffff, regs_base + XSPI_SSR_OFFSET);
+ 	/* Disable the transmitter, enable Manual Slave Select Assertion,
+ 	 * put SPI controller into master mode, and enable it */
+-	xspi->write_fn(XSPI_CR_MANUAL_SSELECT |	XSPI_CR_MASTER_MODE |
+-		XSPI_CR_ENABLE | XSPI_CR_TXFIFO_RESET |	XSPI_CR_RXFIFO_RESET,
+-		regs_base + XSPI_CR_OFFSET);
++	xspi->cr = XSPI_CR_MANUAL_SSELECT | XSPI_CR_MASTER_MODE |
++		XSPI_CR_ENABLE | XSPI_CR_TXFIFO_RESET |	XSPI_CR_RXFIFO_RESET;
++	xspi->write_fn(xspi->cr, regs_base + XSPI_CR_OFFSET);
++	xspi->cr = xspi->read_fn(xspi->regs + XSPI_CR_OFFSET);
+ }
+ 
+ static void xilinx_spi_chipselect(struct spi_device *spi, int is_on)
+ {
+ 	struct xilinx_spi *xspi = spi_master_get_devdata(spi->master);
+-	u16 cr;
+ 	u32 cs;
+ 
+ 	if (is_on == BITBANG_CS_INACTIVE) {
+@@ -198,16 +199,16 @@ static void xilinx_spi_chipselect(struct spi_device *spi, int is_on)
+ 	}
+ 
+ 	/* Set the SPI clock phase and polarity */
+-	cr = xspi->read_fn(xspi->regs + XSPI_CR_OFFSET)	& ~XSPI_CR_MODE_MASK;
++	xspi->cr &=  ~XSPI_CR_MODE_MASK;
+ 	if (spi->mode & SPI_CPHA)
+-		cr |= XSPI_CR_CPHA;
++		xspi->cr |= XSPI_CR_CPHA;
+ 	if (spi->mode & SPI_CPOL)
+-		cr |= XSPI_CR_CPOL;
++		xspi->cr |= XSPI_CR_CPOL;
+ 	if (spi->mode & SPI_LSB_FIRST)
+-		cr |= XSPI_CR_LSB_FIRST;
++		xspi->cr |= XSPI_CR_LSB_FIRST;
+ 	if (spi->mode & SPI_LOOP)
+-		cr |= XSPI_CR_LOOP;
+-	xspi->write_fn(cr, xspi->regs + XSPI_CR_OFFSET);
++		xspi->cr |= XSPI_CR_LOOP;
++	xspi->write_fn(xspi->cr, xspi->regs + XSPI_CR_OFFSET);
+ 
+ 	/* We do not check spi->max_speed_hz here as the SPI clock
+ 	 * frequency is not software programmable (the IP block design
+@@ -254,7 +255,8 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 		u32 isr;
+ 		use_irq = true;
+ 		/* Inhibit irq to avoid spurious irqs on tx_empty*/
+-		cr = xspi->read_fn(xspi->regs + XSPI_CR_OFFSET);
++		cr = xspi->cr;
++		xspi->cr = cr | XSPI_CR_TRANS_INHIBIT;
+ 		xspi->write_fn(cr | XSPI_CR_TRANS_INHIBIT,
+ 			       xspi->regs + XSPI_CR_OFFSET);
+ 		/* ACK old irqs (if any) */
+@@ -283,7 +285,8 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 		 */
+ 
+ 		if (use_irq) {
+-			xspi->write_fn(cr, xspi->regs + XSPI_CR_OFFSET);
++			xspi->cr = cr;
++			xspi->write_fn(xspi->cr, xspi->regs + XSPI_CR_OFFSET);
+ 			wait_for_completion(&xspi->done);
+ 			/* A transmit has just completed. Process received data
+ 			 * and check for more data to transmit. Always inhibit
+@@ -291,8 +294,8 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 			 * register/FIFO, or make sure it is stopped if we're
+ 			 * done.
+ 			 */
+-			xspi->write_fn(cr | XSPI_CR_TRANS_INHIBIT,
+-				       xspi->regs + XSPI_CR_OFFSET);
++			xspi->cr = xspi->cr | XSPI_CR_TRANS_INHIBIT;
++			xspi->write_fn(xspi->cr, xspi->regs + XSPI_CR_OFFSET);
+ 			sr = XSPI_SR_TX_EMPTY_MASK;
+ 		} else
+ 			sr = xspi->read_fn(xspi->regs + XSPI_SR_OFFSET);
+@@ -318,7 +321,8 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 
+ 	if (use_irq) {
+ 		xspi->write_fn(0, xspi->regs + XIPIF_V123B_DGIER_OFFSET);
+-		xspi->write_fn(cr, xspi->regs + XSPI_CR_OFFSET);
++		xspi->cr = cr;
++		xspi->write_fn(xspi->cr, xspi->regs + XSPI_CR_OFFSET);
+ 	}
+ 
+ 	return t->len;
 -- 
-Maxime Ripard, Free Electrons
-Embedded Linux, Kernel and Android engineering
-http://free-electrons.com
---8QM4kKE+nfbBA4vJ--
+1.7.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

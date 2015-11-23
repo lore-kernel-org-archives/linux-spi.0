@@ -1,19 +1,18 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: spidev_test: output to a file" to the spi tree
-Date: Mon, 23 Nov 2015 14:54:22 +0000
-Message-ID: <E1a0sVa-0000Lq-7x@debutante>
-References: <9ef02d085de706dfbf7eb57370ce33f076dfd9ce.1447880230.git.stillcompiling@gmail.com>
+Subject: Applied "spi: Move spi code from Documentation to tools" to the spi tree
+Date: Mon, 23 Nov 2015 14:54:24 +0000
+Message-ID: <E1a0sVc-0000NJ-QX@debutante>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Joshua Clayton <stillcompiling-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <9ef02d085de706dfbf7eb57370ce33f076dfd9ce.1447880230.git.stillcompiling-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: 
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: spidev_test: output to a file
+   spi: Move spi code from Documentation to tools
 
 has been applied to the spi tree at
 
@@ -38,99 +37,112 @@ to this mail.
 Thanks,
 Mark
 
->From 983b27886a3c7f6eff4e987ddba932da74703f4e Mon Sep 17 00:00:00 2001
+>From 5eca4d843f9f0c3140a8657ba2f8217ee6c08c11 Mon Sep 17 00:00:00 2001
 From: Joshua Clayton <stillcompiling-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Wed, 18 Nov 2015 14:30:40 -0800
-Subject: [PATCH] spi: spidev_test: output to a file
+Date: Wed, 18 Nov 2015 14:30:37 -0800
+Subject: [PATCH] spi: Move spi code from Documentation to tools
 
-For testing of larger data transfers, output unmodified data
-directly to a file.
+Jon Corbet requested this code moved with the last changeset,
+https://lkml.org/lkml/2015/3/1/144,
+but the patch was not applied because it missed the Makefile.
+Moved spidev_test, spidev_fdx and their Makefile infrastructure.
 
 Signed-off-by: Joshua Clayton <stillcompiling-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- tools/spi/spidev_test.c | 26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+ Documentation/Makefile                     | 2 +-
+ Documentation/spi/Makefile                 | 8 --------
+ tools/Makefile                             | 7 ++++---
+ tools/spi/Makefile                         | 4 ++++
+ {Documentation => tools}/spi/spidev_fdx.c  | 0
+ {Documentation => tools}/spi/spidev_test.c | 0
+ 6 files changed, 9 insertions(+), 12 deletions(-)
+ delete mode 100644 Documentation/spi/Makefile
+ create mode 100644 tools/spi/Makefile
+ rename {Documentation => tools}/spi/spidev_fdx.c (100%)
+ rename {Documentation => tools}/spi/spidev_test.c (100%)
 
-diff --git a/tools/spi/spidev_test.c b/tools/spi/spidev_test.c
-index 71a45a4d7d49..02fc3a44901b 100644
---- a/tools/spi/spidev_test.c
-+++ b/tools/spi/spidev_test.c
-@@ -35,6 +35,7 @@ static const char *device = "/dev/spidev1.1";
- static uint32_t mode;
- static uint8_t bits = 8;
- static char *input_file;
-+static char *output_file;
- static uint32_t speed = 500000;
- static uint16_t delay;
- static int verbose;
-@@ -105,7 +106,7 @@ static int unescape(char *_dst, char *_src, size_t len)
- static void transfer(int fd, uint8_t const *tx, uint8_t const *rx, size_t len)
- {
- 	int ret;
+diff --git a/Documentation/Makefile b/Documentation/Makefile
+index bc0548201755..1207d7907650 100644
+--- a/Documentation/Makefile
++++ b/Documentation/Makefile
+@@ -1,4 +1,4 @@
+ subdir-y := accounting auxdisplay blackfin connector \
+ 	filesystems filesystems ia64 laptops mic misc-devices \
+-	networking pcmcia prctl ptp spi timers vDSO video4linux \
++	networking pcmcia prctl ptp timers vDSO video4linux \
+ 	watchdog
+diff --git a/Documentation/spi/Makefile b/Documentation/spi/Makefile
+deleted file mode 100644
+index efa255813e9d..000000000000
+--- a/Documentation/spi/Makefile
++++ /dev/null
+@@ -1,8 +0,0 @@
+-# List of programs to build
+-hostprogs-y := spidev_test spidev_fdx
 -
-+	int out_fd;
- 	struct spi_ioc_transfer tr = {
- 		.tx_buf = (unsigned long)tx,
- 		.rx_buf = (unsigned long)rx,
-@@ -136,7 +137,21 @@ static void transfer(int fd, uint8_t const *tx, uint8_t const *rx, size_t len)
+-# Tell kbuild to always build the programs
+-always := $(hostprogs-y)
+-
+-HOSTCFLAGS_spidev_test.o += -I$(objtree)/usr/include
+-HOSTCFLAGS_spidev_fdx.o += -I$(objtree)/usr/include
+diff --git a/tools/Makefile b/tools/Makefile
+index d6f307dfb1a3..0528aa13ccb4 100644
+--- a/tools/Makefile
++++ b/tools/Makefile
+@@ -17,6 +17,7 @@ help:
+ 	@echo '  lguest     - a minimal 32-bit x86 hypervisor'
+ 	@echo '  perf       - Linux performance measurement and analysis tool'
+ 	@echo '  selftests  - various kernel selftests'
++	@echo '  spi        - spi tools'
+ 	@echo '  turbostat  - Intel CPU idle stats and freq reporting tool'
+ 	@echo '  usb        - USB testing tools'
+ 	@echo '  virtio     - vhost test module'
+@@ -48,7 +49,7 @@ acpi: FORCE
+ cpupower: FORCE
+ 	$(call descend,power/$@)
  
- 	if (verbose)
- 		hex_dump(tx, len, 32, "TX");
--	hex_dump(rx, len, 32, "RX");
-+
-+	if (output_file) {
-+		out_fd = open(output_file, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-+		if (out_fd < 0)
-+			pabort("could not open output file");
-+
-+		ret = write(out_fd, rx, len);
-+		if (ret != len)
-+			pabort("not all bytes written to utput file");
-+
-+		close(out_fd);
-+	}
-+
-+	if (verbose || !output_file)
-+		hex_dump(rx, len, 32, "RX");
- }
+-cgroup firewire hv guest usb virtio vm net iio: FORCE
++cgroup firewire hv guest spi usb virtio vm net iio: FORCE
+ 	$(call descend,$@)
  
- static void print_usage(const char *prog)
-@@ -147,6 +162,7 @@ static void print_usage(const char *prog)
- 	     "  -d --delay    delay (usec)\n"
- 	     "  -b --bpw      bits per word \n"
- 	     "  -i --input    input data from a file (e.g. \"test.bin\")\n"
-+	     "  -o --output   output data to a file (e.g. \"results.bin\")\n"
- 	     "  -l --loop     loopback\n"
- 	     "  -H --cpha     clock phase\n"
- 	     "  -O --cpol     clock polarity\n"
-@@ -171,6 +187,7 @@ static void parse_opts(int argc, char *argv[])
- 			{ "delay",   1, 0, 'd' },
- 			{ "bpw",     1, 0, 'b' },
- 			{ "input",   1, 0, 'i' },
-+			{ "output",  1, 0, 'o' },
- 			{ "loop",    0, 0, 'l' },
- 			{ "cpha",    0, 0, 'H' },
- 			{ "cpol",    0, 0, 'O' },
-@@ -186,7 +203,7 @@ static void parse_opts(int argc, char *argv[])
- 		};
- 		int c;
+ liblockdep: FORCE
+@@ -109,7 +110,7 @@ acpi_clean:
+ cpupower_clean:
+ 	$(call descend,power/cpupower,clean)
  
--		c = getopt_long(argc, argv, "D:s:d:b:i:lHOLC3NR24p:v",
-+		c = getopt_long(argc, argv, "D:s:d:b:i:o:lHOLC3NR24p:v",
- 				lopts, NULL);
+-cgroup_clean hv_clean firewire_clean lguest_clean usb_clean virtio_clean vm_clean net_clean iio_clean:
++cgroup_clean hv_clean firewire_clean lguest_clean spi_clean usb_clean virtio_clean vm_clean net_clean iio_clean:
+ 	$(call descend,$(@:_clean=),clean)
  
- 		if (c == -1)
-@@ -208,6 +225,9 @@ static void parse_opts(int argc, char *argv[])
- 		case 'i':
- 			input_file = optarg;
- 			break;
-+		case 'o':
-+			output_file = optarg;
-+			break;
- 		case 'l':
- 			mode |= SPI_LOOP;
- 			break;
+ liblockdep_clean:
+@@ -134,7 +135,7 @@ freefall_clean:
+ 	$(call descend,laptop/freefall,clean)
+ 
+ clean: acpi_clean cgroup_clean cpupower_clean hv_clean firewire_clean lguest_clean \
+-		perf_clean selftests_clean turbostat_clean usb_clean virtio_clean \
++		perf_clean selftests_clean turbostat_clean spi_clean usb_clean virtio_clean \
+ 		vm_clean net_clean iio_clean x86_energy_perf_policy_clean tmon_clean \
+ 		freefall_clean
+ 
+diff --git a/tools/spi/Makefile b/tools/spi/Makefile
+new file mode 100644
+index 000000000000..cd0db62e4d9d
+--- /dev/null
++++ b/tools/spi/Makefile
+@@ -0,0 +1,4 @@
++all: spidev_test spidev_fdx
++
++clean:
++	$(RM) spidev_test spidev_fdx
+diff --git a/Documentation/spi/spidev_fdx.c b/tools/spi/spidev_fdx.c
+similarity index 100%
+rename from Documentation/spi/spidev_fdx.c
+rename to tools/spi/spidev_fdx.c
+diff --git a/Documentation/spi/spidev_test.c b/tools/spi/spidev_test.c
+similarity index 100%
+rename from Documentation/spi/spidev_test.c
+rename to tools/spi/spidev_test.c
 -- 
 2.6.2
 

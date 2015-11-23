@@ -1,18 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: Move spi code from Documentation to tools" to the spi tree
-Date: Mon, 23 Nov 2015 14:54:24 +0000
-Message-ID: <E1a0sVc-0000NJ-QX@debutante>
+Subject: Applied "spi: spidev_test: accept input from a file" to the spi tree
+Date: Mon, 23 Nov 2015 14:54:23 +0000
+Message-ID: <E1a0sVb-0000MJ-4g@debutante>
+References: <783ea7346741b23f17c73a13f03f64ac17de8c2e.1447880230.git.stillcompiling@gmail.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Joshua Clayton <stillcompiling-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: 
+In-Reply-To: <783ea7346741b23f17c73a13f03f64ac17de8c2e.1447880230.git.stillcompiling-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: Move spi code from Documentation to tools
+   spi: spidev_test: accept input from a file
 
 has been applied to the spi tree at
 
@@ -37,112 +38,129 @@ to this mail.
 Thanks,
 Mark
 
->From 5eca4d843f9f0c3140a8657ba2f8217ee6c08c11 Mon Sep 17 00:00:00 2001
+>From 7af475a5b55e8e47327818e8133fe22204c1fc4d Mon Sep 17 00:00:00 2001
 From: Joshua Clayton <stillcompiling-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Wed, 18 Nov 2015 14:30:37 -0800
-Subject: [PATCH] spi: Move spi code from Documentation to tools
+Date: Wed, 18 Nov 2015 14:30:39 -0800
+Subject: [PATCH] spi: spidev_test: accept input from a file
 
-Jon Corbet requested this code moved with the last changeset,
-https://lkml.org/lkml/2015/3/1/144,
-but the patch was not applied because it missed the Makefile.
-Moved spidev_test, spidev_fdx and their Makefile infrastructure.
+Add input file support to facilitate testing larger data.
 
 Signed-off-by: Joshua Clayton <stillcompiling-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- Documentation/Makefile                     | 2 +-
- Documentation/spi/Makefile                 | 8 --------
- tools/Makefile                             | 7 ++++---
- tools/spi/Makefile                         | 4 ++++
- {Documentation => tools}/spi/spidev_fdx.c  | 0
- {Documentation => tools}/spi/spidev_test.c | 0
- 6 files changed, 9 insertions(+), 12 deletions(-)
- delete mode 100644 Documentation/spi/Makefile
- create mode 100644 tools/spi/Makefile
- rename {Documentation => tools}/spi/spidev_fdx.c (100%)
- rename {Documentation => tools}/spi/spidev_test.c (100%)
+ tools/spi/spidev_test.c | 48 +++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 47 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/Makefile b/Documentation/Makefile
-index bc0548201755..1207d7907650 100644
---- a/Documentation/Makefile
-+++ b/Documentation/Makefile
-@@ -1,4 +1,4 @@
- subdir-y := accounting auxdisplay blackfin connector \
- 	filesystems filesystems ia64 laptops mic misc-devices \
--	networking pcmcia prctl ptp spi timers vDSO video4linux \
-+	networking pcmcia prctl ptp timers vDSO video4linux \
- 	watchdog
-diff --git a/Documentation/spi/Makefile b/Documentation/spi/Makefile
-deleted file mode 100644
-index efa255813e9d..000000000000
---- a/Documentation/spi/Makefile
-+++ /dev/null
-@@ -1,8 +0,0 @@
--# List of programs to build
--hostprogs-y := spidev_test spidev_fdx
--
--# Tell kbuild to always build the programs
--always := $(hostprogs-y)
--
--HOSTCFLAGS_spidev_test.o += -I$(objtree)/usr/include
--HOSTCFLAGS_spidev_fdx.o += -I$(objtree)/usr/include
-diff --git a/tools/Makefile b/tools/Makefile
-index d6f307dfb1a3..0528aa13ccb4 100644
---- a/tools/Makefile
-+++ b/tools/Makefile
-@@ -17,6 +17,7 @@ help:
- 	@echo '  lguest     - a minimal 32-bit x86 hypervisor'
- 	@echo '  perf       - Linux performance measurement and analysis tool'
- 	@echo '  selftests  - various kernel selftests'
-+	@echo '  spi        - spi tools'
- 	@echo '  turbostat  - Intel CPU idle stats and freq reporting tool'
- 	@echo '  usb        - USB testing tools'
- 	@echo '  virtio     - vhost test module'
-@@ -48,7 +49,7 @@ acpi: FORCE
- cpupower: FORCE
- 	$(call descend,power/$@)
+diff --git a/tools/spi/spidev_test.c b/tools/spi/spidev_test.c
+index f9d2957e538b..71a45a4d7d49 100644
+--- a/tools/spi/spidev_test.c
++++ b/tools/spi/spidev_test.c
+@@ -19,6 +19,7 @@
+ #include <getopt.h>
+ #include <fcntl.h>
+ #include <sys/ioctl.h>
++#include <sys/stat.h>
+ #include <linux/types.h>
+ #include <linux/spi/spidev.h>
  
--cgroup firewire hv guest usb virtio vm net iio: FORCE
-+cgroup firewire hv guest spi usb virtio vm net iio: FORCE
- 	$(call descend,$@)
+@@ -33,6 +34,7 @@ static void pabort(const char *s)
+ static const char *device = "/dev/spidev1.1";
+ static uint32_t mode;
+ static uint8_t bits = 8;
++static char *input_file;
+ static uint32_t speed = 500000;
+ static uint16_t delay;
+ static int verbose;
+@@ -144,6 +146,7 @@ static void print_usage(const char *prog)
+ 	     "  -s --speed    max speed (Hz)\n"
+ 	     "  -d --delay    delay (usec)\n"
+ 	     "  -b --bpw      bits per word \n"
++	     "  -i --input    input data from a file (e.g. \"test.bin\")\n"
+ 	     "  -l --loop     loopback\n"
+ 	     "  -H --cpha     clock phase\n"
+ 	     "  -O --cpol     clock polarity\n"
+@@ -167,6 +170,7 @@ static void parse_opts(int argc, char *argv[])
+ 			{ "speed",   1, 0, 's' },
+ 			{ "delay",   1, 0, 'd' },
+ 			{ "bpw",     1, 0, 'b' },
++			{ "input",   1, 0, 'i' },
+ 			{ "loop",    0, 0, 'l' },
+ 			{ "cpha",    0, 0, 'H' },
+ 			{ "cpol",    0, 0, 'O' },
+@@ -182,7 +186,8 @@ static void parse_opts(int argc, char *argv[])
+ 		};
+ 		int c;
  
- liblockdep: FORCE
-@@ -109,7 +110,7 @@ acpi_clean:
- cpupower_clean:
- 	$(call descend,power/cpupower,clean)
+-		c = getopt_long(argc, argv, "D:s:d:b:lHOLC3NR24p:v", lopts, NULL);
++		c = getopt_long(argc, argv, "D:s:d:b:i:lHOLC3NR24p:v",
++				lopts, NULL);
  
--cgroup_clean hv_clean firewire_clean lguest_clean usb_clean virtio_clean vm_clean net_clean iio_clean:
-+cgroup_clean hv_clean firewire_clean lguest_clean spi_clean usb_clean virtio_clean vm_clean net_clean iio_clean:
- 	$(call descend,$(@:_clean=),clean)
+ 		if (c == -1)
+ 			break;
+@@ -200,6 +205,9 @@ static void parse_opts(int argc, char *argv[])
+ 		case 'b':
+ 			bits = atoi(optarg);
+ 			break;
++		case 'i':
++			input_file = optarg;
++			break;
+ 		case 'l':
+ 			mode |= SPI_LOOP;
+ 			break;
+@@ -269,6 +277,39 @@ static void transfer_escaped_string(int fd, char *str)
+ 	free(tx);
+ }
  
- liblockdep_clean:
-@@ -134,7 +135,7 @@ freefall_clean:
- 	$(call descend,laptop/freefall,clean)
- 
- clean: acpi_clean cgroup_clean cpupower_clean hv_clean firewire_clean lguest_clean \
--		perf_clean selftests_clean turbostat_clean usb_clean virtio_clean \
-+		perf_clean selftests_clean turbostat_clean spi_clean usb_clean virtio_clean \
- 		vm_clean net_clean iio_clean x86_energy_perf_policy_clean tmon_clean \
- 		freefall_clean
- 
-diff --git a/tools/spi/Makefile b/tools/spi/Makefile
-new file mode 100644
-index 000000000000..cd0db62e4d9d
---- /dev/null
-+++ b/tools/spi/Makefile
-@@ -0,0 +1,4 @@
-+all: spidev_test spidev_fdx
++static void transfer_file(int fd, char *filename)
++{
++	ssize_t bytes;
++	struct stat sb;
++	int tx_fd;
++	uint8_t *tx;
++	uint8_t *rx;
 +
-+clean:
-+	$(RM) spidev_test spidev_fdx
-diff --git a/Documentation/spi/spidev_fdx.c b/tools/spi/spidev_fdx.c
-similarity index 100%
-rename from Documentation/spi/spidev_fdx.c
-rename to tools/spi/spidev_fdx.c
-diff --git a/Documentation/spi/spidev_test.c b/tools/spi/spidev_test.c
-similarity index 100%
-rename from Documentation/spi/spidev_test.c
-rename to tools/spi/spidev_test.c
++	if (stat(filename, &sb) == -1)
++		pabort("can't stat input file");
++
++	tx_fd = open(filename, O_RDONLY);
++	if (fd < 0)
++		pabort("can't open input file");
++
++	tx = malloc(sb.st_size);
++	if (!tx)
++		pabort("can't allocate tx buffer");
++
++	rx = malloc(sb.st_size);
++	if (!rx)
++		pabort("can't allocate rx buffer");
++
++	bytes = read(tx_fd, tx, sb.st_size);
++	if (bytes != sb.st_size)
++		pabort("failed to read input file");
++
++	transfer(fd, tx, rx, sb.st_size);
++	free(rx);
++	free(tx);
++	close(tx_fd);
++}
++
+ int main(int argc, char *argv[])
+ {
+ 	int ret = 0;
+@@ -317,8 +358,13 @@ int main(int argc, char *argv[])
+ 	printf("bits per word: %d\n", bits);
+ 	printf("max speed: %d Hz (%d KHz)\n", speed, speed/1000);
+ 
++	if (input_tx && input_file)
++		pabort("only one of -p and --input may be selected");
++
+ 	if (input_tx)
+ 		transfer_escaped_string(fd, input_tx);
++	else if (input_file)
++		transfer_file(fd, input_file);
+ 	else
+ 		transfer(fd, default_tx, default_rx, sizeof(default_tx));
+ 
 -- 
 2.6.2
 

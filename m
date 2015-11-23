@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pl022: handle EPROBE_DEFER for dma" to the spi tree
-Date: Mon, 23 Nov 2015 11:41:08 +0000
-Message-ID: <E1a0pUa-0005Wg-JI@debutante>
-References: <1448262825-19710-1-git-send-email-rabin.vincent@axis.com>
+Subject: Applied "spi: spidev_test: fix whitespace" to the spi tree
+Date: Mon, 23 Nov 2015 14:54:20 +0000
+Message-ID: <E1a0sVY-0000Ja-EC@debutante>
+References: <0365b51d6bfd3002287a1ebe382e58a2766aa2d2.1447880230.git.stillcompiling@gmail.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Rabin Vincent <rabin.vincent-VrBV9hrLPhE@public.gmane.org>,
+To: Joshua Clayton <stillcompiling-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1448262825-19710-1-git-send-email-rabin.vincent-VrBV9hrLPhE@public.gmane.org>
+In-Reply-To: <0365b51d6bfd3002287a1ebe382e58a2766aa2d2.1447880230.git.stillcompiling-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: pl022: handle EPROBE_DEFER for dma
+   spi: spidev_test: fix whitespace
 
 has been applied to the spi tree at
 
@@ -38,82 +38,40 @@ to this mail.
 Thanks,
 Mark
 
->From f3d4bb3342630cd3d89882586851498d8dc7c0f2 Mon Sep 17 00:00:00 2001
-From: Rabin Vincent <rabin.vincent-VrBV9hrLPhE@public.gmane.org>
-Date: Mon, 23 Nov 2015 08:13:45 +0100
-Subject: [PATCH] spi: pl022: handle EPROBE_DEFER for dma
+>From b2cfc90428f1c24ce4920f06b584bd05c62741e6 Mon Sep 17 00:00:00 2001
+From: Joshua Clayton <stillcompiling-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Wed, 18 Nov 2015 14:30:42 -0800
+Subject: [PATCH] spi: spidev_test: fix whitespace
 
-Handle EPROBE_DEFER explicitly so that we ensure that we get the DMA
-channel specified in the device tree, instead of depending on the DMA
-controller getting probed before us.
-
-Signed-off-by: Rabin Vincent <rabin.vincent-VrBV9hrLPhE@public.gmane.org>
+Signed-off-by: Joshua Clayton <stillcompiling-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-pl022.c | 28 ++++++++++++++++++++++------
- 1 file changed, 22 insertions(+), 6 deletions(-)
+ tools/spi/spidev_test.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index 94af80676684..5e5fd77e2711 100644
---- a/drivers/spi/spi-pl022.c
-+++ b/drivers/spi/spi-pl022.c
-@@ -1171,19 +1171,31 @@ err_no_rxchan:
- static int pl022_dma_autoprobe(struct pl022 *pl022)
+diff --git a/tools/spi/spidev_test.c b/tools/spi/spidev_test.c
+index 322370dbc770..eddfc336a960 100644
+--- a/tools/spi/spidev_test.c
++++ b/tools/spi/spidev_test.c
+@@ -52,7 +52,8 @@ uint8_t default_tx[] = {
+ uint8_t default_rx[ARRAY_SIZE(default_tx)] = {0, };
+ char *input_tx;
+ 
+-static void hex_dump(const void *src, size_t length, size_t line_size, char *prefix)
++static void hex_dump(const void *src, size_t length, size_t line_size,
++		     char *prefix)
  {
- 	struct device *dev = &pl022->adev->dev;
-+	struct dma_chan *chan;
-+	int err;
- 
- 	/* automatically configure DMA channels from platform, normally using DT */
--	pl022->dma_rx_channel = dma_request_slave_channel(dev, "rx");
--	if (!pl022->dma_rx_channel)
-+	chan = dma_request_slave_channel_reason(dev, "rx");
-+	if (IS_ERR(chan)) {
-+		err = PTR_ERR(chan);
- 		goto err_no_rxchan;
-+	}
-+
-+	pl022->dma_rx_channel = chan;
- 
--	pl022->dma_tx_channel = dma_request_slave_channel(dev, "tx");
--	if (!pl022->dma_tx_channel)
-+	chan = dma_request_slave_channel_reason(dev, "tx");
-+	if (IS_ERR(chan)) {
-+		err = PTR_ERR(chan);
- 		goto err_no_txchan;
-+	}
-+
-+	pl022->dma_tx_channel = chan;
- 
- 	pl022->dummypage = kmalloc(PAGE_SIZE, GFP_KERNEL);
--	if (!pl022->dummypage)
-+	if (!pl022->dummypage) {
-+		err = -ENOMEM;
- 		goto err_no_dummypage;
-+	}
- 
- 	return 0;
- 
-@@ -1194,7 +1206,7 @@ err_no_txchan:
- 	dma_release_channel(pl022->dma_rx_channel);
- 	pl022->dma_rx_channel = NULL;
- err_no_rxchan:
--	return -ENODEV;
-+	return err;
- }
- 		
- static void terminate_dma(struct pl022 *pl022)
-@@ -2236,6 +2248,10 @@ static int pl022_probe(struct amba_device *adev, const struct amba_id *id)
- 
- 	/* Get DMA channels, try autoconfiguration first */
- 	status = pl022_dma_autoprobe(pl022);
-+	if (status == -EPROBE_DEFER) {
-+		dev_dbg(dev, "deferring probe to get DMA channel\n");
-+		goto err_no_irq;
-+	}
- 
- 	/* If that failed, use channels from platform_info */
- 	if (status == 0)
+ 	int i = 0;
+ 	const unsigned char *address = src;
+@@ -164,7 +165,7 @@ static void print_usage(const char *prog)
+ 	puts("  -D --device   device to use (default /dev/spidev1.1)\n"
+ 	     "  -s --speed    max speed (Hz)\n"
+ 	     "  -d --delay    delay (usec)\n"
+-	     "  -b --bpw      bits per word \n"
++	     "  -b --bpw      bits per word\n"
+ 	     "  -i --input    input data from a file (e.g. \"test.bin\")\n"
+ 	     "  -o --output   output data to a file (e.g. \"results.bin\")\n"
+ 	     "  -l --loop     loopback\n"
 -- 
 2.6.2
 

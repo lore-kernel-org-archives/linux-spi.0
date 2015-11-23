@@ -1,89 +1,85 @@
-From: Rabin Vincent <rabin.vincent-VrBV9hrLPhE@public.gmane.org>
-Subject: [PATCH] spi: pl022: handle EPROBE_DEFER for dma
-Date: Mon, 23 Nov 2015 08:13:45 +0100
-Message-ID: <1448262825-19710-1-git-send-email-rabin.vincent@axis.com>
+From: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi: dts: sun4i: Add support for inter-word
+ wait cycles using the SPI Wait Clock Register
+Date: Mon, 23 Nov 2015 10:14:44 +0100
+Message-ID: <CAGNoLaM2sK1XF_gQ6t=Gg4w9i4+edeGxKkafBGu3V9QkQzHfDg@mail.gmail.com>
+References: <1447948422-4915-1-git-send-email-mweseloh42@gmail.com>
+	<1447948422-4915-2-git-send-email-mweseloh42@gmail.com>
+	<CAGRGNgWQLE5h03+4shLmqD6iW_p=L-i3ewdLb8ndWpxGHWh4rQ@mail.gmail.com>
+	<CAGNoLaNhD73N5_1_NbkvRFnwNqO5ehQBTyeCEgzFVgWCrJZmWQ@mail.gmail.com>
+	<CAGRGNgV0kOkye-Zu4WGQKgGim7N2HB9rAFJ3HNQS89Rr6_WexQ@mail.gmail.com>
+	<CAGNoLaOOz2ACtS5iRUxjOknisMHm2Ow3OVsLkqpWuNU4J-9v-A@mail.gmail.com>
+	<20151120161246.GB21921@rob-hp-laptop>
+	<CAGNoLaPLXOmObXgW0YsN8giM1WCRDn7MieTBcKOE5sjXbjg0GA@mail.gmail.com>
+	<20151122194556.GO32142@lukather>
+Reply-To: mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Rabin Vincent <rabinv-VrBV9hrLPhE@public.gmane.org>
-To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Julian Calaby <julian.calaby-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"Mailing List, Arm" <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-sunxi+bncBDFO74UEV4IRBBFSZOZAKGQEJGAIUAQ-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+In-Reply-To: <20151122194556.GO32142@lukather>
+List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <http://groups.google.com/group/linux-sunxi
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+ <http://groups.google.com/group/linux-sunxi/subscribe>
+List-Id: linux-spi.vger.kernel.org
 
-Handle EPROBE_DEFER explicitly so that we ensure that we get the DMA
-channel specified in the device tree, instead of depending on the DMA
-controller getting probed before us.
+2015-11-22 20:45 GMT+01:00 Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>:
+>> Julien, Rob: thanks for your comments! Ok, I will make the following changes:
+>>
+>> - remove "sun4i,spi-wdelay" from the sun4i binding and add the
+>> property to the spi-bus.txt binding instead
+>> - remove the comment about the additional 3 cycles from the documentation
+>> - modfy the spi-sun4i driver to take care of the minimum 3 cycle period
+>>
+>> Does that sound right?
+>>
+>> And maybe I could also use a more descriptive name for the property,
+>> maybe "spi-word-wait-cycles"?
+>
+> I don't think it should be in a clock-rate dependant unit. Using micro
+> or nano-seconds would be more appropriate I guess.
 
-Signed-off-by: Rabin Vincent <rabin.vincent-VrBV9hrLPhE@public.gmane.org>
----
- drivers/spi/spi-pl022.c |   28 ++++++++++++++++++++++------
- 1 file changed, 22 insertions(+), 6 deletions(-)
+Thanks Maxime, using a time based value instead of cycles sounds like
+a much better approach.
 
-diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index 94af806..5e5fd77 100644
---- a/drivers/spi/spi-pl022.c
-+++ b/drivers/spi/spi-pl022.c
-@@ -1171,19 +1171,31 @@ err_no_rxchan:
- static int pl022_dma_autoprobe(struct pl022 *pl022)
- {
- 	struct device *dev = &pl022->adev->dev;
-+	struct dma_chan *chan;
-+	int err;
- 
- 	/* automatically configure DMA channels from platform, normally using DT */
--	pl022->dma_rx_channel = dma_request_slave_channel(dev, "rx");
--	if (!pl022->dma_rx_channel)
-+	chan = dma_request_slave_channel_reason(dev, "rx");
-+	if (IS_ERR(chan)) {
-+		err = PTR_ERR(chan);
- 		goto err_no_rxchan;
-+	}
-+
-+	pl022->dma_rx_channel = chan;
- 
--	pl022->dma_tx_channel = dma_request_slave_channel(dev, "tx");
--	if (!pl022->dma_tx_channel)
-+	chan = dma_request_slave_channel_reason(dev, "tx");
-+	if (IS_ERR(chan)) {
-+		err = PTR_ERR(chan);
- 		goto err_no_txchan;
-+	}
-+
-+	pl022->dma_tx_channel = chan;
- 
- 	pl022->dummypage = kmalloc(PAGE_SIZE, GFP_KERNEL);
--	if (!pl022->dummypage)
-+	if (!pl022->dummypage) {
-+		err = -ENOMEM;
- 		goto err_no_dummypage;
-+	}
- 
- 	return 0;
- 
-@@ -1194,7 +1206,7 @@ err_no_txchan:
- 	dma_release_channel(pl022->dma_rx_channel);
- 	pl022->dma_rx_channel = NULL;
- err_no_rxchan:
--	return -ENODEV;
-+	return err;
- }
- 		
- static void terminate_dma(struct pl022 *pl022)
-@@ -2236,6 +2248,10 @@ static int pl022_probe(struct amba_device *adev, const struct amba_id *id)
- 
- 	/* Get DMA channels, try autoconfiguration first */
- 	status = pl022_dma_autoprobe(pl022);
-+	if (status == -EPROBE_DEFER) {
-+		dev_dbg(dev, "deferring probe to get DMA channel\n");
-+		goto err_no_irq;
-+	}
- 
- 	/* If that failed, use channels from platform_info */
- 	if (status == 0)
--- 
-1.7.10.4
+However... I'm starting to think that the proposed inter-word wait
+time DT property is just an ugly workaround. Let me explain my
+use-case:
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+I'm developing a driver for a sensor that requires a minimum wait time
+between words. The wait time depends on the mode the sensor is set to:
+37.5us in slow mode, 12.5us in fast mode. I initially used spidev to
+test the sensor from userspace. And for that use case, the
+"spi-wdelay" property that I proposed works well. But now I am writing
+the proper protocol driver and suddenly the explicit wait time setting
+seems just wrong. Ideally, the protocol driver would just expose a DT
+property that allows to choose between "slow" and "fast" mode.
+
+I think that the correct approach would be to extend the SPI
+controller API to allow protocol drivers to set an inter-word delay.
+That would keep the magic numbers inside my protocol driver and out of
+the devicetree. And an additional ioctl call could set that inter-word
+delay from spidev, allowing userspace to set this value as well if
+needed.
+
+Mark: would you be open to such a change to the SPI controller API?
+
+I could use the already available spi_transfer.delay_usecs for this,
+but I would require that I wrap each word in a single transfer, which
+adds significant processing overhead to the communication with the
+sensor.
+
+Cheers,
+
+    Marcus

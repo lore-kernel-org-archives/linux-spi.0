@@ -1,77 +1,64 @@
-From: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-Subject: RE: [PATCH] spi/spi-xilinx: Use a cached copy of CR register
-Date: Tue, 24 Nov 2015 12:51:09 +0000
-Message-ID: <4EED9C67BE3EF440A606099F8E34C528251BE13B@XAP-PVEXMBX01.xlnx.xilinx.com>
-References: <1448257280-15717-1-git-send-email-shubhraj@xilinx.com>
- <CAPybu_1VE_PS6DD+-eMDUkUapAxQYaT1eyeT2mVag1-HVhX23g@mail.gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 4/4] spi: mediatek: revise mtk_spi_probe() failure flow
+Date: Tue, 24 Nov 2015 13:04:26 +0000
+Message-ID: <20151124130426.GL1929@sirena.org.uk>
+References: <1447986080-31410-1-git-send-email-leilk.liu@mediatek.com>
+ <1447986080-31410-4-git-send-email-leilk.liu@mediatek.com>
+ <20151121133949.GH26072@sirena.org.uk>
+ <1448332404.27169.4.camel@mhfsdcap03>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Soren Brinkmann <sorenb-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	Michal Simek <michals-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	Anirudha Sarangi <anirudh-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	"shubhrajyoti.datta-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <shubhrajyoti.datta-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAPybu_1VE_PS6DD+-eMDUkUapAxQYaT1eyeT2mVag1-HVhX23g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="7vAdt9JsdkkzRPKN"
+Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: lei liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1448332404.27169.4.camel@mhfsdcap03>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogUmljYXJkbyBSaWJhbGRh
-IERlbGdhZG8gW21haWx0bzpyaWNhcmRvLnJpYmFsZGFAZ21haWwuY29tXQ0KPiBTZW50OiBUdWVz
-ZGF5LCBOb3ZlbWJlciAyNCwgMjAxNSA2OjAzIFBNDQo+IFRvOiBTaHViaHJhanlvdGkgRGF0dGEN
-Cj4gQ2M6IGxpbnV4LXNwaTsgU29yZW4gQnJpbmttYW5uOyBNaWNoYWwgU2ltZWs7IEFuaXJ1ZGhh
-IFNhcmFuZ2k7IFNodWJocmFqeW90aQ0KPiBEYXR0YQ0KPiBTdWJqZWN0OiBSZTogW1BBVENIXSBz
-cGkvc3BpLXhpbGlueDogVXNlIGEgY2FjaGVkIGNvcHkgb2YgQ1IgcmVnaXN0ZXINCj4gDQo+IEhl
-bGxvDQo+IA0KPiBPbiBNb24sIE5vdiAyMywgMjAxNSBhdCA2OjQxIEFNLCBTaHViaHJhanlvdGkg
-RGF0dGENCj4gPHNodWJocmFqeW90aS5kYXR0YUB4aWxpbnguY29tPiB3cm90ZToNCj4gPiBUaGUg
-Q29udHJvbCByZWdpc3RlciBpcyB3cml0dGVuIGJ5IHRoZSBkcml2ZXIuDQo+ID4gVXNlIGEgY2Fj
-aGVkIGNvcHkgb2YgdGhlIHJlZ2lzdGVyIHNvIHRoYXQgdGhlIHJlYWRzIHRoZXJlYWZ0ZXIgY2Fu
-IHVzZQ0KPiA+IHRoZSB2YXJpYWJsZSBpbnN0ZWFkIG9mIHRoZSByZWdpc3RlciByZWFkLg0KPiA+
-DQo+IA0KPiBIYXZlIHlvdSBtYWRlIGFueSBtZWFzdXJlbWVudCBvZiB0aGUgcGVyZm9ybWFuY2Ug
-aW1wYWN0Pw0KPiANCj4gSG93IG11Y2ggdGltZSBkbyB3ZSBzYXZlIGJ5IHJlbW92aW5nIG9uZSBp
-b3JlYWQgcGVyIHRyYW5zYWNpb24gKyBvbmUNCj4gaW9yZWFkIHBlciBjaGlwIHNlbGVjdCAob25s
-eSBpbiBpcnEgbW9kZSk/DQoNCg0KRm9yIG15IGNhc2UgaXQgaXMgbm90IG11Y2guDQpIb3dldmVy
-IGl0IHdhcyBzdWdnZXN0ZWQgb24gdGhlIGxpc3QgYnkgIEplYW4tRnJhbmNvaXMgRGFnZW5haXMu
-DQpBcyBoZSBoYWQgYSBzeXN0ZW0gYmVoaW5kIGEgcGNpIGJyaWRnZS4NCg0KPiANCj4gSWYgaXQg
-aXMgbWVhc3N1cmFibGUsIGRvbnQgeW91IHRoaW5rIHRoYXQgaXQgd291bGQgYmUgYmV0dGVyIHRv
-IGVuY2Fwc3VsYXRlIHRoZQ0KPiBhY2Nlc3MgdG8gdGhlIHNyIHdpdGggMiBmdW5jdGlvbnM/DQoN
-Ck9rIGNhbiB0cnkgdGhhdC4NCj4gDQo+IE90aGVyIGlubGluZSBjb21tZW50czoNCj4gDQo+ID4g
-U2lnbmVkLW9mZi1ieTogU2h1YmhyYWp5b3RpIERhdHRhIDxzaHViaHJhakB4aWxpbnguY29tPg0K
-PiA+IC0tLQ0KPiA+ICBkcml2ZXJzL3NwaS9zcGkteGlsaW54LmMgfCAgIDM0ICsrKysrKysrKysr
-KysrKysrKystLS0tLS0tLS0tLS0tLS0NCj4gPiAgMSBmaWxlcyBjaGFuZ2VkLCAxOSBpbnNlcnRp
-b25zKCspLCAxNSBkZWxldGlvbnMoLSkNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3Nw
-aS9zcGkteGlsaW54LmMgYi9kcml2ZXJzL3NwaS9zcGkteGlsaW54LmMgaW5kZXgNCj4gPiAzMDA5
-MTIxLi43M2Y0NDUzIDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvc3BpL3NwaS14aWxpbnguYw0K
-PiA+ICsrKyBiL2RyaXZlcnMvc3BpL3NwaS14aWxpbnguYw0KPiA+IEBAIC05MSw2ICs5MSw3IEBA
-IHN0cnVjdCB4aWxpbnhfc3BpIHsNCj4gPiAgICAgICAgIHU4IGJ5dGVzX3Blcl93b3JkOw0KPiA+
-ICAgICAgICAgaW50IGJ1ZmZlcl9zaXplOyAgICAgICAgLyogYnVmZmVyIHNpemUgaW4gd29yZHMg
-Ki8NCj4gPiAgICAgICAgIHUzMiBjc19pbmFjdGl2ZTsgICAgICAgIC8qIExldmVsIG9mIHRoZSBD
-UyBwaW5zIHdoZW4gaW5hY3RpdmUqLw0KPiA+ICsgICAgICAgdTMyIGNyOyAgICAgICAgICAgICAg
-ICAgLyogQ29udHJvbCBSZWdpc3RlciovDQo+ID4gICAgICAgICB1bnNpZ25lZCBpbnQgKCpyZWFk
-X2ZuKSh2b2lkIF9faW9tZW0gKik7DQo+ID4gICAgICAgICB2b2lkICgqd3JpdGVfZm4pKHUzMiwg
-dm9pZCBfX2lvbWVtICopOyAgfTsgQEAgLTE4MCwxNSArMTgxLDE1DQo+ID4gQEAgc3RhdGljIHZv
-aWQgeHNwaV9pbml0X2h3KHN0cnVjdCB4aWxpbnhfc3BpICp4c3BpKQ0KPiA+ICAgICAgICAgeHNw
-aS0+d3JpdGVfZm4oMHhmZmZmLCByZWdzX2Jhc2UgKyBYU1BJX1NTUl9PRkZTRVQpOw0KPiA+ICAg
-ICAgICAgLyogRGlzYWJsZSB0aGUgdHJhbnNtaXR0ZXIsIGVuYWJsZSBNYW51YWwgU2xhdmUgU2Vs
-ZWN0IEFzc2VydGlvbiwNCj4gPiAgICAgICAgICAqIHB1dCBTUEkgY29udHJvbGxlciBpbnRvIG1h
-c3RlciBtb2RlLCBhbmQgZW5hYmxlIGl0ICovDQo+ID4gLSAgICAgICB4c3BpLT53cml0ZV9mbihY
-U1BJX0NSX01BTlVBTF9TU0VMRUNUIHwNCj4gWFNQSV9DUl9NQVNURVJfTU9ERSB8DQo+ID4gLSAg
-ICAgICAgICAgICAgIFhTUElfQ1JfRU5BQkxFIHwgWFNQSV9DUl9UWEZJRk9fUkVTRVQgfA0KPiBY
-U1BJX0NSX1JYRklGT19SRVNFVCwNCj4gPiAtICAgICAgICAgICAgICAgcmVnc19iYXNlICsgWFNQ
-SV9DUl9PRkZTRVQpOw0KPiA+ICsgICAgICAgeHNwaS0+Y3IgPSBYU1BJX0NSX01BTlVBTF9TU0VM
-RUNUIHwgWFNQSV9DUl9NQVNURVJfTU9ERSB8DQo+ID4gKyAgICAgICAgICAgICAgIFhTUElfQ1Jf
-RU5BQkxFIHwgWFNQSV9DUl9UWEZJRk9fUkVTRVQgfA0KPiBYU1BJX0NSX1JYRklGT19SRVNFVDsN
-Cj4gPiArICAgICAgIHhzcGktPndyaXRlX2ZuKHhzcGktPmNyLCByZWdzX2Jhc2UgKyBYU1BJX0NS
-X09GRlNFVCk7DQo+ID4gKyAgICAgICB4c3BpLT5jciA9IHhzcGktPnJlYWRfZm4oeHNwaS0+cmVn
-cyArIFhTUElfQ1JfT0ZGU0VUKTsNCj4gDQo+IElzIHRoaXMgbGFzdCBsaW5lIG5lZWRlZD8NCg0K
-WWVzIGJlY2F1c2UgWFNQSV9DUl9SWEZJRk9fUkVTRVQgYml0cyAgd2hlbiB3cml0dGVuIHRvIDEs
-IHRoaXMgYml0IGZvcmNlcyBhIHJlc2V0IG9mIHRoZSBSZWNlaXZlIEZJRk8gdG8gdGhlIGVtcHR5
-DQpjb25kaXRpb24uIE9uZSBBWEkgY2xvY2sgY3ljbGUgYWZ0ZXIgcmVzZXQsIHRoaXMgYml0IGlz
-IGFnYWluIHNldCB0byAwLg0KDQo=
+
+--7vAdt9JsdkkzRPKN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Tue, Nov 24, 2015 at 10:33:24AM +0800, lei liu wrote:
+> On Sat, 2015-11-21 at 13:39 +0000, Mark Brown wrote:
+> > On Fri, Nov 20, 2015 at 10:21:19AM +0800, Leilk Liu wrote:
+
+> > > This patch revises failure flow while pm_runtime_enable().
+
+> > Why?  This also doesn't apply against current code, please check and
+> > resend.
+
+> I don't know. I can git am this patch to spi/for-next. I will resend it,
+> please help to apply it again, thanks.
+
+If you don't know why we should make this change then we may as well
+just not make it?
+
+--7vAdt9JsdkkzRPKN
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJWVGBaAAoJECTWi3JdVIfQZvwH/3DJ6eln8FeT4HhERJ+140uy
+d6a2V6ewkSaYfSQ/ryXUO4gY9Ngz0OqhgxiGE1J6ytGqb86oiMexiFsIvvHU8P16
+dEP5UeZZrjKf4mJq3JbuQsyca33Hi3ntTeiwprHLKpvK6zqXZb56mOkCzg8dNo90
+xBFsvqw9XDIIqF4JoCrRG1BmRBi+a7iamUtTrxuqZvWo04JDm9odAAyClPMCnv6d
+UzvF0l5yvRUFn2aNFkAO22MAbzLQSigJHCwvxs8h5GKm1YMeKJcwCjdvtJ0xWMG8
+3niZqvhb9VdHb1Wc1nJGOr0wShZMspKogSOEioKrv61TlgQ2of64kIyqVzRvJ+8=
+=OdyF
+-----END PGP SIGNATURE-----
+
+--7vAdt9JsdkkzRPKN--
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

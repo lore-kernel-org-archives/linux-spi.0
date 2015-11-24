@@ -1,155 +1,76 @@
-From: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi/spi-xilinx: Use a cached copy of CR register
-Date: Tue, 24 Nov 2015 13:32:40 +0100
-Message-ID: <CAPybu_1VE_PS6DD+-eMDUkUapAxQYaT1eyeT2mVag1-HVhX23g@mail.gmail.com>
+From: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Subject: RE: [PATCH] spi/spi-xilinx: Use a cached copy of CR register
+Date: Tue, 24 Nov 2015 12:51:09 +0000
+Message-ID: <4EED9C67BE3EF440A606099F8E34C528251BE13B@XAP-PVEXMBX01.xlnx.xilinx.com>
 References: <1448257280-15717-1-git-send-email-shubhraj@xilinx.com>
+ <CAPybu_1VE_PS6DD+-eMDUkUapAxQYaT1eyeT2mVag1-HVhX23g@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	=?UTF-8?Q?S=C3=B6ren_Brinkmann?= <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>, anirudh-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org,
-	Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-To: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+	Soren Brinkmann <sorenb-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	Michal Simek <michals-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	Anirudha Sarangi <anirudh-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	"shubhrajyoti.datta-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <shubhrajyoti.datta-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1448257280-15717-1-git-send-email-shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+In-Reply-To: <CAPybu_1VE_PS6DD+-eMDUkUapAxQYaT1eyeT2mVag1-HVhX23g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hello
-
-On Mon, Nov 23, 2015 at 6:41 AM, Shubhrajyoti Datta
-<shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org> wrote:
-> The Control register is written by the driver.
-> Use a cached copy of the register so that the reads
-> thereafter can use the variable instead of the register read.
->
-
-Have you made any measurement of the performance impact?
-
-How much time do we save by removing one ioread per transacion + one
-ioread per chip select (only in irq mode)?
-
-If it is meassurable, dont you think that it would be better to
-encapsulate the access to the sr with 2 functions?
-
-Other inline comments:
-
-> Signed-off-by: Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-> ---
->  drivers/spi/spi-xilinx.c |   34 +++++++++++++++++++---------------
->  1 files changed, 19 insertions(+), 15 deletions(-)
->
-> diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-> index 3009121..73f4453 100644
-> --- a/drivers/spi/spi-xilinx.c
-> +++ b/drivers/spi/spi-xilinx.c
-> @@ -91,6 +91,7 @@ struct xilinx_spi {
->         u8 bytes_per_word;
->         int buffer_size;        /* buffer size in words */
->         u32 cs_inactive;        /* Level of the CS pins when inactive*/
-> +       u32 cr;                 /* Control Register*/
->         unsigned int (*read_fn)(void __iomem *);
->         void (*write_fn)(u32, void __iomem *);
->  };
-> @@ -180,15 +181,15 @@ static void xspi_init_hw(struct xilinx_spi *xspi)
->         xspi->write_fn(0xffff, regs_base + XSPI_SSR_OFFSET);
->         /* Disable the transmitter, enable Manual Slave Select Assertion,
->          * put SPI controller into master mode, and enable it */
-> -       xspi->write_fn(XSPI_CR_MANUAL_SSELECT | XSPI_CR_MASTER_MODE |
-> -               XSPI_CR_ENABLE | XSPI_CR_TXFIFO_RESET | XSPI_CR_RXFIFO_RESET,
-> -               regs_base + XSPI_CR_OFFSET);
-> +       xspi->cr = XSPI_CR_MANUAL_SSELECT | XSPI_CR_MASTER_MODE |
-> +               XSPI_CR_ENABLE | XSPI_CR_TXFIFO_RESET | XSPI_CR_RXFIFO_RESET;
-> +       xspi->write_fn(xspi->cr, regs_base + XSPI_CR_OFFSET);
-> +       xspi->cr = xspi->read_fn(xspi->regs + XSPI_CR_OFFSET);
-
-Is this last line needed?
-
->  }
->
->  static void xilinx_spi_chipselect(struct spi_device *spi, int is_on)
->  {
->         struct xilinx_spi *xspi = spi_master_get_devdata(spi->master);
-> -       u16 cr;
->         u32 cs;
->
->         if (is_on == BITBANG_CS_INACTIVE) {
-> @@ -198,16 +199,16 @@ static void xilinx_spi_chipselect(struct spi_device *spi, int is_on)
->         }
->
->         /* Set the SPI clock phase and polarity */
-> -       cr = xspi->read_fn(xspi->regs + XSPI_CR_OFFSET) & ~XSPI_CR_MODE_MASK;
-> +       xspi->cr &=  ~XSPI_CR_MODE_MASK;
->         if (spi->mode & SPI_CPHA)
-> -               cr |= XSPI_CR_CPHA;
-> +               xspi->cr |= XSPI_CR_CPHA;
->         if (spi->mode & SPI_CPOL)
-> -               cr |= XSPI_CR_CPOL;
-> +               xspi->cr |= XSPI_CR_CPOL;
->         if (spi->mode & SPI_LSB_FIRST)
-> -               cr |= XSPI_CR_LSB_FIRST;
-> +               xspi->cr |= XSPI_CR_LSB_FIRST;
->         if (spi->mode & SPI_LOOP)
-> -               cr |= XSPI_CR_LOOP;
-> -       xspi->write_fn(cr, xspi->regs + XSPI_CR_OFFSET);
-> +               xspi->cr |= XSPI_CR_LOOP;
-> +       xspi->write_fn(xspi->cr, xspi->regs + XSPI_CR_OFFSET);
->
->         /* We do not check spi->max_speed_hz here as the SPI clock
->          * frequency is not software programmable (the IP block design
-> @@ -254,7 +255,8 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
->                 u32 isr;
->                 use_irq = true;
->                 /* Inhibit irq to avoid spurious irqs on tx_empty*/
-> -               cr = xspi->read_fn(xspi->regs + XSPI_CR_OFFSET);
-> +               cr = xspi->cr;
-> +               xspi->cr = cr | XSPI_CR_TRANS_INHIBIT;
->                 xspi->write_fn(cr | XSPI_CR_TRANS_INHIBIT,
->                                xspi->regs + XSPI_CR_OFFSET);
->                 /* ACK old irqs (if any) */
-> @@ -283,7 +285,8 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
->                  */
->
->                 if (use_irq) {
-> -                       xspi->write_fn(cr, xspi->regs + XSPI_CR_OFFSET);
-> +                       xspi->cr = cr;
-> +                       xspi->write_fn(xspi->cr, xspi->regs + XSPI_CR_OFFSET);
->                         wait_for_completion(&xspi->done);
->                         /* A transmit has just completed. Process received data
->                          * and check for more data to transmit. Always inhibit
-> @@ -291,8 +294,8 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
->                          * register/FIFO, or make sure it is stopped if we're
->                          * done.
->                          */
-> -                       xspi->write_fn(cr | XSPI_CR_TRANS_INHIBIT,
-> -                                      xspi->regs + XSPI_CR_OFFSET);
-> +                       xspi->cr = xspi->cr | XSPI_CR_TRANS_INHIBIT;
-> +                       xspi->write_fn(xspi->cr, xspi->regs + XSPI_CR_OFFSET);
->                         sr = XSPI_SR_TX_EMPTY_MASK;
->                 } else
->                         sr = xspi->read_fn(xspi->regs + XSPI_SR_OFFSET);
-> @@ -318,7 +321,8 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
->
->         if (use_irq) {
->                 xspi->write_fn(0, xspi->regs + XIPIF_V123B_DGIER_OFFSET);
-> -               xspi->write_fn(cr, xspi->regs + XSPI_CR_OFFSET);
-> +               xspi->cr = cr;
-> +               xspi->write_fn(xspi->cr, xspi->regs + XSPI_CR_OFFSET);
->         }
->
->         return t->len;
-> --
-> 1.7.1
->
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-
-
-
--- 
-Ricardo Ribalda
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogUmljYXJkbyBSaWJhbGRh
+IERlbGdhZG8gW21haWx0bzpyaWNhcmRvLnJpYmFsZGFAZ21haWwuY29tXQ0KPiBTZW50OiBUdWVz
+ZGF5LCBOb3ZlbWJlciAyNCwgMjAxNSA2OjAzIFBNDQo+IFRvOiBTaHViaHJhanlvdGkgRGF0dGEN
+Cj4gQ2M6IGxpbnV4LXNwaTsgU29yZW4gQnJpbmttYW5uOyBNaWNoYWwgU2ltZWs7IEFuaXJ1ZGhh
+IFNhcmFuZ2k7IFNodWJocmFqeW90aQ0KPiBEYXR0YQ0KPiBTdWJqZWN0OiBSZTogW1BBVENIXSBz
+cGkvc3BpLXhpbGlueDogVXNlIGEgY2FjaGVkIGNvcHkgb2YgQ1IgcmVnaXN0ZXINCj4gDQo+IEhl
+bGxvDQo+IA0KPiBPbiBNb24sIE5vdiAyMywgMjAxNSBhdCA2OjQxIEFNLCBTaHViaHJhanlvdGkg
+RGF0dGENCj4gPHNodWJocmFqeW90aS5kYXR0YUB4aWxpbnguY29tPiB3cm90ZToNCj4gPiBUaGUg
+Q29udHJvbCByZWdpc3RlciBpcyB3cml0dGVuIGJ5IHRoZSBkcml2ZXIuDQo+ID4gVXNlIGEgY2Fj
+aGVkIGNvcHkgb2YgdGhlIHJlZ2lzdGVyIHNvIHRoYXQgdGhlIHJlYWRzIHRoZXJlYWZ0ZXIgY2Fu
+IHVzZQ0KPiA+IHRoZSB2YXJpYWJsZSBpbnN0ZWFkIG9mIHRoZSByZWdpc3RlciByZWFkLg0KPiA+
+DQo+IA0KPiBIYXZlIHlvdSBtYWRlIGFueSBtZWFzdXJlbWVudCBvZiB0aGUgcGVyZm9ybWFuY2Ug
+aW1wYWN0Pw0KPiANCj4gSG93IG11Y2ggdGltZSBkbyB3ZSBzYXZlIGJ5IHJlbW92aW5nIG9uZSBp
+b3JlYWQgcGVyIHRyYW5zYWNpb24gKyBvbmUNCj4gaW9yZWFkIHBlciBjaGlwIHNlbGVjdCAob25s
+eSBpbiBpcnEgbW9kZSk/DQoNCg0KRm9yIG15IGNhc2UgaXQgaXMgbm90IG11Y2guDQpIb3dldmVy
+IGl0IHdhcyBzdWdnZXN0ZWQgb24gdGhlIGxpc3QgYnkgIEplYW4tRnJhbmNvaXMgRGFnZW5haXMu
+DQpBcyBoZSBoYWQgYSBzeXN0ZW0gYmVoaW5kIGEgcGNpIGJyaWRnZS4NCg0KPiANCj4gSWYgaXQg
+aXMgbWVhc3N1cmFibGUsIGRvbnQgeW91IHRoaW5rIHRoYXQgaXQgd291bGQgYmUgYmV0dGVyIHRv
+IGVuY2Fwc3VsYXRlIHRoZQ0KPiBhY2Nlc3MgdG8gdGhlIHNyIHdpdGggMiBmdW5jdGlvbnM/DQoN
+Ck9rIGNhbiB0cnkgdGhhdC4NCj4gDQo+IE90aGVyIGlubGluZSBjb21tZW50czoNCj4gDQo+ID4g
+U2lnbmVkLW9mZi1ieTogU2h1YmhyYWp5b3RpIERhdHRhIDxzaHViaHJhakB4aWxpbnguY29tPg0K
+PiA+IC0tLQ0KPiA+ICBkcml2ZXJzL3NwaS9zcGkteGlsaW54LmMgfCAgIDM0ICsrKysrKysrKysr
+KysrKysrKystLS0tLS0tLS0tLS0tLS0NCj4gPiAgMSBmaWxlcyBjaGFuZ2VkLCAxOSBpbnNlcnRp
+b25zKCspLCAxNSBkZWxldGlvbnMoLSkNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3Nw
+aS9zcGkteGlsaW54LmMgYi9kcml2ZXJzL3NwaS9zcGkteGlsaW54LmMgaW5kZXgNCj4gPiAzMDA5
+MTIxLi43M2Y0NDUzIDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvc3BpL3NwaS14aWxpbnguYw0K
+PiA+ICsrKyBiL2RyaXZlcnMvc3BpL3NwaS14aWxpbnguYw0KPiA+IEBAIC05MSw2ICs5MSw3IEBA
+IHN0cnVjdCB4aWxpbnhfc3BpIHsNCj4gPiAgICAgICAgIHU4IGJ5dGVzX3Blcl93b3JkOw0KPiA+
+ICAgICAgICAgaW50IGJ1ZmZlcl9zaXplOyAgICAgICAgLyogYnVmZmVyIHNpemUgaW4gd29yZHMg
+Ki8NCj4gPiAgICAgICAgIHUzMiBjc19pbmFjdGl2ZTsgICAgICAgIC8qIExldmVsIG9mIHRoZSBD
+UyBwaW5zIHdoZW4gaW5hY3RpdmUqLw0KPiA+ICsgICAgICAgdTMyIGNyOyAgICAgICAgICAgICAg
+ICAgLyogQ29udHJvbCBSZWdpc3RlciovDQo+ID4gICAgICAgICB1bnNpZ25lZCBpbnQgKCpyZWFk
+X2ZuKSh2b2lkIF9faW9tZW0gKik7DQo+ID4gICAgICAgICB2b2lkICgqd3JpdGVfZm4pKHUzMiwg
+dm9pZCBfX2lvbWVtICopOyAgfTsgQEAgLTE4MCwxNSArMTgxLDE1DQo+ID4gQEAgc3RhdGljIHZv
+aWQgeHNwaV9pbml0X2h3KHN0cnVjdCB4aWxpbnhfc3BpICp4c3BpKQ0KPiA+ICAgICAgICAgeHNw
+aS0+d3JpdGVfZm4oMHhmZmZmLCByZWdzX2Jhc2UgKyBYU1BJX1NTUl9PRkZTRVQpOw0KPiA+ICAg
+ICAgICAgLyogRGlzYWJsZSB0aGUgdHJhbnNtaXR0ZXIsIGVuYWJsZSBNYW51YWwgU2xhdmUgU2Vs
+ZWN0IEFzc2VydGlvbiwNCj4gPiAgICAgICAgICAqIHB1dCBTUEkgY29udHJvbGxlciBpbnRvIG1h
+c3RlciBtb2RlLCBhbmQgZW5hYmxlIGl0ICovDQo+ID4gLSAgICAgICB4c3BpLT53cml0ZV9mbihY
+U1BJX0NSX01BTlVBTF9TU0VMRUNUIHwNCj4gWFNQSV9DUl9NQVNURVJfTU9ERSB8DQo+ID4gLSAg
+ICAgICAgICAgICAgIFhTUElfQ1JfRU5BQkxFIHwgWFNQSV9DUl9UWEZJRk9fUkVTRVQgfA0KPiBY
+U1BJX0NSX1JYRklGT19SRVNFVCwNCj4gPiAtICAgICAgICAgICAgICAgcmVnc19iYXNlICsgWFNQ
+SV9DUl9PRkZTRVQpOw0KPiA+ICsgICAgICAgeHNwaS0+Y3IgPSBYU1BJX0NSX01BTlVBTF9TU0VM
+RUNUIHwgWFNQSV9DUl9NQVNURVJfTU9ERSB8DQo+ID4gKyAgICAgICAgICAgICAgIFhTUElfQ1Jf
+RU5BQkxFIHwgWFNQSV9DUl9UWEZJRk9fUkVTRVQgfA0KPiBYU1BJX0NSX1JYRklGT19SRVNFVDsN
+Cj4gPiArICAgICAgIHhzcGktPndyaXRlX2ZuKHhzcGktPmNyLCByZWdzX2Jhc2UgKyBYU1BJX0NS
+X09GRlNFVCk7DQo+ID4gKyAgICAgICB4c3BpLT5jciA9IHhzcGktPnJlYWRfZm4oeHNwaS0+cmVn
+cyArIFhTUElfQ1JfT0ZGU0VUKTsNCj4gDQo+IElzIHRoaXMgbGFzdCBsaW5lIG5lZWRlZD8NCg0K
+WWVzIGJlY2F1c2UgWFNQSV9DUl9SWEZJRk9fUkVTRVQgYml0cyAgd2hlbiB3cml0dGVuIHRvIDEs
+IHRoaXMgYml0IGZvcmNlcyBhIHJlc2V0IG9mIHRoZSBSZWNlaXZlIEZJRk8gdG8gdGhlIGVtcHR5
+DQpjb25kaXRpb24uIE9uZSBBWEkgY2xvY2sgY3ljbGUgYWZ0ZXIgcmVzZXQsIHRoaXMgYml0IGlz
+IGFnYWluIHNldCB0byAwLg0KDQo=
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

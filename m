@@ -1,90 +1,47 @@
-From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Subject: [PATCH v2] spi: mediatek: revise mtk_spi_probe() failure flow
-Date: Tue, 24 Nov 2015 10:38:32 +0800
-Message-ID: <1448332712-29039-1-git-send-email-leilk.liu@mediatek.com>
+From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH] spi: davinci: fix spurious i/o error
+Date: Tue, 24 Nov 2015 16:04:01 +0530
+Message-ID: <108883742c4b44d338ea0816abeeb2901a2afcd5.1448361028.git.nsekhar@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain
-Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Linux ARM Mailing List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-This patch revises failure flow while pm_runtime_enable().
+davinci_spi_bufs() uses wait_for_completion_interruptible()
+without bothering to handle -ERESTARTSYS. Due to this,
+sometime, it returns prematurely when a signal is received.
+Since the return value is never checked, userspace eventually
+receives a spurious -EIO.
 
-Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+To fix this, use un-interruptible wait_for_completion_timeout().
+
+Signed-off-by: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
 ---
- drivers/spi/spi-mt65xx.c |   15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/spi/spi-davinci.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 6c1a96e..00a36da 100644
---- a/drivers/spi/spi-mt65xx.c
-+++ b/drivers/spi/spi-mt65xx.c
-@@ -607,7 +607,8 @@ static int mtk_spi_probe(struct platform_device *pdev)
- 	ret = clk_set_parent(mdata->sel_clk, mdata->parent_clk);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "failed to clk_set_parent (%d)\n", ret);
--		goto err_disable_clk;
-+		clk_disable_unprepare(mdata->spi_clk);
-+		goto err_put_master;
- 	}
+diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+index 7d3af3eacf57..38026aa1afd7 100644
+--- a/drivers/spi/spi-davinci.c
++++ b/drivers/spi/spi-davinci.c
+@@ -703,7 +703,10 @@ static int davinci_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
  
- 	clk_disable_unprepare(mdata->spi_clk);
-@@ -617,7 +618,7 @@ static int mtk_spi_probe(struct platform_device *pdev)
- 	ret = devm_spi_register_master(&pdev->dev, master);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to register master (%d)\n", ret);
--		goto err_put_master;
-+		goto err_disable_runtime_pm;
- 	}
- 
- 	if (mdata->dev_comp->need_pad_sel) {
-@@ -626,14 +627,14 @@ static int mtk_spi_probe(struct platform_device *pdev)
- 				"pad_num does not match num_chipselect(%d != %d)\n",
- 				mdata->pad_num, master->num_chipselect);
- 			ret = -EINVAL;
--			goto err_put_master;
-+			goto err_disable_runtime_pm;
- 		}
- 
- 		if (!master->cs_gpios && master->num_chipselect > 1) {
- 			dev_err(&pdev->dev,
- 				"cs_gpios not specified and num_chipselect > 1\n");
- 			ret = -EINVAL;
--			goto err_put_master;
-+			goto err_disable_runtime_pm;
- 		}
- 
- 		if (master->cs_gpios) {
-@@ -644,7 +645,7 @@ static int mtk_spi_probe(struct platform_device *pdev)
- 				if (ret) {
- 					dev_err(&pdev->dev,
- 						"can't get CS GPIO %i\n", i);
--					goto err_put_master;
-+					goto err_disable_runtime_pm;
- 				}
- 			}
- 		}
-@@ -652,8 +653,8 @@ static int mtk_spi_probe(struct platform_device *pdev)
- 
- 	return 0;
- 
--err_disable_clk:
--	clk_disable_unprepare(mdata->spi_clk);
-+err_disable_runtime_pm:
-+	pm_runtime_disable(&pdev->dev);
- err_put_master:
- 	spi_master_put(master);
- 
+ 	/* Wait for the transfer to complete */
+ 	if (spicfg->io_type != SPI_IO_TYPE_POLL) {
+-		wait_for_completion_interruptible(&(dspi->done));
++		if (wait_for_completion_timeout(&dspi->done, HZ) == 0) {
++			dev_err(&spi->dev, "spi transfer timeout\n");
++			return -ETIMEDOUT;
++		}
+ 	} else {
+ 		while (dspi->rcount > 0 || dspi->wcount > 0) {
+ 			errors = davinci_spi_process_events(dspi);
 -- 
-1.7.9.5
+2.4.4.408.g16da57c
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

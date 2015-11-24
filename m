@@ -1,50 +1,60 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2] spi: mediatek: revise mtk_spi_probe() failure flow
-Date: Tue, 24 Nov 2015 13:05:23 +0000
-Message-ID: <20151124130523.GM1929@sirena.org.uk>
-References: <1448332712-29039-1-git-send-email-leilk.liu@mediatek.com>
+From: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2] mfd: cros ec: Lock the SPI bus while holding
+ chipselect
+Date: Tue, 24 Nov 2015 17:00:20 +0000
+Message-ID: <20151124170020.GE12874@x1>
+References: <1447043150-4806-1-git-send-email-drinkcat@chromium.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="q8dntDJTu318bll0"
-Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
+	Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>, dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
+	rspangler-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, gwendal-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Nicolas Boichat <drinkcat-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1448332712-29039-1-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <1447043150-4806-1-git-send-email-drinkcat-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Mon, 09 Nov 2015, Nicolas Boichat wrote:
 
---q8dntDJTu318bll0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> cros_ec_cmd_xfer_spi and cros_ec_pkt_xfer_spi generally work like
+> this:
+>  - Pull CS down (active), wait a bit, then send a command
+>  - Wait for response (multiple requests)
+>  - Wait a while, pull CS up (inactive)
+>=20
+> These operations, individually, lock the SPI bus, but there is
+> nothing preventing the SPI framework from interleaving messages
+> intended for other devices as the bus is unlocked in between.
+>=20
+> This is a problem as the EC expects CS to be held low for the
+> whole duration.
+>=20
+> Solution: Lock the SPI bus during the whole transaction, to make
+> sure that no other messages can be interleaved.
+>=20
+> Signed-off-by: Nicolas Boichat <drinkcat-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+> ---
+>=20
+> v2: Move bus_unlock earlier in the functions.
+>=20
+> Applies on top on linux-next/master (20151109)
+>=20
+>  drivers/mfd/cros_ec_spi.c | 41 +++++++++++++++++++++++++++++--------=
+----
+>  1 file changed, 29 insertions(+), 12 deletions(-)
 
-On Tue, Nov 24, 2015 at 10:38:32AM +0800, Leilk Liu wrote:
-> This patch revises failure flow while pm_runtime_enable().
+Code changes look okay, but I think you can drop the comments.
 
-This still doesn't explain what the purpose of this change is.
-
---q8dntDJTu318bll0
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJWVGCSAAoJECTWi3JdVIfQYnEH/28JsFFbizaNYvfTU3LBBtHT
-27jBlS90oOF6ZuvEjf8lZbjcEi/AFYNlSESDT26ySPMB/u7EiqDg0vf7ctqW675L
-2y4JFtlWZgLDaUCpaOgkYVmAuRFaIlSTLxIn47463S0F5utHgsncOO7V4x0rElR8
-VsGiCidVmwQVPrnyJ/pNcJl90GjHtzgrSSO3jaxX36MCCX9KwPFqbkHWkJSso0tG
-YnycdpBxbp+JuS4GyJUkiLmwpH55xwCxWN0N6UlSarqQuCSv/B1pgVvKd5HdvERV
-XbufUn0rvnn7nJlqeDOWQHdmh32BGe2gG2ehkWD6FpfysGb9x+1RJ3QnkziPL1w=
-=oDZq
------END PGP SIGNATURE-----
-
---q8dntDJTu318bll0--
+--=20
+Lee Jones
+Linaro STMicroelectronics Landing Team Lead
+Linaro.org =E2=94=82 Open source software for ARM SoCs
+=46ollow Linaro: Facebook | Twitter | Blog
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

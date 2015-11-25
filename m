@@ -1,96 +1,137 @@
-From: Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v2] spi: mediatek: revise mtk_spi_probe() failure flow
-Date: Tue, 24 Nov 2015 19:12:42 +0100
-Message-ID: <5654A89A.3090202@gmail.com>
-References: <1448332712-29039-1-git-send-email-leilk.liu@mediatek.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Nicolas Boichat <drinkcat-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: [PATCH v3] mfd: cros ec: Lock the SPI bus while holding chipselect
+Date: Wed, 25 Nov 2015 13:51:07 +0800
+Message-ID: <1448430667-4213-1-git-send-email-drinkcat@chromium.org>
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
+	Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>, dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
+	rspangler-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, gwendal-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1448332712-29039-1-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+cros_ec_cmd_xfer_spi and cros_ec_pkt_xfer_spi generally work like
+this:
+ - Pull CS down (active), wait a bit, then send a command
+ - Wait for response (multiple requests)
+ - Wait a while, pull CS up (inactive)
 
+These operations, individually, lock the SPI bus, but there is
+nothing preventing the SPI framework from interleaving messages
+intended for other devices as the bus is unlocked in between.
 
-On 24/11/15 03:38, Leilk Liu wrote:
-> This patch revises failure flow while pm_runtime_enable().
+This is a problem as the EC expects CS to be held low for the
+whole duration.
 
-Please write a proper commit message explaining what this patch does.
+Solution: Lock the SPI bus during the whole transaction, to make
+sure that no other messages can be interleaved.
 
->
-> Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-> ---
->   drivers/spi/spi-mt65xx.c |   15 ++++++++-------
->   1 file changed, 8 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-> index 6c1a96e..00a36da 100644
-> --- a/drivers/spi/spi-mt65xx.c
-> +++ b/drivers/spi/spi-mt65xx.c
-> @@ -607,7 +607,8 @@ static int mtk_spi_probe(struct platform_device *pdev)
->   	ret = clk_set_parent(mdata->sel_clk, mdata->parent_clk);
->   	if (ret < 0) {
->   		dev_err(&pdev->dev, "failed to clk_set_parent (%d)\n", ret);
-> -		goto err_disable_clk;
-> +		clk_disable_unprepare(mdata->spi_clk);
-> +		goto err_put_master;
->   	}
->
->   	clk_disable_unprepare(mdata->spi_clk);
-> @@ -617,7 +618,7 @@ static int mtk_spi_probe(struct platform_device *pdev)
->   	ret = devm_spi_register_master(&pdev->dev, master);
->   	if (ret) {
->   		dev_err(&pdev->dev, "failed to register master (%d)\n", ret);
-> -		goto err_put_master;
-> +		goto err_disable_runtime_pm;
->   	}
->
->   	if (mdata->dev_comp->need_pad_sel) {
-> @@ -626,14 +627,14 @@ static int mtk_spi_probe(struct platform_device *pdev)
->   				"pad_num does not match num_chipselect(%d != %d)\n",
->   				mdata->pad_num, master->num_chipselect);
->   			ret = -EINVAL;
-> -			goto err_put_master;
-> +			goto err_disable_runtime_pm;
->   		}
->
->   		if (!master->cs_gpios && master->num_chipselect > 1) {
->   			dev_err(&pdev->dev,
->   				"cs_gpios not specified and num_chipselect > 1\n");
->   			ret = -EINVAL;
-> -			goto err_put_master;
-> +			goto err_disable_runtime_pm;
->   		}
->
->   		if (master->cs_gpios) {
-> @@ -644,7 +645,7 @@ static int mtk_spi_probe(struct platform_device *pdev)
->   				if (ret) {
->   					dev_err(&pdev->dev,
->   						"can't get CS GPIO %i\n", i);
-> -					goto err_put_master;
-> +					goto err_disable_runtime_pm;
->   				}
->   			}
->   		}
-> @@ -652,8 +653,8 @@ static int mtk_spi_probe(struct platform_device *pdev)
->
->   	return 0;
->
-> -err_disable_clk:
-> -	clk_disable_unprepare(mdata->spi_clk);
-> +err_disable_runtime_pm:
-> +	pm_runtime_disable(&pdev->dev);
->   err_put_master:
->   	spi_master_put(master);
->
->
+Signed-off-by: Nicolas Boichat <drinkcat-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+---
+
+v2: Move bus_unlock earlier in the functions.
+v3: Remove comments.
+
+Applies on top on linux-next/master (20151124)
+
+ drivers/mfd/cros_ec_spi.c | 30 ++++++++++++++++++------------
+ 1 file changed, 18 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/mfd/cros_ec_spi.c b/drivers/mfd/cros_ec_spi.c
+index 6a0f6ec..d6af52d 100644
+--- a/drivers/mfd/cros_ec_spi.c
++++ b/drivers/mfd/cros_ec_spi.c
+@@ -113,7 +113,7 @@ static int terminate_request(struct cros_ec_device *ec_dev)
+ 	trans.delay_usecs = ec_spi->end_of_msg_delay;
+ 	spi_message_add_tail(&trans, &msg);
+ 
+-	ret = spi_sync(ec_spi->spi, &msg);
++	ret = spi_sync_locked(ec_spi->spi, &msg);
+ 
+ 	/* Reset end-of-response timer */
+ 	ec_spi->last_transfer_ns = ktime_get_ns();
+@@ -147,7 +147,7 @@ static int receive_n_bytes(struct cros_ec_device *ec_dev, u8 *buf, int n)
+ 
+ 	spi_message_init(&msg);
+ 	spi_message_add_tail(&trans, &msg);
+-	ret = spi_sync(ec_spi->spi, &msg);
++	ret = spi_sync_locked(ec_spi->spi, &msg);
+ 	if (ret < 0)
+ 		dev_err(ec_dev->dev, "spi transfer failed: %d\n", ret);
+ 
+@@ -391,10 +391,10 @@ static int cros_ec_pkt_xfer_spi(struct cros_ec_device *ec_dev,
+ 	}
+ 
+ 	rx_buf = kzalloc(len, GFP_KERNEL);
+-	if (!rx_buf) {
+-		ret = -ENOMEM;
+-		goto exit;
+-	}
++	if (!rx_buf)
++		return -ENOMEM;
++
++	spi_bus_lock(ec_spi->spi->master);
+ 
+ 	/*
+ 	 * Leave a gap between CS assertion and clocking of data to allow the
+@@ -414,7 +414,7 @@ static int cros_ec_pkt_xfer_spi(struct cros_ec_device *ec_dev,
+ 	trans.len = len;
+ 	trans.cs_change = 1;
+ 	spi_message_add_tail(&trans, &msg);
+-	ret = spi_sync(ec_spi->spi, &msg);
++	ret = spi_sync_locked(ec_spi->spi, &msg);
+ 
+ 	/* Get the response */
+ 	if (!ret) {
+@@ -440,6 +440,9 @@ static int cros_ec_pkt_xfer_spi(struct cros_ec_device *ec_dev,
+ 	}
+ 
+ 	final_ret = terminate_request(ec_dev);
++
++	spi_bus_unlock(ec_spi->spi->master);
++
+ 	if (!ret)
+ 		ret = final_ret;
+ 	if (ret < 0)
+@@ -520,10 +523,10 @@ static int cros_ec_cmd_xfer_spi(struct cros_ec_device *ec_dev,
+ 	}
+ 
+ 	rx_buf = kzalloc(len, GFP_KERNEL);
+-	if (!rx_buf) {
+-		ret = -ENOMEM;
+-		goto exit;
+-	}
++	if (!rx_buf)
++		return -ENOMEM;
++
++	spi_bus_lock(ec_spi->spi->master);
+ 
+ 	/* Transmit phase - send our message */
+ 	debug_packet(ec_dev->dev, "out", ec_dev->dout, len);
+@@ -534,7 +537,7 @@ static int cros_ec_cmd_xfer_spi(struct cros_ec_device *ec_dev,
+ 	trans.cs_change = 1;
+ 	spi_message_init(&msg);
+ 	spi_message_add_tail(&trans, &msg);
+-	ret = spi_sync(ec_spi->spi, &msg);
++	ret = spi_sync_locked(ec_spi->spi, &msg);
+ 
+ 	/* Get the response */
+ 	if (!ret) {
+@@ -560,6 +563,9 @@ static int cros_ec_cmd_xfer_spi(struct cros_ec_device *ec_dev,
+ 	}
+ 
+ 	final_ret = terminate_request(ec_dev);
++
++	spi_bus_unlock(ec_spi->spi->master);
++
+ 	if (!ret)
+ 		ret = final_ret;
+ 	if (ret < 0)
+-- 
+2.6.0.rc2.230.g3dd15c0
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

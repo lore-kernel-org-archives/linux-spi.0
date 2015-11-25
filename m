@@ -1,82 +1,166 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: spi: tests driver to test basic alignment/length issues via loopback
-Date: Wed, 25 Nov 2015 19:56:22 +0100
-Message-ID: <753FCC7B-67D9-495B-A6C1-D49793502C90@martin.sperl.org>
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2104\))
-Content-Type: text/plain; charset=utf-8
+From: Gwendal Grignou <gwendal-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: Re: [PATCH v3] mfd: cros ec: Lock the SPI bus while holding chipselect
+Date: Wed, 25 Nov 2015 14:37:29 -0800
+Message-ID: <CAMHSBOV+hq6O4EhxF9=VQx4erwKR814h7tbK=Md3sFPQxuANqA@mail.gmail.com>
+References: <1448430667-4213-1-git-send-email-drinkcat@chromium.org> <20151125081219.GL12874@x1>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: Nicolas Boichat <drinkcat-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	Linux Kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
+	Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>,
+	Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, rspangler-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
+	Gwendal Grignou <gwendal-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20151125081219.GL12874@x1>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi!
+Reviewed-by: Gwendal Grignou <gwendal-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
-While writing a patch that allows spi_masters (and maybe also the
-framework) to modify a submitted spi_message so that the resulting
-spi_message fits the =E2=80=9Climitations=E2=80=9D of the HW (this basi=
-cally works
-already, but I still need to split it into several patches and run
-further testing before submitting...) I had to generate a test
-harness to make sure that all situations were taken care of properly.
-
-So I had to write a small test driver that allows for generate all sort=
-s
-of spi_messages with different length, rx/tx_buf alignments and more to
-get generated - right now it submits something like 360 distinct
-spi_messages:
-* transfers starting on a page with rx and tx_buf set
-  * length: 1, 16, 32, 64, 128, 256, 1024, 4096, 128k
-  * alignment of rx_buf/tx_buf to 0, 1, 2, 3 ([0:sizeof(int)[)
-    (if your spi_master defines dma_alignment, then [0:dma_alignment[)
-  * a total of 144 spi-messages
-* transfer starting on (page_size - 4) with rx and tx_buf set
-  * same as above
-  * a total of 144 spi-messages
-* tx-only transfers
-  * same as above, but only alignment for tx
-  * total of 36 spi-messages
-* rx-only transfers
-  * same as above, but only alignment for rx
-  * total of 36 spi-messages
-
-Currently no multi-transfers are tested, but in principle these can=20
-get defined very easily.
-
-It is quite extensible and has already helped me identify some regressi=
-ons
-that the =E2=80=9Cmodify=E2=80=9D framework was introducing on the rasp=
-berry Pi.
-
-=46or complete testing the only thing it requires is  MOSI connected to=
- MISO.
-and then it can detect lots of situations:
-* incomplete writes in rx_buf
-* writes outside of spi_transfer.rx_buf (dma writing to much)
-* alignment issues
-
-There is also several distinct tx-payload generators that can get used =
-to
-identify some issues - it may also help when using a logic-analyzer to =
-see
-the data that is really sent out.
-
-Obviously it is not perfect and is only tested using 4 wire mode, but i=
-t
-may act as a =E2=80=9Ctool=E2=80=9D to test for some basic regressions.
-
-So I wonder if there would be some interest in having such a test drive=
-r
-in the kernel for use during spi_master development.
-
-If interested, you can have a look at: https://github.com/msperl/spi-te=
-st <https://github.com/msperl/spi-test>
-and if that seems to fulfill a requirement, then I can submit it as a
-patch.
-
-Thanks,
-	Martin--
+On Wed, Nov 25, 2015 at 12:12 AM, Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrot=
+e:
+> On Wed, 25 Nov 2015, Nicolas Boichat wrote:
+>
+>> cros_ec_cmd_xfer_spi and cros_ec_pkt_xfer_spi generally work like
+>> this:
+>>  - Pull CS down (active), wait a bit, then send a command
+>>  - Wait for response (multiple requests)
+>>  - Wait a while, pull CS up (inactive)
+>>
+>> These operations, individually, lock the SPI bus, but there is
+>> nothing preventing the SPI framework from interleaving messages
+>> intended for other devices as the bus is unlocked in between.
+>>
+>> This is a problem as the EC expects CS to be held low for the
+>> whole duration.
+>>
+>> Solution: Lock the SPI bus during the whole transaction, to make
+>> sure that no other messages can be interleaved.
+>>
+>> Signed-off-by: Nicolas Boichat <drinkcat-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+>> ---
+>>
+>> v2: Move bus_unlock earlier in the functions.
+>> v3: Remove comments.
+>>
+>> Applies on top on linux-next/master (20151124)
+>>
+>>  drivers/mfd/cros_ec_spi.c | 30 ++++++++++++++++++------------
+>>  1 file changed, 18 insertions(+), 12 deletions(-)
+>
+> Acked-by: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+>
+>> diff --git a/drivers/mfd/cros_ec_spi.c b/drivers/mfd/cros_ec_spi.c
+>> index 6a0f6ec..d6af52d 100644
+>> --- a/drivers/mfd/cros_ec_spi.c
+>> +++ b/drivers/mfd/cros_ec_spi.c
+>> @@ -113,7 +113,7 @@ static int terminate_request(struct cros_ec_devi=
+ce *ec_dev)
+>>       trans.delay_usecs =3D ec_spi->end_of_msg_delay;
+>>       spi_message_add_tail(&trans, &msg);
+>>
+>> -     ret =3D spi_sync(ec_spi->spi, &msg);
+>> +     ret =3D spi_sync_locked(ec_spi->spi, &msg);
+>>
+>>       /* Reset end-of-response timer */
+>>       ec_spi->last_transfer_ns =3D ktime_get_ns();
+>> @@ -147,7 +147,7 @@ static int receive_n_bytes(struct cros_ec_device=
+ *ec_dev, u8 *buf, int n)
+>>
+>>       spi_message_init(&msg);
+>>       spi_message_add_tail(&trans, &msg);
+>> -     ret =3D spi_sync(ec_spi->spi, &msg);
+>> +     ret =3D spi_sync_locked(ec_spi->spi, &msg);
+>>       if (ret < 0)
+>>               dev_err(ec_dev->dev, "spi transfer failed: %d\n", ret)=
+;
+>>
+>> @@ -391,10 +391,10 @@ static int cros_ec_pkt_xfer_spi(struct cros_ec=
+_device *ec_dev,
+>>       }
+>>
+>>       rx_buf =3D kzalloc(len, GFP_KERNEL);
+>> -     if (!rx_buf) {
+>> -             ret =3D -ENOMEM;
+>> -             goto exit;
+>> -     }
+>> +     if (!rx_buf)
+>> +             return -ENOMEM;
+>> +
+>> +     spi_bus_lock(ec_spi->spi->master);
+>>
+>>       /*
+>>        * Leave a gap between CS assertion and clocking of data to al=
+low the
+>> @@ -414,7 +414,7 @@ static int cros_ec_pkt_xfer_spi(struct cros_ec_d=
+evice *ec_dev,
+>>       trans.len =3D len;
+>>       trans.cs_change =3D 1;
+>>       spi_message_add_tail(&trans, &msg);
+>> -     ret =3D spi_sync(ec_spi->spi, &msg);
+>> +     ret =3D spi_sync_locked(ec_spi->spi, &msg);
+>>
+>>       /* Get the response */
+>>       if (!ret) {
+>> @@ -440,6 +440,9 @@ static int cros_ec_pkt_xfer_spi(struct cros_ec_d=
+evice *ec_dev,
+>>       }
+>>
+>>       final_ret =3D terminate_request(ec_dev);
+>> +
+>> +     spi_bus_unlock(ec_spi->spi->master);
+>> +
+>>       if (!ret)
+>>               ret =3D final_ret;
+>>       if (ret < 0)
+>> @@ -520,10 +523,10 @@ static int cros_ec_cmd_xfer_spi(struct cros_ec=
+_device *ec_dev,
+>>       }
+>>
+>>       rx_buf =3D kzalloc(len, GFP_KERNEL);
+>> -     if (!rx_buf) {
+>> -             ret =3D -ENOMEM;
+>> -             goto exit;
+>> -     }
+>> +     if (!rx_buf)
+>> +             return -ENOMEM;
+>> +
+>> +     spi_bus_lock(ec_spi->spi->master);
+>>
+>>       /* Transmit phase - send our message */
+>>       debug_packet(ec_dev->dev, "out", ec_dev->dout, len);
+>> @@ -534,7 +537,7 @@ static int cros_ec_cmd_xfer_spi(struct cros_ec_d=
+evice *ec_dev,
+>>       trans.cs_change =3D 1;
+>>       spi_message_init(&msg);
+>>       spi_message_add_tail(&trans, &msg);
+>> -     ret =3D spi_sync(ec_spi->spi, &msg);
+>> +     ret =3D spi_sync_locked(ec_spi->spi, &msg);
+>>
+>>       /* Get the response */
+>>       if (!ret) {
+>> @@ -560,6 +563,9 @@ static int cros_ec_cmd_xfer_spi(struct cros_ec_d=
+evice *ec_dev,
+>>       }
+>>
+>>       final_ret =3D terminate_request(ec_dev);
+>> +
+>> +     spi_bus_unlock(ec_spi->spi->master);
+>> +
+>>       if (!ret)
+>>               ret =3D final_ret;
+>>       if (ret < 0)
+>
+> --
+> Lee Jones
+> Linaro STMicroelectronics Landing Team Lead
+> Linaro.org =E2=94=82 Open source software for ARM SoCs
+> Follow Linaro: Facebook | Twitter | Blog
+--
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

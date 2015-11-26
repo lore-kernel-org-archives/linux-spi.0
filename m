@@ -1,160 +1,44 @@
-From: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3] mfd: cros ec: Lock the SPI bus while holding
- chipselect
-Date: Thu, 26 Nov 2015 09:14:22 +0000
-Message-ID: <20151126091422.GR12874@x1>
-References: <1448430667-4213-1-git-send-email-drinkcat@chromium.org>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: spi: tests driver to test basic alignment/length issues via loopback
+Date: Thu, 26 Nov 2015 10:32:43 +0100
+Message-ID: <CAMuHMdVpds0hOD=4uh1ZA+pfk9wHQJiuJodgXJDG0VcmYRXkeQ@mail.gmail.com>
+References: <753FCC7B-67D9-495B-A6C1-D49793502C90@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
-	Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>, dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
-	rspangler-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, gwendal-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Nicolas Boichat <drinkcat-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1448430667-4213-1-git-send-email-drinkcat-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+In-Reply-To: <753FCC7B-67D9-495B-A6C1-D49793502C90-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, 25 Nov 2015, Nicolas Boichat wrote:
+Hi Martin,
 
-> cros_ec_cmd_xfer_spi and cros_ec_pkt_xfer_spi generally work like
-> this:
->  - Pull CS down (active), wait a bit, then send a command
->  - Wait for response (multiple requests)
->  - Wait a while, pull CS up (inactive)
->=20
-> These operations, individually, lock the SPI bus, but there is
-> nothing preventing the SPI framework from interleaving messages
-> intended for other devices as the bus is unlocked in between.
->=20
-> This is a problem as the EC expects CS to be held low for the
-> whole duration.
->=20
-> Solution: Lock the SPI bus during the whole transaction, to make
-> sure that no other messages can be interleaved.
->=20
-> Signed-off-by: Nicolas Boichat <drinkcat-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-> ---
->=20
-> v2: Move bus_unlock earlier in the functions.
-> v3: Remove comments.
->=20
-> Applies on top on linux-next/master (20151124)
->=20
->  drivers/mfd/cros_ec_spi.c | 30 ++++++++++++++++++------------
->  1 file changed, 18 insertions(+), 12 deletions(-)
+On Wed, Nov 25, 2015 at 7:56 PM, Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org> wrote:
+> So I had to write a small test driver that allows for generate all sorts
+> of spi_messages with different length, rx/tx_buf alignments and more to
+> get generated - right now it submits something like 360 distinct
+> spi_messages:
 
-Applied, thanks.
+Thanks!
 
-> diff --git a/drivers/mfd/cros_ec_spi.c b/drivers/mfd/cros_ec_spi.c
-> index 6a0f6ec..d6af52d 100644
-> --- a/drivers/mfd/cros_ec_spi.c
-> +++ b/drivers/mfd/cros_ec_spi.c
-> @@ -113,7 +113,7 @@ static int terminate_request(struct cros_ec_devic=
-e *ec_dev)
->  	trans.delay_usecs =3D ec_spi->end_of_msg_delay;
->  	spi_message_add_tail(&trans, &msg);
-> =20
-> -	ret =3D spi_sync(ec_spi->spi, &msg);
-> +	ret =3D spi_sync_locked(ec_spi->spi, &msg);
-> =20
->  	/* Reset end-of-response timer */
->  	ec_spi->last_transfer_ns =3D ktime_get_ns();
-> @@ -147,7 +147,7 @@ static int receive_n_bytes(struct cros_ec_device =
-*ec_dev, u8 *buf, int n)
-> =20
->  	spi_message_init(&msg);
->  	spi_message_add_tail(&trans, &msg);
-> -	ret =3D spi_sync(ec_spi->spi, &msg);
-> +	ret =3D spi_sync_locked(ec_spi->spi, &msg);
->  	if (ret < 0)
->  		dev_err(ec_dev->dev, "spi transfer failed: %d\n", ret);
-> =20
-> @@ -391,10 +391,10 @@ static int cros_ec_pkt_xfer_spi(struct cros_ec_=
-device *ec_dev,
->  	}
-> =20
->  	rx_buf =3D kzalloc(len, GFP_KERNEL);
-> -	if (!rx_buf) {
-> -		ret =3D -ENOMEM;
-> -		goto exit;
-> -	}
-> +	if (!rx_buf)
-> +		return -ENOMEM;
-> +
-> +	spi_bus_lock(ec_spi->spi->master);
-> =20
->  	/*
->  	 * Leave a gap between CS assertion and clocking of data to allow t=
-he
-> @@ -414,7 +414,7 @@ static int cros_ec_pkt_xfer_spi(struct cros_ec_de=
-vice *ec_dev,
->  	trans.len =3D len;
->  	trans.cs_change =3D 1;
->  	spi_message_add_tail(&trans, &msg);
-> -	ret =3D spi_sync(ec_spi->spi, &msg);
-> +	ret =3D spi_sync_locked(ec_spi->spi, &msg);
-> =20
->  	/* Get the response */
->  	if (!ret) {
-> @@ -440,6 +440,9 @@ static int cros_ec_pkt_xfer_spi(struct cros_ec_de=
-vice *ec_dev,
->  	}
-> =20
->  	final_ret =3D terminate_request(ec_dev);
-> +
-> +	spi_bus_unlock(ec_spi->spi->master);
-> +
->  	if (!ret)
->  		ret =3D final_ret;
->  	if (ret < 0)
-> @@ -520,10 +523,10 @@ static int cros_ec_cmd_xfer_spi(struct cros_ec_=
-device *ec_dev,
->  	}
-> =20
->  	rx_buf =3D kzalloc(len, GFP_KERNEL);
-> -	if (!rx_buf) {
-> -		ret =3D -ENOMEM;
-> -		goto exit;
-> -	}
-> +	if (!rx_buf)
-> +		return -ENOMEM;
-> +
-> +	spi_bus_lock(ec_spi->spi->master);
-> =20
->  	/* Transmit phase - send our message */
->  	debug_packet(ec_dev->dev, "out", ec_dev->dout, len);
-> @@ -534,7 +537,7 @@ static int cros_ec_cmd_xfer_spi(struct cros_ec_de=
-vice *ec_dev,
->  	trans.cs_change =3D 1;
->  	spi_message_init(&msg);
->  	spi_message_add_tail(&trans, &msg);
-> -	ret =3D spi_sync(ec_spi->spi, &msg);
-> +	ret =3D spi_sync_locked(ec_spi->spi, &msg);
-> =20
->  	/* Get the response */
->  	if (!ret) {
-> @@ -560,6 +563,9 @@ static int cros_ec_cmd_xfer_spi(struct cros_ec_de=
-vice *ec_dev,
->  	}
-> =20
->  	final_ret =3D terminate_request(ec_dev);
-> +
-> +	spi_bus_unlock(ec_spi->spi->master);
-> +
->  	if (!ret)
->  		ret =3D final_ret;
->  	if (ret < 0)
+> * transfers starting on a page with rx and tx_buf set
+>   * length: 1, 16, 32, 64, 128, 256, 1024, 4096, 128k
 
---=20
-Lee Jones
-Linaro STMicroelectronics Landing Team Lead
-Linaro.org =E2=94=82 Open source software for ARM SoCs
-=46ollow Linaro: Facebook | Twitter | Blog
+I think you should add a few lengths that are not powers of two
+(e.g. prime numbers).
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

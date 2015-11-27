@@ -1,7 +1,7 @@
 From: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
-Subject: [PATCH v4 4/7] spi: imx: add function to check for IMX51 family controller
-Date: Sat, 28 Nov 2015 00:16:02 +0100
-Message-ID: <1448666165-7473-5-git-send-email-anton.bondarenko.sama@gmail.com>
+Subject: [PATCH v4 7/7] spi: imx: defer spi initialization, if DMA engine is pending
+Date: Sat, 28 Nov 2015 00:16:05 +0100
+Message-ID: <1448666165-7473-8-git-send-email-anton.bondarenko.sama@gmail.com>
 References: <1448666165-7473-1-git-send-email-anton.bondarenko.sama@gmail.com>
 Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
@@ -12,42 +12,39 @@ In-Reply-To: <1448666165-7473-1-git-send-email-anton.bondarenko.sama@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Similar to other controller type checks add check function for
-IMX51. This also includes IMX53 and IMX6.
+If SPI device supports DMA mode, but DMA controller is not yet
+available due to e.g. a delay in the corresponding kernel module
+initialization, retry to initialize SPI driver later on instead of
+falling back into PIO only mode.
 
+Signed-off-by: Vladimir Zapolskiy <vladimir_zapolskiy@mentor.com>
 Signed-off-by: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
 ---
- drivers/spi/spi-imx.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/spi/spi-imx.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 740583a..4cd8550 100644
+index aaa32c2..c2edd0f 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -127,9 +127,14 @@ static inline int is_imx35_cspi(struct spi_imx_data *d)
- 	return d->devtype_data->devtype == IMX35_CSPI;
- }
- 
-+static inline int is_imx51_ecspi(struct spi_imx_data *d)
-+{
-+	return d->devtype_data->devtype == IMX51_ECSPI;
-+}
-+
- static inline unsigned spi_imx_get_fifosize(struct spi_imx_data *d)
- {
--	return (d->devtype_data->devtype == IMX51_ECSPI) ? 64 : 8;
-+	return is_imx51_ecspi(d) ? 64 : 8;
- }
- 
- #define MXC_SPI_BUF_RX(type)						\
-@@ -1321,7 +1326,7 @@ static int spi_imx_probe(struct platform_device *pdev)
+@@ -1341,9 +1341,15 @@ static int spi_imx_probe(struct platform_device *pdev)
  	 * Only validated on i.mx6 now, can remove the constrain if validated on
  	 * other chips.
  	 */
--	if (spi_imx->devtype_data == &imx51_ecspi_devtype_data &&
-+	if (is_imx51_ecspi(spi_imx) &&
- 	    spi_imx_sdma_init(&pdev->dev, spi_imx, master))
- 		dev_err(&pdev->dev, "dma setup error,use pio instead\n");
+-	if (is_imx51_ecspi(spi_imx) &&
+-	    spi_imx_sdma_init(&pdev->dev, spi_imx, master))
+-		dev_err(&pdev->dev, "dma setup error,use pio instead\n");
++	if (is_imx51_ecspi(spi_imx)) {
++		ret = spi_imx_sdma_init(&pdev->dev, spi_imx, master);
++		if (ret == -EPROBE_DEFER)
++			goto out_clk_put;
++
++		if (ret < 0)
++			dev_err(&pdev->dev, "dma setup error %d, use pio\n",
++				ret);
++	}
+ 
+ 	spi_imx->devtype_data->reset(spi_imx);
  
 -- 
 2.6.3

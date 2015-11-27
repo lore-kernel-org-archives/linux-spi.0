@@ -1,73 +1,83 @@
 From: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
-Subject: [PATCH v4 6/7] spi: imx: return error from dma channel request
-Date: Sat, 28 Nov 2015 00:16:04 +0100
-Message-ID: <1448666165-7473-7-git-send-email-anton.bondarenko.sama@gmail.com>
+Subject: [PATCH v4 5/7] spi: imx: Add support for loopback for ECSPI controllers
+Date: Sat, 28 Nov 2015 00:16:03 +0100
+Message-ID: <1448666165-7473-6-git-send-email-anton.bondarenko.sama@gmail.com>
 References: <1448666165-7473-1-git-send-email-anton.bondarenko.sama@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: jiada_wang@mentor.com, vladimir_zapolskiy@mentor.com,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-spi@vger.kernel.org
-To: broonie@kernel.org,
-	b38343@freescale.com,
-	s.hauer@pengutronix.de
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	vladimir_zapolskiy@mentor.com, jiada_wang@mentor.com
+To: broonie@kernel.org, b38343@freescale.com, s.hauer@pengutronix.de
+Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <1448666165-7473-1-git-send-email-anton.bondarenko.sama@gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On SDMA initialization return exactly the same error, which is
-reported by dma_request_slave_channel_reason(), it is a preceding
-change to defer SPI DMA initialization, if SDMA module is not yet
-available.
+Support for ECSPI loopback for IMX51,IMX53 and IMX6Q using TEST register.
 
-Signed-off-by: Vladimir Zapolskiy <vladimir_zapolskiy@mentor.com>
+Signed-off-by: Mohsin Kazmi <mohsin_kazmi@mentor.com>
 Signed-off-by: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
 ---
- drivers/spi/spi-imx.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ drivers/spi/spi-imx.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index f556eaa..aaa32c2 100644
+index 4cd8550..f556eaa 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -923,18 +923,20 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
- 	spi_imx->wml = spi_imx_get_fifosize(spi_imx) / 2;
+@@ -270,6 +270,9 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+ #define MX51_ECSPI_STAT		0x18
+ #define MX51_ECSPI_STAT_RR		(1 <<  3)
  
- 	/* Prepare for TX DMA: */
--	master->dma_tx = dma_request_slave_channel(dev, "tx");
--	if (!master->dma_tx) {
--		dev_err(dev, "cannot get the TX DMA channel!\n");
--		ret = -EINVAL;
-+	master->dma_tx = dma_request_slave_channel_reason(dev, "tx");
-+	if (IS_ERR(master->dma_tx)) {
-+		dev_info(dev, "cannot get the TX DMA channel!\n");
-+		ret = PTR_ERR(master->dma_tx);
-+		master->dma_tx = NULL;
- 		goto err;
- 	}
++#define MX51_ECSPI_TEST			0x20
++#define MX51_ECSPI_LOOP			BIT(31)
++
+ /* MX51 eCSPI */
+ static unsigned int mx51_ecspi_clkdiv(unsigned int fin, unsigned int fspi,
+ 				      unsigned int *fres)
+@@ -343,6 +346,7 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
+ 	u32 ctrl = MX51_ECSPI_CTRL_ENABLE, dma = 0;
+ 	u32 cfg = readl(spi_imx->base + MX51_ECSPI_CONFIG);
+ 	u32 delay;
++	u32 lpb = 0;
  
- 	/* Prepare for RX : */
--	master->dma_rx = dma_request_slave_channel(dev, "rx");
--	if (!master->dma_rx) {
--		dev_dbg(dev, "cannot get the DMA channel.\n");
--		ret = -EINVAL;
-+	master->dma_rx = dma_request_slave_channel_reason(dev, "rx");
-+	if (IS_ERR(master->dma_rx)) {
-+		dev_info(dev, "cannot get the DMA channel.\n");
-+		ret = PTR_ERR(master->dma_rx);
-+		master->dma_rx = NULL;
- 		goto err;
- 	}
+ 	/*
+ 	 * The hardware seems to have a race condition when changing modes. The
+@@ -385,6 +389,12 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
+ 	writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
+ 	writel(cfg, spi_imx->base + MX51_ECSPI_CONFIG);
  
++	if (config->mode & SPI_LOOP)
++		lpb |= MX51_ECSPI_LOOP;
++
++	if ((readl(spi_imx->base + MX51_ECSPI_TEST) & MX51_ECSPI_LOOP) != lpb)
++		writel(lpb, spi_imx->base + MX51_ECSPI_TEST);
++
+ 	/*
+ 	 * Wait until the changes in the configuration register CONFIGREG
+ 	 * propagate into the hardware. It takes exactly one tick of the
+@@ -1249,6 +1259,9 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 	spi_imx = spi_master_get_devdata(master);
+ 	spi_imx->bitbang.master = master;
+ 
++	spi_imx->devtype_data = of_id ? of_id->data :
++		(struct spi_imx_devtype_data *)pdev->id_entry->driver_data;
++
+ 	for (i = 0; i < master->num_chipselect; i++) {
+ 		int cs_gpio = of_get_named_gpio(np, "cs-gpios", i);
+ 		if (!gpio_is_valid(cs_gpio) && mxc_platform_info)
+@@ -1275,10 +1288,10 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 	spi_imx->bitbang.master->unprepare_message = spi_imx_unprepare_message;
+ 	spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+ 
+-	init_completion(&spi_imx->xfer_done);
++	if (is_imx51_ecspi(spi_imx))
++		spi_imx->bitbang.master->mode_bits |= SPI_LOOP;
+ 
+-	spi_imx->devtype_data = of_id ? of_id->data :
+-		(struct spi_imx_devtype_data *) pdev->id_entry->driver_data;
++	init_completion(&spi_imx->xfer_done);
+ 
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	spi_imx->base = devm_ioremap_resource(&pdev->dev, res);
 -- 
 2.6.3

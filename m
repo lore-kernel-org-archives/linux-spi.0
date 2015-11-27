@@ -1,206 +1,98 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Dynamically adding SPI buses (was: Re: [PATCH v8 0/8] Device Tree
- Overlays - 8th time's the charm)
-Date: Fri, 27 Nov 2015 14:06:41 +0100
-Message-ID: <CAMuHMdUPa6YMa98v+qXMnxeMZ41AKFY1ni12rJewSEnqSB7TRA@mail.gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: Dynamically adding SPI buses (was: Re: [PATCH v8 0/8] Device
+ Tree Overlays - 8th time's the charm)
+Date: Fri, 27 Nov 2015 13:24:41 +0000
+Message-ID: <20151127132441.GS1929@sirena.org.uk>
+References: <CAMuHMdUPa6YMa98v+qXMnxeMZ41AKFY1ni12rJewSEnqSB7TRA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="5UN41tlPsqEEbq75"
+Cc: Michael Fiore <mfjord02-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>,
 	Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Michael Fiore <mfjord02-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdUPa6YMa98v+qXMnxeMZ41AKFY1ni12rJewSEnqSB7TRA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Mike,
 
-(replaying to an old mail, as I'm seeing the exact same behavior with current
- overlay code)
+--5UN41tlPsqEEbq75
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 13, 2014 at 9:10 PM, Michael Fiore <mfjord02-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> I have been doing some testing with the overlay patches and, while it
-> is working in general, I have noticed a couple of issues.
->
-> I am using the following patchsets in conjunction with an updated DTC compiler:
->
-> * Device Tree Overlays (v8)
->
-> * of: Resolver and dynamic updates
->
-> * configfs: Implement binary attributes (v3)
->
-> I have applied all 3 of the patchsets against rev
-> f7e87a44ef60ad379e39b45437604141453bf0ec of the linux source tree.
-> This is the rev that was specified in the submission of the v8 Device
-> Tree Overlay patchset.
->
-> My base dtb has a SPI bus set up, including chip selects, but
-> disabled.  My overlay dtb enables that bus and adds 3 spi devices. My
-> overlay is installed in /lib/firmware/port1_gpio.dtbo. The relevant
-> portion of my base dtb follows:
->
->  91             /* runs to Accessory Port 1 */
->  92             spi0: spi@f0000000 {
->  93                 status = "disabled";
->  94                 cs-gpios = <&pioA 4 0>, <&pioA 2 0>, <&pioA 5 0>, <0>;
->  95             };
->
-> Overlay contents are as follows:
->
-> /dts-v1/;
-> /plugin/;
->
-> /* enable spi0 for mts-io */
->
-> / {
->     fragment@0 {
->         target-path = "/ahb/apb/spi@f0000000";
->         __overlay__ {
->             status = "okay";
->
->             ap1-cs0@0 {
->                 compatible = "mts-io-ap1-adc";
->                 spi-max-frequency = <20000000>;
->                 reg = <0>;
->             };
->             ap1-cs1@1 {
->                 compatible = "mts-io-ap1-dout";
->                 spi-max-frequency = <1000000>;
->                 reg = <1>;
->             };
->             ap1-cs2@2 {
->                 compatible = "mts-io-ap1-din";
->                 spi-max-frequency = <1000000>;
->                 reg = <2>;
->             };
->         };
->     };
-> };
->
-> I have added the following patch in order to more easily demonstrate
-> what I've observed. This change affects the function spi_add_device()
->
-> Index: git/drivers/spi/spi.c
-> ===================================================================
-> --- git.orig/drivers/spi/spi.c 2014-11-13 07:41:14.424270598 -0600
-> +++ git/drivers/spi/spi.c 2014-11-13 08:34:24.700331795 -0600
-> @@ -424,6 +424,8 @@
->   /* Set the bus ID string */
->   spi_dev_set_name(spi);
->
-> + dev_info(dev, "adding spi device - chip select [%d]", spi->chip_select);
-> +
->   /* We need to make sure there's no other device with this
->   * chipselect **BEFORE** we call setup(), else we'll trash
->   * its configuration.  Lock against concurrent add() calls.
->
-> Applying the overlay from above gives the following output:
->
-> root@mtr2d2:~# mount -t configfs none /config/
-> root@mtr2d2:~# cd /config/device-tree/overlays/
-> root@mtr2d2:/config/device-tree/overlays# mkdir port1
-> root@mtr2d2:/config/device-tree/overlays# echo port1_gpio.dtbo > port1/path
-> atmel_spi f0000000.spi: version: 0x212
-> atmel_spi f0000000.spi: Using dma0chan2 (tx) and dma0chan3 (rx) for
-> DMA transfers
-> atmel_spi f0000000.spi: Atmel SPI Controller at 0xf0000000 (irq 142)
-> atmel_spi f0000000.spi: adding spi device - chip select [2]
-> atmel_spi f0000000.spi: adding spi device - chip select [1]
-> atmel_spi f0000000.spi: adding spi device - chip select [0]
-> atmel_spi f0000000.spi: adding spi device - chip select [0]
-> atmel_spi f0000000.spi: chipselect 0 already in use
-> spi_master spi32766: spi_device register error /ahb/apb/spi@f0000000/ap1-cs0@0
-> of_spi_notify: failed to create for '/ahb/apb/spi@f0000000/ap1-cs0@0'
-> __of_changeset_entry_notify: notifier error @/ahb/apb/spi@f0000000/ap1-cs0@0
-> atmel_spi f0000000.spi: adding spi device - chip select [1]
-> atmel_spi f0000000.spi: chipselect 1 already in use
-> spi_master spi32766: spi_device register error /ahb/apb/spi@f0000000/ap1-cs1@1
-> of_spi_notify: failed to create for '/ahb/apb/spi@f0000000/ap1-cs1@1'
-> __of_changeset_entry_notify: notifier error @/ahb/apb/spi@f0000000/ap1-cs1@1
-> atmel_spi f0000000.spi: adding spi device - chip select [2]
-> atmel_spi f0000000.spi: chipselect 2 already in use
-> spi_master spi32766: spi_device register error /ahb/apb/spi@f0000000/ap1-cs2@2
-> of_spi_notify: failed to create for '/ahb/apb/spi@f0000000/ap1-cs2@2'
-> __of_changeset_entry_notify: notifier error @/ahb/apb/spi@f0000000/ap1-cs2@2
->
-> It appears that the spi devices are getting added twice.  Despite the
-> warnings and errors from the overlay driver and the spi subsystem, my
-> spi devices are working properly.
->
-> Attempts to apply additional overlays succeed, but generate an additional error:
->
-> root@mtr2d2:/config/device-tree/overlays# mkdir port2
-> root@mtr2d2:/config/device-tree/overlays# echo port2_gpio.dtbo > port2/path
-> atmel_spi f0004000.spi: version: 0x212
-> atmel_spi f0004000.spi: Using dma1chan0 (tx) and dma1chan1 (rx) for
-> DMA transfers
-> atmel_spi f0004000.spi: Atmel SPI Controller at 0xf0004000 (irq 143)
-> atmel_spi f0004000.spi: adding spi device - chip select [2]
-> atmel_spi f0004000.spi: adding spi device - chip select [1]
-> atmel_spi f0004000.spi: adding spi device - chip select [0]
-> atmel_spi f0004000.spi: adding spi device - chip select [0]
-> atmel_spi f0004000.spi: chipselect 0 already in use
-> spi_master spi32765: spi_device register error /ahb/apb/spi@f0004000/ap1-cs0@0
-> of_spi_notify: failed to create for '/ahb/apb/spi@f0004000/ap1-cs0@0'
-> __of_changeset_entry_notify: notifier error @/ahb/apb/spi@f0004000/ap1-cs0@0
-> atmel_spi f0004000.spi: adding spi device - chip select [1]
-> atmel_spi f0004000.spi: chipselect 1 already in use
-> spi_master spi32765: spi_device register error /ahb/apb/spi@f0004000/ap1-cs1@1
-> of_spi_notify: failed to create for '/ahb/apb/spi@f0004000/ap1-cs1@1'
-> __of_changeset_entry_notify: notifier error @/ahb/apb/spi@f0004000/ap1-cs1@1
-> atmel_spi f0004000.spi: adding spi device - chip select [2]
-> atmel_spi f0004000.spi: chipselect 2 already in use
-> spi_master spi32765: spi_device register error /ahb/apb/spi@f0004000/ap1-cs2@2
-> of_spi_notify: failed to create for '/ahb/apb/spi@f0004000/ap1-cs2@2'
-> __of_changeset_entry_notify: notifier error @/ahb/apb/spi@f0004000/ap1-cs2@2
+On Fri, Nov 27, 2015 at 02:06:41PM +0100, Geert Uytterhoeven wrote:
 
-When adding an SPI master device node to DT, or changing its status to "okay",
-of_register_spi_devices() will scan for SPI slaves, and will add all of them.
-Later, the notifier kicks:
+> (replaying to an old mail, as I'm seeing the exact same behavior with cur=
+rent
+>  overlay code)
 
-    static int of_spi_notify(struct notifier_block *nb, unsigned long action,
-                             void *arg)
-    {
-            ...
+I don't seem to have this mail...  I'm not even sure that mailing list
+archive does (at least
 
-            case OF_RECONFIG_CHANGE_ADD:
-                    master = of_find_spi_master_by_node(rd->dn->parent);
-                    if (master == NULL)
-                            return NOTIFY_OK;       /* not for us */
+   http://thread.gmane.org/gmane.linux.kernel.spi.devel/18597
 
-                    spi = of_register_spi_device(master, rd->dn);
+anyway).
 
-Woops, this fails, as the device has been added before!
-Should the code just check for the existence of the SPI slave first, or would
-that cause problems when just modifying an existing SPI slave node in DT?
+> When adding an SPI master device node to DT, or changing its status to "o=
+kay",
+> of_register_spi_devices() will scan for SPI slaves, and will add all of t=
+hem.
+> Later, the notifier kicks:
 
-> (NULL device *): Direct firmware load for ort2_gpio.dtbo failed with error -2
-> -sh: echo: write error: No such file or directory
->
-> The first character of the dtbo file name got chomped. Again, despite
-> the warnings and errors, the devices are successfully created and
-> functional:
->
-> root@mtr2d2:/config/device-tree/overlays# ls /sys/bus/spi/devices/
-> spi32765.0  spi32765.1  spi32765.2  spi32766.0  spi32766.1  spi32766.2
+>     static int of_spi_notify(struct notifier_block *nb, unsigned long act=
+ion,
+>                              void *arg)
+>     {
+>             ...
+>=20
+>             case OF_RECONFIG_CHANGE_ADD:
+>                     master =3D of_find_spi_master_by_node(rd->dn->parent);
+>                     if (master =3D=3D NULL)
+>                             return NOTIFY_OK;       /* not for us */
+>=20
+>                     spi =3D of_register_spi_device(master, rd->dn);
 
-FWIW, I fixed that one a while ago:
+> Woops, this fails, as the device has been added before!
+> Should the code just check for the existence of the SPI slave first, or w=
+ould
+> that cause problems when just modifying an existing SPI slave node in DT?
 
-http://permalink.gmane.org/gmane.linux.drivers.devicetree/120744
+Looking at the I2C code it seems like it's using
+of_node_test_and_set_flag() to check for OF_POPULATED before
+instantiating, doing that manually in every place where it might
+instantiate a device and manually clearing when deinstantiating.
 
-Gr{oetje,eeting}s,
+I have to say I don't entirely understand the logic behind how this
+stuff is supposed to work, it's confusing to me why we have separate
+dynamic and static instantiation paths in the first place or why this is
+open coded in the buses.  It seems like a more robust thing here is to
+always use the dynamic path even on static instantiation, or to move it
+more into the driver core.
 
-                        Geert
+Ideally I'd like to see the I2C code factored out into the DT core but
+otherwise probably we have to cut'n'paste it.
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+--5UN41tlPsqEEbq75
+Content-Type: application/pgp-signature; name="signature.asc"
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJWWFmYAAoJECTWi3JdVIfQ16sH/39UmlyUxLJKoepUttqg/+hC
+G9QxyRRmhbBxpgWY0wOsMOvm/TYQ59RKZAlgziO33Qo9U0AnE5seHlyxT851ogJz
+SUQNFO9fvBulgyr810tRzqZ3KhSJ+j4uzcX/bxCPYqToB4m5gMgWOzMkMR8mSgfu
+wSlDe1vdAGxEymdJqbV+6LDINkxRRDoEm9PqekWRazaXIOYuRrcE8uNbafqAwL5x
+4hJITbkKlCwqKGJtvLamD6iEXC0cY60PEFfVr3evYZSpYSrm8hpw7Q1fEVnMyYk2
+tp7+vXTDoKh+JKcCOt51QoiTjQogf8lujseZbgZkialgNeu2z2ijphXF2/czpLc=
+=cgv3
+-----END PGP SIGNATURE-----
+
+--5UN41tlPsqEEbq75--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

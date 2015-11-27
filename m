@@ -1,48 +1,43 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: spi: tests driver to test basic alignment/length issues via
- loopback
-Date: Thu, 26 Nov 2015 12:18:02 +0000
-Message-ID: <20151126121802.GF1929@sirena.org.uk>
-References: <753FCC7B-67D9-495B-A6C1-D49793502C90@martin.sperl.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="dgVgbXf0Vb2tUvlQ"
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
+Subject: [PATCH] spi: bugfix: spi_message.transfer_length does not get reset
+Date: Fri, 27 Nov 2015 12:31:09 +0000
+Message-ID: <1448627469-2240-1-git-send-email-kernel@martin.sperl.org>
+Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <753FCC7B-67D9-495B-A6C1-D49793502C90-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
---dgVgbXf0Vb2tUvlQ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+When submitting an identical spi_message multiple times via spi_sync
+the spi_message.frame_length does not get reset to 0 in __spi_validate
+before adding up all spi_transfer.len resulting in
+frame_length > actual_length on all but the first spi_sync call.
 
-On Wed, Nov 25, 2015 at 07:56:22PM +0100, Martin Sperl wrote:
+Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+---
+ drivers/spi/spi.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-> So I wonder if there would be some interest in having such a test driver
-> in the kernel for use during spi_master development.
+Found this by chance while finishing the spi_loopback_test driver,
+which I am about to submit.
 
-Sure, please submit patches for review.
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 20ef469..2b0a8ec 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2131,6 +2131,7 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
+ 	 * Set transfer tx_nbits and rx_nbits as single transfer default
+ 	 * (SPI_NBITS_SINGLE) if it is not set for this transfer.
+ 	 */
++	message->frame_length = 0;
+ 	list_for_each_entry(xfer, &message->transfers, transfer_list) {
+ 		message->frame_length += xfer->len;
+ 		if (!xfer->bits_per_word)
+-- 
+1.7.10.4
 
---dgVgbXf0Vb2tUvlQ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJWVvh5AAoJECTWi3JdVIfQbh8H/280PnIHIyp7k5yMGCGkehk+
-aqhYe+qIvRy/SnCFuaYvk5ven9U7UcEQ5RRYrQbHBI3/GYhksZZz1Dc4ejw0EFjl
-h+3UYcmktZN4PEJrSCALBO08CbSpYmaqfxXJsYainAayKtTFUu45FB6jAEeyFok6
-pd6Hn7hku8p3hcXAqmwXcAJsQqP4grQ01yhiB26oaZ3rL/DIjOGXvxy2O0nD1GjK
-7zW7IV454ZlbXkd31FToLxHoY7iRn93fo/Yi4ptrgjTHJSBCpNCGCYuu6hJ7CbAq
-kDGL+FiS8uJWVCaA6WVBHjDMIM/Gwfvwf6MMU98OPoa3fvb9Az/mrBorGzwwC+4=
-=dF6U
------END PGP SIGNATURE-----
-
---dgVgbXf0Vb2tUvlQ--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

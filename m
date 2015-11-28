@@ -1,50 +1,49 @@
-From: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
-Subject: [PATCH v4 7/7] spi: imx: defer spi initialization, if DMA engine is pending
-Date: Sat, 28 Nov 2015 00:16:05 +0100
-Message-ID: <1448666165-7473-8-git-send-email-anton.bondarenko.sama@gmail.com>
-References: <1448666165-7473-1-git-send-email-anton.bondarenko.sama@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	vladimir_zapolskiy@mentor.com, jiada_wang@mentor.com
-To: broonie@kernel.org, b38343@freescale.com, s.hauer@pengutronix.de
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1448666165-7473-1-git-send-email-anton.bondarenko.sama@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Julia Lawall <Julia.Lawall@lip6.fr>
+Subject: [PATCH] spi: dw-mid: constify dw_spi_dma_ops structure
+Date: Sat, 28 Nov 2015 15:09:38 +0100
+Message-ID: <1448719778-32271-1-git-send-email-Julia.Lawall@lip6.fr>
+Cc: kernel-janitors@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <kernel-janitors-owner@vger.kernel.org>
+Sender: kernel-janitors-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-If SPI device supports DMA mode, but DMA controller is not yet
-available due to e.g. a delay in the corresponding kernel module
-initialization, retry to initialize SPI driver later on instead of
-falling back into PIO only mode.
+The dw_spi_dma_ops structure is never modified, so declare it as const.
 
-Signed-off-by: Vladimir Zapolskiy <vladimir_zapolskiy@mentor.com>
-Signed-off-by: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
+Done with the help of Coccinelle.
+
+Signed-off-by: Julia Lawall <Julia.Lawall@lip6.fr>
+
 ---
- drivers/spi/spi-imx.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/spi/spi-dw-mid.c |    2 +-
+ drivers/spi/spi-dw.h     |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index aaa32c2..c2edd0f 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -1341,9 +1341,15 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	 * Only validated on i.mx6 now, can remove the constrain if validated on
- 	 * other chips.
- 	 */
--	if (is_imx51_ecspi(spi_imx) &&
--	    spi_imx_sdma_init(&pdev->dev, spi_imx, master))
--		dev_err(&pdev->dev, "dma setup error,use pio instead\n");
-+	if (is_imx51_ecspi(spi_imx)) {
-+		ret = spi_imx_sdma_init(&pdev->dev, spi_imx, master);
-+		if (ret == -EPROBE_DEFER)
-+			goto out_clk_put;
-+
-+		if (ret < 0)
-+			dev_err(&pdev->dev, "dma setup error %d, use pio\n",
-+				ret);
-+	}
+diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
+index bb1052e..9185f6c 100644
+--- a/drivers/spi/spi-dw-mid.c
++++ b/drivers/spi/spi-dw-mid.c
+@@ -283,7 +283,7 @@ static void mid_spi_dma_stop(struct dw_spi *dws)
+ 	}
+ }
  
- 	spi_imx->devtype_data->reset(spi_imx);
+-static struct dw_spi_dma_ops mid_dma_ops = {
++static const struct dw_spi_dma_ops mid_dma_ops = {
+ 	.dma_init	= mid_spi_dma_init,
+ 	.dma_exit	= mid_spi_dma_exit,
+ 	.dma_setup	= mid_spi_dma_setup,
+diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+index 35589a2..61bc3cb 100644
+--- a/drivers/spi/spi-dw.h
++++ b/drivers/spi/spi-dw.h
+@@ -130,7 +130,7 @@ struct dw_spi {
+ 	struct dma_chan		*rxchan;
+ 	unsigned long		dma_chan_busy;
+ 	dma_addr_t		dma_addr; /* phy address of the Data register */
+-	struct dw_spi_dma_ops	*dma_ops;
++	const struct dw_spi_dma_ops *dma_ops;
+ 	void			*dma_tx;
+ 	void			*dma_rx;
  
--- 
-2.6.3
+

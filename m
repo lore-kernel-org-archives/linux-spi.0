@@ -1,73 +1,68 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: topcliff-pch: allow build for MIPS platforms" to the spi tree
-Date: Mon, 30 Nov 2015 16:39:49 +0000
-Message-ID: <E1a3RUT-0006C2-5q@debutante>
-References: <1448900513-20856-18-git-send-email-paul.burton@imgtec.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Paul Burton <paul.burton-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/3] spi: core: add max_msg_size to spi_master
+Date: Mon, 30 Nov 2015 16:42:23 +0000
+Message-ID: <20151130164223.GE1929@sirena.org.uk>
+References: <20151120120502.GT31303@sirena.org.uk>
+ <08871ECD-52DF-4CBF-AF3D-4C3A442C008A@sperl.org>
+ <20151121134946.GI26072@sirena.org.uk>
+ <56507B3B.4080608@gmail.com>
+ <CAOMqctR=UDEPbgJDY3YvxpbVEEp4t6ajkyv=cVAZp2fLBNBanA@mail.gmail.com>
+ <5650F7D4.1090209@gmail.com>
+ <20151122131626.GN26072@sirena.org.uk>
+ <5651EA08.5090400@gmail.com>
+ <20151123113846.GH1929@sirena.org.uk>
+ <5658AE7C.3050507@gmail.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="Tk7bxryrhVQGv1nz"
+Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>,
+	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1448900513-20856-18-git-send-email-paul.burton-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <5658AE7C.3050507-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
 
-   spi: topcliff-pch: allow build for MIPS platforms
+--Tk7bxryrhVQGv1nz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-has been applied to the spi tree at
+On Fri, Nov 27, 2015 at 08:26:52PM +0100, Heiner Kallweit wrote:
+> Am 23.11.2015 um 12:38 schrieb Mark Brown:
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+> > No, for the clients so they aren't peering at the struct.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+> Sure, do you think of a simple getter like this or a more complex thing?
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+> size_t spi_get_max_msg_size(struct spi_master *master)
+> {
+> 	return master->max_msg_size;
+> }
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+That's fine, the point is to allow it to get complicated later rather
+than that we have anything else to put in there right now.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+--Tk7bxryrhVQGv1nz
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Thanks,
-Mark
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
->From f05ca854b3df79bf6596de5102eb99ca10d6089f Mon Sep 17 00:00:00 2001
-From: Paul Burton <paul.burton-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
-Date: Mon, 30 Nov 2015 16:21:42 +0000
-Subject: [PATCH] spi: topcliff-pch: allow build for MIPS platforms
+iQEcBAEBCAAGBQJWXHxuAAoJECTWi3JdVIfQhz8H/j6Q8safY93quZf53Pc3ZifY
+MebdOPRqkXqW4jqJbDWJlMZWQxQT9GN8pX2jXpJ5ET+uuve6AnBKBZF2aTKOWJBK
+XxSAEkIywhVmrjOv1ihsvjx6rZe+hKrBrXC/I7p0Krxzlq0Kv3rUsK0J/51E7+jZ
+Cu73/qRyGc6/Y1tWhH/25UFL6ii0YyPRC9SAaxiuxYTmFcQh8L+vUgdSGHpuqptX
+uhgP0bBCEUSj0yZZre2ZUkd97rO2ZN7hqgoWf+1pGUrkDDBLkoUWav2Gnhjqp35h
+Er2+pA0iH7xQSHeAWa0m0tswxRvLvmJshHMxhaC6hbD/e2FWhqM/8hcFRxNhpPI=
+=pmZU
+-----END PGP SIGNATURE-----
 
-Allow the topcliff-pch driver to be built for MIPS platforms, in
-preparation for use on the MIPS Boston board.
-
-Signed-off-by: Paul Burton <paul.burton-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 8b9c2a38d1cc..7c78d52591af 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -585,7 +585,7 @@ config SPI_TEGRA20_SLINK
- 
- config SPI_TOPCLIFF_PCH
- 	tristate "Intel EG20T PCH/LAPIS Semicon IOH(ML7213/ML7223/ML7831) SPI"
--	depends on PCI && (X86_32 || COMPILE_TEST)
-+	depends on PCI && (X86_32 || MIPS || COMPILE_TEST)
- 	help
- 	  SPI driver for the Topcliff PCH (Platform Controller Hub) SPI bus
- 	  used in some x86 embedded processors.
--- 
-2.6.2
-
+--Tk7bxryrhVQGv1nz--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

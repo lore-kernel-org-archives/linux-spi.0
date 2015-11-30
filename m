@@ -1,81 +1,74 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 00/28] MIPS Boston board support
-Date: Mon, 30 Nov 2015 16:34:13 +0000
-Message-ID: <20151130163413.GB1929@sirena.org.uk>
-References: <1448900513-20856-1-git-send-email-paul.burton@imgtec.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="pI6hLdwVzam1XFuA"
-Cc: linux-mips@linux-mips.org, Arnd Bergmann <arnd@arndb.de>,
-        Joshua Kinard <kumba@gentoo.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Jiri Slaby <jslaby@suse.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Kumar Gala <galak@codeaurora.org>,
-        Yijing Wang <wangyijing@huawei.com>,
-        Ian Campbell <ijc+devicetree@hellion.org.uk>,
-        Rob Herring <robh+dt@kernel.org>,
-        John Crispin <blogic@openwrt.org>,
-        Jayachandran C <jchandra@broadcom.com>,
-        linux-spi@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Ray Jui <rjui@broadcom.com>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Tejun Heo <tj@kernel.org>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Andrew
-To: Paul Burton <paul.burton@imgtec.com>
-Return-path: <linux-mips-bounce@linux-mips.org>
-Content-Disposition: inline
-In-Reply-To: <1448900513-20856-1-git-send-email-paul.burton@imgtec.com>
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: topcliff-pch: allow build for MIPS platforms" to the spi tree
+Date: Mon, 30 Nov 2015 16:39:49 +0000
+Message-ID: <E1a3RUT-0006C2-5q@debutante>
+References: <1448900513-20856-18-git-send-email-paul.burton@imgtec.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Paul Burton <paul.burton-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1448900513-20856-18-git-send-email-paul.burton-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---pI6hLdwVzam1XFuA
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: topcliff-pch: allow build for MIPS platforms
 
-On Mon, Nov 30, 2015 at 04:21:25PM +0000, Paul Burton wrote:
-> This series introduces support for the Imagination Technologies MIPS
-> Boston development board. Boston is an FPGA-based development board
-> akin to the much older Malta board, built around a Xilinx FPGA running
-> a MIPS CPU & other logic including a PCIe root port connected to an
-> Intel EG20T Platform Controller Hub. This provides a base set of
-> peripherals including SATA, USB, SD/MMC, ethernet, I2C & GPIOs. PCIe
-> slots are also present for expansion.
+has been applied to the spi tree at
 
-This is an insanely big CC list :(
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-What are the interdependencies here - does this really need to be one
-patch series or can the individual driver changes go in separately?  The
-latter is more normal, usually rather than a single patch series we just
-have each driver sent by itself since that's usually easier to handle
-and avoids the massive CC lists.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
---pI6hLdwVzam1XFuA
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iQEcBAEBCAAGBQJWXHqEAAoJECTWi3JdVIfQJSUH/iIgPfd2b5fhUdpCuloKrkzo
-ez7mkxbm3A2j3pKg0G57M4IEOD1UHHBQdACn9Gn38+UCLVdK2VoDpY+xxpf0bUbB
-aWm0a1vnjxwyTW5lSEkeR0i6EzMuFliUJnIsdv9yrmwUdm8Z0zJTYaLRm2rKsgR3
-kQLDe+kzzuf3qKW0mVcOL8y4rb/keG79c35wSXn4heWbFL7FCAUmVZ0bhcOkeLP+
-O9T7D/fqnlT4+gOvBBlglzHBjWY8JUYJiccHFfccRZJ3hOO973bHQi8QcGhS06C3
-LFww/Secx7tTiUXfdXo5sD0dAJwN7mG8sBrYAmZPBcW1TYn6wzCxFMK9XkLVA9k=
-=7ym9
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---pI6hLdwVzam1XFuA--
+Thanks,
+Mark
+
+>From f05ca854b3df79bf6596de5102eb99ca10d6089f Mon Sep 17 00:00:00 2001
+From: Paul Burton <paul.burton-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
+Date: Mon, 30 Nov 2015 16:21:42 +0000
+Subject: [PATCH] spi: topcliff-pch: allow build for MIPS platforms
+
+Allow the topcliff-pch driver to be built for MIPS platforms, in
+preparation for use on the MIPS Boston board.
+
+Signed-off-by: Paul Burton <paul.burton-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 8b9c2a38d1cc..7c78d52591af 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -585,7 +585,7 @@ config SPI_TEGRA20_SLINK
+ 
+ config SPI_TOPCLIFF_PCH
+ 	tristate "Intel EG20T PCH/LAPIS Semicon IOH(ML7213/ML7223/ML7831) SPI"
+-	depends on PCI && (X86_32 || COMPILE_TEST)
++	depends on PCI && (X86_32 || MIPS || COMPILE_TEST)
+ 	help
+ 	  SPI driver for the Topcliff PCH (Platform Controller Hub) SPI bus
+ 	  used in some x86 embedded processors.
+-- 
+2.6.2
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,19 +1,20 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: tools: move spidev_test metadata" to the spi tree
-Date: Mon, 30 Nov 2015 12:25:45 +0000
-Message-ID: <E1a3NWb-0003W0-F9@debutante>
-References: <1448746103-9809-1-git-send-email-stillcompiling@gmail.com>
+Subject: Applied "spi: dw-mid: constify dw_spi_dma_ops structure" to the spi tree
+Date: Mon, 30 Nov 2015 12:25:46 +0000
+Message-ID: <E1a3NWc-0003WT-CN@debutante>
+References: <1448719778-32271-1-git-send-email-Julia.Lawall@lip6.fr>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Joshua Clayton <stillcompiling-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+To: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>,
+	Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1448746103-9809-1-git-send-email-stillcompiling-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1448719778-32271-1-git-send-email-Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: tools: move spidev_test metadata
+   spi: dw-mid: constify dw_spi_dma_ops structure
 
 has been applied to the spi tree at
 
@@ -38,44 +39,49 @@ to this mail.
 Thanks,
 Mark
 
->From de2c6e58554c7df3db70c68e52f982e558895ecf Mon Sep 17 00:00:00 2001
-From: Joshua Clayton <stillcompiling-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Sat, 28 Nov 2015 13:28:18 -0800
-Subject: [PATCH] spi: tools: move spidev_test metadata
+>From 4fe338c94986df105c3966a39b5a0af608762891 Mon Sep 17 00:00:00 2001
+From: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
+Date: Sat, 28 Nov 2015 15:09:38 +0100
+Subject: [PATCH] spi: dw-mid: constify dw_spi_dma_ops structure
 
-Now that spidev_test and spidev_fdx have been moved, remove them
-from the Documentation index and move their .gitignore file.
+The dw_spi_dma_ops structure is never modified, so declare it as const.
 
-Signed-off-by: Joshua Clayton <stillcompiling-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Done with the help of Coccinelle.
+
+Signed-off-by: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
+Acked-by: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- Documentation/spi/00-INDEX              | 4 ----
- {Documentation => tools}/spi/.gitignore | 0
- 2 files changed, 4 deletions(-)
- rename {Documentation => tools}/spi/.gitignore (100%)
+ drivers/spi/spi-dw-mid.c | 2 +-
+ drivers/spi/spi-dw.h     | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/spi/00-INDEX b/Documentation/spi/00-INDEX
-index a128fa835512..4644bf0d9832 100644
---- a/Documentation/spi/00-INDEX
-+++ b/Documentation/spi/00-INDEX
-@@ -10,13 +10,9 @@ pxa2xx
- 	- PXA2xx SPI master controller build by spi_message fifo wq
- spidev
- 	- Intro to the userspace API for spi devices
--spidev_fdx.c
--	- spidev example file
- spi-lm70llp
- 	- Connecting an LM70-LLP sensor to the kernel via the SPI subsys.
- spi-sc18is602
- 	- NXP SC18IS602/603 I2C-bus to SPI bridge
- spi-summary
- 	- (Linux) SPI overview. If unsure about SPI or SPI in Linux, start here.
--spidev_test.c
--	- SPI testing utility.
-diff --git a/Documentation/spi/.gitignore b/tools/spi/.gitignore
-similarity index 100%
-rename from Documentation/spi/.gitignore
-rename to tools/spi/.gitignore
+diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
+index bb1052e748f2..9185f6c08459 100644
+--- a/drivers/spi/spi-dw-mid.c
++++ b/drivers/spi/spi-dw-mid.c
+@@ -283,7 +283,7 @@ static void mid_spi_dma_stop(struct dw_spi *dws)
+ 	}
+ }
+ 
+-static struct dw_spi_dma_ops mid_dma_ops = {
++static const struct dw_spi_dma_ops mid_dma_ops = {
+ 	.dma_init	= mid_spi_dma_init,
+ 	.dma_exit	= mid_spi_dma_exit,
+ 	.dma_setup	= mid_spi_dma_setup,
+diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+index 35589a270468..61bc3cbab38d 100644
+--- a/drivers/spi/spi-dw.h
++++ b/drivers/spi/spi-dw.h
+@@ -130,7 +130,7 @@ struct dw_spi {
+ 	struct dma_chan		*rxchan;
+ 	unsigned long		dma_chan_busy;
+ 	dma_addr_t		dma_addr; /* phy address of the Data register */
+-	struct dw_spi_dma_ops	*dma_ops;
++	const struct dw_spi_dma_ops *dma_ops;
+ 	void			*dma_tx;
+ 	void			*dma_rx;
+ 
 -- 
 2.6.2
 

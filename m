@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: spidev: Use "%u" to format __u32" to the spi tree
-Date: Mon, 30 Nov 2015 16:23:09 +0000
-Message-ID: <E1a3REL-0005r6-4g@debutante>
-References: <1448893146-8795-1-git-send-email-geert+renesas@glider.be>
+Subject: Applied "spi: sh-msiof: Add support for SH-Mobile AG5" to the spi tree
+Date: Mon, 30 Nov 2015 16:23:10 +0000
+Message-ID: <E1a3REM-0005rZ-1P@debutante>
+References: <1448892840-8195-1-git-send-email-geert+renesas@glider.be>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1448893146-8795-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+In-Reply-To: <1448892840-8195-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: spidev: Use "%u" to format __u32
+   spi: sh-msiof: Add support for SH-Mobile AG5
 
 has been applied to the spi tree at
 
@@ -38,34 +38,31 @@ to this mail.
 Thanks,
 Mark
 
->From f15c58410ad90bd1208305771689877ffffe3a88 Mon Sep 17 00:00:00 2001
+>From ec7f9eb4bea26b627cb5f15ebbfb5b06f969511d Mon Sep 17 00:00:00 2001
 From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Date: Mon, 30 Nov 2015 15:19:06 +0100
-Subject: [PATCH] spi: spidev: Use "%u" to format __u32
+Date: Mon, 30 Nov 2015 15:14:00 +0100
+Subject: [PATCH] spi: sh-msiof: Add support for SH-Mobile AG5
 
-On 64-bit with CONFIG_SPI_DEBUG=y and #define VERBOSE:
-
-    drivers/spi/spidev.c:287:3: warning: format '%zd' expects argument of type 'signed size_t', but argument 4 has type '__u32' [-Wformat=]
+MSIOF in SH-Mobile AG5 (sh73a0) is handled fine by the existing driver.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spidev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/devicetree/bindings/spi/sh-msiof.txt | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 91a0fcd72423..9a8e47c452f4 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -284,7 +284,7 @@ static int spidev_message(struct spidev_data *spidev,
- 			k_tmp->speed_hz = spidev->speed_hz;
- #ifdef VERBOSE
- 		dev_dbg(&spidev->spi->dev,
--			"  xfer len %zd %s%s%s%dbits %u usec %uHz\n",
-+			"  xfer len %u %s%s%s%dbits %u usec %uHz\n",
- 			u_tmp->len,
- 			u_tmp->rx_buf ? "rx " : "",
- 			u_tmp->tx_buf ? "tx " : "",
+diff --git a/Documentation/devicetree/bindings/spi/sh-msiof.txt b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+index 705075da2f10..aa005c1d10d9 100644
+--- a/Documentation/devicetree/bindings/spi/sh-msiof.txt
++++ b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+@@ -10,6 +10,7 @@ Required properties:
+ 			 "renesas,msiof-r8a7792" (R-Car V2H)
+ 			 "renesas,msiof-r8a7793" (R-Car M2-N)
+ 			 "renesas,msiof-r8a7794" (R-Car E2)
++			 "renesas,msiof-sh73a0" (SH-Mobile AG5)
+ - reg                  : A list of offsets and lengths of the register sets for
+ 			 the device.
+ 			 If only one register set is present, it is to be used
 -- 
 2.6.2
 

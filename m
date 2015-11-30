@@ -1,91 +1,77 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: Dynamically adding SPI buses (was: Re: [PATCH v8 0/8] Device Tree
- Overlays - 8th time's the charm)
-Date: Sun, 29 Nov 2015 10:47:07 +0100
-Message-ID: <CAMuHMdVxjzmOO5gwUs=sWU9hN+-xmEnMzMBn0C0Cc+J_wFuSYw@mail.gmail.com>
-References: <CAMuHMdUPa6YMa98v+qXMnxeMZ41AKFY1ni12rJewSEnqSB7TRA@mail.gmail.com>
-	<20151127132441.GS1929@sirena.org.uk>
+From: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH v4 0/5] Add memory mapped read support for ti-qspi
+Date: Mon, 30 Nov 2015 10:45:10 +0530
+Message-ID: <1448860515-28336-1-git-send-email-vigneshr@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Michael Fiore <mfjord02-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>,
-	Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain
+Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+To: Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
+	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20151127132441.GS1929-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Mark,
+Changes since v3:
+Rework to introduce spi_flash_read_message struct.
+Support different opcode/addr/data formats as per Brian's suggestion
+here: https://lkml.org/lkml/2015/11/11/454
 
-On Fri, Nov 27, 2015 at 2:24 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Fri, Nov 27, 2015 at 02:06:41PM +0100, Geert Uytterhoeven wrote:
->> (replaying to an old mail, as I'm seeing the exact same behavior with current
->>  overlay code)
->
-> I don't seem to have this mail...  I'm not even sure that mailing list
-> archive does (at least
->
->    http://thread.gmane.org/gmane.linux.kernel.spi.devel/18597
->
-> anyway).
+Changes since v2:
+Remove mmap_lock_mutex.
+Optimize enable/disable of mmap mode.
 
-It was sent to the devicetree mailing list only, without anyone else CCed.
-Probably that's why no one noticed or replied to it before...
+Changes since v1:
+Introduce API in SPI core that MTD flash driver can call for mmap read
+instead of directly calling spi-master driver callback. This API makes
+sure that SPI core msg queue is locked during mmap transfers.
+v1: https://lkml.org/lkml/2015/9/4/103
 
->> When adding an SPI master device node to DT, or changing its status to "okay",
->> of_register_spi_devices() will scan for SPI slaves, and will add all of them.
->> Later, the notifier kicks:
->
->>     static int of_spi_notify(struct notifier_block *nb, unsigned long action,
->>                              void *arg)
->>     {
->>             ...
->>
->>             case OF_RECONFIG_CHANGE_ADD:
->>                     master = of_find_spi_master_by_node(rd->dn->parent);
->>                     if (master == NULL)
->>                             return NOTIFY_OK;       /* not for us */
->>
->>                     spi = of_register_spi_device(master, rd->dn);
->
->> Woops, this fails, as the device has been added before!
->> Should the code just check for the existence of the SPI slave first, or would
->> that cause problems when just modifying an existing SPI slave node in DT?
->
-> Looking at the I2C code it seems like it's using
-> of_node_test_and_set_flag() to check for OF_POPULATED before
-> instantiating, doing that manually in every place where it might
-> instantiate a device and manually clearing when deinstantiating.
 
-Thanks for looking into that!
+Cover letter:
 
-> I have to say I don't entirely understand the logic behind how this
-> stuff is supposed to work, it's confusing to me why we have separate
-> dynamic and static instantiation paths in the first place or why this is
-> open coded in the buses.  It seems like a more robust thing here is to
-> always use the dynamic path even on static instantiation, or to move it
-> more into the driver core.
+This patch series adds support for memory mapped read port of ti-qspi.
+ti-qspi has a special memory mapped port through which SPI flash
+memories can be accessed directly via SoC specific memory region.
 
-Indeed.
+First patch adds a method to pass flash specific information like read
+opcode, dummy bytes etc and to request mmap read. Second patch
+implements mmap read method in ti-qspi driver. Patch 3 adapts m25p80 to
+use mmap read method before trying normal SPI transfer. Patch 4 and 5
+add memory map region DT entries for DRA7xx and AM43xx SoCs.
 
-> Ideally I'd like to see the I2C code factored out into the DT core but
-> otherwise probably we have to cut'n'paste it.
+This patch series is based on the discussions here:
+http://www.spinics.net/lists/linux-spi/msg04796.html
 
-I'll give that a try...
+Tested on DRA74 EVM and AM437x-SK.
+Read performance increases from ~100kB/s to ~2.5MB/s.
 
-Gr{oetje,eeting}s,
 
-                        Geert
+Vignesh R (5):
+  spi: introduce accelerated read support for spi flash devices
+  spi: spi-ti-qspi: add mmap mode read support
+  mtd: devices: m25p80: add support for mmap read request
+  ARM: dts: DRA7: add entry for qspi mmap region
+  ARM: dts: AM4372: add entry for qspi mmap region
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+ Documentation/devicetree/bindings/spi/ti_qspi.txt |  19 +++-
+ arch/arm/boot/dts/am4372.dtsi                     |   4 +-
+ arch/arm/boot/dts/dra7.dtsi                       |   7 +-
+ drivers/mtd/devices/m25p80.c                      |  20 +++++
+ drivers/spi/spi-ti-qspi.c                         | 101 ++++++++++++++++++++--
+ drivers/spi/spi.c                                 |  45 ++++++++++
+ include/linux/spi/spi.h                           |  41 +++++++++
+ 7 files changed, 225 insertions(+), 12 deletions(-)
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+-- 
+2.6.3
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

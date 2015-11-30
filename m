@@ -1,65 +1,81 @@
-From: Michael Welling <mwelling-EkmVulN54Sk@public.gmane.org>
-Subject: [PATCH] spi: omap2-mcspi: Prevent duplicate gpio_request
-Date: Mon, 30 Nov 2015 09:02:39 -0600
-Message-ID: <1448895759-4282-1-git-send-email-mwelling@ieee.org>
-Cc: Michael Welling <mwelling-EkmVulN54Sk@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Joseph Bell <joe-frEo4xfazcg+9D430DZnzg@public.gmane.org>
+From: Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>
+Subject: Re: [RFC v02 03/15] dmaengine: core: Introduce new, universal API to
+ request a channel
+Date: Mon, 30 Nov 2015 07:51:42 -0800
+Message-ID: <20151130155142.GZ2517@atomide.com>
+References: <1448891145-10766-1-git-send-email-peter.ujfalusi@ti.com>
+ <1448891145-10766-4-git-send-email-peter.ujfalusi@ti.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, arnd-r2nGTMty4D4@public.gmane.org, andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, nsekhar-l0cyMroinI0@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Peter Ujfalusi <peter.ujfalusi-l0cyMroinI0@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1448891145-10766-4-git-send-email-peter.ujfalusi-l0cyMroinI0@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Occasionally the setup function will be called multiple times. Only request
-the gpio the first time otherwise -EBUSY will occur on subsequent calls to
-setup.
+Hi,
 
-Reported-by: Joseph Bell <joe-frEo4xfazcg+9D430DZnzg@public.gmane.org>
+* Peter Ujfalusi <peter.ujfalusi-l0cyMroinI0@public.gmane.org> [151130 05:49]:
+> 
+> For each dmaengine driver an array of DMA device, slave and the parameter
+> for the filter function needs to be added:
+> 
+> static struct dma_filter_map da830_edma_map[] = {
+> 	DMA_FILTER_ENTRY("davinci-mcasp.0", "rx", EDMA_CTLR_CHAN(0, 0)),
+> 	DMA_FILTER_ENTRY("davinci-mcasp.0", "tx", EDMA_CTLR_CHAN(0, 1)),
+> 	DMA_FILTER_ENTRY("davinci-mcasp.1", "rx", EDMA_CTLR_CHAN(0, 2)),
+> 	DMA_FILTER_ENTRY("davinci-mcasp.1", "tx", EDMA_CTLR_CHAN(0, 3)),
+> 	DMA_FILTER_ENTRY("davinci-mcasp.2", "rx", EDMA_CTLR_CHAN(0, 4)),
+> 	DMA_FILTER_ENTRY("davinci-mcasp.2", "tx", EDMA_CTLR_CHAN(0, 5)),
+> 	DMA_FILTER_ENTRY("spi_davinci.0", "rx", EDMA_CTLR_CHAN(0, 14)),
+> 	DMA_FILTER_ENTRY("spi_davinci.0", "tx", EDMA_CTLR_CHAN(0, 15)),
+> 	DMA_FILTER_ENTRY("da830-mmc.0", "rx", EDMA_CTLR_CHAN(0, 16)),
+> 	DMA_FILTER_ENTRY("da830-mmc.0", "tx", EDMA_CTLR_CHAN(0, 17)),
+> 	DMA_FILTER_ENTRY("spi_davinci.1", "rx", EDMA_CTLR_CHAN(0, 18)),
+> 	DMA_FILTER_ENTRY("spi_davinci.1", "tx", EDMA_CTLR_CHAN(0, 19)),
+> };
 
-Signed-off-by: Michael Welling <mwelling-EkmVulN54Sk@public.gmane.org>
----
- drivers/spi/spi-omap2-mcspi.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+FYI, if the EDMA_CTRL_CHAN above is just the evtmux registers, those
+can be handled with the pinctrl framework. It seems that would allow
+leaving out some of the built-in look up data, and have the mux parts
+handled by a proper device driver. Below is a sample from the dm81xx
+platform for reference.
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 02aa1d0..7273820 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1025,6 +1025,16 @@ static int omap2_mcspi_setup(struct spi_device *spi)
- 		spi->controller_state = cs;
- 		/* Link this to context save list */
- 		list_add_tail(&cs->node, &ctx->cs);
-+
-+		if (gpio_is_valid(spi->cs_gpio)) {
-+			ret = gpio_request(spi->cs_gpio, dev_name(&spi->dev));
-+			if (ret) {
-+				dev_err(&spi->dev, "failed to request gpio\n");
-+				return ret;
-+			}
-+			gpio_direction_output(spi->cs_gpio,
-+					 !(spi->mode & SPI_CS_HIGH));
-+		}
- 	}
- 
- 	if (!mcspi_dma->dma_rx || !mcspi_dma->dma_tx) {
-@@ -1033,15 +1043,6 @@ static int omap2_mcspi_setup(struct spi_device *spi)
- 			return ret;
- 	}
- 
--	if (gpio_is_valid(spi->cs_gpio)) {
--		ret = gpio_request(spi->cs_gpio, dev_name(&spi->dev));
--		if (ret) {
--			dev_err(&spi->dev, "failed to request gpio\n");
--			return ret;
--		}
--		gpio_direction_output(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
--	}
--
- 	ret = pm_runtime_get_sync(mcspi->dev);
- 	if (ret < 0)
- 		return ret;
--- 
-2.1.4
+SoC dtsi file:
 
+evtmux: pinmux@f90 {
+	compatible = "pinctrl-single";
+	reg = <0xf90 0x40>;
+	#address-cells = <1>;
+	#size-cells = <0>;
+	pinctrl-single,register-width = <8>;
+	pinctrl-single,function-mask = <0x1f>;
+};
+
+Board specific dts file:
+
+&evtmux {
+	sd2_edma_pins: pinmux_sd2_edma_pins {
+	pinctrl-single,pins = <
+		8 1     /* use SDTXEVT1 for EDMA instead of MCASP0TX */
+		9 2     /* use SDRXEVT1 for EDMA instead of MCASP0RX */
+		>;
+	};
+};
+
+Dynamic muxing of these channels can be done too using the pinctrl
+framework named modes, but probably is not a good idea in the case of
+SD card and MaASP in case something goes wrong :)
+
+Regards,
+
+Tony
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

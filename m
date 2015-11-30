@@ -1,47 +1,38 @@
-From: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [RFC v02 04/15] dmaengine: edma: Add support for DMA filter mapping to slave devices
-Date: Mon, 30 Nov 2015 15:11:49 +0100
-Message-ID: <7490116.jHcmUxB3Rf@wuerfel>
-References: <1448891145-10766-1-git-send-email-peter.ujfalusi@ti.com> <1448891145-10766-5-git-send-email-peter.ujfalusi@ti.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: vinod.koul@intel.com, andy.shevchenko@gmail.com,
-	linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
-	linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mmc@vger.kernel.org, nsekhar@ti.com,
-	linux-spi@vger.kernel.org
-To: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1448891145-10766-5-git-send-email-peter.ujfalusi@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Subject: [PATCH] spi: sh-msiof: Add support for SH-Mobile AG5
+Date: Mon, 30 Nov 2015 15:14:00 +0100
+Message-ID: <1448892840-8195-1-git-send-email-geert+renesas@glider.be>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Monday 30 November 2015 15:45:34 Peter Ujfalusi wrote:
-> @@ -2428,6 +2436,22 @@ bool edma_filter_fn(struct dma_chan *chan, void *param)
->  }
->  EXPORT_SYMBOL(edma_filter_fn);
->  
-> +static bool edma_filter_for_map(struct dma_chan *chan, void *param)
-> +{
-> +       bool match = false;
-> +
-> +       if (chan->device->dev->driver == &edma_driver.driver) {
-> +               struct edma_chan *echan = to_edma_chan(chan);
-> +               unsigned ch_req = (unsigned)param;
-> +               if (ch_req == echan->ch_num) {
-> +                       /* The channel is going to be used as HW synchronized */
-> +                       echan->hw_triggered = true;
-> +                       match = true;
-> +               }
-> +       }
-> +       return match;
-> +}
-> +
->  static int edma_init(void)
-> 
+MSIOF in SH-Mobile AG5 (sh73a0) is handled fine by the existing driver.
 
-I don't see the difference between edma_filter_fn and edma_filter_for_map.
-Why do you need both?
+Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+---
+ Documentation/devicetree/bindings/spi/sh-msiof.txt | 1 +
+ 1 file changed, 1 insertion(+)
 
-	Arnd
+diff --git a/Documentation/devicetree/bindings/spi/sh-msiof.txt b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+index 705075da2f10156e..aa005c1d10d95756 100644
+--- a/Documentation/devicetree/bindings/spi/sh-msiof.txt
++++ b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+@@ -10,6 +10,7 @@ Required properties:
+ 			 "renesas,msiof-r8a7792" (R-Car V2H)
+ 			 "renesas,msiof-r8a7793" (R-Car M2-N)
+ 			 "renesas,msiof-r8a7794" (R-Car E2)
++			 "renesas,msiof-sh73a0" (SH-Mobile AG5)
+ - reg                  : A list of offsets and lengths of the register sets for
+ 			 the device.
+ 			 If only one register set is present, it is to be used
+-- 
+1.9.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,61 +1,40 @@
-From: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [RFC v02 00/15] dmaengine: New 'universal' API for requesting channel
-Date: Mon, 30 Nov 2015 15:18:02 +0100
-Message-ID: <13562653.8QgTG33tZS@wuerfel>
-References: <1448891145-10766-1-git-send-email-peter.ujfalusi@ti.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>, vinod.koul@intel.com,
-	andy.shevchenko@gmail.com, linux-mmc@vger.kernel.org,
-	nsekhar@ti.com, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org, dmaengine@vger.kernel.org,
-	linux-omap@vger.kernel.org
-To: linux-arm-kernel@lists.infradead.org
-Return-path: <linux-mmc-owner@vger.kernel.org>
-In-Reply-To: <1448891145-10766-1-git-send-email-peter.ujfalusi@ti.com>
-Sender: linux-mmc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Subject: [PATCH] spi: spidev: Use "%u" to format __u32
+Date: Mon, 30 Nov 2015 15:19:06 +0100
+Message-ID: <1448893146-8795-1-git-send-email-geert+renesas@glider.be>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Monday 30 November 2015 15:45:30 Peter Ujfalusi wrote:
-> Changes since RFC v01:
->- dma_request_chan(); lost the mask parameter
->- The new API does not rely on RESOURCE_DMA, instead the dma_filter_map table
->  will be used to provide the needed information to the filter function in
->  legacy mode
->- Extended the example patches to convert most of daVinci to use the new API to
->  request the DMA channels.
+On 64-bit with CONFIG_SPI_DEBUG=y and #define VERBOSE:
 
-Very nice overall. Just a few minor comments.
+    drivers/spi/spidev.c:287:3: warning: format '%zd' expects argument of type 'signed size_t', but argument 4 has type '__u32' [-Wformat=]
 
-> static struct dma_filter_map da830_edma_map[] = {
->         DMA_FILTER_ENTRY("davinci-mcasp.0", "rx", EDMA_CTLR_CHAN(0, 0)),
->         DMA_FILTER_ENTRY("davinci-mcasp.0", "tx", EDMA_CTLR_CHAN(0, 1)),
->         DMA_FILTER_ENTRY("davinci-mcasp.1", "rx", EDMA_CTLR_CHAN(0, 2)),
->         DMA_FILTER_ENTRY("davinci-mcasp.1", "tx", EDMA_CTLR_CHAN(0, 3)),
->         DMA_FILTER_ENTRY("davinci-mcasp.2", "rx", EDMA_CTLR_CHAN(0, 4)),
->         DMA_FILTER_ENTRY("davinci-mcasp.2", "tx", EDMA_CTLR_CHAN(0, 5)),
->         DMA_FILTER_ENTRY("spi_davinci.0", "rx", EDMA_CTLR_CHAN(0, 14)),
->         DMA_FILTER_ENTRY("spi_davinci.0", "tx", EDMA_CTLR_CHAN(0, 15)),
->         DMA_FILTER_ENTRY("da830-mmc.0", "rx", EDMA_CTLR_CHAN(0, 16)),
->         DMA_FILTER_ENTRY("da830-mmc.0", "tx", EDMA_CTLR_CHAN(0, 17)),
->         DMA_FILTER_ENTRY("spi_davinci.1", "rx", EDMA_CTLR_CHAN(0, 18)),
->         DMA_FILTER_ENTRY("spi_davinci.1", "tx", EDMA_CTLR_CHAN(0, 19)),
-> };
+Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+---
+ drivers/spi/spidev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I wonder if we should mandate that the lookup table is 'const'.
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 91a0fcd724230809..9a8e47c452f40cb6 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -284,7 +284,7 @@ static int spidev_message(struct spidev_data *spidev,
+ 			k_tmp->speed_hz = spidev->speed_hz;
+ #ifdef VERBOSE
+ 		dev_dbg(&spidev->spi->dev,
+-			"  xfer len %zd %s%s%s%dbits %u usec %uHz\n",
++			"  xfer len %u %s%s%s%dbits %u usec %uHz\n",
+ 			u_tmp->len,
+ 			u_tmp->rx_buf ? "rx " : "",
+ 			u_tmp->tx_buf ? "tx " : "",
+-- 
+1.9.1
 
-We could also drop the DMA_FILTER_ENTRY() macro above, and open-code the
-table like
-
-static struct dma_filter_map da830_edma_map[] = {
-         { "davinci-mcasp.0", "rx", EDMA_CTLR_CHAN(0, 0)},
-         { "davinci-mcasp.0", "tx", EDMA_CTLR_CHAN(0, 1)},
-         { "davinci-mcasp.1", "rx", EDMA_CTLR_CHAN(0, 2)},
-	 ...
-};
-
-which is a little more compact and more obvious, but loses the
-named initializers.
-
-	Arnd
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

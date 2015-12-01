@@ -1,37 +1,59 @@
-From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Subject: Re: [RFC v02 00/15] dmaengine: New 'universal' API for requesting channel
-Date: Tue, 01 Dec 2015 11:15:38 +0100
-Message-ID: <2237139.FINhECNDsD@wuerfel>
-References: <1448891145-10766-1-git-send-email-peter.ujfalusi@ti.com> <13562653.8QgTG33tZS@wuerfel> <565D729F.2000104@ti.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [RFC v02 01/15] dmaengine: core: Allow NULL mask pointer in __dma_device_satisfies_mask()
+Date: Tue, 1 Dec 2015 14:58:35 +0200
+Message-ID: <CAHp75Vfk_GAANRYdbHNxtCy-Ni18FppsKhPPX1X84v1Zu6JXvw@mail.gmail.com>
+References: <1448891145-10766-1-git-send-email-peter.ujfalusi@ti.com>
+	<1448891145-10766-2-git-send-email-peter.ujfalusi@ti.com>
+	<CAHp75VfY=NU4MG7q1w=oYdTiTr0dqtNTQU3UkEaL=tXPJADH5Q@mail.gmail.com>
+	<565D6CB1.8030808@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
-	andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	nsekhar-l0cyMroinI0@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Peter Ujfalusi <peter.ujfalusi-l0cyMroinI0@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <565D729F.2000104-l0cyMroinI0@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Vinod Koul <vinod.koul@intel.com>, Arnd Bergmann <arnd@arndb.de>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	dmaengine <dmaengine@vger.kernel.org>,
+	Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
+	linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+	"linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+	Sekhar Nori <nsekhar@ti.com>,
+	linux-spi <linux-spi@vger.kernel.org>
+To: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Return-path: <linux-mmc-owner@vger.kernel.org>
+In-Reply-To: <565D6CB1.8030808@ti.com>
+Sender: linux-mmc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Tuesday 01 December 2015 12:12:47 Peter Ujfalusi wrote:
-> 
-> We would need:
->         { "da830-mmc.0", "rx", (void*)EDMA_CTLR_CHAN(0, 16) },
->         { "da830-mmc.0", "tx", (void*)EDMA_CTLR_CHAN(0, 17) },
-> 
-> as we need to cast the param.
-> It is still compact, but having to add the (void*) casting makes it a bit ugly.
+On Tue, Dec 1, 2015 at 11:47 AM, Peter Ujfalusi <peter.ujfalusi@ti.com> wrote:
+> On 11/30/2015 04:35 PM, Andy Shevchenko wrote:
+>> On Mon, Nov 30, 2015 at 3:45 PM, Peter Ujfalusi <peter.ujfalusi@ti.com> wrote:
+>>> Treat as true condition the case when the mask is NULL.
+>>
+>> What do you think about setting some default (all "on") mask when mask
+>> is not supplied?
+>
+> Probably rephrasing the commit message to say that when the mask is NULL it
+> means that the caller does not care about the capabilities of the dma device
+> thus return with true in such a case.
+>
+> We could also drop this patch and in private_candidate() :
+>
+> -       if (!__dma_device_satisfies_mask(dev, mask)) {
+> +       if (mask && !__dma_device_satisfies_mask(dev, mask)) {
+>                 pr_debug("%s: wrong capabilities\n", __func__);
+>                 return NULL;
+>         }
 
-Right, I forgot that, but the cast could also be part of EDMA_CTLR_CHAN(),
-and with the version I just posted in my other reply that part is solved
-as well.
+Between patch and above proposal I would choose the latter one.
 
-	Arnd
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+>> I don't know for sure but there might be cases when you don't want
+>> literally *any* channel to satisfy.
+>
+> Or set DMA_SLAVE only in dma_request_chan()? What happens if we have cases
+> when we are able to request channel for memcpy via dma_request_chan()
+> (dedicated memcpy channel/DMA engine?) in that case we will have the SLAVE
+> set, but not MEMCPY, or any other variation we do not know yet?
+
+Frankly, have no idea.
+
+-- 
+With Best Regards,
+Andy Shevchenko

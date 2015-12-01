@@ -1,93 +1,73 @@
-From: Tony Lindgren <tony@atomide.com>
-Subject: Re: [PATCH v4 4/5] ARM: dts: DRA7: add entry for qspi mmap region
-Date: Tue, 1 Dec 2015 08:39:50 -0800
-Message-ID: <20151201163950.GR23396@atomide.com>
-References: <1448860515-28336-1-git-send-email-vigneshr@ti.com>
- <1448860515-28336-5-git-send-email-vigneshr@ti.com>
- <20151130223408.GJ23396@atomide.com>
- <565D25E6.4070206@ti.com>
+From: Michal Suchanek <hramrach@gmail.com>
+Subject: [PATCH v5 00/10] add error checking to spi-nor read and write
+Date: 1 Dec 2015 16:51:03 -0000
+Message-ID: <cover.1448988089.git.hramrach@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Brian Norris <computersforpeace@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Russell King <linux@arm.linux.org.uk>, hramrach@gmail.com,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org
-To: Vignesh R <vigneshr@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <565D25E6.4070206@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: Heiner Kallweit <hkallweit1@gmail.com>,
+  David Woodhouse <dwmw2@infradead.org>,
+  Brian Norris <computersforpeace@gmail.com>, Han Xu <han.xu@freescale.com>,
+  Mark Brown <broonie@kernel.org>, Michal Suchanek <hramrach@gmail.com>,
+  Boris Brezillon <boris.brezillon@free-electrons.com>,
+  Javier Martinez Canillas <javier@osg.samsung.com>,
+  Stephen Warren <swarren@nvidia.com>, "Andrew F. Davis" <afd@ti.com>,
+  Marek Vasut <marex@denx.de>, "Rafał Miłecki" <zajec5@gmail.com>,
+  Mika Westerberg <mika.westerberg@linux.intel.com>,
+  Gabor Juhos <juhosg@openwrt.org>,
+  "Bean Huo 霍斌斌 " <beanhuo@micron.com>,
+  Furquan Shaikh <furquan@google.com>, linux-mtd@lists.infradead.org,
+  linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-* Vignesh R <vigneshr@ti.com> [151130 20:46]:
-> On 12/01/2015 04:04 AM, Tony Lindgren wrote:
-> > 
-> > Actually none of the IO areas above are within the same interconnect target:
-> > 
-> > 0x4b300000  QSPI0 address space in L3 main interconnect
-> > 0x5c000000  QSPI1 address space in L3 main interconnect
-> 
-> 
-> First address range (configuration port: 0x4b300000) corresponds to QSPI
-> registers space. These registers alone are sufficient for generic SPI
-> communication (serial flash as well as non-flash SPI devices).
+Hello,
 
-OK
+as this is getting discussed a lot lately I am sending a rebase of the spi-nor patchset on top of current MTD patch queue.
 
-> In order to speed up SPI flash reads SFI_MM_IF(SPI memory mapped
-> interface) is provided by QSPI IP. This _cannot_ be used with non-flash
-> devices.
+I need to do some testing of the rebase with some actual SPI device.
 
-OK
+However, I do not have the espi hardware and I hope to get testing on that platform as well.
 
-> The second address range (0x5c000000) corresponds to memory-mapped
-> region of SFI_MM_IF, through which SPI flash memories can be read as if
-> though they were RAM addresses (i.e using readl/memcpy). The SFI_MM_IF
-> block that takes care of communicating over SPI bus and getting the data
-> from flash device.
+Also I would like to get comments on the integration of the spi_max_transfer_size
 
-OK
+Thanks
 
-> But SFI_MM_IF block needs to know some flash specific information(such
-> as read opcode, address bytes, dummy bytes, mode). This information must
-> first be populated in QSPI_SPI_SETUP*_REG(0x4B300054-60) before
-> accessing SFI_MM_IF address range via readl.
-> Both addresses space belong to same instance of the driver, one
-> corresponds to register space and other is memory-mapped region.
-> Therefore both regions are claimed by the same driver.
+Michal
 
-OK
+Michal Suchanek (10):
+  mtd: spi-nor: change return value of read/write
+  mtd: m25p80: return amount of data transferred or error in read/write
+  mtd: fsl-quadspi: return amount of data read/written or error
+  mtd: spi-nor: check return value from read/write
+  mtd: spi-nor: stop passing around retlen
+  mtd: spi-nor: simplify write loop
+  mtd: spi-nor: add read loop
+  spi: expose master transfer size limitation.
+  spi: fsl-espi: expose maximum transfer size limit
+  spi: m25p80: read in spi_max_transfer_size chunks
 
-> > 0x4a002558  CTRL_CORE_CONTROL_IO_2 in System Control Module (SCM) in L4_CFG
-> > 
-> > The first two address spaces should be two separate instances of this driver.
-> 
-> Not actually two instances.
+ drivers/mtd/devices/m25p80.c      | 34 +++++++++-----
+ drivers/mtd/spi-nor/fsl-quadspi.c | 29 ++++++------
+ drivers/mtd/spi-nor/spi-nor.c     | 95 +++++++++++++++++++++++++--------------
+ drivers/spi/spi-fsl-espi.c        |  6 +++
+ include/linux/mtd/spi-nor.h       |  8 ++--
+ include/linux/spi/spi.h           | 15 +++++++
+ 6 files changed, 125 insertions(+), 62 deletions(-)
 
-OK. They are both on L3 main so that won't cause any issues for separate
-interconnect driver instances. As they are still separate targets flushing
-a posted write to one area will not flush anything to the other.
+-- 
+2.6.2
 
-> > The CTRL_CORE_CONTROL_IO_2 needs seems like a shared clock register that
-> > needs to be accessed using the clock framework most likely.
-> > 
-> 
-> Not shared clock.
-> The CTRL_CORE_CONTROL_IO_2[10:8] QSPI_MEMMAPPED_CS bit fields provides a
-> functionality for remapping the previously described address space which
-> starts at 0x5C000000 L3_MAIN address to one of the four supported chip
-> selects.
-> How about using syscon to access CTRL_CORE_CONTROL_IO_2?
 
-A separate driver implementing some Linux generic framework would be idael :)
-
-But if that does not fit, yeah then syscon makes sense as that IO range
-will be on separate interconnect driver (and clock and possibly power domain)
-instances eventually.
-
-Regards,
-
-Tony
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

@@ -1,127 +1,164 @@
-From: Tony Lindgren <tony@atomide.com>
-Subject: Re: [RFC v02 03/15] dmaengine: core: Introduce new, universal API to
- request a channel
-Date: Tue, 1 Dec 2015 09:00:32 -0800
-Message-ID: <20151201170031.GT23396@atomide.com>
-References: <1448891145-10766-1-git-send-email-peter.ujfalusi@ti.com>
- <1448891145-10766-4-git-send-email-peter.ujfalusi@ti.com>
- <20151130155142.GZ2517@atomide.com>
- <565D56A0.2090204@ti.com>
+From: Michal Suchanek <hramrach@gmail.com>
+Subject: [PATCH v5 04/10] mtd: spi-nor: check return value from read/write
+Date: 1 Dec 2015 16:51:04 -0000
+Message-ID: <777e381ffb750354e51e347af36994c86ad91035.1448988089.git.hramrach@gmail.com>
+References: <cover.1448988089.git.hramrach@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: vinod.koul@intel.com, arnd@arndb.de, andy.shevchenko@gmail.com,
-	linux-mmc@vger.kernel.org, nsekhar@ti.com,
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	dmaengine@vger.kernel.org, linux-omap@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-To: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Return-path: <linux-mmc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <565D56A0.2090204@ti.com>
-Sender: linux-mmc-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: Heiner Kallweit <hkallweit1@gmail.com>,
+  David Woodhouse <dwmw2@infradead.org>,
+  Brian Norris <computersforpeace@gmail.com>, Han Xu <han.xu@freescale.com>,
+  Mark Brown <broonie@kernel.org>, Michal Suchanek <hramrach@gmail.com>,
+  Boris Brezillon <boris.brezillon@free-electrons.com>,
+  Javier Martinez Canillas <javier@osg.samsung.com>,
+  Stephen Warren <swarren@nvidia.com>, "Andrew F. Davis" <afd@ti.com>,
+  Marek Vasut <marex@denx.de>, "Rafał Miłecki" <zajec5@gmail.com>,
+  Mika Westerberg <mika.westerberg@linux.intel.com>,
+  Gabor Juhos <juhosg@openwrt.org>,
+  "Bean Huo 霍斌斌 " <beanhuo@micron.com>,
+  Furquan Shaikh <furquan@google.com>, linux-mtd@lists.infradead.org,
+  linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <cover.1448988089.git.hramrach@gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-* Peter Ujfalusi <peter.ujfalusi@ti.com> [151201 00:14]:
-> On 11/30/2015 05:51 PM, Tony Lindgren wrote:
-> > Hi,
-> > 
-> > * Peter Ujfalusi <peter.ujfalusi@ti.com> [151130 05:49]:
-> >>
-> >> For each dmaengine driver an array of DMA device, slave and the parameter
-> >> for the filter function needs to be added:
-> >>
-> >> static struct dma_filter_map da830_edma_map[] = {
-> >> 	DMA_FILTER_ENTRY("davinci-mcasp.0", "rx", EDMA_CTLR_CHAN(0, 0)),
-> >> 	DMA_FILTER_ENTRY("davinci-mcasp.0", "tx", EDMA_CTLR_CHAN(0, 1)),
-> >> 	DMA_FILTER_ENTRY("davinci-mcasp.1", "rx", EDMA_CTLR_CHAN(0, 2)),
-> >> 	DMA_FILTER_ENTRY("davinci-mcasp.1", "tx", EDMA_CTLR_CHAN(0, 3)),
-> >> 	DMA_FILTER_ENTRY("davinci-mcasp.2", "rx", EDMA_CTLR_CHAN(0, 4)),
-> >> 	DMA_FILTER_ENTRY("davinci-mcasp.2", "tx", EDMA_CTLR_CHAN(0, 5)),
-> >> 	DMA_FILTER_ENTRY("spi_davinci.0", "rx", EDMA_CTLR_CHAN(0, 14)),
-> >> 	DMA_FILTER_ENTRY("spi_davinci.0", "tx", EDMA_CTLR_CHAN(0, 15)),
-> >> 	DMA_FILTER_ENTRY("da830-mmc.0", "rx", EDMA_CTLR_CHAN(0, 16)),
-> >> 	DMA_FILTER_ENTRY("da830-mmc.0", "tx", EDMA_CTLR_CHAN(0, 17)),
-> >> 	DMA_FILTER_ENTRY("spi_davinci.1", "rx", EDMA_CTLR_CHAN(0, 18)),
-> >> 	DMA_FILTER_ENTRY("spi_davinci.1", "tx", EDMA_CTLR_CHAN(0, 19)),
-> >> };
-> > 
-> > FYI, if the EDMA_CTRL_CHAN above is just the evtmux registers
-> 
-> No, they are not. They are the eDMA event numbers. I used the EDMA_CTRL_CHAN()
-> macro for all board files to have uniform look for the data. The first
-> parameter means the eDMA instance number while the second is the event number
-> on that eDMA. Since most devices have only one eDMA, we have 0 as eDMA id in
-> most cases.
-> The eventmux, or crossbar is different thing and we have several versions of
-> the event crossbar or mux used.
+SPI NOR hardware drivers now return useful value from their read/write
+functions so check them.
 
-OK
+Signed-off-by: Michal Suchanek <hramrach@gmail.com>
+---
+ drivers/mtd/spi-nor/spi-nor.c | 50 +++++++++++++++++++++++++++++++------------
+ 1 file changed, 36 insertions(+), 14 deletions(-)
 
-> > those
-> > can be handled with the pinctrl framework. It seems that would allow
-> > leaving out some of the built-in look up data, and have the mux parts
-> > handled by a proper device driver. Below is a sample from the dm81xx
-> > platform for reference.
-> > 
-> > SoC dtsi file:
-> > 
-> > evtmux: pinmux@f90 {
-> > 	compatible = "pinctrl-single";
-> > 	reg = <0xf90 0x40>;
-> > 	#address-cells = <1>;
-> > 	#size-cells = <0>;
-> > 	pinctrl-single,register-width = <8>;
-> > 	pinctrl-single,function-mask = <0x1f>;
-> > };
-> > 
-> > Board specific dts file:
-> > 
-> > &evtmux {
-> > 	sd2_edma_pins: pinmux_sd2_edma_pins {
-> > 	pinctrl-single,pins = <
-> > 		8 1     /* use SDTXEVT1 for EDMA instead of MCASP0TX */
-> > 		9 2     /* use SDRXEVT1 for EDMA instead of MCASP0RX */
-> > 		>;
-> > 	};
-> > };
-> 
-> I see. The dm81xx basically am33xx/am43xx?
+diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+index b7c038c..5f91bfa 100644
+--- a/drivers/mtd/spi-nor/spi-nor.c
++++ b/drivers/mtd/spi-nor/spi-nor.c
+@@ -910,7 +910,10 @@ static int spi_nor_read(struct mtd_info *mtd, loff_t from, size_t len,
+ 	ret = nor->read(nor, from, len, retlen, buf);
+ 
+ 	spi_nor_unlock_and_unprep(nor, SPI_NOR_OPS_READ);
+-	return ret;
++	if (ret < 0)
++		return ret;
++
++	return 0;
+ }
+ 
+ static int sst_write(struct mtd_info *mtd, loff_t to, size_t len,
+@@ -936,10 +939,14 @@ static int sst_write(struct mtd_info *mtd, loff_t to, size_t len,
+ 		nor->program_opcode = SPINOR_OP_BP;
+ 
+ 		/* write one byte. */
+-		nor->write(nor, to, 1, retlen, buf);
++		ret = nor->write(nor, to, 1, retlen, buf);
++		if (ret < 0)
++			goto sst_write_err;
++		WARN(ret != 1, "While writing 1 byte written %i bytes\n",
++		     (int)ret);
+ 		ret = spi_nor_wait_till_ready(nor);
+ 		if (ret)
+-			goto time_out;
++			goto sst_write_err;
+ 	}
+ 	to += actual;
+ 
+@@ -948,10 +955,14 @@ static int sst_write(struct mtd_info *mtd, loff_t to, size_t len,
+ 		nor->program_opcode = SPINOR_OP_AAI_WP;
+ 
+ 		/* write two bytes. */
+-		nor->write(nor, to, 2, retlen, buf + actual);
++		ret = nor->write(nor, to, 2, retlen, buf + actual);
++		if (ret < 0)
++			goto sst_write_err;
++		WARN(ret != 2, "While writing 2 bytes written %i bytes\n",
++		     (int)ret);
+ 		ret = spi_nor_wait_till_ready(nor);
+ 		if (ret)
+-			goto time_out;
++			goto sst_write_err;
+ 		to += 2;
+ 		nor->sst_write_second = true;
+ 	}
+@@ -960,21 +971,24 @@ static int sst_write(struct mtd_info *mtd, loff_t to, size_t len,
+ 	write_disable(nor);
+ 	ret = spi_nor_wait_till_ready(nor);
+ 	if (ret)
+-		goto time_out;
++		goto sst_write_err;
+ 
+ 	/* Write out trailing byte if it exists. */
+ 	if (actual != len) {
+ 		write_enable(nor);
+ 
+ 		nor->program_opcode = SPINOR_OP_BP;
+-		nor->write(nor, to, 1, retlen, buf + actual);
+-
++		ret = nor->write(nor, to, 1, retlen, buf + actual);
++		if (ret < 0)
++			goto sst_write_err;
++		WARN(ret != 1, "While writing 1 byte written %i bytes\n",
++		     (int)ret);
+ 		ret = spi_nor_wait_till_ready(nor);
+ 		if (ret)
+-			goto time_out;
++			goto sst_write_err;
+ 		write_disable(nor);
+ 	}
+-time_out:
++sst_write_err:
+ 	spi_nor_unlock_and_unprep(nor, SPI_NOR_OPS_WRITE);
+ 	return ret;
+ }
+@@ -1003,14 +1017,18 @@ static int spi_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
+ 
+ 	/* do all the bytes fit onto one page? */
+ 	if (page_offset + len <= nor->page_size) {
+-		nor->write(nor, to, len, retlen, buf);
++		ret = nor->write(nor, to, len, retlen, buf);
++		if (ret < 0)
++			goto write_err;
+ 	} else {
+ 		/* the size of data remaining on the first page */
+ 		page_size = nor->page_size - page_offset;
+-		nor->write(nor, to, page_size, retlen, buf);
++		ret = nor->write(nor, to, page_size, retlen, buf);
++		if (ret < 0)
++			goto write_err;
+ 
+ 		/* write everything in nor->page_size chunks */
+-		for (i = page_size; i < len; i += page_size) {
++		for (i = ret; i < len; ) {
+ 			page_size = len - i;
+ 			if (page_size > nor->page_size)
+ 				page_size = nor->page_size;
+@@ -1021,7 +1039,11 @@ static int spi_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
+ 
+ 			write_enable(nor);
+ 
+-			nor->write(nor, to + i, page_size, retlen, buf + i);
++			ret = nor->write(nor, to + i, page_size, retlen,
++					 buf + i);
++			if (ret < 0)
++				goto write_err;
++			i += ret;
+ 		}
+ 	}
+ 
+-- 
+2.6.2
 
-Yeah similar to am33xx with different clocks and with a bunch of accelerators.
 
-> Actually I would prefer to use the dmaengine's event router framework and we
-> do have support for the am33xx/am43xx type of crossbar already implemented.
-> I'm going to resend the DTS series for am33xx/am43xx to convert them to use
-> the new DT bindings along with the dma event router support:
-> https://www.mail-archive.com/linux-omap%40vger.kernel.org/msg120828.html
-
-OK yes a dmaengine event router works too when available. Good to see
-them as separate driver instances now :) Are only the dts changes missing
-now?
-
-FYI, when we have separate interconnect driver instances, we don't want to
-and cannot tweak registers outside the interconnect instance because of them
-being in separate clock and/or power domains :p
-
-In any case, it seems there's no harm using pinctrl for evtmux on dm81xx
-until the event router is available. It's currently only needed on the
-t410 emmc that I'm aware of :)
-
-> > Dynamic muxing of these channels can be done too using the pinctrl
-> > framework named modes, but probably is not a good idea in the case of
-> > SD card and MaASP in case something goes wrong :)
-> 
-> In theory it can be done, but in practice it is not possible. It is up to the
-> board design decision to select which DMA event is not needed to be used in
-> default mode and that one can be used to route the crossbar hidden request to it.
-> Just imaging: playing audio from MMC (in the example you have), audio needs
-> constant DMA, so the MMC would never get DMA request, also the drivers tend to
-> request the DMA channel in their probe/init and hold to it as long as they are
-> loaded...
-
-Yes dynamic muxing of the dma channels sounds like file corruption waiting
-to happen :) Let's stay away from that.
-
-Regards,
-
-Tony
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

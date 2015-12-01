@@ -1,112 +1,64 @@
-From: Vinod Koul <vinod.koul@intel.com>
-Subject: Re: [RFC v02 04/15] dmaengine: edma: Add support for DMA filter
- mapping to slave devices
-Date: Tue, 1 Dec 2015 22:52:12 +0530
-Message-ID: <20151201172212.GC1696@localhost>
-References: <1448891145-10766-1-git-send-email-peter.ujfalusi@ti.com>
- <1448891145-10766-5-git-send-email-peter.ujfalusi@ti.com>
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v2 1/2] spi: core: add max_msg_size to spi_master
+Date: Tue, 1 Dec 2015 19:55:23 +0100
+Message-ID: <565DED1B.90903@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: arnd@arndb.de, andy.shevchenko@gmail.com,
-	linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
-	linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mmc@vger.kernel.org, nsekhar@ti.com,
-	linux-spi@vger.kernel.org
-To: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Return-path: <linux-mmc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1448891145-10766-5-git-send-email-peter.ujfalusi@ti.com>
-Sender: linux-mmc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, Nov 30, 2015 at 03:45:34PM +0200, Peter Ujfalusi wrote:
-> Add support for providing device to filter_fn mapping so client drivers
-> can switch to use the dma_request_chan() API.
+Add a member to spi_master allowing to better handle
+SPI chips with a message size HW limit.
 
-Any reason why we dont want to go with DT based only for edma here?
+Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+v2: add accessor
 
-> 
-> Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-> ---
->  drivers/dma/edma.c                 | 24 ++++++++++++++++++++++++
->  include/linux/platform_data/edma.h |  5 +++++
->  2 files changed, 29 insertions(+)
-> 
-> diff --git a/drivers/dma/edma.c b/drivers/dma/edma.c
-> index 0675e268d577..386f8c9bd606 100644
-> --- a/drivers/dma/edma.c
-> +++ b/drivers/dma/edma.c
-> @@ -2098,6 +2098,8 @@ static struct dma_chan *of_edma_xlate(struct of_phandle_args *dma_spec,
->  }
->  #endif
->  
-> +static bool edma_filter_for_map(struct dma_chan *chan, void *param);
-> +
->  static int edma_probe(struct platform_device *pdev)
->  {
->  	struct edma_soc_info	*info = pdev->dev.platform_data;
-> @@ -2297,6 +2299,12 @@ static int edma_probe(struct platform_device *pdev)
->  		edma_set_chmap(&ecc->slave_chans[i], ecc->dummy_slot);
->  	}
->  
-> +	if (info->filter_map) {
-> +		ecc->dma_slave.filter_map.map = info->filter_map;
-> +		ecc->dma_slave.filter_map.mapcnt = info->filtercnt;
-> +		ecc->dma_slave.filter_map.filter_fn = edma_filter_for_map;
-> +	}
-> +
->  	ret = dma_async_device_register(&ecc->dma_slave);
->  	if (ret) {
->  		dev_err(dev, "slave ddev registration failed (%d)\n", ret);
-> @@ -2428,6 +2436,22 @@ bool edma_filter_fn(struct dma_chan *chan, void *param)
->  }
->  EXPORT_SYMBOL(edma_filter_fn);
->  
-> +static bool edma_filter_for_map(struct dma_chan *chan, void *param)
-> +{
-> +	bool match = false;
-> +
-> +	if (chan->device->dev->driver == &edma_driver.driver) {
-> +		struct edma_chan *echan = to_edma_chan(chan);
-> +		unsigned ch_req = (unsigned)param;
-> +		if (ch_req == echan->ch_num) {
-> +			/* The channel is going to be used as HW synchronized */
-> +			echan->hw_triggered = true;
-> +			match = true;
-> +		}
-> +	}
-> +	return match;
-> +}
-> +
->  static int edma_init(void)
->  {
->  	int ret;
-> diff --git a/include/linux/platform_data/edma.h b/include/linux/platform_data/edma.h
-> index e2878baeb90e..117a36d63840 100644
-> --- a/include/linux/platform_data/edma.h
-> +++ b/include/linux/platform_data/edma.h
-> @@ -59,6 +59,8 @@ struct edma_rsv_info {
->  	const s16	(*rsv_slots)[2];
->  };
->  
-> +struct dma_filter_map;
-> +
->  /* platform_data for EDMA driver */
->  struct edma_soc_info {
->  	/*
-> @@ -76,6 +78,9 @@ struct edma_soc_info {
->  
->  	s8	(*queue_priority_mapping)[2];
->  	const s16	(*xbar_chans)[2];
-> +
-> +	struct dma_filter_map *filter_map;
-> +	int filtercnt;
->  };
->  
->  #endif
-> -- 
-> 2.6.3
-> 
+ include/linux/spi/spi.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index cce80e6..a8abd24 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -302,6 +302,7 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
+  *	and it's up to the individual driver to perform any validation.
+  * @min_speed_hz: Lowest supported transfer speed
+  * @max_speed_hz: Highest supported transfer speed
++ * @max_msg_size: maximum supported message size
+  * @flags: other constraints relevant to this driver
+  * @bus_lock_spinlock: spinlock for SPI bus locking
+  * @bus_lock_mutex: mutex for SPI bus locking
+@@ -417,6 +418,9 @@ struct spi_master {
+ 	u32			min_speed_hz;
+ 	u32			max_speed_hz;
+ 
++	/* maximum message size */
++	size_t			max_msg_size;
++
+ 	/* other constraints relevant to this driver */
+ 	u16			flags;
+ #define SPI_MASTER_HALF_DUPLEX	BIT(0)		/* can't do full duplex */
+@@ -556,6 +560,11 @@ static inline void spi_master_put(struct spi_master *master)
+ 		put_device(&master->dev);
+ }
+ 
++static inline size_t spi_master_get_max_msg_size(struct spi_master *master)
++{
++	return master->max_msg_size;
++}
++
+ /* PM calls that need to be issued by the driver */
+ extern int spi_master_suspend(struct spi_master *master);
+ extern int spi_master_resume(struct spi_master *master);
 -- 
-~Vinod
+2.6.2
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

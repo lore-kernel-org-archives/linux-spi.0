@@ -1,19 +1,20 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: Mark instantiated device nodes with OF_POPULATE" to the spi tree
-Date: Tue, 01 Dec 2015 23:00:29 +0000
-Message-ID: <E1a3tuP-00085K-3W@debutante>
-References: <1448893687-9159-3-git-send-email-geert+renesas@glider.be>
+Subject: Applied "spi: omap2-mcspi: Prevent duplicate gpio_request" to the spi tree
+Date: Tue, 01 Dec 2015 23:00:31 +0000
+Message-ID: <E1a3tuR-00086n-26@debutante>
+References: <1448895759-4282-1-git-send-email-mwelling@ieee.org>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
+To: Joseph Bell <joe-frEo4xfazcg+9D430DZnzg@public.gmane.org>,
+	Michael Welling <mwelling-EkmVulN54Sk@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1448893687-9159-3-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+In-Reply-To: <1448895759-4282-1-git-send-email-mwelling-EkmVulN54Sk@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: Mark instantiated device nodes with OF_POPULATE
+   spi: omap2-mcspi: Prevent duplicate gpio_request
 
 has been applied to the spi tree at
 
@@ -38,76 +39,60 @@ to this mail.
 Thanks,
 Mark
 
->From bd6c1644a2f6f46cdf89388e81168a70711fce3a Mon Sep 17 00:00:00 2001
-From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Date: Mon, 30 Nov 2015 15:28:07 +0100
-Subject: [PATCH] spi: Mark instantiated device nodes with OF_POPULATE
+>From 2f538c017e1a8620d19553931199c6d6a6d31bb2 Mon Sep 17 00:00:00 2001
+From: Michael Welling <mwelling-EkmVulN54Sk@public.gmane.org>
+Date: Mon, 30 Nov 2015 09:02:39 -0600
+Subject: [PATCH] spi: omap2-mcspi: Prevent duplicate gpio_request
 
-Mark (and unmark) device nodes with the POPULATE flag as appropriate.
-This is required to avoid multi probing when enabling and populating SPI
-buses in DT overlays.
+Occasionally the setup function will be called multiple times. Only request
+the gpio the first time otherwise -EBUSY will occur on subsequent calls to
+setup.
 
-Based on commit 4f001fd30145a6a8 ("i2c: Mark instantiated device nodes
-with OF_POPULATE").
+Reported-by: Joseph Bell <joe-frEo4xfazcg+9D430DZnzg@public.gmane.org>
 
-Suggested-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Signed-off-by: Michael Welling <mwelling-EkmVulN54Sk@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ drivers/spi/spi-omap2-mcspi.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 3f135cc9a70e..c7486a373af1 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -613,8 +613,12 @@ EXPORT_SYMBOL_GPL(spi_new_device);
-  */
- void spi_unregister_device(struct spi_device *spi)
- {
--	if (spi)
--		device_unregister(&spi->dev);
-+	if (!spi)
-+		return;
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 02aa1d0607b3..7273820275e9 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -1025,6 +1025,16 @@ static int omap2_mcspi_setup(struct spi_device *spi)
+ 		spi->controller_state = cs;
+ 		/* Link this to context save list */
+ 		list_add_tail(&cs->node, &ctx->cs);
 +
-+	if (spi->dev.of_node)
-+		of_node_clear_flag(spi->dev.of_node, OF_POPULATED);
-+	device_unregister(&spi->dev);
- }
- EXPORT_SYMBOL_GPL(spi_unregister_device);
- 
-@@ -1561,6 +1565,8 @@ static void of_register_spi_devices(struct spi_master *master)
- 		return;
- 
- 	for_each_available_child_of_node(master->dev.of_node, nc) {
-+		if (of_node_test_and_set_flag(nc, OF_POPULATED))
-+			continue;
- 		spi = of_register_spi_device(master, nc);
- 		if (IS_ERR(spi))
- 			dev_warn(&master->dev, "Failed to create SPI device for %s\n",
-@@ -2645,6 +2651,11 @@ static int of_spi_notify(struct notifier_block *nb, unsigned long action,
- 		if (master == NULL)
- 			return NOTIFY_OK;	/* not for us */
- 
-+		if (of_node_test_and_set_flag(rd->dn, OF_POPULATED)) {
-+			put_device(&master->dev);
-+			return NOTIFY_OK;
++		if (gpio_is_valid(spi->cs_gpio)) {
++			ret = gpio_request(spi->cs_gpio, dev_name(&spi->dev));
++			if (ret) {
++				dev_err(&spi->dev, "failed to request gpio\n");
++				return ret;
++			}
++			gpio_direction_output(spi->cs_gpio,
++					 !(spi->mode & SPI_CS_HIGH));
 +		}
-+
- 		spi = of_register_spi_device(master, rd->dn);
- 		put_device(&master->dev);
+ 	}
  
-@@ -2656,6 +2667,10 @@ static int of_spi_notify(struct notifier_block *nb, unsigned long action,
- 		break;
+ 	if (!mcspi_dma->dma_rx || !mcspi_dma->dma_tx) {
+@@ -1033,15 +1043,6 @@ static int omap2_mcspi_setup(struct spi_device *spi)
+ 			return ret;
+ 	}
  
- 	case OF_RECONFIG_CHANGE_REMOVE:
-+		/* already depopulated? */
-+		if (!of_node_check_flag(rd->dn, OF_POPULATED))
-+			return NOTIFY_OK;
-+
- 		/* find our device by node */
- 		spi = of_find_spi_device_by_node(rd->dn);
- 		if (spi == NULL)
+-	if (gpio_is_valid(spi->cs_gpio)) {
+-		ret = gpio_request(spi->cs_gpio, dev_name(&spi->dev));
+-		if (ret) {
+-			dev_err(&spi->dev, "failed to request gpio\n");
+-			return ret;
+-		}
+-		gpio_direction_output(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
+-	}
+-
+ 	ret = pm_runtime_get_sync(mcspi->dev);
+ 	if (ret < 0)
+ 		return ret;
 -- 
 2.6.2
 

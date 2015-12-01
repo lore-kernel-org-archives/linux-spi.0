@@ -1,8 +1,7 @@
 From: Michal Suchanek <hramrach@gmail.com>
-Subject: [PATCH v5 03/10] mtd: fsl-quadspi: return amount of data read/written
- or error
-Date: 1 Dec 2015 16:51:04 -0000
-Message-ID: <ad10a42f8c502b9b91fcba05b3e46c42663e1141.1448988089.git.hramrach@gmail.com>
+Subject: [PATCH v5 08/10] spi: expose master transfer size limitation.
+Date: 1 Dec 2015 16:51:06 -0000
+Message-ID: <8c34c7790244489c2ce0072c72bd9bc7c4cdb965.1448988089.git.hramrach@gmail.com>
 References: <cover.1448988089.git.hramrach@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -33,74 +32,53 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Return amount of data read/written or error as read(2)/write(2) does.
+On some SPI controllers it is not feasible to transfer arbitrary amount
+of data at once.
+
+When the limit on transfer size is a few kilobytes at least it makes
+sense to use the SPI hardware rather than reverting to gpio driver.
+
+The protocol drivers need a way to check that they do not sent overly
+long messages, though.
 
 Signed-off-by: Michal Suchanek <hramrach@gmail.com>
 ---
- drivers/mtd/spi-nor/fsl-quadspi.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ include/linux/spi/spi.h | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/mtd/spi-nor/fsl-quadspi.c b/drivers/mtd/spi-nor/fsl-quadspi.c
-index 10d2b59..9beb739 100644
---- a/drivers/mtd/spi-nor/fsl-quadspi.c
-+++ b/drivers/mtd/spi-nor/fsl-quadspi.c
-@@ -575,7 +575,7 @@ static inline void fsl_qspi_invalid(struct fsl_qspi *q)
- 	writel(reg, q->iobase + QUADSPI_MCR);
- }
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index cce80e6..9598bae 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -425,6 +425,12 @@ struct spi_master {
+ #define SPI_MASTER_MUST_RX      BIT(3)		/* requires rx */
+ #define SPI_MASTER_MUST_TX      BIT(4)		/* requires tx */
  
--static int fsl_qspi_nor_write(struct fsl_qspi *q, struct spi_nor *nor,
-+static ssize_t fsl_qspi_nor_write(struct fsl_qspi *q, struct spi_nor *nor,
- 				u8 opcode, unsigned int to, u32 *txbuf,
- 				unsigned count, size_t *retlen)
- {
-@@ -604,8 +604,11 @@ static int fsl_qspi_nor_write(struct fsl_qspi *q, struct spi_nor *nor,
- 	/* Trigger it */
- 	ret = fsl_qspi_runcmd(q, opcode, to, count);
++	/*
++	 * on some hardware transfer size may be constrained
++	 * the limit may depend on device transfer settings
++	 */
++	size_t (*max_transfer_size)(struct spi_device *spi);
++
+ 	/* lock and mutex for SPI bus locking */
+ 	spinlock_t		bus_lock_spinlock;
+ 	struct mutex		bus_lock_mutex;
+@@ -832,6 +838,15 @@ extern int spi_async(struct spi_device *spi, struct spi_message *message);
+ extern int spi_async_locked(struct spi_device *spi,
+ 			    struct spi_message *message);
  
--	if (ret == 0 && retlen)
--		*retlen += count;
-+	if (ret == 0) {
-+		if (retlen)
-+			*retlen += count;
-+		return count;
-+	}
++static inline size_t
++spi_max_transfer_size(struct spi_device *spi)
++{
++	struct spi_master *master = spi->master;
++	if (!master->max_transfer_size)
++		return 0;
++	return master->max_transfer_size(spi);
++}
++
+ /*---------------------------------------------------------------------------*/
  
- 	return ret;
- }
-@@ -814,6 +817,8 @@ static int fsl_qspi_write_reg(struct spi_nor *nor, u8 opcode, u8 *buf, int len)
- 	} else if (len > 0) {
- 		ret = fsl_qspi_nor_write(q, nor, opcode, 0,
- 					(u32 *)buf, len, NULL);
-+		if (ret > 0)
-+			return 0;
- 	} else {
- 		dev_err(q->dev, "invalid cmd %d\n", opcode);
- 		ret = -EINVAL;
-@@ -827,12 +832,12 @@ static ssize_t fsl_qspi_write(struct spi_nor *nor, loff_t to,
- {
- 	struct fsl_qspi *q = nor->priv;
- 
--	fsl_qspi_nor_write(q, nor, nor->program_opcode, to,
-+	ssize_t ret = fsl_qspi_nor_write(q, nor, nor->program_opcode, to,
- 				(u32 *)buf, len, retlen);
- 
- 	/* invalid the data in the AHB buffer. */
- 	fsl_qspi_invalid(q);
--	return 0;
-+	return ret;
- }
- 
- static ssize_t fsl_qspi_read(struct spi_nor *nor, loff_t from,
-@@ -878,8 +883,7 @@ static ssize_t fsl_qspi_read(struct spi_nor *nor, loff_t from,
- 	memcpy(buf, q->ahb_addr + q->chip_base_addr + from - q->memmap_offs,
- 		len);
- 
--	*retlen += len;
--	return 0;
-+	return len;
- }
- 
- static int fsl_qspi_erase(struct spi_nor *nor, loff_t offs)
+ /* All these synchronous SPI transfer routines are utilities layered
 -- 
 2.6.2
 

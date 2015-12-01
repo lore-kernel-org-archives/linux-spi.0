@@ -1,20 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: omap2-mcspi: Prevent duplicate gpio_request" to the spi tree
-Date: Tue, 01 Dec 2015 23:00:31 +0000
-Message-ID: <E1a3tuR-00086n-26@debutante>
-References: <1448895759-4282-1-git-send-email-mwelling@ieee.org>
+Subject: Applied "spi: Uninline spi_unregister_device()" to the spi tree
+Date: Tue, 01 Dec 2015 23:00:30 +0000
+Message-ID: <E1a3tuQ-000865-3D@debutante>
+References: <1448893687-9159-2-git-send-email-geert+renesas@glider.be>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Joseph Bell <joe-frEo4xfazcg+9D430DZnzg@public.gmane.org>,
-	Michael Welling <mwelling-EkmVulN54Sk@public.gmane.org>,
+To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1448895759-4282-1-git-send-email-mwelling-EkmVulN54Sk@public.gmane.org>
+In-Reply-To: <1448893687-9159-2-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: omap2-mcspi: Prevent duplicate gpio_request
+   spi: Uninline spi_unregister_device()
 
 has been applied to the spi tree at
 
@@ -39,60 +38,64 @@ to this mail.
 Thanks,
 Mark
 
->From 2f538c017e1a8620d19553931199c6d6a6d31bb2 Mon Sep 17 00:00:00 2001
-From: Michael Welling <mwelling-EkmVulN54Sk@public.gmane.org>
-Date: Mon, 30 Nov 2015 09:02:39 -0600
-Subject: [PATCH] spi: omap2-mcspi: Prevent duplicate gpio_request
+>From 3b1884c24c98dada51fc4b05735773f0078711d2 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Date: Mon, 30 Nov 2015 15:28:06 +0100
+Subject: [PATCH] spi: Uninline spi_unregister_device()
 
-Occasionally the setup function will be called multiple times. Only request
-the gpio the first time otherwise -EBUSY will occur on subsequent calls to
-setup.
+Uninline spi_unregister_device() in preparation of adding more code to
+it. Add kerneldoc documentation while we're at it.
 
-Reported-by: Joseph Bell <joe-frEo4xfazcg+9D430DZnzg@public.gmane.org>
-
-Signed-off-by: Michael Welling <mwelling-EkmVulN54Sk@public.gmane.org>
+Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-omap2-mcspi.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ drivers/spi/spi.c       | 14 ++++++++++++++
+ include/linux/spi/spi.h |  7 +------
+ 2 files changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 02aa1d0607b3..7273820275e9 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1025,6 +1025,16 @@ static int omap2_mcspi_setup(struct spi_device *spi)
- 		spi->controller_state = cs;
- 		/* Link this to context save list */
- 		list_add_tail(&cs->node, &ctx->cs);
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index e2415be209d5..3f135cc9a70e 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -604,6 +604,20 @@ struct spi_device *spi_new_device(struct spi_master *master,
+ }
+ EXPORT_SYMBOL_GPL(spi_new_device);
+ 
++/**
++ * spi_unregister_device - unregister a single SPI device
++ * @spi: spi_device to unregister
++ *
++ * Start making the passed SPI device vanish. Normally this would be handled
++ * by spi_unregister_master().
++ */
++void spi_unregister_device(struct spi_device *spi)
++{
++	if (spi)
++		device_unregister(&spi->dev);
++}
++EXPORT_SYMBOL_GPL(spi_unregister_device);
 +
-+		if (gpio_is_valid(spi->cs_gpio)) {
-+			ret = gpio_request(spi->cs_gpio, dev_name(&spi->dev));
-+			if (ret) {
-+				dev_err(&spi->dev, "failed to request gpio\n");
-+				return ret;
-+			}
-+			gpio_direction_output(spi->cs_gpio,
-+					 !(spi->mode & SPI_CS_HIGH));
-+		}
- 	}
+ static void spi_match_master_to_boardinfo(struct spi_master *master,
+ 				struct spi_board_info *bi)
+ {
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index cce80e6dc7d1..075bede66521 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -1115,12 +1115,7 @@ spi_add_device(struct spi_device *spi);
+ extern struct spi_device *
+ spi_new_device(struct spi_master *, struct spi_board_info *);
  
- 	if (!mcspi_dma->dma_rx || !mcspi_dma->dma_tx) {
-@@ -1033,15 +1043,6 @@ static int omap2_mcspi_setup(struct spi_device *spi)
- 			return ret;
- 	}
+-static inline void
+-spi_unregister_device(struct spi_device *spi)
+-{
+-	if (spi)
+-		device_unregister(&spi->dev);
+-}
++extern void spi_unregister_device(struct spi_device *spi);
  
--	if (gpio_is_valid(spi->cs_gpio)) {
--		ret = gpio_request(spi->cs_gpio, dev_name(&spi->dev));
--		if (ret) {
--			dev_err(&spi->dev, "failed to request gpio\n");
--			return ret;
--		}
--		gpio_direction_output(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
--	}
--
- 	ret = pm_runtime_get_sync(mcspi->dev);
- 	if (ret < 0)
- 		return ret;
+ extern const struct spi_device_id *
+ spi_get_device_id(const struct spi_device *sdev);
 -- 
 2.6.2
 

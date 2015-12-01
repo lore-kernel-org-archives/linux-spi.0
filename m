@@ -1,100 +1,148 @@
 From: Vignesh R <vigneshr@ti.com>
-Subject: Re: [PATCH v4 4/5] ARM: dts: DRA7: add entry for qspi mmap region
-Date: Tue, 1 Dec 2015 10:15:26 +0530
-Message-ID: <565D25E6.4070206@ti.com>
+Subject: Re: [PATCH v4 2/5] spi: spi-ti-qspi: add mmap mode read support
+Date: Tue, 1 Dec 2015 13:14:33 +0530
+Message-ID: <565D4FE1.50704@ti.com>
 References: <1448860515-28336-1-git-send-email-vigneshr@ti.com>
- <1448860515-28336-5-git-send-email-vigneshr@ti.com>
- <20151130223408.GJ23396@atomide.com>
+ <1448860515-28336-3-git-send-email-vigneshr@ti.com>
+ <87lh9f15fh.fsf@saruman.tx.rr.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="windows-1252"
 Content-Transfer-Encoding: 7bit
-Cc: Brian Norris <computersforpeace@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Russell King <linux@arm.linux.org.uk>, <hramrach@gmail.com>,
-	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-omap@vger.kernel.org>,
+Cc: Rob Herring <robh+dt@kernel.org>,
+	Russell King <linux@arm.linux.org.uk>,
+	"hramrach@gmail.com" <hramrach@gmail.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
 	<linux-arm-kernel@lists.infradead.org>,
-	<linux-mtd@lists.infradead.org>, <linux-spi@vger.kernel.org>
-To: Tony Lindgren <tony@atomide.com>
+	"linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+To: "Balbi, Felipe" <balbi@ti.com>, Tony Lindgren <tony@atomide.com>,
+	Brian Norris <computersforpeace@gmail.com>,
+	Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20151130223408.GJ23396@atomide.com>
+In-Reply-To: <87lh9f15fh.fsf@saruman.tx.rr.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi Felipe,
 
-
-On 12/01/2015 04:04 AM, Tony Lindgren wrote:
-> * Vignesh R <vigneshr@ti.com> [151129 21:16]:
->> Add qspi memory mapped region entries for DRA7xx based SoCs. Also,
->> update the binding documents for the controller to document this change.
->>
->> Acked-by: Rob Herring <robh@kernel.org>
->> Signed-off-by: Vignesh R <vigneshr@ti.com>
-> ...
->> --- a/Documentation/devicetree/bindings/spi/ti_qspi.txt
->> +++ b/Documentation/devicetree/bindings/spi/ti_qspi.txt
->> @@ -26,3 +26,17 @@ qspi: qspi@4b300000 {
->>  	spi-max-frequency = <25000000>;
->>  	ti,hwmods = "qspi";
->>  };
+On 12/01/2015 04:05 AM, Balbi, Felipe wrote:
+> 
+> Hi,
+> 
+> Vignesh R <vigneshr@ti.com> writes:
+[...]
+>> +}
 >> +
->> +For dra7xx:
->> +qspi: qspi@4b300000 {
->> +	compatible = "ti,dra7xxx-qspi";
->> +	reg = <0x4b300000 0x100>,
->> +	      <0x5c000000 0x4000000>,
->> +	      <0x4a002558 0x4>;
->> +	reg-names = "qspi_base", "qspi_mmap",
->> +		    "qspi_ctrlmod";
->> +	#address-cells = <1>;
->> +	#size-cells = <0>;
->> +	spi-max-frequency = <48000000>;
->> +	ti,hwmods = "qspi";
->> +};
+>> +static int ti_qspi_spi_flash_read(struct  spi_device *spi,
+>> +				  struct spi_flash_read_message *msg)
+>> +{
+>> +	struct ti_qspi *qspi = spi_master_get_devdata(spi->master);
+>> +	int ret = 0;
+>> +
+>> +	mutex_lock(&qspi->list_lock);
+>> +
+>> +	if (!qspi->mmap_enabled)
+>> +		ti_qspi_enable_memory_map(spi);
+>> +	ti_qspi_setup_mmap_read(spi, msg);
+>> +	memcpy_fromio(msg->buf, qspi->mmap_base + msg->from, msg->len);
+>> +	msg->retlen = msg->len;
 > 
-> Actually none of the IO areas above are within the same interconnect target:
+> the way I have always expected this to work was that spi controller
+> would setup the mmap region (using ranges?) and pass the base address to
+> the SPI NOR flash instead, so that could call standard
+> write[bwl]/read[bwl] functions.
 > 
-> 0x4b300000  QSPI0 address space in L3 main interconnect
-> 0x5c000000  QSPI1 address space in L3 main interconnect
-
-
-First address range (configuration port: 0x4b300000) corresponds to QSPI
-registers space. These registers alone are sufficient for generic SPI
-communication (serial flash as well as non-flash SPI devices).
-
-In order to speed up SPI flash reads SFI_MM_IF(SPI memory mapped
-interface) is provided by QSPI IP. This _cannot_ be used with non-flash
-devices.
-The second address range (0x5c000000) corresponds to memory-mapped
-region of SFI_MM_IF, through which SPI flash memories can be read as if
-though they were RAM addresses (i.e using readl/memcpy). The SFI_MM_IF
-block that takes care of communicating over SPI bus and getting the data
-from flash device.
-But SFI_MM_IF block needs to know some flash specific information(such
-as read opcode, address bytes, dummy bytes, mode). This information must
-first be populated in QSPI_SPI_SETUP*_REG(0x4B300054-60) before
-accessing SFI_MM_IF address range via readl.
-Both addresses space belong to same instance of the driver, one
-corresponds to register space and other is memory-mapped region.
-Therefore both regions are claimed by the same driver.
-
-> 0x4a002558  CTRL_CORE_CONTROL_IO_2 in System Control Module (SCM) in L4_CFG
-> 
-> The first two address spaces should be two separate instances of this driver.
-
-Not actually two instances.
-
-> The CTRL_CORE_CONTROL_IO_2 needs seems like a shared clock register that
-> needs to be accessed using the clock framework most likely.
+> I mean, when we're dealing with AXI, AHB, PCI, OCP, whatever we
+> completely ignore these details, why should SPI be different ? If it's
+> memory mapped, the SW view of the thing is a piece of memory and that
+> should be accessible with standard {read,write}[bwl]() calls.
 > 
 
-Not shared clock.
-The CTRL_CORE_CONTROL_IO_2[10:8] QSPI_MEMMAPPED_CS bit fields provides a
-functionality for remapping the previously described address space which
-starts at 0x5C000000 L3_MAIN address to one of the four supported chip
-selects.
-How about using syscon to access CTRL_CORE_CONTROL_IO_2?
+This is just an acceleration provided to improve flash read speeds.
+Whenever there is an access to QSPI memory map region, there is a
+SFI_MM_IF block in QSPI IP that generates SPI bus signals in order fetch
+the data from flash. This SFI_MM_IF must first be configured with flash
+specific information like read opcode, read mode, dummy bytes etc (which
+may vary from flash to flash), by writing to QSPI_SPI_SETUP*_REG also,
+SFI_MM_IF needs to be selected by writing to QSPI_SPI_SWITCH_REG.
+IMO, there has to be a call from spi-nor to ti-qspi before using
+standard {read,write}[bwl]() calls for populating flash info, power mgmt
+and locking SPI bus.
+
+> I really think $subject is not a good way forward because it gives too
+> much responsibility to the SPI controller driver; note that this driver
+> is the one actually accessing the memory map region, instead of simply
+> setting it up and passing it along.
+> 
+
+How would you propose to setup mmap transfers while taking care of SPI
+bus locking and passing of flash info to ti-qspi?
+
+
+> So the way I see it, the DTS should be like so:
+> 
+> qspi@XYZ {
+>          reg = <XYZ foo>;
+>          [...]
+>          ranges = <0 0 0x30000000 $size>;
+> 
+>          flash@0,0 {
+>                    compatible = "mp2580";
+>                    reg = <0 0 $flash_size>;
+>          };
+> };
+> 
+> 
+> if you have more than one device sitting on this SPI bus using different
+> chip selects, that's easy too, just change your ranges property:
+> 
+> qspi@XYZ {
+>          reg = <XYZ foo>;
+>          [...]
+>          ranges = <0 0 0x30000000 0x1000
+>                    1 0 0x30001000 0x1000
+>                    2 0 0x30002000 0x1000>;
+> 
+>          flash@0,0 {
+>                  [...]
+>          };
+> 
+>          flash@1,0 {
+>                    [...]
+>          };
+> 
+>          flash@2,0 {
+>                    [...]
+> 	};
+> };
+> 
+
+No, even if there are multiple slaves, all slaves map to the same start
+address (0x30000000 in above example). Based on the chip-select line
+that is asserted (selected by writing to a particular CTRL_MODULE
+register field), the corresponding slave responds. Different slaves
+cannot be mapped to different address ranges inside mmap address space.
+The ranges property will always be the same for all slaves and all
+chip-selects.
+
+> and so on. From ti-qspi perspective, you should just setup the memory
+> map and from mp25p80 you would check if your reg property pointed to an
+> address that looks like memory, then ioremap it and use tradicional
+> {read,write}[bwl]() accessors. Any reasons why that wasn't done the way
+> pointed out above ?
+> 
+
+There might be a SPI controller that provides accelerated interface for
+SPI flash read not as a memory mapping but some-other way. Brian Norris
+has pointed out that there is at least one other controller which
+provides such acceleration w/o memory mapping[1] May be Brian can
+explain that better?
+
+
+[1]https://lkml.org/lkml/2015/11/10/618
 
 -- 
 Regards

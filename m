@@ -1,178 +1,101 @@
-From: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v4 1/7] spi: imx: Fix DMA transfer
-Date: Tue, 1 Dec 2015 00:35:18 +0100
-Message-ID: <565CDD36.4040001@gmail.com>
-References: <1448666165-7473-1-git-send-email-anton.bondarenko.sama@gmail.com>
- <1448666165-7473-2-git-send-email-anton.bondarenko.sama@gmail.com>
- <20151130082939.GU11966@pengutronix.de>
+From: Vignesh R <vigneshr@ti.com>
+Subject: Re: [PATCH v4 4/5] ARM: dts: DRA7: add entry for qspi mmap region
+Date: Tue, 1 Dec 2015 10:15:26 +0530
+Message-ID: <565D25E6.4070206@ti.com>
+References: <1448860515-28336-1-git-send-email-vigneshr@ti.com>
+ <1448860515-28336-5-git-send-email-vigneshr@ti.com>
+ <20151130223408.GJ23396@atomide.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Type: text/plain; charset="windows-1252"
 Content-Transfer-Encoding: 7bit
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org, jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org
-To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20151130082939.GU11966-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Brian Norris <computersforpeace@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Russell King <linux@arm.linux.org.uk>, <hramrach@gmail.com>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-omap@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>,
+	<linux-mtd@lists.infradead.org>, <linux-spi@vger.kernel.org>
+To: Tony Lindgren <tony@atomide.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20151130223408.GJ23396@atomide.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
-On 2015-11-30 09:29, Sascha Hauer wrote:
-> On Sat, Nov 28, 2015 at 12:15:59AM +0100, Anton Bondarenko wrote:
->> New implementation change handling of RX data tail. DMA is used to process
->> all TX data and only full chunks of RX data with size aligned to FIFO/2.
->> Driver is waiting until both TX and RX DMA transaction done and all
->> TX data are pushed out. At that moment there is only RX data tail in
->> the RX FIFO. This data read out using PIO.
->>
->> Transfer triggering changed to avoid RX data loss.
->>
->> Signed-off-by: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
->
-> This patch doesn't make me feel very comfortable. It's quite big and I
-> think it contains multiple logical changes. It should be split up
-> further.
->
-Agreed. I'm going to split patch according to suggestions
->> ---
->>   drivers/spi/spi-imx.c | 115 +++++++++++++++++++++++++++++++++-----------------
->>   1 file changed, 76 insertions(+), 39 deletions(-)
->>
->> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
->> index 0e5723a..bd7b721 100644
->> --- a/drivers/spi/spi-imx.c
->> +++ b/drivers/spi/spi-imx.c
->> @@ -53,6 +53,7 @@
->>   /* generic defines to abstract from the different register layouts */
->>   #define MXC_INT_RR	(1 << 0) /* Receive data ready interrupt */
->>   #define MXC_INT_TE	(1 << 1) /* Transmit FIFO empty interrupt */
->> +#define MXC_INT_TCEN	BIT(7)   /* Transfer complete */
->>
->>   /* The maximum  bytes that a sdma BD can transfer.*/
->>   #define MAX_SDMA_BD_BYTES  (1 << 15)
->> @@ -104,9 +105,7 @@ struct spi_imx_data {
->>   	unsigned int dma_is_inited;
->>   	unsigned int dma_finished;
->>   	bool usedma;
->> -	u32 rx_wml;
->> -	u32 tx_wml;
->> -	u32 rxt_wml;
->> +	u32 wml;
->
-> One logical change is: Merge the different FIFO watermark level
-> variables into a single variable since they are all the same.
->
->>   	struct completion dma_rx_completion;
->>   	struct completion dma_tx_completion;
->>
->> @@ -939,17 +944,18 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
->>   	/* Trigger the cspi module. */
->>   	spi_imx->dma_finished = 0;
->>
->> -	dma = readl(spi_imx->base + MX51_ECSPI_DMA);
->> -	dma = dma & (~MX51_ECSPI_DMA_RXT_WML_MASK);
->> -	/* Change RX_DMA_LENGTH trigger dma fetch tail data */
->> -	left = transfer->len % spi_imx->rxt_wml;
->> -	if (left)
->> -		writel(dma | (left << MX51_ECSPI_DMA_RXT_WML_OFFSET),
->> -				spi_imx->base + MX51_ECSPI_DMA);
->> +	/*
->> +	 * Set these order to avoid potential RX overflow. The overflow may
->> +	 * happen if we enable SPI HW before starting RX DMA due to rescheduling
->> +	 * for another task and/or interrupt.
->> +	 * So RX DMA enabled first to make sure data would be read out from FIFO
->> +	 * ASAP. TX DMA enabled next to start filling TX FIFO with new data.
->> +	 * And finaly SPI HW enabled to start actual data transfer.
->> +	 */
->> +	dma_async_issue_pending(master->dma_rx);
->> +	dma_async_issue_pending(master->dma_tx);
->>   	spi_imx->devtype_data->trigger(spi_imx);
->>
->> -	dma_async_issue_pending(master->dma_tx);
->> -	dma_async_issue_pending(master->dma_rx);
->
-> Here you fix the order of the different step to start a transfer. This
-> could also be a separate patch, no?
->
-Agreed.
->>   	/* Wait SDMA to finish the data transfer.*/
->>   	timeout = wait_for_completion_timeout(&spi_imx->dma_tx_completion,
->>   						IMX_DMA_TIMEOUT);
->> @@ -958,6 +964,7 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
->>   			dev_driver_string(&master->dev),
->>   			dev_name(&master->dev));
->>   		dmaengine_terminate_all(master->dma_tx);
->> +		dmaengine_terminate_all(master->dma_rx);
->
-> This could also be a separate "Add missing dmaengine_terminate_all() for
-> rx dma" patch.
->
-Agreed.
->>   	} else {
->>   		timeout = wait_for_completion_timeout(
->>   				&spi_imx->dma_rx_completion, IMX_DMA_TIMEOUT);
->> @@ -967,10 +974,40 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
->>   				dev_name(&master->dev));
->>   			spi_imx->devtype_data->reset(spi_imx);
->>   			dmaengine_terminate_all(master->dma_rx);
->> +		} else if (left) {
->> +			void *pio_buffer = transfer->rx_buf
->> +						+ (transfer->len - left);
->> +
->> +			dma_sync_sg_for_cpu(master->dma_rx->device->dev,
->> +					    &rx->sgl[rx->nents - 1], 1,
->> +					    DMA_FROM_DEVICE);
->> +
->> +			spi_imx->rx_buf = pio_buffer;
->> +			spi_imx->txfifo = left;
->> +			reinit_completion(&spi_imx->xfer_done);
->> +
->> +			spi_imx->devtype_data->intctrl(spi_imx, MXC_INT_TCEN);
->> +
->> +			timeout = wait_for_completion_timeout(
->> +					&spi_imx->xfer_done, IMX_DMA_TIMEOUT);
->> +			if (!timeout) {
->> +				pr_warn("%s %s: I/O Error in RX tail\n",
->> +					dev_driver_string(&master->dev),
->> +					dev_name(&master->dev));
->> +			}
->> +
->> +			/*
->> +			 * WARNING: this call will cause DMA debug complains
->> +			 * about wrong combination of DMA direction and sync
->> +			 * function. But we must use it to make sure the data
->> +			 * read by PIO mode will be cleared from CPU cache.
->> +			 * Otherwise SPI core will invalidate it during unmap of
->> +			 * SG buffers.
->> +			 */
->> +			dma_sync_sg_for_device(master->dma_rx->device->dev,
->> +					       &rx->sgl[rx->nents - 1], 1,
->> +					       DMA_TO_DEVICE);
->
-> This is the most scary place in this patch and I think this should not
-> be resolved like that. The problem you are solving here is that you want
-> to transfer most of the data using DMA and only the remaining non
-> burstsize aligned data using PIO. Such a mixed DMA/PIO transfer doesn't
-> seem to be supported by the SPI core. To support it we must probably add
-> some possibility to call __spi_unmap_msg from the driver.
->
-> A much simpler approach to fix the issue would be to just forbid DMA
-> when the transfer size is not a multiple of the burstsize. Only bigger
-> transfers benefit from DMA, for the smaller ones DMA can even be slower.
-> I assume that the bigger transfers are burstsize aligned anyway, so it
-> might even not be necessary to have support for non burstsize aligned
-> DMA transfers.
->
-> Sascha
->
-Yeah, the implementation is a bit ugly. I'll exclude this part from 
-patch series and replace it with proposed limitation. It will decrease 
-performance in some cases, but at least driver will work correctly.
 
-BR, Anton
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+On 12/01/2015 04:04 AM, Tony Lindgren wrote:
+> * Vignesh R <vigneshr@ti.com> [151129 21:16]:
+>> Add qspi memory mapped region entries for DRA7xx based SoCs. Also,
+>> update the binding documents for the controller to document this change.
+>>
+>> Acked-by: Rob Herring <robh@kernel.org>
+>> Signed-off-by: Vignesh R <vigneshr@ti.com>
+> ...
+>> --- a/Documentation/devicetree/bindings/spi/ti_qspi.txt
+>> +++ b/Documentation/devicetree/bindings/spi/ti_qspi.txt
+>> @@ -26,3 +26,17 @@ qspi: qspi@4b300000 {
+>>  	spi-max-frequency = <25000000>;
+>>  	ti,hwmods = "qspi";
+>>  };
+>> +
+>> +For dra7xx:
+>> +qspi: qspi@4b300000 {
+>> +	compatible = "ti,dra7xxx-qspi";
+>> +	reg = <0x4b300000 0x100>,
+>> +	      <0x5c000000 0x4000000>,
+>> +	      <0x4a002558 0x4>;
+>> +	reg-names = "qspi_base", "qspi_mmap",
+>> +		    "qspi_ctrlmod";
+>> +	#address-cells = <1>;
+>> +	#size-cells = <0>;
+>> +	spi-max-frequency = <48000000>;
+>> +	ti,hwmods = "qspi";
+>> +};
+> 
+> Actually none of the IO areas above are within the same interconnect target:
+> 
+> 0x4b300000  QSPI0 address space in L3 main interconnect
+> 0x5c000000  QSPI1 address space in L3 main interconnect
+
+
+First address range (configuration port: 0x4b300000) corresponds to QSPI
+registers space. These registers alone are sufficient for generic SPI
+communication (serial flash as well as non-flash SPI devices).
+
+In order to speed up SPI flash reads SFI_MM_IF(SPI memory mapped
+interface) is provided by QSPI IP. This _cannot_ be used with non-flash
+devices.
+The second address range (0x5c000000) corresponds to memory-mapped
+region of SFI_MM_IF, through which SPI flash memories can be read as if
+though they were RAM addresses (i.e using readl/memcpy). The SFI_MM_IF
+block that takes care of communicating over SPI bus and getting the data
+from flash device.
+But SFI_MM_IF block needs to know some flash specific information(such
+as read opcode, address bytes, dummy bytes, mode). This information must
+first be populated in QSPI_SPI_SETUP*_REG(0x4B300054-60) before
+accessing SFI_MM_IF address range via readl.
+Both addresses space belong to same instance of the driver, one
+corresponds to register space and other is memory-mapped region.
+Therefore both regions are claimed by the same driver.
+
+> 0x4a002558  CTRL_CORE_CONTROL_IO_2 in System Control Module (SCM) in L4_CFG
+> 
+> The first two address spaces should be two separate instances of this driver.
+
+Not actually two instances.
+
+> The CTRL_CORE_CONTROL_IO_2 needs seems like a shared clock register that
+> needs to be accessed using the clock framework most likely.
+> 
+
+Not shared clock.
+The CTRL_CORE_CONTROL_IO_2[10:8] QSPI_MEMMAPPED_CS bit fields provides a
+functionality for remapping the previously described address space which
+starts at 0x5C000000 L3_MAIN address to one of the four supported chip
+selects.
+How about using syscon to access CTRL_CORE_CONTROL_IO_2?
+
+-- 
+Regards
+Vignesh

@@ -1,76 +1,100 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v5 08/10] spi: expose master transfer size limitation.
-Date: Tue, 1 Dec 2015 19:58:16 +0000
-Message-ID: <20151201195816.GS1929@sirena.org.uk>
-References: <cover.1448988089.git.hramrach@gmail.com>
- <8c34c7790244489c2ce0072c72bd9bc7c4cdb965.1448988089.git.hramrach@gmail.com>
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Subject: Re: [RFC v02 00/15] dmaengine: New 'universal' API for requesting channel
+Date: Tue, 01 Dec 2015 21:17:06 +0100
+Message-ID: <3124382.EhiMyQGKTA@wuerfel>
+References: <1448891145-10766-1-git-send-email-peter.ujfalusi@ti.com> <20151201165954.GA1696@localhost>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="v98/5hv2LQXhs+5A"
-Cc: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Han Xu <han.xu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
-	Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-	"Andrew F. Davis" <afd-l0cyMroinI0@public.gmane.org>, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
-	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
-	Bean Huo =?utf-8?B?6ZyN5paM5paM?= <beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org>,
-	Furquan Shaikh <furquan-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: Peter Ujfalusi <peter.ujfalusi-l0cyMroinI0@public.gmane.org>, andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, nsekhar-l0cyMroinI0@public.gmane.org,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <8c34c7790244489c2ce0072c72bd9bc7c4cdb965.1448988089.git.hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <20151201165954.GA1696@localhost>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Tuesday 01 December 2015 22:29:54 Vinod Koul wrote:
+> On Mon, Nov 30, 2015 at 03:45:30PM +0200, Peter Ujfalusi wrote:
+> > channel via DT, ACPI or in case if the kernel booted in non DT/ACPI mode
+> > it will use a filter lookup table and retrieves the needed information from
+> > the dma_filter_map provided by the DMA drivers.
+> 
+> That sounds right, for the third case would the arch, driver or someone else
+> configure this?
 
---v98/5hv2LQXhs+5A
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The typical case is for the configuration to be defined in arch or platform
+code and passed down to the dmaengine driver.
 
-On Tue, Dec 01, 2015 at 04:51:06PM -0000, Michal Suchanek wrote:
-> On some SPI controllers it is not feasible to transfer arbitrary amount
-> of data at once.
->=20
-> When the limit on transfer size is a few kilobytes at least it makes
-> sense to use the SPI hardware rather than reverting to gpio driver.
+I just noticed that the text above (and probably the code too) should
+be changed so we always fall back to this. There are cases where the
+platform is booted with DT in principle, but the DMA engine does not
+(yet) use DT and still wants to be converted. I think we can easily
+handle that case by always trying this if the other methods fail.
 
-> +	/*
-> +	 * on some hardware transfer size may be constrained
-> +	 * the limit may depend on device transfer settings
-> +	 */
-> +	size_t (*max_transfer_size)(struct spi_device *spi);
+> > This legacy mode needs changes in platform code, in dmaengine drivers and
+> > finally the dmaengine user drivers can be converted:
+> 
+> Are you marking the current APIs as dericated in the end of this series
 
-Heiner submitted a *very* similar patch just now with a straight
-variable plus accessor instead of a function and using a name with _msg.
-I'm ambivalent on the implementation but prefer the naming here since
-that's more the limitation we're trying to express I think (some
-hardware does have limiations about multple transfers too).  Can the two
-of you come up with something that works for both of you?
+I think we practically stopped marking things as deprecated in general.
+Per Linus decree, whenever we want to get rid of something, we should
+instead change all users in tree and then remove the API, expecting
+driver maintainers to do something just because you marked it as deprecated
+often doesn't work.
 
---v98/5hv2LQXhs+5A
-Content-Type: application/pgp-signature; name="signature.asc"
+I can help out converting a few platforms, maybe one interface at a time.
+This is what I see:
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+arnd@wuerfel:~/arm-soc$ for i in dma_request_slave_channel_reason dma_request_slave_channel dma_request_slave_channel_compat dma_request_channel  ; do echo `git grep -wl $i drivers/  | grep -v drivers/dma | wc -l`\      $i ; done
+14      dma_request_slave_channel_reason
+27      dma_request_slave_channel
+25      dma_request_slave_channel_compat
+34      dma_request_channel
 
-iQEcBAEBCAAGBQJWXfvYAAoJECTWi3JdVIfQ+csH/jQoupku0nMby5MfE9iDpwif
-jN/8jQm3WpdH7oGihAYfqmCLyAdEKuACkqrCLuE5X0a4qJB3aqjsOm6aAT5P+nL1
-GTTLGJ1RDdStgiyyFbyfW9CUL4ltvKt4Cefi7DozO+xXQaOheW0VwHG8HkfSX5fZ
-PPHIF82+NexFIpJANK4bRvsZGhtLiHS3LRjm5n/pHsrLZAbzJqPMRSIGd485B0Tx
-jvWNV1Nzz4ZWAq5Od7HTFl9y91x/9Mxjura2YilV0+vfVwkYGWcPMCOOzk5va8C7
-RHjSNCRt69TljR6kS1oPpUZQWW8ADhaebfLkNFLW4mQ5dTuFHqcYeS+SXCH2H+c=
-=70ge
------END PGP SIGNATURE-----
+I would probably leave the users of dma_request_channel() while converting
+the others, as that is still used by all the platforms that don't use any DT
+support.
 
---v98/5hv2LQXhs+5A--
+Changing dma_request_slave_channel_reason and dma_request_slave_channel is
+trivial, we can probably use coccinelle for that, as it does not require
+any platform changes. That brings us to the users of
+dma_request_slave_channel_compat, which currently includes these files:
+
+$ git grep -wl dma_request_slave_channel_compat drivers/ata/pata_pxa.c
+drivers/crypto/atmel-aes.c
+drivers/crypto/atmel-sha.c
+drivers/crypto/atmel-tdes.c
+drivers/crypto/omap-aes.c
+drivers/crypto/omap-des.c
+drivers/crypto/omap-sham.c
+drivers/media/platform/omap3isp/isphist.c
+drivers/mmc/host/davinci_mmc.c
+drivers/mmc/host/omap.c
+drivers/mmc/host/omap_hsmmc.c
+drivers/mmc/host/pxamci.c
+drivers/mmc/host/s3cmci.c
+drivers/mmc/host/tmio_mmc_dma.c
+drivers/mtd/nand/pxa3xx_nand.c
+drivers/net/ethernet/smsc/smc91x.c
+drivers/net/irda/pxaficp_ir.c
+drivers/spi/spi-omap2-mcspi.c
+drivers/spi/spi-pxa2xx-dma.c
+drivers/spi/spi-rspi.c
+drivers/spi/spi-s3c64xx.c
+drivers/spi/spi-sh-msiof.c
+drivers/tty/serial/8250/8250_dma.c
+drivers/tty/serial/samsung.c
+drivers/tty/serial/sh-sci.c
+include/linux/dmaengine.h
+
+In other words: arch/avr32 and arch/sh along with omap1, omap2, davinci, pxa, and s3c
+in terms of ARM platforms.
+
+	Arnd
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

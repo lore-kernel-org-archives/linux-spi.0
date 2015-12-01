@@ -1,7 +1,7 @@
 From: Michal Suchanek <hramrach@gmail.com>
-Subject: [PATCH v5 08/10] spi: expose master transfer size limitation.
-Date: 1 Dec 2015 16:51:06 -0000
-Message-ID: <8c34c7790244489c2ce0072c72bd9bc7c4cdb965.1448988089.git.hramrach@gmail.com>
+Subject: [PATCH v5 01/10] mtd: spi-nor: change return value of read/write
+Date: 1 Dec 2015 16:51:03 -0000
+Message-ID: <b255ef9e237b9b58e2cfb13ee0047df62cabe9a5.1448988089.git.hramrach@gmail.com>
 References: <cover.1448988089.git.hramrach@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -32,53 +32,91 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On some SPI controllers it is not feasible to transfer arbitrary amount
-of data at once.
-
-When the limit on transfer size is a few kilobytes at least it makes
-sense to use the SPI hardware rather than reverting to gpio driver.
-
-The protocol drivers need a way to check that they do not sent overly
-long messages, though.
+Change the return value of spi-nor device read and write methods to
+allow returning amount of data transferred and errors as
+read(2)/write(2) does.
 
 Signed-off-by: Michal Suchanek <hramrach@gmail.com>
 ---
- include/linux/spi/spi.h | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index cce80e6..9598bae 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -425,6 +425,12 @@ struct spi_master {
- #define SPI_MASTER_MUST_RX      BIT(3)		/* requires rx */
- #define SPI_MASTER_MUST_TX      BIT(4)		/* requires tx */
+ - avoid compiler warning
+---
+ drivers/mtd/devices/m25p80.c      | 5 +++--
+ drivers/mtd/spi-nor/fsl-quadspi.c | 5 +++--
+ include/linux/mtd/spi-nor.h       | 4 ++--
+ 3 files changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+index c9c3b7f..6ee3bb3 100644
+--- a/drivers/mtd/devices/m25p80.c
++++ b/drivers/mtd/devices/m25p80.c
+@@ -73,7 +73,7 @@ static int m25p80_write_reg(struct spi_nor *nor, u8 opcode, u8 *buf, int len)
+ 	return spi_write(spi, flash->command, len + 1);
+ }
  
-+	/*
-+	 * on some hardware transfer size may be constrained
-+	 * the limit may depend on device transfer settings
-+	 */
-+	size_t (*max_transfer_size)(struct spi_device *spi);
-+
- 	/* lock and mutex for SPI bus locking */
- 	spinlock_t		bus_lock_spinlock;
- 	struct mutex		bus_lock_mutex;
-@@ -832,6 +838,15 @@ extern int spi_async(struct spi_device *spi, struct spi_message *message);
- extern int spi_async_locked(struct spi_device *spi,
- 			    struct spi_message *message);
+-static void m25p80_write(struct spi_nor *nor, loff_t to, size_t len,
++static ssize_t m25p80_write(struct spi_nor *nor, loff_t to, size_t len,
+ 			size_t *retlen, const u_char *buf)
+ {
+ 	struct m25p *flash = nor->priv;
+@@ -101,6 +101,7 @@ static void m25p80_write(struct spi_nor *nor, loff_t to, size_t len,
+ 	spi_sync(spi, &m);
  
-+static inline size_t
-+spi_max_transfer_size(struct spi_device *spi)
-+{
-+	struct spi_master *master = spi->master;
-+	if (!master->max_transfer_size)
-+		return 0;
-+	return master->max_transfer_size(spi);
-+}
-+
- /*---------------------------------------------------------------------------*/
+ 	*retlen += m.actual_length - cmd_sz;
++	return 0;
+ }
  
- /* All these synchronous SPI transfer routines are utilities layered
+ static inline unsigned int m25p80_rx_nbits(struct spi_nor *nor)
+@@ -119,7 +120,7 @@ static inline unsigned int m25p80_rx_nbits(struct spi_nor *nor)
+  * Read an address range from the nor chip.  The address range
+  * may be any size provided it is within the physical boundaries.
+  */
+-static int m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
++static ssize_t m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
+ 			size_t *retlen, u_char *buf)
+ {
+ 	struct m25p *flash = nor->priv;
+diff --git a/drivers/mtd/spi-nor/fsl-quadspi.c b/drivers/mtd/spi-nor/fsl-quadspi.c
+index 54640f1..10d2b59 100644
+--- a/drivers/mtd/spi-nor/fsl-quadspi.c
++++ b/drivers/mtd/spi-nor/fsl-quadspi.c
+@@ -822,7 +822,7 @@ static int fsl_qspi_write_reg(struct spi_nor *nor, u8 opcode, u8 *buf, int len)
+ 	return ret;
+ }
+ 
+-static void fsl_qspi_write(struct spi_nor *nor, loff_t to,
++static ssize_t fsl_qspi_write(struct spi_nor *nor, loff_t to,
+ 		size_t len, size_t *retlen, const u_char *buf)
+ {
+ 	struct fsl_qspi *q = nor->priv;
+@@ -832,9 +832,10 @@ static void fsl_qspi_write(struct spi_nor *nor, loff_t to,
+ 
+ 	/* invalid the data in the AHB buffer. */
+ 	fsl_qspi_invalid(q);
++	return 0;
+ }
+ 
+-static int fsl_qspi_read(struct spi_nor *nor, loff_t from,
++static ssize_t fsl_qspi_read(struct spi_nor *nor, loff_t from,
+ 		size_t len, size_t *retlen, u_char *buf)
+ {
+ 	struct fsl_qspi *q = nor->priv;
+diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
+index 7bed974..6080701 100644
+--- a/include/linux/mtd/spi-nor.h
++++ b/include/linux/mtd/spi-nor.h
+@@ -171,9 +171,9 @@ struct spi_nor {
+ 	int (*read_reg)(struct spi_nor *nor, u8 opcode, u8 *buf, int len);
+ 	int (*write_reg)(struct spi_nor *nor, u8 opcode, u8 *buf, int len);
+ 
+-	int (*read)(struct spi_nor *nor, loff_t from,
++	ssize_t (*read)(struct spi_nor *nor, loff_t from,
+ 			size_t len, size_t *retlen, u_char *read_buf);
+-	void (*write)(struct spi_nor *nor, loff_t to,
++	ssize_t (*write)(struct spi_nor *nor, loff_t to,
+ 			size_t len, size_t *retlen, const u_char *write_buf);
+ 	int (*erase)(struct spi_nor *nor, loff_t offs);
+ 
 -- 
 2.6.2
 

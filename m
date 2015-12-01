@@ -1,7 +1,9 @@
 From: Michal Suchanek <hramrach@gmail.com>
-Subject: [PATCH v5 00/10] add error checking to spi-nor read and write
-Date: 1 Dec 2015 16:51:03 -0000
-Message-ID: <cover.1448988089.git.hramrach@gmail.com>
+Subject: [PATCH v5 02/10] mtd: m25p80: return amount of data transferred or
+ error in read/write
+Date: 1 Dec 2015 16:51:04 -0000
+Message-ID: <addb82044e8f8472ac0d02bd08ee5dca1a186117.1448988089.git.hramrach@gmail.com>
+References: <cover.1448988089.git.hramrach@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -19,6 +21,7 @@ To: Heiner Kallweit <hkallweit1@gmail.com>,
   Furquan Shaikh <furquan@google.com>, linux-mtd@lists.infradead.org,
   linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
 Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <cover.1448988089.git.hramrach@gmail.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
  <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
@@ -30,40 +33,72 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello,
+Add checking of SPI transfer errors and return them from read/write
+functions. Also return the amount of data transferred.
 
-as this is getting discussed a lot lately I am sending a rebase of the spi-nor patchset on top of current MTD patch queue.
+Signed-off-by: Michal Suchanek <hramrach@gmail.com>
+---
+ drivers/mtd/devices/m25p80.c | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-I need to do some testing of the rebase with some actual SPI device.
-
-However, I do not have the espi hardware and I hope to get testing on that platform as well.
-
-Also I would like to get comments on the integration of the spi_max_transfer_size
-
-Thanks
-
-Michal
-
-Michal Suchanek (10):
-  mtd: spi-nor: change return value of read/write
-  mtd: m25p80: return amount of data transferred or error in read/write
-  mtd: fsl-quadspi: return amount of data read/written or error
-  mtd: spi-nor: check return value from read/write
-  mtd: spi-nor: stop passing around retlen
-  mtd: spi-nor: simplify write loop
-  mtd: spi-nor: add read loop
-  spi: expose master transfer size limitation.
-  spi: fsl-espi: expose maximum transfer size limit
-  spi: m25p80: read in spi_max_transfer_size chunks
-
- drivers/mtd/devices/m25p80.c      | 34 +++++++++-----
- drivers/mtd/spi-nor/fsl-quadspi.c | 29 ++++++------
- drivers/mtd/spi-nor/spi-nor.c     | 95 +++++++++++++++++++++++++--------------
- drivers/spi/spi-fsl-espi.c        |  6 +++
- include/linux/mtd/spi-nor.h       |  8 ++--
- include/linux/spi/spi.h           | 15 +++++++
- 6 files changed, 125 insertions(+), 62 deletions(-)
-
+diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+index 6ee3bb3..fc694fd 100644
+--- a/drivers/mtd/devices/m25p80.c
++++ b/drivers/mtd/devices/m25p80.c
+@@ -81,6 +81,7 @@ static ssize_t m25p80_write(struct spi_nor *nor, loff_t to, size_t len,
+ 	struct spi_transfer t[2] = {};
+ 	struct spi_message m;
+ 	int cmd_sz = m25p_cmdsz(nor);
++	ssize_t ret;
+ 
+ 	spi_message_init(&m);
+ 
+@@ -98,10 +99,15 @@ static ssize_t m25p80_write(struct spi_nor *nor, loff_t to, size_t len,
+ 	t[1].len = len;
+ 	spi_message_add_tail(&t[1], &m);
+ 
+-	spi_sync(spi, &m);
++	ret = spi_sync(spi, &m);
++	if (ret)
++		return ret;
+ 
+-	*retlen += m.actual_length - cmd_sz;
+-	return 0;
++	ret = m.actual_length - cmd_sz;
++	if (ret < 0)
++		return -EIO;
++	*retlen += ret;
++	return ret;
+ }
+ 
+ static inline unsigned int m25p80_rx_nbits(struct spi_nor *nor)
+@@ -128,6 +134,7 @@ static ssize_t m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
+ 	struct spi_transfer t[2];
+ 	struct spi_message m;
+ 	unsigned int dummy = nor->read_dummy;
++	ssize_t ret;
+ 
+ 	/* convert the dummy cycles to the number of bytes */
+ 	dummy /= 8;
+@@ -147,10 +154,15 @@ static ssize_t m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
+ 	t[1].len = len;
+ 	spi_message_add_tail(&t[1], &m);
+ 
+-	spi_sync(spi, &m);
++	ret = spi_sync(spi, &m);
++	if (ret)
++		return ret;
+ 
+-	*retlen = m.actual_length - m25p_cmdsz(nor) - dummy;
+-	return 0;
++	ret = m.actual_length - m25p_cmdsz(nor) - dummy;
++	if (ret < 0)
++		return -EIO;
++	*retlen += ret;
++	return ret;
+ }
+ 
+ /*
 -- 
 2.6.2
 

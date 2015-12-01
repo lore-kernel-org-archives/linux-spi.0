@@ -1,40 +1,62 @@
-From: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [RFC v02 04/15] dmaengine: edma: Add support for DMA filter
- mapping to slave devices
-Date: Tue, 01 Dec 2015 21:20:28 +0100
-Message-ID: <1589780.JL62pLTh05@wuerfel>
-References: <1448891145-10766-1-git-send-email-peter.ujfalusi@ti.com>
- <1448891145-10766-5-git-send-email-peter.ujfalusi@ti.com>
- <20151201172212.GC1696@localhost>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/3] spi: added spi_resource management
+Date: Tue, 1 Dec 2015 21:04:10 +0000
+Message-ID: <20151201210410.GU1929@sirena.org.uk>
+References: <1448888695-2260-1-git-send-email-kernel@martin.sperl.org>
+ <1448888695-2260-2-git-send-email-kernel@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: nsekhar@ti.com, linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org, andy.shevchenko@gmail.com,
- dmaengine@vger.kernel.org, linux-omap@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-To: Vinod Koul <vinod.koul@intel.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20151201172212.GC1696@localhost>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="BV9bEMyK3jSSO1UG"
+Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1448888695-2260-2-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Tuesday 01 December 2015 22:52:12 Vinod Koul wrote:
-> On Mon, Nov 30, 2015 at 03:45:34PM +0200, Peter Ujfalusi wrote:
-> > Add support for providing device to filter_fn mapping so client drivers
-> > can switch to use the dma_request_chan() API.
-> 
-> Any reason why we dont want to go with DT based only for edma here?
 
-I think the OMAP2 based platforms using edma are all DT-only, but mach-davinci
-would need a lot of work for that.
+--BV9bEMyK3jSSO1UG
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-	Arnd
+On Mon, Nov 30, 2015 at 01:04:52PM +0000, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
+
+> +static struct spi_res *__spi_res_alloc(struct spi_device *spi,
+> +				       spi_res_release_t release,
+> +				       size_t size,
+> +				       gfp_t gfp)
+
+This has exactly one (tiny) user.  Why is it a separate function?
+
+> +	sres = kzalloc(tot_size, gfp);
+> +	if (unlikely(!sres))
+> +		return NULL;
+
+Don't use likely() or unlikely() annotations unless the code is *really*
+performance critical, just let the optimiser get on with things.  The
+annotations most likely cost more time in reading the code than they'll
+ever save.
+
+--BV9bEMyK3jSSO1UG
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJWXgtJAAoJECTWi3JdVIfQ3JQH/iMuroeakcJBJI9XhKxEyx2m
+qvUd4s/u1r8ZEvm22QEFetOF9ogkqFdsU9BTc3Z0yTXauL6/U5K3azizw/W74i0w
+oPX27sSs49EuNFz+TS0Ufg+rPnKgnb5hQJUqGIcWQU+6dU79FHfhB4atjO/ZDkSR
+Wynumr/inYu38Ygp0vqPqqmBHcVqdwAyRf75T+B7/fAT6Ky8Y3kcMmyOZLD/ES+P
+kJyG57CBKBVBrlsxJzXKBGjRtBEsmmOCWoGrfy9+jowHt3TLJ5qwY9QXJwYcXbrU
+4k1sLbySH7ScEHrI83TxxiiIXCmNCYFVpDgNJmBxcX/HHOjMmH1Zx6Hy2Jrmf6E=
+=JdfJ
+-----END PGP SIGNATURE-----
+
+--BV9bEMyK3jSSO1UG--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

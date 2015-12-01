@@ -1,73 +1,116 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v5 08/10] spi: expose master transfer size limitation.
-Date: Tue, 1 Dec 2015 21:31:52 +0000
-Message-ID: <20151201213152.GW1929@sirena.org.uk>
-References: <cover.1448988089.git.hramrach@gmail.com>
- <8c34c7790244489c2ce0072c72bd9bc7c4cdb965.1448988089.git.hramrach@gmail.com>
- <20151201195816.GS1929@sirena.org.uk>
- <565E0C2B.4070504@gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="wGE1Wqqn9IXiFm4H"
-Cc: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Han Xu <han.xu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
-	Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-	"Andrew F. Davis" <afd-l0cyMroinI0@public.gmane.org>, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
-	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
-	Bean Huo =?utf-8?B?6ZyN5paM5paM?= <beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org>,
-	Furquan Shaikh <furquan-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Applied "spi: Mark instantiated device nodes with OF_POPULATE" to the spi tree
+Date: Tue, 01 Dec 2015 23:00:29 +0000
+Message-ID: <E1a3tuP-00085K-3W@debutante>
+References: <1448893687-9159-3-git-send-email-geert+renesas@glider.be>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <565E0C2B.4070504-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1448893687-9159-3-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---wGE1Wqqn9IXiFm4H
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: Mark instantiated device nodes with OF_POPULATE
 
-On Tue, Dec 01, 2015 at 10:07:55PM +0100, Heiner Kallweit wrote:
+has been applied to the spi tree at
 
-> Sure .. Just one inquiry:
-> When you say "the naming here" you refer to Michal's or my version?
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-Michael's (transfer).
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> Actually I like in Michal's hook that it directly takes a struct spi_device.
-> This saves the caller one level of indirection as the caller usually will
-> deal with a spi_device and not a spi_master.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-> If you're fine with Michal's version then this is also fine with me,
-> especially as the functionality is the same.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-OK.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---wGE1Wqqn9IXiFm4H
-Content-Type: application/pgp-signature; name="signature.asc"
+Thanks,
+Mark
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+>From bd6c1644a2f6f46cdf89388e81168a70711fce3a Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Date: Mon, 30 Nov 2015 15:28:07 +0100
+Subject: [PATCH] spi: Mark instantiated device nodes with OF_POPULATE
 
-iQEcBAEBCAAGBQJWXhHHAAoJECTWi3JdVIfQGt0H/RrrYHiYZL2tii1DcolmEmVm
-0Zzz54ngc0PUiDuUJO25EKlwYmDPNUNxLZBldTWnvRWifhl7pfBePTdPbELdiqi3
-qSWmwsJDMVhH655vuU5a3HrU+Mm4Cu0HH3qGfyrTwhOZfNE8k0JvStuzpKnYELsU
-Yt1xl/y/Fgn4gwUl6PnA5mCA8bs68gE0ouT8mK4fw60fJCK1/AkdG54Ky9bzHZed
-6sjof/3B9Ld0t2X33jczI8WMn0mXlPDotXNelfOtWTADqlSxywSZhwOupHMiNWED
-ULFA/mkzi0H4hsrZqeW0dbZhRQD1ZxSPDKJViZC4SPfDek05Gw5D89i2QH2WCKo=
-=kDAi
------END PGP SIGNATURE-----
+Mark (and unmark) device nodes with the POPULATE flag as appropriate.
+This is required to avoid multi probing when enabling and populating SPI
+buses in DT overlays.
 
---wGE1Wqqn9IXiFm4H--
+Based on commit 4f001fd30145a6a8 ("i2c: Mark instantiated device nodes
+with OF_POPULATE").
+
+Suggested-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 3f135cc9a70e..c7486a373af1 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -613,8 +613,12 @@ EXPORT_SYMBOL_GPL(spi_new_device);
+  */
+ void spi_unregister_device(struct spi_device *spi)
+ {
+-	if (spi)
+-		device_unregister(&spi->dev);
++	if (!spi)
++		return;
++
++	if (spi->dev.of_node)
++		of_node_clear_flag(spi->dev.of_node, OF_POPULATED);
++	device_unregister(&spi->dev);
+ }
+ EXPORT_SYMBOL_GPL(spi_unregister_device);
+ 
+@@ -1561,6 +1565,8 @@ static void of_register_spi_devices(struct spi_master *master)
+ 		return;
+ 
+ 	for_each_available_child_of_node(master->dev.of_node, nc) {
++		if (of_node_test_and_set_flag(nc, OF_POPULATED))
++			continue;
+ 		spi = of_register_spi_device(master, nc);
+ 		if (IS_ERR(spi))
+ 			dev_warn(&master->dev, "Failed to create SPI device for %s\n",
+@@ -2645,6 +2651,11 @@ static int of_spi_notify(struct notifier_block *nb, unsigned long action,
+ 		if (master == NULL)
+ 			return NOTIFY_OK;	/* not for us */
+ 
++		if (of_node_test_and_set_flag(rd->dn, OF_POPULATED)) {
++			put_device(&master->dev);
++			return NOTIFY_OK;
++		}
++
+ 		spi = of_register_spi_device(master, rd->dn);
+ 		put_device(&master->dev);
+ 
+@@ -2656,6 +2667,10 @@ static int of_spi_notify(struct notifier_block *nb, unsigned long action,
+ 		break;
+ 
+ 	case OF_RECONFIG_CHANGE_REMOVE:
++		/* already depopulated? */
++		if (!of_node_check_flag(rd->dn, OF_POPULATED))
++			return NOTIFY_OK;
++
+ 		/* find our device by node */
+ 		spi = of_find_spi_device_by_node(rd->dn);
+ 		if (spi == NULL)
+-- 
+2.6.2
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

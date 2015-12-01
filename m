@@ -1,7 +1,8 @@
 From: Michal Suchanek <hramrach@gmail.com>
-Subject: [PATCH v5 07/10] mtd: spi-nor: add read loop
-Date: 1 Dec 2015 16:51:05 -0000
-Message-ID: <42c51bf17e21a5ae658174000f14035a56b0879b.1448988089.git.hramrach@gmail.com>
+Subject: [PATCH v5 03/10] mtd: fsl-quadspi: return amount of data read/written
+ or error
+Date: 1 Dec 2015 16:51:04 -0000
+Message-ID: <ad10a42f8c502b9b91fcba05b3e46c42663e1141.1448988089.git.hramrach@gmail.com>
 References: <cover.1448988089.git.hramrach@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -32,51 +33,74 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-mtdblock and ubi do not handle the situation when read returns less data
-than requested. Loop in spi-nor until buffer is filled or an error is
-returned.
+Return amount of data read/written or error as read(2)/write(2) does.
 
 Signed-off-by: Michal Suchanek <hramrach@gmail.com>
-
 ---
- - use WARN_ON rather than BUG_ON
----
- drivers/mtd/spi-nor/spi-nor.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ drivers/mtd/spi-nor/fsl-quadspi.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index 115c123..ded79ae 100644
---- a/drivers/mtd/spi-nor/spi-nor.c
-+++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -907,14 +907,22 @@ static int spi_nor_read(struct mtd_info *mtd, loff_t from, size_t len,
- 	if (ret)
- 		return ret;
+diff --git a/drivers/mtd/spi-nor/fsl-quadspi.c b/drivers/mtd/spi-nor/fsl-quadspi.c
+index 10d2b59..9beb739 100644
+--- a/drivers/mtd/spi-nor/fsl-quadspi.c
++++ b/drivers/mtd/spi-nor/fsl-quadspi.c
+@@ -575,7 +575,7 @@ static inline void fsl_qspi_invalid(struct fsl_qspi *q)
+ 	writel(reg, q->iobase + QUADSPI_MCR);
+ }
  
--	ret = nor->read(nor, from, len, buf);
-+	while (len) {
-+		ret = nor->read(nor, from, len, buf);
-+		if (ret <= 0)
-+			goto read_err;
-+
-+		WARN_ON(ret > len);
-+		*retlen += ret;
-+		buf += ret;
-+		from += ret;
-+		len -= ret;
+-static int fsl_qspi_nor_write(struct fsl_qspi *q, struct spi_nor *nor,
++static ssize_t fsl_qspi_nor_write(struct fsl_qspi *q, struct spi_nor *nor,
+ 				u8 opcode, unsigned int to, u32 *txbuf,
+ 				unsigned count, size_t *retlen)
+ {
+@@ -604,8 +604,11 @@ static int fsl_qspi_nor_write(struct fsl_qspi *q, struct spi_nor *nor,
+ 	/* Trigger it */
+ 	ret = fsl_qspi_runcmd(q, opcode, to, count);
+ 
+-	if (ret == 0 && retlen)
+-		*retlen += count;
++	if (ret == 0) {
++		if (retlen)
++			*retlen += count;
++		return count;
 +	}
-+	ret = 0;
  
-+read_err:
- 	spi_nor_unlock_and_unprep(nor, SPI_NOR_OPS_READ);
--	if (ret < 0)
--		return ret;
--
--	*retlen += ret;
+ 	return ret;
+ }
+@@ -814,6 +817,8 @@ static int fsl_qspi_write_reg(struct spi_nor *nor, u8 opcode, u8 *buf, int len)
+ 	} else if (len > 0) {
+ 		ret = fsl_qspi_nor_write(q, nor, opcode, 0,
+ 					(u32 *)buf, len, NULL);
++		if (ret > 0)
++			return 0;
+ 	} else {
+ 		dev_err(q->dev, "invalid cmd %d\n", opcode);
+ 		ret = -EINVAL;
+@@ -827,12 +832,12 @@ static ssize_t fsl_qspi_write(struct spi_nor *nor, loff_t to,
+ {
+ 	struct fsl_qspi *q = nor->priv;
+ 
+-	fsl_qspi_nor_write(q, nor, nor->program_opcode, to,
++	ssize_t ret = fsl_qspi_nor_write(q, nor, nor->program_opcode, to,
+ 				(u32 *)buf, len, retlen);
+ 
+ 	/* invalid the data in the AHB buffer. */
+ 	fsl_qspi_invalid(q);
 -	return 0;
 +	return ret;
  }
  
- static int sst_write(struct mtd_info *mtd, loff_t to, size_t len,
+ static ssize_t fsl_qspi_read(struct spi_nor *nor, loff_t from,
+@@ -878,8 +883,7 @@ static ssize_t fsl_qspi_read(struct spi_nor *nor, loff_t from,
+ 	memcpy(buf, q->ahb_addr + q->chip_base_addr + from - q->memmap_offs,
+ 		len);
+ 
+-	*retlen += len;
+-	return 0;
++	return len;
+ }
+ 
+ static int fsl_qspi_erase(struct spi_nor *nor, loff_t offs)
 -- 
 2.6.2
 

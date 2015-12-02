@@ -1,66 +1,54 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH 1/3] spi: added spi_resource management
-Date: Wed, 2 Dec 2015 14:04:24 +0100
-Message-ID: <565EEC58.4040006@martin.sperl.org>
-References: <1448888695-2260-1-git-send-email-kernel@martin.sperl.org>
- <1448888695-2260-2-git-send-email-kernel@martin.sperl.org>
- <20151201210410.GU1929@sirena.org.uk>
- <56C9120A-8979-4156-B3C4-5851D695BDF0@martin.sperl.org>
- <20151202122953.GG1929@sirena.org.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: Handling clocks on external busses
+Date: Wed, 2 Dec 2015 13:30:10 +0000
+Message-ID: <20151202133010.GJ1929@sirena.org.uk>
+References: <20151124173718.GK18889@ck-lbox>
+ <20151202125855.GB6058@localhost.localdomain>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20151202122953.GG1929-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="r7YfqnGwAF7PgTLe"
+Cc: linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux@arm.linux.org.uk,
+	mturquette@baylibre.com, sboyd@codeaurora.org, wsa@the-dreams.de
+To: Charles Keepax <ckeepax@opensource.wolfsonmicro.com>
+Return-path: <linux-i2c-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20151202125855.GB6058@localhost.localdomain>
+Sender: linux-i2c-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On 02.12.2015 13:29, Mark Brown wrote:
-> On Wed, Dec 02, 2015 at 08:30:51AM +0100, Martin Sperl wrote:
->
->>> This has exactly one (tiny) user.  Why is it a separate function?
->
->> Readability, mimicking devres code and the option of adding
->> object caching/reuse here later...
->
-> This is *not* helping readability.
-Originally it contained a bit more code to avoid repeated allocations,
-which was cut out for the initial version of the patch.
 
->> There is a much higher likelihood that spi_resources will be
->> allocated and then freed several times per second, so this
->> can save cpu cycles and avoid locks...
->
-> In what way does splitting this over two functions helping improve
-> performance?  If there were multiple users or something perhaps but
-> there don't appear to be.
->
+--r7YfqnGwAF7PgTLe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-It does not help performance per se, but it allows adding more
-code in that location that would allow to reuse allocated objects.
+On Wed, Dec 02, 2015 at 12:58:55PM +0000, Charles Keepax wrote:
 
-As of now I will merge those 2 functions.
+> So after a bit more digging it seems this has been mitigated slightly
+> as a lot of SPI driver have been updated to execute transfers in
+> thread rather than from a worker thread and it seems the clock
+> framework lets you re-enter the locked sections if called from the
+> same thread.
 
-The bigger question (based on your comments to Patch 2/3) is:
+No, this isn't something the drivers support (it's a framework feature)
+and it isn't something that we're guaranteed to do, if the bus is busy
+we defer to the thread and it's possible the drivers might do something
+multi-threaded themselves.  It might work a lot of the time but it's
+never going to be guaranteed to work.
 
-Do you want to follow the devres approach (i.e: hiding
-"struct spi_res" after allocation and returning "void *"
-to the data-payload only in spi_res_alloc)?
+--r7YfqnGwAF7PgTLe
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Or do you prefer to have "struct spi_res" as an explicit member of
-a structure (i.e. in Patch 2/3 "struct spi_res_replaced_transfers")?
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-I want to get this settled before submitting newer versions of the
-other patches that address other concerns, because any changes to
-spi_res design directly impact these other patches.
+iQEcBAEBCAAGBQJWXvJhAAoJECTWi3JdVIfQA+AH/Rj5XoHAusUguUDYc4NViJGW
+evlxnShud6Y4PKjbRvsJMb2sjO9REmwxXjKMSMrR3fBaGRDlCUWybrK5bu4YXW1U
+RkoykLwpbwEqqQ6RSGN9bvh9xuaQoRKTNHJfyFcVw8puFFHooo9c5RHN+UnaeavR
+o1rSdWyah01z2SS8hnKMKvs6FclOnpku02STFVZxRaH9vtiBPkBLS1uGMX/54yE1
+c3yhW3PGcllG4ieJlcfcJHH4QB0sVKvxbQ+DVxzy0/J6LxrEjhPbOpyjq4DvdrCQ
+hPQqCSmQS89dLW1aaqLT7TI1b2p11CxukcOy99ZFHt0lhlAi6BeM+TRyP+iYT5o=
+=1wIb
+-----END PGP SIGNATURE-----
 
-Thanks,
-	Martin
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--r7YfqnGwAF7PgTLe--

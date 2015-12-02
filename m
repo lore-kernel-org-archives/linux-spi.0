@@ -1,59 +1,56 @@
-From: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [RFC v02 00/15] dmaengine: New 'universal' API for requesting channel
-Date: Wed, 02 Dec 2015 09:23:59 +0100
-Message-ID: <2174709.hFEDv974P4@wuerfel>
-References: <1448891145-10766-1-git-send-email-peter.ujfalusi@ti.com> <3124382.EhiMyQGKTA@wuerfel> <20151202045209.GB1854@localhost>
+From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v5 08/10] spi: expose master transfer size limitation.
+Date: Wed, 2 Dec 2015 10:38:56 +0100
+Message-ID: <CAOMqctS6KaXuX0nS_pO7O80466j-3G8g_MAySdwRcCK10jozFw@mail.gmail.com>
+References: <cover.1448988089.git.hramrach@gmail.com> <8c34c7790244489c2ce0072c72bd9bc7c4cdb965.1448988089.git.hramrach@gmail.com>
+ <20151201231233.GA1929@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>, andy.shevchenko@gmail.com,
-	linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
-	linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mmc@vger.kernel.org, nsekhar@ti.com,
-	linux-spi@vger.kernel.org
-To: Vinod Koul <vinod.koul@intel.com>
-Return-path: <linux-mmc-owner@vger.kernel.org>
-In-Reply-To: <20151202045209.GB1854@localhost>
-Sender: linux-mmc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Cc: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Han Xu <han.xu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
+	Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+	"Andrew F. Davis" <afd-l0cyMroinI0@public.gmane.org>, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
+	=?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
+	=?UTF-8?B?QmVhbiBIdW8g6ZyN5paM5paM?= <beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org>,
+	Furquan Shaikh <furquan-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
+	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20151201231233.GA1929-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Wednesday 02 December 2015 10:22:09 Vinod Koul wrote:
-> > 
-> > > > This legacy mode needs changes in platform code, in dmaengine drivers and
-> > > > finally the dmaengine user drivers can be converted:
-> > > 
-> > > Are you marking the current APIs as dericated in the end of this series
-> > 
-> > I think we practically stopped marking things as deprecated in general.
-> > Per Linus decree, whenever we want to get rid of something, we should
-> > instead change all users in tree and then remove the API, expecting
-> > driver maintainers to do something just because you marked it as deprecated
-> > often doesn't work.
-> 
-> Yes but while we do conversion we don't know if new users get added which use
-> old API..
+On 2 December 2015 at 00:12, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Tue, Dec 01, 2015 at 04:51:06PM -0000, Michal Suchanek wrote:
+>
+>> +static inline size_t
+>> +spi_max_transfer_size(struct spi_device *spi)
+>> +{
+>> +     struct spi_master *master = spi->master;
+>> +     if (!master->max_transfer_size)
+>> +             return 0;
+>> +     return master->max_transfer_size(spi);
+>> +}
+>
+> Can we change this to return SIZE_MAX instead (ie, the maximum value for
+> a size_t)?  That way callers don't need to worry if there is a limit, if
+> they want to handle it they can just unconditionally assume that a limit
+> will be provided.
 
-We probably don't need to worry about new users of dma_request_channel(),
-as we don't add new ARM platforms without DT, and other architectures
-don't add a lot of new platforms. Similarly, I don't expect a whole lot
-of dma_request_slave_channel_compat() users, because the conversion from
-board files to DT based booting has slowed down a lot after most of the
-actively maintained platforms are done with it.
+Yes, that sounds reasonable.
 
-If you do a one-line patch to add dma_request_chan() as an alias for
-dma_request_slave_channel_reason() now, we can probably convert most
-users of dma_request_slave_channel() and dma_request_slave_channel_reason()
-to dma_request_chan() in the next merge window and do a patch to
-replace the few remaining ones and remove the API one merge window later.
+Thanks
 
-If wewant to stage out the conversion of the
-dma_request_slave_channel_compat() and dma_request_channel() similarly,
-it would be good to have all the interface changes for the dmaengine
-core basically in place, so we can start to convert the platforms
-independently for the 4.5 merge window without having a dependency on
-dmaengine patches. It's probably best to not convert a slave driver
-away from dma_request_channel() until the dma map has been created
-for all platforms using that driver, again to avoid having too many
-dependencies.
-
-	Arnd
+Michal
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,7 +1,8 @@
 From: Michal Suchanek <hramrach@gmail.com>
-Subject: [PATCH v6 06/10] mtd: spi-nor: simplify write loop
-Date: 2 Dec 2015 10:38:20 -0000
-Message-ID: <2236d87ad516f118f58eb5df232d441f970c4499.1449052427.git.hramrach@gmail.com>
+Subject: [PATCH v6 03/10] mtd: fsl-quadspi: return amount of data read/written
+ or error
+Date: 2 Dec 2015 10:38:19 -0000
+Message-ID: <ad10a42f8c502b9b91fcba05b3e46c42663e1141.1449052427.git.hramrach@gmail.com>
 References: <cover.1449052427.git.hramrach@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -31,107 +32,74 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-The spi-nor write loop assumes that what is passed to the hardware
-driver write() is what gets written.
-
-When write() writes less than page size at once data is dropped on the
-floor. Check the amount of data writen and exit if it does not match
-requested amount.
+Return amount of data read/written or error as read(2)/write(2) does.
 
 Signed-off-by: Michal Suchanek <hramrach@gmail.com>
-
 ---
+ drivers/mtd/spi-nor/fsl-quadspi.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
- - add warning when writing incomplete pages
- - refuse to continue writing when full page was not written
----
- drivers/mtd/spi-nor/spi-nor.c | 58 +++++++++++++++++++------------------------
- 1 file changed, 25 insertions(+), 33 deletions(-)
-
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index 3d02803..115c123 100644
---- a/drivers/mtd/spi-nor/spi-nor.c
-+++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -1005,8 +1005,8 @@ static int spi_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
- 	size_t *retlen, const u_char *buf)
+diff --git a/drivers/mtd/spi-nor/fsl-quadspi.c b/drivers/mtd/spi-nor/fsl-quadspi.c
+index 10d2b59..9beb739 100644
+--- a/drivers/mtd/spi-nor/fsl-quadspi.c
++++ b/drivers/mtd/spi-nor/fsl-quadspi.c
+@@ -575,7 +575,7 @@ static inline void fsl_qspi_invalid(struct fsl_qspi *q)
+ 	writel(reg, q->iobase + QUADSPI_MCR);
+ }
+ 
+-static int fsl_qspi_nor_write(struct fsl_qspi *q, struct spi_nor *nor,
++static ssize_t fsl_qspi_nor_write(struct fsl_qspi *q, struct spi_nor *nor,
+ 				u8 opcode, unsigned int to, u32 *txbuf,
+ 				unsigned count, size_t *retlen)
  {
- 	struct spi_nor *nor = mtd_to_spi_nor(mtd);
--	u32 page_offset, page_size, i;
--	int ret;
-+	size_t page_offset, page_remain, i;
-+	ssize_t ret;
+@@ -604,8 +604,11 @@ static int fsl_qspi_nor_write(struct fsl_qspi *q, struct spi_nor *nor,
+ 	/* Trigger it */
+ 	ret = fsl_qspi_runcmd(q, opcode, to, count);
  
- 	dev_dbg(nor->dev, "to 0x%08x, len %zd\n", (u32)to, len);
+-	if (ret == 0 && retlen)
+-		*retlen += count;
++	if (ret == 0) {
++		if (retlen)
++			*retlen += count;
++		return count;
++	}
  
-@@ -1014,45 +1014,37 @@ static int spi_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
- 	if (ret)
- 		return ret;
- 
--	write_enable(nor);
--
--	page_offset = to & (nor->page_size - 1);
-+	for (i = 0; i < len; ) {
-+		ssize_t written;
- 
--	/* do all the bytes fit onto one page? */
--	if (page_offset + len <= nor->page_size) {
--		ret = nor->write(nor, to, len, buf);
--		if (ret < 0)
--			goto write_err;
--		*retlen += ret;
--	} else {
-+		page_offset = to & (nor->page_size - 1);
-+		WARN_ONCE(page_offset,
-+			  "Writing at offset %zu into a NOR page. Writing partial pages may decrease reliability and increase wear of NOR flash.",
-+			  page_offset);
- 		/* the size of data remaining on the first page */
--		page_size = nor->page_size - page_offset;
--		ret = nor->write(nor, to, page_size, buf);
-+		page_remain = min_t(size_t,
-+				    nor->page_size - page_offset, len - i);
-+
-+		write_enable(nor);
-+		ret = nor->write(nor, to + i, page_remain, buf + i);
- 		if (ret < 0)
- 			goto write_err;
--		*retlen += ret;
--
--		/* write everything in nor->page_size chunks */
--		for (i = ret; i < len; ) {
--			page_size = len - i;
--			if (page_size > nor->page_size)
--				page_size = nor->page_size;
--
--			ret = spi_nor_wait_till_ready(nor);
--			if (ret)
--				goto write_err;
-+		written = ret;
- 
--			write_enable(nor);
--
--			ret = nor->write(nor, to + i, page_size, buf + i);
--			if (ret < 0)
--				goto write_err;
--			*retlen += ret;
--			i += ret;
-+		ret = spi_nor_wait_till_ready(nor);
-+		if (ret)
-+			goto write_err;
-+		*retlen += written;
-+		i += written;
-+		if (written != page_remain) {
-+			dev_err(nor->dev,
-+				"While writing %zu bytes written %zd bytes\n",
-+				page_remain, written);
-+			ret = -EIO;
-+			goto write_err;
- 		}
- 	}
- 
--	ret = spi_nor_wait_till_ready(nor);
- write_err:
- 	spi_nor_unlock_and_unprep(nor, SPI_NOR_OPS_WRITE);
  	return ret;
+ }
+@@ -814,6 +817,8 @@ static int fsl_qspi_write_reg(struct spi_nor *nor, u8 opcode, u8 *buf, int len)
+ 	} else if (len > 0) {
+ 		ret = fsl_qspi_nor_write(q, nor, opcode, 0,
+ 					(u32 *)buf, len, NULL);
++		if (ret > 0)
++			return 0;
+ 	} else {
+ 		dev_err(q->dev, "invalid cmd %d\n", opcode);
+ 		ret = -EINVAL;
+@@ -827,12 +832,12 @@ static ssize_t fsl_qspi_write(struct spi_nor *nor, loff_t to,
+ {
+ 	struct fsl_qspi *q = nor->priv;
+ 
+-	fsl_qspi_nor_write(q, nor, nor->program_opcode, to,
++	ssize_t ret = fsl_qspi_nor_write(q, nor, nor->program_opcode, to,
+ 				(u32 *)buf, len, retlen);
+ 
+ 	/* invalid the data in the AHB buffer. */
+ 	fsl_qspi_invalid(q);
+-	return 0;
++	return ret;
+ }
+ 
+ static ssize_t fsl_qspi_read(struct spi_nor *nor, loff_t from,
+@@ -878,8 +883,7 @@ static ssize_t fsl_qspi_read(struct spi_nor *nor, loff_t from,
+ 	memcpy(buf, q->ahb_addr + q->chip_base_addr + from - q->memmap_offs,
+ 		len);
+ 
+-	*retlen += len;
+-	return 0;
++	return len;
+ }
+ 
+ static int fsl_qspi_erase(struct spi_nor *nor, loff_t offs)
 -- 
 2.6.2
 

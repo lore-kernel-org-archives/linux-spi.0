@@ -1,78 +1,83 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v4 1/5] spi: introduce accelerated read support for spi
- flash devices
-Date: Wed, 2 Dec 2015 19:41:25 +0000
-Message-ID: <20151202194125.GL1929@sirena.org.uk>
-References: <1448860515-28336-1-git-send-email-vigneshr@ti.com>
- <1448860515-28336-2-git-send-email-vigneshr@ti.com>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6700869830520781660=="
-Cc: devicetree@vger.kernel.org, hramrach@gmail.com,
- Russell King <linux@arm.linux.org.uk>, Tony Lindgren <tony@atomide.com>,
- linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-omap@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
- linux-mtd@lists.infradead.org, Brian Norris <computersforpeace@gmail.com>,
- linux-arm-kernel@lists.infradead.org
-To: Vignesh R <vigneshr@ti.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1448860515-28336-2-git-send-email-vigneshr@ti.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: butterfly: remove cast to void" to the spi tree
+Date: Wed, 02 Dec 2015 20:11:05 +0000
+Message-ID: <E1a4Dk1-0003TN-HZ@debutante>
+References: <1449064071-4915-2-git-send-email-sudipm.mukherjee@gmail.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Sudip Mukherjee <sudip-ofJRbWXBVFamYgehrs7/Lw@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1449064071-4915-2-git-send-email-sudipm.mukherjee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---===============6700869830520781660==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="/bs84jhnE1DqD3f3"
-Content-Disposition: inline
+   spi: butterfly: remove cast to void
 
+has been applied to the spi tree at
 
---/bs84jhnE1DqD3f3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-On Mon, Nov 30, 2015 at 10:45:11AM +0530, Vignesh R wrote:
-> In addition to providing direct access to SPI bus, some spi controller
-> hardwares (like ti-qspi) provide special port (like memory mapped port)
-> that are optimized to improve SPI flash read performance.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-I'm reasonably OK with this from the SPI side but I'd really like to see
-people working on MTD say that this makes sense.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---/bs84jhnE1DqD3f3
-Content-Type: application/pgp-signature; name="signature.asc"
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-iQEcBAEBCAAGBQJWX0lkAAoJECTWi3JdVIfQbBsH/i+LzrX/mNNWMO2Q8w2kJhx5
-nwO6kUbQ+a4yvvd3YPcsrjAHB2s8cLUNnvxqGrYmu1By8TTW6icaxjxyTV+q0L4C
-xEwYBM63BTG0qjpc+7uBwPQ9bDpDAU6uNDz3XD5zg4GxHffzkQSOKIMzpcCNnXv6
-nqmU+cYVUAtkpC3UbJsFuXFyWynJgZ6sEBxMfhC/+80Ua4l4cVYtDXdDAiypKVC5
-of9zgQt7bCSYyn3jLJpERnfn/ZUhVCxcb1eDmJuV+Jko7O3vg8SQ8mK+2ifrS1xK
-oBhsZ4ZCj4ldptHi+/z15+L99IQB3iW4bFVaKIwwcOju329G1oUvs66hD07PcYw=
-=ym/f
------END PGP SIGNATURE-----
+Thanks,
+Mark
 
---/bs84jhnE1DqD3f3--
+>From b12fe7250cf013622d064a280b87b19448d26d00 Mon Sep 17 00:00:00 2001
+From: Sudip Mukherjee <sudipm.mukherjee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Wed, 2 Dec 2015 19:17:49 +0530
+Subject: [PATCH] spi: butterfly: remove cast to void
 
+checkpatch was complaining about space after cast. But the cast to void
+is not required at that place.
 
---===============6700869830520781660==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Signed-off-by: Sudip Mukherjee <sudip-ofJRbWXBVFamYgehrs7/Lw@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-butterfly.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-_______________________________________________
-linux-arm-kernel mailing list
-linux-arm-kernel@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+diff --git a/drivers/spi/spi-butterfly.c b/drivers/spi/spi-butterfly.c
+index f520eaa193c5..8fc284d0d7c3 100644
+--- a/drivers/spi/spi-butterfly.c
++++ b/drivers/spi/spi-butterfly.c
+@@ -289,7 +289,7 @@ clean2:
+ clean1:
+ 	parport_unregister_device(pd);
+ clean0:
+-	(void) spi_master_put(pp->bitbang.master);
++	spi_master_put(pp->bitbang.master);
+ done:
+ 	pr_debug("%s: butterfly probe, fail %d\n", p->name, status);
+ }
+@@ -317,7 +317,7 @@ static void butterfly_detach(struct parport *p)
+ 	parport_release(pp->pd);
+ 	parport_unregister_device(pp->pd);
+ 
+-	(void) spi_master_put(pp->bitbang.master);
++	spi_master_put(pp->bitbang.master);
+ }
+ 
+ static struct parport_driver butterfly_driver = {
+-- 
+2.6.2
 
---===============6700869830520781660==--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

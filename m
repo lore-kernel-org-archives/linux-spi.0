@@ -1,68 +1,71 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH 1/3] spi: added spi_resource management
-Date: Wed, 2 Dec 2015 14:53:23 +0100
-Message-ID: <2F8F8F8D-6351-4F76-B18B-403F84E0E164@martin.sperl.org>
-References: <1448888695-2260-1-git-send-email-kernel@martin.sperl.org> <1448888695-2260-2-git-send-email-kernel@martin.sperl.org> <20151201210410.GU1929@sirena.org.uk> <56C9120A-8979-4156-B3C4-5851D695BDF0@martin.sperl.org> <20151202122953.GG1929@sirena.org.uk> <565EEC58.4040006@martin.sperl.org> <20151202133232.GK1929@sirena.org.uk>
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2104\))
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20151202133232.GK1929-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Subject: [RFC v03 06/15] ARM: davinci: dm355: Add dma_filter_map to edma
+Date: Wed, 2 Dec 2015 15:59:16 +0200
+Message-ID: <1449064765-27427-7-git-send-email-peter.ujfalusi@ti.com>
+References: <1449064765-27427-1-git-send-email-peter.ujfalusi@ti.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+Cc: <linux-kernel@vger.kernel.org>, <dmaengine@vger.kernel.org>,
+	<linux-omap@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>,
+	<linux-mmc@vger.kernel.org>, <nsekhar@ti.com>,
+	<linux-spi@vger.kernel.org>, <tony@atomide.com>
+To: <vinod.koul@intel.com>, <arnd@arndb.de>,
+	<andy.shevchenko@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1449064765-27427-1-git-send-email-peter.ujfalusi@ti.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+Provide the dma_filter_map to edma which will allow us to move the drivers
+to the new, simpler dmaengine API and we can remove the DMA resources also
+for the devices.
 
-> On 02.12.2015, at 14:32, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
->=20
-> On Wed, Dec 02, 2015 at 02:04:24PM +0100, Martin Sperl wrote:
->=20
->> The bigger question (based on your comments to Patch 2/3) is:
->=20
-> I haven't even looked at your reply ot that yet.
->=20
->> Do you want to follow the devres approach (i.e: hiding
->> "struct spi_res" after allocation and returning "void *"
->> to the data-payload only in spi_res_alloc)?
->=20
->> Or do you prefer to have "struct spi_res" as an explicit member of
->> a structure (i.e. in Patch 2/3 "struct spi_res_replaced_transfers")?
->=20
-> I wasn't aware that was an issue?
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+---
+ arch/arm/mach-davinci/dm355.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-Here the section from your reply to the other patch I am referring to:
-> On 01.12.2015, at 22:29, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
->=20
-
->>=20
->> +/* the spi_resource structure used */
->> +struct spi_res_replaced_transfers {
->> +	spi_res_release_t release;
->> +	struct list_head replaced_transfers;
->> +	int inserted;
->> +	struct spi_transfer xfers[];
->> +};
->=20
-> This quite clearly isn't a struct spi_resource, nor does it contain
-> one=E2=80=A6
-
-As said: it could also get written as:
-+/* the spi_resource structure used */
-+struct spi_res_replaced_transfers {
-+	struct spi_res resource;
-+	spi_res_release_t release;
-+	struct list_head replaced_transfers;
-+	int inserted;
-+	struct spi_transfer xfers[];
+diff --git a/arch/arm/mach-davinci/dm355.c b/arch/arm/mach-davinci/dm355.c
+index 609950b8c191..ee7656fa0c52 100644
+--- a/arch/arm/mach-davinci/dm355.c
++++ b/arch/arm/mach-davinci/dm355.c
+@@ -13,6 +13,7 @@
+ #include <linux/serial_8250.h>
+ #include <linux/platform_device.h>
+ #include <linux/dma-mapping.h>
++#include <linux/dmaengine.h>
+ #include <linux/spi/spi.h>
+ #include <linux/platform_data/edma.h>
+ #include <linux/platform_data/gpio-davinci.h>
+@@ -576,9 +577,28 @@ static s8 queue_priority_mapping[][2] = {
+ 	{-1, -1},
+ };
+ 
++static const struct dma_filter_map da355_edma_map[] = {
++	{ "davinci-mcbsp.0", "tx", EDMA_FILTER_PARAM(0, 2) },
++	{ "davinci-mcbsp.0", "rx", EDMA_FILTER_PARAM(0, 3) },
++	{ "davinci-mcbsp.1", "tx", EDMA_FILTER_PARAM(0, 8) },
++	{ "davinci-mcbsp.1", "rx", EDMA_FILTER_PARAM(0, 9) },
++	{ "spi_davinci.2", "tx", EDMA_FILTER_PARAM(0, 10) },
++	{ "spi_davinci.2", "rx", EDMA_FILTER_PARAM(0, 11) },
++	{ "spi_davinci.1", "tx", EDMA_FILTER_PARAM(0, 14) },
++	{ "spi_davinci.1", "rx", EDMA_FILTER_PARAM(0, 15) },
++	{ "spi_davinci.0", "tx", EDMA_FILTER_PARAM(0, 16) },
++	{ "spi_davinci.0", "rx", EDMA_FILTER_PARAM(0, 17) },
++	{ "dm6441-mmc.0", "rx", EDMA_FILTER_PARAM(0, 26) },
++	{ "dm6441-mmc.0", "tx", EDMA_FILTER_PARAM(0, 27) },
++	{ "dm6441-mmc.1", "rx", EDMA_FILTER_PARAM(0, 30) },
++	{ "dm6441-mmc.1", "tx", EDMA_FILTER_PARAM(0, 31) },
 +};
-
-But we loose the ability to just allocate memory the way we use
-devm_kmalloc.
-
-Martin--
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
++
+ static struct edma_soc_info dm355_edma_pdata = {
+ 	.queue_priority_mapping	= queue_priority_mapping,
+ 	.default_queue		= EVENTQ_1,
++	.slave_map		= da355_edma_map,
++	.slavecnt		= ARRAY_SIZE(da355_edma_map),
+ };
+ 
+ static struct resource edma_resources[] = {
+-- 
+2.6.3

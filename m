@@ -1,62 +1,60 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/3] spi: added spi_resource management
-Date: Wed, 2 Dec 2015 12:29:53 +0000
-Message-ID: <20151202122953.GG1929@sirena.org.uk>
-References: <1448888695-2260-1-git-send-email-kernel@martin.sperl.org>
- <1448888695-2260-2-git-send-email-kernel@martin.sperl.org>
- <20151201210410.GU1929@sirena.org.uk>
- <56C9120A-8979-4156-B3C4-5851D695BDF0@martin.sperl.org>
+From: Charles Keepax <ckeepax-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Subject: Re: Handling clocks on external busses
+Date: Wed, 2 Dec 2015 12:58:55 +0000
+Message-ID: <20151202125855.GB6058@localhost.localdomain>
+References: <20151124173718.GK18889@ck-lbox>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="suyaDfHbCMIDpItJ"
-Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Cc: <linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, <mturquette-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
+	<sboyd-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+To: <linux-clk-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <56C9120A-8979-4156-B3C4-5851D695BDF0-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <20151124173718.GK18889@ck-lbox>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Tue, Nov 24, 2015 at 05:37:18PM +0000, Charles Keepax wrote:
+> Hi,
+> 
+> When a clock driver is controlling a clock that is controlled
+> over I2C / SPI, we need to perform a write on that bus to enable
+> the clock. However, such busses often have their own clocks that
+> must be enabled. Since all clock prepares are controlled under
+> one large mutex this easily causes deadlock. The device is
+> waiting for the I2C / SPI write to complete and the I2C / SPI
+> driver is waiting for the clock prepare lock to be released so it
+> can enable its own clock.
+> 
+> I have had a bit of a search and it seems the only really advice
+> kicking about is that all I2C / SPI drivers should leave the
+> clock prepared all the time. Is that intended to be the long term
+> solution, should I treat not leaving the clock prepared as a bug?
+> 
+> Thanks,
+> Charles
 
---suyaDfHbCMIDpItJ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Adding a few more people for visibility.
 
-On Wed, Dec 02, 2015 at 08:30:51AM +0100, Martin Sperl wrote:
+So after a bit more digging it seems this has been mitigated slightly
+as a lot of SPI driver have been updated to execute transfers in
+thread rather than from a worker thread and it seems the clock
+framework lets you re-enter the locked sections if called from the
+same thread.
 
-> > This has exactly one (tiny) user.  Why is it a separate function?
+I am looking at moving some (in mainline) clocking code into an actual
+clocking driver (for a SPI/I2C audio CODEC) but I am rather nervous
+about this causing problems for customers with random deadlocks.
 
-> Readability, mimicking devres code and the option of adding
-> object caching/reuse here later...
+I guess the naive solution looks like individual locks per clock, but
+from what I have been able to google it looks like there are some
+challenges with that approach, does anyone have any links to previous
+discussions on that? And any suggestions on how I might approach
+this?
 
-This is *not* helping readability.
-
-> There is a much higher likelihood that spi_resources will be
-> allocated and then freed several times per second, so this
-> can save cpu cycles and avoid locks...
-
-In what way does splitting this over two functions helping improve
-performance?  If there were multiple users or something perhaps but
-there don't appear to be.
-
---suyaDfHbCMIDpItJ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJWXuRAAAoJECTWi3JdVIfQba0H/j0C7gYWfacg0ux4JncQtetj
-bp1M9iwP6Mjlotz0+XUs6X/v97apwk/QEkWmw8iMBeCEltVyvLI6uWRdA97NGQRZ
-F2wjdEhddAwJpkZ00Sud0vntyT8q+E/ahvI5aXxnidq3zZvK67fu4w3KdRBFabB4
-j0xKbic0iLMIazkDYlbAUZFp9dgOttIh2plHfEZ6Sh5IsIC8mgQ3sDqDR/rQfMOh
-DPyFzK1njb1wSls4wSu0mWcw1LtPhBepPR5M8jSPbo3UkLO5J1IPK+pWbPWTLPc0
-JA326dXDmYMkkN8+AQJBbZ6xHodEKXDV7arEmv/1tLx8xNBUFbDx3Vi0TWv2qIY=
-=qQXS
------END PGP SIGNATURE-----
-
---suyaDfHbCMIDpItJ--
+Thanks,
+Charles
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

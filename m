@@ -1,117 +1,124 @@
-From: Vinod Koul <vinod.koul@intel.com>
-Subject: Re: [RFC v02 00/15] dmaengine: New 'universal' API for requesting
- channel
-Date: Wed, 2 Dec 2015 10:22:09 +0530
-Message-ID: <20151202045209.GB1854@localhost>
-References: <1448891145-10766-1-git-send-email-peter.ujfalusi@ti.com>
- <20151201165954.GA1696@localhost>
- <3124382.EhiMyQGKTA@wuerfel>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>, andy.shevchenko@gmail.com,
-	linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
-	linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mmc@vger.kernel.org, nsekhar@ti.com,
-	linux-spi@vger.kernel.org
-To: Arnd Bergmann <arnd@arndb.de>
-Return-path: <linux-mmc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <3124382.EhiMyQGKTA@wuerfel>
-Sender: linux-mmc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: Re: [PATCH 2/3] spi: add initial set of spi_transfer transformation methods
+Date: Wed, 2 Dec 2015 08:25:08 +0100
+Message-ID: <35C5C134-8291-4856-8916-7EDDFB07A0A9@martin.sperl.org>
+References: <1448888695-2260-1-git-send-email-kernel@martin.sperl.org> <1448888695-2260-3-git-send-email-kernel@martin.sperl.org> <20151201212929.GV1929@sirena.org.uk>
+Mime-Version: 1.0 (1.0)
+Content-Type: text/plain;
+	charset=us-ascii
+Content-Transfer-Encoding: 8BIT
+Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20151201212929.GV1929-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Dec 01, 2015 at 09:17:06PM +0100, Arnd Bergmann wrote:
-> On Tuesday 01 December 2015 22:29:54 Vinod Koul wrote:
-> > On Mon, Nov 30, 2015 at 03:45:30PM +0200, Peter Ujfalusi wrote:
-> > > channel via DT, ACPI or in case if the kernel booted in non DT/ACPI mode
-> > > it will use a filter lookup table and retrieves the needed information from
-> > > the dma_filter_map provided by the DMA drivers.
-> > 
-> > That sounds right, for the third case would the arch, driver or someone else
-> > configure this?
-> 
-> The typical case is for the configuration to be defined in arch or platform
-> code and passed down to the dmaengine driver.
-> 
-> I just noticed that the text above (and probably the code too) should
-> be changed so we always fall back to this. There are cases where the
-> platform is booted with DT in principle, but the DMA engine does not
-> (yet) use DT and still wants to be converted. I think we can easily
-> handle that case by always trying this if the other methods fail.
 
-I agree that this makes sense, not just for DT cases but ACPI as well
 
+> On 01.12.2015, at 22:29, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
 > 
-> > > This legacy mode needs changes in platform code, in dmaengine drivers and
-> > > finally the dmaengine user drivers can be converted:
-> > 
-> > Are you marking the current APIs as dericated in the end of this series
+>> On Mon, Nov 30, 2015 at 01:04:53PM +0000, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
+>> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+>> 
+>> added the following spi_transformation methods:
+>> * spi_split_transfers_first_page_len_not_aligned -
+>>  this splits spi_transfers that are not aligned on rx_buf/tx_buf
+>>  this will create 2 or 3 transfers, where the first 1/2 transfers are
+>>  just there to allow the last transfer to be fully aligned. These first
+>>  transfers will have a length less than alignment.
+>> * spi_split_transfers_maxsize
+>>  this splits the spi_transfer into multiple independent spi_transfers
+>>  all of which will be of size max_size or smaller.
 > 
-> I think we practically stopped marking things as deprecated in general.
-> Per Linus decree, whenever we want to get rid of something, we should
-> instead change all users in tree and then remove the API, expecting
-> driver maintainers to do something just because you marked it as deprecated
-> often doesn't work.
+> Please split this up for review, as I'm fairly sure has been discussed
+> before smaller, more focused patches with clear changelogs describing
+> what they are suppose to do are much easier to review.  Start by adding
+> the framework changes, then add one transformation at once.  This is a
+> very big patch full of fiddly, unexplained code.
 
-Yes but while we do conversion we don't know if new users get added which use
-old API..
+I can split this in two or 3, as I already have a prototype that allows for
+merging multiple transfers into one transfer by copying data arround.
 
 > 
-> I can help out converting a few platforms, maybe one interface at a time.
+>> To start these shall get used by the individual drivers in prepare_message,
+>> but some may get moved into spi-core with the correct parametrization in
+>> spi_master.
+> 
+> As discussed I'm not a big fan of this approach.
+It is just a first step.
 
-Great yes we all will have to chip in and start removing these, i will try
-doing few after new year
+As far as I can see different hw may require different policies.
 
-Am sure Andy can chip in as well :)
+If there is a common code to handle all the variations then we can
+Implement that, but I have no idea what that could be.
 
-> This is what I see:
-> 
-> arnd@wuerfel:~/arm-soc$ for i in dma_request_slave_channel_reason dma_request_slave_channel dma_request_slave_channel_compat dma_request_channel  ; do echo `git grep -wl $i drivers/  | grep -v drivers/dma | wc -l`\      $i ; done
-> 14      dma_request_slave_channel_reason
-> 27      dma_request_slave_channel
-> 25      dma_request_slave_channel_compat
-> 34      dma_request_channel
-> 
-> I would probably leave the users of dma_request_channel() while converting
-> the others, as that is still used by all the platforms that don't use any DT
-> support.
-> 
-> Changing dma_request_slave_channel_reason and dma_request_slave_channel is
-> trivial, we can probably use coccinelle for that, as it does not require
-> any platform changes. That brings us to the users of
-> dma_request_slave_channel_compat, which currently includes these files:
-> 
-> $ git grep -wl dma_request_slave_channel_compat drivers/ata/pata_pxa.c
-> drivers/crypto/atmel-aes.c
-> drivers/crypto/atmel-sha.c
-> drivers/crypto/atmel-tdes.c
-> drivers/crypto/omap-aes.c
-> drivers/crypto/omap-des.c
-> drivers/crypto/omap-sham.c
-> drivers/media/platform/omap3isp/isphist.c
-> drivers/mmc/host/davinci_mmc.c
-> drivers/mmc/host/omap.c
-> drivers/mmc/host/omap_hsmmc.c
-> drivers/mmc/host/pxamci.c
-> drivers/mmc/host/s3cmci.c
-> drivers/mmc/host/tmio_mmc_dma.c
-> drivers/mtd/nand/pxa3xx_nand.c
-> drivers/net/ethernet/smsc/smc91x.c
-> drivers/net/irda/pxaficp_ir.c
-> drivers/spi/spi-omap2-mcspi.c
-> drivers/spi/spi-pxa2xx-dma.c
-> drivers/spi/spi-rspi.c
-> drivers/spi/spi-s3c64xx.c
-> drivers/spi/spi-sh-msiof.c
-> drivers/tty/serial/8250/8250_dma.c
-> drivers/tty/serial/samsung.c
-> drivers/tty/serial/sh-sci.c
-> include/linux/dmaengine.h
-> 
-> In other words: arch/avr32 and arch/sh along with omap1, omap2, davinci, pxa, and s3c
-> in terms of ARM platforms.
-> 
-> 	Arnd
+That is why I took this prepare message approach for now as it
+allows most control from the driver perspective (and is not 
+breaking existing drivers)
 
--- 
-~Vinod
+As said: this can get moved to the core when we have found the
+correct parametrization for driver.
+Parameters that come to mind are:
+* dma_alignment
+* max_transfersize (for which there exists a patch already)
+
+> 
+>> +/* the spi_resource structure used */
+>> +struct spi_res_replaced_transfers {
+>> +    spi_res_release_t release;
+>> +    struct list_head replaced_transfers;
+>> +    int inserted;
+>> +    struct spi_transfer xfers[];
+>> +};
+> 
+> This quite clearly isn't a struct spi_resource, nor does it contain
+> one...
+It is done the same way as devm_kalloc uses struct devres:
+the magic devres struct is hidden by the devres framework. 
+Only the payload data pointer is returned, which is what this
+structure describes.
+
+You want it as a more explicit member instead?
+
+> 
+>> +static void __spi_split_transfers_fixup_transfer_addr_and_len(
+>> +    struct spi_transfer *xfer, int count, int shift)
+>> +{
+>> +    int i;
+>> +
+>> +    /* fix up transfer length */
+>> +    xfer[0].len = shift;
+>> +
+>> +    /* shift all the addresses arround */
+>> +    for (i = 1; i < count; i++) {
+>> +        xfer[i].len -= shift;
+>> +        xfer[i].tx_buf += xfer[i].tx_buf ? shift : 0;
+>> +        xfer[i].rx_buf += xfer[i].rx_buf ? shift : 0;
+>> +        xfer[i].tx_dma += xfer[i].tx_dma ? shift : 0;
+>> +        xfer[i].rx_dma += xfer[i].rx_dma ? shift : 0;
+>> +    }
+>> +}
+> 
+> It's really not clear what this is supposed to do.  Among other things
+> "shift" appears to be misnamed and anything using tx_dma and rx_dma is
+> worrying.
+Essentially this will handle count spi-transfers that have all identical data
+(Except for transfer_list) initially - especially Len and tx/rx buf.
+The first of those transfers is set its length to shift 
+(no need to modify rx/tx_buf)
+The others are reduced by that length and the pointers are shifted up,
+So that they are now starting at the address after the first transfer and
+Transfer the correct number of bytes.
+
+Rx/tx_dma is handled because it is there and it's address needs also to be
+accurately Shifted by that offset. I know that it is a depreciated interface,
+but as it is still there it needs to be supported...
+
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

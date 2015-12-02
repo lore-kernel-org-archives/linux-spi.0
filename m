@@ -1,66 +1,63 @@
-From: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Subject: Re: [RFC v02 00/15] dmaengine: New 'universal' API for requesting
- channel
-Date: Wed, 2 Dec 2015 14:29:33 +0200
-Message-ID: <565EE42D.2030705@ti.com>
-References: <1448891145-10766-1-git-send-email-peter.ujfalusi@ti.com>
- <20151201165954.GA1696@localhost> <3124382.EhiMyQGKTA@wuerfel>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/3] spi: added spi_resource management
+Date: Wed, 2 Dec 2015 12:29:53 +0000
+Message-ID: <20151202122953.GG1929@sirena.org.uk>
+References: <1448888695-2260-1-git-send-email-kernel@martin.sperl.org>
+ <1448888695-2260-2-git-send-email-kernel@martin.sperl.org>
+ <20151201210410.GU1929@sirena.org.uk>
+ <56C9120A-8979-4156-B3C4-5851D695BDF0@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: <andy.shevchenko@gmail.com>, <linux-kernel@vger.kernel.org>,
-	<dmaengine@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>,
-	<linux-mmc@vger.kernel.org>, <nsekhar@ti.com>,
-	<linux-spi@vger.kernel.org>
-To: Arnd Bergmann <arnd@arndb.de>, Vinod Koul <vinod.koul@intel.com>
-Return-path: <linux-mmc-owner@vger.kernel.org>
-In-Reply-To: <3124382.EhiMyQGKTA@wuerfel>
-Sender: linux-mmc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="suyaDfHbCMIDpItJ"
+Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <56C9120A-8979-4156-B3C4-5851D695BDF0-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 12/01/2015 10:17 PM, Arnd Bergmann wrote:
-> On Tuesday 01 December 2015 22:29:54 Vinod Koul wrote:
->> On Mon, Nov 30, 2015 at 03:45:30PM +0200, Peter Ujfalusi wrote:
->>> channel via DT, ACPI or in case if the kernel booted in non DT/ACPI=
- mode
->>> it will use a filter lookup table and retrieves the needed informat=
-ion from
->>> the dma_filter_map provided by the DMA drivers.
->>
->> That sounds right, for the third case would the arch, driver or some=
-one else
->> configure this?
->=20
-> The typical case is for the configuration to be defined in arch or pl=
-atform
-> code and passed down to the dmaengine driver.
->=20
-> I just noticed that the text above (and probably the code too) should
-> be changed so we always fall back to this. There are cases where the
-> platform is booted with DT in principle, but the DMA engine does not
-> (yet) use DT and still wants to be converted. I think we can easily
-> handle that case by always trying this if the other methods fail.
 
-Yes, it was intentional actually to not fall back to legacy lookup. Wit=
-h the
-dma_request_slave_channel_compat() I have had cases when the DT binding=
- was
-not correct - or actually when trying to get deferred working that the =
-code
-would fall back to legacy mode and it got me a channel which is not usa=
-ble.
-I did not know that we have platforms booting in DT but the dma binding=
- is not
-working so it uses other method to get channel.
-I think, if we allow the fall back within dma_request_chan() it would n=
-ot
-cause the same issue as the dma_request_slave_channel_compat() did as l=
-ong as
-we are not providing the lookup table on DT booted cases when the DMA b=
-inding
-is working correctly.
-Let me see the flow, but I think it is doable.
+--suyaDfHbCMIDpItJ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
---=20
-P=E9ter
+On Wed, Dec 02, 2015 at 08:30:51AM +0100, Martin Sperl wrote:
+
+> > This has exactly one (tiny) user.  Why is it a separate function?
+
+> Readability, mimicking devres code and the option of adding
+> object caching/reuse here later...
+
+This is *not* helping readability.
+
+> There is a much higher likelihood that spi_resources will be
+> allocated and then freed several times per second, so this
+> can save cpu cycles and avoid locks...
+
+In what way does splitting this over two functions helping improve
+performance?  If there were multiple users or something perhaps but
+there don't appear to be.
+
+--suyaDfHbCMIDpItJ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJWXuRAAAoJECTWi3JdVIfQba0H/j0C7gYWfacg0ux4JncQtetj
+bp1M9iwP6Mjlotz0+XUs6X/v97apwk/QEkWmw8iMBeCEltVyvLI6uWRdA97NGQRZ
+F2wjdEhddAwJpkZ00Sud0vntyT8q+E/ahvI5aXxnidq3zZvK67fu4w3KdRBFabB4
+j0xKbic0iLMIazkDYlbAUZFp9dgOttIh2plHfEZ6Sh5IsIC8mgQ3sDqDR/rQfMOh
+DPyFzK1njb1wSls4wSu0mWcw1LtPhBepPR5M8jSPbo3UkLO5J1IPK+pWbPWTLPc0
+JA326dXDmYMkkN8+AQJBbZ6xHodEKXDV7arEmv/1tLx8xNBUFbDx3Vi0TWv2qIY=
+=qQXS
+-----END PGP SIGNATURE-----
+
+--suyaDfHbCMIDpItJ--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

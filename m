@@ -1,62 +1,72 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/3] spi: added spi_resource management
-Date: Wed, 2 Dec 2015 13:32:32 +0000
-Message-ID: <20151202133232.GK1929@sirena.org.uk>
-References: <1448888695-2260-1-git-send-email-kernel@martin.sperl.org>
- <1448888695-2260-2-git-send-email-kernel@martin.sperl.org>
- <20151201210410.GU1929@sirena.org.uk>
- <56C9120A-8979-4156-B3C4-5851D695BDF0@martin.sperl.org>
- <20151202122953.GG1929@sirena.org.uk>
- <565EEC58.4040006@martin.sperl.org>
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Subject: Re: [RFC v02 00/15] dmaengine: New 'universal' API for requesting channel
+Date: Wed, 02 Dec 2015 14:38:39 +0100
+Message-ID: <15116008.0PghG2Imaa@wuerfel>
+References: <1448891145-10766-1-git-send-email-peter.ujfalusi@ti.com> <103520159.g0xhtFsXUi@wuerfel> <565ECD3F.3070500@ti.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="5HZuAPtaWzuxXW8L"
-Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	dmaengine <dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Linux OMAP Mailing List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-arm Mailing List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Peter Ujfalusi <peter.ujfalusi-l0cyMroinI0@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <565EEC58.4040006-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <565ECD3F.3070500-l0cyMroinI0@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Wednesday 02 December 2015 12:51:43 Peter Ujfalusi wrote:
+> On 12/01/2015 04:24 PM, Arnd Bergmann wrote:
+> > On Tuesday 01 December 2015 15:45:32 Peter Ujfalusi wrote:
+> >>>> static struct dma_filter_map da830_edma_map[] = {
+> >>>>         DMA_FILTER_ENTRY("davinci-mcasp.0", "rx", EDMA_CTLR_CHAN(0, 0)),
+> >>>>         DMA_FILTER_ENTRY("davinci-mcasp.0", "tx", EDMA_CTLR_CHAN(0, 1)),
+> >>>>         DMA_FILTER_ENTRY("davinci-mcasp.1", "rx", EDMA_CTLR_CHAN(0, 2)),
+> >>>>         DMA_FILTER_ENTRY("davinci-mcasp.1", "tx", EDMA_CTLR_CHAN(0, 3)),
+> >>>>         DMA_FILTER_ENTRY("davinci-mcasp.2", "rx", EDMA_CTLR_CHAN(0, 4)),
+> >>>>         DMA_FILTER_ENTRY("davinci-mcasp.2", "tx", EDMA_CTLR_CHAN(0, 5)),
+> >>>>         DMA_FILTER_ENTRY("spi_davinci.0", "rx", EDMA_CTLR_CHAN(0, 14)),
+> >>>>         DMA_FILTER_ENTRY("spi_davinci.0", "tx", EDMA_CTLR_CHAN(0, 15)),
+> >>>>         DMA_FILTER_ENTRY("da830-mmc.0", "rx", EDMA_CTLR_CHAN(0, 16)),
+> >>>>         DMA_FILTER_ENTRY("da830-mmc.0", "tx", EDMA_CTLR_CHAN(0, 17)),
+> >>>>         DMA_FILTER_ENTRY("spi_davinci.1", "rx", EDMA_CTLR_CHAN(0, 18)),
+> >>>>         DMA_FILTER_ENTRY("spi_davinci.1", "tx", EDMA_CTLR_CHAN(0, 19)),
+> >>>
+> >>> Does this ".2" and so prevent driver to use auto ID for platform devices?
+> >>
+> >> Yes, as all the infra around the traditional board files with platform_device
+> >> creation does. Ideally we could have 'phandle' pointing from this table to the
+> >> device in question (or other way around), but I'm not aware of anything we can
+> >> use.
+> > 
+> > I was thinking that we could use a pointer to the device structure, but
+> > if you have that, you can also just read the name from it.
+> 
+> Hrm to have pdev pointer instead of the devname string? In the core we could
+> get the pdev from the caller's device with to_platform_device(dev) and simply
+> compare the pointers...
+> 
+> One of the issue I see (in mach-davinci and mach-omap1/2) is that the pdevs
+> are scattered around in the c files so gathering the pointers to a place where
+> we can see them to be able to use it in the dma_filter_map is not going to be
+> light weight task.
+> Furthermore we have the omap_hwmod for OMAP2+ which creates the actual pdevs
+> and resources from the omap_hwmod data structures so getting out the DMA event
+> numbers there is not going to be easy either...
+> 
+> I'll hold back the RFC v3 to see if we should switch to pdev pointer or stay
+> with the devname strings here.
 
---5HZuAPtaWzuxXW8L
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Sorry, what I meant to say above is that I had already concluded that using
+device pointers was a bad idea and we should stay with names.
 
-On Wed, Dec 02, 2015 at 02:04:24PM +0100, Martin Sperl wrote:
-
-> The bigger question (based on your comments to Patch 2/3) is:
-
-I haven't even looked at your reply ot that yet.
-
-> Do you want to follow the devres approach (i.e: hiding
-> "struct spi_res" after allocation and returning "void *"
-> to the data-payload only in spi_res_alloc)?
-
-> Or do you prefer to have "struct spi_res" as an explicit member of
-> a structure (i.e. in Patch 2/3 "struct spi_res_replaced_transfers")?
-
-I wasn't aware that was an issue?
-
---5HZuAPtaWzuxXW8L
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJWXvLvAAoJECTWi3JdVIfQ448H/jsZGX6mr5zLgx/TmoMxktkq
-afU2xDsDjNdWZLqk2DO3R2AnO367CHeBfDD61u+/q0xr52eHQo10BKzpIB/7sLHe
-EKG1wXUxZvDkdv1A5HmrCt/EoHGiJoABNIsz9JsbfTI3pxOn25b+wqYL/NglleD+
-8sPY0lPDuFvIgGvQORCXJ4p/Vdw2Uv0msSljmQbYh7LwYD37viidUOZ3Fmfa5qFb
-wbdFwKNTNuurHB8TOSCZL0QjBBCa5ifLN1bIFj1bDMpaphaR/67miJK8IzEyFWk9
-mTdshQ6PhA5y/q/Wf1ZfL5tfkCpgOE338oZxy0Cl7Q+gs3eata87baAQ4prGls4=
-=b+/7
------END PGP SIGNATURE-----
-
---5HZuAPtaWzuxXW8L--
+	Arnd
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

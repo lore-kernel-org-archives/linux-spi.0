@@ -1,72 +1,48 @@
-From: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Subject: [RFC v03 13/15] ARM: davinci: devices: Remove DMA resources for MMC
-Date: Wed, 2 Dec 2015 15:59:23 +0200
-Message-ID: <1449064765-27427-14-git-send-email-peter.ujfalusi@ti.com>
-References: <1449064765-27427-1-git-send-email-peter.ujfalusi@ti.com>
+From: Colin King <colin.king@canonical.com>
+Subject: [PATCH] spi/bcm63xx: fix build warning on printk format specifier
+Date: Wed,  2 Dec 2015 14:33:57 +0000
+Message-ID: <1449066837-15773-1-git-send-email-colin.king@canonical.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <linux-kernel@vger.kernel.org>, <dmaengine@vger.kernel.org>,
-	<linux-omap@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>,
-	<linux-mmc@vger.kernel.org>, <nsekhar@ti.com>,
-	<linux-spi@vger.kernel.org>, <tony@atomide.com>
-To: <vinod.koul@intel.com>, <arnd@arndb.de>,
-	<andy.shevchenko@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: linux-kernel@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1449064765-27427-1-git-send-email-peter.ujfalusi@ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The driver is converted to not use the DMA resource.
+=46rom: Colin Ian King <colin.king@canonical.com>
 
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+=46ix the following build warning when building with clang:
+
+drivers/spi/spi-bcm63xx.c:565:16: warning: format =E2=80=98%x=E2=80=99 =
+expects
+  argument of type =E2=80=98unsigned int=E2=80=99, but argument 3 has t=
+ype
+  =E2=80=98resource_size_t {aka long long unsigned int}=E2=80=99 [-Wfor=
+mat=3D]
+  dev_info(dev, "at 0x%08x (irq %d, FIFOs size %d)\n",
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- arch/arm/mach-davinci/devices.c | 19 -------------------
- 1 file changed, 19 deletions(-)
+ drivers/spi/spi-bcm63xx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-davinci/devices.c b/arch/arm/mach-davinci/devices.c
-index 6257aa452568..3ae70f2909b0 100644
---- a/arch/arm/mach-davinci/devices.c
-+++ b/arch/arm/mach-davinci/devices.c
-@@ -36,9 +36,6 @@
- #define DM365_MMCSD0_BASE	     0x01D11000
- #define DM365_MMCSD1_BASE	     0x01D00000
- 
--#define DAVINCI_DMA_MMCRXEVT	26
--#define DAVINCI_DMA_MMCTXEVT	27
--
- void __iomem  *davinci_sysmod_base;
- 
- void davinci_map_sysmod(void)
-@@ -144,14 +141,6 @@ static struct resource mmcsd0_resources[] = {
- 		.start = IRQ_SDIOINT,
- 		.flags = IORESOURCE_IRQ,
- 	},
--	/* DMA channels: RX, then TX */
--	{
--		.start = EDMA_CTLR_CHAN(0, DAVINCI_DMA_MMCRXEVT),
--		.flags = IORESOURCE_DMA,
--	}, {
--		.start = EDMA_CTLR_CHAN(0, DAVINCI_DMA_MMCTXEVT),
--		.flags = IORESOURCE_DMA,
--	},
- };
- 
- static struct platform_device davinci_mmcsd0_device = {
-@@ -181,14 +170,6 @@ static struct resource mmcsd1_resources[] = {
- 		.start = IRQ_DM355_SDIOINT1,
- 		.flags = IORESOURCE_IRQ,
- 	},
--	/* DMA channels: RX, then TX */
--	{
--		.start = EDMA_CTLR_CHAN(0, 30),	/* rx */
--		.flags = IORESOURCE_DMA,
--	}, {
--		.start = EDMA_CTLR_CHAN(0, 31),	/* tx */
--		.flags = IORESOURCE_DMA,
--	},
- };
- 
- static struct platform_device davinci_mmcsd1_device = {
--- 
-2.6.3
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index 06858e0..8209b60 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -562,8 +562,8 @@ static int bcm63xx_spi_probe(struct platform_device=
+ *pdev)
+ 		goto out_clk_disable;
+ 	}
+=20
+-	dev_info(dev, "at 0x%08x (irq %d, FIFOs size %d)\n",
+-		 r->start, irq, bs->fifo_size);
++	dev_info(dev, "at %pa (irq %d, FIFOs size %d)\n",
++		 (void *)r->start, irq, bs->fifo_size);
+=20
+ 	return 0;
+=20
+--=20
+2.6.2

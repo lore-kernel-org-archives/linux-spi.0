@@ -1,7 +1,7 @@
 From: Michal Suchanek <hramrach@gmail.com>
-Subject: [PATCH v6 07/10] mtd: spi-nor: add read loop
-Date: 2 Dec 2015 10:38:20 -0000
-Message-ID: <42c51bf17e21a5ae658174000f14035a56b0879b.1449052427.git.hramrach@gmail.com>
+Subject: [PATCH v6 09/10] spi: fsl-espi: expose maximum transfer size limit
+Date: 2 Dec 2015 10:38:21 -0000
+Message-ID: <515f8373f20ed814f8761ebadfec0e306517b0e3.1449052427.git.hramrach@gmail.com>
 References: <cover.1449052427.git.hramrach@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -31,51 +31,41 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-mtdblock and ubi do not handle the situation when read returns less data
-than requested. Loop in spi-nor until buffer is filled or an error is
-returned.
+The fsl-espi hardware can trasfer at most 64K data so report teh
+limitation.
 
+Based on patch by Heiner Kallweit <hkallweit1@gmail.com>
+
+CC: Heiner Kallweit <hkallweit1@gmail.com>
 Signed-off-by: Michal Suchanek <hramrach@gmail.com>
-
 ---
- - use WARN_ON rather than BUG_ON
----
- drivers/mtd/spi-nor/spi-nor.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index 115c123..ded79ae 100644
---- a/drivers/mtd/spi-nor/spi-nor.c
-+++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -907,14 +907,22 @@ static int spi_nor_read(struct mtd_info *mtd, loff_t from, size_t len,
- 	if (ret)
- 		return ret;
- 
--	ret = nor->read(nor, from, len, buf);
-+	while (len) {
-+		ret = nor->read(nor, from, len, buf);
-+		if (ret <= 0)
-+			goto read_err;
-+
-+		WARN_ON(ret > len);
-+		*retlen += ret;
-+		buf += ret;
-+		from += ret;
-+		len -= ret;
-+	}
-+	ret = 0;
- 
-+read_err:
- 	spi_nor_unlock_and_unprep(nor, SPI_NOR_OPS_READ);
--	if (ret < 0)
--		return ret;
--
--	*retlen += ret;
--	return 0;
-+	return ret;
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index c27124a..7fd6a4c 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -643,6 +643,11 @@ static int fsl_espi_runtime_resume(struct device *dev)
  }
+ #endif
  
- static int sst_write(struct mtd_info *mtd, loff_t to, size_t len,
++static size_t fsl_espi_max_transfer_size(struct spi_device *spi)
++{
++	return SPCOM_TRANLEN_MAX;
++}
++
+ static struct spi_master * fsl_espi_probe(struct device *dev,
+ 		struct resource *mem, unsigned int irq)
+ {
+@@ -670,6 +675,7 @@ static struct spi_master * fsl_espi_probe(struct device *dev,
+ 	master->cleanup = fsl_espi_cleanup;
+ 	master->transfer_one_message = fsl_espi_do_one_msg;
+ 	master->auto_runtime_pm = true;
++	master->max_transfer_size = fsl_espi_max_transfer_size;
+ 
+ 	mpc8xxx_spi = spi_master_get_devdata(master);
+ 
 -- 
 2.6.2
 

@@ -1,96 +1,115 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: butterfly: use new parport device model" to the spi tree
-Date: Wed, 02 Dec 2015 20:11:03 +0000
-Message-ID: <E1a4Djz-00030v-I4@debutante>
-References: <1449064071-4915-4-git-send-email-sudipm.mukherjee@gmail.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Sudip Mukherjee <sudip-ofJRbWXBVFamYgehrs7/Lw@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1449064071-4915-4-git-send-email-sudipm.mukherjee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Han Xu <han.xu@freescale.com>
+Subject: Re: [PATCH v6 03/10] mtd: fsl-quadspi: return amount of data
+ read/written or error
+Date: Wed, 2 Dec 2015 15:06:28 -0600
+Message-ID: <20151202210626.GA21512@chopperman.am.freescale.net>
+References: <cover.1449052427.git.hramrach@gmail.com>
+ <ad10a42f8c502b9b91fcba05b3e46c42663e1141.1449052427.git.hramrach@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Brian Norris <computersforpeace@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Boris Brezillon <boris.brezillon@free-electrons.com>,
+	Javier Martinez Canillas <javier@osg.samsung.com>,
+	Rafal Milecki <zajec5@gmail.com>,
+	Jagan Teki <jteki@openedev.com>,
+	"Andrew F. Davis" <afd@ti.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Gabor Juhos <juhosg@openwrt.org>,
+	Bean Huo <beanhuo@micron.com>,
+	Furquan Shaikh <furquan@google.com>,
+	<linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<linux-spi@vger.kernel.org>
+To: Michal Suchanek <hramrach@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <ad10a42f8c502b9b91fcba05b3e46c42663e1141.1449052427.git.hramrach@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-The patch
+On Wed, Dec 02, 2015 at 10:38:19AM +0000, Michal Suchanek wrote:
+> Return amount of data read/written or error as read(2)/write(2) does.
+> 
+> Signed-off-by: Michal Suchanek <hramrach@gmail.com>
+> ---
+>  drivers/mtd/spi-nor/fsl-quadspi.c | 18 +++++++++++-------
+>  1 file changed, 11 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/mtd/spi-nor/fsl-quadspi.c b/drivers/mtd/spi-nor/fsl-quadspi.c
+> index 10d2b59..9beb739 100644
+> --- a/drivers/mtd/spi-nor/fsl-quadspi.c
+> +++ b/drivers/mtd/spi-nor/fsl-quadspi.c
+> @@ -575,7 +575,7 @@ static inline void fsl_qspi_invalid(struct fsl_qspi *q)
+>  	writel(reg, q->iobase + QUADSPI_MCR);
+>  }
+>  
+> -static int fsl_qspi_nor_write(struct fsl_qspi *q, struct spi_nor *nor,
+> +static ssize_t fsl_qspi_nor_write(struct fsl_qspi *q, struct spi_nor *nor,
 
-   spi: butterfly: use new parport device model
+conflict with the patch I acked.
 
-has been applied to the spi tree at
+https://patchwork.ozlabs.org/patch/545925/
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+I may change it and test on my side.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+>  				u8 opcode, unsigned int to, u32 *txbuf,
+>  				unsigned count, size_t *retlen)
+>  {
+> @@ -604,8 +604,11 @@ static int fsl_qspi_nor_write(struct fsl_qspi *q, struct spi_nor *nor,
+>  	/* Trigger it */
+>  	ret = fsl_qspi_runcmd(q, opcode, to, count);
+>  
+> -	if (ret == 0 && retlen)
+> -		*retlen += count;
+> +	if (ret == 0) {
+> +		if (retlen)
+> +			*retlen += count;
+> +		return count;
+> +	}
+>  
+>  	return ret;
+>  }
+> @@ -814,6 +817,8 @@ static int fsl_qspi_write_reg(struct spi_nor *nor, u8 opcode, u8 *buf, int len)
+>  	} else if (len > 0) {
+>  		ret = fsl_qspi_nor_write(q, nor, opcode, 0,
+>  					(u32 *)buf, len, NULL);
+> +		if (ret > 0)
+> +			return 0;
+>  	} else {
+>  		dev_err(q->dev, "invalid cmd %d\n", opcode);
+>  		ret = -EINVAL;
+> @@ -827,12 +832,12 @@ static ssize_t fsl_qspi_write(struct spi_nor *nor, loff_t to,
+>  {
+>  	struct fsl_qspi *q = nor->priv;
+>  
+> -	fsl_qspi_nor_write(q, nor, nor->program_opcode, to,
+> +	ssize_t ret = fsl_qspi_nor_write(q, nor, nor->program_opcode, to,
+>  				(u32 *)buf, len, retlen);
+>  
+>  	/* invalid the data in the AHB buffer. */
+>  	fsl_qspi_invalid(q);
+> -	return 0;
+> +	return ret;
+>  }
+>  
+>  static ssize_t fsl_qspi_read(struct spi_nor *nor, loff_t from,
+> @@ -878,8 +883,7 @@ static ssize_t fsl_qspi_read(struct spi_nor *nor, loff_t from,
+>  	memcpy(buf, q->ahb_addr + q->chip_base_addr + from - q->memmap_offs,
+>  		len);
+>  
+> -	*retlen += len;
+> -	return 0;
+> +	return len;
+>  }
+>  
+>  static int fsl_qspi_erase(struct spi_nor *nor, loff_t offs)
+> -- 
+> 2.6.2
+> 
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 1d3029cc5f17081afdc2d6b7b50f9d0366cdbae1 Mon Sep 17 00:00:00 2001
-From: Sudip Mukherjee <sudipm.mukherjee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Wed, 2 Dec 2015 19:17:51 +0530
-Subject: [PATCH] spi: butterfly: use new parport device model
-
-Modify spi-butterfly driver to use the new parallel port device model.
-
-Signed-off-by: Sudip Mukherjee <sudip-ofJRbWXBVFamYgehrs7/Lw@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-butterfly.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/spi/spi-butterfly.c b/drivers/spi/spi-butterfly.c
-index f16ef7fb10f1..22a31e4a1a11 100644
---- a/drivers/spi/spi-butterfly.c
-+++ b/drivers/spi/spi-butterfly.c
-@@ -189,6 +189,7 @@ static void butterfly_attach(struct parport *p)
- 	struct butterfly	*pp;
- 	struct spi_master	*master;
- 	struct device		*dev = p->physport->dev;
-+	struct pardev_cb	butterfly_cb;
- 
- 	if (butterfly || !dev)
- 		return;
-@@ -221,9 +222,9 @@ static void butterfly_attach(struct parport *p)
- 	 * parport hookup
- 	 */
- 	pp->port = p;
--	pd = parport_register_device(p, "spi_butterfly",
--				     NULL, NULL, NULL,
--				     0 /* FLAGS */, pp);
-+	memset(&butterfly_cb, 0, sizeof(butterfly_cb));
-+	butterfly_cb.private = pp;
-+	pd = parport_register_dev_model(p, "spi_butterfly", &butterfly_cb, 0);
- 	if (!pd) {
- 		status = -ENOMEM;
- 		goto clean0;
-@@ -321,8 +322,9 @@ static void butterfly_detach(struct parport *p)
- 
- static struct parport_driver butterfly_driver = {
- 	.name =		"spi_butterfly",
--	.attach =	butterfly_attach,
-+	.match_port =	butterfly_attach,
- 	.detach =	butterfly_detach,
-+	.devmodel = true,
- };
- 
- static int __init butterfly_init(void)
 -- 
-2.6.2
+Best Regards,
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Han "Allen" Xu

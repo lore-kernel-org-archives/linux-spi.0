@@ -1,7 +1,7 @@
 From: Michal Suchanek <hramrach@gmail.com>
-Subject: [PATCH v6 10/10] mtd: m25p80: read in spi_max_transfer_size chunks
+Subject: [PATCH v6 08/10] spi: expose master transfer size limitation.
 Date: 2 Dec 2015 10:38:21 -0000
-Message-ID: <77973c7d90afb034f3bee55db7bff5be23e2a812.1449052427.git.hramrach@gmail.com>
+Message-ID: <8b7f438323e5d9002ad4f62bedc7810154ffd474.1449052427.git.hramrach@gmail.com>
 References: <cover.1449052427.git.hramrach@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -31,30 +31,57 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Take into account transfer size limitation of SPI master.
+On some SPI controllers it is not feasible to transfer arbitrary amount
+of data at once.
+
+When the limit on transfer size is a few kilobytes at least it makes
+sense to use the SPI hardware rather than reverting to gpio driver.
+
+The protocol drivers need a way to check that they do not sent overly
+long messages, though.
 
 Signed-off-by: Michal Suchanek <hramrach@gmail.com>
 
 ---
 
- - update for: return SIZE_MAX when no limit is known
+ - return SIZE_MAX when no limit is known
 ---
- drivers/mtd/devices/m25p80.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/spi/spi.h | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
-index 58ecfa4..f36ffc6 100644
---- a/drivers/mtd/devices/m25p80.c
-+++ b/drivers/mtd/devices/m25p80.c
-@@ -150,7 +150,7 @@ static ssize_t m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index cce80e6..3eebc6c 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -425,6 +425,12 @@ struct spi_master {
+ #define SPI_MASTER_MUST_RX      BIT(3)		/* requires rx */
+ #define SPI_MASTER_MUST_TX      BIT(4)		/* requires tx */
  
- 	t[1].rx_buf = buf;
- 	t[1].rx_nbits = m25p80_rx_nbits(nor);
--	t[1].len = len;
-+	t[1].len = min_t(size_t, len, spi_max_transfer_size(spi));
- 	spi_message_add_tail(&t[1], &m);
++	/*
++	 * on some hardware transfer size may be constrained
++	 * the limit may depend on device transfer settings
++	 */
++	size_t (*max_transfer_size)(struct spi_device *spi);
++
+ 	/* lock and mutex for SPI bus locking */
+ 	spinlock_t		bus_lock_spinlock;
+ 	struct mutex		bus_lock_mutex;
+@@ -832,6 +838,15 @@ extern int spi_async(struct spi_device *spi, struct spi_message *message);
+ extern int spi_async_locked(struct spi_device *spi,
+ 			    struct spi_message *message);
  
- 	ret = spi_sync(spi, &m);
++static inline size_t
++spi_max_transfer_size(struct spi_device *spi)
++{
++	struct spi_master *master = spi->master;
++	if (!master->max_transfer_size)
++		return SIZE_MAX;
++	return master->max_transfer_size(spi);
++}
++
+ /*---------------------------------------------------------------------------*/
+ 
+ /* All these synchronous SPI transfer routines are utilities layered
 -- 
 2.6.2
 

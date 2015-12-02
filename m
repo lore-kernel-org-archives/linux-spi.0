@@ -1,91 +1,94 @@
-From: Michal Suchanek <hramrach@gmail.com>
-Subject: [PATCH v6 08/10] spi: expose master transfer size limitation.
-Date: 2 Dec 2015 10:38:21 -0000
-Message-ID: <8b7f438323e5d9002ad4f62bedc7810154ffd474.1449052427.git.hramrach@gmail.com>
-References: <cover.1449052427.git.hramrach@gmail.com>
+From: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Subject: Re: [RFC v02 00/15] dmaengine: New 'universal' API for requesting
+ channel
+Date: Wed, 2 Dec 2015 12:51:43 +0200
+Message-ID: <565ECD3F.3070500@ti.com>
+References: <1448891145-10766-1-git-send-email-peter.ujfalusi@ti.com>
+ <CAHp75VcC5uwGTp_N13q5P8MPtkhy0DFytDaXGrnoiHfnoEo8ng@mail.gmail.com>
+ <565DA47C.4000308@ti.com> <103520159.g0xhtFsXUi@wuerfel>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Heiner Kallweit <hkallweit1@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>,
- Brian Norris <computersforpeace@gmail.com>, Han Xu <han.xu@freescale.com>,
- Mark Brown <broonie@kernel.org>, Michal Suchanek <hramrach@gmail.com>,
- Boris Brezillon <boris.brezillon@free-electrons.com>,
- Javier Martinez Canillas <javier@osg.samsung.com>,
- "Rafal Milecki" <zajec5@gmail.com>, Jagan Teki <jteki@openedev.com>,
- "Andrew F. Davis" <afd@ti.com>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- Gabor Juhos <juhosg@openwrt.org>, "Bean Huo  " <beanhuo@micron.com>,
- Furquan Shaikh <furquan@google.com>, linux-mtd@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <cover.1449052427.git.hramrach@gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Vinod Koul <vinod.koul@intel.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	dmaengine <dmaengine@vger.kernel.org>,
+	Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
+	linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+	"linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+	Sekhar Nori <nsekhar@ti.com>,
+	linux-spi <linux-spi@vger.kernel.org>
+To: Arnd Bergmann <arnd@arndb.de>
+Return-path: <linux-mmc-owner@vger.kernel.org>
+In-Reply-To: <103520159.g0xhtFsXUi@wuerfel>
+Sender: linux-mmc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On some SPI controllers it is not feasible to transfer arbitrary amount
-of data at once.
+On 12/01/2015 04:24 PM, Arnd Bergmann wrote:
+> On Tuesday 01 December 2015 15:45:32 Peter Ujfalusi wrote:
+>>>> static struct dma_filter_map da830_edma_map[] =3D {
+>>>>         DMA_FILTER_ENTRY("davinci-mcasp.0", "rx", EDMA_CTLR_CHAN(0=
+, 0)),
+>>>>         DMA_FILTER_ENTRY("davinci-mcasp.0", "tx", EDMA_CTLR_CHAN(0=
+, 1)),
+>>>>         DMA_FILTER_ENTRY("davinci-mcasp.1", "rx", EDMA_CTLR_CHAN(0=
+, 2)),
+>>>>         DMA_FILTER_ENTRY("davinci-mcasp.1", "tx", EDMA_CTLR_CHAN(0=
+, 3)),
+>>>>         DMA_FILTER_ENTRY("davinci-mcasp.2", "rx", EDMA_CTLR_CHAN(0=
+, 4)),
+>>>>         DMA_FILTER_ENTRY("davinci-mcasp.2", "tx", EDMA_CTLR_CHAN(0=
+, 5)),
+>>>>         DMA_FILTER_ENTRY("spi_davinci.0", "rx", EDMA_CTLR_CHAN(0, =
+14)),
+>>>>         DMA_FILTER_ENTRY("spi_davinci.0", "tx", EDMA_CTLR_CHAN(0, =
+15)),
+>>>>         DMA_FILTER_ENTRY("da830-mmc.0", "rx", EDMA_CTLR_CHAN(0, 16=
+)),
+>>>>         DMA_FILTER_ENTRY("da830-mmc.0", "tx", EDMA_CTLR_CHAN(0, 17=
+)),
+>>>>         DMA_FILTER_ENTRY("spi_davinci.1", "rx", EDMA_CTLR_CHAN(0, =
+18)),
+>>>>         DMA_FILTER_ENTRY("spi_davinci.1", "tx", EDMA_CTLR_CHAN(0, =
+19)),
+>>>
+>>> Does this ".2" and so prevent driver to use auto ID for platform de=
+vices?
+>>
+>> Yes, as all the infra around the traditional board files with platfo=
+rm_device
+>> creation does. Ideally we could have 'phandle' pointing from this ta=
+ble to the
+>> device in question (or other way around), but I'm not aware of anyth=
+ing we can
+>> use.
+>=20
+> I was thinking that we could use a pointer to the device structure, b=
+ut
+> if you have that, you can also just read the name from it.
 
-When the limit on transfer size is a few kilobytes at least it makes
-sense to use the SPI hardware rather than reverting to gpio driver.
+Hrm to have pdev pointer instead of the devname string? In the core we =
+could
+get the pdev from the caller's device with to_platform_device(dev) and =
+simply
+compare the pointers...
 
-The protocol drivers need a way to check that they do not sent overly
-long messages, though.
+One of the issue I see (in mach-davinci and mach-omap1/2) is that the p=
+devs
+are scattered around in the c files so gathering the pointers to a plac=
+e where
+we can see them to be able to use it in the dma_filter_map is not going=
+ to be
+light weight task.
+=46urthermore we have the omap_hwmod for OMAP2+ which creates the actua=
+l pdevs
+and resources from the omap_hwmod data structures so getting out the DM=
+A event
+numbers there is not going to be easy either...
 
-Signed-off-by: Michal Suchanek <hramrach@gmail.com>
+I'll hold back the RFC v3 to see if we should switch to pdev pointer or=
+ stay
+with the devname strings here.
 
----
-
- - return SIZE_MAX when no limit is known
----
- include/linux/spi/spi.h | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index cce80e6..3eebc6c 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -425,6 +425,12 @@ struct spi_master {
- #define SPI_MASTER_MUST_RX      BIT(3)		/* requires rx */
- #define SPI_MASTER_MUST_TX      BIT(4)		/* requires tx */
- 
-+	/*
-+	 * on some hardware transfer size may be constrained
-+	 * the limit may depend on device transfer settings
-+	 */
-+	size_t (*max_transfer_size)(struct spi_device *spi);
-+
- 	/* lock and mutex for SPI bus locking */
- 	spinlock_t		bus_lock_spinlock;
- 	struct mutex		bus_lock_mutex;
-@@ -832,6 +838,15 @@ extern int spi_async(struct spi_device *spi, struct spi_message *message);
- extern int spi_async_locked(struct spi_device *spi,
- 			    struct spi_message *message);
- 
-+static inline size_t
-+spi_max_transfer_size(struct spi_device *spi)
-+{
-+	struct spi_master *master = spi->master;
-+	if (!master->max_transfer_size)
-+		return SIZE_MAX;
-+	return master->max_transfer_size(spi);
-+}
-+
- /*---------------------------------------------------------------------------*/
- 
- /* All these synchronous SPI transfer routines are utilities layered
--- 
-2.6.2
-
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+--=20
+P=E9ter

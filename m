@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: butterfly: remove multiple blank lines" to the spi tree
-Date: Wed, 02 Dec 2015 20:11:06 +0000
-Message-ID: <E1a4Dk2-0003WN-Fe@debutante>
-References: <1449064071-4915-1-git-send-email-sudipm.mukherjee@gmail.com>
+Subject: Applied "spi: butterfly: use new parport device model" to the spi tree
+Date: Wed, 02 Dec 2015 20:11:03 +0000
+Message-ID: <E1a4Djz-00030v-I4@debutante>
+References: <1449064071-4915-4-git-send-email-sudipm.mukherjee@gmail.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Sudip Mukherjee <sudip-ofJRbWXBVFamYgehrs7/Lw@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1449064071-4915-1-git-send-email-sudipm.mukherjee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1449064071-4915-4-git-send-email-sudipm.mukherjee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: butterfly: remove multiple blank lines
+   spi: butterfly: use new parport device model
 
 has been applied to the spi tree at
 
@@ -38,86 +38,55 @@ to this mail.
 Thanks,
 Mark
 
->From 1bfa91e9255065e8f5b8aef869eee57b8badf61e Mon Sep 17 00:00:00 2001
+>From 1d3029cc5f17081afdc2d6b7b50f9d0366cdbae1 Mon Sep 17 00:00:00 2001
 From: Sudip Mukherjee <sudipm.mukherjee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Wed, 2 Dec 2015 19:17:48 +0530
-Subject: [PATCH] spi: butterfly: remove multiple blank lines
+Date: Wed, 2 Dec 2015 19:17:51 +0530
+Subject: [PATCH] spi: butterfly: use new parport device model
 
-checkpatch complains about multiple blank lines.
+Modify spi-butterfly driver to use the new parallel port device model.
 
 Signed-off-by: Sudip Mukherjee <sudip-ofJRbWXBVFamYgehrs7/Lw@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-butterfly.c | 9 ---------
- 1 file changed, 9 deletions(-)
+ drivers/spi/spi-butterfly.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi-butterfly.c b/drivers/spi/spi-butterfly.c
-index 9a95862986c8..f520eaa193c5 100644
+index f16ef7fb10f1..22a31e4a1a11 100644
 --- a/drivers/spi/spi-butterfly.c
 +++ b/drivers/spi/spi-butterfly.c
-@@ -27,7 +27,6 @@
+@@ -189,6 +189,7 @@ static void butterfly_attach(struct parport *p)
+ 	struct butterfly	*pp;
+ 	struct spi_master	*master;
+ 	struct device		*dev = p->physport->dev;
++	struct pardev_cb	butterfly_cb;
  
- #include <linux/mtd/partitions.h>
- 
--
- /*
-  * This uses SPI to talk with an "AVR Butterfly", which is a $US20 card
-  * with a battery powered AVR microcontroller and lots of goodies.  You
-@@ -37,7 +36,6 @@
-  * and use this custom parallel port cable.
-  */
- 
--
- /* DATA output bits (pins 2..9 == D0..D7) */
- #define	butterfly_nreset (1 << 1)		/* pin 3 */
- 
-@@ -52,14 +50,11 @@
- /* CONTROL output bits */
- #define	spi_cs_bit	PARPORT_CONTROL_SELECT	/* pin 17 */
- 
--
--
- static inline struct butterfly *spidev_to_pp(struct spi_device *spi)
- {
- 	return spi->controller_data;
- }
- 
--
- struct butterfly {
- 	/* REVISIT ... for now, this must be first */
- 	struct spi_bitbang	bitbang;
-@@ -140,7 +135,6 @@ static void butterfly_chipselect(struct spi_device *spi, int value)
- 	parport_frob_control(pp->port, spi_cs_bit, value ? spi_cs_bit : 0);
- }
- 
--
- /* we only needed to implement one mode here, and choose SPI_MODE_0 */
- 
- #define spidelay(X)	do { } while (0)
-@@ -186,7 +180,6 @@ static struct flash_platform_data flash = {
- 	.nr_parts	= ARRAY_SIZE(partitions),
- };
- 
--
- /* REVISIT remove this ugly global and its "only one" limitation */
- static struct butterfly *butterfly;
- 
-@@ -262,7 +255,6 @@ static void butterfly_attach(struct parport *p)
- 	parport_write_data(pp->port, pp->lastbyte);
- 	msleep(100);
- 
--
- 	/*
- 	 * Start SPI ... for now, hide that we're two physical busses.
+ 	if (butterfly || !dev)
+ 		return;
+@@ -221,9 +222,9 @@ static void butterfly_attach(struct parport *p)
+ 	 * parport hookup
  	 */
-@@ -334,7 +326,6 @@ static struct parport_driver butterfly_driver = {
+ 	pp->port = p;
+-	pd = parport_register_device(p, "spi_butterfly",
+-				     NULL, NULL, NULL,
+-				     0 /* FLAGS */, pp);
++	memset(&butterfly_cb, 0, sizeof(butterfly_cb));
++	butterfly_cb.private = pp;
++	pd = parport_register_dev_model(p, "spi_butterfly", &butterfly_cb, 0);
+ 	if (!pd) {
+ 		status = -ENOMEM;
+ 		goto clean0;
+@@ -321,8 +322,9 @@ static void butterfly_detach(struct parport *p)
+ 
+ static struct parport_driver butterfly_driver = {
+ 	.name =		"spi_butterfly",
+-	.attach =	butterfly_attach,
++	.match_port =	butterfly_attach,
  	.detach =	butterfly_detach,
++	.devmodel = true,
  };
  
--
  static int __init butterfly_init(void)
- {
- 	return parport_register_driver(&butterfly_driver);
 -- 
 2.6.2
 

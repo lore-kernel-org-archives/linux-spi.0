@@ -1,58 +1,67 @@
-From: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Subject: [PATCH 3/4] spi: butterfly: correct alignment
-Date: Wed,  2 Dec 2015 19:17:50 +0530
-Message-ID: <1449064071-4915-3-git-send-email-sudipm.mukherjee@gmail.com>
+From: Sudip Mukherjee <sudipm.mukherjee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 4/4] spi: butterfly: use new parport device model
+Date: Wed,  2 Dec 2015 19:17:51 +0530
+Message-ID: <1449064071-4915-4-git-send-email-sudipm.mukherjee@gmail.com>
 References: <1449064071-4915-1-git-send-email-sudipm.mukherjee@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1449064071-4915-1-git-send-email-sudipm.mukherjee@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Sudip Mukherjee <sudipm.mukherjee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1449064071-4915-1-git-send-email-sudipm.mukherjee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-checkpatch complains about the allignment with open parenthesis. 
+Modify spi-butterfly driver to use the new parallel port device model.
 
-Signed-off-by: Sudip Mukherjee <sudip@vectorindia.org>
+Signed-off-by: Sudip Mukherjee <sudip-ofJRbWXBVFamYgehrs7/Lw@public.gmane.org>
 ---
- drivers/spi/spi-butterfly.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+
+Only change is in the module loading part. It has been tested by
+inserting and removing the module repeatedly, tested with unbind also.
+
+ drivers/spi/spi-butterfly.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi-butterfly.c b/drivers/spi/spi-butterfly.c
-index 8fc284d..f16ef7f 100644
+index f16ef7f..22a31e4 100644
 --- a/drivers/spi/spi-butterfly.c
 +++ b/drivers/spi/spi-butterfly.c
-@@ -143,9 +143,8 @@ static void butterfly_chipselect(struct spi_device *spi, int value)
- #include "spi-bitbang-txrx.h"
+@@ -189,6 +189,7 @@ static void butterfly_attach(struct parport *p)
+ 	struct butterfly	*pp;
+ 	struct spi_master	*master;
+ 	struct device		*dev = p->physport->dev;
++	struct pardev_cb	butterfly_cb;
  
- static u32
--butterfly_txrx_word_mode0(struct spi_device *spi,
--		unsigned nsecs,
--		u32 word, u8 bits)
-+butterfly_txrx_word_mode0(struct spi_device *spi, unsigned nsecs, u32 word,
-+			  u8 bits)
- {
- 	return bitbang_txrx_be_cpha0(spi, nsecs, 0, 0, word, bits);
- }
-@@ -223,8 +222,8 @@ static void butterfly_attach(struct parport *p)
+ 	if (butterfly || !dev)
+ 		return;
+@@ -221,9 +222,9 @@ static void butterfly_attach(struct parport *p)
+ 	 * parport hookup
  	 */
  	pp->port = p;
- 	pd = parport_register_device(p, "spi_butterfly",
--			NULL, NULL, NULL,
--			0 /* FLAGS */, pp);
-+				     NULL, NULL, NULL,
-+				     0 /* FLAGS */, pp);
+-	pd = parport_register_device(p, "spi_butterfly",
+-				     NULL, NULL, NULL,
+-				     0 /* FLAGS */, pp);
++	memset(&butterfly_cb, 0, sizeof(butterfly_cb));
++	butterfly_cb.private = pp;
++	pd = parport_register_dev_model(p, "spi_butterfly", &butterfly_cb, 0);
  	if (!pd) {
  		status = -ENOMEM;
  		goto clean0;
-@@ -275,7 +274,7 @@ static void butterfly_attach(struct parport *p)
- 	pp->dataflash = spi_new_device(pp->bitbang.master, &pp->info[0]);
- 	if (pp->dataflash)
- 		pr_debug("%s: dataflash at %s\n", p->name,
--				dev_name(&pp->dataflash->dev));
-+			 dev_name(&pp->dataflash->dev));
+@@ -321,8 +322,9 @@ static void butterfly_detach(struct parport *p)
  
- 	pr_info("%s: AVR Butterfly\n", p->name);
- 	butterfly = pp;
+ static struct parport_driver butterfly_driver = {
+ 	.name =		"spi_butterfly",
+-	.attach =	butterfly_attach,
++	.match_port =	butterfly_attach,
+ 	.detach =	butterfly_detach,
++	.devmodel = true,
+ };
+ 
+ static int __init butterfly_init(void)
 -- 
 1.9.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

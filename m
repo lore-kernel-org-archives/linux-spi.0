@@ -1,60 +1,65 @@
-From: Charles Keepax <ckeepax-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: Re: Handling clocks on external busses
-Date: Wed, 2 Dec 2015 12:58:55 +0000
-Message-ID: <20151202125855.GB6058@localhost.localdomain>
-References: <20151124173718.GK18889@ck-lbox>
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: Re: [PATCH 1/3] spi: added spi_resource management
+Date: Wed, 2 Dec 2015 14:04:24 +0100
+Message-ID: <565EEC58.4040006@martin.sperl.org>
+References: <1448888695-2260-1-git-send-email-kernel@martin.sperl.org>
+ <1448888695-2260-2-git-send-email-kernel@martin.sperl.org>
+ <20151201210410.GU1929@sirena.org.uk>
+ <56C9120A-8979-4156-B3C4-5851D695BDF0@martin.sperl.org>
+ <20151202122953.GG1929@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Cc: <linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, <mturquette-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
-	<sboyd-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
-To: <linux-clk-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20151124173718.GK18889@ck-lbox>
+In-Reply-To: <20151202122953.GG1929-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Nov 24, 2015 at 05:37:18PM +0000, Charles Keepax wrote:
-> Hi,
-> 
-> When a clock driver is controlling a clock that is controlled
-> over I2C / SPI, we need to perform a write on that bus to enable
-> the clock. However, such busses often have their own clocks that
-> must be enabled. Since all clock prepares are controlled under
-> one large mutex this easily causes deadlock. The device is
-> waiting for the I2C / SPI write to complete and the I2C / SPI
-> driver is waiting for the clock prepare lock to be released so it
-> can enable its own clock.
-> 
-> I have had a bit of a search and it seems the only really advice
-> kicking about is that all I2C / SPI drivers should leave the
-> clock prepared all the time. Is that intended to be the long term
-> solution, should I treat not leaving the clock prepared as a bug?
-> 
-> Thanks,
-> Charles
+On 02.12.2015 13:29, Mark Brown wrote:
+> On Wed, Dec 02, 2015 at 08:30:51AM +0100, Martin Sperl wrote:
+>
+>>> This has exactly one (tiny) user.  Why is it a separate function?
+>
+>> Readability, mimicking devres code and the option of adding
+>> object caching/reuse here later...
+>
+> This is *not* helping readability.
+Originally it contained a bit more code to avoid repeated allocations,
+which was cut out for the initial version of the patch.
 
-Adding a few more people for visibility.
+>> There is a much higher likelihood that spi_resources will be
+>> allocated and then freed several times per second, so this
+>> can save cpu cycles and avoid locks...
+>
+> In what way does splitting this over two functions helping improve
+> performance?  If there were multiple users or something perhaps but
+> there don't appear to be.
+>
 
-So after a bit more digging it seems this has been mitigated slightly
-as a lot of SPI driver have been updated to execute transfers in
-thread rather than from a worker thread and it seems the clock
-framework lets you re-enter the locked sections if called from the
-same thread.
+It does not help performance per se, but it allows adding more
+code in that location that would allow to reuse allocated objects.
 
-I am looking at moving some (in mainline) clocking code into an actual
-clocking driver (for a SPI/I2C audio CODEC) but I am rather nervous
-about this causing problems for customers with random deadlocks.
+As of now I will merge those 2 functions.
 
-I guess the naive solution looks like individual locks per clock, but
-from what I have been able to google it looks like there are some
-challenges with that approach, does anyone have any links to previous
-discussions on that? And any suggestions on how I might approach
-this?
+The bigger question (based on your comments to Patch 2/3) is:
+
+Do you want to follow the devres approach (i.e: hiding
+"struct spi_res" after allocation and returning "void *"
+to the data-payload only in spi_res_alloc)?
+
+Or do you prefer to have "struct spi_res" as an explicit member of
+a structure (i.e. in Patch 2/3 "struct spi_res_replaced_transfers")?
+
+I want to get this settled before submitting newer versions of the
+other patches that address other concerns, because any changes to
+spi_res design directly impact these other patches.
 
 Thanks,
-Charles
+	Martin
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

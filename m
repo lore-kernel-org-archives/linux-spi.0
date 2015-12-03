@@ -1,64 +1,88 @@
-From: Brian Norris <computersforpeace@gmail.com>
-Subject: Re: [PATCH v6 03/10] mtd: fsl-quadspi: return amount of data
- read/written or error
-Date: Wed, 2 Dec 2015 15:07:32 -0800
-Message-ID: <20151202230732.GT64635@google.com>
-References: <cover.1449052427.git.hramrach@gmail.com>
- <ad10a42f8c502b9b91fcba05b3e46c42663e1141.1449052427.git.hramrach@gmail.com>
- <20151202210626.GA21512@chopperman.am.freescale.net>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: [GIT PULL] spi fixes for v4.4
+Date: Thu, 3 Dec 2015 00:09:30 +0000
+Message-ID: <20151203000930.GO1929@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Michal Suchanek <hramrach@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Mark Brown <broonie@kernel.org>,
-	Boris Brezillon <boris.brezillon@free-electrons.com>,
-	Javier Martinez Canillas <javier@osg.samsung.com>,
-	Rafal Milecki <zajec5@gmail.com>,
-	Jagan Teki <jteki@openedev.com>,
-	"Andrew F. Davis" <afd@ti.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Gabor Juhos <juhosg@openwrt.org>,
-	Bean Huo <beanhuo@micron.com>,
-	Furquan Shaikh <furquan@google.com>,
-	linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org
-To: Han Xu <han.xu@freescale.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="7IW4cJjAUl9XYRv4"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20151202210626.GA21512@chopperman.am.freescale.net>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Dec 02, 2015 at 03:06:28PM -0600, Han Xu wrote:
-> On Wed, Dec 02, 2015 at 10:38:19AM +0000, Michal Suchanek wrote:
-> > Return amount of data read/written or error as read(2)/write(2) does.
-> > 
-> > Signed-off-by: Michal Suchanek <hramrach@gmail.com>
-> > ---
-> >  drivers/mtd/spi-nor/fsl-quadspi.c | 18 +++++++++++-------
-> >  1 file changed, 11 insertions(+), 7 deletions(-)
-> > 
-> > diff --git a/drivers/mtd/spi-nor/fsl-quadspi.c b/drivers/mtd/spi-nor/fsl-quadspi.c
-> > index 10d2b59..9beb739 100644
-> > --- a/drivers/mtd/spi-nor/fsl-quadspi.c
-> > +++ b/drivers/mtd/spi-nor/fsl-quadspi.c
-> > @@ -575,7 +575,7 @@ static inline void fsl_qspi_invalid(struct fsl_qspi *q)
-> >  	writel(reg, q->iobase + QUADSPI_MCR);
-> >  }
-> >  
-> > -static int fsl_qspi_nor_write(struct fsl_qspi *q, struct spi_nor *nor,
-> > +static ssize_t fsl_qspi_nor_write(struct fsl_qspi *q, struct spi_nor *nor,
-> 
-> conflict with the patch I acked.
-> 
-> https://patchwork.ozlabs.org/patch/545925/
-> 
-> I may change it and test on my side.
 
-I'll let you know if I need things rebased. If conflicts are trivial, I
-can handle it. But right now, the linked patch (big endian support) is
-incomplete (no documentation), and Michal's was just sent today. So it
-remains to be seen which will be "ready" first.
+--7IW4cJjAUl9XYRv4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Brian
+The following changes since commit 31ade3b83e1821da5fbb2f11b5b3d4ab2ec39db8:
+
+  Linux 4.4-rc3 (2015-11-29 18:58:26 -0800)
+
+are available in the git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v4.4-rc3
+
+for you to fetch changes up to a057d737d6ad64c47eb60d7c058cdab6585e96a6:
+
+  Merge remote-tracking branches 'spi/fix/bcm63xx', 'spi/fix/doc', 'spi/fix/mediatek' and 'spi/fix/pl022' into spi-linus (2015-11-30 12:26:47 +0000)
+
+----------------------------------------------------------------
+spi: Fixes for v4.4
+
+There's one fix for the core here, we weren't reinitialising the actual
+transferred length in messages when they get reused which meant that
+we'd just keep adding to the length if a message is reused.  This has
+limited impact since it's only used in error handling cases but will
+really mess anything that tries to use it up when it triggers.
+
+As ever there's a small collection of driver specific fixes too.
+
+----------------------------------------------------------------
+Arnd Bergmann (1):
+      spi: bcm63xx: use correct format string for printing a resource
+
+Mark Brown (2):
+      Merge remote-tracking branch 'spi/fix/core' into spi-linus
+      Merge remote-tracking branches 'spi/fix/bcm63xx', 'spi/fix/doc', 'spi/fix/mediatek' and 'spi/fix/pl022' into spi-linus
+
+Martin Sperl (1):
+      spi: bugfix: spi_message.transfer_length does not get reset
+
+Nicolas Boichat (1):
+      spi: mediatek: single device does not require cs_gpios
+
+Rabin Vincent (1):
+      spi: pl022: handle EPROBE_DEFER for dma
+
+Thierry Reding (1):
+      spi: Add missing kerneldoc description for parameter
+
+ drivers/spi/spi-bcm63xx.c |  4 ++--
+ drivers/spi/spi-mt65xx.c  | 26 ++++++++++++++++++--------
+ drivers/spi/spi-pl022.c   | 28 ++++++++++++++++++++++------
+ drivers/spi/spi.c         |  2 ++
+ 4 files changed, 44 insertions(+), 16 deletions(-)
+
+--7IW4cJjAUl9XYRv4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJWX4g6AAoJECTWi3JdVIfQPxcH/iPscMr50aS2tEtB9bcHMGID
+42sq3Jyh0VrAPP5m0H0/fdnRhN/C36B00bnIAZLYk79iDIf4OFBT6A86AXn3cMUi
+Rmvd5mBvh3EUGrOqxS/v+lNkwh0olZ/jYMvZrtc/mGfQcAGWKsVv/FA6maSOlaqJ
+LH8unbNfZRUfxWKMPOCvHCLOM7hVFVu6n9TAzRVIN2dMuFcZ0MVFxPDNpTa59xIP
+lxZtWhB4Y5KwgbDrMLJLA9ziH0goJsM+J6p+HrMjjfylv6uxn4lFk9UtHug0t2tD
+/anGW0I4qs2MXashmUnOVcg3B+BlB+jUYuT5sZzLYFcKGcaK6q0Z/t87BQvWVI0=
+=mXDE
+-----END PGP SIGNATURE-----
+
+--7IW4cJjAUl9XYRv4--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

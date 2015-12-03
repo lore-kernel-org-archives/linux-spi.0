@@ -1,35 +1,57 @@
-From: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Subject: [PATCH 5/7] spi: lm70llp: remove space
-Date: Thu,  3 Dec 2015 18:29:57 +0530
-Message-ID: <1449147599-26705-5-git-send-email-sudipm.mukherjee@gmail.com>
+From: Sudip Mukherjee <sudipm.mukherjee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 2/7] spi: lm70llp: add blank line after declaration
+Date: Thu,  3 Dec 2015 18:29:54 +0530
+Message-ID: <1449147599-26705-2-git-send-email-sudipm.mukherjee@gmail.com>
 References: <1449147599-26705-1-git-send-email-sudipm.mukherjee@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1449147599-26705-1-git-send-email-sudipm.mukherjee@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Sudip Mukherjee <sudipm.mukherjee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1449147599-26705-1-git-send-email-sudipm.mukherjee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-checkpatch complains about space before closing brace.
+checkpatch complains about missing blank line after declaration.
 
-Signed-off-by: Sudip Mukherjee <sudip@vectorindia.org>
+Signed-off-by: Sudip Mukherjee <sudip-ofJRbWXBVFamYgehrs7/Lw@public.gmane.org>
 ---
- drivers/spi/spi-lm70llp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-lm70llp.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/drivers/spi/spi-lm70llp.c b/drivers/spi/spi-lm70llp.c
-index 5f526ce..62d0f6d 100644
+index eb4b421..7037028 100644
 --- a/drivers/spi/spi-lm70llp.c
 +++ b/drivers/spi/spi-lm70llp.c
-@@ -166,7 +166,7 @@ static inline int getmiso(struct spi_device *s)
+@@ -119,12 +119,14 @@ static inline void assertCS(struct spi_lm70llp *pp)
+ static inline void clkHigh(struct spi_lm70llp *pp)
  {
- 	struct spi_lm70llp *pp = spidev_to_pp(s);
- 
--	return ((SIO == (parport_read_status(pp->port) & SIO)) ? 0 : 1 );
-+	return ((SIO == (parport_read_status(pp->port) & SIO)) ? 0 : 1);
+ 	u8 data = parport_read_data(pp->port);
++
+ 	parport_write_data(pp->port, data | SCLK);
  }
  
+ static inline void clkLow(struct spi_lm70llp *pp)
+ {
+ 	u8 data = parport_read_data(pp->port);
++
+ 	parport_write_data(pp->port, data & ~SCLK);
+ }
+ 
+@@ -163,8 +165,10 @@ static inline void setmosi(struct spi_device *s, int is_on)
+ static inline int getmiso(struct spi_device *s)
+ {
+ 	struct spi_lm70llp *pp = spidev_to_pp(s);
++
+ 	return ((SIO == (parport_read_status(pp->port) & SIO)) ? 0 : 1 );
+ }
++
  /*--------------------------------------------------------------------*/
+ 
+ #include "spi-bitbang-txrx.h"
 -- 
 1.9.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

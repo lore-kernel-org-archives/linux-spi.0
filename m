@@ -1,87 +1,110 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [GIT PULL] spi fixes for v4.4
-Date: Thu, 3 Dec 2015 00:09:30 +0000
-Message-ID: <20151203000930.GO1929@sirena.org.uk>
+Subject: Re: [PATCH 2/3] spi: add initial set of spi_transfer transformation
+ methods
+Date: Thu, 3 Dec 2015 00:36:18 +0000
+Message-ID: <20151203003618.GQ1929@sirena.org.uk>
+References: <1448888695-2260-1-git-send-email-kernel@martin.sperl.org>
+ <1448888695-2260-3-git-send-email-kernel@martin.sperl.org>
+ <20151201212929.GV1929@sirena.org.uk>
+ <35C5C134-8291-4856-8916-7EDDFB07A0A9@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="7IW4cJjAUl9XYRv4"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="66fSncucMF2yJS4h"
+Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
+In-Reply-To: <35C5C134-8291-4856-8916-7EDDFB07A0A9-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---7IW4cJjAUl9XYRv4
+--66fSncucMF2yJS4h
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The following changes since commit 31ade3b83e1821da5fbb2f11b5b3d4ab2ec39db8:
+On Wed, Dec 02, 2015 at 08:25:08AM +0100, Martin Sperl wrote:
+> > On 01.12.2015, at 22:29, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> >> On Mon, Nov 30, 2015 at 01:04:53PM +0000, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrot=
+e:
 
-  Linux 4.4-rc3 (2015-11-29 18:58:26 -0800)
+Please use normal formatting for e-mails with blank lines between
+paragraphs, it makes things much easier to read.
 
-are available in the git repository at:
+> >> +/* the spi_resource structure used */
+> >> +struct spi_res_replaced_transfers {
+> >> +    spi_res_release_t release;
+> >> +    struct list_head replaced_transfers;
+> >> +    int inserted;
+> >> +    struct spi_transfer xfers[];
+> >> +};
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v4.4-rc3
+> > This quite clearly isn't a struct spi_resource, nor does it contain
+> > one...
 
-for you to fetch changes up to a057d737d6ad64c47eb60d7c058cdab6585e96a6:
+> It is done the same way as devm_kalloc uses struct devres:
+> the magic devres struct is hidden by the devres framework.=20
+> Only the payload data pointer is returned, which is what this
+> structure describes.
 
-  Merge remote-tracking branches 'spi/fix/bcm63xx', 'spi/fix/doc', 'spi/fix/mediatek' and 'spi/fix/pl022' into spi-linus (2015-11-30 12:26:47 +0000)
+> You want it as a more explicit member instead?
 
-----------------------------------------------------------------
-spi: Fixes for v4.4
+If it's not actually a resource and is really just a structure that
+happens to be managed with a resource then describe it as such, I'm
+complaining about the confusing naming here.
 
-There's one fix for the core here, we weren't reinitialising the actual
-transferred length in messages when they get reused which meant that
-we'd just keep adding to the length if a message is reused.  This has
-limited impact since it's only used in error handling cases but will
-really mess anything that tries to use it up when it triggers.
+> >> +static void __spi_split_transfers_fixup_transfer_addr_and_len(
+> >> +    struct spi_transfer *xfer, int count, int shift)
+> >> +{
+> >> +    int i;
 
-As ever there's a small collection of driver specific fixes too.
+> >> +    /* fix up transfer length */
+> >> +    xfer[0].len =3D shift;
 
-----------------------------------------------------------------
-Arnd Bergmann (1):
-      spi: bcm63xx: use correct format string for printing a resource
+> > It's really not clear what this is supposed to do.  Among other things
+> > "shift" appears to be misnamed and anything using tx_dma and rx_dma is
+> > worrying.
 
-Mark Brown (2):
-      Merge remote-tracking branch 'spi/fix/core' into spi-linus
-      Merge remote-tracking branches 'spi/fix/bcm63xx', 'spi/fix/doc', 'spi/fix/mediatek' and 'spi/fix/pl022' into spi-linus
+> Essentially this will handle count spi-transfers that have all identical =
+data
+> (Except for transfer_list) initially - especially Len and tx/rx buf.
+> The first of those transfers is set its length to shift=20
+> (no need to modify rx/tx_buf)
+> The others are reduced by that length and the pointers are shifted up,
+> So that they are now starting at the address after the first transfer and
+> Transfer the correct number of bytes.
 
-Martin Sperl (1):
-      spi: bugfix: spi_message.transfer_length does not get reset
+I'm sorry but the above is still very opaque - why would we have some
+list of transfers that all have identical data?  I *think* the intention
+here is to do some realignment and that shift is really an offset to
+move things by?
 
-Nicolas Boichat (1):
-      spi: mediatek: single device does not require cs_gpios
+> Rx/tx_dma is handled because it is there and it's address needs also to be
+> accurately Shifted by that offset. I know that it is a depreciated interf=
+ace,
+> but as it is still there it needs to be supported...
 
-Rabin Vincent (1):
-      spi: pl022: handle EPROBE_DEFER for dma
+It's really quite broken already for most users.
 
-Thierry Reding (1):
-      spi: Add missing kerneldoc description for parameter
-
- drivers/spi/spi-bcm63xx.c |  4 ++--
- drivers/spi/spi-mt65xx.c  | 26 ++++++++++++++++++--------
- drivers/spi/spi-pl022.c   | 28 ++++++++++++++++++++++------
- drivers/spi/spi.c         |  2 ++
- 4 files changed, 44 insertions(+), 16 deletions(-)
-
---7IW4cJjAUl9XYRv4
+--66fSncucMF2yJS4h
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJWX4g6AAoJECTWi3JdVIfQPxcH/iPscMr50aS2tEtB9bcHMGID
-42sq3Jyh0VrAPP5m0H0/fdnRhN/C36B00bnIAZLYk79iDIf4OFBT6A86AXn3cMUi
-Rmvd5mBvh3EUGrOqxS/v+lNkwh0olZ/jYMvZrtc/mGfQcAGWKsVv/FA6maSOlaqJ
-LH8unbNfZRUfxWKMPOCvHCLOM7hVFVu6n9TAzRVIN2dMuFcZ0MVFxPDNpTa59xIP
-lxZtWhB4Y5KwgbDrMLJLA9ziH0goJsM+J6p+HrMjjfylv6uxn4lFk9UtHug0t2tD
-/anGW0I4qs2MXashmUnOVcg3B+BlB+jUYuT5sZzLYFcKGcaK6q0Z/t87BQvWVI0=
-=mXDE
+iQEcBAEBCAAGBQJWX46CAAoJECTWi3JdVIfQxwAH/irYcv8g9NcGPTHPHwR/Q6uA
+XcqDPmkCuFE0Qo4Gx0CDYiFTVSmSWzDfgh2aGbyS3Pr5v9qYERt+ycmvviWZLQZ0
+XZ/SetrVZexXtP94ieGxdCTLaXKznYqlVZp11KF85Ar/Uqw4m6SmEH0VrsvGh347
+pH2t3Kq5JgwybaXEzyrqiy8oLgGt2zck+jaPHS4JBEFbwKR9G+TfENicsrQ1ZMIS
+CE/qulcMSFv7pYbYvw04HXg+3Ay65iDhPRnKpxQm55TGHIWYDn6eEl0FVMU1Axdu
+woikYdbPbmm7fOFyUYrkrQRpbpvsRtEKCrBUy9UgCNDW8AXzpfgdiFjdbVr7tzw=
+=J6TD
 -----END PGP SIGNATURE-----
 
---7IW4cJjAUl9XYRv4--
+--66fSncucMF2yJS4h--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

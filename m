@@ -1,76 +1,63 @@
-From: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi-imx: Add loopback mode support
-Date: Thu,  3 Dec 2015 23:23:24 -0200
-Message-ID: <1449192204-24877-1-git-send-email-festevam@gmail.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 6/7] spi: lm70llp: remove printk
+Date: Fri, 4 Dec 2015 12:16:23 +0000
+Message-ID: <20151204121623.GA26072@sirena.org.uk>
+References: <1449147599-26705-1-git-send-email-sudipm.mukherjee@gmail.com>
+ <1449147599-26705-6-git-send-email-sudipm.mukherjee@gmail.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="OXAoLeOWtqbacoe/"
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Sudip Mukherjee <sudipm.mukherjee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1449147599-26705-6-git-send-email-sudipm.mukherjee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 
-Loopback mode can be activated by setting bit LBC (LoopBack
-Control) of register ECSPI_TESTREG.
+--OXAoLeOWtqbacoe/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Add support for it.
+On Thu, Dec 03, 2015 at 06:29:58PM +0530, Sudip Mukherjee wrote:
+> Using pr_* macros are more prefferable than using printk. Start using
+> pr_* family of macros and define pr_fmt to be used with it.
+> While at it remove DRVNAME from an existing pr_info() as the name is now
+> being printed by pr_fmt.
 
-Signed-off-by: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
----
- drivers/spi/spi-imx.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+> @@ -246,9 +245,7 @@ static void spi_lm70llp_attach(struct parport *p)
+>  	 */
+>  	status =3D spi_bitbang_start(&pp->bitbang);
+>  	if (status < 0) {
+> -		printk(KERN_WARNING
+> -			"%s: spi_bitbang_start failed with status %d\n",
+> -			DRVNAME, status);
+> +		pr_warn("spi_bitbang_start failed with status %d\n", status);
+>  		goto out_off_and_release;
+>  	}
+> =20
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 0e5723a..e7e4f0c 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -244,6 +244,9 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
- #define MX51_ECSPI_STAT		0x18
- #define MX51_ECSPI_STAT_RR		(1 <<  3)
- 
-+#define MX51_ECSPI_TESTREG	0x20
-+#define MX51_ECSPI_TESTREG_LBC	BIT(31)
-+
- /* MX51 eCSPI */
- static unsigned int mx51_ecspi_clkdiv(unsigned int fin, unsigned int fspi,
- 				      unsigned int *fres)
-@@ -313,7 +316,7 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
- {
- 	u32 ctrl = MX51_ECSPI_CTRL_ENABLE, cfg = 0, dma = 0;
- 	u32 tx_wml_cfg, rx_wml_cfg, rxt_wml_cfg;
--	u32 clk = config->speed_hz, delay;
-+	u32 clk = config->speed_hz, delay, reg;
- 
- 	/*
- 	 * The hardware seems to have a race condition when changing modes. The
-@@ -351,6 +354,13 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
- 	else
- 		cfg &= ~MX51_ECSPI_CONFIG_SSBPOL(config->cs);
- 
-+	reg = readl(spi_imx->base + MX51_ECSPI_TESTREG);
-+	if (config->mode & SPI_LOOP)
-+		reg |= MX51_ECSPI_TESTREG_LBC;
-+	else
-+		reg &= ~MX51_ECSPI_TESTREG_LBC;
-+	writel(reg, spi_imx->base + MX51_ECSPI_TESTREG);
-+
- 	writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
- 	writel(cfg, spi_imx->base + MX51_ECSPI_CONFIG);
- 
-@@ -1141,7 +1151,8 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	spi_imx->bitbang.master->cleanup = spi_imx_cleanup;
- 	spi_imx->bitbang.master->prepare_message = spi_imx_prepare_message;
- 	spi_imx->bitbang.master->unprepare_message = spi_imx_unprepare_message;
--	spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
-+	spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH |
-+					     SPI_LOOP;
- 
- 	init_completion(&spi_imx->xfer_done);
- 
--- 
-1.9.1
+When we have a struct device available it's even better to use
+dev_warn() and so on.
 
+--OXAoLeOWtqbacoe/
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJWYYQWAAoJECTWi3JdVIfQsqUH/1WyKG3P8CmenWgCuc+YoVnP
+XgcY9ibUaGsWodWHZw3HWwMcvlo2mwULnQy9QcnmCg5CWxX+XgRpGbqxcxti07ns
+vUeByf+auc3EB8Jq+kMQeAlGQ7eZd/FBqRxns9I0+PlKh1d36WZmEOSrlJQo30jE
+5Q6DcMBQMPN1xhCRmfMrJnrr8GlCqDn6rBcuyCqQNfssblu5Eq0JD2shb0SskQKz
++DuEs4YWxl2UdPcV4eevnYknwUOQTp2yOr2qzKxdEFz5Gt/RkG14Ehu94CT8dXH/
+gTYigj7l/OsFVxihyF2Y4gsikHlNLoZ4Lnhat9aP6N5cZ4B1QxFRNhu0RfGSrZA=
+=K/ao
+-----END PGP SIGNATURE-----
+
+--OXAoLeOWtqbacoe/--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

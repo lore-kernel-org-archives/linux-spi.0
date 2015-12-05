@@ -1,128 +1,135 @@
 From: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
-Subject: [PATCH v5 10/11] spi: imx: replace fixed timeout with calculated
-Date: Sat,  5 Dec 2015 17:57:08 +0100
-Message-ID: <1449334629-4715-11-git-send-email-anton.bondarenko.sama@gmail.com>
+Subject: [PATCH v5 03/11] spi: imx: replace multiple watermarks with single
+ for RX, TX and RXT
+Date: Sat,  5 Dec 2015 17:57:01 +0100
+Message-ID: <1449334629-4715-4-git-send-email-anton.bondarenko.sama@gmail.com>
 References: <1449334629-4715-1-git-send-email-anton.bondarenko.sama@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	vladimir_zapolskiy@mentor.com, jiada_wang@mentor.com
-To: broonie@kernel.org, b38343@freescale.com, s.hauer@pengutronix.de
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: jiada_wang@mentor.com, vladimir_zapolskiy@mentor.com,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-spi@vger.kernel.org
+To: broonie@kernel.org,
+	b38343@freescale.com,
+	s.hauer@pengutronix.de
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
 In-Reply-To: <1449334629-4715-1-git-send-email-anton.bondarenko.sama@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Fixed timeout value can fire while transaction is ongoing. This may happen
-because there are no strict requirements on SPI transaction duration.
-Dynamic timeout value is generated based on SCLK and transaction size.
-
-There is also 4 * SCLK delay between TX bursts related to HW internal CS change.
+There is no need to have different watermarks levels since they are the same.
+Merge them into one WML parameter.
 
 Signed-off-by: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
 ---
- drivers/spi/spi-imx.c | 33 +++++++++++++++++++++++++++------
- 1 file changed, 27 insertions(+), 6 deletions(-)
+ drivers/spi/spi-imx.c | 29 +++++++++++++----------------
+ 1 file changed, 13 insertions(+), 16 deletions(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index adfa9cf..f7ee288 100644
+index 17e8f9e..f811f68 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -56,7 +56,6 @@
+@@ -104,9 +104,7 @@ struct spi_imx_data {
+ 	unsigned int dma_is_inited;
+ 	unsigned int dma_finished;
+ 	bool usedma;
+-	u32 rx_wml;
+-	u32 tx_wml;
+-	u32 rxt_wml;
++	u32 wml;
+ 	struct completion dma_rx_completion;
+ 	struct completion dma_tx_completion;
  
- /* The maximum  bytes that a sdma BD can transfer.*/
- #define MAX_SDMA_BD_BYTES  (1 << 15)
--#define IMX_DMA_TIMEOUT (msecs_to_jiffies(3000))
- struct spi_imx_config {
- 	unsigned int speed_hz;
- 	unsigned int bpw;
-@@ -92,6 +91,7 @@ struct spi_imx_data {
- 	struct clk *clk_per;
- 	struct clk *clk_ipg;
- 	unsigned long spi_clk;
-+	unsigned int spi_bus_clk;
- 
- 	unsigned int count;
- 	void (*tx)(struct spi_imx_data *);
-@@ -318,7 +318,7 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
+@@ -201,9 +199,8 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
  {
- 	u32 ctrl = MX51_ECSPI_CTRL_ENABLE, cfg = 0, dma = 0;
- 	u32 tx_wml_cfg, rx_wml_cfg, rxt_wml_cfg;
--	u32 clk = config->speed_hz, delay;
-+	u32 delay;
- 	u32 lpb = 0;
+ 	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
  
- 	/*
-@@ -331,7 +331,9 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
- 	ctrl |= MX51_ECSPI_CTRL_MODE_MASK;
- 
- 	/* set clock speed */
--	ctrl |= mx51_ecspi_clkdiv(spi_imx->spi_clk, config->speed_hz, &clk);
-+	spi_imx->spi_bus_clk = config->speed_hz;
-+	ctrl |= mx51_ecspi_clkdiv(spi_imx->spi_clk, config->speed_hz,
-+				  &spi_imx->spi_bus_clk);
- 
- 	/* set chip select to use */
- 	ctrl |= MX51_ECSPI_CTRL_CS(config->cs);
-@@ -377,7 +379,7 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
- 	 * the SPI communication as the device on the other end would consider
- 	 * the change of SCLK polarity as a clock tick already.
- 	 */
--	delay = (2 * 1000000) / clk;
-+	delay = (2 * USEC_PER_SEC) / spi_imx->spi_bus_clk;
- 	if (likely(delay < 10))	/* SCLK is faster than 100 kHz */
- 		udelay(delay);
- 	else			/* SCLK is _very_ slow */
-@@ -911,11 +913,26 @@ static void spi_imx_dma_tx_callback(void *cookie)
- 	complete(&spi_imx->dma_tx_completion);
+-	if (spi_imx->dma_is_inited
+-	    && transfer->len > spi_imx->rx_wml * sizeof(u32)
+-	    && transfer->len > spi_imx->tx_wml * sizeof(u32))
++	if (spi_imx->dma_is_inited &&
++	    transfer->len > spi_imx->wml * sizeof(u32))
+ 		return true;
+ 	return false;
  }
+@@ -378,10 +375,9 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
+ 	if (spi_imx->dma_is_inited) {
+ 		dma = readl(spi_imx->base + MX51_ECSPI_DMA);
  
-+static int spi_imx_calculate_timeout(struct spi_imx_data *spi_imx, int size)
-+{
-+	unsigned long timeout = 0;
-+
-+	/* Time with actual data transfer and CS change delay related to HW */
-+	timeout = (8 + 4) * size / spi_imx->spi_bus_clk;
-+
-+	/* Add extra second for scheduler related activities */
-+	timeout += 1;
-+
-+	/* Double calculated timeout */
-+	return msecs_to_jiffies(2 * timeout * MSEC_PER_SEC);
-+}
-+
- static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 				struct spi_transfer *transfer)
- {
- 	struct dma_async_tx_descriptor *desc_tx = NULL, *desc_rx = NULL;
- 	int ret;
-+	unsigned long transfer_timeout;
- 	unsigned long timeout;
- 	struct spi_master *master = spi_imx->bitbang.master;
- 	struct sg_table *tx = &transfer->tx_sg, *rx = &transfer->rx_sg;
-@@ -962,9 +979,11 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 	dma_async_issue_pending(master->dma_tx);
- 	spi_imx->devtype_data->trigger(spi_imx);
+-		spi_imx->rxt_wml = spi_imx_get_fifosize(spi_imx) / 2;
+-		rx_wml_cfg = spi_imx->rx_wml << MX51_ECSPI_DMA_RX_WML_OFFSET;
+-		tx_wml_cfg = spi_imx->tx_wml << MX51_ECSPI_DMA_TX_WML_OFFSET;
+-		rxt_wml_cfg = spi_imx->rxt_wml << MX51_ECSPI_DMA_RXT_WML_OFFSET;
++		rx_wml_cfg = spi_imx->wml << MX51_ECSPI_DMA_RX_WML_OFFSET;
++		tx_wml_cfg = spi_imx->wml << MX51_ECSPI_DMA_TX_WML_OFFSET;
++		rxt_wml_cfg = spi_imx->wml << MX51_ECSPI_DMA_RXT_WML_OFFSET;
+ 		dma = (dma & ~MX51_ECSPI_DMA_TX_WML_MASK
+ 			   & ~MX51_ECSPI_DMA_RX_WML_MASK
+ 			   & ~MX51_ECSPI_DMA_RXT_WML_MASK)
+@@ -832,6 +828,8 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
+ 	if (of_machine_is_compatible("fsl,imx6dl"))
+ 		return 0;
  
-+	transfer_timeout = spi_imx_calculate_timeout(spi_imx, transfer->len);
++	spi_imx->wml = spi_imx_get_fifosize(spi_imx) / 2;
 +
- 	/* Wait SDMA to finish the data transfer.*/
- 	timeout = wait_for_completion_timeout(&spi_imx->dma_tx_completion,
--						IMX_DMA_TIMEOUT);
-+						transfer_timeout);
- 	if (!timeout) {
- 		pr_warn("%s %s: I/O Error in DMA TX\n",
- 			dev_driver_string(&master->dev),
-@@ -972,8 +991,10 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 		dmaengine_terminate_all(master->dma_tx);
- 		dmaengine_terminate_all(master->dma_rx);
- 	} else {
-+		transfer_timeout = spi_imx_calculate_timeout(spi_imx,
-+							     spi_imx->wml);
- 		timeout = wait_for_completion_timeout(
--				&spi_imx->dma_rx_completion, IMX_DMA_TIMEOUT);
-+				&spi_imx->dma_rx_completion, transfer_timeout);
- 		if (!timeout) {
- 			pr_warn("%s %s: I/O Error in DMA RX\n",
- 				dev_driver_string(&master->dev),
+ 	/* Prepare for TX DMA: */
+ 	master->dma_tx = dma_request_slave_channel(dev, "tx");
+ 	if (!master->dma_tx) {
+@@ -843,7 +841,7 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
+ 	slave_config.direction = DMA_MEM_TO_DEV;
+ 	slave_config.dst_addr = res->start + MXC_CSPITXDATA;
+ 	slave_config.dst_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
+-	slave_config.dst_maxburst = spi_imx_get_fifosize(spi_imx) / 2;
++	slave_config.dst_maxburst = spi_imx->wml;
+ 	ret = dmaengine_slave_config(master->dma_tx, &slave_config);
+ 	if (ret) {
+ 		dev_err(dev, "error in TX dma configuration.\n");
+@@ -861,7 +859,7 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
+ 	slave_config.direction = DMA_DEV_TO_MEM;
+ 	slave_config.src_addr = res->start + MXC_CSPIRXDATA;
+ 	slave_config.src_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
+-	slave_config.src_maxburst = spi_imx_get_fifosize(spi_imx) / 2;
++	slave_config.src_maxburst = spi_imx->wml;
+ 	ret = dmaengine_slave_config(master->dma_rx, &slave_config);
+ 	if (ret) {
+ 		dev_err(dev, "error in RX dma configuration.\n");
+@@ -874,8 +872,6 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
+ 	master->max_dma_len = MAX_SDMA_BD_BYTES;
+ 	spi_imx->bitbang.master->flags = SPI_MASTER_MUST_RX |
+ 					 SPI_MASTER_MUST_TX;
+-	spi_imx->tx_wml = spi_imx_get_fifosize(spi_imx) / 2;
+-	spi_imx->rx_wml = spi_imx_get_fifosize(spi_imx) / 2;
+ 	spi_imx->dma_is_inited = 1;
+ 
+ 	return 0;
+@@ -942,7 +938,7 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+ 	dma = readl(spi_imx->base + MX51_ECSPI_DMA);
+ 	dma = dma & (~MX51_ECSPI_DMA_RXT_WML_MASK);
+ 	/* Change RX_DMA_LENGTH trigger dma fetch tail data */
+-	left = transfer->len % spi_imx->rxt_wml;
++	left = transfer->len % spi_imx->wml;
+ 	if (left)
+ 		writel(dma | (left << MX51_ECSPI_DMA_RXT_WML_OFFSET),
+ 				spi_imx->base + MX51_ECSPI_DMA);
+@@ -977,8 +973,9 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+ 			spi_imx->devtype_data->reset(spi_imx);
+ 			dmaengine_terminate_all(master->dma_rx);
+ 		}
++		dma &= ~MX51_ECSPI_DMA_RXT_WML_MASK;
+ 		writel(dma |
+-		       spi_imx->rxt_wml << MX51_ECSPI_DMA_RXT_WML_OFFSET,
++		       spi_imx->wml << MX51_ECSPI_DMA_RXT_WML_OFFSET,
+ 		       spi_imx->base + MX51_ECSPI_DMA);
+ 	}
+ 
 -- 
 2.6.3

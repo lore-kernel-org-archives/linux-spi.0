@@ -1,135 +1,40 @@
 From: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
-Subject: [PATCH v5 03/11] spi: imx: replace multiple watermarks with single
- for RX, TX and RXT
-Date: Sat,  5 Dec 2015 17:57:01 +0100
-Message-ID: <1449334629-4715-4-git-send-email-anton.bondarenko.sama@gmail.com>
+Subject: [PATCH v5 07/11] spi: imx: defer spi initialization, if DMA engine is
+Date: Sat,  5 Dec 2015 17:57:05 +0100
+Message-ID: <1449334629-4715-8-git-send-email-anton.bondarenko.sama@gmail.com>
 References: <1449334629-4715-1-git-send-email-anton.bondarenko.sama@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: jiada_wang@mentor.com, vladimir_zapolskiy@mentor.com,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-spi@vger.kernel.org
-To: broonie@kernel.org,
-	b38343@freescale.com,
-	s.hauer@pengutronix.de
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	vladimir_zapolskiy@mentor.com, jiada_wang@mentor.com
+To: broonie@kernel.org, b38343@freescale.com, s.hauer@pengutronix.de
+Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <1449334629-4715-1-git-send-email-anton.bondarenko.sama@gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-There is no need to have different watermarks levels since they are the same.
-Merge them into one WML parameter.
+If SPI device supports DMA mode, but DMA controller is not yet
+available due to e.g. a delay in the corresponding kernel module
+initialization, retry to initialize SPI driver later on instead of
+falling back into PIO only mode.
 
 Signed-off-by: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
 ---
- drivers/spi/spi-imx.c | 29 +++++++++++++----------------
- 1 file changed, 13 insertions(+), 16 deletions(-)
+ drivers/spi/spi-imx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 17e8f9e..f811f68 100644
+index 277dd75..fa24637 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -104,9 +104,7 @@ struct spi_imx_data {
- 	unsigned int dma_is_inited;
- 	unsigned int dma_finished;
- 	bool usedma;
--	u32 rx_wml;
--	u32 tx_wml;
--	u32 rxt_wml;
-+	u32 wml;
- 	struct completion dma_rx_completion;
- 	struct completion dma_tx_completion;
- 
-@@ -201,9 +199,8 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
- {
- 	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
- 
--	if (spi_imx->dma_is_inited
--	    && transfer->len > spi_imx->rx_wml * sizeof(u32)
--	    && transfer->len > spi_imx->tx_wml * sizeof(u32))
-+	if (spi_imx->dma_is_inited &&
-+	    transfer->len > spi_imx->wml * sizeof(u32))
- 		return true;
- 	return false;
- }
-@@ -378,10 +375,9 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
- 	if (spi_imx->dma_is_inited) {
- 		dma = readl(spi_imx->base + MX51_ECSPI_DMA);
- 
--		spi_imx->rxt_wml = spi_imx_get_fifosize(spi_imx) / 2;
--		rx_wml_cfg = spi_imx->rx_wml << MX51_ECSPI_DMA_RX_WML_OFFSET;
--		tx_wml_cfg = spi_imx->tx_wml << MX51_ECSPI_DMA_TX_WML_OFFSET;
--		rxt_wml_cfg = spi_imx->rxt_wml << MX51_ECSPI_DMA_RXT_WML_OFFSET;
-+		rx_wml_cfg = spi_imx->wml << MX51_ECSPI_DMA_RX_WML_OFFSET;
-+		tx_wml_cfg = spi_imx->wml << MX51_ECSPI_DMA_TX_WML_OFFSET;
-+		rxt_wml_cfg = spi_imx->wml << MX51_ECSPI_DMA_RXT_WML_OFFSET;
- 		dma = (dma & ~MX51_ECSPI_DMA_TX_WML_MASK
- 			   & ~MX51_ECSPI_DMA_RX_WML_MASK
- 			   & ~MX51_ECSPI_DMA_RXT_WML_MASK)
-@@ -832,6 +828,8 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
- 	if (of_machine_is_compatible("fsl,imx6dl"))
- 		return 0;
- 
-+	spi_imx->wml = spi_imx_get_fifosize(spi_imx) / 2;
+@@ -1221,6 +1221,9 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 	 */
+ 	if (is_imx51_ecspi(spi_imx)) {
+ 		ret = spi_imx_sdma_init(&pdev->dev, spi_imx, master, res);
++		if (ret == -EPROBE_DEFER)
++			goto out_clk_put;
 +
- 	/* Prepare for TX DMA: */
- 	master->dma_tx = dma_request_slave_channel(dev, "tx");
- 	if (!master->dma_tx) {
-@@ -843,7 +841,7 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
- 	slave_config.direction = DMA_MEM_TO_DEV;
- 	slave_config.dst_addr = res->start + MXC_CSPITXDATA;
- 	slave_config.dst_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
--	slave_config.dst_maxburst = spi_imx_get_fifosize(spi_imx) / 2;
-+	slave_config.dst_maxburst = spi_imx->wml;
- 	ret = dmaengine_slave_config(master->dma_tx, &slave_config);
- 	if (ret) {
- 		dev_err(dev, "error in TX dma configuration.\n");
-@@ -861,7 +859,7 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
- 	slave_config.direction = DMA_DEV_TO_MEM;
- 	slave_config.src_addr = res->start + MXC_CSPIRXDATA;
- 	slave_config.src_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
--	slave_config.src_maxburst = spi_imx_get_fifosize(spi_imx) / 2;
-+	slave_config.src_maxburst = spi_imx->wml;
- 	ret = dmaengine_slave_config(master->dma_rx, &slave_config);
- 	if (ret) {
- 		dev_err(dev, "error in RX dma configuration.\n");
-@@ -874,8 +872,6 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
- 	master->max_dma_len = MAX_SDMA_BD_BYTES;
- 	spi_imx->bitbang.master->flags = SPI_MASTER_MUST_RX |
- 					 SPI_MASTER_MUST_TX;
--	spi_imx->tx_wml = spi_imx_get_fifosize(spi_imx) / 2;
--	spi_imx->rx_wml = spi_imx_get_fifosize(spi_imx) / 2;
- 	spi_imx->dma_is_inited = 1;
- 
- 	return 0;
-@@ -942,7 +938,7 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 	dma = readl(spi_imx->base + MX51_ECSPI_DMA);
- 	dma = dma & (~MX51_ECSPI_DMA_RXT_WML_MASK);
- 	/* Change RX_DMA_LENGTH trigger dma fetch tail data */
--	left = transfer->len % spi_imx->rxt_wml;
-+	left = transfer->len % spi_imx->wml;
- 	if (left)
- 		writel(dma | (left << MX51_ECSPI_DMA_RXT_WML_OFFSET),
- 				spi_imx->base + MX51_ECSPI_DMA);
-@@ -977,8 +973,9 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 			spi_imx->devtype_data->reset(spi_imx);
- 			dmaengine_terminate_all(master->dma_rx);
- 		}
-+		dma &= ~MX51_ECSPI_DMA_RXT_WML_MASK;
- 		writel(dma |
--		       spi_imx->rxt_wml << MX51_ECSPI_DMA_RXT_WML_OFFSET,
-+		       spi_imx->wml << MX51_ECSPI_DMA_RXT_WML_OFFSET,
- 		       spi_imx->base + MX51_ECSPI_DMA);
- 	}
- 
+ 		if (ret < 0)
+ 			dev_err(&pdev->dev, "dma setup error %d, use pio\n",
+ 				ret);
 -- 
 2.6.3

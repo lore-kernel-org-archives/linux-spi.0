@@ -1,7 +1,7 @@
 From: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
-Subject: [PATCH v5 09/11] spi: imx: remove dead RX DMA tail handling code
-Date: Sat,  5 Dec 2015 17:57:07 +0100
-Message-ID: <1449334629-4715-10-git-send-email-anton.bondarenko.sama@gmail.com>
+Subject: [PATCH v5 04/11] spi: imx: add function to check for IMX51 family controller
+Date: Sat,  5 Dec 2015 17:57:02 +0100
+Message-ID: <1449334629-4715-5-git-send-email-anton.bondarenko.sama@gmail.com>
 References: <1449334629-4715-1-git-send-email-anton.bondarenko.sama@gmail.com>
 Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
@@ -12,52 +12,44 @@ In-Reply-To: <1449334629-4715-1-git-send-email-anton.bondarenko.sama@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-transfer->len % wml for DMA capable transactions will always be 0
-due to recent change in can_dma checks. So it's safe to remove dead code
-in processing DMA.
+Similar to other controller type checks add check function for
+IMX51. It includes IMX53 and IMX6.
 
 Signed-off-by: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
 ---
- drivers/spi/spi-imx.c | 13 -------------
- 1 file changed, 13 deletions(-)
+ drivers/spi/spi-imx.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 7a68c62..adfa9cf 100644
+index f811f68..363276d 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -917,8 +917,6 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 	struct dma_async_tx_descriptor *desc_tx = NULL, *desc_rx = NULL;
- 	int ret;
- 	unsigned long timeout;
--	u32 dma;
--	int left;
- 	struct spi_master *master = spi_imx->bitbang.master;
- 	struct sg_table *tx = &transfer->tx_sg, *rx = &transfer->rx_sg;
+@@ -122,9 +122,14 @@ static inline int is_imx35_cspi(struct spi_imx_data *d)
+ 	return d->devtype_data->devtype == IMX35_CSPI;
+ }
  
-@@ -952,13 +950,6 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 	/* Trigger the cspi module. */
- 	spi_imx->dma_finished = 0;
++static inline int is_imx51_ecspi(struct spi_imx_data *d)
++{
++	return d->devtype_data->devtype == IMX51_ECSPI;
++}
++
+ static inline unsigned spi_imx_get_fifosize(struct spi_imx_data *d)
+ {
+-	return (d->devtype_data->devtype == IMX51_ECSPI) ? 64 : 8;
++	return is_imx51_ecspi(d) ? 64 : 8;
+ }
  
--	dma = readl(spi_imx->base + MX51_ECSPI_DMA);
--	dma = dma & (~MX51_ECSPI_DMA_RXT_WML_MASK);
--	/* Change RX_DMA_LENGTH trigger dma fetch tail data */
--	left = transfer->len % spi_imx->wml;
--	if (left)
--		writel(dma | (left << MX51_ECSPI_DMA_RXT_WML_OFFSET),
--				spi_imx->base + MX51_ECSPI_DMA);
- 	/*
- 	 * Set these order to avoid potential RX overflow. The overflow may
- 	 * happen if we enable SPI HW before starting RX DMA due to rescheduling
-@@ -990,10 +981,6 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 			spi_imx->devtype_data->reset(spi_imx);
- 			dmaengine_terminate_all(master->dma_rx);
- 		}
--		dma &= ~MX51_ECSPI_DMA_RXT_WML_MASK;
--		writel(dma |
--		       spi_imx->wml << MX51_ECSPI_DMA_RXT_WML_OFFSET,
--		       spi_imx->base + MX51_ECSPI_DMA);
- 	}
+ #define MXC_SPI_BUF_RX(type)						\
+@@ -1199,8 +1204,8 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 	 * Only validated on i.mx6 now, can remove the constrain if validated on
+ 	 * other chips.
+ 	 */
+-	if (spi_imx->devtype_data == &imx51_ecspi_devtype_data
+-	    && spi_imx_sdma_init(&pdev->dev, spi_imx, master, res))
++	if (is_imx51_ecspi(spi_imx) &&
++	    spi_imx_sdma_init(&pdev->dev, spi_imx, master, res))
+ 		dev_err(&pdev->dev, "dma setup error,use pio instead\n");
  
- 	spi_imx->dma_finished = 1;
+ 	spi_imx->devtype_data->reset(spi_imx);
 -- 
 2.6.3

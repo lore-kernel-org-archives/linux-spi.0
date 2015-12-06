@@ -1,82 +1,53 @@
-From: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH] spi-imx: Add loopback mode support
-Date: Sat, 5 Dec 2015 15:32:31 -0200
-Message-ID: <CAOMZO5AejRorUv6TKH90t-VpsSGd6NiH9cCTJC5-QuMpiGPOPw@mail.gmail.com>
+Date: Sun, 6 Dec 2015 11:24:07 +0000
+Message-ID: <20151206112407.GK5727@sirena.org.uk>
 References: <1449192204-24877-1-git-send-email-festevam@gmail.com>
+ <CAOMZO5AejRorUv6TKH90t-VpsSGd6NiH9cCTJC5-QuMpiGPOPw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="2WS97oupGEGbYNpW"
 Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
 	anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1449192204-24877-1-git-send-email-festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAOMZO5AejRorUv6TKH90t-VpsSGd6NiH9cCTJC5-QuMpiGPOPw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Dec 3, 2015 at 11:23 PM, Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> From: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
->
-> Loopback mode can be activated by setting bit LBC (LoopBack
-> Control) of register ECSPI_TESTREG.
->
-> Add support for it.
->
-> Signed-off-by: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-> ---
->  drivers/spi/spi-imx.c | 15 +++++++++++++--
->  1 file changed, 13 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-> index 0e5723a..e7e4f0c 100644
-> --- a/drivers/spi/spi-imx.c
-> +++ b/drivers/spi/spi-imx.c
-> @@ -244,6 +244,9 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
->  #define MX51_ECSPI_STAT                0x18
->  #define MX51_ECSPI_STAT_RR             (1 <<  3)
->
-> +#define MX51_ECSPI_TESTREG     0x20
-> +#define MX51_ECSPI_TESTREG_LBC BIT(31)
-> +
->  /* MX51 eCSPI */
->  static unsigned int mx51_ecspi_clkdiv(unsigned int fin, unsigned int fspi,
->                                       unsigned int *fres)
-> @@ -313,7 +316,7 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
->  {
->         u32 ctrl = MX51_ECSPI_CTRL_ENABLE, cfg = 0, dma = 0;
->         u32 tx_wml_cfg, rx_wml_cfg, rxt_wml_cfg;
-> -       u32 clk = config->speed_hz, delay;
-> +       u32 clk = config->speed_hz, delay, reg;
->
->         /*
->          * The hardware seems to have a race condition when changing modes. The
-> @@ -351,6 +354,13 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
->         else
->                 cfg &= ~MX51_ECSPI_CONFIG_SSBPOL(config->cs);
->
-> +       reg = readl(spi_imx->base + MX51_ECSPI_TESTREG);
-> +       if (config->mode & SPI_LOOP)
-> +               reg |= MX51_ECSPI_TESTREG_LBC;
-> +       else
-> +               reg &= ~MX51_ECSPI_TESTREG_LBC;
-> +       writel(reg, spi_imx->base + MX51_ECSPI_TESTREG);
-> +
->         writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
->         writel(cfg, spi_imx->base + MX51_ECSPI_CONFIG);
->
-> @@ -1141,7 +1151,8 @@ static int spi_imx_probe(struct platform_device *pdev)
->         spi_imx->bitbang.master->cleanup = spi_imx_cleanup;
->         spi_imx->bitbang.master->prepare_message = spi_imx_prepare_message;
->         spi_imx->bitbang.master->unprepare_message = spi_imx_unprepare_message;
-> -       spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
-> +       spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH |
-> +                                            SPI_LOOP;
 
-The SPI_LOOP should not be added to all spi versions, only for the
-mx51/mx53/mx6q type.
+--2WS97oupGEGbYNpW
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Just realized that Anton sent the loopback support as part of his
-series, so please discard this one.
+On Sat, Dec 05, 2015 at 03:32:31PM -0200, Fabio Estevam wrote:
+
+> The SPI_LOOP should not be added to all spi versions, only for the
+> mx51/mx53/mx6q type.
+
+> Just realized that Anton sent the loopback support as part of his
+> series, so please discard this one.
+
+I'd already applied this before you sent your mail, sorry.
+
+--2WS97oupGEGbYNpW
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJWZBrQAAoJECTWi3JdVIfQQu4H/jN1bToszDAUJ8N+d4UW2mZn
+VuUlpi+fdaPwOmm0AgJLDhlLXlINx+A+Ka2K4+yek+Q/wyR8hKz9gGDHpqmxCZIk
+gPaEurU/uQnoIJwin8xrNrHmO2P9200Zp8as5H19EMb7bVCP/ef+lkRfgTFlSTjz
+mB2NlxnpNrBP8lUcIahgoujn9pbnEadBKMjHeF+Crc1Q1aO9qI5Eka0m4SgKUGUo
++/arkIUAPY96syxNbmJgv8skdUtaLngvl6o/5PFocMGNmGXtUabRJyvq1+WHIO6V
+HFB/pKCdPP/5WBoFurTO3dX0iGrLcS1DgGzIdS95jwXKJOFSMuaByaULdo3CBRE=
+=by5N
+-----END PGP SIGNATURE-----
+
+--2WS97oupGEGbYNpW--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

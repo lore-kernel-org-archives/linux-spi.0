@@ -1,36 +1,35 @@
-From: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi-imx: Add loopback mode support
-Date: Sun, 6 Dec 2015 12:51:04 -0200
-Message-ID: <CAOMZO5BrOgOvupBXRcK=iLYmbViKMjQE6xYi6HwU71Twjt2O0A@mail.gmail.com>
-References: <1449192204-24877-1-git-send-email-festevam@gmail.com>
-	<CAOMZO5AejRorUv6TKH90t-VpsSGd6NiH9cCTJC5-QuMpiGPOPw@mail.gmail.com>
-	<20151206112407.GK5727@sirena.org.uk>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: sh-msiof: Add support for SH-Mobile AG5
+Date: Sun, 6 Dec 2015 09:45:34 -0600
+Message-ID: <CAL_JsqJrb63rApW2Hw+5OjDYJsQ4PKBni1cRaOgP9aEwXTSTVw@mail.gmail.com>
+References: <1448892840-8195-1-git-send-email-geert+renesas@glider.be>
+ <20151204185608.GA10576@rob-hp-laptop> <20151205164937.GD26072@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	SH-Linux <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20151206112407.GK5727-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <20151205164937.GD26072-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Sun, Dec 6, 2015 at 9:24 AM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Sat, Dec 05, 2015 at 03:32:31PM -0200, Fabio Estevam wrote:
+On Sat, Dec 5, 2015 at 10:49 AM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Fri, Dec 04, 2015 at 12:56:08PM -0600, Rob Herring wrote:
+>> On Mon, Nov 30, 2015 at 03:14:00PM +0100, Geert Uytterhoeven wrote:
+>> > MSIOF in SH-Mobile AG5 (sh73a0) is handled fine by the existing driver.
 >
->> The SPI_LOOP should not be added to all spi versions, only for the
->> mx51/mx53/mx6q type.
+>> > Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 >
->> Just realized that Anton sent the loopback support as part of his
->> series, so please discard this one.
+>> Applied, thanks.
 >
-> I'd already applied this before you sent your mail, sorry.
+> I've already applied this to the SPI tree?
 
-No problekm, Mark. I think Anton can move the SPI_LOOP flag from the
-probe function to only mx51/mx53/mx6 config and all will be fine.
+Okay, I'll drop it.
 
-Thanks
+Rob
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

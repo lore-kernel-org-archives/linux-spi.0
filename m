@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: imx: reorder HW operations enable order to avoid possible RX data loss" to the spi tree
-Date: Mon, 07 Dec 2015 19:54:16 +0000
-Message-ID: <E1a61rU-0003cM-Jc@debutante>
-References: <1449334629-4715-3-git-send-email-anton.bondarenko.sama@gmail.com>
+Subject: Applied "spi: imx: add function to check for IMX51 family controller" to the spi tree
+Date: Mon, 07 Dec 2015 19:54:14 +0000
+Message-ID: <E1a61rS-0003bP-AJ@debutante>
+References: <1449334629-4715-5-git-send-email-anton.bondarenko.sama@gmail.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1449334629-4715-3-git-send-email-anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1449334629-4715-5-git-send-email-anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: imx: reorder HW operations enable order to avoid possible RX data loss
+   spi: imx: add function to check for IMX51 family controller
 
 has been applied to the spi tree at
 
@@ -38,51 +38,51 @@ to this mail.
 Thanks,
 Mark
 
->From fab44ef1adcc585440c07c90539e2b9e2cded4bf Mon Sep 17 00:00:00 2001
+>From f8a876176f38e00aab200d308506ca4a4ba57b39 Mon Sep 17 00:00:00 2001
 From: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Sat, 5 Dec 2015 17:57:00 +0100
-Subject: [PATCH] spi: imx: reorder HW operations enable order to avoid
- possible RX data loss
+Date: Sat, 5 Dec 2015 17:57:02 +0100
+Subject: [PATCH] spi: imx: add function to check for IMX51 family controller
 
-The overflow may happen due to rescheduling for another task and/or interrupt
-if we enable SPI HW before starting RX DMA. So RX DMA enabled first to make
-sure data would be read out from FIFO ASAP. TX DMA enabled next to start
-filling TX FIFO with new data. And finaly SPI HW enabled to start actual
-data transfer.
-
-The risk rise in case of heavy system load and high SPI clock.
+Similar to other controller type checks add check function for
+IMX51. It includes IMX53 and IMX6.
 
 Signed-off-by: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-imx.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/spi/spi-imx.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index d6dc66542811..e6b1c74ade6b 100644
+index beba40b08ed1..410522fdd4c9 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -956,10 +956,18 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 	if (left)
- 		writel(dma | (left << MX51_ECSPI_DMA_RXT_WML_OFFSET),
- 				spi_imx->base + MX51_ECSPI_DMA);
-+	/*
-+	 * Set these order to avoid potential RX overflow. The overflow may
-+	 * happen if we enable SPI HW before starting RX DMA due to rescheduling
-+	 * for another task and/or interrupt.
-+	 * So RX DMA enabled first to make sure data would be read out from FIFO
-+	 * ASAP. TX DMA enabled next to start filling TX FIFO with new data.
-+	 * And finaly SPI HW enabled to start actual data transfer.
-+	 */
-+	dma_async_issue_pending(master->dma_rx);
-+	dma_async_issue_pending(master->dma_tx);
- 	spi_imx->devtype_data->trigger(spi_imx);
+@@ -122,9 +122,14 @@ static inline int is_imx35_cspi(struct spi_imx_data *d)
+ 	return d->devtype_data->devtype == IMX35_CSPI;
+ }
  
--	dma_async_issue_pending(master->dma_tx);
--	dma_async_issue_pending(master->dma_rx);
- 	/* Wait SDMA to finish the data transfer.*/
- 	timeout = wait_for_completion_timeout(&spi_imx->dma_tx_completion,
- 						IMX_DMA_TIMEOUT);
++static inline int is_imx51_ecspi(struct spi_imx_data *d)
++{
++	return d->devtype_data->devtype == IMX51_ECSPI;
++}
++
+ static inline unsigned spi_imx_get_fifosize(struct spi_imx_data *d)
+ {
+-	return (d->devtype_data->devtype == IMX51_ECSPI) ? 64 : 8;
++	return is_imx51_ecspi(d) ? 64 : 8;
+ }
+ 
+ #define MXC_SPI_BUF_RX(type)						\
+@@ -1210,8 +1215,8 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 	 * Only validated on i.mx6 now, can remove the constrain if validated on
+ 	 * other chips.
+ 	 */
+-	if (spi_imx->devtype_data == &imx51_ecspi_devtype_data
+-	    && spi_imx_sdma_init(&pdev->dev, spi_imx, master, res))
++	if (is_imx51_ecspi(spi_imx) &&
++	    spi_imx_sdma_init(&pdev->dev, spi_imx, master, res))
+ 		dev_err(&pdev->dev, "dma setup error,use pio instead\n");
+ 
+ 	spi_imx->devtype_data->reset(spi_imx);
 -- 
 2.6.2
 

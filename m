@@ -1,19 +1,18 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: lm70llp: use dev_warn" to the spi tree
-Date: Mon, 07 Dec 2015 20:09:31 +0000
-Message-ID: <E1a626F-0004Vu-Rg@debutante>
-References: <1449485255-1103-7-git-send-email-sudipm.mukherjee@gmail.com>
+Subject: Applied "spi: lm70llp: remove printk" to the spi tree
+Date: Mon, 07 Dec 2015 20:09:30 +0000
+Message-ID: <E1a626E-0004VO-GE@debutante>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Sudip Mukherjee <sudip-ofJRbWXBVFamYgehrs7/Lw@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1449485255-1103-7-git-send-email-sudipm.mukherjee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: 
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: lm70llp: use dev_warn
+   spi: lm70llp: remove printk
 
 has been applied to the spi tree at
 
@@ -38,45 +37,55 @@ to this mail.
 Thanks,
 Mark
 
->From 46c52c28deb38df19b1284468792fb59e6a6c27b Mon Sep 17 00:00:00 2001
+>From 22de54a9b929e7c11e445c8f329d33aa7b154495 Mon Sep 17 00:00:00 2001
 From: Sudip Mukherjee <sudipm.mukherjee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Mon, 7 Dec 2015 16:17:34 +0530
-Subject: [PATCH] spi: lm70llp: use dev_warn
+Date: Mon, 7 Dec 2015 16:17:35 +0530
+Subject: [PATCH] spi: lm70llp: remove printk
 
-As we have a struct device available it is better to use dev_warn()
-instead of printk.
+Using pr_* macros are more prefferable than using printk. Start using
+pr_* family of macros and define pr_fmt to be used with it.
+While at it remove DRVNAME from an existing pr_info() as the name is now
+being printed by pr_fmt.
 
 Signed-off-by: Sudip Mukherjee <sudip-ofJRbWXBVFamYgehrs7/Lw@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-lm70llp.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/spi/spi-lm70llp.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi-lm70llp.c b/drivers/spi/spi-lm70llp.c
-index ef829081abd7..cb2284475385 100644
+index cb2284475385..61ee0f4269ae 100644
 --- a/drivers/spi/spi-lm70llp.c
 +++ b/drivers/spi/spi-lm70llp.c
-@@ -249,9 +249,8 @@ static void spi_lm70llp_attach(struct parport *p)
- 	 */
- 	status = spi_bitbang_start(&pp->bitbang);
- 	if (status < 0) {
+@@ -14,6 +14,8 @@
+  * GNU General Public License for more details.
+  */
+ 
++#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++
+ #include <linux/init.h>
+ #include <linux/module.h>
+ #include <linux/kernel.h>
+@@ -200,9 +202,7 @@ static void spi_lm70llp_attach(struct parport *p)
+ 	struct pardev_cb	lm70llp_cb;
+ 
+ 	if (lm70llp) {
 -		printk(KERN_WARNING
--			"%s: spi_bitbang_start failed with status %d\n",
--			DRVNAME, status);
-+		dev_warn(&pd->dev, "spi_bitbang_start failed with status %d\n",
-+			 status);
- 		goto out_off_and_release;
+-			"%s: spi_lm70llp instance already loaded. Aborting.\n",
+-			DRVNAME);
++		pr_warn("spi_lm70llp instance already loaded. Aborting.\n");
+ 		return;
  	}
  
-@@ -278,7 +277,7 @@ static void spi_lm70llp_attach(struct parport *p)
- 		dev_dbg(&pp->spidev_lm70->dev, "spidev_lm70 at %s\n",
- 			dev_name(&pp->spidev_lm70->dev));
- 	else {
--		printk(KERN_WARNING "%s: spi_new_device failed\n", DRVNAME);
-+		dev_warn(&pd->dev, "spi_new_device failed\n");
- 		status = -ENODEV;
- 		goto out_bitbang_stop;
- 	}
+@@ -298,7 +298,7 @@ out_parport_unreg:
+ out_free_master:
+ 	spi_master_put(master);
+ out_fail:
+-	pr_info("%s: spi_lm70llp probe fail, status %d\n", DRVNAME, status);
++	pr_info("spi_lm70llp probe fail, status %d\n", status);
+ }
+ 
+ static void spi_lm70llp_detach(struct parport *p)
 -- 
 2.6.2
 

@@ -1,7 +1,7 @@
 From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH V2 3/5] spi: core: add spi_split_transfers_maxsize
-Date: Mon,  7 Dec 2015 15:21:46 +0000
-Message-ID: <1449501708-2228-4-git-send-email-kernel@martin.sperl.org>
+Subject: [PATCH V2 2/5] spi: core: add spi_replace_transfers method
+Date: Mon,  7 Dec 2015 15:21:45 +0000
+Message-ID: <1449501708-2228-3-git-send-email-kernel@martin.sperl.org>
 References: <1449501708-2228-1-git-send-email-kernel@martin.sperl.org>
 Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
@@ -15,180 +15,212 @@ List-ID: <linux-spi.vger.kernel.org>
 
 From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-Add spi_split_transfers_maxsize method that splits
-spi_transfers transparently into multiple transfers
-that are below the given max-size.
-
-This makes use of the spi_res framework via
-spi_replace_transfers to allocate/free the extra
-transfers as well as reverting back the changes applied
-while processing the spi_message.
+Add the spi_replace_transfers method that can get used
+to replace some spi_transfers from a spi_message with other
+transfers.
 
 Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 ---
- drivers/spi/spi.c       |  101 +++++++++++++++++++++++++++++++++++++++++++++++
- include/linux/spi/spi.h |    8 ++++
- 2 files changed, 109 insertions(+)
+ drivers/spi/spi.c       |  130 +++++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/spi/spi.h |   44 ++++++++++++++++
+ 2 files changed, 174 insertions(+)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 97c77b3..507dff0 100644
+index fb39d23..97c77b3 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -145,6 +145,8 @@ SPI_STATISTICS_TRANSFER_BYTES_HISTO(14, "16384-32767");
- SPI_STATISTICS_TRANSFER_BYTES_HISTO(15, "32768-65535");
- SPI_STATISTICS_TRANSFER_BYTES_HISTO(16, "65536+");
+@@ -2087,6 +2087,136 @@ EXPORT_SYMBOL_GPL(spi_res_release);
 
-+SPI_STATISTICS_SHOW(transfers_split_maxsize, "%lu");
+ /*-------------------------------------------------------------------------*/
+
++/* Core methods for spi_message alterations */
 +
- static struct attribute *spi_dev_attrs[] = {
- 	&dev_attr_modalias.attr,
- 	NULL,
-@@ -182,6 +184,7 @@ static struct attribute *spi_device_statistics_attrs[] = {
- 	&dev_attr_spi_device_transfer_bytes_histo14.attr,
- 	&dev_attr_spi_device_transfer_bytes_histo15.attr,
- 	&dev_attr_spi_device_transfer_bytes_histo16.attr,
-+	&dev_attr_spi_device_transfers_split_maxsize.attr,
- 	NULL,
- };
-
-@@ -224,6 +227,7 @@ static struct attribute *spi_master_statistics_attrs[] = {
- 	&dev_attr_spi_master_transfer_bytes_histo14.attr,
- 	&dev_attr_spi_master_transfer_bytes_histo15.attr,
- 	&dev_attr_spi_master_transfer_bytes_histo16.attr,
-+	&dev_attr_spi_master_transfers_split_maxsize.attr,
- 	NULL,
- };
-
-@@ -2215,6 +2219,103 @@ struct spi_replaced_transfers *spi_replace_transfers(
- }
- EXPORT_SYMBOL_GPL(spi_replace_transfers);
-
-+int __spi_split_transfer_maxsize(struct spi_master *master,
-+				 struct spi_message *msg,
-+				 struct spi_transfer **xferp,
-+				 size_t maxsize)
++static void __spi_replace_transfers_release(struct spi_master *master,
++					    struct spi_message *msg,
++					    void *res)
 +{
-+	struct spi_transfer *xfer = *xferp, *xfers;
-+	struct spi_replaced_transfers *srt;
-+	size_t offset;
-+	int count, i;
++	struct spi_replaced_transfers *srt = res;
++	int i;
 +
-+	/* calculate how many we have to replace */
-+	count = DIV_ROUND_UP(xfer->len, maxsize);
++	/* call extra callback if requested */
++	if (srt->release)
++		srt->release(master, msg, res);
 +
-+	/* create replacement */
-+	srt = spi_replace_transfers(msg, xfer, 1, count, NULL, 0);
-+	if (!srt)
-+		return -ENOMEM;
-+	xfers = srt->inserted_transfers;
++	/* insert replaced transfers back into the message */
++	list_splice(&srt->replaced_transfers, srt->replaced_after);
 +
-+	/* now handle each of those newly inserted spi_transfers
-+	 * note that the replacements spi_transfers all are preset
-+	 * to the same values as *xferp, so tx_buf, rx_buf and len
-+	 * are all identical (as well as most others)
-+	 * so we just have to fix up len and the pointers.
-+	 *
-+	 * this also includes support for the depreciated
-+	 * spi_message.is_dma_mapped interface
-+	 */
-+
-+	/* the first transfer just needs the length modified, so we
-+	 * run it outside the loop
-+	 */
-+	xfers[0].len = min(maxsize, xfer[0].len);
-+
-+	/* all the others need rx_buf/tx_buf also set */
-+	for (i = 1, offset = maxsize; i < count; offset += maxsize, i++) {
-+		/* update rx_buf, tx_buf and dma */
-+		if (xfers[i].rx_buf)
-+			xfers[i].rx_buf += offset;
-+		if (xfers[i].rx_dma)
-+			xfers[i].rx_dma += offset;
-+		if (xfers[i].tx_buf)
-+			xfers[i].tx_buf += offset;
-+		if (xfers[i].tx_dma)
-+			xfers[i].tx_dma += offset;
-+
-+		/* update length */
-+		xfers[i].len = min(maxsize, xfers[i].len - offset);
-+	}
-+
-+	/* we set up xferp to the last entry we have inserted,
-+	 * so that we skip those already split transfers
-+	 */
-+	*xferp = &xfers[count - 1];
-+
-+	/* increment statistics counters */
-+	SPI_STATISTICS_INCREMENT_FIELD(&master->statistics,
-+				       transfers_split_maxsize);
-+	SPI_STATISTICS_INCREMENT_FIELD(&msg->spi->statistics,
-+				       transfers_split_maxsize);
-+
-+	return 0;
++	/* remove the formerly inserted entries */
++	for (i = 0; i < srt->inserted; i++)
++		list_del(&srt->inserted_transfers[i].transfer_list);
 +}
 +
 +/**
-+ * spi_split_tranfers_maxsize - split spi transfers into multiple transfers
-+ *                              when an individual transfer exceeds a
-+ *                              certain size
-+ * @master:    the @spi_master for this transfer
-+ * @message:   the @spi_message to transform
-+ * @max_size:  the maximum when to apply this
++ * spi_replace_transfers - replace transfers with several transfers
++ *                         and register change with spi_message.resources
++ * @msg:           the spi_message we work upon
++ * @xfer_first:    the first spi_transfer we want to replace
++ * @remove:        number of transfers to remove
++ * @insert:        the number of transfers we want to insert instead
++ * @release:       extra release code necessary in some circumstances
++ * @extradatasize: extra data to allocate (with alignment guarantees
++ *                 of struct @spi_transfer)
 + *
-+ * Return: status of transformation
++ * Returns: pointer to @spi_replaced_transfers,
++ *          NULL in case of errors
 + */
-+int spi_split_transfers_maxsize(struct spi_master *master,
-+				struct spi_message *msg,
-+				size_t maxsize)
++struct spi_replaced_transfers *spi_replace_transfers(
++	struct spi_message *msg,
++	struct spi_transfer *xfer_first,
++	size_t remove,
++	size_t insert,
++	spi_replaced_release_t release,
++	size_t extradatasize)
 +{
-+	struct spi_transfer *xfer;
-+	int ret;
++	struct spi_replaced_transfers *srt;
++	int i;
 +
-+	/* iterate over the transfer_list,
-+	 * but note that xfer is advanced to the last transfer inserted
++	/* allocate the structure using spi_res */
++	srt = spi_res_alloc(msg->spi, __spi_replace_transfers_release,
++			    insert * sizeof(struct spi_transfer)
++			    + sizeof(struct spi_replaced_transfers)
++			    + extradatasize,
++			    0);
++	if (!srt)
++		return NULL;
++
++	/* the release code to invoke before running the generic release */
++	srt->release = release;
++
++	/* assign extradata */
++	if (extradatasize)
++		srt->extradata = &srt->inserted_transfers[srt->inserted];
++
++	/* init the replaced_transfers list */
++	INIT_LIST_HEAD(&srt->replaced_transfers);
++
++	/* assign the list_entry after which we should reinsert
++	 * the @replaced_transfers - it may be spi_message.messages!
 +	 */
-+	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
-+		if (xfer->len > maxsize) {
-+			ret = __spi_split_transfer_maxsize(
-+				master, msg, &xfer, maxsize);
-+			if (ret)
-+				return ret;
++	srt->replaced_after = xfer_first->transfer_list.prev;
++
++	/* remove the requested number of transfers */
++	for (i = 0; i < remove; i++) {
++		/* if the entry after replaced_after it is msg->transfers
++		 * then we have been requested to remove more transfers
++		 * than are in the list
++		 */
++		if (srt->replaced_after->next == &msg->transfers) {
++			dev_err(&msg->spi->dev,
++				"requested to remove more spi_transfers than are available\n");
++			/* insert replaced transfers back into the message */
++			list_splice(&srt->replaced_transfers,
++				    srt->replaced_after);
++
++			/* free the spi_replace_transfer structure */
++			spi_res_free(srt);
++
++			/* and return with an error */
++			return NULL;
 +		}
++
++		/* remove the entry after replaced_after from list of
++		 * transfers and add it to list of replaced_transfers
++		 */
++		list_move_tail(srt->replaced_after->next,
++			       &srt->replaced_transfers);
 +	}
 +
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(spi_split_transfers_maxsize);
++	/* create copy of the given xfer with identical settings
++	 * based on the first transfer to get removed
++	 * note that we run in reverse to keep the array order
++	 * match the order in transfer_list
++	 */
++	srt->inserted = insert;
++	for (i = insert - 1; i >= 0 ; i--) {
++		/* copy all spi_transfer data */
++		memcpy(&srt->inserted_transfers[i], xfer_first,
++		       sizeof(*xfer_first));
 +
- /*-------------------------------------------------------------------------*/
-
++		/* for all but the last inserted_transfer,
++		 * clear some settings
++		 */
++		if (i < insert - 1) {
++			srt->inserted_transfers[i].cs_change = 0;
++			srt->inserted_transfers[i].delay_usecs = 0;
++		}
++
++		/* add after srt->replaced_after */
++		list_add(&srt->inserted_transfers[i].transfer_list,
++			 srt->replaced_after);
++	}
++
++	/* and register it with spi_res/spi_message */
++	spi_res_add(msg, srt);
++
++	return srt;
++}
++EXPORT_SYMBOL_GPL(spi_replace_transfers);
++
++/*-------------------------------------------------------------------------*/
++
  /* Core methods for SPI master protocol drivers.  Some of the
+  * other core methods are currently defined as inline functions.
+  */
 diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 35b5f17..f5c9296 100644
+index 7e74e0e..35b5f17 100644
 --- a/include/linux/spi/spi.h
 +++ b/include/linux/spi/spi.h
-@@ -72,6 +72,8 @@ struct spi_statistics {
+@@ -875,6 +875,50 @@ extern int spi_async_locked(struct spi_device *spi,
 
- #define SPI_STATISTICS_HISTO_SIZE 17
- 	unsigned long transfer_bytes_histo[SPI_STATISTICS_HISTO_SIZE];
-+
-+	unsigned long transfers_split_maxsize;
- };
-
- void spi_statistics_add_transfer_stats(struct spi_statistics *stats,
-@@ -917,6 +919,12 @@ extern struct spi_replaced_transfers *spi_replace_transfers(
- 	spi_replaced_release_t release,
- 	size_t extradatasize);
-
-+/* SPI transfer transformation methods */
-+
-+extern int spi_split_transfers_maxsize(struct spi_master *master,
-+				       struct spi_message *msg,
-+				       size_t maxsize);
-+
  /*---------------------------------------------------------------------------*/
 
++/* SPI transfer replacement methods which make use of spi_res */
++
++/**
++ * struct spi_replaced_transfers - structure describing the spi_transfer
++ *                                 replacements that have occurred
++ *                                 so that they can get reverted
++ * @release:            some extra release code to get executed prior to
++ *                      relasing this structure
++ * @extradata:          pointer to some extra data if requested or NULL
++ * @replaced_transfers: transfers that have been replaced and which need
++ *                      to get restored
++ * @replaced_after:     the transfer after which the @replaced_transfers
++ *                      are to get re-inserted
++ * @inserted:           number of transfers inserted
++ * @inserted_transfers: array of spi_transfers of array-size @inserted,
++ *                      that have been replacing replaced_transfers
++ *
++ * note: that @extradata will point to @inserted_transfers[@inserted]
++ * if some extra allocation is requested, so alignment will be the same
++ * as for spi_transfers
++ */
++struct spi_replaced_transfers;
++typedef void (*spi_replaced_release_t)(struct spi_master *master,
++				       struct spi_message *msg,
++				       struct spi_replaced_transfers *res);
++struct spi_replaced_transfers {
++	spi_replaced_release_t release;
++	void *extradata;
++	struct list_head replaced_transfers;
++	struct list_head *replaced_after;
++	size_t inserted;
++	struct spi_transfer inserted_transfers[];
++};
++
++extern struct spi_replaced_transfers *spi_replace_transfers(
++	struct spi_message *msg,
++	struct spi_transfer *xfer_first,
++	size_t remove,
++	size_t insert,
++	spi_replaced_release_t release,
++	size_t extradatasize);
++
++/*---------------------------------------------------------------------------*/
++
  /* All these synchronous SPI transfer routines are utilities layered
+  * over the core async transfer primitive.  Here, "synchronous" means
+  * they will sleep uninterruptibly until the async transfer completes.
 --
 1.7.10.4
 

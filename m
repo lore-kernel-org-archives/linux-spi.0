@@ -1,91 +1,54 @@
-From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: Re: [PATCH v5 05/11] spi: imx: Add support for loopback for ECSPI
- controllers
-Date: Mon, 7 Dec 2015 10:27:47 +0100
-Message-ID: <20151207092747.GA11966@pengutronix.de>
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH v5 06/11] spi: imx: return error from dma channel request
+Date: Mon, 7 Dec 2015 10:32:36 +0100
+Message-ID: <20151207093236.GB11966@pengutronix.de>
 References: <1449334629-4715-1-git-send-email-anton.bondarenko.sama@gmail.com>
- <1449334629-4715-6-git-send-email-anton.bondarenko.sama@gmail.com>
+ <1449334629-4715-7-git-send-email-anton.bondarenko.sama@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org, jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org
-To: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: broonie@kernel.org, b38343@freescale.com,
+	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	vladimir_zapolskiy@mentor.com, jiada_wang@mentor.com
+To: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1449334629-4715-6-git-send-email-anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1449334629-4715-7-git-send-email-anton.bondarenko.sama@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Sat, Dec 05, 2015 at 05:57:03PM +0100, Anton Bondarenko wrote:
-> Support for ECSPI loopback for IMX51, IMX53 and IMX6Q using TEST register.
+On Sat, Dec 05, 2015 at 05:57:04PM +0100, Anton Bondarenko wrote:
+> On SDMA initialization return exactly the same error, which is
+> reported by dma_request_slave_channel_reason(), it is a preceding
+> change to defer SPI DMA initialization, if SDMA module is not yet
+> available.
 > 
-> Signed-off-by: Mohsin Kazmi <mohsin_kazmi-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
-> Signed-off-by: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> Signed-off-by: Vladimir Zapolskiy <vladimir_zapolskiy@mentor.com>
+> Signed-off-by: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
 > ---
->  drivers/spi/spi-imx.c | 19 ++++++++++++++++---
->  1 file changed, 16 insertions(+), 3 deletions(-)
+>  drivers/spi/spi-imx.c | 27 ++++++++++++++++-----------
+>  1 file changed, 16 insertions(+), 11 deletions(-)
 > 
 > diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-> index 363276d..3525616 100644
+> index 3525616..277dd75 100644
 > --- a/drivers/spi/spi-imx.c
 > +++ b/drivers/spi/spi-imx.c
-> @@ -246,6 +246,9 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
->  #define MX51_ECSPI_STAT		0x18
->  #define MX51_ECSPI_STAT_RR		(1 <<  3)
+> @@ -846,10 +846,11 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
+>  	spi_imx->wml = spi_imx_get_fifosize(spi_imx) / 2;
 >  
-> +#define MX51_ECSPI_TEST			0x20
-> +#define MX51_ECSPI_LOOP			BIT(31)
-> +
->  /* MX51 eCSPI */
->  static unsigned int mx51_ecspi_clkdiv(unsigned int fin, unsigned int fspi,
->  				      unsigned int *fres)
-> @@ -316,6 +319,7 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
->  	u32 ctrl = MX51_ECSPI_CTRL_ENABLE, cfg = 0, dma = 0;
->  	u32 tx_wml_cfg, rx_wml_cfg, rxt_wml_cfg;
->  	u32 clk = config->speed_hz, delay;
-> +	u32 lpb = 0;
->  
->  	/*
->  	 * The hardware seems to have a race condition when changing modes. The
-> @@ -356,6 +360,12 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
->  	writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
->  	writel(cfg, spi_imx->base + MX51_ECSPI_CONFIG);
->  
-> +	if (config->mode & SPI_LOOP)
-> +		lpb |= MX51_ECSPI_LOOP;
-> +
-> +	if ((readl(spi_imx->base + MX51_ECSPI_TEST) & MX51_ECSPI_LOOP) != lpb)
-> +		writel(lpb, spi_imx->base + MX51_ECSPI_TEST);
-> +
->  	/*
->  	 * Wait until the changes in the configuration register CONFIGREG
->  	 * propagate into the hardware. It takes exactly one tick of the
-> @@ -1128,6 +1138,9 @@ static int spi_imx_probe(struct platform_device *pdev)
->  	spi_imx = spi_master_get_devdata(master);
->  	spi_imx->bitbang.master = master;
->  
-> +	spi_imx->devtype_data = of_id ? of_id->data :
-> +		(struct spi_imx_devtype_data *)pdev->id_entry->driver_data;
-> +
->  	for (i = 0; i < master->num_chipselect; i++) {
->  		int cs_gpio = of_get_named_gpio(np, "cs-gpios", i);
->  		if (!gpio_is_valid(cs_gpio) && mxc_platform_info)
-> @@ -1154,10 +1167,10 @@ static int spi_imx_probe(struct platform_device *pdev)
->  	spi_imx->bitbang.master->unprepare_message = spi_imx_unprepare_message;
->  	spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
->  
-> -	init_completion(&spi_imx->xfer_done);
-> +	if (is_imx51_ecspi(spi_imx))
-> +		spi_imx->bitbang.master->mode_bits |= SPI_LOOP;
->  
-> -	spi_imx->devtype_data = of_id ? of_id->data :
-> -		(struct spi_imx_devtype_data *) pdev->id_entry->driver_data;
-> +	init_completion(&spi_imx->xfer_done);
+>  	/* Prepare for TX DMA: */
+> -	master->dma_tx = dma_request_slave_channel(dev, "tx");
+> -	if (!master->dma_tx) {
+> -		dev_err(dev, "cannot get the TX DMA channel!\n");
+> -		ret = -EINVAL;
+> +	master->dma_tx = dma_request_slave_channel_reason(dev, "tx");
+> +	if (IS_ERR(master->dma_tx)) {
+> +		dev_info(dev, "cannot get the TX DMA channel!\n");
 
-Some unrelated lines are moved in these two hunks. Is this necessary or
-just some leftover from development?
+When changing it can you add the error code to the message? That's
+usually the next thing one wants to know when reading it. Also, isn't
+dev_dbg enough here? Otherwise the driver gets really verbose when it
+actually defers probe.
 
 Sascha
 
@@ -94,7 +57,3 @@ Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

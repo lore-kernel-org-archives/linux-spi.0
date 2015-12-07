@@ -1,53 +1,53 @@
 From: Sudip Mukherjee <sudipm.mukherjee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v2 1/8] spi: lm70llp: remove multiple blank lines
-Date: Mon,  7 Dec 2015 16:17:28 +0530
-Message-ID: <1449485255-1103-1-git-send-email-sudipm.mukherjee@gmail.com>
+Subject: [PATCH v2 2/8] spi: lm70llp: add blank line after declaration
+Date: Mon,  7 Dec 2015 16:17:29 +0530
+Message-ID: <1449485255-1103-2-git-send-email-sudipm.mukherjee@gmail.com>
+References: <1449485255-1103-1-git-send-email-sudipm.mukherjee@gmail.com>
 Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	Sudip Mukherjee <sudipm.mukherjee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1449485255-1103-1-git-send-email-sudipm.mukherjee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-checkpatch complains about multiple blank lines.
+checkpatch complains about missing blank line after declaration.
 
 Signed-off-by: Sudip Mukherjee <sudip-ofJRbWXBVFamYgehrs7/Lw@public.gmane.org>
 ---
- drivers/spi/spi-lm70llp.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/spi/spi-lm70llp.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/drivers/spi/spi-lm70llp.c b/drivers/spi/spi-lm70llp.c
-index ba72347..eb4b421 100644
+index eb4b421..7037028 100644
 --- a/drivers/spi/spi-lm70llp.c
 +++ b/drivers/spi/spi-lm70llp.c
-@@ -23,11 +23,9 @@
- #include <linux/sysfs.h>
- #include <linux/workqueue.h>
- 
--
- #include <linux/spi/spi.h>
- #include <linux/spi/spi_bitbang.h>
- 
--
- /*
-  * The LM70 communicates with a host processor using a 3-wire variant of
-  * the SPI/Microwire bus interface. This driver specifically supports an
-@@ -88,7 +86,6 @@ struct spi_lm70llp {
- /* REVISIT : ugly global ; provides "exclusive open" facility */
- static struct spi_lm70llp *lm70llp;
- 
--
- /*-------------------------------------------------------------------*/
- 
- static inline struct spi_lm70llp *spidev_to_pp(struct spi_device *spi)
-@@ -319,7 +316,6 @@ static void spi_lm70llp_detach(struct parport *p)
- 	lm70llp = NULL;
+@@ -119,12 +119,14 @@ static inline void assertCS(struct spi_lm70llp *pp)
+ static inline void clkHigh(struct spi_lm70llp *pp)
+ {
+ 	u8 data = parport_read_data(pp->port);
++
+ 	parport_write_data(pp->port, data | SCLK);
  }
  
--
- static struct parport_driver spi_lm70llp_drv = {
- 	.name =		DRVNAME,
- 	.attach =	spi_lm70llp_attach,
+ static inline void clkLow(struct spi_lm70llp *pp)
+ {
+ 	u8 data = parport_read_data(pp->port);
++
+ 	parport_write_data(pp->port, data & ~SCLK);
+ }
+ 
+@@ -163,8 +165,10 @@ static inline void setmosi(struct spi_device *s, int is_on)
+ static inline int getmiso(struct spi_device *s)
+ {
+ 	struct spi_lm70llp *pp = spidev_to_pp(s);
++
+ 	return ((SIO == (parport_read_status(pp->port) & SIO)) ? 0 : 1 );
+ }
++
+ /*--------------------------------------------------------------------*/
+ 
+ #include "spi-bitbang-txrx.h"
 -- 
 1.9.1
 

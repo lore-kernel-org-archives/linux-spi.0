@@ -1,93 +1,54 @@
-From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH V2 4/5] spi: core add spi_master.translate_message
-Date: Mon,  7 Dec 2015 15:21:47 +0000
-Message-ID: <1449501708-2228-5-git-send-email-kernel@martin.sperl.org>
-References: <1449501708-2228-1-git-send-email-kernel@martin.sperl.org>
-Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi-imx: Add loopback mode support
+Date: Mon, 7 Dec 2015 19:16:25 +0000
+Message-ID: <20151207191625.GM5727@sirena.org.uk>
+References: <1449192204-24877-1-git-send-email-festevam@gmail.com>
+ <CAOMZO5AejRorUv6TKH90t-VpsSGd6NiH9cCTJC5-QuMpiGPOPw@mail.gmail.com>
+ <20151206112407.GK5727@sirena.org.uk>
+ <56642EF4.1050804@gmail.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="SEFvVLxbW/dEDtN8"
+Cc: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+To: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1449501708-2228-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <56642EF4.1050804-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-Add translate_message to spi_master structure to allow
-translations of spi_messages to happen independently of
-prepare messages.
+--SEFvVLxbW/dEDtN8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-This "translations" are supposed to be using spi_res to handle the
-reverse transformation (see spi_replace_transfers), so no explicit
-code is necessary to revert any changes.
+On Sun, Dec 06, 2015 at 01:49:56PM +0100, Anton Bondarenko wrote:
+> On 2015-12-06 12:24, Mark Brown wrote:
 
-dma_mapping of spi_messages could also become part of this processing.
+> >I'd already applied this before you sent your mail, sorry.
 
-The long-term view is that this translation as well as the
-dma_mapping of the messages may happen in a separate thread
-when we are queueing those spi_messages - this would allows
-for better use of cpu resources as well as reduction of latency
-in the case of queuing.
+> I'll rebase my changes on top of topic/imx. Is it OK?
 
-Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
----
- drivers/spi/spi.c       |   15 +++++++++++++++
- include/linux/spi/spi.h |    4 ++++
- 2 files changed, 19 insertions(+)
+Yes, totally fine - please go ahead.
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 507dff0..40fb4cf 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1143,6 +1143,21 @@ static void __spi_pump_messages(struct spi_master *master, bool in_kthread)
+--SEFvVLxbW/dEDtN8
+Content-Type: application/pgp-signature; name="signature.asc"
 
- 	trace_spi_message_start(master->cur_msg);
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-+	/* under some circumstances (i.e: when queuing a message) this
-+	 * could get moved to a separate thread to reduce latencies
-+	 * this could also handle the mapping of spi_transfers
-+	 */
-+	if (master->translate_message) {
-+		ret = master->translate_message(master, master->cur_msg);
-+		if (ret) {
-+			dev_err(&master->dev,
-+				"failed to translate message: %d\n", ret);
-+			master->cur_msg->status = ret;
-+			spi_finalize_current_message(master);
-+			return;
-+		}
-+	}
-+
- 	if (master->prepare_message) {
- 		ret = master->prepare_message(master, master->cur_msg);
- 		if (ret) {
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index f5c9296..55e5864 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -363,6 +363,8 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
-  * @handle_err: the subsystem calls the driver to handle an error that occurs
-  *		in the generic implementation of transfer_one_message().
-  * @unprepare_message: undo any work done by prepare_message().
-+ * @translate_message: apply some message translations to optimize for the
-+ *                     spi_master
-  * @cs_gpios: Array of GPIOs to use as chip select lines; one per CS
-  *	number. Any individual value may be -ENOENT for CS lines that
-  *	are not GPIOs (driven by the SPI controller itself).
-@@ -509,6 +511,8 @@ struct spi_master {
- 			       struct spi_message *message);
- 	int (*unprepare_message)(struct spi_master *master,
- 				 struct spi_message *message);
-+	int (*translate_message)(struct spi_master *master,
-+				 struct spi_message *message);
+iQEcBAEBCAAGBQJWZdsIAAoJECTWi3JdVIfQof8H/jYFKzYtRlZ+szSFXLhmHrKe
+aCiiOMmjoWRkvyGLbsCu8HNPLjhGuM7UTWzyM2hvD9AWWUBVfgLm4hk6pu0gv0i6
+7jPMbzYyzMNi7BsF7lKBgOlxMU5QYBOehms/VwvwMQVxFP0Cw2j9eWdjvnZAPQTg
+oKWYZOMJeXnuPpYFhCGVwLxPSj1WXJRlXY26j+4BnxH75dWpP3F/Ma7U9BsnL6V+
+K1ZtOvKeLcbWSkMTOlttFHjZWZypjLHvHVxESRmyT/NbJsc9Eq7ZimRBc1r7lI38
+ythTwjV67RW4ZrCP2kl3j3535MYLvJWm5expNzEkxIOKoKE7fX+uIRvwT/+nJvo=
+=7xhT
+-----END PGP SIGNATURE-----
 
- 	/*
- 	 * These hooks are for drivers that use a generic implementation
---
-1.7.10.4
-
+--SEFvVLxbW/dEDtN8--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

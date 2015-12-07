@@ -1,7 +1,7 @@
 From: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Subject: [PATCH v2 7/8] spi: lm70llp: use dev_warn
-Date: Mon,  7 Dec 2015 16:17:34 +0530
-Message-ID: <1449485255-1103-7-git-send-email-sudipm.mukherjee@gmail.com>
+Subject: [PATCH v2 6/8] spi: lm70llp: use new parport device model
+Date: Mon,  7 Dec 2015 16:17:33 +0530
+Message-ID: <1449485255-1103-6-git-send-email-sudipm.mukherjee@gmail.com>
 References: <1449485255-1103-1-git-send-email-sudipm.mukherjee@gmail.com>
 Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
 	Sudip Mukherjee <sudipm.mukherjee@gmail.com>
@@ -11,38 +11,50 @@ In-Reply-To: <1449485255-1103-1-git-send-email-sudipm.mukherjee@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-As we have a struct device available it is better to use dev_warn()
-instead of printk.
+Modify spi-lm70llp driver to use the new parallel port device model.
 
 Signed-off-by: Sudip Mukherjee <sudip@vectorindia.org>
 ---
- drivers/spi/spi-lm70llp.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/spi/spi-lm70llp.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi-lm70llp.c b/drivers/spi/spi-lm70llp.c
-index 9d45a63..393eb2b 100644
+index 62d0f6d..9d45a63 100644
 --- a/drivers/spi/spi-lm70llp.c
 +++ b/drivers/spi/spi-lm70llp.c
-@@ -249,9 +249,8 @@ static void spi_lm70llp_attach(struct parport *p)
- 	 */
- 	status = spi_bitbang_start(&pp->bitbang);
- 	if (status < 0) {
--		printk(KERN_WARNING
--			"%s: spi_bitbang_start failed with status %d\n",
--			DRVNAME, status);
-+		dev_warn(&pd->dev, "spi_bitbang_start failed with status %d\n",
-+			 status);
- 		goto out_off_and_release;
- 	}
+@@ -197,6 +197,7 @@ static void spi_lm70llp_attach(struct parport *p)
+ 	struct spi_lm70llp	*pp;
+ 	struct spi_master	*master;
+ 	int			status;
++	struct pardev_cb        lm70llp_cb;
  
-@@ -278,7 +277,7 @@ static void spi_lm70llp_attach(struct parport *p)
- 		dev_dbg(&pp->spidev_lm70->dev, "spidev_lm70 at %s\n",
- 			dev_name(&pp->spidev_lm70->dev));
- 	else {
--		printk(KERN_WARNING "%s: spi_new_device failed\n", DRVNAME);
-+		dev_warn(&pd->dev, "spi_new_device failed\n");
- 		status = -ENODEV;
- 		goto out_bitbang_stop;
- 	}
+ 	if (lm70llp) {
+ 		printk(KERN_WARNING
+@@ -228,9 +229,11 @@ static void spi_lm70llp_attach(struct parport *p)
+ 	 * Parport hookup
+ 	 */
+ 	pp->port = p;
+-	pd = parport_register_device(p, DRVNAME,
+-				     NULL, NULL, NULL,
+-				     PARPORT_FLAG_EXCL, pp);
++	memset(&lm70llp_cb, 0, sizeof(lm70llp_cb));
++	lm70llp_cb.private = pp;
++	lm70llp_cb.flags = PARPORT_FLAG_EXCL;
++	pd = parport_register_dev_model(p, DRVNAME, &lm70llp_cb, 0);
++
+ 	if (!pd) {
+ 		status = -ENOMEM;
+ 		goto out_free_master;
+@@ -322,8 +325,9 @@ static void spi_lm70llp_detach(struct parport *p)
+ 
+ static struct parport_driver spi_lm70llp_drv = {
+ 	.name =		DRVNAME,
+-	.attach =	spi_lm70llp_attach,
++	.match_port =	spi_lm70llp_attach,
+ 	.detach =	spi_lm70llp_detach,
++	.devmodel =     true,
+ };
+ 
+ static int __init init_spi_lm70llp(void)
 -- 
 1.9.1

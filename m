@@ -1,7 +1,7 @@
 From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH V2 5/5] spi: bcm2835: split long transfers
-Date: Mon,  7 Dec 2015 15:21:48 +0000
-Message-ID: <1449501708-2228-6-git-send-email-kernel@martin.sperl.org>
+Subject: [PATCH V2 4/5] spi: core add spi_master.translate_message
+Date: Mon,  7 Dec 2015 15:21:47 +0000
+Message-ID: <1449501708-2228-5-git-send-email-kernel@martin.sperl.org>
 References: <1449501708-2228-1-git-send-email-kernel@martin.sperl.org>
 Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
@@ -15,76 +15,76 @@ List-ID: <linux-spi.vger.kernel.org>
 
 From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-Start to use spi_translate_message method when running in
-DMA mode and (for now) split spi_transfers with len > 60kB
-transparently into multiple transfers using the core method
-spi_split_transfers_maxsize.
+Add translate_message to spi_master structure to allow
+translations of spi_messages to happen independently of
+prepare messages.
 
-Eventually the bcm2835_translate_message may get moved into
-SPI-core as shared code (when we find the common denominators
-for different HW)
+This "translations" are supposed to be using spi_res to handle the
+reverse transformation (see spi_replace_transfers), so no explicit
+code is necessary to revert any changes.
+
+dma_mapping of spi_messages could also become part of this processing.
+
+The long-term view is that this translation as well as the
+dma_mapping of the messages may happen in a separate thread
+when we are queueing those spi_messages - this would allows
+for better use of cpu resources as well as reduction of latency
+in the case of queuing.
 
 Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 ---
- drivers/spi/spi-bcm2835.c |   31 +++++++++++++++++--------------
- 1 file changed, 17 insertions(+), 14 deletions(-)
+ drivers/spi/spi.c       |   15 +++++++++++++++
+ include/linux/spi/spi.h |    4 ++++
+ 2 files changed, 19 insertions(+)
 
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index cf04960..03c889d 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -353,6 +353,14 @@ static int bcm2835_spi_transfer_one_dma(struct spi_master *master,
- 	return 1;
- }
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 507dff0..40fb4cf 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1143,6 +1143,21 @@ static void __spi_pump_messages(struct spi_master *master, bool in_kthread)
 
-+static int bcm2835_translate_message(struct spi_master *master,
-+				     struct spi_message *message)
-+{
-+	/* translate the message */
-+	return spi_split_transfers_maxsize(master, message,
-+					   master->max_dma_len);
-+}
-+
- static bool bcm2835_spi_can_dma(struct spi_master *master,
- 				struct spi_device *spi,
- 				struct spi_transfer *tfr)
-@@ -365,19 +373,6 @@ static bool bcm2835_spi_can_dma(struct spi_master *master,
- 	if (tfr->len < BCM2835_SPI_DMA_MIN_LENGTH)
- 		return false;
+ 	trace_spi_message_start(master->cur_msg);
 
--	/* BCM2835_SPI_DLEN has defined a max transfer size as
--	 * 16 bit, so max is 65535
--	 * we can revisit this by using an alternative transfer
--	 * method - ideally this would get done without any more
--	 * interaction...
--	 */
--	if (tfr->len > 65535) {
--		dev_warn_once(&spi->dev,
--			      "transfer size of %d too big for dma-transfer\n",
--			      tfr->len);
--		return false;
--	}
--
- 	/* if we run rx/tx_buf with word aligned addresses then we are OK */
- 	if ((((size_t)tfr->rx_buf & 3) == 0) &&
- 	    (((size_t)tfr->tx_buf & 3) == 0))
-@@ -461,7 +456,15 @@ static void bcm2835_dma_init(struct spi_master *master, struct device *dev)
-
- 	/* all went well, so set can_dma */
- 	master->can_dma = bcm2835_spi_can_dma;
--	master->max_dma_len = 65535; /* limitation by BCM2835_SPI_DLEN */
-+
-+	/* also set up transform message */
-+	master->translate_message = bcm2835_translate_message;
-+
-+	/* the max_dma_size limited by BCM2835_SPI_DLEN is actually 65535,
-+	 * but for al practical purposes we use 15 pages (60k)
++	/* under some circumstances (i.e: when queuing a message) this
++	 * could get moved to a separate thread to reduce latencies
++	 * this could also handle the mapping of spi_transfers
 +	 */
-+	master->max_dma_len = 15 * PAGE_SIZE;
-+	master->dma_alignment = 4; /* word alignment is recommended */
- 	/* need to do TX AND RX DMA, so we need dummy buffers */
- 	master->flags = SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX;
++	if (master->translate_message) {
++		ret = master->translate_message(master, master->cur_msg);
++		if (ret) {
++			dev_err(&master->dev,
++				"failed to translate message: %d\n", ret);
++			master->cur_msg->status = ret;
++			spi_finalize_current_message(master);
++			return;
++		}
++	}
++
+ 	if (master->prepare_message) {
+ 		ret = master->prepare_message(master, master->cur_msg);
+ 		if (ret) {
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index f5c9296..55e5864 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -363,6 +363,8 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
+  * @handle_err: the subsystem calls the driver to handle an error that occurs
+  *		in the generic implementation of transfer_one_message().
+  * @unprepare_message: undo any work done by prepare_message().
++ * @translate_message: apply some message translations to optimize for the
++ *                     spi_master
+  * @cs_gpios: Array of GPIOs to use as chip select lines; one per CS
+  *	number. Any individual value may be -ENOENT for CS lines that
+  *	are not GPIOs (driven by the SPI controller itself).
+@@ -509,6 +511,8 @@ struct spi_master {
+ 			       struct spi_message *message);
+ 	int (*unprepare_message)(struct spi_master *master,
+ 				 struct spi_message *message);
++	int (*translate_message)(struct spi_master *master,
++				 struct spi_message *message);
 
+ 	/*
+ 	 * These hooks are for drivers that use a generic implementation
 --
 1.7.10.4
 

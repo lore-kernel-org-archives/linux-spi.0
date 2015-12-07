@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: imx: add function to check for IMX51 family controller" to the spi tree
-Date: Mon, 07 Dec 2015 19:54:14 +0000
-Message-ID: <E1a61rS-0003bP-AJ@debutante>
-References: <1449334629-4715-5-git-send-email-anton.bondarenko.sama@gmail.com>
+Subject: Applied "spi: imx: terminate RX DMA transaction in case of TX DMA timeout" to the spi tree
+Date: Mon, 07 Dec 2015 19:54:17 +0000
+Message-ID: <E1a61rV-0003cr-OU@debutante>
+References: <1449334629-4715-2-git-send-email-anton.bondarenko.sama@gmail.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1449334629-4715-5-git-send-email-anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1449334629-4715-2-git-send-email-anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: imx: add function to check for IMX51 family controller
+   spi: imx: terminate RX DMA transaction in case of TX DMA timeout
 
 has been applied to the spi tree at
 
@@ -38,51 +38,34 @@ to this mail.
 Thanks,
 Mark
 
->From f8a876176f38e00aab200d308506ca4a4ba57b39 Mon Sep 17 00:00:00 2001
+>From e47b33c0765400d38ebaf57908f00abab2488f74 Mon Sep 17 00:00:00 2001
 From: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Sat, 5 Dec 2015 17:57:02 +0100
-Subject: [PATCH] spi: imx: add function to check for IMX51 family controller
+Date: Sat, 5 Dec 2015 17:56:59 +0100
+Subject: [PATCH] spi: imx: terminate RX DMA transaction in case of TX DMA
+ timeout
 
-Similar to other controller type checks add check function for
-IMX51. It includes IMX53 and IMX6.
+Not only TX DMA should be terminated, but RX DMA also. It's required
+to avoid accidential DMA memory writes from RX DMA channel and properly
+terminate transaction.
 
 Signed-off-by: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-imx.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/spi/spi-imx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index beba40b08ed1..410522fdd4c9 100644
+index e7e4f0c0f14d..d6dc66542811 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -122,9 +122,14 @@ static inline int is_imx35_cspi(struct spi_imx_data *d)
- 	return d->devtype_data->devtype == IMX35_CSPI;
- }
- 
-+static inline int is_imx51_ecspi(struct spi_imx_data *d)
-+{
-+	return d->devtype_data->devtype == IMX51_ECSPI;
-+}
-+
- static inline unsigned spi_imx_get_fifosize(struct spi_imx_data *d)
- {
--	return (d->devtype_data->devtype == IMX51_ECSPI) ? 64 : 8;
-+	return is_imx51_ecspi(d) ? 64 : 8;
- }
- 
- #define MXC_SPI_BUF_RX(type)						\
-@@ -1210,8 +1215,8 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	 * Only validated on i.mx6 now, can remove the constrain if validated on
- 	 * other chips.
- 	 */
--	if (spi_imx->devtype_data == &imx51_ecspi_devtype_data
--	    && spi_imx_sdma_init(&pdev->dev, spi_imx, master, res))
-+	if (is_imx51_ecspi(spi_imx) &&
-+	    spi_imx_sdma_init(&pdev->dev, spi_imx, master, res))
- 		dev_err(&pdev->dev, "dma setup error,use pio instead\n");
- 
- 	spi_imx->devtype_data->reset(spi_imx);
+@@ -968,6 +968,7 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+ 			dev_driver_string(&master->dev),
+ 			dev_name(&master->dev));
+ 		dmaengine_terminate_all(master->dma_tx);
++		dmaengine_terminate_all(master->dma_rx);
+ 	} else {
+ 		timeout = wait_for_completion_timeout(
+ 				&spi_imx->dma_rx_completion, IMX_DMA_TIMEOUT);
 -- 
 2.6.2
 

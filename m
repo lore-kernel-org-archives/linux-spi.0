@@ -1,114 +1,46 @@
-From: Christophe Ricard <christophe.ricard@gmail.com>
-Subject: [PATCH v4 1/3] acpi: Rename acpi_gsi_get_irq_type to acpi_get_irq_type and export symbol
-Date: Mon,  7 Dec 2015 23:39:10 +0100
-Message-ID: <1449527952-8399-2-git-send-email-christophe-h.ricard@st.com>
+From: Christophe Ricard <christophe.ricard-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v4 3/3] ACPI / spi: attach gpio irq from acpi description to spi device
+Date: Mon,  7 Dec 2015 23:39:12 +0100
+Message-ID: <1449527952-8399-4-git-send-email-christophe-h.ricard@st.com>
 References: <1449527952-8399-1-git-send-email-christophe-h.ricard@st.com>
-Cc: linux-spi@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	Christophe Ricard <christophe-h.ricard@st.com>
-To: rjw@rjwysocki.net, lenb@kernel.org, linus.walleij@linaro.org,
-	gnurou@gmail.com, andriy.shevchenko@linux.intel.com,
-	mika.westerberg@linux.intel.com, broonie@kernel.org
-Return-path: <linux-acpi-owner@vger.kernel.org>
-In-Reply-To: <1449527952-8399-1-git-send-email-christophe-h.ricard@st.com>
-Sender: linux-acpi-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Christophe Ricard <christophe-h.ricard-qxv4g6HH51o@public.gmane.org>
+To: rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org, lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	gnurou-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
+	mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1449527952-8399-1-git-send-email-christophe-h.ricard-qxv4g6HH51o@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-acpi_gsi_get_irq_type could be use out of gsi purpose.
+spi->irq was ignoring GpioInt property setting it to -1.
+acpi_dev_gpio_irq_get returns and configure the slave irq  according to
+the acpi slave node description.
+It is now inline with devicetree behavior.
 
-Rename and make it available as a utility function.
-
-Signed-off-by: Christophe Ricard <christophe-h.ricard@st.com>
+Signed-off-by: Christophe Ricard <christophe-h.ricard-qxv4g6HH51o@public.gmane.org>
 ---
- drivers/acpi/gsi.c   | 21 +--------------------
- drivers/acpi/utils.c | 21 +++++++++++++++++++++
- include/linux/acpi.h |  2 ++
- 3 files changed, 24 insertions(+), 20 deletions(-)
+ drivers/spi/spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/gsi.c b/drivers/acpi/gsi.c
-index fa4585a..2828351 100644
---- a/drivers/acpi/gsi.c
-+++ b/drivers/acpi/gsi.c
-@@ -17,25 +17,6 @@ enum acpi_irq_model_id acpi_irq_model;
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index a5f53de..5c10815 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1534,7 +1534,7 @@ static acpi_status acpi_spi_add_device(acpi_handle handle, u32 level,
+ 	}
  
- static struct fwnode_handle *acpi_gsi_domain_id;
+ 	ACPI_COMPANION_SET(&spi->dev, adev);
+-	spi->irq = -1;
++	spi->irq = acpi_dev_gpio_irq_get(ACPI_COMPANION(&spi->dev), 0);
  
--static unsigned int acpi_gsi_get_irq_type(int trigger, int polarity)
--{
--	switch (polarity) {
--	case ACPI_ACTIVE_LOW:
--		return trigger == ACPI_EDGE_SENSITIVE ?
--		       IRQ_TYPE_EDGE_FALLING :
--		       IRQ_TYPE_LEVEL_LOW;
--	case ACPI_ACTIVE_HIGH:
--		return trigger == ACPI_EDGE_SENSITIVE ?
--		       IRQ_TYPE_EDGE_RISING :
--		       IRQ_TYPE_LEVEL_HIGH;
--	case ACPI_ACTIVE_BOTH:
--		if (trigger == ACPI_EDGE_SENSITIVE)
--			return IRQ_TYPE_EDGE_BOTH;
--	default:
--		return IRQ_TYPE_NONE;
--	}
--}
--
- /**
-  * acpi_gsi_to_irq() - Retrieve the linux irq number for a given GSI
-  * @gsi: GSI IRQ number to map
-@@ -82,7 +63,7 @@ int acpi_register_gsi(struct device *dev, u32 gsi, int trigger,
- 
- 	fwspec.fwnode = acpi_gsi_domain_id;
- 	fwspec.param[0] = gsi;
--	fwspec.param[1] = acpi_gsi_get_irq_type(trigger, polarity);
-+	fwspec.param[1] = acpi_get_irq_type(trigger, polarity);
- 	fwspec.param_count = 2;
- 
- 	return irq_create_fwspec_mapping(&fwspec);
-diff --git a/drivers/acpi/utils.c b/drivers/acpi/utils.c
-index 475c907..715b24b 100644
---- a/drivers/acpi/utils.c
-+++ b/drivers/acpi/utils.c
-@@ -33,6 +33,27 @@
- #define _COMPONENT		ACPI_BUS_COMPONENT
- ACPI_MODULE_NAME("utils");
- 
-+unsigned int acpi_get_irq_type(int trigger, int polarity)
-+{
-+	switch (polarity) {
-+	case ACPI_ACTIVE_LOW:
-+		return trigger == ACPI_EDGE_SENSITIVE ?
-+		       IRQ_TYPE_EDGE_FALLING :
-+		       IRQ_TYPE_LEVEL_LOW;
-+	case ACPI_ACTIVE_HIGH:
-+		return trigger == ACPI_EDGE_SENSITIVE ?
-+		       IRQ_TYPE_EDGE_RISING :
-+		       IRQ_TYPE_LEVEL_HIGH;
-+	case ACPI_ACTIVE_BOTH:
-+		if (trigger == ACPI_EDGE_SENSITIVE)
-+			return IRQ_TYPE_EDGE_BOTH;
-+	default:
-+		return IRQ_TYPE_NONE;
-+	}
-+}
-+EXPORT_SYMBOL_GPL(acpi_get_irq_type);
-+
-+
- /* --------------------------------------------------------------------------
-                             Object Evaluation Helpers
-    -------------------------------------------------------------------------- */
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index d863e12..b0c5a11 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -204,6 +204,8 @@ int acpi_isa_irq_to_gsi (unsigned isa_irq, u32 *gsi);
- void acpi_set_irq_model(enum acpi_irq_model_id model,
- 			struct fwnode_handle *fwnode);
- 
-+unsigned int acpi_get_irq_type(int trigger, int polarity);
-+
- #ifdef CONFIG_X86_IO_APIC
- extern int acpi_get_override_irq(u32 gsi, int *trigger, int *polarity);
- #else
+ 	INIT_LIST_HEAD(&resource_list);
+ 	ret = acpi_dev_get_resources(adev, &resource_list,
 -- 
 2.1.4
 
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

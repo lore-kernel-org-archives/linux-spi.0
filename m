@@ -1,38 +1,45 @@
-From: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi-imx: Add loopback mode support
-Date: Sun, 6 Dec 2015 17:34:59 -0200
-Message-ID: <CAOMZO5Ar3mqfmE94vuiWvveuby6SNV2=Ss5o8cdCmLEYrnVZhA@mail.gmail.com>
-References: <1449192204-24877-1-git-send-email-festevam@gmail.com>
-	<CAOMZO5AejRorUv6TKH90t-VpsSGd6NiH9cCTJC5-QuMpiGPOPw@mail.gmail.com>
-	<20151206112407.GK5727@sirena.org.uk>
-	<CAOMZO5BrOgOvupBXRcK=iLYmbViKMjQE6xYi6HwU71Twjt2O0A@mail.gmail.com>
-	<56647929.4060202@gmail.com>
+From: Andreas Werner <andreas.werner@men.de>
+Subject: [PATCH] spi/spi-fsl-espi.c: Add spi cs polarity support
+Date: Mon, 7 Dec 2015 08:07:16 +0100
+Message-ID: <20151207070657.GA25586@awelinux>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <56647929.4060202-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Cc: <linux-spi@vger.kernel.org>, <broonie@kernel.org>
+To: <linux-kernel@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Anton,
+Add CS polarity flag to be able to set the CS polarity
+via the DT property spi-cs-high.
 
-On Sun, Dec 6, 2015 at 4:06 PM, Anton Bondarenko
-<anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+Signed-off-by: Andreas Werner <andreas.werner@men.de>
+---
+ drivers/spi/spi-fsl-espi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
->
-> There is a small problem with this change. Loopback mode not enabled for
-> first transaction in the system. This is happen because TEST reg written
-> before controller taken out from the reset by writing to CTRL reg. The
-> simple fix will be to move TEST reg read/write after write to CTRL reg.
-
-Could you please fix this as part of your series?
-
-Thanks
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index c27124a..2dc70953 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -495,7 +495,7 @@ static int fsl_espi_setup(struct spi_device *spi)
+ 			&reg_base->csmode[spi->chip_select]);
+ 	/* mask out bits we are going to set */
+ 	cs->hw_mode &= ~(CSMODE_CP_BEGIN_EDGECLK | CSMODE_CI_INACTIVEHIGH
+-			 | CSMODE_REV);
++			 | CSMODE_REV | CSMODE_POL_1);
+ 
+ 	if (spi->mode & SPI_CPHA)
+ 		cs->hw_mode |= CSMODE_CP_BEGIN_EDGECLK;
+@@ -503,6 +503,8 @@ static int fsl_espi_setup(struct spi_device *spi)
+ 		cs->hw_mode |= CSMODE_CI_INACTIVEHIGH;
+ 	if (!(spi->mode & SPI_LSB_FIRST))
+ 		cs->hw_mode |= CSMODE_REV;
++	if (!(spi->mode & SPI_CS_HIGH))
++		cs->hw_mode |= CSMODE_POL_1;
+ 
+ 	/* Handle the loop mode */
+ 	loop_mode = mpc8xxx_spi_read_reg(&reg_base->mode);
+-- 
+2.6.2

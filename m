@@ -1,7 +1,7 @@
 From: Sudip Mukherjee <sudipm.mukherjee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v2 2/8] spi: lm70llp: add blank line after declaration
-Date: Mon,  7 Dec 2015 16:17:29 +0530
-Message-ID: <1449485255-1103-2-git-send-email-sudipm.mukherjee@gmail.com>
+Subject: [PATCH v2 8/8] spi: lm70llp: remove printk
+Date: Mon,  7 Dec 2015 16:17:35 +0530
+Message-ID: <1449485255-1103-8-git-send-email-sudipm.mukherjee@gmail.com>
 References: <1449485255-1103-1-git-send-email-sudipm.mukherjee@gmail.com>
 Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	Sudip Mukherjee <sudipm.mukherjee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
@@ -11,43 +11,49 @@ In-Reply-To: <1449485255-1103-1-git-send-email-sudipm.mukherjee-Re5JQEeQqe8Avxti
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-checkpatch complains about missing blank line after declaration.
+Using pr_* macros are more prefferable than using printk. Start using
+pr_* family of macros and define pr_fmt to be used with it.
+While at it remove DRVNAME from an existing pr_info() as the name is now
+being printed by pr_fmt.
 
 Signed-off-by: Sudip Mukherjee <sudip-ofJRbWXBVFamYgehrs7/Lw@public.gmane.org>
 ---
- drivers/spi/spi-lm70llp.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/spi/spi-lm70llp.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi-lm70llp.c b/drivers/spi/spi-lm70llp.c
-index eb4b421..7037028 100644
+index 393eb2b..8fe83d0 100644
 --- a/drivers/spi/spi-lm70llp.c
 +++ b/drivers/spi/spi-lm70llp.c
-@@ -119,12 +119,14 @@ static inline void assertCS(struct spi_lm70llp *pp)
- static inline void clkHigh(struct spi_lm70llp *pp)
- {
- 	u8 data = parport_read_data(pp->port);
+@@ -14,6 +14,8 @@
+  * GNU General Public License for more details.
+  */
+ 
++#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 +
- 	parport_write_data(pp->port, data | SCLK);
+ #include <linux/init.h>
+ #include <linux/module.h>
+ #include <linux/kernel.h>
+@@ -200,9 +202,7 @@ static void spi_lm70llp_attach(struct parport *p)
+ 	struct pardev_cb        lm70llp_cb;
+ 
+ 	if (lm70llp) {
+-		printk(KERN_WARNING
+-			"%s: spi_lm70llp instance already loaded. Aborting.\n",
+-			DRVNAME);
++		pr_warn("spi_lm70llp instance already loaded. Aborting.\n");
+ 		return;
+ 	}
+ 
+@@ -298,7 +298,7 @@ out_parport_unreg:
+ out_free_master:
+ 	spi_master_put(master);
+ out_fail:
+-	pr_info("%s: spi_lm70llp probe fail, status %d\n", DRVNAME, status);
++	pr_info("spi_lm70llp probe fail, status %d\n", status);
  }
  
- static inline void clkLow(struct spi_lm70llp *pp)
- {
- 	u8 data = parport_read_data(pp->port);
-+
- 	parport_write_data(pp->port, data & ~SCLK);
- }
- 
-@@ -163,8 +165,10 @@ static inline void setmosi(struct spi_device *s, int is_on)
- static inline int getmiso(struct spi_device *s)
- {
- 	struct spi_lm70llp *pp = spidev_to_pp(s);
-+
- 	return ((SIO == (parport_read_status(pp->port) & SIO)) ? 0 : 1 );
- }
-+
- /*--------------------------------------------------------------------*/
- 
- #include "spi-bitbang-txrx.h"
+ static void spi_lm70llp_detach(struct parport *p)
 -- 
 1.9.1
 

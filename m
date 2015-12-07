@@ -1,47 +1,63 @@
-From: Christophe Ricard <christophe.ricard@gmail.com>
-Subject: [PATCH v4 0/3] ACPI: Add irq_type to gpio interrupt
-Date: Mon,  7 Dec 2015 23:39:09 +0100
-Message-ID: <1449527952-8399-1-git-send-email-christophe-h.ricard@st.com>
-Cc: linux-spi@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	Christophe Ricard <christophe-h.ricard@st.com>
-To: rjw@rjwysocki.net, lenb@kernel.org, linus.walleij@linaro.org,
-	gnurou@gmail.com, andriy.shevchenko@linux.intel.com,
-	mika.westerberg@linux.intel.com, broonie@kernel.org
-Return-path: <linux-acpi-owner@vger.kernel.org>
-Sender: linux-acpi-owner@vger.kernel.org
+From: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
+Subject: Re: [PATCH v5 06/11] spi: imx: return error from dma channel request
+Date: Tue, 8 Dec 2015 00:38:17 +0100
+Message-ID: <56661869.5090503@gmail.com>
+References: <1449334629-4715-1-git-send-email-anton.bondarenko.sama@gmail.com>
+ <1449334629-4715-7-git-send-email-anton.bondarenko.sama@gmail.com>
+ <20151207093236.GB11966@pengutronix.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: broonie@kernel.org, b38343@freescale.com,
+	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	vladimir_zapolskiy@mentor.com, jiada_wang@mentor.com
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20151207093236.GB11966@pengutronix.de>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
 
-ACPI probing method does not retrieve irq_type from a gpio interrupt declared
-with GpioInt as it is done with devicetree probing. In other terms, irq_get_trigger_type
-will always send back 0.
 
-Those 3 patches propose a way to retrieve the correct interrupt polarity/type from a GpioInt
-acpi declaration when using irq_get_trigger_type.
+On 2015-12-07 10:32, Sascha Hauer wrote:
+> On Sat, Dec 05, 2015 at 05:57:04PM +0100, Anton Bondarenko wrote:
+>> On SDMA initialization return exactly the same error, which is
+>> reported by dma_request_slave_channel_reason(), it is a preceding
+>> change to defer SPI DMA initialization, if SDMA module is not yet
+>> available.
+>>
+>> Signed-off-by: Vladimir Zapolskiy <vladimir_zapolskiy@mentor.com>
+>> Signed-off-by: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
+>> ---
+>>   drivers/spi/spi-imx.c | 27 ++++++++++++++++-----------
+>>   1 file changed, 16 insertions(+), 11 deletions(-)
+>>
+>> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+>> index 3525616..277dd75 100644
+>> --- a/drivers/spi/spi-imx.c
+>> +++ b/drivers/spi/spi-imx.c
+>> @@ -846,10 +846,11 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
+>>   	spi_imx->wml = spi_imx_get_fifosize(spi_imx) / 2;
+>>
+>>   	/* Prepare for TX DMA: */
+>> -	master->dma_tx = dma_request_slave_channel(dev, "tx");
+>> -	if (!master->dma_tx) {
+>> -		dev_err(dev, "cannot get the TX DMA channel!\n");
+>> -		ret = -EINVAL;
+>> +	master->dma_tx = dma_request_slave_channel_reason(dev, "tx");
+>> +	if (IS_ERR(master->dma_tx)) {
+>> +		dev_info(dev, "cannot get the TX DMA channel!\n");
+>
+> When changing it can you add the error code to the message? That's
+> usually the next thing one wants to know when reading it. Also, isn't
+> dev_dbg enough here? Otherwise the driver gets really verbose when it
+> actually defers probe.
+>
+> Sascha
+>
 
-Since v3:
-- A new fied irq_type in acpi_gpio_info is added and the way the irq_type is attached to the irq is improved.
-- The irq described in the acpi spi slave node is now set 
+Agreed. But the error from spi_imx_sdma_init printed in probe. Anyway, 
+I've changed the code as requested in upcoming series V6.
 
-Best Regards
-Christophe 
-
-Christophe Ricard (3):
-  acpi: Rename acpi_gsi_get_irq_type to acpi_get_irq_type and export
-    symbol
-  ACPI / gpio: Add irq_type when a gpio is used as an interrupt
-  ACPI / spi: attach gpio irq from acpi description to spi device
-
- drivers/acpi/gsi.c          | 21 +--------------------
- drivers/acpi/utils.c        | 21 +++++++++++++++++++++
- drivers/gpio/gpiolib-acpi.c | 22 ++++++++++++++++++----
- drivers/gpio/gpiolib.h      |  1 +
- drivers/spi/spi.c           |  2 +-
- include/linux/acpi.h        |  2 ++
- 6 files changed, 44 insertions(+), 25 deletions(-)
-
--- 
-2.1.4
-
+Regards, Anton

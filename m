@@ -1,71 +1,92 @@
 From: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
-Subject: [PATCH v6 5/8] spi: imx: allow only WML aligned transfers to use DMA
-Date: Tue,  8 Dec 2015 07:43:47 +0100
-Message-ID: <1449557030-27525-6-git-send-email-anton.bondarenko.sama@gmail.com>
+Subject: [PATCH v6 3/8] spi: imx: return error from dma channel request
+Date: Tue,  8 Dec 2015 07:43:45 +0100
+Message-ID: <1449557030-27525-4-git-send-email-anton.bondarenko.sama@gmail.com>
 References: <1449557030-27525-1-git-send-email-anton.bondarenko.sama@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	vladimir_zapolskiy@mentor.com, jiada_wang@mentor.com
-To: broonie@kernel.org, b38343@freescale.com, s.hauer@pengutronix.de
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: jiada_wang@mentor.com, vladimir_zapolskiy@mentor.com,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-spi@vger.kernel.org
+To: broonie@kernel.org,
+	b38343@freescale.com,
+	s.hauer@pengutronix.de
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
 In-Reply-To: <1449557030-27525-1-git-send-email-anton.bondarenko.sama@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-RX DMA tail data handling doesn't work correctly in many cases with current
-implementation. It happens because SPI core was setup to generates both RX
-and RX TAIL events. And RX TAIL event does not work correctly.
-This can be easily verified by sending SPI transaction with size modulus
-WML(32 in our case) not equal 0.
+On SDMA initialization return exactly the same error, which is
+reported by dma_request_slave_channel_reason(), it is a preceding
+change to defer SPI DMA initialization, if SDMA module is not yet
+available.
 
-Also removing change introduced in f6ee9b582d2db652497b73c1f117591dfb6d3a90
-since this change only fix usecases with transfer size from 33 to 128 bytes
-and doesn't fix 129 bytes and bigger.
-
-This is output from transaction with len 138 bytes in loopback mode at 10Mhz:
-TX0000: a3 97 a2 55 53 be f1 fc f9 79 6b 52 14 13 e9 e2
-TX0010: 2d 51 8e 1f 56 08 57 27 a7 05 d4 d0 52 82 77 75
-TX0020: 1b 99 4a ed 58 3d 6a 52 36 d5 24 4a 68 8e ad 95
-TX0030: 5f 3c 35 b5 c4 8c dd 6c 11 32 3d e2 b4 b4 59 cf
-TX0040: ce 23 3d 27 df a7 f9 96 fc 1e e0 66 2c 0e 7b 8c
-TX0050: ca 30 42 8f bc 9f 7b ce d1 b8 b1 87 ec 8a d6 bb
-TX0060: 2e 15 63 0e 3c dc a4 3a 7a 06 20 a7 93 1b 34 dd
-TX0070: 4c f5 ec 88 96 68 d6 68 a0 09 6f 8e 93 47 c9 41
-TX0080: db ac cf 97 89 f3 51 05 79 71
-
-RX0000: a3 97 a2 55 53 be f1 fc f9 79 6b 52 14 13 e9 e2
-RX0010: 2d 51 8e 1f 56 08 57 27 a7 05 d4 d0 52 82 77 75
-RX0020: 1b 99 4a ed 58 3d 6a 52 36 d5 24 4a 68 8e ad 95
-RX0030: 5f 3c 35 00 00 b5 00 00 00 c4 00 00 8c 00 00 dd
-RX0040: 6c 11 32 3d e2 b4 b4 59 cf ce 23 3d 27 df a7 f9
-RX0050: 96 fc 1e e0 66 2c 0e 7b 8c ca 30 42 8f 1f 1f bc
-RX0060: 9f 7b ce d1 b8 b1 87 ec 8a d6 bb 2e 15 63 0e ed
-RX0070: ed 3c 58 58 58 dc 3d 3d a4 6a 6a 3a 52 52 7a 36
-RX0080: 06 20 a7 93 1b 34 dd 4c f5 ec
-
-Zeros at offset 33 and 34 caused by reading empty RX FIFO which not possible
-if DMA RX read was triggered by RX event. This mean DMA was triggered
-by RX TAIL event.
-
+Signed-off-by: Vladimir Zapolskiy <vladimir_zapolskiy@mentor.com>
 Signed-off-by: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
 ---
- drivers/spi/spi-imx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-imx.c | 27 ++++++++++++++++-----------
+ 1 file changed, 16 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index d98c33c..50e0a79 100644
+index 17a90dc..c123060 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -204,8 +204,8 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
- {
- 	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
+@@ -848,10 +848,11 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
+ 	spi_imx->wml = spi_imx_get_fifosize(spi_imx) / 2;
  
--	if (spi_imx->dma_is_inited &&
--	    transfer->len > spi_imx->wml * sizeof(u32))
-+	if (spi_imx->dma_is_inited && transfer->len >= spi_imx->wml &&
-+	    (transfer->len % spi_imx->wml) == 0)
- 		return true;
- 	return false;
- }
+ 	/* Prepare for TX DMA: */
+-	master->dma_tx = dma_request_slave_channel(dev, "tx");
+-	if (!master->dma_tx) {
+-		dev_err(dev, "cannot get the TX DMA channel!\n");
+-		ret = -EINVAL;
++	master->dma_tx = dma_request_slave_channel_reason(dev, "tx");
++	if (IS_ERR(master->dma_tx)) {
++		ret = PTR_ERR(master->dma_tx);
++		dev_dbg(dev, "can't get the TX DMA channel, error %d!\n", ret);
++		master->dma_tx = NULL;
+ 		goto err;
+ 	}
+ 
+@@ -866,10 +867,11 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
+ 	}
+ 
+ 	/* Prepare for RX : */
+-	master->dma_rx = dma_request_slave_channel(dev, "rx");
+-	if (!master->dma_rx) {
+-		dev_dbg(dev, "cannot get the DMA channel.\n");
+-		ret = -EINVAL;
++	master->dma_rx = dma_request_slave_channel_reason(dev, "rx");
++	if (IS_ERR(master->dma_rx)) {
++		ret = PTR_ERR(master->dma_rx);
++		dev_dbg(dev, "can't get the RX DMA channel, error %d\n", ret);
++		master->dma_rx = NULL;
+ 		goto err;
+ 	}
+ 
+@@ -1218,9 +1220,12 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 	 * Only validated on i.mx6 now, can remove the constrain if validated on
+ 	 * other chips.
+ 	 */
+-	if (is_imx51_ecspi(spi_imx) &&
+-	    spi_imx_sdma_init(&pdev->dev, spi_imx, master, res))
+-		dev_err(&pdev->dev, "dma setup error,use pio instead\n");
++	if (is_imx51_ecspi(spi_imx)) {
++		ret = spi_imx_sdma_init(&pdev->dev, spi_imx, master, res);
++		if (ret < 0)
++			dev_err(&pdev->dev, "dma setup error %d, use pio\n",
++				ret);
++	}
+ 
+ 	spi_imx->devtype_data->reset(spi_imx);
+ 
 -- 
 2.6.3

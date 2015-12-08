@@ -1,52 +1,48 @@
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: Re: [PATCH v4 3/3] ACPI / spi: attach gpio irq from acpi description
- to spi device
-Date: Tue, 8 Dec 2015 13:59:17 +0200
-Message-ID: <20151208115917.GN1766@lahna.fi.intel.com>
-References: <1449527952-8399-1-git-send-email-christophe-h.ricard@st.com>
- <1449527952-8399-4-git-send-email-christophe-h.ricard@st.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2 1/8] spi: lm70llp: remove multiple blank lines
+Date: Tue, 8 Dec 2015 12:49:56 +0000
+Message-ID: <20151208124956.GR5727@sirena.org.uk>
+References: <1449485255-1103-1-git-send-email-sudipm.mukherjee@gmail.com>
+ <20151207200737.GN5727@sirena.org.uk>
+ <20151208043259.GA23610@sudip-pc>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: rjw@rjwysocki.net, lenb@kernel.org, linus.walleij@linaro.org,
-	gnurou@gmail.com, andriy.shevchenko@linux.intel.com,
-	broonie@kernel.org, linux-spi@vger.kernel.org,
-	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-	Christophe Ricard <christophe-h.ricard@st.com>
-To: Christophe Ricard <christophe.ricard@gmail.com>
-Return-path: <linux-gpio-owner@vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="qXPE+6hUsFlDAc0e"
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1449527952-8399-4-git-send-email-christophe-h.ricard@st.com>
-Sender: linux-gpio-owner@vger.kernel.org
+In-Reply-To: <20151208043259.GA23610@sudip-pc>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Dec 07, 2015 at 11:39:12PM +0100, Christophe Ricard wrote:
-> spi->irq was ignoring GpioInt property setting it to -1.
-> acpi_dev_gpio_irq_get returns and configure the slave irq  according to
-> the acpi slave node description.
-> It is now inline with devicetree behavior.
-> 
-> Signed-off-by: Christophe Ricard <christophe-h.ricard@st.com>
-> ---
->  drivers/spi/spi.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index a5f53de..5c10815 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -1534,7 +1534,7 @@ static acpi_status acpi_spi_add_device(acpi_handle handle, u32 level,
->  	}
->  
->  	ACPI_COMPANION_SET(&spi->dev, adev);
-> -	spi->irq = -1;
-> +	spi->irq = acpi_dev_gpio_irq_get(ACPI_COMPANION(&spi->dev), 0);
 
-Also I think we should first check for the normal Interrupt() resource
-(like what we are already doing in acpi_spi_add_resource()) and only
-then resort back to use GPIO
+--qXPE+6hUsFlDAc0e
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
->  
->  	INIT_LIST_HEAD(&resource_list);
->  	ret = acpi_dev_get_resources(adev, &resource_list,
-> -- 
-> 2.1.4
+On Tue, Dec 08, 2015 at 10:03:00AM +0530, Sudip Mukherjee wrote:
+
+> I think there is some confusion. I am not seeing v1 of these patches in
+> for-next branch of your spi tree. And in review of v1 you said to use
+> dev_*. And for that last 2 patch of v1 changed and one extra came so I
+> sent the whole series as v2.
+
+I'm not sure why you're not seeing them but they're there...
+
+--qXPE+6hUsFlDAc0e
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJWZtHzAAoJECTWi3JdVIfQrXEIAIbgI5gDxDXmkvnDMrG/f51o
+/AzRIShMQHy7oCf/v+cYowpk9QisBnIc6vdEhPbTa7D/TudDeCPYp7dYKav6dnuV
+q2WoSUgMUgUHDQvDEJSs0l+bwH8yliVAgyxdbkASVclqDYp5WpT9+fHIwTAmP9Fz
+P67PMsL5L4HNOcoUGC2TgrfjU56T6gMnQiBgPfFSrWw1SyQo/zSZMoKHuEhzEMbR
+FdB+eSq0Gz/CCyrvS42yc9ZrzeKbf/0UwYN7JarO3PykGpq4OLzoRyaWJubYzinq
+7yW3M/4Yb1kNpuZnwGbGFxdxsL6Gn1HgeR0TdJ3jG4aXg4Fj6rZpjhaeJyFIB2k=
+=5/d2
+-----END PGP SIGNATURE-----
+
+--qXPE+6hUsFlDAc0e--

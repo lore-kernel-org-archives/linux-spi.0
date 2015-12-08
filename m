@@ -1,120 +1,39 @@
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Subject: Re: [PATCH v5 08/11] spi: imx: allow only WML aligned transfers to
- use DMA
-Date: Tue, 8 Dec 2015 07:05:12 +0100
-Message-ID: <20151208060511.GL11966@pengutronix.de>
-References: <1449334629-4715-1-git-send-email-anton.bondarenko.sama@gmail.com>
- <1449334629-4715-9-git-send-email-anton.bondarenko.sama@gmail.com>
- <20151207094224.GC11966@pengutronix.de>
- <5666254E.2070006@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: broonie@kernel.org, b38343@freescale.com,
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	vladimir_zapolskiy@mentor.com, jiada_wang@mentor.com
-To: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <5666254E.2070006@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v6 0/8]  Improvements for SPI IMX driver for Freescale ECSPI controller, continuation
+Date: Tue,  8 Dec 2015 07:43:42 +0100
+Message-ID: <1449557030-27525-1-git-send-email-anton.bondarenko.sama@gmail.com>
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org, jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org, s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Dec 08, 2015 at 01:33:18AM +0100, Anton Bondarenko wrote:
-> 
-> 
-> On 2015-12-07 10:42, Sascha Hauer wrote:
-> >On Sat, Dec 05, 2015 at 05:57:06PM +0100, Anton Bondarenko wrote:
-> >>RX DMA tail data handling doesn't work correctly in many cases with current
-> >>implementation. It happens because SPI core was setup to generates both RX
-> >>and RX TAIL events. And RX TAIL event does not work correctly.
-> >>This can be easily verified by sending SPI transaction with size modulus
-> >>WML(32 in our case) not equal 0.
-> >>
-> >>Also removing change introduced in f6ee9b582d2db652497b73c1f117591dfb6d3a90
-> >>since this change only fix usecases with transfer size from 33 to 128 bytes
-> >>and does not fix 129 bytes etc.
-> >>
-> >>This is output from transaction with len 138 bytes in loopback mode at 10Mhz:
-> >>TX0000: a3 97 a2 55 53 be f1 fc f9 79 6b 52 14 13 e9 e2
-> >>TX0010: 2d 51 8e 1f 56 08 57 27 a7 05 d4 d0 52 82 77 75
-> >>TX0020: 1b 99 4a ed 58 3d 6a 52 36 d5 24 4a 68 8e ad 95
-> >>TX0030: 5f 3c 35 b5 c4 8c dd 6c 11 32 3d e2 b4 b4 59 cf
-> >>TX0040: ce 23 3d 27 df a7 f9 96 fc 1e e0 66 2c 0e 7b 8c
-> >>TX0050: ca 30 42 8f bc 9f 7b ce d1 b8 b1 87 ec 8a d6 bb
-> >>TX0060: 2e 15 63 0e 3c dc a4 3a 7a 06 20 a7 93 1b 34 dd
-> >>TX0070: 4c f5 ec 88 96 68 d6 68 a0 09 6f 8e 93 47 c9 41
-> >>TX0080: db ac cf 97 89 f3 51 05 79 71
-> >>
-> >>RX0000: a3 97 a2 55 53 be f1 fc f9 79 6b 52 14 13 e9 e2
-> >>RX0010: 2d 51 8e 1f 56 08 57 27 a7 05 d4 d0 52 82 77 75
-> >>RX0020: 1b 99 4a ed 58 3d 6a 52 36 d5 24 4a 68 8e ad 95
-> >>RX0030: 5f 3c 35 00 00 b5 00 00 00 c4 00 00 8c 00 00 dd
-> >>RX0040: 6c 11 32 3d e2 b4 b4 59 cf ce 23 3d 27 df a7 f9
-> >>RX0050: 96 fc 1e e0 66 2c 0e 7b 8c ca 30 42 8f 1f 1f bc
-> >>RX0060: 9f 7b ce d1 b8 b1 87 ec 8a d6 bb 2e 15 63 0e ed
-> >>RX0070: ed 3c 58 58 58 dc 3d 3d a4 6a 6a 3a 52 52 7a 36
-> >>RX0080: 06 20 a7 93 1b 34 dd 4c f5 ec
-> >>
-> >>Zeros at offset 33 and 34 caused by reading empty RX FIFO which not possible
-> >>if DMA RX read was triggered by RX event. This mean DMA was triggered
-> >>by RX TAIL event.
-> >>
-> >>Signed-off-by: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
-> >>---
-> >>  drivers/spi/spi-imx.c | 4 ++--
-> >>  1 file changed, 2 insertions(+), 2 deletions(-)
-> >>
-> >>diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-> >>index fa24637..7a68c62 100644
-> >>--- a/drivers/spi/spi-imx.c
-> >>+++ b/drivers/spi/spi-imx.c
-> >>@@ -204,8 +204,8 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
-> >>  {
-> >>  	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
-> >>
-> >>-	if (spi_imx->dma_is_inited &&
-> >>-	    transfer->len > spi_imx->wml * sizeof(u32))
-> >>+	if (spi_imx->dma_is_inited && transfer->len > spi_imx->wml &&
-> >>+	    (transfer->len % spi_imx->wml) == 0)
-> >>  		return true;
-> >
-> >Must transfer->len really be bigger than spi_imx->wml? I would assume it
-> >should be >= instead. And where is the * sizeof(u32) gone? If that's
-> >unnecessary I heven't understood why.
-> >
-> >Sascha
-> >
-> >
-> 
-> Agree on '>='. Will be in V6.
-> As for missing sizeof(u32).
-> According to SoC specification it's possible to operate with 8- or 16 bits
-> word directly by setting proper value in word_width field in CFG register. I
-> do not know the what exactly is fixed by f6ee9b582d, but I could suspect
-> such scenario:
-> Some SPI client (spi-nor?) trying to perform SPI transaction with len mod 32
-> not equal zero. It could be any value between 33 and 127, excluding 64. But
-> since DMA RX tail functionality does not work correctly RX contains some
-> garbage.
+This series is to complement commits already applied to topic/imx branch
 
-I just tested it. Back then I had 60byte transfers with the SPI NOR
-driver. What I got is:
+Changes since V5:
+ * Fix for commit "spi: imx: Add loopback mode support"
+ * Addressed some comments from Sascha Hauer for DMA initialization error report
+ * Fixed 32 bytes transaction. It will be DMA now.
 
-spi_master spi0: I/O Error in DMA RX
-spi_master spi0: failed to transfer one message from queue
+Anton Bondarenko (8):
+  spi: imx: fix loopback mode setup after controller reset
+  spi: imx: enable loopback only for ECSPI controller family
+  spi: imx: return error from dma channel request
+  spi: imx: defer spi initialization, if DMA engine is
+  spi: imx: allow only WML aligned transfers to use DMA
+  spi: imx: remove dead RX DMA tail handling code
+  spi: imx: replace fixed timeout with calculated
+  spi: imx: add support for all SPI word width for DMA
 
-I can't follow anymore what led me to the assumption that this issue is
-related to byte/wordsize mixup. The SPI NOR driver uses 8bit transfers
-so one word is one byte, something the driver handles correctly.
-
-I just tested your series successfully with this usecase. I can redo the
-test with v6 once you send it and provide my tested-by tag.
-
-Sascha
+ drivers/spi/spi-imx.c | 203 +++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 145 insertions(+), 58 deletions(-)
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.6.3
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

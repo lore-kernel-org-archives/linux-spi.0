@@ -1,7 +1,7 @@
 From: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
-Subject: [PATCH v6 3/8] spi: imx: return error from dma channel request
-Date: Tue,  8 Dec 2015 07:43:45 +0100
-Message-ID: <1449557030-27525-4-git-send-email-anton.bondarenko.sama@gmail.com>
+Subject: [PATCH v6 4/8] spi: imx: defer spi initialization, if DMA engine is
+Date: Tue,  8 Dec 2015 07:43:46 +0100
+Message-ID: <1449557030-27525-5-git-send-email-anton.bondarenko.sama@gmail.com>
 References: <1449557030-27525-1-git-send-email-anton.bondarenko.sama@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -25,68 +25,29 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On SDMA initialization return exactly the same error, which is
-reported by dma_request_slave_channel_reason(), it is a preceding
-change to defer SPI DMA initialization, if SDMA module is not yet
-available.
+If SPI device supports DMA mode, but DMA controller is not yet
+available due to e.g. a delay in the corresponding kernel module
+initialization, retry to initialize SPI driver later on instead of
+falling back into PIO only mode.
 
-Signed-off-by: Vladimir Zapolskiy <vladimir_zapolskiy@mentor.com>
 Signed-off-by: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
 ---
- drivers/spi/spi-imx.c | 27 ++++++++++++++++-----------
- 1 file changed, 16 insertions(+), 11 deletions(-)
+ drivers/spi/spi-imx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 17a90dc..c123060 100644
+index c123060..d98c33c 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -848,10 +848,11 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
- 	spi_imx->wml = spi_imx_get_fifosize(spi_imx) / 2;
- 
- 	/* Prepare for TX DMA: */
--	master->dma_tx = dma_request_slave_channel(dev, "tx");
--	if (!master->dma_tx) {
--		dev_err(dev, "cannot get the TX DMA channel!\n");
--		ret = -EINVAL;
-+	master->dma_tx = dma_request_slave_channel_reason(dev, "tx");
-+	if (IS_ERR(master->dma_tx)) {
-+		ret = PTR_ERR(master->dma_tx);
-+		dev_dbg(dev, "can't get the TX DMA channel, error %d!\n", ret);
-+		master->dma_tx = NULL;
- 		goto err;
- 	}
- 
-@@ -866,10 +867,11 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
- 	}
- 
- 	/* Prepare for RX : */
--	master->dma_rx = dma_request_slave_channel(dev, "rx");
--	if (!master->dma_rx) {
--		dev_dbg(dev, "cannot get the DMA channel.\n");
--		ret = -EINVAL;
-+	master->dma_rx = dma_request_slave_channel_reason(dev, "rx");
-+	if (IS_ERR(master->dma_rx)) {
-+		ret = PTR_ERR(master->dma_rx);
-+		dev_dbg(dev, "can't get the RX DMA channel, error %d\n", ret);
-+		master->dma_rx = NULL;
- 		goto err;
- 	}
- 
-@@ -1218,9 +1220,12 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	 * Only validated on i.mx6 now, can remove the constrain if validated on
- 	 * other chips.
+@@ -1222,6 +1222,9 @@ static int spi_imx_probe(struct platform_device *pdev)
  	 */
--	if (is_imx51_ecspi(spi_imx) &&
--	    spi_imx_sdma_init(&pdev->dev, spi_imx, master, res))
--		dev_err(&pdev->dev, "dma setup error,use pio instead\n");
-+	if (is_imx51_ecspi(spi_imx)) {
-+		ret = spi_imx_sdma_init(&pdev->dev, spi_imx, master, res);
-+		if (ret < 0)
-+			dev_err(&pdev->dev, "dma setup error %d, use pio\n",
-+				ret);
-+	}
- 
- 	spi_imx->devtype_data->reset(spi_imx);
- 
+ 	if (is_imx51_ecspi(spi_imx)) {
+ 		ret = spi_imx_sdma_init(&pdev->dev, spi_imx, master, res);
++		if (ret == -EPROBE_DEFER)
++			goto out_clk_put;
++
+ 		if (ret < 0)
+ 			dev_err(&pdev->dev, "dma setup error %d, use pio\n",
+ 				ret);
 -- 
 2.6.3

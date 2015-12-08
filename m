@@ -1,7 +1,7 @@
 From: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
-Subject: [PATCH v6 7/8] spi: imx: replace fixed timeout with calculated
-Date: Tue,  8 Dec 2015 07:43:49 +0100
-Message-ID: <1449557030-27525-8-git-send-email-anton.bondarenko.sama@gmail.com>
+Subject: [PATCH v6 6/8] spi: imx: remove dead RX DMA tail handling code
+Date: Tue,  8 Dec 2015 07:43:48 +0100
+Message-ID: <1449557030-27525-7-git-send-email-anton.bondarenko.sama@gmail.com>
 References: <1449557030-27525-1-git-send-email-anton.bondarenko.sama@gmail.com>
 Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
@@ -12,96 +12,52 @@ In-Reply-To: <1449557030-27525-1-git-send-email-anton.bondarenko.sama@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Fixed timeout value can fire while transaction is ongoing. This may happen
-because there are no strict requirements on SPI transaction duration.
-Dynamic timeout value is generated based on SCLK and transaction size.
-
-There is also 4 * SCLK delay between TX bursts related to HW internal CS change.
+transfer->len % wml for DMA capable transactions will always be 0
+due to recent change in can_dma checks. So it's safe to remove dead code
+in processing DMA.
 
 Signed-off-by: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
 ---
- drivers/spi/spi-imx.c | 26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+ drivers/spi/spi-imx.c | 13 -------------
+ 1 file changed, 13 deletions(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 08492d6..d74d809 100644
+index 50e0a79..08492d6 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -56,7 +56,6 @@
- 
- /* The maximum  bytes that a sdma BD can transfer.*/
- #define MAX_SDMA_BD_BYTES  (1 << 15)
--#define IMX_DMA_TIMEOUT (msecs_to_jiffies(3000))
- struct spi_imx_config {
- 	unsigned int speed_hz;
- 	unsigned int bpw;
-@@ -92,6 +91,7 @@ struct spi_imx_data {
- 	struct clk *clk_per;
- 	struct clk *clk_ipg;
- 	unsigned long spi_clk;
-+	unsigned int spi_bus_clk;
- 
- 	unsigned int count;
- 	void (*tx)(struct spi_imx_data *);
-@@ -331,6 +331,7 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
- 
- 	/* set clock speed */
- 	ctrl |= mx51_ecspi_clkdiv(spi_imx->spi_clk, config->speed_hz, &clk);
-+	spi_imx->spi_bus_clk = clk;
- 
- 	/* set chip select to use */
- 	ctrl |= MX51_ECSPI_CTRL_CS(config->cs);
-@@ -913,11 +914,26 @@ static void spi_imx_dma_tx_callback(void *cookie)
- 	complete(&spi_imx->dma_tx_completion);
- }
- 
-+static int spi_imx_calculate_timeout(struct spi_imx_data *spi_imx, int size)
-+{
-+	unsigned long timeout = 0;
-+
-+	/* Time with actual data transfer and CS change delay related to HW */
-+	timeout = (8 + 4) * size / spi_imx->spi_bus_clk;
-+
-+	/* Add extra second for scheduler related activities */
-+	timeout += 1;
-+
-+	/* Double calculated timeout */
-+	return msecs_to_jiffies(2 * timeout * MSEC_PER_SEC);
-+}
-+
- static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 				struct spi_transfer *transfer)
- {
+@@ -919,8 +919,6 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
  	struct dma_async_tx_descriptor *desc_tx = NULL, *desc_rx = NULL;
  	int ret;
-+	unsigned long transfer_timeout;
  	unsigned long timeout;
+-	u32 dma;
+-	int left;
  	struct spi_master *master = spi_imx->bitbang.master;
  	struct sg_table *tx = &transfer->tx_sg, *rx = &transfer->rx_sg;
-@@ -964,9 +980,11 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 	dma_async_issue_pending(master->dma_tx);
- 	spi_imx->devtype_data->trigger(spi_imx);
  
-+	transfer_timeout = spi_imx_calculate_timeout(spi_imx, transfer->len);
-+
- 	/* Wait SDMA to finish the data transfer.*/
- 	timeout = wait_for_completion_timeout(&spi_imx->dma_tx_completion,
--						IMX_DMA_TIMEOUT);
-+						transfer_timeout);
- 	if (!timeout) {
- 		pr_warn("%s %s: I/O Error in DMA TX\n",
- 			dev_driver_string(&master->dev),
-@@ -974,8 +992,10 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 		dmaengine_terminate_all(master->dma_tx);
- 		dmaengine_terminate_all(master->dma_rx);
- 	} else {
-+		transfer_timeout = spi_imx_calculate_timeout(spi_imx,
-+							     spi_imx->wml);
- 		timeout = wait_for_completion_timeout(
--				&spi_imx->dma_rx_completion, IMX_DMA_TIMEOUT);
-+				&spi_imx->dma_rx_completion, transfer_timeout);
- 		if (!timeout) {
- 			pr_warn("%s %s: I/O Error in DMA RX\n",
- 				dev_driver_string(&master->dev),
+@@ -954,13 +952,6 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+ 	/* Trigger the cspi module. */
+ 	spi_imx->dma_finished = 0;
+ 
+-	dma = readl(spi_imx->base + MX51_ECSPI_DMA);
+-	dma = dma & (~MX51_ECSPI_DMA_RXT_WML_MASK);
+-	/* Change RX_DMA_LENGTH trigger dma fetch tail data */
+-	left = transfer->len % spi_imx->wml;
+-	if (left)
+-		writel(dma | (left << MX51_ECSPI_DMA_RXT_WML_OFFSET),
+-				spi_imx->base + MX51_ECSPI_DMA);
+ 	/*
+ 	 * Set these order to avoid potential RX overflow. The overflow may
+ 	 * happen if we enable SPI HW before starting RX DMA due to rescheduling
+@@ -992,10 +983,6 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+ 			spi_imx->devtype_data->reset(spi_imx);
+ 			dmaengine_terminate_all(master->dma_rx);
+ 		}
+-		dma &= ~MX51_ECSPI_DMA_RXT_WML_MASK;
+-		writel(dma |
+-		       spi_imx->wml << MX51_ECSPI_DMA_RXT_WML_OFFSET,
+-		       spi_imx->base + MX51_ECSPI_DMA);
+ 	}
+ 
+ 	spi_imx->dma_finished = 1;
 -- 
 2.6.3

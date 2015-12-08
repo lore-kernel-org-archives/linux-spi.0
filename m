@@ -1,39 +1,56 @@
-From: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v6 0/8]  Improvements for SPI IMX driver for Freescale ECSPI controller, continuation
-Date: Tue,  8 Dec 2015 07:43:42 +0100
-Message-ID: <1449557030-27525-1-git-send-email-anton.bondarenko.sama@gmail.com>
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org, jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org, s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
+Subject: [PATCH v6 2/8] spi: imx: enable loopback only for ECSPI controller family
+Date: Tue,  8 Dec 2015 07:43:44 +0100
+Message-ID: <1449557030-27525-3-git-send-email-anton.bondarenko.sama@gmail.com>
+References: <1449557030-27525-1-git-send-email-anton.bondarenko.sama@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	vladimir_zapolskiy@mentor.com, jiada_wang@mentor.com
+To: broonie@kernel.org, b38343@freescale.com, s.hauer@pengutronix.de
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1449557030-27525-1-git-send-email-anton.bondarenko.sama@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-This series is to complement commits already applied to topic/imx branch
+Limit SPI_LOOP mode to ECSPI controller (iMX.51, iMX53 and i.MX6) only since
+there is no support in other families specific code for now.
 
-Changes since V5:
- * Fix for commit "spi: imx: Add loopback mode support"
- * Addressed some comments from Sascha Hauer for DMA initialization error report
- * Fixed 32 bytes transaction. It will be DMA now.
+Signed-off-by: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
+---
+ drivers/spi/spi-imx.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-Anton Bondarenko (8):
-  spi: imx: fix loopback mode setup after controller reset
-  spi: imx: enable loopback only for ECSPI controller family
-  spi: imx: return error from dma channel request
-  spi: imx: defer spi initialization, if DMA engine is
-  spi: imx: allow only WML aligned transfers to use DMA
-  spi: imx: remove dead RX DMA tail handling code
-  spi: imx: replace fixed timeout with calculated
-  spi: imx: add support for all SPI word width for DMA
-
- drivers/spi/spi-imx.c | 203 +++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 145 insertions(+), 58 deletions(-)
-
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 3aa33c8..17a90dc 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -1140,6 +1140,9 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 	spi_imx = spi_master_get_devdata(master);
+ 	spi_imx->bitbang.master = master;
+ 
++	spi_imx->devtype_data = of_id ? of_id->data :
++		(struct spi_imx_devtype_data *)pdev->id_entry->driver_data;
++
+ 	for (i = 0; i < master->num_chipselect; i++) {
+ 		int cs_gpio = of_get_named_gpio(np, "cs-gpios", i);
+ 		if (!gpio_is_valid(cs_gpio) && mxc_platform_info)
+@@ -1164,14 +1167,12 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 	spi_imx->bitbang.master->cleanup = spi_imx_cleanup;
+ 	spi_imx->bitbang.master->prepare_message = spi_imx_prepare_message;
+ 	spi_imx->bitbang.master->unprepare_message = spi_imx_unprepare_message;
+-	spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH |
+-					     SPI_LOOP;
++	spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
++	if (is_imx51_ecspi(spi_imx))
++		spi_imx->bitbang.master->mode_bits |= SPI_LOOP;
+ 
+ 	init_completion(&spi_imx->xfer_done);
+ 
+-	spi_imx->devtype_data = of_id ? of_id->data :
+-		(struct spi_imx_devtype_data *) pdev->id_entry->driver_data;
+-
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	spi_imx->base = devm_ioremap_resource(&pdev->dev, res);
+ 	if (IS_ERR(spi_imx->base)) {
 -- 
 2.6.3
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

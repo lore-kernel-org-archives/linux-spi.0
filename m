@@ -1,52 +1,54 @@
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH v4 1/3] acpi: Rename acpi_gsi_get_irq_type to
- acpi_get_irq_type and export symbol
-Date: Wed, 9 Dec 2015 16:19:46 +0200
-Message-ID: <CAHp75Vfc=YT8TrUHo2Tdd=4e9-C=rQY126wraKpyn0B-=0n3-w@mail.gmail.com>
-References: <1449527952-8399-1-git-send-email-christophe-h.ricard@st.com>
-	<1449527952-8399-2-git-send-email-christophe-h.ricard@st.com>
-	<20151208112855.GI1766@lahna.fi.intel.com>
-	<5667523F.60704@gmail.com>
-	<20151209133646.GV1766@lahna.fi.intel.com>
+From: Bastien Nocera <hadess@hadess.net>
+Subject: Re: [PATCH] ACPI / scan: set status to 0 if _STA failed
+Date: Wed, 09 Dec 2015 16:40:22 +0100
+Message-ID: <1449675622.3723.4.camel@hadess.net>
+References: <564D3C75.60208@intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Christophe Ricard <christophe.ricard@gmail.com>,
-	"Rafael J. Wysocki" <rjw@rjwysocki.net>,
-	Len Brown <lenb@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Alexandre Courbot <gnurou@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	Christophe Ricard <christophe-h.ricard@st.com>
-To: Mika Westerberg <mika.westerberg@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: ACPI Devel Mailing List <linux-acpi@vger.kernel.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Stephen Just <stephenjust@gmail.com>,
+	"Chen, Yu C" <yu.c.chen@intel.com>, linux-spi@vger.kernel.org
+To: Aaron Lu <aaron.lu@intel.com>,
+	"Rafael J. Wysocki" <rjw@rjwysocki.net>
 Return-path: <linux-acpi-owner@vger.kernel.org>
-In-Reply-To: <20151209133646.GV1766@lahna.fi.intel.com>
+In-Reply-To: <564D3C75.60208@intel.com>
 Sender: linux-acpi-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Dec 9, 2015 at 3:36 PM, Mika Westerberg
-<mika.westerberg@linux.intel.com> wrote:
-> On Tue, Dec 08, 2015 at 10:57:19PM +0100, Christophe Ricard wrote:
->> I believe changes done in this patch take benefit of another existing
->> function used in acpi gsi context that is doing the
->> job as expected.
->>
->> Do you still believe acpi_dev_irq_flags is more appropriate ?
->
-> I don't have strong feelings about that. I just wanted to point out
-> there already exists such function.
->
-> However, if you do use acpi_gsi_get_irq_type() I think it should be
-> placed to the same file as acpi_dev_irq_flags().
+On Thu, 2015-11-19 at 11:05 +0800, Aaron Lu wrote:
+> Some ACPI node's _STA will touch operation region field, since the
+> evaluation of _STA in acpi_bus_type_and_status is very early, the
+> operation region handler is not ready yet. Instead of fail that
+> function
+> and not creating the acpi_device node consequently, set status to 0
+> so
+> that later when the driver for that device is probing, it can find
+> the acpi_device node and proceed normally. And at that time, the
+> handler for the operation region is ready and its _STA evaluation
+> will
+> succeed, its present status can be checked there.
+> 
+> Even there will be no driver using this node later, it doesn't seem
+> hurt to have one more acpi_device node created with status set to 0.
+> 
+> This happens on Microsoft Surface 3, where the SPI device node NTRG's
+> _STA touches GPIO fields and the SPI core driver will only enumerate
+> SPI
+> devices from ACPI if the acpi_device node is 1: created; 2: _STA
+> indicates it's present.
+> 
+> Note that due to another problem in SPI driver, for NTRG to be
+> actually
+> enumerated, some changes have to be made in the SPI layer, which is
+> addressed by Mika(not send out yet):
+> https://bugzilla.kernel.org/show_bug.cgi?id=104291#c23
+> 
+> Buglink: https://bugzilla.kernel.org/show_bug.cgi?id=104291
+> Reported-by: Bastien Nocera <bugzilla@hadess.net>
+> Signed-off-by: Aaron Lu <aaron.lu@intel.com>
 
-And perhaps renamed accordingly
+Worked for me with the additional SPI patch on a Surface 3.
 
-acpi_dev_get_irq_type() I suppose.
-
-
--- 
-With Best Regards,
-Andy Shevchenko
+Tested-by: Bastien Nocera <hadess@hadess.net>

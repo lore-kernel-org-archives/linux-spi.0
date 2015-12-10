@@ -1,7 +1,7 @@
 From: Sekhar Nori <nsekhar@ti.com>
-Subject: [PATCH v2 2/2] spi: davinci: use dev_err() for error reporting
-Date: Thu, 10 Dec 2015 21:59:05 +0530
-Message-ID: <83b3c0bb63ff958d10c773ab7bf128393cc7ddad.1449764266.git.nsekhar@ti.com>
+Subject: [PATCH v2 1/2] spi: davinci: fix spurious i/o error
+Date: Thu, 10 Dec 2015 21:59:04 +0530
+Message-ID: <fbcc972e6612cf3d069e7230dd078d8a1e0e2e5a.1449764266.git.nsekhar@ti.com>
 References: <cover.1449764266.git.nsekhar@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -15,58 +15,32 @@ In-Reply-To: <cover.1449764266.git.nsekhar@ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Use dev_err() for reporting errors rather than
-dev_dbg().
+davinci_spi_bufs() uses wait_for_completion_interruptible()
+without bothering to handle -ERESTARTSYS. Due to this,
+sometime, it returns prematurely when a signal is received.
+Since the return value is never checked, userspace eventually
+receives a spurious -EIO.
+
+To fix this, use un-interruptible wait_for_completion_timeout().
 
 Signed-off-by: Sekhar Nori <nsekhar@ti.com>
 ---
- drivers/spi/spi-davinci.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/spi/spi-davinci.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index 57d6960a6252..fddb7a3be322 100644
+index 7d3af3eacf57..57d6960a6252 100644
 --- a/drivers/spi/spi-davinci.c
 +++ b/drivers/spi/spi-davinci.c
-@@ -477,33 +477,33 @@ static int davinci_spi_check_error(struct davinci_spi *dspi, int int_status)
- 	struct device *sdev = dspi->bitbang.master->dev.parent;
+@@ -703,7 +703,8 @@ static int davinci_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
  
- 	if (int_status & SPIFLG_TIMEOUT_MASK) {
--		dev_dbg(sdev, "SPI Time-out Error\n");
-+		dev_err(sdev, "SPI Time-out Error\n");
- 		return -ETIMEDOUT;
- 	}
- 	if (int_status & SPIFLG_DESYNC_MASK) {
--		dev_dbg(sdev, "SPI Desynchronization Error\n");
-+		dev_err(sdev, "SPI Desynchronization Error\n");
- 		return -EIO;
- 	}
- 	if (int_status & SPIFLG_BITERR_MASK) {
--		dev_dbg(sdev, "SPI Bit error\n");
-+		dev_err(sdev, "SPI Bit error\n");
- 		return -EIO;
- 	}
- 
- 	if (dspi->version == SPI_VERSION_2) {
- 		if (int_status & SPIFLG_DLEN_ERR_MASK) {
--			dev_dbg(sdev, "SPI Data Length Error\n");
-+			dev_err(sdev, "SPI Data Length Error\n");
- 			return -EIO;
- 		}
- 		if (int_status & SPIFLG_PARERR_MASK) {
--			dev_dbg(sdev, "SPI Parity Error\n");
-+			dev_err(sdev, "SPI Parity Error\n");
- 			return -EIO;
- 		}
- 		if (int_status & SPIFLG_OVRRUN_MASK) {
--			dev_dbg(sdev, "SPI Data Overrun error\n");
-+			dev_err(sdev, "SPI Data Overrun error\n");
- 			return -EIO;
- 		}
- 		if (int_status & SPIFLG_BUF_INIT_ACTIVE_MASK) {
--			dev_dbg(sdev, "SPI Buffer Init Active\n");
-+			dev_err(sdev, "SPI Buffer Init Active\n");
- 			return -EBUSY;
- 		}
- 	}
+ 	/* Wait for the transfer to complete */
+ 	if (spicfg->io_type != SPI_IO_TYPE_POLL) {
+-		wait_for_completion_interruptible(&(dspi->done));
++		if (wait_for_completion_timeout(&dspi->done, HZ) == 0)
++			errors = SPIFLG_TIMEOUT_MASK;
+ 	} else {
+ 		while (dspi->rcount > 0 || dspi->wcount > 0) {
+ 			errors = davinci_spi_process_events(dspi);
 -- 
 2.6.3

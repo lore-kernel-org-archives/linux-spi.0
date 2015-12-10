@@ -1,80 +1,90 @@
-From: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH v4 4/5] ARM: dts: DRA7: add entry for qspi mmap region
-Date: Thu, 10 Dec 2015 10:34:23 +0530
-Message-ID: <566907D7.6040003@ti.com>
-References: <1448860515-28336-1-git-send-email-vigneshr@ti.com>
- <1448860515-28336-5-git-send-email-vigneshr@ti.com>
- <20151130223408.GJ23396@atomide.com> <565D25E6.4070206@ti.com>
- <20151201163950.GR23396@atomide.com> <566017A8.5040106@ti.com>
+From: Bhuvanchandra DV <bhuvanchandra.dv@toradex.com>
+Subject: [PATCH v2] spi-fsl-dspi: Fix CTAR Register access
+Date: Thu, 10 Dec 2015 11:25:30 +0530
+Message-ID: <1449726930-7378-1-git-send-email-bhuvanchandra.dv@toradex.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	"hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <566017A8.5040106-l0cyMroinI0@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain
+Cc: <stefan@agner.ch>, <linux-spi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>,
+	Bhuvanchandra DV <bhuvanchandra.dv@toradex.com>
+To: <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+DSPI instances in Vybrid have a different amount of chip selects
+and CTARs (Clock and transfer Attributes Register). In case of
+DSPI1 we only have 2 CTAR registers and 4 CS. In present driver
+implementation CTAR offset is derived from CS instance which will
+lead to out of bound access if chip select instance is greater than
+CTAR register instance, hence use single CTAR0 register for all CS
+instances. Since we write the CTAR register anyway before each access,
+there is no value in using the additional CTAR registers. Also one
+should not program a value in CTAS for a CTAR register that is not
+present, hence configure CTAS to use CTAR0.
 
+Signed-off-by: Bhuvanchandra DV <bhuvanchandra.dv@toradex.com>
+---
+ drivers/spi/spi-fsl-dspi.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-On 12/03/2015 03:51 PM, Vignesh R wrote:
-> 
-> 
-> On 12/01/2015 10:09 PM, Tony Lindgren wrote:
->> * Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org> [151130 20:46]:
->>> On 12/01/2015 04:04 AM, Tony Lindgren wrote:
->>>>
-...
->>
->> OK. They are both on L3 main so that won't cause any issues for separate
->> interconnect driver instances. As they are still separate targets flushing
->> a posted write to one area will not flush anything to the other.
->>
-> 
-> I didn't quite understand what you meant by interconnect driver instance.
-> qspi_base and qspi_mmap region are tightly bound to each other and both
-> needs to be accessed by ti-qspi driver (though different targets).
-> Besides qspi_mmap region is only used to read data, there will not be
-> any write accesses to this target. Are you saying this binding is not
-> viable?
-> 
-
-As I stated above qspi_base and qspi_mmap region are tightly bound,
-there is no way to use qspi_mmap region w/o accessing qspi_base. So I am
-planning to keep them as it is. I will move qspi_ctrlmod to use syscon.
-Something like:
-
-qspi: qspi@4b300000 {
-       compatible = "ti,dra7xxx-qspi";
-       reg = <0x4b300000 0x100>,
-             <0x5c000000 0x4000000>,
-       reg-names = "qspi_base", "qspi_mmap";
-       syscon-chipselects = <&scm_conf 0x558>;
-       #address-cells = <1>;
-       #size-cells = <0>;
-       spi-max-frequency = <48000000>;
-       ti,hwmods = "qspi";
-};
-
-Do you think this is not viable in future?
-
-
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 59a1143..39412c9 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -167,7 +167,7 @@ static inline int is_double_byte_mode(struct fsl_dspi *dspi)
+ {
+ 	unsigned int val;
+ 
+-	regmap_read(dspi->regmap, SPI_CTAR(dspi->cs), &val);
++	regmap_read(dspi->regmap, SPI_CTAR(0), &val);
+ 
+ 	return ((val & SPI_FRAME_BITS_MASK) == SPI_FRAME_BITS(8)) ? 0 : 1;
+ }
+@@ -257,7 +257,7 @@ static u32 dspi_data_to_pushr(struct fsl_dspi *dspi, int tx_word)
+ 
+ 	return	SPI_PUSHR_TXDATA(d16) |
+ 		SPI_PUSHR_PCS(dspi->cs) |
+-		SPI_PUSHR_CTAS(dspi->cs) |
++		SPI_PUSHR_CTAS(0) |
+ 		SPI_PUSHR_CONT;
+ }
+ 
+@@ -290,7 +290,7 @@ static int dspi_eoq_write(struct fsl_dspi *dspi)
+ 		 */
+ 		if (tx_word && (dspi->len == 1)) {
+ 			dspi->dataflags |= TRAN_STATE_WORD_ODD_NUM;
+-			regmap_update_bits(dspi->regmap, SPI_CTAR(dspi->cs),
++			regmap_update_bits(dspi->regmap, SPI_CTAR(0),
+ 					SPI_FRAME_BITS_MASK, SPI_FRAME_BITS(8));
+ 			tx_word = 0;
+ 		}
+@@ -339,7 +339,7 @@ static int dspi_tcfq_write(struct fsl_dspi *dspi)
+ 
+ 	if (tx_word && (dspi->len == 1)) {
+ 		dspi->dataflags |= TRAN_STATE_WORD_ODD_NUM;
+-		regmap_update_bits(dspi->regmap, SPI_CTAR(dspi->cs),
++		regmap_update_bits(dspi->regmap, SPI_CTAR(0),
+ 				SPI_FRAME_BITS_MASK, SPI_FRAME_BITS(8));
+ 		tx_word = 0;
+ 	}
+@@ -407,7 +407,7 @@ static int dspi_transfer_one_message(struct spi_master *master,
+ 		regmap_update_bits(dspi->regmap, SPI_MCR,
+ 				SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF,
+ 				SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF);
+-		regmap_write(dspi->regmap, SPI_CTAR(dspi->cs),
++		regmap_write(dspi->regmap, SPI_CTAR(0),
+ 				dspi->cur_chip->ctar_val);
+ 
+ 		trans_mode = dspi->devtype_data->trans_mode;
+@@ -566,7 +566,7 @@ static irqreturn_t dspi_interrupt(int irq, void *dev_id)
+ 		if (!dspi->len) {
+ 			if (dspi->dataflags & TRAN_STATE_WORD_ODD_NUM) {
+ 				regmap_update_bits(dspi->regmap,
+-						   SPI_CTAR(dspi->cs),
++						   SPI_CTAR(0),
+ 						   SPI_FRAME_BITS_MASK,
+ 						   SPI_FRAME_BITS(16));
+ 				dspi->dataflags &= ~TRAN_STATE_WORD_ODD_NUM;
 -- 
-Regards
-Vignesh
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+2.6.2

@@ -1,90 +1,75 @@
-From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v5 4/5] ARM: dts: DRA7: add entry for qspi mmap region
-Date: Fri, 11 Dec 2015 09:09:35 -0600
-Message-ID: <20151211150935.GA15654@rob-hp-laptop>
-References: <1449807000-6457-1-git-send-email-vigneshr@ti.com>
- <1449807000-6457-5-git-send-email-vigneshr@ti.com>
-Mime-Version: 1.0
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: Re: [PATCH V2 2/5] spi: core: add spi_replace_transfers method
+Date: Fri, 11 Dec 2015 17:04:23 +0100
+Message-ID: <E4196FDC-4E6D-430F-973D-5E447FF7707E@martin.sperl.org>
+References: <1449501708-2228-1-git-send-email-kernel@martin.sperl.org> <1449501708-2228-3-git-send-email-kernel@martin.sperl.org> <CAHp75Vd_7NBibKFPq++JuDiWp9zkwu9iPrjZyKK6XoL6Lr_S0g@mail.gmail.com>
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2104\))
 Content-Type: text/plain; charset=us-ascii
-Cc: Tony Lindgren <tony@atomide.com>,
-	Brian Norris <computersforpeace@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Russell King <linux@arm.linux.org.uk>, hramrach@gmail.com,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org
-To: Vignesh R <vigneshr@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1449807000-6457-5-git-send-email-vigneshr@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
+	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CAHp75Vd_7NBibKFPq++JuDiWp9zkwu9iPrjZyKK6XoL6Lr_S0g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, Dec 11, 2015 at 09:39:59AM +0530, Vignesh R wrote:
-> Add qspi memory mapped region entries for DRA7xx based SoCs. Also,
-> update the binding documents for the controller to document this change.
-> 
-> Signed-off-by: Vignesh R <vigneshr@ti.com>
 
-Acked-by: Rob Herring <robh@kernel.org>
+> On 11.12.2015, at 15:37, Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> 
+> On Mon, Dec 7, 2015 at 5:21 PM,  <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org> wrote:
+>> +/* Core methods for spi_message alterations */
+>> +
+>> +static void __spi_replace_transfers_release(struct spi_master *master,
+>> +                                           struct spi_message *msg,
+>> +                                           void *res)
+>> +{
+>> +       struct spi_replaced_transfers *srt = res;
+> 
+> srt sounds magic
+> rxfer might be better?
+srt = Spi_Replaced_Transfer - if you like rxfer better I can replace it.
 
-> ---
 > 
-> v5: use syscon to access scm register.
+>> +       int i;
 > 
->  Documentation/devicetree/bindings/spi/ti_qspi.txt | 17 +++++++++++++++++
->  arch/arm/boot/dts/dra7.dtsi                       |  6 ++++--
->  2 files changed, 21 insertions(+), 2 deletions(-)
+> unsigned int i; or size_t to be in align with inserted field.
+will do.
+
+>> +       int i;
 > 
-> diff --git a/Documentation/devicetree/bindings/spi/ti_qspi.txt b/Documentation/devicetree/bindings/spi/ti_qspi.txt
-> index 601a360531a5..809c3f334316 100644
-> --- a/Documentation/devicetree/bindings/spi/ti_qspi.txt
-> +++ b/Documentation/devicetree/bindings/spi/ti_qspi.txt
-> @@ -15,6 +15,10 @@ Recommended properties:
->  - spi-max-frequency: Definition as per
->                       Documentation/devicetree/bindings/spi/spi-bus.txt
->  
-> +Optional properties:
-> +- syscon-chipselects: Handle to system control region contains QSPI
-> +		      chipselect register and offset of that register.
-> +
->  Example:
->  
->  qspi: qspi@4b300000 {
-> @@ -26,3 +30,16 @@ qspi: qspi@4b300000 {
->  	spi-max-frequency = <25000000>;
->  	ti,hwmods = "qspi";
->  };
-> +
-> +For dra7xx:
-> +qspi: qspi@4b300000 {
-> +	compatible = "ti,dra7xxx-qspi";
-> +	reg = <0x4b300000 0x100>,
-> +	      <0x5c000000 0x4000000>,
-> +	reg-names = "qspi_base", "qspi_mmap";
-> +	syscon-chipselects = <&scm_conf 0x558>;
-> +	#address-cells = <1>;
-> +	#size-cells = <0>;
-> +	spi-max-frequency = <48000000>;
-> +	ti,hwmods = "qspi";
-> +};
-> diff --git a/arch/arm/boot/dts/dra7.dtsi b/arch/arm/boot/dts/dra7.dtsi
-> index fe99231cbde5..be91c7781c07 100644
-> --- a/arch/arm/boot/dts/dra7.dtsi
-> +++ b/arch/arm/boot/dts/dra7.dtsi
-> @@ -1153,8 +1153,10 @@
->  
->  		qspi: qspi@4b300000 {
->  			compatible = "ti,dra7xxx-qspi";
-> -			reg = <0x4b300000 0x100>;
-> -			reg-names = "qspi_base";
-> +			reg = <0x4b300000 0x100>,
-> +			      <0x5c000000 0x4000000>;
-> +			reg-names = "qspi_base", "qspi_mmap";
-> +			syscon-chipselects = <&scm_conf 0x558>;
->  			#address-cells = <1>;
->  			#size-cells = <0>;
->  			ti,hwmods = "qspi";
-> -- 
-> 2.6.3
+> Ditto.
 > 
+>> +
+>> +       /* allocate the structure using spi_res */
+>> +       srt = spi_res_alloc(msg->spi, __spi_replace_transfers_release,
+>> +                           insert * sizeof(struct spi_transfer)
+>> +                           + sizeof(struct spi_replaced_transfers)
+>> +                           + extradatasize,
+>> +                           0);
+>> +       if (!srt)
+>> +               return NULL;
+> 
+> ERR_PTR for this API seems better to have.
+Can do that.
+
+>> +       srt->inserted = insert;
+>> +       for (i = insert - 1; i >= 0 ; i--) {
+> 
+> This is classical pattern for
+> 
+> while (--insert >= 0) {
+> }
+did it slightly differently as size_t is always >= 0 - 
+the main reason for using int here...
+
+Martin
+
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

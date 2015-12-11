@@ -1,75 +1,37 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH V2 2/5] spi: core: add spi_replace_transfers method
-Date: Fri, 11 Dec 2015 17:04:23 +0100
-Message-ID: <E4196FDC-4E6D-430F-973D-5E447FF7707E@martin.sperl.org>
-References: <1449501708-2228-1-git-send-email-kernel@martin.sperl.org> <1449501708-2228-3-git-send-email-kernel@martin.sperl.org> <CAHp75Vd_7NBibKFPq++JuDiWp9zkwu9iPrjZyKK6XoL6Lr_S0g@mail.gmail.com>
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2104\))
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAHp75Vd_7NBibKFPq++JuDiWp9zkwu9iPrjZyKK6XoL6Lr_S0g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH 0/2] gpio: Add driver for SPI serializers
+Date: Fri, 11 Dec 2015 22:43:35 +0100
+Message-ID: <CACRpkdaWRYeg_A5xWuSMX=J7-VFMh+kjKVADO_wuhZ1n2Joskg@mail.gmail.com>
+References: <1449863184-29668-1-git-send-email-afd@ti.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: Alexandre Courbot <gnurou@gmail.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora.org>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: "Andrew F. Davis" <afd@ti.com>, Mark Brown <broonie@kernel.org>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+Return-path: <linux-gpio-owner@vger.kernel.org>
+In-Reply-To: <1449863184-29668-1-git-send-email-afd@ti.com>
+Sender: linux-gpio-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+On Fri, Dec 11, 2015 at 8:46 PM, Andrew F. Davis <afd@ti.com> wrote:
 
-> On 11.12.2015, at 15:37, Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> 
-> On Mon, Dec 7, 2015 at 5:21 PM,  <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org> wrote:
->> +/* Core methods for spi_message alterations */
->> +
->> +static void __spi_replace_transfers_release(struct spi_master *master,
->> +                                           struct spi_message *msg,
->> +                                           void *res)
->> +{
->> +       struct spi_replaced_transfers *srt = res;
-> 
-> srt sounds magic
-> rxfer might be better?
-srt = Spi_Replaced_Transfer - if you like rxfer better I can replace it.
+> This series adds a GPI(General Purpose Input) driver for generic
+> parallel-in/serial-out shift registers, such as the SN65HVS882
+> that this driver was tested on. This should also work for the rest
+> of the SN65HVS88x series as well as other 74x165 style devices.
 
-> 
->> +       int i;
-> 
-> unsigned int i; or size_t to be in align with inserted field.
-will do.
+Pretty interesting, I'd like you to CC SPI maintainer Mark Brown
+on this patch series, and the SPI mailing list.
 
->> +       int i;
-> 
-> Ditto.
-> 
->> +
->> +       /* allocate the structure using spi_res */
->> +       srt = spi_res_alloc(msg->spi, __spi_replace_transfers_release,
->> +                           insert * sizeof(struct spi_transfer)
->> +                           + sizeof(struct spi_replaced_transfers)
->> +                           + extradatasize,
->> +                           0);
->> +       if (!srt)
->> +               return NULL;
-> 
-> ERR_PTR for this API seems better to have.
-Can do that.
+Looking closer at the code.
 
->> +       srt->inserted = insert;
->> +       for (i = insert - 1; i >= 0 ; i--) {
-> 
-> This is classical pattern for
-> 
-> while (--insert >= 0) {
-> }
-did it slightly differently as size_t is always >= 0 - 
-the main reason for using int here...
-
-Martin
-
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Yours,
+Linus Walleij

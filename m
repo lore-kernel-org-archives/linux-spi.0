@@ -1,150 +1,90 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH V2 1/5] spi: core: added spi_resource management
-Date: Fri, 11 Dec 2015 15:55:24 +0100
-Message-ID: <D2C3BEFF-D4E2-4B07-BDB2-6B12F095A12E@martin.sperl.org>
-References: <1449501708-2228-1-git-send-email-kernel@martin.sperl.org> <1449501708-2228-2-git-send-email-kernel@martin.sperl.org> <CAHp75Vf4UGOAz5ZLCBtCeNitYY1h0P6Ae7_puVTfe+KweyeeAA@mail.gmail.com>
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2104\))
+From: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH v5 4/5] ARM: dts: DRA7: add entry for qspi mmap region
+Date: Fri, 11 Dec 2015 09:09:35 -0600
+Message-ID: <20151211150935.GA15654@rob-hp-laptop>
+References: <1449807000-6457-1-git-send-email-vigneshr@ti.com>
+ <1449807000-6457-5-git-send-email-vigneshr@ti.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 8BIT
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAHp75Vf4UGOAz5ZLCBtCeNitYY1h0P6Ae7_puVTfe+KweyeeAA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Tony Lindgren <tony@atomide.com>,
+	Brian Norris <computersforpeace@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Russell King <linux@arm.linux.org.uk>, hramrach@gmail.com,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org
+To: Vignesh R <vigneshr@ti.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1449807000-6457-5-git-send-email-vigneshr@ti.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+On Fri, Dec 11, 2015 at 09:39:59AM +0530, Vignesh R wrote:
+> Add qspi memory mapped region entries for DRA7xx based SoCs. Also,
+> update the binding documents for the controller to document this change.
+> 
+> Signed-off-by: Vignesh R <vigneshr@ti.com>
 
-> On 11.12.2015, at 15:30, Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> 
-> On Mon, Dec 7, 2015 at 5:21 PM,  <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org> wrote:
->> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
->> 
->> SPI resource management framework used while processing a spi_message
->> 
-> 
-> I have no thoughts (*) about the whole idea, but below some comments
-> regarding implementation.
-> 
-> (*) [Yet] For a fist glance looked a bit complicated.
-Look at all the patch-sets - by now everything (besides dma_mapping) is
-implemented and should come in the next version.
+Acked-by: Rob Herring <robh@kernel.org>
 
-It then includes also the spi-loopback-test framework which I use heavily
-to test the patches for functional regressions.
-
+> ---
 > 
->> 
->> Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
->> ---
->> drivers/spi/spi.c       |   93 +++++++++++++++++++++++++++++++++++++++++++++++
->> include/linux/spi/spi.h |   36 ++++++++++++++++++
->> 2 files changed, 129 insertions(+)
->> 
->> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
->> index 2b0a8ec..fb39d23 100644
->> --- a/drivers/spi/spi.c
->> +++ b/drivers/spi/spi.c
->> @@ -1007,6 +1007,8 @@ out:
->>        if (msg->status && master->handle_err)
->>                master->handle_err(master, msg);
->> 
->> +       spi_res_release(master, msg);
->> +
+> v5: use syscon to access scm register.
 > 
-> Why it's in this patch and not later?
-Because it needs to get released when we finish the spi_message processing code.
-Also it is the only place were we talk directly about spi_res and releasing it.
-
+>  Documentation/devicetree/bindings/spi/ti_qspi.txt | 17 +++++++++++++++++
+>  arch/arm/boot/dts/dra7.dtsi                       |  6 ++++--
+>  2 files changed, 21 insertions(+), 2 deletions(-)
 > 
->>        spi_finalize_current_message(master);
->> 
->>        return ret;
->> @@ -1991,6 +1993,97 @@ struct spi_master *spi_busnum_to_master(u16 bus_num)
->> }
->> EXPORT_SYMBOL_GPL(spi_busnum_to_master);
->> 
->> +/*-------------------------------------------------------------------------*/
->> +
->> +/* Core methods for SPI resource management */
->> +
->> +/**
->> + * spi_res_alloc - allocate a spi resource that is life-cycle managed
->> + *                 during the processing of a spi_message while using
->> + *                 spi_transfer_one
->> + * @spi:     the spi device for which we allocate memory
->> + * @release: the release code to execute for this resource
->> + * @size:    size to alloc and return
->> + * @gfp:     GFP allocation flags
->> + *
->> + * Return: the pointer to the allocated data
->> + *
->> + * This may get enhanced in the future to allocate from a memory pool
->> + * of the @spi_device or @spi_master to avoid repeated allocations.
->> + */
->> +void *spi_res_alloc(struct spi_device *spi,
->> +                   spi_res_release_t release,
->> +                   size_t size, gfp_t gfp)
->> +{
->> +       struct spi_res *sres;
+> diff --git a/Documentation/devicetree/bindings/spi/ti_qspi.txt b/Documentation/devicetree/bindings/spi/ti_qspi.txt
+> index 601a360531a5..809c3f334316 100644
+> --- a/Documentation/devicetree/bindings/spi/ti_qspi.txt
+> +++ b/Documentation/devicetree/bindings/spi/ti_qspi.txt
+> @@ -15,6 +15,10 @@ Recommended properties:
+>  - spi-max-frequency: Definition as per
+>                       Documentation/devicetree/bindings/spi/spi-bus.txt
+>  
+> +Optional properties:
+> +- syscon-chipselects: Handle to system control region contains QSPI
+> +		      chipselect register and offset of that register.
+> +
+>  Example:
+>  
+>  qspi: qspi@4b300000 {
+> @@ -26,3 +30,16 @@ qspi: qspi@4b300000 {
+>  	spi-max-frequency = <25000000>;
+>  	ti,hwmods = "qspi";
+>  };
+> +
+> +For dra7xx:
+> +qspi: qspi@4b300000 {
+> +	compatible = "ti,dra7xxx-qspi";
+> +	reg = <0x4b300000 0x100>,
+> +	      <0x5c000000 0x4000000>,
+> +	reg-names = "qspi_base", "qspi_mmap";
+> +	syscon-chipselects = <&scm_conf 0x558>;
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +	spi-max-frequency = <48000000>;
+> +	ti,hwmods = "qspi";
+> +};
+> diff --git a/arch/arm/boot/dts/dra7.dtsi b/arch/arm/boot/dts/dra7.dtsi
+> index fe99231cbde5..be91c7781c07 100644
+> --- a/arch/arm/boot/dts/dra7.dtsi
+> +++ b/arch/arm/boot/dts/dra7.dtsi
+> @@ -1153,8 +1153,10 @@
+>  
+>  		qspi: qspi@4b300000 {
+>  			compatible = "ti,dra7xxx-qspi";
+> -			reg = <0x4b300000 0x100>;
+> -			reg-names = "qspi_base";
+> +			reg = <0x4b300000 0x100>,
+> +			      <0x5c000000 0x4000000>;
+> +			reg-names = "qspi_base", "qspi_mmap";
+> +			syscon-chipselects = <&scm_conf 0x558>;
+>  			#address-cells = <1>;
+>  			#size-cells = <0>;
+>  			ti,hwmods = "qspi";
+> -- 
+> 2.6.3
 > 
->> +       size_t tot_size = sizeof(struct spi_res) + size;
-> 
-> Looks like you create a variable for one use. And I'm pretty sure the
-> 80 character limit is not a case here.
-fixed in next version of the patchset.
-
-> 
->> +
->> +       sres = kzalloc(tot_size, gfp);
->> +       if (!sres)
->> +               return NULL;
->> +
->> +       INIT_LIST_HEAD(&sres->entry);
->> +       sres->release = release;
->> +
->> +       return sres->data;
->> +}
->> +EXPORT_SYMBOL_GPL(spi_res_alloc);
->> +
->> +/**
->> + * spi_res_free - free an spi resource
->> + * @res: pointer to the custom data of a resource
->> + *
->> + */
->> +void spi_res_free(void *res)
->> +{
->> +       struct spi_res *sres;
->> +
->> +       if (res) {
-> 
-> if (!res)
-> return;
-> ?
-matter of taste I guess - will fix it in the next version.
-(I also guess it was taken from the template dev_res)
-
-> 
->> +               sres = container_of(res, struct spi_res, data);
-> 
-> This might be at the definition block even if res == NULL.
-
-I was skeptical about making this assumption - fixed.
-
->> +struct spi_res {
->> +       struct list_head        entry;
->> +       spi_res_release_t       release;
->> +       unsigned long long      data[]; /* guarantee ull alignment */
-> 
-> Isn't better to use __aligned(8)?
-> And why not simple void *?
-devres does it that way, so I kept it that way...
-
-Thanks,
-	Martin--
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

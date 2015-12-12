@@ -1,77 +1,53 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: davinci: fix spurious i/o error" to the spi tree
-Date: Sat, 12 Dec 2015 23:08:09 +0000
-Message-ID: <E1a7tGr-0002tQ-De@finisterre>
-References: <fbcc972e6612cf3d069e7230dd078d8a1e0e2e5a.1449764266.git.nsekhar@ti.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Christophe Ricard <christophe.ricard-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v5 0/3] ACPI: Add irq_type to gpio interrupt
+Date: Sun, 13 Dec 2015 00:30:01 +0100
+Message-ID: <1449963004-8391-1-git-send-email-christophe-h.ricard@st.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Christophe Ricard <christophe-h.ricard-qxv4g6HH51o@public.gmane.org>
+To: rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org, lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	gnurou-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
+	mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <fbcc972e6612cf3d069e7230dd078d8a1e0e2e5a.1449764266.git.nsekhar-l0cyMroinI0@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+Hi,
 
-   spi: davinci: fix spurious i/o error
+ACPI probing method does not retrieve irq_type from a gpio interrupt declared
+with GpioInt as it is done with devicetree probing. In other terms, irq_get_trigger_type
+will always send back 0.
 
-has been applied to the spi tree at
+Those 3 patches propose a way to retrieve the correct interrupt polarity/type from a GpioInt
+acpi declaration when using irq_get_trigger_type.
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+Since v4 after Mika and Andy's feedbacks:
+- acpi_gpio_info active_low field got renamed polarity. Note that polarity/active_low is having sense
+also when a gpio is not mapped as an interrupt but as an output (For example: check gpiod_set_value
+in drivers/gpio/gpiolib.c).
+- acpi_gsi_get_irq_type is now renamed acpi_dev_get_irq_type and moved to drivers/acpi/resource.c
+- The irq described in the acpi spi slave node is now set once we fall back to retrieve normal interrupt.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+Best Regards
+Christophe 
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Christophe Ricard (3):
+  acpi: Rename acpi_gsi_get_irq_type to acpi_dev_get_irq_type and export
+    symbol
+  ACPI / gpio: Add irq_type when a gpio is used as an interrupt
+  ACPI / spi: attach gpio irq from acpi description to spi device
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+ drivers/acpi/gsi.c          | 21 +--------------------
+ drivers/acpi/resource.c     | 26 ++++++++++++++++++++++++++
+ drivers/gpio/gpiolib-acpi.c | 28 ++++++++++++++++++++++------
+ drivers/gpio/gpiolib.c      |  4 ++--
+ drivers/gpio/gpiolib.h      |  6 ++++--
+ drivers/spi/spi.c           |  2 ++
+ include/linux/acpi.h        |  1 +
+ 7 files changed, 58 insertions(+), 30 deletions(-)
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 7f3ac71ac3b05aaa2c55c266448f973188275a8c Mon Sep 17 00:00:00 2001
-From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
-Date: Thu, 10 Dec 2015 21:59:04 +0530
-Subject: [PATCH] spi: davinci: fix spurious i/o error
-
-davinci_spi_bufs() uses wait_for_completion_interruptible()
-without bothering to handle -ERESTARTSYS. Due to this,
-sometime, it returns prematurely when a signal is received.
-Since the return value is never checked, userspace eventually
-receives a spurious -EIO.
-
-To fix this, use un-interruptible wait_for_completion_timeout().
-
-Signed-off-by: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-davinci.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index 7d3af3e..57d6960 100644
---- a/drivers/spi/spi-davinci.c
-+++ b/drivers/spi/spi-davinci.c
-@@ -703,7 +703,8 @@ static int davinci_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
- 
- 	/* Wait for the transfer to complete */
- 	if (spicfg->io_type != SPI_IO_TYPE_POLL) {
--		wait_for_completion_interruptible(&(dspi->done));
-+		if (wait_for_completion_timeout(&dspi->done, HZ) == 0)
-+			errors = SPIFLG_TIMEOUT_MASK;
- 	} else {
- 		while (dspi->rcount > 0 || dspi->wcount > 0) {
- 			errors = davinci_spi_process_events(dspi);
 -- 
-2.6.4
+2.1.4
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

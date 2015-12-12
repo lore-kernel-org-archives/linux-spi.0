@@ -1,125 +1,46 @@
-From: Christophe Ricard <christophe.ricard@gmail.com>
-Subject: [PATCH v5 1/3] acpi: Rename acpi_gsi_get_irq_type to acpi_dev_get_irq_type and export symbol
-Date: Sun, 13 Dec 2015 00:30:02 +0100
-Message-ID: <1449963004-8391-2-git-send-email-christophe-h.ricard@st.com>
+From: Christophe Ricard <christophe.ricard-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v5 3/3] ACPI / spi: attach gpio irq from acpi description to spi device
+Date: Sun, 13 Dec 2015 00:30:04 +0100
+Message-ID: <1449963004-8391-4-git-send-email-christophe-h.ricard@st.com>
 References: <1449963004-8391-1-git-send-email-christophe-h.ricard@st.com>
-Cc: linux-spi@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	Christophe Ricard <christophe-h.ricard@st.com>
-To: rjw@rjwysocki.net, lenb@kernel.org, linus.walleij@linaro.org,
-	gnurou@gmail.com, andriy.shevchenko@linux.intel.com,
-	mika.westerberg@linux.intel.com, broonie@kernel.org
-Return-path: <linux-acpi-owner@vger.kernel.org>
-In-Reply-To: <1449963004-8391-1-git-send-email-christophe-h.ricard@st.com>
-Sender: linux-acpi-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Christophe Ricard <christophe-h.ricard-qxv4g6HH51o@public.gmane.org>
+To: rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org, lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	gnurou-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
+	mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1449963004-8391-1-git-send-email-christophe-h.ricard-qxv4g6HH51o@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-acpi_gsi_get_irq_type could be use out of gsi purpose.
+spi->irq was ignoring GpioInt property setting it to -1.
+acpi_dev_gpio_irq_get returns and configure the slave irq according to
+the acpi slave node description.
+It is now inline with devicetree behavior.
 
-Rename and make it available as a resource function.
-
-Signed-off-by: Christophe Ricard <christophe-h.ricard@st.com>
+Signed-off-by: Christophe Ricard <christophe-h.ricard-qxv4g6HH51o@public.gmane.org>
 ---
- drivers/acpi/gsi.c      | 21 +--------------------
- drivers/acpi/resource.c | 26 ++++++++++++++++++++++++++
- include/linux/acpi.h    |  1 +
- 3 files changed, 28 insertions(+), 20 deletions(-)
+ drivers/spi/spi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/acpi/gsi.c b/drivers/acpi/gsi.c
-index fa4585a..ee9e0f2 100644
---- a/drivers/acpi/gsi.c
-+++ b/drivers/acpi/gsi.c
-@@ -17,25 +17,6 @@ enum acpi_irq_model_id acpi_irq_model;
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index a5f53de..d67c6fa 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1506,6 +1506,8 @@ static int acpi_spi_add_resource(struct acpi_resource *ares, void *data)
  
- static struct fwnode_handle *acpi_gsi_domain_id;
+ 		if (acpi_dev_resource_interrupt(ares, 0, &r))
+ 			spi->irq = r.start;
++		else
++			spi->irq = acpi_dev_gpio_irq_get(ACPI_COMPANION(&spi->dev), 0);
+ 	}
  
--static unsigned int acpi_gsi_get_irq_type(int trigger, int polarity)
--{
--	switch (polarity) {
--	case ACPI_ACTIVE_LOW:
--		return trigger == ACPI_EDGE_SENSITIVE ?
--		       IRQ_TYPE_EDGE_FALLING :
--		       IRQ_TYPE_LEVEL_LOW;
--	case ACPI_ACTIVE_HIGH:
--		return trigger == ACPI_EDGE_SENSITIVE ?
--		       IRQ_TYPE_EDGE_RISING :
--		       IRQ_TYPE_LEVEL_HIGH;
--	case ACPI_ACTIVE_BOTH:
--		if (trigger == ACPI_EDGE_SENSITIVE)
--			return IRQ_TYPE_EDGE_BOTH;
--	default:
--		return IRQ_TYPE_NONE;
--	}
--}
--
- /**
-  * acpi_gsi_to_irq() - Retrieve the linux irq number for a given GSI
-  * @gsi: GSI IRQ number to map
-@@ -82,7 +63,7 @@ int acpi_register_gsi(struct device *dev, u32 gsi, int trigger,
- 
- 	fwspec.fwnode = acpi_gsi_domain_id;
- 	fwspec.param[0] = gsi;
--	fwspec.param[1] = acpi_gsi_get_irq_type(trigger, polarity);
-+	fwspec.param[1] = acpi_dev_get_irq_type(trigger, polarity);
- 	fwspec.param_count = 2;
- 
- 	return irq_create_fwspec_mapping(&fwspec);
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 15d22db..bd1b945 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -23,6 +23,7 @@
- #include <linux/export.h>
- #include <linux/ioport.h>
- #include <linux/slab.h>
-+#include <linux/irq.h>
- 
- #ifdef CONFIG_X86
- #define valid_IRQ(i) (((i) != 0) && ((i) != 2))
-@@ -333,6 +334,31 @@ unsigned long acpi_dev_irq_flags(u8 triggering, u8 polarity, u8 shareable)
- }
- EXPORT_SYMBOL_GPL(acpi_dev_irq_flags);
- 
-+/**
-+ * acpi_dev_get_irq_type - Determine irq type.
-+ * @triggering: Triggering type as provided by ACPI.
-+ * @polarity: Interrupt polarity as provided by ACPI.
-+ */
-+u32 acpi_dev_get_irq_type(u32 triggering, u32 polarity)
-+{
-+	switch (polarity) {
-+	case ACPI_ACTIVE_LOW:
-+		return triggering == ACPI_EDGE_SENSITIVE ?
-+		       IRQ_TYPE_EDGE_FALLING :
-+		       IRQ_TYPE_LEVEL_LOW;
-+	case ACPI_ACTIVE_HIGH:
-+		return triggering == ACPI_EDGE_SENSITIVE ?
-+		       IRQ_TYPE_EDGE_RISING :
-+		       IRQ_TYPE_LEVEL_HIGH;
-+	case ACPI_ACTIVE_BOTH:
-+		if (triggering == ACPI_EDGE_SENSITIVE)
-+			return IRQ_TYPE_EDGE_BOTH;
-+	default:
-+		return IRQ_TYPE_NONE;
-+	}
-+}
-+EXPORT_SYMBOL_GPL(acpi_dev_get_irq_type);
-+
- static void acpi_dev_irqresource_disabled(struct resource *res, u32 gsi)
- {
- 	res->start = gsi;
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index d863e12..162e0e7 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -299,6 +299,7 @@ bool acpi_dev_resource_address_space(struct acpi_resource *ares,
- bool acpi_dev_resource_ext_address_space(struct acpi_resource *ares,
- 					 struct resource_win *win);
- unsigned long acpi_dev_irq_flags(u8 triggering, u8 polarity, u8 shareable);
-+u32 acpi_dev_get_irq_type(u32 triggering, u32 polarity);
- bool acpi_dev_resource_interrupt(struct acpi_resource *ares, int index,
- 				 struct resource *res);
- 
+ 	/* Always tell the ACPI core to skip this resource */
 -- 
 2.1.4
 
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

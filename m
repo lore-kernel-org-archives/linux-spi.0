@@ -1,48 +1,105 @@
-From: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v2] spi: dts: sun4i: Add support for
- inter-word wait cycles using the SPI Wait Clock Register
-Date: Sat, 12 Dec 2015 11:44:45 +0100
-Message-ID: <CAGNoLaOUnvpP6XYkeCc64goVY7uQp21-cCjjXymTfOjzViacLA@mail.gmail.com>
-References: <1449873940-10167-1-git-send-email-mweseloh42@gmail.com>
-	<1449911980.29015.7.camel@plaes.org>
-Reply-To: mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>, Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"Mailing List, Arm" <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Priit Laes <plaes-q/aMd4JkU83YtjvyW6yDsg@public.gmane.org>
-Return-path: <linux-sunxi+bncBDFO74UEV4IRBHXVV6ZQKGQEIGDPFHQ-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-In-Reply-To: <1449911980.29015.7.camel-q/aMd4JkU83YtjvyW6yDsg@public.gmane.org>
-List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <https://groups.google.com/group/linux-sunxi
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-List-Subscribe: <https://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
- <https://groups.google.com/group/linux-sunxi/subscribe>
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: davinci: use dev_err() for error reporting" to the spi tree
+Date: Sat, 12 Dec 2015 23:08:07 +0000
+Message-ID: <E1a7tGp-0002sx-OT@finisterre>
+References: <83b3c0bb63ff958d10c773ab7bf128393cc7ddad.1449764266.git.nsekhar@ti.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <83b3c0bb63ff958d10c773ab7bf128393cc7ddad.1449764266.git.nsekhar-l0cyMroinI0@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-2015-12-12 10:19 GMT+01:00 Priit Laes <plaes-q/aMd4JkU83YtjvyW6yDsg@public.gmane.org>:
-> On Fri, 2015-12-11 at 23:45 +0100, Marcus Weseloh wrote:
-> [...]
->> +- sun4i,spi-word-wait-ns: hardware based delay in nanoseconds between
->> +                       transmission of words
->
-> Should be 'allwinner,spi-word-wait-ns'
+The patch
 
-Thanks for the review, I will change the prefix.
+   spi: davinci: use dev_err() for error reporting
 
-> [...]
->> +     /* Setup wait time beteen words */
-> typo
+has been applied to the spi tree at
 
-Ah, yes. I will wait for more review comments and post a v3 after that.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-Cheers,
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-   Marcus
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 21c015b776d4013b656bca8a4f42b953297b8b8c Mon Sep 17 00:00:00 2001
+From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
+Date: Thu, 10 Dec 2015 21:59:05 +0530
+Subject: [PATCH] spi: davinci: use dev_err() for error reporting
+
+Use dev_err() for reporting errors rather than
+dev_dbg().
+
+Signed-off-by: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-davinci.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+index 57d6960..fddb7a3 100644
+--- a/drivers/spi/spi-davinci.c
++++ b/drivers/spi/spi-davinci.c
+@@ -477,33 +477,33 @@ static int davinci_spi_check_error(struct davinci_spi *dspi, int int_status)
+ 	struct device *sdev = dspi->bitbang.master->dev.parent;
+ 
+ 	if (int_status & SPIFLG_TIMEOUT_MASK) {
+-		dev_dbg(sdev, "SPI Time-out Error\n");
++		dev_err(sdev, "SPI Time-out Error\n");
+ 		return -ETIMEDOUT;
+ 	}
+ 	if (int_status & SPIFLG_DESYNC_MASK) {
+-		dev_dbg(sdev, "SPI Desynchronization Error\n");
++		dev_err(sdev, "SPI Desynchronization Error\n");
+ 		return -EIO;
+ 	}
+ 	if (int_status & SPIFLG_BITERR_MASK) {
+-		dev_dbg(sdev, "SPI Bit error\n");
++		dev_err(sdev, "SPI Bit error\n");
+ 		return -EIO;
+ 	}
+ 
+ 	if (dspi->version == SPI_VERSION_2) {
+ 		if (int_status & SPIFLG_DLEN_ERR_MASK) {
+-			dev_dbg(sdev, "SPI Data Length Error\n");
++			dev_err(sdev, "SPI Data Length Error\n");
+ 			return -EIO;
+ 		}
+ 		if (int_status & SPIFLG_PARERR_MASK) {
+-			dev_dbg(sdev, "SPI Parity Error\n");
++			dev_err(sdev, "SPI Parity Error\n");
+ 			return -EIO;
+ 		}
+ 		if (int_status & SPIFLG_OVRRUN_MASK) {
+-			dev_dbg(sdev, "SPI Data Overrun error\n");
++			dev_err(sdev, "SPI Data Overrun error\n");
+ 			return -EIO;
+ 		}
+ 		if (int_status & SPIFLG_BUF_INIT_ACTIVE_MASK) {
+-			dev_dbg(sdev, "SPI Buffer Init Active\n");
++			dev_err(sdev, "SPI Buffer Init Active\n");
+ 			return -EBUSY;
+ 		}
+ 	}
+-- 
+2.6.4
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

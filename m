@@ -1,19 +1,18 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: add spi_message_init_no_memset to avoid zeroing the spi_message" to the spi tree
-Date: Sat, 12 Dec 2015 23:08:05 +0000
-Message-ID: <E1a7tGn-0002s1-7B@finisterre>
-References: <1448632564-2381-2-git-send-email-kernel@martin.sperl.org>
+Subject: Applied "spi: davinci: fix spurious i/o error" to the spi tree
+Date: Sat, 12 Dec 2015 23:08:09 +0000
+Message-ID: <E1a7tGr-0002tQ-De@finisterre>
+References: <fbcc972e6612cf3d069e7230dd078d8a1e0e2e5a.1449764266.git.nsekhar@ti.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1448632564-2381-2-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <fbcc972e6612cf3d069e7230dd078d8a1e0e2e5a.1449764266.git.nsekhar-l0cyMroinI0@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: add spi_message_init_no_memset to avoid zeroing the spi_message
+   spi: davinci: fix spurious i/o error
 
 has been applied to the spi tree at
 
@@ -38,52 +37,39 @@ to this mail.
 Thanks,
 Mark
 
->From 49ddedf3bfcb59a562c7db0e50aecd1422e9cdc9 Mon Sep 17 00:00:00 2001
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Date: Fri, 27 Nov 2015 13:56:03 +0000
-Subject: [PATCH] spi: add spi_message_init_no_memset to avoid zeroing the
- spi_message
+>From 7f3ac71ac3b05aaa2c55c266448f973188275a8c Mon Sep 17 00:00:00 2001
+From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
+Date: Thu, 10 Dec 2015 21:59:04 +0530
+Subject: [PATCH] spi: davinci: fix spurious i/o error
 
-In the spi_loopback_test driver there is the need to initialize
-a spi_message that is filled with values from a static structure.
+davinci_spi_bufs() uses wait_for_completion_interruptible()
+without bothering to handle -ERESTARTSYS. Due to this,
+sometime, it returns prematurely when a signal is received.
+Since the return value is never checked, userspace eventually
+receives a spurious -EIO.
 
-Applying spi_message_init to such a prefilled structure results in
-all the settings getting reset to zero, which is not what we want.
-Copying each field of spi_message separately instead always includes
-the risk that some new fields have not been implemented in the copying
-code.
+To fix this, use un-interruptible wait_for_completion_timeout().
 
-So here we introduce a version of spi_message_init called
-spi_message_init_no_memset that does not fill the structure
-with zero first, but only initializes the relevant list_heads.
-
-Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Signed-off-by: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- include/linux/spi/spi.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/spi/spi-davinci.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index cce80e6..4c54d47 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -762,10 +762,15 @@ struct spi_message {
- 	void			*state;
- };
+diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+index 7d3af3e..57d6960 100644
+--- a/drivers/spi/spi-davinci.c
++++ b/drivers/spi/spi-davinci.c
+@@ -703,7 +703,8 @@ static int davinci_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
  
-+static inline void spi_message_init_no_memset(struct spi_message *m)
-+{
-+	INIT_LIST_HEAD(&m->transfers);
-+}
-+
- static inline void spi_message_init(struct spi_message *m)
- {
- 	memset(m, 0, sizeof *m);
--	INIT_LIST_HEAD(&m->transfers);
-+	spi_message_init_no_memset(m);
- }
- 
- static inline void
+ 	/* Wait for the transfer to complete */
+ 	if (spicfg->io_type != SPI_IO_TYPE_POLL) {
+-		wait_for_completion_interruptible(&(dspi->done));
++		if (wait_for_completion_timeout(&dspi->done, HZ) == 0)
++			errors = SPIFLG_TIMEOUT_MASK;
+ 	} else {
+ 		while (dspi->rcount > 0 || dspi->wcount > 0) {
+ 			errors = davinci_spi_process_events(dspi);
 -- 
 2.6.4
 

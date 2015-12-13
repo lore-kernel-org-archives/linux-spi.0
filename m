@@ -1,73 +1,76 @@
-From: Paul Gortmaker <paul.gortmaker-CWA4WttNNZF54TAoqtyWWQ@public.gmane.org>
-Subject: [PATCH] spi: Add builtin_spi_driver() to avoid registration boilerplate
-Date: Sun, 13 Dec 2015 15:53:57 -0500
-Message-ID: <1450040037-28334-1-git-send-email-paul.gortmaker@windriver.com>
+From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH v2] spi: dts: sun4i: Add support for
+ inter-word wait cycles using the SPI Wait Clock Register
+Date: Sun, 13 Dec 2015 22:07:19 +0100
+Message-ID: <20151213210719.GC19456@lukather>
+References: <1449873940-10167-1-git-send-email-mweseloh42@gmail.com>
+Reply-To: maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: Paul Gortmaker <paul.gortmaker-CWA4WttNNZF54TAoqtyWWQ@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="H8ygTp4AXg6deix2"
+Cc: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-sunxi+bncBD2ZNBF5VYJRBCF4W6ZQKGQEUXFOV6A-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1449873940-10167-1-git-send-email-mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <https://groups.google.com/group/linux-sunxi
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+List-Subscribe: <https://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+ <https://groups.google.com/group/linux-sunxi/subscribe>
+List-Id: linux-spi.vger.kernel.org
 
-In commit f309d4443130bf814e991f836e919dca22df37ae ("platform_device:
-better support builtin boilerplate avoidance") we introduced the
-builtin_driver macro.
+--H8ygTp4AXg6deix2
+Content-Type: text/plain; charset=UTF-8
+Content-Disposition: inline
 
-Here we use that support and extend it to SPI driver registration, so where
-a driver is clearly non-modular and builtin-only, we can register it in a
-similar fashion.  Existing code that is clearly non-modular can be updated
-with the simple mapping of
+Hi,
 
-  module_spi_driver(...)  ---> builtin_spi_driver(...)
+On Fri, Dec 11, 2015 at 11:45:39PM +0100, Marcus Weseloh wrote:
+> Adds support and binding documentation for a new slave device property
+> "sun4i,spi-word-wait-ns" that allows to set a hardware based delay
+> between the transmission of words using the SPI Wait Clock Register.
+> The SPI hardware needs 3 clock cycles to set up the delay, which makes
+> the minimum non-zero wait time 4 clock cycles.
+> 
+> Signed-off-by: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> ---
+> Changes from v1:
+>  * renamed the property for more clarity
+>  * wait time is set in nanoseconds instead of number of clock cycles
+>  * transparently handle the 3 setup clock cycles
+> 
+> There is one review comment that I didn't address: Rob Herring suggested
+> that this should be in the core-binding rather than in sun4i. I checked
+> many of the hardware manuals of other SPI drivers and it looks to me like
+> this hardware based inter-word delay is a feature that not many SPI
+> controllers offer. And the SPI core currently has no way to control an
+> inter-word delay, only inter-message. So I would like to propose this again
+> as a sun4i binding, as it targets a sun4i (or sunxi?) specific hardware
+> feature.
 
-We've essentially cloned the former to make the latter, and taken out the
-remove/module_exit parts since those never get used in a non-modular build
-of the code.
+Only a few of them justify to have this in the framework. There's a
+bunch of controllers that support such a feature, and it definitely
+belongs in the core.
 
-A similar thing was done in commit b4eb6cdbbd13698704863f680c643c569909e1c2
-("PCI: Add builtin_pci_driver() to avoid registration boilerplate").
+The point of the framework is not to be the least common denominator,
+it's about having as much code in common as possible, and it
+definitely falls into that category.
 
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Signed-off-by: Paul Gortmaker <paul.gortmaker-CWA4WttNNZF54TAoqtyWWQ@public.gmane.org>
----
+Thanks,
+Maxime
 
-[I've a drivers/video user of this in my personal testing queue, but
- obviously I can't submit that until builtin_spi_driver makes it to
- mainline.  Since there are no drivers/spi users of it (yet), this
- change is sent to the spi list/maintainers on its own.]
-
- include/linux/spi/spi.h | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 075bede66521..1458f2f21dcc 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -272,6 +272,17 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
- 	__spi_register_driver(THIS_MODULE, driver)
- 
- /**
-+ * builtin_spi_driver() - Helper macro for registering a SPI driver
-+ * @__spi_driver: spi_driver struct
-+ *
-+ * Helper macro for SPI drivers which do not do anything special in
-+ * init. This eliminates a lot of boilerplate. Each file may only
-+ * use this macro once, and calling it replaces device_initcall()
-+ */
-+#define builtin_spi_driver(__spi_driver) \
-+	builtin_driver(__spi_driver, spi_register_driver)
-+
-+/**
-  * module_spi_driver() - Helper macro for registering a SPI driver
-  * @__spi_driver: spi_driver struct
-  *
 -- 
-2.6.1
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Maxime Ripard, Free Electrons
+Embedded Linux, Kernel and Android engineering
+http://free-electrons.com
+--H8ygTp4AXg6deix2--

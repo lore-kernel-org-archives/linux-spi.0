@@ -1,191 +1,89 @@
-From: "Andrew F. Davis" <afd-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH 2/2] gpio: Add driver for SPI serializers
-Date: Mon, 14 Dec 2015 10:47:22 -0600
-Message-ID: <566EF29A.7090704@ti.com>
-References: <1449863184-29668-1-git-send-email-afd@ti.com>
- <1449863184-29668-3-git-send-email-afd@ti.com>
- <CACRpkda0zAg_vAWd6nZLpWqZo4u5kLbBCCJ4WzO-fP08=CBQTQ@mail.gmail.com>
+From: Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH 1/2] dt-bindings: GPIO: Add generic serializer binding
+Date: Mon, 14 Dec 2015 16:36:41 -0600
+Message-ID: <CAL_Jsq+kYSJQd003RhYTeVFv6xLaSCxzZK7wnF2LVs502sWu4g@mail.gmail.com>
+References: <1449863184-29668-1-git-send-email-afd@ti.com> <1449863184-29668-2-git-send-email-afd@ti.com>
+ <CACRpkdaV_dxzWUQcJ8pwPUDQNJ8qLhCvLvE9tBYFcTTGMoumWQ@mail.gmail.com> <566EF12C.4060509@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Alexandre Courbot <gnurou-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	"linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CACRpkda0zAg_vAWd6nZLpWqZo4u5kLbBCCJ4WzO-fP08=CBQTQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Alexandre Courbot <gnurou@gmail.com>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora.org>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: "Andrew F. Davis" <afd@ti.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <566EF12C.4060509@ti.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On 12/11/2015 04:09 PM, Linus Walleij wrote:
-> On Fri, Dec 11, 2015 at 8:46 PM, Andrew F. Davis <afd-l0cyMroinI0@public.gmane.org> wrote:
->
->> Add generic parallel-in/serial-out shift register GPIO driver.
+On Mon, Dec 14, 2015 at 10:41 AM, Andrew F. Davis <afd@ti.com> wrote:
+> On 12/11/2015 03:48 PM, Linus Walleij wrote:
 >>
->> This includes SPI compatible devices like SN74165 serial-out shift
->> registers and the SN65HVS88x series of industrial serializers that can
->> be read over the SPI bus and used for GPI (General Purpose Input).
+>> On Fri, Dec 11, 2015 at 8:46 PM, Andrew F. Davis <afd@ti.com> wrote:
 >>
->> Signed-off-by: Andrew F. Davis <afd-l0cyMroinI0@public.gmane.org>
-> (...)
->> +#include <linux/delay.h>
->> +#include <linux/gpio.h>
+>>> Add binding for generic parallel-in/serial-out shift register devices
+>>> used as GPIO.
+>>>
+>>> Signed-off-by: Andrew F. Davis <afd@ti.com>
+>>
+>>
+>>> +Generic Parallel-in/Serial-out Shift Register GPIO Driver
+>>> +
+>>> +This binding describes generic parallel-in/serial-out shift register
+>>> +devices that can be used for GPI (General Purpose Input). This includes
+>>> +SN74165 serial-out shift registers and the SN65HVS88x series of
+>>> +industrial serializers.
+>>> +
+>>> +Required properties:
+>>> + - compatible          : Should be "pisosr-gpio".
+>>
+>>
+>> I think it should also define compatible strings on the "vendor,device"
+>> format apart from the generic compatible. Sooner or later we may need
+>> to differentiate them and then that comes in handy.
+>>
 >
-> Use #include <linux/gpio/driver.h> instead.
+> Would it be better to wait until/if this issue arises? This driver
+> targets the generic features, as these parts are very generic and
+> have been produced by many companies since the 70s I'm not sure
+> if privileging any of them makes much sense.
 >
+> What I'm worried about looks to have happened with the gpio-74x164
+> driver, this is kind of the companion device to mine (74164 / 74165)
+> and should work with any 74164 compatible shift register (possibly 100s
+> of versions of them), but the compatible string that was added is
+> "fairchild,74hc595", a relatively new device by a single manufacturer.
+> The problem this has is then that boards will use this compatible string
+> even if the parts are not actually the Fairchild version, just to get
+> the match, when they should be using a generic string.
 
-ACK
+I agree the generic version is fine (or find who made the first part
+;)). What "pisosr" is is not very obvious though. Having 74165 in the
+compatible would make it somewhat more obvious it is a standard logic
+part.
 
->> +#include <linux/module.h>
->> +#include <linux/mutex.h>
->> +#include <linux/spi/spi.h>
->> +
->> +#define DEFAULT_NGPIO 8
->> +
->> +struct pisosr_gpio {
->> +       struct gpio_chip chip;
->> +       struct spi_device *spi;
->> +       u8 *buffer;
->> +       size_t buffer_size;
->> +       struct gpio_desc *load_gpio;
->> +       struct mutex lock;
->> +};
+>>> +Optional properties:
+>>> + - ngpios              : Number of GPIO lines, default is 8.
+>>
+>>
+>> If you didn't do "pisosr-gpio" but instead "foo,sn74165", maybe you
+>> don't need to have this in the device tree but instead it can be
+>> determined from the compatible string?
+>>
+>> In that case do that.
+>>
 >
-> Add kerneldoc to this struct.
->
+> These devices can be daisy-chained together, so three 8bit registers
+> look exactly like one 24bit register. The only way to know this is
+> from the physical wiring of the board, not from the part number.
 
-Will do.
+Then you should say it must be multiple of 8 (or are there other lengths?).
 
->> +static inline struct pisosr_gpio *to_pisosr_gpio(struct gpio_chip *chip)
->> +{
->> +       return container_of(chip, struct pisosr_gpio, chip);
->> +}
->
-> We are doing away with this, but I can fix up the driver by a separate
-> patch later of we merge it.
->
-
-That will work, thanks.
-
->> +static int pisosr_gpio_refresh(struct pisosr_gpio *gpio)
->> +{
->> +       int ret;
->> +
->> +       mutex_lock(&gpio->lock);
->> +
->> +       if (gpio->load_gpio) {
->> +               gpiod_set_value(gpio->load_gpio, 1);
->> +               udelay(1); /* registers load time (~10ns) */
->> +               gpiod_set_value(gpio->load_gpio, 0);
->> +               udelay(1); /* registers recovery time (~5ns) */
->
->
-> So aren't these load/recovery times dependent on the device?
-> I think these should come from the compatible string.
->
-
-Yes, but they are all under 20ns or so, I just put the smallest
-reasonable delay to keep a fast host from going under this limit.
-(although I doubt any could)
-
->> +static int pisosr_gpio_get_direction(struct gpio_chip *chip,
->> +                                    unsigned offset)
->> +{
->> +       return GPIOF_DIR_IN;
->> +}
->
-> Just return 1, GPIOF_DIR_IN is for the external API.
->
-
-ACK
-
->> +static int pisosr_gpio_get(struct gpio_chip *chip, unsigned offset)
->> +{
->> +       struct pisosr_gpio *gpio = to_pisosr_gpio(chip);
->> +
->> +       /* Refresh may not always be needed */
->> +       pisosr_gpio_refresh(gpio);
->> +
->> +       return (gpio->buffer[offset / 8] >> (offset % 8)) & 0x1;
->> +}
->
-> This looks like a good reason to implement .get_multiple() in the
-> same way that we have .set_multiple(), so you agree?
->
-> But it's not like I'm requiring you to engineer all that. Just an
-> academic reflection of the fact.
->
-
-I was disappointed when I saw only set_multiple, so this would
-be something nice to have, I'll look into it.
-
->> +static int pisosr_gpio_probe(struct spi_device *spi)
->> +{
->> +       struct pisosr_gpio *gpio;
->> +       struct device_node *np = spi->dev.of_node;
->> +       int ret;
->
->
-> To match and get a pointer to a compatible-string-specific data variant,
-> look at the example in drivers/mfd/tc3589x.c
->
-
-ACK
-
->> +       gpio = devm_kzalloc(&spi->dev, sizeof(*gpio), GFP_KERNEL);
->> +       if (!gpio)
->> +               return -ENOMEM;
->> +
->> +       spi_set_drvdata(spi, gpio);
->> +
->> +       gpio->chip = template_chip;
->> +       gpio->chip.parent = &spi->dev;
->> +       of_property_read_u16(np, "ngpios", &gpio->chip.ngpio);
->
-> As I wrote elsewhere, should come from the variant data, based on the
-> compatible string. ngpios is in case you're not using all of them and
-> need to restrict the number of used GPIOs. Usually this only applies to
-> on-SoC GPIOs that are unrouted.
->
-
-(See my reply to your previous comment on this)
-
->> +       gpio->spi = spi;
->> +
->> +       gpio->buffer_size = DIV_ROUND_UP(gpio->chip.ngpio, 8);
->> +       gpio->buffer = devm_kzalloc(&spi->dev, gpio->buffer_size, GFP_KERNEL);
->> +       if (!gpio->buffer)
->> +               return -ENOMEM;
->> +
->> +       gpio->load_gpio = devm_gpiod_get(&spi->dev, "load", GPIOD_OUT_LOW);
->> +       if (IS_ERR(gpio->load_gpio)) {
->> +               ret = PTR_ERR(gpio->load_gpio);
->> +               if (ret != -ENOENT && ret != -ENOSYS) {
->> +                       if (ret != -EPROBE_DEFER)
->> +                               dev_err(&spi->dev, "Unable to allocate reset gpio\n");
->
-> Reset gpio? Really? Load GPIO?
->
-
-Ops, copy/paste error I think.
-
-Thanks,
-Andrew
-
-> Apart from that it looks good.
->
-> Yours,
-> Linus Walleij
->
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Rob

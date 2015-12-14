@@ -1,46 +1,79 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3] spi: dts: sun4i: Add support for
- hardware-based wait time between words
-Date: Mon, 14 Dec 2015 10:57:49 +0000
-Message-ID: <20151214105749.GU5727@sirena.org.uk>
-References: <1449873940-10167-1-git-send-email-mweseloh42@gmail.com>
- <1450047853-9005-1-git-send-email-mweseloh42@gmail.com>
- <20151213230837.GT5727@sirena.org.uk>
- <CAGNoLaOS94iHHSpFtYC-72TUvJj5dtrY7imW835OCRoCY8R4SA@mail.gmail.com>
-Reply-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+From: Ranjit Waghmode <ranjit.waghmode@xilinx.com>
+Subject: [LINUX RFC v3 0/4] spi: add dual parallel mode support in Zynq MPSoC GQSPI controller
+Date: Mon, 14 Dec 2015 18:39:41 +0530
+Message-ID: <1450098585-3129-1-git-send-email-ranjit.waghmode@xilinx.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="0tLsAbKYoZ7gVvm3"
-Cc: linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>,
-	devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"Mailing List, Arm" <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-sunxi+bncBDQ2L75W5QGBBP6BXKZQKGQECDGPZZI-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAGNoLaOS94iHHSpFtYC-72TUvJj5dtrY7imW835OCRoCY8R4SA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <https://groups.google.com/group/linux-sunxi
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-List-Subscribe: <https://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
- <https://groups.google.com/group/linux-sunxi/subscribe>
+Content-Type: text/plain
+Cc: <linux-spi@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <harinik@xilinx.com>,
+	<punnaia@xilinx.com>, <ran27jit@gmail.com>,
+	"Ranjit Waghmode" <ranjit.waghmode@xilinx.com>
+To: <broonie@kernel.org>, <dwmw2@infradead.org>,
+	<computersforpeace@gmail.com>, <swarren@nvidia.com>,
+	<geert+renesas@glider.be>, <afd@ti.com>, <jic23@kernel.org>,
+	<marex@denx.de>, <jteki@openedev.com>, <zajec5@gmail.com>,
+	<juhosg@openwrt.org>, <mika.westerberg@linux.intel.com>,
+	<sean.nyekjaer@prevas.dk>, <beanhuo@micron.com>,
+	<furquan@google.com>, <michal.simek@xilinx.com>,
+	<soren.brinkmann@xilinx.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---0tLsAbKYoZ7gVvm3
-Content-Type: text/plain; charset=UTF-8
-Content-Disposition: inline
+This series adds dual parallel mode support for Zynq Ultrascale+
+MPSoC GQSPI controller driver.
 
-On Mon, Dec 14, 2015 at 12:23:29AM +0100, Marcus Weseloh wrote:
+What is dual parallel mode?
+---------------------------
+ZynqMP GQSPI controller supports Dual Parallel mode with following functionalities:
+1) Supporting two SPI flash memories operating in parallel. 8 I/O lines.
+2) Chip selects and clock are shared to both the flash devices
+3) This mode is targeted for faster read/write speed and also doubles the size
+4) Commands/data can be transmitted/received from both the devices(mirror),
+   or only upper or only lower flash memory devices.
+5) Data arrangement:
+   With stripe enabled,
+	Even bytes i.e. 0, 2, 4,... are transmitted on Lower Data Bus
+	Odd bytes i.e. 1, 3, 5,.. are transmitted on Upper Data Bus.
 
-> Should I resend the patch?
+This series also updated MTD layer files for adding parallel mode support.
 
-No, it's OK.
---0tLsAbKYoZ7gVvm3--
+1) Added Support for two flashes
+2) Support to enable/disable data stripe as and when required.
+3) Added required parameters to spi_nor structure. Initialized all
+   added parameters in spi_nor_scan()
+4) Added support for dual parallel in spi_nor_read/write/erase functions by:
+   a) Increasing page_size, sector_size, erase_size and toatal flash size
+      as and when required.
+   b) Dividing address by 2
+   c) Updating spi->master->flags for qspi driver to change CS
+5) Updated read_sr() to get status of both flashes
+6) Also updated read_fsr() to get status of both flashes
+These all are very high level changes and expected to make an idea clear.
+
+---
+V3 Changes:
+   - Changed couple of comments to remove ambiguity in understanding
+
+V2 Changes:
+a) Splitted patches based on logical changes
+b) Added error handling for newly added APIs in SPI core
+---
+
+Ranjit Waghmode (4):
+  spi: addng support for data stripe feature in core
+  mtd: add spi_device instance to spi_nor struct
+  mtd: spi-nor: add dual parallel mode support
+  spi: zynqmp: gqspi: add support for dual parallel mode configuration
+
+ drivers/mtd/devices/m25p80.c   |  1 +
+ drivers/mtd/spi-nor/spi-nor.c  | 89 ++++++++++++++++++++++++++++++++++--------
+ drivers/spi/spi-zynqmp-gqspi.c | 24 +++++++++++-
+ drivers/spi/spi.c              |  8 ++++
+ include/linux/mtd/spi-nor.h    |  3 ++
+ include/linux/spi/spi.h        | 11 ++++++
+ 6 files changed, 119 insertions(+), 17 deletions(-)
+
+--
+2.1.2

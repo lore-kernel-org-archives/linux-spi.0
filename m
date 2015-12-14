@@ -1,7 +1,7 @@
 From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH v3 8/8] spi: bcm2835: move to spi-core methods translate_message and can_dma
-Date: Mon, 14 Dec 2015 15:20:25 +0000
-Message-ID: <1450106426-2277-9-git-send-email-kernel@martin.sperl.org>
+Subject: [PATCH v3 7/8] spi: core: add spi_master.min_dma_len and supporting methods
+Date: Mon, 14 Dec 2015 15:20:24 +0000
+Message-ID: <1450106426-2277-8-git-send-email-kernel@martin.sperl.org>
 References: <1450106426-2277-1-git-send-email-kernel@martin.sperl.org>
 Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
@@ -15,98 +15,146 @@ List-ID: <linux-spi.vger.kernel.org>
 
 From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-Remove all limitations in can_dma that inhibit the use of DMA
-
-To meet the limitiations of the HW we are now using the standardized
-version of spi_translate_message, that:
-* splits long transfers (> 60k)
-* aligns transfers (on 4 byte boundary)
-* merges transfers (for optimizations)
+Added spi_master.min_dma_len plus methods requireing this information:
+* spi_translate_message_size_align_merge
+* spi_can_dma_min_dma_len
 
 Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 ---
- drivers/spi/spi-bcm2835.c |   58 +++++++++++++++------------------------------
- 1 file changed, 19 insertions(+), 39 deletions(-)
+ drivers/spi/spi.c       |   66 +++++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/spi/spi.h |   14 +++++++++-
+ 2 files changed, 79 insertions(+), 1 deletion(-)
 
-Changelog:
-  V1 -> V3: move to use spi-core methods where possible
-
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index cf04960..75e4425 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -361,44 +361,8 @@ static bool bcm2835_spi_can_dma(struct spi_master *master,
- 	if (!gpio_is_valid(spi->cs_gpio))
- 		return false;
-
--	/* we start DMA efforts only on bigger transfers */
--	if (tfr->len < BCM2835_SPI_DMA_MIN_LENGTH)
--		return false;
--
--	/* BCM2835_SPI_DLEN has defined a max transfer size as
--	 * 16 bit, so max is 65535
--	 * we can revisit this by using an alternative transfer
--	 * method - ideally this would get done without any more
--	 * interaction...
--	 */
--	if (tfr->len > 65535) {
--		dev_warn_once(&spi->dev,
--			      "transfer size of %d too big for dma-transfer\n",
--			      tfr->len);
--		return false;
--	}
--
--	/* if we run rx/tx_buf with word aligned addresses then we are OK */
--	if ((((size_t)tfr->rx_buf & 3) == 0) &&
--	    (((size_t)tfr->tx_buf & 3) == 0))
--		return true;
--
--	/* otherwise we only allow transfers within the same page
--	 * to avoid wasting time on dma_mapping when it is not practical
--	 */
--	if (((size_t)tfr->tx_buf & (PAGE_SIZE - 1)) + tfr->len > PAGE_SIZE) {
--		dev_warn_once(&spi->dev,
--			      "Unaligned spi tx-transfer bridging page\n");
--		return false;
--	}
--	if (((size_t)tfr->rx_buf & (PAGE_SIZE - 1)) + tfr->len > PAGE_SIZE) {
--		dev_warn_once(&spi->dev,
--			      "Unaligned spi rx-transfer bridging page\n");
--		return false;
--	}
--
--	/* return OK */
--	return true;
-+	/* use the default implementation */
-+	return spi_can_dma_min_dma_len(master, spi, tfr);
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 020e34d..883bfa8 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -277,6 +277,27 @@ void spi_statistics_add_transfer_stats(struct spi_statistics *stats,
  }
+ EXPORT_SYMBOL_GPL(spi_statistics_add_transfer_stats);
 
- static void bcm2835_dma_release(struct spi_master *master)
-@@ -461,7 +425,23 @@ static void bcm2835_dma_init(struct spi_master *master, struct device *dev)
-
- 	/* all went well, so set can_dma */
- 	master->can_dma = bcm2835_spi_can_dma;
--	master->max_dma_len = 65535; /* limitation by BCM2835_SPI_DLEN */
++/**
++ * spi_can_dma_min_dma_len - default implementation for spi_can_dma
++ *                           that only checks spi_transfer.len is bigger
++ *                           spi_master.min_dma_len
++ * @master: the spi_master device
++ * @spi:    the spi_device
++ * @tfr:    the spi_transfer
++ */
++bool spi_can_dma_min_dma_len(struct spi_master *master,
++			     struct spi_device *spi,
++			     struct spi_transfer *tfr)
++{
++	/* we start DMA efforts only on bigger transfers */
++	if (tfr->len < master->min_dma_len)
++		return false;
 +
-+	/* set up transform message using the default implementation
-+	 * for size, alignment and merging transfers
++	/* return OK */
++	return true;
++}
++EXPORT_SYMBOL_GPL(spi_can_dma_min_dma_len);
++
+ /* modalias support makes "modprobe $MODALIAS" new-style hotplug work,
+  * and the sysfs version makes coldplug work too.
+  */
+@@ -2793,6 +2814,51 @@ int spi_merge_transfers(struct spi_master *master,
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(spi_merge_transfers);
++/*-------------------------------------------------------------------------*/
++
++/**
++ * spi_translate_message_size_align_merge - default spi_message translation
++ *                                          code that takes its parameters
++ *                                          from @spi_master
++ *
++ * @master:  the spi_master for which we run this translation
++ * @message: the spi_message which we need to translate
++ *
++ * Returns: status of tranformation
++ */
++int spi_translate_message_size_align_merge(
++	struct spi_master *master, struct spi_message *message)
++{
++	int ret;
++
++	/* translate the message */
++
++	/* fix alignment of transfers by splitting rx_buf/tx_buf
++	 * (and worsted case copying tx_buf)
 +	 */
-+	master->translate_message = spi_translate_message_size_align_merge;
++	ret = spi_split_transfers_unaligned(master, message,
++					    master->min_dma_len,
++					    master->dma_alignment,
++					    GFP_KERNEL);
++	if (ret)
++		return ret;
 +
-+	/* the minimum length when we run DMA */
-+	master->min_dma_len = BCM2835_SPI_DMA_MIN_LENGTH;
++	/* limit transfer length */
++	if (master->max_dma_len) {
++		ret = spi_split_transfers_maxsize(master, message,
++						  master->max_dma_len,
++						  GFP_KERNEL);
++		if (ret)
++			return ret;
++	}
 +
-+	/* the max_dma_len limited by BCM2835_SPI_DLEN is actually 65535,
-+	 * but for al practical purposes we use 15 pages (60k)
-+	 */
-+	master->max_dma_len = 15 * PAGE_SIZE;
++	/* merge spi_transfers up to a full page */
++	ret = spi_merge_transfers(master, message, 2, PAGE_SIZE,
++				  GFP_KERNEL);
 +
-+	/* dma alignment is 4 bytes */
-+	master->dma_alignment = 4;
-+
- 	/* need to do TX AND RX DMA, so we need dummy buffers */
- 	master->flags = SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX;
++	return ret;
++}
++EXPORT_SYMBOL_GPL(spi_translate_message_size_align_merge);
 
+ /*-------------------------------------------------------------------------*/
+
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 4b4c1e9..f055a47 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -351,6 +351,9 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
+  *                   while the hardware is prepared, using the parent
+  *                   device for the spidev
+  * @max_dma_len: Maximum length of a DMA transfer for the device.
++ * @min_dma_len: Minimum length of a DMA transfer for the device.
++ *               (mostly to avoid dma_mapping a buffer when dma is not used,
++ *                should be multiple of dma_alignment)
+  * @prepare_transfer_hardware: a message will soon arrive from the queue
+  *	so the subsystem requests the driver to prepare the transfer hardware
+  *	by issuing this call
+@@ -423,7 +426,6 @@ struct spi_master {
+ 	 * buffers; let protocol drivers know about these requirements.
+ 	 */
+ 	u16			dma_alignment;
+-
+ 	/* spi_device.mode flags understood by this controller driver */
+ 	u16			mode_bits;
+
+@@ -517,6 +519,7 @@ struct spi_master {
+ 	bool                            cur_msg_prepared;
+ 	bool				cur_msg_mapped;
+ 	struct completion               xfer_completion;
++	size_t				min_dma_len;
+ 	size_t				max_dma_len;
+
+ 	int (*prepare_transfer_hardware)(struct spi_master *master);
+@@ -940,6 +943,15 @@ extern struct spi_replaced_transfers *spi_replace_transfers(
+ 	size_t extradatasize,
+ 	gfp_t gfp);
+
++/* some default implementations that drivers may use */
++extern int spi_translate_message_size_align_merge(
++	struct spi_master *master, struct spi_message *message);
++
++/* a default implementation of can_dma */
++extern bool spi_can_dma_min_dma_len(struct spi_master *master,
++				    struct spi_device *spi,
++				    struct spi_transfer *tfr);
++
+ /*---------------------------------------------------------------------------*/
+
+ /* SPI transfer transformation methods */
 --
 1.7.10.4
 

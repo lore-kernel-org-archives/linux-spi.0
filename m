@@ -1,7 +1,7 @@
 From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH v3 2/8] spi: core: add spi_replace_transfers method
-Date: Mon, 14 Dec 2015 15:20:19 +0000
-Message-ID: <1450106426-2277-3-git-send-email-kernel@martin.sperl.org>
+Subject: [PATCH v3 8/8] spi: bcm2835: move to spi-core methods translate_message and can_dma
+Date: Mon, 14 Dec 2015 15:20:25 +0000
+Message-ID: <1450106426-2277-9-git-send-email-kernel@martin.sperl.org>
 References: <1450106426-2277-1-git-send-email-kernel@martin.sperl.org>
 Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
@@ -15,218 +15,98 @@ List-ID: <linux-spi.vger.kernel.org>
 
 From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-Add the spi_replace_transfers method that can get used
-to replace some spi_transfers from a spi_message with other
-transfers.
+Remove all limitations in can_dma that inhibit the use of DMA
+
+To meet the limitiations of the HW we are now using the standardized
+version of spi_translate_message, that:
+* splits long transfers (> 60k)
+* aligns transfers (on 4 byte boundary)
+* merges transfers (for optimizations)
 
 Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 ---
- drivers/spi/spi.c       |  132 +++++++++++++++++++++++++++++++++++++++++++++++
- include/linux/spi/spi.h |   45 ++++++++++++++++
- 2 files changed, 177 insertions(+)
+ drivers/spi/spi-bcm2835.c |   58 +++++++++++++++------------------------------
+ 1 file changed, 19 insertions(+), 39 deletions(-)
 
 Changelog:
-  V2 -> V3: new implementation of spi_replace_transfers
+  V1 -> V3: move to use spi-core methods where possible
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 8149602..ede3e57 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2105,6 +2105,138 @@ EXPORT_SYMBOL_GPL(spi_res_release);
+diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+index cf04960..75e4425 100644
+--- a/drivers/spi/spi-bcm2835.c
++++ b/drivers/spi/spi-bcm2835.c
+@@ -361,44 +361,8 @@ static bool bcm2835_spi_can_dma(struct spi_master *master,
+ 	if (!gpio_is_valid(spi->cs_gpio))
+ 		return false;
 
- /*-------------------------------------------------------------------------*/
+-	/* we start DMA efforts only on bigger transfers */
+-	if (tfr->len < BCM2835_SPI_DMA_MIN_LENGTH)
+-		return false;
+-
+-	/* BCM2835_SPI_DLEN has defined a max transfer size as
+-	 * 16 bit, so max is 65535
+-	 * we can revisit this by using an alternative transfer
+-	 * method - ideally this would get done without any more
+-	 * interaction...
+-	 */
+-	if (tfr->len > 65535) {
+-		dev_warn_once(&spi->dev,
+-			      "transfer size of %d too big for dma-transfer\n",
+-			      tfr->len);
+-		return false;
+-	}
+-
+-	/* if we run rx/tx_buf with word aligned addresses then we are OK */
+-	if ((((size_t)tfr->rx_buf & 3) == 0) &&
+-	    (((size_t)tfr->tx_buf & 3) == 0))
+-		return true;
+-
+-	/* otherwise we only allow transfers within the same page
+-	 * to avoid wasting time on dma_mapping when it is not practical
+-	 */
+-	if (((size_t)tfr->tx_buf & (PAGE_SIZE - 1)) + tfr->len > PAGE_SIZE) {
+-		dev_warn_once(&spi->dev,
+-			      "Unaligned spi tx-transfer bridging page\n");
+-		return false;
+-	}
+-	if (((size_t)tfr->rx_buf & (PAGE_SIZE - 1)) + tfr->len > PAGE_SIZE) {
+-		dev_warn_once(&spi->dev,
+-			      "Unaligned spi rx-transfer bridging page\n");
+-		return false;
+-	}
+-
+-	/* return OK */
+-	return true;
++	/* use the default implementation */
++	return spi_can_dma_min_dma_len(master, spi, tfr);
+ }
 
-+/* Core methods for spi_message alterations */
+ static void bcm2835_dma_release(struct spi_master *master)
+@@ -461,7 +425,23 @@ static void bcm2835_dma_init(struct spi_master *master, struct device *dev)
+
+ 	/* all went well, so set can_dma */
+ 	master->can_dma = bcm2835_spi_can_dma;
+-	master->max_dma_len = 65535; /* limitation by BCM2835_SPI_DLEN */
 +
-+static void __spi_replace_transfers_release(struct spi_master *master,
-+					    struct spi_message *msg,
-+					    void *res)
-+{
-+	struct spi_replaced_transfers *rxfer = res;
-+	size_t i;
-+
-+	/* call extra callback if requested */
-+	if (rxfer->release)
-+		rxfer->release(master, msg, res);
-+
-+	/* insert replaced transfers back into the message */
-+	list_splice(&rxfer->replaced_transfers, rxfer->replaced_after);
-+
-+	/* remove the formerly inserted entries */
-+	for (i = 0; i < rxfer->inserted; i++)
-+		list_del(&rxfer->inserted_transfers[i].transfer_list);
-+}
-+
-+/**
-+ * spi_replace_transfers - replace transfers with several transfers
-+ *                         and register change with spi_message.resources
-+ * @msg:           the spi_message we work upon
-+ * @xfer_first:    the first spi_transfer we want to replace
-+ * @remove:        number of transfers to remove
-+ * @insert:        the number of transfers we want to insert instead
-+ * @release:       extra release code necessary in some circumstances
-+ * @extradatasize: extra data to allocate (with alignment guarantees
-+ *                 of struct @spi_transfer)
-+ *
-+ * Returns: pointer to @spi_replaced_transfers,
-+ *          PTR_ERR(...) in case of errors.
-+ */
-+struct spi_replaced_transfers *spi_replace_transfers(
-+	struct spi_message *msg,
-+	struct spi_transfer *xfer_first,
-+	size_t remove,
-+	size_t insert,
-+	spi_replaced_release_t release,
-+	size_t extradatasize,
-+	gfp_t gfp)
-+{
-+	struct spi_replaced_transfers *rxfer;
-+	struct spi_transfer *xfer;
-+	size_t i;
-+
-+	/* allocate the structure using spi_res */
-+	rxfer = spi_res_alloc(msg->spi, __spi_replace_transfers_release,
-+			      insert * sizeof(struct spi_transfer)
-+			      + sizeof(struct spi_replaced_transfers)
-+			      + extradatasize,
-+			      gfp);
-+	if (!rxfer)
-+		return ERR_PTR(-ENOMEM);
-+
-+	/* the release code to invoke before running the generic release */
-+	rxfer->release = release;
-+
-+	/* assign extradata */
-+	if (extradatasize)
-+		rxfer->extradata =
-+			&rxfer->inserted_transfers[insert];
-+
-+	/* init the replaced_transfers list */
-+	INIT_LIST_HEAD(&rxfer->replaced_transfers);
-+
-+	/* assign the list_entry after which we should reinsert
-+	 * the @replaced_transfers - it may be spi_message.messages!
++	/* set up transform message using the default implementation
++	 * for size, alignment and merging transfers
 +	 */
-+	rxfer->replaced_after = xfer_first->transfer_list.prev;
++	master->translate_message = spi_translate_message_size_align_merge;
 +
-+	/* remove the requested number of transfers */
-+	for (i = 0; i < remove; i++) {
-+		/* if the entry after replaced_after it is msg->transfers
-+		 * then we have been requested to remove more transfers
-+		 * than are in the list
-+		 */
-+		if (rxfer->replaced_after->next == &msg->transfers) {
-+			dev_err(&msg->spi->dev,
-+				"requested to remove more spi_transfers than are available\n");
-+			/* insert replaced transfers back into the message */
-+			list_splice(&rxfer->replaced_transfers,
-+				    rxfer->replaced_after);
++	/* the minimum length when we run DMA */
++	master->min_dma_len = BCM2835_SPI_DMA_MIN_LENGTH;
 +
-+			/* free the spi_replace_transfer structure */
-+			spi_res_free(rxfer);
-+
-+			/* and return with an error */
-+			return ERR_PTR(-EINVAL);
-+		}
-+
-+		/* remove the entry after replaced_after from list of
-+		 * transfers and add it to list of replaced_transfers
-+		 */
-+		list_move_tail(rxfer->replaced_after->next,
-+			       &rxfer->replaced_transfers);
-+	}
-+
-+	/* create copy of the given xfer with identical settings
-+	 * based on the first transfer to get removed
++	/* the max_dma_len limited by BCM2835_SPI_DLEN is actually 65535,
++	 * but for al practical purposes we use 15 pages (60k)
 +	 */
-+	for (i = 0; i < insert; i++) {
-+		/* we need to run in reverse order */
-+		xfer = &rxfer->inserted_transfers[insert - 1 - i];
++	master->max_dma_len = 15 * PAGE_SIZE;
 +
-+		/* copy all spi_transfer data */
-+		memcpy(xfer, xfer_first, sizeof(*xfer));
++	/* dma alignment is 4 bytes */
++	master->dma_alignment = 4;
 +
-+		/* add to list */
-+		list_add(&xfer->transfer_list, rxfer->replaced_after);
-+
-+		/* clear cs_change and delay_usecs for all but the last */
-+		if (i) {
-+			xfer->cs_change = false;
-+			xfer->delay_usecs = 0;
-+		}
-+	}
-+
-+	/* set up inserted */
-+	rxfer->inserted = insert;
-+
-+	/* and register it with spi_res/spi_message */
-+	spi_res_add(msg, rxfer);
-+
-+	return rxfer;
-+}
-+EXPORT_SYMBOL_GPL(spi_replace_transfers);
-+
-+/*-------------------------------------------------------------------------*/
-+
- /* Core methods for SPI master protocol drivers.  Some of the
-  * other core methods are currently defined as inline functions.
-  */
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 739a476..13831ed 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -875,6 +875,51 @@ extern int spi_async_locked(struct spi_device *spi,
+ 	/* need to do TX AND RX DMA, so we need dummy buffers */
+ 	master->flags = SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX;
 
- /*---------------------------------------------------------------------------*/
-
-+/* SPI transfer replacement methods which make use of spi_res */
-+
-+/**
-+ * struct spi_replaced_transfers - structure describing the spi_transfer
-+ *                                 replacements that have occurred
-+ *                                 so that they can get reverted
-+ * @release:            some extra release code to get executed prior to
-+ *                      relasing this structure
-+ * @extradata:          pointer to some extra data if requested or NULL
-+ * @replaced_transfers: transfers that have been replaced and which need
-+ *                      to get restored
-+ * @replaced_after:     the transfer after which the @replaced_transfers
-+ *                      are to get re-inserted
-+ * @inserted:           number of transfers inserted
-+ * @inserted_transfers: array of spi_transfers of array-size @inserted,
-+ *                      that have been replacing replaced_transfers
-+ *
-+ * note: that @extradata will point to @inserted_transfers[@inserted]
-+ * if some extra allocation is requested, so alignment will be the same
-+ * as for spi_transfers
-+ */
-+struct spi_replaced_transfers;
-+typedef void (*spi_replaced_release_t)(struct spi_master *master,
-+				       struct spi_message *msg,
-+				       struct spi_replaced_transfers *res);
-+struct spi_replaced_transfers {
-+	spi_replaced_release_t release;
-+	void *extradata;
-+	struct list_head replaced_transfers;
-+	struct list_head *replaced_after;
-+	size_t inserted;
-+	struct spi_transfer inserted_transfers[];
-+};
-+
-+extern struct spi_replaced_transfers *spi_replace_transfers(
-+	struct spi_message *msg,
-+	struct spi_transfer *xfer_first,
-+	size_t remove,
-+	size_t insert,
-+	spi_replaced_release_t release,
-+	size_t extradatasize,
-+	gfp_t gfp);
-+
-+/*---------------------------------------------------------------------------*/
-+
- /* All these synchronous SPI transfer routines are utilities layered
-  * over the core async transfer primitive.  Here, "synchronous" means
-  * they will sleep uninterruptibly until the async transfer completes.
 --
 1.7.10.4
 

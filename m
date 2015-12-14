@@ -1,89 +1,59 @@
-From: Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH 1/2] dt-bindings: GPIO: Add generic serializer binding
-Date: Mon, 14 Dec 2015 16:36:41 -0600
-Message-ID: <CAL_Jsq+kYSJQd003RhYTeVFv6xLaSCxzZK7wnF2LVs502sWu4g@mail.gmail.com>
-References: <1449863184-29668-1-git-send-email-afd@ti.com> <1449863184-29668-2-git-send-email-afd@ti.com>
- <CACRpkdaV_dxzWUQcJ8pwPUDQNJ8qLhCvLvE9tBYFcTTGMoumWQ@mail.gmail.com> <566EF12C.4060509@ti.com>
+From: "Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>
+Subject: Re: [PATCH] ACPI / scan: set status to 0 if _STA failed
+Date: Tue, 15 Dec 2015 00:42:21 +0100
+Message-ID: <5288517.rYC1Fmx4Ls@vostro.rjw.lan>
+References: <564D3C75.60208@intel.com> <20151119101149.GZ1604@lahna.fi.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Alexandre Courbot <gnurou@gmail.com>,
-	Pawel Moll <pawel.moll@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Ian Campbell <ijc+devicetree@hellion.org.uk>,
-	Kumar Gala <galak@codeaurora.org>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: "Andrew F. Davis" <afd@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <566EF12C.4060509@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7Bit
+Cc: ACPI Devel Mailing List <linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Bastien Nocera <bugzilla-0MeiytkfxGOsTnJN9+BGXg@public.gmane.org>,
+	Stephen Just <stephenjust-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"Chen, Yu C" <yu.c.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Aaron Lu <aaron.lu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20151119101149.GZ1604-3PARRvDOhMZrdx17CPfAsdBPR1lH4CV8@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, Dec 14, 2015 at 10:41 AM, Andrew F. Davis <afd@ti.com> wrote:
-> On 12/11/2015 03:48 PM, Linus Walleij wrote:
->>
->> On Fri, Dec 11, 2015 at 8:46 PM, Andrew F. Davis <afd@ti.com> wrote:
->>
->>> Add binding for generic parallel-in/serial-out shift register devices
->>> used as GPIO.
->>>
->>> Signed-off-by: Andrew F. Davis <afd@ti.com>
->>
->>
->>> +Generic Parallel-in/Serial-out Shift Register GPIO Driver
->>> +
->>> +This binding describes generic parallel-in/serial-out shift register
->>> +devices that can be used for GPI (General Purpose Input). This includes
->>> +SN74165 serial-out shift registers and the SN65HVS88x series of
->>> +industrial serializers.
->>> +
->>> +Required properties:
->>> + - compatible          : Should be "pisosr-gpio".
->>
->>
->> I think it should also define compatible strings on the "vendor,device"
->> format apart from the generic compatible. Sooner or later we may need
->> to differentiate them and then that comes in handy.
->>
->
-> Would it be better to wait until/if this issue arises? This driver
-> targets the generic features, as these parts are very generic and
-> have been produced by many companies since the 70s I'm not sure
-> if privileging any of them makes much sense.
->
-> What I'm worried about looks to have happened with the gpio-74x164
-> driver, this is kind of the companion device to mine (74164 / 74165)
-> and should work with any 74164 compatible shift register (possibly 100s
-> of versions of them), but the compatible string that was added is
-> "fairchild,74hc595", a relatively new device by a single manufacturer.
-> The problem this has is then that boards will use this compatible string
-> even if the parts are not actually the Fairchild version, just to get
-> the match, when they should be using a generic string.
+On Thursday, November 19, 2015 12:11:49 PM Mika Westerberg wrote:
+> On Thu, Nov 19, 2015 at 11:05:25AM +0800, Aaron Lu wrote:
+> > Some ACPI node's _STA will touch operation region field, since the
+> > evaluation of _STA in acpi_bus_type_and_status is very early, the
+> > operation region handler is not ready yet. Instead of fail that function
+> > and not creating the acpi_device node consequently, set status to 0 so
+> > that later when the driver for that device is probing, it can find
+> > the acpi_device node and proceed normally. And at that time, the
+> > handler for the operation region is ready and its _STA evaluation will
+> > succeed, its present status can be checked there.
+> > 
+> > Even there will be no driver using this node later, it doesn't seem
+> > hurt to have one more acpi_device node created with status set to 0.
+> > 
+> > This happens on Microsoft Surface 3, where the SPI device node NTRG's
+> > _STA touches GPIO fields and the SPI core driver will only enumerate SPI
+> > devices from ACPI if the acpi_device node is 1: created; 2: _STA
+> > indicates it's present.
+> > 
+> > Note that due to another problem in SPI driver, for NTRG to be actually
+> > enumerated, some changes have to be made in the SPI layer, which is
+> > addressed by Mika(not send out yet):
+> > https://bugzilla.kernel.org/show_bug.cgi?id=104291#c23
+> > 
+> > Buglink: https://bugzilla.kernel.org/show_bug.cgi?id=104291
+> > Reported-by: Bastien Nocera <bugzilla-0MeiytkfxGOsTnJN9+BGXg@public.gmane.org>
+> > Signed-off-by: Aaron Lu <aaron.lu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+> 
+> I don't know any better solution to this,
+> 
+> Reviewed-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 
-I agree the generic version is fine (or find who made the first part
-;)). What "pisosr" is is not very obvious though. Having 74165 in the
-compatible would make it somewhat more obvious it is a standard logic
-part.
+Applied, thanks!
 
->>> +Optional properties:
->>> + - ngpios              : Number of GPIO lines, default is 8.
->>
->>
->> If you didn't do "pisosr-gpio" but instead "foo,sn74165", maybe you
->> don't need to have this in the device tree but instead it can be
->> determined from the compatible string?
->>
->> In that case do that.
->>
->
-> These devices can be daisy-chained together, so three 8bit registers
-> look exactly like one 24bit register. The only way to know this is
-> from the physical wiring of the board, not from the part number.
+Rafael
 
-Then you should say it must be multiple of 8 (or are there other lengths?).
-
-Rob
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

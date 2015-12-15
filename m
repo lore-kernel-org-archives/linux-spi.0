@@ -1,20 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: imx: return error from dma channel request" to the spi tree
-Date: Tue, 15 Dec 2015 22:41:25 +0000
-Message-ID: <E1a8yHd-0008IY-B6@debutante>
-References: <1449557030-27525-4-git-send-email-anton.bondarenko.sama@gmail.com>
+Subject: Applied "spi: imx: fix loopback mode setup after controller reset" to the spi tree
+Date: Tue, 15 Dec 2015 22:41:27 +0000
+Message-ID: <E1a8yHf-0008JW-5D@debutante>
+References: <1449557030-27525-2-git-send-email-anton.bondarenko.sama@gmail.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Vladimir Zapolskiy <vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
-	Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+To: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1449557030-27525-4-git-send-email-anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1449557030-27525-2-git-send-email-anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: imx: return error from dma channel request
+   spi: imx: fix loopback mode setup after controller reset
 
 has been applied to the spi tree at
 
@@ -39,75 +38,43 @@ to this mail.
 Thanks,
 Mark
 
->From 3760047a7d83353163b69b96d216a13148a321d9 Mon Sep 17 00:00:00 2001
+>From f677f17cced0ca72a4331b64de119b35b19facb0 Mon Sep 17 00:00:00 2001
 From: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Tue, 8 Dec 2015 07:43:45 +0100
-Subject: [PATCH] spi: imx: return error from dma channel request
+Date: Tue, 8 Dec 2015 07:43:43 +0100
+Subject: [PATCH] spi: imx: fix loopback mode setup after controller reset
 
-On SDMA initialization return exactly the same error, which is
-reported by dma_request_slave_channel_reason(), it is a preceding
-change to defer SPI DMA initialization, if SDMA module is not yet
-available.
+If controller hold in reset it's not possible to write any
+register except CTRL. So all other registers must be updated
+only after controller bring out from reset.
 
-Signed-off-by: Vladimir Zapolskiy <vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 Signed-off-by: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-imx.c | 27 ++++++++++++++++-----------
- 1 file changed, 16 insertions(+), 11 deletions(-)
+ drivers/spi/spi-imx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 17a90dcab328..c12306099d24 100644
+index 410522fdd4c9..3aa33c8c819f 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -848,10 +848,11 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
- 	spi_imx->wml = spi_imx_get_fifosize(spi_imx) / 2;
+@@ -356,6 +356,9 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
+ 	else
+ 		cfg &= ~MX51_ECSPI_CONFIG_SSBPOL(config->cs);
  
- 	/* Prepare for TX DMA: */
--	master->dma_tx = dma_request_slave_channel(dev, "tx");
--	if (!master->dma_tx) {
--		dev_err(dev, "cannot get the TX DMA channel!\n");
--		ret = -EINVAL;
-+	master->dma_tx = dma_request_slave_channel_reason(dev, "tx");
-+	if (IS_ERR(master->dma_tx)) {
-+		ret = PTR_ERR(master->dma_tx);
-+		dev_dbg(dev, "can't get the TX DMA channel, error %d!\n", ret);
-+		master->dma_tx = NULL;
- 		goto err;
- 	}
++	/* CTRL register always go first to bring out controller from reset */
++	writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
++
+ 	reg = readl(spi_imx->base + MX51_ECSPI_TESTREG);
+ 	if (config->mode & SPI_LOOP)
+ 		reg |= MX51_ECSPI_TESTREG_LBC;
+@@ -363,7 +366,6 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
+ 		reg &= ~MX51_ECSPI_TESTREG_LBC;
+ 	writel(reg, spi_imx->base + MX51_ECSPI_TESTREG);
  
-@@ -866,10 +867,11 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
- 	}
+-	writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
+ 	writel(cfg, spi_imx->base + MX51_ECSPI_CONFIG);
  
- 	/* Prepare for RX : */
--	master->dma_rx = dma_request_slave_channel(dev, "rx");
--	if (!master->dma_rx) {
--		dev_dbg(dev, "cannot get the DMA channel.\n");
--		ret = -EINVAL;
-+	master->dma_rx = dma_request_slave_channel_reason(dev, "rx");
-+	if (IS_ERR(master->dma_rx)) {
-+		ret = PTR_ERR(master->dma_rx);
-+		dev_dbg(dev, "can't get the RX DMA channel, error %d\n", ret);
-+		master->dma_rx = NULL;
- 		goto err;
- 	}
- 
-@@ -1218,9 +1220,12 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	 * Only validated on i.mx6 now, can remove the constrain if validated on
- 	 * other chips.
- 	 */
--	if (is_imx51_ecspi(spi_imx) &&
--	    spi_imx_sdma_init(&pdev->dev, spi_imx, master, res))
--		dev_err(&pdev->dev, "dma setup error,use pio instead\n");
-+	if (is_imx51_ecspi(spi_imx)) {
-+		ret = spi_imx_sdma_init(&pdev->dev, spi_imx, master, res);
-+		if (ret < 0)
-+			dev_err(&pdev->dev, "dma setup error %d, use pio\n",
-+				ret);
-+	}
- 
- 	spi_imx->devtype_data->reset(spi_imx);
- 
+ 	/*
 -- 
 2.6.2
 

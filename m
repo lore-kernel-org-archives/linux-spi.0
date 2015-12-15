@@ -1,242 +1,59 @@
-From: Robin Gong <b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: Re: [PATCH v6 8/8] spi: imx: add support for all SPI word width for
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v6 5/8] spi: imx: allow only WML aligned transfers to use
  DMA
-Date: Tue, 15 Dec 2015 17:41:29 +0800
-Message-ID: <20151215094111.GA11427@shlinux2>
+Date: Tue, 15 Dec 2015 18:27:10 +0000
+Message-ID: <20151215182710.GD5727@sirena.org.uk>
 References: <1449557030-27525-1-git-send-email-anton.bondarenko.sama@gmail.com>
- <1449557030-27525-9-git-send-email-anton.bondarenko.sama@gmail.com>
+ <1449557030-27525-6-git-send-email-anton.bondarenko.sama@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Cc: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>, <jiada_wang-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
-To: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="unl2YYqPcAwXdP9c"
+Cc: b38343@freescale.com, s.hauer@pengutronix.de,
+	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	vladimir_zapolskiy@mentor.com, jiada_wang@mentor.com
+To: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1449557030-27525-9-git-send-email-anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1449557030-27525-6-git-send-email-anton.bondarenko.sama@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Tue, Dec 08, 2015 at 07:43:50AM +0100, Anton Bondarenko wrote:
-> DMA transfer for SPI was limited to up to 8 bits word size until now.
-> Sync in SPI burst size and DMA bus width is necessary to correctly
-> support 16 and 32 BPW.
-> 
-> Signed-off-by: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> ---
->  drivers/spi/spi-imx.c | 121 +++++++++++++++++++++++++++++++++++++++-----------
->  1 file changed, 95 insertions(+), 26 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-> index d74d809..750001c 100644
-> --- a/drivers/spi/spi-imx.c
-> +++ b/drivers/spi/spi-imx.c
-> @@ -88,11 +88,15 @@ struct spi_imx_data {
->  
->  	struct completion xfer_done;
->  	void __iomem *base;
-> +	unsigned long base_phys;
-> +
->  	struct clk *clk_per;
->  	struct clk *clk_ipg;
->  	unsigned long spi_clk;
->  	unsigned int spi_bus_clk;
->  
-> +	unsigned int bytes_per_word;
-> +
->  	unsigned int count;
->  	void (*tx)(struct spi_imx_data *);
->  	void (*rx)(struct spi_imx_data *);
-> @@ -199,13 +203,32 @@ static unsigned int spi_imx_clkdiv_2(unsigned int fin,
->  	return 7;
->  }
->  
-> +static int spi_imx_get_bytes_per_word(const int bpw)
-> +{
-> +	return DIV_ROUND_UP(bpw, BITS_PER_BYTE);
-> +}
-> +
->  static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
->  			 struct spi_transfer *transfer)
->  {
->  	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
-> +	unsigned int bpw = transfer->bits_per_word;
-> +
-> +	if (!bpw)
-> +		bpw = spi->bits_per_word;
->  
-> -	if (spi_imx->dma_is_inited && transfer->len >= spi_imx->wml &&
-> -	    (transfer->len % spi_imx->wml) == 0)
-> +	bpw = spi_imx_get_bytes_per_word(bpw);
-> +
-> +	/*
-> +	 * We need to use SPI word size in calculation to decide
-> +	 * if we want to go with DMA or PIO mode. Just a short example:
-> +	 * We need to transfer 24 SPI words with BPW == 32. This will take
-> +	 * 24 PIO writes to FIFO (and same for reads). But transfer->len will
-> +	 * be 24*4=96 bytes. WML is 32 SPI words. The decision will be incorrect
-> +	 * if we do not take into account SPI bits per word.
-> +	 */
-> +	if (spi_imx->dma_is_inited && transfer->len >= (spi_imx->wml * bpw) &&
-> +	    (transfer->len % (spi_imx->wml * bpw)) == 0)
->  		return true;
->  	return false;
->  }
-> @@ -785,11 +808,60 @@ static irqreturn_t spi_imx_isr(int irq, void *dev_id)
->  	return IRQ_HANDLED;
->  }
->  
-> +static int spi_imx_sdma_configure(struct spi_master *master)
-> +{
-> +	int ret;
-> +	enum dma_slave_buswidth dsb_default = DMA_SLAVE_BUSWIDTH_1_BYTE;
-> +	struct dma_slave_config slave_config = {};
-> +	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
-> +
-> +	switch (spi_imx->bytes_per_word) {
-> +	case 4:
-> +		dsb_default = DMA_SLAVE_BUSWIDTH_4_BYTES;
-> +		break;
-> +	case 2:
-> +		dsb_default = DMA_SLAVE_BUSWIDTH_2_BYTES;
-> +		break;
-> +	case 1:
-> +		dsb_default = DMA_SLAVE_BUSWIDTH_1_BYTE;
-> +		break;
-> +	default:
-> +		pr_err("Not supported word size %d\n", spi_imx->bytes_per_word);
-> +		ret = -EINVAL;
-> +		goto err;
-> +	}
-> +
-> +	slave_config.direction = DMA_MEM_TO_DEV;
-> +	slave_config.dst_addr = spi_imx->base_phys + MXC_CSPITXDATA;
-> +	slave_config.dst_addr_width = dsb_default;
-> +	slave_config.dst_maxburst = spi_imx->wml;
-> +	ret = dmaengine_slave_config(master->dma_tx, &slave_config);
-> +	if (ret) {
-> +		pr_err("error in TX dma configuration.\n");
-> +		goto err;
-> +	}
-> +
-> +	memset(&slave_config, 0, sizeof(slave_config));
-> +
-> +	slave_config.direction = DMA_DEV_TO_MEM;
-> +	slave_config.src_addr = spi_imx->base_phys + MXC_CSPIRXDATA;
-> +	slave_config.src_addr_width = dsb_default;
-> +	slave_config.src_maxburst = spi_imx->wml;
-> +	ret = dmaengine_slave_config(master->dma_rx, &slave_config);
-> +	if (ret)
-> +		pr_err("error in RX dma configuration.\n");
-> +
-> +err:
-> +	return ret;
-> +}
-> +
->  static int spi_imx_setupxfer(struct spi_device *spi,
->  				 struct spi_transfer *t)
->  {
->  	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
->  	struct spi_imx_config config;
-> +	unsigned int new_bytes_per_word;
-> +	int ret = 0;
->  
->  	config.bpw = t ? t->bits_per_word : spi->bits_per_word;
->  	config.speed_hz  = t ? t->speed_hz : spi->max_speed_hz;
-> @@ -813,9 +885,19 @@ static int spi_imx_setupxfer(struct spi_device *spi,
->  		spi_imx->tx = spi_imx_buf_tx_u32;
->  	}
->  
-> -	spi_imx->devtype_data->config(spi_imx, &config);
-> +	new_bytes_per_word = spi_imx_get_bytes_per_word(config.bpw);
-> +	if (spi_imx->dma_is_inited &&
-> +	    spi_imx->bytes_per_word != new_bytes_per_word) {
-Configure dma even in PIO mode for some minimal data transfer case?It's better
-to check can_dma here.
-> +		spi_imx->bytes_per_word = new_bytes_per_word;
-> +		ret = spi_imx_sdma_configure(spi->master);
-> +		if (ret != 0)
-> +			pr_err("Can't configure SDMA, error %d\n", ret);
-> +	}
->  
-> -	return 0;
-> +	if (!ret)
-> +		ret = spi_imx->devtype_data->config(spi_imx, &config);
-> +
-> +	return ret;
->  }
->  
->  static void spi_imx_sdma_exit(struct spi_imx_data *spi_imx)
-> @@ -839,7 +921,6 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
->  			     struct spi_master *master,
->  			     const struct resource *res)
->  {
-> -	struct dma_slave_config slave_config = {};
->  	int ret;
->  
->  	/* use pio mode for i.mx6dl chip TKT238285 */
-> @@ -857,16 +938,6 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
->  		goto err;
->  	}
->  
-> -	slave_config.direction = DMA_MEM_TO_DEV;
-> -	slave_config.dst_addr = res->start + MXC_CSPITXDATA;
-> -	slave_config.dst_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
-> -	slave_config.dst_maxburst = spi_imx->wml;
-> -	ret = dmaengine_slave_config(master->dma_tx, &slave_config);
-> -	if (ret) {
-> -		dev_err(dev, "error in TX dma configuration.\n");
-> -		goto err;
-> -	}
-> -
->  	/* Prepare for RX : */
->  	master->dma_rx = dma_request_slave_channel_reason(dev, "rx");
->  	if (IS_ERR(master->dma_rx)) {
-> @@ -876,22 +947,20 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
->  		goto err;
->  	}
->  
-> -	slave_config.direction = DMA_DEV_TO_MEM;
-> -	slave_config.src_addr = res->start + MXC_CSPIRXDATA;
-> -	slave_config.src_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
-> -	slave_config.src_maxburst = spi_imx->wml;
-> -	ret = dmaengine_slave_config(master->dma_rx, &slave_config);
-> -	if (ret) {
-> -		dev_err(dev, "error in RX dma configuration.\n");
-> -		goto err;
-> -	}
-> -
->  	init_completion(&spi_imx->dma_rx_completion);
->  	init_completion(&spi_imx->dma_tx_completion);
->  	master->can_dma = spi_imx_can_dma;
->  	master->max_dma_len = MAX_SDMA_BD_BYTES;
->  	spi_imx->bitbang.master->flags = SPI_MASTER_MUST_RX |
->  					 SPI_MASTER_MUST_TX;
-> +	spi_imx->bytes_per_word = 1;
-> +	spi_imx->base_phys = res->start;
-> +	ret = spi_imx_sdma_configure(master);
-> +	if (ret) {
-> +		dev_info(dev, "cannot get setup DMA.\n");
-> +		goto err;
-> +	}
-> +
->  	spi_imx->dma_is_inited = 1;
->  
->  	return 0;
-> @@ -993,7 +1062,7 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
->  		dmaengine_terminate_all(master->dma_rx);
->  	} else {
->  		transfer_timeout = spi_imx_calculate_timeout(spi_imx,
-> -							     spi_imx->wml);
-> +					spi_imx->bytes_per_word * spi_imx->wml);
->  		timeout = wait_for_completion_timeout(
->  				&spi_imx->dma_rx_completion, transfer_timeout);
->  		if (!timeout) {
-> -- 
-> 2.6.3
-> 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+
+--unl2YYqPcAwXdP9c
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Tue, Dec 08, 2015 at 07:43:47AM +0100, Anton Bondarenko wrote:
+
+> Also removing change introduced in f6ee9b582d2db652497b73c1f117591dfb6d3a90
+> since this change only fix usecases with transfer size from 33 to 128 bytes
+> and doesn't fix 129 bytes and bigger.
+
+This is a bug fix for stable but it's randomly in the middle of the
+patch series so I can't apply it as such :(  Please send this as a bug
+fix suitable for sending to Linus.
+
+Please also include human readable descriptions of things like commits
+and issues being discussed in e-mail in your mails, this makes them much
+easier for humans to read especially when they have no internet access.
+I do frequently catch up on my mail on flights or while otherwise
+travelling so this is even more pressing for me than just being about
+making things a bit easier to read.
+
+--unl2YYqPcAwXdP9c
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJWcFt9AAoJECTWi3JdVIfQ3AIH/3w6ayNJPB6JM9lXp3joo+3b
+LjlXaPMe+R5JNi3GK//WPN2NyyN752LIUNQN3VcYUV6rTQiTlNqLOLDC1GsscP7m
+Tf37yjmWbrubk52i9HefnJkNwf1+EohUnc5DyowV72AEKQ9fRUmGPA65tNdEWQK8
+/dbhpCpogLWIzWmT8WSbcW/DiL4bnivYsShAH5hrgi4NCTppKGsHYrHWGNXSv/kB
+ZTxXP3Kvd53LGrQFW3aqAAlBgpCa9GYhf/a2N90RukzxYB/RYPgBnCl5dtJT6bQC
+cjtQJ32S07pj4uBgproo+/TZsB30E/6ajwBN1eqsrx87LPDm3KuMQ1wzF1KgvIo=
+=+57w
+-----END PGP SIGNATURE-----
+
+--unl2YYqPcAwXdP9c--

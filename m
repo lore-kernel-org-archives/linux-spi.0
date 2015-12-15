@@ -1,150 +1,75 @@
-From: Han Xu <han.xu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: Re: [PATCH v6 06/10] mtd: spi-nor: simplify write loop
-Date: Tue, 15 Dec 2015 14:22:17 -0600
-Message-ID: <20151215202216.GA11742@chopperman.am.freescale.net>
-References: <cover.1449052427.git.hramrach@gmail.com>
- <2236d87ad516f118f58eb5df232d441f970c4499.1449052427.git.hramrach@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Cc: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
-	Rafal Milecki <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Jagan Teki <jteki-oRp2ZoJdM/RWk0Htik3J/w@public.gmane.org>,
-	"Andrew F. Davis" <afd-l0cyMroinI0@public.gmane.org>,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
-	Bean Huo <beanhuo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org>,
-	Furquan Shaikh <furquan-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
-	<linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: imx: defer spi initialization, if DMA engine is" to the spi tree
+Date: Tue, 15 Dec 2015 22:41:24 +0000
+Message-ID: <E1a8yHc-0008I5-DX@debutante>
+References: <1449334629-4715-8-git-send-email-anton.bondarenko.sama@gmail.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <2236d87ad516f118f58eb5df232d441f970c4499.1449052427.git.hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1449334629-4715-8-git-send-email-anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Dec 02, 2015 at 10:38:20AM +0000, Michal Suchanek wrote:
-> The spi-nor write loop assumes that what is passed to the hardware
-> driver write() is what gets written.
-> 
-> When write() writes less than page size at once data is dropped on the
-> floor. Check the amount of data writen and exit if it does not match
-> requested amount.
-> 
-> Signed-off-by: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> 
-> ---
-> 
->  - add warning when writing incomplete pages
->  - refuse to continue writing when full page was not written
-> ---
->  drivers/mtd/spi-nor/spi-nor.c | 58 +++++++++++++++++++------------------------
->  1 file changed, 25 insertions(+), 33 deletions(-)
-> 
-> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-> index 3d02803..115c123 100644
-> --- a/drivers/mtd/spi-nor/spi-nor.c
-> +++ b/drivers/mtd/spi-nor/spi-nor.c
-> @@ -1005,8 +1005,8 @@ static int spi_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
->  	size_t *retlen, const u_char *buf)
->  {
->  	struct spi_nor *nor = mtd_to_spi_nor(mtd);
-> -	u32 page_offset, page_size, i;
-> -	int ret;
-> +	size_t page_offset, page_remain, i;
-> +	ssize_t ret;
->  
->  	dev_dbg(nor->dev, "to 0x%08x, len %zd\n", (u32)to, len);
->  
-> @@ -1014,45 +1014,37 @@ static int spi_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
->  	if (ret)
->  		return ret;
->  
-> -	write_enable(nor);
-> -
-> -	page_offset = to & (nor->page_size - 1);
-> +	for (i = 0; i < len; ) {
-> +		ssize_t written;
->  
-> -	/* do all the bytes fit onto one page? */
-> -	if (page_offset + len <= nor->page_size) {
-> -		ret = nor->write(nor, to, len, buf);
-> -		if (ret < 0)
-> -			goto write_err;
-> -		*retlen += ret;
-> -	} else {
-> +		page_offset = to & (nor->page_size - 1);
-> +		WARN_ONCE(page_offset,
-> +			  "Writing at offset %zu into a NOR page. Writing partial pages may decrease reliability and increase wear of NOR flash.",
-> +			  page_offset);
->  		/* the size of data remaining on the first page */
-> -		page_size = nor->page_size - page_offset;
-> -		ret = nor->write(nor, to, page_size, buf);
-> +		page_remain = min_t(size_t,
-> +				    nor->page_size - page_offset, len - i);
-> +
-> +		write_enable(nor);
-> +		ret = nor->write(nor, to + i, page_remain, buf + i);
+The patch
 
-Previous implementation was trying to write nor->page_size byte data in
-each loop, except the first and last loop, if possible. But this change
-may write only (nor->page_size - page_offset) in each loop, for the
-worst case, if page_offset equals nor->page_size -1, it writes byte by
-byte.
+   spi: imx: defer spi initialization, if DMA engine is
 
->  		if (ret < 0)
->  			goto write_err;
-> -		*retlen += ret;
-> -
-> -		/* write everything in nor->page_size chunks */
-> -		for (i = ret; i < len; ) {
-> -			page_size = len - i;
-> -			if (page_size > nor->page_size)
-> -				page_size = nor->page_size;
-> -
-> -			ret = spi_nor_wait_till_ready(nor);
-> -			if (ret)
-> -				goto write_err;
-> +		written = ret;
->  
-> -			write_enable(nor);
-> -
-> -			ret = nor->write(nor, to + i, page_size, buf + i);
-> -			if (ret < 0)
-> -				goto write_err;
-> -			*retlen += ret;
-> -			i += ret;
-> +		ret = spi_nor_wait_till_ready(nor);
-> +		if (ret)
-> +			goto write_err;
-> +		*retlen += written;
-> +		i += written;
-> +		if (written != page_remain) {
-> +			dev_err(nor->dev,
-> +				"While writing %zu bytes written %zd bytes\n",
-> +				page_remain, written);
-> +			ret = -EIO;
-> +			goto write_err;
->  		}
->  	}
->  
-> -	ret = spi_nor_wait_till_ready(nor);
->  write_err:
->  	spi_nor_unlock_and_unprep(nor, SPI_NOR_OPS_WRITE);
->  	return ret;
-> -- 
-> 2.6.2
-> 
+has been applied to the spi tree at
 
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From bf9af08cd5151f1915119ea4c6a873d5a4880d74 Mon Sep 17 00:00:00 2001
+From: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Tue, 8 Dec 2015 07:43:46 +0100
+Subject: [PATCH] spi: imx: defer spi initialization, if DMA engine is
+
+If SPI device supports DMA mode, but DMA controller is not yet
+available due to e.g. a delay in the corresponding kernel module
+initialization, retry to initialize SPI driver later on instead of
+falling back into PIO only mode.
+
+Signed-off-by: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-imx.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index c12306099d24..d98c33cb64f9 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -1222,6 +1222,9 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 	 */
+ 	if (is_imx51_ecspi(spi_imx)) {
+ 		ret = spi_imx_sdma_init(&pdev->dev, spi_imx, master, res);
++		if (ret == -EPROBE_DEFER)
++			goto out_clk_put;
++
+ 		if (ret < 0)
+ 			dev_err(&pdev->dev, "dma setup error %d, use pio\n",
+ 				ret);
 -- 
-Best Regards,
-
-Han "Allen" Xu
+2.6.2
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

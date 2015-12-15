@@ -1,7 +1,8 @@
 From: Christophe Ricard <christophe.ricard@gmail.com>
-Subject: [PATCH v7 0/3] ACPI: Add irq_type to gpio interrupt
-Date: Tue, 15 Dec 2015 08:11:30 +0100
-Message-ID: <1450163493-4938-1-git-send-email-christophe-h.ricard@st.com>
+Subject: [PATCH v7 1/3] acpi: Rename acpi_gsi_get_irq_type to acpi_dev_get_irq_type and export symbol
+Date: Tue, 15 Dec 2015 08:11:31 +0100
+Message-ID: <1450163493-4938-2-git-send-email-christophe-h.ricard@st.com>
+References: <1450163493-4938-1-git-send-email-christophe-h.ricard@st.com>
 Cc: linux-spi@vger.kernel.org, linux-gpio@vger.kernel.org,
 	linux-acpi@vger.kernel.org,
 	Christophe Ricard <christophe-h.ricard@st.com>
@@ -9,49 +10,116 @@ To: rjw@rjwysocki.net, lenb@kernel.org, linus.walleij@linaro.org,
 	gnurou@gmail.com, andriy.shevchenko@linux.intel.com,
 	mika.westerberg@linux.intel.com, broonie@kernel.org
 Return-path: <linux-gpio-owner@vger.kernel.org>
+In-Reply-To: <1450163493-4938-1-git-send-email-christophe-h.ricard@st.com>
 Sender: linux-gpio-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+acpi_gsi_get_irq_type could be use out of gsi purpose.
 
-ACPI probing method does not retrieve irq_type from a gpio interrupt declared
-with GpioInt as it is done with devicetree probing. In other terms, irq_get_trigger_type
-will always send back 0.
+Rename and make it available as a resource function.
 
-Those 3 patches propose a way to retrieve the correct interrupt polarity/type from a GpioInt
-acpi declaration when using irq_get_trigger_type.
+Signed-off-by: Christophe Ricard <christophe-h.ricard@st.com>
+---
+ drivers/acpi/gsi.c      | 21 +--------------------
+ drivers/acpi/resource.c | 26 ++++++++++++++++++++++++++
+ include/linux/acpi.h    |  1 +
+ 3 files changed, 28 insertions(+), 20 deletions(-)
 
-Since v4 after Mika and Andy's feedbacks:
-- acpi_gpio_info active_low field got renamed polarity. Note that polarity/active_low is having sense
-also when a gpio is not mapped as an interrupt but as an output (For example: check gpiod_set_value
-in drivers/gpio/gpiolib.c).
-- acpi_gsi_get_irq_type is now renamed acpi_dev_get_irq_type and moved to drivers/acpi/resource.c
-- The irq described in the acpi spi slave node is now set once we fall back to retrieve normal interrupt.
-
-Since v5 after Andy's feedbacks:
-- Make sure we are not using u* type but pure C type for non hardware value.
-
-Since v6:
-- Patches now applies on top of Raphael tree tag linux-next
-
-Best Regards
-Christophe 
-
-Christophe Ricard (3):
-  acpi: Rename acpi_gsi_get_irq_type to acpi_dev_get_irq_type and export
-    symbol
-  ACPI / gpio: Add irq_type when a gpio is used as an interrupt
-  ACPI / spi: attach gpio irq from acpi description to spi device
-
- drivers/acpi/gsi.c          | 21 +--------------------
- drivers/acpi/resource.c     | 26 ++++++++++++++++++++++++++
- drivers/gpio/gpiolib-acpi.c | 30 ++++++++++++++++++++++++------
- drivers/gpio/gpiolib.c      |  4 ++--
- drivers/gpio/gpiolib.h      |  3 ++-
- drivers/spi/spi.c           |  2 ++
- include/linux/acpi.h        |  1 +
- 7 files changed, 58 insertions(+), 29 deletions(-)
-
+diff --git a/drivers/acpi/gsi.c b/drivers/acpi/gsi.c
+index fa4585a..ee9e0f2 100644
+--- a/drivers/acpi/gsi.c
++++ b/drivers/acpi/gsi.c
+@@ -17,25 +17,6 @@ enum acpi_irq_model_id acpi_irq_model;
+ 
+ static struct fwnode_handle *acpi_gsi_domain_id;
+ 
+-static unsigned int acpi_gsi_get_irq_type(int trigger, int polarity)
+-{
+-	switch (polarity) {
+-	case ACPI_ACTIVE_LOW:
+-		return trigger == ACPI_EDGE_SENSITIVE ?
+-		       IRQ_TYPE_EDGE_FALLING :
+-		       IRQ_TYPE_LEVEL_LOW;
+-	case ACPI_ACTIVE_HIGH:
+-		return trigger == ACPI_EDGE_SENSITIVE ?
+-		       IRQ_TYPE_EDGE_RISING :
+-		       IRQ_TYPE_LEVEL_HIGH;
+-	case ACPI_ACTIVE_BOTH:
+-		if (trigger == ACPI_EDGE_SENSITIVE)
+-			return IRQ_TYPE_EDGE_BOTH;
+-	default:
+-		return IRQ_TYPE_NONE;
+-	}
+-}
+-
+ /**
+  * acpi_gsi_to_irq() - Retrieve the linux irq number for a given GSI
+  * @gsi: GSI IRQ number to map
+@@ -82,7 +63,7 @@ int acpi_register_gsi(struct device *dev, u32 gsi, int trigger,
+ 
+ 	fwspec.fwnode = acpi_gsi_domain_id;
+ 	fwspec.param[0] = gsi;
+-	fwspec.param[1] = acpi_gsi_get_irq_type(trigger, polarity);
++	fwspec.param[1] = acpi_dev_get_irq_type(trigger, polarity);
+ 	fwspec.param_count = 2;
+ 
+ 	return irq_create_fwspec_mapping(&fwspec);
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index cdc5c25..d02fd53 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -23,6 +23,7 @@
+ #include <linux/export.h>
+ #include <linux/ioport.h>
+ #include <linux/slab.h>
++#include <linux/irq.h>
+ 
+ #ifdef CONFIG_X86
+ #define valid_IRQ(i) (((i) != 0) && ((i) != 2))
+@@ -336,6 +337,31 @@ unsigned long acpi_dev_irq_flags(u8 triggering, u8 polarity, u8 shareable)
+ }
+ EXPORT_SYMBOL_GPL(acpi_dev_irq_flags);
+ 
++/**
++ * acpi_dev_get_irq_type - Determine irq type.
++ * @triggering: Triggering type as provided by ACPI.
++ * @polarity: Interrupt polarity as provided by ACPI.
++ */
++unsigned int acpi_dev_get_irq_type(int triggering, int polarity)
++{
++	switch (polarity) {
++	case ACPI_ACTIVE_LOW:
++		return triggering == ACPI_EDGE_SENSITIVE ?
++		       IRQ_TYPE_EDGE_FALLING :
++		       IRQ_TYPE_LEVEL_LOW;
++	case ACPI_ACTIVE_HIGH:
++		return triggering == ACPI_EDGE_SENSITIVE ?
++		       IRQ_TYPE_EDGE_RISING :
++		       IRQ_TYPE_LEVEL_HIGH;
++	case ACPI_ACTIVE_BOTH:
++		if (triggering == ACPI_EDGE_SENSITIVE)
++			return IRQ_TYPE_EDGE_BOTH;
++	default:
++		return IRQ_TYPE_NONE;
++	}
++}
++EXPORT_SYMBOL_GPL(acpi_dev_get_irq_type);
++
+ static void acpi_dev_irqresource_disabled(struct resource *res, u32 gsi)
+ {
+ 	res->start = gsi;
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index 1991aea..42adb80 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -318,6 +318,7 @@ bool acpi_dev_resource_address_space(struct acpi_resource *ares,
+ bool acpi_dev_resource_ext_address_space(struct acpi_resource *ares,
+ 					 struct resource_win *win);
+ unsigned long acpi_dev_irq_flags(u8 triggering, u8 polarity, u8 shareable);
++unsigned int acpi_dev_get_irq_type(int triggering, int polarity);
+ bool acpi_dev_resource_interrupt(struct acpi_resource *ares, int index,
+ 				 struct resource *res);
+ 
 -- 
 2.1.4
 

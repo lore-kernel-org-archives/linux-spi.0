@@ -1,57 +1,80 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: Add builtin_spi_driver() to avoid registration
- boilerplate
-Date: Wed, 16 Dec 2015 13:23:57 +0000
-Message-ID: <20151216132357.GK5727@sirena.org.uk>
-References: <1450040037-28334-1-git-send-email-paul.gortmaker@windriver.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="kdFpxm//39tBKx/r"
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Paul Gortmaker <paul.gortmaker-CWA4WttNNZF54TAoqtyWWQ@public.gmane.org>
+Subject: Applied "spi: spidev: Hold spi_lock over all defererences of spi in release()" to the spi tree
+Date: Wed, 16 Dec 2015 13:27:07 +0000
+Message-ID: <E1a9C6l-0003RZ-GZ@debutante>
+References: <1447689999-20632-1-git-send-email-broonie@kernel.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Vegard Nossum <vegard.nossum-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1450040037-28334-1-git-send-email-paul.gortmaker-CWA4WttNNZF54TAoqtyWWQ@public.gmane.org>
+In-Reply-To: <1447689999-20632-1-git-send-email-broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---kdFpxm//39tBKx/r
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: spidev: Hold spi_lock over all defererences of spi in release()
 
-On Sun, Dec 13, 2015 at 03:53:57PM -0500, Paul Gortmaker wrote:
+has been applied to the spi tree at
 
-> Here we use that support and extend it to SPI driver registration, so where
-> a driver is clearly non-modular and builtin-only, we can register it in a
-> similar fashion.  Existing code that is clearly non-modular can be updated
-> with the simple mapping of
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
->   module_spi_driver(...)  ---> builtin_spi_driver(...)
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> We've essentially cloned the former to make the latter, and taken out the
-> remove/module_exit parts since those never get used in a non-modular build
-> of the code.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Why would it be sensible to have a SPI driver that can't be built as a
-module?
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---kdFpxm//39tBKx/r
-Content-Type: application/pgp-signature; name="signature.asc"
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Thanks,
+Mark
 
-iQEcBAEBCAAGBQJWcWXsAAoJECTWi3JdVIfQRdcH/j2mVFu/Cl2chuIB3wP/QfA9
-yauV/HzfB86C3lAG3U/PBfMKw+9JtfoC+sC7FtvJtmAp9LKssyGYl2ufd2OdSDyn
-08FOvsQjeSnr1lLFpyyCQ8ESCgheW2BYF36WzfcVugbF8kvP1Dkh0tEPPQ+EOyJ3
-OZh/9jDqQiB2l8iAcz9bq0o+ViqMr5VB/EQoJ/qWIZ9SUKOIFi+i/H7V2rGhRS+e
-DZaWx91SpExkIuyEM2bCL1hGRp70UQYbvUASprCqmOS4Gfl9u+GjoEn6FfY2/P8h
-gTZDCLgbmDcMDpb8rB3IPhN/FNbzxnsBq/vQjpMVDXkkQdZjV91EaOcR90ULCyM=
-=JE3S
------END PGP SIGNATURE-----
+>From 56ea1075e7f07724cf9b91039aa0968a0c70112f Mon Sep 17 00:00:00 2001
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Date: Mon, 16 Nov 2015 13:57:37 +0000
+Subject: [PATCH] spi: spidev: Hold spi_lock over all defererences of spi in
+ release()
 
---kdFpxm//39tBKx/r--
+We use the spi_lock spinlock to protect against races between the device
+being removed and file operations on the spidev.  This means that in the
+removal path all references to the device need to be done under lock as
+in removal we dropping references to the device.
+
+Reported-by: Vegard Nossum <vegard.nossum-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spidev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 91a0fcd72423..d0e7dfc647cf 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -651,11 +651,11 @@ static int spidev_release(struct inode *inode, struct file *filp)
+ 		kfree(spidev->rx_buffer);
+ 		spidev->rx_buffer = NULL;
+ 
++		spin_lock_irq(&spidev->spi_lock);
+ 		if (spidev->spi)
+ 			spidev->speed_hz = spidev->spi->max_speed_hz;
+ 
+ 		/* ... after we unbound from the underlying device? */
+-		spin_lock_irq(&spidev->spi_lock);
+ 		dofree = (spidev->spi == NULL);
+ 		spin_unlock_irq(&spidev->spi_lock);
+ 
+-- 
+2.6.2
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

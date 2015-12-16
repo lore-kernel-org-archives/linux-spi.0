@@ -1,56 +1,40 @@
-From: Paul Gortmaker <paul.gortmaker-CWA4WttNNZF54TAoqtyWWQ@public.gmane.org>
-Subject: Re: [PATCH] spi: Add builtin_spi_driver() to avoid registration
- boilerplate
-Date: Wed, 16 Dec 2015 09:21:17 -0500
-Message-ID: <20151216142117.GL2772@windriver.com>
-References: <1450040037-28334-1-git-send-email-paul.gortmaker@windriver.com>
- <20151216132357.GK5727@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: Re: [PATCH v3 4/8] spi: core: added spi_split_transfers_unaligned
+Date: Wed, 16 Dec 2015 17:11:17 +0100
+Message-ID: <55E2C0B8-EE1C-40C8-A3AA-0A1F75BFA860@martin.sperl.org>
+References: <1450106426-2277-1-git-send-email-kernel@martin.sperl.org> <1450106426-2277-5-git-send-email-kernel@martin.sperl.org>
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2104\))
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
+	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20151216132357.GK5727-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <1450106426-2277-5-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-[Re: [PATCH] spi: Add builtin_spi_driver() to avoid registration boilerplate] On 16/12/2015 (Wed 13:23) Mark Brown wrote:
 
-> On Sun, Dec 13, 2015 at 03:53:57PM -0500, Paul Gortmaker wrote:
-> 
-> > Here we use that support and extend it to SPI driver registration, so where
-> > a driver is clearly non-modular and builtin-only, we can register it in a
-> > similar fashion.  Existing code that is clearly non-modular can be updated
-> > with the simple mapping of
-> 
-> >   module_spi_driver(...)  ---> builtin_spi_driver(...)
-> 
-> > We've essentially cloned the former to make the latter, and taken out the
-> > remove/module_exit parts since those never get used in a non-modular build
-> > of the code.
-> 
-> Why would it be sensible to have a SPI driver that can't be built as a
-> module?
+> On 14.12.2015, at 16:20, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
+> +	/* the number of bytes by which we need to shift to align */
+> +	alignment_shift = BIT(alignment) - alignment_to_correct;
 
-Looking at the existing use case - in:
+This actually needs to be:
+	alignment_shift = alignment - alignment_to_correct
 
-  drivers/video/fbdev/mmp/panel/tpo_tj032md01bw.c
+> +
+> +	/* calculate the values */
+> +	alignment_mask = (1 << alignment) - 1;
+This actually needs to be:
+	 alignment_mask = alignment - 1
 
-it would appear that the SPI driver is embedded within another driver
-that the author decided to make non-modular.  Others that don't actually
-use the module_spi_driver macro but are also non modular are drivers/mfd
-wm831x-spi.c and stmpe-spi.c -- I'm guessing based on the above that you
-will suggest we convert those to tristate.
+This was due to a misconception of @spi_master.dma_alignment...
 
-At a more general level, if we have provided infrastructural helpers
-like module_xyz() then it seems sensible IMHO to have the parallel
-equivalent of builtin_xyz() so that we don't force non-modular code to
-require an include of <module.h> to build.
+I will wait for other feedback before creating v4 of the
+patchset.
 
-Paul.
---
+Martin
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

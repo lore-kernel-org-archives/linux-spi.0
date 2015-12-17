@@ -1,8 +1,9 @@
 From: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v5 0/2] spi: dts: sun4i: Add support for wait
- time between word transmissions
-Date: Thu, 17 Dec 2015 12:40:25 +0100
-Message-ID: <1450352427-25350-1-git-send-email-mweseloh42@gmail.com>
+Subject: [PATCH v5 2/2] spi: sun4i: Add support for wait time
+ between word transmissions
+Date: Thu, 17 Dec 2015 12:40:27 +0100
+Message-ID: <1450352427-25350-3-git-send-email-mweseloh42@gmail.com>
+References: <1450352427-25350-1-git-send-email-mweseloh42@gmail.com>
 Reply-To: mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -20,7 +21,8 @@ Cc: Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>,
 	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
 	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 To: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-Return-path: <linux-sunxi+bncBDFO74UEV4IRBZN6ZKZQKGQEWJJYY2A-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+Return-path: <linux-sunxi+bncBDFO74UEV4IRB5V6ZKZQKGQEOKFUDNI-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+In-Reply-To: <1450352427-25350-1-git-send-email-mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
 List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
 List-Archive: <https://groups.google.com/group/linux-sunxi
@@ -30,47 +32,62 @@ List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39
  <https://groups.google.com/group/linux-sunxi/subscribe>
 List-Id: linux-spi.vger.kernel.org
 
-Hi all,
+Modifies the sun4i SPI master driver to make use of the
+"spi-word-wait-ns" property. This specific SPI controller needs 3 clock
+cycles to set up the delay, which makes the minimum non-zero wait time
+on this hardware 4 clock cycles.
 
-This patch set adds a new property "spi-word-wait-ns" to the spi-bus
-binding that allows SPI slave devices to set a wait time between the
-transmission of words. Modifies the spi_device struct and slave device
-probing to read and store the new property.
+Signed-off-by: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi-sun4i.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-Also modifies the sun4i SPI master driver to make use of the new property.
-This specific SPI controller needs 3 clock cycles to set up the delay,
-which makes the minimum non-zero wait time on this hardware 4 clock cycles.
-
-Changes from v1:
- * renamed the property for more clarity
- * wait time is set in nanoseconds instead of number of clock cycles
- * transparently handle the 3 setup clock cycles
-
- Changes from v2:
- * fixed typo in comment
- * moved parameter to spi-bus binding, dropping the vendor prefix
- * changed commit summary and description to reflect the changes
-
- Changes from v3:
- * remove reference to "hardware" in comments and description, as the wait
-   time could also be implemented in software
- * read and set property value in spi core
-
- Changes from v4:
- * log with dev_dbg instead of dev_info
- * split patch into two separate ones for SPI-core and sun4i parts
-
-
-Marcus Weseloh (2):
-  spi: dts: Add new device property to specifcy a wait time between word
-    transmissions
-  spi: sun4i: Add support for wait time between word transmissions
-
- Documentation/devicetree/bindings/spi/spi-bus.txt |  2 ++
- drivers/spi/spi-sun4i.c                           | 22 ++++++++++++++++++++++
- drivers/spi/spi.c                                 |  2 ++
- include/linux/spi/spi.h                           |  2 ++
- 4 files changed, 28 insertions(+)
-
+diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
+index f60a6d6..3b4f5f4 100644
+--- a/drivers/spi/spi-sun4i.c
++++ b/drivers/spi/spi-sun4i.c
+@@ -19,6 +19,7 @@
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
++#include <linux/of.h>
+ 
+ #include <linux/spi/spi.h>
+ 
+@@ -173,6 +174,8 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
+ 	unsigned int tx_len = 0;
+ 	int ret = 0;
+ 	u32 reg;
++	int wait_clk = 0;
++	int clk_ns = 0;
+ 
+ 	/* We don't support transfer larger than the FIFO */
+ 	if (tfr->len > SUN4I_FIFO_DEPTH)
+@@ -261,6 +264,25 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
+ 
+ 	sun4i_spi_write(sspi, SUN4I_CLK_CTL_REG, reg);
+ 
++	/*
++	 * Setup wait time between words.
++	 *
++	 * Wait time is set in SPI_CLK cycles. The SPI hardware needs 3
++	 * additional cycles to setup the wait counter, so the minimum delay
++	 * time is 4 cycles.
++	 */
++	if (spi->word_wait_ns) {
++		clk_ns = DIV_ROUND_UP(1000000000, tfr->speed_hz);
++		wait_clk = DIV_ROUND_UP(spi->word_wait_ns, clk_ns) - 3;
++		if (wait_clk < 1) {
++			wait_clk = 1;
++			dev_dbg(&spi->dev,
++				"using minimum of 4 word wait cycles (%uns)",
++				4 * clk_ns);
++		}
++	}
++	sun4i_spi_write(sspi, SUN4I_WAIT_REG, (u16)wait_clk);
++
+ 	/* Setup the transfer now... */
+ 	if (sspi->tx_buf)
+ 		tx_len = tfr->len;
 -- 
 1.9.1

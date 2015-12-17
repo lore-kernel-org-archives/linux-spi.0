@@ -1,66 +1,59 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: Add builtin_spi_driver() to avoid registration
- boilerplate
-Date: Wed, 16 Dec 2015 17:41:44 +0000
-Message-ID: <20151216174144.GN5727@sirena.org.uk>
-References: <1450040037-28334-1-git-send-email-paul.gortmaker@windriver.com>
- <20151216132357.GK5727@sirena.org.uk>
- <20151216142117.GL2772@windriver.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH 1/2] dt-bindings: GPIO: Add generic serializer binding
+Date: Thu, 17 Dec 2015 09:28:09 +0100
+Message-ID: <CAMuHMdUVS6zRAMyES1171N94WK53mF5dd7ADYqrnaegsu2U4dQ@mail.gmail.com>
+References: <1449863184-29668-1-git-send-email-afd@ti.com>
+	<1449863184-29668-2-git-send-email-afd@ti.com>
+	<CACRpkdaV_dxzWUQcJ8pwPUDQNJ8qLhCvLvE9tBYFcTTGMoumWQ@mail.gmail.com>
+	<566EF12C.4060509@ti.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="hF9BROpwVWvPzXeD"
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-To: Paul Gortmaker <paul.gortmaker@windriver.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20151216142117.GL2772@windriver.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Alexandre Courbot <gnurou@gmail.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora.org>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: "Andrew F. Davis" <afd@ti.com>
+Return-path: <linux-gpio-owner@vger.kernel.org>
+In-Reply-To: <566EF12C.4060509@ti.com>
+Sender: linux-gpio-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Mon, Dec 14, 2015 at 5:41 PM, Andrew F. Davis <afd@ti.com> wrote:
+> What I'm worried about looks to have happened with the gpio-74x164
+> driver, this is kind of the companion device to mine (74164 / 74165)
+> and should work with any 74164 compatible shift register (possibly 100s
+> of versions of them), but the compatible string that was added is
+> "fairchild,74hc595", a relatively new device by a single manufacturer.
 
---hF9BROpwVWvPzXeD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+In hindsight, that probably should have been "motorola,mc74hc595" instead.
+Recently I read that Motorola invented the 74hc59x for their "new" SPI bus
+as that time, as the 74164 is not 100% SPI-compatible.
 
-On Wed, Dec 16, 2015 at 09:21:17AM -0500, Paul Gortmaker wrote:
+Given the limitations of the '164 for SPI, is the same true for '165, and
+should it be "[...]74[...]597" instead?
 
-> Looking at the existing use case - in:
+> The problem this has is then that boards will use this compatible string
+> even if the parts are not actually the Fairchild version, just to get
+> the match, when they should be using a generic string.
 
->   drivers/video/fbdev/mmp/panel/tpo_tj032md01bw.c
+They're all supposed to be "compatible".
+Personally, I wouldn't object to just "74595", cfr. "ns16550a".
 
-> it would appear that the SPI driver is embedded within another driver
-> that the author decided to make non-modular.  Others that don't actually
-> use the module_spi_driver macro but are also non modular are drivers/mfd
-> wm831x-spi.c and stmpe-spi.c -- I'm guessing based on the above that you
-> will suggest we convert those to tristate.
+Gr{oetje,eeting}s,
 
-Well, the question you have to ask yourself is if the code really has to
-be non-modular - what is the strong reason the code looks like this?
-The panel embedding one driver in another seems like a bit of an
-abstraction problem.
+                        Geert
 
-> At a more general level, if we have provided infrastructural helpers
-> like module_xyz() then it seems sensible IMHO to have the parallel
-> equivalent of builtin_xyz() so that we don't force non-modular code to
-> require an include of <module.h> to build.
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-That really doesn't seem like the end of the world, and like I say if
-we're not expecting sensible use cases it might even be a bad thing to
-encourage people to do this.
-
---hF9BROpwVWvPzXeD
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJWcaJXAAoJECTWi3JdVIfQoqcH/09cqZOABlYaraVnSUuHDup7
-4MbuHS1AlX0HCw+O5KCPXv2RYIgIbvqWevUiIa+BEYPOFA/v0eRzlkT0bFDxzFOP
-JxXBvP74RcCVmzxLJf5mgMuLEW+t1m5vLzZjyFvzplD+Xe9rXDYWPIN0gPRJAE3x
-VygsifS5daVtvjy+I9ktT85g7I9dhwWtNAAwJOVxC9NijdtAiEA7Prj1aMQ/snmq
-VCyoAq1lBrHuMMtu2yLogNiGUFeE1zak+2ot/AgIQi8KiuTPcLJF1N8Rqx1ThkiI
-9mPCl5ZrBVgAgwVkxz5icJbG4oFqmxjCC21/kDtyqsWx2QqTrRfjsk8AKeOr/9k=
-=bfTO
------END PGP SIGNATURE-----
-
---hF9BROpwVWvPzXeD--
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

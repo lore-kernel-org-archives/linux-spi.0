@@ -1,7 +1,7 @@
 From: Stanislau Arkhipenka <dise.logo-JGs/UdohzUI@public.gmane.org>
 Subject: SPI-CAN mcp2515
-Date: Thu, 17 Dec 2015 23:51:55 +0300
-Message-ID: <1450385515.3635.1.camel@mail.ru>
+Date: Thu, 17 Dec 2015 23:26:00 +0300
+Message-ID: <1450383960.2007.3.camel@mail.ru>
 Reply-To: dise.logo-JGs/UdohzUI@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
@@ -123,8 +123,8 @@ default qlen 10
      0          0        0       0       0       0
 
 Your help will be really helpful.
-Thank you in advance, SA.
 
+Thank you in advance, SA
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

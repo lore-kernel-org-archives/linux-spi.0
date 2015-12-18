@@ -1,57 +1,69 @@
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: Re: [PATCH v7 3/3] ACPI / spi: attach gpio irq from acpi description
- to spi device
-Date: Fri, 18 Dec 2015 11:17:45 +0200
-Message-ID: <20151218091745.GE1762@lahna.fi.intel.com>
+From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [PATCH v7 2/3] ACPI / gpio: Add irq_type when a gpio is used as
+ an interrupt
+Date: Fri, 18 Dec 2015 11:13:11 +0200
+Message-ID: <20151218091311.GD1762@lahna.fi.intel.com>
 References: <1450163493-4938-1-git-send-email-christophe-h.ricard@st.com>
- <1450163493-4938-4-git-send-email-christophe-h.ricard@st.com>
+ <1450163493-4938-3-git-send-email-christophe-h.ricard@st.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: rjw@rjwysocki.net, lenb@kernel.org, linus.walleij@linaro.org,
-	gnurou@gmail.com, andriy.shevchenko@linux.intel.com,
-	broonie@kernel.org, linux-spi@vger.kernel.org,
-	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-	Christophe Ricard <christophe-h.ricard@st.com>
-To: Christophe Ricard <christophe.ricard@gmail.com>
-Return-path: <linux-gpio-owner@vger.kernel.org>
+Cc: rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org, lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	gnurou-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
+	broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Christophe Ricard <christophe-h.ricard-qxv4g6HH51o@public.gmane.org>
+To: Christophe Ricard <christophe.ricard-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1450163493-4938-4-git-send-email-christophe-h.ricard@st.com>
-Sender: linux-gpio-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1450163493-4938-3-git-send-email-christophe-h.ricard-qxv4g6HH51o@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Dec 15, 2015 at 08:11:33AM +0100, Christophe Ricard wrote:
-> spi->irq was ignoring GpioInt property setting it to -1.
-> acpi_dev_gpio_irq_get returns and configure the slave irq according to
-> the acpi slave node description.
-> It is now inline with devicetree behavior.
+On Tue, Dec 15, 2015 at 08:11:32AM +0100, Christophe Ricard wrote:
+> When a gpio is used as an interrupt in acpi, the irq_type was not
+> available for device driver.
 > 
-> Signed-off-by: Christophe Ricard <christophe-h.ricard@st.com>
+> Make available polarity and triggering information in acpi_find_gpio by
+> renaming acpi_gpio_info field active_low  to polarity and adding triggering
+> field (edge/level).
+> For sanity, in gpiolib.c replace info.active_low by
+> "info.polarity == GPIO_ACTIVE_LOW".
+> 
+> Set the irq_type if necessary in acpi_dev_gpio_irq_get.
+> 
+> Signed-off-by: Christophe Ricard <christophe-h.ricard-qxv4g6HH51o@public.gmane.org>
 > ---
->  drivers/spi/spi.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  drivers/gpio/gpiolib-acpi.c | 30 ++++++++++++++++++++++++------
+>  drivers/gpio/gpiolib.c      |  4 ++--
+>  drivers/gpio/gpiolib.h      |  3 ++-
+>  3 files changed, 28 insertions(+), 9 deletions(-)
 > 
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index 2b0a8ec..6e5d1f7 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -1583,6 +1583,8 @@ static int acpi_spi_add_resource(struct acpi_resource *ares, void *data)
+> diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
+> index 16a7b68..9f83fc6 100644
+> --- a/drivers/gpio/gpiolib-acpi.c
+> +++ b/drivers/gpio/gpiolib-acpi.c
+> @@ -418,9 +418,11 @@ static int acpi_find_gpio(struct acpi_resource *ares, void *data)
+>  		 * GpioIo is used then the only way to set the flag is
+>  		 * to use _DSD "gpios" property.
+>  		 */
+> -		if (lookup->info.gpioint)
+> -			lookup->info.active_low =
+> -				agpio->polarity == ACPI_ACTIVE_LOW;
+> +		if (lookup->info.gpioint) {
+> +			lookup->info.polarity = agpio->polarity;
+
+Since you are passing ACPI_ACTIVE_LOW/HIGH/BOTH here and then later on
+compare that to GPIO_ACTIVE_LOW you should either put comment here
+explaining that we expect the two to be equal, or alternatively convert
+ACPI flags here to the corresponding Linux ones.
+
+> +			lookup->info.triggering = agpio->triggering;
+> +		}
+> +
+>  	}
 >  
->  		if (acpi_dev_resource_interrupt(ares, 0, &r))
->  			spi->irq = r.start;
-> +		else
-> +			spi->irq = acpi_dev_gpio_irq_get(ACPI_COMPANION(&spi->dev), 0);
-
-This still does not work as expected if the device has other resources
-in _CRS.
-
-Instead of this, you should do something like below which only uses GPIO
-when we are sure no Interrupt() resource was found.
-
-acpi_spi_add_device()
-{
-	...
-	acpi_dev_get_resources()
-	...
-
-	if (spi->irq < 0)
-		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
+>  	return 1;
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

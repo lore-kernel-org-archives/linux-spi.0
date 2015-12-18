@@ -1,55 +1,52 @@
-From: Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: [PATCH v5 4/5] ARM: dts: DRA7: add entry for qspi mmap region
-Date: Fri, 18 Dec 2015 08:42:00 -0800
-Message-ID: <20151218164200.GM23396@atomide.com>
-References: <1449807000-6457-1-git-send-email-vigneshr@ti.com>
- <1449807000-6457-5-git-send-email-vigneshr@ti.com>
- <20151211150935.GA15654@rob-hp-laptop>
- <20151217184557.GC23396@atomide.com>
- <56739EB4.6040804@ti.com>
-Mime-Version: 1.0
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: Re: [PATCH 1/4] spi: core: add spi_message_dump and spi_transfer_dump
+Date: Fri, 18 Dec 2015 17:53:13 +0100
+Message-ID: <407EFA5A-72AE-4609-8081-887CCA3C2944@martin.sperl.org>
+References: <1450442668-2391-1-git-send-email-kernel@martin.sperl.org> <1450442668-2391-2-git-send-email-kernel@martin.sperl.org> <CAHp75VfYQf2nfxNxNhtwwbg2_OJdiU3RFgyoyZB-THCRtfJWBA@mail.gmail.com>
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2104\))
 Content-Type: text/plain; charset=us-ascii
-Cc: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	"hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <56739EB4.6040804-l0cyMroinI0@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CAHp75VfYQf2nfxNxNhtwwbg2_OJdiU3RFgyoyZB-THCRtfJWBA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-* Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org> [151217 21:51]:
-> 
-> 
-> On 12/18/2015 12:15 AM, Tony Lindgren wrote:
-> > * Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> [151211 07:10]:
-> >> On Fri, Dec 11, 2015 at 09:39:59AM +0530, Vignesh R wrote:
-> >>> Add qspi memory mapped region entries for DRA7xx based SoCs. Also,
-> >>> update the binding documents for the controller to document this change.
-> >>>
-> >>> Signed-off-by: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
-> >>
-> >> Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> > 
-> > Vignes, are patches 4 and 5 safe to apply separately already or
-> > do things break if we do that?
-> 
-> Yes, 4 and 5 can be applied separately w/o driver changes.
 
-OK picking 4 and 5 into omap-for-v4.5/dt thanks.
+> On 18.12.2015, at 14:32, Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> 
+> On Fri, Dec 18, 2015 at 2:44 PM,  <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org> wrote:
+>> +static void __spi_transfer_dump_chunk(struct spi_device *spi, char *pre,
+>> +                                     const void *ptr, size_t start,
+>> +                                     size_t len)
+...
+all comments fixed in next patch (mostly by rewriting code to use %*ph)
 
-Tony
+> Documentation/printk-formats.txt is your friend. In particular a
+> chapter about %*ph.
+had to do a sprintf for the format itself as %*ph does not allow for
+variable length - it still reduced the codesize...
+
+> 
+> roundup() / rounddown().
+> 
+> Magic.
+> 
+> Usually sentences are started with a capital letter and ended with a dot.
+> 
+all comments fixed in next patch
+> 
+> How many users do you have for the helpers? I suggest to add a helper
+> whenever there are at least 2+ users present.
+> 
+As these are mostly convenience methods for use when debugging things
+there are not typically that many users that would be needing those.
+So I would prefer to keep them.
+
+Thanks for the comments, Martin
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

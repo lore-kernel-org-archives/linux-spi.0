@@ -1,52 +1,129 @@
-From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH v5 1/2] spi: dts: Add new device property to
- specifcy a wait time between word transmissions
-Date: Fri, 18 Dec 2015 12:11:01 +0100
-Message-ID: <20151218111101.GL30359@lukather>
-References: <1450352427-25350-1-git-send-email-mweseloh42@gmail.com>
- <1450352427-25350-2-git-send-email-mweseloh42@gmail.com>
-Reply-To: maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org
+From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 3/4] spi: loopback-test: make dump_messages module
+ parameter a bitmask
+Date: Sat, 19 Dec 2015 03:43:40 +0200
+Message-ID: <CAHp75VdEm0iyOxfWmM8E-uU0cekGras71D03VT1P5WKXdEAG4g@mail.gmail.com>
+References: <1450442668-2391-1-git-send-email-kernel@martin.sperl.org>
+	<1450442668-2391-4-git-send-email-kernel@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="IuJpT0rwbUevm2bB"
-Cc: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org, Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-sunxi+bncBD2ZNBF5VYJRBDXC2GZQKGQE5BV5DNI-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1450352427-25350-2-git-send-email-mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <https://groups.google.com/group/linux-sunxi
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-List-Subscribe: <https://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
- <https://groups.google.com/group/linux-sunxi/subscribe>
-List-Id: linux-spi.vger.kernel.org
-
---IuJpT0rwbUevm2bB
 Content-Type: text/plain; charset=UTF-8
-Content-Disposition: inline
+Cc: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1450442668-2391-4-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Dec 17, 2015 at 12:40:26PM +0100, Marcus Weseloh wrote:
-> Adds a new property "spi-word-wait-ns" to the spi-bus binding that allows
-> SPI slave devices to set a wait time between the transmission of words.
-> 
-> Signed-off-by: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+On Fri, Dec 18, 2015 at 2:44 PM,  <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org> wrote:
+> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+>
+> Make dump_messages module parameter a bitmask to allow for better
+> granularity when dumping messages.
+>
+> Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+> ---
+>  drivers/spi/spi-loopback-test.c |   40 ++++++++++++++++++++++++++++-----------
+>  1 file changed, 29 insertions(+), 11 deletions(-)
+>
+> diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
+> index 8dac6a4..6e76c3e 100644
+> --- a/drivers/spi/spi-loopback-test.c
+> +++ b/drivers/spi/spi-loopback-test.c
+> @@ -36,11 +36,17 @@ MODULE_PARM_DESC(simulate_only, "if not 0 do not execute the spi message");
+>
+>  /* dump spi messages */
+>  int dump_messages;
+> +#define DUMP_MESSAGE_AFTER             BIT(0)
+> +#define DUMP_MESSAGE_BEFORE            BIT(1)
+> +#define DUMP_MESSAGE_DATA_AFTER                BIT(2)
+> +#define DUMP_MESSAGE_DATA_BEFORE       BIT(3)
 
-Reviewed-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+DUMP is used in lib/hexdump.c, I would suggest
+SPI_DUMP_MSG_
 
-Thanks!
-Maxime
+>  module_param(dump_messages, int, 0);
+> -MODULE_PARM_DESC(dump_message,
+> -                "=1 dump the basic spi_message_structure, " \
+> -                "=2 dump the spi_message_structure including data, " \
+> -                "=3 dump the spi_message structure before and after execution");
+> +MODULE_PARM_DESC(dump_messages,
+> +                "BIT(0) - dump the basic spi_message_structure after processing, "
+> +                "BIT(1) - dump the basic spi_message_structure before processing, "
+> +                "BIT(2) - also dump the spi_message data after processing, "
+> +                "BIT(3) - also dump the spi_message data before processing");
+
+Logically it is exactly two bits, not four.
+
+> +
+>  /* the device is jumpered for loopback - enabling some rx_buf tests */
+>  int loopback;
+>  module_param(loopback, int, 0);
+> @@ -749,9 +755,15 @@ int spi_test_execute_msg(struct spi_device *spi, struct spi_test *test,
+>
+>         /* only if we do not simulate */
+>         if (!simulate_only) {
+> -               /* dump the complete message before and after the transfer */
+> -               if (dump_messages == 3)
+> -                       spi_message_dump_data(spi, msg, 1024);
+> +               /* dump the complete message before the transfer */
+> +               if (dump_messages & DUMP_MESSAGE_BEFORE) {
+> +                       /* calc bytes to dump */
+
+> +                       if (dump_messages & DUMP_MESSAGE_DATA_BEFORE)
+> +                               i = 1024;
+> +                       else
+> +                               i = 0;
+
+Ternary operator ?
+
+> +                       spi_message_dump_data(spi, msg, i);
+> +               }
+>
+>                 /* run spi message */
+>                 ret = spi_sync(spi, msg);
+> @@ -786,10 +798,16 @@ int spi_test_execute_msg(struct spi_device *spi, struct spi_test *test,
+>
+>         /* if requested or on error dump message (including data) */
+>  exit:
+> -       if (dump_messages || ret)
+> -               spi_message_dump_data(spi, msg,
+> -                                     ((dump_messages >= 2) || (ret)) ?
+> -                                     1024 : 0);
+> +       if ((dump_messages & DUMP_MESSAGE_AFTER) || ret) {
+> +               /* calc bytes to dump */
+
+> +               i = 0;
+> +               if (dump_messages & DUMP_MESSAGE_DATA_AFTER)
+> +                       i = 1024;
+> +               if (ret)
+> +                       i = 1024;
+
+Ditto.
+
+i = (dump_messages & DUMP_MESSAGE_DATA_AFTER) || ret ? 1024 : 0;
+
+> +               /* dump the message */
+> +               spi_message_dump_data(spi, msg, i);
+> +       }
+>
+>         return ret;
+>  }
+> --
+> 1.7.10.4
+>
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+
+
 
 -- 
-Maxime Ripard, Free Electrons
-Embedded Linux, Kernel and Android engineering
-http://free-electrons.com
---IuJpT0rwbUevm2bB--
+With Best Regards,
+Andy Shevchenko
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

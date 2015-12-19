@@ -1,126 +1,104 @@
 From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 3/4] spi: loopback-test: make dump_messages module
- parameter a bitmask
-Date: Sat, 19 Dec 2015 03:43:40 +0200
-Message-ID: <CAHp75VdEm0iyOxfWmM8E-uU0cekGras71D03VT1P5WKXdEAG4g@mail.gmail.com>
+Subject: Re: [PATCH 4/4] spi: loopback-test: added support for HW-loopback mode
+Date: Sat, 19 Dec 2015 04:12:21 +0200
+Message-ID: <CAHp75VeW+7SiRw6RSkrcVG87ECuLY7vxY8WCxXbOeLxDrq6CEA@mail.gmail.com>
 References: <1450442668-2391-1-git-send-email-kernel@martin.sperl.org>
-	<1450442668-2391-4-git-send-email-kernel@martin.sperl.org>
+	<1450442668-2391-5-git-send-email-kernel@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 Cc: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1450442668-2391-4-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <1450442668-2391-5-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 On Fri, Dec 18, 2015 at 2:44 PM,  <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org> wrote:
 > From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 >
-> Make dump_messages module parameter a bitmask to allow for better
-> granularity when dumping messages.
+> If the module parameter "loopback" for testing RX to match TX
+> is not set and the spi_master supports SPI_LOOP then
+> SPI_LOOP as well as RX-data testing will get enabled.
 >
+> When the "loopback" module parameter is set
+
+I would suggest to distinguish somehow internal and external loopback
+somehow, e.g. name it ext_loopback.
+
+> then the SPI_LOOP support in spi_master will not get enabled,
+> which means that MOSI needs to get connected to MISO by some
+> other means (possibly via a jumper connection or a SN74AHCT125)
+>
+> Suggested-by: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 > Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 > ---
->  drivers/spi/spi-loopback-test.c |   40 ++++++++++++++++++++++++++++-----------
->  1 file changed, 29 insertions(+), 11 deletions(-)
+>  drivers/spi/spi-loopback-test.c |   16 +++++++++++++++-
+>  1 file changed, 15 insertions(+), 1 deletion(-)
 >
-> diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
-> index 8dac6a4..6e76c3e 100644
+> Note: this has been tested by faking SPI_LOOP support
+> inside spi-bcm2835 (master->mode_bits |=3D SPI_LOOP;)
+> and retaining the external link between MOSI and MISO.
+>
+> diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopba=
+ck-test.c
+> index 6e76c3e..15207a7 100644
 > --- a/drivers/spi/spi-loopback-test.c
 > +++ b/drivers/spi/spi-loopback-test.c
-> @@ -36,11 +36,17 @@ MODULE_PARM_DESC(simulate_only, "if not 0 do not execute the spi message");
+> @@ -289,7 +289,21 @@ static int spi_loopback_test_probe(struct spi_de=
+vice *spi)
+>  {
+>         int ret;
 >
->  /* dump spi messages */
->  int dump_messages;
-> +#define DUMP_MESSAGE_AFTER             BIT(0)
-> +#define DUMP_MESSAGE_BEFORE            BIT(1)
-> +#define DUMP_MESSAGE_DATA_AFTER                BIT(2)
-> +#define DUMP_MESSAGE_DATA_BEFORE       BIT(3)
+> -       dev_info(&spi->dev, "Executing spi-loopback-tests\n");
+> +       /* enable HW-loopback automatically if the master supports it
+> +        * and we have the loopback module parameter unset
+> +        */
 
-DUMP is used in lib/hexdump.c, I would suggest
-SPI_DUMP_MSG_
+Capital letter and dot. check all your patches for that.
+Moreover, block comment style in most cases looks like
+/*
+ * Text.
+ */
 
->  module_param(dump_messages, int, 0);
-> -MODULE_PARM_DESC(dump_message,
-> -                "=1 dump the basic spi_message_structure, " \
-> -                "=2 dump the spi_message_structure including data, " \
-> -                "=3 dump the spi_message structure before and after execution");
-> +MODULE_PARM_DESC(dump_messages,
-> +                "BIT(0) - dump the basic spi_message_structure after processing, "
-> +                "BIT(1) - dump the basic spi_message_structure before processing, "
-> +                "BIT(2) - also dump the spi_message data after processing, "
-> +                "BIT(3) - also dump the spi_message data before processing");
+> +       if ((!loopback) && (spi->master->mode_bits & SPI_LOOP)) {
 
-Logically it is exactly two bits, not four.
+Redundant parens for !.
 
-> +
->  /* the device is jumpered for loopback - enabling some rx_buf tests */
->  int loopback;
->  module_param(loopback, int, 0);
-> @@ -749,9 +755,15 @@ int spi_test_execute_msg(struct spi_device *spi, struct spi_test *test,
->
->         /* only if we do not simulate */
->         if (!simulate_only) {
-> -               /* dump the complete message before and after the transfer */
-> -               if (dump_messages == 3)
-> -                       spi_message_dump_data(spi, msg, 1024);
-> +               /* dump the complete message before the transfer */
-> +               if (dump_messages & DUMP_MESSAGE_BEFORE) {
-> +                       /* calc bytes to dump */
-
-> +                       if (dump_messages & DUMP_MESSAGE_DATA_BEFORE)
-> +                               i = 1024;
-> +                       else
-> +                               i = 0;
-
-Ternary operator ?
-
-> +                       spi_message_dump_data(spi, msg, i);
-> +               }
->
->                 /* run spi message */
->                 ret = spi_sync(spi, msg);
-> @@ -786,10 +798,16 @@ int spi_test_execute_msg(struct spi_device *spi, struct spi_test *test,
->
->         /* if requested or on error dump message (including data) */
->  exit:
-> -       if (dump_messages || ret)
-> -               spi_message_dump_data(spi, msg,
-> -                                     ((dump_messages >= 2) || (ret)) ?
-> -                                     1024 : 0);
-> +       if ((dump_messages & DUMP_MESSAGE_AFTER) || ret) {
-> +               /* calc bytes to dump */
-
-> +               i = 0;
-> +               if (dump_messages & DUMP_MESSAGE_DATA_AFTER)
-> +                       i = 1024;
+> +               spi->mode |=3D SPI_LOOP;
+> +               ret =3D spi_setup(spi);
 > +               if (ret)
-> +                       i = 1024;
-
-Ditto.
-
-i = (dump_messages & DUMP_MESSAGE_DATA_AFTER) || ret ? 1024 : 0;
-
-> +               /* dump the message */
-> +               spi_message_dump_data(spi, msg, i);
+> +                       dev_err(&spi->dev,
+> +                               "spi_setup failed to enable loopback:=
+ %i\n",
+> +                               ret);
+> +               loopback =3D 1;
 > +       }
+> +
+
+> +       dev_info(&spi->dev, "Executing spi-loopback-tests%s\n",
+> +                loopback ? " with loopback tests enabled" : "");
+
+Perhaps "=E2=80=A6 with %s loopback enabled", ext_loopback ? "external"=
+ : "internal"
+
 >
->         return ret;
->  }
+>         ret =3D spi_test_run_tests(spi, spi_tests);
+>
 > --
 > 1.7.10.4
 >
 > --
-> To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+> To unsubscribe from this list: send the line "unsubscribe linux-spi" =
+in
 > the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 > More majordomo info at  http://vger.kernel.org/majordomo-info.html
 
 
 
--- 
+--=20
 With Best Regards,
 Andy Shevchenko
 --

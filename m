@@ -1,8 +1,8 @@
 From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH v5 1/2] spi: dts: Add new device property to
  specifcy a wait time between word transmissions
-Date: Fri, 18 Dec 2015 13:50:20 -0600
-Message-ID: <20151219040913.CC85E2C02E8@rob-hp-laptop>
+Date: Fri, 18 Dec 2015 22:17:46 -0600
+Message-ID: <20151219041746.GF14936@rob-hp-laptop>
 References: <1450352427-25350-1-git-send-email-mweseloh42@gmail.com>
  <1450352427-25350-2-git-send-email-mweseloh42@gmail.com>
 Reply-To: robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
@@ -18,7 +18,7 @@ Cc: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org, Chen-Yu Tsai <wens-jdAy
 	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
 	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>
 To: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-sunxi+bncBDJIP47K7MERBCFR2OZQKGQEVXDASHY-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+Return-path: <linux-sunxi+bncBDJIP47K7MERB3VU2OZQKGQEC2LLG7A-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
 Content-Disposition: inline
 In-Reply-To: <1450352427-25350-2-git-send-email-mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>

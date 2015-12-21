@@ -1,76 +1,92 @@
-From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH v2 8/8] spi: loopback-test: added support for HW-loopback mode
-Date: Mon, 21 Dec 2015 11:52:51 +0000
-Message-ID: <1450698772-2379-9-git-send-email-kernel@martin.sperl.org>
-References: <1450698772-2379-1-git-send-email-kernel@martin.sperl.org>
-Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1450698772-2379-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Vignesh R <vigneshr@ti.com>
+Subject: Re: [PATCH v5 0/5] Add memory mapped read support for ti-qspi
+Date: Mon, 21 Dec 2015 17:33:02 +0530
+Message-ID: <5677EA76.6000108@ti.com>
+References: <1449807000-6457-1-git-send-email-vigneshr@ti.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: devicetree@vger.kernel.org, hramrach@gmail.com,
+ Russell King <linux@arm.linux.org.uk>, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+ linux-mtd@lists.infradead.org, linux-omap@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+To: Tony Lindgren <tony@atomide.com>, Brian Norris
+ <computersforpeace@gmail.com>, Mark Brown <broonie@kernel.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1449807000-6457-1-git-send-email-vigneshr@ti.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-If the module parameter "loopback" for testing RX to match TX
-is not set and the spi_master supports SPI_LOOP then
-SPI_LOOP as well as RX-data testing will get enabled.
 
-When the "loopback" module parameter is set
-then the SPI_LOOP support in spi_master will not get enabled,
-which means that MOSI needs to get connected to MISO by some
-other means (possibly via a simple jumper connection
-or a SN74AHCT125 connecting MOSI/MISO)
+On 12/11/2015 09:39 AM, Vignesh R wrote:
+> Changes since v4:
+> Use syscon to access system control module register in ti-qspi driver.
+> 
+> Changes since v3:
+> Rework to introduce spi_flash_read_message struct.
+> Support different opcode/addr/data formats as per Brian's suggestion
+> here: https://lkml.org/lkml/2015/11/11/454
+> 
 
-Suggested-by: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
----
- drivers/spi/spi-loopback-test.c |   27 ++++++++++++++++++++++++++-
- 1 file changed, 26 insertions(+), 1 deletion(-)
+Gentle Ping on the series...
 
-diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
-index b42d1a8..4e4f368 100644
---- a/drivers/spi/spi-loopback-test.c
-+++ b/drivers/spi/spi-loopback-test.c
-@@ -288,8 +288,34 @@ static struct spi_test spi_tests[] = {
- static int spi_loopback_test_probe(struct spi_device *spi)
- {
- 	int ret;
-+	char *msg;
- 
--	dev_info(&spi->dev, "Executing spi-loopback-tests\n");
-+	/*
-+	 * Enable HW-loopback automatically if the master supports it
-+	 * and we have the have_rx_buf unset (set means that we have
-+	 * got an external loopback enabled, so no need to use SPI_LOOP)
-+	 */
-+	if (!check_rx_buf && (spi->master->mode_bits & SPI_LOOP)) {
-+		spi->mode |= SPI_LOOP;
-+		ret = spi_setup(spi);
-+		if (ret) {
-+			dev_err(&spi->dev,
-+				"spi_setup failed to enable loopback: %i\n",
-+				ret);
-+			return ret;
-+		}
-+
-+		/* force checking rx_buf for valid (loopback) data */
-+		check_rx_buf = 1;
-+
-+		msg = "with SPI_LOOP support";
-+	} else {
-+		msg = (check_rx_buf) ?
-+		      "with external loopback" :
-+		      "without any loopback - rx_buf content is not checked";
-+	}
-+
-+	dev_info(&spi->dev, "Executing spi-loopback-tests %s\n", msg);
- 
- 	ret = spi_test_run_tests(spi, spi_tests);
- 
+
+> Changes since v2:
+> Remove mmap_lock_mutex.
+> Optimize enable/disable of mmap mode.
+> 
+> Changes since v1:
+> Introduce API in SPI core that MTD flash driver can call for mmap read
+> instead of directly calling spi-master driver callback. This API makes
+> sure that SPI core msg queue is locked during mmap transfers.
+> v1: https://lkml.org/lkml/2015/9/4/103
+> 
+> 
+> Cover letter:
+> 
+> This patch series adds support for memory mapped read port of ti-qspi.
+> ti-qspi has a special memory mapped port through which SPI flash
+> memories can be accessed directly via SoC specific memory region.
+> 
+> First patch adds a method to pass flash specific information like read
+> opcode, dummy bytes etc and to request mmap read. Second patch
+> implements mmap read method in ti-qspi driver. Patch 3 adapts m25p80 to
+> use mmap read method before trying normal SPI transfer. Patch 4 and 5
+> add memory map region DT entries for DRA7xx and AM43xx SoCs.
+> 
+> This patch series is based on the discussions here:
+> http://www.spinics.net/lists/linux-spi/msg04796.html
+> 
+> Tested on DRA74 EVM and AM437x-SK.
+> Read performance increases from ~100kB/s to ~2.5MB/s.
+> 
+> Vignesh R (5):
+>   spi: introduce accelerated read support for spi flash devices
+>   spi: spi-ti-qspi: add mmap mode read support
+>   mtd: devices: m25p80: add support for mmap read request
+>   ARM: dts: DRA7: add entry for qspi mmap region
+>   ARM: dts: AM4372: add entry for qspi mmap region
+> 
+>  Documentation/devicetree/bindings/spi/ti_qspi.txt |  22 +++-
+>  arch/arm/boot/dts/am4372.dtsi                     |   4 +-
+>  arch/arm/boot/dts/dra7.dtsi                       |   6 +-
+>  drivers/mtd/devices/m25p80.c                      |  20 ++++
+>  drivers/spi/spi-ti-qspi.c                         | 139 +++++++++++++++++-----
+>  drivers/spi/spi.c                                 |  45 +++++++
+>  include/linux/spi/spi.h                           |  41 +++++++
+>  7 files changed, 243 insertions(+), 34 deletions(-)
+> 
+
 -- 
-1.7.10.4
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Regards
+Vignesh

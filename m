@@ -1,7 +1,7 @@
 From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH v2 4/8] spi: loopback-test: move to use spi_message_dump_data
-Date: Mon, 21 Dec 2015 11:52:47 +0000
-Message-ID: <1450698772-2379-5-git-send-email-kernel@martin.sperl.org>
+Subject: [PATCH v2 1/8] spi: core: add spi_message_dump and spi_transfer_dump
+Date: Mon, 21 Dec 2015 11:52:46 +0000
+Message-ID: <1450698772-2379-4-git-send-email-kernel@martin.sperl.org>
 References: <1450698772-2379-1-git-send-email-kernel@martin.sperl.org>
 Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
@@ -12,186 +12,251 @@ List-ID: <linux-spi.vger.kernel.org>
 
 From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-Move loopback-test to use the core spi_message_dump_data method.
+This implements a means to dump a spi_message or spi_transfer.
 
-A piece of functionality (testing for UNWRITTEN guard pattern)
-that was inside spi_test_dump_transfer had to get moved out
-to keep the functionality working.
+spi_loop_back_test requires a means to report on failed transfers
+(including payload data), so it makes use of this.
+
+Such a functionality can also be helpful during development of
+other drivers, so it has been exposed as a general facility.
 
 Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 ---
- drivers/spi/spi-loopback-test.c |  116 +++++++++++++--------------------------
- 1 file changed, 39 insertions(+), 77 deletions(-)
+ drivers/spi/spi.c       |  169 +++++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/spi/spi.h |   24 +++++++
+ 2 files changed, 193 insertions(+)
 
-diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
-index 81fa906..75cea07 100644
---- a/drivers/spi/spi-loopback-test.c
-+++ b/drivers/spi/spi-loopback-test.c
-@@ -331,74 +331,6 @@ MODULE_LICENSE("GPL");
- /* we allocate one page more, to allow for offsets */
- #define SPI_TEST_MAX_SIZE_PLUS (SPI_TEST_MAX_SIZE + PAGE_SIZE)
- 
--static void spi_test_print_hex_dump(char *pre, const void *ptr, size_t len)
--{
--	/* limit the hex_dump */
--	if (len < 1024) {
--		print_hex_dump(KERN_INFO, pre,
--			       DUMP_PREFIX_OFFSET, 16, 1,
--			       ptr, len, 0);
--		return;
--	}
--	/* print head */
--	print_hex_dump(KERN_INFO, pre,
--		       DUMP_PREFIX_OFFSET, 16, 1,
--		       ptr, 512, 0);
--	/* print tail */
--	pr_info("%s truncated - continuing at offset %04zx\n",
--		pre, len - 512);
--	print_hex_dump(KERN_INFO, pre,
--		       DUMP_PREFIX_OFFSET, 16, 1,
--		       ptr + (len - 512), 512, 0);
--}
--
--static void spi_test_dump_message(struct spi_device *spi,
--				  struct spi_message *msg,
--				  bool dump_data)
--{
--	struct spi_transfer *xfer;
--	int i;
--	u8 b;
--
--	dev_info(&spi->dev, "  spi_msg@%pK\n", msg);
--	if (msg->status)
--		dev_info(&spi->dev, "    status:        %i\n",
--			 msg->status);
--	dev_info(&spi->dev, "    frame_length:  %i\n",
--		 msg->frame_length);
--	dev_info(&spi->dev, "    actual_length: %i\n",
--		 msg->actual_length);
--
--	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
--		dev_info(&spi->dev, "    spi_transfer@%pK\n", xfer);
--		dev_info(&spi->dev, "      len:    %i\n", xfer->len);
--		dev_info(&spi->dev, "      tx_buf: %pK\n", xfer->tx_buf);
--		if (dump_data && xfer->tx_buf)
--			spi_test_print_hex_dump("          TX: ",
--						xfer->tx_buf,
--						xfer->len);
--
--		dev_info(&spi->dev, "      rx_buf: %pK\n", xfer->rx_buf);
--		if (dump_data && xfer->rx_buf)
--			spi_test_print_hex_dump("          RX: ",
--						xfer->rx_buf,
--						xfer->len);
--		/* check for unwritten test pattern on rx_buf */
--		if (xfer->rx_buf) {
--			for (i = 0 ; i < xfer->len ; i++) {
--				b = ((u8 *)xfer->rx_buf)[xfer->len - 1 - i];
--				if (b != SPI_TEST_PATTERN_UNWRITTEN)
--					break;
--			}
--			if (i)
--				dev_info(&spi->dev,
--					 "      rx_buf filled with %02x starts at offset: %i\n",
--					 SPI_TEST_PATTERN_UNWRITTEN,
--					 xfer->len - i);
--		}
--	}
--}
--
- struct rx_ranges {
- 	struct list_head list;
- 	u8 *start;
-@@ -423,17 +355,37 @@ static int spi_check_rx_ranges(struct spi_device *spi,
- {
- 	struct spi_transfer *xfer;
- 	struct rx_ranges ranges[SPI_TEST_MAX_TRANSFERS], *r;
--	int i = 0;
-+	size_t i = 0;
- 	LIST_HEAD(ranges_list);
--	u8 *addr;
-+	u8 *addr, b;
- 	int ret = 0;
- 
--	/* loop over all transfers to fill in the rx_ranges */
-+	/* if there is no rx, then no check is needed */
- 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
--		/* if there is no rx, then no check is needed */
- 		if (!xfer->rx_buf)
- 			continue;
--		/* fill in the rx_range */
-+		/* check the unwritten pattern inside the transfer*/
-+		for (i = 0; i < xfer->len ; i++) {
-+			b = ((u8 *)xfer->rx_buf)[xfer->len - 1 - i];
-+			if (b != SPI_TEST_PATTERN_UNWRITTEN)
-+				break;
-+		}
-+		/* if there is a match then return with an error
-+		 * note that the fill pattern makes sure that the last
-+		 * TX byte per transfer is never the UNWRITTEN test pattern
-+		 */
-+		if (i) {
-+			dev_err(&spi->dev,
-+				"      rx_buf filled with %02x starts at offset: %i\n",
-+				SPI_TEST_PATTERN_UNWRITTEN,
-+				xfer->len - i);
-+			return -EINVAL;
-+		}
+Changelog:
+V1->V2: * changes recommended by Andy Shevchenko
+        * slight reorganisation of code - specifically remove
+	  hex_dump_to_buffer and use %*ph instead
+	* removal of one helper function and renaming another
+	* change in method parameters to allow changing the amount
+	  of lines to dump at the head independently from tail
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 9964835..bf623db 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -31,6 +31,7 @@
+ #include <linux/of_gpio.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/pm_domain.h>
++#include <linux/printk.h>
+ #include <linux/export.h>
+ #include <linux/sched/rt.h>
+ #include <linux/delay.h>
+@@ -718,6 +719,174 @@ int spi_register_board_info(struct spi_board_info const *info, unsigned n)
+ 	return 0;
+ }
+
++const unsigned spi_dump_bytes_per_line = 16;
++static void __spi_transfer_dump_chunk(struct spi_device *spi, char *prefix,
++				      const void *ptr, size_t start,
++				      size_t len)
++{
++	const size_t spi_dump_bytes_per_line = 16;
++	char hexdata[spi_dump_bytes_per_line * 3];
++	size_t i, l;
++
++	for (i = start; i < len; i += spi_dump_bytes_per_line) {
++		/* format the next 16 bytes */
++		snprintf(hexdata, sizeof(hexdata), "%16ph", ptr + i);
++
++		/* truncate the unnecessarily printed bytes */
++		l = min_t(size_t, len - i, spi_dump_bytes_per_line) * 3 - 1;
++		hexdata[l] = 0;
++
++		/* and print data including address and offset */
++		dev_info(&spi->dev, "%soff=0x%.5zx ptr=0x%pK: %s\n",
++			 prefix, i, ptr + i, hexdata);
++	}
++}
++
++static void spi_transfer_dump_buffer(struct spi_device *spi, char *prefix,
++				     const void *ptr, size_t len,
++				     size_t head_len, size_t tail_len)
++{
++	size_t tail_start;
++
++	/* dump head if requested */
++	if (head_len) {
++		/* calculate effective head_len - aligning if necessary */
++		head_len = (len <= head_len) ?
++			   len :
++			   roundup(head_len, spi_dump_bytes_per_line);
++
++		/* dump the head */
++		__spi_transfer_dump_chunk(spi, prefix, ptr, 0, head_len);
++
++		/* if we dumped everything return immediately */
++		if (len == head_len)
++			return;
 +	}
 +
-+	/* loop over all transfers to fill in the rx_ranges */
-+	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
-+		/* fill in the rx_range for the check below*/
- 		if (RANGE_CHECK(xfer->rx_buf, xfer->len,
- 				rx, SPI_TEST_MAX_SIZE_PLUS)) {
- 			ranges[i].start = xfer->rx_buf;
-@@ -653,6 +605,12 @@ static int spi_test_fill_pattern(struct spi_device *spi,
- 				return -EINVAL;
- 			}
- 		}
-+		/* make sure that the last byte in TX is
-+		 * not the UNWRITTEN pattern
-+		 */
-+		tx_buf--;
-+		if (*tx_buf == SPI_TEST_PATTERN_UNWRITTEN)
-+			*tx_buf = 0;
- 	}
- 
- 	return 0;
-@@ -812,6 +770,7 @@ static int spi_test_run_iter(struct spi_device *spi,
- int spi_test_execute_msg(struct spi_device *spi, struct spi_test *test,
- 			 void *tx, void *rx)
- {
-+	const size_t dump_size = 512;
- 	struct spi_message *msg = &test->msg;
- 	int ret = 0;
- 	int i;
-@@ -820,7 +779,7 @@ int spi_test_execute_msg(struct spi_device *spi, struct spi_test *test,
- 	if (!simulate_only) {
- 		/* dump the complete message before and after the transfer */
- 		if (dump_messages == 3)
--			spi_test_dump_message(spi, msg, true);
-+			spi_message_dump(spi, msg, dump_size, dump_size);
- 
- 		/* run spi message */
- 		ret = spi_sync(spi, msg);
-@@ -855,9 +814,12 @@ int spi_test_execute_msg(struct spi_device *spi, struct spi_test *test,
- 
- 	/* if requested or on error dump message (including data) */
- exit:
--	if (dump_messages || ret)
--		spi_test_dump_message(spi, msg,
--				      (dump_messages >= 2) || (ret));
-+	if (dump_messages || ret) {
-+		if ((dump_messages >= 2) || (ret))
-+			spi_message_dump(spi, msg, dump_size, dump_size);
++	/* return if no tail_len is requested */
++	if (!tail_len)
++		return;
++
++	/* calculate real tail start offset aligning it */
++	tail_start = (tail_len >= len) ?
++		     head_len :
++		     rounddown(len - tail_len, spi_dump_bytes_per_line);
++
++	/* special handling needed if we have been dumping head */
++	if (head_len) {
++		if (tail_start > head_len)
++			/* we are not overlapping */
++			dev_info(&spi->dev,
++				 "%struncated - continuing at offset %04x\n",
++				 prefix, tail_start);
 +		else
-+			spi_message_dump(spi, msg, 0, 0);
++			/* we are overlapping, so continue at head_len */
++			tail_start = head_len;
 +	}
- 
- 	return ret;
- }
--- 
++
++	/* dump the tail */
++	__spi_transfer_dump_chunk(spi, prefix, ptr, tail_start, len);
++}
++
++/**
++ * spi_transfer_dump - dump all the essential information
++ *                     of a @spi_transfer, when dump_size is set,
++ *                     then hex-dump that many bytes of data
++ * @spi:       @spi_device for which to dump this (dev_info)
++ * @msg:       @spi_message to which xfer belongs
++ * @xfer:      @spi_transfer to dump
++ * @head_len: bytes to dump from the start of the buffers
++ *            (rounded up to multiple of 16)
++ * @tail_len: bytes to dump from the end of the buffers
++ *            (rounded up so that tail dump starts 16 byte aligned)
++ */
++void spi_transfer_dump(struct spi_device *spi,
++		       struct spi_message *msg,
++		       struct spi_transfer *xfer,
++		       size_t head_len, size_t tail_len)
++{
++	struct device *dev = &spi->dev;
++
++	dev_info(dev, "  spi_transfer@%pK\n", xfer);
++	dev_info(dev, "    speed_hz:    %u\n", xfer->speed_hz);
++	dev_info(dev, "    len:         %u\n", xfer->len);
++	dev_info(dev, "    tx_nbits:    %u\n", xfer->tx_nbits);
++	dev_info(dev, "    rx_nbits:    %u\n", xfer->rx_nbits);
++	dev_info(dev, "    bits/word:   %u\n", xfer->bits_per_word);
++	if (xfer->delay_usecs)
++		dev_info(dev, "    delay_usecs: %u\n",
++			 xfer->delay_usecs);
++	if (xfer->cs_change)
++		dev_info(dev, "    cs_change\n");
++	if (xfer->tx_buf) {
++		dev_info(dev, "    tx_buf:      %pK\n", xfer->tx_buf);
++		if (xfer->tx_dma)
++			dev_info(dev, "    tx_dma:      %pad\n",
++				 &xfer->tx_dma);
++		if (head_len | tail_len)
++			spi_transfer_dump_buffer(spi, "\t",
++						 xfer->tx_buf, xfer->len,
++						 head_len, tail_len);
++	}
++	if (xfer->rx_buf) {
++		dev_info(dev, "    rx_buf:      %pK\n", xfer->rx_buf);
++		if (xfer->rx_dma)
++			dev_info(dev, "    rx_dma:      %pad\n",
++				 &xfer->rx_dma);
++		if (head_len | tail_len)
++			spi_transfer_dump_buffer(spi, "\t",
++						 xfer->rx_buf, xfer->len,
++						 head_len, tail_len);
++	}
++}
++EXPORT_SYMBOL_GPL(spi_transfer_dump);
++
++/**
++ * spi_message_dump_custom - dump a spi message with ability to have
++ *                           a custom dump method per transfer
++ * @spi:       @spi_device for which to dump this (dev_info)
++ * @msg:       @spi_message to dump
++ * @head_len: bytes to dump from the start of the buffers
++ *            (rounded up to multiple of 16)
++ * @tail_len: bytes to dump from the end of the buffers
++ *            (rounded up so that tail dump starts 16 byte aligned)
++ * @custom:    custom dump code to execute per transfer
++ * @context:   context to pass to the custom dump code
++ *
++ * Uses dev_info() to dump the lines.
++ */
++void spi_message_dump_custom(struct spi_device *spi,
++			     struct spi_message *msg,
++			     size_t head_len, size_t tail_len,
++			     spi_transfer_dump_custom_t custom,
++			     void *context)
++{
++	struct device *dev = &spi->dev;
++	struct spi_transfer *xfer;
++
++	/* dump the message */
++	dev_info(dev, "spi_msg@%pK\n", msg);
++	if (msg->status)
++		dev_info(dev, "  status:         %d\n", msg->status);
++	dev_info(dev, "  frame_length:   %zu\n", msg->frame_length);
++	dev_info(dev, "  actual_length:  %zu\n", msg->actual_length);
++	if (msg->complete)
++		dev_info(dev, "  complete:       %pF\n", msg->complete);
++	if (msg->context)
++		dev_info(dev, "  context:        %pF\n", msg->context);
++	if (msg->is_dma_mapped)
++		dev_info(dev, "  is_dma_mapped\n");
++	dev_info(dev, "  transfers-head: %pK\n", &msg->transfers);
++
++	/* dump transfers themselves */
++	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
++		spi_transfer_dump(spi, msg, xfer, head_len, tail_len);
++		if (custom)
++			custom(spi, msg, xfer, context);
++	}
++}
++EXPORT_SYMBOL_GPL(spi_message_dump_custom);
++
+ /*-------------------------------------------------------------------------*/
+
+ static void spi_set_cs(struct spi_device *spi, bool enable)
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index f055a47..13f8f06 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -897,6 +897,30 @@ extern int spi_setup(struct spi_device *spi);
+ extern int spi_async(struct spi_device *spi, struct spi_message *message);
+ extern int spi_async_locked(struct spi_device *spi,
+ 			    struct spi_message *message);
++/*---------------------------------------------------------------------------*/
++
++extern void spi_transfer_dump(struct spi_device *spi,
++			      struct spi_message *msg,
++			      struct spi_transfer *xfer,
++			      size_t dump_head, size_t dump_tail);
++
++typedef void (*spi_transfer_dump_custom_t)(struct spi_device *spi,
++					   struct spi_message *msg,
++					   struct spi_transfer *xfer,
++					   void *context);
++
++extern void spi_message_dump_custom(struct spi_device *spi,
++				    struct spi_message *msg,
++				    size_t dump_head, size_t dump_tail,
++				    spi_transfer_dump_custom_t custom,
++				    void *context);
++
++static inline void spi_message_dump(struct spi_device *spi,
++				    struct spi_message *msg,
++				    size_t dump_head, size_t dump_tail)
++{
++	spi_message_dump_custom(spi, msg, dump_head, dump_tail, NULL, NULL);
++}
+
+ /*---------------------------------------------------------------------------*/
+
+--
 1.7.10.4
 
 --

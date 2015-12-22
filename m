@@ -1,55 +1,51 @@
 From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH v3 0/8] spi: loopback-test: improvments and sharing dump code
-Date: Tue, 22 Dec 2015 18:03:20 +0000
-Message-ID: <1450807408-2422-1-git-send-email-kernel@martin.sperl.org>
+Subject: [PATCH v3 2/8] spi: loopback-test: rename method spi_test_fill_tx to spi_test_fill_pattern
+Date: Tue, 22 Dec 2015 18:03:22 +0000
+Message-ID: <1450807408-2422-3-git-send-email-kernel@martin.sperl.org>
+References: <1450807408-2422-1-git-send-email-kernel@martin.sperl.org>
 Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1450807408-2422-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-Move spi_message dump method into SPI-core and make use of
-this extended version of the dumping code in loopback-test.
+Rename method spi_test_fill_tx to spi_test_fill_pattern
+to better describe what it does.
 
-This requires also separation of some content verification
-from the dump code itself.
+Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+---
+ drivers/spi/spi-loopback-test.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-Also it now handles module-parameters differently
-(some renaming to make it clearer what they are for)
-and adds SPI_LOOP support.
-
-Changelog:
-V1->V2: * changes recommended in review by Andy Shevchenko
-        * better separation to smaller patches
-	* reintroduction of check for RX guard-pattern
-	  lost in V1
-	* rename module parameters, variables and methods
-V2->V3: only change in patch 3 as per review of Andy Shevchenko
-	* kernel doc
-	* use of %*ph for dumping hex
-	* fixing | to ||
-
-Martin Sperl (8):
-  spi: loopback-test: write rx pattern also when running without tx_buf
-  spi: loopback-test: rename method spi_test_fill_tx to
-    spi_test_fill_pattern
-  spi: core: add spi_message_dump and spi_transfer_dump
-  spi: loopback-test: move to use spi_message_dump_data
-  spi: loopback-test: spi_check_rx_ranges can get always done
-  spi: loopback-test: improve granularity of dump_messages module
-    parameter
-  spi: loopback-test: change module parameter name to
-    have_external_loopback
-  spi: loopback-test: added support for HW-loopback mode
-
- drivers/spi/spi-loopback-test.c |  217 +++++++++++++++++++++------------------
- drivers/spi/spi.c               |  171 ++++++++++++++++++++++++++++++
- include/linux/spi/spi.h         |   24 +++++
- 3 files changed, 311 insertions(+), 101 deletions(-)
-
---
+diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
+index 8af2e40..81fa906 100644
+--- a/drivers/spi/spi-loopback-test.c
++++ b/drivers/spi/spi-loopback-test.c
+@@ -574,7 +574,8 @@ static int spi_test_translate(struct spi_device *spi,
+ 	return -EINVAL;
+ }
+ 
+-static int spi_test_fill_tx(struct spi_device *spi, struct spi_test *test)
++static int spi_test_fill_pattern(struct spi_device *spi,
++				 struct spi_test *test)
+ {
+ 	struct spi_transfer *xfers = test->transfers;
+ 	u8 *tx_buf;
+@@ -691,8 +692,8 @@ static int _spi_test_run_iter(struct spi_device *spi,
+ 		spi_message_add_tail(x, msg);
+ 	}
+ 
+-	/* fill in the transfer data */
+-	ret = spi_test_fill_tx(spi, test);
++	/* fill in the transfer buffers with pattern */
++	ret = spi_test_fill_pattern(spi, test);
+ 	if (ret)
+ 		return ret;
+ 
+-- 
 1.7.10.4
 
 --

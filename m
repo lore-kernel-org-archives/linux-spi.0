@@ -1,54 +1,55 @@
 From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH v3 1/8] spi: loopback-test: write rx pattern also when running without tx_buf
-Date: Tue, 22 Dec 2015 18:03:21 +0000
-Message-ID: <1450807408-2422-2-git-send-email-kernel@martin.sperl.org>
-References: <1450807408-2422-1-git-send-email-kernel@martin.sperl.org>
+Subject: [PATCH v3 0/8] spi: loopback-test: improvments and sharing dump code
+Date: Tue, 22 Dec 2015 18:03:20 +0000
+Message-ID: <1450807408-2422-1-git-send-email-kernel@martin.sperl.org>
 Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1450807408-2422-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-Currently the rx_buf does not get set with the
-SPI_TEST_PATTERN_UNWRITTEN when tx_buf == NULL in the transfer.
+Move spi_message dump method into SPI-core and make use of
+this extended version of the dumping code in loopback-test.
 
-Reorder code so that it gets done also under this specific condition.
+This requires also separation of some content verification
+from the dump code itself.
 
-Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
----
- drivers/spi/spi-loopback-test.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Also it now handles module-parameters differently
+(some renaming to make it clearer what they are for)
+and adds SPI_LOOP support.
 
-diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
-index 7f497ac..8af2e40 100644
---- a/drivers/spi/spi-loopback-test.c
-+++ b/drivers/spi/spi-loopback-test.c
-@@ -591,6 +591,10 @@ static int spi_test_fill_tx(struct spi_device *spi, struct spi_test *test)
- 
- 	/* fill all transfers with the pattern requested */
- 	for (i = 0; i < test->transfer_count; i++) {
-+		/* fill rx_buf with SPI_TEST_PATTERN_UNWRITTEN */
-+		if (xfers[i].rx_buf)
-+			memset(xfers[i].rx_buf, SPI_TEST_PATTERN_UNWRITTEN,
-+			       xfers[i].len);
- 		/* if tx_buf is NULL then skip */
- 		tx_buf = (u8 *)xfers[i].tx_buf;
- 		if (!tx_buf)
-@@ -648,10 +652,6 @@ static int spi_test_fill_tx(struct spi_device *spi, struct spi_test *test)
- 				return -EINVAL;
- 			}
- 		}
--		/* fill rx_buf with SPI_TEST_PATTERN_UNWRITTEN */
--		if (xfers[i].rx_buf)
--			memset(xfers[i].rx_buf, SPI_TEST_PATTERN_UNWRITTEN,
--			       xfers[i].len);
- 	}
- 
- 	return 0;
--- 
+Changelog:
+V1->V2: * changes recommended in review by Andy Shevchenko
+        * better separation to smaller patches
+	* reintroduction of check for RX guard-pattern
+	  lost in V1
+	* rename module parameters, variables and methods
+V2->V3: only change in patch 3 as per review of Andy Shevchenko
+	* kernel doc
+	* use of %*ph for dumping hex
+	* fixing | to ||
+
+Martin Sperl (8):
+  spi: loopback-test: write rx pattern also when running without tx_buf
+  spi: loopback-test: rename method spi_test_fill_tx to
+    spi_test_fill_pattern
+  spi: core: add spi_message_dump and spi_transfer_dump
+  spi: loopback-test: move to use spi_message_dump_data
+  spi: loopback-test: spi_check_rx_ranges can get always done
+  spi: loopback-test: improve granularity of dump_messages module
+    parameter
+  spi: loopback-test: change module parameter name to
+    have_external_loopback
+  spi: loopback-test: added support for HW-loopback mode
+
+ drivers/spi/spi-loopback-test.c |  217 +++++++++++++++++++++------------------
+ drivers/spi/spi.c               |  171 ++++++++++++++++++++++++++++++
+ include/linux/spi/spi.h         |   24 +++++
+ 3 files changed, 311 insertions(+), 101 deletions(-)
+
+--
 1.7.10.4
 
 --

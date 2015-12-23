@@ -1,7 +1,7 @@
 From: Christophe Ricard <christophe.ricard@gmail.com>
-Subject: [PATCH v8 3/3] ACPI / spi: attach gpio irq from acpi description to spi device
-Date: Wed, 23 Dec 2015 23:25:35 +0100
-Message-ID: <1450909535-32138-4-git-send-email-christophe-h.ricard@st.com>
+Subject: [PATCH v8 2/3] ACPI / gpio: Add irq_type when a gpio is used as an interrupt
+Date: Wed, 23 Dec 2015 23:25:34 +0100
+Message-ID: <1450909535-32138-3-git-send-email-christophe-h.ricard@st.com>
 References: <1450909535-32138-1-git-send-email-christophe-h.ricard@st.com>
 Cc: linux-spi@vger.kernel.org, linux-gpio@vger.kernel.org,
 	linux-acpi@vger.kernel.org,
@@ -14,31 +14,126 @@ In-Reply-To: <1450909535-32138-1-git-send-email-christophe-h.ricard@st.com>
 Sender: linux-gpio-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-spi->irq was ignoring GpioInt property setting it to -1.
-acpi_dev_gpio_irq_get returns and configure the slave irq according to
-the acpi slave node description.
-It is now inline with devicetree behavior.
+When a gpio is used as an interrupt in acpi, the irq_type was not
+available for device driver.
 
-Acked-by: Mark Brown <broonie@kernel.org>
+Make available polarity and triggering information in acpi_find_gpio by
+renaming acpi_gpio_info field active_low  to polarity and adding triggering
+field (edge/level).
+For sanity, in gpiolib.c replace info.active_low by
+"info.polarity == GPIO_ACTIVE_LOW".
+
+Set the irq_type if necessary in acpi_dev_gpio_irq_get.
+
 Signed-off-by: Christophe Ricard <christophe-h.ricard@st.com>
 ---
- drivers/spi/spi.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpio/gpiolib-acpi.c | 33 +++++++++++++++++++++++++++------
+ drivers/gpio/gpiolib.c      |  4 ++--
+ drivers/gpio/gpiolib.h      |  3 ++-
+ 3 files changed, 31 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 2b0a8ec..f1723bb 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1623,6 +1623,9 @@ static acpi_status acpi_spi_add_device(acpi_handle handle, u32 level,
- 		return AE_OK;
+diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
+index 16a7b68..cbbb67a 100644
+--- a/drivers/gpio/gpiolib-acpi.c
++++ b/drivers/gpio/gpiolib-acpi.c
+@@ -417,10 +417,15 @@ static int acpi_find_gpio(struct acpi_resource *ares, void *data)
+ 		 * ActiveLow is only specified for GpioInt resource. If
+ 		 * GpioIo is used then the only way to set the flag is
+ 		 * to use _DSD "gpios" property.
++		 * Note: we expect here:
++		 * - ACPI_ACTIVE_LOW == GPIO_ACTIVE_LOW
++		 * - ACPI_ACTIVE_HIGH == GPIO_ACTIVE_HIGH
+ 		 */
+-		if (lookup->info.gpioint)
+-			lookup->info.active_low =
+-				agpio->polarity == ACPI_ACTIVE_LOW;
++		if (lookup->info.gpioint) {
++			lookup->info.polarity = agpio->polarity;
++			lookup->info.triggering = agpio->triggering;
++		}
++
  	}
  
-+	if (spi->irq < 0)
-+		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
+ 	return 1;
+@@ -447,7 +452,7 @@ static int acpi_gpio_resource_lookup(struct acpi_gpio_lookup *lookup,
+ 	if (info) {
+ 		*info = lookup->info;
+ 		if (lookup->active_low)
+-			info->active_low = lookup->active_low;
++			info->polarity = lookup->active_low;
+ 	}
+ 	return 0;
+ }
+@@ -595,6 +600,7 @@ struct gpio_desc *acpi_node_get_gpiod(struct fwnode_handle *fwnode,
+ int acpi_dev_gpio_irq_get(struct acpi_device *adev, int index)
+ {
+ 	int idx, i;
++	unsigned int irq_flags;
+ 
+ 	for (i = 0, idx = 0; idx <= index; i++) {
+ 		struct acpi_gpio_info info;
+@@ -603,8 +609,23 @@ int acpi_dev_gpio_irq_get(struct acpi_device *adev, int index)
+ 		desc = acpi_get_gpiod_by_index(adev, NULL, i, &info);
+ 		if (IS_ERR(desc))
+ 			break;
+-		if (info.gpioint && idx++ == index)
+-			return gpiod_to_irq(desc);
++		if (info.gpioint && idx++ == index) {
++			int irq = gpiod_to_irq(desc);
 +
- 	adev->power.flags.ignore_parent = true;
- 	strlcpy(spi->modalias, acpi_device_hid(adev), sizeof(spi->modalias));
- 	if (spi_add_device(spi)) {
++			if (irq < 0)
++				return irq;
++
++			irq_flags = acpi_dev_get_irq_type(info.triggering,
++							  info.polarity);
++
++			/* Set type if specified and different than the current one */
++			if (irq_flags != IRQ_TYPE_NONE &&
++			    irq_flags != irq_get_trigger_type(irq))
++				irq_set_irq_type(irq, irq_flags);
++
++			return irq;
++		}
++
+ 	}
+ 	return -ENOENT;
+ }
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 2a91f32..5b67177 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -1873,7 +1873,7 @@ static struct gpio_desc *acpi_find_gpio(struct device *dev, const char *con_id,
+ 			return desc;
+ 	}
+ 
+-	if (info.active_low)
++	if (info.polarity == GPIO_ACTIVE_LOW)
+ 		*flags |= GPIO_ACTIVE_LOW;
+ 
+ 	return desc;
+@@ -2211,7 +2211,7 @@ struct gpio_desc *fwnode_get_named_gpiod(struct fwnode_handle *fwnode,
+ 
+ 		desc = acpi_node_get_gpiod(fwnode, propname, 0, &info);
+ 		if (!IS_ERR(desc))
+-			active_low = info.active_low;
++			active_low = info.polarity == GPIO_ACTIVE_LOW;
+ 	}
+ 
+ 	if (IS_ERR(desc))
+diff --git a/drivers/gpio/gpiolib.h b/drivers/gpio/gpiolib.h
+index 98ab08c..5ac3b88 100644
+--- a/drivers/gpio/gpiolib.h
++++ b/drivers/gpio/gpiolib.h
+@@ -26,7 +26,8 @@ struct acpi_device;
+  */
+ struct acpi_gpio_info {
+ 	bool gpioint;
+-	bool active_low;
++	int polarity;
++	int triggering;
+ };
+ 
+ /* gpio suffixes used for ACPI and device tree lookup */
 -- 
 2.1.4
 

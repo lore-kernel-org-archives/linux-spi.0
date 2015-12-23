@@ -1,67 +1,44 @@
-From: Christophe Ricard <christophe.ricard-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v8 0/3] ACPI: Add irq_type to gpio interrupt
-Date: Wed, 23 Dec 2015 23:25:32 +0100
-Message-ID: <1450909535-32138-1-git-send-email-christophe-h.ricard@st.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Christophe Ricard <christophe-h.ricard-qxv4g6HH51o@public.gmane.org>
-To: rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org, lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-	gnurou-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
-	mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Christophe Ricard <christophe.ricard@gmail.com>
+Subject: [PATCH v8 3/3] ACPI / spi: attach gpio irq from acpi description to spi device
+Date: Wed, 23 Dec 2015 23:25:35 +0100
+Message-ID: <1450909535-32138-4-git-send-email-christophe-h.ricard@st.com>
+References: <1450909535-32138-1-git-send-email-christophe-h.ricard@st.com>
+Cc: linux-spi@vger.kernel.org, linux-gpio@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	Christophe Ricard <christophe-h.ricard@st.com>
+To: rjw@rjwysocki.net, lenb@kernel.org, linus.walleij@linaro.org,
+	gnurou@gmail.com, andriy.shevchenko@linux.intel.com,
+	mika.westerberg@linux.intel.com, broonie@kernel.org
+Return-path: <linux-gpio-owner@vger.kernel.org>
+In-Reply-To: <1450909535-32138-1-git-send-email-christophe-h.ricard@st.com>
+Sender: linux-gpio-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi,
+spi->irq was ignoring GpioInt property setting it to -1.
+acpi_dev_gpio_irq_get returns and configure the slave irq according to
+the acpi slave node description.
+It is now inline with devicetree behavior.
 
-ACPI probing method does not retrieve irq_type from a gpio interrupt declared
-with GpioInt as it is done with devicetree probing. In other terms, irq_get_trigger_type
-will always send back 0.
+Acked-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Christophe Ricard <christophe-h.ricard@st.com>
+---
+ drivers/spi/spi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Those 3 patches propose a way to retrieve the correct interrupt polarity/type from a GpioInt
-acpi declaration when using irq_get_trigger_type.
-
-Since v4 after Mika and Andy's feedbacks:
-- acpi_gpio_info active_low field got renamed polarity. Note that polarity/active_low is having sense
-also when a gpio is not mapped as an interrupt but as an output (For example: check gpiod_set_value
-in drivers/gpio/gpiolib.c).
-- acpi_gsi_get_irq_type is now renamed acpi_dev_get_irq_type and moved to drivers/acpi/resource.c
-- The irq described in the acpi spi slave node is now set once we fall back to retrieve normal interrupt.
-
-Since v5 after Andy's feedbacks:
-- Make sure we are not using u* type but pure C type for non hardware value.
-
-Since v6:
-- Patches now applies on top of Raphael tree tag linux-next
-
-Since v7:
-- Added "Acked-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>" to patch 1.
-- Added "Acked-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>" to patch 3.
-- Patch 3 got reworked following Mika's feedback.
-- Patch 2 added few comment in acpi_find_gpio following Mika's feedback.
-
-Best Regards
-Christophe 
-
-Christophe Ricard (3):
-  acpi: Rename acpi_gsi_get_irq_type to acpi_dev_get_irq_type and export
-    symbol
-  ACPI / gpio: Add irq_type when a gpio is used as an interrupt
-  ACPI / spi: attach gpio irq from acpi description to spi device
-
- drivers/acpi/gsi.c          | 21 +--------------------
- drivers/acpi/resource.c     | 26 ++++++++++++++++++++++++++
- drivers/gpio/gpiolib-acpi.c | 33 +++++++++++++++++++++++++++------
- drivers/gpio/gpiolib.c      |  4 ++--
- drivers/gpio/gpiolib.h      |  3 ++-
- drivers/spi/spi.c           |  3 +++
- include/linux/acpi.h        |  1 +
- 7 files changed, 62 insertions(+), 29 deletions(-)
-
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 2b0a8ec..f1723bb 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1623,6 +1623,9 @@ static acpi_status acpi_spi_add_device(acpi_handle handle, u32 level,
+ 		return AE_OK;
+ 	}
+ 
++	if (spi->irq < 0)
++		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
++
+ 	adev->power.flags.ignore_parent = true;
+ 	strlcpy(spi->modalias, acpi_device_hid(adev), sizeof(spi->modalias));
+ 	if (spi_add_device(spi)) {
 -- 
 2.1.4
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

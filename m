@@ -1,45 +1,53 @@
-From: Jisheng Zhang <jszhang@marvell.com>
-Subject: Re: [RFC] spi: dw: support setting tmode dynamically
-Date: Wed, 23 Dec 2015 20:29:52 +0800
-Message-ID: <20151223202952.28be5bab@xhacker>
-References: <20151223192338.128e95a4@xhacker>
-	<20151223121512.GV16023@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-Cc: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20151223121512.GV16023@sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH v1 1/1] spi: pxa2xx: handle error of pxa2xx_spi_dma_prepare()
+Date: Wed, 23 Dec 2015 21:50:00 +0200
+Message-ID: <1450900200-120644-1-git-send-email-andriy.shevchenko@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Dear Mark,
+If by some reason pxa2xx_spi_dma_prepare() fails we have not to ignore its
+error. In such case we abort the transfer and return the error to upper level.
 
-On Wed, 23 Dec 2015 12:15:12 +0000 Mark Brown wrote:
+Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Cc: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+---
+ drivers/spi/spi-pxa2xx.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-> On Wed, Dec 23, 2015 at 07:23:38PM +0800, Jisheng Zhang wrote:
-> 
-> > Currently the spi-dw tmode is fixed to SPI_TMOD_TR if cs_control is NULL, but we
-> > need to set it as SPI_TMOD_EPROMREAD to read nor flash, my solution is to add and
-> > export one functions to set the tmode, then the nor flash driver call it
-> > before reading and set back to SPI_TMOD_TR after done.  
-> 
-> What does this mean - what is TMOD and why do we need to set it to read
-> NOR flash?  I've no information on this controller...
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 267a3a2..2e6915c 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -890,6 +890,7 @@ static void pump_transfers(unsigned long data)
+ 	u32 dma_thresh = drv_data->cur_chip->dma_threshold;
+ 	u32 dma_burst = drv_data->cur_chip->dma_burst_size;
+ 	u32 change_mask = pxa2xx_spi_get_ssrc1_change_mask(drv_data);
++	int err;
+ 
+ 	/* Get current state information */
+ 	message = drv_data->cur_msg;
+@@ -1024,7 +1025,12 @@ static void pump_transfers(unsigned long data)
+ 		/* Ensure we have the correct interrupt handler */
+ 		drv_data->transfer_handler = pxa2xx_spi_dma_transfer;
+ 
+-		pxa2xx_spi_dma_prepare(drv_data, dma_burst);
++		err = pxa2xx_spi_dma_prepare(drv_data, dma_burst);
++		if (err) {
++			message->status = err;
++			giveback(drv_data);
++			return;
++		}
+ 
+ 		/* Clear status and start DMA engine */
+ 		cr1 = chip->cr1 | dma_thresh | drv_data->dma_cr1;
+-- 
+2.6.4
 
-TMOD is one field of DW_SPI_CTRL0. Its available value could be:
-
-0: Transmit and Receive
-
-1: Transmit only
-
-2: Receive only
-
-3: EEPROM Read
-
-If the one spi nor flash is connected to the SPI host, so far I can only succeed
-to read the nor flash content after setting the TMOD field as 3.
-
-Thanks,
-Jisheng
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

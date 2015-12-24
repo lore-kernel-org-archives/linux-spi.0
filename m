@@ -1,139 +1,88 @@
-From: Christophe Ricard <christophe.ricard@gmail.com>
-Subject: [PATCH v8 2/3] ACPI / gpio: Add irq_type when a gpio is used as an interrupt
-Date: Wed, 23 Dec 2015 23:25:34 +0100
-Message-ID: <1450909535-32138-3-git-send-email-christophe-h.ricard@st.com>
-References: <1450909535-32138-1-git-send-email-christophe-h.ricard@st.com>
-Cc: linux-spi@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	Christophe Ricard <christophe-h.ricard@st.com>
-To: rjw@rjwysocki.net, lenb@kernel.org, linus.walleij@linaro.org,
-	gnurou@gmail.com, andriy.shevchenko@linux.intel.com,
-	mika.westerberg@linux.intel.com, broonie@kernel.org
-Return-path: <linux-gpio-owner@vger.kernel.org>
-In-Reply-To: <1450909535-32138-1-git-send-email-christophe-h.ricard@st.com>
-Sender: linux-gpio-owner@vger.kernel.org
+From: Yoshihiro Kaneko <ykaneko0929@gmail.com>
+Subject: [PATCH 1/2] spi: sh-msiof: Add rcar fallback compatibility string
+Date: Thu, 24 Dec 2015 20:16:46 +0900
+Message-ID: <1450955807-22869-2-git-send-email-ykaneko0929@gmail.com>
+References: <1450955807-22869-1-git-send-email-ykaneko0929@gmail.com>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
+	Mark Brown <broonie@kernel.org>,
+	Simon Horman <horms@verge.net.au>,
+	Magnus Damm <magnus.damm@gmail.com>, linux-sh@vger.kernel.org
+To: linux-spi@vger.kernel.org
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1450955807-22869-1-git-send-email-ykaneko0929@gmail.com>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-When a gpio is used as an interrupt in acpi, the irq_type was not
-available for device driver.
+Add fallback compatibility string for R-Car Gen2 and Gen3.
+This is in keeping with the fallback scheme being adopted wherever
+appropriate for drivers for Renesas SoCs.
+In Addition, this patch deletes the compat strings for old SoCs.
 
-Make available polarity and triggering information in acpi_find_gpio by
-renaming acpi_gpio_info field active_low  to polarity and adding triggering
-field (edge/level).
-For sanity, in gpiolib.c replace info.active_low by
-"info.polarity == GPIO_ACTIVE_LOW".
-
-Set the irq_type if necessary in acpi_dev_gpio_irq_get.
-
-Signed-off-by: Christophe Ricard <christophe-h.ricard@st.com>
+Signed-off-by: Yoshihiro Kaneko <ykaneko0929@gmail.com>
 ---
- drivers/gpio/gpiolib-acpi.c | 33 +++++++++++++++++++++++++++------
- drivers/gpio/gpiolib.c      |  4 ++--
- drivers/gpio/gpiolib.h      |  3 ++-
- 3 files changed, 31 insertions(+), 9 deletions(-)
+ Documentation/devicetree/bindings/spi/sh-msiof.txt | 11 ++++++++---
+ drivers/spi/spi-sh-msiof.c                         |  5 +++--
+ 2 files changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-index 16a7b68..cbbb67a 100644
---- a/drivers/gpio/gpiolib-acpi.c
-+++ b/drivers/gpio/gpiolib-acpi.c
-@@ -417,10 +417,15 @@ static int acpi_find_gpio(struct acpi_resource *ares, void *data)
- 		 * ActiveLow is only specified for GpioInt resource. If
- 		 * GpioIo is used then the only way to set the flag is
- 		 * to use _DSD "gpios" property.
-+		 * Note: we expect here:
-+		 * - ACPI_ACTIVE_LOW == GPIO_ACTIVE_LOW
-+		 * - ACPI_ACTIVE_HIGH == GPIO_ACTIVE_HIGH
- 		 */
--		if (lookup->info.gpioint)
--			lookup->info.active_low =
--				agpio->polarity == ACPI_ACTIVE_LOW;
-+		if (lookup->info.gpioint) {
-+			lookup->info.polarity = agpio->polarity;
-+			lookup->info.triggering = agpio->triggering;
-+		}
-+
- 	}
+diff --git a/Documentation/devicetree/bindings/spi/sh-msiof.txt b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+index aa005c1..d9d89ee 100644
+--- a/Documentation/devicetree/bindings/spi/sh-msiof.txt
++++ b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+@@ -2,8 +2,8 @@ Renesas MSIOF spi controller
  
- 	return 1;
-@@ -447,7 +452,7 @@ static int acpi_gpio_resource_lookup(struct acpi_gpio_lookup *lookup,
- 	if (info) {
- 		*info = lookup->info;
- 		if (lookup->active_low)
--			info->active_low = lookup->active_low;
-+			info->polarity = lookup->active_low;
- 	}
- 	return 0;
- }
-@@ -595,6 +600,7 @@ struct gpio_desc *acpi_node_get_gpiod(struct fwnode_handle *fwnode,
- int acpi_dev_gpio_irq_get(struct acpi_device *adev, int index)
- {
- 	int idx, i;
-+	unsigned int irq_flags;
- 
- 	for (i = 0, idx = 0; idx <= index; i++) {
- 		struct acpi_gpio_info info;
-@@ -603,8 +609,23 @@ int acpi_dev_gpio_irq_get(struct acpi_device *adev, int index)
- 		desc = acpi_get_gpiod_by_index(adev, NULL, i, &info);
- 		if (IS_ERR(desc))
- 			break;
--		if (info.gpioint && idx++ == index)
--			return gpiod_to_irq(desc);
-+		if (info.gpioint && idx++ == index) {
-+			int irq = gpiod_to_irq(desc);
+ Required properties:
+ - compatible           : "renesas,msiof-<soctype>" for SoCs,
+-			 "renesas,sh-msiof" for SuperH, or
+-			 "renesas,sh-mobile-msiof" for SH Mobile series.
++			 "renesas,rcar-gen2-msiof" for R-Car Gen2 series, or
++			 "renesas,rcar-gen3-msiof" for R-Car Gen3 series.
+ 			 Examples with soctypes are:
+ 			 "renesas,msiof-r8a7790" (R-Car H2)
+ 			 "renesas,msiof-r8a7791" (R-Car M2-W)
+@@ -11,6 +11,11 @@ Required properties:
+ 			 "renesas,msiof-r8a7793" (R-Car M2-N)
+ 			 "renesas,msiof-r8a7794" (R-Car E2)
+ 			 "renesas,msiof-sh73a0" (SH-Mobile AG5)
 +
-+			if (irq < 0)
-+				return irq;
++			 When compatible with the generic version, nodes must
++			 list the SoC-specific version corresponding to the
++			 platform first followed by the generic version.
 +
-+			irq_flags = acpi_dev_get_irq_type(info.triggering,
-+							  info.polarity);
-+
-+			/* Set type if specified and different than the current one */
-+			if (irq_flags != IRQ_TYPE_NONE &&
-+			    irq_flags != irq_get_trigger_type(irq))
-+				irq_set_irq_type(irq, irq_flags);
-+
-+			return irq;
-+		}
-+
- 	}
- 	return -ENOENT;
- }
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 2a91f32..5b67177 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -1873,7 +1873,7 @@ static struct gpio_desc *acpi_find_gpio(struct device *dev, const char *con_id,
- 			return desc;
- 	}
+ - reg                  : A list of offsets and lengths of the register sets for
+ 			 the device.
+ 			 If only one register set is present, it is to be used
+@@ -60,7 +65,7 @@ Documentation/devicetree/bindings/pinctrl/renesas,*.
+ Example:
  
--	if (info.active_low)
-+	if (info.polarity == GPIO_ACTIVE_LOW)
- 		*flags |= GPIO_ACTIVE_LOW;
- 
- 	return desc;
-@@ -2211,7 +2211,7 @@ struct gpio_desc *fwnode_get_named_gpiod(struct fwnode_handle *fwnode,
- 
- 		desc = acpi_node_get_gpiod(fwnode, propname, 0, &info);
- 		if (!IS_ERR(desc))
--			active_low = info.active_low;
-+			active_low = info.polarity == GPIO_ACTIVE_LOW;
- 	}
- 
- 	if (IS_ERR(desc))
-diff --git a/drivers/gpio/gpiolib.h b/drivers/gpio/gpiolib.h
-index 98ab08c..5ac3b88 100644
---- a/drivers/gpio/gpiolib.h
-+++ b/drivers/gpio/gpiolib.h
-@@ -26,7 +26,8 @@ struct acpi_device;
-  */
- struct acpi_gpio_info {
- 	bool gpioint;
--	bool active_low;
-+	int polarity;
-+	int triggering;
+ 	msiof0: spi@e6e20000 {
+-		compatible = "renesas,msiof-r8a7791";
++		compatible = "renesas,msiof-r8a7791", "renesas,rcar-gen2-msiof";
+ 		reg = <0 0xe6e20000 0 0x0064>;
+ 		interrupts = <0 156 IRQ_TYPE_LEVEL_HIGH>;
+ 		clocks = <&mstp0_clks R8A7791_CLK_MSIOF0>;
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index a7934ab..283fb31 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -1,6 +1,7 @@
+ /*
+  * SuperH MSIOF SPI Master Interface
+  *
++ * Copyright (C) 2014-2015 Renesas Electronics Corporation
+  * Copyright (c) 2009 Magnus Damm
+  * Copyright (C) 2014 Glider bvba
+  *
+@@ -971,8 +972,8 @@ static const struct sh_msiof_chipdata r8a779x_data = {
  };
  
- /* gpio suffixes used for ACPI and device tree lookup */
+ static const struct of_device_id sh_msiof_match[] = {
+-	{ .compatible = "renesas,sh-msiof",        .data = &sh_data },
+-	{ .compatible = "renesas,sh-mobile-msiof", .data = &sh_data },
++	{ .compatible = "renesas,rcar-gen2-msiof", .data = &r8a779x_data },
++	{ .compatible = "renesas,rcar-gen3-msiof", .data = &r8a779x_data },
+ 	{ .compatible = "renesas,msiof-r8a7790",   .data = &r8a779x_data },
+ 	{ .compatible = "renesas,msiof-r8a7791",   .data = &r8a779x_data },
+ 	{ .compatible = "renesas,msiof-r8a7792",   .data = &r8a779x_data },
 -- 
-2.1.4
+1.9.1
 

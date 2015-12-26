@@ -1,95 +1,96 @@
-From: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v6 3/3] spi: sun4i: Add support for wait time
- between word transmissions
-Date: Sat, 26 Dec 2015 16:53:06 +0100
-Message-ID: <1451145186-14235-4-git-send-email-mweseloh42@gmail.com>
-References: <1451145186-14235-1-git-send-email-mweseloh42@gmail.com>
-Reply-To: mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: Julia Lawall <julia.lawall@lip6.fr>
+Subject: [PATCH v2] coccinelle: api: check for propagation of error from
+ platform_get_irq
+Date: Sat, 26 Dec 2015 21:58:58 +0100 (CET)
+Message-ID: <alpine.DEB.2.02.1512262156580.2070@localhost6.localdomain6>
+References: <1451157891-24881-1-git-send-email-Julia.Lawall@lip6.fr> <567EF188.7020203@cogentembedded.com> <alpine.DEB.2.02.1512262107340.2070@localhost6.localdomain6> <alpine.DEB.2.02.1512262123500.2070@localhost6.localdomain6>
+ <567EF895.6080702@cogentembedded.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-Return-path: <linux-sunxi+bncBDFO74UEV4IRB57P7KZQKGQEFSUKX2A-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-In-Reply-To: <1451145186-14235-1-git-send-email-mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <https://groups.google.com/group/linux-sunxi
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-List-Subscribe: <https://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
- <https://groups.google.com/group/linux-sunxi/subscribe>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Cc: kernel-janitors@vger.kernel.org
+To: Gilles Muller <Gilles.Muller@lip6.fr>,
+	Nicolas Palix <nicolas.palix@imag.fr>,
+	Michal Marek <mmarek@suse.com>, cocci@systeme.lip6.fr,
+	linux-kernel@vger.kernel.org,
+	Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+	linux-media@vger.kernel.org, netdev@vger.kernel.org,
+	linux-i2c@vger.kernel.org, linux-spi@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Return-path: <linux-i2c-owner@vger.kernel.org>
+In-Reply-To: <567EF895.6080702@cogentembedded.com>
+Sender: linux-i2c-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Modifies the sun4i SPI master driver to make use of the
-"spi-word-wait-ns" property. This specific SPI controller needs 3 clock
-cycles to set up the delay, which makes the minimum non-zero wait time
-on this hardware 4 clock cycles.
+The error return value of platform_get_irq seems to often get dropped.
 
-Signed-off-by: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Julia Lawall <Julia.Lawall@lip6.fr>
+
 ---
- drivers/spi/spi-sun4i.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
 
-diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
-index d67e142..4d6f77c 100644
---- a/drivers/spi/spi-sun4i.c
-+++ b/drivers/spi/spi-sun4i.c
-@@ -176,6 +176,9 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
- 	unsigned int tx_len = 0;
- 	int ret = 0;
- 	u32 reg;
-+	int wait_clk = 0;
-+	int clk_ns = 0;
-+	unsigned int speed_hz;
- 
- 	/* We don't support transfer larger than the FIFO */
- 	if (tfr->len > SUN4I_FIFO_DEPTH)
-@@ -260,13 +263,34 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
- 	div = DIV_ROUND_UP(mclk_rate, 2 * tfr->speed_hz) - 1;
- 	if (div <= SUN4I_CLK_CTL_CDR2_MASK) {
- 		reg = SUN4I_CLK_CTL_CDR2(div) | SUN4I_CLK_CTL_DRS;
-+		speed_hz = mclk_rate / (2 * (div + 1));
- 	} else {
- 		div = ilog2(roundup_pow_of_two(mclk_rate / tfr->speed_hz));
- 		reg = SUN4I_CLK_CTL_CDR1(div);
-+		speed_hz = mclk_rate / (1 << div);
- 	}
- 
- 	sun4i_spi_write(sspi, SUN4I_CLK_CTL_REG, reg);
- 
-+	/*
-+	 * Setup wait time between words.
-+	 *
-+	 * Wait time is set in SPI_CLK cycles. The SPI hardware needs 3
-+	 * additional cycles to setup the wait counter, so the minimum delay
-+	 * time is 4 cycles.
-+	 */
-+	if (spi->word_wait_ns) {
-+		clk_ns = DIV_ROUND_UP(1000000000, speed_hz);
-+		wait_clk = DIV_ROUND_UP(spi->word_wait_ns, clk_ns) - 3;
-+		if (wait_clk < 1) {
-+			wait_clk = 1;
-+			dev_dbg(&spi->dev,
-+				"using minimum of 4 word wait cycles (%uns)",
-+				4 * clk_ns);
-+		}
-+	}
-+	sun4i_spi_write(sspi, SUN4I_WAIT_REG, (u16)wait_clk);
+v2: Check for the direct return case also.  Added some mailing lists of
+common offenders.
+
+diff --git a/scripts/coccinelle/api/platform_get_irq_return.cocci b/scripts/coccinelle/api/platform_get_irq_return.cocci
+new file mode 100644
+index 0000000..44680d0
+--- /dev/null
++++ b/scripts/coccinelle/api/platform_get_irq_return.cocci
+@@ -0,0 +1,58 @@
++/// Propagate the return value of platform_get_irq.
++//# Sometimes the return value of platform_get_irq is tested using <= 0, but 0
++//# might not be an appropriate return value in an error case.
++///
++// Confidence: Moderate
++// Copyright: (C) 2015 Julia Lawall, Inria. GPLv2.
++// URL: http://coccinelle.lip6.fr/
++// Options: --no-includes --include-headers
 +
- 	/* Setup the transfer now... */
- 	if (sspi->tx_buf)
- 		tx_len = tfr->len;
--- 
-1.9.1
++virtual context
++virtual org
++virtual report
++
++// ----------------------------------------------------------------------------
++
++@r depends on context || org || report@
++constant C;
++statement S;
++expression e, ret;
++position j0, j1;
++@@
++
++* e@j0 = platform_get_irq(...);
++(
++if@j1 (...) {
++  ...
++  return -C;
++} else S
++|
++if@j1 (...) {
++  ...
++  ret = -C;
++  ...
++  return ret;
++} else S
++)
++
++// ----------------------------------------------------------------------------
++
++@script:python r_org depends on org@
++j0 << r.j0;
++j1 << r.j1;
++@@
++
++msg = "Propagate return value of platform_get_irq."
++coccilib.org.print_todo(j0[0], msg)
++coccilib.org.print_link(j1[0], "")
++
++// ----------------------------------------------------------------------------
++
++@script:python r_report depends on report@
++j0 << r.j0;
++j1 << r.j1;
++@@
++
++msg = "Propagate return value of platform_get_irq around line %s." % (j1[0].line)
++coccilib.report.print_report(j0[0], msg)
++

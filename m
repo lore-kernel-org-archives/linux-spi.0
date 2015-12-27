@@ -1,87 +1,47 @@
-From: Geliang Tang <geliangtang@163.com>
-Subject: [PATCH 02/10] spi: cadence, zynq: use to_platform_device()
-Date: Sun, 27 Dec 2015 21:15:40 +0800
-Message-ID: <522ef92bb1d83c651cbdd12ff10b594b2e2a691c.1451221174.git.geliangtang@163.com>
-References: <a554e6af3a3528c2206c94dab62b7800f96caa4b.1451221174.git.geliangtang@163.com>
+From: SF Markus Elfring <elfring@users.sourceforge.net>
+Subject: Re: [Cocci] [PATCH v2] coccinelle: api: check for propagation of
+ error from platform_get_irq
+Date: Sun, 27 Dec 2015 17:24:02 +0100
+Message-ID: <568010A2.3000902@users.sourceforge.net>
+References: <1451157891-24881-1-git-send-email-Julia.Lawall@lip6.fr>
+ <567EF188.7020203@cogentembedded.com>
+ <alpine.DEB.2.02.1512262107340.2070@localhost6.localdomain6>
+ <alpine.DEB.2.02.1512262123500.2070@localhost6.localdomain6>
+ <567EF895.6080702@cogentembedded.com>
+ <alpine.DEB.2.02.1512262156580.2070@localhost6.localdomain6>
+ <567F9A29.50202@users.sourceforge.net>
+ <alpine.DEB.2.02.1512271239460.2038@localhost6.localdomain6>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Geliang Tang <geliangtang@163.com>, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>, Michal Simek <michal.simek@xilinx.com>,
- =?UTF-8?q?S=C3=B6ren=20Brinkmann?= <soren.brinkmann@xilinx.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <a554e6af3a3528c2206c94dab62b7800f96caa4b.1451221174.git.geliangtang@163.com>
-In-Reply-To: <a554e6af3a3528c2206c94dab62b7800f96caa4b.1451221174.git.geliangtang@163.com>
-References: <a554e6af3a3528c2206c94dab62b7800f96caa4b.1451221174.git.geliangtang@163.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+ Gilles Muller <Gilles.Muller@lip6.fr>, netdev@vger.kernel.org,
+ Nicolas Palix <nicolas.palix@imag.fr>, kernel-janitors@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>, dri-devel@lists.freedesktop.org,
+ linux-spi@vger.kernel.org, Michal Marek <mmarek@suse.com>,
+ linux-i2c@vger.kernel.org, Coccinelle <cocci@systeme.lip6.fr>,
+ linux-media@vger.kernel.org
+To: Julia Lawall <julia.lawall@lip6.fr>
+Return-path: <dri-devel-bounces@lists.freedesktop.org>
+In-Reply-To: <alpine.DEB.2.02.1512271239460.2038@localhost6.localdomain6>
+List-Unsubscribe: <http://lists.freedesktop.org/mailman/options/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <http://lists.freedesktop.org/archives/dri-devel>
+List-Post: <mailto:dri-devel@lists.freedesktop.org>
+List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <http://lists.freedesktop.org/mailman/listinfo/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: dri-devel-bounces@lists.freedesktop.org
+Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
 List-Id: linux-spi.vger.kernel.org
 
-Use to_platform_device() instead of open-coding it.
-
-Signed-off-by: Geliang Tang <geliangtang@163.com>
----
- drivers/spi/spi-cadence.c      | 6 ++----
- drivers/spi/spi-zynqmp-gqspi.c | 8 ++------
- 2 files changed, 4 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
-index 5a67498..121a413 100644
---- a/drivers/spi/spi-cadence.c
-+++ b/drivers/spi/spi-cadence.c
-@@ -617,8 +617,7 @@ static int cdns_spi_remove(struct platform_device *pdev)
-  */
- static int __maybe_unused cdns_spi_suspend(struct device *dev)
- {
--	struct platform_device *pdev = container_of(dev,
--			struct platform_device, dev);
-+	struct platform_device *pdev = to_platform_device(dev);
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct cdns_spi *xspi = spi_master_get_devdata(master);
- 
-@@ -641,8 +640,7 @@ static int __maybe_unused cdns_spi_suspend(struct device *dev)
-  */
- static int __maybe_unused cdns_spi_resume(struct device *dev)
- {
--	struct platform_device *pdev = container_of(dev,
--			struct platform_device, dev);
-+	struct platform_device *pdev = to_platform_device(dev);
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct cdns_spi *xspi = spi_master_get_devdata(master);
- 	int ret = 0;
-diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
-index f23f36e..aab9b49 100644
---- a/drivers/spi/spi-zynqmp-gqspi.c
-+++ b/drivers/spi/spi-zynqmp-gqspi.c
-@@ -917,9 +917,7 @@ static int zynqmp_qspi_start_transfer(struct spi_master *master,
-  */
- static int __maybe_unused zynqmp_qspi_suspend(struct device *dev)
- {
--	struct platform_device *pdev = container_of(dev,
--						    struct platform_device,
--						    dev);
-+	struct platform_device *pdev = to_platform_device(dev);
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 
- 	spi_master_suspend(master);
-@@ -940,9 +938,7 @@ static int __maybe_unused zynqmp_qspi_suspend(struct device *dev)
-  */
- static int __maybe_unused zynqmp_qspi_resume(struct device *dev)
- {
--	struct platform_device *pdev = container_of(dev,
--						    struct platform_device,
--						    dev);
-+	struct platform_device *pdev = to_platform_device(dev);
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
- 	int ret = 0;
--- 
-2.5.0
+Pj4gaHR0cHM6Ly9jd2UubWl0cmUub3JnL2RhdGEvZGVmaW5pdGlvbnMvMjUyLmh0bWwKPiAKPiBU
+aGUgdmFsdWUgaXMgbm90IHVuY2hlY2tlZC4KCldvdWxkIHlvdSBsaWtlIHRvIGV4cHJlc3MgYW55
+IHN0cm9uZ2VyIHJlbGF0aW9uc2hpcCBiZXR3ZWVuCnRoZSBmdW5jdGlvbiBjYWxsIGV4YW1wbGUg
+YW5kIHRoZSBvY2N1cnJlbmNlIG9mIGFuIGlmIHN0YXRlbWVudApieSB0aGUgZGlzY3Vzc2VkIFNt
+UEwgc2NyaXB0PwoKCj4gSSBtYWRlIGEgc3BlY2lmaWMgcnVsZSBiZWNhdXNlIHRoZSBzcGVjaWZp
+YyBwcm9ibGVtIGlzIHF1aXRlIGNvbW1vbi4KCkNhbiBpdCBiZWNvbWUgYWxzbyBpbnRlcmVzdGlu
+ZyB0byBnZW5lcmFsaXNlIHRoaXMgc2VhcmNoIHBhdHRlcm4/CgpSZWdhcmRzLApNYXJrdXMKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KZHJpLWRldmVsIG1h
+aWxpbmcgbGlzdApkcmktZGV2ZWxAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHA6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9kcmktZGV2ZWwK

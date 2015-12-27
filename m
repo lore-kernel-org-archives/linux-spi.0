@@ -1,86 +1,87 @@
-From: Julia Lawall <julia.lawall@lip6.fr>
-Subject: Re: [Cocci] [PATCH v2] coccinelle: api: check for propagation of
- error from platform_get_irq
-Date: Sun, 27 Dec 2015 12:41:30 +0100 (CET)
-Message-ID: <alpine.DEB.2.02.1512271239460.2038@localhost6.localdomain6>
-References: <1451157891-24881-1-git-send-email-Julia.Lawall@lip6.fr>
- <567EF188.7020203@cogentembedded.com>
- <alpine.DEB.2.02.1512262107340.2070@localhost6.localdomain6>
- <alpine.DEB.2.02.1512262123500.2070@localhost6.localdomain6>
- <567EF895.6080702@cogentembedded.com>
- <alpine.DEB.2.02.1512262156580.2070@localhost6.localdomain6>
- <567F9A29.50202@users.sourceforge.net>
+From: Geliang Tang <geliangtang@163.com>
+Subject: [PATCH 02/10] spi: cadence, zynq: use to_platform_device()
+Date: Sun, 27 Dec 2015 21:15:40 +0800
+Message-ID: <522ef92bb1d83c651cbdd12ff10b594b2e2a691c.1451221174.git.geliangtang@163.com>
+References: <a554e6af3a3528c2206c94dab62b7800f96caa4b.1451221174.git.geliangtang@163.com>
 Mime-Version: 1.0
-Content-Type: MULTIPART/MIXED; BOUNDARY="8323328-506290417-1451216492=:2038"
-Cc: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
- Gilles Muller <Gilles.Muller@lip6.fr>, netdev@vger.kernel.org,
- Nicolas Palix <nicolas.palix@imag.fr>, kernel-janitors@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>, dri-devel@lists.freedesktop.org,
- linux-spi@vger.kernel.org, Julia Lawall <julia.lawall@lip6.fr>,
- Michal Marek <mmarek@suse.com>, linux-i2c@vger.kernel.org,
- Coccinelle <cocci@systeme.lip6.fr>, linux-media@vger.kernel.org
-To: SF Markus Elfring <elfring@users.sourceforge.net>
-Return-path: <dri-devel-bounces@lists.freedesktop.org>
-In-Reply-To: <567F9A29.50202@users.sourceforge.net>
-List-Unsubscribe: <http://lists.freedesktop.org/mailman/options/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <http://lists.freedesktop.org/archives/dri-devel>
-List-Post: <mailto:dri-devel@lists.freedesktop.org>
-List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <http://lists.freedesktop.org/mailman/listinfo/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: dri-devel-bounces@lists.freedesktop.org
-Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Geliang Tang <geliangtang@163.com>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>, Michal Simek <michal.simek@xilinx.com>,
+ =?UTF-8?q?S=C3=B6ren=20Brinkmann?= <soren.brinkmann@xilinx.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <a554e6af3a3528c2206c94dab62b7800f96caa4b.1451221174.git.geliangtang@163.com>
+In-Reply-To: <a554e6af3a3528c2206c94dab62b7800f96caa4b.1451221174.git.geliangtang@163.com>
+References: <a554e6af3a3528c2206c94dab62b7800f96caa4b.1451221174.git.geliangtang@163.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Use to_platform_device() instead of open-coding it.
 
---8323328-506290417-1451216492=:2038
-Content-Type: TEXT/PLAIN; charset=windows-1252
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Geliang Tang <geliangtang@163.com>
+---
+ drivers/spi/spi-cadence.c      | 6 ++----
+ drivers/spi/spi-zynqmp-gqspi.c | 8 ++------
+ 2 files changed, 4 insertions(+), 10 deletions(-)
 
-
-
-On Sun, 27 Dec 2015, SF Markus Elfring wrote:
-
-> > The error return value of platform_get_irq seems to often get dropped=
-.
->=20
-> How do you think about any more fine-tuning here?
->=20
-> Commit message:
-> * =85 of the platform_get_irq() function seems to get dropped too often=
-.
->=20
-> * Why do you concentrate on a single function name?
->   Do you plan to extend this source code analysis approach?
->=20
->=20
-> > +@script:python r_report depends on report@
-> > +j0 << r.j0;
-> > +j1 << r.j1;
-> > +@@
-> > +
-> > +msg =3D "Propagate return value of platform_get_irq around line %s."=
- % (j1[0].line)
->=20
-> Are there more unchecked return values which are interesting
-> for further considerations?
-> https://cwe.mitre.org/data/definitions/252.html
-
-The value is not unchecked.  I made a specific rule because the specific=20
-problem is quite common.
-
-julia
---8323328-506290417-1451216492=:2038
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KZHJpLWRldmVs
-IG1haWxpbmcgbGlzdApkcmktZGV2ZWxAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHA6Ly9saXN0
-cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9kcmktZGV2ZWwK
-
---8323328-506290417-1451216492=:2038--
+diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
+index 5a67498..121a413 100644
+--- a/drivers/spi/spi-cadence.c
++++ b/drivers/spi/spi-cadence.c
+@@ -617,8 +617,7 @@ static int cdns_spi_remove(struct platform_device *pdev)
+  */
+ static int __maybe_unused cdns_spi_suspend(struct device *dev)
+ {
+-	struct platform_device *pdev = container_of(dev,
+-			struct platform_device, dev);
++	struct platform_device *pdev = to_platform_device(dev);
+ 	struct spi_master *master = platform_get_drvdata(pdev);
+ 	struct cdns_spi *xspi = spi_master_get_devdata(master);
+ 
+@@ -641,8 +640,7 @@ static int __maybe_unused cdns_spi_suspend(struct device *dev)
+  */
+ static int __maybe_unused cdns_spi_resume(struct device *dev)
+ {
+-	struct platform_device *pdev = container_of(dev,
+-			struct platform_device, dev);
++	struct platform_device *pdev = to_platform_device(dev);
+ 	struct spi_master *master = platform_get_drvdata(pdev);
+ 	struct cdns_spi *xspi = spi_master_get_devdata(master);
+ 	int ret = 0;
+diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
+index f23f36e..aab9b49 100644
+--- a/drivers/spi/spi-zynqmp-gqspi.c
++++ b/drivers/spi/spi-zynqmp-gqspi.c
+@@ -917,9 +917,7 @@ static int zynqmp_qspi_start_transfer(struct spi_master *master,
+  */
+ static int __maybe_unused zynqmp_qspi_suspend(struct device *dev)
+ {
+-	struct platform_device *pdev = container_of(dev,
+-						    struct platform_device,
+-						    dev);
++	struct platform_device *pdev = to_platform_device(dev);
+ 	struct spi_master *master = platform_get_drvdata(pdev);
+ 
+ 	spi_master_suspend(master);
+@@ -940,9 +938,7 @@ static int __maybe_unused zynqmp_qspi_suspend(struct device *dev)
+  */
+ static int __maybe_unused zynqmp_qspi_resume(struct device *dev)
+ {
+-	struct platform_device *pdev = container_of(dev,
+-						    struct platform_device,
+-						    dev);
++	struct platform_device *pdev = to_platform_device(dev);
+ 	struct spi_master *master = platform_get_drvdata(pdev);
+ 	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
+ 	int ret = 0;
+-- 
+2.5.0

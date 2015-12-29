@@ -1,26 +1,38 @@
-From: "Zahra Robert" <jakonyvtar-v1d7l9VOqKc@public.gmane.org>
-Subject: Assalam o Alaikum
-Date: Tue, 29 Dec 2015 03:03:43 +0100
-Message-ID: <1bce1f3ae08c9485bb9bf7f7467c89ea.squirrel__48139.0860434205$1451354668$gmane$org@oldwebmail.prtelecom.hu>
-Reply-To: zahrarobert-/E1597aS9LQAvxtiuMwx3w@public.gmane.org
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-To: jakonyvtar-v1d7l9VOqKc@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Sylwester Nawrocki <s.nawrocki@samsung.com>
+Subject: [PATCH] spi: s3c64xx: Remove unused platform_device_id entries
+Date: Tue, 29 Dec 2015 18:34:40 +0100
+Message-ID: <1451410480-13935-1-git-send-email-s.nawrocki@samsung.com>
+Cc: linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>
+To: broonie@kernel.org
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+Sender: linux-samsung-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+s5pv210 and exynos4 are now DT only platforms hence these
+entries can now be safely removed from the match table.
 
+Signed-off-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
+---
+ drivers/spi/spi-s3c64xx.c |    6 ------
+ 1 file changed, 6 deletions(-)
 
-
-Cordial greeting message from Eva Zahra, I am seeking for your help,I will
-be very glad if you do assist me to relocate a sum of (US$4 Million
-Dollars)into your Bank account in your country for the benefit of both of
-us i want to use this money for investment. I will give you more details
-as you reply Yours Eva Zahra Robert
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 8e86e7f..ec697fe 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -1370,12 +1370,6 @@ static const struct platform_device_id s3c64xx_spi_driver_ids[] = {
+ 	}, {
+ 		.name		= "s3c6410-spi",
+ 		.driver_data	= (kernel_ulong_t)&s3c6410_spi_port_config,
+-	}, {
+-		.name		= "s5pv210-spi",
+-		.driver_data	= (kernel_ulong_t)&s5pv210_spi_port_config,
+-	}, {
+-		.name		= "exynos4210-spi",
+-		.driver_data	= (kernel_ulong_t)&exynos4_spi_port_config,
+ 	},
+ 	{ },
+ };
+-- 
+1.7.9.5

@@ -1,38 +1,37 @@
-From: Sylwester Nawrocki <s.nawrocki@samsung.com>
-Subject: [PATCH] spi: s3c64xx: Remove unused platform_device_id entries
-Date: Tue, 29 Dec 2015 18:34:40 +0100
-Message-ID: <1451410480-13935-1-git-send-email-s.nawrocki@samsung.com>
-Cc: linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>
-To: broonie@kernel.org
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-Sender: linux-samsung-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Moritz Fischer <moritz.fischer-+aYTwkv1SeIAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 02/10] spi: cadence, zynq: use to_platform_device()
+Date: Tue, 29 Dec 2015 10:01:04 -0800
+Message-ID: <CAAtXAHd_Xp4WbXMSY5QVLT7cYnpbzObf5UHCnuzh64LgOBER3Q@mail.gmail.com>
+References: <a554e6af3a3528c2206c94dab62b7800f96caa4b.1451221174.git.geliangtang@163.com>
+	<522ef92bb1d83c651cbdd12ff10b594b2e2a691c.1451221174.git.geliangtang@163.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	=?UTF-8?Q?S=C3=B6ren_Brinkmann?= <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-arm-kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Geliang Tang <geliangtang-9Onoh4P/yGk@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <522ef92bb1d83c651cbdd12ff10b594b2e2a691c.1451221174.git.geliangtang-9Onoh4P/yGk@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-s5pv210 and exynos4 are now DT only platforms hence these
-entries can now be safely removed from the match table.
+Hi,
 
-Signed-off-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
----
- drivers/spi/spi-s3c64xx.c |    6 ------
- 1 file changed, 6 deletions(-)
+On Sun, Dec 27, 2015 at 5:15 AM, Geliang Tang <geliangtang-9Onoh4P/yGk@public.gmane.org> wrote:
+> Use to_platform_device() instead of open-coding it.
+>
+Reviewed-by: Moritz Fischer <moritz.fischer-+aYTwkv1SeIAvxtiuMwx3w@public.gmane.org>
+> Signed-off-by: Geliang Tang <geliangtang-9Onoh4P/yGk@public.gmane.org>
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 8e86e7f..ec697fe 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -1370,12 +1370,6 @@ static const struct platform_device_id s3c64xx_spi_driver_ids[] = {
- 	}, {
- 		.name		= "s3c6410-spi",
- 		.driver_data	= (kernel_ulong_t)&s3c6410_spi_port_config,
--	}, {
--		.name		= "s5pv210-spi",
--		.driver_data	= (kernel_ulong_t)&s5pv210_spi_port_config,
--	}, {
--		.name		= "exynos4210-spi",
--		.driver_data	= (kernel_ulong_t)&exynos4_spi_port_config,
- 	},
- 	{ },
- };
--- 
-1.7.9.5
+Looks good to me, maybe (nit) split it up into two commits.
+
+Cheers,
+
+Moritz
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

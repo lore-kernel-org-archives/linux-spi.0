@@ -1,133 +1,50 @@
-From: "Andrew F. Davis" <afd@ti.com>
-Subject: Re: [PATCH 1/2] dt-bindings: GPIO: Add generic serializer binding
-Date: Wed, 30 Dec 2015 10:59:38 -0600
-Message-ID: <56840D7A.4060502@ti.com>
-References: <1449863184-29668-1-git-send-email-afd@ti.com>
- <1449863184-29668-2-git-send-email-afd@ti.com>
- <CACRpkdaV_dxzWUQcJ8pwPUDQNJ8qLhCvLvE9tBYFcTTGMoumWQ@mail.gmail.com>
- <566EF12C.4060509@ti.com>
- <CAL_Jsq+kYSJQd003RhYTeVFv6xLaSCxzZK7wnF2LVs502sWu4g@mail.gmail.com>
- <566F4E9B.8090202@ti.com>
- <CAL_JsqJbg-VsZjg6QuN5SUvDXGR1DnShmhLvp3b_bipVn1q74A@mail.gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: cadence: use to_platform_device()
+Date: Wed, 30 Dec 2015 17:02:30 +0000
+Message-ID: <20151230170230.GX16023@sirena.org.uk>
+References: <CAAtXAHd_Xp4WbXMSY5QVLT7cYnpbzObf5UHCnuzh64LgOBER3Q@mail.gmail.com>
+ <eba9c4fde1cf48cc56afba6275a4efdda998cbbe.1451485340.git.geliangtang@163.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Alexandre Courbot <gnurou@gmail.com>,
-	Pawel Moll <pawel.moll@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Ian Campbell <ijc+devicetree@hellion.org.uk>,
-	Kumar Gala <galak@codeaurora.org>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Rob Herring <robh+dt@kernel.org>
-Return-path: <linux-gpio-owner@vger.kernel.org>
-In-Reply-To: <CAL_JsqJbg-VsZjg6QuN5SUvDXGR1DnShmhLvp3b_bipVn1q74A@mail.gmail.com>
-Sender: linux-gpio-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="OtXN0xDA1zr/oUEL"
+Cc: Moritz Fischer <moritz.fischer-+aYTwkv1SeIAvxtiuMwx3w@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Geliang Tang <geliangtang-9Onoh4P/yGk@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <eba9c4fde1cf48cc56afba6275a4efdda998cbbe.1451485340.git.geliangtang-9Onoh4P/yGk@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 12/16/2015 10:29 AM, Rob Herring wrote:
-> On Mon, Dec 14, 2015 at 5:19 PM, Andrew F. Davis <afd@ti.com> wrote:
->> On 12/14/2015 04:36 PM, Rob Herring wrote:
->>>
->>> On Mon, Dec 14, 2015 at 10:41 AM, Andrew F. Davis <afd@ti.com> wrote:
->>>>
->>>> On 12/11/2015 03:48 PM, Linus Walleij wrote:
->>>>>
->>>>>
->>>>> On Fri, Dec 11, 2015 at 8:46 PM, Andrew F. Davis <afd@ti.com> wrote:
->
-> [...]
->
->>>>>> + - compatible          : Should be "pisosr-gpio".
->>>>>
->>>>>
->>>>>
->>>>> I think it should also define compatible strings on the "vendor,device"
->>>>> format apart from the generic compatible. Sooner or later we may need
->>>>> to differentiate them and then that comes in handy.
->>>>>
->>>>
->>>> Would it be better to wait until/if this issue arises? This driver
->>>> targets the generic features, as these parts are very generic and
->>>> have been produced by many companies since the 70s I'm not sure
->>>> if privileging any of them makes much sense.
->>>>
->>>> What I'm worried about looks to have happened with the gpio-74x164
->>>> driver, this is kind of the companion device to mine (74164 / 74165)
->>>> and should work with any 74164 compatible shift register (possibly 100s
->>>> of versions of them), but the compatible string that was added is
->>>> "fairchild,74hc595", a relatively new device by a single manufacturer.
->>>> The problem this has is then that boards will use this compatible string
->>>> even if the parts are not actually the Fairchild version, just to get
->>>> the match, when they should be using a generic string.
->>>
->>>
->>> I agree the generic version is fine (or find who made the first part
->>> ;)). What "pisosr" is is not very obvious though. Having 74165 in the
->>> compatible would make it somewhat more obvious it is a standard logic
->>> part.
->>>
->>
->> A quick search shows shift-registers being made from vacuum tubes for
->> the Colossus! Those might work with this driver if you could match the
->> voltage to an SPI bus... :)
->>
->> I agree about the name not being very good, but I'm not sure about
->> 74165 ether as it is also just a single part number. The idea was to
->> have a non-part number compatible string for any shift-register you
->> can hook to the SPI line. That way when we have boards with a sn65x882
->> or something we wont have to call it a 74165. But I guess that's why
->> it's a "compatible:" string, and not "is-a:" string.
->
-> If there are a couple then I think it is okay. If there are 10s then
-> maybe not. Perhaps logic-pisosr or discrete-pisosr?
->
 
-My concern as well, there are a lot of them, and every device doesn't
-need its own string, so why privilege the name of any that don't have
-anything different.
+--OtXN0xDA1zr/oUEL
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-I'd like to leave the named ones for odd cases that needs special
-handling.
+On Wed, Dec 30, 2015 at 10:57:35PM +0800, Geliang Tang wrote:
+> Use to_platform_device() instead of open-coding it.
 
->>>>>> +Optional properties:
->>>>>> + - ngpios              : Number of GPIO lines, default is 8.
->>>>>
->>>>>
->>>>>
->>>>> If you didn't do "pisosr-gpio" but instead "foo,sn74165", maybe you
->>>>> don't need to have this in the device tree but instead it can be
->>>>> determined from the compatible string?
->>>>>
->>>>> In that case do that.
->>>>>
->>>>
->>>> These devices can be daisy-chained together, so three 8bit registers
->>>> look exactly like one 24bit register. The only way to know this is
->>>> from the physical wiring of the board, not from the part number.
->>>
->>>
->>> Then you should say it must be multiple of 8 (or are there other
->>> lengths?).
->>>
->>
->> Some are 4bit, you can even just hook a single flip-flop to the SPI bus for
->> a single bit (or multiples) of input.
->
-> One would hope you would just connect the CS signal directly to that
-> input for 1-bit... I guess you could be out of GPIOs and only have a
-> free output only CS signal.
->
+Please don't send new patches in reply to the middle of other serieses,
+it gets confusing working out what the currently propose series is.
+Send new patches as new patches.
 
-Interesting use-case idea :), I'm more worried about a device with any
-prime number of pins where multiples will fail, not that I have ever
-seen one.
+--OtXN0xDA1zr/oUEL
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Andrew
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-> Rob
->
+iQEcBAEBCAAGBQJWhA4mAAoJECTWi3JdVIfQHv4H/2LWbJ1xtdELbLM3fkhwKuFh
+4wj5by5XnCdxYOgJN/5RuzSoFcUM7KyANK9TnOYKl3atSpJeq6knpcRLpVrm/hg9
+YIn5AIsBNmX/dR4I4JCDq27mhGMfVEhhbBz5kpB7Jh4usVk6T3X+4DeMHaAlGsYd
+nHX16B8VGQAO46Lr+1lWe1xm2BvxELgD0aO7o/BEVxrnjgpBr15eeZg8bGOcwTU8
+1YSXI95kelMqGgX7+n+RRNCy1fCplW3khSINkorWEJT5s324jiBxhwXpP5QByTNO
+VVYp6AAiwmrCCtz4Gvmgntn0DhMKWrhMcHFquJQNlzh+4zXNtKqth5F76lcYylM=
+=TDGP
+-----END PGP SIGNATURE-----
+
+--OtXN0xDA1zr/oUEL--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

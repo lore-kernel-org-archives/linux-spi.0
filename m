@@ -1,50 +1,81 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: cadence: use to_platform_device()
-Date: Wed, 30 Dec 2015 17:02:30 +0000
-Message-ID: <20151230170230.GX16023@sirena.org.uk>
-References: <CAAtXAHd_Xp4WbXMSY5QVLT7cYnpbzObf5UHCnuzh64LgOBER3Q@mail.gmail.com>
- <eba9c4fde1cf48cc56afba6275a4efdda998cbbe.1451485340.git.geliangtang@163.com>
+From: "Andrew F. Davis" <afd@ti.com>
+Subject: Re: [PATCH 1/2] dt-bindings: GPIO: Add generic serializer binding
+Date: Wed, 30 Dec 2015 11:05:20 -0600
+Message-ID: <56840ED0.6070205@ti.com>
+References: <1449863184-29668-1-git-send-email-afd@ti.com>
+ <1449863184-29668-2-git-send-email-afd@ti.com>
+ <CACRpkdaV_dxzWUQcJ8pwPUDQNJ8qLhCvLvE9tBYFcTTGMoumWQ@mail.gmail.com>
+ <566EF12C.4060509@ti.com>
+ <CAL_Jsq+kYSJQd003RhYTeVFv6xLaSCxzZK7wnF2LVs502sWu4g@mail.gmail.com>
+ <566F4E9B.8090202@ti.com>
+ <CACRpkdYapF8br=c3utUmMbmPxyHwxZuT5pC8N-pySPY7dtEwng@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="OtXN0xDA1zr/oUEL"
-Cc: Moritz Fischer <moritz.fischer-+aYTwkv1SeIAvxtiuMwx3w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Geliang Tang <geliangtang-9Onoh4P/yGk@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <eba9c4fde1cf48cc56afba6275a4efdda998cbbe.1451485340.git.geliangtang-9Onoh4P/yGk@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Rob Herring <robh+dt@kernel.org>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Alexandre Courbot <gnurou@gmail.com>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora.org>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Linus Walleij <linus.walleij@linaro.org>
+Return-path: <linux-gpio-owner@vger.kernel.org>
+In-Reply-To: <CACRpkdYapF8br=c3utUmMbmPxyHwxZuT5pC8N-pySPY7dtEwng@mail.gmail.com>
+Sender: linux-gpio-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+On 12/22/2015 03:51 AM, Linus Walleij wrote:
+> On Tue, Dec 15, 2015 at 12:19 AM, Andrew F. Davis <afd@ti.com> wrote:
+>> [Rob]
+>>> I agree the generic version is fine (or find who made the first part
+>>> ;)). What "pisosr" is is not very obvious though. Having 74165 in the
+>>> compatible would make it somewhat more obvious it is a standard logic
+>>> part.
+>>>
+>>
+>> A quick search shows shift-registers being made from vacuum tubes for
+>> the Colossus! Those might work with this driver if you could match the
+>> voltage to an SPI bus... :)
+>>
+>> I agree about the name not being very good, but I'm not sure about
+>> 74165 ether as it is also just a single part number.
+>
+> We can add many compatible strings so it's not an issue.
+> "ti,74165" works for me as TI invented the 74xx series.
+>
 
---OtXN0xDA1zr/oUEL
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Free advertising for our parts :)
 
-On Wed, Dec 30, 2015 at 10:57:35PM +0800, Geliang Tang wrote:
-> Use to_platform_device() instead of open-coding it.
+>> The idea was to
+>> have a non-part number compatible string for any shift-register you
+>> can hook to the SPI line.
+>
+> Again, one does not exclude the other. I'm happy with a generic
+> compatible *and* "ti,74165".
+>
+>> That way when we have boards with a sn65x882
+>> or something we wont have to call it a 74165. But I guess that's why
+>> it's a "compatible:" string, and not "is-a:" string.
+>
+> Compatible ranges from the specific to the more generic
+> so compatible = "ti,74165", "pisosr"; is just fine. Something
+> will match if there is a suitable driver. The OS may choose to
+> provide something part-specific or something more generic.
+>
 
-Please don't send new patches in reply to the middle of other serieses,
-it gets confusing working out what the currently propose series is.
-Send new patches as new patches.
+And so we won't need to have "ti,74165" in the driver itself,
+if we just have "pisosr", then dts files can use what ever they
+like to correctly identify the part then fall back to pisosr.
 
---OtXN0xDA1zr/oUEL
-Content-Type: application/pgp-signature; name="signature.asc"
+compatible = "company,random_numbers_of_exact_part_actually_on_board", "pisosr";
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Andrew
 
-iQEcBAEBCAAGBQJWhA4mAAoJECTWi3JdVIfQHv4H/2LWbJ1xtdELbLM3fkhwKuFh
-4wj5by5XnCdxYOgJN/5RuzSoFcUM7KyANK9TnOYKl3atSpJeq6knpcRLpVrm/hg9
-YIn5AIsBNmX/dR4I4JCDq27mhGMfVEhhbBz5kpB7Jh4usVk6T3X+4DeMHaAlGsYd
-nHX16B8VGQAO46Lr+1lWe1xm2BvxELgD0aO7o/BEVxrnjgpBr15eeZg8bGOcwTU8
-1YSXI95kelMqGgX7+n+RRNCy1fCplW3khSINkorWEJT5s324jiBxhwXpP5QByTNO
-VVYp6AAiwmrCCtz4Gvmgntn0DhMKWrhMcHFquJQNlzh+4zXNtKqth5F76lcYylM=
-=TDGP
------END PGP SIGNATURE-----
-
---OtXN0xDA1zr/oUEL--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> Yours,
+> Linus Walleij
+>

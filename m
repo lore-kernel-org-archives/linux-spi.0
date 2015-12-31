@@ -1,48 +1,77 @@
-From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Subject: [PATCH 2/4] spi: mediatek: Add spi support for mt2701 IC
-Date: Thu, 31 Dec 2015 10:59:01 +0800
-Message-ID: <1451530743-8995-3-git-send-email-leilk.liu@mediatek.com>
+From: Leilk Liu <leilk.liu@mediatek.com>
+Subject: [PATCH 3/4] dts: mt2701: add spi dts for mt2701
+Date: Thu, 31 Dec 2015 10:59:02 +0800
+Message-ID: <1451530743-8995-4-git-send-email-leilk.liu@mediatek.com>
 References: <1451530743-8995-1-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
 Content-Type: text/plain
-Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1451530743-8995-1-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>,
+	<linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
+	Leilk Liu <leilk.liu@mediatek.com>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1451530743-8995-1-git-send-email-leilk.liu@mediatek.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-This patch adds spi support for mt2701 IC.
+This patch adds dtsi node of spi for mt2701.
 
-Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
 ---
- drivers/spi/spi-mt65xx.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm/boot/dts/mt2701.dtsi |   39 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 3573c09..fe95f3f 100644
---- a/drivers/spi/spi-mt65xx.c
-+++ b/drivers/spi/spi-mt65xx.c
-@@ -111,6 +111,9 @@ static const struct mtk_chip_config mtk_default_chip_info = {
+diff --git a/arch/arm/boot/dts/mt2701.dtsi b/arch/arm/boot/dts/mt2701.dtsi
+index bd88ae9..9ccd1f0 100644
+--- a/arch/arm/boot/dts/mt2701.dtsi
++++ b/arch/arm/boot/dts/mt2701.dtsi
+@@ -194,4 +194,43 @@
+ 		clocks = <&uart_clk>;
+ 		status = "disabled";
+ 	};
++
++	spi0: spi@1100a000 {
++		compatible = "mediatek,mt2701-spi";
++		#address-cells = <1>;
++		#size-cells = <0>;
++		reg = <0 0x1100a000 0 0x100>;
++		interrupts = <GIC_SPI 78 IRQ_TYPE_LEVEL_LOW>;
++		clocks = <&topckgen CLK_TOP_SYSPLL3_D2>,
++			 <&topckgen CLK_TOP_SPI0_SEL>,
++			 <&pericfg CLK_PERI_SPI0>;
++		clock-names = "parent-clk", "sel-clk", "spi-clk";
++		status = "disabled";
++	};
++
++	spi1: spi@11016000 {
++		compatible = "mediatek,mt2701-spi";
++		#address-cells = <1>;
++		#size-cells = <0>;
++		reg = <0 0x11016000 0 0x100>;
++		interrupts = <GIC_SPI 79 IRQ_TYPE_LEVEL_LOW>;
++		clocks = <&topckgen CLK_TOP_SYSPLL3_D2>,
++			 <&topckgen CLK_TOP_SPI1_SEL>,
++			 <&pericfg CLK_PERI_SPI1>;
++		clock-names = "parent-clk", "sel-clk", "spi-clk";
++		status = "disabled";
++	};
++
++	spi2: spi@11017000 {
++		compatible = "mediatek,mt2701-spi";
++		#address-cells = <1>;
++		#size-cells = <0>;
++		reg = <0 0x11017000 0 0x1000>;
++		interrupts = <GIC_SPI 142 IRQ_TYPE_LEVEL_LOW>;
++		clocks = <&topckgen CLK_TOP_SYSPLL3_D2>,
++			 <&topckgen CLK_TOP_SPI2_SEL>,
++			 <&pericfg CLK_PERI_SPI2>;
++		clock-names = "parent-clk", "sel-clk", "spi-clk";
++		status = "disabled";
++	};
  };
- 
- static const struct of_device_id mtk_spi_of_match[] = {
-+	{ .compatible = "mediatek,mt2701-spi",
-+		.data = (void *)&mtk_common_compat,
-+	},
- 	{ .compatible = "mediatek,mt6589-spi",
- 		.data = (void *)&mtk_common_compat,
- 	},
 -- 
 1.7.9.5
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

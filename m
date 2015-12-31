@@ -1,18 +1,18 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: mediatek: merge all identical compat to mtk_common_compat" to the spi tree
-Date: Thu, 31 Dec 2015 22:18:58 +0000
-Message-ID: <E1aElYg-0006Tr-5T@debutante>
-References: <1451530743-8995-2-git-send-email-leilk.liu@mediatek.com>
+Subject: Applied "spi: mediatek: Add spi support for mt2701 IC" to the spi tree
+Date: Thu, 31 Dec 2015 22:18:57 +0000
+Message-ID: <E1aElYf-0006TO-7q@debutante>
+References: <1451530743-8995-3-git-send-email-leilk.liu@mediatek.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1451530743-8995-2-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <1451530743-8995-3-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: mediatek: merge all identical compat to mtk_common_compat
+   spi: mediatek: Add spi support for mt2701 IC
 
 has been applied to the spi tree at
 
@@ -37,55 +37,33 @@ to this mail.
 Thanks,
 Mark
 
->From 4eaf6f730355ce3725dd8c98e62696ec4c507e9b Mon Sep 17 00:00:00 2001
+>From 15bcdefdc71a791ce0308989ed3fc43b4f973c7f Mon Sep 17 00:00:00 2001
 From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Date: Thu, 31 Dec 2015 10:59:00 +0800
-Subject: [PATCH] spi: mediatek: merge all identical compat to
- mtk_common_compat
+Date: Thu, 31 Dec 2015 10:59:01 +0800
+Subject: [PATCH] spi: mediatek: Add spi support for mt2701 IC
 
-This patch merge all identical compat into on mtk_common_compat
-and used for all compatible soc.
+This patch adds spi support for mt2701 IC.
 
 Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Reviewed-by: Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-mt65xx.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ drivers/spi/spi-mt65xx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 00a36dacfe2f..917c564edd4a 100644
+index 917c564edd4a..dedc4dd9d78a 100644
 --- a/drivers/spi/spi-mt65xx.c
 +++ b/drivers/spi/spi-mt65xx.c
-@@ -95,8 +95,7 @@ struct mtk_spi {
- 	const struct mtk_spi_compatible *dev_comp;
- };
- 
--static const struct mtk_spi_compatible mt6589_compat;
--static const struct mtk_spi_compatible mt8135_compat;
-+static const struct mtk_spi_compatible mtk_common_compat;
- static const struct mtk_spi_compatible mt8173_compat = {
- 	.need_pad_sel = true,
- 	.must_tx = true,
-@@ -112,9 +111,15 @@ static const struct mtk_chip_config mtk_default_chip_info = {
+@@ -111,6 +111,9 @@ static const struct mtk_chip_config mtk_default_chip_info = {
  };
  
  static const struct of_device_id mtk_spi_of_match[] = {
--	{ .compatible = "mediatek,mt6589-spi", .data = (void *)&mt6589_compat },
--	{ .compatible = "mediatek,mt8135-spi", .data = (void *)&mt8135_compat },
--	{ .compatible = "mediatek,mt8173-spi", .data = (void *)&mt8173_compat },
-+	{ .compatible = "mediatek,mt6589-spi",
++	{ .compatible = "mediatek,mt2701-spi",
 +		.data = (void *)&mtk_common_compat,
 +	},
-+	{ .compatible = "mediatek,mt8135-spi",
-+		.data = (void *)&mtk_common_compat,
-+	},
-+	{ .compatible = "mediatek,mt8173-spi",
-+		.data = (void *)&mt8173_compat,
-+	},
- 	{}
- };
- MODULE_DEVICE_TABLE(of, mtk_spi_of_match);
+ 	{ .compatible = "mediatek,mt6589-spi",
+ 		.data = (void *)&mtk_common_compat,
+ 	},
 -- 
 2.6.2
 

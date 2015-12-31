@@ -1,78 +1,44 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: s3c64xx: Remove unused platform_device_id entries" to the spi tree
-Date: Wed, 30 Dec 2015 18:05:28 +0000
-Message-ID: <E1aEL7o-0007Uu-Tp@debutante>
-References: <1451410480-13935-1-git-send-email-s.nawrocki@samsung.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Sylwester Nawrocki <s.nawrocki-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1451410480-13935-1-git-send-email-s.nawrocki-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+Subject: [PATCH 0/4] SPI: support mt2701 IC
+Date: Thu, 31 Dec 2015 10:58:59 +0800
+Message-ID: <1451530743-8995-1-git-send-email-leilk.liu@mediatek.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-The patch
+This series are based on 4.4-rc1 and provide 4 patches to support
+mt2701 spi HW.
 
-   spi: s3c64xx: Remove unused platform_device_id entries
+Change in this series:
+1. merge all identical compat to mtk_common_compat;
+2. Add spi support for mt2701 IC;
+3. add spi dts for mt2701;
+4. Add bindings for mediatek MT2701 soc platform.
 
-has been applied to the spi tree at
+Leilk Liu (4):
+  spi: mediatek: merge all identical compat to mtk_common_compat
+  spi: mediatek: Add spi support for mt2701 IC
+  dts: mt2701: add spi dts for mt2701
+  Document: spi: Add bindings for mediatek MT2701 soc platform
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From cc023478dc8a3ab07828620dd80303fcd81fb227 Mon Sep 17 00:00:00 2001
-From: Sylwester Nawrocki <s.nawrocki-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Date: Tue, 29 Dec 2015 18:34:40 +0100
-Subject: [PATCH] spi: s3c64xx: Remove unused platform_device_id entries
-
-s5pv210 and exynos4 are now DT only platforms hence these
-entries can now be safely removed from the match table.
-
-Signed-off-by: Sylwester Nawrocki <s.nawrocki-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-s3c64xx.c | 6 ------
- 1 file changed, 6 deletions(-)
-
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index b954c5444cca..5a76a50063b5 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -1357,12 +1357,6 @@ static const struct platform_device_id s3c64xx_spi_driver_ids[] = {
- 	}, {
- 		.name		= "s3c6410-spi",
- 		.driver_data	= (kernel_ulong_t)&s3c6410_spi_port_config,
--	}, {
--		.name		= "s5pv210-spi",
--		.driver_data	= (kernel_ulong_t)&s5pv210_spi_port_config,
--	}, {
--		.name		= "exynos4210-spi",
--		.driver_data	= (kernel_ulong_t)&exynos4_spi_port_config,
- 	},
- 	{ },
- };
--- 
-2.6.2
+ .../devicetree/bindings/spi/spi-mt65xx.txt         |    5 ++-
+ arch/arm/boot/dts/mt2701.dtsi                      |   39 ++++++++++++++++++++
+ drivers/spi/spi-mt65xx.c                           |   18 ++++++---
+ 3 files changed, 55 insertions(+), 7 deletions(-)
 
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+1.7.9.5
+
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,34 +1,53 @@
-From: "Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>
-Subject: Re: [PATCH v8 0/3] ACPI: Add irq_type to gpio interrupt
-Date: Fri, 01 Jan 2016 01:55:33 +0100
-Message-ID: <22359653.XfSnrDyVLr@vostro.rjw.lan>
-References: <1450909535-32138-1-git-send-email-christophe-h.ricard@st.com> <56841705.5030508@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7Bit
-Cc: lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, gnurou-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
-	broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Christophe Ricard <christophe-h.ricard-qxv4g6HH51o@public.gmane.org>
-To: Christophe Ricard <christophe.ricard-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Geliang Tang <geliangtang-9Onoh4P/yGk@public.gmane.org>
+Subject: [PATCH 1/2 v2] spi: cadence: use to_platform_device()
+Date: Fri,  1 Jan 2016 20:28:59 +0800
+Message-ID: <80986828f7ac394fef839514fbbc78ce0b18a675.1451650817.git.geliangtang@163.com>
+Cc: Geliang Tang <geliangtang-9Onoh4P/yGk@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Moritz Fischer <moritz.fischer-+aYTwkv1SeIAvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <56841705.5030508-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wednesday, December 30, 2015 06:40:21 PM Christophe Ricard wrote:
-> Hi,
-> 
-> Do you expect any other update from me ?
-> Is there Anything else needed to this patchset to hit 4.5 release ?
+Use to_platform_device() instead of open-coding it.
 
-No.
+Signed-off-by: Geliang Tang <geliangtang-9Onoh4P/yGk@public.gmane.org>
+Reviewed-by: Moritz Fischer <moritz.fischer-+aYTwkv1SeIAvxtiuMwx3w@public.gmane.org>
+---
+Changes in v2:
+ - split from 'spi: cadence, zynq: use to_platform_device()'
+---
+ drivers/spi/spi-cadence.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-I'm going to add it to my queue for 4.5 shortly.
+diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
+index 5a67498..121a413 100644
+--- a/drivers/spi/spi-cadence.c
++++ b/drivers/spi/spi-cadence.c
+@@ -617,8 +617,7 @@ static int cdns_spi_remove(struct platform_device *pdev)
+  */
+ static int __maybe_unused cdns_spi_suspend(struct device *dev)
+ {
+-	struct platform_device *pdev = container_of(dev,
+-			struct platform_device, dev);
++	struct platform_device *pdev = to_platform_device(dev);
+ 	struct spi_master *master = platform_get_drvdata(pdev);
+ 	struct cdns_spi *xspi = spi_master_get_devdata(master);
+ 
+@@ -641,8 +640,7 @@ static int __maybe_unused cdns_spi_suspend(struct device *dev)
+  */
+ static int __maybe_unused cdns_spi_resume(struct device *dev)
+ {
+-	struct platform_device *pdev = container_of(dev,
+-			struct platform_device, dev);
++	struct platform_device *pdev = to_platform_device(dev);
+ 	struct spi_master *master = platform_get_drvdata(pdev);
+ 	struct cdns_spi *xspi = spi_master_get_devdata(master);
+ 	int ret = 0;
+-- 
+2.5.0
 
-Thanks,
-Rafael
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

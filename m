@@ -1,74 +1,34 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: mtk: Add bindings for mediatek MT2701 soc platform" to the spi tree
-Date: Thu, 31 Dec 2015 22:18:59 +0000
-Message-ID: <E1aElYh-0006UK-3P@debutante>
-References: <1451530743-8995-5-git-send-email-leilk.liu@mediatek.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: "Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>
+Subject: Re: [PATCH v8 0/3] ACPI: Add irq_type to gpio interrupt
+Date: Fri, 01 Jan 2016 01:55:33 +0100
+Message-ID: <22359653.XfSnrDyVLr@vostro.rjw.lan>
+References: <1450909535-32138-1-git-send-email-christophe-h.ricard@st.com> <56841705.5030508@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7Bit
+Cc: lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, gnurou-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
+	broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Christophe Ricard <christophe-h.ricard-qxv4g6HH51o@public.gmane.org>
+To: Christophe Ricard <christophe.ricard-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1451530743-8995-5-git-send-email-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <56841705.5030508-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+On Wednesday, December 30, 2015 06:40:21 PM Christophe Ricard wrote:
+> Hi,
+> 
+> Do you expect any other update from me ?
+> Is there Anything else needed to this patchset to hit 4.5 release ?
 
-   spi: mtk: Add bindings for mediatek MT2701 soc platform
+No.
 
-has been applied to the spi tree at
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+I'm going to add it to my queue for 4.5 shortly.
 
 Thanks,
-Mark
-
->From 5c5e09f623d5984532a74b90d3d24e1caa99bc9f Mon Sep 17 00:00:00 2001
-From: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Date: Thu, 31 Dec 2015 10:59:03 +0800
-Subject: [PATCH] spi: mtk: Add bindings for mediatek MT2701 soc platform
-
-This patch adds a DT binding documentation for the MT2701 soc.
-
-Signed-off-by: Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- Documentation/devicetree/bindings/spi/spi-mt65xx.txt | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
-index 60a183c16e6e..e43f4cf4cf35 100644
---- a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
-@@ -2,9 +2,10 @@ Binding for MTK SPI controller
- 
- Required properties:
- - compatible: should be one of the following.
--    - mediatek,mt8173-spi: for mt8173 platforms
--    - mediatek,mt8135-spi: for mt8135 platforms
-+    - mediatek,mt2701-spi: for mt2701 platforms
-     - mediatek,mt6589-spi: for mt6589 platforms
-+    - mediatek,mt8135-spi: for mt8135 platforms
-+    - mediatek,mt8173-spi: for mt8173 platforms
- 
- - #address-cells: should be 1.
- 
--- 
-2.6.2
+Rafael
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

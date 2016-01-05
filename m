@@ -1,86 +1,84 @@
-From: Vignesh R <vigneshr@ti.com>
-Subject: Re: [PATCH v5 0/5] Add memory mapped read support for ti-qspi
-Date: Tue, 5 Jan 2016 10:50:42 +0530
-Message-ID: <568B52AA.4070900@ti.com>
-References: <1449807000-6457-1-git-send-email-vigneshr@ti.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-Cc: Rob Herring <robh+dt@kernel.org>,
-	Russell King <linux@arm.linux.org.uk>, <hramrach@gmail.com>,
-	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-omap@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>,
-	<linux-mtd@lists.infradead.org>, <linux-spi@vger.kernel.org>
-To: Tony Lindgren <tony@atomide.com>,
-	Brian Norris <computersforpeace@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1449807000-6457-1-git-send-email-vigneshr@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: cadence: use to_platform_device()" to the spi tree
+Date: Tue, 05 Jan 2016 12:33:22 +0000
+Message-ID: <E1aGQni-0007ew-S7@debutante>
+References: <eba9c4fde1cf48cc56afba6275a4efdda998cbbe.1451485340.git.geliangtang@163.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Geliang Tang <geliangtang-9Onoh4P/yGk@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <eba9c4fde1cf48cc56afba6275a4efdda998cbbe.1451485340.git.geliangtang-9Onoh4P/yGk@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Brian,
+The patch
 
-On 12/11/2015 09:39 AM, Vignesh R wrote:
-> Changes since v4:
-> Use syscon to access system control module register in ti-qspi driver.
-> 
+   spi: cadence: use to_platform_device()
 
-Gentle ping...
-Are you ok with MTD side changes of this patch series?
+has been applied to the spi tree at
 
-> Changes since v3:
-> Rework to introduce spi_flash_read_message struct.
-> Support different opcode/addr/data formats as per Brian's suggestion
-> here: https://lkml.org/lkml/2015/11/11/454
-> 
-> Changes since v2:
-> Remove mmap_lock_mutex.
-> Optimize enable/disable of mmap mode.
-> 
-> Changes since v1:
-> Introduce API in SPI core that MTD flash driver can call for mmap read
-> instead of directly calling spi-master driver callback. This API makes
-> sure that SPI core msg queue is locked during mmap transfers.
-> v1: https://lkml.org/lkml/2015/9/4/103
-> 
-> 
-> Cover letter:
-> 
-> This patch series adds support for memory mapped read port of ti-qspi.
-> ti-qspi has a special memory mapped port through which SPI flash
-> memories can be accessed directly via SoC specific memory region.
-> 
-> First patch adds a method to pass flash specific information like read
-> opcode, dummy bytes etc and to request mmap read. Second patch
-> implements mmap read method in ti-qspi driver. Patch 3 adapts m25p80 to
-> use mmap read method before trying normal SPI transfer. Patch 4 and 5
-> add memory map region DT entries for DRA7xx and AM43xx SoCs.
-> 
-> This patch series is based on the discussions here:
-> http://www.spinics.net/lists/linux-spi/msg04796.html
-> 
-> Tested on DRA74 EVM and AM437x-SK.
-> Read performance increases from ~100kB/s to ~2.5MB/s.
-> 
-> Vignesh R (5):
->   spi: introduce accelerated read support for spi flash devices
->   spi: spi-ti-qspi: add mmap mode read support
->   mtd: devices: m25p80: add support for mmap read request
->   ARM: dts: DRA7: add entry for qspi mmap region
->   ARM: dts: AM4372: add entry for qspi mmap region
-> 
->  Documentation/devicetree/bindings/spi/ti_qspi.txt |  22 +++-
->  arch/arm/boot/dts/am4372.dtsi                     |   4 +-
->  arch/arm/boot/dts/dra7.dtsi                       |   6 +-
->  drivers/mtd/devices/m25p80.c                      |  20 ++++
->  drivers/spi/spi-ti-qspi.c                         | 139 +++++++++++++++++-----
->  drivers/spi/spi.c                                 |  45 +++++++
->  include/linux/spi/spi.h                           |  41 +++++++
->  7 files changed, 243 insertions(+), 34 deletions(-)
-> 
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 9033a5f9ac83538502a2bddc62311b09d966799e Mon Sep 17 00:00:00 2001
+From: Geliang Tang <geliangtang-9Onoh4P/yGk@public.gmane.org>
+Date: Fri, 1 Jan 2016 20:28:59 +0800
+Subject: [PATCH] spi: cadence: use to_platform_device()
+
+Use to_platform_device() instead of open-coding it.
+
+Signed-off-by: Geliang Tang <geliangtang-9Onoh4P/yGk@public.gmane.org>
+Reviewed-by: Moritz Fischer <moritz.fischer-+aYTwkv1SeIAvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-cadence.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
+index 5a6749881ff9..121a4135b540 100644
+--- a/drivers/spi/spi-cadence.c
++++ b/drivers/spi/spi-cadence.c
+@@ -617,8 +617,7 @@ static int cdns_spi_remove(struct platform_device *pdev)
+  */
+ static int __maybe_unused cdns_spi_suspend(struct device *dev)
+ {
+-	struct platform_device *pdev = container_of(dev,
+-			struct platform_device, dev);
++	struct platform_device *pdev = to_platform_device(dev);
+ 	struct spi_master *master = platform_get_drvdata(pdev);
+ 	struct cdns_spi *xspi = spi_master_get_devdata(master);
+ 
+@@ -641,8 +640,7 @@ static int __maybe_unused cdns_spi_suspend(struct device *dev)
+  */
+ static int __maybe_unused cdns_spi_resume(struct device *dev)
+ {
+-	struct platform_device *pdev = container_of(dev,
+-			struct platform_device, dev);
++	struct platform_device *pdev = to_platform_device(dev);
+ 	struct spi_master *master = platform_get_drvdata(pdev);
+ 	struct cdns_spi *xspi = spi_master_get_devdata(master);
+ 	int ret = 0;
 -- 
-Regards
-Vignesh
+2.6.2
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

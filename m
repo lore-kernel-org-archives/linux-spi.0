@@ -1,108 +1,145 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: loopback-test: added support for HW-loopback mode" to the spi tree
-Date: Tue, 05 Jan 2016 19:15:25 +0000
-Message-ID: <E1aGX4n-0005eg-SS@debutante>
-References: <1450698772-2379-9-git-send-email-kernel@martin.sperl.org>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans-2StjZFpD7GcAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v2] spi: atmel: Refactor spi-atmel to use SPI framework queue
+Date: Tue, 05 Jan 2016 19:27:58 +0000
+Message-ID: <yw1xziwj25dt.fsf@unicorn.mansr.com>
+References: <1389244755-16188-1-git-send-email-wenyou.yang@atmel.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1450698772-2379-9-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <1389244755-16188-1-git-send-email-wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org> (Wenyou
+	Yang's message of "Thu, 9 Jan 2014 13:19:15 +0800")
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org> writes:
 
-   spi: loopback-test: added support for HW-loopback mode
+> Replace the deprecated master->transfer with transfer_one_message()
+> and allow the SPI subsystem handle all the queuing of messages.
+>
+> Signed-off-by: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+> Tested-by: Richard Genoud <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> ---
+> Hi Mark,
+>
+> Thanks for your feedback.
+>
+> According to your advice, I prepared this version 2.
+>
+> The patch is based on the for-next branch of
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git
+>
+> I tested it on sama5d3xek and at91sam9m10g45ek board.
+> Richard helped tested it on at91sam9g35-ek board.
+>
+> Best Regards,
+> Wenyou Yang
+>
+> v2 changelog:
+>  1./ Rebase the latest for-next branch included the patch from Richar=
+d.
+>  2./ remove the lock on complete(&as->xfer_completion).
+>  3./ rework the xfer->cs_change is true.
+>  4./ remove the member stopping of struct atmel_spi.
+>
+>  drivers/spi/spi-atmel.c |  678 +++++++++++++++----------------------=
+----------
+>  1 file changed, 220 insertions(+), 458 deletions(-)
 
-has been applied to the spi tree at
+This patch broke the display control on the AT32STK1000 board.  I don't
+know which part of the patch is causing the problem.  This shows up in
+the kernel log (with debug messages enabled):
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+atmel_spi atmel_spi.0: version: 0x171
+atmel_spi atmel_spi.0: Atmel SPI Controller at 0xffe00000 (irq 3)
+spi spi0.0: setup: bpw 8 mode 0x1 -> csr0 00000008
+spi spi0.1: setup: bpw 8 mode 0x3 -> csr1 00000009
+ltv350qv spi0.1: new message 93c29cb4 submitted for spi0.1
+ltv350qv spi0.1: activate 1, mr 000e0011
+ltv350qv spi0.1:   start xfer 93c29c78: len 3 tx 93c69ccc/13c69ccc rx  =
+ (null)/ffffffff
+------------[ cut here ]------------
+WARNING: at drivers/spi/spi-atmel.c:1351
+CPU: 0 PID: 1 Comm: swapper Not tainted 4.4.0-rc8+ #14
+task: 93c1e000 ti: 93c28000 task.ti: 93c28000
+PC is at atmel_spi_transfer_one_message+0x33a/0x72c
+LR is at schedule_timeout+0x72/0xc0
+pc : [<90139a26>]    lr : [<901d44b6>]    Not tainted
+sp : 93c29b2c  r12: 00000000  r11: 93d1adb8
+r10: 93c1e364  r9 : 00000200  r8 : 00400022
+r7 : 93d12dfc  r6 : 93d12dfc  r5 : 93c29c78  r4 : 93c29bb8
+r3 : 93c29cb4  r2 : 93d12c00  r1 : 00000000  r0 : 00000000
+=46lags: qvnZc
+Mode bits: hjmde....G
+CPU Mode: Supervisor
+Call trace:
+ [<900ebfea>] ida_get_new_above+0x5a/0x148
+ [<900ec07e>] ida_get_new_above+0xee/0x148
+ [<900efa96>] put_dec+0xa2/0xbc
+ [<900efdea>] number+0x2e6/0x2f4
+ [<90137e6a>] __spi_pump_messages+0x21e/0x304
+ [<90137910>] spi_queued_transfer+0x0/0x8
+ [<90138046>] __spi_sync+0xf6/0xf8
+ [<90137910>] spi_queued_transfer+0x0/0x8
+ [<90138056>] spi_sync+0x6/0x8
+ [<9010a39e>] ltv350qv_write_reg+0x100/0x106
+ [<90080000>] __generic_block_fiemap+0x78/0x250
+ [<90138150>] spi_complete+0x0/0x8
+ [<9010a3cc>] ltv350qv_power+0x28/0x1e4
+ [<9010a5f6>] ltv350qv_probe+0x4e/0x68
+ [<90136b68>] spi_drv_probe+0x20/0x22
+ [<901336e6>] driver_probe_device+0xe6/0x188
+ [<90133826>] __device_attach_driver+0x4a/0x54
+ [<901327ae>] bus_for_each_drv+0x32/0x54
+ [<901337dc>] __device_attach_driver+0x0/0x54
+ [<901338a2>] __device_attach+0x5a/0x7c
+ [<901338ca>] device_initial_probe+0x6/0x8
+ [<90132e2c>] bus_probe_device+0x58/0x5c
+ [<90131d94>] device_add+0x1fc/0x344
+ [<9013823c>] spi_setup+0x88/0xf8
+ [<90139e18>] atmel_spi_setup+0x0/0x160
+ [<901386e8>] spi_add_device+0x70/0xf0
+ [<9013881e>] spi_new_device+0x56/0x6c
+ [<9013884e>] spi_match_master_to_boardinfo+0x1a/0x30
+ [<90138938>] spi_register_master+0xd4/0x22c
+ [<90138aac>] devm_spi_register_master+0x1c/0x44
+ [<90138faa>] atmel_spi_probe+0x29a/0x38c
+ [<900b06c0>] sysfs_do_create_link_sd+0x34/0x60
+ [<90134430>] platform_drv_probe+0x14/0x40
+ [<901336e6>] driver_probe_device+0xe6/0x188
+ [<900ecbca>] kobject_add_internal+0x56/0x1c8
+ [<901337d8>] __driver_attach+0x50/0x54
+ [<90000418>] repair_env_string+0x0/0x58
+ [<9013280e>] bus_for_each_dev+0x3e/0x58
+ [<90133788>] __driver_attach+0x0/0x54
+ [<90133508>] driver_attach+0x10/0x14
+ [<90132cb2>] bus_add_driver+0xf6/0x15c
+ [<90133aae>] driver_register+0x3e/0x98
+ [<901343b6>] __platform_driver_register+0x22/0x28
+ [<9000aba8>] atmel_spi_driver_init+0x0/0x10
+ [<9000abb2>] atmel_spi_driver_init+0xa/0x10
+ [<9000023e>] do_one_initcall+0xaa/0x130
+ [<90027ae2>] parse_args+0x19e/0x27c
+ [<90000418>] repair_env_string+0x0/0x58
+ [<90000374>] kernel_init_freeable+0x88/0x12c
+ [<90000382>] kernel_init_freeable+0x96/0x12c
+ [<90000418>] repair_env_string+0x0/0x58
+ [<901d2588>] kernel_init+0x8/0xa4
+ [<90013130>] syscall_return+0x0/0x12
+ [<901d2580>] kernel_init+0x0/0xa4
+ [<90013130>] syscall_return+0x0/0x12
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+---[ end trace 6b6391f8ee24f957 ]---
+ltv350qv spi0.1: spi transfer timeout
+atmel_spi atmel_spi.0: overrun (2/3 remaining)
+atmel_spi atmel_spi.0: timeout waiting for TXEMPTY
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From b0632bfe5ec416a30d2e72bb1cc5dde5c6864e41 Mon Sep 17 00:00:00 2001
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Date: Tue, 22 Dec 2015 18:03:28 +0000
-Subject: [PATCH] spi: loopback-test: added support for HW-loopback mode
-
-If the module parameter "loopback" for testing RX to match TX
-is not set and the spi_master supports SPI_LOOP then
-SPI_LOOP as well as RX-data testing will get enabled.
-
-When the "loopback" module parameter is set
-then the SPI_LOOP support in spi_master will not get enabled,
-which means that MOSI needs to get connected to MISO by some
-other means (possibly via a simple jumper connection
-or a SN74AHCT125 connecting MOSI/MISO)
-
-Suggested-by: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-loopback-test.c | 28 +++++++++++++++++++++++++++-
- 1 file changed, 27 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
-index 7f79a77c4b68..a194d4bab7fa 100644
---- a/drivers/spi/spi-loopback-test.c
-+++ b/drivers/spi/spi-loopback-test.c
-@@ -282,8 +282,34 @@ static struct spi_test spi_tests[] = {
- static int spi_loopback_test_probe(struct spi_device *spi)
- {
- 	int ret;
-+	char *msg;
- 
--	dev_info(&spi->dev, "Executing spi-loopback-tests\n");
-+	/*
-+	 * Enable HW-loopback automatically if the master supports it
-+	 * and we have the have_rx_buf unset (set means that we have
-+	 * got an external loopback enabled, so no need to use SPI_LOOP)
-+	 */
-+	if (!check_rx_buf && (spi->master->mode_bits & SPI_LOOP)) {
-+		spi->mode |= SPI_LOOP;
-+		ret = spi_setup(spi);
-+		if (ret) {
-+			dev_err(&spi->dev,
-+				"spi_setup failed to enable loopback: %i\n",
-+				ret);
-+			return ret;
-+		}
-+
-+		/* force checking rx_buf for valid (loopback) data */
-+		check_rx_buf = 1;
-+
-+		msg = "with SPI_LOOP support";
-+	} else {
-+		msg = (check_rx_buf) ?
-+		      "with external loopback" :
-+		      "without any loopback - rx_buf content is not checked";
-+	}
-+
-+	dev_info(&spi->dev, "Executing spi-loopback-tests %s\n", msg);
- 
- 	ret = spi_test_run_tests(spi, spi_tests);
- 
--- 
-2.7.0.rc3
-
+--=20
+M=E5ns Rullg=E5rd
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,85 +1,72 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: zynq: use to_platform_device()" to the spi tree
-Date: Tue, 05 Jan 2016 12:33:21 +0000
-Message-ID: <E1aGQnh-0007eS-VT@debutante>
-References: <917c5adcc61a2a9e6390c0fe54445aa7c8642462.1451485340.git.geliangtang@163.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Geliang Tang <geliangtang-9Onoh4P/yGk@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [RFC] spi: dw: support setting tmode dynamically
+Date: Tue, 5 Jan 2016 16:12:31 +0000
+Message-ID: <20160105161231.GG6588@sirena.org.uk>
+References: <20151223192338.128e95a4@xhacker>
+ <20151223121512.GV16023@sirena.org.uk>
+ <20151223202952.28be5bab@xhacker>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="fCcDWlUEdh43YKr8"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jisheng Zhang <jszhang-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <917c5adcc61a2a9e6390c0fe54445aa7c8642462.1451485340.git.geliangtang-9Onoh4P/yGk@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20151223202952.28be5bab@xhacker>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
 
-   spi: zynq: use to_platform_device()
+--fCcDWlUEdh43YKr8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-has been applied to the spi tree at
+On Wed, Dec 23, 2015 at 08:29:52PM +0800, Jisheng Zhang wrote:
+> On Wed, 23 Dec 2015 12:15:12 +0000 Mark Brown wrote:
+> > On Wed, Dec 23, 2015 at 07:23:38PM +0800, Jisheng Zhang wrote:
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+> > > Currently the spi-dw tmode is fixed to SPI_TMOD_TR if cs_control is N=
+ULL, but we
+> > > need to set it as SPI_TMOD_EPROMREAD to read nor flash, my solution i=
+s to add and
+> > > export one functions to set the tmode, then the nor flash driver call=
+ it
+> > > before reading and set back to SPI_TMOD_TR after done. =20
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+> > What does this mean - what is TMOD and why do we need to set it to read
+> > NOR flash?  I've no information on this controller...
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+> TMOD is one field of DW_SPI_CTRL0. Its available value could be:
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+> 0: Transmit and Receive
+> 1: Transmit only
+> 2: Receive only
+> 3: EEPROM Read
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+> If the one spi nor flash is connected to the SPI host, so far I can only =
+succeed
+> to read the nor flash content after setting the TMOD field as 3.
 
-Thanks,
-Mark
+Why?  What does this mean in practical terms at the hardware level, what
+is "EEPROM read"?  It sounds like there's some bigger issue here.
 
->From 9d0c1c3332b49570454bb11e55d3c6c7993163da Mon Sep 17 00:00:00 2001
-From: Geliang Tang <geliangtang-9Onoh4P/yGk@public.gmane.org>
-Date: Fri, 1 Jan 2016 20:29:00 +0800
-Subject: [PATCH] spi: zynq: use to_platform_device()
+--fCcDWlUEdh43YKr8
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Use to_platform_device() instead of open-coding it.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-Signed-off-by: Geliang Tang <geliangtang-9Onoh4P/yGk@public.gmane.org>
-Reviewed-by: Moritz Fischer <moritz.fischer-+aYTwkv1SeIAvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-zynqmp-gqspi.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+iQEcBAEBCAAGBQJWi+tuAAoJECTWi3JdVIfQBNgH+gJDq1/l0iZhZ+A/xtRiogUg
+wAWR3LUMThNN4f7LY4o5WG0clp8MRzP3iGRLs9fhd6r+F9w3Uyj0tvw9239GHzxn
+BVzDV8HtxuysNBSm4WDTW3V2otsMti657NEdCwvAjFEHdPZ1p2uMCe74kh4FCYII
+X/CvAURcfcJCMjf277uEwN3Bz9I2zxMi1xRDamh83AxpzYxLuyabTraFClIqu8S6
+iMO3btPSXVTxKmmAXhsAH2ytS8Uuwie8GZKoO6lv1RZsxojKFNmN1B+aso7tcZc9
+KnKYROgx2rEyOJy9EHXOCh16f7SGBe2A8ZsWtHCjn2Ej7PID/bWIN4HsoBVwzP0=
+=+T3A
+-----END PGP SIGNATURE-----
 
-diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
-index f23f36ebaf3d..aab9b492c627 100644
---- a/drivers/spi/spi-zynqmp-gqspi.c
-+++ b/drivers/spi/spi-zynqmp-gqspi.c
-@@ -917,9 +917,7 @@ static int zynqmp_qspi_start_transfer(struct spi_master *master,
-  */
- static int __maybe_unused zynqmp_qspi_suspend(struct device *dev)
- {
--	struct platform_device *pdev = container_of(dev,
--						    struct platform_device,
--						    dev);
-+	struct platform_device *pdev = to_platform_device(dev);
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 
- 	spi_master_suspend(master);
-@@ -940,9 +938,7 @@ static int __maybe_unused zynqmp_qspi_suspend(struct device *dev)
-  */
- static int __maybe_unused zynqmp_qspi_resume(struct device *dev)
- {
--	struct platform_device *pdev = container_of(dev,
--						    struct platform_device,
--						    dev);
-+	struct platform_device *pdev = to_platform_device(dev);
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct zynqmp_qspi *xqspi = spi_master_get_devdata(master);
- 	int ret = 0;
--- 
-2.6.2
-
+--fCcDWlUEdh43YKr8--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,7 +1,7 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: expose master transfer size limitation." to the spi tree
-Date: Tue, 05 Jan 2016 17:49:34 +0000
-Message-ID: <E1aGVji-0003H9-Ll@debutante>
+Subject: Applied "spi: fsl-espi: expose maximum transfer size limit" to the spi tree
+Date: Tue, 05 Jan 2016 17:49:33 +0000
+Message-ID: <E1aGVjh-0003Gg-Th@debutante>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
@@ -12,7 +12,7 @@ List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: expose master transfer size limitation.
+   spi: fsl-espi: expose maximum transfer size limit
 
 has been applied to the spi tree at
 
@@ -37,59 +37,47 @@ to this mail.
 Thanks,
 Mark
 
->From 4acad4aae10d1fa79a075b38b5c73772c44f576c Mon Sep 17 00:00:00 2001
+>From b541eef125fa3ae0df84572459af4e7084cb6343 Mon Sep 17 00:00:00 2001
 From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Date: Wed, 2 Dec 2015 10:38:21 +0000
-Subject: [PATCH] spi: expose master transfer size limitation.
+Subject: [PATCH] spi: fsl-espi: expose maximum transfer size limit
 
-On some SPI controllers it is not feasible to transfer arbitrary amount
-of data at once.
+The fsl-espi hardware can trasfer at most 64K data so report teh
+limitation.
 
-When the limit on transfer size is a few kilobytes at least it makes
-sense to use the SPI hardware rather than reverting to gpio driver.
+Based on patch by Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-The protocol drivers need a way to check that they do not sent overly
-long messages, though.
-
+CC: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- include/linux/spi/spi.h | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/spi/spi-fsl-espi.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index cce80e6dc7d1..3eebc6c235fb 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -425,6 +425,12 @@ struct spi_master {
- #define SPI_MASTER_MUST_RX      BIT(3)		/* requires rx */
- #define SPI_MASTER_MUST_TX      BIT(4)		/* requires tx */
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index c27124a5ec8e..7fd6a4c009d2 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -643,6 +643,11 @@ static int fsl_espi_runtime_resume(struct device *dev)
+ }
+ #endif
  
-+	/*
-+	 * on some hardware transfer size may be constrained
-+	 * the limit may depend on device transfer settings
-+	 */
-+	size_t (*max_transfer_size)(struct spi_device *spi);
-+
- 	/* lock and mutex for SPI bus locking */
- 	spinlock_t		bus_lock_spinlock;
- 	struct mutex		bus_lock_mutex;
-@@ -832,6 +838,15 @@ extern int spi_async(struct spi_device *spi, struct spi_message *message);
- extern int spi_async_locked(struct spi_device *spi,
- 			    struct spi_message *message);
- 
-+static inline size_t
-+spi_max_transfer_size(struct spi_device *spi)
++static size_t fsl_espi_max_transfer_size(struct spi_device *spi)
 +{
-+	struct spi_master *master = spi->master;
-+	if (!master->max_transfer_size)
-+		return SIZE_MAX;
-+	return master->max_transfer_size(spi);
++	return SPCOM_TRANLEN_MAX;
 +}
 +
- /*---------------------------------------------------------------------------*/
+ static struct spi_master * fsl_espi_probe(struct device *dev,
+ 		struct resource *mem, unsigned int irq)
+ {
+@@ -670,6 +675,7 @@ static struct spi_master * fsl_espi_probe(struct device *dev,
+ 	master->cleanup = fsl_espi_cleanup;
+ 	master->transfer_one_message = fsl_espi_do_one_msg;
+ 	master->auto_runtime_pm = true;
++	master->max_transfer_size = fsl_espi_max_transfer_size;
  
- /* All these synchronous SPI transfer routines are utilities layered
+ 	mpc8xxx_spi = spi_master_get_devdata(master);
+ 
 -- 
 2.7.0.rc3
 

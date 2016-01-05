@@ -1,59 +1,90 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v5 0/5] Add memory mapped read support for ti-qspi
-Date: Tue, 5 Jan 2016 18:19:20 +0000
-Message-ID: <20160105181920.GK6588@sirena.org.uk>
-References: <1449807000-6457-1-git-send-email-vigneshr@ti.com>
- <568B52AA.4070900@ti.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="VJJoKLVEFXdmHQwR"
-Cc: Tony Lindgren <tony@atomide.com>,
-	Brian Norris <computersforpeace@gmail.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Russell King <linux@arm.linux.org.uk>, hramrach@gmail.com,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org
-To: Vignesh R <vigneshr@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <568B52AA.4070900@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: loopback-test: write rx pattern also when running without tx_buf" to the spi tree
+Date: Tue, 05 Jan 2016 19:06:44 +0000
+Message-ID: <E1aGWwO-00053i-3l@debutante>
+References: <1450698772-2379-2-git-send-email-kernel@martin.sperl.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1450698772-2379-2-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---VJJoKLVEFXdmHQwR
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   spi: loopback-test: write rx pattern also when running without tx_buf
 
-On Tue, Jan 05, 2016 at 10:50:42AM +0530, Vignesh R wrote:
-> Hi Brian,
->=20
-> On 12/11/2015 09:39 AM, Vignesh R wrote:
-> > Changes since v4:
-> > Use syscon to access system control module register in ti-qspi driver.
-> >=20
->=20
-> Gentle ping...
-> Are you ok with MTD side changes of this patch series?
+has been applied to the spi tree at
 
-Please don't send content free pings and please allow a reasonable time
-for review (we've just had the Christmas vacation...).
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
---VJJoKLVEFXdmHQwR
-Content-Type: application/pgp-signature; name="signature.asc"
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEcBAEBCAAGBQJWjAknAAoJECTWi3JdVIfQo1IH/2uM4umOoXDmbvAfvoo0HQiB
-co+aYq7vLt3RrOWDW8YmWvEI7qWN/bK2CKdq5cCOTRB4PRtwbnY+vHEhsWE/T2Nj
-pawmI3UGcqioxNiLJ3sxzeVSADCz0gnS/f3VkmJ4KJwYZUZYvJop/Wnp6GU9lBXj
-6Eso8dTaDKRfUWSJZ1kLoZ7Y8T7/c8cN1dWo8tove7PvseQY/HYzhv7QykmkLA8C
-5s5KxQoznHeScpkmbSCHYrFtnv4HLHd71drwjh5UfjRkn+xbllZQBhVtI4Ruc9e8
-JDv2DLWu8L/v+9cODDeYQAKi93fj9mUA8VPnRAPhr1RHh5oZOuEluFiZn5tPRX8=
-=cOKV
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---VJJoKLVEFXdmHQwR--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From e6520a3c8877d02c471135afb371e79b04409ab8 Mon Sep 17 00:00:00 2001
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Date: Tue, 22 Dec 2015 18:03:21 +0000
+Subject: [PATCH] spi: loopback-test: write rx pattern also when running
+ without tx_buf
+
+Currently the rx_buf does not get set with the
+SPI_TEST_PATTERN_UNWRITTEN when tx_buf == NULL in the transfer.
+
+Reorder code so that it gets done also under this specific condition.
+
+Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-loopback-test.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
+index 7f497acc906c..8af2e4070153 100644
+--- a/drivers/spi/spi-loopback-test.c
++++ b/drivers/spi/spi-loopback-test.c
+@@ -591,6 +591,10 @@ static int spi_test_fill_tx(struct spi_device *spi, struct spi_test *test)
+ 
+ 	/* fill all transfers with the pattern requested */
+ 	for (i = 0; i < test->transfer_count; i++) {
++		/* fill rx_buf with SPI_TEST_PATTERN_UNWRITTEN */
++		if (xfers[i].rx_buf)
++			memset(xfers[i].rx_buf, SPI_TEST_PATTERN_UNWRITTEN,
++			       xfers[i].len);
+ 		/* if tx_buf is NULL then skip */
+ 		tx_buf = (u8 *)xfers[i].tx_buf;
+ 		if (!tx_buf)
+@@ -648,10 +652,6 @@ static int spi_test_fill_tx(struct spi_device *spi, struct spi_test *test)
+ 				return -EINVAL;
+ 			}
+ 		}
+-		/* fill rx_buf with SPI_TEST_PATTERN_UNWRITTEN */
+-		if (xfers[i].rx_buf)
+-			memset(xfers[i].rx_buf, SPI_TEST_PATTERN_UNWRITTEN,
+-			       xfers[i].len);
+ 	}
+ 
+ 	return 0;
+-- 
+2.7.0.rc3
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

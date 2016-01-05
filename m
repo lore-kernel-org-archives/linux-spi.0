@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: loopback-test: spi_check_rx_ranges can get always done" to the spi tree
-Date: Tue, 05 Jan 2016 19:15:26 +0000
-Message-ID: <E1aGX4o-0005fF-Oq@debutante>
-References: <1450698772-2379-6-git-send-email-kernel@martin.sperl.org>
+Subject: Applied "spi: loopback-test: added support for HW-loopback mode" to the spi tree
+Date: Tue, 05 Jan 2016 19:15:25 +0000
+Message-ID: <E1aGX4n-0005eg-SS@debutante>
+References: <1450698772-2379-9-git-send-email-kernel@martin.sperl.org>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1450698772-2379-6-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <1450698772-2379-9-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: loopback-test: spi_check_rx_ranges can get always done
+   spi: loopback-test: added support for HW-loopback mode
 
 has been applied to the spi tree at
 
@@ -38,65 +38,68 @@ to this mail.
 Thanks,
 Mark
 
->From 1e8db97f0e5205c0f6fd20c9a4f38cd871bc467f Mon Sep 17 00:00:00 2001
+>From b0632bfe5ec416a30d2e72bb1cc5dde5c6864e41 Mon Sep 17 00:00:00 2001
 From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Date: Tue, 22 Dec 2015 18:03:25 +0000
-Subject: [PATCH] spi: loopback-test: spi_check_rx_ranges can get always done
+Date: Tue, 22 Dec 2015 18:03:28 +0000
+Subject: [PATCH] spi: loopback-test: added support for HW-loopback mode
 
-The spi_check_rx_ranges can always get executed independent of
-if we have a real loopback situation.
+If the module parameter "loopback" for testing RX to match TX
+is not set and the spi_master supports SPI_LOOP then
+SPI_LOOP as well as RX-data testing will get enabled.
 
+When the "loopback" module parameter is set
+then the SPI_LOOP support in spi_master will not get enabled,
+which means that MOSI needs to get connected to MISO by some
+other means (possibly via a simple jumper connection
+or a SN74AHCT125 connecting MOSI/MISO)
+
+Suggested-by: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-loopback-test.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ drivers/spi/spi-loopback-test.c | 28 +++++++++++++++++++++++++++-
+ 1 file changed, 27 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
-index 81fa9068df43..7f79a77c4b68 100644
+index 7f79a77c4b68..a194d4bab7fa 100644
 --- a/drivers/spi/spi-loopback-test.c
 +++ b/drivers/spi/spi-loopback-test.c
-@@ -489,7 +489,18 @@ static int spi_test_check_loopback_result(struct spi_device *spi,
- 	struct spi_transfer *xfer;
- 	u8 rxb, txb;
- 	size_t i;
-+	int ret;
+@@ -282,8 +282,34 @@ static struct spi_test spi_tests[] = {
+ static int spi_loopback_test_probe(struct spi_device *spi)
+ {
+ 	int ret;
++	char *msg;
+ 
+-	dev_info(&spi->dev, "Executing spi-loopback-tests\n");
++	/*
++	 * Enable HW-loopback automatically if the master supports it
++	 * and we have the have_rx_buf unset (set means that we have
++	 * got an external loopback enabled, so no need to use SPI_LOOP)
++	 */
++	if (!check_rx_buf && (spi->master->mode_bits & SPI_LOOP)) {
++		spi->mode |= SPI_LOOP;
++		ret = spi_setup(spi);
++		if (ret) {
++			dev_err(&spi->dev,
++				"spi_setup failed to enable loopback: %i\n",
++				ret);
++			return ret;
++		}
 +
-+	/* checks rx_buffer pattern are valid with loopback or without */
-+	ret = spi_check_rx_ranges(spi, msg, rx);
-+	if (ret)
-+		return ret;
- 
-+	/* if we run without loopback, then return now */
-+	if (!loopback)
-+		return 0;
++		/* force checking rx_buf for valid (loopback) data */
++		check_rx_buf = 1;
 +
-+	/* if applicable to transfer check that rx_buf is equal to tx_buf */
- 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
- 		/* if there is no rx, then no check is needed */
- 		if (!xfer->rx_buf)
-@@ -521,7 +532,7 @@ static int spi_test_check_loopback_result(struct spi_device *spi,
- 		}
- 	}
++		msg = "with SPI_LOOP support";
++	} else {
++		msg = (check_rx_buf) ?
++		      "with external loopback" :
++		      "without any loopback - rx_buf content is not checked";
++	}
++
++	dev_info(&spi->dev, "Executing spi-loopback-tests %s\n", msg);
  
--	return spi_check_rx_ranges(spi, msg, rx);
-+	return 0;
+ 	ret = spi_test_run_tests(spi, spi_tests);
  
- mismatch_error:
- 	dev_err(&spi->dev,
-@@ -847,10 +858,8 @@ int spi_test_execute_msg(struct spi_device *spi, struct spi_test *test,
- 			goto exit;
- 		}
- 
--		/* run rx-tests when in loopback mode */
--		if (loopback)
--			ret = spi_test_check_loopback_result(spi, msg,
--							     tx, rx);
-+		/* run rx-buffer tests */
-+		ret = spi_test_check_loopback_result(spi, msg, tx, rx);
- 	}
- 
- 	/* if requested or on error dump message (including data) */
 -- 
 2.7.0.rc3
 

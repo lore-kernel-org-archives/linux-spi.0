@@ -1,87 +1,59 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: fsl-espi: expose maximum transfer size limit" to the spi tree
-Date: Tue, 05 Jan 2016 17:49:33 +0000
-Message-ID: <E1aGVjh-0003Gg-Th@debutante>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: 
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v5 0/5] Add memory mapped read support for ti-qspi
+Date: Tue, 5 Jan 2016 18:19:20 +0000
+Message-ID: <20160105181920.GK6588@sirena.org.uk>
+References: <1449807000-6457-1-git-send-email-vigneshr@ti.com>
+ <568B52AA.4070900@ti.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="VJJoKLVEFXdmHQwR"
+Cc: Tony Lindgren <tony@atomide.com>,
+	Brian Norris <computersforpeace@gmail.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Russell King <linux@arm.linux.org.uk>, hramrach@gmail.com,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org
+To: Vignesh R <vigneshr@ti.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <568B52AA.4070900@ti.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-The patch
 
-   spi: fsl-espi: expose maximum transfer size limit
+--VJJoKLVEFXdmHQwR
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-has been applied to the spi tree at
+On Tue, Jan 05, 2016 at 10:50:42AM +0530, Vignesh R wrote:
+> Hi Brian,
+>=20
+> On 12/11/2015 09:39 AM, Vignesh R wrote:
+> > Changes since v4:
+> > Use syscon to access system control module register in ti-qspi driver.
+> >=20
+>=20
+> Gentle ping...
+> Are you ok with MTD side changes of this patch series?
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+Please don't send content free pings and please allow a reasonable time
+for review (we've just had the Christmas vacation...).
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+--VJJoKLVEFXdmHQwR
+Content-Type: application/pgp-signature; name="signature.asc"
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+iQEcBAEBCAAGBQJWjAknAAoJECTWi3JdVIfQo1IH/2uM4umOoXDmbvAfvoo0HQiB
+co+aYq7vLt3RrOWDW8YmWvEI7qWN/bK2CKdq5cCOTRB4PRtwbnY+vHEhsWE/T2Nj
+pawmI3UGcqioxNiLJ3sxzeVSADCz0gnS/f3VkmJ4KJwYZUZYvJop/Wnp6GU9lBXj
+6Eso8dTaDKRfUWSJZ1kLoZ7Y8T7/c8cN1dWo8tove7PvseQY/HYzhv7QykmkLA8C
+5s5KxQoznHeScpkmbSCHYrFtnv4HLHd71drwjh5UfjRkn+xbllZQBhVtI4Ruc9e8
+JDv2DLWu8L/v+9cODDeYQAKi93fj9mUA8VPnRAPhr1RHh5oZOuEluFiZn5tPRX8=
+=cOKV
+-----END PGP SIGNATURE-----
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From b541eef125fa3ae0df84572459af4e7084cb6343 Mon Sep 17 00:00:00 2001
-From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Wed, 2 Dec 2015 10:38:21 +0000
-Subject: [PATCH] spi: fsl-espi: expose maximum transfer size limit
-
-The fsl-espi hardware can trasfer at most 64K data so report teh
-limitation.
-
-Based on patch by Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-
-CC: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-fsl-espi.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index c27124a5ec8e..7fd6a4c009d2 100644
---- a/drivers/spi/spi-fsl-espi.c
-+++ b/drivers/spi/spi-fsl-espi.c
-@@ -643,6 +643,11 @@ static int fsl_espi_runtime_resume(struct device *dev)
- }
- #endif
- 
-+static size_t fsl_espi_max_transfer_size(struct spi_device *spi)
-+{
-+	return SPCOM_TRANLEN_MAX;
-+}
-+
- static struct spi_master * fsl_espi_probe(struct device *dev,
- 		struct resource *mem, unsigned int irq)
- {
-@@ -670,6 +675,7 @@ static struct spi_master * fsl_espi_probe(struct device *dev,
- 	master->cleanup = fsl_espi_cleanup;
- 	master->transfer_one_message = fsl_espi_do_one_msg;
- 	master->auto_runtime_pm = true;
-+	master->max_transfer_size = fsl_espi_max_transfer_size;
- 
- 	mpc8xxx_spi = spi_master_get_devdata(master);
- 
--- 
-2.7.0.rc3
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--VJJoKLVEFXdmHQwR--

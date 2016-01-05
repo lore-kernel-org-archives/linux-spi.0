@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: loopback-test: write rx pattern also when running without tx_buf" to the spi tree
-Date: Tue, 05 Jan 2016 19:06:44 +0000
-Message-ID: <E1aGWwO-00053i-3l@debutante>
-References: <1450698772-2379-2-git-send-email-kernel@martin.sperl.org>
+Subject: Applied "spi: loopback-test: rename method spi_test_fill_tx to spi_test_fill_pattern" to the spi tree
+Date: Tue, 05 Jan 2016 19:06:43 +0000
+Message-ID: <E1aGWwN-00053F-6u@debutante>
+References: <1450698772-2379-3-git-send-email-kernel@martin.sperl.org>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1450698772-2379-2-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <1450698772-2379-3-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: loopback-test: write rx pattern also when running without tx_buf
+   spi: loopback-test: rename method spi_test_fill_tx to spi_test_fill_pattern
 
 has been applied to the spi tree at
 
@@ -38,49 +38,46 @@ to this mail.
 Thanks,
 Mark
 
->From e6520a3c8877d02c471135afb371e79b04409ab8 Mon Sep 17 00:00:00 2001
+>From 339ec3ce54e5c7137287dc807555ae69934b2d2a Mon Sep 17 00:00:00 2001
 From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Date: Tue, 22 Dec 2015 18:03:21 +0000
-Subject: [PATCH] spi: loopback-test: write rx pattern also when running
- without tx_buf
+Date: Tue, 22 Dec 2015 18:03:22 +0000
+Subject: [PATCH] spi: loopback-test: rename method spi_test_fill_tx to
+ spi_test_fill_pattern
 
-Currently the rx_buf does not get set with the
-SPI_TEST_PATTERN_UNWRITTEN when tx_buf == NULL in the transfer.
-
-Reorder code so that it gets done also under this specific condition.
+Rename method spi_test_fill_tx to spi_test_fill_pattern
+to better describe what it does.
 
 Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-loopback-test.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/spi/spi-loopback-test.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
-index 7f497acc906c..8af2e4070153 100644
+index 8af2e4070153..81fa9068df43 100644
 --- a/drivers/spi/spi-loopback-test.c
 +++ b/drivers/spi/spi-loopback-test.c
-@@ -591,6 +591,10 @@ static int spi_test_fill_tx(struct spi_device *spi, struct spi_test *test)
+@@ -574,7 +574,8 @@ static int spi_test_translate(struct spi_device *spi,
+ 	return -EINVAL;
+ }
  
- 	/* fill all transfers with the pattern requested */
- 	for (i = 0; i < test->transfer_count; i++) {
-+		/* fill rx_buf with SPI_TEST_PATTERN_UNWRITTEN */
-+		if (xfers[i].rx_buf)
-+			memset(xfers[i].rx_buf, SPI_TEST_PATTERN_UNWRITTEN,
-+			       xfers[i].len);
- 		/* if tx_buf is NULL then skip */
- 		tx_buf = (u8 *)xfers[i].tx_buf;
- 		if (!tx_buf)
-@@ -648,10 +652,6 @@ static int spi_test_fill_tx(struct spi_device *spi, struct spi_test *test)
- 				return -EINVAL;
- 			}
- 		}
--		/* fill rx_buf with SPI_TEST_PATTERN_UNWRITTEN */
--		if (xfers[i].rx_buf)
--			memset(xfers[i].rx_buf, SPI_TEST_PATTERN_UNWRITTEN,
--			       xfers[i].len);
+-static int spi_test_fill_tx(struct spi_device *spi, struct spi_test *test)
++static int spi_test_fill_pattern(struct spi_device *spi,
++				 struct spi_test *test)
+ {
+ 	struct spi_transfer *xfers = test->transfers;
+ 	u8 *tx_buf;
+@@ -691,8 +692,8 @@ static int _spi_test_run_iter(struct spi_device *spi,
+ 		spi_message_add_tail(x, msg);
  	}
  
- 	return 0;
+-	/* fill in the transfer data */
+-	ret = spi_test_fill_tx(spi, test);
++	/* fill in the transfer buffers with pattern */
++	ret = spi_test_fill_pattern(spi, test);
+ 	if (ret)
+ 		return ret;
+ 
 -- 
 2.7.0.rc3
 

@@ -1,86 +1,62 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: loopback-test: rename method spi_test_fill_tx to spi_test_fill_pattern" to the spi tree
-Date: Tue, 05 Jan 2016 19:06:43 +0000
-Message-ID: <E1aGWwN-00053F-6u@debutante>
-References: <1450698772-2379-3-git-send-email-kernel@martin.sperl.org>
+Subject: Re: [PATCH v3 3/8] spi: core: add spi_message_dump and
+ spi_transfer_dump
+Date: Tue, 5 Jan 2016 19:11:32 +0000
+Message-ID: <20160105191132.GQ6588@sirena.org.uk>
+References: <1450807408-2422-1-git-send-email-kernel@martin.sperl.org>
+ <1450807408-2422-4-git-send-email-kernel@martin.sperl.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="qd/SZIFVu+MYwfCR"
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1450698772-2379-3-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1450807408-2422-4-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
 
-   spi: loopback-test: rename method spi_test_fill_tx to spi_test_fill_pattern
+--qd/SZIFVu+MYwfCR
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-has been applied to the spi tree at
+On Tue, Dec 22, 2015 at 06:03:23PM +0000, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
+> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+>=20
+> This implements a means to dump a spi_message or spi_transfer.
+>=20
+> spi_loop_back_test requires a means to report on failed transfers
+> (including payload data), so it makes use of this.
+>=20
+> Such a functionality can also be helpful during development of
+> other drivers, so it has been exposed as a general facility.
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+It can definitely be useful but as Andy indicated memory coherency does
+mean it can get fun actually using it reliably - you'd need to make sure
+that both buffers are OK for the CPU to access otherwise it can give
+misleading results...  Hrm.  Comments might be all that's needed here,
+or flags to say which buffer contents to dump.  The flags might be most
+sensible since for bidrectional transfers you'll quite often want to
+dump only one direction at once when debugging.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+--qd/SZIFVu+MYwfCR
+Content-Type: application/pgp-signature; name="signature.asc"
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+iQEcBAEBCAAGBQJWjBVjAAoJECTWi3JdVIfQWVEH/RxoJ4gftv7CK6rkYYqZp0ru
+yuJxGa30j/gi0IzrGcflHExBXXPhwkCA+vf8EsALgWURyeATFPa7TdoBsOa1QLU/
+JAHINYdWx0ikvRga9mum7RfotRj/co41v84riMosnZ6PSogVS8wQVyrsAQl0PzmX
+BymgoZj5ChloxJBAxB4uqPqCL1ERWw770s45PsWFock/CGDzWNZs6nGPkSjM/fGR
+Tw6tkfaf2Qrnt7Qqh40kh4rJuNkgacZiLsy9QalLNfvsn2WnID7U1JWdV/yj0g6U
+UrmVwLF7aoEyWYBRqyqQcS1ZcVSabk9L5/a9L8k0TvlAp5/TFSKMzb4j25/JBAo=
+=jlSR
+-----END PGP SIGNATURE-----
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 339ec3ce54e5c7137287dc807555ae69934b2d2a Mon Sep 17 00:00:00 2001
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Date: Tue, 22 Dec 2015 18:03:22 +0000
-Subject: [PATCH] spi: loopback-test: rename method spi_test_fill_tx to
- spi_test_fill_pattern
-
-Rename method spi_test_fill_tx to spi_test_fill_pattern
-to better describe what it does.
-
-Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-loopback-test.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
-index 8af2e4070153..81fa9068df43 100644
---- a/drivers/spi/spi-loopback-test.c
-+++ b/drivers/spi/spi-loopback-test.c
-@@ -574,7 +574,8 @@ static int spi_test_translate(struct spi_device *spi,
- 	return -EINVAL;
- }
- 
--static int spi_test_fill_tx(struct spi_device *spi, struct spi_test *test)
-+static int spi_test_fill_pattern(struct spi_device *spi,
-+				 struct spi_test *test)
- {
- 	struct spi_transfer *xfers = test->transfers;
- 	u8 *tx_buf;
-@@ -691,8 +692,8 @@ static int _spi_test_run_iter(struct spi_device *spi,
- 		spi_message_add_tail(x, msg);
- 	}
- 
--	/* fill in the transfer data */
--	ret = spi_test_fill_tx(spi, test);
-+	/* fill in the transfer buffers with pattern */
-+	ret = spi_test_fill_pattern(spi, test);
- 	if (ret)
- 		return ret;
- 
--- 
-2.7.0.rc3
-
+--qd/SZIFVu+MYwfCR--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

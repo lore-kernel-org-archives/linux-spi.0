@@ -1,72 +1,98 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [RFC] spi: dw: support setting tmode dynamically
-Date: Tue, 5 Jan 2016 16:12:31 +0000
-Message-ID: <20160105161231.GG6588@sirena.org.uk>
-References: <20151223192338.128e95a4@xhacker>
- <20151223121512.GV16023@sirena.org.uk>
- <20151223202952.28be5bab@xhacker>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="fCcDWlUEdh43YKr8"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jisheng Zhang <jszhang-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
+Subject: Applied "spi: expose master transfer size limitation." to the spi tree
+Date: Tue, 05 Jan 2016 17:49:34 +0000
+Message-ID: <E1aGVji-0003H9-Ll@debutante>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20151223202952.28be5bab@xhacker>
+In-Reply-To: 
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---fCcDWlUEdh43YKr8
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   spi: expose master transfer size limitation.
 
-On Wed, Dec 23, 2015 at 08:29:52PM +0800, Jisheng Zhang wrote:
-> On Wed, 23 Dec 2015 12:15:12 +0000 Mark Brown wrote:
-> > On Wed, Dec 23, 2015 at 07:23:38PM +0800, Jisheng Zhang wrote:
+has been applied to the spi tree at
 
-> > > Currently the spi-dw tmode is fixed to SPI_TMOD_TR if cs_control is N=
-ULL, but we
-> > > need to set it as SPI_TMOD_EPROMREAD to read nor flash, my solution i=
-s to add and
-> > > export one functions to set the tmode, then the nor flash driver call=
- it
-> > > before reading and set back to SPI_TMOD_TR after done. =20
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> > What does this mean - what is TMOD and why do we need to set it to read
-> > NOR flash?  I've no information on this controller...
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> TMOD is one field of DW_SPI_CTRL0. Its available value could be:
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-> 0: Transmit and Receive
-> 1: Transmit only
-> 2: Receive only
-> 3: EEPROM Read
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-> If the one spi nor flash is connected to the SPI host, so far I can only =
-succeed
-> to read the nor flash content after setting the TMOD field as 3.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-Why?  What does this mean in practical terms at the hardware level, what
-is "EEPROM read"?  It sounds like there's some bigger issue here.
+Thanks,
+Mark
 
---fCcDWlUEdh43YKr8
-Content-Type: application/pgp-signature; name="signature.asc"
+>From 4acad4aae10d1fa79a075b38b5c73772c44f576c Mon Sep 17 00:00:00 2001
+From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Wed, 2 Dec 2015 10:38:21 +0000
+Subject: [PATCH] spi: expose master transfer size limitation.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+On some SPI controllers it is not feasible to transfer arbitrary amount
+of data at once.
 
-iQEcBAEBCAAGBQJWi+tuAAoJECTWi3JdVIfQBNgH+gJDq1/l0iZhZ+A/xtRiogUg
-wAWR3LUMThNN4f7LY4o5WG0clp8MRzP3iGRLs9fhd6r+F9w3Uyj0tvw9239GHzxn
-BVzDV8HtxuysNBSm4WDTW3V2otsMti657NEdCwvAjFEHdPZ1p2uMCe74kh4FCYII
-X/CvAURcfcJCMjf277uEwN3Bz9I2zxMi1xRDamh83AxpzYxLuyabTraFClIqu8S6
-iMO3btPSXVTxKmmAXhsAH2ytS8Uuwie8GZKoO6lv1RZsxojKFNmN1B+aso7tcZc9
-KnKYROgx2rEyOJy9EHXOCh16f7SGBe2A8ZsWtHCjn2Ej7PID/bWIN4HsoBVwzP0=
-=+T3A
------END PGP SIGNATURE-----
+When the limit on transfer size is a few kilobytes at least it makes
+sense to use the SPI hardware rather than reverting to gpio driver.
 
---fCcDWlUEdh43YKr8--
+The protocol drivers need a way to check that they do not sent overly
+long messages, though.
+
+Signed-off-by: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ include/linux/spi/spi.h | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index cce80e6dc7d1..3eebc6c235fb 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -425,6 +425,12 @@ struct spi_master {
+ #define SPI_MASTER_MUST_RX      BIT(3)		/* requires rx */
+ #define SPI_MASTER_MUST_TX      BIT(4)		/* requires tx */
+ 
++	/*
++	 * on some hardware transfer size may be constrained
++	 * the limit may depend on device transfer settings
++	 */
++	size_t (*max_transfer_size)(struct spi_device *spi);
++
+ 	/* lock and mutex for SPI bus locking */
+ 	spinlock_t		bus_lock_spinlock;
+ 	struct mutex		bus_lock_mutex;
+@@ -832,6 +838,15 @@ extern int spi_async(struct spi_device *spi, struct spi_message *message);
+ extern int spi_async_locked(struct spi_device *spi,
+ 			    struct spi_message *message);
+ 
++static inline size_t
++spi_max_transfer_size(struct spi_device *spi)
++{
++	struct spi_master *master = spi->master;
++	if (!master->max_transfer_size)
++		return SIZE_MAX;
++	return master->max_transfer_size(spi);
++}
++
+ /*---------------------------------------------------------------------------*/
+ 
+ /* All these synchronous SPI transfer routines are utilities layered
+-- 
+2.7.0.rc3
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

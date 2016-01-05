@@ -1,52 +1,105 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3 0/8] spi: loopback-test: improvments and sharing dump
- code
-Date: Tue, 5 Jan 2016 19:15:13 +0000
-Message-ID: <20160105191513.GR6588@sirena.org.uk>
-References: <1450807408-2422-1-git-send-email-kernel@martin.sperl.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="JKGvNdIvrY8Ovf7Z"
+Subject: Applied "spi: loopback-test: spi_check_rx_ranges can get always done" to the spi tree
+Date: Tue, 05 Jan 2016 19:15:26 +0000
+Message-ID: <E1aGX4o-0005fF-Oq@debutante>
+References: <1450698772-2379-6-git-send-email-kernel@martin.sperl.org>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1450807408-2422-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <1450698772-2379-6-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---JKGvNdIvrY8Ovf7Z
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   spi: loopback-test: spi_check_rx_ranges can get always done
 
-On Tue, Dec 22, 2015 at 06:03:20PM +0000, kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org wrote:
-> From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
->=20
-> Move spi_message dump method into SPI-core and make use of
-> this extended version of the dumping code in loopback-test.
+has been applied to the spi tree at
 
-This looks good apart from the memory coherency thing on the patch
-moving things into the core - I'll apply what applies without a
-dependency on that patch.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
---JKGvNdIvrY8Ovf7Z
-Content-Type: application/pgp-signature; name="signature.asc"
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEcBAEBCAAGBQJWjBZAAAoJECTWi3JdVIfQDjsH/i18eBwqJlXWFwJtIs8a6Acl
-Z3ie0dZhLYWqkaG7z/FhF3yUWMV+bnyab847d5hMZp4lhm97VlgKOgEvf38IWDa+
-TM8yNZeRBpr5i3f0dOep1xgoBSadvF4XYcIPULsUq6RJuPbZVxToc7/8RsFOWOMr
-Nv2s1D6gP4rf8CkCX5OsDUyLAtIofO9Mfv3cuRzZLvZX7SGBAZP86OZQayMJfIRf
-NzHAn0VGApnmly9tbZK01NRyTPcRdaAOEKaZWIR0StmcTkE8M+xzJ0PPxdv0lJh5
-ir6WdOb2yoIMvudezG6UD8NF7sNZMg7dwPCiSSGoHDEfZsm8AKrnmzplUVtmt/Q=
-=B/4J
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---JKGvNdIvrY8Ovf7Z--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 1e8db97f0e5205c0f6fd20c9a4f38cd871bc467f Mon Sep 17 00:00:00 2001
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Date: Tue, 22 Dec 2015 18:03:25 +0000
+Subject: [PATCH] spi: loopback-test: spi_check_rx_ranges can get always done
+
+The spi_check_rx_ranges can always get executed independent of
+if we have a real loopback situation.
+
+Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-loopback-test.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
+index 81fa9068df43..7f79a77c4b68 100644
+--- a/drivers/spi/spi-loopback-test.c
++++ b/drivers/spi/spi-loopback-test.c
+@@ -489,7 +489,18 @@ static int spi_test_check_loopback_result(struct spi_device *spi,
+ 	struct spi_transfer *xfer;
+ 	u8 rxb, txb;
+ 	size_t i;
++	int ret;
++
++	/* checks rx_buffer pattern are valid with loopback or without */
++	ret = spi_check_rx_ranges(spi, msg, rx);
++	if (ret)
++		return ret;
+ 
++	/* if we run without loopback, then return now */
++	if (!loopback)
++		return 0;
++
++	/* if applicable to transfer check that rx_buf is equal to tx_buf */
+ 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+ 		/* if there is no rx, then no check is needed */
+ 		if (!xfer->rx_buf)
+@@ -521,7 +532,7 @@ static int spi_test_check_loopback_result(struct spi_device *spi,
+ 		}
+ 	}
+ 
+-	return spi_check_rx_ranges(spi, msg, rx);
++	return 0;
+ 
+ mismatch_error:
+ 	dev_err(&spi->dev,
+@@ -847,10 +858,8 @@ int spi_test_execute_msg(struct spi_device *spi, struct spi_test *test,
+ 			goto exit;
+ 		}
+ 
+-		/* run rx-tests when in loopback mode */
+-		if (loopback)
+-			ret = spi_test_check_loopback_result(spi, msg,
+-							     tx, rx);
++		/* run rx-buffer tests */
++		ret = spi_test_check_loopback_result(spi, msg, tx, rx);
+ 	}
+ 
+ 	/* if requested or on error dump message (including data) */
+-- 
+2.7.0.rc3
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,89 +1,158 @@
-From: =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans-2StjZFpD7GcAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v3 1/3] spi: atmel: add support for the internal chip-select of the spi controller
-Date: Tue, 05 Jan 2016 21:50:54 +0000
-Message-ID: <yw1xvb771yrl.fsf@unicorn.mansr.com>
-References: <cover.1433850255.git.cyrille.pitchen@atmel.com>
-	<c05f4d9abfdabb62b3b3cfeb57a3f9c138b4e45d.1433850255.git.cyrille.pitchen@atmel.com>
+From: Khoa Dang Pham <kpham-qTEPVZfXA3Y@public.gmane.org>
+Subject: Re: [RFC] spi: dw: support setting tmode dynamically
+Date: Wed, 6 Jan 2016 09:03:41 +0700
+Message-ID: <CAFLsZf2NC3gx=2G9M_Pqsgq1vp6t5_t+ZFuBXEuOohzbVpsHJw@mail.gmail.com>
+References: <20151223192338.128e95a4@xhacker>
+	<20151223121512.GV16023@sirena.org.uk>
+	<20151223202952.28be5bab@xhacker>
+	<20160105161231.GG6588@sirena.org.uk>
+	<CAFLsZf0LvrQ60GdLzp_5nPLVxSxVaPadgzT_7aL4SQzgvswQbA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	Mark Browk <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-To: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: unlisted-recipients:; (no To-header on input)
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <c05f4d9abfdabb62b3b3cfeb57a3f9c138b4e45d.1433850255.git.cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-	(Cyrille Pitchen's message of "Tue, 9 Jun 2015 13:53:52 +0200")
+In-Reply-To: <CAFLsZf0LvrQ60GdLzp_5nPLVxSxVaPadgzT_7aL4SQzgvswQbA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org> writes:
+Hi Mark,
 
-> This patch relies on the CSAAT (Chip Select Active After Transfer) fe=
-ature
-> introduced by the version 2 of the spi controller. This new mode allo=
-ws to
-> use properly the internal chip-select output pin of the spi controlle=
-r
-> instead of using external gpios. Consequently, the "cs-gpios" device-=
-tree
-> property becomes optional.
->
-> When the new CSAAT bit is set into the Chip Select Register, the inte=
-rnal
-> chip-select output pin remains asserted till both the following condi=
-tions
-> become true:
-> - the LASTXFER bit is set into the Control Register (or the Transmit =
-Data
->   Register)
-> - the Transmit Data Register and its shift register are empty.
->
-> WARNING: if the LASTXFER bit is set into the Control Register then ne=
-w
-> data are written into the Transmit Data Register fast enough to keep =
-its
-> shifter not empty, the chip-select output pin remains asserted. Only =
-when
-> the shifter becomes empty, the chip-select output pin is unasserted.
->
-> When the CSAAT bit is clear in the Chip Select Register, the LASTXFER=
- bit
-> is ignored in both the Control Register and the Transmit Data Registe=
-r.
-> The internal chip-select output pin remains active as long as the Tra=
-nsmit
-> Data Register or its shift register are not empty.
->
-> Signed-off-by: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-> ---
->  drivers/spi/spi-atmel.c | 37 ++++++++++++++++++++++++++++---------
->  1 file changed, 28 insertions(+), 9 deletions(-)
+May I provide a bit more info about the "EEPROM read" on this controlle=
+r?
 
-[...]
+According to the "DesignWare DW_apb_ssi Databook" (version 3.21b)
+provided by Synopsys, the EEPROM read is:
 
-> @@ -1338,6 +1350,13 @@ static int atmel_spi_probe(struct platform_dev=
-ice *pdev)
->
->  	atmel_get_caps(as);
->
-> +	as->use_cs_gpios =3D true;
-> +	if (atmel_spi_is_v2(as) &&
-> +	    !of_get_property(pdev->dev.of_node, "cs-gpios", NULL)) {
-> +		as->use_cs_gpios =3D false;
-> +		master->num_chipselect =3D 4;
-> +	}
+"When TMOD =3D 2=E2=80=98b11, the transmit data is used to transmit an =
+opcode
+and/or an address to the EEPROM
+device. Typically this takes three data frames (8-bit opcode followed
+by 8-bit upper address and 8-bit lower
+address). During the transmission of the opcode and address, no data
+is captured by the receive logic (as
+long as the DW_apb_ssi master is transmitting data on its txd line,
+data on the rxd line is ignored). The
+DW_apb_ssi master continues to transmit data until the transmit FIFO
+is empty. Therefore, you should
+ONLY have enough data frames in the transmit FIFO to supply the opcode
+and address to the EEPROM. If
+more data frames are in the transmit FIFO than are needed, then read
+data is lost.
 
-This part breaks the AVR32 boards and probably anything else that
-doesn't use devicetree but does use GPIOs for chip select.
+When the transmit FIFO becomes empty (all control information has been
+sent), data on the receive line
+(rxd) is valid and is stored in the receive FIFO; the txd output is
+held at a constant logic level. The serial
+transfer continues until the number of data frames received by the
+DW_apb_ssi master matches the value of
+the NDF field in the CTRLR1 register + 1."
+Regards,
+Khoa Pham
+
+
+On Wed, Jan 6, 2016 at 8:45 AM, Khoa Dang Pham <kpham-qTEPVZfXA3Y@public.gmane.org> wrote:
+> Hi Mark,
+>
+> May I provide a bit more info about the "EEPROM read" on this control=
+ler?
+>
+> According to the "DesignWare DW_apb_ssi Databook" (version 3.21b) pro=
+vided
+> by Synopsys, the EEPROM read is:
+>
+> "When TMOD =3D 2=E2=80=98b11, the transmit data is used to transmit a=
+n opcode and/or
+> an address to the EEPROM
+> device. Typically this takes three data frames (8-bit opcode followed=
+ by
+> 8-bit upper address and 8-bit lower
+> address). During the transmission of the opcode and address, no data =
+is
+> captured by the receive logic (as
+> long as the DW_apb_ssi master is transmitting data on its txd line, d=
+ata on
+> the rxd line is ignored). The
+> DW_apb_ssi master continues to transmit data until the transmit FIFO =
+is
+> empty. Therefore, you should
+> ONLY have enough data frames in the transmit FIFO to supply the opcod=
+e and
+> address to the EEPROM. If
+> more data frames are in the transmit FIFO than are needed, then read =
+data is
+> lost.
+> When the transmit FIFO becomes empty (all control information has bee=
+n
+> sent), data on the receive line
+> (rxd) is valid and is stored in the receive FIFO; the txd output is h=
+eld at
+> a constant logic level. The serial
+> transfer continues until the number of data frames received by the
+> DW_apb_ssi master matches the value of
+> the NDF field in the CTRLR1 register + 1."
+>
+> Regards,
+> Khoa Pham
+>
+> On Tue, Jan 5, 2016 at 11:12 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrot=
+e:
+>>
+>> On Wed, Dec 23, 2015 at 08:29:52PM +0800, Jisheng Zhang wrote:
+>> > On Wed, 23 Dec 2015 12:15:12 +0000 Mark Brown wrote:
+>> > > On Wed, Dec 23, 2015 at 07:23:38PM +0800, Jisheng Zhang wrote:
+>>
+>> > > > Currently the spi-dw tmode is fixed to SPI_TMOD_TR if cs_contr=
+ol is
+>> > > > NULL, but we
+>> > > > need to set it as SPI_TMOD_EPROMREAD to read nor flash, my sol=
+ution
+>> > > > is to add and
+>> > > > export one functions to set the tmode, then the nor flash driv=
+er
+>> > > > call it
+>> > > > before reading and set back to SPI_TMOD_TR after done.
+>>
+>> > > What does this mean - what is TMOD and why do we need to set it =
+to
+>> > > read
+>> > > NOR flash?  I've no information on this controller...
+>>
+>> > TMOD is one field of DW_SPI_CTRL0. Its available value could be:
+>>
+>> > 0: Transmit and Receive
+>> > 1: Transmit only
+>> > 2: Receive only
+>> > 3: EEPROM Read
+>>
+>> > If the one spi nor flash is connected to the SPI host, so far I ca=
+n only
+>> > succeed
+>> > to read the nor flash content after setting the TMOD field as 3.
+>>
+>> Why?  What does this mean in practical terms at the hardware level, =
+what
+>> is "EEPROM read"?  It sounds like there's some bigger issue here.
+>
+>
 
 --=20
-M=E5ns Rullg=E5rd
+CONFIDENTIALITY NOTICE: This e-mail message, including any attachments,=
+ is=20
+for the sole use of the intended recipient(s) and contains information =
+that=20
+is confidential and proprietary to Applied Micro Circuits Corporation o=
+r=20
+its subsidiaries. It is to be used solely for the purpose of furthering=
+ the=20
+parties' business relationship. All unauthorized review, use, disclosur=
+e or=20
+distribution is prohibited. If you are not the intended recipient, plea=
+se=20
+contact the sender by reply e-mail and destroy all copies of the origin=
+al=20
+message.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

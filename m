@@ -1,58 +1,65 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi/spi-fsl-espi.c: Add spi cs polarity support
-Date: Wed, 6 Jan 2016 17:31:03 +0000
-Message-ID: <20160106173103.GB6588@sirena.org.uk>
-References: <20151207070657.GA25586@awelinux>
- <1452085240-9582-1-git-send-email-andy@wernerandy.de>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v3 1/3] spi: atmel: add support for the internal
+ chip-select of the spi controller
+Date: Thu, 7 Jan 2016 15:40:24 +0000
+Message-ID: <20160107154024.GF6588@sirena.org.uk>
+References: <cover.1433850255.git.cyrille.pitchen@atmel.com>
+ <c05f4d9abfdabb62b3b3cfeb57a3f9c138b4e45d.1433850255.git.cyrille.pitchen@atmel.com>
+ <yw1xvb771yrl.fsf@unicorn.mansr.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="ERHfpFOxJvIsVBXy"
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, andreas.werner-csrFAY9JiS4@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Andreas Werner <andy-KIP9bFwF4MjQTulR1yJuvA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="kb0TSCuX821Ar6UT"
+Cc: Cyrille Pitchen <cyrille.pitchen@atmel.com>,
+	Nicolas Ferre <nicolas.ferre@atmel.com>,
+	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	Rob Herring <robh+dt@kernel.org>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora.org>
+To: =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1452085240-9582-1-git-send-email-andy-KIP9bFwF4MjQTulR1yJuvA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <yw1xvb771yrl.fsf@unicorn.mansr.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---ERHfpFOxJvIsVBXy
-Content-Type: text/plain; charset=us-ascii
+--kb0TSCuX821Ar6UT
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 06, 2016 at 02:00:40PM +0100, Andreas Werner wrote:
-> Hi,
-> any comments for this patches?
->=20
-> Regards
-> Andy
+On Tue, Jan 05, 2016 at 09:50:54PM +0000, M=E5ns Rullg=E5rd wrote:
+> Cyrille Pitchen <cyrille.pitchen@atmel.com> writes:
 
-Please don't send content free pings and please allow a reasonable time
-for review.  People get busy, go on holiday, attend conferences and so=20
-on so unless there is some reason for urgency (like critical bug fixes)
-please allow at least a couple of weeks for review.  Sending content
-free pings just adds to the mail volume (if they are seen at all) and if=20
-something has gone wrong you'll have to resend the patches anyway.
+> > +	as->use_cs_gpios =3D true;
+> > +	if (atmel_spi_is_v2(as) &&
+> > +	    !of_get_property(pdev->dev.of_node, "cs-gpios", NULL)) {
+> > +		as->use_cs_gpios =3D false;
+> > +		master->num_chipselect =3D 4;
+> > +	}
 
---ERHfpFOxJvIsVBXy
+> This part breaks the AVR32 boards and probably anything else that
+> doesn't use devicetree but does use GPIOs for chip select.
+
+Shouldn't this just be setting defaults for the case where nothing is
+provided?
+
+--kb0TSCuX821Ar6UT
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJWjU9WAAoJECTWi3JdVIfQcEwH+gPBXHr8QRzBZzQNOuhBPLe0
-+EhUYCjaCi79GT/tceGZ/MfeYBUxBjoOwYFmG0wS9n4xJMgSpxEAaCTXhFr3tQFW
-hCcKEFun609Y9HFwFytn1V9I36dpx57DKU+eFCR4omjc4JcGGQpiYwdt8VQpjjDh
-+UGV0O59scxerBkFPchqmngqR6QIpa1TkZ4+BQsKbpy0AIqQ98i5QZD3xO3EfJNZ
-RRyMUG+Bep/QjpeBfH0yFQpetq78ix/5jD18xDnzoCO71cBQqxP04dEibx6nwmrE
-OqX+BECZUdslQV/kI6BAvJUV1dDWgkeY07bhi6DmuuZRSL00p+yJf2DFvAru4vE=
-=2ZKu
+iQEcBAEBCAAGBQJWjobnAAoJECTWi3JdVIfQcOIH/0IRDnR/cOnV4JzxMw20Yvll
+YSsZtp3wzhw4N2iP8QBqXmh2v1nPCEOt86G209PUhHd0o0akfLC1Rd/FoO7YL2oj
+gQg5nATqrbrW1yx2TQBkMD+FrYr8cGA7Pf402fPK1uSwEmhmnEqoUdx0mbq8a2Go
+htOtk/npZ/rPGxoeiIpSsg47hipzC4Ny2BkoEYScIjeKGnTPWY1LYGD8E07/+M+Z
+SNKUv7n50cAZ8qIo5+tDamT8yycfHTRdwdjDDDB24uagx0j7VtQxOsqoUDqsGPGZ
+9+/2S1TFvEVR13qHo0UUL6mtiiGQbcI2eFsHoxAKp3JmdQxPwqWjbRCc8Ludma4=
+=caE8
 -----END PGP SIGNATURE-----
 
---ERHfpFOxJvIsVBXy--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--kb0TSCuX821Ar6UT--

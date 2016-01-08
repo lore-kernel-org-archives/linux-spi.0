@@ -1,13 +1,46 @@
-From: Mans Rullgard <mans-2StjZFpD7GcAvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: atmel: improve internal vs gpio chip-select choice
-Date: Fri,  8 Jan 2016 00:11:47 +0000
-Message-ID: <1452211907-16074-1-git-send-email-mans@mansr.com>
-To: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: atmel: improve internal vs gpio chip-select choice" to the spi tree
+Date: Fri, 08 Jan 2016 13:44:56 +0000
+Message-ID: <E1aHXLc-0003NY-Kd@debutante>
+References: <1452211907-16074-1-git-send-email-mans@mansr.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mans Rullgard <mans-2StjZFpD7GcAvxtiuMwx3w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1452211907-16074-1-git-send-email-mans-2StjZFpD7GcAvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
+
+The patch
+
+   spi: atmel: improve internal vs gpio chip-select choice
+
+has been applied to the spi tree at
+
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 3fe5e14919b7ef2792aed8cacd7d1ae3e30adcd2 Mon Sep 17 00:00:00 2001
+From: Mans Rullgard <mans-2StjZFpD7GcAvxtiuMwx3w@public.gmane.org>
+Date: Fri, 8 Jan 2016 00:11:47 +0000
+Subject: [PATCH] spi: atmel: improve internal vs gpio chip-select choice
 
 The driver currently chooses between internal chip-select or gpio
 based on the existence of the cs-gpios DT property which fails on
@@ -25,6 +58,7 @@ following priority:
 Tested on AVR32 ATSTK1000.
 
 Signed-off-by: Mans Rullgard <mans-2StjZFpD7GcAvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
  drivers/spi/spi-atmel.c | 44 ++++++++++++++++++++++----------------------
  1 file changed, 22 insertions(+), 22 deletions(-)
@@ -147,7 +181,7 @@ index aebad36391c9..8be07fb67d4d 100644
  	as->use_pdc = false;
  	if (as->caps.has_dma_support) {
 -- 
-2.7.0
+2.7.0.rc3
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

@@ -1,18 +1,20 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: loopback: fix typo in MODULE_PARM_DESC" to the spi tree
-Date: Fri, 08 Jan 2016 13:44:57 +0000
-Message-ID: <E1aHXLd-0003O1-D7@debutante>
+Subject: Applied "spi: sun4i: Prevent chip-select from being activated twice before a transfer" to the spi tree
+Date: Fri, 08 Jan 2016 13:44:58 +0000
+Message-ID: <E1aHXLe-0003OU-C9@debutante>
+References: <1452026780-8819-1-git-send-email-mweseloh42@gmail.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>,
+To: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: 
+In-Reply-To: <1452026780-8819-1-git-send-email-mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: loopback: fix typo in MODULE_PARM_DESC
+   spi: sun4i: Prevent chip-select from being activated twice before a transfer
 
 has been applied to the spi tree at
 
@@ -37,33 +39,53 @@ to this mail.
 Thanks,
 Mark
 
->From 8caad1da223c361e2804b76d68405b1abe7886ff Mon Sep 17 00:00:00 2001
-From: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
-Date: Fri, 8 Jan 2016 13:48:51 +0300
-Subject: [PATCH] spi: loopback: fix typo in MODULE_PARM_DESC
+>From 218e0b575ffe6de1c93249871b25bbf570fe1cb5 Mon Sep 17 00:00:00 2001
+From: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Tue, 5 Jan 2016 21:46:20 +0100
+Subject: [PATCH] spi: sun4i: Prevent chip-select from being activated twice
+ before a transfer
 
-There should be an 's' on "dump_message" so it matches the module_param.
+The SPI core calls set_cs before a transfer, but the SUN4I_CTL_CS_MANUAL
+flag is only set in transfer_one. This leads to the following pattern on
+the chip-select line (with runtime power-management on every transfer,
+without it only on the first one):
 
-Fixes: 84e0c4e5e2c4 ('spi: add loopback test driver to allow for spi_master regression tests')
-Signed-off-by: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+activate, deactivate, activate, transfer, deactivate
+
+Moving the configuration of the SUN4I_CTL_CS_MANUAL flag from transfer_one
+to set_cs removes the double activation.
+
+Signed-off-by: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Acked-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-loopback-test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-sun4i.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
-index 7f79a77c4b68..894616f687b0 100644
---- a/drivers/spi/spi-loopback-test.c
-+++ b/drivers/spi/spi-loopback-test.c
-@@ -37,7 +37,7 @@ MODULE_PARM_DESC(simulate_only, "if not 0 do not execute the spi message");
- /* dump spi messages */
- int dump_messages;
- module_param(dump_messages, int, 0);
--MODULE_PARM_DESC(dump_message,
-+MODULE_PARM_DESC(dump_messages,
- 		 "=1 dump the basic spi_message_structure, " \
- 		 "=2 dump the spi_message_structure including data, " \
- 		 "=3 dump the spi_message structure before and after execution");
+diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
+index fbb0a4d74e91..a6d936c68674 100644
+--- a/drivers/spi/spi-sun4i.c
++++ b/drivers/spi/spi-sun4i.c
+@@ -140,6 +140,9 @@ static void sun4i_spi_set_cs(struct spi_device *spi, bool enable)
+ 	reg &= ~SUN4I_CTL_CS_MASK;
+ 	reg |= SUN4I_CTL_CS(spi->chip_select);
+ 
++	/* We want to control the chip select manually */
++	reg |= SUN4I_CTL_CS_MANUAL;
++
+ 	if (enable)
+ 		reg |= SUN4I_CTL_CS_LEVEL;
+ 	else
+@@ -222,9 +225,6 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
+ 	else
+ 		reg |= SUN4I_CTL_DHB;
+ 
+-	/* We want to control the chip select manually */
+-	reg |= SUN4I_CTL_CS_MANUAL;
+-
+ 	sun4i_spi_write(sspi, SUN4I_CTL_REG, reg);
+ 
+ 	/* Ensure that we have a parent clock fast enough */
 -- 
 2.7.0.rc3
 

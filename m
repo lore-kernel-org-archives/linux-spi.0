@@ -1,84 +1,200 @@
-From: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v6 2/3] spi: sun4i: Fix clock calculations
- to be predictable and never exceed the requested rate
-Date: Sun, 10 Jan 2016 22:37:21 +0100
-Message-ID: <CAGNoLaOnpCLALNMscQC1XsnPjf55rXMomYdJPJFdpk=FuFgK4g@mail.gmail.com>
-References: <1451145186-14235-1-git-send-email-mweseloh42@gmail.com>
-	<1451145186-14235-3-git-send-email-mweseloh42@gmail.com>
-	<20151227210946.GL30359@lukather>
-	<CAGNoLaPcBAqDqFuff7sWWADjVH3Z-LWhZatSmzvEm4mLSrSNvw@mail.gmail.com>
-	<CAGNoLaMsdPe4BE7+skYR45doEcXkZGA7QdFOidUA_yPZmiE9eg@mail.gmail.com>
-	<20160110194450.GI9631@lukather>
-Reply-To: mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi: atmel: improve internal vs gpio chip-select choice
+Date: Mon, 11 Jan 2016 16:26:27 +0100
+Message-ID: <5693C9A3.9040403@atmel.com>
+References: <1452211907-16074-1-git-send-email-mans@mansr.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>, Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>,
-	devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	"Mailing List, Arm" <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Return-path: <linux-sunxi+bncBDFO74UEV4IRBEM6ZO2AKGQEZM2VVFQ-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-In-Reply-To: <20160110194450.GI9631@lukather>
-List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <https://groups.google.com/group/linux-sunxi
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-List-Subscribe: <https://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
- <https://groups.google.com/group/linux-sunxi/subscribe>
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+To: Mans Rullgard <mans-2StjZFpD7GcAvxtiuMwx3w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-arm-kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+	"Yang, Wenyou" <Wenyou.Yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1452211907-16074-1-git-send-email-mans-2StjZFpD7GcAvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi,
+Le 08/01/2016 01:11, Mans Rullgard a =E9crit :
+> The driver currently chooses between internal chip-select or gpio
+> based on the existence of the cs-gpios DT property which fails on
+> non-DT systems and also enforces the same choice for all devices.
 
-2016-01-10 20:44 GMT+01:00 Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>:
-> On Mon, Dec 28, 2015 at 05:22:35PM +0100, Marcus Weseloh wrote:
->> 2015-12-28 0:29 GMT+01:00 Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>:
->> > 2015-12-27 22:09 GMT+01:00 Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>:
-[...]
->> > Oh, and I just noticed a mistake in the comment: the clock driver
->> > rounds up _or_ down, so I should drop the "up".
->>
->> As I'm looking further into this, I think the comment should read
->> "possibly rounded down", as the clk framework is expected to set a
->> frequency that is less or equal to the requested frequency.
->
-> AFAIK, there's no such expectation in the clock framework. You
-> treating this from a maximum frequency perspective, but it would be
-> the exact opposite if you were talking about a minimum frequency, as
-> might be the case for other consumers.
+Well, I fear that such a per-device choice may impact further the drive=
+r
+than just moving a field from one structure to another... Moreover, I
+have the feeling that it was not the objective of this patch.
 
-I was looking though the clk driver source and found this comment in
-drivers/clk/sunxi/clk-factors.c (Line 89):
+> This patch makes the method per device instead of per controller
+> and fixes the selection on non-DT systems.  With these changes,
+> the chip-select method for each device is chosen according to the
+> following priority:
+>=20
+> 1. GPIO from device tree
+> 2. GPIO from platform data
+> 3. Internal chip-select
+>=20
+> Tested on AVR32 ATSTK1000.
 
-/* find the parent that can help provide the fastest rate <= rate */
+This patch breaks the SAMA5D2 SPI support at least on most recent
+linux-next (tested by Cyrille).
 
-And that comments seems to be correct, because that is what the code
-is doing (and the comment is copied from the core clk framework). So
-it checks every parent to see if that parent could be used to get a
-clock rate that is less or equal to the requested clock. If it can't
-find one, i.e. all parents can only supply a larger clock, then
--EINVAL is returned. Or am I missing something here?
+more remarks below...
 
-Up to now this driver would never return -EINVAL, because of the
-problems in the mod0 clock driver I mentioned. But the intended effect
-seems to be actual rate <= requested rate. And it seems like clk
-drivers on other platforms do this as well.
+> Signed-off-by: Mans Rullgard <mans-2StjZFpD7GcAvxtiuMwx3w@public.gmane.org>
+> ---
+>  drivers/spi/spi-atmel.c | 44 ++++++++++++++++++++++-----------------=
+-----
+>  1 file changed, 22 insertions(+), 22 deletions(-)
+>=20
+> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+> index aebad36391c9..8be07fb67d4d 100644
+> --- a/drivers/spi/spi-atmel.c
+> +++ b/drivers/spi/spi-atmel.c
+> @@ -310,7 +310,6 @@ struct atmel_spi {
+> =20
+>  	bool			use_dma;
+>  	bool			use_pdc;
+> -	bool			use_cs_gpios;
+>  	/* dmaengine data */
+>  	struct atmel_spi_dma	dma;
+> =20
+> @@ -324,6 +323,7 @@ struct atmel_spi {
+>  struct atmel_spi_device {
+>  	unsigned int		npcs_pin;
+>  	u32			csr;
+> +	bool			use_cs_gpio;
+>  };
+> =20
+>  #define BUFFER_SIZE		PAGE_SIZE
+> @@ -388,7 +388,7 @@ static void cs_activate(struct atmel_spi *as, str=
+uct spi_device *spi)
+>  		}
+> =20
+>  		mr =3D spi_readl(as, MR);
+> -		if (as->use_cs_gpios)
+> +		if (asd->use_cs_gpio)
+>  			gpio_set_value(asd->npcs_pin, active);
+>  	} else {
+>  		u32 cpol =3D (spi->mode & SPI_CPOL) ? SPI_BIT(CPOL) : 0;
+> @@ -405,7 +405,7 @@ static void cs_activate(struct atmel_spi *as, str=
+uct spi_device *spi)
+> =20
+>  		mr =3D spi_readl(as, MR);
+>  		mr =3D SPI_BFINS(PCS, ~(1 << spi->chip_select), mr);
+> -		if (as->use_cs_gpios && spi->chip_select !=3D 0)
+> +		if (asd->use_cs_gpio && spi->chip_select !=3D 0)
+>  			gpio_set_value(asd->npcs_pin, active);
+>  		spi_writel(as, MR, mr);
+>  	}
+> @@ -434,7 +434,7 @@ static void cs_deactivate(struct atmel_spi *as, s=
+truct spi_device *spi)
+>  			asd->npcs_pin, active ? " (low)" : "",
+>  			mr);
+> =20
+> -	if (!as->use_cs_gpios)
+> +	if (!asd->use_cs_gpio)
+>  		spi_writel(as, CR, SPI_BIT(LASTXFER));
+>  	else if (atmel_spi_is_v2(as) || spi->chip_select !=3D 0)
+>  		gpio_set_value(asd->npcs_pin, !active);
+> @@ -1221,8 +1221,6 @@ static int atmel_spi_setup(struct spi_device *s=
+pi)
+>  		csr |=3D SPI_BIT(CPOL);
+>  	if (!(spi->mode & SPI_CPHA))
+>  		csr |=3D SPI_BIT(NCPHA);
+> -	if (!as->use_cs_gpios)
+> -		csr |=3D SPI_BIT(CSAAT);
+> =20
+>  	/* DLYBS is mostly irrelevant since we manage chipselect using GPIO=
+s.
+>  	 *
+> @@ -1233,21 +1231,28 @@ static int atmel_spi_setup(struct spi_device =
+*spi)
+>  	csr |=3D SPI_BF(DLYBS, 0);
+>  	csr |=3D SPI_BF(DLYBCT, 0);
+> =20
+> -	/* chipselect must have been muxed as GPIO (e.g. in board setup) */
+> -	npcs_pin =3D (unsigned long)spi->controller_data;
+> -
+> -	if (!as->use_cs_gpios)
+> -		npcs_pin =3D spi->chip_select;
+> -	else if (gpio_is_valid(spi->cs_gpio))
+> -		npcs_pin =3D spi->cs_gpio;
+> -
+>  	asd =3D spi->controller_state;
+>  	if (!asd) {
+>  		asd =3D kzalloc(sizeof(struct atmel_spi_device), GFP_KERNEL);
+>  		if (!asd)
+>  			return -ENOMEM;
+> =20
+> -		if (as->use_cs_gpios) {
+> +		npcs_pin =3D (unsigned long)spi->controller_data;
+> +
+> +		if (gpio_is_valid(spi->cs_gpio)) {
 
-[...]
->> That clk_set_rate sets a higher frequency than requested seems to be a
->> problem in itself. I had a look at clk/sunxi/clk-mod0.c and noticed a
->> few small problems there. Will post an RFC patch in a couple of
->> minutes.
->
-> Did you post these patches already? I think I missed them if that's
-> the case.
+The bug may come from here as the logic is somehow inverted and a "0" i=
+s
+a valid gpio according to this gpio_is_valid() function. So we may take
+this conditional branch instead of the third one in the sama5d2 case.
 
-Yes, I've posted the patch to the clk-mod0.c here:
-https://groups.google.com/d/msg/linux-sunxi/BQWhOHGqliI/fMtirUFsBgAJ
+> +			/* GPIO from DT */
+> +			npcs_pin =3D spi->cs_gpio;
+> +			asd->use_cs_gpio =3D true;
+> +		} else if (npcs_pin && gpio_is_valid(npcs_pin)) {
+> +			/* GPIO from platform data */
+> +			asd->use_cs_gpio =3D true;
+> +		} else {
+> +			/* internal chip-select */
+> +			npcs_pin =3D spi->chip_select;
+> +			asd->use_cs_gpio =3D false;
+> +		}
+> +
+> +		if (asd->use_cs_gpio) {
+>  			ret =3D gpio_request(npcs_pin, dev_name(&spi->dev));
+>  			if (ret) {
+>  				kfree(asd);
+> @@ -1262,6 +1267,8 @@ static int atmel_spi_setup(struct spi_device *s=
+pi)
+>  		spi->controller_state =3D asd;
+>  	}
+> =20
+> +	if (!asd->use_cs_gpio)
+> +		csr |=3D SPI_BIT(CSAAT);
+>  	asd->csr =3D csr;
+> =20
+>  	dev_dbg(&spi->dev,
+> @@ -1569,13 +1576,6 @@ static int atmel_spi_probe(struct platform_dev=
+ice *pdev)
+> =20
+>  	atmel_get_caps(as);
+> =20
+> -	as->use_cs_gpios =3D true;
+> -	if (atmel_spi_is_v2(as) &&
 
-Cheers,
+I don't see this atmel_spi_is_v2() test in the resulting code anymore:
+did you make sure that the v1 of the peripheral is protected?
 
-  Marcus
+> -	    !of_get_property(pdev->dev.of_node, "cs-gpios", NULL)) {
+> -		as->use_cs_gpios =3D false;
+> -		master->num_chipselect =3D 4;
+
+This line is pretty important: you mustn't remove it blindly!
+
+
+> -	}
+> -
+>  	as->use_dma =3D false;
+>  	as->use_pdc =3D false;
+>  	if (as->caps.has_dma_support) {
+>=20
+
+So, sorry but it's a NACK for me.
+
+Bye,
+--=20
+Nicolas Ferre
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

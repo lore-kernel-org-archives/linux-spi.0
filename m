@@ -1,205 +1,207 @@
-From: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v2] spi: atmel: improve internal vs gpio chip-select
- choice
-Date: Tue, 12 Jan 2016 09:52:02 +0100
-Message-ID: <5694BEB2.4000603@atmel.com>
-References: <1452528102-26458-1-git-send-email-mans@mansr.com>
+From: Stefan Roese <sr@denx.de>
+Subject: [PATCH RFC] spi: orion.c: Add direct write mode
+Date: Tue, 12 Jan 2016 10:02:19 +0100
+Message-ID: <1452589339-21402-1-git-send-email-sr@denx.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-To: Mans Rullgard <mans-2StjZFpD7GcAvxtiuMwx3w@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	"Yang, Wenyou" <Wenyou.Yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1452528102-26458-1-git-send-email-mans-2StjZFpD7GcAvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Nadav Haklai <nadavh@marvell.com>,
+ Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
+ Mark Brown <broonie@kernel.org>,
+ Gregory CLEMENT <gregory.clement@free-electrons.com>
+To: linux-arm-kernel@lists.infradead.org,
+	linux-spi@vger.kernel.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-Le 11/01/2016 17:01, Mans Rullgard a =E9crit :
-> The driver currently chooses between internal chip-select or gpio
-> based on the existence of the cs-gpios DT property which fails on
-> non-DT systems and also enforces the same choice for all devices.
->=20
-> This patch makes the method per device instead of per controller
-> and fixes the selection on non-DT systems.
+This patch adds support for the direct write mode to the Orion SPI
+driver which is used on the Marvell Armada based SoCs. In this direct
+mode, all data written to a specifically mapped MBus window (linked
+to only one SPI chip-select on one of the SPI controllers) will be
+transferred directly to the SPI bus. Without the need to control the
+SPI registers in between. This can improve the SPI transfer rate in
+such cases.
 
-Sorry Mans, but it's still a NACK for me on this "mixed CS feature" (Cf=
-=2E
-my answer to the previous version).
+Currently only the direct write mode is supported. This mode especially
+benefits from the SPI direct mode, as the data bytes are written
+head-to-head to the SPI bus, without any additional addresses, that
+are also written in the direct read mode.
 
-Bye,
+One use-case for this direct write mode is, programming a FPGA bitstream
+image into the FPGA connected to the SPI bus at maximum speed.
 
->  With these changes,
-> the chip-select method for each device is chosen according to the
-> following priority:
->=20
-> 1. GPIO from device tree
-> 2. GPIO from platform data
-> 3. Internal chip-select
->=20
-> Tested on AVR32 ATSTK1000.
->=20
-> Signed-off-by: Mans Rullgard <mans-2StjZFpD7GcAvxtiuMwx3w@public.gmane.org>
-> ---
-> Changes:
-> - allow internal CS only hardware v2
-> - retain seting of master->num_chipselect to 4 on hardware v2 if
->   cs-gpios property is missing
-> ---
->  drivers/spi/spi-atmel.c | 38 +++++++++++++++++++++++---------------
->  1 file changed, 23 insertions(+), 15 deletions(-)
->=20
-> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-> index 08cbb3e43c76..d4a806e24060 100644
-> --- a/drivers/spi/spi-atmel.c
-> +++ b/drivers/spi/spi-atmel.c
-> @@ -312,7 +312,6 @@ struct atmel_spi {
-> =20
->  	bool			use_dma;
->  	bool			use_pdc;
-> -	bool			use_cs_gpios;
->  	/* dmaengine data */
->  	struct atmel_spi_dma	dma;
-> =20
-> @@ -323,6 +322,7 @@ struct atmel_spi {
->  struct atmel_spi_device {
->  	unsigned int		npcs_pin;
->  	u32			csr;
-> +	bool			use_cs_gpio;
->  };
-> =20
->  #define BUFFER_SIZE		PAGE_SIZE
-> @@ -387,7 +387,7 @@ static void cs_activate(struct atmel_spi *as, str=
-uct spi_device *spi)
->  		}
-> =20
->  		mr =3D spi_readl(as, MR);
-> -		if (as->use_cs_gpios)
-> +		if (asd->use_cs_gpio)
->  			gpio_set_value(asd->npcs_pin, active);
->  	} else {
->  		u32 cpol =3D (spi->mode & SPI_CPOL) ? SPI_BIT(CPOL) : 0;
-> @@ -404,7 +404,7 @@ static void cs_activate(struct atmel_spi *as, str=
-uct spi_device *spi)
-> =20
->  		mr =3D spi_readl(as, MR);
->  		mr =3D SPI_BFINS(PCS, ~(1 << spi->chip_select), mr);
-> -		if (as->use_cs_gpios && spi->chip_select !=3D 0)
-> +		if (asd->use_cs_gpio && spi->chip_select !=3D 0)
->  			gpio_set_value(asd->npcs_pin, active);
->  		spi_writel(as, MR, mr);
->  	}
-> @@ -433,7 +433,7 @@ static void cs_deactivate(struct atmel_spi *as, s=
-truct spi_device *spi)
->  			asd->npcs_pin, active ? " (low)" : "",
->  			mr);
-> =20
-> -	if (!as->use_cs_gpios)
-> +	if (!asd->use_cs_gpio)
->  		spi_writel(as, CR, SPI_BIT(LASTXFER));
->  	else if (atmel_spi_is_v2(as) || spi->chip_select !=3D 0)
->  		gpio_set_value(asd->npcs_pin, !active);
-> @@ -1539,6 +1539,7 @@ static int atmel_spi_setup(struct spi_device *s=
-pi)
->  	unsigned int		bits =3D spi->bits_per_word;
->  	unsigned int		npcs_pin;
->  	int			ret;
-> +	bool			use_cs_gpio;
-> =20
->  	as =3D spi_master_get_devdata(spi->master);
-> =20
-> @@ -1565,8 +1566,6 @@ static int atmel_spi_setup(struct spi_device *s=
-pi)
->  		csr |=3D SPI_BIT(CPOL);
->  	if (!(spi->mode & SPI_CPHA))
->  		csr |=3D SPI_BIT(NCPHA);
-> -	if (!as->use_cs_gpios)
-> -		csr |=3D SPI_BIT(CSAAT);
-> =20
->  	/* DLYBS is mostly irrelevant since we manage chipselect using GPIO=
-s.
->  	 *
-> @@ -1577,13 +1576,22 @@ static int atmel_spi_setup(struct spi_device =
-*spi)
->  	csr |=3D SPI_BF(DLYBS, 0);
->  	csr |=3D SPI_BF(DLYBCT, 0);
-> =20
-> -	/* chipselect must have been muxed as GPIO (e.g. in board setup) */
->  	npcs_pin =3D (unsigned long)spi->controller_data;
-> =20
-> -	if (!as->use_cs_gpios)
-> -		npcs_pin =3D spi->chip_select;
-> -	else if (gpio_is_valid(spi->cs_gpio))
-> +	if (gpio_is_valid(spi->cs_gpio)) {
-> +		/* GPIO from DT */
->  		npcs_pin =3D spi->cs_gpio;
-> +		use_cs_gpio =3D true;
-> +	} else if (npcs_pin && gpio_is_valid(npcs_pin)) {
-> +		/* GPIO from platform data */
-> +		use_cs_gpio =3D true;
-> +	} else if (atmel_spi_is_v2(as)) {
-> +		/* internal chip-select */
-> +		npcs_pin =3D spi->chip_select;
-> +		use_cs_gpio =3D false;
-> +	} else {
-> +		return -EINVAL;
-> +	}
-> =20
->  	asd =3D spi->controller_state;
->  	if (!asd) {
-> @@ -1591,7 +1599,7 @@ static int atmel_spi_setup(struct spi_device *s=
-pi)
->  		if (!asd)
->  			return -ENOMEM;
-> =20
-> -		if (as->use_cs_gpios) {
-> +		if (use_cs_gpio) {
->  			ret =3D gpio_request(npcs_pin, dev_name(&spi->dev));
->  			if (ret) {
->  				kfree(asd);
-> @@ -1603,6 +1611,7 @@ static int atmel_spi_setup(struct spi_device *s=
-pi)
->  		}
-> =20
->  		asd->npcs_pin =3D npcs_pin;
-> +		asd->use_cs_gpio =3D use_cs_gpio;
->  		spi->controller_state =3D asd;
->  	} else {
->  		atmel_spi_lock(as);
-> @@ -1612,6 +1621,8 @@ static int atmel_spi_setup(struct spi_device *s=
-pi)
->  		atmel_spi_unlock(as);
->  	}
-> =20
-> +	if (!asd->use_cs_gpio)
-> +		csr |=3D SPI_BIT(CSAAT);
->  	asd->csr =3D csr;
-> =20
->  	dev_dbg(&spi->dev,
-> @@ -1807,12 +1818,9 @@ static int atmel_spi_probe(struct platform_dev=
-ice *pdev)
-> =20
->  	atmel_get_caps(as);
-> =20
-> -	as->use_cs_gpios =3D true;
->  	if (atmel_spi_is_v2(as) &&
-> -	    !of_get_property(pdev->dev.of_node, "cs-gpios", NULL)) {
-> -		as->use_cs_gpios =3D false;
-> +	    !of_get_property(pdev->dev.of_node, "cs-gpios", NULL))
->  		master->num_chipselect =3D 4;
-> -	}
-> =20
->  	as->use_dma =3D false;
->  	as->use_pdc =3D false;
->=20
+This mode is described in chapter "22.5.2 Direct Write to SPI" in the
+Marvell Armada XP Functional Spec Datasheet.
 
+Signed-off-by: Stefan Roese <sr@denx.de>
+Cc: Nadav Haklai <nadavh@marvell.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Cc: Gregory CLEMENT <gregory.clement@free-electrons.com>
+Cc: Mark Brown <broonie@kernel.org>
+---
 
---=20
-Nicolas Ferre
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+ .../devicetree/bindings/spi/spi-orion.txt          | 26 ++++++++++
+ drivers/spi/spi-orion.c                            | 59 ++++++++++++++++++++++
+ 2 files changed, 85 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/spi/spi-orion.txt b/Documentation/devicetree/bindings/spi/spi-orion.txt
+index 98bc698..b22ebc5 100644
+--- a/Documentation/devicetree/bindings/spi/spi-orion.txt
++++ b/Documentation/devicetree/bindings/spi/spi-orion.txt
+@@ -12,6 +12,8 @@ Required properties:
+ - cell-index : Which of multiple SPI controllers is this.
+ Optional properties:
+ - interrupts : Is currently not used.
++- direct-addr : The phandle to the node containing the base address
++                of the direct-mapped MBus window for this SPI device.
+ 
+ Example:
+        spi@10600 {
+@@ -23,3 +25,27 @@ Example:
+ 	       interrupts = <23>;
+ 	       status = "disabled";
+        };
++
++Example with direct-write mode:
++	soc {
++		ranges = <MBUS_ID(0xf0, 0x01) 0 0 0xf1000000 0x100000	/* internal regs */
++			  MBUS_ID(0x01, 0x1d) 0 0 0xfff00000 0x100000	/* BootROM       */
++			  MBUS_ID(0x01, 0x5e) 0 0 0xf2000000 0x100000>;	/* SPI0 CS1      */
++
++		spi0_cs1: spi@015e {
++			compatible = "marvell,spi-direct-mode";
++			reg = <MBUS_ID(0x01, 0x5e) 0 0x100000>;
++		};
++
++	...
++
++	spi@10600 {
++		compatible = "marvell,orion-spi";
++		status = "okay";
++
++		spidev@1 {
++			compatible = "spidev";
++			direct-addr = <&spi0_cs1>;
++			reg = <1>;
++		};
++	};
+diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
+index a87cfd4..c028679 100644
+--- a/drivers/spi/spi-orion.c
++++ b/drivers/spi/spi-orion.c
+@@ -18,6 +18,7 @@
+ #include <linux/module.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/of.h>
++#include <linux/of_address.h>
+ #include <linux/of_device.h>
+ #include <linux/clk.h>
+ #include <linux/sizes.h>
+@@ -43,6 +44,9 @@
+ #define ORION_SPI_INT_CAUSE_REG		0x10
+ #define ORION_SPI_TIMING_PARAMS_REG	0x18
+ 
++/* Register for the "Direct Mode" */
++#define SPI_DIRECT_WRITE_CONFIG_REG	0x20
++
+ #define ORION_SPI_TMISO_SAMPLE_MASK	(0x3 << 6)
+ #define ORION_SPI_TMISO_SAMPLE_1	(1 << 6)
+ #define ORION_SPI_TMISO_SAMPLE_2	(2 << 6)
+@@ -83,6 +87,7 @@ struct orion_spi {
+ 	void __iomem		*base;
+ 	struct clk              *clk;
+ 	const struct orion_spi_dev *devdata;
++	void __iomem		*slave_direct_addr[8];
+ };
+ 
+ static inline void __iomem *spi_reg(struct orion_spi *orion_spi, u32 reg)
+@@ -372,10 +377,29 @@ orion_spi_write_read(struct spi_device *spi, struct spi_transfer *xfer)
+ {
+ 	unsigned int count;
+ 	int word_len;
++	struct orion_spi *orion_spi;
++	void __iomem *direct_addr;
+ 
+ 	word_len = spi->bits_per_word;
+ 	count = xfer->len;
+ 
++	/* Use SPI direct write mode if such an address is provided via DT */
++	orion_spi = spi_master_get_devdata(spi->master);
++	direct_addr = orion_spi->slave_direct_addr[spi->chip_select];
++	if (direct_addr && xfer->tx_buf) {
++		/* Deassert CS between the SPI transfers */
++		writel(0x00010000, spi_reg(orion_spi,
++					   SPI_DIRECT_WRITE_CONFIG_REG));
++
++		/*
++		 * Send the tx-data to the SPI device via the direct mapped
++		 * address window
++		 */
++		memcpy(direct_addr, xfer->tx_buf, count);
++
++		return count;
++	}
++
+ 	if (word_len == 8) {
+ 		const u8 *tx = xfer->tx_buf;
+ 		u8 *rx = xfer->rx_buf;
+@@ -501,6 +525,7 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 	const struct orion_spi_dev *devdata;
+ 	struct spi_master *master;
+ 	struct orion_spi *spi;
++	struct device_node *np;
+ 	struct resource *r;
+ 	unsigned long tclk_hz;
+ 	int status = 0;
+@@ -576,6 +601,40 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 		goto out_rel_clk;
+ 	}
+ 
++	/*
++	 * Scan all SPI devices of this controller for direct mapped devices
++	 */
++	for_each_available_child_of_node(pdev->dev.of_node, np) {
++		struct device_node *direct_addr_np;
++
++		/*
++		 * Get "direct-addr" device node with the mapping info
++		 */
++		direct_addr_np = of_parse_phandle(np, "direct-addr", 0);
++		if (direct_addr_np) {
++			struct resource res;
++			u32 cs;
++			int rc;
++
++			/* Get chip-select number from the "reg" property */
++			rc = of_property_read_u32(np, "reg", &cs);
++			if (rc) {
++				dev_err(&pdev->dev,
++					"%s has no valid 'reg' property (%d)\n",
++					direct_addr_np->full_name, rc);
++				continue;
++			}
++
++			/*
++			 * Store the address to use it later for the direct
++			 * access
++			 */
++			rc = of_address_to_resource(direct_addr_np, 0, &res);
++			spi->slave_direct_addr[cs] =
++				devm_ioremap_resource(&pdev->dev, &res);
++		}
++	}
++
+ 	pm_runtime_set_active(&pdev->dev);
+ 	pm_runtime_use_autosuspend(&pdev->dev);
+ 	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
+-- 
+2.6.5

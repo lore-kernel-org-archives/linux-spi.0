@@ -1,423 +1,116 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [GIT PULL] SPI updates for v4.5
-Date: Wed, 13 Jan 2016 10:50:09 +0000
-Message-ID: <20160113105009.GG6588@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="zpRN6KW+pnHWATcM"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH] spi: pxa2xx: Remove CONFIG_SPI_PXA2XX_DMA
+Date: Wed, 13 Jan 2016 16:20:07 +0200
+Message-ID: <1452694807-29304-1-git-send-email-jarkko.nikula@linux.intel.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+After removal of legacy PXA DMA code by the commit 6356437e65c2
+("spi: spi-pxa2xx: remove legacy PXA DMA bits") the
+CONFIG_SPI_PXA2XX_DMA follows the CONFIG_SPI_PXA2XX and cannot be disabled
+alone. Therefore remove this config symbol and dead definitions from the
+spi-pxa2xx.h.
+
+Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+---
+ drivers/spi/Kconfig      |  4 ----
+ drivers/spi/Makefile     |  3 +--
+ drivers/spi/spi-pxa2xx.h | 35 -----------------------------------
+ 3 files changed, 1 insertion(+), 41 deletions(-)
+
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 77064160dd76..1b959eb7098b 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -415,10 +415,6 @@ config SPI_PPC4xx
+ 	help
+ 	  This selects a driver for the PPC4xx SPI Controller.
+ 
+-config SPI_PXA2XX_DMA
+-	def_bool y
+-	depends on SPI_PXA2XX
+-
+ config SPI_PXA2XX
+ 	tristate "PXA2xx SSP SPI master"
+ 	depends on (ARCH_PXA || PCI || ACPI)
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 8991ffce6e12..7274c0c344f9 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -62,8 +62,7 @@ obj-$(CONFIG_SPI_TI_QSPI)		+= spi-ti-qspi.o
+ obj-$(CONFIG_SPI_ORION)			+= spi-orion.o
+ obj-$(CONFIG_SPI_PL022)			+= spi-pl022.o
+ obj-$(CONFIG_SPI_PPC4xx)		+= spi-ppc4xx.o
+-spi-pxa2xx-platform-objs		:= spi-pxa2xx.o
+-spi-pxa2xx-platform-$(CONFIG_SPI_PXA2XX_DMA)	+= spi-pxa2xx-dma.o
++spi-pxa2xx-platform-objs		:= spi-pxa2xx.o spi-pxa2xx-dma.o
+ obj-$(CONFIG_SPI_PXA2XX)		+= spi-pxa2xx-platform.o
+ obj-$(CONFIG_SPI_PXA2XX_PCI)		+= spi-pxa2xx-pci.o
+ obj-$(CONFIG_SPI_QUP)			+= spi-qup.o
+diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
+index 58efa98313aa..8e781c8b4374 100644
+--- a/drivers/spi/spi-pxa2xx.h
++++ b/drivers/spi/spi-pxa2xx.h
+@@ -147,20 +147,9 @@ static inline void write_SSSR_CS(struct driver_data *drv_data, u32 val)
+ extern int pxa2xx_spi_flush(struct driver_data *drv_data);
+ extern void *pxa2xx_spi_next_transfer(struct driver_data *drv_data);
+ 
+-/*
+- * Select the right DMA implementation.
+- */
+-#if defined(CONFIG_SPI_PXA2XX_DMA)
+-#define SPI_PXA2XX_USE_DMA	1
+ #define MAX_DMA_LEN		SZ_64K
+ #define DEFAULT_DMA_CR1		(SSCR1_TSRE | SSCR1_RSRE | SSCR1_TRAIL)
+-#else
+-#undef SPI_PXA2XX_USE_DMA
+-#define MAX_DMA_LEN		0
+-#define DEFAULT_DMA_CR1		0
+-#endif
+ 
+-#ifdef SPI_PXA2XX_USE_DMA
+ extern bool pxa2xx_spi_dma_is_possible(size_t len);
+ extern int pxa2xx_spi_map_dma_buffers(struct driver_data *drv_data);
+ extern irqreturn_t pxa2xx_spi_dma_transfer(struct driver_data *drv_data);
+@@ -173,29 +162,5 @@ extern int pxa2xx_spi_set_dma_burst_and_threshold(struct chip_data *chip,
+ 						  u8 bits_per_word,
+ 						  u32 *burst_code,
+ 						  u32 *threshold);
+-#else
+-static inline bool pxa2xx_spi_dma_is_possible(size_t len) { return false; }
+-static inline int pxa2xx_spi_map_dma_buffers(struct driver_data *drv_data)
+-{
+-	return 0;
+-}
+-#define pxa2xx_spi_dma_transfer NULL
+-static inline void pxa2xx_spi_dma_prepare(struct driver_data *drv_data,
+-					  u32 dma_burst) {}
+-static inline void pxa2xx_spi_dma_start(struct driver_data *drv_data) {}
+-static inline int pxa2xx_spi_dma_setup(struct driver_data *drv_data)
+-{
+-	return 0;
+-}
+-static inline void pxa2xx_spi_dma_release(struct driver_data *drv_data) {}
+-static inline int pxa2xx_spi_set_dma_burst_and_threshold(struct chip_data *chip,
+-							 struct spi_device *spi,
+-							 u8 bits_per_word,
+-							 u32 *burst_code,
+-							 u32 *threshold)
+-{
+-	return -ENODEV;
+-}
+-#endif
+ 
+ #endif /* SPI_PXA2XX_H */
+-- 
+2.6.4
 
---zpRN6KW+pnHWATcM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-The following changes since commit 168309855a7d1e16db751e9c647119fe2d2dc878:
-
-  Linux 4.4-rc8 (2016-01-03 15:15:37 -0800)
-
-are available in the git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-v4.5
-
-for you to fetch changes up to cabeea980879c2c701b0bd03f145c9f7dae17a63:
-
-  Merge remote-tracking branches 'spi/topic/sun4i', 'spi/topic/topcliff-pch' and 'spi/topic/zynq' into spi-next (2016-01-11 16:48:38 +0000)
-
-----------------------------------------------------------------
-The following changes since commit 168309855a7d1e16db751e9c647119fe2d2dc878:
-
-  Linux 4.4-rc8 (2016-01-03 15:15:37 -0800)
-
-are available in the git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-v4.5
-
-for you to fetch changes up to cabeea980879c2c701b0bd03f145c9f7dae17a63:
-
-  Merge remote-tracking branches 'spi/topic/sun4i', 'spi/topic/topcliff-pch' and 'spi/topic/zynq' into spi-next (2016-01-11 16:48:38 +0000)
-
-----------------------------------------------------------------
-spi: Updates for v4.5
-
-A quiet release for SPI, not even many driver updates:
-
- - Add a dummy loopback driver for use in exercising framework features
-   during development.
- - Move the test utilities to tools/ and add support for transferring
-   data to and from a file instead of stdin and stdout to spidev_test.
- - Support for Mediatek MT2701 and Renesas AG5 deices.
-
-----------------------------------------------------------------
-Anton Bondarenko (8):
-      spi: imx: terminate RX DMA transaction in case of TX DMA timeout
-      spi: imx: reorder HW operations enable order to avoid possible RX data loss
-      spi: imx: replace multiple watermarks with single for RX, TX and RXT
-      spi: imx: add function to check for IMX51 family controller
-      spi: imx: fix loopback mode setup after controller reset
-      spi: imx: enable loopback only for ECSPI controller family
-      spi: imx: return error from dma channel request
-      spi: imx: defer spi initialization, if DMA engine is
-
-Arnd Bergmann (1):
-      spi: s3c64xx: pass DMA arguments in platform data
-
-Dan Carpenter (1):
-      spi: loopback: fix typo in MODULE_PARM_DESC
-
-Fabio Estevam (2):
-      spi: imx: Add loopback mode support
-      spi: spidev_test: Fix typo in error message
-
-Geert Uytterhoeven (5):
-      spi/bcm63xx: Move default clock configuration to kill compiler warning
-      spi: sh-msiof: Add support for SH-Mobile AG5
-      spi: spidev: Use "%u" to format __u32
-      spi: Uninline spi_unregister_device()
-      spi: Mark instantiated device nodes with OF_POPULATE
-
-Geliang Tang (3):
-      spi: use to_spi_device
-      spi: cadence: use to_platform_device()
-      spi: zynq: use to_platform_device()
-
-Jisheng Zhang (1):
-      spi: dw: Use SPI_TMOD_TR rather than magic const 0 to set tmode
-
-Joshua Clayton (7):
-      spi: Move spi code from Documentation to tools
-      spi: spidev_test: transfer_escaped_string function
-      spi: spidev_test: accept input from a file
-      spi: spidev_test: output to a file
-      spi: spidev_test: check error
-      spi: spidev_test: fix whitespace
-      spi: tools: move spidev_test metadata
-
-Julia Lawall (1):
-      spi: dw-mid: constify dw_spi_dma_ops structure
-
-Leilk Liu (4):
-      spi: mediatek: revise mtk_spi_probe() failure flow
-      spi: mtk: Add bindings for mediatek MT2701 soc platform
-      spi: mediatek: merge all identical compat to mtk_common_compat
-      spi: mediatek: Add spi support for mt2701 IC
-
-Marcus Weseloh (2):
-      spi: sun4i: allow transfers to set transmission speed
-      spi: sun4i: Prevent chip-select from being activated twice before a transfer
-
-Mark Brown (9):
-      Merge branch 'fix/mediatek' of git://git.kernel.org/.../broonie/spi into spi-mtk
-      Merge remote-tracking branch 'spi/fix/mtk' into spi-linus
-      Merge remote-tracking branch 'spi/topic/core' into spi-next
-      Merge remote-tracking branch 'spi/topic/sunxi' into spi-next
-      Merge remote-tracking branches 'spi/topic/bcm63xx', 'spi/topic/butterfly', 'spi/topic/cadence' and 'spi/topic/davinci' into spi-next
-      Merge remote-tracking branches 'spi/topic/dw', 'spi/topic/dw-mid', 'spi/topic/fsl-espi' and 'spi/topic/imx' into spi-next
-      Merge remote-tracking branches 'spi/topic/lm70llp', 'spi/topic/loopback', 'spi/topic/mtk' and 'spi/topic/omap2-mcspi' into spi-next
-      Merge remote-tracking branches 'spi/topic/overlay', 'spi/topic/pxa2xx', 'spi/topic/s3c64xx', 'spi/topic/sh-msiof' and 'spi/topic/spidev' into spi-next
-      Merge remote-tracking branches 'spi/topic/sun4i', 'spi/topic/topcliff-pch' and 'spi/topic/zynq' into spi-next
-
-Martin Sperl (9):
-      spi: add spi_message_init_no_memset to avoid zeroing the spi_message
-      spi: add loopback test driver to allow for spi_master regression tests
-      spi: add spi-loopback-test to build framework
-      spi: loopback: fix printk format issues with size_t
-      spi: loopback: match configuration of test to description
-      spi: loopback: added additional non-power of 2 transfer lengthes
-      spi: loopback-test: write rx pattern also when running without tx_buf
-      spi: loopback-test: rename method spi_test_fill_tx to spi_test_fill_pattern
-      spi: loopback-test: spi_check_rx_ranges can get always done
-
-Michael Welling (1):
-      spi: omap2-mcspi: Prevent duplicate gpio_request
-
-Michal Suchanek (2):
-      spi: expose master transfer size limitation.
-      spi: fsl-espi: expose maximum transfer size limit
-
-Mika Westerberg (1):
-      spi: pxa2xx: Remove redundant call to lpss_ssp_setup() in probe
-
-Nicolas Boichat (1):
-      spi: mediatek: Prevent overflows in FIFO transfers
-
-Pascal Huerst (1):
-      spi: omap2-mcspi: Add calls for pinctrl state select
-
-Paul Burton (1):
-      spi: topcliff-pch: allow build for MIPS platforms
-
-Sekhar Nori (2):
-      spi: davinci: fix spurious i/o error
-      spi: davinci: use dev_err() for error reporting
-
-Sudip Mukherjee (12):
-      spi: butterfly: remove multiple blank lines
-      spi: butterfly: remove cast to void
-      spi: butterfly: correct alignment
-      spi: butterfly: use new parport device model
-      spi: lm70llp: remove multiple blank lines
-      spi: lm70llp: add blank line after declaration
-      spi: lm70llp: remove cast to void
-      spi: lm70llp: correct alignment
-      spi: lm70llp: remove space
-      spi: lm70llp: use new parport device model
-      spi: lm70llp: use dev_warn
-      spi: lm70llp: remove printk
-
-Sylwester Nawrocki (1):
-      spi: s3c64xx: Remove unused platform_device_id entries
-
-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org (3):
-      spi: mediatek: update document devicetree bindings to fix syntax error
-      spi: mediatek: remove unrequired description
-      spi: mediatek: remove needless pair of writel()/readl()
-
- Documentation/Makefile                             |    2 +-
- Documentation/devicetree/bindings/spi/sh-msiof.txt |    1 +
- .../devicetree/bindings/spi/spi-mt65xx.txt         |    9 +-
- Documentation/spi/00-INDEX                         |    4 -
- Documentation/spi/Makefile                         |    8 -
- arch/arm/plat-samsung/devs.c                       |   19 +-
- drivers/spi/Kconfig                                |   11 +-
- drivers/spi/Makefile                               |    1 +
- drivers/spi/spi-bcm63xx.c                          |    7 +-
- drivers/spi/spi-butterfly.c                        |   30 +-
- drivers/spi/spi-cadence.c                          |    6 +-
- drivers/spi/spi-davinci.c                          |   17 +-
- drivers/spi/spi-dw-mid.c                           |    2 +-
- drivers/spi/spi-dw.c                               |    2 +-
- drivers/spi/spi-dw.h                               |    2 +-
- drivers/spi/spi-fsl-espi.c                         |    6 +
- drivers/spi/spi-imx.c                              |  101 +-
- drivers/spi/spi-lm70llp.c                          |   43 +-
- drivers/spi/spi-loopback-test.c                    | 1005 ++++++++++++++++++++
- drivers/spi/spi-mt65xx.c                           |   64 +-
- drivers/spi/spi-omap2-mcspi.c                      |   31 +-
- drivers/spi/spi-pxa2xx.c                           |    3 -
- drivers/spi/spi-s3c64xx.c                          |   33 +-
- drivers/spi/spi-sun4i.c                            |   14 +-
- drivers/spi/spi-sun6i.c                            |    8 +-
- drivers/spi/spi-test.h                             |  136 +++
- drivers/spi/spi-zynqmp-gqspi.c                     |    8 +-
- drivers/spi/spi.c                                  |   32 +-
- drivers/spi/spidev.c                               |    2 +-
- include/linux/platform_data/spi-s3c64xx.h          |    2 +
- include/linux/spi/spi.h                            |   29 +-
- tools/Makefile                                     |    7 +-
- {Documentation => tools}/spi/.gitignore            |    0
- tools/spi/Makefile                                 |    4 +
- {Documentation => tools}/spi/spidev_fdx.c          |    0
- {Documentation => tools}/spi/spidev_test.c         |  119 ++-
- 36 files changed, 1536 insertions(+), 232 deletions(-)
- delete mode 100644 Documentation/spi/Makefile
- create mode 100644 drivers/spi/spi-loopback-test.c
- create mode 100644 drivers/spi/spi-test.h
- rename {Documentation => tools}/spi/.gitignore (100%)
- create mode 100644 tools/spi/Makefile
- rename {Documentation => tools}/spi/spidev_fdx.c (100%)
- rename {Documentation => tools}/spi/spidev_test.c (75%)
-spi: Updates for v4.5
-
-A quiet release for SPI, not even many driver updates:
-
- - Add a dummy loopback driver for use in exercising framework features
-   during development.
- - Move the test utilities to tools/ and add support for transferring
-   data to and from a file instead of stdin and stdout to spidev_test.
- - Support for Mediatek MT2701 and Renesas AG5 deices.
-
-----------------------------------------------------------------
-Anton Bondarenko (8):
-      spi: imx: terminate RX DMA transaction in case of TX DMA timeout
-      spi: imx: reorder HW operations enable order to avoid possible RX data loss
-      spi: imx: replace multiple watermarks with single for RX, TX and RXT
-      spi: imx: add function to check for IMX51 family controller
-      spi: imx: fix loopback mode setup after controller reset
-      spi: imx: enable loopback only for ECSPI controller family
-      spi: imx: return error from dma channel request
-      spi: imx: defer spi initialization, if DMA engine is
-
-Arnd Bergmann (1):
-      spi: s3c64xx: pass DMA arguments in platform data
-
-Dan Carpenter (1):
-      spi: loopback: fix typo in MODULE_PARM_DESC
-
-Fabio Estevam (2):
-      spi: imx: Add loopback mode support
-      spi: spidev_test: Fix typo in error message
-
-Geert Uytterhoeven (5):
-      spi/bcm63xx: Move default clock configuration to kill compiler warning
-      spi: sh-msiof: Add support for SH-Mobile AG5
-      spi: spidev: Use "%u" to format __u32
-      spi: Uninline spi_unregister_device()
-      spi: Mark instantiated device nodes with OF_POPULATE
-
-Geliang Tang (3):
-      spi: use to_spi_device
-      spi: cadence: use to_platform_device()
-      spi: zynq: use to_platform_device()
-
-Jisheng Zhang (1):
-      spi: dw: Use SPI_TMOD_TR rather than magic const 0 to set tmode
-
-Joshua Clayton (7):
-      spi: Move spi code from Documentation to tools
-      spi: spidev_test: transfer_escaped_string function
-      spi: spidev_test: accept input from a file
-      spi: spidev_test: output to a file
-      spi: spidev_test: check error
-      spi: spidev_test: fix whitespace
-      spi: tools: move spidev_test metadata
-
-Julia Lawall (1):
-      spi: dw-mid: constify dw_spi_dma_ops structure
-
-Leilk Liu (4):
-      spi: mediatek: revise mtk_spi_probe() failure flow
-      spi: mtk: Add bindings for mediatek MT2701 soc platform
-      spi: mediatek: merge all identical compat to mtk_common_compat
-      spi: mediatek: Add spi support for mt2701 IC
-
-Marcus Weseloh (2):
-      spi: sun4i: allow transfers to set transmission speed
-      spi: sun4i: Prevent chip-select from being activated twice before a transfer
-
-Mark Brown (9):
-      Merge branch 'fix/mediatek' of git://git.kernel.org/.../broonie/spi into spi-mtk
-      Merge remote-tracking branch 'spi/fix/mtk' into spi-linus
-      Merge remote-tracking branch 'spi/topic/core' into spi-next
-      Merge remote-tracking branch 'spi/topic/sunxi' into spi-next
-      Merge remote-tracking branches 'spi/topic/bcm63xx', 'spi/topic/butterfly', 'spi/topic/cadence' and 'spi/topic/davinci' into spi-next
-      Merge remote-tracking branches 'spi/topic/dw', 'spi/topic/dw-mid', 'spi/topic/fsl-espi' and 'spi/topic/imx' into spi-next
-      Merge remote-tracking branches 'spi/topic/lm70llp', 'spi/topic/loopback', 'spi/topic/mtk' and 'spi/topic/omap2-mcspi' into spi-next
-      Merge remote-tracking branches 'spi/topic/overlay', 'spi/topic/pxa2xx', 'spi/topic/s3c64xx', 'spi/topic/sh-msiof' and 'spi/topic/spidev' into spi-next
-      Merge remote-tracking branches 'spi/topic/sun4i', 'spi/topic/topcliff-pch' and 'spi/topic/zynq' into spi-next
-
-Martin Sperl (9):
-      spi: add spi_message_init_no_memset to avoid zeroing the spi_message
-      spi: add loopback test driver to allow for spi_master regression tests
-      spi: add spi-loopback-test to build framework
-      spi: loopback: fix printk format issues with size_t
-      spi: loopback: match configuration of test to description
-      spi: loopback: added additional non-power of 2 transfer lengthes
-      spi: loopback-test: write rx pattern also when running without tx_buf
-      spi: loopback-test: rename method spi_test_fill_tx to spi_test_fill_pattern
-      spi: loopback-test: spi_check_rx_ranges can get always done
-
-Michael Welling (1):
-      spi: omap2-mcspi: Prevent duplicate gpio_request
-
-Michal Suchanek (2):
-      spi: expose master transfer size limitation.
-      spi: fsl-espi: expose maximum transfer size limit
-
-Mika Westerberg (1):
-      spi: pxa2xx: Remove redundant call to lpss_ssp_setup() in probe
-
-Nicolas Boichat (1):
-      spi: mediatek: Prevent overflows in FIFO transfers
-
-Pascal Huerst (1):
-      spi: omap2-mcspi: Add calls for pinctrl state select
-
-Paul Burton (1):
-      spi: topcliff-pch: allow build for MIPS platforms
-
-Sekhar Nori (2):
-      spi: davinci: fix spurious i/o error
-      spi: davinci: use dev_err() for error reporting
-
-Sudip Mukherjee (12):
-      spi: butterfly: remove multiple blank lines
-      spi: butterfly: remove cast to void
-      spi: butterfly: correct alignment
-      spi: butterfly: use new parport device model
-      spi: lm70llp: remove multiple blank lines
-      spi: lm70llp: add blank line after declaration
-      spi: lm70llp: remove cast to void
-      spi: lm70llp: correct alignment
-      spi: lm70llp: remove space
-      spi: lm70llp: use new parport device model
-      spi: lm70llp: use dev_warn
-      spi: lm70llp: remove printk
-
-Sylwester Nawrocki (1):
-      spi: s3c64xx: Remove unused platform_device_id entries
-
-leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org (3):
-      spi: mediatek: update document devicetree bindings to fix syntax error
-      spi: mediatek: remove unrequired description
-      spi: mediatek: remove needless pair of writel()/readl()
-
- Documentation/Makefile                             |    2 +-
- Documentation/devicetree/bindings/spi/sh-msiof.txt |    1 +
- .../devicetree/bindings/spi/spi-mt65xx.txt         |    9 +-
- Documentation/spi/00-INDEX                         |    4 -
- Documentation/spi/Makefile                         |    8 -
- arch/arm/plat-samsung/devs.c                       |   19 +-
- drivers/spi/Kconfig                                |   11 +-
- drivers/spi/Makefile                               |    1 +
- drivers/spi/spi-bcm63xx.c                          |    7 +-
- drivers/spi/spi-butterfly.c                        |   30 +-
- drivers/spi/spi-cadence.c                          |    6 +-
- drivers/spi/spi-davinci.c                          |   17 +-
- drivers/spi/spi-dw-mid.c                           |    2 +-
- drivers/spi/spi-dw.c                               |    2 +-
- drivers/spi/spi-dw.h                               |    2 +-
- drivers/spi/spi-fsl-espi.c                         |    6 +
- drivers/spi/spi-imx.c                              |  101 +-
- drivers/spi/spi-lm70llp.c                          |   43 +-
- drivers/spi/spi-loopback-test.c                    | 1005 ++++++++++++++++++++
- drivers/spi/spi-mt65xx.c                           |   64 +-
- drivers/spi/spi-omap2-mcspi.c                      |   31 +-
- drivers/spi/spi-pxa2xx.c                           |    3 -
- drivers/spi/spi-s3c64xx.c                          |   33 +-
- drivers/spi/spi-sun4i.c                            |   14 +-
- drivers/spi/spi-sun6i.c                            |    8 +-
- drivers/spi/spi-test.h                             |  136 +++
- drivers/spi/spi-zynqmp-gqspi.c                     |    8 +-
- drivers/spi/spi.c                                  |   32 +-
- drivers/spi/spidev.c                               |    2 +-
- include/linux/platform_data/spi-s3c64xx.h          |    2 +
- include/linux/spi/spi.h                            |   29 +-
- tools/Makefile                                     |    7 +-
- {Documentation => tools}/spi/.gitignore            |    0
- tools/spi/Makefile                                 |    4 +
- {Documentation => tools}/spi/spidev_fdx.c          |    0
- {Documentation => tools}/spi/spidev_test.c         |  119 ++-
- 36 files changed, 1536 insertions(+), 232 deletions(-)
- delete mode 100644 Documentation/spi/Makefile
- create mode 100644 drivers/spi/spi-loopback-test.c
- create mode 100644 drivers/spi/spi-test.h
- rename {Documentation => tools}/spi/.gitignore (100%)
- create mode 100644 tools/spi/Makefile
- rename {Documentation => tools}/spi/spidev_fdx.c (100%)
- rename {Documentation => tools}/spi/spidev_test.c (75%)
-
---zpRN6KW+pnHWATcM
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJWlivgAAoJECTWi3JdVIfQChoH/1whnUy5sJ1NNht0nDpFxxqI
-FTUPpqbWQG6ZTX/HZ15kaakVI4afR07eZsQnNedUsAQ4T8/ZoyKNdqcx8SGi3ofF
-/IVk8UE4IH11RGcJOjw8jBIDGwi53rnAwIgrGrMRN78Is23kKFwv9pk61ZsMzkSM
-SN8vknm2bQ4rWud8YzeD+Ovk+bwlEhf5v8mmVV/ca4hq2As6GB+3YRrkRFcnRujf
-qzuPT18M2pss9lq/lwBGLfv8ef3Sfsth1S0n+FENrpC0lbbfPNwKtVuSs0U6aduI
-HDngKOoAqjCyAkYrC4rVTjNK14gGSMjdefUKw4X0ifOCKPNJZWpeuI/gvh+djag=
-=Fr89
------END PGP SIGNATURE-----
-
---zpRN6KW+pnHWATcM--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

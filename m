@@ -1,126 +1,96 @@
-From: "Yang, Wenyou" <Wenyou.Yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Subject: RE: [PATCH v2] spi: atmel: Refactor spi-atmel to use SPI framework
- queue
-Date: Thu, 14 Jan 2016 03:23:53 +0000
-Message-ID: <B256D81BAE5131468A838E5D7A243641D63EBD4A@penmbx01>
-References: <1389244755-16188-1-git-send-email-wenyou.yang@atmel.com>
- <yw1xziwj25dt.fsf@unicorn.mansr.com>
+From: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH RFC] spi: orion.c: Add direct write mode
+Date: Thu, 14 Jan 2016 08:01:56 +0100
+Message-ID: <569747E4.2080402@denx.de>
+References: <1452589339-21402-1-git-send-email-sr@denx.de>
+ <20160112101358.GY6588@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"Ferre, Nicolas" <Nicolas.FERRE-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: =?utf-8?B?TcOlbnMgUnVsbGfDpXJk?= <mans-2StjZFpD7GcAvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <yw1xziwj25dt.fsf-OEaqT8BN2ezZK2NkWkPsZwC/G2K4zDHf@public.gmane.org>
-Content-Language: en-US
+In-Reply-To: <20160112101358.GY6588-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-SGVsbG8gTcOlbnMsDQoNClNvcnJ5IGZvciBsYXRlIGFuc3dlci4NCg0KPiAtLS0tLU9yaWdpbmFs
-IE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBNw6VucyBSdWxsZ8OlcmQgW21haWx0bzptYW5zQG1hbnNy
-LmNvbV0NCj4gU2VudDogMjAxNuW5tDHmnIg25pelIDM6MjgNCj4gVG86IFlhbmcsIFdlbnlvdSA8
-V2VueW91LllhbmdAYXRtZWwuY29tPg0KPiBDYzogYnJvb25pZUBrZXJuZWwub3JnOyByaWNoYXJk
-Lmdlbm91ZEBnbWFpbC5jb207IEZlcnJlLCBOaWNvbGFzDQo+IDxOaWNvbGFzLkZFUlJFQGF0bWVs
-LmNvbT47IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LQ0KPiBzcGlAdmdlci5r
-ZXJuZWwub3JnOyBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmcNCj4gU3ViamVj
-dDogUmU6IFtQQVRDSCB2Ml0gc3BpOiBhdG1lbDogUmVmYWN0b3Igc3BpLWF0bWVsIHRvIHVzZSBT
-UEkgZnJhbWV3b3JrDQo+IHF1ZXVlDQo+IA0KPiBXZW55b3UgWWFuZyA8d2VueW91LnlhbmdAYXRt
-ZWwuY29tPiB3cml0ZXM6DQo+IA0KPiA+IFJlcGxhY2UgdGhlIGRlcHJlY2F0ZWQgbWFzdGVyLT50
-cmFuc2ZlciB3aXRoIHRyYW5zZmVyX29uZV9tZXNzYWdlKCkNCj4gPiBhbmQgYWxsb3cgdGhlIFNQ
-SSBzdWJzeXN0ZW0gaGFuZGxlIGFsbCB0aGUgcXVldWluZyBvZiBtZXNzYWdlcy4NCj4gPg0KPiA+
-IFNpZ25lZC1vZmYtYnk6IFdlbnlvdSBZYW5nIDx3ZW55b3UueWFuZ0BhdG1lbC5jb20+DQo+ID4g
-VGVzdGVkLWJ5OiBSaWNoYXJkIEdlbm91ZCA8cmljaGFyZC5nZW5vdWRAZ21haWwuY29tPg0KPiA+
-IC0tLQ0KPiA+IEhpIE1hcmssDQo+ID4NCj4gPiBUaGFua3MgZm9yIHlvdXIgZmVlZGJhY2suDQo+
-ID4NCj4gPiBBY2NvcmRpbmcgdG8geW91ciBhZHZpY2UsIEkgcHJlcGFyZWQgdGhpcyB2ZXJzaW9u
-IDIuDQo+ID4NCj4gPiBUaGUgcGF0Y2ggaXMgYmFzZWQgb24gdGhlIGZvci1uZXh0IGJyYW5jaCBv
-Zg0KPiA+IAlnaXQ6Ly9naXQua2VybmVsLm9yZy9wdWIvc2NtL2xpbnV4L2tlcm5lbC9naXQvYnJv
-b25pZS9zcGkuZ2l0DQo+ID4NCj4gPiBJIHRlc3RlZCBpdCBvbiBzYW1hNWQzeGVrIGFuZCBhdDkx
-c2FtOW0xMGc0NWVrIGJvYXJkLg0KPiA+IFJpY2hhcmQgaGVscGVkIHRlc3RlZCBpdCBvbiBhdDkx
-c2FtOWczNS1layBib2FyZC4NCj4gPg0KPiA+IEJlc3QgUmVnYXJkcywNCj4gPiBXZW55b3UgWWFu
-Zw0KPiA+DQo+ID4gdjIgY2hhbmdlbG9nOg0KPiA+ICAxLi8gUmViYXNlIHRoZSBsYXRlc3QgZm9y
-LW5leHQgYnJhbmNoIGluY2x1ZGVkIHRoZSBwYXRjaCBmcm9tIFJpY2hhcmQuDQo+ID4gIDIuLyBy
-ZW1vdmUgdGhlIGxvY2sgb24gY29tcGxldGUoJmFzLT54ZmVyX2NvbXBsZXRpb24pLg0KPiA+ICAz
-Li8gcmV3b3JrIHRoZSB4ZmVyLT5jc19jaGFuZ2UgaXMgdHJ1ZS4NCj4gPiAgNC4vIHJlbW92ZSB0
-aGUgbWVtYmVyIHN0b3BwaW5nIG9mIHN0cnVjdCBhdG1lbF9zcGkuDQo+ID4NCj4gPiAgZHJpdmVy
-cy9zcGkvc3BpLWF0bWVsLmMgfCAgNjc4DQo+ID4gKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0NCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDIyMCBpbnNlcnRpb25z
-KCspLCA0NTggZGVsZXRpb25zKC0pDQo+IA0KPiBUaGlzIHBhdGNoIGJyb2tlIHRoZSBkaXNwbGF5
-IGNvbnRyb2wgb24gdGhlIEFUMzJTVEsxMDAwIGJvYXJkLiAgSSBkb24ndCBrbm93DQo+IHdoaWNo
-IHBhcnQgb2YgdGhlIHBhdGNoIGlzIGNhdXNpbmcgdGhlIHByb2JsZW0uICBUaGlzIHNob3dzIHVw
-IGluIHRoZSBrZXJuZWwgbG9nDQo+ICh3aXRoIGRlYnVnIG1lc3NhZ2VzIGVuYWJsZWQpOg0KPiAN
-Cj4gYXRtZWxfc3BpIGF0bWVsX3NwaS4wOiB2ZXJzaW9uOiAweDE3MQ0KPiBhdG1lbF9zcGkgYXRt
-ZWxfc3BpLjA6IEF0bWVsIFNQSSBDb250cm9sbGVyIGF0IDB4ZmZlMDAwMDAgKGlycSAzKSBzcGkg
-c3BpMC4wOiBzZXR1cDoNCj4gYnB3IDggbW9kZSAweDEgLT4gY3NyMCAwMDAwMDAwOCBzcGkgc3Bp
-MC4xOiBzZXR1cDogYnB3IDggbW9kZSAweDMgLT4gY3NyMQ0KPiAwMDAwMDAwOSBsdHYzNTBxdiBz
-cGkwLjE6IG5ldyBtZXNzYWdlIDkzYzI5Y2I0IHN1Ym1pdHRlZCBmb3Igc3BpMC4xIGx0djM1MHF2
-DQo+IHNwaTAuMTogYWN0aXZhdGUgMSwgbXIgMDAwZTAwMTENCj4gbHR2MzUwcXYgc3BpMC4xOiAg
-IHN0YXJ0IHhmZXIgOTNjMjljNzg6IGxlbiAzIHR4IDkzYzY5Y2NjLzEzYzY5Y2NjIHJ4ICAgKG51
-bGwpL2ZmZmZmZmZmDQo+IC0tLS0tLS0tLS0tLVsgY3V0IGhlcmUgXS0tLS0tLS0tLS0tLQ0KPiBX
-QVJOSU5HOiBhdCBkcml2ZXJzL3NwaS9zcGktYXRtZWwuYzoxMzUxDQo+IENQVTogMCBQSUQ6IDEg
-Q29tbTogc3dhcHBlciBOb3QgdGFpbnRlZCA0LjQuMC1yYzgrICMxNA0KPiB0YXNrOiA5M2MxZTAw
-MCB0aTogOTNjMjgwMDAgdGFzay50aTogOTNjMjgwMDAgUEMgaXMgYXQNCj4gYXRtZWxfc3BpX3Ry
-YW5zZmVyX29uZV9tZXNzYWdlKzB4MzNhLzB4NzJjDQo+IExSIGlzIGF0IHNjaGVkdWxlX3RpbWVv
-dXQrMHg3Mi8weGMwDQo+IHBjIDogWzw5MDEzOWEyNj5dICAgIGxyIDogWzw5MDFkNDRiNj5dICAg
-IE5vdCB0YWludGVkDQo+IHNwIDogOTNjMjliMmMgIHIxMjogMDAwMDAwMDAgIHIxMTogOTNkMWFk
-YjgNCj4gcjEwOiA5M2MxZTM2NCAgcjkgOiAwMDAwMDIwMCAgcjggOiAwMDQwMDAyMg0KPiByNyA6
-IDkzZDEyZGZjICByNiA6IDkzZDEyZGZjICByNSA6IDkzYzI5Yzc4ICByNCA6IDkzYzI5YmI4DQo+
-IHIzIDogOTNjMjljYjQgIHIyIDogOTNkMTJjMDAgIHIxIDogMDAwMDAwMDAgIHIwIDogMDAwMDAw
-MDANCj4gRmxhZ3M6IHF2blpjDQo+IE1vZGUgYml0czogaGptZGUuLi4uRw0KPiBDUFUgTW9kZTog
-U3VwZXJ2aXNvcg0KPiBDYWxsIHRyYWNlOg0KPiAgWzw5MDBlYmZlYT5dIGlkYV9nZXRfbmV3X2Fi
-b3ZlKzB4NWEvMHgxNDggIFs8OTAwZWMwN2U+XQ0KPiBpZGFfZ2V0X25ld19hYm92ZSsweGVlLzB4
-MTQ4ICBbPDkwMGVmYTk2Pl0gcHV0X2RlYysweGEyLzB4YmMgIFs8OTAwZWZkZWE+XQ0KPiBudW1i
-ZXIrMHgyZTYvMHgyZjQgIFs8OTAxMzdlNmE+XSBfX3NwaV9wdW1wX21lc3NhZ2VzKzB4MjFlLzB4
-MzA0DQo+IFs8OTAxMzc5MTA+XSBzcGlfcXVldWVkX3RyYW5zZmVyKzB4MC8weDggIFs8OTAxMzgw
-NDY+XSBfX3NwaV9zeW5jKzB4ZjYvMHhmOA0KPiBbPDkwMTM3OTEwPl0gc3BpX3F1ZXVlZF90cmFu
-c2ZlcisweDAvMHg4ICBbPDkwMTM4MDU2Pl0gc3BpX3N5bmMrMHg2LzB4OA0KPiBbPDkwMTBhMzll
-Pl0gbHR2MzUwcXZfd3JpdGVfcmVnKzB4MTAwLzB4MTA2ICBbPDkwMDgwMDAwPl0NCj4gX19nZW5l
-cmljX2Jsb2NrX2ZpZW1hcCsweDc4LzB4MjUwICBbPDkwMTM4MTUwPl0gc3BpX2NvbXBsZXRlKzB4
-MC8weDgNCj4gWzw5MDEwYTNjYz5dIGx0djM1MHF2X3Bvd2VyKzB4MjgvMHgxZTQgIFs8OTAxMGE1
-ZjY+XQ0KPiBsdHYzNTBxdl9wcm9iZSsweDRlLzB4NjggIFs8OTAxMzZiNjg+XSBzcGlfZHJ2X3By
-b2JlKzB4MjAvMHgyMg0KPiBbPDkwMTMzNmU2Pl0gZHJpdmVyX3Byb2JlX2RldmljZSsweGU2LzB4
-MTg4ICBbPDkwMTMzODI2Pl0NCj4gX19kZXZpY2VfYXR0YWNoX2RyaXZlcisweDRhLzB4NTQgIFs8
-OTAxMzI3YWU+XSBidXNfZm9yX2VhY2hfZHJ2KzB4MzIvMHg1NA0KPiBbPDkwMTMzN2RjPl0gX19k
-ZXZpY2VfYXR0YWNoX2RyaXZlcisweDAvMHg1NCAgWzw5MDEzMzhhMj5dDQo+IF9fZGV2aWNlX2F0
-dGFjaCsweDVhLzB4N2MgIFs8OTAxMzM4Y2E+XSBkZXZpY2VfaW5pdGlhbF9wcm9iZSsweDYvMHg4
-DQo+IFs8OTAxMzJlMmM+XSBidXNfcHJvYmVfZGV2aWNlKzB4NTgvMHg1YyAgWzw5MDEzMWQ5ND5d
-DQo+IGRldmljZV9hZGQrMHgxZmMvMHgzNDQgIFs8OTAxMzgyM2M+XSBzcGlfc2V0dXArMHg4OC8w
-eGY4ICBbPDkwMTM5ZTE4Pl0NCj4gYXRtZWxfc3BpX3NldHVwKzB4MC8weDE2MCAgWzw5MDEzODZl
-OD5dIHNwaV9hZGRfZGV2aWNlKzB4NzAvMHhmMA0KPiBbPDkwMTM4ODFlPl0gc3BpX25ld19kZXZp
-Y2UrMHg1Ni8weDZjICBbPDkwMTM4ODRlPl0NCj4gc3BpX21hdGNoX21hc3Rlcl90b19ib2FyZGlu
-Zm8rMHgxYS8weDMwDQo+ICBbPDkwMTM4OTM4Pl0gc3BpX3JlZ2lzdGVyX21hc3RlcisweGQ0LzB4
-MjJjICBbPDkwMTM4YWFjPl0NCj4gZGV2bV9zcGlfcmVnaXN0ZXJfbWFzdGVyKzB4MWMvMHg0NA0K
-PiAgWzw5MDEzOGZhYT5dIGF0bWVsX3NwaV9wcm9iZSsweDI5YS8weDM4YyAgWzw5MDBiMDZjMD5d
-DQo+IHN5c2ZzX2RvX2NyZWF0ZV9saW5rX3NkKzB4MzQvMHg2MCAgWzw5MDEzNDQzMD5dDQo+IHBs
-YXRmb3JtX2Rydl9wcm9iZSsweDE0LzB4NDAgIFs8OTAxMzM2ZTY+XSBkcml2ZXJfcHJvYmVfZGV2
-aWNlKzB4ZTYvMHgxODgNCj4gWzw5MDBlY2JjYT5dIGtvYmplY3RfYWRkX2ludGVybmFsKzB4NTYv
-MHgxYzggIFs8OTAxMzM3ZDg+XQ0KPiBfX2RyaXZlcl9hdHRhY2grMHg1MC8weDU0ICBbPDkwMDAw
-NDE4Pl0gcmVwYWlyX2Vudl9zdHJpbmcrMHgwLzB4NTgNCj4gWzw5MDEzMjgwZT5dIGJ1c19mb3Jf
-ZWFjaF9kZXYrMHgzZS8weDU4ICBbPDkwMTMzNzg4Pl0NCj4gX19kcml2ZXJfYXR0YWNoKzB4MC8w
-eDU0ICBbPDkwMTMzNTA4Pl0gZHJpdmVyX2F0dGFjaCsweDEwLzB4MTQgIFs8OTAxMzJjYjI+XQ0K
-PiBidXNfYWRkX2RyaXZlcisweGY2LzB4MTVjICBbPDkwMTMzYWFlPl0gZHJpdmVyX3JlZ2lzdGVy
-KzB4M2UvMHg5OA0KPiBbPDkwMTM0M2I2Pl0gX19wbGF0Zm9ybV9kcml2ZXJfcmVnaXN0ZXIrMHgy
-Mi8weDI4DQo+ICBbPDkwMDBhYmE4Pl0gYXRtZWxfc3BpX2RyaXZlcl9pbml0KzB4MC8weDEwICBb
-PDkwMDBhYmIyPl0NCj4gYXRtZWxfc3BpX2RyaXZlcl9pbml0KzB4YS8weDEwICBbPDkwMDAwMjNl
-Pl0gZG9fb25lX2luaXRjYWxsKzB4YWEvMHgxMzANCj4gWzw5MDAyN2FlMj5dIHBhcnNlX2FyZ3Mr
-MHgxOWUvMHgyN2MgIFs8OTAwMDA0MTg+XQ0KPiByZXBhaXJfZW52X3N0cmluZysweDAvMHg1OCAg
-Wzw5MDAwMDM3ND5dIGtlcm5lbF9pbml0X2ZyZWVhYmxlKzB4ODgvMHgxMmMNCj4gWzw5MDAwMDM4
-Mj5dIGtlcm5lbF9pbml0X2ZyZWVhYmxlKzB4OTYvMHgxMmMgIFs8OTAwMDA0MTg+XQ0KPiByZXBh
-aXJfZW52X3N0cmluZysweDAvMHg1OCAgWzw5MDFkMjU4OD5dIGtlcm5lbF9pbml0KzB4OC8weGE0
-ICBbPDkwMDEzMTMwPl0NCj4gc3lzY2FsbF9yZXR1cm4rMHgwLzB4MTIgIFs8OTAxZDI1ODA+XSBr
-ZXJuZWxfaW5pdCsweDAvMHhhNCAgWzw5MDAxMzEzMD5dDQo+IHN5c2NhbGxfcmV0dXJuKzB4MC8w
-eDEyDQo+IA0KPiAtLS1bIGVuZCB0cmFjZSA2YjYzOTFmOGVlMjRmOTU3IF0tLS0NCj4gbHR2MzUw
-cXYgc3BpMC4xOiBzcGkgdHJhbnNmZXIgdGltZW91dA0KPiBhdG1lbF9zcGkgYXRtZWxfc3BpLjA6
-IG92ZXJydW4gKDIvMyByZW1haW5pbmcpIGF0bWVsX3NwaSBhdG1lbF9zcGkuMDogdGltZW91dA0K
-PiB3YWl0aW5nIGZvciBUWEVNUFRZDQoNCkkgdHJpZWQgdG8gcmVwcm9kdWNlIHRoaXMgaXNzdWUs
-IGJ1dCBJIGZhaWxlZC4NCg0KQ291bGQgeW91IHNlbmQgbWUgeW91ciAuY29uZmlnIGZpbGU/IFRo
-YW5rIHlvdS4NCg0KPiANCj4gLS0NCj4gTcOlbnMgUnVsbGfDpXJkDQoNCg0KQmVzdCBSZWdhcmRz
-LA0KV2VueW91IFlhbmcNCg==
+On 12.01.2016 11:13, Mark Brown wrote:
+> On Tue, Jan 12, 2016 at 10:02:19AM +0100, Stefan Roese wrote:
+>
+>> +- direct-addr : The phandle to the node containing the base address
+>> +                of the direct-mapped MBus window for this SPI device.
+>
+> Why are we not just making the MBus window a normal resource on the SPI
+> controller and why do we need to use this only for a single device?  If
+> we can program which device is used then we can just reconfigure
+> whenever we change devices and use this optimisation for everything.
+
+Interesting idea. It should be possible to add a dynamic MBus
+window allocation / configuration, similar to what pci-mvebu.c
+does. I'll give it a try to implement this dynamic MBus
+configuration in the next version.
+
+>> +		spidev@1 {
+>> +			compatible = "spidev";
+>> +			direct-addr = <&spi0_cs1>;
+>> +			reg = <1>;
+>> +		};
+>
+> This is broken, spidev should never appear in a DT (and the driver will
+> complain loudly if it does).  Describe the actual hardware.
+
+Yes. This was meant just as an example - a quite bad one, I agree.
+I'll change this.
+
+>> +	/* Use SPI direct write mode if such an address is provided via DT */
+>> +	orion_spi = spi_master_get_devdata(spi->master);
+>> +	direct_addr = orion_spi->slave_direct_addr[spi->chip_select];
+>> +	if (direct_addr && xfer->tx_buf) {
+>> +		/* Deassert CS between the SPI transfers */
+>> +		writel(0x00010000, spi_reg(orion_spi,
+>> +					   SPI_DIRECT_WRITE_CONFIG_REG));
+>
+> This is badly broken, we should be asserting /CS over the entire message
+> unless the individual transfer says otherwise.  I'm surprised this
+> works.
+
+It works, at least on the FPGA that I'm programming the bitstream into
+right now. The reason for deasserting the CS after each SPI transfer
+was, to work around potential problems with concurrent accesses to
+other SPI devices connected to the same SPI controller. Like SPI NOR
+flash devices using the "normal" indirect mode. Deasserting the CS
+seemed like the "safe" way to me here.
+
+>> +		/*
+>> +		 * Send the tx-data to the SPI device via the direct mapped
+>> +		 * address window
+>> +		 */
+>> +		memcpy(direct_addr, xfer->tx_buf, count);
+>
+> What if we are transferring more data than the window mapped in
+> direct_addr
+
+Right, a check is missing here.
+
+> and what if the transfer is bidirectional?  It looks like we
+> can only do this for transmit only transfers.
+
+This patch only adds support for the direct write mode. As the main
+purpose is to speed up the SPI TX throughput for FPGA bitstream
+programming. It could be extended to support also the direct read
+mode. But this would need more configuration options, like the
+number of address-bytes to transfer in each read access. Not sure
+how this should interact with the SPI flash driver from the MTD
+subsystem.
+
+I would prefer to not adding this direct read mode just yet. It
+can be added later, if really needed.
+
+Thanks,
+Stefan
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

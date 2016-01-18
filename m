@@ -1,126 +1,69 @@
-From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH v6 2/3] spi: sun4i: Fix clock calculations
- to be predictable and never exceed the requested rate
-Date: Sun, 17 Jan 2016 19:51:43 +0100
-Message-ID: <20160117185143.GL4581@lukather>
-References: <1451145186-14235-1-git-send-email-mweseloh42@gmail.com>
- <1451145186-14235-3-git-send-email-mweseloh42@gmail.com>
- <20151227210946.GL30359@lukather>
- <CAGNoLaPcBAqDqFuff7sWWADjVH3Z-LWhZatSmzvEm4mLSrSNvw@mail.gmail.com>
- <20160110181428.GH9631@lukather>
- <CAGNoLaNi72=T6SzGK-Y-b1X6jNx6M-c2oMSQ85sREp9REs5SKQ@mail.gmail.com>
-Reply-To: maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="dZihrQ6eCIduWT38"
-Cc: linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
-	Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>,
-	devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	"Mailing List, Arm" <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Marcus Weseloh <mweseloh42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-sunxi+bncBD2ZNBF5VYJRBQOF562AKGQEJHPLDXQ-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAGNoLaNi72=T6SzGK-Y-b1X6jNx6M-c2oMSQ85sREp9REs5SKQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <https://groups.google.com/group/linux-sunxi
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-List-Subscribe: <https://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
- <https://groups.google.com/group/linux-sunxi/subscribe>
-List-Id: linux-spi.vger.kernel.org
+From: Mans Rullgard <mans-2StjZFpD7GcAvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: atmel: fix handling of cs_change set on non-last xfer
+Date: Mon, 18 Jan 2016 01:25:51 +0000
+Message-ID: <1453080351-29593-1-git-send-email-mans@mansr.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+	"Yang, Wenyou" <Wenyou.Yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
---dZihrQ6eCIduWT38
-Content-Type: text/plain; charset=UTF-8
-Content-Disposition: inline
+The driver does the wrong thing when cs_change is set on a non-last
+xfer in a message.  When cs_change is set, the driver deactivates the
+CS and leaves it off until a later xfer again has cs_change set whereas
+it should be briefly toggling CS off and on again.
 
-Hi,
+This patch brings the behaviour of the driver back in line with the
+documentation and common sense.  The delay of 10 us is the same as is
+used by the default spi_transfer_one_message() function in spi.c.
 
-On Sun, Jan 10, 2016 at 10:11:11PM +0100, Marcus Weseloh wrote:
-> >> >> -     /* Ensure that we have a parent clock fast enough */
-> >> >> +     /*
-> >> >> +      * Ensure that the parent clock is set to twice the max speed
-> >> >> +      * of the spi device (possibly rounded up by the clk driver)
-> >> >> +      */
-> >> >>       mclk_rate = clk_get_rate(sspi->mclk);
-> >> >> -     if (mclk_rate < (2 * tfr->speed_hz)) {
-> >> >> -             clk_set_rate(sspi->mclk, 2 * tfr->speed_hz);
-> >> >> +     if (spi->max_speed_hz != sspi->cur_max_speed ||
-> >> >> +         mclk_rate != sspi->cur_mclk) {
-> >> >
-> >> > Do you need to cache the values? As far as I'm aware, you end up doing
-> >> > the computation all the time anyway.
-> >>
-> >> By caching the values we optimize the case when a single SPI slave
-> >> device (or even multiple slave devices with the same max_speed) are
-> >> used multiple times in a row. In that case, we're saving two calls:
-> >> clk_set_rate and clk_get_rate. I was unsure about how expensive the
-> >> clk_* calls were, so I thought it would be safer use caching. But
-> >> maybe it's not worth the extra code?
-> >
-> > Unless you can point that there's a significant performance
-> > difference, I'm not sure it's worth it.
-> 
-> I did actually notice a significant transfer latency when a new mod0
-> clock frequency is set, probably due to the __delay in
-> drivers/clk/sunxi/clk-factors.c (line 147). So my feeling is that the
-> caching is worth it... at least for the case when there are two slave
-> devices with different transfer speeds accessing the same SPI module.
+Fixes: 8090d6d1a415 ("spi: atmel: Refactor spi-atmel to use SPI framework queue")
+Signed-off-by: Mans Rullgard <mans-2StjZFpD7GcAvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi-atmel.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-I'm not sure we even need that delay in the first place, at least not
-for all the clocks using factor.
-
-AFAIK, the only case where it's useful is for PLL, and all of them
-have a bit you can busy-wait on that will let you know when the clock
-has stabilized.
-
-> >> [...]
-> >> >> -     div = mclk_rate / (2 * tfr->speed_hz);
-> >> >> -     if (div <= (SUN4I_CLK_CTL_CDR2_MASK + 1)) {
-> >> >> -             if (div > 0)
-> >> >> -                     div--;
-> >> >> -
-> >> >> +     div = DIV_ROUND_UP(mclk_rate, 2 * tfr->speed_hz) - 1;
-> >> >
-> >> > Isn't it exactly the same thing as mclk_rate / (2 * tfr->speed_hz) ?
-> >>
-> >> It is quite often, but not in all cases. The plain division rounds to
-> >> the nearest integer, so it rounds down sometimes. Consider the
-> >> following case: we have a slow SPI device with a spi-max-frequency of
-> >> 50kHz. Our clock driver can't find a clock as slow as 100kHz, so it
-> >> sets mclk to 214,285Hz.
-> >>
-> >> Using the old calculation we get: 214,285 / (2 * 50,000) = 2, so div =
-> >> 1 as the old code subtracts 1 two lines further down
-> >> The new calculation results in: DIV_ROUND_UP(214,285, 2 * 50,000)  =
-> >> 3, so div = 2 if we add the -1
-> >
-> > Except that you have that extra - 1 after your DIV_ROUND_UP
-> > calculation in the line you add.  so you have to remove 1 from that
-> > line above, and then 1 again when we set the register, which ends up
-> > being the exact same thing, or am I missing something?
-> 
-> The -1 after the DIV_ROUND_UP is already the -1 that is needed to set
-> the register. There's no need for another -1 after that (and there
-> isn't one in the code).
-
-I was probably hallucinating :) My bad.
-
-That being said, I still have a hard time figuring out what would not
-be solved simply by removing the div--, which seems to match what your
-commit log says.
-
-Thanks!
-Maxime
-
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index aebad36391c9..4b8ccf1f897e 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -315,7 +315,6 @@ struct atmel_spi {
+ 	struct atmel_spi_dma	dma;
+ 
+ 	bool			keep_cs;
+-	bool			cs_active;
+ 
+ 	u32			fifo_size;
+ };
+@@ -1406,11 +1405,9 @@ static int atmel_spi_one_transfer(struct spi_master *master,
+ 				 &msg->transfers)) {
+ 			as->keep_cs = true;
+ 		} else {
+-			as->cs_active = !as->cs_active;
+-			if (as->cs_active)
+-				cs_activate(as, msg->spi);
+-			else
+-				cs_deactivate(as, msg->spi);
++			cs_deactivate(as, msg->spi);
++			udelay(10);
++			cs_activate(as, msg->spi);
+ 		}
+ 	}
+ 
+@@ -1433,7 +1430,6 @@ static int atmel_spi_transfer_one_message(struct spi_master *master,
+ 	atmel_spi_lock(as);
+ 	cs_activate(as, spi);
+ 
+-	as->cs_active = true;
+ 	as->keep_cs = false;
+ 
+ 	msg->status = 0;
 -- 
-Maxime Ripard, Free Electrons
-Embedded Linux, Kernel and Android engineering
-http://free-electrons.com
---dZihrQ6eCIduWT38--
+2.7.0
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

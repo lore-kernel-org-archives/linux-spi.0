@@ -1,38 +1,67 @@
-From: =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans-2StjZFpD7GcAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [TROLL PATCH] spi: add option to create spidev nodes for unclaimed chip selects
-Date: Thu, 21 Jan 2016 17:23:01 +0000
-Message-ID: <yw1x4me6onii.fsf@unicorn.mansr.com>
-References: <1453394169-11458-1-git-send-email-mans@mansr.com>
-	<CAMuHMdXgL-mXPhTw6d=eRwBme3nU=FNp4G+JSNcJrY0UVe8kUg@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel\@vger.kernel.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAMuHMdXgL-mXPhTw6d=eRwBme3nU=FNp4G+JSNcJrY0UVe8kUg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-	(Geert Uytterhoeven's message of "Thu, 21 Jan 2016 18:11:07 +0100")
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH] spi: qup: provide proper bus numbers
+Date: Thu, 21 Jan 2016 18:33:47 +0000
+Message-ID: <1453401227-27135-1-git-send-email-srinivas.kandagatla@linaro.org>
+Cc: David Brown <david.brown@linaro.org>,
+	Mark Brown <broonie@kernel.org>, linux-arm-msm@vger.kernel.org,
+	linux-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+To: Andy Gross <andy.gross@linaro.org>, linux-spi@vger.kernel.org
+Return-path: <linux-arm-msm-owner@vger.kernel.org>
+Sender: linux-arm-msm-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org> writes:
+This driver reuses pdev->id for spi bus numbers resulting in random
+or very large bus numbering when used with device trees. pdev->id
+is not the correct choice when using device trees. So add code to
+get bus numbers via device tree aliases and if it fails then generate
+a unique bus number.
 
-> On Thu, Jan 21, 2016 at 5:36 PM, Mans Rullgard <mans-2StjZFpD7GcAvxtiuMwx3w@public.gmane.org> wrote=
-:
->> This adds an option to create spidev nodes for any chip selects not
->> bound to a driver via DT/ACPI.  It probably doesn't play nicely with
->> modules.
->
-> And with pinmux, FWIW ;-)
+Without this patch the driver get a random and useless bus number.
 
-In my particular case, I can put whatever pinmux I want in the DT and
-bring out the SPI signals, but I simply don't know what device will be
-connected.
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+---
+ drivers/spi/spi-qup.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---=20
-M=E5ns Rullg=E5rd
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
+index 810a7fa..2bc67a9 100644
+--- a/drivers/spi/spi-qup.c
++++ b/drivers/spi/spi-qup.c
+@@ -127,6 +127,8 @@
+ #define SPI_DELAY_THRESHOLD		1
+ #define SPI_DELAY_RETRY			10
+ 
++static atomic_t spi_qup_next_id = ATOMIC_INIT(0);
++
+ struct spi_qup {
+ 	void __iomem		*base;
+ 	struct device		*dev;
+@@ -759,7 +761,7 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 	struct device *dev;
+ 	void __iomem *base;
+ 	u32 max_freq, iomode, num_cs;
+-	int ret, irq, size;
++	int ret, irq, size, bus_num;
+ 
+ 	dev = &pdev->dev;
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+@@ -816,7 +818,15 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 	else
+ 		master->num_chipselect = num_cs;
+ 
+-	master->bus_num = pdev->id;
++	if (dev->of_node)
++		bus_num = of_alias_get_id(dev->of_node, "spi");
++	else
++		bus_num = pdev->id;
++
++	if (bus_num < 0)
++		bus_num = atomic_inc_return(&spi_qup_next_id) - 1;
++
++	master->bus_num = bus_num;
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LOOP;
+ 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
+ 	master->max_speed_hz = max_freq;
+-- 
+1.9.1

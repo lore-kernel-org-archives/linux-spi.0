@@ -1,57 +1,88 @@
-From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [PATCH v1 1/1] spi: pxa2xx: handle error of
- pxa2xx_spi_dma_prepare()
-Date: Wed, 20 Jan 2016 13:13:13 +0200
-Message-ID: <569F6BC9.5020804@linux.intel.com>
-References: <1450900200-120644-1-git-send-email-andriy.shevchenko@linux.intel.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Mans Rullgard <mans-2StjZFpD7GcAvxtiuMwx3w@public.gmane.org>
+Subject: [TROLL PATCH] spi: add option to create spidev nodes for unclaimed chip selects
+Date: Thu, 21 Jan 2016 16:36:09 +0000
+Message-ID: <1453394169-11458-1-git-send-email-mans@mansr.com>
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1450900200-120644-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 12/23/2015 09:50 PM, Andy Shevchenko wrote:
-> If by some reason pxa2xx_spi_dma_prepare() fails we have not to ignore its
-> error. In such case we abort the transfer and return the error to upper level.
->
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-> Cc: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-> ---
->   drivers/spi/spi-pxa2xx.c | 8 +++++++-
->   1 file changed, 7 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-> index 267a3a2..2e6915c 100644
-> --- a/drivers/spi/spi-pxa2xx.c
-> +++ b/drivers/spi/spi-pxa2xx.c
-> @@ -890,6 +890,7 @@ static void pump_transfers(unsigned long data)
->   	u32 dma_thresh = drv_data->cur_chip->dma_threshold;
->   	u32 dma_burst = drv_data->cur_chip->dma_burst_size;
->   	u32 change_mask = pxa2xx_spi_get_ssrc1_change_mask(drv_data);
-> +	int err;
->
->   	/* Get current state information */
->   	message = drv_data->cur_msg;
-> @@ -1024,7 +1025,12 @@ static void pump_transfers(unsigned long data)
->   		/* Ensure we have the correct interrupt handler */
->   		drv_data->transfer_handler = pxa2xx_spi_dma_transfer;
->
-> -		pxa2xx_spi_dma_prepare(drv_data, dma_burst);
-> +		err = pxa2xx_spi_dma_prepare(drv_data, dma_burst);
-> +		if (err) {
-> +			message->status = err;
-> +			giveback(drv_data);
-> +			return;
-> +		}
->
-Hmm, I've managed to read this patch but not acked it. Luckily noticed 
-it now.
+This adds an option to create spidev nodes for any chip selects not
+bound to a driver via DT/ACPI.  It probably doesn't play nicely with
+modules.
 
-Acked-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Signed-off-by: Mans Rullgard <mans-2StjZFpD7GcAvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/Kconfig |  4 ++++
+ drivers/spi/spi.c   | 29 +++++++++++++++++++++++++++++
+ 2 files changed, 33 insertions(+)
+
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 8b9c2a38d1cc..4977fc2fbb30 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -689,6 +689,10 @@ config SPI_SPIDEV
+ 	  Note that this application programming interface is EXPERIMENTAL
+ 	  and hence SUBJECT TO CHANGE WITHOUT NOTICE while it stabilizes.
+ 
++config SPI_SPIDEV_AUTO
++	bool "Create spidev nodes for unclaimed chip selects"
++	depends on SPI_SPIDEV
++
+ config SPI_TLE62X0
+ 	tristate "Infineon TLE62X0 (for power switching)"
+ 	depends on SYSFS
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index dee1cb87d24f..8c0294387e6d 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1654,6 +1654,34 @@ static void acpi_register_spi_devices(struct spi_master *master)
+ static inline void acpi_register_spi_devices(struct spi_master *master) {}
+ #endif /* CONFIG_ACPI */
+ 
++#ifdef CONFIG_SPI_SPIDEV_AUTO
++static void spidev_register_spi_devices(struct spi_master *master)
++{
++	struct spi_device *spi;
++	int err;
++	int i;
++
++	for (i = 0; i < master->num_chipselect; i++) {
++		spi = spi_alloc_device(master);
++		if (!spi)
++			return;
++
++		strlcpy(spi->modalias, "spidev", sizeof(spi->modalias));
++		spi->chip_select = i;
++
++		err = bus_for_each_dev(&spi_bus_type, NULL, spi, spi_dev_check);
++
++		if (!err)
++			err = spi_add_device(spi);
++
++		if (err)
++			spi_dev_put(spi);
++	}
++}
++#else
++static void spidev_register_spi_devices(struct spi_master *master) { }
++#endif
++
+ static void spi_master_release(struct device *dev)
+ {
+ 	struct spi_master *master;
+@@ -1849,6 +1877,7 @@ int spi_register_master(struct spi_master *master)
+ 	/* Register devices from the device tree and ACPI */
+ 	of_register_spi_devices(master);
+ 	acpi_register_spi_devices(master);
++	spidev_register_spi_devices(master);
+ done:
+ 	return status;
+ }
+-- 
+2.7.0
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

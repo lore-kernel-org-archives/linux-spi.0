@@ -1,56 +1,68 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH 2/2] spi/fsl-espi: Remove the address conversion operation
-Date: Fri, 22 Jan 2016 12:16:36 +0000
-Message-ID: <20160122121636.GW6588@sirena.org.uk>
+Date: Fri, 22 Jan 2016 17:02:42 +0000
+Message-ID: <20160122170242.GC6588@sirena.org.uk>
 References: <1453460307-9768-1-git-send-email-Zhiqiang.Hou@freescale.com>
  <1453460307-9768-2-git-send-email-Zhiqiang.Hou@freescale.com>
- <20160122112637.GU6588@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="1EkNNaW82TX7EOeM"
+	protocol="application/pgp-signature"; boundary="XvrhuzKSC4pLtZe9"
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
 	hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, Mingkai.Hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org,
 	Shaohui.Xie-KZfg59tc24xl57MIdRCFDg@public.gmane.org, Hou Zhiqiang <B48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 To: Zhiqiang Hou <Zhiqiang.Hou-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20160122112637.GU6588-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <1453460307-9768-2-git-send-email-Zhiqiang.Hou-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---1EkNNaW82TX7EOeM
+--XvrhuzKSC4pLtZe9
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 22, 2016 at 11:26:37AM +0000, Mark Brown wrote:
-> On Fri, Jan 22, 2016 at 06:58:27PM +0800, Zhiqiang Hou wrote:
-> > From: Hou Zhiqiang <B48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-> >=20
-> > The eSPI bus driver should not touch the protocol layer drivers'
-> > operations. It makes the eSPI driver isn't compatiable with devices
->=20
-> I don't seem to have patch 1.
+On Fri, Jan 22, 2016 at 06:58:27PM +0800, Zhiqiang Hou wrote:
 
-It turned up now.
+>  Tested on T1042D4RDB.
+>  This patch depend on patchset:
+>  http://patchwork.ozlabs.org/patch/551304/
+>  http://patchwork.ozlabs.org/patch/551308/
+>  http://patchwork.ozlabs.org/patch/551305/
+>  http://patchwork.ozlabs.org/patch/551306/
+>  http://patchwork.ozlabs.org/patch/551309/
+>  http://patchwork.ozlabs.org/patch/551307/
+>  http://patchwork.ozlabs.org/patch/551310/
+>  http://patchwork.ozlabs.org/patch/551311/
+>  and patch:
+>  http://patchwork.ozlabs.org/patch/571581/
 
---1EkNNaW82TX7EOeM
+This is a *very* large list of dependencies.  What exactly are these and
+what is the relationship between them and this patch?
+
+Please include human readable descriptions of things like commits and
+issues being discussed in e-mail in your mails, this makes them much
+easier for humans to read especially when they have no internet access.
+I do frequently catch up on my mail on flights or while otherwise
+travelling so this is even more pressing for me than just being about
+making things a bit easier to read.
+
+--XvrhuzKSC4pLtZe9
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJWoh2jAAoJECTWi3JdVIfQEn4H/2pmR/zT3AABSNQt4zuISKwR
-TWs6Vymx2tdnF/VLW4M7Vu6zDXjzTQHN0jz1o845ZPiYTmftk9ZyTy6kVBdoI5z1
-2QKskGMrkx1vJrbVPqZPZXfg1ZyzWLkShdr58Xo64RIqGNFZI3NIs663+LFBf2Y8
-cd98ibpCCs6bDLk5+KwY5o1tBcueR1F0UiVf93v8UrIdcRcJ/HEFD1J+02hXlcfV
-1iE8tszq6A4iw96bJqD0yEfjbx1YlCQ4OOhmhyfXl8mSLa4UXMGDySFIqRUfYDrC
-m8TnKP0NM2rwCsQocu5CevhbncTTVT1uHgADLq7SBtkzoA4jvC+Lv5CLbX0xxYU=
-=oTZa
+iQEcBAEBCAAGBQJWomCyAAoJECTWi3JdVIfQr6QH/2t9dt/XIFCOJBWOQYyd1n+u
+DYk8Kp/P9Lb7O1DErct3UbFzBDQuMGNqZuqJUdUlFuYirP9Ua3zZaPrY5sL4FIm5
+nuu5BOfCOQocepzI52T6r0Og5S5CW9ODKsk4n2G74fi8v2erND7DTa68de2NCsBJ
+EJVAxAB5BNI7MRIiXFVbsAXahkpXBKlVQPsCAg/UQuj8LO2Zjs02L8nPtJmI31kT
+2Q3dLM0G2Jwc/m1gN8RokAv40SGvJxhDhnO8658qt6IW4zn7smwWafwAsr33nlcQ
+gFinbNcf4/qdcedP/leD5P79Ftzzml3I/ihCdRKMMxMS/Y5B5sbfJni7Vfqcq8U=
+=gm5u
 -----END PGP SIGNATURE-----
 
---1EkNNaW82TX7EOeM--
+--XvrhuzKSC4pLtZe9--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,18 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: imx: fix spi resource leak with dma transfer" to the spi tree
-Date: Fri, 22 Jan 2016 18:27:10 +0000
-Message-ID: <E1aMgQQ-0004Io-Hc@debutante>
-References: <1453103041-23197-1-git-send-email-pandy.gao@nxp.com>
+Subject: Applied "spi/fsl-espi: Correct the maximum transaction length" to the spi tree
+Date: Fri, 22 Jan 2016 18:27:09 +0000
+Message-ID: <E1aMgQP-0004IK-KG@debutante>
+References: <1453460307-9768-1-git-send-email-Zhiqiang.Hou@freescale.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Hou Zhiqiang <B48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1453103041-23197-1-git-send-email-pandy.gao-3arQi8VN3Tc@public.gmane.org>
+In-Reply-To: <1453460307-9768-1-git-send-email-Zhiqiang.Hou-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: imx: fix spi resource leak with dma transfer
+   spi/fsl-espi: Correct the maximum transaction length
 
 has been applied to the spi tree at
 
@@ -37,56 +38,41 @@ to this mail.
 Thanks,
 Mark
 
->From f8efca2f1783050368c71e978ee32d3aa692637b Mon Sep 17 00:00:00 2001
-From: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
-Date: Mon, 18 Jan 2016 15:44:01 +0800
-Subject: [PATCH] spi: imx: fix spi resource leak with dma transfer
+>From 5cfa1e4e0deced0cccedb4b30facb8a8e68e209b Mon Sep 17 00:00:00 2001
+From: Hou Zhiqiang <B48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Date: Fri, 22 Jan 2016 18:58:26 +0800
+Subject: [PATCH] spi/fsl-espi: Correct the maximum transaction length
 
-In spi_imx_dma_transfer(), when desc_rx = dmaengine_prep_slave_sg()
-fails, the context goes to label no_dma and then return. However,
-the memory allocated for desc_tx has not been freed yet, which leads
-to resource leak.
+The maximum length during one transcation is 64KiB.
 
-Signed-off-by: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
-Reviewed-by: Fugang Duan <B38611-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Signed-off-by: Hou Zhiqiang <B48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-imx.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index d98c33cb64f9..6a4ff27f4357 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -929,7 +929,7 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 					tx->sgl, tx->nents, DMA_MEM_TO_DEV,
- 					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
- 		if (!desc_tx)
--			goto no_dma;
-+			goto tx_nodma;
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index 7fd6a4c009d2..7cb0c1921495 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -84,7 +84,7 @@ struct fsl_espi_transfer {
+ /* SPCOM register values */
+ #define SPCOM_CS(x)		((x) << 30)
+ #define SPCOM_TRANLEN(x)	((x) << 0)
+-#define	SPCOM_TRANLEN_MAX	0xFFFF	/* Max transaction length */
++#define	SPCOM_TRANLEN_MAX	0x10000	/* Max transaction length */
  
- 		desc_tx->callback = spi_imx_dma_tx_callback;
- 		desc_tx->callback_param = (void *)spi_imx;
-@@ -941,7 +941,7 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 					rx->sgl, rx->nents, DMA_DEV_TO_MEM,
- 					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
- 		if (!desc_rx)
--			goto no_dma;
-+			goto rx_nodma;
+ #define AUTOSUSPEND_TIMEOUT 2000
  
- 		desc_rx->callback = spi_imx_dma_rx_callback;
- 		desc_rx->callback_param = (void *)spi_imx;
-@@ -1008,7 +1008,9 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+@@ -233,7 +233,7 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	reinit_completion(&mpc8xxx_spi->done);
  
- 	return ret;
- 
--no_dma:
-+rx_nodma:
-+	dmaengine_terminate_all(master->dma_tx);
-+tx_nodma:
- 	pr_warn_once("%s %s: DMA not available, falling back to PIO\n",
- 		     dev_driver_string(&master->dev),
- 		     dev_name(&master->dev));
+ 	/* Set SPCOM[CS] and SPCOM[TRANLEN] field */
+-	if ((t->len - 1) > SPCOM_TRANLEN_MAX) {
++	if (t->len > SPCOM_TRANLEN_MAX) {
+ 		dev_err(mpc8xxx_spi->dev, "Transaction length (%d)"
+ 				" beyond the SPCOM[TRANLEN] field\n", t->len);
+ 		return -EINVAL;
 -- 
 2.7.0.rc3
 

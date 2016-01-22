@@ -1,100 +1,171 @@
-From: Caesar Wang <wxt-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Subject: [PATCH v7 9/9] spi: rockchip: modify DMA max burst to 1
-Date: Fri, 22 Jan 2016 19:06:52 +0800
-Message-ID: <1453460812-8498-10-git-send-email-wxt@rock-chips.com>
-References: <1453460812-8498-1-git-send-email-wxt@rock-chips.com>
-Cc: Sonny Rao <sonnyrao-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org,
-	dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Addy Ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-	Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>,
-	Caesar Wang <wxt-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>, Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+From: Zhiqiang Hou <Zhiqiang.Hou-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Subject: [PATCH 2/2] spi/fsl-espi: Remove the address conversion operation
+Date: Fri, 22 Jan 2016 18:58:27 +0800
+Message-ID: <1453460307-9768-2-git-send-email-Zhiqiang.Hou@freescale.com>
+References: <1453460307-9768-1-git-send-email-Zhiqiang.Hou@freescale.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+Cc: <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	<Mingkai.Hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, <Shaohui.Xie-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Hou Zhiqiang <B48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1453460812-8498-1-git-send-email-wxt-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+In-Reply-To: <1453460307-9768-1-git-send-email-Zhiqiang.Hou-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Addy Ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+From: Hou Zhiqiang <B48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 
-Generic dma controller on Rockchips' platform cannot support
-DMAFLUSHP instruction which make dma to flush the req of non-aligned
-or non-multiple of what we need. That will cause an unrecoverable
-dma bus error. The saftest way is to set dma max burst to 1.
+The eSPI bus driver should not touch the protocol layer drivers'
+operations. It makes the eSPI driver isn't compatiable with devices
+except 3-Byte addressing SPI flash. So, remove the address
+conversion operations to make it compatible for most SPI interface
+devices.
 
-Signed-off-by: Addy ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Fixes: 64e36824b32b06 ("spi/rockchip: add driver for Rockchip...")
-Signed-off-by: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-cc: Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>
-cc: Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>
-cc: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-cc: Sonny Rao <sonnyrao-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+The eSPI controller is able to transfer maxminum 64KiB each time.
+If the transaction length exceed the limited length, the eSPI
+controller driver will add the address by length of the last time
+transferred with assuming that the SPI flash address width is 3
+Bytes.
 
-Acked-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Signed-off-by: Caesar Wang <wxt-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+With this patch, if the transaction length exceed the limited
+length, it will truncate the transaction to max-length and return
+the actual length transferred.
 
+Signed-off-by: Hou Zhiqiang <B48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 ---
+ Tested on T1042D4RDB.
+ This patch depend on patchset:
+ http://patchwork.ozlabs.org/patch/551304/
+ http://patchwork.ozlabs.org/patch/551308/
+ http://patchwork.ozlabs.org/patch/551305/
+ http://patchwork.ozlabs.org/patch/551306/
+ http://patchwork.ozlabs.org/patch/551309/
+ http://patchwork.ozlabs.org/patch/551307/
+ http://patchwork.ozlabs.org/patch/551310/
+ http://patchwork.ozlabs.org/patch/551311/
+ and patch:
+ http://patchwork.ozlabs.org/patch/571581/
 
-Changes in v7: None
-Changes in v6:
-- remove quirks and get dma caps in order to limit burst
+ drivers/spi/spi-fsl-espi.c | 84 ++++++++++++----------------------------------
+ 1 file changed, 21 insertions(+), 63 deletions(-)
 
-Changes in v5: None
-Changes in v4: None
-Changes in v3: None
-Changes in v2: None
-Changes in v1: None
-
- drivers/spi/spi-rockchip.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 79a8bc4..aa9561f 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -199,6 +199,7 @@ struct rockchip_spi {
- 	struct sg_table rx_sg;
- 	struct rockchip_spi_dma_data dma_rx;
- 	struct rockchip_spi_dma_data dma_tx;
-+	struct dma_slave_caps dma_caps;
- };
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index 7cb0c19..66ebb02 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -253,23 +253,6 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	return mpc8xxx_spi->count;
+ }
  
- static inline void spi_enable_chip(struct rockchip_spi *rs, int enable)
-@@ -449,7 +450,10 @@ static void rockchip_spi_prepare_dma(struct rockchip_spi *rs)
- 		rxconf.direction = rs->dma_rx.direction;
- 		rxconf.src_addr = rs->dma_rx.addr;
- 		rxconf.src_addr_width = rs->n_bytes;
--		rxconf.src_maxburst = rs->n_bytes;
-+		if (rs->dma_caps.max_burst > 4)
-+			rxconf.src_maxburst = 4;
-+		else
-+			rxconf.src_maxburst = 1;
- 		dmaengine_slave_config(rs->dma_rx.ch, &rxconf);
+-static inline void fsl_espi_addr2cmd(unsigned int addr, u8 *cmd)
+-{
+-	if (cmd) {
+-		cmd[1] = (u8)(addr >> 16);
+-		cmd[2] = (u8)(addr >> 8);
+-		cmd[3] = (u8)(addr >> 0);
+-	}
+-}
+-
+-static inline unsigned int fsl_espi_cmd2addr(u8 *cmd)
+-{
+-	if (cmd)
+-		return cmd[1] << 16 | cmd[2] << 8 | cmd[3] << 0;
+-
+-	return 0;
+-}
+-
+ static void fsl_espi_do_trans(struct spi_message *m,
+ 				struct fsl_espi_transfer *tr)
+ {
+@@ -366,12 +349,9 @@ static void fsl_espi_rw_trans(struct spi_message *m,
+ 	struct spi_transfer *t;
+ 	u8 *local_buf;
+ 	u8 *rx_buf = rx_buff;
+-	unsigned int trans_len;
+-	unsigned int addr;
+-	unsigned int tx_only;
+-	unsigned int rx_pos = 0;
+-	unsigned int pos;
+-	int i, loop;
++	unsigned int trans_len = total_len;
++	unsigned int tx_only = 0;
++	int i = 0;
  
- 		rxdesc = dmaengine_prep_slave_sg(
-@@ -466,7 +470,10 @@ static void rockchip_spi_prepare_dma(struct rockchip_spi *rs)
- 		txconf.direction = rs->dma_tx.direction;
- 		txconf.dst_addr = rs->dma_tx.addr;
- 		txconf.dst_addr_width = rs->n_bytes;
--		txconf.dst_maxburst = rs->n_bytes;
-+		if (rs->dma_caps.max_burst > 4)
-+			txconf.dst_maxburst = 4;
-+		else
-+			txconf.dst_maxburst = 1;
- 		dmaengine_slave_config(rs->dma_tx.ch, &txconf);
- 
- 		txdesc = dmaengine_prep_slave_sg(
-@@ -730,6 +737,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 	local_buf = kzalloc(SPCOM_TRANLEN_MAX, GFP_KERNEL);
+ 	if (!local_buf) {
+@@ -379,51 +359,29 @@ static void fsl_espi_rw_trans(struct spi_message *m,
+ 		return;
  	}
  
- 	if (rs->dma_tx.ch && rs->dma_rx.ch) {
-+		dma_get_slave_caps(rs->dma_rx.ch, &(rs->dma_caps));
- 		rs->dma_tx.addr = (dma_addr_t)(mem->start + ROCKCHIP_SPI_TXDR);
- 		rs->dma_rx.addr = (dma_addr_t)(mem->start + ROCKCHIP_SPI_RXDR);
- 		rs->dma_tx.direction = DMA_MEM_TO_DEV;
+-	for (pos = 0, loop = 0; pos < total_len; pos += trans_len, loop++) {
+-		trans_len = total_len - pos;
+-
+-		i = 0;
+-		tx_only = 0;
+-		list_for_each_entry(t, &m->transfers, transfer_list) {
+-			if (t->tx_buf) {
+-				memcpy(local_buf + i, t->tx_buf, t->len);
+-				i += t->len;
+-				if (!t->rx_buf)
+-					tx_only += t->len;
+-			}
+-		}
+-
+-		/* Add additional TX bytes to compensate SPCOM_TRANLEN_MAX */
+-		if (loop > 0)
+-			trans_len += tx_only;
+-
+-		if (trans_len > SPCOM_TRANLEN_MAX)
+-			trans_len = SPCOM_TRANLEN_MAX;
+-
+-		/* Update device offset */
+-		if (pos > 0) {
+-			addr = fsl_espi_cmd2addr(local_buf);
+-			addr += rx_pos;
+-			fsl_espi_addr2cmd(addr, local_buf);
++	list_for_each_entry(t, &m->transfers, transfer_list) {
++		if (t->tx_buf) {
++			memcpy(local_buf + i, t->tx_buf, t->len);
++			i += t->len;
++			if (!t->rx_buf)
++				tx_only += t->len;
+ 		}
++	}
+ 
+-		espi_trans->len = trans_len;
+-		espi_trans->tx_buf = local_buf;
+-		espi_trans->rx_buf = local_buf;
+-		fsl_espi_do_trans(m, espi_trans);
++	if (trans_len > SPCOM_TRANLEN_MAX)
++		trans_len = SPCOM_TRANLEN_MAX;
+ 
+-		/* If there is at least one RX byte then copy it to rx_buf */
+-		if (tx_only < SPCOM_TRANLEN_MAX)
+-			memcpy(rx_buf + rx_pos, espi_trans->rx_buf + tx_only,
+-					trans_len - tx_only);
++	espi_trans->len = trans_len;
++	espi_trans->tx_buf = local_buf;
++	espi_trans->rx_buf = local_buf;
++	fsl_espi_do_trans(m, espi_trans);
+ 
+-		rx_pos += trans_len - tx_only;
++	/* If there is at least one RX byte then copy it to rx_buf */
++	if (tx_only < SPCOM_TRANLEN_MAX)
++		memcpy(rx_buf, espi_trans->rx_buf + tx_only,
++				trans_len - tx_only);
+ 
+-		if (loop > 0)
+-			espi_trans->actual_length += espi_trans->len - tx_only;
+-		else
+-			espi_trans->actual_length += espi_trans->len;
+-	}
++	espi_trans->actual_length += espi_trans->len;
+ 
+ 	kfree(local_buf);
+ }
 -- 
-1.9.1
+2.1.0.27.g96db324
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

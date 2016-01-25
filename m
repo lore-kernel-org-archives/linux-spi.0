@@ -1,62 +1,98 @@
-From: =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
-Subject: Re: [PATCH 03/15] dmaengine: dw: rename masters to reflect actual topology
-Date: Sun, 24 Jan 2016 22:38:57 +0000
-Message-ID: <yw1xk2myli0u.fsf@unicorn.mansr.com>
-References: <1453663322-14474-1-git-send-email-mans@mansr.com>
-	<1453663322-14474-4-git-send-email-mans@mansr.com>
-	<20160124223629.GI6588@sirena.org.uk>
+From: Zhiqiang Hou <zhiqiang.hou-3arQi8VN3Tc@public.gmane.org>
+Subject: RE: [PATCH 2/2] spi/fsl-espi: Remove the address conversion operation
+Date: Mon, 25 Jan 2016 05:47:33 +0000
+Message-ID: <HE1PR04MB090646FAE865004A1AD64E9184C70@HE1PR04MB0906.eurprd04.prod.outlook.com>
+References: <1453460307-9768-1-git-send-email-Zhiqiang.Hou@freescale.com>
+ <1453460307-9768-2-git-send-email-Zhiqiang.Hou@freescale.com>
+ <20160122170242.GC6588@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Viresh Kumar <vireshk@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Vinod Koul <vinod.koul@intel.com>,
-	linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
-	Rob Herring <robh+dt@kernel.org>,
-	Pawel Moll <pawel.moll@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Ian Campbell <ijc+devicetree@hellion.org.uk>,
-	Kumar Gala <galak@codeaurora.org>,
-	Haavard Skinnemoen <hskinnemoen@gmail.com>,
-	Hans-Christian Egtvedt <egtvedt@samfundet.no>,
-	Tejun Heo <tj@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jslaby@suse.com>, devicetree@vger.kernel.org,
-	linux-ide@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-spi@vger.kernel.org, linux-serial@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-ide-owner@vger.kernel.org>
-In-Reply-To: <20160124223629.GI6588@sirena.org.uk> (Mark Brown's message of
-	"Sun, 24 Jan 2016 22:36:29 +0000")
-Sender: linux-ide-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"Mingkai.Hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org" <Mingkai.Hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	"Shaohui.Xie-KZfg59tc24xl57MIdRCFDg@public.gmane.org" <Shaohui.Xie-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Hou Zhiqiang <B48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Zhiqiang Hou <Zhiqiang.Hou-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20160122170242.GC6588-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Language: en-US
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Mark Brown <broonie@kernel.org> writes:
-
-> On Sun, Jan 24, 2016 at 07:21:50PM +0000, Mans Rullgard wrote:
->> From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->>=20
->> The source and destination masters are reflecting buses or their lay=
-ers to
->> where the different devices can be connected. The patch changes the =
-master
->> names to reflect which one is related to which independently on the =
-transfer
->> direction.
->
-> This is patch 3 of a series but I don't have anything else in the
-> series.  What is going on with the rest of the series - what are the
-> dependencies and so on?
-
-I give up.  Seriously, this is impossible.  If I don't include everybod=
-y
-in the slightest way related to any patch in the series, I get
-complaints that patches are missing.  If I do, the lists reject it all
-due to too many recipients.  What the hell am I supposed to do?
-
---=20
-M=E5ns Rullg=E5rd
+SGkgTWFyaywNCg0KVGhhbmtzIGZvciB5b3VyIGNvbW1lbnRzIQ0KDQo+IC0tLS0tT3JpZ2luYWwg
+TWVzc2FnZS0tLS0tDQo+IEZyb206IE1hcmsgQnJvd24gW21haWx0bzpicm9vbmllQGtlcm5lbC5v
+cmddDQo+IFNlbnQ6IDIwMTbE6jHUwjIzyNUgMTowMw0KPiBUbzogWmhpcWlhbmcgSG91IDxaaGlx
+aWFuZy5Ib3VAZnJlZXNjYWxlLmNvbT4NCj4gQ2M6IGxpbnV4LXNwaUB2Z2VyLmtlcm5lbC5vcmc7
+IGNvbXB1dGVyc2ZvcnBlYWNlQGdtYWlsLmNvbTsNCj4gaHJhbXJhY2hAZ21haWwuY29tOyBNaW5n
+a2FpLkh1QGZyZWVzY2FsZS5jb207IFNoYW9odWkuWGllQGZyZWVzY2FsZS5jb207DQo+IEhvdSBa
+aGlxaWFuZyA8QjQ4Mjg2QGZyZWVzY2FsZS5jb20+DQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggMi8y
+XSBzcGkvZnNsLWVzcGk6IFJlbW92ZSB0aGUgYWRkcmVzcyBjb252ZXJzaW9uIG9wZXJhdGlvbg0K
+PiANCj4gT24gRnJpLCBKYW4gMjIsIDIwMTYgYXQgMDY6NTg6MjdQTSArMDgwMCwgWmhpcWlhbmcg
+SG91IHdyb3RlOg0KPiANCj4gPiAgVGVzdGVkIG9uIFQxMDQyRDRSREIuDQo+ID4gIFRoaXMgcGF0
+Y2ggZGVwZW5kIG9uIHBhdGNoc2V0Og0KPiA+ICBodHRwOi8vcGF0Y2h3b3JrLm96bGFicy5vcmcv
+cGF0Y2gvNTUxMzA0Lw0KDQpwYXRjaCB0aXRsZTogW3Y2LDAxLzEwXSBtdGQ6IHNwaS1ub3I6IGNo
+YW5nZSByZXR1cm4gdmFsdWUgb2YgcmVhZC93cml0ZQ0KQ2hhbmdlIHRoZSByZXR1cm4gdmFsdWUg
+b2Ygc3BpLW5vciBkZXZpY2UgcmVhZCBhbmQgd3JpdGUgbWV0aG9kcyB0bw0KYWxsb3cgcmV0dXJu
+aW5nIGFtb3VudCBvZiBkYXRhIHRyYW5zZmVycmVkIGFuZCBlcnJvcnMgYXMNCnJlYWQoMikvd3Jp
+dGUoMikgZG9lcy4NCg0KPiA+ICBodHRwOi8vcGF0Y2h3b3JrLm96bGFicy5vcmcvcGF0Y2gvNTUx
+MzA4L1tdIA0KDQpwYXRjaCB0aXRsZTogW3Y2LDAyLzEwXSBtdGQ6IG0yNXA4MDogcmV0dXJuIGFt
+b3VudCBvZiBkYXRhIHRyYW5zZmVycmVkIG9yIGVycm9yIGluIHJlYWQvd3JpdGUNCkFkZCBjaGVj
+a2luZyBvZiBTUEkgdHJhbnNmZXIgZXJyb3JzIGFuZCByZXR1cm4gdGhlbSBmcm9tIHJlYWQvd3Jp
+dGUNCmZ1bmN0aW9ucy4gQWxzbyByZXR1cm4gdGhlIGFtb3VudCBvZiBkYXRhIHRyYW5zZmVycmVk
+Lg0KDQo+ID4gIGh0dHA6Ly9wYXRjaHdvcmsub3psYWJzLm9yZy9wYXRjaC81NTEzMDUvDQoNCnBh
+dGNoIHRpdGxlOiBbdjYsMDMvMTBdIG10ZDogZnNsLXF1YWRzcGk6IHJldHVybiBhbW91bnQgb2Yg
+ZGF0YSByZWFkL3dyaXR0ZW4gb3IgZXJyb3INClJldHVybiBhbW91bnQgb2YgZGF0YSByZWFkL3dy
+aXR0ZW4gb3IgZXJyb3IgYXMgcmVhZCgyKS93cml0ZSgyKSBkb2VzLg0KDQo+ID4gIGh0dHA6Ly9w
+YXRjaHdvcmsub3psYWJzLm9yZy9wYXRjaC81NTEzMDYvDQoNCnBhdGNoIHRpdGxlOiBbdjYsMDQv
+MTBdIG10ZDogc3BpLW5vcjogY2hlY2sgcmV0dXJuIHZhbHVlIGZyb20gcmVhZC93cml0ZQ0KU1BJ
+IE5PUiBoYXJkd2FyZSBkcml2ZXJzIG5vdyByZXR1cm4gdXNlZnVsIHZhbHVlIGZyb20gdGhlaXIg
+cmVhZC93cml0ZQ0KZnVuY3Rpb25zIHNvIGNoZWNrIHRoZW0uDQoNCj4gPiAgaHR0cDovL3BhdGNo
+d29yay5vemxhYnMub3JnL3BhdGNoLzU1MTMwOS8NCg0KcGF0Y2ggdGl0bGU6IFt2NiwwNS8xMF0g
+bXRkOiBzcGktbm9yOiBzdG9wIHBhc3NpbmcgYXJvdW5kIHJldGxlbg0KRG8gbm90IHBhc3MgcmV0
+bGVuIHRvIGhhcmR3YXJlIGRyaXZlciByZWFkL3dyaXRlIGZ1bmN0aW9ucy4gVXBkYXRlIGl0IGlu
+DQpzcGktbm9yIGdlbmVyaWMgZHJpdmVyIGluc3RlYWQuDQoNCj4gPiAgaHR0cDovL3BhdGNod29y
+ay5vemxhYnMub3JnL3BhdGNoLzU1MTMwNy8NCg0KcGF0Y2ggdGl0bGU6IFt2NiwwNi8xMF0gbXRk
+OiBzcGktbm9yOiBzaW1wbGlmeSB3cml0ZSBsb29wDQpUaGUgc3BpLW5vciB3cml0ZSBsb29wIGFz
+c3VtZXMgdGhhdCB3aGF0IGlzIHBhc3NlZCB0byB0aGUgaGFyZHdhcmUNCmRyaXZlciB3cml0ZSgp
+IGlzIHdoYXQgZ2V0cyB3cml0dGVuLg0KDQpXaGVuIHdyaXRlKCkgd3JpdGVzIGxlc3MgdGhhbiBw
+YWdlIHNpemUgYXQgb25jZSBkYXRhIGlzIGRyb3BwZWQgb24gdGhlDQpmbG9vci4gQ2hlY2sgdGhl
+IGFtb3VudCBvZiBkYXRhIHdyaXRlbiBhbmQgZXhpdCBpZiBpdCBkb2VzIG5vdCBtYXRjaA0KcmVx
+dWVzdGVkIGFtb3VudC4NCg0KPiA+ICBodHRwOi8vcGF0Y2h3b3JrLm96bGFicy5vcmcvcGF0Y2gv
+NTUxMzEwLw0KDQpwYXRjaCB0aXRsZTogW3Y2LDA3LzEwXSBtdGQ6IHNwaS1ub3I6IGFkZCByZWFk
+IGxvb3ANCm10ZGJsb2NrIGFuZCB1YmkgZG8gbm90IGhhbmRsZSB0aGUgc2l0dWF0aW9uIHdoZW4g
+cmVhZCByZXR1cm5zIGxlc3MgZGF0YQ0KdGhhbiByZXF1ZXN0ZWQuIExvb3AgaW4gc3BpLW5vciB1
+bnRpbCBidWZmZXIgaXMgZmlsbGVkIG9yIGFuIGVycm9yIGlzDQpyZXR1cm5lZC4NCg0KPiA+ICBo
+dHRwOi8vcGF0Y2h3b3JrLm96bGFicy5vcmcvcGF0Y2gvNTUxMzExL1tdIA0KDQpwYXRjaCB0aXRs
+ZTogW3Y2LDEwLzEwXSBtdGQ6IG0yNXA4MDogcmVhZCBpbiBzcGlfbWF4X3RyYW5zZmVyX3NpemUg
+Y2h1bmtzDQpUYWtlIGludG8gYWNjb3VudCB0cmFuc2ZlciBzaXplIGxpbWl0YXRpb24gb2YgU1BJ
+IG1hc3Rlci4NCiANClRob3NlIGlzIGEgcGF0Y2hzZXQgdGhhdCBoYXMgMTAgcGF0Y2hlcyBhbmQg
+MiBvZiB0aGVtIGhhcyBiZWVuIG1lcmdlZCwNCnNvIEkgcGFzdGVkIHRoZSByZW1uYW50IGFzIHRo
+ZSBkZXBlbmRlbmNlLg0KDQpUaGUgcGF0Y2ggW3Y2LDAzLzEwXSBtdGQ6IGZzbC1xdWFkc3BpOiBy
+ZXR1cm4gYW1vdW50IG9mIGRhdGEgcmVhZC93cml0dGVuIG9yIGVycm9yDQphbmQgW3Y2LDA2LzEw
+XSBtdGQ6IHNwaS1ub3I6IHNpbXBsaWZ5IHdyaXRlIGxvb3AgaXMgbm90IGRlcGVuZGVkLg0KVGhl
+IG90aGVycyBvZiB0aGlzIHBhdGNoc2V0IGlzIGRlcGVuZGVkLCBhcyB0aGUgcmVtb3ZlZCBwcm90
+b2NvbCBsYXllcidzIG9wZXJhdGlvbnMNCmZyb20gZVNQSSBjb250cm9sbGVyIGRyaXZlciB3ZXJl
+IGhhbmRsZWQgYnkgdGhpcyBwYXRjaHNldC4NCg0KPiA+ICBhbmQgcGF0Y2g6DQo+ID4gIGh0dHA6
+Ly9wYXRjaHdvcmsub3psYWJzLm9yZy9wYXRjaC81NzE1ODEvDQoNCnBhdGNoIHRpdGxlOiBkdHMv
+ZnNsL3Bvd2VycGM6IGFkZCAiamVkZWMsIHNwaS1ub3IiIGZsYXNoIGNvbXBhdGlibGUgYmluZGlu
+Zw0KVGhpcyBwYXRjaCBpcyBub3QgYSBjb2RlIGRlcGVuZGVuY3kgYnV0IHRlc3QgbmVlZCwgdXBv
+biB0aGUgbGF0ZXN0IGNvZGUgYmFzZSB0aGUNCm0yNXA4MCBkcml2ZXIgd2lsbCBmYWlsZWQgdG8g
+cHJvYmUsIEkgYWRkZWQgdGhpcyBwYXRjaCB0byBtYWtlIG90aGVycyBjYW4gcmVwcm9kdWNlDQp0
+aGUgdGVzdC4gDQoNCj4gDQo+IFRoaXMgaXMgYSAqdmVyeSogbGFyZ2UgbGlzdCBvZiBkZXBlbmRl
+bmNpZXMuICBXaGF0IGV4YWN0bHkgYXJlIHRoZXNlIGFuZCB3aGF0IGlzIHRoZQ0KPiByZWxhdGlv
+bnNoaXAgYmV0d2VlbiB0aGVtIGFuZCB0aGlzIHBhdGNoPw0KPiANCj4gUGxlYXNlIGluY2x1ZGUg
+aHVtYW4gcmVhZGFibGUgZGVzY3JpcHRpb25zIG9mIHRoaW5ncyBsaWtlIGNvbW1pdHMgYW5kIGlz
+c3VlcyBiZWluZw0KPiBkaXNjdXNzZWQgaW4gZS1tYWlsIGluIHlvdXIgbWFpbHMsIHRoaXMgbWFr
+ZXMgdGhlbSBtdWNoIGVhc2llciBmb3IgaHVtYW5zIHRvIHJlYWQNCj4gZXNwZWNpYWxseSB3aGVu
+IHRoZXkgaGF2ZSBubyBpbnRlcm5ldCBhY2Nlc3MuDQo+IEkgZG8gZnJlcXVlbnRseSBjYXRjaCB1
+cCBvbiBteSBtYWlsIG9uIGZsaWdodHMgb3Igd2hpbGUgb3RoZXJ3aXNlIHRyYXZlbGxpbmcgc28g
+dGhpcw0KPiBpcyBldmVuIG1vcmUgcHJlc3NpbmcgZm9yIG1lIHRoYW4ganVzdCBiZWluZyBhYm91
+dCBtYWtpbmcgdGhpbmdzIGEgYml0IGVhc2llciB0bw0KPiByZWFkLg0KDQp5ZXMsIHRoYW5rcyBm
+b3IgeW91ciBhZHZpY2UuDQoNClRoYW5rcywNClpoaXFpYW5nDQo=
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,102 +1,96 @@
-From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH 1/4] spi: Let drivers translate ACPI DeviceSelection to suitable Linux chip select
-Date: Tue, 26 Jan 2016 13:18:28 +0200
-Message-ID: <1453807111-103111-2-git-send-email-mika.westerberg@linux.intel.com>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 2/4] spi: pxa2xx: Translate ACPI DeviceSelection to Linux chip select on Baytrail
+Date: Tue, 26 Jan 2016 13:18:29 +0200
+Message-ID: <1453807111-103111-3-git-send-email-mika.westerberg@linux.intel.com>
 References: <1453807111-103111-1-git-send-email-mika.westerberg@linux.intel.com>
-Cc: Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Bastien Nocera <bugzilla-0MeiytkfxGOsTnJN9+BGXg@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1453807111-103111-1-git-send-email-mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Bastien Nocera <bugzilla@hadess.net>,
+	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-acpi-owner@vger.kernel.org>
+In-Reply-To: <1453807111-103111-1-git-send-email-mika.westerberg@linux.intel.com>
+Sender: linux-acpi-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-In Windows it is up to the SPI host controller driver to handle the ACPI
-DeviceSelection as it likes. The SPI core does not take any part in it.
-This is different in Linux because we always expect to have chip select in
-range of 0 .. master->num_chipselect - 1.
+The Windows Baytrail SPI host controller driver uses 1 as the first (and
+only) value for ACPI DeviceSelection like can be seen in DSDT taken from
+Lenovo Thinkpad 10:
 
-In order to support this in Linux we need a way to allow the driver to
-translate between ACPI DeviceSelection field and Linux chip select number
-so provide a new optional hook ->fw_translate_cs() that can be used by a
-driver to handle translation and call this hook if set during SPI slave
-ACPI enumeration.
+    Device (FPNT)
+    {
+        ...
+        Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
+        {
+            Name (UBUF, ResourceTemplate ()
+            {
+                SpiSerialBus (0x0001, // DeviceSelection
+                    PolarityLow, FourWireMode, 0x08,
+                    ControllerInitiated, 0x007A1200, ClockPolarityLow,
+                    ClockPhaseFirst, "\\_SB.SPI1",
+                    0x00, ResourceConsumer,,)
 
-Signed-off-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+This will fail to enumerate in Linux with following error:
+
+[    0.241296] pxa2xx-spi 80860F0E:00: cs1 >= max 1
+[    0.241312] spi_master spi32766: failed to add SPI device VFSI6101:00 from ACPI
+
+To make the Linux SPI core successfully enumerate the device we provide a
+custom version of ->fw_translate_cs() that translates DeviceSelection
+correctly.
+
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 ---
- drivers/spi/spi.c       | 19 ++++++++++++++++++-
- include/linux/spi/spi.h |  5 +++++
- 2 files changed, 23 insertions(+), 1 deletion(-)
+ drivers/spi/spi-pxa2xx.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 47eff8012a77..2c0c26a57f03 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1581,13 +1581,30 @@ static void of_register_spi_devices(struct spi_master *master) { }
- static int acpi_spi_add_resource(struct acpi_resource *ares, void *data)
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index ab9914ad8365..baa98365a490 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1328,11 +1328,30 @@ static int pxa2xx_spi_get_port_id(struct acpi_device *adev)
+ 		port_id = devid;
+ 	return port_id;
+ }
++
++static int pxa2xx_spi_fw_translate_cs(struct spi_master *master, unsigned cs)
++{
++	struct driver_data *drv_data = spi_master_get_devdata(master);
++
++	switch (drv_data->ssp_type) {
++	/*
++	 * For Atoms the Windows driver starts enumerating chip selects
++	 * from 1 instead of 0 so translate it here to match what Linux
++	 * expects.
++	 */
++	case LPSS_BYT_SSP:
++		return cs - 1;
++
++	default:
++		return cs;
++	}
++}
+ #else /* !CONFIG_ACPI */
+ static int pxa2xx_spi_get_port_id(struct acpi_device *adev)
  {
- 	struct spi_device *spi = data;
-+	struct spi_master *master = spi->master;
+ 	return -1;
+ }
++#define pxa2xx_spi_fw_translate_cs	NULL
+ #endif
  
- 	if (ares->type == ACPI_RESOURCE_TYPE_SERIAL_BUS) {
- 		struct acpi_resource_spi_serialbus *sb;
+ /*
+@@ -1490,6 +1509,7 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+ 	master->setup = setup;
+ 	master->transfer_one_message = pxa2xx_spi_transfer_one_message;
+ 	master->unprepare_transfer_hardware = pxa2xx_spi_unprepare_transfer;
++	master->fw_translate_cs = pxa2xx_spi_fw_translate_cs;
+ 	master->auto_runtime_pm = true;
  
- 		sb = &ares->data.spi_serial_bus;
- 		if (sb->type == ACPI_RESOURCE_SERIAL_TYPE_SPI) {
--			spi->chip_select = sb->device_selection;
-+			/*
-+			 * ACPI DeviceSelection numbering is handled by the
-+			 * host controller driver in Windows and can vary
-+			 * from driver to driver. In Linux we always expect
-+			 * 0 .. max - 1 so we need to ask the driver to
-+			 * translate between the two schemes.
-+			 */
-+			if (master->fw_translate_cs) {
-+				int cs = master->fw_translate_cs(master,
-+						sb->device_selection);
-+				if (cs < 0)
-+					return cs;
-+				spi->chip_select = cs;
-+			} else {
-+				spi->chip_select = sb->device_selection;
-+			}
-+
- 			spi->max_speed_hz = sb->connection_speed;
- 
- 			if (sb->clock_phase == ACPI_SPI_SECOND_PHASE)
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 53be3a4c60cb..8a25e6c2fb56 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -369,6 +369,9 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
-  * @dma_rx: DMA receive channel
-  * @dummy_rx: dummy receive buffer for full-duplex devices
-  * @dummy_tx: dummy transmit buffer for full-duplex devices
-+ * @fw_translate_cs: If the boot firmware uses different numbering scheme
-+ *	what Linux expects, this optional hook can be used to translate
-+ *	between the two.
-  *
-  * Each SPI master controller can communicate with one or more @spi_device
-  * children.  These make a small bus, sharing MOSI, MISO and SCK signals
-@@ -537,6 +540,8 @@ struct spi_master {
- 	/* dummy data for full duplex devices */
- 	void			*dummy_rx;
- 	void			*dummy_tx;
-+
-+	int (*fw_translate_cs)(struct spi_master *master, unsigned cs);
- };
- 
- static inline void *spi_master_get_devdata(struct spi_master *master)
+ 	drv_data->ssp_type = ssp->type;
 -- 
 2.7.0.rc3
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

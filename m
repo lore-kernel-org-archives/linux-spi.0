@@ -1,77 +1,89 @@
-From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH] spi: pxa2xx: Print actual DMA/PIO transfer mode in debug messages
-Date: Tue, 26 Jan 2016 15:33:21 +0200
-Message-ID: <1453815201-3178-1-git-send-email-jarkko.nikula@linux.intel.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi: atmel: fix handling of cs_change set on non-last
+ xfer
+Date: Tue, 26 Jan 2016 18:01:01 +0100
+Message-ID: <56A7A64D.1070601@atmel.com>
+References: <1453080351-29593-1-git-send-email-mans@mansr.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mans Rullgard <mans-2StjZFpD7GcAvxtiuMwx3w@public.gmane.org>,
+	"Yang, Wenyou" <Wenyou.Yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1453080351-29593-1-git-send-email-mans-2StjZFpD7GcAvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Transfer debug messages don't actually show is the transfer really using
-DMA. Driver may fall back to PIO in case transfer size is not within the
-certain limits or fails to map DMA buffers but debug messages don't reveal
-that.
+Le 18/01/2016 02:25, Mans Rullgard a =E9crit :
+> The driver does the wrong thing when cs_change is set on a non-last
+> xfer in a message.  When cs_change is set, the driver deactivates the
+> CS and leaves it off until a later xfer again has cs_change set where=
+as
+> it should be briefly toggling CS off and on again.
+>=20
+> This patch brings the behaviour of the driver back in line with the
+> documentation and common sense.  The delay of 10 us is the same as is
+> used by the default spi_transfer_one_message() function in spi.c.
+>=20
+> Fixes: 8090d6d1a415 ("spi: atmel: Refactor spi-atmel to use SPI frame=
+work queue")
+> Signed-off-by: Mans Rullgard <mans-2StjZFpD7GcAvxtiuMwx3w@public.gmane.org>
 
-Move these debug messages further in pump_transfers() where the actual
-transfer mode is known and use drv_data->dma_mapped flag instead of
-chip->enable_dma for printing the mode.
+Hi Mans,
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
----
- drivers/spi/spi-pxa2xx.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+Yes, it seems to be a sensible thing to do:
+Acked-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index ab9914ad8365..227e8bad19e6 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1001,19 +1001,6 @@ static void pump_transfers(unsigned long data)
- 					     "pump_transfers: DMA burst size reduced to match bits_per_word\n");
- 	}
- 
--	/* NOTE:  PXA25x_SSP _could_ use external clocking ... */
--	cr0 = pxa2xx_configure_sscr0(drv_data, clk_div, bits);
--	if (!pxa25x_ssp_comp(drv_data))
--		dev_dbg(&message->spi->dev, "%u Hz actual, %s\n",
--			drv_data->master->max_speed_hz
--				/ (1 + ((cr0 & SSCR0_SCR(0xfff)) >> 8)),
--			chip->enable_dma ? "DMA" : "PIO");
--	else
--		dev_dbg(&message->spi->dev, "%u Hz actual, %s\n",
--			drv_data->master->max_speed_hz / 2
--				/ (1 + ((cr0 & SSCR0_SCR(0x0ff)) >> 8)),
--			chip->enable_dma ? "DMA" : "PIO");
--
- 	message->state = RUNNING_STATE;
- 
- 	drv_data->dma_mapped = 0;
-@@ -1040,6 +1027,19 @@ static void pump_transfers(unsigned long data)
- 		write_SSSR_CS(drv_data, drv_data->clear_sr);
- 	}
- 
-+	/* NOTE:  PXA25x_SSP _could_ use external clocking ... */
-+	cr0 = pxa2xx_configure_sscr0(drv_data, clk_div, bits);
-+	if (!pxa25x_ssp_comp(drv_data))
-+		dev_dbg(&message->spi->dev, "%u Hz actual, %s\n",
-+			drv_data->master->max_speed_hz
-+				/ (1 + ((cr0 & SSCR0_SCR(0xfff)) >> 8)),
-+			drv_data->dma_mapped ? "DMA" : "PIO");
-+	else
-+		dev_dbg(&message->spi->dev, "%u Hz actual, %s\n",
-+			drv_data->master->max_speed_hz / 2
-+				/ (1 + ((cr0 & SSCR0_SCR(0x0ff)) >> 8)),
-+			drv_data->dma_mapped ? "DMA" : "PIO");
-+
- 	if (is_lpss_ssp(drv_data)) {
- 		if ((pxa2xx_spi_read(drv_data, SSIRF) & 0xff)
- 		    != chip->lpss_rx_threshold)
--- 
-2.7.0.rc3
+Thanks, best regards.
 
+> ---
+>  drivers/spi/spi-atmel.c | 10 +++-------
+>  1 file changed, 3 insertions(+), 7 deletions(-)
+>=20
+> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+> index aebad36391c9..4b8ccf1f897e 100644
+> --- a/drivers/spi/spi-atmel.c
+> +++ b/drivers/spi/spi-atmel.c
+> @@ -315,7 +315,6 @@ struct atmel_spi {
+>  	struct atmel_spi_dma	dma;
+> =20
+>  	bool			keep_cs;
+> -	bool			cs_active;
+> =20
+>  	u32			fifo_size;
+>  };
+> @@ -1406,11 +1405,9 @@ static int atmel_spi_one_transfer(struct spi_m=
+aster *master,
+>  				 &msg->transfers)) {
+>  			as->keep_cs =3D true;
+>  		} else {
+> -			as->cs_active =3D !as->cs_active;
+> -			if (as->cs_active)
+> -				cs_activate(as, msg->spi);
+> -			else
+> -				cs_deactivate(as, msg->spi);
+> +			cs_deactivate(as, msg->spi);
+> +			udelay(10);
+> +			cs_activate(as, msg->spi);
+>  		}
+>  	}
+> =20
+> @@ -1433,7 +1430,6 @@ static int atmel_spi_transfer_one_message(struc=
+t spi_master *master,
+>  	atmel_spi_lock(as);
+>  	cs_activate(as, spi);
+> =20
+> -	as->cs_active =3D true;
+>  	as->keep_cs =3D false;
+> =20
+>  	msg->status =3D 0;
+>=20
+
+
+--=20
+Nicolas Ferre
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

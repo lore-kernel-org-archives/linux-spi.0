@@ -1,7 +1,7 @@
 From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH 4/4] spi: pxa2xx: Add support for both chip selects on Intel Braswell
-Date: Tue, 26 Jan 2016 13:18:31 +0200
-Message-ID: <1453807111-103111-5-git-send-email-mika.westerberg@linux.intel.com>
+Subject: [PATCH 3/4] spi: pxa2xx: Move chip select control bits into lpss_config structure
+Date: Tue, 26 Jan 2016 13:18:30 +0200
+Message-ID: <1453807111-103111-4-git-send-email-mika.westerberg@linux.intel.com>
 References: <1453807111-103111-1-git-send-email-mika.westerberg@linux.intel.com>
 Cc: Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
 	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
@@ -17,106 +17,125 @@ In-Reply-To: <1453807111-103111-1-git-send-email-mika.westerberg-VuQAYsv1563Yd54
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Intel Braswell LPSS SPI controller actually has two chip selects and there
-is no capabilities register where this could be found out. These two chip
-selects are controlled by bits which are in slightly differrent location
-than Broxton has.
+Some Intel LPSS SPI controllers, like the one in Braswell has these bits in
+a different location so move these bits to be part of the LPSS
+configuration.
 
-Braswell Windows driver also starts chip select (ACPI DeviceSelection)
-numbering from 1 so translate it to be suitable for Linux as well.
+Since not all LPSS SPI controllers support multiple native chip selects we
+refactor selecting chip select to its own function and check
+control->cs_sel_mask before switching to another chip select.
 
 Signed-off-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 ---
- drivers/spi/spi-pxa2xx.c   | 21 ++++++++++++++++++++-
- include/linux/pxa2xx_ssp.h |  1 +
- 2 files changed, 21 insertions(+), 1 deletion(-)
+ drivers/spi/spi-pxa2xx.c | 65 ++++++++++++++++++++++++++++++------------------
+ 1 file changed, 41 insertions(+), 24 deletions(-)
 
 diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index d6a7855cf148..e05d0dc2eb11 100644
+index baa98365a490..d6a7855cf148 100644
 --- a/drivers/spi/spi-pxa2xx.c
 +++ b/drivers/spi/spi-pxa2xx.c
-@@ -83,6 +83,7 @@ struct lpss_config {
- 	/* Chip select control */
- 	unsigned cs_sel_shift;
- 	unsigned cs_sel_mask;
-+	unsigned cs_num;
+@@ -65,8 +65,6 @@ MODULE_ALIAS("platform:pxa2xx-spi");
+ #define LPSS_GENERAL_REG_RXTO_HOLDOFF_DISABLE	BIT(24)
+ #define LPSS_CS_CONTROL_SW_MODE			BIT(0)
+ #define LPSS_CS_CONTROL_CS_HIGH			BIT(1)
+-#define LPSS_CS_CONTROL_CS_SEL_SHIFT		8
+-#define LPSS_CS_CONTROL_CS_SEL_MASK		(3 << LPSS_CS_CONTROL_CS_SEL_SHIFT)
+ #define LPSS_CAPS_CS_EN_SHIFT			9
+ #define LPSS_CAPS_CS_EN_MASK			(0xf << LPSS_CAPS_CS_EN_SHIFT)
+ 
+@@ -82,6 +80,9 @@ struct lpss_config {
+ 	u32 rx_threshold;
+ 	u32 tx_threshold_lo;
+ 	u32 tx_threshold_hi;
++	/* Chip select control */
++	unsigned cs_sel_shift;
++	unsigned cs_sel_mask;
  };
  
  /* Keep these sorted with enum pxa_ssp_type */
-@@ -107,6 +108,19 @@ static const struct lpss_config lpss_platforms[] = {
- 		.tx_threshold_lo = 160,
- 		.tx_threshold_hi = 224,
+@@ -125,6 +126,8 @@ static const struct lpss_config lpss_platforms[] = {
+ 		.rx_threshold = 1,
+ 		.tx_threshold_lo = 16,
+ 		.tx_threshold_hi = 48,
++		.cs_sel_shift = 8,
++		.cs_sel_mask = 3 << 8,
  	},
-+	{	/* LPSS_BSW_SSP */
-+		.offset = 0x400,
-+		.reg_general = 0x08,
-+		.reg_ssp = 0x0c,
-+		.reg_cs_ctrl = 0x18,
-+		.reg_capabilities = -1,
-+		.rx_threshold = 64,
-+		.tx_threshold_lo = 160,
-+		.tx_threshold_hi = 224,
-+		.cs_sel_shift = 2,
-+		.cs_sel_mask = 1 << 2,
-+		.cs_num = 2,
-+	},
- 	{	/* LPSS_SPT_SSP */
- 		.offset = 0x200,
- 		.reg_general = -1,
-@@ -142,6 +156,7 @@ static bool is_lpss_ssp(const struct driver_data *drv_data)
- 	switch (drv_data->ssp_type) {
- 	case LPSS_LPT_SSP:
- 	case LPSS_BYT_SSP:
-+	case LPSS_BSW_SSP:
- 	case LPSS_SPT_SSP:
- 	case LPSS_BXT_SSP:
- 		return true;
-@@ -1183,6 +1198,7 @@ static int setup(struct spi_device *spi)
- 		break;
- 	case LPSS_LPT_SSP:
- 	case LPSS_BYT_SSP:
-+	case LPSS_BSW_SSP:
- 	case LPSS_SPT_SSP:
- 	case LPSS_BXT_SSP:
- 		config = lpss_get_config(drv_data);
-@@ -1330,7 +1346,7 @@ static const struct acpi_device_id pxa2xx_spi_acpi_match[] = {
- 	{ "INT3430", LPSS_LPT_SSP },
- 	{ "INT3431", LPSS_LPT_SSP },
- 	{ "80860F0E", LPSS_BYT_SSP },
--	{ "8086228E", LPSS_BYT_SSP },
-+	{ "8086228E", LPSS_BSW_SSP },
- 	{ },
  };
- MODULE_DEVICE_TABLE(acpi, pxa2xx_spi_acpi_match);
-@@ -1357,6 +1373,7 @@ static int pxa2xx_spi_fw_translate_cs(struct spi_master *master, unsigned cs)
- 	 * expects.
- 	 */
- 	case LPSS_BYT_SSP:
-+	case LPSS_BSW_SSP:
- 		return cs - 1;
  
- 	default:
-@@ -1613,6 +1630,8 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
- 			tmp &= LPSS_CAPS_CS_EN_MASK;
- 			tmp >>= LPSS_CAPS_CS_EN_SHIFT;
- 			platform_info->num_chipselect = ffz(tmp);
-+		} else if (config->cs_num) {
-+			platform_info->num_chipselect = config->cs_num;
- 		}
+@@ -288,37 +291,51 @@ static void lpss_ssp_setup(struct driver_data *drv_data)
  	}
- 	master->num_chipselect = platform_info->num_chipselect;
-diff --git a/include/linux/pxa2xx_ssp.h b/include/linux/pxa2xx_ssp.h
-index c2f2574ff61c..2a097d176ba9 100644
---- a/include/linux/pxa2xx_ssp.h
-+++ b/include/linux/pxa2xx_ssp.h
-@@ -197,6 +197,7 @@ enum pxa_ssp_type {
- 	QUARK_X1000_SSP,
- 	LPSS_LPT_SSP, /* Keep LPSS types sorted with lpss_platforms[] */
- 	LPSS_BYT_SSP,
-+	LPSS_BSW_SSP,
- 	LPSS_SPT_SSP,
- 	LPSS_BXT_SSP,
- };
+ }
+ 
++static void lpss_ssp_select_cs(struct driver_data *drv_data,
++			       const struct lpss_config *config)
++{
++	u32 value, cs;
++
++	if (!config->cs_sel_mask)
++		return;
++
++	value = __lpss_ssp_read_priv(drv_data, config->reg_cs_ctrl);
++
++	cs = drv_data->cur_msg->spi->chip_select;
++	cs <<= config->cs_sel_shift;
++	if (cs != (value & config->cs_sel_mask)) {
++		/*
++		 * When switching another chip select output active
++		 * the output must be selected first and wait 2 ssp_clk
++		 * cycles before changing state to active. Otherwise
++		 * a short glitch will occur on the previous chip
++		 * select since output select is latched but state
++		 * control is not.
++		 */
++		value &= ~config->cs_sel_mask;
++		value |= cs;
++		__lpss_ssp_write_priv(drv_data,
++				      config->reg_cs_ctrl, value);
++		ndelay(1000000000 /
++		       (drv_data->master->max_speed_hz / 2));
++	}
++}
++
+ static void lpss_ssp_cs_control(struct driver_data *drv_data, bool enable)
+ {
+ 	const struct lpss_config *config;
+-	u32 value, cs;
++	u32 value;
+ 
+ 	config = lpss_get_config(drv_data);
+ 
++	if (enable)
++		lpss_ssp_select_cs(drv_data, config);
++
+ 	value = __lpss_ssp_read_priv(drv_data, config->reg_cs_ctrl);
+-	if (enable) {
+-		cs = drv_data->cur_msg->spi->chip_select;
+-		cs <<= LPSS_CS_CONTROL_CS_SEL_SHIFT;
+-		if (cs != (value & LPSS_CS_CONTROL_CS_SEL_MASK)) {
+-			/*
+-			 * When switching another chip select output active
+-			 * the output must be selected first and wait 2 ssp_clk
+-			 * cycles before changing state to active. Otherwise
+-			 * a short glitch will occur on the previous chip
+-			 * select since output select is latched but state
+-			 * control is not.
+-			 */
+-			value &= ~LPSS_CS_CONTROL_CS_SEL_MASK;
+-			value |= cs;
+-			__lpss_ssp_write_priv(drv_data,
+-					      config->reg_cs_ctrl, value);
+-			ndelay(1000000000 /
+-			       (drv_data->master->max_speed_hz / 2));
+-		}
++	if (enable)
+ 		value &= ~LPSS_CS_CONTROL_CS_HIGH;
+-	} else {
++	else
+ 		value |= LPSS_CS_CONTROL_CS_HIGH;
+-	}
+ 	__lpss_ssp_write_priv(drv_data, config->reg_cs_ctrl, value);
+ }
+ 
 -- 
 2.7.0.rc3
 

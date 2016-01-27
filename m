@@ -1,54 +1,109 @@
-From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/2] dt-bindings: GPIO: Add generic serializer binding
-Date: Wed, 27 Jan 2016 14:57:32 +0100
-Message-ID: <CACRpkdaCp1xSXK+ibRZzQCsFLTnGySDCHVFjVuKNSOgWadZ4gg@mail.gmail.com>
-References: <1449863184-29668-1-git-send-email-afd@ti.com>
-	<1449863184-29668-2-git-send-email-afd@ti.com>
-	<CACRpkdaV_dxzWUQcJ8pwPUDQNJ8qLhCvLvE9tBYFcTTGMoumWQ@mail.gmail.com>
-	<566EF12C.4060509@ti.com>
-	<CAL_Jsq+kYSJQd003RhYTeVFv6xLaSCxzZK7wnF2LVs502sWu4g@mail.gmail.com>
-	<566F4E9B.8090202@ti.com>
-	<CACRpkdYapF8br=c3utUmMbmPxyHwxZuT5pC8N-pySPY7dtEwng@mail.gmail.com>
-	<56840ED0.6070205@ti.com>
+From: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v3 1/3] spi: atmel: add support for the internal
+ chip-select of the spi controller
+Date: Wed, 27 Jan 2016 16:46:51 +0100
+Message-ID: <56A8E66B.208@atmel.com>
+References: <cover.1433850255.git.cyrille.pitchen@atmel.com>
+ <c05f4d9abfdabb62b3b3cfeb57a3f9c138b4e45d.1433850255.git.cyrille.pitchen@atmel.com>
+ <yw1xvb771yrl.fsf@unicorn.mansr.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Alexandre Courbot <gnurou-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+	Mark Browk <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
 	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
 	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
 	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	"linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: "Andrew F. Davis" <afd-l0cyMroinI0@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <56840ED0.6070205-l0cyMroinI0@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+	"Yang, Wenyou" <Wenyou.Yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+To: =?UTF-8?B?TcOlbnMgUnVsbGfDpXJk?= <mans-2StjZFpD7GcAvxtiuMwx3w@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <yw1xvb771yrl.fsf-OEaqT8BN2ezZK2NkWkPsZwC/G2K4zDHf@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-On Wed, Dec 30, 2015 at 6:05 PM, Andrew F. Davis <afd-l0cyMroinI0@public.gmane.org> wrote:
-> [Me]
->> Compatible ranges from the specific to the more generic
->> so compatible = "ti,74165", "pisosr"; is just fine. Something
->> will match if there is a suitable driver. The OS may choose to
->> provide something part-specific or something more generic.
+Le 05/01/2016 22:50, M=E5ns Rullg=E5rd a =E9crit :
+> Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org> writes:
+>=20
+>> This patch relies on the CSAAT (Chip Select Active After Transfer) f=
+eature
+>> introduced by the version 2 of the spi controller. This new mode all=
+ows to
+>> use properly the internal chip-select output pin of the spi controll=
+er
+>> instead of using external gpios. Consequently, the "cs-gpios" device=
+-tree
+>> property becomes optional.
 >>
->
-> And so we won't need to have "ti,74165" in the driver itself,
-> if we just have "pisosr", then dts files can use what ever they
-> like to correctly identify the part then fall back to pisosr.
->
-> compatible = "company,random_numbers_of_exact_part_actually_on_board",
-> "pisosr";
+>> When the new CSAAT bit is set into the Chip Select Register, the int=
+ernal
+>> chip-select output pin remains asserted till both the following cond=
+itions
+>> become true:
+>> - the LASTXFER bit is set into the Control Register (or the Transmit=
+ Data
+>>   Register)
+>> - the Transmit Data Register and its shift register are empty.
+>>
+>> WARNING: if the LASTXFER bit is set into the Control Register then n=
+ew
+>> data are written into the Transmit Data Register fast enough to keep=
+ its
+>> shifter not empty, the chip-select output pin remains asserted. Only=
+ when
+>> the shifter becomes empty, the chip-select output pin is unasserted.
+>>
+>> When the CSAAT bit is clear in the Chip Select Register, the LASTXFE=
+R bit
+>> is ignored in both the Control Register and the Transmit Data Regist=
+er.
+>> The internal chip-select output pin remains active as long as the Tr=
+ansmit
+>> Data Register or its shift register are not empty.
+>>
+>> Signed-off-by: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+>> ---
+>>  drivers/spi/spi-atmel.c | 37 ++++++++++++++++++++++++++++---------
+>>  1 file changed, 28 insertions(+), 9 deletions(-)
+>=20
+> [...]
+>=20
+>> @@ -1338,6 +1350,13 @@ static int atmel_spi_probe(struct platform_de=
+vice *pdev)
+>>
+>>  	atmel_get_caps(as);
+>>
+>> +	as->use_cs_gpios =3D true;
+>> +	if (atmel_spi_is_v2(as) &&
+>> +	    !of_get_property(pdev->dev.of_node, "cs-gpios", NULL)) {
+>> +		as->use_cs_gpios =3D false;
+>> +		master->num_chipselect =3D 4;
+>> +	}
+>=20
+> This part breaks the AVR32 boards and probably anything else that
+> doesn't use devicetree but does use GPIOs for chip select.
 
-Exactly. Sorry for slow replies.
+Hi Mans,
 
-Yours,
-Linus Walleij
+I have difficulties finding why you may enter this test. So, maybe you
+can give me a clue by reading for me the value that resides in the SPI
+version register: you can have it by reading at 0xFFE000FC for instance
+(actually the atmel_get_caps() dev_info() call gives it as well in the
+boot log which is somewhat easier: I tried to find one on the Internet
+without success...).
+
+So I think that just fixing the logic in atmel_get_caps() introduced by
+d4820b7496219edd9a7055022681364d304525f7 can make it come back to a
+situation where the ARV32 was more tested than nowadays.
+
+Bye,
+--=20
+Nicolas Ferre
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" i=
+n
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

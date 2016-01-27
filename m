@@ -1,70 +1,54 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 03/15] dmaengine: dw: rename masters to reflect actual
- topology
-Date: Wed, 27 Jan 2016 12:47:28 +0000
-Message-ID: <20160127124728.GM6042@sirena.org.uk>
-References: <1453663322-14474-1-git-send-email-mans@mansr.com>
- <1453663322-14474-4-git-send-email-mans@mansr.com>
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/2] dt-bindings: GPIO: Add generic serializer binding
+Date: Wed, 27 Jan 2016 14:57:32 +0100
+Message-ID: <CACRpkdaCp1xSXK+ibRZzQCsFLTnGySDCHVFjVuKNSOgWadZ4gg@mail.gmail.com>
+References: <1449863184-29668-1-git-send-email-afd@ti.com>
+	<1449863184-29668-2-git-send-email-afd@ti.com>
+	<CACRpkdaV_dxzWUQcJ8pwPUDQNJ8qLhCvLvE9tBYFcTTGMoumWQ@mail.gmail.com>
+	<566EF12C.4060509@ti.com>
+	<CAL_Jsq+kYSJQd003RhYTeVFv6xLaSCxzZK7wnF2LVs502sWu4g@mail.gmail.com>
+	<566F4E9B.8090202@ti.com>
+	<CACRpkdYapF8br=c3utUmMbmPxyHwxZuT5pC8N-pySPY7dtEwng@mail.gmail.com>
+	<56840ED0.6070205@ti.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="vdqwC0msT4ilQ2it"
-Cc: Viresh Kumar <vireshk@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Vinod Koul <vinod.koul@intel.com>,
-	linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
-	Rob Herring <robh+dt@kernel.org>,
-	Pawel Moll <pawel.moll@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Ian Campbell <ijc+devicetree@hellion.org.uk>,
-	Kumar Gala <galak@codeaurora.org>,
-	Haavard Skinnemoen <hskinnemoen@gmail.com>,
-	Hans-Christian Egtvedt <egtvedt@samfundet.no>,
-	Tejun Heo <tj@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jslaby@suse.com>, devicetree@vger.kernel.org,
-	linux-ide@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-spi@vger.kernel.org, linux-serial@vger.kernel.org
-To: Mans Rullgard <mans@mansr.com>
-Return-path: <linux-ide-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1453663322-14474-4-git-send-email-mans@mansr.com>
-Sender: linux-ide-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Alexandre Courbot <gnurou-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	"linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: "Andrew F. Davis" <afd-l0cyMroinI0@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <56840ED0.6070205-l0cyMroinI0@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+On Wed, Dec 30, 2015 at 6:05 PM, Andrew F. Davis <afd-l0cyMroinI0@public.gmane.org> wrote:
+> [Me]
+>> Compatible ranges from the specific to the more generic
+>> so compatible = "ti,74165", "pisosr"; is just fine. Something
+>> will match if there is a suitable driver. The OS may choose to
+>> provide something part-specific or something more generic.
+>>
+>
+> And so we won't need to have "ti,74165" in the driver itself,
+> if we just have "pisosr", then dts files can use what ever they
+> like to correctly identify the part then fall back to pisosr.
+>
+> compatible = "company,random_numbers_of_exact_part_actually_on_board",
+> "pisosr";
 
---vdqwC0msT4ilQ2it
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Exactly. Sorry for slow replies.
 
-On Sun, Jan 24, 2016 at 07:21:50PM +0000, Mans Rullgard wrote:
-> From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->=20
-> The source and destination masters are reflecting buses or their layers to
-> where the different devices can be connected. The patch changes the master
-> names to reflect which one is related to which independently on the trans=
-fer
-> direction.
-
-Acked-by: Mark Brown <broonie@kernel.org>
-
---vdqwC0msT4ilQ2it
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJWqLxfAAoJECTWi3JdVIfQfrUH/0xxvyT4TCQ1uidDSVHY61/o
-UnFfWQxuPn45knqyPT9RxxZlUSBtXyp9FCvgDT4CnXmZOxa808JC9r8PGgu7G5wV
-Qej5oJaJOtK7TVaxJHkfvo7sn/D3sjwrr9oEV75oqAWW7ZQA4uav4V/Vk0c8IWKu
-Gdih9px5/e5ES2mTexPBDuH6OxqqoyRY883lPuE8hsNnxPV7Bhw2Vq5jASrwzRkn
-PZRrpodGf93bvME+Ng3DKwYujpSF+To5bMxDS7MoQ+9rDBtQY0h0ELq/axTQB8G2
-otMkKf2AW8WxqjnLFC/SUQ7AsPsdBy8c+bFnWQS1hRkdY1uYnncU7CclDkpw3UA=
-=IEOK
------END PGP SIGNATURE-----
-
---vdqwC0msT4ilQ2it--
+Yours,
+Linus Walleij
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

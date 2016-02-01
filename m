@@ -1,70 +1,150 @@
-From: Vignesh R <vigneshr@ti.com>
-Subject: [RESEND][PATCH v5 0/3] Add memory mapped read support for ti-qspi
-Date: Mon, 1 Feb 2016 12:14:22 +0530
-Message-ID: <1454309065-11493-1-git-send-email-vigneshr@ti.com>
+From: Caesar Wang <caesar.upstream-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v7 0/9] Fix broken DMAFLUSHP on Rockchips platform
+Date: Mon, 1 Feb 2016 14:56:54 +0800
+Message-ID: <56AF01B6.6030204@gmail.com>
+References: <1453460812-8498-1-git-send-email-wxt@rock-chips.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: Russell King <linux@arm.linux.org.uk>, <hramrach@gmail.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	<linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-	<linux-mtd@lists.infradead.org>, <linux-spi@vger.kernel.org>,
-	Vignesh R <vigneshr@ti.com>
-To: Brian Norris <computersforpeace@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Transfer-Encoding: base64
+Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+ Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
+ Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>, Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+ shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
+ linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+ Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+ dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Dan Williams <dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+ linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Sonny Rao <sonnyrao-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+ linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Caesar Wang <wxt-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+To: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-rockchip-bounces+glpar-linux-rockchip=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+In-Reply-To: <1453460812-8498-1-git-send-email-wxt-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rockchip>,
+ <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-rockchip/>
+List-Post: <mailto:linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+List-Help: <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rockchip>,
+ <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
+Sender: "Linux-rockchip" <linux-rockchip-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Errors-To: linux-rockchip-bounces+glpar-linux-rockchip=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Resend v5:
-Rebased on top of v4.5-rc1
-
-Changes since v4:
-Use syscon to access system control module register in ti-qspi driver.
-
-Changes since v3:
-Rework to introduce spi_flash_read_message struct.
-Support different opcode/addr/data formats as per Brian's suggestion
-here: https://lkml.org/lkml/2015/11/11/454
-
-Changes since v2:
-Remove mmap_lock_mutex.
-Optimize enable/disable of mmap mode.
-
-Changes since v1:
-Introduce API in SPI core that MTD flash driver can call for mmap read
-instead of directly calling spi-master driver callback. This API makes
-sure that SPI core msg queue is locked during mmap transfers.
-v1: https://lkml.org/lkml/2015/9/4/103
-
-
-Cover letter:
-
-This patch series adds support for memory mapped read port of ti-qspi.
-ti-qspi has a special memory mapped port through which SPI flash
-memories can be accessed directly via SoC specific memory region.
-
-First patch adds a method to pass flash specific information like read
-opcode, dummy bytes etc and to request mmap read. Second patch
-implements mmap read method in ti-qspi driver. Patch 3 adapts m25p80 to
-use mmap read method before trying normal SPI transfer. Patch 4 and 5
-add memory map region DT entries for DRA7xx and AM43xx SoCs.
-
-This patch series is based on the discussions here:
-http://www.spinics.net/lists/linux-spi/msg04796.html
-
-Tested on DRA74 EVM and AM437x-SK.
-Read performance increases from ~100kB/s to ~2.5MB/s.
-
-Vignesh R (3):
-  spi: introduce accelerated read support for spi flash devices
-  spi: spi-ti-qspi: add mmap mode read support
-  mtd: devices: m25p80: add support for mmap read request
-
- drivers/mtd/devices/m25p80.c |  20 +++++++
- drivers/spi/spi-ti-qspi.c    | 139 ++++++++++++++++++++++++++++++++++---------
- drivers/spi/spi.c            |  45 ++++++++++++++
- include/linux/spi/spi.h      |  41 +++++++++++++
- 4 files changed, 216 insertions(+), 29 deletions(-)
-
--- 
-2.7.0
+SGVsbG8gVmlub2QsCgpJcyB0aGVyZSBhbnkgY2hhbmNlIGFwcGx5IHRoZSBETUEgcGF0Y2hlcz86
+LSkKCgotCkNhZXNhcgoK5ZyoIDIwMTblubQwMeaciDIy5pelIDE5OjA2LCBDYWVzYXIgV2FuZyDl
+hpnpgZM6Cj4gVGhpcyBzZXJpZXMgcGF0Y2hlcyBhcmUgYXBwbHkgb24gbGludXMgbWFzdGVyIGJy
+YW5jaC4KPiBPa2F5LCB0aGlzIHNlcmllcyBwYXRjaGVzIHZlcmlmaWVkIG9uIG15IGdpdGh1Yi4K
+PiAoaHR0cHM6Ly9naXRodWIuY29tL0NhZXNhci1naXRodWIvcm9ja2NoaXAvY29tbWl0cy9mb3It
+ZG1hLXRlc3RzKQo+Cj4gTGludXggdmVyc2lvbiA0LjQuMCsgKHd4dEB1YnVudHUpICAoVWJ1bnR1
+L0xpbmFybyA0LjcuMy0xMnVidW50dTEpICkgIzE0Cj4gU01QIEZyaSBKYW4gMjIgMTg6MTM6MTIg
+Q1NUIDIwMTYKPgo+IFRoZSBwZXJpb3VzIHZlcnNpb24gNiBmcm9tIFNoYXduLgo+IChodHRwOi8v
+d3d3LnNwaW5pY3MubmV0L2xpc3RzL2RtYWVuZ2luZS9tc2cwNjYwNi5odG1sKQo+IEkgcGljayB0
+aGVtIHVwIHRvIGdvIG9uIHVwc3RyZWFtIHNpbmNlIFNoYXduIGhhc24ndCBtdWNoIHRpbWUgdG8g
+dHJhY2sgdGhlbS4KPiAtLS0tCj4KPiBUaGUgcHVycG9zZSBvZiB0aGUgRE1BRkxVU0hQIGluc3Ry
+dWN0aW9uOgo+IC0gVGVsbCB0aGUgcGVyaXBoZXJhbCB0byBjbGVhciBpdHMgc3RhdHVzIGFuZCBj
+b250cm9sIHJlZ2lzdGVycy4KPiAtIFNlbmQgYSBtZXNzYWdlIHRvIHRoZSBwZXJpcGhlcmFsIHRv
+IHJlc2VuZCBpdHMgbGV2ZWwgc3RhdHVzLgo+Cj4gVGhlcmUgYXJlIDMgdGltaW5ncyBkZXNjcmli
+ZWQgaW4gUEwzMzAgVGVjaG5pY2FsIFJlZmVyZW5jZSBNYW51YWw6Cj4gLSBUaW1pbmcgMTogQnVy
+c3QgcmVxdWVzdCwgY2FuIHdvcmsgd2VsbCB3aXRob3V0IERNQUZMVVNIUC4KPiAtIFRpbWluZyAy
+OiBTaW5nbGUgYW5kIGJ1cnN0IHJlcXVlc3QsIERNQUMgd2lsbCBpZ25vcmUgdGhlIHNpbmdsZQo+
+ICAgICAgICAgICAgICB0cmFuc2ZlciByZXF1ZXN0LiBUaGlzIHRpbWluZyBoYXBwZW5zIGlmIHRo
+ZXJlIGFyZSBzaW5nbGUKPiAgICAgICAgICAgICAgYW5kIGJ1cnN0IHJlcXVlc3QuCj4gLSBUaW1p
+bmcgMzogU2luZ2xlIHRyYW5zZmVycyBmb3IgYSBidXJzdCByZXF1ZXN0LCBETUFDIHNob3VsZCBz
+aWduYWxzCj4gICAgICAgICAgICAgIGRhdHlwZSB0byByZXF1ZXN0IHRoZSBwZXJpcGhlcmFsIHRv
+IGZsdXNoIHRoZSBjb250ZW50cyBvZgo+ICAgICAgICAgICAgICBhbnkgY29udHJvbCByZWdpc3Rl
+cnMuIFRoaXMgdGltaW5nIGhhcHBlbnMgaWYgdGhlcmUgaXMKPiAgICAgICAgICAgICAgbm90IGVu
+b3VnaCBNRklGTyB0byBwbGFjZXMgdGhlIGJ1cnN0IGRhdGEuCj4KPiBBIHBlcmlwaGVyYWwgbWF5
+IHNpZ25hbCBhIERNQSByZXF1ZXN0IGR1cmluZyB0aGUgZXhlY3V0aW9uIG9mCj4gRE1BRkxVU0hQ
+IGluc3RydWN0aW9uLCB0aGF0IGNhdXNlIERNQSByZXF1ZXN0IGJlaW5nIGlnbm9yZWQgYnkgRE1B
+Qy4KPgo+IEJ1dCBETUFDIGFuZCBhbGwgcGVyaXBoZXJhbHMgb24gUkszWCBTb0NzIERPIE5PVCBz
+dXBwb3J0IERNQUZMVVNIUC4KPiBJdCBjYW4ndCBzZW5kIGEgbWVzc2FnZSB0byB0aGUgcGVyaXBo
+ZXJhbCB0byByZXNlbmQgRE1BIHJlcXVlc3QsCj4gYW5kIHRoZSBwZXJpcGhlcmFsIGNhbid0IGFj
+a25vd2xlZGdlIGEgZmx1c2ggcmVxdWVzdCBmcm9tIERNQUMuCj4gU28gYWxsIERNQSByZXF1ZXN0
+cyBzaG91bGQgTk9UIGJlIGlnbm9yZWQgYnkgRE1BQywgYW5kIERNQUMgd2lsbCBub3QKPiBub3Rp
+ZnkgdGhlIHBlcmlwaGVyYWwgdG8gZmx1c2guCj4KPiBUbyBmaXggdGhpcyBwcm9ibGVtLCB3ZSBu
+ZWVkOgo+IC0gRG8gTk9UIGV4ZWN1dGUgRE1BRkxVU0hQIGluc3RydWN0aW9uLgo+IC0gVGltaW5n
+IDIgYW5kIHRpbWluZyAzIHNob3VsZCBub3QgaGFwcGVuLgo+Cj4gQmVjYXVzZSBvbiBSSzNYIFNv
+Q3MsIHRoZXJlIGFyZSA2IG9yIGJlbG93ICBjaGFubmVscyBhbmQgMzIgTUZJRk8gZGVwdGgKPiBm
+b3IgRE1BQ19CVVMsIGFuZCA4IGNoYW5uZWxzIGFuZCA2NCBNRklGTyBkZXB0aCBmb3IgRE1BQ19Q
+RVJJLCBpdCBpcwo+IGltcG9zc2libGUgdG8gaGl0IHRoZSB0aW1pbmcgMyBpZiBidXJzdCBsZW5n
+dGggaXMgZXF1YWwgb3IgbGVzcyB0aGFuIDQuCj4KPiBTaW5jZSB0aGUgcmVxdWVzdCB0eXBlIHNp
+Z25hbCBieSB0aGUgcGVyaXBoZXJhbCBjYW4gb25seSBiZSBzZXQgYnkKPiBzb2Z0d2FyZS4gV2Ug
+Y2FuIHNldCBSb2NrY2hpcCBTb2MncyBHUkZfUEVSSURNQUNfQ09OMFsyOjFdIHRvIHNlbGVjdCBz
+aW5nbGUKPiBvciBidXJzdCByZXF1ZXN0LCBpZiBpdCBpcyBzZXQgYjAxLCAgYWxsIG9mIHRoZSBw
+ZXJpcGhhcmFscyB3aWxsIHNpZ25hbCBhIGJydXN0Cj4gcmVxdWVzdC4gU28gdGhlIHRpbWluZyAy
+IHdpbGwgbm90IGhhcHBlbiwgdG9vLgo+Cj4gU28gRE1BQyBvbiBSSzNYIGNhbiBzdXBwb3J0IHNp
+bmdsZSBvciBidXJzdCB0cmFuc2ZlciwgYnV0IGNhbid0IHN1cHBvcnQKPiBtaXhlZCB0cmFuc2Zl
+ci4KPgo+IEJlY2F1c2UgYnVyc3QgdHJhbnNmZXIgaXMgbW9yZSBlZmZpY2llbnQgdGhhbiBzaW5n
+bGUgdHJhbnNmZXIsIHRoaXMgaXMKPiBjb25maXJtZWQgYnkgb3VyIEFTSUMgdGVhbSwgd2hvIHN0
+cm9uZ2x5IHN1Z2dlc3QgdG8gdXNlIGJ1cnN0IHRyYW5zZmVyLgo+IEFuZCB0aGlzIGlzIGNvbmZp
+cm1lZCBieSBBZGR5J3MgdGVzdCBvbiBSSzMyODgtUGluazIgYm9hcmQsIHRoZSBzcGVlZCBvZgo+
+IHNwaSBmbGFzaCBidXJzdCB0cmFuc2ZlciB3aWxsIGluY3JlYXNlIGFib3V0IHR3byB0aW1lcyB0
+aGFuIHNpbmdsZSB0cmFuc2Zlci4KPiBBbHNvLCBJIGhhdmUgdGVzdGVkIGR3X21tYyB3aXRoIHBs
+MzMwIG9uIFJLMzE4OCBwbGF0Zm9ybSB0byBkb3VibGUgY29uZmlybQo+IHRoZSByZXN1bHQuIFRo
+YXQgbWVhbnMgYnVyc3QgdHJhbnNmZXIgaXMgcmVhbnNvbmFibGUuCj4KPiBTbyB3ZSBuZWVkIGEg
+cXVpcmsgbm90IHRvIGV4ZWN1dGUgRE1BRkxVU0hQIGluc3RydWN0aW9uIGFuZCB0byB1c2UgYnVy
+c3QKPiB0cmFuc2Zlci4KPgo+IE5vdGU6Cj4gLSBUaGUgUm9ja2NoaXAgU29jIGRlZmF1bHQgdmFs
+dWUgb2YgR1JGX1BFUklETUFDX0NPTjBbMjoxXSBpcyBiMDEuIFRvCj4gICAgc3VwcG9ydCBicnVz
+dCB0cmFuc2ZlciwgdGhlc2UgYml0cyBzaG91bGQgbm90IGJlIGNoYW5nZWQgaW4gYm9vdGxvYWRl
+ci4KPgo+IFRvZG86Cj4gcmVtb3ZlIHRoZSBwYXRjaGVzIHJlbGVhdGVkIHRvIGkycywgdGhhdCB3
+aWxsIHNlbmQgdGhlbSBhdCBsYXRlci4KPiAtIGh0dHBzOi8vcGF0Y2h3b3JrLmtlcm5lbC5vcmcv
+cGF0Y2gvNzM5OTU4MS8KPiAtIGh0dHBzOi8vcGF0Y2h3b3JrLmtlcm5lbC5vcmcvcGF0Y2gvNzM5
+OTY3MS8KPgo+Cj4gQ2hhbmdlcyBpbiB2NzoKPiAtIEFzIHZpbm9kIGNvbW1lbnRzLCBmaXggdGhl
+IHN1YnN5c3RlbSBuYW1lLgo+IC0gbW9kaWZ5IHRoZSBzdWJqZWN0IHRvIGJlIGJldHRlciBtYXRj
+aC4KPiAtIGZpeCB0aGUgc3Vic3lzdGVtLgo+IC0gZml4IHRoZSBzdWJqZWN0Lgo+IC0gZml4IHRo
+ZSBzdWJqZWN0Lgo+Cj4gQ2hhbmdlcyBpbiB2NjoKPiAtIHJlbW92ZSBleHBvc2UgcXVpcmsgYW5k
+IGFkZCBkbWEgbWF4X2J1cnN0IGNhcHMgZm9yIGNsaWVudHMKPiAtIHJlbW92ZSBleHBvc2UgcXVp
+cmtzIGFuZCBhZGQgbWF4X2J1cnN0IGZvciBkbWFlbmdpbmUKPiAtIHJlbW92ZSBxdWlya3MgYW5k
+IGdldCBkbWEgY2FwcyBpbiBvcmRlciB0byBsaW1pdCBidXJzdAo+Cj4gQ2hhbmdlcyBpbiB2NToK
+PiAtIGFkZCBNYXJrJ3MgdGFnIGZvciBzcGkgY2hhbmdlcwo+IC0gcmVtb3ZlIHVubmVjZXNzYXJ5
+IHdoaXRlc3BhY2UgY2hhbmdlCj4gLSB1c2Ugc3dpdGNoIHN0YXRlbWVudCBmb3IgaTJzIHF1aXJr
+Cj4KPiBDaGFuZ2VzIGluIHY0Ogo+IC0gcmVtb3ZlIHNwaSAmIGkycyBkdHMgY2hhbmdlcyBhbmQg
+cXVlcnkgcXVpcmsgZnJvbSBkbWFlbmdpbmUgQVBJCj4gICAgc3VnZ2VzZXRlZCBieSBNYXJrLgo+
+IC0gZml4IHR5cG8KPiAtIEFkZCBkbWFlbmdpbmVfZ2V0X3F1aXJrIGhvb2sgYW5kIGltcGxlbWVu
+dCBpdCBmb3IgcGwzMzAKPgo+IENoYW5nZXMgaW4gdjM6Cj4gLSBhZGQgU3VubnkncyB0YWcKPiAt
+IGFkZCBtb3JlIHJvY2tjaGlwIGRyaXZlcnMnIGNoYW5nZXMgaW4gdGhpcyBwYXRjaHNldAo+IC0g
+YWRkIFJldmlld2VkLWJ5OiBTb25ueSBSYW8gPHNvbm55cmFvQGNocm9taXVtLm9yZz4KPiAtIGFk
+ZCBSZXZpZXdlZC1ieTogU29ubnkgUmFvIDxzb25ueXJhb0BjaHJvbWl1bS5vcmc+Cj4gLSBhZGQg
+UmV2aWV3ZWQtYnk6IFNvbm55IFJhbyA8c29ubnlyYW9AY2hyb21pdW0ub3JnPgo+Cj4gQ2hhbmdl
+cyBpbiB2MjoKPiAtIGFtZW5kIHRoZSBhdXRob3IKPiAtIHJlb3JkZXIgdGhlIHBhdGNoZXMgc3Vn
+Z2VzdGVkIGJ5IERvdWcKPiAtIGFkZCBSZXZpZXdlZC1ieTogRG91ZyBBbmRlcnNvbiA8ZGlhbmRl
+cnNAY2hyb21pdW0ub3JnPiBmb3IKPiAgICByazMyODguZHRzaSBwYXRjaCBhbmQgYXJtLXBsMzMw
+LnR4dCBwYXRjaAo+IC0gYWRkIFJldmlld2VkLWJ5OiBEb3VnIEFuZGVyc29uIDxkaWFuZGVyc0Bj
+aHJvbWl1bS5vcmc+Cj4gLSBhbWVuZCB0aGUgYXV0aG9yCj4gLSBmaXggT2xvZidzIG1haWwgYWRk
+cmVzcwo+IC0gYW1lbmQgdGhlIGF1dGhvcgo+IC0gYWRkIFJldmlld2VkLWJ5OiBEb3VnIEFuZGVy
+c29uIDxkaWFuZGVyc0BjaHJvbWl1bS5vcmc+Cj4gLSBhbWVuZCBPbG9mJ3MgbWFpbCBhZGRyZXNz
+Cj4KPiBDaGFuZ2VzIGluIHYxOgo+IC0gcmVuYW1lIGJyb2tlbi1uby1mbHVzaHAgdG8gImFybSxw
+bDMzMC1icm9rZW4tbm8tZmx1c2hwIiBzdWdnZXN0ZWQKPiAgICBieSBLcnp5c3p0b2YuCj4gLSBh
+ZGQgRnJvbSBvcmlnaW5hbCBhdXRob3IuCj4gLSByZW1vdmUgU3VubnkncyB0YWcKPiAtIHJlbmFt
+ZSBicm9rZW4tbm8tZmx1c2hwIHRvICJhcm0scGwzMzAtYnJva2VuLW5vLWZsdXNocCIgc3VnZ2Vz
+dGVkCj4gICAgYnkgS3J6eXN6dG9mLgo+IC0gcmVuYW1lIGJyb2tlbi1uby1mbHVzaHAgdG8gImFy
+bSxwbDMzMC1icm9rZW4tbm8tZmx1c2hwIiBzdWdnZXN0ZWQKPiAgICBieSBLcnp5c3p0b2YuCj4g
+LSByZW1vdmUgU3VubnkncyB0YWcKPiAtIHJlbmFtZSBicm9rZW4tbm8tZmx1c2hwIHRvICJhcm0s
+cGwzMzAtYnJva2VuLW5vLWZsdXNocCIgc3VnZ2VzdGVkCj4gICAgYnkgS3J6eXN6dG9mLgo+ICAg
+IC0gcmVtb3ZlIFN1bm55J3MgdGFnCj4gLSByZW5hbWUgYnJva2VuLW5vLWZsdXNocCB0byAiYXJt
+LHBsMzMwLWJyb2tlbi1uby1mbHVzaHAiIHN1Z2dlc3RlZAo+ICAgIGJ5IEtyenlzenRvZi4KPgo+
+IEFkZHkgS2UgKDMpOgo+ICAgIGRtYWVuZ2luZTogcGwzMzA6IGFkZCBxdWlyayBmb3IgYnJva2Vu
+IG5vIGZsdXNocAo+ICAgIEFSTTogZHRzOiBBZGQgYXJtLCBwbDMzMC1icm9rZW4tbm8tZmx1c2hw
+IHF1aXJrIGZvciByazMyODggcGxhdGZvcm0KPiAgICBzcGk6IHJvY2tjaGlwOiBtb2RpZnkgRE1B
+IG1heCBidXJzdCB0byAxCj4KPiBCb29qaW4gS2ltICgxKToKPiAgICBkbWFlbmdpbmU6IHBsMzMw
+OiBzdXBwb3J0IGJ1cnN0IG1vZGUgZm9yIGRldi10by1tZW0gYW5kIG1lbS10by1kZXYKPiAgICAg
+IHRyYW5zbWl0Cj4KPiBDYWVzYXIgV2FuZyAoMSk6Cj4gICAgQVJNOiBkdHM6IGFkZCBwbDMzMC1i
+cm9rZW4tbm8tZmx1c2hwIHF1aXJrIGZvciByazMwMzYgU29Dcwo+Cj4gU2hhd24gTGluICg0KToK
+PiAgICBkdC9iaW5kaW5nczogYXJtLXBsMzMwOiBhZGQgZGVzY3JpcHRpb24gb2YgYXJtLCBwbDMz
+MC1icm9rZW4tbm8tZmx1c2hwCj4gICAgQVJNOiBkdHM6IEFkZCBhcm0sIHBsMzMwLWJyb2tlbi1u
+by1mbHVzaHAgcXVpcmsgZm9yIHJrM3h4eCBwbGF0Zm9ybQo+ICAgIGRtYWVuZ2luZTogY29yZTog
+ZXhwb3NlIG1heCBidXJzdCBjYXBhYmlsaXR5IHRvIGNsaWVudHMKPiAgICBkbWFlbmdpbmU6IHBs
+MzMwOiBhZGQgbWF4IGJ1cnN0IGZvciBkbWFlbmdpbmUKPgo+ICAgLi4uL2RldmljZXRyZWUvYmlu
+ZGluZ3MvZG1hL2FybS1wbDMzMC50eHQgICAgICAgICAgfCAgIDEgKwo+ICAgYXJjaC9hcm0vYm9v
+dC9kdHMvcmszMDM2LmR0c2kgICAgICAgICAgICAgICAgICAgICAgfCAgIDEgKwo+ICAgYXJjaC9h
+cm0vYm9vdC9kdHMvcmszMjg4LmR0c2kgICAgICAgICAgICAgICAgICAgICAgfCAgIDMgKwo+ICAg
+YXJjaC9hcm0vYm9vdC9kdHMvcmszeHh4LmR0c2kgICAgICAgICAgICAgICAgICAgICAgfCAgIDMg
+Kwo+ICAgZHJpdmVycy9kbWEvZG1hZW5naW5lLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+fCAgIDEgKwo+ICAgZHJpdmVycy9kbWEvcGwzMzAuYyAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgfCAxMDYgKysrKysrKysrKysrKysrLS0tLS0tCj4gICBkcml2ZXJzL3NwaS9zcGktcm9j
+a2NoaXAuYyAgICAgICAgICAgICAgICAgICAgICAgICB8ICAxMiArKy0KPiAgIGluY2x1ZGUvbGlu
+dXgvZG1hZW5naW5lLmggICAgICAgICAgICAgICAgICAgICAgICAgIHwgICA0ICsKPiAgIDggZmls
+ZXMgY2hhbmdlZCwgOTkgaW5zZXJ0aW9ucygrKSwgMzIgZGVsZXRpb25zKC0pCj4KCgotLSAKVGhh
+bmtzLApDYWVzYXIKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwpMaW51eC1yb2NrY2hpcCBtYWlsaW5nIGxpc3QKTGludXgtcm9ja2NoaXBAbGlzdHMuaW5m
+cmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xp
+bnV4LXJvY2tjaGlwCg==

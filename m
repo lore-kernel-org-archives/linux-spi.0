@@ -1,78 +1,73 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: atmel: fix gpio chip-select in case of non-DT platform" to the spi tree
-Date: Thu, 28 Jan 2016 23:52:19 +0100
-Message-ID: <E1aOvQJ-00049b-1c@finisterre>
-References: <1453913312-18108-1-git-send-email-nicolas.ferre@atmel.com>
-Cc: linux-spi@vger.kernel.org
-To: Mans Rullgard <mans@mansr.com>,
-	Cyrille Pitchen <cyrille.pitchen@atmel.com>,
-	Nicolas Ferre <nicolas.ferre@atmel.com>,
-	Mans Rullgard <mans@mansr.com>,
-	Mark Brown <broonie@kernel.org>, stable@vger.kernel.org
-Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <1453913312-18108-1-git-send-email-nicolas.ferre@atmel.com>
-Sender: stable-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+Subject: [RESEND][PATCH v5 3/3] mtd: devices: m25p80: add support for mmap read request
+Date: Mon, 1 Feb 2016 12:14:25 +0530
+Message-ID: <1454309065-11493-4-git-send-email-vigneshr@ti.com>
+References: <1454309065-11493-1-git-send-email-vigneshr@ti.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+Cc: Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+To: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1454309065-11493-1-git-send-email-vigneshr-l0cyMroinI0@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+Certain spi controllers may provide accelerated interface to read from
+m25p80 type flash devices. This interface provides better read
+performance than regular SPI interface.
+Call spi_flash_read(), if supported, to make use of such interface.
 
-   spi: atmel: fix gpio chip-select in case of non-DT platform
-
-has been applied to the spi tree at
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 70f340df24518d36eeaefb6652d492f250115c19 Mon Sep 17 00:00:00 2001
-From: Cyrille Pitchen <cyrille.pitchen@atmel.com>
-Date: Wed, 27 Jan 2016 17:48:32 +0100
-Subject: [PATCH] spi: atmel: fix gpio chip-select in case of non-DT platform
-
-The non-DT platform that uses this driver (actually the AVR32) was taking a bad
-branch for determining if the IP would use gpio for CS.
-Adding the presence of DT as a condition fixes this issue.
-
-Fixes: 4820303480a1 ("spi: atmel: add support for the internal chip-select of the spi controller")
-Reported-by: Mans Rullgard <mans@mansr.com>
-Signed-off-by: Cyrille Pitchen <cyrille.pitchen@atmel.com>
-[nicolas.ferre@atmel.com: extract from ml discussion]
-Signed-off-by: Nicolas Ferre <nicolas.ferre@atmel.com>
-Tested-by: Mans Rullgard <mans@mansr.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
+Signed-off-by: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
 ---
- drivers/spi/spi-atmel.c | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index aebad36..8feac59 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -1571,6 +1571,7 @@ static int atmel_spi_probe(struct platform_device *pdev)
+Resend v5:
+Rebased on top of v4.5-rc1
+
+v5: No changes
+
+ drivers/mtd/devices/m25p80.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+index c9c3b7fa3051..7730e633d7d3 100644
+--- a/drivers/mtd/devices/m25p80.c
++++ b/drivers/mtd/devices/m25p80.c
+@@ -131,6 +131,26 @@ static int m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
+ 	/* convert the dummy cycles to the number of bytes */
+ 	dummy /= 8;
  
- 	as->use_cs_gpios = true;
- 	if (atmel_spi_is_v2(as) &&
-+	    pdev->dev.of_node &&
- 	    !of_get_property(pdev->dev.of_node, "cs-gpios", NULL)) {
- 		as->use_cs_gpios = false;
- 		master->num_chipselect = 4;
++	if (spi_flash_read_supported(spi)) {
++		struct spi_flash_read_message msg;
++		int ret;
++
++		msg.buf = buf;
++		msg.from = from;
++		msg.len = len;
++		msg.read_opcode = nor->read_opcode;
++		msg.addr_width = nor->addr_width;
++		msg.dummy_bytes = dummy;
++		/* TODO: Support other combinations */
++		msg.opcode_nbits = SPI_NBITS_SINGLE;
++		msg.addr_nbits = SPI_NBITS_SINGLE;
++		msg.data_nbits = m25p80_rx_nbits(nor);
++
++		ret = spi_flash_read(spi, &msg);
++		*retlen = msg.retlen;
++		return ret;
++	}
++
+ 	spi_message_init(&m);
+ 	memset(t, 0, (sizeof t));
+ 
 -- 
-2.6.4
+2.7.0
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

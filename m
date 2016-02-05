@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: axi: Add bindings documentation for Analog Devices axi-spi-engine" to the spi tree
-Date: Fri, 05 Feb 2016 18:13:24 +0000
-Message-ID: <E1aRksm-0002mD-5E@debutante>
-References: <1454602410-14049-1-git-send-email-lars@metafoo.de>
+Subject: Applied "spi: Add Analog Devices AXI SPI Engine controller support" to the spi tree
+Date: Fri, 05 Feb 2016 18:13:23 +0000
+Message-ID: <E1aRksl-0002lk-81@debutante>
+References: <1454602410-14049-2-git-send-email-lars@metafoo.de>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1454602410-14049-1-git-send-email-lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+In-Reply-To: <1454602410-14049-2-git-send-email-lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: axi: Add bindings documentation for Analog Devices axi-spi-engine
+   spi: Add Analog Devices AXI SPI Engine controller support
 
 has been applied to the spi tree at
 
@@ -38,70 +38,673 @@ to this mail.
 Thanks,
 Mark
 
->From 2ec3b6287b12a7131c28cd9408b368cd451bdc48 Mon Sep 17 00:00:00 2001
+>From b1353d1c1d4555b7c40066fa2cacc7da266e9904 Mon Sep 17 00:00:00 2001
 From: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-Date: Thu, 4 Feb 2016 17:13:29 +0100
-Subject: [PATCH] spi: axi: Add bindings documentation for Analog Devices
- axi-spi-engine
+Date: Thu, 4 Feb 2016 17:13:30 +0100
+Subject: [PATCH] spi: Add Analog Devices AXI SPI Engine controller support
 
-Add the devicetree bindings documentation for the Analog Devices
-axi-spi-engine SPI master peripheral. This is a soft-peripheral used in
-FPGAs.
+This patch adds support for the AXI SPI Engine controller which is a FPGA
+soft-peripheral which is used in some of Analog Devices' reference designs.
 
-The external interfaces of the peripheral are:
-	* A memory mapped register map which is used to configure the
-	  peripheral.
-	* One interrupt.
-	* Two clocks, one for the memory mapped register interface and one
-	  for the SPI bus.
-	* A SPI master interface to which the slave devices are connected.
+The AXI SPI Engine controller is part of the SPI Engine framework[1] and
+allows memory mapped access to the SPI Engine control bus. This allows it
+to be used as a general purpose software driven SPI controller. The SPI
+Engine in addition offers some optional advanced acceleration and
+offloading capabilities, which are not part of this patch though and will
+be introduced separately.
 
-These interfaces are described by the devicetree bindings accordingly.
+At the core of the SPI Engine framework is a small sort of co-processor
+that accepts a command stream and turns the commands into low-level SPI
+transactions. Communication is done through three memory mapped FIFOs in
+the register map of the AXI SPI Engine peripheral. One FIFO for the command
+stream and one each for transmit and receive data.
+
+The driver translates a spi_message in a command stream and writes it to
+the peripheral which executes it asynchronously. This allows it to perform
+very precise timings which are required for some SPI slave devices to
+achieve maximum performance (e.g. analog-to-digital and digital-to-analog
+converters). The execution flow is synchronized to the host system by a
+special synchronize instruction which generates a interrupt.
+
+[1] https://wiki.analog.com/resources/fpga/peripherals/spi_engine
 
 Signed-off-by: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- .../devicetree/bindings/spi/adi,axi-spi-engine.txt | 31 ++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/adi,axi-spi-engine.txt
+ drivers/spi/Kconfig              |   8 +
+ drivers/spi/Makefile             |   1 +
+ drivers/spi/spi-axi-spi-engine.c | 591 +++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 600 insertions(+)
+ create mode 100644 drivers/spi/spi-axi-spi-engine.c
 
-diff --git a/Documentation/devicetree/bindings/spi/adi,axi-spi-engine.txt b/Documentation/devicetree/bindings/spi/adi,axi-spi-engine.txt
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 7caf18cb3e5e..d84adceb9b89 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -83,6 +83,14 @@ config SPI_AU1550
+ 	  If you say yes to this option, support will be included for the
+ 	  PSC SPI controller found on Au1550, Au1200 and Au1300 series.
+ 
++config SPI_AXI_SPI_ENGINE
++	tristate "Analog Devices AXI SPI Engine controller"
++	depends on HAS_IOMEM
++	help
++	  This enables support for the Analog Devices AXI SPI Engine SPI controller.
++	  It is part of the SPI Engine framework that is used in some Analog Devices
++	  reference designs for FPGAs.
++
+ config SPI_BCM2835
+ 	tristate "BCM2835 SPI controller"
+ 	depends on GPIOLIB
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 8991ffce6e12..7ad880684a85 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -15,6 +15,7 @@ obj-$(CONFIG_SPI_ALTERA)		+= spi-altera.o
+ obj-$(CONFIG_SPI_ATMEL)			+= spi-atmel.o
+ obj-$(CONFIG_SPI_ATH79)			+= spi-ath79.o
+ obj-$(CONFIG_SPI_AU1550)		+= spi-au1550.o
++obj-$(CONFIG_SPI_AXI_SPI_ENGINE)	+= spi-axi-spi-engine.o
+ obj-$(CONFIG_SPI_BCM2835)		+= spi-bcm2835.o
+ obj-$(CONFIG_SPI_BCM2835AUX)		+= spi-bcm2835aux.o
+ obj-$(CONFIG_SPI_BCM53XX)		+= spi-bcm53xx.o
+diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
 new file mode 100644
-index 000000000000..8a18d71e6879
+index 000000000000..c968ab210a51
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/adi,axi-spi-engine.txt
-@@ -0,0 +1,31 @@
-+Analog Devices AXI SPI Engine controller Device Tree Bindings
++++ b/drivers/spi/spi-axi-spi-engine.c
+@@ -0,0 +1,591 @@
++/*
++ * SPI-Engine SPI controller driver
++ * Copyright 2015 Analog Devices Inc.
++ *  Author: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
++ *
++ * Licensed under the GPL-2.
++ */
 +
-+Required properties:
-+- compatible		: Must be "adi,axi-spi-engine-1.00.a""
-+- reg			: Physical base address and size of the register map.
-+- interrupts		: Property with a value describing the interrupt
-+			  number.
-+- clock-names		: List of input clock names - "s_axi_aclk", "spi_clk"
-+- clocks		: Clock phandles and specifiers (See clock bindings for
-+			  details on clock-names and clocks).
-+- #address-cells	: Must be <1>
-+- #size-cells		: Must be <0>
++#include <linux/clk.h>
++#include <linux/interrupt.h>
++#include <linux/io.h>
++#include <linux/of.h>
++#include <linux/module.h>
++#include <linux/platform_device.h>
++#include <linux/spi/spi.h>
 +
-+Optional subnodes:
-+	Subnodes are use to represent the SPI slave devices connected to the SPI
-+	master. They follow the generic SPI bindings as outlined in spi-bus.txt.
++#define SPI_ENGINE_VERSION_MAJOR(x)	((x >> 16) & 0xff)
++#define SPI_ENGINE_VERSION_MINOR(x)	((x >> 8) & 0xff)
++#define SPI_ENGINE_VERSION_PATCH(x)	(x & 0xff)
 +
-+Example:
++#define SPI_ENGINE_REG_VERSION			0x00
 +
-+    spi@@44a00000 {
-+		compatible = "adi,axi-spi-engine-1.00.a";
-+		reg = <0x44a00000 0x1000>;
-+		interrupts = <0 56 4>;
-+		clocks = <&clkc 15 &clkc 15>;
-+		clock-names = "s_axi_aclk", "spi_clk";
++#define SPI_ENGINE_REG_RESET			0x40
 +
-+		#address-cells = <1>;
-+		#size-cells = <0>;
++#define SPI_ENGINE_REG_INT_ENABLE		0x80
++#define SPI_ENGINE_REG_INT_PENDING		0x84
++#define SPI_ENGINE_REG_INT_SOURCE		0x88
 +
-+		/* SPI devices */
-+    };
++#define SPI_ENGINE_REG_SYNC_ID			0xc0
++
++#define SPI_ENGINE_REG_CMD_FIFO_ROOM		0xd0
++#define SPI_ENGINE_REG_SDO_FIFO_ROOM		0xd4
++#define SPI_ENGINE_REG_SDI_FIFO_LEVEL		0xd8
++
++#define SPI_ENGINE_REG_CMD_FIFO			0xe0
++#define SPI_ENGINE_REG_SDO_DATA_FIFO		0xe4
++#define SPI_ENGINE_REG_SDI_DATA_FIFO		0xe8
++#define SPI_ENGINE_REG_SDI_DATA_FIFO_PEEK	0xec
++
++#define SPI_ENGINE_INT_CMD_ALMOST_EMPTY		BIT(0)
++#define SPI_ENGINE_INT_SDO_ALMOST_EMPTY		BIT(1)
++#define SPI_ENGINE_INT_SDI_ALMOST_FULL		BIT(2)
++#define SPI_ENGINE_INT_SYNC			BIT(3)
++
++#define SPI_ENGINE_CONFIG_CPHA			BIT(0)
++#define SPI_ENGINE_CONFIG_CPOL			BIT(1)
++#define SPI_ENGINE_CONFIG_3WIRE			BIT(2)
++
++#define SPI_ENGINE_INST_TRANSFER		0x0
++#define SPI_ENGINE_INST_ASSERT			0x1
++#define SPI_ENGINE_INST_WRITE			0x2
++#define SPI_ENGINE_INST_MISC			0x3
++
++#define SPI_ENGINE_CMD_REG_CLK_DIV		0x0
++#define SPI_ENGINE_CMD_REG_CONFIG		0x1
++
++#define SPI_ENGINE_MISC_SYNC			0x0
++#define SPI_ENGINE_MISC_SLEEP			0x1
++
++#define SPI_ENGINE_TRANSFER_WRITE		0x1
++#define SPI_ENGINE_TRANSFER_READ		0x2
++
++#define SPI_ENGINE_CMD(inst, arg1, arg2) \
++	(((inst) << 12) | ((arg1) << 8) | (arg2))
++
++#define SPI_ENGINE_CMD_TRANSFER(flags, n) \
++	SPI_ENGINE_CMD(SPI_ENGINE_INST_TRANSFER, (flags), (n))
++#define SPI_ENGINE_CMD_ASSERT(delay, cs) \
++	SPI_ENGINE_CMD(SPI_ENGINE_INST_ASSERT, (delay), (cs))
++#define SPI_ENGINE_CMD_WRITE(reg, val) \
++	SPI_ENGINE_CMD(SPI_ENGINE_INST_WRITE, (reg), (val))
++#define SPI_ENGINE_CMD_SLEEP(delay) \
++	SPI_ENGINE_CMD(SPI_ENGINE_INST_MISC, SPI_ENGINE_MISC_SLEEP, (delay))
++#define SPI_ENGINE_CMD_SYNC(id) \
++	SPI_ENGINE_CMD(SPI_ENGINE_INST_MISC, SPI_ENGINE_MISC_SYNC, (id))
++
++struct spi_engine_program {
++	unsigned int length;
++	uint16_t instructions[];
++};
++
++struct spi_engine {
++	struct clk *clk;
++	struct clk *ref_clk;
++
++	spinlock_t lock;
++
++	void __iomem *base;
++
++	struct spi_message *msg;
++	struct spi_engine_program *p;
++	unsigned cmd_length;
++	const uint16_t *cmd_buf;
++
++	struct spi_transfer *tx_xfer;
++	unsigned int tx_length;
++	const uint8_t *tx_buf;
++
++	struct spi_transfer *rx_xfer;
++	unsigned int rx_length;
++	uint8_t *rx_buf;
++
++	unsigned int sync_id;
++	unsigned int completed_id;
++
++	unsigned int int_enable;
++};
++
++static void spi_engine_program_add_cmd(struct spi_engine_program *p,
++	bool dry, uint16_t cmd)
++{
++	if (!dry)
++		p->instructions[p->length] = cmd;
++	p->length++;
++}
++
++static unsigned int spi_engine_get_config(struct spi_device *spi)
++{
++	unsigned int config = 0;
++
++	if (spi->mode & SPI_CPOL)
++		config |= SPI_ENGINE_CONFIG_CPOL;
++	if (spi->mode & SPI_CPHA)
++		config |= SPI_ENGINE_CONFIG_CPHA;
++	if (spi->mode & SPI_3WIRE)
++		config |= SPI_ENGINE_CONFIG_3WIRE;
++
++	return config;
++}
++
++static unsigned int spi_engine_get_clk_div(struct spi_engine *spi_engine,
++	struct spi_device *spi, struct spi_transfer *xfer)
++{
++	unsigned int clk_div;
++
++	clk_div = DIV_ROUND_UP(clk_get_rate(spi_engine->ref_clk),
++		xfer->speed_hz * 2);
++	if (clk_div > 255)
++		clk_div = 255;
++	else if (clk_div > 0)
++		clk_div -= 1;
++
++	return clk_div;
++}
++
++static void spi_engine_gen_xfer(struct spi_engine_program *p, bool dry,
++	struct spi_transfer *xfer)
++{
++	unsigned int len = xfer->len;
++
++	while (len) {
++		unsigned int n = min(len, 256U);
++		unsigned int flags = 0;
++
++		if (xfer->tx_buf)
++			flags |= SPI_ENGINE_TRANSFER_WRITE;
++		if (xfer->rx_buf)
++			flags |= SPI_ENGINE_TRANSFER_READ;
++
++		spi_engine_program_add_cmd(p, dry,
++			SPI_ENGINE_CMD_TRANSFER(flags, n - 1));
++		len -= n;
++	}
++}
++
++static void spi_engine_gen_sleep(struct spi_engine_program *p, bool dry,
++	struct spi_engine *spi_engine, unsigned int clk_div, unsigned int delay)
++{
++	unsigned int spi_clk = clk_get_rate(spi_engine->ref_clk);
++	unsigned int t;
++
++	if (delay == 0)
++		return;
++
++	t = DIV_ROUND_UP(delay * spi_clk, (clk_div + 1) * 2);
++	while (t) {
++		unsigned int n = min(t, 256U);
++
++		spi_engine_program_add_cmd(p, dry, SPI_ENGINE_CMD_SLEEP(n - 1));
++		t -= n;
++	}
++}
++
++static void spi_engine_gen_cs(struct spi_engine_program *p, bool dry,
++		struct spi_device *spi, bool assert)
++{
++	unsigned int mask = 0xff;
++
++	if (assert)
++		mask ^= BIT(spi->chip_select);
++
++	spi_engine_program_add_cmd(p, dry, SPI_ENGINE_CMD_ASSERT(1, mask));
++}
++
++static int spi_engine_compile_message(struct spi_engine *spi_engine,
++	struct spi_message *msg, bool dry, struct spi_engine_program *p)
++{
++	struct spi_device *spi = msg->spi;
++	struct spi_transfer *xfer;
++	int clk_div, new_clk_div;
++	bool cs_change = true;
++
++	clk_div = -1;
++
++	spi_engine_program_add_cmd(p, dry,
++		SPI_ENGINE_CMD_WRITE(SPI_ENGINE_CMD_REG_CONFIG,
++			spi_engine_get_config(spi)));
++
++	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
++		new_clk_div = spi_engine_get_clk_div(spi_engine, spi, xfer);
++		if (new_clk_div != clk_div) {
++			clk_div = new_clk_div;
++			spi_engine_program_add_cmd(p, dry,
++				SPI_ENGINE_CMD_WRITE(SPI_ENGINE_CMD_REG_CLK_DIV,
++					clk_div));
++		}
++
++		if (cs_change)
++			spi_engine_gen_cs(p, dry, spi, true);
++
++		spi_engine_gen_xfer(p, dry, xfer);
++		spi_engine_gen_sleep(p, dry, spi_engine, clk_div,
++			xfer->delay_usecs);
++
++		cs_change = xfer->cs_change;
++		if (list_is_last(&xfer->transfer_list, &msg->transfers))
++			cs_change = !cs_change;
++
++		if (cs_change)
++			spi_engine_gen_cs(p, dry, spi, false);
++	}
++
++	return 0;
++}
++
++static void spi_engine_xfer_next(struct spi_engine *spi_engine,
++	struct spi_transfer **_xfer)
++{
++	struct spi_message *msg = spi_engine->msg;
++	struct spi_transfer *xfer = *_xfer;
++
++	if (!xfer) {
++		xfer = list_first_entry(&msg->transfers,
++			struct spi_transfer, transfer_list);
++	} else if (list_is_last(&xfer->transfer_list, &msg->transfers)) {
++		xfer = NULL;
++	} else {
++		xfer = list_next_entry(xfer, transfer_list);
++	}
++
++	*_xfer = xfer;
++}
++
++static void spi_engine_tx_next(struct spi_engine *spi_engine)
++{
++	struct spi_transfer *xfer = spi_engine->tx_xfer;
++
++	do {
++		spi_engine_xfer_next(spi_engine, &xfer);
++	} while (xfer && !xfer->tx_buf);
++
++	spi_engine->tx_xfer = xfer;
++	if (xfer) {
++		spi_engine->tx_length = xfer->len;
++		spi_engine->tx_buf = xfer->tx_buf;
++	} else {
++		spi_engine->tx_buf = NULL;
++	}
++}
++
++static void spi_engine_rx_next(struct spi_engine *spi_engine)
++{
++	struct spi_transfer *xfer = spi_engine->rx_xfer;
++
++	do {
++		spi_engine_xfer_next(spi_engine, &xfer);
++	} while (xfer && !xfer->rx_buf);
++
++	spi_engine->rx_xfer = xfer;
++	if (xfer) {
++		spi_engine->rx_length = xfer->len;
++		spi_engine->rx_buf = xfer->rx_buf;
++	} else {
++		spi_engine->rx_buf = NULL;
++	}
++}
++
++static bool spi_engine_write_cmd_fifo(struct spi_engine *spi_engine)
++{
++	void __iomem *addr = spi_engine->base + SPI_ENGINE_REG_CMD_FIFO;
++	unsigned int n, m, i;
++	const uint16_t *buf;
++
++	n = readl_relaxed(spi_engine->base + SPI_ENGINE_REG_CMD_FIFO_ROOM);
++	while (n && spi_engine->cmd_length) {
++		m = min(n, spi_engine->cmd_length);
++		buf = spi_engine->cmd_buf;
++		for (i = 0; i < m; i++)
++			writel_relaxed(buf[i], addr);
++		spi_engine->cmd_buf += m;
++		spi_engine->cmd_length -= m;
++		n -= m;
++	}
++
++	return spi_engine->cmd_length != 0;
++}
++
++static bool spi_engine_write_tx_fifo(struct spi_engine *spi_engine)
++{
++	void __iomem *addr = spi_engine->base + SPI_ENGINE_REG_SDO_DATA_FIFO;
++	unsigned int n, m, i;
++	const uint8_t *buf;
++
++	n = readl_relaxed(spi_engine->base + SPI_ENGINE_REG_SDO_FIFO_ROOM);
++	while (n && spi_engine->tx_length) {
++		m = min(n, spi_engine->tx_length);
++		buf = spi_engine->tx_buf;
++		for (i = 0; i < m; i++)
++			writel_relaxed(buf[i], addr);
++		spi_engine->tx_buf += m;
++		spi_engine->tx_length -= m;
++		n -= m;
++		if (spi_engine->tx_length == 0)
++			spi_engine_tx_next(spi_engine);
++	}
++
++	return spi_engine->tx_length != 0;
++}
++
++static bool spi_engine_read_rx_fifo(struct spi_engine *spi_engine)
++{
++	void __iomem *addr = spi_engine->base + SPI_ENGINE_REG_SDI_DATA_FIFO;
++	unsigned int n, m, i;
++	uint8_t *buf;
++
++	n = readl_relaxed(spi_engine->base + SPI_ENGINE_REG_SDI_FIFO_LEVEL);
++	while (n && spi_engine->rx_length) {
++		m = min(n, spi_engine->rx_length);
++		buf = spi_engine->rx_buf;
++		for (i = 0; i < m; i++)
++			buf[i] = readl_relaxed(addr);
++		spi_engine->rx_buf += m;
++		spi_engine->rx_length -= m;
++		n -= m;
++		if (spi_engine->rx_length == 0)
++			spi_engine_rx_next(spi_engine);
++	}
++
++	return spi_engine->rx_length != 0;
++}
++
++static irqreturn_t spi_engine_irq(int irq, void *devid)
++{
++	struct spi_master *master = devid;
++	struct spi_engine *spi_engine = spi_master_get_devdata(master);
++	unsigned int disable_int = 0;
++	unsigned int pending;
++
++	pending = readl_relaxed(spi_engine->base + SPI_ENGINE_REG_INT_PENDING);
++
++	if (pending & SPI_ENGINE_INT_SYNC) {
++		writel_relaxed(SPI_ENGINE_INT_SYNC,
++			spi_engine->base + SPI_ENGINE_REG_INT_PENDING);
++		spi_engine->completed_id = readl_relaxed(
++			spi_engine->base + SPI_ENGINE_REG_SYNC_ID);
++	}
++
++	spin_lock(&spi_engine->lock);
++
++	if (pending & SPI_ENGINE_INT_CMD_ALMOST_EMPTY) {
++		if (!spi_engine_write_cmd_fifo(spi_engine))
++			disable_int |= SPI_ENGINE_INT_CMD_ALMOST_EMPTY;
++	}
++
++	if (pending & SPI_ENGINE_INT_SDO_ALMOST_EMPTY) {
++		if (!spi_engine_write_tx_fifo(spi_engine))
++			disable_int |= SPI_ENGINE_INT_SDO_ALMOST_EMPTY;
++	}
++
++	if (pending & (SPI_ENGINE_INT_SDI_ALMOST_FULL | SPI_ENGINE_INT_SYNC)) {
++		if (!spi_engine_read_rx_fifo(spi_engine))
++			disable_int |= SPI_ENGINE_INT_SDI_ALMOST_FULL;
++	}
++
++	if (pending & SPI_ENGINE_INT_SYNC) {
++		if (spi_engine->msg &&
++		    spi_engine->completed_id == spi_engine->sync_id) {
++			struct spi_message *msg = spi_engine->msg;
++
++			kfree(spi_engine->p);
++			msg->status = 0;
++			msg->actual_length = msg->frame_length;
++			spi_engine->msg = NULL;
++			spi_finalize_current_message(master);
++			disable_int |= SPI_ENGINE_INT_SYNC;
++		}
++	}
++
++	if (disable_int) {
++		spi_engine->int_enable &= ~disable_int;
++		writel_relaxed(spi_engine->int_enable,
++			spi_engine->base + SPI_ENGINE_REG_INT_ENABLE);
++	}
++
++	spin_unlock(&spi_engine->lock);
++
++	return IRQ_HANDLED;
++}
++
++static int spi_engine_transfer_one_message(struct spi_master *master,
++	struct spi_message *msg)
++{
++	struct spi_engine_program p_dry, *p;
++	struct spi_engine *spi_engine = spi_master_get_devdata(master);
++	unsigned int int_enable = 0;
++	unsigned long flags;
++	size_t size;
++
++	p_dry.length = 0;
++	spi_engine_compile_message(spi_engine, msg, true, &p_dry);
++
++	size = sizeof(*p->instructions) * (p_dry.length + 1);
++	p = kzalloc(sizeof(*p) + size, GFP_KERNEL);
++	if (!p)
++		return -ENOMEM;
++	spi_engine_compile_message(spi_engine, msg, false, p);
++
++	spin_lock_irqsave(&spi_engine->lock, flags);
++	spi_engine->sync_id = (spi_engine->sync_id + 1) & 0xff;
++	spi_engine_program_add_cmd(p, false,
++		SPI_ENGINE_CMD_SYNC(spi_engine->sync_id));
++
++	spi_engine->msg = msg;
++	spi_engine->p = p;
++
++	spi_engine->cmd_buf = p->instructions;
++	spi_engine->cmd_length = p->length;
++	if (spi_engine_write_cmd_fifo(spi_engine))
++		int_enable |= SPI_ENGINE_INT_CMD_ALMOST_EMPTY;
++
++	spi_engine_tx_next(spi_engine);
++	if (spi_engine_write_tx_fifo(spi_engine))
++		int_enable |= SPI_ENGINE_INT_SDO_ALMOST_EMPTY;
++
++	spi_engine_rx_next(spi_engine);
++	if (spi_engine->rx_length != 0)
++		int_enable |= SPI_ENGINE_INT_SDI_ALMOST_FULL;
++
++	int_enable |= SPI_ENGINE_INT_SYNC;
++
++	writel_relaxed(int_enable,
++		spi_engine->base + SPI_ENGINE_REG_INT_ENABLE);
++	spi_engine->int_enable = int_enable;
++	spin_unlock_irqrestore(&spi_engine->lock, flags);
++
++	return 0;
++}
++
++static int spi_engine_probe(struct platform_device *pdev)
++{
++	struct spi_engine *spi_engine;
++	struct spi_master *master;
++	unsigned int version;
++	struct resource *res;
++	int irq;
++	int ret;
++
++	irq = platform_get_irq(pdev, 0);
++	if (irq <= 0)
++		return -ENXIO;
++
++	spi_engine = devm_kzalloc(&pdev->dev, sizeof(*spi_engine), GFP_KERNEL);
++	if (!spi_engine)
++		return -ENOMEM;
++
++	master = spi_alloc_master(&pdev->dev, 0);
++	if (!master)
++		return -ENOMEM;
++
++	spi_master_set_devdata(master, spi_engine);
++
++	spin_lock_init(&spi_engine->lock);
++
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	spi_engine->base = devm_ioremap_resource(&pdev->dev, res);
++	if (IS_ERR(spi_engine->base)) {
++		ret = PTR_ERR(spi_engine->base);
++		goto err_put_master;
++	}
++
++	version = readl(spi_engine->base + SPI_ENGINE_REG_VERSION);
++	if (SPI_ENGINE_VERSION_MAJOR(version) != 1) {
++		dev_err(&pdev->dev, "Unsupported peripheral version %u.%u.%c\n",
++			SPI_ENGINE_VERSION_MAJOR(version),
++			SPI_ENGINE_VERSION_MINOR(version),
++			SPI_ENGINE_VERSION_PATCH(version));
++		return -ENODEV;
++	}
++
++	spi_engine->clk = devm_clk_get(&pdev->dev, "s_axi_aclk");
++	if (IS_ERR(spi_engine->clk)) {
++		ret = PTR_ERR(spi_engine->clk);
++		goto err_put_master;
++	}
++
++	spi_engine->ref_clk = devm_clk_get(&pdev->dev, "spi_clk");
++	if (IS_ERR(spi_engine->ref_clk)) {
++		ret = PTR_ERR(spi_engine->ref_clk);
++		goto err_put_master;
++	}
++
++	ret = clk_prepare_enable(spi_engine->clk);
++	if (ret)
++		goto err_put_master;
++
++	ret = clk_prepare_enable(spi_engine->ref_clk);
++	if (ret)
++		goto err_clk_disable;
++
++	writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_RESET);
++	writel_relaxed(0xff, spi_engine->base + SPI_ENGINE_REG_INT_PENDING);
++	writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_INT_ENABLE);
++
++	ret = request_irq(irq, spi_engine_irq, 0, pdev->name, master);
++	if (ret)
++		goto err_ref_clk_disable;
++
++	master->dev.parent = &pdev->dev;
++	master->dev.of_node = pdev->dev.of_node;
++	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_3WIRE;
++	master->bits_per_word_mask = SPI_BPW_MASK(8);
++	master->max_speed_hz = clk_get_rate(spi_engine->ref_clk) / 2;
++	master->transfer_one_message = spi_engine_transfer_one_message;
++	master->num_chipselect = 8;
++
++	ret = spi_register_master(master);
++	if (ret)
++		goto err_free_irq;
++
++	platform_set_drvdata(pdev, master);
++
++	return 0;
++err_free_irq:
++	free_irq(irq, master);
++err_ref_clk_disable:
++	clk_disable_unprepare(spi_engine->ref_clk);
++err_clk_disable:
++	clk_disable_unprepare(spi_engine->clk);
++err_put_master:
++	spi_master_put(master);
++	return ret;
++}
++
++static int spi_engine_remove(struct platform_device *pdev)
++{
++	struct spi_master *master = platform_get_drvdata(pdev);
++	struct spi_engine *spi_engine = spi_master_get_devdata(master);
++	int irq = platform_get_irq(pdev, 0);
++
++	spi_unregister_master(master);
++
++	free_irq(irq, master);
++
++	writel_relaxed(0xff, spi_engine->base + SPI_ENGINE_REG_INT_PENDING);
++	writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_INT_ENABLE);
++	writel_relaxed(0x01, spi_engine->base + SPI_ENGINE_REG_RESET);
++
++	clk_disable_unprepare(spi_engine->ref_clk);
++	clk_disable_unprepare(spi_engine->clk);
++
++	return 0;
++}
++
++static const struct of_device_id spi_engine_match_table[] = {
++	{ .compatible = "adi,axi-spi-engine-1.00.a" },
++	{ },
++};
++
++static struct platform_driver spi_engine_driver = {
++	.probe = spi_engine_probe,
++	.remove = spi_engine_remove,
++	.driver = {
++		.name = "spi-engine",
++		.of_match_table = spi_engine_match_table,
++	},
++};
++module_platform_driver(spi_engine_driver);
++
++MODULE_AUTHOR("Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>");
++MODULE_DESCRIPTION("Analog Devices SPI engine peripheral driver");
++MODULE_LICENSE("GPL");
 -- 
 2.7.0.rc3
 

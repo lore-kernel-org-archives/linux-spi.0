@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: dw-mid: switch to new dmaengine_terminate_* API" to the spi tree
-Date: Fri, 05 Feb 2016 17:45:54 +0000
-Message-ID: <E1aRkSA-000264-E0@debutante>
-References: <1454683586-74628-1-git-send-email-andriy.shevchenko@linux.intel.com>
+Subject: Applied "spi: dw-mmio: remove message which is handled by core" to the spi tree
+Date: Fri, 05 Feb 2016 17:45:53 +0000
+Message-ID: <E1aRkS9-00025Z-G1@debutante>
+References: <1454684050-76407-1-git-send-email-andriy.shevchenko@linux.intel.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1454683586-74628-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <1454684050-76407-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: dw-mid: switch to new dmaengine_terminate_* API
+   spi: dw-mmio: remove message which is handled by core
 
 has been applied to the spi tree at
 
@@ -38,36 +38,36 @@ to this mail.
 Thanks,
 Mark
 
->From a3ff9582369e71439ad2bf40e70474b9f1b85c55 Mon Sep 17 00:00:00 2001
+>From 2f6fdefb3503ff0600b5435c0c9ce43cb50d3f1a Mon Sep 17 00:00:00 2001
 From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Fri, 5 Feb 2016 16:46:26 +0200
-Subject: [PATCH] spi: dw-mid: switch to new dmaengine_terminate_* API
+Date: Fri, 5 Feb 2016 16:54:10 +0200
+Subject: [PATCH] spi: dw-mmio: remove message which is handled by core
 
-Convert dmaengine_terminate_all() calls to synchronous versions.
+devm_ioremap_resource() validates its parameters and issues an error message if
+needed.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-dw-mid.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-dw-mmio.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
-index 9185f6c08459..e31971f91475 100644
---- a/drivers/spi/spi-dw-mid.c
-+++ b/drivers/spi/spi-dw-mid.c
-@@ -89,10 +89,10 @@ static void mid_spi_dma_exit(struct dw_spi *dws)
- 	if (!dws->dma_inited)
- 		return;
+diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
+index a6d7029a85ac..447497e9124c 100644
+--- a/drivers/spi/spi-dw-mmio.c
++++ b/drivers/spi/spi-dw-mmio.c
+@@ -47,11 +47,6 @@ static int dw_spi_mmio_probe(struct platform_device *pdev)
  
--	dmaengine_terminate_all(dws->txchan);
-+	dmaengine_terminate_sync(dws->txchan);
- 	dma_release_channel(dws->txchan);
- 
--	dmaengine_terminate_all(dws->rxchan);
-+	dmaengine_terminate_sync(dws->rxchan);
- 	dma_release_channel(dws->rxchan);
- }
- 
+ 	/* Get basic io resource and map it */
+ 	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (!mem) {
+-		dev_err(&pdev->dev, "no mem resource?\n");
+-		return -EINVAL;
+-	}
+-
+ 	dws->regs = devm_ioremap_resource(&pdev->dev, mem);
+ 	if (IS_ERR(dws->regs)) {
+ 		dev_err(&pdev->dev, "SPI region map failed\n");
 -- 
 2.7.0.rc3
 

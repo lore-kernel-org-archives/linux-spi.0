@@ -1,56 +1,56 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [RFC PATCH] SPI/ACPI: DesignWare: Add ACPI support for
- Designware SPI driver
-Date: Fri, 5 Feb 2016 16:11:13 +0000
-Message-ID: <20160205161113.GY4455@sirena.org.uk>
-References: <1454656280-130658-1-git-send-email-qiujiang@huawei.com>
- <CAHp75VeSkUvHSd_JC-qPzwDjBWM8oxJP8jt3UD91uq1=fvEEqw@mail.gmail.com>
+From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi: Add Analog Devices AXI SPI Engine controller support
+Date: Fri, 5 Feb 2016 18:34:53 +0200
+Message-ID: <CAHp75VezOq14okNyYR+JP0Cv-Pkbxng8gOWuKzMhV8dvPEsEBg@mail.gmail.com>
+References: <1454602410-14049-1-git-send-email-lars@metafoo.de>
+	<1454602410-14049-2-git-send-email-lars@metafoo.de>
+	<CAHp75VcQ1WrHVxk=6xNrjhsep=2YhcMLiXAPChXeB+fG3MX2fQ@mail.gmail.com>
+	<56B4B1E9.7080804@metafoo.de>
+	<CAHp75Vd1WEGDaFx99mX3jN5xXNZ9Rc6R_pE8G5kyGfNirF7T6A@mail.gmail.com>
+	<56B4C7FB.3080204@metafoo.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Z1EIi0fvCUyWUKja"
-Cc: qiujiang <qiujiang-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linuxarm-hv44wF8Li93QT0dZR+AlfA@public.gmane.org, haifeng.wei-hv44wF8Li93QT0dZR+AlfA@public.gmane.org,
-	charles.chenxin-hv44wF8Li93QT0dZR+AlfA@public.gmane.org
-To: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAHp75VeSkUvHSd_JC-qPzwDjBWM8oxJP8jt3UD91uq1=fvEEqw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <56B4C7FB.3080204-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
+On Fri, Feb 5, 2016 at 6:04 PM, Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org> wrote:
+> On 02/05/2016 04:32 PM, Andy Shevchenko wrote:
+>> On Fri, Feb 5, 2016 at 4:30 PM, Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org> wrote:
 
---Z1EIi0fvCUyWUKja
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+>>>>> +               for (i = 0; i < m; i++)
+>>>>> +                       writel_relaxed(buf[i], addr);
+>>>>
+>>>> writesl() ?
+>>>
+>>> Hm, maybe. Does it really have the same semantics?
+>>
+>> It's a loop inside, so it has a count parameter. Otherwise it should be similar.
 
-On Fri, Feb 05, 2016 at 05:55:42PM +0200, Andy Shevchenko wrote:
+> It seems to have different semantics in terms of endianness and ordering.
 
-> Like Mark noticed there is also same issue. Do you indeed check the
-> configuration with different chip select signals?
+Ouch, I was totally under impression that they are done in a way of
+write*/read*.
 
-It's not clear to me that *any* chip select signals work, we get a GPIO
-descriptor back but I didn't see any code that ever used the value.
+>> Maybe the hardware flow control implementation is needed?
+>
+> But wouldn't that be transfer_one_message?
 
---Z1EIi0fvCUyWUKja
-Content-Type: application/pgp-signature; name="signature.asc"
+Depends how many common stuff we might have. For now it is indeed.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJWtMmgAAoJECTWi3JdVIfQfLEH/j1ZbidUWinUSaeWo5mGcn1Q
-e2QCjzuuFZQ7hijP2cFQnac+59ycPC/lgZ91VZo668y3Gt4DK89YtBSzscyRQ4ry
-BPjuysM0FP9QZZdQTrjjCcoi/zlsWGTKlDN9qcr4E5AyQ2uPVtcF7C9th7Yi8Ao2
-ubxI9osyMckKIoKN5ofaZ7qoGkrlGjD2xiAqAARm4YudTyWr3gqzcuqdEaR+aSFr
-kEZ+9K+DGQGqC2cEsuMQ+7G3C8oRvO/9slg7PDhwznqGxDHq84iehd88PPTPWNc2
-NZbKyqetkXyn9upNKE/UB44IlR7WMjMc+xzDcj+NmOcCkJd+QPA/1NiSJXDKGWw=
-=LX+c
------END PGP SIGNATURE-----
-
---Z1EIi0fvCUyWUKja--
+-- 
+With Best Regards,
+Andy Shevchenko
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,56 +1,77 @@
-From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: Add Analog Devices AXI SPI Engine controller support
-Date: Fri, 5 Feb 2016 18:34:53 +0200
-Message-ID: <CAHp75VezOq14okNyYR+JP0Cv-Pkbxng8gOWuKzMhV8dvPEsEBg@mail.gmail.com>
-References: <1454602410-14049-1-git-send-email-lars@metafoo.de>
-	<1454602410-14049-2-git-send-email-lars@metafoo.de>
-	<CAHp75VcQ1WrHVxk=6xNrjhsep=2YhcMLiXAPChXeB+fG3MX2fQ@mail.gmail.com>
-	<56B4B1E9.7080804@metafoo.de>
-	<CAHp75Vd1WEGDaFx99mX3jN5xXNZ9Rc6R_pE8G5kyGfNirF7T6A@mail.gmail.com>
-	<56B4C7FB.3080204@metafoo.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <56B4C7FB.3080204-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: dw-mid: switch to new dmaengine_terminate_* API" to the spi tree
+Date: Fri, 05 Feb 2016 17:45:54 +0000
+Message-ID: <E1aRkSA-000264-E0@debutante>
+References: <1454683586-74628-1-git-send-email-andriy.shevchenko@linux.intel.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1454683586-74628-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, Feb 5, 2016 at 6:04 PM, Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org> wrote:
-> On 02/05/2016 04:32 PM, Andy Shevchenko wrote:
->> On Fri, Feb 5, 2016 at 4:30 PM, Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org> wrote:
+The patch
 
->>>>> +               for (i = 0; i < m; i++)
->>>>> +                       writel_relaxed(buf[i], addr);
->>>>
->>>> writesl() ?
->>>
->>> Hm, maybe. Does it really have the same semantics?
->>
->> It's a loop inside, so it has a count parameter. Otherwise it should be similar.
+   spi: dw-mid: switch to new dmaengine_terminate_* API
 
-> It seems to have different semantics in terms of endianness and ordering.
+has been applied to the spi tree at
 
-Ouch, I was totally under impression that they are done in a way of
-write*/read*.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
->> Maybe the hardware flow control implementation is needed?
->
-> But wouldn't that be transfer_one_message?
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-Depends how many common stuff we might have. For now it is indeed.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From a3ff9582369e71439ad2bf40e70474b9f1b85c55 Mon Sep 17 00:00:00 2001
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Date: Fri, 5 Feb 2016 16:46:26 +0200
+Subject: [PATCH] spi: dw-mid: switch to new dmaengine_terminate_* API
+
+Convert dmaengine_terminate_all() calls to synchronous versions.
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-dw-mid.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
+index 9185f6c08459..e31971f91475 100644
+--- a/drivers/spi/spi-dw-mid.c
++++ b/drivers/spi/spi-dw-mid.c
+@@ -89,10 +89,10 @@ static void mid_spi_dma_exit(struct dw_spi *dws)
+ 	if (!dws->dma_inited)
+ 		return;
+ 
+-	dmaengine_terminate_all(dws->txchan);
++	dmaengine_terminate_sync(dws->txchan);
+ 	dma_release_channel(dws->txchan);
+ 
+-	dmaengine_terminate_all(dws->rxchan);
++	dmaengine_terminate_sync(dws->rxchan);
+ 	dma_release_channel(dws->rxchan);
+ }
+ 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.7.0.rc3
+
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

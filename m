@@ -1,62 +1,62 @@
-From: Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: pxa2xx: Fix too early chipselect deassert
-Date: Thu, 04 Feb 2016 22:01:29 +0100
-Message-ID: <874mdo5gwm.fsf@belgarion.home>
-References: <1454581857-12921-1-git-send-email-jarkko.nikula@linux.intel.com>
-	<1454581857-12921-2-git-send-email-jarkko.nikula@linux.intel.com>
+From: Purna Chandra Mandal <purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+Subject: Re: [PATCH] spi: Fix incomplete handling of
+ SPI_MASTER_MUST_RX/_MUST_TX
+Date: Fri, 5 Feb 2016 10:30:24 +0530
+Message-ID: <56B42C68.4030909@microchip.com>
+References: <1454366363-10564-1-git-send-email-joshua.henderson@microchip.com>
+ <20160201231733.GK4455@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+Cc: Joshua Henderson <joshua.henderson-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
+	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1454581857-12921-2-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-	(Jarkko Nikula's message of "Thu, 4 Feb 2016 12:30:57 +0200")
+In-Reply-To: <20160201231733.GK4455-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org> writes:
+Thanks Mark.
 
-> There is a chance that chipselect is deasserted too early while the last
-> clock cycle is still running. Protocol analyzers will see this as a failed
-> last byte. This is more likely to occur with slow bitrates, for instance
-> at 25 kbps.
->
-> Reason for this is when using SPI mode 0 that both SPI host controller and
-> SPI slave will drive the data lines at the falling edge of clock signal
-> and sample at the rising edge. Receive FIFO gets the last bit now at the
-> rising edge and code sees transfer to be finished either by the interrupt
-> in PIO mode or by the DMA completion in DMA mode.
->
-> The SSP Time Out register SSTO should take care of delaying the
-> completion but it does not seems to have effect at least on Intel
-> Skylake and Broxton even when using long enough values. Depending on
-> timing code may get into point where chipselect is deasserted while the
-> last clock cycle is still running at its second half cycle.
->
-> Fix this by adding a wait loop in giveback() that waits until SSP becomes
-> idle before deasserting the chipselect.
->
-> Reported-by: Weifeng Voon <weifeng.voon-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-> Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-> ---
-> For normal development cycle. This is not a fatal issue and I guess real SPI
-> slaves may not hickup because of it. But you never know.
+On 02/02/2016 04:47 AM, Mark Brown wrote:
 
-I feel quite nervous about this one, as it will affect all pxa variants, for a
-Skylake and Broxton issues.
+> On Mon, Feb 01, 2016 at 03:39:23PM -0700, Joshua Henderson wrote:
+>> From: Purna Chandra Mandal <purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+>> There is a BUG in the way SPI_MASTER_MUST_RX/TX is implemented which can create
+> Bug is a WORD like any other WORD...
 
-What makes me even more nervous is that I don't have a way to test it yet ...
+ack.
 
-I will neither ack nor block it, let's have others judge it first.
+>> (1) spi core assigns dummy_rx buffer to transfer.rx_buf member and
+>> (2) passes it to lower layer for handling. and lower layer completed the
+>>     transfer/message in due time.
+>> (3) spi core deletes the buffer if no other requests pending, but
+>>     'transfer.rx_buf' continues to hold *stale* dummy buffer pointer.
+>> (4) If spi client driver (like mmc_spi) reuses the same transfer structure and
+>>     don't touch .rx_buf to NULL
+>> mmc_spi doesn't reset the ptr unless data transfer direction changes in future
+>> transaction(s). spi core will skip assigning new dummy buffer and underlying
+>> master driver will treat .rx_buf as legitimate ptr. This will result into memory
+>> corruption due to usage of free'd ptr.
+> It's not clear to me that this is the best fix, it's causing problems to
+> free the transfer but we could also fix that by just not freeing the
+> dummy data once we realize we need it unless the adaptor is freed.  That
+> should also be more efficient since it saves us having to allocate and
+> free things.
 
-Cheers.
+Idea is good, but not sufficient.
+Dummy buffers are _reallocated_ to accommodate larger size of transfer. In this if
+[originally NULL] .rx_buf/.tx_buf is not reset back to NULL after the transfer
+is over spi-core will find those .rx/tx_buf non-NULL in next _transfer() call and
+will pass the stale rx/tx_buf to spi controller driver which will definitely
+corrupt the memory and crash the system.
 
--- 
-Robert
+Above all the whole design depends on trust that core will not play with any data-structure
+which will break object-oriented/layered approach. So better to undo the modification
+(when needed to facilitate some functionality) unless core wants those information to be passed
+back to caller/client for reporting success or error or else.
+
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,407 +1,506 @@
-From: Purna Chandra Mandal <purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: spi-pic32: Add PIC32 SPI master driver
-Date: Fri, 5 Feb 2016 17:27:04 +0530
-Message-ID: <56B48E10.4070307@microchip.com>
-References: <1454366701-10847-1-git-send-email-joshua.henderson@microchip.com>
- <1454366701-10847-2-git-send-email-joshua.henderson@microchip.com>
- <20160202121342.GN4455@sirena.org.uk>
+From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi: Add Analog Devices AXI SPI Engine controller support
+Date: Fri, 5 Feb 2016 16:04:48 +0200
+Message-ID: <CAHp75VcQ1WrHVxk=6xNrjhsep=2YhcMLiXAPChXeB+fG3MX2fQ@mail.gmail.com>
+References: <1454602410-14049-1-git-send-email-lars@metafoo.de>
+	<1454602410-14049-2-git-send-email-lars@metafoo.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Joshua Henderson <joshua.henderson-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
-	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160202121342.GN4455-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <1454602410-14049-2-git-send-email-lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Mark,
-
-On 02/02/2016 05:43 PM, Mark Brown wrote:
-
-> On Mon, Feb 01, 2016 at 03:44:57PM -0700, Joshua Henderson wrote:
+On Thu, Feb 4, 2016 at 6:13 PM, Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org> wrote:
+> This patch adds support for the AXI SPI Engine controller which is a FPGA
+> soft-peripheral which is used in some of Analog Devices' reference designs.
 >
->> The PIC32 SPI driver is capable of performing SPI transfers either u=
-sing
->> polling or based on interrupt-trigger. GPIO based CS support (necess=
-ary
->> for correct SPI operation) is available. It is dependent on availabi=
-lity
->> of "cs-gpios" property of spi node in board dts file.
-> There's quite a lot of issues here.  At a high level the big issues a=
-re
-> with duplicating core functionality, a large number of helper functio=
-ns
-> that don't seem to add much and some interesting locking.  There's al=
-so
-> no DT binding documentation which is mandatory for new bindings.
-
-Good summary, will remove the helper functions wherever required. Also =
-fix
-locking issue, and implement transfer_one().
-
-Please find the binding documentation (missed adding you in CC).
-https://patchwork.ozlabs.org/patch/576738/
-
->> +config SPI_PIC32
->> +	tristate "Microchip PIC32 series SPI"
->> +	depends on MACH_PIC32
->> +	help
->> +	  SPI driver for PIC32 SPI master controller.
->> +
->> +
->>  #
->>  # Add new SPI master controllers in alphabetical order above this l=
-ine
->>  #
-> Note the comment here (yes, there are some things out of order but
-> that's no reason to add more).  Please also add an || COMPILE_TEST
-> unless there's an actual build time dependency.
-
-Ack, Will add in alphabetical order and add || COMPILE_TEST.
-
->> diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
->> index 8991ffc..bb37fed 100644
->> --- a/drivers/spi/Makefile
->> +++ b/drivers/spi/Makefile
->> @@ -94,3 +94,4 @@ obj-$(CONFIG_SPI_XILINX)		+=3D spi-xilinx.o
->>  obj-$(CONFIG_SPI_XLP)			+=3D spi-xlp.o
->>  obj-$(CONFIG_SPI_XTENSA_XTFPGA)		+=3D spi-xtensa-xtfpga.o
->>  obj-$(CONFIG_SPI_ZYNQMP_GQSPI)		+=3D spi-zynqmp-gqspi.o
->> +obj-$(CONFIG_SPI_PIC32)			+=3D spi-pic32.o
-> Similarly here where things are better sorted already.
-
-ack, Will add in sorted order.
-
->> +/*
->> + * PIC32 SPI core controller driver (refer dw_spi.c)
-> What should we refer to dw_spi.c for?  If this is a Designware IP you
-> should share the same driver.
-
-This is Microchip proprietary SPI IP, not Designware. Reference to dw_s=
-pi.c here
-is to mention 'inspired by'. Will update comment accordingly.
-
->> +static inline void spi_disable_chip(struct pic32_spi *pic32s)
->> +{
->> +	writel(SPICON_ON, pic32s->regs + SPICON_CLR);
->> +	cpu_relax();
->> +}
-> What is the cpu_relax() intended to do here?
-
-No SPI registers may be read or written in the CPU cycle immediately fo=
-llowing
-the instruction that clears the module=92s ON bit.
-Is there any better alternative than this? or udelay()? anyway, will ad=
-d comment why this is here.
-
->> +static inline void spi_set_clk_mode(struct pic32_spi *pic32s, int m=
-ode)
->> +{
->> +	u32 conset =3D 0, conclr =3D 0;
->> +
->> +	/* active low */
->> +	if (mode & SPI_CPOL)
->> +		conset |=3D SPICON_CKP;
->> +	else
->> +		conclr |=3D SPICON_CKP;
->> +
->> +	/* tx on rising edge of clk */
->> +	if (mode & SPI_CPHA)
->> +		conclr |=3D SPICON_CKE;
->> +	else
->> +		conset |=3D SPICON_CKE;
->> +
->> +	/* rx at end of tx */
->> +	conset |=3D SPICON_SMP;
->> +
->> +	writel(conclr, pic32s->regs + SPICON_CLR);
->> +	writel(conset, pic32s->regs + SPICON_SET);
->> +}
-> This is large for an inline function and only has one caller anyway.
-> Why not just include it in that user?
-
-ack. Merge accordingly,
-
->> +static inline void spi_drain_rx_buf(struct pic32_spi *pic32s)
->> +{
->> +	u32 sr;
->> +
->> +	/* drain rx bytes until empty */
->> +	for (;;) {
->> +		sr =3D readl(pic32s->regs + SPISTAT);
->> +		if (sr & STAT_RF_EMPTY)
->> +			break;
->> +
->> +		(void)readl(pic32s->regs + SPIBUF);
-> Why do you need this cast to void?
-
-Will drop.
-
->> +	}
-> A busy waiting loop like this is more where I'd expect to see a
-> cpu_relax().  I'd also expect to see some kind of timeout here,
-> otherwise if something goes wrong we could lock up.
-
-Will add usleep_range() and timeout check to avoid unbounded wait.
-
->> +static inline void spi_set_clk_rate(struct pic32_spi *pic32s, u32 s=
-ck)
-> Essentially all the functions in this file appear to be marked as
-> inline.  Don't do this unless the function really *needs* to be inlin=
-e,
-> just let the compiler inline it if it figures out that it's a good id=
-ea.
-
-Will remove 'inline' keyword in larger functions.
-Also as per my understanding compiler ignores 'inline' hint if it finds=
- otherwise.
-
->> +static inline void spi_set_ss_auto(struct pic32_spi *pic32s, u8 mst=
-, u32 mode)
->> +{
->> +	u32 v;
->> +
->> +	/* spi controller can drive CS/SS during transfer depending on fif=
-o
->> +	 * fill-level. SS will stay asserted as long as TX fifo has someth=
-ing
->> +	 * to transfer, else will be deasserted confirming completion of
->> +	 * the ongoing transfer.
->> +	 */
->> +
->> +	v =3D readl(pic32s->regs + SPICON);
->> +	v &=3D ~SPICON_MSSEN;
->> +	if (mst) {
->> +		v |=3D SPICON_MSSEN;
->> +		if (mode & SPI_CS_HIGH)
->> +			v |=3D SPICON_FRMPOL;
->> +		else
->> +			v &=3D ~SPICON_FRMPOL;
->> +	}
->> +
->> +	writel(v, pic32s->regs + SPICON);
->> +}
-> I don't really know what the above is suposed to do just from looking=
- at
-> it.  If it's enabling automatic /CS managment that doesn't sound like
-> something we can actually use in Linux based on the comment.
-
-The functions enables/disables automatic /CS management depending on 'm=
-st'
-argument which is govern by presence of valid cs_gpio.
-Now we know, clearly, the SPI IP works correct only with GPIO controlle=
-d
-/CS management. So will remove this logic and force disable-automatic /=
-CS  handling.
-
->> +static inline void spi_set_err_int(struct pic32_spi *pic32s)
->> +{
->> +	u32 mask;
->> +
->> +	mask =3D SPI_INT_TX_UR_EN | SPI_INT_RX_OV_EN | SPI_INT_FRM_ERR_EN;
->> +	writel(mask, pic32s->regs + SPICON2_SET);
->> +}
-> There is no need for this to be a function - there is one caller and
-> it contains only a single function.  Just inline it and add a comment=
- if
-> there is a need for documentation.  This applies to quite a lot of th=
-e
-> functions in this file, they are very small and have only one user so
-> mostly just make the code less direct.  Using spi_ as the prefix also
-> has a namespacing issue, that's the namespace for the core.
-
-ack. Will replace accordingly.
-
->> +	pic32s->mesg->state =3D (void *)-1;
-> This is trying to munge a numeric return code into a pointer without
-> using PTR_ERR() and friends which is ugly and fragile.  If you really
-> need to do this use the standard macros, but since we already have an
-> error code in the message you can use that (though it seems nothing
-> actually ever reads these...).  You should also use real error codes =
-not
-> magic numbers.
-
-Ack, Will implement transfer_one() and there will be no need of handlin=
-g
-message state at all.
-
->> +	complete(&pic32s->xfer_done);
->> +
->> +	disable_irq_nosync(pic32s->fault_irq);
->> +	disable_irq_nosync(pic32s->rx_irq);
->> +	disable_irq_nosync(pic32s->tx_irq);
-> This is racy, you are completing the transfer then disabling the
-> interrupts.  Something could come along and try and do another transf=
-er
-> before the interrupts are disabled.
-
-Good catch. Will change the order.
-
->> +	if (!pic32s->mesg) {
->> +		pic32_err_stop(pic32s, "err_irq: mesg error");
->> +		goto irq_handled;
->> +	}
-> There's nothing in this case that checks that the interrupt actually
-> fired.
-
-ack. Will return with IRQ_NONE in this case.
-
->> +	/* tx complete? mask and disable tx interrupt */
->> +	if (pic32s->tx_end =3D=3D pic32s->tx)
->> +		disable_irq_nosync(pic32s->tx_irq);
-> It seems there's no interrupt masking in the actual IP and the
-> interrupts will scream when the IP is idle?
+> The AXI SPI Engine controller is part of the SPI Engine framework[1] and
+> allows memory mapped access to the SPI Engine control bus. This allows it
+> to be used as a general purpose software driven SPI controller. The SPI
+> Engine in addition offers some optional advanced acceleration and
+> offloading capabilities, which are not part of this patch though and will
+> be introduced separately.
 >
-At IP level there is no interrupt masking capability. So to disable
-firing interrupt when IP is idle interrupts are masked/disabled at
-interrupt controller level.=20
-
->> +static inline void pic32_spi_cs_assert(struct pic32_spi *pic32s)
->> +{
->> +	int cs_high;
->> +	struct spi_device *spi_dev =3D pic32s->spi_dev;
->> +
->> +	if (pic32s->flags & SPI_SS_MASTER)
->> +		return;
->> +
->> +	cs_high =3D pic32s->mode & SPI_CS_HIGH;
->> +	gpio_set_value(spi_dev->cs_gpio, cs_high);
->> +}
-> Don't open code GPIO chip selects, use the core support.
-
-ack. Will implement .transfer_one() callback and use SPI core support.
-
->> +static void pic32_spi_dma_rx_notify(void *data)
->> +{
->> +	struct pic32_spi *pic32s =3D data;
->> +
->> +	spin_lock(&pic32s->lock);
->> +	complete(&pic32s->xfer_done);
->> +	spin_unlock(&pic32s->lock);
->> +}
-> Taking the spinlock here looks completely pointless - what is it
-> intended to protect?
-
-Will drop.
-
->> +err_dma:
->> +	pic32_spi_dma_abort(pic32s);
->> +	return -ENOMEM;
-> -ENOMEM looks completely random here, please use a sensible error cod=
-e
-> (if you got one back from another funtion pass it through).
-
-ack. Will use same error code as returned by failed function call.
-
->> +static int pic32_spi_one_transfer(struct pic32_spi *pic32s,
->> +				  struct spi_message *message,
->> +				  struct spi_transfer *transfer)
->> +	if (transfer->speed_hz && (transfer->speed_hz !=3D pic32s->speed_h=
-z)) {
-> Just use the transfer, the core will ensure that it is set.
-
-ack.
-
->> +	spin_lock_irqsave(&pic32s->lock, flags);
->> +
->> +	spi_enable_chip(pic32s);
->> +
->> +	/* polling mode? */
->> +	if (pic32s->flags & SPI_XFER_POLL) {
->> +		ret =3D pic32_spi_poll_transfer(pic32s, 2 * HZ);
->> +		spin_unlock_irqrestore(&pic32s->lock, flags);
->> +
->> +		if (ret) {
->> +			dev_err(&master->dev, "poll-xfer timedout\n");
->> +			message->status =3D ret;
->> +			goto err_xfer_done;
->> +		}
->> +		goto out_xfer_done;
->> +	}
->> +
->> +	reinit_completion(&pic32s->xfer_done);
->> +
->> +	/* DMA mode ? */
->> +	if (pic32_spi_dma_is_ready(pic32s)) {
->> +		spin_unlock_irqrestore(&pic32s->lock, flags);
->> +
->> +		ret =3D pic32_spi_dma_transfer(pic32s, transfer);
->> +		if (ret) {
->> +			dev_err(&master->dev, "dma xfer error\n");
->> +			message->status =3D ret;
->> +			spin_lock_irqsave(&pic32s->lock, flags);
->> +		} else {
->> +			goto out_wait_for_xfer;
->> +		}
->> +	}
->> +
->> +	/* enable interrupt */
->> +	enable_irq(pic32s->fault_irq);
->> +	enable_irq(pic32s->tx_irq);
->> +	enable_irq(pic32s->rx_irq);
->> +
->> +	spin_unlock_irqrestore(&pic32s->lock, flags);
-> This seems like a very large section of code to hold a spinlock for a=
-nd
-> I'm not immediately seeing a reason why the locking has to be so
-> aggressive.  Among other things it's holding a spinlock with interrup=
-ts
-> disabled for up to two seconds over a polling transfer which is at be=
-st
-> needless.
-
-ack. Will remove locking requirement for polling-mode (needed to suppor=
-t
-automatic /CS handling).
-
->> +static int pic32_spi_one_message(struct spi_master *master,
->> +				 struct spi_message *msg)
->> +{
->> +	int ret =3D 0;
->> +	int cs_active =3D 0;
-> Don't open code message parsing, use the core support and implement
-> transfer_one().
-
-ack. Will implement.
-
->> +	clk_prepare_enable(pic32s->clk);
-> No error checking.  It'd also be better to have runtime power managem=
-ent
-> of this.
-
-Will add error checking. Currently we don't have support for runtime po=
-wer-management.
-
->> +	if (dev->of_node) {
-> This has DT support but the DT binding is not documented.  Documentat=
-ion
-> is mandatory for all new DT bindings.
-
-ack. See above for DT documentation.
-
->> +		of_property_read_u32(dev->of_node,
->> +				     "max-clock-frequency", &max_spi_rate);
-> This looks like it's duplicating something that should be in the cloc=
-k
-> bindings.  As far as I can tell we never change the parent clock rate=
- so
-> we can just look at that to identify the maximum clock rate.
-
-ack. Will drop this and derive maximum clock rate from the parent clock=
-=2E
-
->> +		if (of_find_property(dev->of_node, "use-no-dma", NULL)) {
->> +			dev_warn(dev, "DMA support not requested\n");
->> +			pic32s->flags &=3D ~SPI_DMA_CAP;
->> +		}
-> Why not just handle the DT binding information being missing?
-
-Will drop this DT property (added mainly for debug purpose).
+> At the core of the SPI Engine framework is a small sort of co-processor
+> that accepts a command stream and turns the commands into low-level SPI
+> transactions. Communication is done through three memory mapped FIFOs in
+> the register map of the AXI SPI Engine peripheral. One FIFO for the command
+> stream and one each for transmit and receive data.
+>
+> The driver translates a spi_message in a command stream and writes it to
+> the peripheral which executes it asynchronously. This allows it to perform
+> very precise timings which are required for some SPI slave devices to
+> achieve maximum performance (e.g. analog-to-digital and digital-to-analog
+> converters). The execution flow is synchronized to the host system by a
+> special synchronize instruction which generates a interrupt.
+>
+> [1] https://wiki.analog.com/resources/fpga/peripherals/spi_engine
+>
 
 
+> +++ b/drivers/spi/spi-axi-spi-engine.c
+> @@ -0,0 +1,591 @@
+
+> +static unsigned int spi_engine_get_clk_div(struct spi_engine *spi_engine,
+> +       struct spi_device *spi, struct spi_transfer *xfer)
+> +{
+> +       unsigned int clk_div;
+> +
+> +       clk_div = DIV_ROUND_UP(clk_get_rate(spi_engine->ref_clk),
+> +               xfer->speed_hz * 2);
+
+> +       if (clk_div > 255)
+> +               clk_div = 255;
+> +       else if (clk_div > 0)
+> +               clk_div -= 1;
+
+255 is okay, 254 is not, 253- is okay. Why 254 is so special?
+
+> +
+> +       return clk_div;
+> +}
+
+
+> +static int spi_engine_compile_message(struct spi_engine *spi_engine,
+> +       struct spi_message *msg, bool dry, struct spi_engine_program *p)
+> +{
+> +       struct spi_device *spi = msg->spi;
+> +       struct spi_transfer *xfer;
+> +       int clk_div, new_clk_div;
+> +       bool cs_change = true;
+> +
+> +       clk_div = -1;
+> +
+> +       spi_engine_program_add_cmd(p, dry,
+> +               SPI_ENGINE_CMD_WRITE(SPI_ENGINE_CMD_REG_CONFIG,
+> +                       spi_engine_get_config(spi)));
+> +
+> +       list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+> +               new_clk_div = spi_engine_get_clk_div(spi_engine, spi, xfer);
+
+> +               if (new_clk_div != clk_div) {
+> +                       clk_div = new_clk_div;
+> +                       spi_engine_program_add_cmd(p, dry,
+> +                               SPI_ENGINE_CMD_WRITE(SPI_ENGINE_CMD_REG_CLK_DIV,
+> +                                       clk_div));
+> +               }
+
+Shouldn't be speed programmed per transfer?
+
+> +
+> +               if (cs_change)
+> +                       spi_engine_gen_cs(p, dry, spi, true);
+> +
+> +               spi_engine_gen_xfer(p, dry, xfer);
+> +               spi_engine_gen_sleep(p, dry, spi_engine, clk_div,
+> +                       xfer->delay_usecs);
+> +
+> +               cs_change = xfer->cs_change;
+> +               if (list_is_last(&xfer->transfer_list, &msg->transfers))
+> +                       cs_change = !cs_change;
+> +
+> +               if (cs_change)
+> +                       spi_engine_gen_cs(p, dry, spi, false);
+> +       }
+> +
+> +       return 0;
+> +}
+> +
+> +static void spi_engine_xfer_next(struct spi_engine *spi_engine,
+> +       struct spi_transfer **_xfer)
+> +{
+> +       struct spi_message *msg = spi_engine->msg;
+> +       struct spi_transfer *xfer = *_xfer;
+> +
+> +       if (!xfer) {
+> +               xfer = list_first_entry(&msg->transfers,
+> +                       struct spi_transfer, transfer_list);
+> +       } else if (list_is_last(&xfer->transfer_list, &msg->transfers)) {
+> +               xfer = NULL;
+> +       } else {
+> +               xfer = list_next_entry(xfer, transfer_list);
+> +       }
+> +
+> +       *_xfer = xfer;
+> +}
+> +
+> +static void spi_engine_tx_next(struct spi_engine *spi_engine)
+> +{
+> +       struct spi_transfer *xfer = spi_engine->tx_xfer;
+> +
+> +       do {
+> +               spi_engine_xfer_next(spi_engine, &xfer);
+> +       } while (xfer && !xfer->tx_buf);
+> +
+> +       spi_engine->tx_xfer = xfer;
+> +       if (xfer) {
+> +               spi_engine->tx_length = xfer->len;
+> +               spi_engine->tx_buf = xfer->tx_buf;
+> +       } else {
+> +               spi_engine->tx_buf = NULL;
+> +       }
+> +}
+> +
+> +static void spi_engine_rx_next(struct spi_engine *spi_engine)
+> +{
+> +       struct spi_transfer *xfer = spi_engine->rx_xfer;
+> +
+> +       do {
+> +               spi_engine_xfer_next(spi_engine, &xfer);
+> +       } while (xfer && !xfer->rx_buf);
+> +
+> +       spi_engine->rx_xfer = xfer;
+> +       if (xfer) {
+> +               spi_engine->rx_length = xfer->len;
+> +               spi_engine->rx_buf = xfer->rx_buf;
+> +       } else {
+> +               spi_engine->rx_buf = NULL;
+> +       }
+> +}
+> +
+> +static bool spi_engine_write_cmd_fifo(struct spi_engine *spi_engine)
+> +{
+> +       void __iomem *addr = spi_engine->base + SPI_ENGINE_REG_CMD_FIFO;
+> +       unsigned int n, m, i;
+> +       const uint16_t *buf;
+> +
+> +       n = readl_relaxed(spi_engine->base + SPI_ENGINE_REG_CMD_FIFO_ROOM);
+> +       while (n && spi_engine->cmd_length) {
+> +               m = min(n, spi_engine->cmd_length);
+> +               buf = spi_engine->cmd_buf;
+> +               for (i = 0; i < m; i++)
+> +                       writel_relaxed(buf[i], addr);
+> +               spi_engine->cmd_buf += m;
+> +               spi_engine->cmd_length -= m;
+> +               n -= m;
+> +       }
+> +
+> +       return spi_engine->cmd_length != 0;
+> +}
+> +
+> +static bool spi_engine_write_tx_fifo(struct spi_engine *spi_engine)
+> +{
+> +       void __iomem *addr = spi_engine->base + SPI_ENGINE_REG_SDO_DATA_FIFO;
+> +       unsigned int n, m, i;
+> +       const uint8_t *buf;
+> +
+> +       n = readl_relaxed(spi_engine->base + SPI_ENGINE_REG_SDO_FIFO_ROOM);
+> +       while (n && spi_engine->tx_length) {
+> +               m = min(n, spi_engine->tx_length);
+> +               buf = spi_engine->tx_buf;
+
+> +               for (i = 0; i < m; i++)
+> +                       writel_relaxed(buf[i], addr);
+
+writesl() ?
+
+> +               spi_engine->tx_buf += m;
+> +               spi_engine->tx_length -= m;
+> +               n -= m;
+> +               if (spi_engine->tx_length == 0)
+> +                       spi_engine_tx_next(spi_engine);
+> +       }
+> +
+> +       return spi_engine->tx_length != 0;
+> +}
+> +
+> +static bool spi_engine_read_rx_fifo(struct spi_engine *spi_engine)
+> +{
+> +       void __iomem *addr = spi_engine->base + SPI_ENGINE_REG_SDI_DATA_FIFO;
+> +       unsigned int n, m, i;
+> +       uint8_t *buf;
+> +
+> +       n = readl_relaxed(spi_engine->base + SPI_ENGINE_REG_SDI_FIFO_LEVEL);
+> +       while (n && spi_engine->rx_length) {
+> +               m = min(n, spi_engine->rx_length);
+> +               buf = spi_engine->rx_buf;
+
+> +               for (i = 0; i < m; i++)
+> +                       buf[i] = readl_relaxed(addr);
+
+readsl() ?
+
+> +               spi_engine->rx_buf += m;
+> +               spi_engine->rx_length -= m;
+> +               n -= m;
+> +               if (spi_engine->rx_length == 0)
+> +                       spi_engine_rx_next(spi_engine);
+> +       }
+> +
+> +       return spi_engine->rx_length != 0;
+> +}
+> +
+> +static irqreturn_t spi_engine_irq(int irq, void *devid)
+> +{
+> +       struct spi_master *master = devid;
+> +       struct spi_engine *spi_engine = spi_master_get_devdata(master);
+> +       unsigned int disable_int = 0;
+> +       unsigned int pending;
+> +
+> +       pending = readl_relaxed(spi_engine->base + SPI_ENGINE_REG_INT_PENDING);
+> +
+> +       if (pending & SPI_ENGINE_INT_SYNC) {
+> +               writel_relaxed(SPI_ENGINE_INT_SYNC,
+> +                       spi_engine->base + SPI_ENGINE_REG_INT_PENDING);
+> +               spi_engine->completed_id = readl_relaxed(
+> +                       spi_engine->base + SPI_ENGINE_REG_SYNC_ID);
+> +       }
+> +
+> +       spin_lock(&spi_engine->lock);
+> +
+> +       if (pending & SPI_ENGINE_INT_CMD_ALMOST_EMPTY) {
+> +               if (!spi_engine_write_cmd_fifo(spi_engine))
+> +                       disable_int |= SPI_ENGINE_INT_CMD_ALMOST_EMPTY;
+> +       }
+> +
+> +       if (pending & SPI_ENGINE_INT_SDO_ALMOST_EMPTY) {
+> +               if (!spi_engine_write_tx_fifo(spi_engine))
+> +                       disable_int |= SPI_ENGINE_INT_SDO_ALMOST_EMPTY;
+> +       }
+> +
+> +       if (pending & (SPI_ENGINE_INT_SDI_ALMOST_FULL | SPI_ENGINE_INT_SYNC)) {
+> +               if (!spi_engine_read_rx_fifo(spi_engine))
+> +                       disable_int |= SPI_ENGINE_INT_SDI_ALMOST_FULL;
+> +       }
+> +
+> +       if (pending & SPI_ENGINE_INT_SYNC) {
+> +               if (spi_engine->msg &&
+> +                   spi_engine->completed_id == spi_engine->sync_id) {
+> +                       struct spi_message *msg = spi_engine->msg;
+> +
+> +                       kfree(spi_engine->p);
+> +                       msg->status = 0;
+> +                       msg->actual_length = msg->frame_length;
+> +                       spi_engine->msg = NULL;
+> +                       spi_finalize_current_message(master);
+> +                       disable_int |= SPI_ENGINE_INT_SYNC;
+> +               }
+> +       }
+> +
+> +       if (disable_int) {
+> +               spi_engine->int_enable &= ~disable_int;
+> +               writel_relaxed(spi_engine->int_enable,
+> +                       spi_engine->base + SPI_ENGINE_REG_INT_ENABLE);
+> +       }
+> +
+> +       spin_unlock(&spi_engine->lock);
+> +
+> +       return IRQ_HANDLED;
+> +}
+> +
+> +static int spi_engine_transfer_one_message(struct spi_master *master,
+> +       struct spi_message *msg)
+
+And you are not using transfer_one() because of..?
+
+> +{
+> +       struct spi_engine_program p_dry, *p;
+> +       struct spi_engine *spi_engine = spi_master_get_devdata(master);
+> +       unsigned int int_enable = 0;
+> +       unsigned long flags;
+> +       size_t size;
+> +
+> +       p_dry.length = 0;
+> +       spi_engine_compile_message(spi_engine, msg, true, &p_dry);
+> +
+> +       size = sizeof(*p->instructions) * (p_dry.length + 1);
+> +       p = kzalloc(sizeof(*p) + size, GFP_KERNEL);
+> +       if (!p)
+> +               return -ENOMEM;
+> +       spi_engine_compile_message(spi_engine, msg, false, p);
+> +
+> +       spin_lock_irqsave(&spi_engine->lock, flags);
+> +       spi_engine->sync_id = (spi_engine->sync_id + 1) & 0xff;
+> +       spi_engine_program_add_cmd(p, false,
+> +               SPI_ENGINE_CMD_SYNC(spi_engine->sync_id));
+> +
+> +       spi_engine->msg = msg;
+> +       spi_engine->p = p;
+> +
+> +       spi_engine->cmd_buf = p->instructions;
+> +       spi_engine->cmd_length = p->length;
+> +       if (spi_engine_write_cmd_fifo(spi_engine))
+> +               int_enable |= SPI_ENGINE_INT_CMD_ALMOST_EMPTY;
+> +
+> +       spi_engine_tx_next(spi_engine);
+> +       if (spi_engine_write_tx_fifo(spi_engine))
+> +               int_enable |= SPI_ENGINE_INT_SDO_ALMOST_EMPTY;
+> +
+> +       spi_engine_rx_next(spi_engine);
+> +       if (spi_engine->rx_length != 0)
+> +               int_enable |= SPI_ENGINE_INT_SDI_ALMOST_FULL;
+> +
+> +       int_enable |= SPI_ENGINE_INT_SYNC;
+> +
+> +       writel_relaxed(int_enable,
+> +               spi_engine->base + SPI_ENGINE_REG_INT_ENABLE);
+> +       spi_engine->int_enable = int_enable;
+> +       spin_unlock_irqrestore(&spi_engine->lock, flags);
+> +
+> +       return 0;
+> +}
+> +
+> +static int spi_engine_probe(struct platform_device *pdev)
+> +{
+> +       struct spi_engine *spi_engine;
+> +       struct spi_master *master;
+> +       unsigned int version;
+> +       struct resource *res;
+> +       int irq;
+> +       int ret;
+> +
+> +       irq = platform_get_irq(pdev, 0);
+> +       if (irq <= 0)
+
+I don't remember 0 is valid or invalid here.
+
+> +               return -ENXIO;
+> +
+> +       spi_engine = devm_kzalloc(&pdev->dev, sizeof(*spi_engine), GFP_KERNEL);
+> +       if (!spi_engine)
+> +               return -ENOMEM;
+> +
+> +       master = spi_alloc_master(&pdev->dev, 0);
+> +       if (!master)
+> +               return -ENOMEM;
+> +
+> +       spi_master_set_devdata(master, spi_engine);
+> +
+> +       spin_lock_init(&spi_engine->lock);
+> +
+> +       res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> +       spi_engine->base = devm_ioremap_resource(&pdev->dev, res);
+> +       if (IS_ERR(spi_engine->base)) {
+> +               ret = PTR_ERR(spi_engine->base);
+> +               goto err_put_master;
+> +       }
+> +
+> +       version = readl(spi_engine->base + SPI_ENGINE_REG_VERSION);
+> +       if (SPI_ENGINE_VERSION_MAJOR(version) != 1) {
+> +               dev_err(&pdev->dev, "Unsupported peripheral version %u.%u.%c\n",
+> +                       SPI_ENGINE_VERSION_MAJOR(version),
+> +                       SPI_ENGINE_VERSION_MINOR(version),
+> +                       SPI_ENGINE_VERSION_PATCH(version));
+> +               return -ENODEV;
+> +       }
+> +
+> +       spi_engine->clk = devm_clk_get(&pdev->dev, "s_axi_aclk");
+> +       if (IS_ERR(spi_engine->clk)) {
+> +               ret = PTR_ERR(spi_engine->clk);
+> +               goto err_put_master;
+> +       }
+> +
+> +       spi_engine->ref_clk = devm_clk_get(&pdev->dev, "spi_clk");
+> +       if (IS_ERR(spi_engine->ref_clk)) {
+> +               ret = PTR_ERR(spi_engine->ref_clk);
+> +               goto err_put_master;
+> +       }
+> +
+> +       ret = clk_prepare_enable(spi_engine->clk);
+> +       if (ret)
+> +               goto err_put_master;
+> +
+> +       ret = clk_prepare_enable(spi_engine->ref_clk);
+> +       if (ret)
+> +               goto err_clk_disable;
+> +
+> +       writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_RESET);
+> +       writel_relaxed(0xff, spi_engine->base + SPI_ENGINE_REG_INT_PENDING);
+> +       writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_INT_ENABLE);
+> +
+> +       ret = request_irq(irq, spi_engine_irq, 0, pdev->name, master);
+> +       if (ret)
+> +               goto err_ref_clk_disable;
+> +
+> +       master->dev.parent = &pdev->dev;
+> +       master->dev.of_node = pdev->dev.of_node;
+> +       master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_3WIRE;
+> +       master->bits_per_word_mask = SPI_BPW_MASK(8);
+> +       master->max_speed_hz = clk_get_rate(spi_engine->ref_clk) / 2;
+> +       master->transfer_one_message = spi_engine_transfer_one_message;
+> +       master->num_chipselect = 8;
+> +
+> +       ret = spi_register_master(master);
+
+devm_
+
+> +       if (ret)
+> +               goto err_free_irq;
+> +
+> +       platform_set_drvdata(pdev, master);
+> +
+> +       return 0;
+> +err_free_irq:
+> +       free_irq(irq, master);
+> +err_ref_clk_disable:
+> +       clk_disable_unprepare(spi_engine->ref_clk);
+> +err_clk_disable:
+> +       clk_disable_unprepare(spi_engine->clk);
+> +err_put_master:
+> +       spi_master_put(master);
+> +       return ret;
+> +}
+> +
+> +static int spi_engine_remove(struct platform_device *pdev)
+> +{
+> +       struct spi_master *master = platform_get_drvdata(pdev);
+> +       struct spi_engine *spi_engine = spi_master_get_devdata(master);
+> +       int irq = platform_get_irq(pdev, 0);
+> +
+> +       spi_unregister_master(master);
+> +
+> +       free_irq(irq, master);
+> +
+> +       writel_relaxed(0xff, spi_engine->base + SPI_ENGINE_REG_INT_PENDING);
+> +       writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_INT_ENABLE);
+> +       writel_relaxed(0x01, spi_engine->base + SPI_ENGINE_REG_RESET);
+> +
+> +       clk_disable_unprepare(spi_engine->ref_clk);
+> +       clk_disable_unprepare(spi_engine->clk);
+> +
+> +       return 0;
+> +}
+> +
+> +static const struct of_device_id spi_engine_match_table[] = {
+> +       { .compatible = "adi,axi-spi-engine-1.00.a" },
+> +       { },
+> +};
+> +
+> +static struct platform_driver spi_engine_driver = {
+> +       .probe = spi_engine_probe,
+> +       .remove = spi_engine_remove,
+> +       .driver = {
+> +               .name = "spi-engine",
+> +               .of_match_table = spi_engine_match_table,
+> +       },
+> +};
+> +module_platform_driver(spi_engine_driver);
+> +
+> +MODULE_AUTHOR("Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>");
+> +MODULE_DESCRIPTION("Analog Devices SPI engine peripheral driver");
+> +MODULE_LICENSE("GPL");
+> --
+> 2.1.4
+>
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+
+
+
+-- 
+With Best Regards,
+Andy Shevchenko
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

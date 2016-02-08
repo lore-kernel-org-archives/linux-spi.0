@@ -1,66 +1,55 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: Fix incomplete handling of
- SPI_MASTER_MUST_RX/_MUST_TX
-Date: Mon, 8 Feb 2016 16:15:42 +0000
-Message-ID: <20160208161542.GF7265@sirena.org.uk>
-References: <1454366363-10564-1-git-send-email-joshua.henderson@microchip.com>
- <20160201231733.GK4455@sirena.org.uk>
- <56B42C68.4030909@microchip.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: fix spi.h kernel-doc warning
+Date: Mon, 8 Feb 2016 16:55:56 +0000
+Message-ID: <20160208165556.GJ7265@sirena.org.uk>
+References: <56B54CFB.9050904@infradead.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="TeJTyD9hb8KJN2Jy"
-Cc: Joshua Henderson <joshua.henderson@microchip.com>,
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-To: Purna Chandra Mandal <purna.mandal@microchip.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="aznLbwQ42o7LEaqN"
+Cc: LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+To: Randy Dunlap <rdunlap-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <56B42C68.4030909@microchip.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <56B54CFB.9050904-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---TeJTyD9hb8KJN2Jy
+--aznLbwQ42o7LEaqN
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 05, 2016 at 10:30:24AM +0530, Purna Chandra Mandal wrote:
+On Fri, Feb 05, 2016 at 05:31:39PM -0800, Randy Dunlap wrote:
+> From: Randy Dunlap <rdunlap-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+>=20
+> Fix kernel-doc warning for missing struct field notation.
+>=20
+> ..//include/linux/spi/spi.h:540: warning: No description found for parame=
+ter 'max_transfer_size'
 
-Please fix your mail client to word wrap within paragraphs at something
-substantially less than 80 columns.  Doing this makes your messages much
-easier to read and reply to.
+The patch description and especially subject here should be something
+along the lines of "Document max_transfer_size" - describe what you
+think the change is.
 
-> Idea is good, but not sufficient.
-> Dummy buffers are _reallocated_ to accommodate larger size of transfer. In this if
-> [originally NULL] .rx_buf/.tx_buf is not reset back to NULL after the transfer
-> is over spi-core will find those .rx/tx_buf non-NULL in next _transfer() call and
-> will pass the stale rx/tx_buf to spi controller driver which will definitely
-> corrupt the memory and crash the system.
-
-This needs to be clear to readers; a fairly obvious way of dealing with
-this would be to rellocate down to a page rather than freeing.
-
-> Above all the whole design depends on trust that core will not play with any data-structure
-> which will break object-oriented/layered approach. So better to undo the modification
-> (when needed to facilitate some functionality) unless core wants those information to be passed
-> back to caller/client for reporting success or error or else.
-
-That's really not the case, we already make a range of other
-modifications to complete partially filled transfers in order to
-simplify driver code.
-
---TeJTyD9hb8KJN2Jy
+--aznLbwQ42o7LEaqN
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJWuL8uAAoJECTWi3JdVIfQ46QH/1NnOqqDiFyIpmylR735oUJP
-zHDMbSMfwKGXCqt3j6gKJes050zmoZEnyGcGgmGEgIZMYFlujm9lmnLEkfax+oHV
-RzdX8pr0IiJcV5Nz0rvDNiu4Cv9NNEbL0siamATVha5arAh89/4e7QzpN1zSAlWt
-D8c2UcZszc1/p/zF3ZmL4sTgjO/tbTU9IGumUkD0Tf9LPkUuJ1vA+wqHOW5cd+5V
-wBSzDLy87wICxTPV+CMsj54pPh7U/+Z1eI++M6hekG/eg0SSpx14zcpH77B/Sd2F
-CmCq/RugnlGKYnCnhcjetltKdYSH3emkOHcD0k9xhGAOPOYfL+KgZ6brcyxqqJQ=
-=JZca
+iQEcBAEBCAAGBQJWuMibAAoJECTWi3JdVIfQAEgH/jIPh473DFX+9FjO6QrUa2Vh
+l8gPzzTyHNNagbYAfKj+P7Hvgd2JeEzC9oE3T+86Jg2Z7HU6s8jdLsaDwbOzi8yM
+/nctV09QhgMbKZkzReQYUbxLdstMwTDVGorofDix5EOtbiv80ipH4/6uhnNw1wVW
+pV8oKPFl6X58gqU6LwSsEwgRUHIc/f+SozXgCb9Vqh07Dft3/H8byWH5K8w6zuep
+nZIsYH17HmOD5ttg0MxNCwEcnVXwcjmWRnWXTFxhhYB16pQox1zysA1vKrNvcN/Y
+ByWYBA6hF9Xo5IESrBOCB2RLbJc/hC4OHN3wpbQlR+BtptsX7mFaD/f59u5h3q8=
+=14BG
 -----END PGP SIGNATURE-----
 
---TeJTyD9hb8KJN2Jy--
+--aznLbwQ42o7LEaqN--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

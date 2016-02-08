@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: Document max_transfer_size" to the spi tree
-Date: Mon, 08 Feb 2016 18:01:46 +0000
-Message-ID: <E1aSq8A-0002sx-Jn@debutante>
-References: <56B54CFB.9050904@infradead.org>
+Subject: Applied "spi: Allow compile test of bcm2835aux if !GPIOLIB" to the spi tree
+Date: Mon, 08 Feb 2016 18:01:47 +0000
+Message-ID: <E1aSq8B-0002tQ-Gq@debutante>
+References: <1454854349-20780-1-git-send-email-geert@linux-m68k.org>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Randy Dunlap <rdunlap-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <56B54CFB.9050904-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+In-Reply-To: <1454854349-20780-1-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: Document max_transfer_size
+   spi: Allow compile test of bcm2835aux if !GPIOLIB
 
 has been applied to the spi tree at
 
@@ -38,36 +38,38 @@ to this mail.
 Thanks,
 Mark
 
->From ee7683a31683c6368a66a83c555600dfd704e543 Mon Sep 17 00:00:00 2001
-From: Randy Dunlap <rdunlap-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
-Date: Fri, 5 Feb 2016 17:31:39 -0800
-Subject: [PATCH] spi: Document max_transfer_size
+>From 0697ae80fe3ccaf7d443fa5522fa7eeea34c19bb Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Date: Sun, 7 Feb 2016 15:12:29 +0100
+Subject: [PATCH] spi: Allow compile test of bcm2835aux if !GPIOLIB
 
-Fix kernel-doc warning for missing struct field notation.
+The GPIO subsystem provides dummy GPIO consumer functions if GPIOLIB is
+not enabled. Hence drivers that depend on GPIOLIB, but use GPIO consumer
+functionality only, can still be compiled if GPIOLIB is not enabled.
 
-..//include/linux/spi/spi.h:540: warning: No description found for parameter 'max_transfer_size'
+Relax the dependency of SPI_BCM2835AUX on GPIOLIB if COMPILE_TEST is
+enabled.
 
-[Meaningful subject -- broonie]
-
-Signed-off-by: Randy Dunlap <rdunlap-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+Signed-off-by: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- include/linux/spi/spi.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/Kconfig | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 53be3a4c60cb..e9290c335cc4 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -303,6 +303,8 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
-  * @min_speed_hz: Lowest supported transfer speed
-  * @max_speed_hz: Highest supported transfer speed
-  * @flags: other constraints relevant to this driver
-+ * @max_transfer_size: function that returns the max transfer size for
-+ *	a &spi_device; may be %NULL, so the default %SIZE_MAX will be used.
-  * @bus_lock_spinlock: spinlock for SPI bus locking
-  * @bus_lock_mutex: mutex for SPI bus locking
-  * @bus_lock_flag: indicates that the SPI bus is locked for exclusive use
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 77064160dd76..4e08d42a9fa1 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -90,8 +90,7 @@ config SPI_BCM2835
+ 
+ config SPI_BCM2835AUX
+ 	tristate "BCM2835 SPI auxiliary controller"
+-	depends on ARCH_BCM2835 || COMPILE_TEST
+-	depends on GPIOLIB
++	depends on (ARCH_BCM2835 && GPIOLIB) || COMPILE_TEST
+ 	help
+ 	  This selects a driver for the Broadcom BCM2835 SPI aux master.
+ 
 -- 
 2.7.0.rc3
 

@@ -1,79 +1,140 @@
-From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH v2 0/4] spi: pxa2xx: Chip select fixes for Intel Baytrail and Braswell
-Date: Mon,  8 Feb 2016 17:14:27 +0200
-Message-ID: <1454944471-50119-1-git-send-email-mika.westerberg@linux.intel.com>
-Cc: Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Bastien Nocera <bugzilla-0MeiytkfxGOsTnJN9+BGXg@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH v2 3/4] spi: pxa2xx: Move chip select control bits into lpss_config structure
+Date: Mon,  8 Feb 2016 17:14:30 +0200
+Message-ID: <1454944471-50119-4-git-send-email-mika.westerberg@linux.intel.com>
+References: <1454944471-50119-1-git-send-email-mika.westerberg@linux.intel.com>
+Cc: Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Bastien Nocera <bugzilla@hadess.net>,
+	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1454944471-50119-1-git-send-email-mika.westerberg@linux.intel.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-It turns out that in Windows SPI drivers are responsible for handling ACPI
-DeviceSelection field themselves.  Furthermore there has been separate
-drivers for big core and atom SPI host controllers. For atom (including
-Baytrail and Braswell) the driver starts DeviceSelection from 1 instead of 0
-as expected by the Linux SPI core.
+Some Intel LPSS SPI controllers, like the one in Braswell has these bits in
+a different location so move these bits to be part of the LPSS
+configuration.
 
-As an example Microsoft Surface 3 has touch screen connected to SPI bus
-described in ACPI DSDT like this:
+Since not all LPSS SPI controllers support multiple native chip selects we
+refactor selecting chip select to its own function and check
+control->cs_sel_mask before switching to another chip select.
 
-    Scope (_SB.PCI0.SPI1)
-    {
-        Device (NTRG)
-        {
-            Name (_HID, "MSHW0037")  // _HID: Hardware ID
-            ...
-            Name (CRS1, ResourceTemplate ()
-            {
-                SpiSerialBus (0x0001, // SPI DeviceSelection
-                    PolarityLow, FourWireMode, 0x10,
-                    ControllerInitiated, 0x007A1200, ClockPolarityLow,
-                    ClockPhaseFirst, "\\_SB.PCI0.SPI1",
-                    0x00, ResourceConsumer, ,
-                    )
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+---
+ drivers/spi/spi-pxa2xx.c | 64 ++++++++++++++++++++++++++++++------------------
+ 1 file changed, 40 insertions(+), 24 deletions(-)
 
-This fails to enumerate because ACPI DeviceSelection of 1 is greater than
-number of chip selects the driver supports [1].
-
-This series adds a new hook to struct spi_master ->fw_translate_cs() that
-allows a driver to translate the chip select number from firmware to the
-numbering scheme expected by the Linux SPI core and implement that for both
-Baytrail and Braswell.
-
-In addition to that we add support for the second chip select found on
-Braswell.
-
-This is a second revision of the series. Changes to the v1:
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 7c795cfbbf9d..6d4adc906f52 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -65,8 +65,6 @@ MODULE_ALIAS("platform:pxa2xx-spi");
+ #define LPSS_GENERAL_REG_RXTO_HOLDOFF_DISABLE	BIT(24)
+ #define LPSS_CS_CONTROL_SW_MODE			BIT(0)
+ #define LPSS_CS_CONTROL_CS_HIGH			BIT(1)
+-#define LPSS_CS_CONTROL_CS_SEL_SHIFT		8
+-#define LPSS_CS_CONTROL_CS_SEL_MASK		(3 << LPSS_CS_CONTROL_CS_SEL_SHIFT)
+ #define LPSS_CAPS_CS_EN_SHIFT			9
+ #define LPSS_CAPS_CS_EN_MASK			(0xf << LPSS_CAPS_CS_EN_SHIFT)
  
- - Added Jarkko's Reviewed-by
- - Use runtime ACPI check in pxa2xx_spi_fw_translate_cs() to prevent build
-   breakage found by kbuild test robot.
-
-[1] https://bugzilla.kernel.org/show_bug.cgi?id=104291
-
-Mika Westerberg (4):
-  spi: Let drivers translate ACPI DeviceSelection to suitable Linux chip select
-  spi: pxa2xx: Translate ACPI DeviceSelection to Linux chip select on Baytrail
-  spi: pxa2xx: Move chip select control bits into lpss_config structure
-  spi: pxa2xx: Add support for both chip selects on Intel Braswell
-
- drivers/spi/spi-pxa2xx.c   | 108 ++++++++++++++++++++++++++++++++++-----------
- drivers/spi/spi.c          |  19 +++++++-
- include/linux/pxa2xx_ssp.h |   1 +
- include/linux/spi/spi.h    |   5 +++
- 4 files changed, 107 insertions(+), 26 deletions(-)
-
+@@ -82,6 +80,9 @@ struct lpss_config {
+ 	u32 rx_threshold;
+ 	u32 tx_threshold_lo;
+ 	u32 tx_threshold_hi;
++	/* Chip select control */
++	unsigned cs_sel_shift;
++	unsigned cs_sel_mask;
+ };
+ 
+ /* Keep these sorted with enum pxa_ssp_type */
+@@ -125,6 +126,8 @@ static const struct lpss_config lpss_platforms[] = {
+ 		.rx_threshold = 1,
+ 		.tx_threshold_lo = 16,
+ 		.tx_threshold_hi = 48,
++		.cs_sel_shift = 8,
++		.cs_sel_mask = 3 << 8,
+ 	},
+ };
+ 
+@@ -288,37 +291,50 @@ static void lpss_ssp_setup(struct driver_data *drv_data)
+ 	}
+ }
+ 
++static void lpss_ssp_select_cs(struct driver_data *drv_data,
++			       const struct lpss_config *config)
++{
++	u32 value, cs;
++
++	if (!config->cs_sel_mask)
++		return;
++
++	value = __lpss_ssp_read_priv(drv_data, config->reg_cs_ctrl);
++
++	cs = drv_data->cur_msg->spi->chip_select;
++	cs <<= config->cs_sel_shift;
++	if (cs != (value & config->cs_sel_mask)) {
++		/*
++		 * When switching another chip select output active the
++		 * output must be selected first and wait 2 ssp_clk cycles
++		 * before changing state to active. Otherwise a short
++		 * glitch will occur on the previous chip select since
++		 * output select is latched but state control is not.
++		 */
++		value &= ~config->cs_sel_mask;
++		value |= cs;
++		__lpss_ssp_write_priv(drv_data,
++				      config->reg_cs_ctrl, value);
++		ndelay(1000000000 /
++		       (drv_data->master->max_speed_hz / 2));
++	}
++}
++
+ static void lpss_ssp_cs_control(struct driver_data *drv_data, bool enable)
+ {
+ 	const struct lpss_config *config;
+-	u32 value, cs;
++	u32 value;
+ 
+ 	config = lpss_get_config(drv_data);
+ 
++	if (enable)
++		lpss_ssp_select_cs(drv_data, config);
++
+ 	value = __lpss_ssp_read_priv(drv_data, config->reg_cs_ctrl);
+-	if (enable) {
+-		cs = drv_data->cur_msg->spi->chip_select;
+-		cs <<= LPSS_CS_CONTROL_CS_SEL_SHIFT;
+-		if (cs != (value & LPSS_CS_CONTROL_CS_SEL_MASK)) {
+-			/*
+-			 * When switching another chip select output active
+-			 * the output must be selected first and wait 2 ssp_clk
+-			 * cycles before changing state to active. Otherwise
+-			 * a short glitch will occur on the previous chip
+-			 * select since output select is latched but state
+-			 * control is not.
+-			 */
+-			value &= ~LPSS_CS_CONTROL_CS_SEL_MASK;
+-			value |= cs;
+-			__lpss_ssp_write_priv(drv_data,
+-					      config->reg_cs_ctrl, value);
+-			ndelay(1000000000 /
+-			       (drv_data->master->max_speed_hz / 2));
+-		}
++	if (enable)
+ 		value &= ~LPSS_CS_CONTROL_CS_HIGH;
+-	} else {
++	else
+ 		value |= LPSS_CS_CONTROL_CS_HIGH;
+-	}
+ 	__lpss_ssp_write_priv(drv_data, config->reg_cs_ctrl, value);
+ }
+ 
 -- 
 2.7.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

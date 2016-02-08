@@ -1,14 +1,17 @@
-From: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH v7 0/9] Fix broken DMAFLUSHP on Rockchips platform
-Date: Mon, 8 Feb 2016 18:44:19 +0530
-Message-ID: <20160208131419.GA19598@localhost>
+Date: Mon, 8 Feb 2016 14:02:57 +0000
+Message-ID: <20160208140257.GC7265@sirena.org.uk>
 References: <1453460812-8498-1-git-send-email-wxt@rock-chips.com>
  <56AF01B6.6030204@gmail.com>
  <20160208031134.GI2531@localhost>
  <3817335.PXCk0JfYDT@phil>
+ <20160208131419.GA19598@localhost>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Caesar Wang <caesar.upstream-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="hYooF8G/hrfVAmum"
+Cc: Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
+	Caesar Wang <caesar.upstream-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Caesar Wang <wxt-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
 	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
 	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
@@ -17,54 +20,62 @@ Cc: Caesar Wang <caesar.upstream-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org,
 	dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	Dan Williams <dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
 	Sonny Rao <sonnyrao-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>
+To: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <3817335.PXCk0JfYDT@phil>
+In-Reply-To: <20160208131419.GA19598@localhost>
 Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Heiko,
 
-On Mon, Feb 08, 2016 at 10:27:04AM +0100, Heiko Stuebner wrote:
-> Hi Vinod,
-> 
-> Am Montag, 8. Februar 2016, 08:41:34 schrieb Vinod Koul:
-> > On Mon, Feb 01, 2016 at 02:56:54PM +0800, Caesar Wang wrote:
-> > > Hello Vinod,
-> > > 
-> > > Is there any chance apply the DMA patches?:-)
-> > 
-> > I was waiting for any ACKs on ARM patches before I merge this series.
-> 
-> I think the more regular way is for the driver maintainer to take the 
-> driver-specific stuff and the devicetree parts going through the specific arm-
-> tree. But if you really want to take the whole series, for patches 4,5,6
+--hYooF8G/hrfVAmum
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Yes but that causes cross tree dependencies, which looking at this won't be
-a big problem, so I can safely merge dmaengine changes and rest can go thru
-ARM tree.
+On Mon, Feb 08, 2016 at 06:44:19PM +0530, Vinod Koul wrote:
+> On Mon, Feb 08, 2016 at 10:27:04AM +0100, Heiko Stuebner wrote:
 
-Typically submitter should say which tree he/she prefers, which was not
-provided..
+> > I think the more regular way is for the driver maintainer to take the=
+=20
+> > driver-specific stuff and the devicetree parts going through the specif=
+ic arm-
+> > tree. But if you really want to take the whole series, for patches 4,5,6
 
-So, are all okay to merge the entire series thru dmaengine tree or
-independent. I don't mind either
+> Yes but that causes cross tree dependencies, which looking at this won't =
+be
+> a big problem, so I can safely merge dmaengine changes and rest can go th=
+ru
+> ARM tree.
 
-> - ARM: dts: Add arm, pl330-broken-no-flushp quirk for rk3288 platform
-> - ARM: dts: Add arm, pl330-broken-no-flushp quirk for rk3xxx platform
-> - ARM: dts: add pl330-broken-no-flushp quirk for rk3036 SoCs
-> 
-> Acked-by: Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>
+Not for the DT stuff - since the DT is supposed to be a stable ABI there
+really shouldn't be any hard dependencies on things outside the DT.
 
-Thanks
--- 
-~Vinod
+> Typically submitter should say which tree he/she prefers, which was not
+> provided..
+
+It's the norm for DT stuff.
+
+--hYooF8G/hrfVAmum
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJWuKARAAoJECTWi3JdVIfQ5+IH/RfdkKdGgrryPKWH6j09ZoLc
+23CoxN0Y3eUCdKOZU7ywHHGMr4ZsPzSTW1fjYJv7+CxNDlRUXQBYT3DvggoQ4idz
+0jkIyf7JUhYnLoo/5LaUulLF2qvkHKjanJH/rbZh4xgn7lUe+qpCX8TLko7SDIph
+jVCNJAQhkQ/Ca1Fi2IK1eMSHgc3hmpXiY+sOVjlGigO07+WCye0QNGXQ0arpKrY3
+Ea2hVRR6o6zajuVHm332gQiyTVY9S0ZgwDuJ3uqk/vkjh1gn2CExDEYZFiP5LaHi
+suo0XW2KcvsBhhLCpqzMyHRBTnMC8uSsHenzE/jVYu3xXkEN3r9pfT9S0DQG1Rg=
+=g7sB
+-----END PGP SIGNATURE-----
+
+--hYooF8G/hrfVAmum--
 --
 To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

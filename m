@@ -1,127 +1,95 @@
-From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH v2 4/4] spi: pxa2xx: Add support for both chip selects on Intel Braswell
-Date: Mon,  8 Feb 2016 17:14:31 +0200
-Message-ID: <1454944471-50119-5-git-send-email-mika.westerberg@linux.intel.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH v2 0/4] spi: pxa2xx: Chip select fixes for Intel Baytrail
+ and Braswell
+Date: Mon, 8 Feb 2016 17:31:22 +0200
+Message-ID: <CAHp75VcRVrqNr5LVWVc9MgMWHjDq_3nXgHBTwj3U4HzQJG+qCA@mail.gmail.com>
 References: <1454944471-50119-1-git-send-email-mika.westerberg@linux.intel.com>
-Cc: Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Bastien Nocera <bugzilla-0MeiytkfxGOsTnJN9+BGXg@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1454944471-50119-1-git-send-email-mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie@kernel.org>, Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Bastien Nocera <bugzilla@hadess.net>,
+	linux-spi <linux-spi@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Mika Westerberg <mika.westerberg@linux.intel.com>
+Return-path: <linux-acpi-owner@vger.kernel.org>
+In-Reply-To: <1454944471-50119-1-git-send-email-mika.westerberg@linux.intel.com>
+Sender: linux-acpi-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Intel Braswell LPSS SPI controller actually has two chip selects and there
-is no capabilities register where this could be found out. These two chip
-selects are controlled by bits which are in slightly differrent location
-than Broxton has.
+On Mon, Feb 8, 2016 at 5:14 PM, Mika Westerberg
+<mika.westerberg@linux.intel.com> wrote:
+> It turns out that in Windows SPI drivers are responsible for handling ACPI
+> DeviceSelection field themselves.  Furthermore there has been separate
+> drivers for big core and atom SPI host controllers. For atom (including
+> Baytrail and Braswell) the driver starts DeviceSelection from 1 instead of 0
+> as expected by the Linux SPI core.
+>
+> As an example Microsoft Surface 3 has touch screen connected to SPI bus
+> described in ACPI DSDT like this:
+>
+>     Scope (_SB.PCI0.SPI1)
+>     {
+>         Device (NTRG)
+>         {
+>             Name (_HID, "MSHW0037")  // _HID: Hardware ID
+>             ...
+>             Name (CRS1, ResourceTemplate ()
+>             {
+>                 SpiSerialBus (0x0001, // SPI DeviceSelection
+>                     PolarityLow, FourWireMode, 0x10,
+>                     ControllerInitiated, 0x007A1200, ClockPolarityLow,
+>                     ClockPhaseFirst, "\\_SB.PCI0.SPI1",
+>                     0x00, ResourceConsumer, ,
+>                     )
+>
+> This fails to enumerate because ACPI DeviceSelection of 1 is greater than
+> number of chip selects the driver supports [1].
+>
+> This series adds a new hook to struct spi_master ->fw_translate_cs() that
+> allows a driver to translate the chip select number from firmware to the
+> numbering scheme expected by the Linux SPI core and implement that for both
+> Baytrail and Braswell.
+>
+> In addition to that we add support for the second chip select found on
+> Braswell.
+>
 
-Braswell Windows driver also starts chip select (ACPI DeviceSelection)
-numbering from 1 so translate it to be suitable for Linux as well.
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-Signed-off-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Reviewed-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
----
- drivers/spi/spi-pxa2xx.c   | 21 ++++++++++++++++++++-
- include/linux/pxa2xx_ssp.h |  1 +
- 2 files changed, 21 insertions(+), 1 deletion(-)
+> This is a second revision of the series. Changes to the v1:
+>
+>  - Added Jarkko's Reviewed-by
+>  - Use runtime ACPI check in pxa2xx_spi_fw_translate_cs() to prevent build
+>    breakage found by kbuild test robot.
+>
+> [1] https://bugzilla.kernel.org/show_bug.cgi?id=104291
+>
+> Mika Westerberg (4):
+>   spi: Let drivers translate ACPI DeviceSelection to suitable Linux chip select
+>   spi: pxa2xx: Translate ACPI DeviceSelection to Linux chip select on Baytrail
+>   spi: pxa2xx: Move chip select control bits into lpss_config structure
+>   spi: pxa2xx: Add support for both chip selects on Intel Braswell
+>
+>  drivers/spi/spi-pxa2xx.c   | 108 ++++++++++++++++++++++++++++++++++-----------
+>  drivers/spi/spi.c          |  19 +++++++-
+>  include/linux/pxa2xx_ssp.h |   1 +
+>  include/linux/spi/spi.h    |   5 +++
+>  4 files changed, 107 insertions(+), 26 deletions(-)
+>
+> --
+> 2.7.0
+>
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 6d4adc906f52..569c7d89485c 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -83,6 +83,7 @@ struct lpss_config {
- 	/* Chip select control */
- 	unsigned cs_sel_shift;
- 	unsigned cs_sel_mask;
-+	unsigned cs_num;
- };
- 
- /* Keep these sorted with enum pxa_ssp_type */
-@@ -107,6 +108,19 @@ static const struct lpss_config lpss_platforms[] = {
- 		.tx_threshold_lo = 160,
- 		.tx_threshold_hi = 224,
- 	},
-+	{	/* LPSS_BSW_SSP */
-+		.offset = 0x400,
-+		.reg_general = 0x08,
-+		.reg_ssp = 0x0c,
-+		.reg_cs_ctrl = 0x18,
-+		.reg_capabilities = -1,
-+		.rx_threshold = 64,
-+		.tx_threshold_lo = 160,
-+		.tx_threshold_hi = 224,
-+		.cs_sel_shift = 2,
-+		.cs_sel_mask = 1 << 2,
-+		.cs_num = 2,
-+	},
- 	{	/* LPSS_SPT_SSP */
- 		.offset = 0x200,
- 		.reg_general = -1,
-@@ -142,6 +156,7 @@ static bool is_lpss_ssp(const struct driver_data *drv_data)
- 	switch (drv_data->ssp_type) {
- 	case LPSS_LPT_SSP:
- 	case LPSS_BYT_SSP:
-+	case LPSS_BSW_SSP:
- 	case LPSS_SPT_SSP:
- 	case LPSS_BXT_SSP:
- 		return true;
-@@ -1182,6 +1197,7 @@ static int setup(struct spi_device *spi)
- 		break;
- 	case LPSS_LPT_SSP:
- 	case LPSS_BYT_SSP:
-+	case LPSS_BSW_SSP:
- 	case LPSS_SPT_SSP:
- 	case LPSS_BXT_SSP:
- 		config = lpss_get_config(drv_data);
-@@ -1329,7 +1345,7 @@ static const struct acpi_device_id pxa2xx_spi_acpi_match[] = {
- 	{ "INT3430", LPSS_LPT_SSP },
- 	{ "INT3431", LPSS_LPT_SSP },
- 	{ "80860F0E", LPSS_BYT_SSP },
--	{ "8086228E", LPSS_BYT_SSP },
-+	{ "8086228E", LPSS_BSW_SSP },
- 	{ },
- };
- MODULE_DEVICE_TABLE(acpi, pxa2xx_spi_acpi_match);
-@@ -1466,6 +1482,7 @@ static int pxa2xx_spi_fw_translate_cs(struct spi_master *master, unsigned cs)
- 		 * to match what Linux expects.
- 		 */
- 		case LPSS_BYT_SSP:
-+		case LPSS_BSW_SSP:
- 			return cs - 1;
- 
- 		default:
-@@ -1615,6 +1632,8 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
- 			tmp &= LPSS_CAPS_CS_EN_MASK;
- 			tmp >>= LPSS_CAPS_CS_EN_SHIFT;
- 			platform_info->num_chipselect = ffz(tmp);
-+		} else if (config->cs_num) {
-+			platform_info->num_chipselect = config->cs_num;
- 		}
- 	}
- 	master->num_chipselect = platform_info->num_chipselect;
-diff --git a/include/linux/pxa2xx_ssp.h b/include/linux/pxa2xx_ssp.h
-index c2f2574ff61c..2a097d176ba9 100644
---- a/include/linux/pxa2xx_ssp.h
-+++ b/include/linux/pxa2xx_ssp.h
-@@ -197,6 +197,7 @@ enum pxa_ssp_type {
- 	QUARK_X1000_SSP,
- 	LPSS_LPT_SSP, /* Keep LPSS types sorted with lpss_platforms[] */
- 	LPSS_BYT_SSP,
-+	LPSS_BSW_SSP,
- 	LPSS_SPT_SSP,
- 	LPSS_BXT_SSP,
- };
+
+
 -- 
-2.7.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+With Best Regards,
+Andy Shevchenko

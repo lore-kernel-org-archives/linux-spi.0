@@ -1,78 +1,87 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: Allow compile test of bcm2835aux if !GPIOLIB" to the spi tree
-Date: Mon, 08 Feb 2016 18:01:47 +0000
-Message-ID: <E1aSq8B-0002tQ-Gq@debutante>
-References: <1454854349-20780-1-git-send-email-geert@linux-m68k.org>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/2] devicetree: Add bindings documentation for Analog
+ Devices axi-spi-engine
+Date: Mon, 8 Feb 2016 12:59:28 -0600
+Message-ID: <20160208185928.GA16097@rob-hp-laptop>
+References: <1454602410-14049-1-git-send-email-lars@metafoo.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1454854349-20780-1-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1454602410-14049-1-git-send-email-lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+On Thu, Feb 04, 2016 at 05:13:29PM +0100, Lars-Peter Clausen wrote:
+> Add the devicetree bindings documentation for the Analog Devices
+> axi-spi-engine SPI master peripheral. This is a soft-peripheral used in
+> FPGAs.
+> 
+> The external interfaces of the peripheral are:
+> 	* A memory mapped register map which is used to configure the
+> 	  peripheral.
+> 	* One interrupt.
+> 	* Two clocks, one for the memory mapped register interface and one
+> 	  for the SPI bus.
+> 	* A SPI master interface to which the slave devices are connected.
+> 
+> These interfaces are described by the devicetree bindings accordingly.
+> 
+> Signed-off-by: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+> ---
+>  .../devicetree/bindings/spi/adi,axi-spi-engine.txt | 31 ++++++++++++++++++++++
+>  1 file changed, 31 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/spi/adi,axi-spi-engine.txt
 
-   spi: Allow compile test of bcm2835aux if !GPIOLIB
+Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 
-has been applied to the spi tree at
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 0697ae80fe3ccaf7d443fa5522fa7eeea34c19bb Mon Sep 17 00:00:00 2001
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Date: Sun, 7 Feb 2016 15:12:29 +0100
-Subject: [PATCH] spi: Allow compile test of bcm2835aux if !GPIOLIB
-
-The GPIO subsystem provides dummy GPIO consumer functions if GPIOLIB is
-not enabled. Hence drivers that depend on GPIOLIB, but use GPIO consumer
-functionality only, can still be compiled if GPIOLIB is not enabled.
-
-Relax the dependency of SPI_BCM2835AUX on GPIOLIB if COMPILE_TEST is
-enabled.
-
-Signed-off-by: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/Kconfig | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 77064160dd76..4e08d42a9fa1 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -90,8 +90,7 @@ config SPI_BCM2835
- 
- config SPI_BCM2835AUX
- 	tristate "BCM2835 SPI auxiliary controller"
--	depends on ARCH_BCM2835 || COMPILE_TEST
--	depends on GPIOLIB
-+	depends on (ARCH_BCM2835 && GPIOLIB) || COMPILE_TEST
- 	help
- 	  This selects a driver for the Broadcom BCM2835 SPI aux master.
- 
--- 
-2.7.0.rc3
-
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/adi,axi-spi-engine.txt b/Documentation/devicetree/bindings/spi/adi,axi-spi-engine.txt
+> new file mode 100644
+> index 0000000..8a18d71
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/adi,axi-spi-engine.txt
+> @@ -0,0 +1,31 @@
+> +Analog Devices AXI SPI Engine controller Device Tree Bindings
+> +
+> +Required properties:
+> +- compatible		: Must be "adi,axi-spi-engine-1.00.a""
+> +- reg			: Physical base address and size of the register map.
+> +- interrupts		: Property with a value describing the interrupt
+> +			  number.
+> +- clock-names		: List of input clock names - "s_axi_aclk", "spi_clk"
+> +- clocks		: Clock phandles and specifiers (See clock bindings for
+> +			  details on clock-names and clocks).
+> +- #address-cells	: Must be <1>
+> +- #size-cells		: Must be <0>
+> +
+> +Optional subnodes:
+> +	Subnodes are use to represent the SPI slave devices connected to the SPI
+> +	master. They follow the generic SPI bindings as outlined in spi-bus.txt.
+> +
+> +Example:
+> +
+> +    spi@@44a00000 {
+> +		compatible = "adi,axi-spi-engine-1.00.a";
+> +		reg = <0x44a00000 0x1000>;
+> +		interrupts = <0 56 4>;
+> +		clocks = <&clkc 15 &clkc 15>;
+> +		clock-names = "s_axi_aclk", "spi_clk";
+> +
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		/* SPI devices */
+> +    };
+> -- 
+> 2.1.4
+> 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

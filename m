@@ -1,19 +1,18 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pxa2xx: Add support for both chip selects on Intel Braswell" to the spi tree
-Date: Tue, 09 Feb 2016 19:43:16 +0000
-Message-ID: <E1aTEBw-0003Ku-2d@debutante>
-References: <1454944471-50119-5-git-send-email-mika.westerberg@linux.intel.com>
+Subject: Applied "spi: core: add spi_replace_transfers method" to the spi tree
+Date: Tue, 09 Feb 2016 19:43:14 +0000
+Message-ID: <E1aTEBu-0003Jy-DS@debutante>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1454944471-50119-5-git-send-email-mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: 
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: pxa2xx: Add support for both chip selects on Intel Braswell
+   spi: core: add spi_replace_transfers method
 
 has been applied to the spi tree at
 
@@ -38,115 +37,221 @@ to this mail.
 Thanks,
 Mark
 
->From 30f3a6ab44d8d06bb3d94f6320e4aa76df59d025 Mon Sep 17 00:00:00 2001
-From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Mon, 8 Feb 2016 17:14:31 +0200
-Subject: [PATCH] spi: pxa2xx: Add support for both chip selects on Intel
- Braswell
+>From 523baf5a0609690cb742b3662b7ccac0ea0b2ef2 Mon Sep 17 00:00:00 2001
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Date: Mon, 14 Dec 2015 15:20:19 +0000
+Subject: [PATCH] spi: core: add spi_replace_transfers method
 
-Intel Braswell LPSS SPI controller actually has two chip selects and there
-is no capabilities register where this could be found out. These two chip
-selects are controlled by bits which are in slightly differrent location
-than Broxton has.
+Add the spi_replace_transfers method that can get used
+to replace some spi_transfers from a spi_message with other
+transfers.
 
-Braswell Windows driver also starts chip select (ACPI DeviceSelection)
-numbering from 1 so translate it to be suitable for Linux as well.
-
-Signed-off-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Reviewed-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Reviewed-by: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-pxa2xx.c   | 21 ++++++++++++++++++++-
- include/linux/pxa2xx_ssp.h |  1 +
- 2 files changed, 21 insertions(+), 1 deletion(-)
+ drivers/spi/spi.c       | 132 ++++++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/spi/spi.h |  45 +++++++++++++++++
+ 2 files changed, 177 insertions(+)
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 81d68e01046a..0eb79368eabc 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -83,6 +83,7 @@ struct lpss_config {
- 	/* Chip select control */
- 	unsigned cs_sel_shift;
- 	unsigned cs_sel_mask;
-+	unsigned cs_num;
- };
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 894ed0357dd7..2ec8e66a8098 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2107,6 +2107,138 @@ EXPORT_SYMBOL_GPL(spi_res_release);
  
- /* Keep these sorted with enum pxa_ssp_type */
-@@ -107,6 +108,19 @@ static const struct lpss_config lpss_platforms[] = {
- 		.tx_threshold_lo = 160,
- 		.tx_threshold_hi = 224,
- 	},
-+	{	/* LPSS_BSW_SSP */
-+		.offset = 0x400,
-+		.reg_general = 0x08,
-+		.reg_ssp = 0x0c,
-+		.reg_cs_ctrl = 0x18,
-+		.reg_capabilities = -1,
-+		.rx_threshold = 64,
-+		.tx_threshold_lo = 160,
-+		.tx_threshold_hi = 224,
-+		.cs_sel_shift = 2,
-+		.cs_sel_mask = 1 << 2,
-+		.cs_num = 2,
-+	},
- 	{	/* LPSS_SPT_SSP */
- 		.offset = 0x200,
- 		.reg_general = -1,
-@@ -142,6 +156,7 @@ static bool is_lpss_ssp(const struct driver_data *drv_data)
- 	switch (drv_data->ssp_type) {
- 	case LPSS_LPT_SSP:
- 	case LPSS_BYT_SSP:
-+	case LPSS_BSW_SSP:
- 	case LPSS_SPT_SSP:
- 	case LPSS_BXT_SSP:
- 		return true;
-@@ -1189,6 +1204,7 @@ static int setup(struct spi_device *spi)
- 		break;
- 	case LPSS_LPT_SSP:
- 	case LPSS_BYT_SSP:
-+	case LPSS_BSW_SSP:
- 	case LPSS_SPT_SSP:
- 	case LPSS_BXT_SSP:
- 		config = lpss_get_config(drv_data);
-@@ -1336,7 +1352,7 @@ static const struct acpi_device_id pxa2xx_spi_acpi_match[] = {
- 	{ "INT3430", LPSS_LPT_SSP },
- 	{ "INT3431", LPSS_LPT_SSP },
- 	{ "80860F0E", LPSS_BYT_SSP },
--	{ "8086228E", LPSS_BYT_SSP },
-+	{ "8086228E", LPSS_BSW_SSP },
- 	{ },
- };
- MODULE_DEVICE_TABLE(acpi, pxa2xx_spi_acpi_match);
-@@ -1473,6 +1489,7 @@ static int pxa2xx_spi_fw_translate_cs(struct spi_master *master, unsigned cs)
- 		 * to match what Linux expects.
- 		 */
- 		case LPSS_BYT_SSP:
-+		case LPSS_BSW_SSP:
- 			return cs - 1;
+ /*-------------------------------------------------------------------------*/
  
- 		default:
-@@ -1622,6 +1639,8 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
- 			tmp &= LPSS_CAPS_CS_EN_MASK;
- 			tmp >>= LPSS_CAPS_CS_EN_SHIFT;
- 			platform_info->num_chipselect = ffz(tmp);
-+		} else if (config->cs_num) {
-+			platform_info->num_chipselect = config->cs_num;
- 		}
- 	}
- 	master->num_chipselect = platform_info->num_chipselect;
-diff --git a/include/linux/pxa2xx_ssp.h b/include/linux/pxa2xx_ssp.h
-index c2f2574ff61c..2a097d176ba9 100644
---- a/include/linux/pxa2xx_ssp.h
-+++ b/include/linux/pxa2xx_ssp.h
-@@ -197,6 +197,7 @@ enum pxa_ssp_type {
- 	QUARK_X1000_SSP,
- 	LPSS_LPT_SSP, /* Keep LPSS types sorted with lpss_platforms[] */
- 	LPSS_BYT_SSP,
-+	LPSS_BSW_SSP,
- 	LPSS_SPT_SSP,
- 	LPSS_BXT_SSP,
- };
++/* Core methods for spi_message alterations */
++
++static void __spi_replace_transfers_release(struct spi_master *master,
++					    struct spi_message *msg,
++					    void *res)
++{
++	struct spi_replaced_transfers *rxfer = res;
++	size_t i;
++
++	/* call extra callback if requested */
++	if (rxfer->release)
++		rxfer->release(master, msg, res);
++
++	/* insert replaced transfers back into the message */
++	list_splice(&rxfer->replaced_transfers, rxfer->replaced_after);
++
++	/* remove the formerly inserted entries */
++	for (i = 0; i < rxfer->inserted; i++)
++		list_del(&rxfer->inserted_transfers[i].transfer_list);
++}
++
++/**
++ * spi_replace_transfers - replace transfers with several transfers
++ *                         and register change with spi_message.resources
++ * @msg:           the spi_message we work upon
++ * @xfer_first:    the first spi_transfer we want to replace
++ * @remove:        number of transfers to remove
++ * @insert:        the number of transfers we want to insert instead
++ * @release:       extra release code necessary in some circumstances
++ * @extradatasize: extra data to allocate (with alignment guarantees
++ *                 of struct @spi_transfer)
++ *
++ * Returns: pointer to @spi_replaced_transfers,
++ *          PTR_ERR(...) in case of errors.
++ */
++struct spi_replaced_transfers *spi_replace_transfers(
++	struct spi_message *msg,
++	struct spi_transfer *xfer_first,
++	size_t remove,
++	size_t insert,
++	spi_replaced_release_t release,
++	size_t extradatasize,
++	gfp_t gfp)
++{
++	struct spi_replaced_transfers *rxfer;
++	struct spi_transfer *xfer;
++	size_t i;
++
++	/* allocate the structure using spi_res */
++	rxfer = spi_res_alloc(msg->spi, __spi_replace_transfers_release,
++			      insert * sizeof(struct spi_transfer)
++			      + sizeof(struct spi_replaced_transfers)
++			      + extradatasize,
++			      gfp);
++	if (!rxfer)
++		return ERR_PTR(-ENOMEM);
++
++	/* the release code to invoke before running the generic release */
++	rxfer->release = release;
++
++	/* assign extradata */
++	if (extradatasize)
++		rxfer->extradata =
++			&rxfer->inserted_transfers[insert];
++
++	/* init the replaced_transfers list */
++	INIT_LIST_HEAD(&rxfer->replaced_transfers);
++
++	/* assign the list_entry after which we should reinsert
++	 * the @replaced_transfers - it may be spi_message.messages!
++	 */
++	rxfer->replaced_after = xfer_first->transfer_list.prev;
++
++	/* remove the requested number of transfers */
++	for (i = 0; i < remove; i++) {
++		/* if the entry after replaced_after it is msg->transfers
++		 * then we have been requested to remove more transfers
++		 * than are in the list
++		 */
++		if (rxfer->replaced_after->next == &msg->transfers) {
++			dev_err(&msg->spi->dev,
++				"requested to remove more spi_transfers than are available\n");
++			/* insert replaced transfers back into the message */
++			list_splice(&rxfer->replaced_transfers,
++				    rxfer->replaced_after);
++
++			/* free the spi_replace_transfer structure */
++			spi_res_free(rxfer);
++
++			/* and return with an error */
++			return ERR_PTR(-EINVAL);
++		}
++
++		/* remove the entry after replaced_after from list of
++		 * transfers and add it to list of replaced_transfers
++		 */
++		list_move_tail(rxfer->replaced_after->next,
++			       &rxfer->replaced_transfers);
++	}
++
++	/* create copy of the given xfer with identical settings
++	 * based on the first transfer to get removed
++	 */
++	for (i = 0; i < insert; i++) {
++		/* we need to run in reverse order */
++		xfer = &rxfer->inserted_transfers[insert - 1 - i];
++
++		/* copy all spi_transfer data */
++		memcpy(xfer, xfer_first, sizeof(*xfer));
++
++		/* add to list */
++		list_add(&xfer->transfer_list, rxfer->replaced_after);
++
++		/* clear cs_change and delay_usecs for all but the last */
++		if (i) {
++			xfer->cs_change = false;
++			xfer->delay_usecs = 0;
++		}
++	}
++
++	/* set up inserted */
++	rxfer->inserted = insert;
++
++	/* and register it with spi_res/spi_message */
++	spi_res_add(msg, rxfer);
++
++	return rxfer;
++}
++EXPORT_SYMBOL_GPL(spi_replace_transfers);
++
++/*-------------------------------------------------------------------------*/
++
+ /* Core methods for SPI master protocol drivers.  Some of the
+  * other core methods are currently defined as inline functions.
+  */
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 38204b584dc5..d71385756fee 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -890,6 +890,51 @@ spi_max_transfer_size(struct spi_device *spi)
+ 
+ /*---------------------------------------------------------------------------*/
+ 
++/* SPI transfer replacement methods which make use of spi_res */
++
++/**
++ * struct spi_replaced_transfers - structure describing the spi_transfer
++ *                                 replacements that have occurred
++ *                                 so that they can get reverted
++ * @release:            some extra release code to get executed prior to
++ *                      relasing this structure
++ * @extradata:          pointer to some extra data if requested or NULL
++ * @replaced_transfers: transfers that have been replaced and which need
++ *                      to get restored
++ * @replaced_after:     the transfer after which the @replaced_transfers
++ *                      are to get re-inserted
++ * @inserted:           number of transfers inserted
++ * @inserted_transfers: array of spi_transfers of array-size @inserted,
++ *                      that have been replacing replaced_transfers
++ *
++ * note: that @extradata will point to @inserted_transfers[@inserted]
++ * if some extra allocation is requested, so alignment will be the same
++ * as for spi_transfers
++ */
++struct spi_replaced_transfers;
++typedef void (*spi_replaced_release_t)(struct spi_master *master,
++				       struct spi_message *msg,
++				       struct spi_replaced_transfers *res);
++struct spi_replaced_transfers {
++	spi_replaced_release_t release;
++	void *extradata;
++	struct list_head replaced_transfers;
++	struct list_head *replaced_after;
++	size_t inserted;
++	struct spi_transfer inserted_transfers[];
++};
++
++extern struct spi_replaced_transfers *spi_replace_transfers(
++	struct spi_message *msg,
++	struct spi_transfer *xfer_first,
++	size_t remove,
++	size_t insert,
++	spi_replaced_release_t release,
++	size_t extradatasize,
++	gfp_t gfp);
++
++/*---------------------------------------------------------------------------*/
++
+ /* All these synchronous SPI transfer routines are utilities layered
+  * over the core async transfer primitive.  Here, "synchronous" means
+  * they will sleep uninterruptibly until the async transfer completes.
 -- 
 2.7.0.rc3
 

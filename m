@@ -1,60 +1,139 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: s3c64xx: Get fifosize via device tree
-Date: Tue, 9 Feb 2016 16:10:36 +0000
-Message-ID: <20160209161036.GI13270@sirena.org.uk>
-References: <1455031585-11113-1-git-send-email-ym0914@gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Li7ckgedzMh1NgdW"
-Cc: kgene@kernel.org, k.kozlowski@samsung.com,
-	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org
-To: Youngmin Nam <ym0914@gmail.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1455031585-11113-1-git-send-email-ym0914@gmail.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: stephanolbrich-Mmb7MZpHnFY@public.gmane.org
+Subject: [PATCH 3/4] spi: bcm2835aux: set up spi-mode before asserting cs-gpio
+Date: Tue,  9 Feb 2016 19:10:34 +0100
+Message-ID: <1455041435-8015-4-git-send-email-stephanolbrich@gmx.de>
+References: <1455041435-8015-1-git-send-email-stephanolbrich@gmx.de>
+Cc: Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
+	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1455041435-8015-1-git-send-email-stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+From: Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
 
---Li7ckgedzMh1NgdW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+When using reverse polarity for clock (spi-cpol) on a device
+the clock line gets altered after chip-select has been asserted
+resulting in an additional clock beat, which confuses hardware.
 
-On Wed, Feb 10, 2016 at 12:26:25AM +0900, Youngmin Nam wrote:
+To avoid this situation this patch moves the setup of polarity
+(spi-cpol and spi-cpha) outside of the chip-select into
+prepare_message, which is run prior to asserting chip-select.
 
-> SPI driver on some SoCs only differ in the fifosize of each
-> SPI channel. It is useless to duplicate the s3c64xx_spi_port_config struc=
-ture
-> or create a compatible name for such a change.
+Signed-off-by: Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
+---
+ drivers/spi/spi-bcm2835aux.c | 54 +++++++++++++++++++++++++++++++-------------
+ 1 file changed, 38 insertions(+), 16 deletions(-)
 
-I disagree that it is useless to do this, it means that if we realize
-later that there is some other difference between the implementations
-then we have the information in the DT to handle this without needing=20
-to update the ABI.
+diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
+index d2f0067..b90aa34 100644
+--- a/drivers/spi/spi-bcm2835aux.c
++++ b/drivers/spi/spi-bcm2835aux.c
+@@ -218,9 +218,9 @@ static irqreturn_t bcm2835aux_spi_interrupt(int irq, void *dev_id)
+ 			BCM2835_AUX_SPI_CNTL1_IDLE);
+ 	}
+ 
+-	/* and if rx_len is 0 then wake up completion and disable spi */
++	/* and if rx_len is 0 then disable interrupts and wake up completion */
+ 	if (!bs->rx_len) {
+-		bcm2835aux_spi_reset_hw(bs);
++		bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL1, bs->cntl[1]);
+ 		complete(&master->xfer_completion);
+ 	}
+ 
+@@ -313,9 +313,6 @@ static int bcm2835aux_spi_transfer_one_poll(struct spi_master *master,
+ 		}
+ 	}
+ 
+-	/* Transfer complete - reset SPI HW */
+-	bcm2835aux_spi_reset_hw(bs);
+-
+ 	/* and return without waiting for completion */
+ 	return 0;
+ }
+@@ -336,10 +333,6 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *master,
+ 	 * resulting (potentially) in more interrupts when transferring
+ 	 * more than 12 bytes
+ 	 */
+-	bs->cntl[0] = BCM2835_AUX_SPI_CNTL0_ENABLE |
+-		      BCM2835_AUX_SPI_CNTL0_VAR_WIDTH |
+-		      BCM2835_AUX_SPI_CNTL0_MSBF_OUT;
+-	bs->cntl[1] = BCM2835_AUX_SPI_CNTL1_MSBF_IN;
+ 
+ 	/* set clock */
+ 	spi_hz = tfr->speed_hz;
+@@ -358,13 +351,6 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *master,
+ 
+ 	spi_used_hz = clk_hz / (2 * (speed + 1));
+ 
+-	/* handle all the modes */
+-	if (spi->mode & SPI_CPOL)
+-		bs->cntl[0] |= BCM2835_AUX_SPI_CNTL0_CPOL;
+-	if (spi->mode & SPI_CPHA)
+-		bs->cntl[0] |= BCM2835_AUX_SPI_CNTL0_CPHA_OUT |
+-			       BCM2835_AUX_SPI_CNTL0_CPHA_IN;
+-
+ 	/* set transmit buffers and length */
+ 	bs->tx_buf = tfr->tx_buf;
+ 	bs->rx_buf = tfr->rx_buf;
+@@ -388,6 +374,40 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *master,
+ 	return bcm2835aux_spi_transfer_one_irq(master, spi, tfr);
+ }
+ 
++static int bcm2835aux_spi_prepare_message(struct spi_master *master,
++					  struct spi_message *msg)
++{
++	struct spi_device *spi = msg->spi;
++	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
++
++	bs->cntl[0] = BCM2835_AUX_SPI_CNTL0_ENABLE |
++		      BCM2835_AUX_SPI_CNTL0_VAR_WIDTH |
++		      BCM2835_AUX_SPI_CNTL0_MSBF_OUT;
++	bs->cntl[1] = BCM2835_AUX_SPI_CNTL1_MSBF_IN;
++
++	/* handle all the modes */
++	if (spi->mode & SPI_CPOL)
++		bs->cntl[0] |= BCM2835_AUX_SPI_CNTL0_CPOL;
++	if (spi->mode & SPI_CPHA)
++		bs->cntl[0] |= BCM2835_AUX_SPI_CNTL0_CPHA_OUT |
++			       BCM2835_AUX_SPI_CNTL0_CPHA_IN;
++
++	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL1, bs->cntl[1]);
++	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL0, bs->cntl[0]);
++
++	return 0;
++}
++
++static int bcm2835aux_spi_unprepare_message(struct spi_master *master,
++					    struct spi_message *msg)
++{
++	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
++
++	bcm2835aux_spi_reset_hw(bs);
++
++	return 0;
++}
++
+ static void bcm2835aux_spi_handle_err(struct spi_master *master,
+ 				      struct spi_message *msg)
+ {
+@@ -416,6 +436,8 @@ static int bcm2835aux_spi_probe(struct platform_device *pdev)
+ 	master->num_chipselect = -1;
+ 	master->transfer_one = bcm2835aux_spi_transfer_one;
+ 	master->handle_err = bcm2835aux_spi_handle_err;
++	master->prepare_message = bcm2835aux_spi_prepare_message;
++	master->unprepare_message = bcm2835aux_spi_unprepare_message;
+ 	master->dev.of_node = pdev->dev.of_node;
+ 
+ 	bs = spi_master_get_devdata(master);
+-- 
+2.5.0
 
-> +Optional SoC Specific properties:
-> +
-> +- samsung,spi-fifosize: The fifo size supported by the SPI channel
-> +
-> +
-
-In units of...?  FIFO sizes do get quoted in both words and bytes so it
-seems good to be clear.
-
---Li7ckgedzMh1NgdW
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJWug97AAoJECTWi3JdVIfQ6BEH/ArILUtDqECGIVGHk5KH0RR8
-jXv4Gqa6SErTZduDYxZn6XI5ZCWG29C3WbO/QQekHc7sOdEt9dnYV+lYlKkTL6oE
-rfuReYPlL8VGpJRR1wr0FFNfHnXR9xfg/WYY6GAWBbpBZAKNRKA2DZkNPPsM6phh
-DwOrLtfSRQXbAi9fmrCXxS7j9mMgnv6Xj/C29x/b05NV6b4p+0MXjdrA45/4glGS
-ndUtmBAe1/qEaQuJy8Uceq7PSPPhFiUksS+PnF6LMt5PG2lt+3Rm9E36RxHEhKru
-06qMlGwTnOewEfOkc70zJ/3g/7r8G+24Ei8CSjqnm8aoBAlvedjYfgS6upKtySA=
-=JVKH
------END PGP SIGNATURE-----
-
---Li7ckgedzMh1NgdW--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

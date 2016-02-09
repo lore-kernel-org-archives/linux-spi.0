@@ -1,7 +1,8 @@
 From: stephanolbrich-Mmb7MZpHnFY@public.gmane.org
-Subject: [PATCH 0/4] spi: bcm2835aux: auxiliary spi improvements
-Date: Tue,  9 Feb 2016 19:10:31 +0100
-Message-ID: <1455041435-8015-1-git-send-email-stephanolbrich@gmx.de>
+Subject: [PATCH 1/4] spi: bcm2835aux: fix bitmask defines
+Date: Tue,  9 Feb 2016 19:10:32 +0100
+Message-ID: <1455041435-8015-2-git-send-email-stephanolbrich@gmx.de>
+References: <1455041435-8015-1-git-send-email-stephanolbrich@gmx.de>
 Cc: Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
@@ -9,39 +10,34 @@ To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1455041435-8015-1-git-send-email-stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 From: Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
 
-This patch series has some improvements and fixes for the auxiliary spi.
+The bitmasks for txempty and idle interrupts were interchanged.
 
-1. fix bitmask defines
- just fixes a typo (needed in 2.)
+Signed-off-by: Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
+---
+ drivers/spi/spi-bcm2835aux.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-2. disable tx fifo empty irq
- reduces the numer of interrupts with nothing to do
-
-3. set up spi-mode before asserting cs-gpio
- As Martin Sperl suggested this is done in the same way as in spi-bcm2835.c
- acace73df2c1913a526c1b41e4741a4a6704c863
-
-4. fix CPOL/CPHA setting
- From what I've seen in the documentation [1] and seen on the scope this chip
- doesn't support modes with CPHA=1. With this patch spi mode 0 and 2 should
- work correctly whereas mode 1 and 3 do not. 
-
-[1] https://www.raspberrypi.org/wp-content/uploads/2012/02/BCM2835-ARM-Peripherals.pdf
-
-Stephan Olbrich (4):
-  spi: bcm2835aux: fix bitmask defines
-  spi: bcm2835aux: disable tx fifo empty irq
-  spi: bcm2835aux: set up spi-mode before asserting cs-gpio
-  spi: bcm2835aux: fix CPOL/CPHA setting
-
- drivers/spi/spi-bcm2835aux.c | 64 +++++++++++++++++++++++++++++++-------------
- 1 file changed, 46 insertions(+), 18 deletions(-)
-
+diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
+index 7de6f84..ecc73c0 100644
+--- a/drivers/spi/spi-bcm2835aux.c
++++ b/drivers/spi/spi-bcm2835aux.c
+@@ -73,8 +73,8 @@
+ 
+ /* Bitfields in CNTL1 */
+ #define BCM2835_AUX_SPI_CNTL1_CSHIGH	0x00000700
+-#define BCM2835_AUX_SPI_CNTL1_IDLE	0x00000080
+-#define BCM2835_AUX_SPI_CNTL1_TXEMPTY	0x00000040
++#define BCM2835_AUX_SPI_CNTL1_TXEMPTY	0x00000080
++#define BCM2835_AUX_SPI_CNTL1_IDLE	0x00000040
+ #define BCM2835_AUX_SPI_CNTL1_MSBF_IN	0x00000002
+ #define BCM2835_AUX_SPI_CNTL1_KEEP_IN	0x00000001
+ 
 -- 
 2.5.0
 

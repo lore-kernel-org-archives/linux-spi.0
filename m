@@ -1,18 +1,18 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: introduce accelerated read support for spi flash devices" to the spi tree
-Date: Tue, 09 Feb 2016 19:43:12 +0000
-Message-ID: <E1aTEBs-0003J2-Sz@debutante>
-References: <1448860515-28336-2-git-send-email-vigneshr@ti.com>
+Subject: Applied "spi: core: added spi_resource management" to the spi tree
+Date: Tue, 09 Feb 2016 19:43:15 +0000
+Message-ID: <E1aTEBv-0003KR-51@debutante>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1448860515-28336-2-git-send-email-vigneshr-l0cyMroinI0@public.gmane.org>
+In-Reply-To: 
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: introduce accelerated read support for spi flash devices
+   spi: core: added spi_resource management
 
 has been applied to the spi tree at
 
@@ -37,192 +37,212 @@ to this mail.
 Thanks,
 Mark
 
->From 556351f14e74db4cd3ddde386457edce7bf0b27f Mon Sep 17 00:00:00 2001
-From: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
-Date: Fri, 11 Dec 2015 09:39:56 +0530
-Subject: [PATCH] spi: introduce accelerated read support for spi flash devices
+>From d780c3711d9df9bacd56b71cf23443b895a331ca Mon Sep 17 00:00:00 2001
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Date: Mon, 14 Dec 2015 15:20:18 +0000
+Subject: [PATCH] spi: core: added spi_resource management
 
-In addition to providing direct access to SPI bus, some spi controller
-hardwares (like ti-qspi) provide special port (like memory mapped port)
-that are optimized to improve SPI flash read performance.
-This means the controller can automatically send the SPI signals
-required to read data from the SPI flash device.
-For this, SPI controller needs to know flash specific information like
-read command to use, dummy bytes and address width.
+SPI resource management framework used while processing a spi_message
+via the spi-core.
 
-Introduce spi_flash_read() interface to support accelerated read
-over SPI flash devices. SPI master drivers can implement this callback to
-support interfaces such as memory mapped read etc. m25p80 flash driver
-and other flash drivers can call this make use of such interfaces. The
-interface should only be used with SPI flashes and cannot be used with
-other SPI devices.
+The basic idea is taken from devres, but as the allocation may happen
+fairly frequently, some provisioning (in the form of an unused spi_device
+pointer argument to spi_res_alloc) has been made so that at a later stage
+we may implement reuse objects allocated earlier avoiding the repeated
+allocation by keeping a cache of objects that we can reuse.
 
-Signed-off-by: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+This framework can get used for:
+* rewriting spi_messages
+  * to fullfill alignment requirements of the spi_master HW
+  * to fullfill transfer length requirements
+    (e.g: transfers need to be less than 64k)
+  * consolidate spi_messages with multiple transfers into a single transfer
+  when the total transfer length is below a threshold.
+* reimplement spi_unmap_buf without explicitly needing to check if it has
+  been mapped
+
+Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi.c       | 45 +++++++++++++++++++++++++++++++++++++++++++++
- include/linux/spi/spi.h | 41 +++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 86 insertions(+)
+ drivers/spi/spi.c       | 91 +++++++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/spi/spi.h | 36 +++++++++++++++++++
+ 2 files changed, 127 insertions(+)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 47eff8012a77..dcc6f6e92668 100644
+index 47eff8012a77..894ed0357dd7 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -1152,6 +1152,7 @@ static void __spi_pump_messages(struct spi_master *master, bool in_kthread)
- 		}
- 	}
+@@ -1024,6 +1024,8 @@ out:
+ 	if (msg->status && master->handle_err)
+ 		master->handle_err(master, msg);
  
-+	mutex_lock(&master->bus_lock_mutex);
- 	trace_spi_message_start(master->cur_msg);
++	spi_res_release(master, msg);
++
+ 	spi_finalize_current_message(master);
  
- 	if (master->prepare_message) {
-@@ -1161,6 +1162,7 @@ static void __spi_pump_messages(struct spi_master *master, bool in_kthread)
- 				"failed to prepare message: %d\n", ret);
- 			master->cur_msg->status = ret;
- 			spi_finalize_current_message(master);
-+			mutex_unlock(&master->bus_lock_mutex);
- 			return;
- 		}
- 		master->cur_msg_prepared = true;
-@@ -1170,6 +1172,7 @@ static void __spi_pump_messages(struct spi_master *master, bool in_kthread)
- 	if (ret) {
- 		master->cur_msg->status = ret;
- 		spi_finalize_current_message(master);
-+		mutex_unlock(&master->bus_lock_mutex);
- 		return;
- 	}
- 
-@@ -1177,8 +1180,10 @@ static void __spi_pump_messages(struct spi_master *master, bool in_kthread)
- 	if (ret) {
- 		dev_err(&master->dev,
- 			"failed to transfer one message from queue\n");
-+		mutex_unlock(&master->bus_lock_mutex);
- 		return;
- 	}
-+	mutex_unlock(&master->bus_lock_mutex);
+ 	return ret;
+@@ -2013,6 +2015,95 @@ struct spi_master *spi_busnum_to_master(u16 bus_num)
  }
+ EXPORT_SYMBOL_GPL(spi_busnum_to_master);
  
- /**
-@@ -2351,6 +2356,46 @@ int spi_async_locked(struct spi_device *spi, struct spi_message *message)
- EXPORT_SYMBOL_GPL(spi_async_locked);
- 
- 
-+int spi_flash_read(struct spi_device *spi,
-+		   struct spi_flash_read_message *msg)
++/*-------------------------------------------------------------------------*/
 +
++/* Core methods for SPI resource management */
++
++/**
++ * spi_res_alloc - allocate a spi resource that is life-cycle managed
++ *                 during the processing of a spi_message while using
++ *                 spi_transfer_one
++ * @spi:     the spi device for which we allocate memory
++ * @release: the release code to execute for this resource
++ * @size:    size to alloc and return
++ * @gfp:     GFP allocation flags
++ *
++ * Return: the pointer to the allocated data
++ *
++ * This may get enhanced in the future to allocate from a memory pool
++ * of the @spi_device or @spi_master to avoid repeated allocations.
++ */
++void *spi_res_alloc(struct spi_device *spi,
++		    spi_res_release_t release,
++		    size_t size, gfp_t gfp)
 +{
-+	struct spi_master *master = spi->master;
-+	int ret;
++	struct spi_res *sres;
 +
-+	if ((msg->opcode_nbits == SPI_NBITS_DUAL ||
-+	     msg->addr_nbits == SPI_NBITS_DUAL) &&
-+	    !(spi->mode & (SPI_TX_DUAL | SPI_TX_QUAD)))
-+		return -EINVAL;
-+	if ((msg->opcode_nbits == SPI_NBITS_QUAD ||
-+	     msg->addr_nbits == SPI_NBITS_QUAD) &&
-+	    !(spi->mode & SPI_TX_QUAD))
-+		return -EINVAL;
-+	if (msg->data_nbits == SPI_NBITS_DUAL &&
-+	    !(spi->mode & (SPI_RX_DUAL | SPI_RX_QUAD)))
-+		return -EINVAL;
-+	if (msg->data_nbits == SPI_NBITS_QUAD &&
-+	    !(spi->mode &  SPI_RX_QUAD))
-+		return -EINVAL;
++	sres = kzalloc(sizeof(*sres) + size, gfp);
++	if (!sres)
++		return NULL;
 +
-+	if (master->auto_runtime_pm) {
-+		ret = pm_runtime_get_sync(master->dev.parent);
-+		if (ret < 0) {
-+			dev_err(&master->dev, "Failed to power device: %d\n",
-+				ret);
-+			return ret;
-+		}
-+	}
-+	mutex_lock(&master->bus_lock_mutex);
-+	ret = master->spi_flash_read(spi, msg);
-+	mutex_unlock(&master->bus_lock_mutex);
-+	if (master->auto_runtime_pm)
-+		pm_runtime_put(master->dev.parent);
++	INIT_LIST_HEAD(&sres->entry);
++	sres->release = release;
 +
-+	return ret;
++	return sres->data;
 +}
-+EXPORT_SYMBOL_GPL(spi_flash_read);
++EXPORT_SYMBOL_GPL(spi_res_alloc);
 +
++/**
++ * spi_res_free - free an spi resource
++ * @res: pointer to the custom data of a resource
++ *
++ */
++void spi_res_free(void *res)
++{
++	struct spi_res *sres = container_of(res, struct spi_res, data);
++
++	if (!res)
++		return;
++
++	WARN_ON(!list_empty(&sres->entry));
++	kfree(sres);
++}
++EXPORT_SYMBOL_GPL(spi_res_free);
++
++/**
++ * spi_res_add - add a spi_res to the spi_message
++ * @message: the spi message
++ * @res:     the spi_resource
++ */
++void spi_res_add(struct spi_message *message, void *res)
++{
++	struct spi_res *sres = container_of(res, struct spi_res, data);
++
++	WARN_ON(!list_empty(&sres->entry));
++	list_add_tail(&sres->entry, &message->resources);
++}
++EXPORT_SYMBOL_GPL(spi_res_add);
++
++/**
++ * spi_res_release - release all spi resources for this message
++ * @master:  the @spi_master
++ * @message: the @spi_message
++ */
++void spi_res_release(struct spi_master *master,
++		     struct spi_message *message)
++{
++	struct spi_res *res;
++
++	while (!list_empty(&message->resources)) {
++		res = list_last_entry(&message->resources,
++				      struct spi_res, entry);
++
++		if (res->release)
++			res->release(master, message, res->data);
++
++		list_del(&res->entry);
++
++		kfree(res);
++	}
++}
++EXPORT_SYMBOL_GPL(spi_res_release);
+ 
  /*-------------------------------------------------------------------------*/
  
- /* Utility methods for SPI master protocol drivers, layered on
 diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 53be3a4c60cb..ba0dee9d05a3 100644
+index 53be3a4c60cb..38204b584dc5 100644
 --- a/include/linux/spi/spi.h
 +++ b/include/linux/spi/spi.h
-@@ -25,6 +25,7 @@
- struct dma_chan;
- struct spi_master;
- struct spi_transfer;
-+struct spi_flash_read_message;
+@@ -582,6 +582,37 @@ extern void spi_unregister_master(struct spi_master *master);
  
- /*
-  * INTERFACES between SPI master-side drivers and SPI infrastructure.
-@@ -361,6 +362,8 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
-  * @handle_err: the subsystem calls the driver to handle an error that occurs
-  *		in the generic implementation of transfer_one_message().
-  * @unprepare_message: undo any work done by prepare_message().
-+ * @spi_flash_read: to support spi-controller hardwares that provide
-+ *                  accelerated interface to read from flash devices.
-  * @cs_gpios: Array of GPIOs to use as chip select lines; one per CS
-  *	number. Any individual value may be -ENOENT for CS lines that
-  *	are not GPIOs (driven by the SPI controller itself).
-@@ -513,6 +516,8 @@ struct spi_master {
- 			       struct spi_message *message);
- 	int (*unprepare_message)(struct spi_master *master,
- 				 struct spi_message *message);
-+	int (*spi_flash_read)(struct  spi_device *spi,
-+			      struct spi_flash_read_message *msg);
+ extern struct spi_master *spi_busnum_to_master(u16 busnum);
  
- 	/*
- 	 * These hooks are for drivers that use a generic implementation
-@@ -1019,6 +1024,42 @@ static inline ssize_t spi_w8r16be(struct spi_device *spi, u8 cmd)
- 	return be16_to_cpu(result);
- }
- 
-+/**
-+ * struct spi_flash_read_message - flash specific information for
-+ * spi-masters that provide accelerated flash read interfaces
-+ * @buf: buffer to read data
-+ * @from: offset within the flash from where data is to be read
-+ * @len: length of data to be read
-+ * @retlen: actual length of data read
-+ * @read_opcode: read_opcode to be used to communicate with flash
-+ * @addr_width: number of address bytes
-+ * @dummy_bytes: number of dummy bytes
-+ * @opcode_nbits: number of lines to send opcode
-+ * @addr_nbits: number of lines to send address
-+ * @data_nbits: number of lines for data
++/*
++ * SPI resource management while processing a SPI message
 + */
-+struct spi_flash_read_message {
-+	void *buf;
-+	loff_t from;
-+	size_t len;
-+	size_t retlen;
-+	u8 read_opcode;
-+	u8 addr_width;
-+	u8 dummy_bytes;
-+	u8 opcode_nbits;
-+	u8 addr_nbits;
-+	u8 data_nbits;
++
++/**
++ * struct spi_res - spi resource management structure
++ * @entry:   list entry
++ * @release: release code called prior to freeing this resource
++ * @data:    extra data allocated for the specific use-case
++ *
++ * this is based on ideas from devres, but focused on life-cycle
++ * management during spi_message processing
++ */
++typedef void (*spi_res_release_t)(struct spi_master *master,
++				  struct spi_message *msg,
++				  void *res);
++struct spi_res {
++	struct list_head        entry;
++	spi_res_release_t       release;
++	unsigned long long      data[]; /* guarantee ull alignment */
 +};
 +
-+/* SPI core interface for flash read support */
-+static inline bool spi_flash_read_supported(struct spi_device *spi)
-+{
-+	return spi->master->spi_flash_read ? true : false;
-+}
++extern void *spi_res_alloc(struct spi_device *spi,
++			   spi_res_release_t release,
++			   size_t size, gfp_t gfp);
++extern void spi_res_add(struct spi_message *message, void *res);
++extern void spi_res_free(void *res);
 +
-+int spi_flash_read(struct spi_device *spi,
-+		   struct spi_flash_read_message *msg);
++extern void spi_res_release(struct spi_master *master,
++			    struct spi_message *message);
 +
  /*---------------------------------------------------------------------------*/
  
  /*
+@@ -720,6 +751,7 @@ struct spi_transfer {
+  * @status: zero for success, else negative errno
+  * @queue: for use by whichever driver currently owns the message
+  * @state: for use by whichever driver currently owns the message
++ * @resources: for resource management when the spi message is processed
+  *
+  * A @spi_message is used to execute an atomic sequence of data transfers,
+  * each represented by a struct spi_transfer.  The sequence is "atomic"
+@@ -766,11 +798,15 @@ struct spi_message {
+ 	 */
+ 	struct list_head	queue;
+ 	void			*state;
++
++	/* list of spi_res reources when the spi message is processed */
++	struct list_head        resources;
+ };
+ 
+ static inline void spi_message_init_no_memset(struct spi_message *m)
+ {
+ 	INIT_LIST_HEAD(&m->transfers);
++	INIT_LIST_HEAD(&m->resources);
+ }
+ 
+ static inline void spi_message_init(struct spi_message *m)
 -- 
 2.7.0.rc3
 

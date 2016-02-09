@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pxa2xx: Move chip select control bits into lpss_config structure" to the spi tree
-Date: Tue, 09 Feb 2016 19:43:16 +0000
-Message-ID: <E1aTEBw-0003LN-Vq@debutante>
-References: <1454944471-50119-4-git-send-email-mika.westerberg@linux.intel.com>
+Subject: Applied "spi: pxa2xx: Translate ACPI DeviceSelection to Linux chip select on Baytrail" to the spi tree
+Date: Tue, 09 Feb 2016 19:43:17 +0000
+Message-ID: <E1aTEBx-0003Lr-TS@debutante>
+References: <1454944471-50119-3-git-send-email-mika.westerberg@linux.intel.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1454944471-50119-4-git-send-email-mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <1454944471-50119-3-git-send-email-mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: pxa2xx: Move chip select control bits into lpss_config structure
+   spi: pxa2xx: Translate ACPI DeviceSelection to Linux chip select on Baytrail
 
 has been applied to the spi tree at
 
@@ -38,133 +38,87 @@ to this mail.
 Thanks,
 Mark
 
->From c1e4a53c6b8161ded3a44e3352ef38206d0967ea Mon Sep 17 00:00:00 2001
+>From 0c27d9cf7245d832d3d34f289c1bcd4f7f3fbd30 Mon Sep 17 00:00:00 2001
 From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Mon, 8 Feb 2016 17:14:30 +0200
-Subject: [PATCH] spi: pxa2xx: Move chip select control bits into lpss_config
- structure
+Date: Mon, 8 Feb 2016 17:14:29 +0200
+Subject: [PATCH] spi: pxa2xx: Translate ACPI DeviceSelection to Linux chip
+ select on Baytrail
 
-Some Intel LPSS SPI controllers, like the one in Braswell has these bits in
-a different location so move these bits to be part of the LPSS
-configuration.
+The Windows Baytrail SPI host controller driver uses 1 as the first (and
+only) value for ACPI DeviceSelection like can be seen in DSDT taken from
+Lenovo Thinkpad 10:
 
-Since not all LPSS SPI controllers support multiple native chip selects we
-refactor selecting chip select to its own function and check
-control->cs_sel_mask before switching to another chip select.
+    Device (FPNT)
+    {
+        ...
+        Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
+        {
+            Name (UBUF, ResourceTemplate ()
+            {
+                SpiSerialBus (0x0001, // DeviceSelection
+                    PolarityLow, FourWireMode, 0x08,
+                    ControllerInitiated, 0x007A1200, ClockPolarityLow,
+                    ClockPhaseFirst, "\\_SB.SPI1",
+                    0x00, ResourceConsumer,,)
+
+This will fail to enumerate in Linux with following error:
+
+[    0.241296] pxa2xx-spi 80860F0E:00: cs1 >= max 1
+[    0.241312] spi_master spi32766: failed to add SPI device VFSI6101:00 from ACPI
+
+To make the Linux SPI core successfully enumerate the device we provide a
+custom version of ->fw_translate_cs() that translates DeviceSelection
+correctly.
 
 Signed-off-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Reviewed-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Reviewed-by: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-pxa2xx.c | 64 ++++++++++++++++++++++++++++++------------------
- 1 file changed, 40 insertions(+), 24 deletions(-)
+ drivers/spi/spi-pxa2xx.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
 diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 7d6d3b74d25b..81d68e01046a 100644
+index ce66cf44bba5..7d6d3b74d25b 100644
 --- a/drivers/spi/spi-pxa2xx.c
 +++ b/drivers/spi/spi-pxa2xx.c
-@@ -65,8 +65,6 @@ MODULE_ALIAS("platform:pxa2xx-spi");
- #define LPSS_GENERAL_REG_RXTO_HOLDOFF_DISABLE	BIT(24)
- #define LPSS_CS_CONTROL_SW_MODE			BIT(0)
- #define LPSS_CS_CONTROL_CS_HIGH			BIT(1)
--#define LPSS_CS_CONTROL_CS_SEL_SHIFT		8
--#define LPSS_CS_CONTROL_CS_SEL_MASK		(3 << LPSS_CS_CONTROL_CS_SEL_SHIFT)
- #define LPSS_CAPS_CS_EN_SHIFT			9
- #define LPSS_CAPS_CS_EN_MASK			(0xf << LPSS_CAPS_CS_EN_SHIFT)
- 
-@@ -82,6 +80,9 @@ struct lpss_config {
- 	u32 rx_threshold;
- 	u32 tx_threshold_lo;
- 	u32 tx_threshold_hi;
-+	/* Chip select control */
-+	unsigned cs_sel_shift;
-+	unsigned cs_sel_mask;
- };
- 
- /* Keep these sorted with enum pxa_ssp_type */
-@@ -125,6 +126,8 @@ static const struct lpss_config lpss_platforms[] = {
- 		.rx_threshold = 1,
- 		.tx_threshold_lo = 16,
- 		.tx_threshold_hi = 48,
-+		.cs_sel_shift = 8,
-+		.cs_sel_mask = 3 << 8,
- 	},
- };
- 
-@@ -288,37 +291,50 @@ static void lpss_ssp_setup(struct driver_data *drv_data)
- 	}
+@@ -1445,6 +1445,28 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
  }
+ #endif
  
-+static void lpss_ssp_select_cs(struct driver_data *drv_data,
-+			       const struct lpss_config *config)
++static int pxa2xx_spi_fw_translate_cs(struct spi_master *master, unsigned cs)
 +{
-+	u32 value, cs;
++	struct driver_data *drv_data = spi_master_get_devdata(master);
 +
-+	if (!config->cs_sel_mask)
-+		return;
-+
-+	value = __lpss_ssp_read_priv(drv_data, config->reg_cs_ctrl);
-+
-+	cs = drv_data->cur_msg->spi->chip_select;
-+	cs <<= config->cs_sel_shift;
-+	if (cs != (value & config->cs_sel_mask)) {
++	if (has_acpi_companion(&drv_data->pdev->dev)) {
++		switch (drv_data->ssp_type) {
 +		/*
-+		 * When switching another chip select output active the
-+		 * output must be selected first and wait 2 ssp_clk cycles
-+		 * before changing state to active. Otherwise a short
-+		 * glitch will occur on the previous chip select since
-+		 * output select is latched but state control is not.
++		 * For Atoms the ACPI DeviceSelection used by the Windows
++		 * driver starts from 1 instead of 0 so translate it here
++		 * to match what Linux expects.
 +		 */
-+		value &= ~config->cs_sel_mask;
-+		value |= cs;
-+		__lpss_ssp_write_priv(drv_data,
-+				      config->reg_cs_ctrl, value);
-+		ndelay(1000000000 /
-+		       (drv_data->master->max_speed_hz / 2));
++		case LPSS_BYT_SSP:
++			return cs - 1;
++
++		default:
++			break;
++		}
 +	}
++
++	return cs;
 +}
 +
- static void lpss_ssp_cs_control(struct driver_data *drv_data, bool enable)
+ static int pxa2xx_spi_probe(struct platform_device *pdev)
  {
- 	const struct lpss_config *config;
--	u32 value, cs;
-+	u32 value;
+ 	struct device *dev = &pdev->dev;
+@@ -1497,6 +1519,7 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+ 	master->setup = setup;
+ 	master->transfer_one_message = pxa2xx_spi_transfer_one_message;
+ 	master->unprepare_transfer_hardware = pxa2xx_spi_unprepare_transfer;
++	master->fw_translate_cs = pxa2xx_spi_fw_translate_cs;
+ 	master->auto_runtime_pm = true;
  
- 	config = lpss_get_config(drv_data);
- 
-+	if (enable)
-+		lpss_ssp_select_cs(drv_data, config);
-+
- 	value = __lpss_ssp_read_priv(drv_data, config->reg_cs_ctrl);
--	if (enable) {
--		cs = drv_data->cur_msg->spi->chip_select;
--		cs <<= LPSS_CS_CONTROL_CS_SEL_SHIFT;
--		if (cs != (value & LPSS_CS_CONTROL_CS_SEL_MASK)) {
--			/*
--			 * When switching another chip select output active
--			 * the output must be selected first and wait 2 ssp_clk
--			 * cycles before changing state to active. Otherwise
--			 * a short glitch will occur on the previous chip
--			 * select since output select is latched but state
--			 * control is not.
--			 */
--			value &= ~LPSS_CS_CONTROL_CS_SEL_MASK;
--			value |= cs;
--			__lpss_ssp_write_priv(drv_data,
--					      config->reg_cs_ctrl, value);
--			ndelay(1000000000 /
--			       (drv_data->master->max_speed_hz / 2));
--		}
-+	if (enable)
- 		value &= ~LPSS_CS_CONTROL_CS_HIGH;
--	} else {
-+	else
- 		value |= LPSS_CS_CONTROL_CS_HIGH;
--	}
- 	__lpss_ssp_write_priv(drv_data, config->reg_cs_ctrl, value);
- }
- 
+ 	drv_data->ssp_type = ssp->type;
 -- 
 2.7.0.rc3
 

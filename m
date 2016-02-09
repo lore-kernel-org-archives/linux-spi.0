@@ -1,7 +1,7 @@
 From: stephanolbrich-Mmb7MZpHnFY@public.gmane.org
-Subject: [PATCH 1/4] spi: bcm2835aux: fix bitmask defines
-Date: Tue,  9 Feb 2016 19:10:32 +0100
-Message-ID: <1455041435-8015-2-git-send-email-stephanolbrich@gmx.de>
+Subject: [PATCH 2/4] spi: bcm2835aux: disable tx fifo empty irq
+Date: Tue,  9 Feb 2016 19:10:33 +0100
+Message-ID: <1455041435-8015-3-git-send-email-stephanolbrich@gmx.de>
 References: <1455041435-8015-1-git-send-email-stephanolbrich@gmx.de>
 Cc: Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
@@ -16,28 +16,31 @@ List-ID: <linux-spi.vger.kernel.org>
 
 From: Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
 
-The bitmasks for txempty and idle interrupts were interchanged.
+The tx empty irq can be disabled when all data was copied.
+This prevents unnecessary interrupts while the last bytes are sent.
 
 Signed-off-by: Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
 ---
- drivers/spi/spi-bcm2835aux.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-bcm2835aux.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
-index 7de6f84..ecc73c0 100644
+index ecc73c0..d2f0067 100644
 --- a/drivers/spi/spi-bcm2835aux.c
 +++ b/drivers/spi/spi-bcm2835aux.c
-@@ -73,8 +73,8 @@
+@@ -212,6 +212,12 @@ static irqreturn_t bcm2835aux_spi_interrupt(int irq, void *dev_id)
+ 		ret = IRQ_HANDLED;
+ 	}
  
- /* Bitfields in CNTL1 */
- #define BCM2835_AUX_SPI_CNTL1_CSHIGH	0x00000700
--#define BCM2835_AUX_SPI_CNTL1_IDLE	0x00000080
--#define BCM2835_AUX_SPI_CNTL1_TXEMPTY	0x00000040
-+#define BCM2835_AUX_SPI_CNTL1_TXEMPTY	0x00000080
-+#define BCM2835_AUX_SPI_CNTL1_IDLE	0x00000040
- #define BCM2835_AUX_SPI_CNTL1_MSBF_IN	0x00000002
- #define BCM2835_AUX_SPI_CNTL1_KEEP_IN	0x00000001
- 
++	if (!bs->tx_len) {
++		/* disable tx fifo empty interrupt */
++		bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL1, bs->cntl[1] |
++			BCM2835_AUX_SPI_CNTL1_IDLE);
++	}
++
+ 	/* and if rx_len is 0 then wake up completion and disable spi */
+ 	if (!bs->rx_len) {
+ 		bcm2835aux_spi_reset_hw(bs);
 -- 
 2.5.0
 

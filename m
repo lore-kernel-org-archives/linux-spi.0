@@ -1,18 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: core: add spi_split_transfers_maxsize" to the spi tree
-Date: Tue, 09 Feb 2016 19:43:13 +0000
-Message-ID: <E1aTEBt-0003JV-L6@debutante>
+Subject: Applied "spi: pxa2xx: Move chip select control bits into lpss_config structure" to the spi tree
+Date: Tue, 09 Feb 2016 19:43:16 +0000
+Message-ID: <E1aTEBw-0003LN-Vq@debutante>
+References: <1454944471-50119-4-git-send-email-mika.westerberg@linux.intel.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
+To: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: 
+In-Reply-To: <1454944471-50119-4-git-send-email-mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: core: add spi_split_transfers_maxsize
+   spi: pxa2xx: Move chip select control bits into lpss_config structure
 
 has been applied to the spi tree at
 
@@ -37,210 +38,133 @@ to this mail.
 Thanks,
 Mark
 
->From d9f1212272818420fcde611a940c1ad611a8b785 Mon Sep 17 00:00:00 2001
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Date: Mon, 14 Dec 2015 15:20:20 +0000
-Subject: [PATCH] spi: core: add spi_split_transfers_maxsize
+>From c1e4a53c6b8161ded3a44e3352ef38206d0967ea Mon Sep 17 00:00:00 2001
+From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Date: Mon, 8 Feb 2016 17:14:30 +0200
+Subject: [PATCH] spi: pxa2xx: Move chip select control bits into lpss_config
+ structure
 
-Add spi_split_transfers_maxsize method that splits
-spi_transfers transparently into multiple transfers
-that are below the given max-size.
+Some Intel LPSS SPI controllers, like the one in Braswell has these bits in
+a different location so move these bits to be part of the LPSS
+configuration.
 
-This makes use of the spi_res framework via
-spi_replace_transfers to allocate/free the extra
-transfers as well as reverting back the changes applied
-while processing the spi_message.
+Since not all LPSS SPI controllers support multiple native chip selects we
+refactor selecting chip select to its own function and check
+control->cs_sel_mask before switching to another chip select.
 
-Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Signed-off-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Reviewed-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Reviewed-by: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi.c       | 111 ++++++++++++++++++++++++++++++++++++++++++++++++
- include/linux/spi/spi.h |  15 +++++++
- 2 files changed, 126 insertions(+)
+ drivers/spi/spi-pxa2xx.c | 64 ++++++++++++++++++++++++++++++------------------
+ 1 file changed, 40 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 2ec8e66a8098..34e3741504f9 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -144,6 +144,8 @@ SPI_STATISTICS_TRANSFER_BYTES_HISTO(14, "16384-32767");
- SPI_STATISTICS_TRANSFER_BYTES_HISTO(15, "32768-65535");
- SPI_STATISTICS_TRANSFER_BYTES_HISTO(16, "65536+");
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 7d6d3b74d25b..81d68e01046a 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -65,8 +65,6 @@ MODULE_ALIAS("platform:pxa2xx-spi");
+ #define LPSS_GENERAL_REG_RXTO_HOLDOFF_DISABLE	BIT(24)
+ #define LPSS_CS_CONTROL_SW_MODE			BIT(0)
+ #define LPSS_CS_CONTROL_CS_HIGH			BIT(1)
+-#define LPSS_CS_CONTROL_CS_SEL_SHIFT		8
+-#define LPSS_CS_CONTROL_CS_SEL_MASK		(3 << LPSS_CS_CONTROL_CS_SEL_SHIFT)
+ #define LPSS_CAPS_CS_EN_SHIFT			9
+ #define LPSS_CAPS_CS_EN_MASK			(0xf << LPSS_CAPS_CS_EN_SHIFT)
  
-+SPI_STATISTICS_SHOW(transfers_split_maxsize, "%lu");
-+
- static struct attribute *spi_dev_attrs[] = {
- 	&dev_attr_modalias.attr,
- 	NULL,
-@@ -181,6 +183,7 @@ static struct attribute *spi_device_statistics_attrs[] = {
- 	&dev_attr_spi_device_transfer_bytes_histo14.attr,
- 	&dev_attr_spi_device_transfer_bytes_histo15.attr,
- 	&dev_attr_spi_device_transfer_bytes_histo16.attr,
-+	&dev_attr_spi_device_transfers_split_maxsize.attr,
- 	NULL,
+@@ -82,6 +80,9 @@ struct lpss_config {
+ 	u32 rx_threshold;
+ 	u32 tx_threshold_lo;
+ 	u32 tx_threshold_hi;
++	/* Chip select control */
++	unsigned cs_sel_shift;
++	unsigned cs_sel_mask;
  };
  
-@@ -223,6 +226,7 @@ static struct attribute *spi_master_statistics_attrs[] = {
- 	&dev_attr_spi_master_transfer_bytes_histo14.attr,
- 	&dev_attr_spi_master_transfer_bytes_histo15.attr,
- 	&dev_attr_spi_master_transfer_bytes_histo16.attr,
-+	&dev_attr_spi_master_transfers_split_maxsize.attr,
- 	NULL,
+ /* Keep these sorted with enum pxa_ssp_type */
+@@ -125,6 +126,8 @@ static const struct lpss_config lpss_platforms[] = {
+ 		.rx_threshold = 1,
+ 		.tx_threshold_lo = 16,
+ 		.tx_threshold_hi = 48,
++		.cs_sel_shift = 8,
++		.cs_sel_mask = 3 << 8,
+ 	},
  };
  
-@@ -2237,6 +2241,113 @@ struct spi_replaced_transfers *spi_replace_transfers(
+@@ -288,37 +291,50 @@ static void lpss_ssp_setup(struct driver_data *drv_data)
+ 	}
  }
- EXPORT_SYMBOL_GPL(spi_replace_transfers);
  
-+int __spi_split_transfer_maxsize(struct spi_master *master,
-+				 struct spi_message *msg,
-+				 struct spi_transfer **xferp,
-+				 size_t maxsize,
-+				 gfp_t gfp)
++static void lpss_ssp_select_cs(struct driver_data *drv_data,
++			       const struct lpss_config *config)
 +{
-+	struct spi_transfer *xfer = *xferp, *xfers;
-+	struct spi_replaced_transfers *srt;
-+	size_t offset;
-+	size_t count, i;
++	u32 value, cs;
 +
-+	/* warn once about this fact that we are splitting a transfer */
-+	dev_warn_once(&msg->spi->dev,
-+		      "spi_transfer of length %i exceed max length of %i - needed to split transfers\n",
-+		      xfer->len, maxsize);
++	if (!config->cs_sel_mask)
++		return;
 +
-+	/* calculate how many we have to replace */
-+	count = DIV_ROUND_UP(xfer->len, maxsize);
++	value = __lpss_ssp_read_priv(drv_data, config->reg_cs_ctrl);
 +
-+	/* create replacement */
-+	srt = spi_replace_transfers(msg, xfer, 1, count, NULL, 0, gfp);
-+	if (!srt)
-+		return -ENOMEM;
-+	xfers = srt->inserted_transfers;
-+
-+	/* now handle each of those newly inserted spi_transfers
-+	 * note that the replacements spi_transfers all are preset
-+	 * to the same values as *xferp, so tx_buf, rx_buf and len
-+	 * are all identical (as well as most others)
-+	 * so we just have to fix up len and the pointers.
-+	 *
-+	 * this also includes support for the depreciated
-+	 * spi_message.is_dma_mapped interface
-+	 */
-+
-+	/* the first transfer just needs the length modified, so we
-+	 * run it outside the loop
-+	 */
-+	xfers[0].len = min(maxsize, xfer[0].len);
-+
-+	/* all the others need rx_buf/tx_buf also set */
-+	for (i = 1, offset = maxsize; i < count; offset += maxsize, i++) {
-+		/* update rx_buf, tx_buf and dma */
-+		if (xfers[i].rx_buf)
-+			xfers[i].rx_buf += offset;
-+		if (xfers[i].rx_dma)
-+			xfers[i].rx_dma += offset;
-+		if (xfers[i].tx_buf)
-+			xfers[i].tx_buf += offset;
-+		if (xfers[i].tx_dma)
-+			xfers[i].tx_dma += offset;
-+
-+		/* update length */
-+		xfers[i].len = min(maxsize, xfers[i].len - offset);
++	cs = drv_data->cur_msg->spi->chip_select;
++	cs <<= config->cs_sel_shift;
++	if (cs != (value & config->cs_sel_mask)) {
++		/*
++		 * When switching another chip select output active the
++		 * output must be selected first and wait 2 ssp_clk cycles
++		 * before changing state to active. Otherwise a short
++		 * glitch will occur on the previous chip select since
++		 * output select is latched but state control is not.
++		 */
++		value &= ~config->cs_sel_mask;
++		value |= cs;
++		__lpss_ssp_write_priv(drv_data,
++				      config->reg_cs_ctrl, value);
++		ndelay(1000000000 /
++		       (drv_data->master->max_speed_hz / 2));
 +	}
-+
-+	/* we set up xferp to the last entry we have inserted,
-+	 * so that we skip those already split transfers
-+	 */
-+	*xferp = &xfers[count - 1];
-+
-+	/* increment statistics counters */
-+	SPI_STATISTICS_INCREMENT_FIELD(&master->statistics,
-+				       transfers_split_maxsize);
-+	SPI_STATISTICS_INCREMENT_FIELD(&msg->spi->statistics,
-+				       transfers_split_maxsize);
-+
-+	return 0;
 +}
 +
-+/**
-+ * spi_split_tranfers_maxsize - split spi transfers into multiple transfers
-+ *                              when an individual transfer exceeds a
-+ *                              certain size
-+ * @master:    the @spi_master for this transfer
-+ * @message:   the @spi_message to transform
-+ * @max_size:  the maximum when to apply this
-+ *
-+ * Return: status of transformation
-+ */
-+int spi_split_transfers_maxsize(struct spi_master *master,
-+				struct spi_message *msg,
-+				size_t maxsize,
-+				gfp_t gfp)
-+{
-+	struct spi_transfer *xfer;
-+	int ret;
-+
-+	/* iterate over the transfer_list,
-+	 * but note that xfer is advanced to the last transfer inserted
-+	 * to avoid checking sizes again unnecessarily (also xfer does
-+	 * potentiall belong to a different list by the time the
-+	 * replacement has happened
-+	 */
-+	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
-+		if (xfer->len > maxsize) {
-+			ret = __spi_split_transfer_maxsize(
-+				master, msg, &xfer, maxsize, gfp);
-+			if (ret)
-+				return ret;
-+		}
-+	}
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(spi_split_transfers_maxsize);
-+
- /*-------------------------------------------------------------------------*/
+ static void lpss_ssp_cs_control(struct driver_data *drv_data, bool enable)
+ {
+ 	const struct lpss_config *config;
+-	u32 value, cs;
++	u32 value;
  
- /* Core methods for SPI master protocol drivers.  Some of the
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index d71385756fee..3c02b4d06268 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -53,6 +53,10 @@ extern struct bus_type spi_bus_type;
-  *
-  * @transfer_bytes_histo:
-  *                 transfer bytes histogramm
-+ *
-+ * @transfers_split_maxsize:
-+ *                 number of transfers that have been split because of
-+ *                 maxsize limit
-  */
- struct spi_statistics {
- 	spinlock_t		lock; /* lock for the whole structure */
-@@ -72,6 +76,8 @@ struct spi_statistics {
+ 	config = lpss_get_config(drv_data);
  
- #define SPI_STATISTICS_HISTO_SIZE 17
- 	unsigned long transfer_bytes_histo[SPI_STATISTICS_HISTO_SIZE];
++	if (enable)
++		lpss_ssp_select_cs(drv_data, config);
 +
-+	unsigned long transfers_split_maxsize;
- };
+ 	value = __lpss_ssp_read_priv(drv_data, config->reg_cs_ctrl);
+-	if (enable) {
+-		cs = drv_data->cur_msg->spi->chip_select;
+-		cs <<= LPSS_CS_CONTROL_CS_SEL_SHIFT;
+-		if (cs != (value & LPSS_CS_CONTROL_CS_SEL_MASK)) {
+-			/*
+-			 * When switching another chip select output active
+-			 * the output must be selected first and wait 2 ssp_clk
+-			 * cycles before changing state to active. Otherwise
+-			 * a short glitch will occur on the previous chip
+-			 * select since output select is latched but state
+-			 * control is not.
+-			 */
+-			value &= ~LPSS_CS_CONTROL_CS_SEL_MASK;
+-			value |= cs;
+-			__lpss_ssp_write_priv(drv_data,
+-					      config->reg_cs_ctrl, value);
+-			ndelay(1000000000 /
+-			       (drv_data->master->max_speed_hz / 2));
+-		}
++	if (enable)
+ 		value &= ~LPSS_CS_CONTROL_CS_HIGH;
+-	} else {
++	else
+ 		value |= LPSS_CS_CONTROL_CS_HIGH;
+-	}
+ 	__lpss_ssp_write_priv(drv_data, config->reg_cs_ctrl, value);
+ }
  
- void spi_statistics_add_transfer_stats(struct spi_statistics *stats,
-@@ -935,6 +941,15 @@ extern struct spi_replaced_transfers *spi_replace_transfers(
- 
- /*---------------------------------------------------------------------------*/
- 
-+/* SPI transfer transformation methods */
-+
-+extern int spi_split_transfers_maxsize(struct spi_master *master,
-+				       struct spi_message *msg,
-+				       size_t maxsize,
-+				       gfp_t gfp);
-+
-+/*---------------------------------------------------------------------------*/
-+
- /* All these synchronous SPI transfer routines are utilities layered
-  * over the core async transfer primitive.  Here, "synchronous" means
-  * they will sleep uninterruptibly until the async transfer completes.
 -- 
 2.7.0.rc3
 

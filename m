@@ -1,78 +1,33 @@
 From: Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
-Subject: Re: [PATCH 1/4] spi: bcm2835aux: fix bitmask defines
-Date: Wed, 10 Feb 2016 21:08:55 +0100
-Message-ID: <14130392.6x8cIOuJmD@chaos-desktop>
-References: <1455041435-8015-1-git-send-email-stephanolbrich@gmx.de> <1455041435-8015-2-git-send-email-stephanolbrich@gmx.de> <56BA43DB.7030209@lategoodbye.de>
+Subject: Re: [PATCH 3/4] spi: bcm2835aux: set up spi-mode before asserting cs-gpio
+Date: Wed, 10 Feb 2016 21:26:05 +0100
+Message-ID: <2743238.b2UJKq0efN@chaos-desktop>
+References: <1455041435-8015-1-git-send-email-stephanolbrich@gmx.de> <878u2s2xym.fsf@eliezer.anholt.net> <20160210190204.GD13270@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7Bit
-Cc: Stefan Wahren <info-saaNCTdWVBT7BZbvpMY5sg@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>,
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 To: linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <56BA43DB.7030209-saaNCTdWVBT7BZbvpMY5sg@public.gmane.org>
+In-Reply-To: <20160210190204.GD13270-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Stefan
-
-Am Tuesday 09 February 2016, 20:54:03 schrieb Stefan Wahren:
-> Hi Stephan,
+Am Wednesday 10 February 2016, 19:02:04 schrieb Mark Brown:
+> On Wed, Feb 10, 2016 at 10:59:29AM -0800, Eric Anholt wrote:
+> > Oops, this makes more sense now.  Subject even mentioned gpio, and a
+> > GPIO CS must be getting set around the transfer_one call.  I'll be ready
+> > to send an r-b for a v2 with the speed update bug fixed (unless transfer
+> > speeds are guaranteed to be constant between a prepare and unprepare).
 > 
-> Am 09.02.2016 um 19:10 schrieb stephanolbrich-Mmb7MZpHnFY@public.gmane.org:
-> > From: Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
-> > 
-> > The bitmasks for txempty and idle interrupts were interchanged.
-> > 
-> > Signed-off-by: Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
-> > ---
-> > 
-> >   drivers/spi/spi-bcm2835aux.c | 4 ++--
-> >   1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
-> > index 7de6f84..ecc73c0 100644
-> > --- a/drivers/spi/spi-bcm2835aux.c
-> > +++ b/drivers/spi/spi-bcm2835aux.c
-> > @@ -73,8 +73,8 @@
-> > 
-> >   /* Bitfields in CNTL1 */
-> >   #define BCM2835_AUX_SPI_CNTL1_CSHIGH	0x00000700
-> > 
-> > -#define BCM2835_AUX_SPI_CNTL1_IDLE	0x00000080
-> > -#define BCM2835_AUX_SPI_CNTL1_TXEMPTY	0x00000040
-> 
-> according to a comment in this file these values are from
-> brcm_usrlib/dag/vmcsx/vcinclude/bcm2708_chip/aux_io.h.
-> 
-> So you want to say that at least these 2 are wrong and you took the
-> values from BCM2835-ARM-Peripherals.pdf [1]?
-> 
-> I think it's worth to mention it.
-
-Actually I stumbled across this while writing the second patch in this series 
-and the wrong interrupt got disabled but BCM2835-ARM-Peripherals.pdf did 
-confirm my findings.
-As Mark has already applied this patch I can't add any comment to it anymore, 
-right?
-
-> [1] -
-> https://www.raspberrypi.org/wp-content/uploads/2012/02/BCM2835-ARM-Periphera
-> ls.pdf
-> > +#define BCM2835_AUX_SPI_CNTL1_TXEMPTY	0x00000080
-> > +#define BCM2835_AUX_SPI_CNTL1_IDLE	0x00000040
-> > 
-> >   #define BCM2835_AUX_SPI_CNTL1_MSBF_IN	0x00000002
-> >   #define BCM2835_AUX_SPI_CNTL1_KEEP_IN	0x00000001
-> 
-> _______________________________________________
-> linux-rpi-kernel mailing list
-> linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-> http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel
-
+> No guarantee that they'll not change, especially in a situation where we
+> have two devices on different speeds on a bus working at the same time.
+Are you saying, that between a prepare and unprepare there could be transfers 
+for another device? Then all the clock setting couldn't be done in prepare 
+either.
+Apart from that, if two transfers in the same message are not guarantied to 
+have the same speed, this still needs to be fixed. I'll roll a v2.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

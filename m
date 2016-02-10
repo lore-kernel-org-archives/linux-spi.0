@@ -1,58 +1,146 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 3/4] spi: bcm2835aux: set up spi-mode before asserting
- cs-gpio
-Date: Wed, 10 Feb 2016 08:01:49 +0000
-Message-ID: <20160210080149.GQ13270@sirena.org.uk>
-References: <1455041435-8015-1-git-send-email-stephanolbrich@gmx.de>
- <1455041435-8015-4-git-send-email-stephanolbrich@gmx.de>
- <87d1s54f7f.fsf@eliezer.anholt.net>
+From: =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Bug in in spi-bcm53xx (rcu_sched) exposed by 0461a41 ("spi: Pump
+ transfers inside calling context for spi_sync()")
+Date: Wed, 10 Feb 2016 13:21:04 +0100
+Message-ID: <CACna6rxQPv_Ut9NwN+BMbwSW+5-tJMoKXC3QWDfSP7zsCqfj7Q@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="qnK4RqISe3HuYx1/"
-Cc: stephanolbrich-Mmb7MZpHnFY@public.gmane.org, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>
+Content-Type: multipart/mixed; boundary=047d7bd75c3acad1f8052b697710
+Cc: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <87d1s54f7f.fsf-omZaPlIz5HhaEpDpdNBo/KxOck334EZe@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+--047d7bd75c3acad1f8052b697710
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
---qnK4RqISe3HuYx1/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hi,
 
-On Tue, Feb 09, 2016 at 03:49:24PM -0800, Eric Anholt wrote:
+I recently tried few recent kernels and found out that spi-bcm53xx
+fails (rcu_sched) with them. I knew it was working OK with 3.18, so I
+tried newer ones one by one and discovered it's a 4.0 regression.
+Bisecting pointed following commit:
 
-> This patch surprised me.  I would have thought that the solution was to
-> just write the updated CNTL bits for CPOL and wait a moment whenever it
-> changes.  The CS only gets asserted later on when we get some data in
-> the TX FIFO, so I think you're just reducing the chance of losing the
-> race to get our inverted clock noticed by the device before the CS gets
-> asserted.
+commit 0461a4149836c792d186027c8c859637a4cfb11a
+Author: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Date:   Tue Dec 9 21:38:05 2014 +0000
 
-We support (and generally want to use since hardware chip selects are
-often very limited in what they do) chip select on GPIO.
+    spi: Pump transfers inside calling context for spi_sync()
 
---qnK4RqISe3HuYx1/
-Content-Type: application/pgp-signature; name="signature.asc"
+I also confirmed that reverting two commits:
+spi: Only idle the message pump in the worker kthread
+spi: Pump transfers inside calling context for spi_sync()
+from top of 4.0.9 (clean), 4.1.16 (clean) and 4.4 (manual) fixes
+(workarounds) that issue for me.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Unfortunately the bug in spi-bcm53xx isn't obvious for me. I kept
+looking at its code for a bit but couldn't find anything.
 
-iQEcBAEBCAAGBQJWuu4zAAoJECTWi3JdVIfQG3MH/2zwOpqOrVaUjEKKvM3RWs0N
-Rl5hndG7yME/uiDPz8kbiPzTmVuO0faFV/c3BAZT1kcmY/D5ew2P9vf9vHMx/S81
-xzewUx1g41n+fJiP/xBUxi+5XeGuXPlnlE+psBWLSAvxizpak+DYTGjGjvyoOmvs
-lIAra3Iy6jc65AIrtAT3GFN/Arm+BxxL/MfjChV1TBdWep7KVgIM24H52XgZU+hL
-j8elu4TPYUBF1UhQRa2snT8zJj4nQQaPvDGaRjLPVusx67KvoEdW0jqr3tbp+TiM
-+Gv+nMfsQNIRC/LvaZmF1dJ59V6WL4Vck1ll1XoJ0yhjkIkf9SwpgGeyAANqLkA=
-=Q+8t
------END PGP SIGNATURE-----
+Knowing the commit that exposed this bug, does it give you any hint
+what may be wrong with spi-bcm53xx?
 
---qnK4RqISe3HuYx1/--
+--=20
+Rafa=C5=82
+
+--047d7bd75c3acad1f8052b697710
+Content-Type: text/plain; charset=US-ASCII; name="rcu_sched.txt"
+Content-Disposition: attachment; filename="rcu_sched.txt"
+Content-Transfer-Encoding: base64
+X-Attachment-Id: f_ikgsr57d0
+
+WyAgIDc0LjQzODM5OV0gSU5GTzogcmN1X3NjaGVkIHNlbGYtZGV0ZWN0ZWQgc3RhbGwgb24gQ1BV
+IHsgMH0gICh0PTYwMDAgamlmZmllcyBnPS0xMTYgYz0tMTE3IHE9MTIpClsgICA3NC40NDcyMDNd
+IFRhc2sgZHVtcCBmb3IgQ1BVIDA6ClsgICA3NC40NTA0MTddIG10ZCAgICAgICAgICAgICBSIHJ1
+bm5pbmcgICAgICAwICAgNTA1ICAgIDUwMyAweDAwMDAwMDAyClsgICA3NC40NTY3NThdIEJhY2t0
+cmFjZTogClsgICA3NC40NTkyNDJdIFs8YzAwMTU5MGM+XSAoZHVtcF9iYWNrdHJhY2UpIGZyb20g
+WzxjMDAxNWIxYz5dIChzaG93X3N0YWNrKzB4MTgvMHgxYykKWyAgIDc0LjQ2Njc3MV0gIHI3OmMw
+M2UxYzQwIHI2OmMwM2RiMGZjIHI1OmM3OTgxYzAwIHI0OjAwMDAwMDAwClsgICA3NC40NzI0NDdd
+IFs8YzAwMTViMDQ+XSAoc2hvd19zdGFjaykgZnJvbSBbPGMwMDNjNDI4Pl0gKHNjaGVkX3Nob3df
+dGFzaysweGIwLzB4ZDApClsgICA3NC40ODAwNjldIFs8YzAwM2MzNzg+XSAoc2NoZWRfc2hvd190
+YXNrKSBmcm9tIFs8YzAwM2UyMTA+XSAoZHVtcF9jcHVfdGFzaysweDM0LzB4NDQpClsgICA3NC40
+ODc5NDddICByNTowMDAwMDAwMCByNDowMDAwMDAwMApbICAgNzQuNDkxNTMxXSBbPGMwMDNlMWRj
+Pl0gKGR1bXBfY3B1X3Rhc2spIGZyb20gWzxjMDA1NDM1ND5dIChyY3VfZHVtcF9jcHVfc3RhY2tz
+KzB4N2MvMHhhMCkKWyAgIDc0LjQ5OTc1MF0gIHI1OjAwMDAwMDAwIHI0OmMwM2UxYzQwClsgICA3
+NC41MDMzMzJdIFs8YzAwNTQyZDg+XSAocmN1X2R1bXBfY3B1X3N0YWNrcykgZnJvbSBbPGMwMDU2
+Y2E4Pl0gKHJjdV9jaGVja19jYWxsYmFja3MrMHgxZDgvMHg1NjgpClsgICA3NC41MTIyNDNdICBy
+OTpjMDNkYTEwMCByODpjMDNkYjE0OCByNzpjNzA2MDAwOCByNjowMDAwMDAwYyByNTpjNmRkNDIw
+OCByNDpjMDNlMWM0MApbICAgNzQuNTIwMDAxXSBbPGMwMDU2YWQwPl0gKHJjdV9jaGVja19jYWxs
+YmFja3MpIGZyb20gWzxjMDA1ODlmND5dICh1cGRhdGVfcHJvY2Vzc190aW1lcysweDQwLzB4NjAp
+ClsgICA3NC41Mjg4MjNdICByMTA6NTFlYjg1MWYgcjk6MDlmMTJhNzMgcjg6MDAwMDAwMWQgcjc6
+MDAwMDAwMDAgcjY6MDAwMDAwMDAgcjU6Yzc5ODFjMDAKWyAgIDc0LjUzNjY1MV0gIHI0OmM3MDYw
+MDAwClsgICA3NC41MzkxOTddIFs8YzAwNTg5YjQ+XSAodXBkYXRlX3Byb2Nlc3NfdGltZXMpIGZy
+b20gWzxjMDA2MzQwYz5dICh0aWNrX3BlcmlvZGljKzB4YTgvMHhjMCkKWyAgIDc0LjU0NzUwM10g
+IHI3OjAwMDAwMDAwIHI2OmM2ZGQ4MDAwIHI1OjdmZmZmZmZmIHI0OmMwM2RhMTQwClsgICA3NC41
+NTMxNzNdIFs8YzAwNjMzNjQ+XSAodGlja19wZXJpb2RpYykgZnJvbSBbPGMwMDYzNjA4Pl0gKHRp
+Y2tfaGFuZGxlX3BlcmlvZGljKzB4MzAvMHg5MCkKWyAgIDc0LjU2MTQ4Ml0gIHI1OjdmZmZmZmZm
+IHI0OmZmZmZmZmZmClsgICA3NC41NjUwNjNdIFs8YzAwNjM1ZDg+XSAodGlja19oYW5kbGVfcGVy
+aW9kaWMpIGZyb20gWzxjMDAxN2RkMD5dICh0d2RfaGFuZGxlcisweDM0LzB4NDApClsgICA3NC41
+NzMxOThdICByOTowOWYxMmE3MyByODowMDAwMDAxZCByNzpjNzgxNDFjMCByNjpjMDNlNWI3OCBy
+NTpjNzgwNTY0MCByNDowMDAwMDAwMQpbICAgNzQuNTgwOTYwXSBbPGMwMDE3ZDljPl0gKHR3ZF9o
+YW5kbGVyKSBmcm9tIFs8YzAwNTE5ZWM+XSAoaGFuZGxlX3BlcmNwdV9kZXZpZF9pcnErMHg3MC8w
+eDhjKQpbICAgNzQuNTg5MzU1XSAgcjU6Yzc4MDU2NDAgcjQ6YzZkZDgwMDAKWyAgIDc0LjU5Mjkz
+NF0gWzxjMDA1MTk3Yz5dIChoYW5kbGVfcGVyY3B1X2RldmlkX2lycSkgZnJvbSBbPGMwMDRlMTRj
+Pl0gKGdlbmVyaWNfaGFuZGxlX2lycSsweDI4LzB4MzgpClsgICA3NC42MDE5MzRdICByOTowOWYx
+MmE3MyByODowMDAwMDAwMSByNzpjNzgwZTgwMCByNjpjMDNkNjg5NCByNTowMDAwMDAwMCByNDow
+MDAwMDAxZApbICAgNzQuNjA5Njg2XSBbPGMwMDRlMTI0Pl0gKGdlbmVyaWNfaGFuZGxlX2lycSkg
+ZnJvbSBbPGMwMDRlNDBjPl0gKF9faGFuZGxlX2RvbWFpbl9pcnErMHg4NC8weGE4KQpbICAgNzQu
+NjE4MzQxXSAgcjU6MDAwMDAwMDAgcjQ6MDAwMDAwMDAKWyAgIDc0LjYyMTkyMl0gWzxjMDA0ZTM4
+OD5dIChfX2hhbmRsZV9kb21haW5faXJxKSBmcm9tIFs8YzAwMDg2NmM+XSAoZ2ljX2hhbmRsZV9p
+cnErMHg0NC8weDY0KQpbICAgNzQuNjMwMjMxXSAgcjk6MDlmMTJhNzMgcjg6YzAzZTU5NjQgcjc6
+YzcwNjFjMTQgcjY6YzcwNjFiZTAgcjU6YzAzZGI0ODAgcjQ6Yzg4MDIxMDAKWyAgIDc0LjYzNzk4
+MV0gWzxjMDAwODYyOD5dIChnaWNfaGFuZGxlX2lycSkgZnJvbSBbPGMwMDA5MjAwPl0gKF9faXJx
+X3N2YysweDQwLzB4NTQpClsgICA3NC42NDU0MzFdIEV4Y2VwdGlvbiBzdGFjaygweGM3MDYxYmUw
+IHRvIDB4YzcwNjFjMjgpClsgICA3NC42NTA0NjVdIDFiZTA6IDAwMDAwMDAxIGM4OGUwMjIwIDY2
+NjY2NjZjIGM4OGUwMDAwIGMwM2RhMTAwIGM3YTRjOWI4IGZmZmZhN2UyIGMwM2U1OTY0ClsgICA3
+NC42NTg2MDNdIDFjMDA6IGMwM2U1OTY0IDA5ZjEyYTczIDUxZWI4NTFmIGM3MDYxYzM0IGM3MDYx
+YzM4IGM3MDYxYzI4IGMwMWVmOGI0IGMwMjA5ZGI0ClsgICA3NC42NjY3MzZdIDFjMjA6IDYwMDAw
+MDEzIGZmZmZmZmZmClsgICA3NC42NzAyMDddICByNzpjNzA2MWMxNCByNjpmZmZmZmZmZiByNTo2
+MDAwMDAxMyByNDpjMDIwOWRiNApbICAgNzQuNjc1ODg2XSBbPGMwMjA5ZDk4Pl0gKGJjbWFfaG9z
+dF9zb2NfcmVhZDMyKSBmcm9tIFs8YzAxZWY4YjQ+XSAoYmNtNTN4eHNwaV93YWl0LmlzcmEuMCsw
+eGMwLzB4MTI0KQpbICAgNzQuNjg1MDY4XSBbPGMwMWVmN2Y0Pl0gKGJjbTUzeHhzcGlfd2FpdC5p
+c3JhLjApIGZyb20gWzxjMDFlZmMxOD5dIChiY201M3h4c3BpX3RyYW5zZmVyX29uZSsweDMwMC8w
+eDM3NCkKWyAgIDc0LjY5NDU4MV0gIHI5OjA5ZjEyYTczIHI4OmM3MTNiNTJiIHI3OjAwMDAwMDEw
+IHI2OjAwMDA0YWQ1IHI1OjAwMDAwMDEwIHI0OmM3YTRjOWI4ClsgICA3NC43MDIzNDVdIFs8YzAx
+ZWY5MTg+XSAoYmNtNTN4eHNwaV90cmFuc2Zlcl9vbmUpIGZyb20gWzxjMDFlZTJjOD5dIChzcGlf
+dHJhbnNmZXJfb25lX21lc3NhZ2UrMHg3MC8weDFkMCkKWyAgIDc0LjcxMTk0OF0gIHIxMDpjN2E0
+YzkwMCByOTowMDAwMDAwMSByODowMDAwMDAwMCByNzpjN2E0YzgwMCByNjowMDAwMDAwMCByNTpj
+NzA2MWRjYwpbICAgNzQuNzE5Nzc2XSAgcjQ6YzcwNjFkNjAgcjM6YzAxZWY5MTgKWyAgIDc0Ljcy
+MzM1Nl0gWzxjMDFlZTI1OD5dIChzcGlfdHJhbnNmZXJfb25lX21lc3NhZ2UpIGZyb20gWzxjMDFl
+ZWEwMD5dIChzcGlfcHVtcF9tZXNzYWdlcysweDNjOC8weDQwYykKWyAgIDc0LjczMjUyOF0gIHI5
+OmM3MDYxZDA4IHI4OmM3MDYxZDYwIHI3OjAwMDAwMDAwIHI2OmM3YTRjODAwIHI1OmM3YTRjOTVj
+IHI0OmM3YTRjOTRjClsgICA3NC43NDAyODFdIFs8YzAxZWU2Mzg+XSAoc3BpX3B1bXBfbWVzc2Fn
+ZXMpIGZyb20gWzxjMDFlZjRkND5dIChfX3NwaV9zeW5jKzB4MTQ4LzB4MTcwKQpbICAgNzQuNzQ4
+MjQ0XSAgcjEwOmM3YTRjOTAwIHI5OmM3MDYxZDA4IHI4OmM3YTRjOTVjIHI3OjAwMDAwMDAwIHI2
+OmM3YTRjODAwIHI1OmM3YTRjOTYwClsgICA3NC43NTYwNzNdICByNDpjNzA2MWQ2MApbICAgNzQu
+NzU4NjA1XSBbPGMwMWVmMzhjPl0gKF9fc3BpX3N5bmMpIGZyb20gWzxjMDFlZjUxMD5dIChzcGlf
+c3luYysweDE0LzB4MTgpClsgICA3NC43NjU2MjBdICByMTA6YzdhNmNlMDAgcjk6MDAwMDAwMDAg
+cjg6YzdhNDg4MTAgcjc6YzcwNjFkNjAgcjY6YzcwNjFlZjggcjU6MDFjNDAwMDAKWyAgIDc0Ljc3
+MzQ0N10gIHI0OjAwMDAwMDA1ClsgICA3NC43NzU5ODFdIFs8YzAxZWY0ZmM+XSAoc3BpX3N5bmMp
+IGZyb20gWzxjMDFkZGEwYz5dIChiY201M3h4c3BpZmxhc2hfcmVhZCsweGQwLzB4ZmMpClsgICA3
+NC43ODM4NjddIFs8YzAxZGQ5M2M+XSAoYmNtNTN4eHNwaWZsYXNoX3JlYWQpIGZyb20gWzxjMDFk
+YzcwND5dIChzcGlfbm9yX3JlYWQrMHg2MC8weDdjKQpbICAgNzQuNzkyMDg0XSAgcjg6MDAwNDAw
+MDAgcjc6MDAwMDAwMDAgcjY6MDFjNDAwMDAgcjU6YzdhNDg5ZjAgcjQ6MDAwMDAwMDAKWyAgIDc0
+Ljc5ODc5OV0gWzxjMDFkYzZhND5dIChzcGlfbm9yX3JlYWQpIGZyb20gWzxjMDFjMGMzYz5dIChw
+YXJ0X3JlYWQrMHg1MC8weDg4KQpbICAgNzQuODA2MDcyXSAgcjc6YzcwNjFmODAgcjY6MDAwMDAw
+MDAgcjU6MDAwMDAwMDAgcjQ6YzdhNmNlMDAKWyAgIDc0LjgxMTc1MV0gWzxjMDFjMGJlYz5dIChw
+YXJ0X3JlYWQpIGZyb20gWzxjMDFiZTMwOD5dIChtdGRfcmVhZCsweDZjLzB4YTQpClsgICA3NC44
+MTg2NzddICByOTowMDAwMDAwMCByODpjN2E2Y2UwMCByNjpjNzEyMDAwMCByNTowMDAwMDAwMCBy
+NDowMDNiMDAwMApbICAgNzQuODI1MzkxXSBbPGMwMWJlMjljPl0gKG10ZF9yZWFkKSBmcm9tIFs8
+YzAxYzIzNDA+XSAobXRkY2hhcl9yZWFkKzB4MTNjLzB4MjA0KQpbICAgNzQuODMyNzUzXSAgcjEw
+OmM3MDYwMDAwIHI5OmI2YWIxMDEwIHI4OmM3YTZjZTAwIHI3OmM3MDYxZjgwIHI2OmM3MTIwMDAw
+IHI1OjAwM2IwMDAwClsgICA3NC44NDA1ODBdICByNDowMDAwMDAwMApbICAgNzQuODQzMTI0XSBb
+PGMwMWMyMjA0Pl0gKG10ZGNoYXJfcmVhZCkgZnJvbSBbPGMwMGE3ZTg0Pl0gKHZmc19yZWFkKzB4
+OWMvMHgxMzApClsgICA3NC44NTAzOTVdICByMTA6MDAwMDAwMDAgcjk6YzcwNjAwMDAgcjg6YzAw
+MDhhODQgcjc6YzAxYzIyMDQgcjY6YzcwNjFmODAgcjU6YzcwMmY4ODAKWyAgIDc0Ljg1ODIyM10g
+IHI0OmI0ZWIxMDEwClsgICA3NC44NjA3NTddIFs8YzAwYTdkZTg+XSAodmZzX3JlYWQpIGZyb20g
+WzxjMDBhODUwOD5dIChTeVNfcHJlYWQ2NCsweDY4LzB4ODgpClsgICA3NC44Njc4NTddICByOTpj
+NzA2MDAwMCByODpjMDAwOGE4NCByNzowMWZiMDAwMCByNjpjNzAyZjg4MCByNTpjNzAyZjg4MCBy
+NDpiNGViMTAxMApbICAgNzQuODc1NjA3XSBbPGMwMGE4NGEwPl0gKFN5U19wcmVhZDY0KSBmcm9t
+IFs8YzAwMDg4ZTA+XSAocmV0X2Zhc3Rfc3lzY2FsbCsweDAvMHgzMCkKWyAgIDc0Ljg4MzMxNF0g
+IHI3OjAwMDAwMGI0IHI2OjAwMDAwMDAzIHI1OjAwMDAwMDAwIHI0OjAwMDAwMDAwCg==
+--047d7bd75c3acad1f8052b697710--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

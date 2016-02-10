@@ -1,8 +1,8 @@
 From: Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>
-Subject: Re: [PATCH 3/4] spi: bcm2835aux: set up spi-mode before asserting cs-gpio
-Date: Tue, 09 Feb 2016 15:49:24 -0800
-Message-ID: <87d1s54f7f.fsf@eliezer.anholt.net>
-References: <1455041435-8015-1-git-send-email-stephanolbrich@gmx.de> <1455041435-8015-4-git-send-email-stephanolbrich@gmx.de>
+Subject: Re: [PATCH 4/4] spi: bcm2835aux: fix CPOL/CPHA setting
+Date: Tue, 09 Feb 2016 16:13:06 -0800
+Message-ID: <87a8n94e3x.fsf@eliezer.anholt.net>
+References: <1455041435-8015-1-git-send-email-stephanolbrich@gmx.de> <1455041435-8015-5-git-send-email-stephanolbrich@gmx.de>
 Mime-Version: 1.0
 Content-Type: multipart/signed; boundary="==-=-=";
 	micalg=pgp-sha512; protocol="application/pgp-signature"
@@ -13,7 +13,7 @@ To: stephanolbrich-Mmb7MZpHnFY@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2yg
 	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1455041435-8015-4-git-send-email-stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
+In-Reply-To: <1455041435-8015-5-git-send-email-stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
@@ -25,79 +25,53 @@ stephanolbrich-Mmb7MZpHnFY@public.gmane.org writes:
 
 > From: Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
 >
-> When using reverse polarity for clock (spi-cpol) on a device
-> the clock line gets altered after chip-select has been asserted
-> resulting in an additional clock beat, which confuses hardware.
+> The auxiliary spi supports only CPHA=3D0 modes as the first bit is
+> always output to the pin before the first clock cycle. In CPHA=3D1
+> modes the first clock edge outputs the second bit hence the slave
+> can never read the first bit.
 >
-> To avoid this situation this patch moves the setup of polarity
-> (spi-cpol and spi-cpha) outside of the chip-select into
-> prepare_message, which is run prior to asserting chip-select.
-
-This patch surprised me.  I would have thought that the solution was to
-just write the updated CNTL bits for CPOL and wait a moment whenever it
-changes.  The CS only gets asserted later on when we get some data in
-the TX FIFO, so I think you're just reducing the chance of losing the
-race to get our inverted clock noticed by the device before the CS gets
-asserted.
-
-If we're only talking to a device that does an inverted clock, it seems
-silly that we're resetting the hardware back to non-inverted clock after
-every transfer/message.
-
-I'd be OK with the patch anyway, since you reduce the number of resets
-for a multi-transfer message, except for what I think is bug...
-
+> Also the CPHA registers switch between clocking data in/out on
+> rising/falling edge hence depend on the CPOL setting.
+>
 > Signed-off-by: Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
 > ---
->  drivers/spi/spi-bcm2835aux.c | 54 +++++++++++++++++++++++++++++++-------=
-------
->  1 file changed, 38 insertions(+), 16 deletions(-)
+>  drivers/spi/spi-bcm2835aux.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
 >
 > diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
-> index d2f0067..b90aa34 100644
+> index b90aa34..169f521 100644
 > --- a/drivers/spi/spi-bcm2835aux.c
-> +++ b/drivers/spi/spi-bcm2835aux.c=20=20=20=20
-> @@ -218,9 +218,9 @@ static irqreturn_t bcm2835aux_spi_interrupt(int irq, =
-void *dev_id)
->  			BCM2835_AUX_SPI_CNTL1_IDLE);
->  	}
->=20=20
-> -	/* and if rx_len is 0 then wake up completion and disable spi */
-> +	/* and if rx_len is 0 then disable interrupts and wake up completion */
->  	if (!bs->rx_len) {
-> -		bcm2835aux_spi_reset_hw(bs);
-> +		bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL1, bs->cntl[1]);
->  		complete(&master->xfer_completion);
->  	}
->=20=20
-> @@ -313,9 +313,6 @@ static int bcm2835aux_spi_transfer_one_poll(struct sp=
+> +++ b/drivers/spi/spi-bcm2835aux.c
+> @@ -386,12 +386,12 @@ static int bcm2835aux_spi_prepare_message(struct sp=
 i_master *master,
->  		}
->  	}
+>  	bs->cntl[1] =3D BCM2835_AUX_SPI_CNTL1_MSBF_IN;
 >=20=20
-> -	/* Transfer complete - reset SPI HW */
-> -	bcm2835aux_spi_reset_hw(bs);
+>  	/* handle all the modes */
+> -	if (spi->mode & SPI_CPOL)
+> +	if (spi->mode & SPI_CPOL) {
+>  		bs->cntl[0] |=3D BCM2835_AUX_SPI_CNTL0_CPOL;
+> -	if (spi->mode & SPI_CPHA)
+> -		bs->cntl[0] |=3D BCM2835_AUX_SPI_CNTL0_CPHA_OUT |
+> -			       BCM2835_AUX_SPI_CNTL0_CPHA_IN;
 > -
->  	/* and return without waiting for completion */
->  	return 0;
->  }
-> @@ -336,10 +333,6 @@ static int bcm2835aux_spi_transfer_one(struct spi_ma=
-ster *master,
->  	 * resulting (potentially) in more interrupts when transferring
->  	 * more than 12 bytes
->  	 */
-> -	bs->cntl[0] =3D BCM2835_AUX_SPI_CNTL0_ENABLE |
-> -		      BCM2835_AUX_SPI_CNTL0_VAR_WIDTH |
-> -		      BCM2835_AUX_SPI_CNTL0_MSBF_OUT;
-> -	bs->cntl[1] =3D BCM2835_AUX_SPI_CNTL1_MSBF_IN;
->=20=20
->  	/* set clock */
->  	spi_hz =3D tfr->speed_hz;
+> +		bs->cntl[0] |=3D BCM2835_AUX_SPI_CNTL0_CPHA_OUT;
+> +	} else {
+> +		bs->cntl[0] |=3D BCM2835_AUX_SPI_CNTL0_CPHA_IN;
+> +	}
+>  	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL1, bs->cntl[1]);
+>  	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL0, bs->cntl[0]);
 
-Just below this block, we update cntl[0] with the transfer's speed bits,
-so now that you're not resetting cntl[0] on each transfer, their speeds
-will all get ORed all together by the end.  I think you could just mask
-out the max speed before setting the new one.
+(Note for other readers: A better name for CNTL0_CPHA_* would be
+CNTL0_*_RISING).
+
+I think you're right about not actually supporting CPHA.  I don't see
+wany way to keep bit 1 out lasting through the first full clock cycle.
+I think Stefan's right that we should drop CPHA from MODE_BITS
+(actually, MODE_BITS would be nicer if we just merged it into its one
+user, I think).
+
+However, this hunk appears to be correct and would fix the timing of our
+data going out in the CPOL=3D0 case and of sampling IN data for CPOL=3D1.
 
 --==-=-=
 Content-Type: application/pgp-signature; name="signature.asc"
@@ -105,19 +79,19 @@ Content-Type: application/pgp-signature; name="signature.asc"
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQIcBAEBCgAGBQJWunsEAAoJELXWKTbR/J7oepkQAK0L1olcKlEg1Wt4iWQ8M6y/
-b/VXe3qmhfCFgWttbUV44u2VMF8F4hoKcXZBEos/Eb8a+UkPELeGHcxGJO3EQ23h
-KHxzqR0pCq/rRAjRh1LRjc96JHO/LsoKeGs+arWhQfJfqFABdAV8pAgWkH1TtTd2
-dbImmTuAxPRtQwojIaaL2tw8nF6cHEvVeR+bdWVov3JnUU7Jtr4rjYd5ovmwzDvW
-ruxRzSNZIi4i13pq3MmmgtgeU7qXCll29v9g3djfqO+1PVLZ9ftO5CpwLolpgcvz
-NMh+91jdpuzZG73Eq49ohvJ8rcdQKST56QneOdVDgcSqaN5e8f+6Oy1x2rVczFH3
-1HsaMsnGTOXf3PztlU6ZqTGpCK/Zii6YAkAIXMloa40O9R4qyDyI3fWytglIA6OL
-1SzI9mMnnuAMURarsijV93slWCQRjvHskr83N6obMNAGo3OTsWmJ7ueghs6K+UGE
-HdMHX88KIfTz3/11N9Dt/ovTQWfoH9QYKrW0RnSIPaDQb87kTczuxrX+VzC+LG6d
-gIoc+oTXNTSgZ8Z+79KnJqyxplAXKl1nc3B1jxxfV1mc7bj4TnutPQ7XwLmxlTro
-kuOxgVH4G6jNH/BRD1qUphmMteqRfBrcvxOs+W9mW29UybzcSn2D1l3OGjdrcqvj
-1G95CAFpwAETZm3D9FqA
-=rOvQ
+iQIcBAEBCgAGBQJWuoCTAAoJELXWKTbR/J7odKYQAJXoXzvKq9eueKwvh7LpUWX4
+EEhUE5JbGmY3gLGJlExl/3JFwd3fCfiJjvwGMPLQqVpWHMatIuHF6IIIDKatFnU9
+ImnbmKfznlLnfuSX8QjjQMjvhny61A6fbzkkh9dzthC2z8lGRB+U/KrkDu3+HGeM
+y4OLAq2L2YyIN3YUJfLqkBFSW+ZmicOyctfoacOdY7p611aM8acAm0g3Vi3LBcpU
+zPn7bQGBkyifSVsuHzKkQ5cyV7hesS80kRxmY8gbepqOItDOslBtfZBLjbR3Hd/I
+pvOQPEy+NEUUVbrS+0oY5eP1bn4zX1bK8nKUvqSTa4BKD2Km1lpMOy7e6ldX2c6+
+c0CbfXxyO02MYxG1eNLJ6JSP5K63KoXZ1gaZsVVGeKm9EB/o6gnNnRNkyCN5TcHR
+bonfQpoPAWJErURUcfnTNIjnfhcE1CoSlxOCbUIHxXYDPjZvWWjZRKopHAmHKJXF
+xsmLxoBzuDsJt8EaAZbWRrQAlT8j/6cWbkKW1m3G4Y+BG7jH30t1ZVvnKDKJUaEn
+zC2icZPnHbA+smn3rp1c9JoxLbt28brDaEEh+HG5RY6vD7JQAB1IRhFtl+XDpG5e
+kX/Sfhow7GuUi+mzcpraS2smVLrr785ofkQVbXqvzxA74MFEhq/tT4d3B3tjd0Wp
+9dYUjj86o5ZYfNp+xm44
+=NVsW
 -----END PGP SIGNATURE-----
 --==-=-=--
 --

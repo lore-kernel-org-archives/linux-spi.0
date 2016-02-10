@@ -1,58 +1,78 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 3/4] spi: bcm2835aux: set up spi-mode before asserting
- cs-gpio
-Date: Wed, 10 Feb 2016 19:02:04 +0000
-Message-ID: <20160210190204.GD13270@sirena.org.uk>
-References: <1455041435-8015-1-git-send-email-stephanolbrich@gmx.de>
- <1455041435-8015-4-git-send-email-stephanolbrich@gmx.de>
- <87d1s54f7f.fsf@eliezer.anholt.net>
- <20160210080149.GQ13270@sirena.org.uk>
- <878u2s2xym.fsf@eliezer.anholt.net>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="0VNbQffo0Gc48lc+"
-Cc: stephanolbrich-Mmb7MZpHnFY@public.gmane.org, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>
+Subject: Applied "spi: bcm2835aux: disable tx fifo empty irq" to the spi tree
+Date: Wed, 10 Feb 2016 19:22:59 +0000
+Message-ID: <E1aTaLr-0000lF-1D@debutante>
+References: <1455041435-8015-3-git-send-email-stephanolbrich@gmx.de>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <878u2s2xym.fsf-omZaPlIz5HhaEpDpdNBo/KxOck334EZe@public.gmane.org>
+In-Reply-To: <1455041435-8015-3-git-send-email-stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---0VNbQffo0Gc48lc+
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: bcm2835aux: disable tx fifo empty irq
 
-On Wed, Feb 10, 2016 at 10:59:29AM -0800, Eric Anholt wrote:
+has been applied to the spi tree at
 
-> Oops, this makes more sense now.  Subject even mentioned gpio, and a
-> GPIO CS must be getting set around the transfer_one call.  I'll be ready
-> to send an r-b for a v2 with the speed update bug fixed (unless transfer
-> speeds are guaranteed to be constant between a prepare and unprepare).
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-No guarantee that they'll not change, especially in a situation where we
-have two devices on different speeds on a bus working at the same time.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
---0VNbQffo0Gc48lc+
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iQEcBAEBCAAGBQJWu4krAAoJECTWi3JdVIfQ5u0H/iJBpudo7nkanGMXSy1XFLGm
-CkIxMKQYs+R2zyTspf+n8UAkyGssmboY5kNnj386jhK+8Ohh8izfZxf+OP06Dvpt
-yoq04fUY4MYEgixFi9ybSDXT8GDOXt0tS77NKSTnL4x8tKS/qqzY29DPUDHwR/A6
-OqX9i1UdgXwh0wc91GeaFiewbBB6VRN3Qe07VqagHY0sTkY4UV7Wb5454e9ZRa2M
-+rMapfKvr+zhq400xIb83qS3bIayWruIIVBiCgJMSeNYIzPvik74w/1tqW3HAx2i
-tLKtqsYJHPDvnmGyYeWp4PzJE7Du/a2PP8z4umb5ZGsk7+5g0Btoj6EPx+VJMOY=
-=+6rD
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---0VNbQffo0Gc48lc+--
+Thanks,
+Mark
+
+>From f29ab1845f3e2684ba1c6de6c3bd5198e4b1459c Mon Sep 17 00:00:00 2001
+From: Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
+Date: Tue, 9 Feb 2016 19:10:33 +0100
+Subject: [PATCH] spi: bcm2835aux: disable tx fifo empty irq
+
+The tx empty irq can be disabled when all data was copied.
+This prevents unnecessary interrupts while the last bytes are sent.
+
+Signed-off-by: Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
+Reviewed-by: Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-bcm2835aux.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
+index 7de6f8472a81..e1b2fec1db63 100644
+--- a/drivers/spi/spi-bcm2835aux.c
++++ b/drivers/spi/spi-bcm2835aux.c
+@@ -212,6 +212,12 @@ static irqreturn_t bcm2835aux_spi_interrupt(int irq, void *dev_id)
+ 		ret = IRQ_HANDLED;
+ 	}
+ 
++	if (!bs->tx_len) {
++		/* disable tx fifo empty interrupt */
++		bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL1, bs->cntl[1] |
++			BCM2835_AUX_SPI_CNTL1_IDLE);
++	}
++
+ 	/* and if rx_len is 0 then wake up completion and disable spi */
+ 	if (!bs->rx_len) {
+ 		bcm2835aux_spi_reset_hw(bs);
+-- 
+2.7.0
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

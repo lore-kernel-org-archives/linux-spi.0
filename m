@@ -1,69 +1,50 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 3/4] spi: bcm2835aux: set up spi-mode before asserting
- cs-gpio
-Date: Thu, 11 Feb 2016 12:27:36 +0000
-Message-ID: <20160211122736.GH13270@sirena.org.uk>
-References: <1455041435-8015-1-git-send-email-stephanolbrich@gmx.de>
- <878u2s2xym.fsf@eliezer.anholt.net>
- <20160210190204.GD13270@sirena.org.uk>
- <2743238.b2UJKq0efN@chaos-desktop>
+From: Tony Lindgren <tony@atomide.com>
+Subject: Re: [PATCH 1/7] mmc: omap_hsmmc: Fix PM regression with deferred
+ probe for pm_runtime_reinit
+Date: Thu, 11 Feb 2016 07:02:41 -0800
+Message-ID: <20160211150240.GR19432@atomide.com>
+References: <1455145370-20301-1-git-send-email-tony@atomide.com>
+ <1455145370-20301-2-git-send-email-tony@atomide.com>
+ <CAPDyKFpAcsfLgtu93P45fTEg11MjdGwREcyeGSS7vt6GWbNu_w@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Gs9iBZf6UKWgztis"
-Cc: linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <2743238.b2UJKq0efN@chaos-desktop>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
-
-
---Gs9iBZf6UKWgztis
 Content-Type: text/plain; charset=us-ascii
+Cc: linux-omap <linux-omap@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	linux-mmc <linux-mmc@vger.kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Nishanth Menon <nm@ti.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Tero Kristo <t-kristo@ti.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+	linux-serial@vger.kernel.org,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Peter Hurley <peter@hurleysoftware.com>,
+	Wolfram Sang <wsa@the-dreams.de>
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Return-path: <linux-i2c-owner@vger.kernel.org>
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CAPDyKFpAcsfLgtu93P45fTEg11MjdGwREcyeGSS7vt6GWbNu_w@mail.gmail.com>
+Sender: linux-i2c-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Wed, Feb 10, 2016 at 09:26:05PM +0100, Stephan Olbrich wrote:
-> Am Wednesday 10 February 2016, 19:02:04 schrieb Mark Brown:
+* Ulf Hansson <ulf.hansson@linaro.org> [160211 02:19]:
+> On 11 February 2016 at 00:02, Tony Lindgren <tony@atomide.com> wrote:
+> >
+> > Ulf, I'd like to merge this along with other related fixes via the
+> > ARM SoC tree if no objections, please review and ack if this look OK
+> > to you.
+> 
+> I have some other omap_hsmmc patches queued for 4.6, so I prefer to
+> send this via my mmc tree.
+> 
+> I guess that's okay as well!?
 
-> > No guarantee that they'll not change, especially in a situation where we
-> > have two devices on different speeds on a bus working at the same time.
+Naturally yes, please go ahead thanks!
 
-> Are you saying, that between a prepare and unprepare there could be trans=
-fers=20
-> for another device? Then all the clock setting couldn't be done in prepar=
-e=20
-> either.
-> Apart from that, if two transfers in the same message are not guarantied =
-to=20
-> have the same speed, this still needs to be fixed. I'll roll a v2.
+Regards,
 
-There are two prepares, I don't know which you're talking about.  The
-most common is prepare_transfer_hardware() which is used to power up the
-hardware and may have many transfers for many devices before it is
-reversed.  The other is prepare_message() which is called once per
-message.
-
---Gs9iBZf6UKWgztis
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJWvH43AAoJECTWi3JdVIfQNWAH/jj+uIwVJ13wK7Vx1KQOaul/
-1KZktUoph6sQvA3g8g0ENPbpw2+67AmQ3WR0hnDBTk+GJ+jngS5mdtZrwAG5V+LI
-5QK4yNidBO8INc1ikrYq4E7HztqbPPvuc5KzI/7Zb8S67jXXCjkR3gEf/ffisihY
-ZX9UctmbVEvzoQt8/fMNiMMqJJOdxnuUCT0V4YmNsDmEZC9aeIJM8ng1AMbqs4r/
-IJuDtQk8qiPrc4bAxF5QaGHl7z+xWObR9kHmnI0MAEoyDssLJp6RXN+IJA6ZGA8t
-TzsGMSCTEwzernm2udNg2b+MHERWoAlr7w5S85JwtLJrvpS7Wvi6dbAZn8Xd2w4=
-=5R4b
------END PGP SIGNATURE-----
-
---Gs9iBZf6UKWgztis--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Tony

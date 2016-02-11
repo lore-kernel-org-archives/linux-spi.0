@@ -1,142 +1,72 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH 3/4] spi: bcm2835aux: set up spi-mode before asserting cs-gpio
-Date: Thu, 11 Feb 2016 19:06:43 +0100
-Message-ID: <F75D5360-5D55-453F-89A7-7BB4B07427C5@martin.sperl.org>
-References: <1455041435-8015-1-git-send-email-stephanolbrich@gmx.de> <1455041435-8015-4-git-send-email-stephanolbrich@gmx.de>
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2104\))
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 3/7] spi: omap2-mcspi: Fix PM regression with deferred
+ probe for pm_runtime_reinit
+Date: Thu, 11 Feb 2016 18:36:40 +0000
+Message-ID: <20160211183640.GB1953@sirena.org.uk>
+References: <1455145370-20301-1-git-send-email-tony@atomide.com>
+ <1455145370-20301-4-git-send-email-tony@atomide.com>
+ <20160211115128.GF13270@sirena.org.uk>
+ <20160211150806.GS19432@atomide.com>
+ <20160211155255.GA1953@sirena.org.uk>
+ <20160211173620.GU19432@atomide.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="aVD9QWMuhilNxW9f"
+Cc: linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-spi@vger.kernel.org, Alan Stern <stern@rowland.harvard.edu>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Nishanth Menon <nm@ti.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Tero Kristo <t-kristo@ti.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-i2c@vger.kernel.org, linux-mmc@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	Peter Hurley <peter@hurleysoftware.com>,
+	Wolfram Sang <wsa@the-dreams.de>
+To: Tony Lindgren <tony@atomide.com>
+Return-path: <linux-i2c-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20160211173620.GU19432@atomide.com>
+Sender: linux-i2c-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
+
+
+--aVD9QWMuhilNxW9f
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 8BIT
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: stephanolbrich-Mmb7MZpHnFY@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1455041435-8015-4-git-send-email-stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Disposition: inline
 
+On Thu, Feb 11, 2016 at 09:36:20AM -0800, Tony Lindgren wrote:
+> * Mark Brown <broonie@kernel.org> [160211 07:54]:
 
-> On 09.02.2016, at 19:10, stephanolbrich-Mmb7MZpHnFY@public.gmane.org wrote:
-> 
-> From: Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
-> 
-> When using reverse polarity for clock (spi-cpol) on a device
-> the clock line gets altered after chip-select has been asserted
-> resulting in an additional clock beat, which confuses hardware.
-> 
-> To avoid this situation this patch moves the setup of polarity
-> (spi-cpol and spi-cpha) outside of the chip-select into
-> prepare_message, which is run prior to asserting chip-select.
-> 
-> Signed-off-by: Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
-> ---
-> drivers/spi/spi-bcm2835aux.c | 54 +++++++++++++++++++++++++++++++-------------
-> 1 file changed, 38 insertions(+), 16 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
-> index d2f0067..b90aa34 100644
-> --- a/drivers/spi/spi-bcm2835aux.c
-> +++ b/drivers/spi/spi-bcm2835aux.c
-> @@ -218,9 +218,9 @@ static irqreturn_t bcm2835aux_spi_interrupt(int irq, void *dev_id)
-> 			BCM2835_AUX_SPI_CNTL1_IDLE);
-> 	}
-> 
-> -	/* and if rx_len is 0 then wake up completion and disable spi */
-> +	/* and if rx_len is 0 then disable interrupts and wake up completion */
-> 	if (!bs->rx_len) {
-> -		bcm2835aux_spi_reset_hw(bs);
-> +		bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL1, bs->cntl[1]);
-> 		complete(&master->xfer_completion);
-> 	}
-> 
-> @@ -313,9 +313,6 @@ static int bcm2835aux_spi_transfer_one_poll(struct spi_master *master,
-> 		}
-> 	}
-> 
-> -	/* Transfer complete - reset SPI HW */
-> -	bcm2835aux_spi_reset_hw(bs);
-> -
-> 	/* and return without waiting for completion */
-> 	return 0;
-> }
-> @@ -336,10 +333,6 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *master,
-> 	 * resulting (potentially) in more interrupts when transferring
-> 	 * more than 12 bytes
-> 	 */
-> -	bs->cntl[0] = BCM2835_AUX_SPI_CNTL0_ENABLE |
-> -		      BCM2835_AUX_SPI_CNTL0_VAR_WIDTH |
-> -		      BCM2835_AUX_SPI_CNTL0_MSBF_OUT;
-> -	bs->cntl[1] = BCM2835_AUX_SPI_CNTL1_MSBF_IN;
-> 
-> 	/* set clock */
-> 	spi_hz = tfr->speed_hz;
-> @@ -358,13 +351,6 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *master,
-Note that here you need to explicitly mask out the clock!
-otherwise spi messages with different clock speeds will fill up the 
-bitfield of the clock divider with the wrong values.
+> > This does sound like there's been a change in the interface compared to
+> > what users are actually doing - is this an actual problem or is it just
+> > a divergence from docs?
 
-This has not happened before because the values were re-computed every time
-now we defer it to prepare
+> It's an actual problem at least on omaps as the omap_device code
+> is very picky about the hardware state.
 
-@@ -348,17 +345,12 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *
-        } else { /* the slowest we can go */
-                speed = BCM2835_AUX_SPI_CNTL0_SPEED_MAX;
-        }
-+	/* mask out old speed from previous spi_transfer */
-+       bs->cntl[0] &= ~BCM2835_AUX_SPI_CNTL0_SPEED;
-+	/* set the new speed */
-        bs->cntl[0] |= speed << BCM2835_AUX_SPI_CNTL0_SPEED_SHIFT;
+> Depending how the PM runtime is implemented, it may be a problem
+> for some other cases too.
 
-> 
-> 	spi_used_hz = clk_hz / (2 * (speed + 1));
-> 
-> -	/* handle all the modes */
-> -	if (spi->mode & SPI_CPOL)
-> -		bs->cntl[0] |= BCM2835_AUX_SPI_CNTL0_CPOL;
-> -	if (spi->mode & SPI_CPHA)
-> -		bs->cntl[0] |= BCM2835_AUX_SPI_CNTL0_CPHA_OUT |
-> -			       BCM2835_AUX_SPI_CNTL0_CPHA_IN;
-> -
-> 	/* set transmit buffers and length */
-> 	bs->tx_buf = tfr->tx_buf;
-> 	bs->rx_buf = tfr->rx_buf;
+Or people just aren't testing mainline that well (if this is broken in
+v4.5 that suggests nobody noticed in -next) - do you know when this
+broke?  It really seems like we may need to spin round on how this is
+deployed.
 
+--aVD9QWMuhilNxW9f
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-> @@ -388,6 +374,40 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *master,
-> 	return bcm2835aux_spi_transfer_one_irq(master, spi, tfr);
-> }
-> 
-> +
-> +static int bcm2835aux_spi_unprepare_message(struct spi_master *master,
-> +					    struct spi_message *msg)
-> +{
-> +	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
-> +
-> +	bcm2835aux_spi_reset_hw(bs);
-> +
-> +	return 0;
-> +}
-> +
+iQEcBAEBCAAGBQJWvNSNAAoJECTWi3JdVIfQvDAH/R33v0iExbqNxZ4R/3MlQqpq
+Qqjd9BwzT+U6WESAIOqLPV9lJkO35qpHGTZAaDJ2mbetnW+Lw/K3KQeE/Kho6Tz3
+ZYJagutqNHbP2fIA4pKHlKwY1MO3O49ca5dD4mO6GCCuYtUy+ytE69N6FHAY5OpY
+/Q+rvzVec9zuVOfGmITxE7hhMFxs1MmVCKiIwhxhyV2oo8y8IOs8ZKRvUpQM3Whn
+JCXoZWriYDgjbxN6TqCjYooscXXPahNY6/26uJEcEWs6+YDoVApKJklMLkd2510C
+hLM2D/o7j5goUqIsNuN81ztD6XOgTJzpUkSJNIrOszgInIiTCXYjlyU4obSSWzY=
+=ncHq
+-----END PGP SIGNATURE-----
 
-I was wondering a long time why we would need this - but after
-some experimentation it became clear: with auxspi disabled driving
-the gates so they go into their default states (low) before GPIO-cs
-is de-asserted.
-
-It may be worth mentioning that fact - others might wonder as
-well later later.
-
-With the above in place:
-Reviewed-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Tested-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-
-Martin
-
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--aVD9QWMuhilNxW9f--

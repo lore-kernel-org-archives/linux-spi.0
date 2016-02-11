@@ -1,126 +1,131 @@
-From: Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
-Subject: Re: [PATCH 4/4] spi: bcm2835aux: fix CPOL/CPHA setting
-Date: Thu, 11 Feb 2016 17:19:45 +0100
-Message-ID: <50D0ECA7-8116-4248-AC85-6E1C8002A185@sperl.org>
-References: <1455041435-8015-1-git-send-email-stephanolbrich@gmx.de> <87a8n94e3x.fsf@eliezer.anholt.net> <16A848EA-6E08-48C4-B3DD-DF27333B7458@sperl.org> <10547867.CcbLVQlgyH@chaos-desktop>
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2104\))
+From: Tony Lindgren <tony@atomide.com>
+Subject: Re: [PATCH 1/7] mmc: omap_hsmmc: Fix PM regression with deferred
+ probe for pm_runtime_reinit
+Date: Thu, 11 Feb 2016 09:26:32 -0800
+Message-ID: <20160211172632.GT19432@atomide.com>
+References: <1455145370-20301-1-git-send-email-tony@atomide.com>
+ <1455145370-20301-2-git-send-email-tony@atomide.com>
+ <CAPDyKFpAcsfLgtu93P45fTEg11MjdGwREcyeGSS7vt6GWbNu_w@mail.gmail.com>
+ <20160211150240.GR19432@atomide.com>
+ <CAPDyKFo4Jyjwyvr3P5VHfDhQ87K9mnR01N-NtKz-yx2ycnfOLg@mail.gmail.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 8BIT
-Cc: linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <10547867.CcbLVQlgyH@chaos-desktop>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: linux-omap <linux-omap@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	linux-mmc <linux-mmc@vger.kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Nishanth Menon <nm@ti.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Tero Kristo <t-kristo@ti.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+	linux-serial@vger.kernel.org,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Peter Hurley <peter@hurleysoftware.com>,
+	Wolfram Sang <wsa@the-dreams.de>
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Return-path: <linux-i2c-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <CAPDyKFo4Jyjwyvr3P5VHfDhQ87K9mnR01N-NtKz-yx2ycnfOLg@mail.gmail.com>
+Sender: linux-i2c-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-
-> On 11.02.2016, at 17:05, Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org> wrote:
+* Ulf Hansson <ulf.hansson@linaro.org> [160211 07:14]:
+> On 11 February 2016 at 16:02, Tony Lindgren <tony@atomide.com> wrote:
+> > * Ulf Hansson <ulf.hansson@linaro.org> [160211 02:19]:
+> >> On 11 February 2016 at 00:02, Tony Lindgren <tony@atomide.com> wrote:
+> >> >
+> >> > Ulf, I'd like to merge this along with other related fixes via the
+> >> > ARM SoC tree if no objections, please review and ack if this look OK
+> >> > to you.
+> >>
+> >> I have some other omap_hsmmc patches queued for 4.6, so I prefer to
+> >> send this via my mmc tree.
+> >>
+> >> I guess that's okay as well!?
+> >
+> > Naturally yes, please go ahead thanks!
 > 
-> Martin,
+> Okay!
 > 
-> Am Thursday 11 February 2016, 16:25:43 schrieb Martin Sperl:
->>> On 10.02.2016, at 01:13, Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org> wrote:
->>> 
->>> stephanolbrich-Mmb7MZpHnFY@public.gmane.org writes:
->>>> From: Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
->>>> 
->>>> The auxiliary spi supports only CPHA=0 modes as the first bit is
->>>> always output to the pin before the first clock cycle. In CPHA=1
->>>> modes the first clock edge outputs the second bit hence the slave
->>>> can never read the first bit.
->>>> 
->>>> Also the CPHA registers switch between clocking data in/out on
->>>> rising/falling edge hence depend on the CPOL setting.
->>>> 
->>>> Signed-off-by: Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
->>>> ---
->>>> drivers/spi/spi-bcm2835aux.c | 10 +++++-----
->>>> 1 file changed, 5 insertions(+), 5 deletions(-)
->>>> 
->>>> diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
->>>> index b90aa34..169f521 100644
->>>> --- a/drivers/spi/spi-bcm2835aux.c
->>>> +++ b/drivers/spi/spi-bcm2835aux.c
->>>> @@ -386,12 +386,12 @@ static int bcm2835aux_spi_prepare_message(struct
->>>> spi_master *master,>> 
->>>> 	bs->cntl[1] = BCM2835_AUX_SPI_CNTL1_MSBF_IN;
->>>> 	
->>>> 	/* handle all the modes */
->>>> 
->>>> -	if (spi->mode & SPI_CPOL)
->>>> +	if (spi->mode & SPI_CPOL) {
->>>> 
->>>> 		bs->cntl[0] |= BCM2835_AUX_SPI_CNTL0_CPOL;
->>>> 
->>>> -	if (spi->mode & SPI_CPHA)
->>>> -		bs->cntl[0] |= BCM2835_AUX_SPI_CNTL0_CPHA_OUT |
->>>> -			       BCM2835_AUX_SPI_CNTL0_CPHA_IN;
->>>> -
->>>> +		bs->cntl[0] |= BCM2835_AUX_SPI_CNTL0_CPHA_OUT;
->>>> +	} else {
->>>> +		bs->cntl[0] |= BCM2835_AUX_SPI_CNTL0_CPHA_IN;
->>>> +	}
->>>> 
->>>> 	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL1, bs->cntl[1]);
->>>> 	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL0, bs->cntl[0]);
->>> 
->>> (Note for other readers: A better name for CNTL0_CPHA_* would be
->>> CNTL0_*_RISING).
->>> 
->>> I think you're right about not actually supporting CPHA.  I don't see
->>> wany way to keep bit 1 out lasting through the first full clock cycle.
->>> I think Stefan's right that we should drop CPHA from MODE_BITS
->>> (actually, MODE_BITS would be nicer if we just merged it into its one
->>> user, I think).
->>> 
->>> However, this hunk appears to be correct and would fix the timing of our
->>> data going out in the CPOL=0 case and of sampling IN data for CPOL=1.
->> 
->> Are you sure that CPHA is not working?
->> 
->> I have used the following to test all combinations:
->> for C in "" "-C"; do
->>  for O in "" "-O"; do
->>   for H in "" "-H"; do
->>    spidev_test -vD /dev/*.1 $H $O -p "\x00\x82\x00" -s 1000000;
->>   done
->>  done
->> done
->> 
->> I have tested with the 4.5-rc3 kernel without any of your patches.
->> 
->> And looked at the logic-analyzer: I see distinct waveform pattern
->> for clk and data for all events!
+> BTW, did you notice my other comments to the patch?
 > 
-> The problem I see, is not that there is no waveform but that it has the wrong 
-> timing.
-> I'll make an example:
-> Data is 0xAA,0xFF, CPOL=1, CPHA=1
-> What happens is this:
-> CS goes active and MOSI goes high (first bit in 1)
-> After a short time, SCLK goes from low to high and MOSI goes to low (second 
-> bit is 0)
-> Then SCLK goes low (sampling data)
-> Then SCLK goes high and MOSI goes high (third bit is 1) 
-> and so on.
-> At the end with the last rising edge of SCLK MOSI goes to low and stays there 
-> while SCLK goes to low and then CS to inactive.
-> 
-> So the slave has no chance to get the first bit but gets an additional 0 at the 
-> end.
-> It may not be easy visible with 0x00,0x82,0x00 as data, so could you repeat 
-> your test with 0xAA,0xFF if you see the same as I do or not?
+> I can fix them before applying, unless you want to send a v2?
 
-I did retest also with 0x81,0x00,0x81 and saw my expected behavior - but maybe
-me understanding of those modes is wrong.
+Oh sorry, no I missed the rest of your comments again, I really
+need to recalibrate my reading habits obviously if I keep
+missing comments on regular basis..
 
-I will send you the images for the pattern I have generated with 
-0x81, 0x00, 0x81 as a personal email.
+You comments make sense to me. Below is the patch with only
+minimal changes. Seems to work just fine and hit off mode for
+suspend too.
 
-Martin--
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Regards,
+
+Tony
+
+8< -------------------
+>From eb3c93421f01fb6198f76127262a92b527dd214c Mon Sep 17 00:00:00 2001
+From: Tony Lindgren <tony@atomide.com>
+Date: Tue, 9 Feb 2016 09:31:10 -0800
+Subject: [PATCH] mmc: omap_hsmmc: Fix PM regression with deferred probe for
+ pm_runtime_reinit
+
+Commit 5de85b9d57ab ("PM / runtime: Re-init runtime PM states at probe
+error and driver unbind") introduced pm_runtime_reinit() that is used
+to reinitialize PM runtime after -EPROBE_DEFER. This allows shutting
+down the device after a failed probe.
+
+However, for drivers using pm_runtime_use_autosuspend() this can cause
+a state where suspend callback is never called after -EPROBE_DEFER.
+On the following device driver probe, hardware state is different from
+the PM runtime state causing omap_device to produce the following
+error:
+
+omap_device_enable() called from invalid state 1
+
+And with omap_device and omap hardware being picky for PM, this will
+block any deeper idle states in hardware.
+
+The solution is to fix the drivers to follow the PM runtime documentation:
+
+1. For sections of code that needs the device disabled, use
+   pm_runtime_put_sync_suspend() if pm_runtime_set_autosuspend() has
+   been set.
+
+2. For driver exit code, use pm_runtime_dont_use_autosuspend() before
+   pm_runtime_put_sync() if pm_runtime_use_autosuspend() has been
+   set.
+
+Fixes: 5de85b9d57ab ("PM / runtime: Re-init runtime PM states at probe
+error and driver unbind")
+Cc: linux-mmc@vger.kernel.org
+Cc: Alan Stern <stern@rowland.harvard.edu>
+Cc: Kevin Hilman <khilman@baylibre.com>
+Cc: Nishanth Menon <nm@ti.com>
+Cc: Rafael J. Wysocki <rafael@kernel.org>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Tero Kristo <t-kristo@ti.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+
+--- a/drivers/mmc/host/omap_hsmmc.c
++++ b/drivers/mmc/host/omap_hsmmc.c
+@@ -2232,6 +2232,7 @@ err_irq:
+ 		dma_release_channel(host->tx_chan);
+ 	if (host->rx_chan)
+ 		dma_release_channel(host->rx_chan);
++	pm_runtime_dont_use_autosuspend(host->dev);
+ 	pm_runtime_put_sync(host->dev);
+ 	pm_runtime_disable(host->dev);
+ 	if (host->dbclk)
+@@ -2253,6 +2254,7 @@ static int omap_hsmmc_remove(struct platform_device *pdev)
+ 	dma_release_channel(host->tx_chan);
+ 	dma_release_channel(host->rx_chan);
+ 
++	pm_runtime_dont_use_autosuspend(host->dev);
+ 	pm_runtime_put_sync(host->dev);
+ 	pm_runtime_disable(host->dev);
+ 	device_init_wakeup(&pdev->dev, false);

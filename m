@@ -1,47 +1,142 @@
-From: Tony Lindgren <tony@atomide.com>
-Subject: Re: [PATCH 2/7] i2c: omap: Fix PM regression with deferred probe for
- pm_runtime_reinit
-Date: Thu, 11 Feb 2016 09:56:58 -0800
-Message-ID: <20160211175658.GW19432@atomide.com>
-References: <1455145370-20301-1-git-send-email-tony@atomide.com>
- <1455145370-20301-3-git-send-email-tony@atomide.com>
- <20160211173427.GB1524@katana>
-Mime-Version: 1.0
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: Re: [PATCH 3/4] spi: bcm2835aux: set up spi-mode before asserting cs-gpio
+Date: Thu, 11 Feb 2016 19:06:43 +0100
+Message-ID: <F75D5360-5D55-453F-89A7-7BB4B07427C5@martin.sperl.org>
+References: <1455041435-8015-1-git-send-email-stephanolbrich@gmx.de> <1455041435-8015-4-git-send-email-stephanolbrich@gmx.de>
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2104\))
 Content-Type: text/plain; charset=us-ascii
-Cc: linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-i2c@vger.kernel.org, Alan Stern <stern@rowland.harvard.edu>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Nishanth Menon <nm@ti.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Tero Kristo <t-kristo@ti.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-mmc@vger.kernel.org, linux-serial@vger.kernel.org,
-	linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-	Peter Hurley <peter@hurleysoftware.com>
-To: Wolfram Sang <wsa@the-dreams.de>
-Return-path: <linux-mmc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20160211173427.GB1524@katana>
-Sender: linux-mmc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Transfer-Encoding: 8BIT
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
+	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: stephanolbrich-Mmb7MZpHnFY@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1455041435-8015-4-git-send-email-stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-* Wolfram Sang <wsa@the-dreams.de> [160211 09:35]:
+
+> On 09.02.2016, at 19:10, stephanolbrich-Mmb7MZpHnFY@public.gmane.org wrote:
 > 
-> > Wolfram, I'd like to merge this along with other related fixes via
-> > the ARM SoC tree if no objections, please review and ack if this
-> > look OK to you.
+> From: Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
 > 
-> Well, since most patches seem to be picked up individually now, I'd
-> prefer to do the same. This is v4.5 material, or?
+> When using reverse polarity for clock (spi-cpol) on a device
+> the clock line gets altered after chip-select has been asserted
+> resulting in an additional clock beat, which confuses hardware.
+> 
+> To avoid this situation this patch moves the setup of polarity
+> (spi-cpol and spi-cpha) outside of the chip-select into
+> prepare_message, which is run prior to asserting chip-select.
+> 
+> Signed-off-by: Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
+> ---
+> drivers/spi/spi-bcm2835aux.c | 54 +++++++++++++++++++++++++++++++-------------
+> 1 file changed, 38 insertions(+), 16 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
+> index d2f0067..b90aa34 100644
+> --- a/drivers/spi/spi-bcm2835aux.c
+> +++ b/drivers/spi/spi-bcm2835aux.c
+> @@ -218,9 +218,9 @@ static irqreturn_t bcm2835aux_spi_interrupt(int irq, void *dev_id)
+> 			BCM2835_AUX_SPI_CNTL1_IDLE);
+> 	}
+> 
+> -	/* and if rx_len is 0 then wake up completion and disable spi */
+> +	/* and if rx_len is 0 then disable interrupts and wake up completion */
+> 	if (!bs->rx_len) {
+> -		bcm2835aux_spi_reset_hw(bs);
+> +		bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL1, bs->cntl[1]);
+> 		complete(&master->xfer_completion);
+> 	}
+> 
+> @@ -313,9 +313,6 @@ static int bcm2835aux_spi_transfer_one_poll(struct spi_master *master,
+> 		}
+> 	}
+> 
+> -	/* Transfer complete - reset SPI HW */
+> -	bcm2835aux_spi_reset_hw(bs);
+> -
+> 	/* and return without waiting for completion */
+> 	return 0;
+> }
+> @@ -336,10 +333,6 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *master,
+> 	 * resulting (potentially) in more interrupts when transferring
+> 	 * more than 12 bytes
+> 	 */
+> -	bs->cntl[0] = BCM2835_AUX_SPI_CNTL0_ENABLE |
+> -		      BCM2835_AUX_SPI_CNTL0_VAR_WIDTH |
+> -		      BCM2835_AUX_SPI_CNTL0_MSBF_OUT;
+> -	bs->cntl[1] = BCM2835_AUX_SPI_CNTL1_MSBF_IN;
+> 
+> 	/* set clock */
+> 	spi_hz = tfr->speed_hz;
+> @@ -358,13 +351,6 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *master,
+Note that here you need to explicitly mask out the clock!
+otherwise spi messages with different clock speeds will fill up the 
+bitfield of the clock divider with the wrong values.
 
-Sure please do, thanks. And yes for v4.5 please. Although
-I've only seen this happen with the MMC driver so far, there's
-still a slight chance of this happening with the other drivers
-using omap_device.
+This has not happened before because the values were re-computed every time
+now we defer it to prepare
 
-Regards,
+@@ -348,17 +345,12 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *
+        } else { /* the slowest we can go */
+                speed = BCM2835_AUX_SPI_CNTL0_SPEED_MAX;
+        }
++	/* mask out old speed from previous spi_transfer */
++       bs->cntl[0] &= ~BCM2835_AUX_SPI_CNTL0_SPEED;
++	/* set the new speed */
+        bs->cntl[0] |= speed << BCM2835_AUX_SPI_CNTL0_SPEED_SHIFT;
 
-Tony
+> 
+> 	spi_used_hz = clk_hz / (2 * (speed + 1));
+> 
+> -	/* handle all the modes */
+> -	if (spi->mode & SPI_CPOL)
+> -		bs->cntl[0] |= BCM2835_AUX_SPI_CNTL0_CPOL;
+> -	if (spi->mode & SPI_CPHA)
+> -		bs->cntl[0] |= BCM2835_AUX_SPI_CNTL0_CPHA_OUT |
+> -			       BCM2835_AUX_SPI_CNTL0_CPHA_IN;
+> -
+> 	/* set transmit buffers and length */
+> 	bs->tx_buf = tfr->tx_buf;
+> 	bs->rx_buf = tfr->rx_buf;
 
 
+
+> @@ -388,6 +374,40 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *master,
+> 	return bcm2835aux_spi_transfer_one_irq(master, spi, tfr);
+> }
+> 
+> +
+> +static int bcm2835aux_spi_unprepare_message(struct spi_master *master,
+> +					    struct spi_message *msg)
+> +{
+> +	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
+> +
+> +	bcm2835aux_spi_reset_hw(bs);
+> +
+> +	return 0;
+> +}
+> +
+
+I was wondering a long time why we would need this - but after
+some experimentation it became clear: with auxspi disabled driving
+the gates so they go into their default states (low) before GPIO-cs
+is de-asserted.
+
+It may be worth mentioning that fact - others might wonder as
+well later later.
+
+With the above in place:
+Reviewed-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Tested-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+
+Martin
+
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

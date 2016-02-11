@@ -1,104 +1,74 @@
-From: Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
-Subject: Re: [PATCH 4/4] spi: bcm2835aux: fix CPOL/CPHA setting
-Date: Thu, 11 Feb 2016 16:25:43 +0100
-Message-ID: <16A848EA-6E08-48C4-B3DD-DF27333B7458@sperl.org>
-References: <1455041435-8015-1-git-send-email-stephanolbrich@gmx.de> <1455041435-8015-5-git-send-email-stephanolbrich@gmx.de> <87a8n94e3x.fsf@eliezer.anholt.net>
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2104\))
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 3/7] spi: omap2-mcspi: Fix PM regression with deferred
+ probe for pm_runtime_reinit
+Date: Thu, 11 Feb 2016 15:52:55 +0000
+Message-ID: <20160211155255.GA1953@sirena.org.uk>
+References: <1455145370-20301-1-git-send-email-tony@atomide.com>
+ <1455145370-20301-4-git-send-email-tony@atomide.com>
+ <20160211115128.GF13270@sirena.org.uk>
+ <20160211150806.GS19432@atomide.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="k1lZvvs/B4yU6o8G"
+Cc: linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-spi@vger.kernel.org, Alan Stern <stern@rowland.harvard.edu>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Nishanth Menon <nm@ti.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Tero Kristo <t-kristo@ti.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-i2c@vger.kernel.org, linux-mmc@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	Peter Hurley <peter@hurleysoftware.com>,
+	Wolfram Sang <wsa@the-dreams.de>
+To: Tony Lindgren <tony@atomide.com>
+Return-path: <linux-i2c-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20160211150806.GS19432@atomide.com>
+Sender: linux-i2c-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
+
+
+--k1lZvvs/B4yU6o8G
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 8BIT
-Cc: stephanolbrich-Mmb7MZpHnFY@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <87a8n94e3x.fsf-omZaPlIz5HhaEpDpdNBo/KxOck334EZe@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Disposition: inline
 
+On Thu, Feb 11, 2016 at 07:08:06AM -0800, Tony Lindgren wrote:
+> * Mark Brown <broonie@kernel.org> [160211 03:52]:
 
-> On 10.02.2016, at 01:13, Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org> wrote:
-> 
-> stephanolbrich-Mmb7MZpHnFY@public.gmane.org writes:
-> 
->> From: Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
->> 
->> The auxiliary spi supports only CPHA=0 modes as the first bit is
->> always output to the pin before the first clock cycle. In CPHA=1
->> modes the first clock edge outputs the second bit hence the slave
->> can never read the first bit.
->> 
->> Also the CPHA registers switch between clocking data in/out on
->> rising/falling edge hence depend on the CPOL setting.
->> 
->> Signed-off-by: Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
->> ---
->> drivers/spi/spi-bcm2835aux.c | 10 +++++-----
->> 1 file changed, 5 insertions(+), 5 deletions(-)
->> 
->> diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
->> index b90aa34..169f521 100644
->> --- a/drivers/spi/spi-bcm2835aux.c
->> +++ b/drivers/spi/spi-bcm2835aux.c
->> @@ -386,12 +386,12 @@ static int bcm2835aux_spi_prepare_message(struct spi_master *master,
->> 	bs->cntl[1] = BCM2835_AUX_SPI_CNTL1_MSBF_IN;
->> 
->> 	/* handle all the modes */
->> -	if (spi->mode & SPI_CPOL)
->> +	if (spi->mode & SPI_CPOL) {
->> 		bs->cntl[0] |= BCM2835_AUX_SPI_CNTL0_CPOL;
->> -	if (spi->mode & SPI_CPHA)
->> -		bs->cntl[0] |= BCM2835_AUX_SPI_CNTL0_CPHA_OUT |
->> -			       BCM2835_AUX_SPI_CNTL0_CPHA_IN;
->> -
->> +		bs->cntl[0] |= BCM2835_AUX_SPI_CNTL0_CPHA_OUT;
->> +	} else {
->> +		bs->cntl[0] |= BCM2835_AUX_SPI_CNTL0_CPHA_IN;
->> +	}
->> 	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL1, bs->cntl[1]);
->> 	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL0, bs->cntl[0]);
-> 
-> (Note for other readers: A better name for CNTL0_CPHA_* would be
-> CNTL0_*_RISING).
-> 
-> I think you're right about not actually supporting CPHA.  I don't see
-> wany way to keep bit 1 out lasting through the first full clock cycle.
-> I think Stefan's right that we should drop CPHA from MODE_BITS
-> (actually, MODE_BITS would be nicer if we just merged it into its one
-> user, I think).
-> 
-> However, this hunk appears to be correct and would fix the timing of our
-> data going out in the CPOL=0 case and of sampling IN data for CPOL=1.
+> > Why, I'm not seeing any dependencies here?  I'd also expect to be seeing
+> > an awful lot more changes like this, this shouldn't be an OMAP thing -
+> > do we need to fix the core API and then roll out the transition in a
+> > different way?
 
-Are you sure that CPHA is not working?
+> Please feel free to pick up this one if you have other fixes
+> lined up, nothing stopping that.
 
-I have used the following to test all combinations:
- for C in "" "-C"; do
-  for O in "" "-O"; do
-   for H in "" "-H"; do
-    spidev_test -vD /dev/*.1 $H $O -p "\x00\x82\x00" -s 1000000;
-   done
-  done
- done
+I'll take it myself unless there is a strong reason to merge it as part
+of another series.
 
-I have tested with the 4.5-rc3 kernel without any of your patches.
+> There will be likely more fixes like this to make drivers follow
+> the PM runtime API documentation. These were just the initial
+> ones that were obvious.
 
-And looked at the logic-analyzer: I see distinct waveform pattern
-for clk and data for all events!
+This does sound like there's been a change in the interface compared to
+what users are actually doing - is this an actual problem or is it just
+a divergence from docs?
 
-The bug with regards to clock polarity needs to get fixed!
+--k1lZvvs/B4yU6o8G
+Content-Type: application/pgp-signature; name="signature.asc"
 
-I will now apply patch4 only and see how it looks then...
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-Thanks,
-	Martin
+iQEcBAEBCAAGBQJWvK5WAAoJECTWi3JdVIfQE7QH/3g03VkdaXgc2bDPCzrmonTA
+y2oDDu1KuPFAZ51kG7Lv6oBOErT0IeqtBa81h/RVV9Mwfq4dhezSoOA0CrB8NN8K
+frG7VzvivMz+qqeu2wj2KIJdtlZIdkn4qr4iKQPQ561NY7l3h7apM6CKeX1j+xiJ
+43DL6DK9YUDwLTqs6Ti91bRoSZZ7kaWOazwv4UbjdgD2wIxBBk5ADLpHUTScd+va
+UPFoxo3ePs6S10LujriLF1Afq8/pV7Xg3v0mib26sp4Ccg4LBrzGZPYgKj7xTiO1
+HloVZPizcXel9tIpfJ9wuF95+pR/1Jr7RlQ8aDBxcBPzYuSIKiwVIaqGcMJ7m+8=
+=7zKN
+-----END PGP SIGNATURE-----
 
-
-
-
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--k1lZvvs/B4yU6o8G--

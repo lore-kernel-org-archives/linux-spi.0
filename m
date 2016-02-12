@@ -1,74 +1,39 @@
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH 4/7] serial: 8250_omap: Fix PM regression with deferred
- probe for pm_runtime_reinit
-Date: Thu, 11 Feb 2016 19:17:13 -0800
-Message-ID: <20160212031713.GB10157@kroah.com>
-References: <1455145370-20301-1-git-send-email-tony@atomide.com>
- <1455145370-20301-5-git-send-email-tony@atomide.com>
+From: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Subject: [patch] spi: checking for NULL instead of IS_ERR
+Date: Fri, 12 Feb 2016 09:38:33 +0300
+Message-ID: <20160212063833.GB22756@mwanda>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-serial@vger.kernel.org,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Nishanth Menon <nm@ti.com>,
-	Peter Hurley <peter@hurleysoftware.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Tero Kristo <t-kristo@ti.com>, linux-i2c@vger.kernel.org,
-	linux-mmc@vger.kernel.org, linux-spi@vger.kernel.org,
-	Mark Brown <broonie@kernel.org>,
-	Wolfram Sang <wsa@the-dreams.de>
-To: Tony Lindgren <tony@atomide.com>
-Return-path: <linux-mmc-owner@vger.kernel.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1455145370-20301-5-git-send-email-tony@atomide.com>
-Sender: linux-mmc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Feb 10, 2016 at 03:02:47PM -0800, Tony Lindgren wrote:
-> Commit 5de85b9d57ab ("PM / runtime: Re-init runtime PM states at probe
-> error and driver unbind") introduced pm_runtime_reinit() that is used
-> to reinitialize PM runtime after -EPROBE_DEFER. This allows shutting
-> down the device after a failed probe.
-> 
-> However, for drivers using pm_runtime_use_autosuspend() this can cause
-> a state where suspend callback is never called after -EPROBE_DEFER.
-> On the following device driver probe, hardware state is different from
-> the PM runtime state causing omap_device to produce the following
-> error:
-> 
-> omap_device_enable() called from invalid state 1
-> 
-> And with omap_device and omap hardware being picky for PM, this will
-> block any deeper idle states in hardware.
-> 
-> The solution is to fix the drivers to follow the PM runtime documentation:
-> 
-> 1. For sections of code that needs the device disabled, use
->    pm_runtime_put_sync_suspend() if pm_runtime_set_autosuspend() has
->    been set.
-> 
-> 2. For driver exit code, use pm_runtime_dont_use_autosuspend() before
->    pm_runtime_put_sync() if pm_runtime_use_autosuspend() has been
->    set.
-> 
-> Fixes: 5de85b9d57ab ("PM / runtime: Re-init runtime PM states at probe
-> error and driver unbind")
-> Cc: linux-serial@vger.kernel.org
-> Cc: Alan Stern <stern@rowland.harvard.edu>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Kevin Hilman <khilman@baylibre.com>
-> Cc: Nishanth Menon <nm@ti.com>
-> Cc: Peter Hurley <peter@hurleysoftware.com>
-> Cc: Rafael J. Wysocki <rafael@kernel.org>
-> Cc: Ulf Hansson <ulf.hansson@linaro.org>
-> Cc: Tero Kristo <t-kristo@ti.com>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
-> 
-> Greg & Peter, I'd like to merge this along with other related fixes
-> via the ARM SoC tree if no objections, please review and ack if this
-> look OK to you.
+spi_replace_transfers() returns error pointers on error, it never
+returns NULL.
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d9f121227281 ('spi: core: add spi_split_transfers_maxsize')
+Signed-off-by: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 1413a6b..d459adc 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2284,8 +2284,8 @@ int __spi_split_transfer_maxsize(struct spi_master *master,
+ 
+ 	/* create replacement */
+ 	srt = spi_replace_transfers(msg, xfer, 1, count, NULL, 0, gfp);
+-	if (!srt)
+-		return -ENOMEM;
++	if (IS_ERR(srt))
++		return PTR_ERR(srt);
+ 	xfers = srt->inserted_transfers;
+ 
+ 	/* now handle each of those newly inserted spi_transfers
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,71 +1,87 @@
-From: Tony Lindgren <tony@atomide.com>
-Subject: Re: [PATCH 3/7] spi: omap2-mcspi: Fix PM regression with deferred
- probe for pm_runtime_reinit
-Date: Thu, 11 Feb 2016 10:52:01 -0800
-Message-ID: <20160211185201.GX19432@atomide.com>
+From: Kevin Hilman <khilman@baylibre.com>
+Subject: Re: [PATCH 6/7] ARM: OMAP2+: Improve omap_device error for driver writers
+Date: Thu, 11 Feb 2016 17:13:23 -0800
+Message-ID: <7hfuwy6898.fsf@baylibre.com>
 References: <1455145370-20301-1-git-send-email-tony@atomide.com>
- <1455145370-20301-4-git-send-email-tony@atomide.com>
- <20160211115128.GF13270@sirena.org.uk>
- <20160211150806.GS19432@atomide.com>
- <20160211155255.GA1953@sirena.org.uk>
- <20160211173620.GU19432@atomide.com>
- <20160211183640.GB1953@sirena.org.uk>
+	<1455145370-20301-7-git-send-email-tony@atomide.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain
 Cc: linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-spi@vger.kernel.org, Alan Stern <stern@rowland.harvard.edu>,
-	Kevin Hilman <khilman@baylibre.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
 	Nishanth Menon <nm@ti.com>,
 	"Rafael J . Wysocki" <rafael@kernel.org>,
 	Ulf Hansson <ulf.hansson@linaro.org>,
 	Tero Kristo <t-kristo@ti.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	linux-i2c@vger.kernel.org, linux-mmc@vger.kernel.org,
-	linux-serial@vger.kernel.org,
+	linux-serial@vger.kernel.org, linux-spi@vger.kernel.org,
+	Mark Brown <broonie@kernel.org>,
 	Peter Hurley <peter@hurleysoftware.com>,
 	Wolfram Sang <wsa@the-dreams.de>
-To: Mark Brown <broonie@kernel.org>
+To: Tony Lindgren <tony@atomide.com>
 Return-path: <linux-mmc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20160211183640.GB1953@sirena.org.uk>
+In-Reply-To: <1455145370-20301-7-git-send-email-tony@atomide.com> (Tony
+	Lindgren's message of "Wed, 10 Feb 2016 15:02:49 -0800")
 Sender: linux-mmc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-* Mark Brown <broonie@kernel.org> [160211 10:38]:
-> On Thu, Feb 11, 2016 at 09:36:20AM -0800, Tony Lindgren wrote:
-> > * Mark Brown <broonie@kernel.org> [160211 07:54]:
-> 
-> > > This does sound like there's been a change in the interface compared to
-> > > what users are actually doing - is this an actual problem or is it just
-> > > a divergence from docs?
-> 
-> > It's an actual problem at least on omaps as the omap_device code
-> > is very picky about the hardware state.
-> 
-> > Depending how the PM runtime is implemented, it may be a problem
-> > for some other cases too.
-> 
-> Or people just aren't testing mainline that well (if this is broken in
-> v4.5 that suggests nobody noticed in -next) - do you know when this
-> broke?  It really seems like we may need to spin round on how this is
-> deployed.
+Tony Lindgren <tony@atomide.com> writes:
 
-I noticed it only with v4.5-rc1 and bisected it to commit 5de85b9d57ab
-("PM / runtime: Re-init runtime PM states at probe error and driver
-unbind") as it broke my PM tests for n900. For Linux next probably
-was also broken for before that for some time.
+> Drivers using pm_runtime_use_autosuspend() may not get disabled after
+> -EPROBE_DEFER. On the following device driver probe, hardware state
+> is different from the PM runtime state causing omap_device to produce
+> the following error:
+>
+> omap_device_enable() called from invalid state 1
+>
+> And with omap_device and omap hardware being picky for PM, this will
+> block any deeper idle states in hardware.
+>
+> Let's add a proper error message so driver writers can easily fix
+> their drivers for PM.
+>
+> In general, the solution is to fix the drivers to follow the PM
+> runtime documentation:
+>
+> 1. For sections of code that needs the device disabled, use
+>    pm_runtime_put_sync_suspend() if pm_runtime_set_autosuspend() has
+>    been set.
+>
+> 2. For driver exit code, use pm_runtime_dont_use_autosuspend() before
+>    pm_runtime_put_sync() if pm_runtime_use_autosuspend() has been
+>    set.
+>
+> Let's not return with 0 from _od_runtime_resume() as that will
+> eventually lead into new drivers with broken PM runtime that will
+> block deeper idle states on omaps.
+>
+> Cc: Alan Stern <stern@rowland.harvard.edu>
+> Cc: Kevin Hilman <khilman@baylibre.com>
+> Cc: Nishanth Menon <nm@ti.com>
+> Cc: Rafael J. Wysocki <rafael@kernel.org>
+> Cc: Ulf Hansson <ulf.hansson@linaro.org>
+> Cc: Tero Kristo <t-kristo@ti.com>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
 
-Unfortunately based on the regressions I'm chasing every merge window
-I'm suspecting that very few people are actually testing PM runtime
-with mainline Linux kernel. Or they don't have the PM runtime fully
-implemented in the mainline kernel for their devices. This is at
-least for the SoC PM use case.
+Acked-by: Kevin Hilman <khilman@baylibre.com>
 
-Ulf is working on a generic PM runtime test driver :) I'm hoping we
-can then use that for basic regression testing on in an arch
-independent way.
-
-Regards,
-
-Tony
-
+> ---
+>  arch/arm/mach-omap2/omap_device.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/arm/mach-omap2/omap_device.c b/arch/arm/mach-omap2/omap_device.c
+> index 0437537..ebd8369 100644
+> --- a/arch/arm/mach-omap2/omap_device.c
+> +++ b/arch/arm/mach-omap2/omap_device.c
+> @@ -602,8 +602,10 @@ static int _od_runtime_resume(struct device *dev)
+>  	int ret;
+>  
+>  	ret = omap_device_enable(pdev);
+> -	if (ret)
+> +	if (ret) {
+> +		dev_err(dev, "use pm_runtime_put_sync_suspend() in driver?\n");
+>  		return ret;
+> +	}
+>  
+>  	return pm_generic_runtime_resume(dev);
+>  }

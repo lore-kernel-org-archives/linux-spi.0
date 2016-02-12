@@ -1,39 +1,111 @@
-From: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
-Subject: [patch] spi: checking for NULL instead of IS_ERR
-Date: Fri, 12 Feb 2016 09:38:33 +0300
-Message-ID: <20160212063833.GB22756@mwanda>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Subject: Re: [PATCH 2/7] i2c: omap: Fix PM regression with deferred probe for pm_runtime_reinit
+Date: Fri, 12 Feb 2016 13:50:37 +0100
+Message-ID: <CAPDyKFqGAhWefDtFMPwYAv2m1J8tPPUNOdznRtAPVpTbwnAN1A@mail.gmail.com>
+References: <1455145370-20301-1-git-send-email-tony@atomide.com>
+	<1455145370-20301-3-git-send-email-tony@atomide.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-omap <linux-omap@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Nishanth Menon <nm@ti.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Tero Kristo <t-kristo@ti.com>,
+	Wolfram Sang <wsa@the-dreams.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-mmc <linux-mmc@vger.kernel.org>,
+	linux-serial@vger.kernel.org,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Peter Hurley <peter@hurleysoftware.com>
+To: Tony Lindgren <tony@atomide.com>
+Return-path: <linux-i2c-owner@vger.kernel.org>
+In-Reply-To: <1455145370-20301-3-git-send-email-tony@atomide.com>
+Sender: linux-i2c-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-spi_replace_transfers() returns error pointers on error, it never
-returns NULL.
+On 11 February 2016 at 00:02, Tony Lindgren <tony@atomide.com> wrote:
+> Commit 5de85b9d57ab ("PM / runtime: Re-init runtime PM states at probe
+> error and driver unbind") introduced pm_runtime_reinit() that is used
+> to reinitialize PM runtime after -EPROBE_DEFER. This allows shutting
+> down the device after a failed probe.
+>
+> However, for drivers using pm_runtime_use_autosuspend() this can cause
+> a state where suspend callback is never called after -EPROBE_DEFER.
+> On the following device driver probe, hardware state is different from
+> the PM runtime state causing omap_device to produce the following
+> error:
+>
+> omap_device_enable() called from invalid state 1
+>
+> And with omap_device and omap hardware being picky for PM, this will
+> block any deeper idle states in hardware.
+>
+> The solution is to fix the drivers to follow the PM runtime documentation:
+>
+> 1. For sections of code that needs the device disabled, use
+>    pm_runtime_put_sync_suspend() if pm_runtime_set_autosuspend() has
+>    been set.
+>
+> 2. For driver exit code, use pm_runtime_dont_use_autosuspend() before
+>    pm_runtime_put_sync() if pm_runtime_use_autosuspend() has been
+>    set.
+>
+> Fixes: 5de85b9d57ab ("PM / runtime: Re-init runtime PM states at probe
+> error and driver unbind")
+> Cc: linux-i2c@vger.kernel.org
+> Cc: Alan Stern <stern@rowland.harvard.edu>
+> Cc: Kevin Hilman <khilman@baylibre.com>
+> Cc: Nishanth Menon <nm@ti.com>
+> Cc: Rafael J. Wysocki <rafael@kernel.org>
+> Cc: Ulf Hansson <ulf.hansson@linaro.org>
+> Cc: Tero Kristo <t-kristo@ti.com>
+> Cc: Wolfram Sang <wsa@the-dreams.de>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
 
-Fixes: d9f121227281 ('spi: core: add spi_split_transfers_maxsize')
-Signed-off-by: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 1413a6b..d459adc 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2284,8 +2284,8 @@ int __spi_split_transfer_maxsize(struct spi_master *master,
- 
- 	/* create replacement */
- 	srt = spi_replace_transfers(msg, xfer, 1, count, NULL, 0, gfp);
--	if (!srt)
--		return -ENOMEM;
-+	if (IS_ERR(srt))
-+		return PTR_ERR(srt);
- 	xfers = srt->inserted_transfers;
- 
- 	/* now handle each of those newly inserted spi_transfers
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Kind regards
+Uffe
+
+> ---
+>
+> Wolfram, I'd like to merge this along with other related fixes via
+> the ARM SoC tree if no objections, please review and ack if this
+> look OK to you.
+>
+>
+> ---
+>
+>  drivers/i2c/busses/i2c-omap.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-omap.c
+> index 08d26ba..13c4529 100644
+> --- a/drivers/i2c/busses/i2c-omap.c
+> +++ b/drivers/i2c/busses/i2c-omap.c
+> @@ -1450,7 +1450,8 @@ omap_i2c_probe(struct platform_device *pdev)
+>
+>  err_unuse_clocks:
+>         omap_i2c_write_reg(omap, OMAP_I2C_CON_REG, 0);
+> -       pm_runtime_put(omap->dev);
+> +       pm_runtime_dont_use_autosuspend(omap->dev);
+> +       pm_runtime_put_sync(omap->dev);
+>         pm_runtime_disable(&pdev->dev);
+>  err_free_mem:
+>
+> @@ -1468,6 +1469,7 @@ static int omap_i2c_remove(struct platform_device *pdev)
+>                 return ret;
+>
+>         omap_i2c_write_reg(omap, OMAP_I2C_CON_REG, 0);
+> +       pm_runtime_dont_use_autosuspend(&pdev->dev);
+>         pm_runtime_put_sync(&pdev->dev);
+>         pm_runtime_disable(&pdev->dev);
+>         return 0;
+> --
+> 2.7.0
+>

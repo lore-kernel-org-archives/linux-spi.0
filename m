@@ -1,99 +1,89 @@
-From: Wolfram Sang <wsa@the-dreams.de>
-Subject: Re: [PATCH 2/7] i2c: omap: Fix PM regression with deferred probe for
- pm_runtime_reinit
-Date: Fri, 12 Feb 2016 19:43:36 +0100
-Message-ID: <20160212184335.GF1520@katana>
-References: <1455145370-20301-1-git-send-email-tony@atomide.com>
- <1455145370-20301-3-git-send-email-tony@atomide.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v5 3/5] mtd: devices: m25p80: add support for mmap read
+ request
+Date: Fri, 12 Feb 2016 22:37:11 +0000
+Message-ID: <20160212223711.GD18988@sirena.org.uk>
+References: <1449807000-6457-1-git-send-email-vigneshr@ti.com>
+ <1449807000-6457-4-git-send-email-vigneshr@ti.com>
+ <20160209193616.GN13270@sirena.org.uk> <56BC1D3E.5020203@ti.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="7cm2iqirTL37Ot+N"
-Cc: linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-i2c@vger.kernel.org, Alan Stern <stern@rowland.harvard.edu>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Nishanth Menon <nm@ti.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Tero Kristo <t-kristo@ti.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-mmc@vger.kernel.org, linux-serial@vger.kernel.org,
-	linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-	Peter Hurley <peter@hurleysoftware.com>
-To: Tony Lindgren <tony@atomide.com>
-Return-path: <linux-i2c-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1455145370-20301-3-git-send-email-tony@atomide.com>
-Sender: linux-i2c-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============8997627174105592297=="
+Cc: devicetree@vger.kernel.org, hramrach@gmail.com,
+ Russell King <linux@arm.linux.org.uk>, Tony Lindgren <tony@atomide.com>,
+ linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-omap@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+ linux-mtd@lists.infradead.org, Brian Norris <computersforpeace@gmail.com>,
+ linux-arm-kernel@lists.infradead.org
+To: Vignesh R <vigneshr@ti.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <56BC1D3E.5020203@ti.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
 
---7cm2iqirTL37Ot+N
+--===============8997627174105592297==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="tNQTSEo8WG/FKZ8E"
+Content-Disposition: inline
+
+
+--tNQTSEo8WG/FKZ8E
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 10, 2016 at 03:02:45PM -0800, Tony Lindgren wrote:
-> Commit 5de85b9d57ab ("PM / runtime: Re-init runtime PM states at probe
-> error and driver unbind") introduced pm_runtime_reinit() that is used
-> to reinitialize PM runtime after -EPROBE_DEFER. This allows shutting
-> down the device after a failed probe.
->=20
-> However, for drivers using pm_runtime_use_autosuspend() this can cause
-> a state where suspend callback is never called after -EPROBE_DEFER.
-> On the following device driver probe, hardware state is different from
-> the PM runtime state causing omap_device to produce the following
-> error:
->=20
-> omap_device_enable() called from invalid state 1
->=20
-> And with omap_device and omap hardware being picky for PM, this will
-> block any deeper idle states in hardware.
->=20
-> The solution is to fix the drivers to follow the PM runtime documentation:
->=20
-> 1. For sections of code that needs the device disabled, use
->    pm_runtime_put_sync_suspend() if pm_runtime_set_autosuspend() has
->    been set.
->=20
-> 2. For driver exit code, use pm_runtime_dont_use_autosuspend() before
->    pm_runtime_put_sync() if pm_runtime_use_autosuspend() has been
->    set.
->=20
-> Fixes: 5de85b9d57ab ("PM / runtime: Re-init runtime PM states at probe
-> error and driver unbind")
-> Cc: linux-i2c@vger.kernel.org
-> Cc: Alan Stern <stern@rowland.harvard.edu>
-> Cc: Kevin Hilman <khilman@baylibre.com>
-> Cc: Nishanth Menon <nm@ti.com>
-> Cc: Rafael J. Wysocki <rafael@kernel.org>
-> Cc: Ulf Hansson <ulf.hansson@linaro.org>
-> Cc: Tero Kristo <t-kristo@ti.com>
-> Cc: Wolfram Sang <wsa@the-dreams.de>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
+On Thu, Feb 11, 2016 at 11:03:50AM +0530, Vignesh R wrote:
+> On 02/10/2016 01:06 AM, Mark Brown wrote:
+> > On Fri, Dec 11, 2015 at 09:39:58AM +0530, Vignesh R wrote:
 
-Applied to for-current, thanks!
+> >> +	if (spi_flash_read_supported(spi)) {
+> >> +		struct spi_flash_read_message msg;
+> >> +		int ret;
 
+> > Looking at this I can't help but think that spi_flash_read() ought to
+> > have the stub in rather than the caller.  But given that we're pretty
+> > much only ever expecting one user I'm not 100% sure it actually matters.
 
---7cm2iqirTL37Ot+N
+> Well, my initial patch set passed long list of arguments to
+> spi_flash_read(), but Brian suggested to use struct[1] in order to avoid
+> unnecessary churn when things need changed in the API.
+
+I don't see what that has to do with my point?
+
+--tNQTSEo8WG/FKZ8E
 Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
+Version: GnuPG v2
 
-iQIcBAEBAgAGBQJWvifXAAoJEBQN5MwUoCm2u3gP/0siHYGbBX7efB637S6GialN
-ufvgD31ukWw1xebwQy02EEi2d4/JU/Th2XkhulqC435TEbC2KaDKurauJ++iXIeC
-qJX8tYaiZDT2w+OEzRAheoUsGBeF6bVbSUX1kLNJwXRDKBh2OOm4apr363F2xp/F
-l3asdMzvthXLw38oxB/YpC5baHKNcIz59aWJKtdMmTreobvZ9ygU40iNtJsaGjdE
-8UbAXFt2Ncf3vNAzVLwGfcMfxl/zbnSdSgj0VInmNe3Akt3MLo6bZZcseaky7u8q
-AU6SqCrk/xr1mWi9pJBKCEqYzCMspqYOapHpa6f8uLaaTQCpUDUzWgxrbN95CTSb
-FkWW4kDrc2GSHAACs7cv5uNNqbAuLmmUarej82V96VIqATPpIHYJq4bpot5EjH8K
-99/2rsVAgZuHGw4j7/AuuV64FmAnTUwsVGA59VGKQIpi8Ew/Xyl3+8HFECYhl7Y/
-dnxyEI4TGnAwbhgmcw/Zt4idlw9YBtuFAELAkqcFU0qMyFDm7Pm3Bz+8KaW2Dx5J
-ZBX99K1zStqVS+sBoRN1bmZgDcdAh4qAxrwgnivJlxG9I+I4WqumcqsQDbnpRqE2
-5M+noBKtdByQKdEgcSVmUv4LQVPFan5Jqh4kQ6FDkc+gAA4KBOLN5fyC20mWmZoV
-hQkZTE6ZbbccnGLlhkX3
-=Jr//
+iQEcBAEBCAAGBQJWvl6UAAoJECTWi3JdVIfQblMH/RvNAztMXHLsEFRW0U1bdB63
+ImbcXa/jiHyGzMjlgdMzlJgYnVQ0KmX0PRVIDzbhHrIcLl0mqpNKENLU/IIgEDCw
+6uOKcEGGBRYqdT0GIHvHOwlf5Pmdm79FTz7Y/qcL7KwZfWtBAjk4OR/oMHgcMJYC
+fGLMpR+cpgdm7i/KCEXTZiFLahkQELonVKjyAE7vjxdjt7kUwA6r67LsOrNPbuEn
+aYxSgu2btiJzCXWsFRTv+9i/YzbzmTiVt2EB54gDgF8yMDW5pncbEZfm/iigUMRM
+jBngWvjoiVHatdGFtacqwXpU/Ad4ZutSaQ6+p64UIgzacVv1pTbkNmBo8+9eebo=
+=L0w+
 -----END PGP SIGNATURE-----
 
---7cm2iqirTL37Ot+N--
+--tNQTSEo8WG/FKZ8E--
+
+
+--===============8997627174105592297==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+linux-arm-kernel mailing list
+linux-arm-kernel@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+
+--===============8997627174105592297==--

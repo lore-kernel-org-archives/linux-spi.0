@@ -1,45 +1,41 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH RFT] spi: bcm2835: Remove unnecessary workaround to call
- gpio_set_value
-Date: Sun, 14 Feb 2016 00:19:07 +0800
-Message-ID: <1455380347.25581.1.camel@ingics.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: Re: [PATCH RFT] spi: bcm2835: Remove unnecessary workaround to call gpio_set_value
+Date: Sat, 13 Feb 2016 18:08:25 +0100
+Message-ID: <67B70D1B-7FA5-48A6-8719-490FA484BFF6@martin.sperl.org>
+References: <1455380347.25581.1.camel@ingics.com>
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2104\))
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1455380347.25581.1.camel-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-This should be fixed by commit 4c02cba18cc9
-("pinctrl: bcm2835: Fix initial value for direction_output")
 
-Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
----
- drivers/spi/spi-bcm2835.c | 5 -----
- 1 file changed, 5 deletions(-)
+> On 13.02.2016, at 17:19, Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org> wrote:
+> 
+> This should be fixed by commit 4c02cba18cc9
+> ("pinctrl: bcm2835: Fix initial value for direction_output")
+> 
+> Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index cf04960..f35cc10 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -727,11 +727,6 @@ static int bcm2835_spi_setup(struct spi_device *spi)
- 			spi->chip_select, spi->cs_gpio, err);
- 		return err;
- 	}
--	/* the implementation of pinctrl-bcm2835 currently does not
--	 * set the GPIO value when using gpio_direction_output
--	 * so we are setting it here explicitly
--	 */
--	gpio_set_value(spi->cs_gpio, (spi->mode & SPI_CS_HIGH) ? 0 : 1);
- 
- 	return 0;
- }
--- 
-2.1.4
+Actually this also solves the situation when the DT is configured
+badly - and it is likely that old DTs are configured badly,
+because it did not matter before (it was always wrong anyway).
 
+This change would break those old DTs in this respect and can
+result in unexpected behavior and undetected devices.
 
+In this case it would be better to add a warning that the
+GPIO is not configured in the DT correctly, so that it is
+clear that the DT needs to change.
+
+But then maybe a more generalized approach implemented
+in the framework would be better...
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

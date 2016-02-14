@@ -1,49 +1,61 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH RFT] spi: bcm2835: Remove unnecessary workaround to call gpio_set_value
-Date: Sun, 14 Feb 2016 11:41:34 +0800
-Message-ID: <CAFRkauCaq+4Rs_MaApZmqdZ=SiBG2GViZkm1VnjY9j-ftFsXZg@mail.gmail.com>
-References: <1455380347.25581.1.camel@ingics.com>
-	<67B70D1B-7FA5-48A6-8719-490FA484BFF6@martin.sperl.org>
+From: Youngmin Nam <ym0914-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi: s3c64xx: Get fifosize via device tree
+Date: Sun, 14 Feb 2016 15:28:30 +0900
+Message-ID: <56C01E8E.6090107@gmail.com>
+References: <1455031585-11113-1-git-send-email-ym0914@gmail.com>
+ <20160209161036.GI13270@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org,
+	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <67B70D1B-7FA5-48A6-8719-490FA484BFF6-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <20160209161036.GI13270-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-2016-02-14 1:08 GMT+08:00 Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>:
->
->> On 13.02.2016, at 17:19, Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org> wrote:
->>
->> This should be fixed by commit 4c02cba18cc9
->> ("pinctrl: bcm2835: Fix initial value for direction_output")
->>
->> Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
->
-> Actually this also solves the situation when the DT is configured
-> badly - and it is likely that old DTs are configured badly,
-> because it did not matter before (it was always wrong anyway).
->
-> This change would break those old DTs in this respect and can
-> result in unexpected behavior and undetected devices.
+Hello Mark.
+Thank you for your review.
+Please ignore previous mail that I sent to you.
+I sent this mail without CC-ing. I resend including CC list.
 
-Hi Martin,
-I don't understand why this patch breaks old DTs.
+On 2016=EB=85=84 02=EC=9B=94 10=EC=9D=BC 01:10, Mark Brown wrote:
+> On Wed, Feb 10, 2016 at 12:26:25AM +0900, Youngmin Nam wrote:
+>=20
+>> SPI driver on some SoCs only differ in the fifosize of each
+>> SPI channel. It is useless to duplicate the s3c64xx_spi_port_config =
+structure
+>> or create a compatible name for such a change.
+>=20
+> I disagree that it is useless to do this, it means that if we realize
+> later that there is some other difference between the implementations
+> then we have the information in the DT to handle this without needing=
+=20
+> to update the ABI.
+>=20
 
-Before 4c02cba18cc9:
-gpio_direction_output(spi->cs_gpio, (spi->mode & SPI_CS_HIGH) ? 0 : 1);
-gpio_set_value(spi->cs_gpio, (spi->mode & SPI_CS_HIGH) ? 0 : 1);
+To clarify, let me check that I understood.
+Do you mean we can fix fifosize of each SPI channel with DT handling
+if there is difference on this fifosize with driver code?
 
-is equivalent to
+If I understand your words correctly, let me modify commit messages.=20
 
-After 4c02cba18cc9: (Already in Linus' tree)
-gpio_direction_output(spi->cs_gpio, (spi->mode & SPI_CS_HIGH) ? 0 : 1);
+>> +Optional SoC Specific properties:
+>> +
+>> +- samsung,spi-fifosize: The fifo size supported by the SPI channel
+>> +
+>> +
+>=20
+> In units of...?  FIFO sizes do get quoted in both words and bytes so =
+it
+> seems good to be clear.
+>=20
 
-Axel
+"samsung,spi-fifosize =3D <64>" means 64 bytes of fifosize.
+Let me add the units as bytes.
+
+Thank you.=20
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,61 +1,66 @@
-From: Youngmin Nam <ym0914-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Subject: Re: [PATCH] spi: s3c64xx: Get fifosize via device tree
-Date: Sun, 14 Feb 2016 15:28:30 +0900
-Message-ID: <56C01E8E.6090107@gmail.com>
+Date: Sun, 14 Feb 2016 16:01:08 +0900
+Message-ID: <56C02634.8020204@samsung.com>
 References: <1455031585-11113-1-git-send-email-ym0914@gmail.com>
- <20160209161036.GI13270@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org,
-	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=iso-8859-2
+Content-Transfer-Encoding: 7bit
+Cc: k.kozlowski.k-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Youngmin Nam <ym0914-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160209161036.GI13270-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <1455031585-11113-1-git-send-email-ym0914-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hello Mark.
-Thank you for your review.
-Please ignore previous mail that I sent to you.
-I sent this mail without CC-ing. I resend including CC list.
+W dniu 10.02.2016 o 00:26, Youngmin Nam pisze:
+> SPI driver on some SoCs only differ in the fifosize of each
+> SPI channel. It is useless to duplicate the s3c64xx_spi_port_config structure
+> or create a compatible name for such a change.
+> 
+> We can get fifosize via the device tree nodes (not mandatory).
+> Also the device tree binding document was updated.
+> 
+> Signed-off-by: Youngmin Nam <ym0914-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> ---
+>  Documentation/devicetree/bindings/spi/spi-samsung.txt |  6 ++++++
+>  drivers/spi/spi-s3c64xx.c                             | 13 +++++++++++++
+>  2 files changed, 19 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/spi-samsung.txt b/Documentation/devicetree/bindings/spi/spi-samsung.txt
+> index 6dbdeb3..5c4a08d 100644
+> --- a/Documentation/devicetree/bindings/spi/spi-samsung.txt
+> +++ b/Documentation/devicetree/bindings/spi/spi-samsung.txt
+> @@ -23,6 +23,11 @@ Required SoC Specific Properties:
+>  - dma-names: Names for the dma channels. There must be at least one channel
+>    named "tx" for transmit and named "rx" for receive.
+>  
+> +Optional SoC Specific properties:
+> +
+> +- samsung,spi-fifosize: The fifo size supported by the SPI channel
+> +
+> +
+>  Required Board Specific Properties:
+>  
+>  - #address-cells: should be 1.
+> @@ -73,6 +78,7 @@ Example:
+>  		dma-names = "tx", "rx";
+>  		#address-cells = <1>;
+>  		#size-cells = <0>;
+> +		samsung,spi-fifosize = <64>;
+>  	};
+>  
 
-On 2016=EB=85=84 02=EC=9B=94 10=EC=9D=BC 01:10, Mark Brown wrote:
-> On Wed, Feb 10, 2016 at 12:26:25AM +0900, Youngmin Nam wrote:
->=20
->> SPI driver on some SoCs only differ in the fifosize of each
->> SPI channel. It is useless to duplicate the s3c64xx_spi_port_config =
-structure
->> or create a compatible name for such a change.
->=20
-> I disagree that it is useless to do this, it means that if we realize
-> later that there is some other difference between the implementations
-> then we have the information in the DT to handle this without needing=
-=20
-> to update the ABI.
->=20
+That does not look good. Is it a configurable part of SoC? I think
+not...  rather it must contain exact value supported by given device...
+So this should be part of compatible because AFAIU you just made
+compatible devices uncompatible...
 
-To clarify, let me check that I understood.
-Do you mean we can fix fifosize of each SPI channel with DT handling
-if there is difference on this fifosize with driver code?
+Best regards,
+Krzysztof
 
-If I understand your words correctly, let me modify commit messages.=20
-
->> +Optional SoC Specific properties:
->> +
->> +- samsung,spi-fifosize: The fifo size supported by the SPI channel
->> +
->> +
->=20
-> In units of...?  FIFO sizes do get quoted in both words and bytes so =
-it
-> seems good to be clear.
->=20
-
-"samsung,spi-fifosize =3D <64>" means 64 bytes of fifosize.
-Let me add the units as bytes.
-
-Thank you.=20
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

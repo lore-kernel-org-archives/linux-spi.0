@@ -1,7 +1,7 @@
 From: Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
-Subject: [PATCH v2 2/2] spi: bcm2835aux: fix CPOL/CPHA setting
-Date: Sun, 14 Feb 2016 11:04:29 +0100
-Message-ID: <1455444269-4797-3-git-send-email-stephanolbrich@gmx.de>
+Subject: [PATCH v2 1/2] spi: bcm2835aux: set up spi-mode before asserting cs-gpio
+Date: Sun, 14 Feb 2016 11:04:28 +0100
+Message-ID: <1455444269-4797-2-git-send-email-stephanolbrich@gmx.de>
 References: <1455444269-4797-1-git-send-email-stephanolbrich@gmx.de>
 Cc: Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
@@ -15,72 +15,134 @@ In-Reply-To: <1455444269-4797-1-git-send-email-stephanolbrich-Mmb7MZpHnFY@public
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The auxiliary spi supports only CPHA=0 modes as the first bit is
-always output to the pin before the first clock cycle. In CPHA=1
-modes the first clock edge outputs the second bit hence the slave
-can never read the first bit.
+When using reverse polarity for clock (spi-cpol) on a device
+the clock line gets altered after chip-select has been asserted
+resulting in an additional clock beat, which confuses hardware.
 
-Also the CPHA registers switch between clocking data in/out on
-rising/falling edge hence depend on the CPOL setting.
+This happens due to the fact, the the hardware was initialized
+and reset at the begin and end of each transfer which results
+in default state for all lines except chip-select which is
+handled by the spi-subsystem as gpio-cs is used.
+
+To avoid this situation this patch moves the setup of polarity
+(spi-cpol and spi-cpha) outside of the chip-select into
+prepare_message, which is run prior to asserting chip-select.
 
 Signed-off-by: Stephan Olbrich <stephanolbrich-Mmb7MZpHnFY@public.gmane.org>
+Reviewed-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Tested-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 ---
- drivers/spi/spi-bcm2835aux.c | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ drivers/spi/spi-bcm2835aux.c | 57 +++++++++++++++++++++++++++++++-------------
+ 1 file changed, 41 insertions(+), 16 deletions(-)
 
 diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
-index 103335e..7428091 100644
+index d2f0067..103335e 100644
 --- a/drivers/spi/spi-bcm2835aux.c
 +++ b/drivers/spi/spi-bcm2835aux.c
-@@ -64,9 +64,9 @@
- #define BCM2835_AUX_SPI_CNTL0_VAR_WIDTH	0x00004000
- #define BCM2835_AUX_SPI_CNTL0_DOUTHOLD	0x00003000
- #define BCM2835_AUX_SPI_CNTL0_ENABLE	0x00000800
--#define BCM2835_AUX_SPI_CNTL0_CPHA_IN	0x00000400
-+#define BCM2835_AUX_SPI_CNTL0_IN_RISING	0x00000400
- #define BCM2835_AUX_SPI_CNTL0_CLEARFIFO	0x00000200
--#define BCM2835_AUX_SPI_CNTL0_CPHA_OUT	0x00000100
-+#define BCM2835_AUX_SPI_CNTL0_OUT_RISING	0x00000100
- #define BCM2835_AUX_SPI_CNTL0_CPOL	0x00000080
- #define BCM2835_AUX_SPI_CNTL0_MSBF_OUT	0x00000040
- #define BCM2835_AUX_SPI_CNTL0_SHIFTLEN	0x0000003F
-@@ -92,9 +92,6 @@
- #define BCM2835_AUX_SPI_POLLING_LIMIT_US	30
- #define BCM2835_AUX_SPI_POLLING_JIFFIES		2
+@@ -218,9 +218,9 @@ static irqreturn_t bcm2835aux_spi_interrupt(int irq, void *dev_id)
+ 			BCM2835_AUX_SPI_CNTL1_IDLE);
+ 	}
  
--#define BCM2835_AUX_SPI_MODE_BITS (SPI_CPOL | SPI_CPHA | SPI_CS_HIGH \
--				  | SPI_NO_CS)
+-	/* and if rx_len is 0 then wake up completion and disable spi */
++	/* and if rx_len is 0 then disable interrupts and wake up completion */
+ 	if (!bs->rx_len) {
+-		bcm2835aux_spi_reset_hw(bs);
++		bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL1, bs->cntl[1]);
+ 		complete(&master->xfer_completion);
+ 	}
+ 
+@@ -313,9 +313,6 @@ static int bcm2835aux_spi_transfer_one_poll(struct spi_master *master,
+ 		}
+ 	}
+ 
+-	/* Transfer complete - reset SPI HW */
+-	bcm2835aux_spi_reset_hw(bs);
 -
- struct bcm2835aux_spi {
- 	void __iomem *regs;
- 	struct clk *clk;
-@@ -389,12 +386,12 @@ static int bcm2835aux_spi_prepare_message(struct spi_master *master,
- 	bs->cntl[1] = BCM2835_AUX_SPI_CNTL1_MSBF_IN;
+ 	/* and return without waiting for completion */
+ 	return 0;
+ }
+@@ -336,10 +333,6 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *master,
+ 	 * resulting (potentially) in more interrupts when transferring
+ 	 * more than 12 bytes
+ 	 */
+-	bs->cntl[0] = BCM2835_AUX_SPI_CNTL0_ENABLE |
+-		      BCM2835_AUX_SPI_CNTL0_VAR_WIDTH |
+-		      BCM2835_AUX_SPI_CNTL0_MSBF_OUT;
+-	bs->cntl[1] = BCM2835_AUX_SPI_CNTL1_MSBF_IN;
  
- 	/* handle all the modes */
+ 	/* set clock */
+ 	spi_hz = tfr->speed_hz;
+@@ -354,17 +347,13 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *master,
+ 	} else { /* the slowest we can go */
+ 		speed = BCM2835_AUX_SPI_CNTL0_SPEED_MAX;
+ 	}
++	/* mask out old speed from previous spi_transfer */
++	bs->cntl[0] &= ~(BCM2835_AUX_SPI_CNTL0_SPEED);
++	/* set the new speed */
+ 	bs->cntl[0] |= speed << BCM2835_AUX_SPI_CNTL0_SPEED_SHIFT;
+ 
+ 	spi_used_hz = clk_hz / (2 * (speed + 1));
+ 
+-	/* handle all the modes */
 -	if (spi->mode & SPI_CPOL)
-+	if (spi->mode & SPI_CPOL) {
- 		bs->cntl[0] |= BCM2835_AUX_SPI_CNTL0_CPOL;
+-		bs->cntl[0] |= BCM2835_AUX_SPI_CNTL0_CPOL;
 -	if (spi->mode & SPI_CPHA)
 -		bs->cntl[0] |= BCM2835_AUX_SPI_CNTL0_CPHA_OUT |
 -			       BCM2835_AUX_SPI_CNTL0_CPHA_IN;
 -
-+		bs->cntl[0] |= BCM2835_AUX_SPI_CNTL0_OUT_RISING;
-+	} else {
-+		bs->cntl[0] |= BCM2835_AUX_SPI_CNTL0_IN_RISING;
-+	}
- 	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL1, bs->cntl[1]);
- 	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL0, bs->cntl[0]);
+ 	/* set transmit buffers and length */
+ 	bs->tx_buf = tfr->tx_buf;
+ 	bs->rx_buf = tfr->rx_buf;
+@@ -388,6 +377,40 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *master,
+ 	return bcm2835aux_spi_transfer_one_irq(master, spi, tfr);
+ }
  
-@@ -434,7 +431,7 @@ static int bcm2835aux_spi_probe(struct platform_device *pdev)
- 	}
- 
- 	platform_set_drvdata(pdev, master);
--	master->mode_bits = BCM2835_AUX_SPI_MODE_BITS;
-+	master->mode_bits = (SPI_CPOL | SPI_CS_HIGH | SPI_NO_CS);
- 	master->bits_per_word_mask = SPI_BPW_MASK(8);
++static int bcm2835aux_spi_prepare_message(struct spi_master *master,
++					  struct spi_message *msg)
++{
++	struct spi_device *spi = msg->spi;
++	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
++
++	bs->cntl[0] = BCM2835_AUX_SPI_CNTL0_ENABLE |
++		      BCM2835_AUX_SPI_CNTL0_VAR_WIDTH |
++		      BCM2835_AUX_SPI_CNTL0_MSBF_OUT;
++	bs->cntl[1] = BCM2835_AUX_SPI_CNTL1_MSBF_IN;
++
++	/* handle all the modes */
++	if (spi->mode & SPI_CPOL)
++		bs->cntl[0] |= BCM2835_AUX_SPI_CNTL0_CPOL;
++	if (spi->mode & SPI_CPHA)
++		bs->cntl[0] |= BCM2835_AUX_SPI_CNTL0_CPHA_OUT |
++			       BCM2835_AUX_SPI_CNTL0_CPHA_IN;
++
++	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL1, bs->cntl[1]);
++	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL0, bs->cntl[0]);
++
++	return 0;
++}
++
++static int bcm2835aux_spi_unprepare_message(struct spi_master *master,
++					    struct spi_message *msg)
++{
++	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
++
++	bcm2835aux_spi_reset_hw(bs);
++
++	return 0;
++}
++
+ static void bcm2835aux_spi_handle_err(struct spi_master *master,
+ 				      struct spi_message *msg)
+ {
+@@ -416,6 +439,8 @@ static int bcm2835aux_spi_probe(struct platform_device *pdev)
  	master->num_chipselect = -1;
  	master->transfer_one = bcm2835aux_spi_transfer_one;
+ 	master->handle_err = bcm2835aux_spi_handle_err;
++	master->prepare_message = bcm2835aux_spi_prepare_message;
++	master->unprepare_message = bcm2835aux_spi_unprepare_message;
+ 	master->dev.of_node = pdev->dev.of_node;
+ 
+ 	bs = spi_master_get_devdata(master);
 -- 
 2.5.0
 

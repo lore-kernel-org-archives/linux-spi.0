@@ -1,70 +1,86 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH RFT] spi: bcm2835: Remove unnecessary workaround to call gpio_set_value
-Date: Sun, 14 Feb 2016 12:28:06 +0100
-Message-ID: <6AB90673-0726-4E18-BA19-146ED6988813@martin.sperl.org>
-References: <1455380347.25581.1.camel@ingics.com> <67B70D1B-7FA5-48A6-8719-490FA484BFF6@martin.sperl.org> <CAFRkauCaq+4Rs_MaApZmqdZ=SiBG2GViZkm1VnjY9j-ftFsXZg@mail.gmail.com>
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2104\))
+From: Youngmin Nam <ym0914@gmail.com>
+Subject: Re: [PATCH] spi: s3c64xx: Get fifosize via device tree
+Date: Sun, 14 Feb 2016 22:22:04 +0900
+Message-ID: <56C07F7C.5030907@gmail.com>
+References: <1455031585-11113-1-git-send-email-ym0914@gmail.com>
+ <56C02634.8020204@samsung.com> <56C03731.5040107@gmail.com>
+ <56C03B78.1040100@samsung.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAFRkauCaq+4Rs_MaApZmqdZ=SiBG2GViZkm1VnjY9j-ftFsXZg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: k.kozlowski.k@gmail.com, linux-samsung-soc@vger.kernel.org,
+	linux-spi@vger.kernel.org
+To: Krzysztof Kozlowski <k.kozlowski@samsung.com>, kgene@kernel.org,
+	broonie@kernel.org
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <56C03B78.1040100@samsung.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
+
+When I think about this patch, I was motivated by below patch.
+
+commit 135f07c3252dc77d0245714d0b413ecc711cd823
+Author: Naveen Krishna Chatradhi <ch.naveen@samsung.com>
+Date:   Mon Jul 14 17:07:16 2014 +0530
+
+    serial: samsung: get fifosize via device tree
+   =20
+    UART modules on some SoCs only differ in the fifosize of each
+    UART channel. Its useless to duplicate the drv_data structure
+    or create a compatible name for such a change.
+   =20
+    We can get fifosize via the device tree nodes (not mandating it).
+   =20
+    Also updates the documentation.
+   =20
+    Signed-off-by: Naveen Krishna Chatradhi <ch.naveen@samsung.com>
+    Reviewed-by: Tomasz Figa <t.figa@samsung.com>
+    Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>=20
+
+I thought we can apply above patch to SPI also.
+The fifosize should be required for fifo_lvl_mask value in SPI of Exyno=
+s series.
+I think this patch is useful when we port for the new exynos7xxx SoC co=
+me out.
+Because SPI of new exynos7xxx SoC has only difference on fifosize.=20
+
+Thanks.
 
 
-> On 14.02.2016, at 04:41, Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org> wrote:
+On 2016=EB=85=84 02=EC=9B=94 14=EC=9D=BC 17:31, Krzysztof Kozlowski wro=
+te:
+> W dniu 14.02.2016 o 17:13, Youngmin Nam pisze:
+>> Hello Krzysztof,
+>>
+>> As you mentioned, spi fifosize is not configurable in the given SoC.
+>> The point is we can set fifosize without changing driver code.
+>> For example, if some SoC in exynos7 series has different spi fifosiz=
+e of on each channel with current
+>> our compatible, we can't cover this situation without adding new com=
+patible into spi driver code.
 >=20
-> 2016-02-14 1:08 GMT+08:00 Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>:
->>=20
->>> On 13.02.2016, at 17:19, Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org> wrote:
->>>=20
->>> This should be fixed by commit 4c02cba18cc9
->>> ("pinctrl: bcm2835: Fix initial value for direction_output")
->>>=20
->>> Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
->>=20
->> Actually this also solves the situation when the DT is configured
->> badly - and it is likely that old DTs are configured badly,
->> because it did not matter before (it was always wrong anyway).
->>=20
->> This change would break those old DTs in this respect and can
->> result in unexpected behavior and undetected devices.
+> Yes, because new SoC is not compatible with old ones... so a new
+> compatible is required!
 >=20
-> Hi Martin,
-> I don't understand why this patch breaks old DTs.
+>> Whenever new SoC kind of exynos7 come out, we should add new compati=
+ble into driver code only for fifosize change.
+>> I think this is not efficient. I think we can reduces this works thr=
+ough DT handling.
 >=20
-> Before 4c02cba18cc9:
-> gpio_direction_output(spi->cs_gpio, (spi->mode & SPI_CS_HIGH) ? 0 : 1=
-);
-> gpio_set_value(spi->cs_gpio, (spi->mode & SPI_CS_HIGH) ? 0 : 1);
+> I agree that this is not the most efficient possible way of setting s=
+ome
+> specific properties of devices but this is the way how DT works.
 >=20
-> is equivalent to
+> What if the property is not present on board with Exynos7? What value
+> should be used?
 >=20
-> After 4c02cba18cc9: (Already in Linus' tree)
-> gpio_direction_output(spi->cs_gpio, (spi->mode & SPI_CS_HIGH) ? 0 : 1=
-);
-
-Looking thru the bigger context now.
-
-I thought it also impacted the GPIO-cs case, where
-  cs-gpios =3D <&gpio x 1>, <&gpio y 1>;
-would just define the GPIOs - as the 3rd value was always ignored
-and resulted in a =E2=80=9Clow=E2=80=9D level on the GPIO via pinctrl i=
-nitially -=20
-at least there was a time when this has happened.
-A change here would have had an impact on =E2=80=9Cold=E2=80=9D DT.
-
-Now I see that this only impacts the native-cs case
-and that should be fine.
-
-Acked-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> You did not want to add a new compatible but you are adding a
+> compatible-like property which apparently is required for some device=
+s.
+>=20
+> That looks bad. It's easy to make a mistake, messes with compatibles.
+>=20
+> Best regards,
+> Krzysztof
+>=20
+>=20

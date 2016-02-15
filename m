@@ -1,74 +1,64 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: rockchip: disable runtime pm when in err case" to the spi tree
-Date: Mon, 15 Feb 2016 12:28:37 +0000
-Message-ID: <E1aVIGb-0000bH-Cf@debutante>
-References: <1455524878-2696-1-git-send-email-shawn.lin@rock-chips.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1455524878-2696-1-git-send-email-shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 3/3] spi: rockchip: add debug interface support
+Date: Mon, 15 Feb 2016 17:26:32 +0000
+Message-ID: <20160215172632.GQ18988@sirena.org.uk>
+References: <1455524848-2646-1-git-send-email-shawn.lin@rock-chips.com>
+ <1455524902-2780-1-git-send-email-shawn.lin@rock-chips.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="rUztinBX/EQDJOOk"
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Shawn Lin <shawn.lin@rock-chips.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1455524902-2780-1-git-send-email-shawn.lin@rock-chips.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-The patch
 
-   spi: rockchip: disable runtime pm when in err case
+--rUztinBX/EQDJOOk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-has been applied to the spi tree at
+On Mon, Feb 15, 2016 at 04:28:22PM +0800, Shawn Lin wrote:
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+> +#ifdef CONFIG_DEBUG_FS
+> +#include <linux/debugfs.h>
+> +#endif
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+Just include the header.  Only add ifdefs if they do something.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+> +static int rockchip_spi_debugfs_init(struct rockchip_spi *rs)
+> +{
+> +	rs->debugfs = debugfs_create_dir("rockchip_spi", NULL);
+> +	if (!rs->debugfs)
+> +		return -ENOMEM;
+> +
+> +	debugfs_create_file("regs", S_IFREG | S_IRUGO,
+> +		rs->debugfs, (void *)rs, &rockchip_spi_dbg_ops);
+> +	return 0;
+> +}
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+This is completely separate to the core debugfs support for SPI, if
+we're adding new debugfs stuff that's per device we should be extending
+the core debugfs stuff so everything is in one place.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+Your register dump stuff looks like you might want to consider using
+regmap, it's got this and other register access diagnostics already.
 
-Thanks,
-Mark
+--rUztinBX/EQDJOOk
+Content-Type: application/pgp-signature; name="signature.asc"
 
->From b8659adda9e295eca0b10a67f3b15a8644c8ed6f Mon Sep 17 00:00:00 2001
-From: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Date: Mon, 15 Feb 2016 16:27:58 +0800
-Subject: [PATCH] spi: rockchip: disable runtime pm when in err case
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-Before registering master, driver enables runtime pm.
-This patch  pm_runtime_disable in err case while probing
-driver to balance pm reference count.
+iQEcBAEBCAAGBQJWwgpHAAoJECTWi3JdVIfQgq4H/in00Ld6JFx7n2LUDtuXZVyW
+qAumqHhgv0ncwn14U6DSOKJTswu+nOrNTZ9XQ2L8xVYz4+7Gg5fr/7Vsm+M8We02
+L/mfkJLz/e2RMDpPuxVPz9r6QWSRU18KHVEO8jls1ovhNSgB4BSJ7UEIbFaPERVz
+sqqsVSRvRfxelZwjTeh0w7gEGb7ujQRhQOxdYgj1x0q+nYHCwkF38gSnGTL/IvOt
+I2still+0WUcm5Cv7QnJH1AsFMURvYmmOuXHCmqQmrcr6a2GOVoMGwxGMUVD8W7G
+qNmVE4Nfa0XRvCvIVtE6vdwAtOmBFVfZ9//5whEI8exNplibBlreuiG5Z1XvejI=
+=tZsL
+-----END PGP SIGNATURE-----
 
-Signed-off-by: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-rockchip.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 79a8bc4f6cec..c0f9baee1e91 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -749,6 +749,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 	return 0;
- 
- err_register_master:
-+	pm_runtime_disable(&pdev->dev);
- 	if (rs->dma_tx.ch)
- 		dma_release_channel(rs->dma_tx.ch);
- 	if (rs->dma_rx.ch)
--- 
-2.7.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--rUztinBX/EQDJOOk--

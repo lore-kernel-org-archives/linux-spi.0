@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: rockchip: add missing spi_master_put" to the spi tree
-Date: Mon, 15 Feb 2016 12:28:36 +0000
-Message-ID: <E1aVIGa-0000aO-G6@debutante>
-References: <1455524892-2739-1-git-send-email-shawn.lin@rock-chips.com>
+Subject: Applied "spi: rockchip: disable runtime pm when in err case" to the spi tree
+Date: Mon, 15 Feb 2016 12:28:37 +0000
+Message-ID: <E1aVIGb-0000bH-Cf@debutante>
+References: <1455524878-2696-1-git-send-email-shawn.lin@rock-chips.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1455524892-2739-1-git-send-email-shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+In-Reply-To: <1455524878-2696-1-git-send-email-shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: rockchip: add missing spi_master_put
+   spi: rockchip: disable runtime pm when in err case
 
 has been applied to the spi tree at
 
@@ -38,33 +38,33 @@ to this mail.
 Thanks,
 Mark
 
->From 844c9f476a43db0bdf61df409026a026ce98ec1b Mon Sep 17 00:00:00 2001
+>From b8659adda9e295eca0b10a67f3b15a8644c8ed6f Mon Sep 17 00:00:00 2001
 From: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Date: Mon, 15 Feb 2016 16:28:12 +0800
-Subject: [PATCH] spi: rockchip: add missing spi_master_put
+Date: Mon, 15 Feb 2016 16:27:58 +0800
+Subject: [PATCH] spi: rockchip: disable runtime pm when in err case
 
-Add missing spi_master_put for rockchip_spi_remove since
-it calls spi_master_get already.
+Before registering master, driver enables runtime pm.
+This patch  pm_runtime_disable in err case while probing
+driver to balance pm reference count.
 
 Signed-off-by: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-rockchip.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spi-rockchip.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index c0f9baee1e91..7cb1b2d710c1 100644
+index 79a8bc4f6cec..c0f9baee1e91 100644
 --- a/drivers/spi/spi-rockchip.c
 +++ b/drivers/spi/spi-rockchip.c
-@@ -779,6 +779,8 @@ static int rockchip_spi_remove(struct platform_device *pdev)
- 	if (rs->dma_rx.ch)
- 		dma_release_channel(rs->dma_rx.ch);
- 
-+	spi_master_put(master);
-+
+@@ -749,6 +749,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
  	return 0;
- }
  
+ err_register_master:
++	pm_runtime_disable(&pdev->dev);
+ 	if (rs->dma_tx.ch)
+ 		dma_release_channel(rs->dma_tx.ch);
+ 	if (rs->dma_rx.ch)
 -- 
 2.7.0
 

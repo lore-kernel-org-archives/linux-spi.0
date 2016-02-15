@@ -1,92 +1,61 @@
-From: Mark Brown <broonie@kernel.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [RFC PATCH] SPI/ACPI: DesignWare: Add ACPI support for
  Designware SPI driver
-Date: Mon, 15 Feb 2016 17:44:38 +0000
-Message-ID: <20160215174438.GR18988@sirena.org.uk>
+Date: Mon, 15 Feb 2016 17:45:40 +0000
+Message-ID: <20160215174540.GS18988@sirena.org.uk>
 References: <1454656280-130658-1-git-send-email-qiujiang@huawei.com>
  <20160205110900.GA12311@sirena.org.uk>
- <56C04962.7080206@huawei.com>
+ <56C18C07.2030209@huawei.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="phbq2bkSb+hZnunM"
-Cc: linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linuxarm@huawei.com,
-	haifeng.wei@huawei.com, charles.chenxin@huawei.com,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>
-To: Jiang Qiu <qiujiang@huawei.com>
-Return-path: <linux-acpi-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="xUq7mlTLx96rFlBf"
+Cc: qiujiang <qiujiang-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>,
+	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	charles.chenxin-hv44wF8Li93QT0dZR+AlfA@public.gmane.org, linuxarm-hv44wF8Li93QT0dZR+AlfA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Hanjun Guo <guohanjun-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <56C04962.7080206@huawei.com>
-Sender: linux-acpi-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <56C18C07.2030209-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---phbq2bkSb+hZnunM
-Content-Type: text/plain; charset=utf-8
+--xUq7mlTLx96rFlBf
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Sun, Feb 14, 2016 at 05:31:14PM +0800, Jiang Qiu wrote:
-> =E5=9C=A8 2016/2/5 19:09, Mark Brown =E5=86=99=E9=81=93:
-> >On Fri, Feb 05, 2016 at 03:11:20PM +0800, qiujiang wrote:
+On Mon, Feb 15, 2016 at 04:27:51PM +0800, Hanjun Guo wrote:
+> On 2016/2/5 19:09, Mark Brown wrote:
 
-Please fix your mail client to word wrap within paragraphs at something
-substantially less than 80 columns.  Doing this makes your messages much
-easier to read and reply to.  Your mail has lines wrapped alternately at
-normal length and half length which is difficult to read, I've reflowed
-this time.
+> > Intel are heavy users of this driver on their systems which also use
+> > ACPI.  Have you discussed this binding with them?  I've copied Andy and
+> > Jarkko who've worked on the driver recently.
 
-> >>+	char propname[32];
+> There is no ACPI code in this driver yet, seems "PRP0001" is used to reuse
+> this driver directly.
 
-> >That's a magic number, where did it come from and why is it a magic
-> >nummber?
+No, on Intel systems the devices appear on the PCI bus.
 
-> I'm sorry for here without any comments. This number define is come from
-> gpiolib.c. It means the max size of gpio property name. The reference code
-> located in line 1815 of gpiolib.c.
-
-That really isn't helping here.  The problem is that you've got a random
-magic number thrown in here with no documentation.
-
-> >I'm not seeing anywhere where we store the GPIO in this loop.  It is
-> >therefore unclear to me how the chip select is going to work?
-
-> In DT binding, of_get_named_gpio and devm_gpio_request were used to
-> parse gpio pins defined in DTs and then request these pins. Similarly,
-> for ACPI, devm_gpiod_get can do that two operation in a single
-> function. It is a unified interface to ACPI and DT binding.
-
-> If the gpiod is valid, the corresponding gpio pins has been requested.
-> We do not need to save this gpiod any more.
-
-No, that makes no sense at all.  If we're requesting a GPIO to use as
-chip select we can't just then ignore the GPIO, we need to control it at
-some point and...
-
-> which gpio pin was used is defined in spi_device, named cs_gpio, the
-> configuration to the gpio pins will be done in the setup callback
-> routine of each device. What the spi master should do is just request
-> these pins to the gpio subsystem.
-
-=2E..this would be a complete failure of abstraction - you appear to be
-suggesting that the client devices should also separately request the
-GPIOs and set them up.  That's at best going to be redundant and is
-likely to introduce bugs.
-
---phbq2bkSb+hZnunM
+--xUq7mlTLx96rFlBf
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJWwg6FAAoJECTWi3JdVIfQClAH/jcwz+KMQc5oMHgGB6kfiTT6
-JDlWD7jzbG3FCzOlm8KBc1iuoLkSkL34D0PqO8hVOT1UcQFXkkwz9ahKJy4MN4H4
-YV/mcZgoINXfh9VwjAvLJ9Oqywb3KoknF1TA/CSvtVm9a/MkJmkwQiUWxWqAP83p
-1JVWwJCNQSe/jE5mic59Nw0tUChcJ1cRBU3blrRRxdE85RrMm+V5rb2tUVcz1dsW
-jU0FgB9nz+jkqCFUEO971ApC+y42wIySR3fR/muPK0qOZUZirS52IBhtsS0j7ODd
-fprNGs/W/aHM/+DUBslXTFZ++sUv0tWyzFkSBcNp6Nx8MNQ8n9oEBkvzG7Cfcog=
-=LkdD
+iQEcBAEBCAAGBQJWwg7DAAoJECTWi3JdVIfQQUkH/iZIyyv5aQXnMun9sqlGlfjj
+m/v7EPIx4TvNK7jzU79tUvSJ5r8qR9Dvup3fRKxhMDnwH9fEI5zvP00K7M71wiLO
+Tl62m398ZEaYCoPtlufXaFVY/lSzQxffxqWEbxIYGE2JiJb5loPe3p7EgoeUraFE
+YQOJi/Qbk3Yz23GXEYIKOPwx4RGh9DRWLfu12yp3hAyouf+b9dFayLaRFgqGW+1s
+uHiQPoIp6imPfOlDj1W6yG/31qCkg5e/QUGOTUE4HyjdoczgMQkwpaLKZLC+oE1i
+YF0sAqGeNFe+1WttPoGFk40d7dLUmG52kF+KmE7TScpkdc7mW+DzLSOAqvRj2kg=
+=/6qf
 -----END PGP SIGNATURE-----
 
---phbq2bkSb+hZnunM--
+--xUq7mlTLx96rFlBf--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

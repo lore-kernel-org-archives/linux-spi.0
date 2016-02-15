@@ -1,47 +1,42 @@
-From: One Thousand Gnomes <gnomes-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org>
-Subject: Re: [RFC PATCH] SPI/ACPI: DesignWare: Add ACPI support for
- Designware SPI driver
-Date: Mon, 15 Feb 2016 18:09:21 +0000
-Message-ID: <20160215180921.2692941e@lxorguk.ukuu.org.uk>
-References: <1454656280-130658-1-git-send-email-qiujiang@huawei.com>
-	<20160205110900.GA12311@sirena.org.uk>
-	<56C18C07.2030209@huawei.com>
-	<20160215174540.GS18988@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: Hanjun Guo <guohanjun-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>, qiujiang <qiujiang-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>,
-	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	charles.chenxin-hv44wF8Li93QT0dZR+AlfA@public.gmane.org, linuxarm-hv44wF8Li93QT0dZR+AlfA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: [PATCH] spi: Add cond_resched() in main message processing loop
+Date: Mon, 15 Feb 2016 18:34:41 +0000
+Message-ID: <1455561281-18573-1-git-send-email-broonie@kernel.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160215174540.GS18988-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, 15 Feb 2016 17:45:40 +0000
-Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+When a controller has only PIO support it is very likely that we will
+run into use cases where we spend a very large amount of time consuming
+CPU.  Code that does this should call cond_resched() every once in a
+while to give other tasks more of a chance to run so do that in the main
+SPI loop, the overhead is negligable if it's not needed.
 
-> On Mon, Feb 15, 2016 at 04:27:51PM +0800, Hanjun Guo wrote:
-> > On 2016/2/5 19:09, Mark Brown wrote:  
-> 
-> > > Intel are heavy users of this driver on their systems which also use
-> > > ACPI.  Have you discussed this binding with them?  I've copied Andy and
-> > > Jarkko who've worked on the driver recently.  
-> 
-> > There is no ACPI code in this driver yet, seems "PRP0001" is used to reuse
-> > this driver directly.  
-> 
-> No, on Intel systems the devices appear on the PCI bus.
+Suggested-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-They may be ACPI or PCI enumerated - depends upon the system and
-firmware. See drivers/acpi/acpi_lpss.c
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 0ad55946e388..4252a112985c 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1207,6 +1207,9 @@ static void __spi_pump_messages(struct spi_master *master, bool in_kthread)
+ 		return;
+ 	}
+ 	mutex_unlock(&master->bus_lock_mutex);
++
++	/* Prod the scheduler in case transfer_one() was busy waiting */
++	cond_resched();
+ }
+ 
+ /**
+-- 
+2.7.0
 
-
-Alan
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,50 +1,58 @@
-From: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: core: Staticize __spi_split_transfer_maxsize()
-Date: Sun, 14 Feb 2016 13:33:50 -0200
-Message-ID: <1455464030-24398-1-git-send-email-festevam@gmail.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+From: Hanjun Guo <guohanjun-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
+Subject: Re: [RFC PATCH] SPI/ACPI: DesignWare: Add ACPI support for Designware
+ SPI driver
+Date: Mon, 15 Feb 2016 16:27:51 +0800
+Message-ID: <56C18C07.2030209@huawei.com>
+References: <1454656280-130658-1-git-send-email-qiujiang@huawei.com>
+ <20160205110900.GA12311@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	<charles.chenxin-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>, <linuxarm-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>,
+	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, qiujiang <qiujiang-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20160205110900.GA12311-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
+On 2016/2/5 19:09, Mark Brown wrote:
+> On Fri, Feb 05, 2016 at 03:11:20PM +0800, qiujiang wrote:
+>
+>> This patch added ACPI support for DesignWare SPI mmio driver. It
+>> was based the corresponding DT driver and compatible for this two
+>> way. This patch has been tested on Hisilicon D02 board. It relies
+>> on the GPIO patchset.
+> Intel are heavy users of this driver on their systems which also use
+> ACPI.  Have you discussed this binding with them?  I've copied Andy and
+> Jarkko who've worked on the driver recently.
 
-__spi_split_transfer_maxsize() can be made static as it is only
-used in this file.
+There is no ACPI code in this driver yet, seems "PRP0001" is used to reuse
+this driver directly.
 
-This fixes the following sparse warning:
+[...]
+>
+>> +static const struct acpi_device_id dw_spi_mmio_acpi_match[] = {
+>> +		{"HISI0171", 0},
+>> +		{ }
+>> +};
+>> +MODULE_DEVICE_TABLE(acpi, dw_spi_mmio_acpi_match);
+> I really do wish ACPI had some more sensible system for allocating
+> device IDs so the tables were a little more legible. :(
 
-drivers/spi/spi.c:2266:5: warning: symbol '__spi_split_transfer_maxsize' was not declared. Should it be static?
+Hmm, I agree. but for now, every OEM can request ACPI or PNP ID with specific
+prefixes, and they can manage it by themselves, that would flexible for OEM verdors
+to develop firmware and driver.
 
-Signed-off-by: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
----
- drivers/spi/spi.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+For this driver in particular, if DesignWare provides the ACPI or PNP ID, that would
+be great for all OEMs can reuse it.
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 1413a6b..ced6c88 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2263,11 +2263,11 @@ struct spi_replaced_transfers *spi_replace_transfers(
- }
- EXPORT_SYMBOL_GPL(spi_replace_transfers);
- 
--int __spi_split_transfer_maxsize(struct spi_master *master,
--				 struct spi_message *msg,
--				 struct spi_transfer **xferp,
--				 size_t maxsize,
--				 gfp_t gfp)
-+static int __spi_split_transfer_maxsize(struct spi_master *master,
-+					struct spi_message *msg,
-+					struct spi_transfer **xferp,
-+					size_t maxsize,
-+					gfp_t gfp)
- {
- 	struct spi_transfer *xfer = *xferp, *xfers;
- 	struct spi_replaced_transfers *srt;
--- 
-1.9.1
+Thanks
+Hanjun
+
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

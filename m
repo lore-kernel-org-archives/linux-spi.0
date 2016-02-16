@@ -1,112 +1,81 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH v3 3/8] spi: core: add spi_split_transfers_maxsize
-Date: Tue, 16 Feb 2016 09:52:07 +0100
-Message-ID: <CAMuHMdVX6BUJZHA0xUYVe50bZMP4eKdFb4=TSfQMvA=5GDVv5A@mail.gmail.com>
-References: <1450106426-2277-1-git-send-email-kernel@martin.sperl.org>
-	<1450106426-2277-4-git-send-email-kernel@martin.sperl.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v5 3/5] mtd: devices: m25p80: add support for mmap read
+ request
+Date: Tue, 16 Feb 2016 12:38:54 +0000
+Message-ID: <20160216123854.GJ18327@sirena.org.uk>
+References: <1449807000-6457-1-git-send-email-vigneshr@ti.com>
+ <1449807000-6457-4-git-send-email-vigneshr@ti.com>
+ <20160209193616.GN13270@sirena.org.uk>
+ <56BC1D3E.5020203@ti.com>
+ <20160212223711.GD18988@sirena.org.uk>
+ <56C2D731.6050306@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	Lee Jones <lee-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1450106426-2277-4-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
-
-On Mon, Dec 14, 2015 at 4:20 PM,  <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org> wrote:
-> +int __spi_split_transfer_maxsize(struct spi_master *master,
-> +                                struct spi_message *msg,
-> +                                struct spi_transfer **xferp,
-> +                                size_t maxsize,
-> +                                gfp_t gfp)
-> +{
-> +       struct spi_transfer *xfer = *xferp, *xfers;
-> +       struct spi_replaced_transfers *srt;
-> +       size_t offset;
-> +       size_t count, i;
-> +
-> +       /* warn once about this fact that we are splitting a transfer */
-> +       dev_warn_once(&msg->spi->dev,
-> +                     "spi_transfer of length %i exceed max length of %i - needed to split transfers\n",
-
-On arm64:
-
-drivers/spi/spi.c:2278:2: warning: format '%i' expects argument of
-type 'int', but argument 4 has type 'size_t' [-Wformat=]
-  dev_warn_once(&msg->spi->dev,
-
-%u ... %zu
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="HSQ3hISbU3Um6hch"
+Cc: Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
+	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	"hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <56C2D731.6050306-l0cyMroinI0@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
 
-> +                     xfer->len, maxsize);
-> +
-> +       /* calculate how many we have to replace */
-> +       count = DIV_ROUND_UP(xfer->len, maxsize);
-> +
-> +       /* create replacement */
-> +       srt = spi_replace_transfers(msg, xfer, 1, count, NULL, 0, gfp);
-> +       if (!srt)
-> +               return -ENOMEM;
-> +       xfers = srt->inserted_transfers;
-> +
-> +       /* now handle each of those newly inserted spi_transfers
-> +        * note that the replacements spi_transfers all are preset
-> +        * to the same values as *xferp, so tx_buf, rx_buf and len
-> +        * are all identical (as well as most others)
-> +        * so we just have to fix up len and the pointers.
-> +        *
-> +        * this also includes support for the depreciated
-> +        * spi_message.is_dma_mapped interface
-> +        */
-> +
-> +       /* the first transfer just needs the length modified, so we
-> +        * run it outside the loop
-> +        */
-> +       xfers[0].len = min(maxsize, xfer[0].len);
-> +
-> +       /* all the others need rx_buf/tx_buf also set */
-> +       for (i = 1, offset = maxsize; i < count; offset += maxsize, i++) {
-> +               /* update rx_buf, tx_buf and dma */
-> +               if (xfers[i].rx_buf)
-> +                       xfers[i].rx_buf += offset;
-> +               if (xfers[i].rx_dma)
-> +                       xfers[i].rx_dma += offset;
-> +               if (xfers[i].tx_buf)
-> +                       xfers[i].tx_buf += offset;
-> +               if (xfers[i].tx_dma)
-> +                       xfers[i].tx_dma += offset;
-> +
-> +               /* update length */
-> +               xfers[i].len = min(maxsize, xfers[i].len - offset);
+--HSQ3hISbU3Um6hch
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On arm64:
+On Tue, Feb 16, 2016 at 01:30:49PM +0530, Vignesh R wrote:
+> On 02/13/2016 04:07 AM, Mark Brown wrote:
+> > On Thu, Feb 11, 2016 at 11:03:50AM +0530, Vignesh R wrote:
+> >> On 02/10/2016 01:06 AM, Mark Brown wrote:
 
-drivers/spi/spi.c:2304:113: warning: comparison of distinct pointer
-types lacks a cast
+> >>> Looking at this I can't help but think that spi_flash_read() ought to
+> >>> have the stub in rather than the caller.  But given that we're pretty
+> >>> much only ever expecting one user I'm not 100% sure it actually matters.
 
-> +       }
+> >> Well, my initial patch set passed long list of arguments to
+> >> spi_flash_read(), but Brian suggested to use struct[1] in order to avoid
+> >> unnecessary churn when things need changed in the API.
 
-Does it make sense that maxsize is size_t (32 or 64 bit), while
-spi_transfer.len is
-unsigned int (always 32 bit)?
+> > I don't see what that has to do with my point?
 
-I see this is coming from spi_master.max_dma_len, which is also size_t.
+> AFAIU, your previous comment was to move initialization of
+> spi_flash_read_message struct to spi_flash_read(). This would mean
 
-Gr{oetje,eeting}s,
+No, not at all.  I'm talking about how we handle the case where we don't
+have hardware support for this and need to implement it in software -
+currently that's in a separate place to the place where we call the
+driver.
 
-                        Geert
+--HSQ3hISbU3Um6hch
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJWwxhUAAoJECTWi3JdVIfQVM0H/j64x3bLpAv0cTZC+2n0VAOm
+5oSygJJOfQqjzFBhmpPdJfd1BvVzJnSb7Lh42eGLlehbABTwyHc5upivQNti/D5H
+FYwmZDhCge7Ewj0YDB9Q2StXsUKw1X0QMFFlRXMZlB06TkBIKYMfp04jorAs9ZdI
+osCAbMdjt/bZ9EqMxEcR+Mief5y1BYEVZS3ridmPtBazefEhNBkQ43yvwXNIPdkw
+yRxBFlDLteJO1E1+bUbumGFj8cb1jC2DvuG6PjuQUJ14g+gZ+f02FHQ5XH+uuAGu
+0RPS4Jqm6YM0Nv00H8rRj8PWYglqqLwUcHT4gNcW6vOtgu/6AX04dcVuak0zY2w=
+=m7oA
+-----END PGP SIGNATURE-----
+
+--HSQ3hISbU3Um6hch--
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

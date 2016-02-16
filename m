@@ -1,78 +1,61 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: bcm2835: Remove unnecessary workaround to call gpio_set_value" to the spi tree
-Date: Mon, 15 Feb 2016 20:59:20 +0000
-Message-ID: <E1aVQEq-00083a-Pg@finisterre>
-References: <1455380347.25581.1.camel@ingics.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>,
-	Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Subject: Re: [PATCH 3/3] spi: rockchip: add debug interface support
+Date: Tue, 16 Feb 2016 09:32:23 +0800
+Message-ID: <56C27C27.8090108@rock-chips.com>
+References: <1455524848-2646-1-git-send-email-shawn.lin@rock-chips.com>
+ <1455524902-2780-1-git-send-email-shawn.lin@rock-chips.com>
+ <20160215172632.GQ18988@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org, shawn.lin-NgiFYW8Wbx6Ta72+1OMJgUB+6BGkLq7r@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1455380347.25581.1.camel-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+In-Reply-To: <20160215172632.GQ18988-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+Hi Mark,
 
-   spi: bcm2835: Remove unnecessary workaround to call gpio_set_value
+On 2016/2/16 1:26, Mark Brown wrote:
+> On Mon, Feb 15, 2016 at 04:28:22PM +0800, Shawn Lin wrote:
+>
+>> +#ifdef CONFIG_DEBUG_FS
+>> +#include <linux/debugfs.h>
+>> +#endif
+>
+> Just include the header.  Only add ifdefs if they do something.
+>
+>> +static int rockchip_spi_debugfs_init(struct rockchip_spi *rs)
+>> +{
+>> +	rs->debugfs = debugfs_create_dir("rockchip_spi", NULL);
+>> +	if (!rs->debugfs)
+>> +		return -ENOMEM;
+>> +
+>> +	debugfs_create_file("regs", S_IFREG | S_IRUGO,
+>> +		rs->debugfs, (void *)rs, &rockchip_spi_dbg_ops);
+>> +	return 0;
+>> +}
+>
+> This is completely separate to the core debugfs support for SPI, if
+> we're adding new debugfs stuff that's per device we should be extending
+> the core debugfs stuff so everything is in one place.
 
-has been applied to the spi tree at
+yes, I will check the spi core debugfs to see how we can extend it
+for per device to dump specific msg.
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+Thanks.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+>
+> Your register dump stuff looks like you might want to consider using
+> regmap, it's got this and other register access diagnostics already.
+>
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 763dedfcda5f6c9294c4a5d048f5261f442cc1e8 Mon Sep 17 00:00:00 2001
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Date: Sun, 14 Feb 2016 00:19:07 +0800
-Subject: [PATCH] spi: bcm2835: Remove unnecessary workaround to call
- gpio_set_value
-
-This should be fixed by commit 4c02cba18cc9
-("pinctrl: bcm2835: Fix initial value for direction_output")
-
-Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Acked-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-bcm2835.c | 5 -----
- 1 file changed, 5 deletions(-)
-
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index cf04960..f35cc10 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -727,11 +727,6 @@ static int bcm2835_spi_setup(struct spi_device *spi)
- 			spi->chip_select, spi->cs_gpio, err);
- 		return err;
- 	}
--	/* the implementation of pinctrl-bcm2835 currently does not
--	 * set the GPIO value when using gpio_direction_output
--	 * so we are setting it here explicitly
--	 */
--	gpio_set_value(spi->cs_gpio, (spi->mode & SPI_CS_HIGH) ? 0 : 1);
- 
- 	return 0;
- }
 -- 
-2.7.0
+Best Regards
+Shawn Lin
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

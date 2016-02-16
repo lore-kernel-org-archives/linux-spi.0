@@ -1,61 +1,39 @@
 From: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Subject: Re: [PATCH 3/3] spi: rockchip: add debug interface support
-Date: Tue, 16 Feb 2016 09:32:23 +0800
-Message-ID: <56C27C27.8090108@rock-chips.com>
-References: <1455524848-2646-1-git-send-email-shawn.lin@rock-chips.com>
- <1455524902-2780-1-git-send-email-shawn.lin@rock-chips.com>
- <20160215172632.GQ18988@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org, shawn.lin-NgiFYW8Wbx6Ta72+1OMJgUB+6BGkLq7r@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Subject: [PATCH] spi: rockchip: remove xfer_completion from rockchip_spi
+Date: Tue, 16 Feb 2016 11:23:32 +0800
+Message-ID: <1455593012-21248-1-git-send-email-shawn.lin@rock-chips.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160215172632.GQ18988-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Mark,
+xfer_completion isn't been used anywhere, so it can be
+removed.
 
-On 2016/2/16 1:26, Mark Brown wrote:
-> On Mon, Feb 15, 2016 at 04:28:22PM +0800, Shawn Lin wrote:
->
->> +#ifdef CONFIG_DEBUG_FS
->> +#include <linux/debugfs.h>
->> +#endif
->
-> Just include the header.  Only add ifdefs if they do something.
->
->> +static int rockchip_spi_debugfs_init(struct rockchip_spi *rs)
->> +{
->> +	rs->debugfs = debugfs_create_dir("rockchip_spi", NULL);
->> +	if (!rs->debugfs)
->> +		return -ENOMEM;
->> +
->> +	debugfs_create_file("regs", S_IFREG | S_IRUGO,
->> +		rs->debugfs, (void *)rs, &rockchip_spi_dbg_ops);
->> +	return 0;
->> +}
->
-> This is completely separate to the core debugfs support for SPI, if
-> we're adding new debugfs stuff that's per device we should be extending
-> the core debugfs stuff so everything is in one place.
+Signed-off-by: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+---
 
-yes, I will check the spi core debugfs to see how we can extend it
-for per device to dump specific msg.
+ drivers/spi/spi-rockchip.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-Thanks.
-
->
-> Your register dump stuff looks like you might want to consider using
-> regmap, it's got this and other register access diagnostics already.
->
-
-
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index 79a8bc4..07909ee9 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -192,8 +192,6 @@ struct rockchip_spi {
+ 	/* protect state */
+ 	spinlock_t lock;
+ 
+-	struct completion xfer_completion;
+-
+ 	u32 use_dma;
+ 	struct sg_table tx_sg;
+ 	struct sg_table rx_sg;
 -- 
-Best Regards
-Shawn Lin
+2.3.7
+
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

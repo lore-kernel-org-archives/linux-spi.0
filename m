@@ -1,54 +1,70 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 01/13] spi: imx: allow only WML aligned transfers to use
- DMA
-Date: Wed, 17 Feb 2016 16:05:35 +0000
-Message-ID: <20160217160535.GW7544@sirena.org.uk>
-References: <1455715739-25161-1-git-send-email-s.hauer@pengutronix.de>
- <1455715739-25161-2-git-send-email-s.hauer@pengutronix.de>
- <20160217141619.GR7544@sirena.org.uk>
- <20160217150146.GC3939@pengutronix.de>
+From: "R, Vignesh" <vigneshr-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH v5 3/5] mtd: devices: m25p80: add support for mmap read
+ request
+Date: Wed, 17 Feb 2016 21:41:10 +0530
+Message-ID: <56C49B9E.8060506@ti.com>
+References: <1449807000-6457-1-git-send-email-vigneshr@ti.com>
+ <1449807000-6457-4-git-send-email-vigneshr@ti.com>
+ <20160209193616.GN13270@sirena.org.uk> <56BC1D3E.5020203@ti.com>
+ <20160212223711.GD18988@sirena.org.uk> <56C2D731.6050306@ti.com>
+ <20160216123854.GJ18327@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="G9m07da55tKJni3T"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+Cc: Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
+	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	"hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20160217150146.GC3939-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+In-Reply-To: <20160216123854.GJ18327-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---G9m07da55tKJni3T
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Wed, Feb 17, 2016 at 04:01:46PM +0100, Sascha Hauer wrote:
+On 02/16/2016 06:08 PM, Mark Brown wrote:
+> On Tue, Feb 16, 2016 at 01:30:49PM +0530, Vignesh R wrote:
+>> On 02/13/2016 04:07 AM, Mark Brown wrote:
+>>> On Thu, Feb 11, 2016 at 11:03:50AM +0530, Vignesh R wrote:
+>>>> On 02/10/2016 01:06 AM, Mark Brown wrote:
+> 
+>>>>> Looking at this I can't help but think that spi_flash_read() ought to
+>>>>> have the stub in rather than the caller.  But given that we're pretty
+>>>>> much only ever expecting one user I'm not 100% sure it actually matters.
+> 
+>>>> Well, my initial patch set passed long list of arguments to
+>>>> spi_flash_read(), but Brian suggested to use struct[1] in order to avoid
+>>>> unnecessary churn when things need changed in the API.
+> 
+>>> I don't see what that has to do with my point?
+> 
+>> AFAIU, your previous comment was to move initialization of
+>> spi_flash_read_message struct to spi_flash_read(). This would mean
+> 
+> No, not at all.  I'm talking about how we handle the case where we don't
+> have hardware support for this and need to implement it in software -
+> currently that's in a separate place to the place where we call the
+> driver.
+> 
 
-> You seem to have a template for this, I remember having read the same
-> text before ;)
+Yeah, but AFAIK, hardware accelerated read support is applicable for
+m25p80 flashes only, I doubt whether spi_flash_read() will be used by
+other types. I felt keeping the software implementation in m25p80_read()
+will be consistent with m25p80_write().
 
-I do, but even before I had a template I'd always end up typing the same
-thing by hand anyway.
 
---G9m07da55tKJni3T
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJWxJpPAAoJECTWi3JdVIfQnS4H/jSu2NdPy3XoX0vZx6QE1Kdo
-+cCrBB/PAnNdAqfqYzGaASTdYoZME9gqlj9Y7zTY/JEgi8b7akvrTCBeBYp8b51W
-LBzYKUBrOlNVBMLmL5xn2lZ0HZ3UZLSCbXmEhn60WBPriOUGEMytnHZwDazPIPyl
-KI3UaAb30kFtw3Rcegw4HAB+z+bZfvyLyToIl78pojNy+H8/ioAeXzx55PIe4Vju
-82QWoErBeKnYdhpWA/3vE6tDHZq2ZaLTFDJUJnuuIhkQEyrccz/j9BbIOKyUBbG7
-BMK2b9J4rjXnv+wRk2YCXIKu0nrGGc+w+VhvJF4Xxitwb++08bReU83Eb+VR/mU=
-=nSlf
------END PGP SIGNATURE-----
-
---G9m07da55tKJni3T--
+-- 
+Regards
+Vignesh
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

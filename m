@@ -1,7 +1,7 @@
 From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH 13/13] ARM: dts: imx6: Use correct SDMA script for SPI cores
-Date: Wed, 17 Feb 2016 14:28:59 +0100
-Message-ID: <1455715739-25161-14-git-send-email-s.hauer@pengutronix.de>
+Subject: [PATCH 10/13] spi: imx: make some register defines simpler
+Date: Wed, 17 Feb 2016 14:28:56 +0100
+Message-ID: <1455715739-25161-11-git-send-email-s.hauer@pengutronix.de>
 References: <1455715739-25161-1-git-send-email-s.hauer@pengutronix.de>
 Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
@@ -14,59 +14,49 @@ In-Reply-To: <1455715739-25161-1-git-send-email-s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@p
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-According to the reference manual the shp_2_mcu / mcu_2_shp
-scripts must be used for devices connected through the SPBA.
-
-This fixes an issue we saw with DMA transfers from SPI NOR Flashes.
-Sometimes the SPI controller RX FIFO was not empty after a DMA
-transfer and the driver got stuck in the next PIO transfer when
-it read one word more than expected.
+The watermark levels in the DMA register are write only, the driver
+should never have to read them back from the hardware. Replace the
+current _MASK and _OFFSET defines with defines taking the watermark
+level directly.
 
 Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 ---
- arch/arm/boot/dts/imx6qdl.dtsi | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/spi/spi-imx.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm/boot/dts/imx6qdl.dtsi b/arch/arm/boot/dts/imx6qdl.dtsi
-index 4f6ae92..06d2c4e 100644
---- a/arch/arm/boot/dts/imx6qdl.dtsi
-+++ b/arch/arm/boot/dts/imx6qdl.dtsi
-@@ -261,7 +261,7 @@
- 					clocks = <&clks IMX6QDL_CLK_ECSPI1>,
- 						 <&clks IMX6QDL_CLK_ECSPI1>;
- 					clock-names = "ipg", "per";
--					dmas = <&sdma 3 7 1>, <&sdma 4 7 2>;
-+					dmas = <&sdma 3 8 1>, <&sdma 4 8 2>;
- 					dma-names = "rx", "tx";
- 					status = "disabled";
- 				};
-@@ -275,7 +275,7 @@
- 					clocks = <&clks IMX6QDL_CLK_ECSPI2>,
- 						 <&clks IMX6QDL_CLK_ECSPI2>;
- 					clock-names = "ipg", "per";
--					dmas = <&sdma 5 7 1>, <&sdma 6 7 2>;
-+					dmas = <&sdma 5 8 1>, <&sdma 6 8 2>;
- 					dma-names = "rx", "tx";
- 					status = "disabled";
- 				};
-@@ -289,7 +289,7 @@
- 					clocks = <&clks IMX6QDL_CLK_ECSPI3>,
- 						 <&clks IMX6QDL_CLK_ECSPI3>;
- 					clock-names = "ipg", "per";
--					dmas = <&sdma 7 7 1>, <&sdma 8 7 2>;
-+					dmas = <&sdma 7 8 1>, <&sdma 8 8 2>;
- 					dma-names = "rx", "tx";
- 					status = "disabled";
- 				};
-@@ -303,7 +303,7 @@
- 					clocks = <&clks IMX6QDL_CLK_ECSPI4>,
- 						 <&clks IMX6QDL_CLK_ECSPI4>;
- 					clock-names = "ipg", "per";
--					dmas = <&sdma 9 7 1>, <&sdma 10 7 2>;
-+					dmas = <&sdma 9 8 1>, <&sdma 10 8 2>;
- 					dma-names = "rx", "tx";
- 					status = "disabled";
- 				};
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 2476de7..dee5e28 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -256,12 +256,9 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+ #define MX51_ECSPI_INT_RREN		(1 <<  3)
+ 
+ #define MX51_ECSPI_DMA      0x14
+-#define MX51_ECSPI_DMA_TX_WML_OFFSET	0
+-#define MX51_ECSPI_DMA_TX_WML_MASK	0x3F
+-#define MX51_ECSPI_DMA_RX_WML_OFFSET	16
+-#define MX51_ECSPI_DMA_RX_WML_MASK	(0x3F << 16)
+-#define MX51_ECSPI_DMA_RXT_WML_OFFSET	24
+-#define MX51_ECSPI_DMA_RXT_WML_MASK	(0x3F << 24)
++#define MX51_ECSPI_DMA_TX_WML(wml)	((wml) & 0x3f)
++#define MX51_ECSPI_DMA_RX_WML(wml)	(((wml) & 0x3f) << 16)
++#define MX51_ECSPI_DMA_RXT_WML(wml)	(((wml) & 0x3f) << 24)
+ 
+ #define MX51_ECSPI_DMA_TEDEN		(1 << 7)
+ #define MX51_ECSPI_DMA_RXDEN		(1 << 23)
+@@ -408,9 +405,9 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
+ 	 * and enable DMA request.
+ 	 */
+ 
+-	writel(spi_imx->wml << MX51_ECSPI_DMA_RX_WML_OFFSET |
+-		spi_imx->wml << MX51_ECSPI_DMA_TX_WML_OFFSET |
+-		spi_imx->wml << MX51_ECSPI_DMA_RXT_WML_OFFSET |
++	writel(MX51_ECSPI_DMA_RX_WML(spi_imx->wml) |
++		MX51_ECSPI_DMA_TX_WML(spi_imx->wml) |
++		MX51_ECSPI_DMA_RXT_WML(spi_imx->wml) |
+ 		MX51_ECSPI_DMA_TEDEN | MX51_ECSPI_DMA_RXDEN |
+ 		MX51_ECSPI_DMA_RXTDEN, spi_imx->base + MX51_ECSPI_DMA);
+ 
 -- 
 2.7.0
 

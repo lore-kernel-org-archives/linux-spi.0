@@ -1,47 +1,54 @@
-From: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
-Subject: [PATCH 2/2] spi: core: Use cast inside 'min' macro
-Date: Wed, 17 Feb 2016 13:20:24 -0200
-Message-ID: <1455722424-15490-2-git-send-email-fabio.estevam@nxp.com>
-References: <1455722424-15490-1-git-send-email-fabio.estevam@nxp.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 01/13] spi: imx: allow only WML aligned transfers to use
+ DMA
+Date: Wed, 17 Feb 2016 16:05:35 +0000
+Message-ID: <20160217160535.GW7544@sirena.org.uk>
+References: <1455715739-25161-1-git-send-email-s.hauer@pengutronix.de>
+ <1455715739-25161-2-git-send-email-s.hauer@pengutronix.de>
+ <20160217141619.GR7544@sirena.org.uk>
+ <20160217150146.GC3939@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
-To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="G9m07da55tKJni3T"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1455722424-15490-1-git-send-email-fabio.estevam-3arQi8VN3Tc@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20160217150146.GC3939-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Use cast inside 'min' macro in order to avoid the following 
-build warning on ARM64:
 
-include/linux/kernel.h:754:17: warning: comparison of distinct pointer types lacks a cast
-  (void) (&_min1 == &_min2);  \
-                 ^
-drivers/spi/spi.c:2304:17: note: in expansion of macro 'min'
-  xfers[0].len = min(maxsize, xfer[0].len);
+--G9m07da55tKJni3T
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Signed-off-by: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
----
- drivers/spi/spi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Wed, Feb 17, 2016 at 04:01:46PM +0100, Sascha Hauer wrote:
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 0725ffa..4498f40 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2301,7 +2301,7 @@ static int __spi_split_transfer_maxsize(struct spi_master *master,
- 	/* the first transfer just needs the length modified, so we
- 	 * run it outside the loop
- 	 */
--	xfers[0].len = min(maxsize, xfer[0].len);
-+	xfers[0].len = min(maxsize, (size_t)xfer[0].len);
- 
- 	/* all the others need rx_buf/tx_buf also set */
- 	for (i = 1, offset = maxsize; i < count; offset += maxsize, i++) {
--- 
-1.9.1
+> You seem to have a template for this, I remember having read the same
+> text before ;)
 
+I do, but even before I had a template I'd always end up typing the same
+thing by hand anyway.
+
+--G9m07da55tKJni3T
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJWxJpPAAoJECTWi3JdVIfQnS4H/jSu2NdPy3XoX0vZx6QE1Kdo
++cCrBB/PAnNdAqfqYzGaASTdYoZME9gqlj9Y7zTY/JEgi8b7akvrTCBeBYp8b51W
+LBzYKUBrOlNVBMLmL5xn2lZ0HZ3UZLSCbXmEhn60WBPriOUGEMytnHZwDazPIPyl
+KI3UaAb30kFtw3Rcegw4HAB+z+bZfvyLyToIl78pojNy+H8/ioAeXzx55PIe4Vju
+82QWoErBeKnYdhpWA/3vE6tDHZq2ZaLTFDJUJnuuIhkQEyrccz/j9BbIOKyUBbG7
+BMK2b9J4rjXnv+wRk2YCXIKu0nrGGc+w+VhvJF4Xxitwb++08bReU83Eb+VR/mU=
+=nSlf
+-----END PGP SIGNATURE-----
+
+--G9m07da55tKJni3T--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

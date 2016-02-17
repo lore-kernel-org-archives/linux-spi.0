@@ -1,20 +1,25 @@
 From: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
-Subject: [PATCH 1/2] spi: core: Use %zu for printing 'size_t' type
-Date: Wed, 17 Feb 2016 13:20:23 -0200
-Message-ID: <1455722424-15490-1-git-send-email-fabio.estevam@nxp.com>
+Subject: [PATCH 2/2] spi: core: Use cast inside 'min' macro
+Date: Wed, 17 Feb 2016 13:20:24 -0200
+Message-ID: <1455722424-15490-2-git-send-email-fabio.estevam@nxp.com>
+References: <1455722424-15490-1-git-send-email-fabio.estevam@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
 To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1455722424-15490-1-git-send-email-fabio.estevam-3arQi8VN3Tc@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Use %zu for printing 'size_t' type in order to fix the following
+Use cast inside 'min' macro in order to avoid the following 
 build warning on ARM64:
 
-drivers/spi/spi.c: In function '__spi_split_transfer_maxsize':
-drivers/spi/spi.c:2278:2: warning: format '%i' expects argument of type 'int', but argument 4 has type 'size_t' [-Wformat=]
+include/linux/kernel.h:754:17: warning: comparison of distinct pointer types lacks a cast
+  (void) (&_min1 == &_min2);  \
+                 ^
+drivers/spi/spi.c:2304:17: note: in expansion of macro 'min'
+  xfers[0].len = min(maxsize, xfer[0].len);
 
 Signed-off-by: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
 ---
@@ -22,18 +27,18 @@ Signed-off-by: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index f6c76be..0725ffa 100644
+index 0725ffa..4498f40 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -2276,7 +2276,7 @@ static int __spi_split_transfer_maxsize(struct spi_master *master,
+@@ -2301,7 +2301,7 @@ static int __spi_split_transfer_maxsize(struct spi_master *master,
+ 	/* the first transfer just needs the length modified, so we
+ 	 * run it outside the loop
+ 	 */
+-	xfers[0].len = min(maxsize, xfer[0].len);
++	xfers[0].len = min(maxsize, (size_t)xfer[0].len);
  
- 	/* warn once about this fact that we are splitting a transfer */
- 	dev_warn_once(&msg->spi->dev,
--		      "spi_transfer of length %i exceed max length of %i - needed to split transfers\n",
-+		      "spi_transfer of length %i exceed max length of %zu - needed to split transfers\n",
- 		      xfer->len, maxsize);
- 
- 	/* calculate how many we have to replace */
+ 	/* all the others need rx_buf/tx_buf also set */
+ 	for (i = 1, offset = maxsize; i < count; offset += maxsize, i++) {
 -- 
 1.9.1
 

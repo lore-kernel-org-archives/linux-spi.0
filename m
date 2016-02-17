@@ -1,70 +1,57 @@
-From: "R, Vignesh" <vigneshr-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH v5 3/5] mtd: devices: m25p80: add support for mmap read
- request
-Date: Wed, 17 Feb 2016 21:41:10 +0530
-Message-ID: <56C49B9E.8060506@ti.com>
-References: <1449807000-6457-1-git-send-email-vigneshr@ti.com>
- <1449807000-6457-4-git-send-email-vigneshr@ti.com>
- <20160209193616.GN13270@sirena.org.uk> <56BC1D3E.5020203@ti.com>
- <20160212223711.GD18988@sirena.org.uk> <56C2D731.6050306@ti.com>
- <20160216123854.GJ18327@sirena.org.uk>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi: core: Use cast inside 'min' macro
+Date: Wed, 17 Feb 2016 18:34:23 +0100
+Message-ID: <CAMuHMdX1eVTwG6vjVkhk962LFoKbtj-WQ0JeiT3Jiv8=onEpLA@mail.gmail.com>
+References: <1455722424-15490-1-git-send-email-fabio.estevam@nxp.com>
+	<1455722424-15490-2-git-send-email-fabio.estevam@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-Cc: Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
-	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	"hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160216123854.GJ18327-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <1455722424-15490-2-git-send-email-fabio.estevam-3arQi8VN3Tc@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Wed, Feb 17, 2016 at 4:20 PM, Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org> wrote:
+> Use cast inside 'min' macro in order to avoid the following
+> build warning on ARM64:
+>
+> include/linux/kernel.h:754:17: warning: comparison of distinct pointer types lacks a cast
+>   (void) (&_min1 == &_min2);  \
+>                  ^
+> drivers/spi/spi.c:2304:17: note: in expansion of macro 'min'
+>   xfers[0].len = min(maxsize, xfer[0].len);
+>
+> Signed-off-by: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
+> ---
+>  drivers/spi/spi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 0725ffa..4498f40 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -2301,7 +2301,7 @@ static int __spi_split_transfer_maxsize(struct spi_master *master,
+>         /* the first transfer just needs the length modified, so we
+>          * run it outside the loop
+>          */
+> -       xfers[0].len = min(maxsize, xfer[0].len);
+> +       xfers[0].len = min(maxsize, (size_t)xfer[0].len);
 
+Please use "min_t(size_t, ..., ...)" instead of explicit casting.
 
-On 02/16/2016 06:08 PM, Mark Brown wrote:
-> On Tue, Feb 16, 2016 at 01:30:49PM +0530, Vignesh R wrote:
->> On 02/13/2016 04:07 AM, Mark Brown wrote:
->>> On Thu, Feb 11, 2016 at 11:03:50AM +0530, Vignesh R wrote:
->>>> On 02/10/2016 01:06 AM, Mark Brown wrote:
-> 
->>>>> Looking at this I can't help but think that spi_flash_read() ought to
->>>>> have the stub in rather than the caller.  But given that we're pretty
->>>>> much only ever expecting one user I'm not 100% sure it actually matters.
-> 
->>>> Well, my initial patch set passed long list of arguments to
->>>> spi_flash_read(), but Brian suggested to use struct[1] in order to avoid
->>>> unnecessary churn when things need changed in the API.
-> 
->>> I don't see what that has to do with my point?
-> 
->> AFAIU, your previous comment was to move initialization of
->> spi_flash_read_message struct to spi_flash_read(). This would mean
-> 
-> No, not at all.  I'm talking about how we handle the case where we don't
-> have hardware support for this and need to implement it in software -
-> currently that's in a separate place to the place where we call the
-> driver.
-> 
+Gr{oetje,eeting}s,
 
-Yeah, but AFAIK, hardware accelerated read support is applicable for
-m25p80 flashes only, I doubt whether spi_flash_read() will be used by
-other types. I felt keeping the software implementation in m25p80_read()
-will be consistent with m25p80_write().
+                        Geert
 
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
 
--- 
-Regards
-Vignesh
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

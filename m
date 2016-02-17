@@ -1,60 +1,80 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 03/13] spi: imx: replace fixed timeout with calculated
-Date: Wed, 17 Feb 2016 14:22:37 +0000
-Message-ID: <20160217142237.GS7544@sirena.org.uk>
+From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: [PATCH] i.MX SPI DMA cleanup
+Date: Wed, 17 Feb 2016 15:59:44 +0100
+Message-ID: <20160217145944.GB3939@pengutronix.de>
 References: <1455715739-25161-1-git-send-email-s.hauer@pengutronix.de>
- <1455715739-25161-4-git-send-email-s.hauer@pengutronix.de>
+ <56C478C9.6050706@de.bosch.com>
+ <20160217135441.GA3939@pengutronix.de>
+ <56C47F64.1080706@de.bosch.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="K3vkeaB0MlFjg8U+"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1455715739-25161-4-git-send-email-s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+In-Reply-To: <56C47F64.1080706-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Wed, Feb 17, 2016 at 03:10:44PM +0100, Dirk Behme wrote:
+> On 17.02.2016 14:54, Sascha Hauer wrote:
+> >Hi Dirk,
+> >
+> >On Wed, Feb 17, 2016 at 02:42:33PM +0100, Dirk Behme wrote:
+> >>Hi Sascha,
+> >>
+> >>On 17.02.2016 14:28, Sascha Hauer wrote:
+> >>>This picks up a series sent by Anton Bondarenko last year. It
+> >>>contains the remaining not yet upstreamed patches from Antons series
+> >>>plus some more DMA related cleanup patches.
+> >>>
+> >>>My mission was to hunt a bug in the DMA code path sometimes causing
+> >>>an additional word in the RX FIFO which locked up the driver in the
+> >>>next transfer. It turned out that this was no bug in the driver but
+> >>>instead in the device tree: We used the wrong SDMA script for i.MX6.
+> >>>The ECSPI cores are connected through the SPBA, so according to the
+> >>>reference manual we need the shp/mcu scripts rather than the app/mcu
+> >>>scripts.
+> >>
+> >>
+> >>Are you talking about what is known as "TKT238285 hardware issue"
+> >>
+> >>https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/drivers/spi/spi-imx.c?id=a02bb401f8ae264be782ee57d98bdd99f14c8022
+> >
+> >I am aware of this issue, but I have no idea if this is the same or
+> >another issue. It says:
+> >
+> >>For TKT238285 hardware issue which may cause txfifo store data twice can only
+> >>be caught on i.mx6dl, we use pio mode instead of DMA mode on i.mx6dl.
+> >
+> >What I saw here is that there was one word more than expected in the RX
+> >FIFO. Since both RX and TX FIFO act synchronously it could be that the
+> >additional word in the RX FIFO was caused by an additional word in the
+> >TX FIFO as described above.
+> 
+> 
+> The question behind all this is if we could drop
+> 
+> https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/drivers/spi/spi-imx.c?id=a02bb401f8ae264be782ee57d98bdd99f14c8022
+> 
+> ?
 
---K3vkeaB0MlFjg8U+
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+It seems on the i.MX6DL we (additionally) have another issue. I just
+tested here on a i.MX6DL board with a NOR Flash connected. I saw the
+same issue as I saw on the i.MX6Q, but on the i.MX6DL it cannot be fixed
+by using the shp/mcu SDMA scripts.
+Funny enough on the i.MX6DL the RXFIFO issue happens much more
+frequently than on the i.MX6Q.
 
-On Wed, Feb 17, 2016 at 02:28:49PM +0100, Sascha Hauer wrote:
-> From: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
->=20
-> Fixed timeout value can fire while transaction is ongoing. This may happen
-> because there are no strict requirements on SPI transaction duration.
-> Dynamic timeout value is generated based on SCLK and transaction size.
->=20
-> There is also 4 * SCLK delay between TX bursts related to HW internal CS =
-change.
->=20
-> Signed-off-by: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> ---
+Sascha
 
-I can't take this without a signoff from you, sorry - the DCO is very
-imporant here.
-
---K3vkeaB0MlFjg8U+
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJWxIIdAAoJECTWi3JdVIfQ1TYIAIS9OjT0D8t4VvxasQCJBDN0
-Ah0kGEOSr4MfwIgXtrASkdYyRIshqsb00KeC1ybTKggoPbs9oQfIkACPHqZbCWKJ
-mNouxzd3CI/ZPv/QL1Xr+9AhZ/C/R2IJ3pPowzDvHNqT0Wa066MWo6Md6lhHYNkq
-GbmRdFEq42/XSvd2bV5jip8UB0ajQzXiseIezuGBwqaSBjISFq1wn0GzSjhdHcvy
-w0TDvdCaWeiCndZBdFuYWYgZP9EW/GKZZZ7znQBlcZaONb9iUBi1JDaSHGUJTYn0
-QQH9xJpbBB6iCxYGIbnCOBVe98vmrHE2qj1cV2Fu2WT9mqKSMUmXpWQ84uEgYes=
-=jJ7M
------END PGP SIGNATURE-----
-
---K3vkeaB0MlFjg8U+--
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

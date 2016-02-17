@@ -1,49 +1,94 @@
-From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: Re: [PATCH 01/13] spi: imx: allow only WML aligned transfers to use
- DMA
-Date: Wed, 17 Feb 2016 16:01:46 +0100
-Message-ID: <20160217150146.GC3939@pengutronix.de>
+From: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+Subject: Re: [PATCH] i.MX SPI DMA cleanup
+Date: Wed, 17 Feb 2016 16:33:47 +0100
+Message-ID: <56C492DB.6000405@de.bosch.com>
 References: <1455715739-25161-1-git-send-email-s.hauer@pengutronix.de>
- <1455715739-25161-2-git-send-email-s.hauer@pengutronix.de>
- <20160217141619.GR7544@sirena.org.uk>
+ <56C478C9.6050706@de.bosch.com> <20160217135441.GA3939@pengutronix.de>
+ <56C47F64.1080706@de.bosch.com> <20160217145944.GB3939@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20160217141619.GR7544-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <20160217145944.GB3939-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Feb 17, 2016 at 02:16:19PM +0000, Mark Brown wrote:
-> On Wed, Feb 17, 2016 at 02:28:47PM +0100, Sascha Hauer wrote:
-> 
-> > Also removing change introduced in f6ee9b582d2db652497b73c1f117591dfb6d3a90
-> > since this change only fix usecases with transfer size from 33 to 128 bytes
-> > and doesn't fix 129 bytes and bigger.
-> 
-> Please include human readable descriptions of things like commits and
-> issues being discussed in e-mail in your mails, this makes them much
-> easier for humans to read especially when they have no internet access.
-> I do frequently catch up on my mail on flights or while otherwise
-> travelling so this is even more pressing for me than just being about
-> making things a bit easier to read.
+On 17.02.2016 15:59, Sascha Hauer wrote:
+> On Wed, Feb 17, 2016 at 03:10:44PM +0100, Dirk Behme wrote:
+>> On 17.02.2016 14:54, Sascha Hauer wrote:
+>>> Hi Dirk,
+>>>
+>>> On Wed, Feb 17, 2016 at 02:42:33PM +0100, Dirk Behme wrote:
+>>>> Hi Sascha,
+>>>>
+>>>> On 17.02.2016 14:28, Sascha Hauer wrote:
+>>>>> This picks up a series sent by Anton Bondarenko last year. It
+>>>>> contains the remaining not yet upstreamed patches from Antons series
+>>>>> plus some more DMA related cleanup patches.
+>>>>>
+>>>>> My mission was to hunt a bug in the DMA code path sometimes causing
+>>>>> an additional word in the RX FIFO which locked up the driver in the
+>>>>> next transfer. It turned out that this was no bug in the driver but
+>>>>> instead in the device tree: We used the wrong SDMA script for i.MX6.
+>>>>> The ECSPI cores are connected through the SPBA, so according to the
+>>>>> reference manual we need the shp/mcu scripts rather than the app/mcu
+>>>>> scripts.
+>>>>
+>>>>
+>>>> Are you talking about what is known as "TKT238285 hardware issue"
+>>>>
+>>>> https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/drivers/spi/spi-imx.c?id=a02bb401f8ae264be782ee57d98bdd99f14c8022
+>>>
+>>> I am aware of this issue, but I have no idea if this is the same or
+>>> another issue. It says:
+>>>
+>>>> For TKT238285 hardware issue which may cause txfifo store data twice can only
+>>>> be caught on i.mx6dl, we use pio mode instead of DMA mode on i.mx6dl.
+>>>
+>>> What I saw here is that there was one word more than expected in the RX
+>>> FIFO. Since both RX and TX FIFO act synchronously it could be that the
+>>> additional word in the RX FIFO was caused by an additional word in the
+>>> TX FIFO as described above.
+>>
+>>
+>> The question behind all this is if we could drop
+>>
+>> https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/drivers/spi/spi-imx.c?id=a02bb401f8ae264be782ee57d98bdd99f14c8022
+>>
+>> ?
+>
+> It seems on the i.MX6DL we (additionally) have another issue. I just
+> tested here on a i.MX6DL board with a NOR Flash connected. I saw the
+> same issue as I saw on the i.MX6Q, but on the i.MX6DL it cannot be fixed
+> by using the shp/mcu SDMA scripts.
 
-You seem to have a template for this, I remember having read the same
-text before ;)
 
-Will fix this and add a signed-off-by.
+To my understanding this might depend on the SDMA firmware itself, as in
 
-Sascha
+http://git.freescale.com/git/cgit.cgi/imx/linux-2.6-imx.git/commit/?h=imx_3.14.38_6qp_ga&id=321beb210ffb382b8b5378cbf4467f8986efd52f
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Freescale patches/changes the firmware, too.
+
+
+> Funny enough on the i.MX6DL the RXFIFO issue happens much more
+> frequently than on the i.MX6Q.
+
+
+To my understanding, the TKT238285 hardware issue exists on both i.MX6Q 
+and i.MX6DL. Even though the commit message in
+
+https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/drivers/spi/spi-imx.c?id=a02bb401f8ae264be782ee57d98bdd99f14c802
+
+states it differently. Maybe due to timing issues it happens less often 
+on i.MX6Q and therefore wasn't in the focus there, yet.
+
+Best regards
+
+Dirk
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

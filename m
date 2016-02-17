@@ -1,76 +1,110 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pl022: Remove obsolete struct pl022 members from kerneldoc" to the spi tree
-Date: Wed, 17 Feb 2016 13:04:43 +0000
-Message-ID: <E1aW1md-0004zL-Da@debutante>
-References: <1455709932-12146-1-git-send-email-jarkko.nikula@linux.intel.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: [PATCH 01/13] spi: imx: allow only WML aligned transfers to use DMA
+Date: Wed, 17 Feb 2016 14:28:47 +0100
+Message-ID: <1455715739-25161-2-git-send-email-s.hauer@pengutronix.de>
+References: <1455715739-25161-1-git-send-email-s.hauer@pengutronix.de>
+Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1455709932-12146-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <1455715739-25161-1-git-send-email-s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+From: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-   spi: pl022: Remove obsolete struct pl022 members from kerneldoc
+RX DMA tail data handling doesn't work correctly in many cases with current
+implementation. It happens because SPI core was setup to generates both RX
+and RX TAIL events. And RX TAIL event does not work correctly.
+This can be easily verified by sending SPI transaction with size modulus
+WML(32 in our case) not equal 0.
 
-has been applied to the spi tree at
+Also removing change introduced in f6ee9b582d2db652497b73c1f117591dfb6d3a90
+since this change only fix usecases with transfer size from 33 to 128 bytes
+and doesn't fix 129 bytes and bigger.
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+This is output from transaction with len 138 bytes in loopback mode at 10Mhz:
+TX0000: a3 97 a2 55 53 be f1 fc f9 79 6b 52 14 13 e9 e2
+TX0010: 2d 51 8e 1f 56 08 57 27 a7 05 d4 d0 52 82 77 75
+TX0020: 1b 99 4a ed 58 3d 6a 52 36 d5 24 4a 68 8e ad 95
+TX0030: 5f 3c 35 b5 c4 8c dd 6c 11 32 3d e2 b4 b4 59 cf
+TX0040: ce 23 3d 27 df a7 f9 96 fc 1e e0 66 2c 0e 7b 8c
+TX0050: ca 30 42 8f bc 9f 7b ce d1 b8 b1 87 ec 8a d6 bb
+TX0060: 2e 15 63 0e 3c dc a4 3a 7a 06 20 a7 93 1b 34 dd
+TX0070: 4c f5 ec 88 96 68 d6 68 a0 09 6f 8e 93 47 c9 41
+TX0080: db ac cf 97 89 f3 51 05 79 71
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+RX0000: a3 97 a2 55 53 be f1 fc f9 79 6b 52 14 13 e9 e2
+RX0010: 2d 51 8e 1f 56 08 57 27 a7 05 d4 d0 52 82 77 75
+RX0020: 1b 99 4a ed 58 3d 6a 52 36 d5 24 4a 68 8e ad 95
+RX0030: 5f 3c 35 00 00 b5 00 00 00 c4 00 00 8c 00 00 dd
+RX0040: 6c 11 32 3d e2 b4 b4 59 cf ce 23 3d 27 df a7 f9
+RX0050: 96 fc 1e e0 66 2c 0e 7b 8c ca 30 42 8f 1f 1f bc
+RX0060: 9f 7b ce d1 b8 b1 87 ec 8a d6 bb 2e 15 63 0e ed
+RX0070: ed 3c 58 58 58 dc 3d 3d a4 6a 6a 3a 52 52 7a 36
+RX0080: 06 20 a7 93 1b 34 dd 4c f5 ec
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Zeros at offset 33 and 34 caused by reading empty RX FIFO which not possible
+if DMA RX read was triggered by RX event. This mean DMA was triggered
+by RX TAIL event.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 22640c8a2736d1127a3fd2380f6ed08670b22ed9 Mon Sep 17 00:00:00 2001
-From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Wed, 17 Feb 2016 13:52:12 +0200
-Subject: [PATCH] spi: pl022: Remove obsolete struct pl022 members from
- kerneldoc
-
-These structure members were removed in 2012 by the commit ffbbdd21329f
-("spi: create a message queueing infrastructure").
-
-Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off--by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 ---
- drivers/spi/spi-pl022.c | 7 -------
- 1 file changed, 7 deletions(-)
+ drivers/spi/spi-imx.c | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index 5e5fd77e2711..f7f7ba17b40e 100644
---- a/drivers/spi/spi-pl022.c
-+++ b/drivers/spi/spi-pl022.c
-@@ -346,13 +346,6 @@ struct vendor_data {
-  * @clk: outgoing clock "SPICLK" for the SPI bus
-  * @master: SPI framework hookup
-  * @master_info: controller-specific data from machine setup
-- * @kworker: thread struct for message pump
-- * @kworker_task: pointer to task for message pump kworker thread
-- * @pump_messages: work struct for scheduling work to the message pump
-- * @queue_lock: spinlock to syncronise access to message queue
-- * @queue: message queue
-- * @busy: message pump is busy
-- * @running: message pump is running
-  * @pump_transfers: Tasklet used in Interrupt Transfer mode
-  * @cur_msg: Pointer to current spi_message being processed
-  * @cur_transfer: Pointer to current spi_transfer
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index d98c33c..08492d6 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -204,8 +204,8 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+ {
+ 	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
+ 
+-	if (spi_imx->dma_is_inited &&
+-	    transfer->len > spi_imx->wml * sizeof(u32))
++	if (spi_imx->dma_is_inited && transfer->len >= spi_imx->wml &&
++	    (transfer->len % spi_imx->wml) == 0)
+ 		return true;
+ 	return false;
+ }
+@@ -919,8 +919,6 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+ 	struct dma_async_tx_descriptor *desc_tx = NULL, *desc_rx = NULL;
+ 	int ret;
+ 	unsigned long timeout;
+-	u32 dma;
+-	int left;
+ 	struct spi_master *master = spi_imx->bitbang.master;
+ 	struct sg_table *tx = &transfer->tx_sg, *rx = &transfer->rx_sg;
+ 
+@@ -954,13 +952,6 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+ 	/* Trigger the cspi module. */
+ 	spi_imx->dma_finished = 0;
+ 
+-	dma = readl(spi_imx->base + MX51_ECSPI_DMA);
+-	dma = dma & (~MX51_ECSPI_DMA_RXT_WML_MASK);
+-	/* Change RX_DMA_LENGTH trigger dma fetch tail data */
+-	left = transfer->len % spi_imx->wml;
+-	if (left)
+-		writel(dma | (left << MX51_ECSPI_DMA_RXT_WML_OFFSET),
+-				spi_imx->base + MX51_ECSPI_DMA);
+ 	/*
+ 	 * Set these order to avoid potential RX overflow. The overflow may
+ 	 * happen if we enable SPI HW before starting RX DMA due to rescheduling
+@@ -992,10 +983,6 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+ 			spi_imx->devtype_data->reset(spi_imx);
+ 			dmaengine_terminate_all(master->dma_rx);
+ 		}
+-		dma &= ~MX51_ECSPI_DMA_RXT_WML_MASK;
+-		writel(dma |
+-		       spi_imx->wml << MX51_ECSPI_DMA_RXT_WML_OFFSET,
+-		       spi_imx->base + MX51_ECSPI_DMA);
+ 	}
+ 
+ 	spi_imx->dma_finished = 1;
 -- 
 2.7.0
 

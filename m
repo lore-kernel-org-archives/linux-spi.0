@@ -1,127 +1,46 @@
-From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH 02/13] spi: imx: use proper dev_* functions for driver messages
-Date: Wed, 17 Feb 2016 14:28:48 +0100
-Message-ID: <1455715739-25161-3-git-send-email-s.hauer@pengutronix.de>
+From: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+Subject: Re: [PATCH] i.MX SPI DMA cleanup
+Date: Wed, 17 Feb 2016 14:42:33 +0100
+Message-ID: <56C478C9.6050706@de.bosch.com>
 References: <1455715739-25161-1-git-send-email-s.hauer@pengutronix.de>
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <1455715739-25161-1-git-send-email-s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Add a struct device * member to the private driver data and use
-it to print messages using dev_* functions rather than pr_*.
+Hi Sascha,
 
-Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
----
- drivers/spi/spi-imx.c | 27 ++++++++++++---------------
- 1 file changed, 12 insertions(+), 15 deletions(-)
+On 17.02.2016 14:28, Sascha Hauer wrote:
+> This picks up a series sent by Anton Bondarenko last year. It
+> contains the remaining not yet upstreamed patches from Antons series
+> plus some more DMA related cleanup patches.
+>
+> My mission was to hunt a bug in the DMA code path sometimes causing
+> an additional word in the RX FIFO which locked up the driver in the
+> next transfer. It turned out that this was no bug in the driver but
+> instead in the device tree: We used the wrong SDMA script for i.MX6.
+> The ECSPI cores are connected through the SPBA, so according to the
+> reference manual we need the shp/mcu scripts rather than the app/mcu
+> scripts.
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 08492d6..7904d45 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -86,6 +86,7 @@ struct spi_imx_devtype_data {
- 
- struct spi_imx_data {
- 	struct spi_bitbang bitbang;
-+	struct device *dev;
- 
- 	struct completion xfer_done;
- 	void __iomem *base;
-@@ -250,14 +251,15 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
- #define MX51_ECSPI_TESTREG_LBC	BIT(31)
- 
- /* MX51 eCSPI */
--static unsigned int mx51_ecspi_clkdiv(unsigned int fin, unsigned int fspi,
--				      unsigned int *fres)
-+static unsigned int mx51_ecspi_clkdiv(struct spi_imx_data *spi_imx,
-+				      unsigned int fspi, unsigned int *fres)
- {
- 	/*
- 	 * there are two 4-bit dividers, the pre-divider divides by
- 	 * $pre, the post-divider by 2^$post
- 	 */
- 	unsigned int pre, post;
-+	unsigned int fin = spi_imx->spi_clk;
- 
- 	if (unlikely(fspi > fin))
- 		return 0;
-@@ -270,14 +272,14 @@ static unsigned int mx51_ecspi_clkdiv(unsigned int fin, unsigned int fspi,
- 
- 	post = max(4U, post) - 4;
- 	if (unlikely(post > 0xf)) {
--		pr_err("%s: cannot set clock freq: %u (base freq: %u)\n",
--				__func__, fspi, fin);
-+		dev_err(spi_imx->dev, "cannot set clock freq: %u (base freq: %u)\n",
-+				fspi, fin);
- 		return 0xff;
- 	}
- 
- 	pre = DIV_ROUND_UP(fin, fspi << post) - 1;
- 
--	pr_debug("%s: fin: %u, fspi: %u, post: %u, pre: %u\n",
-+	dev_dbg(spi_imx->dev, "%s: fin: %u, fspi: %u, post: %u, pre: %u\n",
- 			__func__, fin, fspi, post, pre);
- 
- 	/* Resulting frequency for the SCLK line. */
-@@ -330,7 +332,7 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
- 	ctrl |= MX51_ECSPI_CTRL_MODE_MASK;
- 
- 	/* set clock speed */
--	ctrl |= mx51_ecspi_clkdiv(spi_imx->spi_clk, config->speed_hz, &clk);
-+	ctrl |= mx51_ecspi_clkdiv(spi_imx, config->speed_hz, &clk);
- 
- 	/* set chip select to use */
- 	ctrl |= MX51_ECSPI_CTRL_CS(config->cs);
-@@ -968,18 +970,14 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 	timeout = wait_for_completion_timeout(&spi_imx->dma_tx_completion,
- 						IMX_DMA_TIMEOUT);
- 	if (!timeout) {
--		pr_warn("%s %s: I/O Error in DMA TX\n",
--			dev_driver_string(&master->dev),
--			dev_name(&master->dev));
-+		dev_err(spi_imx->dev, "I/O Error in DMA TX\n");
- 		dmaengine_terminate_all(master->dma_tx);
- 		dmaengine_terminate_all(master->dma_rx);
- 	} else {
- 		timeout = wait_for_completion_timeout(
- 				&spi_imx->dma_rx_completion, IMX_DMA_TIMEOUT);
- 		if (!timeout) {
--			pr_warn("%s %s: I/O Error in DMA RX\n",
--				dev_driver_string(&master->dev),
--				dev_name(&master->dev));
-+			dev_err(spi_imx->dev, "I/O Error in DMA RX\n");
- 			spi_imx->devtype_data->reset(spi_imx);
- 			dmaengine_terminate_all(master->dma_rx);
- 		}
-@@ -996,9 +994,7 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 	return ret;
- 
- no_dma:
--	pr_warn_once("%s %s: DMA not available, falling back to PIO\n",
--		     dev_driver_string(&master->dev),
--		     dev_name(&master->dev));
-+	dev_warn_once(spi_imx->dev, "DMA not available, falling back to PIO\n");
- 	return -EAGAIN;
- }
- 
-@@ -1128,6 +1124,7 @@ static int spi_imx_probe(struct platform_device *pdev)
- 
- 	spi_imx = spi_master_get_devdata(master);
- 	spi_imx->bitbang.master = master;
-+	spi_imx->dev = &pdev->dev;
- 
- 	spi_imx->devtype_data = of_id ? of_id->data :
- 		(struct spi_imx_devtype_data *)pdev->id_entry->driver_data;
--- 
-2.7.0
 
+Are you talking about what is known as "TKT238285 hardware issue"
+
+https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/drivers/spi/spi-imx.c?id=a02bb401f8ae264be782ee57d98bdd99f14c8022
+
+?
+
+Or are you talking about a different issue?
+
+Best regards
+
+Dirk
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,83 +1,57 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: core: Use min_t(size_t,..)" to the spi tree
-Date: Wed, 17 Feb 2016 19:18:28 +0000
-Message-ID: <E1aW7cK-0002oc-5l@debutante>
-References: <1455730948-24938-2-git-send-email-fabio.estevam@nxp.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>,
-	Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1455730948-24938-2-git-send-email-fabio.estevam-3arQi8VN3Tc@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Simon Horman <horms+renesas@verge.net.au>
+Subject: [PATCH] spi: sh-spi, sh-msiof, rspi: Use ARCH_RENESAS
+Date: Thu, 18 Feb 2016 10:47:52 +0900
+Message-ID: <1455760072-27456-1-git-send-email-horms+renesas@verge.net.au>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>, linux-spi@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	Simon Horman <horms+renesas@verge.net.au>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-renesas-soc-owner@vger.kernel.org>
+Sender: linux-renesas-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-The patch
+Make use of ARCH_RENESAS in place of ARCH_SHMOBILE.
 
-   spi: core: Use min_t(size_t,..)
+This is part of an ongoing process to migrate from ARCH_SHMOBILE to
+ARCH_RENESAS the motivation for which being that RENESAS seems to be a more
+appropriate name than SHMOBILE for the majority of Renesas ARM based SoCs.
 
-has been applied to the spi tree at
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From c8dab77a1f92095674e4d7fcb151cac4630e10f9 Mon Sep 17 00:00:00 2001
-From: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
-Date: Wed, 17 Feb 2016 15:42:28 -0200
-Subject: [PATCH] spi: core: Use min_t(size_t,..)
-
-Use min_t(size_t,..) in order to avoid the following
-build warning on ARM64:
-
-include/linux/kernel.h:754:17: warning: comparison of distinct pointer types lacks a cast
-  (void) (&_min1 == &_min2);  \
-                 ^
-drivers/spi/spi.c:2304:17: note: in expansion of macro 'min'
-  xfers[0].len = min(maxsize, xfer[0].len);
-
-Suggested-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Signed-off-by: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
-Acked-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
 ---
- drivers/spi/spi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/Kconfig | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 9ae199db171b..390d9ee937b6 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2279,7 +2279,7 @@ static int __spi_split_transfer_maxsize(struct spi_master *master,
- 	/* the first transfer just needs the length modified, so we
- 	 * run it outside the loop
- 	 */
--	xfers[0].len = min(maxsize, xfer[0].len);
-+	xfers[0].len = min_t(size_t, maxsize, xfer[0].len);
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 533fe2da0027..6cd36a16c366 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -477,7 +477,7 @@ config SPI_RB4XX
  
- 	/* all the others need rx_buf/tx_buf also set */
- 	for (i = 1, offset = maxsize; i < count; offset += maxsize, i++) {
+ config SPI_RSPI
+ 	tristate "Renesas RSPI/QSPI controller"
+-	depends on SUPERH || ARCH_SHMOBILE || COMPILE_TEST
++	depends on SUPERH || ARCH_RENESAS || COMPILE_TEST
+ 	help
+ 	  SPI driver for Renesas RSPI and QSPI blocks.
+ 
+@@ -527,7 +527,7 @@ config SPI_SC18IS602
+ config SPI_SH_MSIOF
+ 	tristate "SuperH MSIOF SPI controller"
+ 	depends on HAVE_CLK && HAS_DMA
+-	depends on SUPERH || ARCH_SHMOBILE || COMPILE_TEST
++	depends on SUPERH || ARCH_RENESAS || COMPILE_TEST
+ 	help
+ 	  SPI driver for SuperH and SH Mobile MSIOF blocks.
+ 
+@@ -546,7 +546,7 @@ config SPI_SH_SCI
+ 
+ config SPI_SH_HSPI
+ 	tristate "SuperH HSPI controller"
+-	depends on ARCH_SHMOBILE || COMPILE_TEST
++	depends on ARCH_RENESAS || COMPILE_TEST
+ 	help
+ 	  SPI driver for SuperH HSPI blocks.
+ 
 -- 
-2.7.0
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+2.1.4

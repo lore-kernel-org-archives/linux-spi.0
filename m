@@ -1,40 +1,43 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH] spi: sh-spi, sh-msiof, rspi: Use ARCH_RENESAS
-Date: Thu, 18 Feb 2016 08:27:06 +0100
-Message-ID: <CAMuHMdVpDAqpMTXPCgko+Cby5zm7YU19b-9B4r5_58SJpHgOsQ@mail.gmail.com>
-References: <1455760072-27456-1-git-send-email-horms+renesas@verge.net.au>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	linux-renesas-soc@vger.kernel.org
-To: Simon Horman <horms+renesas@verge.net.au>
-Return-path: <linux-renesas-soc-owner@vger.kernel.org>
-In-Reply-To: <1455760072-27456-1-git-send-email-horms+renesas@verge.net.au>
-Sender: linux-renesas-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 1/2] spi: Use %u for unsigned int, %zu for size_t
+Date: Thu, 18 Feb 2016 14:32:57 +0100
+Message-ID: <1455802378-17780-1-git-send-email-thierry.reding@gmail.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Feb 18, 2016 at 2:47 AM, Simon Horman
-<horms+renesas@verge.net.au> wrote:
-> Make use of ARCH_RENESAS in place of ARCH_SHMOBILE.
->
-> This is part of an ongoing process to migrate from ARCH_SHMOBILE to
-> ARCH_RENESAS the motivation for which being that RENESAS seems to be a more
-> appropriate name than SHMOBILE for the majority of Renesas ARM based SoCs.
->
-> Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+From: Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 
-Acked-by: Geert Uytterhoeven <geert+renesas@glider.be>
+When printing unsigned int it is more idiomatic to use %u, for size_t
+the correct specifier is %zu (see Documentation/printk-formats.txt).
 
-Gr{oetje,eeting}s,
+GCC only warns about the latter, but fixing up the former while at it
+for consistency.
 
-                        Geert
+Signed-off-by: Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index f6c76be39e96..f123f9f4d779 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2276,7 +2276,7 @@ static int __spi_split_transfer_maxsize(struct spi_master *master,
+ 
+ 	/* warn once about this fact that we are splitting a transfer */
+ 	dev_warn_once(&msg->spi->dev,
+-		      "spi_transfer of length %i exceed max length of %i - needed to split transfers\n",
++		      "spi_transfer of length %u exceed max length of %zu - needed to split transfers\n",
+ 		      xfer->len, maxsize);
+ 
+ 	/* calculate how many we have to replace */
+-- 
+2.7.1
 
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

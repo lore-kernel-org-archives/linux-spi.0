@@ -1,25 +1,40 @@
-From: Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] i.MX SPI DMA cleanup
-Date: Thu, 18 Feb 2016 22:47:59 +0800
-Message-ID: <20160218144759.GB6756@tiger>
-References: <1455715739-25161-1-git-send-email-s.hauer@pengutronix.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
+Subject: [PATCH 2/2] spi: docbook: add missing parameter documentation
+Date: Thu, 18 Feb 2016 15:53:11 +0000
+Message-ID: <1455810791-3669-2-git-send-email-kernel@martin.sperl.org>
+References: <1455810791-3669-1-git-send-email-kernel@martin.sperl.org>
+Cc: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1455715739-25161-1-git-send-email-s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+In-Reply-To: <1455810791-3669-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Feb 17, 2016 at 02:28:46PM +0100, Sascha Hauer wrote:
-> Shawn, please pick up the last patch. The rest can go through the SPI
-> tree. The last patch has no dependency on the remaining patches.
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-Okay, patch #13 applied.
+Add missing docbook documentation for the gfp parameter
+in function spi_replace_transfers.
+
+Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+---
+ drivers/spi/spi.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index f6c76be..6889c7f 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2164,6 +2164,7 @@ static void __spi_replace_transfers_release(struct spi_master *master,
+  * @release:       extra release code necessary in some circumstances
+  * @extradatasize: extra data to allocate (with alignment guarantees
+  *                 of struct @spi_transfer)
++ * @gfp:           gfp flags
+  *
+  * Returns: pointer to @spi_replaced_transfers,
+  *          PTR_ERR(...) in case of errors.
+-- 
+1.7.10.4
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

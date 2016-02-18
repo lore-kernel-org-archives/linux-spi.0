@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: rockchip: add bindings for rk3399 spi" to the spi tree
-Date: Thu, 18 Feb 2016 20:12:31 +0000
-Message-ID: <E1aWUwB-0003mO-1p@debutante>
+Subject: Applied "spi: docbook: add missing parameter documentation" to the spi tree
+Date: Thu, 18 Feb 2016 20:12:28 +0000
+Message-ID: <E1aWUw8-0003kx-Gc@debutante>
+References: <1455810791-3669-2-git-send-email-kernel@martin.sperl.org>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jianqun Xu <jay.xu-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-	Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: 
+In-Reply-To: <1455810791-3669-2-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: rockchip: add bindings for rk3399 spi
+   spi: docbook: add missing parameter documentation
 
 has been applied to the spi tree at
 
@@ -38,46 +38,32 @@ to this mail.
 Thanks,
 Mark
 
->From 9b7a56221590cad777e56ec40afe7a6a68f9ac01 Mon Sep 17 00:00:00 2001
-From: Xu Jianqun <jay.xu-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Date: Thu, 18 Feb 2016 19:16:31 +0800
-Subject: [PATCH] spi: rockchip: add bindings for rk3399 spi
+>From 058853979ffc6a1e83c913a692aff8db84f6c417 Mon Sep 17 00:00:00 2001
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Date: Thu, 18 Feb 2016 15:53:11 +0000
+Subject: [PATCH] spi: docbook: add missing parameter documentation
 
-Add devicetree bindings for Rockchip rk3399 spi which found on
-Rockchip rk3399 SoCs.
+Add missing docbook documentation for the gfp parameter
+in function spi_replace_transfers.
 
-Signed-off-by: Jianqun Xu <jay.xu-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Signed-off-by: Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>
+Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- Documentation/devicetree/bindings/spi/spi-rockchip.txt | 1 +
- drivers/spi/spi-rockchip.c                             | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/spi/spi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-rockchip.txt b/Documentation/devicetree/bindings/spi/spi-rockchip.txt
-index 0c491bda4c65..1b14d69d8903 100644
---- a/Documentation/devicetree/bindings/spi/spi-rockchip.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-rockchip.txt
-@@ -9,6 +9,7 @@ Required Properties:
-     "rockchip,rk3066-spi" for rk3066.
-     "rockchip,rk3188-spi", "rockchip,rk3066-spi" for rk3188.
-     "rockchip,rk3288-spi", "rockchip,rk3066-spi" for rk3288.
-+    "rockchip,rk3399-spi", "rockchip,rk3066-spi" for rk3399.
- - reg: physical base address of the controller and length of memory mapped
-        region.
- - interrupts: The interrupt number to the cpu. The interrupt specifier format
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 07909ee9b33f..07c082aa5cff 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -866,6 +866,7 @@ static const struct of_device_id rockchip_spi_dt_match[] = {
- 	{ .compatible = "rockchip,rk3066-spi", },
- 	{ .compatible = "rockchip,rk3188-spi", },
- 	{ .compatible = "rockchip,rk3288-spi", },
-+	{ .compatible = "rockchip,rk3399-spi", },
- 	{ },
- };
- MODULE_DEVICE_TABLE(of, rockchip_spi_dt_match);
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 390d9ee937b6..b0c5d45641ec 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2142,6 +2142,7 @@ static void __spi_replace_transfers_release(struct spi_master *master,
+  * @release:       extra release code necessary in some circumstances
+  * @extradatasize: extra data to allocate (with alignment guarantees
+  *                 of struct @spi_transfer)
++ * @gfp:           gfp flags
+  *
+  * Returns: pointer to @spi_replaced_transfers,
+  *          PTR_ERR(...) in case of errors.
 -- 
 2.7.0
 

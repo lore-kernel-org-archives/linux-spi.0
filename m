@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: docbook: fix parsing error" to the spi tree
-Date: Thu, 18 Feb 2016 20:12:29 +0000
-Message-ID: <E1aWUw9-0003lS-DO@debutante>
-References: <1455810791-3669-1-git-send-email-kernel@martin.sperl.org>
+Subject: Applied "spi: rockchip: add bindings for rk3399 spi" to the spi tree
+Date: Thu, 18 Feb 2016 20:12:31 +0000
+Message-ID: <E1aWUwB-0003mO-1p@debutante>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
+To: Jianqun Xu <jay.xu-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
+	Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1455810791-3669-1-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: 
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: docbook: fix parsing error
+   spi: rockchip: add bindings for rk3399 spi
 
 has been applied to the spi tree at
 
@@ -38,48 +38,46 @@ to this mail.
 Thanks,
 Mark
 
->From d6497816836da321a46c0e8575c4fa3d0c672bda Mon Sep 17 00:00:00 2001
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Date: Thu, 18 Feb 2016 15:53:10 +0000
-Subject: [PATCH] spi: docbook: fix parsing error
+>From 9b7a56221590cad777e56ec40afe7a6a68f9ac01 Mon Sep 17 00:00:00 2001
+From: Xu Jianqun <jay.xu-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Date: Thu, 18 Feb 2016 19:16:31 +0800
+Subject: [PATCH] spi: rockchip: add bindings for rk3399 spi
 
-Fixes docbook parsing error because documentation
-is not directly followed by the structure, but typedef
-used in structure.
+Add devicetree bindings for Rockchip rk3399 spi which found on
+Rockchip rk3399 SoCs.
 
-Reordering should solve that issue.
-
-Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Signed-off-by: Jianqun Xu <jay.xu-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Signed-off-by: Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- include/linux/spi/spi.h | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ Documentation/devicetree/bindings/spi/spi-rockchip.txt | 1 +
+ drivers/spi/spi-rockchip.c                             | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 38204b584dc5..5396ee5fc51f 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -586,6 +586,10 @@ extern struct spi_master *spi_busnum_to_master(u16 busnum);
-  * SPI resource management while processing a SPI message
-  */
- 
-+typedef void (*spi_res_release_t)(struct spi_master *master,
-+				  struct spi_message *msg,
-+				  void *res);
-+
- /**
-  * struct spi_res - spi resource management structure
-  * @entry:   list entry
-@@ -595,9 +599,6 @@ extern struct spi_master *spi_busnum_to_master(u16 busnum);
-  * this is based on ideas from devres, but focused on life-cycle
-  * management during spi_message processing
-  */
--typedef void (*spi_res_release_t)(struct spi_master *master,
--				  struct spi_message *msg,
--				  void *res);
- struct spi_res {
- 	struct list_head        entry;
- 	spi_res_release_t       release;
+diff --git a/Documentation/devicetree/bindings/spi/spi-rockchip.txt b/Documentation/devicetree/bindings/spi/spi-rockchip.txt
+index 0c491bda4c65..1b14d69d8903 100644
+--- a/Documentation/devicetree/bindings/spi/spi-rockchip.txt
++++ b/Documentation/devicetree/bindings/spi/spi-rockchip.txt
+@@ -9,6 +9,7 @@ Required Properties:
+     "rockchip,rk3066-spi" for rk3066.
+     "rockchip,rk3188-spi", "rockchip,rk3066-spi" for rk3188.
+     "rockchip,rk3288-spi", "rockchip,rk3066-spi" for rk3288.
++    "rockchip,rk3399-spi", "rockchip,rk3066-spi" for rk3399.
+ - reg: physical base address of the controller and length of memory mapped
+        region.
+ - interrupts: The interrupt number to the cpu. The interrupt specifier format
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index 07909ee9b33f..07c082aa5cff 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -866,6 +866,7 @@ static const struct of_device_id rockchip_spi_dt_match[] = {
+ 	{ .compatible = "rockchip,rk3066-spi", },
+ 	{ .compatible = "rockchip,rk3188-spi", },
+ 	{ .compatible = "rockchip,rk3288-spi", },
++	{ .compatible = "rockchip,rk3399-spi", },
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(of, rockchip_spi_dt_match);
 -- 
 2.7.0
 

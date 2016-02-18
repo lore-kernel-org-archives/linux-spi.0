@@ -1,20 +1,18 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: sh-spi, sh-msiof, rspi: Use ARCH_RENESAS" to the spi tree
-Date: Thu, 18 Feb 2016 20:12:30 +0000
-Message-ID: <E1aWUwA-0003lv-Ab@debutante>
-References: <1455760072-27456-1-git-send-email-horms+renesas@verge.net.au>
+Subject: Applied "spi: Add cond_resched() in main message processing loop" to the spi tree
+Date: Thu, 18 Feb 2016 20:12:27 +0000
+Message-ID: <E1aWUw7-0003kQ-JJ@debutante>
+References: <1455561281-18573-1-git-send-email-broonie@kernel.org>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Simon Horman <horms+renesas-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
-	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1455760072-27456-1-git-send-email-horms+renesas-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
+In-Reply-To: <1455561281-18573-1-git-send-email-broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: sh-spi, sh-msiof, rspi: Use ARCH_RENESAS
+   spi: Add cond_resched() in main message processing loop
 
 has been applied to the spi tree at
 
@@ -39,55 +37,37 @@ to this mail.
 Thanks,
 Mark
 
->From 3aec3166739ee9e49a23b3e7b6bfe5781ade04d4 Mon Sep 17 00:00:00 2001
-From: Simon Horman <horms+renesas-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
-Date: Thu, 18 Feb 2016 10:47:52 +0900
-Subject: [PATCH] spi: sh-spi, sh-msiof, rspi: Use ARCH_RENESAS
+>From 628269704f19fcfc765499b7158effccfc79b6cf Mon Sep 17 00:00:00 2001
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Date: Mon, 15 Feb 2016 18:28:02 +0000
+Subject: [PATCH] spi: Add cond_resched() in main message processing loop
 
-Make use of ARCH_RENESAS in place of ARCH_SHMOBILE.
+When a controller has only PIO support it is very likely that we will
+run into use cases where we spend a very large amount of time consuming
+CPU.  Code that does this should call cond_resched() every once in a
+while to give other tasks more of a chance to run so do that in the main
+SPI loop, the overhead is negligable if it's not needed.
 
-This is part of an ongoing process to migrate from ARCH_SHMOBILE to
-ARCH_RENESAS the motivation for which being that RENESAS seems to be a more
-appropriate name than SHMOBILE for the majority of Renesas ARM based SoCs.
-
-Signed-off-by: Simon Horman <horms+renesas-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
-Acked-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Suggested-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/Kconfig | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/spi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 77064160dd76..496e48131db4 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -451,7 +451,7 @@ config SPI_RB4XX
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index dcc6f6e92668..0b2bbf144460 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1184,6 +1184,9 @@ static void __spi_pump_messages(struct spi_master *master, bool in_kthread)
+ 		return;
+ 	}
+ 	mutex_unlock(&master->bus_lock_mutex);
++
++	/* Prod the scheduler in case transfer_one() was busy waiting */
++	cond_resched();
+ }
  
- config SPI_RSPI
- 	tristate "Renesas RSPI/QSPI controller"
--	depends on SUPERH || ARCH_SHMOBILE || COMPILE_TEST
-+	depends on SUPERH || ARCH_RENESAS || COMPILE_TEST
- 	help
- 	  SPI driver for Renesas RSPI and QSPI blocks.
- 
-@@ -501,7 +501,7 @@ config SPI_SC18IS602
- config SPI_SH_MSIOF
- 	tristate "SuperH MSIOF SPI controller"
- 	depends on HAVE_CLK && HAS_DMA
--	depends on SUPERH || ARCH_SHMOBILE || COMPILE_TEST
-+	depends on SUPERH || ARCH_RENESAS || COMPILE_TEST
- 	help
- 	  SPI driver for SuperH and SH Mobile MSIOF blocks.
- 
-@@ -520,7 +520,7 @@ config SPI_SH_SCI
- 
- config SPI_SH_HSPI
- 	tristate "SuperH HSPI controller"
--	depends on ARCH_SHMOBILE || COMPILE_TEST
-+	depends on ARCH_RENESAS || COMPILE_TEST
- 	help
- 	  SPI driver for SuperH HSPI blocks.
- 
+ /**
 -- 
 2.7.0
 

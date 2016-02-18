@@ -1,19 +1,20 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: docbook: add missing parameter documentation" to the spi tree
-Date: Thu, 18 Feb 2016 20:12:28 +0000
-Message-ID: <E1aWUw8-0003kx-Gc@debutante>
-References: <1455810791-3669-2-git-send-email-kernel@martin.sperl.org>
+Subject: Applied "spi: sh-spi, sh-msiof, rspi: Use ARCH_RENESAS" to the spi tree
+Date: Thu, 18 Feb 2016 20:12:30 +0000
+Message-ID: <E1aWUwA-0003lv-Ab@debutante>
+References: <1455760072-27456-1-git-send-email-horms+renesas@verge.net.au>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>,
+To: Simon Horman <horms+renesas-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
+	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1455810791-3669-2-git-send-email-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <1455760072-27456-1-git-send-email-horms+renesas-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: docbook: add missing parameter documentation
+   spi: sh-spi, sh-msiof, rspi: Use ARCH_RENESAS
 
 has been applied to the spi tree at
 
@@ -38,32 +39,55 @@ to this mail.
 Thanks,
 Mark
 
->From 058853979ffc6a1e83c913a692aff8db84f6c417 Mon Sep 17 00:00:00 2001
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Date: Thu, 18 Feb 2016 15:53:11 +0000
-Subject: [PATCH] spi: docbook: add missing parameter documentation
+>From 3aec3166739ee9e49a23b3e7b6bfe5781ade04d4 Mon Sep 17 00:00:00 2001
+From: Simon Horman <horms+renesas-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
+Date: Thu, 18 Feb 2016 10:47:52 +0900
+Subject: [PATCH] spi: sh-spi, sh-msiof, rspi: Use ARCH_RENESAS
 
-Add missing docbook documentation for the gfp parameter
-in function spi_replace_transfers.
+Make use of ARCH_RENESAS in place of ARCH_SHMOBILE.
 
-Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+This is part of an ongoing process to migrate from ARCH_SHMOBILE to
+ARCH_RENESAS the motivation for which being that RENESAS seems to be a more
+appropriate name than SHMOBILE for the majority of Renesas ARM based SoCs.
+
+Signed-off-by: Simon Horman <horms+renesas-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
+Acked-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/Kconfig | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 390d9ee937b6..b0c5d45641ec 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2142,6 +2142,7 @@ static void __spi_replace_transfers_release(struct spi_master *master,
-  * @release:       extra release code necessary in some circumstances
-  * @extradatasize: extra data to allocate (with alignment guarantees
-  *                 of struct @spi_transfer)
-+ * @gfp:           gfp flags
-  *
-  * Returns: pointer to @spi_replaced_transfers,
-  *          PTR_ERR(...) in case of errors.
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 77064160dd76..496e48131db4 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -451,7 +451,7 @@ config SPI_RB4XX
+ 
+ config SPI_RSPI
+ 	tristate "Renesas RSPI/QSPI controller"
+-	depends on SUPERH || ARCH_SHMOBILE || COMPILE_TEST
++	depends on SUPERH || ARCH_RENESAS || COMPILE_TEST
+ 	help
+ 	  SPI driver for Renesas RSPI and QSPI blocks.
+ 
+@@ -501,7 +501,7 @@ config SPI_SC18IS602
+ config SPI_SH_MSIOF
+ 	tristate "SuperH MSIOF SPI controller"
+ 	depends on HAVE_CLK && HAS_DMA
+-	depends on SUPERH || ARCH_SHMOBILE || COMPILE_TEST
++	depends on SUPERH || ARCH_RENESAS || COMPILE_TEST
+ 	help
+ 	  SPI driver for SuperH and SH Mobile MSIOF blocks.
+ 
+@@ -520,7 +520,7 @@ config SPI_SH_SCI
+ 
+ config SPI_SH_HSPI
+ 	tristate "SuperH HSPI controller"
+-	depends on ARCH_SHMOBILE || COMPILE_TEST
++	depends on ARCH_RENESAS || COMPILE_TEST
+ 	help
+ 	  SPI driver for SuperH HSPI blocks.
+ 
 -- 
 2.7.0
 

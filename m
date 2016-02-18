@@ -1,43 +1,38 @@
-From: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 1/2] spi: Use %u for unsigned int, %zu for size_t
-Date: Thu, 18 Feb 2016 14:32:57 +0100
-Message-ID: <1455802378-17780-1-git-send-email-thierry.reding@gmail.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Thierry Reding <thierry.reding@gmail.com>
+Subject: [PATCH 2/2] spi: Prevent a type mismatch warning using min_t()
+Date: Thu, 18 Feb 2016 14:32:58 +0100
+Message-ID: <1455802378-17780-2-git-send-email-thierry.reding@gmail.com>
+References: <1455802378-17780-1-git-send-email-thierry.reding@gmail.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1455802378-17780-1-git-send-email-thierry.reding@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+From: Thierry Reding <treding@nvidia.com>
 
-When printing unsigned int it is more idiomatic to use %u, for size_t
-the correct specifier is %zu (see Documentation/printk-formats.txt).
+The min_t() variant of the min() macro uses an explicit cast to the type
+given in the first argument and can be used to avoid a compiler warning
+if both types differ (f.e. in signedness).
 
-GCC only warns about the latter, but fixing up the former while at it
-for consistency.
-
-Signed-off-by: Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 ---
  drivers/spi/spi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index f6c76be39e96..f123f9f4d779 100644
+index f123f9f4d779..fe001ec4471e 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -2276,7 +2276,7 @@ static int __spi_split_transfer_maxsize(struct spi_master *master,
+@@ -2301,7 +2301,7 @@ static int __spi_split_transfer_maxsize(struct spi_master *master,
+ 	/* the first transfer just needs the length modified, so we
+ 	 * run it outside the loop
+ 	 */
+-	xfers[0].len = min(maxsize, xfer[0].len);
++	xfers[0].len = min_t(size_t, maxsize, xfer[0].len);
  
- 	/* warn once about this fact that we are splitting a transfer */
- 	dev_warn_once(&msg->spi->dev,
--		      "spi_transfer of length %i exceed max length of %i - needed to split transfers\n",
-+		      "spi_transfer of length %u exceed max length of %zu - needed to split transfers\n",
- 		      xfer->len, maxsize);
- 
- 	/* calculate how many we have to replace */
+ 	/* all the others need rx_buf/tx_buf also set */
+ 	for (i = 1, offset = maxsize; i < count; offset += maxsize, i++) {
 -- 
 2.7.1
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

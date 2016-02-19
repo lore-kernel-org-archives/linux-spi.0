@@ -1,47 +1,64 @@
 From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH v2] i.MX SPI DMA cleanup
-Date: Fri, 19 Feb 2016 08:43:00 +0100
-Message-ID: <1455867792-26389-1-git-send-email-s.hauer@pengutronix.de>
+Subject: [PATCH 10/12] spi: imx: make some register defines simpler
+Date: Fri, 19 Feb 2016 08:43:10 +0100
+Message-ID: <1455867792-26389-11-git-send-email-s.hauer@pengutronix.de>
+References: <1455867792-26389-1-git-send-email-s.hauer@pengutronix.de>
 Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+	Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1455867792-26389-1-git-send-email-s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Second round for the i.MX SPI DMA patches. No changes to code, only
-updated commit messages.
+The watermark levels in the DMA register are write only, the driver
+should never have to read them back from the hardware. Replace the
+current _MASK and _OFFSET defines with defines taking the watermark
+level directly.
 
-Mark, you already applied patch 1/12 and 2/12. I'm resending them here
-anyway because I updated the commit message as you requested. Feel free
-to ignore 1/12 and 2/12 or replace them with this updated version.
+Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+---
+ drivers/spi/spi-imx.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-Changes since v1:
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 2476de7..dee5e28 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -256,12 +256,9 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+ #define MX51_ECSPI_INT_RREN		(1 <<  3)
+ 
+ #define MX51_ECSPI_DMA      0x14
+-#define MX51_ECSPI_DMA_TX_WML_OFFSET	0
+-#define MX51_ECSPI_DMA_TX_WML_MASK	0x3F
+-#define MX51_ECSPI_DMA_RX_WML_OFFSET	16
+-#define MX51_ECSPI_DMA_RX_WML_MASK	(0x3F << 16)
+-#define MX51_ECSPI_DMA_RXT_WML_OFFSET	24
+-#define MX51_ECSPI_DMA_RXT_WML_MASK	(0x3F << 24)
++#define MX51_ECSPI_DMA_TX_WML(wml)	((wml) & 0x3f)
++#define MX51_ECSPI_DMA_RX_WML(wml)	(((wml) & 0x3f) << 16)
++#define MX51_ECSPI_DMA_RXT_WML(wml)	(((wml) & 0x3f) << 24)
+ 
+ #define MX51_ECSPI_DMA_TEDEN		(1 << 7)
+ #define MX51_ECSPI_DMA_RXDEN		(1 << 23)
+@@ -408,9 +405,9 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
+ 	 * and enable DMA request.
+ 	 */
+ 
+-	writel(spi_imx->wml << MX51_ECSPI_DMA_RX_WML_OFFSET |
+-		spi_imx->wml << MX51_ECSPI_DMA_TX_WML_OFFSET |
+-		spi_imx->wml << MX51_ECSPI_DMA_RXT_WML_OFFSET |
++	writel(MX51_ECSPI_DMA_RX_WML(spi_imx->wml) |
++		MX51_ECSPI_DMA_TX_WML(spi_imx->wml) |
++		MX51_ECSPI_DMA_RXT_WML(spi_imx->wml) |
+ 		MX51_ECSPI_DMA_TEDEN | MX51_ECSPI_DMA_RXDEN |
+ 		MX51_ECSPI_DMA_RXTDEN, spi_imx->base + MX51_ECSPI_DMA);
+ 
+-- 
+2.7.0
 
-- Add missing Signed-off-by to Patch 3
-- Drop device tree change as it's already applied by Shawn
-- Add patch subject when referring to commits
-
-----------------------------------------------------------------
-Anton Bondarenko (3):
-      spi: imx: allow only WML aligned transfers to use DMA
-      spi: imx: replace fixed timeout with calculated
-      spi: imx: add support for all SPI word width for DMA
-
-Sascha Hauer (9):
-      spi: imx: use proper dev_* functions for driver messages
-      spi: imx: drop fallback to PIO
-      spi: imx: initialize usedma earlier
-      spi: imx: drop unnecessary read/modify/write
-      spi: imx: drop unncessary dma_is_inited variable
-      spi: imx: remove unnecessary bit clearing in mx51_ecspi_config
-      spi: imx: make some register defines simpler
-      spi: imx: set MX51_ECSPI_CTRL_SMC bit in setup function
-      spi: imx: drop bogus tests for rx/tx bufs in DMA transfer
-
- drivers/spi/spi-imx.c | 350 ++++++++++++++++++++++++++------------------------
- 1 file changed, 181 insertions(+), 169 deletions(-)
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

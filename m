@@ -1,7 +1,7 @@
 From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH 04/12] spi: imx: drop fallback to PIO
-Date: Fri, 19 Feb 2016 08:43:04 +0100
-Message-ID: <1455867792-26389-5-git-send-email-s.hauer@pengutronix.de>
+Subject: [PATCH 11/12] spi: imx: set MX51_ECSPI_CTRL_SMC bit in setup function
+Date: Fri, 19 Feb 2016 08:43:11 +0100
+Message-ID: <1455867792-26389-12-git-send-email-s.hauer@pengutronix.de>
 References: <1455867792-26389-1-git-send-email-s.hauer@pengutronix.de>
 Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
@@ -13,69 +13,85 @@ In-Reply-To: <1455867792-26389-1-git-send-email-s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@p
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-At the moment the driver decides to fallback to PIO mode the buffers
-are already mapped for DMA. It's a bug to access them with the CPU
-afterwards, so we cannot just fallback to PIO mode.
-It should not be necessary anyway, since we only use DMA when we
-verified that it's possible in the fist place, so when prep_slave_sg
-fails it's a bug, either in the SDMA driver or in the can_dma
-implementation.
+Now that the config function knows whether we are doing DMA or not we
+can do the necessary register setup in the config function and no longer
+have to do this in the trigger function. With this the trigger function
+becomes a no-op for DMA, so instead of testing if we are doing DMA or
+not in the trigger function we simply no longer call it in the DMA case.
 
 Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 ---
- drivers/spi/spi-imx.c | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+ drivers/spi/spi-imx.c | 21 ++++++---------------
+ 1 file changed, 6 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index b277375..5a48d07 100644
+index dee5e28..3512c2f 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -945,7 +945,7 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 					tx->sgl, tx->nents, DMA_MEM_TO_DEV,
- 					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
- 		if (!desc_tx)
--			goto no_dma;
-+			return -EINVAL;
+@@ -106,7 +106,6 @@ struct spi_imx_data {
+ 	unsigned int txfifo; /* number of words pushed in tx FIFO */
  
- 		desc_tx->callback = spi_imx_dma_tx_callback;
- 		desc_tx->callback_param = (void *)spi_imx;
-@@ -957,7 +957,7 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 					rx->sgl, rx->nents, DMA_DEV_TO_MEM,
- 					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
- 		if (!desc_rx)
--			goto no_dma;
-+			return -EINVAL;
+ 	/* DMA */
+-	unsigned int dma_finished;
+ 	bool usedma;
+ 	u32 wml;
+ 	struct completion dma_rx_completion;
+@@ -324,14 +323,10 @@ static void __maybe_unused mx51_ecspi_intctrl(struct spi_imx_data *spi_imx, int
  
- 		desc_rx->callback = spi_imx_dma_rx_callback;
- 		desc_rx->callback_param = (void *)spi_imx;
-@@ -1010,10 +1010,6 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 		ret = transfer->len;
+ static void __maybe_unused mx51_ecspi_trigger(struct spi_imx_data *spi_imx)
+ {
+-	u32 reg = readl(spi_imx->base + MX51_ECSPI_CTRL);
++	u32 reg;
  
- 	return ret;
--
--no_dma:
--	dev_warn_once(spi_imx->dev, "DMA not available, falling back to PIO\n");
--	return -EAGAIN;
+-	if (!spi_imx->usedma)
+-		reg |= MX51_ECSPI_CTRL_XCH;
+-	else if (!spi_imx->dma_finished)
+-		reg |= MX51_ECSPI_CTRL_SMC;
+-	else
+-		reg &= ~MX51_ECSPI_CTRL_SMC;
++	reg = readl(spi_imx->base + MX51_ECSPI_CTRL);
++	reg |= MX51_ECSPI_CTRL_XCH;
+ 	writel(reg, spi_imx->base + MX51_ECSPI_CTRL);
  }
  
- static int spi_imx_pio_transfer(struct spi_device *spi,
-@@ -1040,15 +1036,12 @@ static int spi_imx_pio_transfer(struct spi_device *spi,
- static int spi_imx_transfer(struct spi_device *spi,
- 				struct spi_transfer *transfer)
- {
--	int ret;
- 	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
+@@ -371,6 +366,9 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
+ 	if (config->mode & SPI_CS_HIGH)
+ 		cfg |= MX51_ECSPI_CONFIG_SSBPOL(config->cs);
  
- 	if (spi_imx->bitbang.master->can_dma &&
- 	    spi_imx_can_dma(spi_imx->bitbang.master, spi, transfer)) {
- 		spi_imx->usedma = true;
--		ret = spi_imx_dma_transfer(spi_imx, transfer);
--		if (ret != -EAGAIN)
--			return ret;
-+		return spi_imx_dma_transfer(spi_imx, transfer);
++	if (spi_imx->usedma)
++		ctrl |= MX51_ECSPI_CTRL_SMC;
++
+ 	/* CTRL register always go first to bring out controller from reset */
+ 	writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
+ 
+@@ -1010,9 +1008,6 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+ 	reinit_completion(&spi_imx->dma_rx_completion);
+ 	reinit_completion(&spi_imx->dma_tx_completion);
+ 
+-	/* Trigger the cspi module. */
+-	spi_imx->dma_finished = 0;
+-
+ 	/*
+ 	 * Set these order to avoid potential RX overflow. The overflow may
+ 	 * happen if we enable SPI HW before starting RX DMA due to rescheduling
+@@ -1023,7 +1018,6 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+ 	 */
+ 	dma_async_issue_pending(master->dma_rx);
+ 	dma_async_issue_pending(master->dma_tx);
+-	spi_imx->devtype_data->trigger(spi_imx);
+ 
+ 	transfer_timeout = spi_imx_calculate_timeout(spi_imx, transfer->len);
+ 
+@@ -1044,9 +1038,6 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+ 		}
  	}
- 	spi_imx->usedma = false;
  
+-	spi_imx->dma_finished = 1;
+-	spi_imx->devtype_data->trigger(spi_imx);
+-
+ 	if (!timeout)
+ 		ret = -ETIMEDOUT;
+ 	else
 -- 
 2.7.0
 

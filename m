@@ -1,73 +1,87 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: Add cond_resched() in main message processing loop" to the spi tree
-Date: Thu, 18 Feb 2016 20:12:27 +0000
-Message-ID: <E1aWUw7-0003kQ-JJ@debutante>
-References: <1455561281-18573-1-git-send-email-broonie@kernel.org>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: [PATCH 06/12] spi: imx: drop unnecessary read/modify/write
+Date: Fri, 19 Feb 2016 08:43:06 +0100
+Message-ID: <1455867792-26389-7-git-send-email-s.hauer@pengutronix.de>
+References: <1455867792-26389-1-git-send-email-s.hauer@pengutronix.de>
+Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1455561281-18573-1-git-send-email-broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+In-Reply-To: <1455867792-26389-1-git-send-email-s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+When the MX51_ECSPI_DMA is configured we control every single bit
+of the register, so there's no need to read/modify/write it. Instead
+just write the value we want to have in the register. Also, drop
+unnecessary check if we are actually doing DMA. The values written
+to the register have no effect in PIO mode and value written there
+during the last DMA transfer is still in the register, so we can
+equally well always write a value.
 
-   spi: Add cond_resched() in main message processing loop
-
-has been applied to the spi tree at
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 628269704f19fcfc765499b7158effccfc79b6cf Mon Sep 17 00:00:00 2001
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Date: Mon, 15 Feb 2016 18:28:02 +0000
-Subject: [PATCH] spi: Add cond_resched() in main message processing loop
-
-When a controller has only PIO support it is very likely that we will
-run into use cases where we spend a very large amount of time consuming
-CPU.  Code that does this should call cond_resched() every once in a
-while to give other tasks more of a chance to run so do that in the main
-SPI loop, the overhead is negligable if it's not needed.
-
-Suggested-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 ---
- drivers/spi/spi.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/spi/spi-imx.c | 31 ++++++++++---------------------
+ 1 file changed, 10 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index dcc6f6e92668..0b2bbf144460 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1184,6 +1184,9 @@ static void __spi_pump_messages(struct spi_master *master, bool in_kthread)
- 		return;
- 	}
- 	mutex_unlock(&master->bus_lock_mutex);
-+
-+	/* Prod the scheduler in case transfer_one() was busy waiting */
-+	cond_resched();
- }
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 7047453..073a134 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -240,9 +240,9 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+ #define MX51_ECSPI_DMA_RXT_WML_OFFSET	24
+ #define MX51_ECSPI_DMA_RXT_WML_MASK	(0x3F << 24)
  
- /**
+-#define MX51_ECSPI_DMA_TEDEN_OFFSET	7
+-#define MX51_ECSPI_DMA_RXDEN_OFFSET	23
+-#define MX51_ECSPI_DMA_RXTDEN_OFFSET	31
++#define MX51_ECSPI_DMA_TEDEN		(1 << 7)
++#define MX51_ECSPI_DMA_RXDEN		(1 << 23)
++#define MX51_ECSPI_DMA_RXTDEN		(1 << 31)
+ 
+ #define MX51_ECSPI_STAT		0x18
+ #define MX51_ECSPI_STAT_RR		(1 <<  3)
+@@ -318,8 +318,7 @@ static void __maybe_unused mx51_ecspi_trigger(struct spi_imx_data *spi_imx)
+ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
+ 		struct spi_imx_config *config)
+ {
+-	u32 ctrl = MX51_ECSPI_CTRL_ENABLE, cfg = 0, dma = 0;
+-	u32 tx_wml_cfg, rx_wml_cfg, rxt_wml_cfg;
++	u32 ctrl = MX51_ECSPI_CTRL_ENABLE, cfg = 0;
+ 	u32 clk = config->speed_hz, delay, reg;
+ 
+ 	/*
+@@ -392,22 +391,12 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
+ 	 * Configure the DMA register: setup the watermark
+ 	 * and enable DMA request.
+ 	 */
+-	if (spi_imx->dma_is_inited) {
+-		dma = readl(spi_imx->base + MX51_ECSPI_DMA);
+-
+-		rx_wml_cfg = spi_imx->wml << MX51_ECSPI_DMA_RX_WML_OFFSET;
+-		tx_wml_cfg = spi_imx->wml << MX51_ECSPI_DMA_TX_WML_OFFSET;
+-		rxt_wml_cfg = spi_imx->wml << MX51_ECSPI_DMA_RXT_WML_OFFSET;
+-		dma = (dma & ~MX51_ECSPI_DMA_TX_WML_MASK
+-			   & ~MX51_ECSPI_DMA_RX_WML_MASK
+-			   & ~MX51_ECSPI_DMA_RXT_WML_MASK)
+-			   | rx_wml_cfg | tx_wml_cfg | rxt_wml_cfg
+-			   |(1 << MX51_ECSPI_DMA_TEDEN_OFFSET)
+-			   |(1 << MX51_ECSPI_DMA_RXDEN_OFFSET)
+-			   |(1 << MX51_ECSPI_DMA_RXTDEN_OFFSET);
+-
+-		writel(dma, spi_imx->base + MX51_ECSPI_DMA);
+-	}
++
++	writel(spi_imx->wml << MX51_ECSPI_DMA_RX_WML_OFFSET |
++		spi_imx->wml << MX51_ECSPI_DMA_TX_WML_OFFSET |
++		spi_imx->wml << MX51_ECSPI_DMA_RXT_WML_OFFSET |
++		MX51_ECSPI_DMA_TEDEN | MX51_ECSPI_DMA_RXDEN |
++		MX51_ECSPI_DMA_RXTDEN, spi_imx->base + MX51_ECSPI_DMA);
+ 
+ 	return 0;
+ }
 -- 
 2.7.0
 

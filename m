@@ -1,7 +1,7 @@
 From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH 03/12] spi: imx: replace fixed timeout with calculated
-Date: Fri, 19 Feb 2016 08:43:03 +0100
-Message-ID: <1455867792-26389-4-git-send-email-s.hauer@pengutronix.de>
+Subject: [PATCH 02/12] spi: imx: use proper dev_* functions for driver messages
+Date: Fri, 19 Feb 2016 08:43:02 +0100
+Message-ID: <1455867792-26389-3-git-send-email-s.hauer@pengutronix.de>
 References: <1455867792-26389-1-git-send-email-s.hauer@pengutronix.de>
 Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
@@ -13,96 +13,111 @@ In-Reply-To: <1455867792-26389-1-git-send-email-s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@p
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Add a struct device * member to the private driver data and use
+it to print messages using dev_* functions rather than pr_*.
 
-Fixed timeout value can fire while transaction is ongoing. This may happen
-because there are no strict requirements on SPI transaction duration.
-Dynamic timeout value is generated based on SCLK and transaction size.
-
-There is also 4 * SCLK delay between TX bursts related to HW internal CS change.
-
-Signed-off-by: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 ---
- drivers/spi/spi-imx.c | 24 +++++++++++++++++++++---
- 1 file changed, 21 insertions(+), 3 deletions(-)
+ drivers/spi/spi-imx.c | 27 ++++++++++++---------------
+ 1 file changed, 12 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 7904d45..b277375 100644
+index 08492d6..7904d45 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -56,7 +56,6 @@
+@@ -86,6 +86,7 @@ struct spi_imx_devtype_data {
  
- /* The maximum  bytes that a sdma BD can transfer.*/
- #define MAX_SDMA_BD_BYTES  (1 << 15)
--#define IMX_DMA_TIMEOUT (msecs_to_jiffies(3000))
- struct spi_imx_config {
- 	unsigned int speed_hz;
- 	unsigned int bpw;
-@@ -93,6 +92,7 @@ struct spi_imx_data {
- 	struct clk *clk_per;
- 	struct clk *clk_ipg;
- 	unsigned long spi_clk;
-+	unsigned int spi_bus_clk;
+ struct spi_imx_data {
+ 	struct spi_bitbang bitbang;
++	struct device *dev;
  
- 	unsigned int count;
- 	void (*tx)(struct spi_imx_data *);
-@@ -333,6 +333,7 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
+ 	struct completion xfer_done;
+ 	void __iomem *base;
+@@ -250,14 +251,15 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+ #define MX51_ECSPI_TESTREG_LBC	BIT(31)
+ 
+ /* MX51 eCSPI */
+-static unsigned int mx51_ecspi_clkdiv(unsigned int fin, unsigned int fspi,
+-				      unsigned int *fres)
++static unsigned int mx51_ecspi_clkdiv(struct spi_imx_data *spi_imx,
++				      unsigned int fspi, unsigned int *fres)
+ {
+ 	/*
+ 	 * there are two 4-bit dividers, the pre-divider divides by
+ 	 * $pre, the post-divider by 2^$post
+ 	 */
+ 	unsigned int pre, post;
++	unsigned int fin = spi_imx->spi_clk;
+ 
+ 	if (unlikely(fspi > fin))
+ 		return 0;
+@@ -270,14 +272,14 @@ static unsigned int mx51_ecspi_clkdiv(unsigned int fin, unsigned int fspi,
+ 
+ 	post = max(4U, post) - 4;
+ 	if (unlikely(post > 0xf)) {
+-		pr_err("%s: cannot set clock freq: %u (base freq: %u)\n",
+-				__func__, fspi, fin);
++		dev_err(spi_imx->dev, "cannot set clock freq: %u (base freq: %u)\n",
++				fspi, fin);
+ 		return 0xff;
+ 	}
+ 
+ 	pre = DIV_ROUND_UP(fin, fspi << post) - 1;
+ 
+-	pr_debug("%s: fin: %u, fspi: %u, post: %u, pre: %u\n",
++	dev_dbg(spi_imx->dev, "%s: fin: %u, fspi: %u, post: %u, pre: %u\n",
+ 			__func__, fin, fspi, post, pre);
+ 
+ 	/* Resulting frequency for the SCLK line. */
+@@ -330,7 +332,7 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
+ 	ctrl |= MX51_ECSPI_CTRL_MODE_MASK;
  
  	/* set clock speed */
- 	ctrl |= mx51_ecspi_clkdiv(spi_imx, config->speed_hz, &clk);
-+	spi_imx->spi_bus_clk = clk;
+-	ctrl |= mx51_ecspi_clkdiv(spi_imx->spi_clk, config->speed_hz, &clk);
++	ctrl |= mx51_ecspi_clkdiv(spi_imx, config->speed_hz, &clk);
  
  	/* set chip select to use */
  	ctrl |= MX51_ECSPI_CTRL_CS(config->cs);
-@@ -915,11 +916,26 @@ static void spi_imx_dma_tx_callback(void *cookie)
- 	complete(&spi_imx->dma_tx_completion);
- }
- 
-+static int spi_imx_calculate_timeout(struct spi_imx_data *spi_imx, int size)
-+{
-+	unsigned long timeout = 0;
-+
-+	/* Time with actual data transfer and CS change delay related to HW */
-+	timeout = (8 + 4) * size / spi_imx->spi_bus_clk;
-+
-+	/* Add extra second for scheduler related activities */
-+	timeout += 1;
-+
-+	/* Double calculated timeout */
-+	return msecs_to_jiffies(2 * timeout * MSEC_PER_SEC);
-+}
-+
- static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 				struct spi_transfer *transfer)
- {
- 	struct dma_async_tx_descriptor *desc_tx = NULL, *desc_rx = NULL;
- 	int ret;
-+	unsigned long transfer_timeout;
- 	unsigned long timeout;
- 	struct spi_master *master = spi_imx->bitbang.master;
- 	struct sg_table *tx = &transfer->tx_sg, *rx = &transfer->rx_sg;
-@@ -966,16 +982,18 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 	dma_async_issue_pending(master->dma_tx);
- 	spi_imx->devtype_data->trigger(spi_imx);
- 
-+	transfer_timeout = spi_imx_calculate_timeout(spi_imx, transfer->len);
-+
- 	/* Wait SDMA to finish the data transfer.*/
+@@ -968,18 +970,14 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
  	timeout = wait_for_completion_timeout(&spi_imx->dma_tx_completion,
--						IMX_DMA_TIMEOUT);
-+						transfer_timeout);
+ 						IMX_DMA_TIMEOUT);
  	if (!timeout) {
- 		dev_err(spi_imx->dev, "I/O Error in DMA TX\n");
+-		pr_warn("%s %s: I/O Error in DMA TX\n",
+-			dev_driver_string(&master->dev),
+-			dev_name(&master->dev));
++		dev_err(spi_imx->dev, "I/O Error in DMA TX\n");
  		dmaengine_terminate_all(master->dma_tx);
  		dmaengine_terminate_all(master->dma_rx);
  	} else {
  		timeout = wait_for_completion_timeout(
--				&spi_imx->dma_rx_completion, IMX_DMA_TIMEOUT);
-+				&spi_imx->dma_rx_completion, transfer_timeout);
+ 				&spi_imx->dma_rx_completion, IMX_DMA_TIMEOUT);
  		if (!timeout) {
- 			dev_err(spi_imx->dev, "I/O Error in DMA RX\n");
+-			pr_warn("%s %s: I/O Error in DMA RX\n",
+-				dev_driver_string(&master->dev),
+-				dev_name(&master->dev));
++			dev_err(spi_imx->dev, "I/O Error in DMA RX\n");
  			spi_imx->devtype_data->reset(spi_imx);
+ 			dmaengine_terminate_all(master->dma_rx);
+ 		}
+@@ -996,9 +994,7 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+ 	return ret;
+ 
+ no_dma:
+-	pr_warn_once("%s %s: DMA not available, falling back to PIO\n",
+-		     dev_driver_string(&master->dev),
+-		     dev_name(&master->dev));
++	dev_warn_once(spi_imx->dev, "DMA not available, falling back to PIO\n");
+ 	return -EAGAIN;
+ }
+ 
+@@ -1128,6 +1124,7 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 
+ 	spi_imx = spi_master_get_devdata(master);
+ 	spi_imx->bitbang.master = master;
++	spi_imx->dev = &pdev->dev;
+ 
+ 	spi_imx->devtype_data = of_id ? of_id->data :
+ 		(struct spi_imx_devtype_data *)pdev->id_entry->driver_data;
 -- 
 2.7.0
 

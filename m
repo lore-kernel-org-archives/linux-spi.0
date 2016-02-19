@@ -1,67 +1,40 @@
-From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH 07/12] spi: imx: drop unncessary dma_is_inited variable
-Date: Fri, 19 Feb 2016 08:43:07 +0100
-Message-ID: <1455867792-26389-8-git-send-email-s.hauer@pengutronix.de>
+From: Lothar =?UTF-8?B?V2HDn21hbm4=?= <LW-bxm8fMRDkQLDiMYJYoSAnRvVK+yQ3ZXh@public.gmane.org>
+Subject: Re: [PATCH 05/12] spi: imx: initialize usedma earlier
+Date: Fri, 19 Feb 2016 09:08:46 +0100
+Message-ID: <20160219090846.3004de9d@ipc1.ka-ro>
 References: <1455867792-26389-1-git-send-email-s.hauer@pengutronix.de>
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+	<1455867792-26389-6-git-send-email-s.hauer@pengutronix.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1455867792-26389-1-git-send-email-s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+In-Reply-To: <1455867792-26389-6-git-send-email-s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-There's no need for an extra dma_is_inited variable when we can
-equally well check for the existence of a DMA channel.
+Hi,
 
-Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
----
- drivers/spi/spi-imx.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+On Fri, 19 Feb 2016 08:43:05 +0100 Sascha Hauer wrote:
+> So that the SoC specific config function can know if we will do
+>
+It's not quite obvious that this partial sentence is a continuation of
+the subject header, even more since it starts with a capital letter...
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 073a134..57b7af8 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -102,7 +102,6 @@ struct spi_imx_data {
- 	unsigned int txfifo; /* number of words pushed in tx FIFO */
- 
- 	/* DMA */
--	unsigned int dma_is_inited;
- 	unsigned int dma_finished;
- 	bool usedma;
- 	u32 wml;
-@@ -205,7 +204,7 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
- {
- 	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
- 
--	if (spi_imx->dma_is_inited && transfer->len >= spi_imx->wml &&
-+	if (master->dma_rx && transfer->len >= spi_imx->wml &&
- 	    (transfer->len % spi_imx->wml) == 0)
- 		return true;
- 	return false;
-@@ -827,8 +826,6 @@ static void spi_imx_sdma_exit(struct spi_imx_data *spi_imx)
- 		dma_release_channel(master->dma_tx);
- 		master->dma_tx = NULL;
- 	}
--
--	spi_imx->dma_is_inited = 0;
- }
- 
- static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
-@@ -888,7 +885,6 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
- 	master->max_dma_len = MAX_SDMA_BD_BYTES;
- 	spi_imx->bitbang.master->flags = SPI_MASTER_MUST_RX |
- 					 SPI_MASTER_MUST_TX;
--	spi_imx->dma_is_inited = 1;
- 
- 	return 0;
- err:
--- 
-2.7.0
 
+Lothar Wa=C3=9Fmann
+--=20
+___________________________________________________________
+
+Ka-Ro electronics GmbH | Pascalstra=C3=9Fe 22 | D - 52076 Aachen
+Phone: +49 2408 1402-0 | Fax: +49 2408 1402-10
+Gesch=C3=A4ftsf=C3=BChrer: Matthias Kaussen
+Handelsregistereintrag: Amtsgericht Aachen, HRB 4996
+
+www.karo-electronics.de | info-AvR2QvxeiV7DiMYJYoSAnRvVK+yQ3ZXh@public.gmane.org
+___________________________________________________________
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

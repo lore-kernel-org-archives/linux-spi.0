@@ -1,18 +1,20 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: imx: fix spi resource leak with dma transfer" to the spi tree
-Date: Sun, 21 Feb 2016 03:11:04 +0900
-Message-ID: <E1aXBzk-0001vE-O6@finisterre>
-References: <1453103041-23197-1-git-send-email-pandy.gao@nxp.com>
+Subject: Applied "spi: imx: replace fixed timeout with calculated" to the spi tree
+Date: Sun, 21 Feb 2016 03:11:03 +0900
+Message-ID: <E1aXBzj-0001um-6i@finisterre>
+References: <1455715739-25161-4-git-send-email-s.hauer@pengutronix.de>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1453103041-23197-1-git-send-email-pandy.gao-3arQi8VN3Tc@public.gmane.org>
+In-Reply-To: <1455715739-25161-4-git-send-email-s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: imx: fix spi resource leak with dma transfer
+   spi: imx: replace fixed timeout with calculated
 
 has been applied to the spi tree at
 
@@ -37,56 +39,100 @@ to this mail.
 Thanks,
 Mark
 
->From ba4a3550e93415f4ff300810b8d0659949fea193 Mon Sep 17 00:00:00 2001
-From: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
-Date: Mon, 18 Jan 2016 15:44:01 +0800
-Subject: [PATCH] spi: imx: fix spi resource leak with dma transfer
+>From 4bfe927a11b18db447706507654aef83c9ef15c1 Mon Sep 17 00:00:00 2001
+From: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Fri, 19 Feb 2016 08:43:03 +0100
+Subject: [PATCH] spi: imx: replace fixed timeout with calculated
 
-In spi_imx_dma_transfer(), when desc_rx = dmaengine_prep_slave_sg()
-fails, the context goes to label no_dma and then return. However,
-the memory allocated for desc_tx has not been freed yet, which leads
-to resource leak.
+Fixed timeout value can fire while transaction is ongoing. This may happen
+because there are no strict requirements on SPI transaction duration.
+Dynamic timeout value is generated based on SCLK and transaction size.
 
-Signed-off-by: Gao Pan <pandy.gao-3arQi8VN3Tc@public.gmane.org>
-Reviewed-by: Fugang Duan <B38611-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+There is also 4 * SCLK delay between TX bursts related to HW internal CS change.
+
+Signed-off-by: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-imx.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/spi/spi-imx.c | 24 +++++++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 08492d6..c688efa 100644
+index c5eeb84..6497fc9 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -927,7 +927,7 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 					tx->sgl, tx->nents, DMA_MEM_TO_DEV,
- 					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
- 		if (!desc_tx)
--			goto no_dma;
-+			goto tx_nodma;
+@@ -56,7 +56,6 @@
  
- 		desc_tx->callback = spi_imx_dma_tx_callback;
- 		desc_tx->callback_param = (void *)spi_imx;
-@@ -939,7 +939,7 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 					rx->sgl, rx->nents, DMA_DEV_TO_MEM,
- 					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
- 		if (!desc_rx)
--			goto no_dma;
-+			goto rx_nodma;
+ /* The maximum  bytes that a sdma BD can transfer.*/
+ #define MAX_SDMA_BD_BYTES  (1 << 15)
+-#define IMX_DMA_TIMEOUT (msecs_to_jiffies(3000))
+ struct spi_imx_config {
+ 	unsigned int speed_hz;
+ 	unsigned int bpw;
+@@ -93,6 +92,7 @@ struct spi_imx_data {
+ 	struct clk *clk_per;
+ 	struct clk *clk_ipg;
+ 	unsigned long spi_clk;
++	unsigned int spi_bus_clk;
  
- 		desc_rx->callback = spi_imx_dma_rx_callback;
- 		desc_rx->callback_param = (void *)spi_imx;
-@@ -995,7 +995,9 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+ 	unsigned int count;
+ 	void (*tx)(struct spi_imx_data *);
+@@ -333,6 +333,7 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
  
- 	return ret;
+ 	/* set clock speed */
+ 	ctrl |= mx51_ecspi_clkdiv(spi_imx, config->speed_hz, &clk);
++	spi_imx->spi_bus_clk = clk;
  
--no_dma:
-+rx_nodma:
-+	dmaengine_terminate_all(master->dma_tx);
-+tx_nodma:
- 	pr_warn_once("%s %s: DMA not available, falling back to PIO\n",
- 		     dev_driver_string(&master->dev),
- 		     dev_name(&master->dev));
+ 	/* set chip select to use */
+ 	ctrl |= MX51_ECSPI_CTRL_CS(config->cs);
+@@ -915,11 +916,26 @@ static void spi_imx_dma_tx_callback(void *cookie)
+ 	complete(&spi_imx->dma_tx_completion);
+ }
+ 
++static int spi_imx_calculate_timeout(struct spi_imx_data *spi_imx, int size)
++{
++	unsigned long timeout = 0;
++
++	/* Time with actual data transfer and CS change delay related to HW */
++	timeout = (8 + 4) * size / spi_imx->spi_bus_clk;
++
++	/* Add extra second for scheduler related activities */
++	timeout += 1;
++
++	/* Double calculated timeout */
++	return msecs_to_jiffies(2 * timeout * MSEC_PER_SEC);
++}
++
+ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+ 				struct spi_transfer *transfer)
+ {
+ 	struct dma_async_tx_descriptor *desc_tx = NULL, *desc_rx = NULL;
+ 	int ret;
++	unsigned long transfer_timeout;
+ 	unsigned long timeout;
+ 	struct spi_master *master = spi_imx->bitbang.master;
+ 	struct sg_table *tx = &transfer->tx_sg, *rx = &transfer->rx_sg;
+@@ -966,16 +982,18 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+ 	dma_async_issue_pending(master->dma_tx);
+ 	spi_imx->devtype_data->trigger(spi_imx);
+ 
++	transfer_timeout = spi_imx_calculate_timeout(spi_imx, transfer->len);
++
+ 	/* Wait SDMA to finish the data transfer.*/
+ 	timeout = wait_for_completion_timeout(&spi_imx->dma_tx_completion,
+-						IMX_DMA_TIMEOUT);
++						transfer_timeout);
+ 	if (!timeout) {
+ 		dev_err(spi_imx->dev, "I/O Error in DMA TX\n");
+ 		dmaengine_terminate_all(master->dma_tx);
+ 		dmaengine_terminate_all(master->dma_rx);
+ 	} else {
+ 		timeout = wait_for_completion_timeout(
+-				&spi_imx->dma_rx_completion, IMX_DMA_TIMEOUT);
++				&spi_imx->dma_rx_completion, transfer_timeout);
+ 		if (!timeout) {
+ 			dev_err(spi_imx->dev, "I/O Error in DMA RX\n");
+ 			spi_imx->devtype_data->reset(spi_imx);
 -- 
 2.7.0
 

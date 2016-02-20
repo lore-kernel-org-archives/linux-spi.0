@@ -1,62 +1,88 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: spi-pxa2xx-pci: Add ID and driver type for
- WildcatPoint PCH
-Date: Sun, 21 Feb 2016 02:43:39 +0900
-Message-ID: <20160220174339.GC18327@sirena.org.uk>
-References: <CAC=cSJ91R6sT6FwCNv9pHaqnvOFwiigw0fdMhz1XX0NOMn6pTw@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="1GFpsN+DA+8qGtn4"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: Leif Liddy <leif.liddy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Applied "spi: pxa2xx: Remove unused DMA buffer mappings" to the spi tree
+Date: Sun, 21 Feb 2016 03:11:01 +0900
+Message-ID: <E1aXBzh-0001uI-Vc@finisterre>
+References: <1455886881-5790-1-git-send-email-jarkko.nikula@linux.intel.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAC=cSJ91R6sT6FwCNv9pHaqnvOFwiigw0fdMhz1XX0NOMn6pTw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <1455886881-5790-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---1GFpsN+DA+8qGtn4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: pxa2xx: Remove unused DMA buffer mappings
 
-On Fri, Feb 19, 2016 at 10:55:10PM +0100, Leif Liddy wrote:
+has been applied to the spi tree at
 
-> BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=108331
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-Please don't include noise like this in upstream submissions.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> + [PORT_LPT] = {
-> + .type = LPSS_LPT_SSP,
-> + .port_id = 0,
-> + .num_chipselect = 1,
-> + .max_clk_rate = 50000000,
-> + .tx_param = &lpt_tx_param,
-> + .rx_param = &lpt_rx_param,
-> + },
->  };
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-It looks like your patch has been corrupted so I can't apply, please fix
-this and resend.  Pasting things into the gmail web UI is known not to
-work, try using git send-email.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---1GFpsN+DA+8qGtn4
-Content-Type: application/pgp-signature; name="signature.asc"
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Thanks,
+Mark
 
-iQEcBAEBCAAGBQJWyKXKAAoJECTWi3JdVIfQF4cH/0jx1/tiZwXZ9NbQGRO5Obvc
-o3cpEKp8uY3EQmgQcNn0BuETmbq4JfY+sH2i59AF4mFpW7d9fNQlqp1P2DRO3vbz
-2FFx+MKBq3g9mAJC/yrCmQ1QjiXTTT3VqNrdE5brjR+W1+yjBCIMEkwbcfJ9lqYg
-TC6FF6bl3/HfDM7JsS6VxDjAPnUp8qOutcrx3HDvIMyYaSowxJLcdFuFeZoI6NYZ
-U/EXXsRa670XiX41EMdQdoUGAPZKE1l782LlOf6tD/fO0pMo7NB2DvLzmuxUQVr4
-ezQGYEcrHZgA2XkEEz3xB3oXDxJCG00hZmogLwvHRoQY6L1G8cOtJJEtJHxQyYg=
-=2lok
------END PGP SIGNATURE-----
+>From 7c04b792d30ef8d62259f24065cdeddbfb4afe3d Mon Sep 17 00:00:00 2001
+From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Date: Fri, 19 Feb 2016 15:01:21 +0200
+Subject: [PATCH] spi: pxa2xx: Remove unused DMA buffer mappings
 
---1GFpsN+DA+8qGtn4--
+Only legacy PXA DMA implementation was using these rx_dma and tx_dma DMA
+addresses so they are not needed after commit 6356437e65c2
+("spi: spi-pxa2xx: remove legacy PXA DMA bits").
+
+Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-pxa2xx.c | 2 --
+ drivers/spi/spi-pxa2xx.h | 2 --
+ 2 files changed, 4 deletions(-)
+
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 0eb7936..2c4e8cc 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -995,8 +995,6 @@ static void pump_transfers(unsigned long data)
+ 	drv_data->tx_end = drv_data->tx + transfer->len;
+ 	drv_data->rx = transfer->rx_buf;
+ 	drv_data->rx_end = drv_data->rx + transfer->len;
+-	drv_data->rx_dma = transfer->rx_dma;
+-	drv_data->tx_dma = transfer->tx_dma;
+ 	drv_data->len = transfer->len;
+ 	drv_data->write = drv_data->tx ? chip->write : null_writer;
+ 	drv_data->read = drv_data->rx ? chip->read : null_reader;
+diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
+index 8e781c8..a1ef889 100644
+--- a/drivers/spi/spi-pxa2xx.h
++++ b/drivers/spi/spi-pxa2xx.h
+@@ -69,8 +69,6 @@ struct driver_data {
+ 	void *rx;
+ 	void *rx_end;
+ 	int dma_mapped;
+-	dma_addr_t rx_dma;
+-	dma_addr_t tx_dma;
+ 	size_t rx_map_len;
+ 	size_t tx_map_len;
+ 	u8 n_bytes;
+-- 
+2.7.0
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

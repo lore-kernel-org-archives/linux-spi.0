@@ -1,107 +1,85 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: spi-pxa2xx-pci: Add ID and driver type for WildcatPoint PCH" to the spi tree
-Date: Sun, 21 Feb 2016 05:02:26 +0900
-Message-ID: <E1aXDjW-00036J-Hf@finisterre>
-References: <1455996022-19773-1-git-send-email-leif.liddy@gmail.com>
+From: Oleksij Rempel <linux-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
+Subject: Re: propper support of 5 wire SPI (SPI_READY signal)
+Date: Sat, 20 Feb 2016 22:40:52 +0100
+Message-ID: <56C8DD64.1070700@rempel-privat.de>
+References: <56C6DB9E.5080905@rempel-privat.de>
+ <20160220195641.GE18327@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="86fowTqkI0BuavvNqOlGEhUamPpNkieUR"
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Leif Liddy <leif.liddy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1455996022-19773-1-git-send-email-leif.liddy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <20160220195641.GE18327-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--86fowTqkI0BuavvNqOlGEhUamPpNkieUR
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-   spi: spi-pxa2xx-pci: Add ID and driver type for WildcatPoint PCH
+Am 20.02.2016 um 20:56 schrieb Mark Brown:
+> On Fri, Feb 19, 2016 at 10:08:46AM +0100, Oleksij Rempel wrote:
+>=20
+>> i'm working on a project which depends on 5 Wire SPI communication. It=
 
-has been applied to the spi tree at
+>> is probably identical to spi-davinci.c with SPI_READY signal. Only
+>> difference is that SPI_READY is not supported by hardware, in this cas=
+e
+>> GPIO input is used.
+>=20
+>> Currently this project implements SPI_READY and CS on top of spidev
+>> driver. What makes it really ugly, slow and complicated.
+>=20
+>> My question is, are there any better, upstreamable way to implement it=
+?
+>> For example directly insight of spi framework? Any suggestions and
+>> comments are welcome.
+>=20
+> Unless the hardware support SPI_READY a GPIO is going to be as good as
+> it gets I think, someone else might have better ideas but nothing
+> springs to mind for me.  I'd be OK with a GPIO based implementation in
+> the core for systems that don't have hardware support for it but I don'=
+t
+> see anything that'd be fundamentally better in terms of system
+> performance right now.
+>=20
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+Ok, i'm working on it.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+I would need some naming suggestions (we call our protokol SSI). It
+looks like the protocol used by us has some differences with Davinci.
+The Dav. using SPI_READY line only
+to allow or pause transmission (fix me if i'm wrong)
+We call it Request line and use it to: Ready to Receive; Receive
+Finished; and Request data shift by slave.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+In this case probably spi framework need to be extended with kind of
+request call back. If data is currently not transmitted and Req line is
+not used for flow control, then call driver specific function to
+initiate data shift.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+--=20
+Regards,
+Oleksij
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
 
-Thanks,
-Mark
+--86fowTqkI0BuavvNqOlGEhUamPpNkieUR
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
 
->From caba248db2863466a886735cb8d5704048063ac9 Mon Sep 17 00:00:00 2001
-From: Leif Liddy <leif.liddy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Sat, 20 Feb 2016 20:20:22 +0100
-Subject: [PATCH] spi: spi-pxa2xx-pci: Add ID and driver type for WildcatPoint
- PCH
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-WildcatPoint PCH as seen on MacBook 12-inch (Early 2015) has a PCI enabled
-SPI controller. Enable it by adding its ID to the corresponding driver.
-The ACPI enumerated name for this SPI controller (found in spi-pxa2xx.c) is INT33C1.
-Therefore, we associate the SPI controller with the corresponding type of LPSS_LPT_SSP.
+iF4EAREIAAYFAlbI3WoACgkQHwImuRkmbWmgLwD/XfcYOzAlR2azyF7EWddcSvin
+RpGWcWtU37oli8r0JjkA/j5iKfeVCAu1qayRex8Erb7a8ecUzc+aCyOjuMxVqvdE
+=cqhL
+-----END PGP SIGNATURE-----
 
-Signed-off-by: Leif Liddy <leif.liddy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-pxa2xx-pci.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
-diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
-index d19d7f2..520ed1d 100644
---- a/drivers/spi/spi-pxa2xx-pci.c
-+++ b/drivers/spi/spi-pxa2xx-pci.c
-@@ -19,6 +19,7 @@ enum {
- 	PORT_BSW1,
- 	PORT_BSW2,
- 	PORT_QUARK_X1000,
-+	PORT_LPT,
- };
- 
- struct pxa_spi_info {
-@@ -42,6 +43,9 @@ static struct dw_dma_slave bsw1_rx_param = { .src_id = 7 };
- static struct dw_dma_slave bsw2_tx_param = { .dst_id = 8 };
- static struct dw_dma_slave bsw2_rx_param = { .src_id = 9 };
- 
-+static struct dw_dma_slave lpt_tx_param = { .dst_id = 0 };
-+static struct dw_dma_slave lpt_rx_param = { .src_id = 1 };
-+
- static bool lpss_dma_filter(struct dma_chan *chan, void *param)
- {
- 	struct dw_dma_slave *dws = param;
-@@ -98,6 +102,14 @@ static struct pxa_spi_info spi_info_configs[] = {
- 		.num_chipselect = 1,
- 		.max_clk_rate = 50000000,
- 	},
-+	[PORT_LPT] = {
-+		.type = LPSS_LPT_SSP,
-+		.port_id = 0,
-+		.num_chipselect = 1,
-+		.max_clk_rate = 50000000,
-+		.tx_param = &lpt_tx_param,
-+		.rx_param = &lpt_rx_param,
-+	},
- };
- 
- static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
-@@ -202,6 +214,7 @@ static const struct pci_device_id pxa2xx_spi_pci_devices[] = {
- 	{ PCI_VDEVICE(INTEL, 0x228e), PORT_BSW0 },
- 	{ PCI_VDEVICE(INTEL, 0x2290), PORT_BSW1 },
- 	{ PCI_VDEVICE(INTEL, 0x22ac), PORT_BSW2 },
-+	{ PCI_VDEVICE(INTEL, 0x9ce6), PORT_LPT },
- 	{ },
- };
- MODULE_DEVICE_TABLE(pci, pxa2xx_spi_pci_devices);
--- 
-2.7.0
-
+--86fowTqkI0BuavvNqOlGEhUamPpNkieUR--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

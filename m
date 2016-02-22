@@ -1,54 +1,52 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] Doc: spi: make xmldocs warning caused by spi.c
-Date: Mon, 22 Feb 2016 23:03:29 +0900
-Message-ID: <20160222140329.GF18327@sirena.org.uk>
-References: <1456140824-15744-1-git-send-email-standby24x7@gmail.com>
+From: Tony Lindgren <tony@atomide.com>
+Subject: Re: [PATCH 1/7] mmc: omap_hsmmc: Fix PM regression with deferred
+ probe for pm_runtime_reinit
+Date: Mon, 22 Feb 2016 09:54:26 -0800
+Message-ID: <20160222175426.GI13417@atomide.com>
+References: <1455145370-20301-1-git-send-email-tony@atomide.com>
+ <1455145370-20301-2-git-send-email-tony@atomide.com>
+ <CAPDyKFpAcsfLgtu93P45fTEg11MjdGwREcyeGSS7vt6GWbNu_w@mail.gmail.com>
+ <20160211150240.GR19432@atomide.com>
+ <CAPDyKFo4Jyjwyvr3P5VHfDhQ87K9mnR01N-NtKz-yx2ycnfOLg@mail.gmail.com>
+ <20160211172632.GT19432@atomide.com>
+ <CAPDyKFpwGcCW_Vwz07cgh8LxGmxu9=GVch0MVJEpNJ19zoLZ7g@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Q935UqjMul3XuJv7"
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, corbet-T1hC0tSOHrs@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Masanari Iida <standby24x7-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1456140824-15744-1-git-send-email-standby24x7-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
-
-
---Q935UqjMul3XuJv7
 Content-Type: text/plain; charset=us-ascii
+Cc: linux-omap <linux-omap@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	linux-mmc <linux-mmc@vger.kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Nishanth Menon <nm@ti.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Tero Kristo <t-kristo@ti.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+	linux-serial@vger.kernel.org,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Peter Hurley <peter@hurleysoftware.com>,
+	Wolfram Sang <wsa@the-dreams.de>
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Return-path: <linux-i2c-owner@vger.kernel.org>
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CAPDyKFpwGcCW_Vwz07cgh8LxGmxu9=GVch0MVJEpNJ19zoLZ7g@mail.gmail.com>
+Sender: linux-i2c-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Mon, Feb 22, 2016 at 08:33:44PM +0900, Masanari Iida wrote:
-> This patch fix following warnings while make xmldocs.
->=20
-> .//drivers/spi/spi.c:2354: warning: Excess function parameter
-> 'message' description in 'spi_split_transfers_maxsize'
-> .//drivers/spi/spi.c:2354: warning: Excess function parameter
->  'max_size' description in 'spi_split_transfers_maxsize'
+* Ulf Hansson <ulf.hansson@linaro.org> [160212 05:00]:
+> On 11 February 2016 at 18:26, Tony Lindgren <tony@atomide.com> wrote:
+> > Subject: [PATCH] mmc: omap_hsmmc: Fix PM regression with deferred probe for
+> >  pm_runtime_reinit
+>
+> Thanks, applied for fixes!
 
-Please use subject lines matching the style for the subsystem.  This
-makes it easier for people to identify relevant patches.
+Ulf, any news on getting this into the mainline tree?
 
---Q935UqjMul3XuJv7
-Content-Type: application/pgp-signature; name="signature.asc"
+My PM tests have been now broken for six weeks or something
+because of this!
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Regards,
 
-iQEcBAEBCAAGBQJWyxUiAAoJECTWi3JdVIfQ4hYH/RZ+mYQcwVS/2DdULTKT335m
-Ah5uwHJOjDxZ5V902CC0c+/Wxmfhm6ZazcDINwKC54d/zEYw9XpgrHvO/tu10AqU
-5xk4MU9fKCaW1B5PkL7bwJ/74qt+UBkOMJuoXH5falVj6oDeynS35iRnRukqTLfc
-7VGcWK+vjLceuny8WGXG2L+I8KljjIXq5ABFRmYF4qio6OOqMg7WDISMQ8fk9bhp
-Mg1aTeXlDPPD2utX1XBQtaeMPiXm+05Si1F6/VfMzAq5xy0ixC7VElBXKAyClCVV
-qF8YJS2fi5J8a1EBM5t4U9JNE3GCkm+tCX1w7l6QhUkcuUYdY5Bu0BDKXfe2kKE=
-=XbCL
------END PGP SIGNATURE-----
-
---Q935UqjMul3XuJv7--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Tony

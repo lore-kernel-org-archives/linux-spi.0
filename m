@@ -1,7 +1,7 @@
 From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH 7/9] spi: imx: make some register defines simpler
-Date: Tue, 23 Feb 2016 10:23:56 +0100
-Message-ID: <1456219438-21205-8-git-send-email-s.hauer@pengutronix.de>
+Subject: [PATCH 2/9] spi: imx: initialize usedma earlier
+Date: Tue, 23 Feb 2016 10:23:51 +0100
+Message-ID: <1456219438-21205-3-git-send-email-s.hauer@pengutronix.de>
 References: <1456219438-21205-1-git-send-email-s.hauer@pengutronix.de>
 Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
@@ -13,49 +13,48 @@ In-Reply-To: <1456219438-21205-1-git-send-email-s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@p
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The watermark levels in the DMA register are write only, the driver
-should never have to read them back from the hardware. Replace the
-current _MASK and _OFFSET defines with defines taking the watermark
-level directly.
+So that the SoC specific config function can know if we will do
+DMA or not. Will be needed in following patches.
 
 Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 ---
- drivers/spi/spi-imx.c | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ drivers/spi/spi-imx.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 287ec0c..96e32d4 100644
+index a61b1b1..5792918 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -256,12 +256,9 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
- #define MX51_ECSPI_INT_RREN		(1 <<  3)
+@@ -815,6 +815,11 @@ static int spi_imx_setupxfer(struct spi_device *spi,
+ 		spi_imx->tx = spi_imx_buf_tx_u32;
+ 	}
  
- #define MX51_ECSPI_DMA      0x14
--#define MX51_ECSPI_DMA_TX_WML_OFFSET	0
--#define MX51_ECSPI_DMA_TX_WML_MASK	0x3F
--#define MX51_ECSPI_DMA_RX_WML_OFFSET	16
--#define MX51_ECSPI_DMA_RX_WML_MASK	(0x3F << 16)
--#define MX51_ECSPI_DMA_RXT_WML_OFFSET	24
--#define MX51_ECSPI_DMA_RXT_WML_MASK	(0x3F << 24)
-+#define MX51_ECSPI_DMA_TX_WML(wml)	((wml) & 0x3f)
-+#define MX51_ECSPI_DMA_RX_WML(wml)	(((wml) & 0x3f) << 16)
-+#define MX51_ECSPI_DMA_RXT_WML(wml)	(((wml) & 0x3f) << 24)
++	if (spi_imx_can_dma(spi_imx->bitbang.master, spi, t))
++		spi_imx->usedma = 1;
++	else
++		spi_imx->usedma = 0;
++
+ 	spi_imx->devtype_data->config(spi_imx, &config);
  
- #define MX51_ECSPI_DMA_TEDEN		(1 << 7)
- #define MX51_ECSPI_DMA_RXDEN		(1 << 23)
-@@ -408,9 +405,9 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
- 	 * and enable DMA request.
- 	 */
+ 	return 0;
+@@ -1040,14 +1045,10 @@ static int spi_imx_transfer(struct spi_device *spi,
+ {
+ 	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
  
--	writel(spi_imx->wml << MX51_ECSPI_DMA_RX_WML_OFFSET |
--		spi_imx->wml << MX51_ECSPI_DMA_TX_WML_OFFSET |
--		spi_imx->wml << MX51_ECSPI_DMA_RXT_WML_OFFSET |
-+	writel(MX51_ECSPI_DMA_RX_WML(spi_imx->wml) |
-+		MX51_ECSPI_DMA_TX_WML(spi_imx->wml) |
-+		MX51_ECSPI_DMA_RXT_WML(spi_imx->wml) |
- 		MX51_ECSPI_DMA_TEDEN | MX51_ECSPI_DMA_RXDEN |
- 		MX51_ECSPI_DMA_RXTDEN, spi_imx->base + MX51_ECSPI_DMA);
+-	if (spi_imx->bitbang.master->can_dma &&
+-	    spi_imx_can_dma(spi_imx->bitbang.master, spi, transfer)) {
+-		spi_imx->usedma = true;
++	if (spi_imx->usedma)
+ 		return spi_imx_dma_transfer(spi_imx, transfer);
+-	}
+-	spi_imx->usedma = false;
+-
+-	return spi_imx_pio_transfer(spi, transfer);
++	else
++		return spi_imx_pio_transfer(spi, transfer);
+ }
  
+ static int spi_imx_setup(struct spi_device *spi)
 -- 
 2.7.0
 

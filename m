@@ -1,7 +1,7 @@
 From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH 9/9] spi: imx: drop bogus tests for rx/tx bufs in DMA transfer
-Date: Tue, 23 Feb 2016 10:23:58 +0100
-Message-ID: <1456219438-21205-10-git-send-email-s.hauer@pengutronix.de>
+Subject: [PATCH 8/9] spi: imx: set MX51_ECSPI_CTRL_SMC bit in setup function
+Date: Tue, 23 Feb 2016 10:23:57 +0100
+Message-ID: <1456219438-21205-9-git-send-email-s.hauer@pengutronix.de>
 References: <1456219438-21205-1-git-send-email-s.hauer@pengutronix.de>
 Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
@@ -13,132 +13,85 @@ In-Reply-To: <1456219438-21205-1-git-send-email-s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@p
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The driver tries to be clever by only setting up DMA channels when
-the corresponding sg tables are non NULL. The sg tables are embedded
-structs in struct spi_transfer, so they are guaranteed to be non NULL
-which makes the if(tx)/if(rx) tests completely bogus. The driver even
-sets the SPI_MASTER_MUST_RX / SPI_MASTER_MUST_TX flags which makes sure
-the sg tables are not only present but also non empty.
-Drop the tests and make the DMA path easier to follow.
+Now that the config function knows whether we are doing DMA or not we
+can do the necessary register setup in the config function and no longer
+have to do this in the trigger function. With this the trigger function
+becomes a no-op for DMA, so instead of testing if we are doing DMA or
+not in the trigger function we simply no longer call it in the DMA case.
 
 Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 ---
- drivers/spi/spi-imx.c | 82 +++++++++++++++++++++------------------------------
- 1 file changed, 34 insertions(+), 48 deletions(-)
+ drivers/spi/spi-imx.c | 21 ++++++---------------
+ 1 file changed, 6 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 91890b2..e7a19be 100644
+index 96e32d4..91890b2 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -974,51 +974,40 @@ static int spi_imx_calculate_timeout(struct spi_imx_data *spi_imx, int size)
- static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 				struct spi_transfer *transfer)
+@@ -106,7 +106,6 @@ struct spi_imx_data {
+ 	unsigned int txfifo; /* number of words pushed in tx FIFO */
+ 
+ 	/* DMA */
+-	unsigned int dma_finished;
+ 	bool usedma;
+ 	u32 wml;
+ 	struct completion dma_rx_completion;
+@@ -324,14 +323,10 @@ static void __maybe_unused mx51_ecspi_intctrl(struct spi_imx_data *spi_imx, int
+ 
+ static void __maybe_unused mx51_ecspi_trigger(struct spi_imx_data *spi_imx)
  {
--	struct dma_async_tx_descriptor *desc_tx = NULL, *desc_rx = NULL;
--	int ret;
-+	struct dma_async_tx_descriptor *desc_tx, *desc_rx;
- 	unsigned long transfer_timeout;
- 	unsigned long timeout;
- 	struct spi_master *master = spi_imx->bitbang.master;
- 	struct sg_table *tx = &transfer->tx_sg, *rx = &transfer->rx_sg;
+-	u32 reg = readl(spi_imx->base + MX51_ECSPI_CTRL);
++	u32 reg;
  
--	if (tx) {
--		desc_tx = dmaengine_prep_slave_sg(master->dma_tx,
--					tx->sgl, tx->nents, DMA_MEM_TO_DEV,
--					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
--		if (!desc_tx)
--			return -EINVAL;
--
--		desc_tx->callback = spi_imx_dma_tx_callback;
--		desc_tx->callback_param = (void *)spi_imx;
--		dmaengine_submit(desc_tx);
--	}
-+	/*
-+	 * The TX DMA setup starts the transfer, so make sure RX is configured
-+	 * before TX.
-+	 */
-+	desc_rx = dmaengine_prep_slave_sg(master->dma_rx,
-+				rx->sgl, rx->nents, DMA_DEV_TO_MEM,
-+				DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
-+	if (!desc_rx)
-+		return -EINVAL;
- 
--	if (rx) {
--		desc_rx = dmaengine_prep_slave_sg(master->dma_rx,
--					rx->sgl, rx->nents, DMA_DEV_TO_MEM,
--					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
--		if (!desc_rx) {
--			dmaengine_terminate_all(master->dma_tx);
--			return -EINVAL;
--		}
-+	desc_rx->callback = spi_imx_dma_rx_callback;
-+	desc_rx->callback_param = (void *)spi_imx;
-+	dmaengine_submit(desc_rx);
-+	reinit_completion(&spi_imx->dma_rx_completion);
-+	dma_async_issue_pending(master->dma_rx);
- 
--		desc_rx->callback = spi_imx_dma_rx_callback;
--		desc_rx->callback_param = (void *)spi_imx;
--		dmaengine_submit(desc_rx);
-+	desc_tx = dmaengine_prep_slave_sg(master->dma_tx,
-+				tx->sgl, tx->nents, DMA_MEM_TO_DEV,
-+				DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
-+	if (!desc_tx) {
-+		dmaengine_terminate_all(master->dma_tx);
-+		return -EINVAL;
- 	}
- 
--	reinit_completion(&spi_imx->dma_rx_completion);
-+	desc_tx->callback = spi_imx_dma_tx_callback;
-+	desc_tx->callback_param = (void *)spi_imx;
-+	dmaengine_submit(desc_tx);
- 	reinit_completion(&spi_imx->dma_tx_completion);
--
--	/*
--	 * Set these order to avoid potential RX overflow. The overflow may
--	 * happen if we enable SPI HW before starting RX DMA due to rescheduling
--	 * for another task and/or interrupt.
--	 * So RX DMA enabled first to make sure data would be read out from FIFO
--	 * ASAP. TX DMA enabled next to start filling TX FIFO with new data.
--	 * And finaly SPI HW enabled to start actual data transfer.
--	 */
--	dma_async_issue_pending(master->dma_rx);
- 	dma_async_issue_pending(master->dma_tx);
- 
- 	transfer_timeout = spi_imx_calculate_timeout(spi_imx, transfer->len);
-@@ -1030,22 +1019,19 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 		dev_err(spi_imx->dev, "I/O Error in DMA TX\n");
- 		dmaengine_terminate_all(master->dma_tx);
- 		dmaengine_terminate_all(master->dma_rx);
--	} else {
--		timeout = wait_for_completion_timeout(
--				&spi_imx->dma_rx_completion, transfer_timeout);
--		if (!timeout) {
--			dev_err(spi_imx->dev, "I/O Error in DMA RX\n");
--			spi_imx->devtype_data->reset(spi_imx);
--			dmaengine_terminate_all(master->dma_rx);
--		}
-+		return -ETIMEDOUT;
- 	}
- 
--	if (!timeout)
--		ret = -ETIMEDOUT;
+-	if (!spi_imx->usedma)
+-		reg |= MX51_ECSPI_CTRL_XCH;
+-	else if (!spi_imx->dma_finished)
+-		reg |= MX51_ECSPI_CTRL_SMC;
 -	else
--		ret = transfer->len;
-+	timeout = wait_for_completion_timeout(&spi_imx->dma_rx_completion,
-+					      transfer_timeout);
-+	if (!timeout) {
-+		dev_err(&master->dev, "I/O Error in DMA RX\n");
-+		spi_imx->devtype_data->reset(spi_imx);
-+		dmaengine_terminate_all(master->dma_rx);
-+		return -ETIMEDOUT;
-+	}
- 
--	return ret;
-+	return transfer->len;
+-		reg &= ~MX51_ECSPI_CTRL_SMC;
++	reg = readl(spi_imx->base + MX51_ECSPI_CTRL);
++	reg |= MX51_ECSPI_CTRL_XCH;
+ 	writel(reg, spi_imx->base + MX51_ECSPI_CTRL);
  }
  
- static int spi_imx_pio_transfer(struct spi_device *spi,
+@@ -371,6 +366,9 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
+ 	if (config->mode & SPI_CS_HIGH)
+ 		cfg |= MX51_ECSPI_CONFIG_SSBPOL(config->cs);
+ 
++	if (spi_imx->usedma)
++		ctrl |= MX51_ECSPI_CTRL_SMC;
++
+ 	/* CTRL register always go first to bring out controller from reset */
+ 	writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
+ 
+@@ -1012,9 +1010,6 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+ 	reinit_completion(&spi_imx->dma_rx_completion);
+ 	reinit_completion(&spi_imx->dma_tx_completion);
+ 
+-	/* Trigger the cspi module. */
+-	spi_imx->dma_finished = 0;
+-
+ 	/*
+ 	 * Set these order to avoid potential RX overflow. The overflow may
+ 	 * happen if we enable SPI HW before starting RX DMA due to rescheduling
+@@ -1025,7 +1020,6 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+ 	 */
+ 	dma_async_issue_pending(master->dma_rx);
+ 	dma_async_issue_pending(master->dma_tx);
+-	spi_imx->devtype_data->trigger(spi_imx);
+ 
+ 	transfer_timeout = spi_imx_calculate_timeout(spi_imx, transfer->len);
+ 
+@@ -1046,9 +1040,6 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+ 		}
+ 	}
+ 
+-	spi_imx->dma_finished = 1;
+-	spi_imx->devtype_data->trigger(spi_imx);
+-
+ 	if (!timeout)
+ 		ret = -ETIMEDOUT;
+ 	else
 -- 
 2.7.0
 

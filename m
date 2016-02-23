@@ -1,100 +1,38 @@
-From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH 8/9] spi: imx: set MX51_ECSPI_CTRL_SMC bit in setup function
-Date: Tue, 23 Feb 2016 10:23:57 +0100
-Message-ID: <1456219438-21205-9-git-send-email-s.hauer@pengutronix.de>
+From: Lothar =?UTF-8?B?V2HDn21hbm4=?= <LW-bxm8fMRDkQLDiMYJYoSAnRvVK+yQ3ZXh@public.gmane.org>
+Subject: Re: [PATCH 2/9] spi: imx: initialize usedma earlier
+Date: Tue, 23 Feb 2016 11:15:59 +0100
+Message-ID: <20160223111559.3c2cb641@ipc1.ka-ro>
 References: <1456219438-21205-1-git-send-email-s.hauer@pengutronix.de>
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+	<1456219438-21205-3-git-send-email-s.hauer@pengutronix.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1456219438-21205-1-git-send-email-s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+In-Reply-To: <1456219438-21205-3-git-send-email-s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Now that the config function knows whether we are doing DMA or not we
-can do the necessary register setup in the config function and no longer
-have to do this in the trigger function. With this the trigger function
-becomes a no-op for DMA, so instead of testing if we are doing DMA or
-not in the trigger function we simply no longer call it in the DMA case.
+Hi,
 
-Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
----
- drivers/spi/spi-imx.c | 21 ++++++---------------
- 1 file changed, 6 insertions(+), 15 deletions(-)
+On Tue, 23 Feb 2016 10:23:51 +0100 Sascha Hauer wrote:
+> So that the SoC specific config function can know if we will do
+> DMA or not. Will be needed in following patches.
+>=20
+> Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+>
+The first sentence of the commit log sounds silly unless you read it in
+conjunction with the subject header. I made this remark already in
+<20160219090846.3004de9d-VjFSrY7JcPWvSplVBqRQBQ@public.gmane.org>
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 96e32d4..91890b2 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -106,7 +106,6 @@ struct spi_imx_data {
- 	unsigned int txfifo; /* number of words pushed in tx FIFO */
- 
- 	/* DMA */
--	unsigned int dma_finished;
- 	bool usedma;
- 	u32 wml;
- 	struct completion dma_rx_completion;
-@@ -324,14 +323,10 @@ static void __maybe_unused mx51_ecspi_intctrl(struct spi_imx_data *spi_imx, int
- 
- static void __maybe_unused mx51_ecspi_trigger(struct spi_imx_data *spi_imx)
- {
--	u32 reg = readl(spi_imx->base + MX51_ECSPI_CTRL);
-+	u32 reg;
- 
--	if (!spi_imx->usedma)
--		reg |= MX51_ECSPI_CTRL_XCH;
--	else if (!spi_imx->dma_finished)
--		reg |= MX51_ECSPI_CTRL_SMC;
--	else
--		reg &= ~MX51_ECSPI_CTRL_SMC;
-+	reg = readl(spi_imx->base + MX51_ECSPI_CTRL);
-+	reg |= MX51_ECSPI_CTRL_XCH;
- 	writel(reg, spi_imx->base + MX51_ECSPI_CTRL);
- }
- 
-@@ -371,6 +366,9 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
- 	if (config->mode & SPI_CS_HIGH)
- 		cfg |= MX51_ECSPI_CONFIG_SSBPOL(config->cs);
- 
-+	if (spi_imx->usedma)
-+		ctrl |= MX51_ECSPI_CTRL_SMC;
-+
- 	/* CTRL register always go first to bring out controller from reset */
- 	writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
- 
-@@ -1012,9 +1010,6 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 	reinit_completion(&spi_imx->dma_rx_completion);
- 	reinit_completion(&spi_imx->dma_tx_completion);
- 
--	/* Trigger the cspi module. */
--	spi_imx->dma_finished = 0;
--
- 	/*
- 	 * Set these order to avoid potential RX overflow. The overflow may
- 	 * happen if we enable SPI HW before starting RX DMA due to rescheduling
-@@ -1025,7 +1020,6 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 	 */
- 	dma_async_issue_pending(master->dma_rx);
- 	dma_async_issue_pending(master->dma_tx);
--	spi_imx->devtype_data->trigger(spi_imx);
- 
- 	transfer_timeout = spi_imx_calculate_timeout(spi_imx, transfer->len);
- 
-@@ -1046,9 +1040,6 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 		}
- 	}
- 
--	spi_imx->dma_finished = 1;
--	spi_imx->devtype_data->trigger(spi_imx);
--
- 	if (!timeout)
- 		ret = -ETIMEDOUT;
- 	else
--- 
-2.7.0
+Is there any reason why this commit log is written as a continuation of
+the subject line (whithout making that obvious) while all the other
+commit logs in your patch set are self-contained?
 
+
+Lothar Wa=C3=9Fmann
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

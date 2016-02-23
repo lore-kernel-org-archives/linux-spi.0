@@ -1,60 +1,90 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3] spi: master driver to enable RTC on ICPDAS LP-8841
-Date: Tue, 23 Feb 2016 06:27:38 +0900
-Message-ID: <20160222212738.GH18327@sirena.org.uk>
-References: <1456105630-28914-1-git-send-email-ynvich@gmail.com>
- <1456142265-12925-1-git-send-email-ynvich@gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="nJFBJCcSkptt2CoF"
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"open list:SPI SUBSYSTEM" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Sergei Ianovich <ynvich-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: [PATCH 1/9] spi: imx: drop fallback to PIO
+Date: Tue, 23 Feb 2016 10:23:50 +0100
+Message-ID: <1456219438-21205-2-git-send-email-s.hauer@pengutronix.de>
+References: <1456219438-21205-1-git-send-email-s.hauer@pengutronix.de>
+Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1456142265-12925-1-git-send-email-ynvich-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1456219438-21205-1-git-send-email-s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+At the moment the driver decides to fallback to PIO mode the buffers
+are already mapped for DMA. It's a bug to access them with the CPU
+afterwards, so we cannot just fallback to PIO mode.
+It should not be necessary anyway, since we only use DMA when we
+verified that it's possible in the fist place, so when prep_slave_sg
+fails it's a bug, either in the SDMA driver or in the can_dma
+implementation.
 
---nJFBJCcSkptt2CoF
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+---
+ drivers/spi/spi-imx.c | 19 ++++++-------------
+ 1 file changed, 6 insertions(+), 13 deletions(-)
 
-On Mon, Feb 22, 2016 at 02:57:42PM +0300, Sergei Ianovich wrote:
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 6497fc9..a61b1b1 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -945,7 +945,7 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+ 					tx->sgl, tx->nents, DMA_MEM_TO_DEV,
+ 					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+ 		if (!desc_tx)
+-			goto tx_nodma;
++			return -EINVAL;
+ 
+ 		desc_tx->callback = spi_imx_dma_tx_callback;
+ 		desc_tx->callback_param = (void *)spi_imx;
+@@ -956,8 +956,10 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+ 		desc_rx = dmaengine_prep_slave_sg(master->dma_rx,
+ 					rx->sgl, rx->nents, DMA_DEV_TO_MEM,
+ 					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+-		if (!desc_rx)
+-			goto rx_nodma;
++		if (!desc_rx) {
++			dmaengine_terminate_all(master->dma_tx);
++			return -EINVAL;
++		}
+ 
+ 		desc_rx->callback = spi_imx_dma_rx_callback;
+ 		desc_rx->callback_param = (void *)spi_imx;
+@@ -1010,12 +1012,6 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+ 		ret = transfer->len;
+ 
+ 	return ret;
+-
+-rx_nodma:
+-	dmaengine_terminate_all(master->dma_tx);
+-tx_nodma:
+-	dev_warn_once(spi_imx->dev, "DMA not available, falling back to PIO\n");
+-	return -EAGAIN;
+ }
+ 
+ static int spi_imx_pio_transfer(struct spi_device *spi,
+@@ -1042,15 +1038,12 @@ static int spi_imx_pio_transfer(struct spi_device *spi,
+ static int spi_imx_transfer(struct spi_device *spi,
+ 				struct spi_transfer *transfer)
+ {
+-	int ret;
+ 	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
+ 
+ 	if (spi_imx->bitbang.master->can_dma &&
+ 	    spi_imx_can_dma(spi_imx->bitbang.master, spi, transfer)) {
+ 		spi_imx->usedma = true;
+-		ret = spi_imx_dma_transfer(spi_imx, transfer);
+-		if (ret != -EAGAIN)
+-			return ret;
++		return spi_imx_dma_transfer(spi_imx, transfer);
+ 	}
+ 	spi_imx->usedma = false;
+ 
+-- 
+2.7.0
 
-Please don't send new patches in the middle of old threads, it makes it
-hard to find what the current versions of things are.
-
->    v2..v3 to fix Mark Brown review comments
->    * drop dependencies in Kconfig
-
-No, what I was asking you to do was to change where the || COMPILE_TEST
-was grouped.  It is good to hide things from users where they clearly
-can't use the driver, that's what COMPILE_TEST is for.
-
---nJFBJCcSkptt2CoF
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJWy31JAAoJECTWi3JdVIfQgi0H/j5eOAsim8Xo1KG2I3bjJW7Z
-jkroSD2JTfa4F2hJmcZZaj2SniCwZUvZ0nVIZcjhYiAkQIw76Bqtu6OOFLerytgV
-GKHOBmj+OGxRi3NRzuPdEYM50rOAHBAc96L5HOvdMJAOP8WmwqsYk4JgymCa+yJ6
-kAjAQEkRR2a+4kFjq7ExYYPNQcPkVq7LzTc5A1GehQ4tC/7cRP2025+OoNkYe/d2
-bgRFQlaoA5CnhJR5aE3waPV+lPpshoMjFy53ZykMjRD0nTmJVDcyctfn0HI/X4q8
-nj7854GPlsjjR4wD/KBqb9z0yyLZlPdMSG4on9LOqNlDXonvvLhACwaz18cuSgc=
-=zhk5
------END PGP SIGNATURE-----
-
---nJFBJCcSkptt2CoF--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,44 +1,67 @@
 From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH v3] i.MX SPI DMA cleanup
-Date: Tue, 23 Feb 2016 10:23:49 +0100
-Message-ID: <1456219438-21205-1-git-send-email-s.hauer@pengutronix.de>
+Subject: [PATCH 4/9] spi: imx: drop unncessary dma_is_inited variable
+Date: Tue, 23 Feb 2016 10:23:53 +0100
+Message-ID: <1456219438-21205-5-git-send-email-s.hauer@pengutronix.de>
+References: <1456219438-21205-1-git-send-email-s.hauer@pengutronix.de>
 Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+	Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1456219438-21205-1-git-send-email-s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-(hopefully) final round...
+There's no need for an extra dma_is_inited variable when we can
+equally well check for the existence of a DMA channel.
 
-Changes since v2:
+Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+---
+ drivers/spi/spi-imx.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-- Drop patches already applied
-- rebase on next
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index ec03304..567a242 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -102,7 +102,6 @@ struct spi_imx_data {
+ 	unsigned int txfifo; /* number of words pushed in tx FIFO */
+ 
+ 	/* DMA */
+-	unsigned int dma_is_inited;
+ 	unsigned int dma_finished;
+ 	bool usedma;
+ 	u32 wml;
+@@ -205,7 +204,7 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+ {
+ 	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
+ 
+-	if (spi_imx->dma_is_inited && transfer->len >= spi_imx->wml &&
++	if (master->dma_rx && transfer->len >= spi_imx->wml &&
+ 	    (transfer->len % spi_imx->wml) == 0)
+ 		return true;
+ 	return false;
+@@ -827,8 +826,6 @@ static void spi_imx_sdma_exit(struct spi_imx_data *spi_imx)
+ 		dma_release_channel(master->dma_tx);
+ 		master->dma_tx = NULL;
+ 	}
+-
+-	spi_imx->dma_is_inited = 0;
+ }
+ 
+ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
+@@ -888,7 +885,6 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
+ 	master->max_dma_len = MAX_SDMA_BD_BYTES;
+ 	spi_imx->bitbang.master->flags = SPI_MASTER_MUST_RX |
+ 					 SPI_MASTER_MUST_TX;
+-	spi_imx->dma_is_inited = 1;
+ 
+ 	return 0;
+ err:
+-- 
+2.7.0
 
-Changes since v1:
-
-- Add missing Signed-off-by to Patch 3
-- Drop device tree change as it's already applied by Shawn
-- Add patch subject when referring to commits
-
-----------------------------------------------------------------
-Anton Bondarenko (1):
-      spi: imx: add support for all SPI word width for DMA
-
-Sascha Hauer (8):
-      spi: imx: drop fallback to PIO
-      spi: imx: initialize usedma earlier
-      spi: imx: drop unnecessary read/modify/write
-      spi: imx: drop unncessary dma_is_inited variable
-      spi: imx: remove unnecessary bit clearing in mx51_ecspi_config
-      spi: imx: make some register defines simpler
-      spi: imx: set MX51_ECSPI_CTRL_SMC bit in setup function
-      spi: imx: drop bogus tests for rx/tx bufs in DMA transfer
-
- drivers/spi/spi-imx.c | 296 ++++++++++++++++++++++++++------------------------
- 1 file changed, 153 insertions(+), 143 deletions(-)
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

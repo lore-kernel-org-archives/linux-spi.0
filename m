@@ -1,7 +1,7 @@
 From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH 2/9] spi: imx: initialize usedma earlier
-Date: Tue, 23 Feb 2016 10:23:51 +0100
-Message-ID: <1456219438-21205-3-git-send-email-s.hauer@pengutronix.de>
+Subject: [PATCH 6/9] spi: imx: remove unnecessary bit clearing in mx51_ecspi_config
+Date: Tue, 23 Feb 2016 10:23:55 +0100
+Message-ID: <1456219438-21205-7-git-send-email-s.hauer@pengutronix.de>
 References: <1456219438-21205-1-git-send-email-s.hauer@pengutronix.de>
 Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
@@ -13,48 +13,41 @@ In-Reply-To: <1456219438-21205-1-git-send-email-s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@p
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-So that the SoC specific config function can know if we will do
-DMA or not. Will be needed in following patches.
+This reverts patch 1476253cef (spi: imx: fix ecspi mode setup)
+The patch tried to fix something by clearing bits in the cfg variable,
+but cfg is initialized to zero on function entry. There are no bits to
+clear.
 
 Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 ---
- drivers/spi/spi-imx.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/spi/spi-imx.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index a61b1b1..5792918 100644
+index 15b23f0..287ec0c 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -815,6 +815,11 @@ static int spi_imx_setupxfer(struct spi_device *spi,
- 		spi_imx->tx = spi_imx_buf_tx_u32;
+@@ -366,20 +366,13 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
+ 
+ 	if (config->mode & SPI_CPHA)
+ 		cfg |= MX51_ECSPI_CONFIG_SCLKPHA(config->cs);
+-	else
+-		cfg &= ~MX51_ECSPI_CONFIG_SCLKPHA(config->cs);
+ 
+ 	if (config->mode & SPI_CPOL) {
+ 		cfg |= MX51_ECSPI_CONFIG_SCLKPOL(config->cs);
+ 		cfg |= MX51_ECSPI_CONFIG_SCLKCTL(config->cs);
+-	} else {
+-		cfg &= ~MX51_ECSPI_CONFIG_SCLKPOL(config->cs);
+-		cfg &= ~MX51_ECSPI_CONFIG_SCLKCTL(config->cs);
  	}
+ 	if (config->mode & SPI_CS_HIGH)
+ 		cfg |= MX51_ECSPI_CONFIG_SSBPOL(config->cs);
+-	else
+-		cfg &= ~MX51_ECSPI_CONFIG_SSBPOL(config->cs);
  
-+	if (spi_imx_can_dma(spi_imx->bitbang.master, spi, t))
-+		spi_imx->usedma = 1;
-+	else
-+		spi_imx->usedma = 0;
-+
- 	spi_imx->devtype_data->config(spi_imx, &config);
- 
- 	return 0;
-@@ -1040,14 +1045,10 @@ static int spi_imx_transfer(struct spi_device *spi,
- {
- 	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
- 
--	if (spi_imx->bitbang.master->can_dma &&
--	    spi_imx_can_dma(spi_imx->bitbang.master, spi, transfer)) {
--		spi_imx->usedma = true;
-+	if (spi_imx->usedma)
- 		return spi_imx_dma_transfer(spi_imx, transfer);
--	}
--	spi_imx->usedma = false;
--
--	return spi_imx_pio_transfer(spi, transfer);
-+	else
-+		return spi_imx_pio_transfer(spi, transfer);
- }
- 
- static int spi_imx_setup(struct spi_device *spi)
+ 	/* CTRL register always go first to bring out controller from reset */
+ 	writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
 -- 
 2.7.0
 

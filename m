@@ -1,7 +1,7 @@
 From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH 8/9] spi: imx: set MX51_ECSPI_CTRL_SMC bit in setup function
-Date: Wed, 24 Feb 2016 09:20:32 +0100
-Message-ID: <1456302033-25638-9-git-send-email-s.hauer@pengutronix.de>
+Subject: [PATCH 2/9] spi: imx: initialize usedma earlier
+Date: Wed, 24 Feb 2016 09:20:26 +0100
+Message-ID: <1456302033-25638-3-git-send-email-s.hauer@pengutronix.de>
 References: <1456302033-25638-1-git-send-email-s.hauer@pengutronix.de>
 Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
@@ -13,85 +13,50 @@ In-Reply-To: <1456302033-25638-1-git-send-email-s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@p
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Now that the config function knows whether we are doing DMA or not we
-can do the necessary register setup in the config function and no longer
-have to do this in the trigger function. With this the trigger function
-becomes a no-op for DMA, so instead of testing if we are doing DMA or
-not in the trigger function we simply no longer call it in the DMA case.
+The SoC specific config function does not know if DMA will be used or
+not. This information will be useful to configure the SPI controller
+correctly for DMA in following patches, so initialize the usedma
+variable before calling into the SoC specific config function.
 
 Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 ---
- drivers/spi/spi-imx.c | 21 ++++++---------------
- 1 file changed, 6 insertions(+), 15 deletions(-)
+ drivers/spi/spi-imx.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 96e32d4..91890b2 100644
+index a61b1b1..5792918 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -106,7 +106,6 @@ struct spi_imx_data {
- 	unsigned int txfifo; /* number of words pushed in tx FIFO */
- 
- 	/* DMA */
--	unsigned int dma_finished;
- 	bool usedma;
- 	u32 wml;
- 	struct completion dma_rx_completion;
-@@ -324,14 +323,10 @@ static void __maybe_unused mx51_ecspi_intctrl(struct spi_imx_data *spi_imx, int
- 
- static void __maybe_unused mx51_ecspi_trigger(struct spi_imx_data *spi_imx)
- {
--	u32 reg = readl(spi_imx->base + MX51_ECSPI_CTRL);
-+	u32 reg;
- 
--	if (!spi_imx->usedma)
--		reg |= MX51_ECSPI_CTRL_XCH;
--	else if (!spi_imx->dma_finished)
--		reg |= MX51_ECSPI_CTRL_SMC;
--	else
--		reg &= ~MX51_ECSPI_CTRL_SMC;
-+	reg = readl(spi_imx->base + MX51_ECSPI_CTRL);
-+	reg |= MX51_ECSPI_CTRL_XCH;
- 	writel(reg, spi_imx->base + MX51_ECSPI_CTRL);
- }
- 
-@@ -371,6 +366,9 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
- 	if (config->mode & SPI_CS_HIGH)
- 		cfg |= MX51_ECSPI_CONFIG_SSBPOL(config->cs);
- 
-+	if (spi_imx->usedma)
-+		ctrl |= MX51_ECSPI_CTRL_SMC;
-+
- 	/* CTRL register always go first to bring out controller from reset */
- 	writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
- 
-@@ -1012,9 +1010,6 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 	reinit_completion(&spi_imx->dma_rx_completion);
- 	reinit_completion(&spi_imx->dma_tx_completion);
- 
--	/* Trigger the cspi module. */
--	spi_imx->dma_finished = 0;
--
- 	/*
- 	 * Set these order to avoid potential RX overflow. The overflow may
- 	 * happen if we enable SPI HW before starting RX DMA due to rescheduling
-@@ -1025,7 +1020,6 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 	 */
- 	dma_async_issue_pending(master->dma_rx);
- 	dma_async_issue_pending(master->dma_tx);
--	spi_imx->devtype_data->trigger(spi_imx);
- 
- 	transfer_timeout = spi_imx_calculate_timeout(spi_imx, transfer->len);
- 
-@@ -1046,9 +1040,6 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 		}
+@@ -815,6 +815,11 @@ static int spi_imx_setupxfer(struct spi_device *spi,
+ 		spi_imx->tx = spi_imx_buf_tx_u32;
  	}
  
--	spi_imx->dma_finished = 1;
--	spi_imx->devtype_data->trigger(spi_imx);
++	if (spi_imx_can_dma(spi_imx->bitbang.master, spi, t))
++		spi_imx->usedma = 1;
++	else
++		spi_imx->usedma = 0;
++
+ 	spi_imx->devtype_data->config(spi_imx, &config);
+ 
+ 	return 0;
+@@ -1040,14 +1045,10 @@ static int spi_imx_transfer(struct spi_device *spi,
+ {
+ 	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
+ 
+-	if (spi_imx->bitbang.master->can_dma &&
+-	    spi_imx_can_dma(spi_imx->bitbang.master, spi, transfer)) {
+-		spi_imx->usedma = true;
++	if (spi_imx->usedma)
+ 		return spi_imx_dma_transfer(spi_imx, transfer);
+-	}
+-	spi_imx->usedma = false;
 -
- 	if (!timeout)
- 		ret = -ETIMEDOUT;
- 	else
+-	return spi_imx_pio_transfer(spi, transfer);
++	else
++		return spi_imx_pio_transfer(spi, transfer);
+ }
+ 
+ static int spi_imx_setup(struct spi_device *spi)
 -- 
 2.7.0
 

@@ -1,80 +1,72 @@
-From: "Huang, Tao" <huangtao@rock-chips.com>
-Subject: Re: [PATCH] spi/rockchip: Make sure spi clk is on in
- rockchip_spi_set_cs
-Date: Wed, 24 Feb 2016 19:09:57 +0800
-Message-ID: <56CD8F85.2090204@rock-chips.com>
-References: <1456308004-29102-1-git-send-email-huibin.hong@rock-chips.com>
+From: Vignesh R <vigneshr@ti.com>
+Subject: Re: [PATCH v5 3/5] mtd: devices: m25p80: add support for mmap read
+ request
+Date: Wed, 24 Feb 2016 17:51:08 +0530
+Message-ID: <56CDA034.7050607@ti.com>
+References: <1449807000-6457-1-git-send-email-vigneshr@ti.com>
+ <1449807000-6457-4-git-send-email-vigneshr@ti.com>
+ <20160209193616.GN13270@sirena.org.uk> <56BC1D3E.5020203@ti.com>
+ <20160212223711.GD18988@sirena.org.uk> <56C2D731.6050306@ti.com>
+ <20160216123854.GJ18327@sirena.org.uk> <56C49B9E.8060506@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Huibin Hong <huibin.hong@rock-chips.com>,
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	"shawn.lin" <shawn.lin@kernel-upstream.org>,
-	linux-rockchip@lists.infradead.org, Addy Ke <addy.ke@rockchip.com>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+Cc: Tony Lindgren <tony@atomide.com>,
+	Brian Norris <computersforpeace@gmail.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Russell King <linux@arm.linux.org.uk>,
+	"hramrach@gmail.com" <hramrach@gmail.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
 To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1456308004-29102-1-git-send-email-huibin.hong@rock-chips.com>
+In-Reply-To: <56C49B9E.8060506@ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi, Mark:
 
-Another way to solve this bug is add runtime PM support while spi setup=
-=2E
-Some other chips may have some problem, for example mt65xx and orion,
-which access hardware register too.
 
-On 2016=E5=B9=B402=E6=9C=8824=E6=97=A5 18:00, Huibin Hong wrote:
-> Rockchip_spi_set_cs could be called by spi_setup, but
-> spi_setup may be called by device driver after runtime suspend.
-> Then the spi clock is closed, rockchip_spi_set_cs may access the
-> spi registers, which causes cpu block in some socs.
->=20
-> Fixes: 64e36824b32 ("spi/rockchip: add driver for Rockchip RK3xxx")
-> Cc: Addy Ke <addy.ke@rockchip.com>
-> Cc: shawn.lin <shawn.lin@kernel-upstream.org>
-> Signed-off-by: Huibin Hong <huibin.hong@rock-chips.com>
-> ---
->=20
->  drivers/spi/spi-rockchip.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-> index 79a8bc4..035767c 100644
-> --- a/drivers/spi/spi-rockchip.c
-> +++ b/drivers/spi/spi-rockchip.c
-> @@ -265,7 +265,10 @@ static inline u32 rx_max(struct rockchip_spi *rs=
-)
->  static void rockchip_spi_set_cs(struct spi_device *spi, bool enable)
->  {
->  	u32 ser;
-> -	struct rockchip_spi *rs =3D spi_master_get_devdata(spi->master);
-> +	struct spi_master *master =3D spi->master;
-> +	struct rockchip_spi *rs =3D spi_master_get_devdata(master);
-> +
-> +	pm_runtime_get_sync(rs->dev);
->=20
->  	ser =3D readl_relaxed(rs->regs + ROCKCHIP_SPI_SER) & SER_MASK;
->=20
-> @@ -290,6 +293,8 @@ static void rockchip_spi_set_cs(struct spi_device=
- *spi, bool enable)
->  		ser &=3D ~(1 << spi->chip_select);
->=20
->  	writel_relaxed(ser, rs->regs + ROCKCHIP_SPI_SER);
-> +
-> +	pm_runtime_put_sync(rs->dev);
->  }
->=20
->  static int rockchip_spi_prepare_message(struct spi_master *master,
-> --
-> 1.9.1
->=20
->=20
->=20
-> _______________________________________________
-> Linux-rockchip mailing list
-> Linux-rockchip@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-rockchip
->=20
->=20
->=20
+On 02/17/2016 09:41 PM, R, Vignesh wrote:
+> 
+> 
+> On 02/16/2016 06:08 PM, Mark Brown wrote:
+>> On Tue, Feb 16, 2016 at 01:30:49PM +0530, Vignesh R wrote:
+>>> On 02/13/2016 04:07 AM, Mark Brown wrote:
+>>>> On Thu, Feb 11, 2016 at 11:03:50AM +0530, Vignesh R wrote:
+>>>>> On 02/10/2016 01:06 AM, Mark Brown wrote:
+>>
+>>>>>> Looking at this I can't help but think that spi_flash_read() ought to
+>>>>>> have the stub in rather than the caller.  But given that we're pretty
+>>>>>> much only ever expecting one user I'm not 100% sure it actually matters.
+>>
+>>>>> Well, my initial patch set passed long list of arguments to
+>>>>> spi_flash_read(), but Brian suggested to use struct[1] in order to avoid
+>>>>> unnecessary churn when things need changed in the API.
+>>
+>>>> I don't see what that has to do with my point?
+>>
+>>> AFAIU, your previous comment was to move initialization of
+>>> spi_flash_read_message struct to spi_flash_read(). This would mean
+>>
+>> No, not at all.  I'm talking about how we handle the case where we don't
+>> have hardware support for this and need to implement it in software -
+>> currently that's in a separate place to the place where we call the
+>> driver.
+>>
+> 
+> Yeah, but AFAIK, hardware accelerated read support is applicable for
+> m25p80 flashes only, I doubt whether spi_flash_read() will be used by
+> other types. I felt keeping the software implementation in m25p80_read()
+> will be consistent with m25p80_write().
+
+Is there any further work required on the patch? If not, what's the plan
+to merge this patch?
+
+-- 
+Regards
+Vignesh

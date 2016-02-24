@@ -1,62 +1,52 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v4] spi: master driver to enable RTC on ICPDAS LP-8841
-Date: Tue, 23 Feb 2016 17:28:21 -0600
-Message-ID: <20160223232821.GA14960@rob-hp-laptop>
-References: <1456105630-28914-1-git-send-email-ynvich@gmail.com>
- <1456224272-4391-1-git-send-email-ynvich@gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: imx: initialize usedma earlier
+Date: Wed, 24 Feb 2016 12:19:36 +0900
+Message-ID: <20160224031936.GI18327@sirena.org.uk>
+References: <20160223111559.3c2cb641@ipc1.ka-ro>
+ <1456223095-32185-1-git-send-email-s.hauer@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"open list:SPI SUBSYSTEM" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Sergei Ianovich <ynvich-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="YioeI7PjS1+Wb3xh"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Lothar =?iso-8859-1?Q?Wa=DFmann?= <LW-bxm8fMRDkQLDiMYJYoSAnRvVK+yQ3ZXh@public.gmane.org>
+To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1456224272-4391-1-git-send-email-ynvich-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1456223095-32185-1-git-send-email-s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Feb 23, 2016 at 01:44:28PM +0300, Sergei Ianovich wrote:
-> ICP DAS LP-8841 contains a DS-1302 RTC. This driver provides an SPI
-> master which makes the RTC usable. The driver is not supposed to work
-> with anything else.
-> 
-> The driver uses the standard MicroWire half-duplex transfer timing.
-> Master output is set on low clock and sensed by the RTC on the rising
-> edge. Master input is set by the RTC on the trailing edge and is sensed
-> by the master on low clock.
-> 
-> Signed-off-by: Sergei Ianovich <ynvich-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> CC: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> CC: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> 
->    v3..v4
->    fix Mark Brown review comments
->    * fix dependencies in Kconfig
-> 
->    fix Rob Herring review comments
->    * rewrite binding description
->    * change binding and doc file names
->    * fix typo
-> 
->    v2..v3 to fix Mark Brown review comments
->    * drop dependencies in Kconfig
->    * use #ifdef CONFIG_OF to allow build without DT
->    * drop empty driver->remove
-> 
->    v1..v2 to fix Mark Brown review comments
->    * drop ifdef around MODULE_NAME
->    * use usleep_range directly
->    * drop empty master->cleanup
-> ---
->  .../bindings/spi/icpdas-lp8841-spi-rtc.txt         |  54 +++++
 
-Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+--YioeI7PjS1+Wb3xh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Tue, Feb 23, 2016 at 11:24:55AM +0100, Sascha Hauer wrote:
+> The SoC specific config function does not know if DMA will be used or
+> not. This information will be useful to configure the SPI controller
+> correctly for DMA in following patches, so initialize the usedma
+> variable before calling into the SoC specific config function.
+
+Don't send new patches in reply to old serieses, especially not in the
+middle of them - it makes it confusing to follow what's going on.
+
+--YioeI7PjS1+Wb3xh
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJWzSE/AAoJECTWi3JdVIfQH/oH/2YMKpzNz2wPSa5hcEYIuVSJ
+Oo6jBzzDlbzsytQW0m99SmHty3b796dFu1lr+31lWMUUCJ98uz3VMUJuSZMSDs2G
+q5rT1RweXcHL/b3LTL1OWktPTkd5Yhrz6+dcAZdpDlGlnWRCryXO/sLJ4rEO8+hk
+c9BcTJ2IeR4h9QVl5EN+vZFW40zbh8mF5veNcj0m5kb1X6jDi2sXb+bxsLfIXdoS
+ugMfIc4TMv2zS+FLA2G22W7WJcEkc9QSotRvQOqQUnCAVSvaOCDCQTofnx0LqCf6
+eVwviFe2yznn0g5wPfcCJJGZ1DTy6bO1xQTXkOeRV91DlyKOUf4qeKSLOezgpw4=
+=WEux
+-----END PGP SIGNATURE-----
+
+--YioeI7PjS1+Wb3xh--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

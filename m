@@ -1,54 +1,95 @@
-From: "Huang, Tao" <huangtao-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Subject: Re: [PATCH] spi/rockchip: Make sure spi clk is on in
- rockchip_spi_set_cs
-Date: Fri, 26 Feb 2016 10:31:50 +0800
-Message-ID: <56CFB916.5010403@rock-chips.com>
-References: <1456308004-29102-1-git-send-email-huibin.hong@rock-chips.com>
- <56CD8F85.2090204@rock-chips.com> <20160226015829.GC18327@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Huibin Hong <huibin.hong-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"shawn.lin" <shawn.lin-NgiFYW8Wbx6Ta72+1OMJgUB+6BGkLq7r@public.gmane.org>,
-	linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Addy Ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: imx: initialize usedma earlier" to the spi tree
+Date: Fri, 26 Feb 2016 11:48:01 +0900
+Message-ID: <E1aZ8Rl-0006bJ-Fc@finisterre>
+References: <1455715739-25161-6-git-send-email-s.hauer@pengutronix.de>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160226015829.GC18327-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <1455715739-25161-6-git-send-email-s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 2016=E5=B9=B402=E6=9C=8826=E6=97=A5 09:58, Mark Brown wrote:
->=20
->> Another way to solve this bug is add runtime PM support while spi se=
-tup.
->> Some other chips may have some problem, for example mt65xx and orion=
-,
->> which access hardware register too.
->=20
-> No, this is telling you you're doing something wrong - setup() might =
-be
-> called while another transfer is in progress so you shouldn't be
-> changing the hardware setup (see Documentation/spi/spi-summary).  Thi=
-s
-> means that you normally shouldn't be writing to registers there.  Mov=
-ing
-> this to prepare_message() instead is probably what you want.
->=20
-You misunderstand me. I talk about spi_setup, as
-Documentation/spi/spi-summary, which would normally be called from
-probe() before the first I/O is done to the device.
-spi_setup will call spi_set_cs(spi, false), which introduced with commi=
-t
-1a7b7ee72c21 ("spi: Ensure that CS line is in non-active state after
-spi_setup()"). And spi_set_cs will call spi->master->set_cs, and set_cs
-callback will access register. Without clk enable, I believe some
-drivers will failed to run.
+The patch
 
-Best Regards,
+   spi: imx: initialize usedma earlier
 
-Huang, Tao
+has been applied to the spi tree at
+
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From c008a800716256300c8a62e781a8897a8d3bce1e Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Date: Wed, 24 Feb 2016 09:20:26 +0100
+Subject: [PATCH] spi: imx: initialize usedma earlier
+
+The SoC specific config function does not know if DMA will be used or
+not. This information will be useful to configure the SPI controller
+correctly for DMA in following patches, so initialize the usedma
+variable before calling into the SoC specific config function.
+
+Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-imx.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index a61b1b140523..5792918aa751 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -815,6 +815,11 @@ static int spi_imx_setupxfer(struct spi_device *spi,
+ 		spi_imx->tx = spi_imx_buf_tx_u32;
+ 	}
+ 
++	if (spi_imx_can_dma(spi_imx->bitbang.master, spi, t))
++		spi_imx->usedma = 1;
++	else
++		spi_imx->usedma = 0;
++
+ 	spi_imx->devtype_data->config(spi_imx, &config);
+ 
+ 	return 0;
+@@ -1040,14 +1045,10 @@ static int spi_imx_transfer(struct spi_device *spi,
+ {
+ 	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
+ 
+-	if (spi_imx->bitbang.master->can_dma &&
+-	    spi_imx_can_dma(spi_imx->bitbang.master, spi, transfer)) {
+-		spi_imx->usedma = true;
++	if (spi_imx->usedma)
+ 		return spi_imx_dma_transfer(spi_imx, transfer);
+-	}
+-	spi_imx->usedma = false;
+-
+-	return spi_imx_pio_transfer(spi, transfer);
++	else
++		return spi_imx_pio_transfer(spi, transfer);
+ }
+ 
+ static int spi_imx_setup(struct spi_device *spi)
+-- 
+2.7.0
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

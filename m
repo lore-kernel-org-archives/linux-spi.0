@@ -1,19 +1,20 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: imx: initialize usedma earlier" to the spi tree
-Date: Fri, 26 Feb 2016 11:48:01 +0900
-Message-ID: <E1aZ8Rl-0006bJ-Fc@finisterre>
-References: <1455715739-25161-6-git-send-email-s.hauer@pengutronix.de>
+Subject: Applied "spi: imx: add support for all SPI word width for DMA" to the spi tree
+Date: Fri, 26 Feb 2016 11:47:59 +0900
+Message-ID: <E1aZ8Rj-0006Zr-9u@finisterre>
+References: <1455715739-25161-9-git-send-email-s.hauer@pengutronix.de>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+To: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1455715739-25161-6-git-send-email-s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+In-Reply-To: <1455715739-25161-9-git-send-email-s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: imx: initialize usedma earlier
+   spi: imx: add support for all SPI word width for DMA
 
 has been applied to the spi tree at
 
@@ -38,56 +39,223 @@ to this mail.
 Thanks,
 Mark
 
->From c008a800716256300c8a62e781a8897a8d3bce1e Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Date: Wed, 24 Feb 2016 09:20:26 +0100
-Subject: [PATCH] spi: imx: initialize usedma earlier
+>From f12ae171c7ce8633a6dd6dea4c50fd6cb72f433a Mon Sep 17 00:00:00 2001
+From: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Wed, 24 Feb 2016 09:20:29 +0100
+Subject: [PATCH] spi: imx: add support for all SPI word width for DMA
 
-The SoC specific config function does not know if DMA will be used or
-not. This information will be useful to configure the SPI controller
-correctly for DMA in following patches, so initialize the usedma
-variable before calling into the SoC specific config function.
+DMA transfer for SPI was limited to up to 8 bits word size until now.
+Sync in SPI burst size and DMA bus width is necessary to correctly
+support 16 and 32 BPW.
 
+Signed-off-by: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-imx.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/spi/spi-imx.c | 118 ++++++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 91 insertions(+), 27 deletions(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index a61b1b140523..5792918aa751 100644
+index 567a2426e314..15b23f0b83e8 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -815,6 +815,11 @@ static int spi_imx_setupxfer(struct spi_device *spi,
- 		spi_imx->tx = spi_imx_buf_tx_u32;
- 	}
+@@ -89,11 +89,15 @@ struct spi_imx_data {
  
-+	if (spi_imx_can_dma(spi_imx->bitbang.master, spi, t))
-+		spi_imx->usedma = 1;
-+	else
-+		spi_imx->usedma = 0;
+ 	struct completion xfer_done;
+ 	void __iomem *base;
++	unsigned long base_phys;
++
+ 	struct clk *clk_per;
+ 	struct clk *clk_ipg;
+ 	unsigned long spi_clk;
+ 	unsigned int spi_bus_clk;
+ 
++	unsigned int bytes_per_word;
++
+ 	unsigned int count;
+ 	void (*tx)(struct spi_imx_data *);
+ 	void (*rx)(struct spi_imx_data *);
+@@ -199,15 +203,35 @@ static unsigned int spi_imx_clkdiv_2(unsigned int fin,
+ 	return 7;
+ }
+ 
++static int spi_imx_bytes_per_word(const int bpw)
++{
++	return DIV_ROUND_UP(bpw, BITS_PER_BYTE);
++}
++
+ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+ 			 struct spi_transfer *transfer)
+ {
+ 	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
++	unsigned int bpw = transfer->bits_per_word;
++
++	if (!master->dma_rx)
++		return false;
++
++	if (!bpw)
++		bpw = spi->bits_per_word;
++
++	bpw = spi_imx_bytes_per_word(bpw);
++
++	if (bpw != 1 && bpw != 2 && bpw != 4)
++		return false;
++
++	if (transfer->len < spi_imx->wml * bpw)
++		return false;
++
++	if (transfer->len % (spi_imx->wml * bpw))
++		return false;
+ 
+-	if (master->dma_rx && transfer->len >= spi_imx->wml &&
+-	    (transfer->len % spi_imx->wml) == 0)
+-		return true;
+-	return false;
++	return true;
+ }
+ 
+ #define MX51_ECSPI_CTRL		0x08
+@@ -775,11 +799,63 @@ static irqreturn_t spi_imx_isr(int irq, void *dev_id)
+ 	return IRQ_HANDLED;
+ }
+ 
++static int spi_imx_dma_configure(struct spi_master *master,
++				 int bytes_per_word)
++{
++	int ret;
++	enum dma_slave_buswidth buswidth;
++	struct dma_slave_config rx = {}, tx = {};
++	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
++
++	if (bytes_per_word == spi_imx->bytes_per_word)
++		/* Same as last time */
++		return 0;
++
++	switch (bytes_per_word) {
++	case 4:
++		buswidth = DMA_SLAVE_BUSWIDTH_4_BYTES;
++		break;
++	case 2:
++		buswidth = DMA_SLAVE_BUSWIDTH_2_BYTES;
++		break;
++	case 1:
++		buswidth = DMA_SLAVE_BUSWIDTH_1_BYTE;
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	tx.direction = DMA_MEM_TO_DEV;
++	tx.dst_addr = spi_imx->base_phys + MXC_CSPITXDATA;
++	tx.dst_addr_width = buswidth;
++	tx.dst_maxburst = spi_imx->wml;
++	ret = dmaengine_slave_config(master->dma_tx, &tx);
++	if (ret) {
++		dev_err(spi_imx->dev, "TX dma configuration failed with %d\n", ret);
++		return ret;
++	}
++
++	rx.direction = DMA_DEV_TO_MEM;
++	rx.src_addr = spi_imx->base_phys + MXC_CSPIRXDATA;
++	rx.src_addr_width = buswidth;
++	rx.src_maxburst = spi_imx->wml;
++	ret = dmaengine_slave_config(master->dma_rx, &rx);
++	if (ret) {
++		dev_err(spi_imx->dev, "RX dma configuration failed with %d\n", ret);
++		return ret;
++	}
++
++	spi_imx->bytes_per_word = bytes_per_word;
++
++	return 0;
++}
++
+ static int spi_imx_setupxfer(struct spi_device *spi,
+ 				 struct spi_transfer *t)
+ {
+ 	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
+ 	struct spi_imx_config config;
++	int ret;
+ 
+ 	config.bpw = t ? t->bits_per_word : spi->bits_per_word;
+ 	config.speed_hz  = t ? t->speed_hz : spi->max_speed_hz;
+@@ -808,6 +884,13 @@ static int spi_imx_setupxfer(struct spi_device *spi,
+ 	else
+ 		spi_imx->usedma = 0;
+ 
++	if (spi_imx->usedma) {
++		ret = spi_imx_dma_configure(spi->master,
++					    spi_imx_bytes_per_word(config.bpw));
++		if (ret)
++			return ret;
++	}
 +
  	spi_imx->devtype_data->config(spi_imx, &config);
  
  	return 0;
-@@ -1040,14 +1045,10 @@ static int spi_imx_transfer(struct spi_device *spi,
- {
- 	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
- 
--	if (spi_imx->bitbang.master->can_dma &&
--	    spi_imx_can_dma(spi_imx->bitbang.master, spi, transfer)) {
--		spi_imx->usedma = true;
-+	if (spi_imx->usedma)
- 		return spi_imx_dma_transfer(spi_imx, transfer);
--	}
--	spi_imx->usedma = false;
--
--	return spi_imx_pio_transfer(spi, transfer);
-+	else
-+		return spi_imx_pio_transfer(spi, transfer);
+@@ -829,10 +912,8 @@ static void spi_imx_sdma_exit(struct spi_imx_data *spi_imx)
  }
  
- static int spi_imx_setup(struct spi_device *spi)
+ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
+-			     struct spi_master *master,
+-			     const struct resource *res)
++			     struct spi_master *master)
+ {
+-	struct dma_slave_config slave_config = {};
+ 	int ret;
+ 
+ 	/* use pio mode for i.mx6dl chip TKT238285 */
+@@ -850,16 +931,6 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
+ 		goto err;
+ 	}
+ 
+-	slave_config.direction = DMA_MEM_TO_DEV;
+-	slave_config.dst_addr = res->start + MXC_CSPITXDATA;
+-	slave_config.dst_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
+-	slave_config.dst_maxburst = spi_imx->wml;
+-	ret = dmaengine_slave_config(master->dma_tx, &slave_config);
+-	if (ret) {
+-		dev_err(dev, "error in TX dma configuration.\n");
+-		goto err;
+-	}
+-
+ 	/* Prepare for RX : */
+ 	master->dma_rx = dma_request_slave_channel_reason(dev, "rx");
+ 	if (IS_ERR(master->dma_rx)) {
+@@ -869,15 +940,7 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
+ 		goto err;
+ 	}
+ 
+-	slave_config.direction = DMA_DEV_TO_MEM;
+-	slave_config.src_addr = res->start + MXC_CSPIRXDATA;
+-	slave_config.src_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
+-	slave_config.src_maxburst = spi_imx->wml;
+-	ret = dmaengine_slave_config(master->dma_rx, &slave_config);
+-	if (ret) {
+-		dev_err(dev, "error in RX dma configuration.\n");
+-		goto err;
+-	}
++	spi_imx_dma_configure(master, 1);
+ 
+ 	init_completion(&spi_imx->dma_rx_completion);
+ 	init_completion(&spi_imx->dma_tx_completion);
+@@ -1164,6 +1227,7 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 		ret = PTR_ERR(spi_imx->base);
+ 		goto out_master_put;
+ 	}
++	spi_imx->base_phys = res->start;
+ 
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0) {
+@@ -1204,7 +1268,7 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 	 * other chips.
+ 	 */
+ 	if (is_imx51_ecspi(spi_imx)) {
+-		ret = spi_imx_sdma_init(&pdev->dev, spi_imx, master, res);
++		ret = spi_imx_sdma_init(&pdev->dev, spi_imx, master);
+ 		if (ret == -EPROBE_DEFER)
+ 			goto out_clk_put;
+ 
 -- 
 2.7.0
 

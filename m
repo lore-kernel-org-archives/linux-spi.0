@@ -1,7 +1,7 @@
 From: Oleksij Rempel <linux-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
-Subject: [PATCH 5/6] spi: sun4i: set new SPI_FC_* flags
-Date: Tue,  1 Mar 2016 15:43:19 +0100
-Message-ID: <1456843400-20696-5-git-send-email-linux@rempel-privat.de>
+Subject: [PATCH 6/6] spi: bitbang: set new SPI_FC_* flags
+Date: Tue,  1 Mar 2016 15:43:20 +0100
+Message-ID: <1456843400-20696-6-git-send-email-linux@rempel-privat.de>
 References: <56D448E1.6090006@de.bosch.com>
  <1456843400-20696-1-git-send-email-linux@rempel-privat.de>
 Cc: Oleksij Rempel <linux-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
@@ -14,27 +14,28 @@ In-Reply-To: <1456843400-20696-1-git-send-email-linux-YEK0n+YFykbzxQdaRaTXBw@pub
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-to indicate flow control support.
+to indicate flow control support
 
 Signed-off-by: Oleksij Rempel <linux-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
 ---
- drivers/spi/spi-sun4i.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-bitbang.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
-index 1ddd9e2..2443728 100644
---- a/drivers/spi/spi-sun4i.c
-+++ b/drivers/spi/spi-sun4i.c
-@@ -390,7 +390,8 @@ static int sun4i_spi_probe(struct platform_device *pdev)
- 	master->set_cs = sun4i_spi_set_cs;
- 	master->transfer_one = sun4i_spi_transfer_one;
- 	master->num_chipselect = 4;
--	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST;
-+	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST |
-+			    SPI_FC_REQUEST | SPI_FC_READY | SPI_FC_STOP_ACK;
- 	master->bits_per_word_mask = SPI_BPW_MASK(8);
- 	master->dev.of_node = pdev->dev.of_node;
- 	master->auto_runtime_pm = true;
+diff --git a/drivers/spi/spi-bitbang.c b/drivers/spi/spi-bitbang.c
+index 3aa9e6e..5b17295 100644
+--- a/drivers/spi/spi-bitbang.c
++++ b/drivers/spi/spi-bitbang.c
+@@ -363,7 +363,9 @@ int spi_bitbang_start(struct spi_bitbang *bitbang)
+ 	mutex_init(&bitbang->lock);
+ 
+ 	if (!master->mode_bits)
+-		master->mode_bits = SPI_CPOL | SPI_CPHA | bitbang->flags;
++		master->mode_bits = SPI_CPOL | SPI_CPHA |
++				    SPI_FC_READY | SPI_FC_STOP_ACK |
++				    SPI_FC_REQUEST | bitbang->flags;
+ 
+ 	if (master->transfer || master->transfer_one_message)
+ 		return -EINVAL;
 -- 
 1.9.1
 

@@ -1,50 +1,60 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/6] spi: add flow controll support
-Date: Wed, 2 Mar 2016 10:32:33 +0900
-Message-ID: <20160302013233.GK18327@sirena.org.uk>
-References: <56D448E1.6090006@de.bosch.com>
- <1456843400-20696-1-git-send-email-linux@rempel-privat.de>
+From: Laison Computech Inc <7sales-mT95+eBjLkWwyptSkfDYNlaTQe2KTcn/@public.gmane.org>
+Subject: CISCO AND AVAYA IP Phones
+Date: Wed, 02 Mar 2016 03:10:35 +0700
+Message-ID: <20160301210942.70B54574BBB__46490.1848034517$1456883518$gmane$org@srv-mta.gcmillenium.com.br>
+Reply-To: sales-mT95+eBjLkWwyptSkfDYNlaTQe2KTcn/@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="TbqbGUYwJfHHaS/d"
-Cc: fixed-term.Oleksij.Rempel-V5te9oGctAVWk0Htik3J/w@public.gmane.org, geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org,
-	dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-To: Oleksij Rempel <linux-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+To: Recipients <7sales-mT95+eBjLkWwyptSkfDYNlaTQe2KTcn/@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1456843400-20696-1-git-send-email-linux-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
+Content-Description: Mail message body
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hi,
 
---TbqbGUYwJfHHaS/d
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Clean tested working pulls CPUs and QTYs in stock.
 
-On Tue, Mar 01, 2016 at 03:43:15PM +0100, Oleksij Rempel wrote:
-> Different HW implement different variants of SPI based flow control (FC).
-> To flexible FC implementation a spited it to fallowing common parts:
+115 X X5650
+65 X E5410
+75 X X5660
+145 X E5530
+100 X E5645
+40 X X5680
+75 X X5690
 
-Please don't bury new patches in reply to the middle of some other
-thread, it makes it really hard to follow what's going on.
+Brand new sealed IP phones and QTYs in stock.
 
---TbqbGUYwJfHHaS/d
-Content-Type: application/pgp-signature; name="signature.asc"
+55 x CP-7937G
+77 x CP-7942G
+54 x CP-7945G
+75 x CP-7962G
+=2E.....
+45 x Avaya 9630
+65 x Avaya 9641
+55 x Avaya 9640=20
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+USED IT HARDWARE FROM:
 
-iQEcBAEBCAAGBQJW1kKwAAoJECTWi3JdVIfQUl8H/jlGEhFFbt3osepFKo6tgpAY
-rNWTYftIjHuS5zp8ACPyVPNlCwCgeyx6aI6rOZ1CpxPFNxxQdCyyDsZtOSwtxeMN
-cE4PG6mIjLX74pPsrpvnv4VVVdmNBhEWtX1cev7cBYxbenv33tBYf6RlcP6FeBLa
-O6D0SLkefp3TVp9VwZLK8KTs+eDAhpwG0H3/dWOSd5WvSlIDc4J80njI1o4XsS0l
-AJZ1irHZngVPOcXfQthw5jhWooFevjdhGeeq7r25t5ZmJXfLBdj4yGyZetAiHkj8
-/4l/m9lCX+oGFAsSJveIRKGuNzKm0jIYIQlhBkqPEZoRNuUVfE3j6bdOwZwCVXo=
-=Yn32
------END PGP SIGNATURE-----
+=46UJITSU       IBM         SUN        HP
+QUANTUM   DELL       HDS        STK
+NETAPP      SGI         Oracle      EMC=B2
 
---TbqbGUYwJfHHaS/d--
+3Com, ADVA, Alcatel, Brocade, Cisco,
+Cabletron, Enterasys, Extreme Networks,
+Huawei, Marconi, Nortel, Qlogic, Avaya
+
+Let me know if you're interested. We are very open to offers and willin=
+g to work with you to make sure that we have a deal.
+
+Sincerely
+Barbara Johnson
+Laison Computech Inc
+Tel: +1-657-205-7860
+=46ax: +1-347-214-0478
+Email: sales-mT95+eBjLkWwyptSkfDYNlaTQe2KTcn/@public.gmane.org
+Web: www.laisoncomputech.com
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

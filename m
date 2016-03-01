@@ -1,7 +1,7 @@
 From: Oleksij Rempel <linux-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
-Subject: [PATCH 3/6] DT: add documentation for spi-fc-test driver
-Date: Tue,  1 Mar 2016 15:43:17 +0100
-Message-ID: <1456843400-20696-3-git-send-email-linux@rempel-privat.de>
+Subject: [PATCH 4/6] spi: davinci: set new SPI_FC_* flags
+Date: Tue,  1 Mar 2016 15:43:18 +0100
+Message-ID: <1456843400-20696-4-git-send-email-linux@rempel-privat.de>
 References: <56D448E1.6090006@de.bosch.com>
  <1456843400-20696-1-git-send-email-linux@rempel-privat.de>
 Cc: Oleksij Rempel <linux-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
@@ -14,48 +14,55 @@ In-Reply-To: <1456843400-20696-1-git-send-email-linux-YEK0n+YFykbzxQdaRaTXBw@pub
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+to indicate flow control support.
+
 Signed-off-by: Oleksij Rempel <linux-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
 ---
- .../devicetree/bindings/spi/spi-fc-test.txt        | 30 ++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-fc-test.txt
+ drivers/spi/spi-davinci.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-fc-test.txt b/Documentation/devicetree/bindings/spi/spi-fc-test.txt
-new file mode 100644
-index 0000000..c1f14e8
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-fc-test.txt
-@@ -0,0 +1,30 @@
-+SPI-FC-TEST is a test driver to simulate slave
-+flow control from spi master.
-+
-+Required properties:
-+ - compatible: should be set to "spi-fc-test"
-+ - fc-gpio: spi device gpio input for flow control line.
-+ - test-cs-in-gpio: chip select gpio input to emulate slave device
-+ - test-fc-out-gpio: request gpio output to emulate slave device
-+Fallowing required properties are provided by spi framework.
-+See spi-bus.txt for more information.
-+ - spi-fc-ready
-+ - spi-fc-stop-ack
-+ - spi-fc-request
-+
-+Example:
-+test-spi@0 {
-+	status = "okay";
-+	reg = <0>;
-+	compatible = "spi-fc-test";
-+	spi-max-frequency = <100000>;
-+	spi-fc-ready;
-+	spi-fc-request;
-+	spi-fc-stop-ack;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&spi_test_in_pins_bananapi>, <&spi_test_out_pins_bananapi>;
-+	fc-gpio = <&pio 7 20 GPIO_ACTIVE_LOW>; /* request line, in IO-4, (PH20) */
-+	test-cs-in-gpio = <&pio 7 1 GPIO_ACTIVE_LOW>; /* RXD0, (PH1)  */
-+	test-rq-out-gpio = <&pio 7 21 GPIO_ACTIVE_LOW>; /* IO-5, (PH21) */
-+};
-+
+diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+index fddb7a3..8728df9 100644
+--- a/drivers/spi/spi-davinci.c
++++ b/drivers/spi/spi-davinci.c
+@@ -351,8 +351,8 @@ static int davinci_spi_setup_transfer(struct spi_device *spi,
+ 	 *
+ 	 * Version 2 hardware supports an optional handshaking signal,
+ 	 * so it can support two more modes:
+-	 *  - 5 pin SPI variant is standard SPI plus SPI_READY
+-	 *  - 4 pin with enable is (SPI_READY | SPI_NO_CS)
++	 *  - 5 pin SPI variant is standard SPI plus SPI_FC_READY
++	 *  - 4 pin with enable is (SPI_FC_READY | SPI_NO_CS)
+ 	 */
+ 
+ 	if (dspi->version == SPI_VERSION_2) {
+@@ -374,7 +374,7 @@ static int davinci_spi_setup_transfer(struct spi_device *spi,
+ 						& SPIDELAY_T2CDELAY_MASK;
+ 		}
+ 
+-		if (spi->mode & SPI_READY) {
++		if (spi->mode & SPI_FC_READY) {
+ 			spifmt |= SPIFMT_WAITENA_MASK;
+ 			delay |= (spicfg->t2edelay << SPIDELAY_T2EDELAY_SHIFT)
+ 						& SPIDELAY_T2EDELAY_MASK;
+@@ -452,7 +452,7 @@ static int davinci_spi_setup(struct spi_device *spi)
+ 			set_io_bits(dspi->base + SPIPC0, 1 << spi->chip_select);
+ 	}
+ 
+-	if (spi->mode & SPI_READY)
++	if (spi->mode & SPI_FC_READY)
+ 		set_io_bits(dspi->base + SPIPC0, SPIPC0_SPIENA_MASK);
+ 
+ 	if (spi->mode & SPI_LOOP)
+@@ -1021,7 +1021,7 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 
+ 	dspi->bitbang.flags = SPI_NO_CS | SPI_LSB_FIRST | SPI_LOOP;
+ 	if (dspi->version == SPI_VERSION_2)
+-		dspi->bitbang.flags |= SPI_READY;
++		dspi->bitbang.flags |= SPI_FC_HW_ONLY | SPI_FC_READY | SPI_FC_PAUSE;
+ 
+ 	if (pdev->dev.of_node) {
+ 		int i;
 -- 
 1.9.1
 

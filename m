@@ -1,72 +1,58 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pxa2xx: Update comment in int_transfer_complete()" to the spi tree
-Date: Thu, 04 Feb 2016 12:16:25 +0000
-Message-ID: <E1aRIpl-0001S8-RT@debutante>
-References: <1454581857-12921-1-git-send-email-jarkko.nikula@linux.intel.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Purna Chandra Mandal <purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+Subject: Re: [PATCH] spi: Fix incomplete handling of
+ SPI_MASTER_MUST_RX/_MUST_TX
+Date: Tue, 1 Mar 2016 17:47:49 +0530
+Message-ID: <56D5886D.4060504@microchip.com>
+References: <1454366363-10564-1-git-send-email-joshua.henderson@microchip.com>
+ <20160201231733.GK4455@sirena.org.uk> <56B42C68.4030909@microchip.com>
+ <20160208161542.GF7265@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+Cc: Joshua Henderson <joshua.henderson-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
+	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1454581857-12921-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <20160208161542.GF7265-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+Mark,
 
-   spi: pxa2xx: Update comment in int_transfer_complete()
+On 02/08/2016 09:45 PM, Mark Brown wrote:
 
-has been applied to the spi tree at
+> On Fri, Feb 05, 2016 at 10:30:24AM +0530, Purna Chandra Mandal wrote:
+>
+> Please fix your mail client to word wrap within paragraphs at something
+> substantially less than 80 columns.  Doing this makes your messages much
+> easier to read and reply to.
+>
+>> Idea is good, but not sufficient.
+>> Dummy buffers are _reallocated_ to accommodate larger size of transfer. In this if
+>> [originally NULL] .rx_buf/.tx_buf is not reset back to NULL after the transfer
+>> is over spi-core will find those .rx/tx_buf non-NULL in next _transfer() call and
+>> will pass the stale rx/tx_buf to spi controller driver which will definitely
+>> corrupt the memory and crash the system.
+> This needs to be clear to readers; a fairly obvious way of dealing with
+> this would be to rellocate down to a page rather than freeing.
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+Yea. But current krealloc() implementation allocates new memory if new size
+is more than the allocated space, (and frees the old). If we allocate
+PAGE_SIZE of dummy buffer (at first call irrespective of required size),
+re-use it and don't allow transfer size to grow more than PAGE_SIZE we
+will be fine provided all SPI clients agree to the size restriction.
+The moment we'll try to re-allocate new buffer we will reach the same
+point we wanted to avoid here.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+>> Above all the whole design depends on trust that core will not play with any data-structure
+>> which will break object-oriented/layered approach. So better to undo the modification
+>> (when needed to facilitate some functionality) unless core wants those information to be passed
+>> back to caller/client for reporting success or error or else.
+> That's really not the case, we already make a range of other
+> modifications to complete partially filled transfers in order to
+> simplify driver code.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 07550df04712c88717d2ab6578bb36bbd4305e35 Mon Sep 17 00:00:00 2001
-From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Thu, 4 Feb 2016 12:30:56 +0200
-Subject: [PATCH] spi: pxa2xx: Update comment in int_transfer_complete()
-
-The register writes here actually don't stop the SSP but clean and
-disable interrupts and set the receive FIFO inactivity timeout to zero.
-
-Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-pxa2xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 227e8bad19e6..9b9a528a9fbd 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -572,7 +572,7 @@ static void int_error_stop(struct driver_data *drv_data, const char* msg)
- 
- static void int_transfer_complete(struct driver_data *drv_data)
- {
--	/* Stop SSP */
-+	/* Clear and disable interrupts */
- 	write_SSSR_CS(drv_data, drv_data->clear_sr);
- 	reset_sccr1(drv_data);
- 	if (!pxa25x_ssp_comp(drv_data))
--- 
-2.7.0.rc3
+Purna
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

@@ -1,120 +1,82 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/6] spi: add flow controll support
-Date: Wed, 2 Mar 2016 19:55:30 +0900
-Message-ID: <20160302105530.GK18327@sirena.org.uk>
-References: <56D448E1.6090006@de.bosch.com>
- <1456843400-20696-1-git-send-email-linux@rempel-privat.de>
- <20160302024656.GR18327@sirena.org.uk>
- <56D68CD7.8000203@de.bosch.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="s/cK5nSd5NvswZqS"
-Cc: Oleksij Rempel <linux-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>, geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org,
-	dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-To: "fixed-term.Oleksij.Rempel" <fixed-term.Oleksij.Rempel-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+Subject: Applied "spi: pxa2xx: Add support for Intel Broxton B-Step" to the spi tree
+Date: Wed, 02 Mar 2016 20:04:03 +0900
+Message-ID: <E1ab4ZX-0005tf-6S@finisterre>
+References: <1456905254-32726-1-git-send-email-jarkko.nikula@linux.intel.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Steve Sakoman <steve.sakoman-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <56D68CD7.8000203-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <1456905254-32726-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---s/cK5nSd5NvswZqS
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: pxa2xx: Add support for Intel Broxton B-Step
 
-On Wed, Mar 02, 2016 at 07:48:55AM +0100, fixed-term.Oleksij.Rempel wrote:
-> On 02.03.2016 03:46, Mark Brown wrote:
-> > On Tue, Mar 01, 2016 at 03:43:15PM +0100, Oleksij Rempel wrote:
+has been applied to the spi tree at
 
-> > In the case above this looks like a normal interrupt from a device, I'm
-> > not clear what is different here or why this is in the core?
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> At least our HW use tree different signals for flow control. One of it
-> is Request Signal.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-That's still an interrupt, just on a different line to the main
-interrupt.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-> >> Flow control: ACK End of Data
-> >> Master CS   |______________________/2------|
-> >> Slave  FC   |________________________/3----|
-> >> DATA        |__________________/1----------|
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-> > Why would anything care about this case and why is it part of the SPI
-> > protocol rather than something that the device driver would do?
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-> This case covers real bugs and in our case we need to detect if master
-> or slave stalls under one second. If communication problem is detected,
-> some of recovery scenarios is initiated. Like i said, this protocol is
-> used for automotive industry.
+Thanks,
+Mark
 
-That doesn't answer the second part of my question.  This doesn't seem
-to be something that's anything to do with SPI, it's just your device
-signalling things out of band.
+>From c1b03f116453cebb9381fa64311ab047ecece485 Mon Sep 17 00:00:00 2001
+From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Date: Wed, 2 Mar 2016 09:54:14 +0200
+Subject: [PATCH] spi: pxa2xx: Add support for Intel Broxton B-Step
 
-> Please see two attached screen shots of Master and Slave initiated
-> transfers.
+Add support for third Intel Broxton variant and update comment for
+A-Step variant.
 
-Those tell me nothing.
+Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Tested-by: Steve Sakoman <steve.sakoman-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-pxa2xx.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-> > Atomic operations are very hard to use safely, you need to really spell
-> > out what you think this is doing from a synchronization point of view
-> > and why it's safe.
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 2c4e8ccd573b..85e59a406a4c 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1384,10 +1384,14 @@ static const struct pci_device_id pxa2xx_spi_pci_compound_match[] = {
+ 	/* SPT-H */
+ 	{ PCI_VDEVICE(INTEL, 0xa129), LPSS_SPT_SSP },
+ 	{ PCI_VDEVICE(INTEL, 0xa12a), LPSS_SPT_SSP },
+-	/* BXT */
++	/* BXT A-Step */
+ 	{ PCI_VDEVICE(INTEL, 0x0ac2), LPSS_BXT_SSP },
+ 	{ PCI_VDEVICE(INTEL, 0x0ac4), LPSS_BXT_SSP },
+ 	{ PCI_VDEVICE(INTEL, 0x0ac6), LPSS_BXT_SSP },
++	/* BXT B-Step */
++	{ PCI_VDEVICE(INTEL, 0x1ac2), LPSS_BXT_SSP },
++	{ PCI_VDEVICE(INTEL, 0x1ac4), LPSS_BXT_SSP },
++	{ PCI_VDEVICE(INTEL, 0x1ac6), LPSS_BXT_SSP },
+ 	/* APL */
+ 	{ PCI_VDEVICE(INTEL, 0x5ac2), LPSS_BXT_SSP },
+ 	{ PCI_VDEVICE(INTEL, 0x5ac4), LPSS_BXT_SSP },
+-- 
+2.7.0
 
-> I'm trying to detect if we are on Master or Slave initiated transfer,
-> which was detected by spi_fc_rq. Normally there should be no other
-> interrupts on FC line and active_rq should not be changed until this
-> transfer was processed. The "if (!spi_fc_equal_cs(spi))" check is in
-> case my assumption is wrong or there is some HW issue. Do you have other
-> suggestions?
-
-Among other things it really needs to be crystal clear how this update
-gets propagated to all CPUs in the system with no race conditions.
-
-> >> +	if (spi->mode | SPI_FC_REQUEST &&
-> >> +			!spi->cs_enabled && fc_enabled) {
-> >> +		atomic_set(&spi->active_rq, 1);
-> >> +		if (spi->request_cb)
-> >> +			spi->request_cb(spi);
-
-> > This logic is all too complicated for me to follow.  Why are we oring
-> > things with spi->mode?
-
-> I'm trying to checking here if fallowing case is actually expected by
-> slave device. Other suggestions?
-
-In what way are we checking what?  The code is incomprehensible.
-
-Again, you're ignoring my specific question about the or.
-
-> > We can't support things only for DT, we need a way for things to be used
-> > on other systemms.
-
-> I have nothing against it, but i even do not have other HW to test if my
-> assumptions are correct. Would you accept untested code? :)
-
-In general the way we do DT code is that the DT parses into some data
-structure and then we work with that data structure.  This means that
-everyone's code path is tested.
-
---s/cK5nSd5NvswZqS
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJW1sahAAoJECTWi3JdVIfQ2j4H/2uah1T/wIjfZXbGj0jX0MQa
-grKvBVnhcnYSAsWXM8gy2Mb6qej3EIR0W82PRs3r89MlQqVhQfOozBKba0ej6jzT
-Ol+cfWKY2xeO3LXl6O/z7rNQiI1CuNMoBSBjwhiTp+tzQgu64XxIU+2fvvnNx42R
-X1UWz3TQ7qUQ9TV7Jy5gAhu08XpaAkF+mN7sYK82jCg9CnXgW93yh326ezVUJBX3
-WFml63pCa/heVsALO8eOIHDKkV8YJgv4lB0Eahd/tzOHY/GFqmN4XobxAyA5s4GG
-m9gNtbjf7Y8gclgENvvxZUlsBNEbYFh6xIhGXcA3TTLNSjzMk4KFnJtZYw/Z35g=
-=W9JD
------END PGP SIGNATURE-----
-
---s/cK5nSd5NvswZqS--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,7 +1,7 @@
 From: Matthew Garrett <mjg59-1xO5oi07KQx4cg9Nei1l7Q@public.gmane.org>
 Subject: Re: ACPI SPI slave device
-Date: Thu, 3 Mar 2016 17:48:06 +0000
-Message-ID: <20160303174806.GB11728@srcf.ucam.org>
+Date: Thu, 3 Mar 2016 17:45:35 +0000
+Message-ID: <20160303174535.GA11728@srcf.ucam.org>
 References: <20160229082114.GC1770@lahna.fi.intel.com>
  <CAAbRKOt=CDOqD1FESZkxv4fdYSDm6qoi4J0wYn=e5mvN-NLpCA@mail.gmail.com>
  <CAAbRKOscDyYaUqBTFVFZ2Fe81a_Kkx9oeNXHrttm3Qs_27fAzQ@mail.gmail.com>
@@ -25,11 +25,24 @@ In-Reply-To: <20160303114740.GA24132-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Oh, sorry, I see - it's a little more complicated than that. Bleah. I 
-still think we probably want to do this at the core level rather than 
-having the driver special-case things based on the HID, but it's clearly 
-going to need some knowledge of the device type to parse Apple's data 
-into something consistent with the spec.
+On Thu, Mar 03, 2016 at 12:47:40PM +0100, Lukas Wunner wrote:
+
+> I think you want to add a quirk to spi.c:acpi_spi_add_device()
+> which checks if acpi_dev_get_resources() returned nothing and
+> the HID of the acpi_device is APP000D: Search the namespace below
+> the acpi_device's handle for _CRS.UBUF (using acpi_get_handle()).
+> If this exists, call acpi_walk_resource_buffer() on it (with the
+> acpi_spi_add_resource callback). You need to somehow convert the
+> acpi_handle to an acpi_buffer, maybe that just involves filling in
+> acpi_buffer->pointer = acpi_handle and somehow determining the
+> length of the resource settings from the handle. Someone more
+> intimately familiar with the layout of the namespace in memory
+> should be able to answer this. Hopefully this will already get
+> you started, if not just ask questions.
+
+If Apple are consistently using this mechanism to define resources, do 
+we want to extend acpi_dev_get_resources to attempt to call the _DSM 
+method as well?
 
 -- 
 Matthew Garrett | mjg59-1xO5oi07KQx4cg9Nei1l7Q@public.gmane.org

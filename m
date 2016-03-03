@@ -1,48 +1,38 @@
-From: Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>
-Subject: Re: [PATCH] spi: pxa2xx: Use newer more explicit DMAengine terminate API
-Date: Thu, 03 Mar 2016 19:25:01 +0100
-Message-ID: <87twknpgg2.fsf@belgarion.home>
-References: <1457002934-9671-1-git-send-email-jarkko.nikula@linux.intel.com>
+From: Matthew Garrett <mjg59-1xO5oi07KQx4cg9Nei1l7Q@public.gmane.org>
+Subject: Re: ACPI SPI slave device
+Date: Thu, 3 Mar 2016 17:48:06 +0000
+Message-ID: <20160303174806.GB11728@srcf.ucam.org>
+References: <20160229082114.GC1770@lahna.fi.intel.com>
+ <CAAbRKOt=CDOqD1FESZkxv4fdYSDm6qoi4J0wYn=e5mvN-NLpCA@mail.gmail.com>
+ <CAAbRKOscDyYaUqBTFVFZ2Fe81a_Kkx9oeNXHrttm3Qs_27fAzQ@mail.gmail.com>
+ <20160301160726.GA23371@wunner.de>
+ <CAAbRKOuESP+_65cmeCPNtO5HzN1+ct7bDv1stbE+a8u=KEwDKw@mail.gmail.com>
+ <CAAbRKOsNxsu4CYq=EByck997RWRO3fQ-+LAAS5AbSL3XNRSh7A@mail.gmail.com>
+ <20160302114250.GA23487@wunner.de>
+ <CAAbRKOvP9yudKbzu_GquPUzhz2VQBtuKYmJbqLpt1jFcB6U1kQ@mail.gmail.com>
+ <CAAbRKOs=ySAtqn71Mf5tyHvjqOGGRs5xsO6oU5YPYWgOSXqehA@mail.gmail.com>
+ <20160303114740.GA24132@wunner.de>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Leif Liddy <leif.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1457002934-9671-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-	(Jarkko Nikula's message of "Thu, 3 Mar 2016 13:02:14 +0200")
+Content-Disposition: inline
+In-Reply-To: <20160303114740.GA24132-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org> writes:
+Oh, sorry, I see - it's a little more complicated than that. Bleah. I 
+still think we probably want to do this at the core level rather than 
+having the driver special-case things based on the HID, but it's clearly 
+going to need some knowledge of the device type to parse Apple's data 
+into something consistent with the spec.
 
-> Commit b36f09c3c441 ("dmaengine: Add transfer termination
-> synchronization support") marked dmaengine_terminate_all() as
-> deprecated and is being replaced by explicit synchronous and asynchronous
-> terminate functions.
->
-> Here DMA termination are done in two cases: FIFO overrun and module
-> removal.
->
-> FIFO overrun is handled in interrupt context and converting
-> dmaengine_terminate_all() to dmaengine_terminate_async() does the same than
-> before.
->
-> Using synchronous termination in module removal however adds a bit more
-> robustness as it waits all completion callbacks have finished. Although it
-> looks all known DMA engines used with spi-pxa2xx don't implement
-> device_synchronize() callback so this too appears to be a no-op in
-> practice.
->
-> Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Acked-by: Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>
-
-Cheers.
-
---
-Robert
+-- 
+Matthew Garrett | mjg59-1xO5oi07KQx4cg9Nei1l7Q@public.gmane.org
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

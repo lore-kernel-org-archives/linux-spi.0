@@ -1,76 +1,78 @@
-From: Vladimir Zapolskiy <vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH 6/9] spi: imx: remove unnecessary bit clearing in
- mx51_ecspi_config
-Date: Fri, 4 Mar 2016 14:06:57 +0200
-Message-ID: <56D97A61.2070602@mentor.com>
-References: <1456302033-25638-1-git-send-email-s.hauer@pengutronix.de>
- <1456302033-25638-7-git-send-email-s.hauer@pengutronix.de>
- <56D968DF.7000007@mentor.com> <20160304114737.GE21869@pengutronix.de>
+From: Purna Chandra Mandal <purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+Subject: [PATCH v2 1/2] dt/bindings: Add bindings for PIC32 SPI peripheral
+Date: Fri, 4 Mar 2016 19:14:41 +0530
+Message-ID: <1457099082-12587-1-git-send-email-purna.mandal@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Content-Type: text/plain
+Cc: Purna Chandra Mandal <purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
+	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
+	Sergei Shtylyov <sergei.shtylyov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>
+To: <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160304114737.GE21869-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 04.03.2016 13:47, Sascha Hauer wrote:
-> On Fri, Mar 04, 2016 at 12:52:15PM +0200, Vladimir Zapolskiy wrote:
->> Hi Sascha,
->>
->> On 24.02.2016 10:20, Sascha Hauer wrote:
->>> This reverts patch 1476253cef (spi: imx: fix ecspi mode setup)
->>> The patch tried to fix something by clearing bits in the cfg variable,
->>> but cfg is initialized to zero on function entry. There are no bits to
->>> clear.
->>>
->>> Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
->>
->> I believe here the expected fix should be
->>
->> ----8<----
->>
->> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
->> index 6a4ff27..9c9bae0 100644
->> --- a/drivers/spi/spi-imx.c
->> +++ b/drivers/spi/spi-imx.c
->> @@ -316,9 +316,10 @@ static void __maybe_unused mx51_ecspi_trigger(struct
->> spi_imx_data *spi_imx)
->>  static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
->>  		struct spi_imx_config *config)
->>  {
->> -	u32 ctrl = MX51_ECSPI_CTRL_ENABLE, cfg = 0, dma = 0;
->> +	u32 ctrl = MX51_ECSPI_CTRL_ENABLE, dma = 0;
->>  	u32 tx_wml_cfg, rx_wml_cfg, rxt_wml_cfg;
->>  	u32 clk = config->speed_hz, delay, reg;
->> +	u32 cfg = readl(spi_imx->base + MX51_ECSPI_CONFIG);
->>
-> 
-> With this change applied we would indeed have to clear and not only set the bits,
-> but why would we do this?
+Signed-off-by: Purna Chandra Mandal <purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
 
-Locally we have quite a similar to 1476253cef change (well, correct version
-of it) authored by Knut Wohlrab, here is his comment from a discussion:
+---
 
-Please notice that iMX6 ECSPI controller support 4 channels/chip selects at
-one SPI bus. The original iMX driver implementation(*) did not care about
-the SPI_CPHA, SPI_CPOL and SPI_CS_HIGH configuration of the not selected
-channels and set this to "0". Depending on the configuration of this
-channels this could cause unwanted edges at the clock line when using this
-channels the next time. To prevent this, we introduce the read of the
-actual configuration/register content and set only the necessary changes.
+Changes in v2:
+ - fix indentation
+ - add space after comma
+ - moved 'cs-gpios' section under 'required' properties.
 
-(*) here it means the version prior to 1476253cef ("spi: imx: fix ecspi mode
-setup)
+ .../bindings/spi/microchip,spi-pic32.txt           | 34 ++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/microchip,spi-pic32.txt
 
---
-With best wishes,
-Vladimir
+diff --git a/Documentation/devicetree/bindings/spi/microchip,spi-pic32.txt b/Documentation/devicetree/bindings/spi/microchip,spi-pic32.txt
+new file mode 100644
+index 0000000..79de379f
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/microchip,spi-pic32.txt
+@@ -0,0 +1,34 @@
++Microchip PIC32 SPI Master controller
++
++Required properties:
++- compatible: Should be "microchip,pic32mzda-spi".
++- reg: Address and length of register space for the device.
++- interrupts: Should contain all three spi interrupts in sequence
++              of <fault-irq>, <receive-irq>, <transmit-irq>.
++- interrupt-names: Should be "fault", "rx", "tx" in order.
++- clocks: Phandle of the clock generating SPI clock on the bus.
++- clock-names: Should be "mck0".
++- cs-gpios: Specifies the gpio pins to be used for chipselects.
++            See: Documentation/devicetree/bindings/spi/spi-bus.txt
++
++Optional properties:
++- dmas: Two or more DMA channel specifiers following the convention outlined
++        in Documentation/devicetree/bindings/dma/dma.txt
++- dma-names: Names for the dma channels. There must be at least one channel
++             named "spi-tx" for transmit and named "spi-rx" for receive.
++
++Example:
++
++spi1: spi@1f821000 {
++        compatible = "microchip,pic32mzda-spi";
++        reg = <0x1f821000 0x200>;
++        interrupts = <109 IRQ_TYPE_LEVEL_HIGH>,
++                     <110 IRQ_TYPE_LEVEL_HIGH>,
++                     <111 IRQ_TYPE_LEVEL_HIGH>;
++        interrupt-names = "fault", "rx", "tx";
++        clocks = <&PBCLK2>;
++        clock-names = "mck0";
++        cs-gpios = <&gpio3 4 GPIO_ACTIVE_LOW>;
++        dmas = <&dma 134>, <&dma 135>;
++        dma-names = "spi-rx", "spi-tx";
++};
+-- 
+1.8.3.1
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,20 +1,18 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pxa2xx: Use newer more explicit DMAengine terminate API" to the spi tree
-Date: Sat, 05 Mar 2016 21:26:06 +0900
-Message-ID: <E1acBHa-0003Xj-Mp@finisterre>
-References: <1457002934-9671-1-git-send-email-jarkko.nikula@linux.intel.com>
+Subject: Applied "spi/rockchip: Make sure spi clk is on in rockchip_spi_set_cs" to the spi tree
+Date: Sat, 05 Mar 2016 21:26:05 +0900
+Message-ID: <E1acBHZ-0003XE-1H@finisterre>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+To: Huibin Hong <huibin.hong-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1457002934-9671-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: 
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: pxa2xx: Use newer more explicit DMAengine terminate API
+   spi/rockchip: Make sure spi clk is on in rockchip_spi_set_cs
 
 has been applied to the spi tree at
 
@@ -39,68 +37,48 @@ to this mail.
 Thanks,
 Mark
 
->From 590745017ef3658b33a581fe0c6d60b70e92df85 Mon Sep 17 00:00:00 2001
-From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Thu, 3 Mar 2016 13:02:14 +0200
-Subject: [PATCH] spi: pxa2xx: Use newer more explicit DMAengine terminate API
+>From b920cc3191d7612f26f36ee494e05b5ffd9044c0 Mon Sep 17 00:00:00 2001
+From: Huibin Hong <huibin.hong-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Date: Wed, 24 Feb 2016 18:00:04 +0800
+Subject: [PATCH] spi/rockchip: Make sure spi clk is on in rockchip_spi_set_cs
 
-Commit b36f09c3c441 ("dmaengine: Add transfer termination
-synchronization support") marked dmaengine_terminate_all() as
-deprecated and is being replaced by explicit synchronous and asynchronous
-terminate functions.
+Rockchip_spi_set_cs could be called by spi_setup, but
+spi_setup may be called by device driver after runtime suspend.
+Then the spi clock is closed, rockchip_spi_set_cs may access the
+spi registers, which causes cpu block in some socs.
 
-Here DMA termination are done in two cases: FIFO overrun and module
-removal.
-
-FIFO overrun is handled in interrupt context and converting
-dmaengine_terminate_all() to dmaengine_terminate_async() does the same than
-before.
-
-Using synchronous termination in module removal however adds a bit more
-robustness as it waits all completion callbacks have finished. Although it
-looks all known DMA engines used with spi-pxa2xx don't implement
-device_synchronize() callback so this too appears to be a no-op in
-practice.
-
-Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Reviewed-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Acked-by: Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>
+Fixes: 64e36824b32 ("spi/rockchip: add driver for Rockchip RK3xxx")
+Signed-off-by: Huibin Hong <huibin.hong-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-pxa2xx-dma.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/spi/spi-rockchip.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-pxa2xx-dma.c b/drivers/spi/spi-pxa2xx-dma.c
-index bd8b369a343c..365fc22c3572 100644
---- a/drivers/spi/spi-pxa2xx-dma.c
-+++ b/drivers/spi/spi-pxa2xx-dma.c
-@@ -254,8 +254,8 @@ irqreturn_t pxa2xx_spi_dma_transfer(struct driver_data *drv_data)
- 	if (status & SSSR_ROR) {
- 		dev_err(&drv_data->pdev->dev, "FIFO overrun\n");
- 
--		dmaengine_terminate_all(drv_data->rx_chan);
--		dmaengine_terminate_all(drv_data->tx_chan);
-+		dmaengine_terminate_async(drv_data->rx_chan);
-+		dmaengine_terminate_async(drv_data->tx_chan);
- 
- 		pxa2xx_spi_dma_transfer_complete(drv_data, true);
- 		return IRQ_HANDLED;
-@@ -331,13 +331,13 @@ int pxa2xx_spi_dma_setup(struct driver_data *drv_data)
- void pxa2xx_spi_dma_release(struct driver_data *drv_data)
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index 07c082aa5cff..6cdb4d81d66c 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -263,7 +263,10 @@ static inline u32 rx_max(struct rockchip_spi *rs)
+ static void rockchip_spi_set_cs(struct spi_device *spi, bool enable)
  {
- 	if (drv_data->rx_chan) {
--		dmaengine_terminate_all(drv_data->rx_chan);
-+		dmaengine_terminate_sync(drv_data->rx_chan);
- 		dma_release_channel(drv_data->rx_chan);
- 		sg_free_table(&drv_data->rx_sgt);
- 		drv_data->rx_chan = NULL;
- 	}
- 	if (drv_data->tx_chan) {
--		dmaengine_terminate_all(drv_data->tx_chan);
-+		dmaengine_terminate_sync(drv_data->tx_chan);
- 		dma_release_channel(drv_data->tx_chan);
- 		sg_free_table(&drv_data->tx_sgt);
- 		drv_data->tx_chan = NULL;
+ 	u32 ser;
+-	struct rockchip_spi *rs = spi_master_get_devdata(spi->master);
++	struct spi_master *master = spi->master;
++	struct rockchip_spi *rs = spi_master_get_devdata(master);
++
++	pm_runtime_get_sync(rs->dev);
+ 
+ 	ser = readl_relaxed(rs->regs + ROCKCHIP_SPI_SER) & SER_MASK;
+ 
+@@ -288,6 +291,8 @@ static void rockchip_spi_set_cs(struct spi_device *spi, bool enable)
+ 		ser &= ~(1 << spi->chip_select);
+ 
+ 	writel_relaxed(ser, rs->regs + ROCKCHIP_SPI_SER);
++
++	pm_runtime_put_sync(rs->dev);
+ }
+ 
+ static int rockchip_spi_prepare_message(struct spi_master *master,
 -- 
 2.7.0
 

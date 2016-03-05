@@ -1,62 +1,67 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi/rockchip: Make sure spi clk is on in
- rockchip_spi_set_cs
-Date: Sat, 5 Mar 2016 13:45:31 +0900
-Message-ID: <20160305044531.GB18327@sirena.org.uk>
-References: <1456308004-29102-1-git-send-email-huibin.hong@rock-chips.com>
- <56CD8F85.2090204@rock-chips.com>
- <20160226015829.GC18327@sirena.org.uk>
- <56CFB916.5010403@rock-chips.com>
+Subject: Re: [PATCH 2/2] spi/fsl-espi: Remove the address conversion operation
+Date: Sat, 5 Mar 2016 14:36:37 +0900
+Message-ID: <20160305053637.GH18327@sirena.org.uk>
+References: <1453460307-9768-1-git-send-email-Zhiqiang.Hou@freescale.com>
+ <1453460307-9768-2-git-send-email-Zhiqiang.Hou@freescale.com>
+ <20160122170242.GC6588@sirena.org.uk>
+ <HE1PR04MB090646FAE865004A1AD64E9184C70@HE1PR04MB0906.eurprd04.prod.outlook.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="YTJxIO/azM2K2lD0"
-Cc: Huibin Hong <huibin.hong-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"shawn.lin" <shawn.lin-NgiFYW8Wbx6Ta72+1OMJgUB+6BGkLq7r@public.gmane.org>,
-	linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Addy Ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-To: "Huang, Tao" <huangtao-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="yyDGAYpCcmoErx1x"
+Cc: Zhiqiang Hou <Zhiqiang.Hou-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"Mingkai.Hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org" <Mingkai.Hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	"Shaohui.Xie-KZfg59tc24xl57MIdRCFDg@public.gmane.org" <Shaohui.Xie-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Hou Zhiqiang <B48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+To: Zhiqiang Hou <zhiqiang.hou-3arQi8VN3Tc@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <56CFB916.5010403-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+In-Reply-To: <HE1PR04MB090646FAE865004A1AD64E9184C70-6LN7OEpIatWBkn9woE/rDM9NdZoXdze2vxpqHgZTriW3zl9H0oFU5g@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---YTJxIO/azM2K2lD0
+--yyDGAYpCcmoErx1x
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Feb 26, 2016 at 10:31:50AM +0800, Huang, Tao wrote:
+On Mon, Jan 25, 2016 at 05:47:33AM +0000, Zhiqiang Hou wrote:
 
-> You misunderstand me. I talk about spi_setup, as
-> Documentation/spi/spi-summary, which would normally be called from
-> probe() before the first I/O is done to the device.
-> spi_setup will call spi_set_cs(spi, false), which introduced with commit
-> 1a7b7ee72c21 ("spi: Ensure that CS line is in non-active state after
-> spi_setup()"). And spi_set_cs will call spi->master->set_cs, and set_cs
-> callback will access register. Without clk enable, I believe some
-> drivers will failed to run.
+> > This is a *very* large list of dependencies.  What exactly are these and what is the
+> > relationship between them and this patch?
 
-That's definitely very driver specific, a large proportion of devices
-don't manage their chip selects via the SPI controller at all.
+> > Please include human readable descriptions of things like commits and issues being
+> > discussed in e-mail in your mails, this makes them much easier for humans to read
+> > especially when they have no internet access.
+> > I do frequently catch up on my mail on flights or while otherwise travelling so this
+> > is even more pressing for me than just being about making things a bit easier to
+> > read.
 
---YTJxIO/azM2K2lD0
+> yes, thanks for your advice.
+
+I still can't really tell what's going on here or where these
+dependencies are at.  Probably the easiest thing here is to submit this
+once the dependencies are in.
+
+--yyDGAYpCcmoErx1x
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJW2mRqAAoJECTWi3JdVIfQZt8H+gOI5ydHv+WUOYUgx906u8ur
-jSrNy4ntmcmu/rma0sMnm5XplfSjfcjpyZAf1drVRii0K6jWsyuriMXimS2J2kPc
-ZHYyEg9E/tbMcLB0xvo855YUIRz269QK0cX0j0VbA5qnikyNfBogqLCaVPK/Hgx4
-gXDL4ye0c/vIIRExgWjIUezBIwsQP5tKlccsS516WxvNk3SQFnn+ZtgLXNSVlKh2
-cWiF1gg80fncvS4IsQbv3PyTNg7ws8woYZv39df/ksYnNrGMSwWUz3u/9uvq75/w
-S4xT9agud1xWzlWeoZ/RyW8/jD+gjjaQytaAC9lY7u141Uuho9S1dEVk48SHo3o=
-=ZuRK
+iQEcBAEBCAAGBQJW2nBkAAoJECTWi3JdVIfQgBIH/0nUKtwgQ4yv2KyutQ0FPDxF
+M0fF36Drs82drAEMSu4MWgO6K1/kGJUJOSBFI2oGljHpmkwFKewk6x7gY2EoyPok
+PKOB8c1XUZEekIfJoDaL8d99A/RQ7jUEtcR2K5+E2DgrvGRu+P9yR1TSwYHePXTk
+DzmFzOyNIs3ZBV8IChFIJDud25W7NTaGht8Rg38H2MQJ4BGjAwed6kOcultcIxNL
+5BLQ2ebgA2jOrGi8ohAAOttvMPl3FWOuGar3jaJ5UrFu762YawB+jybpVTsHVH2d
+YT8YdoEI54TZn9GWWWrNeVNS5VKxQeYvq2cQYoP9NeaH4PtXJLTK1QcVtUMmab8=
+=76OD
 -----END PGP SIGNATURE-----
 
---YTJxIO/azM2K2lD0--
+--yyDGAYpCcmoErx1x--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

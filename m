@@ -1,7 +1,8 @@
 From: Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: [PATCH 4/7] scatterlist: add sg_alloc_table_from_buf() helper
-Date: Tue,  8 Mar 2016 12:15:12 +0100
-Message-ID: <1457435715-24740-5-git-send-email-boris.brezillon@free-electrons.com>
+Subject: [PATCH 5/7] mtd: provide helper to prepare buffers for
+ DMA operations
+Date: Tue,  8 Mar 2016 12:15:13 +0100
+Message-ID: <1457435715-24740-6-git-send-email-boris.brezillon@free-electrons.com>
 References: <1457435715-24740-1-git-send-email-boris.brezillon@free-electrons.com>
 Reply-To: boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org
 Mime-Version: 1.0
@@ -43,211 +44,136 @@ List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39
  <https://groups.google.com/group/linux-sunxi/subscribe>
 List-Id: linux-spi.vger.kernel.org
 
-sg_alloc_table_from_buf() provides an easy solution to create an sg_table
-from a virtual address pointer. This function takes care of dealing with
-vmallocated buffers, buffer alignment, or DMA engine limitations (maximum
-DMA transfer size).
+Some NAND controller drivers are making use of DMA to transfer data from
+the controller to the buffer passed by the MTD user.
+Provide a generic mtd_map/unmap_buf() implementation to avoid open coded
+(and sometime erroneous) implementations.
 
 Signed-off-by: Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 ---
- include/linux/scatterlist.h |  24 ++++++++
- lib/scatterlist.c           | 142 ++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 166 insertions(+)
+ drivers/mtd/mtdcore.c   | 66 +++++++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/mtd/mtd.h | 25 +++++++++++++++++++
+ 2 files changed, 91 insertions(+)
 
-diff --git a/include/linux/scatterlist.h b/include/linux/scatterlist.h
-index 556ec1e..4a75362 100644
---- a/include/linux/scatterlist.h
-+++ b/include/linux/scatterlist.h
-@@ -41,6 +41,27 @@ struct sg_table {
- 	unsigned int orig_nents;	/* original size of list */
- };
- 
-+/**
-+ * struct sg_constraints - SG constraints structure
-+ *
-+ * @max_chunk_len: maximum chunk buffer length. Each SG entry has to be smaller
-+ *		   than this value. Zero means no constraint.
-+ * @required_alignment: minimum alignment. Is used for both size and pointer
-+ *			alignment. If this constraint is not met, the function
-+ *			should return -EINVAL.
-+ * @preferred_alignment: preferred alignment. Mainly used to optimize
-+ *			 throughput when the DMA engine performs better when
-+ *			 doing aligned accesses.
-+ *
-+ * This structure is here to help sg_alloc_table_from_buf() create the optimal
-+ * SG list based on DMA engine constraints.
-+ */
-+struct sg_constraints {
-+	size_t max_chunk_len;
-+	size_t required_alignment;
-+	size_t preferred_alignment;
-+};
-+
- /*
-  * Notes on SG table design.
-  *
-@@ -265,6 +286,9 @@ int sg_alloc_table_from_pages(struct sg_table *sgt,
- 	struct page **pages, unsigned int n_pages,
- 	unsigned long offset, unsigned long size,
- 	gfp_t gfp_mask);
-+int sg_alloc_table_from_buf(struct sg_table *sgt, const void *buf, size_t len,
-+			    const struct sg_constraints *constraints,
-+			    gfp_t gfp_mask);
- 
- size_t sg_copy_buffer(struct scatterlist *sgl, unsigned int nents, void *buf,
- 		      size_t buflen, off_t skip, bool to_buffer);
-diff --git a/lib/scatterlist.c b/lib/scatterlist.c
-index bafa993..706b583 100644
---- a/lib/scatterlist.c
-+++ b/lib/scatterlist.c
-@@ -433,6 +433,148 @@ int sg_alloc_table_from_pages(struct sg_table *sgt,
+diff --git a/drivers/mtd/mtdcore.c b/drivers/mtd/mtdcore.c
+index 3096251..3c368f0 100644
+--- a/drivers/mtd/mtdcore.c
++++ b/drivers/mtd/mtdcore.c
+@@ -1253,6 +1253,72 @@ void *mtd_kmalloc_up_to(const struct mtd_info *mtd, size_t *size)
  }
- EXPORT_SYMBOL(sg_alloc_table_from_pages);
+ EXPORT_SYMBOL_GPL(mtd_kmalloc_up_to);
  
-+static size_t sg_buf_chunk_len(const void *buf, size_t len,
-+			       const struct sg_constraints *cons)
-+{
-+	size_t chunk_len = len;
-+
-+	if (cons->max_chunk_len)
-+		chunk_len = min_t(size_t, chunk_len, cons->max_chunk_len);
-+
-+	if (is_vmalloc_addr(buf))
-+		chunk_len = min_t(size_t, chunk_len,
-+				  PAGE_SIZE - offset_in_page(buf));
-+
-+	if (!IS_ALIGNED((unsigned long)buf, cons->preferred_alignment)) {
-+		const void *aligned_buf = PTR_ALIGN(buf,
-+						    cons->preferred_alignment);
-+		size_t unaligned_len = (unsigned long)(aligned_buf - buf);
-+
-+		chunk_len = min_t(size_t, chunk_len, unaligned_len);
-+	} else if (chunk_len > cons->preferred_alignment) {
-+		chunk_len &= ~(cons->preferred_alignment - 1);
-+	}
-+
-+	return chunk_len;
-+}
-+
-+#define sg_for_each_chunk_in_buf(buf, len, chunk_len, constraints)	\
-+	for (chunk_len = sg_buf_chunk_len(buf, len, constraints);	\
-+	     len;							\
-+	     len -= chunk_len, buf += chunk_len,			\
-+	     chunk_len = sg_buf_chunk_len(buf, len, constraints))
-+
-+static int sg_check_constraints(struct sg_constraints *cons,
-+				const void *buf, size_t len)
-+{
-+	if (!cons->required_alignment)
-+		cons->required_alignment = 1;
-+
-+	if (!cons->preferred_alignment)
-+		cons->preferred_alignment = cons->required_alignment;
-+
-+	/* Test if buf and len are properly aligned. */
-+	if (!IS_ALIGNED((unsigned long)buf, cons->required_alignment) ||
-+	    !IS_ALIGNED(len, cons->required_alignment))
-+		return -EINVAL;
-+
-+	/*
-+	 * if the buffer has been vmallocated and required_alignment is
-+	 * more than PAGE_SIZE we cannot guarantee it.
-+	 */
-+	if (is_vmalloc_addr(buf) && cons->required_alignment > PAGE_SIZE)
-+		return -EINVAL;
-+
-+	/*
-+	 * max_chunk_len has to be aligned to required_alignment to
-+	 * guarantee that all buffer chunks are aligned correctly.
-+	 */
-+	if (!IS_ALIGNED(cons->max_chunk_len, cons->required_alignment))
-+		return -EINVAL;
-+
-+	/*
-+	 * preferred_alignment has to be aligned to required_alignment
-+	 * to avoid misalignment of buffer chunks.
-+	 */
-+	if (!IS_ALIGNED(cons->preferred_alignment, cons->required_alignment))
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
++#ifdef CONFIG_HAS_DMA
 +/**
-+ * sg_alloc_table_from_buf - create an SG table from a buffer
++ * mtd_map_buf - create an SG table and prepare it for DMA operations
 + *
-+ * @sgt: SG table
-+ * @buf: buffer you want to create this SG table from
++ * @mtd: mtd device description object pointer
++ * @dev: device handling the DMA operation
++ * @buf: buf used to create the SG table
 + * @len: length of buf
 + * @constraints: optional constraints to take into account when creating
-+ *		 the SG table. Can be NULL if no specific constraints are
-+ *		 required.
-+ * @gfp_mask: type of allocation to use when creating the table
++ *		 the SG table. Can be NULL if no specific constraints
++ *		 are required.
++ * @dir: direction of the DMA operation
 + *
-+ * This function creates an SG table from a buffer, its length and some
-+ * SG constraints.
-+ *
-+ * Note: This function supports vmallocated buffers.
++ * This function should be used when an MTD driver wants to do DMA operations
++ * on a buffer passed by the MTD layer. This functions takes care of
++ * vmallocated buffer constraints, and return and sg_table that you can safely
++ * use.
 + */
-+int sg_alloc_table_from_buf(struct sg_table *sgt, const void *buf, size_t len,
-+			    const struct sg_constraints *constraints,
-+			    gfp_t gfp_mask)
++int mtd_map_buf(struct mtd_info *mtd, struct device *dev,
++		struct sg_table *sgt, const void *buf, size_t len,
++		const struct sg_constraints *constraints,
++		enum dma_data_direction dir)
 +{
-+	struct sg_constraints cons = { };
-+	size_t remaining, chunk_len;
-+	const void *sg_buf;
-+	int i, ret;
++	int ret;
 +
-+	if (constraints)
-+		cons = *constraints;
-+
-+	ret = sg_check_constraints(&cons, buf, len);
++	ret = sg_alloc_table_from_buf(sgt, buf, len, constraints, GFP_KERNEL);
 +	if (ret)
 +		return ret;
 +
-+	sg_buf = buf;
-+	remaining = len;
-+	i = 0;
-+	sg_for_each_chunk_in_buf(sg_buf, remaining, chunk_len, &cons)
-+		i++;
++	ret = dma_map_sg(dev, sgt->sgl, sgt->nents, dir);
++	if (!ret)
++		ret = -ENOMEM;
 +
-+	ret = sg_alloc_table(sgt, i, gfp_mask);
-+	if (ret)
++	if (ret < 0) {
++		sg_free_table(sgt);
 +		return ret;
-+
-+	sg_buf = buf;
-+	remaining = len;
-+	i = 0;
-+	sg_for_each_chunk_in_buf(sg_buf, remaining, chunk_len, &cons) {
-+		if (is_vmalloc_addr(sg_buf)) {
-+			struct page *vm_page;
-+
-+			vm_page = vmalloc_to_page(sg_buf);
-+			if (!vm_page) {
-+				ret = -ENOMEM;
-+				goto err_free_table;
-+			}
-+
-+			sg_set_page(&sgt->sgl[i], vm_page, chunk_len,
-+				    offset_in_page(sg_buf));
-+		} else {
-+			sg_set_buf(&sgt->sgl[i], sg_buf, chunk_len);
-+		}
-+
-+		i++;
 +	}
 +
++	sgt->nents = ret;
++
 +	return 0;
-+
-+err_free_table:
-+	sg_free_table(sgt);
-+
-+	return ret;
 +}
-+EXPORT_SYMBOL(sg_alloc_table_from_buf);
++EXPORT_SYMBOL_GPL(mtd_map_buf);
 +
- void __sg_page_iter_start(struct sg_page_iter *piter,
- 			  struct scatterlist *sglist, unsigned int nents,
- 			  unsigned long pgoffset)
++/**
++ * mtd_map_buf - unmap an SG table and release its resources
++ *
++ * @mtd: mtd device description object pointer
++ * @dev: device handling the DMA operation
++ * @sgt: SG table
++ * @dir: direction of the DMA operation
++ *
++ * This function unmaps a previously mapped SG table and release SG table
++ * resources. Should be called when your DMA operation is done.
++ */
++void mtd_unmap_buf(struct mtd_info *mtd, struct device *dev,
++		   struct sg_table *sgt, enum dma_data_direction dir)
++{
++	if (sgt->orig_nents) {
++		dma_unmap_sg(dev, sgt->sgl, sgt->orig_nents, dir);
++		sg_free_table(sgt);
++	}
++}
++EXPORT_SYMBOL_GPL(mtd_unmap_buf);
++#endif /* !CONFIG_HAS_DMA */
++
+ #ifdef CONFIG_PROC_FS
+ 
+ /*====================================================================*/
+diff --git a/include/linux/mtd/mtd.h b/include/linux/mtd/mtd.h
+index cc84923..11c63f1 100644
+--- a/include/linux/mtd/mtd.h
++++ b/include/linux/mtd/mtd.h
+@@ -24,6 +24,7 @@
+ #include <linux/uio.h>
+ #include <linux/notifier.h>
+ #include <linux/device.h>
++#include <linux/dma-mapping.h>
+ 
+ #include <mtd/mtd-abi.h>
+ 
+@@ -406,6 +407,30 @@ extern void register_mtd_user (struct mtd_notifier *new);
+ extern int unregister_mtd_user (struct mtd_notifier *old);
+ void *mtd_kmalloc_up_to(const struct mtd_info *mtd, size_t *size);
+ 
++#ifdef CONFIG_HAS_DMA
++int mtd_map_buf(struct mtd_info *mtd, struct device *dev,
++		struct sg_table *sgt, const void *buf, size_t len,
++		const struct sg_constraints *constraints,
++		enum dma_data_direction dir);
++void mtd_unmap_buf(struct mtd_info *mtd, struct device *dev,
++		   struct sg_table *sgt, enum dma_data_direction dir);
++#else
++static inline int mtd_map_buf(struct mtd_info *mtd, struct device *dev,
++			      struct sg_table *sgt, const void *buf,
++			      size_t len,
++			      const struct sg_constraints *constraints
++			      enum dma_data_direction dir)
++{
++	return -ENOTSUPP;
++}
++
++static void mtd_unmap_buf(struct mtd_info *mtd, struct device *dev,
++			  struct sg_table *sgt, enum dma_data_direction dir)
++{
++	return -ENOTSUPP;
++}
++#endif
++
+ void mtd_erase_callback(struct erase_info *instr);
+ 
+ static inline int mtd_is_bitflip(int err) {
 -- 
 2.1.4

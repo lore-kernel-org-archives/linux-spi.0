@@ -1,51 +1,34 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi/spi-xilinx:  Add clock support
-Date: Wed, 9 Mar 2016 09:42:00 +0700
-Message-ID: <20160309024200.GD3898@sirena.org.uk>
-References: <1457426528-15247-1-git-send-email-shubhraj@xilinx.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="zbGR4y+acU1DwHSi"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org,
-	michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org, Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-To: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+From: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Subject: [PATCH 0/3] Some fixes for slave-dma stuff for spi-rockchip
+Date: Wed,  9 Mar 2016 16:10:43 +0800
+Message-ID: <1457511043-2058-1-git-send-email-shawn.lin@rock-chips.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1457426528-15247-1-git-send-email-shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---zbGR4y+acU1DwHSi
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This patchset mainly do the following three things:
+(1) Defer probing driver when geting EPROBE_DEFER
+(2) Check the return value of dmaengine_prep_slave_sg
+(3) Migrate dmaengine_terminate_all to dmaengine_terminate_async
 
-On Tue, Mar 08, 2016 at 02:12:08PM +0530, Shubhrajyoti Datta wrote:
 
-> +	xspi->clk = devm_clk_get(&pdev->dev, NULL);
-> +	if (IS_ERR(xspi->clk)) {
-> +		dev_err(&pdev->dev, "input clock not found.\n");
-> +		return PTR_ERR(xspi->clk);
-> +	}
 
-This changes the DT binding but does not update the binding document.
+Shawn Lin (3):
+  spi: rockchip: check return value of dmaengine_prep_slave_sg
+  spi: rockchip: migrate to dmaengine_terminate_async
+  spi: rockchip: check requesting dma channel with EPROBE_DEFER
 
---zbGR4y+acU1DwHSi
-Content-Type: application/pgp-signature; name="signature.asc"
+ drivers/spi/spi-rockchip.c | 27 +++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+-- 
+2.3.7
 
-iQEcBAEBCAAGBQJW3412AAoJECTWi3JdVIfQ/PIH/26FGHuAIEHfGu/Y8jDLKqoJ
-lwF3q8zf3Dauns/kXD8+pxvBVDC2dme/cUvcoT4YbMfLxUuXHUWygm84qmeBuaRV
-NpJtzU21OTNC8zStuUANok2wBvvvCR2tAa/1wv5OKCFhULAFfmOsJo2mL+HI+gB5
-2JeZwOgAUxSWy/OKRwGnk7JbfwcH1Ea+aHPMAEsJDgQh1Ylk9xJ+rpsnCcpXaXLJ
-w60FnDMtOQ9PxNwzqu8r0Ur1CnPgBAQe+suhMLO6IJZRH524XXttTHwveX5NHnGL
-GZTSWJSWF/AuwYFEL7Lle8iourRhY2/4O/uJvnezQzq+ghmosx1eaBRbkgg0HKs=
-=r11p
------END PGP SIGNATURE-----
 
---zbGR4y+acU1DwHSi--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

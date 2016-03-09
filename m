@@ -1,7 +1,7 @@
 From: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Subject: [PATCH 2/3] spi: rockchip: migrate to dmaengine_terminate_async
-Date: Wed,  9 Mar 2016 16:11:23 +0800
-Message-ID: <1457511083-2175-1-git-send-email-shawn.lin@rock-chips.com>
+Subject: [PATCH 3/3] spi: rockchip: check requesting dma channel with EPROBE_DEFER
+Date: Wed,  9 Mar 2016 16:11:32 +0800
+Message-ID: <1457511092-2216-1-git-send-email-shawn.lin@rock-chips.com>
 References: <1457511043-2058-1-git-send-email-shawn.lin@rock-chips.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
@@ -11,34 +11,36 @@ In-Reply-To: <1457511043-2058-1-git-send-email-shawn.lin-TNX95d0MmH7DzftRWevZcw@
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-dmaengine_terminate_all is deprecated, let's use
-dmaengine_terminate_async for interrupt handling.
+Let's defer probing the driver if the return value of
+dma_request_slave_channel is ERR_PTR(-EPROBE_DEFER) instead
+of disabling dma capability directly.
 
 Signed-off-by: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
 ---
 
- drivers/spi/spi-rockchip.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-rockchip.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 91f44a3..ca4f4e0 100644
+index ca4f4e0..75fa990 100644
 --- a/drivers/spi/spi-rockchip.c
 +++ b/drivers/spi/spi-rockchip.c
-@@ -323,12 +323,12 @@ static void rockchip_spi_handle_err(struct spi_master *master,
- 	 */
- 	if (rs->use_dma) {
- 		if (rs->state & RXBUSY) {
--			dmaengine_terminate_all(rs->dma_rx.ch);
-+			dmaengine_terminate_async(rs->dma_rx.ch);
- 			flush_fifo(rs);
- 		}
+@@ -737,8 +737,14 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 	master->handle_err = rockchip_spi_handle_err;
  
- 		if (rs->state & TXBUSY)
--			dmaengine_terminate_all(rs->dma_tx.ch);
-+			dmaengine_terminate_async(rs->dma_tx.ch);
- 	}
+ 	rs->dma_tx.ch = dma_request_slave_channel(rs->dev, "tx");
+-	if (!rs->dma_tx.ch)
++	if (IS_ERR_OR_NULL(rs->dma_tx.ch)) {
++		/* Check tx to see if we need defer probing driver */
++		if (PTR_ERR(rs->dma_tx.ch) == -EPROBE_DEFER) {
++			ret = -EPROBE_DEFER;
++			goto err_get_fifo_len;
++		}
+ 		dev_warn(rs->dev, "Failed to request TX DMA channel\n");
++	}
  
- 	spin_unlock_irqrestore(&rs->lock, flags);
+ 	rs->dma_rx.ch = dma_request_slave_channel(rs->dev, "rx");
+ 	if (!rs->dma_rx.ch) {
 -- 
 2.3.7
 

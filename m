@@ -1,81 +1,75 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: rockchip: check requesting dma channel with EPROBE_DEFER" to the spi tree
-Date: Thu, 10 Mar 2016 10:39:34 +0700
-Message-ID: <E1adrRm-0007do-Iq@finisterre>
-References: <1457511092-2216-1-git-send-email-shawn.lin@rock-chips.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: [GIT PULL] spi fixes for v4.5
+Date: Thu, 10 Mar 2016 11:14:59 +0700
+Message-ID: <20160310041459.GK3898@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="cN0A5YokcrYPGsSB"
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1457511092-2216-1-git-send-email-shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Content-Disposition: inline
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
 
-   spi: rockchip: check requesting dma channel with EPROBE_DEFER
+--cN0A5YokcrYPGsSB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-has been applied to the spi tree at
+The following changes since commit f6cede5b49e822ebc41a099fe41ab4989f64e2cb:
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+  Linux 4.5-rc7 (2016-03-06 14:48:03 -0800)
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+are available in the git repository at:
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v4.5-rc7
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+for you to fetch changes up to 3ee20abb063acc57a45ccb2fdab2eb3ce29e85fa:
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+  Merge remote-tracking branch 'spi/fix/rockchip' into spi-linus (2016-03-10 10:42:24 +0700)
 
-Thanks,
-Mark
+----------------------------------------------------------------
+spi: Fixes for v4.5
 
->From 61cadcf46cfdb9f7eec70527968c2b91e9823786 Mon Sep 17 00:00:00 2001
-From: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Date: Wed, 9 Mar 2016 16:11:32 +0800
-Subject: [PATCH] spi: rockchip: check requesting dma channel with EPROBE_DEFER
+A few driver specific fixes for the Rockchip and i.MX SPI controllers,
+especially for the i.MX they're annoying bugs if you run into them.
 
-Let's defer probing the driver if the return value of
-dma_request_slave_channel is ERR_PTR(-EPROBE_DEFER) instead
-of disabling dma capability directly.
+----------------------------------------------------------------
+Anton Bondarenko (1):
+      spi: imx: allow only WML aligned transfers to use DMA
 
-Signed-off-by: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-rockchip.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+Gao Pan (1):
+      spi: imx: fix spi resource leak with dma transfer
 
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index b6b8a0bb5b2f..795fd191faa7 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -730,8 +730,14 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 	master->handle_err = rockchip_spi_handle_err;
- 
- 	rs->dma_tx.ch = dma_request_slave_channel(rs->dev, "tx");
--	if (!rs->dma_tx.ch)
-+	if (IS_ERR_OR_NULL(rs->dma_tx.ch)) {
-+		/* Check tx to see if we need defer probing driver */
-+		if (PTR_ERR(rs->dma_tx.ch) == -EPROBE_DEFER) {
-+			ret = -EPROBE_DEFER;
-+			goto err_get_fifo_len;
-+		}
- 		dev_warn(rs->dev, "Failed to request TX DMA channel\n");
-+	}
- 
- 	rs->dma_rx.ch = dma_request_slave_channel(rs->dev, "rx");
- 	if (!rs->dma_rx.ch) {
--- 
-2.7.0
+Mark Brown (2):
+      Merge remote-tracking branch 'spi/fix/imx' into spi-linus
+      Merge remote-tracking branch 'spi/fix/rockchip' into spi-linus
 
+Shawn Lin (2):
+      spi: rockchip: disable runtime pm when in err case
+      spi: rockchip: add missing spi_master_put
+
+ drivers/spi/spi-imx.c      | 17 ++---------------
+ drivers/spi/spi-rockchip.c |  3 +++
+ 2 files changed, 5 insertions(+), 15 deletions(-)
+
+--cN0A5YokcrYPGsSB
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJW4PTAAAoJECTWi3JdVIfQqFwH/3lm84jwFrgW5slCKT9xh6op
+u3+G9geCXnHS5SIYkDPVGlH/3BVHyZYTdcKi4Qs9oJtCIBpPyse6HuifSAVaKb9K
+0P2r6phjJKDmnPoz8wx2T3WZwOUaOu3Xfb6CgsUj2MMB0s5h4vQ2pF4OUiGan6Re
+UA7kptsTp8GBiBLhp6gDbLwmMhVPaUN9xhvgTllDMqGz4an+qCBwFHyL5M3wJkic
+dQaJq3s1I6Tpc4lCgwMxhTJfdlx+Jd7W2NKYtOGi77EAx+9EY2eVG7mNhSVcgpMH
+v9Exg6nZp37mFi08THf/0BgSR04kkFvxi2qwIZaUULvH98y6UFTNpL1ZwSkYcn8=
+=oaht
+-----END PGP SIGNATURE-----
+
+--cN0A5YokcrYPGsSB--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

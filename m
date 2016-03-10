@@ -1,66 +1,92 @@
 From: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-Subject: RE: [PATCHv2 2/3] spi/spi-xilinx:  Add clock support
-Date: Thu, 10 Mar 2016 11:20:53 +0000
-Message-ID: <4EED9C67BE3EF440A606099F8E34C5282652F809@XAP-PVEXMBX01.xlnx.xilinx.com>
-References: <1457513242-11202-1-git-send-email-shubhraj@xilinx.com>
- <1457513242-11202-2-git-send-email-shubhraj@xilinx.com>
- <20160310032948.GI3898@sirena.org.uk>
+Subject: [PATCHv3 1/2] spi/spi-xilinx:  Add clock support
+Date: Thu, 10 Mar 2016 17:41:04 +0530
+Message-ID: <1457611865-40120-1-git-send-email-shubhraj@xilinx.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Soren Brinkmann <sorenb-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Michal Simek <michals-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain
+Cc: <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>,
+	Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160310032948.GI3898-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Add basic clock support. The clocks are requested at probe
+and released at remove.
 
+Signed-off-by: Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+---
+v3 changes:
+Do not fail probe if no clock is given
+Add a clk name
+Fix some space errors
 
-> -----Original Message-----
-> From: Mark Brown [mailto:broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org]
-> Sent: Thursday, March 10, 2016 9:00 AM
-> To: Shubhrajyoti Datta
-> Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; Soren Brinkmann;
-> devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; Michal Simek; Shubhrajyoti Datta
-> Subject: Re: [PATCHv2 2/3] spi/spi-xilinx: Add clock support
-> 
-> On Wed, Mar 09, 2016 at 02:17:21PM +0530, Shubhrajyoti Datta wrote:
-> 
-> > +       xspi->clk = devm_clk_get(&pdev->dev, NULL);
-> > +       if (IS_ERR(xspi->clk)) {
-> 
-> As someone pointed out on the previous version of the series this will cause
-> the driver to fail to probe with existing DTs.  We probably need to explicitly
-> handle a -ENOENT as a "this clock will never appear" or something.
-I got comments after I sent the v2.
-I will update it with Lars comments.
-> 
-> This also requests a single nameless clock but someone pointed out on the
-> previous version there are multiple clocks into the IP.  Even if you only want
-> to add one clock right now the clock should probably be named so we can
-> scale up
+ drivers/spi/spi-xilinx.c |   20 ++++++++++++++++++++
+ 1 files changed, 20 insertions(+), 0 deletions(-)
 
-I will add a name.
-.
-> 
-> > +	}
-> > +	ret = clk_prepare_enable(xspi->clk);
-> 
-> Missing blank line here.
-Will fix in next version
-> 
-> > +	if (ret)
-> > +		dev_err(&pdev->dev, "Unable to enable clock.\n");
-> > +
-> 
-> This isn't really checking the return code - if we failed to enable the clock we
-> should be failing the probe, not just carrying on.
-Will fix.
+diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
+index 3009121..426ce12 100644
+--- a/drivers/spi/spi-xilinx.c
++++ b/drivers/spi/spi-xilinx.c
+@@ -21,6 +21,7 @@
+ #include <linux/spi/spi_bitbang.h>
+ #include <linux/spi/xilinx_spi.h>
+ #include <linux/io.h>
++#include <linux/clk.h>
+ 
+ #define XILINX_SPI_MAX_CS	32
+ 
+@@ -83,6 +84,7 @@ struct xilinx_spi {
+ 	struct spi_bitbang bitbang;
+ 	struct completion done;
+ 	void __iomem	*regs;	/* virt. address of the control registers */
++	struct clk *clk;
+ 
+ 	int		irq;
+ 
+@@ -428,6 +430,22 @@ static int xilinx_spi_probe(struct platform_device *pdev)
+ 		goto put_master;
+ 	}
+ 
++	xspi->clk = devm_clk_get(&pdev->dev, "spi_fclk");
++	if (IS_ERR(xspi->clk)) {
++		if (PTR_ERR(xspi->clk) == -ENOENT) {
++			xspi->clk = NULL;
++		} else {
++			ret = PTR_ERR(xspi->clk);
++			goto put_master;
++		}
++	}
++
++	ret = clk_prepare_enable(xspi->clk);
++	if (ret) {
++		dev_err(&pdev->dev, "Unable to enable clock.\n");
++		goto put_master;
++	}
++
+ 	master->bus_num = pdev->id;
+ 	master->num_chipselect = num_cs;
+ 	master->dev.of_node = pdev->dev.of_node;
+@@ -485,6 +503,7 @@ static int xilinx_spi_probe(struct platform_device *pdev)
+ 
+ put_master:
+ 	spi_master_put(master);
++	clk_disable_unprepare(xspi->clk);
+ 
+ 	return ret;
+ }
+@@ -503,6 +522,7 @@ static int xilinx_spi_remove(struct platform_device *pdev)
+ 	xspi->write_fn(0, regs_base + XIPIF_V123B_DGIER_OFFSET);
+ 
+ 	spi_master_put(xspi->bitbang.master);
++	clk_disable_unprepare(xspi->clk);
+ 
+ 	return 0;
+ }
+-- 
+1.7.1
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

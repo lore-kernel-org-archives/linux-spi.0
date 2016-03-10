@@ -1,57 +1,66 @@
-From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: sun4i: add DMA support
-Date: Thu, 10 Mar 2016 10:01:04 +0100
-Message-ID: <CAOMqctQ5aq0A95ErVVF13f_8JBy0xRw9_FZ3avbYmZUGXp=Svg@mail.gmail.com>
-References: <1456466217-6793-1-git-send-email-plaes@plaes.org>
- <1456466217-6793-2-git-send-email-plaes@plaes.org> <20160226122504.GR18327@sirena.org.uk>
- <CAOMqctTz=szSkpk95D_dUJjjpziCKoPv=xRczjfq2Roct-K-OA@mail.gmail.com> <20160306214206.GW8418@lukather>
+From: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Subject: RE: [PATCHv2 2/3] spi/spi-xilinx:  Add clock support
+Date: Thu, 10 Mar 2016 11:20:53 +0000
+Message-ID: <4EED9C67BE3EF440A606099F8E34C5282652F809@XAP-PVEXMBX01.xlnx.xilinx.com>
+References: <1457513242-11202-1-git-send-email-shubhraj@xilinx.com>
+ <1457513242-11202-2-git-send-email-shubhraj@xilinx.com>
+ <20160310032948.GI3898@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Priit Laes <plaes-q/aMd4JkU83YtjvyW6yDsg@public.gmane.org>,
-	Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	=?UTF-8?Q?Emilio_L=C3=B3pez?= <emilio-0Z03zUJReD5OxF6Tv1QG9Q@public.gmane.org>
-To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Soren Brinkmann <sorenb-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Michal Simek <michals-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160306214206.GW8418@lukather>
+In-Reply-To: <20160310032948.GI3898-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hello,
 
-On 6 March 2016 at 22:42, Maxime Ripard
-<maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> wrote:
-> On Fri, Feb 26, 2016 at 01:51:51PM +0100, Michal Suchanek wrote:
 
->> Besides this non-technical objection there were multiple technical
->> objections.
->>
->> IIRC one was that the driver does not handle the case when the DMA
->> channels are not available. As I understand it the channels are
->> exclusively reserved for a particular peripherial on sunxi platform so
->> this ShoulNotHappen(tm). So it's probably fine for the driver to fail
->> probe  when you have broken DT or no DMA engine support for sunxi
->> platform.
->
-> There's a quite trivial scenario that would trigger this: if the dma
-> driver or dmaengine is not enabled / loaded.
+> -----Original Message-----
+> From: Mark Brown [mailto:broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org]
+> Sent: Thursday, March 10, 2016 9:00 AM
+> To: Shubhrajyoti Datta
+> Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; Soren Brinkmann;
+> devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; Michal Simek; Shubhrajyoti Datta
+> Subject: Re: [PATCHv2 2/3] spi/spi-xilinx: Add clock support
+> 
+> On Wed, Mar 09, 2016 at 02:17:21PM +0530, Shubhrajyoti Datta wrote:
+> 
+> > +       xspi->clk = devm_clk_get(&pdev->dev, NULL);
+> > +       if (IS_ERR(xspi->clk)) {
+> 
+> As someone pointed out on the previous version of the series this will cause
+> the driver to fail to probe with existing DTs.  We probably need to explicitly
+> handle a -ENOENT as a "this clock will never appear" or something.
+I got comments after I sent the v2.
+I will update it with Lars comments.
+> 
+> This also requests a single nameless clock but someone pointed out on the
+> previous version there are multiple clocks into the IP.  Even if you only want
+> to add one clock right now the clock should probably be named so we can
+> scale up
 
-There are other trivial scenarios under which the driver will fail
-like loading wrong DT, not compiling or loading the sunxi pinmux
-driver, and whatnot.
-
-When you misconfigure your kernel it does not work. So long as the
-driver just fails and does not crash and burn it's normal. Since the
-driver is pretty much useless without DMA as it is now (63 byte
-transfer limit) losing the non-DMA functionality when DMA engine is
-not compiled-in does not seem that terrible.
-
-Thanks
-
-Michal
+I will add a name.
+.
+> 
+> > +	}
+> > +	ret = clk_prepare_enable(xspi->clk);
+> 
+> Missing blank line here.
+Will fix in next version
+> 
+> > +	if (ret)
+> > +		dev_err(&pdev->dev, "Unable to enable clock.\n");
+> > +
+> 
+> This isn't really checking the return code - if we failed to enable the clock we
+> should be failing the probe, not just carrying on.
+Will fix.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

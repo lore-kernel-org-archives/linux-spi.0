@@ -1,37 +1,58 @@
-From: Shawn Lin <shawn.lin@rock-chips.com>
-Subject: [PATCH 2/2] spi: rockchip: covert rsd_nsecs to u32 type
-Date: Thu, 10 Mar 2016 14:52:27 +0800
-Message-ID: <1457592747-27365-1-git-send-email-shawn.lin@rock-chips.com>
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	Shawn Lin <shawn.lin@rock-chips.com>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: sun4i: add DMA support
+Date: Thu, 10 Mar 2016 10:01:04 +0100
+Message-ID: <CAOMqctQ5aq0A95ErVVF13f_8JBy0xRw9_FZ3avbYmZUGXp=Svg@mail.gmail.com>
+References: <1456466217-6793-1-git-send-email-plaes@plaes.org>
+ <1456466217-6793-2-git-send-email-plaes@plaes.org> <20160226122504.GR18327@sirena.org.uk>
+ <CAOMqctTz=szSkpk95D_dUJjjpziCKoPv=xRczjfq2Roct-K-OA@mail.gmail.com> <20160306214206.GW8418@lukather>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Priit Laes <plaes-q/aMd4JkU83YtjvyW6yDsg@public.gmane.org>,
+	Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	=?UTF-8?Q?Emilio_L=C3=B3pez?= <emilio-0Z03zUJReD5OxF6Tv1QG9Q@public.gmane.org>
+To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20160306214206.GW8418@lukather>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-rsd_nsecs is defined as u8 memeber of struct rockchip_spi,
-but using of_property_read_u32. That means we take risk of
-truncation by type conversion if we pass on big value from
-dt.
+Hello,
 
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
----
+On 6 March 2016 at 22:42, Maxime Ripard
+<maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> wrote:
+> On Fri, Feb 26, 2016 at 01:51:51PM +0100, Michal Suchanek wrote:
 
- drivers/spi/spi-rockchip.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+>> Besides this non-technical objection there were multiple technical
+>> objections.
+>>
+>> IIRC one was that the driver does not handle the case when the DMA
+>> channels are not available. As I understand it the channels are
+>> exclusively reserved for a particular peripherial on sunxi platform so
+>> this ShoulNotHappen(tm). So it's probably fine for the driver to fail
+>> probe  when you have broken DT or no DMA engine support for sunxi
+>> platform.
+>
+> There's a quite trivial scenario that would trigger this: if the dma
+> driver or dmaengine is not enabled / loaded.
 
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 7a4a131..26e2688 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -173,7 +173,7 @@ struct rockchip_spi {
- 	u8 tmode;
- 	u8 bpw;
- 	u8 n_bytes;
--	u8 rsd_nsecs;
-+	u32 rsd_nsecs;
- 	unsigned len;
- 	u32 speed;
- 
--- 
-2.3.7
+There are other trivial scenarios under which the driver will fail
+like loading wrong DT, not compiling or loading the sunxi pinmux
+driver, and whatnot.
+
+When you misconfigure your kernel it does not work. So long as the
+driver just fails and does not crash and burn it's normal. Since the
+driver is pretty much useless without DMA as it is now (63 byte
+transfer limit) losing the non-DMA functionality when DMA engine is
+not compiled-in does not seem that terrible.
+
+Thanks
+
+Michal
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

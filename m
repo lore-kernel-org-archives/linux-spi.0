@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: respect the maximum segment size of DMA device" to the spi tree
-Date: Thu, 10 Mar 2016 10:39:31 +0700
-Message-ID: <E1adrRj-0007dJ-Tj@finisterre>
-References: <1457515200-111327-1-git-send-email-andriy.shevchenko@linux.intel.com>
+Subject: Applied "spi: rockchip: migrate to dmaengine_terminate_async" to the spi tree
+Date: Thu, 10 Mar 2016 10:39:36 +0700
+Message-ID: <E1adrRo-0007eH-76@finisterre>
+References: <1457511083-2175-1-git-send-email-shawn.lin@rock-chips.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+To: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1457515200-111327-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <1457511083-2175-1-git-send-email-shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: respect the maximum segment size of DMA device
+   spi: rockchip: migrate to dmaengine_terminate_async
 
 has been applied to the spi tree at
 
@@ -38,53 +38,39 @@ to this mail.
 Thanks,
 Mark
 
->From df88e91bbfd16662f3c8dcba27ad19e9eb4ebcef Mon Sep 17 00:00:00 2001
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Wed, 9 Mar 2016 11:20:00 +0200
-Subject: [PATCH] spi: respect the maximum segment size of DMA device
+>From 557b7ea34b9a10a5e13f4d7fd58ac965d801e3bd Mon Sep 17 00:00:00 2001
+From: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Date: Wed, 9 Mar 2016 16:11:23 +0800
+Subject: [PATCH] spi: rockchip: migrate to dmaengine_terminate_async
 
-The device which is actually does DMA may have a limitation of the maximum
-segment size. Respect this setting when preparing scatter-gather list.
+dmaengine_terminate_all is deprecated, let's use
+dmaengine_terminate_async for interrupt handling.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Signed-off-by: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/spi-rockchip.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 47eff8012a77..9e6480a2e869 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -702,6 +702,7 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
- 		       enum dma_data_direction dir)
- {
- 	const bool vmalloced_buf = is_vmalloc_addr(buf);
-+	unsigned int max_seg_size = dma_get_max_seg_size(dev);
- 	int desc_len;
- 	int sgs;
- 	struct page *vm_page;
-@@ -710,10 +711,10 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
- 	int i, ret;
- 
- 	if (vmalloced_buf) {
--		desc_len = PAGE_SIZE;
-+		desc_len = min_t(int, max_seg_size, PAGE_SIZE);
- 		sgs = DIV_ROUND_UP(len + offset_in_page(buf), desc_len);
- 	} else {
--		desc_len = master->max_dma_len;
-+		desc_len = min_t(int, max_seg_size, master->max_dma_len);
- 		sgs = DIV_ROUND_UP(len, desc_len);
- 	}
- 
-@@ -739,7 +740,6 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
- 			sg_set_buf(&sgt->sgl[i], sg_buf, min);
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index aa8528e9840c..b6b8a0bb5b2f 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -322,12 +322,12 @@ static void rockchip_spi_handle_err(struct spi_master *master,
+ 	 */
+ 	if (rs->use_dma) {
+ 		if (rs->state & RXBUSY) {
+-			dmaengine_terminate_all(rs->dma_rx.ch);
++			dmaengine_terminate_async(rs->dma_rx.ch);
+ 			flush_fifo(rs);
  		}
  
--
- 		buf += min;
- 		len -= min;
+ 		if (rs->state & TXBUSY)
+-			dmaengine_terminate_all(rs->dma_tx.ch);
++			dmaengine_terminate_async(rs->dma_tx.ch);
  	}
+ 
+ 	spin_unlock_irqrestore(&rs->lock, flags);
 -- 
 2.7.0
 

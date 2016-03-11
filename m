@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: Add gfp parameter to kernel-doc to fix build warning" to the spi tree
-Date: Fri, 11 Mar 2016 14:25:20 +0700
-Message-ID: <E1aeHRo-000317-P3@finisterre>
-References: <1457632874-11250-3-git-send-email-javier@osg.samsung.com>
+Subject: Applied "spi: Fix htmldocs build error due struct spi_replaced_transfers" to the spi tree
+Date: Fri, 11 Mar 2016 14:25:23 +0700
+Message-ID: <E1aeHRr-00031b-CD@finisterre>
+References: <1457632874-11250-2-git-send-email-javier@osg.samsung.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1457632874-11250-3-git-send-email-javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
+In-Reply-To: <1457632874-11250-2-git-send-email-javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: Add gfp parameter to kernel-doc to fix build warning
+   spi: Fix htmldocs build error due struct spi_replaced_transfers
 
 has been applied to the spi tree at
 
@@ -38,34 +38,50 @@ to this mail.
 Thanks,
 Mark
 
->From 10f11a2238d4d66e74438b629214b530a77db8e1 Mon Sep 17 00:00:00 2001
+>From c76d9ae415f1a80489a76ea41620c3f17383b7fb Mon Sep 17 00:00:00 2001
 From: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
-Date: Thu, 10 Mar 2016 15:01:14 -0300
-Subject: [PATCH] spi: Add gfp parameter to kernel-doc to fix build warning
+Date: Thu, 10 Mar 2016 15:01:13 -0300
+Subject: [PATCH] spi: Fix htmldocs build error due struct
+ spi_replaced_transfers
 
-The spi_split_transfers_maxsize() gfp parameter is missing in the
-function kernel-doc so building gives the following warning:
+The kernel-doc has to be just before the structure definition but the one
+for struct spi_replaced_transfers was before a structure declaration and
+that confuses kernel-doc which complains with the following build error:
 
-.//drivers/spi/spi.c:2359: warning: No description found for parameter 'gfp'
+.//include/linux/spi/spi.h:933: error: Cannot parse struct or union!
 
 Signed-off-by: Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/spi/spi.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 96c764d7efe6..c881493974d8 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2319,6 +2319,7 @@ static int __spi_split_transfer_maxsize(struct spi_master *master,
-  * @master:    the @spi_master for this transfer
-  * @msg:   the @spi_message to transform
-  * @maxsize:  the maximum when to apply this
-+ * @gfp: GFP allocation flags
-  *
-  * Return: status of transformation
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 3c02b4d06268..1fc33db4347f 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -898,6 +898,10 @@ spi_max_transfer_size(struct spi_device *spi)
+ 
+ /* SPI transfer replacement methods which make use of spi_res */
+ 
++struct spi_replaced_transfers;
++typedef void (*spi_replaced_release_t)(struct spi_master *master,
++				       struct spi_message *msg,
++				       struct spi_replaced_transfers *res);
+ /**
+  * struct spi_replaced_transfers - structure describing the spi_transfer
+  *                                 replacements that have occurred
+@@ -917,10 +921,6 @@ spi_max_transfer_size(struct spi_device *spi)
+  * if some extra allocation is requested, so alignment will be the same
+  * as for spi_transfers
   */
+-struct spi_replaced_transfers;
+-typedef void (*spi_replaced_release_t)(struct spi_master *master,
+-				       struct spi_message *msg,
+-				       struct spi_replaced_transfers *res);
+ struct spi_replaced_transfers {
+ 	spi_replaced_release_t release;
+ 	void *extradata;
 -- 
 2.7.0
 

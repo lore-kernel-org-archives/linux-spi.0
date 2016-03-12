@@ -1,80 +1,71 @@
-From: Shubhrajyoti Datta <shubhrajyoti.datta-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCHv4 2/2] bindings: spi: Add clock entries for spi-xilinx
-Date: Sat, 12 Mar 2016 21:22:15 +0530
-Message-ID: <CAKfKVtEJ=7z3UwjmoiVMH_Qsm2xCQ=4EEJCcRzG75d-AC0nFQg@mail.gmail.com>
-References: <1457769637-5627-1-git-send-email-shubhraj@xilinx.com>
-	<1457769637-5627-2-git-send-email-shubhraj@xilinx.com>
-	<20160312100518.GT3173@xsjsorenbubuntu>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: propper support of 5 wire SPI (SPI_READY signal)
+Date: Sat, 12 Mar 2016 14:21:32 +0700
+Message-ID: <20160312072132.GA3898@sirena.org.uk>
+References: <56C6DB9E.5080905@rempel-privat.de>
+ <20160220195641.GE18327@sirena.org.uk>
+ <56C8DD64.1070700@rempel-privat.de>
+ <20160222110948.GE18327@sirena.org.uk>
+ <56CAF443.8010705@rempel-privat.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>,
-	Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-To: =?UTF-8?Q?S=C3=B6ren_Brinkmann?= <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="lYjFa3qL1bvncypl"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org,
+	"EXTERNAL Rempel Oleksij (Brunel, CM-AI/ECO3)"
+	<fixed-term.Oleksij.Rempel-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+To: Oleksij Rempel <linux-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160312100518.GT3173@xsjsorenbubuntu>
+Content-Disposition: inline
+In-Reply-To: <56CAF443.8010705-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Sat, Mar 12, 2016 at 3:35 PM, S=C3=B6ren Brinkmann
-<soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org> wrote:
-> On Sat, 2016-03-12 at 13:30:37 +0530, Shubhrajyoti Datta wrote:
->> Add clock description for spi-xilinx
->>
->> Signed-off-by: Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
->> ---
->> v3
->> Add a clock name
->> v4
->> Correct the name
->>  .../devicetree/bindings/spi/spi-xilinx.txt         |    5 +++++
->>  1 files changed, 5 insertions(+), 0 deletions(-)
->>
->> diff --git a/Documentation/devicetree/bindings/spi/spi-xilinx.txt b/=
-Documentation/devicetree/bindings/spi/spi-xilinx.txt
->> index c7b7856..07ec09a 100644
->> --- a/Documentation/devicetree/bindings/spi/spi-xilinx.txt
->> +++ b/Documentation/devicetree/bindings/spi/spi-xilinx.txt
->> @@ -7,6 +7,9 @@ Required properties:
->>  - interrupts         : Property with a value describing the interru=
-pt
->>                         number.
->>  - interrupt-parent   : Must be core interrupt controller
->> +- clocks: Input clock specifier. Refer to common clock bindings.
->> +- clock-names: tuple listing input clock names.
->> +     Required elements: "s_axi_aclk"
->
-> I thought there were too clocks? If the IP has two clocks, I think bo=
-th
-> should be added and supported here.
->
-Ok sure
 
->>
->>  Optional properties:
->>  - xlnx,num-ss-bits   : Number of chip selects used.
->> @@ -14,6 +17,8 @@ Optional properties:
->>  Example:
->>       axi_quad_spi@41e00000 {
->>                       compatible =3D "xlnx,xps-spi-2.00.a";
->> +                     clocks =3D <&clkc 15>;
->> +                     clock-names =3D "spi_fclk";
->
-> Doesn't match the binding documented above.
+--lYjFa3qL1bvncypl
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-missed it will update thanks.
+On Mon, Feb 22, 2016 at 12:42:59PM +0100, Oleksij Rempel wrote:
+> Am 22.02.2016 um 12:09 schrieb Mark Brown:
 
->
->         S=C3=B6ren
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-spi" =
-in
-> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> > Oh, so this isn't SPI_READY?
+
+> Not 100%.
+> According to TI documentation, transfer initiated by master looks like:
+> 1. Master: SPIx_CS (on)
+> 2. Slave: SPIx_READY (on)
+> 3. Master: Date transfer
+> 4. Slave: SPIx_READY (off)
+> 5. Master: SPIx_CS (off)
+
+> Bosch version of 5-wire transfer initiated by master:
+> 1. Master: SPIx_CS (on)
+> 2. Slave: SPIx_REQUEST (on)
+> 3. Master: Date transfer
+> 4. Master: SPIx_CS  (off)    <----- different order.
+> 5. Slave: SPIx_REQUEST (on) <-----
+
+I can't tell the difference between these two cases.  In the first case
+the device gets busy after the data is transferred, in the second case
+it never changes the request line but really there's no meaningful
+difference I can see.
+
+--lYjFa3qL1bvncypl
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJW48N4AAoJECTWi3JdVIfQP1cH/0qpkfhdEdAGbRoAi+fhO2vb
+ouMF98JPrhS/jFUZ79Amv8a/pPEBsXua+3PnN4zCJHib6fhi1tbtRN8RrDVNaOat
+y2iExlCA2VnCCef4oOo0dxXscrr9mf8iwarfrrCJZsoHy8iSqc2o783mWgSG0kCX
+am1DzvrX51Rr/1/+SsMZL0TmEA+nTun0KXkBP0fYrS6UdpE1BdWKgkiZ9M5JKB3C
+lgNohVGIkbdHNKyRzxcxX9dOwWuqCe1G3Qly3B2CkGSGTLGbPqTm9apefwd0Vl9S
+Ly/y1LX/PTF+a75LL9xpBgk1+P076/NOeb/5gRzYarvrZOD7jHpSsDMO/7z1lHs=
+=vDrG
+-----END PGP SIGNATURE-----
+
+--lYjFa3qL1bvncypl--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

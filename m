@@ -1,95 +1,63 @@
-From: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
-Subject: [PATCH] spi: imx: only do necessary changes to ECSPIx_CONFIGREG
-Date: Tue, 15 Mar 2016 14:24:36 +0100
-Message-ID: <1458048276-31884-1-git-send-email-dirk.behme@de.bosch.com>
+From: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Subject: re: spi: imx: initialize usedma earlier
+Date: Wed, 16 Mar 2016 10:42:38 +0300
+Message-ID: <20160316074238.GD12860@mwanda>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Vladimir Zapolskiy <vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Knut Wohlrab <knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>,
-	Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
-To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Knut Wohlrab <knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+Hello Sascha Hauer,
 
-If the SPI chip select (CS) for a dedicated channel is done manually by
-the used higher device driver, the CS may be active while writing to
-ECSPIx_CONFIGREG. To prevent unwanted clock edges when selecting
-the clock mode,  only do the necessary changes to the i.MX SPI
-configuration register and leave not selected channels untouched.
+This is a semi-automatic email about new static checker warnings.
 
-To prevent unwanted clock edges on first use, an empty dummy
-transmission shall be done by the initialization procedure of the device
-driver of this channel. This will set the clock mode to the correct state.
+The patch c008a8007162: "spi: imx: initialize usedma earlier" from
+Feb 24, 2016, leads to the following Smatch complaint:
 
-Signed-off-by: Knut Wohlrab <knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
-Signed-off-by: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
----
+drivers/spi/spi-imx.c:870 spi_imx_setupxfer()
+	 error: we previously assumed 't' could be null (see line 848)
 
-This is regarding the discussion in
+drivers/spi/spi-imx.c
+   847	
+   848		config.bpw = t ? t->bits_per_word : spi->bits_per_word;
+                             ^
+   849		config.speed_hz  = t ? t->speed_hz : spi->max_speed_hz;
+                                   ^
+Old code checks for NULL.
 
-http://www.spinics.net/lists/arm-kernel/msg489107.html
+   850		config.mode = spi->mode;
+   851		config.cs = spi->chip_select;
+   852	
+   853		if (!config.speed_hz)
+   854			config.speed_hz = spi->max_speed_hz;
+   855		if (!config.bpw)
+   856			config.bpw = spi->bits_per_word;
+   857	
+   858		/* Initialize the functions for transfer */
+   859		if (config.bpw <= 8) {
+   860			spi_imx->rx = spi_imx_buf_rx_u8;
+   861			spi_imx->tx = spi_imx_buf_tx_u8;
+   862		} else if (config.bpw <= 16) {
+   863			spi_imx->rx = spi_imx_buf_rx_u16;
+   864			spi_imx->tx = spi_imx_buf_tx_u16;
+   865		} else {
+   866			spi_imx->rx = spi_imx_buf_rx_u32;
+   867			spi_imx->tx = spi_imx_buf_tx_u32;
+   868		}
+   869	
+   870		if (spi_imx_can_dma(spi_imx->bitbang.master, spi, t))
+                                                                  ^
+Patch adds a new unchecked dereference (inside the function call).
 
-and the revert
+   871			spi_imx->usedma = 1;
+   872		else
 
-https://git.kernel.org/cgit/linux/kernel/git/broonie/spi.git/commit/drivers/spi/spi-imx.c?h=for-linus&id=c34de7168cd201ab757b11bfc7899953948d7753
-
-This version is mainly the same like the reverted one, but making sure
-that the cfg variable isn't just 0.
-
-This patch is against
-
-https://git.kernel.org/cgit/linux/kernel/git/broonie/spi.git/log/?h=for-linus
-
-commit d00de215041f706
-
- drivers/spi/spi-imx.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index e7a19be..b79d70d 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -333,8 +333,9 @@ static void __maybe_unused mx51_ecspi_trigger(struct spi_imx_data *spi_imx)
- static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
- 		struct spi_imx_config *config)
- {
--	u32 ctrl = MX51_ECSPI_CTRL_ENABLE, cfg = 0;
-+	u32 ctrl = MX51_ECSPI_CTRL_ENABLE;
- 	u32 clk = config->speed_hz, delay, reg;
-+	u32 cfg = readl(spi_imx->base + MX51_ECSPI_CONFIG);
- 
- 	/*
- 	 * The hardware seems to have a race condition when changing modes. The
-@@ -358,13 +359,20 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
- 
- 	if (config->mode & SPI_CPHA)
- 		cfg |= MX51_ECSPI_CONFIG_SCLKPHA(config->cs);
-+	else
-+		cfg &= ~MX51_ECSPI_CONFIG_SCLKPHA(config->cs);
- 
- 	if (config->mode & SPI_CPOL) {
- 		cfg |= MX51_ECSPI_CONFIG_SCLKPOL(config->cs);
- 		cfg |= MX51_ECSPI_CONFIG_SCLKCTL(config->cs);
-+	} else {
-+		cfg &= ~MX51_ECSPI_CONFIG_SCLKPOL(config->cs);
-+		cfg &= ~MX51_ECSPI_CONFIG_SCLKCTL(config->cs);
- 	}
- 	if (config->mode & SPI_CS_HIGH)
- 		cfg |= MX51_ECSPI_CONFIG_SSBPOL(config->cs);
-+	else
-+		cfg &= ~MX51_ECSPI_CONFIG_SSBPOL(config->cs);
- 
- 	if (spi_imx->usedma)
- 		ctrl |= MX51_ECSPI_CTRL_SMC;
--- 
-2.5.0
-
+regards,
+dan carpenter
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

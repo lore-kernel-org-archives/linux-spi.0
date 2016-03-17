@@ -1,72 +1,60 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCHv2 1/3] bindings: spi: Add devicetree binding for
  spi-xilinx
-Date: Thu, 17 Mar 2016 11:32:28 -0500
-Message-ID: <20160317163228.GA8920@rob-hp-laptop>
+Date: Thu, 17 Mar 2016 16:46:04 +0000
+Message-ID: <20160317164604.GI2566@sirena.org.uk>
 References: <1457513242-11202-1-git-send-email-shubhraj@xilinx.com>
+ <20160310033027.GJ3898@sirena.org.uk>
+ <20160317164321.GB8920@rob-hp-laptop>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="DHioQtdaSVZskSfq"
+Cc: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org,
 	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org,
-	broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-To: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1457513242-11202-1-git-send-email-shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <20160317164321.GB8920@rob-hp-laptop>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-On Wed, Mar 09, 2016 at 02:17:20PM +0530, Shubhrajyoti Datta wrote:
-> Add a binding document for the spi/spi-xilinx
-> 
-> Signed-off-by: Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-> ---
->  .../devicetree/bindings/spi/spi-xilinx.txt         |   22 ++++++++++++++++++++
->  1 files changed, 22 insertions(+), 0 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/spi/spi-xilinx.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-xilinx.txt b/Documentation/devicetree/bindings/spi/spi-xilinx.txt
-> new file mode 100644
-> index 0000000..c7b7856
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/spi-xilinx.txt
-> @@ -0,0 +1,22 @@
-> +Xilinx SPI controller Device Tree Bindings
-> +-------------------------------------------------
-> +
-> +Required properties:
-> +- compatible		: Should be "xlnx,xps-spi-2.00.a" or "xlnx,xps-spi-2.00.b"
-> +- reg			: Physical base address and size of SPI registers map.
-> +- interrupts		: Property with a value describing the interrupt
-> +			  number.
-> +- interrupt-parent	: Must be core interrupt controller
-> +
-> +Optional properties:
-> +- xlnx,num-ss-bits	: Number of chip selects used.
 
-There's a standard property for this.
+--DHioQtdaSVZskSfq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> +
-> +Example:
-> +	axi_quad_spi@41e00000 {
+On Thu, Mar 17, 2016 at 11:43:21AM -0500, Rob Herring wrote:
+> On Thu, Mar 10, 2016 at 10:30:27AM +0700, Mark Brown wrote:
 
-Use generic spi@...
+> > Please use subject lines matching the style for the subsystem.
 
-> +			compatible = "xlnx,xps-spi-2.00.a";
-> +			interrupt-parent = <&intc>;
-> +			interrupts = <0 31 1>;
-> +			reg = <0x41e00000 0x10000>;
-> +			xlnx,num-ss-bits = <0x1>;
-> +	};
-> +
-> -- 
-> 1.7.1
-> 
-> --
-> To unsubscribe from this list: send the line "unsubscribe devicetree" in
-> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> You are wanting "spi: ..."? This is bindings though and my preference=20
+> would be "dt-bindings: spi: "... That said, I don't really try to=20
+> enforce anything given bindings currently get merged thru many trees.
+
+Yes, given that they go in with the driver I'd expect them to match the
+style for the driver (the bulk of changes do do that).
+
+--DHioQtdaSVZskSfq
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJW6t9KAAoJECTWi3JdVIfQPGcH/1KeeZLtHQKFIf2KXD0YqGJp
+uhiicIGyVarO++Qd+WcypLaTV3eLF1vQ7f0JoeF8iwKRyi2wKvOFIvn6ZwkVYHC2
+FfAjno3jZ4vqy7WEADZ7a8tP5ghNCn/xe/PM4C7p1jiYiQe9QY9sKWjyprCsKkIi
+iefcykRESLzI0Lr2yFhA7pnMIX3n10c6dHkN2FJVDZkOmIDksUQqq1nvmz5alAnH
+7JnhWVAmWzyD++7YNGp1pWBjOA71fKdnuBFCYR4LnMPiTknTfmIggOWGFqOR+ATn
+v+2jO7IC17fHAzeWpM8sCfDXu/Ye3aPZeLD/8ZeRDNEyHYP8qf7xadkC5u1O4ss=
+=UNJ8
+-----END PGP SIGNATURE-----
+
+--DHioQtdaSVZskSfq--
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

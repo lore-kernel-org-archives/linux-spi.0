@@ -1,20 +1,21 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: imx: Fix possible NULL pointer deref" to the spi tree
-Date: Thu, 17 Mar 2016 11:45:29 +0000
-Message-ID: <E1agWMr-0001zX-JM@debutante>
-References: <1458202910-7565-1-git-send-email-s.hauer@pengutronix.de>
+Subject: Applied "spi: imx: only do necessary changes to ECSPIx_CONFIGREG" to the spi tree
+Date: Thu, 17 Mar 2016 11:45:30 +0000
+Message-ID: <E1agWMs-000201-H8@debutante>
+References: <1458048276-31884-1-git-send-email-dirk.behme@de.bosch.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>,
+To: Knut Wohlrab <knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>,
+	Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1458202910-7565-1-git-send-email-s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+In-Reply-To: <1458048276-31884-1-git-send-email-dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: imx: Fix possible NULL pointer deref
+   spi: imx: only do necessary changes to ECSPIx_CONFIGREG
 
 has been applied to the spi tree at
 
@@ -39,43 +40,65 @@ to this mail.
 Thanks,
 Mark
 
->From cd8dd41a33264a4602539711f76670c2a1f4d007 Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Date: Thu, 17 Mar 2016 09:21:50 +0100
-Subject: [PATCH] spi: imx: Fix possible NULL pointer deref
+>From 793c7f9212fdb7bea5e017427e750afa11217c29 Mon Sep 17 00:00:00 2001
+From: Knut Wohlrab <knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+Date: Tue, 15 Mar 2016 14:24:36 +0100
+Subject: [PATCH] spi: imx: only do necessary changes to ECSPIx_CONFIGREG
 
-transfer could be NULL in spi_imx_can_dma() when it's called from
-spi_imx_setupxfer() with a NULL transfer. Test for a NULL pointer before
-dereferencing it.
+If the SPI chip select (CS) for a dedicated channel is done manually by
+the used higher device driver, the CS may be active while writing to
+ECSPIx_CONFIGREG. To prevent unwanted clock edges when selecting
+the clock mode,  only do the necessary changes to the i.MX SPI
+configuration register and leave not selected channels untouched.
 
-Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Cc: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+To prevent unwanted clock edges on first use, an empty dummy
+transmission shall be done by the initialization procedure of the device
+driver of this channel. This will set the clock mode to the correct state.
+
+Signed-off-by: Knut Wohlrab <knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+Signed-off-by: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+Acked-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-imx.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/spi/spi-imx.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index b79d70d6dabf..50769078e72e 100644
+index e7a19be87c38..b79d70d6dabf 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -211,11 +211,15 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
- 			 struct spi_transfer *transfer)
+@@ -333,8 +333,9 @@ static void __maybe_unused mx51_ecspi_trigger(struct spi_imx_data *spi_imx)
+ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
+ 		struct spi_imx_config *config)
  {
- 	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
--	unsigned int bpw = transfer->bits_per_word;
-+	unsigned int bpw;
+-	u32 ctrl = MX51_ECSPI_CTRL_ENABLE, cfg = 0;
++	u32 ctrl = MX51_ECSPI_CTRL_ENABLE;
+ 	u32 clk = config->speed_hz, delay, reg;
++	u32 cfg = readl(spi_imx->base + MX51_ECSPI_CONFIG);
  
- 	if (!master->dma_rx)
- 		return false;
+ 	/*
+ 	 * The hardware seems to have a race condition when changing modes. The
+@@ -358,13 +359,20 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
  
-+	if (!transfer)
-+		return false;
-+
-+	bpw = transfer->bits_per_word;
- 	if (!bpw)
- 		bpw = spi->bits_per_word;
+ 	if (config->mode & SPI_CPHA)
+ 		cfg |= MX51_ECSPI_CONFIG_SCLKPHA(config->cs);
++	else
++		cfg &= ~MX51_ECSPI_CONFIG_SCLKPHA(config->cs);
  
+ 	if (config->mode & SPI_CPOL) {
+ 		cfg |= MX51_ECSPI_CONFIG_SCLKPOL(config->cs);
+ 		cfg |= MX51_ECSPI_CONFIG_SCLKCTL(config->cs);
++	} else {
++		cfg &= ~MX51_ECSPI_CONFIG_SCLKPOL(config->cs);
++		cfg &= ~MX51_ECSPI_CONFIG_SCLKCTL(config->cs);
+ 	}
+ 	if (config->mode & SPI_CS_HIGH)
+ 		cfg |= MX51_ECSPI_CONFIG_SSBPOL(config->cs);
++	else
++		cfg &= ~MX51_ECSPI_CONFIG_SSBPOL(config->cs);
+ 
+ 	if (spi_imx->usedma)
+ 		ctrl |= MX51_ECSPI_CTRL_SMC;
 -- 
 2.7.0
 

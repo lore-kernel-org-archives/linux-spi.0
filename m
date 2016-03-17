@@ -1,61 +1,43 @@
-From: Knut Wohlrab <knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCH] spi: imx: only do necessary changes to ECSPIx_CONFIGREG
-Date: Thu, 17 Mar 2016 16:00:30 +0100
-Message-ID: <56EAC68E.4040103@de.bosch.com>
-References: <1458048276-31884-1-git-send-email-dirk.behme@de.bosch.com> <20160317075911.GV30994@pengutronix.de>
+From: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH 7/7] mtd: nand: sunxi: update DT bindings
+Date: Thu, 17 Mar 2016 10:28:14 -0500
+Message-ID: <20160317152814.GA9047@rob-hp-laptop>
+References: <1457435715-24740-1-git-send-email-boris.brezillon@free-electrons.com>
+ <1457435715-24740-8-git-send-email-boris.brezillon@free-electrons.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 8bit
-Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Vladimir Zapolskiy <vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160317075911.GV30994-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Dave Gordon <david.s.gordon@intel.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Brian Norris <computersforpeace@gmail.com>,
+	linux-mtd@lists.infradead.org, Mark Brown <broonie@kernel.org>,
+	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Maxime Ripard <maxime.ripard@free-electrons.com>,
+	Chen-Yu Tsai <wens@csie.org>, linux-sunxi@googlegroups.com,
+	Vinod Koul <vinod.koul@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	dmaengine@vger.kernel.org,
+	Mauro Carvalho Chehab <m.chehab@samsung.com>,
+	Hans Verkuil <hans.verkuil@cisco.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	linux-media@vger.kernel.org, Pawel Moll <pawel.moll@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora.org>, devicetree@vger.kerne
+To: Boris Brezillon <boris.brezillon@free-electrons.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1457435715-24740-8-git-send-email-boris.brezillon@free-electrons.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Am 03/17/2016 um 08:59 AM schrieb Sascha Hauer:
-> On Tue, Mar 15, 2016 at 02:24:36PM +0100, Dirk Behme wrote:
->> > From: Knut Wohlrab <knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
->> > 
->> > If the SPI chip select (CS) for a dedicated channel is done manually by
->> > the used higher device driver, the CS may be active while writing to
->> > ECSPIx_CONFIGREG. To prevent unwanted clock edges when selecting
->> > the clock mode,  only do the necessary changes to the i.MX SPI
->> > configuration register and leave not selected channels untouched.
->> > 
->> > To prevent unwanted clock edges on first use, an empty dummy
->> > transmission shall be done by the initialization procedure of the device
->> > driver of this channel. This will set the clock mode to the correct state.
-> The patch does the right thing, so:
+On Tue, Mar 08, 2016 at 12:15:15PM +0100, Boris Brezillon wrote:
+> Document dmas and dma-names properties.
 > 
-> Acked-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-> 
-> Only the above sentence is not clear to me. By device driver you mean
-> the SPI slave driver (flash, PMIC), right? Isn't this what
-> bitbang->setup_transfer(spi, NULL), called from spi_bitbang_setup() already
-> does? spi_bitbang_setup should be called while adding a new SPI slave
-> device and the setup_transfer with an empty message should setup the
-> config register correctly without involing the slave device driver.
-> 
-> Sascha
-> 
-"Higher device driver" is a "historical" protocol stack to unify our
-data transfer via several physical interfaces, here SPI. This driver
-requires own control to the CS signal to start data transfer only if CS
-is acknowledged by the external SPI slave device via GPIO/IRQ. Therefore
-we can not rely on iMX6 SPI controller IP or kernel driver CS/RDY
-functionality. The CS signal is active before the SPI driver is involved
-and if the SPI driver changes the clock polarity, the unwanted clock
-edge is destroying the data transfer.
+> Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
+> ---
+>  Documentation/devicetree/bindings/mtd/sunxi-nand.txt | 4 ++++
+>  1 file changed, 4 insertions(+)
 
-Thanks and regards
-
-Knut
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Acked-by: Rob Herring <robh@kernel.org>

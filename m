@@ -1,107 +1,58 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: imx: only do necessary changes to ECSPIx_CONFIGREG" to the spi tree
-Date: Thu, 17 Mar 2016 11:45:30 +0000
-Message-ID: <E1agWMs-000201-H8@debutante>
-References: <1458048276-31884-1-git-send-email-dirk.behme@de.bosch.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Knut Wohlrab <knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>,
-	Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: sun4i: add DMA support
+Date: Thu, 17 Mar 2016 12:54:08 +0100
+Message-ID: <CAOMqctSoA5WxtBCUK0PoHTV9OBi_fw4mdqOw+Dc_1DB_jghqng@mail.gmail.com>
+References: <1456466217-6793-1-git-send-email-plaes@plaes.org>
+ <1456466217-6793-2-git-send-email-plaes@plaes.org> <20160226122504.GR18327@sirena.org.uk>
+ <CAOMqctTz=szSkpk95D_dUJjjpziCKoPv=xRczjfq2Roct-K-OA@mail.gmail.com>
+ <20160306214206.GW8418@lukather> <CAOMqctQ5aq0A95ErVVF13f_8JBy0xRw9_FZ3avbYmZUGXp=Svg@mail.gmail.com>
+ <20160317072721.GJ30977@lukather> <CAOMqctQzMhR_bf=rMyROcTAPcrgx2EBqhH+qJL=b-U=iG9ZF4Q@mail.gmail.com>
+ <20160317114308.GF2566@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Priit Laes <plaes-q/aMd4JkU83YtjvyW6yDsg@public.gmane.org>, Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	=?UTF-8?Q?Emilio_L=C3=B3pez?= <emilio-0Z03zUJReD5OxF6Tv1QG9Q@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1458048276-31884-1-git-send-email-dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <20160317114308.GF2566-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+On 17 March 2016 at 12:43, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Thu, Mar 17, 2016 at 11:58:05AM +0100, Michal Suchanek wrote:
+>> On 17 March 2016 at 08:27, Maxime Ripard
+>
+>> > You're mixing two things up: the fact that we can't do more than the
+>> > FIFO length in PIO and that we're missing DMA support. We have patches
+>> > to address both, and there's no depedency between the two.
+>
+>> The only thing is that although DMA is optional on pretty much any
+>> system you will have DMA available unless you broke your config. You
+>> really do want the DMA support when it is available. So there will be
+>> nobody testing the non-DMA part and it will be prone to bitrot.
+>
+> Well, it might be worth doing PIO for very short transfers even if you
+> have DMA - it's quite common for this to perform better.
 
-   spi: imx: only do necessary changes to ECSPIx_CONFIGREG
+That's what the driver does. The discussion revolves around the fact
+that the driver does not attempt to work (even for very short
+transfers) when the DMA channels are not configured and just bails
+out. AFAICT the channels are always available when the system is
+properly configured and the dmaengine driver loaded.
 
-has been applied to the spi tree at
+Very few device drivers would work with 63byte transfers only and the
+code for manually driving the CS line in case the DMA engine fails to
+configure will necessarily go untested most of the time since most
+systems will have DMA configured properly.
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+Thanks
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 793c7f9212fdb7bea5e017427e750afa11217c29 Mon Sep 17 00:00:00 2001
-From: Knut Wohlrab <knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
-Date: Tue, 15 Mar 2016 14:24:36 +0100
-Subject: [PATCH] spi: imx: only do necessary changes to ECSPIx_CONFIGREG
-
-If the SPI chip select (CS) for a dedicated channel is done manually by
-the used higher device driver, the CS may be active while writing to
-ECSPIx_CONFIGREG. To prevent unwanted clock edges when selecting
-the clock mode,  only do the necessary changes to the i.MX SPI
-configuration register and leave not selected channels untouched.
-
-To prevent unwanted clock edges on first use, an empty dummy
-transmission shall be done by the initialization procedure of the device
-driver of this channel. This will set the clock mode to the correct state.
-
-Signed-off-by: Knut Wohlrab <knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
-Signed-off-by: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
-Acked-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-imx.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index e7a19be87c38..b79d70d6dabf 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -333,8 +333,9 @@ static void __maybe_unused mx51_ecspi_trigger(struct spi_imx_data *spi_imx)
- static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
- 		struct spi_imx_config *config)
- {
--	u32 ctrl = MX51_ECSPI_CTRL_ENABLE, cfg = 0;
-+	u32 ctrl = MX51_ECSPI_CTRL_ENABLE;
- 	u32 clk = config->speed_hz, delay, reg;
-+	u32 cfg = readl(spi_imx->base + MX51_ECSPI_CONFIG);
- 
- 	/*
- 	 * The hardware seems to have a race condition when changing modes. The
-@@ -358,13 +359,20 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
- 
- 	if (config->mode & SPI_CPHA)
- 		cfg |= MX51_ECSPI_CONFIG_SCLKPHA(config->cs);
-+	else
-+		cfg &= ~MX51_ECSPI_CONFIG_SCLKPHA(config->cs);
- 
- 	if (config->mode & SPI_CPOL) {
- 		cfg |= MX51_ECSPI_CONFIG_SCLKPOL(config->cs);
- 		cfg |= MX51_ECSPI_CONFIG_SCLKCTL(config->cs);
-+	} else {
-+		cfg &= ~MX51_ECSPI_CONFIG_SCLKPOL(config->cs);
-+		cfg &= ~MX51_ECSPI_CONFIG_SCLKCTL(config->cs);
- 	}
- 	if (config->mode & SPI_CS_HIGH)
- 		cfg |= MX51_ECSPI_CONFIG_SSBPOL(config->cs);
-+	else
-+		cfg &= ~MX51_ECSPI_CONFIG_SSBPOL(config->cs);
- 
- 	if (spi_imx->usedma)
- 		ctrl |= MX51_ECSPI_CTRL_SMC;
--- 
-2.7.0
-
+Michal
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,53 +1,49 @@
 From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: Re: [PATCH] spi: imx: only do necessary changes to ECSPIx_CONFIGREG
-Date: Thu, 17 Mar 2016 08:59:11 +0100
-Message-ID: <20160317075911.GV30994@pengutronix.de>
-References: <1458048276-31884-1-git-send-email-dirk.behme@de.bosch.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Vladimir Zapolskiy <vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Knut Wohlrab <knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
-To: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+Subject: [PATCH] spi: imx: Fix possible NULL pointer deref
+Date: Thu, 17 Mar 2016 09:21:50 +0100
+Message-ID: <1458202910-7565-1-git-send-email-s.hauer@pengutronix.de>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1458048276-31884-1-git-send-email-dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Mar 15, 2016 at 02:24:36PM +0100, Dirk Behme wrote:
-> From: Knut Wohlrab <knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
-> 
-> If the SPI chip select (CS) for a dedicated channel is done manually by
-> the used higher device driver, the CS may be active while writing to
-> ECSPIx_CONFIGREG. To prevent unwanted clock edges when selecting
-> the clock mode,  only do the necessary changes to the i.MX SPI
-> configuration register and leave not selected channels untouched.
-> 
-> To prevent unwanted clock edges on first use, an empty dummy
-> transmission shall be done by the initialization procedure of the device
-> driver of this channel. This will set the clock mode to the correct state.
+transfer could be NULL in spi_imx_can_dma() when it's called from
+spi_imx_setupxfer() with a NULL transfer. Test for a NULL pointer before
+dereferencing it.
 
-The patch does the right thing, so:
+Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Cc: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi-imx.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Acked-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-
-Only the above sentence is not clear to me. By device driver you mean
-the SPI slave driver (flash, PMIC), right? Isn't this what
-bitbang->setup_transfer(spi, NULL), called from spi_bitbang_setup() already
-does? spi_bitbang_setup should be called while adding a new SPI slave
-device and the setup_transfer with an empty message should setup the
-config register correctly without involing the slave device driver.
-
-Sascha
-
-
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index e7a19be..e5cc3a0 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -211,11 +211,15 @@ static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+ 			 struct spi_transfer *transfer)
+ {
+ 	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
+-	unsigned int bpw = transfer->bits_per_word;
++	unsigned int bpw;
+ 
+ 	if (!master->dma_rx)
+ 		return false;
+ 
++	if (!transfer)
++		return false;
++
++	bpw = transfer->bits_per_word;
+ 	if (!bpw)
+ 		bpw = spi->bits_per_word;
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.7.0
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

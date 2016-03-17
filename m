@@ -1,74 +1,78 @@
-From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: Re: spi: imx: initialize usedma earlier
-Date: Thu, 17 Mar 2016 09:25:59 +0100
-Message-ID: <20160317082559.GW30994@pengutronix.de>
-References: <20160316074238.GD12860@mwanda>
+From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: sun4i: add DMA support
+Date: Thu, 17 Mar 2016 11:58:05 +0100
+Message-ID: <CAOMqctQzMhR_bf=rMyROcTAPcrgx2EBqhH+qJL=b-U=iG9ZF4Q@mail.gmail.com>
+References: <1456466217-6793-1-git-send-email-plaes@plaes.org>
+ <1456466217-6793-2-git-send-email-plaes@plaes.org> <20160226122504.GR18327@sirena.org.uk>
+ <CAOMqctTz=szSkpk95D_dUJjjpziCKoPv=xRczjfq2Roct-K-OA@mail.gmail.com>
+ <20160306214206.GW8418@lukather> <CAOMqctQ5aq0A95ErVVF13f_8JBy0xRw9_FZ3avbYmZUGXp=Svg@mail.gmail.com>
+ <20160317072721.GJ30977@lukather>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Priit Laes <plaes-q/aMd4JkU83YtjvyW6yDsg@public.gmane.org>,
+	Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	=?UTF-8?Q?Emilio_L=C3=B3pez?= <emilio-0Z03zUJReD5OxF6Tv1QG9Q@public.gmane.org>
+To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20160316074238.GD12860@mwanda>
+In-Reply-To: <20160317072721.GJ30977@lukather>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Mar 16, 2016 at 10:42:38AM +0300, Dan Carpenter wrote:
-> Hello Sascha Hauer,
-> 
-> This is a semi-automatic email about new static checker warnings.
-> 
-> The patch c008a8007162: "spi: imx: initialize usedma earlier" from
-> Feb 24, 2016, leads to the following Smatch complaint:
-> 
-> drivers/spi/spi-imx.c:870 spi_imx_setupxfer()
-> 	 error: we previously assumed 't' could be null (see line 848)
-> 
-> drivers/spi/spi-imx.c
->    847	
->    848		config.bpw = t ? t->bits_per_word : spi->bits_per_word;
->                              ^
->    849		config.speed_hz  = t ? t->speed_hz : spi->max_speed_hz;
->                                    ^
-> Old code checks for NULL.
-> 
->    850		config.mode = spi->mode;
->    851		config.cs = spi->chip_select;
->    852	
->    853		if (!config.speed_hz)
->    854			config.speed_hz = spi->max_speed_hz;
->    855		if (!config.bpw)
->    856			config.bpw = spi->bits_per_word;
->    857	
->    858		/* Initialize the functions for transfer */
->    859		if (config.bpw <= 8) {
->    860			spi_imx->rx = spi_imx_buf_rx_u8;
->    861			spi_imx->tx = spi_imx_buf_tx_u8;
->    862		} else if (config.bpw <= 16) {
->    863			spi_imx->rx = spi_imx_buf_rx_u16;
->    864			spi_imx->tx = spi_imx_buf_tx_u16;
->    865		} else {
->    866			spi_imx->rx = spi_imx_buf_rx_u32;
->    867			spi_imx->tx = spi_imx_buf_tx_u32;
->    868		}
->    869	
->    870		if (spi_imx_can_dma(spi_imx->bitbang.master, spi, t))
->                                                                   ^
-> Patch adds a new unchecked dereference (inside the function call).
+On 17 March 2016 at 08:27, Maxime Ripard
+<maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> wrote:
+> On Thu, Mar 10, 2016 at 10:01:04AM +0100, Michal Suchanek wrote:
+>> Hello,
+>>
+>> On 6 March 2016 at 22:42, Maxime Ripard
+>> <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> wrote:
+>> > On Fri, Feb 26, 2016 at 01:51:51PM +0100, Michal Suchanek wrote:
+>>
+>> >> Besides this non-technical objection there were multiple technical
+>> >> objections.
+>> >>
+>> >> IIRC one was that the driver does not handle the case when the DMA
+>> >> channels are not available. As I understand it the channels are
+>> >> exclusively reserved for a particular peripherial on sunxi platform so
+>> >> this ShoulNotHappen(tm). So it's probably fine for the driver to fail
+>> >> probe  when you have broken DT or no DMA engine support for sunxi
+>> >> platform.
+>> >
+>> > There's a quite trivial scenario that would trigger this: if the dma
+>> > driver or dmaengine is not enabled / loaded.
+>>
+>> There are other trivial scenarios under which the driver will fail
+>> like loading wrong DT, not compiling or loading the sunxi pinmux
+>> driver, and whatnot.
+>
+> I don't see what the pinmux has to do with SPI and DMA, and you're
+> wrong, the pinmux driver is always compiled in if you enable the sunxi
+> support.
+>
+> And you're missing the whole point. DMA accesses are optional, pinmux
+> and proper machine support are not.
+>
+>> When you misconfigure your kernel it does not work. So long as the
+>> driver just fails and does not crash and burn it's normal. Since the
+>> driver is pretty much useless without DMA as it is now (63 byte
+>> transfer limit) losing the non-DMA functionality when DMA engine is
+>> not compiled-in does not seem that terrible.
+>
+> You're mixing two things up: the fact that we can't do more than the
+> FIFO length in PIO and that we're missing DMA support. We have patches
+> to address both, and there's no depedency between the two.
 
-This really is a possible NULL pointer dereference. From what I see
-spi_imx_setupxfer() should be called with a NULL transfer during setup
-of a new SPI slave device. Apparently this doesn't happen because
-otherwise I should have seen a crash on every boot with this patch
-applied. Anyway, just sent a patch to fix this.
+The only thing is that although DMA is optional on pretty much any
+system you will have DMA available unless you broke your config. You
+really do want the DMA support when it is available. So there will be
+nobody testing the non-DMA part and it will be prone to bitrot.
 
-Sascha
+Thanks
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Michal
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

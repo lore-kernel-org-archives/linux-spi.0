@@ -1,7 +1,7 @@
 From: Nobuteru Hayashi <hayashi.nbb-MBed0sS7vigTBYAz+LHnZg@public.gmane.org>
-Subject: [PATCH 0/3] fix infinite loops and worker task hang up
+Subject: [PATCH 1/3] spi/fsl-espi: Don't spin forever on SPIE_RXCNT
 Date: Fri, 18 Mar 2016 11:35:21 +0000
-Message-ID: <59EFBE2126ED0E4AA25DF57320AFF129051FE3A9@BPXM14GP.gisp.nec.co.jp>
+Message-ID: <59EFBE2126ED0E4AA25DF57320AFF129051FE3AF@BPXM14GP.gisp.nec.co.jp>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-2022-jp"
 Content-Transfer-Encoding: 8BIT
@@ -12,28 +12,54 @@ Content-Language: ja-JP
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hello,
+From: Nobuteru Hayashi <hayashi.nbb-MBed0sS7vigTBYAz+LHnZg@public.gmane.org>
 
-Fix infinite loops on fsl_espi_cpu_irq().
- - spin forever on SPIE_RXCNT
- - infinite loops on while (tmp--)
+Infinite loop on SPIE_RXCNT occurred.
 
-Fix worker task hang up that is caused by waiting transaction
-completion forever on wait_for_completion().
+while (SPIE_RXCNT(events) < min(4, mspi->len)) {
+        cpu_relax();
+        events = mpc8xxx_spi_read_reg(&reg_base->event);
+}
 
-Best regards,
-Nobu
+We met a soft lockup at fsl_espi_cpu_irq() because of this.
 
-Nobuteru Hayashi (3):
-  spi/fsl-espi: Don't spin forever on SPIE_RXCNT
-  spi/fsl-espi: avoid infinite loops on fsl_espi_cpu_irq()
-  spi/fsl-espi: Don't wait transaction completion forever
+Fix it by using spin_event_timeout() so that fsl_espi_cpu_irq()
+can break loop with timeouts dmesg.
 
- drivers/spi/spi-fsl-espi.c | 30 +++++++++++++++++++++++++-----
- 1 file changed, 25 insertions(+), 5 deletions(-)
+Signed-off-by: Nobuteru Hayashi <hayashi.nbb-MBed0sS7vigTBYAz+LHnZg@public.gmane.org>
+---
+ drivers/spi/spi-fsl-espi.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index 7fd6a4c..cfabfb2 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -539,11 +539,18 @@ void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
+ 	if (events & SPIE_NE) {
+ 		u32 rx_data, tmp;
+ 		u8 rx_data_8;
++		int ret;
+ 
+ 		/* Spin until RX is done */
+-		while (SPIE_RXCNT(events) < min(4, mspi->len)) {
+-			cpu_relax();
+-			events = mpc8xxx_spi_read_reg(&reg_base->event);
++		if (SPIE_RXCNT(events) < min(4, mspi->len)) {
++			ret = spin_event_timeout(
++				!(SPIE_RXCNT(events =
++				mpc8xxx_spi_read_reg(&reg_base->event)) <
++						min(4, mspi->len)),
++						10000, 0); /* 10 msec */
++			if (!ret)
++				dev_err(mspi->dev,
++					 "tired waiting for SPIE_RXCNT\n");
+ 		}
+ 
+ 		if (mspi->len >= 4) {
 -- 
 1.9.1
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

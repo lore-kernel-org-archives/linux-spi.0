@@ -1,57 +1,42 @@
-From: Nobuteru Hayashi <hayashi.nbb-MBed0sS7vigTBYAz+LHnZg@public.gmane.org>
-Subject: [PATCH 3/3] spi/fsl-espi: Don't wait transaction completion forever
-Date: Fri, 18 Mar 2016 11:35:21 +0000
-Message-ID: <59EFBE2126ED0E4AA25DF57320AFF129051FE3BB@BPXM14GP.gisp.nec.co.jp>
+From: Kevin Hilman <khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Subject: Re: [PATCH v2] spi: fix possible deadlock between internal bus locks and bus_lock_flag
+Date: Fri, 18 Mar 2016 09:22:20 -0700
+Message-ID: <7hoaabsqmb.fsf@baylibre.com>
+References: <1603558.KZbpLAQA15@diego>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-2022-jp"
-Content-Transfer-Encoding: 8BIT
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>,
+	Jon Hunter <jonathanh-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+	linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Heiko =?utf-8?Q?St=C3=BCbner?= <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Language: ja-JP
+In-Reply-To: <1603558.KZbpLAQA15@diego> ("Heiko =?utf-8?Q?St=C3=BCbner=22'?=
+ =?utf-8?Q?s?= message of "Fri, 18
+	Mar 2016 11:15:11 +0100")
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Nobuteru Hayashi <hayashi.nbb-MBed0sS7vigTBYAz+LHnZg@public.gmane.org>
+Heiko St=C3=BCbner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org> writes:
 
-Because the eSPI driver uses wait_for_completion(), any stuck-able
-phenomenon at half-way transaction progress made worker task hang up.
-This phenomenon is perhaps caused by eSPI device errata which seems not
-to be published from vendor site yet.
+> External users may use spi_bus_lock to get exclusive access. This wil=
+l
+> also grab the bus_lock_mutex and may therefore result in a deadlock i=
+f
+> __spi_pump_messages also tries to get the mutex.
+>
+> Therefore adapt spi_pump_messages as well as spi_sync to preset the
+> bus_locked parameter according to the master->bus_lock_flag.
+>
+> Fixes: 49023d2e4ead ("spi: core: Fix deadlock when sending messages")
+> Signed-off-by: Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>
 
-Anyway, we fix hang task by using fixed 2 seconds timeout
-that is our preferred value for eSPI maximum transaction size.
+Tested on rk3288-veyron-jerry and verified that it fixes the boot
+failure I reported.
 
-It seems to be better that eSPI driver can detect this stuck and
-report error (EMSGSIZE) to the upper device driver because
-the upper device driver can decide to retry or recover.
+Tested-by: Kevin Hilman <khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
 
-Signed-off-by: Nobuteru Hayashi <hayashi.nbb-MBed0sS7vigTBYAz+LHnZg@public.gmane.org>
----
- drivers/spi/spi-fsl-espi.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index d7406f0..91b8e61 100644
---- a/drivers/spi/spi-fsl-espi.c
-+++ b/drivers/spi/spi-fsl-espi.c
-@@ -245,7 +245,12 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
- 	if (ret)
- 		return ret;
- 
--	wait_for_completion(&mpc8xxx_spi->done);
-+	/* Won't hang up forever, SPI bus sometimes got lost interrupts... */
-+	ret = wait_for_completion_timeout(&mpc8xxx_spi->done, 2 * HZ);
-+	if (ret == 0)
-+		dev_err(mpc8xxx_spi->dev,
-+			"Transaction hanging up (left %d bytes)\n",
-+			mpc8xxx_spi->count);
- 
- 	/* disable rx ints */
- 	mpc8xxx_spi_write_reg(&reg_base->mask, 0);
--- 
-1.9.1
-
+Kevin
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

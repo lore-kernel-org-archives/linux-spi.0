@@ -1,75 +1,78 @@
-From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi: pxa2xx: Fix cs_change management
-Date: Sun, 20 Mar 2016 21:42:40 +0200
-Message-ID: <CAHp75VdJ3Rgvrh5=7tCUs8it_7G=POhNiKWLcK=55=i3HRtCgA@mail.gmail.com>
-References: <1458498617-11566-1-git-send-email-christophe-h.ricard@st.com>
+From: P L Sai Krishna <lakshmi.sai.krishna.potthuri@xilinx.com>
+Subject: [LINUX PATCH 1/2] mtd: Added dummy entry in the spi_transfer
+ structure.
+Date: Mon, 21 Mar 2016 17:50:08 +0530
+Message-ID: <1458562809-36114-1-git-send-email-lakshmis@xilinx.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Christophe RICARD <christophe-h.ricard-qxv4g6HH51o@public.gmane.org>,
-	benoit.houyere-qxv4g6HH51o@public.gmane.org, Jean-Luc Blanc <jean-luc.blanc-qxv4g6HH51o@public.gmane.org>
-To: Christophe Ricard <christophe.ricard-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1458498617-11566-1-git-send-email-christophe-h.ricard-qxv4g6HH51o@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Harini Katakam <harinik@xilinx.com>, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org,
+ P L Sai Krishna <lakshmis@xilinx.com>, Anirudha Sarangi <anirudh@xilinx.com>,
+ Punnaiah Choudary Kalluri <punnaia@xilinx.com>,
+ linux-arm-kernel@lists.infradead.org
+To: Michal Simek <michal.simek@xilinx.com>, Soren Brinkmann
+ <soren.brinkmann@xilinx.com>, David Woodhouse <dwmw2@infradead.org>, "Brian
+ Norris" <computersforpeace@gmail.com>, Mark Brown <broonie@kernel.org>,
+ "Javier Martinez Canillas" <javier@osg.samsung.com>, Boris Brezillon
+ <boris.brezillon@free-electrons.com>, Stephen Warren <swarren@nvidia.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>, "Andrew F. Davis" <afd@ti.com>,
+ Marek Vasut <marex@denx.de>, Jagan Teki <jteki@openedev.com>,
+ =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-On Sun, Mar 20, 2016 at 8:30 PM, Christophe Ricard
-<christophe.ricard-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> Fix cs_change management so that it is in line with other spi drivers.
->
-> In the spi core api helpers such as spi_bus_lock/unlock and spi_sync_locked
-> or cs_change field in spi_transfer help to manage chip select from the
-> device driver.
->
-> The driver was setting the chip select to idle if the message queue was
-> empty despite cs_change or other status field set by spi_bus_lock/unlock
-> or spi_sync_locked.
+This patch does following things.
+1. Added dummy entry in the spi_transfer structure.
+2. Assigned dummy cycles to dummy member in the transfer
+structure during read operation.
 
-Do you have experience the issues right now?
+Signed-off-by: P L Sai Krishna <lakshmis@xilinx.com>
+---
+ drivers/mtd/devices/m25p80.c | 1 +
+ include/linux/spi/spi.h      | 2 ++
+ 2 files changed, 3 insertions(+)
 
-In long term prospective I would like to see this driver converted to
-use more parts from SPI core. giveback() function will gone if that
-conversion happens.
-
->
-> Signed-off-by: Christophe Ricard <christophe-h.ricard-qxv4g6HH51o@public.gmane.org>
-> ---
->  drivers/spi/spi-pxa2xx.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-> index ab9914a..ed034ed 100644
-> --- a/drivers/spi/spi-pxa2xx.c
-> +++ b/drivers/spi/spi-pxa2xx.c
-> @@ -532,9 +532,8 @@ static void giveback(struct driver_data *drv_data)
->                 /* see if the next and current messages point
->                  * to the same chip
->                  */
-> -               if (next_msg && next_msg->spi != msg->spi)
-> -                       next_msg = NULL;
-> -               if (!next_msg || msg->state == ERROR_STATE)
-> +               if ((next_msg && next_msg->spi != msg->spi) ||
-> +                   msg->state == ERROR_STATE)
->                         cs_deassert(drv_data);
->         }
->
-> --
-> 2.5.0
->
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-
-
-
+diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+index c9c3b7f..7c9fac9 100644
+--- a/drivers/mtd/devices/m25p80.c
++++ b/drivers/mtd/devices/m25p80.c
+@@ -139,6 +139,7 @@ static int m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
+ 
+ 	t[0].tx_buf = flash->command;
+ 	t[0].len = m25p_cmdsz(nor) + dummy;
++	t[0].dummy = nor->read_dummy;
+ 	spi_message_add_tail(&t[0], &m);
+ 
+ 	t[1].rx_buf = buf;
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 857a9a1..3f93526 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -664,6 +664,7 @@ extern void spi_res_release(struct spi_master *master,
+  * @len: size of rx and tx buffers (in bytes)
+  * @speed_hz: Select a speed other than the device default for this
+  *      transfer. If 0 the default (from @spi_device) is used.
++ * @dummy: number of dummy cycles.
+  * @bits_per_word: select a bits_per_word other than the device default
+  *      for this transfer. If 0 the default (from @spi_device) is used.
+  * @cs_change: affects chipselect after this transfer completes
+@@ -752,6 +753,7 @@ struct spi_transfer {
+ 	u8		bits_per_word;
+ 	u16		delay_usecs;
+ 	u32		speed_hz;
++	u32		dummy;
+ 
+ 	struct list_head transfer_list;
+ };
 -- 
-With Best Regards,
-Andy Shevchenko
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+2.1.2

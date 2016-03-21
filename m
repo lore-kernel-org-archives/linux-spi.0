@@ -1,92 +1,68 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: octeon: Convert to use devm_ioremap_resource" to the spi tree
-Date: Mon, 21 Mar 2016 17:06:47 +0000
-Message-ID: <E1ai3Hz-0005Od-1k@debutante>
-References: <1458435286.9290.0.camel@ingics.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Bhuvanchandra DV <bhuvanchandra.dv-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
+Subject: [PATCH] spi: fsl-dspi: Set max_speed_hz for master
+Date: Tue, 22 Mar 2016 01:41:52 +0530
+Message-ID: <1458591112-2743-1-git-send-email-bhuvanchandra.dv@toradex.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+Cc: <stefan-XLVq0VzYD2Y@public.gmane.org>, <haikun.wang-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, <han.xu-3arQi8VN3Tc@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Bhuvanchandra DV <bhuvanchandra.dv-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	<kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1458435286.9290.0.camel-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+Calculate and update max speed from bus clock for SoC's
+using DSPI IP.
 
-   spi: octeon: Convert to use devm_ioremap_resource
+The bus clock factor's are taken from the data sheet's
+of respective SoC's.
 
-has been applied to the spi tree at
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 3ae36c8b67e450dcb7011181658c198bec386e98 Mon Sep 17 00:00:00 2001
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Date: Sun, 20 Mar 2016 08:54:46 +0800
-Subject: [PATCH] spi: octeon: Convert to use devm_ioremap_resource
-
-Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Bhuvanchandra DV <bhuvanchandra.dv-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi-octeon.c | 17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ drivers/spi/spi-fsl-dspi.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/spi/spi-octeon.c b/drivers/spi/spi-octeon.c
-index 07e4ce8273df..3b170093989f 100644
---- a/drivers/spi/spi-octeon.c
-+++ b/drivers/spi/spi-octeon.c
-@@ -175,6 +175,7 @@ err:
- static int octeon_spi_probe(struct platform_device *pdev)
- {
- 	struct resource *res_mem;
-+	void __iomem *reg_base;
- 	struct spi_master *master;
- 	struct octeon_spi *p;
- 	int err = -ENOENT;
-@@ -186,19 +187,13 @@ static int octeon_spi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 59a1143..8753276 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -121,18 +121,22 @@ enum dspi_trans_mode {
+ 
+ struct fsl_dspi_devtype_data {
+ 	enum dspi_trans_mode trans_mode;
++	u8 max_clock_factor;
+ };
+ 
+ static const struct fsl_dspi_devtype_data vf610_data = {
+ 	.trans_mode = DSPI_EOQ_MODE,
++	.max_clock_factor = 2,
+ };
+ 
+ static const struct fsl_dspi_devtype_data ls1021a_v1_data = {
+ 	.trans_mode = DSPI_TCFQ_MODE,
++	.max_clock_factor = 8,
+ };
+ 
+ static const struct fsl_dspi_devtype_data ls2085a_data = {
+ 	.trans_mode = DSPI_TCFQ_MODE,
++	.max_clock_factor = 8,
+ };
+ 
+ struct fsl_dspi {
+@@ -726,6 +730,9 @@ static int dspi_probe(struct platform_device *pdev)
+ 	}
+ 	clk_prepare_enable(dspi->clk);
+ 
++	master->max_speed_hz =
++		clk_get_rate(dspi->clk) / dspi->devtype_data->max_clock_factor;
++
+ 	init_waitqueue_head(&dspi->waitq);
  	platform_set_drvdata(pdev, master);
  
- 	res_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--
--	if (res_mem == NULL) {
--		dev_err(&pdev->dev, "found no memory resource\n");
--		err = -ENXIO;
--		goto fail;
--	}
--	if (!devm_request_mem_region(&pdev->dev, res_mem->start,
--				     resource_size(res_mem), res_mem->name)) {
--		dev_err(&pdev->dev, "request_mem_region failed\n");
-+	reg_base = devm_ioremap_resource(&pdev->dev, res_mem);
-+	if (IS_ERR(reg_base)) {
-+		err = PTR_ERR(reg_base);
- 		goto fail;
- 	}
--	p->register_base = (u64)devm_ioremap(&pdev->dev, res_mem->start,
--					     resource_size(res_mem));
-+
-+	p->register_base = (u64)reg_base;
- 
- 	master->num_chipselect = 4;
- 	master->mode_bits = SPI_CPHA |
 -- 
-2.7.0
+2.7.3
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

@@ -1,137 +1,112 @@
-From: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: Re: [PATCH 3/3] spi: rockchip: check requesting dma channel with EPROBE_DEFER
-Date: Mon, 21 Mar 2016 20:33:24 -0700
-Message-ID: <CAD=FV=UOfj8CBtjC+suM9dxtAN=0rX1E9rxYjjjbr5uLzgFCXg@mail.gmail.com>
-References: <1457511043-2058-1-git-send-email-shawn.lin@rock-chips.com>
-	<1457511092-2216-1-git-send-email-shawn.lin@rock-chips.com>
-	<CAD=FV=Wi9SEtM+o4AEPW6kpuGU+NH1uhW9hk5OQ5U8inyr1y1w@mail.gmail.com>
-	<56F0A7F0.5000900@rock-chips.com>
-	<CAD=FV=XUKoKq9_Ecx6F_c7XC6FbM6jK5B5XmKqmds_2zHW7i1g@mail.gmail.com>
-	<56F0B3A1.9080509@rock-chips.com>
+From: Lakshmi Sai Krishna Potthuri
+	<lakshmi.sai.krishna.potthuri-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Subject: RE: [LINUX PATCH 1/2] mtd: Added dummy entry in the spi_transfer
+ structure.
+Date: Tue, 22 Mar 2016 06:39:51 +0000
+Message-ID: <4FF8F58FAA9D5D4193D4E554E4352C5902C6D34C@XAP-PVEXMBX02.xlnx.xilinx.com>
+References: <1458562809-36114-1-git-send-email-lakshmis@xilinx.com>
+ <20160321130734.GS2566@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+Cc: Michal Simek <michals-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	Soren Brinkmann <sorenb-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
+	Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
+	"Andrew F. Davis" <afd-l0cyMroinI0@public.gmane.org>, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
+	Jagan Teki <jteki-oRp2ZoJdM/RWk0Htik3J/w@public.gmane.org>,
+	=?iso-8859-2?Q?Rafa=B3_Mi=B3ecki?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
 	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>,
-	"open list:ARM/Rockchip SoC..." <linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	Harini Katakam <harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	Punnaiah Choudary Kalluri <punnaia-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	Anirudha Sarangi <anirudh-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <56F0B3A1.9080509-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+In-Reply-To: <20160321130734.GS2566-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Shawn,
+Hi Mark,
 
-On Mon, Mar 21, 2016 at 7:53 PM, Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org> wrote:
-> + Vinod
+<snip>
+>On Mon, Mar 21, 2016 at 05:50:08PM +0530, P L Sai Krishna wrote:
+>> This patch does following things.
+>> 1. Added dummy entry in the spi_transfer structure.
+>> 2. Assigned dummy cycles to dummy member in the transfer structure
+>> during read operation.
 >
+>Please try to follow the patch submission process covered in
+>SubmittingPatches, in particular please use subject lines reflecting the style
+>for the subsystem (which helps people identify relevant changes to
+>review) and...
 >
-> On 2016/3/22 10:33, Doug Anderson wrote:
+>>  drivers/mtd/devices/m25p80.c | 1 +
+>>  include/linux/spi/spi.h      | 2 ++
+>>  2 files changed, 3 insertions(+)
+>
+>...split things up into individual patches, for example here you're both adding a
+>new feature and adding a user of that feature in a single patch.
+
+I will split the patch into two with appropriate commit messages.
+
+>
+>> + * @dummy: number of dummy cycles.
+>
+>This needs to be clearer about what a dummy cycle is and where it gets
+>inserted.  We probably also want a better name, just "dummy" makes it look
+>like a padding field in the structure.  How about dummy_cycles?
+
+dummy_cycles is a better idea.
+I will change it and add the usage of this in the description in a detailed manner.
+
+>
+>> @@ -752,6 +753,7 @@ struct spi_transfer {
+>>      u8              bits_per_word;
+>>      u16             delay_usecs;
+>>      u32             speed_hz;
+>> +    u32             dummy;
 >>
->> Shawn,
->>
->> On Mon, Mar 21, 2016 at 7:03 PM, Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
->> wrote:
->>>>
->>>> ...but, looking at this, presumably before landing any patch that made
->>>> dma_request_slave_channel() return -EPROBE_DEFER you'd need to modify
->>>> _all_ users of dma_request_slave_channel to handle error pointers
->>>> being returned.  Right now dma_request_slave_channel() says it returns
->>>> a pointer to a channel or NULL and the function explicitly avoids
->>>> returning any errors.  That might be possible, but it's a big
->>>> change...
->>>
->>>
->>>
->>> At first glance, it's a big change, but maybe not really.
->>> Almost all of them use the templet like:
->>> ch = dma_request_slave_channel
->>> if (!ch)
->>>          balabala....
->>>
->>> It's same for all the non-null return pointer/non-zero value ?
->>>
->>> So from my view, we can safely change dma_request_slave_channel,
->>> and leave the caller here. I presumably the respective
->>> drivers will graduately migrate to check the return value with
->>> EPROBE_DEFER if they do care this issue. Otherwise, we believe
->>> they don't suffer the changes we make, just as what they did in the
->>> past. Does that make sense?
->>
->>
->> ...but if you return ERR_PTR(-EPROBE_DEFER) and don't change existing
->> callers, then existing callers will think you've returned a valid
->> pointer when you really returned an error pointer.  They'll pass this
->> error pointer around like it's a valid "struct dma_chan", won't then?
->>
+>>      struct list_head transfer_list;
+>>  };
 >
-> possibly, it depends on how caller deal with it. Should check it case by
-> case for each caller.
->
->> Actually, could your code just call
->> dma_request_slave_channel_reason().  Oh, looks like that's exactly
->> what you want.  See commit 0ad7c00057dc ("dma: add channel request API
->> that supports deferred probe").  Oh, but I'm looking at 4.4.  Looking
->> at linuxnext, it looks like this got renamed to dma_request_chan().
->> ...so you need to use that, no?
->>
->> Strange, but on 4.4 there was some extra code in
->> dma_request_slave_channel() that wasn't in
->> dma_request_slave_channel_reason().  ...but looks like that all got
->> cleaned up in the same CL that added the new name.
->
->
-> dma_request_chan already return ERR_PTR(-EPROBE_DEFER), but
-> dma_request_slave_channel ignore this and rewrite it to be NULL.
-> Strange behaviour looks to me. commit 0ad7c00057dc ("dma: add channel
-> request API that supports deferred probe")  did the right thing, but
-> what happened then?  It was drop for some reasons?
->
-> Hello Vinod,
->
-> Could you please elaborate some more infomation to commit 0ad7c00057dc
-> ("dma: add channel request API that supports deferred probe") :) ?
+>This isn't enough to add the feature - a client driver trying to make use of this
+>needs to be able to tell if the cycles are actually going to be inserted.  I'd
+>expect to see a capability flag that can be checked and some error checking so
+>that if we try to do a transfer with dummy cycles and can't support it we don't
+>silently ignore the dummy cycles, ideally also something that'll handle
+>multiples of 8 bits with SPI controllers that don't otherwise support this
+>feature.
 
-I think it's relatively straightforward.
+Currently, all fast reads use 8 cycles or 1 byte of dummy. This generally works.
+But it can be vary based on the flash and the type of read command.
+Dummy bytes are taken care of in m25p80.c by adjusting the len field:
+Length = size of (command + address + dummy byte)
 
-The scheme they came up with allows them to more easily update one
-client at a time.  AKA:
+There might be controllers (like ZynqMP GQSPI) that would be able to use
+the information that dummy byte(s) were added and the precise number
+of dummy cycles. This patch does not disturb the existing implementation
+of adjusting length (as described above). It adds an additional optional feature.
+So there is no harm to controllers that can't support it - they can ignore it and
+still work with the existing "length adjustment" implementation.
+If you think there value in adding a capability flag, please let me know.
 
-* If your code has been updated to handle ERR_PTR() returns, you call
-dma_request_slave_channel_reason().
+Thanks for your review.
 
-* If your code hasn't been updated, it will still call
-dma_request_slave_channel().  In this case EPROBE_DEFER is treated
-like any other failure.  That's not ideal but better than the
-alternative.
-
-* In recent kernels dma_request_slave_channel() was renamed to
-dma_request_chan().  Old code can still use
-dma_request_slave_channel_reason() but presumably they want you to use
-dma_request_chan() for new code.  They are equivalent:
-
-> #define dma_request_slave_channel_reason(dev, name) dma_request_chan(dev, name)
+Regards,
+Sai Krishna
 
 
-So your patch should be:
+This email and any attachments are intended for the sole use of the named recipient(s) and contain(s) confidential information that may be proprietary, privileged or copyrighted under applicable law. If you are not the intended recipient, do not read, copy, or forward this email message or any attachments. Delete this email message and any attachments immediately.
 
--       rs->dma_tx.ch = dma_request_slave_channel(rs->dev, "tx");
--       if (!rs->dma_tx.ch)
-+       rs->dma_tx.ch = dma_request_slave_chan(rs->dev, "tx");
-+       if (IS_ERR_OR_NULL(rs->dma_tx.ch)) {
-+               /* Check tx to see if we need defer probing driver */
-+               if (rs->dma_tx.ch == ERR_PTR(-EPROBE_DEFER)) {
-+                       ret = -EPROBE_DEFER;
-+                       goto err_get_fifo_len;
-+               }
-                dev_warn(rs->dev, "Failed to request TX DMA channel\n");
-+               rs->dma_tx.ch = NULL;
-+       }
-
-...and then a similar patch for the "rx" side of things.
-
--Doug
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

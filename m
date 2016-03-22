@@ -1,106 +1,65 @@
-From: Stefan Roese <sr@denx.de>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH v2] spi: orion.c: Add direct access mode
-Date: Tue, 22 Mar 2016 17:44:52 +0100
-Message-ID: <56F17684.2010307@denx.de>
+Date: Tue, 22 Mar 2016 17:39:52 +0000
+Message-ID: <20160322173952.GF2566@sirena.org.uk>
 References: <1458663893-13766-1-git-send-email-sr@denx.de>
  <20160322173546.40d24cc2@free-electrons.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
-Content-Transfer-Encoding: 7bit
-Cc: Arnd Bergmann <arnd@arndb.de>, linux-spi@vger.kernel.org,
- Nadav Haklai <nadavh@marvell.com>, Mark Brown <broonie@kernel.org>,
- Ezequiel Garcia <ezequiel.garcia@free-electrons.com>,
- Gregory CLEMENT <gregory.clement@free-electrons.com>,
- linux-arm-kernel@lists.infradead.org
-To: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20160322173546.40d24cc2@free-electrons.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="SXJj2kVWw/JBQDhF"
+Cc: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
+	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+To: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20160322173546.40d24cc2-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Thomas,
 
-On 22.03.2016 17:35, Thomas Petazzoni wrote:
-> On Tue, 22 Mar 2016 17:24:53 +0100, Stefan Roese wrote:
->> This patch adds support for the direct access mode to the Orion SPI
->> driver which is used on the Marvell Armada based SoCs. In this direct
->> mode, all data written to (or read from) a specifically mapped MBus
->> window (linked to one SPI chip-select on one of the SPI controllers)
->> will be transferred directly to the SPI bus. Without the need to control
->> the SPI registers in between. This can improve the SPI transfer rate in
->> such cases.
->>
->> Both, direct-read and -write mode are supported. But only the write
->> mode has been tested. This mode especially benefits from the SPI direct
->> mode, as the data bytes are written head-to-head to the SPI bus,
->> without any additional addresses.
->>
->> One use-case for this direct write mode is, programming a FPGA bitstream
->> image into the FPGA connected to the SPI bus at maximum speed.
->>
->> This mode is described in chapter "22.5.2 Direct Write to SPI" in the
->> Marvell Armada XP Functional Spec Datasheet.
->>
->> Signed-off-by: Stefan Roese <sr@denx.de>
->> Cc: Nadav Haklai <nadavh@marvell.com>
->> Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
->> Cc: Gregory CLEMENT <gregory.clement@free-electrons.com>
->> Cc: Mark Brown <broonie@kernel.org>
->> ---
->> Mark, sorry for the huge delay for v2 of this direct-access patch.
->> I was busy with other tasks in the meantime. And only found now
->> the time to address (hopefully all) of your comments.
->
-> Thanks for this new version! To be honest, I don't remember all the
-> discussions that took place on the v1, so maybe I'll just be re-asking
-> the same question.
+--SXJj2kVWw/JBQDhF
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-No problem. Thanks for looking into this.
+On Tue, Mar 22, 2016 at 05:35:46PM +0100, Thomas Petazzoni wrote:
 
 > Has there been any discussion on whether dynamically adding the MBus
 > window is a good idea, as opposed to statically defining it in the
 > board .dts ?
 
-Yes. My 1st patch version (still RFC) used fixed MBus windows instead:
-
-http://www.spinics.net/lists/linux-spi/msg06536.html
-
-Mark suggested to use dynamic windows, so that one area could be
-used for all SPI devices by switching (re-configuring) the MBus
-window:
-
-http://www.spinics.net/lists/linux-spi/msg06537.html
-
 > So far, the only driver that was using dynamically allocated MBus is
 > the PCIe controller driver, because there is no way in advanced to know
 > the number and memory window requirements of the PCIe devices that will
 > be connected to the system.
->
+
 > For all other windows (BootROM, crypto SRAM and more recently network
 > related SRAM), we are using statically allocated windows.
->
-> So I'm wondering if we should add this additional DT binding that
-> describes the necessary information to allow the driver to dynamically
-> allocate a window, or if we shouldn't rely on a statically allocated
-> window.
->
-> This is really an open discussion, I don't have a very well-defined
-> opinion on the matter.
 
-I also have no real preference here.
+Is this a case where we used to use static assignment because we didn't
+have a mechanism for dynamic assignment but now have a mechanism for
+dynamic assignment?  In other words is there any advantage to doing the
+assignments statically given that we can do them dynamically?
 
-> Let's Cc: Arnd Bergmann on this question, he has followed the whole
-> MBus story and might have some interesting insights.
+--SXJj2kVWw/JBQDhF
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Good idea.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-Thanks,
-Stefan
+iQEcBAEBCAAGBQJW8YNnAAoJECTWi3JdVIfQQNIH/iHqb9zqrtEKwwi9GaiuDDYU
+QJ6T8267T7bxzs31H+SRX8OLrLbmCtiok+McdfBd8cAv7EdgEhxWXj9aJaDlv5Ry
+C25bRXqRcVxKuXb23axaei2GfJnbrVpq9pOIH4k9DFs6SdHahFDmP4y1O5UCzghC
+cnv21YxfLFfXu9iSMWmECRzr2ni0a3rVWd7pQ0El7EQwvRrvIyrBMZI8P2rwgdqP
+Sfw4SINkj0yhee5jPP3l2B2hIu5pjsmur8xOSIPqhti+GqmBucXDCKE4fhOp8OwO
+wrPxPA7KbDNEhhNIIhPO7tpK/NKNO8MsdOzFe4qZnzwbyfW0KcWDJ7Tz/xbaKdk=
+=1+Al
+-----END PGP SIGNATURE-----
+
+--SXJj2kVWw/JBQDhF--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,77 +1,74 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2] spi: orion.c: Add direct access mode
-Date: Wed, 23 Mar 2016 13:36:12 +0000
-Message-ID: <20160323133612.GO2566@sirena.org.uk>
-References: <1458663893-13766-1-git-send-email-sr@denx.de>
- <20160322173546.40d24cc2@free-electrons.com>
- <56F17684.2010307@denx.de>
- <20160323113316.GH2566@sirena.org.uk>
- <56F2852C.5010006@denx.de>
- <20160323125448.GM2566@sirena.org.uk>
- <56F295E1.4030505@denx.de>
- <20160323132637.GC19953@lunn.ch>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="+mo68zJvr9wl4l14"
-Cc: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>,
-	Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
-	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
+Subject: Applied "spi: xlp: Enable SPI driver for Broadcom Vulcan ARM64" to the spi tree
+Date: Wed, 23 Mar 2016 13:43:12 +0000
+Message-ID: <E1aij44-0004Hg-6I@debutante>
+References: <1458652094-4484-1-git-send-email-kamlakant.patel@broadcom.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Kamlakant Patel <kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20160323132637.GC19953-g2DYL2Zd6BY@public.gmane.org>
+In-Reply-To: <1458652094-4484-1-git-send-email-kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---+mo68zJvr9wl4l14
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: xlp: Enable SPI driver for Broadcom Vulcan ARM64
 
-On Wed, Mar 23, 2016 at 02:26:37PM +0100, Andrew Lunn wrote:
+has been applied to the spi tree at
 
-> The number of windows is limited. On i think the Armada XP, if you put
-> a PCIe device on every available PCIe bus, you can run out of
-> windows. This is why Thomas implemented dynamic allocation of the
-> Windows, so that only those that are needed are used.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> So i would not statically and globally allocate as many windows as
-> possible SPI devices.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> The fact that SPI can fall back to another mechanism if there are no
-> available windows, were as PCIe cannot, suggests that SPI should
-> dynamically allocate a window, and be prepared for it to fail.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-> Since only one SPI device can be active at once on a SPI bus, one
-> window per bus makes sense, and keeps the required number of windows
-> to a minimum.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-If we're under pressure for windows I'd go further and say that we
-should be dynamically allocating the windows only when they're actually
-in use (and modifying other drivers to do the same if that makes sense
-for them), unless it's somehow expensive to allocate windows that means
-that we should reduce the overall pressure.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---+mo68zJvr9wl4l14
-Content-Type: application/pgp-signature; name="signature.asc"
+Thanks,
+Mark
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+>From bf23d1917d551487e85378c4f4a7a0efcfe77f4e Mon Sep 17 00:00:00 2001
+From: Kamlakant Patel <kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+Date: Tue, 22 Mar 2016 18:38:14 +0530
+Subject: [PATCH] spi: xlp: Enable SPI driver for Broadcom Vulcan ARM64
 
-iQEcBAEBCAAGBQJW8pvLAAoJECTWi3JdVIfQKJkH/AwMXjMlQFRdoDQbcyX/4P7k
-EGd/mAA4NyieNKaB4+oUzH6umDr6mYbrGmWsDwrcx4i0TU16XsEjLyu/xIrEY9ap
-NPpur5skn4l6WPFF3bnrykZSKY09+gzPW2tRNXiFcGWaXSOu9LwKkhkcjSLu+NhU
-txdFWbIb6uRpUa7qO0VA+cYWl8vxxge4GarRUwqDVQklWvUYCMwx8MXSa5Tnt/1h
-NzOuaMk+Q8kYrqTD8Um3WScSO/E/+xcwQfTcuDc0QFFztgu6V2SQ5SjvJEuh6fN3
-AdeThmrZ+jObSFzJautlfojO8uqMifdwwRq/MwhzAYiYX/2rXbr4C670yG20948=
-=LDo2
------END PGP SIGNATURE-----
+- Vulcan spi controller is compatible with netlogic,xlp832-spi.
+- Add depends on ARCH_VULCAN to Kconfig to enable spi controller
+  driver for Broadcom Vulcan ARM64 SoCs.
 
---+mo68zJvr9wl4l14--
+Signed-off-by: Kamlakant Patel <kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 9d8c84bb1544..6536068ce74f 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -656,7 +656,7 @@ config SPI_XILINX
+ 
+ config SPI_XLP
+ 	tristate "Netlogic XLP SPI controller driver"
+-	depends on CPU_XLP || COMPILE_TEST
++	depends on CPU_XLP || ARCH_VULCAN || COMPILE_TEST
+ 	help
+ 	  Enable support for the SPI controller on the Netlogic XLP SoCs.
+ 	  Currently supported XLP variants are XLP8XX, XLP3XX, XLP2XX, XLP9XX
+-- 
+2.7.0
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

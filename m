@@ -1,94 +1,82 @@
-From: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
 Subject: Re: [PATCH v2] spi: orion.c: Add direct access mode
-Date: Wed, 23 Mar 2016 19:39:52 +0100
-Message-ID: <20160323183952.GK5250@lunn.ch>
-References: <1458663893-13766-1-git-send-email-sr@denx.de>
- <20160322173546.40d24cc2@free-electrons.com>
- <56F17684.2010307@denx.de>
- <20160323113316.GH2566@sirena.org.uk>
- <56F2852C.5010006@denx.de>
- <20160323125448.GM2566@sirena.org.uk>
- <56F295E1.4030505@denx.de>
- <20160323132732.GN2566@sirena.org.uk>
- <56F2D19A.7020604@denx.de>
+Date: Wed, 23 Mar 2016 20:51:18 +0100
+Message-ID: <12458203.7DzKuGjIvi@wuerfel>
+References: <1458663893-13766-1-git-send-email-sr@denx.de> <20160323133612.GO2566@sirena.org.uk> <20160323135606.GE19953@lunn.ch>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>,
 	Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
 	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
-	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-To: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <56F2D19A.7020604-ynQEQJNshbs@public.gmane.org>
+In-Reply-To: <20160323135606.GE19953-g2DYL2Zd6BY@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-> Please note that this direct access mode is really not suitable
-> for "normal" SPI devices like SPI NOR chips. As the direct read
-> mode (as described in chapter 22.5.1 of the Armada XP datasheet)
-> always generates:
+On Wednesday 23 March 2016 14:56:06 Andrew Lunn wrote:
+> On Wed, Mar 23, 2016 at 01:36:12PM +0000, Mark Brown wrote:
+> > On Wed, Mar 23, 2016 at 02:26:37PM +0100, Andrew Lunn wrote:
+> > 
+> > > The number of windows is limited. On i think the Armada XP, if you put
+> > > a PCIe device on every available PCIe bus, you can run out of
+> > > windows. This is why Thomas implemented dynamic allocation of the
+> > > Windows, so that only those that are needed are used.
+> > 
+> > > So i would not statically and globally allocate as many windows as
+> > > possible SPI devices.
+> > 
+> > > The fact that SPI can fall back to another mechanism if there are no
+> > > available windows, were as PCIe cannot, suggests that SPI should
+> > > dynamically allocate a window, and be prepared for it to fail.
+> > 
+> > > Since only one SPI device can be active at once on a SPI bus, one
+> > > window per bus makes sense, and keeps the required number of windows
+> > > to a minimum.
+> > 
+> > If we're under pressure for windows I'd go further and say that we
+> > should be dynamically allocating the windows only when they're actually
+> > in use (and modifying other drivers to do the same if that makes sense
+> > for them), unless it's somehow expensive to allocate windows that means
+> > that we should reduce the overall pressure.
 > 
-> a) a write command to the SPI bus (opcode configurable via register)
+> Hi Mark
 > 
-> and
+> We are only under pressure in the extremes, i.e 10 PCIe busses in
+> use. Only allocating PCIe Windows when needed means in practice, we
+> have not had issues. We need to be mindful, and don't waste them, but
+> we don't need to consider them a scarce resource.
 > 
-> b) writes 1-4 address bytes to the SPI bus
-> 
-> before the data is read from the SPI bus.
-> 
-> So its definitely nothing that should be enabled per default for
-> all SPI devices.
+> I don't see it being an issue for the SPI driver to allocate one on
+> probe and keeping it until release. I probably would object to it
+> allocating one per chip select line.
 
-Looking at the Kirkwood datasheet, it suggests it can be used with SPI
-flash:
+I agree. We had a very long debate about this when we first added
+the support for MBus, and not much has changed. As far as I'm concerned,
+this is where we're at:
 
-	If using SPI flash, set the <Attr> field in the CPU address
-	decoding windows to match the SPI interface (see Section 2,
-	Address Map, on page 34 for more details). Any CPU read to
-	this address space is converted by the SPI controller to a SPI
-	flash read transaction, composed of an address phase, followed
-	by a data phase.
+The binding defines a reasonable set of default settings for each
+device that uses MBus, and the OS can use them, or define its own.
+Coming up with an algorithm to do this right however is very hard
+and not really worth it, as defining the defaults works well enough.
 
-	The actual sequence that is driven on the SPI interface is:
+Ideally we'd let the boot loader set up the windows statically and
+have the DT describe what they are, but unfortunately that is not
+what boot loaders in the field do.
 
-	1. Assert SPI_CSn. Write command to the SPI. The command is
-	either Read or Fast_Read, based on the configuration of the
-	<DirectRdCommand> field.
+The method that was picked for MBus is similar to how we typically
+handle PCI host bridges that have the same problem: you can set up
+translation windows between CPU addresses and the various PCI
+address spaces (I/O, mem, prefetchable, config, ...) in all sorts
+of ways, with various tradeoffs, but instead we just pick a
+reasonable default and describe it in the DT, because the kernel
+has no good generic way of picking a particular setting over another.
 
-	2. Write the address. The Address is driven in 1 to 4 phases
-	based on the configuration of the <DirectAddrLen>> field. The order of
-	the bytes is MSB to LSB.
-
-	3. In Fast_Read mode, add a one-byte dummy write.
-
-	4. Read the data, according to the length given by the request.
-
-	5. De-assert the SPI_CSn signal.
-
-There is also something interesting in the Direct Write to SPI
-section:
-
-	4. Address Phase.
-
-	This is a 1-4 byte field that is taken from the address of the
-	request.  The size of the address is configured via the
-	<DirectAddrLen> field in the Serial Memory Interface
-	Configuration Register (Table 629 p. 686).  The entire Address
-	phase is omitted when <Direct Wr Addr Enable> field in the
-	Serial Memory Direct Write Configuration Register (Table 634
-	p. 688) is cleared.
-
-Turning off the address phase may mean it is possible to do normal SPI
-writes using the direct mode.
-
-Quite a few Kirkwood boards have SPI flash, so if this brings better
-performance, it would be nice to be able to use it.
-
-	     Andrew
+	Arnd
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

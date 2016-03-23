@@ -1,82 +1,85 @@
-From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Subject: Re: [PATCH v2] spi: orion.c: Add direct access mode
-Date: Wed, 23 Mar 2016 20:51:18 +0100
-Message-ID: <12458203.7DzKuGjIvi@wuerfel>
-References: <1458663893-13766-1-git-send-email-sr@denx.de> <20160323133612.GO2566@sirena.org.uk> <20160323135606.GE19953@lunn.ch>
+From: Laison-2WGxrPcL6/av+0K4mfL3GVAUjnlXr6A1@public.gmane.org, Computech-2WGxrPcL6/av+0K4mfL3GVAUjnlXr6A1@public.gmane.org,
+	"Inc <support"@ensuretech.com
+Subject: CISCO IP PHONES AND CPU's
+Date: Thu, 24 Mar 2016 01:45:21 +0700
+Message-ID: <20160323200920.4054CA68BF__43156.6755673431$1458765589$gmane$org@seymour.toledo.br>
+Reply-To: sales-69Ibs8hIYaLnzTGioTClidREWwmQVq3b@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>,
-	Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
-	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+To: Recipients <support-lhT63EwJ3xcqDJ6do+/SaQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160323135606.GE19953-g2DYL2Zd6BY@public.gmane.org>
+Content-Description: Mail message body
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wednesday 23 March 2016 14:56:06 Andrew Lunn wrote:
-> On Wed, Mar 23, 2016 at 01:36:12PM +0000, Mark Brown wrote:
-> > On Wed, Mar 23, 2016 at 02:26:37PM +0100, Andrew Lunn wrote:
-> > 
-> > > The number of windows is limited. On i think the Armada XP, if you put
-> > > a PCIe device on every available PCIe bus, you can run out of
-> > > windows. This is why Thomas implemented dynamic allocation of the
-> > > Windows, so that only those that are needed are used.
-> > 
-> > > So i would not statically and globally allocate as many windows as
-> > > possible SPI devices.
-> > 
-> > > The fact that SPI can fall back to another mechanism if there are no
-> > > available windows, were as PCIe cannot, suggests that SPI should
-> > > dynamically allocate a window, and be prepared for it to fail.
-> > 
-> > > Since only one SPI device can be active at once on a SPI bus, one
-> > > window per bus makes sense, and keeps the required number of windows
-> > > to a minimum.
-> > 
-> > If we're under pressure for windows I'd go further and say that we
-> > should be dynamically allocating the windows only when they're actually
-> > in use (and modifying other drivers to do the same if that makes sense
-> > for them), unless it's somehow expensive to allocate windows that means
-> > that we should reduce the overall pressure.
-> 
-> Hi Mark
-> 
-> We are only under pressure in the extremes, i.e 10 PCIe busses in
-> use. Only allocating PCIe Windows when needed means in practice, we
-> have not had issues. We need to be mindful, and don't waste them, but
-> we don't need to consider them a scarce resource.
-> 
-> I don't see it being an issue for the SPI driver to allocate one on
-> probe and keeping it until release. I probably would object to it
-> allocating one per chip select line.
+Hi,
 
-I agree. We had a very long debate about this when we first added
-the support for MBus, and not much has changed. As far as I'm concerned,
-this is where we're at:
+Our Stock list.
 
-The binding defines a reasonable set of default settings for each
-device that uses MBus, and the OS can use them, or define its own.
-Coming up with an algorithm to do this right however is very hard
-and not really worth it, as defining the defaults works well enough.
+Brand NEW
+96 x Cisco 7900 IP Phone
+87 x Unified IP Phone 6900
+12 x Unified IP Phone 8900
+76 x Unified IP Phone 9900
+55 x Unified IP Phone 8800
+67 x Cisco 1921
+67 x Cisco 1941
+56 x Cisco CP-7961G 7961G
+34 x Cisco CP-7971G-GE 7971G
+19 x Cisco Unified IP Conference Station 7937G Model: 7937 CP-7937G
+20 x Cisco CP-7975G 7975G
 
-Ideally we'd let the boot loader set up the windows statically and
-have the DT describe what they are, but unfortunately that is not
-what boot loaders in the field do.
+Brand New Sealed :
 
-The method that was picked for MBus is similar to how we typically
-handle PCI host bridges that have the same problem: you can set up
-translation windows between CPU addresses and the various PCI
-address spaces (I/O, mem, prefetchable, config, ...) in all sorts
-of ways, with various tradeoffs, but instead we just pick a
-reasonable default and describe it in the DT, because the kernel
-has no good generic way of picking a particular setting over another.
+23 x  CISCO1921-SEC/K9
+Conditions: Brand New Sealed
+Description: CISCO 1921 Security Bundle w/SEC license PAK
 
-	Arnd
+45 x CISCO1921/K9
+Conditions: Brand New Sealed
+Description: CISCO 1921 Modular Router, 2 GE, 2 EHWIC slots, 512DRAM, IP Base
+
+(1)  WS-C4500X-16SFP+
+Serial number:  JAE183501L3
+US&#36;2600
+
+(1)  WS-C3850-48PW-S
+Serial number:  FCW1823C0EW
+US&#36;2650
+
+(1)  WS-X6908-10G-2T
+Serial number:  SAL1620CKUB
+US&#36;3650
+
+(1)  ASR1000-ESP10
+Serial number:  JAE181306C3
+US&#36;3800
+
+(1)  AIR-CT5508-250-K9   (this is new but box is open!)
+Serial number:  FCW1521L038
+US&#36;4000
+
+CPUs part number below
+
+89 x  X5650
+
+975 x  X5660
+
+150 x  X5680
+
+265 x  X5690
+
+Kindly make your price offers.
+
+Sincerely
+Barbara Johnson
+Laison Computech
+210 N Scoring Ave,
+Rialto California, 92376
+Tel: +1-657-232-7047
+Fax: +1-347-214-0478
+Email: sales-69Ibs8hIYaLnzTGioTClidREWwmQVq3b@public.gmane.org
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

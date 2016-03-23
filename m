@@ -1,62 +1,76 @@
-From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH 1/3] spi: pxa2xx: handle error of pxa2xx_spi_dma_prepare()
-Date: Wed, 23 Mar 2016 17:29:22 +0200
-Message-ID: <1458746964-9335-1-git-send-email-jarkko.nikula@linux.intel.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH v2] spi: orion.c: Add direct access mode
+Date: Wed, 23 Mar 2016 18:25:46 +0100
+Message-ID: <56F2D19A.7020604@denx.de>
+References: <1458663893-13766-1-git-send-email-sr@denx.de>
+ <20160322173546.40d24cc2@free-electrons.com> <56F17684.2010307@denx.de>
+ <20160323113316.GH2566@sirena.org.uk> <56F2852C.5010006@denx.de>
+ <20160323125448.GM2566@sirena.org.uk> <56F295E1.4030505@denx.de>
+ <20160323132732.GN2566@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
+	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20160323132732.GN2566-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+On 23.03.2016 14:27, Mark Brown wrote:
+> On Wed, Mar 23, 2016 at 02:10:57PM +0100, Stefan Roese wrote:
+>> On 23.03.2016 13:54, Mark Brown wrote:
+>
+>>> I haven't looked at your new code at all.  What I'm saying is that
+>>> specifying a per-device MBus window seems like pointless complexity.
+>
+>> I don't necessarily share this opinions. Code-wise, its less complex
+>> that re-configuring (removing the old and creating the new) the MBus
+>> window. But I have no strong feeling here. Whatever is decided that
+>> should be used, I can go with.
+>
+> No, really - it's just unhelpful.  Putting this in the ABI means that
+> every single system integrator who cares about performance is going to
+> need to go and manually figure out how to configure this in DT and
+> manually select values.  That's not doing a good job for users, it's
+> making their lives harder for no gain.  If there are no physical
+> constraints then how we allocate space in the MBus should be a runtime
+> thing, it shouldn't be part of the ABI.
 
-If by some reason pxa2xx_spi_dma_prepare() fails we have not to ignore its
-error. In such case we abort the transfer and return the error to upper
-level.
+Do I understand you correctly, that you want the complete MBus
+allocation and configuration to be included in the SPI driver
+instead of using the DT to describe the window (target, attribute,
+area)? If yes, then the SPI driver would be the first driver
+to do this "internally". All other drivers using MBus resources
+parse these from the DT (AFAIK) as this is highly SoC specific.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
----
-Reposting Andy's fix from December that got buried to list during
-holidays.
----
- drivers/spi/spi-pxa2xx.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+Sidenote:
+Please note that this direct access mode is really not suitable
+for "normal" SPI devices like SPI NOR chips. As the direct read
+mode (as described in chapter 22.5.1 of the Armada XP datasheet)
+always generates:
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 85e59a406a4c..47bdbd350a24 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -928,6 +928,7 @@ static void pump_transfers(unsigned long data)
- 	u32 dma_thresh = drv_data->cur_chip->dma_threshold;
- 	u32 dma_burst = drv_data->cur_chip->dma_burst_size;
- 	u32 change_mask = pxa2xx_spi_get_ssrc1_change_mask(drv_data);
-+	int err;
- 
- 	/* Get current state information */
- 	message = drv_data->cur_msg;
-@@ -1047,7 +1048,12 @@ static void pump_transfers(unsigned long data)
- 		/* Ensure we have the correct interrupt handler */
- 		drv_data->transfer_handler = pxa2xx_spi_dma_transfer;
- 
--		pxa2xx_spi_dma_prepare(drv_data, dma_burst);
-+		err = pxa2xx_spi_dma_prepare(drv_data, dma_burst);
-+		if (err) {
-+			message->status = err;
-+			giveback(drv_data);
-+			return;
-+		}
- 
- 		/* Clear status and start DMA engine */
- 		cr1 = chip->cr1 | dma_thresh | drv_data->dma_cr1;
--- 
-2.7.0
+a) a write command to the SPI bus (opcode configurable via register)
 
+and
+
+b) writes 1-4 address bytes to the SPI bus
+
+before the data is read from the SPI bus.
+
+So its definitely nothing that should be enabled per default for
+all SPI devices. In my case of the FPGA bitstream loading, the
+direct write mode is perfect, as it provides the fastest way to
+stream the bitstream back-to-back onto the SPI bus.
+
+Thanks,
+Stefan
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

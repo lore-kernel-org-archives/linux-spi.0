@@ -1,70 +1,77 @@
-From: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
-Subject: Re: [PATCH v2] spi: orion.c: Add direct access mode
-Date: Wed, 23 Mar 2016 14:56:06 +0100
-Message-ID: <20160323135606.GE19953@lunn.ch>
-References: <1458663893-13766-1-git-send-email-sr@denx.de>
- <20160322173546.40d24cc2@free-electrons.com>
- <56F17684.2010307@denx.de>
- <20160323113316.GH2566@sirena.org.uk>
- <56F2852C.5010006@denx.de>
- <20160323125448.GM2566@sirena.org.uk>
- <56F295E1.4030505@denx.de>
- <20160323132637.GC19953@lunn.ch>
- <20160323133612.GO2566@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>,
-	Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
-	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH 2/3] spi: pxa2xx: Remove rx_/tx_map_len members from struct driver_data
+Date: Wed, 23 Mar 2016 17:29:23 +0200
+Message-ID: <1458746964-9335-2-git-send-email-jarkko.nikula@linux.intel.com>
+References: <1458746964-9335-1-git-send-email-jarkko.nikula@linux.intel.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20160323133612.GO2566-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <1458746964-9335-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Mar 23, 2016 at 01:36:12PM +0000, Mark Brown wrote:
-> On Wed, Mar 23, 2016 at 02:26:37PM +0100, Andrew Lunn wrote:
-> 
-> > The number of windows is limited. On i think the Armada XP, if you put
-> > a PCIe device on every available PCIe bus, you can run out of
-> > windows. This is why Thomas implemented dynamic allocation of the
-> > Windows, so that only those that are needed are used.
-> 
-> > So i would not statically and globally allocate as many windows as
-> > possible SPI devices.
-> 
-> > The fact that SPI can fall back to another mechanism if there are no
-> > available windows, were as PCIe cannot, suggests that SPI should
-> > dynamically allocate a window, and be prepared for it to fail.
-> 
-> > Since only one SPI device can be active at once on a SPI bus, one
-> > window per bus makes sense, and keeps the required number of windows
-> > to a minimum.
-> 
-> If we're under pressure for windows I'd go further and say that we
-> should be dynamically allocating the windows only when they're actually
-> in use (and modifying other drivers to do the same if that makes sense
-> for them), unless it's somehow expensive to allocate windows that means
-> that we should reduce the overall pressure.
+spi-pxa2xx-dma.c DMA engine implementation stopped using PIO for
+unaligned trailing bytes in the commit 111e0a9dc71e ("spi/pxa2xx: Prevent
+DMA from transferring too many bytes"). This means there is no need to
+update tx/rx transfer buffer pointers after DMA completion. These buffer
+pointers will be set to new buffers when handling the next transfer.
 
-Hi Mark
+Because this buffer pointer update was only remaining use for rx_map_len
+and tx_map_len members in struct driver_data after removing the legacy PXA
+DMA implementation they can be removed now.
 
-We are only under pressure in the extremes, i.e 10 PCIe busses in
-use. Only allocating PCIe Windows when needed means in practice, we
-have not had issues. We need to be mindful, and don't waste them, but
-we don't need to consider them a scarce resource.
+Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+---
+ drivers/spi/spi-pxa2xx-dma.c | 5 -----
+ drivers/spi/spi-pxa2xx.h     | 2 --
+ 2 files changed, 7 deletions(-)
 
-I don't see it being an issue for the SPI driver to allocate one on
-probe and keeping it until release. I probably would object to it
-allocating one per chip select line.
-
-   Andrew
-
+diff --git a/drivers/spi/spi-pxa2xx-dma.c b/drivers/spi/spi-pxa2xx-dma.c
+index 365fc22c3572..696a340230eb 100644
+--- a/drivers/spi/spi-pxa2xx-dma.c
++++ b/drivers/spi/spi-pxa2xx-dma.c
+@@ -33,12 +33,10 @@ static int pxa2xx_spi_map_dma_buffer(struct driver_data *drv_data,
+ 		dmadev = drv_data->tx_chan->device->dev;
+ 		sgt = &drv_data->tx_sgt;
+ 		buf = drv_data->tx;
+-		drv_data->tx_map_len = len;
+ 	} else {
+ 		dmadev = drv_data->rx_chan->device->dev;
+ 		sgt = &drv_data->rx_sgt;
+ 		buf = drv_data->rx;
+-		drv_data->rx_map_len = len;
+ 	}
+ 
+ 	nents = DIV_ROUND_UP(len, SZ_2K);
+@@ -133,9 +131,6 @@ static void pxa2xx_spi_dma_transfer_complete(struct driver_data *drv_data,
+ 		if (!error) {
+ 			pxa2xx_spi_unmap_dma_buffers(drv_data);
+ 
+-			drv_data->tx += drv_data->tx_map_len;
+-			drv_data->rx += drv_data->rx_map_len;
+-
+ 			msg->actual_length += drv_data->len;
+ 			msg->state = pxa2xx_spi_next_transfer(drv_data);
+ 		} else {
+diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
+index a1ef88948144..85017f9ca67c 100644
+--- a/drivers/spi/spi-pxa2xx.h
++++ b/drivers/spi/spi-pxa2xx.h
+@@ -69,8 +69,6 @@ struct driver_data {
+ 	void *rx;
+ 	void *rx_end;
+ 	int dma_mapped;
+-	size_t rx_map_len;
+-	size_t tx_map_len;
+ 	u8 n_bytes;
+ 	int (*write)(struct driver_data *drv_data);
+ 	int (*read)(struct driver_data *drv_data);
+-- 
+2.7.0
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

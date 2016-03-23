@@ -1,75 +1,70 @@
-From: Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>
-Subject: Re: [PATCH] spi: fsl-dspi: Set max_speed_hz for master
-Date: Tue, 22 Mar 2016 23:35:04 -0700
-Message-ID: <c865ac8ef7ab29e1529cfdde96ae4b59@agner.ch>
-References: <1458591112-2743-1-git-send-email-bhuvanchandra.dv@toradex.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2] spi: orion.c: Add direct access mode
+Date: Wed, 23 Mar 2016 11:33:16 +0000
+Message-ID: <20160323113316.GH2566@sirena.org.uk>
+References: <1458663893-13766-1-git-send-email-sr@denx.de>
+ <20160322173546.40d24cc2@free-electrons.com>
+ <56F17684.2010307@denx.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
-	haikun.wang-KZfg59tc24xl57MIdRCFDg@public.gmane.org, han.xu-3arQi8VN3Tc@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Bhuvanchandra DV <bhuvanchandra.dv-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="pjXrr8OcmD/XY8aP"
+Cc: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
+	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+To: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1458591112-2743-1-git-send-email-bhuvanchandra.dv-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <56F17684.2010307-ynQEQJNshbs@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 2016-03-21 13:11, Bhuvanchandra DV wrote:
-> Calculate and update max speed from bus clock for SoC's
-> using DSPI IP.
-> 
-> The bus clock factor's are taken from the data sheet's
-> of respective SoC's.
 
-Plurals are without apostrophe...
+--pjXrr8OcmD/XY8aP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-I wonder if GCC optimizes this to a bit shift...
+On Tue, Mar 22, 2016 at 05:44:52PM +0100, Stefan Roese wrote:
+> On 22.03.2016 17:35, Thomas Petazzoni wrote:
 
-Acked-by: Stefan Agner <stefan-XLVq0VzYD2Y@public.gmane.org>
+> >Has there been any discussion on whether dynamically adding the MBus
+> >window is a good idea, as opposed to statically defining it in the
+> >board .dts ?
 
-> 
-> Signed-off-by: Bhuvanchandra DV <bhuvanchandra.dv-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
-> ---
->  drivers/spi/spi-fsl-dspi.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-> index 59a1143..8753276 100644
-> --- a/drivers/spi/spi-fsl-dspi.c
-> +++ b/drivers/spi/spi-fsl-dspi.c
-> @@ -121,18 +121,22 @@ enum dspi_trans_mode {
->  
->  struct fsl_dspi_devtype_data {
->  	enum dspi_trans_mode trans_mode;
-> +	u8 max_clock_factor;
->  };
->  
->  static const struct fsl_dspi_devtype_data vf610_data = {
->  	.trans_mode = DSPI_EOQ_MODE,
-> +	.max_clock_factor = 2,
->  };
->  
->  static const struct fsl_dspi_devtype_data ls1021a_v1_data = {
->  	.trans_mode = DSPI_TCFQ_MODE,
-> +	.max_clock_factor = 8,
->  };
->  
->  static const struct fsl_dspi_devtype_data ls2085a_data = {
->  	.trans_mode = DSPI_TCFQ_MODE,
-> +	.max_clock_factor = 8,
->  };
->  
->  struct fsl_dspi {
-> @@ -726,6 +730,9 @@ static int dspi_probe(struct platform_device *pdev)
->  	}
->  	clk_prepare_enable(dspi->clk);
->  
-> +	master->max_speed_hz =
-> +		clk_get_rate(dspi->clk) / dspi->devtype_data->max_clock_factor;
-> +
->  	init_waitqueue_head(&dspi->waitq);
->  	platform_set_drvdata(pdev, master);
+> Yes. My 1st patch version (still RFC) used fixed MBus windows instead:
+
+> http://www.spinics.net/lists/linux-spi/msg06536.html
+
+> Mark suggested to use dynamic windows, so that one area could be
+> used for all SPI devices by switching (re-configuring) the MBus
+> window:
+
+> http://www.spinics.net/lists/linux-spi/msg06537.html
+
+No, there's two separate things here.  The big problem with what you
+originally sent was that you were defining a window per SPI device but
+this is a part of the SPI controller so having to change windows per
+device is just going to make the code more complex.  There's also the
+separate issue of where any MBus windows we get come up with.
+
+--pjXrr8OcmD/XY8aP
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJW8n77AAoJECTWi3JdVIfQ/ewH/33RyElpNNT2rwl9QmK771o+
+KpMLePLKbvXsaAxYOAOGB0CG8cYMpHIGS7790H18oBrJKLtxX3AicYAVcQYpkOZ2
+bFwyCiWaxJyQQxEXNFVNRhenK9DhoeM8/uwsPDYXoIklAEqfVQwvkTxsozCFv5cs
+CJ1wAqjyPmFWm1vpsL8+OhmEJb0fPAo5J6RHU03OXiI8kDyiFnuB0tmmwCMeLEpP
+34gvl7KJZfoi/ZJ7v2mjf6EjL7zC0xz/WYJQLdaIl5xDcS/RnLrFjfymeviDrln4
+a9vTzaT1wtOXlbIx/fD99jiUC9ST37gxXYWrcmxqOQSlNGBpFQll09HEmekNZfc=
+=eEHU
+-----END PGP SIGNATURE-----
+
+--pjXrr8OcmD/XY8aP--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

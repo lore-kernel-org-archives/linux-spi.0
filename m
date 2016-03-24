@@ -1,85 +1,113 @@
-From: Laison-2WGxrPcL6/av+0K4mfL3GVAUjnlXr6A1@public.gmane.org, Computech-2WGxrPcL6/av+0K4mfL3GVAUjnlXr6A1@public.gmane.org,
-	"Inc <support"@ensuretech.com
-Subject: CISCO IP PHONES AND CPU's
-Date: Thu, 24 Mar 2016 02:12:05 +0700
-Message-ID: <20160323203604.5CDB3A7B4E__42497.8922158063$1458768374$gmane$org@seymour.toledo.br>
-Reply-To: sales-69Ibs8hIYaLnzTGioTClidREWwmQVq3b@public.gmane.org
+From: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH v2] spi: orion.c: Add direct access mode
+Date: Thu, 24 Mar 2016 06:45:35 +0100
+Message-ID: <56F37EFF.2090605@denx.de>
+References: <1458663893-13766-1-git-send-email-sr@denx.de>
+ <20160322173546.40d24cc2@free-electrons.com> <56F17684.2010307@denx.de>
+ <20160323113316.GH2566@sirena.org.uk> <56F2852C.5010006@denx.de>
+ <20160323125448.GM2566@sirena.org.uk> <56F295E1.4030505@denx.de>
+ <20160323132732.GN2566@sirena.org.uk> <56F2D19A.7020604@denx.de>
+ <20160323183952.GK5250@lunn.ch>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-To: Recipients <support-lhT63EwJ3xcqDJ6do+/SaQ@public.gmane.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
+	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+To: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Description: Mail message body
+In-Reply-To: <20160323183952.GK5250-g2DYL2Zd6BY@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi,
+On 23.03.2016 19:39, Andrew Lunn wrote:
+>> Please note that this direct access mode is really not suitable
+>> for "normal" SPI devices like SPI NOR chips. As the direct read
+>> mode (as described in chapter 22.5.1 of the Armada XP datasheet)
+>> always generates:
+>>
+>> a) a write command to the SPI bus (opcode configurable via register)
+>>
+>> and
+>>
+>> b) writes 1-4 address bytes to the SPI bus
+>>
+>> before the data is read from the SPI bus.
+>>
+>> So its definitely nothing that should be enabled per default for
+>> all SPI devices.
+> 
+> Looking at the Kirkwood datasheet, it suggests it can be used with SPI
+> flash:
+> 
+> 	If using SPI flash, set the <Attr> field in the CPU address
+> 	decoding windows to match the SPI interface (see Section 2,
+> 	Address Map, on page 34 for more details). Any CPU read to
+> 	this address space is converted by the SPI controller to a SPI
+> 	flash read transaction, composed of an address phase, followed
+> 	by a data phase.
+> 
+> 	The actual sequence that is driven on the SPI interface is:
+> 
+> 	1. Assert SPI_CSn. Write command to the SPI. The command is
+> 	either Read or Fast_Read, based on the configuration of the
+> 	<DirectRdCommand> field.
+> 
+> 	2. Write the address. The Address is driven in 1 to 4 phases
+> 	based on the configuration of the <DirectAddrLen>> field. The order of
+> 	the bytes is MSB to LSB.
+> 
+> 	3. In Fast_Read mode, add a one-byte dummy write.
+> 
+> 	4. Read the data, according to the length given by the request.
+> 
+> 	5. De-assert the SPI_CSn signal.
 
-Our Stock list.
+Right. It is of course possible to use this direct mode to access
+SPI flash. Its just not the way how the SPI MTD driver uses the
+SPI controller. All information that is written to the SPI flash
+(e.g. commands, addresses) are passed as plain tx-data in the SPI
+message to the SPI controller. And it would be not easy to detect
+commands / addresses vs. "real data" in this orion SPI driver
+to put these values into the specific registers.
+ 
+> There is also something interesting in the Direct Write to SPI
+> section:
+> 
+> 	4. Address Phase.
+> 
+> 	This is a 1-4 byte field that is taken from the address of the
+> 	request.  The size of the address is configured via the
+> 	<DirectAddrLen> field in the Serial Memory Interface
+> 	Configuration Register (Table 629 p. 686).  The entire Address
+> 	phase is omitted when <Direct Wr Addr Enable> field in the
+> 	Serial Memory Direct Write Configuration Register (Table 634
+> 	p. 688) is cleared.
+> 
+> Turning off the address phase may mean it is possible to do normal SPI
+> writes using the direct mode.
 
-Brand NEW
-96 x Cisco 7900 IP Phone
-87 x Unified IP Phone 6900
-12 x Unified IP Phone 8900
-76 x Unified IP Phone 9900
-55 x Unified IP Phone 8800
-67 x Cisco 1921
-67 x Cisco 1941
-56 x Cisco CP-7961G 7961G
-34 x Cisco CP-7971G-GE 7971G
-19 x Cisco Unified IP Conference Station 7937G Model: 7937 CP-7937G
-20 x Cisco CP-7975G 7975G
+Correct. And this is exactly why I'm using this direct write mode
+for the FPGAs connected via SPI. To implement normal, optimized SPI
+writes using this direct write mode.
 
-Brand New Sealed :
+> Quite a few Kirkwood boards have SPI flash, so if this brings better
+> performance, it would be nice to be able to use it.
 
-23 x  CISCO1921-SEC/K9
-Conditions: Brand New Sealed
-Description: CISCO 1921 Security Bundle w/SEC license PAK
+Yes. But I hope my explanation above makes it clear that this is not
+easily implemented. So I suggest to just use the implementation I've
+added with this patch for these special SPI devices like FPGAs
+for fast bitstream downloading. And for this it is necessary, to make
+this direct access mode optionally configurable on a per-SPI-device
+basis.
 
-45 x CISCO1921/K9
-Conditions: Brand New Sealed
-Description: CISCO 1921 Modular Router, 2 GE, 2 EHWIC slots, 512DRAM, IP Base
+Thanks,
+Stefan
 
-(1)  WS-C4500X-16SFP+
-Serial number:  JAE183501L3
-US&#36;2600
-
-(1)  WS-C3850-48PW-S
-Serial number:  FCW1823C0EW
-US&#36;2650
-
-(1)  WS-X6908-10G-2T
-Serial number:  SAL1620CKUB
-US&#36;3650
-
-(1)  ASR1000-ESP10
-Serial number:  JAE181306C3
-US&#36;3800
-
-(1)  AIR-CT5508-250-K9   (this is new but box is open!)
-Serial number:  FCW1521L038
-US&#36;4000
-
-CPUs part number below
-
-89 x  X5650
-
-975 x  X5660
-
-150 x  X5680
-
-265 x  X5690
-
-Kindly make your price offers.
-
-Sincerely
-Barbara Johnson
-Laison Computech
-210 N Scoring Ave,
-Rialto California, 92376
-Tel: +1-657-232-7047
-Fax: +1-347-214-0478
-Email: sales-69Ibs8hIYaLnzTGioTClidREWwmQVq3b@public.gmane.org
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

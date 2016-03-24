@@ -1,105 +1,83 @@
 From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCHv2 1/3] spi: pxa2xx: handle error of pxa2xx_spi_dma_prepare()
-Date: Thu, 24 Mar 2016 15:35:42 +0200
-Message-ID: <1458826544-28553-1-git-send-email-jarkko.nikula@linux.intel.com>
+Subject: [PATCHv2 3/3] spi: pxa2xx: Use dummy buffers provided by SPI core
+Date: Thu, 24 Mar 2016 15:35:44 +0200
+Message-ID: <1458826544-28553-3-git-send-email-jarkko.nikula@linux.intel.com>
+References: <1458826544-28553-1-git-send-email-jarkko.nikula@linux.intel.com>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
 	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
 	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
 	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1458826544-28553-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Dummy buffer is used for half duplex transfers that don't have TX or RX
+buffer set. Instead of own dummy buffer management here let the SPI core to
+handle it by setting the SPI_MASTER_MUST_RX and SPI_MASTER_MUST_TX flags.
+Then core makes sure both transfer buffers are set.
 
-If by some reason pxa2xx_spi_dma_prepare() fails we have not to ignore its
-error. In such case we abort the transfer and return the error to upper
-level.
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-[Jarkko: Avoid leaking TX descriptors in case RX descriptor allocation
-fails. Noted by Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>.
-Unmap also buffers in case of failure.]
 Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 ---
-Reposting Andy's fix from December that got buried to list during
-holidays.
----
- drivers/spi/spi-pxa2xx-dma.c | 13 +++++++++++--
- drivers/spi/spi-pxa2xx.c     |  8 +++++++-
- 2 files changed, 18 insertions(+), 3 deletions(-)
+ drivers/spi/spi-pxa2xx-dma.c | 10 +---------
+ drivers/spi/spi-pxa2xx.c     |  1 +
+ drivers/spi/spi-pxa2xx.h     |  1 -
+ 3 files changed, 2 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/spi/spi-pxa2xx-dma.c b/drivers/spi/spi-pxa2xx-dma.c
-index 365fc22c3572..b1883d228103 100644
+index 624cb06bd2e1..a18a03d0afb7 100644
 --- a/drivers/spi/spi-pxa2xx-dma.c
 +++ b/drivers/spi/spi-pxa2xx-dma.c
-@@ -267,19 +267,22 @@ irqreturn_t pxa2xx_spi_dma_transfer(struct driver_data *drv_data)
- int pxa2xx_spi_dma_prepare(struct driver_data *drv_data, u32 dma_burst)
- {
- 	struct dma_async_tx_descriptor *tx_desc, *rx_desc;
-+	int err = 0;
+@@ -53,11 +53,7 @@ static int pxa2xx_spi_map_dma_buffer(struct driver_data *drv_data,
+ 	for_each_sg(sgt->sgl, sg, sgt->nents, i) {
+ 		size_t bytes = min_t(size_t, len, SZ_2K);
  
- 	tx_desc = pxa2xx_spi_dma_prepare_one(drv_data, DMA_MEM_TO_DEV);
- 	if (!tx_desc) {
- 		dev_err(&drv_data->pdev->dev,
- 			"failed to get DMA TX descriptor\n");
--		return -EBUSY;
-+		err = -EBUSY;
-+		goto err_tx;
+-		if (buf)
+-			sg_set_buf(sg, pbuf, bytes);
+-		else
+-			sg_set_buf(sg, drv_data->dummy, bytes);
+-
++		sg_set_buf(sg, pbuf, bytes);
+ 		pbuf += bytes;
+ 		len -= bytes;
  	}
+@@ -312,10 +308,6 @@ int pxa2xx_spi_dma_setup(struct driver_data *drv_data)
+ 	dma_cap_zero(mask);
+ 	dma_cap_set(DMA_SLAVE, mask);
  
- 	rx_desc = pxa2xx_spi_dma_prepare_one(drv_data, DMA_DEV_TO_MEM);
- 	if (!rx_desc) {
- 		dev_err(&drv_data->pdev->dev,
- 			"failed to get DMA RX descriptor\n");
--		return -EBUSY;
-+		err = -EBUSY;
-+		goto err_rx;
- 	}
- 
- 	/* We are ready when RX completes */
-@@ -289,6 +292,12 @@ int pxa2xx_spi_dma_prepare(struct driver_data *drv_data, u32 dma_burst)
- 	dmaengine_submit(rx_desc);
- 	dmaengine_submit(tx_desc);
- 	return 0;
-+
-+err_rx:
-+	dmaengine_terminate_async(drv_data->tx_chan);
-+err_tx:
-+	pxa2xx_spi_unmap_dma_buffers(drv_data);
-+	return err;
- }
- 
- void pxa2xx_spi_dma_start(struct driver_data *drv_data)
+-	drv_data->dummy = devm_kzalloc(dev, SZ_2K, GFP_KERNEL);
+-	if (!drv_data->dummy)
+-		return -ENOMEM;
+-
+ 	drv_data->tx_chan = dma_request_slave_channel_compat(mask,
+ 				pdata->dma_filter, pdata->tx_param, dev, "tx");
+ 	if (!drv_data->tx_chan)
 diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 85e59a406a4c..47bdbd350a24 100644
+index 47bdbd350a24..86c155aea0cf 100644
 --- a/drivers/spi/spi-pxa2xx.c
 +++ b/drivers/spi/spi-pxa2xx.c
-@@ -928,6 +928,7 @@ static void pump_transfers(unsigned long data)
- 	u32 dma_thresh = drv_data->cur_chip->dma_threshold;
- 	u32 dma_burst = drv_data->cur_chip->dma_burst_size;
- 	u32 change_mask = pxa2xx_spi_get_ssrc1_change_mask(drv_data);
-+	int err;
+@@ -1562,6 +1562,7 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+ 	master->unprepare_transfer_hardware = pxa2xx_spi_unprepare_transfer;
+ 	master->fw_translate_cs = pxa2xx_spi_fw_translate_cs;
+ 	master->auto_runtime_pm = true;
++	master->flags = SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX;
  
- 	/* Get current state information */
- 	message = drv_data->cur_msg;
-@@ -1047,7 +1048,12 @@ static void pump_transfers(unsigned long data)
- 		/* Ensure we have the correct interrupt handler */
- 		drv_data->transfer_handler = pxa2xx_spi_dma_transfer;
+ 	drv_data->ssp_type = ssp->type;
  
--		pxa2xx_spi_dma_prepare(drv_data, dma_burst);
-+		err = pxa2xx_spi_dma_prepare(drv_data, dma_burst);
-+		if (err) {
-+			message->status = err;
-+			giveback(drv_data);
-+			return;
-+		}
+diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
+index 85017f9ca67c..e6b09000ff14 100644
+--- a/drivers/spi/spi-pxa2xx.h
++++ b/drivers/spi/spi-pxa2xx.h
+@@ -56,7 +56,6 @@ struct driver_data {
+ 	struct sg_table tx_sgt;
+ 	int rx_nents;
+ 	int tx_nents;
+-	void *dummy;
+ 	atomic_t dma_running;
  
- 		/* Clear status and start DMA engine */
- 		cr1 = chip->cr1 | dma_thresh | drv_data->dma_cr1;
+ 	/* Current message transfer state info */
 -- 
 2.8.0.rc3
 

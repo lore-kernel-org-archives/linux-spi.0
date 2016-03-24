@@ -1,33 +1,27 @@
 From: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
 Subject: Re: [PATCH v2] spi: orion.c: Add direct access mode
-Date: Thu, 24 Mar 2016 18:30:22 +0100
-Message-ID: <56F4242E.70501@denx.de>
+Date: Thu, 24 Mar 2016 18:51:53 +0100
+Message-ID: <56F42939.4020803@denx.de>
 References: <1458663893-13766-1-git-send-email-sr@denx.de>
  <3250653.vvT0RgK8yg@wuerfel> <56F412B5.2080200@denx.de>
- <3107533.ZIfFo6QAv3@wuerfel>
+ <30176583.aSTyzO0qS3@wuerfel>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+Cc: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <3107533.ZIfFo6QAv3@wuerfel>
+In-Reply-To: <30176583.aSTyzO0qS3@wuerfel>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 24.03.2016 17:42, Arnd Bergmann wrote:
+On 24.03.2016 17:48, Arnd Bergmann wrote:
 > On Thursday 24 March 2016 17:15:49 Stefan Roese wrote:
->>> but then we have a
->>> problem with how it uses both internal-regs and and its own mbus
->>> based reg, so we probably have to move the spi node outside of
->>> the internal-regs node to achieve that, similar to how we handle
->>> the devbus devices:
->>>
 >>>
 >>>        soc@ {
 >>>                spi0 {
@@ -51,13 +45,56 @@ On 24.03.2016 17:42, Arnd Bergmann wrote:
 >> And let the SPI driver then extract and dynamically enable (map)
 >> the one that is currently used?
 >
-> I had not realize that there is more than one per controller.
-> Is it one per chip-select, or how do you pick the right ones?
+> Actually the syntax above doesn't imply any mapping at all, it
+> just describes how the hardware is wired up, so that really
+> needs to list all windows, and then the ranges property in the
+> soc node can statically map the ones that are used on the
+> particular machine.
 
-Yes, its one per chip-select (SPI device).
+I see. But with this we are back to statically mapping the MBus
+windows that are used. Resulting in potentially multiple windows
+per SPI controller, which is not necessary (Andrew and Mark
+objected against that).
+
+>> We also need a per-SPI-device DT property to enable this direct
+>> access mode for this specific SPI device. As not all SPI devices
+>> support this mode - at least not yet. How about this one:
+>>
+>>                  flash0: flash@0 {
+>>                          compatible = "m25p128";
+>>                          reg = <0>;
+>>                          direct-access-enable;
+>>                          ...
+>>                  };
+>>
+>> ?
+>
+> Maybe the spi driver can just check whether the window is mapped
+> or not, and then have no ranges entry for the devices that don't
+> support it?
+
+Sure, if its statically mapped (via 'ranges' in the soc node),
+then this is easy to implement in the driver. Its similar to what
+the RFC version of the patch did.
+
+> Alternatively, we might encode this in the 'reg' property in
+> some way?
+>
+> How do we know whether a device supports the mode or not?
+
+Currently, only a very limited number of SPI devices will support
+it. As its really only useful right now for full-speed tx-transfer.
+In my case its downloading a bitstream into a FPGA (only SPI
+writes). In the future, SPI NOR flash devices can be supported.
+But this needs additional work. So SPI devices should not use
+this direct access mode as default for now. It needs to get
+opted-in via some DT property.
 
 Thanks,
 Stefan
+
+PS: I'm off into Easter vacation in a few hours. So I will follow-up
+on this earliest in week 14.
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

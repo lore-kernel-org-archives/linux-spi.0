@@ -1,86 +1,108 @@
-From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Subject: Re: [PATCH v2] spi: orion.c: Add direct access mode
-Date: Thu, 24 Mar 2016 13:42:38 +0100
-Message-ID: <3250653.vvT0RgK8yg@wuerfel>
-References: <1458663893-13766-1-git-send-email-sr@denx.de> <12458203.7DzKuGjIvi@wuerfel> <56F395BC.6070108@denx.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
-	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
+From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCHv2 1/3] spi: pxa2xx: handle error of pxa2xx_spi_dma_prepare()
+Date: Thu, 24 Mar 2016 15:35:42 +0200
+Message-ID: <1458826544-28553-1-git-send-email-jarkko.nikula@linux.intel.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <56F395BC.6070108-ynQEQJNshbs@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Thursday 24 March 2016 08:22:36 Stefan Roese wrote:
-> 
-> Arnd, thanks for your comments.
-> 
-> So we seem to agree, that one MBus window per SPI controller is the
-> way to go. Only how should this be described in the DT? I've come up
-> with these new DT properties in v2:
-> 
-> +- da-reg : The physical memory area that will be used for the direct
-> +           access mode, if enabled in one of the SPI devices.
-> +
-> +Per SPI device:
-> +- da-target-attribute : The target and attribute value for a specific
-> +                        SPI-controller / SPI-device combination.
-> +                       E.g. <0x01 0x5e>: SPI0-CS1 target and attribute
-> 
-> ...
-> 
-> +Example with direct access mode:
-> +       spi@10600 {
-> +               compatible = "marvell,orion-spi";
-> +               status = "okay";
-> +               da-reg = <0xf2000000 0x100000>;
-> +
-> +               spi-fpga@1 {
-> +                       compatible = "altera,stratix-v";
-> +                       reg = <1>;
-> +                       /* 0x01 0x5e: SPI0-CS1 target and attribute */
-> +                       da-target-attribute = <0x01 0x5e>;
-> +               };
-> +       };
-> 
-> I've added the "da-*" (Direct Access) properties to enable the
-> SPI driver to dynamically allocate the MBus windows. Do you find
-> these new bindings reasonable? Or do you have better suggestions for
-> this per-SPI-device dynamic MBus allocation, perhaps by using
-> MBUS_ID somehow?
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 
-I was thinking it would be statically set up, but then we have a
-problem with how it uses both internal-regs and and its own mbus
-based reg, so we probably have to move the spi node outside of
-the internal-regs node to achieve that, similar to how we handle
-the devbus devices:
+If by some reason pxa2xx_spi_dma_prepare() fails we have not to ignore its
+error. In such case we abort the transfer and return the error to upper
+level.
 
+Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+[Jarkko: Avoid leaking TX descriptors in case RX descriptor allocation
+fails. Noted by Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>.
+Unmap also buffers in case of failure.]
+Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+---
+Reposting Andy's fix from December that got buried to list during
+holidays.
+---
+ drivers/spi/spi-pxa2xx-dma.c | 13 +++++++++++--
+ drivers/spi/spi-pxa2xx.c     |  8 +++++++-
+ 2 files changed, 18 insertions(+), 3 deletions(-)
 
-	soc@ {
-		spi0 {
-                       compatible = "marvell,armada-370-spi",
-                                    "marvell,orion-spi";
-			reg = <MBUS_ID(0xf0, 0x01) 0x10600 0x28>,
-			      <MBUS_ID(0x01, 0x5e) 0 0x100000>;
-                       #address-cells = <1>;
-                       #size-cells = <0>;
-                       pinctrl-0 = <&spi0_pins1>;
-                       pinctrl-names = "default";
-                       cell-index = <0>;
-                       interrupts = <30>;
-                       clocks = <&coreclk 0>;
-                       status = "disabled";
-		};
-	};
+diff --git a/drivers/spi/spi-pxa2xx-dma.c b/drivers/spi/spi-pxa2xx-dma.c
+index 365fc22c3572..b1883d228103 100644
+--- a/drivers/spi/spi-pxa2xx-dma.c
++++ b/drivers/spi/spi-pxa2xx-dma.c
+@@ -267,19 +267,22 @@ irqreturn_t pxa2xx_spi_dma_transfer(struct driver_data *drv_data)
+ int pxa2xx_spi_dma_prepare(struct driver_data *drv_data, u32 dma_burst)
+ {
+ 	struct dma_async_tx_descriptor *tx_desc, *rx_desc;
++	int err = 0;
+ 
+ 	tx_desc = pxa2xx_spi_dma_prepare_one(drv_data, DMA_MEM_TO_DEV);
+ 	if (!tx_desc) {
+ 		dev_err(&drv_data->pdev->dev,
+ 			"failed to get DMA TX descriptor\n");
+-		return -EBUSY;
++		err = -EBUSY;
++		goto err_tx;
+ 	}
+ 
+ 	rx_desc = pxa2xx_spi_dma_prepare_one(drv_data, DMA_DEV_TO_MEM);
+ 	if (!rx_desc) {
+ 		dev_err(&drv_data->pdev->dev,
+ 			"failed to get DMA RX descriptor\n");
+-		return -EBUSY;
++		err = -EBUSY;
++		goto err_rx;
+ 	}
+ 
+ 	/* We are ready when RX completes */
+@@ -289,6 +292,12 @@ int pxa2xx_spi_dma_prepare(struct driver_data *drv_data, u32 dma_burst)
+ 	dmaengine_submit(rx_desc);
+ 	dmaengine_submit(tx_desc);
+ 	return 0;
++
++err_rx:
++	dmaengine_terminate_async(drv_data->tx_chan);
++err_tx:
++	pxa2xx_spi_unmap_dma_buffers(drv_data);
++	return err;
+ }
+ 
+ void pxa2xx_spi_dma_start(struct driver_data *drv_data)
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 85e59a406a4c..47bdbd350a24 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -928,6 +928,7 @@ static void pump_transfers(unsigned long data)
+ 	u32 dma_thresh = drv_data->cur_chip->dma_threshold;
+ 	u32 dma_burst = drv_data->cur_chip->dma_burst_size;
+ 	u32 change_mask = pxa2xx_spi_get_ssrc1_change_mask(drv_data);
++	int err;
+ 
+ 	/* Get current state information */
+ 	message = drv_data->cur_msg;
+@@ -1047,7 +1048,12 @@ static void pump_transfers(unsigned long data)
+ 		/* Ensure we have the correct interrupt handler */
+ 		drv_data->transfer_handler = pxa2xx_spi_dma_transfer;
+ 
+-		pxa2xx_spi_dma_prepare(drv_data, dma_burst);
++		err = pxa2xx_spi_dma_prepare(drv_data, dma_burst);
++		if (err) {
++			message->status = err;
++			giveback(drv_data);
++			return;
++		}
+ 
+ 		/* Clear status and start DMA engine */
+ 		cr1 = chip->cr1 | dma_thresh | drv_data->dma_cr1;
+-- 
+2.8.0.rc3
 
-	Arnd
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

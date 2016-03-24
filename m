@@ -1,55 +1,86 @@
-From: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
 Subject: Re: [PATCH v2] spi: orion.c: Add direct access mode
-Date: Thu, 24 Mar 2016 13:05:29 +0100
-Message-ID: <56F3D809.5060803@denx.de>
-References: <20160322173546.40d24cc2@free-electrons.com>
- <56F17684.2010307@denx.de> <20160323113316.GH2566@sirena.org.uk>
- <56F2852C.5010006@denx.de> <20160323125448.GM2566@sirena.org.uk>
- <56F295E1.4030505@denx.de> <20160323132732.GN2566@sirena.org.uk>
- <56F2D19A.7020604@denx.de> <20160323183952.GK5250@lunn.ch>
- <56F37EFF.2090605@denx.de> <20160324112308.GY2566@sirena.org.uk>
+Date: Thu, 24 Mar 2016 13:42:38 +0100
+Message-ID: <3250653.vvT0RgK8yg@wuerfel>
+References: <1458663893-13766-1-git-send-email-sr@denx.de> <12458203.7DzKuGjIvi@wuerfel> <56F395BC.6070108@denx.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
 	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
-	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160324112308.GY2566-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <56F395BC.6070108-ynQEQJNshbs@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 24.03.2016 12:23, Mark Brown wrote:
-> On Thu, Mar 24, 2016 at 06:45:35AM +0100, Stefan Roese wrote:
+On Thursday 24 March 2016 08:22:36 Stefan Roese wrote:
 > 
->> Right. It is of course possible to use this direct mode to access
->> SPI flash. Its just not the way how the SPI MTD driver uses the
->> SPI controller. All information that is written to the SPI flash
->> (e.g. commands, addresses) are passed as plain tx-data in the SPI
->> message to the SPI controller. And it would be not easy to detect
->> commands / addresses vs. "real data" in this orion SPI driver
->> to put these values into the specific registers.
+> Arnd, thanks for your comments.
 > 
-> We now have extensions for passing commands through directly (see
-> spi_flash_read()).
+> So we seem to agree, that one MBus window per SPI controller is the
+> way to go. Only how should this be described in the DT? I've come up
+> with these new DT properties in v2:
+> 
+> +- da-reg : The physical memory area that will be used for the direct
+> +           access mode, if enabled in one of the SPI devices.
+> +
+> +Per SPI device:
+> +- da-target-attribute : The target and attribute value for a specific
+> +                        SPI-controller / SPI-device combination.
+> +                       E.g. <0x01 0x5e>: SPI0-CS1 target and attribute
+> 
+> ...
+> 
+> +Example with direct access mode:
+> +       spi@10600 {
+> +               compatible = "marvell,orion-spi";
+> +               status = "okay";
+> +               da-reg = <0xf2000000 0x100000>;
+> +
+> +               spi-fpga@1 {
+> +                       compatible = "altera,stratix-v";
+> +                       reg = <1>;
+> +                       /* 0x01 0x5e: SPI0-CS1 target and attribute */
+> +                       da-target-attribute = <0x01 0x5e>;
+> +               };
+> +       };
+> 
+> I've added the "da-*" (Direct Access) properties to enable the
+> SPI driver to dynamically allocate the MBus windows. Do you find
+> these new bindings reasonable? Or do you have better suggestions for
+> this per-SPI-device dynamic MBus allocation, perhaps by using
+> MBUS_ID somehow?
 
-Interesting. So this direct access mode can be used to interface
-with SPI flash using these extensions. Great.
+I was thinking it would be statically set up, but then we have a
+problem with how it uses both internal-regs and and its own mbus
+based reg, so we probably have to move the spi node outside of
+the internal-regs node to achieve that, similar to how we handle
+the devbus devices:
 
-But I hope that its not a requirement that I add this SPI flash
-support (via direct access mode) to the orion SPI driver to get
-this patch accepted. As it really was not the scope of my project.
-I can try to get this added later, but I can't make any promises
-here. Perhaps someone else finds the time to implement this?
 
-Thanks,
-Stefan
+	soc@ {
+		spi0 {
+                       compatible = "marvell,armada-370-spi",
+                                    "marvell,orion-spi";
+			reg = <MBUS_ID(0xf0, 0x01) 0x10600 0x28>,
+			      <MBUS_ID(0x01, 0x5e) 0 0x100000>;
+                       #address-cells = <1>;
+                       #size-cells = <0>;
+                       pinctrl-0 = <&spi0_pins1>;
+                       pinctrl-names = "default";
+                       cell-index = <0>;
+                       interrupts = <30>;
+                       clocks = <&coreclk 0>;
+                       status = "disabled";
+		};
+	};
 
+	Arnd
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

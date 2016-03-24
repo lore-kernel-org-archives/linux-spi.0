@@ -1,123 +1,75 @@
-From: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH v2] spi: orion.c: Add direct access mode
-Date: Thu, 24 Mar 2016 08:22:36 +0100
-Message-ID: <56F395BC.6070108@denx.de>
-References: <1458663893-13766-1-git-send-email-sr@denx.de>
- <20160323133612.GO2566@sirena.org.uk> <20160323135606.GE19953@lunn.ch>
- <12458203.7DzKuGjIvi@wuerfel>
+From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [PATCH 1/3] spi: pxa2xx: handle error of pxa2xx_spi_dma_prepare()
+Date: Thu, 24 Mar 2016 11:12:26 +0200
+Message-ID: <56F3AF7A.1080107@linux.intel.com>
+References: <1458746964-9335-1-git-send-email-jarkko.nikula@linux.intel.com>
+ <87fuvhrrgb.fsf@belgarion.home>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
+Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
-	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <12458203.7DzKuGjIvi@wuerfel>
+In-Reply-To: <87fuvhrrgb.fsf-4ty26DBLk+jEm7gnYqmdkQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 23.03.2016 20:51, Arnd Bergmann wrote:
-> On Wednesday 23 March 2016 14:56:06 Andrew Lunn wrote:
->> On Wed, Mar 23, 2016 at 01:36:12PM +0000, Mark Brown wrote:
->>> On Wed, Mar 23, 2016 at 02:26:37PM +0100, Andrew Lunn wrote:
->>>
->>>> The number of windows is limited. On i think the Armada XP, if you put
->>>> a PCIe device on every available PCIe bus, you can run out of
->>>> windows. This is why Thomas implemented dynamic allocation of the
->>>> Windows, so that only those that are needed are used.
->>>
->>>> So i would not statically and globally allocate as many windows as
->>>> possible SPI devices.
->>>
->>>> The fact that SPI can fall back to another mechanism if there are no
->>>> available windows, were as PCIe cannot, suggests that SPI should
->>>> dynamically allocate a window, and be prepared for it to fail.
->>>
->>>> Since only one SPI device can be active at once on a SPI bus, one
->>>> window per bus makes sense, and keeps the required number of windows
->>>> to a minimum.
->>>
->>> If we're under pressure for windows I'd go further and say that we
->>> should be dynamically allocating the windows only when they're actually
->>> in use (and modifying other drivers to do the same if that makes sense
->>> for them), unless it's somehow expensive to allocate windows that means
->>> that we should reduce the overall pressure.
+On 03/23/2016 08:15 PM, Robert Jarzmik wrote:
+> Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org> writes:
+>
+>> From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 >>
->> Hi Mark
+>> If by some reason pxa2xx_spi_dma_prepare() fails we have not to ignore its
+>> error. In such case we abort the transfer and return the error to upper
+>> level.
 >>
->> We are only under pressure in the extremes, i.e 10 PCIe busses in
->> use. Only allocating PCIe Windows when needed means in practice, we
->> have not had issues. We need to be mindful, and don't waste them, but
->> we don't need to consider them a scarce resource.
+>> Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+>> Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+>> ---
+>> Reposting Andy's fix from December that got buried to list during
+>> holidays.
+>> ---
+>>   drivers/spi/spi-pxa2xx.c | 8 +++++++-
+>>   1 file changed, 7 insertions(+), 1 deletion(-)
 >>
->> I don't see it being an issue for the SPI driver to allocate one on
->> probe and keeping it until release. I probably would object to it
->> allocating one per chip select line.
-> 
-> I agree. We had a very long debate about this when we first added
-> the support for MBus, and not much has changed. As far as I'm concerned,
-> this is where we're at:
-> 
-> The binding defines a reasonable set of default settings for each
-> device that uses MBus, and the OS can use them, or define its own.
-> Coming up with an algorithm to do this right however is very hard
-> and not really worth it, as defining the defaults works well enough.
-> 
-> Ideally we'd let the boot loader set up the windows statically and
-> have the DT describe what they are, but unfortunately that is not
-> what boot loaders in the field do.
-> 
-> The method that was picked for MBus is similar to how we typically
-> handle PCI host bridges that have the same problem: you can set up
-> translation windows between CPU addresses and the various PCI
-> address spaces (I/O, mem, prefetchable, config, ...) in all sorts
-> of ways, with various tradeoffs, but instead we just pick a
-> reasonable default and describe it in the DT, because the kernel
-> has no good generic way of picking a particular setting over another.
+>> diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+>> index 85e59a406a4c..47bdbd350a24 100644
+>> --- a/drivers/spi/spi-pxa2xx.c
+>> +++ b/drivers/spi/spi-pxa2xx.c
+>> @@ -928,6 +928,7 @@ static void pump_transfers(unsigned long data)
+>>   	u32 dma_thresh = drv_data->cur_chip->dma_threshold;
+>>   	u32 dma_burst = drv_data->cur_chip->dma_burst_size;
+>>   	u32 change_mask = pxa2xx_spi_get_ssrc1_change_mask(drv_data);
+>> +	int err;
+>>
+>>   	/* Get current state information */
+>>   	message = drv_data->cur_msg;
+>> @@ -1047,7 +1048,12 @@ static void pump_transfers(unsigned long data)
+>>   		/* Ensure we have the correct interrupt handler */
+>>   		drv_data->transfer_handler = pxa2xx_spi_dma_transfer;
+>>
+>> -		pxa2xx_spi_dma_prepare(drv_data, dma_burst);
+>> +		err = pxa2xx_spi_dma_prepare(drv_data, dma_burst);
+>> +		if (err) {
+>> +			message->status = err;
+>> +			giveback(drv_data);
+>> +			return;
+>> +		}
+> Hi Jarrko,
+>
+> Even if this patch is perfectly fine, isn't pxa2xx_spi_dma_prepare() leaking
+> tx_desc if its rx_desc allocation failed ? If so, wouldn't it make sense to add
+> it to this patch ?
+>
+Good catch, it indeeds leak. Also unmapping needs to be done too. Will 
+fix and resend.
 
-Arnd, thanks for your comments.
-
-So we seem to agree, that one MBus window per SPI controller is the
-way to go. Only how should this be described in the DT? I've come up
-with these new DT properties in v2:
-
-+- da-reg : The physical memory area that will be used for the direct
-+           access mode, if enabled in one of the SPI devices.
-+
-+Per SPI device:
-+- da-target-attribute : The target and attribute value for a specific
-+                        SPI-controller / SPI-device combination.
-+			E.g. <0x01 0x5e>: SPI0-CS1 target and attribute
-
-...
-
-+Example with direct access mode:
-+	spi@10600 {
-+		compatible = "marvell,orion-spi";
-+		status = "okay";
-+		da-reg = <0xf2000000 0x100000>;
-+
-+		spi-fpga@1 {
-+			compatible = "altera,stratix-v";
-+			reg = <1>;
-+			/* 0x01 0x5e: SPI0-CS1 target and attribute */
-+			da-target-attribute = <0x01 0x5e>;
-+		};
-+	};
-
-I've added the "da-*" (Direct Access) properties to enable the
-SPI driver to dynamically allocate the MBus windows. Do you find
-these new bindings reasonable? Or do you have better suggestions for
-this per-SPI-device dynamic MBus allocation, perhaps by using
-MBUS_ID somehow?
-
-Thanks,
-Stefan
-
+-- 
+Jarkko
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

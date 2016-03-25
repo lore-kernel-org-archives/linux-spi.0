@@ -1,85 +1,123 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2] spi: orion.c: Add direct access mode
-Date: Fri, 25 Mar 2016 10:32:53 +0000
-Message-ID: <20160325103253.GA2566@sirena.org.uk>
-References: <1458663893-13766-1-git-send-email-sr@denx.de>
- <30176583.aSTyzO0qS3@wuerfel>
- <56F42939.4020803@denx.de>
- <12540712.SXPhdxqg9f@wuerfel>
+From: Lakshmi Sai Krishna Potthuri <lakshmi.sai.krishna.potthuri@xilinx.com>
+Subject: RE: [LINUX PATCH 1/2] mtd: Added dummy entry in the spi_transfer
+ structure.
+Date: Fri, 25 Mar 2016 13:41:16 +0000
+Message-ID: <4FF8F58FAA9D5D4193D4E554E4352C5902C6DB59@XAP-PVEXMBX02.xlnx.xilinx.com>
+References: <1458562809-36114-1-git-send-email-lakshmis@xilinx.com>
+ <20160321130734.GS2566@sirena.org.uk>
+ <4FF8F58FAA9D5D4193D4E554E4352C5902C6D34C@XAP-PVEXMBX02.xlnx.xilinx.com>
+ <20160322100615.GA2566@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Wcqk1U9YY/kgSQtH"
-Cc: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
-	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <12540712.SXPhdxqg9f@wuerfel>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
-
-
---Wcqk1U9YY/kgSQtH
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset="iso-8859-2"
 Content-Transfer-Encoding: quoted-printable
+Cc: Marek Vasut <marex@denx.de>,
+ Boris Brezillon <boris.brezillon@free-electrons.com>,
+ Stephen Warren <swarren@nvidia.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Harini Katakam <harinik@xilinx.com>,
+ =?iso-8859-2?Q?Rafa=B3_Mi=B3ecki?= <zajec5@gmail.com>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "Andrew F. Davis" <afd@ti.com>,
+ Javier Martinez Canillas <javier@osg.samsung.com>,
+ Michal Simek <michals@xilinx.com>, Soren Brinkmann <sorenb@xilinx.com>,
+ Anirudha Sarangi <anirudh@xilinx.com>,
+ Punnaiah Choudary Kalluri <punnaia@xilinx.com>,
+ Jagan Teki <jteki@openedev.com>,
+ "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+ Brian Norris <computersforpeace@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20160322100615.GA2566@sirena.org.uk>
+Content-Language: en-US
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-On Thu, Mar 24, 2016 at 09:07:32PM +0100, Arnd Bergmann wrote:
-> On Thursday 24 March 2016 18:51:53 Stefan Roese wrote:
+Hi Mark,
 
-> > I see. But with this we are back to statically mapping the MBus
-> > windows that are used. Resulting in potentially multiple windows
-> > per SPI controller, which is not necessary (Andrew and Mark
-> > objected against that).
+>-----Original Message-----
+>From: Mark Brown [mailto:broonie@kernel.org]
+>Sent: Tuesday, March 22, 2016 3:36 PM
+>To: Lakshmi Sai Krishna Potthuri
+>Cc: Michal Simek; Soren Brinkmann; David Woodhouse; Brian Norris; Javier
+>Martinez Canillas; Boris Brezillon; Stephen Warren; Geert Uytterhoeven;
+>Andrew F. Davis; Marek Vasut; Jagan Teki; Rafa=B3 Mi=B3ecki; linux-
+>mtd@lists.infradead.org; linux-kernel@vger.kernel.org; linux-
+>spi@vger.kernel.org; linux-arm-kernel@lists.infradead.org; Harini Katakam;
+>Punnaiah Choudary Kalluri; Anirudha Sarangi
+>Subject: Re: [LINUX PATCH 1/2] mtd: Added dummy entry in the spi_transfer
+>structure.
+>
+>On Tue, Mar 22, 2016 at 06:39:51AM +0000, Lakshmi Sai Krishna Potthuri
+>wrote:
+>
+>Please fix your mail client to word wrap within paragraphs at something
+>substantially less than 80 columns.  Doing this makes your messages much
+>easier to read and reply to.  Please also avoid reflowing other text into =
+longer
+>lengths, this makes things worse.
+>
+>> >This isn't enough to add the feature - a client driver trying to make
+>> >use of this needs to be able to tell if the cycles are actually going
+>> >to be inserted.  I'd expect to see a capability flag that can be
+>> >checked and some error checking so that if we try to do a transfer
+>> >with dummy cycles and can't support it we don't silently ignore the
+>> >dummy cycles, ideally also something that'll handle multiples of 8
+>> >bits with SPI controllers that don't otherwise support this feature.
+>
+>> Currently, all fast reads use 8 cycles or 1 byte of dummy. This generally
+>works.
+>> But it can be vary based on the flash and the type of read command.
+>> Dummy bytes are taken care of in m25p80.c by adjusting the len field:
+>> Length =3D size of (command + address + dummy byte)
+>
+>> There might be controllers (like ZynqMP GQSPI) that would be able to
+>> use the information that dummy byte(s) were added and the precise
+>> number of dummy cycles. This patch does not disturb the existing
+>> implementation of adjusting length (as described above). It adds an
+>additional optional feature.
+>> So there is no harm to controllers that can't support it - they can
+>> ignore it and still work with the existing "length adjustment"
+>implementation.
+>> If you think there value in adding a capability flag, please let me know.
+>
+>This is really not what I'd expect to happen, I'd expect that these dummy
+>cycles would be in addition to the actual data (see my request for better
+>documentation...).  If they overlap with the data then what is the point in
+>specifying this?  It's more work for the host, what benefit do we get from
+>doing it over just handing it like a normal byte?
 
-> I'm not following here. Do you mean we should set up and tear
-> down the windows in the runtime PM callbacks so they are only
-> present when we actually access a device instead?
+len field in the transfer structure contains dummy bytes along with actual =
+data
+bytes, controllers which requires dummy bytes use len field and simply Igno=
+re
+the dummy field (contains only no of cycles)added in this patch. Controllers
+(like ZynqMP GQSPI) expects dummy in cycles won't work directly by using
+len field because host driver doesn't know that len field of a particular t=
+ransfer
+includes dummy bytes or not (and also number of dummy bytes included in len
+field). In such cases driver use this dummy field to identify the number of=
+ dummy
+cycles and based on that it will send the required number of dummy cycles (=
+which
+i did in the second patch).
 
-What we're trying to avoid is allocating a window to every single client
-device attached to SPI, the controller can only talk to one device at
-once anyway so having one per device is wasteful when this is a limited
-resource.  Looking at this from the point of view of a SPI driver it
-just seems obviously bad, in order to get the best performance with this
-controller we need to do a special per-device magic binding.  That's not
-good for usability, it's not ideal having to do it per controller but at
-least then it's done for the SoC.
+Regards
+Sai Krishna
 
-We also already apparently have some dynamic code for PCIe.=20
 
-> Among the dts files we ship with the kernel, how many would
-> actually use more than one mapping in practice if we decide to
-> do the static ranges property? I had a quick look and could not
-> even find one that has more than one chip-select connected.
-
-Do any of these boards have things like expansion connectors?
-
-> Ok, so with the static mapping it could be done very easily, or
-> we need a more complex solution for the dynamic mapping.
-
-Part of what I personally don't understand is why this is complicated?
-
---Wcqk1U9YY/kgSQtH
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJW9RPUAAoJECTWi3JdVIfQ6tEH/j4EiSyDcljDZ0CL5qZw77gA
-H+eW8aK9dmW7kmTB7xukdXHsbVVyTR60GQHlq+572q3O0T53N9Tfu2CS6pVZYSA9
-LYaH3tknOeT2db+84qxGwJLNFLTCEBo3GfAo6ow/FuUN9NQ6cZm1zSvqjMquZwdW
-2m62B8EPftolXy2EYn7/ZPmk9kOZahOvB5JMCjjCMohLZAGrx+yVMNglIAa8M2Xk
-OWvF7bLXdB4qSiENHlGsPHkQPzfDX9UHgtQ16Ar1v2QPI0/3Su3kZUKCoDtFZ/Mo
-GNaLdwAEs/b4KIabKQ1BiQ/l16RKu8U8AyIuRZmLcrQ87h0tOaVDzuza0v7we6Q=
-=5zgk
------END PGP SIGNATURE-----
-
---Wcqk1U9YY/kgSQtH--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+This email and any attachments are intended for the sole use of the named r=
+ecipient(s) and contain(s) confidential information that may be proprietary=
+, privileged or copyrighted under applicable law. If you are not the intend=
+ed recipient, do not read, copy, or forward this email message or any attac=
+hments. Delete this email message and any attachments immediately.

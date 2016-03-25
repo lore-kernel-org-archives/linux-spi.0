@@ -1,89 +1,78 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [LINUX PATCH 1/2] mtd: Added dummy entry in the spi_transfer
- structure.
-Date: Fri, 25 Mar 2016 15:01:09 +0000
-Message-ID: <20160325150109.GF2566@sirena.org.uk>
-References: <1458562809-36114-1-git-send-email-lakshmis@xilinx.com>
- <20160321130734.GS2566@sirena.org.uk>
- <4FF8F58FAA9D5D4193D4E554E4352C5902C6D34C@XAP-PVEXMBX02.xlnx.xilinx.com>
- <20160322100615.GA2566@sirena.org.uk>
- <4FF8F58FAA9D5D4193D4E554E4352C5902C6DB59@XAP-PVEXMBX02.xlnx.xilinx.com>
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Subject: Re: [PATCH v2] spi: orion.c: Add direct access mode
+Date: Fri, 25 Mar 2016 16:11:05 +0100
+Message-ID: <4319407.5A4b1VspuB@wuerfel>
+References: <1458663893-13766-1-git-send-email-sr@denx.de> <12540712.SXPhdxqg9f@wuerfel> <20160325103253.GA2566@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="K4TeRK2lnUi9hBXL"
-Cc: Michal Simek <michals-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	Soren Brinkmann <sorenb-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
-	Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
-	"Andrew F. Davis" <afd-l0cyMroinI0@public.gmane.org>, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
-	Jagan Teki <jteki-oRp2ZoJdM/RWk0Htik3J/w@public.gmane.org>,
-	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Harini Katakam <harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	Punnaiah Choudary Kalluri <punnaia-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	Anirudha Sarangi <anirudh-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-To: Lakshmi Sai Krishna Potthuri
-	<lakshmi.sai.krishna.potthuri-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <4FF8F58FAA9D5D4193D4E554E4352C5902C6DB59-4lKfpRxZ5ekkx2a1wsGfbYg+Gb3gawCHQz34XiSyOiE@public.gmane.org>
+In-Reply-To: <20160325103253.GA2566-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Friday 25 March 2016 10:32:53 Mark Brown wrote:
+> On Thu, Mar 24, 2016 at 09:07:32PM +0100, Arnd Bergmann wrote:
+> > On Thursday 24 March 2016 18:51:53 Stefan Roese wrote:
+> 
+> > > I see. But with this we are back to statically mapping the MBus
+> > > windows that are used. Resulting in potentially multiple windows
+> > > per SPI controller, which is not necessary (Andrew and Mark
+> > > objected against that).
+> 
+> > I'm not following here. Do you mean we should set up and tear
+> > down the windows in the runtime PM callbacks so they are only
+> > present when we actually access a device instead?
+> 
+> What we're trying to avoid is allocating a window to every single client
+> device attached to SPI, the controller can only talk to one device at
+> once anyway so having one per device is wasteful when this is a limited
+> resource.  Looking at this from the point of view of a SPI driver it
+> just seems obviously bad, in order to get the best performance with this
+> controller we need to do a special per-device magic binding.  That's not
+> good for usability, it's not ideal having to do it per controller but at
+> least then it's done for the SoC.
+> 
+> We also already apparently have some dynamic code for PCIe. 
 
---K4TeRK2lnUi9hBXL
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The PCI implementation is a bit of a layering violation, as the mbus
+binding has to know about the special reserved area that is used for
+dynamic PCI mappings.
 
-On Fri, Mar 25, 2016 at 01:41:16PM +0000, Lakshmi Sai Krishna Potthuri wrote:
+There is nothing magic in the binding if we just do the same thing
+the flash driver does, and describe the memory range that is associated
+with a chipselect.
 
-As I'm fairly sure I've said before please fix your mail client to word
-wrap within paragraphs at something substantially less than 80 columns.
-Doing this makes your messages much easier to read and reply to.
+> > Among the dts files we ship with the kernel, how many would
+> > actually use more than one mapping in practice if we decide to
+> > do the static ranges property? I had a quick look and could not
+> > even find one that has more than one chip-select connected.
+> 
+> Do any of these boards have things like expansion connectors?
 
-> >This is really not what I'd expect to happen, I'd expect that these dummy
-> >cycles would be in addition to the actual data (see my request for better
-> >documentation...).  If they overlap with the data then what is the point in
-> >specifying this?  It's more work for the host, what benefit do we get from
-> >doing it over just handing it like a normal byte?
+I think they are basically all consumer products, e.g. NAS systems
+or routers that just have a single SPI-NOR flash.
 
-> len field in the transfer structure contains dummy bytes along with actual data
-> bytes, controllers which requires dummy bytes use len field and simply Ignore
-> the dummy field (contains only no of cycles)added in this patch. Controllers
-> (like ZynqMP GQSPI) expects dummy in cycles won't work directly by using
-> len field because host driver doesn't know that len field of a particular transfer
-> includes dummy bytes or not (and also number of dummy bytes included in len
-> field). In such cases driver use this dummy field to identify the number of dummy
-> cycles and based on that it will send the required number of dummy cycles (which
-> i did in the second patch).
+> > Ok, so with the static mapping it could be done very easily, or
+> > we need a more complex solution for the dynamic mapping.
+> 
+> Part of what I personally don't understand is why this is complicated?
 
-This doesn't make any sense at all to me.  Why does the controller care
-what the bytes being sent to and from the device mean?
+I think we'd need to add another special case in the bus driver
+for it, which otherwise should be able to handle this in a generic
+way: if we just use the existing binding, the spi host driver can
+simply call devm_ioremap_resource() to see if there is a map
+for a given chipselect and otherwise fall back to the current
+mode.
 
---K4TeRK2lnUi9hBXL
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJW9VKzAAoJECTWi3JdVIfQ+MIH/1+HkvEE6Ni1KnJoU+HCfSgl
-aXmOYcM7VHQ2AKBsnlXNFxkc0sPdxUsdB3pihdNK/RSzxjsUy0apliTeCal4Nr11
-jUfGPFc5CYoWGgta6JZFEzQ9pOarVNyrQrc+z7IrutwehLqV9rGnf9Q9kZBJ10ii
-bpCN/GT/Nlq8J6CY6SkDFuhjuqZfiueRx2xGDQfXY1Cs+L1YmLoY4Czm2eg4mPbd
-H7vFjrTvcsiNb4H5OTUqvpFs4YVXMxoW37ta9TvOWKVZUiidCfzL8G4JzrIFpGwV
-bnIWeqSV3vgroCWvIdXKGxy/Fau1A/JT/lf7kayH1LGR+CzkGzYg0bJ93z0HX6g=
-=bEvJ
------END PGP SIGNATURE-----
-
---K4TeRK2lnUi9hBXL--
+	Arnd
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

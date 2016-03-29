@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi/fsl-espi: avoid infinite loops on fsl_espi_cpu_irq()" to the spi tree
+Subject: Applied "spi: pxa2xx: Fix cs_change management" to the spi tree
 Date: Tue, 29 Mar 2016 00:42:22 -0700
-Message-ID: <E1akoIA-0007p0-F5@finisterre>
-References: <59EFBE2126ED0E4AA25DF57320AFF129051FE3B5@BPXM14GP.gisp.nec.co.jp>
+Message-ID: <E1akoIA-0007oY-3Y@finisterre>
+References: <1458498617-11566-1-git-send-email-christophe-h.ricard@st.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Nobuteru Hayashi <hayashi.nbb-MBed0sS7vigTBYAz+LHnZg@public.gmane.org>,
+To: Christophe Ricard <christophe-h.ricard-qxv4g6HH51o@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <59EFBE2126ED0E4AA25DF57320AFF129051FE3B5-ZmjkEB1lVlLt6d3pZDjeaEtBU8KWyXPq@public.gmane.org>
+In-Reply-To: <1458498617-11566-1-git-send-email-christophe-h.ricard-qxv4g6HH51o@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi/fsl-espi: avoid infinite loops on fsl_espi_cpu_irq()
+   spi: pxa2xx: Fix cs_change management
 
 has been applied to the spi tree at
 
@@ -38,64 +38,43 @@ to this mail.
 Thanks,
 Mark
 
->From 6319a68011b86fa61dc63e94dc4fb716628037f3 Mon Sep 17 00:00:00 2001
-From: Nobuteru Hayashi <hayashi.nbb-MBed0sS7vigTBYAz+LHnZg@public.gmane.org>
-Date: Fri, 18 Mar 2016 11:35:21 +0000
-Subject: [PATCH] spi/fsl-espi: avoid infinite loops on fsl_espi_cpu_irq()
+>From a52db659c79ceede44e2d5ca63ca058d49df8dea Mon Sep 17 00:00:00 2001
+From: Christophe Ricard <christophe.ricard-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Sun, 20 Mar 2016 19:30:17 +0100
+Subject: [PATCH] spi: pxa2xx: Fix cs_change management
 
-It brought nearly infinite loops, and was possible to be
-occurred only if the SPI transaction total size are not
-alighed with 4. Loops are here at while (tmp--),
-tmp is unsigned, and set it with minus value.
+Fix cs_change management so that it is in line with other spi drivers.
 
-The loops are executed as a result of unexpected RX interrupt
-occurrence after that. This interrupt may be hardware eratta
-and is not fixed.
+In the spi core api helpers such as spi_bus_lock/unlock and spi_sync_locked
+or cs_change field in spi_transfer help to manage chip select from the
+device driver.
 
-Fix mspi->len from minus value to 0 and print warning message.
+The driver was setting the chip select to idle if the message queue was
+empty despite cs_change or other status field set by spi_bus_lock/unlock
+or spi_sync_locked.
 
-Signed-off-by: Nobuteru Hayashi <hayashi.nbb-MBed0sS7vigTBYAz+LHnZg@public.gmane.org>
+Signed-off-by: Christophe Ricard <christophe-h.ricard-qxv4g6HH51o@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/spi/spi-pxa2xx.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 64d794b99803..8d85a3c343da 100644
---- a/drivers/spi/spi-fsl-espi.c
-+++ b/drivers/spi/spi-fsl-espi.c
-@@ -544,6 +544,7 @@ void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
- 	if (events & SPIE_NE) {
- 		u32 rx_data, tmp;
- 		u8 rx_data_8;
-+		int rx_nr_bytes = 4;
- 		int ret;
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 86c155aea0cf..0ce82db8e484 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -570,9 +570,8 @@ static void giveback(struct driver_data *drv_data)
+ 		/* see if the next and current messages point
+ 		 * to the same chip
+ 		 */
+-		if (next_msg && next_msg->spi != msg->spi)
+-			next_msg = NULL;
+-		if (!next_msg || msg->state == ERROR_STATE)
++		if ((next_msg && next_msg->spi != msg->spi) ||
++		    msg->state == ERROR_STATE)
+ 			cs_deassert(drv_data);
+ 	}
  
- 		/* Spin until RX is done */
-@@ -560,7 +561,14 @@ void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
- 
- 		if (mspi->len >= 4) {
- 			rx_data = mpc8xxx_spi_read_reg(&reg_base->receive);
-+		} else if (mspi->len <= 0) {
-+			dev_err(mspi->dev,
-+				"unexpected RX(SPIE_NE) interrupt occurred,\n"
-+				"(local rxlen %d bytes, reg rxlen %d bytes)\n",
-+				min(4, mspi->len), SPIE_RXCNT(events));
-+			rx_nr_bytes = 0;
- 		} else {
-+			rx_nr_bytes = mspi->len;
- 			tmp = mspi->len;
- 			rx_data = 0;
- 			while (tmp--) {
-@@ -571,7 +579,7 @@ void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
- 			rx_data <<= (4 - mspi->len) * 8;
- 		}
- 
--		mspi->len -= 4;
-+		mspi->len -= rx_nr_bytes;
- 
- 		if (mspi->rx)
- 			mspi->get_rx(rx_data, mspi);
 -- 
 2.8.0.rc3
 

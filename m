@@ -1,92 +1,111 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2] spi: orion.c: Add direct access mode
-Date: Fri, 25 Mar 2016 22:39:22 +0000
-Message-ID: <20160325223922.GG5028@sirena.org.uk>
-References: <1458663893-13766-1-git-send-email-sr@denx.de>
- <4319407.5A4b1VspuB@wuerfel>
- <20160325155032.GH2566@sirena.org.uk>
- <10747635.WkGeFaKqdy@wuerfel>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="reI/iBAAp9kzkmX4"
-Cc: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
-	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Subject: Applied "spi: pxa2xx: Remove rx_/tx_map_len members from struct driver_data" to the spi tree
+Date: Tue, 29 Mar 2016 00:42:23 -0700
+Message-ID: <E1akoIB-0007qo-S5@finisterre>
+References: <1458746964-9335-2-git-send-email-jarkko.nikula@linux.intel.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <10747635.WkGeFaKqdy@wuerfel>
+In-Reply-To: <1458746964-9335-2-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---reI/iBAAp9kzkmX4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   spi: pxa2xx: Remove rx_/tx_map_len members from struct driver_data
 
-On Fri, Mar 25, 2016 at 09:58:40PM +0100, Arnd Bergmann wrote:
-> On Friday 25 March 2016 15:50:32 Mark Brown wrote:
+has been applied to the spi tree at
 
-> > Why are we even doing that though?  Like I say it just seems pointlessly
-> > unhelpful for users.  Are we really saying that every single system has
-> > to go through and manually modify their DT so that they can use this
-> > entirely in SoC feature?  That doesn't seem like winning...
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> I don't remember the exact details, but I think we had come up with
-> a generic constraint solving algorithm to pick appropriate windows for
-> each device with a (close to) minimal use of physical address space,
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-So there are some complicated constraints that make it hard to allocate
-=66rom the bus space?
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-> > > way: if we just use the existing binding, the spi host driver can
-> > > simply call devm_ioremap_resource() to see if there is a map
-> > > for a given chipselect and otherwise fall back to the current
-> > > mode.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-> > Why does the binding have to be in the client device to do that?
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-> I don't understand the question. The client device here is the SPI
-> controller, right? That doesn't need to have a special binding, it
-> just needs to list the registers relative to the mbus address space
-> like any other device, and that is independent of how we implement
-> it.
+Thanks,
+Mark
 
-If you're saying we're doing a binding per chip select presumably that
-binding appears in the SPI device even if it's the controller driver
-that parses it.  This was what the original patch did, I pushed back
-since it's a fairly common pattern for poor quality bindings where
-people for some reason want to add per device properties for whatever
-new feature they want to support instead of doing it at the controller
-level (and ideally just doing it without requring any configuration).
+>From 68335ec76e45fb3a1b796b26c3ea49ce1231d8fb Mon Sep 17 00:00:00 2001
+From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Date: Thu, 24 Mar 2016 15:35:43 +0200
+Subject: [PATCH] spi: pxa2xx: Remove rx_/tx_map_len members from struct
+ driver_data
 
-> It looks like Stefan's patch tricks here by creating an incompatible
-> binding for mbus that bypasses the address mapping.
+spi-pxa2xx-dma.c DMA engine implementation stopped using PIO for
+unaligned trailing bytes in the commit 111e0a9dc71e ("spi/pxa2xx: Prevent
+DMA from transferring too many bytes"). This means there is no need to
+update tx/rx transfer buffer pointers after DMA completion. These buffer
+pointers will be set to new buffers when handling the next transfer.
 
-I've not looked at the patch and honestly nobody has been talking about
-any generic binding, all I've seen is the per device property in the
-original patch.
+Because this buffer pointer update was only remaining use for rx_map_len
+and tx_map_len members in struct driver_data after removing the legacy PXA
+DMA implementation they can be removed now.
 
---reI/iBAAp9kzkmX4
-Content-Type: application/pgp-signature; name="signature.asc"
+Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Acked-by: Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-pxa2xx-dma.c | 5 -----
+ drivers/spi/spi-pxa2xx.h     | 2 --
+ 2 files changed, 7 deletions(-)
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+diff --git a/drivers/spi/spi-pxa2xx-dma.c b/drivers/spi/spi-pxa2xx-dma.c
+index b1883d228103..624cb06bd2e1 100644
+--- a/drivers/spi/spi-pxa2xx-dma.c
++++ b/drivers/spi/spi-pxa2xx-dma.c
+@@ -33,12 +33,10 @@ static int pxa2xx_spi_map_dma_buffer(struct driver_data *drv_data,
+ 		dmadev = drv_data->tx_chan->device->dev;
+ 		sgt = &drv_data->tx_sgt;
+ 		buf = drv_data->tx;
+-		drv_data->tx_map_len = len;
+ 	} else {
+ 		dmadev = drv_data->rx_chan->device->dev;
+ 		sgt = &drv_data->rx_sgt;
+ 		buf = drv_data->rx;
+-		drv_data->rx_map_len = len;
+ 	}
+ 
+ 	nents = DIV_ROUND_UP(len, SZ_2K);
+@@ -133,9 +131,6 @@ static void pxa2xx_spi_dma_transfer_complete(struct driver_data *drv_data,
+ 		if (!error) {
+ 			pxa2xx_spi_unmap_dma_buffers(drv_data);
+ 
+-			drv_data->tx += drv_data->tx_map_len;
+-			drv_data->rx += drv_data->rx_map_len;
+-
+ 			msg->actual_length += drv_data->len;
+ 			msg->state = pxa2xx_spi_next_transfer(drv_data);
+ 		} else {
+diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
+index a1ef88948144..85017f9ca67c 100644
+--- a/drivers/spi/spi-pxa2xx.h
++++ b/drivers/spi/spi-pxa2xx.h
+@@ -69,8 +69,6 @@ struct driver_data {
+ 	void *rx;
+ 	void *rx_end;
+ 	int dma_mapped;
+-	size_t rx_map_len;
+-	size_t tx_map_len;
+ 	u8 n_bytes;
+ 	int (*write)(struct driver_data *drv_data);
+ 	int (*read)(struct driver_data *drv_data);
+-- 
+2.8.0.rc3
 
-iQEcBAEBCAAGBQJW9b4YAAoJECTWi3JdVIfQGPEH/2Q7LKiHm2G9gX5FhW6mnKAf
-hNzUpQZxgESGnTohoFRQtA3pvynPU1NAj/DmkrPUtu1nIcCXLHGO30uBnnnb9bEU
-+Dym04sNdK2NGT8y3rAhibGVceZ/izcAyWmNZFU7UjEH2ZdLFXdInwgpuiLvmqX4
-aLvx/610FhZhKKKTyULfGTvuBwcUgu1xmYZ/Bj96VF9Uc1o7RwvSpZKNBvCamJSs
-jOKSscKat1p+AfvdovD1kVlPxIcnG6jkDObnwiFi3/AkspwFkwcMM+PsZINOMkjJ
-pxfuPJZBzouBPZPpx9xrc2LnvRjOvTrqV8/KGpnG5fkLkeJTT0acuuxtsprMFwM=
-=3KRB
------END PGP SIGNATURE-----
-
---reI/iBAAp9kzkmX4--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

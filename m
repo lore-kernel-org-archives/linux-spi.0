@@ -1,77 +1,87 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v4 2/2] spi: spi-pic32: Add PIC32 SPI master driver
-Date: Tue, 29 Mar 2016 09:25:01 -0700
-Message-ID: <20160329162501.GP2350@sirena.org.uk>
-References: <1458740576-9168-1-git-send-email-purna.mandal@microchip.com>
- <1458740576-9168-2-git-send-email-purna.mandal@microchip.com>
- <20160328192629.GG2350@sirena.org.uk>
- <56FA6EE1.3000405@microchip.com>
+Subject: Re: [PATCH v2] spi: orion.c: Add direct access mode
+Date: Tue, 29 Mar 2016 09:47:58 -0700
+Message-ID: <20160329164758.GQ2350@sirena.org.uk>
+References: <1458663893-13766-1-git-send-email-sr@denx.de>
+ <10747635.WkGeFaKqdy@wuerfel>
+ <20160325223922.GG5028@sirena.org.uk>
+ <29105031.S6XB0bXn2i@wuerfel>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="WYfJCIN5rqlfy3K0"
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Sergei Shtylyov <sergei.shtylyov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>,
-	Joshua Henderson <digitalpeer-icZdIMMiY0PM6KjX8ROVJw@public.gmane.org>,
-	Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: Purna Chandra Mandal <purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="xiprIVX1FSGBv8kC"
+Cc: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <56FA6EE1.3000405-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+In-Reply-To: <29105031.S6XB0bXn2i@wuerfel>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---WYfJCIN5rqlfy3K0
+--xiprIVX1FSGBv8kC
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Mar 29, 2016 at 05:32:41PM +0530, Purna Chandra Mandal wrote:
+On Tue, Mar 29, 2016 at 02:39:10PM +0200, Arnd Bergmann wrote:
+> On Friday 25 March 2016 22:39:22 Mark Brown wrote:
 
-> It is required for MMC-over-SPI support. Linux MMC_SPI driver sometimes
-> (depending on some logic) want chip-select to be kept enabled (using
-> transfer.cs_change) even at the end of SPI message so that following
-> message(s) can also be made part of the running MMC transaction.
-> In this case if there is any error (and in some other cases as well)
+> > So there are some complicated constraints that make it hard to allocate
+> > from the bus space?
 
-If your hardware doesn't support per-/CS setup then your driver needs to
-record whatever is configured via setup() and apply it later.
+> Yes, it's basically an optimization problem: the closer you can squeeze
+> everything together, the more address space you have left for RAM and/or
+> PCI.
 
-> MMC_SPI will have to terminate on-going MMC transactions and it is
-> done by calling setup(). It is assumed that setup() will always leave
-> the chip-select deactivated.
+But there are allocation constraints that make that hard?
 
-No, this is just completely broken - that's quite simply not what
-setup() does.  See spi-summary.  There is *no* code in the core that
-terminates ongoing transfers as a result of calling setup(), if that's
-happening it's a result of triggering error handling.
+> What we really have though is additional registers that belong to
+> the SPI controller and that are not part of internal-regs, so
+> we need to move it up one level out of the internal-regs node in order
+> to add more registers:
 
-> Best thing I can add is wait for unprepare_message() before calling
-> cleanup().
+That seems fine, it's part of the controller binding.
 
-The cleanup() function is for deallocating dynamically allocated data,
-it will be called by the core.
+> I think it makes a lot of sense to define a separate window for each CS
+> at boot time, just so you don't have to reprogram the windows manually.
+> After all, the entire point of the direct mode is to avoid having to
+> do any of the setup work, and have the SPI master set the right CS
+> itself based on the MBus ID that is used for accessing the slave mmio
+> window. This is also required if we want to enable things like
+> XIP (DaX) mappings for file systems on a SPI-NOR flash.
 
-> If you could suggest better alternative that will be great.
+Well, in the cases where we have one device on the bus then it's not a
+big deal since we can check what the last thing we set was.  The direct
+access stuff is going to have trouble if we have multiple devices on the
+bus since we try to mix it with non-MMIO access we run the risk of
+conflicting simultaneous use unless we continue to route everything
+through the SPI subsystem (like we do with the current flash read
+support).
 
-If you want to change the chip select you need to use the normal
-interfaces for changing the chip select via message processing.
+It really only makes a difference if the reprogramming process happens a
+lot and is expensive relative to the transfers and that doesn't seem
+like something I'd expect.
 
---WYfJCIN5rqlfy3K0
+--xiprIVX1FSGBv8kC
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJW+qxcAAoJECTWi3JdVIfQCGEH/0ro4qDCRm3bQh+5p5470DJg
-e0fokQVirG2OGwmCyvj2uIIwPflYltBY0D6Cp3UasEXmFwj0k4yulHy05NZAo97I
-+BNqSGlUCqjfpoS6vQ8cOUnLkpa7O/8/W6TF6fBwkrrKehRpHKkeAa1RV8Ln/KQr
-nhkXEw7U5nxLsx0DKSyJfEkBiHFLSM2kd1t+k/8Uh38LPjU2LviOoS7yvijdaZbs
-WBmmHdyh8hdB0eZAFJadERpYgXtzRumya7c/DQUsFi9GjhnBkV4x39JfPC26Mvd5
-v+/d6DanAjQGKY0E7EL6JWVhn7NKbxNu3qXPBcBSoM05ei36deB1yiZhF7rKTAs=
-=0JYq
+iQEcBAEBCAAGBQJW+rG9AAoJECTWi3JdVIfQQqUH/0DFMXZVGPsiAhBHZxk3mEP0
+yO+Mf/gP8odQFXXAsnxAL5qEPfaxWTYFxpAhzOmNMSu34I1RMitF97wHXfsu/2j9
+pX1t/XShHJQMyS6ind2M+Uc4t97BJkPFXzpiMiRsmrAixBZjpYFXvmEhNLj4SCd8
+EeB7IioiRHR6m9k2FfN1pT5JRx4z/876+gQAuk1O++ujhu7SeAsehtTUCHt3IuUO
+7iVNXirH6lUYtoVK2aadJZghCcQ8ojn1VnlXI7mNStqjgOV2kFrKijCPP/CIIuKf
+Ze1qznmC8RgOdZ+gQkGn25AKLc1+BVQq9qVnXQxKMGyP/g06RJCXpLvKH2L6Mvs=
+=gMDf
 -----END PGP SIGNATURE-----
 
---WYfJCIN5rqlfy3K0--
+--xiprIVX1FSGBv8kC--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

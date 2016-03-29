@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pxa2xx: Use dummy buffers provided by SPI core" to the spi tree
-Date: Tue, 29 Mar 2016 00:42:23 -0700
-Message-ID: <E1akoIB-0007qM-H4@finisterre>
-References: <1458746964-9335-3-git-send-email-jarkko.nikula@linux.intel.com>
+Subject: Applied "spi/fsl-espi: avoid infinite loops on fsl_espi_cpu_irq()" to the spi tree
+Date: Tue, 29 Mar 2016 00:42:22 -0700
+Message-ID: <E1akoIA-0007p0-F5@finisterre>
+References: <59EFBE2126ED0E4AA25DF57320AFF129051FE3B5@BPXM14GP.gisp.nec.co.jp>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+To: Nobuteru Hayashi <hayashi.nbb-MBed0sS7vigTBYAz+LHnZg@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1458746964-9335-3-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <59EFBE2126ED0E4AA25DF57320AFF129051FE3B5-ZmjkEB1lVlLt6d3pZDjeaEtBU8KWyXPq@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: pxa2xx: Use dummy buffers provided by SPI core
+   spi/fsl-espi: avoid infinite loops on fsl_espi_cpu_irq()
 
 has been applied to the spi tree at
 
@@ -38,76 +38,64 @@ to this mail.
 Thanks,
 Mark
 
->From 8c3ad488fe0e4478b3b29b9501074c5fb1bfda0d Mon Sep 17 00:00:00 2001
-From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Thu, 24 Mar 2016 15:35:44 +0200
-Subject: [PATCH] spi: pxa2xx: Use dummy buffers provided by SPI core
+>From 6319a68011b86fa61dc63e94dc4fb716628037f3 Mon Sep 17 00:00:00 2001
+From: Nobuteru Hayashi <hayashi.nbb-MBed0sS7vigTBYAz+LHnZg@public.gmane.org>
+Date: Fri, 18 Mar 2016 11:35:21 +0000
+Subject: [PATCH] spi/fsl-espi: avoid infinite loops on fsl_espi_cpu_irq()
 
-Dummy buffer is used for half duplex transfers that don't have TX or RX
-buffer set. Instead of own dummy buffer management here let the SPI core to
-handle it by setting the SPI_MASTER_MUST_RX and SPI_MASTER_MUST_TX flags.
-Then core makes sure both transfer buffers are set.
+It brought nearly infinite loops, and was possible to be
+occurred only if the SPI transaction total size are not
+alighed with 4. Loops are here at while (tmp--),
+tmp is unsigned, and set it with minus value.
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+The loops are executed as a result of unexpected RX interrupt
+occurrence after that. This interrupt may be hardware eratta
+and is not fixed.
+
+Fix mspi->len from minus value to 0 and print warning message.
+
+Signed-off-by: Nobuteru Hayashi <hayashi.nbb-MBed0sS7vigTBYAz+LHnZg@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-pxa2xx-dma.c | 10 +---------
- drivers/spi/spi-pxa2xx.c     |  1 +
- drivers/spi/spi-pxa2xx.h     |  1 -
- 3 files changed, 2 insertions(+), 10 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-pxa2xx-dma.c b/drivers/spi/spi-pxa2xx-dma.c
-index 624cb06bd2e1..a18a03d0afb7 100644
---- a/drivers/spi/spi-pxa2xx-dma.c
-+++ b/drivers/spi/spi-pxa2xx-dma.c
-@@ -53,11 +53,7 @@ static int pxa2xx_spi_map_dma_buffer(struct driver_data *drv_data,
- 	for_each_sg(sgt->sgl, sg, sgt->nents, i) {
- 		size_t bytes = min_t(size_t, len, SZ_2K);
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index 64d794b99803..8d85a3c343da 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -544,6 +544,7 @@ void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
+ 	if (events & SPIE_NE) {
+ 		u32 rx_data, tmp;
+ 		u8 rx_data_8;
++		int rx_nr_bytes = 4;
+ 		int ret;
  
--		if (buf)
--			sg_set_buf(sg, pbuf, bytes);
--		else
--			sg_set_buf(sg, drv_data->dummy, bytes);
--
-+		sg_set_buf(sg, pbuf, bytes);
- 		pbuf += bytes;
- 		len -= bytes;
- 	}
-@@ -312,10 +308,6 @@ int pxa2xx_spi_dma_setup(struct driver_data *drv_data)
- 	dma_cap_zero(mask);
- 	dma_cap_set(DMA_SLAVE, mask);
+ 		/* Spin until RX is done */
+@@ -560,7 +561,14 @@ void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
  
--	drv_data->dummy = devm_kzalloc(dev, SZ_2K, GFP_KERNEL);
--	if (!drv_data->dummy)
--		return -ENOMEM;
--
- 	drv_data->tx_chan = dma_request_slave_channel_compat(mask,
- 				pdata->dma_filter, pdata->tx_param, dev, "tx");
- 	if (!drv_data->tx_chan)
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 47bdbd350a24..86c155aea0cf 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1562,6 +1562,7 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
- 	master->unprepare_transfer_hardware = pxa2xx_spi_unprepare_transfer;
- 	master->fw_translate_cs = pxa2xx_spi_fw_translate_cs;
- 	master->auto_runtime_pm = true;
-+	master->flags = SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX;
+ 		if (mspi->len >= 4) {
+ 			rx_data = mpc8xxx_spi_read_reg(&reg_base->receive);
++		} else if (mspi->len <= 0) {
++			dev_err(mspi->dev,
++				"unexpected RX(SPIE_NE) interrupt occurred,\n"
++				"(local rxlen %d bytes, reg rxlen %d bytes)\n",
++				min(4, mspi->len), SPIE_RXCNT(events));
++			rx_nr_bytes = 0;
+ 		} else {
++			rx_nr_bytes = mspi->len;
+ 			tmp = mspi->len;
+ 			rx_data = 0;
+ 			while (tmp--) {
+@@ -571,7 +579,7 @@ void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
+ 			rx_data <<= (4 - mspi->len) * 8;
+ 		}
  
- 	drv_data->ssp_type = ssp->type;
+-		mspi->len -= 4;
++		mspi->len -= rx_nr_bytes;
  
-diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
-index 85017f9ca67c..e6b09000ff14 100644
---- a/drivers/spi/spi-pxa2xx.h
-+++ b/drivers/spi/spi-pxa2xx.h
-@@ -56,7 +56,6 @@ struct driver_data {
- 	struct sg_table tx_sgt;
- 	int rx_nents;
- 	int tx_nents;
--	void *dummy;
- 	atomic_t dma_running;
- 
- 	/* Current message transfer state info */
+ 		if (mspi->rx)
+ 			mspi->get_rx(rx_data, mspi);
 -- 
 2.8.0.rc3
 

@@ -1,21 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pxa2xx: handle error of pxa2xx_spi_dma_prepare()" to the spi tree
-Date: Tue, 29 Mar 2016 00:42:24 -0700
-Message-ID: <E1akoIC-0007rG-81@finisterre>
-References: <1458826544-28553-1-git-send-email-jarkko.nikula@linux.intel.com>
+Subject: Applied "spi/fsl-espi: Don't wait transaction completion forever" to the spi tree
+Date: Tue, 29 Mar 2016 00:42:22 -0700
+Message-ID: <E1akoIA-0007pS-QU@finisterre>
+References: <59EFBE2126ED0E4AA25DF57320AFF129051FE3BB@BPXM14GP.gisp.nec.co.jp>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+To: Nobuteru Hayashi <hayashi.nbb-MBed0sS7vigTBYAz+LHnZg@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1458826544-28553-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <59EFBE2126ED0E4AA25DF57320AFF129051FE3BB-ZmjkEB1lVlLt6d3pZDjeaEtBU8KWyXPq@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: pxa2xx: handle error of pxa2xx_spi_dma_prepare()
+   spi/fsl-espi: Don't wait transaction completion forever
 
 has been applied to the spi tree at
 
@@ -40,95 +38,47 @@ to this mail.
 Thanks,
 Mark
 
->From 7d1f1bf699efc9b0f0e92c910dc667a4511943f5 Mon Sep 17 00:00:00 2001
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Thu, 24 Mar 2016 15:35:42 +0200
-Subject: [PATCH] spi: pxa2xx: handle error of pxa2xx_spi_dma_prepare()
+>From aa70e567c4f0eeb849c6bcef3685bdf1fc3ca19d Mon Sep 17 00:00:00 2001
+From: Nobuteru Hayashi <hayashi.nbb-MBed0sS7vigTBYAz+LHnZg@public.gmane.org>
+Date: Fri, 18 Mar 2016 11:35:21 +0000
+Subject: [PATCH] spi/fsl-espi: Don't wait transaction completion forever
 
-If by some reason pxa2xx_spi_dma_prepare() fails we have not to ignore its
-error. In such case we abort the transfer and return the error to upper
-level.
+Because the eSPI driver uses wait_for_completion(), any stuck-able
+phenomenon at half-way transaction progress made worker task hang up.
+This phenomenon is perhaps caused by eSPI device errata which seems not
+to be published from vendor site yet.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-[Jarkko: Avoid leaking TX descriptors in case RX descriptor allocation
-fails. Noted by Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>.
-Unmap also buffers in case of failure.]
-Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Acked-by: Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>
+Anyway, we fix hang task by using fixed 2 seconds timeout
+that is our preferred value for eSPI maximum transaction size.
+
+It seems to be better that eSPI driver can detect this stuck and
+report error (EMSGSIZE) to the upper device driver because
+the upper device driver can decide to retry or recover.
+
+Signed-off-by: Nobuteru Hayashi <hayashi.nbb-MBed0sS7vigTBYAz+LHnZg@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-pxa2xx-dma.c | 13 +++++++++++--
- drivers/spi/spi-pxa2xx.c     |  8 +++++++-
- 2 files changed, 18 insertions(+), 3 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-pxa2xx-dma.c b/drivers/spi/spi-pxa2xx-dma.c
-index 365fc22c3572..b1883d228103 100644
---- a/drivers/spi/spi-pxa2xx-dma.c
-+++ b/drivers/spi/spi-pxa2xx-dma.c
-@@ -267,19 +267,22 @@ irqreturn_t pxa2xx_spi_dma_transfer(struct driver_data *drv_data)
- int pxa2xx_spi_dma_prepare(struct driver_data *drv_data, u32 dma_burst)
- {
- 	struct dma_async_tx_descriptor *tx_desc, *rx_desc;
-+	int err = 0;
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index 5d7fb81240cd..64d794b99803 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -245,7 +245,12 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	if (ret)
+ 		return ret;
  
- 	tx_desc = pxa2xx_spi_dma_prepare_one(drv_data, DMA_MEM_TO_DEV);
- 	if (!tx_desc) {
- 		dev_err(&drv_data->pdev->dev,
- 			"failed to get DMA TX descriptor\n");
--		return -EBUSY;
-+		err = -EBUSY;
-+		goto err_tx;
- 	}
+-	wait_for_completion(&mpc8xxx_spi->done);
++	/* Won't hang up forever, SPI bus sometimes got lost interrupts... */
++	ret = wait_for_completion_timeout(&mpc8xxx_spi->done, 2 * HZ);
++	if (ret == 0)
++		dev_err(mpc8xxx_spi->dev,
++			"Transaction hanging up (left %d bytes)\n",
++			mpc8xxx_spi->count);
  
- 	rx_desc = pxa2xx_spi_dma_prepare_one(drv_data, DMA_DEV_TO_MEM);
- 	if (!rx_desc) {
- 		dev_err(&drv_data->pdev->dev,
- 			"failed to get DMA RX descriptor\n");
--		return -EBUSY;
-+		err = -EBUSY;
-+		goto err_rx;
- 	}
- 
- 	/* We are ready when RX completes */
-@@ -289,6 +292,12 @@ int pxa2xx_spi_dma_prepare(struct driver_data *drv_data, u32 dma_burst)
- 	dmaengine_submit(rx_desc);
- 	dmaengine_submit(tx_desc);
- 	return 0;
-+
-+err_rx:
-+	dmaengine_terminate_async(drv_data->tx_chan);
-+err_tx:
-+	pxa2xx_spi_unmap_dma_buffers(drv_data);
-+	return err;
- }
- 
- void pxa2xx_spi_dma_start(struct driver_data *drv_data)
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 85e59a406a4c..47bdbd350a24 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -928,6 +928,7 @@ static void pump_transfers(unsigned long data)
- 	u32 dma_thresh = drv_data->cur_chip->dma_threshold;
- 	u32 dma_burst = drv_data->cur_chip->dma_burst_size;
- 	u32 change_mask = pxa2xx_spi_get_ssrc1_change_mask(drv_data);
-+	int err;
- 
- 	/* Get current state information */
- 	message = drv_data->cur_msg;
-@@ -1047,7 +1048,12 @@ static void pump_transfers(unsigned long data)
- 		/* Ensure we have the correct interrupt handler */
- 		drv_data->transfer_handler = pxa2xx_spi_dma_transfer;
- 
--		pxa2xx_spi_dma_prepare(drv_data, dma_burst);
-+		err = pxa2xx_spi_dma_prepare(drv_data, dma_burst);
-+		if (err) {
-+			message->status = err;
-+			giveback(drv_data);
-+			return;
-+		}
- 
- 		/* Clear status and start DMA engine */
- 		cr1 = chip->cr1 | dma_thresh | drv_data->dma_cr1;
+ 	/* disable rx ints */
+ 	mpc8xxx_spi_write_reg(&reg_base->mask, 0);
 -- 
 2.8.0.rc3
 

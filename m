@@ -1,19 +1,21 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi/fsl-espi: Don't spin forever on SPIE_RXCNT" to the spi tree
-Date: Tue, 29 Mar 2016 00:42:23 -0700
-Message-ID: <E1akoIB-0007pu-5p@finisterre>
-References: <59EFBE2126ED0E4AA25DF57320AFF129051FE3AF@BPXM14GP.gisp.nec.co.jp>
+Subject: Applied "spi: pxa2xx: handle error of pxa2xx_spi_dma_prepare()" to the spi tree
+Date: Tue, 29 Mar 2016 00:42:24 -0700
+Message-ID: <E1akoIC-0007rG-81@finisterre>
+References: <1458826544-28553-1-git-send-email-jarkko.nikula@linux.intel.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Nobuteru Hayashi <hayashi.nbb-MBed0sS7vigTBYAz+LHnZg@public.gmane.org>,
+To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <59EFBE2126ED0E4AA25DF57320AFF129051FE3AF-ZmjkEB1lVlLt6d3pZDjeaEtBU8KWyXPq@public.gmane.org>
+In-Reply-To: <1458826544-28553-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi/fsl-espi: Don't spin forever on SPIE_RXCNT
+   spi: pxa2xx: handle error of pxa2xx_spi_dma_prepare()
 
 has been applied to the spi tree at
 
@@ -38,55 +40,95 @@ to this mail.
 Thanks,
 Mark
 
->From a12ddd60ed0a88c3bb83a8d4c07762e41620bf8c Mon Sep 17 00:00:00 2001
-From: Nobuteru Hayashi <hayashi.nbb-MBed0sS7vigTBYAz+LHnZg@public.gmane.org>
-Date: Fri, 18 Mar 2016 11:35:21 +0000
-Subject: [PATCH] spi/fsl-espi: Don't spin forever on SPIE_RXCNT
+>From 7d1f1bf699efc9b0f0e92c910dc667a4511943f5 Mon Sep 17 00:00:00 2001
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Date: Thu, 24 Mar 2016 15:35:42 +0200
+Subject: [PATCH] spi: pxa2xx: handle error of pxa2xx_spi_dma_prepare()
 
-Infinite loop on SPIE_RXCNT occurred.
+If by some reason pxa2xx_spi_dma_prepare() fails we have not to ignore its
+error. In such case we abort the transfer and return the error to upper
+level.
 
-while (SPIE_RXCNT(events) < min(4, mspi->len)) {
-        cpu_relax();
-        events = mpc8xxx_spi_read_reg(&reg_base->event);
-}
-
-We met a soft lockup at fsl_espi_cpu_irq() because of this.
-
-Fix it by using spin_event_timeout() so that fsl_espi_cpu_irq()
-can break loop with timeouts dmesg.
-
-Signed-off-by: Nobuteru Hayashi <hayashi.nbb-MBed0sS7vigTBYAz+LHnZg@public.gmane.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+[Jarkko: Avoid leaking TX descriptors in case RX descriptor allocation
+fails. Noted by Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>.
+Unmap also buffers in case of failure.]
+Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Acked-by: Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/spi/spi-pxa2xx-dma.c | 13 +++++++++++--
+ drivers/spi/spi-pxa2xx.c     |  8 +++++++-
+ 2 files changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 7cb0c1921495..5d7fb81240cd 100644
---- a/drivers/spi/spi-fsl-espi.c
-+++ b/drivers/spi/spi-fsl-espi.c
-@@ -539,11 +539,18 @@ void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
- 	if (events & SPIE_NE) {
- 		u32 rx_data, tmp;
- 		u8 rx_data_8;
-+		int ret;
+diff --git a/drivers/spi/spi-pxa2xx-dma.c b/drivers/spi/spi-pxa2xx-dma.c
+index 365fc22c3572..b1883d228103 100644
+--- a/drivers/spi/spi-pxa2xx-dma.c
++++ b/drivers/spi/spi-pxa2xx-dma.c
+@@ -267,19 +267,22 @@ irqreturn_t pxa2xx_spi_dma_transfer(struct driver_data *drv_data)
+ int pxa2xx_spi_dma_prepare(struct driver_data *drv_data, u32 dma_burst)
+ {
+ 	struct dma_async_tx_descriptor *tx_desc, *rx_desc;
++	int err = 0;
  
- 		/* Spin until RX is done */
--		while (SPIE_RXCNT(events) < min(4, mspi->len)) {
--			cpu_relax();
--			events = mpc8xxx_spi_read_reg(&reg_base->event);
-+		if (SPIE_RXCNT(events) < min(4, mspi->len)) {
-+			ret = spin_event_timeout(
-+				!(SPIE_RXCNT(events =
-+				mpc8xxx_spi_read_reg(&reg_base->event)) <
-+						min(4, mspi->len)),
-+						10000, 0); /* 10 msec */
-+			if (!ret)
-+				dev_err(mspi->dev,
-+					 "tired waiting for SPIE_RXCNT\n");
- 		}
+ 	tx_desc = pxa2xx_spi_dma_prepare_one(drv_data, DMA_MEM_TO_DEV);
+ 	if (!tx_desc) {
+ 		dev_err(&drv_data->pdev->dev,
+ 			"failed to get DMA TX descriptor\n");
+-		return -EBUSY;
++		err = -EBUSY;
++		goto err_tx;
+ 	}
  
- 		if (mspi->len >= 4) {
+ 	rx_desc = pxa2xx_spi_dma_prepare_one(drv_data, DMA_DEV_TO_MEM);
+ 	if (!rx_desc) {
+ 		dev_err(&drv_data->pdev->dev,
+ 			"failed to get DMA RX descriptor\n");
+-		return -EBUSY;
++		err = -EBUSY;
++		goto err_rx;
+ 	}
+ 
+ 	/* We are ready when RX completes */
+@@ -289,6 +292,12 @@ int pxa2xx_spi_dma_prepare(struct driver_data *drv_data, u32 dma_burst)
+ 	dmaengine_submit(rx_desc);
+ 	dmaengine_submit(tx_desc);
+ 	return 0;
++
++err_rx:
++	dmaengine_terminate_async(drv_data->tx_chan);
++err_tx:
++	pxa2xx_spi_unmap_dma_buffers(drv_data);
++	return err;
+ }
+ 
+ void pxa2xx_spi_dma_start(struct driver_data *drv_data)
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 85e59a406a4c..47bdbd350a24 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -928,6 +928,7 @@ static void pump_transfers(unsigned long data)
+ 	u32 dma_thresh = drv_data->cur_chip->dma_threshold;
+ 	u32 dma_burst = drv_data->cur_chip->dma_burst_size;
+ 	u32 change_mask = pxa2xx_spi_get_ssrc1_change_mask(drv_data);
++	int err;
+ 
+ 	/* Get current state information */
+ 	message = drv_data->cur_msg;
+@@ -1047,7 +1048,12 @@ static void pump_transfers(unsigned long data)
+ 		/* Ensure we have the correct interrupt handler */
+ 		drv_data->transfer_handler = pxa2xx_spi_dma_transfer;
+ 
+-		pxa2xx_spi_dma_prepare(drv_data, dma_burst);
++		err = pxa2xx_spi_dma_prepare(drv_data, dma_burst);
++		if (err) {
++			message->status = err;
++			giveback(drv_data);
++			return;
++		}
+ 
+ 		/* Clear status and start DMA engine */
+ 		cr1 = chip->cr1 | dma_thresh | drv_data->dma_cr1;
 -- 
 2.8.0.rc3
 

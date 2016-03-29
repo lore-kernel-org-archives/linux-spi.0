@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pxa2xx: Fix cs_change management" to the spi tree
-Date: Tue, 29 Mar 2016 00:42:22 -0700
-Message-ID: <E1akoIA-0007oY-3Y@finisterre>
-References: <1458498617-11566-1-git-send-email-christophe-h.ricard@st.com>
+Subject: Applied "spi/fsl-espi: Don't spin forever on SPIE_RXCNT" to the spi tree
+Date: Tue, 29 Mar 2016 00:42:23 -0700
+Message-ID: <E1akoIB-0007pu-5p@finisterre>
+References: <59EFBE2126ED0E4AA25DF57320AFF129051FE3AF@BPXM14GP.gisp.nec.co.jp>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Christophe Ricard <christophe-h.ricard-qxv4g6HH51o@public.gmane.org>,
+To: Nobuteru Hayashi <hayashi.nbb-MBed0sS7vigTBYAz+LHnZg@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1458498617-11566-1-git-send-email-christophe-h.ricard-qxv4g6HH51o@public.gmane.org>
+In-Reply-To: <59EFBE2126ED0E4AA25DF57320AFF129051FE3AF-ZmjkEB1lVlLt6d3pZDjeaEtBU8KWyXPq@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: pxa2xx: Fix cs_change management
+   spi/fsl-espi: Don't spin forever on SPIE_RXCNT
 
 has been applied to the spi tree at
 
@@ -38,43 +38,55 @@ to this mail.
 Thanks,
 Mark
 
->From a52db659c79ceede44e2d5ca63ca058d49df8dea Mon Sep 17 00:00:00 2001
-From: Christophe Ricard <christophe.ricard-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Sun, 20 Mar 2016 19:30:17 +0100
-Subject: [PATCH] spi: pxa2xx: Fix cs_change management
+>From a12ddd60ed0a88c3bb83a8d4c07762e41620bf8c Mon Sep 17 00:00:00 2001
+From: Nobuteru Hayashi <hayashi.nbb-MBed0sS7vigTBYAz+LHnZg@public.gmane.org>
+Date: Fri, 18 Mar 2016 11:35:21 +0000
+Subject: [PATCH] spi/fsl-espi: Don't spin forever on SPIE_RXCNT
 
-Fix cs_change management so that it is in line with other spi drivers.
+Infinite loop on SPIE_RXCNT occurred.
 
-In the spi core api helpers such as spi_bus_lock/unlock and spi_sync_locked
-or cs_change field in spi_transfer help to manage chip select from the
-device driver.
+while (SPIE_RXCNT(events) < min(4, mspi->len)) {
+        cpu_relax();
+        events = mpc8xxx_spi_read_reg(&reg_base->event);
+}
 
-The driver was setting the chip select to idle if the message queue was
-empty despite cs_change or other status field set by spi_bus_lock/unlock
-or spi_sync_locked.
+We met a soft lockup at fsl_espi_cpu_irq() because of this.
 
-Signed-off-by: Christophe Ricard <christophe-h.ricard-qxv4g6HH51o@public.gmane.org>
+Fix it by using spin_event_timeout() so that fsl_espi_cpu_irq()
+can break loop with timeouts dmesg.
+
+Signed-off-by: Nobuteru Hayashi <hayashi.nbb-MBed0sS7vigTBYAz+LHnZg@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-pxa2xx.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 86c155aea0cf..0ce82db8e484 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -570,9 +570,8 @@ static void giveback(struct driver_data *drv_data)
- 		/* see if the next and current messages point
- 		 * to the same chip
- 		 */
--		if (next_msg && next_msg->spi != msg->spi)
--			next_msg = NULL;
--		if (!next_msg || msg->state == ERROR_STATE)
-+		if ((next_msg && next_msg->spi != msg->spi) ||
-+		    msg->state == ERROR_STATE)
- 			cs_deassert(drv_data);
- 	}
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index 7cb0c1921495..5d7fb81240cd 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -539,11 +539,18 @@ void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
+ 	if (events & SPIE_NE) {
+ 		u32 rx_data, tmp;
+ 		u8 rx_data_8;
++		int ret;
  
+ 		/* Spin until RX is done */
+-		while (SPIE_RXCNT(events) < min(4, mspi->len)) {
+-			cpu_relax();
+-			events = mpc8xxx_spi_read_reg(&reg_base->event);
++		if (SPIE_RXCNT(events) < min(4, mspi->len)) {
++			ret = spin_event_timeout(
++				!(SPIE_RXCNT(events =
++				mpc8xxx_spi_read_reg(&reg_base->event)) <
++						min(4, mspi->len)),
++						10000, 0); /* 10 msec */
++			if (!ret)
++				dev_err(mspi->dev,
++					 "tired waiting for SPIE_RXCNT\n");
+ 		}
+ 
+ 		if (mspi->len >= 4) {
 -- 
 2.8.0.rc3
 

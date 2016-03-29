@@ -1,149 +1,148 @@
-From: Purna Chandra Mandal <purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Subject: Re: [PATCH v4 2/2] spi: spi-pic32: Add PIC32 SPI master driver
-Date: Tue, 29 Mar 2016 17:32:41 +0530
-Message-ID: <56FA6EE1.3000405@microchip.com>
-References: <1458740576-9168-1-git-send-email-purna.mandal@microchip.com>
- <1458740576-9168-2-git-send-email-purna.mandal@microchip.com>
- <20160328192629.GG2350@sirena.org.uk>
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Subject: Re: [PATCH v2] spi: orion.c: Add direct access mode
+Date: Tue, 29 Mar 2016 14:39:10 +0200
+Message-ID: <29105031.S6XB0bXn2i@wuerfel>
+References: <1458663893-13766-1-git-send-email-sr@denx.de> <10747635.WkGeFaKqdy@wuerfel> <20160325223922.GG5028@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-Cc: <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Sergei Shtylyov <sergei.shtylyov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>,
-	Joshua Henderson <digitalpeer-icZdIMMiY0PM6KjX8ROVJw@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160328192629.GG2350-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <20160325223922.GG5028-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 03/29/2016 12:56 AM, Mark Brown wrote:
+On Friday 25 March 2016 22:39:22 Mark Brown wrote:
+> On Fri, Mar 25, 2016 at 09:58:40PM +0100, Arnd Bergmann wrote:
+> > On Friday 25 March 2016 15:50:32 Mark Brown wrote:
+> 
+> > > Why are we even doing that though?  Like I say it just seems pointlessly
+> > > unhelpful for users.  Are we really saying that every single system has
+> > > to go through and manually modify their DT so that they can use this
+> > > entirely in SoC feature?  That doesn't seem like winning...
+> 
+> > I don't remember the exact details, but I think we had come up with
+> > a generic constraint solving algorithm to pick appropriate windows for
+> > each device with a (close to) minimal use of physical address space,
+> 
+> So there are some complicated constraints that make it hard to allocate
+> from the bus space?
 
-> On Wed, Mar 23, 2016 at 07:12:56PM +0530, Purna Chandra Mandal wrote:
+Yes, it's basically an optimization problem: the closer you can squeeze
+everything together, the more address space you have left for RAM and/or
+PCI.
+
+>From the Armada XP data sheet, I can also see that it's possible to map
+multiple SPI slaves into the MMIO space using a single MBus window, which
+can be useful if  you have plenty of address space but a shortage of
+mbus window registers.
+
+> > > > way: if we just use the existing binding, the spi host driver can
+> > > > simply call devm_ioremap_resource() to see if there is a map
+> > > > for a given chipselect and otherwise fall back to the current
+> > > > mode.
+> 
+> > > Why does the binding have to be in the client device to do that?
+> 
+> > I don't understand the question. The client device here is the SPI
+> > controller, right? That doesn't need to have a special binding, it
+> > just needs to list the registers relative to the mbus address space
+> > like any other device, and that is independent of how we implement
+> > it.
+> 
+> If you're saying we're doing a binding per chip select presumably that
+> binding appears in the SPI device even if it's the controller driver
+> that parses it.  This was what the original patch did, I pushed back
+> since it's a fairly common pattern for poor quality bindings where
+> people for some reason want to add per device properties for whatever
+> new feature they want to support instead of doing it at the controller
+> level (and ideally just doing it without requring any configuration).
 >
->> +	switch (bits_per_word) {
->> +	default:
->> +	case 8:
-> Are you sure that all bits per word settings other than those explicitly
-> supported should be handled in exactly the same fashion as 8 bits per
-> word?  That doesn't seem entirely expected.  I'd expect the default to
-> be to return an error.
+> > It looks like Stefan's patch tricks here by creating an incompatible
+> > binding for mbus that bypasses the address mapping.
+> 
+> I've not looked at the patch and honestly nobody has been talking about
+> any generic binding, all I've seen is the per device property in the
+> original patch.
 
-ack. Will treat default case as error.
+I've looked up the original patch now, and I agree with your concern.
+It's not at all what I suggest here though. We should not need any
+properties in the spi slave node, and I think all added properties in
+the spi master node should be static, and not refer to the configuration
+at all.
 
->> +static int pic32_spi_prepare_message(struct spi_master *master,
->> +				     struct spi_message *msg)
->> +{
->> +	struct spi_device *spi = msg->spi;
->> +	struct spi_transfer *xfer;
->> +	struct pic32_spi *pic32s;
->> +
->> +	pic32s = spi_master_get_devdata(master);
->> +
->> +	pic32s->mesg = msg;
->> +	pic32_spi_disable_chip(pic32s);
->> +
->> +	if (!pic32_spi_debug)
->> +		return 0;
-> This appears to be some half implemented debugging code which is never
-> enabled, please remove it.
+In the DT node for the spi master, we already have a register range
+for the SPI's control registers, and this is an address in the
+domain of the MBus controller, which we treat as a 64-bit flat address
+space in DT, specifically it is part of the 'internal-regs' bus that
+has a 20-bit section out of that 64-bit bus:
 
-ack. Will remove the debug logic.
+        soc {
+                #address-cells = <2>;
+                #size-cells = <1>;
+                internal-regs {
+                        compatible = "simple-bus";
+                        #address-cells = <1>;
+                        #size-cells = <1>;
+                        ranges = <0 MBUS_ID(0xf0, 0x01) 0 0x100000>;
 
->> +	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
->> +		dev_dbg(&spi->dev, "  xfer %p: len %u tx %p rx %p\n",
->> +			xfer, xfer->len, xfer->tx_buf, xfer->rx_buf);
->> +		print_hex_dump(KERN_DEBUG, "tx_buf ",
->> +			       DUMP_PREFIX_ADDRESS,
->> +			       16, 1, xfer->tx_buf,
->> +			       min_t(u32, xfer->len, 16), 1);
->> +	}
-> Similarly here, the core already has extensive trace stuff in it which
-> you can use.
+                        spi0: spi@10600 {
+				compatible = "marvell,armada-370-spi";
+                                reg = <0x10600 0x28>;
+                                #address-cells = <1>;
+                                #size-cells = <0>;
+                        };
+		};
+	};
 
-Will remove.
+What we really have though is additional registers that belong to
+the SPI controller and that are not part of internal-regs, so
+we need to move it up one level out of the internal-regs node in order
+to add more registers:
 
->> +	/* transact by DMA mode */
->> +	if (transfer->rx_sg.nents && transfer->tx_sg.nents) {
->> +		ret = pic32_spi_dma_transfer(pic32s, transfer);
->> +		if (ret) {
->> +			dev_err(&spi->dev, "dma submit error\n");
->> +			return ret;
->> +		}
->> +
->> +		/* DMA issued, wait for completion */
->> +		set_bit(PIC32F_DMA_ISSUED, &pic32s->flags);
->> +		goto out_wait_for_xfer;
->> +	}
-> ...
->
->> +
->> +out_wait_for_xfer:
-> Please write normal code with an if/else rather than using gotos, it's a
-> lot easier to follow.
+        soc {
+                #address-cells = <2>;
+                #size-cells = <1>;
+               spi0: spi@10600 {
+			compatible = "marvell,armada-370-spi";
+                       reg = <MBUS_ID(0xf0, 0x01) 0x10600 0x28>, /* control */
+			       <MBUS_ID(0x01, 0x1e) 0 0x100000>; /* CS0 */
+			       <MBUS_ID(0x01, 0x5e) 0 0x100000>; /* CS1 */
+			       <MBUS_ID(0x01, 0x9e) 0 0x100000>; /* CS2 */
+			       <MBUS_ID(0x01, 0xee) 0 0x100000>; /* CS3 */
+			       <MBUS_ID(0x01, 0x1f) 0 0x100000>; /* CS4 */
+			       <MBUS_ID(0x01, 0x5f) 0 0x100000>; /* CS5 */
+			       <MBUS_ID(0x01, 0x9f) 0 0x100000>; /* CS6 */
+			       <MBUS_ID(0x01, 0xef) 0 0x100000>; /* CS7 */
+                       #address-cells = <1>;
+                       #size-cells = <0>;
+		};
+	};
 
-Make sense. Will use if-else.
+This lists all the addresses as seen from the MBus, but doesn't put them
+into the CPU address space, which is then done by adding an entry in the
+'ranges' property of the soc node:
 
->> +	pic32s = spi_master_get_devdata(master);
->> +
->> +	pic32_spi_disable_chip(pic32s);
-> Do we really need tod isable the hardware after every single message?
-> It's normally more efficient to just leave the hardware powered until it
-> goes idle and unprepare_transfer_hardware() is called.
->
-Ack. There is no particular need to disable h/w per message.
-Will instead implement prepare/unprepare_transfer_hardware() and add there.
+	soc {
+		ranges = <MBUS_ID(0x01, 0x1e) 0  0xe0000000  0x20000>; /* SPI 0 CS0 128kb */
+		...
+	};
 
->> +	/* SPI master supports only one spi-device at a time.
->> +	 * So multiple spi_setup() to different devices is not allowed.
->> +	 */
->> +	if (unlikely(pic32s->spi_dev && (pic32s->spi_dev != spi))) {
-> unlikely() is for fast paths, outside of them it's just noise.
+I think it makes a lot of sense to define a separate window for each CS
+at boot time, just so you don't have to reprogram the windows manually.
+After all, the entire point of the direct mode is to avoid having to
+do any of the setup work, and have the SPI master set the right CS
+itself based on the MBus ID that is used for accessing the slave mmio
+window. This is also required if we want to enable things like
+XIP (DaX) mappings for file systems on a SPI-NOR flash.
 
-ack.
-
->> +	/* But spi_setup() can be called multiple times by same device.
->> +	 * In that case stop current on-going transaction and release
->> +	 * resource(s).
->> +	 */
->> +	if (pic32s->spi_dev == spi)
->> +		pic32_spi_cleanup(spi);
-> This is broken, it will break in progress transfers.  setup() shouldn't
-> be doing anything that disrupts them, anything that can't be run when
-> other transfers are in progress needs to be deferred till we actually do
-> the transfers (or done earlier in probe).
-
-Normally setup() and cleanup() are called in-pair by spi-client driver.
-In these cases the above condition won't met and will not be a problem.
-
-It is required for MMC-over-SPI support. Linux MMC_SPI driver sometimes
-(depending on some logic) want chip-select to be kept enabled (using
-transfer.cs_change) even at the end of SPI message so that following
-message(s) can also be made part of the running MMC transaction.
-In this case if there is any error (and in some other cases as well)
-MMC_SPI will have to terminate on-going MMC transactions and it is
-done by calling setup(). It is assumed that setup() will always leave
-the chip-select deactivated.
-
-Reference from drivers/mmc/host/mmc_spi.c:
--------------------
-/*
- * MMC-over-SPI protocol glue, used by the MMC stack interface
- */
-
-static inline int mmc_cs_off(struct mmc_spi_host *host)
-{
-        /* chipselect will always be inactive after setup() */
-        return spi_setup(host->spi);
-}
-----------------
-
-Best thing I can add is wait for unprepare_message() before calling
-cleanup().
-
-If you could suggest better alternative that will be great.
-
-
+	Arnd
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

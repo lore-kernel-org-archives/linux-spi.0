@@ -1,273 +1,71 @@
-From: Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: [PATCH v2 4/7] scatterlist: add sg_alloc_table_from_buf()
- helper
-Date: Wed, 30 Mar 2016 17:39:51 +0200
-Message-ID: <1459352394-22810-5-git-send-email-boris.brezillon@free-electrons.com>
-References: <1459352394-22810-1-git-send-email-boris.brezillon@free-electrons.com>
-Reply-To: boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v4 2/2] spi: spi-pic32: Add PIC32 SPI master driver
+Date: Wed, 30 Mar 2016 08:48:39 -0700
+Message-ID: <20160330154839.GZ2350@sirena.org.uk>
+References: <1458740576-9168-1-git-send-email-purna.mandal@microchip.com>
+ <1458740576-9168-2-git-send-email-purna.mandal@microchip.com>
+ <20160328192629.GG2350@sirena.org.uk>
+ <56FA6EE1.3000405@microchip.com>
+ <20160329162501.GP2350@sirena.org.uk>
+ <56FBAF2C.9090401@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>,
-	linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org,
-	Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Dan Williams <dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Mauro Carvalho Chehab <m.chehab-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Hans Verkuil <hans.verkuil-FYB4Gu1CFyUAvxtiuMwx3w@public.gmane.org>,
-	Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>,
-	linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Richard Weinberger <richard-/L3Ra7n9ekc@public.gmane.org>
-To: David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	Dave Gordon <david.s.gordon-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-sunxi+bncBCIPJ6FA2QLBBUHG563QKGQEITACF4Q-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-In-Reply-To: <1459352394-22810-1-git-send-email-boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <https://groups.google.com/group/linux-sunxi
-List-Subscribe: <https://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
- <https://groups.google.com/group/linux-sunxi/subscribe>
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="5LK7OEqpP/xdrAG9"
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Sergei Shtylyov <sergei.shtylyov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>,
+	Joshua Henderson <digitalpeer-icZdIMMiY0PM6KjX8ROVJw@public.gmane.org>,
+	Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Purna Chandra Mandal <purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <56FBAF2C.9090401-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-sg_alloc_table_from_buf() provides an easy solution to create an sg_table
-from a virtual address pointer. This function takes care of dealing with
-vmallocated buffers, buffer alignment, or DMA engine limitations (maximum
-DMA transfer size).
 
-Signed-off-by: Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
----
- include/linux/scatterlist.h |  24 +++++++
- lib/scatterlist.c           | 161 ++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 185 insertions(+)
+--5LK7OEqpP/xdrAG9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/include/linux/scatterlist.h b/include/linux/scatterlist.h
-index 556ec1e..4a75362 100644
---- a/include/linux/scatterlist.h
-+++ b/include/linux/scatterlist.h
-@@ -41,6 +41,27 @@ struct sg_table {
- 	unsigned int orig_nents;	/* original size of list */
- };
- 
-+/**
-+ * struct sg_constraints - SG constraints structure
-+ *
-+ * @max_chunk_len: maximum chunk buffer length. Each SG entry has to be smaller
-+ *		   than this value. Zero means no constraint.
-+ * @required_alignment: minimum alignment. Is used for both size and pointer
-+ *			alignment. If this constraint is not met, the function
-+ *			should return -EINVAL.
-+ * @preferred_alignment: preferred alignment. Mainly used to optimize
-+ *			 throughput when the DMA engine performs better when
-+ *			 doing aligned accesses.
-+ *
-+ * This structure is here to help sg_alloc_table_from_buf() create the optimal
-+ * SG list based on DMA engine constraints.
-+ */
-+struct sg_constraints {
-+	size_t max_chunk_len;
-+	size_t required_alignment;
-+	size_t preferred_alignment;
-+};
-+
- /*
-  * Notes on SG table design.
-  *
-@@ -265,6 +286,9 @@ int sg_alloc_table_from_pages(struct sg_table *sgt,
- 	struct page **pages, unsigned int n_pages,
- 	unsigned long offset, unsigned long size,
- 	gfp_t gfp_mask);
-+int sg_alloc_table_from_buf(struct sg_table *sgt, const void *buf, size_t len,
-+			    const struct sg_constraints *constraints,
-+			    gfp_t gfp_mask);
- 
- size_t sg_copy_buffer(struct scatterlist *sgl, unsigned int nents, void *buf,
- 		      size_t buflen, off_t skip, bool to_buffer);
-diff --git a/lib/scatterlist.c b/lib/scatterlist.c
-index 004fc70..94776ff 100644
---- a/lib/scatterlist.c
-+++ b/lib/scatterlist.c
-@@ -433,6 +433,167 @@ int sg_alloc_table_from_pages(struct sg_table *sgt,
- }
- EXPORT_SYMBOL(sg_alloc_table_from_pages);
- 
-+static size_t sg_buf_chunk_len(const void *buf, size_t len,
-+			       const struct sg_constraints *cons)
-+{
-+	size_t chunk_len = len;
-+
-+	if (cons->max_chunk_len)
-+		chunk_len = min_t(size_t, chunk_len, cons->max_chunk_len);
-+
-+	if (is_vmalloc_addr(buf)) {
-+		unsigned long offset_in_page = offset_in_page(buf);
-+		size_t contig_len = PAGE_SIZE - offset_in_page;
-+		unsigned long phys = vmalloc_to_pfn(buf) - offset_in_page;
-+		const void *contig_ptr = buf + contig_len;
-+
-+		/*
-+		 * Vmalloced buffer might be composed of several physically
-+		 * contiguous pages. Avoid extra scattergather entries in
-+		 * this case.
-+		 */
-+		while (contig_len < chunk_len) {
-+			if (phys + PAGE_SIZE != vmalloc_to_pfn(contig_ptr))
-+				break;
-+
-+			contig_len += PAGE_SIZE;
-+			contig_ptr += PAGE_SIZE;
-+			phys += PAGE_SIZE;
-+		}
-+
-+		chunk_len = min_t(size_t, chunk_len, contig_len);
-+	}
-+
-+	if (!IS_ALIGNED((unsigned long)buf, cons->preferred_alignment)) {
-+		const void *aligned_buf = PTR_ALIGN(buf,
-+						    cons->preferred_alignment);
-+		size_t unaligned_len = (unsigned long)(aligned_buf - buf);
-+
-+		chunk_len = min_t(size_t, chunk_len, unaligned_len);
-+	} else if (chunk_len > cons->preferred_alignment) {
-+		chunk_len &= ~(cons->preferred_alignment - 1);
-+	}
-+
-+	return chunk_len;
-+}
-+
-+#define sg_for_each_chunk_in_buf(buf, len, chunk_len, constraints)	\
-+	for (chunk_len = sg_buf_chunk_len(buf, len, constraints);	\
-+	     len;							\
-+	     len -= chunk_len, buf += chunk_len,			\
-+	     chunk_len = sg_buf_chunk_len(buf, len, constraints))
-+
-+static int sg_check_constraints(struct sg_constraints *cons,
-+				const void *buf, size_t len)
-+{
-+	if (!cons->required_alignment)
-+		cons->required_alignment = 1;
-+
-+	if (!cons->preferred_alignment)
-+		cons->preferred_alignment = cons->required_alignment;
-+
-+	/* Test if buf and len are properly aligned. */
-+	if (!IS_ALIGNED((unsigned long)buf, cons->required_alignment) ||
-+	    !IS_ALIGNED(len, cons->required_alignment))
-+		return -EINVAL;
-+
-+	/*
-+	 * if the buffer has been vmallocated and required_alignment is
-+	 * more than PAGE_SIZE we cannot guarantee it.
-+	 */
-+	if (is_vmalloc_addr(buf) && cons->required_alignment > PAGE_SIZE)
-+		return -EINVAL;
-+
-+	/*
-+	 * max_chunk_len has to be aligned to required_alignment to
-+	 * guarantee that all buffer chunks are aligned correctly.
-+	 */
-+	if (!IS_ALIGNED(cons->max_chunk_len, cons->required_alignment))
-+		return -EINVAL;
-+
-+	/*
-+	 * preferred_alignment has to be aligned to required_alignment
-+	 * to avoid misalignment of buffer chunks.
-+	 */
-+	if (!IS_ALIGNED(cons->preferred_alignment, cons->required_alignment))
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
-+/**
-+ * sg_alloc_table_from_buf - create an SG table from a buffer
-+ *
-+ * @sgt: SG table
-+ * @buf: buffer you want to create this SG table from
-+ * @len: length of buf
-+ * @constraints: optional constraints to take into account when creating
-+ *		 the SG table. Can be NULL if no specific constraints are
-+ *		 required.
-+ * @gfp_mask: type of allocation to use when creating the table
-+ *
-+ * This function creates an SG table from a buffer, its length and some
-+ * SG constraints.
-+ *
-+ * Note: This function supports vmallocated and physically contiguous buffers.
-+ */
-+int sg_alloc_table_from_buf(struct sg_table *sgt, const void *buf, size_t len,
-+			    const struct sg_constraints *constraints,
-+			    gfp_t gfp_mask)
-+{
-+	struct sg_constraints cons = { };
-+	size_t remaining, chunk_len;
-+	const void *sg_buf;
-+	int i, ret;
-+
-+	if (constraints)
-+		cons = *constraints;
-+
-+	ret = sg_check_constraints(&cons, buf, len);
-+	if (ret)
-+		return ret;
-+
-+	sg_buf = buf;
-+	remaining = len;
-+	i = 0;
-+	sg_for_each_chunk_in_buf(sg_buf, remaining, chunk_len, &cons)
-+		i++;
-+
-+	ret = sg_alloc_table(sgt, i, gfp_mask);
-+	if (ret)
-+		return ret;
-+
-+	sg_buf = buf;
-+	remaining = len;
-+	i = 0;
-+	sg_for_each_chunk_in_buf(sg_buf, remaining, chunk_len, &cons) {
-+		if (is_vmalloc_addr(sg_buf)) {
-+			struct page *vm_page;
-+
-+			vm_page = vmalloc_to_page(sg_buf);
-+			if (!vm_page) {
-+				ret = -ENOMEM;
-+				goto err_free_table;
-+			}
-+
-+			sg_set_page(&sgt->sgl[i], vm_page, chunk_len,
-+				    offset_in_page(sg_buf));
-+		} else {
-+			sg_set_buf(&sgt->sgl[i], sg_buf, chunk_len);
-+		}
-+
-+		i++;
-+	}
-+
-+	return 0;
-+
-+err_free_table:
-+	sg_free_table(sgt);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL(sg_alloc_table_from_buf);
-+
- void __sg_page_iter_start(struct sg_page_iter *piter,
- 			  struct scatterlist *sglist, unsigned int nents,
- 			  unsigned long pgoffset)
--- 
-2.5.0
+On Wed, Mar 30, 2016 at 04:19:16PM +0530, Purna Chandra Mandal wrote:
+> On 03/29/2016 09:55 PM, Mark Brown wrote:
+> > On Tue, Mar 29, 2016 at 05:32:41PM +0530, Purna Chandra Mandal wrote:
+
+> >> MMC_SPI will have to terminate on-going MMC transactions and it is
+> >> done by calling setup(). It is assumed that setup() will always leave
+> >> the chip-select deactivated.
+
+> > No, this is just completely broken - that's quite simply not what
+> > setup() does.  See spi-summary.  There is *no* code in the core that
+> > terminates ongoing transfers as a result of calling setup(), if that's
+> > happening it's a result of triggering error handling.
+
+> Description of spi_setup() in spi.c clearly mentions that "When this
+> function returns, the spi device is deselected" and this is only
+> possible if (at least) chip-select is deactivated.
+
+This doesn't say anything about any ongoing operations!  Trying to do a
+setup() with active transfers on the device is just not sensible, it is
+intended to be used on an idle device.  I would not expect it to work
+reliably on an active device.
+
+--5LK7OEqpP/xdrAG9
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJW+/VWAAoJECTWi3JdVIfQMWYH/i7A8Ehf3fPcdsl2l1VSJKgy
+cLfPNo1m7Ffqe8VArYS7DAnRBE+wedQ1CuFqZF3BYmBjUr9kQ2+QKTTtkb0ocp3Z
+AcM14vTQYHMVeJBa+FQqZQEtdC+tU8SX53wkBKtNxf9Y0AaMCf918hSw9TmTz2df
+iwqYu13PECCKAfm0hgthDZTpJRDZx49CkHQKYuuCEsXDMBTlbBGO48ocqRlICcJo
+yTbgib6aAazz4JrdWpqgbVtTP2XgPiUaedcfM/LxwbnrT106OjI10XsULLrmkXVf
+hu/5vvTixkkfrk66Ly4ZlkeIOjFag57zvu8KLBPhdqjSQlFSFXuq7G1GtCGmhGM=
+=VU9y
+-----END PGP SIGNATURE-----
+
+--5LK7OEqpP/xdrAG9--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

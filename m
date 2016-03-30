@@ -1,71 +1,57 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v4 2/2] spi: spi-pic32: Add PIC32 SPI master driver
-Date: Wed, 30 Mar 2016 08:48:39 -0700
-Message-ID: <20160330154839.GZ2350@sirena.org.uk>
-References: <1458740576-9168-1-git-send-email-purna.mandal@microchip.com>
- <1458740576-9168-2-git-send-email-purna.mandal@microchip.com>
- <20160328192629.GG2350@sirena.org.uk>
- <56FA6EE1.3000405@microchip.com>
- <20160329162501.GP2350@sirena.org.uk>
- <56FBAF2C.9090401@microchip.com>
+Subject: Re: [PATCH v2 4/7] scatterlist: add sg_alloc_table_from_buf()
+ helper
+Date: Wed, 30 Mar 2016 09:51:43 -0700
+Message-ID: <20160330165143.GI2350@sirena.org.uk>
+References: <1459352394-22810-1-git-send-email-boris.brezillon@free-electrons.com>
+ <1459352394-22810-5-git-send-email-boris.brezillon@free-electrons.com>
+Reply-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="5LK7OEqpP/xdrAG9"
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Sergei Shtylyov <sergei.shtylyov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>,
-	Joshua Henderson <digitalpeer-icZdIMMiY0PM6KjX8ROVJw@public.gmane.org>,
-	Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: Purna Chandra Mandal <purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="vFj1JTFBn4Zx1dEI"
+Cc: David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	Dave Gordon <david.s.gordon-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>, linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org,
+	Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Dan Williams <dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mauro Carvalho Chehab <m.chehab-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Hans Verkuil <hans.verkuil-FYB4Gu1CFyUAvxtiuMwx3w@public.gmane.org>,
+	Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>,
+	linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Richard Weinberger <ri
+To: Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Return-path: <linux-sunxi+bncBDQ2L75W5QGBBSMI6C3QKGQEKKOOJUA-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
 Content-Disposition: inline
-In-Reply-To: <56FBAF2C.9090401-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1459352394-22810-5-git-send-email-boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <https://groups.google.com/group/linux-sunxi
+List-Subscribe: <https://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+ <https://groups.google.com/group/linux-sunxi/subscribe>
+List-Id: linux-spi.vger.kernel.org
 
-
---5LK7OEqpP/xdrAG9
-Content-Type: text/plain; charset=us-ascii
+--vFj1JTFBn4Zx1dEI
+Content-Type: text/plain; charset=UTF-8
 Content-Disposition: inline
 
-On Wed, Mar 30, 2016 at 04:19:16PM +0530, Purna Chandra Mandal wrote:
-> On 03/29/2016 09:55 PM, Mark Brown wrote:
-> > On Tue, Mar 29, 2016 at 05:32:41PM +0530, Purna Chandra Mandal wrote:
+On Wed, Mar 30, 2016 at 05:39:51PM +0200, Boris Brezillon wrote:
+> sg_alloc_table_from_buf() provides an easy solution to create an sg_table
+> from a virtual address pointer. This function takes care of dealing with
+> vmallocated buffers, buffer alignment, or DMA engine limitations (maximum
+> DMA transfer size).
 
-> >> MMC_SPI will have to terminate on-going MMC transactions and it is
-> >> done by calling setup(). It is assumed that setup() will always leave
-> >> the chip-select deactivated.
-
-> > No, this is just completely broken - that's quite simply not what
-> > setup() does.  See spi-summary.  There is *no* code in the core that
-> > terminates ongoing transfers as a result of calling setup(), if that's
-> > happening it's a result of triggering error handling.
-
-> Description of spi_setup() in spi.c clearly mentions that "When this
-> function returns, the spi device is deselected" and this is only
-> possible if (at least) chip-select is deactivated.
-
-This doesn't say anything about any ongoing operations!  Trying to do a
-setup() with active transfers on the device is just not sensible, it is
-intended to be used on an idle device.  I would not expect it to work
-reliably on an active device.
-
---5LK7OEqpP/xdrAG9
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJW+/VWAAoJECTWi3JdVIfQMWYH/i7A8Ehf3fPcdsl2l1VSJKgy
-cLfPNo1m7Ffqe8VArYS7DAnRBE+wedQ1CuFqZF3BYmBjUr9kQ2+QKTTtkb0ocp3Z
-AcM14vTQYHMVeJBa+FQqZQEtdC+tU8SX53wkBKtNxf9Y0AaMCf918hSw9TmTz2df
-iwqYu13PECCKAfm0hgthDZTpJRDZx49CkHQKYuuCEsXDMBTlbBGO48ocqRlICcJo
-yTbgib6aAazz4JrdWpqgbVtTP2XgPiUaedcfM/LxwbnrT106OjI10XsULLrmkXVf
-hu/5vvTixkkfrk66Ly4ZlkeIOjFag57zvu8KLBPhdqjSQlFSFXuq7G1GtCGmhGM=
-=VU9y
------END PGP SIGNATURE-----
-
---5LK7OEqpP/xdrAG9--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+This seems nice.  Should we also have a further helper on top of this
+which will get constraints from a dmaengine, it seems like it'd be a
+common need?
+--vFj1JTFBn4Zx1dEI--

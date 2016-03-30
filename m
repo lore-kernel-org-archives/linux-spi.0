@@ -1,87 +1,71 @@
-From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Subject: Re: [PATCH v2] spi: orion.c: Add direct access mode
-Date: Wed, 30 Mar 2016 00:04:55 +0200
-Message-ID: <13533301.gfdhE3AuMf@wuerfel>
-References: <1458663893-13766-1-git-send-email-sr@denx.de> <3108005.nUMWsj4kjp@wuerfel> <20160329212842.GN2350@sirena.org.uk>
+From: Purna Chandra Mandal <purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+Subject: Re: [PATCH v4 2/2] spi: spi-pic32: Add PIC32 SPI master driver
+Date: Wed, 30 Mar 2016 16:19:16 +0530
+Message-ID: <56FBAF2C.9090401@microchip.com>
+References: <1458740576-9168-1-git-send-email-purna.mandal@microchip.com>
+ <1458740576-9168-2-git-send-email-purna.mandal@microchip.com>
+ <20160328192629.GG2350@sirena.org.uk> <56FA6EE1.3000405@microchip.com>
+ <20160329162501.GP2350@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
-	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+Cc: <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Sergei Shtylyov <sergei.shtylyov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>,
+	Joshua Henderson <digitalpeer-icZdIMMiY0PM6KjX8ROVJw@public.gmane.org>,
+	Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160329212842.GN2350-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <20160329162501.GP2350-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tuesday 29 March 2016 14:28:42 Mark Brown wrote:
-> On Tue, Mar 29, 2016 at 11:08:55PM +0200, Arnd Bergmann wrote:
-> > On Tuesday 29 March 2016 14:00:18 Mark Brown wrote:
-> 
-> > > Implementing that would require the SPI core to export something
-> > > providing access to the memory regions.  We don't currently do that,
-> > > it'd require us to deal with the interaction with access as a SPI device
-> > > (this hardware often seems to only accelerate reads so we still need to
-> > > use regular SPI access for writes).
-> 
-> > The manual lists both read and write accesses as handled through
-> > direct mode.
-> 
-> That is not in general the case for this sort of hardware, and there's
-> also erase support to consider here.
+On 03/29/2016 09:55 PM, Mark Brown wrote:
 
-Sorry for being unclear, I was referring to spi writes here, not flash
-writes.
+> On Tue, Mar 29, 2016 at 05:32:41PM +0530, Purna Chandra Mandal wrote:
+>
+>> It is required for MMC-over-SPI support. Linux MMC_SPI driver sometimes
+>> (depending on some logic) want chip-select to be kept enabled (using
+>> transfer.cs_change) even at the end of SPI message so that following
+>> message(s) can also be made part of the running MMC transaction.
+>> In this case if there is any error (and in some other cases as well)
+> If your hardware doesn't support per-/CS setup then your driver needs to
+> record whatever is configured via setup() and apply it later.
 
-The MTD infrastructure handles _point internally, and I think it is
-only ever used on jffs2 these days. I had assumed that _point was
-used by mtd_block to implement direct_access for read-only block
-based file systems as well, but it's not.
+PIC32 SPI controller supports one /CS per instance. So per-/CS specific
+logic might not be required.
 
-I don't think there is any device that abstracts a SPI-NOR flash
-to look like RAM.
+>> MMC_SPI will have to terminate on-going MMC transactions and it is
+>> done by calling setup(). It is assumed that setup() will always leave
+>> the chip-select deactivated.
+> No, this is just completely broken - that's quite simply not what
+> setup() does.  See spi-summary.  There is *no* code in the core that
+> terminates ongoing transfers as a result of calling setup(), if that's
+> happening it's a result of triggering error handling.
 
-> > > I don't like having to assign windows per device, like I say it seems
-> > > like more work.
-> 
-> > Ok, but that's something else that can be implemented independently
-> > as I explained earlier: We currently rely on the windows to be assigned
-> > in the DT, but it's also possible to extend the mbus driver in a way
-> > that lets it pick its own windows in one way or another. It should
-> 
-> That's what I've been asking for but people keep saying it's not
-> possible...
+Description of spi_setup() in spi.c clearly mentions that "When this
+function returns, the spi device is deselected" and this is only
+possible if (at least) chip-select is deactivated.
 
-It's not impossible, it's just that IIRC we decided that the effort
-to do this well was not reasonable compared to the benefit back
-when the mbus driver got added.
+So based on spi-summary and spi_setup() description, except chip-select,
+all other settings has to be recorded and applied later when device is
+selected and data is transferred to or from the device.
 
-I don't think anything has changed here.
+Keeping this in mind I'll just retain cs-deselect logic in setup() and
+apply the recorded setting in prepare_message() callback, if and when required.
 
-> > not impact the binding for the SPI host controller in any way, the
-> > binding just describes how the internal addressing is wired up to
-> > the mbus in hardware, and the mbus driver takes care of mapping those
-> > into CPU addresses.
-> 
-> If we're able to do it automatically without baking this into the DT and
-> there's enough space to cope with this and PCI together then that's more
-> reasonable.
+>> Best thing I can add is wait for unprepare_message() before calling
+>> cleanup().
+> The cleanup() function is for deallocating dynamically allocated data,
+> it will be called by the core.
 
-Ok, good. Then let's just do the SPI host driver like all the other
-mbus slaves using whatever mbus provides, and implement dynamic remapping
-of mbus windows whenever someone gets too annoyed with having to 
-come up with a mapping for their board.
+ack.
 
-At least by doing SPI like all the other devices, we don't make it
-harder to come up with a generic algorithm for assigning the windows
-at boot time.
+>> If you could suggest better alternative that will be great.
+> If you want to change the chip select you need to use the normal
+> interfaces for changing the chip select via message processing.
 
-	Arnd
+ack.
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

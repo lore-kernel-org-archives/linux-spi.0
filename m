@@ -1,98 +1,133 @@
-From: Vignesh R <vigneshr@ti.com>
-Subject: Re: [v2,4/7] scatterlist: add sg_alloc_table_from_buf() helper
-Date: Thu, 31 Mar 2016 10:26:59 +0530
-Message-ID: <56FCAE1B.90206@ti.com>
-References: <1459352394-22810-5-git-send-email-boris.brezillon@free-electrons.com>
+From: Lakshmi Sai Krishna Potthuri <lakshmi.sai.krishna.potthuri@xilinx.com>
+Subject: RE: [LINUX PATCH 1/2] mtd: Added dummy entry in the spi_transfer
+ structure.
+Date: Thu, 31 Mar 2016 06:14:24 +0000
+Message-ID: <4FF8F58FAA9D5D4193D4E554E4352C5902C6E92A@XAP-PVEXMBX02.xlnx.xilinx.com>
+References: <1458562809-36114-1-git-send-email-lakshmis@xilinx.com>
+ <20160321130734.GS2566@sirena.org.uk>
+ <4FF8F58FAA9D5D4193D4E554E4352C5902C6D34C@XAP-PVEXMBX02.xlnx.xilinx.com>
+ <20160322100615.GA2566@sirena.org.uk>
+ <4FF8F58FAA9D5D4193D4E554E4352C5902C6DB59@XAP-PVEXMBX02.xlnx.xilinx.com>
+ <20160325150109.GF2566@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland@arm.com>, <devicetree@vger.kernel.org>,
-	Pawel Moll <pawel.moll@arm.com>,
-	Ian Campbell <ijc+devicetree@hellion.org.uk>,
-	Vinod Koul <vinod.koul@intel.com>,
-	Chen-Yu Tsai <wens@csie.org>, Rob Herring <robh+dt@kernel.org>,
-	<linux-spi@vger.kernel.org>, Richard Weinberger <richard@nod.at>,
-	<linux-sunxi@googlegroups.com>, Mark Brown <broonie@kernel.org>,
-	Hans Verkuil <hans.verkuil@cisco.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Kumar Gala <galak@codeaurora.org>, <dmaengine@vger.kernel.org>,
-	Maxime Ripard <maxime.ripard@free-electrons.com>,
-	<linux-media@vger.kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	<linux-arm-kernel@lists.infradead.org>,
-	Mauro Carvalho Chehab <m.chehab@samsung.com>
-To: Boris BREZILLON <boris.brezillon@free-electrons.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Brian Norris <computersforpeace@gmail.com>,
-	<linux-mtd@lists.infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Dave Gordon <david.s.gordon@intel.com>
-Return-path: <linux-media-owner@vger.kernel.org>
-In-Reply-To: <1459352394-22810-5-git-send-email-boris.brezillon@free-electrons.com>
-Sender: linux-media-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-2"
+Content-Transfer-Encoding: quoted-printable
+Cc: Marek Vasut <marex@denx.de>,
+ Boris Brezillon <boris.brezillon@free-electrons.com>,
+ Stephen Warren <swarren@nvidia.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Harini Katakam <harinik@xilinx.com>,
+ =?iso-8859-2?Q?Rafa=B3_Mi=B3ecki?= <zajec5@gmail.com>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "Andrew F. Davis" <afd@ti.com>,
+ Javier Martinez Canillas <javier@osg.samsung.com>,
+ Michal Simek <michals@xilinx.com>, Soren Brinkmann <sorenb@xilinx.com>,
+ Anirudha Sarangi <anirudh@xilinx.com>,
+ Punnaiah Choudary Kalluri <punnaia@xilinx.com>,
+ Jagan Teki <jteki@openedev.com>,
+ "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+ Brian Norris <computersforpeace@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20160325150109.GF2566@sirena.org.uk>
+Content-Language: en-US
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
-
-On 03/30/2016 09:09 PM, Boris BREZILLON wrote:
-
-[...]
-
-> +int sg_alloc_table_from_buf(struct sg_table *sgt, const void *buf, size_t len,
-> +			    const struct sg_constraints *constraints,
-> +			    gfp_t gfp_mask)
-> +{
-> +	struct sg_constraints cons = { };
-> +	size_t remaining, chunk_len;
-> +	const void *sg_buf;
-> +	int i, ret;
-> +
-> +	if (constraints)
-> +		cons = *constraints;
-> +
-> +	ret = sg_check_constraints(&cons, buf, len);
-> +	if (ret)
-> +		return ret;
-> +
-> +	sg_buf = buf;
-> +	remaining = len;
-> +	i = 0;
-> +	sg_for_each_chunk_in_buf(sg_buf, remaining, chunk_len, &cons)
-> +		i++;
-> +
-> +	ret = sg_alloc_table(sgt, i, gfp_mask);
-> +	if (ret)
-> +		return ret;
-> +
-> +	sg_buf = buf;
-> +	remaining = len;
-> +	i = 0;
-> +	sg_for_each_chunk_in_buf(sg_buf, remaining, chunk_len, &cons) {
-> +		if (is_vmalloc_addr(sg_buf)) {
-> +			struct page *vm_page;
-> +
-> +			vm_page = vmalloc_to_page(sg_buf);
-> +			if (!vm_page) {
-> +				ret = -ENOMEM;
-> +				goto err_free_table;
-> +			}
-> +
-> +			sg_set_page(&sgt->sgl[i], vm_page, chunk_len,
-> +				    offset_in_page(sg_buf));
-> +		} else {
-> +			sg_set_buf(&sgt->sgl[i], sg_buf, chunk_len);
-> +		}
-> +
-
-If the buf address is in PKMAP_BASE - PAGE_OFFSET-1 region (I have
-observed that JFFS2 FS provides buffers in above region to MTD layer),
-if CONFIG_DEBUG_SG is set then sg_set_buf() will throw a BUG_ON() as
-virt_addr_is_valid() will return false. Is there a sane way to handle
-buffers of PKMAP_BASE region with sg_*  APIs?
-Or, is the function sg_alloc_table_from_buf() not to be used with such
-buffers?
 
 
--- 
+>-----Original Message-----
+>From: Mark Brown [mailto:broonie@kernel.org]
+>Sent: Friday, March 25, 2016 8:31 PM
+>To: Lakshmi Sai Krishna Potthuri <lakshmis@xilinx.com>
+>Cc: Michal Simek <michals@xilinx.com>; Soren Brinkmann
+><sorenb@xilinx.com>; David Woodhouse <dwmw2@infradead.org>; Brian
+>Norris <computersforpeace@gmail.com>; Javier Martinez Canillas
+><javier@osg.samsung.com>; Boris Brezillon <boris.brezillon@free-
+>electrons.com>; Stephen Warren <swarren@nvidia.com>; Geert
+>Uytterhoeven <geert+renesas@glider.be>; Andrew F. Davis <afd@ti.com>;
+>Marek Vasut <marex@denx.de>; Jagan Teki <jteki@openedev.com>; Rafa=B3
+>Mi=B3ecki <zajec5@gmail.com>; linux-mtd@lists.infradead.org; linux-
+>kernel@vger.kernel.org; linux-spi@vger.kernel.org; linux-arm-
+>kernel@lists.infradead.org; Harini Katakam <harinik@xilinx.com>; Punnaiah
+>Choudary Kalluri <punnaia@xilinx.com>; Anirudha Sarangi
+><anirudh@xilinx.com>
+>Subject: Re: [LINUX PATCH 1/2] mtd: Added dummy entry in the spi_transfer
+>structure.
+>
+>On Fri, Mar 25, 2016 at 01:41:16PM +0000, Lakshmi Sai Krishna Potthuri wro=
+te:
+>
+>As I'm fairly sure I've said before please fix your mail client to word
+>wrap within paragraphs at something substantially less than 80 columns.
+>Doing this makes your messages much easier to read and reply to.
+>
+
+Sorry, there was some issue with my mail client, now I corrected it.
+
+>> >This is really not what I'd expect to happen, I'd expect that these dum=
+my
+>> >cycles would be in addition to the actual data (see my request for bett=
+er
+>> >documentation...).  If they overlap with the data then what is the poin=
+t in
+>> >specifying this?  It's more work for the host, what benefit do we get f=
+rom
+>> >doing it over just handing it like a normal byte?
+>
+>> len field in the transfer structure contains dummy bytes along with actu=
+al
+>data
+>> bytes, controllers which requires dummy bytes use len field and simply
+>Ignore
+>> the dummy field (contains only no of cycles)added in this patch. Control=
+lers
+>> (like ZynqMP GQSPI) expects dummy in cycles won't work directly by using
+>> len field because host driver doesn't know that len field of a particular
+>transfer
+>> includes dummy bytes or not (and also number of dummy bytes included in
+>len
+>> field). In such cases driver use this dummy field to identify the number=
+ of
+>dummy
+>> cycles and based on that it will send the required number of dummy cycles
+>(which
+>> i did in the second patch).
+>
+>This doesn't make any sense at all to me.  Why does the controller care
+>what the bytes being sent to and from the device mean?
+
+>From the flash point of view, it expects the controller to send the dummy
+on 1/2/4 lines based on the command. For Quad commands, flash expects
+4 lines to be active during dummy phase. Similarly, 2 lines for dual
+Commands and 1 line for normal/fast commands.
+Since len field contains total number of cmd+addr+dummy bytes,
+host driver should take care of sending these bytes on their respective
+bus widths. Knowing when the dummy is being sent also helps in
+the correct switching of IO pads (since the data lines are bidirectional)
+ZynqMP GQSPI is a generic controller, majorly interfaced to flash devices.
+It seems reasonable for it to know the above information from
+the flash layer. Adding "dummy" cycles entry should be useful to any
+controller that cares about it without affecting other spi/qspi controllers.
+
 Regards
-Vignesh
+Sai Krishna
+
+
+
+This email and any attachments are intended for the sole use of the named r=
+ecipient(s) and contain(s) confidential information that may be proprietary=
+, privileged or copyrighted under applicable law. If you are not the intend=
+ed recipient, do not read, copy, or forward this email message or any attac=
+hments. Delete this email message and any attachments immediately.

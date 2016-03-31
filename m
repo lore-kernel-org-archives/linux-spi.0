@@ -1,63 +1,51 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [RFC PATCH 06/10] spi: add support for ACPI reconfigure
- notifications
-Date: Thu, 31 Mar 2016 10:29:35 -0700
-Message-ID: <20160331172935.GL2350@sirena.org.uk>
-References: <1459417026-6697-1-git-send-email-octavian.purdila@intel.com>
- <1459417026-6697-7-git-send-email-octavian.purdila@intel.com>
+From: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: Re: [PATCH v2] spi: rockchip: fix warning of static check
+Date: Thu, 31 Mar 2016 10:52:09 -0700
+Message-ID: <CAD=FV=XjRcnOe0z8vZcE5393s8fr9r74dxP74_RCQiR46jBX9A@mail.gmail.com>
+References: <1459393901-18758-1-git-send-email-shawn.lin@rock-chips.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="vYlOGI1a8wP+YbIl"
-Cc: "Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
-	Len Brown <lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Matt Fleming <matt-mF/unelCI9GS6iBeEJttW/XRex20P6io@public.gmane.org>,
-	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
-	Joel Becker <jlbec-aKy9MeLSZ9dg9hUCZPvPmw@public.gmane.org>,
-	Christoph Hellwig <hch-jcswGhMUV9g@public.gmane.org>, linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-efi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	irina.tirdea-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
-To: Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-efi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1459417026-6697-7-git-send-email-octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Sender: linux-efi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1459393901-18758-1-git-send-email-shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
+
+Shawn,
+
+On Wed, Mar 30, 2016 at 8:11 PM, Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org> wrote:
+> Use dma_request_chan instead of dma_request_slave_channel,
+> in this case we can check EPROBE_DEFER without static
+> warning.
+
+Technically this is more than just a warning fix.  The previous commit
+61cadcf46cfd ("spi: rockchip: check requesting dma channel with
+EPROBE_DEFER") could never have done what it was supposed to do
+because dma_request_slave_channel() could never return EPROBE_DEFER.
+...so really this makes the previous commit work properly.
 
 
---vYlOGI1a8wP+YbIl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> Reported-by: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+> Cc: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+> Cc: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+> Signed-off-by: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+>
+> ---
+>
+> Changes in v2:
+> - use dma_request_chan and replace IS_ERR_OR_NULL()
+>   with IS_ERR
+> - do the same for rx
+>
+>  drivers/spi/spi-rockchip.c | 14 +++++++++-----
+>  1 file changed, 9 insertions(+), 5 deletions(-)
 
-On Thu, Mar 31, 2016 at 12:37:02PM +0300, Octavian Purdila wrote:
-
-> +#if IS_ENABLED(CONFIG_ACPI)
-> +static int acpi_spi_table_load(struct device *dev, const void *data)
-> +{
-> +	struct spi_master *master = container_of(dev, struct spi_master, dev);
-> +
-> +	acpi_register_spi_devices(master);
-> +	return 0;
-> +}
-
-Why do we have a separate code path for this coompared to the initial
-startup?  The handling appears to be identical so it seems we should
-drive this from the ACPI code so we don't have to add this to every
-single bus with ACPI bindings.
-
---vYlOGI1a8wP+YbIl
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJW/V50AAoJECTWi3JdVIfQaYwH/1w1D1N5NRZxoG8yE8B48DU6
-dPRkmhxGlcoz5A0COfqjPMbEdccEcSod1bNjAzoBdIElblKWkpqakv55oLU81Gbc
-mkVkVVusnB7QGrc9dsw9PY2ydDlP4CM9UWcxPUa3SHGnS0L2fUy82Vq5rkc5Fss4
-8vW8W6GSVRGfATDsZlLegCP4GiKCEO68EbqZXm2gXQEQuphn4dRGHc+Wk+1hfMiF
-VGt1hVL/edlU8EDRGeLYN548OYrkbRPQjkq1YI2+JmYj3mRO8/vDj60hvajQ04hd
-3mQcwrkNAXn+6vmgl8ZP+FiFAHcUpxHB3Py5djkRqPfuN9HdSzstJleGX4VtvuA=
-=57Lr
------END PGP SIGNATURE-----
-
---vYlOGI1a8wP+YbIl--
+Reviewed-by: Douglas Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

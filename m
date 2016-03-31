@@ -1,48 +1,121 @@
-From: Purna Chandra Mandal <purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Subject: Re: [PATCH v4 2/2] spi: spi-pic32: Add PIC32 SPI master driver
-Date: Thu, 31 Mar 2016 16:39:38 +0530
-Message-ID: <56FD0572.1030309@microchip.com>
-References: <1458740576-9168-1-git-send-email-purna.mandal@microchip.com>
- <1458740576-9168-2-git-send-email-purna.mandal@microchip.com>
- <20160328192629.GG2350@sirena.org.uk> <56FA6EE1.3000405@microchip.com>
- <20160329162501.GP2350@sirena.org.uk> <56FBAF2C.9090401@microchip.com>
- <20160330154839.GZ2350@sirena.org.uk>
+From: Lakshmi Sai Krishna Potthuri
+	<lakshmi.sai.krishna.potthuri-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Subject: RE: [LINUX PATCH 1/2] mtd: Added dummy entry in the spi_transfer
+ structure.
+Date: Thu, 31 Mar 2016 11:12:17 +0000
+Message-ID: <4FF8F58FAA9D5D4193D4E554E4352C5902C6EA12@XAP-PVEXMBX02.xlnx.xilinx.com>
+References: <1458562809-36114-1-git-send-email-lakshmis@xilinx.com>
+	<20160321130734.GS2566@sirena.org.uk>
+	<4FF8F58FAA9D5D4193D4E554E4352C5902C6D34C@XAP-PVEXMBX02.xlnx.xilinx.com>
+	<20160322100615.GA2566@sirena.org.uk>
+	<4FF8F58FAA9D5D4193D4E554E4352C5902C6DB59@XAP-PVEXMBX02.xlnx.xilinx.com>
+	<20160325150109.GF2566@sirena.org.uk>
+	<4FF8F58FAA9D5D4193D4E554E4352C5902C6E92A@XAP-PVEXMBX02.xlnx.xilinx.com>
+ <CAMuHMdV0B8Qka57nMv009aLdQ-fdBpAYr3wONQ7xaMfKXrORvQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-Cc: <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Sergei Shtylyov <sergei.shtylyov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>,
-	Joshua Henderson <digitalpeer-icZdIMMiY0PM6KjX8ROVJw@public.gmane.org>,
-	Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Michal Simek <michals-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	"Soren Brinkmann" <sorenb-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	"Brian Norris" <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
+	Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
+	"Andrew F. Davis" <afd-l0cyMroinI0@public.gmane.org>, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
+	Jagan Teki <jteki-oRp2ZoJdM/RWk0Htik3J/w@public.gmane.org>,
+	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	Harini Katakam <harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	Punnaiah Choudary Kalluri <punnaia-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	A
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160330154839.GZ2350-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <CAMuHMdV0B8Qka57nMv009aLdQ-fdBpAYr3wONQ7xaMfKXrORvQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 03/30/2016 09:18 PM, Mark Brown wrote:
-
-> On Wed, Mar 30, 2016 at 04:19:16PM +0530, Purna Chandra Mandal wrote:
->> On 03/29/2016 09:55 PM, Mark Brown wrote:
->>> On Tue, Mar 29, 2016 at 05:32:41PM +0530, Purna Chandra Mandal wrote:
->>>> MMC_SPI will have to terminate on-going MMC transactions and it is
->>>> done by calling setup(). It is assumed that setup() will always leave
->>>> the chip-select deactivated.
->>> No, this is just completely broken - that's quite simply not what
->>> setup() does.  See spi-summary.  There is *no* code in the core that
->>> terminates ongoing transfers as a result of calling setup(), if that's
->>> happening it's a result of triggering error handling.
->> Description of spi_setup() in spi.c clearly mentions that "When this
->> function returns, the spi device is deselected" and this is only
->> possible if (at least) chip-select is deactivated.
-> This doesn't say anything about any ongoing operations!  Trying to do a
-> setup() with active transfers on the device is just not sensible, it is
-> intended to be used on an idle device.  I would not expect it to work
-> reliably on an active device.
-
-agreed.
-
-
+SGksDQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IGdlZXJ0LnV5dHRlcmhv
+ZXZlbkBnbWFpbC5jb20NCj5bbWFpbHRvOmdlZXJ0LnV5dHRlcmhvZXZlbkBnbWFpbC5jb21dIE9u
+IEJlaGFsZiBPZiBHZWVydCBVeXR0ZXJob2V2ZW4NCj5TZW50OiBUaHVyc2RheSwgTWFyY2ggMzEs
+IDIwMTYgMTo1OCBQTQ0KPlRvOiBMYWtzaG1pIFNhaSBLcmlzaG5hIFBvdHRodXJpIDxsYWtzaG1p
+c0B4aWxpbnguY29tPg0KPkNjOiBNYXJrIEJyb3duIDxicm9vbmllQGtlcm5lbC5vcmc+OyBNaWNo
+YWwgU2ltZWsgPG1pY2hhbHNAeGlsaW54LmNvbT47DQo+U29yZW4gQnJpbmttYW5uIDxzb3JlbmJA
+eGlsaW54LmNvbT47IERhdmlkIFdvb2Rob3VzZQ0KPjxkd213MkBpbmZyYWRlYWQub3JnPjsgQnJp
+YW4gTm9ycmlzIDxjb21wdXRlcnNmb3JwZWFjZUBnbWFpbC5jb20+Ow0KPkphdmllciBNYXJ0aW5l
+eiBDYW5pbGxhcyA8amF2aWVyQG9zZy5zYW1zdW5nLmNvbT47IEJvcmlzIEJyZXppbGxvbg0KPjxi
+b3Jpcy5icmV6aWxsb25AZnJlZS1lbGVjdHJvbnMuY29tPjsgU3RlcGhlbiBXYXJyZW4NCj48c3dh
+cnJlbkBudmlkaWEuY29tPjsgR2VlcnQgVXl0dGVyaG9ldmVuIDxnZWVydCtyZW5lc2FzQGdsaWRl
+ci5iZT47DQo+QW5kcmV3IEYuIERhdmlzIDxhZmRAdGkuY29tPjsgTWFyZWsgVmFzdXQgPG1hcmV4
+QGRlbnguZGU+OyBKYWdhbiBUZWtpDQo+PGp0ZWtpQG9wZW5lZGV2LmNvbT47IFJhZmHFgiBNacWC
+ZWNraSA8emFqZWM1QGdtYWlsLmNvbT47IGxpbnV4LQ0KPm10ZEBsaXN0cy5pbmZyYWRlYWQub3Jn
+OyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnOyBsaW51eC0NCj5zcGlAdmdlci5rZXJuZWwu
+b3JnOyBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmc7IEhhcmluaSBLYXRha2Ft
+DQo+PGhhcmluaWtAeGlsaW54LmNvbT47IFB1bm5haWFoIENob3VkYXJ5IEthbGx1cmkgPHB1bm5h
+aWFAeGlsaW54LmNvbT47DQo+QW5pcnVkaGEgU2FyYW5naSA8YW5pcnVkaEB4aWxpbnguY29tPjsg
+c2Fpa3Jpc2huYTEyNDY4QGdtYWlsLmNvbQ0KPlN1YmplY3Q6IFJlOiBbTElOVVggUEFUQ0ggMS8y
+XSBtdGQ6IEFkZGVkIGR1bW15IGVudHJ5IGluIHRoZSBzcGlfdHJhbnNmZXINCj5zdHJ1Y3R1cmUu
+DQo+DQo+T24gVGh1LCBNYXIgMzEsIDIwMTYgYXQgODoxNCBBTSwgTGFrc2htaSBTYWkgS3Jpc2hu
+YSBQb3R0aHVyaQ0KPjxsYWtzaG1pLnNhaS5rcmlzaG5hLnBvdHRodXJpQHhpbGlueC5jb20+IHdy
+b3RlOg0KPj4+PiA+VGhpcyBpcyByZWFsbHkgbm90IHdoYXQgSSdkIGV4cGVjdCB0byBoYXBwZW4s
+IEknZCBleHBlY3QgdGhhdCB0aGVzZQ0KPmR1bW15DQo+Pj4+ID5jeWNsZXMgd291bGQgYmUgaW4g
+YWRkaXRpb24gdG8gdGhlIGFjdHVhbCBkYXRhIChzZWUgbXkgcmVxdWVzdCBmb3IgYmV0dGVyDQo+
+Pj4+ID5kb2N1bWVudGF0aW9uLi4uKS4gIElmIHRoZXkgb3ZlcmxhcCB3aXRoIHRoZSBkYXRhIHRo
+ZW4gd2hhdCBpcyB0aGUgcG9pbnQNCj5pbg0KPj4+PiA+c3BlY2lmeWluZyB0aGlzPyAgSXQncyBt
+b3JlIHdvcmsgZm9yIHRoZSBob3N0LCB3aGF0IGJlbmVmaXQgZG8gd2UgZ2V0DQo+ZnJvbQ0KPj4+
+PiA+ZG9pbmcgaXQgb3ZlciBqdXN0IGhhbmRpbmcgaXQgbGlrZSBhIG5vcm1hbCBieXRlPw0KPj4+
+DQo+Pj4+IGxlbiBmaWVsZCBpbiB0aGUgdHJhbnNmZXIgc3RydWN0dXJlIGNvbnRhaW5zIGR1bW15
+IGJ5dGVzIGFsb25nIHdpdGggYWN0dWFsDQo+Pj5kYXRhDQo+Pj4+IGJ5dGVzLCBjb250cm9sbGVy
+cyB3aGljaCByZXF1aXJlcyBkdW1teSBieXRlcyB1c2UgbGVuIGZpZWxkIGFuZCBzaW1wbHkNCj4+
+Pklnbm9yZQ0KPj4+PiB0aGUgZHVtbXkgZmllbGQgKGNvbnRhaW5zIG9ubHkgbm8gb2YgY3ljbGVz
+KWFkZGVkIGluIHRoaXMgcGF0Y2guDQo+Q29udHJvbGxlcnMNCj4+Pj4gKGxpa2UgWnlucU1QIEdR
+U1BJKSBleHBlY3RzIGR1bW15IGluIGN5Y2xlcyB3b24ndCB3b3JrIGRpcmVjdGx5IGJ5DQo+dXNp
+bmcNCj4+Pj4gbGVuIGZpZWxkIGJlY2F1c2UgaG9zdCBkcml2ZXIgZG9lc24ndCBrbm93IHRoYXQg
+bGVuIGZpZWxkIG9mIGEgcGFydGljdWxhcg0KPj4+dHJhbnNmZXINCj4+Pj4gaW5jbHVkZXMgZHVt
+bXkgYnl0ZXMgb3Igbm90IChhbmQgYWxzbyBudW1iZXIgb2YgZHVtbXkgYnl0ZXMgaW5jbHVkZWQN
+Cj5pbg0KPj4+bGVuDQo+Pj4+IGZpZWxkKS4gSW4gc3VjaCBjYXNlcyBkcml2ZXIgdXNlIHRoaXMg
+ZHVtbXkgZmllbGQgdG8gaWRlbnRpZnkgdGhlIG51bWJlciBvZg0KPj4+ZHVtbXkNCj4+Pj4gY3lj
+bGVzIGFuZCBiYXNlZCBvbiB0aGF0IGl0IHdpbGwgc2VuZCB0aGUgcmVxdWlyZWQgbnVtYmVyIG9m
+IGR1bW15DQo+Y3ljbGVzDQo+Pj4od2hpY2gNCj4+Pj4gaSBkaWQgaW4gdGhlIHNlY29uZCBwYXRj
+aCkuDQo+Pj4NCj4+PlRoaXMgZG9lc24ndCBtYWtlIGFueSBzZW5zZSBhdCBhbGwgdG8gbWUuICBX
+aHkgZG9lcyB0aGUgY29udHJvbGxlciBjYXJlDQo+Pj53aGF0IHRoZSBieXRlcyBiZWluZyBzZW50
+IHRvIGFuZCBmcm9tIHRoZSBkZXZpY2UgbWVhbj8NCj4+DQo+PiBGcm9tIHRoZSBmbGFzaCBwb2lu
+dCBvZiB2aWV3LCBpdCBleHBlY3RzIHRoZSBjb250cm9sbGVyIHRvIHNlbmQgdGhlIGR1bW15DQo+
+PiBvbiAxLzIvNCBsaW5lcyBiYXNlZCBvbiB0aGUgY29tbWFuZC4gRm9yIFF1YWQgY29tbWFuZHMs
+IGZsYXNoIGV4cGVjdHMNCj4+IDQgbGluZXMgdG8gYmUgYWN0aXZlIGR1cmluZyBkdW1teSBwaGFz
+ZS4gU2ltaWxhcmx5LCAyIGxpbmVzIGZvciBkdWFsDQo+PiBDb21tYW5kcyBhbmQgMSBsaW5lIGZv
+ciBub3JtYWwvZmFzdCBjb21tYW5kcy4NCj4+IFNpbmNlIGxlbiBmaWVsZCBjb250YWlucyB0b3Rh
+bCBudW1iZXIgb2YgY21kK2FkZHIrZHVtbXkgYnl0ZXMsDQo+PiBob3N0IGRyaXZlciBzaG91bGQg
+dGFrZSBjYXJlIG9mIHNlbmRpbmcgdGhlc2UgYnl0ZXMgb24gdGhlaXIgcmVzcGVjdGl2ZQ0KPj4g
+YnVzIHdpZHRocy4gS25vd2luZyB3aGVuIHRoZSBkdW1teSBpcyBiZWluZyBzZW50IGFsc28gaGVs
+cHMgaW4NCj4+IHRoZSBjb3JyZWN0IHN3aXRjaGluZyBvZiBJTyBwYWRzIChzaW5jZSB0aGUgZGF0
+YSBsaW5lcyBhcmUgYmlkaXJlY3Rpb25hbCkNCj4+IFp5bnFNUCBHUVNQSSBpcyBhIGdlbmVyaWMg
+Y29udHJvbGxlciwgbWFqb3JseSBpbnRlcmZhY2VkIHRvIGZsYXNoIGRldmljZXMuDQo+PiBJdCBz
+ZWVtcyByZWFzb25hYmxlIGZvciBpdCB0byBrbm93IHRoZSBhYm92ZSBpbmZvcm1hdGlvbiBmcm9t
+DQo+PiB0aGUgZmxhc2ggbGF5ZXIuIEFkZGluZyAiZHVtbXkiIGN5Y2xlcyBlbnRyeSBzaG91bGQg
+YmUgdXNlZnVsIHRvIGFueQ0KPj4gY29udHJvbGxlciB0aGF0IGNhcmVzIGFib3V0IGl0IHdpdGhv
+dXQgYWZmZWN0aW5nIG90aGVyIHNwaS9xc3BpIGNvbnRyb2xsZXJzLg0KPg0KPlRoZSBtMjVwODAg
+ZHJpdmVyIGFscmVhZHkgdXNlcyBkdW1teSBjeWNsZXMsIHVzaW5nIHJlYWwgc3BpX3RyYW5zZmVy
+DQo+c3RydWN0cywgd2hpY2ggaGF2ZSB0eF9uYml0cy9yeF9uYml0cyBmaWVsZHMgdG8gaW5kaWNh
+dGUgaG93IG1hbnkgZGF0YSBsaW5lcw0KPnRvIHVzZS4NCg0KbTI1cDgwIGltcGxlbWVudGF0aW9u
+IGp1c3Qgc2VuZCBjb21tYW5kLCBhZGRyZXNzIGFuZCBkdW1teSB0b2dldGhlcg0Kd2l0aCB0eF9u
+Yml0IGZpZWxkIGFzIDEgYW5kIGhvc3QgZHJpdmVyIGNhbid0IGRpZmZlcmVudGlhdGUgYmV0d2Vl
+biB0aGVtLg0KQ29tbWFuZCBhbmQgYWRkcmVzcyBnbyBvbiBvbmUgbGluZSBhbmQgZHVtbXkgc2hv
+dWxkIHNlbmQgYmFzZWQNCm9uIHRoZSBjb21tYW5kIGFzIGV4cGxhaW5lZCBteSBwcmV2aW91cyBt
+YWlsLg0KDQpSZWdhcmRzDQpTYWkgS3Jpc2huYQ0KDQoNClRoaXMgZW1haWwgYW5kIGFueSBhdHRh
+Y2htZW50cyBhcmUgaW50ZW5kZWQgZm9yIHRoZSBzb2xlIHVzZSBvZiB0aGUgbmFtZWQgcmVjaXBp
+ZW50KHMpIGFuZCBjb250YWluKHMpIGNvbmZpZGVudGlhbCBpbmZvcm1hdGlvbiB0aGF0IG1heSBi
+ZSBwcm9wcmlldGFyeSwgcHJpdmlsZWdlZCBvciBjb3B5cmlnaHRlZCB1bmRlciBhcHBsaWNhYmxl
+IGxhdy4gSWYgeW91IGFyZSBub3QgdGhlIGludGVuZGVkIHJlY2lwaWVudCwgZG8gbm90IHJlYWQs
+IGNvcHksIG9yIGZvcndhcmQgdGhpcyBlbWFpbCBtZXNzYWdlIG9yIGFueSBhdHRhY2htZW50cy4g
+RGVsZXRlIHRoaXMgZW1haWwgbWVzc2FnZSBhbmQgYW55IGF0dGFjaG1lbnRzIGltbWVkaWF0ZWx5
+Lg0KDQo=
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

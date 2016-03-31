@@ -1,55 +1,76 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 4/7] scatterlist: add sg_alloc_table_from_buf()
- helper
-Date: Wed, 30 Mar 2016 11:34:39 -0700
-Message-ID: <20160330183439.GS2350@sirena.org.uk>
-References: <1459352394-22810-1-git-send-email-boris.brezillon@free-electrons.com>
- <1459352394-22810-5-git-send-email-boris.brezillon@free-electrons.com>
- <20160330165143.GI2350@sirena.org.uk>
- <20160330201831.38e1d6bd@bbrezillon>
-Reply-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="hrnpeiJmytOBrElT"
-Cc: David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	Dave Gordon <david.s.gordon-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>, linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org,
-	Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Dan Williams <dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Mauro Carvalho Chehab <m.chehab-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Hans Verkuil <hans.verkuil-FYB4Gu1CFyUAvxtiuMwx3w@public.gmane.org>,
-	Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>,
-	linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Richard Weinberger <ri
-To: Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Return-path: <linux-sunxi+bncBDQ2L75W5QGBBZ5Y6C3QKGQEIQ5UIXI-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-Content-Disposition: inline
-In-Reply-To: <20160330201831.38e1d6bd@bbrezillon>
-List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <https://groups.google.com/group/linux-sunxi
-List-Subscribe: <https://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
- <https://groups.google.com/group/linux-sunxi/subscribe>
-List-Id: linux-spi.vger.kernel.org
+From: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Subject: [PATCH v2] spi: rockchip: fix warning of static check
+Date: Thu, 31 Mar 2016 11:11:41 +0800
+Message-ID: <1459393901-18758-1-git-send-email-shawn.lin@rock-chips.com>
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org,
+	dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
---hrnpeiJmytOBrElT
-Content-Type: text/plain; charset=UTF-8
-Content-Disposition: inline
+Use dma_request_chan instead of dma_request_slave_channel,
+in this case we can check EPROBE_DEFER without static
+warning.
 
-On Wed, Mar 30, 2016 at 08:18:31PM +0200, Boris Brezillon wrote:
+Reported-by: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Cc: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Cc: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
 
-> BTW, do you see other things that should be added in sg_constraints?
+---
 
-It looked to do everything SPI does which is everything I know about.
---hrnpeiJmytOBrElT--
+Changes in v2:
+- use dma_request_chan and replace IS_ERR_OR_NULL()
+  with IS_ERR
+- do the same for rx
+
+ drivers/spi/spi-rockchip.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index b71c1ae..6c6c001 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -730,23 +730,27 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 	master->transfer_one = rockchip_spi_transfer_one;
+ 	master->handle_err = rockchip_spi_handle_err;
+ 
+-	rs->dma_tx.ch = dma_request_slave_channel(rs->dev, "tx");
+-	if (IS_ERR_OR_NULL(rs->dma_tx.ch)) {
++	rs->dma_tx.ch = dma_request_chan(rs->dev, "tx");
++	if (IS_ERR(rs->dma_tx.ch)) {
+ 		/* Check tx to see if we need defer probing driver */
+ 		if (PTR_ERR(rs->dma_tx.ch) == -EPROBE_DEFER) {
+ 			ret = -EPROBE_DEFER;
+ 			goto err_get_fifo_len;
+ 		}
+ 		dev_warn(rs->dev, "Failed to request TX DMA channel\n");
++		rs->dma_tx.ch = NULL;
+ 	}
+ 
+-	rs->dma_rx.ch = dma_request_slave_channel(rs->dev, "rx");
+-	if (!rs->dma_rx.ch) {
+-		if (rs->dma_tx.ch) {
++	rs->dma_rx.ch = dma_request_chan(rs->dev, "rx");
++	if (IS_ERR(rs->dma_rx.ch)) {
++		if (PTR_ERR(rs->dma_rx.ch) == -EPROBE_DEFER) {
+ 			dma_release_channel(rs->dma_tx.ch);
+ 			rs->dma_tx.ch = NULL;
++			ret = -EPROBE_DEFER;
++			goto err_get_fifo_len;
+ 		}
+ 		dev_warn(rs->dev, "Failed to request RX DMA channel\n");
++		rs->dma_rx.ch = NULL;
+ 	}
+ 
+ 	if (rs->dma_tx.ch && rs->dma_rx.ch) {
+-- 
+2.3.7
+
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,55 +1,47 @@
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [RFC PATCH 06/10] spi: add support for ACPI reconfigure notifications
-Date: Fri, 1 Apr 2016 21:26:38 +0200
-Message-ID: <CAJZ5v0itmFDdPi6vJmsheEHADEwmeTNgCQ5iVroJfV=o6Wof3A@mail.gmail.com>
-References: <1459417026-6697-1-git-send-email-octavian.purdila@intel.com>
-	<1459417026-6697-7-git-send-email-octavian.purdila@intel.com>
-	<20160331172935.GL2350@sirena.org.uk>
-	<CAE1zotJbUGBOUF-4-XAx0DUkj55egOMXVn9FzjV3Fdj4MYxD0Q@mail.gmail.com>
-	<20160401140856.GW2350@sirena.org.uk>
+From: Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>
+Subject: Issues with cros_ec and "spi: rockchip: check return value of dmaengine_prep_slave_sg"
+Date: Sat, 02 Apr 2016 01:52:19 +0200
+Message-ID: <5681888.LvkE41Ux3K@phil>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Octavian Purdila <octavian.purdila@intel.com>,
-	"Rafael J. Wysocki" <rjw@rjwysocki.net>,
-	Len Brown <lenb@kernel.org>,
-	Matt Fleming <matt@codeblueprint.co.uk>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Joel Becker <jlbec@evilplan.org>,
-	Christoph Hellwig <hch@lst.de>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	linux-efi@vger.kernel.org, linux-i2c <linux-i2c@vger.kernel.org>,
-	linux-spi@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>,
-	Irina Tirdea <irina.tirdea@intel.com>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-i2c-owner@vger.kernel.org>
-In-Reply-To: <20160401140856.GW2350@sirena.org.uk>
-Sender: linux-i2c-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, Apr 1, 2016 at 4:08 PM, Mark Brown <broonie@kernel.org> wrote:
-> On Fri, Apr 01, 2016 at 01:54:28PM +0300, Octavian Purdila wrote:
->
->> I probably don't fully understand your question, but I don't see a way
->> of how we can create a new SPI device from generic ACPI code. For
->> example, in acpi_spi_add_device() we need the spi_master node so that
->> we can allocate the spi device.
->
-> Right, but the same applies to initial enumeration so we also have to
-> manually instantiate ACPI devices on startup.  Why do we need to do
-> that?
->
->> The handling is identical because we don't have yet have a way to
->> identify what where the new nodes added when a new ACPI table /
->> overlay has been loaded, so we have to rescan the ACPI namespace under
->> each controller.
->
-> That's not the point.  The point is that since the handling is identical
-> why are we handling it through exactly the same code?
+Hi Shawn,
 
-I think that during the initial enumeration the controller driver's
-probe walks the children and creates device objects for them.  When a
-table is loaded later, the controller driver has been probed already
-and there needs to be a way to trigger a walk over the (new) children
-from it.
+it looks like commit ea9849113343 ("spi: rockchip: check return value of
+dmaengine_prep_slave_sg") negatively affects the cros_ec spi backend.
 
-Or a hook somewhere around acpi_platform_notify() is needed.
+During boot on the most recent mainline kernel I get:
+
+[    1.025480] cros-ec-spi spi0.0: Chrome EC device registered
+[    1.641636] input: cros_ec as /devices/platform/ff110000.spi/spi_master/spi0/spi0.0/ff110000.spi:ec@0:keyboard-controller/input/input0
+[    2.340214] cros-ec-spi spi0.0: EC failed to respond in time
+[    2.357735] cros-ec-spi spi0.0: packet too long (249 bytes, expected 4)
+[    2.470353] cros-ec-spi spi0.0: EC failed to respond in time
+[    2.508495] cros-ec-spi spi0.0: packet too long (249 bytes, expected 4)
+[    2.620176] cros-ec-spi spi0.0: EC failed to respond in time
+[    2.637345] cros-ec-spi spi0.0: packet too long (249 bytes, expected 4)
+[    2.750245] cros-ec-spi spi0.0: EC failed to respond in time
+[    2.767519] cros-ec-spi spi0.0: packet too long (249 bytes, expected 4)
+
+The cros-ec works ok after boot without further errors [aka keyboard
+and everything working correctly] and I haven't been able to figure out
+what goes wrong, but was able to bisect the issue down to the commit
+mentioned above.
+
+Reverting the patch silences the cros-ec again. I'll try to look into it
+further, but maybe you also have an idea what might go wrong.
+
+
+Heiko
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

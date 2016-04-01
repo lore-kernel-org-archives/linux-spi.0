@@ -1,81 +1,69 @@
-From: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
-Subject: re: spi/tegra114: add spi driver
-Date: Fri, 1 Apr 2016 16:52:27 +0300
-Message-ID: <20160401135227.GA24190@mwanda>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [RFC PATCH 06/10] spi: add support for ACPI reconfigure
+ notifications
+Date: Fri, 1 Apr 2016 07:08:56 -0700
+Message-ID: <20160401140856.GW2350@sirena.org.uk>
+References: <1459417026-6697-1-git-send-email-octavian.purdila@intel.com>
+ <1459417026-6697-7-git-send-email-octavian.purdila@intel.com>
+ <20160331172935.GL2350@sirena.org.uk>
+ <CAE1zotJbUGBOUF-4-XAx0DUkj55egOMXVn9FzjV3Fdj4MYxD0Q@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="hjRTvux2945W8dyK"
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+	Len Brown <lenb@kernel.org>,
+	Matt Fleming <matt@codeblueprint.co.uk>,
+	Wolfram Sang <wsa@the-dreams.de>,
+	Joel Becker <jlbec@evilplan.org>,
+	Christoph Hellwig <hch@lst.de>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	linux-efi@vger.kernel.org, linux-i2c <linux-i2c@vger.kernel.org>,
+	linux-spi@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>,
+	Irina Tirdea <irina.tirdea@intel.com>
+To: Octavian Purdila <octavian.purdila@intel.com>
+Return-path: <linux-i2c-owner@vger.kernel.org>
 Content-Disposition: inline
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <CAE1zotJbUGBOUF-4-XAx0DUkj55egOMXVn9FzjV3Fdj4MYxD0Q@mail.gmail.com>
+Sender: linux-i2c-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hello Laxman Dewangan,
 
-The patch f333a331adfa: "spi/tegra114: add spi driver" from Feb 22,
-2013, leads to the following static checker warning:
+--hjRTvux2945W8dyK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-	drivers/spi/spi-tegra114.c:621 tegra_spi_init_dma_param()
-	error: uninitialized variable 'dma_phys'.
+On Fri, Apr 01, 2016 at 01:54:28PM +0300, Octavian Purdila wrote:
 
-drivers/spi/spi-tegra114.c
-   583          dma_addr_t dma_phys;
-                ^^^^^^^^^^^^^^^^^^^
-   584          int ret;
-   585          struct dma_slave_config dma_sconfig;
-   586  
-   587          dma_chan = dma_request_slave_channel_reason(tspi->dev,
-   588                                          dma_to_memory ? "rx" : "tx");
-   589          if (IS_ERR(dma_chan)) {
-   590                  ret = PTR_ERR(dma_chan);
-   591                  if (ret != -EPROBE_DEFER)
-   592                          dev_err(tspi->dev,
-   593                                  "Dma channel is not available: %d\n", ret);
-   594                  return ret;
-   595          }
-   596  
-   597          dma_buf = dma_alloc_coherent(tspi->dev, tspi->dma_buf_size,
-   598                                  &dma_phys, GFP_KERNEL);
+> I probably don't fully understand your question, but I don't see a way
+> of how we can create a new SPI device from generic ACPI code. For
+> example, in acpi_spi_add_device() we need the spi_master node so that
+> we can allocate the spi device.
 
-The issue is that in dma_alloc_attrs() if we can dma_alloc_from_coherent()
-then dma_phys is not set.  I'm getting a couple similar errors and I'm
-not certian what to do about it.
+Right, but the same applies to initial enumeration so we also have to
+manually instantiate ACPI devices on startup.  Why do we need to do
+that?
 
-   599          if (!dma_buf) {
-   600                  dev_err(tspi->dev, " Not able to allocate the dma buffer\n");
-   601                  dma_release_channel(dma_chan);
-   602                  return -ENOMEM;
-   603          }
-   604  
-   605          if (dma_to_memory) {
-   606                  dma_sconfig.src_addr = tspi->phys + SPI_RX_FIFO;
-   607                  dma_sconfig.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
-   608                  dma_sconfig.src_maxburst = 0;
-   609          } else {
-   610                  dma_sconfig.dst_addr = tspi->phys + SPI_TX_FIFO;
-   611                  dma_sconfig.dst_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
-   612                  dma_sconfig.dst_maxburst = 0;
-   613          }
-   614  
-   615          ret = dmaengine_slave_config(dma_chan, &dma_sconfig);
-   616          if (ret)
-   617                  goto scrub;
-   618          if (dma_to_memory) {
-   619                  tspi->rx_dma_chan = dma_chan;
-   620                  tspi->rx_dma_buf = dma_buf;
-   621                  tspi->rx_dma_phys = dma_phys;
-                                            ^^^^^^^^
-Uninitialized.
+> The handling is identical because we don't have yet have a way to
+> identify what where the new nodes added when a new ACPI table /
+> overlay has been loaded, so we have to rescan the ACPI namespace under
+> each controller.
 
-   622          } else {
-   623                  tspi->tx_dma_chan = dma_chan;
-   624                  tspi->tx_dma_buf = dma_buf;
-   625                  tspi->tx_dma_phys = dma_phys;
+That's not the point.  The point is that since the handling is identical
+why are we handling it through exactly the same code?
 
-regards,
-dan carpenter
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--hjRTvux2945W8dyK
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJW/oD0AAoJECTWi3JdVIfQaRAH/jeQz8zKvAX6aepL5CfzNu3V
+o6yItlKEvj0noTBht+Qpw2MRWvpjZHMEWGV5XEmLZC3S7ft8apurWTGDppJkRsf+
+I1fSxifDFMoEhMA3tN39ruRBcSajBrF7zroElYR6WgTbtcbSPYtxCAJHbjHdJyEB
+/XG6bSk4due7Vezl/jKE0ap/hOWXa3qBzfA7rXIWWw+TbvtyYXlHSJHdZZttRH07
+gVNcsLhfRBwp8EqbSnUM3WxvVx6xMTsNtKLnu1q4e9YNL69ZbS0MpEIoNBOJJnl9
+97WntPF+mgoufsRLvnUFkggxHZu1Q1a0oO4kWezuYmgqvXzoNc+XDvamSJ3LsX0=
+=PJGW
+-----END PGP SIGNATURE-----
+
+--hjRTvux2945W8dyK--

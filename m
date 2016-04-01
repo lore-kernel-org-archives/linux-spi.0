@@ -1,53 +1,83 @@
-From: Octavian Purdila <octavian.purdila@intel.com>
-Subject: Re: [RFC PATCH 06/10] spi: add support for ACPI reconfigure notifications
-Date: Fri, 1 Apr 2016 13:54:28 +0300
-Message-ID: <CAE1zotJbUGBOUF-4-XAx0DUkj55egOMXVn9FzjV3Fdj4MYxD0Q@mail.gmail.com>
-References: <1459417026-6697-1-git-send-email-octavian.purdila@intel.com>
-	<1459417026-6697-7-git-send-email-octavian.purdila@intel.com>
-	<20160331172935.GL2350@sirena.org.uk>
+From: Purna Chandra Mandal <purna.mandal@microchip.com>
+Subject: [PATCH v5 1/2] dt/bindings: Add bindings for PIC32 SPI peripheral
+Date: Fri, 1 Apr 2016 16:48:49 +0530
+Message-ID: <1459509530-22716-1-git-send-email-purna.mandal@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-	Len Brown <lenb@kernel.org>,
-	Matt Fleming <matt@codeblueprint.co.uk>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Joel Becker <jlbec@evilplan.org>,
-	Christoph Hellwig <hch@lst.de>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	linux-efi@vger.kernel.org, linux-i2c <linux-i2c@vger.kernel.org>,
-	linux-spi@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>,
-	Irina Tirdea <irina.tirdea@intel.com>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-acpi-owner@vger.kernel.org>
-In-Reply-To: <20160331172935.GL2350@sirena.org.uk>
-Sender: linux-acpi-owner@vger.kernel.org
+Content-Type: text/plain
+Cc: Mark Brown <broonie@kernel.org>,
+	Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+	Joshua Henderson <digitalpeer@digitalpeer.com>,
+	Purna Chandra Mandal <purna.mandal@microchip.com>,
+	<devicetree@vger.kernel.org>, <linux-mips@linux-mips.org>,
+	Kumar Gala <galak@codeaurora.org>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	Rob Herring <robh+dt@kernel.org>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>
+To: <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Mar 31, 2016 at 8:29 PM, Mark Brown <broonie@kernel.org> wrote:
-> On Thu, Mar 31, 2016 at 12:37:02PM +0300, Octavian Purdila wrote:
->
->> +#if IS_ENABLED(CONFIG_ACPI)
->> +static int acpi_spi_table_load(struct device *dev, const void *data)
->> +{
->> +     struct spi_master *master = container_of(dev, struct spi_master, dev);
->> +
->> +     acpi_register_spi_devices(master);
->> +     return 0;
->> +}
->
-> Why do we have a separate code path for this coompared to the initial
-> startup?  The handling appears to be identical so it seems we should
-> drive this from the ACPI code so we don't have to add this to every
-> single bus with ACPI bindings.
+Document the devicetree bindings for the SPI peripheral found
+on Microchip PIC32 class devices.
 
-Hi Mark,
+Signed-off-by: Purna Chandra Mandal <purna.mandal@microchip.com>
+Acked-by: Rob Herring <robh@kernel.org>
 
-I probably don't fully understand your question, but I don't see a way
-of how we can create a new SPI device from generic ACPI code. For
-example, in acpi_spi_add_device() we need the spi_master node so that
-we can allocate the spi device.
+---
 
-The handling is identical because we don't have yet have a way to
-identify what where the new nodes added when a new ACPI table /
-overlay has been loaded, so we have to rescan the ACPI namespace under
-each controller.
+Changes in v5: None
+Changes in v4: None
+Changes in v3: None
+Changes in v2:
+ - fix indentation
+ - add space after comma
+ - moved 'cs-gpios' section under 'required' properties.
+
+ .../bindings/spi/microchip,spi-pic32.txt           | 34 ++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/microchip,spi-pic32.txt
+
+diff --git a/Documentation/devicetree/bindings/spi/microchip,spi-pic32.txt b/Documentation/devicetree/bindings/spi/microchip,spi-pic32.txt
+new file mode 100644
+index 0000000..79de379f
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/microchip,spi-pic32.txt
+@@ -0,0 +1,34 @@
++Microchip PIC32 SPI Master controller
++
++Required properties:
++- compatible: Should be "microchip,pic32mzda-spi".
++- reg: Address and length of register space for the device.
++- interrupts: Should contain all three spi interrupts in sequence
++              of <fault-irq>, <receive-irq>, <transmit-irq>.
++- interrupt-names: Should be "fault", "rx", "tx" in order.
++- clocks: Phandle of the clock generating SPI clock on the bus.
++- clock-names: Should be "mck0".
++- cs-gpios: Specifies the gpio pins to be used for chipselects.
++            See: Documentation/devicetree/bindings/spi/spi-bus.txt
++
++Optional properties:
++- dmas: Two or more DMA channel specifiers following the convention outlined
++        in Documentation/devicetree/bindings/dma/dma.txt
++- dma-names: Names for the dma channels. There must be at least one channel
++             named "spi-tx" for transmit and named "spi-rx" for receive.
++
++Example:
++
++spi1: spi@1f821000 {
++        compatible = "microchip,pic32mzda-spi";
++        reg = <0x1f821000 0x200>;
++        interrupts = <109 IRQ_TYPE_LEVEL_HIGH>,
++                     <110 IRQ_TYPE_LEVEL_HIGH>,
++                     <111 IRQ_TYPE_LEVEL_HIGH>;
++        interrupt-names = "fault", "rx", "tx";
++        clocks = <&PBCLK2>;
++        clock-names = "mck0";
++        cs-gpios = <&gpio3 4 GPIO_ACTIVE_LOW>;
++        dmas = <&dma 134>, <&dma 135>;
++        dma-names = "spi-rx", "spi-tx";
++};
+-- 
+1.8.3.1

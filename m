@@ -1,72 +1,51 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [RFC PATCH 06/10] spi: add support for ACPI reconfigure
- notifications
-Date: Sat, 2 Apr 2016 09:24:49 -0700
-Message-ID: <20160402162449.GB2350@sirena.org.uk>
-References: <1459417026-6697-1-git-send-email-octavian.purdila@intel.com>
- <1459417026-6697-7-git-send-email-octavian.purdila@intel.com>
- <20160331172935.GL2350@sirena.org.uk>
- <CAE1zotJbUGBOUF-4-XAx0DUkj55egOMXVn9FzjV3Fdj4MYxD0Q@mail.gmail.com>
- <20160401140856.GW2350@sirena.org.uk>
- <CAJZ5v0itmFDdPi6vJmsheEHADEwmeTNgCQ5iVroJfV=o6Wof3A@mail.gmail.com>
+Subject: Re: [PATCH v5 1/2] dt/bindings: Add bindings for PIC32 SPI peripheral
+Date: Sat, 2 Apr 2016 09:35:06 -0700
+Message-ID: <20160402163506.GD2350@sirena.org.uk>
+References: <1459509530-22716-1-git-send-email-purna.mandal@microchip.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="rtWt6SZ6GqpxALBD"
-Cc: Octavian Purdila <octavian.purdila@intel.com>,
-	"Rafael J. Wysocki" <rjw@rjwysocki.net>,
-	Len Brown <lenb@kernel.org>,
-	Matt Fleming <matt@codeblueprint.co.uk>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Joel Becker <jlbec@evilplan.org>,
-	Christoph Hellwig <hch@lst.de>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	linux-efi@vger.kernel.org, linux-i2c <linux-i2c@vger.kernel.org>,
-	linux-spi@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>,
-	Irina Tirdea <irina.tirdea@intel.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Return-path: <linux-i2c-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="dds9jO4idXToq0wP"
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+	Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+	Joshua Henderson <digitalpeer@digitalpeer.com>,
+	devicetree@vger.kernel.org, linux-mips@linux-mips.org,
+	Kumar Gala <galak@codeaurora.org>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	Rob Herring <robh+dt@kernel.org>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>
+To: Purna Chandra Mandal <purna.mandal@microchip.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CAJZ5v0itmFDdPi6vJmsheEHADEwmeTNgCQ5iVroJfV=o6Wof3A@mail.gmail.com>
-Sender: linux-i2c-owner@vger.kernel.org
+In-Reply-To: <1459509530-22716-1-git-send-email-purna.mandal@microchip.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---rtWt6SZ6GqpxALBD
+--dds9jO4idXToq0wP
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Apr 01, 2016 at 09:26:38PM +0200, Rafael J. Wysocki wrote:
-> On Fri, Apr 1, 2016 at 4:08 PM, Mark Brown <broonie@kernel.org> wrote:
+On Fri, Apr 01, 2016 at 04:48:49PM +0530, Purna Chandra Mandal wrote:
+> Document the devicetree bindings for the SPI peripheral found
+> on Microchip PIC32 class devices.
 
-> > That's not the point.  The point is that since the handling is identical
-> > why are we handling it through exactly the same code?
+Please use subject lines reflecting the style for the subsystem.
 
-> I think that during the initial enumeration the controller driver's
-> probe walks the children and creates device objects for them.  When a
-> table is loaded later, the controller driver has been probed already
-> and there needs to be a way to trigger a walk over the (new) children
-> from it.
-
-> Or a hook somewhere around acpi_platform_notify() is needed.
-
-What I don't understand is why the flow on inital probe isn't simply to
-register the controller which then triggers the walk of the children.
-That way any bus that supports initial probe also supports hotplug
-without needing to go and manually add a second code path.
-
---rtWt6SZ6GqpxALBD
+--dds9jO4idXToq0wP
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJW//JQAAoJECTWi3JdVIfQFHwH/2J7wKNmy+CXSc+JOI24dd/l
-BsStLIDa+Vh7k9Ml720D1EoA1NwZxKkMV2wmEMSrYBGwrIAVJr46l2L9sYo1nyzU
-mTxlwWVPbbgr5ofF/RlaJrXFI3eIogBoXrrrPk54WrizG1W5LvNNn2xtzLJlHxGa
-8olcz/UKlydNVA0n8y/8QR+Rg+uy6MULLqgpoTig0P5Hck6/E7gNG+gYZhwVA5yI
-Ak4/HAe1BPdxaYUuf/rYqeRYLlXv4jPqZER5CTSPP/cU64XSns3S0AI8LXrgXFBV
-DFCEvNpXoMKYpxCoXlzttIbPBgjP9mdiiVz2rL+JYkjTI0jwMHqRh4DvNDRoG8U=
-=Kt7q
+iQEcBAEBCAAGBQJW//S4AAoJECTWi3JdVIfQjfEH+weHKWmxXd0vqovgGShGg0Cd
+lvdbe/YcGan7+wIQY4RfnbuEBgv7SCVDZETrTbKNTFDu/GSxYfzNZQBPCU8PPbzb
+3OQhH3thPKGTsAWdmNGQMTn8B7vCh2HvcNUdDwDFQF8ooMklBNTd4NyjKifuNqto
+PG3VtRHfzjDabfrLnvsuAjRJj9cT3xsYW+Q+/ztZFT2ree6kKwsUL7qL6pDgwhO6
+0FjKVOVZCtUwhLAcMwCNQDovVVyDKcKfkdb9FZP8pIQyEvx4q6icygfeVbBinYk/
+rb22jYg72YKvF+r14gCz6iimQh3GvSiowYoGSk5wOo6ADU8kuhXBNlxdXBBrrf8=
+=+uPx
 -----END PGP SIGNATURE-----
 
---rtWt6SZ6GqpxALBD--
+--dds9jO4idXToq0wP--

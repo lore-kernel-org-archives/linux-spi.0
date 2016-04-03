@@ -1,51 +1,60 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v5 1/2] dt/bindings: Add bindings for PIC32 SPI peripheral
-Date: Sat, 2 Apr 2016 09:35:06 -0700
-Message-ID: <20160402163506.GD2350@sirena.org.uk>
-References: <1459509530-22716-1-git-send-email-purna.mandal@microchip.com>
+From: Tema williams <temawilliams22-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: WE NEED YOUR HELP URGENTLY.
+Date: Sun, 3 Apr 2016 18:14:14 +0200
+Message-ID: <CA+hOsCvD3C4OmnF77sXHYmo_TOmxOYZx0ndPSdjPY=VrvrzoOQ__46506.185612134$1459700075$gmane$org@mail.gmail.com>
+Reply-To: temawilliams26-/E1597aS9LQAvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="dds9jO4idXToq0wP"
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-	Joshua Henderson <digitalpeer@digitalpeer.com>,
-	devicetree@vger.kernel.org, linux-mips@linux-mips.org,
-	Kumar Gala <galak@codeaurora.org>,
-	Ian Campbell <ijc+devicetree@hellion.org.uk>,
-	Rob Herring <robh+dt@kernel.org>,
-	Pawel Moll <pawel.moll@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>
-To: Purna Chandra Mandal <purna.mandal@microchip.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1459509530-22716-1-git-send-email-purna.mandal@microchip.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+To: undisclosed-recipients:;
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
+
+Dear Sir/madam,
+
+With due respect and to the glory of Almighty God whom we worship I
+call upon you to assist my family.
+Please Permit me to inform you of my desire of going into business
+relationship with you.
+
+My name is Tema Williams,The only Son of late Chief PATRICK WILLIAMS.
+My father was a very wealthy cocoa merchant in Abidjan but we are from
+Sierra Leone
+After my Father death I and my Family move to South Africa as refugee.
+
+My father was poisoned to death by his business associates on one of
+their outings on a business trip.
+Before his death in a private hospital in Abidjan he secretly called
+me on his bed side and told me that
+he has the sum of ($12.000,000 MILLION US DOLLAR) kept with a security
+and finance company in South Africa,
+He also explained to me that it was because of this wealth that he was
+poisoned by his business associates,
+that I should seek for a beneficiary in any country of my choice where
+I will transfer this money and use it for investment.
+I am honorably seeking for your assistance to transfer our fund out of
+South Africa.
+Upon the successful transfer of this fund,we shall make arrangement
+for me,my mother and younger sister to come
+over to your country to further our Education and invest in a
+profitable business that you may suggest.
+
+More over,I am willing to offer you 20% of the total sum as
+compensation for your effort/input after the successful
+transfer of this fund into your nominated bank account overseas.
+
+As we depend on God, and with God all things are possible.
+Anticipating to hear from you today.
+
+Thanks and God bless.
+PLEASE CALL ME +27787597591
 
 
---dds9jO4idXToq0wP
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Best regards,
 
-On Fri, Apr 01, 2016 at 04:48:49PM +0530, Purna Chandra Mandal wrote:
-> Document the devicetree bindings for the SPI peripheral found
-> on Microchip PIC32 class devices.
-
-Please use subject lines reflecting the style for the subsystem.
-
---dds9jO4idXToq0wP
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJW//S4AAoJECTWi3JdVIfQjfEH+weHKWmxXd0vqovgGShGg0Cd
-lvdbe/YcGan7+wIQY4RfnbuEBgv7SCVDZETrTbKNTFDu/GSxYfzNZQBPCU8PPbzb
-3OQhH3thPKGTsAWdmNGQMTn8B7vCh2HvcNUdDwDFQF8ooMklBNTd4NyjKifuNqto
-PG3VtRHfzjDabfrLnvsuAjRJj9cT3xsYW+Q+/ztZFT2ree6kKwsUL7qL6pDgwhO6
-0FjKVOVZCtUwhLAcMwCNQDovVVyDKcKfkdb9FZP8pIQyEvx4q6icygfeVbBinYk/
-rb22jYg72YKvF+r14gCz6iimQh3GvSiowYoGSk5wOo6ADU8kuhXBNlxdXBBrrf8=
-=+uPx
------END PGP SIGNATURE-----
-
---dds9jO4idXToq0wP--
+Tema Williams
+(for the family)
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

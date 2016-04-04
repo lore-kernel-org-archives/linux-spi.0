@@ -1,59 +1,36 @@
-From: Tema williams <temawilliams22-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: WE NEED YOUR HELP URGENTLY.
-Date: Sun, 3 Apr 2016 18:14:14 +0200
-Message-ID: <CA+hOsCvD3C4OmnF77sXHYmo_TOmxOYZx0ndPSdjPY=VrvrzoOQ__46506.185612134$1459700075$gmane$org@mail.gmail.com>
-Reply-To: temawilliams26-/E1597aS9LQAvxtiuMwx3w@public.gmane.org
+From: Rich Felker <dalias-8zAoT0mYgF4@public.gmane.org>
+Subject: 4.6-rc1 regression in SPI core -- deadlock
+Date: Sun, 3 Apr 2016 21:20:13 -0400
+Message-ID: <20160404012013.GA5735@brightrain.aerifal.cx>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-To: undisclosed-recipients:;
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jon Hunter <jonathanh-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+	Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Dear Sir/madam,
+I've spent several days trying to debug a deadlock using our local
+(not yet ready for upstream) driver for the J-Core SPI device and it
+seems to be a new deadlock in the SPI core caused by commit
+556351f14e74 and unrelated to the particular driver. Commit
+49023d2e4ead tried to solve a related deadlock problem, but there
+still seems to be a lock order issue and it's affecting SPI use even
+without the spi_flash_read optimization. The deadlock I'm observing
+has a kworker thread stuck in wait_for_completion called from
+spi_sync_locked (ultimately from mmc_rescan) and the completion is
+never finishing because this kworker thread has the bus locked while
+the spi master task has already started processing the queue but can't
+proceed because the bus lock is taken.
 
-With due respect and to the glory of Almighty God whom we worship I
-call upon you to assist my family.
-Please Permit me to inform you of my desire of going into business
-relationship with you.
+Anyone else seen this? Ideas for a proper fix? I've got it working for
+me by disabling the bus locking in __spi_pump_messages entirely (like
+before commit 556351f14e74) but I'm pretty sure this breaks the new
+feature that was added.
 
-My name is Tema Williams,The only Son of late Chief PATRICK WILLIAMS.
-My father was a very wealthy cocoa merchant in Abidjan but we are from
-Sierra Leone
-After my Father death I and my Family move to South Africa as refugee.
-
-My father was poisoned to death by his business associates on one of
-their outings on a business trip.
-Before his death in a private hospital in Abidjan he secretly called
-me on his bed side and told me that
-he has the sum of ($12.000,000 MILLION US DOLLAR) kept with a security
-and finance company in South Africa,
-He also explained to me that it was because of this wealth that he was
-poisoned by his business associates,
-that I should seek for a beneficiary in any country of my choice where
-I will transfer this money and use it for investment.
-I am honorably seeking for your assistance to transfer our fund out of
-South Africa.
-Upon the successful transfer of this fund,we shall make arrangement
-for me,my mother and younger sister to come
-over to your country to further our Education and invest in a
-profitable business that you may suggest.
-
-More over,I am willing to offer you 20% of the total sum as
-compensation for your effort/input after the successful
-transfer of this fund into your nominated bank account overseas.
-
-As we depend on God, and with God all things are possible.
-Anticipating to hear from you today.
-
-Thanks and God bless.
-PLEASE CALL ME +27787597591
-
-
-Best regards,
-
-Tema Williams
-(for the family)
+Rich
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,76 +1,24 @@
-From: Vignesh R <vigneshr@ti.com>
-Subject: Re: [PATCH 1/4] mm: add is_highmem_addr() helper
-Date: Mon, 4 Apr 2016 13:44:11 +0530
-Message-ID: <57022253.70400@ti.com>
-References: <1459427384-21374-1-git-send-email-boris.brezillon@free-electrons.com>
- <1459427384-21374-2-git-send-email-boris.brezillon@free-electrons.com>
+From: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Subject: Re: spi/tegra114: add spi driver
+Date: Mon, 4 Apr 2016 11:56:13 +0300
+Message-ID: <20160404085612.GF5273@mwanda>
+References: <20160401135227.GA24190@mwanda>
+ <570203B1.3040304@nvidia.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie@kernel.org>, <linux-spi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Vinod Koul <vinod.koul@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>, <dmaengine@vger.kernel.org>,
-        Mauro
- Carvalho Chehab <m.chehab@samsung.com>,
-        Hans Verkuil
-	<hans.verkuil@cisco.com>,
-        Laurent Pinchart
-	<laurent.pinchart@ideasonboard.com>,
-        <linux-media@vger.kernel.org>, Richard
- Weinberger <richard@nod.at>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        <linux-crypto@vger.kernel.org>, <linux-mm@kvack.org>,
-        Joerg Roedel <joro@8bytes.org>, <iommu@lists.linux-foundation.org>,
-        <linux-kernel@vger.kernel.org>
-To: Boris Brezillon <boris.brezillon@free-electrons.com>,
-        David Woodhouse
-	<dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        <linux-mtd@lists.infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Dave Gordon <david.s.gordon@intel.com>
-Return-path: <owner-linux-mm@kvack.org>
-In-Reply-To: <1459427384-21374-2-git-send-email-boris.brezillon@free-electrons.com>
-Sender: owner-linux-mm@kvack.org
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <570203B1.3040304-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+Oh...  Duh.  I read this code but I got my variables switched around in
+my head.  The static checker finds the code confusing in a different way
+than I did...
 
-On 03/31/2016 05:59 PM, Boris Brezillon wrote:
-> Add an helper to check if a virtual address is in the highmem region.
-> 
-> Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
-> ---
->  include/linux/highmem.h | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
-> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
-> index bb3f329..13dff37 100644
-> --- a/include/linux/highmem.h
-> +++ b/include/linux/highmem.h
-> @@ -41,6 +41,14 @@ void kmap_flush_unused(void);
->  
->  struct page *kmap_to_page(void *addr);
->  
-> +static inline bool is_highmem_addr(const void *x)
-> +{
-> +	unsigned long vaddr = (unsigned long)x;
-> +
-> +	return vaddr >=  PKMAP_BASE &&
-> +	       vaddr < ((PKMAP_BASE + LAST_PKMAP) * PAGE_SIZE);
+Thanks for taking a look.
 
-
-Shouldn't this be:
-		vaddr < (PKMAP_BASE + (LAST_PKMAP * PAGE_SIZE)) ?
-
--- 
-Regards
-Vignesh
-
---
-To unsubscribe, send a message with 'unsubscribe linux-mm' in
-the body to majordomo@kvack.org.  For more info on Linux MM,
-see: http://www.linux-mm.org/ .
-Don't email: <a href=mailto:"dont@kvack.org"> email@kvack.org </a>
+regards,
+dan carpenter

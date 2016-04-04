@@ -1,103 +1,70 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pic32: Add bindings for PIC32 SPI peripheral" to the spi tree
-Date: Mon, 04 Apr 2016 10:05:34 -0700
-Message-ID: <E1an7wU-0004WQ-Mb@finisterre>
-References: <1457099082-12587-1-git-send-email-purna.mandal@microchip.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Purna Chandra Mandal <purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
-	Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1457099082-12587-1-git-send-email-purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Octavian Purdila <octavian.purdila@intel.com>
+Subject: Re: [RFC PATCH 06/10] spi: add support for ACPI reconfigure notifications
+Date: Mon, 4 Apr 2016 22:34:56 +0300
+Message-ID: <CAE1zot+ESGBEYeUbLTreKfkc-6B45uQq3PWhhRfBo1AWd-7Vxw@mail.gmail.com>
+References: <1459417026-6697-1-git-send-email-octavian.purdila@intel.com>
+	<1459417026-6697-7-git-send-email-octavian.purdila@intel.com>
+	<20160331172935.GL2350@sirena.org.uk>
+	<CAE1zotJbUGBOUF-4-XAx0DUkj55egOMXVn9FzjV3Fdj4MYxD0Q@mail.gmail.com>
+	<20160401140856.GW2350@sirena.org.uk>
+	<CAJZ5v0itmFDdPi6vJmsheEHADEwmeTNgCQ5iVroJfV=o6Wof3A@mail.gmail.com>
+	<20160402162449.GB2350@sirena.org.uk>
+	<CAE1zotKDZd2mYmzoQvCPgVrZ5vfOrPDtBRzTscdsqrZbT8Z+cg@mail.gmail.com>
+	<20160404160327.GH2350@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	"Rafael J. Wysocki" <rjw@rjwysocki.net>,
+	Len Brown <lenb@kernel.org>,
+	Matt Fleming <matt@codeblueprint.co.uk>,
+	Wolfram Sang <wsa@the-dreams.de>,
+	Joel Becker <jlbec@evilplan.org>,
+	Christoph Hellwig <hch@lst.de>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	linux-efi@vger.kernel.org, linux-i2c <linux-i2c@vger.kernel.org>,
+	linux-spi@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>,
+	Irina Tirdea <irina.tirdea@intel.com>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-acpi-owner@vger.kernel.org>
+In-Reply-To: <20160404160327.GH2350@sirena.org.uk>
+Sender: linux-acpi-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-The patch
+On Mon, Apr 4, 2016 at 7:03 PM, Mark Brown <broonie@kernel.org> wrote:
+> On Mon, Apr 04, 2016 at 01:25:56PM +0300, Octavian Purdila wrote:
+>> On Sat, Apr 2, 2016 at 7:24 PM, Mark Brown <broonie@kernel.org> wrote:
+>
+>> > What I don't understand is why the flow on inital probe isn't simply to
+>> > register the controller which then triggers the walk of the children.
+>> > That way any bus that supports initial probe also supports hotplug
+>> > without needing to go and manually add a second code path.
+>
+>> Do you mean register the notifier per controller instead of per
+>> subsystem? Either way we need changes at the subsystem level and I
+>> choose to follow the device tree implementation for consistency.
+>
+> No!  I mean use the exact same callback you've got now for everything.
+>
+>> The other reason is that (pending other ACPICA changes) we can add
+>> other notification events in the future such as node added or removed
+>> (just like device tree), and in that case the probe and hotplug
+>> handling would be different (and a bit more efficient).
+>
+> Why is probe different to hotplug?  We don't need to do that in the
+> normal driver model.
 
-   spi: pic32: Add bindings for PIC32 SPI peripheral
+There might be some confusion with the term, I am referring to slave
+hotplug, not controller hotplug.
 
-has been applied to the spi tree at
+The way I see it, there are two logical operations: probe of a
+controller and the associated enumeration of the SPI slaves for that
+bus and "hotplug" of new SPI slaves and the enumeration of those
+particular slaves.
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+When we probe the controller we search DT/ACPI and enumerate all the
+slaves for *that* controller.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 120e8989ebac7c7c702e351046c20e9918912aca Mon Sep 17 00:00:00 2001
-From: Purna Chandra Mandal <purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Date: Fri, 1 Apr 2016 16:48:49 +0530
-Subject: [PATCH] spi: pic32: Add bindings for PIC32 SPI peripheral
-
-Document the devicetree bindings for the SPI peripheral found
-on Microchip PIC32 class devices.
-
-Signed-off-by: Purna Chandra Mandal <purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- .../bindings/spi/microchip,spi-pic32.txt           | 34 ++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/microchip,spi-pic32.txt
-
-diff --git a/Documentation/devicetree/bindings/spi/microchip,spi-pic32.txt b/Documentation/devicetree/bindings/spi/microchip,spi-pic32.txt
-new file mode 100644
-index 000000000000..79de379f4dc0
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/microchip,spi-pic32.txt
-@@ -0,0 +1,34 @@
-+Microchip PIC32 SPI Master controller
-+
-+Required properties:
-+- compatible: Should be "microchip,pic32mzda-spi".
-+- reg: Address and length of register space for the device.
-+- interrupts: Should contain all three spi interrupts in sequence
-+              of <fault-irq>, <receive-irq>, <transmit-irq>.
-+- interrupt-names: Should be "fault", "rx", "tx" in order.
-+- clocks: Phandle of the clock generating SPI clock on the bus.
-+- clock-names: Should be "mck0".
-+- cs-gpios: Specifies the gpio pins to be used for chipselects.
-+            See: Documentation/devicetree/bindings/spi/spi-bus.txt
-+
-+Optional properties:
-+- dmas: Two or more DMA channel specifiers following the convention outlined
-+        in Documentation/devicetree/bindings/dma/dma.txt
-+- dma-names: Names for the dma channels. There must be at least one channel
-+             named "spi-tx" for transmit and named "spi-rx" for receive.
-+
-+Example:
-+
-+spi1: spi@1f821000 {
-+        compatible = "microchip,pic32mzda-spi";
-+        reg = <0x1f821000 0x200>;
-+        interrupts = <109 IRQ_TYPE_LEVEL_HIGH>,
-+                     <110 IRQ_TYPE_LEVEL_HIGH>,
-+                     <111 IRQ_TYPE_LEVEL_HIGH>;
-+        interrupt-names = "fault", "rx", "tx";
-+        clocks = <&PBCLK2>;
-+        clock-names = "mck0";
-+        cs-gpios = <&gpio3 4 GPIO_ACTIVE_LOW>;
-+        dmas = <&dma 134>, <&dma 135>;
-+        dma-names = "spi-rx", "spi-tx";
-+};
--- 
-2.8.0.rc3
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+When a slave hotplug happens for device tree we get a device node
+notification and we can instantiate the SPI slave based on that info.
+In case of ACPI, (at this point) we get a global callback and in that
+callback we need to iterate through *all* controllers.

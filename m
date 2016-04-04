@@ -1,70 +1,51 @@
-From: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-Subject: Re: spi/tegra114: add spi driver
-Date: Mon, 4 Apr 2016 11:33:29 +0530
-Message-ID: <570203B1.3040304@nvidia.com>
-References: <20160401135227.GA24190@mwanda>
+From: Rich Felker <dalias-8zAoT0mYgF4@public.gmane.org>
+Subject: Re: 4.6-rc1 regression in SPI core -- deadlock
+Date: Mon, 4 Apr 2016 03:04:47 -0400
+Message-ID: <20160404070446.GJ21636@brightrain.aerifal.cx>
+References: <20160404012013.GA5735@brightrain.aerifal.cx>
+ <5701E53B.5040407@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Jon Hunter <jonathanh-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160401135227.GA24190@mwanda>
+Content-Disposition: inline
+In-Reply-To: <5701E53B.5040407-l0cyMroinI0@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Mon, Apr 04, 2016 at 09:23:31AM +0530, Vignesh R wrote:
+> 
+> 
+> On 04/04/2016 06:50 AM, Rich Felker wrote:
+> > I've spent several days trying to debug a deadlock using our local
+> > (not yet ready for upstream) driver for the J-Core SPI device and it
+> > seems to be a new deadlock in the SPI core caused by commit
+> > 556351f14e74 and unrelated to the particular driver. Commit
+> > 49023d2e4ead tried to solve a related deadlock problem, but there
+> > still seems to be a lock order issue and it's affecting SPI use even
+> > without the spi_flash_read optimization. The deadlock I'm observing
+> > has a kworker thread stuck in wait_for_completion called from
+> > spi_sync_locked (ultimately from mmc_rescan) and the completion is
+> > never finishing because this kworker thread has the bus locked while
+> > the spi master task has already started processing the queue but can't
+> > proceed because the bus lock is taken.
+> > 
+> > Anyone else seen this? Ideas for a proper fix?
+> 
+> Could you try 24c8cd1b081286("spi: fix possible deadlock between
+> internal bus locks and bus_lock_flag") from linux-next?
 
-On Friday 01 April 2016 07:22 PM, Dan Carpenter wrote:
-> Hello Laxman Dewangan,
->
-> The patch f333a331adfa: "spi/tegra114: add spi driver" from Feb 22,
-> 2013, leads to the following static checker warning:
->
-> 	drivers/spi/spi-tegra114.c:621 tegra_spi_init_dma_param()
-> 	error: uninitialized variable 'dma_phys'.
->
-> drivers/spi/spi-tegra114.c
->     583          dma_addr_t dma_phys;
->                  ^^^^^^^^^^^^^^^^^^^
->     584          int ret;
->     585          struct dma_slave_config dma_sconfig;
->     586
->     587          dma_chan = dma_request_slave_channel_reason(tspi->dev,
->     588                                          dma_to_memory ? "rx" : "tx");
->     589          if (IS_ERR(dma_chan)) {
->     590                  ret = PTR_ERR(dma_chan);
->     591                  if (ret != -EPROBE_DEFER)
->     592                          dev_err(tspi->dev,
->     593                                  "Dma channel is not available: %d\n", ret);
->     594                  return ret;
->     595          }
->     596
->     597          dma_buf = dma_alloc_coherent(tspi->dev, tspi->dma_buf_size,
->     598                                  &dma_phys, GFP_KERNEL);
->
-> The issue is that in dma_alloc_attrs() if we can dma_alloc_from_coherent()
-> then dma_phys is not set.  I'm getting a couple similar errors and I'm
-> not certian what to do about it.
->
+This seems to fix the problem. I'm still hitting an issue where
+mmc_rescan deadlocks (at best) or crashes/corrupts the card state, but
+I think that's a separate bug since it happened with my workaround
+hack too. The patch in linux-next makes sense to me from what I've
+read of the SPI core code so far. Thanks!
 
-
-The issue is with compiler actually.
-we have code as
-         dma_buf = dma_alloc_coherent(tspi->dev, tspi->dma_buf_size,
-                                 &dma_phys, GFP_KERNEL);
-         if (!dma_buf) {
-                 dev_err(tspi->dev, " Not able to allocate the dma 
-buffer\n");
-                 dma_release_channel(dma_chan);
-                 return -ENOMEM;
-         }
-
-So if returned value "dma_buf" is not NULL then we can assume that 
-dma_phy is initialized other wise it should return NULL.
-
-The static check is not able to find out that calling function has 
-initialized it or not.
-
+Rich
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

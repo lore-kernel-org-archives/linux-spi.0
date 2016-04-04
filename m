@@ -1,52 +1,76 @@
-From: Rich Felker <dalias-8zAoT0mYgF4@public.gmane.org>
-Subject: Re: 4.6-rc1 regression in SPI core -- deadlock
-Date: Mon, 4 Apr 2016 03:04:47 -0400
-Message-ID: <20160404070446.GJ21636@brightrain.aerifal.cx>
-References: <20160404012013.GA5735@brightrain.aerifal.cx>
- <5701E53B.5040407@ti.com>
+From: Vignesh R <vigneshr@ti.com>
+Subject: Re: [PATCH 1/4] mm: add is_highmem_addr() helper
+Date: Mon, 4 Apr 2016 13:44:11 +0530
+Message-ID: <57022253.70400@ti.com>
+References: <1459427384-21374-1-git-send-email-boris.brezillon@free-electrons.com>
+ <1459427384-21374-2-git-send-email-boris.brezillon@free-electrons.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Jon Hunter <jonathanh-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <5701E53B.5040407-l0cyMroinI0@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie@kernel.org>, <linux-spi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Vinod Koul <vinod.koul@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>, <dmaengine@vger.kernel.org>,
+        Mauro
+ Carvalho Chehab <m.chehab@samsung.com>,
+        Hans Verkuil
+	<hans.verkuil@cisco.com>,
+        Laurent Pinchart
+	<laurent.pinchart@ideasonboard.com>,
+        <linux-media@vger.kernel.org>, Richard
+ Weinberger <richard@nod.at>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        <linux-crypto@vger.kernel.org>, <linux-mm@kvack.org>,
+        Joerg Roedel <joro@8bytes.org>, <iommu@lists.linux-foundation.org>,
+        <linux-kernel@vger.kernel.org>
+To: Boris Brezillon <boris.brezillon@free-electrons.com>,
+        David Woodhouse
+	<dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        <linux-mtd@lists.infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Dave Gordon <david.s.gordon@intel.com>
+Return-path: <owner-linux-mm@kvack.org>
+In-Reply-To: <1459427384-21374-2-git-send-email-boris.brezillon@free-electrons.com>
+Sender: owner-linux-mm@kvack.org
+List-Id: linux-spi.vger.kernel.org
 
-On Mon, Apr 04, 2016 at 09:23:31AM +0530, Vignesh R wrote:
-> 
-> 
-> On 04/04/2016 06:50 AM, Rich Felker wrote:
-> > I've spent several days trying to debug a deadlock using our local
-> > (not yet ready for upstream) driver for the J-Core SPI device and it
-> > seems to be a new deadlock in the SPI core caused by commit
-> > 556351f14e74 and unrelated to the particular driver. Commit
-> > 49023d2e4ead tried to solve a related deadlock problem, but there
-> > still seems to be a lock order issue and it's affecting SPI use even
-> > without the spi_flash_read optimization. The deadlock I'm observing
-> > has a kworker thread stuck in wait_for_completion called from
-> > spi_sync_locked (ultimately from mmc_rescan) and the completion is
-> > never finishing because this kworker thread has the bus locked while
-> > the spi master task has already started processing the queue but can't
-> > proceed because the bus lock is taken.
-> > 
-> > Anyone else seen this? Ideas for a proper fix?
-> 
-> Could you try 24c8cd1b081286("spi: fix possible deadlock between
-> internal bus locks and bus_lock_flag") from linux-next?
+Hi,
 
-This seems to fix the problem. I'm still hitting an issue where
-mmc_rescan deadlocks (at best) or crashes/corrupts the card state, but
-I think that's a separate bug since it happened with my workaround
-hack too. The patch in linux-next makes sense to me from what I've
-read of the SPI core code so far. Thanks!
+On 03/31/2016 05:59 PM, Boris Brezillon wrote:
+> Add an helper to check if a virtual address is in the highmem region.
+> 
+> Signed-off-by: Boris Brezillon <boris.brezillon@free-electrons.com>
+> ---
+>  include/linux/highmem.h | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+> 
+> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
+> index bb3f329..13dff37 100644
+> --- a/include/linux/highmem.h
+> +++ b/include/linux/highmem.h
+> @@ -41,6 +41,14 @@ void kmap_flush_unused(void);
+>  
+>  struct page *kmap_to_page(void *addr);
+>  
+> +static inline bool is_highmem_addr(const void *x)
+> +{
+> +	unsigned long vaddr = (unsigned long)x;
+> +
+> +	return vaddr >=  PKMAP_BASE &&
+> +	       vaddr < ((PKMAP_BASE + LAST_PKMAP) * PAGE_SIZE);
 
-Rich
+
+Shouldn't this be:
+		vaddr < (PKMAP_BASE + (LAST_PKMAP * PAGE_SIZE)) ?
+
+-- 
+Regards
+Vignesh
+
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+To unsubscribe, send a message with 'unsubscribe linux-mm' in
+the body to majordomo@kvack.org.  For more info on Linux MM,
+see: http://www.linux-mm.org/ .
+Don't email: <a href=mailto:"dont@kvack.org"> email@kvack.org </a>

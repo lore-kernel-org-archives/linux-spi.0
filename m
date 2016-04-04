@@ -1,38 +1,58 @@
-From: Purna Chandra Mandal <purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Subject: Re: [PATCH v5 1/2] dt/bindings: Add bindings for PIC32 SPI peripheral
-Date: Mon, 4 Apr 2016 15:37:59 +0530
-Message-ID: <57023CFF.5040308@microchip.com>
-References: <1459509530-22716-1-git-send-email-purna.mandal@microchip.com>
- <20160402163506.GD2350@sirena.org.uk>
+From: Octavian Purdila <octavian.purdila@intel.com>
+Subject: Re: [RFC PATCH 06/10] spi: add support for ACPI reconfigure notifications
+Date: Mon, 4 Apr 2016 13:25:56 +0300
+Message-ID: <CAE1zotKDZd2mYmzoQvCPgVrZ5vfOrPDtBRzTscdsqrZbT8Z+cg@mail.gmail.com>
+References: <1459417026-6697-1-git-send-email-octavian.purdila@intel.com>
+	<1459417026-6697-7-git-send-email-octavian.purdila@intel.com>
+	<20160331172935.GL2350@sirena.org.uk>
+	<CAE1zotJbUGBOUF-4-XAx0DUkj55egOMXVn9FzjV3Fdj4MYxD0Q@mail.gmail.com>
+	<20160401140856.GW2350@sirena.org.uk>
+	<CAJZ5v0itmFDdPi6vJmsheEHADEwmeTNgCQ5iVroJfV=o6Wof3A@mail.gmail.com>
+	<20160402162449.GB2350@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-Cc: <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Sergei Shtylyov <sergei.shtylyov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>,
-	Joshua Henderson <digitalpeer-icZdIMMiY0PM6KjX8ROVJw@public.gmane.org>,
-	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160402163506.GD2350-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	"Rafael J. Wysocki" <rjw@rjwysocki.net>,
+	Len Brown <lenb@kernel.org>,
+	Matt Fleming <matt@codeblueprint.co.uk>,
+	Wolfram Sang <wsa@the-dreams.de>,
+	Joel Becker <jlbec@evilplan.org>,
+	Christoph Hellwig <hch@lst.de>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	linux-efi@vger.kernel.org, linux-i2c <linux-i2c@vger.kernel.org>,
+	linux-spi@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>,
+	Irina Tirdea <irina.tirdea@intel.com>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-i2c-owner@vger.kernel.org>
+In-Reply-To: <20160402162449.GB2350@sirena.org.uk>
+Sender: linux-i2c-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On 04/02/2016 10:05 PM, Mark Brown wrote:
+On Sat, Apr 2, 2016 at 7:24 PM, Mark Brown <broonie@kernel.org> wrote:
+> On Fri, Apr 01, 2016 at 09:26:38PM +0200, Rafael J. Wysocki wrote:
+>> On Fri, Apr 1, 2016 at 4:08 PM, Mark Brown <broonie@kernel.org> wrote:
+>
+>> > That's not the point.  The point is that since the handling is identical
+>> > why are we handling it through exactly the same code?
+>
+>> I think that during the initial enumeration the controller driver's
+>> probe walks the children and creates device objects for them.  When a
+>> table is loaded later, the controller driver has been probed already
+>> and there needs to be a way to trigger a walk over the (new) children
+>> from it.
+>
+>> Or a hook somewhere around acpi_platform_notify() is needed.
+>
+> What I don't understand is why the flow on inital probe isn't simply to
+> register the controller which then triggers the walk of the children.
+> That way any bus that supports initial probe also supports hotplug
+> without needing to go and manually add a second code path.
 
-> On Fri, Apr 01, 2016 at 04:48:49PM +0530, Purna Chandra Mandal wrote:
->> Document the devicetree bindings for the SPI peripheral found
->> on Microchip PIC32 class devices.
-> Please use subject lines reflecting the style for the subsystem.
+Do you mean register the notifier per controller instead of per
+subsystem? Either way we need changes at the subsystem level and I
+choose to follow the device tree implementation for consistency.
 
-ack. Will do.
-
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+The other reason is that (pending other ACPICA changes) we can add
+other notification events in the future such as node added or removed
+(just like device tree), and in that case the probe and hotplug
+handling would be different (and a bit more efficient).

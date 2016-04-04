@@ -1,84 +1,77 @@
-From: Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH 1/4] mm: add is_highmem_addr() helper
-Date: Mon, 4 Apr 2016 17:05:58 +0200
-Message-ID: <20160404170558.0e3278b5@bbrezillon>
-References: <1459427384-21374-1-git-send-email-boris.brezillon@free-electrons.com>
-	<1459427384-21374-2-git-send-email-boris.brezillon@free-electrons.com>
-	<57022253.70400@ti.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [RFC PATCH 06/10] spi: add support for ACPI reconfigure
+ notifications
+Date: Mon, 4 Apr 2016 09:03:27 -0700
+Message-ID: <20160404160327.GH2350@sirena.org.uk>
+References: <1459417026-6697-1-git-send-email-octavian.purdila@intel.com>
+ <1459417026-6697-7-git-send-email-octavian.purdila@intel.com>
+ <20160331172935.GL2350@sirena.org.uk>
+ <CAE1zotJbUGBOUF-4-XAx0DUkj55egOMXVn9FzjV3Fdj4MYxD0Q@mail.gmail.com>
+ <20160401140856.GW2350@sirena.org.uk>
+ <CAJZ5v0itmFDdPi6vJmsheEHADEwmeTNgCQ5iVroJfV=o6Wof3A@mail.gmail.com>
+ <20160402162449.GB2350@sirena.org.uk>
+ <CAE1zotKDZd2mYmzoQvCPgVrZ5vfOrPDtBRzTscdsqrZbT8Z+cg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	<linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	Dave Gordon <david.s.gordon-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Dan Williams <dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	<dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Mauro Carvalho Chehab <m.chehab-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Hans Verkuil <hans.verkuil-FYB4Gu1CFyUAvxtiuMwx3w@public.gmane.org>,
-	Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>,
-	<linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Richard Weinberger <richard-/L3Ra7n9ekc@public.gmane.org>,
-	Herbert Xu <herbert-lOAM2aK0SrRLBo1qDEOMRrpzq4S04n8Q@public.gmane.org>,
-	"David S. Miller" <davem-fT/PcQaiUtIeIZ0/mPfg9Q@public.gmane.org>,
-	<linux-crypto-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mm-Bw31MaZKKs3YtjvyW6yDsg@public.gmane.org>,
-	Joerg Roedel <joro-zLv9SwRftAIdnm+yROfE0A@public.gmane.org>,
-	<iommu-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <57022253.70400-l0cyMroinI0@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="GH2w3bbsGmSMo31z"
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	"Rafael J. Wysocki" <rjw@rjwysocki.net>,
+	Len Brown <lenb@kernel.org>,
+	Matt Fleming <matt@codeblueprint.co.uk>,
+	Wolfram Sang <wsa@the-dreams.de>,
+	Joel Becker <jlbec@evilplan.org>,
+	Christoph Hellwig <hch@lst.de>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	linux-efi@vger.kernel.org, linux-i2c <linux-i2c@vger.kernel.org>,
+	linux-spi@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>,
+	Irina Tirdea <irina.tirdea@intel.com>
+To: Octavian Purdila <octavian.purdila@intel.com>
+Return-path: <linux-acpi-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <CAE1zotKDZd2mYmzoQvCPgVrZ5vfOrPDtBRzTscdsqrZbT8Z+cg@mail.gmail.com>
+Sender: linux-acpi-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Mon, 4 Apr 2016 13:44:11 +0530
-Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org> wrote:
 
-> Hi,
-> 
-> On 03/31/2016 05:59 PM, Boris Brezillon wrote:
-> > Add an helper to check if a virtual address is in the highmem region.
-> > 
-> > Signed-off-by: Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-> > ---
-> >  include/linux/highmem.h | 13 +++++++++++++
-> >  1 file changed, 13 insertions(+)
-> > 
-> > diff --git a/include/linux/highmem.h b/include/linux/highmem.h
-> > index bb3f329..13dff37 100644
-> > --- a/include/linux/highmem.h
-> > +++ b/include/linux/highmem.h
-> > @@ -41,6 +41,14 @@ void kmap_flush_unused(void);
-> >  
-> >  struct page *kmap_to_page(void *addr);
-> >  
-> > +static inline bool is_highmem_addr(const void *x)
-> > +{
-> > +	unsigned long vaddr = (unsigned long)x;
-> > +
-> > +	return vaddr >=  PKMAP_BASE &&
-> > +	       vaddr < ((PKMAP_BASE + LAST_PKMAP) * PAGE_SIZE);
-> 
-> 
-> Shouldn't this be:
-> 		vaddr < (PKMAP_BASE + (LAST_PKMAP * PAGE_SIZE)) ?
+--GH2w3bbsGmSMo31z
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Oops, yes indeed.
+On Mon, Apr 04, 2016 at 01:25:56PM +0300, Octavian Purdila wrote:
+> On Sat, Apr 2, 2016 at 7:24 PM, Mark Brown <broonie@kernel.org> wrote:
 
-Anyway, given Russell's feedback I don't think I'm gonna follow up on
-this series.
+> > What I don't understand is why the flow on inital probe isn't simply to
+> > register the controller which then triggers the walk of the children.
+> > That way any bus that supports initial probe also supports hotplug
+> > without needing to go and manually add a second code path.
 
-Sorry.
+> Do you mean register the notifier per controller instead of per
+> subsystem? Either way we need changes at the subsystem level and I
+> choose to follow the device tree implementation for consistency.
 
-Boris
+No!  I mean use the exact same callback you've got now for everything.
 
--- 
-Boris Brezillon, Free Electrons
-Embedded Linux and Kernel engineering
-http://free-electrons.com
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> The other reason is that (pending other ACPICA changes) we can add
+> other notification events in the future such as node added or removed
+> (just like device tree), and in that case the probe and hotplug
+> handling would be different (and a bit more efficient).
+
+Why is probe different to hotplug?  We don't need to do that in the
+normal driver model.
+
+--GH2w3bbsGmSMo31z
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJXApBKAAoJECTWi3JdVIfQi4UH/0n5ctuTiNy19NukG3EILHSB
+mD92PAk3ysfpgYqCY3v+x0V3UiEhbhDIflrSpi0IiKIaMu8M+7K3gJKjeVo1Jd6b
+JSKVE0lsLzXkM9cQs7nE/eg0zXcpSx/uHE5ilfxZsZpPcaWG0demluZmHDtAczKb
+saOInORaXf5JtzjVlwHWa001SFRSRuDciSCRZS9lm5XHjgFgzlXLrMbA3tbsHh1W
+pKVnoddslbAL8DDxZU59NtizJhc9HTA74JIG50ZqNRgsb1aa8cD+ez3drA5pnLMD
+AVLhHy5IwWjCKVf3CphJAEYXKdWiLYekFZpnFVDVelzQ7qt4IyKYG+x80S/rIJU=
+=fMiN
+-----END PGP SIGNATURE-----
+
+--GH2w3bbsGmSMo31z--

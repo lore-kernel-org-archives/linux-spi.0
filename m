@@ -1,85 +1,95 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [RFC PATCH 06/10] spi: add support for ACPI reconfigure
- notifications
-Date: Tue, 5 Apr 2016 11:32:55 -0700
-Message-ID: <20160405183255.GH1924@sirena.org.uk>
-References: <20160331172935.GL2350@sirena.org.uk>
- <CAE1zotJbUGBOUF-4-XAx0DUkj55egOMXVn9FzjV3Fdj4MYxD0Q@mail.gmail.com>
- <20160401140856.GW2350@sirena.org.uk>
- <CAJZ5v0itmFDdPi6vJmsheEHADEwmeTNgCQ5iVroJfV=o6Wof3A@mail.gmail.com>
- <20160402162449.GB2350@sirena.org.uk>
- <CAE1zotKDZd2mYmzoQvCPgVrZ5vfOrPDtBRzTscdsqrZbT8Z+cg@mail.gmail.com>
- <20160404160327.GH2350@sirena.org.uk>
- <CAE1zot+ESGBEYeUbLTreKfkc-6B45uQq3PWhhRfBo1AWd-7Vxw@mail.gmail.com>
- <CAJZ5v0gV8N6zgVrwtRFaY98Wv1HsoKs+4=U-s_V29FSpCdFW3g@mail.gmail.com>
- <CAE1zot+wvU_he-6cFQi1np9X1=FcXWoF-mbxYDRYUkyOT+7nyQ@mail.gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: [GIT PULL] SPI fixes for v4.6
+Date: Tue, 5 Apr 2016 11:36:32 -0700
+Message-ID: <20160405183632.GI1924@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="X+8siUETKMkW99st"
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	"Rafael J. Wysocki" <rjw@rjwysocki.net>,
-	Len Brown <lenb@kernel.org>,
-	Matt Fleming <matt@codeblueprint.co.uk>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Joel Becker <jlbec@evilplan.org>,
-	Christoph Hellwig <hch@lst.de>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	linux-efi@vger.kernel.org, linux-i2c <linux-i2c@vger.kernel.org>,
-	linux-spi@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>,
-	Irina Tirdea <irina.tirdea@intel.com>
-To: Octavian Purdila <octavian.purdila@intel.com>
-Return-path: <linux-i2c-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="h22Fi9ANawrtbNPX"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CAE1zot+wvU_he-6cFQi1np9X1=FcXWoF-mbxYDRYUkyOT+7nyQ@mail.gmail.com>
-Sender: linux-i2c-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---X+8siUETKMkW99st
-Content-Type: text/plain; charset=us-ascii
+--h22Fi9ANawrtbNPX
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 05, 2016 at 02:49:13PM +0300, Octavian Purdila wrote:
+The following changes since commit 9735a22799b9214d17d3c231fe377fc852f042e9:
 
-> If we really want to have a single path for ACPI enumeration we could
-> do that by using an ACPI SPI bridge driver or scan handlers after
-> extending the matching mechanisms. But we would still need to modify
-> the SPI subsystem and I don't think its worth it just to save a call
-> to acpi_register_spi_devices() from spi_register_master().
+  Linux 4.6-rc2 (2016-04-03 09:09:40 -0500)
 
-It's not specifically for SPI, it's the fact that you're asking every
-single bus type which might be described in ACPI to handle both hotplug
-and coldplug paths separately.  Given that the code that's being added
-just seems like trivial boilerplate it seems like we're doing this
-wrong, we should be factoring this out so there's nothing bus types can
-get wrong.
+are available in the git repository at:
 
-> Now for parent notification complexity: in the case of SPI we can
-> easily to this because current ACPI SPI enumeration supports only
-> direct children as slaves. However, on I2C we can have an unrelated
-> node as a slave - that is why the I2C scanning searches the whole
-> namespaces for references to a particular i2c_adapter. So, we would
-> need to retrieve the parent node from the namespace node information
-> which means that we will do SPI specific stuff in ACPI generic code. I
-> don't think it is a big issue, because we already treat SPI / I2C
-> special, right?
+  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fi=
+x-v4.6-rc2
 
-Or perhaps the issue is that we can't make our mind up if the bus
-specific code should go in the bus or in the ACPI core?
+for you to fetch changes up to cb39f732abbe4f38d2bef8e0a1c8bd5c242fc1b7:
 
---X+8siUETKMkW99st
+  Merge remote-tracking branches 'spi/fix/omap2' and 'spi/fix/rockchip' int=
+o spi-linus (2016-04-04 10:05:49 -0700)
+
+----------------------------------------------------------------
+spi: Fixes for v4.6
+
+A couple of driver specific fixes here that came in since the merge
+window plus one core fix for locking in cases where a client driver
+grabs a lock on the whole bus for an extended series of operations that
+was introduced by the changes to support accelerated flash operations.
+
+----------------------------------------------------------------
+Akinobu Mita (1):
+      spi: omap2-mcspi: fix dma transfer for vmalloced buffer
+
+Geert Uytterhoeven (1):
+      spi: rockchip: Spelling s/divsor/divisor/
+
+Heiko St=FCbner (1):
+      spi: fix possible deadlock between internal bus locks and bus_lock_fl=
+ag
+
+Knut Wohlrab (1):
+      spi: imx: only do necessary changes to ECSPIx_CONFIGREG
+
+Mark Brown (3):
+      Merge remote-tracking branch 'spi/fix/core' into spi-linus
+      Merge remote-tracking branch 'spi/fix/imx' into spi-linus
+      Merge remote-tracking branches 'spi/fix/omap2' and 'spi/fix/rockchip'=
+ into spi-linus
+
+Sascha Hauer (1):
+      spi: imx: Fix possible NULL pointer deref
+
+Shawn Lin (1):
+      spi: rockchip: fix probe deferral handling
+
+ drivers/spi/spi-imx.c         | 16 +++++++++--
+ drivers/spi/spi-omap2-mcspi.c | 62 ++++++++++++---------------------------=
+----
+ drivers/spi/spi-rockchip.c    | 16 ++++++-----
+ drivers/spi/spi.c             |  4 +--
+ 4 files changed, 43 insertions(+), 55 deletions(-)
+
+--h22Fi9ANawrtbNPX
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJXBATWAAoJECTWi3JdVIfQXl4H/0BzWIDQKWOqLzpt7x5yOPOl
-QkkiK0BMXoGfMwzvb6ykmztzT0zkkfFGCCPS3EpGC7TZWQOIaniKavxDyVl0tYo2
-0/em4gdafI11N3uns6MCsnP/JU2frcJqoNHdPc0PlrOcFy3aQbwm9Uw/Ya2uFNZJ
-hhKRX5lym6Pp+3kwFnZSAp+GCvn8cw2wv+AnnrPZY5K4efDY9jUS34NedT9NvywR
-fZAH72ZuoLwK+dpx1fkPrJg3o71h+nlGm5lEKG+VKfQUcnEBcoTxXJm5CE66emVp
-cpPs921uqQJPGCwNxuG6L7pPu048F8FdJc29DOVZ8sX3CX0nuSsr8TfTQXtHIAg=
-=MLeI
+iQEcBAEBCAAGBQJXBAWvAAoJECTWi3JdVIfQR9QH/AtRK/cH/XfbwGeYgzVBhBiS
+pxtiYyeo3DPEn4nGA2fuQe/6Q8+ND4AKzEh2XqVKNeAcklw4wTob3waDwKlN7Yxr
+nvQmVtwxXbE3412hBdzE8V9iew48UF4ji9YSzWzNS5FjhSrOrUBu+nJ+XmMUcsVz
+Ti9XKOgaTnDRi+iEyaBnSxya2iTHh20Zn3MdHNtlTeJXldaRhCQlJpnye+Fs55Dh
+bE9d7RFpTTlksNfdsZZDv8uA77fCxw/Qwdt2NKGRECoPx/sTULQInjD+dJOFfGLr
+PMe5ryQRXXI01IEjQlSLURmQWfyDbAOg132FCRgCq1uVjihfXtpS6+yX+qtD17I=
+=rRU1
 -----END PGP SIGNATURE-----
 
---X+8siUETKMkW99st--
+--h22Fi9ANawrtbNPX--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,38 +1,40 @@
-From: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
-Subject: Re: [PATCH v2] spi: orion.c: Add direct access mode
-Date: Tue, 5 Apr 2016 15:31:58 +0200
-Message-ID: <20160405133158.GC30881@lunn.ch>
-References: <1458663893-13766-1-git-send-email-sr@denx.de>
- <3108005.nUMWsj4kjp@wuerfel>
- <20160329212842.GN2350@sirena.org.uk>
- <13533301.gfdhE3AuMf@wuerfel>
- <5703651F.4040901@denx.de>
- <20160405131529.GA30881@lunn.ch>
- <5703BB82.4090204@denx.de>
+From: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH 1/7] spi: cadence: Fix a check patch warning
+Date: Tue, 5 Apr 2016 23:37:48 +0530
+Message-ID: <1459879674-13012-1-git-send-email-shubhraj@xilinx.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
-	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-To: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
+Content-Type: text/plain
+Cc: <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <5703BB82.4090204-ynQEQJNshbs@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-> Yes, I wanted to suggest this change as well. I hope its
-> acceptable that I only change the SPI nodes to using the
-> "labels style" in this attempt though?
+CHECK: Comparison to NULL could be written "!master"
++	if (master == NULL)
 
-Gregory and Thomas should give their O.K. for armada-* files. If you
-need to change kirkwood-*, dove-* or orion5-* files, im happy with
-label style.
+Signed-off-by: Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi-cadence.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-      Andrew
+diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
+index 121a413..3acaac3 100644
+--- a/drivers/spi/spi-cadence.c
++++ b/drivers/spi/spi-cadence.c
+@@ -481,7 +481,7 @@ static int cdns_spi_probe(struct platform_device *pdev)
+ 	u32 num_cs;
+ 
+ 	master = spi_alloc_master(&pdev->dev, sizeof(*xspi));
+-	if (master == NULL)
++	if (!master)
+ 		return -ENOMEM;
+ 
+ 	xspi = spi_master_get_devdata(master);
+-- 
+1.7.1
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

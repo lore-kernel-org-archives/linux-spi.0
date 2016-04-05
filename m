@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: cadence: Fix a check patch warning" to the spi tree
-Date: Tue, 05 Apr 2016 11:51:59 -0700
-Message-ID: <E1anW51-0000TF-TW@finisterre>
-References: <1459879674-13012-1-git-send-email-shubhraj@xilinx.com>
+Subject: Applied "spi: cadance: Fix the Documentation" to the spi tree
+Date: Tue, 05 Apr 2016 11:51:53 -0700
+Message-ID: <E1anW4v-0000QV-65@finisterre>
+References: <1459879674-13012-4-git-send-email-shubhraj@xilinx.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1459879674-13012-1-git-send-email-shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+In-Reply-To: <1459879674-13012-4-git-send-email-shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: cadence: Fix a check patch warning
+   spi: cadance: Fix the Documentation
 
 has been applied to the spi tree at
 
@@ -38,13 +38,18 @@ to this mail.
 Thanks,
 Mark
 
->From 15a1c5030a1e0445af2e4eaa1535cccc8519d99c Mon Sep 17 00:00:00 2001
+>From b4037360e66b90755ed73022976f10108bc82045 Mon Sep 17 00:00:00 2001
 From: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-Date: Tue, 5 Apr 2016 23:37:48 +0530
-Subject: [PATCH] spi: cadence: Fix a check patch warning
+Date: Tue, 5 Apr 2016 23:37:51 +0530
+Subject: [PATCH] spi: cadance: Fix the Documentation
 
-CHECK: Comparison to NULL could be written "!master"
-+	if (master == NULL)
+cdns_spi_chipselect has parameter is_high however the comment
+describes it as is_on.
+Also fixes the below warning.
+drivers/spi/spi-cadence.c:182: warning: No description found for
+parameter 'is_high'
+drivers/spi/spi-cadence.c:182: warning: Excess function parameter 'is_on'
+description in 'cdns_spi_chipselect'
 
 Signed-off-by: Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
@@ -53,18 +58,18 @@ Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
-index 121a4135b540..3acaac33218a 100644
+index 2915b257921d..8a6fee934364 100644
 --- a/drivers/spi/spi-cadence.c
 +++ b/drivers/spi/spi-cadence.c
-@@ -481,7 +481,7 @@ static int cdns_spi_probe(struct platform_device *pdev)
- 	u32 num_cs;
- 
- 	master = spi_alloc_master(&pdev->dev, sizeof(*xspi));
--	if (master == NULL)
-+	if (!master)
- 		return -ENOMEM;
- 
- 	xspi = spi_master_get_devdata(master);
+@@ -169,7 +169,7 @@ static void cdns_spi_init_hw(struct cdns_spi *xspi)
+ /**
+  * cdns_spi_chipselect - Select or deselect the chip select line
+  * @spi:	Pointer to the spi_device structure
+- * @is_on:	Select(0) or deselect (1) the chip select line
++ * @is_high:	Select(0) or deselect (1) the chip select line
+  */
+ static void cdns_spi_chipselect(struct spi_device *spi, bool is_high)
+ {
 -- 
 2.8.0.rc3
 

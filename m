@@ -1,7 +1,7 @@
 From: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH 4/7] spi: cadance: Fix the Documentation
-Date: Tue, 5 Apr 2016 23:37:51 +0530
-Message-ID: <1459879674-13012-4-git-send-email-shubhraj@xilinx.com>
+Subject: [PATCH 3/7] spi: cadence: Fix probe error handling
+Date: Tue, 5 Apr 2016 23:37:50 +0530
+Message-ID: <1459879674-13012-3-git-send-email-shubhraj@xilinx.com>
 References: <1459879674-13012-1-git-send-email-shubhraj@xilinx.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -13,32 +13,36 @@ In-Reply-To: <1459879674-13012-1-git-send-email-shubhraj-gjFFaj9aHVfQT0dZR+AlfA@
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-cdns_spi_chipselect has parameter is_high however the comment
-describes it as is_on.
-Also fixes the below warning.
-drivers/spi/spi-cadence.c:182: warning: No description found for
-parameter 'is_high'
-drivers/spi/spi-cadence.c:182: warning: Excess function parameter 'is_on'
-description in 'cdns_spi_chipselect'
+The clock disabling is missed out in some
+error cases at probe. Fix the same.
 
 Signed-off-by: Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
 ---
- drivers/spi/spi-cadence.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ drivers/spi/spi-cadence.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
-index 2915b25..8a6fee9 100644
+index 97a3bf6..2915b25 100644
 --- a/drivers/spi/spi-cadence.c
 +++ b/drivers/spi/spi-cadence.c
-@@ -169,7 +169,7 @@ static void cdns_spi_init_hw(struct cdns_spi *xspi)
- /**
-  * cdns_spi_chipselect - Select or deselect the chip select line
-  * @spi:	Pointer to the spi_device structure
-- * @is_on:	Select(0) or deselect (1) the chip select line
-+ * @is_high:	Select(0) or deselect (1) the chip select line
-  */
- static void cdns_spi_chipselect(struct spi_device *spi, bool is_high)
- {
+@@ -527,7 +527,7 @@ static int cdns_spi_probe(struct platform_device *pdev)
+ 	if (irq <= 0) {
+ 		ret = -ENXIO;
+ 		dev_err(&pdev->dev, "irq number is invalid\n");
+-		goto remove_master;
++		goto clk_dis_all;
+ 	}
+ 
+ 	ret = devm_request_irq(&pdev->dev, irq, cdns_spi_irq,
+@@ -535,7 +535,7 @@ static int cdns_spi_probe(struct platform_device *pdev)
+ 	if (ret != 0) {
+ 		ret = -ENXIO;
+ 		dev_err(&pdev->dev, "request_irq failed\n");
+-		goto remove_master;
++		goto clk_dis_all;
+ 	}
+ 
+ 	master->prepare_transfer_hardware = cdns_prepare_transfer_hardware;
 -- 
 1.7.1
 

@@ -1,56 +1,93 @@
-From: Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [RFC PATCH 06/10] spi: add support for ACPI reconfigure notifications
-Date: Tue, 5 Apr 2016 22:16:16 +0300
-Message-ID: <CAE1zotL7X+di4rHecRW_G-45wUPbbNb9jvn3C_zjD4XttZ4v3w@mail.gmail.com>
-References: <20160331172935.GL2350@sirena.org.uk>
-	<CAE1zotJbUGBOUF-4-XAx0DUkj55egOMXVn9FzjV3Fdj4MYxD0Q@mail.gmail.com>
-	<20160401140856.GW2350@sirena.org.uk>
-	<CAJZ5v0itmFDdPi6vJmsheEHADEwmeTNgCQ5iVroJfV=o6Wof3A@mail.gmail.com>
-	<20160402162449.GB2350@sirena.org.uk>
-	<CAE1zotKDZd2mYmzoQvCPgVrZ5vfOrPDtBRzTscdsqrZbT8Z+cg@mail.gmail.com>
-	<20160404160327.GH2350@sirena.org.uk>
-	<CAE1zot+ESGBEYeUbLTreKfkc-6B45uQq3PWhhRfBo1AWd-7Vxw@mail.gmail.com>
-	<CAJZ5v0gV8N6zgVrwtRFaY98Wv1HsoKs+4=U-s_V29FSpCdFW3g@mail.gmail.com>
-	<CAE1zot+wvU_he-6cFQi1np9X1=FcXWoF-mbxYDRYUkyOT+7nyQ@mail.gmail.com>
-	<20160405183255.GH1924@sirena.org.uk>
+From: Ben Hutchings <ben.hutchings-4yDnlxn2s6sWdaTGBSpHTA@public.gmane.org>
+Subject: [PATCH 1/2] spi: spi-ti-qspi: Fix FLEN and WLEN settings if
+ bits_per_word is overridden
+Date: Tue, 05 Apr 2016 20:45:28 +0100
+Message-ID: <1459885528.26669.5.camel@codethink.co.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: "Rafael J. Wysocki" <rafael-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
-	Len Brown <lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Matt Fleming <matt-mF/unelCI9GS6iBeEJttW/XRex20P6io@public.gmane.org>,
-	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
-	Joel Becker <jlbec-aKy9MeLSZ9dg9hUCZPvPmw@public.gmane.org>,
-	Christoph Hellwig <hch-jcswGhMUV9g@public.gmane.org>,
-	"linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-efi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c <linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Irina Tirdea <irina.tirdea-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	CT kernel <linux-kernel-81qHHgoATdFT9dQujB1mzip2UmYkHbXO@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-efi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160405183255.GH1924-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-efi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Apr 5, 2016 at 9:32 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Tue, Apr 05, 2016 at 02:49:13PM +0300, Octavian Purdila wrote:
->
->> If we really want to have a single path for ACPI enumeration we could
->> do that by using an ACPI SPI bridge driver or scan handlers after
->> extending the matching mechanisms. But we would still need to modify
->> the SPI subsystem and I don't think its worth it just to save a call
->> to acpi_register_spi_devices() from spi_register_master().
->
-> It's not specifically for SPI, it's the fact that you're asking every
-> single bus type which might be described in ACPI to handle both hotplug
-> and coldplug paths separately.  Given that the code that's being added
-> just seems like trivial boilerplate it seems like we're doing this
-> wrong, we should be factoring this out so there's nothing bus types can
-> get wrong.
->
+Each transfer can specify 8, 16 or 32 bits per word independently of
+the default for the device being addressed.  Currently we always set
+the FLEN register field according to the device default.  Also, if
+multiple transfers in the same message have differing bits_per_word,
+we bitwise-or the different values in the WLEN register field.  Fix
+both of these.
 
-AFAICS this is exactly the same case for DT: one code path for
-coldplug and one for hotplug.
+Cc: stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Signed-off-by: Ben Hutchings <ben.hutchings-4yDnlxn2s6sWdaTGBSpHTA@public.gmane.org>
+---
+Unfortunately I don't have a test setup where bits_per_word is
+overridden.  But it is straightforward to verify that the driver is no
+longer using spi->bits_per_word.
 
-Which makes me think that it is not possible to have a single path for
-both, or maybe its not worth it. Do I miss something obvious?
+Ben.
+
+ drivers/spi/spi-ti-qspi.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+index 64318fcfacf2..e5cefaca0589 100644
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -94,6 +94,7 @@ struct ti_qspi {
+ #define QSPI_FLEN(n)			((n - 1) << 0)
+ #define QSPI_WLEN_MAX_BITS		128
+ #define QSPI_WLEN_MAX_BYTES		16
++#define QSPI_WLEN_MASK			QSPI_WLEN(QSPI_WLEN_MAX_BITS)
+ 
+ /* STATUS REGISTER */
+ #define BUSY				0x01
+@@ -373,7 +374,7 @@ static int ti_qspi_start_transfer_one(struct spi_master *master,
+ 	struct spi_device *spi = m->spi;
+ 	struct spi_transfer *t;
+ 	int status = 0, ret;
+-	int frame_length;
++	unsigned int frame_length;
+ 
+ 	/* setup device control reg */
+ 	qspi->dc = 0;
+@@ -385,9 +386,10 @@ static int ti_qspi_start_transfer_one(struct spi_master *master,
+ 	if (spi->mode & SPI_CS_HIGH)
+ 		qspi->dc |= QSPI_CSPOL(spi->chip_select);
+ 
+-	frame_length = (m->frame_length << 3) / spi->bits_per_word;
+-
+-	frame_length = clamp(frame_length, 0, QSPI_FRAME);
++	frame_length = 0;
++	list_for_each_entry(t, &m->transfers, transfer_list)
++		frame_length += t->len / (t->bits_per_word >> 3);
++	frame_length = min_t(unsigned int, frame_length, QSPI_FRAME);
+ 
+ 	/* setup command reg */
+ 	qspi->cmd = 0;
+@@ -399,7 +401,8 @@ static int ti_qspi_start_transfer_one(struct spi_master *master,
+ 	mutex_lock(&qspi->list_lock);
+ 
+ 	list_for_each_entry(t, &m->transfers, transfer_list) {
+-		qspi->cmd |= QSPI_WLEN(t->bits_per_word);
++		qspi->cmd = ((qspi->cmd & ~QSPI_WLEN_MASK) |
++			     QSPI_WLEN(t->bits_per_word));
+ 
+ 		ret = qspi_transfer_msg(qspi, t);
+ 		if (ret) {
+-- 
+2.8.0.rc3
+
+
+
+-- 
+Ben Hutchings
+Software Developer, Codethink Ltd.
+
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

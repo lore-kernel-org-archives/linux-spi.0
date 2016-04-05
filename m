@@ -1,79 +1,76 @@
-From: "Rafael J. Wysocki" <rafael-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [RFC PATCH 06/10] spi: add support for ACPI reconfigure notifications
-Date: Mon, 4 Apr 2016 23:18:56 +0200
-Message-ID: <CAJZ5v0gV8N6zgVrwtRFaY98Wv1HsoKs+4=U-s_V29FSpCdFW3g@mail.gmail.com>
+From: "Zheng, Lv" <lv.zheng@intel.com>
+Subject: RE: [RFC PATCH 02/10] acpi: install SSDT tables from initrd
+Date: Tue, 5 Apr 2016 00:49:30 +0000
+Message-ID: <1AE640813FDE7649BE1B193DEA596E883BB66700@SHSMSX101.ccr.corp.intel.com>
 References: <1459417026-6697-1-git-send-email-octavian.purdila@intel.com>
-	<1459417026-6697-7-git-send-email-octavian.purdila@intel.com>
-	<20160331172935.GL2350@sirena.org.uk>
-	<CAE1zotJbUGBOUF-4-XAx0DUkj55egOMXVn9FzjV3Fdj4MYxD0Q@mail.gmail.com>
-	<20160401140856.GW2350@sirena.org.uk>
-	<CAJZ5v0itmFDdPi6vJmsheEHADEwmeTNgCQ5iVroJfV=o6Wof3A@mail.gmail.com>
-	<20160402162449.GB2350@sirena.org.uk>
-	<CAE1zotKDZd2mYmzoQvCPgVrZ5vfOrPDtBRzTscdsqrZbT8Z+cg@mail.gmail.com>
-	<20160404160327.GH2350@sirena.org.uk>
-	<CAE1zot+ESGBEYeUbLTreKfkc-6B45uQq3PWhhRfBo1AWd-7Vxw@mail.gmail.com>
+	<1459417026-6697-3-git-send-email-octavian.purdila@intel.com>
+	<1AE640813FDE7649BE1B193DEA596E883BB66258@SHSMSX101.ccr.corp.intel.com>
+	<CAE1zotJ1fa4m-_FO3PUQK8_p0vHcfWD5TmuMdxOSHDjku421pA@mail.gmail.com>
+ <CAE1zotLX8L=jpJRYtUddtpYmgc0NxqmtdDjcQPWWg8KTO8PH5A@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"Rafael J. Wysocki" <rafael-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
-	Len Brown <lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Matt Fleming <matt-mF/unelCI9GS6iBeEJttW/XRex20P6io@public.gmane.org>,
-	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
-	Joel Becker <jlbec-aKy9MeLSZ9dg9hUCZPvPmw@public.gmane.org>,
-	Christoph Hellwig <hch-jcswGhMUV9g@public.gmane.org>,
-	"linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-efi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c <linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Irina Tirdea <irina.tirdea-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-To: Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-efi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAE1zot+ESGBEYeUbLTreKfkc-6B45uQq3PWhhRfBo1AWd-7Vxw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-efi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+	Len Brown <lenb@kernel.org>,
+	"Matt Fleming" <matt@codeblueprint.co.uk>,
+	Mark Brown <broonie@kernel.org>,
+	"Wolfram Sang" <wsa@the-dreams.de>,
+	Joel Becker <jlbec@evilplan.org>,
+	Christoph Hellwig <hch@lst.de>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"Tirdea, Irina" <irina.tirdea@intel.com>
+To: "Purdila, Octavian" <octavian.purdila@intel.com>
+Return-path: <linux-i2c-owner@vger.kernel.org>
+In-Reply-To: <CAE1zotLX8L=jpJRYtUddtpYmgc0NxqmtdDjcQPWWg8KTO8PH5A@mail.gmail.com>
+Content-Language: en-US
+Sender: linux-i2c-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Apr 4, 2016 at 9:34 PM, Octavian Purdila
-<octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org> wrote:
-> On Mon, Apr 4, 2016 at 7:03 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
->> On Mon, Apr 04, 2016 at 01:25:56PM +0300, Octavian Purdila wrote:
->>> On Sat, Apr 2, 2016 at 7:24 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
->>
->>> > What I don't understand is why the flow on inital probe isn't simply to
->>> > register the controller which then triggers the walk of the children.
->>> > That way any bus that supports initial probe also supports hotplug
->>> > without needing to go and manually add a second code path.
->>
->>> Do you mean register the notifier per controller instead of per
->>> subsystem? Either way we need changes at the subsystem level and I
->>> choose to follow the device tree implementation for consistency.
->>
->> No!  I mean use the exact same callback you've got now for everything.
->>
->>> The other reason is that (pending other ACPICA changes) we can add
->>> other notification events in the future such as node added or removed
->>> (just like device tree), and in that case the probe and hotplug
->>> handling would be different (and a bit more efficient).
->>
->> Why is probe different to hotplug?  We don't need to do that in the
->> normal driver model.
->
-> There might be some confusion with the term, I am referring to slave
-> hotplug, not controller hotplug.
->
-> The way I see it, there are two logical operations: probe of a
-> controller and the associated enumeration of the SPI slaves for that
-> bus and "hotplug" of new SPI slaves and the enumeration of those
-> particular slaves.
->
-> When we probe the controller we search DT/ACPI and enumerate all the
-> slaves for *that* controller.
->
-> When a slave hotplug happens for device tree we get a device node
-> notification and we can instantiate the SPI slave based on that info.
-> In case of ACPI, (at this point) we get a global callback and in that
-> callback we need to iterate through *all* controllers.
-
-Is that really necessary?
-
-The namespace rescan could notify the parent of a new node in
-acpi_default_enumeration(), couldn't it?
+SGksDQoNCj4gRnJvbTogT2N0YXZpYW4gUHVyZGlsYSBbbWFpbHRvOm9jdGF2aWFuLnB1cmRpbGFA
+aW50ZWwuY29tXQ0KPiBTdWJqZWN0OiBSZTogW1JGQyBQQVRDSCAwMi8xMF0gYWNwaTogaW5zdGFs
+bCBTU0RUIHRhYmxlcyBmcm9tIGluaXRyZA0KPiANCj4gT24gRnJpLCBBcHIgMSwgMjAxNiBhdCAx
+OjExIFBNLCBPY3RhdmlhbiBQdXJkaWxhDQo+IDxvY3Rhdmlhbi5wdXJkaWxhQGludGVsLmNvbT4g
+d3JvdGU6DQo+ID4gT24gRnJpLCBBcHIgMSwgMjAxNiBhdCA4OjA1IEFNLCBaaGVuZywgTHYgPGx2
+LnpoZW5nQGludGVsLmNvbT4gd3JvdGU6DQo+ID4+IEhpLA0KPiA+Pg0KPiA+PiBJTU8sIHRoZXJl
+IGlzIGFscmVhZHkgYSBzaW1pbGFyIGZ1bmN0aW9uIHVwc3RyZWFtZWQ6DQo+ID4+DQo+IGh0dHBz
+Oi8vZ2l0Lmtlcm5lbC5vcmcvY2dpdC9saW51eC9rZXJuZWwvZ2l0L3RvcnZhbGRzL2xpbnV4Lmdp
+dC9jb21taXQvP2lkPWM4NWMNCj4gYzgxDQo+ID4+IENvdWxkIGl0IHdvcmsgZm9yIHlvdXIgdXNl
+IGNhc2U/DQo+ID4NCj4gPiBZZXMsIGl0IGlzIGJhc2ljYWxseSB0aGUgc2FtZS4NCj4gPg0KPiA+
+IFRoZSBvbmx5IGRpZmZlcmVuY2UgaXMgb24gaG93IHdlIGhhbmRsZSB0YWludC4gSSB0aGluayB3
+ZSBzaG91bGQgdXNlIGENCj4gPiBuZXcgdGFpbnQgZm9yIG92ZXJsYXlzIGFuZCB0aGF0IHdlIGRv
+bid0IG5lZWQgdG8gZGlzYWJsZSBsb2NrZGVwLg0KPiA+DQo+ID4gQlRXLCB3aHkgaXMgbG9ja2Rl
+cCBkaXNhYmxlZCB3aGVuIHdlIG92ZXJyaWRlPw0KPiANCj4gVGhlIG90aGVyIHRoaW5nIEkgZm9y
+Z290IHRvIG1lbnRpb24gaXMgdGhhdCBJIHRoaW5rIHdlIHNob3VsZCBhbGxvdw0KPiBpbnN0YWxs
+aW5nIG5ldyB0YWJsZXMgZXZlbiBpZiBDT05GSUdfQUNQSV9JTklUUkRfVEFCTEVfT1ZFUlJJREUg
+aXMgbm90DQo+IHNlbGVjdGVkLiBJTU8gdGhlIG92ZXJyaWRlIGFuZCBvdmVybGF5IGZ1bmN0aW9u
+YWxpdHkgaXMgZGlmZmVyZW50LA0KPiB3aXRoIHRoZSBsYXR0ZXIgYmVpbmcgbW9yZSB0aGVuIGEg
+ZGVidWcgb3B0aW9uLg0KW0x2IFpoZW5nXSANCkkgZG9uJ3QgdGhpbmsgc28uIFRoZSBpbml0cmQg
+b3ZlcnJpZGUgbWVjaGFuaXNtIGlzIG5vdCBkZXBlbmRlbnQgb24gQ09ORklHX0FDUElfREVCVUcu
+DQpBY2NvcmRpbmcgdG8gdGhlIHNwZWMsIHdlIGNhbiBhbGxvdyBhIGhpZ2hlciB2ZXJzaW9uaW5n
+IHNhbWUgdGFibGUgKHNhbWUgdGFibGUgc2lnLCB0YWJsZSBpZCwgdGFibGUgb2VtIGlkKSB0byBv
+dmVycmlkZSB0aGUgb2xkIHRhYmxlcyBhcyBhIHBhdGNoaW5nIGZ1bmN0aW9uYWxpdHkuDQpTbyBi
+b3RoIHRoZSBmdW5jdGlvbmFsaXRpZXMgYXJlIG5vdCBkZWJ1ZyBvcHRpb25zIGFuZCBzZXJ2ZSBm
+b3IgdGhlIHNhbWUgcHVycG9zZSBmcm9tIHRoaXMgcG9pbnQgb2Ygdmlldy4NCkFuZCBJTU8gdGhh
+dCdzIHdoeSB0aGUgaW5pdHJkIG92ZXJyaWRlIG1lY2hhbmlzbSBuZWVkbid0IGJlIGRlcGVuZGVu
+dCBvbiBDT05GSUdfQUNQSV9ERUJVRy4NCg0KSSdtIHJlYWxseSBPSyB3aXRoIHJlbW92aW5nIHRo
+ZSBhY3BpX3RhYmxlX3RhaW50KCkgZm9yIENPTkZJR19BQ1BJX0lOSVRSRF9UQUJMRV9PVkVSUklE
+RSBidXQgbGVhdmluZyBzb21lIGluZm8gbWVzc2FnZXMgaW5kaWNhdGluZyB0aGUgdGFibGUgdXBn
+cmFkZXMuDQpJIGRvbid0IHRoaW5rIHRoaXMgbWVjaGFuaXNtIGlzIHVuc2FmZS4NCkl0IGhhcHBl
+bnMgZHVyaW5nIGEgaW5pdGlhbGl6YXRpb24gc3RlcCBvY2N1cnJpbmcgYmVmb3JlIHRoZSB0YWJs
+ZSBpcyBsb2FkZWQgYW5kIGhlbmNlIHNob3VsZCBiZSBzYWZlIGV2ZW4gdGhlIHN5bmNocm9uaXph
+dGlvbiBpcyBub3Qgc28gcm9idXN0IGluIEFDUElDQS4NCkFuZCB3aXRoIHRoZSByZXZpc2lvbiBz
+dXBwb3J0IGFkZGVkLCB3ZSBzaG91bGQgYmUgYWJsZSB0byBhbGxvdyB2ZW5kb3JzIHRvIHVwZGF0
+ZSB0aGUgYnVnZ3kgdGFibGVzLg0KVGhhdCBtZWFucyB0aGUgdGFibGVzIG1heSBiZSBvcmlnaW5h
+dGVkIGZyb20gdGhlIHNhZmUgc291cmNlcyAtIHRoZSB2ZW5kb3JzLg0KDQo+IA0KPiBJIHdpbGwg
+cHJlcGFyZSBhIHBhdGNoIGZvciB0aGUgbmV4dCB2ZXJzaW9uIG9mIHRoZSBzZXJpZXMgdG8gZGVj
+b3VwbGUNCj4gaW5zdGFsbGluZyBuZXcgdGFibGVzIGZyb20gQ09ORklHX0FDUElfSU5JVFJEX1RB
+QkxFX09WRVJSSURFLg0KW0x2IFpoZW5nXSANCkkgZG9uJ3QgdGhpbmsgdGhleSBuZWVkIHRvIGJl
+IGRlY291cGxlZC4NClRoZSB1c2UgY2FzZSBpczoNCklmIHRoZXJlIGlzIGFuIEFDUEkgdGFibGUg
+aW4gaW5pdHJkIGltYWdlIGFuZDoNCjEuIGlmIHRoZSB0YWJsZSdzIHJldmlzaW9uIGlzIGhpZ2hl
+ciB0aGFuIHRoZSBleGlzdGluZyBvbmUsIG92ZXJyaWRlIHRoZSBleGlzdGluZyBvbmU7DQoyLiBp
+ZiB0aGUgdGFibGUgaXMgYSBicmFuZCBuZXcgb25lLCBpbnN0YWxsIGl0Lg0KDQpUaGFua3MgYW5k
+IGJlc3QgcmVnYXJkcw0KLUx2DQo=

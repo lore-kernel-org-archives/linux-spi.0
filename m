@@ -1,129 +1,114 @@
 From: Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [RFC PATCH 10/10] acpi: add support for loading SSDTs via configfs
-Date: Tue, 5 Apr 2016 11:21:48 +0300
-Message-ID: <CAE1zotKDFLNP5JTnMiWOstE4DYBHVeyP902J9ixD+fJbFqSZ6Q@mail.gmail.com>
+Subject: Re: [RFC PATCH 06/10] spi: add support for ACPI reconfigure notifications
+Date: Tue, 5 Apr 2016 14:49:13 +0300
+Message-ID: <CAE1zot+wvU_he-6cFQi1np9X1=FcXWoF-mbxYDRYUkyOT+7nyQ@mail.gmail.com>
 References: <1459417026-6697-1-git-send-email-octavian.purdila@intel.com>
-	<1459417026-6697-11-git-send-email-octavian.purdila@intel.com>
-	<1AE640813FDE7649BE1B193DEA596E883BB66233@SHSMSX101.ccr.corp.intel.com>
-	<CAE1zotLgjfKvFr0W9CjFbbkxqM6erLGwv-aHzTt=qwdCPzGOhw@mail.gmail.com>
-	<1AE640813FDE7649BE1B193DEA596E883BB6677B@SHSMSX101.ccr.corp.intel.com>
+	<1459417026-6697-7-git-send-email-octavian.purdila@intel.com>
+	<20160331172935.GL2350@sirena.org.uk>
+	<CAE1zotJbUGBOUF-4-XAx0DUkj55egOMXVn9FzjV3Fdj4MYxD0Q@mail.gmail.com>
+	<20160401140856.GW2350@sirena.org.uk>
+	<CAJZ5v0itmFDdPi6vJmsheEHADEwmeTNgCQ5iVroJfV=o6Wof3A@mail.gmail.com>
+	<20160402162449.GB2350@sirena.org.uk>
+	<CAE1zotKDZd2mYmzoQvCPgVrZ5vfOrPDtBRzTscdsqrZbT8Z+cg@mail.gmail.com>
+	<20160404160327.GH2350@sirena.org.uk>
+	<CAE1zot+ESGBEYeUbLTreKfkc-6B45uQq3PWhhRfBo1AWd-7Vxw@mail.gmail.com>
+	<CAJZ5v0gV8N6zgVrwtRFaY98Wv1HsoKs+4=U-s_V29FSpCdFW3g@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Cc: "Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
 	Len Brown <lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Matt Fleming <matt-mF/unelCI9GS6iBeEJttW/XRex20P6io@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
 	Joel Becker <jlbec-aKy9MeLSZ9dg9hUCZPvPmw@public.gmane.org>,
 	Christoph Hellwig <hch-jcswGhMUV9g@public.gmane.org>,
 	"linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-efi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-efi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"Tirdea, Irina" <irina.tirdea-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-To: "Zheng, Lv" <lv.zheng-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+	linux-efi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c <linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Irina Tirdea <irina.tirdea-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: "Rafael J. Wysocki" <rafael-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1AE640813FDE7649BE1B193DEA596E883BB6677B-0J0gbvR4kThpB2pF5aRoyrfspsVTdybXVpNB7YpNyf8@public.gmane.org>
+In-Reply-To: <CAJZ5v0gV8N6zgVrwtRFaY98Wv1HsoKs+4=U-s_V29FSpCdFW3g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Apr 5, 2016 at 6:11 AM, Zheng, Lv <lv.zheng-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org> wrote:
-> Hi,
+On Tue, Apr 5, 2016 at 12:18 AM, Rafael J. Wysocki <rafael-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Mon, Apr 4, 2016 at 9:34 PM, Octavian Purdila
+> <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org> wrote:
+>> On Mon, Apr 4, 2016 at 7:03 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+>>> On Mon, Apr 04, 2016 at 01:25:56PM +0300, Octavian Purdila wrote:
+>>>> On Sat, Apr 2, 2016 at 7:24 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+>>>
+>>>> > What I don't understand is why the flow on inital probe isn't simply to
+>>>> > register the controller which then triggers the walk of the children.
+>>>> > That way any bus that supports initial probe also supports hotplug
+>>>> > without needing to go and manually add a second code path.
+>>>
+>>>> Do you mean register the notifier per controller instead of per
+>>>> subsystem? Either way we need changes at the subsystem level and I
+>>>> choose to follow the device tree implementation for consistency.
+>>>
+>>> No!  I mean use the exact same callback you've got now for everything.
+>>>
+>>>> The other reason is that (pending other ACPICA changes) we can add
+>>>> other notification events in the future such as node added or removed
+>>>> (just like device tree), and in that case the probe and hotplug
+>>>> handling would be different (and a bit more efficient).
+>>>
+>>> Why is probe different to hotplug?  We don't need to do that in the
+>>> normal driver model.
+>>
+>> There might be some confusion with the term, I am referring to slave
+>> hotplug, not controller hotplug.
+>>
+>> The way I see it, there are two logical operations: probe of a
+>> controller and the associated enumeration of the SPI slaves for that
+>> bus and "hotplug" of new SPI slaves and the enumeration of those
+>> particular slaves.
+>>
+>> When we probe the controller we search DT/ACPI and enumerate all the
+>> slaves for *that* controller.
+>>
+>> When a slave hotplug happens for device tree we get a device node
+>> notification and we can instantiate the SPI slave based on that info.
+>> In case of ACPI, (at this point) we get a global callback and in that
+>> callback we need to iterate through *all* controllers.
 >
->> From: Octavian Purdila [mailto:octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org]
->> Subject: Re: [RFC PATCH 10/10] acpi: add support for loading SSDTs via configfs
->>
->> On Fri, Apr 1, 2016 at 7:55 AM, Zheng, Lv <lv.zheng-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org> wrote:
->> > Hi,
->>
->> Hi Lv,
->>
->> >> Add support for acpi_user_table configfs items that allows the user to
->> >> load new tables. The data attributes contains the table data and once it
->> >> is filled from userspace the table is loaded and ACPI devices are
->> >> enumerated.
->> > [Lv Zheng]
->> > We've been considering to implement this facility before.
->> > The 2 alternative solutions are:
->> > 1. implement LOAD/UNLOAD ioctl for /sys/kernel/debug/acpi/acpidbg - this
->> will be useful for extracting AML byte stream from kernel to be used by a
->> userspace disassembler.
->>
->> AFAIK adding new ioctls is discouraged.
-> [Lv Zheng]
-> Tools/power/acpi/tools/acpidbg is a file descriptor based utility.
-> And it needs a method to obtain an AML byte stream from kernel.
-> Using ioctl is a best fit design for acpidbg so that it needn't to access any other files.
+> Is that really necessary?
 >
->>
->> > 2. transition /sys/firmware/acpi/tables/xxx into directory and implement
->> /sys/firmware/acpi/tables/load, /sys/firmware/acpi/tables/unload - this should
->> be able to meet your requirement.
->>
->> We can't do that as it would break the ABI.
-> [Lv Zheng]
-> The only user of this directory hierarchy is acpidump.
+> The namespace rescan could notify the parent of a new node in
+> acpi_default_enumeration(), couldn't it?
 
-Some systems (e.g. Android, Brillo) do not ship acpidump and in this
-case the only way to dump tables is by accessing sysfs directly.
+We could do that, with some complexity, but I am not sure if it is
+worth it - see below. And in either case I still don't see how we can
+avoid two enumeration paths: one from the probe of the controller ->
+spi_register_master() -> acpi_register_spi_devices()  and one from the
+notification handler -> acpi_register_spi_devices(). Both will end up
+are calling the same enumeration function but there are still two
+paths.
 
-> And the user of this tool are all developers/reporters on the kernel bugzilla.
-> We've been asking the Bugzilla users to use the up-to-date acpidump instead of the distribution vendor provided one for so many years.
-> So IMO, this is not a serious problem you should consider.
-> You only need to think about an acceptable way for the distribution vendors to synchronize the kernel change and the acpidump change.
->
+Even right now, in the case of dynamic DT, we have the two enumeration paths.
 
-I guess the perf model where you have a perf package build together
-with the kernel will work. But right now distributions are not using
-this model and a kernel change will break the userspace tool.
+If we really want to have a single path for ACPI enumeration we could
+do that by using an ACPI SPI bridge driver or scan handlers after
+extending the matching mechanisms. But we would still need to modify
+the SPI subsystem and I don't think its worth it just to save a call
+to acpi_register_spi_devices() from spi_register_master().
 
-> IMO:
-> You may expose a version file from /sys/firmware/acpi.
-> acpidump can be changed accordingly by referencing the version file.
-> And old directory hierarchy support could be kept in acpidump.
->
+Now for parent notification complexity: in the case of SPI we can
+easily to this because current ACPI SPI enumeration supports only
+direct children as slaves. However, on I2C we can have an unrelated
+node as a slave - that is why the I2C scanning searches the whole
+namespaces for references to a particular i2c_adapter. So, we would
+need to retrieve the parent node from the namespace node information
+which means that we will do SPI specific stuff in ACPI generic code. I
+don't think it is a big issue, because we already treat SPI / I2C
+special, right?
 
-That will still break if you upgrade the kernel and use the old tool.
-
-> Note that acpidump is also a part of the kernel, so your change could be consistent.
-> For example,
-> If you changed acpidump prior than making the kernel change, the distribution vendors might have already released the new acpidump for all old kernels before you transitioned the directory hierarchy.
-
-To me this still looks like breaking userspace, patches have been
-reverted for less :) But I can see how this could be considered a gray
-area.
-
-ABI aside, see below for why configfs is better then sysfs.
-
->
->>
->> > So my first question is:
->> > Why do you use configfs rather than the existing mechanisms?
->>
->> sysfs is not a good choice for dealing with objects created from
->> userspace, configfs was created to address this specific need. Since
->> we want to be able to create and load new tables from userspace this
->> use-case fits very well with configfs.
-> [Lv Zheng]
-> Was the table binary stream still maintained by the userspace?
-> If not, I couldn't see the difference/advantages from using /sys/firmware/acpi/tables to using configfs.
->
-
-It is hard to create new kernel objects from sysfs. You need to resort
-to hacks like using new_table sysfs entries which does not map to a
-kernel object. Writes larger then PAGE_SIZE are impossible to handle
-with multiple open files because you have no open callback to create a
-file context. It is also not possible to do any clean-up because there
-is no close callback and if something goes wrong for example when
-trying to install the table you will leak the allocated memory.
-
-configfs was designed for the specific purpose of creating kernel
-objects from userspace and addresses all of the limitations above (and
-some more).
-
-Initially I started to implement this functionality via sysfs but I
-run into the issues mentioned above and decided to use configfs.
+Once we have the parent handle we would still have to iterate through
+all controllers to get the spi_master matching the ACPI handle. It is
+a bit more efficient then global notification, but probably won't
+matter in practice.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

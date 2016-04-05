@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: cadance: Fix the Documentation" to the spi tree
-Date: Tue, 05 Apr 2016 11:51:53 -0700
-Message-ID: <E1anW4v-0000QV-65@finisterre>
-References: <1459879674-13012-4-git-send-email-shubhraj@xilinx.com>
+Subject: Applied "spi: spi-fsl-dspi: Fix cs_change handling in message transfer" to the spi tree
+Date: Tue, 05 Apr 2016 12:13:18 -0700
+Message-ID: <E1anWPe-0001J1-Gm@finisterre>
+References: <1459859594-3414-1-git-send-email-andrey.vostrikov@cogentembedded.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+To: Andrey Vostrikov <andrey.vostrikov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1459879674-13012-4-git-send-email-shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+In-Reply-To: <1459859594-3414-1-git-send-email-andrey.vostrikov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: cadance: Fix the Documentation
+   spi: spi-fsl-dspi: Fix cs_change handling in message transfer
 
 has been applied to the spi tree at
 
@@ -38,38 +38,36 @@ to this mail.
 Thanks,
 Mark
 
->From b4037360e66b90755ed73022976f10108bc82045 Mon Sep 17 00:00:00 2001
-From: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-Date: Tue, 5 Apr 2016 23:37:51 +0530
-Subject: [PATCH] spi: cadance: Fix the Documentation
+>From 92dc20d83adec565378254c0630e839ff5674e14 Mon Sep 17 00:00:00 2001
+From: Andrey Vostrikov <andrey.vostrikov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>
+Date: Tue, 5 Apr 2016 15:33:14 +0300
+Subject: [PATCH] spi: spi-fsl-dspi: Fix cs_change handling in message transfer
 
-cdns_spi_chipselect has parameter is_high however the comment
-describes it as is_on.
-Also fixes the below warning.
-drivers/spi/spi-cadence.c:182: warning: No description found for
-parameter 'is_high'
-drivers/spi/spi-cadence.c:182: warning: Excess function parameter 'is_on'
-description in 'cdns_spi_chipselect'
+There are use cases when chip select should be triggered between transfers
+in single SPI message. Current implementation does this only on last
+transfer in message ignoring cs_change value provided in current transfer.
 
-Signed-off-by: Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Andrey Vostrikov <andrey.vostrikov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-cadence.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-fsl-dspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
-index 2915b257921d..8a6fee934364 100644
---- a/drivers/spi/spi-cadence.c
-+++ b/drivers/spi/spi-cadence.c
-@@ -169,7 +169,7 @@ static void cdns_spi_init_hw(struct cdns_spi *xspi)
- /**
-  * cdns_spi_chipselect - Select or deselect the chip select line
-  * @spi:	Pointer to the spi_device structure
-- * @is_on:	Select(0) or deselect (1) the chip select line
-+ * @is_high:	Select(0) or deselect (1) the chip select line
-  */
- static void cdns_spi_chipselect(struct spi_device *spi, bool is_high)
- {
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 39412c9097c6..c1a2d747b246 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -385,8 +385,8 @@ static int dspi_transfer_one_message(struct spi_master *master,
+ 		dspi->cur_chip = spi_get_ctldata(spi);
+ 		dspi->cs = spi->chip_select;
+ 		dspi->cs_change = 0;
+-		if (dspi->cur_transfer->transfer_list.next
+-				== &dspi->cur_msg->transfers)
++		if (list_is_last(&dspi->cur_transfer->transfer_list,
++				 &dspi->cur_msg->transfers) || transfer->cs_change)
+ 			dspi->cs_change = 1;
+ 		dspi->void_write_data = dspi->cur_chip->void_write_data;
+ 
 -- 
 2.8.0.rc3
 

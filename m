@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: cadence: Return the error code for cdns_spi_suspend and cdns_spi_resume" to the spi tree
-Date: Tue, 05 Apr 2016 11:51:51 -0700
-Message-ID: <E1anW4t-0000Nk-3f@finisterre>
-References: <1459879674-13012-7-git-send-email-shubhraj@xilinx.com>
+Subject: Applied "spi: cadence: Fix a check patch warning" to the spi tree
+Date: Tue, 05 Apr 2016 11:51:59 -0700
+Message-ID: <E1anW51-0000TF-TW@finisterre>
+References: <1459879674-13012-1-git-send-email-shubhraj@xilinx.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1459879674-13012-7-git-send-email-shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+In-Reply-To: <1459879674-13012-1-git-send-email-shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: cadence: Return the error code for cdns_spi_suspend and cdns_spi_resume
+   spi: cadence: Fix a check patch warning
 
 has been applied to the spi tree at
 
@@ -38,56 +38,33 @@ to this mail.
 Thanks,
 Mark
 
->From 6fe9b67dbe5e0a0abeeabd428cb596b913995b36 Mon Sep 17 00:00:00 2001
+>From 15a1c5030a1e0445af2e4eaa1535cccc8519d99c Mon Sep 17 00:00:00 2001
 From: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-Date: Tue, 5 Apr 2016 23:37:54 +0530
-Subject: [PATCH] spi: cadence: Return the error code for cdns_spi_suspend and
- cdns_spi_resume
+Date: Tue, 5 Apr 2016 23:37:48 +0530
+Subject: [PATCH] spi: cadence: Fix a check patch warning
 
-Return the error code for cdns_spi_suspend and cdns_spi_resume.
-Also fixes a comment where which claims that the error code is
-returned.
+CHECK: Comparison to NULL could be written "!master"
++	if (master == NULL)
 
 Signed-off-by: Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-cadence.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ drivers/spi/spi-cadence.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
-index d0cdd1801e9e..07481e12d8a3 100644
+index 121a4135b540..3acaac33218a 100644
 --- a/drivers/spi/spi-cadence.c
 +++ b/drivers/spi/spi-cadence.c
-@@ -615,16 +615,14 @@ static int cdns_spi_remove(struct platform_device *pdev)
-  * This function disables the SPI controller and
-  * changes the driver state to "suspend"
-  *
-- * Return:	Always 0
-+ * Return:	0 on success and error value on error
-  */
- static int __maybe_unused cdns_spi_suspend(struct device *dev)
- {
- 	struct platform_device *pdev = to_platform_device(dev);
- 	struct spi_master *master = platform_get_drvdata(pdev);
+@@ -481,7 +481,7 @@ static int cdns_spi_probe(struct platform_device *pdev)
+ 	u32 num_cs;
  
--	spi_master_suspend(master);
--
--	return 0;
-+	return spi_master_suspend(master);
- }
+ 	master = spi_alloc_master(&pdev->dev, sizeof(*xspi));
+-	if (master == NULL)
++	if (!master)
+ 		return -ENOMEM;
  
- /**
-@@ -640,9 +638,7 @@ static int __maybe_unused cdns_spi_resume(struct device *dev)
- 	struct platform_device *pdev = to_platform_device(dev);
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 
--	spi_master_resume(master);
--
--	return 0;
-+	return spi_master_resume(master);
- }
- 
- /**
+ 	xspi = spi_master_get_devdata(master);
 -- 
 2.8.0.rc3
 

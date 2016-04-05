@@ -1,68 +1,92 @@
-From: Dave Gordon <david.s.gordon-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v2 4/7] scatterlist: add sg_alloc_table_from_buf() helper
-Date: Tue, 5 Apr 2016 08:11:48 +0100
-Message-ID: <57036534.7010800@intel.com>
-References: <1459352394-22810-1-git-send-email-boris.brezillon@free-electrons.com>
- <1459352394-22810-5-git-send-email-boris.brezillon@free-electrons.com>
- <20160330165143.GI2350@sirena.org.uk> <20160330201831.38e1d6bd@bbrezillon>
+From: Octavian Purdila <octavian.purdila@intel.com>
+Subject: Re: [RFC PATCH 02/10] acpi: install SSDT tables from initrd
+Date: Tue, 5 Apr 2016 10:23:08 +0300
+Message-ID: <CAE1zotJL9QW0V+k-4VJBBFuQ+kCcjGNUJ8W1LKd54Xdp++z3SQ@mail.gmail.com>
+References: <1459417026-6697-1-git-send-email-octavian.purdila@intel.com>
+	<1459417026-6697-3-git-send-email-octavian.purdila@intel.com>
+	<1AE640813FDE7649BE1B193DEA596E883BB66258@SHSMSX101.ccr.corp.intel.com>
+	<CAE1zotJ1fa4m-_FO3PUQK8_p0vHcfWD5TmuMdxOSHDjku421pA@mail.gmail.com>
+	<CAE1zotLX8L=jpJRYtUddtpYmgc0NxqmtdDjcQPWWg8KTO8PH5A@mail.gmail.com>
+	<1AE640813FDE7649BE1B193DEA596E883BB66700@SHSMSX101.ccr.corp.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>, linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org,
-	Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Dan Williams <dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Mauro Carvalho Chehab <m.chehab-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Hans Verkuil <hans.verkuil-FYB4Gu1CFyUAvxtiuMwx3w@public.gmane.org>,
-	Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>,
-	linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Richard Weinberger <richard-/L3Ra7n9ekc@public.gmane.org>
-To: Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160330201831.38e1d6bd@bbrezillon>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+	Len Brown <lenb@kernel.org>,
+	Matt Fleming <matt@codeblueprint.co.uk>,
+	Mark Brown <broonie@kernel.org>,
+	Wolfram Sang <wsa@the-dreams.de>,
+	Joel Becker <jlbec@evilplan.org>,
+	Christoph Hellwig <hch@lst.de>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"Tirdea, Irina" <irina.tirdea@intel.com>
+To: "Zheng, Lv" <lv.zheng@intel.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1AE640813FDE7649BE1B193DEA596E883BB66700@SHSMSX101.ccr.corp.intel.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On 30/03/16 19:18, Boris Brezillon wrote:
-> On Wed, 30 Mar 2016 09:51:43 -0700
-> Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+On Tue, Apr 5, 2016 at 3:49 AM, Zheng, Lv <lv.zheng@intel.com> wrote:
+> Hi,
 >
->> On Wed, Mar 30, 2016 at 05:39:51PM +0200, Boris Brezillon wrote:
->>> sg_alloc_table_from_buf() provides an easy solution to create an sg_table
->>> from a virtual address pointer. This function takes care of dealing with
->>> vmallocated buffers, buffer alignment, or DMA engine limitations (maximum
->>> DMA transfer size).
+>> From: Octavian Purdila [mailto:octavian.purdila@intel.com]
+>> Subject: Re: [RFC PATCH 02/10] acpi: install SSDT tables from initrd
 >>
->> This seems nice.  Should we also have a further helper on top of this
->> which will get constraints from a dmaengine, it seems like it'd be a
->> common need?
->
-> Yep, we could create a wrapper extracting dma_slave caps info,
-> converting it to sg_constraints and calling sg_alloc_table_from_buf().
-> But let's try to get this function accepted first, and I'll send another
-> patch providing this wrapper.
->
-> BTW, do you see other things that should be added in sg_constraints?
+>> On Fri, Apr 1, 2016 at 1:11 PM, Octavian Purdila
+>> <octavian.purdila@intel.com> wrote:
+>> > On Fri, Apr 1, 2016 at 8:05 AM, Zheng, Lv <lv.zheng@intel.com> wrote:
+>> >> Hi,
+>> >>
+>> >> IMO, there is already a similar function upstreamed:
+>> >>
+>> https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=c85c
+>> c81
+>> >> Could it work for your use case?
+>> >
+>> > Yes, it is basically the same.
+>> >
+>> > The only difference is on how we handle taint. I think we should use a
+>> > new taint for overlays and that we don't need to disable lockdep.
+>> >
+>> > BTW, why is lockdep disabled when we override?
+>>
+>> The other thing I forgot to mention is that I think we should allow
+>> installing new tables even if CONFIG_ACPI_INITRD_TABLE_OVERRIDE is not
+>> selected. IMO the override and overlay functionality is different,
+>> with the latter being more then a debug option.
+> [Lv Zheng]
+> I don't think so. The initrd override mechanism is not dependent on CONFIG_ACPI_DEBUG.
+> According to the spec, we can allow a higher versioning same table (same table sig, table id, table oem id) to override the old tables as a patching functionality.
+> So both the functionalities are not debug options and serve for the same purpose from this point of view.
+> And IMO that's why the initrd override mechanism needn't be dependent on CONFIG_ACPI_DEBUG.
 >
 
-You could compare with the things Solaris uses to describe the 
-restrictions on a DMA binding ...
+The problem is that CONFIG_ACPI_INITRD_TABLE_OVERRIDE is presented as
+a debug option in Documentation/initrd_table_override.txt and most
+distributions are not selecting it which makes it hard to use it in
+practice.
 
-http://docs.oracle.com/cd/E23824_01/html/821-1478/ddi-dma-attr-9s.html#REFMAN9Sddi-dma-attr-9s
+> I'm really OK with removing the acpi_table_taint() for CONFIG_ACPI_INITRD_TABLE_OVERRIDE but leaving some info messages indicating the table upgrades.
+> I don't think this mechanism is unsafe.
+> It happens during a initialization step occurring before the table is loaded and hence should be safe even the synchronization is not so robust in ACPICA.
+> And with the revision support added, we should be able to allow vendors to update the buggy tables.
+> That means the tables may be originated from the safe sources - the vendors.
+>
+>>
+>> I will prepare a patch for the next version of the series to decouple
+>> installing new tables from CONFIG_ACPI_INITRD_TABLE_OVERRIDE.
+> [Lv Zheng]
+> I don't think they need to be decoupled.
+> The use case is:
+> If there is an ACPI table in initrd image and:
+> 1. if the table's revision is higher than the existing one, override the existing one;
+> 2. if the table is a brand new one, install it.
+>
 
-.Dave.
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+The implementation will stay the same of course, I was just suggesting
+to move CONFIG_ACPI_INITRD_TABLE_OVERRIDE in
+acpi_os_physical_table_override to allow new tables to be loaded even
+if the option is not selected.

@@ -1,83 +1,36 @@
-From: "Zheng, Lv" <lv.zheng@intel.com>
-Subject: RE: [RFC PATCH 10/10] acpi: add support for loading SSDTs via
- configfs
-Date: Tue, 5 Apr 2016 03:11:21 +0000
-Message-ID: <1AE640813FDE7649BE1B193DEA596E883BB6677B@SHSMSX101.ccr.corp.intel.com>
-References: <1459417026-6697-1-git-send-email-octavian.purdila@intel.com>
-	<1459417026-6697-11-git-send-email-octavian.purdila@intel.com>
-	<1AE640813FDE7649BE1B193DEA596E883BB66233@SHSMSX101.ccr.corp.intel.com>
- <CAE1zotLgjfKvFr0W9CjFbbkxqM6erLGwv-aHzTt=qwdCPzGOhw@mail.gmail.com>
+From: Vignesh R <vigneshr@ti.com>
+Subject: [PATCH 0/2] spi: Add DMA support for ti-qspi
+Date: Tue, 5 Apr 2016 09:19:50 +0530
+Message-ID: <1459828192-5531-1-git-send-email-vigneshr@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-	Len Brown <lenb@kernel.org>,
-	Matt Fleming <matt@codeblueprint.co.uk>,
-	Mark Brown <broonie@kernel.org>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Joel Becker <jlbec@evilplan.org>,
-	Christoph Hellwig <hch@lst.de>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
-	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"Tirdea, Irina" <irina.tirdea@intel.com>
-To: "Purdila, Octavian" <octavian.purdila@intel.com>
-Return-path: <linux-acpi-owner@vger.kernel.org>
-In-Reply-To: <CAE1zotLgjfKvFr0W9CjFbbkxqM6erLGwv-aHzTt=qwdCPzGOhw@mail.gmail.com>
-Content-Language: en-US
-Sender: linux-acpi-owner@vger.kernel.org
+Content-Type: text/plain
+Cc: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-omap@vger.kernel.org>, Vignesh R <vigneshr@ti.com>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-SGksDQoNCj4gRnJvbTogT2N0YXZpYW4gUHVyZGlsYSBbbWFpbHRvOm9jdGF2aWFuLnB1cmRpbGFA
-aW50ZWwuY29tXQ0KPiBTdWJqZWN0OiBSZTogW1JGQyBQQVRDSCAxMC8xMF0gYWNwaTogYWRkIHN1
-cHBvcnQgZm9yIGxvYWRpbmcgU1NEVHMgdmlhIGNvbmZpZ2ZzDQo+IA0KPiBPbiBGcmksIEFwciAx
-LCAyMDE2IGF0IDc6NTUgQU0sIFpoZW5nLCBMdiA8bHYuemhlbmdAaW50ZWwuY29tPiB3cm90ZToN
-Cj4gPiBIaSwNCj4gDQo+IEhpIEx2LA0KPiANCj4gPj4gQWRkIHN1cHBvcnQgZm9yIGFjcGlfdXNl
-cl90YWJsZSBjb25maWdmcyBpdGVtcyB0aGF0IGFsbG93cyB0aGUgdXNlciB0bw0KPiA+PiBsb2Fk
-IG5ldyB0YWJsZXMuIFRoZSBkYXRhIGF0dHJpYnV0ZXMgY29udGFpbnMgdGhlIHRhYmxlIGRhdGEg
-YW5kIG9uY2UgaXQNCj4gPj4gaXMgZmlsbGVkIGZyb20gdXNlcnNwYWNlIHRoZSB0YWJsZSBpcyBs
-b2FkZWQgYW5kIEFDUEkgZGV2aWNlcyBhcmUNCj4gPj4gZW51bWVyYXRlZC4NCj4gPiBbTHYgWmhl
-bmddDQo+ID4gV2UndmUgYmVlbiBjb25zaWRlcmluZyB0byBpbXBsZW1lbnQgdGhpcyBmYWNpbGl0
-eSBiZWZvcmUuDQo+ID4gVGhlIDIgYWx0ZXJuYXRpdmUgc29sdXRpb25zIGFyZToNCj4gPiAxLiBp
-bXBsZW1lbnQgTE9BRC9VTkxPQUQgaW9jdGwgZm9yIC9zeXMva2VybmVsL2RlYnVnL2FjcGkvYWNw
-aWRiZyAtIHRoaXMNCj4gd2lsbCBiZSB1c2VmdWwgZm9yIGV4dHJhY3RpbmcgQU1MIGJ5dGUgc3Ry
-ZWFtIGZyb20ga2VybmVsIHRvIGJlIHVzZWQgYnkgYQ0KPiB1c2Vyc3BhY2UgZGlzYXNzZW1ibGVy
-Lg0KPiANCj4gQUZBSUsgYWRkaW5nIG5ldyBpb2N0bHMgaXMgZGlzY291cmFnZWQuDQpbTHYgWmhl
-bmddIA0KVG9vbHMvcG93ZXIvYWNwaS90b29scy9hY3BpZGJnIGlzIGEgZmlsZSBkZXNjcmlwdG9y
-IGJhc2VkIHV0aWxpdHkuDQpBbmQgaXQgbmVlZHMgYSBtZXRob2QgdG8gb2J0YWluIGFuIEFNTCBi
-eXRlIHN0cmVhbSBmcm9tIGtlcm5lbC4NClVzaW5nIGlvY3RsIGlzIGEgYmVzdCBmaXQgZGVzaWdu
-IGZvciBhY3BpZGJnIHNvIHRoYXQgaXQgbmVlZG4ndCB0byBhY2Nlc3MgYW55IG90aGVyIGZpbGVz
-Lg0KDQo+IA0KPiA+IDIuIHRyYW5zaXRpb24gL3N5cy9maXJtd2FyZS9hY3BpL3RhYmxlcy94eHgg
-aW50byBkaXJlY3RvcnkgYW5kIGltcGxlbWVudA0KPiAvc3lzL2Zpcm13YXJlL2FjcGkvdGFibGVz
-L2xvYWQsIC9zeXMvZmlybXdhcmUvYWNwaS90YWJsZXMvdW5sb2FkIC0gdGhpcyBzaG91bGQNCj4g
-YmUgYWJsZSB0byBtZWV0IHlvdXIgcmVxdWlyZW1lbnQuDQo+IA0KPiBXZSBjYW4ndCBkbyB0aGF0
-IGFzIGl0IHdvdWxkIGJyZWFrIHRoZSBBQkkuDQpbTHYgWmhlbmddIA0KVGhlIG9ubHkgdXNlciBv
-ZiB0aGlzIGRpcmVjdG9yeSBoaWVyYXJjaHkgaXMgYWNwaWR1bXAuDQpBbmQgdGhlIHVzZXIgb2Yg
-dGhpcyB0b29sIGFyZSBhbGwgZGV2ZWxvcGVycy9yZXBvcnRlcnMgb24gdGhlIGtlcm5lbCBidWd6
-aWxsYS4NCldlJ3ZlIGJlZW4gYXNraW5nIHRoZSBCdWd6aWxsYSB1c2VycyB0byB1c2UgdGhlIHVw
-LXRvLWRhdGUgYWNwaWR1bXAgaW5zdGVhZCBvZiB0aGUgZGlzdHJpYnV0aW9uIHZlbmRvciBwcm92
-aWRlZCBvbmUgZm9yIHNvIG1hbnkgeWVhcnMuDQpTbyBJTU8sIHRoaXMgaXMgbm90IGEgc2VyaW91
-cyBwcm9ibGVtIHlvdSBzaG91bGQgY29uc2lkZXIuDQpZb3Ugb25seSBuZWVkIHRvIHRoaW5rIGFi
-b3V0IGFuIGFjY2VwdGFibGUgd2F5IGZvciB0aGUgZGlzdHJpYnV0aW9uIHZlbmRvcnMgdG8gc3lu
-Y2hyb25pemUgdGhlIGtlcm5lbCBjaGFuZ2UgYW5kIHRoZSBhY3BpZHVtcCBjaGFuZ2UuDQoNCklN
-TzoNCllvdSBtYXkgZXhwb3NlIGEgdmVyc2lvbiBmaWxlIGZyb20gL3N5cy9maXJtd2FyZS9hY3Bp
-Lg0KYWNwaWR1bXAgY2FuIGJlIGNoYW5nZWQgYWNjb3JkaW5nbHkgYnkgcmVmZXJlbmNpbmcgdGhl
-IHZlcnNpb24gZmlsZS4NCkFuZCBvbGQgZGlyZWN0b3J5IGhpZXJhcmNoeSBzdXBwb3J0IGNvdWxk
-IGJlIGtlcHQgaW4gYWNwaWR1bXAuDQoNCk5vdGUgdGhhdCBhY3BpZHVtcCBpcyBhbHNvIGEgcGFy
-dCBvZiB0aGUga2VybmVsLCBzbyB5b3VyIGNoYW5nZSBjb3VsZCBiZSBjb25zaXN0ZW50Lg0KRm9y
-IGV4YW1wbGUsDQpJZiB5b3UgY2hhbmdlZCBhY3BpZHVtcCBwcmlvciB0aGFuIG1ha2luZyB0aGUg
-a2VybmVsIGNoYW5nZSwgdGhlIGRpc3RyaWJ1dGlvbiB2ZW5kb3JzIG1pZ2h0IGhhdmUgYWxyZWFk
-eSByZWxlYXNlZCB0aGUgbmV3IGFjcGlkdW1wIGZvciBhbGwgb2xkIGtlcm5lbHMgYmVmb3JlIHlv
-dSB0cmFuc2l0aW9uZWQgdGhlIGRpcmVjdG9yeSBoaWVyYXJjaHkuDQoNCj4gDQo+ID4gU28gbXkg
-Zmlyc3QgcXVlc3Rpb24gaXM6DQo+ID4gV2h5IGRvIHlvdSB1c2UgY29uZmlnZnMgcmF0aGVyIHRo
-YW4gdGhlIGV4aXN0aW5nIG1lY2hhbmlzbXM/DQo+IA0KPiBzeXNmcyBpcyBub3QgYSBnb29kIGNo
-b2ljZSBmb3IgZGVhbGluZyB3aXRoIG9iamVjdHMgY3JlYXRlZCBmcm9tDQo+IHVzZXJzcGFjZSwg
-Y29uZmlnZnMgd2FzIGNyZWF0ZWQgdG8gYWRkcmVzcyB0aGlzIHNwZWNpZmljIG5lZWQuIFNpbmNl
-DQo+IHdlIHdhbnQgdG8gYmUgYWJsZSB0byBjcmVhdGUgYW5kIGxvYWQgbmV3IHRhYmxlcyBmcm9t
-IHVzZXJzcGFjZSB0aGlzDQo+IHVzZS1jYXNlIGZpdHMgdmVyeSB3ZWxsIHdpdGggY29uZmlnZnMu
-DQpbTHYgWmhlbmddIA0KV2FzIHRoZSB0YWJsZSBiaW5hcnkgc3RyZWFtIHN0aWxsIG1haW50YWlu
-ZWQgYnkgdGhlIHVzZXJzcGFjZT8NCklmIG5vdCwgSSBjb3VsZG4ndCBzZWUgdGhlIGRpZmZlcmVu
-Y2UvYWR2YW50YWdlcyBmcm9tIHVzaW5nIC9zeXMvZmlybXdhcmUvYWNwaS90YWJsZXMgdG8gdXNp
-bmcgY29uZmlnZnMuDQoNClRoYW5rcyBhbmQgYmVzdCByZWdhcmRzDQotTHYNCg==
+
+
+This series adds support for DMA during QSPI flash read via memory
+mapped mode.
+
+Tested on DRA74 EVM on linux-next with patch for mtd support[1] applied.
+Also tested with series[2] from Boris refractoring spi_map_buf().
+[1]http://lists.infradead.org/pipermail/linux-mtd/2016-March/066335.html
+[2]http://www.spinics.net/lists/linux-mm/msg104694.html
+
+
+
+Vignesh R (2):
+  spi: Add DMA support for spi_flash_read()
+  spi: spi-ti-qspi: Add DMA support for QSPI mmap read
+
+ drivers/spi/spi-ti-qspi.c | 132 +++++++++++++++++++++++++++++++++++++++++-----
+ drivers/spi/spi.c         |  15 ++++++
+ include/linux/spi/spi.h   |   2 +
+ 3 files changed, 137 insertions(+), 12 deletions(-)
+
+-- 
+2.8.0

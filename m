@@ -1,94 +1,103 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [GIT PULL] SPI fixes for v4.6
-Date: Tue, 5 Apr 2016 11:36:32 -0700
-Message-ID: <20160405183632.GI1924@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="h22Fi9ANawrtbNPX"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Subject: Applied "spi: cadence: Remove the clock enable and disable from suspend and resume" to the spi tree
+Date: Tue, 05 Apr 2016 11:51:52 -0700
+Message-ID: <E1anW4u-0000OQ-2E@finisterre>
+References: <1459879674-13012-6-git-send-email-shubhraj@xilinx.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <1459879674-13012-6-git-send-email-shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---h22Fi9ANawrtbNPX
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   spi: cadence: Remove the clock enable and disable from suspend and resume
 
-The following changes since commit 9735a22799b9214d17d3c231fe377fc852f042e9:
+has been applied to the spi tree at
 
-  Linux 4.6-rc2 (2016-04-03 09:09:40 -0500)
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-are available in the git repository at:
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fi=
-x-v4.6-rc2
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-for you to fetch changes up to cb39f732abbe4f38d2bef8e0a1c8bd5c242fc1b7:
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-  Merge remote-tracking branches 'spi/fix/omap2' and 'spi/fix/rockchip' int=
-o spi-linus (2016-04-04 10:05:49 -0700)
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-----------------------------------------------------------------
-spi: Fixes for v4.6
+Thanks,
+Mark
 
-A couple of driver specific fixes here that came in since the merge
-window plus one core fix for locking in cases where a client driver
-grabs a lock on the whole bus for an extended series of operations that
-was introduced by the changes to support accelerated flash operations.
+>From 2198b7483d4a89cf2cc710045c76a76dba573ea5 Mon Sep 17 00:00:00 2001
+From: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Date: Tue, 5 Apr 2016 23:37:53 +0530
+Subject: [PATCH] spi: cadence: Remove the clock enable and disable from
+ suspend and resume
 
-----------------------------------------------------------------
-Akinobu Mita (1):
-      spi: omap2-mcspi: fix dma transfer for vmalloced buffer
+Now that the clocks are enabled and disabled per transaction
+, remove the clock enable and disable from resume and suspend
+hooks.
 
-Geert Uytterhoeven (1):
-      spi: rockchip: Spelling s/divsor/divisor/
+Signed-off-by: Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-cadence.c | 19 -------------------
+ 1 file changed, 19 deletions(-)
 
-Heiko St=FCbner (1):
-      spi: fix possible deadlock between internal bus locks and bus_lock_fl=
-ag
+diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
+index 3b94063b2823..d0cdd1801e9e 100644
+--- a/drivers/spi/spi-cadence.c
++++ b/drivers/spi/spi-cadence.c
+@@ -621,14 +621,9 @@ static int __maybe_unused cdns_spi_suspend(struct device *dev)
+ {
+ 	struct platform_device *pdev = to_platform_device(dev);
+ 	struct spi_master *master = platform_get_drvdata(pdev);
+-	struct cdns_spi *xspi = spi_master_get_devdata(master);
+ 
+ 	spi_master_suspend(master);
+ 
+-	clk_disable_unprepare(xspi->ref_clk);
+-
+-	clk_disable_unprepare(xspi->pclk);
+-
+ 	return 0;
+ }
+ 
+@@ -644,21 +639,7 @@ static int __maybe_unused cdns_spi_resume(struct device *dev)
+ {
+ 	struct platform_device *pdev = to_platform_device(dev);
+ 	struct spi_master *master = platform_get_drvdata(pdev);
+-	struct cdns_spi *xspi = spi_master_get_devdata(master);
+-	int ret = 0;
+-
+-	ret = clk_prepare_enable(xspi->pclk);
+-	if (ret) {
+-		dev_err(dev, "Cannot enable APB clock.\n");
+-		return ret;
+-	}
+ 
+-	ret = clk_prepare_enable(xspi->ref_clk);
+-	if (ret) {
+-		dev_err(dev, "Cannot enable device clock.\n");
+-		clk_disable(xspi->pclk);
+-		return ret;
+-	}
+ 	spi_master_resume(master);
+ 
+ 	return 0;
+-- 
+2.8.0.rc3
 
-Knut Wohlrab (1):
-      spi: imx: only do necessary changes to ECSPIx_CONFIGREG
-
-Mark Brown (3):
-      Merge remote-tracking branch 'spi/fix/core' into spi-linus
-      Merge remote-tracking branch 'spi/fix/imx' into spi-linus
-      Merge remote-tracking branches 'spi/fix/omap2' and 'spi/fix/rockchip'=
- into spi-linus
-
-Sascha Hauer (1):
-      spi: imx: Fix possible NULL pointer deref
-
-Shawn Lin (1):
-      spi: rockchip: fix probe deferral handling
-
- drivers/spi/spi-imx.c         | 16 +++++++++--
- drivers/spi/spi-omap2-mcspi.c | 62 ++++++++++++---------------------------=
-----
- drivers/spi/spi-rockchip.c    | 16 ++++++-----
- drivers/spi/spi.c             |  4 +--
- 4 files changed, 43 insertions(+), 55 deletions(-)
-
---h22Fi9ANawrtbNPX
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJXBAWvAAoJECTWi3JdVIfQR9QH/AtRK/cH/XfbwGeYgzVBhBiS
-pxtiYyeo3DPEn4nGA2fuQe/6Q8+ND4AKzEh2XqVKNeAcklw4wTob3waDwKlN7Yxr
-nvQmVtwxXbE3412hBdzE8V9iew48UF4ji9YSzWzNS5FjhSrOrUBu+nJ+XmMUcsVz
-Ti9XKOgaTnDRi+iEyaBnSxya2iTHh20Zn3MdHNtlTeJXldaRhCQlJpnye+Fs55Dh
-bE9d7RFpTTlksNfdsZZDv8uA77fCxw/Qwdt2NKGRECoPx/sTULQInjD+dJOFfGLr
-PMe5ryQRXXI01IEjQlSLURmQWfyDbAOg132FCRgCq1uVjihfXtpS6+yX+qtD17I=
-=rRU1
------END PGP SIGNATURE-----
-
---h22Fi9ANawrtbNPX--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

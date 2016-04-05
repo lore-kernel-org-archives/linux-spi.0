@@ -1,64 +1,67 @@
-From: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH v2] spi: orion.c: Add direct access mode
-Date: Tue, 5 Apr 2016 09:11:27 +0200
-Message-ID: <5703651F.4040901@denx.de>
-References: <1458663893-13766-1-git-send-email-sr@denx.de>
- <3108005.nUMWsj4kjp@wuerfel> <20160329212842.GN2350@sirena.org.uk>
- <13533301.gfdhE3AuMf@wuerfel>
+From: Dave Gordon <david.s.gordon-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v2 4/7] scatterlist: add sg_alloc_table_from_buf() helper
+Date: Tue, 5 Apr 2016 08:11:48 +0100
+Message-ID: <57036534.7010800@intel.com>
+References: <1459352394-22810-1-git-send-email-boris.brezillon@free-electrons.com>
+ <1459352394-22810-5-git-send-email-boris.brezillon@free-electrons.com>
+ <20160330165143.GI2350@sirena.org.uk> <20160330201831.38e1d6bd@bbrezillon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
-	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>, linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org,
+	Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Dan Williams <dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mauro Carvalho Chehab <m.chehab-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Hans Verkuil <hans.verkuil-FYB4Gu1CFyUAvxtiuMwx3w@public.gmane.org>,
+	Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>,
+	linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Richard Weinberger <richard-/L3Ra7n9ekc@public.gmane.org>
+To: Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <13533301.gfdhE3AuMf@wuerfel>
+In-Reply-To: <20160330201831.38e1d6bd@bbrezillon>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 30.03.2016 00:04, Arnd Bergmann wrote:
-> On Tuesday 29 March 2016 14:28:42 Mark Brown wrote:
->> On Tue, Mar 29, 2016 at 11:08:55PM +0200, Arnd Bergmann wrote:
->>> On Tuesday 29 March 2016 14:00:18 Mark Brown wrote:
-
-<snip>
-
->>> not impact the binding for the SPI host controller in any way, the
->>> binding just describes how the internal addressing is wired up to
->>> the mbus in hardware, and the mbus driver takes care of mapping those
->>> into CPU addresses.
+On 30/03/16 19:18, Boris Brezillon wrote:
+> On Wed, 30 Mar 2016 09:51:43 -0700
+> Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+>
+>> On Wed, Mar 30, 2016 at 05:39:51PM +0200, Boris Brezillon wrote:
+>>> sg_alloc_table_from_buf() provides an easy solution to create an sg_table
+>>> from a virtual address pointer. This function takes care of dealing with
+>>> vmallocated buffers, buffer alignment, or DMA engine limitations (maximum
+>>> DMA transfer size).
 >>
->> If we're able to do it automatically without baking this into the DT and
->> there's enough space to cope with this and PCI together then that's more
->> reasonable.
-> 
-> Ok, good. Then let's just do the SPI host driver like all the other
-> mbus slaves using whatever mbus provides, and implement dynamic remapping
-> of mbus windows whenever someone gets too annoyed with having to
-> come up with a mapping for their board.
-> 
-> At least by doing SPI like all the other devices, we don't make it
-> harder to come up with a generic algorithm for assigning the windows
-> at boot time.
+>> This seems nice.  Should we also have a further helper on top of this
+>> which will get constraints from a dmaengine, it seems like it'd be a
+>> common need?
+>
+> Yep, we could create a wrapper extracting dma_slave caps info,
+> converting it to sg_constraints and calling sg_alloc_table_from_buf().
+> But let's try to get this function accepted first, and I'll send another
+> patch providing this wrapper.
+>
+> BTW, do you see other things that should be added in sg_constraints?
+>
 
-Okay, I'll implement the static mapping as suggested by Arnd in the
-'reg' property of the SPI controller (additionally to the SPI controller
-register range). Which will get configured and enabled in the 'ranges'
-property of the per-board 'soc' node.
+You could compare with the things Solaris uses to describe the 
+restrictions on a DMA binding ...
 
-This will make the SPI driver patch very simple but will generate quite
-a big Armada dts change, moving all the SPI controllers from the
-'internal-regs' node to the 'soc' node though.
+http://docs.oracle.com/cd/E23824_01/html/821-1478/ddi-dma-attr-9s.html#REFMAN9Sddi-dma-attr-9s
 
-Please let me know if this is not the consensus.
-
-Thanks,
-Stefan
-
+.Dave.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,98 +1,104 @@
-From: Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [RFC PATCH 10/10] acpi: add support for loading SSDTs via configfs
-Date: Wed, 6 Apr 2016 21:46:51 +0300
-Message-ID: <CAE1zotKa+t5cxznWfPyQ599k9ZB=akOuEDZusWcJgzux8wqp5A@mail.gmail.com>
-References: <1459417026-6697-1-git-send-email-octavian.purdila@intel.com>
-	<1459417026-6697-11-git-send-email-octavian.purdila@intel.com>
-	<1AE640813FDE7649BE1B193DEA596E883BB66233@SHSMSX101.ccr.corp.intel.com>
-	<CAE1zotLgjfKvFr0W9CjFbbkxqM6erLGwv-aHzTt=qwdCPzGOhw@mail.gmail.com>
-	<1AE640813FDE7649BE1B193DEA596E883BB6677B@SHSMSX101.ccr.corp.intel.com>
-	<CAE1zotKDFLNP5JTnMiWOstE4DYBHVeyP902J9ixD+fJbFqSZ6Q@mail.gmail.com>
-	<1AE640813FDE7649BE1B193DEA596E883BB66B8C@SHSMSX101.ccr.corp.intel.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: "Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
-	Len Brown <lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Matt Fleming <matt-mF/unelCI9GS6iBeEJttW/XRex20P6io@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
-	Joel Becker <jlbec-aKy9MeLSZ9dg9hUCZPvPmw@public.gmane.org>,
-	Christoph Hellwig <hch-jcswGhMUV9g@public.gmane.org>,
-	"linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-efi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-efi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"Tirdea, Irina" <irina.tirdea-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-To: "Zheng, Lv" <lv.zheng-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: cadence: Fix some checkpatch warnings" to the spi tree
+Date: Wed, 06 Apr 2016 14:39:04 -0700
+Message-ID: <E1anvAG-00084M-F2@finisterre>
+References: <1459934735-40434-1-git-send-email-shubhraj@xilinx.com>
+Cc: Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+To: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1AE640813FDE7649BE1B193DEA596E883BB66B8C-0J0gbvR4kThpB2pF5aRoyrfspsVTdybXVpNB7YpNyf8@public.gmane.org>
+In-Reply-To: <1459934735-40434-1-git-send-email-shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Apr 6, 2016 at 9:05 AM, Zheng, Lv <lv.zheng-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org> wrote:
+The patch
 
->> It is hard to create new kernel objects from sysfs. You need to resort
->> to hacks like using new_table sysfs entries which does not map to a
->> kernel object. Writes larger then PAGE_SIZE are impossible to handle
->> with multiple open files because you have no open callback to create a
->> file context. It is also not possible to do any clean-up because there
->> is no close callback and if something goes wrong for example when
->> trying to install the table you will leak the allocated memory.
->>
->> configfs was designed for the specific purpose of creating kernel
->> objects from userspace and addresses all of the limitations above (and
->> some more).
->>
->> Initially I started to implement this functionality via sysfs but I
->> run into the issues mentioned above and decided to use configfs.
-> [Lv Zheng]
-> I can sense different difficulties from your descriptions.
-> Let me break it down into details.
->
-> We already have acpi_table_handler working there for creating new ACPI table entries for us.
-> Based on this facility, let's think about the following solution:
-> 1. sysfs presenting change
-> We can change the table file to a table directory whose name is in the following format:
-> TableSignature-OemId-OemTableId
-> Then we can get rid of the annoying numbered table name suffix first.
-> The numbered table name suffix cannot be kept consistent to reflect the real index if we allow tables to be dynamically loaded/unloaded.
->
-> This is the first design difficulty we need to solve.
->
-> 2. acpi_table_handler change
-> Now we can append 2 new events to acpi_table_handler - ACPI_TABLE_INSTALL/ACPI_TABLE_UNINSTALL.
-> With which, the sysfs entries can be created/deleted when the table is added to/removed from the global table list.
-> And this should be the working mechanism for us
-> So we actually don't have the trouble to deal with the new kernel object creation/deletion from sysfs.
->
-> I agree the dynamic kernel object creation/deletion need special care.
-> But this actually is what a kernel engineer should do because this kind of things happen here and there throughout the kernel.
-> We should have already been used to that.
->
-> This is the second engineering difficulty we need to face.
->
-> 3. load/unload commanding
-> Now we need a character device in sysfs to handle load/unload command.
-> Well, there are many such kind of files in sysfs, for example, device nodes.
-> So this is not a non-achievable task, but just a difficult engineering task.
-> The system engineers need to be skillful enough to implement this.
-> Like the dynamic kernel object handling, we should have already been used to this.
->
->
-> If you still think this is difficult, the alternative choice is to use acpidbg char device's ioctl interface.
-> That could simplifies this task.
-> And since the ioctl interface is required by ACPICA disassembler, the work on that will be inherited by the disassembler porting.
->
+   spi: cadence: Fix some checkpatch warnings
 
-Why can't the dissembler access the tables through the existing sysfs interface?
+has been applied to the spi tree at
 
-> This is the last engineering difficulty we need to face.
->
-> So why can't these solutions work for us?
->
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-It can be done, but it is not the right way to do it, IMO.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 57bb1369de36a72e2e13fde9c88663342f729ace Mon Sep 17 00:00:00 2001
+From: Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Date: Wed, 6 Apr 2016 14:55:35 +0530
+Subject: [PATCH] spi: cadence: Fix some checkpatch warnings
+
+No functional change.
+Fixing some style related issues
+
+CHECK: multiple assignments should be avoided
++	new_ctrl_reg = ctrl_reg = cdns_spi_read(xspi, CDNS_SPI_CR);
+
+CHECK: Alignment should match open parenthesis
++static void cdns_spi_config_clock_freq(struct spi_device *spi,
++				  struct spi_transfer *transfer)
+
+CHECK: Please use a blank line after function/struct/union/enum declarations
++}
++static int cdns_prepare_message(struct spi_master *master,
+
+Signed-off-by: Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-cadence.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
+index 07481e12d8a3..8a0bd62a5088 100644
+--- a/drivers/spi/spi-cadence.c
++++ b/drivers/spi/spi-cadence.c
+@@ -209,7 +209,8 @@ static void cdns_spi_config_clock_mode(struct spi_device *spi)
+ 	struct cdns_spi *xspi = spi_master_get_devdata(spi->master);
+ 	u32 ctrl_reg, new_ctrl_reg;
+ 
+-	new_ctrl_reg = ctrl_reg = cdns_spi_read(xspi, CDNS_SPI_CR);
++	new_ctrl_reg = cdns_spi_read(xspi, CDNS_SPI_CR);
++	ctrl_reg = new_ctrl_reg;
+ 
+ 	/* Set the SPI clock phase and clock polarity */
+ 	new_ctrl_reg &= ~(CDNS_SPI_CR_CPHA | CDNS_SPI_CR_CPOL);
+@@ -246,7 +247,7 @@ static void cdns_spi_config_clock_mode(struct spi_device *spi)
+  * controller.
+  */
+ static void cdns_spi_config_clock_freq(struct spi_device *spi,
+-				  struct spi_transfer *transfer)
++				       struct spi_transfer *transfer)
+ {
+ 	struct cdns_spi *xspi = spi_master_get_devdata(spi->master);
+ 	u32 ctrl_reg, baud_rate_val;
+@@ -380,6 +381,7 @@ static irqreturn_t cdns_spi_irq(int irq, void *dev_id)
+ 
+ 	return status;
+ }
++
+ static int cdns_prepare_message(struct spi_master *master,
+ 				struct spi_message *msg)
+ {
+-- 
+2.8.0.rc3
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

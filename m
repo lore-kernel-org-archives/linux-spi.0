@@ -1,110 +1,215 @@
-From: "Zheng, Lv" <lv.zheng-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: RE: [RFC PATCH 10/10] acpi: add support for loading SSDTs via
- configfs
-Date: Thu, 7 Apr 2016 02:42:50 +0000
-Message-ID: <1AE640813FDE7649BE1B193DEA596E883BB66E60@SHSMSX101.ccr.corp.intel.com>
-References: <1459417026-6697-1-git-send-email-octavian.purdila@intel.com>
-	<1459417026-6697-11-git-send-email-octavian.purdila@intel.com>
-	<1AE640813FDE7649BE1B193DEA596E883BB66233@SHSMSX101.ccr.corp.intel.com>
-	<CAE1zotLgjfKvFr0W9CjFbbkxqM6erLGwv-aHzTt=qwdCPzGOhw@mail.gmail.com>
-	<1AE640813FDE7649BE1B193DEA596E883BB6677B@SHSMSX101.ccr.corp.intel.com>
-	<CAE1zotKDFLNP5JTnMiWOstE4DYBHVeyP902J9ixD+fJbFqSZ6Q@mail.gmail.com>
-	<1AE640813FDE7649BE1B193DEA596E883BB66B8C@SHSMSX101.ccr.corp.intel.com>
- <CAE1zotKa+t5cxznWfPyQ599k9ZB=akOuEDZusWcJgzux8wqp5A@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
-	Len Brown <lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"Matt Fleming" <matt-mF/unelCI9GS6iBeEJttW/XRex20P6io@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"Wolfram Sang" <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
-	Joel Becker <jlbec-aKy9MeLSZ9dg9hUCZPvPmw@public.gmane.org>,
-	Christoph Hellwig <hch-jcswGhMUV9g@public.gmane.org>,
-	"linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-efi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-efi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"Tirdea, Irina" <irina.tirdea-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-To: "Purdila, Octavian" <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-efi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAE1zotKa+t5cxznWfPyQ599k9ZB=akOuEDZusWcJgzux8wqp5A-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-Language: en-US
-Sender: linux-efi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+From: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
+Subject: [PATCH v3] spi: orion.c: Add direct access mode
+Date: Thu,  7 Apr 2016 14:06:51 +0200
+Message-ID: <1460030811-13787-1-git-send-email-sr@denx.de>
+Cc: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-SGksDQoNCj4gRnJvbTogbGludXgtYWNwaS1vd25lckB2Z2VyLmtlcm5lbC5vcmcgW21haWx0bzps
-aW51eC1hY3BpLQ0KPiBvd25lckB2Z2VyLmtlcm5lbC5vcmddIE9uIEJlaGFsZiBPZiBPY3Rhdmlh
-biBQdXJkaWxhDQo+IFN1YmplY3Q6IFJlOiBbUkZDIFBBVENIIDEwLzEwXSBhY3BpOiBhZGQgc3Vw
-cG9ydCBmb3IgbG9hZGluZyBTU0RUcyB2aWEgY29uZmlnZnMNCj4gDQo+IE9uIFdlZCwgQXByIDYs
-IDIwMTYgYXQgOTowNSBBTSwgWmhlbmcsIEx2IDxsdi56aGVuZ0BpbnRlbC5jb20+IHdyb3RlOg0K
-PiANCj4gPj4gSXQgaXMgaGFyZCB0byBjcmVhdGUgbmV3IGtlcm5lbCBvYmplY3RzIGZyb20gc3lz
-ZnMuIFlvdSBuZWVkIHRvIHJlc29ydA0KPiA+PiB0byBoYWNrcyBsaWtlIHVzaW5nIG5ld190YWJs
-ZSBzeXNmcyBlbnRyaWVzIHdoaWNoIGRvZXMgbm90IG1hcCB0byBhDQo+ID4+IGtlcm5lbCBvYmpl
-Y3QuIFdyaXRlcyBsYXJnZXIgdGhlbiBQQUdFX1NJWkUgYXJlIGltcG9zc2libGUgdG8gaGFuZGxl
-DQo+ID4+IHdpdGggbXVsdGlwbGUgb3BlbiBmaWxlcyBiZWNhdXNlIHlvdSBoYXZlIG5vIG9wZW4g
-Y2FsbGJhY2sgdG8gY3JlYXRlIGENCj4gPj4gZmlsZSBjb250ZXh0LiBJdCBpcyBhbHNvIG5vdCBw
-b3NzaWJsZSB0byBkbyBhbnkgY2xlYW4tdXAgYmVjYXVzZSB0aGVyZQ0KPiA+PiBpcyBubyBjbG9z
-ZSBjYWxsYmFjayBhbmQgaWYgc29tZXRoaW5nIGdvZXMgd3JvbmcgZm9yIGV4YW1wbGUgd2hlbg0K
-PiA+PiB0cnlpbmcgdG8gaW5zdGFsbCB0aGUgdGFibGUgeW91IHdpbGwgbGVhayB0aGUgYWxsb2Nh
-dGVkIG1lbW9yeS4NCj4gPj4NCj4gPj4gY29uZmlnZnMgd2FzIGRlc2lnbmVkIGZvciB0aGUgc3Bl
-Y2lmaWMgcHVycG9zZSBvZiBjcmVhdGluZyBrZXJuZWwNCj4gPj4gb2JqZWN0cyBmcm9tIHVzZXJz
-cGFjZSBhbmQgYWRkcmVzc2VzIGFsbCBvZiB0aGUgbGltaXRhdGlvbnMgYWJvdmUgKGFuZA0KPiA+
-PiBzb21lIG1vcmUpLg0KPiA+Pg0KPiA+PiBJbml0aWFsbHkgSSBzdGFydGVkIHRvIGltcGxlbWVu
-dCB0aGlzIGZ1bmN0aW9uYWxpdHkgdmlhIHN5c2ZzIGJ1dCBJDQo+ID4+IHJ1biBpbnRvIHRoZSBp
-c3N1ZXMgbWVudGlvbmVkIGFib3ZlIGFuZCBkZWNpZGVkIHRvIHVzZSBjb25maWdmcy4NCj4gPiBb
-THYgWmhlbmddDQo+ID4gSSBjYW4gc2Vuc2UgZGlmZmVyZW50IGRpZmZpY3VsdGllcyBmcm9tIHlv
-dXIgZGVzY3JpcHRpb25zLg0KPiA+IExldCBtZSBicmVhayBpdCBkb3duIGludG8gZGV0YWlscy4N
-Cj4gPg0KPiA+IFdlIGFscmVhZHkgaGF2ZSBhY3BpX3RhYmxlX2hhbmRsZXIgd29ya2luZyB0aGVy
-ZSBmb3IgY3JlYXRpbmcgbmV3IEFDUEkNCj4gdGFibGUgZW50cmllcyBmb3IgdXMuDQo+ID4gQmFz
-ZWQgb24gdGhpcyBmYWNpbGl0eSwgbGV0J3MgdGhpbmsgYWJvdXQgdGhlIGZvbGxvd2luZyBzb2x1
-dGlvbjoNCj4gPiAxLiBzeXNmcyBwcmVzZW50aW5nIGNoYW5nZQ0KPiA+IFdlIGNhbiBjaGFuZ2Ug
-dGhlIHRhYmxlIGZpbGUgdG8gYSB0YWJsZSBkaXJlY3Rvcnkgd2hvc2UgbmFtZSBpcyBpbiB0aGUN
-Cj4gZm9sbG93aW5nIGZvcm1hdDoNCj4gPiBUYWJsZVNpZ25hdHVyZS1PZW1JZC1PZW1UYWJsZUlk
-DQo+ID4gVGhlbiB3ZSBjYW4gZ2V0IHJpZCBvZiB0aGUgYW5ub3lpbmcgbnVtYmVyZWQgdGFibGUg
-bmFtZSBzdWZmaXggZmlyc3QuDQo+ID4gVGhlIG51bWJlcmVkIHRhYmxlIG5hbWUgc3VmZml4IGNh
-bm5vdCBiZSBrZXB0IGNvbnNpc3RlbnQgdG8gcmVmbGVjdCB0aGUgcmVhbA0KPiBpbmRleCBpZiB3
-ZSBhbGxvdyB0YWJsZXMgdG8gYmUgZHluYW1pY2FsbHkgbG9hZGVkL3VubG9hZGVkLg0KPiA+DQo+
-ID4gVGhpcyBpcyB0aGUgZmlyc3QgZGVzaWduIGRpZmZpY3VsdHkgd2UgbmVlZCB0byBzb2x2ZS4N
-Cj4gPg0KPiA+IDIuIGFjcGlfdGFibGVfaGFuZGxlciBjaGFuZ2UNCj4gPiBOb3cgd2UgY2FuIGFw
-cGVuZCAyIG5ldyBldmVudHMgdG8gYWNwaV90YWJsZV9oYW5kbGVyIC0NCj4gQUNQSV9UQUJMRV9J
-TlNUQUxML0FDUElfVEFCTEVfVU5JTlNUQUxMLg0KPiA+IFdpdGggd2hpY2gsIHRoZSBzeXNmcyBl
-bnRyaWVzIGNhbiBiZSBjcmVhdGVkL2RlbGV0ZWQgd2hlbiB0aGUgdGFibGUgaXMgYWRkZWQNCj4g
-dG8vcmVtb3ZlZCBmcm9tIHRoZSBnbG9iYWwgdGFibGUgbGlzdC4NCj4gPiBBbmQgdGhpcyBzaG91
-bGQgYmUgdGhlIHdvcmtpbmcgbWVjaGFuaXNtIGZvciB1cw0KPiA+IFNvIHdlIGFjdHVhbGx5IGRv
-bid0IGhhdmUgdGhlIHRyb3VibGUgdG8gZGVhbCB3aXRoIHRoZSBuZXcga2VybmVsIG9iamVjdA0K
-PiBjcmVhdGlvbi9kZWxldGlvbiBmcm9tIHN5c2ZzLg0KPiA+DQo+ID4gSSBhZ3JlZSB0aGUgZHlu
-YW1pYyBrZXJuZWwgb2JqZWN0IGNyZWF0aW9uL2RlbGV0aW9uIG5lZWQgc3BlY2lhbCBjYXJlLg0K
-PiA+IEJ1dCB0aGlzIGFjdHVhbGx5IGlzIHdoYXQgYSBrZXJuZWwgZW5naW5lZXIgc2hvdWxkIGRv
-IGJlY2F1c2UgdGhpcyBraW5kIG9mDQo+IHRoaW5ncyBoYXBwZW4gaGVyZSBhbmQgdGhlcmUgdGhy
-b3VnaG91dCB0aGUga2VybmVsLg0KPiA+IFdlIHNob3VsZCBoYXZlIGFscmVhZHkgYmVlbiB1c2Vk
-IHRvIHRoYXQuDQo+ID4NCj4gPiBUaGlzIGlzIHRoZSBzZWNvbmQgZW5naW5lZXJpbmcgZGlmZmlj
-dWx0eSB3ZSBuZWVkIHRvIGZhY2UuDQo+ID4NCj4gPiAzLiBsb2FkL3VubG9hZCBjb21tYW5kaW5n
-DQo+ID4gTm93IHdlIG5lZWQgYSBjaGFyYWN0ZXIgZGV2aWNlIGluIHN5c2ZzIHRvIGhhbmRsZSBs
-b2FkL3VubG9hZCBjb21tYW5kLg0KPiA+IFdlbGwsIHRoZXJlIGFyZSBtYW55IHN1Y2gga2luZCBv
-ZiBmaWxlcyBpbiBzeXNmcywgZm9yIGV4YW1wbGUsIGRldmljZSBub2Rlcy4NCj4gPiBTbyB0aGlz
-IGlzIG5vdCBhIG5vbi1hY2hpZXZhYmxlIHRhc2ssIGJ1dCBqdXN0IGEgZGlmZmljdWx0IGVuZ2lu
-ZWVyaW5nIHRhc2suDQo+ID4gVGhlIHN5c3RlbSBlbmdpbmVlcnMgbmVlZCB0byBiZSBza2lsbGZ1
-bCBlbm91Z2ggdG8gaW1wbGVtZW50IHRoaXMuDQo+ID4gTGlrZSB0aGUgZHluYW1pYyBrZXJuZWwg
-b2JqZWN0IGhhbmRsaW5nLCB3ZSBzaG91bGQgaGF2ZSBhbHJlYWR5IGJlZW4gdXNlZCB0bw0KPiB0
-aGlzLg0KPiA+DQo+ID4NCj4gPiBJZiB5b3Ugc3RpbGwgdGhpbmsgdGhpcyBpcyBkaWZmaWN1bHQs
-IHRoZSBhbHRlcm5hdGl2ZSBjaG9pY2UgaXMgdG8gdXNlIGFjcGlkYmcgY2hhcg0KPiBkZXZpY2Un
-cyBpb2N0bCBpbnRlcmZhY2UuDQo+ID4gVGhhdCBjb3VsZCBzaW1wbGlmaWVzIHRoaXMgdGFzay4N
-Cj4gPiBBbmQgc2luY2UgdGhlIGlvY3RsIGludGVyZmFjZSBpcyByZXF1aXJlZCBieSBBQ1BJQ0Eg
-ZGlzYXNzZW1ibGVyLCB0aGUgd29yayBvbg0KPiB0aGF0IHdpbGwgYmUgaW5oZXJpdGVkIGJ5IHRo
-ZSBkaXNhc3NlbWJsZXIgcG9ydGluZy4NCj4gPg0KPiANCj4gV2h5IGNhbid0IHRoZSBkaXNzZW1i
-bGVyIGFjY2VzcyB0aGUgdGFibGVzIHRocm91Z2ggdGhlIGV4aXN0aW5nIHN5c2ZzIGludGVyZmFj
-ZT8NCltMdiBaaGVuZ10gDQpUaGUgYWNwaWRiZyB1dGlsaXR5IHNob3VsZCBiZSBzZWxmLWNvbnRh
-aW5lZC4NCkl0IHdpbGwgYmUgYmFjayBwb3J0ZWQgdG8gQUNQSUNBLg0KU28gaXQgbWlnaHQgYmUg
-cG9ydGVkIHRvIG90aGVyIE9TUE1zLg0KRnJvbSB0aGlzIHBvaW50IG9mIHZpZXcsIGFjcGlkYmcg
-bmVlZCBzdWNoIGtpbmQgb2YgZGVzaWduIC0gZG9pbmcgZXZlcnl0aGluZyBpdCBuZWVkIGZyb20g
-YW4gT1NQTSBrZXJuZWwgdXNpbmcgYSBzaW5nbGUgY2hhciBkZXZpY2UuDQoNClRoYW5rcyBhbmQg
-YmVzdCByZWdhcmRzDQotTHYNCg0KPiANCj4gPiBUaGlzIGlzIHRoZSBsYXN0IGVuZ2luZWVyaW5n
-IGRpZmZpY3VsdHkgd2UgbmVlZCB0byBmYWNlLg0KPiA+DQo+ID4gU28gd2h5IGNhbid0IHRoZXNl
-IHNvbHV0aW9ucyB3b3JrIGZvciB1cz8NCj4gPg0KPiANCj4gSXQgY2FuIGJlIGRvbmUsIGJ1dCBp
-dCBpcyBub3QgdGhlIHJpZ2h0IHdheSB0byBkbyBpdCwgSU1PLg0KPiAtLQ0KPiBUbyB1bnN1YnNj
-cmliZSBmcm9tIHRoaXMgbGlzdDogc2VuZCB0aGUgbGluZSAidW5zdWJzY3JpYmUgbGludXgtYWNw
-aSIgaW4NCj4gdGhlIGJvZHkgb2YgYSBtZXNzYWdlIHRvIG1ham9yZG9tb0B2Z2VyLmtlcm5lbC5v
-cmcNCj4gTW9yZSBtYWpvcmRvbW8gaW5mbyBhdCAgaHR0cDovL3ZnZXIua2VybmVsLm9yZy9tYWpv
-cmRvbW8taW5mby5odG1sDQo=
+This patch adds support for the direct access mode to the Orion SPI
+driver which is used on the Marvell Armada based SoCs. In this direct
+mode, all data written to (or read from) a specifically mapped MBus
+window (linked to one SPI chip-select on one of the SPI controllers)
+will be transferred directly to the SPI bus. Without the need to control
+the SPI registers in between. This can improve the SPI transfer rate in
+such cases.
+
+Both, direct-read and -write mode are supported. But only the write
+mode has been tested. This mode especially benefits from the SPI direct
+mode, as the data bytes are written head-to-head to the SPI bus,
+without any additional addresses.
+
+One use-case for this direct write mode is, programming a FPGA bitstream
+image into the FPGA connected to the SPI bus at maximum speed.
+
+This mode is described in chapter "22.5.2 Direct Write to SPI" in the
+Marvell Armada XP Functional Spec Datasheet.
+
+Signed-off-by: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
+Cc: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Cc: Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Cc: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
+Cc: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+v3:
+- Used static MBus windows again, as suggested by Arnd
+- No new DT bindings needed for this. The MBus windows need to be
+  configured in the 'reg' property of the SPI controller. This is
+  done in a separate patch for the Armada platforms.
+- The direct mapping is configured and enable by adding the
+  specific MBus entry to the 'ranges' property of the 'soc' node
+  in the board dts file.
+
+v2:
+- Use one MBus window for each SPI controller instead of one for
+  for each SPI device. This MBus window is re-assigned, once the
+  CS changes.
+- Assert the CS over the entire message
+- Don't restrict the direct access mode to only direct write mode
+- Add check for max size before using memcpy()
+- Remove spidev from DT bindings documentation
+
+ drivers/spi/spi-orion.c | 86 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 86 insertions(+)
+
+diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
+index a87cfd4..69e710e 100644
+--- a/drivers/spi/spi-orion.c
++++ b/drivers/spi/spi-orion.c
+@@ -18,6 +18,7 @@
+ #include <linux/module.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/of.h>
++#include <linux/of_address.h>
+ #include <linux/of_device.h>
+ #include <linux/clk.h>
+ #include <linux/sizes.h>
+@@ -43,6 +44,9 @@
+ #define ORION_SPI_INT_CAUSE_REG		0x10
+ #define ORION_SPI_TIMING_PARAMS_REG	0x18
+ 
++/* Register for the "Direct Mode" */
++#define SPI_DIRECT_WRITE_CONFIG_REG	0x20
++
+ #define ORION_SPI_TMISO_SAMPLE_MASK	(0x3 << 6)
+ #define ORION_SPI_TMISO_SAMPLE_1	(1 << 6)
+ #define ORION_SPI_TMISO_SAMPLE_2	(2 << 6)
+@@ -78,11 +82,18 @@ struct orion_spi_dev {
+ 	bool			is_errata_50mhz_ac;
+ };
+ 
++struct orion_direct_acc {
++	void __iomem		*vaddr;
++	u32			size;
++};
++
+ struct orion_spi {
+ 	struct spi_master	*master;
+ 	void __iomem		*base;
+ 	struct clk              *clk;
+ 	const struct orion_spi_dev *devdata;
++
++	struct orion_direct_acc	direct_access[ORION_NUM_CHIPSELECTS];
+ };
+ 
+ static inline void __iomem *spi_reg(struct orion_spi *orion_spi, u32 reg)
+@@ -372,10 +383,44 @@ orion_spi_write_read(struct spi_device *spi, struct spi_transfer *xfer)
+ {
+ 	unsigned int count;
+ 	int word_len;
++	struct orion_spi *orion_spi;
++	int cs = spi->chip_select;
+ 
+ 	word_len = spi->bits_per_word;
+ 	count = xfer->len;
+ 
++	orion_spi = spi_master_get_devdata(spi->master);
++
++	/* Use SPI direct access mode if base address is available */
++	if (orion_spi->direct_access[cs].vaddr) {
++		struct orion_direct_acc *da = &orion_spi->direct_access[cs];
++
++		if (count > da->size) {
++			dev_err(&spi->dev,
++				"max transfer size exceeded (%d > %d)\n",
++				count, da->size);
++			return 0;
++		}
++
++		if (xfer->tx_buf) {
++			/*
++			 * Send the tx-data to the SPI device via the direct
++			 * mapped address window
++			 */
++			memcpy(da->vaddr, xfer->tx_buf, count);
++		}
++
++		if (xfer->rx_buf) {
++			/*
++			 * Read the rx-data from the SPI device via the direct
++			 * mapped address window
++			 */
++			memcpy(xfer->rx_buf, da->vaddr, count);
++		}
++
++		return count;
++	}
++
+ 	if (word_len == 8) {
+ 		const u8 *tx = xfer->tx_buf;
+ 		u8 *rx = xfer->rx_buf;
+@@ -425,6 +470,10 @@ static int orion_spi_reset(struct orion_spi *orion_spi)
+ {
+ 	/* Verify that the CS is deasserted */
+ 	orion_spi_clrbits(orion_spi, ORION_SPI_IF_CTRL_REG, 0x1);
++
++	/* Don't deassert CS between the direct mapped SPI transfers */
++	writel(0, spi_reg(orion_spi, SPI_DIRECT_WRITE_CONFIG_REG));
++
+ 	return 0;
+ }
+ 
+@@ -504,6 +553,7 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 	struct resource *r;
+ 	unsigned long tclk_hz;
+ 	int status = 0;
++	struct device_node *np;
+ 
+ 	master = spi_alloc_master(&pdev->dev, sizeof(*spi));
+ 	if (master == NULL) {
+@@ -576,6 +626,42 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 		goto out_rel_clk;
+ 	}
+ 
++	/* Scan all SPI devices of this controller for direct mapped devices */
++	for_each_available_child_of_node(pdev->dev.of_node, np) {
++		u32 cs;
++
++		/* Get chip-select number from the "reg" property */
++		status = of_property_read_u32(np, "reg", &cs);
++		if (status) {
++			dev_err(&pdev->dev,
++				"%s has no valid 'reg' property (%d)\n",
++				np->full_name, status);
++			status = 0;
++			continue;
++		}
++
++		/*
++		 * Check if an address is configured for this SPI device. If
++		 * not, the MBus mapping via the 'ranges' property in the 'soc'
++		 * node is not configured and this device should not use the
++		 * direct mode. In this case, just continue with the next
++		 * device.
++		 */
++		status = of_address_to_resource(pdev->dev.of_node, cs + 1, r);
++		if (status)
++			continue;
++
++		spi->direct_access[cs].vaddr = devm_ioremap_resource(&pdev->dev,
++								     r);
++		if (IS_ERR(spi->direct_access[cs].vaddr)) {
++			status = PTR_ERR(spi->direct_access[cs].vaddr);
++			goto out_rel_clk;
++		}
++
++		spi->direct_access[cs].size = resource_size(r);
++		dev_info(&pdev->dev, "CS%d configured for direct access\n", cs);
++	}
++
+ 	pm_runtime_set_active(&pdev->dev);
+ 	pm_runtime_use_autosuspend(&pdev->dev);
+ 	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
+-- 
+2.8.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,166 +1,170 @@
-From: Akinobu Mita <akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi: omap2-mcspi: fix dma transfer for vmalloced buffer
-Date: Thu, 7 Apr 2016 21:17:29 +0900
-Message-ID: <CAC5umyj0zbwqt0Tmbubh0=URYvrvtWLO0q1ym1F2c7a84vRHjg@mail.gmail.com>
-References: <1458576021-4373-1-git-send-email-akinobu.mita@gmail.com>
+From: P L Sai Krishna <lakshmi.sai.krishna.potthuri-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Subject: [LINUX PATCH v2 3/3] spi:zynqmp:gqspi: Added separate dummy entry.
+Date: Thu, 7 Apr 2016 20:09:29 +0530
+Message-ID: <1460039969-9835-3-git-send-email-lakshmis@xilinx.com>
+References: <1460039969-9835-1-git-send-email-lakshmis@xilinx.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Akinobu Mita <akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain
+Cc: <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"Harini Katakam" <harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	Punnaiah Choudary Kalluri <punnaia-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	Anirudha Sarangi <anirudh-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	P L Sai Krishna <lakshmis-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+To: Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	Soren Brinkmann <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	"Brian Norris" <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"Javier Martinez Canillas" <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
+	Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
+	"Andrew F. Davis" <afd-l0cyMroinI0@public.gmane.org>, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
+	Jagan Teki <jteki-oRp2ZoJdM/RWk0Htik3J/w@public.gmane.org>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1458576021-4373-1-git-send-email-akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1460039969-9835-1-git-send-email-lakshmis-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-2016-03-22 1:00 GMT+09:00 Akinobu Mita <akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>:
-> Currently omap2-mcspi cannot handle dma transfer for vmalloced buffer.
-> I hit this problem when using mtdblock on spi-nor.
->
-> This lets the SPI core handle the page mapping for dma transfer buffer.
->
-> Signed-off-by: Akinobu Mita <akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> ---
->  drivers/spi/spi-omap2-mcspi.c | 62 ++++++++++++-------------------------------
->  1 file changed, 17 insertions(+), 45 deletions(-)
->
-> diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-> index 0caa3c8..43a02e3 100644
-> --- a/drivers/spi/spi-omap2-mcspi.c
-> +++ b/drivers/spi/spi-omap2-mcspi.c
-> @@ -423,16 +423,12 @@ static void omap2_mcspi_tx_dma(struct spi_device *spi,
->
->         if (mcspi_dma->dma_tx) {
->                 struct dma_async_tx_descriptor *tx;
-> -               struct scatterlist sg;
->
->                 dmaengine_slave_config(mcspi_dma->dma_tx, &cfg);
->
-> -               sg_init_table(&sg, 1);
-> -               sg_dma_address(&sg) = xfer->tx_dma;
-> -               sg_dma_len(&sg) = xfer->len;
-> -
-> -               tx = dmaengine_prep_slave_sg(mcspi_dma->dma_tx, &sg, 1,
-> -               DMA_MEM_TO_DEV, DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
-> +               tx = dmaengine_prep_slave_sg(mcspi_dma->dma_tx, xfer->tx_sg.sgl,
-> +                                            xfer->tx_sg.nents, DMA_MEM_TO_DEV,
-> +                                            DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
->                 if (tx) {
->                         tx->callback = omap2_mcspi_tx_callback;
->                         tx->callback_param = spi;
-> @@ -478,20 +474,15 @@ omap2_mcspi_rx_dma(struct spi_device *spi, struct spi_transfer *xfer,
->
->         if (mcspi_dma->dma_rx) {
->                 struct dma_async_tx_descriptor *tx;
-> -               struct scatterlist sg;
->
->                 dmaengine_slave_config(mcspi_dma->dma_rx, &cfg);
->
->                 if ((l & OMAP2_MCSPI_CHCONF_TURBO) && mcspi->fifo_depth == 0)
->                         dma_count -= es;
->
+This patch sends dummy as a separate entry.
+Break the Address+Cmd+dummy transfer into multiple transfers.
+Address+Cmd as one transfer.
+Dummy cycles as another transfer.
+As per the controller spec, immediate data field of dummy entry
+in the GenFifo represent dummy cycles.
+Bus width for dummy cycles transfer should be same as
+Rx bus width.
 
-The actual transfer length can be smaller than xfer->len by above line.
-And the last word is filled after dma transfer completion.
+Signed-off-by: P L Sai Krishna <lakshmis-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+---
+v2:
+ - Replaced dummy with dummy_cycles.
+ 
+ drivers/spi/spi-zynqmp-gqspi.c | 57 ++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 55 insertions(+), 2 deletions(-)
 
-So this patch is broken.  Could you revert remove this from your
-development tree?
-I don't find a way how to fix it without copy and pasting a lot of
-line from spi core.
+diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
+index aab9b49..a4b109e 100644
+--- a/drivers/spi/spi-zynqmp-gqspi.c
++++ b/drivers/spi/spi-zynqmp-gqspi.c
+@@ -134,6 +134,9 @@
+ #define GQSPI_SELECT_MODE_QUADSPI	0x4
+ #define GQSPI_DMA_UNALIGN		0x3
+ #define GQSPI_DEFAULT_NUM_CS	1	/* Default number of chip selects */
++#define GQSPI_RX_BUS_WIDTH_QUAD		0x4
++#define GQSPI_RX_BUS_WIDTH_DUAL		0x2
++#define GQSPI_RX_BUS_WIDTH_SINGLE	0x1
+ 
+ enum mode_type {GQSPI_MODE_IO, GQSPI_MODE_DMA};
+ 
+@@ -169,6 +172,7 @@ struct zynqmp_qspi {
+ 	u32 genfifobus;
+ 	u32 dma_rx_bytes;
+ 	dma_addr_t dma_addr;
++	u32 rx_bus_width;
+ 	u32 genfifoentry;
+ 	enum mode_type mode;
+ };
+@@ -541,6 +545,35 @@ static void zynqmp_qspi_filltxfifo(struct zynqmp_qspi *xqspi, int size)
+ }
+ 
+ /**
++ * zynqmp_qspi_preparedummy:	Prepares the dummy entry
++ *
++ * @xqspi:	Pointer to the zynqmp_qspi structure
++ * @transfer:	It is a pointer to the structure containing transfer data.
++ * @genfifoentry:	genfifoentry is pointer to the variable in which
++ *			GENFIFO	mask is returned to calling function
++ */
++static void zynqmp_qspi_preparedummy(struct zynqmp_qspi *xqspi,
++					struct spi_transfer *transfer,
++					u32 *genfifoentry)
++{
++	/* For dummy Tx and Rx are NULL */
++	*genfifoentry &= ~(GQSPI_GENFIFO_TX | GQSPI_GENFIFO_RX);
++
++	/* SPI mode */
++	*genfifoentry &= ~GQSPI_GENFIFO_MODE_QUADSPI;
++	if (xqspi->rx_bus_width == GQSPI_RX_BUS_WIDTH_QUAD)
++		*genfifoentry |= GQSPI_GENFIFO_MODE_QUADSPI;
++	else if (xqspi->rx_bus_width == GQSPI_RX_BUS_WIDTH_DUAL)
++		*genfifoentry |= GQSPI_GENFIFO_MODE_DUALSPI;
++	else
++		*genfifoentry |= GQSPI_GENFIFO_MODE_SPI;
++
++	/* Immediate data */
++	*genfifoentry &= ~GQSPI_GENFIFO_IMM_DATA_MASK;
++	*genfifoentry |= transfer->dummy_cycles;
++}
++
++/**
+  * zynqmp_qspi_readrxfifo:	Fills the RX FIFO as long as there is room in
+  *				the FIFO.
+  * @xqspi:	Pointer to the zynqmp_qspi structure
+@@ -771,7 +804,7 @@ static void zynqmp_qspi_txrxsetup(struct zynqmp_qspi *xqspi,
+ 		*genfifoentry |= GQSPI_GENFIFO_TX;
+ 		*genfifoentry |=
+ 			zynqmp_qspi_selectspimode(xqspi, transfer->tx_nbits);
+-		xqspi->bytes_to_transfer = transfer->len;
++		xqspi->bytes_to_transfer = transfer->len - (transfer->dummy_cycles/8);
+ 		if (xqspi->mode == GQSPI_MODE_DMA) {
+ 			config_reg = zynqmp_gqspi_read(xqspi,
+ 							GQSPI_CONFIG_OFST);
+@@ -832,13 +865,19 @@ static int zynqmp_qspi_start_transfer(struct spi_master *master,
+ 	if (xqspi->mode == GQSPI_MODE_DMA)
+ 		transfer_len = xqspi->dma_rx_bytes;
+ 	else
+-		transfer_len = transfer->len;
++		transfer_len = transfer->len - (transfer->dummy_cycles/8);
+ 
+ 	xqspi->genfifoentry = genfifoentry;
+ 	if ((transfer_len) < GQSPI_GENFIFO_IMM_DATA_MASK) {
+ 		genfifoentry &= ~GQSPI_GENFIFO_IMM_DATA_MASK;
+ 		genfifoentry |= transfer_len;
+ 		zynqmp_gqspi_write(xqspi, GQSPI_GEN_FIFO_OFST, genfifoentry);
++		if (transfer->dummy_cycles) {
++			zynqmp_qspi_preparedummy(xqspi, transfer,
++					&genfifoentry);
++			zynqmp_gqspi_write(xqspi, GQSPI_GEN_FIFO_OFST,
++					genfifoentry);
++		}
+ 	} else {
+ 		int tempcount = transfer_len;
+ 		u32 exponent = 8;	/* 2^8 = 256 */
+@@ -979,6 +1018,8 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
+ 	struct zynqmp_qspi *xqspi;
+ 	struct resource *res;
+ 	struct device *dev = &pdev->dev;
++	struct device_node *nc;
++	u32 rx_bus_width;
+ 
+ 	master = spi_alloc_master(&pdev->dev, sizeof(*xqspi));
+ 	if (!master)
+@@ -1039,6 +1080,18 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
+ 		goto clk_dis_all;
+ 	}
+ 
++	xqspi->rx_bus_width = GQSPI_RX_BUS_WIDTH_SINGLE;
++	for_each_available_child_of_node(pdev->dev.of_node, nc) {
++		ret = of_property_read_u32(nc, "spi-rx-bus-width",
++					&rx_bus_width);
++		if (!ret) {
++			xqspi->rx_bus_width = rx_bus_width;
++			break;
++		}
++	}
++	if (ret)
++		dev_err(dev, "rx bus width not found\n");
++
+ 	master->num_chipselect = GQSPI_DEFAULT_NUM_CS;
+ 
+ 	master->setup = zynqmp_qspi_setup;
+-- 
+2.1.2
 
-> -               sg_init_table(&sg, 1);
-> -               sg_dma_address(&sg) = xfer->rx_dma;
-> -               sg_dma_len(&sg) = dma_count;
-> -
-> -               tx = dmaengine_prep_slave_sg(mcspi_dma->dma_rx, &sg, 1,
-> -                               DMA_DEV_TO_MEM, DMA_PREP_INTERRUPT |
-> -                               DMA_CTRL_ACK);
-> +               tx = dmaengine_prep_slave_sg(mcspi_dma->dma_rx, xfer->rx_sg.sgl,
-> +                                            xfer->rx_sg.nents, DMA_DEV_TO_MEM,
-> +                                            DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
->                 if (tx) {
->                         tx->callback = omap2_mcspi_rx_callback;
->                         tx->callback_param = spi;
-> @@ -505,8 +496,6 @@ omap2_mcspi_rx_dma(struct spi_device *spi, struct spi_transfer *xfer,
->         omap2_mcspi_set_dma_req(spi, 1, 1);
->
->         wait_for_completion(&mcspi_dma->dma_rx_completion);
-> -       dma_unmap_single(mcspi->dev, xfer->rx_dma, count,
-> -                        DMA_FROM_DEVICE);
->
->         if (mcspi->fifo_depth > 0)
->                 return count;
-> @@ -619,8 +608,6 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
->
->         if (tx != NULL) {
->                 wait_for_completion(&mcspi_dma->dma_tx_completion);
-> -               dma_unmap_single(mcspi->dev, xfer->tx_dma, xfer->len,
-> -                                DMA_TO_DEVICE);
->
->                 if (mcspi->fifo_depth > 0) {
->                         irqstat_reg = mcspi->base + OMAP2_MCSPI_IRQSTATUS;
-> @@ -1087,6 +1074,16 @@ static void omap2_mcspi_cleanup(struct spi_device *spi)
->                 gpio_free(spi->cs_gpio);
->  }
->
-> +static bool omap2_mcspi_can_dma(struct spi_master *master,
-> +                               struct spi_device *spi,
-> +                               struct spi_transfer *xfer)
-> +{
-> +       if (xfer->len < DMA_MIN_BYTES)
-> +               return false;
-> +
-> +       return true;
-> +}
-> +
->  static int omap2_mcspi_work_one(struct omap2_mcspi *mcspi,
->                 struct spi_device *spi, struct spi_transfer *t)
->  {
-> @@ -1268,32 +1265,6 @@ static int omap2_mcspi_transfer_one(struct spi_master *master,
->                 return -EINVAL;
->         }
->
-> -       if (len < DMA_MIN_BYTES)
-> -               goto skip_dma_map;
-> -
-> -       if (mcspi_dma->dma_tx && tx_buf != NULL) {
-> -               t->tx_dma = dma_map_single(mcspi->dev, (void *) tx_buf,
-> -                               len, DMA_TO_DEVICE);
-> -               if (dma_mapping_error(mcspi->dev, t->tx_dma)) {
-> -                       dev_dbg(mcspi->dev, "dma %cX %d bytes error\n",
-> -                                       'T', len);
-> -                       return -EINVAL;
-> -               }
-> -       }
-> -       if (mcspi_dma->dma_rx && rx_buf != NULL) {
-> -               t->rx_dma = dma_map_single(mcspi->dev, rx_buf, t->len,
-> -                               DMA_FROM_DEVICE);
-> -               if (dma_mapping_error(mcspi->dev, t->rx_dma)) {
-> -                       dev_dbg(mcspi->dev, "dma %cX %d bytes error\n",
-> -                                       'R', len);
-> -                       if (tx_buf != NULL)
-> -                               dma_unmap_single(mcspi->dev, t->tx_dma,
-> -                                               len, DMA_TO_DEVICE);
-> -                       return -EINVAL;
-> -               }
-> -       }
-> -
-> -skip_dma_map:
->         return omap2_mcspi_work_one(mcspi, spi, t);
->  }
->
-> @@ -1377,6 +1348,7 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
->         master->transfer_one = omap2_mcspi_transfer_one;
->         master->set_cs = omap2_mcspi_set_cs;
->         master->cleanup = omap2_mcspi_cleanup;
-> +       master->can_dma = omap2_mcspi_can_dma;
->         master->dev.of_node = node;
->         master->max_speed_hz = OMAP2_MCSPI_MAX_FREQ;
->         master->min_speed_hz = OMAP2_MCSPI_MAX_FREQ >> 15;
-> --
-> 2.5.0
->
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

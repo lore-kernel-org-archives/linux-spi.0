@@ -1,60 +1,159 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: omap2-mcspi: fix dma transfer for vmalloced buffer
-Date: Thu, 7 Apr 2016 10:57:48 -0700
-Message-ID: <20160407175748.GY1924@sirena.org.uk>
-References: <1458576021-4373-1-git-send-email-akinobu.mita@gmail.com>
- <CAC5umyj0zbwqt0Tmbubh0=URYvrvtWLO0q1ym1F2c7a84vRHjg@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="mlvFMpb4NrD3AMcD"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Akinobu Mita <akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Akinobu Mita <akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] Revert "spi: omap2-mcspi: fix dma transfer for vmalloced buffer"
+Date: Sat,  9 Apr 2016 03:43:15 +0900
+Message-ID: <1460140995-4062-1-git-send-email-akinobu.mita@gmail.com>
+Cc: Akinobu Mita <akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAC5umyj0zbwqt0Tmbubh0=URYvrvtWLO0q1ym1F2c7a84vRHjg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+This reverts commit 3525e0aac91c4de5d20b1f22a6c6e2b39db3cc96.
 
---mlvFMpb4NrD3AMcD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The DMA transfer for RX buffer was not handled correctly in this change.
 
-On Thu, Apr 07, 2016 at 09:17:29PM +0900, Akinobu Mita wrote:
-> 2016-03-22 1:00 GMT+09:00 Akinobu Mita <akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>:
+The actual transfer length for DMA RX can be less than xfer->len in the
+specific condition and the last words will be filled after the DMA
+completion, but the commit doesn't consider it and the dmaengine is
+started with rx_sg mapped by spi core.
 
-> >                 if ((l & OMAP2_MCSPI_CHCONF_TURBO) && mcspi->fifo_depth == 0)
-> >                         dma_count -= es;
+The solution for this at least requires more lines than this commit
+has inserted.  So revert it for now.
 
-> The actual transfer length can be smaller than xfer->len by above line.
-> And the last word is filled after dma transfer completion.
+Signed-off-by: Akinobu Mita <akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-omap2-mcspi.c | 62 +++++++++++++++++++++++++++++++------------
+ 1 file changed, 45 insertions(+), 17 deletions(-)
 
-> So this patch is broken.  Could you revert remove this from your
-> development tree?
-> I don't find a way how to fix it without copy and pasting a lot of
-> line from spi core.
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 43a02e3..0caa3c8 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -423,12 +423,16 @@ static void omap2_mcspi_tx_dma(struct spi_device *spi,
+ 
+ 	if (mcspi_dma->dma_tx) {
+ 		struct dma_async_tx_descriptor *tx;
++		struct scatterlist sg;
+ 
+ 		dmaengine_slave_config(mcspi_dma->dma_tx, &cfg);
+ 
+-		tx = dmaengine_prep_slave_sg(mcspi_dma->dma_tx, xfer->tx_sg.sgl,
+-					     xfer->tx_sg.nents, DMA_MEM_TO_DEV,
+-					     DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
++		sg_init_table(&sg, 1);
++		sg_dma_address(&sg) = xfer->tx_dma;
++		sg_dma_len(&sg) = xfer->len;
++
++		tx = dmaengine_prep_slave_sg(mcspi_dma->dma_tx, &sg, 1,
++		DMA_MEM_TO_DEV, DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+ 		if (tx) {
+ 			tx->callback = omap2_mcspi_tx_callback;
+ 			tx->callback_param = spi;
+@@ -474,15 +478,20 @@ omap2_mcspi_rx_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ 
+ 	if (mcspi_dma->dma_rx) {
+ 		struct dma_async_tx_descriptor *tx;
++		struct scatterlist sg;
+ 
+ 		dmaengine_slave_config(mcspi_dma->dma_rx, &cfg);
+ 
+ 		if ((l & OMAP2_MCSPI_CHCONF_TURBO) && mcspi->fifo_depth == 0)
+ 			dma_count -= es;
+ 
+-		tx = dmaengine_prep_slave_sg(mcspi_dma->dma_rx, xfer->rx_sg.sgl,
+-					     xfer->rx_sg.nents, DMA_DEV_TO_MEM,
+-					     DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
++		sg_init_table(&sg, 1);
++		sg_dma_address(&sg) = xfer->rx_dma;
++		sg_dma_len(&sg) = dma_count;
++
++		tx = dmaengine_prep_slave_sg(mcspi_dma->dma_rx, &sg, 1,
++				DMA_DEV_TO_MEM, DMA_PREP_INTERRUPT |
++				DMA_CTRL_ACK);
+ 		if (tx) {
+ 			tx->callback = omap2_mcspi_rx_callback;
+ 			tx->callback_param = spi;
+@@ -496,6 +505,8 @@ omap2_mcspi_rx_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ 	omap2_mcspi_set_dma_req(spi, 1, 1);
+ 
+ 	wait_for_completion(&mcspi_dma->dma_rx_completion);
++	dma_unmap_single(mcspi->dev, xfer->rx_dma, count,
++			 DMA_FROM_DEVICE);
+ 
+ 	if (mcspi->fifo_depth > 0)
+ 		return count;
+@@ -608,6 +619,8 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
+ 
+ 	if (tx != NULL) {
+ 		wait_for_completion(&mcspi_dma->dma_tx_completion);
++		dma_unmap_single(mcspi->dev, xfer->tx_dma, xfer->len,
++				 DMA_TO_DEVICE);
+ 
+ 		if (mcspi->fifo_depth > 0) {
+ 			irqstat_reg = mcspi->base + OMAP2_MCSPI_IRQSTATUS;
+@@ -1074,16 +1087,6 @@ static void omap2_mcspi_cleanup(struct spi_device *spi)
+ 		gpio_free(spi->cs_gpio);
+ }
+ 
+-static bool omap2_mcspi_can_dma(struct spi_master *master,
+-				struct spi_device *spi,
+-				struct spi_transfer *xfer)
+-{
+-	if (xfer->len < DMA_MIN_BYTES)
+-		return false;
+-
+-	return true;
+-}
+-
+ static int omap2_mcspi_work_one(struct omap2_mcspi *mcspi,
+ 		struct spi_device *spi, struct spi_transfer *t)
+ {
+@@ -1265,6 +1268,32 @@ static int omap2_mcspi_transfer_one(struct spi_master *master,
+ 		return -EINVAL;
+ 	}
+ 
++	if (len < DMA_MIN_BYTES)
++		goto skip_dma_map;
++
++	if (mcspi_dma->dma_tx && tx_buf != NULL) {
++		t->tx_dma = dma_map_single(mcspi->dev, (void *) tx_buf,
++				len, DMA_TO_DEVICE);
++		if (dma_mapping_error(mcspi->dev, t->tx_dma)) {
++			dev_dbg(mcspi->dev, "dma %cX %d bytes error\n",
++					'T', len);
++			return -EINVAL;
++		}
++	}
++	if (mcspi_dma->dma_rx && rx_buf != NULL) {
++		t->rx_dma = dma_map_single(mcspi->dev, rx_buf, t->len,
++				DMA_FROM_DEVICE);
++		if (dma_mapping_error(mcspi->dev, t->rx_dma)) {
++			dev_dbg(mcspi->dev, "dma %cX %d bytes error\n",
++					'R', len);
++			if (tx_buf != NULL)
++				dma_unmap_single(mcspi->dev, t->tx_dma,
++						len, DMA_TO_DEVICE);
++			return -EINVAL;
++		}
++	}
++
++skip_dma_map:
+ 	return omap2_mcspi_work_one(mcspi, spi, t);
+ }
+ 
+@@ -1348,7 +1377,6 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
+ 	master->transfer_one = omap2_mcspi_transfer_one;
+ 	master->set_cs = omap2_mcspi_set_cs;
+ 	master->cleanup = omap2_mcspi_cleanup;
+-	master->can_dma = omap2_mcspi_can_dma;
+ 	master->dev.of_node = node;
+ 	master->max_speed_hz = OMAP2_MCSPI_MAX_FREQ;
+ 	master->min_speed_hz = OMAP2_MCSPI_MAX_FREQ >> 15;
+-- 
+2.5.0
 
-Can you please send a patch doing the revert and explaining why we can't
-do this in the changelog?  That might help someone else looking at this
-to figure it out in future, or at least stop them trying the same thing
-and running into problems.
-
---mlvFMpb4NrD3AMcD
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJXBp+bAAoJECTWi3JdVIfQD34H/jvRDRdGqyOY+pxENMA1DW7U
-+oGrqlcTzQST5tQpEj3nTIStjnNmeWCU0MLvYFfm+cyxYx6WPhl8Hsq/Xsr8hQRt
-VwdU331q2tidS7/5+aSsDhxMEaF3Esx9APOlFGaCguCP36eRhPJAM4Dinx8S+vxl
-jC3QlYStoZwO+XzSF+eAe34zKP1wzs23b/Q0DWoJmNWaTltyN0ocXTm8R+vDBuX4
-Czz6OqQRcYc2+umw+S/Deys2gJCYqUC54yFM/R+JXdtFfIAG9XUnn3/koiaD2hFJ
-Dq4qoW38GeoU7Bup62bVqpv02JGbkhBAU1O9H4ggfJ8M19L91oz8+UJnxNV1ias=
-=Mlm6
------END PGP SIGNATURE-----
-
---mlvFMpb4NrD3AMcD--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

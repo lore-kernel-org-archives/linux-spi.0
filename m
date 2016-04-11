@@ -1,66 +1,45 @@
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Subject: Re: [PATCH] spi: let SPI masters ignore their children for PM
-Date: Mon, 11 Apr 2016 14:58:13 +0200
-Message-ID: <CAPDyKFr9Oxcw1tdQinDeDy-y51Mcim8kZni2QtNKp3dmR-OL7w@mail.gmail.com>
-References: <1460375463-15557-1-git-send-email-linus.walleij@linaro.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie@kernel.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	"Rafael J. Wysocki" <rjw@rjwysocki.net>,
-	"linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>
-To: Linus Walleij <linus.walleij@linaro.org>
-Return-path: <linux-pm-owner@vger.kernel.org>
-In-Reply-To: <1460375463-15557-1-git-send-email-linus.walleij@linaro.org>
-Sender: linux-pm-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH v1 1/1] spi: dw-mid: set DMA burst on memory side
+Date: Mon, 11 Apr 2016 19:30:12 +0300
+Message-ID: <1460392212-101116-1-git-send-email-andriy.shevchenko@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 11 April 2016 at 13:51, Linus Walleij <linus.walleij@linaro.org> wrote:
-> Let all SPI masters ignore their children: when it comes
-> to power management: SPI children have no business doing
-> keeping their parents awake: they are completely autonomous
-> devices that just use their parent to talk, and the latter
-> usecase must be power managed by the host itself on a
-> per-message basis.
->
-> Cc: Wolfram Sang <wsa@the-dreams.de>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Ulf Hansson <ulf.hansson@linaro.org>
-> Cc: Rafael J. Wysocki <rjw@rjwysocki.net>
-> Cc: linux-pm@vger.kernel.org
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+To optimize amount of bus writes on memory side set burst to be the same amount
+of data on both sides.
 
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+---
+ drivers/spi/spi-dw-mid.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Kind regards
-Uffe
+diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
+index e31971f9..0e0c34e 100644
+--- a/drivers/spi/spi-dw-mid.c
++++ b/drivers/spi/spi-dw-mid.c
+@@ -157,6 +157,7 @@ static struct dma_async_tx_descriptor *dw_spi_dma_prepare_tx(struct dw_spi *dws,
+ 
+ 	txconf.direction = DMA_MEM_TO_DEV;
+ 	txconf.dst_addr = dws->dma_addr;
++	txconf.src_maxburst = 4 * dws->dma_width;
+ 	txconf.dst_maxburst = 16;
+ 	txconf.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
+ 	txconf.dst_addr_width = convert_dma_width(dws->dma_width);
+@@ -203,6 +204,7 @@ static struct dma_async_tx_descriptor *dw_spi_dma_prepare_rx(struct dw_spi *dws,
+ 
+ 	rxconf.direction = DMA_DEV_TO_MEM;
+ 	rxconf.src_addr = dws->dma_addr;
++	rxconf.dst_maxburst = 4 * dws->dma_width;
+ 	rxconf.src_maxburst = 16;
+ 	rxconf.dst_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
+ 	rxconf.src_addr_width = convert_dma_width(dws->dma_width);
+-- 
+2.8.0.rc3
 
-> ---
-> ChangeLog v1->v2:
-> - Change subject from
->   "let SPI masters inherit suspend child ignorance"
->   to
->   "let SPI masters ignore their PM children"
-> -  Use the big hammer and do the sensible thing:
->    mark all SPI masters as ignoring their children
->    when it comes to power management.
-> ---
->  drivers/spi/spi.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index de2f2f90d799..6c4c050e6b65 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -1764,6 +1764,7 @@ struct spi_master *spi_alloc_master(struct device *dev, unsigned size)
->         master->num_chipselect = 1;
->         master->dev.class = &spi_master_class;
->         master->dev.parent = dev;
-> +       pm_suspend_ignore_children(&master->dev, true);
->         spi_master_set_devdata(master, &master[1]);
->
->         return master;
-> --
-> 2.4.3
->
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

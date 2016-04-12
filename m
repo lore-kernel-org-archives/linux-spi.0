@@ -1,50 +1,55 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] Revert "spi: omap2-mcspi: fix dma transfer for vmalloced
- buffer"
-Date: Tue, 12 Apr 2016 02:22:21 +0100
-Message-ID: <20160412012220.GP3351@sirena.org.uk>
-References: <1460140995-4062-1-git-send-email-akinobu.mita@gmail.com>
+Subject: Re: [PATCH 1/2] spi: spi-ti-qspi: Fix FLEN and WLEN settings if
+ bits_per_word is overridden
+Date: Tue, 12 Apr 2016 02:30:14 +0100
+Message-ID: <20160412013014.GR3351@sirena.org.uk>
+References: <1459885528.26669.5.camel@codethink.co.uk>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Kynn+LdAwU9N+JqL"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Akinobu Mita <akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="kJZGYML2m3vFaueA"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	CT kernel <linux-kernel-81qHHgoATdFT9dQujB1mzip2UmYkHbXO@public.gmane.org>
+To: Ben Hutchings <ben.hutchings-4yDnlxn2s6sWdaTGBSpHTA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1460140995-4062-1-git-send-email-akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1459885528.26669.5.camel-4yDnlxn2s6sWdaTGBSpHTA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---Kynn+LdAwU9N+JqL
+--kJZGYML2m3vFaueA
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Apr 09, 2016 at 03:43:15AM +0900, Akinobu Mita wrote:
-> This reverts commit 3525e0aac91c4de5d20b1f22a6c6e2b39db3cc96.
->=20
-> The DMA transfer for RX buffer was not handled correctly in this change.
+On Tue, Apr 05, 2016 at 08:45:28PM +0100, Ben Hutchings wrote:
 
-Please use subject lines reflecting the style for the subsystem.  This
-makes it easier to spot relevant changes for review.
+> +	frame_length =3D 0;
+> +	list_for_each_entry(t, &m->transfers, transfer_list)
+> +		frame_length +=3D t->len / (t->bits_per_word >> 3);
+> +	frame_length =3D min_t(unsigned int, frame_length, QSPI_FRAME);
+> =20
 
---Kynn+LdAwU9N+JqL
+This doesn't seem obviously correct - what exactly is the frame length
+here and why doesn't it change per transfer like the word length does?
+There's nothing in the changelog about this.
+
+--kJZGYML2m3vFaueA
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJXDE3LAAoJECTWi3JdVIfQUBEH/0ACs18KAc5RwVNFA7CHImrV
-eIpc8raS5CM0yzieFnHC950DyiGByfQ7kTcYqraLG4slYeQG6T7WlfdstHwV2raz
-kOc8XQr/Ag4v1wPMbcLFsgSR+EuU1PkcCD8+EWYLerz3dnZQCYuTh8n1FnGstOkw
-+a3siw551wlfWIPkx28zbuVkb1Kj59pyEnBA7shMnooFveSd6TKwu4XUy0OCbm4K
-NklHAO20w77NeItO6UN8N4G87LMYbrntmpaKFaUxaWRxtm3LPJPEEKetSZPB+6Oz
-raiVLH7EF/VP23NOi7i9lQk+4ZdfuWacdOIEYxipvMqigq7EzzmbeOdyTcsRJ7c=
-=dpow
+iQEcBAEBCAAGBQJXDE+lAAoJECTWi3JdVIfQ77sH/Rkk6wHvs5FApPY92m/jRFuP
+UGAdukFYZ5ZoigfaFyMsfSWaZQZpibP5sbH3tbJESf7ldneJxWff/bDMiIeOUA7p
+L9u+ALNrwdj+3nzB4tXCWTIgmSKDyV49f0DUavaBcKQ43HndSWCvdMlHmLAqmWjk
+VK73ZhmL2ZosOQ/OGXnfCbdwXkXuqyaLI3LisJOBVRrmBk0vh6YSiT23RB2NVOhl
+Qw7b1+l/VZ+/Fnmtqa+B+NrAfOZWZ9+AivakoQLouBwN0LkJk1QafaMDHYY7x0vj
+vyMh7V/jUT+vSw0yJnZWQZJSQPju/a3Vq/3JLctT4RZOn9IyCgFD4YqZ3T1I880=
+=LxOc
 -----END PGP SIGNATURE-----
 
---Kynn+LdAwU9N+JqL--
+--kJZGYML2m3vFaueA--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

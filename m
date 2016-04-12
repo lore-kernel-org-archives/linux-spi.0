@@ -1,120 +1,51 @@
-From: Javier Martinez Canillas <javier-0uQlZySMnqxg9hUCZPvPmw@public.gmane.org>
-Subject: Re: Issues with cros_ec and "spi: rockchip: check return value of dmaengine_prep_slave_sg"
-Date: Mon, 11 Apr 2016 13:54:51 -0400
-Message-ID: <CABxcv=kotgZosaLBKV0f1NpwYH8w57k+RT0fS2QL5ZpNWtU-yA@mail.gmail.com>
-References: <5681888.LvkE41Ux3K@phil>
-	<56FF9741.4040304@rock-chips.com>
-	<32438337.LoARtRoxf0@phil>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v1 1/1] spi: dw-mid: set DMA burst on memory side
+Date: Tue, 12 Apr 2016 01:34:09 +0100
+Message-ID: <20160412003409.GN3351@sirena.org.uk>
+References: <1460392212-101116-1-git-send-email-andriy.shevchenko@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Tomeu Vizoso <tomeu.vizoso-ZGY8ohtN/8qB+jHODAdFcQ@public.gmane.org>,
-	Enric Balletbo Serra <eballetbo-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="E0h0CbphJD8hN+Gf"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <32438337.LoARtRoxf0@phil>
+Content-Disposition: inline
+In-Reply-To: <1460392212-101116-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hello Heiko,
 
-Sorry for the late response, I got this email while I was sick and
-forgot to answer when I recovered.
+--E0h0CbphJD8hN+Gf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Sat, Apr 2, 2016 at 9:37 AM, Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org> wrote:
-> Hi Shawn,
->
-> Am Samstag, 2. April 2016, 17:56:17 schrieb Shawn Lin:
->> =E5=9C=A8 2016/4/2 7:52, Heiko Stuebner =E5=86=99=E9=81=93:
->> > it looks like commit ea9849113343 ("spi: rockchip: check return va=
-lue of
->> > dmaengine_prep_slave_sg") negatively affects the cros_ec spi backe=
-nd.
->> >
->> > During boot on the most recent mainline kernel I get:
->> >
->> > [    1.025480] cros-ec-spi spi0.0: Chrome EC device registered
->> > [    1.641636] input: cros_ec as
->> > /devices/platform/ff110000.spi/spi_master/spi0/spi0.0/ff110000.spi=
-:ec@0
->> > :keyboard-controller/input/input0 [    2.340214] cros-ec-spi spi0.=
-0: EC
->> > failed to respond in time
->> > [    2.357735] cros-ec-spi spi0.0: packet too long (249 bytes, exp=
-ected
->> > 4) [    2.470353] cros-ec-spi spi0.0: EC failed to respond in time
->> > [    2.508495] cros-ec-spi spi0.0: packet too long (249 bytes, exp=
-ected
->> > 4) [    2.620176] cros-ec-spi spi0.0: EC failed to respond in time
->> > [    2.637345] cros-ec-spi spi0.0: packet too long (249 bytes, exp=
-ected
->> > 4) [    2.750245] cros-ec-spi spi0.0: EC failed to respond in time
->> > [    2.767519] cros-ec-spi spi0.0: packet too long (249 bytes, exp=
-ected
->> > 4)
->> >
->> > The cros-ec works ok after boot without further errors [aka keyboa=
-rd
->> > and everything working correctly] and I haven't been able to figur=
-e out
->> > what goes wrong, but was able to bisect the issue down to the comm=
-it
->> > mentioned above.
->>
->> Which Soc I can reproduce it?
->
-> I can see that on both a veyron-pinky as well as a veyron-jerry, so t=
-he
-> rk3288-based devices.
->
->
->> I'm not able to find out how this commit to break the cros-ec. So I
->> prone to think this commit just expose some issues rather than
->> introducing negatively affects. I guess, before this commit, cros-ec
->> always get successful transfer, but the reality is that the tranfer
->> does failed in the early booting stage but spi-rockchip doesn't log =
-out
->> anything. If that is the case, that means spi-rockchip fails to prep=
-are
->> sg for some unknown reasons?
->
-> That is a possibility.
->
+On Mon, Apr 11, 2016 at 07:30:12PM +0300, Andy Shevchenko wrote:
 
-I also agree with this theory. AFAICT the mentioned commit is only
-adding some checks so it seems the problem is with on the spi-rockchip
-driver.
+> To optimize amount of bus writes on memory side set burst to be the same amount
+> of data on both sides.
 
-> I haven't had much experience with both spi and cros-ec and it seems =
-I've
-> forgotten to also include Javier in my Cc-list who die the cros-ec
-> mainlining. I've corrected that now and maybe he has some additional =
-idea
-> what may go wrong there.
->
+> +	txconf.src_maxburst = 4 * dws->dma_width;
+>  	txconf.dst_maxburst = 16;
 
-Unfortunately I'm neither familiar with Rockchip platforms nor have
-access to Rockchip based Chromebooks to reproduce this issue. But I
-don't see this error on my Exynos based Chromebooks so that's another
-sign that the issue may be in the spi-rockchip driver.
+This doesn't seem to do what the subject says (at least not always,
+it'll align for a dma_width of 4)?
 
-I've added to the cc list to Enric and Tomeu who were working on the
-cros_ec drivers lately and AFAIK have access to some Rockchip
-Chromebooks.
+--E0h0CbphJD8hN+Gf
+Content-Type: application/pgp-signature; name="signature.asc"
 
->> > Reverting the patch silences the cros-ec again. I'll try to look i=
-nto it
->> > further, but maybe you also have an idea what might go wrong.
->
->
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-Best regards,
-Javier
+iQEcBAEBCAAGBQJXDEKAAAoJECTWi3JdVIfQJrAH/1HJjnire9dPse8fEGmKVEtX
+XPjgatiC1W67SUZxPRnxIW8561i8cdfvhGW9ZtsuiCarwvuhPRRVGnXIMNXuBd70
+yKrV8+AWDsMgpuQDLqHIWB5OW4X9B/q3ycFB0RRVliq6909Mdl7SWSzlHE6QYzHG
+T4iQQA9oyUi4zYWMY9Nt+zmMSfpo5KqeWRsUtl59i2DSNdhp5G5rRFK0CE17FAPD
+O8rWFZOCwVftgOM8PMa8cSM5c67sdWACtnZ8LtArwjHHMfb4hofRU804SRXX3LUt
+dGvQz+6oOMIlK8X+lQ7UQJWzbZhDKP1bmM7afDAxhvLPlJFTrwDQ7fvNwzFNoOE=
+=DqjS
+-----END PGP SIGNATURE-----
+
+--E0h0CbphJD8hN+Gf--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

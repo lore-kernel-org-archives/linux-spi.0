@@ -1,51 +1,50 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v1 1/1] spi: dw-mid: set DMA burst on memory side
-Date: Tue, 12 Apr 2016 01:34:09 +0100
-Message-ID: <20160412003409.GN3351@sirena.org.uk>
-References: <1460392212-101116-1-git-send-email-andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH] Revert "spi: omap2-mcspi: fix dma transfer for vmalloced
+ buffer"
+Date: Tue, 12 Apr 2016 02:22:21 +0100
+Message-ID: <20160412012220.GP3351@sirena.org.uk>
+References: <1460140995-4062-1-git-send-email-akinobu.mita@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="E0h0CbphJD8hN+Gf"
+	protocol="application/pgp-signature"; boundary="Kynn+LdAwU9N+JqL"
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: Akinobu Mita <akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1460392212-101116-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <1460140995-4062-1-git-send-email-akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---E0h0CbphJD8hN+Gf
+--Kynn+LdAwU9N+JqL
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 11, 2016 at 07:30:12PM +0300, Andy Shevchenko wrote:
+On Sat, Apr 09, 2016 at 03:43:15AM +0900, Akinobu Mita wrote:
+> This reverts commit 3525e0aac91c4de5d20b1f22a6c6e2b39db3cc96.
+>=20
+> The DMA transfer for RX buffer was not handled correctly in this change.
 
-> To optimize amount of bus writes on memory side set burst to be the same amount
-> of data on both sides.
+Please use subject lines reflecting the style for the subsystem.  This
+makes it easier to spot relevant changes for review.
 
-> +	txconf.src_maxburst = 4 * dws->dma_width;
->  	txconf.dst_maxburst = 16;
-
-This doesn't seem to do what the subject says (at least not always,
-it'll align for a dma_width of 4)?
-
---E0h0CbphJD8hN+Gf
+--Kynn+LdAwU9N+JqL
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJXDEKAAAoJECTWi3JdVIfQJrAH/1HJjnire9dPse8fEGmKVEtX
-XPjgatiC1W67SUZxPRnxIW8561i8cdfvhGW9ZtsuiCarwvuhPRRVGnXIMNXuBd70
-yKrV8+AWDsMgpuQDLqHIWB5OW4X9B/q3ycFB0RRVliq6909Mdl7SWSzlHE6QYzHG
-T4iQQA9oyUi4zYWMY9Nt+zmMSfpo5KqeWRsUtl59i2DSNdhp5G5rRFK0CE17FAPD
-O8rWFZOCwVftgOM8PMa8cSM5c67sdWACtnZ8LtArwjHHMfb4hofRU804SRXX3LUt
-dGvQz+6oOMIlK8X+lQ7UQJWzbZhDKP1bmM7afDAxhvLPlJFTrwDQ7fvNwzFNoOE=
-=DqjS
+iQEcBAEBCAAGBQJXDE3LAAoJECTWi3JdVIfQUBEH/0ACs18KAc5RwVNFA7CHImrV
+eIpc8raS5CM0yzieFnHC950DyiGByfQ7kTcYqraLG4slYeQG6T7WlfdstHwV2raz
+kOc8XQr/Ag4v1wPMbcLFsgSR+EuU1PkcCD8+EWYLerz3dnZQCYuTh8n1FnGstOkw
++a3siw551wlfWIPkx28zbuVkb1Kj59pyEnBA7shMnooFveSd6TKwu4XUy0OCbm4K
+NklHAO20w77NeItO6UN8N4G87LMYbrntmpaKFaUxaWRxtm3LPJPEEKetSZPB+6Oz
+raiVLH7EF/VP23NOi7i9lQk+4ZdfuWacdOIEYxipvMqigq7EzzmbeOdyTcsRJ7c=
+=dpow
 -----END PGP SIGNATURE-----
 
---E0h0CbphJD8hN+Gf--
+--Kynn+LdAwU9N+JqL--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,50 +1,56 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: am335x: spi driver and two chip select
-Date: Wed, 13 Apr 2016 05:51:41 +0100
-Message-ID: <20160413045141.GD14664@sirena.org.uk>
+Date: Wed, 13 Apr 2016 05:57:47 +0100
+Message-ID: <20160413045747.GE14664@sirena.org.uk>
 References: <CAF+MRt=ZJP2fssLHRUoR9T9EPfWEPN1LC0CLxZ0CgJQy01S3Rw@mail.gmail.com>
  <CAMuHMdWtHYNLcbX65HzuV6fyPENMR75XrVQ8RkW=y_T=hN44+g@mail.gmail.com>
+ <CAF+MRtkyjeu6baWXX-hJathGjAkwz+REExzUBNWtJCROv5KrtA@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="XvKFcGCOAo53UbWW"
-Cc: Micka <mickamusset-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	protocol="application/pgp-signature"; boundary="G6nVm6DDWH/FONJq"
+Cc: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
 	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+To: Micka <mickamusset-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CAMuHMdWtHYNLcbX65HzuV6fyPENMR75XrVQ8RkW=y_T=hN44+g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <CAF+MRtkyjeu6baWXX-hJathGjAkwz+REExzUBNWtJCROv5KrtA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---XvKFcGCOAo53UbWW
+--G6nVm6DDWH/FONJq
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Apr 12, 2016 at 03:50:21PM +0200, Geert Uytterhoeven wrote:
+On Tue, Apr 12, 2016 at 01:56:27PM +0000, Micka wrote:
 
-> AFAIU, spi_master.setup() should not modify registers immediately when
-> supporting more than a single CS signal, while omap2_mcspi_setup_transfer()
-> seems to do that.
+Please don't top post, reply in line with needed context.  This allows
+readers to readily follow the flow of conversation and understand what
+you are talking about and also helps ensure that everything in the
+discussion is being addressed.
 
-Yes, this is a very common bug.
+> Do you know a way to fix that ? Idea ? How can I prevent the problem ?
 
---XvKFcGCOAo53UbWW
+The driver should store settings in driver data (probably using the
+device controller_data) in setup() and only write them to the hardware
+only when it starts to actually interact with the device.
+
+--G6nVm6DDWH/FONJq
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJXDdBcAAoJECTWi3JdVIfQxKYH/A7YOQqd4sNkhiV/wrsFxduZ
-Y1nfhah13/Iut9r1qKsQZsNA+10p+AxVWzs38200+KUDIZ8NRLj5fif6cev1EABK
-CujyE0DMPD9/43+dOsiYlg9utgvqnmezkMQxXSV5tw5ORklqfi03I5vBvklRUe7a
-dpF0xDv5FiTvBPSxwJrdWE+o604/ikAJEg35+sdLkJlsLGQ+HgE9aTakFlIzu9Uh
-Y3AfvXCi6mhfLCzb/NLmm2P3noK3bD8QOo+101/X+4STpqLMEoyxrCzdZfbzaJst
-/9ICEP6ISJLb7lwN4idzDRx6wF+m4tTZBwIeVjiiTxCAHIAUj+/YjIn9O+0LIwg=
-=u+rz
+iQEcBAEBCAAGBQJXDdHKAAoJECTWi3JdVIfQCKYH/2495jvx09VGb6VR8yt4Dcho
+lDoNFZVAaE1cwSUiD5bLP8XXa9d5zJ9scKLwu3x3+jMpudw61CaNqVJpSIqN4cyw
+b6uW09IIGjzYkoCM01LGVFea4jxb72HtYKwyr6CypD9OjjeIv5wBGLvHHhcLMPXN
+Va5ML4EjwYCPNfzR2otzuoknWvVu7r09Ud7dc+Kx4dozn1HwLK+QKO1Kik95qA1p
+EjWqapbIJVbsw0jlDSitbGX+Uurv5kIEIlGAjq9uf7ylCxcS01UGSk3upEfs+VJp
+MO5arVYHkH0JoStZr4EY4s6DVDiKU3wK/N3aOWKuAe5U1h3NDI59i9+2pVaHnmU=
+=nw31
 -----END PGP SIGNATURE-----
 
---XvKFcGCOAo53UbWW--
+--G6nVm6DDWH/FONJq--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,37 +1,40 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: spi & enable gpio
-Date: Wed, 13 Apr 2016 10:23:27 +0200
-Message-ID: <CAMuHMdVzYr-OHba49nT3bV+5dNDtG-ubiKqfiDuN0kNMSU9j_Q@mail.gmail.com>
-References: <CAF+MRtkHKuN_bCXaShsnVCJ7i_P2AiM7WCdWpbS0jX2vfvrwYg@mail.gmail.com>
+From: Ben Hutchings <ben.hutchings-4yDnlxn2s6sWdaTGBSpHTA@public.gmane.org>
+Subject: Re: [PATCH v2 2/2] spi: spi-ti-qspi: Handle truncated frames
+ properly
+Date: Wed, 13 Apr 2016 10:31:33 +0100
+Message-ID: <1460539893.32355.19.camel@codethink.co.uk>
+References: <1460462185.32355.7.camel@codethink.co.uk>
+	 <1460462294.32355.9.camel@codethink.co.uk>
+	 <20160413071324.GP14664@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Micka <mickamusset-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	CT kernel <linux-kernel-81qHHgoATdFT9dQujB1mzip2UmYkHbXO@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAF+MRtkHKuN_bCXaShsnVCJ7i_P2AiM7WCdWpbS0jX2vfvrwYg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20160413071324.GP14664-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Micka,
+On Wed, 2016-04-13 at 08:13 +0100, Mark Brown wrote:
+> On Tue, Apr 12, 2016 at 12:58:14PM +0100, Ben Hutchings wrote:
+> 
+> > -		ret = qspi_transfer_msg(qspi, t);
+> > +		wlen = t->bits_per_word >> 3;
+> 
+> I did ask you to fix this to just / 8 so it's more readable :/
 
-On Wed, Apr 13, 2016 at 9:55 AM, Micka <mickamusset-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> In my board, I have two component that are not enabled at the boot and
-> need to be enabled when the spi driver start, to do that, I had to
-> modify the driver spi. I would like to know if it's possible to add
-> this possibility for the driver ?
+Not explicitly.  And that would be inconsistent with every other place
+this driver bits_per_word to a byte count.
 
-Perhaps you can use the "gpio-hog" property in DT instead?
+Ben.
 
-Gr{oetje,eeting}s,
+-- 
+Ben Hutchings
+Software Developer, Codethink Ltd.
 
-                        Geert
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

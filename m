@@ -1,91 +1,74 @@
-From: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [LINUX PATCH v2 1/3] spi: Added dummy_cycle entry in the
- spi_transfer structure.
-Date: Thu, 14 Apr 2016 17:23:04 +0200
-Message-ID: <570FB5D8.90807@atmel.com>
-References: <1460039969-9835-1-git-send-email-lakshmis@xilinx.com>
- <57067694.8030806@atmel.com>
- <4FF8F58FAA9D5D4193D4E554E4352C5902C720DE@XAP-PVEXMBX02.xlnx.xilinx.com>
- <570F4F9F.3090605@atmel.com> <20160414085707.GE18024@sirena.org.uk>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/2] dt/bindings/spi: Add bindings for PIC32 Quad-SPI
+ driver.
+Date: Thu, 14 Apr 2016 11:18:26 -0500
+Message-ID: <20160414161826.GA12444@rob-hp-laptop>
+References: <1460553125-32649-1-git-send-email-purna.mandal@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Lakshmi Sai Krishna Potthuri
-	<lakshmi.sai.krishna.potthuri-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	Michal Simek <michals-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	Soren Brinkmann <sorenb-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	"David Woodhouse" <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
-	Boris Brezillon <boris.brezillon-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
-	"Andrew F. Davis" <afd-l0cyMroinI0@public.gmane.org>, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
-	Jagan Teki <jteki-oRp2ZoJdM/RWk0Htik3J/w@public.gmane.org>,
-	=?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Harini Katakam <harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	Punnaiah C
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160414085707.GE18024-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>
+To: Purna Chandra Mandal <purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1460553125-32649-1-git-send-email-purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-Le 14/04/2016 10:57, Mark Brown a =E9crit :
-> On Thu, Apr 14, 2016 at 10:06:55AM +0200, Cyrille Pitchen wrote:
->=20
->> I understand but you propose to patch both the SPI layer and the m25=
-p80 driver
->> to introduce some support which is already provided by the "spi_flas=
-h_read"
->> hook: struct spi_flash_read_message has already a "dummy_bytes" fiel=
-d.
->> IMHO, it looks redundant.
->=20
-> My understanding is that this is intended for dummy bits rather than
-> dummy bytes.
->=20
+On Wed, Apr 13, 2016 at 06:42:04PM +0530, Purna Chandra Mandal wrote:
+> Document Device tree bindings for quad SPI peripheral
+> found on Microchip PIC32 class devices.
+> 
+> Signed-off-by: Purna Chandra Mandal <purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+> 
+> Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+> Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+> ---
+> 
+>  Documentation/devicetree/bindings/spi/sqi-pic32.txt | 18 ++++++++++++++++++
+>  1 file changed, 18 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/spi/sqi-pic32.txt
 
-dummy_bits =3D=3D (dummy_bytes * 8) and
-dummy_cycles =3D=3D ((dummy_bytes * 8) / addr_nbits)
+One nit below, otherwise:
 
-witch addr_nbits in {1, 2, 4}
+Acked-by: Rob Herring <rob-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 
-the struct_flash_read_message has both dummy_bytes and addr_nbits membe=
-rs.
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/sqi-pic32.txt b/Documentation/devicetree/bindings/spi/sqi-pic32.txt
+> new file mode 100644
+> index 0000000..5af9fab
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/sqi-pic32.txt
+> @@ -0,0 +1,18 @@
+> +Microchip PIC32 Quad SPI controller
+> +-----------------------------------
+> +Required properties:
+> +- compatible: Should be "microchip,pic32mzda-sqi".
+> +- reg: Address and length of SQI controller register space.
+> +- interrupts: Should contain SQI interrupt.
+> +- clocks: Should contain phandle of two clocks in sequence, clock that drives
+> +          clock on SPI bus and clock that drives SQI controller.
+> +- clock-names: Should be "spi_ck" and "reg_ck" in order.
+> +
+> +Example:
+> +	sqi1: sqi@1f8e2000 {
 
-The spi-nor framework seems to always provide a multiple of 8 for dummy=
- *bits*.
-I guess because the m25p80 driver only supports such number of dummy bi=
-ts but
-also because all SPI memories can be configured so their number of dumm=
-y cycles keeps the byte alignment for the data to follow.
+spi@...
 
-It still allows to use less than 8 dummy *cycles*, for instance the fac=
-tory
-settings for Macronix Quad SPI memories are:
-- 4 dummy cycles for Fast Read 1-2-2 (hence 8 dummy bits)
-- 6 dummy cycles for Fast Read x-4-4 (hence 24 dummy bits)
-
-AFAIK, only Micron QSPI memories could be configured so the number of d=
-ummy
-cycles doesn't result in a multiple of 8 bits but theirs are not the
-recommanded timings provided by the datasheet.
-
-Micron factory settings are:
-- 10 dummy cycles for Fast Read x-4-4 (hence 40 dummy bits)
-- 8 dummy cycles for other Fast Reads.
-
-
-Best regards,
-
-Cyrille
+> +		compatible = "microchip,pic32mzda-sqi";
+> +		reg = <0x1f8e2000 0x200>;
+> +		clocks = <&rootclk REF2CLK>, <&rootclk PB5CLK>;
+> +		clock-names = "spi_ck", "reg_ck";
+> +		interrupts = <169 IRQ_TYPE_LEVEL_HIGH>;
+> +	};
+> -- 
+> 1.8.3.1
+> 
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

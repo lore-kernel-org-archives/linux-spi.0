@@ -1,69 +1,97 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3] spi: orion.c: Add direct access mode
-Date: Wed, 13 Apr 2016 18:20:20 +0100
-Message-ID: <20160413172020.GB29471@sirena.org.uk>
-References: <1460030811-13787-1-git-send-email-sr@denx.de>
- <20160411105740.GB3351@sirena.org.uk>
- <570CDF5F.9070106@denx.de>
- <20160412192736.GC14664@sirena.org.uk>
- <570DD967.8010703@denx.de>
- <20160413055946.GH14664@sirena.org.uk>
- <570E3010.10309@denx.de>
+Subject: Re: [PATCH v2 2/2] spi: pic32-sqi: add SPI driver for PIC32 SQI
+ controller.
+Date: Thu, 14 Apr 2016 06:55:46 +0100
+Message-ID: <20160414055546.GA18024@sirena.org.uk>
+References: <1460553778-1662-1-git-send-email-purna.mandal@microchip.com>
+ <1460553778-1662-2-git-send-email-purna.mandal@microchip.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="i9LlY+UWpKt15+FH"
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-To: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="ReaqsoxgOBHFXBhH"
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Purna Chandra Mandal <purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <570E3010.10309-ynQEQJNshbs@public.gmane.org>
+In-Reply-To: <1460553778-1662-2-git-send-email-purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---i9LlY+UWpKt15+FH
+--ReaqsoxgOBHFXBhH
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Apr 13, 2016 at 01:40:00PM +0200, Stefan Roese wrote:
-> On 13.04.2016 07:59, Mark Brown wrote:
+On Wed, Apr 13, 2016 at 06:52:58PM +0530, Purna Chandra Mandal wrote:
 
-> >  It also seems like we need to document what
-> > the meaning of the reg properties of the device is, it's all very well
-> > saying that there's a generic MBus binding but we still need to say how
-> > the device will interpret the MBus windows that it has (assuming they
-> > are configured to specific hardware functions transparently).
+> +	enable = readl(sqi->regs + PESQI_INT_ENABLE_REG);
+> +	status = readl(sqi->regs + PESQI_INT_STAT_REG);
+> +	if (!status)
+> +		return IRQ_NONE;
+> +
 
-> Should I add something to the bindings documentation of
-> the orion-spi driver? With an example of how this direct mode
-> can is enabled on a specific board for e.g. SPI0-DEV1? Or what do
-> you think is missing in the mbus bindings documentation I
-> mentioned above?
+For robustness the check should be if there was anything handled, not if
+there was anything set.
 
-I think the biggest thing that's missing is a reference from the Orion
-binding to the MBus binding that the reader can follow (probably added
-to the reg property documentation).  I did look there and couldn't see
-anything about how this would work.
+> +static dma_addr_t pic32_sqi_map_transfer(struct pic32_sqi *sqi,
+> +					 struct spi_transfer *transfer)
+> +{
+> +	struct device *dev = &sqi->master->dev;
 
---i9LlY+UWpKt15+FH
+Don't open code DMA mapping of the buffers, use the core support.
+
+> +	reg = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> +	sqi->regs = devm_ioremap_resource(&pdev->dev, reg);
+> +	if (!sqi->regs) {
+> +		dev_err(&pdev->dev, "mem map failed\n");
+
+devm_ioremap_resource() will log for you.
+
+> +	clk_prepare_enable(sqi->sys_clk);
+> +	clk_prepare_enable(sqi->base_clk);
+
+Check the return value please.
+
+> +	/* install irq handlers */
+> +	ret = devm_request_irq(&pdev->dev, sqi->irq, pic32_sqi_isr,
+> +			       0, dev_name(&pdev->dev), sqi);
+> +	if (ret < 0) {
+> +		dev_err(&pdev->dev, "request-irq %d, failed ?\n", sqi->irq);
+> +		goto err_free_ring;
+> +	}
+
+This will free before the clocks are disabled.  Are you sure that's
+safe?  It's generally not good to mix devm_ and non-devm operations
+especially things like these that aren't simple frees of data.  It is
+safer to use a normal request_irq().
+
+> +static int pic32_sqi_remove(struct platform_device *pdev)
+> +{
+> +	struct pic32_sqi *sqi = platform_get_drvdata(pdev);
+> +
+> +	clk_disable_unprepare(sqi->base_clk);
+> +	clk_disable_unprepare(sqi->sys_clk);
+> +
+> +	/* release memory */
+> +	ring_desc_ring_free(sqi);
+
+This will free the descriptor ring before the interrupt...
+
+--ReaqsoxgOBHFXBhH
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJXDn/TAAoJECTWi3JdVIfQSpkH/jeOChriu/OnZCb2oletqZ9+
-5Aw49ngo1c+byDEiBD/iBEK7Ua+JDlZNXh993hH2WNoNabwGdW9HP70btEAAPraO
-vXggs7Cds1CQpgF4Rx6WqjySE4XAgVz6iTiYuotDq2yp0IRQ3I/qF3P8JuzZwq6Z
-VpgfyNQ1zQhhESUThWAhFXTTQhGGn4igwskO/1PtCYQZ2BkGIMX6QVD22xS2X4tr
-/FeQ5szNfyLHrtbnctg0vLhfqgMaepyKNvronAG6d2LyrFLdT78YBzQoq3CbKHeY
-El5wt+e8BaWXZsLhS369XX2dk6KSpnrcSB0xCqlFyy3QyVJdhyc531hSXDKQipc=
-=pSFx
+iQEcBAEBCAAGBQJXDzDhAAoJECTWi3JdVIfQknAH/1MsEpmid7fjfKax67PJ8ctZ
+/5wyjYId6aa0HLavPxAqZhjSe5CRFYtk7f9V1wr1335xFA9jUIKqRd08/rifnnGK
+yFrNuV36M/IacSfHrUbVDqVyN+TF5ttzKAwGZyUEI+33fUpN8seO07q1gEnWi5Ie
+sX96rpwe0krNfZy1r+duyYtGdGcmXL+A1X7XRDJpoxDpG0tzRTDnK2oXmH3KMHIk
+oxdkbFOVFn5UMKD2bDApHS8L1YD7i3r31+GFmo7zLqxijirETVr2EpI8ym3tVdJo
+qXeRKndsy1VKWGx/WnJpkyN5jE0hn2Idfh9+43h09TZ1ethCZ9+p4X63g0w4+qo=
+=V5EI
 -----END PGP SIGNATURE-----
 
---i9LlY+UWpKt15+FH--
+--ReaqsoxgOBHFXBhH--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

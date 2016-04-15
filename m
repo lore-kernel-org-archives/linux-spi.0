@@ -1,68 +1,74 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 2/2] spi: pic32-sqi: add SPI driver for PIC32 SQI
- controller.
-Date: Fri, 15 Apr 2016 10:35:35 +0100
-Message-ID: <20160415093535.GD3217@sirena.org.uk>
-References: <1460553778-1662-1-git-send-email-purna.mandal@microchip.com>
- <1460553778-1662-2-git-send-email-purna.mandal@microchip.com>
- <20160414055546.GA18024@sirena.org.uk>
- <57108A63.50803@microchip.com>
+From: Purna Chandra Mandal <purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+Subject: [PATCH v3 1/2] spi: pic32-sqi: add binding document for PIC32 Quad-SPI driver.
+Date: Fri, 15 Apr 2016 16:57:18 +0530
+Message-ID: <1460719639-4132-1-git-send-email-purna.mandal@microchip.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="DrWhICOqskFTAXiy"
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Purna Chandra Mandal <purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <57108A63.50803-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Purna Chandra Mandal <purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
+Document Device tree bindings for the quad SPI peripheral
+found on Microchip PIC32 class devices.
 
---DrWhICOqskFTAXiy
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Purna Chandra Mandal <purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+Acked-by: Rob Herring <rob-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 
-On Fri, Apr 15, 2016 at 11:59:55AM +0530, Purna Chandra Mandal wrote:
-> On 04/14/2016 11:25 AM, Mark Brown wrote:
-> > On Wed, Apr 13, 2016 at 06:52:58PM +0530, Purna Chandra Mandal wrote:
+Cc: Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Cc: Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>
+Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>
+Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 
-> >> +	enable = readl(sqi->regs + PESQI_INT_ENABLE_REG);
-> >> +	status = readl(sqi->regs + PESQI_INT_STAT_REG);
-> >> +	if (!status)
-> >> +		return IRQ_NONE;
+---
 
-> > For robustness the check should be if there was anything handled, not if
-> > there was anything set.
+Changes in v3:
+- update exmaple, replace 'sqi@' with 'spi@'.
 
-> In PESQI controller INT_STAT_REG specifies interrupting reason(s) as usual,
-> but mostly to confirm completion of on-going DMA operation. It is sticky,
-> no way to acknowledge the interrupt source except masking the source.
-> In short, whole interrupt logic is mere extension of status polling logic.
+Changes in v2: None
 
-> And in driver isr logic is completely depended on the INT_STAT_REG; if status
-> is zero no handling can be done and is unexpected!
+ Documentation/devicetree/bindings/spi/sqi-pic32.txt | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/sqi-pic32.txt
 
-That's fine, if something goes wrong there's error handling in genirq
-which will notice that the interrupt is screaming and disable it.
+diff --git a/Documentation/devicetree/bindings/spi/sqi-pic32.txt b/Documentation/devicetree/bindings/spi/sqi-pic32.txt
+new file mode 100644
+index 0000000..c82d021
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/sqi-pic32.txt
+@@ -0,0 +1,18 @@
++Microchip PIC32 Quad SPI controller
++-----------------------------------
++Required properties:
++- compatible: Should be "microchip,pic32mzda-sqi".
++- reg: Address and length of SQI controller register space.
++- interrupts: Should contain SQI interrupt.
++- clocks: Should contain phandle of two clocks in sequence, one that drives
++          clock on SPI bus and other that drives SQI controller.
++- clock-names: Should be "spi_ck" and "reg_ck" in order.
++
++Example:
++	sqi1: spi@1f8e2000 {
++		compatible = "microchip,pic32mzda-sqi";
++		reg = <0x1f8e2000 0x200>;
++		clocks = <&rootclk REF2CLK>, <&rootclk PB5CLK>;
++		clock-names = "spi_ck", "reg_ck";
++		interrupts = <169 IRQ_TYPE_LEVEL_HIGH>;
++	};
+-- 
+1.8.3.1
 
---DrWhICOqskFTAXiy
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJXELXlAAoJECTWi3JdVIfQYSEH/09u2k1l18aOWSIqJFvSdsyQ
-m0X8w6wxlXMJk6s29O0R5xgjqraomkvYfeWqSCPDuqNH4Xc+SShZuYDk8fh81all
-C7q6yEcFOM4vD7Vkdc6ZR4heSc7opYExQa4kLTlv5O6ZpP/gmfzpmKtvxg1C9VoC
-tFyDBkr4IzzhOnYcaa/1eqeb4KPsPYeGwIna9ISvQg5eMymf9EW1Co7EzgXi6Ydl
-Mm0l4wZhYSvQ84qgjU8Ykn5VzIdb4vuHSGVrIXIOlIhTWvJ1ilucaRhRn7Z8EQBq
-KBO1d48rsQtK+yURE+ioXJ9sBQsCKhmJoAYRWXAOUhfiei2nkUU+/c0nQh3tzXw=
-=Fhdf
------END PGP SIGNATURE-----
-
---DrWhICOqskFTAXiy--
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

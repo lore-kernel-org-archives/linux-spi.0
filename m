@@ -1,40 +1,58 @@
 From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Subject: Re: [PATCH v3] spi: orion.c: Add direct access mode
-Date: Sat, 16 Apr 2016 22:06:50 +0200
-Message-ID: <10734204.V6uBDOOZ6M@wuerfel>
-References: <1460030811-13787-1-git-send-email-sr@denx.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
+Subject: [PATCH] spi: cadence: mark pm functions __maybe_unused
+Date: Sat, 16 Apr 2016 22:39:21 +0200
+Message-ID: <1460839171-1252854-1-git-send-email-arnd@arndb.de>
+Cc: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
+	Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	Moritz Fischer <moritz.fischer-+aYTwkv1SeIAvxtiuMwx3w@public.gmane.org>,
+	Geliang Tang <geliangtang-9Onoh4P/yGk@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1460030811-13787-1-git-send-email-sr-ynQEQJNshbs@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Thursday 07 April 2016 14:06:51 Stefan Roese wrote:
-> v3:
-> - Used static MBus windows again, as suggested by Arnd
-> - No new DT bindings needed for this. The MBus windows need to be
->   configured in the 'reg' property of the SPI controller. This is
->   done in a separate patch for the Armada platforms.
-> - The direct mapping is configured and enable by adding the
->   specific MBus entry to the 'ranges' property of the 'soc' node
->   in the board dts file.
+The newly added runtime PM support for the cadence spi driver
+causes harmless warnings when PM is disabled:
 
-The new approach looks good to me, thanks!
+drivers/spi/spi-cadence.c:681:12: warning: 'cnds_runtime_suspend' defined but not used
+drivers/spi/spi-cadence.c:652:12: warning: 'cnds_runtime_resume' defined but not used
 
-As Mark pointed out, you still need to document the fact that
-the SPI controller can now have additional entries in its 'reg'
-property, and it would be nice to reference the mbus binding
-from the spi controller binding as a help for people that
-want to enable the direct mode.
+This adds __maybe_unused annotations to the respective functions
+to shut up the warnings, while leaving the code in place for
+compile testing and avoiding ugly #ifdefs.
 
-	Arnd
+Signed-off-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Fixes: d36ccd9f7ea4 ("spi: cadence: Runtime pm adaptation")
+---
+ drivers/spi/spi-cadence.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
+index 8a0bd62a5088..1c57ce64abba 100644
+--- a/drivers/spi/spi-cadence.c
++++ b/drivers/spi/spi-cadence.c
+@@ -651,7 +651,7 @@ static int __maybe_unused cdns_spi_resume(struct device *dev)
+  *
+  * Return:	0 on success and error value on error
+  */
+-static int cnds_runtime_resume(struct device *dev)
++static int __maybe_unused cnds_runtime_resume(struct device *dev)
+ {
+ 	struct spi_master *master = dev_get_drvdata(dev);
+ 	struct cdns_spi *xspi = spi_master_get_devdata(master);
+@@ -680,7 +680,7 @@ static int cnds_runtime_resume(struct device *dev)
+  *
+  * Return:	Always 0
+  */
+-static int cnds_runtime_suspend(struct device *dev)
++static int __maybe_unused cnds_runtime_suspend(struct device *dev)
+ {
+ 	struct spi_master *master = dev_get_drvdata(dev);
+ 	struct cdns_spi *xspi = spi_master_get_devdata(master);
+-- 
+2.7.0
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

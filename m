@@ -1,55 +1,40 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: dln2: Pass of_node to spi master
-Date: Fri, 15 Apr 2016 18:02:26 +0100
-Message-ID: <20160415170226.GG3217@sirena.org.uk>
-References: <692686e5329a437499fbfb2c235e049979b415a3.1460722225.git.leonard.crestez@intel.com>
- <20160415121935.GD2058@lpalcu-desk>
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Subject: Re: [PATCH v3] spi: orion.c: Add direct access mode
+Date: Sat, 16 Apr 2016 22:06:50 +0200
+Message-ID: <10734204.V6uBDOOZ6M@wuerfel>
+References: <1460030811-13787-1-git-send-email-sr@denx.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="1XWsVB21DFCvn2e8"
-Cc: Crestez Dan Leonard <leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Daniel Baluta <daniel.baluta-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Tiberiu Breana <tiberiu.a.breana-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-To: Laurentiu Palcu <laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20160415121935.GD2058@lpalcu-desk>
+In-Reply-To: <1460030811-13787-1-git-send-email-sr-ynQEQJNshbs@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Thursday 07 April 2016 14:06:51 Stefan Roese wrote:
+> v3:
+> - Used static MBus windows again, as suggested by Arnd
+> - No new DT bindings needed for this. The MBus windows need to be
+>   configured in the 'reg' property of the SPI controller. This is
+>   done in a separate patch for the Armada platforms.
+> - The direct mapping is configured and enable by adding the
+>   specific MBus entry to the 'ranges' property of the 'soc' node
+>   in the board dts file.
 
---1XWsVB21DFCvn2e8
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The new approach looks good to me, thanks!
 
-On Fri, Apr 15, 2016 at 03:19:35PM +0300, Laurentiu Palcu wrote:
-> On Fri, Apr 15, 2016 at 03:10:52PM +0300, Crestez Dan Leonard wrote:
+As Mark pointed out, you still need to document the fact that
+the SPI controller can now have additional entries in its 'reg'
+property, and it would be nice to reference the mbus binding
+from the spi controller binding as a help for people that
+want to enable the direct mode.
 
-> > Signed-off-by: Crestez Dan Leonard <leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-> Signed-off-by: Laurentiu Palcu <laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-
-Signed-off-by has a specific meaning regarding ownership of patches and
-validity of contribution, see SubmittingPatches - I'll take this as an
-Acked-by.
-
---1XWsVB21DFCvn2e8
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJXER6hAAoJECTWi3JdVIfQwuoH/j+u2ND49iuiIopXVEcdmBPy
-XCVYz3BHpQkyIgbfb/tE5wr49MmEXZrjJPnzRVeGFHaimqj+AF8b7OUeGLVhCyL4
-OI4eZqYVBnTvpIKbOKQeH1BOKgQyjIkJtt1aKhsJkHJi15Bxqfh6wfD1upb3IPWU
-Y6hCdfq8RU2TpesrkXoRuHhk40oaObCow0VgyFKxtAL/oaigke5q6Vy9steTISsT
-YR2tNr2G5oCR2voim1zNYtTfyCWy8MiKlNCNflWS19Q0ondgLDWyauyMIjyZkuxP
-fkRHRB8pabJWs8Nx2+9LQK/SFrQzNN8VXfHEpxlOSz9miOA7/DEfDdDhFGuo6rY=
-=CRZw
------END PGP SIGNATURE-----
-
---1XWsVB21DFCvn2e8--
+	Arnd
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

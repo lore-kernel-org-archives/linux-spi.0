@@ -1,51 +1,53 @@
-From: Scott Wood <scott.wood@nxp.com>
-Subject: Re: [PATCH] dspi: config dspi master regmap with right mode depend on
- BE or LE
-Date: Sun, 17 Apr 2016 02:41:40 +0000
-Message-ID: <DB5PR0401MB19281A317BFB1D9001F97ABB916A0@DB5PR0401MB1928.eurprd04.prod.outlook.com>
-References: <1460545402-8162-1-git-send-email-po.liu@nxp.com>
+From: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCHv2] wlcore: spi: add wl18xx support
+Date: Mon, 18 Apr 2016 00:19:41 +0200
+Message-ID: <14313437.cDJIgY3kzo@wuerfel>
+References: <1460273570-12298-1-git-send-email-eyalr@ti.com> <8665E2433BC68541A24DFFCA87B70F5B360B6C90@DFRE01.ent.ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Po Liu <po.liu@nxp.com>, "broonie@kernel.org" <broonie@kernel.org>
+Content-Transfer-Encoding: 7Bit
+Cc: Kalle Valo <kvalo@codeaurora.org>,
+	Eyal Reizer <eyalreizer@gmail.com>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	linux-spi@vger.kernel.org
+To: "Reizer, Eyal" <eyalr@ti.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Language: en-US
+In-Reply-To: <8665E2433BC68541A24DFFCA87B70F5B360B6C90@DFRE01.ent.ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 04/13/2016 06:12 AM, Po Liu wrote:
-> When kernel config with big endian mode, spi master need
-> to config regmap data value to be little endian mode. Or else,
-> the kernel boot will hang.
+On Sunday 10 April 2016 07:37:23 Reizer, Eyal wrote:
+> Add support for using with both wl12xx and wl18xx.
 > 
-> Signed-off-by: Po Liu <po.liu@nxp.com>
-> ---
->  drivers/spi/spi-fsl-dspi.c | 3 +++
->  1 file changed, 3 insertions(+)
+> - all wilink family needs special init command for entering wspi mode.
+>   extra clock cycles should be sent after the spi init command while the
+>   cs pin is high.
+> - switch to controling the cs pin from the spi driver for achieveing the
+>   above.
+> - the selected cs gpio is read from the spi device-tree node using the
+>   cs-gpios field and setup as a gpio.
+> - See the example below for specifying the cs gpio using the cs-gpios entry
+> &spi0   {
+>         ...
+>         cs-gpios = <&gpio0 5 0>;
+>         ...
+>         wlcore: wlcore@0 {
+>                 compatible = "ti,wl1835";
+>         ...
+>         ...
+>         };
+> };
 > 
-> diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-> index 39412c9..a1d893c 100644
-> --- a/drivers/spi/spi-fsl-dspi.c
-> +++ b/drivers/spi/spi-fsl-dspi.c
-> @@ -637,6 +637,9 @@ static const struct regmap_config dspi_regmap_config = {
->  	.val_bits = 32,
->  	.reg_stride = 4,
->  	.max_register = 0x88,
-> +#ifdef CONFIG_CPU_BIG_ENDIAN
-> +	.val_format_endian = REGMAP_ENDIAN_LITTLE,
-> +#endif
+> Signed-off-by: Eyal Reizer <eyalr@ti.com>
 
-Drop this ifdef.  It's little endian regardless of what mode the CPU is in.
+I don't think this can work in general: not all SPI hosts uses GPIOs
+for controlling CS, so the logic can't work, and it's also a layering
+violation for the driver to look at the parent.
 
-Are you sure this is correct on all platforms?  E.g. ls1021a?
+I would suggest fixing this using a new API function from the SPI
+core, if we don't already have a generic way to do it.
 
-Looking more closely, the binding has a big-endian property.  It says
-the default if that property is absent is native endian, which is
-insane.  Fix the binding to say that little endian is the default (this
-change shouldn't break any existing trees), and make sure that's what
-the code implements.  I think you need val_format_endian_default, not
-val_format_endian.
-
--Scott
+	Arnd

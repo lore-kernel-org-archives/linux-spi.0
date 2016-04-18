@@ -1,57 +1,54 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH for-next] spi: bcm53xx: add spi_flash_read callback for
- MMIO-based reads
-Date: Mon, 18 Apr 2016 12:57:31 +0100
-Message-ID: <20160418115731.GX3217@sirena.org.uk>
-References: <1460977843-9426-1-git-send-email-zajec5@gmail.com>
- <20160418112457.GU3217@sirena.org.uk>
- <CACna6rzQfX7SxDoL-CTQp3_Ms5_K54pEa8uaUAiTPjR-un=VOg@mail.gmail.com>
+Subject: Re: [RFC 2/2] spi core: Add new sysfs 'num_chipselect' file
+Date: Mon, 18 Apr 2016 13:14:30 +0100
+Message-ID: <20160418121430.GA3217@sirena.org.uk>
+References: <1460978308-8062-1-git-send-email-bhuvanchandra.dv@toradex.com>
+ <1460978308-8062-3-git-send-email-bhuvanchandra.dv@toradex.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="H7DA0n3a+SnB4bJ2"
-Cc: "linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>,
-	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"open list:SPI SUBSYSTEM" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	open list <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="1ozVqH6bFr/3sC51"
+Cc: gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org, stefan-XLVq0VzYD2Y@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Stefan Agner <stefan.agner-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
+To: Bhuvanchandra DV <bhuvanchandra.dv-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CACna6rzQfX7SxDoL-CTQp3_Ms5_K54pEa8uaUAiTPjR-un=VOg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <1460978308-8062-3-git-send-email-bhuvanchandra.dv-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---H7DA0n3a+SnB4bJ2
-Content-Type: text/plain; charset=utf-8
+--1ozVqH6bFr/3sC51
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 18, 2016 at 01:38:28PM +0200, Rafa=C5=82 Mi=C5=82ecki wrote:
+On Mon, Apr 18, 2016 at 04:48:28PM +0530, Bhuvanchandra DV wrote:
+> Add new sysfs 'num_chipselect' file to expose the maximum number
+> of chipselects a SPI master can support.
+> This allows to create a script in user space which automatically
+> creates a new spidev instance for every chipselect on a bus.
 
-> What shall we do if spi_flash_read fails? Should we always fallback to
-> the standard SPI flash read? Or should we standarize error codes
-> returned by spi_flash_read and fallback on some particular error code
-> only?
+This does not seem like a good idea, even if a chip select is supported
+in the IP that doesn't mean it's brought out safely on a board and
+pinmuxing may mean that the set of chip selects that can be used is
+sparse.
 
-I'm not sure, probably just fall back all the time.
-
---H7DA0n3a+SnB4bJ2
+--1ozVqH6bFr/3sC51
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJXFMuqAAoJECTWi3JdVIfQk6AH/17dNIsYHIOjiN+q3S4LZDeu
-8ephxu97hyErGvZUyICt4lIKzVBb95nBrTav4Rg/0uS3SaPdRykYX31uPIfJw87Z
-eDVF1CmTghfdGGN3Hh+/ngyO2PteIrE+zntghiJWEAza8cbN6ayIbE2a3NG/YbDE
-6XkOnvsZ0gZOEm2uEvBij7BLFvWR917YS8o6Z6C6aZbLJpUMpS9TeJauOb1+TMhT
-gd11aEgsm6jvjTHNeFSLJSQMXE7sGAwWm7rFeu0c17ZJSlIcUAHjvrC77ZsAs54+
-/OWnAQfHVYISSWvfmLxYkKGL/N0lKZrmERzpqJKheDAI+eVb53qYs2ok67RNAXU=
-=EFhm
+iQEcBAEBCAAGBQJXFM9SAAoJECTWi3JdVIfQ1Q0H/iMSAujby1d2bQ+QPcTil+Li
+WZjl3QRdwwlDuftd4gww12j/KcYeXH+A8kY1aAsPC/uEokMxYYS1oZglBdh5bYoI
+1+dfewldFWWx2+LOEvsZ5/F+5lGgV9HN1iVO7ij9NmrB6D6hf1IwbL4kS3waEQLz
+nRqB40b4I6Bqo4eV1R/A7D0prdrZviixMXLy3w6ataEJTSFuHGwUZ5a9R1ZLpN1H
+NtDydRn5sxr05IUh8FU/ufwHQuLYvgTgBfWACGkBJpAQ5TxLkYO6yJ1H2+Us44+1
+5remg78tJxFKv6baVzFODuT1LXRXUzXagqTlhypv+y25MTrbZ5Hl1RzOSDsjJQY=
+=0XLl
 -----END PGP SIGNATURE-----
 
---H7DA0n3a+SnB4bJ2--
+--1ozVqH6bFr/3sC51--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

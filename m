@@ -1,65 +1,86 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [RFC 1/2] spi: spidev: Use 'new_id' sysfs file for enabling
- spidev
-Date: Mon, 18 Apr 2016 14:01:26 +0100
-Message-ID: <20160418130126.GC3217@sirena.org.uk>
-References: <1460978308-8062-1-git-send-email-bhuvanchandra.dv@toradex.com>
- <1460978308-8062-2-git-send-email-bhuvanchandra.dv@toradex.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="qXCixuLMVvZDruUh"
-Cc: gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org, stefan-XLVq0VzYD2Y@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Stefan Agner <stefan.agner-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
-To: Bhuvanchandra DV <bhuvanchandra.dv-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1460978308-8062-2-git-send-email-bhuvanchandra.dv-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: dln2: Pass of_node to spi master" to the spi tree
+Date: Mon, 18 Apr 2016 14:11:09 +0100
+Message-ID: <E1as8xJ-00026C-ER@debutante>
+References: <692686e5329a437499fbfb2c235e049979b415a3.1460722225.git.leonard.crestez@intel.com>
+Cc: Laurentiu Palcu <laurentiu.palcu@intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Octavian Purdila <octavian.purdila@intel.com>,
+	Laurentiu Palcu <laurentiu.palcu@intel.com>,
+	Daniel Baluta <daniel.baluta@intel.com>,
+	Tiberiu Breana <tiberiu.a.breana@intel.com>
+To: Crestez Dan Leonard <leonard.crestez@intel.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <692686e5329a437499fbfb2c235e049979b415a3.1460722225.git.leonard.crestez@intel.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---qXCixuLMVvZDruUh
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: dln2: Pass of_node to spi master
 
-On Mon, Apr 18, 2016 at 04:48:27PM +0530, Bhuvanchandra DV wrote:
+has been applied to the spi tree at
 
-> +++ b/Documentation/ABI/testing/sysfs-bus-spi-spidev
-> @@ -0,0 +1,8 @@
-> +What:		/sys/bus/spi/drivers/spidev/new_id
-> +Date:		March 2016
-> +Description:
-> +		This allows to load spidev at runtime. new_id file accepts bus
-> +		number and chip select in 'B.C' format.
-> +		e.g.
-> +		To load spidev1.1 at runtime:
-> +		$ echo 1.1 > /sys/bus/spi/drivers/spidev/new_id
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-I would expect a new_id file to allow a new device identifier to be
-added to a driver at runtime but this isn't doing that, it's specifying
-by bus and chip select instead which is totally different to how we
-normally bind SPI devices.  That seems likely to cause confusion down
-the line.  I'd expect to be able to supply a DT compatible string or a
-Linux SPI ID.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
---qXCixuLMVvZDruUh
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iQEcBAEBCAAGBQJXFNqlAAoJECTWi3JdVIfQTDMH/2HJIsAShm4GQm+704J27Xou
-7aNGkHO0BxrBYPyEYa1nngmC/PnBeDHCuA3qXIKIbaBrUNXBffdVKpanNDrMYo7+
-+NlAwbx7+UUypiRc1LciWoRPHD0BJCy15uKtJygPXd3yyC58ulKWnWVFxHqEC6hR
-xjjYrZlI+7mvc2BO8zHBG2GHuUgjq+I0/yrusCHmPkZSjNDTJWvwZ0Yi9Ixj7hV3
-fqWCVlEGIgOqZHtUY+4JrBV5Oj5C8fsDJ60dQDabnwIH8ArH7huONiLtEGtBzYI8
-F7fF1eZ0lI3bZzSCeBXpvRF+t7upNADpbgUSD1CjH5bjGxRHnBGk/nRL8dkuApc=
-=v+f+
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---qXCixuLMVvZDruUh--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Thanks,
+Mark
+
+>From 83835fb07836eac1b35e98b919bf757ff7f77aad Mon Sep 17 00:00:00 2001
+From: Crestez Dan Leonard <leonard.crestez@intel.com>
+Date: Fri, 15 Apr 2016 15:10:52 +0300
+Subject: [PATCH] spi: dln2: Pass of_node to spi master
+
+This allows defining SPI devices connected to a DLN2 using devicetree.
+
+This already works for i2c because of a similar patch:
+3b10db23: i2c: dln2: set the device tree node of the adapter
+
+Signed-off-by: Crestez Dan Leonard <leonard.crestez@intel.com>
+Acked-by: Laurentiu Palcu <laurentiu.palcu@intel.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-dln2.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/spi/spi-dln2.c b/drivers/spi/spi-dln2.c
+index 3b7d91d94fea..4e8a8629d514 100644
+--- a/drivers/spi/spi-dln2.c
++++ b/drivers/spi/spi-dln2.c
+@@ -683,6 +683,7 @@ static int dln2_spi_probe(struct platform_device *pdev)
+ 	struct spi_master *master;
+ 	struct dln2_spi *dln2;
+ 	struct dln2_platform_data *pdata = dev_get_platdata(&pdev->dev);
++	struct device *dev = &pdev->dev;
+ 	int ret;
+ 
+ 	master = spi_alloc_master(&pdev->dev, sizeof(*dln2));
+@@ -700,6 +701,8 @@ static int dln2_spi_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	dln2->master = master;
++	dln2->master->dev.parent = dev;
++	dln2->master->dev.of_node = dev->of_node;
+ 	dln2->pdev = pdev;
+ 	dln2->port = pdata->port;
+ 	/* cs/mode can never be 0xff, so the first transfer will set them */
+-- 
+2.8.0.rc3

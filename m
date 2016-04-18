@@ -1,25 +1,24 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: dln2: Pass of_node to spi master" to the spi tree
-Date: Mon, 18 Apr 2016 14:11:09 +0100
-Message-ID: <E1as8xJ-00026C-ER@debutante>
-References: <692686e5329a437499fbfb2c235e049979b415a3.1460722225.git.leonard.crestez@intel.com>
-Cc: Laurentiu Palcu <laurentiu.palcu@intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Octavian Purdila <octavian.purdila@intel.com>,
-	Laurentiu Palcu <laurentiu.palcu@intel.com>,
-	Daniel Baluta <daniel.baluta@intel.com>,
-	Tiberiu Breana <tiberiu.a.breana@intel.com>
-To: Crestez Dan Leonard <leonard.crestez@intel.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <692686e5329a437499fbfb2c235e049979b415a3.1460722225.git.leonard.crestez@intel.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: cadence: mark pm functions __maybe_unused" to the spi tree
+Date: Mon, 18 Apr 2016 14:11:03 +0100
+Message-ID: <E1as8xD-00025Y-TB@debutante>
+References: <1460839171-1252854-1-git-send-email-arnd@arndb.de>
+Cc: Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	Moritz Fischer <moritz.fischer-+aYTwkv1SeIAvxtiuMwx3w@public.gmane.org>,
+	Geliang Tang <geliangtang-9Onoh4P/yGk@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1460839171-1252854-1-git-send-email-arnd-r2nGTMty4D4@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: dln2: Pass of_node to spi master
+   spi: cadence: mark pm functions __maybe_unused
 
 has been applied to the spi tree at
 
@@ -44,43 +43,55 @@ to this mail.
 Thanks,
 Mark
 
->From 83835fb07836eac1b35e98b919bf757ff7f77aad Mon Sep 17 00:00:00 2001
-From: Crestez Dan Leonard <leonard.crestez@intel.com>
-Date: Fri, 15 Apr 2016 15:10:52 +0300
-Subject: [PATCH] spi: dln2: Pass of_node to spi master
+>From 148b1eb93c9b54e61d7937b5a5760030276240ab Mon Sep 17 00:00:00 2001
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Date: Sat, 16 Apr 2016 22:39:21 +0200
+Subject: [PATCH] spi: cadence: mark pm functions __maybe_unused
 
-This allows defining SPI devices connected to a DLN2 using devicetree.
+The newly added runtime PM support for the cadence spi driver
+causes harmless warnings when PM is disabled:
 
-This already works for i2c because of a similar patch:
-3b10db23: i2c: dln2: set the device tree node of the adapter
+drivers/spi/spi-cadence.c:681:12: warning: 'cnds_runtime_suspend' defined but not used
+drivers/spi/spi-cadence.c:652:12: warning: 'cnds_runtime_resume' defined but not used
 
-Signed-off-by: Crestez Dan Leonard <leonard.crestez@intel.com>
-Acked-by: Laurentiu Palcu <laurentiu.palcu@intel.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This adds __maybe_unused annotations to the respective functions
+to shut up the warnings, while leaving the code in place for
+compile testing and avoiding ugly #ifdefs.
+
+Fixes: d36ccd9f7ea4 ("spi: cadence: Runtime pm adaptation")
+Signed-off-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Acked-by: Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-dln2.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/spi/spi-cadence.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-dln2.c b/drivers/spi/spi-dln2.c
-index 3b7d91d94fea..4e8a8629d514 100644
---- a/drivers/spi/spi-dln2.c
-+++ b/drivers/spi/spi-dln2.c
-@@ -683,6 +683,7 @@ static int dln2_spi_probe(struct platform_device *pdev)
- 	struct spi_master *master;
- 	struct dln2_spi *dln2;
- 	struct dln2_platform_data *pdata = dev_get_platdata(&pdev->dev);
-+	struct device *dev = &pdev->dev;
- 	int ret;
- 
- 	master = spi_alloc_master(&pdev->dev, sizeof(*dln2));
-@@ -700,6 +701,8 @@ static int dln2_spi_probe(struct platform_device *pdev)
- 	}
- 
- 	dln2->master = master;
-+	dln2->master->dev.parent = dev;
-+	dln2->master->dev.of_node = dev->of_node;
- 	dln2->pdev = pdev;
- 	dln2->port = pdata->port;
- 	/* cs/mode can never be 0xff, so the first transfer will set them */
+diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
+index 8a0bd62a5088..1c57ce64abba 100644
+--- a/drivers/spi/spi-cadence.c
++++ b/drivers/spi/spi-cadence.c
+@@ -651,7 +651,7 @@ static int __maybe_unused cdns_spi_resume(struct device *dev)
+  *
+  * Return:	0 on success and error value on error
+  */
+-static int cnds_runtime_resume(struct device *dev)
++static int __maybe_unused cnds_runtime_resume(struct device *dev)
+ {
+ 	struct spi_master *master = dev_get_drvdata(dev);
+ 	struct cdns_spi *xspi = spi_master_get_devdata(master);
+@@ -680,7 +680,7 @@ static int cnds_runtime_resume(struct device *dev)
+  *
+  * Return:	Always 0
+  */
+-static int cnds_runtime_suspend(struct device *dev)
++static int __maybe_unused cnds_runtime_suspend(struct device *dev)
+ {
+ 	struct spi_master *master = dev_get_drvdata(dev);
+ 	struct cdns_spi *xspi = spi_master_get_devdata(master);
 -- 
 2.8.0.rc3
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

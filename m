@@ -1,73 +1,64 @@
-From: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH v5] spi: orion.c: Add direct access mode
-Date: Mon, 18 Apr 2016 15:00:52 +0200
-Message-ID: <5714DA84.2050505@denx.de>
-References: <1460974417-32375-1-git-send-email-sr@denx.de>
- <4437692.8jaX7AeWuo@wuerfel> <20160418110415.GT3217@sirena.org.uk>
- <4248364.c0REkIZjj0@wuerfel>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [RFC 1/2] spi: spidev: Use 'new_id' sysfs file for enabling
+ spidev
+Date: Mon, 18 Apr 2016 14:01:26 +0100
+Message-ID: <20160418130126.GC3217@sirena.org.uk>
+References: <1460978308-8062-1-git-send-email-bhuvanchandra.dv@toradex.com>
+ <1460978308-8062-2-git-send-email-bhuvanchandra.dv@toradex.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
-To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="qXCixuLMVvZDruUh"
+Cc: gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org, stefan-XLVq0VzYD2Y@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Stefan Agner <stefan.agner-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
+To: Bhuvanchandra DV <bhuvanchandra.dv-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <4248364.c0REkIZjj0@wuerfel>
+Content-Disposition: inline
+In-Reply-To: <1460978308-8062-2-git-send-email-bhuvanchandra.dv-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 18.04.2016 13:32, Arnd Bergmann wrote:
-> On Monday 18 April 2016 12:04:15 Mark Brown wrote:
->> On Mon, Apr 18, 2016 at 12:51:55PM +0200, Arnd Bergmann wrote:
->>
->>> This would be easier if have a conclusive proof that 1MB per CS always enough.
->>> Is this something that is guaranteed in the SPI spec or the documentation for
->>> this controller?
->>
->> There's no spec for SPI but if there were it'd be hard to see it
->> imposing a limit, one can transfer data as long as the bus is clocked
->> (which some things like ADCs and DACs make use of).
->>
->
-> I just reread Stefan's patch and realized that I had fundamentally
-> misunderstood how the transfer is done: I thought the offset inside of
-> the window was used to address a NOR flash directly, but it seems
-> it is just used to send arbitrarily long commands.
 
-Yes. SPI NOR flash support definitely needs some additional patches.
-To support the address and commands being inserted in the SPI
-messages via the corresponding registers. Again, this patch is
-only intended and tested for very "simple" TX messages without any
-addresses being inserted at all.
+--qXCixuLMVvZDruUh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> This means that the 1MB window is probably a reasonable size (provided
-> that the (most importantly) the SPI-NOR driver can guarantee that it
-> never exceeds this).
+On Mon, Apr 18, 2016 at 04:48:27PM +0530, Bhuvanchandra DV wrote:
 
-I have no problem switching from 1MiB to using 0xffffffff in the
-SPI controller 'reg' node to allow even bigger windows in v6.
+> +++ b/Documentation/ABI/testing/sysfs-bus-spi-spidev
+> @@ -0,0 +1,8 @@
+> +What:		/sys/bus/spi/drivers/spidev/new_id
+> +Date:		March 2016
+> +Description:
+> +		This allows to load spidev at runtime. new_id file accepts bus
+> +		number and chip select in 'B.C' format.
+> +		e.g.
+> +		To load spidev1.1 at runtime:
+> +		$ echo 1.1 > /sys/bus/spi/drivers/spidev/new_id
 
-> It also means that we are probably better off using the single-window mode
-> of the SPI controller, where all CS lines share a single mbus window.
-> The only real difference here is that we can map all endpoints using a
-> single contiguous window into the CPU address space if we want, or we
-> can still map them separately on a given board if that results in a nicer
-> layout.
+I would expect a new_id file to allow a new device identifier to be
+added to a driver at runtime but this isn't doing that, it's specifying
+by bus and chip select instead which is totally different to how we
+normally bind SPI devices.  That seems likely to cause confusion down
+the line.  I'd expect to be able to supply a DT compatible string or a
+Linux SPI ID.
 
-Frankly, I've just read about this single-window mode for the first
-time. What I miss here in this mode though, is the configuration of
-the SPI device (chip-select 0...7) for this direct-mode in the SPI
-driver. With the currently implemented separate window method, your
-suggested method is easy: Either is window can be mapped (direct-mode)
-or not (indirect-mode). With this single-window mode I'm missing the
-per-device configuration for direct-mode. Or what is your idea on
-how to configure this access-mode in this case?
+--qXCixuLMVvZDruUh
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Thanks,
-Stefan
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
+iQEcBAEBCAAGBQJXFNqlAAoJECTWi3JdVIfQTDMH/2HJIsAShm4GQm+704J27Xou
+7aNGkHO0BxrBYPyEYa1nngmC/PnBeDHCuA3qXIKIbaBrUNXBffdVKpanNDrMYo7+
++NlAwbx7+UUypiRc1LciWoRPHD0BJCy15uKtJygPXd3yyC58ulKWnWVFxHqEC6hR
+xjjYrZlI+7mvc2BO8zHBG2GHuUgjq+I0/yrusCHmPkZSjNDTJWvwZ0Yi9Ixj7hV3
+fqWCVlEGIgOqZHtUY+4JrBV5Oj5C8fsDJ60dQDabnwIH8ArH7huONiLtEGtBzYI8
+F7fF1eZ0lI3bZzSCeBXpvRF+t7upNADpbgUSD1CjH5bjGxRHnBGk/nRL8dkuApc=
+=v+f+
+-----END PGP SIGNATURE-----
+
+--qXCixuLMVvZDruUh--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

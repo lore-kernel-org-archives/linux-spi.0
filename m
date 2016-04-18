@@ -1,93 +1,158 @@
-From: Bhuvanchandra DV <bhuvanchandra.dv@toradex.com>
-Subject: [RFC 2/2] spi core: Add new sysfs 'num_chipselect' file
-Date: Mon, 18 Apr 2016 16:48:28 +0530
-Message-ID: <1460978308-8062-3-git-send-email-bhuvanchandra.dv@toradex.com>
+From: Bhuvanchandra DV <bhuvanchandra.dv-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
+Subject: [RFC 1/2] spi: spidev: Use 'new_id' sysfs file for enabling spidev
+Date: Mon, 18 Apr 2016 16:48:27 +0530
+Message-ID: <1460978308-8062-2-git-send-email-bhuvanchandra.dv@toradex.com>
 References: <1460978308-8062-1-git-send-email-bhuvanchandra.dv@toradex.com>
 Mime-Version: 1.0
 Content-Type: text/plain
-Cc: <gregkh@linuxfoundation.org>, <stefan@agner.ch>,
-	<linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-	Bhuvanchandra DV <bhuvanchandra.dv@toradex.com>,
-	Stefan Agner <stefan.agner@toradex.com>
-To: <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1460978308-8062-1-git-send-email-bhuvanchandra.dv@toradex.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>, <stefan-XLVq0VzYD2Y@public.gmane.org>,
+	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Bhuvanchandra DV <bhuvanchandra.dv-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>,
+	Stefan Agner <stefan.agner-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1460978308-8062-1-git-send-email-bhuvanchandra.dv-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Add new sysfs 'num_chipselect' file to expose the maximum number
-of chipselects a SPI master can support.
-This allows to create a script in user space which automatically
-creates a new spidev instance for every chipselect on a bus.
+Use sysfs new_id file to enable spidev at runtime. new_id file accepts bus
+number and chip select in 'B.C' format.
 
-Signed-off-by: Bhuvanchandra DV <bhuvanchandra.dv@toradex.com>
-Signed-off-by: Stefan Agner <stefan.agner@toradex.com>
+With reference to the last ML discussion here[1] regarding the solution for
+spidev with device trees. This patch adds support to load spidevB.C via sysfs
+new_id file as suggested by Greg.
+
+[1] http://thread.gmane.org/gmane.linux.kernel.spi.devel/20331/focus=20369
+
+Suggested-by: Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>
+Signed-off-by: Bhuvanchandra DV <bhuvanchandra.dv-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
+Signed-off-by: Stefan Agner <stefan.agner-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
 ---
- Documentation/spi/spi-summary |  3 +++
- drivers/spi/spi.c             | 23 +++++++++++++++++++++++
- 2 files changed, 26 insertions(+)
+ Documentation/ABI/testing/sysfs-bus-spi-spidev |  8 +++
+ drivers/spi/spidev.c                           | 75 +++++++++++++++++++++++---
+ 2 files changed, 77 insertions(+), 6 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-spi-spidev
 
-diff --git a/Documentation/spi/spi-summary b/Documentation/spi/spi-summary
-index d1824b3..b4d15e4 100644
---- a/Documentation/spi/spi-summary
-+++ b/Documentation/spi/spi-summary
-@@ -181,6 +181,9 @@ shows up in sysfs in several locations:
- 	controller managing bus "B".  All spiB.* devices share one
- 	physical SPI bus segment, with SCLK, MOSI, and MISO.
- 
-+   /sys/class/spi_master/spiB/num_chipselect ... exposes the maximum
-+	number of chipselects a SPI master can support.
-+
- Note that the actual location of the controller's class state depends
- on whether you enabled CONFIG_SYSFS_DEPRECATED or not.  At this time,
- the only class-specific state is the bus number ("B" in "spiB"), so
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index de2f2f9..c3eb29f 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -67,6 +67,19 @@ modalias_show(struct device *dev, struct device_attribute *a, char *buf)
+diff --git a/Documentation/ABI/testing/sysfs-bus-spi-spidev b/Documentation/ABI/testing/sysfs-bus-spi-spidev
+new file mode 100644
+index 0000000..3f6e092
+--- /dev/null
++++ b/Documentation/ABI/testing/sysfs-bus-spi-spidev
+@@ -0,0 +1,8 @@
++What:		/sys/bus/spi/drivers/spidev/new_id
++Date:		March 2016
++Description:
++		This allows to load spidev at runtime. new_id file accepts bus
++		number and chip select in 'B.C' format.
++		e.g.
++		To load spidev1.1 at runtime:
++		$ echo 1.1 > /sys/bus/spi/drivers/spidev/new_id
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index e3c19f3..99e9842 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -667,6 +667,57 @@ static int spidev_release(struct inode *inode, struct file *filp)
+ 	return 0;
  }
- static DEVICE_ATTR_RO(modalias);
  
-+static ssize_t
-+num_chipselect_show(struct device *dev, struct device_attribute *a, char *buf)
++/**
++ * new_id_store - add a new spidevB.C instance
++ * @driver: target device driver
++ * @buf: buffer for scanning bus number and chip select
++ * @count: input size
++ *
++ * Adds a new dynamic spidev instance based on the requested bus number
++ * and chip select.
++ */
++static ssize_t new_id_store(struct device_driver *drv, const char *buf,
++		size_t count)
 +{
-+	struct spi_master *master = container_of(dev,
-+						 struct spi_master, dev);
++	int ret;
++	u32 bus, cs;
++	struct spi_device *spi;
++	struct spi_master *master;
 +
-+	return sprintf(buf, "%d\n", master->num_chipselect);
++	ret = sscanf(buf, "%u.%u", &bus, &cs);
++
++	if (ret < 2)
++		return -EINVAL;
++
++	master = spi_busnum_to_master(bus);
++	if (!master)
++		return -ENODEV;
++
++	if (cs >= master->num_chipselect)
++		return -ENODEV;
++
++	spi = spi_alloc_device(master);
++	if (!spi) {
++		dev_err(&master->dev, "Couldn't allocate spidev device\n");
++		return -ENOMEM;;
++	}
++
++	spi->chip_select = cs;
++	master->bus_num = bus;
++
++	strlcpy(spi->modalias, "spidev", sizeof(spi->modalias));
++
++	ret = spi_add_device(spi);
++	if (ret) {
++		dev_err(&master->dev, "Couldn't add spidev device\n");
++		spi_dev_put(spi);
++		return ret;
++	}
++
++	return count;
 +}
-+static struct device_attribute dev_attr_num_chipselect = {
-+	.attr = { .name = "num_chipselect", .mode = S_IRUGO },
-+	.show = num_chipselect_show,
-+};
++static DRIVER_ATTR_WO(new_id);
 +
- #define SPI_STATISTICS_ATTRS(field, file)				\
- static ssize_t spi_master_##field##_show(struct device *dev,		\
- 					 struct device_attribute *attr,	\
-@@ -155,6 +168,15 @@ static const struct attribute_group spi_dev_group = {
- 	.attrs  = spi_dev_attrs,
- };
+ static const struct file_operations spidev_fops = {
+ 	.owner =	THIS_MODULE,
+ 	/* REVISIT switch to aio primitives, so that userspace
+@@ -817,21 +868,33 @@ static int __init spidev_init(void)
  
-+static struct attribute *spi_master_attrs[] = {
-+	&dev_attr_num_chipselect.attr,
-+	NULL,
-+};
-+
-+static const struct attribute_group spi_master_group = {
-+	.attrs  = spi_master_attrs,
-+};
-+
- static struct attribute *spi_device_statistics_attrs[] = {
- 	&dev_attr_spi_device_messages.attr,
- 	&dev_attr_spi_device_transfers.attr,
-@@ -236,6 +258,7 @@ static const struct attribute_group spi_master_statistics_group = {
- };
+ 	spidev_class = class_create(THIS_MODULE, "spidev");
+ 	if (IS_ERR(spidev_class)) {
+-		unregister_chrdev(SPIDEV_MAJOR, spidev_spi_driver.driver.name);
+-		return PTR_ERR(spidev_class);
++		status = PTR_ERR(spidev_class);
++		goto err_unregister_chrdev;
+ 	}
  
- static const struct attribute_group *spi_master_groups[] = {
-+	&spi_master_group,
- 	&spi_master_statistics_group,
- 	NULL,
- };
+ 	status = spi_register_driver(&spidev_spi_driver);
+-	if (status < 0) {
+-		class_destroy(spidev_class);
+-		unregister_chrdev(SPIDEV_MAJOR, spidev_spi_driver.driver.name);
+-	}
++	if (status < 0)
++		goto err_destroy_class;
++
++	status = driver_create_file(&spidev_spi_driver.driver, &driver_attr_new_id);
++	if (status < 0)
++		goto err_unregister_driver;
++
++	return status;
++
++err_unregister_driver:
++	spi_unregister_driver(&spidev_spi_driver);
++err_destroy_class:
++	class_destroy(spidev_class);
++err_unregister_chrdev:
++	unregister_chrdev(SPIDEV_MAJOR, spidev_spi_driver.driver.name);
+ 	return status;
+ }
+ module_init(spidev_init);
+ 
+ static void __exit spidev_exit(void)
+ {
++	driver_remove_file(&spidev_spi_driver.driver, &driver_attr_new_id);
+ 	spi_unregister_driver(&spidev_spi_driver);
+ 	class_destroy(spidev_class);
+ 	unregister_chrdev(SPIDEV_MAJOR, spidev_spi_driver.driver.name);
 -- 
 2.7.3
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

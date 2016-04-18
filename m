@@ -1,74 +1,26 @@
-From: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCHv2] wlcore: spi: add wl18xx support
-Date: Mon, 18 Apr 2016 16:57:03 +0200
-Message-ID: <1463330011.BhWEcYYuGD@wuerfel>
-References: <1460273570-12298-1-git-send-email-eyalr@ti.com> <14313437.cDJIgY3kzo@wuerfel> <8665E2433BC68541A24DFFCA87B70F5B360BF614@DFRE01.ent.ti.com>
+From: andreas11-Ko4HvKsVEdMwu+U/h7MTDQ@public.gmane.org
+Subject: Greetings!!!
+Date: Mon, 18 Apr 2016 18:43:38 +0100
+Message-ID: <962979.90403.qm__26864.2846298919$1461001481$gmane$org@smtp106.biz.mail.gq1.yahoo.com>
+Reply-To: J_ericdaniels111-1ViLX0X+lBJBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: Kalle Valo <kvalo@codeaurora.org>,
-	Eyal Reizer <eyalreizer@gmail.com>,
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
-To: "Reizer, Eyal" <eyalr@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <8665E2433BC68541A24DFFCA87B70F5B360BF614@DFRE01.ent.ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+To: "Mr. Eric" <andreas11-Ko4HvKsVEdMwu+U/h7MTDQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Description: Mail message body
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Monday 18 April 2016 05:55:51 Reizer, Eyal wrote:
-> > >
-> > > - all wilink family needs special init command for entering wspi mode.
-> > >   extra clock cycles should be sent after the spi init command while the
-> > >   cs pin is high.
-> > > - switch to controling the cs pin from the spi driver for achieveing the
-> > >   above.
-> > > - the selected cs gpio is read from the spi device-tree node using the
-> > >   cs-gpios field and setup as a gpio.
-> > > - See the example below for specifying the cs gpio using the cs-gpios entry
-> > > &spi0   {
-> > >         ...
-> > >         cs-gpios = <&gpio0 5 0>;
-> > >         ...
-> > >         wlcore: wlcore@0 {
-> > >                 compatible = "ti,wl1835";
-> > >         ...
-> > >         ...
-> > >         };
-> > > };
-> > >
-> > > Signed-off-by: Eyal Reizer <eyalr@ti.com>
-> > 
-> > I don't think this can work in general: not all SPI hosts uses GPIOs for
-> > controlling CS, so the logic can't work, and it's also a layering violation for the
-> > driver to look at the parent.
-> > 
-> > I would suggest fixing this using a new API function from the SPI core, if we
-> > don't already have a generic way to do it.
-> >
-> Originally this is what I have done until I was pointed to the generic cs-gpio mechanism 
-> in the SPI core. 
-> It is a generic mechanism already in the SPI core driver.
-> See: Documentation/devicetree/bindings/spi/spi-bus.txt
-
-The cs-gpios property is documented as optional, it defines how you should
-list the gpios if CS is implemented using gpio, but not all hardware does
-it like this.
-
-> It is also part of the generic spi.h (include/Linux/spi/spi.h), already part of 
-> " struct spi_device" So it seemed redundant adding another mechanism for 
-> implementing the same.
-> Platform that interact with a wilink need to use it, and platforms that don't  
-> have this capability will probably not interact with a wilink device using SPI.
-
-The cs_gpio field in spi_device belongs to the spi host controller, no other
-slave driver uses it.
-
-I wasn't asking for a duplication of this mechanism, but an interface to
-use it properly. Internally, the spi core uses the spi_set_cs() function to
-pick a CS. Find a way to use that rather than reimplementing it incorrectly.
-
-	Arnd
+Hi, how are you? My name is J Eric Denials, External Financial Auditor =
+at Lloyds Banking Group plc., London. It is a pleasure to contact you a=
+t this time through this medium. I have a cool and legitimate deal to d=
+o with you as you're a foreigner, it will be mutually beneficial to bot=
+h. If you=E2=80=99re interested, urgently, get back to me for more expl=
+anation about the deal.
+Regards
+Eric
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

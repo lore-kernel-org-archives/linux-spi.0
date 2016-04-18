@@ -1,96 +1,83 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: cadence: mark pm functions __maybe_unused" to the spi tree
-Date: Mon, 18 Apr 2016 14:11:03 +0100
-Message-ID: <E1as8xD-00025Y-TB@debutante>
-References: <1460839171-1252854-1-git-send-email-arnd@arndb.de>
-Cc: Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+From: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH for-next] spi: bcm53xx: add spi_flash_read callback for
+ MMIO-based reads
+Date: Mon, 18 Apr 2016 19:18:32 +0530
+Message-ID: <5714E5B0.2020700@ti.com>
+References: <1460977843-9426-1-git-send-email-zajec5@gmail.com>
+ <20160418112457.GU3217@sirena.org.uk>
+ <CACna6rzQfX7SxDoL-CTQp3_Ms5_K54pEa8uaUAiTPjR-un=VOg@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: "open list:SPI SUBSYSTEM" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	open list <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Shubhrajyoti Datta <shubhrajyoti.datta-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	Moritz Fischer <moritz.fischer-+aYTwkv1SeIAvxtiuMwx3w@public.gmane.org>,
-	Geliang Tang <geliangtang-9Onoh4P/yGk@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1460839171-1252854-1-git-send-email-arnd-r2nGTMty4D4@public.gmane.org>
+In-Reply-To: <CACna6rzQfX7SxDoL-CTQp3_Ms5_K54pEa8uaUAiTPjR-un=VOg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
 
-   spi: cadence: mark pm functions __maybe_unused
 
-has been applied to the spi tree at
+On 04/18/2016 05:08 PM, Rafa=C5=82 Mi=C5=82ecki wrote:
+> On 18 April 2016 at 13:24, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+>> On Mon, Apr 18, 2016 at 01:10:43PM +0200, Rafa=C5=82 Mi=C5=82ecki wr=
+ote:
+>>
+>>> +static int bcm53xxspi_flash_read(struct spi_device *spi,
+>>> +                              struct spi_flash_read_message *msg)
+>>> +{
+>>> +     struct bcm53xxspi *b53spi =3D spi_master_get_devdata(spi->mas=
+ter);
+>>> +     int ret =3D 0;
+>>> +
+>>> +     bcm53xxspi_enable_bspi(b53spi);
+>>> +     memcpy_fromio(msg->buf, b53spi->mmio_base + msg->from, msg->l=
+en);
+>>> +     msg->retlen =3D msg->len;
+>>
+>> There's no bounds check here but...
+>=20
+> That's true, I was looking at ti_qspi_spi_flash_read and somehow
+> incorrectly (!) assumed there is a check above. Of course there isn't
+> one and there can't be, I'll simply fix this code. I guess we should
+> fix ti_qspi_spi_flash_read in ti-qspi driver as well.
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+My assumption was controller will provide ability to map entire flash
+under memory mapped region either in oneshot or in parts. It would be
+odd to have some parts of flash accessible under memory mapped mode and
+some only under SPI mode. Therefore there is no bound check in case of
+ti-qspi(but I see is no harm in adding one. I will fix it up).
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+>=20
+> I also realized there wasn't any fallback introduced in:
+> mtd: devices: m25p80: add support for mmap read request
+> http://git.infradead.org/l2-mtd.git/commitdiff/08922f644878c9163ada8d=
+f3ef9def89be1d5e90
+>=20
+> What shall we do if spi_flash_read fails? Should we always fallback t=
+o
+> the standard SPI flash read? Or should we standarize error codes
+> returned by spi_flash_read and fallback on some particular error code
+> only?
+>=20
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+spi_flash_read() can return error for incorrect protocol format
+(opcode/data/address_nbits), this will fail anyways for normal SPI mode
+as well. Else, its the error code returned by master->spi_flash_read()
+callback (individual driver dependent). Not sure what can be
+standardized here.
+I think fallback would be to try SPI mode when ret!=3D-EINVAL.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
 
-Thanks,
-Mark
 
->From 148b1eb93c9b54e61d7937b5a5760030276240ab Mon Sep 17 00:00:00 2001
-From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Date: Sat, 16 Apr 2016 22:39:21 +0200
-Subject: [PATCH] spi: cadence: mark pm functions __maybe_unused
-
-The newly added runtime PM support for the cadence spi driver
-causes harmless warnings when PM is disabled:
-
-drivers/spi/spi-cadence.c:681:12: warning: 'cnds_runtime_suspend' defined but not used
-drivers/spi/spi-cadence.c:652:12: warning: 'cnds_runtime_resume' defined but not used
-
-This adds __maybe_unused annotations to the respective functions
-to shut up the warnings, while leaving the code in place for
-compile testing and avoiding ugly #ifdefs.
-
-Fixes: d36ccd9f7ea4 ("spi: cadence: Runtime pm adaptation")
-Signed-off-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Acked-by: Shubhrajyoti Datta <shubhraj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-cadence.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
-index 8a0bd62a5088..1c57ce64abba 100644
---- a/drivers/spi/spi-cadence.c
-+++ b/drivers/spi/spi-cadence.c
-@@ -651,7 +651,7 @@ static int __maybe_unused cdns_spi_resume(struct device *dev)
-  *
-  * Return:	0 on success and error value on error
-  */
--static int cnds_runtime_resume(struct device *dev)
-+static int __maybe_unused cnds_runtime_resume(struct device *dev)
- {
- 	struct spi_master *master = dev_get_drvdata(dev);
- 	struct cdns_spi *xspi = spi_master_get_devdata(master);
-@@ -680,7 +680,7 @@ static int cnds_runtime_resume(struct device *dev)
-  *
-  * Return:	Always 0
-  */
--static int cnds_runtime_suspend(struct device *dev)
-+static int __maybe_unused cnds_runtime_suspend(struct device *dev)
- {
- 	struct spi_master *master = dev_get_drvdata(dev);
- 	struct cdns_spi *xspi = spi_master_get_devdata(master);
--- 
-2.8.0.rc3
-
+--=20
+Regards
+Vignesh
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

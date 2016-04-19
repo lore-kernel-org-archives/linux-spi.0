@@ -1,66 +1,68 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCHv2] wlcore: spi: add wl18xx support
-Date: Tue, 19 Apr 2016 18:12:39 +0100
-Message-ID: <20160419171239.GC3217@sirena.org.uk>
+Date: Tue, 19 Apr 2016 18:27:06 +0100
+Message-ID: <20160419172706.GD3217@sirena.org.uk>
 References: <1460273570-12298-1-git-send-email-eyalr@ti.com>
  <14313437.cDJIgY3kzo@wuerfel>
  <8665E2433BC68541A24DFFCA87B70F5B360BF614@DFRE01.ent.ti.com>
  <1463330011.BhWEcYYuGD@wuerfel>
  <8665E2433BC68541A24DFFCA87B70F5B360C0745@DFRE01.ent.ti.com>
+ <20160419171239.GC3217@sirena.org.uk>
+ <sjdvun1fuj4nyi0bgf268g53.1461086401627@email.android.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="4cv0JMvpEKiCIDl2"
-Cc: Kalle Valo <kvalo-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Eyal Reizer <eyalreizer-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	protocol="application/pgp-signature"; boundary="EP2pG3U7hXy67fX3"
+Cc: "kvalo-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org" <kvalo-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	=?utf-8?B?77+977+977+977+9IO+/ve+/ve+/ve+/ve+/vQ==?=
+	<eyalreizer-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	"linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	"netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 To: "Reizer, Eyal" <eyalr-l0cyMroinI0@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <8665E2433BC68541A24DFFCA87B70F5B360C0745-1tpBd5JUCm6IQmiDNMet8wC/G2K4zDHf@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <sjdvun1fuj4nyi0bgf268g53.1461086401627-2ueSQiBKiTY7tOexoI0I+QC/G2K4zDHf@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
 
---4cv0JMvpEKiCIDl2
+--EP2pG3U7hXy67fX3
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 19, 2016 at 09:05:45AM +0000, Reizer, Eyal wrote:
+On Tue, Apr 19, 2016 at 05:21:01PM +0000, Reizer, Eyal wrote:
 
-> Understood. As this special CS manipulation is unique to wspi (wilink spi=
-)  I think the=20
-> best option is to move this gpio allocation into wlcore_spi as a new devi=
-ce tree entry
-> used only by this driver.
+> The main quirk here is that i need to send extra clocks after the spi init command while the CS pin is "high" in order to put the wilink chip into SPI mode.
+> So just sending an empty transfer wouldnt do the trick here.
 
-That sounds like it is going to break normal chip select operation which
-doesn't seem like a good idea either.  What exactly are you trying to do
-here?  If you need to send some extra bytes at the end of a transfer why
-not just do that, or add an empty transfer with a delay.  It's hard to
-see what more you could do with only control of the chip select...
+A single byte transfer would result in extra clocks being sent so there
+must be more to it than that...
 
---4cv0JMvpEKiCIDl2
+> Do you have a recomendation on how to do it without changing the core logic. If it is possible it would be really great.
+
+Please be explicit about what you're trying to do here.  I imagine you
+may need to change the core logic but we need to know what it is that
+the device needs.
+
+--EP2pG3U7hXy67fX3
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJXFmcGAAoJECTWi3JdVIfQV3cH/13tX6IFbyU7cJBFsp94l8u0
-RZ8ygWZrra/QQMyPguVMdheFO50a6wPZL1nZ0iPa2Zp8b0RUCjCuuDxtjoJf5QD6
-39GH1LuyIK122A2S1DG5aRP8HjUtrOT5s1oE8IwGSTxSow9E60bJPOHoDt23uoFi
-EDa6F+MnQ0QhPSQhKdUEwVCrNCep+qEmQxOT83fei+xd3MFAFtb9vTACNaPexOO4
-iRU94K2wUO1np7ug8M9Q4Sx5inkXh+Fy3Ug34x2fWG8prhqa/TDXXfu/IyfDwlpM
-0UIWRQheG7zxMdGqGsXL84gI4k6mNZKn0f37vwmGV3ioan07BzSY+LkBREXpv7I=
-=FdXk
+iQEcBAEBCAAGBQJXFmppAAoJECTWi3JdVIfQ/oQH/j0MMWsgYKYzsuK4POtzTpyJ
+lGSE/l5CDNo99oXISIKHARL8soJXUOOwUHXsVHlo5Hb8eFDrLe7c8hVfr7j7+iVx
+8cH+PZZ6qxsTn7X5Lm3IjpqbiZV3aHGFMgxuCAh31++ZYYi1eS86mNqQLHxIH7Wi
+iiImKWSJtBplg/9s1YHYcJtatgELI0jCsMsYjhKuMaYQrBMlKBd24dJx8UblzrSd
+bLii2gUB96kitwJa7gVdEt4V3tCPg1KhcTRObkEemLZcKmI0pw4epoNt6xk/FDi7
+LC2F55hrnaE9b2XUxB9PGejmD2bwasdumNB1Jy0aqEI+F/nhWgVhASSyxv7YNSc=
+=ggS0
 -----END PGP SIGNATURE-----
 
---4cv0JMvpEKiCIDl2--
+--EP2pG3U7hXy67fX3--
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

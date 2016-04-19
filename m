@@ -1,53 +1,121 @@
-From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Subject: [PATCH] spi: pxa2xx: disallow building on MMP
-Date: Tue, 19 Apr 2016 15:18:20 +0200
-Message-ID: <1461071933-3273163-1-git-send-email-arnd@arndb.de>
-Cc: Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, Daniel Mack <zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v1 1/1] spi: dw-mid: set DMA burst on memory side
+Date: Tue, 19 Apr 2016 19:03:52 +0530
+Message-ID: <20160419133352.GQ2274@localhost>
+References: <1460392212-101116-1-git-send-email-andriy.shevchenko@linux.intel.com>
+ <20160412003409.GN3351@sirena.org.uk>
+ <1460462195.6620.100.camel@linux.intel.com>
+ <20160412140249.GI2274@localhost>
+ <1460477161.6620.120.camel@linux.intel.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	dmaengine <dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1460477161.6620.120.camel-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-After MMP has become part of a multiplatform build, we can end up with
-a randconfig build failure in the pxa2xx spi driver:
+On Tue, Apr 12, 2016 at 07:06:01PM +0300, Andy Shevchenko wrote:
+> On Tue, 2016-04-12 at 19:32 +0530, Vinod Koul wrote:
+> > On Tue, Apr 12, 2016 at 02:56:35PM +0300, Andy Shevchenko wrote:
+> > >=20
+> > > On Tue, 2016-04-12 at 01:34 +0100, Mark Brown wrote:
+> > > >=20
+> > > > On Mon, Apr 11, 2016 at 07:30:12PM +0300, Andy Shevchenko wrote=
+:
+>=20
+> > > > To optimize amount of bus writes on memory side set burst to be
+> > > > > the
+> > > > > same amount
+> > > > > of data on both sides.
+> > > > >=20
+> > > > > +	txconf.src_maxburst =3D 4 * dws->dma_width;
+> > > > > =A0	txconf.dst_maxburst =3D 16;
+> > > > This doesn't seem to do what the subject says (at least not
+> > > > always,
+> > > > it'll align for a dma_width of 4)?
+> > > Thanks you didn't apply the patch.=A0
+> > >=20
+> > > I think the approach itself is wrong.
+> > >=20
+> > > The peripheral drivers usually have no idea and shouldn't know ab=
+out
+> > > DMA
+> > > engine memory side characteristics (bus width, bursts, etc).
+> > These are typically you system characterstics, like 32 bit or 64 bi=
+t
+> > bus to
+> > memory and rest (burst etc) should be maximum as the data will go
+> > from/to
+> > dmaengine FIFO to/from memory, so you would want to push as fast as
+> > possible
+> >=20
+> > Said that, maximun burst with 32bit wide should be saner value in
+> > modern
+> > systems.
+>=20
+> My point that peripheral driver does not and _should not_ care about
+> memory side of the transfer. This is property of DMAengine controller
+> and platform that has it installed.
+>=20
+> Documentation tells nothing how clients should setup _memory side_ of
+> the transfer.
+>=20
+> Thus, I propose to update documentation to tell that there are two si=
+des
+> of the transfer in case of mem2dev, dev2mem, where one of them is
+> _memory side_, and it's DMAengine controller's responsibility to
+> rightfully set the transfer width and burst size.
 
-drivers/spi/built-in.o: In function `pxa2xx_spi_remove':
-:(.text+0x1845c): undefined reference to `pxa_ssp_free'
-drivers/spi/built-in.o: In function `pxa2xx_spi_probe':
-:(.text+0x19844): undefined reference to `pxa_ssp_request'
+Well a dmaengine maybe operating in a 32bit or 64 bit bus. Doing 64bit =
+will
+not help in former case. How do we guess?
 
-What happens here is that we can enable SPI_PXA2XX when some other
-platform in the same build supports PCI. This normally works because the
-pxa_ssp_request/pxa_ssp_free functions are stubbed out when CONFIG_PXA_SSP
-is disabled. However, we can have PXA_SSP=m when that driver is used by
-the SND_SOC_TTC_DKB audio driver.
+I do agree that clients shouldn't be bothered with this
 
-This changes the Kconfig logic to just disallow the pxa2xx SPI
-driver on anything but x86 and pxa.
+>=20
+> I would make a patch if we would agree on this.
+>=20
+> >=20
+> > >=20
+> > >=20
+> > > This should be fixed in certain DMA engine drivers.
+> > >=20
+> > > Also, as you may have noticed when we get maximum length of the
+> > > segment
+> > > we take into consideration what DMA device supports. Many of them
+> > > report
+> > > something like 2^n - 1, which is apparently unaligned and thus in
+> > > the
+> > > poorly written DMA driver leads to performance degradation.
+> > Which Intel controller supports 2^n - 1? AFAIK the dw and idma don'=
+t.
+>=20
+> All three mentioned below takes block size as [0 .. 2 ^ number of bit=
+s
+> in the register - 1]. If transfer width is 1 byte (which is calculate=
+d
+> automatically now, the burst will be 1 byte on memory side!
 
-Signed-off-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
----
- drivers/spi/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+That is not correct :)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index e33be3775a3c..ad8d8714d5b0 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -469,7 +469,7 @@ config SPI_PPC4xx
- 
- config SPI_PXA2XX
- 	tristate "PXA2xx SSP SPI master"
--	depends on (ARCH_PXA || PCI || ACPI)
-+	depends on ARCH_PXA || (X86 && (PCI || ACPI))
- 	select PXA_SSP if ARCH_PXA
- 	help
- 	  This enables using a PXA2xx or Sodaville SSP port as a SPI master
--- 
-2.7.0
+>=20
+> >> Looks like all Intel related DMA drivers should be fixed (HSU,
+> > > iDMA64,
+> > > dw_dmac).
+>=20
+>=20
+> --=20
+> Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+> Intel Finland Oy
+>=20
 
+--=20
+~Vinod
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

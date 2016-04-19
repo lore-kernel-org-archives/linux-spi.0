@@ -1,121 +1,123 @@
-From: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v1 1/1] spi: dw-mid: set DMA burst on memory side
-Date: Tue, 19 Apr 2016 19:03:52 +0530
-Message-ID: <20160419133352.GQ2274@localhost>
-References: <1460392212-101116-1-git-send-email-andriy.shevchenko@linux.intel.com>
- <20160412003409.GN3351@sirena.org.uk>
- <1460462195.6620.100.camel@linux.intel.com>
- <20160412140249.GI2274@localhost>
- <1460477161.6620.120.camel@linux.intel.com>
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Subject: Re: [PATCH v5] spi: orion.c: Add direct access mode
+Date: Tue, 19 Apr 2016 15:41:22 +0200
+Message-ID: <3956609.3ttDzXh866@wuerfel>
+References: <1460974417-32375-1-git-send-email-sr@denx.de> <4509446.OJU128rpNa@wuerfel> <5715FD81.8090100@denx.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	dmaengine <dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1460477161.6620.120.camel-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <5715FD81.8090100-ynQEQJNshbs@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Apr 12, 2016 at 07:06:01PM +0300, Andy Shevchenko wrote:
-> On Tue, 2016-04-12 at 19:32 +0530, Vinod Koul wrote:
-> > On Tue, Apr 12, 2016 at 02:56:35PM +0300, Andy Shevchenko wrote:
-> > >=20
-> > > On Tue, 2016-04-12 at 01:34 +0100, Mark Brown wrote:
-> > > >=20
-> > > > On Mon, Apr 11, 2016 at 07:30:12PM +0300, Andy Shevchenko wrote=
-:
->=20
-> > > > To optimize amount of bus writes on memory side set burst to be
-> > > > > the
-> > > > > same amount
-> > > > > of data on both sides.
-> > > > >=20
-> > > > > +	txconf.src_maxburst =3D 4 * dws->dma_width;
-> > > > > =A0	txconf.dst_maxburst =3D 16;
-> > > > This doesn't seem to do what the subject says (at least not
-> > > > always,
-> > > > it'll align for a dma_width of 4)?
-> > > Thanks you didn't apply the patch.=A0
-> > >=20
-> > > I think the approach itself is wrong.
-> > >=20
-> > > The peripheral drivers usually have no idea and shouldn't know ab=
-out
-> > > DMA
-> > > engine memory side characteristics (bus width, bursts, etc).
-> > These are typically you system characterstics, like 32 bit or 64 bi=
-t
-> > bus to
-> > memory and rest (burst etc) should be maximum as the data will go
-> > from/to
-> > dmaengine FIFO to/from memory, so you would want to push as fast as
-> > possible
-> >=20
-> > Said that, maximun burst with 32bit wide should be saner value in
-> > modern
-> > systems.
->=20
-> My point that peripheral driver does not and _should not_ care about
-> memory side of the transfer. This is property of DMAengine controller
-> and platform that has it installed.
->=20
-> Documentation tells nothing how clients should setup _memory side_ of
-> the transfer.
->=20
-> Thus, I propose to update documentation to tell that there are two si=
-des
-> of the transfer in case of mem2dev, dev2mem, where one of them is
-> _memory side_, and it's DMAengine controller's responsibility to
-> rightfully set the transfer width and burst size.
+On Tuesday 19 April 2016 11:42:25 Stefan Roese wrote:
+> On 18.04.2016 15:57, Arnd Bergmann wrote:
+> > On Monday 18 April 2016 15:00:52 Stefan Roese wrote:
+> >> On 18.04.2016 13:32, Arnd Bergmann wrote:
+> > Ok, so I looked up the datasheet again and understood now that it
+> > actually does both ways: a) the direct read/write that I had always assumed
+> > it did with automatic cmd/addr/data generation, and b) the mode where
+> > you do each write transfer separately as implemented by your patch.
+> > 
+> > Those two modes seem to be wildly different in their needs for address
+> > space:
+> > 
+> > - For a) we definitely need the mapping to be the same size as the
+> >    addressable storage of the SPI-NOR (or other device that fits
+> >    into the cmd/addr/data pattern supported by the hardware)
+> > 
+> > - For b) the address is ignored and at most 32 bytes are transfered,
+> >    so whatever the smallest MBUS mapping window size is would certainly
+> >    be enough.
+> >
+> > As a side-note, I see that you use a regular devm_ioremap_resource(),
+> > which I assume prevents the transfers from ever being more than
+> > a single 4-byte word, while burst mode with up to 32 bytes likely
+> > requires a write-combining mapping.
+> 
+> Thanks for the hint. I've tested again with devm_ioremap_wc() and the
+> resulting SPI TX time is identical to the one using the driver with
+> the uncached (non write-combined) mapping. This is most likely a
+> result of the already fully saturated SPI bus speed being the
+> bottle-neck here.
 
-Well a dmaengine maybe operating in a 32bit or 64 bit bus. Doing 64bit =
-will
-not help in former case. How do we guess?
+Ok
 
-I do agree that clients shouldn't be bothered with this
+> A bit more testing has shown, that using devm_ioremap_wc() leads
+> to sporadic failures in the FPGA image downloading though. Now
+> I'm unsure, if its really worth to add some cache flushing after
+> the memcpy() call here (flush_cache_vmap ?) or better keep the
+> uncached ioremap in place.
 
->=20
-> I would make a patch if we would agree on this.
->=20
-> >=20
-> > >=20
-> > >=20
-> > > This should be fixed in certain DMA engine drivers.
-> > >=20
-> > > Also, as you may have noticed when we get maximum length of the
-> > > segment
-> > > we take into consideration what DMA device supports. Many of them
-> > > report
-> > > something like 2^n - 1, which is apparently unaligned and thus in
-> > > the
-> > > poorly written DMA driver leads to performance degradation.
-> > Which Intel controller supports 2^n - 1? AFAIK the dw and idma don'=
-t.
->=20
-> All three mentioned below takes block size as [0 .. 2 ^ number of bit=
-s
-> in the register - 1]. If transfer width is 1 byte (which is calculate=
-d
-> automatically now, the burst will be 1 byte on memory side!
+The cache is not involved here, as devm_ioremap_wc is still uncached.
+However it's possible that memcpy has other issues here. If you
+don't gain anything from sending more than 32 bits at a time,
+writesl() might be a better alternative, but it requires the data
+to be 32-bit aligned in RAM. If the buffer is not aligned, the
+memcpy() might already cause problems in case the kernel
+implementation does not send the data in the correct order.
 
-That is not correct :)
+memcpy_toio() could also be helpful here.
 
->=20
-> >> Looks like all Intel related DMA drivers should be fixed (HSU,
-> > > iDMA64,
-> > > dw_dmac).
->=20
->=20
-> --=20
-> Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-> Intel Finland Oy
->=20
+> >>> This means that the 1MB window is probably a reasonable size (provided
+> >>> that the (most importantly) the SPI-NOR driver can guarantee that it
+> >>> never exceeds this).
+> >>
+> >> I have no problem switching from 1MiB to using 0xffffffff in the
+> >> SPI controller 'reg' node to allow even bigger windows in v6.
+> > 
+> > How do you decide how much of the window to map though? Using 0xffffffff
+> > is nice because it better represents what the hardware looks like
+> > and doesn't limit you from having arbitrarily large mbus windows
+> > based on your needs, but you'd probably have to try mapping various
+> > sizes then to find the maximum supported one, or you'd have to do
+> > some ugly parsing of the parent node ranges.
+> 
+> This is for the single-window mode, right? My comment above was
+> still referring to the original implementation. And yes, this
+> gets a bit complicated and is most likely not really necessary.
+> So I would prefer to keep the mapping fixed to a max. of 1MiB for
+> now.
 
---=20
-~Vinod
+No, I also meant the separate windows here. Based on the discussion
+above, I think the driver can ideally just ioremap 4KB for devices
+other than SPI-NOR, and then you can list the 0xffffffff length.
+
+> > In this example, you have to configure the SPI controller to have 1MB per CS
+> > in single-window mode using the "SPI DecodeMode" and "SPI CS Adress Decode"
+> > registers. The mbus then contains two mappings, one 2MB window spanning
+> > CS3 and CS4 in a continuous CPU range, and one 64K window for a device at
+> > CS6, making it as small as possible to conserve CPU address space.
+> 
+> Thanks. I've prepared a new version implementing this single-
+> window mode. Please let me know how you prefer the cache issue
+> above to be handled (uncached mapping, flush or ?) and I'll
+> update the patch accordingly.
+
+If a write-combining mapping doesn't help you here, just use the normal
+ioremap as before.
+
+The single-window mode won't really work with SPI-NOR unless you make each
+window large enough to hold the largest possible flash (128MB with
+single-window, 256MB with double-window), but that size makes it harder
+to gain much from saving mbus windows when you trade them for gigantic
+CPU address space consumption.
+
+Therefore, we probably want the separate-window mode to allow the
+combination of large SPI flashes with other SPI devices in direct-access
+mode. We can also implement the single (and/or double) window mode
+in addition to that, but realistically we probably don't need that
+as all machines we support in the kernel today have at most one
+non-flash device.
+
+	Arnd
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

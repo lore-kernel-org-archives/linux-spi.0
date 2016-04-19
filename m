@@ -1,25 +1,51 @@
-From: andreas122-Ko4HvKsVEdMwu+U/h7MTDQ@public.gmane.org
-Subject: Greetings!!!
-Date: Mon, 18 Apr 2016 21:12:16 +0100
-Message-ID: <828729.35773.qm__28179.5310475447$1461010826$gmane$org@smtp105.biz.mail.ne1.yahoo.com>
-Reply-To: J_ericdaniels111-1ViLX0X+lBJBDgjK7y7TUQ@public.gmane.org
+From: Po Liu <po.liu-3arQi8VN3Tc@public.gmane.org>
+Subject: RE: [PATCH] dspi: config dspi master regmap with right mode depend on
+ BE or LE
+Date: Tue, 19 Apr 2016 02:30:50 +0000
+Message-ID: <VI1PR0401MB17091173636FAB61369B5ADE926C0@VI1PR0401MB1709.eurprd04.prod.outlook.com>
+References: <1460545402-8162-1-git-send-email-po.liu@nxp.com>
+ <DB5PR0401MB19281A317BFB1D9001F97ABB916A0@DB5PR0401MB1928.eurprd04.prod.outlook.com>
+ <20160418101117.GP3217@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-To: "Mr. Eric" <andreas122-Ko4HvKsVEdMwu+U/h7MTDQ@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Yao Yuan <yao.yuan-3arQi8VN3Tc@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Scott Wood <scott.wood-3arQi8VN3Tc@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Description: Mail message body
+In-Reply-To: <20160418101117.GP3217-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi, how are you? My name is J Eric Denials, External Financial Auditor =
-at Lloyds Banking Group plc., London. It is a pleasure to contact you a=
-t this time through this medium. I have a cool and legitimate deal to d=
-o with you as you're a foreigner, it will be mutually beneficial to bot=
-h. If you=E2=80=99re interested, urgently, get back to me for more expl=
-anation about the deal.
-Regards
-Eric
+SGkgTWFyayBhbmQgU2NvdHQsDQoNClRoYW5rIHlvdSB2ZXJ5IG11Y2ggYm90aCENClRoZSBkZWZh
+dWx0IGRzcGkgaW4gdGhlIC5kdHNpIHNldHRpbmcgdG8gYmUgQmlnIGVuZGlhbiBhcyBkZWZhdWx0
+LiBCdXQgaXQgd2lsbCBoYW5nIGF0IGNwdSBzZXR0aW5nIGJpZyBlbmRpYW4gbW9kZS4gQWZ0ZXIg
+c2V0dGluZyBfZm9ybWF0X2VuZGlhbiA9IFJFR01BUF9FTkRJQU5fTElUVExFIHdpbGwgZml4IGl0
+IG9ubHkgaW4gYmlnIGVuZGlhbiBtb2RlLg0KDQpXZSdsbCBjaGVjayBpdCBtb3JlIGFib3V0IHRo
+ZSB2YWxfZm9ybWF0X2VuZGlhbl9kZWZhdWx0Lg0KDQoNCkJlc3QgcmVnYXJkcywNCkxpdSBQbw0K
+DQoNCkJlc3QgcmVnYXJkcywNCkxpdSBQbw0KDQpFWFQ6ODAzOA0KDQoNCi0tLS0tT3JpZ2luYWwg
+TWVzc2FnZS0tLS0tDQpGcm9tOiBNYXJrIEJyb3duIFttYWlsdG86YnJvb25pZUBrZXJuZWwub3Jn
+XSANClNlbnQ6IE1vbmRheSwgQXByaWwgMTgsIDIwMTYgNjoxMSBQTQ0KVG86IFNjb3R0IFdvb2QN
+CkNjOiBQbyBMaXU7IGxpbnV4LXNwaUB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWtlcm5lbEB2Z2Vy
+Lmtlcm5lbC5vcmcNClN1YmplY3Q6IFJlOiBbUEFUQ0hdIGRzcGk6IGNvbmZpZyBkc3BpIG1hc3Rl
+ciByZWdtYXAgd2l0aCByaWdodCBtb2RlIGRlcGVuZCBvbiBCRSBvciBMRQ0KDQpPbiBTdW4sIEFw
+ciAxNywgMjAxNiBhdCAwMjo0MTo0MEFNICswMDAwLCBTY290dCBXb29kIHdyb3RlOg0KDQo+IExv
+b2tpbmcgbW9yZSBjbG9zZWx5LCB0aGUgYmluZGluZyBoYXMgYSBiaWctZW5kaWFuIHByb3BlcnR5
+LiAgSXQgc2F5cyANCj4gdGhlIGRlZmF1bHQgaWYgdGhhdCBwcm9wZXJ0eSBpcyBhYnNlbnQgaXMg
+bmF0aXZlIGVuZGlhbiwgd2hpY2ggaXMgDQo+IGluc2FuZS4gIEZpeCB0aGUgYmluZGluZyB0byBz
+YXkgdGhhdCBsaXR0bGUgZW5kaWFuIGlzIHRoZSBkZWZhdWx0IA0KPiAodGhpcyBjaGFuZ2Ugc2hv
+dWxkbid0IGJyZWFrIGFueSBleGlzdGluZyB0cmVlcyksIGFuZCBtYWtlIHN1cmUgdGhhdCdzIA0K
+PiB3aGF0IHRoZSBjb2RlIGltcGxlbWVudHMuICBJIHRoaW5rIHlvdSBuZWVkIHZhbF9mb3JtYXRf
+ZW5kaWFuX2RlZmF1bHQsIA0KPiBub3QgdmFsX2Zvcm1hdF9lbmRpYW4uDQoNClRoZSBiaW5kaW5n
+IGRlZmF1bHRzIHRvIGxpdHRsZSBlbmRpYW4gYW5kIChpbiBpbXBsbWVudGF0aW9uIHRlcm1zKSBh
+bHdheXMgaGFzIGRvbmUgdGhvdWdoIHRoYXQgdXNlZCB0byBiZSB1bmludGVudGlvbmFsLiAgVGhl
+cmUgKmFyZSogYSByZWFzb25hYmxlIG51bWJlciBvZiBkZXZpY2VzIG91dCB0aGVyZSB3aGljaCBh
+cmUgbmF0aXZlIGVuZGlhbiwgZm9yIGV4YW1wbGUgbW9zdCBvZiB0aGUgTUlQUyBjaGlwcyBzd2l0
+Y2ggdGhlIGVuZGlhbm5lc3Mgb2YgdGhlIGVudGlyZSBjaGlwIHJhdGhlciB0aGFuIGp1c3QgdGhl
+IENQVSwgYnV0IG1vc3Qgb2YgdGhlIGN1cnJlbnQgdXNhZ2UgaGFzIGJlZW4gb24gQVJNIGRldmlj
+ZXMgd2hpY2ggb25seSBzd2l0Y2ggdGhlIGNvcmUuDQo=
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

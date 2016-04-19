@@ -1,98 +1,124 @@
-From: William Bourque <wfb-q1Y+AKCHEmHQT0dZR+AlfA@public.gmane.org>
-Subject: SPI: Integer overflow cause timeout to be too small
-Date: Tue, 19 Apr 2016 16:59:07 -0400
-Message-ID: <57169C1B.7010100@xiphos.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: [RFC PATCH v2 00/10] ACPI overlays
+Date: Wed, 20 Apr 2016 01:38:58 +0300
+Message-ID: <1461105548-20618-1-git-send-email-octavian.purdila@intel.com>
+Cc: Joel Becker <jlbec-aKy9MeLSZ9dg9hUCZPvPmw@public.gmane.org>, linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-efi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	irina.tirdea-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
+	Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: "Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
+	Len Brown <lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Matt Fleming <matt-mF/unelCI9GS6iBeEJttW/XRex20P6io@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+Return-path: <linux-efi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-efi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
+
+This patch set enables custom ACPI board configuration by adding
+mechanisms in the Linux kernel for loading user defined SSDTs.
+
+In order to support ACPI open-ended hardware configurations we need a
+way to augment the ACPI configuration provided by the firmware
+image. A common example is connecting sensors on I2C / SPI buses on
+development boards.
+
+Although this can be accomplished by creating a kernel platform driver
+or recompiling the firmware image with updated ACPI tables, neither is
+practical: the former proliferates board specific kernel code while
+the latter requires access to firmware tools which are often not
+publicly available.
+
+Because ACPI supports external references in AML code a more practical
+way to augment firmware ACPI configuration is by dynamically loading
+user defined SSDT tables that contain the board specific information.
+
+This patch sets provides three methods for loading custom SSDTs:
+
+* From an EFI variable
+
+  This is the preferred method, when EFI is supported on the platform,
+  because it allows a persistent, OS independent way of storing and
+  updating the user defined SSDTs. There is also work underway to
+  implement EFI support for loading user defined SSDTs and using this
+  method will make it easier to convert to the EFI loading mechanism
+  when that will arrive.
+
+* From the first uncompressed initrd (similar with the override
+  functionality)
+
+  This is useful when EFI is not supported on the platform and when it
+  is not possible to defer the loading to userspace.
+
+* From userspace via configfs
+
+  This is useful when we want to defer the operation to userspace for
+  platform detection, loading the SSDTs from a custom partition, etc.
 
 
-Hi
+Changes from v1:
 
-I bumped into a strange issue in the SPI driver that might be a bug.
+* rebased on top of the ACPI install from initrd table functionality;
+  there is significant overlap between the 1st patch in this series
+  and these patch [1] from Lv - I kept it in this series until the
+  discussions around the taint and config option are resolved
 
-We are developing hardware based on Xilinx Zynq; as storage we uses an 
-N25Q512A NOR Flash over Xilinx Zynq Quad Spi driver.
-The Quad SPI driver is _not_ in the upstream kernel but the overflowing 
-integer that is the root cause of the issue is (see below).
+* make sure EFI_RUNTIME_SERVICES are available before trying to use
+  EFI variables to load tables
 
-As such, the bug may or may not be related to upstream kernel code. I 
-tracked it down and found a fix but I am unsure if the whole issue isn't 
-just something the calling driver is doing wrong.
+* rework the ACPI reconfiguration notifications to work on device
+  granularity (device added or removed) instead of table granularity
+  (table loaded or unloaded)
 
-The QSPI driver code can be found at:
-https://github.com/Xilinx/linux-xlnx/blob/master/drivers/spi/spi-zynq-qspi.c
+* add support for table unloading / device removal
 
-Recently, we noticed we can crash the SPI driver simply by using dd with 
-an overly large block size.
-Something like:
-[root@test-spi ~]# dd if=/dev/mtd13 bs=4000000 count=1 | md5sum
-m25p80 spi0.0: SPI transfer timed out
-m25p80 spi0.0: flash operation timed out
-m25p80 spi0.0: flash operation timed out
-dd: /dev/mtd13: Connection timed out
+* note that the last patch is just a hack to be able to test the table
+  unload / device remove functionality, if someone wants to try out
+  this patch set
 
-At this point the QSPI is effectively dead, any access to the filesystem 
-result in endless timeout. The system needs a reboot to recover.
-
-[root@test-spi ~]# ls /etc
-m25p80 spi0.0: flash operation timed out
-m25p80 spi0.0: flash operation timed out
-ubi0 warning: ubi_io_read: error -110 while reading 60 bytes from PEB 
-167:54048, read only 0 bytes, retry
-m25p80 spi0.0: flash operation timed out
-...
-
-By poking around, I found that the issue is caused by this line (ref: 
-http://lxr.free-electrons.com/source/drivers/spi/spi.c#L972 ):
-ms = xfer->len * 8 * 1000 / xfer->speed_hz;
-
-ms is an unsigned long.
-In the case shown above, "xfer->len" is 4,000,000 and xfer->speed_hz is 
-62,499,599 (65MHz).
-So here 4,000,000 * 8 * 1000 = 32,000,000,000. It overflows the uint32 
-so the end result ends up being 1,935,228,928.
-After being divided by xfer->speed_hz, ms is roughtly equal to 30.96ms, 
-which is way too small for a transfer of this size.
-
-When a timeout occurs, the transfer is stopped; this leave the QSPI in 
-an incoherent state from which it never recover (this seem weird to me?).
-
-I was able to workaround the issue by doing the math the other way, i.e. 
-by dividing the frequency instead of mutiplying the length.
-Since the frequency of SPI should always be in the MHz, it seems safe 
-enough (although division IS slower on some platform).
-The fix looks like this:
-/* Use max() to avoid division by zero for very small frequency */
-ms = xfer->len / max((unsigned long)1, (unsigned long)xfer->speed_hz / 8 
-/ 1000);
+[1] https://patchwork.kernel.org/patch/8795931/
 
 
-Now, as I said, the bug may not lie in spi.c; the culprit may be Xilinx 
-QSPI driver. Maybe it shouldn't have passed such a large length down to 
-spi.c?
-I don't know enough of the SPI architecture to know what's good practice 
-and what's not.
+Octavian Purdila (10):
+  kernel: add TAINT_OVERLAY_ACPI_TABLE
+  acpi: decouple initrd table install from
+    CONFIG_ACPI_INITRD_TABLE_OVERRIDE
+  acpi: fix enumeration (visited) flags for bus rescans
+  acpi: add support for ACPI reconfiguration notifiers
+  i2c: add support for ACPI reconfigure notifications
+  spi: add support for ACPI reconfigure notifications
+  efi: load SSTDs from EFI variables
+  acpi: add support for configfs
+  acpi: add support for loading SSDTs via configfs
+  HACK: acpi: configfs: add unload_hanlde_path attribute for tables
 
-This lead me to the following questions:
-1- Is this an actual bug and if so, is the likely culprit spi.c or 
-spi-zynq-qspi.c?
-2- Should such large transfer length be handled in calling 
-spi-zynq-qspi.c or down in spi.c?
-3- Is it normal for the SPI to die after such timeout? Shouldn't the 
-SPI/QSPI driver be expected to recover from it?
+ Documentation/ABI/testing/configfs-acpi |  23 ++++
+ Documentation/acpi/ssdt-overlays.txt    | 171 +++++++++++++++++++++++++++
+ Documentation/kernel-parameters.txt     |   7 ++
+ Documentation/oops-tracing.txt          |   2 +
+ Documentation/sysctl/kernel.txt         |   1 +
+ MAINTAINERS                             |   1 +
+ arch/x86/kernel/setup.c                 |   2 +-
+ drivers/acpi/Kconfig                    |   9 ++
+ drivers/acpi/Makefile                   |   1 +
+ drivers/acpi/bus.c                      |   9 ++
+ drivers/acpi/configfs.c                 | 198 ++++++++++++++++++++++++++++++++
+ drivers/acpi/internal.h                 |   3 +
+ drivers/acpi/osl.c                      |  80 +++++++------
+ drivers/acpi/scan.c                     |  79 ++++++++++++-
+ drivers/acpi/sysfs.c                    |   6 +-
+ drivers/firmware/efi/efi.c              | 109 ++++++++++++++++++
+ drivers/i2c/i2c-core.c                  | 170 +++++++++++++++++++++------
+ drivers/spi/spi.c                       |  94 +++++++++++++--
+ include/acpi/acpi_bus.h                 |  18 +++
+ include/linux/acpi.h                    |   8 +-
+ include/linux/kernel.h                  |   1 +
+ kernel/panic.c                          |   2 +
+ 22 files changed, 895 insertions(+), 99 deletions(-)
+ create mode 100644 Documentation/ABI/testing/configfs-acpi
+ create mode 100644 Documentation/acpi/ssdt-overlays.txt
+ create mode 100644 drivers/acpi/configfs.c
 
-
-Thanks,
-
-- William Bourque
-Embedded Software Developer,
-Xiphos Technologies
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+-- 
+1.9.1

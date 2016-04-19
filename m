@@ -1,156 +1,52 @@
-From: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH v5] spi: orion.c: Add direct access mode
-Date: Tue, 19 Apr 2016 11:42:25 +0200
-Message-ID: <5715FD81.8090100@denx.de>
-References: <1460974417-32375-1-git-send-email-sr@denx.de>
- <4248364.c0REkIZjj0@wuerfel> <5714DA84.2050505@denx.de>
- <4509446.OJU128rpNa@wuerfel>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Subject: [PATCH] spi: pxa2xx: disallow building on MMP
+Date: Tue, 19 Apr 2016 15:18:20 +0200
+Message-ID: <1461071933-3273163-1-git-send-email-arnd@arndb.de>
+Cc: Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, Daniel Mack <zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <4509446.OJU128rpNa@wuerfel>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 18.04.2016 15:57, Arnd Bergmann wrote:
-> On Monday 18 April 2016 15:00:52 Stefan Roese wrote:
->> On 18.04.2016 13:32, Arnd Bergmann wrote:
->>> On Monday 18 April 2016 12:04:15 Mark Brown wrote:
->>>> On Mon, Apr 18, 2016 at 12:51:55PM +0200, Arnd Bergmann wrote:
->>>>
->>>>> This would be easier if have a conclusive proof that 1MB per CS always enough.
->>>>> Is this something that is guaranteed in the SPI spec or the documentation for
->>>>> this controller?
->>>>
->>>> There's no spec for SPI but if there were it'd be hard to see it
->>>> imposing a limit, one can transfer data as long as the bus is clocked
->>>> (which some things like ADCs and DACs make use of).
->>>>
->>>
->>> I just reread Stefan's patch and realized that I had fundamentally
->>> misunderstood how the transfer is done: I thought the offset inside of
->>> the window was used to address a NOR flash directly, but it seems
->>> it is just used to send arbitrarily long commands.
->>
->> Yes. SPI NOR flash support definitely needs some additional patches.
->> To support the address and commands being inserted in the SPI
->> messages via the corresponding registers. Again, this patch is
->> only intended and tested for very "simple" TX messages without any
->> addresses being inserted at all.
-> 
-> Ok, so I looked up the datasheet again and understood now that it
-> actually does both ways: a) the direct read/write that I had always assumed
-> it did with automatic cmd/addr/data generation, and b) the mode where
-> you do each write transfer separately as implemented by your patch.
-> 
-> Those two modes seem to be wildly different in their needs for address
-> space:
-> 
-> - For a) we definitely need the mapping to be the same size as the
->    addressable storage of the SPI-NOR (or other device that fits
->    into the cmd/addr/data pattern supported by the hardware)
-> 
-> - For b) the address is ignored and at most 32 bytes are transfered,
->    so whatever the smallest MBUS mapping window size is would certainly
->    be enough.
->
-> As a side-note, I see that you use a regular devm_ioremap_resource(),
-> which I assume prevents the transfers from ever being more than
-> a single 4-byte word, while burst mode with up to 32 bytes likely
-> requires a write-combining mapping.
+After MMP has become part of a multiplatform build, we can end up with
+a randconfig build failure in the pxa2xx spi driver:
 
-Thanks for the hint. I've tested again with devm_ioremap_wc() and the
-resulting SPI TX time is identical to the one using the driver with
-the uncached (non write-combined) mapping. This is most likely a
-result of the already fully saturated SPI bus speed being the
-bottle-neck here.
+drivers/spi/built-in.o: In function `pxa2xx_spi_remove':
+:(.text+0x1845c): undefined reference to `pxa_ssp_free'
+drivers/spi/built-in.o: In function `pxa2xx_spi_probe':
+:(.text+0x19844): undefined reference to `pxa_ssp_request'
 
-A bit more testing has shown, that using devm_ioremap_wc() leads
-to sporadic failures in the FPGA image downloading though. Now
-I'm unsure, if its really worth to add some cache flushing after
-the memcpy() call here (flush_cache_vmap ?) or better keep the
-uncached ioremap in place.
+What happens here is that we can enable SPI_PXA2XX when some other
+platform in the same build supports PCI. This normally works because the
+pxa_ssp_request/pxa_ssp_free functions are stubbed out when CONFIG_PXA_SSP
+is disabled. However, we can have PXA_SSP=m when that driver is used by
+the SND_SOC_TTC_DKB audio driver.
 
->>> This means that the 1MB window is probably a reasonable size (provided
->>> that the (most importantly) the SPI-NOR driver can guarantee that it
->>> never exceeds this).
->>
->> I have no problem switching from 1MiB to using 0xffffffff in the
->> SPI controller 'reg' node to allow even bigger windows in v6.
-> 
-> How do you decide how much of the window to map though? Using 0xffffffff
-> is nice because it better represents what the hardware looks like
-> and doesn't limit you from having arbitrarily large mbus windows
-> based on your needs, but you'd probably have to try mapping various
-> sizes then to find the maximum supported one, or you'd have to do
-> some ugly parsing of the parent node ranges.
+This changes the Kconfig logic to just disallow the pxa2xx SPI
+driver on anything but x86 and pxa.
 
-This is for the single-window mode, right? My comment above was
-still referring to the original implementation. And yes, this
-gets a bit complicated and is most likely not really necessary.
-So I would prefer to keep the mapping fixed to a max. of 1MiB for
-now.
+Signed-off-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+---
+ drivers/spi/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index e33be3775a3c..ad8d8714d5b0 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -469,7 +469,7 @@ config SPI_PPC4xx
  
->>> It also means that we are probably better off using the single-window mode
->>> of the SPI controller, where all CS lines share a single mbus window.
->>> The only real difference here is that we can map all endpoints using a
->>> single contiguous window into the CPU address space if we want, or we
->>> can still map them separately on a given board if that results in a nicer
->>> layout.
->>
->> Frankly, I've just read about this single-window mode for the first
->> time. What I miss here in this mode though, is the configuration of
->> the SPI device (chip-select 0...7) for this direct-mode in the SPI
->> driver. With the currently implemented separate window method, your
->> suggested method is easy: Either is window can be mapped (direct-mode)
->> or not (indirect-mode). With this single-window mode I'm missing the
->> per-device configuration for direct-mode. Or what is your idea on
->> how to configure this access-mode in this case?
-> 
-> It would work the same way, the main difference is that for single-window
-> mode all the devices get the same amount of address MBUS address space,
-> e.g. 1MB per CS in a contiguous MBUS range, but you can still map
-> subsections of it into the CPU, e.g.
-> 
-> 
-> &mbus {
-> 	ranges = <MBUS_ID(0xf0, 0x01) 0 0 0xf1000000 0x100000>,   /* internal regs */
-> 		 <MBUS_ID(0x01, 0x1e) 0x300000 0 0xf1100000 0x200000>, /* CS3+CS4 */
-> 		 <MBUS_ID(0x01, 0x1d) 0x600000 0 0xf1300000 0x80000>, /* bootrom */
-> 		 <MBUS_ID(0x01, 0x1e) 0x600000 0 0xf1380000 0x10000>; /* CS6 */
-> 
-> 	spi@f0,01,10600 {
->                  reg = <MBUS_ID(0xf0, 0x01) 0x10600 0x28>,       /* control */
->                        <MBUS_ID(0x01, 0x1e) 0x000000 0x100000>, /* CS0 */
->                        <MBUS_ID(0x01, 0x1e) 0x100000 0x100000>, /* CS1 */
->                        <MBUS_ID(0x01, 0x1e) 0x200000 0x100000>, /* CS2 */
->                        <MBUS_ID(0x01, 0x1e) 0x300000 0x100000>, /* CS3 */
->                        <MBUS_ID(0x01, 0x1e) 0x400000 0x100000>, /* CS4 */
->                        <MBUS_ID(0x01, 0x1e) 0x500000 0x100000>, /* CS5 */
->                        <MBUS_ID(0x01, 0x1e) 0x600000 0x100000>, /* CS6 */
->                        <MBUS_ID(0x01, 0x1e) 0x700000 0x100000>; /* CS7 */
-> 	};
-> };
-> 
-> In this example, you have to configure the SPI controller to have 1MB per CS
-> in single-window mode using the "SPI DecodeMode" and "SPI CS Adress Decode"
-> registers. The mbus then contains two mappings, one 2MB window spanning
-> CS3 and CS4 in a continuous CPU range, and one 64K window for a device at
-> CS6, making it as small as possible to conserve CPU address space.
-
-Thanks. I've prepared a new version implementing this single-
-window mode. Please let me know how you prefer the cache issue
-above to be handled (uncached mapping, flush or ?) and I'll
-update the patch accordingly.
-
-Thanks,
-Stefan
+ config SPI_PXA2XX
+ 	tristate "PXA2xx SSP SPI master"
+-	depends on (ARCH_PXA || PCI || ACPI)
++	depends on ARCH_PXA || (X86 && (PCI || ACPI))
+ 	select PXA_SSP if ARCH_PXA
+ 	help
+ 	  This enables using a PXA2xx or Sodaville SSP port as a SPI master
+-- 
+2.7.0
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

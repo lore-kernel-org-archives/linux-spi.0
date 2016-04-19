@@ -1,66 +1,97 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCHv2] wlcore: spi: add wl18xx support
-Date: Tue, 19 Apr 2016 19:46:27 +0100
-Message-ID: <20160419184627.GG3217@sirena.org.uk>
-References: <14313437.cDJIgY3kzo@wuerfel>
- <8665E2433BC68541A24DFFCA87B70F5B360BF614@DFRE01.ent.ti.com>
- <1463330011.BhWEcYYuGD@wuerfel>
- <8665E2433BC68541A24DFFCA87B70F5B360C0745@DFRE01.ent.ti.com>
- <20160419171239.GC3217@sirena.org.uk>
- <sjdvun1fuj4nyi0bgf268g53.1461086401627@email.android.com>
- <20160419172706.GD3217@sirena.org.uk>
- <oe8hqfknrcljrjawnrxlohvr.1461087275186@email.android.com>
- <20160419175402.GE3217@sirena.org.uk>
- <us0dopt1inbrt0x47njgc2vy.1461089085965@email.android.com>
+From: William Bourque <wfb-q1Y+AKCHEmHQT0dZR+AlfA@public.gmane.org>
+Subject: SPI: Integer overflow cause timeout to be too small
+Date: Tue, 19 Apr 2016 16:59:07 -0400
+Message-ID: <57169C1B.7010100@xiphos.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="mEgWsss+US7fWyVR"
-Cc: "kvalo-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org" <kvalo-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	=?utf-8?B?77+977+977+977+9IO+/ve+/ve+/ve+/ve+/vQ==?=
-	<eyalreizer-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: "Reizer, Eyal" <eyalr-l0cyMroinI0@public.gmane.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <us0dopt1inbrt0x47njgc2vy.1461089085965-2ueSQiBKiTY7tOexoI0I+QC/G2K4zDHf@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---mEgWsss+US7fWyVR
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hi
 
-On Tue, Apr 19, 2016 at 06:04:49PM +0000, Reizer, Eyal wrote:
+I bumped into a strange issue in the SPI driver that might be a bug.
 
-> Thanks! Glad the illustration helped.
-> I will try it out again as if i recall cotrectly, i did try that l, and it didnt produce the correct waveform, but perhaps i didnt understand the usage of .cs_change correctly.
-> Will double check anyway.
+We are developing hardware based on Xilinx Zynq; as storage we uses an 
+N25Q512A NOR Flash over Xilinx Zynq Quad Spi driver.
+The Quad SPI driver is _not_ in the upstream kernel but the overflowing 
+integer that is the root cause of the issue is (see below).
 
-It could also be a bug in your controller driver, it's common for them
-to not handle cs_change correctly (at least those that open code the
-message loop, obviously modern ones just factor this out into the core).
+As such, the bug may or may not be related to upstream kernel code. I 
+tracked it down and found a fix but I am unsure if the whole issue isn't 
+just something the calling driver is doing wrong.
 
---mEgWsss+US7fWyVR
-Content-Type: application/pgp-signature; name="signature.asc"
+The QSPI driver code can be found at:
+https://github.com/Xilinx/linux-xlnx/blob/master/drivers/spi/spi-zynq-qspi.c
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Recently, we noticed we can crash the SPI driver simply by using dd with 
+an overly large block size.
+Something like:
+[root@test-spi ~]# dd if=/dev/mtd13 bs=4000000 count=1 | md5sum
+m25p80 spi0.0: SPI transfer timed out
+m25p80 spi0.0: flash operation timed out
+m25p80 spi0.0: flash operation timed out
+dd: /dev/mtd13: Connection timed out
 
-iQEcBAEBCAAGBQJXFn0CAAoJECTWi3JdVIfQKw0H/jOYdlXC0V/rFL8ZKhslFovs
-ldUSdQfhkzvk7V5VBXP4hGnX+TwCXdNXSc/O7/gK1IUYBOmvsKISonGuIypTUVXu
-ExgAsuR2JfUprjfCldeUhhIJIQryCP0gc1adis4IK4UrjoX6hSwqu3pK9OKHpdYT
-0Q4WwnDAP07hFfWGJEM1Jeid8n2rnQRW1B/mCOteW1r85+XdtuiS/NVWZwj6SDUr
-m135oFf9d0cVycKqcu4KXW+FBCHAp25I/XKGUg924jU0ZfSn5TB5HJpvLiiMq3d/
-JppDWHOmfsNjLzBLb5Ciq2LQzSVHz4JuTK9n9Y5ezwsJ+MSX16XxnuL1RaQ7314=
-=UEMr
------END PGP SIGNATURE-----
+At this point the QSPI is effectively dead, any access to the filesystem 
+result in endless timeout. The system needs a reboot to recover.
 
---mEgWsss+US7fWyVR--
+[root@test-spi ~]# ls /etc
+m25p80 spi0.0: flash operation timed out
+m25p80 spi0.0: flash operation timed out
+ubi0 warning: ubi_io_read: error -110 while reading 60 bytes from PEB 
+167:54048, read only 0 bytes, retry
+m25p80 spi0.0: flash operation timed out
+...
+
+By poking around, I found that the issue is caused by this line (ref: 
+http://lxr.free-electrons.com/source/drivers/spi/spi.c#L972 ):
+ms = xfer->len * 8 * 1000 / xfer->speed_hz;
+
+ms is an unsigned long.
+In the case shown above, "xfer->len" is 4,000,000 and xfer->speed_hz is 
+62,499,599 (65MHz).
+So here 4,000,000 * 8 * 1000 = 32,000,000,000. It overflows the uint32 
+so the end result ends up being 1,935,228,928.
+After being divided by xfer->speed_hz, ms is roughtly equal to 30.96ms, 
+which is way too small for a transfer of this size.
+
+When a timeout occurs, the transfer is stopped; this leave the QSPI in 
+an incoherent state from which it never recover (this seem weird to me?).
+
+I was able to workaround the issue by doing the math the other way, i.e. 
+by dividing the frequency instead of mutiplying the length.
+Since the frequency of SPI should always be in the MHz, it seems safe 
+enough (although division IS slower on some platform).
+The fix looks like this:
+/* Use max() to avoid division by zero for very small frequency */
+ms = xfer->len / max((unsigned long)1, (unsigned long)xfer->speed_hz / 8 
+/ 1000);
+
+
+Now, as I said, the bug may not lie in spi.c; the culprit may be Xilinx 
+QSPI driver. Maybe it shouldn't have passed such a large length down to 
+spi.c?
+I don't know enough of the SPI architecture to know what's good practice 
+and what's not.
+
+This lead me to the following questions:
+1- Is this an actual bug and if so, is the likely culprit spi.c or 
+spi-zynq-qspi.c?
+2- Should such large transfer length be handled in calling 
+spi-zynq-qspi.c or down in spi.c?
+3- Is it normal for the SPI to die after such timeout? Shouldn't the 
+SPI/QSPI driver be expected to recover from it?
+
+
+Thanks,
+
+- William Bourque
+Embedded Software Developer,
+Xiphos Technologies
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,51 +1,91 @@
-From: Po Liu <po.liu-3arQi8VN3Tc@public.gmane.org>
-Subject: RE: [PATCH] dspi: config dspi master regmap with right mode depend on
- BE or LE
-Date: Tue, 19 Apr 2016 02:30:50 +0000
-Message-ID: <VI1PR0401MB17091173636FAB61369B5ADE926C0@VI1PR0401MB1709.eurprd04.prod.outlook.com>
-References: <1460545402-8162-1-git-send-email-po.liu@nxp.com>
- <DB5PR0401MB19281A317BFB1D9001F97ABB916A0@DB5PR0401MB1928.eurprd04.prod.outlook.com>
- <20160418101117.GP3217@sirena.org.uk>
+From: "Reizer, Eyal" <eyalr-l0cyMroinI0@public.gmane.org>
+Subject: RE: [PATCHv2] wlcore: spi: add wl18xx support
+Date: Tue, 19 Apr 2016 09:05:45 +0000
+Message-ID: <8665E2433BC68541A24DFFCA87B70F5B360C0745@DFRE01.ent.ti.com>
+References: <1460273570-12298-1-git-send-email-eyalr@ti.com>
+ <14313437.cDJIgY3kzo@wuerfel>
+ <8665E2433BC68541A24DFFCA87B70F5B360BF614@DFRE01.ent.ti.com>
+ <1463330011.BhWEcYYuGD@wuerfel>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Cc: Kalle Valo <kvalo-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Eyal Reizer <eyalreizer-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Yao Yuan <yao.yuan-3arQi8VN3Tc@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Scott Wood <scott.wood-3arQi8VN3Tc@public.gmane.org>
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160418101117.GP3217-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <1463330011.BhWEcYYuGD@wuerfel>
 Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-SGkgTWFyayBhbmQgU2NvdHQsDQoNClRoYW5rIHlvdSB2ZXJ5IG11Y2ggYm90aCENClRoZSBkZWZh
-dWx0IGRzcGkgaW4gdGhlIC5kdHNpIHNldHRpbmcgdG8gYmUgQmlnIGVuZGlhbiBhcyBkZWZhdWx0
-LiBCdXQgaXQgd2lsbCBoYW5nIGF0IGNwdSBzZXR0aW5nIGJpZyBlbmRpYW4gbW9kZS4gQWZ0ZXIg
-c2V0dGluZyBfZm9ybWF0X2VuZGlhbiA9IFJFR01BUF9FTkRJQU5fTElUVExFIHdpbGwgZml4IGl0
-IG9ubHkgaW4gYmlnIGVuZGlhbiBtb2RlLg0KDQpXZSdsbCBjaGVjayBpdCBtb3JlIGFib3V0IHRo
-ZSB2YWxfZm9ybWF0X2VuZGlhbl9kZWZhdWx0Lg0KDQoNCkJlc3QgcmVnYXJkcywNCkxpdSBQbw0K
-DQoNCkJlc3QgcmVnYXJkcywNCkxpdSBQbw0KDQpFWFQ6ODAzOA0KDQoNCi0tLS0tT3JpZ2luYWwg
-TWVzc2FnZS0tLS0tDQpGcm9tOiBNYXJrIEJyb3duIFttYWlsdG86YnJvb25pZUBrZXJuZWwub3Jn
-XSANClNlbnQ6IE1vbmRheSwgQXByaWwgMTgsIDIwMTYgNjoxMSBQTQ0KVG86IFNjb3R0IFdvb2QN
-CkNjOiBQbyBMaXU7IGxpbnV4LXNwaUB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWtlcm5lbEB2Z2Vy
-Lmtlcm5lbC5vcmcNClN1YmplY3Q6IFJlOiBbUEFUQ0hdIGRzcGk6IGNvbmZpZyBkc3BpIG1hc3Rl
-ciByZWdtYXAgd2l0aCByaWdodCBtb2RlIGRlcGVuZCBvbiBCRSBvciBMRQ0KDQpPbiBTdW4sIEFw
-ciAxNywgMjAxNiBhdCAwMjo0MTo0MEFNICswMDAwLCBTY290dCBXb29kIHdyb3RlOg0KDQo+IExv
-b2tpbmcgbW9yZSBjbG9zZWx5LCB0aGUgYmluZGluZyBoYXMgYSBiaWctZW5kaWFuIHByb3BlcnR5
-LiAgSXQgc2F5cyANCj4gdGhlIGRlZmF1bHQgaWYgdGhhdCBwcm9wZXJ0eSBpcyBhYnNlbnQgaXMg
-bmF0aXZlIGVuZGlhbiwgd2hpY2ggaXMgDQo+IGluc2FuZS4gIEZpeCB0aGUgYmluZGluZyB0byBz
-YXkgdGhhdCBsaXR0bGUgZW5kaWFuIGlzIHRoZSBkZWZhdWx0IA0KPiAodGhpcyBjaGFuZ2Ugc2hv
-dWxkbid0IGJyZWFrIGFueSBleGlzdGluZyB0cmVlcyksIGFuZCBtYWtlIHN1cmUgdGhhdCdzIA0K
-PiB3aGF0IHRoZSBjb2RlIGltcGxlbWVudHMuICBJIHRoaW5rIHlvdSBuZWVkIHZhbF9mb3JtYXRf
-ZW5kaWFuX2RlZmF1bHQsIA0KPiBub3QgdmFsX2Zvcm1hdF9lbmRpYW4uDQoNClRoZSBiaW5kaW5n
-IGRlZmF1bHRzIHRvIGxpdHRsZSBlbmRpYW4gYW5kIChpbiBpbXBsbWVudGF0aW9uIHRlcm1zKSBh
-bHdheXMgaGFzIGRvbmUgdGhvdWdoIHRoYXQgdXNlZCB0byBiZSB1bmludGVudGlvbmFsLiAgVGhl
-cmUgKmFyZSogYSByZWFzb25hYmxlIG51bWJlciBvZiBkZXZpY2VzIG91dCB0aGVyZSB3aGljaCBh
-cmUgbmF0aXZlIGVuZGlhbiwgZm9yIGV4YW1wbGUgbW9zdCBvZiB0aGUgTUlQUyBjaGlwcyBzd2l0
-Y2ggdGhlIGVuZGlhbm5lc3Mgb2YgdGhlIGVudGlyZSBjaGlwIHJhdGhlciB0aGFuIGp1c3QgdGhl
-IENQVSwgYnV0IG1vc3Qgb2YgdGhlIGN1cnJlbnQgdXNhZ2UgaGFzIGJlZW4gb24gQVJNIGRldmlj
-ZXMgd2hpY2ggb25seSBzd2l0Y2ggdGhlIGNvcmUuDQo=
+Arnd,
+
+> > > >
+> > > > - all wilink family needs special init command for entering wspi mode.
+> > > >   extra clock cycles should be sent after the spi init command while the
+> > > >   cs pin is high.
+> > > > - switch to controling the cs pin from the spi driver for achieveing the
+> > > >   above.
+> > > > - the selected cs gpio is read from the spi device-tree node using the
+> > > >   cs-gpios field and setup as a gpio.
+> > > > - See the example below for specifying the cs gpio using the cs-gpios
+> entry
+> > > > &spi0   {
+> > > >         ...
+> > > >         cs-gpios = <&gpio0 5 0>;
+> > > >         ...
+> > > >         wlcore: wlcore@0 {
+> > > >                 compatible = "ti,wl1835";
+> > > >         ...
+> > > >         ...
+> > > >         };
+> > > > };
+> > > >
+> > > > Signed-off-by: Eyal Reizer <eyalr-l0cyMroinI0@public.gmane.org>
+> > >
+> > > I don't think this can work in general: not all SPI hosts uses GPIOs
+> > > for controlling CS, so the logic can't work, and it's also a
+> > > layering violation for the driver to look at the parent.
+> > >
+> > > I would suggest fixing this using a new API function from the SPI
+> > > core, if we don't already have a generic way to do it.
+> > >
+> > Originally this is what I have done until I was pointed to the generic
+> > cs-gpio mechanism in the SPI core.
+> > It is a generic mechanism already in the SPI core driver.
+> > See: Documentation/devicetree/bindings/spi/spi-bus.txt
+> 
+> The cs-gpios property is documented as optional, it defines how you should
+> list the gpios if CS is implemented using gpio, but not all hardware does it like
+> this.
+> 
+> > It is also part of the generic spi.h (include/Linux/spi/spi.h),
+> > already part of " struct spi_device" So it seemed redundant adding
+> > another mechanism for implementing the same.
+> > Platform that interact with a wilink need to use it, and platforms
+> > that don't have this capability will probably not interact with a wilink device
+> using SPI.
+> 
+> The cs_gpio field in spi_device belongs to the spi host controller, no other
+> slave driver uses it.
+> 
+> I wasn't asking for a duplication of this mechanism, but an interface to use it
+> properly. Internally, the spi core uses the spi_set_cs() function to pick a CS.
+> Find a way to use that rather than reimplementing it incorrectly.
+> 
+
+Understood. As this special CS manipulation is unique to wspi (wilink spi)  I think the 
+best option is to move this gpio allocation into wlcore_spi as a new device tree entry
+used only by this driver.
+If you agree I will submit a v3.
+
+Best Regards,
+Eyal
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

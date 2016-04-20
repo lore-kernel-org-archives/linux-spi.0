@@ -1,139 +1,71 @@
-From: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
 Subject: Re: [PATCH v5] spi: orion.c: Add direct access mode
-Date: Wed, 20 Apr 2016 09:38:29 +0200
-Message-ID: <571731F5.2010809@denx.de>
-References: <1460974417-32375-1-git-send-email-sr@denx.de>
- <4509446.OJU128rpNa@wuerfel> <5715FD81.8090100@denx.de>
- <3956609.3ttDzXh866@wuerfel>
+Date: Wed, 20 Apr 2016 10:11:50 +0200
+Message-ID: <4680158.9eGGVIb1s6@wuerfel>
+References: <1460974417-32375-1-git-send-email-sr@denx.de> <3956609.3ttDzXh866@wuerfel> <571731F5.2010809@denx.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
 Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
 	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
 	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+To: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <3956609.3ttDzXh866@wuerfel>
+In-Reply-To: <571731F5.2010809-ynQEQJNshbs@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 19.04.2016 15:41, Arnd Bergmann wrote:
-> On Tuesday 19 April 2016 11:42:25 Stefan Roese wrote:
->> On 18.04.2016 15:57, Arnd Bergmann wrote:
->>> On Monday 18 April 2016 15:00:52 Stefan Roese wrote:
->>>> On 18.04.2016 13:32, Arnd Bergmann wrote:
->>> Ok, so I looked up the datasheet again and understood now that it
->>> actually does both ways: a) the direct read/write that I had always assumed
->>> it did with automatic cmd/addr/data generation, and b) the mode where
->>> you do each write transfer separately as implemented by your patch.
->>>
->>> Those two modes seem to be wildly different in their needs for address
->>> space:
->>>
->>> - For a) we definitely need the mapping to be the same size as the
->>>     addressable storage of the SPI-NOR (or other device that fits
->>>     into the cmd/addr/data pattern supported by the hardware)
->>>
->>> - For b) the address is ignored and at most 32 bytes are transfered,
->>>     so whatever the smallest MBUS mapping window size is would certainly
->>>     be enough.
->>>
->>> As a side-note, I see that you use a regular devm_ioremap_resource(),
->>> which I assume prevents the transfers from ever being more than
->>> a single 4-byte word, while burst mode with up to 32 bytes likely
->>> requires a write-combining mapping.
->>
->> Thanks for the hint. I've tested again with devm_ioremap_wc() and the
->> resulting SPI TX time is identical to the one using the driver with
->> the uncached (non write-combined) mapping. This is most likely a
->> result of the already fully saturated SPI bus speed being the
->> bottle-neck here.
->
-> Ok
->
->> A bit more testing has shown, that using devm_ioremap_wc() leads
->> to sporadic failures in the FPGA image downloading though. Now
->> I'm unsure, if its really worth to add some cache flushing after
->> the memcpy() call here (flush_cache_vmap ?) or better keep the
->> uncached ioremap in place.
->
-> The cache is not involved here, as devm_ioremap_wc is still uncached.
-> However it's possible that memcpy has other issues here. If you
-> don't gain anything from sending more than 32 bits at a time,
-> writesl() might be a better alternative, but it requires the data
-> to be 32-bit aligned in RAM. If the buffer is not aligned, the
-> memcpy() might already cause problems in case the kernel
-> implementation does not send the data in the correct order.
->
-> memcpy_toio() could also be helpful here.
->
->>>>> This means that the 1MB window is probably a reasonable size (provided
->>>>> that the (most importantly) the SPI-NOR driver can guarantee that it
->>>>> never exceeds this).
->>>>
->>>> I have no problem switching from 1MiB to using 0xffffffff in the
->>>> SPI controller 'reg' node to allow even bigger windows in v6.
->>>
->>> How do you decide how much of the window to map though? Using 0xffffffff
->>> is nice because it better represents what the hardware looks like
->>> and doesn't limit you from having arbitrarily large mbus windows
->>> based on your needs, but you'd probably have to try mapping various
->>> sizes then to find the maximum supported one, or you'd have to do
->>> some ugly parsing of the parent node ranges.
->>
->> This is for the single-window mode, right? My comment above was
->> still referring to the original implementation. And yes, this
->> gets a bit complicated and is most likely not really necessary.
->> So I would prefer to keep the mapping fixed to a max. of 1MiB for
->> now.
->
-> No, I also meant the separate windows here. Based on the discussion
-> above, I think the driver can ideally just ioremap 4KB for devices
-> other than SPI-NOR, and then you can list the 0xffffffff length.
->
->>> In this example, you have to configure the SPI controller to have 1MB per CS
->>> in single-window mode using the "SPI DecodeMode" and "SPI CS Adress Decode"
->>> registers. The mbus then contains two mappings, one 2MB window spanning
->>> CS3 and CS4 in a continuous CPU range, and one 64K window for a device at
->>> CS6, making it as small as possible to conserve CPU address space.
->>
->> Thanks. I've prepared a new version implementing this single-
->> window mode. Please let me know how you prefer the cache issue
->> above to be handled (uncached mapping, flush or ?) and I'll
->> update the patch accordingly.
->
-> If a write-combining mapping doesn't help you here, just use the normal
-> ioremap as before.
+On Wednesday 20 April 2016 09:38:29 Stefan Roese wrote:
+> > The single-window mode won't really work with SPI-NOR unless you make each
+> > window large enough to hold the largest possible flash (128MB with
+> > single-window, 256MB with double-window), but that size makes it harder
+> > to gain much from saving mbus windows when you trade them for gigantic
+> > CPU address space consumption.
+> >
+> > Therefore, we probably want the separate-window mode to allow the
+> > combination of large SPI flashes with other SPI devices in direct-access
+> > mode. We can also implement the single (and/or double) window mode
+> > in addition to that, but realistically we probably don't need that
+> > as all machines we support in the kernel today have at most one
+> > non-flash device.
+> 
+> Yes, this is also my feeling. While implementing this 0xffffffff
+> size in the SPI controller 'reg' DT node, I just stumbled over the
+> following problem: The resulting size of the area to map
+> (of_address_to_resource) is not the minimum of the 'soc' 'ranges'
+> entry and this 0xffffffff as I would have expected. But its always
+> 0xffffffff. Do you know if this is general problem with this
+> approach or perhaps a problem / bug in the DT address probing /
+> translation?
 
-Okay, switching back to the normal ioremap.
+That is the problem I was trying to explain a few mails back. The
+creation of the platform resources does not look at what size can
+be translated. I had not considered the possibility that this could
+be changed (which would make things work here), but there are also
+reasons for not changing it: if we make the resource smaller (possibly
+even changing the start rather than the end), that may be even
+more unexpected to other driver writers when the parent ranges 
+are smaller than the device addresses.
 
-> The single-window mode won't really work with SPI-NOR unless you make each
-> window large enough to hold the largest possible flash (128MB with
-> single-window, 256MB with double-window), but that size makes it harder
-> to gain much from saving mbus windows when you trade them for gigantic
-> CPU address space consumption.
->
-> Therefore, we probably want the separate-window mode to allow the
-> combination of large SPI flashes with other SPI devices in direct-access
-> mode. We can also implement the single (and/or double) window mode
-> in addition to that, but realistically we probably don't need that
-> as all machines we support in the kernel today have at most one
-> non-flash device.
+However, I think there is a simpler solution here: for normal
+devices, just always map just a single page using ioremap,
+independent of what size the mbus mapping is. If you change
+from memcpy() to writesl(), all writes will go to address zero
+anyway, and we are already guaranteed (by not using ioremap_wc)
+that there won't be any transfers that span more than four bytes
+at a time (8 bytes once we use the driver on 64-bit machines
+with writesq()).
 
-Yes, this is also my feeling. While implementing this 0xffffffff
-size in the SPI controller 'reg' DT node, I just stumbled over the
-following problem: The resulting size of the area to map
-(of_address_to_resource) is not the minimum of the 'soc' 'ranges'
-entry and this 0xffffffff as I would have expected. But its always
-0xffffffff. Do you know if this is general problem with this
-approach or perhaps a problem / bug in the DT address probing /
-translation?
+For the direct spi-nor or spi-nand modes, we need extra code
+in the spi controller driver, and that code will then also have
+to ioremap_wc() the entire device. That ioremap should fail
+if the ranges property lists a smaller area than the entire
+device and it can fall back to the mode of using the 4k page
+map.
 
-Thanks,
-Stefan
-
+	Arnd
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

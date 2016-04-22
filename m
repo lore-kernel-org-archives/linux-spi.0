@@ -1,39 +1,48 @@
-From: Purna Chandra Mandal <purna.mandal@microchip.com>
-Subject: Re: [patch] spi: pic32-sqi: silence array overflow warning
-Date: Fri, 22 Apr 2016 15:28:13 +0530
-Message-ID: <5719F5B5.2030101@microchip.com>
-References: <20160422095524.GB11398@mwanda>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie@kernel.org>, <linux-spi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-To: Dan Carpenter <dan.carpenter@oracle.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20160422095524.GB11398@mwanda>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: [PATCH] spi: spi-orion: enable the driver on ARCH_MVEBU platforms
+Date: Fri, 22 Apr 2016 15:17:28 +0200
+Message-ID: <1461331048-27451-1-git-send-email-thomas.petazzoni@free-electrons.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	Hanna Hawa <hannah-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	Yehuda Yitschak <yehuday-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
+	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
+	Sebastian Hesselbarth <sebastian.hesselbarth-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 04/22/2016 03:25 PM, Dan Carpenter wrote:
+The SPI controller managed by the spi-orion is used on the new ARM64
+Marvell Armada 7K/8K SoCs. In order to allow this driver to be built
+for this platform, we allow it to be selected for ARCH_MVEBU=y
+configurations.
 
-> We read one element beyond the end of the array when we access
-> "rdesc[i + 1]" so it causes a static checker warning.  It's harmless
-> because we write over it again on the next line.  But let's just silence
-> the warning.
->
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
->
-> diff --git a/drivers/spi/spi-pic32-sqi.c b/drivers/spi/spi-pic32-sqi.c
-> index b215347..74b9e68 100644
-> --- a/drivers/spi/spi-pic32-sqi.c
-> +++ b/drivers/spi/spi-pic32-sqi.c
-> @@ -537,7 +537,7 @@ static int ring_desc_ring_alloc(struct pic32_sqi *sqi)
->  	}
->  
->  	/* Prepare BD: chain to next BD(s) */
-> -	for (i = 0, rdesc = sqi->ring; i < PESQI_BD_COUNT; i++)
-> +	for (i = 0, rdesc = sqi->ring; i < PESQI_BD_COUNT - 1; i++)
->  		bd[i].bd_nextp = rdesc[i + 1].bd_dma;
->  	bd[PESQI_BD_COUNT - 1].bd_nextp = 0;
->
-Reviewed-by: Purna Chandra Mandal <purna.mandal@microchip.com>
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+---
+ drivers/spi/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 9d8c84b..720c5ee 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -432,7 +432,7 @@ config SPI_OMAP_100K
+ 
+ config SPI_ORION
+ 	tristate "Orion SPI master"
+-	depends on PLAT_ORION || COMPILE_TEST
++	depends on PLAT_ORION || ARCH_MVEBU || COMPILE_TEST
+ 	help
+ 	  This enables using the SPI master controller on the Orion chips.
+ 
+-- 
+2.6.4
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

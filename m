@@ -1,71 +1,99 @@
-From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: core: add hook flash_read_supported to spi_master
-Date: Sat, 23 Apr 2016 22:47:08 +0200
-Message-ID: <571BDF4C.1000102@gmail.com>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH RFT] spi: pic32-sqi: Remove pic32_sqi_setup and
+ pic32_sqi_cleanup
+Date: Sun, 24 Apr 2016 14:59:20 +0800
+Message-ID: <1461481160.19798.1.camel@ingics.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: Purna Chandra Mandal <purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-If hook spi_flash_read is implemented the fast flash read feature
-is enabled for all devices attached to the respective master.
+Current code does not use ctldata at all, so remove spi_set_ctldata call.
 
-In most cases there is just one flash chip, however there are also
-devices with more than one flash chip, namely some WiFi routers.
-Then the fast flash read feature can be used for the first chip only.
-OpenWRT implemented an own handling of this case, using controller_data
-element of spi_device to hold the information whether fast flash read
-can be used for a device.
+spi_setup() will set spi->bits_per_word = 8 if it was not set, so remove
+!spi->max_speed_hz checking.
 
-This patch adds hook flash_read_supported to spi_master which is
-used to extend spi_flash_read_supported() by checking whether the
-fast flash read feature can be used for a specific spi_device.
+The spi core allows absent of spi->max_speed_hz setting, if it was not set
+spi_setup() assigns spi->master->max_speed_hz to it.
 
-If the hook is not implemented the default behavior is to allow
-fast flash read for all devices (if spi_flash_read is implemented).
+spi core allows spi->max_speed_hz > spi->master->max_speed_hz, in this case
+spi core will limit the transfer speed to ensure xfer->speed_hz won't
+greater than spi->master->max_speed_hz so remove checking if
+spi->max_speed_hz is higher than spi->master->max_speed_hz.
 
-Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+As a result, both pic32_sqi_setup() and pic32_sqi_cleanup() can be removed.
+
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 ---
- include/linux/spi/spi.h | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/spi/spi-pic32-sqi.c | 41 -----------------------------------------
+ 1 file changed, 41 deletions(-)
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 857a9a1..1f03483 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -372,6 +372,7 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
-  * @unprepare_message: undo any work done by prepare_message().
-  * @spi_flash_read: to support spi-controller hardwares that provide
-  *                  accelerated interface to read from flash devices.
-+ * @flash_read_supported: spi device supports flash read
-  * @cs_gpios: Array of GPIOs to use as chip select lines; one per CS
-  *	number. Any individual value may be -ENOENT for CS lines that
-  *	are not GPIOs (driven by the SPI controller itself).
-@@ -529,6 +530,7 @@ struct spi_master {
- 				 struct spi_message *message);
- 	int (*spi_flash_read)(struct  spi_device *spi,
- 			      struct spi_flash_read_message *msg);
-+	bool (*flash_read_supported)(struct spi_device *spi);
- 
- 	/*
- 	 * These hooks are for drivers that use a generic implementation
-@@ -1158,7 +1160,9 @@ struct spi_flash_read_message {
- /* SPI core interface for flash read support */
- static inline bool spi_flash_read_supported(struct spi_device *spi)
- {
--	return spi->master->spi_flash_read ? true : false;
-+	return spi->master->spi_flash_read &&
-+	       (!spi->master->flash_read_supported ||
-+	       spi->master->flash_read_supported(spi));
+diff --git a/drivers/spi/spi-pic32-sqi.c b/drivers/spi/spi-pic32-sqi.c
+index b215347..b5ef4d0 100644
+--- a/drivers/spi/spi-pic32-sqi.c
++++ b/drivers/spi/spi-pic32-sqi.c
+@@ -460,45 +460,6 @@ static int pic32_sqi_unprepare_hardware(struct spi_master *master)
+ 	return 0;
  }
  
- int spi_flash_read(struct spi_device *spi,
+-/* This may be called twice for each spi dev */
+-static int pic32_sqi_setup(struct spi_device *spi)
+-{
+-	struct pic32_sqi *sqi;
+-
+-	if (spi_get_ctldata(spi)) {
+-		dev_err(&spi->dev, "is already associated\n");
+-		return -EBUSY;
+-	}
+-
+-	/* check word size */
+-	if (!spi->bits_per_word) {
+-		dev_err(&spi->dev, "No bits_per_word defined\n");
+-		return -EINVAL;
+-	}
+-
+-	/* check maximum SPI clk rate */
+-	if (!spi->max_speed_hz) {
+-		dev_err(&spi->dev, "No max speed HZ parameter\n");
+-		return -EINVAL;
+-	}
+-
+-	if (spi->master->max_speed_hz < spi->max_speed_hz) {
+-		dev_err(&spi->dev, "max speed %u HZ is too high\n",
+-			spi->max_speed_hz);
+-		return -EINVAL;
+-	}
+-
+-	sqi = spi_master_get_devdata(spi->master);
+-	spi_set_ctldata(spi, (void *)sqi);
+-
+-	return 0;
+-}
+-
+-static void pic32_sqi_cleanup(struct spi_device *spi)
+-{
+-	spi_set_ctldata(spi, (void *)NULL);
+-}
+-
+ static int ring_desc_ring_alloc(struct pic32_sqi *sqi)
+ {
+ 	struct ring_desc *rdesc;
+@@ -700,8 +661,6 @@ static int pic32_sqi_probe(struct platform_device *pdev)
+ 	master->mode_bits	= SPI_MODE_3 | SPI_MODE_0 | SPI_TX_DUAL |
+ 				  SPI_RX_DUAL | SPI_TX_QUAD | SPI_RX_QUAD;
+ 	master->flags		= SPI_MASTER_HALF_DUPLEX;
+-	master->setup		= pic32_sqi_setup;
+-	master->cleanup		= pic32_sqi_cleanup;
+ 	master->can_dma		= pic32_sqi_can_dma;
+ 	master->bits_per_word_mask	= SPI_BPW_RANGE_MASK(8, 32);
+ 	master->transfer_one_message	= pic32_sqi_one_message;
 -- 
-2.8.0
+2.5.0
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

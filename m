@@ -1,20 +1,19 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: return error if kmap'd buffers passed to spi_map_buf()" to the spi tree
-Date: Mon, 25 Apr 2016 18:57:02 +0100
-Message-ID: <E1aukko-0007o3-5w@debutante>
-References: <1461577442-8853-2-git-send-email-vigneshr@ti.com>
-Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-	linux-spi@vger.kernel.org, linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-To: Vignesh R <vigneshr@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1461577442-8853-2-git-send-email-vigneshr@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: core: add hook flash_read_supported to spi_master" to the spi tree
+Date: Mon, 25 Apr 2016 18:57:05 +0100
+Message-ID: <E1aukkr-0007oh-4e@debutante>
+References: <571BDF4C.1000102@gmail.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <571BDF4C.1000102-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: return error if kmap'd buffers passed to spi_map_buf()
+   spi: core: add hook flash_read_supported to spi_master
 
 has been applied to the spi tree at
 
@@ -39,37 +38,69 @@ to this mail.
 Thanks,
 Mark
 
->From 0569a88f3d1ffed94b15569d53872f16e2351099 Mon Sep 17 00:00:00 2001
-From: Vignesh R <vigneshr@ti.com>
-Date: Mon, 25 Apr 2016 15:14:00 +0530
-Subject: [PATCH] spi: return error if kmap'd buffers passed to spi_map_buf()
+>From 7ba2f2757d84eae533679306f03c93c118437a87 Mon Sep 17 00:00:00 2001
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Sat, 23 Apr 2016 22:47:08 +0200
+Subject: [PATCH] spi: core: add hook flash_read_supported to spi_master
 
-Current spi_map_buf() implementation supports creates sg_table for
-vmalloc'd and kmalloc'd buffers. Therefore return error if kmap'd buffer
-(or any other buffer) is passed to spi_map_buf().
+If hook spi_flash_read is implemented the fast flash read feature
+is enabled for all devices attached to the respective master.
 
-Signed-off-by: Vignesh R <vigneshr@ti.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+In most cases there is just one flash chip, however there are also
+devices with more than one flash chip, namely some WiFi routers.
+Then the fast flash read feature can be used for the first chip only.
+OpenWRT implemented an own handling of this case, using controller_data
+element of spi_device to hold the information whether fast flash read
+can be used for a device.
+
+This patch adds hook flash_read_supported to spi_master which is
+used to extend spi_flash_read_supported() by checking whether the
+fast flash read feature can be used for a specific spi_device.
+
+If the hook is not implemented the default behavior is to allow
+fast flash read for all devices (if spi_flash_read is implemented).
+
+Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/linux/spi/spi.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 6c4c050e6b65..a50f880a5036 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -717,9 +717,11 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
- 	if (vmalloced_buf) {
- 		desc_len = min_t(int, max_seg_size, PAGE_SIZE);
- 		sgs = DIV_ROUND_UP(len + offset_in_page(buf), desc_len);
--	} else {
-+	} else if (virt_addr_valid(buf)) {
- 		desc_len = min_t(int, max_seg_size, master->max_dma_len);
- 		sgs = DIV_ROUND_UP(len, desc_len);
-+	} else {
-+		return -EINVAL;
- 	}
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 857a9a1d82b5..1f03483f61e5 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -372,6 +372,7 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
+  * @unprepare_message: undo any work done by prepare_message().
+  * @spi_flash_read: to support spi-controller hardwares that provide
+  *                  accelerated interface to read from flash devices.
++ * @flash_read_supported: spi device supports flash read
+  * @cs_gpios: Array of GPIOs to use as chip select lines; one per CS
+  *	number. Any individual value may be -ENOENT for CS lines that
+  *	are not GPIOs (driven by the SPI controller itself).
+@@ -529,6 +530,7 @@ struct spi_master {
+ 				 struct spi_message *message);
+ 	int (*spi_flash_read)(struct  spi_device *spi,
+ 			      struct spi_flash_read_message *msg);
++	bool (*flash_read_supported)(struct spi_device *spi);
  
- 	ret = sg_alloc_table(sgt, sgs, GFP_KERNEL);
+ 	/*
+ 	 * These hooks are for drivers that use a generic implementation
+@@ -1158,7 +1160,9 @@ struct spi_flash_read_message {
+ /* SPI core interface for flash read support */
+ static inline bool spi_flash_read_supported(struct spi_device *spi)
+ {
+-	return spi->master->spi_flash_read ? true : false;
++	return spi->master->spi_flash_read &&
++	       (!spi->master->flash_read_supported ||
++	       spi->master->flash_read_supported(spi));
+ }
+ 
+ int spi_flash_read(struct spi_device *spi,
 -- 
 2.8.0.rc3
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

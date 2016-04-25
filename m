@@ -1,96 +1,75 @@
-From: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH v2 2/3] spi: Add DMA support for spi_flash_read()
-Date: Mon, 25 Apr 2016 15:14:01 +0530
-Message-ID: <1461577442-8853-3-git-send-email-vigneshr@ti.com>
-References: <1461577442-8853-1-git-send-email-vigneshr@ti.com>
-Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1461577442-8853-1-git-send-email-vigneshr-l0cyMroinI0@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: return error if kmap'd buffers passed to spi_map_buf()" to the spi tree
+Date: Mon, 25 Apr 2016 18:57:02 +0100
+Message-ID: <E1aukko-0007o3-5w@debutante>
+References: <1461577442-8853-2-git-send-email-vigneshr@ti.com>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+	linux-spi@vger.kernel.org, linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+To: Vignesh R <vigneshr@ti.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1461577442-8853-2-git-send-email-vigneshr@ti.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Few SPI devices provide accelerated read interfaces to read from
-SPI-NOR flash devices. These hardwares also support DMA to transfer data
-from flash to memory either via mem-to-mem DMA or dedicated slave DMA
-channels. Hence, add support for DMA in order to improve throughput and
-reduce CPU load.
-Use spi_map_buf() to get sg table for the buffer and pass it to SPI
-driver.
+The patch
 
-Signed-off-by: Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>
+   spi: return error if kmap'd buffers passed to spi_map_buf()
+
+has been applied to the spi tree at
+
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 0569a88f3d1ffed94b15569d53872f16e2351099 Mon Sep 17 00:00:00 2001
+From: Vignesh R <vigneshr@ti.com>
+Date: Mon, 25 Apr 2016 15:14:00 +0530
+Subject: [PATCH] spi: return error if kmap'd buffers passed to spi_map_buf()
+
+Current spi_map_buf() implementation supports creates sg_table for
+vmalloc'd and kmalloc'd buffers. Therefore return error if kmap'd buffer
+(or any other buffer) is passed to spi_map_buf().
+
+Signed-off-by: Vignesh R <vigneshr@ti.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
-
-v2: use cur_msg_mapped flag to indicate success/failure of spi_map_buf()
-
- drivers/spi/spi.c       | 14 ++++++++++++++
- include/linux/spi/spi.h |  4 ++++
- 2 files changed, 18 insertions(+)
+ drivers/spi/spi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 82126bbe69cf..f98c19addc07 100644
+index 6c4c050e6b65..a50f880a5036 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -2725,6 +2725,7 @@ int spi_flash_read(struct spi_device *spi,
- 
- {
- 	struct spi_master *master = spi->master;
-+	struct device *rx_dev = NULL;
- 	int ret;
- 
- 	if ((msg->opcode_nbits == SPI_NBITS_DUAL ||
-@@ -2750,9 +2751,22 @@ int spi_flash_read(struct spi_device *spi,
- 			return ret;
- 		}
+@@ -717,9 +717,11 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
+ 	if (vmalloced_buf) {
+ 		desc_len = min_t(int, max_seg_size, PAGE_SIZE);
+ 		sgs = DIV_ROUND_UP(len + offset_in_page(buf), desc_len);
+-	} else {
++	} else if (virt_addr_valid(buf)) {
+ 		desc_len = min_t(int, max_seg_size, master->max_dma_len);
+ 		sgs = DIV_ROUND_UP(len, desc_len);
++	} else {
++		return -EINVAL;
  	}
-+
- 	mutex_lock(&master->bus_lock_mutex);
-+	if (master->dma_rx) {
-+		rx_dev = master->dma_rx->device->dev;
-+		ret = spi_map_buf(master, rx_dev, &msg->rx_sg,
-+				  msg->buf, msg->len,
-+				  DMA_FROM_DEVICE);
-+		if (!ret)
-+			msg->cur_msg_mapped = true;
-+	}
- 	ret = master->spi_flash_read(spi, msg);
-+	if (msg->cur_msg_mapped)
-+		spi_unmap_buf(master, rx_dev, &msg->rx_sg,
-+			      DMA_FROM_DEVICE);
- 	mutex_unlock(&master->bus_lock_mutex);
-+
- 	if (master->auto_runtime_pm)
- 		pm_runtime_put(master->dev.parent);
  
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 857a9a1d82b5..b51ea761b5c8 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -1141,6 +1141,8 @@ static inline ssize_t spi_w8r16be(struct spi_device *spi, u8 cmd)
-  * @opcode_nbits: number of lines to send opcode
-  * @addr_nbits: number of lines to send address
-  * @data_nbits: number of lines for data
-+ * @rx_sg: Scatterlist for receive data read from flash
-+ * @cur_msg_mapped: message has been mapped for DMA
-  */
- struct spi_flash_read_message {
- 	void *buf;
-@@ -1153,6 +1155,8 @@ struct spi_flash_read_message {
- 	u8 opcode_nbits;
- 	u8 addr_nbits;
- 	u8 data_nbits;
-+	struct sg_table rx_sg;
-+	bool cur_msg_mapped;
- };
- 
- /* SPI core interface for flash read support */
+ 	ret = sg_alloc_table(sgt, sgs, GFP_KERNEL);
 -- 
-2.8.1
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+2.8.0.rc3

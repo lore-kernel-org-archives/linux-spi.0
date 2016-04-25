@@ -1,104 +1,128 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: core: add hook flash_read_supported to spi_master" to the spi tree
-Date: Mon, 25 Apr 2016 18:57:05 +0100
-Message-ID: <E1aukkr-0007oh-4e@debutante>
-References: <571BDF4C.1000102@gmail.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: William Bourque <wfb-q1Y+AKCHEmHQT0dZR+AlfA@public.gmane.org>
+Subject: Re: SPI: Integer overflow cause timeout to be too small
+Date: Mon, 25 Apr 2016 18:19:55 -0400
+Message-ID: <571E980B.5020700@xiphos.com>
+References: <57169C1B.7010100@xiphos.com>
+ <CAFcVECKhL_c53Rco_Qht7fNS_jozr_a5xG2Yfy-y38b5sfjYxA@mail.gmail.com>
+ <CAGub7DGotZ6mpVbRmxvK7ZfU748FyFE58Zr=u=yjc-Vez-m-5g@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Harini Katakam <harinikatakamlinux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: sai krishna <saikrishna12468-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <571BDF4C.1000102-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <CAGub7DGotZ6mpVbRmxvK7ZfU748FyFE58Zr=u=yjc-Vez-m-5g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+On 20/04/16 06:58 AM, sai krishna wrote:
+>> Hi
+>>
+>> I bumped into a strange issue in the SPI driver that might be a bug.
+>>
+>> We are developing hardware based on Xilinx Zynq; as storage we uses an
+>> N25Q512A NOR Flash over Xilinx Zynq Quad Spi driver.
+>> The Quad SPI driver is _not_ in the upstream kernel but the
+>> overflowing integer that is the root cause of the issue is (see
+>> below).
+>>
+>> As such, the bug may or may not be related to upstream kernel code. I
+>> tracked it down and found a fix but I am unsure if the whole issue
+>> isn't just something the calling driver is doing wrong.
+>>
+>> The QSPI driver code can be found at:
+>> https://github.com/Xilinx/linux-xlnx/blob/master/drivers/spi/spi-zynq-qspi.c
+>>
+>> Recently, we noticed we can crash the SPI driver simply by using dd
+>> with an overly large block size.
+>> Something like:
+>> [root@test-spi ~]# dd if=/dev/mtd13 bs=4000000 count=1 | md5sum
+>> m25p80 spi0.0: SPI transfer timed out
+>> m25p80 spi0.0: flash operation timed out
+>> m25p80 spi0.0: flash operation timed out
+>> dd: /dev/mtd13: Connection timed out
+>>
+>> At this point the QSPI is effectively dead, any access to the
+>> filesystem result in endless timeout. The system needs a reboot to
+>> recover.
+>>
+>> [root@test-spi ~]# ls /etc
+>> m25p80 spi0.0: flash operation timed out
+>> m25p80 spi0.0: flash operation timed out
+>> ubi0 warning: ubi_io_read: error -110 while reading 60 bytes from PEB
+>> 167:54048, read only 0 bytes, retry
+>> m25p80 spi0.0: flash operation timed out
+>> ...
+>>
+>> By poking around, I found that the issue is caused by this line (ref:
+>> http://lxr.free-electrons.com/source/drivers/spi/spi.c#L972 ):
+>> ms = xfer->len * 8 * 1000 / xfer->speed_hz;
+>>
+>> ms is an unsigned long.
+>> In the case shown above, "xfer->len" is 4,000,000 and xfer->speed_hz
+>> is 62,499,599 (65MHz).
+>> So here 4,000,000 * 8 * 1000 = 32,000,000,000. It overflows the uint32
+>> so the end result ends up being 1,935,228,928.
+>> After being divided by xfer->speed_hz, ms is roughtly equal to
+>> 30.96ms, which is way too small for a transfer of this size.
+>>
+>> When a timeout occurs, the transfer is stopped; this leave the QSPI in
+>> an incoherent state from which it never recover (this seem weird to
+>> me?).
+>>
+>> I was able to workaround the issue by doing the math the other way,
+>> i.e. by dividing the frequency instead of mutiplying the length.
+>> Since the frequency of SPI should always be in the MHz, it seems safe
+>> enough (although division IS slower on some platform).
+>> The fix looks like this:
+>> /* Use max() to avoid division by zero for very small frequency */
+>> ms = xfer->len / max((unsigned long)1, (unsigned long)xfer->speed_hz /
+>> 8 / 1000);
+>>
+>>
+>> Now, as I said, the bug may not lie in spi.c; the culprit may be
+>> Xilinx QSPI driver. Maybe it shouldn't have passed such a large length
+>> down to spi.c?
+>> I don't know enough of the SPI architecture to know what's good
+>> practice and what's not.
+>>
+>> This lead me to the following questions:
+>> 1- Is this an actual bug and if so, is the likely culprit spi.c or
+>> spi-zynq-qspi.c?
+>> 2- Should such large transfer length be handled in calling
+>> spi-zynq-qspi.c or down in spi.c?
+>> 3- Is it normal for the SPI to die after such timeout? Shouldn't the
+>> SPI/QSPI driver be expected to recover from it?
+> Transfer length is passed from the MTD layer to the spi core which passes
+> it to the driver. Transfer size is broken down by the upper layers/filesystem.
+Ok.
+What you are saying is that the length is passed FROM the spi core TO 
+the driver, not the reverse way around like I described. It seems I got 
+it backward.
+Correct me if I am wrong but that would mean that the integer overflow I 
+described is a bug in the spi core since the overflows occurs before any 
+driver/filesystem is involved.
 
-   spi: core: add hook flash_read_supported to spi_master
-
-has been applied to the spi tree at
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+Is the fix described (dividing frequency instead of multiplying length) 
+seems acceptable?
 
 Thanks,
-Mark
 
->From 7ba2f2757d84eae533679306f03c93c118437a87 Mon Sep 17 00:00:00 2001
-From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Sat, 23 Apr 2016 22:47:08 +0200
-Subject: [PATCH] spi: core: add hook flash_read_supported to spi_master
+- William
 
-If hook spi_flash_read is implemented the fast flash read feature
-is enabled for all devices attached to the respective master.
-
-In most cases there is just one flash chip, however there are also
-devices with more than one flash chip, namely some WiFi routers.
-Then the fast flash read feature can be used for the first chip only.
-OpenWRT implemented an own handling of this case, using controller_data
-element of spi_device to hold the information whether fast flash read
-can be used for a device.
-
-This patch adds hook flash_read_supported to spi_master which is
-used to extend spi_flash_read_supported() by checking whether the
-fast flash read feature can be used for a specific spi_device.
-
-If the hook is not implemented the default behavior is to allow
-fast flash read for all devices (if spi_flash_read is implemented).
-
-Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- include/linux/spi/spi.h | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 857a9a1d82b5..1f03483f61e5 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -372,6 +372,7 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
-  * @unprepare_message: undo any work done by prepare_message().
-  * @spi_flash_read: to support spi-controller hardwares that provide
-  *                  accelerated interface to read from flash devices.
-+ * @flash_read_supported: spi device supports flash read
-  * @cs_gpios: Array of GPIOs to use as chip select lines; one per CS
-  *	number. Any individual value may be -ENOENT for CS lines that
-  *	are not GPIOs (driven by the SPI controller itself).
-@@ -529,6 +530,7 @@ struct spi_master {
- 				 struct spi_message *message);
- 	int (*spi_flash_read)(struct  spi_device *spi,
- 			      struct spi_flash_read_message *msg);
-+	bool (*flash_read_supported)(struct spi_device *spi);
- 
- 	/*
- 	 * These hooks are for drivers that use a generic implementation
-@@ -1158,7 +1160,9 @@ struct spi_flash_read_message {
- /* SPI core interface for flash read support */
- static inline bool spi_flash_read_supported(struct spi_device *spi)
- {
--	return spi->master->spi_flash_read ? true : false;
-+	return spi->master->spi_flash_read &&
-+	       (!spi->master->flash_read_supported ||
-+	       spi->master->flash_read_supported(spi));
- }
- 
- int spi_flash_read(struct spi_device *spi,
--- 
-2.8.0.rc3
+> Regards
+> Sai Krishna
+>>
+>> Thanks,
+>>
+>> - William Bourque
+>> Embedded Software Developer,
+>> Xiphos Technologies
+>> --
+>> To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+>> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+>> More majordomo info at  http://vger.kernel.org/majordomo-info.html
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

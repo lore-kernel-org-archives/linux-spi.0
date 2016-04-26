@@ -1,22 +1,20 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pxa2xx: Do not detect number of enabled chip selects on Intel SPT" to the spi tree
-Date: Tue, 26 Apr 2016 11:26:55 +0100
-Message-ID: <E1av0Cl-0007AW-9I@debutante>
-References: <1461654506-4040-1-git-send-email-jarkko.nikula@linux.intel.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>, stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org#4.4+
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Applied "spi: pic32: Set proper bits_per_word_mask" to the spi tree
+Date: Tue, 26 Apr 2016 11:26:52 +0100
+Message-ID: <E1av0Ci-00079r-AS@debutante>
+References: <1461627075.5054.1.camel@ingics.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Purna Chandra Mandal <purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1461654506-4040-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <1461627075.5054.1.camel-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: pxa2xx: Do not detect number of enabled chip selects on Intel SPT
+   spi: pic32: Set proper bits_per_word_mask
 
 has been applied to the spi tree at
 
@@ -41,42 +39,53 @@ to this mail.
 Thanks,
 Mark
 
->From 66ec246eb9982e7eb8e15e1fc55f543230310dd0 Mon Sep 17 00:00:00 2001
-From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Tue, 26 Apr 2016 10:08:26 +0300
-Subject: [PATCH] spi: pxa2xx: Do not detect number of enabled chip selects on
- Intel SPT
+>From 2452ee25255af95d122ff66ea390facb67a61fc3 Mon Sep 17 00:00:00 2001
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Date: Tue, 26 Apr 2016 07:31:15 +0800
+Subject: [PATCH] spi: pic32: Set proper bits_per_word_mask
 
-Certain Intel Sunrisepoint PCH variants report zero chip selects in SPI
-capabilities register even they have one per port. Detection in
-pxa2xx_spi_probe() sets master->num_chipselect to 0 leading to -EINVAL
-from spi_register_master() where chip select count is validated.
+This driver only supports 8/16/32 bits_per_word, so set
+master->bits_per_word_mask accordingly. With this change, we can remove
+the spi->bits_per_word checking in pic32_spi_setup as it's done by spi
+core.
 
-Fix this by not using SPI capabilities register on Sunrisepoint. They don't
-have more than one chip select so use the default value 1 instead of
-detection.
-
-Fixes: 8b136baa5892 ("spi: pxa2xx: Detect number of enabled Intel LPSS SPI chip select signals")
-Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 ---
- drivers/spi/spi-pxa2xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-pic32.c | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 85e59a406a4c..86138e4101b0 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -126,7 +126,7 @@ static const struct lpss_config lpss_platforms[] = {
- 		.reg_general = -1,
- 		.reg_ssp = 0x20,
- 		.reg_cs_ctrl = 0x24,
--		.reg_capabilities = 0xfc,
-+		.reg_capabilities = -1,
- 		.rx_threshold = 1,
- 		.tx_threshold_lo = 32,
- 		.tx_threshold_hi = 56,
+diff --git a/drivers/spi/spi-pic32.c b/drivers/spi/spi-pic32.c
+index f8313ea11a34..4eeb8a85b030 100644
+--- a/drivers/spi/spi-pic32.c
++++ b/drivers/spi/spi-pic32.c
+@@ -592,16 +592,6 @@ static int pic32_spi_setup(struct spi_device *spi)
+ 		return -EINVAL;
+ 	}
+ 
+-	switch (spi->bits_per_word) {
+-	case 8:
+-	case 16:
+-	case 32:
+-		break;
+-	default:
+-		dev_err(&spi->dev, "Invalid bits_per_word defined\n");
+-		return -EINVAL;
+-	}
+-
+ 	/* PIC32 spi controller can drive /CS during transfer depending
+ 	 * on tx fifo fill-level. /CS will stay asserted as long as TX
+ 	 * fifo is non-empty, else will be deasserted indicating
+@@ -791,7 +781,8 @@ static int pic32_spi_probe(struct platform_device *pdev)
+ 	master->setup		= pic32_spi_setup;
+ 	master->cleanup		= pic32_spi_cleanup;
+ 	master->flags		= SPI_MASTER_MUST_TX | SPI_MASTER_MUST_RX;
+-	master->bits_per_word_mask	= SPI_BPW_RANGE_MASK(8, 32);
++	master->bits_per_word_mask	= SPI_BPW_MASK(8) | SPI_BPW_MASK(16) |
++					  SPI_BPW_MASK(32);
+ 	master->transfer_one		= pic32_spi_one_transfer;
+ 	master->prepare_message		= pic32_spi_prepare_message;
+ 	master->unprepare_message	= pic32_spi_unprepare_message;
 -- 
 2.8.0.rc3
 

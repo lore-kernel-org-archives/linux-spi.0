@@ -1,60 +1,50 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH RFT] spi: pic32: Set proper bits_per_word_mask
-Date: Tue, 26 Apr 2016 07:31:15 +0800
-Message-ID: <1461627075.5054.1.camel@ingics.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Purna Chandra Mandal <purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH] spi: pxa2xx: Do not detect number of enabled chip selects on Intel SPT
+Date: Tue, 26 Apr 2016 10:08:26 +0300
+Message-ID: <1461654506-4040-1-git-send-email-jarkko.nikula@linux.intel.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org#4.4+
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-This driver only supports 8/16/32 bits_per_word, so set
-master->bits_per_word_mask accordingly. With this change, we can remove
-the spi->bits_per_word checking in pic32_spi_setup as it's done by spi
-core.
+Certain Intel Sunrisepoint PCH variants report zero chip selects in SPI
+capabilities register even they have one per port. Detection in
+pxa2xx_spi_probe() sets master->num_chipselect to 0 leading to -EINVAL
+from spi_register_master() where chip select count is validated.
 
-Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Fix this by not using SPI capabilities register on Sunrisepoint. They don't
+have more than one chip select so use the default value 1 instead of
+detection.
+
+Cc: <stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org> # 4.4+
+Fixes: 8b136baa5892 ("spi: pxa2xx: Detect number of enabled Intel LPSS
+SPI chip select signals")
+Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 ---
- drivers/spi/spi-pic32.c | 13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
+ drivers/spi/spi-pxa2xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-pic32.c b/drivers/spi/spi-pic32.c
-index f8313ea..4eeb8a8 100644
---- a/drivers/spi/spi-pic32.c
-+++ b/drivers/spi/spi-pic32.c
-@@ -592,16 +592,6 @@ static int pic32_spi_setup(struct spi_device *spi)
- 		return -EINVAL;
- 	}
- 
--	switch (spi->bits_per_word) {
--	case 8:
--	case 16:
--	case 32:
--		break;
--	default:
--		dev_err(&spi->dev, "Invalid bits_per_word defined\n");
--		return -EINVAL;
--	}
--
- 	/* PIC32 spi controller can drive /CS during transfer depending
- 	 * on tx fifo fill-level. /CS will stay asserted as long as TX
- 	 * fifo is non-empty, else will be deasserted indicating
-@@ -791,7 +781,8 @@ static int pic32_spi_probe(struct platform_device *pdev)
- 	master->setup		= pic32_spi_setup;
- 	master->cleanup		= pic32_spi_cleanup;
- 	master->flags		= SPI_MASTER_MUST_TX | SPI_MASTER_MUST_RX;
--	master->bits_per_word_mask	= SPI_BPW_RANGE_MASK(8, 32);
-+	master->bits_per_word_mask	= SPI_BPW_MASK(8) | SPI_BPW_MASK(16) |
-+					  SPI_BPW_MASK(32);
- 	master->transfer_one		= pic32_spi_one_transfer;
- 	master->prepare_message		= pic32_spi_prepare_message;
- 	master->unprepare_message	= pic32_spi_unprepare_message;
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 0ce82db8e484..66c36b1aab0c 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -126,7 +126,7 @@ static const struct lpss_config lpss_platforms[] = {
+ 		.reg_general = -1,
+ 		.reg_ssp = 0x20,
+ 		.reg_cs_ctrl = 0x24,
+-		.reg_capabilities = 0xfc,
++		.reg_capabilities = -1,
+ 		.rx_threshold = 1,
+ 		.tx_threshold_lo = 32,
+ 		.tx_threshold_hi = 56,
 -- 
-2.5.0
+2.8.0.rc3
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

@@ -1,56 +1,78 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: spi-fsl-dspi: replace regmap R/W with internal
- implementation
-Date: Wed, 27 Apr 2016 16:25:32 +0100
-Message-ID: <20160427152532.GX3217@sirena.org.uk>
-References: <1461744756-31481-1-git-send-email-yao.yuan@freescale.com>
- <1461744756-31481-2-git-send-email-yao.yuan@freescale.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="ootmdsr3EpGRXR2m"
-Cc: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, pawel.moll-5wv7dgnIgG8@public.gmane.org, shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+Subject: Applied "spi: spi-fsl-dspi: Update DT binding documentation" to the spi tree
+Date: Wed, 27 Apr 2016 17:35:29 +0100
+Message-ID: <E1avSQz-0004dl-En@debutante>
+References: <1461744756-31481-3-git-send-email-yao.yuan@freescale.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, pawel.moll-5wv7dgnIgG8@public.gmane.org, shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
 	linux-devel-XDVM779Km55Y1YpKYGMr2+TW4wlIGRCZ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, yao.yuan-3arQi8VN3Tc@public.gmane.org, leoyang.li-3arQi8VN3Tc@public.gmane.org,
 	scott.wood-3arQi8VN3Tc@public.gmane.org
-To: Yuan Yao <yao.yuan-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+To: Yuan Yao <yao.yuan-3arQi8VN3Tc@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1461744756-31481-2-git-send-email-yao.yuan-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+In-Reply-To: <1461744756-31481-3-git-send-email-yao.yuan-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---ootmdsr3EpGRXR2m
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: spi-fsl-dspi: Update DT binding documentation
 
-On Wed, Apr 27, 2016 at 04:12:35PM +0800, Yuan Yao wrote:
+has been applied to the spi tree at
 
-> At first we use regmap to cover this issue.
-> But the regmap is designed too large and complex.
-> The issue for regmap often effect the DSPI's stability.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-I'm not convinced that open coding things is going to make life much
-easier here.  If there's problems in the underlying code then fixing
-those seems like a more generally useful approach to things.  What are
-the actual problems this is intended to fix?
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
---ootmdsr3EpGRXR2m
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iQEcBAEBCAAGBQJXINnqAAoJECTWi3JdVIfQnxQH+gK813tyzo7pKrDoMvVQLKSc
-Wra2q+IRKTb4F4XfRlvAMmVnHgl1LKn1lXgMWyuBgC2bzYKHPIxdzC7hqSAhvUQs
-BQGUGIPkBvgdubFKTWQTG6ZLevfW7bGW7UYeL/B8y4T4bRiK6CkDvJH5rr2/PHdS
-i6KLIoaQklAOAysknTZBMcbe9ZzGGpf8SdqR0UQ/B+LlcBS0mGXAgIlSOdF/V2NV
-BAVsTDqtNoi2QlfyQIeQh09uEwMdn2mtheKyMfVMmejVN18rgR/uJuu2cI+L9Zdq
-AokfA+B9TN+gKhMetDJfT4EHV3IKbnI2Rr52JeSsd9IOpc1p+GGngd3TWVzir7Y=
-=hoqu
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---ootmdsr3EpGRXR2m--
+Thanks,
+Mark
+
+>From c145344763192042135ef6172b779baaf4a16c1e Mon Sep 17 00:00:00 2001
+From: Yuan Yao <yao.yuan-3arQi8VN3Tc@public.gmane.org>
+Date: Wed, 27 Apr 2016 16:12:36 +0800
+Subject: [PATCH] spi: spi-fsl-dspi: Update DT binding documentation
+
+DSPI driver support the register on the controller with big endian
+mode R/W. But not use the regmap API.
+So update the binding documentation for "big-endian".
+
+Signed-off-by: Yuan Yao <yao.yuan-3arQi8VN3Tc@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt b/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt
+index fa77f874e321..d2969d2ceb4b 100644
+--- a/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt
++++ b/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt
+@@ -13,8 +13,7 @@ Required properties:
+ 
+ Optional property:
+ - big-endian: If present the dspi device's registers are implemented
+-  in big endian mode, otherwise in native mode(same with CPU), for more
+-  detail please see: Documentation/devicetree/bindings/regmap/regmap.txt.
++  in big endian mode.
+ 
+ Optional SPI slave node properties:
+ - fsl,spi-cs-sck-delay: a delay in nanoseconds between activating chip
+-- 
+2.8.0.rc3
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

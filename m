@@ -1,49 +1,48 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH] spi: pic32: Fix checking return value of
- devm_ioremap_resource
-Date: Wed, 27 Apr 2016 16:19:26 +0800
-Message-ID: <1461745166.12751.0.camel@ingics.com>
+From: Yuan Yao <yao.yuan-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Subject: [PATCH 0/2] spi: spi-fsl-dspi: replace regmap R/W with internal implementation
+Date: Wed, 27 Apr 2016 16:12:34 +0800
+Message-ID: <1461744756-31481-1-git-send-email-yao.yuan@freescale.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Purna Chandra Mandal <purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain
+Cc: <leoyang.li-3arQi8VN3Tc@public.gmane.org>, <scott.wood-3arQi8VN3Tc@public.gmane.org>
+To: <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	<shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-devel-XDVM779Km55Y1YpKYGMr2+TW4wlIGRCZ@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<yao.yuan-3arQi8VN3Tc@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-devm_ioremap_resource() returns ERR_PTR on error.
-Also remove the redundant dev_err message, the implementation of
-devm_ioremap_resource() already print error messages on error paths.
+From: Yuan Yao <yao.yuan-3arQi8VN3Tc@public.gmane.org>
 
-Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
----
- drivers/spi/spi-pic32.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+The qSPI controller's endian is independent of the CPU core's endian.
 
-diff --git a/drivers/spi/spi-pic32.c b/drivers/spi/spi-pic32.c
-index 4eeb8a8..73db87f 100644
---- a/drivers/spi/spi-pic32.c
-+++ b/drivers/spi/spi-pic32.c
-@@ -711,10 +711,9 @@ static int pic32_spi_hw_probe(struct platform_device *pdev,
- 
- 	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	pic32s->regs = devm_ioremap_resource(&pdev->dev, mem);
--	if (!pic32s->regs) {
--		dev_err(&pdev->dev, "ioremap() failed\n");
--		return -ENOMEM;
--	}
-+	if (IS_ERR(pic32s->regs))
-+		return PTR_ERR(pic32s->regs);
-+
- 	pic32s->dma_base = mem->start;
- 
- 	/* get irq resources: err-irq, rx-irq, tx-irq */
+For eg, Core on NXP LS1043A SoC is little endian but DSPI is big endian
+whereas Core on LS2080A SoC is little endian and DSPI also is little
+endian on the same core.
+
+At first we use regmap to cover this issue.
+But the regmap is designed too large and complex.
+The issue for regmap often effect the DSPI's stability.
+
+DSPI driver just only need a effective way to R/W the controller register
+with BE or LE mode.
+
+So it's better to packaging a sample function.
+This will make the DSPI driver more stability and high effective.
+
+Yuan Yao (2):
+  spi: spi-fsl-dspi: replace regmap R/W with internal implementation
+  spi: spi-fsl-dspi: Update DT binding documentation
+
+ .../devicetree/bindings/spi/spi-fsl-dspi.txt       |   3 +-
+ drivers/spi/spi-fsl-dspi.c                         | 101 +++++++++++++--------
+ 2 files changed, 62 insertions(+), 42 deletions(-)
+
 -- 
-2.5.0
+2.1.0.27.g96db324
 
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

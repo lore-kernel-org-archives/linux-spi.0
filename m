@@ -1,52 +1,35 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: imx: Add pm-runtime autosuspend
-Date: Thu, 28 Apr 2016 12:22:49 +0100
-Message-ID: <20160428112249.GL3217@sirena.org.uk>
-References: <1461841411-26529-1-git-send-email-mpa@pengutronix.de>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: Re: [RFC PATCH v2 05/10] i2c: add support for ACPI reconfigure
+ notifications
+Date: Thu, 28 Apr 2016 17:58:47 +0300
+Message-ID: <20160428145847.GC32610@lahna.fi.intel.com>
+References: <1461105548-20618-1-git-send-email-octavian.purdila@intel.com>
+ <1461105548-20618-6-git-send-email-octavian.purdila@intel.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Scih7unjikL75S6V"
-Cc: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Markus Pargmann <mpa-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1461841411-26529-1-git-send-email-mpa-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
-
-
---Scih7unjikL75S6V
 Content-Type: text/plain; charset=us-ascii
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+	Len Brown <lenb@kernel.org>,
+	Matt Fleming <matt@codeblueprint.co.uk>,
+	Mark Brown <broonie@kernel.org>,
+	Wolfram Sang <wsa@the-dreams.de>,
+	Joel Becker <jlbec@evilplan.org>, linux-acpi@vger.kernel.org,
+	linux-efi@vger.kernel.org, linux-i2c@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	irina.tirdea@intel.com
+To: Octavian Purdila <octavian.purdila@intel.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
+In-Reply-To: <1461105548-20618-6-git-send-email-octavian.purdila@intel.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Thu, Apr 28, 2016 at 01:03:31PM +0200, Markus Pargmann wrote:
-> Currently for each transfer the two clocks are enabled and disabled. For
-> heavy SPI usage this can lead to a significant overhead.
+On Wed, Apr 20, 2016 at 01:39:03AM +0300, Octavian Purdila wrote:
+> This patch adds supports for I2C device enumeration and removal via
+> ACPI reconfiguration notifications that are send as a result of an
+> ACPI table load or unload operation.
+> 
+> Signed-off-by: Octavian Purdila <octavian.purdila@intel.com>
 
-Really?  If the system is loaded the normal effect is that we will get
-an equivalent effect from the SPI message thread - I'm curious what the
-numbers are here.  This doesn't seem like something we should be doing
-in individual drivers if it makes a difference.
+Looks reasonable to me,
 
---Scih7unjikL75S6V
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJXIfKIAAoJECTWi3JdVIfQZDAH/2sLywFqRhtz4sJ/Xz6lAIBT
-loB44IuPMi1rFxXVPYqiJflrEEE8nLNa7ZsKvrhZTo8ifW4Y5ZmWtCyPKASZHswF
-iwJEPM0hPDtx2Jf1G1M1LLhaM2HeK6Fttv7kR4pE5QZCxpPrupOHJ4Z/gvEcVtoE
-AlWYIlj6FyOCx5rEwPajg/JCIAbDvGe8h0sz8FUQ923s1SAZNGkn00NqhFU/y5WK
-+4LwdtLU1p2+5ptaviNapMOI7l82xOzkHjie5cybilOaPNv/l+MfkS5vfY5Xo5pe
-xVwf1QZiAu+HP/E02aYQ9VLKxHipoSpvW0JyFcNylJVtPm5cz8uHCKy737VwcGI=
-=uSGo
------END PGP SIGNATURE-----
-
---Scih7unjikL75S6V--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>

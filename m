@@ -1,50 +1,42 @@
-From: Octavian Purdila <octavian.purdila@intel.com>
-Subject: Re: [RFC PATCH v2 06/10] spi: add support for ACPI reconfigure notifications
-Date: Thu, 28 Apr 2016 22:37:57 +0300
-Message-ID: <CAE1zot+LuQJGrDrEDM2iVv-omz3Sg6k3bavX+5gde8jzrK0pog@mail.gmail.com>
-References: <1461105548-20618-1-git-send-email-octavian.purdila@intel.com>
-	<1461105548-20618-7-git-send-email-octavian.purdila@intel.com>
-	<20160428174215.GS3217@sirena.org.uk>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH 1/2] spi: st-ssc4: Allow compile test build
+Date: Fri, 29 Apr 2016 13:38:41 +0800
+Message-ID: <1461908321.20684.1.camel@ingics.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-	Len Brown <lenb@kernel.org>,
-	Matt Fleming <matt@codeblueprint.co.uk>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Joel Becker <jlbec@evilplan.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	linux-efi@vger.kernel.org, linux-i2c <linux-i2c@vger.kernel.org>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	lkml <linux-kernel@vger.kernel.org>,
-	Irina Tirdea <irina.tirdea@intel.com>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-i2c-owner@vger.kernel.org>
-In-Reply-To: <20160428174215.GS3217@sirena.org.uk>
-Sender: linux-i2c-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Patrice Chotard <patrice.chotard-qxv4g6HH51o@public.gmane.org>,
+	Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Apr 28, 2016 at 8:42 PM, Mark Brown <broonie@kernel.org> wrote:
-> On Wed, Apr 20, 2016 at 01:39:04AM +0300, Octavian Purdila wrote:
->
->> +     switch (value) {
->> +     case ACPI_RECONFIG_DEVICE_ADD:
->> +             master = acpi_spi_find_master_by_adev(adev->parent);
->> +             if (!master)
->> +                     break;
->> +
->> +             acpi_register_spi_device(master, adev);
->> +             put_device(&master->dev);
->> +             break;
->> +     case ACPI_RECONFIG_DEVICE_REMOVE:
->> +             spi = acpi_spi_find_device_by_adev(adev);
->> +             if (!spi)
->> +                     break;
->
-> There's more code here now than I remember but this all looks *really*
-> close to the DT code except for the OF_POPULATED flag that we set when
-> things are instantiated in DT.  The duplication seems bad but the fact
-> that we're missing the flag worries me...  do we have guarantees that
-> ACPI won't double register?
+There is no build dependency for this driver, so enable COMPILE_TEST to get
+better build coverage.
 
-We use the adev->flags.visited to check when a device has been already
-enumerated, and we skip registering a new SPI slave in that case.
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 2a357f6..8b39be4 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -581,7 +581,7 @@ config SPI_SIRF
+ 
+ config SPI_ST_SSC4
+ 	tristate "STMicroelectronics SPI SSC-based driver"
+-	depends on ARCH_STI
++	depends on ARCH_STI || COMPILE_TEST
+ 	help
+ 	  STMicroelectronics SoCs support for SPI. If you say yes to
+ 	  this option, support will be included for the SSC driven SPI.
+-- 
+2.5.0
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

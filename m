@@ -1,11 +1,12 @@
 From: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Subject: [PATCH] spi: davinci: Use dma_request_chan() for requesting DMA channel
-Date: Fri, 29 Apr 2016 16:10:22 +0300
-Message-ID: <1461935422-28756-1-git-send-email-peter.ujfalusi@ti.com>
+Subject: [PATCH] spi: omap2-mcspi: Use dma_request_chan() for requesting DMA channel
+Date: Fri, 29 Apr 2016 16:11:56 +0300
+Message-ID: <1461935516-28812-1-git-send-email-peter.ujfalusi@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain
-Cc: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: <broonie@kernel.org>, <nsekhar@ti.com>
+Cc: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-omap@vger.kernel.org>
+To: <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
@@ -16,152 +17,146 @@ By switching to the new API the driver can now support deferred probing
 against DMA.
 
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+CC: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-davinci.c | 76 +++++++++++++++--------------------------------
- 1 file changed, 24 insertions(+), 52 deletions(-)
+ drivers/spi/spi-omap2-mcspi.c | 83 ++++++++++---------------------------------
+ 1 file changed, 18 insertions(+), 65 deletions(-)
 
-diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index fddb7a3be322..d36c11b73a35 100644
---- a/drivers/spi/spi-davinci.c
-+++ b/drivers/spi/spi-davinci.c
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 0caa3c8bef46..1d237e93a289 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
 @@ -23,7 +23,6 @@
- #include <linux/clk.h>
- #include <linux/dmaengine.h>
+ #include <linux/delay.h>
  #include <linux/dma-mapping.h>
--#include <linux/edma.h>
- #include <linux/of.h>
- #include <linux/of_device.h>
- #include <linux/of_gpio.h>
-@@ -33,8 +32,6 @@
+ #include <linux/dmaengine.h>
+-#include <linux/omap-dma.h>
+ #include <linux/pinctrl/consumer.h>
+ #include <linux/platform_device.h>
+ #include <linux/err.h>
+@@ -103,9 +102,6 @@ struct omap2_mcspi_dma {
+ 	struct dma_chan *dma_tx;
+ 	struct dma_chan *dma_rx;
  
- #include <linux/platform_data/spi-davinci.h>
- 
--#define SPI_NO_RESOURCE		((resource_size_t)-1)
+-	int dma_tx_sync_dev;
+-	int dma_rx_sync_dev;
 -
- #define CS_DEFAULT	0xFF
+ 	struct completion dma_tx_completion;
+ 	struct completion dma_rx_completion;
  
- #define SPIFMT_PHASE_MASK	BIT(16)
-@@ -130,8 +127,6 @@ struct davinci_spi {
- 
- 	struct dma_chan		*dma_rx;
- 	struct dma_chan		*dma_tx;
--	int			dma_rx_chnum;
--	int			dma_tx_chnum;
- 
- 	struct davinci_spi_platform_data pdata;
- 
-@@ -797,35 +792,19 @@ static irqreturn_t davinci_spi_irq(s32 irq, void *data)
- 
- static int davinci_spi_request_dma(struct davinci_spi *dspi)
- {
+@@ -964,8 +960,7 @@ static int omap2_mcspi_request_dma(struct spi_device *spi)
+ 	struct spi_master	*master = spi->master;
+ 	struct omap2_mcspi	*mcspi;
+ 	struct omap2_mcspi_dma	*mcspi_dma;
 -	dma_cap_mask_t mask;
- 	struct device *sdev = dspi->bitbang.master->dev.parent;
--	int r;
--
+-	unsigned sig;
++	int ret = 0;
+ 
+ 	mcspi = spi_master_get_devdata(master);
+ 	mcspi_dma = mcspi->dma_channels + spi->chip_select;
+@@ -973,34 +968,25 @@ static int omap2_mcspi_request_dma(struct spi_device *spi)
+ 	init_completion(&mcspi_dma->dma_rx_completion);
+ 	init_completion(&mcspi_dma->dma_tx_completion);
+ 
 -	dma_cap_zero(mask);
 -	dma_cap_set(DMA_SLAVE, mask);
+-	sig = mcspi_dma->dma_rx_sync_dev;
+-
+-	mcspi_dma->dma_rx =
+-		dma_request_slave_channel_compat(mask, omap_dma_filter_fn,
+-						 &sig, &master->dev,
+-						 mcspi_dma->dma_rx_ch_name);
+-	if (!mcspi_dma->dma_rx)
++	mcspi_dma->dma_rx = dma_request_chan(&master->dev,
++					     mcspi_dma->dma_rx_ch_name);
++	if (IS_ERR(mcspi_dma->dma_rx)) {
++		ret = PTR_ERR(mcspi_dma->dma_rx);
++		mcspi_dma->dma_rx = NULL;
+ 		goto no_dma;
++	}
  
--	dspi->dma_rx = dma_request_channel(mask, edma_filter_fn,
--					   &dspi->dma_rx_chnum);
--	if (!dspi->dma_rx) {
--		dev_err(sdev, "request RX DMA channel failed\n");
--		r = -ENODEV;
--		goto rx_dma_failed;
--	}
-+	dspi->dma_rx = dma_request_chan(sdev, "rx");
-+	if (IS_ERR(dspi->dma_rx))
-+		return PTR_ERR(dspi->dma_rx);
- 
--	dspi->dma_tx = dma_request_channel(mask, edma_filter_fn,
--					   &dspi->dma_tx_chnum);
--	if (!dspi->dma_tx) {
--		dev_err(sdev, "request TX DMA channel failed\n");
--		r = -ENODEV;
--		goto tx_dma_failed;
-+	dspi->dma_tx = dma_request_chan(sdev, "tx");
-+	if (IS_ERR(dspi->dma_tx)) {
-+		dma_release_channel(dspi->dma_rx);
-+		return PTR_ERR(dspi->dma_tx);
+-	sig = mcspi_dma->dma_tx_sync_dev;
+-	mcspi_dma->dma_tx =
+-		dma_request_slave_channel_compat(mask, omap_dma_filter_fn,
+-						 &sig, &master->dev,
+-						 mcspi_dma->dma_tx_ch_name);
+-
+-	if (!mcspi_dma->dma_tx) {
++	mcspi_dma->dma_tx = dma_request_chan(&master->dev,
++					     mcspi_dma->dma_tx_ch_name);
++	if (IS_ERR(mcspi_dma->dma_tx)) {
++		ret = PTR_ERR(mcspi_dma->dma_tx);
++		mcspi_dma->dma_tx = NULL;
+ 		dma_release_channel(mcspi_dma->dma_rx);
+ 		mcspi_dma->dma_rx = NULL;
+-		goto no_dma;
  	}
  
- 	return 0;
+-	return 0;
 -
--tx_dma_failed:
--	dma_release_channel(dspi->dma_rx);
--rx_dma_failed:
--	return r;
+ no_dma:
+-	dev_warn(&spi->dev, "not using DMA for McSPI\n");
+-	return -EAGAIN;
++	return ret;
  }
  
- #if defined(CONFIG_OF)
-@@ -936,8 +915,6 @@ static int davinci_spi_probe(struct platform_device *pdev)
- 	struct davinci_spi *dspi;
- 	struct davinci_spi_platform_data *pdata;
- 	struct resource *r;
--	resource_size_t dma_rx_chan = SPI_NO_RESOURCE;
--	resource_size_t	dma_tx_chan = SPI_NO_RESOURCE;
- 	int ret = 0;
- 	u32 spipc0;
+ static int omap2_mcspi_setup(struct spi_device *spi)
+@@ -1039,8 +1025,9 @@ static int omap2_mcspi_setup(struct spi_device *spi)
  
-@@ -1044,27 +1021,15 @@ static int davinci_spi_probe(struct platform_device *pdev)
- 		}
+ 	if (!mcspi_dma->dma_rx || !mcspi_dma->dma_tx) {
+ 		ret = omap2_mcspi_request_dma(spi);
+-		if (ret < 0 && ret != -EAGAIN)
+-			return ret;
++		if (ret)
++			dev_warn(&spi->dev, "not using DMA for McSPI (%d)\n",
++				 ret);
  	}
  
--	r = platform_get_resource(pdev, IORESOURCE_DMA, 0);
--	if (r)
--		dma_rx_chan = r->start;
--	r = platform_get_resource(pdev, IORESOURCE_DMA, 1);
--	if (r)
--		dma_tx_chan = r->start;
--
- 	dspi->bitbang.txrx_bufs = davinci_spi_bufs;
--	if (dma_rx_chan != SPI_NO_RESOURCE &&
--	    dma_tx_chan != SPI_NO_RESOURCE) {
--		dspi->dma_rx_chnum = dma_rx_chan;
--		dspi->dma_tx_chnum = dma_tx_chan;
--
--		ret = davinci_spi_request_dma(dspi);
--		if (ret)
--			goto free_clk;
--
--		dev_info(&pdev->dev, "DMA: supported\n");
--		dev_info(&pdev->dev, "DMA: RX channel: %pa, TX channel: %pa, event queue: %d\n",
--				&dma_rx_chan, &dma_tx_chan,
--				pdata->dma_event_q);
-+
-+	ret = davinci_spi_request_dma(dspi);
-+	if (ret == -EPROBE_DEFER) {
-+		goto free_clk;
-+	} else if (ret) {
-+		dev_info(&pdev->dev, "DMA is not supported (%d)\n", ret);
-+		dspi->dma_rx = NULL;
-+		dspi->dma_tx = NULL;
+ 	ret = pm_runtime_get_sync(mcspi->dev);
+@@ -1434,42 +1421,8 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
  	}
  
- 	dspi->get_rx = davinci_spi_rx_buf_u8;
-@@ -1102,8 +1067,10 @@ static int davinci_spi_probe(struct platform_device *pdev)
- 	return ret;
+ 	for (i = 0; i < master->num_chipselect; i++) {
+-		char *dma_rx_ch_name = mcspi->dma_channels[i].dma_rx_ch_name;
+-		char *dma_tx_ch_name = mcspi->dma_channels[i].dma_tx_ch_name;
+-		struct resource *dma_res;
+-
+-		sprintf(dma_rx_ch_name, "rx%d", i);
+-		if (!pdev->dev.of_node) {
+-			dma_res =
+-				platform_get_resource_byname(pdev,
+-							     IORESOURCE_DMA,
+-							     dma_rx_ch_name);
+-			if (!dma_res) {
+-				dev_dbg(&pdev->dev,
+-					"cannot get DMA RX channel\n");
+-				status = -ENODEV;
+-				break;
+-			}
+-
+-			mcspi->dma_channels[i].dma_rx_sync_dev =
+-				dma_res->start;
+-		}
+-		sprintf(dma_tx_ch_name, "tx%d", i);
+-		if (!pdev->dev.of_node) {
+-			dma_res =
+-				platform_get_resource_byname(pdev,
+-							     IORESOURCE_DMA,
+-							     dma_tx_ch_name);
+-			if (!dma_res) {
+-				dev_dbg(&pdev->dev,
+-					"cannot get DMA TX channel\n");
+-				status = -ENODEV;
+-				break;
+-			}
+-
+-			mcspi->dma_channels[i].dma_tx_sync_dev =
+-				dma_res->start;
+-		}
++		sprintf(mcspi->dma_channels[i].dma_rx_ch_name, "rx%d", i);
++		sprintf(mcspi->dma_channels[i].dma_tx_ch_name, "tx%d", i);
+ 	}
  
- free_dma:
--	dma_release_channel(dspi->dma_rx);
--	dma_release_channel(dspi->dma_tx);
-+	if (dspi->dma_rx) {
-+		dma_release_channel(dspi->dma_rx);
-+		dma_release_channel(dspi->dma_tx);
-+	}
- free_clk:
- 	clk_disable_unprepare(dspi->clk);
- free_master:
-@@ -1134,6 +1101,11 @@ static int davinci_spi_remove(struct platform_device *pdev)
- 	clk_disable_unprepare(dspi->clk);
- 	spi_master_put(master);
- 
-+	if (dspi->dma_rx) {
-+		dma_release_channel(dspi->dma_rx);
-+		dma_release_channel(dspi->dma_tx);
-+	}
-+
- 	return 0;
- }
- 
+ 	if (status < 0)
 -- 
 2.8.1

@@ -1,20 +1,20 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: st-ssc4: Allow compile test build" to the spi tree
-Date: Mon, 02 May 2016 12:03:58 +0100
-Message-ID: <E1axBdu-0001kT-7X@debutante>
-References: <1461908321.20684.1.camel@ingics.com>
+Subject: Applied "spi: st-ssc4: Fix missing spi_master_put in spi_st_probe error paths" to the spi tree
+Date: Mon, 02 May 2016 12:03:55 +0100
+Message-ID: <E1axBdr-0001jd-7y@debutante>
+References: <1461908378.20684.2.camel@ingics.com>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Patrice Chotard <patrice.chotard-qxv4g6HH51o@public.gmane.org>,
 	Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1461908321.20684.1.camel-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+In-Reply-To: <1461908378.20684.2.camel-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: st-ssc4: Allow compile test build
+   spi: st-ssc4: Fix missing spi_master_put in spi_st_probe error paths
 
 has been applied to the spi tree at
 
@@ -39,33 +39,48 @@ to this mail.
 Thanks,
 Mark
 
->From 83fefd2d5bec94de765305d44633c42371360a2a Mon Sep 17 00:00:00 2001
+>From 1051550e9d2d3550e7c17cd563b908638833979d Mon Sep 17 00:00:00 2001
 From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Date: Fri, 29 Apr 2016 13:38:41 +0800
-Subject: [PATCH] spi: st-ssc4: Allow compile test build
-
-There is no build dependency for this driver, so enable COMPILE_TEST to get
-better build coverage.
+Date: Fri, 29 Apr 2016 13:39:38 +0800
+Subject: [PATCH] spi: st-ssc4: Fix missing spi_master_put in spi_st_probe
+ error paths
 
 Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-st-ssc4.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 9d8c84bb1544..06190890a60e 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -569,7 +569,7 @@ config SPI_SIRF
+diff --git a/drivers/spi/spi-st-ssc4.c b/drivers/spi/spi-st-ssc4.c
+index f17c0abe299f..d5adf9f31602 100644
+--- a/drivers/spi/spi-st-ssc4.c
++++ b/drivers/spi/spi-st-ssc4.c
+@@ -345,12 +345,13 @@ static int spi_st_probe(struct platform_device *pdev)
+ 	spi_st->clk = devm_clk_get(&pdev->dev, "ssc");
+ 	if (IS_ERR(spi_st->clk)) {
+ 		dev_err(&pdev->dev, "Unable to request clock\n");
+-		return PTR_ERR(spi_st->clk);
++		ret = PTR_ERR(spi_st->clk);
++		goto put_master;
+ 	}
  
- config SPI_ST_SSC4
- 	tristate "STMicroelectronics SPI SSC-based driver"
--	depends on ARCH_STI
-+	depends on ARCH_STI || COMPILE_TEST
- 	help
- 	  STMicroelectronics SoCs support for SPI. If you say yes to
- 	  this option, support will be included for the SSC driven SPI.
+ 	ret = spi_st_clk_enable(spi_st);
+ 	if (ret)
+-		return ret;
++		goto put_master;
+ 
+ 	init_completion(&spi_st->done);
+ 
+@@ -408,7 +409,8 @@ static int spi_st_probe(struct platform_device *pdev)
+ 
+ clk_disable:
+ 	spi_st_clk_disable(spi_st);
+-
++put_master:
++	spi_master_put(master);
+ 	return ret;
+ }
+ 
 -- 
 2.8.1
 

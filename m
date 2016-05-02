@@ -1,47 +1,63 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH] spi: Drop unnecessary dependencies on relaxed I/O accessors
-Date: Sat, 30 Apr 2016 15:01:08 +0800
-Message-ID: <1461999668.6497.2.camel@ingics.com>
+From: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH v6] spi: orion.c: Add direct access mode
+Date: Mon, 2 May 2016 08:47:15 +0200
+Message-ID: <5726F7F3.9070700@denx.de>
+References: <1461147068-4829-1-git-send-email-sr@denx.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 7bit
-Cc: Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>, Addy Ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
+	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
+To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1461147068-4829-1-git-send-email-sr-ynQEQJNshbs@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The relaxed I/O accessors are available on all architectures now.
+On 20.04.2016 12:11, Stefan Roese wrote:
+> This patch adds support for the direct write mode to the Orion SPI
+> driver which is used on the Marvell Armada based SoCs. In this direct
+> mode, all data written to (or read from) a specifically mapped MBus
+> window (linked to one SPI chip-select on one of the SPI controllers)
+> will be transferred directly to the SPI bus. Without the need to control
+> the SPI registers in between. This can improve the SPI transfer rate in
+> such cases.
+> 
+> Currently only the direct write mode is supported. This mode especially
+> benefits from the SPI direct mode, as the data bytes are written
+> head-to-head to the SPI bus, without any additional addresses, that
+> are also written in the direct read mode.
+> 
+> One use-case for this direct write mode is, programming a FPGA bitstream
+> image into the FPGA connected to the SPI bus at maximum speed.
+> 
+> This mode is described in chapter "22.5.2 Direct Write to SPI" in the
+> Marvell Armada XP Functional Spec Datasheet.
+> 
+> It should be possible to support SPI-NOR and SPI-NAND devices via
+> this direct access mode as well. But this needs further work, e.g.:
+> - The mapping of the MBus window needs to get extended to span
+>    the complete flash device size
+> - The address / control data needs to get inserted into the SPI
+>    controller registers
+> 
+> Signed-off-by: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
+> Cc: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+> Cc: Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+> Cc: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
+> Cc: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+> Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 
-Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
----
- drivers/spi/Kconfig | 2 --
- 1 file changed, 2 deletions(-)
+Its been a while since v6 of this direct write access mode has been
+posted. This is a gentle ping on its status.
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 2a357f6..8259bf7 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -410,7 +410,6 @@ config SPI_OMAP_UWIRE
- config SPI_OMAP24XX
- 	tristate "McSPI driver for OMAP"
- 	depends on HAS_DMA
--	depends on ARM || ARM64 || AVR32 || HEXAGON || MIPS || SUPERH
- 	depends on ARCH_OMAP2PLUS || COMPILE_TEST
- 	help
- 	  SPI master controller for OMAP24XX and later Multichannel SPI
-@@ -481,7 +480,6 @@ config SPI_PXA2XX_PCI
- 
- config SPI_ROCKCHIP
- 	tristate "Rockchip SPI controller driver"
--	depends on ARM || ARM64 || AVR32 || HEXAGON || MIPS || SUPERH
- 	help
- 	  This selects a driver for Rockchip SPI controller.
- 
--- 
-2.5.0
+Arnd / Mark, do you have any additional change requests or are you okay
+with the current version?
 
+Thanks,
+Stefan
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

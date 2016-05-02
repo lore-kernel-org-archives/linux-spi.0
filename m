@@ -1,21 +1,20 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: qup: Handle clocks in pm_runtime suspend and resume" to the spi tree
-Date: Mon, 02 May 2016 16:47:24 +0100
-Message-ID: <E1axG4C-0005RE-2M@debutante>
-References: <1462191244-30758-1-git-send-email-pramod.gurav@linaro.org>
-Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
-	rjw@rjwysocki.net, ulf.hansson@linaro.org, andy.gross@linaro.org,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org
-To: Pramod Gurav <pramod.gurav@linaro.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1462191244-30758-1-git-send-email-pramod.gurav@linaro.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: Drop unnecessary dependencies on relaxed I/O accessors" to the spi tree
+Date: Mon, 02 May 2016 16:47:18 +0100
+Message-ID: <E1axG46-0005PO-7R@debutante>
+References: <1461999668.6497.2.camel@ingics.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
+	Addy Ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1461999668.6497.2.camel-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: qup: Handle clocks in pm_runtime suspend and resume
+   spi: Drop unnecessary dependencies on relaxed I/O accessors
 
 has been applied to the spi tree at
 
@@ -40,50 +39,43 @@ to this mail.
 Thanks,
 Mark
 
->From dae1a7700b34eceae049cf8f1567a640528ca4c1 Mon Sep 17 00:00:00 2001
-From: Pramod Gurav <pramod.gurav@linaro.org>
-Date: Mon, 2 May 2016 17:44:03 +0530
-Subject: [PATCH] spi: qup: Handle clocks in pm_runtime suspend and resume
+>From 46cb41534a1a1d1f75aae5eab0dd8c06a9461e6b Mon Sep 17 00:00:00 2001
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Date: Sat, 30 Apr 2016 15:01:08 +0800
+Subject: [PATCH] spi: Drop unnecessary dependencies on relaxed I/O accessors
 
-Clocks must ne disabled in pm_runtime to achieve some power saving.
-Enable the clocks when the device is runtime resumed during a transfer.
+The relaxed I/O accessors are available on all architectures now.
 
-Signed-off-by: Pramod Gurav <pramod.gurav@linaro.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-qup.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/spi/Kconfig | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index 810a7fae3479..e42ff613c0e0 100644
---- a/drivers/spi/spi-qup.c
-+++ b/drivers/spi/spi-qup.c
-@@ -937,6 +937,10 @@ static int spi_qup_pm_suspend_runtime(struct device *device)
- 	config = readl(controller->base + QUP_CONFIG);
- 	config |= QUP_CONFIG_CLOCK_AUTO_GATE;
- 	writel_relaxed(config, controller->base + QUP_CONFIG);
-+
-+	clk_disable_unprepare(controller->cclk);
-+	clk_disable_unprepare(controller->iclk);
-+
- 	return 0;
- }
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 9d8c84bb1544..28147c8031c6 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -410,7 +410,6 @@ config SPI_OMAP_UWIRE
+ config SPI_OMAP24XX
+ 	tristate "McSPI driver for OMAP"
+ 	depends on HAS_DMA
+-	depends on ARM || ARM64 || AVR32 || HEXAGON || MIPS || SUPERH
+ 	depends on ARCH_OMAP2PLUS || COMPILE_TEST
+ 	help
+ 	  SPI master controller for OMAP24XX and later Multichannel SPI
+@@ -469,7 +468,6 @@ config SPI_PXA2XX_PCI
  
-@@ -945,6 +949,15 @@ static int spi_qup_pm_resume_runtime(struct device *device)
- 	struct spi_master *master = dev_get_drvdata(device);
- 	struct spi_qup *controller = spi_master_get_devdata(master);
- 	u32 config;
-+	int ret;
-+
-+	ret = clk_prepare_enable(controller->iclk);
-+	if (ret)
-+		return ret;
-+
-+	ret = clk_prepare_enable(controller->cclk);
-+	if (ret)
-+		return ret;
+ config SPI_ROCKCHIP
+ 	tristate "Rockchip SPI controller driver"
+-	depends on ARM || ARM64 || AVR32 || HEXAGON || MIPS || SUPERH
+ 	help
+ 	  This selects a driver for Rockchip SPI controller.
  
- 	/* Disable clocks auto gaiting */
- 	config = readl_relaxed(controller->base + QUP_CONFIG);
 -- 
 2.8.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

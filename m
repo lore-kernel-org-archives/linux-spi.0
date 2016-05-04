@@ -1,93 +1,55 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: rockchip: potential NULL dereference on error" to the spi tree
-Date: Wed, 04 May 2016 14:56:56 +0100
-Message-ID: <E1axxIO-0001hK-3n@debutante>
-References: <20160504062546.GG22064@mwanda>
-Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Heiko Stuebner <heiko@sntech.de>, linux-spi@vger.kernel.org,
-	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-To: Dan Carpenter <dan.carpenter@oracle.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20160504062546.GG22064@mwanda>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [RFC PATCH v2 06/10] spi: add support for ACPI reconfigure notifications
+Date: Wed, 4 May 2016 18:04:45 +0300
+Message-ID: <CAE1zotJ1FKNdxCqV_XRUJrFB-fqHpBr54rj3C65ZM80h7=t3DQ@mail.gmail.com>
+References: <1461105548-20618-1-git-send-email-octavian.purdila@intel.com>
+	<1461105548-20618-7-git-send-email-octavian.purdila@intel.com>
+	<20160428174215.GS3217@sirena.org.uk>
+	<CAE1zot+LuQJGrDrEDM2iVv-omz3Sg6k3bavX+5gde8jzrK0pog@mail.gmail.com>
+	<20160503121954.GQ6292@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: "Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
+	Len Brown <lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Matt Fleming <matt-mF/unelCI9GS6iBeEJttW/XRex20P6io@public.gmane.org>,
+	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
+	Joel Becker <jlbec-aKy9MeLSZ9dg9hUCZPvPmw@public.gmane.org>,
+	"linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-efi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c <linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Irina Tirdea <irina.tirdea-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20160503121954.GQ6292-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+On Tue, May 3, 2016 at 3:19 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Thu, Apr 28, 2016 at 10:37:57PM +0300, Octavian Purdila wrote:
+>> On Thu, Apr 28, 2016 at 8:42 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+>
+>> > There's more code here now than I remember but this all looks *really*
+>> > close to the DT code except for the OF_POPULATED flag that we set when
+>> > things are instantiated in DT.  The duplication seems bad but the fact
+>> > that we're missing the flag worries me...  do we have guarantees that
+>> > ACPI won't double register?
+>
+>> We use the adev->flags.visited to check when a device has been already
+>> enumerated, and we skip registering a new SPI slave in that case.
+>
+> OK, but the fact that I need to know that isn't exactly thrilling -
+> that's really the issue with the not quite duplication here.  It's not
+> just if the code works but also the maintainability.
 
-   spi: rockchip: potential NULL dereference on error
+I agree that this is unfortunate. I could not find a common path for
+both device tree and ACPI. Perhaps when we remove of_node from struct
+device and move to fwnode we could remove some duplication.
 
-has been applied to the spi tree at
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 5de7ed0c980c4bcfd8ea5c0b84a61b76df7d6c08 Mon Sep 17 00:00:00 2001
-From: Dan Carpenter <dan.carpenter@oracle.com>
-Date: Wed, 4 May 2016 09:25:46 +0300
-Subject: [PATCH] spi: rockchip: potential NULL dereference on error
-
-We were calling dma_release_channel(rs->dma_tx.ch) when "rs->dma_tx.ch"
-is potentially NULL.  There is actually a call to that in the unwind
-code at the bottom of the function so we can just re-arrange this a bit
-and remove the call.  Also there is no need to set rs->dma_tx.ch to
-NULL on this error path.
-
-Fixes: e4c0e06f949b ('spi: rockchip: fix probe deferral handling')
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-rockchip.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 6c6c0013ec7a..cd89682065b9 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -744,10 +744,8 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 	rs->dma_rx.ch = dma_request_chan(rs->dev, "rx");
- 	if (IS_ERR(rs->dma_rx.ch)) {
- 		if (PTR_ERR(rs->dma_rx.ch) == -EPROBE_DEFER) {
--			dma_release_channel(rs->dma_tx.ch);
--			rs->dma_tx.ch = NULL;
- 			ret = -EPROBE_DEFER;
--			goto err_get_fifo_len;
-+			goto err_free_dma_tx;
- 		}
- 		dev_warn(rs->dev, "Failed to request RX DMA channel\n");
- 		rs->dma_rx.ch = NULL;
-@@ -775,10 +773,11 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 
- err_register_master:
- 	pm_runtime_disable(&pdev->dev);
--	if (rs->dma_tx.ch)
--		dma_release_channel(rs->dma_tx.ch);
- 	if (rs->dma_rx.ch)
- 		dma_release_channel(rs->dma_rx.ch);
-+err_free_dma_tx:
-+	if (rs->dma_tx.ch)
-+		dma_release_channel(rs->dma_tx.ch);
- err_get_fifo_len:
- 	clk_disable_unprepare(rs->spiclk);
- err_spiclk_enable:
--- 
-2.8.1
+I can add a couple of comments around  acpi_device_enumerated() and
+adev->flags.visited = true; to make it clear that we won't double
+enumerate. Will that help?
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

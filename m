@@ -1,29 +1,31 @@
-From: Rich Felker <dalias@libc.org>
-Subject: Re: Unsynchronized access to spi bus by mmc_rescan?
-Date: Wed, 4 May 2016 18:44:45 -0400
-Message-ID: <20160504224445.GW21636@brightrain.aerifal.cx>
-References: <20160422212842.GB21636@brightrain.aerifal.cx>
+From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] mtd: m25p80: add message if mmap flash read is supported
+Date: Wed, 4 May 2016 17:54:36 -0700
+Message-ID: <20160505005436.GA122798@google.com>
+References: <9111b023-d1e5-3084-4320-acf727e828f4@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-To: linux-spi@vger.kernel.org, linux-mmc@vger.kernel.org
-Return-path: <linux-mmc-owner@vger.kernel.org>
+Cc: MTD Mailing List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20160422212842.GB21636@brightrain.aerifal.cx>
-Sender: linux-mmc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <9111b023-d1e5-3084-4320-acf727e828f4-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Ping.
+(moving linux-spi to BCC, since this is MTD-only, and doesn't concern
+the SPI core)
 
-On Fri, Apr 22, 2016 at 05:28:42PM -0400, Rich Felker wrote:
-> I'm working on a driver for the J-core (http://j-core.org) SPI master,
-> which is currently limited to PIO and using the spi-bitbang framework
-> (probably not the right thing to use, but planned to change, and seems
-> orthogonal to the issue at hand). We're using it to access an SD card
-> via the mmc_spi mmc host driver, and experiencing crashes/corruption
-> that I tracked down to mmc_rescan (we don't yet have an interrupt for
-> media change) happening during SPI message transfers. Which locks are
-> supposed to preclude this from happening? Is it likely something wrong
-> our driver is using, or is there possibly a general bug in the MMC/SPI
-> subsystem(s)?
-> 
-> Rich
+On Wed, Apr 27, 2016 at 10:36:48PM +0200, Heiner Kallweit wrote:
+> As a follow-up to commit 08922f644878c9 "mtd: devices: m25p80: add support for
+> mmap read request" add an info to syslog if mmap flash read is supported for a
+> device.
+
+Any particular reason you want this to be printed? There are quite a few
+other features we don't print to the log right now.
+
+Brian
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

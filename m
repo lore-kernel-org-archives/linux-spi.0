@@ -1,76 +1,132 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/2] mtd: m25p80: consider max_transfer_size when reading
-Date: Fri, 6 May 2016 13:14:31 +0100
-Message-ID: <20160506121431.GQ6292@sirena.org.uk>
-References: <56D22823.7090005@gmail.com>
- <20160405193952.GA5243@localhost>
- <57041B43.2000109@gmail.com>
- <20160405210727.GB5243@localhost>
- <5706B084.2070909@gmail.com>
- <20160505235700.GA99474@google.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="C6e6/dnRACxPVebH"
-Cc: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Han Xu <han.xu-3arQi8VN3Tc@public.gmane.org>,
+Subject: Applied "spi: pic32-sqi: Remove pic32_sqi_setup and pic32_sqi_cleanup" to the spi tree
+Date: Fri, 06 May 2016 18:19:09 +0100
+Message-ID: <E1ayjPB-0006z2-Mc@debutante>
+References: <1461481160.19798.1.camel@ingics.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Purna Chandra Mandal <purna.mandal-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20160505235700.GA99474-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>
+In-Reply-To: <1461481160.19798.1.camel-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---C6e6/dnRACxPVebH
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   spi: pic32-sqi: Remove pic32_sqi_setup and pic32_sqi_cleanup
 
-On Thu, May 05, 2016 at 04:57:00PM -0700, Brian Norris wrote:
-> On Thu, Apr 07, 2016 at 09:09:56PM +0200, Heiner Kallweit wrote:
+has been applied to the spi tree at
 
-> > 2. At least in the case of fsl-espi the size limit refers to one
-> >    physical transfer (including the command) and therefore to the sum
-> >    of all transfers.
-> > We should change
-> > +	t[1].len =3D min_t(size_t, len, spi_max_transfer_size(spi));
-> > to
-> > +	t[1].len =3D min(len, spi_max_transfer_size(spi) - t[0].len);
-> >=20
-> > Apart from that the patch set looks good to me.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> That's not what Mark specified here:
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> http://lists.infradead.org/pipermail/linux-mtd/2015-November/063616.html
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-> and that's not what the API's very *name* means; it says max transfer
-> size (where a spi_transfer is a very well-defined concept). You need to
-> fix the driver or take up the API issues with Mark if you want to
-> suggest we interpret this differently.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-Yes, it's called the maximum transfer size because it is the maximum
-size of a transfer, not because it's the maximum size of a message.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---C6e6/dnRACxPVebH
-Content-Type: application/pgp-signature; name="signature.asc"
+Thanks,
+Mark
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+>From 191ec113487e7e7adc4b890c290f63e9155264ad Mon Sep 17 00:00:00 2001
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Date: Sun, 24 Apr 2016 14:59:20 +0800
+Subject: [PATCH] spi: pic32-sqi: Remove pic32_sqi_setup and pic32_sqi_cleanup
 
-iQEcBAEBCAAGBQJXLIqlAAoJECTWi3JdVIfQC88H/2xva2PCrdlC+6dXK+S1n43y
-sse7ST2houCukrSHljK+A+maopvucdVRcMHruitptQQPwv7BoKKVEpBEblUgjZ4s
-StWz4vsqc+/T5pZU5OAPCau4IgLM7+QE5phNK3uGm1RZRljQoyTYzYgi1QWn5c5v
-pzLS836b5+KcYMCmuubqCuB5tjemj3V4x8oiv5T2WoqkAoGAfZWoNds/cix3QD1c
-PNaeBL6EC/TrhHOxNDc36EE0s07+NJptG0rFkh+OHFtyhGfa2sMtN6GOau/rM0ak
-4n0+2zMmkoMkInhetqi5fV5N99U2dbZYNv8V9Y3/RfFREKbeSzhnNAivSvfZ2S4=
-=E4sK
------END PGP SIGNATURE-----
+Current code does not use ctldata at all, so remove spi_set_ctldata call.
 
---C6e6/dnRACxPVebH--
+spi_setup() will set spi->bits_per_word = 8 if it was not set, so remove
+!spi->max_speed_hz checking.
+
+The spi core allows absent of spi->max_speed_hz setting, if it was not set
+spi_setup() assigns spi->master->max_speed_hz to it.
+
+spi core allows spi->max_speed_hz > spi->master->max_speed_hz, in this case
+spi core will limit the transfer speed to ensure xfer->speed_hz won't
+greater than spi->master->max_speed_hz so remove checking if
+spi->max_speed_hz is higher than spi->master->max_speed_hz.
+
+As a result, both pic32_sqi_setup() and pic32_sqi_cleanup() can be removed.
+
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-pic32-sqi.c | 41 -----------------------------------------
+ 1 file changed, 41 deletions(-)
+
+diff --git a/drivers/spi/spi-pic32-sqi.c b/drivers/spi/spi-pic32-sqi.c
+index 74b9e684b10d..ca3c8d94b290 100644
+--- a/drivers/spi/spi-pic32-sqi.c
++++ b/drivers/spi/spi-pic32-sqi.c
+@@ -460,45 +460,6 @@ static int pic32_sqi_unprepare_hardware(struct spi_master *master)
+ 	return 0;
+ }
+ 
+-/* This may be called twice for each spi dev */
+-static int pic32_sqi_setup(struct spi_device *spi)
+-{
+-	struct pic32_sqi *sqi;
+-
+-	if (spi_get_ctldata(spi)) {
+-		dev_err(&spi->dev, "is already associated\n");
+-		return -EBUSY;
+-	}
+-
+-	/* check word size */
+-	if (!spi->bits_per_word) {
+-		dev_err(&spi->dev, "No bits_per_word defined\n");
+-		return -EINVAL;
+-	}
+-
+-	/* check maximum SPI clk rate */
+-	if (!spi->max_speed_hz) {
+-		dev_err(&spi->dev, "No max speed HZ parameter\n");
+-		return -EINVAL;
+-	}
+-
+-	if (spi->master->max_speed_hz < spi->max_speed_hz) {
+-		dev_err(&spi->dev, "max speed %u HZ is too high\n",
+-			spi->max_speed_hz);
+-		return -EINVAL;
+-	}
+-
+-	sqi = spi_master_get_devdata(spi->master);
+-	spi_set_ctldata(spi, (void *)sqi);
+-
+-	return 0;
+-}
+-
+-static void pic32_sqi_cleanup(struct spi_device *spi)
+-{
+-	spi_set_ctldata(spi, (void *)NULL);
+-}
+-
+ static int ring_desc_ring_alloc(struct pic32_sqi *sqi)
+ {
+ 	struct ring_desc *rdesc;
+@@ -700,8 +661,6 @@ static int pic32_sqi_probe(struct platform_device *pdev)
+ 	master->mode_bits	= SPI_MODE_3 | SPI_MODE_0 | SPI_TX_DUAL |
+ 				  SPI_RX_DUAL | SPI_TX_QUAD | SPI_RX_QUAD;
+ 	master->flags		= SPI_MASTER_HALF_DUPLEX;
+-	master->setup		= pic32_sqi_setup;
+-	master->cleanup		= pic32_sqi_cleanup;
+ 	master->can_dma		= pic32_sqi_can_dma;
+ 	master->bits_per_word_mask	= SPI_BPW_RANGE_MASK(8, 32);
+ 	master->transfer_one_message	= pic32_sqi_one_message;
+-- 
+2.8.1
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

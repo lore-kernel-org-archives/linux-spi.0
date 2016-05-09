@@ -1,76 +1,93 @@
-From: Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [RFC PATCH v2 07/10] efi: load SSTDs from EFI variables
-Date: Mon, 9 May 2016 12:59:09 +0300
-Message-ID: <CAE1zotKgmr30rsTZCQTXuSsUTZybt41m0TJqQqJgTaZ0auSrPw@mail.gmail.com>
-References: <1461105548-20618-1-git-send-email-octavian.purdila@intel.com>
-	<1461105548-20618-8-git-send-email-octavian.purdila@intel.com>
-	<da0e65ef-7c04-e274-2f15-a50daa8c4c8c@redhat.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: spi-fsl-dspi: replace regmap R/W with internal
+ implementation
+Date: Mon, 9 May 2016 11:28:40 +0100
+Message-ID: <20160509102840.GB6292@sirena.org.uk>
+References: <1461744756-31481-1-git-send-email-yao.yuan@freescale.com>
+ <1461744756-31481-2-git-send-email-yao.yuan@freescale.com>
+ <20160427152532.GX3217@sirena.org.uk>
+ <AM2PR04MB072250B43DE37A38E374679989700@AM2PR04MB0722.eurprd04.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: "Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
-	Len Brown <lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Matt Fleming <matt-mF/unelCI9GS6iBeEJttW/XRex20P6io@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
-	Joel Becker <jlbec-aKy9MeLSZ9dg9hUCZPvPmw@public.gmane.org>,
-	"linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-efi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c <linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Irina Tirdea <irina.tirdea-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Vincent Zimmer <vincent.zimmer-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-To: Jon Masters <jcm-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="f8UppZzm5eRNGSBg"
+Cc: Yuan Yao <yao.yuan-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	"robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"pawel.moll-5wv7dgnIgG8@public.gmane.org" <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	"shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"linux-devel-XDVM779Km55Y1YpKYGMr2+TW4wlIGRCZ@public.gmane.org" <linux-devel-XDVM779Km55Y1YpKYGMr2+TW4wlIGRCZ@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Yang-Leo Li <leoyang.li-3arQi8VN3Tc@public.gmane.org>,
+	Scott Wood <scott.wood-3arQi8VN3Tc@public.gmane.org>
+To: Yao Yuan <yao.yuan-3arQi8VN3Tc@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <da0e65ef-7c04-e274-2f15-a50daa8c4c8c-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <AM2PR04MB072250B43DE37A38E374679989700-IPoeDzmMJYrzmGvksFXQpM9NdZoXdze2vxpqHgZTriW3zl9H0oFU5g@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, May 9, 2016 at 7:13 AM, Jon Masters <jcm-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org> wrote:
-> Hi Octavian,
->
-> Apologies for missing this earlier, just catching up on this thread...
 
-Hi Jon,
+--f8UppZzm5eRNGSBg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->
-> On 04/19/2016 06:39 PM, Octavian Purdila wrote:
->
->> This patch allows SSDTs to be loaded from EFI variables. It works by
->> specifying the EFI variable name containing the SSDT to be loaded. All
->> variables with the same name (regardless of the vendor GUID) will be
->> loaded.
->
-> This sounds very useful during development. However, and using EFI
-> variables isn't so terrible, but I am concerned that this should be
-> standardized through ASWG and at least involve certain other OS vendors
-> so that the variable (GUID) can be captured somewhere. If not in the
-> spec itself, then it should be captured as an external ACPI resource on
-> the UEFI website with a clear pointer to the exact IDs to be used.
->
-> Can you confirm that's the intention? i.e. that you're allowing a
-> command line option for specifying the ID now because you intend to go
-> ensure that there is a standard one that everyone will use later?
->
+On Mon, May 09, 2016 at 08:48:59AM +0000, Yao Yuan wrote:
+> Hi Mark Brown,
 
-Yes, that is the intention. As I mentioned in the commit the long term
-plan is to do the loading at the FW level (before the OS boots) using
-the same mechanisms. But since this is going to take some time, I
-think its worth having the option to do the loading from software for
-two reason:
+Please don't top post, reply in line with needed context.  This allows
+readers to readily follow the flow of conversation and understand what
+you are talking about and also helps ensure that everything in the
+discussion is being addressed.
 
-a) to provide a way for using this mechanism on older boards that will
-not have the option to do a firmware update to get this functionality
+Please fix your mail client to word wrap within paragraphs at something
+substantially less than 80 columns.  Doing this makes your messages much
+easier to read and reply to.
 
-b) to implement the software support needed in advance and have a way to test it
+> There are two problems we have found for use regmap up to now.
 
-> I should check (but maybe you know) if the kernel is automatically
-> tainted by this codepath as well?
+> 1, Regmap will read device value depends on endian in .dtsi(DSPI in .dtsi=
+ file is big-endian) and readl()(readl() in arm64 is le32_to_cpu read) in s=
+ystem. =20
+> That is the value read out is fixed regardless the kernel were compiled w=
+ith CONFIG_CPU_BIG_ENDIAN yes or no. That makes the value(read from DSPI)ca=
+n't be recognized in one endian mode(CONFIG_CPU_BIG_ENDIAN be set or not).
+> The result is: DSPI can't working with CONFIG_CPU_BIG_ENDIAN set.
 
-In this version of the patch the kernel is tainted. However, note that
-in future versions I intend to remove it because it was already
-removed part of the initrd ACPI table upgrade patch [1].
+This doesn't make sense.  If the endianness of the device is specified
+in DT then the endianness of the CPU won't make a difference.
 
-[1] http://lkml.iu.edu/hypermail/linux/kernel/1604.1/01488.html
+> 2, Sometimes regmap will generate some issues. Some regmap issues will ca=
+use the DSPI do not working.
+> At 2016.4 we find the DSPI was not work, then we found that the regmap R/=
+W the controller register sometimes not right.=20
+> The result is: DSPI can't working with REGMAP API.
+> Although the regmap issues was fast fixed by some giving person. But I'm =
+still tend to use the reliable way.
+
+> Regmap is nice and Maybe I should try to fix regmap instead of replacing =
+regmap in my driver.
+> But regmap is really very large and complex for DSPI driver.
+
+Yes, if you find bugs in generic frameworks you should fix them rather
+than just open coding something. =20
+
+--f8UppZzm5eRNGSBg
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJXMGZWAAoJECTWi3JdVIfQMPcH/RdjCPbu+6zVJfPYp26y7B2H
+whuq1IsqB4wFcM+PqbC9cNkdRlIe9iS48FAfdIffurpD9Vkf2Tfela/Ff7YvMT2I
+nrn1e1Oto6MRFHWE3bJRGpwPVfr2X7cOrIUDcdLPCxOV/6WP79CPjy3ZG83RCy1W
+DmzMeQkhfTy5KS/OQCsvuS5ej07yTTi+cjSe2JcWARyfCjD+hQSlladP5T/kItku
+n7PIbjB+6PIKHcva5v3yTrElhxXZoNvg/vNc9fUEueLv8OuRVSLA/KTBMF5PFvrV
+khz1eHM/veGap2zkqjixbSykIITgR6QDM3AQzkXmw8QENC45rBJIN2hSg6m0oQs=
+=F+MD
+-----END PGP SIGNATURE-----
+
+--f8UppZzm5eRNGSBg--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

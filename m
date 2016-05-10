@@ -1,42 +1,38 @@
-From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH -trivial 3/3] spi: dw-pci: Spelling s/paltforms/platforms/g
-Date: Tue, 10 May 2016 20:59:58 +0200
-Message-ID: <1462906798-27993-3-git-send-email-geert+renesas@glider.be>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH -trivial 2/3] ARM: Spelling s/paltform/platform/g
+Date: Tue, 10 May 2016 20:59:57 +0200
+Message-ID: <1462906798-27993-2-git-send-email-geert+renesas@glider.be>
 References: <1462906798-27993-1-git-send-email-geert+renesas@glider.be>
-Cc: linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-To: Jonathan Corbet <corbet-T1hC0tSOHrs@public.gmane.org>,
-	Russell King <linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Jiri Kosina <trivial-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1462906798-27993-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-spi@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+To: Jonathan Corbet <corbet@lwn.net>,
+	Russell King <linux@armlinux.org.uk>,
+	Mark Brown <broonie@kernel.org>,
+	Jiri Kosina <trivial@kernel.org>
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <1462906798-27993-1-git-send-email-geert+renesas@glider.be>
+Sender: linux-doc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- drivers/spi/spi-dw-pci.c | 2 +-
+ arch/arm/Kconfig | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-dw-pci.c b/drivers/spi/spi-dw-pci.c
-index 332ccb0539a77710..ef7db75c92c13b34 100644
---- a/drivers/spi/spi-dw-pci.c
-+++ b/drivers/spi/spi-dw-pci.c
-@@ -67,7 +67,7 @@ static int spi_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	dws->irq = pdev->irq;
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 2d756aa471f33316..c01039b81d6eeb13 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -897,7 +897,7 @@ config MACH_STM32F429
+ 	default y
  
- 	/*
--	 * Specific handling for paltforms, like dma setup,
-+	 * Specific handling for platforms, like dma setup,
- 	 * clock rate, FIFO depth.
- 	 */
- 	if (desc) {
+ config ARCH_MPS2
+-	bool "ARM MPS2 paltform"
++	bool "ARM MPS2 platform"
+ 	depends on ARM_SINGLE_ARMV7M
+ 	select ARM_AMBA
+ 	select CLKSRC_MPS2
 -- 
 1.9.1
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

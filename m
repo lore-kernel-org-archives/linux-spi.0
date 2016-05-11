@@ -1,65 +1,70 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: Applied "spi: omap2-mcspi: Undo broken fix for dma transfer of
- vmalloced buffer" to the spi tree
-Date: Wed, 11 May 2016 17:20:30 +0100
-Message-ID: <20160511162030.GN6261@sirena.org.uk>
-References: <1460140995-4062-1-git-send-email-akinobu.mita@gmail.com>
- <E1apndq-0002S5-8J@debutante>
- <CAC5umyg2fJxYKOB4J96+3igkNx+eJs5MET8S8NnafZ3hcPPEag@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Zl+NncWK+U5aSfTo"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Akinobu Mita <akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAC5umyg2fJxYKOB4J96+3igkNx+eJs5MET8S8NnafZ3hcPPEag-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: dw-pci: Spelling s/paltforms/platforms/g" to the spi tree
+Date: Wed, 11 May 2016 18:27:33 +0100
+Message-ID: <E1b0Xv3-0000TA-HX@debutante>
+References: <1462906798-27993-3-git-send-email-geert+renesas@glider.be>
+Cc: Mark Brown <broonie@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Russell King <linux@armlinux.org.uk>,
+	Mark Brown <broonie@kernel.org>,
+	Jiri Kosina <trivial@kernel.org>, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <1462906798-27993-3-git-send-email-geert+renesas@glider.be>
+Sender: linux-doc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---Zl+NncWK+U5aSfTo
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: dw-pci: Spelling s/paltforms/platforms/g
 
-On Thu, May 12, 2016 at 12:39:35AM +0900, Akinobu Mita wrote:
+has been applied to the spi tree at
 
-> I realized that this undo patch has not been merged to Linus' tree yet.
-> I have a fix for this issue (attached patch).  But the change is not
-> small and also v4.6 release is soon.  So I think this undo patch
-> should go into 4.6 release.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-I actually just sent that a few minutes ago anyway.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> The actual DMA transfer length by dmaengine can be smaller than SPI
-> transfer length in the specific condition.  In that case, the last
-> word needs to be filled after DMA transfer completion.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-> This fixes it by detecting that case and remap the scatterlist with
-> correct DMA transfer length.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-This feels like it should be in the framework, I imagine other devices
-will have similar limiations.  Especially if the limitation comes from
-the DMA engine I'd hope we can arrange to query it somehow...  can you
-provide a bit more detail on what the restriction is please?
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---Zl+NncWK+U5aSfTo
-Content-Type: application/pgp-signature; name="signature.asc"
+Thanks,
+Mark
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+>From 3208a1ccb23018c650ff9e08c4bd1c8b01f6d8f1 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Tue, 10 May 2016 20:59:58 +0200
+Subject: [PATCH] spi: dw-pci: Spelling s/paltforms/platforms/g
 
-iQEcBAEBCAAGBQJXM1vNAAoJECTWi3JdVIfQte8H+wYeHgHG0iqbsWJWI2Mqze//
-5xNnANllLET9k/DnLwjDOdSoJDfhf1rjfu7wxQ6sNcpyyC0EOzn/kJb0bk/qYG5Z
-LKIA++42flykWACVeXbEGEdNuIVknyCGl6Z6GsMqkSw20oL1jNt3cMWKCwcIq50o
-b6AmCUhG5eAeoeQ3VIEM4LTs6IDDJZuzyg4xTR9PzEaI3OC9L1PEfOD49wJgCAep
-/HESLlgGPeB+Tg3YmV3h99y2RHnYPXb7fEWq0ujXlpleyXzVprhJYEaDiXLHKwSI
-w+MyHEydznR2rbMNf9LqpL+VygmWxNsWsVN7HRPzi8xxrOFGaP6P4Cuon5EjDQM=
-=4B0x
------END PGP SIGNATURE-----
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-dw-pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---Zl+NncWK+U5aSfTo--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/drivers/spi/spi-dw-pci.c b/drivers/spi/spi-dw-pci.c
+index 332ccb0539a7..ef7db75c92c1 100644
+--- a/drivers/spi/spi-dw-pci.c
++++ b/drivers/spi/spi-dw-pci.c
+@@ -67,7 +67,7 @@ static int spi_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	dws->irq = pdev->irq;
+ 
+ 	/*
+-	 * Specific handling for paltforms, like dma setup,
++	 * Specific handling for platforms, like dma setup,
+ 	 * clock rate, FIFO depth.
+ 	 */
+ 	if (desc) {
+-- 
+2.8.1
+

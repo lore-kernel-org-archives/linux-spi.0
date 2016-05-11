@@ -1,94 +1,80 @@
-From: Akinobu Mita <akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: Applied "spi: omap2-mcspi: Undo broken fix for dma transfer of
- vmalloced buffer" to the spi tree
-Date: Thu, 12 May 2016 00:39:35 +0900
-Message-ID: <CAC5umyg2fJxYKOB4J96+3igkNx+eJs5MET8S8NnafZ3hcPPEag@mail.gmail.com>
-References: <1460140995-4062-1-git-send-email-akinobu.mita@gmail.com> <E1apndq-0002S5-8J@debutante>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: [GIT PULL] SPI fixes for v4.6
+Date: Wed, 11 May 2016 17:03:46 +0100
+Message-ID: <20160511160346.GM6261@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary=001a11393ba06fd28d053292da01
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="hnsKUeImFCk/igEn"
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <E1apndq-0002S5-8J@debutante>
+Content-Disposition: inline
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
---001a11393ba06fd28d053292da01
-Content-Type: text/plain; charset=UTF-8
 
-2016-04-12 11:01 GMT+09:00 Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>:
-> The patch
->
->    spi: omap2-mcspi: Undo broken fix for dma transfer of vmalloced buffer
->
-> has been applied to the spi tree at
->
->    git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git
+--hnsKUeImFCk/igEn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-I realized that this undo patch has not been merged to Linus' tree yet.
-I have a fix for this issue (attached patch).  But the change is not
-small and also v4.6 release is soon.  So I think this undo patch
-should go into 4.6 release.
+The following changes since commit 04974df8049fc4240d22759a91e035082ccd18b4:
 
---001a11393ba06fd28d053292da01
-Content-Type: text/x-patch; charset=US-ASCII;
-	name="0001-spi-omap2-mcspi-fix-dma-transfer.patch"
-Content-Disposition: attachment;
-	filename="0001-spi-omap2-mcspi-fix-dma-transfer.patch"
-Content-Transfer-Encoding: base64
-X-Attachment-Id: f_io315bor0
+  Linux 4.6-rc6 (2016-05-01 15:52:31 -0700)
 
-RnJvbSA1YWJjNTg5YWIwOGUyMzllODg0ZmIyZTg5MzdkNzRmODFmYjBiODg4IE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBBa2lub2J1IE1pdGEgPGFraW5vYnUubWl0YUBnbWFpbC5jb20+
-CkRhdGU6IE1vbiwgMjEgTWFyIDIwMTYgMDE6MTY6MDYgKzA5MDAKU3ViamVjdDogW1BBVENIXSBz
-cGk6IG9tYXAyLW1jc3BpOiBmaXggZG1hIHRyYW5zZmVyCgpUaGlzIGZpeGVzIHRoZSBwcm9ibGVt
-IGludHJvZHVjZWQgYnkgdGhlIGNvbW1pdCAzNTI1ZTBhYWM5MWMgKCJzcGk6Cm9tYXAyLW1jc3Bp
-OiBmaXggZG1hIHRyYW5zZmVyIGZvciB2bWFsbG9jZWQgYnVmZmVyIikKClRoZSBhY3R1YWwgRE1B
-IHRyYW5zZmVyIGxlbmd0aCBieSBkbWFlbmdpbmUgY2FuIGJlIHNtYWxsZXIgdGhhbiBTUEkKdHJh
-bnNmZXIgbGVuZ3RoIGluIHRoZSBzcGVjaWZpYyBjb25kaXRpb24uICBJbiB0aGF0IGNhc2UsIHRo
-ZSBsYXN0CndvcmQgbmVlZHMgdG8gYmUgZmlsbGVkIGFmdGVyIERNQSB0cmFuc2ZlciBjb21wbGV0
-aW9uLgoKVGhpcyBmaXhlcyBpdCBieSBkZXRlY3RpbmcgdGhhdCBjYXNlIGFuZCByZW1hcCB0aGUg
-c2NhdHRlcmxpc3Qgd2l0aApjb3JyZWN0IERNQSB0cmFuc2ZlciBsZW5ndGguCgpTaWduZWQtb2Zm
-LWJ5OiBBa2lub2J1IE1pdGEgPGFraW5vYnUubWl0YUBnbWFpbC5jb20+CkNjOiBNYXJrIEJyb3du
-IDxicm9vbmllQGtlcm5lbC5vcmc+Ci0tLQogZHJpdmVycy9zcGkvc3BpLW9tYXAyLW1jc3BpLmMg
-fCA0NyArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrCiAxIGZpbGUg
-Y2hhbmdlZCwgNDcgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3BpL3NwaS1v
-bWFwMi1tY3NwaS5jIGIvZHJpdmVycy9zcGkvc3BpLW9tYXAyLW1jc3BpLmMKaW5kZXggNDNhMDJl
-My4uYTdmYWZkMCAxMDA2NDQKLS0tIGEvZHJpdmVycy9zcGkvc3BpLW9tYXAyLW1jc3BpLmMKKysr
-IGIvZHJpdmVycy9zcGkvc3BpLW9tYXAyLW1jc3BpLmMKQEAgLTQzOSw3ICs0MzksNDEgQEAgc3Rh
-dGljIHZvaWQgb21hcDJfbWNzcGlfdHhfZG1hKHN0cnVjdCBzcGlfZGV2aWNlICpzcGksCiAJfQog
-CWRtYV9hc3luY19pc3N1ZV9wZW5kaW5nKG1jc3BpX2RtYS0+ZG1hX3R4KTsKIAlvbWFwMl9tY3Nw
-aV9zZXRfZG1hX3JlcShzcGksIDAsIDEpOworfQorCitzdGF0aWMgaW50CitvbWFwMl9tY3NwaV9y
-eF9kbWFfcmVtYXAoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSwgc3RydWN0IHNwaV90cmFuc2ZlciAq
-eGZlciwKKwkJCSB1bnNpZ25lZCBpbnQgZG1hX2NvdW50KQoreworCWludCBpOworCXN0cnVjdCBz
-Y2F0dGVybGlzdCAqc2c7CisJc3RydWN0IG9tYXAyX21jc3BpICptY3NwaTsKKwl1bnNpZ25lZCBp
-bnQgbmVudHMgPSAwOworCXVuc2lnbmVkIGludCBjb3VudCA9IDA7CisJaW50IHJldDsKKworCW1j
-c3BpID0gc3BpX21hc3Rlcl9nZXRfZGV2ZGF0YShzcGktPm1hc3Rlcik7CisKKwlkbWFfdW5tYXBf
-c2cobWNzcGktPmRldiwgeGZlci0+cnhfc2cuc2dsLCB4ZmVyLT5yeF9zZy5uZW50cywKKwkJICAg
-ICBETUFfRlJPTV9ERVZJQ0UpOworCisJZm9yX2VhY2hfc2coeGZlci0+cnhfc2cuc2dsLCBzZywg
-eGZlci0+cnhfc2cubmVudHMsIGkpIHsKKwkJbmVudHMrKzsKKwkJaWYgKGNvdW50ICsgc2ctPmxl
-bmd0aCA8IGRtYV9jb3VudCkgeworCQkJY291bnQgKz0gc2ctPmxlbmd0aDsKKwkJCWNvbnRpbnVl
-OworCQl9CisJCXNnLT5sZW5ndGggPSBkbWFfY291bnQgLSBjb3VudDsKKwkJYnJlYWs7CisJfQog
-CisJcmV0ID0gZG1hX21hcF9zZyhtY3NwaS0+ZGV2LCB4ZmVyLT5yeF9zZy5zZ2wsIG5lbnRzLCBE
-TUFfRlJPTV9ERVZJQ0UpOworCWlmICghcmV0KQorCQlyZXR1cm4gLUVOT01FTTsKKworCXhmZXIt
-PnJ4X3NnLm5lbnRzID0gcmV0OworCisJcmV0dXJuIDA7CiB9CiAKIHN0YXRpYyB1bnNpZ25lZApA
-QCAtNDgwLDYgKzUxNCwxNiBAQCBvbWFwMl9tY3NwaV9yeF9kbWEoc3RydWN0IHNwaV9kZXZpY2Ug
-KnNwaSwgc3RydWN0IHNwaV90cmFuc2ZlciAqeGZlciwKIAkJaWYgKChsICYgT01BUDJfTUNTUElf
-Q0hDT05GX1RVUkJPKSAmJiBtY3NwaS0+Zmlmb19kZXB0aCA9PSAwKQogCQkJZG1hX2NvdW50IC09
-IGVzOwogCisJCWlmICh4ZmVyLT5sZW4gIT0gZG1hX2NvdW50KSB7CisJCQlpbnQgcmV0OworCisJ
-CQlyZXQgPSBvbWFwMl9tY3NwaV9yeF9kbWFfcmVtYXAoc3BpLCB4ZmVyLCBkbWFfY291bnQpOwor
-CQkJaWYgKHJldCkgeworCQkJCWRldl9lcnIoJnNwaS0+ZGV2LCAiZmFpbGVkIHRvIG1hcCByeCBi
-dWZcbiIpOworCQkJCXJldHVybiAwOworCQkJfQorCQl9CisKIAkJdHggPSBkbWFlbmdpbmVfcHJl
-cF9zbGF2ZV9zZyhtY3NwaV9kbWEtPmRtYV9yeCwgeGZlci0+cnhfc2cuc2dsLAogCQkJCQkgICAg
-IHhmZXItPnJ4X3NnLm5lbnRzLCBETUFfREVWX1RPX01FTSwKIAkJCQkJICAgICBETUFfUFJFUF9J
-TlRFUlJVUFQgfCBETUFfQ1RSTF9BQ0spOwpAQCAtNDk2LDYgKzU0MCw5IEBAIG9tYXAyX21jc3Bp
-X3J4X2RtYShzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpLCBzdHJ1Y3Qgc3BpX3RyYW5zZmVyICp4ZmVy
-LAogCW9tYXAyX21jc3BpX3NldF9kbWFfcmVxKHNwaSwgMSwgMSk7CiAKIAl3YWl0X2Zvcl9jb21w
-bGV0aW9uKCZtY3NwaV9kbWEtPmRtYV9yeF9jb21wbGV0aW9uKTsKKwlkbWFfdW5tYXBfc2cobWNz
-cGktPmRldiwgeGZlci0+cnhfc2cuc2dsLCB4ZmVyLT5yeF9zZy5uZW50cywKKwkJICAgICBETUFf
-RlJPTV9ERVZJQ0UpOworCXNnX2ZyZWVfdGFibGUoJnhmZXItPnJ4X3NnKTsKIAogCWlmIChtY3Nw
-aS0+Zmlmb19kZXB0aCA+IDApCiAJCXJldHVybiBjb3VudDsKLS0gCjIuNy40Cgo=
---001a11393ba06fd28d053292da01--
+are available in the git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v4.6-rc7
+
+for you to fetch changes up to 9b1f189e6dfb0483b715e19364c782d2ddee96a0:
+
+  Merge remote-tracking branches 'spi/fix/fsl-dspi', 'spi/fix/omap2-mcspi', 'spi/fix/pxa2xx' and 'spi/fix/ti-qspi' into spi-linus (2016-05-06 18:20:37 +0100)
+
+----------------------------------------------------------------
+spi: Fixes for v4.6
+
+A bunch of small driver specific fixes that have come up, none of them
+remarkable in themselves.  One fixes a regression introduced in the
+merge window and another two are targetted at stable.
+
+----------------------------------------------------------------
+Akinobu Mita (1):
+      spi: omap2-mcspi: Undo broken fix for dma transfer of vmalloced buffer
+
+Andrey Vostrikov (1):
+      spi: spi-fsl-dspi: Fix cs_change handling in message transfer
+
+Ben Hutchings (2):
+      spi: spi-ti-qspi: Fix FLEN and WLEN settings if bits_per_word is overridden
+      spi: spi-ti-qspi: Handle truncated frames properly
+
+Jarkko Nikula (1):
+      spi: pxa2xx: Do not detect number of enabled chip selects on Intel SPT
+
+Mark Brown (1):
+      Merge remote-tracking branches 'spi/fix/fsl-dspi', 'spi/fix/omap2-mcspi', 'spi/fix/pxa2xx' and 'spi/fix/ti-qspi' into spi-linus
+
+ drivers/spi/spi-fsl-dspi.c    |  4 +--
+ drivers/spi/spi-omap2-mcspi.c | 62 +++++++++++++++++++++++++++++++------------
+ drivers/spi/spi-pxa2xx.c      |  2 +-
+ drivers/spi/spi-ti-qspi.c     | 45 +++++++++++++++++++------------
+ 4 files changed, 76 insertions(+), 37 deletions(-)
+
+--hnsKUeImFCk/igEn
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJXM1ffAAoJECTWi3JdVIfQacYH/R3kugYinFnnkqbfvw41P0+s
+wsI2S2obKDojvGBcCiiHrrIiGqq8f8eEg5fpyURmbTbrM73xfyBuY3DVEw4PXy4/
+Pg1iBvwPt48pQ8bw1qTYW8XkUnZTJq/KVyB/8h4/1F/U7wJXJ5dPBSy22eS/Nn0L
+nvL8N3DFon4FYDEWJ6+qnEbFEpkJzI9pQgQexcXoXjlhixlkk9/FwvbaABbns5KK
+2miVgvNq/KzBdJAn3FTBHdSekxieDEFco5j6gyrmTxBljsFr7gogge+vlK4ukUHC
+q3oHVwVg2YMFTaBBNsaiO0ZqR5x/k9dZ0dqt0tTDIDKx2w/tNAeVS2sepKR6ZCY=
+=FQ4b
+-----END PGP SIGNATURE-----
+
+--hnsKUeImFCk/igEn--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

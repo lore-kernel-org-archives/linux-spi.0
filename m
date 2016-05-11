@@ -1,40 +1,261 @@
-From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH -trivial 1/3] Documentation: vm: Spelling s/paltform/platform/g
-Date: Tue, 10 May 2016 20:59:56 +0200
-Message-ID: <1462906798-27993-1-git-send-email-geert+renesas@glider.be>
-Cc: linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-To: Jonathan Corbet <corbet-T1hC0tSOHrs@public.gmane.org>,
-	Russell King <linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Jiri Kosina <trivial-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 1/4] dt: bindings: spi-bcm-qspi: NSP, NS2, BRCMSTB SoC bindings
+Date: Wed, 11 May 2016 11:29:24 -0400
+Message-ID: <1462980567-310-1-git-send-email-kdasu.kdev@gmail.com>
+Cc: bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, vikram.prakash-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
+	andy.fung-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, jon.mason-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
+	Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Yendapally Reddy Dhananjaya Reddy
+	<yendapally.reddy-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
----
- Documentation/vm/hugetlbpage.txt | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Added device tree bindings documentation for SoCs supported by the
+new spi-bcm-qspi driver.
 
-diff --git a/Documentation/vm/hugetlbpage.txt b/Documentation/vm/hugetlbpage.txt
-index 54dd9b9c6c31aeed..6f3b3fa35613d900 100644
---- a/Documentation/vm/hugetlbpage.txt
-+++ b/Documentation/vm/hugetlbpage.txt
-@@ -275,10 +275,10 @@ This command mounts a (pseudo) filesystem of type hugetlbfs on the directory
- options sets the owner and group of the root of the file system.  By default
- the uid and gid of the current process are taken.  The mode option sets the
- mode of root of file system to value & 01777.  This value is given in octal.
--By default the value 0755 is picked. If the paltform supports multiple huge
-+By default the value 0755 is picked. If the platform supports multiple huge
- page sizes, the pagesize option can be used to specify the huge page size and
- associated pool.  pagesize is specified in bytes.  If pagesize is not specified
--the paltform's default huge page size and associated pool will be used. The
-+the platform's default huge page size and associated pool will be used. The
- size option sets the maximum value of memory (huge pages) allowed for that
- filesystem (/mnt/huge).  The size option can be specified in bytes, or as a
- percentage of the specified huge page pool (nr_hugepages).  The size is
+Signed-off-by: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Yendapally Reddy Dhananjaya Reddy <yendapally.reddy-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+---
+ .../devicetree/bindings/spi/spi-bcm-qspi.txt       | 228 +++++++++++++++++++++
+ 1 file changed, 228 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-bcm-qspi.txt
+
+diff --git a/Documentation/devicetree/bindings/spi/spi-bcm-qspi.txt b/Documentation/devicetree/bindings/spi/spi-bcm-qspi.txt
+new file mode 100644
+index 0000000..a79a384
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-bcm-qspi.txt
+@@ -0,0 +1,228 @@
++Broadcom SPI controller
++
++The Broadcom SPI controller is a SPI master found on various SOCs, including
++BRCMSTB (BCM7XXX), Cygnus, NSP and NS2.
++
++Required properties:
++
++- #address-cells:
++    Must be <1>, as required by generic SPI binding.
++
++- #size-cells:
++    Must be <0>, also as required by generic SPI binding.
++
++- compatible:
++    Must be one of :
++    "brcm,spi-bcm-qspi" 
++    "brcm,spi-brmstb" spi-nor and/or "brcm,spi-brmstb-mspi" unmanaged SPI Master
++
++- reg:
++    Define the bases and ranges of the associated I/O address spaces.
++    The required range is MSPI controller registers and interrupt registers, the others 
++    are optional Boot SPI (BSPI) portion for fast flash reads.
++
++- reg-names:
++    First name does not matter, but must be reserved for the MSPI controller
++    register range as mentioned in 'reg' above, and will typically contain
++    - "bspi_regs": BSPI register range
++    - "mspi_regs": MSPI register range
++    - "intr_regs", "intr_status_reg" : Interrupt and status register for NSP, NS2 SoC
++    - "hif_spi_intr2" : Interrupt and status register for BRCMSTB SoC
++   
++- interrupts
++    The interrupts used by the MSPI and/or BSPI controller.
++
++- interrupt-names:
++    Names of interrupts associated with this MSPI and/or BSPI controller.
++    - "mspi_halted" :
++    - "mspi_done": Indicates that the requested SPI operation is complete.
++    - "spi_lr_fullness_reached" : Linear read BSPI pipe full
++    - "spi_lr_session_aborted"  : Linear read BSPI pipe aborted
++    - "spi_lr_impatient" : Linear read BSPI requested when pipe empty
++    - "spi_lr_session_done" : Linear read BSPI session done 
++
++Optional properties:
++
++- clocks:
++    A phandle to the reference clock for this block.  If not present, will
++    assume a 27 MHz fixed clock (default for UPG).
++
++
++Optional properties:
++
++- clocks:
++    A phandle to the reference clock for this block.
++
++- bspi-sel:
++    Chip selects that requires bspi support.
++
++
++Examples:
++
++BRCMSTB SoC Example: 
++
++  SPI Master for SPI-NOR:
++
++    spi@f03e3400 {
++		#address-cells = <0x1>;
++		#size-cells = <0x0>;
++		compatible = "brcm,qspi-brcmstb";
++		reg = <0xf03e0920 0x4 0xf03e3400 0x188 0xf03e3200 0x50>;
++		reg-names = "cs_reg", "hif_mspi", "bspi";
++		interrupts = <0x6 0x5 0x4 0x3 0x2 0x1 0x0>;
++		interrupt-parent = <0x1c>;
++		interrupt-names = "mspi_halted",
++				  "mspi_done",
++				  "spi_lr_overread",
++				  "spi_lr_session_done",
++				  "spi_lr_impatient",
++				  "spi_lr_session_aborted",
++				  "spi_lr_fullness_reached";
++
++		clocks = <0x1b>;
++		clock-names = "sw_spi";
++
++		m25p80@0 {
++			#size-cells = <0x2>;
++			#address-cells = <0x2>;
++			compatible = "m25p80";
++			reg = <0x0>;
++			spi-max-frequency = <0x2625a00>;
++			spi-cpol;
++			spi-cpha;
++			use-bspi;
++			m25p,fast-read;
++
++			flash0.bolt@0 {
++				reg = <0x0 0x0 0x0 0x100000>;
++			};
++
++			flash0.macadr@100000 {
++				reg = <0x0 0x100000 0x0 0x10000>;
++			};
++
++			flash0.nvram@110000 {
++				reg = <0x0 0x110000 0x0 0x10000>;
++			};
++
++			flash0.kernel@120000 {
++				reg = <0x0 0x120000 0x0 0x400000>;
++			};
++
++			flash0.devtree@520000 {
++				reg = <0x0 0x520000 0x0 0x10000>;
++			};
++
++			flash0.splash@530000 {
++				reg = <0x0 0x530000 0x0 0x80000>;
++			};
++
++			flash0@0 {
++				reg = <0x0 0x0 0x0 0x4000000>;
++			};
++		};
++	};
++
++
++    MSPI master:
++
++		spi@f0416000 {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			clocks = <&upg_fixed>;
++			compatible = "brcm,spi-brcmstb-mspi";
++			reg = <0xf0416000 0x180>;
++			reg-names = "mspi";
++			interrupts = <0x14>;
++			interrupt-parent = <&irq0_aon_intc>;
++			interrupt-names = "mspi_done";
++		};
++
++
++
++iProc SoC Example:
++
++    qspi: spi@18027200 {
++        compatible = "brcm,spi-bcm-qspi";
++        reg = <0x18027200 0x184>,
++	      <0x18027000 0x124>,
++              <0x1811c408 0x004>,
++              <0x180273a0 0x01c>;
++        reg-names = "mspi_regs", "bspi_regs", "intr_regs", "intr_status_reg";
++        interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 73 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 75 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 76 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 77 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 78 IRQ_TYPE_LEVEL_HIGH>;
++        interrupt-names = 
++		     "spi_lr_fullness_reached",
++ 		     "spi_lr_session_aborted",
++		     "spi_lr_impatient",
++		     "spi_lr_session_done",
++		     "mspi_done",
++		     "mspi_halted";
++        clocks = <&iprocmed>;
++        clock-names = "iprocmed";
++        clock-frequency = <12500000>;
++        num-cs = <2>;
++        #address-cells = <1>;
++        #size-cells = <0>;
++    };
++
++
++ NS2 SoC Example:
++
++               qspi: spi@66470200 {
++                       compatible = "brcm,spi-bcm-qspi";
++                       reg = <0x66470200 0x184>,
++                             <0x66470000 0x124>,
++                             <0x67017408 0x004>,
++                             <0x664703a0 0x01c>;
++                       reg-names = "mspi", "bspi", "intr_regs", "intr_status_reg";
++                       interrupts = <GIC_SPI 419 IRQ_TYPE_LEVEL_HIGH>;
++                       interrupt-names = "spi_l1_intr";
++                        clocks = <&iprocmed>;
++                        clock-names = "iprocmed";
++                        clock-frequency = <12500000>;
++                        num-cs = <2>;
++                        #address-cells = <1>;
++                        #size-cells = <0>;
++               };
++
++
++ m25p80 node for NSP, NS2 and iProc
++
++ 	 &qspi {
++    	     bspi-sel = <0>;
++       	     flash: m25p80@0 {
++             	      #address-cells = <1>;
++               	      #size-cells = <1>;
++		      compatible = "m25p80";
++		      reg = <0x0>;
++		      spi-max-frequency = <12500000>;
++		      m25p,fast-read;
++		      spi-cpol;
++		      spi-cpha;
++		      
++		      partition@0 {
++		      		  label = "boot";
++				  reg = <0x00000000 0x000a0000>;
++		      };
++
++		      partition@1 {
++		      		  label = "env";
++				  reg = <0x000a0000 0x00060000>;
++		      };
++
++		      partition@2 {
++		      		  label = "system";
++				  reg = <0x00100000 0x00600000>;
++		      };
++
++		      partition@3 {
++		      		  label = "rootfs";
++				  reg = <0x00700000 0x01900000>;
++		      };
++	 };
 -- 
 1.9.1
 

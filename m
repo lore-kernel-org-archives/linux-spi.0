@@ -1,70 +1,87 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: dw-pci: Spelling s/paltforms/platforms/g" to the spi tree
-Date: Wed, 11 May 2016 18:27:33 +0100
-Message-ID: <E1b0Xv3-0000TA-HX@debutante>
-References: <1462906798-27993-3-git-send-email-geert+renesas@glider.be>
-Cc: Mark Brown <broonie@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Russell King <linux@armlinux.org.uk>,
-	Mark Brown <broonie@kernel.org>,
-	Jiri Kosina <trivial@kernel.org>, linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
-To: Geert Uytterhoeven <geert+renesas@glider.be>
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <1462906798-27993-3-git-send-email-geert+renesas@glider.be>
-Sender: linux-doc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Leo Li <pku.leo-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: spi-fsl-dspi: replace regmap R/W with internal implementation
+Date: Wed, 11 May 2016 17:20:25 -0500
+Message-ID: <CADRPPNT2OpNxdQV8f_-S_DJjySEOu=SyegLMKU650hxuvr3CYw@mail.gmail.com>
+References: <1461744756-31481-1-git-send-email-yao.yuan@freescale.com>
+	<1461744756-31481-2-git-send-email-yao.yuan@freescale.com>
+	<20160427152532.GX3217@sirena.org.uk>
+	<AM2PR04MB072250B43DE37A38E374679989700@AM2PR04MB0722.eurprd04.prod.outlook.com>
+	<20160509102840.GB6292@sirena.org.uk>
+	<AM2PR04MB0722180ABF5DB9406F56162B89700@AM2PR04MB0722.eurprd04.prod.outlook.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Yuan Yao <yao.yuan-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	"robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"pawel.moll-5wv7dgnIgG8@public.gmane.org" <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	"shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"linux-devel-XDVM779Km55Y1YpKYGMr2+TW4wlIGRCZ@public.gmane.org" <linux-devel-XDVM779Km55Y1YpKYGMr2+TW4wlIGRCZ@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Yang-Leo Li <leoyang.li-3arQi8VN3Tc@public.gmane.org>,
+	Scott Wood <scott.wood-3arQi8VN3Tc@public.gmane.org>
+To: Yao Yuan <yao.yuan-3arQi8VN3Tc@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <AM2PR04MB0722180ABF5DB9406F56162B89700-IPoeDzmMJYrzmGvksFXQpM9NdZoXdze2vxpqHgZTriW3zl9H0oFU5g@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+On Mon, May 9, 2016 at 5:58 AM, Yao Yuan <yao.yuan-3arQi8VN3Tc@public.gmane.org> wrote:
+> On Mon, May 09, 2016 at 06:29:59AM +0800, Mark Brown wrote:
+>> On Mon, May 09, 2016 at 08:48:59AM +0000, Yao Yuan wrote:
+>> > Hi Mark Brown,
+>>
+>> Please don't top post, reply in line with needed context.  This allows readers to
+>> readily follow the flow of conversation and understand what you are talking
+>> about and also helps ensure that everything in the discussion is being
+>> addressed.
+>>
+>> Please fix your mail client to word wrap within paragraphs at something
+>> substantially less than 80 columns.  Doing this makes your messages much
+>> easier to read and reply to.
+>>
+>
+> Ok, Thanks.
+>
+>> > There are two problems we have found for use regmap up to now.
+>>
+>> > 1, Regmap will read device value depends on endian in .dtsi(DSPI in .dtsi file is
+>> big-endian) and readl()(readl() in arm64 is le32_to_cpu read) in system.
+>> > That is the value read out is fixed regardless the kernel were compiled with
+>> CONFIG_CPU_BIG_ENDIAN yes or no. That makes the value(read from
+>> DSPI)can't be recognized in one endian mode(CONFIG_CPU_BIG_ENDIAN be
+>> set or not).
+>> > The result is: DSPI can't working with CONFIG_CPU_BIG_ENDIAN set.
+>>
+>> This doesn't make sense.  If the endianness of the device is specified in DT then
+>> the endianness of the CPU won't make a difference.
+>>
+>
+> For example, if DSPI controller register is BE, so I set big-endian in DT.
+> That means we should R/W the DSPI controller register with big-endian.
+> Then I can think all of the value we R/W to/from DSPI controller register, we can
+> Think they are the BE.
+> So that we can understand it easy.
+>
+> That means no matter core is LE or BE, we both need get the value from DSPI register
+> with big endian.
+>
+> But from regmap is not.
+> When the core is little endian, I can get the big endian value form register like:0xaabbccdd.
+> Then we can analysis and process this value.
+> But once config the core to big endian, I get the value like:0xddccbbaa. It's the little endian.
+> That's terrible for my driver to understand the value.
 
-   spi: dw-pci: Spelling s/paltforms/platforms/g
+This is just the result.  Are you able to dig deeper to explain why
+this is happening?
 
-has been applied to the spi tree at
+I checked the LS1043 reference manual, the register definition looks
+like little endian instead of the big endian defined in the LS1043
+device tree.  Can you confirm if the block is actually having big
+endian registers or little endian registers.
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 3208a1ccb23018c650ff9e08c4bd1c8b01f6d8f1 Mon Sep 17 00:00:00 2001
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-Date: Tue, 10 May 2016 20:59:58 +0200
-Subject: [PATCH] spi: dw-pci: Spelling s/paltforms/platforms/g
-
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-dw-pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-dw-pci.c b/drivers/spi/spi-dw-pci.c
-index 332ccb0539a7..ef7db75c92c1 100644
---- a/drivers/spi/spi-dw-pci.c
-+++ b/drivers/spi/spi-dw-pci.c
-@@ -67,7 +67,7 @@ static int spi_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	dws->irq = pdev->irq;
- 
- 	/*
--	 * Specific handling for paltforms, like dma setup,
-+	 * Specific handling for platforms, like dma setup,
- 	 * clock rate, FIFO depth.
- 	 */
- 	if (desc) {
--- 
-2.8.1
-
+Regards,
+Leo
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

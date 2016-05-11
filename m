@@ -1,80 +1,64 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [GIT PULL] SPI fixes for v4.6
-Date: Wed, 11 May 2016 17:03:46 +0100
-Message-ID: <20160511160346.GM6261@sirena.org.uk>
+Subject: Re: Applied "spi: omap2-mcspi: Undo broken fix for dma transfer of
+ vmalloced buffer" to the spi tree
+Date: Wed, 11 May 2016 17:20:30 +0100
+Message-ID: <20160511162030.GN6261@sirena.org.uk>
+References: <1460140995-4062-1-git-send-email-akinobu.mita@gmail.com>
+ <E1apndq-0002S5-8J@debutante>
+ <CAC5umyg2fJxYKOB4J96+3igkNx+eJs5MET8S8NnafZ3hcPPEag@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="hnsKUeImFCk/igEn"
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="Zl+NncWK+U5aSfTo"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Akinobu Mita <akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
+In-Reply-To: <CAC5umyg2fJxYKOB4J96+3igkNx+eJs5MET8S8NnafZ3hcPPEag-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---hnsKUeImFCk/igEn
+--Zl+NncWK+U5aSfTo
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-The following changes since commit 04974df8049fc4240d22759a91e035082ccd18b4:
+On Thu, May 12, 2016 at 12:39:35AM +0900, Akinobu Mita wrote:
 
-  Linux 4.6-rc6 (2016-05-01 15:52:31 -0700)
+> I realized that this undo patch has not been merged to Linus' tree yet.
+> I have a fix for this issue (attached patch).  But the change is not
+> small and also v4.6 release is soon.  So I think this undo patch
+> should go into 4.6 release.
 
-are available in the git repository at:
+I actually just sent that a few minutes ago anyway.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v4.6-rc7
+> The actual DMA transfer length by dmaengine can be smaller than SPI
+> transfer length in the specific condition.  In that case, the last
+> word needs to be filled after DMA transfer completion.
 
-for you to fetch changes up to 9b1f189e6dfb0483b715e19364c782d2ddee96a0:
+> This fixes it by detecting that case and remap the scatterlist with
+> correct DMA transfer length.
 
-  Merge remote-tracking branches 'spi/fix/fsl-dspi', 'spi/fix/omap2-mcspi', 'spi/fix/pxa2xx' and 'spi/fix/ti-qspi' into spi-linus (2016-05-06 18:20:37 +0100)
+This feels like it should be in the framework, I imagine other devices
+will have similar limiations.  Especially if the limitation comes from
+the DMA engine I'd hope we can arrange to query it somehow...  can you
+provide a bit more detail on what the restriction is please?
 
-----------------------------------------------------------------
-spi: Fixes for v4.6
-
-A bunch of small driver specific fixes that have come up, none of them
-remarkable in themselves.  One fixes a regression introduced in the
-merge window and another two are targetted at stable.
-
-----------------------------------------------------------------
-Akinobu Mita (1):
-      spi: omap2-mcspi: Undo broken fix for dma transfer of vmalloced buffer
-
-Andrey Vostrikov (1):
-      spi: spi-fsl-dspi: Fix cs_change handling in message transfer
-
-Ben Hutchings (2):
-      spi: spi-ti-qspi: Fix FLEN and WLEN settings if bits_per_word is overridden
-      spi: spi-ti-qspi: Handle truncated frames properly
-
-Jarkko Nikula (1):
-      spi: pxa2xx: Do not detect number of enabled chip selects on Intel SPT
-
-Mark Brown (1):
-      Merge remote-tracking branches 'spi/fix/fsl-dspi', 'spi/fix/omap2-mcspi', 'spi/fix/pxa2xx' and 'spi/fix/ti-qspi' into spi-linus
-
- drivers/spi/spi-fsl-dspi.c    |  4 +--
- drivers/spi/spi-omap2-mcspi.c | 62 +++++++++++++++++++++++++++++++------------
- drivers/spi/spi-pxa2xx.c      |  2 +-
- drivers/spi/spi-ti-qspi.c     | 45 +++++++++++++++++++------------
- 4 files changed, 76 insertions(+), 37 deletions(-)
-
---hnsKUeImFCk/igEn
+--Zl+NncWK+U5aSfTo
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJXM1ffAAoJECTWi3JdVIfQacYH/R3kugYinFnnkqbfvw41P0+s
-wsI2S2obKDojvGBcCiiHrrIiGqq8f8eEg5fpyURmbTbrM73xfyBuY3DVEw4PXy4/
-Pg1iBvwPt48pQ8bw1qTYW8XkUnZTJq/KVyB/8h4/1F/U7wJXJ5dPBSy22eS/Nn0L
-nvL8N3DFon4FYDEWJ6+qnEbFEpkJzI9pQgQexcXoXjlhixlkk9/FwvbaABbns5KK
-2miVgvNq/KzBdJAn3FTBHdSekxieDEFco5j6gyrmTxBljsFr7gogge+vlK4ukUHC
-q3oHVwVg2YMFTaBBNsaiO0ZqR5x/k9dZ0dqt0tTDIDKx2w/tNAeVS2sepKR6ZCY=
-=FQ4b
+iQEcBAEBCAAGBQJXM1vNAAoJECTWi3JdVIfQte8H+wYeHgHG0iqbsWJWI2Mqze//
+5xNnANllLET9k/DnLwjDOdSoJDfhf1rjfu7wxQ6sNcpyyC0EOzn/kJb0bk/qYG5Z
+LKIA++42flykWACVeXbEGEdNuIVknyCGl6Z6GsMqkSw20oL1jNt3cMWKCwcIq50o
+b6AmCUhG5eAeoeQ3VIEM4LTs6IDDJZuzyg4xTR9PzEaI3OC9L1PEfOD49wJgCAep
+/HESLlgGPeB+Tg3YmV3h99y2RHnYPXb7fEWq0ujXlpleyXzVprhJYEaDiXLHKwSI
+w+MyHEydznR2rbMNf9LqpL+VygmWxNsWsVN7HRPzi8xxrOFGaP6P4Cuon5EjDQM=
+=4B0x
 -----END PGP SIGNATURE-----
 
---hnsKUeImFCk/igEn--
+--Zl+NncWK+U5aSfTo--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

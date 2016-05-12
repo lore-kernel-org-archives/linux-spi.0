@@ -1,56 +1,71 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: Applied "spi: omap2-mcspi: Undo broken fix for dma transfer of
- vmalloced buffer" to the spi tree
-Date: Thu, 12 May 2016 16:44:36 +0100
-Message-ID: <20160512154436.GE6261@sirena.org.uk>
-References: <1460140995-4062-1-git-send-email-akinobu.mita@gmail.com>
- <E1apndq-0002S5-8J@debutante>
- <CAC5umyg2fJxYKOB4J96+3igkNx+eJs5MET8S8NnafZ3hcPPEag@mail.gmail.com>
- <20160511162030.GN6261@sirena.org.uk>
- <CAC5umyjoKfMBbO1JPyTjqsz4zuiZMQDZcKHxonZuEwqGpJxb_g@mail.gmail.com>
+Subject: Re: [PATCH 1/2] spi: spi-fsl-dspi: replace regmap R/W with internal
+ implementation
+Date: Thu, 12 May 2016 17:31:31 +0100
+Message-ID: <20160512163131.GF6261@sirena.org.uk>
+References: <1461744756-31481-1-git-send-email-yao.yuan@freescale.com>
+ <1461744756-31481-2-git-send-email-yao.yuan@freescale.com>
+ <20160427152532.GX3217@sirena.org.uk>
+ <AM2PR04MB072250B43DE37A38E374679989700@AM2PR04MB0722.eurprd04.prod.outlook.com>
+ <20160509102840.GB6292@sirena.org.uk>
+ <AM2PR04MB0722180ABF5DB9406F56162B89700@AM2PR04MB0722.eurprd04.prod.outlook.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="djTb5EnuS5qMpC9h"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Akinobu Mita <akinobu.mita-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="ULkDCyeHsmlwbqED"
+Cc: Yuan Yao <yao.yuan-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	"robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"pawel.moll-5wv7dgnIgG8@public.gmane.org" <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	"shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"linux-devel-XDVM779Km55Y1YpKYGMr2+TW4wlIGRCZ@public.gmane.org" <linux-devel-XDVM779Km55Y1YpKYGMr2+TW4wlIGRCZ@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Yang-Leo Li <leoyang.li-3arQi8VN3Tc@public.gmane.org>,
+	Scott Wood <scott.wood-3arQi8VN3Tc@public.gmane.org>
+To: Yao Yuan <yao.yuan-3arQi8VN3Tc@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CAC5umyjoKfMBbO1JPyTjqsz4zuiZMQDZcKHxonZuEwqGpJxb_g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <AM2PR04MB0722180ABF5DB9406F56162B89700-IPoeDzmMJYrzmGvksFXQpM9NdZoXdze2vxpqHgZTriW3zl9H0oFU5g@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---djTb5EnuS5qMpC9h
+--ULkDCyeHsmlwbqED
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, May 12, 2016 at 10:49:15PM +0900, Akinobu Mita wrote:
+On Mon, May 09, 2016 at 10:58:08AM +0000, Yao Yuan wrote:
 
-> If we have an optional callback to get the actual DMA transfer length
-> instead of using spi_transfer->len for each spi_transfer in the
-> framework, we can use it to determine the correct map size used by
-> spi_map_buf() in spi.c.
+> For example, if DSPI controller register is BE, so I set big-endian in DT.
+> That means we should R/W the DSPI controller register with big-endian.
+> Then I can think all of the value we R/W to/from DSPI controller register, we can
+> Think they are the BE.
+> So that we can understand it easy.
 
-That sounds plausible, we can also do some querying of the dmaengine at
-the same place we call that when we get around to that.  Can you try to
-come up with an implementation?
+> That means no matter core is LE or BE, we both need get the value from DSPI register
+> with big endian.
 
---djTb5EnuS5qMpC9h
+That's not how regmap is intended to be used, the intention is that the
+driver will interact with native endian values and regmap will hide the
+endianness changes.  You could mask this with some cpu_to_be() and
+be_to_cpu() usage but I'm not sure it's a great idea or what it's buying
+you.
+
+--ULkDCyeHsmlwbqED
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJXNKThAAoJECTWi3JdVIfQLX8H/17iQu+bDiGwX2wCMv/lj5OY
-NcQCwpd1BiyDPA3/E/kWL3U9OmxPFWtTypM50CmBvXSGlCnYil+QJlu3DI/lJ2oW
-G3iflJhRS6zPk1YaLIVDZO/qR+qxUMKtjSfvSV/44JxEyrRrbw4ZljV109xZO3mf
-l7cWaN5utY6Itl0ccVHqikXXT6u+n00blVDXK8H08Y3oMkDIN0d8mX/WMS8sYLjH
-PAf4ZgyYYUSQVZEuhauaTAqDC34QF7Mrs+P0MEM/+J7Y8mmGfOUNGhQ8mJ60ceXB
-HCJtNVUZVcoOUKkf0M22grfaS4IF/XOIpkZo+pcau/hue/C83w4Q/Wn0m68ezl0=
-=9Pds
+iQEcBAEBCAAGBQJXNK/iAAoJECTWi3JdVIfQTtIH/jOoIqmqJRFrGFiiuOzvwcZl
+LuGO+au9/oAq6tWxVTSF+84WVzTstHVLFoX4xx2N356XPKstUf8V38gjuuAMP4n4
+hdrUVkr+R8iNLRsoHv2D0FV3cUiUHnGmMAkuuikwWHP1clCmQl6554HNtFYHMIHR
+APmo7YBG3sv+w5N/D7ztvBlabscdrUOBiz6W3xYmYmBCnkpq7o/7qGxbBB5oqVKJ
+tOGX2yMLVyxsMSVGLAaV835URmAApvvYwI9tTVpk4OjrF0Oys5vwLyHKcMCpFrh9
+ud2XyS1G9V+pseyMQkZFraeD9aBlXtlPvA+SE6RWcIiniGF1Kz/F3+DBfl37oIA=
+=rHFK
 -----END PGP SIGNATURE-----
 
---djTb5EnuS5qMpC9h--
+--ULkDCyeHsmlwbqED--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

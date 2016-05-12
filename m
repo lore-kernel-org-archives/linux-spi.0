@@ -1,86 +1,110 @@
-From: Leo Li <pku.leo-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: spi-fsl-dspi: replace regmap R/W with internal implementation
-Date: Wed, 11 May 2016 17:20:25 -0500
-Message-ID: <CADRPPNT2OpNxdQV8f_-S_DJjySEOu=SyegLMKU650hxuvr3CYw@mail.gmail.com>
+From: Po Liu <po.liu-3arQi8VN3Tc@public.gmane.org>
+Subject: RE: [linux-devel] [PATCH 1/2] spi: spi-fsl-dspi: replace regmap R/W
+	with internal implementation
+Date: Thu, 12 May 2016 13:40:53 +0000
+Message-ID: <VI1PR0401MB1709B075CEE16F3EF3CD4A9292730@VI1PR0401MB1709.eurprd04.prod.outlook.com>
 References: <1461744756-31481-1-git-send-email-yao.yuan@freescale.com>
 	<1461744756-31481-2-git-send-email-yao.yuan@freescale.com>
 	<20160427152532.GX3217@sirena.org.uk>
 	<AM2PR04MB072250B43DE37A38E374679989700@AM2PR04MB0722.eurprd04.prod.outlook.com>
 	<20160509102840.GB6292@sirena.org.uk>
 	<AM2PR04MB0722180ABF5DB9406F56162B89700@AM2PR04MB0722.eurprd04.prod.outlook.com>
+ <CADRPPNT2OpNxdQV8f_-S_DJjySEOu=SyegLMKU650hxuvr3CYw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Yuan Yao <yao.yuan-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	"robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	"pawel.moll-5wv7dgnIgG8@public.gmane.org" <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	"shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-devel-XDVM779Km55Y1YpKYGMr2+TW4wlIGRCZ@public.gmane.org" <linux-devel-XDVM779Km55Y1YpKYGMr2+TW4wlIGRCZ@public.gmane.org>,
+	"robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"linux-devel-XDVM779Km55Y1YpKYGMr2+TW4wlIGRCZ@public.gmane.org" <linux-devel-XDVM779Km55Y1YpKYGMr2+TW4wlIGRCZ@public.gmane.org>,
+	"Scott Wood" <scott.wood-3arQi8VN3Tc@public.gmane.org>,
 	Yang-Leo Li <leoyang.li-3arQi8VN3Tc@public.gmane.org>,
-	Scott Wood <scott.wood-3arQi8VN3Tc@public.gmane.org>
-To: Yao Yuan <yao.yuan-3arQi8VN3Tc@public.gmane.org>
+	"shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Leo Li <pku.leo-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Yao Yuan <yao.yuan-3arQi8VN3Tc@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <AM2PR04MB0722180ABF5DB9406F56162B89700-IPoeDzmMJYrzmGvksFXQpM9NdZoXdze2vxpqHgZTriW3zl9H0oFU5g@public.gmane.org>
+In-Reply-To: <CADRPPNT2OpNxdQV8f_-S_DJjySEOu=SyegLMKU650hxuvr3CYw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, May 9, 2016 at 5:58 AM, Yao Yuan <yao.yuan-3arQi8VN3Tc@public.gmane.org> wrote:
-> On Mon, May 09, 2016 at 06:29:59AM +0800, Mark Brown wrote:
->> On Mon, May 09, 2016 at 08:48:59AM +0000, Yao Yuan wrote:
->> > Hi Mark Brown,
->>
->> Please don't top post, reply in line with needed context.  This allows readers to
->> readily follow the flow of conversation and understand what you are talking
->> about and also helps ensure that everything in the discussion is being
->> addressed.
->>
->> Please fix your mail client to word wrap within paragraphs at something
->> substantially less than 80 columns.  Doing this makes your messages much
->> easier to read and reply to.
->>
->
-> Ok, Thanks.
->
->> > There are two problems we have found for use regmap up to now.
->>
->> > 1, Regmap will read device value depends on endian in .dtsi(DSPI in .dtsi file is
->> big-endian) and readl()(readl() in arm64 is le32_to_cpu read) in system.
->> > That is the value read out is fixed regardless the kernel were compiled with
->> CONFIG_CPU_BIG_ENDIAN yes or no. That makes the value(read from
->> DSPI)can't be recognized in one endian mode(CONFIG_CPU_BIG_ENDIAN be
->> set or not).
->> > The result is: DSPI can't working with CONFIG_CPU_BIG_ENDIAN set.
->>
->> This doesn't make sense.  If the endianness of the device is specified in DT then
->> the endianness of the CPU won't make a difference.
->>
->
-> For example, if DSPI controller register is BE, so I set big-endian in DT.
-> That means we should R/W the DSPI controller register with big-endian.
-> Then I can think all of the value we R/W to/from DSPI controller register, we can
-> Think they are the BE.
-> So that we can understand it easy.
->
-> That means no matter core is LE or BE, we both need get the value from DSPI register
-> with big endian.
->
-> But from regmap is not.
-> When the core is little endian, I can get the big endian value form register like:0xaabbccdd.
-> Then we can analysis and process this value.
-> But once config the core to big endian, I get the value like:0xddccbbaa. It's the little endian.
-> That's terrible for my driver to understand the value.
-
-This is just the result.  Are you able to dig deeper to explain why
-this is happening?
-
-I checked the LS1043 reference manual, the register definition looks
-like little endian instead of the big endian defined in the LS1043
-device tree.  Can you confirm if the block is actually having big
-endian registers or little endian registers.
-
-Regards,
-Leo
+PiAgLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gIEZyb206IGxpbnV4LWRldmVsLWJvdW5j
+ZXNAZ2ZvcmdlLmZyZWVzY2FsZS5uZXQgW21haWx0bzpsaW51eC1kZXZlbC0NCj4gIGJvdW5jZXNA
+Z2ZvcmdlLmZyZWVzY2FsZS5uZXRdIE9uIEJlaGFsZiBPZiBMZW8gTGkNCj4gIFNlbnQ6IFRodXJz
+ZGF5LCBNYXkgMTIsIDIwMTYgNjoyMCBBTQ0KPiAgVG86IFlhbyBZdWFuDQo+ICBDYzogZGV2aWNl
+dHJlZUB2Z2VyLmtlcm5lbC5vcmc7IHBhd2VsLm1vbGxAYXJtLmNvbTsgcm9iaCtkdEBrZXJuZWwu
+b3JnOw0KPiAgbGludXgtc3BpQHZnZXIua2VybmVsLm9yZzsgTWFyayBCcm93bjsgbGludXgtZGV2
+ZWxAZ2ZvcmdlLmZyZWVzY2FsZS5uZXQ7DQo+ICBTY290dCBXb29kOyBZYW5nLUxlbyBMaTsgc2hh
+d25ndW9Aa2VybmVsLm9yZw0KPiAgU3ViamVjdDogUmU6IFtsaW51eC1kZXZlbF0gW1BBVENIIDEv
+Ml0gc3BpOiBzcGktZnNsLWRzcGk6IHJlcGxhY2UgcmVnbWFwDQo+ICBSL1cgd2l0aCBpbnRlcm5h
+bCBpbXBsZW1lbnRhdGlvbg0KPiAgDQo+ICBPbiBNb24sIE1heSA5LCAyMDE2IGF0IDU6NTggQU0s
+IFlhbyBZdWFuIDx5YW8ueXVhbkBueHAuY29tPiB3cm90ZToNCj4gID4gT24gTW9uLCBNYXkgMDks
+IDIwMTYgYXQgMDY6Mjk6NTlBTSArMDgwMCwgTWFyayBCcm93biB3cm90ZToNCj4gID4+IE9uIE1v
+biwgTWF5IDA5LCAyMDE2IGF0IDA4OjQ4OjU5QU0gKzAwMDAsIFlhbyBZdWFuIHdyb3RlOg0KPiAg
+Pj4gPiBIaSBNYXJrIEJyb3duLA0KPiAgPj4NCj4gID4+IFBsZWFzZSBkb24ndCB0b3AgcG9zdCwg
+cmVwbHkgaW4gbGluZSB3aXRoIG5lZWRlZCBjb250ZXh0LiAgVGhpcw0KPiAgPj4gYWxsb3dzIHJl
+YWRlcnMgdG8gcmVhZGlseSBmb2xsb3cgdGhlIGZsb3cgb2YgY29udmVyc2F0aW9uIGFuZA0KPiAg
+Pj4gdW5kZXJzdGFuZCB3aGF0IHlvdSBhcmUgdGFsa2luZyBhYm91dCBhbmQgYWxzbyBoZWxwcyBl
+bnN1cmUgdGhhdA0KPiAgPj4gZXZlcnl0aGluZyBpbiB0aGUgZGlzY3Vzc2lvbiBpcyBiZWluZyBh
+ZGRyZXNzZWQuDQo+ICA+Pg0KPiAgPj4gUGxlYXNlIGZpeCB5b3VyIG1haWwgY2xpZW50IHRvIHdv
+cmQgd3JhcCB3aXRoaW4gcGFyYWdyYXBocyBhdA0KPiAgPj4gc29tZXRoaW5nIHN1YnN0YW50aWFs
+bHkgbGVzcyB0aGFuIDgwIGNvbHVtbnMuICBEb2luZyB0aGlzIG1ha2VzIHlvdXINCj4gID4+IG1l
+c3NhZ2VzIG11Y2ggZWFzaWVyIHRvIHJlYWQgYW5kIHJlcGx5IHRvLg0KPiAgPj4NCj4gID4NCj4g
+ID4gT2ssIFRoYW5rcy4NCj4gID4NCj4gID4+ID4gVGhlcmUgYXJlIHR3byBwcm9ibGVtcyB3ZSBo
+YXZlIGZvdW5kIGZvciB1c2UgcmVnbWFwIHVwIHRvIG5vdy4NCj4gID4+DQo+ICA+PiA+IDEsIFJl
+Z21hcCB3aWxsIHJlYWQgZGV2aWNlIHZhbHVlIGRlcGVuZHMgb24gZW5kaWFuIGluIC5kdHNpKERT
+UEkgaW4NCj4gID4+ID4gLmR0c2kgZmlsZSBpcw0KPiAgPj4gYmlnLWVuZGlhbikgYW5kIHJlYWRs
+KCkocmVhZGwoKSBpbiBhcm02NCBpcyBsZTMyX3RvX2NwdSByZWFkKSBpbg0KPiAgc3lzdGVtLg0K
+PiAgPj4gPiBUaGF0IGlzIHRoZSB2YWx1ZSByZWFkIG91dCBpcyBmaXhlZCByZWdhcmRsZXNzIHRo
+ZSBrZXJuZWwgd2VyZQ0KPiAgPj4gPiBjb21waWxlZCB3aXRoDQo+ICA+PiBDT05GSUdfQ1BVX0JJ
+R19FTkRJQU4geWVzIG9yIG5vLiBUaGF0IG1ha2VzIHRoZSB2YWx1ZShyZWFkIGZyb20NCj4gID4+
+IERTUEkpY2FuJ3QgYmUgcmVjb2duaXplZCBpbiBvbmUgZW5kaWFuIG1vZGUoQ09ORklHX0NQVV9C
+SUdfRU5ESUFOIGJlDQo+ICA+PiBzZXQgb3Igbm90KS4NCj4gID4+ID4gVGhlIHJlc3VsdCBpczog
+RFNQSSBjYW4ndCB3b3JraW5nIHdpdGggQ09ORklHX0NQVV9CSUdfRU5ESUFOIHNldC4NCj4gID4+
+DQo+ICA+PiBUaGlzIGRvZXNuJ3QgbWFrZSBzZW5zZS4gIElmIHRoZSBlbmRpYW5uZXNzIG9mIHRo
+ZSBkZXZpY2UgaXMNCj4gID4+IHNwZWNpZmllZCBpbiBEVCB0aGVuIHRoZSBlbmRpYW5uZXNzIG9m
+IHRoZSBDUFUgd29uJ3QgbWFrZSBhDQo+ICBkaWZmZXJlbmNlLg0KPiAgPj4NCj4gID4NCj4gID4g
+Rm9yIGV4YW1wbGUsIGlmIERTUEkgY29udHJvbGxlciByZWdpc3RlciBpcyBCRSwgc28gSSBzZXQg
+YmlnLWVuZGlhbiBpbg0KPiAgRFQuDQo+ICA+IFRoYXQgbWVhbnMgd2Ugc2hvdWxkIFIvVyB0aGUg
+RFNQSSBjb250cm9sbGVyIHJlZ2lzdGVyIHdpdGggYmlnLWVuZGlhbi4NCj4gID4gVGhlbiBJIGNh
+biB0aGluayBhbGwgb2YgdGhlIHZhbHVlIHdlIFIvVyB0by9mcm9tIERTUEkgY29udHJvbGxlcg0K
+PiAgPiByZWdpc3Rlciwgd2UgY2FuIFRoaW5rIHRoZXkgYXJlIHRoZSBCRS4NCj4gID4gU28gdGhh
+dCB3ZSBjYW4gdW5kZXJzdGFuZCBpdCBlYXN5Lg0KPiAgPg0KPiAgPiBUaGF0IG1lYW5zIG5vIG1h
+dHRlciBjb3JlIGlzIExFIG9yIEJFLCB3ZSBib3RoIG5lZWQgZ2V0IHRoZSB2YWx1ZSBmcm9tDQo+
+ICA+IERTUEkgcmVnaXN0ZXIgd2l0aCBiaWcgZW5kaWFuLg0KPiAgPg0KPiAgPiBCdXQgZnJvbSBy
+ZWdtYXAgaXMgbm90Lg0KPiAgPiBXaGVuIHRoZSBjb3JlIGlzIGxpdHRsZSBlbmRpYW4sIEkgY2Fu
+IGdldCB0aGUgYmlnIGVuZGlhbiB2YWx1ZSBmb3JtDQo+ICByZWdpc3RlciBsaWtlOjB4YWFiYmNj
+ZGQuDQo+ICA+IFRoZW4gd2UgY2FuIGFuYWx5c2lzIGFuZCBwcm9jZXNzIHRoaXMgdmFsdWUuDQo+
+ICA+IEJ1dCBvbmNlIGNvbmZpZyB0aGUgY29yZSB0byBiaWcgZW5kaWFuLCBJIGdldCB0aGUgdmFs
+dWUNCj4gIGxpa2U6MHhkZGNjYmJhYS4gSXQncyB0aGUgbGl0dGxlIGVuZGlhbi4NCj4gID4gVGhh
+dCdzIHRlcnJpYmxlIGZvciBteSBkcml2ZXIgdG8gdW5kZXJzdGFuZCB0aGUgdmFsdWUuDQo+ICAN
+Cj4gIFRoaXMgaXMganVzdCB0aGUgcmVzdWx0LiAgQXJlIHlvdSBhYmxlIHRvIGRpZyBkZWVwZXIg
+dG8gZXhwbGFpbiB3aHkgdGhpcw0KPiAgaXMgaGFwcGVuaW5nPw0Kc3BpL3NwaS1mc2wtZHNwaS5j
+IHVzZSB0aGUgZGV2bV9yZWdtYXBfaW5pdF9tbWlvX2NsaygpIGdldCByZWdtYXAgd2hpY2ggd2ls
+bCB1c2UgcmVnbWFwX21taW8gZm9yIG9wZXJhdGlvbiB0aGUgcmVnaXN0ZXJzLg0KDQpzdGF0aWMg
+c3RydWN0IHJlZ21hcF9idXMgcmVnbWFwX21taW8gPSB7DQoJLi4uDQoJLndyaXRlID0gcmVnbWFw
+X21taW9fd3JpdGUsDQoJLnJlYWQgPSByZWdtYXBfbW1pb19yZWFkLA0KfQ0KDQpBbnl3YXksIHRo
+ZSB3aG9sZSBwcm9jZXNzIHJlZ2lzdGVyIHJlYWQgb3BlcmF0aW9uIHdpbGwgaW5jbHVkZSByZWdt
+YXBfbW1pb19yZWFkIGFuZCBmb3JtYXQucGFyc2VfdmFsKG1hcC0+d29ya19idWYpIHRoZW4gZ2V0
+IHRoZSB2YWx1ZS4NCglyZWdtYXBfbW1pb19yZWFkKCkgd2lsbCB1c2UgbGUzMl90b19jcHUoKSB2
+YWx1ZSwgDQoJZm9ybWF0LnBhcnNlX3ZhbCgpIHdpbGwgdXNlIGNwdV90b19iZTMyKCkgKGlmIC5k
+dHNpIGZpbGUgY29uZmlnIHRoZSBkc3BpIHdpdGggYmlnX2VuZGlhbiwgZWxzZSB1c2UgY3B1X3Rv
+X2xlMzIoKSBpZiBzZXQgbGl0dGxlX2VuZGlhbiApDQoNClNvIGZvciBrZXJuZWwgd2UgZ2V0IHRo
+ZSB2YWx1ZSB3aWxsIGFsd2F5cyBsZTMyX3RvX2NwdSgpICsgY3B1X3RvX2JlMzIoKSwgaW4gc2hv
+cnQsIHRoZSB2YWx1ZSBhbHdheXMgZ2V0IHZhbHVlIGZyb20gcmVnaXN0ZXIgbGUzMl90b19iZTMy
+IHJlYWQuIFRoaXMgb3BlcmF0aW9uIGNvdWxkIG5vdCBiZSByZWNvZ25pemVkIGZvciBib3RoIGJp
+Z19lbmRpYW4gYW5kIGxpdHRsZV9lbmRpYW4gY29yZSBzZXR0aW5nLiBGb3VuZGVkIHRoYXQgaXQg
+d2lsbCBoYW5nIGluIG9uZSB0eXBlIG9mIENQVSBFTkRJQU4gbW9kZS4NCg0KPiAgDQo+ICBJIGNo
+ZWNrZWQgdGhlIExTMTA0MyByZWZlcmVuY2UgbWFudWFsLCB0aGUgcmVnaXN0ZXIgZGVmaW5pdGlv
+biBsb29rcw0KPiAgbGlrZSBsaXR0bGUgZW5kaWFuIGluc3RlYWQgb2YgdGhlIGJpZyBlbmRpYW4g
+ZGVmaW5lZCBpbiB0aGUgTFMxMDQzDQo+ICBkZXZpY2UgdHJlZS4gIENhbiB5b3UgY29uZmlybSBp
+ZiB0aGUgYmxvY2sgaXMgYWN0dWFsbHkgaGF2aW5nIGJpZyBlbmRpYW4NCj4gIHJlZ2lzdGVycyBv
+ciBsaXR0bGUgZW5kaWFuIHJlZ2lzdGVycy4NCj4gIA0KPiAgUmVnYXJkcywNCj4gIExlbw0KPiAg
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18NCj4gIGxpbnV4
+LWRldmVsIG1haWxpbmcgbGlzdA0KPiAgbGludXgtZGV2ZWxAZ2ZvcmdlLmZyZWVzY2FsZS5uZXQN
+Cj4gIGh0dHA6Ly9nZm9yZ2UuZnJlZXNjYWxlLm5ldC9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LWRl
+dmVsDQo=
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

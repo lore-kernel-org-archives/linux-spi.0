@@ -1,60 +1,109 @@
-From: Scott Wood <scott.wood-3arQi8VN3Tc@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: spi-fsl-dspi: replace regmap R/W with internal
- implementation
-Date: Fri, 13 May 2016 03:08:55 +0000
-Message-ID: <DB5PR0401MB192850FBCBE79EBBC61ACA3A91740@DB5PR0401MB1928.eurprd04.prod.outlook.com>
+From: Yao Yuan <yao.yuan-3arQi8VN3Tc@public.gmane.org>
+Subject: RE: [linux-devel] [PATCH 1/2] spi: spi-fsl-dspi: replace regmap R/W
+	with internal implementation
+Date: Fri, 13 May 2016 05:52:42 +0000
+Message-ID: <AM2PR04MB07227F126A5EA54731AD73E189740@AM2PR04MB0722.eurprd04.prod.outlook.com>
 References: <1461744756-31481-1-git-send-email-yao.yuan@freescale.com>
- <1461744756-31481-2-git-send-email-yao.yuan@freescale.com>
- <20160427152532.GX3217@sirena.org.uk>
- <AM2PR04MB072250B43DE37A38E374679989700@AM2PR04MB0722.eurprd04.prod.outlook.com>
- <20160509102840.GB6292@sirena.org.uk>
+	<1461744756-31481-2-git-send-email-yao.yuan@freescale.com>
+	<20160427152532.GX3217@sirena.org.uk>
+	<AM2PR04MB072250B43DE37A38E374679989700@AM2PR04MB0722.eurprd04.prod.outlook.com>
+	<20160509102840.GB6292@sirena.org.uk>
+	<AM2PR04MB0722180ABF5DB9406F56162B89700@AM2PR04MB0722.eurprd04.prod.outlook.com>
+ <CADRPPNT2OpNxdQV8f_-S_DJjySEOu=SyegLMKU650hxuvr3CYw@mail.gmail.com>
+ <VI1PR0401MB1709B075CEE16F3EF3CD4A9292730@VI1PR0401MB1709.eurprd04.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: "robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	"pawel.moll-5wv7dgnIgG8@public.gmane.org" <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	"shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-devel-XDVM779Km55Y1YpKYGMr2+TW4wlIGRCZ@public.gmane.org" <linux-devel-XDVM779Km55Y1YpKYGMr2+TW4wlIGRCZ@public.gmane.org>,
+	"robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Yang-Leo Li <leoyang.li-3arQi8VN3Tc@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Yao Yuan <yao.yuan-3arQi8VN3Tc@public.gmane.org>
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"linux-devel-XDVM779Km55Y1YpKYGMr2+TW4wlIGRCZ@public.gmane.org" <linux-devel-XDVM779Km55Y1YpKYGMr2+TW4wlIGRCZ@public.gmane.org>,
+	"Scott Wood" <scott.wood-3arQi8VN3Tc@public.gmane.org>,
+	Yang-Leo Li <leoyang.li-3arQi8VN3Tc@public.gmane.org>,
+	"shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Po Liu <po.liu-3arQi8VN3Tc@public.gmane.org>, Leo Li <pku.leo-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <VI1PR0401MB1709B075CEE16F3EF3CD4A9292730-9IDQY6o3qQhWumToEB7uiI3W/0Ik+aLCnBOFsp37pqbUKgpGm//BTAC/G2K4zDHf@public.gmane.org>
 Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 05/09/2016 05:29 AM, Mark Brown wrote:
-> On Mon, May 09, 2016 at 08:48:59AM +0000, Yao Yuan wrote:
->> 2, Sometimes regmap will generate some issues. Some regmap issues will cause the DSPI do not working.
->> At 2016.4 we find the DSPI was not work, then we found that the regmap R/W the controller register sometimes not right. 
->> The result is: DSPI can't working with REGMAP API.
->> Although the regmap issues was fast fixed by some giving person. But I'm still tend to use the reliable way.
-> 
->> Regmap is nice and Maybe I should try to fix regmap instead of replacing regmap in my driver.
->> But regmap is really very large and complex for DSPI driver.
-> 
-> Yes, if you find bugs in generic frameworks you should fix them rather
-> than just open coding something.  
-
-That's often true, but using regmap to handle endianness is like
-swatting flies with a sledgehammer.  Regmap's code is quite (over?)
-complicated (e.g. the (user-visible!) difference between
-reg_format_endian and val_format_endian is quite confusing) and ideally
-people who aren't getting actual value from a buggy and/or awkward
-subsystem shouldn't be forced to use/fix it.  We're not talking about
-massive duplication here.  We're talking about a set of simple I/O
-wrappers (something that many drivers do) with an if-statement.
-
-That said, Yao Yuan, can you try linux-next to see if the regmap
-problems have been fixed?  Looking at Linus's tree I don't see how
-regmap-mmio would ever give you anything but little-endian if the driver
-doesn't specify an endianness (the device tree is only looked at by
-regmap_get_val_endian() which wasn't called for regmap-mmio), but that
-appears to be fixed in linux-next.
-
--Scott
-
+T24gVGh1LCBNYXkgMTIsIDIwMTYgYXQgMDk6NDEgT00sIFBvIExpdSB3cm90ZToNCj4gT24gVGh1
+LCBNYXkxMiwgMjAxNiBhdCAwNjoyMCBBTSwgTGVvIExpIFdyb3RlOg0KPiA+ICBPbiBNb24sIE1h
+eSA5LCAyMDE2IGF0IDU6NTggQU0sIFlhbyBZdWFuIDx5YW8ueXVhbkBueHAuY29tPiB3cm90ZToN
+Cj4gPiAgPiBPbiBNb24sIE1heSAwOSwgMjAxNiBhdCAwNjoyOTo1OUFNICswODAwLCBNYXJrIEJy
+b3duIHdyb3RlOg0KPiA+ICA+PiBPbiBNb24sIE1heSAwOSwgMjAxNiBhdCAwODo0ODo1OUFNICsw
+MDAwLCBZYW8gWXVhbiB3cm90ZToNCj4gPiAgPj4gPiBIaSBNYXJrIEJyb3duLA0KPiA+ICA+Pg0K
+PiA+ICA+PiBQbGVhc2UgZG9uJ3QgdG9wIHBvc3QsIHJlcGx5IGluIGxpbmUgd2l0aCBuZWVkZWQg
+Y29udGV4dC4gIFRoaXMNCj4gPiA+PiBhbGxvd3MgcmVhZGVycyB0byByZWFkaWx5IGZvbGxvdyB0
+aGUgZmxvdyBvZiBjb252ZXJzYXRpb24gYW5kICA+Pg0KPiA+IHVuZGVyc3RhbmQgd2hhdCB5b3Ug
+YXJlIHRhbGtpbmcgYWJvdXQgYW5kIGFsc28gaGVscHMgZW5zdXJlIHRoYXQgID4+DQo+ID4gZXZl
+cnl0aGluZyBpbiB0aGUgZGlzY3Vzc2lvbiBpcyBiZWluZyBhZGRyZXNzZWQuDQo+ID4gID4+DQo+
+ID4gID4+IFBsZWFzZSBmaXggeW91ciBtYWlsIGNsaWVudCB0byB3b3JkIHdyYXAgd2l0aGluIHBh
+cmFncmFwaHMgYXQgID4+DQo+ID4gc29tZXRoaW5nIHN1YnN0YW50aWFsbHkgbGVzcyB0aGFuIDgw
+IGNvbHVtbnMuICBEb2luZyB0aGlzIG1ha2VzIHlvdXINCj4gPiA+PiBtZXNzYWdlcyBtdWNoIGVh
+c2llciB0byByZWFkIGFuZCByZXBseSB0by4NCj4gPiAgPj4NCj4gPiAgPg0KPiA+ICA+IE9rLCBU
+aGFua3MuDQo+ID4gID4NCj4gPiAgPj4gPiBUaGVyZSBhcmUgdHdvIHByb2JsZW1zIHdlIGhhdmUg
+Zm91bmQgZm9yIHVzZSByZWdtYXAgdXAgdG8gbm93Lg0KPiA+ICA+Pg0KPiA+ICA+PiA+IDEsIFJl
+Z21hcCB3aWxsIHJlYWQgZGV2aWNlIHZhbHVlIGRlcGVuZHMgb24gZW5kaWFuIGluIC5kdHNpKERT
+UEkNCj4gPiBpbiAgPj4gPiAuZHRzaSBmaWxlIGlzICA+PiBiaWctZW5kaWFuKSBhbmQgcmVhZGwo
+KShyZWFkbCgpIGluIGFybTY0IGlzDQo+ID4gbGUzMl90b19jcHUgcmVhZCkgaW4gIHN5c3RlbS4N
+Cj4gPiAgPj4gPiBUaGF0IGlzIHRoZSB2YWx1ZSByZWFkIG91dCBpcyBmaXhlZCByZWdhcmRsZXNz
+IHRoZSBrZXJuZWwgd2VyZQ0KPiA+ID4+ID4gY29tcGlsZWQgd2l0aCAgPj4gQ09ORklHX0NQVV9C
+SUdfRU5ESUFOIHllcyBvciBuby4gVGhhdCBtYWtlcyB0aGUNCj4gPiB2YWx1ZShyZWFkIGZyb20g
+ID4+IERTUEkpY2FuJ3QgYmUgcmVjb2duaXplZCBpbiBvbmUgZW5kaWFuDQo+ID4gbW9kZShDT05G
+SUdfQ1BVX0JJR19FTkRJQU4gYmUgID4+IHNldCBvciBub3QpLg0KPiA+ICA+PiA+IFRoZSByZXN1
+bHQgaXM6IERTUEkgY2FuJ3Qgd29ya2luZyB3aXRoIENPTkZJR19DUFVfQklHX0VORElBTiBzZXQu
+DQo+ID4gID4+DQo+ID4gID4+IFRoaXMgZG9lc24ndCBtYWtlIHNlbnNlLiAgSWYgdGhlIGVuZGlh
+bm5lc3Mgb2YgdGhlIGRldmljZSBpcyAgPj4NCj4gPiBzcGVjaWZpZWQgaW4gRFQgdGhlbiB0aGUg
+ZW5kaWFubmVzcyBvZiB0aGUgQ1BVIHdvbid0IG1ha2UgYQ0KPiA+IGRpZmZlcmVuY2UuDQo+ID4g
+ID4+DQo+ID4gID4NCj4gPiAgPiBGb3IgZXhhbXBsZSwgaWYgRFNQSSBjb250cm9sbGVyIHJlZ2lz
+dGVyIGlzIEJFLCBzbyBJIHNldCBiaWctZW5kaWFuDQo+ID4gaW4gIERULg0KPiA+ICA+IFRoYXQg
+bWVhbnMgd2Ugc2hvdWxkIFIvVyB0aGUgRFNQSSBjb250cm9sbGVyIHJlZ2lzdGVyIHdpdGggYmln
+LWVuZGlhbi4NCj4gPiAgPiBUaGVuIEkgY2FuIHRoaW5rIGFsbCBvZiB0aGUgdmFsdWUgd2UgUi9X
+IHRvL2Zyb20gRFNQSSBjb250cm9sbGVyICA+DQo+ID4gcmVnaXN0ZXIsIHdlIGNhbiBUaGluayB0
+aGV5IGFyZSB0aGUgQkUuDQo+ID4gID4gU28gdGhhdCB3ZSBjYW4gdW5kZXJzdGFuZCBpdCBlYXN5
+Lg0KPiA+ICA+DQo+ID4gID4gVGhhdCBtZWFucyBubyBtYXR0ZXIgY29yZSBpcyBMRSBvciBCRSwg
+d2UgYm90aCBuZWVkIGdldCB0aGUgdmFsdWUNCj4gPiBmcm9tICA+IERTUEkgcmVnaXN0ZXIgd2l0
+aCBiaWcgZW5kaWFuLg0KPiA+ICA+DQo+ID4gID4gQnV0IGZyb20gcmVnbWFwIGlzIG5vdC4NCj4g
+PiAgPiBXaGVuIHRoZSBjb3JlIGlzIGxpdHRsZSBlbmRpYW4sIEkgY2FuIGdldCB0aGUgYmlnIGVu
+ZGlhbiB2YWx1ZSBmb3JtDQo+ID4gcmVnaXN0ZXIgbGlrZToweGFhYmJjY2RkLg0KPiA+ICA+IFRo
+ZW4gd2UgY2FuIGFuYWx5c2lzIGFuZCBwcm9jZXNzIHRoaXMgdmFsdWUuDQo+ID4gID4gQnV0IG9u
+Y2UgY29uZmlnIHRoZSBjb3JlIHRvIGJpZyBlbmRpYW4sIEkgZ2V0IHRoZSB2YWx1ZQ0KPiA+IGxp
+a2U6MHhkZGNjYmJhYS4gSXQncyB0aGUgbGl0dGxlIGVuZGlhbi4NCj4gPiAgPiBUaGF0J3MgdGVy
+cmlibGUgZm9yIG15IGRyaXZlciB0byB1bmRlcnN0YW5kIHRoZSB2YWx1ZS4NCj4gPg0KPiA+ICBU
+aGlzIGlzIGp1c3QgdGhlIHJlc3VsdC4gIEFyZSB5b3UgYWJsZSB0byBkaWcgZGVlcGVyIHRvIGV4
+cGxhaW4gd2h5DQo+ID4gdGhpcyAgaXMgaGFwcGVuaW5nPw0KPiBzcGkvc3BpLWZzbC1kc3BpLmMg
+dXNlIHRoZSBkZXZtX3JlZ21hcF9pbml0X21taW9fY2xrKCkgZ2V0IHJlZ21hcCB3aGljaCB3aWxs
+DQo+IHVzZSByZWdtYXBfbW1pbyBmb3Igb3BlcmF0aW9uIHRoZSByZWdpc3RlcnMuDQo+IA0KPiBz
+dGF0aWMgc3RydWN0IHJlZ21hcF9idXMgcmVnbWFwX21taW8gPSB7DQo+IAkuLi4NCj4gCS53cml0
+ZSA9IHJlZ21hcF9tbWlvX3dyaXRlLA0KPiAJLnJlYWQgPSByZWdtYXBfbW1pb19yZWFkLA0KPiB9
+DQo+IA0KPiBBbnl3YXksIHRoZSB3aG9sZSBwcm9jZXNzIHJlZ2lzdGVyIHJlYWQgb3BlcmF0aW9u
+IHdpbGwgaW5jbHVkZQ0KPiByZWdtYXBfbW1pb19yZWFkIGFuZCBmb3JtYXQucGFyc2VfdmFsKG1h
+cC0+d29ya19idWYpIHRoZW4gZ2V0IHRoZQ0KPiB2YWx1ZS4NCj4gCXJlZ21hcF9tbWlvX3JlYWQo
+KSB3aWxsIHVzZSBsZTMyX3RvX2NwdSgpIHZhbHVlLA0KPiAJZm9ybWF0LnBhcnNlX3ZhbCgpIHdp
+bGwgdXNlIGNwdV90b19iZTMyKCkgKGlmIC5kdHNpIGZpbGUgY29uZmlnIHRoZSBkc3BpDQo+IHdp
+dGggYmlnX2VuZGlhbiwgZWxzZSB1c2UgY3B1X3RvX2xlMzIoKSBpZiBzZXQgbGl0dGxlX2VuZGlh
+biApDQo+IA0KPiBTbyBmb3Iga2VybmVsIHdlIGdldCB0aGUgdmFsdWUgd2lsbCBhbHdheXMgbGUz
+Ml90b19jcHUoKSArIGNwdV90b19iZTMyKCksIGluDQo+IHNob3J0LCB0aGUgdmFsdWUgYWx3YXlz
+IGdldCB2YWx1ZSBmcm9tIHJlZ2lzdGVyIGxlMzJfdG9fYmUzMiByZWFkLiBUaGlzDQo+IG9wZXJh
+dGlvbiBjb3VsZCBub3QgYmUgcmVjb2duaXplZCBmb3IgYm90aCBiaWdfZW5kaWFuIGFuZCBsaXR0
+bGVfZW5kaWFuIGNvcmUNCj4gc2V0dGluZy4gRm91bmRlZCB0aGF0IGl0IHdpbGwgaGFuZyBpbiBv
+bmUgdHlwZSBvZiBDUFUgRU5ESUFOIG1vZGUuDQoNClllcywgVGhhdCdzIHRoZSByZWFzb24sIFRo
+YW5rcyBmb3IgeW91IHRvIGV4cGxhaW4uDQoNCj4gDQo+ID4NCj4gPiAgSSBjaGVja2VkIHRoZSBM
+UzEwNDMgcmVmZXJlbmNlIG1hbnVhbCwgdGhlIHJlZ2lzdGVyIGRlZmluaXRpb24gbG9va3MNCj4g
+PiBsaWtlIGxpdHRsZSBlbmRpYW4gaW5zdGVhZCBvZiB0aGUgYmlnIGVuZGlhbiBkZWZpbmVkIGlu
+IHRoZSBMUzEwNDMNCj4gPiBkZXZpY2UgdHJlZS4gIENhbiB5b3UgY29uZmlybSBpZiB0aGUgYmxv
+Y2sgaXMgYWN0dWFsbHkgaGF2aW5nIGJpZw0KPiA+IGVuZGlhbiAgcmVnaXN0ZXJzIG9yIGxpdHRs
+ZSBlbmRpYW4gcmVnaXN0ZXJzLg0KDQpObywgaXQgc2hvdWxkIGJlIHRoZSBkb2N1bWVudCBpc3N1
+ZS4NClRoZSByZWdpc3RlciBmb3IgRFNQSSBvbiBMUzEwNDNBIGlzIHN0aWxsIGJpZy1lbmRpYW4u
+DQpNYXliZSB3aWxsIGNoYW5nZWQgdG8gbGl0dGxlLWVuZGlhbiBpbiBzb21lIGxhdGVyIG5ldyBT
+T0MuDQoNCj4gPg0KPiA+ICBSZWdhcmRzLA0KPiA+ICBMZW8NCj4gPiAgX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18NCj4gPiAgbGludXgtZGV2ZWwgbWFpbGlu
+ZyBsaXN0DQo+ID4gIGxpbnV4LWRldmVsQGdmb3JnZS5mcmVlc2NhbGUubmV0DQo+ID4gIGh0dHA6
+Ly9nZm9yZ2UuZnJlZXNjYWxlLm5ldC9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LWRldmVsDQo=
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

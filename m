@@ -1,48 +1,39 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: fix __spi_pump_messages deadlock
-Date: Fri, 13 May 2016 14:38:19 +0100
-Message-ID: <20160513133819.GR22038@sirena.org.uk>
-References: <1463144312-23998-1-git-send-email-thomas.perrot@tupi.fr>
+From: Jonathan Corbet <corbet-T1hC0tSOHrs@public.gmane.org>
+Subject: Re: [PATCH -trivial 1/3] Documentation: vm: Spelling
+ s/paltform/platform/g
+Date: Sat, 14 May 2016 10:15:31 -0600
+Message-ID: <20160514101531.1b13c542@lwn.net>
+References: <1462906798-27993-1-git-send-email-geert+renesas@glider.be>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="teKjxxMjPsACTz/N"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Thomas Perrot <thomas.perrot-cVvwS2TCF4I@public.gmane.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+Cc: Russell King <linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Jiri Kosina <trivial-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1463144312-23998-1-git-send-email-thomas.perrot-cVvwS2TCF4I@public.gmane.org>
+In-Reply-To: <1462906798-27993-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Tue, 10 May 2016 20:59:56 +0200
+Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org> wrote:
 
---teKjxxMjPsACTz/N
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> diff --git a/Documentation/vm/hugetlbpage.txt b/Documentation/vm/hugetlbpage.txt
+> index 54dd9b9c6c31aeed..6f3b3fa35613d900 100644
+> --- a/Documentation/vm/hugetlbpage.txt
+> +++ b/Documentation/vm/hugetlbpage.txt
+> @@ -275,10 +275,10 @@ This command mounts a (pseudo) filesystem of type hugetlbfs on the directory
+>  options sets the owner and group of the root of the file system.  By default
+>  the uid and gid of the current process are taken.  The mode option sets the
+>  mode of root of file system to value & 01777.  This value is given in octal.
+> -By default the value 0755 is picked. If the paltform supports multiple huge
+> +By default the value 0755 is picked. If the platform supports multiple huge
 
-On Fri, May 13, 2016 at 02:58:32PM +0200, Thomas Perrot wrote:
-> The lock on the spi bus is never release at the end of call of the function
-> __spi_pump_messages.
+Applied to the docs tree, thanks.
 
-So how does this deadlock, in what situations does this trigger?  If
-there were a deadlock that happened every single time we tried to
-transfer messages I'd expect people would have noticed...
-
---teKjxxMjPsACTz/N
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJXNdjJAAoJECTWi3JdVIfQ+Q0H/iHobjrsp6F9A0h97AGTEmlV
-PojfA/wsywYHTlUJSsGiBWBcoOBE6V58P/QVZ+ka0y+ZaGCZ9itKoBpOT4deVJQC
-GlWWOEGsT0oF9DsGZNVbJnXXnlEyplWB7TUqGX2ZPmgXg7DaS9iYEQsh6DBKCfNE
-k7VbehH6s97f5XsRFwMFBSC1EzQ2aCJfCc3v62/T+6bDH1K+agXNm4x2OtYD0ulL
-FkSUGC2hnIN7qWCCrwMmZ8a6nRkgGpb3zclIbBGtkO45EobCtzi3xpTw3Vb3bH5n
-0/ANwq4bcxo7KyfVtffLqv7ra/q74CHxW3yx80tQPXE3Kc0YZwP8O/OZl3ADMgU=
-=4uBH
------END PGP SIGNATURE-----
-
---teKjxxMjPsACTz/N--
+jon
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

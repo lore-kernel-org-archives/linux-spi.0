@@ -1,43 +1,59 @@
-From: Rich Felker <dalias-8zAoT0mYgF4@public.gmane.org>
-Subject: [PATCH v4 0/2] J-Core SPI controller support
-Date: Thu, 28 Jul 2016 06:11:40 +0000
-Message-ID: <cover.1469686300.git.dalias@libc.org>
-Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Rich Felker <dalias@libc.org>
+Subject: [PATCH v4 1/2] of: add J-Core SPI master bindings
+Date: Tue, 17 May 2016 23:19:25 +0000
+Message-ID: <9813bf559ad89ca6fecc438d9176d634bbc122a0.1469686300.git.dalias@libc.org>
+References: <cover.1469686300.git.dalias@libc.org>
+Cc: Rob Herring <robh+dt@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mark Brown <broonie@kernel.org>
+To: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-sh@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <cover.1469686300.git.dalias@libc.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-This driver is used with the J2, an open-source VHDL reimplementation
-of SH-2. I've split it out from the main J-Core support patches going
-upstream through my own linux-sh tree. Changes since the v3 should
-include everything requested by Mark Brown in previous review (mainly
-the chipsel changes I failed to make before), plus significant cleanup
-(removal of unused macros and other cruft) and refactoring to
-eliminate duplicate code.
-
-Rich
-
-
-Rich Felker (2):
-  of: add J-Core SPI master bindings
-  spi: add driver for J-Core SPI controller
-
- .../devicetree/bindings/spi/jcore,spi.txt          |  30 +++
- drivers/spi/Kconfig                                |   4 +
- drivers/spi/Makefile                               |   1 +
- drivers/spi/spi-jcore.c                            | 220 +++++++++++++++++++++
- 4 files changed, 255 insertions(+)
+Signed-off-by: Rich Felker <dalias@libc.org>
+---
+ .../devicetree/bindings/spi/jcore,spi.txt          | 30 ++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/spi/jcore,spi.txt
- create mode 100644 drivers/spi/spi-jcore.c
 
+diff --git a/Documentation/devicetree/bindings/spi/jcore,spi.txt b/Documentation/devicetree/bindings/spi/jcore,spi.txt
+new file mode 100644
+index 0000000..815106d
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/jcore,spi.txt
+@@ -0,0 +1,30 @@
++J-Core SPI master
++
++Required properties:
++
++- compatible: Must be "jcore,spi2".
++
++- reg: Memory region for registers.
++
++- #address-cells: Must be 1.
++
++- #size-cells: Must be 0.
++
++Optional properties:
++
++- clock-frequency: Specifies an input clock frequency relative to
++  which the SPI clock speed must be programmed. Necessary only if
++  the input clock rate is something other than 50 MHz.
++
++See spi-bus.txt for additional properties not specific to this device.
++
++Example:
++
++spi@40 {
++	compatible = "jcore,spi2";
++	#address-cells = <1>;
++	#size-cells = <0>;
++	reg = <0x40 0x8>;
++	spi-max-frequency = <25000000>;
++	clock-frequency = <50000000>;
++}
 -- 
 2.8.1
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

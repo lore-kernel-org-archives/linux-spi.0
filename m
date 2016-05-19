@@ -1,14 +1,14 @@
 From: Caesar Wang <wxt-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Subject: [PATCH 2/3] spi/rockchip: add the rk3036/rk3228/rk3368 to match for driver
-Date: Thu, 19 May 2016 23:47:03 +0800
-Message-ID: <1463672824-15367-2-git-send-email-wxt@rock-chips.com>
-References: <1463672824-15367-1-git-send-email-wxt@rock-chips.com>
+Subject: [PATCH v2 2/3] spi/rockchip: add the rk3036/rk3228/rk3368 to match for driver
+Date: Fri, 20 May 2016 07:56:21 +0800
+Message-ID: <1463702182-5188-2-git-send-email-wxt@rock-chips.com>
+References: <1463702182-5188-1-git-send-email-wxt@rock-chips.com>
 Cc: linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	Caesar Wang <wxt-TNX95d0MmH7DzftRWevZcw@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 To: Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1463672824-15367-1-git-send-email-wxt-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+In-Reply-To: <1463702182-5188-1-git-send-email-wxt-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
@@ -23,6 +23,8 @@ Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Cc: Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>
 Cc: linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 ---
+
+Changes in v2: None
 
  drivers/spi/spi-rockchip.c | 3 +++
  1 file changed, 3 insertions(+)

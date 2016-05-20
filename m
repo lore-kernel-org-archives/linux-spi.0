@@ -1,108 +1,72 @@
-From: Mark Brown <broonie@kernel.org>
+From: Rich Felker <dalias@libc.org>
 Subject: Re: [PATCH v2 10/12] spi: add driver for J-Core SPI controller
-Date: Fri, 20 May 2016 11:23:17 +0100
-Message-ID: <20160520102317.GH8206@sirena.org.uk>
+Date: Fri, 20 May 2016 18:50:13 -0400
+Message-ID: <20160520225013.GX21636@brightrain.aerifal.cx>
 References: <cover.1463708766.git.dalias@libc.org>
  <2e287ca758002621ef8eed3db9df37678e26af5e.1463708766.git.dalias@libc.org>
+ <CAMuHMdXLYeZnzh-FDKd8r7+eY0xNPmYixP3njniPvb4w5Cv7GQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="poemUeGtc2GQvHuH"
-Cc: linux-kernel@vger.kernel.org, linux-sh@vger.kernel.org,
-	linux-spi@vger.kernel.org
-To: Rich Felker <dalias@libc.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Linux-sh list <linux-sh@vger.kernel.org>,
+	linux-spi <linux-spi@vger.kernel.org>,
+	Mark Brown <broonie@kernel.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
 Return-path: <linux-sh-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <2e287ca758002621ef8eed3db9df37678e26af5e.1463708766.git.dalias@libc.org>
+In-Reply-To: <CAMuHMdXLYeZnzh-FDKd8r7+eY0xNPmYixP3njniPvb4w5Cv7GQ@mail.gmail.com>
 Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Fri, May 20, 2016 at 10:15:08AM +0200, Geert Uytterhoeven wrote:
+> On Fri, May 20, 2016 at 4:53 AM, Rich Felker <dalias@libc.org> wrote:
+> > --- /dev/null
+> > +++ b/drivers/spi/spi-jcore.c
+> 
+> > +static int jcore_spi_txrx(struct spi_master *master, struct spi_device *spi, struct spi_transfer *t)
+> > +{
+> > +       struct jcore_spi *hw = spi_master_get_devdata(master);
+> > +
+> > +       void *ctrl_reg = hw->base + CTRL_REG;
+> > +       void *data_reg = hw->base + DATA_REG;
+> > +       int timeout;
+> 
+> unsigned int
 
---poemUeGtc2GQvHuH
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+All of these have value ranges where the type is irrelevant, but I'm
+happy to change it to whatever types you prefer.
 
-On Fri, May 20, 2016 at 02:53:04AM +0000, Rich Felker wrote:
-> Signed-off-by: Rich Felker <dalias@libc.org>
-> ---
-> My previous post of the patch series accidentally omitted omitted
-> Cc'ing of subsystem maintainers for the necessary clocksource,
-> irqchip, and spi drivers. Please ack if this looks ok because I want
-> to get it merged as part of the arch/sh pull request for 4.7.
+> > +       jcore_spi_baudrate(hw, t->speed_hz);
+> > +
+> > +       xmit = hw->csReg | hw->speedReg | JCORE_SPI_CTRL_XMIT;
+> > +       tx = t->tx_buf;
+> > +       rx = t->rx_buf;
+> > +       len = t->len;
+> > +
+> > +       for (count = 0; count < len; count++) {
+> > +               timeout = JCORE_SPI_WAIT_RDY_MAX_LOOP;
+> > +               do status = readl(ctrl_reg);
+> > +               while ((status & JCORE_SPI_STAT_BUSY) && --timeout);
+> 
+> do {
+>         ...
+> } while (...)
+> 
+> > +               if (!timeout) break;
+> 
+> if (...)
+>         ...
 
-This is *extremely* late for a first posting of a driver for v4.7 (you
-missed the list as well as the maintainers).
+OK. (for this and other instances)
 
-> +static void jcore_spi_chipsel(struct spi_device *spi, bool value)
-> +{
-> +	struct jcore_spi *hw = spi_master_get_devdata(spi->master);
-> +
-> +	pr_debug("%s: CS=%d\n", __func__, value);
+> > +
+> > +               writel(tx ? *tx++ : 0, data_reg);
+> 
+> You can remove the check for tx if you set the SPI_MASTER_MUST_TX
+> flag in spi_master.flags.
 
-dev_dbg()
+I don't want to do that, because the new version of the hardware
+that's going to support DMA can only do unidirectional DMA, and thus
+we need to be able to see if either tx or rx is null.
 
-> +
-> +	hw->csReg = ( JCORE_SPI_CTRL_ACS | JCORE_SPI_CTRL_CCS | JCORE_SPI_CTRL_DCS )
-> +		^ (!value << 2*spi->chip_select);
-
-Why the xor here and not an or?  The coding style is also weird, a mix
-of extra spaces around the () and missing ones around *.  I'm finding
-the intent of the code confusing here.
-
-> +static int jcore_spi_txrx(struct spi_master *master, struct spi_device *spi, struct spi_transfer *t)
-
-Coding style, please keep lines under 80 columns unless there's a good
-reason.
-
-> +#if !USE_MESSAGE_MODE
-> +	spi_finalize_current_transfer(master);
-> +#endif
-
-I'm not sure what the if is about but it doesn't belong upstream, you
-shouldn't be open coding bits of the framework.
-
-> +	/* register our spi controller */
-> +	err = spi_register_master(master);
-
-devm_
-
-> +static int jcore_spi_remove(struct platform_device *dev)
-> +{
-> +	struct jcore_spi *hw = platform_get_drvdata(dev);
-> +	struct spi_master *master = hw->master;
-> +
-> +	platform_set_drvdata(dev, NULL);
-> +	spi_master_put(master);
-> +	return 0;
-> +}
-
-This can be removed entirely.
-
-> +static const struct of_device_id jcore_spi_of_match[] = {
-> +	{ .compatible = "jcore,spi2" },
-> +	{},
-> +};
-
-This is adding a DT binding with no binding document.  All new DT
-bindings need to be documented.
-
-> +		.owner = THIS_MODULE,
-> +		.pm = NULL,
-
-No need to set either of these.
-
---poemUeGtc2GQvHuH
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJXPuWUAAoJECTWi3JdVIfQU0IH/0h7Kpf0QWt4VrbUkqd8hFBe
-GIz4p92db3MViteCSGLCD7LxYdAZ4g+MAStz6m8O1WCCqcPUnkIRvAloXQuLf0jV
-m8kI6R0Pb1wxy6ps2kip3YZNNiOBjWeNU3S27E6wPw8esVldxN58EP6lFFJOoUjT
-mK4wwGxJ9Ap3JPyQzElCEoYdUSzQSCcGLWp54amN1/jYiN+OzULAshQs1iF74yZb
-SyIUGm5DMP8yy4MhUQLkWoLSQp9krc8rAJEms8T8vTraXL2mBfqw6m23uAo9AMu0
-V2jU2LokuvrtvVPOdu2ufXNx4cUkA2D67hH8t9HUHBzE4nPNn8qwurKkaNAwF9Q=
-=U3aH
------END PGP SIGNATURE-----
-
---poemUeGtc2GQvHuH--
+Rich

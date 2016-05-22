@@ -1,79 +1,40 @@
-From: Dmitry Torokhov <dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi: spidev: fix possible arithmetic overflow for
- multi-transfer message
-Date: Sat, 21 May 2016 09:50:35 -0700
-Message-ID: <CAKdAkRTEWthr6+FjkyukKN0-1YDAziy91Ww+tTOOE4MGkH2k1Q@mail.gmail.com>
-References: <1427133027-8134-1-git-send-email-abbotti@mev.co.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>,
-	lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"3.8+" <stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Ian Abbott <abbotti-GUHe90Wt2aFaa/9Udqfwiw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1427133027-8134-1-git-send-email-abbotti-GUHe90Wt2aFaa/9Udqfwiw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH 44/54] MAINTAINERS: Add file patterns for spi device tree bindings
+Date: Sun, 22 May 2016 11:06:21 +0200
+Message-ID: <1463907991-7916-45-git-send-email-geert@linux-m68k.org>
+References: <1463907991-7916-1-git-send-email-geert@linux-m68k.org>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
+	Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
+To: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1463907991-7916-1-git-send-email-geert@linux-m68k.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Mon, Mar 23, 2015 at 10:50 AM, Ian Abbott <abbotti-GUHe90Wt2aFaa/9Udqfwiw@public.gmane.org> wrote:
-> `spidev_message()` sums the lengths of the individual SPI transfers to
-> determine the overall SPI message length.  It restricts the total
-> length, returning an error if too long, but it does not check for
-> arithmetic overflow.  For example, if the SPI message consisted of two
-> transfers and the first has a length of 10 and the second has a length
-> of (__u32)(-1), the total length would be seen as 9, even though the
-> second transfer is actually very long.  If the second transfer specifies
-> a null `rx_buf` and a non-null `tx_buf`, the `copy_from_user()` could
-> overrun the spidev's pre-allocated tx buffer before it reaches an
-> invalid user memory address.  Fix it by checking that neither the total
-> nor the individual transfer lengths exceed the maximum allowed value.
->
-> Thanks to Dan Carpenter for reporting the potential integer overflow.
->
-> Signed-off-by: Ian Abbott <abbotti-GUHe90Wt2aFaa/9Udqfwiw@public.gmane.org>
-> Cc: <stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org> # 4.0+
-> ---
-> This could be backported to kernels prior to 4.0, but the total and
-> individual lengths would need to be checked against `bufsiz` instead of
-> `INT_MAX`.
-> ---
->  drivers/spi/spidev.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-> index bb6b3ab..23ad978 100644
-> --- a/drivers/spi/spidev.c
-> +++ b/drivers/spi/spidev.c
-> @@ -249,9 +249,10 @@ static int spidev_message(struct spidev_data *spidev,
->                 total += k_tmp->len;
->                 /* Since the function returns the total length of transfers
->                  * on success, restrict the total to positive int values to
-> -                * avoid the return value looking like an error.
-> +                * avoid the return value looking like an error.  Also check
-> +                * each transfer length to avoid arithmetic overflow.
->                  */
-> -               if (total > INT_MAX) {
-> +               if (total > INT_MAX || k_tmp->len > INT_MAX) {
+Submitters of device tree binding documentation may forget to CC
+the subsystem maintainer if this is missing.
 
-What if total is INT_MAX - 2 and k_tmp->len is 3? What about total is
-INT_MAX and k_tmp->len is INT_MAX as well? I think the proper check
-should be:
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org
+---
+Please apply this patch directly if you want to be involved in device
+tree binding documentation for your subsystem.
+---
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-if (total < k_tmp->len || total > INT_MAX) {
-        ...
-}
-
->                         status = -EMSGSIZE;
->                         goto done;
->                 }
-
-Thanks.
-
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 9d81eff6577ff886..f11355314880838b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -10804,6 +10804,7 @@ L:	linux-spi@vger.kernel.org
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git
+ Q:	http://patchwork.kernel.org/project/spi-devel-general/list/
+ S:	Maintained
++F:	Documentation/devicetree/bindings/spi/
+ F:	Documentation/spi/
+ F:	drivers/spi/
+ F:	include/linux/spi/
 -- 
-Dmitry
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+1.9.1

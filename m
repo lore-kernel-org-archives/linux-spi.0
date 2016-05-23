@@ -1,42 +1,45 @@
-From: Ian Abbott <abbotti@mev.co.uk>
-Subject: Re: [PATCH] spi: spidev: fix possible arithmetic overflow for
- multi-transfer message
-Date: Mon, 23 May 2016 12:23:37 +0100
-Message-ID: <5742E839.3040804@mev.co.uk>
-References: <1427133027-8134-1-git-send-email-abbotti@mev.co.uk>
- <CAKdAkRTEWthr6+FjkyukKN0-1YDAziy91Ww+tTOOE4MGkH2k1Q@mail.gmail.com>
- <20160523111521.GQ8206@sirena.org.uk>
+From: Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH] spi: let SPI masters ignore their children for PM
+Date: Mon, 23 May 2016 14:56:29 +0200
+Message-ID: <CACRpkdZPNwnhDHDVD3=Mm0iYqCavH0Oemu7qZ4bRM3AfWbH38A@mail.gmail.com>
+References: <1460375463-15557-1-git-send-email-linus.walleij@linaro.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi <linux-spi@vger.kernel.org>,
-	Dan Carpenter <dan.carpenter@oracle.com>,
-	lkml <linux-kernel@vger.kernel.org>,
-	"3.8+" <stable@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Wolfram Sang <wsa@the-dreams.de>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	"Rafael J. Wysocki" <rjw@rjwysocki.net>,
+	"linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>
 To: Mark Brown <broonie@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20160523111521.GQ8206@sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+Return-path: <linux-pm-owner@vger.kernel.org>
+In-Reply-To: <1460375463-15557-1-git-send-email-linus.walleij@linaro.org>
+Sender: linux-pm-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 23/05/16 12:15, Mark Brown wrote:
-> On Sat, May 21, 2016 at 09:50:35AM -0700, Dmitry Torokhov wrote:
->> On Mon, Mar 23, 2015 at 10:50 AM, Ian Abbott <abbotti@mev.co.uk> wrote:
->>> `spidev_message()` sums the lengths of the individual SPI transfers to
->>> determine the overall SPI message length.  It restricts the total
->>> length, returning an error if too long, but it does not check for
->
-> As documented in SubmittingPatches please send patches to the
-> maintainers for the code you would like to change.  The normal kernel
-> workflow is that people apply patches from their inboxes, if they aren't
-> copied they are likely to not see the patch at all and it is much more
-> difficult to apply patches.
->
+On Mon, Apr 11, 2016 at 1:51 PM, Linus Walleij <linus.walleij@linaro.org> wrote:
 
-In this case, Dmitry was replying to my patch that has already been 
-applied over a year ago. :)
+> Let all SPI masters ignore their children: when it comes
+> to power management: SPI children have no business doing
+> keeping their parents awake: they are completely autonomous
+> devices that just use their parent to talk, and the latter
+> usecase must be power managed by the host itself on a
+> per-message basis.
+>
+> Cc: Wolfram Sang <wsa@the-dreams.de>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Ulf Hansson <ulf.hansson@linaro.org>
+> Cc: Rafael J. Wysocki <rjw@rjwysocki.net>
+> Cc: linux-pm@vger.kernel.org
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 
--- 
--=( Ian Abbott @ MEV Ltd.    E-mail: <abbotti@mev.co.uk> )=-
--=(                          Web: http://www.mev.co.uk/  )=-
+Mark did this slip through the cracks or is there some
+problem with it?
+
+The corresponding patch to I2C is applied in commit
+04f59143b571 "i2c: let I2C masters ignore their children for PM"
+
+Tell me if I should resend it.
+
+Yours,
+Linus Walleij

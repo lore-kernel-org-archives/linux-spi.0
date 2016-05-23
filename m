@@ -1,105 +1,69 @@
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: Re: [PATCH] spi: spidev: fix possible arithmetic overflow for
- multi-transfer message
-Date: Mon, 23 May 2016 10:04:34 -0700
-Message-ID: <20160523170434.GD20465@dtor-ws>
-References: <1427133027-8134-1-git-send-email-abbotti@mev.co.uk>
- <CAKdAkRTEWthr6+FjkyukKN0-1YDAziy91Ww+tTOOE4MGkH2k1Q@mail.gmail.com>
- <5742D973.80104@mev.co.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-spi <linux-spi@vger.kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Dan Carpenter <dan.carpenter@oracle.com>,
-	lkml <linux-kernel@vger.kernel.org>,
-	"3.8+" <stable@vger.kernel.org>
-To: Ian Abbott <abbotti@mev.co.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: Add file patterns for spi device tree bindings" to the spi tree
+Date: Mon, 23 May 2016 18:51:02 +0100
+Message-ID: <E1b4u0M-0006nC-EE@debutante>
+References: <1463907991-7916-45-git-send-email-geert@linux-m68k.org>
+Cc: Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+	linux-spi@vger.kernel.org
+To: Geert Uytterhoeven <geert@linux-m68k.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <5742D973.80104@mev.co.uk>
+In-Reply-To: <1463907991-7916-45-git-send-email-geert@linux-m68k.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, May 23, 2016 at 11:20:35AM +0100, Ian Abbott wrote:
-> On 21/05/16 17:50, Dmitry Torokhov wrote:
-> >On Mon, Mar 23, 2015 at 10:50 AM, Ian Abbott <abbotti@mev.co.uk> wrote:
-> >>`spidev_message()` sums the lengths of the individual SPI transfers to
-> >>determine the overall SPI message length.  It restricts the total
-> >>length, returning an error if too long, but it does not check for
-> >>arithmetic overflow.  For example, if the SPI message consisted of two
-> >>transfers and the first has a length of 10 and the second has a length
-> >>of (__u32)(-1), the total length would be seen as 9, even though the
-> >>second transfer is actually very long.  If the second transfer specifies
-> >>a null `rx_buf` and a non-null `tx_buf`, the `copy_from_user()` could
-> >>overrun the spidev's pre-allocated tx buffer before it reaches an
-> >>invalid user memory address.  Fix it by checking that neither the total
-> >>nor the individual transfer lengths exceed the maximum allowed value.
-> >>
-> >>Thanks to Dan Carpenter for reporting the potential integer overflow.
-> >>
-> >>Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-> >>Cc: <stable@vger.kernel.org> # 4.0+
-> >>---
-> >>This could be backported to kernels prior to 4.0, but the total and
-> >>individual lengths would need to be checked against `bufsiz` instead of
-> >>`INT_MAX`.
-> >>---
-> >>  drivers/spi/spidev.c | 5 +++--
-> >>  1 file changed, 3 insertions(+), 2 deletions(-)
-> >>
-> >>diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-> >>index bb6b3ab..23ad978 100644
-> >>--- a/drivers/spi/spidev.c
-> >>+++ b/drivers/spi/spidev.c
-> >>@@ -249,9 +249,10 @@ static int spidev_message(struct spidev_data *spidev,
-> >>                 total += k_tmp->len;
-> >>                 /* Since the function returns the total length of transfers
-> >>                  * on success, restrict the total to positive int values to
-> >>-                * avoid the return value looking like an error.
-> >>+                * avoid the return value looking like an error.  Also check
-> >>+                * each transfer length to avoid arithmetic overflow.
-> >>                  */
-> >>-               if (total > INT_MAX) {
-> >>+               if (total > INT_MAX || k_tmp->len > INT_MAX) {
-> >
-> >What if total is INT_MAX - 2 and k_tmp->len is 3? What about total is
-> >INT_MAX and k_tmp->len is INT_MAX as well? I think the proper check
-> 
-> In your questions, I assume you are referring to the values of
-> 'total' before the addition.  I'll call the values 'old_total' and
+The patch
 
-Sorry, yes, for some reason I was thinking we are checking before
-performing addition. Ignore me.
+   spi: Add file patterns for spi device tree bindings
 
-> 'new_total' (with the same type as 'total', i.e. 'unsigned int').
-> Note that total (and old_total, and new_total) and 'k_tmp->len' have
-> range UINT_MAX, or 2*INT_MAX+1.
-> 
-> Before the addition, we know that old_total <= INT_MAX (otherwise
-> the loop would have errored out already), but k_tmp->len can have
-> any value from 0 to UINT_MAX.  After the addition, new_total can
-> have any value from 0 to UINT_MAX, and might be less than old_total.
-> new_total can only be less than old_total if old_total + k_tmp->len
-> > UINT_MAX, and here I am referring to proper addition, not addition
-> modulo UINT_MAX+1.  Rearranging, new_total will be less than
-> old_total if k_tmp->len > UINT_MAX - old_total.  Since the maximum
-> value of old_total is INT_MAX, the lowest possible value of
-> k_tmp->len that could cause new_total to be less than old_total is
-> UINT_MAX - INT_MAX, or INT_MAX+1.  That is what the second part of
-> the 'if' test is detecting.
-> 
-> >should be:
-> >
-> >if (total < k_tmp->len || total > INT_MAX) {
-> >         ...
-> >}
-> >
-> 
-> That also works.
-> 
-> -- 
-> -=( Ian Abbott @ MEV Ltd.    E-mail: <abbotti@mev.co.uk> )=-
-> -=(                          Web: http://www.mev.co.uk/  )=-
+has been applied to the spi tree at
 
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From c876fec76e3719734f8a055b799c8c4c1930fcfc Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Sun, 22 May 2016 11:06:21 +0200
+Subject: [PATCH] spi: Add file patterns for spi device tree bindings
+
+Submitters of device tree binding documentation may forget to CC
+the subsystem maintainer if this is missing.
+
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 9c567a431d8d..3aaea9f66eae 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -10511,6 +10511,7 @@ L:	linux-spi@vger.kernel.org
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git
+ Q:	http://patchwork.kernel.org/project/spi-devel-general/list/
+ S:	Maintained
++F:	Documentation/devicetree/bindings/spi/
+ F:	Documentation/spi/
+ F:	drivers/spi/
+ F:	include/linux/spi/
 -- 
-Dmitry
+2.8.1

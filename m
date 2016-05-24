@@ -1,64 +1,48 @@
-From: Mark Rutland <mark.rutland@arm.com>
+From: Christer Weinigel <christer@weinigel.se>
 Subject: Re: [PATCH] devicetree - document using aliases to set spi bus
  number.
-Date: Tue, 24 May 2016 18:41:41 +0100
-Message-ID: <20160524174140.GE11605@leverpostej>
+Date: Tue, 24 May 2016 20:03:48 +0200
+Message-ID: <57449784.4070108@weinigel.se>
 References: <1464107960-10775-1-git-send-email-christer@weinigel.se>
+ <20160524172045.GN8206@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 8bit
 Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, Mark Brown <broonie@kernel.org>
-To: Christer Weinigel <christer@weinigel.se>
+	devicetree@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1464107960-10775-1-git-send-email-christer@weinigel.se>
+In-Reply-To: <20160524172045.GN8206@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, May 24, 2016 at 06:39:20PM +0200, Christer Weinigel wrote:
-> Document how to use devicetree aliases to assign a stable
-> bus number to a spi bus.
-> 
-> Signed-off-by: Christer Weinigel <christer@weinigel.se>
-> 
-> ---
-> 
-> Trivial documentation change.
-> 
-> Not having used devicetree that much it was surprisingly hard to
-> figure out how to assign a stable bus number to a spi bus.  Add a
-> simple example that shows how to do that.
-> 
-> Mark Cced as the SPI maintainer.  Or should trivial documentation
-> fixes like this be addressed to someone else?
-> 
->   /Christer
-> 
->  Documentation/devicetree/bindings/spi/spi-bus.txt | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
-> index 42d5954..c35c4c2 100644
-> --- a/Documentation/devicetree/bindings/spi/spi-bus.txt
-> +++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
-> @@ -94,3 +94,13 @@ SPI example for an MPC5200 SPI bus:
->  			reg = <1>;
->  		};
->  	};
-> +
-> +Normally SPI buses are assigned dynamic bus numbers starting at 32766
-> +and counting downwards.  It is possible to assign the bus number
-> +statically using devicetee aliases.  For example, on the MPC5200 the
-> +"spi@f00" device above is connected to the "soc" bus.  To set its
-> +bus_num to 1 add an aliases entry like this:
 
-As Mark Brown pointed out, this is very Linux-specific (at least in the
-wording of the above).
+On 05/24/2016 07:20 PM, Mark Brown wrote:
+>> Not having used devicetree that much it was surprisingly hard to 
+>> figure out how to assign a stable bus number to a spi bus.  Add
+>> a simple example that shows how to do that.
+> 
+> I'm not sure this is something we want to support at all, I can't 
+> immediately see anything that does this deliberately in the SPI
+> code and obviously the "bus number" is something of a Linux
+> specific concept which would need some explanation if we were going
+> to document it.  It's something I'm struggling a bit to see a
+> robust use case for that isn't better served by parsing sysfs,
+> what's the goal here?
 
-Generally, aliases are there to match _physical_ identifiers (e.g. to
-match physical labels for UART0, UART1, and on).
+Well, that's how it works right now:
 
-I'm not sure whether that applies here.
+commit bb29785e0d6d150181704be2efcc3141044625e2
+Author: Grant Likely <grant.likely@secretlab.ca>
+Date:   Fri Dec 21 19:32:09 2012 +0000
 
-Thanks,
-Mark.
+    spi/of: Use DT aliases for assigning bus number
+
+> + if ((master->bus_num < 0) && master->dev.of_node) +
+> master->bus_num = of_alias_get_id(master->dev.of_node, "spi");
+
+If this isn't something that should be in the Documentation/devicetree
+ because it's not generig enough, where should Linux-specific
+interpretations such as this be documented?
+
+  /Christer

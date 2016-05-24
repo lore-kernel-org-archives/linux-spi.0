@@ -1,14 +1,13 @@
-From: Mark Brown <broonie@kernel.org>
+From: Mark Rutland <mark.rutland@arm.com>
 Subject: Re: [PATCH] devicetree - document using aliases to set spi bus
  number.
-Date: Tue, 24 May 2016 18:20:45 +0100
-Message-ID: <20160524172045.GN8206@sirena.org.uk>
+Date: Tue, 24 May 2016 18:41:41 +0100
+Message-ID: <20160524174140.GE11605@leverpostej>
 References: <1464107960-10775-1-git-send-email-christer@weinigel.se>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="S4drRqups3dkeHIl"
+Content-Type: text/plain; charset=us-ascii
 Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org
+	devicetree@vger.kernel.org, Mark Brown <broonie@kernel.org>
 To: Christer Weinigel <christer@weinigel.se>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
@@ -16,49 +15,50 @@ In-Reply-To: <1464107960-10775-1-git-send-email-christer@weinigel.se>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-
---S4drRqups3dkeHIl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
 On Tue, May 24, 2016 at 06:39:20PM +0200, Christer Weinigel wrote:
 > Document how to use devicetree aliases to assign a stable
 > bus number to a spi bus.
-
-Please submit patches using subject lines reflecting the style for the
-subsystem.  This makes it easier for people to identify relevant
-patches.
-
+> 
+> Signed-off-by: Christer Weinigel <christer@weinigel.se>
+> 
+> ---
+> 
+> Trivial documentation change.
+> 
 > Not having used devicetree that much it was surprisingly hard to
 > figure out how to assign a stable bus number to a spi bus.  Add a
 > simple example that shows how to do that.
-
-I'm not sure this is something we want to support at all, I can't
-immediately see anything that does this deliberately in the SPI code and
-obviously the "bus number" is something of a Linux specific concept
-which would need some explanation if we were going to document it.  It's
-something I'm struggling a bit to see a robust use case for that isn't
-better served by parsing sysfs, what's the goal here?
-
+> 
 > Mark Cced as the SPI maintainer.  Or should trivial documentation
 > fixes like this be addressed to someone else?
+> 
+>   /Christer
+> 
+>  Documentation/devicetree/bindings/spi/spi-bus.txt | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
+> index 42d5954..c35c4c2 100644
+> --- a/Documentation/devicetree/bindings/spi/spi-bus.txt
+> +++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
+> @@ -94,3 +94,13 @@ SPI example for an MPC5200 SPI bus:
+>  			reg = <1>;
+>  		};
+>  	};
+> +
+> +Normally SPI buses are assigned dynamic bus numbers starting at 32766
+> +and counting downwards.  It is possible to assign the bus number
+> +statically using devicetee aliases.  For example, on the MPC5200 the
+> +"spi@f00" device above is connected to the "soc" bus.  To set its
+> +bus_num to 1 add an aliases entry like this:
 
-This is definitely *not* trivial but yes, in general you should CC
-maintainers on things.
+As Mark Brown pointed out, this is very Linux-specific (at least in the
+wording of the above).
 
---S4drRqups3dkeHIl
-Content-Type: application/pgp-signature; name="signature.asc"
+Generally, aliases are there to match _physical_ identifiers (e.g. to
+match physical labels for UART0, UART1, and on).
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+I'm not sure whether that applies here.
 
-iQEcBAEBCAAGBQJXRI1sAAoJECTWi3JdVIfQJBEH/2azAjvdKjETWf7yGqvbp40P
-ivEbqP236nOhIhBj8BvDOU9x68kIvL6evIHXk9tGvq6HYrwBd+7bZQrS/1XeAg6d
-OFfE7Ia4mr9X4U2uVIE6fJggr8LQ/gGsdQsTg1ej2N3FfqC95l6Z9qB3BOptpxuj
-1C7YixX3EiKjpzjCa/7jZo3BDQjtdkwphXnFPCgn/PNHfoGxZzPPpK4RU/ZZZ4yP
-p6Tp43iqYgSowA2QbSjEbUU+TVPqmg1vXq3ylOS0aSnqPSS1ism+3hHm9xKUtSJe
-krGuZBgjArKUGc+lugMLxGXs+E7xrMFPITN68E5DxEYihkPZSflutUtVeknU2Ws=
-=dy/g
------END PGP SIGNATURE-----
-
---S4drRqups3dkeHIl--
+Thanks,
+Mark.

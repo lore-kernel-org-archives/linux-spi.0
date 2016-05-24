@@ -1,68 +1,79 @@
-From: Christer Weinigel <christer-rKHMIqA5R6gwFerOooGFRg@public.gmane.org>
-Subject: Re: [PATCH] devicetree - document using aliases to set spi bus
- number.
-Date: Tue, 24 May 2016 20:57:06 +0200
-Message-ID: <5744A402.8050409@weinigel.se>
-References: <1464107960-10775-1-git-send-email-christer@weinigel.se>
- <20160524172045.GN8206@sirena.org.uk> <57449784.4070108@weinigel.se>
- <20160524183256.GP8206@sirena.org.uk>
+From: Frank Rowand <frowand.list@gmail.com>
+Subject: Re: [PATCH] devicetree - document using aliases to set spi bus number.
+Date: Tue, 24 May 2016 13:41:26 -0700
+Message-ID: <5744BC76.9090403@gmail.com>
+References: <1464107960-10775-1-git-send-email-christer@weinigel.se> <20160524174140.GE11605@leverpostej>
+Reply-To: frowand.list@gmail.com
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 8bit
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160524183256.GP8206-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Cc: Christer Weinigel <christer@weinigel.se>,
+	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, Mark Brown <broonie@kernel.org>
+To: Mark Rutland <mark.rutland@arm.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20160524174140.GE11605@leverpostej>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 05/24/2016 08:32 PM, Mark Brown wrote:
-> On Tue, May 24, 2016 at 08:03:48PM +0200, Christer Weinigel wrote:
->> On 05/24/2016 07:20 PM, Mark Brown wrote:
+On 5/24/2016 10:41 AM, Mark Rutland wrote:
+> On Tue, May 24, 2016 at 06:39:20PM +0200, Christer Weinigel wrote:
+>> Document how to use devicetree aliases to assign a stable
+>> bus number to a spi bus.
+>>
+>> Signed-off-by: Christer Weinigel <christer@weinigel.se>
+>>
+>> ---
+>>
+>> Trivial documentation change.
+>>
+>> Not having used devicetree that much it was surprisingly hard to
+>> figure out how to assign a stable bus number to a spi bus.  Add a
+>> simple example that shows how to do that.
+>>
+>> Mark Cced as the SPI maintainer.  Or should trivial documentation
+>> fixes like this be addressed to someone else?
+>>
+>>   /Christer
+>>
+>>  Documentation/devicetree/bindings/spi/spi-bus.txt | 10 ++++++++++
+>>  1 file changed, 10 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
+>> index 42d5954..c35c4c2 100644
+>> --- a/Documentation/devicetree/bindings/spi/spi-bus.txt
+>> +++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
+>> @@ -94,3 +94,13 @@ SPI example for an MPC5200 SPI bus:
+>>  			reg = <1>;
+>>  		};
+>>  	};
+>> +
+>> +Normally SPI buses are assigned dynamic bus numbers starting at 32766
+>> +and counting downwards.  It is possible to assign the bus number
+>> +statically using devicetee aliases.  For example, on the MPC5200 the
+>> +"spi@f00" device above is connected to the "soc" bus.  To set its
+>> +bus_num to 1 add an aliases entry like this:
 > 
->>> I'm not sure this is something we want to support at all, I
->>> can't immediately see anything that does this deliberately in
->>> the SPI code and obviously the "bus number" is something of a
->>> Linux specific concept which would need some explanation if we
->>> were going to document it.  It's something I'm struggling a bit
->>> to see a robust use case for that isn't better served by
->>> parsing sysfs, what's the goal here?
+> As Mark Brown pointed out, this is very Linux-specific (at least in the
+> wording of the above).
+
+Yes, Linux-specific.  So the Linux documentation of bindings is the
+correct place for it.
+
 > 
->> If this isn't something that should be in the
->> Documentation/devicetree because it's not generig enough, where
->> should Linux-specific interpretations such as this be
->> documented?
+> Generally, aliases are there to match _physical_ identifiers (e.g. to
+> match physical labels for UART0, UART1, and on).
 > 
-> I'm not clear that we want to document this at all since I am not
-> clear that there is a sensible use case for doing it.  I did ask
-> for one but you've not articulated one in this reply.  I am much
-> less gung ho than Grant on this one, even as a Linux specific
-> interface it seems very legacy.
+> I'm not sure whether that applies here.
 
-It's bloody convenient.  I'm working with a Zync board right now where
-we have multiple SPI ports.  Being able to label the ports on the
-board spi1, spi2 and spi3 and having spidev devices show up as
-/dev/spidev1.0 instead of dynamic assignment makes things much easier.
- Especially when doing driver development where unloading and
-reloading the spi driver module will give it a new dynamic number
-every time.
+The code and behavior is in the Linux kernel.  It should be visible in
+the documentation instead of being a big mystery of how it works.
 
-Yes, it's possible to iterate through all files /sys/class/spi_master
-and then have a table to map those names to device names and create
-symlinks to them, it's just painful.  It's much easier to do be able
-to do "cat data >/dev/spidev1.0" from busybox and not have to set up
-all that infrastructure.  And yes, this is on an embedded system using
-busybox without udev.
-
-In addition, right now I have a couple of different variants of the
-boards that I work on, and with different SPI ports at different
-addresses.   It's rather nice to be able to reuse the same kernel +
-ramdisk on multiple variants and only have to update the devicetree to
-get sensible devices names on all variants.
-
-  /Christer
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> 
+> Thanks,
+> Mark.
+> --
+> To unsubscribe from this list: send the line "unsubscribe devicetree" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> 

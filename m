@@ -1,79 +1,50 @@
-From: Frank Rowand <frowand.list@gmail.com>
+From: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH] devicetree - document using aliases to set spi bus number.
-Date: Tue, 24 May 2016 13:41:26 -0700
-Message-ID: <5744BC76.9090403@gmail.com>
-References: <1464107960-10775-1-git-send-email-christer@weinigel.se> <20160524174140.GE11605@leverpostej>
-Reply-To: frowand.list@gmail.com
+Date: Tue, 24 May 2016 16:34:50 -0700
+Message-ID: <5744E51A.1040506@gmail.com>
+References: <1464107960-10775-1-git-send-email-christer@weinigel.se> <20160524172045.GN8206@sirena.org.uk> <57449784.4070108@weinigel.se> <20160524183256.GP8206@sirena.org.uk>
+Reply-To: frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Cc: Christer Weinigel <christer@weinigel.se>,
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, Mark Brown <broonie@kernel.org>
-To: Mark Rutland <mark.rutland@arm.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20160524174140.GE11605@leverpostej>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Christer Weinigel <christer-rKHMIqA5R6gwFerOooGFRg@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20160524183256.GP8206-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 5/24/2016 10:41 AM, Mark Rutland wrote:
-> On Tue, May 24, 2016 at 06:39:20PM +0200, Christer Weinigel wrote:
->> Document how to use devicetree aliases to assign a stable
->> bus number to a spi bus.
->>
->> Signed-off-by: Christer Weinigel <christer@weinigel.se>
->>
->> ---
->>
->> Trivial documentation change.
->>
->> Not having used devicetree that much it was surprisingly hard to
->> figure out how to assign a stable bus number to a spi bus.  Add a
->> simple example that shows how to do that.
->>
->> Mark Cced as the SPI maintainer.  Or should trivial documentation
->> fixes like this be addressed to someone else?
->>
->>   /Christer
->>
->>  Documentation/devicetree/bindings/spi/spi-bus.txt | 10 ++++++++++
->>  1 file changed, 10 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
->> index 42d5954..c35c4c2 100644
->> --- a/Documentation/devicetree/bindings/spi/spi-bus.txt
->> +++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
->> @@ -94,3 +94,13 @@ SPI example for an MPC5200 SPI bus:
->>  			reg = <1>;
->>  		};
->>  	};
->> +
->> +Normally SPI buses are assigned dynamic bus numbers starting at 32766
->> +and counting downwards.  It is possible to assign the bus number
->> +statically using devicetee aliases.  For example, on the MPC5200 the
->> +"spi@f00" device above is connected to the "soc" bus.  To set its
->> +bus_num to 1 add an aliases entry like this:
+On 5/24/2016 11:32 AM, Mark Brown wrote:
+> On Tue, May 24, 2016 at 08:03:48PM +0200, Christer Weinigel wrote:
+>> On 05/24/2016 07:20 PM, Mark Brown wrote:
 > 
-> As Mark Brown pointed out, this is very Linux-specific (at least in the
-> wording of the above).
+>>> I'm not sure this is something we want to support at all, I can't 
+>>> immediately see anything that does this deliberately in the SPI
+>>> code and obviously the "bus number" is something of a Linux
+>>> specific concept which would need some explanation if we were going
+>>> to document it.  It's something I'm struggling a bit to see a
+>>> robust use case for that isn't better served by parsing sysfs,
+>>> what's the goal here?
+> 
+>> If this isn't something that should be in the Documentation/devicetree
+>>  because it's not generig enough, where should Linux-specific
+>> interpretations such as this be documented?
+> 
+> I'm not clear that we want to document this at all since I am not clear
+> that there is a sensible use case for doing it.  I did ask for one but
+> you've not articulated one in this reply.  I am much less gung ho than
+> Grant on this one, even as a Linux specific interface it seems very
+> legacy.
+> 
 
-Yes, Linux-specific.  So the Linux documentation of bindings is the
-correct place for it.
+The time for the use case was when the patch was accepted.
 
-> 
-> Generally, aliases are there to match _physical_ identifiers (e.g. to
-> match physical labels for UART0, UART1, and on).
-> 
-> I'm not sure whether that applies here.
+It is in the kernel, it is appropriate to document it.
 
-The code and behavior is in the Linux kernel.  It should be visible in
-the documentation instead of being a big mystery of how it works.
-
-> 
-> Thanks,
-> Mark.
-> --
-> To unsubscribe from this list: send the line "unsubscribe devicetree" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> 
+-Frank
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

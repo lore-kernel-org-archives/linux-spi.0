@@ -1,61 +1,97 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH v3 00/12] J-core J2 cpu and SoC peripherals support
-Date: Wed, 25 May 2016 09:22:44 +0200
-Message-ID: <CAMuHMdWdZLn=pYt1EC-k5Zd-geRaLkuQKZJjrZOaT6tqOxZ+Og@mail.gmail.com>
-References: <cover.1464148904.git.dalias@libc.org>
+From: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>
+Subject: Re: [PATCH] devicetree - document using aliases to set spi bus
+ number.
+Date: Wed, 25 May 2016 10:20:34 +0100
+Message-ID: <20160525092034.GE1337@leverpostej>
+References: <1464107960-10775-1-git-send-email-christer@weinigel.se>
+ <20160524174140.GE11605@leverpostej>
+ <5744BC76.9090403@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux-sh list <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Thomas Gleixner <tglx-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>,
-	Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
-	Marc Zyngier <marc.zyngier-5wv7dgnIgG8@public.gmane.org>,
-	Daniel Lezcano <daniel.lezcano-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Rich Felker <dalias-8zAoT0mYgF4@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <cover.1464148904.git.dalias-8zAoT0mYgF4@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Christer Weinigel <christer-rKHMIqA5R6gwFerOooGFRg@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <5744BC76.9090403-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Rich,
+On Tue, May 24, 2016 at 01:41:26PM -0700, Frank Rowand wrote:
+> On 5/24/2016 10:41 AM, Mark Rutland wrote:
+> > On Tue, May 24, 2016 at 06:39:20PM +0200, Christer Weinigel wrote:
+> >> Document how to use devicetree aliases to assign a stable
+> >> bus number to a spi bus.
+> >>
+> >> Signed-off-by: Christer Weinigel <christer-rKHMIqA5R6gwFerOooGFRg@public.gmane.org>
+> >>
+> >> ---
+> >>
+> >> Trivial documentation change.
+> >>
+> >> Not having used devicetree that much it was surprisingly hard to
+> >> figure out how to assign a stable bus number to a spi bus.  Add a
+> >> simple example that shows how to do that.
+> >>
+> >> Mark Cced as the SPI maintainer.  Or should trivial documentation
+> >> fixes like this be addressed to someone else?
+> >>
+> >>   /Christer
+> >>
+> >>  Documentation/devicetree/bindings/spi/spi-bus.txt | 10 ++++++++++
+> >>  1 file changed, 10 insertions(+)
+> >>
+> >> diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
+> >> index 42d5954..c35c4c2 100644
+> >> --- a/Documentation/devicetree/bindings/spi/spi-bus.txt
+> >> +++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
+> >> @@ -94,3 +94,13 @@ SPI example for an MPC5200 SPI bus:
+> >>  			reg = <1>;
+> >>  		};
+> >>  	};
+> >> +
+> >> +Normally SPI buses are assigned dynamic bus numbers starting at 32766
+> >> +and counting downwards.  It is possible to assign the bus number
+> >> +statically using devicetee aliases.  For example, on the MPC5200 the
+> >> +"spi@f00" device above is connected to the "soc" bus.  To set its
+> >> +bus_num to 1 add an aliases entry like this:
+> > 
+> > As Mark Brown pointed out, this is very Linux-specific (at least in the
+> > wording of the above).
+> 
+> Yes, Linux-specific.  So the Linux documentation of bindings is the
+> correct place for it.
 
-On Wed, May 25, 2016 at 7:43 AM, Rich Felker <dalias-8zAoT0mYgF4@public.gmane.org> wrote:
-> As arch/sh co-maintainer my intent is to include as much as possible
-> in my pull request for the linux-sh tree. If there are parts outside
-> of arch/sh that can be included in this, please let me know. I'm not
-> clear yet on what the right path to upstream is for the clocksource
-> and irq drivers that are currently only useful/interesting for one
-> arch, or for the DT binding patches. Even if some drivers are delayed
+I don't entirely agree. Which is not to say that I disagree as such, but
+rather that this is not a black-and-white affair.
 
-Drivers outside arch/sh/ should go through the respective maintainer's tree,
-unless that maintainer allows you to take it by giving his Acked-by.
-The same for DT bindings for such drivers.
+While bindings do happen to live in the kernel tree, we try to keep them
+separate from Linux internals or Linux API details that are outside of
+the scope of the HW/kernel interface. There are certainly reasons to
+describe Linux-specific bindings (e.g. things under /chosen).
 
-> going upstream, I would really like to get DT bindings acked and
-> ideally merged, because we want to go ahead with moving the DTB into
-> J2 boot rom where it belongs, and that should only happen with stable
-> bindings.
+Mark Brown's comments imply that there is a better mechanism which does
+not rely on this binding, so even if we must retain support for it in
+Linux for legacy reasons, documenting it as a binding is not necessarily
+in anyone's best interest. If we want to document it, we may want to
+mark it as deprecated, with a pointer to better alternatives.
 
-Please also add a changelog, so people who reviewed your previous series
-before know what to skip and what to focus on.
-Please add collected Acked-by and Reviewed-by tags when reposting.
+> > Generally, aliases are there to match _physical_ identifiers (e.g. to
+> > match physical labels for UART0, UART1, and on).
+> > 
+> > I'm not sure whether that applies here.
+> 
+> The code and behavior is in the Linux kernel. It should be visible in
+> the documentation instead of being a big mystery of how it works.
 
-Thanks!
+As above, I don't entirely agree. Mindlessly documenting existing Linux
+behaviour can have the unfortuante effect of moving people towards the
+wrong tool for the job.
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
+Thanks,
+Mark.
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

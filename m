@@ -1,97 +1,72 @@
-From: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>
-Subject: Re: [PATCH] devicetree - document using aliases to set spi bus
- number.
-Date: Wed, 25 May 2016 10:20:34 +0100
-Message-ID: <20160525092034.GE1337@leverpostej>
-References: <1464107960-10775-1-git-send-email-christer@weinigel.se>
- <20160524174140.GE11605@leverpostej>
- <5744BC76.9090403@gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v3 00/12] J-core J2 cpu and SoC peripherals support
+Date: Wed, 25 May 2016 10:54:44 +0100
+Message-ID: <20160525095444.GR8206@sirena.org.uk>
+References: <cover.1464148904.git.dalias@libc.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Christer Weinigel <christer-rKHMIqA5R6gwFerOooGFRg@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="4CyH/NlNBqvsUTYP"
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Thomas Gleixner <tglx-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>,
+	Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
+	Marc Zyngier <marc.zyngier-5wv7dgnIgG8@public.gmane.org>,
+	Daniel Lezcano <daniel.lezcano-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Rich Felker <dalias-8zAoT0mYgF4@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <5744BC76.9090403-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <cover.1464148904.git.dalias-8zAoT0mYgF4@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-On Tue, May 24, 2016 at 01:41:26PM -0700, Frank Rowand wrote:
-> On 5/24/2016 10:41 AM, Mark Rutland wrote:
-> > On Tue, May 24, 2016 at 06:39:20PM +0200, Christer Weinigel wrote:
-> >> Document how to use devicetree aliases to assign a stable
-> >> bus number to a spi bus.
-> >>
-> >> Signed-off-by: Christer Weinigel <christer-rKHMIqA5R6gwFerOooGFRg@public.gmane.org>
-> >>
-> >> ---
-> >>
-> >> Trivial documentation change.
-> >>
-> >> Not having used devicetree that much it was surprisingly hard to
-> >> figure out how to assign a stable bus number to a spi bus.  Add a
-> >> simple example that shows how to do that.
-> >>
-> >> Mark Cced as the SPI maintainer.  Or should trivial documentation
-> >> fixes like this be addressed to someone else?
-> >>
-> >>   /Christer
-> >>
-> >>  Documentation/devicetree/bindings/spi/spi-bus.txt | 10 ++++++++++
-> >>  1 file changed, 10 insertions(+)
-> >>
-> >> diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
-> >> index 42d5954..c35c4c2 100644
-> >> --- a/Documentation/devicetree/bindings/spi/spi-bus.txt
-> >> +++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
-> >> @@ -94,3 +94,13 @@ SPI example for an MPC5200 SPI bus:
-> >>  			reg = <1>;
-> >>  		};
-> >>  	};
-> >> +
-> >> +Normally SPI buses are assigned dynamic bus numbers starting at 32766
-> >> +and counting downwards.  It is possible to assign the bus number
-> >> +statically using devicetee aliases.  For example, on the MPC5200 the
-> >> +"spi@f00" device above is connected to the "soc" bus.  To set its
-> >> +bus_num to 1 add an aliases entry like this:
-> > 
-> > As Mark Brown pointed out, this is very Linux-specific (at least in the
-> > wording of the above).
-> 
-> Yes, Linux-specific.  So the Linux documentation of bindings is the
-> correct place for it.
 
-I don't entirely agree. Which is not to say that I disagree as such, but
-rather that this is not a black-and-white affair.
+--4CyH/NlNBqvsUTYP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-While bindings do happen to live in the kernel tree, we try to keep them
-separate from Linux internals or Linux API details that are outside of
-the scope of the HW/kernel interface. There are certainly reasons to
-describe Linux-specific bindings (e.g. things under /chosen).
+On Wed, May 25, 2016 at 05:43:02AM +0000, Rich Felker wrote:
 
-Mark Brown's comments imply that there is a better mechanism which does
-not rely on this binding, so even if we must retain support for it in
-Linux for legacy reasons, documenting it as a binding is not necessarily
-in anyone's best interest. If we want to document it, we may want to
-mark it as deprecated, with a pointer to better alternatives.
+> As arch/sh co-maintainer my intent is to include as much as possible
+> in my pull request for the linux-sh tree. If there are parts outside
+> of arch/sh that can be included in this, please let me know. I'm not
 
-> > Generally, aliases are there to match _physical_ identifiers (e.g. to
-> > match physical labels for UART0, UART1, and on).
-> > 
-> > I'm not sure whether that applies here.
-> 
-> The code and behavior is in the Linux kernel. It should be visible in
-> the documentation instead of being a big mystery of how it works.
+Do *not* include the SPI driver, you shouldn't be including any drivers
+unless it's been explicitly discussed with the subsystem maintainers.
 
-As above, I don't entirely agree. Mindlessly documenting existing Linux
-behaviour can have the unfortuante effect of moving people towards the
-wrong tool for the job.
+Quite aside from the fact that like Geert says drivers are expected to
+go through the subsystem trees to repeat what I said last time it wasn't
+posted until after the merge window and we're now a few days before the
+end of the merge window and a new version is being posted.  The
+turnaround times you are demanding on review are unreasonable - people
+get busy, have holidays and so on - and you really need to pay attention
+to what people are telling you about the process or you're just going to
+annoy people.
 
-Thanks,
-Mark.
+> arch, or for the DT binding patches. Even if some drivers are delayed
+> going upstream, I would really like to get DT bindings acked and
+> ideally merged, because we want to go ahead with moving the DTB into
+> J2 boot rom where it belongs, and that should only happen with stable
+
+If you want people to review DT bindings you're going to need to submit
+them.
+
+--4CyH/NlNBqvsUTYP
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJXRXZjAAoJECTWi3JdVIfQzHAH/iyYklTNVi/562dQ1XS+R/Xv
+77ugl6A3S/Gs+2Gs89eDdVoNdF/eVR1u3dD6/1+Cqq7rUqdlMLBHdhkdkUbnU/7H
+0ebnMcOoNVdbeAx69JOubypNptpzxJZlTCzaoTnSs00CIquJzR3Vq7kXtpPnZF0d
+eZ9IJki/N0CfnGa6N4jmQ8QMFUY4seIaa79AvaOak62lQ+dS7Ggwrsyf1ZHP6hOJ
+ll2atmPkLJPFnwJMDDE9CTIkZEZ3jFle2w0l81FMMUdYxlr5RDVsQxxzbsL2hovN
+Q7K7N4kDJydhGww2GKbnxvCg1UidNQ2noyOAqbH6X5wT3IcVJ2TV6MmXLG7vg+o=
+=COyp
+-----END PGP SIGNATURE-----
+
+--4CyH/NlNBqvsUTYP--
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

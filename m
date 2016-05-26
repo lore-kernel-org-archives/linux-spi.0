@@ -1,7 +1,8 @@
 From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 2/5] spi: sun4i: fix FIFO limit
-Date: 26 May 2016 19:25:24 -0000
-Message-ID: <e315008b5e9dc3f1490507508fd2f6e94767dfbb.1464130597.git.hramrach@gmail.com>
+Subject: [PATCH 4/5] spi: sunxi: set maximum and minimum speed
+ of SPI master
+Date: 26 May 2016 19:25:25 -0000
+Message-ID: <7292b1fa08de4f453a643beb63e9faa7826726f6.1464130597.git.hramrach@gmail.com>
 References: <cover.1464130597.git.hramrach@gmail.com>
 Reply-To: hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
@@ -10,7 +11,7 @@ To: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org, Mark Brown <broonie-DgE
   Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
   Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
   linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-Return-path: <linux-sunxi+bncBCQMLUOX54MBBJU3TW5AKGQE6VL76EI-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+Return-path: <linux-sunxi+bncBCQMLUOX54MBBKE3TW5AKGQEJFCMF4A-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
 Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
 In-Reply-To: <cover.1464130597.git.hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
@@ -21,43 +22,46 @@ List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39
  <https://groups.google.com/group/linux-sunxi/subscribe>
 List-Id: linux-spi.vger.kernel.org
 
-When testing SPI without DMA I noticed that filling the FIFO on the
-spi controller causes timeout.
+The maximum speed of SPI master is used when maximum speed of SPI slave
+is not specified. Also the __spi_validate function should check that
+transfer speeds do not exceed the master limits.
 
-Always leave room for one byte in the FIFO.
+The user manual for A10 and A31 specifies maximum
+speed of the SPI clock as 100MHz and minimum as 3kHz.
+
+Setting the SPI clock to out-of-spec values can lock up the SoC.
 
 Signed-off-by: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-
 ---
-v2:
-use EMSGSIZE instead of EINVAL
----
- drivers/spi/spi-sun4i.c | 8 ++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/spi/spi-sun4i.c | 2 ++
+ drivers/spi/spi-sun6i.c | 2 ++
+ 2 files changed, 4 insertions(+)
 
 diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
-index fe63bbd..04f1b77 100644
+index bf52b09..e1a75dd6 100644
 --- a/drivers/spi/spi-sun4i.c
 +++ b/drivers/spi/spi-sun4i.c
-@@ -180,7 +180,9 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
+@@ -405,6 +405,8 @@ static int sun4i_spi_probe(struct platform_device *pdev)
+ 	}
  
- 	/* We don't support transfer larger than the FIFO */
- 	if (tfr->len > SUN4I_FIFO_DEPTH)
--		return -EINVAL;
-+		return -EMSGSIZE;
-+	if (tfr->tx_buf && tfr->len >= SUN4I_FIFO_DEPTH)
-+		return -EMSGSIZE;
+ 	sspi->master = master;
++	master->max_speed_hz = 100*1000*1000;
++	master->min_speed_hz =        3*1000;
+ 	master->set_cs = sun4i_spi_set_cs;
+ 	master->transfer_one = sun4i_spi_transfer_one;
+ 	master->num_chipselect = 4;
+diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
+index 1952956..0c378ff 100644
+--- a/drivers/spi/spi-sun6i.c
++++ b/drivers/spi/spi-sun6i.c
+@@ -400,6 +400,8 @@ static int sun6i_spi_probe(struct platform_device *pdev)
+ 	}
  
- 	reinit_completion(&sspi->done);
- 	sspi->tx_buf = tfr->tx_buf;
-@@ -271,7 +273,9 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
- 	sun4i_spi_write(sspi, SUN4I_XMIT_CNT_REG, SUN4I_XMIT_CNT(tx_len));
- 
- 	/* Fill the TX FIFO */
--	sun4i_spi_fill_fifo(sspi, SUN4I_FIFO_DEPTH);
-+	/* Filling the FIFO fully causes timeout for some reason
-+	 * at least on spi2 on A10s */
-+	sun4i_spi_fill_fifo(sspi, SUN4I_FIFO_DEPTH - 1);
- 
- 	/* Enable the interrupts */
- 	sun4i_spi_write(sspi, SUN4I_INT_CTL_REG, SUN4I_INT_CTL_TC);
+ 	sspi->master = master;
++	master->max_speed_hz = 100*1000*1000;
++	master->min_speed_hz =        3*1000;
+ 	master->set_cs = sun6i_spi_set_cs;
+ 	master->transfer_one = sun6i_spi_transfer_one;
+ 	master->num_chipselect = 4;
+-- 
+2.8.1

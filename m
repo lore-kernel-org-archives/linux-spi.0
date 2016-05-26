@@ -1,112 +1,79 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH] devicetree - document using aliases to set spi bus number.
-Date: Thu, 26 May 2016 10:21:00 +0200
-Message-ID: <CAMuHMdXm4jQE4SO3LweVtQe2x9f7gF4J4b74KH6UyMTeK1=U6g@mail.gmail.com>
-References: <1464107960-10775-1-git-send-email-christer@weinigel.se>
-	<20160524174140.GE11605@leverpostej>
-	<20160525184421.GB10753@rob-hp-laptop>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] devicetree - document using aliases to set spi bus
+ number.
+Date: Thu, 26 May 2016 11:07:53 +0100
+Message-ID: <20160526100753.GB16172@sirena.org.uk>
+References: <20160524172045.GN8206@sirena.org.uk>
+ <57449784.4070108@weinigel.se>
+ <20160524183256.GP8206@sirena.org.uk>
+ <5744E51A.1040506@gmail.com>
+ <20160525174932.GA10753@rob-hp-laptop>
+ <5745E9B6.5090204@gmail.com>
+ <20160525184442.GE8206@sirena.org.uk>
+ <57464D0A.1030706@weinigel.se>
+ <CAL_JsqJwQvPGtscheZjoJyhF1UPxDSqbS-QB9qm3M4HbpOicVA@mail.gmail.com>
+ <574657BB.6070300@weinigel.se>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Christer Weinigel <christer-rKHMIqA5R6gwFerOooGFRg@public.gmane.org>,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="RASg3xLB4tUQ4RcS"
+Cc: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Frank Rowand <frowand.list-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Christer Weinigel <christer-rKHMIqA5R6gwFerOooGFRg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160525184421.GB10753@rob-hp-laptop>
+Content-Disposition: inline
+In-Reply-To: <574657BB.6070300-rKHMIqA5R6gwFerOooGFRg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, May 25, 2016 at 8:44 PM, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Tue, May 24, 2016 at 06:41:41PM +0100, Mark Rutland wrote:
->> On Tue, May 24, 2016 at 06:39:20PM +0200, Christer Weinigel wrote:
->> > Document how to use devicetree aliases to assign a stable
->> > bus number to a spi bus.
->> >
->> > Signed-off-by: Christer Weinigel <christer-rKHMIqA5R6gwFerOooGFRg@public.gmane.org>
->> >
->> > ---
->> >
->> > Trivial documentation change.
->> >
->> > Not having used devicetree that much it was surprisingly hard to
->> > figure out how to assign a stable bus number to a spi bus.  Add a
->> > simple example that shows how to do that.
->> >
->> > Mark Cced as the SPI maintainer.  Or should trivial documentation
->> > fixes like this be addressed to someone else?
->> >
->> >   /Christer
->> >
->> >  Documentation/devicetree/bindings/spi/spi-bus.txt | 10 ++++++++++
->> >  1 file changed, 10 insertions(+)
->> >
->> > diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
->> > index 42d5954..c35c4c2 100644
->> > --- a/Documentation/devicetree/bindings/spi/spi-bus.txt
->> > +++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
->> > @@ -94,3 +94,13 @@ SPI example for an MPC5200 SPI bus:
->> >                     reg = <1>;
->> >             };
->> >     };
->> > +
->> > +Normally SPI buses are assigned dynamic bus numbers starting at 32766
->> > +and counting downwards.  It is possible to assign the bus number
->> > +statically using devicetee aliases.  For example, on the MPC5200 the
->> > +"spi@f00" device above is connected to the "soc" bus.  To set its
->> > +bus_num to 1 add an aliases entry like this:
->>
->> As Mark Brown pointed out, this is very Linux-specific (at least in the
->> wording of the above).
->>
->> Generally, aliases are there to match _physical_ identifiers (e.g. to
->> match physical labels for UART0, UART1, and on).
 
-Indeed.
+--RASg3xLB4tUQ4RcS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> While there may be some correlation to physical identifiers, the reality
-> is aliases are used for mapping to Linux numbering. Their primary use
-> has been to avoid breaking existing userspace and kernel command lines
-> when converting to DT. The reality is that matters on very few platforms
-> and can be solved in other ways for new platforms. For serial port
-> console, that means using stdout-path for example.
+On Thu, May 26, 2016 at 03:56:11AM +0200, Christer Weinigel wrote:
+> On 05/26/2016 03:44 AM, Rob Herring wrote:
+> > Lovely. "Here's something that's simple and useful for users. Let's
+> > break it". What part of "we do not break userspace" do you not
+> > understand? Because that would be a user visible change.
 
-Fortunately the SPI aliases are optional, while for serial devices they
-are mandatory in most (all?) drivers. But this is more a relic of the aging
-serial subsystem, which still relies on allocating arrays of NR_MAX_PORTS at
-driver registration time, and thus can't support uart_port.line counting down
-from 32767 for dynamic numbers like SPI does.
-(BTW, I'd really like to see that fixed ;-)
+You'll notice I've not actually posted this patch...
 
-Aliases are also an obstacle for DT overlays:
-  1. You can't update the aliases from an overlay (I did post a patch to
-     implement that, but it's ugly and buggy, but I still use that as I need to
-     load DT overlays for serial port testing),
-  2. They're almost a guarantee for conflicts (does your overlay provide spi2,
-     or does mine?).
+> > The other saying is "if it is not upstream, it doesn't exist." That
+> > said, I don't think we should remove it. Maybe some time later, but
+> > first we need a suitable alternative.
 
-So yes, try to stay away from aliases if you can.
-There's nothing a udev rule can't solve, can it?
+My inclination is to leave it unless we think of and implement something
+better to do (like using labels), except possibly for paying attention
+to string based aliases too.  Or perhaps we want to just treat all
+aliases as strings.
 
-> For SPI, I think we should use "label" which reflects a name that is
-> defined by the h/w design and is meaningful to the user. Then perhaps
-> the device becomes "/dev/spi/by-name/<label>/spidev.0" or simply
-> "/dev/spidev-<label>.0".
+> Huh?  Commit bb29785e0d6d, which added support for assigning spi bus numbers
+> via devicetree aliases, has been in the upstream Linux kernel since v3.9
+> which was released over three years ago.
 
-I guess using the node name is not an option (say "use standard node names")?
+I think Rob's referring to the fact that there are no in tree DTs that
+use this feature - all the aliases for SPI controllers in mainline are
+string based.
 
-Gr{oetje,eeting}s,
+--RASg3xLB4tUQ4RcS
+Content-Type: application/pgp-signature; name="signature.asc"
 
-                        Geert
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+iQEcBAEBCAAGBQJXRsr4AAoJECTWi3JdVIfQdeYH+QHio6sSjeqGt8VvWsadkR/B
+32yRz8fso0clJG0GGyzp8nwoWcm77FeJAuaMnnXXIvYzTRlfKA1oOxVPniXYvNP5
+gTdmKwN5/1Ti0MoSzrRlOxHbFdXOrZ9GmNaXrKWiOjmg6fHgV0UoKqVY0euZv05E
+MNirz8RkhRjE9/Zfw+sPt8D7jNYjspkwLWJdGlsDaW5CdxhNwx4QfnYlHBtmZ5gY
+xYQHuhV/3HWI5EYaNfibS6zHETAtTxXh5ZocCYQhY/BV+133CyeuH/uaLwLP6/O2
+Ke42klNzzQjBVxfU+bGXl9d7dZH6u7C18hMVjhhtZVkCwKqEvL2bOCeLIklbxFk=
+=ZmyN
+-----END PGP SIGNATURE-----
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+--RASg3xLB4tUQ4RcS--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

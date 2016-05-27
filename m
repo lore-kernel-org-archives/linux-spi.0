@@ -1,295 +1,112 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: orion: Add direct access mode" to the spi tree
-Date: Fri, 27 May 2016 21:46:45 +0100
-Message-ID: <E1b6Oeb-0001m7-Hi@debutante>
-References: <1463641625-15601-1-git-send-email-sr@denx.de>
-Cc: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
+From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH V2, 3/4] arm: dts: Add bcm-nsp and bcm958625k support
+Date: Fri, 27 May 2016 13:47:31 -0700
+Message-ID: <20160527204731.GA121328@google.com>
+References: <1464380097-25125-1-git-send-email-kdasu.kdev@gmail.com>
+ <1464380097-25125-3-git-send-email-kdasu.kdev@gmail.com>
+ <5748ADDE.2090402@broadcom.com>
+ <CAGVrzcZQMSVo4LvbqJ1jcx-f7M+psWQeHQfiRS3-L7JN+C_zuw@mail.gmail.com>
+ <CAGVrzcYfNTZWDAK8tW-HaALYXJo5zPjiWOxsB0mntCVdjnUwUg@mail.gmail.com>
+ <CAGVrzcbhoD1zDtvBXdm8DgzzXeP0MxAMtXduZMYv+BwpiwtgkQ@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: Scott Branden <scott.branden-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Yendapally Reddy Dhananjaya Reddy
+	<yendapally.reddy-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	Vikram Prakash <vikram.prakash-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Jon Mason <jon.mason-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	Andy Fung <andy.fung-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	bcm-kernel-feedback-list <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1463641625-15601-1-git-send-email-sr-ynQEQJNshbs@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAGVrzcbhoD1zDtvBXdm8DgzzXeP0MxAMtXduZMYv+BwpiwtgkQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+Hi Florian,
 
-   spi: orion: Add direct access mode
+(HTML mail. What is this??)
 
-has been applied to the spi tree at
+On Fri, May 27, 2016 at 01:33:20PM -0700, Florian Fainelli wrote:
+>    On May 27, 2016 1:28 PM, "Scott Branden"
+>    <[1]scott.branden-dY08KVG/lbpWk0Htik3J/w@public.gmane.org> wrote:
+> 
+>    >> +&qspi {
+>    >> +       bspi-sel = <0>;
+>    >> +       flash: m25p80@0 {
+>    >> +               #address-cells = <1>;
+>    >> +               #size-cells = <1>;
+>    >> +               compatible = "m25p80";
+>    >> +               reg = <0x0>;
+>    >> +               spi-max-frequency = <12500000>;
+>    >> +               m25p,fast-read;
+>    >> +               spi-cpol;
+>    >> +               spi-cpha;
+>    >> +
+>    >> +               partition@0 {
+>    >> +                       label = "boot";
+>    >> +                       reg = <0x00000000 0x000a0000>;
+>    >> +               };
+>    >> +
+>    >> +               partition@1 {
+>    >> +                       label = "env";
+>    >> +                       reg = <0x000a0000 0x00060000>;
+>    >> +               };
+>    >> +
+>    >> +               partition@2 {
+>    >> +                       label = "system";
+>    >> +                       reg = <0x00100000 0x00600000>;
+>    >> +               };
+>    >> +
+>    >> +               partition@3 {
+>    >> +                       label = "rootfs";
+>    >> +                       reg = <0x00700000 0x01900000>;
+>    >> +               };
+>    >
+>    >
+>    > The partitions are applications specific so should be passed on the
+>    boot command line rather than embedded in the dts file.
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+Scott kinda has a point; they can be application specific, and so in
+some cases, you might want to avoid putting this description in DT, at
+least if there are good alternatives. The command line may or may not be
+a good alternative (I don't think it's a very good one).
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+>    Partitions are typically part of the platform definition and are
+>    suitable for being in Device Tree. AFAICT there is not a good way to
+>    supply partitions in an OF configuration other than putting them in DT
+>    at the moment. There is also a lot of platform inconsistency whether
+>    the command line is appended, extended or overrides the command line in
+>    the Device Tree, so I would not really consider this an issue here.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+My intention is to allow cmdline to take priority, so you could have
+application-specific overrides. If that doesn't work correctly, then
+I'd consider it a bug. I know that has irked some people (e.g.,
+OpenWRT?), where they deal with products where they may not control the
+command line. But that's a separate issue IMO.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+You might want to take a look at supporting a partition parser, if this
+really is so application-specific. I had all the pieces working late
+last year:
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+https://lkml.org/lkml/2015/12/5/9
 
-Thanks,
-Mark
+but I unfortunately got distracted once the conversation on bindings
+derailed:
 
->From 90b89a719c773844040822328efe68b17395d63b Mon Sep 17 00:00:00 2001
-From: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
-Date: Thu, 19 May 2016 09:07:05 +0200
-Subject: [PATCH] spi: orion: Add direct access mode
+https://lkml.org/lkml/2015/12/12/31
 
-This patch adds support for the direct access mode to the Orion SPI
-driver which is used on the Marvell Armada based SoCs. In this direct
-mode, all data written to (or read from) a specifically mapped MBus
-window (linked to one SPI chip-select on one of the SPI controllers)
-will be transferred directly to the SPI bus. Without the need to control
-the SPI registers in between. This can improve the SPI transfer rate in
-such cases.
+I should probably revive that...
 
-Both, direct-read and -write mode are supported. But only the write
-mode has been tested. This mode especially benefits from the SPI direct
-mode, as the data bytes are written head-to-head to the SPI bus,
-without any additional addresses.
+Anyway, if you utilize that, then you can specify which parser(s) are
+valid for your platform, rather than specifying the exact partition
+layout.
 
-One use-case for this direct write mode is, programming a FPGA bitstream
-image into the FPGA connected to the SPI bus at maximum speed.
-
-This mode is described in chapter "22.5.2 Direct Write to SPI" in the
-Marvell Armada XP Functional Spec Datasheet.
-
-Signed-off-by: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
-Acked-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- .../devicetree/bindings/spi/spi-orion.txt          | 49 +++++++++++-
- drivers/spi/spi-orion.c                            | 88 ++++++++++++++++++++++
- 2 files changed, 136 insertions(+), 1 deletion(-)
-
-diff --git a/Documentation/devicetree/bindings/spi/spi-orion.txt b/Documentation/devicetree/bindings/spi/spi-orion.txt
-index 98bc69815eb3..4f629cc7634a 100644
---- a/Documentation/devicetree/bindings/spi/spi-orion.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-orion.txt
-@@ -8,7 +8,15 @@ Required properties:
-     - "marvell,armada-380-spi", for the Armada 38x SoCs
-     - "marvell,armada-390-spi", for the Armada 39x SoCs
-     - "marvell,armada-xp-spi", for the Armada XP SoCs
--- reg : offset and length of the register set for the device
-+- reg : offset and length of the register set for the device.
-+	This property can optionally have additional entries to configure
-+	the SPI direct access mode that some of the Marvell SoCs support
-+	additionally to the normal indirect access (PIO) mode. The values
-+	for the MBus "target" and "attribute" are defined in the Marvell
-+	SoC "Functional Specifications" Manual in the chapter "Marvell
-+	Core Processor Address Decoding".
-+	The eight register sets following the control registers refer to
-+	chip-select lines 0 through 7 respectively.
- - cell-index : Which of multiple SPI controllers is this.
- Optional properties:
- - interrupts : Is currently not used.
-@@ -23,3 +31,42 @@ Example:
- 	       interrupts = <23>;
- 	       status = "disabled";
-        };
-+
-+Example with SPI direct mode support (optionally):
-+	spi0: spi@10600 {
-+		compatible = "marvell,orion-spi";
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		cell-index = <0>;
-+		reg = <MBUS_ID(0xf0, 0x01) 0x10600 0x28>, /* control */
-+		      <MBUS_ID(0x01, 0x1e) 0 0xffffffff>, /* CS0 */
-+		      <MBUS_ID(0x01, 0x5e) 0 0xffffffff>, /* CS1 */
-+		      <MBUS_ID(0x01, 0x9e) 0 0xffffffff>, /* CS2 */
-+		      <MBUS_ID(0x01, 0xde) 0 0xffffffff>, /* CS3 */
-+		      <MBUS_ID(0x01, 0x1f) 0 0xffffffff>, /* CS4 */
-+		      <MBUS_ID(0x01, 0x5f) 0 0xffffffff>, /* CS5 */
-+		      <MBUS_ID(0x01, 0x9f) 0 0xffffffff>, /* CS6 */
-+		      <MBUS_ID(0x01, 0xdf) 0 0xffffffff>; /* CS7 */
-+		interrupts = <23>;
-+		status = "disabled";
-+	};
-+
-+To enable the direct mode, the board specific 'ranges' property in the
-+'soc' node needs to add the entries for the desired SPI controllers
-+and its chip-selects that are used in the direct mode instead of PIO
-+mode. Here an example for this (SPI controller 0, device 1 and SPI
-+controller 1, device 2 are used in direct mode. All other SPI device
-+are used in the default indirect (PIO) mode):
-+	soc {
-+		/*
-+		 * Enable the SPI direct access by configuring an entry
-+		 * here in the board-specific ranges property
-+		 */
-+		ranges = <MBUS_ID(0xf0, 0x01) 0 0 0xf1000000 0x100000>,	/* internal regs */
-+			 <MBUS_ID(0x01, 0x1d) 0 0 0xfff00000 0x100000>,	/* BootROM       */
-+			 <MBUS_ID(0x01, 0x5e) 0 0 0xf1100000 0x10000>,	/* SPI0-DEV1 */
-+			 <MBUS_ID(0x01, 0x9a) 0 0 0xf1110000 0x10000>;	/* SPI1-DEV2 */
-+
-+For further information on the MBus bindings, please see the MBus
-+DT documentation:
-+Documentation/devicetree/bindings/bus/mvebu-mbus.txt
-diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-index a87cfd4ba17b..d0d9c8682b32 100644
---- a/drivers/spi/spi-orion.c
-+++ b/drivers/spi/spi-orion.c
-@@ -18,6 +18,7 @@
- #include <linux/module.h>
- #include <linux/pm_runtime.h>
- #include <linux/of.h>
-+#include <linux/of_address.h>
- #include <linux/of_device.h>
- #include <linux/clk.h>
- #include <linux/sizes.h>
-@@ -43,6 +44,9 @@
- #define ORION_SPI_INT_CAUSE_REG		0x10
- #define ORION_SPI_TIMING_PARAMS_REG	0x18
- 
-+/* Register for the "Direct Mode" */
-+#define SPI_DIRECT_WRITE_CONFIG_REG	0x20
-+
- #define ORION_SPI_TMISO_SAMPLE_MASK	(0x3 << 6)
- #define ORION_SPI_TMISO_SAMPLE_1	(1 << 6)
- #define ORION_SPI_TMISO_SAMPLE_2	(2 << 6)
-@@ -78,11 +82,18 @@ struct orion_spi_dev {
- 	bool			is_errata_50mhz_ac;
- };
- 
-+struct orion_direct_acc {
-+	void __iomem		*vaddr;
-+	u32			size;
-+};
-+
- struct orion_spi {
- 	struct spi_master	*master;
- 	void __iomem		*base;
- 	struct clk              *clk;
- 	const struct orion_spi_dev *devdata;
-+
-+	struct orion_direct_acc	direct_access[ORION_NUM_CHIPSELECTS];
- };
- 
- static inline void __iomem *spi_reg(struct orion_spi *orion_spi, u32 reg)
-@@ -372,10 +383,39 @@ orion_spi_write_read(struct spi_device *spi, struct spi_transfer *xfer)
- {
- 	unsigned int count;
- 	int word_len;
-+	struct orion_spi *orion_spi;
-+	int cs = spi->chip_select;
- 
- 	word_len = spi->bits_per_word;
- 	count = xfer->len;
- 
-+	orion_spi = spi_master_get_devdata(spi->master);
-+
-+	/*
-+	 * Use SPI direct write mode if base address is available. Otherwise
-+	 * fall back to PIO mode for this transfer.
-+	 */
-+	if ((orion_spi->direct_access[cs].vaddr) && (xfer->tx_buf) &&
-+	    (word_len == 8)) {
-+		unsigned int cnt = count / 4;
-+		unsigned int rem = count % 4;
-+
-+		/*
-+		 * Send the TX-data to the SPI device via the direct
-+		 * mapped address window
-+		 */
-+		iowrite32_rep(orion_spi->direct_access[cs].vaddr,
-+			      xfer->tx_buf, cnt);
-+		if (rem) {
-+			u32 *buf = (u32 *)xfer->tx_buf;
-+
-+			iowrite8_rep(orion_spi->direct_access[cs].vaddr,
-+				     &buf[cnt], rem);
-+		}
-+
-+		return count;
-+	}
-+
- 	if (word_len == 8) {
- 		const u8 *tx = xfer->tx_buf;
- 		u8 *rx = xfer->rx_buf;
-@@ -425,6 +465,10 @@ static int orion_spi_reset(struct orion_spi *orion_spi)
- {
- 	/* Verify that the CS is deasserted */
- 	orion_spi_clrbits(orion_spi, ORION_SPI_IF_CTRL_REG, 0x1);
-+
-+	/* Don't deassert CS between the direct mapped SPI transfers */
-+	writel(0, spi_reg(orion_spi, SPI_DIRECT_WRITE_CONFIG_REG));
-+
- 	return 0;
- }
- 
-@@ -504,6 +548,7 @@ static int orion_spi_probe(struct platform_device *pdev)
- 	struct resource *r;
- 	unsigned long tclk_hz;
- 	int status = 0;
-+	struct device_node *np;
- 
- 	master = spi_alloc_master(&pdev->dev, sizeof(*spi));
- 	if (master == NULL) {
-@@ -576,6 +621,49 @@ static int orion_spi_probe(struct platform_device *pdev)
- 		goto out_rel_clk;
- 	}
- 
-+	/* Scan all SPI devices of this controller for direct mapped devices */
-+	for_each_available_child_of_node(pdev->dev.of_node, np) {
-+		u32 cs;
-+
-+		/* Get chip-select number from the "reg" property */
-+		status = of_property_read_u32(np, "reg", &cs);
-+		if (status) {
-+			dev_err(&pdev->dev,
-+				"%s has no valid 'reg' property (%d)\n",
-+				np->full_name, status);
-+			status = 0;
-+			continue;
-+		}
-+
-+		/*
-+		 * Check if an address is configured for this SPI device. If
-+		 * not, the MBus mapping via the 'ranges' property in the 'soc'
-+		 * node is not configured and this device should not use the
-+		 * direct mode. In this case, just continue with the next
-+		 * device.
-+		 */
-+		status = of_address_to_resource(pdev->dev.of_node, cs + 1, r);
-+		if (status)
-+			continue;
-+
-+		/*
-+		 * Only map one page for direct access. This is enough for the
-+		 * simple TX transfer which only writes to the first word.
-+		 * This needs to get extended for the direct SPI-NOR / SPI-NAND
-+		 * support, once this gets implemented.
-+		 */
-+		spi->direct_access[cs].vaddr = devm_ioremap(&pdev->dev,
-+							    r->start,
-+							    PAGE_SIZE);
-+		if (IS_ERR(spi->direct_access[cs].vaddr)) {
-+			status = PTR_ERR(spi->direct_access[cs].vaddr);
-+			goto out_rel_clk;
-+		}
-+		spi->direct_access[cs].size = PAGE_SIZE;
-+
-+		dev_info(&pdev->dev, "CS%d configured for direct access\n", cs);
-+	}
-+
- 	pm_runtime_set_active(&pdev->dev);
- 	pm_runtime_use_autosuspend(&pdev->dev);
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
--- 
-2.8.1
-
+Brian
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

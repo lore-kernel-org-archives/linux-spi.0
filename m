@@ -1,39 +1,123 @@
-From: Rich Felker <dalias@libc.org>
-Subject: Re: [PATCH v3 10/12] spi: add driver for J-Core SPI controller
-Date: Thu, 26 May 2016 21:16:21 -0400
-Message-ID: <20160527011621.GA10893@brightrain.aerifal.cx>
-References: <cover.1464148904.git.dalias@libc.org>
- <00b31c4d09c340bd69fd4bbbc0ea06371aecc502.1464148904.git.dalias@libc.org>
- <20160525101708.GS8206@sirena.org.uk>
+From: Julian Calaby <julian.calaby-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [linux-sunxi] [PATCH 1/5] spi: sunxi: fix transfer timeout
+Date: Fri, 27 May 2016 12:05:12 +1000
+Message-ID: <CAGRGNgWDrVHG26umTSHHAxFC3KXjwmpDejBAfKqvuik0_2-Jcw@mail.gmail.com>
+References: <cover.1464130597.git.hramrach@gmail.com> <cb90b922caa6ac07c1425d726ea19709ee5284f4.1464130597.git.hramrach@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-kernel@vger.kernel.org, linux-sh@vger.kernel.org,
-	linux-spi@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20160525101708.GS8206@sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"Mailing List, Arm" <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <cb90b922caa6ac07c1425d726ea19709ee5284f4.1464130597.git.hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, May 25, 2016 at 11:17:08AM +0100, Mark Brown wrote:
-> On Wed, May 25, 2016 at 05:43:03AM +0000, Rich Felker wrote:
-> 
-> > changes based on ml discussion of the v2 patch. The chipselect change
-> > has not been made yet, except for rewriting the current logic to be
-> > more clear. If the decision is that it's needed, I can do it easily,
-> > but it needs testing still.
-> 
-> You need to fix that, it's not good to just decide to ignore review
-> comments.  It is astonishing that you are doing this while expecting to
-> bypass the normal process for merging things.  I'm not going to look at
-> this version, please ensure you have addressed all the feedback from the
-> previous review before any new version you submit.
+Hi Michal,
 
-I've made and tested a change that looks like what you want, with the
-hw->csReg's chipselect bits set initially high in the probe function,
-and only the requested bit being modified by the chipselect function.
-Would you prefer I continue to submit this driver with new versions of
-the patch series, or separate it out for further review on its own?
+On Fri, May 27, 2016 at 5:25 AM, Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> The trasfer timeout is fixed at 1000 ms. Reading a 4Mbyte flash over
+> 1MHz SPI bus takes way longer than that. Calculate the timeout from the
+> actual time the transfer is supposed to take and multiply by 2 for good
+> measure.
+>
+> Signed-off-by: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> ---
+>
+> v2:
+> - fix build error
+> - use unsigned instead of int in max_t
+> - use tfr->speed_hz instead of sspi->max_speed_hz
+> ---
+>  drivers/spi/spi-sun4i.c | 11 ++++++++++-
+>  drivers/spi/spi-sun6i.c | 11 ++++++++++-
+>  2 files changed, 20 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
+> index 1ddd9e2..fe63bbd 100644
+> --- a/drivers/spi/spi-sun4i.c
+> +++ b/drivers/spi/spi-sun4i.c
+> @@ -173,6 +173,7 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
+>  {
+>         struct sun4i_spi *sspi = spi_master_get_devdata(master);
+>         unsigned int mclk_rate, div, timeout;
+> +       unsigned int start, end, tx_time;
+>         unsigned int tx_len = 0;
+>         int ret = 0;
+>         u32 reg;
+> @@ -279,9 +280,17 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
+>         reg = sun4i_spi_read(sspi, SUN4I_CTL_REG);
+>         sun4i_spi_write(sspi, SUN4I_CTL_REG, reg | SUN4I_CTL_XCH);
+>
+> +       tx_time = max_t(unsigned, tfr->len * 8 * 2 / (tfr->speed_hz / 1000),
 
-Rich
+You should probably use "unsigned int" instead of just "unsigned" here.
+
+> +                       100);
+> +       start = jiffies;
+>         timeout = wait_for_completion_timeout(&sspi->done,
+> -                                             msecs_to_jiffies(1000));
+> +                                             msecs_to_jiffies(tx_time));
+> +       end = jiffies;
+>         if (!timeout) {
+> +               dev_warn(&master->dev,
+> +                        "%s: timeout transferring %u bytes@%iHz for %i(%i)ms",
+> +                        dev_name(&spi->dev), tfr->len, tfr->speed_hz,
+> +                        jiffies_to_msecs(end - start), tx_time);
+
+Should the debug changes be in a separate patch?
+
+>                 ret = -ETIMEDOUT;
+>                 goto out;
+>         }
+> diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
+> index 42e2c4b..8be5c5c 100644
+> --- a/drivers/spi/spi-sun6i.c
+> +++ b/drivers/spi/spi-sun6i.c
+> @@ -162,6 +162,7 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
+>         unsigned int mclk_rate, div, timeout;
+>         unsigned int tx_len = 0;
+>         int ret = 0;
+> +       unsigned int start, end, tx_time;
+>         u32 reg;
+>
+>         /* We don't support transfer larger than the FIFO */
+> @@ -269,9 +270,17 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
+>         reg = sun6i_spi_read(sspi, SUN6I_TFR_CTL_REG);
+>         sun6i_spi_write(sspi, SUN6I_TFR_CTL_REG, reg | SUN6I_TFR_CTL_XCH);
+>
+> +       tx_time = max_t(unsigned, tfr->len * 8 * 2 / (tfr->speed_hz / 1000),
+
+Ditto, "unsigned int" instead of "unsigned"?
+
+> +                       100);
+> +       start = jiffies;
+>         timeout = wait_for_completion_timeout(&sspi->done,
+> -                                             msecs_to_jiffies(1000));
+> +                                             msecs_to_jiffies(tx_time));
+> +       end = jiffies;
+>         if (!timeout) {
+> +               dev_warn(&master->dev,
+> +                        "%s: timeout transferring %u bytes@%iHz for %i(%i)ms",
+> +                        dev_name(&spi->dev), tfr->len, tfr->speed_hz,
+> +                        jiffies_to_msecs(end - start), tx_time);
+
+Ditto, separate patch?
+
+Also, should the changes for the drivers be in two separate patches also?
+
+Thanks,
+
+-- 
+Julian Calaby
+
+Email: julian.calaby-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Profile: http://www.google.com/profiles/julian.calaby/
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

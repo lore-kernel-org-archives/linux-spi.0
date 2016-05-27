@@ -1,146 +1,48 @@
-From: Julian Calaby <julian.calaby-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 1/5] spi: sunxi: fix transfer timeout
-Date: Fri, 27 May 2016 15:10:11 +1000
-Message-ID: <CAGRGNgW=UnmwwiREV+nVcws6sk18-4fKz3qf-WKf4LY9-VqBKg@mail.gmail.com>
-References: <cover.1464130597.git.hramrach@gmail.com> <cb90b922caa6ac07c1425d726ea19709ee5284f4.1464130597.git.hramrach@gmail.com>
- <CAGRGNgWDrVHG26umTSHHAxFC3KXjwmpDejBAfKqvuik0_2-Jcw@mail.gmail.com> <CAOMqctS0AD6rHGt3wjxxyidee=_5xqby95t5TGuozAA12DdPjQ@mail.gmail.com>
-Reply-To: julian.calaby-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v3 10/12] spi: add driver for J-Core SPI controller
+Date: Fri, 27 May 2016 12:27:31 +0100
+Message-ID: <20160527112731.GG16172@sirena.org.uk>
+References: <cover.1464148904.git.dalias@libc.org>
+ <00b31c4d09c340bd69fd4bbbc0ea06371aecc502.1464148904.git.dalias@libc.org>
+ <20160525101708.GS8206@sirena.org.uk>
+ <20160527011621.GA10893@brightrain.aerifal.cx>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"Mailing List, Arm" <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-sunxi+bncBDQIP76OUQLBBR5NT65AKGQEHQOG5XQ-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-In-Reply-To: <CAOMqctS0AD6rHGt3wjxxyidee=_5xqby95t5TGuozAA12DdPjQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <https://groups.google.com/group/linux-sunxi
-List-Subscribe: <https://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
- <https://groups.google.com/group/linux-sunxi/subscribe>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="dMyqICaxQaaUjrCL"
+Cc: linux-kernel@vger.kernel.org, linux-sh@vger.kernel.org,
+	linux-spi@vger.kernel.org
+To: Rich Felker <dalias@libc.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20160527011621.GA10893@brightrain.aerifal.cx>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Michal,
 
-On Fri, May 27, 2016 at 3:05 PM, Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> On 27 May 2016 at 04:05, Julian Calaby <julian.calaby-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
->> Hi Michal,
->>
->> On Fri, May 27, 2016 at 5:25 AM, Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
->>> The trasfer timeout is fixed at 1000 ms. Reading a 4Mbyte flash over
->>> 1MHz SPI bus takes way longer than that. Calculate the timeout from the
->>> actual time the transfer is supposed to take and multiply by 2 for good
->>> measure.
->>>
->>> Signed-off-by: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
->>> ---
->>>
->>> v2:
->>> - fix build error
->>> - use unsigned instead of int in max_t
->>> - use tfr->speed_hz instead of sspi->max_speed_hz
->>> ---
->>>  drivers/spi/spi-sun4i.c | 11 ++++++++++-
->>>  drivers/spi/spi-sun6i.c | 11 ++++++++++-
->>>  2 files changed, 20 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
->>> index 1ddd9e2..fe63bbd 100644
->>> --- a/drivers/spi/spi-sun4i.c
->>> +++ b/drivers/spi/spi-sun4i.c
->>> @@ -173,6 +173,7 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
->>>  {
->>>         struct sun4i_spi *sspi = spi_master_get_devdata(master);
->>>         unsigned int mclk_rate, div, timeout;
->>> +       unsigned int start, end, tx_time;
->>>         unsigned int tx_len = 0;
->>>         int ret = 0;
->>>         u32 reg;
->>> @@ -279,9 +280,17 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
->>>         reg = sun4i_spi_read(sspi, SUN4I_CTL_REG);
->>>         sun4i_spi_write(sspi, SUN4I_CTL_REG, reg | SUN4I_CTL_XCH);
->>>
->>> +       tx_time = max_t(unsigned, tfr->len * 8 * 2 / (tfr->speed_hz / 1000),
->>
->> You should probably use "unsigned int" instead of just "unsigned" here.
->>
->>> +                       100);
->
-> Or just 100U constant and avoid max_t altogether.
->
->>> +       start = jiffies;
->>>         timeout = wait_for_completion_timeout(&sspi->done,
->>> -                                             msecs_to_jiffies(1000));
->>> +                                             msecs_to_jiffies(tx_time));
->>> +       end = jiffies;
->>>         if (!timeout) {
->>> +               dev_warn(&master->dev,
->>> +                        "%s: timeout transferring %u bytes@%iHz for %i(%i)ms",
->>> +                        dev_name(&spi->dev), tfr->len, tfr->speed_hz,
->>> +                        jiffies_to_msecs(end - start), tx_time);
->>
->> Should the debug changes be in a separate patch?
->
-> Is this so big of a change that it needs to be split?
+--dMyqICaxQaaUjrCL
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Some people get touchy about changes not being mentioned in the commit
-log. Technically this is two changes: fixing the timeout and adding
-the timeout debugging, however they're related, so maybe just mention
-that you've added this debugging in the commit log.
+On Thu, May 26, 2016 at 09:16:21PM -0400, Rich Felker wrote:
 
->
->>
->>>                 ret = -ETIMEDOUT;
->>>                 goto out;
->>>         }
->>> diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
->>> index 42e2c4b..8be5c5c 100644
->>> --- a/drivers/spi/spi-sun6i.c
->>> +++ b/drivers/spi/spi-sun6i.c
->>> @@ -162,6 +162,7 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
->>>         unsigned int mclk_rate, div, timeout;
->>>         unsigned int tx_len = 0;
->>>         int ret = 0;
->>> +       unsigned int start, end, tx_time;
->>>         u32 reg;
->>>
->>>         /* We don't support transfer larger than the FIFO */
->>> @@ -269,9 +270,17 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
->>>         reg = sun6i_spi_read(sspi, SUN6I_TFR_CTL_REG);
->>>         sun6i_spi_write(sspi, SUN6I_TFR_CTL_REG, reg | SUN6I_TFR_CTL_XCH);
->>>
->>> +       tx_time = max_t(unsigned, tfr->len * 8 * 2 / (tfr->speed_hz / 1000),
->>
->> Ditto, "unsigned int" instead of "unsigned"?
->>
->>> +                       100);
->>> +       start = jiffies;
->>>         timeout = wait_for_completion_timeout(&sspi->done,
->>> -                                             msecs_to_jiffies(1000));
->>> +                                             msecs_to_jiffies(tx_time));
->>> +       end = jiffies;
->>>         if (!timeout) {
->>> +               dev_warn(&master->dev,
->>> +                        "%s: timeout transferring %u bytes@%iHz for %i(%i)ms",
->>> +                        dev_name(&spi->dev), tfr->len, tfr->speed_hz,
->>> +                        jiffies_to_msecs(end - start), tx_time);
->>
->> Ditto, separate patch?
->>
->> Also, should the changes for the drivers be in two separate patches also?
->
-> That's basically the same driver with different constants so I guess not.
+> Would you prefer I continue to submit this driver with new versions of
+> the patch series, or separate it out for further review on its own?
 
-Fair enough, I withdraw my comment then.
+It would be clearer to submit it separately.
 
-Thanks,
+--dMyqICaxQaaUjrCL
+Content-Type: application/pgp-signature; name="signature.asc"
 
--- 
-Julian Calaby
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-Email: julian.calaby-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-Profile: http://www.google.com/profiles/julian.calaby/
+iQEcBAEBCAAGBQJXSC8hAAoJECTWi3JdVIfQvB0H/i6frYqmNXePufWeECe9f2Qd
+n/o3WeS7OiQnuwXgyjss+SfApCi6FcbozQH6OsbGHSiYqw5jJK7gYnriLh854RI8
+PzfCSkBlskYe4o9WIE7yfFKJ522wJIvG0ykayPWCLxQX+4ySbLDzHeN3Mb79nE/D
+2N1QilL5jfCgBWP+pknH+JOwy/wUZkeU/ZEMUTOsX5XmldBzLeg6BeMkqrM4lA00
+byklA2CcmT/NsilFJINDApodf8Idpe9048Gr79i1VyzxK50v6eowqgk7Trf7lng3
+0N5/QlvM7TwKCBcIXIZXJrJ79PvxqrQEL9LHcYuZPysH7i6BXSpqJNQkBrEJwjk=
+=JxnH
+-----END PGP SIGNATURE-----
+
+--dMyqICaxQaaUjrCL--

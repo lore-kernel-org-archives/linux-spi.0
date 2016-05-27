@@ -1,80 +1,266 @@
-From: Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>
-Subject: Re: [PATCH] spi: pxa2xx: use DMA by default if supported
-Date: Fri, 27 May 2016 21:21:32 +0200
-Message-ID: <87oa7rgvcz.fsf@belgarion.home>
-References: <1464375468-11510-1-git-send-email-dan@emutex.com>
-Mime-Version: 1.0
-Content-Type: text/plain
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org,
-	haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-To: Dan O'Donovan <dan-M3NBUjLqch7QT0dZR+AlfA@public.gmane.org>,
-	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+From: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH V2, 1/4] dt: bindings: spi-bcm-qspi: NSP, NS2, BRCMSTB SoC bindings
+Date: Fri, 27 May 2016 16:14:54 -0400
+Message-ID: <1464380097-25125-1-git-send-email-kdasu.kdev@gmail.com>
+Cc: bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, vikram.prakash-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
+	andy.fung-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, jon.mason-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
+	Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Yendapally Reddy Dhananjaya Reddy
+	<yendapally.reddy-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1464375468-11510-1-git-send-email-dan-M3NBUjLqch7QT0dZR+AlfA@public.gmane.org> (Dan
-	O'Donovan's message of "Fri, 27 May 2016 19:57:48 +0100")
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Dan O'Donovan <dan-M3NBUjLqch7QT0dZR+AlfA@public.gmane.org> writes:
+Added device tree bindings documentation for SoCs supported by the
+new spi-bcm-qspi driver.
 
-Let me add Jarkko and Mika to the review, they were active in the driver's DMA
-area lately.
+Signed-off-by: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Yendapally Reddy Dhananjaya Reddy <yendapally.reddy-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+---
+V2 change renames file to brcm,spi-bcm-qspi.txt
+---
+ .../devicetree/bindings/spi/brcm,spi-bcm-qspi.txt  | 228 +++++++++++++++++++++
+ 1 file changed, 228 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/brcm,spi-bcm-qspi.txt
 
-Cheers.
+diff --git a/Documentation/devicetree/bindings/spi/brcm,spi-bcm-qspi.txt b/Documentation/devicetree/bindings/spi/brcm,spi-bcm-qspi.txt
+new file mode 100644
+index 0000000..a79a384
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/brcm,spi-bcm-qspi.txt
+@@ -0,0 +1,228 @@
++Broadcom SPI controller
++
++The Broadcom SPI controller is a SPI master found on various SOCs, including
++BRCMSTB (BCM7XXX), Cygnus, NSP and NS2.
++
++Required properties:
++
++- #address-cells:
++    Must be <1>, as required by generic SPI binding.
++
++- #size-cells:
++    Must be <0>, also as required by generic SPI binding.
++
++- compatible:
++    Must be one of :
++    "brcm,spi-bcm-qspi" 
++    "brcm,spi-brmstb" spi-nor and/or "brcm,spi-brmstb-mspi" unmanaged SPI Master
++
++- reg:
++    Define the bases and ranges of the associated I/O address spaces.
++    The required range is MSPI controller registers and interrupt registers, the others 
++    are optional Boot SPI (BSPI) portion for fast flash reads.
++
++- reg-names:
++    First name does not matter, but must be reserved for the MSPI controller
++    register range as mentioned in 'reg' above, and will typically contain
++    - "bspi_regs": BSPI register range
++    - "mspi_regs": MSPI register range
++    - "intr_regs", "intr_status_reg" : Interrupt and status register for NSP, NS2 SoC
++    - "hif_spi_intr2" : Interrupt and status register for BRCMSTB SoC
++   
++- interrupts
++    The interrupts used by the MSPI and/or BSPI controller.
++
++- interrupt-names:
++    Names of interrupts associated with this MSPI and/or BSPI controller.
++    - "mspi_halted" :
++    - "mspi_done": Indicates that the requested SPI operation is complete.
++    - "spi_lr_fullness_reached" : Linear read BSPI pipe full
++    - "spi_lr_session_aborted"  : Linear read BSPI pipe aborted
++    - "spi_lr_impatient" : Linear read BSPI requested when pipe empty
++    - "spi_lr_session_done" : Linear read BSPI session done 
++
++Optional properties:
++
++- clocks:
++    A phandle to the reference clock for this block.  If not present, will
++    assume a 27 MHz fixed clock (default for UPG).
++
++
++Optional properties:
++
++- clocks:
++    A phandle to the reference clock for this block.
++
++- bspi-sel:
++    Chip selects that requires bspi support.
++
++
++Examples:
++
++BRCMSTB SoC Example: 
++
++  SPI Master for SPI-NOR:
++
++    spi@f03e3400 {
++		#address-cells = <0x1>;
++		#size-cells = <0x0>;
++		compatible = "brcm,qspi-brcmstb";
++		reg = <0xf03e0920 0x4 0xf03e3400 0x188 0xf03e3200 0x50>;
++		reg-names = "cs_reg", "hif_mspi", "bspi";
++		interrupts = <0x6 0x5 0x4 0x3 0x2 0x1 0x0>;
++		interrupt-parent = <0x1c>;
++		interrupt-names = "mspi_halted",
++				  "mspi_done",
++				  "spi_lr_overread",
++				  "spi_lr_session_done",
++				  "spi_lr_impatient",
++				  "spi_lr_session_aborted",
++				  "spi_lr_fullness_reached";
++
++		clocks = <0x1b>;
++		clock-names = "sw_spi";
++
++		m25p80@0 {
++			#size-cells = <0x2>;
++			#address-cells = <0x2>;
++			compatible = "m25p80";
++			reg = <0x0>;
++			spi-max-frequency = <0x2625a00>;
++			spi-cpol;
++			spi-cpha;
++			use-bspi;
++			m25p,fast-read;
++
++			flash0.bolt@0 {
++				reg = <0x0 0x0 0x0 0x100000>;
++			};
++
++			flash0.macadr@100000 {
++				reg = <0x0 0x100000 0x0 0x10000>;
++			};
++
++			flash0.nvram@110000 {
++				reg = <0x0 0x110000 0x0 0x10000>;
++			};
++
++			flash0.kernel@120000 {
++				reg = <0x0 0x120000 0x0 0x400000>;
++			};
++
++			flash0.devtree@520000 {
++				reg = <0x0 0x520000 0x0 0x10000>;
++			};
++
++			flash0.splash@530000 {
++				reg = <0x0 0x530000 0x0 0x80000>;
++			};
++
++			flash0@0 {
++				reg = <0x0 0x0 0x0 0x4000000>;
++			};
++		};
++	};
++
++
++    MSPI master:
++
++		spi@f0416000 {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			clocks = <&upg_fixed>;
++			compatible = "brcm,spi-brcmstb-mspi";
++			reg = <0xf0416000 0x180>;
++			reg-names = "mspi";
++			interrupts = <0x14>;
++			interrupt-parent = <&irq0_aon_intc>;
++			interrupt-names = "mspi_done";
++		};
++
++
++
++iProc SoC Example:
++
++    qspi: spi@18027200 {
++        compatible = "brcm,spi-bcm-qspi";
++        reg = <0x18027200 0x184>,
++	      <0x18027000 0x124>,
++              <0x1811c408 0x004>,
++              <0x180273a0 0x01c>;
++        reg-names = "mspi_regs", "bspi_regs", "intr_regs", "intr_status_reg";
++        interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 73 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 75 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 76 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 77 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 78 IRQ_TYPE_LEVEL_HIGH>;
++        interrupt-names = 
++		     "spi_lr_fullness_reached",
++ 		     "spi_lr_session_aborted",
++		     "spi_lr_impatient",
++		     "spi_lr_session_done",
++		     "mspi_done",
++		     "mspi_halted";
++        clocks = <&iprocmed>;
++        clock-names = "iprocmed";
++        clock-frequency = <12500000>;
++        num-cs = <2>;
++        #address-cells = <1>;
++        #size-cells = <0>;
++    };
++
++
++ NS2 SoC Example:
++
++               qspi: spi@66470200 {
++                       compatible = "brcm,spi-bcm-qspi";
++                       reg = <0x66470200 0x184>,
++                             <0x66470000 0x124>,
++                             <0x67017408 0x004>,
++                             <0x664703a0 0x01c>;
++                       reg-names = "mspi", "bspi", "intr_regs", "intr_status_reg";
++                       interrupts = <GIC_SPI 419 IRQ_TYPE_LEVEL_HIGH>;
++                       interrupt-names = "spi_l1_intr";
++                        clocks = <&iprocmed>;
++                        clock-names = "iprocmed";
++                        clock-frequency = <12500000>;
++                        num-cs = <2>;
++                        #address-cells = <1>;
++                        #size-cells = <0>;
++               };
++
++
++ m25p80 node for NSP, NS2 and iProc
++
++ 	 &qspi {
++    	     bspi-sel = <0>;
++       	     flash: m25p80@0 {
++             	      #address-cells = <1>;
++               	      #size-cells = <1>;
++		      compatible = "m25p80";
++		      reg = <0x0>;
++		      spi-max-frequency = <12500000>;
++		      m25p,fast-read;
++		      spi-cpol;
++		      spi-cpha;
++		      
++		      partition@0 {
++		      		  label = "boot";
++				  reg = <0x00000000 0x000a0000>;
++		      };
++
++		      partition@1 {
++		      		  label = "env";
++				  reg = <0x000a0000 0x00060000>;
++		      };
++
++		      partition@2 {
++		      		  label = "system";
++				  reg = <0x00100000 0x00600000>;
++		      };
++
++		      partition@3 {
++		      		  label = "rootfs";
++				  reg = <0x00700000 0x01900000>;
++		      };
++	 };
+-- 
+1.9.1
 
---
-Robert
-
-[1] Dan's patch
-> Currently, even if the PXA2xx SPI master supports DMA, it won't be
-> enabled unless (i) the slave device is enumerated through ACPI, or
-> (ii) the slave device is registered with board-specific
-> controller_data specified.  Even then, there isn't a field in the
-> controller_data that explicitly enables dma - it just gets enabled
-> if the master supports it and controller_data is non-NULL.
->
-> This means that drivers which register SPI devices on a bus without
-> awareness of this controller cannot avail of DMA performance gains.
->
-> This patch allows DMA transfers to be used if supported.
->
-> Signed-off-by: Dan O'Donovan <dan-M3NBUjLqch7QT0dZR+AlfA@public.gmane.org>
-> ---
->  drivers/spi/spi-pxa2xx.c | 10 +---------
->  1 file changed, 1 insertion(+), 9 deletions(-)
->
-> diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-> index fe07c05..27e0307 100644
-> --- a/drivers/spi/spi-pxa2xx.c
-> +++ b/drivers/spi/spi-pxa2xx.c
-> @@ -1240,7 +1240,7 @@ static int setup(struct spi_device *spi)
->  			chip->frm = spi->chip_select;
->  		} else
->  			chip->gpio_cs = -1;
-> -		chip->enable_dma = 0;
-> +		chip->enable_dma = drv_data->master_info->enable_dma;
->  		chip->timeout = TIMOUT_DFLT;
->  	}
->  
-> @@ -1259,17 +1259,9 @@ static int setup(struct spi_device *spi)
->  			tx_hi_thres = chip_info->tx_hi_threshold;
->  		if (chip_info->rx_threshold)
->  			rx_thres = chip_info->rx_threshold;
-> -		chip->enable_dma = drv_data->master_info->enable_dma;
->  		chip->dma_threshold = 0;
->  		if (chip_info->enable_loopback)
->  			chip->cr1 = SSCR1_LBM;
-> -	} else if (ACPI_HANDLE(&spi->dev)) {
-> -		/*
-> -		 * Slave devices enumerated from ACPI namespace don't
-> -		 * usually have chip_info but we still might want to use
-> -		 * DMA with them.
-> -		 */
-> -		chip->enable_dma = drv_data->master_info->enable_dma;
->  	}
->  
->  	chip->lpss_rx_threshold = SSIRF_RxThresh(rx_thres);
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

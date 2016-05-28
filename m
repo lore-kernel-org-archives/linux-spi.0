@@ -1,94 +1,41 @@
-From: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH V2, 3/4] arm: dts: Add bcm-nsp and bcm958625k support
-Date: Fri, 27 May 2016 14:29:57 -0700
-Message-ID: <5748BC55.5080507@gmail.com>
-References: <1464380097-25125-1-git-send-email-kdasu.kdev@gmail.com>
- <1464380097-25125-3-git-send-email-kdasu.kdev@gmail.com>
- <5748ADDE.2090402@broadcom.com>
- <CAGVrzcZQMSVo4LvbqJ1jcx-f7M+psWQeHQfiRS3-L7JN+C_zuw@mail.gmail.com>
- <CAGVrzcYfNTZWDAK8tW-HaALYXJo5zPjiWOxsB0mntCVdjnUwUg@mail.gmail.com>
- <CAGVrzcbhoD1zDtvBXdm8DgzzXeP0MxAMtXduZMYv+BwpiwtgkQ@mail.gmail.com>
- <20160527204731.GA121328@google.com>
+From: Christer Weinigel <christer@weinigel.se>
+Subject: Re: [PATCH] devicetree - document using aliases to set spi bus
+ number.
+Date: Sat, 28 May 2016 22:57:33 +0200
+Message-ID: <574A063D.5030700@weinigel.se>
+References: <1464107960-10775-1-git-send-email-christer@weinigel.se>
+ <20160524174140.GE11605@leverpostej> <5744BC76.9090403@gmail.com>
+ <20160525092034.GE1337@leverpostej> <5745C5A3.6060202@gmail.com>
+ <20160525174809.GA8206@sirena.org.uk> <5745F30B.2040605@gmail.com>
+ <20160527183629.GO16172@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: Scott Branden <scott.branden-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Yendapally Reddy Dhananjaya Reddy
-	<yendapally.reddy-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Vikram Prakash <vikram.prakash-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Jon Mason <jon.mason-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Andy Fung <andy.fung-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	bcm-kernel-feedback-list <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160527204731.GA121328-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org, devicetree@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>,
+	Frank Rowand <frowand.list@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20160527183629.GO16172@sirena.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On 05/27/2016 01:47 PM, Brian Norris wrote:
-> Hi Florian,
-> 
-> (HTML mail. What is this??)
+On 05/27/2016 08:36 PM, Mark Brown wrote:
+> Personally the way I parse this situation is that the kernel is taking 
+> a look at what's in the DT and making an effort to present it usefully 
+> in the running systems. Fixing our current interpretation in stone as 
+> a supported thing when we don't have to makes it more cumbersome to 
+> improve and discourages any efforts to do similar things in the 
+> future. It is reasonable to provide and document something here but 
+> when there's some fairly simple and obvious better things we could be 
+> doing it should be those rather than the legacy stuff. 
 
-Made the mistake to reply with the Gmail application on my cellphone,
-does not look like they addressed my feature request ;)
+So what are the "simple and obvious better things" that one can use instead?
 
+   /Christer
 
->>    > The partitions are applications specific so should be passed on the
->>    boot command line rather than embedded in the dts file.
-> 
-> Scott kinda has a point; they can be application specific, and so in
-> some cases, you might want to avoid putting this description in DT, at
-> least if there are good alternatives. The command line may or may not be
-> a good alternative (I don't think it's a very good one).
-
-Fair enough
-
-> 
->>    Partitions are typically part of the platform definition and are
->>    suitable for being in Device Tree. AFAICT there is not a good way to
->>    supply partitions in an OF configuration other than putting them in DT
->>    at the moment. There is also a lot of platform inconsistency whether
->>    the command line is appended, extended or overrides the command line in
->>    the Device Tree, so I would not really consider this an issue here.
-> 
-> My intention is to allow cmdline to take priority, so you could have
-> application-specific overrides. If that doesn't work correctly, then
-> I'd consider it a bug. I know that has irked some people (e.g.,
-> OpenWRT?), where they deal with products where they may not control the
-> command line. But that's a separate issue IMO.
-
-I think this behavior makes sense, my problem is more with the fact that
-different architecture behave differently with respect to providing the
-command line to the kernel, some support taking the bootloader argument
-and merging it with the built-in/Device Tree bootargs command line, some
-do not, it's not always obvious.
-
-> 
-> You might want to take a look at supporting a partition parser, if this
-> really is so application-specific. I had all the pieces working late
-> last year:
-> 
-> https://lkml.org/lkml/2015/12/5/9
-> 
-> but I unfortunately got distracted once the conversation on bindings
-> derailed:
-> 
-> https://lkml.org/lkml/2015/12/12/31
-> 
-> I should probably revive that...
-> 
-> Anyway, if you utilize that, then you can specify which parser(s) are
-> valid for your platform, rather than specifying the exact partition
-> layout.
-
-/me goes reading, thanks!
 -- 
-Florian
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Have laptop, will travel.  I'm a consultant looking for interesting
+jobs anywhere in the world.  I'm an experienced software engineer with
+a solid understanding of hardware.  Specialities: Linux, device
+drivers and embedded systems in general.  Find me at www.weinigel.se.

@@ -1,52 +1,89 @@
-From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [PATCH] spi: pxa2xx: use DMA by default if supported
-Date: Mon, 30 May 2016 10:43:28 +0300
-Message-ID: <574BEF20.8090105@linux.intel.com>
-References: <1464375468-11510-1-git-send-email-dan@emutex.com>
- <87oa7rgvcz.fsf@belgarion.home>
+From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH 2/5] spi: sun4i: fix FIFO limit
+Date: Mon, 30 May 2016 10:37:00 +0200
+Message-ID: <20160530083700.GF4247@lukather>
+References: <cover.1464130597.git.hramrach@gmail.com>
+ <e315008b5e9dc3f1490507508fd2f6e94767dfbb.1464130597.git.hramrach@gmail.com>
+Reply-To: maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org,
-	haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-To: Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-	Dan O'Donovan <dan-M3NBUjLqch7QT0dZR+AlfA@public.gmane.org>,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <87oa7rgvcz.fsf-4ty26DBLk+jEm7gnYqmdkQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="/aVve/J9H4Wl5yVO"
+Cc: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-sunxi+bncBD2ZNBF5VYJRBLPXV65AKGQEHQN4U7I-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+Content-Disposition: inline
+In-Reply-To: <e315008b5e9dc3f1490507508fd2f6e94767dfbb.1464130597.git.hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <https://groups.google.com/group/linux-sunxi
+List-Subscribe: <https://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+ <https://groups.google.com/group/linux-sunxi/subscribe>
+List-Id: linux-spi.vger.kernel.org
 
-On 05/27/2016 10:21 PM, Robert Jarzmik wrote:
-> Dan O'Donovan <dan-M3NBUjLqch7QT0dZR+AlfA@public.gmane.org> writes:
->
-> Let me add Jarkko and Mika to the review, they were active in the driver's DMA
-> area lately.
->
-> Cheers.
->
-> --
-> Robert
->
-> [1] Dan's patch
->> Currently, even if the PXA2xx SPI master supports DMA, it won't be
->> enabled unless (i) the slave device is enumerated through ACPI, or
->> (ii) the slave device is registered with board-specific
->> controller_data specified.  Even then, there isn't a field in the
->> controller_data that explicitly enables dma - it just gets enabled
->> if the master supports it and controller_data is non-NULL.
->>
->> This means that drivers which register SPI devices on a bus without
->> awareness of this controller cannot avail of DMA performance gains.
->>
->> This patch allows DMA transfers to be used if supported.
->>
-Makes sense to me. I've noticed this too but haven't actually touched it 
-if some legacy stuff depends on it. Given that legacy PXA DMA support 
-has been dropped it's probably time to get this cleanup too.
 
-Reviewed-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--/aVve/J9H4Wl5yVO
+Content-Type: text/plain; charset=UTF-8
+Content-Disposition: inline
+
+Hi,
+
+On Thu, May 26, 2016 at 07:25:24PM -0000, Michal Suchanek wrote:
+> When testing SPI without DMA I noticed that filling the FIFO on the
+> spi controller causes timeout.
+> 
+> Always leave room for one byte in the FIFO.
+> 
+> Signed-off-by: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+
+Sending it to stable would be great (with a fixes tag too).
+
+> 
+> ---
+> v2:
+> use EMSGSIZE instead of EINVAL
+> ---
+>  drivers/spi/spi-sun4i.c | 8 ++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
+> index fe63bbd..04f1b77 100644
+> --- a/drivers/spi/spi-sun4i.c
+> +++ b/drivers/spi/spi-sun4i.c
+> @@ -180,7 +180,9 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
+>  
+>  	/* We don't support transfer larger than the FIFO */
+>  	if (tfr->len > SUN4I_FIFO_DEPTH)
+> -		return -EINVAL;
+> +		return -EMSGSIZE;
+
+One new line here.
+
+> +	if (tfr->tx_buf && tfr->len >= SUN4I_FIFO_DEPTH)
+> +		return -EMSGSIZE;
+>  
+>  	reinit_completion(&sspi->done);
+>  	sspi->tx_buf = tfr->tx_buf;
+> @@ -271,7 +273,9 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
+>  	sun4i_spi_write(sspi, SUN4I_XMIT_CNT_REG, SUN4I_XMIT_CNT(tx_len));
+>  
+>  	/* Fill the TX FIFO */
+> -	sun4i_spi_fill_fifo(sspi, SUN4I_FIFO_DEPTH);
+> +	/* Filling the FIFO fully causes timeout for some reason
+> +	 * at least on spi2 on A10s */
+
+This is not the proper comment style and generate a warning with
+checkpatch, please fix that (and merge the comment with the previous
+comment).
+
+Thanks!
+Maxime
+
+-- 
+Maxime Ripard, Free Electrons
+Embedded Linux, Kernel and Android engineering
+http://free-electrons.com
+--/aVve/J9H4Wl5yVO--

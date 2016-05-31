@@ -1,73 +1,46 @@
-From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 5/5] RFC spi: sun4i: add DMA support
-Date: Tue, 31 May 2016 12:44:54 +0200
-Message-ID: <CAOMqctQijjO2amwSmSMGp96KBRGrLb0fvXRwnybOEqvV3-HZ0g@mail.gmail.com>
-References: <cover.1464130597.git.hramrach@gmail.com> <ba0d6eb37cc4b0d2c46acbf9fcd7d644b3545ce8.1464130597.git.hramrach@gmail.com>
- <20160530112610.GJ29837@sirena.org.uk> <CAMuHMdVThvtqgFnyqoqypwwf1d81uu9NBo6-heTZBcvBxRevNw@mail.gmail.com>
- <20160530150343.GL29837@sirena.org.uk> <CAOMqctQb-YYprA7H5qCcYo2hxXiUhjW2z3JbZ3-FhbfcjFzBpw@mail.gmail.com>
- <20160530155016.GO29837@sirena.org.uk>
-Reply-To: hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: spi-imx: add support for single burst mode (8,16,32)
+Date: Tue, 31 May 2016 13:06:08 +0200
+Message-ID: <20160531110608.GG31666@pengutronix.de>
+References: <574D5C2B.1000400@gtsys.com.hk>
+ <CAOMZO5CiW3J+naHfitjv59i4xisYB1R3ATs2qvz4mLh_FMyf+g@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
-	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>, Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-sunxi+bncBCQMLUOX54MBBTWWWW5AKGQEL3DPWXY-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-In-Reply-To: <20160530155016.GO29837-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <https://groups.google.com/group/linux-sunxi
-List-Subscribe: <https://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
- <https://groups.google.com/group/linux-sunxi/subscribe>
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Chris Ruehl <chris.ruehl-CR359r9tUDPXPF5Rlphj1Q@public.gmane.org>,
+	Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAOMZO5CiW3J+naHfitjv59i4xisYB1R3ATs2qvz4mLh_FMyf+g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 30 May 2016 at 17:50, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Mon, May 30, 2016 at 05:28:10PM +0200, Michal Suchanek wrote:
->> On 30 May 2016 at 17:03, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
->
->> > I really don't think it's worth caring too much about cases where the
->> > DMA driver hasn't been compiled in, it's not like SPI is the only thing
->
->> It's what the driver did to start with and it was requested to fall
->> back to non-DMA in the case DMA is not available.
->
-> Why?  I really can't see any sensible use case for this that doesn't
-> have a better solution available.
+On Tue, May 31, 2016 at 07:43:37AM -0300, Fabio Estevam wrote:
+> [Adding Sascha and Anton in Cc]
+> 
+> On Tue, May 31, 2016 at 6:40 AM, Chris Ruehl <chris.ruehl-CR359r9tUDPXPF5Rlphj1Q@public.gmane.org> wrote:
+> > Hi,
+> >
+> > as imx6 using multiple burst to send data to spi slaves and drop the
+> > chipselect between the words by default my sensor NXP MPL115A1 wasn't
+> > working.
 
-Of course, the solution is to compile in the DMA driver.
+I generally recommend to use GPIO Chip selects. The SPI controller has
+its own ideas when to assert the chipselects which is hard to match (if
+possible at all) with what Linux SPI expects. See the cs-gpios device
+tree property.
 
-It's been argued that some drivers which use only short transfers will
-just work.
+Sascha
 
->
->> It's possible to add a parameter like require_dma which could be used
->> to load the driver without dma if unset. If it was set by default then
->> driver ordering is not important so long as dma driver is loaded
->> eventually. Also an informative print that such parameter exists when
->> probing the driver is deferred would be helpful. It would probably
->> create quite a bit of log spam, however. The driver can be deferred
->> several times during boot.
->
-> That seems fairly hacky, if we were going to do anything like that it
-> should be the other way around so that we default to trying to use
-> resources and even then it seems like something that should be handled
-> at a framework level rather than having random options in individual
-> drivers to ignore things.  Having things behave inconsistently between
-> different drivers is going to lead to a worse user experience and if
-> this is a good idea for one driver it seems like it'd be a good idea for
-> all of them.
-
-Hacky but doable if desirable. It's awesome for testing SPI transfer
-fragmentation with different drivers ;-)
-
-The previous discussion of this driver is here
-http://thread.gmane.org/gmane.linux.kernel/2162327
-
-Thanks
-
-Michal
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

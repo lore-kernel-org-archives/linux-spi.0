@@ -1,45 +1,47 @@
-From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+From: Vladimir Zapolskiy <vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
 Subject: Re: spi-imx: add support for single burst mode (8,16,32)
-Date: Tue, 31 May 2016 13:06:08 +0200
-Message-ID: <20160531110608.GG31666@pengutronix.de>
+Date: Tue, 31 May 2016 14:20:06 +0300
+Message-ID: <574D7366.5050203@mentor.com>
 References: <574D5C2B.1000400@gtsys.com.hk>
- <CAOMZO5CiW3J+naHfitjv59i4xisYB1R3ATs2qvz4mLh_FMyf+g@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Chris Ruehl <chris.ruehl-CR359r9tUDPXPF5Rlphj1Q@public.gmane.org>,
-	Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Cc: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Chris Ruehl <chris.ruehl-CR359r9tUDPXPF5Rlphj1Q@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAOMZO5CiW3J+naHfitjv59i4xisYB1R3ATs2qvz4mLh_FMyf+g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <574D5C2B.1000400-CR359r9tUDPXPF5Rlphj1Q@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, May 31, 2016 at 07:43:37AM -0300, Fabio Estevam wrote:
-> [Adding Sascha and Anton in Cc]
+On 31.05.2016 12:40, Chris Ruehl wrote:
+> Hi,
 > 
-> On Tue, May 31, 2016 at 6:40 AM, Chris Ruehl <chris.ruehl-CR359r9tUDPXPF5Rlphj1Q@public.gmane.org> wrote:
-> > Hi,
-> >
-> > as imx6 using multiple burst to send data to spi slaves and drop the
-> > chipselect between the words by default my sensor NXP MPL115A1 wasn't
-> > working.
+> as imx6 using multiple burst to send data to spi slaves and drop the chipselect 
+> between the words by default my sensor NXP MPL115A1 wasn't working.
+> The hint comes from a discussion in the Freescale forum from 2013 where Jeff 
+> Coffman posted his solution for a 3.x kernel.
+> I'd pick-up the idea behind and develop something which works "so far" with
+> 4.6 and linux-next
+> 
+> Up front - I'm not happy using the xfer->cs_change to get set the single burst
+> I more likely want add a new xfer bit which allow to dedicated set a single burst.
+> To replace todays:
+>          xfer[0].cs_change = 0;
+> with a
+> 	xfer[0].singleburst = 1;
+> 
+> An other issue with is not yet solved; when I have a odd number of bytes (8 bpw) 
+> in a transfer, its result in 3 bytes eaten on the start and 0x00 added on the 
+> tail -
 
-I generally recommend to use GPIO Chip selects. The SPI controller has
-its own ideas when to assert the chipselects which is hard to match (if
-possible at all) with what Linux SPI expects. See the cs-gpios device
-tree property.
+Do you use PIO or DMA transfer mode? The problem description resembles
+a known issue within SDMA firmware (referenced as TKT238285 or ERR008517)
+and you should not be able to face it, if SPI controller operates in PIO
+mode.
 
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+--
+With best wishes,
+Vladimir
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

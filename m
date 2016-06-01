@@ -1,52 +1,48 @@
 From: Chris Ruehl <chris.ruehl-CR359r9tUDPXPF5Rlphj1Q@public.gmane.org>
 Subject: Re: spi-imx: add support for single burst mode (8,16,32)
-Date: Wed, 1 Jun 2016 09:48:20 +0800
-Message-ID: <574E3EE4.2030806@gtsys.com.hk>
-References: <574D5C2B.1000400@gtsys.com.hk> <574D7366.5050203@mentor.com>
+Date: Wed, 1 Jun 2016 09:54:39 +0800
+Message-ID: <574E405F.9090000@gtsys.com.hk>
+References: <574D5C2B.1000400@gtsys.com.hk>
+ <CAOMZO5CiW3J+naHfitjv59i4xisYB1R3ATs2qvz4mLh_FMyf+g@mail.gmail.com>
+ <20160531110608.GG31666@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-To: Vladimir Zapolskiy <vladimir_zapolskiy-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Anton Bondarenko <anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <574D7366.5050203-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>
+In-Reply-To: <20160531110608.GG31666-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tuesday, May 31, 2016 07:20 PM, Vladimir Zapolskiy wrote:
-> On 31.05.2016 12:40, Chris Ruehl wrote:
->> Hi,
+On Tuesday, May 31, 2016 07:06 PM, Sascha Hauer wrote:
+> On Tue, May 31, 2016 at 07:43:37AM -0300, Fabio Estevam wrote:
+>> [Adding Sascha and Anton in Cc]
 >>
->> as imx6 using multiple burst to send data to spi slaves and drop the chipselect
->> between the words by default my sensor NXP MPL115A1 wasn't working.
->> The hint comes from a discussion in the Freescale forum from 2013 where Jeff
->> Coffman posted his solution for a 3.x kernel.
->> I'd pick-up the idea behind and develop something which works "so far" with
->> 4.6 and linux-next
->>
->> Up front - I'm not happy using the xfer->cs_change to get set the single burst
->> I more likely want add a new xfer bit which allow to dedicated set a single burst.
->> To replace todays:
->>           xfer[0].cs_change = 0;
->> with a
->> 	xfer[0].singleburst = 1;
->>
->> An other issue with is not yet solved; when I have a odd number of bytes (8 bpw)
->> in a transfer, its result in 3 bytes eaten on the start and 0x00 added on the
->> tail -
+>> On Tue, May 31, 2016 at 6:40 AM, Chris Ruehl <chris.ruehl-CR359r9tUDPXPF5Rlphj1Q@public.gmane.org> wrote:
+>>> Hi,
+>>>
+>>> as imx6 using multiple burst to send data to spi slaves and drop the
+>>> chipselect between the words by default my sensor NXP MPL115A1 wasn't
+>>> working.
 >
-> Do you use PIO or DMA transfer mode? The problem description resembles
-> a known issue within SDMA firmware (referenced as TKT238285 or ERR008517)
-> and you should not be able to face it, if SPI controller operates in PIO
-> mode.
+> I generally recommend to use GPIO Chip selects. The SPI controller has
+> its own ideas when to assert the chipselects which is hard to match (if
+> possible at all) with what Linux SPI expects. See the cs-gpios device
+> tree property.
+>
+> Sascha
 
-Board is a imx6d and its runs in DMA mode. I have the MPL115A working properly
-when I keep an eye on even numbers of bytes in a transfer (which is always the 
-case in a half duplex mode <cmd><00>..)
+Sascha that's a good approach to fight this problem, if you have the
+choice. Sadly my hardware design is finished and I can only switch to
+a gpio by run wires on the finished PCB.. and that's not what I want.
 
-But any how thanks for this interesting info!
-
+With the single burst mode patch, the logic analyser shows a very nice and
+and clean and accurate chipselect clock MOSI and MISO.
 
 Chris
 --

@@ -1,102 +1,69 @@
-From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: Re: [linux-sunxi] [PATCH 1/5] spi: sunxi: fix transfer timeout
-Date: Wed, 1 Jun 2016 20:20:00 +0200
-Message-ID: <20160601182000.GC4908@lukather>
-References: <cover.1464130597.git.hramrach@gmail.com>
- <cb90b922caa6ac07c1425d726ea19709ee5284f4.1464130597.git.hramrach@gmail.com>
- <CAGRGNgWDrVHG26umTSHHAxFC3KXjwmpDejBAfKqvuik0_2-Jcw@mail.gmail.com>
- <CAOMqctS0AD6rHGt3wjxxyidee=_5xqby95t5TGuozAA12DdPjQ@mail.gmail.com>
- <CAGRGNgW=UnmwwiREV+nVcws6sk18-4fKz3qf-WKf4LY9-VqBKg@mail.gmail.com>
- <20160530112350.GI29837@sirena.org.uk>
+From: Chris Ruehl <chris.ruehl-CR359r9tUDPXPF5Rlphj1Q@public.gmane.org>
+Subject: Re: [PATCH] spi-imx: imx6q add single burst transfer support
+Date: Thu, 2 Jun 2016 09:27:25 +0800
+Message-ID: <574F8B7D.9010707@gtsys.com.hk>
+References: <1464756628-25463-1-git-send-email-chris.ruehl@gtsys.com.hk>
+ <20160601065437.GI31666@pengutronix.de> <574E8A19.3020603@gtsys.com.hk>
+ <20160601143213.GA2282@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="a7qI9m+4lZX6A7IJ"
-Cc: Julian Calaby <julian.calaby-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
-	Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"Mailing List, Arm" <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	anton.bondarenko.sama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20160530112350.GI29837-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <20160601143213.GA2282-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Wednesday, June 01, 2016 10:32 PM, Mark Brown wrote:
+> On Wed, Jun 01, 2016 at 03:09:13PM +0800, Chris Ruehl wrote:
+>> On Wednesday, June 01, 2016 02:54 PM, Sascha Hauer wrote:
+>
+>>>> The patch add support for single burst transfer where chipselect will
+>>>> hold active until transfer completes with a limit to 2^7 words transferred.
+>>>> The single-burst-mode need set the burstlength in ECSPI_CONREG.BURST_LENGTH
+>>>> and clear the ecspi channel related ss_ctl flag in ECSPI_CONFIGREG.SS_CTL.
+>
+>>>> The single-burst-mode is disabled by default. The activation from spidev
+>
+>>> Erm, no. This is not acceptable in many ways. First of all the SPI API
+>>> between the kernel and userspace is driver agnostic. There is simply no
+>>> place for passing driver specific quirks from userspace to the spi-imx
+>>> driver. Then there is no API change needed because the way SPI
+>>> messages should be translated to the wire is well defined, the spi-imx
+>>> driver is just doing it wrong in this case which might be worth fixing.
+>>> This could be done without passing a "do it right" flag to the driver.
+>
+>> I expected AND except the "NO" on this!
+>> But the userspace interface (xfer) does not have anything else then
+>> tx,rx-buf cs_change delay.. to carry infos forward to the driver.
+>
+> That's absolutely fine.  The "new" behaviour which you are introducing
+> is the standard behaviour, the fact that the driver currently does
+> anything different is just a very bad bug in the driver.  Instead of
+> introducing a new option to provide a driver specific "make it work"
+> quirk that users must activate you should fix the driver to perform
+> correctly as standard.
+>
 
---a7qI9m+4lZX6A7IJ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Mark,
 
-Hi Mark,
+thanks for that explanation. I did not feel in the position to overrule
+the current behaviour of the driver.
+So if you agree that the change I did is acceptable as standard I going
+to update the patch in the way to do so.
 
-On Mon, May 30, 2016 at 12:23:50PM +0100, Mark Brown wrote:
-> On Fri, May 27, 2016 at 03:10:11PM +1000, Julian Calaby wrote:
-> > On Fri, May 27, 2016 at 3:05 PM, Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> w=
-rote:
->=20
-> > >> Also, should the changes for the drivers be in two separate patches =
-also?
->=20
-> > > That's basically the same driver with different constants so I guess =
-not.
->=20
-> > Fair enough, I withdraw my comment then.
->=20
-> If it's the same driver with different constants it should really
-> actually be the same driver - I did ask this when the drivers were
-> originally merged...
+Chris
 
-I think we already had this discussion a few times :)
+-- 
+GTSYS Limited RFID Technology
+9/F, Unit E, R07, Kwai Shing Industrial Building Phase 2,
+42-46 Tai Lin Pai Road, Kwai Chung, N.T., Hong Kong
+Tel (852) 9079 9521
 
-The thing is that the SPI framework now deals pretty well with the SPI
-controllers, and you basically only have the probe function and how to
-start a transfer. Which is nice.
-
-However, the sun4i and sun6i SPI controllers have very significant
-register layout differences: the registers offset are different, some
-registers in the sun4i have been split in several in the sun6i. So
-while I concur that they look alike, merging the two in a single
-driver would complicate a lot the code, while we would not be able to
-share most of the code, so I am really not sure it's worth it.
-
-Where the issue really lies is that they've been both written at the
-same time, and share the same flaws, especially in their probe
-method. But that's not really related to the controller itself, but
-more because the code has been close to copy/pasted.
-
-Maxime
-
---=20
-Maxime Ripard, Free Electrons
-Embedded Linux, Kernel and Android engineering
-http://free-electrons.com
-
---a7qI9m+4lZX6A7IJ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJXTydQAAoJEBx+YmzsjxAgXOQQAKVJuO8xYuMbZZHrQ2OsYDrA
-wtWSS2S9jYUxnwIBocQrPJ9nwTtGBzrgqxaHlvPXvOz5yTKMX4fKSyRwcIOmD5Cr
-u15wohITPtMk/1FyAwfaoZjUG37Ga3nUpSZOo+CsRcV5UTGr0bjGNSB7LzbWTy+c
-ihpM/2uISFF3GKyCBgKEmiza/WHdusbpA81wyV+eUx3E/bpD6RyJZ2yChmJo7k0H
-38fwNXjQLL9P7UuySbcdcgovCls6J6fZ69s3RQqz80Pks0awx2bcY3+BX6rKQTnf
-p0Zuo3U/kXLjtqlSA5nzPO9+TjTLP0hD6FuWS+cRwnSGTzTRS4NuCGED6scI4Gns
-pG+eYNP8dPWu6+/5hjMp6baDjTFu8s0rzMTRWQha8ZdCJfDI8cFCAN0uwiOGgqT/
-Zqi4pCg10O0t+LvrJDEyurTNLY0zduJcrodHNQzb/n7Q+jJYHpWl10QpQrKC+9O9
-5km+om6wu0g2WprZZa8BfjLLqLi9bh0AkuQudRu48mWUy7IAb0i66VfJeFMOGiQe
-E7At66iVxxzc5faP+E13ymFGoOeDgXDlkUzILtwPqn6WaX5ijBxDWbDcDwp7iyDw
-z54Wc9Yb7EDgzqbBmx+pZsrh8vQwksIRN6u+8GSewWqtSItSdjFrfMx7MfhzxI2p
-DaTowsh0Nu80+edM4vv1
-=Y4WK
------END PGP SIGNATURE-----
-
---a7qI9m+4lZX6A7IJ--
+Disclaimer: http://www.gtsys.com.hk/email/classified.html
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

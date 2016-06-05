@@ -1,87 +1,89 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH RFT] spi: st-ssc4: Fix misuse of
- devm_gpio_request/devm_gpio_free APIs
-Date: Sun, 05 Jun 2016 18:42:27 +0800
-Message-ID: <1465123347.17550.1.camel@ingics.com>
+From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: Re: [PATCH 5/5] RFC spi: sun4i: add DMA support
+Date: Sun, 5 Jun 2016 13:27:11 +0200
+Message-ID: <CAOMqctQwFif=yFF1snfZJc7+sGS7wcC-6oNTCfjW_MSUWHw+xQ@mail.gmail.com>
+References: <cover.1464130597.git.hramrach@gmail.com> <ba0d6eb37cc4b0d2c46acbf9fcd7d644b3545ce8.1464130597.git.hramrach@gmail.com>
+ <20160530112610.GJ29837@sirena.org.uk> <CAMuHMdVThvtqgFnyqoqypwwf1d81uu9NBo6-heTZBcvBxRevNw@mail.gmail.com>
+ <20160530150343.GL29837@sirena.org.uk> <CAOMqctQb-YYprA7H5qCcYo2hxXiUhjW2z3JbZ3-FhbfcjFzBpw@mail.gmail.com>
+ <20160530155016.GO29837@sirena.org.uk> <20160601180056.GA4908@lukather>
+ <1464842546.23881.3.camel@plaes.org> <CAOMqctRMi8Zuwqvakka8LkgvecWVAfzUcER9+ui9WBYS78fWtQ@mail.gmail.com>
+ <20160602142649.GJ2282@sirena.org.uk>
+Reply-To: hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset=UTF-8
+Cc: Priit Laes <plaes-q/aMd4JkU83YtjvyW6yDsg@public.gmane.org>, Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>, linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+	Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>, linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Return-path: <linux-sunxi+bncBCQMLUOX54MBBN4Z2C5AKGQEOB5A3GA-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+In-Reply-To: <20160602142649.GJ2282-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <https://groups.google.com/group/linux-sunxi
+List-Subscribe: <https://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+ <https://groups.google.com/group/linux-sunxi/subscribe>
+List-Id: linux-spi.vger.kernel.org
 
-devm_* API is supposed to be used only in probe function call.
-The resource is allocated at 'probe' and free automatically at 'remove'.
-Usage of devm_* functions outside probe sometimes leads to resource leak.
-Thus avoid using devm_* APIs in .setup/.cleanup callbacks.
+On 2 June 2016 at 16:26, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Thu, Jun 02, 2016 at 02:14:26PM +0200, Michal Suchanek wrote:
+>> On 2 June 2016 at 06:42, Priit Laes <plaes-q/aMd4JkU83YtjvyW6yDsg@public.gmane.org> wrote:
+>> > On Wed, 2016-06-01 at 20:00 +0200, Maxime Ripard wrote:
+>
+>> > Actually it non-DMA case works fine if you don't need SPI transfers
+>> > larger than SUN4I_FIFO_DEPTH - 1, which is 63 bytes.
+>
+>> > This was addressed by this patch, but was never applied:
+>> > http://permalink.gmane.org/gmane.linux.kernel.spi.devel/18950
+>
+>> And the code added in that patch will never run unless you
+>
+>> 1) use long spi transfers
+>> 2) compile in/load SPI without DMA support
+>
+>> There is no reason for doing 2) since we have do DMA support for sunxi.
+>
+> Well, presumably such code exists and is being worked on?
 
-Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
----
- drivers/spi/spi-st-ssc4.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+Which code are you referring to?
 
-diff --git a/drivers/spi/spi-st-ssc4.c b/drivers/spi/spi-st-ssc4.c
-index d5adf9f..fb6ed8b 100644
---- a/drivers/spi/spi-st-ssc4.c
-+++ b/drivers/spi/spi-st-ssc4.c
-@@ -201,10 +201,7 @@ static int spi_st_transfer_one(struct spi_master *master,
- 
- static void spi_st_cleanup(struct spi_device *spi)
- {
--	int cs = spi->cs_gpio;
--
--	if (gpio_is_valid(cs))
--		devm_gpio_free(&spi->dev, cs);
-+	gpio_free(spi->cs_gpio);
- }
- 
- /* the spi->mode bits understood by this driver: */
-@@ -227,14 +224,15 @@ static int spi_st_setup(struct spi_device *spi)
- 		return -EINVAL;
- 	}
- 
--	if (devm_gpio_request(&spi->dev, cs, dev_name(&spi->dev))) {
-+	ret = gpio_request(cs, dev_name(&spi->dev));
-+	if (ret) {
- 		dev_err(&spi->dev, "could not request gpio:%d\n", cs);
--		return -EINVAL;
-+		return ret;
- 	}
- 
- 	ret = gpio_direction_output(cs, spi->mode & SPI_CS_HIGH);
- 	if (ret)
--		return ret;
-+		goto out_free_gpio;
- 
- 	spi_st_clk = clk_get_rate(spi_st->clk);
- 
-@@ -243,7 +241,8 @@ static int spi_st_setup(struct spi_device *spi)
- 	if (sscbrg < 0x07 || sscbrg > BIT(16)) {
- 		dev_err(&spi->dev,
- 			"baudrate %d outside valid range %d\n", sscbrg, hz);
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto out_free_gpio;
- 	}
- 
- 	spi_st->baud = spi_st_clk / (2 * sscbrg);
-@@ -292,6 +291,10 @@ static int spi_st_setup(struct spi_device *spi)
- 	 readl_relaxed(spi_st->base + SSC_RBUF);
- 
- 	 return 0;
-+
-+out_free_gpio:
-+	gpio_free(cs);
-+	return ret;
- }
- 
- /* Interrupt fired when TX shift register becomes empty */
--- 
-2.5.0
+This is a reply to patch which adds DMA support to the SPI driver so
+that it can work for arbitrarily long transfers.
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+So there is code for fully working driver.
+
+>
+>> So that's another code path that needs maintenance and testing and
+>> likely will not get it.
+>
+> Oh, come on.  You might not want to use it yourself but the chances are
+> that someone will want to use it just like the situation with all the
+> other SPI drivers.  It's a perfectly reasonable and sensible feature to
+> support upstream.
+
+Is it?
+
+Once we have *one* driver that works for arbitrarily long transfers
+and it works out of the box with the board defconfig 99% of people who
+will use the SPI driver for anything will use this driver. Any other
+variant will go untested.
+
+And for the driver to also work without DMA you have to *tell* it to
+probe without DMA because it cannot know you are not going to load a
+DMA driver later.
+
+>
+> I really do not understand why there is such a strong desire to have
+> these devices be a special snowflake here, the worst that's likely to
+> happen here is that you're going to end up having to either remove the
+> DMA controller from the DT or load the driver for it neither of which
+> seem like the end of the world.
+
+Why would you do that?
+
+Thanks
+
+Michal

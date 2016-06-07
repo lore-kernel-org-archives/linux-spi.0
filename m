@@ -1,108 +1,84 @@
 From: Lee Jones <lee.jones@linaro.org>
-Subject: [PATCH 6/6] spi: st-ssc4: Remove 'no clocking' hack
-Date: Tue,  7 Jun 2016 12:19:30 +0100
-Message-ID: <20160607111930.10375-7-lee.jones@linaro.org>
+Subject: [PATCH 2/6] clk: st: clkgen-fsyn: Detect critical clocks
+Date: Tue,  7 Jun 2016 12:19:26 +0100
+Message-ID: <20160607111930.10375-3-lee.jones@linaro.org>
 References: <20160607111930.10375-1-lee.jones@linaro.org>
-Cc: kernel@stlinux.com, maxime.coquelin@st.com, patrice.chotard@st.com,
-	mturquette@baylibre.com, sboyd@codeaurora.org, broonie@kernel.org,
-	linux-clk@vger.kernel.org, linux-spi@vger.kernel.org,
-	Lee Jones <lee.jones@linaro.org>
-To: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: kernel@stlinux.com, mturquette@baylibre.com, sboyd@codeaurora.org,
+ patrice.chotard@st.com, linux-spi@vger.kernel.org, broonie@kernel.org,
+ Lee Jones <lee.jones@linaro.org>, linux-clk@vger.kernel.org,
+ maxime.coquelin@st.com
+To: linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
 In-Reply-To: <20160607111930.10375-1-lee.jones@linaro.org>
-Sender: linux-kernel-owner@vger.kernel.org
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Due to the newly upstreamed 'critical clocks' API we can now
-safely handle clocking in the SPI and I2C drivers without fear
-of catastrophically crippling the running platform.
+Utilise the new Critical Clock infrastructure to mark clocks which
+much not be disabled as CRITICAL.
+
+Clocks are marked as CRITICAL using clk flags.  This patch also
+ensures flags are peculated through the framework in the correct
+manner.
 
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/spi/spi-st-ssc4.c | 36 +++++-------------------------------
- 1 file changed, 5 insertions(+), 31 deletions(-)
+ drivers/clk/st/clkgen-fsyn.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-st-ssc4.c b/drivers/spi/spi-st-ssc4.c
-index d5adf9f..a56eca0 100644
---- a/drivers/spi/spi-st-ssc4.c
-+++ b/drivers/spi/spi-st-ssc4.c
-@@ -68,32 +68,6 @@ struct spi_st {
- 	struct completion	done;
- };
- 
--static int spi_st_clk_enable(struct spi_st *spi_st)
--{
--	/*
--	 * Current platforms use one of the core clocks for SPI and I2C.
--	 * If we attempt to disable the clock, the system will hang.
--	 *
--	 * TODO: Remove this when platform supports power domains.
--	 */
--	return 0;
--
--	return clk_prepare_enable(spi_st->clk);
--}
--
--static void spi_st_clk_disable(struct spi_st *spi_st)
--{
--	/*
--	 * Current platforms use one of the core clocks for SPI and I2C.
--	 * If we attempt to disable the clock, the system will hang.
--	 *
--	 * TODO: Remove this when platform supports power domains.
--	 */
--	return;
--
--	clk_disable_unprepare(spi_st->clk);
--}
--
- /* Load the TX FIFO */
- static void ssc_write_tx_fifo(struct spi_st *spi_st)
+diff --git a/drivers/clk/st/clkgen-fsyn.c b/drivers/clk/st/clkgen-fsyn.c
+index dec4eaa..09afeb8 100644
+--- a/drivers/clk/st/clkgen-fsyn.c
++++ b/drivers/clk/st/clkgen-fsyn.c
+@@ -1027,7 +1027,7 @@ static const struct clk_ops st_quadfs_ops = {
+ static struct clk * __init st_clk_register_quadfs_fsynth(
+ 		const char *name, const char *parent_name,
+ 		struct clkgen_quadfs_data *quadfs, void __iomem *reg, u32 chan,
+-		spinlock_t *lock)
++		unsigned long flags, spinlock_t *lock)
  {
-@@ -349,7 +323,7 @@ static int spi_st_probe(struct platform_device *pdev)
- 		goto put_master;
- 	}
+ 	struct st_clk_quadfs_fsynth *fs;
+ 	struct clk *clk;
+@@ -1045,7 +1045,7 @@ static struct clk * __init st_clk_register_quadfs_fsynth(
  
--	ret = spi_st_clk_enable(spi_st);
-+	ret = clk_prepare_enable(spi_st->clk);
- 	if (ret)
- 		goto put_master;
+ 	init.name = name;
+ 	init.ops = &st_quadfs_ops;
+-	init.flags = CLK_GET_RATE_NOCACHE | CLK_IS_BASIC;
++	init.flags = flags | CLK_GET_RATE_NOCACHE | CLK_IS_BASIC;
+ 	init.parent_names = &parent_name;
+ 	init.num_parents = 1;
  
-@@ -408,7 +382,7 @@ static int spi_st_probe(struct platform_device *pdev)
- 	return 0;
+@@ -1115,6 +1115,7 @@ static void __init st_of_create_quadfs_fsynths(
+ 	for (fschan = 0; fschan < QUADFS_MAX_CHAN; fschan++) {
+ 		struct clk *clk;
+ 		const char *clk_name;
++		unsigned long flags = 0;
  
- clk_disable:
--	spi_st_clk_disable(spi_st);
-+	clk_disable_unprepare(spi_st->clk);
- put_master:
- 	spi_master_put(master);
- 	return ret;
-@@ -419,7 +393,7 @@ static int spi_st_remove(struct platform_device *pdev)
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct spi_st *spi_st = spi_master_get_devdata(master);
+ 		if (of_property_read_string_index(np, "clock-output-names",
+ 						  fschan, &clk_name)) {
+@@ -1127,8 +1128,11 @@ static void __init st_of_create_quadfs_fsynths(
+ 		if (*clk_name == '\0')
+ 			continue;
  
--	spi_st_clk_disable(spi_st);
-+	clk_disable_unprepare(spi_st->clk);
++		of_clk_detect_critical(np, fschan, &flags);
++
+ 		clk = st_clk_register_quadfs_fsynth(clk_name, pll_name,
+-				quadfs, reg, fschan, lock);
++						    quadfs, reg, fschan,
++						    flags, lock);
  
- 	pinctrl_pm_select_sleep_state(&pdev->dev);
- 
-@@ -435,7 +409,7 @@ static int spi_st_runtime_suspend(struct device *dev)
- 	writel_relaxed(0, spi_st->base + SSC_IEN);
- 	pinctrl_pm_select_sleep_state(dev);
- 
--	spi_st_clk_disable(spi_st);
-+	clk_disable_unprepare(spi_st->clk);
- 
- 	return 0;
- }
-@@ -446,7 +420,7 @@ static int spi_st_runtime_resume(struct device *dev)
- 	struct spi_st *spi_st = spi_master_get_devdata(master);
- 	int ret;
- 
--	ret = spi_st_clk_enable(spi_st);
-+	ret = clk_prepare_enable(spi_st->clk);
- 	pinctrl_pm_select_default_state(dev);
- 
- 	return ret;
+ 		/*
+ 		 * If there was an error registering this clock output, clean
 -- 
 2.8.3

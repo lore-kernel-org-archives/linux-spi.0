@@ -1,7 +1,7 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH 2/2] mtd: m25p80: consider max_transfer_size when reading
-Date: Tue, 7 Jun 2016 08:03:11 +0200
-Message-ID: <fe0042f9-66c9-51fd-ca91-641c5cc25c40@gmail.com>
+Date: Tue, 7 Jun 2016 06:52:50 +0200
+Message-ID: <63aa1f2f-44dc-5e5f-d0c2-7725354620ad@gmail.com>
 References: <56D22823.7090005@gmail.com> <20160405193952.GA5243@localhost>
  <57041B43.2000109@gmail.com> <20160405210727.GB5243@localhost>
  <5706B084.2070909@gmail.com> <20160505235700.GA99474@google.com>
@@ -9,71 +9,59 @@ References: <56D22823.7090005@gmail.com> <20160405193952.GA5243@localhost>
  <77a22258-95ca-031a-825d-a9e98e30a162@gmail.com>
  <20160606174003.GE7510@sirena.org.uk>
  <a57adb90-0d80-186f-17d3-6fdf106bfb4a@gmail.com>
- <20160606230752.GM7510@sirena.org.uk>
+ <CAMuHMdW5zEmiN=Qw+Ed-gi=M1FffHXu1uSEvUOuRDG+j14ZZBA@mail.gmail.com>
+ <971ad721-5644-e5f9-2918-65db0e6b1996@gmail.com> <5755F8FB.2070409@denx.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
 	Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Han Xu <han.xu-3arQi8VN3Tc@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+	Han Xu <han.xu-3arQi8VN3Tc@public.gmane.org>, linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
+	Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160606230752.GM7510-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <5755F8FB.2070409-ynQEQJNshbs@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Am 07.06.2016 um 01:07 schrieb Mark Brown:
-> On Mon, Jun 06, 2016 at 08:53:10PM +0200, Heiner Kallweit wrote:
->> Am 06.06.2016 um 19:40 schrieb Mark Brown:
+Am 07.06.2016 um 00:28 schrieb Marek Vasut:
+> On 06/06/2016 11:20 PM, Heiner Kallweit wrote:
+>> Am 06.06.2016 um 21:46 schrieb Geert Uytterhoeven:
+>>> Hi Heiner,
+>>>
+>>> On Mon, Jun 6, 2016 at 8:53 PM, Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>>>> Am 06.06.2016 um 19:40 schrieb Mark Brown:
+>>>>> On Sat, Jun 04, 2016 at 12:22:37AM +0200, Heiner Kallweit wrote:
+>>>>>> Am 06.05.2016 um 14:14 schrieb Mark Brown:
+>>>>>>> Yes, it's called the maximum transfer size because it is the
+>>>>>>> maximum size of a transfer, not because it's the maximum size of
+>>>>>>> a message.
+>>>>>
+>>>>>> I'd like to come back to this discussion. You said best would be
+>>>>>> to fix the chip driver. To do this and calculate an appropriate
+>>>>>> value for max_transfer_size the chip driver would have to know that
+>>>>>> the spi_device is a spi-nor device.
+>>>>>
+>>>>> That doesn't make any sense, the controller hardware doesn't
+>>>>> magically change based on what is connected to it.
+>>>>>
+>>>> The issue with fsl-espi is that the controller deactivates CS after
+>>>> each physical transfer. And a lot of HW designs use the hardware CS,
+>>>> therefore the advise to use a GPIO instead doesn't really help.
+>>>
+>>> And you can't use pinmux to configure the pin used for hardware CS
+>>> to become a GPIO?
+>>>
+>> Sadly enough, no. Only the complete block of SPI signals can be switched
+>> to GPIO mode. But then we'd have to use bitbanging and would loose all
+>> features of the integrated SPI controller (FIFO's etc.)
 > 
->>> That doesn't make any sense, the controller hardware doesn't 
->>> magically change based on what is connected to it.
+> Just for completeness, which SoC are we talking about here ?
 > 
->> The issue with fsl-espi is that the controller deactivates CS after
->> each physical transfer. And a lot of HW designs use the hardware CS,
->> therefore the advise to use a GPIO instead doesn't really help.
-> 
-> There's no pinmux to fix the broken behaviour?  The Freescale SPI
-> controllers really are terrible :(
-> 
->> In case of SPI NOR CS needs to stay active between command and data
-> 
-> In the case of *all* SPI transactions this needs to happen.  This is
-> *not* optional, it's not some weird requirement of NOR, it's one of the
-> most basic requirements for a SPI driver on Linux.
-> 
->> Well, we could reduce the max_transfer_size exposed by the driver by
->> the max length of a m25p80 read command in general.
-> 
-> No!  Apart from anything else this would be a complete and total
-> abstraction failure.  This is a driver for a SPI controller, not a
-> driver for a flash controller, which means that it should not have flash
-> specific hacks in it.
-> 
->> Then we might be too strict for other SPI devices, but this may
->> be acceptable as the current fsl-espi driver is usable with SPI NOR
->> devices only anyway.
-> 
-> What makes you say this?  I'm guessing that the driver is just broken
-> but it would be good to understand the specifics.
-> 
-See fsl_espi_rw_trans():
-In case of transfers > SPCOM_TRANLEN_MAX it loops and reads in
-SPCOM_TRANLEN_MAX chunks whilst replacing bytes 2-4 of the
-message buffer with the new start address to read from.
-Having said that it implicitely assumes that the first transfer in
-the message is a m25p80 read command with a 3 byte address.
-
-And in fsl_espi_do_one_msg() it assumes that each message includes
-max one r/o transfer (else rx_buf is overwritten).
-
-I'm not 100% sure whether any arbitrary combination of r/o, r/w, w/o
-transfers in a SPI message is acceptable. But this controller driver
-supports just the transfer combinations generated by the m25p80
-protocol driver.
+Freescale (now NXP) P1014
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

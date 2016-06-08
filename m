@@ -1,52 +1,95 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: rockchip: Signal unfinished DMA transfers
-Date: Wed, 8 Jun 2016 11:55:38 +0100
-Message-ID: <20160608105538.GF7510@sirena.org.uk>
+Subject: Applied "spi: rockchip: Signal unfinished DMA transfers" to the spi tree
+Date: Wed, 08 Jun 2016 11:56:12 +0100
+Message-ID: <E1bAb9g-0001Bn-Ta@debutante>
 References: <1465371171-20810-1-git-send-email-tomeu.vizoso@collabora.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="wtUqn8XWZYmnPFNh"
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
 	Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
 	Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 To: Tomeu Vizoso <tomeu.vizoso-ZGY8ohtN/8qB+jHODAdFcQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
 In-Reply-To: <1465371171-20810-1-git-send-email-tomeu.vizoso-ZGY8ohtN/8qB+jHODAdFcQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---wtUqn8XWZYmnPFNh
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: rockchip: Signal unfinished DMA transfers
 
-On Wed, Jun 08, 2016 at 09:32:51AM +0200, Tomeu Vizoso wrote:
+has been applied to the spi tree at
 
-> +		/* successful DMA prepare means the transfer is in progress */
-> +		ret = ret ? ret : 1;
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-Please write normal if statements so people can read the code more
-easily.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
---wtUqn8XWZYmnPFNh
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iQEcBAEBCAAGBQJXV/mUAAoJECTWi3JdVIfQk6MIAIRxpZvRpSGabzTcwIIvNign
-i2wpwjSiR3wgDGwWx3OIp4rEXj29mwqz2pOXh73E73lCQisyxwclqHLeLy1meEPm
-MxJNJDSIf2t7/Qkbfi58KyMac+m1O6DRQK9Aeu5ZqTAWMUCm4+XsprmrGF5NTdSk
-GJV9tkuT0z4BvFGe1mJZMi0sxdKNS9QkcY6XPKPB2o5venOjtjUs0rXfbjyXiii0
-/cqjqVk+l2ctOk56EycHxYiZBgT+PgIBJ3PFwQ6DCAOf3v9Y6k339kZM9mnVJH9b
-j4/u48kS5nNWR95iNtiqoEalZ3xjsDG6SZnx4g8jNR3nXRPn6rekgsTvbRRGiT8=
-=ksGT
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---wtUqn8XWZYmnPFNh--
+Thanks,
+Mark
+
+>From 4f69b8188871c589a5e382f16a018850ec0146ce Mon Sep 17 00:00:00 2001
+From: Tomeu Vizoso <tomeu.vizoso-ZGY8ohtN/8qB+jHODAdFcQ@public.gmane.org>
+Date: Wed, 8 Jun 2016 09:32:51 +0200
+Subject: [PATCH] spi: rockchip: Signal unfinished DMA transfers
+
+When using DMA, the transfer_one callback should return 1 because the
+transfer hasn't finished yet.
+
+A previous commit changed the function to return 0 when the DMA channels
+were correctly prepared.
+
+This manifested in Veyron boards with this message:
+
+[ 1.983605] cros-ec-spi spi0.0: EC failed to respond in time
+
+Fixes: ea9849113343 ("spi: rockchip: check return value of dmaengine_prep_slave_sg")
+Signed-off-by: Tomeu Vizoso <tomeu.vizoso-ZGY8ohtN/8qB+jHODAdFcQ@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-rockchip.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index cd89682065b9..1026e180eed7 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -578,7 +578,7 @@ static int rockchip_spi_transfer_one(
+ 		struct spi_device *spi,
+ 		struct spi_transfer *xfer)
+ {
+-	int ret = 1;
++	int ret = 0;
+ 	struct rockchip_spi *rs = spi_master_get_devdata(master);
+ 
+ 	WARN_ON(readl_relaxed(rs->regs + ROCKCHIP_SPI_SSIENR) &&
+@@ -627,6 +627,8 @@ static int rockchip_spi_transfer_one(
+ 			spi_enable_chip(rs, 1);
+ 			ret = rockchip_spi_prepare_dma(rs);
+ 		}
++		/* successful DMA prepare means the transfer is in progress */
++		ret = ret ? ret : 1;
+ 	} else {
+ 		spi_enable_chip(rs, 1);
+ 		ret = rockchip_spi_pio_transfer(rs);
+-- 
+2.8.1
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

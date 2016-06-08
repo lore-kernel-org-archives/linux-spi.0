@@ -1,60 +1,120 @@
-From: Tomeu Vizoso <tomeu.vizoso@collabora.com>
-Subject: [PATCH] spi: rockchip: Signal unfinished DMA transfers
-Date: Wed,  8 Jun 2016 09:32:51 +0200
-Message-ID: <1465371171-20810-1-git-send-email-tomeu.vizoso@collabora.com>
-Cc: Tomeu Vizoso <tomeu.vizoso@collabora.com>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Javier Martinez Canillas <javier@osg.samsung.com>,
-	Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org
-To: linux-kernel@vger.kernel.org
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: Add DMA support for spi_flash_read()" to the spi tree
+Date: Wed, 08 Jun 2016 10:25:40 +0100
+Message-ID: <E1bAZk4-00074D-C8@debutante>
+References: <1461577442-8853-3-git-send-email-vigneshr@ti.com>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+	linux-spi@vger.kernel.org, linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+To: Vignesh R <vigneshr@ti.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1461577442-8853-3-git-send-email-vigneshr@ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-When using DMA, the transfer_one callback should return 1 because the
-transfer hasn't finished yet.
+The patch
 
-A previous commit changed the function to return 0 when the DMA channels
-were correctly prepared.
+   spi: Add DMA support for spi_flash_read()
 
-This manifested in Veyron boards with this message:
+has been applied to the spi tree at
 
-[ 1.983605] cros-ec-spi spi0.0: EC failed to respond in time
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-Signed-off-by: Tomeu Vizoso <tomeu.vizoso@collabora.com>
-Fixes: ea9849113343 ("spi: rockchip: check return value of
-dmaengine_prep_slave_sg")
-Cc: Shawn Lin <shawn.lin@rock-chips.com>
-Cc: Heiko Stuebner <heiko@sntech.de>
-Cc: Javier Martinez Canillas <javier@osg.samsung.com>
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 12107f2fcc1dd832ebe0b8a61da2145eaea8730d Mon Sep 17 00:00:00 2001
+From: Vignesh R <vigneshr@ti.com>
+Date: Tue, 7 Jun 2016 13:48:09 +0530
+Subject: [PATCH] spi: Add DMA support for spi_flash_read()
+
+Few SPI devices provide accelerated read interfaces to read from
+SPI-NOR flash devices. These hardwares also support DMA to transfer data
+from flash to memory either via mem-to-mem DMA or dedicated slave DMA
+channels. Hence, add support for DMA in order to improve throughput and
+reduce CPU load.
+Use spi_map_buf() to get sg table for the buffer and pass it to SPI
+driver.
+
+Signed-off-by: Vignesh R <vigneshr@ti.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-rockchip.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/spi/spi.c       | 14 ++++++++++++++
+ include/linux/spi/spi.h |  4 ++++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index cd89682065b9..1026e180eed7 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -578,7 +578,7 @@ static int rockchip_spi_transfer_one(
- 		struct spi_device *spi,
- 		struct spi_transfer *xfer)
- {
--	int ret = 1;
-+	int ret = 0;
- 	struct rockchip_spi *rs = spi_master_get_devdata(master);
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 77e6e45951f4..da2cbe205654 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2725,6 +2725,7 @@ int spi_flash_read(struct spi_device *spi,
  
- 	WARN_ON(readl_relaxed(rs->regs + ROCKCHIP_SPI_SSIENR) &&
-@@ -627,6 +627,8 @@ static int rockchip_spi_transfer_one(
- 			spi_enable_chip(rs, 1);
- 			ret = rockchip_spi_prepare_dma(rs);
+ {
+ 	struct spi_master *master = spi->master;
++	struct device *rx_dev = NULL;
+ 	int ret;
+ 
+ 	if ((msg->opcode_nbits == SPI_NBITS_DUAL ||
+@@ -2750,9 +2751,22 @@ int spi_flash_read(struct spi_device *spi,
+ 			return ret;
  		}
-+		/* successful DMA prepare means the transfer is in progress */
-+		ret = ret ? ret : 1;
- 	} else {
- 		spi_enable_chip(rs, 1);
- 		ret = rockchip_spi_pio_transfer(rs);
+ 	}
++
+ 	mutex_lock(&master->bus_lock_mutex);
++	if (master->dma_rx) {
++		rx_dev = master->dma_rx->device->dev;
++		ret = spi_map_buf(master, rx_dev, &msg->rx_sg,
++				  msg->buf, msg->len,
++				  DMA_FROM_DEVICE);
++		if (!ret)
++			msg->cur_msg_mapped = true;
++	}
+ 	ret = master->spi_flash_read(spi, msg);
++	if (msg->cur_msg_mapped)
++		spi_unmap_buf(master, rx_dev, &msg->rx_sg,
++			      DMA_FROM_DEVICE);
+ 	mutex_unlock(&master->bus_lock_mutex);
++
+ 	if (master->auto_runtime_pm)
+ 		pm_runtime_put(master->dev.parent);
+ 
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 1f03483f61e5..7b53af4ba5f8 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -1143,6 +1143,8 @@ static inline ssize_t spi_w8r16be(struct spi_device *spi, u8 cmd)
+  * @opcode_nbits: number of lines to send opcode
+  * @addr_nbits: number of lines to send address
+  * @data_nbits: number of lines for data
++ * @rx_sg: Scatterlist for receive data read from flash
++ * @cur_msg_mapped: message has been mapped for DMA
+  */
+ struct spi_flash_read_message {
+ 	void *buf;
+@@ -1155,6 +1157,8 @@ struct spi_flash_read_message {
+ 	u8 opcode_nbits;
+ 	u8 addr_nbits;
+ 	u8 data_nbits;
++	struct sg_table rx_sg;
++	bool cur_msg_mapped;
+ };
+ 
+ /* SPI core interface for flash read support */
 -- 
-2.5.5
+2.8.1

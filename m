@@ -1,43 +1,60 @@
-From: Vignesh R <vigneshr@ti.com>
-Subject: Re: [PATCH v3 2/2] spi: spi-ti-qspi: Add DMA support for QSPI mmap
- read
-Date: Wed, 8 Jun 2016 12:23:42 +0530
-Message-ID: <5757C0F6.20906@ti.com>
-References: <20160607081810.6640-1-vigneshr@ti.com>
- <20160607081810.6640-3-vigneshr@ti.com>
- <1d3484c6-6f9e-847c-3e22-9b1726700a37@ti.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-Cc: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-omap@vger.kernel.org>
-To: Peter Ujfalusi <peter.ujfalusi@ti.com>,
-	Mark Brown <broonie@kernel.org>
+From: Tomeu Vizoso <tomeu.vizoso@collabora.com>
+Subject: [PATCH] spi: rockchip: Signal unfinished DMA transfers
+Date: Wed,  8 Jun 2016 09:32:51 +0200
+Message-ID: <1465371171-20810-1-git-send-email-tomeu.vizoso@collabora.com>
+Cc: Tomeu Vizoso <tomeu.vizoso@collabora.com>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Javier Martinez Canillas <javier@osg.samsung.com>,
+	Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org
+To: linux-kernel@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1d3484c6-6f9e-847c-3e22-9b1726700a37@ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+When using DMA, the transfer_one callback should return 1 because the
+transfer hasn't finished yet.
 
+A previous commit changed the function to return 0 when the DMA channels
+were correctly prepared.
 
-On Tuesday 07 June 2016 02:47 PM, Peter Ujfalusi wrote:
-[...]
->> @@ -637,6 +770,33 @@ static int ti_qspi_probe(struct platform_device *pdev)
->>  	if (ret)
->>  		goto free_master;
->>  
->> +	dma_cap_zero(mask);
->> +	dma_cap_set(DMA_MEMCPY, mask);
->> +
->> +	qspi->rx_chan = dma_request_channel(mask, NULL, NULL);
-> 
-> dma_request_channel is deprecated, please use the:
-> dma_request_chan_by_mask()
-> 
+This manifested in Veyron boards with this message:
 
-Updated to use dma_request_chan_by_mask() in v4, Thanks.
+[ 1.983605] cros-ec-spi spi0.0: EC failed to respond in time
 
+Signed-off-by: Tomeu Vizoso <tomeu.vizoso@collabora.com>
+Fixes: ea9849113343 ("spi: rockchip: check return value of
+dmaengine_prep_slave_sg")
+Cc: Shawn Lin <shawn.lin@rock-chips.com>
+Cc: Heiko Stuebner <heiko@sntech.de>
+Cc: Javier Martinez Canillas <javier@osg.samsung.com>
+---
+ drivers/spi/spi-rockchip.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index cd89682065b9..1026e180eed7 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -578,7 +578,7 @@ static int rockchip_spi_transfer_one(
+ 		struct spi_device *spi,
+ 		struct spi_transfer *xfer)
+ {
+-	int ret = 1;
++	int ret = 0;
+ 	struct rockchip_spi *rs = spi_master_get_devdata(master);
+ 
+ 	WARN_ON(readl_relaxed(rs->regs + ROCKCHIP_SPI_SSIENR) &&
+@@ -627,6 +627,8 @@ static int rockchip_spi_transfer_one(
+ 			spi_enable_chip(rs, 1);
+ 			ret = rockchip_spi_prepare_dma(rs);
+ 		}
++		/* successful DMA prepare means the transfer is in progress */
++		ret = ret ? ret : 1;
+ 	} else {
+ 		spi_enable_chip(rs, 1);
+ 		ret = rockchip_spi_pio_transfer(rs);
 -- 
-Regards
-Vignesh
+2.5.5

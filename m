@@ -1,7 +1,7 @@
 From: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [V3, 3/4] arm: dts: Add bcm-nsp and bcm958625k support
-Date: Fri, 10 Jun 2016 16:06:10 -0400
-Message-ID: <1465589171-25575-3-git-send-email-kdasu.kdev@gmail.com>
+Subject: [V3, 4/4] arm64: dts: Add ns2 SoC support
+Date: Fri, 10 Jun 2016 16:06:11 -0400
+Message-ID: <1465589171-25575-4-git-send-email-kdasu.kdev@gmail.com>
 References: <1465589171-25575-1-git-send-email-kdasu.kdev@gmail.com>
 Cc: bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, vikram.prakash-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
 	andy.fung-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, jon.mason-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
@@ -15,7 +15,7 @@ Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 Adding qspi node compatible with the new spi-bcm-qspi
-driver for the broadcom's northstar SoCwq.
+driver for the broadcom's northstar2 SoC.
 
 Signed-off-by: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Yendapally Reddy Dhananjaya Reddy <yendapally.reddy-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
@@ -23,57 +23,16 @@ Signed-off-by: Yendapally Reddy Dhananjaya Reddy <yendapally.reddy-dY08KVG/lbpWk
 V3 chnage fixes checkpatch errors and warnings
 V2 no change
 ---
- arch/arm/boot/dts/bcm-nsp.dtsi   | 30 ++++++++++++++++++++++++++++++
- arch/arm/boot/dts/bcm958625k.dts | 34 ++++++++++++++++++++++++++++++++++
- 2 files changed, 64 insertions(+)
+ arch/arm64/boot/dts/broadcom/ns2-svk.dts | 34 ++++++++++++++++++++++++++++++++
+ arch/arm64/boot/dts/broadcom/ns2.dtsi    | 19 ++++++++++++++++++
+ 2 files changed, 53 insertions(+)
 
-diff --git a/arch/arm/boot/dts/bcm-nsp.dtsi b/arch/arm/boot/dts/bcm-nsp.dtsi
-index def9e78..aae45e6 100644
---- a/arch/arm/boot/dts/bcm-nsp.dtsi
-+++ b/arch/arm/boot/dts/bcm-nsp.dtsi
-@@ -206,6 +206,36 @@
- 			brcm,nand-has-wp;
- 		};
- 
-+		qspi: qspi@27200 {
-+			compatible = "brcm,spi-bcm-qspi";
-+			reg = <0x027200 0x184>,
-+			      <0x027000 0x124>,
-+			      <0x11c408 0x004>,
-+			      <0x0273a0 0x01c>;
-+			reg-names = "mspi", "bspi", "intr_regs",
-+				    "intr_status_reg";
-+			interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 73 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 75 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 76 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 77 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 78 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-names = "spi_lr_fullness_reached",
-+					  "spi_lr_session_aborted",
-+					  "spi_lr_impatient",
-+					  "spi_lr_session_done",
-+					  "spi_lr_overhead",
-+					  "mspi_done",
-+					  "mspi_halted";
-+			clocks = <&iprocmed>;
-+			clock-names = "iprocmed";
-+			clock-frequency = <12500000>;
-+			num-cs = <2>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+		};
-+
- 		ccbtimer0: timer@34000 {
- 			compatible = "arm,sp804";
- 			reg = <0x34000 0x1000>;
-diff --git a/arch/arm/boot/dts/bcm958625k.dts b/arch/arm/boot/dts/bcm958625k.dts
-index e298450..5aea779 100644
---- a/arch/arm/boot/dts/bcm958625k.dts
-+++ b/arch/arm/boot/dts/bcm958625k.dts
-@@ -114,3 +114,37 @@
- 		groups = "nand_grp";
+diff --git a/arch/arm64/boot/dts/broadcom/ns2-svk.dts b/arch/arm64/boot/dts/broadcom/ns2-svk.dts
+index 54ca40c..0754841 100644
+--- a/arch/arm64/boot/dts/broadcom/ns2-svk.dts
++++ b/arch/arm64/boot/dts/broadcom/ns2-svk.dts
+@@ -132,3 +132,37 @@
+ 		#size-cells = <1>;
  	};
  };
 +
@@ -110,6 +69,35 @@ index e298450..5aea779 100644
 +		};
 +	};
 +};
+diff --git a/arch/arm64/boot/dts/broadcom/ns2.dtsi b/arch/arm64/boot/dts/broadcom/ns2.dtsi
+index ec68ec1..9d7c90c 100644
+--- a/arch/arm64/boot/dts/broadcom/ns2.dtsi
++++ b/arch/arm64/boot/dts/broadcom/ns2.dtsi
+@@ -399,5 +399,24 @@
+ 
+ 			brcm,nand-has-wp;
+ 		};
++
++		qspi: spi@66470200 {
++			compatible = "brcm,spi-bcm-qspi";
++			reg = <0x66470200 0x184>,
++				<0x66470000 0x124>,
++				<0x67017408 0x004>,
++				<0x664703a0 0x01c>;
++			reg-names = "mspi", "bspi", "intr_regs",
++				"intr_status_reg";
++			interrupts = <GIC_SPI 419 IRQ_TYPE_LEVEL_HIGH>;
++			interrupt-names = "spi_l1_intr";
++			clocks = <&iprocmed>;
++			clock-names = "iprocmed";
++			clock-frequency = <12500000>;
++			num-cs = <2>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++		};
++
+ 	};
+ };
 -- 
 1.9.1
 

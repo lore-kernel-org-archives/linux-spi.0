@@ -1,106 +1,56 @@
-From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH v3 01/13] spi: sunxi: set maximum and minimum speed of
- SPI master
-Date: Mon, 13 Jun 2016 21:55:02 +0200
-Message-ID: <20160613195502.GA2600@lukather>
+From: Maxime Ripard <maxime.ripard@free-electrons.com>
+Subject: Re: [PATCH v3 02/13] spi: sunxi: fix transfer timeout
+Date: Mon, 13 Jun 2016 21:55:29 +0200
+Message-ID: <20160613195529.GB2600@lukather>
 References: <cover.1465490774.git.hramrach@gmail.com>
- <2db0ce0ea1ddc17e9bb790c8cc50bcb4bb97be58.1465490774.git.hramrach@gmail.com>
+ <064955d033503f129c3e138b0563817d1fffab27.1465490774.git.hramrach@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="C7zPtVaVf+AK4Oqc"
-Cc: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org, stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>,
-	Russell King <linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
-	Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>,
-	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
-	Simon Horman <horms+renesas-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
-	Sjoerd Simons <sjoerd.simons-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>,
-	Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-	Alison Wang <b18965-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Timo Sigurdsson <public_timo.s-fWgRPtSzPNU3WX+qO2AYSQ@public.gmane.org>,
-	Jonathan Liu <net147-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Gerhard Bertelsmann <info-La43T0Mi4bH5xCKuJOYmCvaTkwRoYoCU@public.gmane.org>,
-	Priit Laes <plaes-q/aMd4JkU83YtjvyW6yDsg@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	protocol="application/pgp-signature"; boundary="4bRzO86E/ozDv8r1"
+Cc: linux-sunxi@googlegroups.com, stable@vger.kernel.org,
+	Rob Herring <robh+dt@kernel.org>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora.org>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Mark Brown <broonie@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Olof Johansson <olof@lixom.net>,
+	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+	Javier Martinez Canillas <javier@osg.samsung.com>,
+	Simon Horman <horms+renesas@verge.net.au>,
+	Sjoerd Simons <sjoerd.simons@collabora.co.uk>,
+	Thierry Reding <treding@nvidia.com>,
+	Alison Wang <b18965@freescale.com>,
+	Timo Sigurdsson <public_timo.s@silentcreek.de>,
+	Jonathan Liu <net147@gmail.com>,
+	Gerhard Bertelsmann <info@gerhard-bertelsmann.de>,
+	Priit Laes <plaes@plaes.org>, devicetree@vger.kernel.org,
 	linux-arm-kernel@list
-To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Michal Suchanek <hramrach@gmail.com>
+Return-path: <stable-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <2db0ce0ea1ddc17e9bb790c8cc50bcb4bb97be58.1465490774.git.hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <064955d033503f129c3e138b0563817d1fffab27.1465490774.git.hramrach@gmail.com>
+Sender: stable-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---C7zPtVaVf+AK4Oqc
+--4bRzO86E/ozDv8r1
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 On Mon, Jun 13, 2016 at 05:46:49PM -0000, Michal Suchanek wrote:
-> The speed limits are unset in the sun4i and sun6i SPI drivers.
+> The trasfer timeout is fixed at 1000 ms. Reading a 4Mbyte flash over
+> 1MHz SPI bus takes way longer than that. Calculate the timeout from the
+> actual time the transfer is supposed to take and multiply by 2 for good
+> measure.
 >=20
-> The maximum speed of SPI master is used when maximum speed of SPI slave
-> is not specified. Also the __spi_validate function should check that
-> transfer speeds do not exceed the master limits.
->=20
-> The user manual for A10 and A31 specifies maximum
-> speed of the SPI clock as 100MHz and minimum as 3kHz.
->=20
-> Setting the SPI clock to out-of-spec values can lock up the SoC.
->=20
-> Signed-off-by: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> --
-> v2:
-> new patch
-> v3:
-> fix constant style
-> ---
->  drivers/spi/spi-sun4i.c | 2 ++
->  drivers/spi/spi-sun6i.c | 2 ++
->  2 files changed, 4 insertions(+)
->=20
-> diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
-> index 1ddd9e2..4213508 100644
-> --- a/drivers/spi/spi-sun4i.c
-> +++ b/drivers/spi/spi-sun4i.c
-> @@ -387,6 +387,8 @@ static int sun4i_spi_probe(struct platform_device *pd=
-ev)
->  	}
-> =20
->  	sspi->master =3D master;
-> +	master->max_speed_hz =3D 100 * 1000 * 1000;
-> +	master->min_speed_hz =3D          3 * 1000;
->  	master->set_cs =3D sun4i_spi_set_cs;
->  	master->transfer_one =3D sun4i_spi_transfer_one;
->  	master->num_chipselect =3D 4;
-> diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
-> index 42e2c4b..fe70695 100644
-> --- a/drivers/spi/spi-sun6i.c
-> +++ b/drivers/spi/spi-sun6i.c
-> @@ -386,6 +386,8 @@ static int sun6i_spi_probe(struct platform_device *pd=
-ev)
->  	}
-> =20
->  	sspi->master =3D master;
-> +	master->max_speed_hz =3D 100 * 1000 * 1000;
-> +	master->min_speed_hz =3D          3 * 1000;
->  	master->set_cs =3D sun6i_spi_set_cs;
->  	master->transfer_one =3D sun6i_spi_transfer_one;
->  	master->num_chipselect =3D 4;
+> Signed-off-by: Michal Suchanek <hramrach@gmail.com>
 
-I really don't get why you want to do that kind of padding, when no
-one does in the rest of the driver, or the rest of the kernel.
+Acked-by: Maxime Ripard <maxime.ripard@free-electrons.com>
 
-Once properly changed,
-Acked-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-
-Thanks,
 Maxime
 
 --=20
@@ -108,29 +58,25 @@ Maxime Ripard, Free Electrons
 Embedded Linux, Kernel and Android engineering
 http://free-electrons.com
 
---C7zPtVaVf+AK4Oqc
+--4bRzO86E/ozDv8r1
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQIcBAEBAgAGBQJXXw+WAAoJEBx+YmzsjxAggbAP/i3j7Ax9XN5zRI16Qt44rEAn
-M6r958+FQFSwBXYRSphSLRF6jlHoGoPSsmLx4cQph10+7K++2X6KqCs2WAQGXvbc
-FJVYdeC7KWGTn/+AIIW2ygeq/r6cjWdRwrHKQi2IvCMUdfog8fy8Zgle/m0Komsd
-ZYXJaW6TnCn5HJXMd/9y3s54NWGHOthZkSRvdD+bSKgp/p5bHQ2kLkqDjphYkHzH
-KHI6bHk8YZQBzhtCrHs0tTopKLip4xAcHOkhfkznELg2PWsZWitLUoDYcAwIgVwG
-ZjOnmQcGyEDC3LTYH5V4qxfa3y7olqrPjosbsdjEPCCLW3d/+L29L4ESl2sCPoKI
-043XCWEywl+gA/hGPgm/CcuapcYApIRPpLIfyf7N80chLLBZvq29BbXARNu7pGCP
-SovSkKkubYQaFALaAWhnq8iNvbVTwd/JeV84qjchcAuaMqpCuVfdcQw14XtmPhPC
-dmyvSsdpS0TxFm4OGSlLYAYJyZNO7OoqFY33DvFYTr876aYJNhr5xpjX8d+bLdzL
-pmcal09EW9PKNMPCsYxPuCmOe0e7BHqjDJA8IrvMBmCqn8Gy9lCeo+T8dide0G4s
-HZBzkBE3y17Hsnh9X7GnMZEtWCaeBGT8ks2E/GKIdt5nTlP9RS+SXIsFy44jDwgq
-b9SeLukbeImMPnJtI2Ho
-=vXou
+iQIcBAEBAgAGBQJXXw+xAAoJEBx+YmzsjxAgtQUQAIVacQYe8Hn5EXkzexpyOXie
+xLkDqPMtcYuOAQ7A40ZV4rEzCSErkFTZay3Zrt/TwslRGzbl7D+3YG1rZLQ+lzXX
+ypVFM9kSXoGiPEoxfB709uMC5wG+BHN3NOn+GPqWoRsdvZcTDQoeF1wxBCYF8su1
+tYtQHPiVTpDNti3TIC3Qs4FdvMNU0sqP8GyO39HHNhgKWJ7s2JB23OqMCK3vjEZM
+UDxBV1I5rXrX4bxx1J28vzMggwFsiCi5e/Lymr3/g/CveeQYnc8JLJfPXtIX+RCl
+Fh3a+YvKdoJvb32oH5tPx+xoRbHhCL5uPBQAWrCATmO+elQO1ezXZQT1EF39dXz+
+vZoXKLFtH9yQHF0q4F+Oahw+1aF/f7dTApNT+/NVNANqUPy1zNrirBkDYyCbBKip
+HSaMq70KTH8pU4GwLD/0WZli6hc5zYeSvM4cxIh3KPJ9eSP40TUQcfBoogW5TJMj
+1TpVfDtd+tXKyxt5ovLU3MxnRUDKAvETQZRPwQI6YgcOeVAVYGr9JeCTrj3QH0US
+2OsAWjQFtVCxg0Fjc10UTYltatmI3yxvHptZ9S+75J/DT//yx9JNZlUKAWO9dpL/
+bwmd+vFv8eSdmChApm5VgrDpCfLTA4lEqK+8TgcXikvNa8ibjiK2Rvink555bq6N
+uPiZe22XgrphxbL176ot
+=7o8b
 -----END PGP SIGNATURE-----
 
---C7zPtVaVf+AK4Oqc--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--4bRzO86E/ozDv8r1--

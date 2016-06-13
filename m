@@ -1,63 +1,99 @@
-From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH v3 04/13] spi: sunxi: expose maximum
- transfer size limit
-Date: Mon, 13 Jun 2016 21:56:20 +0200
-Message-ID: <20160613195620.GD2600@lukather>
+From: Maxime Ripard <maxime.ripard@free-electrons.com>
+Subject: Re: [PATCH v3 00/13] sunxi spi fixes
+Date: Mon, 13 Jun 2016 21:57:16 +0200
+Message-ID: <20160613195716.GD9354@lukather>
 References: <cover.1465490774.git.hramrach@gmail.com>
- <6962eec8da0b5255cafd7782bcc39ca19041c2b1.1465490774.git.hramrach@gmail.com>
-Reply-To: maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="P+33d92oIH25kiaB"
-Cc: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>,
-	Russell King <linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
-	Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>,
-	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
-	Simon Horman <horms+renesas-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
-	Sjoerd Simons <sjoerd.simons-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>,
-	Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-	Alison Wang <b18965-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Timo Sigurdsson <public_timo.s-fWgRPtSzPNU3WX+qO2AYSQ@public.gmane.org>,
-	Jonathan Liu <net147-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Gerhard Bertelsmann <info-La43T0Mi4bH5xCKuJOYmCvaTkwRoYoCU@public.gmane.org>,
-	Priit Laes <plaes-q/aMd4JkU83YtjvyW6yDsg@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-ker
-To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-sunxi+bncBDSJBYGBRIMBBZM77S5AKGQEK5SLPGI-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+	protocol="application/pgp-signature"; boundary="AjmyJqqohANyBN/e"
+Cc: linux-sunxi@googlegroups.com, stable@vger.kernel.org,
+	Rob Herring <robh+dt@kernel.org>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora.org>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Mark Brown <broonie@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Olof Johansson <olof@lixom.net>,
+	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+	Javier Martinez Canillas <javier@osg.samsung.com>,
+	Simon Horman <horms+renesas@verge.net.au>,
+	Sjoerd Simons <sjoerd.simons@collabora.co.uk>,
+	Thierry Reding <treding@nvidia.com>,
+	Alison Wang <b18965@freescale.com>,
+	Timo Sigurdsson <public_timo.s@silentcreek.de>,
+	Jonathan Liu <net147@gmail.com>,
+	Gerhard Bertelsmann <info@gerhard-bertelsmann.de>,
+	Priit Laes <plaes@plaes.org>, devicetree@vger.kernel.org,
+	linux-arm-kernel@list
+To: Michal Suchanek <hramrach@gmail.com>
+Return-path: <stable-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <6962eec8da0b5255cafd7782bcc39ca19041c2b1.1465490774.git.hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <https://groups.google.com/group/linux-sunxi
-List-Subscribe: <https://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
- <https://groups.google.com/group/linux-sunxi/subscribe>
+In-Reply-To: <cover.1465490774.git.hramrach@gmail.com>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---P+33d92oIH25kiaB
-Content-Type: text/plain; charset=UTF-8
+--AjmyJqqohANyBN/e
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 13, 2016 at 05:46:50PM -0000, Michal Suchanek wrote:
-> The sun4i spi hardware can trasfer at most 63 bytes of data without DMA
-> support so report the limitation. Same for sun6i.
-> 
-> Signed-off-by: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+On Mon, Jun 13, 2016 at 05:46:48PM -0000, Michal Suchanek wrote:
+> Hello,
+>=20
+> This is update of the sunxi spi patches that should give full-featured SPI
+> driver.
+>=20
+> First three patches fix issues with the current driver and can be of use =
+for
+> stable kernels so adding cc for those.
+>=20
+> I merged the sun4i and sun6i driver because there several issues that nee=
+d to
+> be fixed in both separately and they are even out of sync wrt some fixes.
+> I guess some of the merge patches can be squashed.
+>=20
+> I tested this with A10s Olinuxino Micro. I have no sun6i device so I cann=
+ot
+> tell if that side was broken by this patchset - especially the last patch=
+ that
+> adds DMA was afaik never tested on sun6i.
 
-Acked-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+So, you didn't run that code through checkpatch and you rewrite the
+whole thing entirely without even testing it... Awesome.
+
+For the record, I'm still very much opposed to such a merge.
+
+The first fixes are very welcome though, can and should go in.
 
 Maxime
 
--- 
+--=20
 Maxime Ripard, Free Electrons
 Embedded Linux, Kernel and Android engineering
 http://free-electrons.com
---P+33d92oIH25kiaB--
+
+--AjmyJqqohANyBN/e
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBAgAGBQJXXxAcAAoJEBx+YmzsjxAg9SAQAIgYwmPOmGbLSQ/SUUwcB5Oe
+RaJjByOlmc4Te9z1IWheyWWkNHoNvn5JP9aJYYCoYPp64/io9bZ4XoVUWhED1Lqp
+Y4ibeO/xWUBQtIsuEosZ9kFCtA9L30G/3HX0DW98wFOXWI4yctGd+DRaFNeIWyz0
+mH1JjKwTCmUXeBPFVZIb9qpJLkagbReY7M2mFDRZohRuhDxbzZkkbmeN3bjHVbIL
+VrEhOU/2AOKKuCkOI5x/Qf7Kp3ZvEClIvXS58BPN2op1fKlmh791cmiJPXHu8hxC
+JPv9zGZxfRRW4+xb3dDGKW7g5KOUjHl8Yck4tHNQlBGp7R19YEE3zQq6a/UNZ0ST
+HDKAvlm2CGaN1ZExk7LKakUOqZvQDqDDkk03x8fVUFkngO1H+PwdAUzZ4J4vIFW0
+WK/AN9mcMtcshBvrCcI7eLLfCpp6S5cJVZbSI7LXvQdt7vttUivxPQNcvaeJlCn9
+YPdAHUJNtcwTvwaPxp0/9KVQnmz5Y754FanJsN/b0UZQbXxbVCFK4rpCbW4AJgW4
+TRXak3osnx2+TUxy22oUGGxTIkF8FPThgy/9vtPMTHbMFmEGTxdi16w7DI0KPCfM
+K8snDke0MaAkO5erIlJi8RSZlg2+cfCZfF2RgoF/hl15WSVb2ZBjLSEe59m5jzYo
+Dk5Pq3WqzBLqP3pEGGmL
+=sa5+
+-----END PGP SIGNATURE-----
+
+--AjmyJqqohANyBN/e--

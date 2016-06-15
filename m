@@ -1,61 +1,88 @@
-From: Crestez Dan Leonard <leonard.crestez@intel.com>
-Subject: [PATCH 3/3] acpi spi: Initialize modalias from of_compatible
-Date: Wed, 15 Jun 2016 21:30:29 +0300
-Message-ID: <40e5cbb0aa638c619fc7fe9f1dbfaa50e888c2ac.1466014238.git.leonard.crestez@intel.com>
-References: <cover.1466014238.git.leonard.crestez@intel.com>
-Cc: Crestez Dan Leonard <leonard.crestez@intel.com>,
-	Len Brown <lenb@kernel.org>, linux-i2c@vger.kernel.org,
-	Wolfram Sang <wsa@the-dreams.de>, linux-spi@vger.kernel.org,
-	Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
-	Octavian Purdila <octavian.purdila@intel.com>
-To: linux-acpi@vger.kernel.org,
-	"Rafael J. Wysocki" <rjw@rjwysocki.net>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <cover.1466014238.git.leonard.crestez@intel.com>
-In-Reply-To: <cover.1466014238.git.leonard.crestez@intel.com>
-References: <cover.1466014238.git.leonard.crestez@intel.com>
-Sender: linux-kernel-owner@vger.kernel.org
+From: "Rafael J. Wysocki" <rafael-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v3 7/8] acpi: add support for configfs
+Date: Wed, 15 Jun 2016 23:02:20 +0200
+Message-ID: <CAJZ5v0ip=GuF041dR3m4mMSOqxMU7BDMYC2YTpKtCsjL6pXM+w@mail.gmail.com>
+References: <201606150617.OKhb5WCs%fengguang.wu@intel.com> <3209646.novQQXrKbd@vostro.rjw.lan>
+ <CAE1zotJFg6xWexm0WbxOwU0JFsQ5NJUvo-Tw=hFmqXpNMuwYbA@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: "Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
+	kbuild test robot <lkp-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, kbuild-all-JC7UmRfGjtg@public.gmane.org,
+	Len Brown <lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Matt Fleming <matt-mF/unelCI9GS6iBeEJttW/XRex20P6io@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
+	Joel Becker <jlbec-aKy9MeLSZ9dg9hUCZPvPmw@public.gmane.org>,
+	"linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-efi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c <linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Irina Tirdea <irina.tirdea-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-efi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CAE1zotJFg6xWexm0WbxOwU0JFsQ5NJUvo-Tw=hFmqXpNMuwYbA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-efi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-When using devicetree spi_device.modalias is set to the compatible
-string with the vendor prefix removed. For SPI devices described via
-ACPI the i2c_board_info.type string is initialized by acpi_device_hid.
-When using ACPI and DT ids this string ends up something like "PRP0001".
+On Wed, Jun 15, 2016 at 12:20 PM, Octavian Purdila
+<octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org> wrote:
+> On Wed, Jun 15, 2016 at 1:59 AM, Rafael J. Wysocki <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org> wrote:
+>> Hi Octavian,
+>>
+>> On Wednesday, June 15, 2016 06:43:21 AM kbuild test robot wrote:
+>>> Hi,
+>>>
+>>> [auto build test ERROR on pm/linux-next]
+>>> [also build test ERROR on v4.7-rc3]
+>>> [cannot apply to next-20160614]
+>>> [if your patch is applied to the wrong git tree, please drop us a note to help improve the system]
+>>>
+>>> url:    https://github.com/0day-ci/linux/commits/Octavian-Purdila/ACPI-overlays/20160614-202312
+>>> base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+>>> config: x86_64-allyesconfig (attached as .config)
+>>> compiler: gcc-6 (Debian 6.1.1-1) 6.1.1 20160430
+>>> reproduce:
+>>>         # save the attached .config to linux build tree
+>>>         make ARCH=x86_64
+>>>
+>>> Note: the linux-review/Octavian-Purdila/ACPI-overlays/20160614-202312 HEAD 042f716a165ffa274684c787377acddfc1f34e3f builds fine.
+>>>       It only hurts bisectibility.
+>>>
+>>> All errors (new ones prefixed by >>):
+>>>
+>>>    drivers/acpi/configfs.c: In function 'acpi_configfs_init':
+>>> >> drivers/acpi/configfs.c:19:31: error: 'acpi_configfs' undeclared (first use in this function)
+>>>      struct config_group *root = &acpi_configfs.su_group;
+>>>                                   ^~~~~~~~~~~~~
+>>>    drivers/acpi/configfs.c:19:31: note: each undeclared identifier is reported only once for each function it appears in
+>>>    drivers/acpi/configfs.c: In function 'acpi_configfs_exit':
+>>>    drivers/acpi/configfs.c:33:33: error: 'acpi_configfs' undeclared (first use in this function)
+>>>      configfs_unregister_subsystem(&acpi_configfs);
+>>>                                     ^~~~~~~~~~~~~
+>>>
+>>> vim +/acpi_configfs +19 drivers/acpi/configfs.c
+>>>
+>>>     13        #include <linux/configfs.h>
+>>>     14        #include <linux/acpi.h>
+>>>     15
+>>>     16        static int __init acpi_configfs_init(void)
+>>>     17        {
+>>>     18                int ret;
+>>>   > 19                struct config_group *root = &acpi_configfs.su_group;
+>>>     20
+>>>     21                config_group_init(root);
+>>>     22
+>>>
+>>> ---
+>>
+>> Any chance to send an updated patch with this fixed?
+>>
+>> No need to resend the whole series, just this single patch, please.
+>>
+>
+> Oops, sorry about that. I will have to resend at least the last two
+> patches to fix this issue, but since I have missed to add the
+> Reviewed-by from Mika for another two patches, its probably best to
+> resend the whole series?
 
-Change acpi_register_spi_device to use the of_compatible property if
-present. This makes it easier to instantiate spi drivers through ACPI
-with DT ids.
-
-Signed-off-by: Crestez Dan Leonard <leonard.crestez@intel.com>
----
- drivers/spi/spi.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 77e6e45..eef5ac2 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1680,11 +1680,19 @@ static acpi_status acpi_spi_add_device(acpi_handle handle, u32 level,
- 		return AE_OK;
- 	}
- 
-+	if (adev->data.of_compatible) {
-+		ret = acpi_of_modalias(adev, spi->modalias, sizeof(spi->modalias));
-+		if (ret) {
-+			spi_dev_put(spi);
-+			return AE_NOT_FOUND;
-+		}
-+	} else
-+		strlcpy(spi->modalias, acpi_device_hid(adev), sizeof(spi->modalias));
-+
- 	if (spi->irq < 0)
- 		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
- 
- 	adev->power.flags.ignore_parent = true;
--	strlcpy(spi->modalias, acpi_device_hid(adev), sizeof(spi->modalias));
- 	if (spi_add_device(spi)) {
- 		adev->power.flags.ignore_parent = false;
- 		dev_err(&master->dev, "failed to add SPI device %s from ACPI\n",
--- 
-2.5.5
+Yes, please.

@@ -1,68 +1,71 @@
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: Re: [PATCH 2/3] acpi i2c: Initialize info.type from of_compatible
-Date: Thu, 16 Jun 2016 11:11:45 +0300
-Message-ID: <20160616081145.GU1740@lahna.fi.intel.com>
+From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [PATCH 3/3] acpi spi: Initialize modalias from of_compatible
+Date: Thu, 16 Jun 2016 11:12:57 +0300
+Message-ID: <20160616081257.GV1740@lahna.fi.intel.com>
 References: <cover.1466014238.git.leonard.crestez@intel.com>
- <13cb5b7766b1b25a2bb61ce0053a38f6f440907b.1466014238.git.leonard.crestez@intel.com>
+ <40e5cbb0aa638c619fc7fe9f1dbfaa50e888c2ac.1466014238.git.leonard.crestez@intel.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: linux-acpi@vger.kernel.org,
-	"Rafael J. Wysocki" <rjw@rjwysocki.net>,
-	Len Brown <lenb@kernel.org>, linux-i2c@vger.kernel.org,
-	Wolfram Sang <wsa@the-dreams.de>, linux-spi@vger.kernel.org,
-	Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
-	Octavian Purdila <octavian.purdila@intel.com>,
-	Jarkko Nikula <jarkko.nikula@intel.com>
-To: Crestez Dan Leonard <leonard.crestez@intel.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Cc: linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
+	Len Brown <lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Jarkko Nikula <jarkko.nikula-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: Crestez Dan Leonard <leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <13cb5b7766b1b25a2bb61ce0053a38f6f440907b.1466014238.git.leonard.crestez@intel.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <40e5cbb0aa638c619fc7fe9f1dbfaa50e888c2ac.1466014238.git.leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Jun 15, 2016 at 09:30:28PM +0300, Crestez Dan Leonard wrote:
-> When using devicetree i2c_board_info.type is set to the compatible
-> string with the vendor prefix removed. For I2C devices described via
-> ACPI the i2c_board_info.type string is set to the ACPI device name. When
-> using ACPI and DT ids this string ends up something like "PRP0001:00".
+On Wed, Jun 15, 2016 at 09:30:29PM +0300, Crestez Dan Leonard wrote:
+> When using devicetree spi_device.modalias is set to the compatible
+> string with the vendor prefix removed. For SPI devices described via
+> ACPI the i2c_board_info.type string is initialized by acpi_device_hid.
+> When using ACPI and DT ids this string ends up something like "PRP0001".
 > 
-> If the of_compatible property is present try to use that instead. This
-> makes it easier to instantiate i2c drivers through ACPI with DT ids.
-
-Adding Jarkko -- he was the original author of I2C/SPI device naming in
-ACPI. Since this only affects devices with PRP0001 in their _HID/_CID,
-it should not break anything.
-
-> Signed-off-by: Crestez Dan Leonard <leonard.crestez@intel.com>
+> Change acpi_register_spi_device to use the of_compatible property if
+> present. This makes it easier to instantiate spi drivers through ACPI
+> with DT ids.
+> 
+> Signed-off-by: Crestez Dan Leonard <leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 > ---
->  drivers/i2c/i2c-core.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
+>  drivers/spi/spi.c | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/i2c/i2c-core.c b/drivers/i2c/i2c-core.c
-> index af11b65..5ab1fb9 100644
-> --- a/drivers/i2c/i2c-core.c
-> +++ b/drivers/i2c/i2c-core.c
-> @@ -188,8 +188,14 @@ static acpi_status acpi_i2c_add_device(acpi_handle handle, u32 level,
->  
->  	acpi_dev_free_resource_list(&resource_list);
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 77e6e45..eef5ac2 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -1680,11 +1680,19 @@ static acpi_status acpi_spi_add_device(acpi_handle handle, u32 level,
+>  		return AE_OK;
+>  	}
 >  
 > +	if (adev->data.of_compatible) {
-
-We may want to add acpi_is_of_compatible(adev) or similar at some point.
-
-> +		ret = acpi_of_modalias(adev, info.type, sizeof(info.type));
-> +		if (ret)
-> +			return -EINVAL;
+> +		ret = acpi_of_modalias(adev, spi->modalias, sizeof(spi->modalias));
+> +		if (ret) {
+> +			spi_dev_put(spi);
+> +			return AE_NOT_FOUND;
+> +		}
 > +	} else
-> +		strlcpy(info.type, dev_name(&adev->dev), sizeof(info.type));
+> +		strlcpy(spi->modalias, acpi_device_hid(adev), sizeof(spi->modalias));
 
-Please use {} in the else branch as well. See Documentation/CodingStyle.
+Same here, use {} in the else branch.
 
 > +
+>  	if (spi->irq < 0)
+>  		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
+>  
 >  	adev->power.flags.ignore_parent = true;
-> -	strlcpy(info.type, dev_name(&adev->dev), sizeof(info.type));
->  	if (!i2c_new_device(adapter, &info)) {
+> -	strlcpy(spi->modalias, acpi_device_hid(adev), sizeof(spi->modalias));
+>  	if (spi_add_device(spi)) {
 >  		adev->power.flags.ignore_parent = false;
->  		dev_err(&adapter->dev,
+>  		dev_err(&master->dev, "failed to add SPI device %s from ACPI\n",
 > -- 
 > 2.5.5
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

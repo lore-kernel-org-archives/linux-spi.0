@@ -1,57 +1,26 @@
-From: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH] spi: add spi_sync_single_transfer wrapper for single
- spi_transfer
-Date: Thu, 16 Jun 2016 08:40:46 +0900
-Message-ID: <1466034046-718-1-git-send-email-andi.shyti@samsung.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Andi Shyti <andi-ahk0KpmfxKRAfugRpC6u6w@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: Re: [PATCH 1/3] acpi: Export acpi_of_modalias equiv of
+ of_modalias_node
+Date: Thu, 16 Jun 2016 11:04:05 +0300
+Message-ID: <20160616080405.GS1740@lahna.fi.intel.com>
+References: <cover.1466014238.git.leonard.crestez@intel.com>
+ <2cc8100c0c0f79a56163429aaefc0fcfecc808f4.1466014238.git.leonard.crestez@intel.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-acpi@vger.kernel.org,
+	"Rafael J. Wysocki" <rjw@rjwysocki.net>,
+	Len Brown <lenb@kernel.org>, linux-i2c@vger.kernel.org,
+	Wolfram Sang <wsa@the-dreams.de>, linux-spi@vger.kernel.org,
+	Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
+	Octavian Purdila <octavian.purdila@intel.com>
+To: Crestez Dan Leonard <leonard.crestez@intel.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <2cc8100c0c0f79a56163429aaefc0fcfecc808f4.1466014238.git.leonard.crestez@intel.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-The spi_sync_single_transfer function calls spi_sync_transfer
-with a single spi_transfer element, instead of an array.
+On Wed, Jun 15, 2016 at 09:30:27PM +0300, Crestez Dan Leonard wrote:
+> +int acpi_of_modalias(struct acpi_device *adev, char *outstr, int outlen)
 
-Signed-off-by: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
----
- include/linux/spi/spi.h | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
-
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 1f03483..660f6a1 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -1051,6 +1051,24 @@ spi_sync_transfer(struct spi_device *spi, struct spi_transfer *xfers,
- 	return spi_sync(spi, &msg);
- }
- 
-+/**
-+ * spi_sync_single_transfer - synchronous SPI data transfer of one spi_transfer
-+ * @spi: device with which data will be exchanged
-+ * @xfers: One spi_transfer struct
-+ * Context: can sleep
-+ *
-+ * Does a synchronous SPI data transfer of a given spi_transfer.
-+ *
-+ * For more specific semantics see spi_sync_transfer().
-+ *
-+ * It returns zero on success, else a negative error code.
-+ */
-+static inline int
-+spi_sync_single_transfer(struct spi_device *spi, struct spi_transfer *xfers)
-+{
-+	return spi_sync_transfer(spi, xfers, 1);
-+}
-+
- /* this copies txbuf and rxbuf data; for small transfers only! */
- extern int spi_write_then_read(struct spi_device *spi,
- 		const void *txbuf, unsigned n_tx,
--- 
-2.8.1
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Why not size_t for outlen?

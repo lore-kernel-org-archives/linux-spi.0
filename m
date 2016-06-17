@@ -1,43 +1,41 @@
-From: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: [PATCH] spi: add spi_sync_single_transfer wrapper for single
- spi_transfer
-Date: Fri, 17 Jun 2016 09:43:11 +0900
-Message-ID: <20160617004311.GA911@samsunx.samsung>
-References: <1466034046-718-1-git-send-email-andi.shyti@samsung.com>
- <CGME20160616161054epcas1p26a6616bcb99a3375eee6c11c76117d76@epcas1p2.samsung.com>
- <5762CF88.4060800@metafoo.de>
+From: Crestez Dan Leonard <leonard.crestez@intel.com>
+Subject: Re: [RFC] regmap: Add regmap_pipe_read API
+Date: Fri, 17 Jun 2016 10:04:27 +0300
+Message-ID: <643b0e6a-49a0-00bb-7aed-6d36c1e0bb6b@intel.com>
+References: <7ca3857aa8869a1e1f4709860f57f7d92abf1c6b.1466089603.git.leonard.crestez@intel.com>
+ <CAMuHMdVSQd0z=fXmr9RJ7-DY_7pHbMQri1sx2=pXZfTS=_Qrzw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Andi Shyti <andi-ahk0KpmfxKRAfugRpC6u6w@public.gmane.org>
-To: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-disposition: inline
-In-reply-to: <5762CF88.4060800-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie@kernel.org>,
+	linux-spi <linux-spi@vger.kernel.org>,
+	Wolfram Sang <wsa@the-dreams.de>,
+	Linux I2C <linux-i2c@vger.kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Return-path: <linux-i2c-owner@vger.kernel.org>
+In-Reply-To: <CAMuHMdVSQd0z=fXmr9RJ7-DY_7pHbMQri1sx2=pXZfTS=_Qrzw@mail.gmail.com>
+Sender: linux-i2c-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Lars,
-
-> > The spi_sync_single_transfer function calls spi_sync_transfer
-> > with a single spi_transfer element, instead of an array.
+On 06/16/2016 06:43 PM, Geert Uytterhoeven wrote:
+> Hi Leonard,
 > 
-> So, what's the advantage of using this as opposed to calling
-> spi_sync_transfer with a 1 for the number of transfers?
+> On Thu, Jun 16, 2016 at 5:24 PM, Crestez Dan Leonard
+> <leonard.crestez@intel.com> wrote:
+>> The regmap API usually assumes that bulk read operations will read a
+>> range of registers but some I2C/SPI devices have certain registers for
+>> which a such a read operation will return data from an internal FIFO
+>> instead. Add an explicit API to support bulk read with pipe rather than
+>> range semantics.
+> 
+> Please settle on either "fifo" or "pipe", instead of mixing both.
+> Personally, I prefer the former.
 
-Not much, but it keeps the code a bit nicer to read for those
-using spi_sync_transfer with only one spi_transfer. Besides it's
-also more understandable what the function itself does and there
-would not be any need to jump into the spi_sync_transfer to check
-what the number '1' is needed for (for example it's not a boolean 
-'true' value).
+Well, it doesn't have to be a fifo. The device can return data from some
+other kind of buffer (maybe a stack). I can adjust the documentation to
+clarify.
 
-I checked and there are quite many uses of spi_sync_transfer with
-only 1 transfer.
-
-Thanks,
-Andi
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+I considered naming it something like regmap_multi_read_one_reg or
+something but regmap_pipe_read sounds reasonable and short.

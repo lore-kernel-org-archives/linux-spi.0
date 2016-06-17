@@ -1,142 +1,55 @@
-From: Octavian Purdila <octavian.purdila@intel.com>
-Subject: [PATCH v4 2/8] acpi: fix enumeration (visited) flags for bus rescans
-Date: Fri, 17 Jun 2016 14:52:10 +0300
-Message-ID: <1466164336-9508-3-git-send-email-octavian.purdila@intel.com>
-References: <1466164336-9508-1-git-send-email-octavian.purdila@intel.com>
-Cc: Joel Becker <jlbec@evilplan.org>, linux-acpi@vger.kernel.org,
-	linux-efi@vger.kernel.org, linux-i2c@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	irina.tirdea@intel.com, leonard.crestez@intel.com,
-	Octavian Purdila <octavian.purdila@intel.com>
-To: "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-	Len Brown <lenb@kernel.org>,
-	Matt Fleming <matt@codeblueprint.co.uk>,
-	Mark Brown <broonie@kernel.org>,
-	Wolfram Sang <wsa@the-dreams.de>
+From: Crestez Dan Leonard <leonard.crestez@intel.com>
+Subject: Re: [PATCH 2/3] acpi i2c: Initialize info.type from of_compatible
+Date: Fri, 17 Jun 2016 15:07:39 +0300
+Message-ID: <2ca8f355-bb28-8b68-7579-e26eaee3550a@intel.com>
+References: <cover.1466014238.git.leonard.crestez@intel.com>
+ <13cb5b7766b1b25a2bb61ce0053a38f6f440907b.1466014238.git.leonard.crestez@intel.com>
+ <20160616081145.GU1740@lahna.fi.intel.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Cc: linux-acpi@vger.kernel.org,
+	"Rafael J. Wysocki" <rjw@rjwysocki.net>,
+	Len Brown <lenb@kernel.org>, linux-i2c@vger.kernel.org,
+	Wolfram Sang <wsa@the-dreams.de>, linux-spi@vger.kernel.org,
+	Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
+	Octavian Purdila <octavian.purdila@intel.com>,
+	Jarkko Nikula <jarkko.nikula@intel.com>
+To: Mika Westerberg <mika.westerberg@linux.intel.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1466164336-9508-1-git-send-email-octavian.purdila@intel.com>
+In-Reply-To: <20160616081145.GU1740@lahna.fi.intel.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-If the ACPI tables changes as a result of a dinamically loaded table and
-a bus rescan is required the enumeration/visited flag are not
-consistent.
+On 06/16/2016 11:11 AM, Mika Westerberg wrote:
+> On Wed, Jun 15, 2016 at 09:30:28PM +0300, Crestez Dan Leonard wrote:
+>> When using devicetree i2c_board_info.type is set to the compatible
+>> string with the vendor prefix removed. For I2C devices described via
+>> ACPI the i2c_board_info.type string is set to the ACPI device name. When
+>> using ACPI and DT ids this string ends up something like "PRP0001:00".
+>>
+>> If the of_compatible property is present try to use that instead. This
+>> makes it easier to instantiate i2c drivers through ACPI with DT ids.
+> 
+> Adding Jarkko -- he was the original author of I2C/SPI device naming in
+> ACPI. Since this only affects devices with PRP0001 in their _HID/_CID,
+> it should not break anything.
 
-I2C/SPI are not directly enumerated in acpi_bus_attach(), however the
-visited flag is set. This makes it impossible to check if an ACPI device
-has already been enumerated by the I2C and SPI subsystems. To fix this
-issue we only set the visited flags if the device is not I2C or SPI.
+It's possible to have something like this:
 
-With this change we also need to remove setting visited to false from
-acpi_bus_attach(), otherwise if we rescan already enumerated I2C/SPI
-devices we try to re-enumerate them.
+            Name (_HID, "XXX1234")
+            Name (_CID, "PRP0001")
+            Name (_DSD, Package () {
+                ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+                Package () {
+                    Package () {"compatible", "vendor,x1234"},
+                }
+            })
 
-Note that I2C/SPI devices can be enumerated either via a scan handler
-(when using PRP0001) or via regular device_attach(). In either case
-the flow goes through acpi_default_enumeration() which makes it the
-ideal place to mark the ACPI device as enumerated.
+With these patches the i2c device name changes from "XXX1234:00" to
+"x1234". This would happen even if a driver matches the XXX1234 acpi ID.
+It's not clear if anyone actually uses that or if this change would be
+harmful.
 
-Signed-off-by: Octavian Purdila <octavian.purdila@intel.com>
----
- drivers/acpi/scan.c  | 13 +++++++------
- include/linux/acpi.h | 18 ++++++++++++++++++
- 2 files changed, 25 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index 5f28cf7..f80f8a7 100644
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -1406,7 +1406,7 @@ void acpi_init_device_object(struct acpi_device *device, acpi_handle handle,
- 	acpi_bus_get_flags(device);
- 	device->flags.match_driver = false;
- 	device->flags.initialized = true;
--	device->flags.visited = false;
-+	acpi_device_clear_enumerated(device);
- 	device_initialize(&device->dev);
- 	dev_set_uevent_suppress(&device->dev, true);
- 	acpi_init_coherency(device);
-@@ -1683,8 +1683,10 @@ static void acpi_default_enumeration(struct acpi_device *device)
- 	acpi_dev_get_resources(device, &resource_list, acpi_check_spi_i2c_slave,
- 			       &is_spi_i2c_slave);
- 	acpi_dev_free_resource_list(&resource_list);
--	if (!is_spi_i2c_slave)
-+	if (!is_spi_i2c_slave) {
- 		acpi_create_platform_device(device);
-+		acpi_device_set_enumerated(device);
-+	}
- }
- 
- static const struct acpi_device_id generic_device_ids[] = {
-@@ -1751,7 +1753,7 @@ static void acpi_bus_attach(struct acpi_device *device)
- 	acpi_bus_get_status(device);
- 	/* Skip devices that are not present. */
- 	if (!acpi_device_is_present(device)) {
--		device->flags.visited = false;
-+		acpi_device_clear_enumerated(device);
- 		device->flags.power_manageable = 0;
- 		return;
- 	}
-@@ -1766,7 +1768,7 @@ static void acpi_bus_attach(struct acpi_device *device)
- 
- 		device->flags.initialized = true;
- 	}
--	device->flags.visited = false;
-+
- 	ret = acpi_scan_attach_handler(device);
- 	if (ret < 0)
- 		return;
-@@ -1780,7 +1782,6 @@ static void acpi_bus_attach(struct acpi_device *device)
- 		if (!ret && device->pnp.type.platform_id)
- 			acpi_default_enumeration(device);
- 	}
--	device->flags.visited = true;
- 
-  ok:
- 	list_for_each_entry(child, &device->children, node)
-@@ -1872,7 +1873,7 @@ void acpi_bus_trim(struct acpi_device *adev)
- 	 */
- 	acpi_device_set_power(adev, ACPI_STATE_D3_COLD);
- 	adev->flags.initialized = false;
--	adev->flags.visited = false;
-+	acpi_device_clear_enumerated(adev);
- }
- EXPORT_SYMBOL_GPL(acpi_bus_trim);
- 
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 288fac5..7089e99 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -532,6 +532,16 @@ void acpi_walk_dep_device_list(acpi_handle handle);
- struct platform_device *acpi_create_platform_device(struct acpi_device *);
- #define ACPI_PTR(_ptr)	(_ptr)
- 
-+static inline void acpi_device_set_enumerated(struct acpi_device *adev)
-+{
-+	adev->flags.visited = true;
-+}
-+
-+static inline void acpi_device_clear_enumerated(struct acpi_device *adev)
-+{
-+	adev->flags.visited = false;
-+}
-+
- #else	/* !CONFIG_ACPI */
- 
- #define acpi_disabled 1
-@@ -678,6 +688,14 @@ static inline enum dev_dma_attr acpi_get_dma_attr(struct acpi_device *adev)
- 
- #define ACPI_PTR(_ptr)	(NULL)
- 
-+static inline void acpi_device_set_enumerated(struct acpi_device *adev)
-+{
-+}
-+
-+static inline void acpi_device_clear_enumerated(struct acpi_device *adev)
-+{
-+}
-+
- #endif	/* !CONFIG_ACPI */
- 
- #ifdef CONFIG_ACPI
--- 
-2.7.4
+It theory it would be possible to use of_compatible for naming only if
+there are no other real IDs. I don't think it's worthwhile.

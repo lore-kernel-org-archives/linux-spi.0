@@ -1,47 +1,46 @@
-From: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH, V4, 5/5] mtd: m25p80: Let m25p80_read() fallback to spi transfer
-Date: Fri, 17 Jun 2016 17:03:53 -0400
-Message-ID: <1466197433-11290-5-git-send-email-kdasu.kdev@gmail.com>
-References: <1466197433-11290-1-git-send-email-kdasu.kdev@gmail.com>
-Cc: bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, vikram.prakash-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
-	andy.fung-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, jon.mason-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
-	Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+From: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>
+Subject: [RFC] [PATCH 0/3] scatterlist: Add support to clone sg_table
+Date: Fri, 17 Jun 2016 17:45:10 -0500
+Message-ID: <1466203513-4771-1-git-send-email-fcooper@ti.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+Cc: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <david.s.gordon-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	<akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>, <nsekhar-l0cyMroinI0@public.gmane.org>, <vigneshr-l0cyMroinI0@public.gmane.org>,
+	<peter.ujfalusi-l0cyMroinI0@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1466197433-11290-1-git-send-email-kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-In m25p80_read() even though spi_flash_read() is supported
-by some drivers, under certain circumstances like unaligned
-buffer, address or address range limitations on certain SoCs
-let it fallback to core spi reads. Such drivers are expected
-to return -EAGAIN so that the m25p80_read() uses standard
-spi transfer.
+This patchset creates two new functions within scatterlist that allows a
+user to pass in a sg_table and receive a duplicate copy. The sgl in this
+copied table are dynamically allocated but its values such as offset,
+length and dma_address are the same as its variant within the sgl in the
+original sg_table.
 
-Signed-off-by: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/mtd/devices/m25p80.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+This is useful when tweaks to sgl may be needed to alter a future DMA
+operation by tweaking the table nents count or the individual sgl
+offset/length without changing the original values.
 
-diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
-index 9d68544..3f90542 100644
---- a/drivers/mtd/devices/m25p80.c
-+++ b/drivers/mtd/devices/m25p80.c
-@@ -149,8 +149,11 @@ static int m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
- 		msg.data_nbits = m25p80_rx_nbits(nor);
- 
- 		ret = spi_flash_read(spi, &msg);
--		*retlen = msg.retlen;
--		return ret;
-+		/* some drivers might need to fallback to spi transfer */
-+		if (ret != -EAGAIN) {
-+			*retlen = msg.retlen;
-+			return ret;
-+		}
- 	}
- 
- 	spi_message_init(&m);
+An example use case is also included in this patchset. In the omap2-mcspi
+driver on certain OMAP SOCs if certain conditions are met the DMA should
+transfer one or two less elements when reading from the SPI. The
+remaining bytes are read in CPU mode. To accomplish this the spi's rx_sg
+sgl should have the last entry length reduced for the DMA operation.
+However, this change should only be done locally so instead of altering
+the original sgl this new function allows a clone to be created.
+
+Franklin S Cooper Jr (3):
+  lib/scatterlist: Add support to clone sg_table
+  spi: omap2-mcspi: Add comments for RX only DMA buffer workaround
+  spi: omap2-mcspi: Use the SPI framework to handle DMA mapping
+
+ drivers/spi/spi-omap2-mcspi.c | 122 +++++++++++++++++-------------------------
+ include/linux/scatterlist.h   |   2 +
+ lib/scatterlist.c             |  93 ++++++++++++++++++++++++++++++++
+ 3 files changed, 144 insertions(+), 73 deletions(-)
+
 -- 
 1.9.1
 

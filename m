@@ -1,41 +1,70 @@
-From: Crestez Dan Leonard <leonard.crestez@intel.com>
-Subject: Re: [RFC] regmap: Add regmap_pipe_read API
-Date: Fri, 17 Jun 2016 10:04:27 +0300
-Message-ID: <643b0e6a-49a0-00bb-7aed-6d36c1e0bb6b@intel.com>
-References: <7ca3857aa8869a1e1f4709860f57f7d92abf1c6b.1466089603.git.leonard.crestez@intel.com>
- <CAMuHMdVSQd0z=fXmr9RJ7-DY_7pHbMQri1sx2=pXZfTS=_Qrzw@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie@kernel.org>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Linux I2C <linux-i2c@vger.kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-i2c-owner@vger.kernel.org>
-In-Reply-To: <CAMuHMdVSQd0z=fXmr9RJ7-DY_7pHbMQri1sx2=pXZfTS=_Qrzw@mail.gmail.com>
-Sender: linux-i2c-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Subject: [PATCH 1/5] spi: do not fail if the CS line is not connected
+Date: Fri, 17 Jun 2016 16:57:21 +0900
+Message-ID: <1466150245-2648-2-git-send-email-andi.shyti@samsung.com>
+References: <1466150245-2648-1-git-send-email-andi.shyti@samsung.com>
+Cc: Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Andi Shyti <andi-ahk0KpmfxKRAfugRpC6u6w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-reply-to: <1466150245-2648-1-git-send-email-andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 06/16/2016 06:43 PM, Geert Uytterhoeven wrote:
-> Hi Leonard,
-> 
-> On Thu, Jun 16, 2016 at 5:24 PM, Crestez Dan Leonard
-> <leonard.crestez@intel.com> wrote:
->> The regmap API usually assumes that bulk read operations will read a
->> range of registers but some I2C/SPI devices have certain registers for
->> which a such a read operation will return data from an internal FIFO
->> instead. Add an explicit API to support bulk read with pipe rather than
->> range semantics.
-> 
-> Please settle on either "fifo" or "pipe", instead of mixing both.
-> Personally, I prefer the former.
+Some SPI connected devices do not have any CS line connected as
+some devices are alway enabled. Indeed, until now, a common
+workaround was to assign to num_chipselect a -1 value or 255
+(num_chipselect is unsigned).
 
-Well, it doesn't have to be a fifo. The device can return data from some
-other kind of buffer (maybe a stack). I can adjust the documentation to
-clarify.
+In this case do not fail and defer to the SPI device drivers the
+responsibility to check whether the num-cs is '0'.
 
-I considered naming it something like regmap_multi_read_one_reg or
-something but regmap_pipe_read sounds reasonable and short.
+Signed-off-by: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+---
+ drivers/spi/spi.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 77e6e45..f22dc27 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -504,8 +504,13 @@ int spi_add_device(struct spi_device *spi)
+ 	struct device *dev = master->dev.parent;
+ 	int status;
+ 
+-	/* Chipselects are numbered 0..max; validate. */
+-	if (spi->chip_select >= master->num_chipselect) {
++	/*
++	 * Chipselects are numbered 0..max; validate.
++	 * If there is no chip select (i.e. num_chipselect == 0),
++	 * the comparison doesn't make sense.
++	 */
++	if (master->num_chipselect &&
++				spi->chip_select >= master->num_chipselect) {
+ 		dev_err(dev, "cs%d >= max %d\n",
+ 			spi->chip_select,
+ 			master->num_chipselect);
+@@ -1851,12 +1856,6 @@ int spi_register_master(struct spi_master *master)
+ 	if (status)
+ 		return status;
+ 
+-	/* even if it's just one always-selected device, there must
+-	 * be at least one chipselect
+-	 */
+-	if (master->num_chipselect == 0)
+-		return -EINVAL;
+-
+ 	if ((master->bus_num < 0) && master->dev.of_node)
+ 		master->bus_num = of_alias_get_id(master->dev.of_node, "spi");
+ 
+-- 
+2.8.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

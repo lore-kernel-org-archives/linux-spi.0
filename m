@@ -1,51 +1,67 @@
-From: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-Subject: Re: [RFC] regmap: Add regmap_pipe_read API
-Date: Fri, 17 Jun 2016 10:05:49 +0200
-Message-ID: <5763AF5D.4090309@metafoo.de>
-References: <7ca3857aa8869a1e1f4709860f57f7d92abf1c6b.1466089603.git.leonard.crestez@intel.com>
- <CAMuHMdVSQd0z=fXmr9RJ7-DY_7pHbMQri1sx2=pXZfTS=_Qrzw@mail.gmail.com>
- <643b0e6a-49a0-00bb-7aed-6d36c1e0bb6b@intel.com>
+From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v3 00/13] sunxi spi fixes
+Date: Fri, 17 Jun 2016 12:34:44 +0200
+Message-ID: <CAOMqctS6ZQ3_a97sE2e7H34ZCny2aDE38V1tQA=-SBZwF2sbDQ@mail.gmail.com>
+References: <cover.1465490774.git.hramrach@gmail.com> <20160613195716.GD9354@lukather>
+Reply-To: hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
-	Linux I2C <linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Jonathan Cameron <jic23-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Crestez Dan Leonard <leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <643b0e6a-49a0-00bb-7aed-6d36c1e0bb6b-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>, stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>,
+	Russell King <linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>,
+	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>, Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
+	Simon Horman <horms+renesas-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>, Sjoerd Simons <sjoerd.simons-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>,
+	Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, Alison Wang <b18965-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Timo Sigurdsson <public_timo.s-fWgRPtSzPNU3WX+qO2AYSQ@public.gmane.org>, Jonathan Liu <net147-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Gerhard Bertelsmann <info-La43T0Mi4bH5xCKuJOYmCvaTkwRoYoCU@public.gmane.org>, Priit Laes <plaes-q/aMd4JkU83YtjvyW6yDsg@public.gmane.org>,
+	devicetree <devicetree-u79uwXL29TZNg+MwTxZMZA@public.gmane.org
+To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Return-path: <linux-sunxi+bncBCQMLUOX54MBB3FER65QKGQEEJIYV5Y-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+In-Reply-To: <20160613195716.GD9354@lukather>
+List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <https://groups.google.com/group/linux-sunxi
+List-Subscribe: <https://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+ <https://groups.google.com/group/linux-sunxi/subscribe>
+List-Id: linux-spi.vger.kernel.org
 
-On 06/17/2016 09:04 AM, Crestez Dan Leonard wrote:
-> On 06/16/2016 06:43 PM, Geert Uytterhoeven wrote:
->> Hi Leonard,
+Hello,
+
+On 13 June 2016 at 21:57, Maxime Ripard
+<maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> wrote:
+> On Mon, Jun 13, 2016 at 05:46:48PM -0000, Michal Suchanek wrote:
+>> Hello,
 >>
->> On Thu, Jun 16, 2016 at 5:24 PM, Crestez Dan Leonard
->> <leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org> wrote:
->>> The regmap API usually assumes that bulk read operations will read a
->>> range of registers but some I2C/SPI devices have certain registers for
->>> which a such a read operation will return data from an internal FIFO
->>> instead. Add an explicit API to support bulk read with pipe rather than
->>> range semantics.
+>> This is update of the sunxi spi patches that should give full-featured SPI
+>> driver.
 >>
->> Please settle on either "fifo" or "pipe", instead of mixing both.
->> Personally, I prefer the former.
-> 
-> Well, it doesn't have to be a fifo. The device can return data from some
-> other kind of buffer (maybe a stack). I can adjust the documentation to
-> clarify.
-> 
-> I considered naming it something like regmap_multi_read_one_reg or
-> something but regmap_pipe_read sounds reasonable and short.
+>> First three patches fix issues with the current driver and can be of use for
+>> stable kernels so adding cc for those.
+>>
+>> I merged the sun4i and sun6i driver because there several issues that need to
+>> be fixed in both separately and they are even out of sync wrt some fixes.
+>> I guess some of the merge patches can be squashed.
+>>
+>> I tested this with A10s Olinuxino Micro. I have no sun6i device so I cannot
+>> tell if that side was broken by this patchset - especially the last patch that
+>> adds DMA was afaik never tested on sun6i.
+>
 
-stream might be another option, but pipe is ok in my opinion.
+>
+> For the record, I'm still very much opposed to such a merge.
+>
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+What is the reason against the merge? I did not find the original discussion.
+
+I tried to rename everything in the drivers from sun4i and sun6i to
+sunxi to look at a clean diff and found about 5 differences 2 of which
+look like a bug.
+
+Thanks
+
+Michal

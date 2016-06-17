@@ -1,78 +1,60 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [V3, 2/4] spi: bcm-qspi: Add SPI flash and MSPI driver
-Date: Fri, 17 Jun 2016 12:32:51 +0100
-Message-ID: <20160617113251.GF26099@sirena.org.uk>
-References: <1465589171-25575-1-git-send-email-kdasu.kdev@gmail.com>
- <1465589171-25575-2-git-send-email-kdasu.kdev@gmail.com>
- <20160613101352.GF2282@sirena.org.uk>
- <CAKekbesr2i3N+yw0VV1aYqJONbBraKTNpibzm7NO_+sBbwENyw@mail.gmail.com>
- <20160614165816.GT2282@sirena.org.uk>
- <CAKekbesG+_9wOuP4HXGKJdK-kmEn443g=vUdyu6Zdn==NO-YHw@mail.gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi: add spi_sync_single_transfer wrapper for single
+ spi_transfer
+Date: Fri, 17 Jun 2016 12:34:53 +0100
+Message-ID: <20160617113453.GG26099@sirena.org.uk>
+References: <1466034046-718-1-git-send-email-andi.shyti@samsung.com>
+ <CGME20160616161054epcas1p26a6616bcb99a3375eee6c11c76117d76@epcas1p2.samsung.com>
+ <5762CF88.4060800@metafoo.de>
+ <20160617004311.GA911@samsunx.samsung>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="fwqqG+mf3f7vyBCB"
-Cc: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
-	Vikram Prakash <vikram.prakash-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Andy Fung <andy.fung-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Jon Mason <jon.mason-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Yendapally Reddy Dhananjaya Reddy
-	<yendapally.reddy-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-To: Kamal Dasu <kamal.dasu-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="f5QefDQHtn8hx44O"
+Cc: Lars-Peter Clausen <lars@metafoo.de>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Andi Shyti <andi@etezian.org>
+To: Andi Shyti <andi.shyti@samsung.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CAKekbesG+_9wOuP4HXGKJdK-kmEn443g=vUdyu6Zdn==NO-YHw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <20160617004311.GA911@samsunx.samsung>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---fwqqG+mf3f7vyBCB
+--f5QefDQHtn8hx44O
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 15, 2016 at 06:56:10PM -0400, Kamal Dasu wrote:
+On Fri, Jun 17, 2016 at 09:43:11AM +0900, Andi Shyti wrote:
 
-> I was looking at spi_flash_read() caled from m25p80_read()  and spi
-> core implementation. I have a case where when we have very small reads
-> or  unaligned buffers and addresses passed then I have to fall back to
-> using standard MSPI reads. How best to handle this ?. One of the
-> options without having to replicate code  involves a minor change to
-> m25p80 driver as shown below.
+> > > The spi_sync_single_transfer function calls spi_sync_transfer
+> > > with a single spi_transfer element, instead of an array.
 
-That looks reasonable.  Another option might be to provide a way for
-m25p80 to discover the constraints itself.
+> > So, what's the advantage of using this as opposed to calling
+> > spi_sync_transfer with a 1 for the number of transfers?
 
-> >> Currently not used. But I did not see a good way to be able to send
-> >> commands, like finding the ID, setting 3/4 byte addressing mode , quad
-> >> mode, on a PM resume(). Are you suggesting I make a driver similar to
-> >> m25p80  ?.
+> Not much, but it keeps the code a bit nicer to read for those
+> using spi_sync_transfer with only one spi_transfer. Besides it's
+> also more understandable what the function itself does and there
+> would not be any need to jump into the spi_sync_transfer to check
+> what the number '1' is needed for (for example it's not a boolean=20
+> 'true' value).
 
-> > I am suggesting you implement the standard flash interfaces and as a
-> > result directly use m25p80.
+I really don't think this has been a big source of confusion for people.
 
-> Are you suggesting to use something like spi_read_then_write() in
-> cases where I want to set the addressing and single/quad modes ?.
-
-Or an explicit series of transfers.
-
---fwqqG+mf3f7vyBCB
+--f5QefDQHtn8hx44O
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJXY9/hAAoJECTWi3JdVIfQRVEH/jKLtzBFr2rgEKJ9UQ5SvZ7/
-rtgRCeLZBaA/3X+qyn8P5fJ3t2aIUxjFNRH3CtePg9n1dGBNjPwmIfgk7Canxfev
-3sqwtYzR6SX81GiVKhhJsq6hhBKwZ4Dp6lnIMiYpnwjydlurmrcy1KKHkuPqFuzA
-O68u5ifT/bbeS/OYA6zD6vF9Cqn+0DUr2XgfpcqEEt/SW/NlvnJ4UnWbCddCyS1H
-hpMV70/4tXSukQXOil/Gf7DTg3PwqHDUlatMJH1AAJzbP+MORxg4eFLxnSazbfdn
-44tTxdC+Lf21zUgAJODI32ClaElFSoXIx+h5wuzdGOMI5kzMo3IsHWKqWsArk+o=
-=Pgzt
+iQEcBAEBCAAGBQJXY+BcAAoJECTWi3JdVIfQkjwH/1+fAfyg9aDF/ohOane2rEAg
+fGzf+YdfsyAeK9qaNH5asNhwO1k4JdYYP8MKWzQRQSJ1XvbWvFsSPJ7o9DZoExzH
+79fVdropcSg32LfosNxVj9mZ4LzYYKDxrtzrqgs7C3kbSkCR2rgzFT9CT0u2SDUW
+DEUyO6YW5lD4i0nMNkSbl9NSZhc0JMwvh1k8MF+Owpo5XSagcoAcGrfPRlyyreO2
+v9BqELKwGXw6fRyNbPgXBYUAaPU3pMIJQUPtnZy4v4BqM9fZF2Cja/D845/JHDJ1
+GyVZXLhtEurIyxjCr51gCqZt7MPgwUrR/Lorsh35rXJiShsmgfyI2/l3zg65TnA=
+=Pgz6
 -----END PGP SIGNATURE-----
 
---fwqqG+mf3f7vyBCB--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--f5QefDQHtn8hx44O--

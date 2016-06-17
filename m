@@ -1,72 +1,127 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/5] spi: do not fail if the CS line is not connected
-Date: Fri, 17 Jun 2016 13:28:03 +0100
-Message-ID: <20160617122803.GN26099@sirena.org.uk>
-References: <1466150245-2648-1-git-send-email-andi.shyti@samsung.com>
- <1466150245-2648-2-git-send-email-andi.shyti@samsung.com>
- <20160617104725.GC26099@sirena.org.uk>
- <20160617113622.GA10760@jack.zhora.eu>
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 2/2] mtd: m25p80: consider max_transfer_size when reading
+Date: Fri, 17 Jun 2016 22:13:53 +0200
+Message-ID: <1107393a-374f-856b-9f63-28a9793a18e1@gmail.com>
+References: <56D22823.7090005@gmail.com> <20160405193952.GA5243@localhost>
+ <57041B43.2000109@gmail.com> <20160405210727.GB5243@localhost>
+ <5706B084.2070909@gmail.com> <20160505235700.GA99474@google.com>
+ <20160506121431.GQ6292@sirena.org.uk>
+ <77a22258-95ca-031a-825d-a9e98e30a162@gmail.com>
+ <20160606174003.GE7510@sirena.org.uk>
+ <a57adb90-0d80-186f-17d3-6fdf106bfb4a@gmail.com>
+ <20160606230752.GM7510@sirena.org.uk>
+ <fe0042f9-66c9-51fd-ca91-641c5cc25c40@gmail.com>
+ <20977e07-6354-2753-8286-e992c32454d1@gmail.com>
+ <CAOMqctQfsN4OoXN59yH13n-UJiEUJVOkxzMTMAndmBc8Dq+ANA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="JLiXfqD9/Kt1b+Pq"
-Cc: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>, Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Andi Shyti <andi-ahk0KpmfxKRAfugRpC6u6w@public.gmane.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+	Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Han Xu <han.xu-3arQi8VN3Tc@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20160617113622.GA10760-A05emIGRluN/OPZsa/fw/Q@public.gmane.org>
+In-Reply-To: <CAOMqctQfsN4OoXN59yH13n-UJiEUJVOkxzMTMAndmBc8Dq+ANA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Am 09.06.2016 um 09:12 schrieb Michal Suchanek:
+> On 8 June 2016 at 21:51, Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>> Am 07.06.2016 um 08:03 schrieb Heiner Kallweit:
+>>> Am 07.06.2016 um 01:07 schrieb Mark Brown:
+>>>> On Mon, Jun 06, 2016 at 08:53:10PM +0200, Heiner Kallweit wrote:
+>>>>> Am 06.06.2016 um 19:40 schrieb Mark Brown:
+>>>>
+>>>>>> That doesn't make any sense, the controller hardware doesn't
+>>>>>> magically change based on what is connected to it.
+>>>>
+>>>>> The issue with fsl-espi is that the controller deactivates CS after
+>>>>> each physical transfer. And a lot of HW designs use the hardware CS,
+>>>>> therefore the advise to use a GPIO instead doesn't really help.
+>>>>
+>>>> There's no pinmux to fix the broken behaviour?  The Freescale SPI
+>>>> controllers really are terrible :(
+>>>>
+>>>>> In case of SPI NOR CS needs to stay active between command and data
+>>>>
+>>>> In the case of *all* SPI transactions this needs to happen.  This is
+>>>> *not* optional, it's not some weird requirement of NOR, it's one of the
+>>>> most basic requirements for a SPI driver on Linux.
+>>>>
+>>>>> Well, we could reduce the max_transfer_size exposed by the driver by
+>>>>> the max length of a m25p80 read command in general.
+>>>>
+>>>> No!  Apart from anything else this would be a complete and total
+>>>> abstraction failure.  This is a driver for a SPI controller, not a
+>>>> driver for a flash controller, which means that it should not have flash
+>>>> specific hacks in it.
+>>>>
+>>>>> Then we might be too strict for other SPI devices, but this may
+>>>>> be acceptable as the current fsl-espi driver is usable with SPI NOR
+>>>>> devices only anyway.
+>>>>
+>>>> What makes you say this?  I'm guessing that the driver is just broken
+>>>> but it would be good to understand the specifics.
+>>>>
+>>> See fsl_espi_rw_trans():
+>>> In case of transfers > SPCOM_TRANLEN_MAX it loops and reads in
+>>> SPCOM_TRANLEN_MAX chunks whilst replacing bytes 2-4 of the
+>>> message buffer with the new start address to read from.
+>>> Having said that it implicitely assumes that the first transfer in
+>>> the message is a m25p80 read command with a 3 byte address.
+>>>
+>>> And in fsl_espi_do_one_msg() it assumes that each message includes
+>>> max one r/o transfer (else rx_buf is overwritten).
+>>>
+>>> I'm not 100% sure whether any arbitrary combination of r/o, r/w, w/o
+>>> transfers in a SPI message is acceptable. But this controller driver
+>>> supports just the transfer combinations generated by the m25p80
+>>> protocol driver.
+>>>
+>> I think in this discussion there was the idea already to introduce
+>> a message size limit complementing the transfer size limit.
+>> Could this be an acceptable way to go?
+>> If yes I'd prepare a patch as basis for further discussion.
+>>
+> I think it would be better to introduce a flag saying that the
+> transfer size limit is also a message size limit. We don't have a
+> controller which has different limit for both and protocol drivers
+> that only send one transfer in the message do not need to care that
+> way.
+> 
+I like this idea. In spi_master we could introduce a bool flag
+max_message_size_flag. This would indicate that the max transfer
+size is also the max message size. Then we could change
+m25p80_read to:
 
---JLiXfqD9/Kt1b+Pq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+t[0].tx_buf = flash->command;
+t[0].len = m25p_cmdsz(nor) + dummy;
+spi_message_add_tail(&t[0], &m);
 
-On Fri, Jun 17, 2016 at 08:36:22PM +0900, Andi Shyti wrote:
+max_read_len = spi_max_transfer_size(spi);
+if (spi->master->max_message_size_flag)
+	max_read_len -= t[0].len;
 
-> > > In this case do not fail and defer to the SPI device drivers the
-> > > responsibility to check whether the num-cs is '0'.
+t[1].rx_buf = buf;
+t[1].rx_nbits = m25p80_rx_nbits(nor);
+t[1].len = min(len, max_read_len);
 
-> > A SPI controller always has one chip seelct, it may not be controllable
-> > but it's at least logically present.
+> Also it might be nice to add functionality to spi core that detects
+> drivers that don't have neither set_cs nor cs gpio and do message
+> coalescing for them in the core transfer_one_message.
+> 
+> You could allocate two buffers of the same size, copy the transfer
+> bits into the transfer buffer, do a transfer, and copy the receive
+> bits out of the receive buffer.
+> 
+> Thanks
+> 
+> Michal
+> 
 
-> This is true, but there are cases where the CS is not connected
-> and this case needs to be treated separately to allow the device
-> to work.
-
-In what way?  It is just as easy for a device with no physical chip
-select to have a logical chip select of 0 that it does nothing with as
-it is for that device to handle any other number.
-
-> This is the case of:
-
-> ./drivers/spi/spi-mpc52xx-psc.c:391: master->num_chipselect = 255;
-> ./drivers/spi/spi-oc-tiny.c:256:        master->num_chipselect = 255;
-
-> ./drivers/spi/spi-pxa2xx-pci.c:64:              .num_chipselect = -1,
-> ./drivers/spi/spi-bcm2835aux.c:436:     master->num_chipselect = -1;
-
-These need fixing.
-
---JLiXfqD9/Kt1b+Pq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJXY+zFAAoJECTWi3JdVIfQakEH/iVX1C7bDNxvwfKfmQ9Uq6SE
-isu3+MXuK1/57RmhP/T4rzfiGsig0onzrV6Rcimk5VnyjN5Y2kEd96Uv1OkkOAOB
-UAIiywT0MhboRAni0KSuUGn8f6E57jIMUbpVhBbNR1PYCenya6zG+UsF8KZ/nQIS
-oANRe6ryHlYbRg4y9EFbMsEZwQzRZ2To40dwikiO2jGSNPliRQHp3oxzlhqDb3+M
-S2a0Kq3GFXDQXXgDvDocP/y2iAq+kw4V4refbX29xWTiBA1a/LogJvYf9MtL2PAb
-N2NjKQknIU5xSzcPCpbimU02qLIn2Q/DPnAwI3VYrag8c3Ln9kr3zEBZLq8dmrE=
-=78J/
------END PGP SIGNATURE-----
-
---JLiXfqD9/Kt1b+Pq--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

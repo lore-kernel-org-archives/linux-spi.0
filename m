@@ -1,8 +1,7 @@
 From: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 1/5] spi: do not fail if the CS line is not connected
-Date: Fri, 17 Jun 2016 16:57:21 +0900
-Message-ID: <1466150245-2648-2-git-send-email-andi.shyti@samsung.com>
-References: <1466150245-2648-1-git-send-email-andi.shyti@samsung.com>
+Subject: [PATCH 0/5] SPI CS line logical change and s3c64xx code rework
+Date: Fri, 17 Jun 2016 16:57:20 +0900
+Message-ID: <1466150245-2648-1-git-send-email-andi.shyti@samsung.com>
 Cc: Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
@@ -11,56 +10,40 @@ Cc: Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Andi Shyti <andi-ahk0KpmfxKRAfugRpC6u6w@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-reply-to: <1466150245-2648-1-git-send-email-andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Some SPI connected devices do not have any CS line connected as
-some devices are alway enabled. Indeed, until now, a common
-workaround was to assign to num_chipselect a -1 value or 255
-(num_chipselect is unsigned).
+Hi,
 
-In this case do not fail and defer to the SPI device drivers the
-responsibility to check whether the num-cs is '0'.
+the main goal of the patchset is to support SPI cnnected device
+without CS line link.
 
-Signed-off-by: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
----
- drivers/spi/spi.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+The first patch removes two 'if' conditions in the spi core
+framework, leaving this way the responsibility for checking
+whether the CS line is connected to the specific SPI driver.
+Because the spi core doesn't allow a disconnected CS line, the
+drivers were assigning -1 or 255 as number of CS lines, which is
+not correct also considering the variables type.
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 77e6e45..f22dc27 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -504,8 +504,13 @@ int spi_add_device(struct spi_device *spi)
- 	struct device *dev = master->dev.parent;
- 	int status;
- 
--	/* Chipselects are numbered 0..max; validate. */
--	if (spi->chip_select >= master->num_chipselect) {
-+	/*
-+	 * Chipselects are numbered 0..max; validate.
-+	 * If there is no chip select (i.e. num_chipselect == 0),
-+	 * the comparison doesn't make sense.
-+	 */
-+	if (master->num_chipselect &&
-+				spi->chip_select >= master->num_chipselect) {
- 		dev_err(dev, "cs%d >= max %d\n",
- 			spi->chip_select,
- 			master->num_chipselect);
-@@ -1851,12 +1856,6 @@ int spi_register_master(struct spi_master *master)
- 	if (status)
- 		return status;
- 
--	/* even if it's just one always-selected device, there must
--	 * be at least one chipselect
--	 */
--	if (master->num_chipselect == 0)
--		return -EINVAL;
--
- 	if ((master->bus_num < 0) && master->dev.of_node)
- 		master->bus_num = of_alias_get_id(master->dev.of_node, "spi");
- 
+The second and third patches enable this case in the s3c64xx
+driver.
+
+The fourth and fith patches are code rework related to the
+s3c64xx driver.
+
+Andi
+
+Andi Shyti (5):
+  spi: do not fail if the CS line is not connected
+  spi: s3c64xx: group the CS signalling writes in a single function
+  spi: s3c64xx: consider the case where the CS line is not connected
+  spi: s3c64xx: do not configure the device twice
+  spi: s3c63xx: simplify if statement in prepare_transfer function
+
+ drivers/spi/spi-s3c64xx.c | 104 ++++++++++++++++++++++++----------------------
+ drivers/spi/spi.c         |  15 ++++---
+ 2 files changed, 62 insertions(+), 57 deletions(-)
+
 -- 
 2.8.1
 

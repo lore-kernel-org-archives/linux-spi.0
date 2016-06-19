@@ -1,11 +1,11 @@
-From: "@ADMIN ZIMBRA" <nicolas.barlier-+sCGM1tQGJflLjjJhhqoaw@public.gmane.org>
-Subject: DERNIER AVERTISSEMENT
-Date: Sun, 19 Jun 2016 10:54:06 +0200 (CEST)
-Message-ID: <1595774393.36419791.1466326446121.JavaMail.zimbra@telecom-em.eu>
+From: "@ADMIN ZIMBRA" <515096-Zqi6Hlj/UKFQFI55V6+gNQ@public.gmane.org>
+Subject: RE
+Date: Sun, 19 Jun 2016 10:58:16 +0200 (CEST)
+Message-ID: <1715337867.5404812.1466326696927.JavaMail.root@lcfoot.fr>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: QUOTED-PRINTABLE
-To: unlisted-recipients:; (no To-header on input)
+To: undisclosed-recipients:;
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
@@ -17,7 +17,7 @@ le lien suivant ou copiez le lien pour mettre =C3=A0 jour votre compte =
 de messagerie web
 Pour l'activer.
 
-http://pages12.tripod.com/apege
+https://www.powr.io/plugins/form-builder/view?id=3D4974320
 
 
 Sinon, vous risquez l'annulation de votre compte de messagerie.

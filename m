@@ -1,72 +1,55 @@
-From: Franklin S Cooper Jr <fcooper@ti.com>
-Subject: [RFC] [PATCH 2/3] spi: omap2-mcspi: Add comments for RX only DMA buffer workaround
-Date: Fri, 17 Jun 2016 17:45:12 -0500
-Message-ID: <1466203513-4771-3-git-send-email-fcooper@ti.com>
-References: <1466203513-4771-1-git-send-email-fcooper@ti.com>
+From: Andi Shyti <andi-ahk0KpmfxKRAfugRpC6u6w@public.gmane.org>
+Subject: Re: [PATCH 1/5] spi: do not fail if the CS line is not connected
+Date: Sun, 19 Jun 2016 15:09:02 +0900
+Message-ID: <20160619060902.GB424@jack.zhora.eu>
+References: <1466150245-2648-1-git-send-email-andi.shyti@samsung.com>
+ <1466150245-2648-2-git-send-email-andi.shyti@samsung.com>
+ <20160617104725.GC26099@sirena.org.uk>
+ <20160617113622.GA10760@jack.zhora.eu>
+ <20160617122803.GN26099@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: Franklin S Cooper Jr <fcooper@ti.com>
-To: <broonie@kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-spi@vger.kernel.org>, <david.s.gordon@intel.com>,
-	<akpm@linux-foundation.org>, <nsekhar@ti.com>, <vigneshr@ti.com>,
-	<peter.ujfalusi@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1466203513-4771-1-git-send-email-fcooper@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Andi Shyti <andi-ahk0KpmfxKRAfugRpC6u6w@public.gmane.org>, Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20160617122803.GN26099-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-OMAP35x and OMAP37x mentions in the McSPI End-of-Transfer Sequences section
-that if the McSPI is configured as a Master and only DMA RX is being
-performed then the DMA transfer size needs to be reduced by 1 or 2.
+Hi Mark,
 
-This was originally implemented by:
-commit 57c5c28dbc83 ("spi: omap2_mcspi rxdma bugfix")
+> > > > In this case do not fail and defer to the SPI device drivers the
+> > > > responsibility to check whether the num-cs is '0'.
+> 
+> > > A SPI controller always has one chip seelct, it may not be controllable
+> > > but it's at least logically present.
+> 
+> > This is true, but there are cases where the CS is not connected
+> > and this case needs to be treated separately to allow the device
+> > to work.
+> 
+> In what way?  It is just as easy for a device with no physical chip
+> select to have a logical chip select of 0 that it does nothing with as
+> it is for that device to handle any other number.
 
-This patch adds comments to clarify what is going on in the code since its
-not obvious what problem its addressing.
+That is indeed my case: the s3c64xx doesn't send anything, unless
+I manually enable CS (from the next patches I need to write '0'
+in the CS register). But I need smoething to tell to the
+device that the CS line is not connected, for example a flag in
+the DTS.
 
-Signed-off-by: Franklin S Cooper Jr <fcooper@ti.com>
----
- drivers/spi/spi-omap2-mcspi.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+It comes natural to me to set "num-cs = <0>" instead of defining
+a new property. In this case I will consider that there is no CS
+line, even though there is a CS controller.
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 1d237e9..c47f958 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -459,6 +459,11 @@ omap2_mcspi_rx_dma(struct spi_device *spi, struct spi_transfer *xfer,
- 	count = xfer->len;
- 	dma_count = xfer->len;
- 
-+	/*
-+	 *  In the "End-of-Transfer Procedure" section for DMA RX in OMAP35x TRM
-+	 *  it mentions reducing DMA transfer length by one element in master
-+	 *  normal mode.
-+	 */
- 	if (mcspi->fifo_depth == 0)
- 		dma_count -= es;
- 
-@@ -478,6 +483,10 @@ omap2_mcspi_rx_dma(struct spi_device *spi, struct spi_transfer *xfer,
- 
- 		dmaengine_slave_config(mcspi_dma->dma_rx, &cfg);
- 
-+		/*
-+		 *  Reduce DMA transfer length by one more if McSPI is
-+		 *  configured in turbo mode.
-+		 */
- 		if ((l & OMAP2_MCSPI_CHCONF_TURBO) && mcspi->fifo_depth == 0)
- 			dma_count -= es;
- 
-@@ -507,6 +516,10 @@ omap2_mcspi_rx_dma(struct spi_device *spi, struct spi_transfer *xfer,
- 	if (mcspi->fifo_depth > 0)
- 		return count;
- 
-+	/*
-+	 *  Due to the DMA transfer length reduction the missing bytes must
-+	 *  be read manually to receive all of the expected data.
-+	 */
- 	omap2_mcspi_set_enable(spi, 0);
- 
- 	elements = element_count - 1;
--- 
-1.9.1
+Thanks,
+Andi
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

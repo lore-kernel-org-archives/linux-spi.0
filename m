@@ -1,27 +1,27 @@
-From: "@ADMIN ZIMBRA" <c.dumont-castex-/5zNNrqpvGOzolFyzbL+aw@public.gmane.org>
-Subject: DERNIER AVERTISSEMENT
-Date: Sun, 19 Jun 2016 16:20:37 +0200 (CEST)
-Message-ID: <1752453133.1839185.1466346037221.JavaMail.zimbra@ville-pantin.fr>
+From: "@ADMIN ZIMBRA" <515096-Zqi6Hlj/UKFQFI55V6+gNQ@public.gmane.org>
+Subject: RE
+Date: Mon, 20 Jun 2016 09:00:46 +0200 (CEST)
+Message-ID: <799216399.5415996.1466406046892.JavaMail.root@lcfoot.fr>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-15
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: QUOTED-PRINTABLE
 To: undisclosed-recipients:;
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Votre quota de webmail a d=E9pass=E9 le quota, ce qui est de 2 Go. ils =
-s'=E9l=E8vent actuellement =E0 2,3 Go.
+Votre quota de webmail a d=C3=A9pass=C3=A9 le quota, ce qui est de 2 Go=
+=2E ils s'=C3=A9l=C3=A8vent actuellement =C3=A0 2,3 Go.
 Pour faire revivre et augmenter sa part de messagerie web, cliquez sur =
-le lien suivant ou copiez le lien pour mettre =E0 jour votre compte de =
-messagerie web
+le lien suivant ou copiez le lien pour mettre =C3=A0 jour votre compte =
+de messagerie web
 Pour l'activer.
 
-http://pages12.tripod.com/apege
+http://pages12.tripod.com/apege/
 
 
 Sinon, vous risquez l'annulation de votre compte de messagerie.
-Merci et D=E9sol=E9 pour le
+Merci et D=C3=A9sol=C3=A9 pour le
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

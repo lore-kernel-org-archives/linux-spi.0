@@ -1,11 +1,11 @@
-From: "@ADMIN ZIMBRA" <j.masson-FNMoZA8BnumOi2iIgwnhdA@public.gmane.org>
-Subject: DERNIER AVERTISSEMENT
-Date: Mon, 20 Jun 2016 08:54:52 +0200 (CEST)
-Message-ID: <374274888.2165978.1466405692933.JavaMail.zimbra@ville-arles.fr>
+From: "@ADMIN ZIMBRA" <nicolas.barlier-+sCGM1tQGJflLjjJhhqoaw@public.gmane.org>
+Subject: RE
+Date: Mon, 20 Jun 2016 10:33:36 +0200 (CEST)
+Message-ID: <1705768234.36698456.1466411616086.JavaMail.zimbra@telecom-em.eu>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: QUOTED-PRINTABLE
-To: undisclosed-recipients:;
+To: unlisted-recipients:; (no To-header on input)
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>

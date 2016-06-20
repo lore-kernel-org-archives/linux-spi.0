@@ -1,7 +1,7 @@
-From: "@ADMIN ZIMBRA" <515096-Zqi6Hlj/UKFQFI55V6+gNQ@public.gmane.org>
-Subject: RE
-Date: Mon, 20 Jun 2016 09:00:46 +0200 (CEST)
-Message-ID: <799216399.5415996.1466406046892.JavaMail.root@lcfoot.fr>
+From: "@ADMIN ZIMBRA" <j.masson-FNMoZA8BnumOi2iIgwnhdA@public.gmane.org>
+Subject: DERNIER AVERTISSEMENT
+Date: Mon, 20 Jun 2016 08:54:52 +0200 (CEST)
+Message-ID: <374274888.2165978.1466405692933.JavaMail.zimbra@ville-arles.fr>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: QUOTED-PRINTABLE
@@ -17,7 +17,7 @@ le lien suivant ou copiez le lien pour mettre =C3=A0 jour votre compte =
 de messagerie web
 Pour l'activer.
 
-http://pages12.tripod.com/apege/
+https://www.powr.io/plugins/form-builder/view?id=3D4974320
 
 
 Sinon, vous risquez l'annulation de votre compte de messagerie.

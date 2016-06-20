@@ -1,27 +1,27 @@
-From: "@ADMIN ZIMBRA" <nicolas.barlier-+sCGM1tQGJflLjjJhhqoaw@public.gmane.org>
-Subject: RE
-Date: Mon, 20 Jun 2016 10:33:36 +0200 (CEST)
-Message-ID: <1705768234.36698456.1466411616086.JavaMail.zimbra@telecom-em.eu>
+From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [PATCH] spi: spidev: Allow matching DT compatible strings from
+ ACPI
+Date: Mon, 20 Jun 2016 14:13:58 +0300
+Message-ID: <20160620111358.GK1739@lahna.fi.intel.com>
+References: <1465556147-86198-1-git-send-email-mika.westerberg@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-To: unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Cc: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1465556147-86198-1-git-send-email-mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Votre quota de webmail a d=C3=A9pass=C3=A9 le quota, ce qui est de 2 Go=
-=2E ils s'=C3=A9l=C3=A8vent actuellement =C3=A0 2,3 Go.
-Pour faire revivre et augmenter sa part de messagerie web, cliquez sur =
-le lien suivant ou copiez le lien pour mettre =C3=A0 jour votre compte =
-de messagerie web
-Pour l'activer.
+On Fri, Jun 10, 2016 at 01:55:47PM +0300, Mika Westerberg wrote:
+> Allow the same devices to be used in ACPI based systems if they provide
+> proper DT compatible string.
+> 
+> Signed-off-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 
-https://www.powr.io/plugins/form-builder/view?id=3D4974320
-
-
-Sinon, vous risquez l'annulation de votre compte de messagerie.
-Merci et D=C3=A9sol=C3=A9 pour le
+Any comments Mark?
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,346 +1,101 @@
-From: "Reizer, Eyal" <eyalr@ti.com>
-Subject: [PATCHv3] wlcore: spi: add wl18xx support
-Date: Tue, 21 Jun 2016 12:02:06 +0000
-Message-ID: <8665E2433BC68541A24DFFCA87B70F5B36138299@DFRE01.ent.ti.com>
-References: <1466510145-15751-1-git-send-email-eyalr@ti.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-To: "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Return-path: <netdev-owner@vger.kernel.org>
-In-Reply-To: <1466510145-15751-1-git-send-email-eyalr@ti.com>
-Content-Language: en-US
-Sender: netdev-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Christian Gmeiner <christian.gmeiner-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: imx: wait_for_completion_timeout(..) for PIO transfers
+Date: Tue, 21 Jun 2016 14:12:54 +0200
+Message-ID: <1466511174-17048-1-git-send-email-christian.gmeiner@gmail.com>
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Christian Gmeiner <christian.gmeiner-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Add support for using with both wl12xx and wl18xx.
+In some rare cases I see the following 'task blocked' information. It
+looks like the PIO transfer has some problems and never succeeds. Make
+use of wait_for_completion_timeout(..) to detect this case and
+return -ETIMEDOUT.
 
-- all wilink family needs special init command for entering wspi mode.
-  extra clock cycles should be sent after the spi init command while the
-  cs pin is high.
-- Use inverted chip select for sending a dummy 4 bytes command that
-  completes the init stage and puts the wilink chip into wspi mode.
+[ 240.246067] INFO: task hexdump:1660 blocked for more than 120 seconds.
+[ 240.246089] Not tainted 4.1.17 0000001
+[ 240.246099] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+[ 240.246109] hexdump D c0575548 0 1660 1 0x00000000
+[ 240.246132] Backtrace:
+[ 240.246166] [<c057524c>] (__schedule) from [<c0575a84>] (schedule+0x40/0xa4)
+[ 240.246176] r10:00000000 r9:c07f1300 r8:c07b8408 r7:c0576518 r6:7fffffff r5:7fffffff
+[ 240.246210] r4:ee972e7c
+[ 240.246233] [<c0575a44>] (schedule) from [<c0578544>] (schedule_timeout+0x174/0x274)
+[ 240.246254] [<c05783d0>] (schedule_timeout) from [<c0576518>] (wait_for_common+0xc0/0x164)
+[ 240.246263] r10:00000000 r9:c07f1300 r8:00000002 r7:00000000 r6:7fffffff r5:ee972e78
+[ 240.246294] r4:ee972e7c
+[ 240.246314] [<c0576458>] (wait_for_common) from [<c05765dc>] (wait_for_completion+0x20/0x24)
+[ 240.246324] r10:ee972e50 r8:00000001 r7:c3976200 r6:ee972c00 r5:ee972e50 r4:c2c87d28
+[ 240.246367] [<c05765bc>] (wait_for_completion) from [<c03f6b04>] (spi_imx_transfer+0xe8/0x3cc)
+[ 240.246393] [<c03f6a1c>] (spi_imx_transfer) from [<c03f50e4>] (spi_bitbang_transfer_one+0xb4/0x250)
+[ 240.246403] r10:ee972e50 r8:00000001 r7:00000000 r6:c2c87da0 r5:00000000 r4:c2c87d28
+[ 240.246443] [<c03f5030>] (spi_bitbang_transfer_one) from [<c03f36e8>] (__spi_pump_messages+0x36c/0x6b4)
+[ 240.246452] r10:ee9e5010 r9:00000001 r8:ee9e5010 r7:00000000 r6:c2c87da0 r5:c2c87d6c
+[ 240.246483] r4:ee972c00
+[ 240.246503] [<c03f337c>] (__spi_pump_messages) from [<c03f3b68>] (__spi_sync+0x138/0x1e4)
+[ 240.246512] r10:00000000 r9:00000000 r8:c03f25a8 r7:00000000 r6:ee972c00 r5:c3976200
+[ 240.246542] r4:c2c87da0
+[ 240.246562] [<c03f3a30>] (__spi_sync) from [<c03f3c50>] (spi_sync+0x1c/0x20)
+[ 240.246571] r10:00040000 r9:00000000 r8:c3976200 r7:00000000 r6:ee973300 r5:c2c87da0
+[ 240.246602] r4:ee973014
+[ 240.246623] [<c03f3c34>] (spi_sync) from [<c03f0210>] (m25p80_read+0xf8/0x124)
+[ 240.246641] [<c03f0118>] (m25p80_read) from [<c03f1528>] (spi_nor_read+0x64/0x80)
+[ 240.246651] r10:00004000 r8:00004000 r7:00000000 r6:00040000 r5:00000000 r4:ee973014
+[ 240.246698] [<c03f14c4>] (spi_nor_read) from [<c03cdcb4>] (mtd_read+0x98/0xcc)
+[ 240.246708] r7:c2c87ea0 r6:ee973098 r5:00000000 r4:001c0000
+[ 240.246740] [<c03cdc1c>] (mtd_read) from [<c03d300c>] (mtdchar_read+0xcc/0x204)
+[ 240.246750] r9:ed424000 r8:00000000 r7:b495d018 r6:c2c87f78 r5:00000000 r4:00040000
+[ 240.246793] [<c03d2f40>] (mtdchar_read) from [<c013b1c4>] (__vfs_read+0x3c/0xe0)
+[ 240.246803] r10:00004000 r9:00000000 r8:c2c87f78 r7:b495d018 r6:c2c87f78 r5:c05c8104
+[ 240.246833] r4:c32fe600
+[ 240.246852] [<c013b188>] (__vfs_read) from [<c013befc>] (vfs_read+0x98/0x154)
+[ 240.246861] r10:00000000 r8:00040000 r7:00004000 r6:c2c87f78 r5:b495d018 r4:c32fe600
+[ 240.246899] [<c013be64>] (vfs_read) from [<c013c008>] (SyS_read+0x50/0x90)
+[ 240.246908] r10:00000000 r8:00040000 r7:b495d018 r6:00004000 r5:c32fe601 r4:c32fe600
+[ 240.246953] [<c013bfb8>] (SyS_read) from [<c000fa60>] (ret_fast_syscall+0x0/0x3c)
+[ 240.246962] r9:c2c86000 r8:c000fc04 r7:00000003 r6:00004000 r5:00000000 r4:b495d018
 
-Signed-off-by: Eyal Reizer <eyalr@ti.com>
+Signed-off-by: Christian Gmeiner <christian.gmeiner-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
-v1->v2:update device tree bindings configuration
-v2->v3:revert from manual gpio manipulation. use inverted chip select instead
-for sending the extra init cycle, which achieves the same hardware purpose.
-update device tree bindings docucmentation accordingly
+ drivers/spi/spi-imx.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
- .../bindings/net/wireless/ti,wlcore,spi.txt        |  47 ++++++--
- drivers/net/wireless/ti/wlcore/spi.c               | 124 +++++++++++++++++----
- 2 files changed, 145 insertions(+), 26 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/net/wireless/ti,wlcore,spi.txt b/Documentation/devicetree/bindings/net/wireless/ti,wlcore,spi.txt
-index 9180724..35467cf 100644
---- a/Documentation/devicetree/bindings/net/wireless/ti,wlcore,spi.txt
-+++ b/Documentation/devicetree/bindings/net/wireless/ti,wlcore,spi.txt
-@@ -1,19 +1,30 @@
--* Texas Instruments wl1271 wireless lan controller
-+* Texas Instruments wl12xx/wl18xx wireless lan controller
- 
--The wl1271 chip can be connected via SPI or via SDIO. This
-+The wl12xx/wl18xx chips can be connected via SPI or via SDIO. This
- document describes the binding for the SPI connected chip.
- 
- Required properties:
--- compatible :          Should be "ti,wl1271"
-+- compatible :          Should be one of the following:
-+    * "ti,wl1271"
-+    * "ti,wl1273"
-+    * "ti,wl1281"
-+    * "ti,wl1283"
-+    * "ti,wl1801"
-+    * "ti,wl1805"
-+    * "ti,wl1807"
-+    * "ti,wl1831"
-+    * "ti,wl1835"
-+    * "ti,wl1837"
- - reg :                 Chip select address of device
- - spi-max-frequency :   Maximum SPI clocking speed of device in Hz
--- ref-clock-frequency : Reference clock frequency
- - interrupt-parent, interrupts :
-                         Should contain parameters for 1 interrupt line.
-                         Interrupt parameters: parent, line number, type.
--- vwlan-supply :        Point the node of the regulator that powers/enable the wl1271 chip
-+- vwlan-supply :        Point the node of the regulator that powers/enable the
-+                        wl12xx/wl18xx chip
- 
- Optional properties:
-+- ref-clock-frequency : Reference clock frequency (should be set for wl12xx)
- - clock-xtal :          boolean, clock is generated from XTAL
- 
- - Please consult Documentation/devicetree/bindings/spi/spi-bus.txt
-@@ -21,10 +32,15 @@ Optional properties:
- 
- Examples:
- 
-+For wl12xx family:
- &spi1 {
--	wl1271@1 {
-+	status = "okay";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&spi1_pins>;
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	wlcore: wlcore@0 {
- 		compatible = "ti,wl1271";
--
- 		reg = <1>;
- 		spi-max-frequency = <48000000>;
- 		clock-xtal;
-@@ -34,3 +50,20 @@ Examples:
- 		vwlan-supply = <&vwlan_fixed>;
- 	};
- };
-+
-+For wl18xx family:
-+&spi0	{
-+	status = "okay";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&spi0_pins>;
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	wlcore: wlcore@0 {
-+		compatible = "ti,wl1835";
-+		vwlan-supply = <&wlan_en_reg>;
-+		spi-max-frequency = <48000000>;
-+		reg = <0>;
-+		interrupt-parent = <&gpio0>;
-+		interrupts = <27 IRQ_TYPE_EDGE_RISING>;
-+	};
-+};
-diff --git a/drivers/net/wireless/ti/wlcore/spi.c b/drivers/net/wireless/ti/wlcore/spi.c
-index 020ac1a..bd1253d 100644
---- a/drivers/net/wireless/ti/wlcore/spi.c
-+++ b/drivers/net/wireless/ti/wlcore/spi.c
-@@ -70,16 +70,30 @@
- #define WSPI_MAX_CHUNK_SIZE    4092
- 
- /*
-- * only support SPI for 12xx - this code should be reworked when 18xx
-- * support is introduced
-+ * wl18xx driver aggregation buffer size is (13 * PAGE_SIZE) compared to
-+ * (4 * PAGE_SIZE) for wl12xx, so use the larger buffer needed for wl18xx
-  */
--#define SPI_AGGR_BUFFER_SIZE (4 * PAGE_SIZE)
-+#define SPI_AGGR_BUFFER_SIZE (13 * PAGE_SIZE)
- 
- /* Maximum number of SPI write chunks */
- #define WSPI_MAX_NUM_OF_CHUNKS \
- 	((SPI_AGGR_BUFFER_SIZE / WSPI_MAX_CHUNK_SIZE) + 1)
- 
- 
-+struct wilink_familiy_data {
-+	char name[8];
-+};
-+
-+const struct wilink_familiy_data *wilink_data;
-+
-+static const struct wilink_familiy_data wl18xx_data = {
-+	.name = "wl18xx",
-+};
-+
-+static const struct wilink_familiy_data wl12xx_data = {
-+	.name = "wl12xx",
-+};
-+
- struct wl12xx_spi_glue {
- 	struct device *dev;
- 	struct platform_device *core;
-@@ -119,6 +133,7 @@ static void wl12xx_spi_init(struct device *child)
- 	struct wl12xx_spi_glue *glue = dev_get_drvdata(child->parent);
- 	struct spi_transfer t;
- 	struct spi_message m;
-+	struct spi_device *spi = to_spi_device(glue->dev);
- 	u8 *cmd = kzalloc(WSPI_INIT_CMD_LEN, GFP_KERNEL);
- 
- 	if (!cmd) {
-@@ -151,6 +166,7 @@ static void wl12xx_spi_init(struct device *child)
- 		cmd[6] |= WSPI_INIT_CMD_EN_FIXEDBUSY;
- 
- 	cmd[7] = crc7_be(0, cmd+2, WSPI_INIT_CMD_CRC_LEN) | WSPI_INIT_CMD_END;
-+
- 	/*
- 	 * The above is the logical order; it must actually be stored
- 	 * in the buffer byte-swapped.
-@@ -163,6 +179,28 @@ static void wl12xx_spi_init(struct device *child)
- 	spi_message_add_tail(&t, &m);
- 
- 	spi_sync(to_spi_device(glue->dev), &m);
-+
-+	/* Send extra clocks with inverted CS (high). this is required
-+	 * by the wilink family in order to successfully enter WSPI mode.
-+	 */
-+	spi->mode ^= SPI_CS_HIGH;
-+	memset(&m, 0, sizeof(m));
-+	spi_message_init(&m);
-+
-+	cmd[0] = 0xff;
-+	cmd[1] = 0xff;
-+	cmd[2] = 0xff;
-+	cmd[3] = 0xff;
-+	__swab32s((u32 *)cmd);
-+
-+	t.tx_buf = cmd;
-+	t.len = 4;
-+	spi_message_add_tail(&t, &m);
-+
-+	spi_sync(to_spi_device(glue->dev), &m);
-+
-+	/* Restore chip select configration to normal */
-+	spi->mode ^= SPI_CS_HIGH;
- 	kfree(cmd);
- }
- 
-@@ -270,22 +308,25 @@ static int __must_check wl12xx_spi_raw_read(struct device *child, int addr,
- 	return 0;
- }
- 
--static int __must_check wl12xx_spi_raw_write(struct device *child, int addr,
--					     void *buf, size_t len, bool fixed)
-+static int __wl12xx_spi_raw_write(struct device *child, int addr,
-+				  void *buf, size_t len, bool fixed)
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 50769078..d2b96b1 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -1050,6 +1050,8 @@ static int spi_imx_pio_transfer(struct spi_device *spi,
+ 				struct spi_transfer *transfer)
  {
- 	struct wl12xx_spi_glue *glue = dev_get_drvdata(child->parent);
--	/* SPI write buffers - 2 for each chunk */
--	struct spi_transfer t[2 * WSPI_MAX_NUM_OF_CHUNKS];
-+	struct spi_transfer *t;
- 	struct spi_message m;
- 	u32 commands[WSPI_MAX_NUM_OF_CHUNKS]; /* 1 command per chunk */
- 	u32 *cmd;
- 	u32 chunk_len;
- 	int i;
+ 	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
++	unsigned long transfer_timeout;
++	unsigned long timeout;
  
-+	/* SPI write buffers - 2 for each chunk */
-+	t = kzalloc(sizeof(*t) * 2 * WSPI_MAX_NUM_OF_CHUNKS, GFP_KERNEL);
-+	if (!t)
-+		return -ENOMEM;
+ 	spi_imx->tx_buf = transfer->tx_buf;
+ 	spi_imx->rx_buf = transfer->rx_buf;
+@@ -1062,7 +1064,15 @@ static int spi_imx_pio_transfer(struct spi_device *spi,
+ 
+ 	spi_imx->devtype_data->intctrl(spi_imx, MXC_INT_TE);
+ 
+-	wait_for_completion(&spi_imx->xfer_done);
++	transfer_timeout = spi_imx_calculate_timeout(spi_imx, transfer->len);
 +
- 	WARN_ON(len > SPI_AGGR_BUFFER_SIZE);
++	timeout = wait_for_completion_timeout(&spi_imx->xfer_done,
++					      transfer_timeout);
++	if (!timeout) {
++		dev_err(&spi->dev, "I/O Error in PIO\n");
++		spi_imx->devtype_data->reset(spi_imx);
++		return -ETIMEDOUT;
++	}
  
- 	spi_message_init(&m);
--	memset(t, 0, sizeof(t));
- 
- 	cmd = &commands[0];
- 	i = 0;
-@@ -318,9 +359,26 @@ static int __must_check wl12xx_spi_raw_write(struct device *child, int addr,
- 
- 	spi_sync(to_spi_device(glue->dev), &m);
- 
-+	kfree(t);
- 	return 0;
+ 	return transfer->len;
  }
- 
-+static int __must_check wl12xx_spi_raw_write(struct device *child, int addr,
-+					     void *buf, size_t len, bool fixed)
-+{
-+	int ret;
-+
-+	/* The ELP wakeup write may fail the first time due to internal
-+	 * hardware latency. It is safer to send the wakeup command twice to
-+	 * avoid unexpected failures.
-+	 */
-+	if (addr == HW_ACCESS_ELP_CTRL_REG)
-+		ret = __wl12xx_spi_raw_write(child, addr, buf, len, fixed);
-+	ret = __wl12xx_spi_raw_write(child, addr, buf, len, fixed);
-+
-+	return ret;
-+}
-+
- /**
-  * wl12xx_spi_set_power - power on/off the wl12xx unit
-  * @child: wl12xx device handle.
-@@ -349,17 +407,38 @@ static int wl12xx_spi_set_power(struct device *child, bool enable)
- 	return ret;
- }
- 
-+/**
-+ * wl12xx_spi_set_block_size
-+ *
-+ * This function is not needed for spi mode, but need to be present.
-+ * Without it defined the wlcore fallback to use the wrong packet
-+ * allignment on tx.
-+ */
-+static void wl12xx_spi_set_block_size(struct device *child,
-+				      unsigned int blksz)
-+{
-+}
-+
- static struct wl1271_if_operations spi_ops = {
- 	.read		= wl12xx_spi_raw_read,
- 	.write		= wl12xx_spi_raw_write,
- 	.reset		= wl12xx_spi_reset,
- 	.init		= wl12xx_spi_init,
- 	.power		= wl12xx_spi_set_power,
--	.set_block_size = NULL,
-+	.set_block_size = wl12xx_spi_set_block_size,
- };
- 
- static const struct of_device_id wlcore_spi_of_match_table[] = {
--	{ .compatible = "ti,wl1271" },
-+	{ .compatible = "ti,wl1271", .data = &wl12xx_data},
-+	{ .compatible = "ti,wl1273", .data = &wl12xx_data},
-+	{ .compatible = "ti,wl1281", .data = &wl12xx_data},
-+	{ .compatible = "ti,wl1283", .data = &wl12xx_data},
-+	{ .compatible = "ti,wl1801", .data = &wl18xx_data},
-+	{ .compatible = "ti,wl1805", .data = &wl18xx_data},
-+	{ .compatible = "ti,wl1807", .data = &wl18xx_data},
-+	{ .compatible = "ti,wl1831", .data = &wl18xx_data},
-+	{ .compatible = "ti,wl1835", .data = &wl18xx_data},
-+	{ .compatible = "ti,wl1837", .data = &wl18xx_data},
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, wlcore_spi_of_match_table);
-@@ -375,18 +454,24 @@ static int wlcore_probe_of(struct spi_device *spi, struct wl12xx_spi_glue *glue,
- 			   struct wlcore_platdev_data *pdev_data)
- {
- 	struct device_node *dt_node = spi->dev.of_node;
--	int ret;
-+	const struct of_device_id *of_id;
-+
-+	of_id = of_match_node(wlcore_spi_of_match_table, dt_node);
-+	if (!of_id)
-+		return -ENODEV;
-+
-+	wilink_data = of_id->data;
-+	dev_info(&spi->dev, "selected chip familiy is %s\n",
-+		 wilink_data->name);
- 
- 	if (of_find_property(dt_node, "clock-xtal", NULL))
- 		pdev_data->ref_clock_xtal = true;
- 
--	ret = of_property_read_u32(dt_node, "ref-clock-frequency",
--				   &pdev_data->ref_clock_freq);
--	if (IS_ERR_VALUE(ret)) {
--		dev_err(glue->dev,
--			"can't get reference clock frequency (%d)\n", ret);
--		return ret;
--	}
-+	/* optional clock frequency params */
-+	of_property_read_u32(dt_node, "ref-clock-frequency",
-+			     &pdev_data->ref_clock_freq);
-+	of_property_read_u32(dt_node, "tcxo-clock-frequency",
-+			     &pdev_data->tcxo_clock_freq);
- 
- 	return 0;
- }
-@@ -437,7 +522,8 @@ static int wl1271_probe(struct spi_device *spi)
- 		return ret;
- 	}
- 
--	glue->core = platform_device_alloc("wl12xx", PLATFORM_DEVID_AUTO);
-+	glue->core = platform_device_alloc(wilink_data->name,
-+					   PLATFORM_DEVID_AUTO);
- 	if (!glue->core) {
- 		dev_err(glue->dev, "can't allocate platform_device\n");
- 		return -ENOMEM;
 -- 
-2.7.4
+2.5.5
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

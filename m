@@ -1,415 +1,346 @@
-From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH 2/2] spi: pxa2xx: Switch to SPI core DMA mapping functionality
-Date: Tue, 21 Jun 2016 13:21:34 +0300
-Message-ID: <1466504494-8984-2-git-send-email-jarkko.nikula@linux.intel.com>
-References: <1466504494-8984-1-git-send-email-jarkko.nikula@linux.intel.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1466504494-8984-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: "Reizer, Eyal" <eyalr@ti.com>
+Subject: [PATCHv3] wlcore: spi: add wl18xx support
+Date: Tue, 21 Jun 2016 12:02:06 +0000
+Message-ID: <8665E2433BC68541A24DFFCA87B70F5B36138299@DFRE01.ent.ti.com>
+References: <1466510145-15751-1-git-send-email-eyalr@ti.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+To: "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Return-path: <netdev-owner@vger.kernel.org>
+In-Reply-To: <1466510145-15751-1-git-send-email-eyalr@ti.com>
+Content-Language: en-US
+Sender: netdev-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-SPI core provides DMA mapping with scatterlists. Start using it instead
-of own implementation in spi-pxa2xx. Major difference in addition to
-bunch of removed boilerplate code is that SPI core does
-mapping/unmapping for all transfers in a message before and after the
-message sending where spi-pxa2xx did mapping/unmapping for each
-transfers separately.
+Add support for using with both wl12xx and wl18xx.
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+- all wilink family needs special init command for entering wspi mode.
+  extra clock cycles should be sent after the spi init command while the
+  cs pin is high.
+- Use inverted chip select for sending a dummy 4 bytes command that
+  completes the init stage and puts the wilink chip into wspi mode.
+
+Signed-off-by: Eyal Reizer <eyalr@ti.com>
 ---
- drivers/spi/spi-pxa2xx-dma.c | 170 ++++++++-----------------------------------
- drivers/spi/spi-pxa2xx.c     |  28 +++++--
- drivers/spi/spi-pxa2xx.h     |   9 ---
- 3 files changed, 50 insertions(+), 157 deletions(-)
+v1->v2:update device tree bindings configuration
+v2->v3:revert from manual gpio manipulation. use inverted chip select instead
+for sending the extra init cycle, which achieves the same hardware purpose.
+update device tree bindings docucmentation accordingly
 
-diff --git a/drivers/spi/spi-pxa2xx-dma.c b/drivers/spi/spi-pxa2xx-dma.c
-index a18a03d0afb7..db3ae1dd829e 100644
---- a/drivers/spi/spi-pxa2xx-dma.c
-+++ b/drivers/spi/spi-pxa2xx-dma.c
-@@ -20,79 +20,6 @@
+ .../bindings/net/wireless/ti,wlcore,spi.txt        |  47 ++++++--
+ drivers/net/wireless/ti/wlcore/spi.c               | 124 +++++++++++++++++----
+ 2 files changed, 145 insertions(+), 26 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/net/wireless/ti,wlcore,spi.txt b/Documentation/devicetree/bindings/net/wireless/ti,wlcore,spi.txt
+index 9180724..35467cf 100644
+--- a/Documentation/devicetree/bindings/net/wireless/ti,wlcore,spi.txt
++++ b/Documentation/devicetree/bindings/net/wireless/ti,wlcore,spi.txt
+@@ -1,19 +1,30 @@
+-* Texas Instruments wl1271 wireless lan controller
++* Texas Instruments wl12xx/wl18xx wireless lan controller
  
- #include "spi-pxa2xx.h"
+-The wl1271 chip can be connected via SPI or via SDIO. This
++The wl12xx/wl18xx chips can be connected via SPI or via SDIO. This
+ document describes the binding for the SPI connected chip.
  
--static int pxa2xx_spi_map_dma_buffer(struct driver_data *drv_data,
--				     enum dma_data_direction dir)
--{
--	int i, nents, len = drv_data->len;
--	struct scatterlist *sg;
--	struct device *dmadev;
--	struct sg_table *sgt;
--	void *buf, *pbuf;
--
--	if (dir == DMA_TO_DEVICE) {
--		dmadev = drv_data->tx_chan->device->dev;
--		sgt = &drv_data->tx_sgt;
--		buf = drv_data->tx;
--	} else {
--		dmadev = drv_data->rx_chan->device->dev;
--		sgt = &drv_data->rx_sgt;
--		buf = drv_data->rx;
--	}
--
--	nents = DIV_ROUND_UP(len, SZ_2K);
--	if (nents != sgt->nents) {
--		int ret;
--
--		sg_free_table(sgt);
--		ret = sg_alloc_table(sgt, nents, GFP_ATOMIC);
--		if (ret)
--			return ret;
--	}
--
--	pbuf = buf;
--	for_each_sg(sgt->sgl, sg, sgt->nents, i) {
--		size_t bytes = min_t(size_t, len, SZ_2K);
--
--		sg_set_buf(sg, pbuf, bytes);
--		pbuf += bytes;
--		len -= bytes;
--	}
--
--	nents = dma_map_sg(dmadev, sgt->sgl, sgt->nents, dir);
--	if (!nents)
--		return -ENOMEM;
--
--	return nents;
--}
--
--static void pxa2xx_spi_unmap_dma_buffer(struct driver_data *drv_data,
--					enum dma_data_direction dir)
--{
--	struct device *dmadev;
--	struct sg_table *sgt;
--
--	if (dir == DMA_TO_DEVICE) {
--		dmadev = drv_data->tx_chan->device->dev;
--		sgt = &drv_data->tx_sgt;
--	} else {
--		dmadev = drv_data->rx_chan->device->dev;
--		sgt = &drv_data->rx_sgt;
--	}
--
--	dma_unmap_sg(dmadev, sgt->sgl, sgt->nents, dir);
--}
--
--static void pxa2xx_spi_unmap_dma_buffers(struct driver_data *drv_data)
--{
--	if (!drv_data->dma_mapped)
--		return;
--
--	pxa2xx_spi_unmap_dma_buffer(drv_data, DMA_FROM_DEVICE);
--	pxa2xx_spi_unmap_dma_buffer(drv_data, DMA_TO_DEVICE);
--
--	drv_data->dma_mapped = 0;
--}
--
- static void pxa2xx_spi_dma_transfer_complete(struct driver_data *drv_data,
- 					     bool error)
- {
-@@ -125,8 +52,6 @@ static void pxa2xx_spi_dma_transfer_complete(struct driver_data *drv_data,
- 			pxa2xx_spi_write(drv_data, SSTO, 0);
+ Required properties:
+-- compatible :          Should be "ti,wl1271"
++- compatible :          Should be one of the following:
++    * "ti,wl1271"
++    * "ti,wl1273"
++    * "ti,wl1281"
++    * "ti,wl1283"
++    * "ti,wl1801"
++    * "ti,wl1805"
++    * "ti,wl1807"
++    * "ti,wl1831"
++    * "ti,wl1835"
++    * "ti,wl1837"
+ - reg :                 Chip select address of device
+ - spi-max-frequency :   Maximum SPI clocking speed of device in Hz
+-- ref-clock-frequency : Reference clock frequency
+ - interrupt-parent, interrupts :
+                         Should contain parameters for 1 interrupt line.
+                         Interrupt parameters: parent, line number, type.
+-- vwlan-supply :        Point the node of the regulator that powers/enable the wl1271 chip
++- vwlan-supply :        Point the node of the regulator that powers/enable the
++                        wl12xx/wl18xx chip
  
- 		if (!error) {
--			pxa2xx_spi_unmap_dma_buffers(drv_data);
+ Optional properties:
++- ref-clock-frequency : Reference clock frequency (should be set for wl12xx)
+ - clock-xtal :          boolean, clock is generated from XTAL
+ 
+ - Please consult Documentation/devicetree/bindings/spi/spi-bus.txt
+@@ -21,10 +32,15 @@ Optional properties:
+ 
+ Examples:
+ 
++For wl12xx family:
+ &spi1 {
+-	wl1271@1 {
++	status = "okay";
++	pinctrl-names = "default";
++	pinctrl-0 = <&spi1_pins>;
++	#address-cells = <1>;
++	#size-cells = <0>;
++	wlcore: wlcore@0 {
+ 		compatible = "ti,wl1271";
 -
- 			msg->actual_length += drv_data->len;
- 			msg->state = pxa2xx_spi_next_transfer(drv_data);
- 		} else {
-@@ -152,11 +77,12 @@ pxa2xx_spi_dma_prepare_one(struct driver_data *drv_data,
- 			   enum dma_transfer_direction dir)
- {
- 	struct chip_data *chip = drv_data->cur_chip;
-+	struct spi_transfer *xfer = drv_data->cur_transfer;
- 	enum dma_slave_buswidth width;
- 	struct dma_slave_config cfg;
- 	struct dma_chan *chan;
- 	struct sg_table *sgt;
--	int nents, ret;
-+	int ret;
+ 		reg = <1>;
+ 		spi-max-frequency = <48000000>;
+ 		clock-xtal;
+@@ -34,3 +50,20 @@ Examples:
+ 		vwlan-supply = <&vwlan_fixed>;
+ 	};
+ };
++
++For wl18xx family:
++&spi0	{
++	status = "okay";
++	pinctrl-names = "default";
++	pinctrl-0 = <&spi0_pins>;
++	#address-cells = <1>;
++	#size-cells = <0>;
++	wlcore: wlcore@0 {
++		compatible = "ti,wl1835";
++		vwlan-supply = <&wlan_en_reg>;
++		spi-max-frequency = <48000000>;
++		reg = <0>;
++		interrupt-parent = <&gpio0>;
++		interrupts = <27 IRQ_TYPE_EDGE_RISING>;
++	};
++};
+diff --git a/drivers/net/wireless/ti/wlcore/spi.c b/drivers/net/wireless/ti/wlcore/spi.c
+index 020ac1a..bd1253d 100644
+--- a/drivers/net/wireless/ti/wlcore/spi.c
++++ b/drivers/net/wireless/ti/wlcore/spi.c
+@@ -70,16 +70,30 @@
+ #define WSPI_MAX_CHUNK_SIZE    4092
  
- 	switch (drv_data->n_bytes) {
- 	case 1:
-@@ -178,17 +104,15 @@ pxa2xx_spi_dma_prepare_one(struct driver_data *drv_data,
- 		cfg.dst_addr_width = width;
- 		cfg.dst_maxburst = chip->dma_burst_size;
+ /*
+- * only support SPI for 12xx - this code should be reworked when 18xx
+- * support is introduced
++ * wl18xx driver aggregation buffer size is (13 * PAGE_SIZE) compared to
++ * (4 * PAGE_SIZE) for wl12xx, so use the larger buffer needed for wl18xx
+  */
+-#define SPI_AGGR_BUFFER_SIZE (4 * PAGE_SIZE)
++#define SPI_AGGR_BUFFER_SIZE (13 * PAGE_SIZE)
  
--		sgt = &drv_data->tx_sgt;
--		nents = drv_data->tx_nents;
--		chan = drv_data->tx_chan;
-+		sgt = &xfer->tx_sg;
-+		chan = drv_data->master->dma_tx;
- 	} else {
- 		cfg.src_addr = drv_data->ssdr_physical;
- 		cfg.src_addr_width = width;
- 		cfg.src_maxburst = chip->dma_burst_size;
+ /* Maximum number of SPI write chunks */
+ #define WSPI_MAX_NUM_OF_CHUNKS \
+ 	((SPI_AGGR_BUFFER_SIZE / WSPI_MAX_CHUNK_SIZE) + 1)
  
--		sgt = &drv_data->rx_sgt;
--		nents = drv_data->rx_nents;
--		chan = drv_data->rx_chan;
-+		sgt = &xfer->rx_sg;
-+		chan = drv_data->master->dma_rx;
- 	}
  
- 	ret = dmaengine_slave_config(chan, &cfg);
-@@ -197,46 +121,10 @@ pxa2xx_spi_dma_prepare_one(struct driver_data *drv_data,
- 		return NULL;
- 	}
++struct wilink_familiy_data {
++	char name[8];
++};
++
++const struct wilink_familiy_data *wilink_data;
++
++static const struct wilink_familiy_data wl18xx_data = {
++	.name = "wl18xx",
++};
++
++static const struct wilink_familiy_data wl12xx_data = {
++	.name = "wl12xx",
++};
++
+ struct wl12xx_spi_glue {
+ 	struct device *dev;
+ 	struct platform_device *core;
+@@ -119,6 +133,7 @@ static void wl12xx_spi_init(struct device *child)
+ 	struct wl12xx_spi_glue *glue = dev_get_drvdata(child->parent);
+ 	struct spi_transfer t;
+ 	struct spi_message m;
++	struct spi_device *spi = to_spi_device(glue->dev);
+ 	u8 *cmd = kzalloc(WSPI_INIT_CMD_LEN, GFP_KERNEL);
  
--	return dmaengine_prep_slave_sg(chan, sgt->sgl, nents, dir,
-+	return dmaengine_prep_slave_sg(chan, sgt->sgl, sgt->nents, dir,
- 				       DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+ 	if (!cmd) {
+@@ -151,6 +166,7 @@ static void wl12xx_spi_init(struct device *child)
+ 		cmd[6] |= WSPI_INIT_CMD_EN_FIXEDBUSY;
+ 
+ 	cmd[7] = crc7_be(0, cmd+2, WSPI_INIT_CMD_CRC_LEN) | WSPI_INIT_CMD_END;
++
+ 	/*
+ 	 * The above is the logical order; it must actually be stored
+ 	 * in the buffer byte-swapped.
+@@ -163,6 +179,28 @@ static void wl12xx_spi_init(struct device *child)
+ 	spi_message_add_tail(&t, &m);
+ 
+ 	spi_sync(to_spi_device(glue->dev), &m);
++
++	/* Send extra clocks with inverted CS (high). this is required
++	 * by the wilink family in order to successfully enter WSPI mode.
++	 */
++	spi->mode ^= SPI_CS_HIGH;
++	memset(&m, 0, sizeof(m));
++	spi_message_init(&m);
++
++	cmd[0] = 0xff;
++	cmd[1] = 0xff;
++	cmd[2] = 0xff;
++	cmd[3] = 0xff;
++	__swab32s((u32 *)cmd);
++
++	t.tx_buf = cmd;
++	t.len = 4;
++	spi_message_add_tail(&t, &m);
++
++	spi_sync(to_spi_device(glue->dev), &m);
++
++	/* Restore chip select configration to normal */
++	spi->mode ^= SPI_CS_HIGH;
+ 	kfree(cmd);
  }
  
--bool pxa2xx_spi_dma_is_possible(size_t len)
--{
--	return len <= MAX_DMA_LEN;
--}
--
--int pxa2xx_spi_map_dma_buffers(struct driver_data *drv_data)
--{
--	const struct chip_data *chip = drv_data->cur_chip;
--	int ret;
--
--	if (!chip->enable_dma)
--		return 0;
--
--	/* Don't bother with DMA if we can't do even a single burst */
--	if (drv_data->len < chip->dma_burst_size)
--		return 0;
--
--	ret = pxa2xx_spi_map_dma_buffer(drv_data, DMA_TO_DEVICE);
--	if (ret <= 0) {
--		dev_warn(&drv_data->pdev->dev, "failed to DMA map TX\n");
--		return 0;
--	}
--
--	drv_data->tx_nents = ret;
--
--	ret = pxa2xx_spi_map_dma_buffer(drv_data, DMA_FROM_DEVICE);
--	if (ret <= 0) {
--		pxa2xx_spi_unmap_dma_buffer(drv_data, DMA_TO_DEVICE);
--		dev_warn(&drv_data->pdev->dev, "failed to DMA map RX\n");
--		return 0;
--	}
--
--	drv_data->rx_nents = ret;
--	return 1;
--}
--
- irqreturn_t pxa2xx_spi_dma_transfer(struct driver_data *drv_data)
- {
- 	u32 status;
-@@ -245,8 +133,8 @@ irqreturn_t pxa2xx_spi_dma_transfer(struct driver_data *drv_data)
- 	if (status & SSSR_ROR) {
- 		dev_err(&drv_data->pdev->dev, "FIFO overrun\n");
- 
--		dmaengine_terminate_async(drv_data->rx_chan);
--		dmaengine_terminate_async(drv_data->tx_chan);
-+		dmaengine_terminate_async(drv_data->master->dma_rx);
-+		dmaengine_terminate_async(drv_data->master->dma_tx);
- 
- 		pxa2xx_spi_dma_transfer_complete(drv_data, true);
- 		return IRQ_HANDLED;
-@@ -285,16 +173,15 @@ int pxa2xx_spi_dma_prepare(struct driver_data *drv_data, u32 dma_burst)
+@@ -270,22 +308,25 @@ static int __must_check wl12xx_spi_raw_read(struct device *child, int addr,
  	return 0;
- 
- err_rx:
--	dmaengine_terminate_async(drv_data->tx_chan);
-+	dmaengine_terminate_async(drv_data->master->dma_tx);
- err_tx:
--	pxa2xx_spi_unmap_dma_buffers(drv_data);
- 	return err;
  }
  
- void pxa2xx_spi_dma_start(struct driver_data *drv_data)
+-static int __must_check wl12xx_spi_raw_write(struct device *child, int addr,
+-					     void *buf, size_t len, bool fixed)
++static int __wl12xx_spi_raw_write(struct device *child, int addr,
++				  void *buf, size_t len, bool fixed)
  {
--	dma_async_issue_pending(drv_data->rx_chan);
--	dma_async_issue_pending(drv_data->tx_chan);
-+	dma_async_issue_pending(drv_data->master->dma_rx);
-+	dma_async_issue_pending(drv_data->master->dma_tx);
+ 	struct wl12xx_spi_glue *glue = dev_get_drvdata(child->parent);
+-	/* SPI write buffers - 2 for each chunk */
+-	struct spi_transfer t[2 * WSPI_MAX_NUM_OF_CHUNKS];
++	struct spi_transfer *t;
+ 	struct spi_message m;
+ 	u32 commands[WSPI_MAX_NUM_OF_CHUNKS]; /* 1 command per chunk */
+ 	u32 *cmd;
+ 	u32 chunk_len;
+ 	int i;
  
- 	atomic_set(&drv_data->dma_running, 1);
- }
-@@ -303,21 +190,22 @@ int pxa2xx_spi_dma_setup(struct driver_data *drv_data)
- {
- 	struct pxa2xx_spi_master *pdata = drv_data->master_info;
- 	struct device *dev = &drv_data->pdev->dev;
-+	struct spi_master *master = drv_data->master;
- 	dma_cap_mask_t mask;
- 
- 	dma_cap_zero(mask);
- 	dma_cap_set(DMA_SLAVE, mask);
- 
--	drv_data->tx_chan = dma_request_slave_channel_compat(mask,
-+	master->dma_tx = dma_request_slave_channel_compat(mask,
- 				pdata->dma_filter, pdata->tx_param, dev, "tx");
--	if (!drv_data->tx_chan)
-+	if (!master->dma_tx)
- 		return -ENODEV;
- 
--	drv_data->rx_chan = dma_request_slave_channel_compat(mask,
-+	master->dma_rx = dma_request_slave_channel_compat(mask,
- 				pdata->dma_filter, pdata->rx_param, dev, "rx");
--	if (!drv_data->rx_chan) {
--		dma_release_channel(drv_data->tx_chan);
--		drv_data->tx_chan = NULL;
-+	if (!master->dma_rx) {
-+		dma_release_channel(master->dma_tx);
-+		master->dma_tx = NULL;
- 		return -ENODEV;
- 	}
- 
-@@ -326,17 +214,17 @@ int pxa2xx_spi_dma_setup(struct driver_data *drv_data)
- 
- void pxa2xx_spi_dma_release(struct driver_data *drv_data)
- {
--	if (drv_data->rx_chan) {
--		dmaengine_terminate_sync(drv_data->rx_chan);
--		dma_release_channel(drv_data->rx_chan);
--		sg_free_table(&drv_data->rx_sgt);
--		drv_data->rx_chan = NULL;
-+	struct spi_master *master = drv_data->master;
++	/* SPI write buffers - 2 for each chunk */
++	t = kzalloc(sizeof(*t) * 2 * WSPI_MAX_NUM_OF_CHUNKS, GFP_KERNEL);
++	if (!t)
++		return -ENOMEM;
 +
-+	if (master->dma_rx) {
-+		dmaengine_terminate_sync(master->dma_rx);
-+		dma_release_channel(master->dma_rx);
-+		master->dma_rx = NULL;
- 	}
--	if (drv_data->tx_chan) {
--		dmaengine_terminate_sync(drv_data->tx_chan);
--		dma_release_channel(drv_data->tx_chan);
--		sg_free_table(&drv_data->tx_sgt);
--		drv_data->tx_chan = NULL;
-+	if (master->dma_tx) {
-+		dmaengine_terminate_sync(master->dma_tx);
-+		dma_release_channel(master->dma_tx);
-+		master->dma_tx = NULL;
- 	}
+ 	WARN_ON(len > SPI_AGGR_BUFFER_SIZE);
+ 
+ 	spi_message_init(&m);
+-	memset(t, 0, sizeof(t));
+ 
+ 	cmd = &commands[0];
+ 	i = 0;
+@@ -318,9 +359,26 @@ static int __must_check wl12xx_spi_raw_write(struct device *child, int addr,
+ 
+ 	spi_sync(to_spi_device(glue->dev), &m);
+ 
++	kfree(t);
+ 	return 0;
  }
  
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index e5c457abb596..3e90a4ce668b 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -912,6 +912,17 @@ static unsigned int pxa2xx_ssp_get_clk_div(struct driver_data *drv_data,
- 	return clk_div << 8;
- }
- 
-+static bool pxa2xx_spi_can_dma(struct spi_master *master,
-+			       struct spi_device *spi,
-+			       struct spi_transfer *xfer)
++static int __must_check wl12xx_spi_raw_write(struct device *child, int addr,
++					     void *buf, size_t len, bool fixed)
 +{
-+	struct chip_data *chip = spi_get_ctldata(spi);
++	int ret;
 +
-+	return chip->enable_dma &&
-+	       xfer->len <= MAX_DMA_LEN &&
-+	       xfer->len >= chip->dma_burst_size;
++	/* The ELP wakeup write may fail the first time due to internal
++	 * hardware latency. It is safer to send the wakeup command twice to
++	 * avoid unexpected failures.
++	 */
++	if (addr == HW_ACCESS_ELP_CTRL_REG)
++		ret = __wl12xx_spi_raw_write(child, addr, buf, len, fixed);
++	ret = __wl12xx_spi_raw_write(child, addr, buf, len, fixed);
++
++	return ret;
 +}
 +
- static void pump_transfers(unsigned long data)
+ /**
+  * wl12xx_spi_set_power - power on/off the wl12xx unit
+  * @child: wl12xx device handle.
+@@ -349,17 +407,38 @@ static int wl12xx_spi_set_power(struct device *child, bool enable)
+ 	return ret;
+ }
+ 
++/**
++ * wl12xx_spi_set_block_size
++ *
++ * This function is not needed for spi mode, but need to be present.
++ * Without it defined the wlcore fallback to use the wrong packet
++ * allignment on tx.
++ */
++static void wl12xx_spi_set_block_size(struct device *child,
++				      unsigned int blksz)
++{
++}
++
+ static struct wl1271_if_operations spi_ops = {
+ 	.read		= wl12xx_spi_raw_read,
+ 	.write		= wl12xx_spi_raw_write,
+ 	.reset		= wl12xx_spi_reset,
+ 	.init		= wl12xx_spi_init,
+ 	.power		= wl12xx_spi_set_power,
+-	.set_block_size = NULL,
++	.set_block_size = wl12xx_spi_set_block_size,
+ };
+ 
+ static const struct of_device_id wlcore_spi_of_match_table[] = {
+-	{ .compatible = "ti,wl1271" },
++	{ .compatible = "ti,wl1271", .data = &wl12xx_data},
++	{ .compatible = "ti,wl1273", .data = &wl12xx_data},
++	{ .compatible = "ti,wl1281", .data = &wl12xx_data},
++	{ .compatible = "ti,wl1283", .data = &wl12xx_data},
++	{ .compatible = "ti,wl1801", .data = &wl18xx_data},
++	{ .compatible = "ti,wl1805", .data = &wl18xx_data},
++	{ .compatible = "ti,wl1807", .data = &wl18xx_data},
++	{ .compatible = "ti,wl1831", .data = &wl18xx_data},
++	{ .compatible = "ti,wl1835", .data = &wl18xx_data},
++	{ .compatible = "ti,wl1837", .data = &wl18xx_data},
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(of, wlcore_spi_of_match_table);
+@@ -375,18 +454,24 @@ static int wlcore_probe_of(struct spi_device *spi, struct wl12xx_spi_glue *glue,
+ 			   struct wlcore_platdev_data *pdev_data)
  {
- 	struct driver_data *drv_data = (struct driver_data *)data;
-@@ -929,6 +940,7 @@ static void pump_transfers(unsigned long data)
- 	u32 dma_burst = drv_data->cur_chip->dma_burst_size;
- 	u32 change_mask = pxa2xx_spi_get_ssrc1_change_mask(drv_data);
- 	int err;
-+	int dma_mapped;
+ 	struct device_node *dt_node = spi->dev.of_node;
+-	int ret;
++	const struct of_device_id *of_id;
++
++	of_id = of_match_node(wlcore_spi_of_match_table, dt_node);
++	if (!of_id)
++		return -ENODEV;
++
++	wilink_data = of_id->data;
++	dev_info(&spi->dev, "selected chip familiy is %s\n",
++		 wilink_data->name);
  
- 	/* Get current state information */
- 	message = drv_data->cur_msg;
-@@ -963,7 +975,7 @@ static void pump_transfers(unsigned long data)
+ 	if (of_find_property(dt_node, "clock-xtal", NULL))
+ 		pdev_data->ref_clock_xtal = true;
+ 
+-	ret = of_property_read_u32(dt_node, "ref-clock-frequency",
+-				   &pdev_data->ref_clock_freq);
+-	if (IS_ERR_VALUE(ret)) {
+-		dev_err(glue->dev,
+-			"can't get reference clock frequency (%d)\n", ret);
+-		return ret;
+-	}
++	/* optional clock frequency params */
++	of_property_read_u32(dt_node, "ref-clock-frequency",
++			     &pdev_data->ref_clock_freq);
++	of_property_read_u32(dt_node, "tcxo-clock-frequency",
++			     &pdev_data->tcxo_clock_freq);
+ 
+ 	return 0;
+ }
+@@ -437,7 +522,8 @@ static int wl1271_probe(struct spi_device *spi)
+ 		return ret;
  	}
  
- 	/* Check if we can DMA this transfer */
--	if (!pxa2xx_spi_dma_is_possible(transfer->len) && chip->enable_dma) {
-+	if (transfer->len > MAX_DMA_LEN && chip->enable_dma) {
- 
- 		/* reject already-mapped transfers; PIO won't always work */
- 		if (message->is_dma_mapped
-@@ -1040,10 +1052,10 @@ static void pump_transfers(unsigned long data)
- 
- 	message->state = RUNNING_STATE;
- 
--	drv_data->dma_mapped = 0;
--	if (pxa2xx_spi_dma_is_possible(drv_data->len))
--		drv_data->dma_mapped = pxa2xx_spi_map_dma_buffers(drv_data);
--	if (drv_data->dma_mapped) {
-+	dma_mapped = master->can_dma &&
-+		     master->can_dma(master, message->spi, transfer) &&
-+		     master->cur_msg_mapped;
-+	if (dma_mapped) {
- 
- 		/* Ensure we have the correct interrupt handler */
- 		drv_data->transfer_handler = pxa2xx_spi_dma_transfer;
-@@ -1075,12 +1087,12 @@ static void pump_transfers(unsigned long data)
- 		dev_dbg(&message->spi->dev, "%u Hz actual, %s\n",
- 			master->max_speed_hz
- 				/ (1 + ((cr0 & SSCR0_SCR(0xfff)) >> 8)),
--			drv_data->dma_mapped ? "DMA" : "PIO");
-+			dma_mapped ? "DMA" : "PIO");
- 	else
- 		dev_dbg(&message->spi->dev, "%u Hz actual, %s\n",
- 			master->max_speed_hz / 2
- 				/ (1 + ((cr0 & SSCR0_SCR(0x0ff)) >> 8)),
--			drv_data->dma_mapped ? "DMA" : "PIO");
-+			dma_mapped ? "DMA" : "PIO");
- 
- 	if (is_lpss_ssp(drv_data)) {
- 		if ((pxa2xx_spi_read(drv_data, SSIRF) & 0xff)
-@@ -1594,6 +1606,8 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
- 		if (status) {
- 			dev_dbg(dev, "no DMA channels available, using PIO\n");
- 			platform_info->enable_dma = false;
-+		} else {
-+			master->can_dma = pxa2xx_spi_can_dma;
- 		}
- 	}
- 
-diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
-index e6b09000ff14..d217ad55cc12 100644
---- a/drivers/spi/spi-pxa2xx.h
-+++ b/drivers/spi/spi-pxa2xx.h
-@@ -50,12 +50,6 @@ struct driver_data {
- 	struct tasklet_struct pump_transfers;
- 
- 	/* DMA engine support */
--	struct dma_chan *rx_chan;
--	struct dma_chan *tx_chan;
--	struct sg_table rx_sgt;
--	struct sg_table tx_sgt;
--	int rx_nents;
--	int tx_nents;
- 	atomic_t dma_running;
- 
- 	/* Current message transfer state info */
-@@ -67,7 +61,6 @@ struct driver_data {
- 	void *tx_end;
- 	void *rx;
- 	void *rx_end;
--	int dma_mapped;
- 	u8 n_bytes;
- 	int (*write)(struct driver_data *drv_data);
- 	int (*read)(struct driver_data *drv_data);
-@@ -145,8 +138,6 @@ extern void *pxa2xx_spi_next_transfer(struct driver_data *drv_data);
- #define MAX_DMA_LEN		SZ_64K
- #define DEFAULT_DMA_CR1		(SSCR1_TSRE | SSCR1_RSRE | SSCR1_TRAIL)
- 
--extern bool pxa2xx_spi_dma_is_possible(size_t len);
--extern int pxa2xx_spi_map_dma_buffers(struct driver_data *drv_data);
- extern irqreturn_t pxa2xx_spi_dma_transfer(struct driver_data *drv_data);
- extern int pxa2xx_spi_dma_prepare(struct driver_data *drv_data, u32 dma_burst);
- extern void pxa2xx_spi_dma_start(struct driver_data *drv_data);
+-	glue->core = platform_device_alloc("wl12xx", PLATFORM_DEVID_AUTO);
++	glue->core = platform_device_alloc(wilink_data->name,
++					   PLATFORM_DEVID_AUTO);
+ 	if (!glue->core) {
+ 		dev_err(glue->dev, "can't allocate platform_device\n");
+ 		return -ENOMEM;
 -- 
-2.8.1
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+2.7.4

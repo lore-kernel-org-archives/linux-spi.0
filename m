@@ -1,7 +1,7 @@
 From: Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH/RFC 1/6] spi: Document DT bindings for SPI controllers in slave mode
-Date: Wed, 22 Jun 2016 15:42:04 +0200
-Message-ID: <1466602929-4191-2-git-send-email-geert+renesas@glider.be>
+Subject: [PATCH/RFC 2/6] spi: core: Add support for registering SPI slave controllers
+Date: Wed, 22 Jun 2016 15:42:05 +0200
+Message-ID: <1466602929-4191-3-git-send-email-geert+renesas@glider.be>
 References: <1466602929-4191-1-git-send-email-geert+renesas@glider.be>
 Cc: Rob Herring <robh+dt@kernel.org>,
 	Mark Rutland <mark.rutland@arm.com>,
@@ -12,77 +12,168 @@ Cc: Rob Herring <robh+dt@kernel.org>,
 	linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
 To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-renesas-soc-owner@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <1466602929-4191-1-git-send-email-geert+renesas@glider.be>
-Sender: linux-renesas-soc-owner@vger.kernel.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
+
+Add support for registering SPI slave controllers using the existing SPI
+master framework:
+  - SPI slave controllers must set the SPI_MASTER_IS_SLAVE flag in
+    spi_master.flags,
+  - The "cs-gpios" property is ignored,
+  - The bus is described in DT as having a single slave node, "reg" and
+    "spi-max-frequency" properties are ignored.
+
+>From the point of view of an SPI slave protocol handler, an SPI slave
+controller looks exactly like an ordinary SPI master controller.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- Documentation/devicetree/bindings/spi/spi-bus.txt | 31 ++++++++++++++---------
- 1 file changed, 19 insertions(+), 12 deletions(-)
+Should we rename spi_master to spi_controller?
+---
+ drivers/spi/Kconfig     | 14 +++++++++++++-
+ drivers/spi/Makefile    |  2 ++
+ drivers/spi/spi.c       | 39 ++++++++++++++++++++++++---------------
+ include/linux/spi/spi.h |  5 +++--
+ 4 files changed, 42 insertions(+), 18 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
-index 17822860cb98c34d..bcd024e0bb9e0009 100644
---- a/Documentation/devicetree/bindings/spi/spi-bus.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
-@@ -1,17 +1,23 @@
- SPI (Serial Peripheral Interface) busses
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 4b931ec8d90b610f..00e990d91a715c0e 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -736,6 +736,18 @@ config SPI_TLE62X0
  
--SPI busses can be described with a node for the SPI master device
--and a set of child nodes for each SPI slave on the bus.  For this
--discussion, it is assumed that the system's SPI controller is in
--SPI master mode.  This binding does not describe SPI controllers
--in slave mode.
-+SPI busses can be described with a node for the SPI controller device
-+and a set of child nodes for each SPI slave on the bus.  The system's SPI
-+controller may be described for use in SPI master mode or in SPI slave mode,
-+but not for both at the same time.
+ endif # SPI_MASTER
  
--The SPI master node requires the following properties:
-+The SPI controller node requires the following properties:
-+- compatible      - name of SPI bus controller following generic names
-+		recommended practice.
+-# (slave support would go here)
++#
++# SLAVE side ... listening to other SPI masters
++#
 +
-+In master mode, the SPI controller node requires the following additional
-+properties:
- - #address-cells  - number of cells required to define a chip select
- 		address on the SPI bus.
- - #size-cells     - should be zero.
--- compatible      - name of SPI bus controller following generic names
--		recommended practice.
++config SPI_SLAVE
++	bool "SPI slave protocol handlers"
++	help
++	  If your system has a slave-capable SPI controller, you can enable
++	  slave protocol handlers.
 +
-+In slave node, the SPI controller node requires the presence of a child node
-+named "slave", further following the practices for SPI slave nodes below.
++if SPI_SLAVE
 +
- No other properties are required in the SPI bus node.  It is assumed
- that a driver for an SPI bus device will understand that it is an SPI bus.
- However, the binding does not attempt to define the specific method for
-@@ -21,7 +27,7 @@ assumption that board specific platform code will be used to manage
- chip selects.  Individual drivers can define additional properties to
- support describing the chip select layout.
++endif # SPI_SLAVE
  
--Optional properties:
-+Optional properties (master mode only):
- - cs-gpios	  - gpios chip select.
- - num-cs	  - total number of chipselects.
+ endif # SPI
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 3c74d003535bb9fb..71d02939080fb747 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -97,3 +97,5 @@ obj-$(CONFIG_SPI_XILINX)		+= spi-xilinx.o
+ obj-$(CONFIG_SPI_XLP)			+= spi-xlp.o
+ obj-$(CONFIG_SPI_XTENSA_XTFPGA)		+= spi-xtensa-xtfpga.o
+ obj-$(CONFIG_SPI_ZYNQMP_GQSPI)		+= spi-zynqmp-gqspi.o
++
++# SPI slave protocol handlers
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 77e6e45951f4c5e1..6ea32255d6d9e780 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1462,6 +1462,7 @@ err_init_queue:
+ static struct spi_device *
+ of_register_spi_device(struct spi_master *master, struct device_node *nc)
+ {
++	bool slave = master->flags & SPI_MASTER_IS_SLAVE;
+ 	struct spi_device *spi;
+ 	int rc;
+ 	u32 value;
+@@ -1485,13 +1486,16 @@ of_register_spi_device(struct spi_master *master, struct device_node *nc)
+ 	}
  
-@@ -41,12 +47,13 @@ cs1 : native
- cs2 : &gpio1 1 0
- cs3 : &gpio1 2 0
+ 	/* Device address */
+-	rc = of_property_read_u32(nc, "reg", &value);
+-	if (rc) {
+-		dev_err(&master->dev, "%s has no valid 'reg' property (%d)\n",
+-			nc->full_name, rc);
+-		goto err_out;
++	if (!slave) {
++		rc = of_property_read_u32(nc, "reg", &value);
++		if (rc) {
++			dev_err(&master->dev,
++				"%s has no valid 'reg' property (%d)\n",
++				nc->full_name, rc);
++			goto err_out;
++		}
++		spi->chip_select = value;
+ 	}
+-	spi->chip_select = value;
  
--SPI slave nodes must be children of the SPI master node and can
-+SPI slave nodes must be children of the SPI controller node and can
- contain the following properties.
--- reg             - (required) chip select address of device.
-+- reg             - (required, master mode only) chip select address of device.
- - compatible      - (required) name of SPI device following generic names
- 		recommended practice.
--- spi-max-frequency - (required) Maximum SPI clocking speed of device in Hz.
-+- spi-max-frequency - (required, master mode only) Maximum SPI clocking speed
-+		of device in Hz.
- - spi-cpol        - (optional) Empty property indicating device requires
- 		inverse clock polarity (CPOL) mode.
- - spi-cpha        - (optional) Empty property indicating device requires
+ 	/* Mode (clock phase/polarity/etc.) */
+ 	if (of_find_property(nc, "spi-cpha", NULL))
+@@ -1543,13 +1547,16 @@ of_register_spi_device(struct spi_master *master, struct device_node *nc)
+ 	}
+ 
+ 	/* Device speed */
+-	rc = of_property_read_u32(nc, "spi-max-frequency", &value);
+-	if (rc) {
+-		dev_err(&master->dev, "%s has no valid 'spi-max-frequency' property (%d)\n",
+-			nc->full_name, rc);
+-		goto err_out;
++	if (!slave) {
++		rc = of_property_read_u32(nc, "spi-max-frequency", &value);
++		if (rc) {
++			dev_err(&master->dev,
++				"%s has no valid 'spi-max-frequency' property (%d)\n",
++				nc->full_name, rc);
++			goto err_out;
++		}
++		spi->max_speed_hz = value;
+ 	}
+-	spi->max_speed_hz = value;
+ 
+ 	/* Store a pointer to the node in the device structure */
+ 	of_node_get(nc);
+@@ -1779,7 +1786,7 @@ static int of_spi_register_master(struct spi_master *master)
+ 	int nb, i, *cs;
+ 	struct device_node *np = master->dev.of_node;
+ 
+-	if (!np)
++	if (!np || master->flags & SPI_MASTER_IS_SLAVE)
+ 		return 0;
+ 
+ 	nb = of_gpio_named_count(np, "cs-gpios");
+@@ -1885,8 +1892,10 @@ int spi_register_master(struct spi_master *master)
+ 	status = device_add(&master->dev);
+ 	if (status < 0)
+ 		goto done;
+-	dev_dbg(dev, "registered master %s%s\n", dev_name(&master->dev),
+-			dynamic ? " (dynamic)" : "");
++	dev_dbg(dev, "registered %s %s%s\n",
++			master->flags & SPI_MASTER_IS_SLAVE ? "slave"
++							    : "master",
++			dev_name(&master->dev), dynamic ? " (dynamic)" : "");
+ 
+ 	/* If we're using a queued driver, start the queue */
+ 	if (master->transfer)
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 1f03483f61e5714b..0fbebaa7d93990a4 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -28,8 +28,8 @@ struct spi_transfer;
+ struct spi_flash_read_message;
+ 
+ /*
+- * INTERFACES between SPI master-side drivers and SPI infrastructure.
+- * (There's no SPI slave support for Linux yet...)
++ * INTERFACES between SPI master-side drivers and SPI slave protocol handers,
++ * and SPI infrastructure.
+  */
+ extern struct bus_type spi_bus_type;
+ 
+@@ -439,6 +439,7 @@ struct spi_master {
+ #define SPI_MASTER_NO_TX	BIT(2)		/* can't do buffer write */
+ #define SPI_MASTER_MUST_RX      BIT(3)		/* requires rx */
+ #define SPI_MASTER_MUST_TX      BIT(4)		/* requires tx */
++#define SPI_MASTER_IS_SLAVE     BIT(5)		/* SPI slave controller */
+ 
+ 	/*
+ 	 * on some hardware transfer size may be constrained
 -- 
 1.9.1

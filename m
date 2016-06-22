@@ -1,107 +1,108 @@
 From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH] spi: Improve DT binding documentation
-Date: Wed, 22 Jun 2016 14:48:26 +0200
-Message-ID: <1466599706-2850-1-git-send-email-geert+renesas@glider.be>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+Subject: [PATCH] spi: sh-msiof: Remove sh_msiof_spi_priv.chipdata
+Date: Wed, 22 Jun 2016 14:50:03 +0200
+Message-ID: <1466599803-2965-1-git-send-email-geert+renesas@glider.be>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-  - Add missing verbs and periods,
-  - Add spaces before opening parentheses,
-  - Align list layout,
-  - Correct grammar,
-  - Move "cs-gpios" from the required to the optional properties
-    section,
-  - Remove spaces before tabs.
+After probe time, the pointer to the sh_msiof_chipdata structure in the
+sh_msiof_spi_priv structure is used only for checking the SPI master flags.
+As these are also available in the spi_master structure, convert the
+users to access those, and remove the pointer.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 ---
- Documentation/devicetree/bindings/spi/spi-bus.txt | 35 ++++++++++++-----------
- 1 file changed, 18 insertions(+), 17 deletions(-)
+ drivers/spi/spi-sh-msiof.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
-index 42d595425dfb9f3c..17822860cb98c34d 100644
---- a/Documentation/devicetree/bindings/spi/spi-bus.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
-@@ -8,11 +8,10 @@ in slave mode.
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index a7934ab00b96505f..0f83ad1d5a5858dd 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -45,7 +45,6 @@ struct sh_msiof_spi_priv {
+ 	void __iomem *mapbase;
+ 	struct clk *clk;
+ 	struct platform_device *pdev;
+-	const struct sh_msiof_chipdata *chipdata;
+ 	struct sh_msiof_spi_info *info;
+ 	struct completion done;
+ 	unsigned int tx_fifo_size;
+@@ -271,7 +270,7 @@ static void sh_msiof_spi_set_clk_regs(struct sh_msiof_spi_priv *p,
  
- The SPI master node requires the following properties:
- - #address-cells  - number of cells required to define a chip select
--    		address on the SPI bus.
-+		address on the SPI bus.
- - #size-cells     - should be zero.
- - compatible      - name of SPI bus controller following generic names
--    		recommended practice.
--- cs-gpios	  - (optional) gpios chip select.
-+		recommended practice.
- No other properties are required in the SPI bus node.  It is assumed
- that a driver for an SPI bus device will understand that it is an SPI bus.
- However, the binding does not attempt to define the specific method for
-@@ -22,11 +21,12 @@ assumption that board specific platform code will be used to manage
- chip selects.  Individual drivers can define additional properties to
- support describing the chip select layout.
+ 	scr = sh_msiof_spi_div_table[k].brdv | SCR_BRPS(brps);
+ 	sh_msiof_write(p, TSCR, scr);
+-	if (!(p->chipdata->master_flags & SPI_MASTER_MUST_TX))
++	if (!(p->master->flags & SPI_MASTER_MUST_TX))
+ 		sh_msiof_write(p, RSCR, scr);
+ }
  
--Optional property:
--- num-cs : total number of chipselects
-+Optional properties:
-+- cs-gpios	  - gpios chip select.
-+- num-cs	  - total number of chipselects.
+@@ -336,7 +335,7 @@ static void sh_msiof_spi_set_pin_regs(struct sh_msiof_spi_priv *p,
+ 	tmp |= lsb_first << MDR1_BITLSB_SHIFT;
+ 	tmp |= sh_msiof_spi_get_dtdl_and_syncdl(p);
+ 	sh_msiof_write(p, TMDR1, tmp | MDR1_TRMD | TMDR1_PCON);
+-	if (p->chipdata->master_flags & SPI_MASTER_MUST_TX) {
++	if (p->master->flags & SPI_MASTER_MUST_TX) {
+ 		/* These bits are reserved if RX needs TX */
+ 		tmp &= ~0x0000ffff;
+ 	}
+@@ -360,7 +359,7 @@ static void sh_msiof_spi_set_mode_regs(struct sh_msiof_spi_priv *p,
+ {
+ 	u32 dr2 = MDR2_BITLEN1(bits) | MDR2_WDLEN1(words);
  
--If cs-gpios is used the number of chip select will automatically increased
--with max(cs-gpios > hw cs)
-+If cs-gpios is used the number of chip selects will be increased automatically
-+with max(cs-gpios > hw cs).
+-	if (tx_buf || (p->chipdata->master_flags & SPI_MASTER_MUST_TX))
++	if (tx_buf || (p->master->flags & SPI_MASTER_MUST_TX))
+ 		sh_msiof_write(p, TMDR2, dr2);
+ 	else
+ 		sh_msiof_write(p, TMDR2, dr2 | MDR2_GRPMASK1);
+@@ -1152,6 +1151,7 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ {
+ 	struct resource	*r;
+ 	struct spi_master *master;
++	const struct sh_msiof_chipdata *chipdata;
+ 	const struct of_device_id *of_id;
+ 	struct sh_msiof_spi_priv *p;
+ 	int i;
+@@ -1170,10 +1170,10 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
  
- So if for example the controller has 2 CS lines, and the cs-gpios
- property looks like this:
-@@ -45,29 +45,30 @@ SPI slave nodes must be children of the SPI master node and can
- contain the following properties.
- - reg             - (required) chip select address of device.
- - compatible      - (required) name of SPI device following generic names
--    		recommended practice
--- spi-max-frequency - (required) Maximum SPI clocking speed of device in Hz
-+		recommended practice.
-+- spi-max-frequency - (required) Maximum SPI clocking speed of device in Hz.
- - spi-cpol        - (optional) Empty property indicating device requires
--    		inverse clock polarity (CPOL) mode
-+		inverse clock polarity (CPOL) mode.
- - spi-cpha        - (optional) Empty property indicating device requires
--    		shifted clock phase (CPHA) mode
-+		shifted clock phase (CPHA) mode.
- - spi-cs-high     - (optional) Empty property indicating device requires
--    		chip select active high
-+		chip select active high.
- - spi-3wire       - (optional) Empty property indicating device requires
--    		    3-wire mode.
-+		3-wire mode.
- - spi-lsb-first   - (optional) Empty property indicating device requires
- 		LSB first mode.
--- spi-tx-bus-width - (optional) The bus width(number of data wires) that
-+- spi-tx-bus-width - (optional) The bus width (number of data wires) that is
-                       used for MOSI. Defaults to 1 if not present.
--- spi-rx-bus-width - (optional) The bus width(number of data wires) that
-+- spi-rx-bus-width - (optional) The bus width (number of data wires) that is
-                       used for MISO. Defaults to 1 if not present.
- - spi-rx-delay-us  - (optional) Microsecond delay after a read transfer.
- - spi-tx-delay-us  - (optional) Microsecond delay after a write transfer.
+ 	of_id = of_match_device(sh_msiof_match, &pdev->dev);
+ 	if (of_id) {
+-		p->chipdata = of_id->data;
++		chipdata = of_id->data;
+ 		p->info = sh_msiof_spi_parse_dt(&pdev->dev);
+ 	} else {
+-		p->chipdata = (const void *)pdev->id_entry->driver_data;
++		chipdata = (const void *)pdev->id_entry->driver_data;
+ 		p->info = dev_get_platdata(&pdev->dev);
+ 	}
  
- Some SPI controllers and devices support Dual and Quad SPI transfer mode.
--It allows data in the SPI system to be transferred in 2 wires(DUAL) or 4 wires(QUAD).
-+It allows data in the SPI system to be transferred using 2 wires (DUAL) or 4
-+wires (QUAD).
- Now the value that spi-tx-bus-width and spi-rx-bus-width can receive is
--only 1(SINGLE), 2(DUAL) and 4(QUAD).
-+only 1 (SINGLE), 2 (DUAL) and 4 (QUAD).
- Dual/Quad mode is not allowed when 3-wire mode is used.
+@@ -1217,8 +1217,8 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 	pm_runtime_enable(&pdev->dev);
  
- If a gpio chipselect is used for the SPI slave the gpio number will be passed
+ 	/* Platform data may override FIFO sizes */
+-	p->tx_fifo_size = p->chipdata->tx_fifo_size;
+-	p->rx_fifo_size = p->chipdata->rx_fifo_size;
++	p->tx_fifo_size = chipdata->tx_fifo_size;
++	p->rx_fifo_size = chipdata->rx_fifo_size;
+ 	if (p->info->tx_fifo_override)
+ 		p->tx_fifo_size = p->info->tx_fifo_override;
+ 	if (p->info->rx_fifo_override)
+@@ -1227,7 +1227,7 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 	/* init master code */
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+ 	master->mode_bits |= SPI_LSB_FIRST | SPI_3WIRE;
+-	master->flags = p->chipdata->master_flags;
++	master->flags = chipdata->master_flags;
+ 	master->bus_num = pdev->id;
+ 	master->dev.of_node = pdev->dev.of_node;
+ 	master->num_chipselect = p->info->num_chipselect;
 -- 
 1.9.1
 
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

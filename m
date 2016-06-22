@@ -1,108 +1,88 @@
-From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH] spi: sh-msiof: Remove sh_msiof_spi_priv.chipdata
-Date: Wed, 22 Jun 2016 14:50:03 +0200
-Message-ID: <1466599803-2965-1-git-send-email-geert+renesas@glider.be>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH/RFC 1/6] spi: Document DT bindings for SPI controllers in slave mode
+Date: Wed, 22 Jun 2016 15:42:04 +0200
+Message-ID: <1466602929-4191-2-git-send-email-geert+renesas@glider.be>
+References: <1466602929-4191-1-git-send-email-geert+renesas@glider.be>
+Cc: Rob Herring <robh+dt@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Hisashi Nakamura <hisashi.nakamura.ak@renesas.com>,
+	Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>,
+	linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-renesas-soc-owner@vger.kernel.org>
+In-Reply-To: <1466602929-4191-1-git-send-email-geert+renesas@glider.be>
+Sender: linux-renesas-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-After probe time, the pointer to the sh_msiof_chipdata structure in the
-sh_msiof_spi_priv structure is used only for checking the SPI master flags.
-As these are also available in the spi_master structure, convert the
-users to access those, and remove the pointer.
-
-Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- drivers/spi/spi-sh-msiof.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ Documentation/devicetree/bindings/spi/spi-bus.txt | 31 ++++++++++++++---------
+ 1 file changed, 19 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index a7934ab00b96505f..0f83ad1d5a5858dd 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -45,7 +45,6 @@ struct sh_msiof_spi_priv {
- 	void __iomem *mapbase;
- 	struct clk *clk;
- 	struct platform_device *pdev;
--	const struct sh_msiof_chipdata *chipdata;
- 	struct sh_msiof_spi_info *info;
- 	struct completion done;
- 	unsigned int tx_fifo_size;
-@@ -271,7 +270,7 @@ static void sh_msiof_spi_set_clk_regs(struct sh_msiof_spi_priv *p,
+diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
+index 17822860cb98c34d..bcd024e0bb9e0009 100644
+--- a/Documentation/devicetree/bindings/spi/spi-bus.txt
++++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
+@@ -1,17 +1,23 @@
+ SPI (Serial Peripheral Interface) busses
  
- 	scr = sh_msiof_spi_div_table[k].brdv | SCR_BRPS(brps);
- 	sh_msiof_write(p, TSCR, scr);
--	if (!(p->chipdata->master_flags & SPI_MASTER_MUST_TX))
-+	if (!(p->master->flags & SPI_MASTER_MUST_TX))
- 		sh_msiof_write(p, RSCR, scr);
- }
+-SPI busses can be described with a node for the SPI master device
+-and a set of child nodes for each SPI slave on the bus.  For this
+-discussion, it is assumed that the system's SPI controller is in
+-SPI master mode.  This binding does not describe SPI controllers
+-in slave mode.
++SPI busses can be described with a node for the SPI controller device
++and a set of child nodes for each SPI slave on the bus.  The system's SPI
++controller may be described for use in SPI master mode or in SPI slave mode,
++but not for both at the same time.
  
-@@ -336,7 +335,7 @@ static void sh_msiof_spi_set_pin_regs(struct sh_msiof_spi_priv *p,
- 	tmp |= lsb_first << MDR1_BITLSB_SHIFT;
- 	tmp |= sh_msiof_spi_get_dtdl_and_syncdl(p);
- 	sh_msiof_write(p, TMDR1, tmp | MDR1_TRMD | TMDR1_PCON);
--	if (p->chipdata->master_flags & SPI_MASTER_MUST_TX) {
-+	if (p->master->flags & SPI_MASTER_MUST_TX) {
- 		/* These bits are reserved if RX needs TX */
- 		tmp &= ~0x0000ffff;
- 	}
-@@ -360,7 +359,7 @@ static void sh_msiof_spi_set_mode_regs(struct sh_msiof_spi_priv *p,
- {
- 	u32 dr2 = MDR2_BITLEN1(bits) | MDR2_WDLEN1(words);
+-The SPI master node requires the following properties:
++The SPI controller node requires the following properties:
++- compatible      - name of SPI bus controller following generic names
++		recommended practice.
++
++In master mode, the SPI controller node requires the following additional
++properties:
+ - #address-cells  - number of cells required to define a chip select
+ 		address on the SPI bus.
+ - #size-cells     - should be zero.
+-- compatible      - name of SPI bus controller following generic names
+-		recommended practice.
++
++In slave node, the SPI controller node requires the presence of a child node
++named "slave", further following the practices for SPI slave nodes below.
++
+ No other properties are required in the SPI bus node.  It is assumed
+ that a driver for an SPI bus device will understand that it is an SPI bus.
+ However, the binding does not attempt to define the specific method for
+@@ -21,7 +27,7 @@ assumption that board specific platform code will be used to manage
+ chip selects.  Individual drivers can define additional properties to
+ support describing the chip select layout.
  
--	if (tx_buf || (p->chipdata->master_flags & SPI_MASTER_MUST_TX))
-+	if (tx_buf || (p->master->flags & SPI_MASTER_MUST_TX))
- 		sh_msiof_write(p, TMDR2, dr2);
- 	else
- 		sh_msiof_write(p, TMDR2, dr2 | MDR2_GRPMASK1);
-@@ -1152,6 +1151,7 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
- {
- 	struct resource	*r;
- 	struct spi_master *master;
-+	const struct sh_msiof_chipdata *chipdata;
- 	const struct of_device_id *of_id;
- 	struct sh_msiof_spi_priv *p;
- 	int i;
-@@ -1170,10 +1170,10 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+-Optional properties:
++Optional properties (master mode only):
+ - cs-gpios	  - gpios chip select.
+ - num-cs	  - total number of chipselects.
  
- 	of_id = of_match_device(sh_msiof_match, &pdev->dev);
- 	if (of_id) {
--		p->chipdata = of_id->data;
-+		chipdata = of_id->data;
- 		p->info = sh_msiof_spi_parse_dt(&pdev->dev);
- 	} else {
--		p->chipdata = (const void *)pdev->id_entry->driver_data;
-+		chipdata = (const void *)pdev->id_entry->driver_data;
- 		p->info = dev_get_platdata(&pdev->dev);
- 	}
+@@ -41,12 +47,13 @@ cs1 : native
+ cs2 : &gpio1 1 0
+ cs3 : &gpio1 2 0
  
-@@ -1217,8 +1217,8 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
- 	pm_runtime_enable(&pdev->dev);
- 
- 	/* Platform data may override FIFO sizes */
--	p->tx_fifo_size = p->chipdata->tx_fifo_size;
--	p->rx_fifo_size = p->chipdata->rx_fifo_size;
-+	p->tx_fifo_size = chipdata->tx_fifo_size;
-+	p->rx_fifo_size = chipdata->rx_fifo_size;
- 	if (p->info->tx_fifo_override)
- 		p->tx_fifo_size = p->info->tx_fifo_override;
- 	if (p->info->rx_fifo_override)
-@@ -1227,7 +1227,7 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
- 	/* init master code */
- 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
- 	master->mode_bits |= SPI_LSB_FIRST | SPI_3WIRE;
--	master->flags = p->chipdata->master_flags;
-+	master->flags = chipdata->master_flags;
- 	master->bus_num = pdev->id;
- 	master->dev.of_node = pdev->dev.of_node;
- 	master->num_chipselect = p->info->num_chipselect;
+-SPI slave nodes must be children of the SPI master node and can
++SPI slave nodes must be children of the SPI controller node and can
+ contain the following properties.
+-- reg             - (required) chip select address of device.
++- reg             - (required, master mode only) chip select address of device.
+ - compatible      - (required) name of SPI device following generic names
+ 		recommended practice.
+-- spi-max-frequency - (required) Maximum SPI clocking speed of device in Hz.
++- spi-max-frequency - (required, master mode only) Maximum SPI clocking speed
++		of device in Hz.
+ - spi-cpol        - (optional) Empty property indicating device requires
+ 		inverse clock polarity (CPOL) mode.
+ - spi-cpha        - (optional) Empty property indicating device requires
 -- 
 1.9.1
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

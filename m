@@ -1,63 +1,51 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: spidev: Allow matching DT compatible strings from
- ACPI
-Date: Wed, 22 Jun 2016 16:14:17 +0100
-Message-ID: <20160622151417.GO28202@sirena.org.uk>
-References: <1465556147-86198-1-git-send-email-mika.westerberg@linux.intel.com>
- <20160620111358.GK1739@lahna.fi.intel.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [RFC] [PATCH 1/3] lib/scatterlist: Add support to clone sg_table
+Date: Wed, 22 Jun 2016 16:18:03 +0100
+Message-ID: <20160622151803.GP28202@sirena.org.uk>
+References: <1466203513-4771-1-git-send-email-fcooper@ti.com>
+ <1466203513-4771-2-git-send-email-fcooper@ti.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="JWJEtCrVvH5hpatL"
-Cc: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="IihjUyvzd0n5Ehsu"
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+	david.s.gordon@intel.com, akpm@linux-foundation.org,
+	nsekhar@ti.com, vigneshr@ti.com, peter.ujfalusi@ti.com
+To: Franklin S Cooper Jr <fcooper@ti.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20160620111358.GK1739-3PARRvDOhMZrdx17CPfAsdBPR1lH4CV8@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1466203513-4771-2-git-send-email-fcooper@ti.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---JWJEtCrVvH5hpatL
+--IihjUyvzd0n5Ehsu
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 20, 2016 at 02:13:58PM +0300, Mika Westerberg wrote:
-> On Fri, Jun 10, 2016 at 01:55:47PM +0300, Mika Westerberg wrote:
-> > Allow the same devices to be used in ACPI based systems if they provide
-> > proper DT compatible string.
-> >=20
-> > Signed-off-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
->=20
-> Any comments Mark?
+On Fri, Jun 17, 2016 at 05:45:11PM -0500, Franklin S Cooper Jr wrote:
+> Occasionally there are times you need to tweak a S/G table while
+> maintaining the original table. This function will duplicate the passed
+> in S/G table along with its chained sgl and return a pointer to the cloned
+> copy.
 
-Please don't send content free pings and please allow a reasonable time
-for review.  People get busy, go on holiday, attend conferences and so=20
-on so unless there is some reason for urgency (like critical bug fixes)
-please allow at least a couple of weeks for review.  If there have been
-review comments then people may be waiting for those to be addressed.
-Sending content free pings just adds to the mail volume (if they are
-seen at all) and if something has gone wrong you'll have to resend the
-patches anyway.
+You ought to send this to whoever looks after the scatterlist code as
+well, or at least a wider circulation.  Unfortunately that doesn't look
+100% clear...  off the top of my head Jens Axboe and Andrew Morton look
+like good candidates.
 
---JWJEtCrVvH5hpatL
+--IihjUyvzd0n5Ehsu
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJXaqtHAAoJECTWi3JdVIfQv9IH+wbsBKcarmRsYYjbXRlyJ4Ju
-mipSJpk9TBQYKAhmTPE7V+1C3FxfaYsrbPp0mc6ILBTQHqZ9luAS+4FCiUrYaBlh
-O681DVjoWVU4PlLmK/o107bMkAadU+ST9XMGTnUXfUGOkOKKpEq+KXdB3oplbmDm
-u7v+6TNngKPifWvW5iomUxIefpIlGhNZ2E404Zy/SliDvlMcYHq2a1f8InXtaL8Z
-rsVxM6ZV+kR49W+GCNBINw/8hnIkUWypgm7JajyQE3unKhLZbdAGYZNsWXFJuIah
-XwEUtjqoHRT1aZV7FVBMTOAc49Z6fz3D8su+MLAH+DITNdrAUSaBl39I4qADNXU=
-=9kdb
+iQEcBAEBCAAGBQJXaqwpAAoJECTWi3JdVIfQTPUH/RGWz2BZ8fsFGrm7GxePYmSB
+3QtR/jjLroc1MmSY7UJ7lY4aKfjlIbBgMHpqDEXSs2fJuFWeSMbMz/UCaJmE5mYw
+szEjwv+dPRKS17U0hgwX1AGnkvaSh3Q4rLqIkZPlJ2ZjvK7I3EIRYXgkxiT3FyIw
+mklBO+oMrGuG4vwtnLAHYtVI72N0Of+OfOdRUJIojJ4Ak/T7XNxkUFj/SW7/EYhS
+Uyi48LeErY08J0DlDG4sq/Zvwmb3cZ2wxj/+A+Cyhbq6vBO+3xpoRJ7//mMF0QxP
+NCmjQoJbSko/zIPFG9LPJlsn01FCfy7utkTh1GgG090oQ/FgEYCXvGe8g/nykC8=
+=wsq+
 -----END PGP SIGNATURE-----
 
---JWJEtCrVvH5hpatL--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--IihjUyvzd0n5Ehsu--

@@ -1,139 +1,40 @@
-From: "Reizer, Eyal" <eyalr@ti.com>
-Subject: RE: [PATCHv3] wlcore: spi: add wl18xx support
-Date: Wed, 22 Jun 2016 06:05:34 +0000
-Message-ID: <8665E2433BC68541A24DFFCA87B70F5B36139073@DFRE01.ent.ti.com>
-References: <1466510145-15751-1-git-send-email-eyalr@ti.com>
- <8665E2433BC68541A24DFFCA87B70F5B36138299@DFRE01.ent.ti.com>
- <20160621215703.GA14228@rob-hp-laptop>
+From: Crestez Dan Leonard <leonard.crestez@intel.com>
+Subject: Re: [RFC] regmap: Add regmap_pipe_read API
+Date: Wed, 22 Jun 2016 11:32:20 +0300
+Message-ID: <f3524d45-b266-056d-05b7-df2d4c007921@intel.com>
+References: <7ca3857aa8869a1e1f4709860f57f7d92abf1c6b.1466089603.git.leonard.crestez@intel.com>
+ <20160621184251.GC28202@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	Mark Brown <broonie@kernel.org>
-To: Rob Herring <robh@kernel.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi@vger.kernel.org, Wolfram Sang <wsa@the-dreams.de>,
+	linux-i2c@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+	linux-kernel@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20160621215703.GA14228@rob-hp-laptop>
-Content-Language: en-US
+In-Reply-To: <20160621184251.GC28202@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-> >
-> > - all wilink family needs special init command for entering wspi mode.
-> >   extra clock cycles should be sent after the spi init command while the
-> >   cs pin is high.
-> > - Use inverted chip select for sending a dummy 4 bytes command that
-> >   completes the init stage and puts the wilink chip into wspi mode.
-> >
-> > Signed-off-by: Eyal Reizer <eyalr@ti.com>
-> > ---
-> > v1->v2:update device tree bindings configuration
-> > v2->v3:revert from manual gpio manipulation. use inverted chip select
-> instead
-> > for sending the extra init cycle, which achieves the same hardware purpose.
-> > update device tree bindings docucmentation accordingly
-> >
-> >  .../bindings/net/wireless/ti,wlcore,spi.txt        |  47 ++++++--
-> >  drivers/net/wireless/ti/wlcore/spi.c               | 124 +++++++++++++++++----
-> >  2 files changed, 145 insertions(+), 26 deletions(-)
-> >
-> > diff --git
-> a/Documentation/devicetree/bindings/net/wireless/ti,wlcore,spi.txt
-> b/Documentation/devicetree/bindings/net/wireless/ti,wlcore,spi.txt
-> > index 9180724..35467cf 100644
-> > --- a/Documentation/devicetree/bindings/net/wireless/ti,wlcore,spi.txt
-> > +++ b/Documentation/devicetree/bindings/net/wireless/ti,wlcore,spi.txt
-> > @@ -1,19 +1,30 @@
-> > -* Texas Instruments wl1271 wireless lan controller
-> > +* Texas Instruments wl12xx/wl18xx wireless lan controller
-> >
-> > -The wl1271 chip can be connected via SPI or via SDIO. This
-> > +The wl12xx/wl18xx chips can be connected via SPI or via SDIO. This
-> >  document describes the binding for the SPI connected chip.
-> >
-> >  Required properties:
-> > -- compatible :          Should be "ti,wl1271"
-> > +- compatible :          Should be one of the following:
-> > +    * "ti,wl1271"
-> > +    * "ti,wl1273"
-> > +    * "ti,wl1281"
-> > +    * "ti,wl1283"
-> > +    * "ti,wl1801"
-> > +    * "ti,wl1805"
-> > +    * "ti,wl1807"
-> > +    * "ti,wl1831"
-> > +    * "ti,wl1835"
-> > +    * "ti,wl1837"
-> >  - reg :                 Chip select address of device
-> >  - spi-max-frequency :   Maximum SPI clocking speed of device in Hz
-> > -- ref-clock-frequency : Reference clock frequency
-> >  - interrupt-parent, interrupts :
-> >                          Should contain parameters for 1 interrupt line.
-> >                          Interrupt parameters: parent, line number, type.
-> > -- vwlan-supply :        Point the node of the regulator that powers/enable the
-> wl1271 chip
-> > +- vwlan-supply :        Point the node of the regulator that powers/enable
-> the
-> > +                        wl12xx/wl18xx chip
-> >
-> >  Optional properties:
-> > +- ref-clock-frequency : Reference clock frequency (should be set for
-> wl12xx)
-> >  - clock-xtal :          boolean, clock is generated from XTAL
-> >
-> >  - Please consult Documentation/devicetree/bindings/spi/spi-bus.txt
-> > @@ -21,10 +32,15 @@ Optional properties:
-> >
-> >  Examples:
-> >
-> > +For wl12xx family:
-> >  &spi1 {
-> > -	wl1271@1 {
-> > +	status = "okay";
-> > +	pinctrl-names = "default";
-> > +	pinctrl-0 = <&spi1_pins>;
-> > +	#address-cells = <1>;
-> > +	#size-cells = <0>;
+On 06/21/2016 09:42 PM, Mark Brown wrote:
+> On Thu, Jun 16, 2016 at 06:24:36PM +0300, Crestez Dan Leonard wrote:
 > 
-> None of this is really relevant to this binding.
+>> +		val = ((u8*)val) + read_len;
 > 
-
-Understood. Will remove in v4
-
-> > +	wlcore: wlcore@0 {
+> This cast looks broken, you should be able to do pointer arithmetic on
+> void pointers as though they were char *.
 > 
-> Now your unit-address and reg value don't match.
+Pointer arithmetic on void* is not standard C, it's a GCC extension. I
+know that GCC extensions are allowed for the kernel but is it really
+encouraged to rely on them this way?
 
-You are right. Will fix in v4
+Anyway, are my concerns about the regmap_bus implementation for SPMI
+valid? In theory this could be submitted in it's present form and let
+regmap+spmi users
 
-> 
-> >  		compatible = "ti,wl1271";
-> > -
-> >  		reg = <1>;
-> >  		spi-max-frequency = <48000000>;
-> >  		clock-xtal;
-> > @@ -34,3 +50,20 @@ Examples:
-> >  		vwlan-supply = <&vwlan_fixed>;
-> >  	};
-> >  };
-> > +
-> > +For wl18xx family:
-> > +&spi0	{
-> > +	status = "okay";
-> > +	pinctrl-names = "default";
-> > +	pinctrl-0 = <&spi0_pins>;
-> > +	#address-cells = <1>;
-> > +	#size-cells = <0>;
-> > +	wlcore: wlcore@0 {
-> > +		compatible = "ti,wl1835";
-> > +		vwlan-supply = <&wlan_en_reg>;
-> > +		spi-max-frequency = <48000000>;
-> > +		reg = <0>;
-> > +		interrupt-parent = <&gpio0>;
-> > +		interrupts = <27 IRQ_TYPE_EDGE_RISING>;
-> > +	};
-> > +};
+If this API is otherwise fine I can just resend this marked as [PATCH]
+with the cast removed and some rearranged comments.
+
+-- 
+Regards,
+Leonard

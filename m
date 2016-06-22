@@ -1,68 +1,107 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [RFC] regmap: Add regmap_pipe_read API
-Date: Wed, 22 Jun 2016 11:06:51 +0100
-Message-ID: <20160622100651.GH28202@sirena.org.uk>
-References: <7ca3857aa8869a1e1f4709860f57f7d92abf1c6b.1466089603.git.leonard.crestez@intel.com>
- <20160621184251.GC28202@sirena.org.uk>
- <f3524d45-b266-056d-05b7-df2d4c007921@intel.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="ZPDwMsyfds7q4mrK"
-Cc: linux-spi@vger.kernel.org, Wolfram Sang <wsa@the-dreams.de>,
-	linux-i2c@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-	linux-kernel@vger.kernel.org
-To: Crestez Dan Leonard <leonard.crestez@intel.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <f3524d45-b266-056d-05b7-df2d4c007921@intel.com>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Subject: [PATCH] spi: Improve DT binding documentation
+Date: Wed, 22 Jun 2016 14:48:26 +0200
+Message-ID: <1466599706-2850-1-git-send-email-geert+renesas@glider.be>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+  - Add missing verbs and periods,
+  - Add spaces before opening parentheses,
+  - Align list layout,
+  - Correct grammar,
+  - Move "cs-gpios" from the required to the optional properties
+    section,
+  - Remove spaces before tabs.
 
---ZPDwMsyfds7q4mrK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+---
+ Documentation/devicetree/bindings/spi/spi-bus.txt | 35 ++++++++++++-----------
+ 1 file changed, 18 insertions(+), 17 deletions(-)
 
-On Wed, Jun 22, 2016 at 11:32:20AM +0300, Crestez Dan Leonard wrote:
-> On 06/21/2016 09:42 PM, Mark Brown wrote:
-> > On Thu, Jun 16, 2016 at 06:24:36PM +0300, Crestez Dan Leonard wrote:
+diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
+index 42d595425dfb9f3c..17822860cb98c34d 100644
+--- a/Documentation/devicetree/bindings/spi/spi-bus.txt
++++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
+@@ -8,11 +8,10 @@ in slave mode.
+ 
+ The SPI master node requires the following properties:
+ - #address-cells  - number of cells required to define a chip select
+-    		address on the SPI bus.
++		address on the SPI bus.
+ - #size-cells     - should be zero.
+ - compatible      - name of SPI bus controller following generic names
+-    		recommended practice.
+-- cs-gpios	  - (optional) gpios chip select.
++		recommended practice.
+ No other properties are required in the SPI bus node.  It is assumed
+ that a driver for an SPI bus device will understand that it is an SPI bus.
+ However, the binding does not attempt to define the specific method for
+@@ -22,11 +21,12 @@ assumption that board specific platform code will be used to manage
+ chip selects.  Individual drivers can define additional properties to
+ support describing the chip select layout.
+ 
+-Optional property:
+-- num-cs : total number of chipselects
++Optional properties:
++- cs-gpios	  - gpios chip select.
++- num-cs	  - total number of chipselects.
+ 
+-If cs-gpios is used the number of chip select will automatically increased
+-with max(cs-gpios > hw cs)
++If cs-gpios is used the number of chip selects will be increased automatically
++with max(cs-gpios > hw cs).
+ 
+ So if for example the controller has 2 CS lines, and the cs-gpios
+ property looks like this:
+@@ -45,29 +45,30 @@ SPI slave nodes must be children of the SPI master node and can
+ contain the following properties.
+ - reg             - (required) chip select address of device.
+ - compatible      - (required) name of SPI device following generic names
+-    		recommended practice
+-- spi-max-frequency - (required) Maximum SPI clocking speed of device in Hz
++		recommended practice.
++- spi-max-frequency - (required) Maximum SPI clocking speed of device in Hz.
+ - spi-cpol        - (optional) Empty property indicating device requires
+-    		inverse clock polarity (CPOL) mode
++		inverse clock polarity (CPOL) mode.
+ - spi-cpha        - (optional) Empty property indicating device requires
+-    		shifted clock phase (CPHA) mode
++		shifted clock phase (CPHA) mode.
+ - spi-cs-high     - (optional) Empty property indicating device requires
+-    		chip select active high
++		chip select active high.
+ - spi-3wire       - (optional) Empty property indicating device requires
+-    		    3-wire mode.
++		3-wire mode.
+ - spi-lsb-first   - (optional) Empty property indicating device requires
+ 		LSB first mode.
+-- spi-tx-bus-width - (optional) The bus width(number of data wires) that
++- spi-tx-bus-width - (optional) The bus width (number of data wires) that is
+                       used for MOSI. Defaults to 1 if not present.
+-- spi-rx-bus-width - (optional) The bus width(number of data wires) that
++- spi-rx-bus-width - (optional) The bus width (number of data wires) that is
+                       used for MISO. Defaults to 1 if not present.
+ - spi-rx-delay-us  - (optional) Microsecond delay after a read transfer.
+ - spi-tx-delay-us  - (optional) Microsecond delay after a write transfer.
+ 
+ Some SPI controllers and devices support Dual and Quad SPI transfer mode.
+-It allows data in the SPI system to be transferred in 2 wires(DUAL) or 4 wires(QUAD).
++It allows data in the SPI system to be transferred using 2 wires (DUAL) or 4
++wires (QUAD).
+ Now the value that spi-tx-bus-width and spi-rx-bus-width can receive is
+-only 1(SINGLE), 2(DUAL) and 4(QUAD).
++only 1 (SINGLE), 2 (DUAL) and 4 (QUAD).
+ Dual/Quad mode is not allowed when 3-wire mode is used.
+ 
+ If a gpio chipselect is used for the SPI slave the gpio number will be passed
+-- 
+1.9.1
 
-> >> +		val = ((u8*)val) + read_len;
-
-> > This cast looks broken, you should be able to do pointer arithmetic on
-> > void pointers as though they were char *.
-
-> Pointer arithmetic on void* is not standard C, it's a GCC extension. I
-> know that GCC extensions are allowed for the kernel but is it really
-> encouraged to rely on them this way?
-
-Hrm, I thought it had been standardized in one of the more recent spec
-revisions but I can't seem to find that right now.
-
-> Anyway, are my concerns about the regmap_bus implementation for SPMI
-> valid? In theory this could be submitted in it's present form and let
-> regmap+spmi users
-
-That looks unfinished...
-
-> If this API is otherwise fine I can just resend this marked as [PATCH]
-> with the cast removed and some rearranged comments.
-
-Well, there's the naming.
-
---ZPDwMsyfds7q4mrK
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJXamM5AAoJECTWi3JdVIfQkcgH/AyMgf994mp/x2GvTcIVUVLw
-Q5Gx8XM6oHrTQbCEEpkZM/kKUALHsk4QaJ7Cibcp/FkLuRMoy96k6dhWp7PqId1Q
-4R90QJYJxXUEehBpMETNbP25tlxyndeJE/d94iNrB1yjnZAV0XIL+Fq9aFyP85uP
-rCVSWKzH0juUerS9FfTu1YmbhSzpgqSS4W3otDuDXj1Qva9tQq+Ck60PYuq1qMca
-g6bjGXqAfdjDxQQ2PYnBK3AaY8TbFoY5vFFCaasE5Apc5quLGE/3lMgbQAKnoFMd
-3BVGVRulN0AV2oR5AJVk/lJu63qAxQqRXgeYlakRiSyjtHjkkOa6xk/qx1eFjdQ=
-=v4Yf
------END PGP SIGNATURE-----
-
---ZPDwMsyfds7q4mrK--
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

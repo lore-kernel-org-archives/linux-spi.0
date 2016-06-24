@@ -1,35 +1,49 @@
-From: Colin King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
-Subject: [PATCH] spi: spi-ti-qspi: spelling mistake: "trasnfers" -> "transfers"
-Date: Thu, 23 Jun 2016 18:01:34 +0100
-Message-ID: <1466701294-8033-1-git-send-email-colin.king@canonical.com>
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 0/3] Another stab at making spidev usable with devicetree
+Date: Fri, 24 Jun 2016 16:20:31 +0200
+Message-ID: <cover.1466696079.git.hramrach@gmail.com>
+Cc: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Ingo Molnar <mingo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	Kees Cook <keescook-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	Thomas Gleixner <tglx-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>,
+	Dan Williams <dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Tejun Heo <tj-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"Paul E. McKenney" <paulmck-23VcF4HTsmIX0ybBhKVfKdBPR1lH4CV8@public.gmane.org>,
+	Davidlohr Bueso <dave-h16yJtLeMjHk1uMJSBkQmQ@public.gmane.org>,
+	Andrey Ryabinin <aryabinin-5HdwGun5lf+gSpxsJD1C4w@public.gmane.org>,
+	Nikolay Aleksandrov <nikolay-qUQiAmfTcIp+XZJcv9eMoEEOCMrvLtNR@public.gmane.org>,
+	Dmitry Vyukov <dvyukov-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
+	Adrien Schildknecht <adrien+dev-Yk6CzqVXkG6lnMjI0IkVqw@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Colin Ian King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
+Hello,
 
-trivial fix to spelling mistake in dev_dbg message
+This small patchset makes it possible to bind spidev manually to any SPI slave
+without much hassle.
 
-Signed-off-by: Colin Ian King <colin.king-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
----
- drivers/spi/spi-ti-qspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks
 
-diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
-index 29ea8d2..ac0b072 100644
---- a/drivers/spi/spi-ti-qspi.c
-+++ b/drivers/spi/spi-ti-qspi.c
-@@ -141,7 +141,7 @@ static int ti_qspi_setup(struct spi_device *spi)
- 	u32 clk_ctrl_reg, clk_rate, clk_mask;
- 
- 	if (spi->master->busy) {
--		dev_dbg(qspi->dev, "master busy doing other trasnfers\n");
-+		dev_dbg(qspi->dev, "master busy doing other transfers\n");
- 		return -EBUSY;
- 	}
- 
+Michal
+
+Michal Suchanek (3):
+  spi: spidev: fix the check for spidev in dt
+  spi: of: allow instantiating slaves without a driver
+  drivers core: allow id match override when manually binding driver
+
+ drivers/base/Kconfig.debug | 14 +++++++++
+ drivers/base/bus.c         | 72 +++++++++++++++++++++++++++++++++++++++++++++-
+ drivers/spi/spi.c          | 10 +++----
+ drivers/spi/spidev.c       |  9 ++++--
+ lib/Kconfig.debug          |  2 ++
+ 5 files changed, 98 insertions(+), 9 deletions(-)
+ create mode 100644 drivers/base/Kconfig.debug
+
 -- 
 2.8.1
 

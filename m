@@ -1,53 +1,72 @@
-From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 0/3] Another stab at making spidev usable with devicetree
-Date: Fri, 24 Jun 2016 16:20:31 +0200
-Message-ID: <cover.1466696079.git.hramrach@gmail.com>
-Cc: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Ingo Molnar <mingo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	Kees Cook <keescook-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-	Thomas Gleixner <tglx-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>,
-	Dan Williams <dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Tejun Heo <tj-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"Paul E. McKenney" <paulmck-23VcF4HTsmIX0ybBhKVfKdBPR1lH4CV8@public.gmane.org>,
-	Davidlohr Bueso <dave-h16yJtLeMjHk1uMJSBkQmQ@public.gmane.org>,
-	Andrey Ryabinin <aryabinin-5HdwGun5lf+gSpxsJD1C4w@public.gmane.org>,
-	Nikolay Aleksandrov <nikolay-qUQiAmfTcIp+XZJcv9eMoEEOCMrvLtNR@public.gmane.org>,
-	Dmitry Vyukov <dvyukov-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
-	Adrien Schildknecht <adrien+dev-Yk6CzqVXkG6lnMjI0IkVqw@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Michal Suchanek <hramrach@gmail.com>
+Subject: [PATCH 1/3] spi: spidev: fix the check for spidev in dt
+Date: Fri, 24 Jun 2016 16:20:32 +0200
+Message-ID: <8b66102e44829c5dc445c17f7bfad1050840b9f0.1466696079.git.hramrach@gmail.com>
+References: <cover.1466696079.git.hramrach@gmail.com>
+Cc: Michal Suchanek <hramrach@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Mark Brown <broonie@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kees Cook <keescook@chromium.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Tejun Heo <tj@kernel.org>,
+	"Paul E. McKenney" <paulmck@linux.vnet.ibm.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Andrey Ryabinin <aryabinin@virtuozzo.com>,
+	Nikolay Aleksandrov <nikolay@cumulusnetworks.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Adrien Schildknecht <adrien+dev@schischi.me>,
+	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <cover.1466696079.git.hramrach@gmail.com>
+In-Reply-To: <cover.1466696079.git.hramrach@gmail.com>
+References: <cover.1466696079.git.hramrach@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hello,
+The check is supposed to warn about spidev specified directly in
+devicetree as compatible. This just does not work. I have a devicetree
+with no compatible whatsoever and hacked my kernel so I can manually
+bind spidev. This still triggers.
 
-This small patchset makes it possible to bind spidev manually to any SPI slave
-without much hassle.
+Also I have no idea how this could have build with ! CONFIG_OF since the
+id table which the code checks is not compiled then.
 
-Thanks
+Signed-off-by: Michal Suchanek <hramrach@gmail.com>
+---
+ drivers/spi/spidev.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-Michal
-
-Michal Suchanek (3):
-  spi: spidev: fix the check for spidev in dt
-  spi: of: allow instantiating slaves without a driver
-  drivers core: allow id match override when manually binding driver
-
- drivers/base/Kconfig.debug | 14 +++++++++
- drivers/base/bus.c         | 72 +++++++++++++++++++++++++++++++++++++++++++++-
- drivers/spi/spi.c          | 10 +++----
- drivers/spi/spidev.c       |  9 ++++--
- lib/Kconfig.debug          |  2 ++
- 5 files changed, 98 insertions(+), 9 deletions(-)
- create mode 100644 drivers/base/Kconfig.debug
-
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index e3c19f3..8045baf 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -700,6 +700,11 @@ static const struct of_device_id spidev_dt_ids[] = {
+ MODULE_DEVICE_TABLE(of, spidev_dt_ids);
+ #endif
+ 
++static const struct of_device_id spidev_check[] = {
++			{ .compatible = "spidev" },
++			{}
++};
++
+ /*-------------------------------------------------------------------------*/
+ 
+ static int spidev_probe(struct spi_device *spi)
+@@ -713,10 +718,10 @@ static int spidev_probe(struct spi_device *spi)
+ 	 * compatible string, it is a Linux implementation thing
+ 	 * rather than a description of the hardware.
+ 	 */
+-	if (spi->dev.of_node && !of_match_device(spidev_dt_ids, &spi->dev)) {
++	if (spi->dev.of_node && of_match_device(spidev_check, &spi->dev)) {
+ 		dev_err(&spi->dev, "buggy DT: spidev listed directly in DT\n");
+ 		WARN_ON(spi->dev.of_node &&
+-			!of_match_device(spidev_dt_ids, &spi->dev));
++			of_match_device(spidev_check, &spi->dev));
+ 	}
+ 
+ 	/* Allocate driver data */
 -- 
 2.8.1
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

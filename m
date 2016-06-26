@@ -1,71 +1,68 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/3] spi: of: allow instantiating slaves without a driver
-Date: Sun, 26 Jun 2016 13:45:50 +0100
-Message-ID: <20160626124550.GO28202@sirena.org.uk>
-References: <cover.1466696079.git.hramrach@gmail.com>
- <ebe2a48124441819adab773b28cd12425ba5bda4.1466696079.git.hramrach@gmail.com>
- <20160626011500.GF28202@sirena.org.uk>
- <CAOMqctSA0G+fBKNgAizqWvEUfJLr9Fh0SsN0Pn-cQv=zeu7iFg@mail.gmail.com>
- <20160626112133.GJ28202@sirena.org.uk>
- <CAOMqctQernycZkc0Wia9EierT1PhfcYAPWc=89LgTC-DBgkg5A@mail.gmail.com>
- <20160626115815.GN28202@sirena.org.uk>
- <CAOMqctTf16DDs1j+pL47xBJt2BVdCdHPFUEwaZ6ak_vFtrKBOQ@mail.gmail.com>
+Subject: Re: [PATCH 1/5] spi: do not fail if the CS line is not connected
+Date: Sun, 26 Jun 2016 13:48:43 +0100
+Message-ID: <20160626124843.GP28202@sirena.org.uk>
+References: <1466150245-2648-1-git-send-email-andi.shyti@samsung.com>
+ <1466150245-2648-2-git-send-email-andi.shyti@samsung.com>
+ <20160617104725.GC26099@sirena.org.uk>
+ <20160617113622.GA10760@jack.zhora.eu>
+ <20160617122803.GN26099@sirena.org.uk>
+ <20160619060902.GB424@jack.zhora.eu>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="u+fRANu8FDjhiqn/"
-Cc: Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
-	Ingo Molnar <mingo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	Kees Cook <keescook-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-	Thomas Gleixner <tglx-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>,
-	Dan Williams <dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Tejun Heo <tj-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"Paul E. McKenney" <paulmck-23VcF4HTsmIX0ybBhKVfKdBPR1lH4CV8@public.gmane.org>,
-	Davidlohr Bueso <dave-h16yJtLeMjHk1uMJSBkQmQ@public.gmane.org>,
-	Andrey Ryabinin <aryabinin-5HdwGun5lf+gSpxsJD1C4w@public.gmane.org>,
-	Nikolay Aleksandrov <nikolay-qUQiAmfTcIp+XZJcv9eMoEEOCMrvLtNR@public.gmane.org>,
-	Dmitry Vyukov <dvyukov-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
-	Adrien Schildknecht <adrien+dev-Yk6CzqVXkG6lnMjI0IkVqw@public.gmane.org>,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="aNVUg3Xo9UgCa1D+"
+Cc: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>, Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Andi Shyti <andi-ahk0KpmfxKRAfugRpC6u6w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CAOMqctTf16DDs1j+pL47xBJt2BVdCdHPFUEwaZ6ak_vFtrKBOQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20160619060902.GB424-A05emIGRluN/OPZsa/fw/Q@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---u+fRANu8FDjhiqn/
+--aNVUg3Xo9UgCa1D+
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Sun, Jun 26, 2016 at 02:39:20PM +0200, Michal Suchanek wrote:
-> On 26 June 2016 at 13:58, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+On Sun, Jun 19, 2016 at 03:09:02PM +0900, Andi Shyti wrote:
 
-> > No, there's a lot more to having overlays to board-neutral connectors...
+> > > This is true, but there are cases where the CS is not connected
+> > > and this case needs to be treated separately to allow the device
+> > > to work.
 
-> If you are fine with using only the SPI pins then this is all it takes.
+> > In what way?  It is just as easy for a device with no physical chip
+> > select to have a logical chip select of 0 that it does nothing with as
+> > it is for that device to handle any other number.
 
-No, there's other things like figuring out which controller to bind to
-that need to be taken into consideration.
+> That is indeed my case: the s3c64xx doesn't send anything, unless
+> I manually enable CS (from the next patches I need to write '0'
+> in the CS register). But I need smoething to tell to the
+> device that the CS line is not connected, for example a flag in
+> the DTS.
 
---u+fRANu8FDjhiqn/
+I'm sorry but I just don't understand what you're saying here.  You are
+saying that there is no chip select but you need to enable the chip
+select?
+
+--aNVUg3Xo9UgCa1D+
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJXb859AAoJECTWi3JdVIfQIFgH/1VNHgOdYpVLAu8CGHv9YUBk
-bOB96yTwYX8a5DoDs+TPHXAznP+d36Mr5Mvi/FtFHgrhlw1u6z0hw9akkzBSMp7c
-cQvAhyg+hc6GtAjC3xOlhaT/3DWu8LhSTkElJyiPrN4W+u9ckbj5PQ65TmkYHZET
-Er4UWYI5ih6CaCY2R0OFC+b59LcMpHp0LxSWWklK77fpuWICcWPDiAP2WjQxgxEW
-z2jNuAmsrCzp5LO+iHNGC99LNxiiIXI78HzDJn6iyiCHiNNNyrW7/p/RbejIyURw
-vQwR/Mrak4s5+zB0/471wtxQnRlOFcSBMzdkaQHxwe0VxgidvooQrJszctq+oug=
-=GfiJ
+iQEcBAEBCAAGBQJXb88qAAoJECTWi3JdVIfQWFQH/icyIM42/qc2kgo9DfxAZC4O
+3tSyGU2AzS4HjmfK/v3Pozo2N1q64zN0rUHvRtwYOXypbGTP5mGxykbQ1P/Iw+ap
+LmQeqbEOB/ZNoIRBWk9ZmE/XRHN9vltqnHCcU6cUZb6Zx1MDxlZtgcwGst/mJnJE
+89JEqViAHAO4CvrRYoo1KtRFOB0wtixfORBqVZ2hHAjTYBBAH72AWDfj+2mtjW6L
+TLKNVqG+4Ol08Q7M/Ku+pYk4UyqENSN1Vxq3v1OJlvDoHrxSkE/mjHEV5iv/QVHN
+LiP49EwhZlK/Tg95EnX0jfXefeA/0xNDE4pIRzjdkxuRWapadV0DXuVmnpkFVCE=
+=tFZG
 -----END PGP SIGNATURE-----
 
---u+fRANu8FDjhiqn/--
+--aNVUg3Xo9UgCa1D+--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

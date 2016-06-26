@@ -1,14 +1,14 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/3] spi: spidev: fix the check for spidev in dt
-Date: Sun, 26 Jun 2016 12:05:14 +0100
-Message-ID: <20160626110514.GI28202@sirena.org.uk>
+Subject: Re: [PATCH 2/3] spi: of: allow instantiating slaves without a driver
+Date: Sun, 26 Jun 2016 12:21:33 +0100
+Message-ID: <20160626112133.GJ28202@sirena.org.uk>
 References: <cover.1466696079.git.hramrach@gmail.com>
- <8b66102e44829c5dc445c17f7bfad1050840b9f0.1466696079.git.hramrach@gmail.com>
- <20160626011315.GE28202@sirena.org.uk>
- <CAOMqctR3MDijTSr0=7tiHK+exygrGLbLQQ=GF_KAH-Y2xvb1Nw@mail.gmail.com>
+ <ebe2a48124441819adab773b28cd12425ba5bda4.1466696079.git.hramrach@gmail.com>
+ <20160626011500.GF28202@sirena.org.uk>
+ <CAOMqctSA0G+fBKNgAizqWvEUfJLr9Fh0SsN0Pn-cQv=zeu7iFg@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Y4/B1uKDHmWlpzsz"
+	protocol="application/pgp-signature"; boundary="p0aHTXLXY/BobAxh"
 Cc: Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
 	Ingo Molnar <mingo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
@@ -27,56 +27,64 @@ Cc: Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org
 To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CAOMqctR3MDijTSr0=7tiHK+exygrGLbLQQ=GF_KAH-Y2xvb1Nw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <CAOMqctSA0G+fBKNgAizqWvEUfJLr9Fh0SsN0Pn-cQv=zeu7iFg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---Y4/B1uKDHmWlpzsz
+--p0aHTXLXY/BobAxh
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Sun, Jun 26, 2016 at 04:12:10AM +0200, Michal Suchanek wrote:
-> On 26 June 2016 at 03:13, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> > On Thu, Jun 23, 2016 at 05:41:19PM -0000, Michal Suchanek wrote:
+On Sun, Jun 26, 2016 at 04:23:41AM +0200, Michal Suchanek wrote:
+> On 26 June 2016 at 03:15, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
 
-> >> The check is supposed to warn about spidev specified directly in
-> >> devicetree as compatible. This just does not work. I have a devicetree
-> >> with no compatible whatsoever and hacked my kernel so I can manually
-> >> bind spidev. This still triggers.
+> > I can't relate this hunk to the changelog and there's a coding style
+> > problem, if there's { } on one side of an if statement it should be on
+> > both sides.  Why are we making this change?
 
-> > Well, a DT device won't instantiate without a compatible string...
-> > could you please explain exactly what makes you say this won't work?
+> The intention is that you can specify that your SPI master controller
+> has a CS available without setting up the slave
 
-> That's because the whitelist concept for this check is completely broken.
+This is completely unrelated to the rest of the change and needs
+describing in the changelog.
 
-> Without any patches whatsoever I should be able to specify m25p80
-> binding in the DT, let the kernel create the device, unbind the
-> driver, and bind spidev.
+> Then you can amend the slave node with an overlay or bind a driver
+> that can deal with the node having no configuration.
 
-> Then I have the jedec,spi-nor compatible which is not on the whitelist.
+You can just add the entire slave node in the overlay, it's not clear
+that this buys us anything useful (and typically you'd want to as the
+maximum speed here is more a function of the slave device than the
+master), and this needs to be joined up with the work going on to allow
+expansion connector overlays to be loaded in the first place.
 
-So, none of that is in the changelog where it needs to be and it only
-makes sense if we adopt the very specific solution you are proposing.
-You need to describe this change properly and you need to put it at the
-end of the patch series were it makes sense.
+> The check here isn't very effective anyway since slaves with zero
+> speed somehow creep into the kernel. I have seen people reporting
+> division by zero in SPI master driver as a result. The proper way to
+> fix this is to specify the master minimum and maximum speed limit so
+> the SPI core can reject transfers with speed outside of the allowed
+> range.
 
---Y4/B1uKDHmWlpzsz
+That's a separate argument which is again unrelated to the changelog.
+If the check isn't working it would be better to have an analysis of why
+it's not working.
+
+--p0aHTXLXY/BobAxh
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJXb7bpAAoJECTWi3JdVIfQQHcH/2783gp4lSO6PeFdWJnMqoXz
-pD3ZKnvAyfIkuF54PKjesGjBUR6pkuuLSSB/bYNtyccZh0XZ6RR0Bjv/8ZDeRsyV
-77YjjuemmMB6Qnv3PIDv0uqc6OkcdMBgynGWDf9AvGqjM5bd0POxmQYBVjeLwoyE
-+evaBzJZeJq47uoZX7U/WAeXpBve6P6L1VF5QAUh5ezEEAheXhbAPP7X8IA3wFgt
-JMjqmESwdZWCX32bH5qxgxPNAdGJxG/fflvTaEdDnupAFm/EbukFKWaIww61ERDG
-0Sl+KzJ+JUEPF4bbGjpgQJG4e7uqoStQ53AYFF0U/tBuvIiYW6oUvcr8t2A2N6M=
-=Ntf4
+iQEcBAEBCAAGBQJXb7q8AAoJECTWi3JdVIfQIqMH/2rbbHiHFEvUUm6EU1+dqWZO
+t9kI138y6GM5n355y0fUQFHLFm3JL88wQ6k7YzCku9xAE77K2T7xqDrRLYo+Q5OF
+bcMg4HTV4DSL4K2ZEmc7yabqgcGlEPtk8p3//SKjFmC4PrYiBMYOBeOmx8W2pnQX
+Cx0IV3JGKngzhpSrI1NrhcCNNdjTI0CMiqQX2BYn9vVlM7yPlfMrcD7dIAvd3XdZ
+x5d2wSzRXeVjIClGvkq1VATtKTPxEXw8J5MgPddFO4JIGSzLMmXFnNOUz4kar1sJ
+m0GVjwRH0oArgCo2przoMbC4b0MUL9Dlq/YxyENoban+ea7lkNBI6qgGCgVz340=
+=TIxm
 -----END PGP SIGNATURE-----
 
---Y4/B1uKDHmWlpzsz--
+--p0aHTXLXY/BobAxh--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

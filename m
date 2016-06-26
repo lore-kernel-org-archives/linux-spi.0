@@ -1,12 +1,16 @@
-From: Michal Suchanek <hramrach@gmail.com>
+From: Mark Brown <broonie@kernel.org>
 Subject: Re: [PATCH 2/3] spi: of: allow instantiating slaves without a driver
-Date: Sun, 26 Jun 2016 13:35:46 +0200
-Message-ID: <CAOMqctQernycZkc0Wia9EierT1PhfcYAPWc=89LgTC-DBgkg5A@mail.gmail.com>
-References: <cover.1466696079.git.hramrach@gmail.com> <ebe2a48124441819adab773b28cd12425ba5bda4.1466696079.git.hramrach@gmail.com>
- <20160626011500.GF28202@sirena.org.uk> <CAOMqctSA0G+fBKNgAizqWvEUfJLr9Fh0SsN0Pn-cQv=zeu7iFg@mail.gmail.com>
+Date: Sun, 26 Jun 2016 12:58:15 +0100
+Message-ID: <20160626115815.GN28202@sirena.org.uk>
+References: <cover.1466696079.git.hramrach@gmail.com>
+ <ebe2a48124441819adab773b28cd12425ba5bda4.1466696079.git.hramrach@gmail.com>
+ <20160626011500.GF28202@sirena.org.uk>
+ <CAOMqctSA0G+fBKNgAizqWvEUfJLr9Fh0SsN0Pn-cQv=zeu7iFg@mail.gmail.com>
  <20160626112133.GJ28202@sirena.org.uk>
+ <CAOMqctQernycZkc0Wia9EierT1PhfcYAPWc=89LgTC-DBgkg5A@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="CeC2K4acttR/mmFn"
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ingo Molnar <mingo@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
@@ -22,72 +26,56 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Adrien Schildknecht <adrien+dev@schischi.me>,
 	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
 	linux-spi <linux-spi@vger.kernel.org>
-To: Mark Brown <broonie@kernel.org>
+To: Michal Suchanek <hramrach@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20160626112133.GJ28202@sirena.org.uk>
+Content-Disposition: inline
+In-Reply-To: <CAOMqctQernycZkc0Wia9EierT1PhfcYAPWc=89LgTC-DBgkg5A@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 26 June 2016 at 13:21, Mark Brown <broonie@kernel.org> wrote:
-> On Sun, Jun 26, 2016 at 04:23:41AM +0200, Michal Suchanek wrote:
->> On 26 June 2016 at 03:15, Mark Brown <broonie@kernel.org> wrote:
->
->> > I can't relate this hunk to the changelog and there's a coding style
->> > problem, if there's { } on one side of an if statement it should be on
->> > both sides.  Why are we making this change?
->
->> The intention is that you can specify that your SPI master controller
->> has a CS available without setting up the slave
->
-> This is completely unrelated to the rest of the change and needs
-> describing in the changelog.
->
->> Then you can amend the slave node with an overlay or bind a driver
->> that can deal with the node having no configuration.
->
-> You can just add the entire slave node in the overlay, it's not clear
-> that this buys us anything useful
 
-You have to target the master node and specify the CS in the overlay
-if you create the whole node. If you target the slave node you have
-the CS specified in the board devicetree and the overlay can apply to
-multiple boards without change.
+--CeC2K4acttR/mmFn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Also you have to create an overlay for drivers which don't really need
-it and could be just manually bound.
+On Sun, Jun 26, 2016 at 01:35:46PM +0200, Michal Suchanek wrote:
+> On 26 June 2016 at 13:21, Mark Brown <broonie@kernel.org> wrote:
 
-> (and typically you'd want to as the
-> maximum speed here is more a function of the slave device than the
-> master),
+> > You can just add the entire slave node in the overlay, it's not clear
+> > that this buys us anything useful
 
-Speed is the property of the slave device and if you don't specify the
-device it does not make sense to specify speed.
+> You have to target the master node and specify the CS in the overlay
+> if you create the whole node. If you target the slave node you have
+> the CS specified in the board devicetree and the overlay can apply to
+> multiple boards without change.
 
-> and this needs to be joined up with the work going on to allow
-> expansion connector overlays to be loaded in the first place.
+No, there's a lot more to having overlays to board-neutral connectors...
 
-The overlays work equally well before and after this patch. I don't
-see any problem with them other than part of the infrastructure
-missing in mainline kernel.
+> > and this needs to be joined up with the work going on to allow
+> > expansion connector overlays to be loaded in the first place.
 
->
->> The check here isn't very effective anyway since slaves with zero
->> speed somehow creep into the kernel. I have seen people reporting
->> division by zero in SPI master driver as a result. The proper way to
->> fix this is to specify the master minimum and maximum speed limit so
->> the SPI core can reject transfers with speed outside of the allowed
->> range.
->
-> That's a separate argument which is again unrelated to the changelog.
-> If the check isn't working it would be better to have an analysis of why
-> it's not working.
+> The overlays work equally well before and after this patch. I don't
+> see any problem with them other than part of the infrastructure
+> missing in mainline kernel.
 
-My handwawing analysis is that it's probably due to the ability of
-spidev and other drivers to change the speed later on after this check
-is performed.
+...you're missing all this stuff here - currently the active work on
+this is being done by Patelis.  It's not at all clear to me that
+referring to a slave rather than a master would be any easier in a board
+neutral overlay.
 
-Anyway, it's not terribly useful so a warning suffices imho.
+--CeC2K4acttR/mmFn
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Thanks
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-Michal
+iQEcBAEBCAAGBQJXb8NWAAoJECTWi3JdVIfQ+WgH/1v7Y5uCQ5c9rCndAQfVY2js
++oOtH8golvNuQpohNrC3vHhsaCaEXCeH8rQXmiAukjbLXOdUsUNLQE+PfhdtGvjV
+fEC6rK/kRNz1UGQek+f8NKYYDDEXOMGziRV7xyoxAQrHb46hw24OR14M828E+ZKF
+dxKICyCYJ7agGigkHaJOMig5n3ZAMXCLzrL3+wt/AIVwdECRyCxbG+6jb7f2H9a7
+pl+7n9vB/6y6fUnKN8fzvAtCQ99qS0VcN1IYsyjc4fjPV8EOp0tQt0Y66cQrv1in
+TjsGFbhO3QXFf3c97slhcYVw55EcjAcKtdDyt90GMTNF2HHIuX7V/bEMKbgGiDA=
+=BNc/
+-----END PGP SIGNATURE-----
+
+--CeC2K4acttR/mmFn--

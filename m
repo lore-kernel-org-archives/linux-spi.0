@@ -1,9 +1,9 @@
 From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH 1/3] spi: spidev: fix the check for spidev in dt
-Date: Sun, 26 Jun 2016 03:56:54 +0200
-Message-ID: <CAOMqctQPniBs7jOkTZ9aDPW99vXM1nzpr8VCsw1nATNrTxmVsw@mail.gmail.com>
+Date: Sun, 26 Jun 2016 04:12:10 +0200
+Message-ID: <CAOMqctR3MDijTSr0=7tiHK+exygrGLbLQQ=GF_KAH-Y2xvb1Nw@mail.gmail.com>
 References: <cover.1466696079.git.hramrach@gmail.com> <8b66102e44829c5dc445c17f7bfad1050840b9f0.1466696079.git.hramrach@gmail.com>
- <20160626010909.GD28202@sirena.org.uk>
+ <20160626011315.GE28202@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Cc: Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
@@ -23,25 +23,54 @@ Cc: Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org
 	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160626010909.GD28202-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <20160626011315.GE28202-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 26 June 2016 at 03:09, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Fri, Jun 24, 2016 at 04:20:32PM +0200, Michal Suchanek wrote:
+On 26 June 2016 at 03:13, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Thu, Jun 23, 2016 at 05:41:19PM -0000, Michal Suchanek wrote:
 >
 >> The check is supposed to warn about spidev specified directly in
 >> devicetree as compatible. This just does not work. I have a devicetree
 >> with no compatible whatsoever and hacked my kernel so I can manually
 >> bind spidev. This still triggers.
 >
-> This is the third copy of this I've got in two days, please calm down.
+> Well, a DT device won't instantiate without a compatible string...
+> could you please explain exactly what makes you say this won't work?
 
-Sorry about that.
+That's because the whitelist concept for this check is completely broken.
 
-This is the first copy I have seen on the ML. The first two were
-rejected for some reason and the ML software was not so kind as to
-send a rejection message stating the reason.
+Without any patches whatsoever I should be able to specify m25p80
+binding in the DT, let the kernel create the device, unbind the
+driver, and bind spidev.
+
+Then I have the jedec,spi-nor compatible which is not on the whitelist.
+
+>
+>> Also I have no idea how this could have build with ! CONFIG_OF since the
+>> id table which the code checks is not compiled then.
+>
+> of_match_device() compiles out when !OF.
+>
+>> +static const struct of_device_id spidev_check[] = {
+>> +                     { .compatible = "spidev" },
+>> +                     {}
+>> +};
+>
+> The indentation here is completely non-standard.
+>
+>> -     if (spi->dev.of_node && !of_match_device(spidev_dt_ids, &spi->dev)) {
+>> +     if (spi->dev.of_node && of_match_device(spidev_check, &spi->dev)) {
+>
+> I think what you intend to say in the commit message is that you want to
+> change from a whitelist to a blacklist since that is what the code says,
+> but like I say we also need an explanation of the logic behind such a
+> change.
+
+It's because the check kernel log message says it's a blacklist and
+it's incorrectly implemented as a whitelist.
+
+The change is to correct that.
 
 Thanks
 

@@ -1,43 +1,75 @@
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH v4 5/8] spi: add support for ACPI reconfigure notifications
-Date: Mon, 27 Jun 2016 23:13:56 +0200
-Message-ID: <CAJZ5v0gzw4oWicOE8yKPZCKR8r9MxpnaBUBgZXOTzkz8hc_BQw@mail.gmail.com>
-References: <1466164336-9508-1-git-send-email-octavian.purdila@intel.com>
- <1466164336-9508-6-git-send-email-octavian.purdila@intel.com> <20160627141713.GW28202@sirena.org.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2 2/3] spi: of: allow instantiating slaves without a
+ driver
+Date: Mon, 27 Jun 2016 22:14:59 +0100
+Message-ID: <20160627211459.GJ17217@sirena.org.uk>
+References: <cover.1467053363.git.hramrach@gmail.com>
+ <a85f91bf364bd6e1681f5973ac92c2bb7f9a8999.1467053363.git.hramrach@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-	Len Brown <lenb@kernel.org>,
-	Matt Fleming <matt@codeblueprint.co.uk>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Joel Becker <jlbec@evilplan.org>,
-	ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-	linux-efi@vger.kernel.org, linux-i2c <linux-i2c@vger.kernel.org>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	"Tirdea, Irina" <irina.tirdea@intel.com>, leonard.crestez@intel.com
-To: Mark Brown <broonie@kernel.org>,
-	Octavian Purdila <octavian.purdila@intel.com>
-Return-path: <linux-acpi-owner@vger.kernel.org>
-In-Reply-To: <20160627141713.GW28202@sirena.org.uk>
-Sender: linux-acpi-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="iRjOs3ViPWHdlw/I"
+Cc: Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <a85f91bf364bd6e1681f5973ac92c2bb7f9a8999.1467053363.git.hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, Jun 27, 2016 at 4:17 PM, Mark Brown <broonie@kernel.org> wrote:
-> On Fri, Jun 17, 2016 at 02:52:13PM +0300, Octavian Purdila wrote:
->
->> This patch adds supports for SPI device enumeration and removal via
->> ACPI reconfiguration notifications that are send as a result of an
->> ACPI table load or unload operation.
->
-> I still have the same concern I've had all the way through here: this is
-> very similar to the equivalent DT code but not quite, especially in
-> regard to the OF_POPULATED flag which has no ACPI equivalent.  This
-> gives us ACPI code which just looks like it's missing something.  I'd
-> like to see the comparison at least covered in the changelog so people
-> have something to refer to in future when trying to understand why
-> things are done this way.
 
-I agree here.
+--iRjOs3ViPWHdlw/I
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Tavi, please extend the changelog as requested by Mark.
+On Mon, Jun 27, 2016 at 09:02:31PM +0200, Michal Suchanek wrote:
+
+> SPI slave devices are not created when looking up driver for the slave
+> fails. Create a device anyway so it can be manually bound to a driver.
+
+That's not what of_modalias_node() does, of_modalias_node() just mangles
+a compatible string into a format for consumption by modutils.  It makes
+no effort to find a driver in doing this, it just does a simple string
+transformation on the compatible.
+
+> This allows manually binding a driver to slave devices for which the
+> driver specified by compatible is not available of for which no driver
+> is specified at all. Drivers like spidev or m25p80 that require no
+> configuratiom can be bound to such node.
+
+As ever spidev should never appear directly in a DT because it is not a
+description of hardware, the DT should describe whatever device is there
+and then we need to work out in Linux how to bind spidev to it if that's
+what we want to do.  m25p80 does represent real hardware and that
+hardware should be described, for example by using the jedec,spi-nor
+compatible which says that a non-specific JEDEC enumerable flash is
+present.
+
+> Since this allows slave DT nodes without specifying a slave driver make
+> speed also optional. It makes no sense to specify speed when the device
+> is not specified. The value is only advisory anyway and the slave
+> driver can try to set arbitrary transfer speed.
+
+This appears to be at best marginally related to the rest of the patch.
+That means that it should be a separate patch.
+
+--iRjOs3ViPWHdlw/I
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJXcZdSAAoJECTWi3JdVIfQBYMH/RO3cfj4JDSI/pDHq3LSqNHQ
+hFyqAKPizJG0GFyDDVPZs82Dc7w4UqF9leBCXnkSccSFtfU4dgUy4ML1B6Q//RQO
+rz0nvVNnXcW44Y1WlqN1Xv3jfGEODkXtg4e6/BqFhxR+lkFEVpLW/lBGDwDUJSbV
+dJAhHCWZgpxCg8X1NhsVQQff73KyYD2wMHTl4HMIDHzxLiKG/DgO8JkXT9PoAp7A
+gEqDRfL9OUGpKPiU02TsGqX6MXCoa6rj0Oga+gP4FYFjXPZdrAdCMeLsvoSqPMvM
+cDXcbOlRxCWae6/3vi1bmaJ9F3NAGCZkwM2DNKhH5fkKEqqpQwCSUkEPdYfzQCk=
+=n2ur
+-----END PGP SIGNATURE-----
+
+--iRjOs3ViPWHdlw/I--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

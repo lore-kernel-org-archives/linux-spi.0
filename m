@@ -1,74 +1,80 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 2/3] spi: of: allow instantiating slaves without a
- driver
-Date: Mon, 27 Jun 2016 22:14:59 +0100
-Message-ID: <20160627211459.GJ17217@sirena.org.uk>
+From: Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>
+Subject: Re: [PATCH v2 3/3] drivers core: allow id match override when
+ manually binding driver
+Date: Mon, 27 Jun 2016 15:12:59 -0700
+Message-ID: <20160627221259.GA10054@kroah.com>
 References: <cover.1467053363.git.hramrach@gmail.com>
- <a85f91bf364bd6e1681f5973ac92c2bb7f9a8999.1467053363.git.hramrach@gmail.com>
+ <15ff382f699387e2d8f23779db851d0de7e9291e.1467053363.git.hramrach@gmail.com>
+ <20160627190949.GB5111@kroah.com>
+ <CAOMqctQj0ftbOH9dvMPczBPeSFTvDuTKCXgYprYvtcQDYML8Kw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="iRjOs3ViPWHdlw/I"
-Cc: Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <a85f91bf364bd6e1681f5973ac92c2bb7f9a8999.1467053363.git.hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <CAOMqctQj0ftbOH9dvMPczBPeSFTvDuTKCXgYprYvtcQDYML8Kw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Mon, Jun 27, 2016 at 09:40:38PM +0200, Michal Suchanek wrote:
+> On 27 June 2016 at 21:09, Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org> wrote:
+> > On Mon, Jun 27, 2016 at 09:02:32PM +0200, Michal Suchanek wrote:
+> >> The spi bus has no autodetection whatsoever. The 'detection' of the
+> >> device that's suposed to be on the other side completely relies on user
+> >> supplied information coming from devicetree on many platforms. It is
+> >> completely reasonable then to allow the user to supply the information
+> >> at runtime by doing echo 'somedevice' >
+> >> /sys/bus/spi/drivers/somedriver/bind
+> >> This fails if somedriver does not have in its id table compatible of
+> >> somedevice so just skip this check for manual driver binding.
+> >
+> > That's what the new_id file is for, right?
+> >
+> 
+> No. It's for buses that have some inherent identification. It's not for
+> 
+> 1) generate random compatible and stick it in device tree
+> 2) reboot with new devicetree or load overlay
+> 3) write the random compatible you just generated to new_id file so
+> you can bind drivers to your device
+> 
+> You could have saved yourself a lot of hassle just ignoring the ID completely.
 
---iRjOs3ViPWHdlw/I
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Um, all devices have to have an "id" the driver core enforces this.
 
-On Mon, Jun 27, 2016 at 09:02:31PM +0200, Michal Suchanek wrote:
+Now your bus can ignore them, or do whatever it wants, but really, you
+can't just try to wave them away.
 
-> SPI slave devices are not created when looking up driver for the slave
-> fails. Create a device anyway so it can be manually bound to a driver.
+> Do you have to go through that to connect a different modem to your
+> serial port?
 
-That's not what of_modalias_node() does, of_modalias_node() just mangles
-a compatible string into a format for consumption by modutils.  It makes
-no effort to find a driver in doing this, it just does a simple string
-transformation on the compatible.
+As has been said numerous times, there is no serial port bus, but people
+are working on it.
 
-> This allows manually binding a driver to slave devices for which the
-> driver specified by compatible is not available of for which no driver
-> is specified at all. Drivers like spidev or m25p80 that require no
-> configuratiom can be bound to such node.
+And no, you don't, and serial _devices_ work just fine with the driver
+model.
 
-As ever spidev should never appear directly in a DT because it is not a
-description of hardware, the DT should describe whatever device is there
-and then we need to work out in Linux how to bind spidev to it if that's
-what we want to do.  m25p80 does represent real hardware and that
-hardware should be described, for example by using the jedec,spi-nor
-compatible which says that a non-specific JEDEC enumerable flash is
-present.
+> Or even a new i2c device to i2c bus?
 
-> Since this allows slave DT nodes without specifying a slave driver make
-> speed also optional. It makes no sense to specify speed when the device
-> is not specified. The value is only advisory anyway and the slave
-> driver can try to set arbitrary transfer speed.
+If you have an unknown i2c device, yes you do.
 
-This appears to be at best marginally related to the rest of the patch.
-That means that it should be a separate patch.
+> also AFAIK new_id is not automagic and not all buses have it.
 
---iRjOs3ViPWHdlw/I
-Content-Type: application/pgp-signature; name="signature.asc"
+That's up to the bus to enable that option.  Just like you are creating
+a new option.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+> So it would have to be implemented on SPI. How? On PCI new_id is a PCI
+> id. What is it on SPI? ACPI PnP id? DT compatible? How do you tell?
+> And why when the bus does not even have IDs?
 
-iQEcBAEBCAAGBQJXcZdSAAoJECTWi3JdVIfQBYMH/RO3cfj4JDSI/pDHq3LSqNHQ
-hFyqAKPizJG0GFyDDVPZs82Dc7w4UqF9leBCXnkSccSFtfU4dgUy4ML1B6Q//RQO
-rz0nvVNnXcW44Y1WlqN1Xv3jfGEODkXtg4e6/BqFhxR+lkFEVpLW/lBGDwDUJSbV
-dJAhHCWZgpxCg8X1NhsVQQff73KyYD2wMHTl4HMIDHzxLiKG/DgO8JkXT9PoAp7A
-gEqDRfL9OUGpKPiU02TsGqX6MXCoa6rj0Oga+gP4FYFjXPZdrAdCMeLsvoSqPMvM
-cDXcbOlRxCWae6/3vi1bmaJ9F3NAGCZkwM2DNKhH5fkKEqqpQwCSUkEPdYfzQCk=
-=n2ur
------END PGP SIGNATURE-----
+Then fake the id out, like all other dumb busses that don't have an id.
 
---iRjOs3ViPWHdlw/I--
+Again, I'm not going to take this driver core change, sorry.
+
+greg k-h
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

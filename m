@@ -1,7 +1,7 @@
-From: Mark Brown <broonie@kernel.org>
+From: Andi Shyti <andi-ahk0KpmfxKRAfugRpC6u6w@public.gmane.org>
 Subject: Re: [PATCH 1/5] spi: do not fail if the CS line is not connected
-Date: Mon, 27 Jun 2016 14:06:57 +0100
-Message-ID: <20160627130657.GV28202@sirena.org.uk>
+Date: Mon, 27 Jun 2016 23:08:27 +0900
+Message-ID: <20160627140827.GF424@jack.zhora.eu>
 References: <1466150245-2648-1-git-send-email-andi.shyti@samsung.com>
  <1466150245-2648-2-git-send-email-andi.shyti@samsung.com>
  <20160617104725.GC26099@sirena.org.uk>
@@ -11,69 +11,58 @@ References: <1466150245-2648-1-git-send-email-andi.shyti@samsung.com>
  <CGME20160626124853epcas1p297070a25da8980f1d8d2f025c65cbdab@epcas1p2.samsung.com>
  <20160626124843.GP28202@sirena.org.uk>
  <20160627105716.GA7240@samsunx.samsung>
+ <20160627130657.GV28202@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="7z668gRi33XfcD/+"
-Cc: Andi Shyti <andi@etezian.org>, Kukjin Kim <kgene@kernel.org>,
-	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-To: Andi Shyti <andi.shyti@samsung.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20160627105716.GA7240@samsunx.samsung>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
-
-
---7z668gRi33XfcD/+
 Content-Type: text/plain; charset=us-ascii
+Cc: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>, Andi Shyti <andi-ahk0KpmfxKRAfugRpC6u6w@public.gmane.org>,
+	Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
+In-Reply-To: <20160627130657.GV28202-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, Jun 27, 2016 at 07:57:16PM +0900, Andi Shyti wrote:
+Hi Mark,
 
-> What I meant is that if we do not like num-cs = <0>, the
-> unlinked CS line can be handled only this way (case of the
-> s3c64xx driver):
+> > What I meant is that if we do not like num-cs = <0>, the
+> > unlinked CS line can be handled only this way (case of the
+> > s3c64xx driver):
+> 
+> > +- broken-cs: the CS line is disconnected, therefore the device should not wait
+> > +  for the CS protocol to be established
+> 
+> So what you're saying here is that you just need a property for the
+> inability to read back the chip select status?  That seems like a
+> totally reasonable thing to have which fits in idiomatically with the
+> rest of the subsystem.  I might call it no-cs-readback or something.
+> 
+> > Which is not something I like, because it means adding a new
+> > flag in the dts.
+> 
+> > What I want to suggest, instead, is to slightly change the logic
+> > behind the num-cs property: i.e. if "num-cs = <0>", doesn't
+> > necessarily mean that we don't have a CS controller, but, while
+> > we can have as many as we wish, non of them is connected.
+> 
+> I disagree, I think from a system integration point of view this is just
+> a chip select which can't be changed and it's less likely that we will
+> run into nasty surprises later on with things assuming that chip selects
+> exist.  AFAICT you only need this property in your case because this
+> controller has some features that rely on readback of the chip select
+> status, that's not very common - normally it'd be write only.  I'd
+> expect most controllers would just say they have one chip select and
+> that'd be that.
 
-> +- broken-cs: the CS line is disconnected, therefore the device should not wait
-> +  for the CS protocol to be established
+thanks for your feedback, I will then do as you say, I will use
+the no-cs-readback flag.
 
-So what you're saying here is that you just need a property for the
-inability to read back the chip select status?  That seems like a
-totally reasonable thing to have which fits in idiomatically with the
-rest of the subsystem.  I might call it no-cs-readback or something.
-
-> Which is not something I like, because it means adding a new
-> flag in the dts.
-
-> What I want to suggest, instead, is to slightly change the logic
-> behind the num-cs property: i.e. if "num-cs = <0>", doesn't
-> necessarily mean that we don't have a CS controller, but, while
-> we can have as many as we wish, non of them is connected.
-
-I disagree, I think from a system integration point of view this is just
-a chip select which can't be changed and it's less likely that we will
-run into nasty surprises later on with things assuming that chip selects
-exist.  AFAICT you only need this property in your case because this
-controller has some features that rely on readback of the chip select
-status, that's not very common - normally it'd be write only.  I'd
-expect most controllers would just say they have one chip select and
-that'd be that.
-
---7z668gRi33XfcD/+
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJXcSTrAAoJECTWi3JdVIfQjaEH/RDSWuBB7G3XEFXRRM1s8V5s
-zcXqnL5ngzizL5JLrBSvJVjtAv0h0aLa7QPfoJj9xb1tkcQJptSBsxBOfj9HRvja
-JTiwVPaAHmIjy5azklF0A3GnqViFxX7e5Q7s+DukDC6LV+WPMKkM82qZECkkKbUK
-o9Y1bPmplbVCwlXoYgXbFGi9tm4RZcqxT+/sk2CM5wHlNjW1sYNynhjybTctn5wv
-HMftpe+QhW/cIODTGG9WeS1phZmIac9hnan4ZHi9K8iVEkd/L/sjXH7ZycJBifMS
-3jQZe2Hp2+WqnN7xwvp/pGPZk5F2f6YJ/4lfPVUd2ZGn2xesXUOmXgwy5lctYxY=
-=00VN
------END PGP SIGNATURE-----
-
---7z668gRi33XfcD/+--
+Thanks again,
+Andi
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

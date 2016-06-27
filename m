@@ -1,74 +1,123 @@
-From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 3/3] drivers core: allow id match override when manually
- binding driver
-Date: Sun, 26 Jun 2016 21:07:08 +0200
-Message-ID: <CAOMqctSJjvyknkTjHZbfbt8nh0Eo_oc9LTonjZGUmwP5b8gWDg@mail.gmail.com>
-References: <cover.1466696079.git.hramrach@gmail.com> <5e0397742f887f656d67bb0d61c8e10782c0e5af.1466696079.git.hramrach@gmail.com>
- <20160626182811.GA20461@kroah.com>
+From: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Subject: Re: [PATCH 1/5] spi: do not fail if the CS line is not connected
+Date: Mon, 27 Jun 2016 19:57:16 +0900
+Message-ID: <20160627105716.GA7240@samsunx.samsung>
+References: <1466150245-2648-1-git-send-email-andi.shyti@samsung.com>
+ <1466150245-2648-2-git-send-email-andi.shyti@samsung.com>
+ <20160617104725.GC26099@sirena.org.uk> <20160617113622.GA10760@jack.zhora.eu>
+ <20160617122803.GN26099@sirena.org.uk> <20160619060902.GB424@jack.zhora.eu>
+ <CGME20160626124853epcas1p297070a25da8980f1d8d2f025c65cbdab@epcas1p2.samsung.com>
+ <20160626124843.GP28202@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Ingo Molnar <mingo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	Kees Cook <keescook-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-	Thomas Gleixner <tglx-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>,
-	Dan Williams <dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Tejun Heo <tj-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"Paul E. McKenney" <paulmck-23VcF4HTsmIX0ybBhKVfKdBPR1lH4CV8@public.gmane.org>,
-	Davidlohr Bueso <dave-h16yJtLeMjHk1uMJSBkQmQ@public.gmane.org>,
-	Andrey Ryabinin <aryabinin-5HdwGun5lf+gSpxsJD1C4w@public.gmane.org>,
-	Nikolay Aleksandrov <nikolay-qUQiAmfTcIp+XZJcv9eMoEEOCMrvLtNR@public.gmane.org>,
-	Dmitry Vyukov <dvyukov-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
-	Adrien Schildknecht <adrien+dev-Yk6CzqVXkG6lnMjI0IkVqw@public.gmane.org>,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Andi Shyti <andi-ahk0KpmfxKRAfugRpC6u6w@public.gmane.org>, Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160626182811.GA20461-U8xfFu+wG4EAvxtiuMwx3w@public.gmane.org>
+Content-disposition: inline
+In-reply-to: <20160626124843.GP28202-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 26 June 2016 at 20:28, Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org> wrote:
-> On Thu, Jun 23, 2016 at 05:41:20PM -0000, Michal Suchanek wrote:
->> This allows binding spidev on any slave device by hand using sysfs
->> without adding superfluous compatibles or any other needless
->> complication.
->>
->> Note that any slave driver that requires configuration will fail to
->> probe anyway. Only a driver that binds to anything can be bound
->> successfully.
->>
->> Signed-off-by: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
->> ---
->>  drivers/base/Kconfig.debug | 14 +++++++++
->>  drivers/base/bus.c         | 72 +++++++++++++++++++++++++++++++++++++++++++++-
->>  lib/Kconfig.debug          |  2 ++
->>  3 files changed, 87 insertions(+), 1 deletion(-)
->>  create mode 100644 drivers/base/Kconfig.debug
->>
->> diff --git a/drivers/base/Kconfig.debug b/drivers/base/Kconfig.debug
->> new file mode 100644
->> index 0000000..e21d3cc
->> --- /dev/null
->> +++ b/drivers/base/Kconfig.debug
->> @@ -0,0 +1,14 @@
->> +menuconfig DRIVER_MATCH_OVERRIDE
->> +     bool "Allow manual driver binding to override id match (DANGEROUS)"
->> +     default n
->> +     help
->> +       When binding a driver manually bypass the check of driver id table
->> +       against device id in driver core. This can be useful for development
->> +       or on buses that don't provide reliable device identification.
->
-> Ick, no no no.  Why would you ever want to let this happen?  If you
-> really want to override the check, just write things to the 'bind' file
-> in sysfs, that will skip the driver id check entirely, right?
+Hi Mark,
 
-Well, it does not. Hence this patch which enables skipping the check.
-It's the whole point of it.
+> > > > This is true, but there are cases where the CS is not connected
+> > > > and this case needs to be treated separately to allow the device
+> > > > to work.
+> 
+> > > In what way?  It is just as easy for a device with no physical chip
+> > > select to have a logical chip select of 0 that it does nothing with as
+> > > it is for that device to handle any other number.
+> 
+> > That is indeed my case: the s3c64xx doesn't send anything, unless
+> > I manually enable CS (from the next patches I need to write '0'
+> > in the CS register). But I need smoething to tell to the
+> > device that the CS line is not connected, for example a flag in
+> > the DTS.
+> 
+> I'm sorry but I just don't understand what you're saying here.  You are
+> saying that there is no chip select but you need to enable the chip
+> select?
 
-Thanks
+yes, sorry, I have to admit that didn't explain myself properly,
+but code speaks better than words.
 
-Michal
+What I meant is that if we do not like num-cs = <0>, the
+unlinked CS line can be handled only this way (case of the
+s3c64xx driver):
+
+
+
+diff --git a/Documentation/devicetree/bindings/spi/spi-samsung.txt b/Documentation/devicetree/bindings/spi/spi-samsung.txt
+index 6dbdeb3..62f19b6 100644
+--- a/Documentation/devicetree/bindings/spi/spi-samsung.txt
++++ b/Documentation/devicetree/bindings/spi/spi-samsung.txt
+@@ -40,6 +40,9 @@ Optional Board Specific Properties:
+ 
+ - cs-gpios: should specify GPIOs used for chipselects (see spi-bus.txt)
+ 
++- broken-cs: the CS line is disconnected, therefore the device should not wait
++  for the CS protocol to be established
++
+ SPI Controller specific data in SPI slave nodes:
+ 
+ - The spi slave nodes should provide the following information which is required
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 972367d..5e6ad59 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -315,6 +315,9 @@ static void s3c64xx_spi_set_cs(struct spi_device *spi, bool enable)
+        struct s3c64xx_spi_driver_data *sdd =
+                                        spi_master_get_devdata(spi->master);
+ 
++       if (sdd->cntrlr_info->broken_cs)
++               return;
++
+        if (enable) {
+                if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_CS_AUTO)) {
+                        writel(0, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
+
+[ ... ]
+
+@@ -1015,6 +1020,8 @@ static struct s3c64xx_spi_info *s3c64xx_spi_parse_dt(struct device *dev)
+                sci->num_cs = temp;
+        }
+ 
++       sci->broken_cs = of_property_read_bool(dev->of_node, "broken-cs");
++
+        return sci;
+ }
+ #else
+diff --git a/include/linux/platform_data/spi-s3c64xx.h b/include/linux/platform_data/spi-s3c64xx.h
+index fb5625b..75793b9 100644
+--- a/include/linux/platform_data/spi-s3c64xx.h
++++ b/include/linux/platform_data/spi-s3c64xx.h
+@@ -38,6 +38,7 @@ struct s3c64xx_spi_csinfo {
+ struct s3c64xx_spi_info {
+        int src_clk_nr;
+        int num_cs;
++       bool broken_cs;
+        int (*cfg_gpio)(void);
+        dma_filter_fn filter;
+        void *dma_tx;
+
+
+
+Which is not something I like, because it means adding a new
+flag in the dts.
+
+What I want to suggest, instead, is to slightly change the logic
+behind the num-cs property: i.e. if "num-cs = <0>", doesn't
+necessarily mean that we don't have a CS controller, but, while
+we can have as many as we wish, non of them is connected.
+
+Looking around in the spi drivers, apparently I am not the only
+one who has this need, as I pointed out in my previous mail.
+
+Thanks a lot,
+Andi
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

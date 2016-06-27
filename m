@@ -1,66 +1,82 @@
-From: Michal Suchanek <hramrach@gmail.com>
-Subject: [PATCH v2 2/3] spi: of: allow instantiating slaves without a driver
-Date: Mon, 27 Jun 2016 21:02:31 +0200
-Message-ID: <a85f91bf364bd6e1681f5973ac92c2bb7f9a8999.1467053363.git.hramrach@gmail.com>
-References: <cover.1467053363.git.hramrach@gmail.com>
-Cc: Michal Suchanek <hramrach@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <cover.1467053363.git.hramrach@gmail.com>
-In-Reply-To: <cover.1467053363.git.hramrach@gmail.com>
-References: <cover.1467053363.git.hramrach@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>
+Subject: Re: [PATCH 3/3] drivers core: allow id match override when manually
+ binding driver
+Date: Mon, 27 Jun 2016 12:09:15 -0700
+Message-ID: <20160627190915.GA5111@kroah.com>
+References: <cover.1466696079.git.hramrach@gmail.com>
+ <5e0397742f887f656d67bb0d61c8e10782c0e5af.1466696079.git.hramrach@gmail.com>
+ <20160626182811.GA20461@kroah.com>
+ <CAOMqctSJjvyknkTjHZbfbt8nh0Eo_oc9LTonjZGUmwP5b8gWDg@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Ingo Molnar <mingo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	Kees Cook <keescook-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	Thomas Gleixner <tglx-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>,
+	Dan Williams <dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Tejun Heo <tj-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"Paul E. McKenney" <paulmck-23VcF4HTsmIX0ybBhKVfKdBPR1lH4CV8@public.gmane.org>,
+	Davidlohr Bueso <dave-h16yJtLeMjHk1uMJSBkQmQ@public.gmane.org>,
+	Andrey Ryabinin <aryabinin-5HdwGun5lf+gSpxsJD1C4w@public.gmane.org>,
+	Nikolay Aleksandrov <nikolay-qUQiAmfTcIp+XZJcv9eMoEEOCMrvLtNR@public.gmane.org>,
+	Dmitry Vyukov <dvyukov-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
+	Adrien Schildknecht <adrien+dev-Yk6CzqVXkG6lnMjI0IkVqw@public.gmane.org>,
+	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAOMqctSJjvyknkTjHZbfbt8nh0Eo_oc9LTonjZGUmwP5b8gWDg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-SPI slave devices are not created when looking up driver for the slave
-fails. Create a device anyway so it can be manually bound to a driver.
+On Sun, Jun 26, 2016 at 09:07:08PM +0200, Michal Suchanek wrote:
+> On 26 June 2016 at 20:28, Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org> wrote:
+> > On Thu, Jun 23, 2016 at 05:41:20PM -0000, Michal Suchanek wrote:
+> >> This allows binding spidev on any slave device by hand using sysfs
+> >> without adding superfluous compatibles or any other needless
+> >> complication.
+> >>
+> >> Note that any slave driver that requires configuration will fail to
+> >> probe anyway. Only a driver that binds to anything can be bound
+> >> successfully.
+> >>
+> >> Signed-off-by: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> >> ---
+> >>  drivers/base/Kconfig.debug | 14 +++++++++
+> >>  drivers/base/bus.c         | 72 +++++++++++++++++++++++++++++++++++++++++++++-
+> >>  lib/Kconfig.debug          |  2 ++
+> >>  3 files changed, 87 insertions(+), 1 deletion(-)
+> >>  create mode 100644 drivers/base/Kconfig.debug
+> >>
+> >> diff --git a/drivers/base/Kconfig.debug b/drivers/base/Kconfig.debug
+> >> new file mode 100644
+> >> index 0000000..e21d3cc
+> >> --- /dev/null
+> >> +++ b/drivers/base/Kconfig.debug
+> >> @@ -0,0 +1,14 @@
+> >> +menuconfig DRIVER_MATCH_OVERRIDE
+> >> +     bool "Allow manual driver binding to override id match (DANGEROUS)"
+> >> +     default n
+> >> +     help
+> >> +       When binding a driver manually bypass the check of driver id table
+> >> +       against device id in driver core. This can be useful for development
+> >> +       or on buses that don't provide reliable device identification.
+> >
+> > Ick, no no no.  Why would you ever want to let this happen?  If you
+> > really want to override the check, just write things to the 'bind' file
+> > in sysfs, that will skip the driver id check entirely, right?
+> 
+> Well, it does not. Hence this patch which enables skipping the check.
+> It's the whole point of it.
 
-This allows manually binding a driver to slave devices for which the
-driver specified by compatible is not available of for which no driver
-is specified at all. Drivers like spidev or m25p80 that require no
-configuratiom can be bound to such node.
+Then write the id you wish to use for that driver to the new_id file for
+that driver.  Doesn't that work?
 
-Since this allows slave DT nodes without specifying a slave driver make
-speed also optional. It makes no sense to specify speed when the device
-is not specified. The value is only advisory anyway and the slave
-driver can try to set arbitrary transfer speed.
+thanks,
 
-Signed-off-by: Michal Suchanek <hramrach@gmail.com>
----
- drivers/spi/spi.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 0239b45..9b3b512 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1477,9 +1477,8 @@ of_register_spi_device(struct spi_master *master, struct device_node *nc)
- 	rc = of_modalias_node(nc, spi->modalias,
- 				sizeof(spi->modalias));
- 	if (rc < 0) {
--		dev_err(&master->dev, "cannot find modalias for %s\n",
-+		dev_warn(&master->dev, "cannot find modalias for %s\n",
- 			nc->full_name);
--		goto err_out;
- 	}
- 
- 	/* Device address */
-@@ -1543,11 +1542,11 @@ of_register_spi_device(struct spi_master *master, struct device_node *nc)
- 	/* Device speed */
- 	rc = of_property_read_u32(nc, "spi-max-frequency", &value);
- 	if (rc) {
--		dev_err(&master->dev, "%s has no valid 'spi-max-frequency' property (%d)\n",
-+		dev_warn(&master->dev, "%s has no valid 'spi-max-frequency' property (%d)\n",
- 			nc->full_name, rc);
--		goto err_out;
-+	} else {
-+		spi->max_speed_hz = value;
- 	}
--	spi->max_speed_hz = value;
- 
- 	/* Store a pointer to the node in the device structure */
- 	of_node_get(nc);
--- 
-2.8.1
+greg k-h
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

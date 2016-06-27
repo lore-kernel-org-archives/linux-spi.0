@@ -1,89 +1,68 @@
-From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v2 3/3] drivers core: allow id match override when manually binding driver
-Date: Mon, 27 Jun 2016 21:02:32 +0200
-Message-ID: <15ff382f699387e2d8f23779db851d0de7e9291e.1467053363.git.hramrach@gmail.com>
+From: Michal Suchanek <hramrach@gmail.com>
+Subject: [PATCH v2 1/3] spi: spidev: fix the check for spidev in dt
+Date: Mon, 27 Jun 2016 21:02:30 +0200
+Message-ID: <0123f28025f0a29a0771a43397ad14259a2094b7.1467053363.git.hramrach@gmail.com>
 References: <cover.1467053363.git.hramrach@gmail.com>
-Cc: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <cover.1467053363.git.hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-In-Reply-To: <cover.1467053363.git.hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-References: <cover.1467053363.git.hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Michal Suchanek <hramrach@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <cover.1467053363.git.hramrach@gmail.com>
+In-Reply-To: <cover.1467053363.git.hramrach@gmail.com>
+References: <cover.1467053363.git.hramrach@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-The spi bus has no autodetection whatsoever. The 'detection' of the
-device that's suposed to be on the other side completely relies on user
-supplied information coming from devicetree on many platforms. It is
-completely reasonable then to allow the user to supply the information
-at runtime by doing echo 'somedevice' >
-/sys/bus/spi/drivers/somedriver/bind
-This fails if somedriver does not have in its id table compatible of
-somedevice so just skip this check for manual driver binding.
+The error message is "buggy DT: spidev listed directly in DT\n"
 
-This allows binding spidev on any slave device by hand using sysfs
-without adding superfluous compatibles or any other needless
-complication.
+That's not what the check does. It checks that one if the IDs listed in
+the driver match table matches what is set on the DT node.
 
-Note that any slave driver that requires configuration will fail to
-probe anyway if the configuration is not provided in the devicetree node.
-A driver like spidev that requires no configuration can bind to any slave.
+This does not work if you manage to convince the kernel to bind spidev
+on a node that has some other random compatible which is not "spidev".
 
-Signed-off-by: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Also the spidev id match table is not compiled when !CONFIG_OF
+
+So add a match table that has just "spidev" entry in it so it can
+reliably detect what this message is supposed to warn about.
+
+Signed-off-by: Michal Suchanek <hramrach@gmail.com>
 ---
+ - fix indent
+ - update commit mesage
+---
+ drivers/spi/spidev.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
- drivers/base/bus.c | 25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/base/bus.c b/drivers/base/bus.c
-index 6470eb8..a896aed 100644
---- a/drivers/base/bus.c
-+++ b/drivers/base/bus.c
-@@ -199,6 +199,28 @@ static ssize_t unbind_store(struct device_driver *drv, const char *buf,
- }
- static DRIVER_ATTR_WO(unbind);
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index e3c19f3..3c6ebe7 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -700,6 +700,11 @@ static const struct of_device_id spidev_dt_ids[] = {
+ MODULE_DEVICE_TABLE(of, spidev_dt_ids);
+ #endif
  
-+static const char *driver_override_buses[] = {
-+	"spi",
-+	NULL
++static const struct of_device_id spidev_check[] = {
++	{ .compatible = "spidev" },
++	{}
 +};
 +
-+static inline bool driver_match_override(struct device_driver *drv,
-+					 struct device *dev)
-+{
-+	struct bus_type *bus = bus_get(drv->bus);
-+	int i;
-+
-+	for (i = 0; driver_override_buses[i]; i++) {
-+		if (!strcmp(bus->name, driver_override_buses[i])) {
-+			pr_notice("Overriding id match on manual driver binding:\n bus: %s  driver: %s  device: %s\n",
-+				  bus->name, drv->name, dev_name(dev));
-+			return true;
-+		}
-+	}
-+
-+	return false;
-+}
-+
- /*
-  * Manually attach a device to a driver.
-  * Note: the driver must want to bind to the device,
-@@ -212,7 +234,8 @@ static ssize_t bind_store(struct device_driver *drv, const char *buf,
- 	int err = -ENODEV;
+ /*-------------------------------------------------------------------------*/
  
- 	dev = bus_find_device_by_name(bus, NULL, buf);
--	if (dev && dev->driver == NULL && driver_match_device(drv, dev)) {
-+	if (dev && dev->driver == NULL && (driver_match_device(drv, dev)
-+	    || driver_match_override(drv, dev))) {
- 		if (dev->parent)	/* Needed for USB */
- 			device_lock(dev->parent);
- 		device_lock(dev);
+ static int spidev_probe(struct spi_device *spi)
+@@ -713,10 +718,10 @@ static int spidev_probe(struct spi_device *spi)
+ 	 * compatible string, it is a Linux implementation thing
+ 	 * rather than a description of the hardware.
+ 	 */
+-	if (spi->dev.of_node && !of_match_device(spidev_dt_ids, &spi->dev)) {
++	if (spi->dev.of_node && of_match_device(spidev_check, &spi->dev)) {
+ 		dev_err(&spi->dev, "buggy DT: spidev listed directly in DT\n");
+ 		WARN_ON(spi->dev.of_node &&
+-			!of_match_device(spidev_dt_ids, &spi->dev));
++			of_match_device(spidev_check, &spi->dev));
+ 	}
+ 
+ 	/* Allocate driver data */
 -- 
 2.8.1
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

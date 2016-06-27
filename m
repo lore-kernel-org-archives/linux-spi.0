@@ -1,60 +1,259 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v4 5/8] spi: add support for ACPI reconfigure
- notifications
-Date: Mon, 27 Jun 2016 15:17:13 +0100
-Message-ID: <20160627141713.GW28202@sirena.org.uk>
-References: <1466164336-9508-1-git-send-email-octavian.purdila@intel.com>
- <1466164336-9508-6-git-send-email-octavian.purdila@intel.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="XGH+X5Sk6wksXc5a"
-Cc: "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-	Len Brown <lenb@kernel.org>,
-	Matt Fleming <matt@codeblueprint.co.uk>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Joel Becker <jlbec@evilplan.org>, linux-acpi@vger.kernel.org,
-	linux-efi@vger.kernel.org, linux-i2c@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	irina.tirdea@intel.com, leonard.crestez@intel.com
-To: Octavian Purdila <octavian.purdila@intel.com>
-Return-path: <linux-acpi-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1466164336-9508-6-git-send-email-octavian.purdila@intel.com>
-Sender: linux-acpi-owner@vger.kernel.org
+From: Franklin S Cooper Jr <fcooper@ti.com>
+Subject: [RFC] [PATCH v2 3/3] spi: omap2-mcspi: Use the SPI framework to handle DMA mapping
+Date: Mon, 27 Jun 2016 09:54:09 -0500
+Message-ID: <1467039249-7816-4-git-send-email-fcooper@ti.com>
+References: <1467039249-7816-1-git-send-email-fcooper@ti.com>
+Cc: Franklin S Cooper Jr <fcooper@ti.com>
+To: david.s.gordon@intel.com, axboe@fb.com, akpm@linux-foundation.org,
+	ming.l@ssi.samsung.com, linux-kernel@vger.kernel.org,
+	broonie@kernel.org, linux-spi@vger.kernel.org, nsekhar@ti.com,
+	peter.ujfalusi@ti.com
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1467039249-7816-1-git-send-email-fcooper@ti.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Currently, the driver handles mapping buffers to be used by the DMA.
+However, there are times that the current mapping implementation will
+fail for certain buffers. Fortunately, the SPI framework can detect
+and map buffers so its usable by the DMA.
 
---XGH+X5Sk6wksXc5a
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Update the driver to utilize the SPI framework for buffer
+mapping instead. Also incorporate hooks that the framework uses to
+determine if the DMA can or can not be used.
 
-On Fri, Jun 17, 2016 at 02:52:13PM +0300, Octavian Purdila wrote:
+This will result in the original omap2_mcspi_transfer_one function being
+deleted and omap2_mcspi_work_one being renamed to
+omap2_mcspi_transfer_one. Previously transfer_one was only responsible
+for mapping and work_one handled the transfer. But now only transferring
+needs to be handled by the driver.
 
-> This patch adds supports for SPI device enumeration and removal via
-> ACPI reconfiguration notifications that are send as a result of an
-> ACPI table load or unload operation.
+Signed-off-by: Franklin S Cooper Jr <fcooper@ti.com>
+---
+ drivers/spi/spi-omap2-mcspi.c | 107 ++++++++++++++----------------------------
+ 1 file changed, 34 insertions(+), 73 deletions(-)
 
-I still have the same concern I've had all the way through here: this is
-very similar to the equivalent DT code but not quite, especially in
-regard to the OF_POPULATED flag which has no ACPI equivalent.  This
-gives us ACPI code which just looks like it's missing something.  I'd
-like to see the comparison at least covered in the changelog so people
-have something to refer to in future when trying to understand why
-things are done this way.
-
---XGH+X5Sk6wksXc5a
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJXcTVoAAoJECTWi3JdVIfQ1NkIAICLFrq20hSWhgkKNPVK2Fxu
-ZlIUEeByk4Ko38eN/9XzEXP3JrQC5iIOe7or4AneoEpS2urUPg91Ozx0ylZUBzwV
-8SLbS3mvDTJ/skvMbC/zbBsLgMiJ8MjFGQbYvE622sgFup+bQ+v070l9fmCmB/MX
-NqeJO+LKISe68MA6fugIl6cgj2TR9ngvBbrc/tUFl2FXwzyd0yp14MM3uEHpMBSX
-A097r6EHZTzYQXe3C7V646BHlW2tm8EIi/j1xa5i6ssI+g1SB3Q0TbwOELN7jJ1W
-49rA7hTrS5HsUhlYTqE2xyXXg9sMuP94Nf77qNFsFrYdJBkBw/sffitdCvOY28Q=
-=ikos
------END PGP SIGNATURE-----
-
---XGH+X5Sk6wksXc5a--
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index c47f958..e26dabf 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -419,16 +419,13 @@ static void omap2_mcspi_tx_dma(struct spi_device *spi,
+ 
+ 	if (mcspi_dma->dma_tx) {
+ 		struct dma_async_tx_descriptor *tx;
+-		struct scatterlist sg;
+ 
+ 		dmaengine_slave_config(mcspi_dma->dma_tx, &cfg);
+ 
+-		sg_init_table(&sg, 1);
+-		sg_dma_address(&sg) = xfer->tx_dma;
+-		sg_dma_len(&sg) = xfer->len;
+-
+-		tx = dmaengine_prep_slave_sg(mcspi_dma->dma_tx, &sg, 1,
+-		DMA_MEM_TO_DEV, DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
++		tx = dmaengine_prep_slave_sg(mcspi_dma->dma_tx, xfer->tx_sg.sgl,
++					     xfer->tx_sg.nents,
++					     DMA_MEM_TO_DEV,
++					     DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+ 		if (tx) {
+ 			tx->callback = omap2_mcspi_tx_callback;
+ 			tx->callback_param = spi;
+@@ -449,7 +446,8 @@ omap2_mcspi_rx_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ {
+ 	struct omap2_mcspi	*mcspi;
+ 	struct omap2_mcspi_dma  *mcspi_dma;
+-	unsigned int		count, dma_count;
++	struct sg_table		*cloned_table = NULL;
++	unsigned int		count, transfer_reduction = 0;
+ 	u32			l;
+ 	int			elements = 0;
+ 	int			word_len, element_count;
+@@ -457,7 +455,6 @@ omap2_mcspi_rx_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ 	mcspi = spi_master_get_devdata(spi->master);
+ 	mcspi_dma = &mcspi->dma_channels[spi->chip_select];
+ 	count = xfer->len;
+-	dma_count = xfer->len;
+ 
+ 	/*
+ 	 *  In the "End-of-Transfer Procedure" section for DMA RX in OMAP35x TRM
+@@ -465,7 +462,7 @@ omap2_mcspi_rx_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ 	 *  normal mode.
+ 	 */
+ 	if (mcspi->fifo_depth == 0)
+-		dma_count -= es;
++		transfer_reduction = es;
+ 
+ 	word_len = cs->word_len;
+ 	l = mcspi_cached_chconf0(spi);
+@@ -479,7 +476,6 @@ omap2_mcspi_rx_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ 
+ 	if (mcspi_dma->dma_rx) {
+ 		struct dma_async_tx_descriptor *tx;
+-		struct scatterlist sg;
+ 
+ 		dmaengine_slave_config(mcspi_dma->dma_rx, &cfg);
+ 
+@@ -488,13 +484,21 @@ omap2_mcspi_rx_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ 		 *  configured in turbo mode.
+ 		 */
+ 		if ((l & OMAP2_MCSPI_CHCONF_TURBO) && mcspi->fifo_depth == 0)
+-			dma_count -= es;
++			transfer_reduction += es;
++
++		/*
++		 * Get a cloned copy of the rx sgl whose transfer count has
++		 * has been reduced by transfer_reduction.
++		 */
++		cloned_table = sg_table_clone(&xfer->rx_sg,
++				count - transfer_reduction, GFP_KERNEL);
+ 
+-		sg_init_table(&sg, 1);
+-		sg_dma_address(&sg) = xfer->rx_dma;
+-		sg_dma_len(&sg) = dma_count;
++		if (IS_ERR(cloned_table))
++			return 0;
+ 
+-		tx = dmaengine_prep_slave_sg(mcspi_dma->dma_rx, &sg, 1,
++		tx = dmaengine_prep_slave_sg(mcspi_dma->dma_rx,
++				cloned_table->sgl,
++				cloned_table->nents,
+ 				DMA_DEV_TO_MEM, DMA_PREP_INTERRUPT |
+ 				DMA_CTRL_ACK);
+ 		if (tx) {
+@@ -510,8 +514,8 @@ omap2_mcspi_rx_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ 	omap2_mcspi_set_dma_req(spi, 1, 1);
+ 
+ 	wait_for_completion(&mcspi_dma->dma_rx_completion);
+-	dma_unmap_single(mcspi->dev, xfer->rx_dma, count,
+-			 DMA_FROM_DEVICE);
++
++	sg_free_table(cloned_table);
+ 
+ 	if (mcspi->fifo_depth > 0)
+ 		return count;
+@@ -628,8 +632,6 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
+ 
+ 	if (tx != NULL) {
+ 		wait_for_completion(&mcspi_dma->dma_tx_completion);
+-		dma_unmap_single(mcspi->dev, xfer->tx_dma, xfer->len,
+-				 DMA_TO_DEVICE);
+ 
+ 		if (mcspi->fifo_depth > 0) {
+ 			irqstat_reg = mcspi->base + OMAP2_MCSPI_IRQSTATUS;
+@@ -1087,7 +1089,7 @@ static void omap2_mcspi_cleanup(struct spi_device *spi)
+ 		gpio_free(spi->cs_gpio);
+ }
+ 
+-static int omap2_mcspi_work_one(struct omap2_mcspi *mcspi,
++static int omap2_mcspi_transfer_one(struct spi_master *master,
+ 		struct spi_device *spi, struct spi_transfer *t)
+ {
+ 
+@@ -1098,7 +1100,7 @@ static int omap2_mcspi_work_one(struct omap2_mcspi *mcspi,
+ 	 * chipselect with the FORCE bit ... CS != channel enable.
+ 	 */
+ 
+-	struct spi_master		*master;
++	struct omap2_mcspi		*mcspi;
+ 	struct omap2_mcspi_dma		*mcspi_dma;
+ 	struct omap2_mcspi_cs		*cs;
+ 	struct omap2_mcspi_device_config *cd;
+@@ -1106,7 +1108,7 @@ static int omap2_mcspi_work_one(struct omap2_mcspi *mcspi,
+ 	int				status = 0;
+ 	u32				chconf;
+ 
+-	master = spi->master;
++	mcspi = spi_master_get_devdata(master);
+ 	mcspi_dma = mcspi->dma_channels + spi->chip_select;
+ 	cs = spi->controller_state;
+ 	cd = spi->controller_data;
+@@ -1166,7 +1168,8 @@ static int omap2_mcspi_work_one(struct omap2_mcspi *mcspi,
+ 		unsigned	count;
+ 
+ 		if ((mcspi_dma->dma_rx && mcspi_dma->dma_tx) &&
+-		    (t->len >= DMA_MIN_BYTES))
++		    master->cur_msg_mapped &&
++		    master->can_dma(master, spi, t))
+ 			omap2_mcspi_set_fifo(spi, t, 1);
+ 
+ 		omap2_mcspi_set_enable(spi, 1);
+@@ -1177,7 +1180,8 @@ static int omap2_mcspi_work_one(struct omap2_mcspi *mcspi,
+ 					+ OMAP2_MCSPI_TX0);
+ 
+ 		if ((mcspi_dma->dma_rx && mcspi_dma->dma_tx) &&
+-		    (t->len >= DMA_MIN_BYTES))
++		    master->cur_msg_mapped &&
++		    master->can_dma(master, spi, t))
+ 			count = omap2_mcspi_txrx_dma(spi, t);
+ 		else
+ 			count = omap2_mcspi_txrx_pio(spi, t);
+@@ -1246,55 +1250,11 @@ static int omap2_mcspi_prepare_message(struct spi_master *master,
+ 	return 0;
+ }
+ 
+-static int omap2_mcspi_transfer_one(struct spi_master *master,
+-		struct spi_device *spi, struct spi_transfer *t)
++static bool omap2_mcspi_can_dma(struct spi_master *master,
++				struct spi_device *spi,
++				struct spi_transfer *xfer)
+ {
+-	struct omap2_mcspi	*mcspi;
+-	struct omap2_mcspi_dma	*mcspi_dma;
+-	const void	*tx_buf = t->tx_buf;
+-	void		*rx_buf = t->rx_buf;
+-	unsigned	len = t->len;
+-
+-	mcspi = spi_master_get_devdata(master);
+-	mcspi_dma = mcspi->dma_channels + spi->chip_select;
+-
+-	if ((len && !(rx_buf || tx_buf))) {
+-		dev_dbg(mcspi->dev, "transfer: %d Hz, %d %s%s, %d bpw\n",
+-				t->speed_hz,
+-				len,
+-				tx_buf ? "tx" : "",
+-				rx_buf ? "rx" : "",
+-				t->bits_per_word);
+-		return -EINVAL;
+-	}
+-
+-	if (len < DMA_MIN_BYTES)
+-		goto skip_dma_map;
+-
+-	if (mcspi_dma->dma_tx && tx_buf != NULL) {
+-		t->tx_dma = dma_map_single(mcspi->dev, (void *) tx_buf,
+-				len, DMA_TO_DEVICE);
+-		if (dma_mapping_error(mcspi->dev, t->tx_dma)) {
+-			dev_dbg(mcspi->dev, "dma %cX %d bytes error\n",
+-					'T', len);
+-			return -EINVAL;
+-		}
+-	}
+-	if (mcspi_dma->dma_rx && rx_buf != NULL) {
+-		t->rx_dma = dma_map_single(mcspi->dev, rx_buf, t->len,
+-				DMA_FROM_DEVICE);
+-		if (dma_mapping_error(mcspi->dev, t->rx_dma)) {
+-			dev_dbg(mcspi->dev, "dma %cX %d bytes error\n",
+-					'R', len);
+-			if (tx_buf != NULL)
+-				dma_unmap_single(mcspi->dev, t->tx_dma,
+-						len, DMA_TO_DEVICE);
+-			return -EINVAL;
+-		}
+-	}
+-
+-skip_dma_map:
+-	return omap2_mcspi_work_one(mcspi, spi, t);
++	return (xfer->len >= DMA_MIN_BYTES);
+ }
+ 
+ static int omap2_mcspi_master_setup(struct omap2_mcspi *mcspi)
+@@ -1374,6 +1334,7 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
+ 	master->setup = omap2_mcspi_setup;
+ 	master->auto_runtime_pm = true;
+ 	master->prepare_message = omap2_mcspi_prepare_message;
++	master->can_dma = omap2_mcspi_can_dma;
+ 	master->transfer_one = omap2_mcspi_transfer_one;
+ 	master->set_cs = omap2_mcspi_set_cs;
+ 	master->cleanup = omap2_mcspi_cleanup;
+-- 
+2.7.0

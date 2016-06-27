@@ -1,7 +1,7 @@
 From: Michal Suchanek <hramrach@gmail.com>
-Subject: [PATCH v2 1/3] spi: spidev: fix the check for spidev in dt
-Date: Mon, 27 Jun 2016 21:02:30 +0200
-Message-ID: <0123f28025f0a29a0771a43397ad14259a2094b7.1467053363.git.hramrach@gmail.com>
+Subject: [PATCH v2 2/3] spi: of: allow instantiating slaves without a driver
+Date: Mon, 27 Jun 2016 21:02:31 +0200
+Message-ID: <a85f91bf364bd6e1681f5973ac92c2bb7f9a8999.1467053363.git.hramrach@gmail.com>
 References: <cover.1467053363.git.hramrach@gmail.com>
 Cc: Michal Suchanek <hramrach@gmail.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -14,55 +14,53 @@ References: <cover.1467053363.git.hramrach@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The error message is "buggy DT: spidev listed directly in DT\n"
+SPI slave devices are not created when looking up driver for the slave
+fails. Create a device anyway so it can be manually bound to a driver.
 
-That's not what the check does. It checks that one if the IDs listed in
-the driver match table matches what is set on the DT node.
+This allows manually binding a driver to slave devices for which the
+driver specified by compatible is not available of for which no driver
+is specified at all. Drivers like spidev or m25p80 that require no
+configuratiom can be bound to such node.
 
-This does not work if you manage to convince the kernel to bind spidev
-on a node that has some other random compatible which is not "spidev".
-
-Also the spidev id match table is not compiled when !CONFIG_OF
-
-So add a match table that has just "spidev" entry in it so it can
-reliably detect what this message is supposed to warn about.
+Since this allows slave DT nodes without specifying a slave driver make
+speed also optional. It makes no sense to specify speed when the device
+is not specified. The value is only advisory anyway and the slave
+driver can try to set arbitrary transfer speed.
 
 Signed-off-by: Michal Suchanek <hramrach@gmail.com>
 ---
- - fix indent
- - update commit mesage
----
- drivers/spi/spidev.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/spi/spi.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index e3c19f3..3c6ebe7 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -700,6 +700,11 @@ static const struct of_device_id spidev_dt_ids[] = {
- MODULE_DEVICE_TABLE(of, spidev_dt_ids);
- #endif
- 
-+static const struct of_device_id spidev_check[] = {
-+	{ .compatible = "spidev" },
-+	{}
-+};
-+
- /*-------------------------------------------------------------------------*/
- 
- static int spidev_probe(struct spi_device *spi)
-@@ -713,10 +718,10 @@ static int spidev_probe(struct spi_device *spi)
- 	 * compatible string, it is a Linux implementation thing
- 	 * rather than a description of the hardware.
- 	 */
--	if (spi->dev.of_node && !of_match_device(spidev_dt_ids, &spi->dev)) {
-+	if (spi->dev.of_node && of_match_device(spidev_check, &spi->dev)) {
- 		dev_err(&spi->dev, "buggy DT: spidev listed directly in DT\n");
- 		WARN_ON(spi->dev.of_node &&
--			!of_match_device(spidev_dt_ids, &spi->dev));
-+			of_match_device(spidev_check, &spi->dev));
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 0239b45..9b3b512 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1477,9 +1477,8 @@ of_register_spi_device(struct spi_master *master, struct device_node *nc)
+ 	rc = of_modalias_node(nc, spi->modalias,
+ 				sizeof(spi->modalias));
+ 	if (rc < 0) {
+-		dev_err(&master->dev, "cannot find modalias for %s\n",
++		dev_warn(&master->dev, "cannot find modalias for %s\n",
+ 			nc->full_name);
+-		goto err_out;
  	}
  
- 	/* Allocate driver data */
+ 	/* Device address */
+@@ -1543,11 +1542,11 @@ of_register_spi_device(struct spi_master *master, struct device_node *nc)
+ 	/* Device speed */
+ 	rc = of_property_read_u32(nc, "spi-max-frequency", &value);
+ 	if (rc) {
+-		dev_err(&master->dev, "%s has no valid 'spi-max-frequency' property (%d)\n",
++		dev_warn(&master->dev, "%s has no valid 'spi-max-frequency' property (%d)\n",
+ 			nc->full_name, rc);
+-		goto err_out;
++	} else {
++		spi->max_speed_hz = value;
+ 	}
+-	spi->max_speed_hz = value;
+ 
+ 	/* Store a pointer to the node in the device structure */
+ 	of_node_get(nc);
 -- 
 2.8.1

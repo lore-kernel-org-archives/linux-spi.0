@@ -1,52 +1,79 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH RESEND] spi: spidev: Allow matching DT compatible strings
- from ACPI
-Date: Mon, 27 Jun 2016 13:24:48 +0100
-Message-ID: <20160627122448.GU28202@sirena.org.uk>
-References: <1467027248-6191-1-git-send-email-mika.westerberg@linux.intel.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 1/5] spi: do not fail if the CS line is not connected
+Date: Mon, 27 Jun 2016 14:06:57 +0100
+Message-ID: <20160627130657.GV28202@sirena.org.uk>
+References: <1466150245-2648-1-git-send-email-andi.shyti@samsung.com>
+ <1466150245-2648-2-git-send-email-andi.shyti@samsung.com>
+ <20160617104725.GC26099@sirena.org.uk>
+ <20160617113622.GA10760@jack.zhora.eu>
+ <20160617122803.GN26099@sirena.org.uk>
+ <20160619060902.GB424@jack.zhora.eu>
+ <CGME20160626124853epcas1p297070a25da8980f1d8d2f025c65cbdab@epcas1p2.samsung.com>
+ <20160626124843.GP28202@sirena.org.uk>
+ <20160627105716.GA7240@samsunx.samsung>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="LvvJQ0mOwKOuU4xd"
-Cc: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="7z668gRi33XfcD/+"
+Cc: Andi Shyti <andi@etezian.org>, Kukjin Kim <kgene@kernel.org>,
+	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+To: Andi Shyti <andi.shyti@samsung.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1467027248-6191-1-git-send-email-mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <20160627105716.GA7240@samsunx.samsung>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---LvvJQ0mOwKOuU4xd
+--7z668gRi33XfcD/+
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Mon, Jun 27, 2016 at 02:34:08PM +0300, Mika Westerberg wrote:
+On Mon, Jun 27, 2016 at 07:57:16PM +0900, Andi Shyti wrote:
 
-> Allow the same devices to be used in ACPI based systems if they provide
-> proper DT compatible string.
+> What I meant is that if we do not like num-cs = <0>, the
+> unlinked CS line can be handled only this way (case of the
+> s3c64xx driver):
 
-Please allow a reasonable time for review, especially for an invasive
-change like this which needs a bunch of research to figure out how
-sensible the infrastructure to shove DT into ACPI is.
+> +- broken-cs: the CS line is disconnected, therefore the device should not wait
+> +  for the CS protocol to be established
 
---LvvJQ0mOwKOuU4xd
+So what you're saying here is that you just need a property for the
+inability to read back the chip select status?  That seems like a
+totally reasonable thing to have which fits in idiomatically with the
+rest of the subsystem.  I might call it no-cs-readback or something.
+
+> Which is not something I like, because it means adding a new
+> flag in the dts.
+
+> What I want to suggest, instead, is to slightly change the logic
+> behind the num-cs property: i.e. if "num-cs = <0>", doesn't
+> necessarily mean that we don't have a CS controller, but, while
+> we can have as many as we wish, non of them is connected.
+
+I disagree, I think from a system integration point of view this is just
+a chip select which can't be changed and it's less likely that we will
+run into nasty surprises later on with things assuming that chip selects
+exist.  AFAICT you only need this property in your case because this
+controller has some features that rely on readback of the chip select
+status, that's not very common - normally it'd be write only.  I'd
+expect most controllers would just say they have one chip select and
+that'd be that.
+
+--7z668gRi33XfcD/+
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJXcRsOAAoJECTWi3JdVIfQotoH/1pvbHeewYBs/plvsP3eIxX9
-OoTcjBjCp4zLFz4CVu4328pPDeJ45F1Xggd1Y2sWZBiZy4ylz7dRcDKDOO9BqKdn
-hmhTnlCvqidrSjl5cU8kCHIkytA2Hawnd8VtTE5rSYcEj5g64UdNzgHk1DcmihTY
-BrvDYURAJXgdqftpuJOiGxcVfgOQUwEqnM+10xf545PFl6kEq7a4goKf+FHnvr6M
-idJv/ADJBKA2EVZjEZSPvJge9fNiBt9RfWmBi0kN+Rs6+UUZd1JGUpAiT0dR7bVS
-lHSlPFX7f6xMApRVuX4HoARMyK7Us9VHjyb/gn5YpUTkviKVdzh2WouACKYh7uQ=
-=wN2s
+iQEcBAEBCAAGBQJXcSTrAAoJECTWi3JdVIfQjaEH/RDSWuBB7G3XEFXRRM1s8V5s
+zcXqnL5ngzizL5JLrBSvJVjtAv0h0aLa7QPfoJj9xb1tkcQJptSBsxBOfj9HRvja
+JTiwVPaAHmIjy5azklF0A3GnqViFxX7e5Q7s+DukDC6LV+WPMKkM82qZECkkKbUK
+o9Y1bPmplbVCwlXoYgXbFGi9tm4RZcqxT+/sk2CM5wHlNjW1sYNynhjybTctn5wv
+HMftpe+QhW/cIODTGG9WeS1phZmIac9hnan4ZHi9K8iVEkd/L/sjXH7ZycJBifMS
+3jQZe2Hp2+WqnN7xwvp/pGPZk5F2f6YJ/4lfPVUd2ZGn2xesXUOmXgwy5lctYxY=
+=00VN
 -----END PGP SIGNATURE-----
 
---LvvJQ0mOwKOuU4xd--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--7z668gRi33XfcD/+--

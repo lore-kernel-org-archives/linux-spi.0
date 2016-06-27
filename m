@@ -1,123 +1,54 @@
-From: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: [PATCH 1/5] spi: do not fail if the CS line is not connected
-Date: Mon, 27 Jun 2016 19:57:16 +0900
-Message-ID: <20160627105716.GA7240@samsunx.samsung>
-References: <1466150245-2648-1-git-send-email-andi.shyti@samsung.com>
- <1466150245-2648-2-git-send-email-andi.shyti@samsung.com>
- <20160617104725.GC26099@sirena.org.uk> <20160617113622.GA10760@jack.zhora.eu>
- <20160617122803.GN26099@sirena.org.uk> <20160619060902.GB424@jack.zhora.eu>
- <CGME20160626124853epcas1p297070a25da8980f1d8d2f025c65cbdab@epcas1p2.samsung.com>
- <20160626124843.GP28202@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Andi Shyti <andi-ahk0KpmfxKRAfugRpC6u6w@public.gmane.org>, Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH RESEND] spi: spidev: Allow matching DT compatible strings from ACPI
+Date: Mon, 27 Jun 2016 14:34:08 +0300
+Message-ID: <1467027248-6191-1-git-send-email-mika.westerberg@linux.intel.com>
+Cc: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-disposition: inline
-In-reply-to: <20160626124843.GP28202-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Mark,
+Allow the same devices to be used in ACPI based systems if they provide
+proper DT compatible string.
 
-> > > > This is true, but there are cases where the CS is not connected
-> > > > and this case needs to be treated separately to allow the device
-> > > > to work.
-> 
-> > > In what way?  It is just as easy for a device with no physical chip
-> > > select to have a logical chip select of 0 that it does nothing with as
-> > > it is for that device to handle any other number.
-> 
-> > That is indeed my case: the s3c64xx doesn't send anything, unless
-> > I manually enable CS (from the next patches I need to write '0'
-> > in the CS register). But I need smoething to tell to the
-> > device that the CS line is not connected, for example a flag in
-> > the DTS.
-> 
-> I'm sorry but I just don't understand what you're saying here.  You are
-> saying that there is no chip select but you need to enable the chip
-> select?
+Signed-off-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+---
+ drivers/spi/spidev.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-yes, sorry, I have to admit that didn't explain myself properly,
-but code speaks better than words.
-
-What I meant is that if we do not like num-cs = <0>, the
-unlinked CS line can be handled only this way (case of the
-s3c64xx driver):
-
-
-
-diff --git a/Documentation/devicetree/bindings/spi/spi-samsung.txt b/Documentation/devicetree/bindings/spi/spi-samsung.txt
-index 6dbdeb3..62f19b6 100644
---- a/Documentation/devicetree/bindings/spi/spi-samsung.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-samsung.txt
-@@ -40,6 +40,9 @@ Optional Board Specific Properties:
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index e3c19f30f591..86a4c28b9e58 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -691,14 +691,12 @@ static const struct file_operations spidev_fops = {
  
- - cs-gpios: should specify GPIOs used for chipselects (see spi-bus.txt)
+ static struct class *spidev_class;
  
-+- broken-cs: the CS line is disconnected, therefore the device should not wait
-+  for the CS protocol to be established
-+
- SPI Controller specific data in SPI slave nodes:
+-#ifdef CONFIG_OF
+ static const struct of_device_id spidev_dt_ids[] = {
+ 	{ .compatible = "rohm,dh2228fv" },
+ 	{ .compatible = "lineartechnology,ltc2488" },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, spidev_dt_ids);
+-#endif
  
- - The spi slave nodes should provide the following information which is required
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 972367d..5e6ad59 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -315,6 +315,9 @@ static void s3c64xx_spi_set_cs(struct spi_device *spi, bool enable)
-        struct s3c64xx_spi_driver_data *sdd =
-                                        spi_master_get_devdata(spi->master);
+ /*-------------------------------------------------------------------------*/
  
-+       if (sdd->cntrlr_info->broken_cs)
-+               return;
-+
-        if (enable) {
-                if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_CS_AUTO)) {
-                        writel(0, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
+@@ -788,7 +786,7 @@ static int spidev_remove(struct spi_device *spi)
+ static struct spi_driver spidev_spi_driver = {
+ 	.driver = {
+ 		.name =		"spidev",
+-		.of_match_table = of_match_ptr(spidev_dt_ids),
++		.of_match_table = spidev_dt_ids,
+ 	},
+ 	.probe =	spidev_probe,
+ 	.remove =	spidev_remove,
+-- 
+2.8.1
 
-[ ... ]
-
-@@ -1015,6 +1020,8 @@ static struct s3c64xx_spi_info *s3c64xx_spi_parse_dt(struct device *dev)
-                sci->num_cs = temp;
-        }
- 
-+       sci->broken_cs = of_property_read_bool(dev->of_node, "broken-cs");
-+
-        return sci;
- }
- #else
-diff --git a/include/linux/platform_data/spi-s3c64xx.h b/include/linux/platform_data/spi-s3c64xx.h
-index fb5625b..75793b9 100644
---- a/include/linux/platform_data/spi-s3c64xx.h
-+++ b/include/linux/platform_data/spi-s3c64xx.h
-@@ -38,6 +38,7 @@ struct s3c64xx_spi_csinfo {
- struct s3c64xx_spi_info {
-        int src_clk_nr;
-        int num_cs;
-+       bool broken_cs;
-        int (*cfg_gpio)(void);
-        dma_filter_fn filter;
-        void *dma_tx;
-
-
-
-Which is not something I like, because it means adding a new
-flag in the dts.
-
-What I want to suggest, instead, is to slightly change the logic
-behind the num-cs property: i.e. if "num-cs = <0>", doesn't
-necessarily mean that we don't have a CS controller, but, while
-we can have as many as we wish, non of them is connected.
-
-Looking around in the spi drivers, apparently I am not the only
-one who has this need, as I pointed out in my previous mail.
-
-Thanks a lot,
-Andi
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

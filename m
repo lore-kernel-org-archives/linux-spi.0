@@ -1,54 +1,51 @@
-From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH RESEND] spi: spidev: Allow matching DT compatible strings from ACPI
-Date: Mon, 27 Jun 2016 14:34:08 +0300
-Message-ID: <1467027248-6191-1-git-send-email-mika.westerberg@linux.intel.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH RESEND] spi: spidev: Allow matching DT compatible strings
+ from ACPI
+Date: Mon, 27 Jun 2016 13:24:48 +0100
+Message-ID: <20160627122448.GU28202@sirena.org.uk>
+References: <1467027248-6191-1-git-send-email-mika.westerberg@linux.intel.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="LvvJQ0mOwKOuU4xd"
 Cc: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1467027248-6191-1-git-send-email-mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Allow the same devices to be used in ACPI based systems if they provide
-proper DT compatible string.
 
-Signed-off-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
----
- drivers/spi/spidev.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+--LvvJQ0mOwKOuU4xd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index e3c19f30f591..86a4c28b9e58 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -691,14 +691,12 @@ static const struct file_operations spidev_fops = {
- 
- static struct class *spidev_class;
- 
--#ifdef CONFIG_OF
- static const struct of_device_id spidev_dt_ids[] = {
- 	{ .compatible = "rohm,dh2228fv" },
- 	{ .compatible = "lineartechnology,ltc2488" },
- 	{},
- };
- MODULE_DEVICE_TABLE(of, spidev_dt_ids);
--#endif
- 
- /*-------------------------------------------------------------------------*/
- 
-@@ -788,7 +786,7 @@ static int spidev_remove(struct spi_device *spi)
- static struct spi_driver spidev_spi_driver = {
- 	.driver = {
- 		.name =		"spidev",
--		.of_match_table = of_match_ptr(spidev_dt_ids),
-+		.of_match_table = spidev_dt_ids,
- 	},
- 	.probe =	spidev_probe,
- 	.remove =	spidev_remove,
--- 
-2.8.1
+On Mon, Jun 27, 2016 at 02:34:08PM +0300, Mika Westerberg wrote:
 
+> Allow the same devices to be used in ACPI based systems if they provide
+> proper DT compatible string.
+
+Please allow a reasonable time for review, especially for an invasive
+change like this which needs a bunch of research to figure out how
+sensible the infrastructure to shove DT into ACPI is.
+
+--LvvJQ0mOwKOuU4xd
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJXcRsOAAoJECTWi3JdVIfQotoH/1pvbHeewYBs/plvsP3eIxX9
+OoTcjBjCp4zLFz4CVu4328pPDeJ45F1Xggd1Y2sWZBiZy4ylz7dRcDKDOO9BqKdn
+hmhTnlCvqidrSjl5cU8kCHIkytA2Hawnd8VtTE5rSYcEj5g64UdNzgHk1DcmihTY
+BrvDYURAJXgdqftpuJOiGxcVfgOQUwEqnM+10xf545PFl6kEq7a4goKf+FHnvr6M
+idJv/ADJBKA2EVZjEZSPvJge9fNiBt9RfWmBi0kN+Rs6+UUZd1JGUpAiT0dR7bVS
+lHSlPFX7f6xMApRVuX4HoARMyK7Us9VHjyb/gn5YpUTkviKVdzh2WouACKYh7uQ=
+=wN2s
+-----END PGP SIGNATURE-----
+
+--LvvJQ0mOwKOuU4xd--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

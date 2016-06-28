@@ -1,106 +1,99 @@
 From: Andi Shyti <andi.shyti@samsung.com>
-Subject: [PATCH v2 1/5] spi: s3c64xx: group the CS signalling writes in a
- single function
-Date: Tue, 28 Jun 2016 11:41:11 +0900
-Message-ID: <1467081676-8442-2-git-send-email-andi.shyti@samsung.com>
+Subject: [PATCH v2 4/5] spi: s3c64xx: simplify if statement in prepare_transfer
+ function
+Date: Tue, 28 Jun 2016 11:41:14 +0900
+Message-ID: <1467081676-8442-5-git-send-email-andi.shyti@samsung.com>
 References: <1467081676-8442-1-git-send-email-andi.shyti@samsung.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
- Andi Shyti <andi.shyti@samsung.com>, linux-spi@vger.kernel.org,
- Jaehoon Chung <jh80.chung@samsung.com>, Andi Shyti <andi@etezian.org>,
- linux-arm-kernel@lists.infradead.org
+Cc: Jaehoon Chung <jh80.chung@samsung.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Andi Shyti <andi.shyti@samsung.com>,
+	Andi Shyti <andi@etezian.org>
 To: Kukjin Kim <kgene@kernel.org>,
- Krzysztof Kozlowski <k.kozlowski@samsung.com>, Mark Brown <broonie@kernel.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+	Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 In-reply-to: <1467081676-8442-1-git-send-email-andi.shyti@samsung.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-To enable/disable the CS line, the driver performs a writel in
-the S3C64XX_SPI_SLAVE_SEL registers. Group the register's
-configuration in a single function.
+The whole function is inside an 'if' statement
+("!is_polling(sdd)").
+
+Check the opposite of that statement at the beginning and exit,
+this way we can have one level less of indentation.
+
+Remove the goto paths as they are redundant.
 
 Signed-off-by: Andi Shyti <andi.shyti@samsung.com>
 ---
- drivers/spi/spi-s3c64xx.c | 36 ++++++++++++++++++++++++++----------
- 1 file changed, 26 insertions(+), 10 deletions(-)
+ drivers/spi/spi-s3c64xx.c | 50 +++++++++++++++++++++--------------------------
+ 1 file changed, 22 insertions(+), 28 deletions(-)
 
 diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 5a76a50..972367d 100644
+index c65a9e6..6d8486f 100644
 --- a/drivers/spi/spi-s3c64xx.c
 +++ b/drivers/spi/spi-s3c64xx.c
-@@ -310,6 +310,28 @@ static void prepare_dma(struct s3c64xx_spi_dma_data *dma,
- 	dma_async_issue_pending(dma->ch);
+@@ -341,38 +341,32 @@ static int s3c64xx_spi_prepare_transfer(struct spi_master *spi)
+ 	dma_filter_fn filter = sdd->cntrlr_info->filter;
+ 	struct device *dev = &sdd->pdev->dev;
+ 	dma_cap_mask_t mask;
+-	int ret;
+ 
+-	if (!is_polling(sdd)) {
+-		dma_cap_zero(mask);
+-		dma_cap_set(DMA_SLAVE, mask);
+-
+-		/* Acquire DMA channels */
+-		sdd->rx_dma.ch = dma_request_slave_channel_compat(mask, filter,
+-				   sdd->cntrlr_info->dma_rx, dev, "rx");
+-		if (!sdd->rx_dma.ch) {
+-			dev_err(dev, "Failed to get RX DMA channel\n");
+-			ret = -EBUSY;
+-			goto out;
+-		}
+-		spi->dma_rx = sdd->rx_dma.ch;
+-
+-		sdd->tx_dma.ch = dma_request_slave_channel_compat(mask, filter,
+-				   sdd->cntrlr_info->dma_tx, dev, "tx");
+-		if (!sdd->tx_dma.ch) {
+-			dev_err(dev, "Failed to get TX DMA channel\n");
+-			ret = -EBUSY;
+-			goto out_rx;
+-		}
+-		spi->dma_tx = sdd->tx_dma.ch;
++	if (is_polling(sdd))
++		return 0;
++
++	dma_cap_zero(mask);
++	dma_cap_set(DMA_SLAVE, mask);
++
++	/* Acquire DMA channels */
++	sdd->rx_dma.ch = dma_request_slave_channel_compat(mask, filter,
++			   sdd->cntrlr_info->dma_rx, dev, "rx");
++	if (!sdd->rx_dma.ch) {
++		dev_err(dev, "Failed to get RX DMA channel\n");
++		return -EBUSY;
+ 	}
++	spi->dma_rx = sdd->rx_dma.ch;
+ 
+-	return 0;
++	sdd->tx_dma.ch = dma_request_slave_channel_compat(mask, filter,
++			   sdd->cntrlr_info->dma_tx, dev, "tx");
++	if (!sdd->tx_dma.ch) {
++		dev_err(dev, "Failed to get TX DMA channel\n");
++		dma_release_channel(sdd->rx_dma.ch);
++		return -EBUSY;
++	}
++	spi->dma_tx = sdd->tx_dma.ch;
+ 
+-out_rx:
+-	dma_release_channel(sdd->rx_dma.ch);
+-out:
+-	return ret;
++	return 0;
  }
  
-+static void s3c64xx_spi_set_cs(struct spi_device *spi, bool enable)
-+{
-+	struct s3c64xx_spi_driver_data *sdd =
-+					spi_master_get_devdata(spi->master);
-+
-+	if (enable) {
-+		if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_CS_AUTO)) {
-+			writel(0, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
-+		} else {
-+			u32 ssel = readl(sdd->regs + S3C64XX_SPI_SLAVE_SEL);
-+
-+			ssel |= (S3C64XX_SPI_SLAVE_AUTO |
-+						S3C64XX_SPI_SLAVE_NSC_CNT_2);
-+			writel(ssel, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
-+		}
-+	} else {
-+		if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_CS_AUTO))
-+		writel(S3C64XX_SPI_SLAVE_SIG_INACT,
-+		sdd->regs + S3C64XX_SPI_SLAVE_SEL);
-+	}
-+}
-+
- static int s3c64xx_spi_prepare_transfer(struct spi_master *spi)
- {
- 	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(spi);
-@@ -706,12 +728,7 @@ static int s3c64xx_spi_transfer_one(struct spi_master *master,
- 	enable_datapath(sdd, spi, xfer, use_dma);
- 
- 	/* Start the signals */
--	if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_CS_AUTO))
--		writel(0, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
--	else
--		writel(readl(sdd->regs + S3C64XX_SPI_SLAVE_SEL)
--			| S3C64XX_SPI_SLAVE_AUTO | S3C64XX_SPI_SLAVE_NSC_CNT_2,
--			sdd->regs + S3C64XX_SPI_SLAVE_SEL);
-+	s3c64xx_spi_set_cs(spi, true);
- 
- 	spin_unlock_irqrestore(&sdd->lock, flags);
- 
-@@ -861,16 +878,15 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
- 
- 	pm_runtime_mark_last_busy(&sdd->pdev->dev);
- 	pm_runtime_put_autosuspend(&sdd->pdev->dev);
--	if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_CS_AUTO))
--		writel(S3C64XX_SPI_SLAVE_SIG_INACT, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
-+	s3c64xx_spi_set_cs(spi, false);
-+
- 	return 0;
- 
- setup_exit:
- 	pm_runtime_mark_last_busy(&sdd->pdev->dev);
- 	pm_runtime_put_autosuspend(&sdd->pdev->dev);
- 	/* setup() returns with device de-selected */
--	if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_CS_AUTO))
--		writel(S3C64XX_SPI_SLAVE_SIG_INACT, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
-+	s3c64xx_spi_set_cs(spi, false);
- 
- 	if (gpio_is_valid(spi->cs_gpio))
- 		gpio_free(spi->cs_gpio);
+ static int s3c64xx_spi_unprepare_transfer(struct spi_master *spi)
 -- 
 2.8.1

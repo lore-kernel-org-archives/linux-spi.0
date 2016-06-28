@@ -1,19 +1,19 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: Fix typo in devicetree/bindings/spi" to the spi tree
-Date: Tue, 28 Jun 2016 20:36:33 +0100
-Message-ID: <E1bHyoD-0004ZZ-Be@debutante>
-References: <20160628193333.3971-1-standby24x7@gmail.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, balbi-l0cyMroinI0@public.gmane.org
-To: Masanari Iida <standby24x7-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160628193333.3971-1-standby24x7-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: loopback-test: fix spelling mistake: "missmatch" -> "mismatch"" to the spi tree
+Date: Tue, 28 Jun 2016 20:36:36 +0100
+Message-ID: <E1bHyoG-0004aS-CG@debutante>
+References: <1467116108-8047-1-git-send-email-colin.king@canonical.com>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Colin Ian King <colin.king@canonical.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1467116108-8047-1-git-send-email-colin.king@canonical.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: Fix typo in devicetree/bindings/spi
+   spi: loopback-test: fix spelling mistake: "missmatch" -> "mismatch"
 
 has been applied to the spi tree at
 
@@ -38,51 +38,32 @@ to this mail.
 Thanks,
 Mark
 
->From 0fb7620fba7feb977a5138f8d7f6b42514f81ea9 Mon Sep 17 00:00:00 2001
-From: Masanari Iida <standby24x7-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Wed, 29 Jun 2016 04:33:33 +0900
-Subject: [PATCH] spi: Fix typo in devicetree/bindings/spi
+>From b7ddfb9f496e23eafccd1d630f25b68f105e0ee8 Mon Sep 17 00:00:00 2001
+From: Colin Ian King <colin.king@canonical.com>
+Date: Tue, 28 Jun 2016 13:15:08 +0100
+Subject: [PATCH] spi: loopback-test: fix spelling mistake: "missmatch" ->
+ "mismatch"
 
-This patch fix spelling typos found in
-Documentation/devicetree/bingings/spi.
+trivial fix to spelling mistake in dev_err message
 
-Signed-off-by: Masanari Iida <standby24x7-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- Documentation/devicetree/bindings/spi/spi-davinci.txt | 2 +-
- Documentation/devicetree/bindings/spi/ti_qspi.txt     | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-loopback-test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-davinci.txt b/Documentation/devicetree/bindings/spi/spi-davinci.txt
-index d1e914adcf6e..f5916c92fe91 100644
---- a/Documentation/devicetree/bindings/spi/spi-davinci.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-davinci.txt
-@@ -21,7 +21,7 @@ Required properties:
- 	IP to the interrupt controller within the SoC. Possible values
- 	are 0 and 1. Manual says one of the two possible interrupt
- 	lines can be tied to the interrupt controller. Set this
--	based on a specifc SoC configuration.
-+	based on a specific SoC configuration.
- - interrupts: interrupt number mapped to CPU.
- - clocks: spi clk phandle
+diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
+index cf4bb36bee25..faa1b133b0f1 100644
+--- a/drivers/spi/spi-loopback-test.c
++++ b/drivers/spi/spi-loopback-test.c
+@@ -536,7 +536,7 @@ static int spi_test_check_loopback_result(struct spi_device *spi,
  
-diff --git a/Documentation/devicetree/bindings/spi/ti_qspi.txt b/Documentation/devicetree/bindings/spi/ti_qspi.txt
-index 50b14f6b53a3..e65fde4a7388 100644
---- a/Documentation/devicetree/bindings/spi/ti_qspi.txt
-+++ b/Documentation/devicetree/bindings/spi/ti_qspi.txt
-@@ -20,7 +20,7 @@ Optional properties:
- 		      chipselect register and offset of that register.
+ mismatch_error:
+ 	dev_err(&spi->dev,
+-		"loopback strangeness - transfer missmatch on byte %04zx - expected 0x%02x, but got 0x%02x\n",
++		"loopback strangeness - transfer mismatch on byte %04zx - expected 0x%02x, but got 0x%02x\n",
+ 		i, txb, rxb);
  
- NOTE: TI QSPI controller requires different pinmux and IODelay
--paramaters for Mode-0 and Mode-3 operations, which needs to be set up by
-+parameters for Mode-0 and Mode-3 operations, which needs to be set up by
- the bootloader (U-Boot). Default configuration only supports Mode-0
- operation. Hence, "spi-cpol" and "spi-cpha" DT properties cannot be
- specified in the slave nodes of TI QSPI controller without appropriate
+ 	return -EINVAL;
 -- 
 2.8.1
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

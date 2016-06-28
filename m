@@ -1,53 +1,46 @@
-From: Masanari Iida <standby24x7-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] Doc: spi: Fix typo in devicetree/bindings/spi
-Date: Wed, 29 Jun 2016 04:33:33 +0900
-Message-ID: <20160628193333.3971-1-standby24x7@gmail.com>
-Cc: Masanari Iida <standby24x7-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, balbi-l0cyMroinI0@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] Doc: spi: Fix typo in devicetree/bindings/spi
+Date: Tue, 28 Jun 2016 20:36:15 +0100
+Message-ID: <20160628193615.GB17217@sirena.org.uk>
+References: <20160628193333.3971-1-standby24x7@gmail.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="gz4FNQG/2iJjJcgR"
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	balbi@ti.com
+To: Masanari Iida <standby24x7@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20160628193333.3971-1-standby24x7@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-This patch fix spelling typos found in
-Documentation/devicetree/bingings/spi.
 
-Signed-off-by: Masanari Iida <standby24x7-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- Documentation/devicetree/bindings/spi/spi-davinci.txt | 2 +-
- Documentation/devicetree/bindings/spi/ti_qspi.txt     | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+--gz4FNQG/2iJjJcgR
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-davinci.txt b/Documentation/devicetree/bindings/spi/spi-davinci.txt
-index d1e914adcf6e..f5916c92fe91 100644
---- a/Documentation/devicetree/bindings/spi/spi-davinci.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-davinci.txt
-@@ -21,7 +21,7 @@ Required properties:
- 	IP to the interrupt controller within the SoC. Possible values
- 	are 0 and 1. Manual says one of the two possible interrupt
- 	lines can be tied to the interrupt controller. Set this
--	based on a specifc SoC configuration.
-+	based on a specific SoC configuration.
- - interrupts: interrupt number mapped to CPU.
- - clocks: spi clk phandle
- 
-diff --git a/Documentation/devicetree/bindings/spi/ti_qspi.txt b/Documentation/devicetree/bindings/spi/ti_qspi.txt
-index 50b14f6b53a3..e65fde4a7388 100644
---- a/Documentation/devicetree/bindings/spi/ti_qspi.txt
-+++ b/Documentation/devicetree/bindings/spi/ti_qspi.txt
-@@ -20,7 +20,7 @@ Optional properties:
- 		      chipselect register and offset of that register.
- 
- NOTE: TI QSPI controller requires different pinmux and IODelay
--paramaters for Mode-0 and Mode-3 operations, which needs to be set up by
-+parameters for Mode-0 and Mode-3 operations, which needs to be set up by
- the bootloader (U-Boot). Default configuration only supports Mode-0
- operation. Hence, "spi-cpol" and "spi-cpha" DT properties cannot be
- specified in the slave nodes of TI QSPI controller without appropriate
--- 
-2.9.0.137.gcf4c2cf
+On Wed, Jun 29, 2016 at 04:33:33AM +0900, Masanari Iida wrote:
+> This patch fix spelling typos found in
+> Documentation/devicetree/bingings/spi.
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Please submit patches using subject lines reflecting the style for the
+subsystem.  This makes it easier for people to identify relevant
+patches.
+
+--gz4FNQG/2iJjJcgR
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJXctGjAAoJECTWi3JdVIfQdtkH/AnRRcW4LURkb8JqS5NqHwVO
+bjh5gKpjZBGYbxAgPlZL7I7Du/ppB/0sEw3Fhdm+I2Y3jEOYEtsLT14MNWYEGLOJ
+5sB1xS1aFce51Lv/cx6VabCs1nAGwJfDXkWVdsDBflYSAkJRM0jk+wXYSaqtwdRd
+/Ko3BFCkDybnIDQ4lzVBJhHVRwK45WpmP5emvaUKy8mF1GuubOOSTcWUZk0dPht1
+sBaTJXTvfpUuiIpvWR6bHwqhcBH73NYm6egl6PWbC6Bp1XaXIbkKQNPPkVNryvQ5
+EjPT/e+Pw20DtLHodqCudbjvMVu8zlmMjCRHHPBVl03Ql4a4PW1WKQ5owZ4jYcc=
+=5JbS
+-----END PGP SIGNATURE-----
+
+--gz4FNQG/2iJjJcgR--

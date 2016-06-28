@@ -1,104 +1,54 @@
-From: Andi Shyti <andi.shyti@samsung.com>
-Subject: [PATCH v2 2/5] spi: s3c64xx: consider the case when the CS line is not
- connected
-Date: Tue, 28 Jun 2016 11:41:12 +0900
-Message-ID: <1467081676-8442-3-git-send-email-andi.shyti@samsung.com>
-References: <1467081676-8442-1-git-send-email-andi.shyti@samsung.com>
+From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [PATCH RESEND] spi: spidev: Allow matching DT compatible strings
+ from ACPI
+Date: Tue, 28 Jun 2016 12:22:34 +0300
+Message-ID: <20160628092234.GG1711@lahna.fi.intel.com>
+References: <1467027248-6191-1-git-send-email-mika.westerberg@linux.intel.com>
+ <20160627122448.GU28202@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
- Andi Shyti <andi.shyti@samsung.com>, linux-spi@vger.kernel.org,
- Jaehoon Chung <jh80.chung@samsung.com>, Andi Shyti <andi@etezian.org>,
- linux-arm-kernel@lists.infradead.org
-To: Kukjin Kim <kgene@kernel.org>,
- Krzysztof Kozlowski <k.kozlowski@samsung.com>, Mark Brown <broonie@kernel.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-reply-to: <1467081676-8442-1-git-send-email-andi.shyti@samsung.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20160627122448.GU28202-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-When the CS line is not connected, it is not needed to enable or
-disable the chip selection functionality from the s3c64xx
-devices in order to perform a transfer.
-Set the CS controller logically always enabled already during
-initialization (by writing '0' in the S3C64XX_SPI_SLAVE_SEL
-register) and never disable it.
+On Mon, Jun 27, 2016 at 01:24:48PM +0100, Mark Brown wrote:
+> On Mon, Jun 27, 2016 at 02:34:08PM +0300, Mika Westerberg wrote:
+> 
+> > Allow the same devices to be used in ACPI based systems if they provide
+> > proper DT compatible string.
+> 
+> Please allow a reasonable time for review, especially for an invasive
+> change like this which needs a bunch of research to figure out how
+> sensible the infrastructure to shove DT into ACPI is.
 
-Signed-off-by: Andi Shyti <andi.shyti@samsung.com>
----
- Documentation/devicetree/bindings/spi/spi-samsung.txt | 3 +++
- drivers/spi/spi-s3c64xx.c                             | 9 ++++++++-
- include/linux/platform_data/spi-s3c64xx.h             | 1 +
- 3 files changed, 12 insertions(+), 1 deletion(-)
+Sure.
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-samsung.txt b/Documentation/devicetree/bindings/spi/spi-samsung.txt
-index 6dbdeb3..930bc73 100644
---- a/Documentation/devicetree/bindings/spi/spi-samsung.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-samsung.txt
-@@ -40,6 +40,9 @@ Optional Board Specific Properties:
- 
- - cs-gpios: should specify GPIOs used for chipselects (see spi-bus.txt)
- 
-+- no-cs-readback: the CS line is disconnected, therefore the device should not
-+  operate based on CS signalling.
-+
- SPI Controller specific data in SPI slave nodes:
- 
- - The spi slave nodes should provide the following information which is required
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 972367d..14269b0 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -315,6 +315,9 @@ static void s3c64xx_spi_set_cs(struct spi_device *spi, bool enable)
- 	struct s3c64xx_spi_driver_data *sdd =
- 					spi_master_get_devdata(spi->master);
- 
-+	if (sdd->cntrlr_info->no_cs)
-+		return;
-+
- 	if (enable) {
- 		if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_CS_AUTO)) {
- 			writel(0, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
-@@ -960,7 +963,9 @@ static void s3c64xx_spi_hwinit(struct s3c64xx_spi_driver_data *sdd, int channel)
- 
- 	sdd->cur_speed = 0;
- 
--	if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_CS_AUTO))
-+	if (sci->no_cs)
-+		writel(0, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
-+	else if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_CS_AUTO))
- 		writel(S3C64XX_SPI_SLAVE_SIG_INACT, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
- 
- 	/* Disable Interrupts - we use Polling if not DMA mode */
-@@ -1015,6 +1020,8 @@ static struct s3c64xx_spi_info *s3c64xx_spi_parse_dt(struct device *dev)
- 		sci->num_cs = temp;
- 	}
- 
-+	sci->no_cs = of_property_read_bool(dev->of_node, "broken-cs");
-+
- 	return sci;
- }
- #else
-diff --git a/include/linux/platform_data/spi-s3c64xx.h b/include/linux/platform_data/spi-s3c64xx.h
-index fb5625b..5c1e21c 100644
---- a/include/linux/platform_data/spi-s3c64xx.h
-+++ b/include/linux/platform_data/spi-s3c64xx.h
-@@ -38,6 +38,7 @@ struct s3c64xx_spi_csinfo {
- struct s3c64xx_spi_info {
- 	int src_clk_nr;
- 	int num_cs;
-+	bool no_cs;
- 	int (*cfg_gpio)(void);
- 	dma_filter_fn filter;
- 	void *dma_tx;
--- 
-2.8.1
+Can I ask your opinion regarding an alternative approach to this?
+
+Instead of adding these "pseudo", Linux specific devices to DT or ACPI
+to support raw SPI access, what if we amend spidev a bit:
+
+  - Introduce CONFIG_SPI_SPIDEV_MASTER which is part of spidev.c
+    and can be selected separately.
+
+  - If that option is set we create /dev/spi-<bus_num> for each SPI
+    master.
+
+  - Introduce two new ioctls SPI_IOC_RD/WR_CS which allow setting
+    of chip select.
+
+The /dev/spi-0 then can be used analogous to /dev/i2c-0. You first need
+to program wanted chip select using those new ioctls. Then you can use
+the device as normal spidev (all existing file operations and ioctls
+still work). You can pick another chip select as needed. If there is an
+actual SPI device bound to a chip select, that cannot be used through
+/dev/spi-0.
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

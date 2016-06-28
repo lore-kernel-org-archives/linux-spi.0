@@ -1,65 +1,70 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH RESEND] spi: spidev: Allow matching DT compatible strings
- from ACPI
-Date: Tue, 28 Jun 2016 17:18:22 +0100
-Message-ID: <20160628161822.GQ17217@sirena.org.uk>
-References: <1467027248-6191-1-git-send-email-mika.westerberg@linux.intel.com>
- <20160627122448.GU28202@sirena.org.uk>
- <20160628092234.GG1711@lahna.fi.intel.com>
- <20160628114742.GM17217@sirena.org.uk>
- <20160628143528.GK1711@lahna.fi.intel.com>
- <20160628150752.GO17217@sirena.org.uk>
- <20160628152338.GN1711@lahna.fi.intel.com>
+From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v2 3/3] drivers core: allow id match override when
+ manually binding driver
+Date: Tue, 28 Jun 2016 18:24:58 +0200
+Message-ID: <CAOMqctQbFmWv04idz7G+dPOCg7n-E0AQdhGAyohUDBniKvrP_g@mail.gmail.com>
+References: <cover.1467053363.git.hramrach@gmail.com> <15ff382f699387e2d8f23779db851d0de7e9291e.1467053363.git.hramrach@gmail.com>
+ <20160627190949.GB5111@kroah.com> <CAOMqctQj0ftbOH9dvMPczBPeSFTvDuTKCXgYprYvtcQDYML8Kw@mail.gmail.com>
+ <20160627221259.GA10054@kroah.com> <CAOMqctTQAY0NzTpEqyLyScu8UrSXcF82oLVMM+e2F2WQ225B7A@mail.gmail.com>
+ <20160628155107.GP17217@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="ngPZezdD7QsvFaqQ"
-Cc: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
+	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20160628152338.GN1711-3PARRvDOhMZrdx17CPfAsdBPR1lH4CV8@public.gmane.org>
+In-Reply-To: <20160628155107.GP17217-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On 28 June 2016 at 17:51, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Tue, Jun 28, 2016 at 02:40:41PM +0200, Michal Suchanek wrote:
+>
+>> There is no hardware other than pin header. You are preparing a
+>> factory image for a devboard with a pin header that can be used for
+>> connecting SPI devices. Some devices have fine kernel drivers and for
+>> these you prepare fine overlays. Some devices have fine userspace
+>> drivers and you do NOT want kernel driver for them even if it is
+>> available later on. What compatible do you put in the factory image so
+>> that the user can just connect an external device and run a
+>> corresponding application to use it?
+>
+> The answer is still the same here: if you've got a plug in module you
+> need to load an overlay for that plug in module (see Pantelis' work for
+> mechanisms to do that).  That overlay should describe the hardware in
+> the standard DT fashion.  If the current way to support a given bit of
+> hardware is with a userspace driver then you should add the compatible
+> string for that hardware to spidev or join up the dots to allow that to
+> be done at runtime and then do it at runtime.
 
---ngPZezdD7QsvFaqQ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+No, no, no!
 
-On Tue, Jun 28, 2016 at 06:23:38PM +0300, Mika Westerberg wrote:
-> On Tue, Jun 28, 2016 at 04:07:52PM +0100, Mark Brown wrote:
+This is NOT about loading an overlay. This is about talking on the bus
+without loading an overlay.
 
-> > If that's the case then it's definitely broken - we either always warn
-> > or never warn, neither is good.
+And this is NOT about adding a compatible for the device. Adding
+compatibles for 10 different devices just to use an userspace driver
+for them is ridiculous and nobody will do that. If that really turns
+out necessary anyone will add the compatible for the fist device so
+used and use it for any other device. Which gets us back to generating
+random compatible. Which is even better than registering a compatible
+that makes sense because then it cannot happen that somebody writes a
+kernel driver for your device and you have to unbind it first.
 
-> For DT we warn if the device is used directly (by the node name) as
-> previously. For ACPI we never warn because it is not possible to use the
-> node name directly. We always require use of a proper compatible string.
+>
+> Repeating yourself over and over again is not going to help here, it's
+> just going to make people more annoyed.  Please stop this.
 
-> I don't see how that is broken.
+Then please add something constructive to the debate rather than
+repeating that users have to add compatible for devices used with
+userspace driver. That's ridiculous from usability point of view and
+so will never happen. At best workarounds for kernel obtuseness will
+be used.
 
-So you're saying that it's not possible for ACPI to use anything
-*except* an explicitly listed compatible string to bind?  What we want
-to avoid is any ACPI tables that explicitly list spidev since that's a
-total abstraction failure.
+Thanks
 
---ngPZezdD7QsvFaqQ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJXcqNNAAoJECTWi3JdVIfQNVIH/jv4a1Mj3XgpVbWMoONOsJ3c
-SeFkfMKEHirWJ4tlcku8mDLYCAnDSoaEwpjfDyT/CTFBl0QNSAlhc7xVuF2O+l18
-8/Dapje9F0Auk9ENyD+tLTEpRe5/ASfLz80kCOQVxoyCPdWtUU5KAqbS7HO1xsGy
-otPdnZ//4gA5As9BP5kPYMAO70ZbQXIltq8uyR+KR/pe/8o7judRQ2dCTXqg3Gv1
-DFnlRBxFEKdJq2XGhm9G6gkCLCu3FCKGuwKgP58dnTL+xRePn0Rnj5rF87xBiS+R
-5bEZHnAays8kmK79OklQCAnUjjO9Y6wJjje17vxK7iNfCMAf7eHtUI+ku+diS24=
-=wOUG
------END PGP SIGNATURE-----
-
---ngPZezdD7QsvFaqQ--
+Michal
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

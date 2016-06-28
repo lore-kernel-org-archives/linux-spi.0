@@ -1,145 +1,65 @@
-From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v2 3/3] drivers core: allow id match override when
- manually binding driver
-Date: Tue, 28 Jun 2016 14:40:41 +0200
-Message-ID: <CAOMqctTQAY0NzTpEqyLyScu8UrSXcF82oLVMM+e2F2WQ225B7A@mail.gmail.com>
-References: <cover.1467053363.git.hramrach@gmail.com> <15ff382f699387e2d8f23779db851d0de7e9291e.1467053363.git.hramrach@gmail.com>
- <20160627190949.GB5111@kroah.com> <CAOMqctQj0ftbOH9dvMPczBPeSFTvDuTKCXgYprYvtcQDYML8Kw@mail.gmail.com>
- <20160627221259.GA10054@kroah.com>
+From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [PATCH RESEND] spi: spidev: Allow matching DT compatible strings
+ from ACPI
+Date: Tue, 28 Jun 2016 17:35:28 +0300
+Message-ID: <20160628143528.GK1711@lahna.fi.intel.com>
+References: <1467027248-6191-1-git-send-email-mika.westerberg@linux.intel.com>
+ <20160627122448.GU28202@sirena.org.uk>
+ <20160628092234.GG1711@lahna.fi.intel.com>
+ <20160628114742.GM17217@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160627221259.GA10054-U8xfFu+wG4EAvxtiuMwx3w@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20160628114742.GM17217-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 27 June 2016 at 22:32, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Mon, Jun 27, 2016 at 09:40:38PM +0200, Michal Suchanek wrote:
->
->> No. It's for buses that have some inherent identification. It's not for
->
->> 1) generate random compatible and stick it in device tree
->
-> Don't generate a random compatible, generate one that accurately
-> describes your hardware.
+On Tue, Jun 28, 2016 at 12:47:42PM +0100, Mark Brown wrote:
+> On Tue, Jun 28, 2016 at 12:22:34PM +0300, Mika Westerberg wrote:
+> > On Mon, Jun 27, 2016 at 01:24:48PM +0100, Mark Brown wrote:
+> 
+> > > Please allow a reasonable time for review, especially for an invasive
+> > > change like this which needs a bunch of research to figure out how
+> > > sensible the infrastructure to shove DT into ACPI is.
+> 
+> > Sure.
+> 
+> The big thing I need to check out here is if this breaks the check for
+> directly listing spidev in DT so we end up with the same abstraction
+> failures that plague DT since people refuse to describe their hardware.
 
-Ok, what compatible do you generate to connect a serial modem or use a
-serial console?
+You are talking about this check, right?
 
-I just want to use the SPI bus and not a compatible.
+        if (spi->dev.of_node && !of_match_device(spidev_dt_ids, &spi->dev)) {
+                dev_err(&spi->dev, "buggy DT: spidev listed directly in DT\n");
+                WARN_ON(spi->dev.of_node &&
+                        !of_match_device(spidev_dt_ids, &spi->dev));
+        } 
 
-There is no hardware other than pin header. You are preparing a
-factory image for a devboard with a pin header that can be used for
-connecting SPI devices. Some devices have fine kernel drivers and for
-these you prepare fine overlays. Some devices have fine userspace
-drivers and you do NOT want kernel driver for them even if it is
-available later on. What compatible do you put in the factory image so
-that the user can just connect an external device and run a
-corresponding application to use it?
+As far as I can tell it should work, with the patch applied, just as it worked
+before. For ACPI there is no possibility to list the node directly in ASL code
+as we always require DT compatible string in _DSD.
 
->
->> also AFAIK new_id is not automagic and not all buses have it.
->
-> Yes, this is the bit I've been trying to prompt you to implement rather
-> than going off doing something broken.
+In other words we never match using name of the node.
 
-The new_id part is also broken. How do you new_id a port that can be
-used to connect a serial modem, serial console, SLIP line, or pretty
-much anything else the user pleases? I'm sure users will be happy if
-you enforce to new_id  any use of a serial port once serial bus is
-done.
+> > The /dev/spi-0 then can be used analogous to /dev/i2c-0. You first need
+> > to program wanted chip select using those new ioctls. Then you can use
+> > the device as normal spidev (all existing file operations and ioctls
+> > still work). You can pick another chip select as needed. If there is an
+> > actual SPI device bound to a chip select, that cannot be used through
+> > /dev/spi-0.
+> 
+> The trouble with this is that unlike I2C using SPI devices involves
+> toggling signals that we don't definitively know are connected to the
+> bus.  It's therefore much less safe than the equivalent thing for DT.
+> If we went the extra step and required that a slave be listed in DT then
+> that is much less of a concern.
 
->
->> So it would have to be implemented on SPI. How? On PCI new_id is a PCI
->> id. What is it on SPI? ACPI PnP id? DT compatible? How do you tell?
->
-> Those sound like sensible ideas.
-
-There is slight problem that SPI bus can have *both* ACPI PnP IDs and
-DT compatibles. so you cannot tell which one it is. Even if you put in
-all the infra to tell if the particular bus uses one or the other it
-still does not solve the basic problem that SPI is generic
-communication bus and users want to just send and receive data on the
-bus.
-
->
->> And why when the bus does not even have IDs?
->
-> Identifiers are just a useful way of describing what the hardware is,
-> the fact that some of them can be read back from hardware isn't terribly
-> important here.
-
-Maybe the fact that some buses are useful for just sending random data
-that the kernel does not understand and has no business meddling with
-is important then.
-
-
-
-On 28 June 2016 at 00:12, Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org> wrote:
-> On Mon, Jun 27, 2016 at 09:40:38PM +0200, Michal Suchanek wrote:
->> On 27 June 2016 at 21:09, Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org> wrote:
->> > On Mon, Jun 27, 2016 at 09:02:32PM +0200, Michal Suchanek wrote:
->> >> The spi bus has no autodetection whatsoever. The 'detection' of the
->> >> device that's suposed to be on the other side completely relies on user
->> >> supplied information coming from devicetree on many platforms. It is
->> >> completely reasonable then to allow the user to supply the information
->> >> at runtime by doing echo 'somedevice' >
->> >> /sys/bus/spi/drivers/somedriver/bind
->> >> This fails if somedriver does not have in its id table compatible of
->> >> somedevice so just skip this check for manual driver binding.
->> >
->> > That's what the new_id file is for, right?
->> >
->>
->> No. It's for buses that have some inherent identification. It's not for
->>
->> 1) generate random compatible and stick it in device tree
->> 2) reboot with new devicetree or load overlay
->> 3) write the random compatible you just generated to new_id file so
->> you can bind drivers to your device
->>
->> You could have saved yourself a lot of hassle just ignoring the ID completely.
->
-> Um, all devices have to have an "id" the driver core enforces this.
->
-> Now your bus can ignore them, or do whatever it wants, but really, you
-> can't just try to wave them away.
-
-What id has a serial modem or a serial console?
-
-None as far as I can tell. You just connect a serial cable (or not )
-and write random data to the port. The protocol is defined by
-userspace application and the kernel has no business telling it what
-it should be like.
-
->
->> Do you have to go through that to connect a different modem to your
->> serial port?
->
-> As has been said numerous times, there is no serial port bus, but people
-> are working on it.
->
-> And no, you don't, and serial _devices_ work just fine with the driver
-> model.
-
-Then how does the serial bus work so that you do not have to new_id a
-modem or serial console and it just works as if there was no bus?
-
->
->> Or even a new i2c device to i2c bus?
->
-> If you have an unknown i2c device, yes you do.
-
-No, you don't. You can just talk to any devices you like from
-userspace so long as the address is not used by a kernel driver.
-
-Thanks
-
-Michal
+OK, I see.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

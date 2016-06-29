@@ -1,103 +1,77 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH/RFC 1/6] spi: Document DT bindings for SPI controllers in
- slave mode
-Date: Wed, 29 Jun 2016 11:30:32 +0200
-Message-ID: <CAMuHMdV2PO8oTtWbUCNNohoAXP8Z=uNKPASWwkutZpEytydDew@mail.gmail.com>
-References: <1466602929-4191-1-git-send-email-geert+renesas@glider.be>
- <1466602929-4191-2-git-send-email-geert+renesas@glider.be> <20160624170649.GA22305@rob-hp-laptop>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH RESEND] spi: spidev: Allow matching DT compatible strings
+ from ACPI
+Date: Wed, 29 Jun 2016 17:21:27 +0100
+Message-ID: <20160629162127.GA6247@sirena.org.uk>
+References: <1467027248-6191-1-git-send-email-mika.westerberg@linux.intel.com>
+ <20160627122448.GU28202@sirena.org.uk>
+ <20160628092234.GG1711@lahna.fi.intel.com>
+ <20160628114742.GM17217@sirena.org.uk>
+ <20160628143528.GK1711@lahna.fi.intel.com>
+ <20160628150752.GO17217@sirena.org.uk>
+ <20160628152338.GN1711@lahna.fi.intel.com>
+ <20160628161822.GQ17217@sirena.org.uk>
+ <20160629091304.GP1711@lahna.fi.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
-	Mark Brown <broonie@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Hisashi Nakamura <hisashi.nakamura.ak@renesas.com>,
-	Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Rob Herring <robh@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20160624170649.GA22305@rob-hp-laptop>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="yrj/dFKFPuw6o+aM"
+Cc: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20160629091304.GP1711-3PARRvDOhMZrdx17CPfAsdBPR1lH4CV8@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Rob,
 
-On Fri, Jun 24, 2016 at 7:06 PM, Rob Herring <robh@kernel.org> wrote:
-> On Wed, Jun 22, 2016 at 03:42:04PM +0200, Geert Uytterhoeven wrote:
->> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
->> ---
->>  Documentation/devicetree/bindings/spi/spi-bus.txt | 31 ++++++++++++++---------
->>  1 file changed, 19 insertions(+), 12 deletions(-)
->>
->> diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
->> index 17822860cb98c34d..bcd024e0bb9e0009 100644
->> --- a/Documentation/devicetree/bindings/spi/spi-bus.txt
->> +++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
->> @@ -1,17 +1,23 @@
->>  SPI (Serial Peripheral Interface) busses
->>
->> -SPI busses can be described with a node for the SPI master device
->> -and a set of child nodes for each SPI slave on the bus.  For this
->> -discussion, it is assumed that the system's SPI controller is in
->> -SPI master mode.  This binding does not describe SPI controllers
->> -in slave mode.
->> +SPI busses can be described with a node for the SPI controller device
->> +and a set of child nodes for each SPI slave on the bus.  The system's SPI
->> +controller may be described for use in SPI master mode or in SPI slave mode,
->> +but not for both at the same time.
->>
->> -The SPI master node requires the following properties:
->> +The SPI controller node requires the following properties:
->> +- compatible      - name of SPI bus controller following generic names
->> +             recommended practice.
->> +
->> +In master mode, the SPI controller node requires the following additional
->> +properties:
->>  - #address-cells  - number of cells required to define a chip select
->>               address on the SPI bus.
->>  - #size-cells     - should be zero.
->> -- compatible      - name of SPI bus controller following generic names
->> -             recommended practice.
->> +
->> +In slave node, the SPI controller node requires the presence of a child node
->> +named "slave", further following the practices for SPI slave nodes below.
->> +
->
-> I wouldn't create a child node. Just add a property for slave mode and
-> put the timing mode properties in controller node.
+--yrj/dFKFPuw6o+aM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Originally I wanted to just add a "slave" property, too.
-However, not having a child node means you cannot bind a driver for an SPI
-slave handler from DT, as the existing compatible property is meant for the SPI
-slave controller. That's why I went with the child naming rule instead.
+On Wed, Jun 29, 2016 at 12:13:04PM +0300, Mika Westerberg wrote:
+> On Tue, Jun 28, 2016 at 05:18:22PM +0100, Mark Brown wrote:
 
-Not being able to bind a driver from DT could be a good thing, as this could
-be considered software configuration, not hardware description.
+> > So you're saying that it's not possible for ACPI to use anything
+> > *except* an explicitly listed compatible string to bind?  What we want
+> > to avoid is any ACPI tables that explicitly list spidev since that's a
+> > total abstraction failure.
 
-E.g. i2c slave requires binding slave handlers manually, by creating a new
-device on the bus, using the existing mechanism for adding new devices to an
-i2c bus, cfr. Documentation/i2c/slave-interface:
+> That's exactly what I'm saying. We never match using the node name
+> (which is always 32-bit "string" like "SPI0"). For PRP0001 match to
+> succeeed you need to have "compatible" property.
 
-        echo slave-24c02 0x1064 > /sys/bus/i2c/devices/i2c-1/new_device
+> Without the "compatible" property you get a warning from ACPI core:
 
-Alternatively, we could always create an spidev interface for SPI slave
-controllers, but that precludes (or makes it more difficult) binding another
-driver if that is available.
+>   \_SB.SPI1.SPID requires 'compatible' property
 
-This could definitely use some more discussion or feedback... Thoughts?
+> and it will not match anything.
 
-Thanks!
+But can that compatible string be spidev and be matched via the paths DT
+uses while still ensuring that enough of the OF matching code is enabled
+to cause the check to warn?  That's the problem.
 
-Gr{oetje,eeting}s,
+Life would be a lot eaiser if Intel would use DT where it's appropriate,
+or if the OF in ACPI stuff were more transparent and needed fewer
+special cases.
 
-                        Geert
+--yrj/dFKFPuw6o+aM
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJXc/WDAAoJECTWi3JdVIfQlksH/AoLmgaNjpRRIF05+sHpxxm1
+3M2ag8O9MmySYMU+gdZsSUw/hKbi7/Lft21jaqIJE6CYx5O6uX928k39fc2mwEFn
+Zs5bUFQMKA8iD+/LeVLA/VaW++DqWrxlVoE0ocTCy0ifJNv5zIhHC86pu9UMHBSW
+AJloZdCvyVS8cq2Eh79gYcRr4R4vFdCM8R4GsIhqVcyd9RVbH6BcwTHzWgRVXgQN
+W25bOBRTFVF9rNxu2AqLJsN9yM49QKlVEr1dCvBuqCQ1lowx9ImBctyx6giB4YfO
+LHv4HqqE+4Aq2O9NDtPSR9Ym5LQrwEyc6ACKQPiMN0JMXFzNimdcgDl5ZbUGa3M=
+=jXM1
+-----END PGP SIGNATURE-----
+
+--yrj/dFKFPuw6o+aM--
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

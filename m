@@ -1,128 +1,82 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: s3c64xx: group the CS signalling writes in a single function" to the spi tree
-Date: Thu, 30 Jun 2016 13:15:58 +0100
-Message-ID: <E1bIasw-0001FU-Nj@finisterre>
-References: <1466150245-2648-3-git-send-email-andi.shyti@samsung.com>
-Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-	Kukjin Kim <kgene@kernel.org>,
-	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, Andi Shyti <andi@etezian.org>
-To: Andi Shyti <andi.shyti@samsung.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1466150245-2648-3-git-send-email-andi.shyti@samsung.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH RESEND] spi: spidev: Allow matching DT compatible strings
+ from ACPI
+Date: Wed, 29 Jun 2016 20:20:59 +0100
+Message-ID: <20160629192059.GV6247@sirena.org.uk>
+References: <20160628114742.GM17217@sirena.org.uk>
+ <20160628143528.GK1711@lahna.fi.intel.com>
+ <20160628150752.GO17217@sirena.org.uk>
+ <20160628152338.GN1711@lahna.fi.intel.com>
+ <20160628161822.GQ17217@sirena.org.uk>
+ <20160629091304.GP1711@lahna.fi.intel.com>
+ <20160629162127.GA6247@sirena.org.uk>
+ <20160629163420.GC1711@lahna.fi.intel.com>
+ <20160629183101.GN6247@sirena.org.uk>
+ <20160629185155.GG1711@lahna.fi.intel.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="4HoONH8zr3Mj5MZN"
+Cc: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20160629185155.GG1711-3PARRvDOhMZrdx17CPfAsdBPR1lH4CV8@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The patch
 
-   spi: s3c64xx: group the CS signalling writes in a single function
+--4HoONH8zr3Mj5MZN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-has been applied to the spi tree at
+On Wed, Jun 29, 2016 at 09:51:55PM +0300, Mika Westerberg wrote:
+> On Wed, Jun 29, 2016 at 07:31:01PM +0100, Mark Brown wrote:
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+> > And we're *sure* that's going to be maintained?  People do use the
+> > fallback matching that DT does, I don't trust the ACPI maintainers not
+> > to do the same thing.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+> That fallback matching does not even work in ACPI like I told you
+> already. We have no plans to do anything like that either. That's the
+> reason why we complain if there is PRP0001 without compatible string.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+No, you're completely missing the point here.  The problem is someone
+using something like linux,spidev as a compatible string and going into
+fallback matching on SPI bus IDs rather than compatible strings.  I just
+don't have confidence that someone isn't going to try to add that
+fallback path given that it's used for DT.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+> > Right, but rather than just define a translation from ACPI to DT and use
+> > the DT code paths in their entirety for the relevant nodes what's
+> > happening is that there's a shim layer between ACPI and DT which sort of
+> > emulates bits of the DT interfaces but not quite and can lead to
+> > surprises.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+> Maybe but currently it works fine. And if problems are found they will
+> be fixed as usual.
 
-Thanks,
-Mark
+I'm worried that the reason it's working fine may be that there is very
+little usage, and that there may be more gotchas like we're already
+seeing lurking about.
 
->From aa4964c4eb3ed38666023bcb805403cb7cf2af63 Mon Sep 17 00:00:00 2001
-From: Andi Shyti <andi.shyti@samsung.com>
-Date: Tue, 28 Jun 2016 11:41:11 +0900
-Subject: [PATCH] spi: s3c64xx: group the CS signalling writes in a single
- function
+--4HoONH8zr3Mj5MZN
+Content-Type: application/pgp-signature; name="signature.asc"
 
-To enable/disable the CS line, the driver performs a writel in
-the S3C64XX_SPI_SLAVE_SEL registers. Group the register's
-configuration in a single function.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-Signed-off-by: Andi Shyti <andi.shyti@samsung.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-s3c64xx.c | 36 ++++++++++++++++++++++++++----------
- 1 file changed, 26 insertions(+), 10 deletions(-)
+iQEcBAEBCAAGBQJXdB+aAAoJECTWi3JdVIfQULwH/iCyf4gscKdD1QkyGcjGPx23
++JlTJ2R0R3Lx26GjQIUmNrsktuuNq7vewcVJMxOQ1RgUqY7+6ctJ1qu4dJGnKyoB
+TcHHzcJBaGc4oYBP5efikNogu+AF+oCO2Xef4wq/BiwRr/PDHykBiGcCxyc6XoFE
+HDa0jg1WKWbIss2YvUX5/woEsaTyy8/b6XkpZhL2zMMb9c7MB4TC2Yorb+Sf/416
+0hb6hFLSiX8T8pc7vCcyNYJvJOOxE9Cy/38dqWc/EcRvCmHThVPYOjprN/VqGf1H
+1ClLxCKfdikMRUXAN1jCRSkI5HYLVOySF0ueaIJR0v44C3biJB5E/9WjIYJMCeA=
+=Bd56
+-----END PGP SIGNATURE-----
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 5a76a50063b5..972367d5c7f2 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -310,6 +310,28 @@ static void prepare_dma(struct s3c64xx_spi_dma_data *dma,
- 	dma_async_issue_pending(dma->ch);
- }
- 
-+static void s3c64xx_spi_set_cs(struct spi_device *spi, bool enable)
-+{
-+	struct s3c64xx_spi_driver_data *sdd =
-+					spi_master_get_devdata(spi->master);
-+
-+	if (enable) {
-+		if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_CS_AUTO)) {
-+			writel(0, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
-+		} else {
-+			u32 ssel = readl(sdd->regs + S3C64XX_SPI_SLAVE_SEL);
-+
-+			ssel |= (S3C64XX_SPI_SLAVE_AUTO |
-+						S3C64XX_SPI_SLAVE_NSC_CNT_2);
-+			writel(ssel, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
-+		}
-+	} else {
-+		if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_CS_AUTO))
-+		writel(S3C64XX_SPI_SLAVE_SIG_INACT,
-+		sdd->regs + S3C64XX_SPI_SLAVE_SEL);
-+	}
-+}
-+
- static int s3c64xx_spi_prepare_transfer(struct spi_master *spi)
- {
- 	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(spi);
-@@ -706,12 +728,7 @@ static int s3c64xx_spi_transfer_one(struct spi_master *master,
- 	enable_datapath(sdd, spi, xfer, use_dma);
- 
- 	/* Start the signals */
--	if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_CS_AUTO))
--		writel(0, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
--	else
--		writel(readl(sdd->regs + S3C64XX_SPI_SLAVE_SEL)
--			| S3C64XX_SPI_SLAVE_AUTO | S3C64XX_SPI_SLAVE_NSC_CNT_2,
--			sdd->regs + S3C64XX_SPI_SLAVE_SEL);
-+	s3c64xx_spi_set_cs(spi, true);
- 
- 	spin_unlock_irqrestore(&sdd->lock, flags);
- 
-@@ -861,16 +878,15 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
- 
- 	pm_runtime_mark_last_busy(&sdd->pdev->dev);
- 	pm_runtime_put_autosuspend(&sdd->pdev->dev);
--	if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_CS_AUTO))
--		writel(S3C64XX_SPI_SLAVE_SIG_INACT, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
-+	s3c64xx_spi_set_cs(spi, false);
-+
- 	return 0;
- 
- setup_exit:
- 	pm_runtime_mark_last_busy(&sdd->pdev->dev);
- 	pm_runtime_put_autosuspend(&sdd->pdev->dev);
- 	/* setup() returns with device de-selected */
--	if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_CS_AUTO))
--		writel(S3C64XX_SPI_SLAVE_SIG_INACT, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
-+	s3c64xx_spi_set_cs(spi, false);
- 
- 	if (gpio_is_valid(spi->cs_gpio))
- 		gpio_free(spi->cs_gpio);
--- 
-2.8.1
+--4HoONH8zr3Mj5MZN--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

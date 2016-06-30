@@ -1,64 +1,162 @@
-From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [PATCH RESEND] spi: spidev: Allow matching DT compatible strings
- from ACPI
-Date: Wed, 29 Jun 2016 21:51:55 +0300
-Message-ID: <20160629185155.GG1711@lahna.fi.intel.com>
-References: <20160628092234.GG1711@lahna.fi.intel.com>
- <20160628114742.GM17217@sirena.org.uk>
- <20160628143528.GK1711@lahna.fi.intel.com>
- <20160628150752.GO17217@sirena.org.uk>
- <20160628152338.GN1711@lahna.fi.intel.com>
- <20160628161822.GQ17217@sirena.org.uk>
- <20160629091304.GP1711@lahna.fi.intel.com>
- <20160629162127.GA6247@sirena.org.uk>
- <20160629163420.GC1711@lahna.fi.intel.com>
- <20160629183101.GN6247@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: apronin-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org
+Subject: [PATCH 1/4] spi: Add option to wake a device by toggling CS
+Date: Wed, 29 Jun 2016 20:54:24 -0700
+Message-ID: <1467258867-117727-1-git-send-email-apronin@chromium.org>
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Andrey Pronin <apronin-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20160629183101.GN6247-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Jun 29, 2016 at 07:31:01PM +0100, Mark Brown wrote:
-> On Wed, Jun 29, 2016 at 07:34:20PM +0300, Mika Westerberg wrote:
-> > On Wed, Jun 29, 2016 at 05:21:27PM +0100, Mark Brown wrote:
-> 
-> > > But can that compatible string be spidev and be matched via the paths DT
-> > > uses while still ensuring that enough of the OF matching code is enabled
-> > > to cause the check to warn?  That's the problem.
-> 
-> > No it can't. The match is done in ACPI code not in DT code. See
-> > drivers/acpi/bus.c::acpi_of_match_device().
-> 
-> And we're *sure* that's going to be maintained?  People do use the
-> fallback matching that DT does, I don't trust the ACPI maintainers not
-> to do the same thing.
+From: Andrey Pronin <apronin-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 
-That fallback matching does not even work in ACPI like I told you
-already. We have no plans to do anything like that either. That's the
-reason why we complain if there is PRP0001 without compatible string.
+Some SPI devices may go to sleep after a period of inactivity
+on SPI. For such devices, if enough time has passed since the
+last SPI transaction, toggle CS and wait for the device to
+start before communicating with it.
 
-> > > Life would be a lot eaiser if Intel would use DT where it's appropriate,
-> > > or if the OF in ACPI stuff were more transparent and needed fewer
-> > > special cases.
-> 
-> > I don't get this. We added PRP0001 and properties because then we can
-> > reuse DT bindings in ACPI and thus there is no need to reinvent all
-> > these things for ACPI.
-> 
-> Right, but rather than just define a translation from ACPI to DT and use
-> the DT code paths in their entirety for the relevant nodes what's
-> happening is that there's a shim layer between ACPI and DT which sort of
-> emulates bits of the DT interfaces but not quite and can lead to
-> surprises.
+Signed-off-by: Andrey Pronin <apronin-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+---
+ drivers/spi/spi.c       | 65 +++++++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/spi/spi.h | 17 +++++++++++++
+ 2 files changed, 82 insertions(+)
 
-Maybe but currently it works fine. And if problems are found they will
-be fixed as usual.
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 77e6e45..c51c864 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -700,6 +700,20 @@ static void spi_set_cs(struct spi_device *spi, bool enable)
+ 		spi->master->set_cs(spi, !enable);
+ }
+ 
++static void spi_cs_wake_timer_func(unsigned long arg)
++{
++	struct spi_device *spi = (struct spi_device *)arg;
++
++	spi->cs_wake_needed = true;
++}
++
++static void spi_reset_cs_wake_timer(struct spi_device *spi)
++{
++	spi->cs_wake_needed = false;
++	mod_timer(&spi->cs_wake_timer,
++		  jiffies + spi->cs_sleep_jiffies);
++}
++
+ #ifdef CONFIG_HAS_DMA
+ static int spi_map_buf(struct spi_master *master, struct device *dev,
+ 		       struct sg_table *sgt, void *buf, size_t len,
+@@ -948,6 +962,15 @@ static int spi_transfer_one_message(struct spi_master *master,
+ 	struct spi_statistics *statm = &master->statistics;
+ 	struct spi_statistics *stats = &msg->spi->statistics;
+ 
++	if (msg->spi->cs_wake_after_sleep && msg->spi->cs_wake_needed) {
++		dev_info(&msg->spi->dev, "waking after possible sleep\n");
++		spi_set_cs(msg->spi, true);
++		mdelay(1);
++		spi_set_cs(msg->spi, false);
++		msleep(msg->spi->cs_wake_duration);
++		spi_reset_cs_wake_timer(msg->spi);
++	}
++
+ 	spi_set_cs(msg->spi, true);
+ 
+ 	SPI_STATISTICS_INCREMENT_FIELD(statm, messages);
+@@ -1024,6 +1047,9 @@ out:
+ 	if (ret != 0 || !keep_cs)
+ 		spi_set_cs(msg->spi, false);
+ 
++	if (msg->spi->cs_wake_after_sleep && !ret)
++		spi_reset_cs_wake_timer(msg->spi);
++
+ 	if (msg->status == -EINPROGRESS)
+ 		msg->status = ret;
+ 
+@@ -1551,6 +1577,45 @@ of_register_spi_device(struct spi_master *master, struct device_node *nc)
+ 	}
+ 	spi->max_speed_hz = value;
+ 
++	/* Do we need to assert CS to wake the device after sleep */
++	spi->cs_wake_after_sleep =
++		of_property_read_bool(nc, "cs-wake-after-sleep");
++	if (spi->cs_wake_after_sleep) {
++		dev_info(&master->dev, "cs-wake-after-sleep enabled\n");
++
++		/* After what delay device goes to sleep */
++		rc = of_property_read_u32(nc, "cs-sleep-delay", &value);
++		if (rc) {
++			dev_err(&master->dev,
++				"%s has no valid 'cs-sleep-delay' property (%d)\n",
++				nc->full_name, rc);
++			goto err_out;
++		}
++		spi->cs_sleep_jiffies = value * HZ / 1000; /* jiffies */
++
++		/* How long to wait after waking */
++		rc = of_property_read_u32(nc, "cs-wake-duration", &value);
++		if (rc) {
++			dev_err(&master->dev,
++				"%s has no valid 'cs-wake-duration' property (%d)\n",
++				nc->full_name, rc);
++			goto err_out;
++		}
++		spi->cs_wake_duration = value; /* msec */
++
++		/* Wake before accessing for the 1st time */
++		spi->cs_wake_needed = true;
++		init_timer(&spi->cs_wake_timer);
++		spi->cs_wake_timer.data = (unsigned long)spi;
++		spi->cs_wake_timer.function = spi_cs_wake_timer_func;
++	}
++
++	/* Should there be a delay before each transfer */
++	spi->xfer_delay = 0;
++	of_property_read_u32(nc, "xfer-delay", &spi->xfer_delay);
++	if (spi->xfer_delay)
++		dev_info(&master->dev, "xfer-delay = %u\n", spi->xfer_delay);
++
+ 	/* Store a pointer to the node in the device structure */
+ 	of_node_get(nc);
+ 	spi->dev.of_node = nc;
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 1f03483..4b06ba6 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -126,6 +126,17 @@ void spi_statistics_add_transfer_stats(struct spi_statistics *stats,
+  * @cs_gpio: gpio number of the chipselect line (optional, -ENOENT when
+  *	when not using a GPIO line)
+  *
++ * @cs_wake_after_sleep: Briefly toggle CS before talking to a device
++ *	if it could go to sleep.
++ * @cs_sleep_jiffies: Delay after which a device may go to sleep if there
++ *	was no SPI activity for it (jiffies).
++ * @cs_wake_duration: Delay after waking the device by toggling CS before
++ *	it is ready (msec).
++ * @cs_wake_needed: Is the wake needed (cs_sleep_jiffies passed since
++ *	the last SPI transaction).
++ * @cs_wake_timer: Timer measuring the delay before the device goes to
++ *	sleep after the last SPI transaction.
++ *
+  * @statistics: statistics for the spi_device
+  *
+  * A @spi_device is used to interchange data between an SPI slave
+@@ -166,6 +177,12 @@ struct spi_device {
+ 	char			modalias[SPI_NAME_SIZE];
+ 	int			cs_gpio;	/* chip select gpio */
+ 
++	bool			cs_wake_after_sleep;
++	unsigned long		cs_sleep_jiffies;
++	unsigned long		cs_wake_duration;
++	bool			cs_wake_needed;
++	struct timer_list	cs_wake_timer;
++
+ 	/* the statistics */
+ 	struct spi_statistics	statistics;
+ 
+-- 
+2.6.6
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

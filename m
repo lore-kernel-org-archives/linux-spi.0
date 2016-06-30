@@ -1,178 +1,128 @@
-From: Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v4 6/8] efi: load SSTDs from EFI variables
-Date: Thu, 30 Jun 2016 14:56:35 +0300
-Message-ID: <CAE1zotLvUCtokAWT_8qogUcXuASdjD2K=4LDiE4czrCSeXop=Q@mail.gmail.com>
-References: <1466164336-9508-1-git-send-email-octavian.purdila@intel.com>
- <1466164336-9508-7-git-send-email-octavian.purdila@intel.com> <20160623132237.GG8415@codeblueprint.co.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: "Rafael J . Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
-	Len Brown <lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
-	Joel Becker <jlbec-aKy9MeLSZ9dg9hUCZPvPmw@public.gmane.org>,
-	"linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-efi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c <linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Irina Tirdea <irina.tirdea-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Leonard Crestez <leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-To: Matt Fleming <matt-mF/unelCI9GS6iBeEJttW/XRex20P6io@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160623132237.GG8415-mF/unelCI9GS6iBeEJttW/XRex20P6io@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: s3c64xx: consider the case when the CS line is not connected" to the spi tree
+Date: Thu, 30 Jun 2016 13:15:53 +0100
+Message-ID: <E1bIasr-0001EN-6Z@finisterre>
+References: <1467081676-8442-3-git-send-email-andi.shyti@samsung.com>
+Cc: Mark Brown <broonie@kernel.org>, Kukjin Kim <kgene@kernel.org>,
+	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaehoon Chung <jh80.chung@samsung.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Andi Shyti <andi@etezian.org>
+To: Andi Shyti <andi.shyti@samsung.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1467081676-8442-3-git-send-email-andi.shyti@samsung.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Thu, Jun 23, 2016 at 4:22 PM, Matt Fleming <matt-mF/unelCI9GS6iBeEJttW/XRex20P6io@public.gmane.org> wrote:
+The patch
 
-> On Fri, 17 Jun, at 02:52:14PM, Octavian Purdila wrote:
->> This patch allows SSDTs to be loaded from EFI variables. It works by
->> specifying the EFI variable name containing the SSDT to be loaded. All
->> variables with the same name (regardless of the vendor GUID) will be
->> loaded.
->>
->> Note that we can't use acpi_install_table and we must rely on the
->> dynamic ACPI table loading and bus re-scanning mechanisms. That is
->> because I2C/SPI controllers are initialized earlier then the EFI
->> subsystems and all I2C/SPI ACPI devices are enumerated when the
->> I2C/SPI controllers are initialized.
->>
->> Signed-off-by: Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
->> ---
->>  Documentation/acpi/ssdt-overlays.txt |  67 ++++++++++++++++++++++
->>  Documentation/kernel-parameters.txt  |   7 +++
->>  drivers/firmware/efi/efi.c           | 106 +++++++++++++++++++++++++++++++++++
->>  3 files changed, 180 insertions(+)
->
-> [...]
->
->> @@ -195,6 +197,107 @@ static void generic_ops_unregister(void)
->>       efivars_unregister(&generic_efivars);
->>  }
->>
->> +#if IS_ENABLED(CONFIG_ACPI)
->> +#define EFIVAR_SSDT_NAME_MAX 16
->> +static char efivar_ssdt[EFIVAR_SSDT_NAME_MAX];
->> +static int __init efivar_ssdt_setup(char *str)
->> +{
->> +     if (strlen(str) < sizeof(efivar_ssdt))
->> +             memcpy(efivar_ssdt, str, strlen(str));
->> +     else
->> +             pr_warn("efivar_ssdt: name too long: %s\n", str);
->> +     return 0;
->> +}
->> +__setup("efivar_ssdt=", efivar_ssdt_setup);
->> +
->> +static LIST_HEAD(efivar_ssdts);
->> +
->> +static inline void pr_efivar_name(efi_char16_t *name16)
->> +{
->> +     char name[EFIVAR_SSDT_NAME_MAX];
->> +     int i;
->> +
->> +     for (i = 0; i < EFIVAR_SSDT_NAME_MAX - 1; i++)
->> +             name[i] = name16[i] & 0xFF;
->> +     name[i] = 0;
->> +     pr_cont("%s", name);
->> +}
->
-> Please use the various ucs2_* functions we already have in lib/.
->
+   spi: s3c64xx: consider the case when the CS line is not connected
 
-Okay, after reading the archives regarding UTF8, ucs2, etc. it looks
-like the best thing to do in kernel is to avoid interpreting them. So
-I'll just print the kernel command line parameter and use ucs2_as_utf8
-and memcmp to check if the variable name matches the kernel command
-line.
+has been applied to the spi tree at
 
->> +static __init int efivar_acpi_iter(efi_char16_t *name, efi_guid_t vendor,
->> +                                unsigned long name_size, void *data)
->> +{
->> +     int i;
->> +     int str_len = name_size / sizeof(efi_char16_t);
->> +     struct efivar_entry *entry;
->> +
->> +     if (str_len != strlen(efivar_ssdt) + 1)
->> +             return 0;
->> +
->> +     for (i = 0; i < str_len; i++)
->> +             if ((name[i] & 0xFF) != efivar_ssdt[i])
->> +                     return 0;
->> +
->> +     entry = kzalloc(sizeof(*entry), GFP_KERNEL);
->> +     if (!entry)
->> +             return -ENOMEM;
->> +
->> +     memcpy(entry->var.VariableName, name, name_size);
->> +     memcpy(&entry->var.VendorGuid, &vendor, sizeof(efi_guid_t));
->> +
->> +     efivar_entry_add(entry, &efivar_ssdts);
->> +
->> +     return 0;
->> +}
->> +
->> +static __init int efivar_ssdt_load(void)
->> +{
->> +     struct efivar_entry *i;
->> +     int err;
->> +
->> +     err = efivar_init(efivar_acpi_iter, NULL, true, &efivar_ssdts);
->> +     if (err) {
->> +             pr_err("%s: efivar_init failed: %d\n", __func__, err);
->> +             return err;
->> +     }
->> +
->> +     list_for_each_entry(i, &efivar_ssdts, list) {
->> +             void *data;
->> +             unsigned long size;
->> +
->> +             pr_info("loading SSDT from EFI variable ");
->> +             pr_efivar_name(i->var.VariableName); pr_cont("\n");
->> +
->> +             err = efivar_entry_size(i, &size);
->> +             if (err) {
->> +                     pr_err("failed to get size\n");
->> +                     continue;
->> +             }
->> +
->> +             data = kmalloc(size, GFP_KERNEL);
->> +             if (!data)
->> +                     continue;
->> +
->> +             err = efivar_entry_get(i, NULL, &size, data);
->> +             if (err) {
->> +                     pr_err("failed to get data\n");
->> +                     kfree(data);
->> +                     continue;
->> +             }
->> +
->> +             err = acpi_load_table(data);
->> +             if (err) {
->> +                     pr_err("failed to load table: %d\n", err);
->> +                     kfree(data);
->> +                     continue;
->> +             }
->> +     }
->> +
->
-> Since 'efivar_ssdts' isn't exported to userspace and is never
-> traversed again after its built in efivar_acpi_iter(), can't you just
-> fold the code from the above list_for_each_entry() loop into
-> efivar_acpi_iter()?
->
-> You should be able to call efivar_entry_get() without 'entry' actually
-> being on any list since the list is only used for duplicate variable
-> detection in this case.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-Since commit 1cfd63166 (efi: Merge boolean flag arguments) it is a bit
-hairy to do this. We need to call efivar_init() with duplicates set to
-false to allow passing a  NULL list but in that case the __efivars
-lock is not release when calling the iterator function which means
-that calls like efivar_entry_get from within the iterator function
-will deadlock.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-What seems to work is to call efivar_init() with duplicates set and
-pass a temporary empty list. How does that sound?
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From a92e7c3d82a1313ab1954e5cdfd8f04efdb4ca78 Mon Sep 17 00:00:00 2001
+From: Andi Shyti <andi.shyti@samsung.com>
+Date: Tue, 28 Jun 2016 11:41:12 +0900
+Subject: [PATCH] spi: s3c64xx: consider the case when the CS line is not
+ connected
+
+When the CS line is not connected, it is not needed to enable or
+disable the chip selection functionality from the s3c64xx
+devices in order to perform a transfer.
+Set the CS controller logically always enabled already during
+initialization (by writing '0' in the S3C64XX_SPI_SLAVE_SEL
+register) and never disable it.
+
+Signed-off-by: Andi Shyti <andi.shyti@samsung.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ Documentation/devicetree/bindings/spi/spi-samsung.txt | 3 +++
+ drivers/spi/spi-s3c64xx.c                             | 9 ++++++++-
+ include/linux/platform_data/spi-s3c64xx.h             | 1 +
+ 3 files changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/devicetree/bindings/spi/spi-samsung.txt b/Documentation/devicetree/bindings/spi/spi-samsung.txt
+index 6dbdeb3c361a..930bc7349271 100644
+--- a/Documentation/devicetree/bindings/spi/spi-samsung.txt
++++ b/Documentation/devicetree/bindings/spi/spi-samsung.txt
+@@ -40,6 +40,9 @@ Optional Board Specific Properties:
+ 
+ - cs-gpios: should specify GPIOs used for chipselects (see spi-bus.txt)
+ 
++- no-cs-readback: the CS line is disconnected, therefore the device should not
++  operate based on CS signalling.
++
+ SPI Controller specific data in SPI slave nodes:
+ 
+ - The spi slave nodes should provide the following information which is required
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 972367d5c7f2..14269b07804c 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -315,6 +315,9 @@ static void s3c64xx_spi_set_cs(struct spi_device *spi, bool enable)
+ 	struct s3c64xx_spi_driver_data *sdd =
+ 					spi_master_get_devdata(spi->master);
+ 
++	if (sdd->cntrlr_info->no_cs)
++		return;
++
+ 	if (enable) {
+ 		if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_CS_AUTO)) {
+ 			writel(0, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
+@@ -960,7 +963,9 @@ static void s3c64xx_spi_hwinit(struct s3c64xx_spi_driver_data *sdd, int channel)
+ 
+ 	sdd->cur_speed = 0;
+ 
+-	if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_CS_AUTO))
++	if (sci->no_cs)
++		writel(0, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
++	else if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_CS_AUTO))
+ 		writel(S3C64XX_SPI_SLAVE_SIG_INACT, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
+ 
+ 	/* Disable Interrupts - we use Polling if not DMA mode */
+@@ -1015,6 +1020,8 @@ static struct s3c64xx_spi_info *s3c64xx_spi_parse_dt(struct device *dev)
+ 		sci->num_cs = temp;
+ 	}
+ 
++	sci->no_cs = of_property_read_bool(dev->of_node, "broken-cs");
++
+ 	return sci;
+ }
+ #else
+diff --git a/include/linux/platform_data/spi-s3c64xx.h b/include/linux/platform_data/spi-s3c64xx.h
+index fb5625bcca9a..5c1e21c87270 100644
+--- a/include/linux/platform_data/spi-s3c64xx.h
++++ b/include/linux/platform_data/spi-s3c64xx.h
+@@ -38,6 +38,7 @@ struct s3c64xx_spi_csinfo {
+ struct s3c64xx_spi_info {
+ 	int src_clk_nr;
+ 	int num_cs;
++	bool no_cs;
+ 	int (*cfg_gpio)(void);
+ 	dma_filter_fn filter;
+ 	void *dma_tx;
+-- 
+2.8.1

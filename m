@@ -1,49 +1,73 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH 4/4] spi: Document option to insert delay between transactions
-Date: Thu, 30 Jun 2016 09:12:35 +0200
-Message-ID: <CAMuHMdUBcDUoMok9tkxJzGekkLWA=bya0zHXWqHbGp0BGmeZUg@mail.gmail.com>
-References: <1467258867-117727-1-git-send-email-apronin@chromium.org> <1467258867-117727-4-git-send-email-apronin@chromium.org>
+From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v2 3/3] drivers core: allow id match override when
+ manually binding driver
+Date: Thu, 30 Jun 2016 09:47:32 +0200
+Message-ID: <CAOMqctR-f+dNBiWk8LEqkeYMhpvACjMi8aH3GpHY==RjfANf8Q@mail.gmail.com>
+References: <20160627190949.GB5111@kroah.com> <CAOMqctQj0ftbOH9dvMPczBPeSFTvDuTKCXgYprYvtcQDYML8Kw@mail.gmail.com>
+ <20160627221259.GA10054@kroah.com> <CAOMqctTQAY0NzTpEqyLyScu8UrSXcF82oLVMM+e2F2WQ225B7A@mail.gmail.com>
+ <20160628155107.GP17217@sirena.org.uk> <CAOMqctQbFmWv04idz7G+dPOCg7n-E0AQdhGAyohUDBniKvrP_g@mail.gmail.com>
+ <20160628183825.GS17217@sirena.org.uk> <CAOMqctTNmcg32PFVOZaA99GpFba9GOGOuOqmi3ujzxcHRFZsOA@mail.gmail.com>
+ <20160628205736.GE17217@sirena.org.uk> <CAOMqctS2xGCgfXschxudcAEYq-mcfPDmFS_pTzCuXa0bFBE0NA@mail.gmail.com>
+ <20160629180211.GF6247@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: apronin-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org
+Cc: Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
+	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1467258867-117727-4-git-send-email-apronin-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+In-Reply-To: <20160629180211.GF6247-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-CC devicetree
+On 29 June 2016 at 20:02, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Wed, Jun 29, 2016 at 05:32:48AM +0200, Michal Suchanek wrote:
+>
+>> The other is to get a generic expansion board and jumper wires. Of
+>> course, you will not use all pins of your expansion connector this
+>> way. On the other hand using the remaining pins becomes challenging
+>> because of the jumper wires you just added. You can use some of the
+>> remaining pins as GPIO or add more jumper wires and use some of the
+>> remaining functions of the connector for another expansion board.
+>
+> I'm more than familiar with flying wire systems.  They just aren't a big
+> deal here, this is a very technical audience making systems that aren't
+> going to have their software meaningfully distributed.  Users making
+> flying wire systems really ought to be capable of making the trivial DT
+> changes required for them, and if they just hack something not great up
+> locally that's not really a problem so long as it works for them.
 
-On Thu, Jun 30, 2016 at 5:54 AM,  <apronin-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org> wrote:
-> From: Andrey Pronin <apronin-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
->
-> Some devices may need CS to be deasserted for some time
-> between transactions. Added a new capability to guarantee
-> a delay between SPI transactions for the device.
->
-> Signed-off-by: Andrey Pronin <apronin-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-> ---
->  Documentation/devicetree/bindings/spi/spi-bus.txt | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
-> index 1b7ffd4..87c117a 100644
-> --- a/Documentation/devicetree/bindings/spi/spi-bus.txt
-> +++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
-> @@ -70,6 +70,8 @@ contain the following properties.
->                 sleep if there was no SPI activity (msec).
->  - cs-wake-duration - (optional) Time it takes the device to wake up after
->                 toggling CS if it went to sleep (msec).
-> +- xfer-delay      - (optional) Delay to insert between SPI transactions
-> +               to guarantee that CS is deasserted at least for some time.
->
->  Some SPI controllers and devices support Dual and Quad SPI transfer mode.
->  It allows data in the SPI system to be transferred in 2 wires(DUAL) or 4 wires(QUAD).
-> --
-> 2.6.6
+No. Arduino tutorials made flying wire systems accessible to
+non-technical audience. There are similar tutorials for boards running
+vendor kernels.
+
+Of course somebody with technical skill has to write the tutorial but
+following it requires only understanding of written text - which is
+becoming increasingly rare but is still not uncommon skill.
+
+So to write such tutorial you have to give some steps to follow which
+are reasonably likely to succeed on wide variety of boards and require
+smallest possible changes to the board software.
+
+For mainline this would currently entail
+
+a) loading an overlay that lists spidev directly as compatible and
+joke about obtuseness of the kernel developers that force you to read
+the log spam
+
+b) failing a) decompile your board devicetree, add the spidev
+compatible - apply the overlay manually offline, recompile, and reboot
+
+Adding new_id to spi bus does not simplify the thing at all. You still
+have to modify your devicetree. It will at most remove the log spam.
+
+I can even imagine people listing *all* their devices as compatible on
+single dt node when the board does not ship with kernel patched for
+loading overlays.
+
+Thanks
+
+Michal
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

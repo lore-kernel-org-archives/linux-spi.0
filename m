@@ -1,77 +1,63 @@
-From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [PATCH RESEND] spi: spidev: Allow matching DT compatible strings
- from ACPI
-Date: Thu, 30 Jun 2016 15:49:31 +0300
-Message-ID: <20160630124931.GD23527@lahna.fi.intel.com>
-References: <20160628143528.GK1711@lahna.fi.intel.com>
- <20160628150752.GO17217@sirena.org.uk>
- <20160628152338.GN1711@lahna.fi.intel.com>
- <20160628161822.GQ17217@sirena.org.uk>
- <20160629091304.GP1711@lahna.fi.intel.com>
- <20160629162127.GA6247@sirena.org.uk>
- <20160629163420.GC1711@lahna.fi.intel.com>
- <20160629183101.GN6247@sirena.org.uk>
- <20160629185155.GG1711@lahna.fi.intel.com>
- <20160629192059.GV6247@sirena.org.uk>
+From: Stephen Boyd <sboyd@codeaurora.org>
+Subject: Re: [PATCH 0/6] clk: sti: Add support for critical clocks
+Date: Thu, 30 Jun 2016 12:23:37 -0700
+Message-ID: <20160630192337.GN1521@codeaurora.org>
+References: <20160607111930.10375-1-lee.jones@linaro.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	kernel@stlinux.com, maxime.coquelin@st.com, patrice.chotard@st.com,
+	mturquette@baylibre.com, broonie@kernel.org,
+	linux-clk@vger.kernel.org, linux-spi@vger.kernel.org
+To: Lee Jones <lee.jones@linaro.org>
+Return-path: <linux-clk-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20160629192059.GV6247-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <20160607111930.10375-1-lee.jones@linaro.org>
+Sender: linux-clk-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Wed, Jun 29, 2016 at 08:20:59PM +0100, Mark Brown wrote:
-> On Wed, Jun 29, 2016 at 09:51:55PM +0300, Mika Westerberg wrote:
-> > On Wed, Jun 29, 2016 at 07:31:01PM +0100, Mark Brown wrote:
+On 06/07, Lee Jones wrote:
+> Describe the platform's critical clocks in DT, then search for them
+> from the framework.  This set allows us to remove the clk_ignore_unused
+> kernel command line flag which has been required to achieve a successful
+> boot to prompt until this point.
 > 
-> > > And we're *sure* that's going to be maintained?  People do use the
-> > > fallback matching that DT does, I don't trust the ACPI maintainers not
-> > > to do the same thing.
+> This may not be the definitive list.  There may be other clocks which
+> need to be marked as critical, but we can add those as we go along.
 > 
-> > That fallback matching does not even work in ACPI like I told you
-> > already. We have no plans to do anything like that either. That's the
-> > reason why we complain if there is PRP0001 without compatible string.
-> 
-> No, you're completely missing the point here.  The problem is someone
-> using something like linux,spidev as a compatible string and going into
-> fallback matching on SPI bus IDs rather than compatible strings.  I just
-> don't have confidence that someone isn't going to try to add that
-> fallback path given that it's used for DT.
 
-If someone is using "linux,spidev" as compatible string it will not
-match anything and we are not going to add any kind of fallback to the
-ACPI core for that.
+I applied the three clk ones to an immutable branch named
+'clk-st-critical' in the clk tree and merged this into clk-next.
+I'm not comfortable taking the spi patch as I suspect that will
+break something unless the dts patches are applied.
 
-Of course we cannot predict what happens in the future but is it really
-preventing merging of this patch?
+Please use this branch to base your dts and spi patches on so it
+can be merged through arm-soc without introducing some bisection
+hole.
 
-What I'm simply trying to achieve is to use the existing two DT
-compatible strings from ACPI. I've tested that it works fine and
-provided you all the evidence that it does not break the check for
-misusing DT.
+The following changes since commit 1a695a905c18548062509178b98bc91e67510864:
 
-> > > Right, but rather than just define a translation from ACPI to DT and use
-> > > the DT code paths in their entirety for the relevant nodes what's
-> > > happening is that there's a shim layer between ACPI and DT which sort of
-> > > emulates bits of the DT interfaces but not quite and can lead to
-> > > surprises.
-> 
-> > Maybe but currently it works fine. And if problems are found they will
-> > be fixed as usual.
-> 
-> I'm worried that the reason it's working fine may be that there is very
-> little usage, and that there may be more gotchas like we're already
-> seeing lurking about.
+  Linux 4.7-rc1 (2016-05-29 09:29:24 -0700)
 
-With more usage I'm sure we can improve things. After all the end goal
-is to let single driver to work on both DT and ACPI systems with minimal
-changes. If you think the current implementation is flawed, nothing
-prevents you from proposing better alternative :-)
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+are available in the git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/clk/linux.git clk-st-critical
+
+for you to fetch changes up to 6ca59e6e1fc3a8d7ccbf85ff036bd6ff40847c1a:
+
+  clk: st: clkgen-pll: Detect critical clocks (2016-06-30 12:17:11 -0700)
+
+----------------------------------------------------------------
+Lee Jones (3):
+      clk: st: clk-flexgen: Detect critical clocks
+      clk: st: clkgen-fsyn: Detect critical clocks
+      clk: st: clkgen-pll: Detect critical clocks
+
+ drivers/clk/st/clk-flexgen.c |  4 +++-
+ drivers/clk/st/clkgen-fsyn.c | 10 +++++++---
+ drivers/clk/st/clkgen-pll.c  | 27 +++++++++++++++++----------
+ 3 files changed, 27 insertions(+), 14 deletions(-)
+
+-- 
+Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
+a Linux Foundation Collaborative Project

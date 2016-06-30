@@ -1,63 +1,45 @@
-From: Stephen Boyd <sboyd@codeaurora.org>
-Subject: Re: [PATCH 0/6] clk: sti: Add support for critical clocks
-Date: Thu, 30 Jun 2016 12:23:37 -0700
-Message-ID: <20160630192337.GN1521@codeaurora.org>
+From: Lee Jones <lee.jones@linaro.org>
+Subject: Re: [PATCH 6/6] spi: st-ssc4: Remove 'no clocking' hack
+Date: Thu, 30 Jun 2016 21:52:15 +0100
+Message-ID: <20160630205215.GF1707@dell>
 References: <20160607111930.10375-1-lee.jones@linaro.org>
+ <20160607111930.10375-7-lee.jones@linaro.org>
+ <20160607151712.GA7510@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	kernel@stlinux.com, maxime.coquelin@st.com, patrice.chotard@st.com,
-	mturquette@baylibre.com, broonie@kernel.org,
-	linux-clk@vger.kernel.org, linux-spi@vger.kernel.org
-To: Lee Jones <lee.jones@linaro.org>
-Return-path: <linux-clk-owner@vger.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: kernel@stlinux.com, mturquette@baylibre.com, sboyd@codeaurora.org,
+ patrice.chotard@st.com, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-clk@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, maxime.coquelin@st.com
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
 Content-Disposition: inline
-In-Reply-To: <20160607111930.10375-1-lee.jones@linaro.org>
-Sender: linux-clk-owner@vger.kernel.org
+In-Reply-To: <20160607151712.GA7510@sirena.org.uk>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On 06/07, Lee Jones wrote:
-> Describe the platform's critical clocks in DT, then search for them
-> from the framework.  This set allows us to remove the clk_ignore_unused
-> kernel command line flag which has been required to achieve a successful
-> boot to prompt until this point.
-> 
-> This may not be the definitive list.  There may be other clocks which
-> need to be marked as critical, but we can add those as we go along.
-> 
-
-I applied the three clk ones to an immutable branch named
-'clk-st-critical' in the clk tree and merged this into clk-next.
-I'm not comfortable taking the spi patch as I suspect that will
-break something unless the dts patches are applied.
-
-Please use this branch to base your dts and spi patches on so it
-can be merged through arm-soc without introducing some bisection
-hole.
-
-The following changes since commit 1a695a905c18548062509178b98bc91e67510864:
-
-  Linux 4.7-rc1 (2016-05-29 09:29:24 -0700)
-
-are available in the git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/clk/linux.git clk-st-critical
-
-for you to fetch changes up to 6ca59e6e1fc3a8d7ccbf85ff036bd6ff40847c1a:
-
-  clk: st: clkgen-pll: Detect critical clocks (2016-06-30 12:17:11 -0700)
-
-----------------------------------------------------------------
-Lee Jones (3):
-      clk: st: clk-flexgen: Detect critical clocks
-      clk: st: clkgen-fsyn: Detect critical clocks
-      clk: st: clkgen-pll: Detect critical clocks
-
- drivers/clk/st/clk-flexgen.c |  4 +++-
- drivers/clk/st/clkgen-fsyn.c | 10 +++++++---
- drivers/clk/st/clkgen-pll.c  | 27 +++++++++++++++++----------
- 3 files changed, 27 insertions(+), 14 deletions(-)
-
--- 
-Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
-a Linux Foundation Collaborative Project
+T24gVHVlLCAwNyBKdW4gMjAxNiwgTWFyayBCcm93biB3cm90ZToKPiBPbiBUdWUsIEp1biAwNywg
+MjAxNiBhdCAxMjoxOTozMFBNICswMTAwLCBMZWUgSm9uZXMgd3JvdGU6Cj4gPiBEdWUgdG8gdGhl
+IG5ld2x5IHVwc3RyZWFtZWQgJ2NyaXRpY2FsIGNsb2NrcycgQVBJIHdlIGNhbiBub3cKPiA+IHNh
+ZmVseSBoYW5kbGUgY2xvY2tpbmcgaW4gdGhlIFNQSSBhbmQgSTJDIGRyaXZlcnMgd2l0aG91dCBm
+ZWFyCj4gPiBvZiBjYXRhc3Ryb3BoaWNhbGx5IGNyaXBwbGluZyB0aGUgcnVubmluZyBwbGF0Zm9y
+bS4KPiAKPiBBY2tlZC1ieTogTWFyayBCcm93biA8YnJvb25pZUBrZXJuZWwub3JnPgoKV2UgcmVh
+bGx5IG5lZWQgdG8gZ3VhcmFudGVlIHRoYXQgdGhpcyBnb2VzIGluICphZnRlciogdGhlIG90aGVy
+CnBhdGNoZXMgaGF2ZSBsYW5kZWQsIGFuZCBpdCBsb29rcyBsaWtlIHRoZXkncmUgaGVhZGluZyBp
+biB2aWEgdGhlaXIKb3duIHJlc3BlY3RpdmUgdHJlZXMuICBBbnkgY2hhbmNlIHlvdSBjYW4gaG9s
+ZCB0aGlzIGJhY2sgYW5kIHN1Ym1pdCBpdAp2aWEgeW91ciB2NC44LWZpeGVzIHN1Ym1pc3Npb24/
+CgotLSAKTGVlIEpvbmVzCkxpbmFybyBTVE1pY3JvZWxlY3Ryb25pY3MgTGFuZGluZyBUZWFtIExl
+YWQKTGluYXJvLm9yZyDilIIgT3BlbiBzb3VyY2Ugc29mdHdhcmUgZm9yIEFSTSBTb0NzCkZvbGxv
+dyBMaW5hcm86IEZhY2Vib29rIHwgVHdpdHRlciB8IEJsb2cKCl9fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fCmxpbnV4LWFybS1rZXJuZWwgbWFpbGluZyBsaXN0
+CmxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
+ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LWFybS1rZXJuZWwK

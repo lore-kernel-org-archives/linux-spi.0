@@ -1,88 +1,177 @@
-From: Dan O'Donovan <dan-M3NBUjLqch7QT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH v2 3/3] drivers core: allow id match override when
- manually binding driver
-Date: Thu, 30 Jun 2016 10:03:57 +0100
-Message-ID: <5774E07D.1060706@emutex.com>
-References: <20160627190949.GB5111@kroah.com>
- <CAOMqctQj0ftbOH9dvMPczBPeSFTvDuTKCXgYprYvtcQDYML8Kw@mail.gmail.com>
- <20160627221259.GA10054@kroah.com>
- <CAOMqctTQAY0NzTpEqyLyScu8UrSXcF82oLVMM+e2F2WQ225B7A@mail.gmail.com>
- <20160628155107.GP17217@sirena.org.uk>
- <CAOMqctQbFmWv04idz7G+dPOCg7n-E0AQdhGAyohUDBniKvrP_g@mail.gmail.com>
- <20160628183825.GS17217@sirena.org.uk>
- <CAOMqctTNmcg32PFVOZaA99GpFba9GOGOuOqmi3ujzxcHRFZsOA@mail.gmail.com>
- <20160628205736.GE17217@sirena.org.uk>
- <CAOMqctS2xGCgfXschxudcAEYq-mcfPDmFS_pTzCuXa0bFBE0NA@mail.gmail.com>
- <20160629180211.GF6247@sirena.org.uk>
- <CAOMqctR-f+dNBiWk8LEqkeYMhpvACjMi8aH3GpHY==RjfANf8Q@mail.gmail.com>
+From: Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v4 6/8] efi: load SSTDs from EFI variables
+Date: Thu, 30 Jun 2016 14:56:35 +0300
+Message-ID: <CAE1zotLvUCtokAWT_8qogUcXuASdjD2K=4LDiE4czrCSeXop=Q@mail.gmail.com>
+References: <1466164336-9508-1-git-send-email-octavian.purdila@intel.com>
+ <1466164336-9508-7-git-send-email-octavian.purdila@intel.com> <20160623132237.GG8415@codeblueprint.co.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-Cc: Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: "Rafael J . Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
+	Len Brown <lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
+	Joel Becker <jlbec-aKy9MeLSZ9dg9hUCZPvPmw@public.gmane.org>,
+	"linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-efi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c <linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Irina Tirdea <irina.tirdea-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Leonard Crestez <leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: Matt Fleming <matt-mF/unelCI9GS6iBeEJttW/XRex20P6io@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAOMqctR-f+dNBiWk8LEqkeYMhpvACjMi8aH3GpHY==RjfANf8Q-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20160623132237.GG8415-mF/unelCI9GS6iBeEJttW/XRex20P6io@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 06/30/2016 08:47 AM, Michal Suchanek wrote:
-> On 29 June 2016 at 20:02, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
->> On Wed, Jun 29, 2016 at 05:32:48AM +0200, Michal Suchanek wrote:
+On Thu, Jun 23, 2016 at 4:22 PM, Matt Fleming <matt-mF/unelCI9GS6iBeEJttW/XRex20P6io@public.gmane.org> wrote:
+
+> On Fri, 17 Jun, at 02:52:14PM, Octavian Purdila wrote:
+>> This patch allows SSDTs to be loaded from EFI variables. It works by
+>> specifying the EFI variable name containing the SSDT to be loaded. All
+>> variables with the same name (regardless of the vendor GUID) will be
+>> loaded.
 >>
->>> The other is to get a generic expansion board and jumper wires. Of
->>> course, you will not use all pins of your expansion connector this
->>> way. On the other hand using the remaining pins becomes challenging
->>> because of the jumper wires you just added. You can use some of the
->>> remaining pins as GPIO or add more jumper wires and use some of the
->>> remaining functions of the connector for another expansion board.
->> I'm more than familiar with flying wire systems.  They just aren't a big
->> deal here, this is a very technical audience making systems that aren't
->> going to have their software meaningfully distributed.  Users making
->> flying wire systems really ought to be capable of making the trivial DT
->> changes required for them, and if they just hack something not great up
->> locally that's not really a problem so long as it works for them.
-> No. Arduino tutorials made flying wire systems accessible to
-> non-technical audience. There are similar tutorials for boards running
-> vendor kernels.
-In case its relevant, I'd like add to this point by emphasising that there is an increasing number of "maker" boards available, such as UP, Minnowboard, Intel Galileo, Intel Edison, Raspberry Pi, and more, which expose an open SPI bus interface on a pin header with the intention that a primary use of that SPI interface is decided at application level.  'spidev' is the adopted method for making that SPI interface accessible to those applications, and those boards do typically ship with Linux kernel that either (i) use spi_register_board_info in some board-specific platform driver to enable spidev by default for those interfaces, or (ii) include some hack in a custom kernel (such as adding a "spidev" compatible string) to allow it to be enabled with a DT or ACPI overlay, neither of which see
- m ideal.  Sorry if I'm just re-stating what's already been said.  Anyway, I would love to see a solution integrated for this, whatever the appropriate solution may be.
+>> Note that we can't use acpi_install_table and we must rely on the
+>> dynamic ACPI table loading and bus re-scanning mechanisms. That is
+>> because I2C/SPI controllers are initialized earlier then the EFI
+>> subsystems and all I2C/SPI ACPI devices are enumerated when the
+>> I2C/SPI controllers are initialized.
+>>
+>> Signed-off-by: Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+>> ---
+>>  Documentation/acpi/ssdt-overlays.txt |  67 ++++++++++++++++++++++
+>>  Documentation/kernel-parameters.txt  |   7 +++
+>>  drivers/firmware/efi/efi.c           | 106 +++++++++++++++++++++++++++++++++++
+>>  3 files changed, 180 insertions(+)
 >
-> Of course somebody with technical skill has to write the tutorial but
-> following it requires only understanding of written text - which is
-> becoming increasingly rare but is still not uncommon skill.
+> [...]
 >
-> So to write such tutorial you have to give some steps to follow which
-> are reasonably likely to succeed on wide variety of boards and require
-> smallest possible changes to the board software.
+>> @@ -195,6 +197,107 @@ static void generic_ops_unregister(void)
+>>       efivars_unregister(&generic_efivars);
+>>  }
+>>
+>> +#if IS_ENABLED(CONFIG_ACPI)
+>> +#define EFIVAR_SSDT_NAME_MAX 16
+>> +static char efivar_ssdt[EFIVAR_SSDT_NAME_MAX];
+>> +static int __init efivar_ssdt_setup(char *str)
+>> +{
+>> +     if (strlen(str) < sizeof(efivar_ssdt))
+>> +             memcpy(efivar_ssdt, str, strlen(str));
+>> +     else
+>> +             pr_warn("efivar_ssdt: name too long: %s\n", str);
+>> +     return 0;
+>> +}
+>> +__setup("efivar_ssdt=", efivar_ssdt_setup);
+>> +
+>> +static LIST_HEAD(efivar_ssdts);
+>> +
+>> +static inline void pr_efivar_name(efi_char16_t *name16)
+>> +{
+>> +     char name[EFIVAR_SSDT_NAME_MAX];
+>> +     int i;
+>> +
+>> +     for (i = 0; i < EFIVAR_SSDT_NAME_MAX - 1; i++)
+>> +             name[i] = name16[i] & 0xFF;
+>> +     name[i] = 0;
+>> +     pr_cont("%s", name);
+>> +}
 >
-> For mainline this would currently entail
+> Please use the various ucs2_* functions we already have in lib/.
 >
-> a) loading an overlay that lists spidev directly as compatible and
-> joke about obtuseness of the kernel developers that force you to read
-> the log spam
->
-> b) failing a) decompile your board devicetree, add the spidev
-> compatible - apply the overlay manually offline, recompile, and reboot
->
-> Adding new_id to spi bus does not simplify the thing at all. You still
-> have to modify your devicetree. It will at most remove the log spam.
->
-> I can even imagine people listing *all* their devices as compatible on
-> single dt node when the board does not ship with kernel patched for
-> loading overlays.
->
-> Thanks
->
-> Michal
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
 
+Okay, after reading the archives regarding UTF8, ucs2, etc. it looks
+like the best thing to do in kernel is to avoid interpreting them. So
+I'll just print the kernel command line parameter and use ucs2_as_utf8
+and memcmp to check if the variable name matches the kernel command
+line.
 
+>> +static __init int efivar_acpi_iter(efi_char16_t *name, efi_guid_t vendor,
+>> +                                unsigned long name_size, void *data)
+>> +{
+>> +     int i;
+>> +     int str_len = name_size / sizeof(efi_char16_t);
+>> +     struct efivar_entry *entry;
+>> +
+>> +     if (str_len != strlen(efivar_ssdt) + 1)
+>> +             return 0;
+>> +
+>> +     for (i = 0; i < str_len; i++)
+>> +             if ((name[i] & 0xFF) != efivar_ssdt[i])
+>> +                     return 0;
+>> +
+>> +     entry = kzalloc(sizeof(*entry), GFP_KERNEL);
+>> +     if (!entry)
+>> +             return -ENOMEM;
+>> +
+>> +     memcpy(entry->var.VariableName, name, name_size);
+>> +     memcpy(&entry->var.VendorGuid, &vendor, sizeof(efi_guid_t));
+>> +
+>> +     efivar_entry_add(entry, &efivar_ssdts);
+>> +
+>> +     return 0;
+>> +}
+>> +
+>> +static __init int efivar_ssdt_load(void)
+>> +{
+>> +     struct efivar_entry *i;
+>> +     int err;
+>> +
+>> +     err = efivar_init(efivar_acpi_iter, NULL, true, &efivar_ssdts);
+>> +     if (err) {
+>> +             pr_err("%s: efivar_init failed: %d\n", __func__, err);
+>> +             return err;
+>> +     }
+>> +
+>> +     list_for_each_entry(i, &efivar_ssdts, list) {
+>> +             void *data;
+>> +             unsigned long size;
+>> +
+>> +             pr_info("loading SSDT from EFI variable ");
+>> +             pr_efivar_name(i->var.VariableName); pr_cont("\n");
+>> +
+>> +             err = efivar_entry_size(i, &size);
+>> +             if (err) {
+>> +                     pr_err("failed to get size\n");
+>> +                     continue;
+>> +             }
+>> +
+>> +             data = kmalloc(size, GFP_KERNEL);
+>> +             if (!data)
+>> +                     continue;
+>> +
+>> +             err = efivar_entry_get(i, NULL, &size, data);
+>> +             if (err) {
+>> +                     pr_err("failed to get data\n");
+>> +                     kfree(data);
+>> +                     continue;
+>> +             }
+>> +
+>> +             err = acpi_load_table(data);
+>> +             if (err) {
+>> +                     pr_err("failed to load table: %d\n", err);
+>> +                     kfree(data);
+>> +                     continue;
+>> +             }
+>> +     }
+>> +
+>
+> Since 'efivar_ssdts' isn't exported to userspace and is never
+> traversed again after its built in efivar_acpi_iter(), can't you just
+> fold the code from the above list_for_each_entry() loop into
+> efivar_acpi_iter()?
+>
+> You should be able to call efivar_entry_get() without 'entry' actually
+> being on any list since the list is only used for duplicate variable
+> detection in this case.
+
+Since commit 1cfd63166 (efi: Merge boolean flag arguments) it is a bit
+hairy to do this. We need to call efivar_init() with duplicates set to
+false to allow passing a  NULL list but in that case the __efivars
+lock is not release when calling the iterator function which means
+that calls like efivar_entry_get from within the iterator function
+will deadlock.
+
+What seems to work is to call efivar_init() with duplicates set and
+pass a temporary empty list. How does that sound?
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

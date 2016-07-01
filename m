@@ -1,56 +1,52 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Mark Brown <broonie@kernel.org>
 Subject: Re: [PATCH 1/4] spi: Add option to wake a device by toggling CS
-Date: Fri, 1 Jul 2016 09:02:30 +0100
-Message-ID: <20160701080230.GB6247@sirena.org.uk>
+Date: Fri, 1 Jul 2016 09:21:01 +0100
+Message-ID: <20160701082101.GD6247@sirena.org.uk>
 References: <1467258867-117727-1-git-send-email-apronin@chromium.org>
+ <CAD=FV=WSHKfAmskimrxOaiFvGmF-FTzNgiv-_=RtK+DfX-ZuuA@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="3IyuMspwcGTbYISR"
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: apronin-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="HjNkcEWJ4DMx36DP"
+Cc: apronin@chromium.org,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	linux-spi@vger.kernel.org
+To: Doug Anderson <dianders@chromium.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1467258867-117727-1-git-send-email-apronin-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <CAD=FV=WSHKfAmskimrxOaiFvGmF-FTzNgiv-_=RtK+DfX-ZuuA@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---3IyuMspwcGTbYISR
+--HjNkcEWJ4DMx36DP
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 29, 2016 at 08:54:24PM -0700, apronin-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org wrote:
-> From: Andrey Pronin <apronin-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
->=20
-> Some SPI devices may go to sleep after a period of inactivity
-> on SPI. For such devices, if enough time has passed since the
-> last SPI transaction, toggle CS and wait for the device to
-> start before communicating with it.
+On Thu, Jun 30, 2016 at 09:23:26PM -0700, Doug Anderson wrote:
 
-This seems incredibly specialist, I can imagine someone might implement
-something like this but it really feels like something I'd expect the
-driver for the device to be doing rather than the core.  Is it really a
-bounce that's needed and not something like putting a small delay after
-asserting chip select?
+> Also, something doesn't seem terribly robust about this, buy maybe I'm
+> being paranoid.  If something happens where the timer hasn't fired
+> quickly enough then you might not know that you need to assert the
+> wakeup, right?  I don't think there's a 100% guarantee that a timer
+> will fire and finish running within a certain period of time, is
+> there?
 
---3IyuMspwcGTbYISR
+No, or at least a minimum bound on accuracy - you'd need to set the
+timer for something lower than the actual limit.
+
+--HjNkcEWJ4DMx36DP
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJXdiOVAAoJECTWi3JdVIfQZzYH/jyu6+ob5u/vCMMCP7cg/mtA
-POCOdrpKt1VT2b4i1pVXMyYrTljguWXWxiG4HvpUgVp+5gLeXvJzqFCl+RkzN4pD
-+0aVxVX+17SUQYnJJIYtTeyL3w6wSUfZgnyYqb/WjdCoJyYKruvckOqpz/BVOep3
-jrdmtA010vZUhD85CdqrJnNc2XJZKURUqj4eg0R8b87NyFnqAMai0bUMRXZnFkpb
-VEeAU2z0ELTgBFvvMqvQkyK44KZxelTBq3y+Hzp/rpau2l5DhzWAwN4WL/nggrZA
-ECblOG+5KmxW5qBgN/U3c1ujAIIE5ktAzQrTnUsyOYfdgD1SOjKQR0gmd2lDflM=
-=7tz4
+iQEcBAEBCAAGBQJXdifsAAoJECTWi3JdVIfQ/bQH/i5E4qmz6D9CyvinnTcn0ltO
+PlhllF5RvScG/delCF9lbxuO+FAi6Mmu0z67nJ0mYw3ltWmhsRjfSR0wL5ZnRzxR
+1EzpaJoTTSiI54xkPZ4YAi/taIPtY2DWndNngLoa0PLpDdGo2y3fl+LG/OHe4l0o
+qcO4joknLaU2H1ozMBGPUgz3hEVWoUgKc++8C3T5jtxxqQEJLW5AUtsIPme/cw5T
+n8GpYlRfeQglZ2Vd0r4p0bgYPKpRbMdEZj6PSPFZz65UP2WLfTKFNNbR67L67HQ6
+kuYnIvJMZ++iwZtYbx2zwm+bAQ8SX8y1zvcp9+WqWCvScKtImGTz/kzfk1/Dp9g=
+=LeWY
 -----END PGP SIGNATURE-----
 
---3IyuMspwcGTbYISR--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--HjNkcEWJ4DMx36DP--

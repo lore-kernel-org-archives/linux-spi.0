@@ -1,81 +1,68 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH, V4, 2/5] spi: bcm-qspi: Add SPI flash and MSPI driver
-Date: Fri, 1 Jul 2016 18:07:53 +0200
-Message-ID: <20160701160753.GX6247@sirena.org.uk>
-References: <1466197433-11290-1-git-send-email-kdasu.kdev@gmail.com>
- <1466197433-11290-2-git-send-email-kdasu.kdev@gmail.com>
- <20160622160726.GQ28202@sirena.org.uk>
- <CAKekbevYN3CLvqQs3stUXDFEMREMOJ0g4+w7Zsno1kV-ieYEiw@mail.gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2 3/3] drivers core: allow id match override when
+ manually binding driver
+Date: Fri, 1 Jul 2016 18:22:28 +0200
+Message-ID: <20160701162228.GZ6247@sirena.org.uk>
+References: <20160628183825.GS17217@sirena.org.uk>
+ <CAOMqctTNmcg32PFVOZaA99GpFba9GOGOuOqmi3ujzxcHRFZsOA@mail.gmail.com>
+ <20160628205736.GE17217@sirena.org.uk>
+ <CAOMqctS2xGCgfXschxudcAEYq-mcfPDmFS_pTzCuXa0bFBE0NA@mail.gmail.com>
+ <20160629180211.GF6247@sirena.org.uk>
+ <CAOMqctR-f+dNBiWk8LEqkeYMhpvACjMi8aH3GpHY==RjfANf8Q@mail.gmail.com>
+ <20160701082548.GE6247@sirena.org.uk>
+ <CAOMqctRp+ua1DM82W35Df17TvhoF2suxALBaYqECWtTRrTWXCw@mail.gmail.com>
+ <20160701150015.GQ6247@sirena.org.uk>
+ <CAOMqctSfDKJRYf7bY7pz7LE9obUxMvV-v=Ntz3_mk0WGMKbPtA@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="BzhqTaE66jeIVBY0"
-Cc: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
-	Vikram Prakash <vikram.prakash-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Andy Fung <andy.fung-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Jon Mason <jon.mason-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Yendapally Reddy Dhananjaya Reddy
-	<yendapally.reddy-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-To: Kamal Dasu <kamal.dasu-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="1mpN54+oXr72ab9j"
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	linux-spi <linux-spi@vger.kernel.org>
+To: Michal Suchanek <hramrach@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CAKekbevYN3CLvqQs3stUXDFEMREMOJ0g4+w7Zsno1kV-ieYEiw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <CAOMqctSfDKJRYf7bY7pz7LE9obUxMvV-v=Ntz3_mk0WGMKbPtA@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---BzhqTaE66jeIVBY0
+--1mpN54+oXr72ab9j
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Jul 01, 2016 at 11:39:03AM -0400, Kamal Dasu wrote:
+On Fri, Jul 01, 2016 at 05:37:53PM +0200, Michal Suchanek wrote:
 
-> > All this interrupt code and especially the fact that it's a completely
-> > separate register range in the binding looks very much like it's just
-> > an interrupt controller IP that's not particularly anything to do with
-> > the SPI controller and should therefore be in a separate driver.  Why is
-> > this part of the SPI controller driver?
+> Can you, please, specify what problems this patch creates for other users
+> and maintainability?
 
-> Some SoCs need this since they do not implement a separate interrupt
-> controller and have dedicated l1 interrupt for spi. Also the handling
-> is not generic enough to cover other ips as well in those case. Hence
-> have to handle it within the driver.
+To repeat yet again a major design goal for DT is to describe the
+hardware rather than implementation details of the software you plan to
+run on the system.  Not doing this breaks upgrades or changes in our
+ideas of how we control a given bit of hardware.
 
-That doesn't seem to match what the code is actually doing.  The
-register block this is controlling is separate to the rest of the IP.
-It's perfectly OK to have a driver for an interrupt controller which is
-only used in one place, though you may find one of the generic ones
-might be able to handle it anyway.
+> Without stating the problems of this solution clearly or proposing alternate
+> workable solution there is not much that can be done.
 
-> >> +     default:
-> >> +             break;
-> >> +     }
+You are rejecting out of hand any suggestion that is not the one
+solution you are demanding.
 
-> > We just ignore other widths?
+I'm done with this thread, please come back with new code that fits in
+with the device model and device tree designs.
 
-> These are the only supported widths will make SPI_NBITS_SINGLE default.
-
-If the user is trying to set an unsupported configuration you should
-return an error rather than silently set a different configuration.
-
---BzhqTaE66jeIVBY0
+--1mpN54+oXr72ab9j
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJXdpVYAAoJECTWi3JdVIfQNP4IAIC+tDmPOrLaPAeE4z59FVAs
-XlHBIFx3Weeqrvn4ok+zpMqEAL5fINjlQ3iHMvs1HTLtwS3qZsSin9qeaVTvxdCT
-lNg0dQPEsl8x+n2LreZaZs0239j9Vf29zZcCsVibvxQv9RgZG99BfEDQmEuQe/kR
-1/Ji9WZ80rB7M4JH8FtRO7e3bB520uFs4OljhXCdXw2u3QotpjwkPM2lwybwwDU2
-R2tHWxt1HzKL+XWvEiAHWhC2EtXhJTFI74YTaqh8bXSpWmmGR0DhbHUObl5JPukT
-lFUjOp9y3wxIvoU+gMXkOBJNH3L2l2R7z7jqMh1q+vstiikWi2abrS7NyYqbXJY=
-=dmLp
+iQEcBAEBCAAGBQJXdpjDAAoJECTWi3JdVIfQPR0H+gKMT5Ok8YCkyhmokObqLRNM
+W+UUv5hwBs9OskKu1Wjeeh8YxYJoEPYKef9zPXCIIr52mV1/pnTZ178Nf/VUzPWm
+oH77EPkXi09vL/xm9IpivMU5rSrqa9ykf8U1/fGc96gzp3ytowx5m9agW92HygyA
+Yw9ulc0OUXBWiIaRxH60REAL8iAcB9AOLv1psmQv4BKUxBvn/hkn1fQY0b7NmNdo
+kYh3vsazeOnt49Vionog8c5oivbqAW1QC5+3NVaOsIHhhC033uiPwUeV7PLxBl0H
+jZFBDxxa8l4OBEFGQYnSwGntNFhBo/NQKq6TiAw9WW8v3jXai3cHGLPidFMk4Xs=
+=PxTr
 -----END PGP SIGNATURE-----
 
---BzhqTaE66jeIVBY0--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--1mpN54+oXr72ab9j--

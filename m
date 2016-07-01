@@ -1,48 +1,59 @@
-From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v2 3/3] drivers core: allow id match override when
- manually binding driver
-Date: Fri, 1 Jul 2016 10:58:34 +0200
-Message-ID: <CAOMqctRp+ua1DM82W35Df17TvhoF2suxALBaYqECWtTRrTWXCw@mail.gmail.com>
-References: <20160627221259.GA10054@kroah.com> <CAOMqctTQAY0NzTpEqyLyScu8UrSXcF82oLVMM+e2F2WQ225B7A@mail.gmail.com>
- <20160628155107.GP17217@sirena.org.uk> <CAOMqctQbFmWv04idz7G+dPOCg7n-E0AQdhGAyohUDBniKvrP_g@mail.gmail.com>
- <20160628183825.GS17217@sirena.org.uk> <CAOMqctTNmcg32PFVOZaA99GpFba9GOGOuOqmi3ujzxcHRFZsOA@mail.gmail.com>
- <20160628205736.GE17217@sirena.org.uk> <CAOMqctS2xGCgfXschxudcAEYq-mcfPDmFS_pTzCuXa0bFBE0NA@mail.gmail.com>
- <20160629180211.GF6247@sirena.org.uk> <CAOMqctR-f+dNBiWk8LEqkeYMhpvACjMi8aH3GpHY==RjfANf8Q@mail.gmail.com>
- <20160701082548.GE6247@sirena.org.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 3/4] spi: Add option to insert delay between transactions
+Date: Fri, 1 Jul 2016 09:16:36 +0100
+Message-ID: <20160701081636.GC6247@sirena.org.uk>
+References: <1467258867-117727-1-git-send-email-apronin@chromium.org>
+ <1467258867-117727-3-git-send-email-apronin@chromium.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160701082548.GE6247-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="G5yIW5EaChZ5gJdA"
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: apronin@chromium.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1467258867-117727-3-git-send-email-apronin@chromium.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On 1 July 2016 at 10:25, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Thu, Jun 30, 2016 at 09:47:32AM +0200, Michal Suchanek wrote:
->
->> So to write such tutorial you have to give some steps to follow which
->> are reasonably likely to succeed on wide variety of boards and require
->> smallest possible changes to the board software.
->
->> For mainline this would currently entail
->
-> It's been repeatedly suggested to you that the tooling for this stuff
-> could use some work.  Please go and put some effort into that rather
-> than continuing this thread which is accomplishing nothing.
 
-You completely miss the point. No tooling will make people reconfigure
-the kernel when the configuration in fact stays the same.
+--G5yIW5EaChZ5gJdA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Sure the tooling does need work. And it would help getting the cases
-when the tooling is NOT needed out of the way.
+On Wed, Jun 29, 2016 at 08:54:26PM -0700, apronin@chromium.org wrote:
 
-Thanks
+> Some devices may need CS to be deasserted for some time
+> between transactions. Added a new capability to guarantee
+> a delay between SPI transactions for the device.
 
-Michal
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+This seems like even more of a per device thing - it's a very rare
+requirement (I'm guessing for some SPI controller coprocessor) and
+there's such a wide range of potential patterns that might be needed
+by different devices. =20
+
+> +       if (msg->spi->xfer_delay)
+> +               mdelay(msg->spi->xfer_delay);
+> +
+>         spi_set_cs(msg->spi, true);
+
+This isn't a delay between messages, it's a delay before asserting
+chip select which will happen every single time we do anything
+regardless of if there was any activity immediately before or not.
+
+--G5yIW5EaChZ5gJdA
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJXdibjAAoJECTWi3JdVIfQZoMH/3DSY6u5/SgZ4LQlWAM86hlf
+D17E78t1j/bhpUZka7+FOhgly7Ly5HqJ57Gh4R0049KzvUr6pe0+LN6U5bO/OHyW
+5JXmodaOA6oSS9Wy9DAKrGP2V+cKC2fP+wl8J4BSGoFKpZ7r+cGtrdx+tBHrFOwz
+gmTjB1G7QRK6gAg/gco3Nyfv8yW0Ur6Ay8uyTv9hz7T6b8PAGUcBBscQjcZqLtov
+C7Ise+vXz+ZyQC2UezpCsrYX79p17GDXF6BgntbsH7eP9nUwtfHEcflpbc/G16jI
+o9ufP81N9qkqW699kvUyb1A2KzS5z9CecY7AGymWU3I/yfRrBi9mvMoveKxDsKA=
+=r6ig
+-----END PGP SIGNATURE-----
+
+--G5yIW5EaChZ5gJdA--

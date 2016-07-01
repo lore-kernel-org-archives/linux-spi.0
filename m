@@ -1,59 +1,82 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 3/4] spi: Add option to insert delay between transactions
-Date: Fri, 1 Jul 2016 09:16:36 +0100
-Message-ID: <20160701081636.GC6247@sirena.org.uk>
-References: <1467258867-117727-1-git-send-email-apronin@chromium.org>
- <1467258867-117727-3-git-send-email-apronin@chromium.org>
+Subject: Re: [PATCH v2 3/3] drivers core: allow id match override when
+ manually binding driver
+Date: Fri, 1 Jul 2016 11:36:13 +0200
+Message-ID: <20160701093613.GF6247@sirena.org.uk>
+References: <CAOMqctTQAY0NzTpEqyLyScu8UrSXcF82oLVMM+e2F2WQ225B7A@mail.gmail.com>
+ <20160628155107.GP17217@sirena.org.uk>
+ <CAOMqctQbFmWv04idz7G+dPOCg7n-E0AQdhGAyohUDBniKvrP_g@mail.gmail.com>
+ <20160628183825.GS17217@sirena.org.uk>
+ <CAOMqctTNmcg32PFVOZaA99GpFba9GOGOuOqmi3ujzxcHRFZsOA@mail.gmail.com>
+ <20160628205736.GE17217@sirena.org.uk>
+ <CAOMqctS2xGCgfXschxudcAEYq-mcfPDmFS_pTzCuXa0bFBE0NA@mail.gmail.com>
+ <20160629180211.GF6247@sirena.org.uk>
+ <CAOMqctR-f+dNBiWk8LEqkeYMhpvACjMi8aH3GpHY==RjfANf8Q@mail.gmail.com>
+ <5774E07D.1060706@emutex.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="G5yIW5EaChZ5gJdA"
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-To: apronin@chromium.org
+	protocol="application/pgp-signature"; boundary="XSfi1pJWPNAvuBPy"
+Cc: Michal Suchanek <hramrach@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	linux-spi <linux-spi@vger.kernel.org>
+To: Dan O'Donovan <dan@emutex.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1467258867-117727-3-git-send-email-apronin@chromium.org>
+In-Reply-To: <5774E07D.1060706@emutex.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---G5yIW5EaChZ5gJdA
+--XSfi1pJWPNAvuBPy
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 29, 2016 at 08:54:26PM -0700, apronin@chromium.org wrote:
+On Thu, Jun 30, 2016 at 10:03:57AM +0100, Dan O'Donovan wrote:
 
-> Some devices may need CS to be deasserted for some time
-> between transactions. Added a new capability to guarantee
-> a delay between SPI transactions for the device.
+Please fix your mail client to word wrap within paragraphs at something
+substantially less than 80 columns.  Doing this makes your messages much
+easier to read and reply to.
 
-This seems like even more of a per device thing - it's a very rare
-requirement (I'm guessing for some SPI controller coprocessor) and
-there's such a wide range of potential patterns that might be needed
-by different devices. =20
+> In case its relevant, I'd like add to this point by emphasising that
+> there is an increasing number of "maker" boards available, such as UP,
 
-> +       if (msg->spi->xfer_delay)
-> +               mdelay(msg->spi->xfer_delay);
-> +
->         spi_set_cs(msg->spi, true);
+We know.
 
-This isn't a delay between messages, it's a delay before asserting
-chip select which will happen every single time we do anything
-regardless of if there was any activity immediately before or not.
+> which expose an open SPI bus interface on a pin header with the
+> intention that a primary use of that SPI interface is decided at
+> application level.  'spidev' is the adopted method for making that SPI
+> interface accessible to those applications, and those boards do
+> typically ship with Linux kernel that either (i) use
 
---G5yIW5EaChZ5gJdA
+It's not the case that these boards (even when used with flying wires)
+universally want or use spidev, people will want to use existing drivers
+for devices that have them, and equally there are a bunch of non-maker
+applications for spidev.  It's not like there is a special kind of
+silicon that only makers use here.
+
+> Anyway, I would love to see a solution integrated for this, whatever
+> the appropriate solution may be.
+
+There's a bunch of work going on to make overlays easier to use with
+connectors which will hopefully help a lot here.  The other big bit that
+seems to be missing is automating the process of going from schematic
+capture for the modules to DTs so that people can design something and
+get the bits needed for the software as trivially as possible.
+
+--XSfi1pJWPNAvuBPy
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJXdibjAAoJECTWi3JdVIfQZoMH/3DSY6u5/SgZ4LQlWAM86hlf
-D17E78t1j/bhpUZka7+FOhgly7Ly5HqJ57Gh4R0049KzvUr6pe0+LN6U5bO/OHyW
-5JXmodaOA6oSS9Wy9DAKrGP2V+cKC2fP+wl8J4BSGoFKpZ7r+cGtrdx+tBHrFOwz
-gmTjB1G7QRK6gAg/gco3Nyfv8yW0Ur6Ay8uyTv9hz7T6b8PAGUcBBscQjcZqLtov
-C7Ise+vXz+ZyQC2UezpCsrYX79p17GDXF6BgntbsH7eP9nUwtfHEcflpbc/G16jI
-o9ufP81N9qkqW699kvUyb1A2KzS5z9CecY7AGymWU3I/yfRrBi9mvMoveKxDsKA=
-=r6ig
+iQEcBAEBCAAGBQJXdjmMAAoJECTWi3JdVIfQuLAIAICF/27slEepqCC/v/6IQSqQ
+XUi32ETqsMwvawaDSen/WfroEtFHahPl+sz8c2onC7+MoZ4K/RbKW/+JuLqKeXp4
+UaVVVK07D0NRwNkf+KkT1GJObTtdOkE0v8QyFA4GAg/KDMe15qBBJBtHZ76D9trr
+WhiglUYuzTth77NTEF2lNs1chGy6ogCAQjuPXQeg5UIn0BDl9Y9dT1vsO9kEeoC2
+z70jQFPhJ/0Jo+qtzGtAVWK7U9kYZo7XVI6Pry7e65bV9gfl2YErGb2UL70Erxxh
+a7R29lC1AWyPIWFNHZkw/SfnDRP5FTRsTKqSSD+xgOdxXn9i31w99KGQfVRJ/W0=
+=2JeA
 -----END PGP SIGNATURE-----
 
---G5yIW5EaChZ5gJdA--
+--XSfi1pJWPNAvuBPy--

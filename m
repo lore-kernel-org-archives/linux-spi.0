@@ -1,68 +1,71 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 6/6] spi: st-ssc4: Remove 'no clocking' hack
-Date: Fri, 1 Jul 2016 11:59:43 +0200
-Message-ID: <20160701095943.GL6247@sirena.org.uk>
-References: <20160607111930.10375-1-lee.jones@linaro.org>
- <20160607111930.10375-7-lee.jones@linaro.org>
- <20160607151712.GA7510@sirena.org.uk>
- <20160630205215.GF1707@dell>
+From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [PATCH RESEND] spi: spidev: Allow matching DT compatible strings
+ from ACPI
+Date: Fri, 1 Jul 2016 13:19:12 +0300
+Message-ID: <20160701101912.GL23527@lahna.fi.intel.com>
+References: <20160628150752.GO17217@sirena.org.uk>
+ <20160628152338.GN1711@lahna.fi.intel.com>
+ <20160628161822.GQ17217@sirena.org.uk>
+ <20160629091304.GP1711@lahna.fi.intel.com>
+ <20160629162127.GA6247@sirena.org.uk>
+ <20160629163420.GC1711@lahna.fi.intel.com>
+ <20160629183101.GN6247@sirena.org.uk>
+ <20160629185155.GG1711@lahna.fi.intel.com>
+ <20160629192059.GV6247@sirena.org.uk>
+ <20160630124931.GD23527@lahna.fi.intel.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="J/pvEKOcHgREgBce"
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	kernel@stlinux.com, maxime.coquelin@st.com, patrice.chotard@st.com,
-	mturquette@baylibre.com, sboyd@codeaurora.org,
-	linux-clk@vger.kernel.org, linux-spi@vger.kernel.org
-To: Lee Jones <lee.jones@linaro.org>
-Return-path: <linux-clk-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20160630205215.GF1707@dell>
-Sender: linux-clk-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
-
-
---J/pvEKOcHgREgBce
 Content-Type: text/plain; charset=us-ascii
+Cc: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
+In-Reply-To: <20160630124931.GD23527-3PARRvDOhMZrdx17CPfAsdBPR1lH4CV8@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Jun 30, 2016 at 09:52:15PM +0100, Lee Jones wrote:
-> On Tue, 07 Jun 2016, Mark Brown wrote:
-> > On Tue, Jun 07, 2016 at 12:19:30PM +0100, Lee Jones wrote:
-> > > Due to the newly upstreamed 'critical clocks' API we can now
-> > > safely handle clocking in the SPI and I2C drivers without fear
-> > > of catastrophically crippling the running platform.
+On Thu, Jun 30, 2016 at 03:49:31PM +0300, Mika Westerberg wrote:
+> On Wed, Jun 29, 2016 at 08:20:59PM +0100, Mark Brown wrote:
+> > On Wed, Jun 29, 2016 at 09:51:55PM +0300, Mika Westerberg wrote:
+> > > On Wed, Jun 29, 2016 at 07:31:01PM +0100, Mark Brown wrote:
+> > 
+> > > > And we're *sure* that's going to be maintained?  People do use the
+> > > > fallback matching that DT does, I don't trust the ACPI maintainers not
+> > > > to do the same thing.
+> > 
+> > > That fallback matching does not even work in ACPI like I told you
+> > > already. We have no plans to do anything like that either. That's the
+> > > reason why we complain if there is PRP0001 without compatible string.
+> > 
+> > No, you're completely missing the point here.  The problem is someone
+> > using something like linux,spidev as a compatible string and going into
+> > fallback matching on SPI bus IDs rather than compatible strings.  I just
+> > don't have confidence that someone isn't going to try to add that
+> > fallback path given that it's used for DT.
+> 
+> If someone is using "linux,spidev" as compatible string it will not
+> match anything and we are not going to add any kind of fallback to the
+> ACPI core for that.
+> 
+> Of course we cannot predict what happens in the future but is it really
+> preventing merging of this patch?
+> 
+> What I'm simply trying to achieve is to use the existing two DT
+> compatible strings from ACPI. I've tested that it works fine and
+> provided you all the evidence that it does not break the check for
+> misusing DT.
 
-> > Acked-by: Mark Brown <broonie@kernel.org>
+Actually there seems to be alternative to this.
 
-> We really need to guarantee that this goes in *after* the other
-> patches have landed, and it looks like they're heading in via their
-> own respective trees.  Any chance you can hold this back and submit it
-> via your v4.8-fixes submission?
+Windows seems to have a similar spidev raw interface in their MITT test
+suite here:
 
-I've not applied this patch and had no intention of applying it, the
-whole point in me acking it was that I was expecting it to get applied
-as part of the series since AFAICT everything needed to go in together.
-Your pattern of acking patches you're expecting to be apply yourself is
-fairly unusual, if it's someone else it's generally safe to assume
-they're expecting the patch to go via another tree.
+https://msdn.microsoft.com/fi-fi/windows/hardware/drivers/spb/spi-tests-in-mitt
 
-If this still needs sorting after the merge window please resend it, or
-ideally it can go in along with the rest of the series via whatever path
-that's taking.
-
---J/pvEKOcHgREgBce
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJXdj8NAAoJECTWi3JdVIfQWaYH/0HAssuQfDN6WVtDw6B3EkE1
-o6Y3atrxYQQDhPt1t2R1hnB40wwAhyYW8SoicYZhKU91cyn1H5QTmNhGD49ItySM
-qEeLxXZ9El+f/260hxk60o3lQWMei/Tu8631+kNTQjNPKtxgWFv90uQtaMktWDNF
-HNiZJukpyxQfFosymm8nHvimEDo8ani8VH5FILaiWawCJlrCNVOuPoVFIcGlpCW1
-wclps7EGyqbGDfUqUhm5dyCjx6tCDo2SnCfU9m5BlzmJksUMSrUFXIP8+/Uo34Jw
-CNp5Vn8yEkNyN1VOgV9lDW307kWqQOMbfSBRQfvN9ONxmxRmLVW5HIPRfepfM6Y=
-=oFh6
------END PGP SIGNATURE-----
-
---J/pvEKOcHgREgBce--
+It exposes three ACPI SPI devices with ACPI IDs of SPT0001, SPT0002 and
+SPT0003. I'm thinking that instead of using the existing DT compatible
+strings we could use these ACPI IDs in the driver.
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

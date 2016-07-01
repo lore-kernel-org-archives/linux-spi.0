@@ -1,67 +1,66 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH RESEND] spi: spidev: Allow matching DT compatible strings
- from ACPI
-Date: Fri, 1 Jul 2016 16:50:35 +0200
-Message-ID: <20160701145035.GP6247@sirena.org.uk>
-References: <20160628152338.GN1711@lahna.fi.intel.com>
- <20160628161822.GQ17217@sirena.org.uk>
- <20160629091304.GP1711@lahna.fi.intel.com>
- <20160629162127.GA6247@sirena.org.uk>
- <20160629163420.GC1711@lahna.fi.intel.com>
- <20160629183101.GN6247@sirena.org.uk>
- <20160629185155.GG1711@lahna.fi.intel.com>
- <20160629192059.GV6247@sirena.org.uk>
- <20160630124931.GD23527@lahna.fi.intel.com>
- <20160701101912.GL23527@lahna.fi.intel.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2 3/3] drivers core: allow id match override when
+ manually binding driver
+Date: Fri, 1 Jul 2016 17:00:15 +0200
+Message-ID: <20160701150015.GQ6247@sirena.org.uk>
+References: <20160628155107.GP17217@sirena.org.uk>
+ <CAOMqctQbFmWv04idz7G+dPOCg7n-E0AQdhGAyohUDBniKvrP_g@mail.gmail.com>
+ <20160628183825.GS17217@sirena.org.uk>
+ <CAOMqctTNmcg32PFVOZaA99GpFba9GOGOuOqmi3ujzxcHRFZsOA@mail.gmail.com>
+ <20160628205736.GE17217@sirena.org.uk>
+ <CAOMqctS2xGCgfXschxudcAEYq-mcfPDmFS_pTzCuXa0bFBE0NA@mail.gmail.com>
+ <20160629180211.GF6247@sirena.org.uk>
+ <CAOMqctR-f+dNBiWk8LEqkeYMhpvACjMi8aH3GpHY==RjfANf8Q@mail.gmail.com>
+ <20160701082548.GE6247@sirena.org.uk>
+ <CAOMqctRp+ua1DM82W35Df17TvhoF2suxALBaYqECWtTRrTWXCw@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="0WzQiIesntPPsVaS"
-Cc: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="lYtTbTuCUQxZgETo"
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	linux-spi <linux-spi@vger.kernel.org>
+To: Michal Suchanek <hramrach@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20160701101912.GL23527-3PARRvDOhMZrdx17CPfAsdBPR1lH4CV8@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <CAOMqctRp+ua1DM82W35Df17TvhoF2suxALBaYqECWtTRrTWXCw@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---0WzQiIesntPPsVaS
+--lYtTbTuCUQxZgETo
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Jul 01, 2016 at 01:19:12PM +0300, Mika Westerberg wrote:
+On Fri, Jul 01, 2016 at 10:58:34AM +0200, Michal Suchanek wrote:
+> On 1 July 2016 at 10:25, Mark Brown <broonie@kernel.org> wrote:
 
-> Windows seems to have a similar spidev raw interface in their MITT test
-> suite here:
+> > It's been repeatedly suggested to you that the tooling for this stuff
+> > could use some work.  Please go and put some effort into that rather
+> > than continuing this thread which is accomplishing nothing.
 
-> https://msdn.microsoft.com/fi-fi/windows/hardware/drivers/spb/spi-tests-in-mitt
+> You completely miss the point. No tooling will make people reconfigure
+> the kernel when the configuration in fact stays the same.
 
-> It exposes three ACPI SPI devices with ACPI IDs of SPT0001, SPT0002 and
-> SPT0003. I'm thinking that instead of using the existing DT compatible
-> strings we could use these ACPI IDs in the driver.
+> Sure the tooling does need work. And it would help getting the cases
+> when the tooling is NOT needed out of the way.
 
-Ugh :(  But yes, if there's existing ACPI IDs for this functionality
-clearly we should support those.  Probably with an equivalent warning
-about how they're only for non-production systems.
+I understand the problem perfectly, no amount of repeating yourself is
+going to change the problems that the bodge you are trying to force in
+creates for other users and the maintainability of the system.
 
---0WzQiIesntPPsVaS
+--lYtTbTuCUQxZgETo
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJXdoM1AAoJECTWi3JdVIfQDQYH/jROBS3AzXFW/TGYQexgLROI
-iaDan62sqphiLZpyza717eR0YutnU2EPIz5xAqbRvRNK7W6Nt4PptGZf3OiDBIqA
-+4MXIP15vKqhip4aTKAlJ4Xx3Jc/kf1QQKrCNeim4pOH3jus2rPKovd6BACMRYtG
-IFPCLOV6aCqISF89gqdqSikoUxCfPCc0S76EZxPVBHnLZlkGh9KJtKbp56zNw/PI
-e7BiXMbjXvTf//YBQccER7kgfH4ivKnKhPNqMtnY2q28guRADE8eWS8MwxFMN8Wk
-1mYB1KEAKUscm9WRm526l9yy2xnlIeKNhC37dwnoxNkNaqa6FHjo9Rt1imuye2M=
-=ozty
+iQEcBAEBCAAGBQJXdoV8AAoJECTWi3JdVIfQo64H/0BaU4+0VjG/2c08BTwcX6BP
+wCIAyv55GVe3dmmP/NsYO0TquKZYeK3yzhkWI5QVPItopDRQ745QK9e2cgWgbSb+
+O56omy/dKl0WsQwpa1r09QiZMGq+gHuFpKpAu10FYE6Dw3o+zeJSUh33LoHYOTOX
+m6BmTkyXfkQ3FLB+Rr8WDWVmCB2shPmjAm00VwxTB+PUVd26ggq9h/mISb8bHRom
+XRGcmkM+rsctZheoItnzjc9wPlk+ULuRsS1JZjoShKJcLPl4r9lDo3zeJ3vJwQ8I
+zkh65hm7jL7lHPrF2cdFKq34aQ9LM7q0zlhbas/mxSyQGn0+uU4HQZv6yiV1Zvk=
+=Dew9
 -----END PGP SIGNATURE-----
 
---0WzQiIesntPPsVaS--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--lYtTbTuCUQxZgETo--

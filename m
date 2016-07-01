@@ -1,52 +1,61 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 1/4] spi: Add option to wake a device by toggling CS
-Date: Fri, 1 Jul 2016 09:21:01 +0100
-Message-ID: <20160701082101.GD6247@sirena.org.uk>
-References: <1467258867-117727-1-git-send-email-apronin@chromium.org>
- <CAD=FV=WSHKfAmskimrxOaiFvGmF-FTzNgiv-_=RtK+DfX-ZuuA@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] drivers core: allow id match override when
+ manually binding driver
+Date: Fri, 1 Jul 2016 09:25:48 +0100
+Message-ID: <20160701082548.GE6247@sirena.org.uk>
+References: <20160627221259.GA10054@kroah.com>
+ <CAOMqctTQAY0NzTpEqyLyScu8UrSXcF82oLVMM+e2F2WQ225B7A@mail.gmail.com>
+ <20160628155107.GP17217@sirena.org.uk>
+ <CAOMqctQbFmWv04idz7G+dPOCg7n-E0AQdhGAyohUDBniKvrP_g@mail.gmail.com>
+ <20160628183825.GS17217@sirena.org.uk>
+ <CAOMqctTNmcg32PFVOZaA99GpFba9GOGOuOqmi3ujzxcHRFZsOA@mail.gmail.com>
+ <20160628205736.GE17217@sirena.org.uk>
+ <CAOMqctS2xGCgfXschxudcAEYq-mcfPDmFS_pTzCuXa0bFBE0NA@mail.gmail.com>
+ <20160629180211.GF6247@sirena.org.uk>
+ <CAOMqctR-f+dNBiWk8LEqkeYMhpvACjMi8aH3GpHY==RjfANf8Q@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="HjNkcEWJ4DMx36DP"
-Cc: apronin@chromium.org,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	linux-spi@vger.kernel.org
-To: Doug Anderson <dianders@chromium.org>
+	protocol="application/pgp-signature"; boundary="gqO6s7S91gFL8ZIQ"
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	linux-spi <linux-spi@vger.kernel.org>
+To: Michal Suchanek <hramrach@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CAD=FV=WSHKfAmskimrxOaiFvGmF-FTzNgiv-_=RtK+DfX-ZuuA@mail.gmail.com>
+In-Reply-To: <CAOMqctR-f+dNBiWk8LEqkeYMhpvACjMi8aH3GpHY==RjfANf8Q@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---HjNkcEWJ4DMx36DP
+--gqO6s7S91gFL8ZIQ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Jun 30, 2016 at 09:23:26PM -0700, Doug Anderson wrote:
+On Thu, Jun 30, 2016 at 09:47:32AM +0200, Michal Suchanek wrote:
 
-> Also, something doesn't seem terribly robust about this, buy maybe I'm
-> being paranoid.  If something happens where the timer hasn't fired
-> quickly enough then you might not know that you need to assert the
-> wakeup, right?  I don't think there's a 100% guarantee that a timer
-> will fire and finish running within a certain period of time, is
-> there?
+> So to write such tutorial you have to give some steps to follow which
+> are reasonably likely to succeed on wide variety of boards and require
+> smallest possible changes to the board software.
 
-No, or at least a minimum bound on accuracy - you'd need to set the
-timer for something lower than the actual limit.
+> For mainline this would currently entail
 
---HjNkcEWJ4DMx36DP
+It's been repeatedly suggested to you that the tooling for this stuff
+could use some work.  Please go and put some effort into that rather
+than continuing this thread which is accomplishing nothing.
+
+--gqO6s7S91gFL8ZIQ
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJXdifsAAoJECTWi3JdVIfQ/bQH/i5E4qmz6D9CyvinnTcn0ltO
-PlhllF5RvScG/delCF9lbxuO+FAi6Mmu0z67nJ0mYw3ltWmhsRjfSR0wL5ZnRzxR
-1EzpaJoTTSiI54xkPZ4YAi/taIPtY2DWndNngLoa0PLpDdGo2y3fl+LG/OHe4l0o
-qcO4joknLaU2H1ozMBGPUgz3hEVWoUgKc++8C3T5jtxxqQEJLW5AUtsIPme/cw5T
-n8GpYlRfeQglZ2Vd0r4p0bgYPKpRbMdEZj6PSPFZz65UP2WLfTKFNNbR67L67HQ6
-kuYnIvJMZ++iwZtYbx2zwm+bAQ8SX8y1zvcp9+WqWCvScKtImGTz/kzfk1/Dp9g=
-=LeWY
+iQEcBAEBCAAGBQJXdikLAAoJECTWi3JdVIfQL+wH/izCQYoP2PgYFbHbBoiANmRe
+EBZP6MoOPbYkHuQtSPBErsvX9yNpVgM5FG11px7kaLmUXHFRInJSs0/PFNHEnqMd
+I5YRzH74rCsBAtCAk76jXKjAiKdelw5GAsM0llbk1G8+SZNyEycrQlEZF/HWFUgW
+atZTmP5wDvZBEYxtV7o3qJa0TapZzbj1byf9EsA4/IgotyMqUsQ/QHoMpQH484jI
+OH3uRHhO+vzPCQ2Ii541egRssbGrmn59Q9zC9TyBueccLJossDk/pt4Ei5AvdX7K
+D0MghFFSvAyxRIOFRTQnDpyIr6ozUVK//4yxeUPfH3IPFwwoYb5iGR8KAAaZCqg=
+=T9XC
 -----END PGP SIGNATURE-----
 
---HjNkcEWJ4DMx36DP--
+--gqO6s7S91gFL8ZIQ--

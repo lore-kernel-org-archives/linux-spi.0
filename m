@@ -1,82 +1,68 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 3/3] drivers core: allow id match override when
- manually binding driver
-Date: Fri, 1 Jul 2016 11:36:13 +0200
-Message-ID: <20160701093613.GF6247@sirena.org.uk>
-References: <CAOMqctTQAY0NzTpEqyLyScu8UrSXcF82oLVMM+e2F2WQ225B7A@mail.gmail.com>
- <20160628155107.GP17217@sirena.org.uk>
- <CAOMqctQbFmWv04idz7G+dPOCg7n-E0AQdhGAyohUDBniKvrP_g@mail.gmail.com>
- <20160628183825.GS17217@sirena.org.uk>
- <CAOMqctTNmcg32PFVOZaA99GpFba9GOGOuOqmi3ujzxcHRFZsOA@mail.gmail.com>
- <20160628205736.GE17217@sirena.org.uk>
- <CAOMqctS2xGCgfXschxudcAEYq-mcfPDmFS_pTzCuXa0bFBE0NA@mail.gmail.com>
- <20160629180211.GF6247@sirena.org.uk>
- <CAOMqctR-f+dNBiWk8LEqkeYMhpvACjMi8aH3GpHY==RjfANf8Q@mail.gmail.com>
- <5774E07D.1060706@emutex.com>
+Subject: Re: [PATCH 6/6] spi: st-ssc4: Remove 'no clocking' hack
+Date: Fri, 1 Jul 2016 11:59:43 +0200
+Message-ID: <20160701095943.GL6247@sirena.org.uk>
+References: <20160607111930.10375-1-lee.jones@linaro.org>
+ <20160607111930.10375-7-lee.jones@linaro.org>
+ <20160607151712.GA7510@sirena.org.uk>
+ <20160630205215.GF1707@dell>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="XSfi1pJWPNAvuBPy"
-Cc: Michal Suchanek <hramrach@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	linux-spi <linux-spi@vger.kernel.org>
-To: Dan O'Donovan <dan@emutex.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="J/pvEKOcHgREgBce"
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	kernel@stlinux.com, maxime.coquelin@st.com, patrice.chotard@st.com,
+	mturquette@baylibre.com, sboyd@codeaurora.org,
+	linux-clk@vger.kernel.org, linux-spi@vger.kernel.org
+To: Lee Jones <lee.jones@linaro.org>
+Return-path: <linux-clk-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <5774E07D.1060706@emutex.com>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <20160630205215.GF1707@dell>
+Sender: linux-clk-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---XSfi1pJWPNAvuBPy
+--J/pvEKOcHgREgBce
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Jun 30, 2016 at 10:03:57AM +0100, Dan O'Donovan wrote:
+On Thu, Jun 30, 2016 at 09:52:15PM +0100, Lee Jones wrote:
+> On Tue, 07 Jun 2016, Mark Brown wrote:
+> > On Tue, Jun 07, 2016 at 12:19:30PM +0100, Lee Jones wrote:
+> > > Due to the newly upstreamed 'critical clocks' API we can now
+> > > safely handle clocking in the SPI and I2C drivers without fear
+> > > of catastrophically crippling the running platform.
 
-Please fix your mail client to word wrap within paragraphs at something
-substantially less than 80 columns.  Doing this makes your messages much
-easier to read and reply to.
+> > Acked-by: Mark Brown <broonie@kernel.org>
 
-> In case its relevant, I'd like add to this point by emphasising that
-> there is an increasing number of "maker" boards available, such as UP,
+> We really need to guarantee that this goes in *after* the other
+> patches have landed, and it looks like they're heading in via their
+> own respective trees.  Any chance you can hold this back and submit it
+> via your v4.8-fixes submission?
 
-We know.
+I've not applied this patch and had no intention of applying it, the
+whole point in me acking it was that I was expecting it to get applied
+as part of the series since AFAICT everything needed to go in together.
+Your pattern of acking patches you're expecting to be apply yourself is
+fairly unusual, if it's someone else it's generally safe to assume
+they're expecting the patch to go via another tree.
 
-> which expose an open SPI bus interface on a pin header with the
-> intention that a primary use of that SPI interface is decided at
-> application level.  'spidev' is the adopted method for making that SPI
-> interface accessible to those applications, and those boards do
-> typically ship with Linux kernel that either (i) use
+If this still needs sorting after the merge window please resend it, or
+ideally it can go in along with the rest of the series via whatever path
+that's taking.
 
-It's not the case that these boards (even when used with flying wires)
-universally want or use spidev, people will want to use existing drivers
-for devices that have them, and equally there are a bunch of non-maker
-applications for spidev.  It's not like there is a special kind of
-silicon that only makers use here.
-
-> Anyway, I would love to see a solution integrated for this, whatever
-> the appropriate solution may be.
-
-There's a bunch of work going on to make overlays easier to use with
-connectors which will hopefully help a lot here.  The other big bit that
-seems to be missing is automating the process of going from schematic
-capture for the modules to DTs so that people can design something and
-get the bits needed for the software as trivially as possible.
-
---XSfi1pJWPNAvuBPy
+--J/pvEKOcHgREgBce
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJXdjmMAAoJECTWi3JdVIfQuLAIAICF/27slEepqCC/v/6IQSqQ
-XUi32ETqsMwvawaDSen/WfroEtFHahPl+sz8c2onC7+MoZ4K/RbKW/+JuLqKeXp4
-UaVVVK07D0NRwNkf+KkT1GJObTtdOkE0v8QyFA4GAg/KDMe15qBBJBtHZ76D9trr
-WhiglUYuzTth77NTEF2lNs1chGy6ogCAQjuPXQeg5UIn0BDl9Y9dT1vsO9kEeoC2
-z70jQFPhJ/0Jo+qtzGtAVWK7U9kYZo7XVI6Pry7e65bV9gfl2YErGb2UL70Erxxh
-a7R29lC1AWyPIWFNHZkw/SfnDRP5FTRsTKqSSD+xgOdxXn9i31w99KGQfVRJ/W0=
-=2JeA
+iQEcBAEBCAAGBQJXdj8NAAoJECTWi3JdVIfQWaYH/0HAssuQfDN6WVtDw6B3EkE1
+o6Y3atrxYQQDhPt1t2R1hnB40wwAhyYW8SoicYZhKU91cyn1H5QTmNhGD49ItySM
+qEeLxXZ9El+f/260hxk60o3lQWMei/Tu8631+kNTQjNPKtxgWFv90uQtaMktWDNF
+HNiZJukpyxQfFosymm8nHvimEDo8ani8VH5FILaiWawCJlrCNVOuPoVFIcGlpCW1
+wclps7EGyqbGDfUqUhm5dyCjx6tCDo2SnCfU9m5BlzmJksUMSrUFXIP8+/Uo34Jw
+CNp5Vn8yEkNyN1VOgV9lDW307kWqQOMbfSBRQfvN9ONxmxRmLVW5HIPRfepfM6Y=
+=oFh6
 -----END PGP SIGNATURE-----
 
---XSfi1pJWPNAvuBPy--
+--J/pvEKOcHgREgBce--

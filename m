@@ -1,51 +1,102 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH v5 6/8] efi: load SSTDs from EFI variables
-Date: Sat, 2 Jul 2016 10:18:30 +0200
-Message-ID: <CAMuHMdXG2=1RBaVipW_piizZSWduiUyFLGM+45AnqRttr80S5A@mail.gmail.com>
-References: <1467404352-27101-1-git-send-email-octavian.purdila@intel.com> <1467404352-27101-7-git-send-email-octavian.purdila@intel.com>
+From: Bhaktipriya Shridhar <bhaktipriya96@gmail.com>
+Subject: [PATCH] spi: spi-bfin5xx: Remove deprecated
+ create_singlethread_workqueue
+Date: Sat, 2 Jul 2016 14:12:00 +0530
+Message-ID: <20160702084200.GA27584@Karyakshetra>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-	Len Brown <lenb@kernel.org>,
-	Matt Fleming <matt@codeblueprint.co.uk>,
-	Mark Brown <broonie@kernel.org>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Joel Becker <jlbec@evilplan.org>,
-	ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-	linux-efi@vger.kernel.org, Linux I2C <linux-i2c@vger.kernel.org>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	irina.tirdea@intel.com,
-	Crestez Dan Leonard <leonard.crestez@intel.com>
-To: Octavian Purdila <octavian.purdila@intel.com>
-Return-path: <linux-i2c-owner@vger.kernel.org>
-In-Reply-To: <1467404352-27101-7-git-send-email-octavian.purdila@intel.com>
-Sender: linux-i2c-owner@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Tejun Heo <tj@kernel.org>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Jul 1, 2016 at 10:19 PM, Octavian Purdila
-<octavian.purdila@intel.com> wrote:
-> --- a/drivers/firmware/efi/efi.c
-> +++ b/drivers/firmware/efi/efi.c
+The workqueue "workqueue" serves as a driver message queue.
+It has a single work item(&drv_data->pump_messages) and hence doesn't
+require ordering. Also, it is not being used on a memory reclaim path.
+Hence, the singlethreaded workqueue has been replaced with the use of
+system_wq.
 
-> @@ -195,6 +198,85 @@ static void generic_ops_unregister(void)
->         efivars_unregister(&generic_efivars);
->  }
->
-> +#if IS_ENABLED(CONFIG_ACPI)
-> +#define EFIVAR_SSDT_NAME_MAX   16
-> +static char efivar_ssdt[EFIVAR_SSDT_NAME_MAX];
+System workqueues have been able to handle high level of concurrency
+for a long time now and hence it's not required to have a singlethreaded
+workqueue just to gain concurrency. Unlike a dedicated per-cpu workqueue
+created with create_singlethread_workqueue(), system_wq allows multiple
+work items to overlap executions even on the same CPU; however, a
+per-cpu workqueue doesn't have any CPU locality or global ordering
+guarantee unless the target CPU is explicitly specified and thus the
+increase of local concurrency shouldn't make any difference.
 
-I think efivar_ssdt[] is used from __init functions only, so it can be
-__initdata.
+Work item has been flushed in bfin_spi_destroy_queue() to ensure that there
+are no pending tasks while disconnecting the driver.
 
-Gr{oetje,eeting}s,
+Signed-off-by: Bhaktipriya Shridhar <bhaktipriya96@gmail.com>
+---
+ drivers/spi/spi-bfin5xx.c | 15 ++++-----------
+ 1 file changed, 4 insertions(+), 11 deletions(-)
 
-                        Geert
+diff --git a/drivers/spi/spi-bfin5xx.c b/drivers/spi/spi-bfin5xx.c
+index 1e91325..249c7a3 100644
+--- a/drivers/spi/spi-bfin5xx.c
++++ b/drivers/spi/spi-bfin5xx.c
+@@ -67,8 +67,6 @@ struct bfin_spi_master_data {
+ 	/* BFIN hookup */
+ 	struct bfin5xx_spi_master *master_info;
 
+-	/* Driver message queue */
+-	struct workqueue_struct *workqueue;
+ 	struct work_struct pump_messages;
+ 	spinlock_t lock;
+ 	struct list_head queue;
+@@ -359,7 +357,7 @@ static void bfin_spi_giveback(struct bfin_spi_master_data *drv_data)
+ 	drv_data->cur_msg = NULL;
+ 	drv_data->cur_transfer = NULL;
+ 	drv_data->cur_chip = NULL;
+-	queue_work(drv_data->workqueue, &drv_data->pump_messages);
++	schedule_work(&drv_data->pump_messages);
+ 	spin_unlock_irqrestore(&drv_data->lock, flags);
+
+ 	msg->state = NULL;
+@@ -946,7 +944,7 @@ static int bfin_spi_transfer(struct spi_device *spi, struct spi_message *msg)
+ 	list_add_tail(&msg->queue, &drv_data->queue);
+
+ 	if (drv_data->running && !drv_data->busy)
+-		queue_work(drv_data->workqueue, &drv_data->pump_messages);
++		schedule_work(&drv_data->pump_messages);
+
+ 	spin_unlock_irqrestore(&drv_data->lock, flags);
+
+@@ -1177,12 +1175,7 @@ static int bfin_spi_init_queue(struct bfin_spi_master_data *drv_data)
+ 	tasklet_init(&drv_data->pump_transfers,
+ 		     bfin_spi_pump_transfers, (unsigned long)drv_data);
+
+-	/* init messages workqueue */
+ 	INIT_WORK(&drv_data->pump_messages, bfin_spi_pump_messages);
+-	drv_data->workqueue = create_singlethread_workqueue(
+-				dev_name(drv_data->master->dev.parent));
+-	if (drv_data->workqueue == NULL)
+-		return -EBUSY;
+
+ 	return 0;
+ }
+@@ -1204,7 +1197,7 @@ static int bfin_spi_start_queue(struct bfin_spi_master_data *drv_data)
+ 	drv_data->cur_chip = NULL;
+ 	spin_unlock_irqrestore(&drv_data->lock, flags);
+
+-	queue_work(drv_data->workqueue, &drv_data->pump_messages);
++	schedule_work(&drv_data->pump_messages);
+
+ 	return 0;
+ }
+@@ -1246,7 +1239,7 @@ static int bfin_spi_destroy_queue(struct bfin_spi_master_data *drv_data)
+ 	if (status != 0)
+ 		return status;
+
+-	destroy_workqueue(drv_data->workqueue);
++	flush_work(&drv_data->pump_messages);
+
+ 	return 0;
+ }
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+2.1.4

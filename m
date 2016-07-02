@@ -1,8 +1,8 @@
 From: Bhaktipriya Shridhar <bhaktipriya96-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: spi-txx9: Remove deprecated
+Subject: [PATCH] spi: spi-topcliff-pch: Remove deprecated
  create_singlethread_workqueue
-Date: Sat, 2 Jul 2016 14:20:55 +0530
-Message-ID: <20160702085054.GA28059@Karyakshetra>
+Date: Sat, 2 Jul 2016 14:23:34 +0530
+Message-ID: <20160702085334.GA28440@Karyakshetra>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Cc: Tejun Heo <tj-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
@@ -13,9 +13,10 @@ Content-Disposition: inline
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The workqueue "workqueue" has a single work item(&c->work) and hence
-doesn't require ordering. Also, it is not being used on a memory reclaim
-path.Hence, the singlethreaded workqueue has been replaced with the use of
+The workqueue "wk" serves as a queue for carrying out execution
+of requests. It has a single work item(&drv_data->work) and hence doesn't
+require ordering. Also, it is not being used on a memory reclaim path.
+Hence, the singlethreaded workqueue has been replaced with the use of
 system_wq.
 
 System workqueues have been able to handle high level of concurrency
@@ -27,64 +28,85 @@ per-cpu workqueue doesn't have any CPU locality or global ordering
 guarantee unless the target CPU is explicitly specified and thus the
 increase of local concurrency shouldn't make any difference.
 
-Work item has been flushed in txx9spi_remove() to ensure that
-nothing is pending while disconnecting the driver.
+Work item has been flushed in pch_spi_free_resources() to ensure that
+there are no pending tasks while disconnecting the driver.
 
 Signed-off-by: Bhaktipriya Shridhar <bhaktipriya96-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-txx9.c | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ drivers/spi/spi-topcliff-pch.c | 25 +++----------------------
+ 1 file changed, 3 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/spi/spi-txx9.c b/drivers/spi/spi-txx9.c
-index d69f8f8..7492ea3 100644
---- a/drivers/spi/spi-txx9.c
-+++ b/drivers/spi/spi-txx9.c
-@@ -72,7 +72,6 @@
-
-
- struct txx9spi {
--	struct workqueue_struct	*workqueue;
+diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
+index 93dfcee..621ec19 100644
+--- a/drivers/spi/spi-topcliff-pch.c
++++ b/drivers/spi/spi-topcliff-pch.c
+@@ -133,8 +133,6 @@ struct pch_spi_dma_ctrl {
+  * @io_remap_addr:		The remapped PCI base address
+  * @master:			Pointer to the SPI master structure
+  * @work:			Reference to work queue handler
+- * @wk:				Workqueue for carrying out execution of the
+- *				requests
+  * @wait:			Wait queue for waking up upon receiving an
+  *				interrupt.
+  * @transfer_complete:		Status of SPI Transfer
+@@ -169,7 +167,6 @@ struct pch_spi_data {
+ 	unsigned long io_base_addr;
+ 	struct spi_master *master;
  	struct work_struct work;
- 	spinlock_t lock;	/* protect 'queue' */
- 	struct list_head queue;
-@@ -315,7 +314,7 @@ static int txx9spi_transfer(struct spi_device *spi, struct spi_message *m)
+-	struct workqueue_struct *wk;
+ 	wait_queue_head_t wait;
+ 	u8 transfer_complete;
+ 	u8 bcurrent_msg_processing;
+@@ -517,8 +514,7 @@ static int pch_spi_transfer(struct spi_device *pspi, struct spi_message *pmsg)
 
- 	spin_lock_irqsave(&c->lock, flags);
- 	list_add_tail(&m->queue, &c->queue);
--	queue_work(c->workqueue, &c->work);
-+	schedule_work(&c->work);
- 	spin_unlock_irqrestore(&c->lock, flags);
+ 	dev_dbg(&pspi->dev, "%s - Invoked list_add_tail\n", __func__);
 
- 	return 0;
-@@ -374,10 +373,6 @@ static int txx9spi_probe(struct platform_device *dev)
- 	if (ret)
- 		goto exit;
+-	/* schedule work queue to run */
+-	queue_work(data->wk, &data->work);
++	schedule_work(&data->work);
+ 	dev_dbg(&pspi->dev, "%s - Invoked queue work\n", __func__);
 
--	c->workqueue = create_singlethread_workqueue(
--				dev_name(master->dev.parent));
--	if (!c->workqueue)
--		goto exit_busy;
- 	c->last_chipselect = -1;
+ 	retval = 0;
+@@ -674,7 +670,7 @@ static void pch_spi_nomore_transfer(struct pch_spi_data *data)
+ 		 *more messages)
+ 		 */
+ 		dev_dbg(&data->master->dev, "%s:Invoke queue_work\n", __func__);
+-		queue_work(data->wk, &data->work);
++		schedule_work(&data->work);
+ 	} else if (data->board_dat->suspend_sts ||
+ 		   data->status == STATUS_EXITING) {
+ 		dev_dbg(&data->master->dev,
+@@ -1266,14 +1262,7 @@ static void pch_spi_free_resources(struct pch_spi_board_data *board_dat,
+ {
+ 	dev_dbg(&board_dat->pdev->dev, "%s ENTRY\n", __func__);
 
- 	dev_info(&dev->dev, "at %#llx, irq %d, %dMHz\n",
-@@ -400,8 +395,6 @@ static int txx9spi_probe(struct platform_device *dev)
- exit_busy:
- 	ret = -EBUSY;
- exit:
--	if (c->workqueue)
--		destroy_workqueue(c->workqueue);
- 	clk_disable(c->clk);
- 	spi_master_put(master);
- 	return ret;
-@@ -412,7 +405,7 @@ static int txx9spi_remove(struct platform_device *dev)
- 	struct spi_master *master = platform_get_drvdata(dev);
- 	struct txx9spi *c = spi_master_get_devdata(master);
-
--	destroy_workqueue(c->workqueue);
-+	flush_work(&c->work);
- 	clk_disable(c->clk);
- 	return 0;
+-	/* free workqueue */
+-	if (data->wk != NULL) {
+-		destroy_workqueue(data->wk);
+-		data->wk = NULL;
+-		dev_dbg(&board_dat->pdev->dev,
+-			"%s destroy_workqueue invoked successfully\n",
+-			__func__);
+-	}
++	flush_work(&data->work);
  }
+
+ static int pch_spi_get_resources(struct pch_spi_board_data *board_dat,
+@@ -1283,14 +1272,6 @@ static int pch_spi_get_resources(struct pch_spi_board_data *board_dat,
+
+ 	dev_dbg(&board_dat->pdev->dev, "%s ENTRY\n", __func__);
+
+-	/* create workqueue */
+-	data->wk = create_singlethread_workqueue(KBUILD_MODNAME);
+-	if (!data->wk) {
+-		dev_err(&board_dat->pdev->dev,
+-			"%s create_singlet hread_workqueue failed\n", __func__);
+-		retval = -EBUSY;
+-		goto err_return;
+-	}
+
+ 	/* reset PCH SPI h/w */
+ 	pch_spi_reset(data->master);
 --
 2.1.4
 

@@ -1,79 +1,105 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [GIT PULL] SPI fixes for v4.7
-Date: Sat, 2 Jul 2016 11:08:34 +0200
-Message-ID: <20160702090834.GI6247@sirena.org.uk>
+Subject: Re: [PATCH RESEND] spi: spidev: Allow matching DT compatible strings
+ from ACPI
+Date: Sat, 2 Jul 2016 12:15:10 +0200
+Message-ID: <20160702101510.GJ6247@sirena.org.uk>
+References: <20160629091304.GP1711@lahna.fi.intel.com>
+ <20160629162127.GA6247@sirena.org.uk>
+ <20160629163420.GC1711@lahna.fi.intel.com>
+ <20160629183101.GN6247@sirena.org.uk>
+ <20160629185155.GG1711@lahna.fi.intel.com>
+ <20160629192059.GV6247@sirena.org.uk>
+ <20160630124931.GD23527@lahna.fi.intel.com>
+ <20160701101912.GL23527@lahna.fi.intel.com>
+ <20160701145035.GP6247@sirena.org.uk>
+ <20160702090114.GS23527@lahna.fi.intel.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="qWV9ymU6UYcl1Snp"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="8YDLdOu/DaKXZo9W"
+Cc: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
+In-Reply-To: <20160702090114.GS23527-3PARRvDOhMZrdx17CPfAsdBPR1lH4CV8@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---qWV9ymU6UYcl1Snp
+--8YDLdOu/DaKXZo9W
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-The following changes since commit 4c2e07c6a29e0129e975727b9f57eede813eea85:
+On Sat, Jul 02, 2016 at 12:01:14PM +0300, Mika Westerberg wrote:
 
-  Linux 4.7-rc5 (2016-06-26 17:52:03 -0700)
+> There are these boards for Makers and IoT stuff which basically have pin
+> header where you can connect different low speed peripherals, like
+> sensors and so on. The main point is that you don't always know
+> beforehand what devices will be connected to the board. Now, it seems
 
-are available in the git repository at:
+Sure, that's where most of this crap comes from.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v4.7-rc5
+> that IoT/Maker folks solved this in userspace so that they are not using
+> existing drivers provided by Linux kernel but instead they are using raw
+> access to buses like I2C and SPI, and provide their own "drivers" for
+> those peripherals.
 
-for you to fetch changes up to 2a9b27b326d67dcd1bca066bc35c709da972833c:
+...which is of course a terrible solution which results in a huge amount
+of wheel reinvention and effort duplication.  The best practice here is
+to use overlays, there's people doing active work on standardizing
+connectors for DT at the minute which will help a lot there but
+engagement from the maker community in general seems depressingly poor
+even though some of this stuff ends up getting productized.
+Unfortunately you're going to have to redo all the overlay work for ACPI
+to use it on x86.
 
-  Merge remote-tracking branches 'spi/fix/ep93xx', 'spi/fix/rockchip', 'spi/fix/sunxi' and 'spi/fix/ti-qspi' into spi-linus (2016-06-30 13:17:29 +0100)
+What would be really nice would be if the schematic capture tools were
+able to output DT overlays automatically, that'd make it really simple
+to design an add on board/circuit and get the software support up with
+no bother.
 
-----------------------------------------------------------------
-spi: Fixes for v4.7
+> Now, since spidev is just Linux software abstraction for raw access to
+> the SPI bus I don't think it is good idea to allocate special ACPI ID
+> just for that - it does not describe hardware. So instead I'm thinking
+> we could re-use those Windows ACPI IDs in the driver.
 
-A few small driver-specific fixes for SPI, all in the normal important
-if you hit them category especially the rockchip driver fix which
-addresses a race which has been exposed more frequently with some recent
-performance improvements.
+Yes, exactly - spidev should never appear directly in ACPI or DT since
+our ideas about the best way to control the hardware may change.
 
-----------------------------------------------------------------
-Jean-Jacques Hiblot (1):
-      spi: spi-ti-qspi: Suspend the queue before removing the device
+> With this we can either stick these devices with the boot firmware
+> shipping with boards or alternatively provide overlays which can be
+> loaded to the existing firmware as needed. Users of these boards can
+> then take mainline Linux and use whatever existing IoT userspace
+> components.
 
-Mark Brown (2):
-      Merge branch 'asoc-fix-ep93xx' into spi-fix-ep93xx
-      Merge remote-tracking branches 'spi/fix/ep93xx', 'spi/fix/rockchip', 'spi/fix/sunxi' and 'spi/fix/ti-qspi' into spi-linus
+It really needs to be overlays, not everyone using these boards is doing
+the roll your own driver stuff - they also get used by people developing
+more substantial add on modules for example, or people prototyping more
+real systems who want normal software support.
 
-Michal Suchanek (2):
-      spi: sun4i: fix FIFO limit
-      spi: sunxi: fix transfer timeout
+> I'm going to prepare a new patch adding these ACPI IDs to the spidev
+> early next week.
 
-Tomeu Vizoso (1):
-      spi: rockchip: Signal unfinished DMA transfers
+Please also ensure that we complain loudly when we use them like we do
+for spidev.  We shouldn't be encouraging people to develop software like
+this.
 
- drivers/spi/spi-rockchip.c |  4 +++-
- drivers/spi/spi-sun4i.c    | 23 +++++++++++++++++++----
- drivers/spi/spi-sun6i.c    | 10 +++++++++-
- drivers/spi/spi-ti-qspi.c  |  7 +++++++
- 4 files changed, 38 insertions(+), 6 deletions(-)
-
---qWV9ymU6UYcl1Snp
+--8YDLdOu/DaKXZo9W
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJXd4SQAAoJECTWi3JdVIfQ9ycH/ikKAE0byUHWdFmfGe8MgGA7
-2tc+Uq0H+zFI6iNqfAIQwaO/F0X+9L9zrN9Cm+vL0re9HXzwOGnUzDzyaCZbAY6o
-4yzaW4zzHDF4bPvi97EDJm+krVG6jzD8aefzKGQEMy06YS0mbbzFzCfN+Y4ZosWq
-25lwCvPb/a05b/r2m30Y0RL4Tz9SkPywKCJG3A2n8sX0/i1tc+eWb/himAnRH9VH
-1jEgz6vvuNsQLIOP0GPRTAriZkzIupXWtkEQSKeiDmCFrvHlh4vA5aHEMOvRT1uD
-cxFAec110WgG3GgQX5nOzAlqP6QBk76PTDS1++A1eOIbhvFTbp8NZEbCUaGy3sY=
-=8Fr6
+iQEcBAEBCAAGBQJXd5QdAAoJECTWi3JdVIfQEigH/RatMFHrZkjlhvvghu3lvIjD
+6tmiQGuN2yz9tPgC5A6e7BkjAHGixb8EEkqgBLxnmQZWU7OghJbt5SOGI42SiAWA
+RrpXqpsM3vb3FnoTSoKusezqjMJdNuc2w1jgBsBzxpbZzXFdGSG/wDqlinCPdyxB
+lgBD1QMolf75d978fX6D0mRzeWyHSgrJfZY4M1ZN9vzGm61KMT8VFqVlJN4pYP5I
+of69pS38/QfrxeUJMm46LkwcFJHrzfy8QhzHMug9PjqiV97sylkLf6UCZkCzzELN
+c5b62+bx1R51SrROP4z7jNwzQnUZ/sZ2kZK9bUyryCd45EkkQ0YZFHnMUBKO+Zw=
+=JQAW
 -----END PGP SIGNATURE-----
 
---qWV9ymU6UYcl1Snp--
+--8YDLdOu/DaKXZo9W--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

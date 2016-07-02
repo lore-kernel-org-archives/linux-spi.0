@@ -1,8 +1,8 @@
 From: Bhaktipriya Shridhar <bhaktipriya96-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: spi-topcliff-pch: Remove deprecated
+Subject: [PATCH] spi: spi-mpc52xx-psc: Remove deprecated
  create_singlethread_workqueue
-Date: Sat, 2 Jul 2016 14:23:34 +0530
-Message-ID: <20160702085334.GA28440@Karyakshetra>
+Date: Sat, 2 Jul 2016 14:27:06 +0530
+Message-ID: <20160702085706.GA28703@Karyakshetra>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Cc: Tejun Heo <tj-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
@@ -13,11 +13,10 @@ Content-Disposition: inline
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The workqueue "wk" serves as a queue for carrying out execution
-of requests. It has a single work item(&drv_data->work) and hence doesn't
-require ordering. Also, it is not being used on a memory reclaim path.
-Hence, the singlethreaded workqueue has been replaced with the use of
-system_wq.
+The workqueue "workqueue" has a single work item(&mps->work)
+doesn't require ordering. Also, it is not being used on a memory reclaim
+path. Hence, the singlethreaded workqueue has been replaced with the use
+of system_wq.
 
 System workqueues have been able to handle high level of concurrency
 for a long time now and hence it's not required to have a singlethreaded
@@ -28,85 +27,68 @@ per-cpu workqueue doesn't have any CPU locality or global ordering
 guarantee unless the target CPU is explicitly specified and thus the
 increase of local concurrency shouldn't make any difference.
 
-Work item has been flushed in pch_spi_free_resources() to ensure that
-there are no pending tasks while disconnecting the driver.
+Work item has been flushed in mpc52xx_psc_spi_of_remove() to ensure that
+nothing is pending while disconnecting the driver.
 
 Signed-off-by: Bhaktipriya Shridhar <bhaktipriya96-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-topcliff-pch.c | 25 +++----------------------
- 1 file changed, 3 insertions(+), 22 deletions(-)
+ drivers/spi/spi-mpc52xx-psc.c | 17 +++--------------
+ 1 file changed, 3 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-index 93dfcee..621ec19 100644
---- a/drivers/spi/spi-topcliff-pch.c
-+++ b/drivers/spi/spi-topcliff-pch.c
-@@ -133,8 +133,6 @@ struct pch_spi_dma_ctrl {
-  * @io_remap_addr:		The remapped PCI base address
-  * @master:			Pointer to the SPI master structure
-  * @work:			Reference to work queue handler
-- * @wk:				Workqueue for carrying out execution of the
-- *				requests
-  * @wait:			Wait queue for waking up upon receiving an
-  *				interrupt.
-  * @transfer_complete:		Status of SPI Transfer
-@@ -169,7 +167,6 @@ struct pch_spi_data {
- 	unsigned long io_base_addr;
- 	struct spi_master *master;
+diff --git a/drivers/spi/spi-mpc52xx-psc.c b/drivers/spi/spi-mpc52xx-psc.c
+index 72d11eb..42a8b85 100644
+--- a/drivers/spi/spi-mpc52xx-psc.c
++++ b/drivers/spi/spi-mpc52xx-psc.c
+@@ -42,7 +42,6 @@ struct mpc52xx_psc_spi {
+ 	u8 bits_per_word;
+ 	u8 busy;
+
+-	struct workqueue_struct *workqueue;
  	struct work_struct work;
--	struct workqueue_struct *wk;
- 	wait_queue_head_t wait;
- 	u8 transfer_complete;
- 	u8 bcurrent_msg_processing;
-@@ -517,8 +514,7 @@ static int pch_spi_transfer(struct spi_device *pspi, struct spi_message *pmsg)
 
- 	dev_dbg(&pspi->dev, "%s - Invoked list_add_tail\n", __func__);
+ 	struct list_head queue;
+@@ -299,7 +298,7 @@ static int mpc52xx_psc_spi_transfer(struct spi_device *spi,
 
--	/* schedule work queue to run */
--	queue_work(data->wk, &data->work);
-+	schedule_work(&data->work);
- 	dev_dbg(&pspi->dev, "%s - Invoked queue work\n", __func__);
+ 	spin_lock_irqsave(&mps->lock, flags);
+ 	list_add_tail(&m->queue, &mps->queue);
+-	queue_work(mps->workqueue, &mps->work);
++	schedule_work(&mps->work);
+ 	spin_unlock_irqrestore(&mps->lock, flags);
 
- 	retval = 0;
-@@ -674,7 +670,7 @@ static void pch_spi_nomore_transfer(struct pch_spi_data *data)
- 		 *more messages)
- 		 */
- 		dev_dbg(&data->master->dev, "%s:Invoke queue_work\n", __func__);
--		queue_work(data->wk, &data->work);
-+		schedule_work(&data->work);
- 	} else if (data->board_dat->suspend_sts ||
- 		   data->status == STATUS_EXITING) {
- 		dev_dbg(&data->master->dev,
-@@ -1266,14 +1262,7 @@ static void pch_spi_free_resources(struct pch_spi_board_data *board_dat,
- {
- 	dev_dbg(&board_dat->pdev->dev, "%s ENTRY\n", __func__);
+ 	return 0;
+@@ -425,21 +424,12 @@ static int mpc52xx_psc_spi_do_probe(struct device *dev, u32 regaddr,
+ 	INIT_WORK(&mps->work, mpc52xx_psc_spi_work);
+ 	INIT_LIST_HEAD(&mps->queue);
 
--	/* free workqueue */
--	if (data->wk != NULL) {
--		destroy_workqueue(data->wk);
--		data->wk = NULL;
--		dev_dbg(&board_dat->pdev->dev,
--			"%s destroy_workqueue invoked successfully\n",
--			__func__);
+-	mps->workqueue = create_singlethread_workqueue(
+-		dev_name(master->dev.parent));
+-	if (mps->workqueue == NULL) {
+-		ret = -EBUSY;
+-		goto free_irq;
 -	}
-+	flush_work(&data->work);
- }
+-
+ 	ret = spi_register_master(master);
+ 	if (ret < 0)
+-		goto unreg_master;
++		goto free_irq;
 
- static int pch_spi_get_resources(struct pch_spi_board_data *board_dat,
-@@ -1283,14 +1272,6 @@ static int pch_spi_get_resources(struct pch_spi_board_data *board_dat,
+ 	return ret;
 
- 	dev_dbg(&board_dat->pdev->dev, "%s ENTRY\n", __func__);
+-unreg_master:
+-	destroy_workqueue(mps->workqueue);
+ free_irq:
+ 	free_irq(mps->irq, mps);
+ free_master:
+@@ -484,8 +474,7 @@ static int mpc52xx_psc_spi_of_remove(struct platform_device *op)
+ 	struct spi_master *master = spi_master_get(platform_get_drvdata(op));
+ 	struct mpc52xx_psc_spi *mps = spi_master_get_devdata(master);
 
--	/* create workqueue */
--	data->wk = create_singlethread_workqueue(KBUILD_MODNAME);
--	if (!data->wk) {
--		dev_err(&board_dat->pdev->dev,
--			"%s create_singlet hread_workqueue failed\n", __func__);
--		retval = -EBUSY;
--		goto err_return;
--	}
-
- 	/* reset PCH SPI h/w */
- 	pch_spi_reset(data->master);
+-	flush_workqueue(mps->workqueue);
+-	destroy_workqueue(mps->workqueue);
++	flush_work(&mps->work);
+ 	spi_unregister_master(master);
+ 	free_irq(mps->irq, mps);
+ 	if (mps->psc)
 --
 2.1.4
 

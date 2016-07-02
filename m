@@ -1,8 +1,8 @@
 From: Bhaktipriya Shridhar <bhaktipriya96-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: spi-mpc52xx-psc: Remove deprecated
+Subject: [PATCH] spi: spi-bfin-sport: Remove deprecated
  create_singlethread_workqueue
-Date: Sat, 2 Jul 2016 14:27:06 +0530
-Message-ID: <20160702085706.GA28703@Karyakshetra>
+Date: Sat, 2 Jul 2016 14:29:41 +0530
+Message-ID: <20160702085941.GA28900@Karyakshetra>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Cc: Tejun Heo <tj-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
@@ -13,10 +13,11 @@ Content-Disposition: inline
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The workqueue "workqueue" has a single work item(&mps->work)
-doesn't require ordering. Also, it is not being used on a memory reclaim
-path. Hence, the singlethreaded workqueue has been replaced with the use
-of system_wq.
+The workqueue "workqueue" serves as a driver message queue.
+It has a single work item(&drv_data->pump_messages) and hence doesn't
+require ordering. Also, it is not being used on a memory reclaim path.
+Hence, the singlethreaded workqueue has been replaced with the use of
+system_wq.
 
 System workqueues have been able to handle high level of concurrency
 for a long time now and hence it's not required to have a singlethreaded
@@ -27,68 +28,76 @@ per-cpu workqueue doesn't have any CPU locality or global ordering
 guarantee unless the target CPU is explicitly specified and thus the
 increase of local concurrency shouldn't make any difference.
 
-Work item has been flushed in mpc52xx_psc_spi_of_remove() to ensure that
-nothing is pending while disconnecting the driver.
+Work item has been flushed in bfin_sport_spi_destroy_queue() to ensure
+that there are no pending tasks while disconnecting the driver.
 
 Signed-off-by: Bhaktipriya Shridhar <bhaktipriya96-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-mpc52xx-psc.c | 17 +++--------------
- 1 file changed, 3 insertions(+), 14 deletions(-)
+ drivers/spi/spi-bfin-sport.c | 15 ++++-----------
+ 1 file changed, 4 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/spi/spi-mpc52xx-psc.c b/drivers/spi/spi-mpc52xx-psc.c
-index 72d11eb..42a8b85 100644
---- a/drivers/spi/spi-mpc52xx-psc.c
-+++ b/drivers/spi/spi-mpc52xx-psc.c
-@@ -42,7 +42,6 @@ struct mpc52xx_psc_spi {
- 	u8 bits_per_word;
- 	u8 busy;
+diff --git a/drivers/spi/spi-bfin-sport.c b/drivers/spi/spi-bfin-sport.c
+index 6c96755..01d0ba9 100644
+--- a/drivers/spi/spi-bfin-sport.c
++++ b/drivers/spi/spi-bfin-sport.c
+@@ -64,8 +64,6 @@ struct bfin_sport_spi_master_data {
+ 	/* Pin request list */
+ 	u16 *pin_req;
 
+-	/* Driver message queue */
 -	struct workqueue_struct *workqueue;
- 	struct work_struct work;
-
+ 	struct work_struct pump_messages;
+ 	spinlock_t lock;
  	struct list_head queue;
-@@ -299,7 +298,7 @@ static int mpc52xx_psc_spi_transfer(struct spi_device *spi,
+@@ -300,7 +298,7 @@ bfin_sport_spi_giveback(struct bfin_sport_spi_master_data *drv_data)
+ 	drv_data->cur_msg = NULL;
+ 	drv_data->cur_transfer = NULL;
+ 	drv_data->cur_chip = NULL;
+-	queue_work(drv_data->workqueue, &drv_data->pump_messages);
++	schedule_work(&drv_data->pump_messages);
+ 	spin_unlock_irqrestore(&drv_data->lock, flags);
 
- 	spin_lock_irqsave(&mps->lock, flags);
- 	list_add_tail(&m->queue, &mps->queue);
--	queue_work(mps->workqueue, &mps->work);
-+	schedule_work(&mps->work);
- 	spin_unlock_irqrestore(&mps->lock, flags);
+ 	if (!drv_data->cs_change)
+@@ -556,7 +554,7 @@ bfin_sport_spi_transfer(struct spi_device *spi, struct spi_message *msg)
+ 	list_add_tail(&msg->queue, &drv_data->queue);
+
+ 	if (drv_data->run && !drv_data->busy)
+-		queue_work(drv_data->workqueue, &drv_data->pump_messages);
++		schedule_work(&drv_data->pump_messages);
+
+ 	spin_unlock_irqrestore(&drv_data->lock, flags);
+
+@@ -666,12 +664,7 @@ bfin_sport_spi_init_queue(struct bfin_sport_spi_master_data *drv_data)
+ 	tasklet_init(&drv_data->pump_transfers,
+ 		     bfin_sport_spi_pump_transfers, (unsigned long)drv_data);
+
+-	/* init messages workqueue */
+ 	INIT_WORK(&drv_data->pump_messages, bfin_sport_spi_pump_messages);
+-	drv_data->workqueue =
+-	    create_singlethread_workqueue(dev_name(drv_data->master->dev.parent));
+-	if (drv_data->workqueue == NULL)
+-		return -EBUSY;
 
  	return 0;
-@@ -425,21 +424,12 @@ static int mpc52xx_psc_spi_do_probe(struct device *dev, u32 regaddr,
- 	INIT_WORK(&mps->work, mpc52xx_psc_spi_work);
- 	INIT_LIST_HEAD(&mps->queue);
+ }
+@@ -694,7 +687,7 @@ bfin_sport_spi_start_queue(struct bfin_sport_spi_master_data *drv_data)
+ 	drv_data->cur_chip = NULL;
+ 	spin_unlock_irqrestore(&drv_data->lock, flags);
 
--	mps->workqueue = create_singlethread_workqueue(
--		dev_name(master->dev.parent));
--	if (mps->workqueue == NULL) {
--		ret = -EBUSY;
--		goto free_irq;
--	}
--
- 	ret = spi_register_master(master);
- 	if (ret < 0)
--		goto unreg_master;
-+		goto free_irq;
+-	queue_work(drv_data->workqueue, &drv_data->pump_messages);
++	schedule_work(&drv_data->pump_messages);
 
- 	return ret;
+ 	return 0;
+ }
+@@ -738,7 +731,7 @@ bfin_sport_spi_destroy_queue(struct bfin_sport_spi_master_data *drv_data)
+ 	if (status)
+ 		return status;
 
--unreg_master:
--	destroy_workqueue(mps->workqueue);
- free_irq:
- 	free_irq(mps->irq, mps);
- free_master:
-@@ -484,8 +474,7 @@ static int mpc52xx_psc_spi_of_remove(struct platform_device *op)
- 	struct spi_master *master = spi_master_get(platform_get_drvdata(op));
- 	struct mpc52xx_psc_spi *mps = spi_master_get_devdata(master);
+-	destroy_workqueue(drv_data->workqueue);
++	flush_work(&drv_data->pump_messages);
 
--	flush_workqueue(mps->workqueue);
--	destroy_workqueue(mps->workqueue);
-+	flush_work(&mps->work);
- 	spi_unregister_master(master);
- 	free_irq(mps->irq, mps);
- 	if (mps->psc)
+ 	return 0;
+ }
 --
 2.1.4
 

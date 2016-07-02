@@ -1,106 +1,79 @@
-From: Bhaktipriya Shridhar <bhaktipriya96-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: spi-bfin-sport: Remove deprecated
- create_singlethread_workqueue
-Date: Sat, 2 Jul 2016 14:29:41 +0530
-Message-ID: <20160702085941.GA28900@Karyakshetra>
+From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [PATCH RESEND] spi: spidev: Allow matching DT compatible strings
+ from ACPI
+Date: Sat, 2 Jul 2016 12:01:14 +0300
+Message-ID: <20160702090114.GS23527@lahna.fi.intel.com>
+References: <20160628161822.GQ17217@sirena.org.uk>
+ <20160629091304.GP1711@lahna.fi.intel.com>
+ <20160629162127.GA6247@sirena.org.uk>
+ <20160629163420.GC1711@lahna.fi.intel.com>
+ <20160629183101.GN6247@sirena.org.uk>
+ <20160629185155.GG1711@lahna.fi.intel.com>
+ <20160629192059.GV6247@sirena.org.uk>
+ <20160630124931.GD23527@lahna.fi.intel.com>
+ <20160701101912.GL23527@lahna.fi.intel.com>
+ <20160701145035.GP6247@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: Tejun Heo <tj-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
+In-Reply-To: <20160701145035.GP6247-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The workqueue "workqueue" serves as a driver message queue.
-It has a single work item(&drv_data->pump_messages) and hence doesn't
-require ordering. Also, it is not being used on a memory reclaim path.
-Hence, the singlethreaded workqueue has been replaced with the use of
-system_wq.
+On Fri, Jul 01, 2016 at 04:50:35PM +0200, Mark Brown wrote:
+> On Fri, Jul 01, 2016 at 01:19:12PM +0300, Mika Westerberg wrote:
+> 
+> > Windows seems to have a similar spidev raw interface in their MITT test
+> > suite here:
+> 
+> > https://msdn.microsoft.com/fi-fi/windows/hardware/drivers/spb/spi-tests-in-mitt
+> 
+> > It exposes three ACPI SPI devices with ACPI IDs of SPT0001, SPT0002 and
+> > SPT0003. I'm thinking that instead of using the existing DT compatible
+> > strings we could use these ACPI IDs in the driver.
+> 
+> Ugh :(  But yes, if there's existing ACPI IDs for this functionality
+> clearly we should support those.  Probably with an equivalent warning
+> about how they're only for non-production systems.
 
-System workqueues have been able to handle high level of concurrency
-for a long time now and hence it's not required to have a singlethreaded
-workqueue just to gain concurrency. Unlike a dedicated per-cpu workqueue
-created with create_singlethread_workqueue(), system_wq allows multiple
-work items to overlap executions even on the same CPU; however, a
-per-cpu workqueue doesn't have any CPU locality or global ordering
-guarantee unless the target CPU is explicitly specified and thus the
-increase of local concurrency shouldn't make any difference.
+OK, good :)
 
-Work item has been flushed in bfin_sport_spi_destroy_queue() to ensure
-that there are no pending tasks while disconnecting the driver.
+Let me explain some background why I'm doing this. Maybe it brings
+better alternatives.
 
-Signed-off-by: Bhaktipriya Shridhar <bhaktipriya96-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spi-bfin-sport.c | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+There are these boards for Makers and IoT stuff which basically have pin
+header where you can connect different low speed peripherals, like
+sensors and so on. The main point is that you don't always know
+beforehand what devices will be connected to the board. Now, it seems
+that IoT/Maker folks solved this in userspace so that they are not using
+existing drivers provided by Linux kernel but instead they are using raw
+access to buses like I2C and SPI, and provide their own "drivers" for
+those peripherals.
 
-diff --git a/drivers/spi/spi-bfin-sport.c b/drivers/spi/spi-bfin-sport.c
-index 6c96755..01d0ba9 100644
---- a/drivers/spi/spi-bfin-sport.c
-+++ b/drivers/spi/spi-bfin-sport.c
-@@ -64,8 +64,6 @@ struct bfin_sport_spi_master_data {
- 	/* Pin request list */
- 	u16 *pin_req;
+For I2C it is easy because we have i2c-dev and it does not require any
+kind of firmware support. For SPI we need to be more careful because of
+bus signals like chip selects. Instead of writing out-of-tree board files
+to provide proper configuration for SPI (spidev) we can at least try to
+take advantage of the boot firmware, like ACPI which already has
+a way to describe devices connected to SPI bus.
 
--	/* Driver message queue */
--	struct workqueue_struct *workqueue;
- 	struct work_struct pump_messages;
- 	spinlock_t lock;
- 	struct list_head queue;
-@@ -300,7 +298,7 @@ bfin_sport_spi_giveback(struct bfin_sport_spi_master_data *drv_data)
- 	drv_data->cur_msg = NULL;
- 	drv_data->cur_transfer = NULL;
- 	drv_data->cur_chip = NULL;
--	queue_work(drv_data->workqueue, &drv_data->pump_messages);
-+	schedule_work(&drv_data->pump_messages);
- 	spin_unlock_irqrestore(&drv_data->lock, flags);
+Now, since spidev is just Linux software abstraction for raw access to
+the SPI bus I don't think it is good idea to allocate special ACPI ID
+just for that - it does not describe hardware. So instead I'm thinking
+we could re-use those Windows ACPI IDs in the driver.
 
- 	if (!drv_data->cs_change)
-@@ -556,7 +554,7 @@ bfin_sport_spi_transfer(struct spi_device *spi, struct spi_message *msg)
- 	list_add_tail(&msg->queue, &drv_data->queue);
+With this we can either stick these devices with the boot firmware
+shipping with boards or alternatively provide overlays which can be
+loaded to the existing firmware as needed. Users of these boards can
+then take mainline Linux and use whatever existing IoT userspace
+components.
 
- 	if (drv_data->run && !drv_data->busy)
--		queue_work(drv_data->workqueue, &drv_data->pump_messages);
-+		schedule_work(&drv_data->pump_messages);
-
- 	spin_unlock_irqrestore(&drv_data->lock, flags);
-
-@@ -666,12 +664,7 @@ bfin_sport_spi_init_queue(struct bfin_sport_spi_master_data *drv_data)
- 	tasklet_init(&drv_data->pump_transfers,
- 		     bfin_sport_spi_pump_transfers, (unsigned long)drv_data);
-
--	/* init messages workqueue */
- 	INIT_WORK(&drv_data->pump_messages, bfin_sport_spi_pump_messages);
--	drv_data->workqueue =
--	    create_singlethread_workqueue(dev_name(drv_data->master->dev.parent));
--	if (drv_data->workqueue == NULL)
--		return -EBUSY;
-
- 	return 0;
- }
-@@ -694,7 +687,7 @@ bfin_sport_spi_start_queue(struct bfin_sport_spi_master_data *drv_data)
- 	drv_data->cur_chip = NULL;
- 	spin_unlock_irqrestore(&drv_data->lock, flags);
-
--	queue_work(drv_data->workqueue, &drv_data->pump_messages);
-+	schedule_work(&drv_data->pump_messages);
-
- 	return 0;
- }
-@@ -738,7 +731,7 @@ bfin_sport_spi_destroy_queue(struct bfin_sport_spi_master_data *drv_data)
- 	if (status)
- 		return status;
-
--	destroy_workqueue(drv_data->workqueue);
-+	flush_work(&drv_data->pump_messages);
-
- 	return 0;
- }
---
-2.1.4
-
+I'm going to prepare a new patch adding these ACPI IDs to the spidev
+early next week.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,21 +1,23 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pxa2xx-pci: Do a specific setup in a separate function" to the spi tree
-Date: Mon, 04 Jul 2016 16:17:34 +0200
-Message-ID: <E1bK4go-0006K3-GS@finisterre>
-References: <1467625467-103785-2-git-send-email-andriy.shevchenko@linux.intel.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Applied "spi: pxa2xx: Add support for Intel Kaby Lake PCH-H" to the spi tree
+Date: Mon, 04 Jul 2016 16:17:41 +0200
+Message-ID: <E1bK4gv-0006Kt-DI@finisterre>
+References: <1467627667-63196-1-git-send-email-mika.westerberg@linux.intel.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>
+To: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1467625467-103785-2-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <1467627667-63196-1-git-send-email-mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: pxa2xx-pci: Do a specific setup in a separate function
+   spi: pxa2xx: Add support for Intel Kaby Lake PCH-H
 
 has been applied to the spi tree at
 
@@ -40,166 +42,34 @@ to this mail.
 Thanks,
 Mark
 
->From 743485ea3bee852fa816a2ec6c64b3d500e39895 Mon Sep 17 00:00:00 2001
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Mon, 4 Jul 2016 12:44:24 +0300
-Subject: [PATCH] spi: pxa2xx-pci: Do a specific setup in a separate function
+>From 704d2b07946fcae68afd86c222fde129e11f6bbc Mon Sep 17 00:00:00 2001
+From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Date: Mon, 4 Jul 2016 13:21:07 +0300
+Subject: [PATCH] spi: pxa2xx: Add support for Intel Kaby Lake PCH-H
 
-Move LPSS specific setup to a separate function. It makes ->probe() cleaner as
-well as allows extend the driver for different variation of hardware in the
-future, e.g. for Intel Merrifield.
+Kaby Lake PCH-H has the same SPI host controller as Skylake. Add these new
+PCI IDs to the list of supported devices.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Signed-off-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-pxa2xx-pci.c | 77 +++++++++++++++++++++++++-------------------
- 1 file changed, 44 insertions(+), 33 deletions(-)
+ drivers/spi/spi-pxa2xx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
-index 5202de94f792..8d58598c325d 100644
---- a/drivers/spi/spi-pxa2xx-pci.c
-+++ b/drivers/spi/spi-pxa2xx-pci.c
-@@ -29,8 +29,11 @@ struct pxa_spi_info {
- 	unsigned long max_clk_rate;
- 
- 	/* DMA channel request parameters */
-+	bool (*dma_filter)(struct dma_chan *chan, void *param);
- 	void *tx_param;
- 	void *rx_param;
-+
-+	int (*setup)(struct pci_dev *pdev, struct pxa_spi_info *c);
- };
- 
- static struct dw_dma_slave byt_tx_param = { .dst_id = 0 };
-@@ -57,6 +60,35 @@ static bool lpss_dma_filter(struct dma_chan *chan, void *param)
- 	return true;
- }
- 
-+static int lpss_spi_setup(struct pci_dev *dev, struct pxa_spi_info *c)
-+{
-+	struct pci_dev *dma_dev;
-+
-+	c->num_chipselect = 1;
-+	c->max_clk_rate = 50000000;
-+
-+	dma_dev = pci_get_slot(dev->bus, PCI_DEVFN(PCI_SLOT(dev->devfn), 0));
-+
-+	if (c->tx_param) {
-+		struct dw_dma_slave *slave = c->tx_param;
-+
-+		slave->dma_dev = &dma_dev->dev;
-+		slave->m_master = 0;
-+		slave->p_master = 1;
-+	}
-+
-+	if (c->rx_param) {
-+		struct dw_dma_slave *slave = c->rx_param;
-+
-+		slave->dma_dev = &dma_dev->dev;
-+		slave->m_master = 0;
-+		slave->p_master = 1;
-+	}
-+
-+	c->dma_filter = lpss_dma_filter;
-+	return 0;
-+}
-+
- static struct pxa_spi_info spi_info_configs[] = {
- 	[PORT_CE4100] = {
- 		.type = PXA25x_SSP,
-@@ -67,32 +99,28 @@ static struct pxa_spi_info spi_info_configs[] = {
- 	[PORT_BYT] = {
- 		.type = LPSS_BYT_SSP,
- 		.port_id = 0,
--		.num_chipselect = 1,
--		.max_clk_rate = 50000000,
-+		.setup = lpss_spi_setup,
- 		.tx_param = &byt_tx_param,
- 		.rx_param = &byt_rx_param,
- 	},
- 	[PORT_BSW0] = {
- 		.type = LPSS_BYT_SSP,
- 		.port_id = 0,
--		.num_chipselect = 1,
--		.max_clk_rate = 50000000,
-+		.setup = lpss_spi_setup,
- 		.tx_param = &bsw0_tx_param,
- 		.rx_param = &bsw0_rx_param,
- 	},
- 	[PORT_BSW1] = {
- 		.type = LPSS_BYT_SSP,
- 		.port_id = 1,
--		.num_chipselect = 1,
--		.max_clk_rate = 50000000,
-+		.setup = lpss_spi_setup,
- 		.tx_param = &bsw1_tx_param,
- 		.rx_param = &bsw1_rx_param,
- 	},
- 	[PORT_BSW2] = {
- 		.type = LPSS_BYT_SSP,
- 		.port_id = 2,
--		.num_chipselect = 1,
--		.max_clk_rate = 50000000,
-+		.setup = lpss_spi_setup,
- 		.tx_param = &bsw2_tx_param,
- 		.rx_param = &bsw2_rx_param,
- 	},
-@@ -105,8 +133,7 @@ static struct pxa_spi_info spi_info_configs[] = {
- 	[PORT_LPT] = {
- 		.type = LPSS_LPT_SSP,
- 		.port_id = 0,
--		.num_chipselect = 1,
--		.max_clk_rate = 50000000,
-+		.setup = lpss_spi_setup,
- 		.tx_param = &lpt_tx_param,
- 		.rx_param = &lpt_rx_param,
- 	},
-@@ -122,7 +149,6 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
- 	struct ssp_device *ssp;
- 	struct pxa_spi_info *c;
- 	char buf[40];
--	struct pci_dev *dma_dev;
- 
- 	ret = pcim_enable_device(dev);
- 	if (ret)
-@@ -133,30 +159,15 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
- 		return ret;
- 
- 	c = &spi_info_configs[ent->driver_data];
--
--	memset(&spi_pdata, 0, sizeof(spi_pdata));
--	spi_pdata.num_chipselect = (c->num_chipselect > 0) ?
--					c->num_chipselect : dev->devfn;
--
--	dma_dev = pci_get_slot(dev->bus, PCI_DEVFN(PCI_SLOT(dev->devfn), 0));
--
--	if (c->tx_param) {
--		struct dw_dma_slave *slave = c->tx_param;
--
--		slave->dma_dev = &dma_dev->dev;
--		slave->m_master = 0;
--		slave->p_master = 1;
--	}
--
--	if (c->rx_param) {
--		struct dw_dma_slave *slave = c->rx_param;
--
--		slave->dma_dev = &dma_dev->dev;
--		slave->m_master = 0;
--		slave->p_master = 1;
-+	if (c->setup) {
-+		ret = c->setup(dev, c);
-+		if (ret)
-+			return ret;
- 	}
- 
--	spi_pdata.dma_filter = lpss_dma_filter;
-+	memset(&spi_pdata, 0, sizeof(spi_pdata));
-+	spi_pdata.num_chipselect = (c->num_chipselect > 0) ? c->num_chipselect : dev->devfn;
-+	spi_pdata.dma_filter = c->dma_filter;
- 	spi_pdata.tx_param = c->tx_param;
- 	spi_pdata.rx_param = c->rx_param;
- 	spi_pdata.enable_dma = c->rx_param && c->tx_param;
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 3e90a4ce668b..2f6272af5daf 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1394,6 +1394,9 @@ static const struct pci_device_id pxa2xx_spi_pci_compound_match[] = {
+ 	/* SPT-H */
+ 	{ PCI_VDEVICE(INTEL, 0xa129), LPSS_SPT_SSP },
+ 	{ PCI_VDEVICE(INTEL, 0xa12a), LPSS_SPT_SSP },
++	/* KBL-H */
++	{ PCI_VDEVICE(INTEL, 0xa2a9), LPSS_SPT_SSP },
++	{ PCI_VDEVICE(INTEL, 0xa2aa), LPSS_SPT_SSP },
+ 	/* BXT A-Step */
+ 	{ PCI_VDEVICE(INTEL, 0x0ac2), LPSS_BXT_SSP },
+ 	{ PCI_VDEVICE(INTEL, 0x0ac4), LPSS_BXT_SSP },
 -- 
 2.8.1
 

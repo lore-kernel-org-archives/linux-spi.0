@@ -1,57 +1,114 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: spidev: Add ACPI probing support
-Date: Mon, 4 Jul 2016 15:29:44 +0200
-Message-ID: <20160704132944.GE6247@sirena.org.uk>
-References: <1467628683-5783-1-git-send-email-mika.westerberg@linux.intel.com>
- <20160704125600.GB6247@sirena.org.uk>
- <20160704130806.GB23527@lahna.fi.intel.com>
- <20160704132048.GC6247@sirena.org.uk>
- <20160704132736.GD23527@lahna.fi.intel.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="mg8cdxx98+SFDaXr"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+Subject: Applied "spi: pxa2xx-pci: Sort header block alphabetically" to the spi tree
+Date: Mon, 04 Jul 2016 16:17:14 +0200
+Message-ID: <E1bK4gU-0006Hc-Fz@finisterre>
+References: <1467625467-103785-5-git-send-email-andriy.shevchenko@linux.intel.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20160704132736.GD23527-3PARRvDOhMZrdx17CPfAsdBPR1lH4CV8@public.gmane.org>
+In-Reply-To: <1467625467-103785-5-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---mg8cdxx98+SFDaXr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: pxa2xx-pci: Sort header block alphabetically
 
-On Mon, Jul 04, 2016 at 04:27:36PM +0300, Mika Westerberg wrote:
-> On Mon, Jul 04, 2016 at 03:20:48PM +0200, Mark Brown wrote:
+has been applied to the spi tree at
 
-> > I'm trying to suggest that it'd be nice to write the code to check the
-> > IDs and only warns when appropriate.  :)
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> Ah right, got it now.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> I'll update the patch then to check the IDs first.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Thanks.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---mg8cdxx98+SFDaXr
-Content-Type: application/pgp-signature; name="signature.asc"
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Thanks,
+Mark
 
-iQEcBAEBCAAGBQJXemTGAAoJECTWi3JdVIfQD4EH/As5tC7AuHeHPF9FRix0OgpA
-35IYT2CMx7waPMGAcHWnLvkW3AV6bc0rg5PmDv2h6jOL0JMXbKZZ39NPQsTMqAaq
-QHGtMCH2zIdgWx3V7An0ZxX2XjXeFXnX8g/FvkNtZFdBujlfroSeIDzrhutM1Trg
-B/3DyQqD6ZMpEwEOhOLgA2sjyrI3ej7cjcOXqyrQDw4zTBzrFwxOhx4tMLQnYrgG
-92YfR4fQxV8fRBsQ9a4JTNt/fYfOA3crF2ZmIVHjva7O/buoTUKp966oJ3M21qfu
-zAKl3rhUGOq+G4KrhgFmx5kbyyGEwyMjmrX8cz+GfdIhF4hpgfvL8PsQqHY7dnM=
-=FVlq
------END PGP SIGNATURE-----
+>From e379d2cd35ca0a9e2a2578f40cf75632266f5741 Mon Sep 17 00:00:00 2001
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Date: Mon, 4 Jul 2016 12:44:27 +0300
+Subject: [PATCH] spi: pxa2xx-pci: Sort header block alphabetically
 
---mg8cdxx98+SFDaXr--
+Simply sort header block alphabetically.
+
+While here, sort devices by PCI ID and add a copyright line for Intel.
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-pxa2xx-pci.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
+index 4e3c5a7d9a96..5953edc86ec8 100644
+--- a/drivers/spi/spi-pxa2xx-pci.c
++++ b/drivers/spi/spi-pxa2xx-pci.c
+@@ -1,25 +1,26 @@
+ /*
+  * CE4100's SPI device is more or less the same one as found on PXA
+  *
++ * Copyright (C) 2016, Intel Corporation
+  */
++#include <linux/clk-provider.h>
++#include <linux/module.h>
++#include <linux/of_device.h>
+ #include <linux/pci.h>
+ #include <linux/platform_device.h>
+-#include <linux/of_device.h>
+-#include <linux/module.h>
+ #include <linux/spi/pxa2xx_spi.h>
+-#include <linux/clk-provider.h>
+ 
+ #include <linux/dmaengine.h>
+ #include <linux/platform_data/dma-dw.h>
+ 
+ enum {
+-	PORT_CE4100,
++	PORT_QUARK_X1000,
+ 	PORT_BYT,
+ 	PORT_MRFLD,
+ 	PORT_BSW0,
+ 	PORT_BSW1,
+ 	PORT_BSW2,
+-	PORT_QUARK_X1000,
++	PORT_CE4100,
+ 	PORT_LPT,
+ };
+ 
+@@ -242,13 +243,13 @@ static void pxa2xx_spi_pci_remove(struct pci_dev *dev)
+ }
+ 
+ static const struct pci_device_id pxa2xx_spi_pci_devices[] = {
+-	{ PCI_VDEVICE(INTEL, 0x2e6a), PORT_CE4100 },
+ 	{ PCI_VDEVICE(INTEL, 0x0935), PORT_QUARK_X1000 },
+ 	{ PCI_VDEVICE(INTEL, 0x0f0e), PORT_BYT },
+ 	{ PCI_VDEVICE(INTEL, 0x1194), PORT_MRFLD },
+ 	{ PCI_VDEVICE(INTEL, 0x228e), PORT_BSW0 },
+ 	{ PCI_VDEVICE(INTEL, 0x2290), PORT_BSW1 },
+ 	{ PCI_VDEVICE(INTEL, 0x22ac), PORT_BSW2 },
++	{ PCI_VDEVICE(INTEL, 0x2e6a), PORT_CE4100 },
+ 	{ PCI_VDEVICE(INTEL, 0x9ce6), PORT_LPT },
+ 	{ },
+ };
+-- 
+2.8.1
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

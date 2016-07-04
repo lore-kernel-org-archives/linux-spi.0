@@ -1,75 +1,58 @@
-From: Matt Fleming <matt@codeblueprint.co.uk>
-Subject: Re: [PATCH v5 6/8] efi: load SSTDs from EFI variables
-Date: Mon, 4 Jul 2016 13:00:36 +0100
-Message-ID: <20160704120036.GJ8415@codeblueprint.co.uk>
-References: <1467404352-27101-1-git-send-email-octavian.purdila@intel.com>
- <1467404352-27101-7-git-send-email-octavian.purdila@intel.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: spidev: Add ACPI probing support
+Date: Mon, 4 Jul 2016 14:56:00 +0200
+Message-ID: <20160704125600.GB6247@sirena.org.uk>
+References: <1467628683-5783-1-git-send-email-mika.westerberg@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-	Len Brown <lenb@kernel.org>, Mark Brown <broonie@kernel.org>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Joel Becker <jlbec@evilplan.org>, linux-acpi@vger.kernel.org,
-	linux-efi@vger.kernel.org, linux-i2c@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	irina.tirdea@intel.com, leonard.crestez@intel.com
-To: Octavian Purdila <octavian.purdila@intel.com>
-Return-path: <linux-i2c-owner@vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="vt4ed5MNefdcgji4"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1467404352-27101-7-git-send-email-octavian.purdila@intel.com>
-Sender: linux-i2c-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1467628683-5783-1-git-send-email-mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-(Sorry, didn't get chance to reply before you sent this version)
 
-On Fri, 01 Jul, at 11:19:10PM, Octavian Purdila wrote:
-> +
-> +static __init int efivar_ssdt_load(void)
-> +{
-> +	struct efivar_entry *entry;
-> +	/* We need a temporary empty list to be able to set duplicates
-> +	 * to true so that the efivar lock is dropped to allow us to
-> +	 * call efivar_entry_get from the iterator function.
+--vt4ed5MNefdcgji4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Mon, Jul 04, 2016 at 01:38:03PM +0300, Mika Westerberg wrote:
+
+> +	/*
+> +	 * The ACPI SPT000* devices are only meant for development and
+> +	 * testing. Systems used in production should have a proper ACPI
+> +	 * description of the connected peripheral and they should also use
+> +	 * a proper driver instead of poking directly to the SPI bus.
 > +	 */
-> +	LIST_HEAD(tmp);
-> +	int ret;
-
-I suspect you actually want to enable duplicate detection though,
-because that bug (GetNextVariable() returning the same variable over
-and over) does exist in the wild and it isn't that much more work to
-enable the check.
-
-Yes, the stack-local list looks like the right approach, because you
-don't need access to these entries once this function returns.
-
-Just be sure to free all those entries after efivar_init(), which
-doesn't need to be done under efivar_entry_iter_{begin,end}() because
-no one can concurrently access the list anyway.
-
-Also...
-
-	/*
-	 * Multi-line comments should look like this, with the empty
-	 * first line.
-	 */
-
+> +	if (has_acpi_companion(&spi->dev))
+> +		dev_warn(&spi->dev, "do not use this driver in production systems!\n");
 > +
-> +	/* efivar_entry is too big to allocate it on stack */
-> +	entry = kmalloc(sizeof(*entry), GFP_KERNEL);
-> +	if (!entry)
-> +		return -ENOMEM;
-> +	ret = efivar_init(efivar_ssdt_iter, entry, true, &tmp);
-> +	kfree(entry);
-> +	return ret;
-> +}
-> +#else
-> +static inline int efivar_ssdt_load(void) { return 0; }
-> +#endif
 
-My suggestion is,
+This is fine for now since all the ACPI devices are dummy ones but as
+soon as someone comes up with an actual ACPI ID for something that
+should be managed via spidev it'll need changing...
 
-  - Push the 'entry' allocation into efivar_ssdt_iter()
-  - Add 'entry' to the stack-local tmp list via efivar_entry_add()
-  - Iterate 'tmp' and free entries before returning from efivar_ssdt_load()
+--vt4ed5MNefdcgji4
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Make sense?
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJXelzcAAoJECTWi3JdVIfQRRsH/jxojd2DgFeO9GJx7dUkXc6L
+bxfUBeFoKMGz9y17nS7g4gfKXjFzyPcW7Elf6kn7Mywz57rQVkmWwBfoOz41KAX2
+5a49V/AAo864k7w3yohZbzfNmddUi59maRLy09sl5/1cfSW2hZP0gmf5IckZlg2t
+BMDNCLIQIR0mSC4jwaKpvJKCu+a3XW5TdEq422u4Myez9CI8R4geTifQo0tF8trC
+GWcv4kFDtvoUgQMUr1Us1eQ1hxkqtOxgpzCDMatPz4DrJr+jQVbIQ1NYuQ7M2SQE
+bBbw4OUyHLFAS4qtdmxb+5Dr9A1exlDl8egIwakNjR2J5fISN0VguXEiVYAo8jU=
+=HTCZ
+-----END PGP SIGNATURE-----
+
+--vt4ed5MNefdcgji4--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,119 +1,119 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pxa2xx-pci: Enable SPI on Intel Merrifield" to the spi tree
-Date: Mon, 04 Jul 2016 16:17:28 +0200
-Message-ID: <E1bK4gi-0006JF-9B@finisterre>
-References: <1467625467-103785-3-git-send-email-andriy.shevchenko@linux.intel.com>
+From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH v2] spi: spidev: Add ACPI probing support
+Date: Mon,  4 Jul 2016 17:18:15 +0300
+Message-ID: <1467641895-5341-1-git-send-email-mika.westerberg@linux.intel.com>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1467625467-103785-3-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+Some IoT and maker software stacks are using spidev to perform raw access
+to the SPI bus instead of relying existing drivers provided by the kernel.
+They then implement their own "drivers" in userspace on top of the spidev
+raw interface. This is far from being an ideal solution but we do not want
+to prevent using mainline Linux in these devices.
 
-   spi: pxa2xx-pci: Enable SPI on Intel Merrifield
+Now, it turns out that Windows has similar SPI devices than spidev which
+allow raw access on the SPI bus to userspace programs as described in the
+link below:
 
-has been applied to the spi tree at
+  https://msdn.microsoft.com/windows/hardware/drivers/spb/spi-tests-in-mitt
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+These SPI test devices are also meant to be used during development and
+testing.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+In order to allow usage of spidev for development and testing in Linux, add
+those same ACPI IDs to the spidev driver (which is Linux counterpart of the
+Windows SPI test devices), but complain loudly so that users know it is not
+good idea to use it in production systems. Instead they should be using
+proper drivers for peripherals connected to the SPI bus.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 4f4709109ef7e1248b5515c68df4b9c5ad39fbdf Mon Sep 17 00:00:00 2001
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Mon, 4 Jul 2016 12:44:25 +0300
-Subject: [PATCH] spi: pxa2xx-pci: Enable SPI on Intel Merrifield
-
-The SPI controllers used on Intel Merrifield are PXA2XX compatible. This patch
-enables them.
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 ---
- drivers/spi/spi-pxa2xx-pci.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+Changes from v1:
 
-diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
-index 8d58598c325d..b025eaf14f0f 100644
---- a/drivers/spi/spi-pxa2xx-pci.c
-+++ b/drivers/spi/spi-pxa2xx-pci.c
-@@ -15,6 +15,7 @@
- enum {
- 	PORT_CE4100,
- 	PORT_BYT,
-+	PORT_MRFLD,
- 	PORT_BSW0,
- 	PORT_BSW1,
- 	PORT_BSW2,
-@@ -89,6 +90,27 @@ static int lpss_spi_setup(struct pci_dev *dev, struct pxa_spi_info *c)
- 	return 0;
- }
+  - Issue warning only for SPT000* ACPI IDs (when SPIDEV_ACPI_DUMMY is
+    set).
+
+ drivers/spi/spidev.c | 41 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
+
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index e3c19f30f591..2e05046f866b 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -29,6 +29,7 @@
+ #include <linux/compat.h>
+ #include <linux/of.h>
+ #include <linux/of_device.h>
++#include <linux/acpi.h>
  
-+static int mrfld_spi_setup(struct pci_dev *dev, struct pxa_spi_info *c)
-+{
-+	switch (PCI_FUNC(dev->devfn)) {
-+	case 0:
-+		c->port_id = 3;
-+		c->num_chipselect = 1;
-+		break;
-+	case 1:
-+		c->port_id = 5;
-+		c->num_chipselect = 4;
-+		break;
-+	case 2:
-+		c->port_id = 6;
-+		c->num_chipselect = 1;
-+		break;
-+	default:
-+		return -ENODEV;
-+	}
-+	return 0;
-+}
+ #include <linux/spi/spi.h>
+ #include <linux/spi/spidev.h>
+@@ -700,6 +701,43 @@ static const struct of_device_id spidev_dt_ids[] = {
+ MODULE_DEVICE_TABLE(of, spidev_dt_ids);
+ #endif
+ 
++#ifdef CONFIG_ACPI
 +
- static struct pxa_spi_info spi_info_configs[] = {
- 	[PORT_CE4100] = {
- 		.type = PXA25x_SSP,
-@@ -124,6 +146,11 @@ static struct pxa_spi_info spi_info_configs[] = {
- 		.tx_param = &bsw2_tx_param,
- 		.rx_param = &bsw2_rx_param,
++/* Dummy SPI devices not to be used in production systems */
++#define SPIDEV_ACPI_DUMMY	1
++
++static const struct acpi_device_id spidev_acpi_ids[] = {
++	/*
++	 * The ACPI SPT000* devices are only meant for development and
++	 * testing. Systems used in production should have a proper ACPI
++	 * description of the connected peripheral and they should also use
++	 * a proper driver instead of poking directly to the SPI bus.
++	 */
++	{ "SPT0001", SPIDEV_ACPI_DUMMY },
++	{ "SPT0002", SPIDEV_ACPI_DUMMY },
++	{ "SPT0003", SPIDEV_ACPI_DUMMY },
++	{},
++};
++MODULE_DEVICE_TABLE(acpi, spidev_acpi_ids);
++
++static void spidev_probe_acpi(struct spi_device *spi)
++{
++	const struct acpi_device_id *id;
++
++	if (!has_acpi_companion(&spi->dev))
++		return;
++
++	id = acpi_match_device(spidev_acpi_ids, &spi->dev);
++	if (WARN_ON(!id))
++		return;
++
++	if (id->driver_data == SPIDEV_ACPI_DUMMY)
++		dev_warn(&spi->dev, "do not use this driver in production systems!\n");
++}
++#else
++static inline void spidev_probe_acpi(struct spi_device *spi) {}
++#endif
++
+ /*-------------------------------------------------------------------------*/
+ 
+ static int spidev_probe(struct spi_device *spi)
+@@ -719,6 +757,8 @@ static int spidev_probe(struct spi_device *spi)
+ 			!of_match_device(spidev_dt_ids, &spi->dev));
+ 	}
+ 
++	spidev_probe_acpi(spi);
++
+ 	/* Allocate driver data */
+ 	spidev = kzalloc(sizeof(*spidev), GFP_KERNEL);
+ 	if (!spidev)
+@@ -789,6 +829,7 @@ static struct spi_driver spidev_spi_driver = {
+ 	.driver = {
+ 		.name =		"spidev",
+ 		.of_match_table = of_match_ptr(spidev_dt_ids),
++		.acpi_match_table = ACPI_PTR(spidev_acpi_ids),
  	},
-+	[PORT_MRFLD] = {
-+		.type = PXA27x_SSP,
-+		.max_clk_rate = 25000000,
-+		.setup = mrfld_spi_setup,
-+	},
- 	[PORT_QUARK_X1000] = {
- 		.type = QUARK_X1000_SSP,
- 		.port_id = -1,
-@@ -222,6 +249,7 @@ static const struct pci_device_id pxa2xx_spi_pci_devices[] = {
- 	{ PCI_VDEVICE(INTEL, 0x2e6a), PORT_CE4100 },
- 	{ PCI_VDEVICE(INTEL, 0x0935), PORT_QUARK_X1000 },
- 	{ PCI_VDEVICE(INTEL, 0x0f0e), PORT_BYT },
-+	{ PCI_VDEVICE(INTEL, 0x1194), PORT_MRFLD },
- 	{ PCI_VDEVICE(INTEL, 0x228e), PORT_BSW0 },
- 	{ PCI_VDEVICE(INTEL, 0x2290), PORT_BSW1 },
- 	{ PCI_VDEVICE(INTEL, 0x22ac), PORT_BSW2 },
+ 	.probe =	spidev_probe,
+ 	.remove =	spidev_remove,
 -- 
 2.8.1
 

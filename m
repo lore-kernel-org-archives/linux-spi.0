@@ -1,153 +1,267 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: spidev: Add ACPI probing support" to the spi tree
-Date: Mon, 04 Jul 2016 16:49:54 +0200
-Message-ID: <E1bK5C6-0007R3-TP@finisterre>
-References: <1467641895-5341-1-git-send-email-mika.westerberg@linux.intel.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+From: Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v6 6/8] efi: load SSTDs from EFI variables
+Date: Tue,  5 Jul 2016 13:09:52 +0300
+Message-ID: <1467713392-24825-1-git-send-email-octavian.purdila@intel.com>
+Cc: Joel Becker <jlbec-aKy9MeLSZ9dg9hUCZPvPmw@public.gmane.org>, linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-efi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	irina.tirdea-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
+	geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org, Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: "Rafael J . Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
+	Len Brown <lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Matt Fleming <matt-mF/unelCI9GS6iBeEJttW/XRex20P6io@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1467641895-5341-1-git-send-email-mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+Return-path: <linux-efi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-efi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-The patch
+This patch allows SSDTs to be loaded from EFI variables. It works by
+specifying the EFI variable name containing the SSDT to be loaded. All
+variables with the same name (regardless of the vendor GUID) will be
+loaded.
 
-   spi: spidev: Add ACPI probing support
+Note that we can't use acpi_install_table and we must rely on the
+dynamic ACPI table loading and bus re-scanning mechanisms. That is
+because I2C/SPI controllers are initialized earlier then the EFI
+subsystems and all I2C/SPI ACPI devices are enumerated when the
+I2C/SPI controllers are initialized.
 
-has been applied to the spi tree at
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From cf9f4327a306be58df6c0b3817d7ef06a2a3da03 Mon Sep 17 00:00:00 2001
-From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Mon, 4 Jul 2016 17:18:15 +0300
-Subject: [PATCH] spi: spidev: Add ACPI probing support
-
-Some IoT and maker software stacks are using spidev to perform raw access
-to the SPI bus instead of relying existing drivers provided by the kernel.
-They then implement their own "drivers" in userspace on top of the spidev
-raw interface. This is far from being an ideal solution but we do not want
-to prevent using mainline Linux in these devices.
-
-Now, it turns out that Windows has similar SPI devices than spidev which
-allow raw access on the SPI bus to userspace programs as described in the
-link below:
-
-  https://msdn.microsoft.com/windows/hardware/drivers/spb/spi-tests-in-mitt
-
-These SPI test devices are also meant to be used during development and
-testing.
-
-In order to allow usage of spidev for development and testing in Linux, add
-those same ACPI IDs to the spidev driver (which is Linux counterpart of the
-Windows SPI test devices), but complain loudly so that users know it is not
-good idea to use it in production systems. Instead they should be using
-proper drivers for peripherals connected to the SPI bus.
-
-Signed-off-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spidev.c | 41 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index e3c19f30f591..2e05046f866b 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -29,6 +29,7 @@
- #include <linux/compat.h>
- #include <linux/of.h>
- #include <linux/of_device.h>
-+#include <linux/acpi.h>
- 
- #include <linux/spi/spi.h>
- #include <linux/spi/spidev.h>
-@@ -700,6 +701,43 @@ static const struct of_device_id spidev_dt_ids[] = {
- MODULE_DEVICE_TABLE(of, spidev_dt_ids);
- #endif
- 
-+#ifdef CONFIG_ACPI
+As the rest of the series remains unchanged and it got Acks from most
+of the other patches, I've resend only this patch. Rafael, please let
+me know if you prefer to resend the whole series.
+
+Changes from v5:
+
+* enable duplicate detection to avoid firmware bugs that returns the
+same variable over and over again; this requires pushing the entry
+allocation back into efivar_ssdt_iter() and creating a temporary list
+that is iterated over in efivar_ssdt_load()
+
+* marked efivar_ssdt with __initdata
+
+
+ Documentation/acpi/ssdt-overlays.txt | 67 +++++++++++++++++++++++++
+ Documentation/kernel-parameters.txt  |  7 +++
+ drivers/firmware/efi/efi.c           | 96 ++++++++++++++++++++++++++++++++++++
+ 3 files changed, 170 insertions(+)
+
+diff --git a/Documentation/acpi/ssdt-overlays.txt b/Documentation/acpi/ssdt-overlays.txt
+index 8050259..c4b57ba 100644
+--- a/Documentation/acpi/ssdt-overlays.txt
++++ b/Documentation/acpi/ssdt-overlays.txt
+@@ -89,3 +89,70 @@ cp ssdt.aml kernel/firmware/acpi
+ # on top:
+ find kernel | cpio -H newc --create > /boot/instrumented_initrd
+ cat /boot/initrd >>/boot/instrumented_initrd
 +
-+/* Dummy SPI devices not to be used in production systems */
-+#define SPIDEV_ACPI_DUMMY	1
++== Loading ACPI SSDTs from EFI variables ==
 +
-+static const struct acpi_device_id spidev_acpi_ids[] = {
-+	/*
-+	 * The ACPI SPT000* devices are only meant for development and
-+	 * testing. Systems used in production should have a proper ACPI
-+	 * description of the connected peripheral and they should also use
-+	 * a proper driver instead of poking directly to the SPI bus.
-+	 */
-+	{ "SPT0001", SPIDEV_ACPI_DUMMY },
-+	{ "SPT0002", SPIDEV_ACPI_DUMMY },
-+	{ "SPT0003", SPIDEV_ACPI_DUMMY },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(acpi, spidev_acpi_ids);
++This is the preferred method, when EFI is supported on the platform, because it
++allows a persistent, OS independent way of storing the user defined SSDTs. There
++is also work underway to implement EFI support for loading user defined SSDTs
++and using this method will make it easier to convert to the EFI loading
++mechanism when that will arrive.
 +
-+static void spidev_probe_acpi(struct spi_device *spi)
++In order to load SSDTs from an EFI variable the efivar_ssdt kernel command line
++parameter can be used. The argument for the option is the variable name to
++use. If there are multiple variables with the same name but with different
++vendor GUIDs, all of them will be loaded.
++
++In order to store the AML code in an EFI variable the efivarfs filesystem can be
++used. It is enabled and mounted by default in /sys/firmware/efi/efivars in all
++recent distribution.
++
++Creating a new file in /sys/firmware/efi/efivars will automatically create a new
++EFI variable. Updating a file in /sys/firmware/efi/efivars will update the EFI
++variable. Please note that the file name needs to be specially formatted as
++"Name-GUID" and that the first 4 bytes in the file (little-endian format)
++represent the attributes of the EFI variable (see EFI_VARIABLE_MASK in
++include/linux/efi.h). Writing to the file must also be done with one write
++operation.
++
++For example, you can use the following bash script to create/update an EFI
++variable with the content from a given file:
++
++#!/bin/sh -e
++
++while ! [ -z "$1" ]; do
++        case "$1" in
++        "-f") filename="$2"; shift;;
++        "-g") guid="$2"; shift;;
++        *) name="$1";;
++        esac
++        shift
++done
++
++usage()
 +{
-+	const struct acpi_device_id *id;
++        echo "Syntax: ${0##*/} -f filename [ -g guid ] name"
++        exit 1
++}
 +
-+	if (!has_acpi_companion(&spi->dev))
-+		return;
++[ -n "$name" -a -f "$filename" ] || usage
 +
-+	id = acpi_match_device(spidev_acpi_ids, &spi->dev);
-+	if (WARN_ON(!id))
-+		return;
++EFIVARFS="/sys/firmware/efi/efivars"
 +
-+	if (id->driver_data == SPIDEV_ACPI_DUMMY)
-+		dev_warn(&spi->dev, "do not use this driver in production systems!\n");
++[ -d "$EFIVARFS" ] || exit 2
++
++if stat -tf $EFIVARFS | grep -q -v de5e81e4; then
++        mount -t efivarfs none $EFIVARFS
++fi
++
++# try to pick up an existing GUID
++[ -n "$guid" ] || guid=$(find "$EFIVARFS" -name "$name-*" | head -n1 | cut -f2- -d-)
++
++# use a randomly generated GUID
++[ -n "$guid" ] || guid="$(cat /proc/sys/kernel/random/uuid)"
++
++# efivarfs expects all of the data in one write
++tmp=$(mktemp)
++/bin/echo -ne "\007\000\000\000" | cat - $filename > $tmp
++dd if=$tmp of="$EFIVARFS/$name-$guid" bs=$(stat -c %s $tmp)
++rm $tmp
+diff --git a/Documentation/kernel-parameters.txt b/Documentation/kernel-parameters.txt
+index 82b42c9..bbfb56f 100644
+--- a/Documentation/kernel-parameters.txt
++++ b/Documentation/kernel-parameters.txt
+@@ -1185,6 +1185,13 @@ bytes respectively. Such letter suffixes can also be entirely omitted.
+ 			Address Range Mirroring feature even if your box
+ 			doesn't support it.
+ 
++	efivar_ssdt=	[EFI; X86] Name of an EFI variable that contains an SSDT
++			that is to be dynamically loaded by Linux. If there are
++			multiple variables with the same name but with different
++			vendor GUIDs, all of them will be loaded. See
++			Documentation/acpi/ssdt-overlays.txt for details.
++
++
+ 	eisa_irq_edge=	[PARISC,HW]
+ 			See header of drivers/parisc/eisa.c.
+ 
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index 05509f3..8730fd4 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -24,6 +24,9 @@
+ #include <linux/of_fdt.h>
+ #include <linux/io.h>
+ #include <linux/platform_device.h>
++#include <linux/slab.h>
++#include <linux/acpi.h>
++#include <linux/ucs2_string.h>
+ 
+ #include <asm/early_ioremap.h>
+ 
+@@ -195,6 +198,96 @@ static void generic_ops_unregister(void)
+ 	efivars_unregister(&generic_efivars);
+ }
+ 
++#if IS_ENABLED(CONFIG_ACPI)
++#define EFIVAR_SSDT_NAME_MAX	16
++static char efivar_ssdt[EFIVAR_SSDT_NAME_MAX] __initdata;
++static int __init efivar_ssdt_setup(char *str)
++{
++	if (strlen(str) < sizeof(efivar_ssdt))
++		memcpy(efivar_ssdt, str, strlen(str));
++	else
++		pr_warn("efivar_ssdt: name too long: %s\n", str);
++	return 0;
++}
++__setup("efivar_ssdt=", efivar_ssdt_setup);
++
++static __init int efivar_ssdt_iter(efi_char16_t *name, efi_guid_t vendor,
++				   unsigned long name_size, void *data)
++{
++	struct efivar_entry *entry;
++	struct list_head *list = data;
++	char utf8_name[EFIVAR_SSDT_NAME_MAX];
++	int limit = min_t(unsigned long, EFIVAR_SSDT_NAME_MAX, name_size);
++
++	ucs2_as_utf8(utf8_name, name, limit - 1);
++	if (strncmp(utf8_name, efivar_ssdt, limit) != 0)
++		return 0;
++
++	entry = kmalloc(sizeof(*entry), GFP_KERNEL);
++	if (!entry)
++		return 0;
++
++	memcpy(entry->var.VariableName, name, name_size);
++	memcpy(&entry->var.VendorGuid, &vendor, sizeof(efi_guid_t));
++
++	efivar_entry_add(entry, list);
++
++	return 0;
++}
++
++static __init int efivar_ssdt_load(void)
++{
++	LIST_HEAD(entries);
++	struct efivar_entry *entry, *aux;
++	unsigned long size;
++	void *data;
++	int ret;
++
++	ret = efivar_init(efivar_ssdt_iter, &entries, true, &entries);
++
++	list_for_each_entry_safe(entry, aux, &entries, list) {
++		pr_info("loading SSDT from variable %s-%pUl\n", efivar_ssdt,
++			&entry->var.VendorGuid);
++
++		list_del(&entry->list);
++
++		ret = efivar_entry_size(entry, &size);
++		if (ret) {
++			pr_err("failed to get var size\n");
++			goto free_entry;
++		}
++
++		data = kmalloc(size, GFP_KERNEL);
++		if (!data)
++			goto free_entry;
++
++		ret = efivar_entry_get(entry, NULL, &size, data);
++		if (ret) {
++			pr_err("failed to get var data\n");
++			goto free_data;
++		}
++
++		ret = acpi_load_table(data);
++		if (ret) {
++			pr_err("failed to load table: %d\n", ret);
++			goto free_data;
++		}
++
++		goto free_entry;
++
++free_data:
++		kfree(data);
++
++free_entry:
++		kfree(entry);
++	}
++
++	return ret;
 +}
 +#else
-+static inline void spidev_probe_acpi(struct spi_device *spi) {}
++static inline int efivar_ssdt_load(void) { return 0; }
 +#endif
 +
- /*-------------------------------------------------------------------------*/
+ /*
+  * We register the efi subsystem with the firmware subsystem and the
+  * efivars subsystem with the efi subsystem, if the system was booted with
+@@ -218,6 +311,9 @@ static int __init efisubsys_init(void)
+ 	if (error)
+ 		goto err_put;
  
- static int spidev_probe(struct spi_device *spi)
-@@ -719,6 +757,8 @@ static int spidev_probe(struct spi_device *spi)
- 			!of_match_device(spidev_dt_ids, &spi->dev));
- 	}
- 
-+	spidev_probe_acpi(spi);
++	if (efi_enabled(EFI_RUNTIME_SERVICES))
++		efivar_ssdt_load();
 +
- 	/* Allocate driver data */
- 	spidev = kzalloc(sizeof(*spidev), GFP_KERNEL);
- 	if (!spidev)
-@@ -789,6 +829,7 @@ static struct spi_driver spidev_spi_driver = {
- 	.driver = {
- 		.name =		"spidev",
- 		.of_match_table = of_match_ptr(spidev_dt_ids),
-+		.acpi_match_table = ACPI_PTR(spidev_acpi_ids),
- 	},
- 	.probe =	spidev_probe,
- 	.remove =	spidev_remove,
+ 	error = sysfs_create_group(efi_kobj, &efi_subsys_attr_group);
+ 	if (error) {
+ 		pr_err("efi: Sysfs attribute export failed with error %d.\n",
 -- 
-2.8.1
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+2.7.4

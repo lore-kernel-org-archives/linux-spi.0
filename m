@@ -1,105 +1,66 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: omap2-mcspi: Add comments for RX only DMA buffer workaround" to the spi tree
-Date: Tue, 05 Jul 2016 16:50:31 +0200
-Message-ID: <E1bKRgF-000673-R0@finisterre>
-References: <1466203513-4771-3-git-send-email-fcooper@ti.com>
-Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	david.s.gordon@intel.com, akpm@linux-foundation.org,
-	nsekhar@ti.com, vigneshr@ti.com, peter.ujfalusi@ti.com,
-	linux-spi@vger.kernel.org
-To: Franklin S Cooper Jr <fcooper@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1466203513-4771-3-git-send-email-fcooper@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2 5/5] spi: s3c64xx: use unsigned type for fifo handling
+ variables
+Date: Tue, 5 Jul 2016 16:55:56 +0200
+Message-ID: <20160705145556.GD6247@sirena.org.uk>
+References: <1467081676-8442-1-git-send-email-andi.shyti@samsung.com>
+ <1467081676-8442-6-git-send-email-andi.shyti@samsung.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="2W4Na7kn/Mq3HLmY"
+Cc: Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Jaehoon Chung <jh80.chung-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Andi Shyti <andi-ahk0KpmfxKRAfugRpC6u6w@public.gmane.org>
+To: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1467081676-8442-6-git-send-email-andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The patch
 
-   spi: omap2-mcspi: Add comments for RX only DMA buffer workaround
+--2W4Na7kn/Mq3HLmY
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-has been applied to the spi tree at
+On Tue, Jun 28, 2016 at 11:41:15AM +0900, Andi Shyti wrote:
+> The 'quirks' variable cannot ever be negative, therefore use u8
+> instead of int. The 8 bit size is given from the fact that
+> currently the quirks variable has very few statuses.
+>=20
+> The rx_lvl_offset and tx_st_done store shift values, so that u8
+> is a proper size.
+>=20
+> fifo_lvl_mask stores a series of masks, to be in we will keep the
+> 32 bit size.
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+What's the advantage of these changes?  This feels like microptimisation
+of something that shouldn't be a big performance issue and it's not
+always the case that the compiler does something more sensible with
+smaller or unsigned types.  I'm not saying don't do it, I'm just saying
+that it's not clear to me what the win is.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+--2W4Na7kn/Mq3HLmY
+Content-Type: application/pgp-signature; name="signature.asc"
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+iQEcBAEBCAAGBQJXe8p7AAoJECTWi3JdVIfQUQMH/2i/+wOC+tAv38rAt4MWdG6E
+oD7dzOgD64VKpejv3yuNWDyLZhMiTeN8S8SBIDYYB7wfydMDhKtYgR2OWSyBvPJh
+cf8cHzIMlTx/EEEMYrMRJZi6sm+ZwQ4g4cF2i5tkVT8X+zfhQ6Cq+HYbM83MYT7n
+wCPNzfB8cSgzNOEw4O8yY4HMIgGB5DNIzINQ5w8SlazAB68wQgrSjoc3smWHl7lS
+fwLR4FNiec3AVqC/70jDWCvI/PGaJEi7rtZx+IboAm5CST05IESPkYowHA6kIP+L
+BvcVf65amIBXl5UtWxWa6EWP9OmC6TnVtS44DyU7pvTGlp8SxDWDW6M+Cwpei9A=
+=xArA
+-----END PGP SIGNATURE-----
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 4bd00413cde851d84b297c1b0dae15109025e84b Mon Sep 17 00:00:00 2001
-From: Franklin S Cooper Jr <fcooper@ti.com>
-Date: Mon, 27 Jun 2016 09:54:08 -0500
-Subject: [PATCH] spi: omap2-mcspi: Add comments for RX only DMA buffer
- workaround
-
-OMAP35x and OMAP37x mentions in the McSPI End-of-Transfer Sequences section
-that if the McSPI is configured as a Master and only DMA RX is being
-performed then the DMA transfer size needs to be reduced by 1 or 2.
-
-This was originally implemented by:
-commit 57c5c28dbc83 ("spi: omap2_mcspi rxdma bugfix")
-
-This patch adds comments to clarify what is going on in the code since its
-not obvious what problem its addressing.
-
-Signed-off-by: Franklin S Cooper Jr <fcooper@ti.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-omap2-mcspi.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 1d237e93a289..c47f95879833 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -459,6 +459,11 @@ omap2_mcspi_rx_dma(struct spi_device *spi, struct spi_transfer *xfer,
- 	count = xfer->len;
- 	dma_count = xfer->len;
- 
-+	/*
-+	 *  In the "End-of-Transfer Procedure" section for DMA RX in OMAP35x TRM
-+	 *  it mentions reducing DMA transfer length by one element in master
-+	 *  normal mode.
-+	 */
- 	if (mcspi->fifo_depth == 0)
- 		dma_count -= es;
- 
-@@ -478,6 +483,10 @@ omap2_mcspi_rx_dma(struct spi_device *spi, struct spi_transfer *xfer,
- 
- 		dmaengine_slave_config(mcspi_dma->dma_rx, &cfg);
- 
-+		/*
-+		 *  Reduce DMA transfer length by one more if McSPI is
-+		 *  configured in turbo mode.
-+		 */
- 		if ((l & OMAP2_MCSPI_CHCONF_TURBO) && mcspi->fifo_depth == 0)
- 			dma_count -= es;
- 
-@@ -507,6 +516,10 @@ omap2_mcspi_rx_dma(struct spi_device *spi, struct spi_transfer *xfer,
- 	if (mcspi->fifo_depth > 0)
- 		return count;
- 
-+	/*
-+	 *  Due to the DMA transfer length reduction the missing bytes must
-+	 *  be read manually to receive all of the expected data.
-+	 */
- 	omap2_mcspi_set_enable(spi, 0);
- 
- 	elements = element_count - 1;
--- 
-2.8.1
+--2W4Na7kn/Mq3HLmY--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,74 +1,85 @@
-From: "Franklin S Cooper Jr." <fcooper-l0cyMroinI0@public.gmane.org>
-Subject: Re: [RFC] [PATCH v2 1/3] scatterlist: Add support to clone
- scatterlist
-Date: Wed, 6 Jul 2016 12:20:54 -0500
-Message-ID: <577D3DF6.6000406@ti.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [RFC] [PATCH v2 1/3] scatterlist: Add support to clone scatterlist
+Date: Wed, 6 Jul 2016 20:46:57 +0300
+Message-ID: <CAHp75VcPLV-483ihn_RmHnDOc0iFMSdYj5_SrNevyqrrpeWatQ@mail.gmail.com>
 References: <1467039249-7816-1-git-send-email-fcooper@ti.com>
- <1467039249-7816-2-git-send-email-fcooper@ti.com> <577CDA45.80408@ti.com>
+ <1467039249-7816-2-git-send-email-fcooper@ti.com> <CAHp75VfR=TKfVN=03jvGy5oZRA_-ASb8Vb_A4+x3OrkpZT6PoQ@mail.gmail.com>
+ <577D3B5C.7080805@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-To: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>, <david.s.gordon-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	<axboe-b10kYP2dOMg@public.gmane.org>, <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	<ming.l-Vzezgt5dB6uUEJcrhfAQsw@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<peter.ujfalusi-l0cyMroinI0@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <577CDA45.80408-l0cyMroinI0@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: david.s.gordon@intel.com, Jens Axboe <axboe@fb.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ming Lin <ming.l@ssi.samsung.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	linux-spi <linux-spi@vger.kernel.org>,
+	Sekhar Nori <nsekhar@ti.com>,
+	Peter Ujfalusi <peter.ujfalusi@ti.com>
+To: "Franklin S Cooper Jr." <fcooper@ti.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <577D3B5C.7080805@ti.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+On Wed, Jul 6, 2016 at 8:09 PM, Franklin S Cooper Jr. <fcooper@ti.com> wrote:
 
+>>> +               last_entry = sg_is_last(sgl);
+>>> +               *sgl = *orig_sgl;
+>>> +
+>>> +               /*
+>>> +                * If page_link is pointing to a chained sgl then set it to
+>>> +                * zero since we already compensated for chained sgl. If
+>>> +                * page_link is pointing to a page then clear bits 1 and 0.
+>>> +                */
+>>> +               if (sg_is_chain(orig_sgl))
+>>> +                       sgl->page_link = 0x0;
+>>> +               else
+>>> +                       sgl->page_link &= ~0x03;
+>>> +
+>>
+>>> +               if (last_entry) {
+>>> +                       sg_dma_len(sgl) = len;
+>>
+>> Hmm... If it's not DMA mapped and CONFIG_NEED_SG_DMA_LENGTH=y, you
+>> will set dma_length field and len otherwise. Is it on purpose?
+>
+> Thanks for pointing this out. I didn't take into consideration the above
+> scenario.
+>
+> After looking at this more it seems like on occasion dma_length !=
+> length. I see this occurring in various map_sg functions for several
+> architectures.
+>
+> I'm simply trying to reduce the overall sgl length by a certain amount.
+> I'm not sure what the proper approach would be since dma_length and
+> length can be set to different values. Simply setting sgl->dma_length to
+> sgl->length or vice a versa seems like it can be problematic in some
+> scenarios. What confuses me even more is if dma_length != length then
+> how can sg_nents_for_len only use the sgl length property.
+>
+> Any thoughts on what would be the best way to handle this?
 
-On 07/06/2016 05:15 AM, Sekhar Nori wrote:
-> On Monday 27 June 2016 08:24 PM, Franklin S Cooper Jr wrote:
-> 
->> +/*
->> + * sg_table_clone - Duplicate an existing sg_table including chained sgl
-> 
-> This function should probably be called sg_clone_table() to be
-> consistent with sg_alloc_table(), sg_free_table() etc.
+First come to my mind is to refuse to clone if SG table is DMA mapped.
 
+Imagine the scenario where you have for example last entry which your
+caller asked to split as
 
-Will fix.
-> 
->> + * @orig_table:     Original sg_table to be duplicated
->> + * @len:            Total length of sg while taking chaining into account
->> + * @gfp_mask:       GFP allocation mask
->> + *
->> + * Description:
->> + *   Clone a sg_table along with chained sgl. This cloned copy may be
->> + *   modified in some ways while keeping the original table and sgl in tact.
->> + *   Also allow the cloned sgl copy to have a smaller length than the original
->> + *   which may reduce the sgl total sg entries.
->> + *
->> + * Returns:
->> + *   Pointer to new kmalloced sg_table, ERR_PTR() on error
->> + *
->> + */
->> +struct sg_table *sg_table_clone(struct sg_table *orig_table, u64 len,
->> +				gfp_t gfp_mask)
->> +{
->> +	struct sg_table	*table;
->> +
->> +	table = kmalloc(sizeof(struct sg_table), gfp_mask);
-> 
-> Can you use sg_alloc_table() to allocate the new table? The way you have
-> it now, it looks like users will need to use kfree() to free a cloned
-> table and use sg_free_table() otherwise. It will be nice if
-> sg_free_table() can be used consistently.
+total_entry_len = 37235 (input)
+dma_length = 65536 (64k alignment)
 
+asked_len = 32768 (Split chunks: 32768 + 4467)
+resulting_dma_len = ?
 
-Sg_alloc_table doesn't actually allocate a struct sg_table. It allocates
-a single sgl or chained sgl. Drivers that use sg_table manually allocate
-it via kmalloc. One change that might make sense is to not kmalloc
-sg_table but instead have a user pass a pointer to a preallocated
-instance of it. This way it will mimic how sg_table is typically handled.
-> 
-> Regards,
-> Sekhar
-> 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+What do you put here? Initially it perhaps means the same 64k. But how
+to distinguish?
+(I couldn't come with better one, but there are many alike scenarios)
+
+Only hack we have is to supply struct device of the DMA device to this
+SG table where you can get max segment size (but I dunno about
+alignment).
+
+P.S. I'm not familiar of the details of all these.
+
+-- 
+With Best Regards,
+Andy Shevchenko

@@ -1,79 +1,98 @@
-From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Subject: [PATCH 2/2] dt-bindings: spi: add binding for clps711x SPI
-Date: Wed,  6 Jul 2016 16:53:13 +0200
-Message-ID: <20160706145326.2658600-2-arnd@arndb.de>
-References: <20160706145326.2658600-1-arnd@arndb.de>
-Cc: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160706145326.2658600-1-arnd-r2nGTMty4D4@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: Re: [PATCH v5 2/8] acpi: fix enumeration (visited) flags for bus
+ rescans
+Date: Wed, 6 Jul 2016 18:03:17 +0300
+Message-ID: <20160706150317.GH23527@lahna.fi.intel.com>
+References: <1467404352-27101-1-git-send-email-octavian.purdila@intel.com>
+ <1467404352-27101-3-git-send-email-octavian.purdila@intel.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+	Len Brown <lenb@kernel.org>,
+	Matt Fleming <matt@codeblueprint.co.uk>,
+	Mark Brown <broonie@kernel.org>,
+	Wolfram Sang <wsa@the-dreams.de>,
+	Joel Becker <jlbec@evilplan.org>, linux-acpi@vger.kernel.org,
+	linux-efi@vger.kernel.org, linux-i2c@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	irina.tirdea@intel.com, leonard.crestez@intel.com
+To: Octavian Purdila <octavian.purdila@intel.com>
+Return-path: <linux-acpi-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1467404352-27101-3-git-send-email-octavian.purdila@intel.com>
+Sender: linux-acpi-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This documents the binding used by Alexander Shiyan's DT support for
-the clps711x SPI controller.
+On Fri, Jul 01, 2016 at 11:19:06PM +0300, Octavian Purdila wrote:
+> If the ACPI tables changes as a result of a dinamically loaded table and
+> a bus rescan is required the enumeration/visited flag are not
+> consistent.
+> 
+> I2C/SPI are not directly enumerated in acpi_bus_attach(), however the
+> visited flag is set. This makes it impossible to check if an ACPI device
+> has already been enumerated by the I2C and SPI subsystems. To fix this
+> issue we only set the visited flags if the device is not I2C or SPI.
+> 
+> With this change we also need to remove setting visited to false from
+> acpi_bus_attach(), otherwise if we rescan already enumerated I2C/SPI
+> devices we try to re-enumerate them.
+> 
+> Note that I2C/SPI devices can be enumerated either via a scan handler
+> (when using PRP0001) or via regular device_attach(). In either case
+> the flow goes through acpi_default_enumeration() which makes it the
+> ideal place to mark the ACPI device as enumerated.
 
-I've left the file name to match the ARM platform port name "clps711x"
-for consistency with the other bindings, even though the compatible
-string refers to the later ep7309 chip.
+Hmm, this somehow fails to enumerate PRP0001 devices.
 
-Linux no longer supports the old clps711x and ep72xx product lines,
-but we still use the name. The entire family is now discontinued
-by the manufacturer.
+I'm adding following SSDT to my initrd and the resulting device is never
+enumerated on SPI bus (it exists in /sys/bus/acpi/devices). If I use
+normal ACPI IDs (non-PRP0001) then it works fine.
 
-Signed-off-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Cc: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
----
- .../devicetree/bindings/spi/spi-clps711x.txt       | 33 ++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-clps711x.txt
+/*
+ * Minnowboard MAX
+ *
+ * http://wiki.minnowboard.org/MinnowBoard_MAX
+ *
+ * This adds Atmel AT25 compatible serial EEPROM to the SPI host controller
+ * available on Minnowboard MAX low speed connector.
+ */
+DefinitionBlock ("at25.aml", "SSDT", 5, "INTEL", "AT25", 1)
+{
+    External (_SB_.SPI1, DeviceObj)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-clps711x.txt b/Documentation/devicetree/bindings/spi/spi-clps711x.txt
-new file mode 100644
-index 000000000000..4c3ec13f423f
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-clps711x.txt
-@@ -0,0 +1,33 @@
-+Serial Peripheral Interface on Cirrus Logic CL-PS71xx, EP72xx, EP73xx
-+
-+Required properties
-+- #address-cells: must be <1>
-+- #size-cells: must be <0>
-+- compatible: should include "cirrus,ep7209-spi"
-+- reg: Address and length of one register range
-+- interrupts: one interrupt line
-+- clocks: One entry, refers to the SPI bus clock
-+- cs-gpios: Specifies the gpio pins to be used for chipselects.
-+	    See: Documentation/devicetree/bindings/spi/spi-bus.txt
-+
-+An additional register is present in the system controller,
-+which is assumed to be in the same device tree, with and marked
-+as compatible with "cirrus,ep7209-syscon3".
-+
-+Example:
-+
-+spi@80000500 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	compatible = "cirrus,ep7209-spi";
-+	reg = <0x80000500 0x4>;
-+	interrupts = <15>;
-+	clocks = <&clks CLPS711X_CLK_SPI>;
-+	status = "disabled";
-+};
-+
-+syscon3: syscon@80002200 {
-+	compatible = "cirrus,ep7209-syscon3", "syscon";
-+	reg = <0x80002200 0x40>;
-+};
-+
--- 
-2.9.0
+    Scope (\_SB.SPI1)
+    {
+        Device (EEP0) {
+            Name (_HID, "PRP0001")
+            Name (_DDN, "Atmel AT25 compatible EEPROM")
+            Name (_CRS, ResourceTemplate () {
+                SpiSerialBus (
+                    1,                      // Chip select
+                    PolarityLow,            // Chip select is active low
+                    FourWireMode,           // Full duplex
+                    8,                      // Bits per word is 8 (byte)
+                    ControllerInitiated,    // Don't care
+                    1000000,                // Initial bus speed is 1MHz
+                    ClockPolarityLow,       // SPI mode 0
+                    ClockPhaseFirst,        // SPI mode 0
+                    "\\_SB.SPI1",           // SPI host controller
+                    0                       // Must be 0
+                )
+            })
 
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+            /*
+             * See Documentation/devicetree/bindings/eeprom/at25.txt for
+             * more information about these bindings.
+             */
+            Name (_DSD, Package () {
+                ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+                Package () {
+                    Package () {"compatible", Package () {"atmel,at25"}},
+                    Package () {"size", 1024},
+                    Package () {"pagesize", 32},
+                    Package () {"address-width", 16},
+                }
+            })
+        }
+    }
+}

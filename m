@@ -1,61 +1,59 @@
-From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
-Subject: Re: [RFC] [PATCH v2 1/3] scatterlist: Add support to clone
- scatterlist
-Date: Wed, 6 Jul 2016 15:45:33 +0530
-Message-ID: <577CDA45.80408@ti.com>
-References: <1467039249-7816-1-git-send-email-fcooper@ti.com>
- <1467039249-7816-2-git-send-email-fcooper@ti.com>
+From: Matt Fleming <matt@codeblueprint.co.uk>
+Subject: Re: [PATCH v6 6/8] efi: load SSTDs from EFI variables
+Date: Wed, 6 Jul 2016 12:58:27 +0100
+Message-ID: <20160706115827.GR8415@codeblueprint.co.uk>
+References: <1467713392-24825-1-git-send-email-octavian.purdila@intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-To: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>, <david.s.gordon-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	<axboe-b10kYP2dOMg@public.gmane.org>, <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	<ming.l-Vzezgt5dB6uUEJcrhfAQsw@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<peter.ujfalusi-l0cyMroinI0@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1467039249-7816-2-git-send-email-fcooper-l0cyMroinI0@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+	Len Brown <lenb@kernel.org>, Mark Brown <broonie@kernel.org>,
+	Wolfram Sang <wsa@the-dreams.de>,
+	Joel Becker <jlbec@evilplan.org>, linux-acpi@vger.kernel.org,
+	linux-efi@vger.kernel.org, linux-i2c@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	irina.tirdea@intel.com, leonard.crestez@intel.com,
+	geert@linux-m68k.org
+To: Octavian Purdila <octavian.purdila@intel.com>
+Return-path: <linux-acpi-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1467713392-24825-1-git-send-email-octavian.purdila@intel.com>
+Sender: linux-acpi-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Monday 27 June 2016 08:24 PM, Franklin S Cooper Jr wrote:
+On Tue, 05 Jul, at 01:09:52PM, Octavian Purdila wrote:
+> This patch allows SSDTs to be loaded from EFI variables. It works by
+> specifying the EFI variable name containing the SSDT to be loaded. All
+> variables with the same name (regardless of the vendor GUID) will be
+> loaded.
+> 
+> Note that we can't use acpi_install_table and we must rely on the
+> dynamic ACPI table loading and bus re-scanning mechanisms. That is
+> because I2C/SPI controllers are initialized earlier then the EFI
+> subsystems and all I2C/SPI ACPI devices are enumerated when the
+> I2C/SPI controllers are initialized.
+> 
+> Signed-off-by: Octavian Purdila <octavian.purdila@intel.com>
+> ---
+> 
+> As the rest of the series remains unchanged and it got Acks from most
+> of the other patches, I've resend only this patch. Rafael, please let
+> me know if you prefer to resend the whole series.
+> 
+> Changes from v5:
+> 
+> * enable duplicate detection to avoid firmware bugs that returns the
+> same variable over and over again; this requires pushing the entry
+> allocation back into efivar_ssdt_iter() and creating a temporary list
+> that is iterated over in efivar_ssdt_load()
+> 
+> * marked efivar_ssdt with __initdata
+> 
+> 
+>  Documentation/acpi/ssdt-overlays.txt | 67 +++++++++++++++++++++++++
+>  Documentation/kernel-parameters.txt  |  7 +++
+>  drivers/firmware/efi/efi.c           | 96 ++++++++++++++++++++++++++++++++++++
+>  3 files changed, 170 insertions(+)
 
-> +/*
-> + * sg_table_clone - Duplicate an existing sg_table including chained sgl
+Looks fine to me. Thanks Octavian.
 
-This function should probably be called sg_clone_table() to be
-consistent with sg_alloc_table(), sg_free_table() etc.
-
-> + * @orig_table:     Original sg_table to be duplicated
-> + * @len:            Total length of sg while taking chaining into account
-> + * @gfp_mask:       GFP allocation mask
-> + *
-> + * Description:
-> + *   Clone a sg_table along with chained sgl. This cloned copy may be
-> + *   modified in some ways while keeping the original table and sgl in tact.
-> + *   Also allow the cloned sgl copy to have a smaller length than the original
-> + *   which may reduce the sgl total sg entries.
-> + *
-> + * Returns:
-> + *   Pointer to new kmalloced sg_table, ERR_PTR() on error
-> + *
-> + */
-> +struct sg_table *sg_table_clone(struct sg_table *orig_table, u64 len,
-> +				gfp_t gfp_mask)
-> +{
-> +	struct sg_table	*table;
-> +
-> +	table = kmalloc(sizeof(struct sg_table), gfp_mask);
-
-Can you use sg_alloc_table() to allocate the new table? The way you have
-it now, it looks like users will need to use kfree() to free a cloned
-table and use sg_free_table() otherwise. It will be nice if
-sg_free_table() can be used consistently.
-
-Regards,
-Sekhar
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Reviewed-by: Matt Fleming <matt@codeblueprint.co.uk>

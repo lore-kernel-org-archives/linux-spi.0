@@ -1,29 +1,49 @@
-From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [PATCH v5 1/8] Documentation: acpi: add SSDT overlays
- documentation
-Date: Thu, 7 Jul 2016 12:25:40 +0300
-Message-ID: <20160707092540.GM23527@lahna.fi.intel.com>
-References: <1467404352-27101-1-git-send-email-octavian.purdila@intel.com>
- <1467404352-27101-2-git-send-email-octavian.purdila@intel.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 2/2] dt-bindings: spi: add binding for clps711x SPI
+Date: Thu, 7 Jul 2016 11:25:46 +0200
+Message-ID: <20160707092546.GJ6247@sirena.org.uk>
+References: <20160706145326.2658600-1-arnd@arndb.de>
+ <20160706145326.2658600-2-arnd@arndb.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: "Rafael J . Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
-	Len Brown <lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Matt Fleming <matt-mF/unelCI9GS6iBeEJttW/XRex20P6io@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
-	Joel Becker <jlbec-aKy9MeLSZ9dg9hUCZPvPmw@public.gmane.org>, linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-efi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	irina.tirdea-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
-To: Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-efi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="djsmrO0QNMuttZWM"
+Cc: Rob Herring <robh+dt@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shiyan <shc_work@mail.ru>, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+To: Arnd Bergmann <arnd@arndb.de>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1467404352-27101-2-git-send-email-octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Sender: linux-efi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+In-Reply-To: <20160706145326.2658600-2-arnd@arndb.de>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Jul 01, 2016 at 11:19:05PM +0300, Octavian Purdila wrote:
-> Signed-off-by: Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 
-Reviewed-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+--djsmrO0QNMuttZWM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Wed, Jul 06, 2016 at 04:53:13PM +0200, Arnd Bergmann wrote:
+> This documents the binding used by Alexander Shiyan's DT support for
+> the clps711x SPI controller.
+
+Please use subject lines matching the style for the subsystem.  This
+makes it easier for people to identify relevant patches.
+
+--djsmrO0QNMuttZWM
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJXfiAVAAoJECTWi3JdVIfQAUEH/inHJW106JVKvaG7HKgXOZ0I
+OsSmplfG99M0qxf4ELunBE3TlKWMxaFiQ+3VjDNQGCT71NOW5dxe1e5+cfsyOlOS
+/5aa+aWLXLIvTbrtCVfx05S5/J6oablSrzJXF9YNXfcgslan3OQ9PDpmwHucsgrW
+FAOP2aweGozeYxuw926oixTMJhY86gTGdRbhMMtV0iwT0HOXrm8YNQLW4jNs+0OH
+egmZoDU//ALOOddUlBmzKigpW46RIH1SIm9lPbS/LJSU/ZVzELUtTRF6kHQoqIOQ
+Qwdh3slalxVel8CVYai90hojloZQn7WVGY09KW2tlARyB+rp0QD3J1ryOJ25NSU=
+=67Dw
+-----END PGP SIGNATURE-----
+
+--djsmrO0QNMuttZWM--

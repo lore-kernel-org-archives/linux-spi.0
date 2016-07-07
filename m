@@ -1,121 +1,66 @@
-From: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Subject: Re: SPI: performance regression when using the common message queuing
- infrastructure
-Date: Thu, 7 Jul 2016 10:12:35 +0200
-Message-ID: <577E0EF3.6000308@atmel.com>
-References: <577CD464.6050506@atmel.com> <577CD767.2080309@ti.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [RFC] [PATCH v2 1/3] scatterlist: Add support to clone
+ scatterlist
+Date: Thu, 7 Jul 2016 10:02:41 +0200
+Message-ID: <20160707080241.GE6247@sirena.org.uk>
+References: <1467039249-7816-1-git-send-email-fcooper@ti.com>
+ <1467039249-7816-2-git-send-email-fcooper@ti.com>
+ <CAHp75VfR=TKfVN=03jvGy5oZRA_-ASb8Vb_A4+x3OrkpZT6PoQ@mail.gmail.com>
+ <577D3B5C.7080805@ti.com>
+ <CAHp75VcPLV-483ihn_RmHnDOc0iFMSdYj5_SrNevyqrrpeWatQ@mail.gmail.com>
+ <577D5E78.2010307@ti.com>
+ <871t368lu6.fsf@belgarion.home>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	"Nicolas.FERRE-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org" <Nicolas.FERRE-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	"Wenyou.Yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org" <Wenyou.Yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<hs-ynQEQJNshbs@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="BhxIwg67zh/LWMpM"
+Cc: "Franklin S Cooper Jr." <fcooper-l0cyMroinI0@public.gmane.org>,
+	Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	david.s.gordon-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, Jens Axboe <axboe-b10kYP2dOMg@public.gmane.org>,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	Ming Lin <ming.l-Vzezgt5dB6uUEJcrhfAQsw@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>,
+	Peter Ujfalusi <peter.ujfalusi-l0cyMroinI0@public.gmane.org>
+To: Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <577CD767.2080309-l0cyMroinI0@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <871t368lu6.fsf-4ty26DBLk+jEm7gnYqmdkQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Grygorii,
 
-Le 06/07/2016 12:03, Grygorii Strashko a =C3=A9crit :
-> On 07/06/2016 12:50 PM, Cyrille Pitchen wrote:
->> Hi Mark,
->>
->> recently Heiko reported to us a performance regression with Atmel SP=
-I
->> controllers. He noticed the issue on a sam9g15ek board and I was als=
-o able to
->> reproduce it on a sama5d36ek board.
->>
->> We found out that the performance regression was introduced in 3.14 =
-by commit:
->> 8090d6d1a415d3ae1a7208995decfab8f60f4f36
->> spi: atmel: Refactor spi-atmel to use SPI framework queue
->>
->> For the test, I connected a Spansion S25FL512 memory on the SPI1 con=
-troller of
->> a sama5d36ek board. Then with an oscilloscope I monitored the chip-s=
-elect, clock
->> and MOSI signals on the SPI bus.
->>
->>
->> 1 - Reading 512 bytes from the memory
->>
->> # dd if=3D/dev/mtd6 bs=3D512 count=3D1 of=3D/dev/null
->>
->> With the oscilloscope, I measured the time between the chip-select f=
-ell before
->> the Read Status command (05h) and the chip-select rose after all dat=
-a had been
->> read by the 4-byte address Fast Read 1-1-1 command (13h).
->>
->> 3.14 vanilla                      : 305 =C2=B5s
->> 3.14 commit 8090d6d1a415 reverted : 242 =C2=B5s   -21%
->>
->> 2 - Reading 1000 x 1024 bytes from the memory
->>
->> # dd if=3D/dev/mtd6 bs=3D1024 count=3D1000 of=3D/dev/null
->>
->> Still with the scope, I measured the time to read all data.
->>
->> 3.14 vanilla                      : 435 ms
->> 3.14 commit 8090d6d1a415 reverted : 361 ms   -17%
->>
->>
->> Indeed the oscilloscope shows that more time is spent between messag=
-es and
->> transfers.
->>
->> commit 8090d6d1a415 replaced the tasklet used to manage a SPI messag=
-e/transfer
->> queue by a workqueue provided by the SPI framework.
->>
->> The support of this (optional) workqueue was introduced by commit:
->> ffbbdd21329f3e15eeca6df2d4bc11c04d9d91c0
->> spi: create a message queuing infrastructure
->>
->> Though the commit message claims that is common infrastructure is op=
-tional,
->> the patch also claims the .transfer() hook is deprecated, suggesting=
- drivers
->> should implement the new .transfer_one_message() hook instead.
->>
->> This is the reason why commit 8090d6d1a415 was submitted. However we=
- lost
->> quite amount of performances moving from our tasklet to the generic =
-workqueue.
->>
->> So do you recommend us to keep our current generic implementation re=
-lying on
->> the SPI framework workqueue or to go back to a custom implementation=
- using
->> tasklet?
->> If we keep the current implementation, is there a way to improve the
->> performances so we go back to something close to what he had before?
->>
->> We saw in commit ffbbdd21329f that we can change the workqueue threa=
-d
->> scheduling policy to SCHED_FIFO by setting master->rt.
->>
->=20
-> master->rt is not a good choice as i know and
-> you may find thread [1] useful for you.
->=20
-> [1] http://www.spinics.net/lists/linux-rt-users/msg14347.html
->=20
+--BhxIwg67zh/LWMpM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-thanks for the link, I'll look at it :)
+On Thu, Jul 07, 2016 at 12:04:33AM +0200, Robert Jarzmik wrote:
 
-Best regards,
+> For these "tricky" cases, at the time I created sg_split I had done a tester as
+> well. It's very basic, doesn't cover all the corner cases, is a bit dumb, but
+> you might have a look, and the brain cost you'll pay to adapt it to test what
+> you want will hopefully pay off by the knowledge gained on scatterlist. It is
+> appended at the end of the mail.
 
-Cyrille
+Might be worth getting this into the kernel source, under tools/testing
+perhaps?
 
+--BhxIwg67zh/LWMpM
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJXfgyXAAoJECTWi3JdVIfQDw4H/iA9JrBp288DcB26ETU2gTkz
+4d21IMw+RhljLqQyFcCXQSMV7pPscSC24F8BZLtrWI9JBTgCbQZm+XdZ6XtfQlt2
+yR/NHpSeuVkJULAPhfEOn/DWsd+VPqsXx07Ak37r2xg4jNJg0WlfWtbMVIIhRWDP
+bc4IOiM8lqHenraRkiaICTyJAHT0kkf4IX9pUT38U4EeIVG5S4IslEKI87aMhKh5
+xrqetjzMMXJg3rTxJgqooYw+stRoUbQx1axfsLo6eSOvjz21028ACbP/8H8B7wUy
+697SImy9ubPpNQtngisd7TDuA6otMj00iFH0BYexLia7Avui+BJhJBvaidJVRhE=
+=ZxWY
+-----END PGP SIGNATURE-----
+
+--BhxIwg67zh/LWMpM--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

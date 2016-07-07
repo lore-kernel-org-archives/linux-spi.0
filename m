@@ -1,21 +1,27 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: pxa2xx: Clear all RFT bits in reset_sccr1() on Intel Quark" to the spi tree
-Date: Thu, 07 Jul 2016 12:01:34 +0200
-Message-ID: <E1bL67i-0000rX-MS@finisterre>
-References: <1467796091-142927-1-git-send-email-andriy.shevchenko@linux.intel.com>
-Cc: Mark Brown <broonie@kernel.org>, stable@vger.kernel.org,
-	Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
+Subject: Applied "spi: s3c64xx: do not disable the clock while configuring the spi" to the spi tree
+Date: Thu, 07 Jul 2016 12:01:54 +0200
+Message-ID: <E1bL682-0000ul-2D@finisterre>
+References: <1467876237-12183-1-git-send-email-andi.shyti@samsung.com>
+Cc: Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Mark Brown <broonie@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Kukjin Kim <kgene@kernel.org>,
+	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Andi Shyti <andi@etezian.org>,
 	linux-spi@vger.kernel.org
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <1467796091-142927-1-git-send-email-andriy.shevchenko@linux.intel.com>
-Sender: stable-owner@vger.kernel.org
+To: Andi Shyti <andi.shyti@samsung.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <1467876237-12183-1-git-send-email-andi.shyti@samsung.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: pxa2xx: Clear all RFT bits in reset_sccr1() on Intel Quark
+   spi: s3c64xx: do not disable the clock while configuring the spi
 
 has been applied to the spi tree at
 
@@ -40,44 +46,55 @@ to this mail.
 Thanks,
 Mark
 
->From 152bc19e2fc2b7fce7ffbc2a9cea94b147223702 Mon Sep 17 00:00:00 2001
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Date: Wed, 6 Jul 2016 12:08:11 +0300
-Subject: [PATCH] spi: pxa2xx: Clear all RFT bits in reset_sccr1() on Intel
- Quark
+>From d9aaf1dc984a448ae5630e53a611a8b3489d1f8d Mon Sep 17 00:00:00 2001
+From: Andi Shyti <andi.shyti@samsung.com>
+Date: Thu, 7 Jul 2016 16:23:57 +0900
+Subject: [PATCH] spi: s3c64xx: do not disable the clock while configuring the
+ spi
 
-It seems the commit e5262d0568dc ("spi: spi-pxa2xx: SPI support for Intel Quark
-X1000") misses one place to be adapted for Intel Quark, i.e. in reset_sccr1().
+When the clock is coming from the cmu it is not required to be
+disabled and then re-enabled in order to change the rate.
 
-Clear all RFT bits when call reset_sccr1() on Intel Quark.
+Besides, some exynos chipsets (e.g. exynos5433) do not deliver
+any to the SFR if one from the pclk ("spi" in this case) or sclk
+("busclk") is disabled.
 
-Fixes: e5262d0568dc ("spi: spi-pxa2xx: SPI support for Intel Quark X1000")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Remove the clock disabling/enabling to avoid falling into this
+situation.
+
+Signed-off-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
+Signed-off-by: Andi Shyti <andi.shyti@samsung.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
 ---
- drivers/spi/spi-pxa2xx.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/spi/spi-s3c64xx.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index fe07c0592b44..daf28443b7ad 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -585,7 +585,14 @@ static void reset_sccr1(struct driver_data *drv_data)
- 	u32 sccr1_reg;
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 9f0119f64f93..df88fa161d8a 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -596,9 +596,7 @@ static void s3c64xx_spi_config(struct s3c64xx_spi_driver_data *sdd)
+ 	u32 val;
  
- 	sccr1_reg = pxa2xx_spi_read(drv_data, SSCR1) & ~drv_data->int_cr1;
--	sccr1_reg &= ~SSCR1_RFT;
-+	switch (drv_data->ssp_type) {
-+	case QUARK_X1000_SSP:
-+		sccr1_reg &= ~QUARK_X1000_SSCR1_RFT;
-+		break;
-+	default:
-+		sccr1_reg &= ~SSCR1_RFT;
-+		break;
-+	}
- 	sccr1_reg |= chip->threshold;
- 	pxa2xx_spi_write(drv_data, SSCR1, sccr1_reg);
- }
+ 	/* Disable Clock */
+-	if (sdd->port_conf->clk_from_cmu) {
+-		clk_disable_unprepare(sdd->src_clk);
+-	} else {
++	if (!sdd->port_conf->clk_from_cmu) {
+ 		val = readl(regs + S3C64XX_SPI_CLK_CFG);
+ 		val &= ~S3C64XX_SPI_ENCLK_ENABLE;
+ 		writel(val, regs + S3C64XX_SPI_CLK_CFG);
+@@ -641,11 +639,7 @@ static void s3c64xx_spi_config(struct s3c64xx_spi_driver_data *sdd)
+ 	writel(val, regs + S3C64XX_SPI_MODE_CFG);
+ 
+ 	if (sdd->port_conf->clk_from_cmu) {
+-		/* Configure Clock */
+-		/* There is half-multiplier before the SPI */
+ 		clk_set_rate(sdd->src_clk, sdd->cur_speed * 2);
+-		/* Enable Clock */
+-		clk_prepare_enable(sdd->src_clk);
+ 	} else {
+ 		/* Configure Clock */
+ 		val = readl(regs + S3C64XX_SPI_CLK_CFG);
 -- 
 2.8.1

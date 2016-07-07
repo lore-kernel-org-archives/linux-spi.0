@@ -1,49 +1,47 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 2/2] dt-bindings: spi: add binding for clps711x SPI
-Date: Thu, 7 Jul 2016 11:25:46 +0200
-Message-ID: <20160707092546.GJ6247@sirena.org.uk>
-References: <20160706145326.2658600-1-arnd@arndb.de>
- <20160706145326.2658600-2-arnd@arndb.de>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: Re: [PATCH v5 2/8] acpi: fix enumeration (visited) flags for bus
+ rescans
+Date: Thu, 7 Jul 2016 12:28:21 +0300
+Message-ID: <20160707092821.GN23527@lahna.fi.intel.com>
+References: <1467404352-27101-1-git-send-email-octavian.purdila@intel.com>
+ <1467404352-27101-3-git-send-email-octavian.purdila@intel.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="djsmrO0QNMuttZWM"
-Cc: Rob Herring <robh+dt@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shiyan <shc_work@mail.ru>, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-To: Arnd Bergmann <arnd@arndb.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+	Len Brown <lenb@kernel.org>,
+	Matt Fleming <matt@codeblueprint.co.uk>,
+	Mark Brown <broonie@kernel.org>,
+	Wolfram Sang <wsa@the-dreams.de>,
+	Joel Becker <jlbec@evilplan.org>, linux-acpi@vger.kernel.org,
+	linux-efi@vger.kernel.org, linux-i2c@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	irina.tirdea@intel.com, leonard.crestez@intel.com
+To: Octavian Purdila <octavian.purdila@intel.com>
+Return-path: <linux-i2c-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20160706145326.2658600-2-arnd@arndb.de>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <1467404352-27101-3-git-send-email-octavian.purdila@intel.com>
+Sender: linux-i2c-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Fri, Jul 01, 2016 at 11:19:06PM +0300, Octavian Purdila wrote:
+> If the ACPI tables changes as a result of a dinamically loaded table and
+> a bus rescan is required the enumeration/visited flag are not
+> consistent.
+> 
+> I2C/SPI are not directly enumerated in acpi_bus_attach(), however the
+> visited flag is set. This makes it impossible to check if an ACPI device
+> has already been enumerated by the I2C and SPI subsystems. To fix this
+> issue we only set the visited flags if the device is not I2C or SPI.
+> 
+> With this change we also need to remove setting visited to false from
+> acpi_bus_attach(), otherwise if we rescan already enumerated I2C/SPI
+> devices we try to re-enumerate them.
+> 
+> Note that I2C/SPI devices can be enumerated either via a scan handler
+> (when using PRP0001) or via regular device_attach(). In either case
+> the flow goes through acpi_default_enumeration() which makes it the
+> ideal place to mark the ACPI device as enumerated.
+> 
+> Signed-off-by: Octavian Purdila <octavian.purdila@intel.com>
 
---djsmrO0QNMuttZWM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Wed, Jul 06, 2016 at 04:53:13PM +0200, Arnd Bergmann wrote:
-> This documents the binding used by Alexander Shiyan's DT support for
-> the clps711x SPI controller.
-
-Please use subject lines matching the style for the subsystem.  This
-makes it easier for people to identify relevant patches.
-
---djsmrO0QNMuttZWM
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJXfiAVAAoJECTWi3JdVIfQAUEH/inHJW106JVKvaG7HKgXOZ0I
-OsSmplfG99M0qxf4ELunBE3TlKWMxaFiQ+3VjDNQGCT71NOW5dxe1e5+cfsyOlOS
-/5aa+aWLXLIvTbrtCVfx05S5/J6oablSrzJXF9YNXfcgslan3OQ9PDpmwHucsgrW
-FAOP2aweGozeYxuw926oixTMJhY86gTGdRbhMMtV0iwT0HOXrm8YNQLW4jNs+0OH
-egmZoDU//ALOOddUlBmzKigpW46RIH1SIm9lPbS/LJSU/ZVzELUtTRF6kHQoqIOQ
-Qwdh3slalxVel8CVYai90hojloZQn7WVGY09KW2tlARyB+rp0QD3J1ryOJ25NSU=
-=67Dw
------END PGP SIGNATURE-----
-
---djsmrO0QNMuttZWM--
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>

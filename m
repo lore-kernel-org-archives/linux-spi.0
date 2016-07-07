@@ -1,23 +1,21 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: add binding for clps711x SPI" to the spi tree
-Date: Thu, 07 Jul 2016 12:01:40 +0200
-Message-ID: <E1bL67o-0000sU-5Y@finisterre>
-References: <20160706145326.2658600-2-arnd@arndb.de>
-Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shiyan <shc_work@mail.ru>, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-To: Arnd Bergmann <arnd@arndb.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20160706145326.2658600-2-arnd@arndb.de>
-Sender: linux-kernel-owner@vger.kernel.org
+Subject: Applied "spi: pxa2xx: Clear all RFT bits in reset_sccr1() on Intel Quark" to the spi tree
+Date: Thu, 07 Jul 2016 12:01:34 +0200
+Message-ID: <E1bL67i-0000rX-MS@finisterre>
+References: <1467796091-142927-1-git-send-email-andriy.shevchenko@linux.intel.com>
+Cc: Mark Brown <broonie@kernel.org>, stable@vger.kernel.org,
+	Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	linux-spi@vger.kernel.org
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <1467796091-142927-1-git-send-email-andriy.shevchenko@linux.intel.com>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: add binding for clps711x SPI
+   spi: pxa2xx: Clear all RFT bits in reset_sccr1() on Intel Quark
 
 has been applied to the spi tree at
 
@@ -42,67 +40,44 @@ to this mail.
 Thanks,
 Mark
 
->From ea2ff61ba3f8239483f5cd823ac0113d194b469f Mon Sep 17 00:00:00 2001
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Wed, 6 Jul 2016 16:53:13 +0200
-Subject: [PATCH] spi: add binding for clps711x SPI
+>From 152bc19e2fc2b7fce7ffbc2a9cea94b147223702 Mon Sep 17 00:00:00 2001
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Date: Wed, 6 Jul 2016 12:08:11 +0300
+Subject: [PATCH] spi: pxa2xx: Clear all RFT bits in reset_sccr1() on Intel
+ Quark
 
-This documents the binding used by Alexander Shiyan's DT support for
-the clps711x SPI controller.
+It seems the commit e5262d0568dc ("spi: spi-pxa2xx: SPI support for Intel Quark
+X1000") misses one place to be adapted for Intel Quark, i.e. in reset_sccr1().
 
-I've left the file name to match the ARM platform port name "clps711x"
-for consistency with the other bindings, even though the compatible
-string refers to the later ep7309 chip.
+Clear all RFT bits when call reset_sccr1() on Intel Quark.
 
-Linux no longer supports the old clps711x and ep72xx product lines,
-but we still use the name. The entire family is now discontinued
-by the manufacturer.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Fixes: e5262d0568dc ("spi: spi-pxa2xx: SPI support for Intel Quark X1000")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
 ---
- .../devicetree/bindings/spi/spi-clps711x.txt       | 33 ++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-clps711x.txt
+ drivers/spi/spi-pxa2xx.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-clps711x.txt b/Documentation/devicetree/bindings/spi/spi-clps711x.txt
-new file mode 100644
-index 000000000000..4c3ec13f423f
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-clps711x.txt
-@@ -0,0 +1,33 @@
-+Serial Peripheral Interface on Cirrus Logic CL-PS71xx, EP72xx, EP73xx
-+
-+Required properties
-+- #address-cells: must be <1>
-+- #size-cells: must be <0>
-+- compatible: should include "cirrus,ep7209-spi"
-+- reg: Address and length of one register range
-+- interrupts: one interrupt line
-+- clocks: One entry, refers to the SPI bus clock
-+- cs-gpios: Specifies the gpio pins to be used for chipselects.
-+	    See: Documentation/devicetree/bindings/spi/spi-bus.txt
-+
-+An additional register is present in the system controller,
-+which is assumed to be in the same device tree, with and marked
-+as compatible with "cirrus,ep7209-syscon3".
-+
-+Example:
-+
-+spi@80000500 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	compatible = "cirrus,ep7209-spi";
-+	reg = <0x80000500 0x4>;
-+	interrupts = <15>;
-+	clocks = <&clks CLPS711X_CLK_SPI>;
-+	status = "disabled";
-+};
-+
-+syscon3: syscon@80002200 {
-+	compatible = "cirrus,ep7209-syscon3", "syscon";
-+	reg = <0x80002200 0x40>;
-+};
-+
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index fe07c0592b44..daf28443b7ad 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -585,7 +585,14 @@ static void reset_sccr1(struct driver_data *drv_data)
+ 	u32 sccr1_reg;
+ 
+ 	sccr1_reg = pxa2xx_spi_read(drv_data, SSCR1) & ~drv_data->int_cr1;
+-	sccr1_reg &= ~SSCR1_RFT;
++	switch (drv_data->ssp_type) {
++	case QUARK_X1000_SSP:
++		sccr1_reg &= ~QUARK_X1000_SSCR1_RFT;
++		break;
++	default:
++		sccr1_reg &= ~SSCR1_RFT;
++		break;
++	}
+ 	sccr1_reg |= chip->threshold;
+ 	pxa2xx_spi_write(drv_data, SSCR1, sccr1_reg);
+ }
 -- 
 2.8.1

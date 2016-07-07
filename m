@@ -1,66 +1,76 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [RFC] [PATCH v2 1/3] scatterlist: Add support to clone
- scatterlist
-Date: Thu, 7 Jul 2016 10:02:41 +0200
-Message-ID: <20160707080241.GE6247@sirena.org.uk>
-References: <1467039249-7816-1-git-send-email-fcooper@ti.com>
- <1467039249-7816-2-git-send-email-fcooper@ti.com>
- <CAHp75VfR=TKfVN=03jvGy5oZRA_-ASb8Vb_A4+x3OrkpZT6PoQ@mail.gmail.com>
- <577D3B5C.7080805@ti.com>
- <CAHp75VcPLV-483ihn_RmHnDOc0iFMSdYj5_SrNevyqrrpeWatQ@mail.gmail.com>
- <577D5E78.2010307@ti.com>
- <871t368lu6.fsf@belgarion.home>
+From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [PATCH v5 2/8] acpi: fix enumeration (visited) flags for bus
+ rescans
+Date: Thu, 7 Jul 2016 12:00:13 +0300
+Message-ID: <20160707090013.GK23527@lahna.fi.intel.com>
+References: <1467404352-27101-1-git-send-email-octavian.purdila@intel.com>
+ <20160706150317.GH23527@lahna.fi.intel.com>
+ <CAE1zotJg+bCUD+q_cbiO1=abx1PJbUdWVr03uutwR081iG4G1g@mail.gmail.com>
+ <31239967.dEXrvihxAE@vostro.rjw.lan>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="BhxIwg67zh/LWMpM"
-Cc: "Franklin S Cooper Jr." <fcooper-l0cyMroinI0@public.gmane.org>,
-	Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	david.s.gordon-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, Jens Axboe <axboe-b10kYP2dOMg@public.gmane.org>,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	Ming Lin <ming.l-Vzezgt5dB6uUEJcrhfAQsw@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+Content-Type: text/plain; charset=us-ascii
+Cc: Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Len Brown <lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Matt Fleming <matt-mF/unelCI9GS6iBeEJttW/XRex20P6io@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
+	Joel Becker <jlbec-aKy9MeLSZ9dg9hUCZPvPmw@public.gmane.org>,
+	"linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-efi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c <linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>,
-	Peter Ujfalusi <peter.ujfalusi-l0cyMroinI0@public.gmane.org>
-To: Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>
+	lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Irina Tirdea <irina.tirdea-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Leonard Crestez <leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: "Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <871t368lu6.fsf-4ty26DBLk+jEm7gnYqmdkQ@public.gmane.org>
+In-Reply-To: <31239967.dEXrvihxAE-sKB8Sp2ER+y1GS7QM15AGw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Wed, Jul 06, 2016 at 11:09:44PM +0200, Rafael J. Wysocki wrote:
+> On Wednesday, July 06, 2016 06:37:46 PM Octavian Purdila wrote:
+> > On Wed, Jul 6, 2016 at 6:03 PM, Mika Westerberg
+> > <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org> wrote:
+> > > On Fri, Jul 01, 2016 at 11:19:06PM +0300, Octavian Purdila wrote:
+> > >> If the ACPI tables changes as a result of a dinamically loaded table and
+> > >> a bus rescan is required the enumeration/visited flag are not
+> > >> consistent.
+> > >>
+> > >> I2C/SPI are not directly enumerated in acpi_bus_attach(), however the
+> > >> visited flag is set. This makes it impossible to check if an ACPI device
+> > >> has already been enumerated by the I2C and SPI subsystems. To fix this
+> > >> issue we only set the visited flags if the device is not I2C or SPI.
+> > >>
+> > >> With this change we also need to remove setting visited to false from
+> > >> acpi_bus_attach(), otherwise if we rescan already enumerated I2C/SPI
+> > >> devices we try to re-enumerate them.
+> > >>
+> > >> Note that I2C/SPI devices can be enumerated either via a scan handler
+> > >> (when using PRP0001) or via regular device_attach(). In either case
+> > >> the flow goes through acpi_default_enumeration() which makes it the
+> > >> ideal place to mark the ACPI device as enumerated.
+> > >
+> > > Hmm, this somehow fails to enumerate PRP0001 devices.
+> > >
+> > > I'm adding following SSDT to my initrd and the resulting device is never
+> > > enumerated on SPI bus (it exists in /sys/bus/acpi/devices). If I use
+> > > normal ACPI IDs (non-PRP0001) then it works fine.
+> > >
+> > 
+> > I specifically tested with PRP0001 via initrd with I2C, I am not sure
+> > why it does not work on SPI. I'll give it a try tomorrow when I have
+> > access to my setup.
+> 
+> OK, I'll wait for this test to conclude before applying the series, then. :-)
 
---BhxIwg67zh/LWMpM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+I tested again and it works fine. I probably had an older version of the
+series applied or something like that. Now, I'm able to see my AT25 SPI
+eeprom successfully probed:
 
-On Thu, Jul 07, 2016 at 12:04:33AM +0200, Robert Jarzmik wrote:
+[    7.264705] at25 spi-PRP0001:00: 1 KByte at25 eeprom, pagesize 32
 
-> For these "tricky" cases, at the time I created sg_split I had done a tester as
-> well. It's very basic, doesn't cover all the corner cases, is a bit dumb, but
-> you might have a look, and the brain cost you'll pay to adapt it to test what
-> you want will hopefully pay off by the knowledge gained on scatterlist. It is
-> appended at the end of the mail.
-
-Might be worth getting this into the kernel source, under tools/testing
-perhaps?
-
---BhxIwg67zh/LWMpM
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJXfgyXAAoJECTWi3JdVIfQDw4H/iA9JrBp288DcB26ETU2gTkz
-4d21IMw+RhljLqQyFcCXQSMV7pPscSC24F8BZLtrWI9JBTgCbQZm+XdZ6XtfQlt2
-yR/NHpSeuVkJULAPhfEOn/DWsd+VPqsXx07Ak37r2xg4jNJg0WlfWtbMVIIhRWDP
-bc4IOiM8lqHenraRkiaICTyJAHT0kkf4IX9pUT38U4EeIVG5S4IslEKI87aMhKh5
-xrqetjzMMXJg3rTxJgqooYw+stRoUbQx1axfsLo6eSOvjz21028ACbP/8H8B7wUy
-697SImy9ubPpNQtngisd7TDuA6otMj00iFH0BYexLia7Avui+BJhJBvaidJVRhE=
-=ZxWY
------END PGP SIGNATURE-----
-
---BhxIwg67zh/LWMpM--
+Sorry about the confusion.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

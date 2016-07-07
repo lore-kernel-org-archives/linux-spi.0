@@ -1,36 +1,36 @@
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: Re: [PATCH v5 8/8] acpi: add support for loading SSDTs via configfs
-Date: Thu, 7 Jul 2016 12:42:42 +0300
-Message-ID: <20160707094242.GQ23527@lahna.fi.intel.com>
-References: <1467404352-27101-1-git-send-email-octavian.purdila@intel.com>
- <1467404352-27101-9-git-send-email-octavian.purdila@intel.com>
+From: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH 2/2] dt-bindings: spi: add binding for clps711x SPI
+Date: Thu, 07 Jul 2016 11:48:25 +0200
+Message-ID: <3501318.cujsGY8KyD@wuerfel>
+References: <20160706145326.2658600-1-arnd@arndb.de> <20160706145326.2658600-2-arnd@arndb.de> <20160707092546.GJ6247@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-	Len Brown <lenb@kernel.org>,
-	Matt Fleming <matt@codeblueprint.co.uk>,
-	Mark Brown <broonie@kernel.org>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Joel Becker <jlbec@evilplan.org>, linux-acpi@vger.kernel.org,
-	linux-efi@vger.kernel.org, linux-i2c@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	irina.tirdea@intel.com, leonard.crestez@intel.com
-To: Octavian Purdila <octavian.purdila@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: Rob Herring <robh+dt@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shiyan <shc_work@mail.ru>, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1467404352-27101-9-git-send-email-octavian.purdila@intel.com>
+In-Reply-To: <20160707092546.GJ6247@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Jul 01, 2016 at 11:19:12PM +0300, Octavian Purdila wrote:
-> New tables can be loaded by creating directories under /config/table/
-> and writing the AML code into the aml table attribute. Various table
-> attributes will be readable once the table is successfully loaded.
+On Thursday, July 7, 2016 11:25:46 AM CEST Mark Brown wrote:
+> On Wed, Jul 06, 2016 at 04:53:13PM +0200, Arnd Bergmann wrote:
+> > This documents the binding used by Alexander Shiyan's DT support for
+> > the clps711x SPI controller.
 > 
-> Unloading tables is not supported at the moment, but it can be easily
-> implemented once ACPI loading functions provide a table handle to be
-> used for unloading.
-> 
-> Signed-off-by: Octavian Purdila <octavian.purdila@intel.com>
+> Please use subject lines matching the style for the subsystem.  This
+> makes it easier for people to identify relevant patches.
 
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+I tried, though it's a bit tricky for dt-bindings. When I created the
+patch, using 'dt-bindings: $SUBSYSTEM' appeared to be the most common
+one, ahead of '$SUBSYSTEM' (mainly used for combined patches)
+and other random prefixes.
+
+I'll resend it with just 'spi:', but I don't think there is a broad
+consensus on this in the existing patches.
+
+	Arnd

@@ -1,60 +1,57 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: SPI: performance regression when using the common message
- queuing infrastructure
-Date: Thu, 7 Jul 2016 11:50:34 +0200
-Message-ID: <20160707095034.GL6247@sirena.org.uk>
-References: <577CD464.6050506@atmel.com>
+Subject: Re: [PATCH] spi: s3c64xx: do not disable the clock while configuring
+ the spi
+Date: Thu, 7 Jul 2016 14:24:41 +0200
+Message-ID: <20160707122441.GP6247@sirena.org.uk>
+References: <CGME20160707072419epcas1p3ba881fb9b3270eb8cde87380aea7bcf9@epcas1p3.samsung.com>
+ <1467876237-12183-1-git-send-email-andi.shyti@samsung.com>
+ <20160707095840.GH23620@samsunx.samsung>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="w41lMVNXnOw3ZHPk"
-Cc: "Wenyou.Yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org" <Wenyou.Yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-	"Nicolas.FERRE-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org" <Nicolas.FERRE-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>, hs-ynQEQJNshbs@public.gmane.org,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="YQQMu+1WUtOZ6W1X"
+Cc: Sylwester Nawrocki <s.nawrocki-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Andi Shyti <andi-ahk0KpmfxKRAfugRpC6u6w@public.gmane.org>
+To: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <577CD464.6050506-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <20160707095840.GH23620-4M0o0xkwKdT35fTxX1Dczw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---w41lMVNXnOw3ZHPk
+--YQQMu+1WUtOZ6W1X
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Jul 06, 2016 at 11:50:28AM +0200, Cyrille Pitchen wrote:
+On Thu, Jul 07, 2016 at 06:58:41PM +0900, Andi Shyti wrote:
 
-> So do you recommend us to keep our current generic implementation relying on
-> the SPI framework workqueue or to go back to a custom implementation using
-> tasklet?
-> If we keep the current implementation, is there a way to improve the
-> performances so we go back to something close to what he had before?
+> sorry, I will re-send it because I should not remove the comments
+> above.... in the future someone might wonder why it's multiplied
+> by 2.
 
-I'd suggest trying to implement whatever it is that your customm
-implementation was doing in the core, having individual drivers trying
-to open code the message pump is obviously not sensible.  If what you're
-doing makes your controllers run faster it'll probably make everyone
-else's run faster too.
+I already applied and published this, can you please send an incremental
+patch fixing the issue?
 
---w41lMVNXnOw3ZHPk
+--YQQMu+1WUtOZ6W1X
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJXfiXpAAoJECTWi3JdVIfQ3pMH/0+2tOY6dyWDj4/sY0mnm83b
-xA0xzJkDKRFfHEiy3GAdrnP8rzdQf/7hlQj7oAWH0G95uf1XqCfRBLZ1weanUKD5
-HEN+S/m2R9ARO4tzqFYPhl3DBPRsWz0LQ8oN9VZ3n8u8njxyR15T/B/YOXbBkVBB
-P5GwpDS9Wgdqg6XzoNZgAc/hIaZl3CZOnbymv8ys3PmqpSkyZQoyFQapfQBUfgey
-NpMWUT382z30oQCg4Td1Hp73tBuoDbuTYNwenLGRErO8O2rIgznckhvX1KeSpU5J
-rOiH1zNSfmdysNHJMqUBOIrBg9+wIYtHWaiqfNlEuZW9d4B6GnmU4ySNaQIPUeo=
-=OEyT
+iQEcBAEBCAAGBQJXfkoIAAoJECTWi3JdVIfQxSgH/2DbRl77bFbweobnnQkjFl29
++yVtM5aKB6pWPZcVPSM1mXlYWAelzSHqLxugSV9IO9fYFMhFIgq76lmRT+yDuUHn
+djkcg4ZEjuzhQlR1gxdujB1nCb+nqNqymjnHxSTLaO/47EuQh/oIZWrX53d5xyJw
+4zWgWGGOQCt9w/7eiyhz/epNB5JSxovvBMd5K0E5onixkor9vzNFcqUgfZqeXvaJ
+QO7263nriiwNCp5CJQDLnvqZS7XWO4hakVHn578KbMCVhFgCOyhoCjlfNA0QwIcL
+qUyp/mSoXHjtWUKa0g5u7IvwJQGvkl9OYsT8MYF+txpXcQsCIkRoMQMq8FFRy3E=
+=Lg31
 -----END PGP SIGNATURE-----
 
---w41lMVNXnOw3ZHPk--
+--YQQMu+1WUtOZ6W1X--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

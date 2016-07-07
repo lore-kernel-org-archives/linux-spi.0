@@ -1,100 +1,60 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pxa2xx-pci: Support both chipselects on Braswell" to the spi tree
-Date: Thu, 07 Jul 2016 12:05:23 +0200
-Message-ID: <E1bL6BP-0001JO-CX@finisterre>
-References: <1467749525-100594-1-git-send-email-andriy.shevchenko@linux.intel.com>
-Cc: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: SPI: performance regression when using the common message
+ queuing infrastructure
+Date: Thu, 7 Jul 2016 11:50:34 +0200
+Message-ID: <20160707095034.GL6247@sirena.org.uk>
+References: <577CD464.6050506@atmel.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="w41lMVNXnOw3ZHPk"
+Cc: "Wenyou.Yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org" <Wenyou.Yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+	linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	"Nicolas.FERRE-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org" <Nicolas.FERRE-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>, hs-ynQEQJNshbs@public.gmane.org,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1467749525-100594-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <577CD464.6050506-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
 
-   spi: pxa2xx-pci: Support both chipselects on Braswell
+--w41lMVNXnOw3ZHPk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-has been applied to the spi tree at
+On Wed, Jul 06, 2016 at 11:50:28AM +0200, Cyrille Pitchen wrote:
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+> So do you recommend us to keep our current generic implementation relying on
+> the SPI framework workqueue or to go back to a custom implementation using
+> tasklet?
+> If we keep the current implementation, is there a way to improve the
+> performances so we go back to something close to what he had before?
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+I'd suggest trying to implement whatever it is that your customm
+implementation was doing in the core, having individual drivers trying
+to open code the message pump is obviously not sensible.  If what you're
+doing makes your controllers run faster it'll probably make everyone
+else's run faster too.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+--w41lMVNXnOw3ZHPk
+Content-Type: application/pgp-signature; name="signature.asc"
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+iQEcBAEBCAAGBQJXfiXpAAoJECTWi3JdVIfQ3pMH/0+2tOY6dyWDj4/sY0mnm83b
+xA0xzJkDKRFfHEiy3GAdrnP8rzdQf/7hlQj7oAWH0G95uf1XqCfRBLZ1weanUKD5
+HEN+S/m2R9ARO4tzqFYPhl3DBPRsWz0LQ8oN9VZ3n8u8njxyR15T/B/YOXbBkVBB
+P5GwpDS9Wgdqg6XzoNZgAc/hIaZl3CZOnbymv8ys3PmqpSkyZQoyFQapfQBUfgey
+NpMWUT382z30oQCg4Td1Hp73tBuoDbuTYNwenLGRErO8O2rIgznckhvX1KeSpU5J
+rOiH1zNSfmdysNHJMqUBOIrBg9+wIYtHWaiqfNlEuZW9d4B6GnmU4ySNaQIPUeo=
+=OEyT
+-----END PGP SIGNATURE-----
 
-Thanks,
-Mark
-
->From ca80ef718b12eebe247b776d4b97a5e571bb489d Mon Sep 17 00:00:00 2001
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Tue, 5 Jul 2016 23:12:05 +0300
-Subject: [PATCH] spi: pxa2xx-pci: Support both chipselects on Braswell
-
-The commit 30f3a6ab44d8 ("spi: pxa2xx: Add support for both chip selects on
-Intel Braswell") introduces a support of chipselects for Intel Braswell SPI
-host controller. Though it missed to convert the PCI part of the driver.
-
-Do conversion here which enables both chipselects on Intel Braswell when
-enumerated via PCI.
-
-We don't care about num_chipselect value since it is overrided inside core
-driver.
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Acked-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-pxa2xx-pci.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
-index 5953edc86ec8..f3df522db93b 100644
---- a/drivers/spi/spi-pxa2xx-pci.c
-+++ b/drivers/spi/spi-pxa2xx-pci.c
-@@ -127,21 +127,21 @@ static struct pxa_spi_info spi_info_configs[] = {
- 		.rx_param = &byt_rx_param,
- 	},
- 	[PORT_BSW0] = {
--		.type = LPSS_BYT_SSP,
-+		.type = LPSS_BSW_SSP,
- 		.port_id = 0,
- 		.setup = lpss_spi_setup,
- 		.tx_param = &bsw0_tx_param,
- 		.rx_param = &bsw0_rx_param,
- 	},
- 	[PORT_BSW1] = {
--		.type = LPSS_BYT_SSP,
-+		.type = LPSS_BSW_SSP,
- 		.port_id = 1,
- 		.setup = lpss_spi_setup,
- 		.tx_param = &bsw1_tx_param,
- 		.rx_param = &bsw1_rx_param,
- 	},
- 	[PORT_BSW2] = {
--		.type = LPSS_BYT_SSP,
-+		.type = LPSS_BSW_SSP,
- 		.port_id = 2,
- 		.setup = lpss_spi_setup,
- 		.tx_param = &bsw2_tx_param,
--- 
-2.8.1
-
+--w41lMVNXnOw3ZHPk--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

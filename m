@@ -1,63 +1,61 @@
-From: Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: [PATCH v2 6/7] spi: s3c64xx: restore removed comments
-Date: Fri, 8 Jul 2016 22:35:28 +0200
-Message-ID: <20160708203528.GA26626@kozik-lap>
+From: Krzysztof Kozlowski <k.kozlowski@samsung.com>
+Subject: Re: [PATCH v2 5/7] spi: s3c64xx: add exynos5433 compatible for ioclk
+ handling
+Date: Fri, 8 Jul 2016 22:39:27 +0200
+Message-ID: <20160708203927.GB26626@kozik-lap>
 References: <1467989201-14661-1-git-send-email-andi.shyti@samsung.com>
- <1467989201-14661-7-git-send-email-andi.shyti@samsung.com>
+ <1467989201-14661-6-git-send-email-andi.shyti@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Sylwester Nawrocki <s.nawrocki-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Tomasz Figa <tomasz.figa-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Michael Turquette <mturquette-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
-	Stephen Boyd <sboyd-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Chanwoo Choi <cw00.choi-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Jaehoon Chung <jh80.chung-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	linux-clk-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Andi Shyti <andi-ahk0KpmfxKRAfugRpC6u6w@public.gmane.org>
-To: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: Rob Herring <robh+dt@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Kukjin Kim <kgene@kernel.org>,
+	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Tomasz Figa <tomasz.figa@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@codeaurora.org>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Jaehoon Chung <jh80.chung@samsung.com>,
+	linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
+	Andi Shyti <andi@etezian.org>
+To: Andi Shyti <andi.shyti@samsung.com>
+Return-path: <linux-clk-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1467989201-14661-7-git-send-email-andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1467989201-14661-6-git-send-email-andi.shyti@samsung.com>
+Sender: linux-clk-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Fri, Jul 08, 2016 at 11:46:40PM +0900, Andi Shyti wrote:
-> Patch a9e93e8 has erroneously removed some comments which are
-> important to understand why the bus frequency is multiplied by
-> two during the spi transfer.
+On Fri, Jul 08, 2016 at 11:46:39PM +0900, Andi Shyti wrote:
+> The new compatible is related to the Samsung Exynos5433 SoC. The
+> difference between the previous is that in the exynos5433 the SPI
+> controller is driven by three clocks instead of only one.
 > 
-> Signed-off-by: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+> The new clock (ioclk) is controlling the input/output clock
+> whenever the controller is slave or master.
+> 
+> The presence of the clock line is detected from the compatibility
+> structure (exynos5433_spi_port_config) as a boolean value.
+> 
+> The probe function checks whether the ioclk is present and if so,
+> it acquires.
+> 
+> The runtime suspend and resume functions will handle the clock
+> enabling and disabling as well.
+> 
+> Signed-off-by: Andi Shyti <andi.shyti@samsung.com>
 > ---
->  drivers/spi/spi-s3c64xx.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-> index 6da663f..32b66f0 100644
-> --- a/drivers/spi/spi-s3c64xx.c
-> +++ b/drivers/spi/spi-s3c64xx.c
-> @@ -639,6 +639,7 @@ static void s3c64xx_spi_config(struct s3c64xx_spi_driver_data *sdd)
->  	writel(val, regs + S3C64XX_SPI_MODE_CFG);
->  
->  	if (sdd->port_conf->clk_from_cmu) {
-> +		/* There is half-multiplier before the SPI */
->  		clk_set_rate(sdd->src_clk, sdd->cur_speed * 2);
->  	} else {
->  		/* Configure Clock */
+>  drivers/spi/spi-s3c64xx.c | 57 ++++++++++++++++++++++++++++++++++++++++++-----
+>  1 file changed, 52 insertions(+), 5 deletions(-)
+>
 
-Regardless of possible followup after Michael's comments:
+Looks fine to me, thanks for updates.
 
-Reviewed-by: Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Reviewed-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
 
 Best regards,
 Krzysztof
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+

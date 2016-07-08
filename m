@@ -1,121 +1,69 @@
-From: Octavian Purdila <octavian.purdila@intel.com>
-Subject: [PATCH v7 1/8] Documentation: acpi: add SSDT overlays documentation
-Date: Fri,  8 Jul 2016 19:13:07 +0300
-Message-ID: <1467994394-23983-2-git-send-email-octavian.purdila@intel.com>
-References: <1467994394-23983-1-git-send-email-octavian.purdila@intel.com>
-Cc: linux-acpi@vger.kernel.org, linux-efi@vger.kernel.org,
-	linux-i2c@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, leonard.crestez@intel.com,
-	Octavian Purdila <octavian.purdila@intel.com>
-To: "Rafael J . Wysocki" <rjw@rjwysocki.net>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1467994394-23983-1-git-send-email-octavian.purdila@intel.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Michael Turquette <mturquette-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Subject: Re: [PATCH v2 6/7] spi: s3c64xx: restore removed comments
+Date: Fri, 08 Jul 2016 09:17:28 -0700
+Message-ID: <146799464881.73491.7507792367941552864@resonance>
+References: <1467989201-14661-1-git-send-email-andi.shyti@samsung.com>
+ <1467989201-14661-7-git-send-email-andi.shyti@samsung.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+Cc: "Chanwoo Choi" <cw00.choi-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	"Jaehoon Chung" <jh80.chung-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	linux-clk-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"Andi Shyti" <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	"Andi Shyti" <andi-ahk0KpmfxKRAfugRpC6u6w@public.gmane.org>
+To: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	"Rob Herring" <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"Mark Rutland" <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	"Kukjin Kim" <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"Krzysztof Kozlowski" <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	"Mark Brown" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"Sylwester Nawrocki" <s.nawrocki-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	"Tomasz Figa" <tomasz.figa-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"Stephen Boyd" <sboyd-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1467989201-14661-7-git-send-email-andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Signed-off-by: Octavian Purdila <octavian.purdila@intel.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
----
- Documentation/acpi/ssdt-overlays.txt | 91 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 91 insertions(+)
- create mode 100644 Documentation/acpi/ssdt-overlays.txt
+Quoting Andi Shyti (2016-07-08 07:46:40)
+> Patch a9e93e8 has erroneously removed some comments which are
+> important to understand why the bus frequency is multiplied by
+> two during the spi transfer.
+> 
+> Signed-off-by: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+> ---
+>  drivers/spi/spi-s3c64xx.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+> index 6da663f..32b66f0 100644
+> --- a/drivers/spi/spi-s3c64xx.c
+> +++ b/drivers/spi/spi-s3c64xx.c
+> @@ -639,6 +639,7 @@ static void s3c64xx_spi_config(struct s3c64xx_spi_driver_data *sdd)
+>         writel(val, regs + S3C64XX_SPI_MODE_CFG);
+>  
+>         if (sdd->port_conf->clk_from_cmu) {
+> +               /* There is half-multiplier before the SPI */
+>                 clk_set_rate(sdd->src_clk, sdd->cur_speed * 2);
 
-diff --git a/Documentation/acpi/ssdt-overlays.txt b/Documentation/acpi/ssdt-overlays.txt
-new file mode 100644
-index 0000000..8050259
---- /dev/null
-+++ b/Documentation/acpi/ssdt-overlays.txt
-@@ -0,0 +1,91 @@
-+
-+In order to support ACPI open-ended hardware configurations (e.g. development
-+boards) we need a way to augment the ACPI configuration provided by the firmware
-+image. A common example is connecting sensors on I2C / SPI buses on development
-+boards.
-+
-+Although this can be accomplished by creating a kernel platform driver or
-+recompiling the firmware image with updated ACPI tables, neither is practical:
-+the former proliferates board specific kernel code while the latter requires
-+access to firmware tools which are often not publicly available.
-+
-+Because ACPI supports external references in AML code a more practical
-+way to augment firmware ACPI configuration is by dynamically loading
-+user defined SSDT tables that contain the board specific information.
-+
-+For example, to enumerate a Bosch BMA222E accelerometer on the I2C bus of the
-+Minnowboard MAX development board exposed via the LSE connector [1], the
-+following ASL code can be used:
-+
-+DefinitionBlock ("minnowmax.aml", "SSDT", 1, "Vendor", "Accel", 0x00000003)
-+{
-+    External (\_SB.I2C6, DeviceObj)
-+
-+    Scope (\_SB.I2C6)
-+    {
-+        Device (STAC)
-+        {
-+            Name (_ADR, Zero)
-+            Name (_HID, "BMA222E")
-+
-+            Method (_CRS, 0, Serialized)
-+            {
-+                Name (RBUF, ResourceTemplate ()
-+                {
-+                    I2cSerialBus (0x0018, ControllerInitiated, 0x00061A80,
-+                                  AddressingMode7Bit, "\\_SB.I2C6", 0x00,
-+                                  ResourceConsumer, ,)
-+                    GpioInt (Edge, ActiveHigh, Exclusive, PullDown, 0x0000,
-+                             "\\_SB.GPO2", 0x00, ResourceConsumer, , )
-+                    { // Pin list
-+                        0
-+                    }
-+                })
-+                Return (RBUF)
-+            }
-+        }
-+    }
-+}
-+
-+which can then be compiled to AML binary format:
-+
-+$ iasl minnowmax.asl
-+
-+Intel ACPI Component Architecture
-+ASL Optimizing Compiler version 20140214-64 [Mar 29 2014]
-+Copyright (c) 2000 - 2014 Intel Corporation
-+
-+ASL Input:     minnomax.asl - 30 lines, 614 bytes, 7 keywords
-+AML Output:    minnowmax.aml - 165 bytes, 6 named objects, 1 executable opcodes
-+
-+[1] http://wiki.minnowboard.org/MinnowBoard_MAX#Low_Speed_Expansion_Connector_.28Top.29
-+
-+The resulting AML code can then be loaded by the kernel using one of the methods
-+below.
-+
-+== Loading ACPI SSDTs from initrd ==
-+
-+This option allows loading of user defined SSDTs from initrd and it is useful
-+when the system does not support EFI or when there is not enough EFI storage.
-+
-+It works in a similar way with initrd based ACPI tables override/upgrade: SSDT
-+aml code must be placed in the first, uncompressed, initrd under the
-+"kernel/firmware/acpi" path. Multiple files can be used and this will translate
-+in loading multiple tables. Only SSDT and OEM tables are allowed. See
-+initrd_table_override.txt for more details.
-+
-+Here is an example:
-+
-+# Add the raw ACPI tables to an uncompressed cpio archive.
-+# They must be put into a /kernel/firmware/acpi directory inside the
-+# cpio archive.
-+# The uncompressed cpio archive must be the first.
-+# Other, typically compressed cpio archives, must be
-+# concatenated on top of the uncompressed one.
-+mkdir -p kernel/firmware/acpi
-+cp ssdt.aml kernel/firmware/acpi
-+
-+# Create the uncompressed cpio archive and concatenate the original initrd
-+# on top:
-+find kernel | cpio -H newc --create > /boot/instrumented_initrd
-+cat /boot/initrd >>/boot/instrumented_initrd
--- 
-2.7.4
+Just a small comment, but if the fixed-factor divide-by-two clock was
+modeled in Linux, then this driver could call clk_set_rate on that clock
+with the "correct" rate.
+
+I guess that this driver would be the provider of that clock?
+
+Regards,
+Mike
+
+>         } else {
+>                 /* Configure Clock */
+> -- 
+> 2.8.1
+> 
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

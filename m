@@ -1,52 +1,43 @@
-From: Kalle Valo <kvalo@codeaurora.org>
-Subject: Re: [PATCH v4] wlcore: spi: add wl18xx support
-Date: Fri, 08 Jul 2016 12:57:51 +0300
-Message-ID: <87bn281mg0.fsf@kamboji.qca.qualcomm.com>
-References: <1466935675-14696-1-git-send-email-eyalr@ti.com>
-	<8665E2433BC68541A24DFFCA87B70F5B3613BF60@DFRE01.ent.ti.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"netdev\@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"devicetree\@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-spi\@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	Rob Herring <robh@kernel.org>
-To: "Reizer\, Eyal" <eyalr@ti.com>
-Return-path: <netdev-owner@vger.kernel.org>
-In-Reply-To: <8665E2433BC68541A24DFFCA87B70F5B3613BF60@DFRE01.ent.ti.com>
-	(Eyal Reizer's message of "Sun, 26 Jun 2016 10:10:54 +0000")
-Sender: netdev-owner@vger.kernel.org
+From: Andi Shyti <andi.shyti@samsung.com>
+Subject: [PATCH 2/4] bindings: spi-samsung: add exynos5433 spi compatible
+Date: Fri, 08 Jul 2016 21:18:22 +0900
+Message-ID: <1467980304-14093-3-git-send-email-andi.shyti@samsung.com>
+References: <1467980304-14093-1-git-send-email-andi.shyti@samsung.com>
+Cc: Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Kukjin Kim <kgene@kernel.org>,
+	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Andi Shyti <andi.shyti@samsung.com>,
+	Andi Shyti <andi@etezian.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-reply-to: <1467980304-14093-1-git-send-email-andi.shyti@samsung.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-"Reizer, Eyal" <eyalr@ti.com> writes:
+The samsung,exynos5433-spi has some peculiarities that bring the
+need of creating a new compatible in the binding.
 
-> Add support for using with both wl12xx and wl18xx.
->
-> - all wilink family needs special init command for entering wspi mode.
->   extra clock cycles should be sent after the spi init command while the
->   cs pin is high.
-> - Use inverted chip select for sending a dummy 4 bytes command that
->   completes the init stage.
->
-> Signed-off-by: Eyal Reizer <eyalr@ti.com>
-> ---
-> v1->v2:update device tree bindings configuration
-> v2->v3:revert from manual gpio manipulation. use inverted chip select instead
-> for sending the extra init cycle which, achieves the same hardware purpose.
-> update device tree bindings docucmentation accordingly
-> v3->v4: Remove redundant data form binding documentation and fix chip select
-> number mismatch in wl1271 example
+One of those is the 3-clocks controller management where the spi
+is fed with three clocks: "spi", "busclkN" and "ioclk".
 
-Doesn't apply to wireless-drivers-next, please resend.
+Signed-off-by: Andi Shyti <andi.shyti@samsung.com>
+---
+ Documentation/devicetree/bindings/spi/spi-samsung.txt | 1 +
+ 1 file changed, 1 insertion(+)
 
-Applying: wlcore: spi: add wl18xx support
-Using index info to reconstruct a base tree...
-Falling back to patching base and 3-way merge...
-Auto-merging drivers/net/wireless/ti/wlcore/spi.c
-CONFLICT (content): Merge conflict in drivers/net/wireless/ti/wlcore/spi.c
-Failed to merge in the changes.
-Patch failed at 0001 wlcore: spi: add wl18xx support
-
+diff --git a/Documentation/devicetree/bindings/spi/spi-samsung.txt b/Documentation/devicetree/bindings/spi/spi-samsung.txt
+index 6dbdeb3..d4294c7 100644
+--- a/Documentation/devicetree/bindings/spi/spi-samsung.txt
++++ b/Documentation/devicetree/bindings/spi/spi-samsung.txt
+@@ -10,6 +10,7 @@ Required SoC Specific Properties:
+     - samsung,s3c6410-spi: for s3c6410 platforms
+     - samsung,s5pv210-spi: for s5pv210 and s5pc110 platforms
+     - samsung,exynos7-spi: for exynos7 platforms
++    - samsung,exynos5433-spi: for exynos5433 compatible controllers
+ 
+ - reg: physical base address of the controller and length of memory mapped
+   region.
 -- 
-Kalle Valo
+2.8.1

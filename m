@@ -1,172 +1,86 @@
-From: Krzysztof Kozlowski <k.kozlowski@samsung.com>
-Subject: Re: [PATCH 3/4] spi: s3c64xx: add nexynos5433 compatible for ioclk
- handling
-Date: Fri, 08 Jul 2016 15:21:18 +0200
-Message-ID: <577FA8CE.5040209@samsung.com>
-References: <1467980304-14093-1-git-send-email-andi.shyti@samsung.com>
- <1467980304-14093-4-git-send-email-andi.shyti@samsung.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	Kukjin Kim <kgene@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Andi Shyti <andi@etezian.org>
-To: Andi Shyti <andi.shyti@samsung.com>,
-	Mark Brown <broonie@kernel.org>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-reply-to: <1467980304-14093-4-git-send-email-andi.shyti@samsung.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Subject: [PATCH v2 0/7] spi s3c64xx ioclk handling
+Date: Fri, 08 Jul 2016 23:46:34 +0900
+Message-ID: <1467989201-14661-1-git-send-email-andi.shyti@samsung.com>
+Cc: Chanwoo Choi <cw00.choi-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Jaehoon Chung <jh80.chung-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	linux-clk-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Andi Shyti <andi-ahk0KpmfxKRAfugRpC6u6w@public.gmane.org>
+To: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Sylwester Nawrocki <s.nawrocki-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Tomasz Figa <tomasz.figa-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Michael Turquette <mturquette-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
+	Stephen Boyd <sboyd-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 07/08/2016 02:18 PM, Andi Shyti wrote:
-> The new compatible is related to the Samsunx exynos5433 SoC. The
+Hi,
 
-s/Samsunx/Samsung
-Capitalize first letter: Exynos5433
+this patchset improves the compatibility between the s3c64xx
+driver and the exynos5433. One point of incompatibility, indeed,
+was that the SPI controller in exynos5433 is fed by three clocks
+which need to be handled by the driver. The third clock is the
+ioclk which support is the main purpose of this patchset.
+  
+Patch 6 is a bit unrelated with the rest, it restores a
+comment that has been removed earlier by mistake.
 
-> difference between the previous is that in the exynos5433 the SPI
-> controller is driven by three clocks instead of only one.
-> 
-> The new clock (ioclk) is controlling the input/output clock
-> whenever the controller is slave or master.
-> 
-> The presence of the clock line is detected from the compatibility
-> structure (exynos5433_spi_port_config) as a boolean value.
-> 
-> The probe function checks whether the ioclk is present and if so,
-> it acquires.
-> 
-> The runtime suspend and resume functions will handle the clock
-> enabling and disabling as well.
-> 
-> Signed-off-by: Andi Shyti <andi.shyti@samsung.com>
-> ---
->  drivers/spi/spi-s3c64xx.c | 57 ++++++++++++++++++++++++++++++++++++++++++-----
->  1 file changed, 52 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-> index 2ab42b2..1874bc5 100644
-> --- a/drivers/spi/spi-s3c64xx.c
-> +++ b/drivers/spi/spi-s3c64xx.c
-> @@ -156,12 +156,14 @@ struct s3c64xx_spi_port_config {
->  	int	quirks;
->  	bool	high_speed;
->  	bool	clk_from_cmu;
-> +	bool	clk_ioclk;
->  };
->  
->  /**
->   * struct s3c64xx_spi_driver_data - Runtime info holder for SPI driver.
->   * @clk: Pointer to the spi clock.
->   * @src_clk: Pointer to the clock used to generate SPI signals.
-> + * @ioclk: Pointer to the i/o clock between master and slave
->   * @master: Pointer to the SPI Protocol master.
->   * @cntrlr_info: Platform specific data for the controller this driver manages.
->   * @tgl_spi: Pointer to the last CS left untoggled by the cs_change hint.
-> @@ -181,6 +183,7 @@ struct s3c64xx_spi_driver_data {
->  	void __iomem                    *regs;
->  	struct clk                      *clk;
->  	struct clk                      *src_clk;
-> +	struct clk                      *ioclk;
->  	struct platform_device          *pdev;
->  	struct spi_master               *master;
->  	struct s3c64xx_spi_info  *cntrlr_info;
-> @@ -1147,6 +1150,21 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
->  		goto err_disable_clk;
->  	}
->  
-> +	if (sdd->port_conf->clk_ioclk) {
-> +		sdd->ioclk = devm_clk_get(&pdev->dev, "spi_ioclk");
-> +		if (IS_ERR(sdd->ioclk)) {
-> +			dev_err(&pdev->dev, "Unable to acquire 'ioclk'\n");
-> +			ret = PTR_ERR(sdd->ioclk);
-> +			goto err_disable_src_clk;
-> +		}
-> +
-> +		if (clk_prepare_enable(sdd->ioclk)) {
-> +			dev_err(&pdev->dev, "Couldn't enable clock 'ioclk'\n");
-> +			ret = -EBUSY;
+The last patch was first sent on its own and it was its 5th
+version, it has been queued to this patchset as there is a
+dependency with it.
 
-Why not returning real error code from clk_prepare_enable()?
+Changelog V1 -> V2:
 
-> +			goto err_disable_src_clk;
-> +		}
-> +	}
-> +
->  	pm_runtime_set_autosuspend_delay(&pdev->dev, AUTOSUSPEND_TIMEOUT);
->  	pm_runtime_use_autosuspend(&pdev->dev);
->  	pm_runtime_set_active(&pdev->dev);
-> @@ -1193,6 +1211,8 @@ err_power_off:
->  	pm_runtime_disable(&pdev->dev);
->  	pm_runtime_set_suspended(&pdev->dev);
->  
-> +	clk_disable_unprepare(sdd->ioclk);
-> +err_disable_src_clk:
->  	clk_disable_unprepare(sdd->src_clk);
->  err_disable_clk:
->  	clk_disable_unprepare(sdd->clk);
-> @@ -1211,6 +1231,8 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
->  
->  	writel(0, sdd->regs + S3C64XX_SPI_INT_EN);
->  
-> +	clk_disable_unprepare(sdd->ioclk);
-> +
->  	clk_disable_unprepare(sdd->src_clk);
->  
->  	clk_disable_unprepare(sdd->clk);
-> @@ -1269,6 +1291,7 @@ static int s3c64xx_spi_runtime_suspend(struct device *dev)
->  
->  	clk_disable_unprepare(sdd->clk);
->  	clk_disable_unprepare(sdd->src_clk);
-> +	clk_disable_unprepare(sdd->ioclk);
->  
->  	return 0;
->  }
-> @@ -1279,17 +1302,28 @@ static int s3c64xx_spi_runtime_resume(struct device *dev)
->  	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
->  	int ret;
->  
-> +	if (sdd->port_conf->clk_ioclk) {
-> +		ret = clk_prepare_enable(sdd->ioclk);
-> +		if (ret != 0)
-> +			return ret;
-> +	}
-> +
->  	ret = clk_prepare_enable(sdd->src_clk);
->  	if (ret != 0)
-> -		return ret;
-> +		goto err_disable_ioclk;
->  
->  	ret = clk_prepare_enable(sdd->clk);
-> -	if (ret != 0) {
-> -		clk_disable_unprepare(sdd->src_clk);
-> -		return ret;
-> -	}
-> +	if (ret != 0)
-> +		goto err_disable_src_clk;
->  
->  	return 0;
-> +
-> +err_disable_src_clk:
-> +	clk_disable_unprepare(sdd->src_clk);
-> +err_disable_ioclk:
-> +	clk_disable_unprepare(sdd->ioclk);
-> +
-> +	return ret;
->  }
->  #endif /* CONFIG_PM */
->  
-> @@ -1345,6 +1379,16 @@ static struct s3c64xx_spi_port_config exynos7_spi_port_config = {
->  	.quirks		= S3C64XX_SPI_QUIRK_CS_AUTO,
->  };
->  
-> +static struct s3c64xx_spi_port_config exynos5433_spi_port_config = {
-> +	.fifo_lvl_mask	= { 0x1ff, 0x7F, 0x7F, 0x7F, 0x7F, 0x1ff},
+ - patch 1: the exynos5433-spi compatible is placed in
+   alphabetical order compared to exynos7-spi
 
-Don't mix lower and upper cases of hex. I know that existing ones mixed
-it... but let us fix at least new code.
+ - patch 1: deprecates exynos7-spi
 
-Best regards,
-Krzysztof
+ - patch 2: [new] added the clocks and clock-name documentation
+   in the bindings
+
+ - patch 3: fixed some typos, renamed the goto label from
+   err_power_off to err_pm_put add the reviewd-by Krzysztof
+
+ - patch 4: new patch
+
+ - patch 5: fixed typos in commit message and use low letters for
+   hex numbers
+
+ - patch 6: removed one line of comment
+
+ - patch 7: added to ensure sequentiality.
+
+Thanks,
+Andi
+
+
+Andi Shyti (7):
+  bindings: spi-samsung: add exynos5433 spi compatible
+  bindings: spi-samsung: document the clocks and the clock-name property
+  spi: s3c64xx: rename goto labels to meaningful names
+  spi: s3c64xx: use error code from clk_prepare_enable()
+  spi: s3c64xx: add exynos5433 compatible for ioclk handling
+  spi: s3c64xx: restore removed comments
+  clk: exynos5433: remove CLK_IGNORE_UNUSED flag from SPI clocks
+
+ .../devicetree/bindings/spi/spi-samsung.txt        | 11 ++-
+ drivers/clk/samsung/clk-exynos5433.c               |  5 +-
+ drivers/spi/spi-s3c64xx.c                          | 90 +++++++++++++++++-----
+ 3 files changed, 81 insertions(+), 25 deletions(-)
+
+-- 
+2.8.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

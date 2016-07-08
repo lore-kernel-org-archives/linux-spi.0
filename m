@@ -1,71 +1,79 @@
-From: Michael Turquette <mturquette-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCH v2 5/7] spi: s3c64xx: add exynos5433 compatible for ioclk handling
-Date: Fri, 08 Jul 2016 09:13:32 -0700
-Message-ID: <146799441227.73491.13833003558807352160@resonance>
-References: <1467989201-14661-1-git-send-email-andi.shyti@samsung.com>
- <1467989201-14661-6-git-send-email-andi.shyti@samsung.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
-Cc: "Chanwoo Choi" <cw00.choi-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	"Jaehoon Chung" <jh80.chung-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	linux-clk-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"Andi Shyti" <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	"Andi Shyti" <andi-ahk0KpmfxKRAfugRpC6u6w@public.gmane.org>
-To: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	"Rob Herring" <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"Mark Rutland" <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	"Kukjin Kim" <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"Krzysztof Kozlowski" <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	"Mark Brown" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"Sylwester Nawrocki" <s.nawrocki-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	"Tomasz Figa" <tomasz.figa-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"Stephen Boyd" <sboyd-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1467989201-14661-6-git-send-email-andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Octavian Purdila <octavian.purdila@intel.com>
+Subject: [PATCH v7 0/8] ACPI overlays
+Date: Fri,  8 Jul 2016 19:13:06 +0300
+Message-ID: <1467994394-23983-1-git-send-email-octavian.purdila@intel.com>
+Cc: linux-acpi@vger.kernel.org, linux-efi@vger.kernel.org,
+	linux-i2c@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, leonard.crestez@intel.com,
+	Octavian Purdila <octavian.purdila@intel.com>
+To: "Rafael J . Wysocki" <rjw@rjwysocki.net>
+Return-path: <linux-i2c-owner@vger.kernel.org>
+Sender: linux-i2c-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Quoting Andi Shyti (2016-07-08 07:46:39)
-> @@ -1147,6 +1150,21 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
->                 goto err_disable_clk;
->         }
->  
-> +       if (sdd->port_conf->clk_ioclk) {
-> +               sdd->ioclk = devm_clk_get(&pdev->dev, "spi_ioclk");
-> +               if (IS_ERR(sdd->ioclk)) {
-> +                       dev_err(&pdev->dev, "Unable to acquire 'ioclk'\n");
-> +                       ret = PTR_ERR(sdd->ioclk);
-> +                       goto err_disable_src_clk;
-> +               }
-> +
-> +               ret = clk_prepare_enable(sdd->ioclk);
-> +               if (ret) {
-> +                       dev_err(&pdev->dev, "Couldn't enable clock 'ioclk'\n");
-> +                       goto err_disable_src_clk;
-> +               }
-> +       }
-> +
->         pm_runtime_set_autosuspend_delay(&pdev->dev, AUTOSUSPEND_TIMEOUT);
->         pm_runtime_use_autosuspend(&pdev->dev);
->         pm_runtime_set_active(&pdev->dev);
-> @@ -1193,6 +1211,8 @@ err_pm_put:
->         pm_runtime_disable(&pdev->dev);
->         pm_runtime_set_suspended(&pdev->dev);
->  
-> +       clk_disable_unprepare(sdd->ioclk);
-> +err_disable_src_clk:
->         clk_disable_unprepare(sdd->src_clk);
->  err_disable_clk:
->         clk_disable_unprepare(sdd->clk);
+This patch set enables custom ACPI board configuration by adding
+mechanisms in the Linux kernel for loading user defined SSDTs.
 
-Why aren't these clocks enabled/disabled by calls to pm_runtime_get/put?
+Currently it is possible to load SSDT overlays using the upgrade
+initrd mechanism introduced in 4.7. This patch series adds support for
+two more methods:
 
-Regards,
-Mike
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+* From an EFI variable
+
+ This is the preferred method, when EFI is supported on the platform,
+ because it allows a persistent, OS independent way of storing and
+ updating the user defined SSDTs. There is also work underway to
+ implement EFI support for loading user defined SSDTs and using this
+ method will make it easier to convert to the EFI loading mechanism
+ when that will arrive.
+
+* From userspace via configfs
+
+ This is useful when we want to defer the operation to userspace for
+ platform detection, loading the SSDTs from a custom partition, etc.
+
+Changes from v6:
+
+ * make acpi_table_events_fn static, fix (c) year and fix a typo
+
+Changes from v5:
+
+* EFI: enable duplicate detection to avoid firmware bugs that returns the
+same variable over and over again; this requires pushing the entry
+allocation back into efivar_ssdt_iter() and creating a temporary list
+that is iterated over in efivar_ssdt_load()
+
+* EFI: marked efivar_ssdt with __initdata
+
+Octavian Purdila (8):
+  Documentation: acpi: add SSDT overlays documentation
+  acpi: fix enumeration (visited) flags for bus rescans
+  acpi: add support for ACPI reconfiguration notifiers
+  i2c: add support for ACPI reconfigure notifications
+  spi: add support for ACPI reconfigure notifications
+  efi: load SSTDs from EFI variables
+  acpi: add support for configfs
+  acpi: add support for loading SSDTs via configfs
+
+ Documentation/ABI/testing/configfs-acpi |  36 +++++
+ Documentation/acpi/ssdt-overlays.txt    | 172 ++++++++++++++++++++
+ Documentation/kernel-parameters.txt     |   7 +
+ MAINTAINERS                             |   1 +
+ drivers/acpi/Kconfig                    |   8 +
+ drivers/acpi/Makefile                   |   1 +
+ drivers/acpi/bus.c                      |   9 ++
+ drivers/acpi/configfs.c                 | 267 ++++++++++++++++++++++++++++++++
+ drivers/acpi/internal.h                 |   3 +
+ drivers/acpi/scan.c                     |  81 +++++++++-
+ drivers/acpi/sysfs.c                    |   6 +-
+ drivers/firmware/efi/efi.c              |  96 ++++++++++++
+ drivers/i2c/i2c-core.c                  | 175 ++++++++++++++++-----
+ drivers/spi/spi.c                       | 100 +++++++++++-
+ include/linux/acpi.h                    |  36 +++++
+ 15 files changed, 942 insertions(+), 56 deletions(-)
+ create mode 100644 Documentation/ABI/testing/configfs-acpi
+ create mode 100644 Documentation/acpi/ssdt-overlays.txt
+ create mode 100644 drivers/acpi/configfs.c
+
+-- 
+2.7.4

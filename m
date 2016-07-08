@@ -1,45 +1,52 @@
-From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
-Subject: Re: Applied "spi: omap2-mcspi: Select SPI_SPLIT" to the spi tree
-Date: Fri, 8 Jul 2016 14:24:24 +0530
-Message-ID: <577F6A40.1030004@ti.com>
-References: <E1bLRTH-0004lu-Mz@finisterre>
+From: Kalle Valo <kvalo@codeaurora.org>
+Subject: Re: [PATCH v4] wlcore: spi: add wl18xx support
+Date: Fri, 08 Jul 2016 12:57:51 +0300
+Message-ID: <87bn281mg0.fsf@kamboji.qca.qualcomm.com>
+References: <1466935675-14696-1-git-send-email-eyalr@ti.com>
+	<8665E2433BC68541A24DFFCA87B70F5B3613BF60@DFRE01.ent.ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-Cc: <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>, <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	<linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <robert.jarzmik-GANU6spQydw@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <E1bLRTH-0004lu-Mz@finisterre>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"netdev\@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"devicetree\@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-spi\@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	Rob Herring <robh@kernel.org>
+To: "Reizer\, Eyal" <eyalr@ti.com>
+Return-path: <netdev-owner@vger.kernel.org>
+In-Reply-To: <8665E2433BC68541A24DFFCA87B70F5B3613BF60@DFRE01.ent.ti.com>
+	(Eyal Reizer's message of "Sun, 26 Jun 2016 10:10:54 +0000")
+Sender: netdev-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Mark,
+"Reizer, Eyal" <eyalr@ti.com> writes:
 
-On Friday 08 July 2016 02:19 PM, Mark Brown wrote:
-> From 2b32e987c48c65a1a40b3b4294435f761e063b6b Mon Sep 17 00:00:00 2001
-> From: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>
-> Date: Thu, 7 Jul 2016 12:17:49 -0500
-> Subject: [PATCH] spi: omap2-mcspi: Select SPI_SPLIT
+> Add support for using with both wl12xx and wl18xx.
+>
+> - all wilink family needs special init command for entering wspi mode.
+>   extra clock cycles should be sent after the spi init command while the
+>   cs pin is high.
+> - Use inverted chip select for sending a dummy 4 bytes command that
+>   completes the init stage.
+>
+> Signed-off-by: Eyal Reizer <eyalr@ti.com>
+> ---
+> v1->v2:update device tree bindings configuration
+> v2->v3:revert from manual gpio manipulation. use inverted chip select instead
+> for sending the extra init cycle which, achieves the same hardware purpose.
+> update device tree bindings docucmentation accordingly
+> v3->v4: Remove redundant data form binding documentation and fix chip select
+> number mismatch in wl1271 example
 
-Looks like you fixed up the description locally but forgot to fix the
-subject line. It still shows SPI_SPLIT.
+Doesn't apply to wireless-drivers-next, please resend.
 
-> 
-> The function sg_split will be used by spi-omap2-mcspi to handle a SoC
-> workaround in the SPI driver. Therefore, select SG_SPLIT so this function
-> is available to the driver.
-> 
-> Signed-off-by: Franklin S Cooper Jr <fcooper-l0cyMroinI0@public.gmane.org>
-> Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Applying: wlcore: spi: add wl18xx support
+Using index info to reconstruct a base tree...
+Falling back to patching base and 3-way merge...
+Auto-merging drivers/net/wireless/ti/wlcore/spi.c
+CONFLICT (content): Merge conflict in drivers/net/wireless/ti/wlcore/spi.c
+Failed to merge in the changes.
+Patch failed at 0001 wlcore: spi: add wl18xx support
 
-Thanks,
-Sekhar
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+-- 
+Kalle Valo

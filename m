@@ -1,56 +1,40 @@
-From: Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: [PATCH 4/4] spi: s3c64xx: restore removed comments
-Date: Fri, 08 Jul 2016 14:52:42 +0200
-Message-ID: <577FA21A.8020900@samsung.com>
+From: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Subject: Re: [PATCH 2/4] bindings: spi-samsung: add exynos5433 spi compatible
+Date: Fri, 08 Jul 2016 21:56:48 +0900
+Message-ID: <20160708125648.GK23620@samsunx.samsung>
 References: <1467980304-14093-1-git-send-email-andi.shyti@samsung.com>
- <1467980304-14093-5-git-send-email-andi.shyti@samsung.com>
+ <1467980304-14093-3-git-send-email-andi.shyti@samsung.com>
+ <CGME20160708125125epcas1p25209218b03d625369dc9f9495a66b750@epcas1p2.samsung.com>
+ <577FA1CB.30805@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: Sylwester Nawrocki <s.nawrocki-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Sylwester Nawrocki <s.nawrocki-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
 	Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Andi Shyti <andi-ahk0KpmfxKRAfugRpC6u6w@public.gmane.org>
-To: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-reply-to: <1467980304-14093-5-git-send-email-andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Content-disposition: inline
+In-reply-to: <577FA1CB.30805-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 07/08/2016 02:18 PM, Andi Shyti wrote:
-> Patch a9e93e8 has erroneously removed some comments which are
-> important to understand why the bus frequency is multiplied by
-> two during the spi transfer.
+> >  
+> >  - reg: physical base address of the controller and length of memory mapped
+> >    region.
+> > 
 > 
-> Signed-off-by: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-> ---
->  drivers/spi/spi-s3c64xx.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-> index 1874bc5..d1fe100 100644
-> --- a/drivers/spi/spi-s3c64xx.c
-> +++ b/drivers/spi/spi-s3c64xx.c
-> @@ -639,6 +639,8 @@ static void s3c64xx_spi_config(struct s3c64xx_spi_driver_data *sdd)
->  	writel(val, regs + S3C64XX_SPI_MODE_CFG);
->  
->  	if (sdd->port_conf->clk_from_cmu) {
-> +		/* Configure Clock */
-> +		/* There is half-multiplier before the SPI */
+> Thanks for the patch, nice work. I see that you ignored parts of my
+> offline comments so I guess you leave that work to others (describe
+> required clock properties, deprecate exynos7-spi). I'll send the follow
+> up then.
 
-Not a kernel coding style comment. :) Either proper one or just skip the
-"configure clock" as it is meaningless.
+I was actually doing the follow up, I think it's a different
+concept and therefore goes on a different patch.
 
-BR,
-Krzysztof
-
->  		clk_set_rate(sdd->src_clk, sdd->cur_speed * 2);
->  	} else {
->  		/* Configure Clock */
-> 
-
+Andi
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

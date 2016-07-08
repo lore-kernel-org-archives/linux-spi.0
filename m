@@ -1,9 +1,8 @@
 From: Michael Turquette <mturquette-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCH v2 6/7] spi: s3c64xx: restore removed comments
-Date: Fri, 08 Jul 2016 09:17:28 -0700
-Message-ID: <146799464881.73491.7507792367941552864@resonance>
+Subject: Re: [PATCH v2 0/7] spi s3c64xx ioclk handling
+Date: Fri, 08 Jul 2016 09:21:42 -0700
+Message-ID: <146799490260.73491.12050912045304218863@resonance>
 References: <1467989201-14661-1-git-send-email-andi.shyti@samsung.com>
- <1467989201-14661-7-git-send-email-andi.shyti@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8BIT
@@ -23,47 +22,79 @@ To: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
 	"Sylwester Nawrocki" <s.nawrocki-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
 	"Tomasz Figa" <tomasz.figa-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	"Stephen Boyd" <sboyd-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1467989201-14661-7-git-send-email-andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1467989201-14661-1-git-send-email-andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-Quoting Andi Shyti (2016-07-08 07:46:40)
-> Patch a9e93e8 has erroneously removed some comments which are
-> important to understand why the bus frequency is multiplied by
-> two during the spi transfer.
+Quoting Andi Shyti (2016-07-08 07:46:34)
+> Hi,
 > 
-> Signed-off-by: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-> ---
->  drivers/spi/spi-s3c64xx.c | 1 +
->  1 file changed, 1 insertion(+)
+> this patchset improves the compatibility between the s3c64xx
+> driver and the exynos5433. One point of incompatibility, indeed,
+> was that the SPI controller in exynos5433 is fed by three clocks
+> which need to be handled by the driver. The third clock is the
+> ioclk which support is the main purpose of this patchset.
+>   
+> Patch 6 is a bit unrelated with the rest, it restores a
+> comment that has been removed earlier by mistake.
 > 
-> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-> index 6da663f..32b66f0 100644
-> --- a/drivers/spi/spi-s3c64xx.c
-> +++ b/drivers/spi/spi-s3c64xx.c
-> @@ -639,6 +639,7 @@ static void s3c64xx_spi_config(struct s3c64xx_spi_driver_data *sdd)
->         writel(val, regs + S3C64XX_SPI_MODE_CFG);
->  
->         if (sdd->port_conf->clk_from_cmu) {
-> +               /* There is half-multiplier before the SPI */
->                 clk_set_rate(sdd->src_clk, sdd->cur_speed * 2);
+> The last patch was first sent on its own and it was its 5th
+> version, it has been queued to this patchset as there is a
+> dependency with it.
 
-Just a small comment, but if the fixed-factor divide-by-two clock was
-modeled in Linux, then this driver could call clk_set_rate on that clock
-with the "correct" rate.
+Feel free to add the following to all of the patches:
 
-I guess that this driver would be the provider of that clock?
+Reviewed-by: Michael Turquette <mturquette-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
 
 Regards,
 Mike
 
->         } else {
->                 /* Configure Clock */
+> 
+> Changelog V1 -> V2:
+> 
+>  - patch 1: the exynos5433-spi compatible is placed in
+>    alphabetical order compared to exynos7-spi
+> 
+>  - patch 1: deprecates exynos7-spi
+> 
+>  - patch 2: [new] added the clocks and clock-name documentation
+>    in the bindings
+> 
+>  - patch 3: fixed some typos, renamed the goto label from
+>    err_power_off to err_pm_put add the reviewd-by Krzysztof
+> 
+>  - patch 4: new patch
+> 
+>  - patch 5: fixed typos in commit message and use low letters for
+>    hex numbers
+> 
+>  - patch 6: removed one line of comment
+> 
+>  - patch 7: added to ensure sequentiality.
+> 
+> Thanks,
+> Andi
+> 
+> 
+> Andi Shyti (7):
+>   bindings: spi-samsung: add exynos5433 spi compatible
+>   bindings: spi-samsung: document the clocks and the clock-name property
+>   spi: s3c64xx: rename goto labels to meaningful names
+>   spi: s3c64xx: use error code from clk_prepare_enable()
+>   spi: s3c64xx: add exynos5433 compatible for ioclk handling
+>   spi: s3c64xx: restore removed comments
+>   clk: exynos5433: remove CLK_IGNORE_UNUSED flag from SPI clocks
+> 
+>  .../devicetree/bindings/spi/spi-samsung.txt        | 11 ++-
+>  drivers/clk/samsung/clk-exynos5433.c               |  5 +-
+>  drivers/spi/spi-s3c64xx.c                          | 90 +++++++++++++++++-----
+>  3 files changed, 81 insertions(+), 25 deletions(-)
+> 
 > -- 
 > 2.8.1
 > 
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

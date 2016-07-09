@@ -1,61 +1,44 @@
-From: Krzysztof Kozlowski <k.kozlowski@samsung.com>
-Subject: Re: [PATCH v2 5/7] spi: s3c64xx: add exynos5433 compatible for ioclk
- handling
-Date: Fri, 8 Jul 2016 22:39:27 +0200
-Message-ID: <20160708203927.GB26626@kozik-lap>
-References: <1467989201-14661-1-git-send-email-andi.shyti@samsung.com>
- <1467989201-14661-6-git-send-email-andi.shyti@samsung.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Cc: Rob Herring <robh+dt@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Kukjin Kim <kgene@kernel.org>,
-	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	Tomasz Figa <tomasz.figa@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@codeaurora.org>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	Jaehoon Chung <jh80.chung@samsung.com>,
-	linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-	Andi Shyti <andi@etezian.org>
-To: Andi Shyti <andi.shyti@samsung.com>
-Return-path: <linux-clk-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1467989201-14661-6-git-send-email-andi.shyti@samsung.com>
-Sender: linux-clk-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Prahlad V <prahlad.eee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: spi-ti-qspi: clear wlen field while setting word length.
+Date: Sun, 10 Jul 2016 01:35:53 +0530
+Message-ID: <1468094753-8327-1-git-send-email-prahlad.eee@gmail.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	vigneshr-l0cyMroinI0@public.gmane.org, Prahlad V <prahlad.eee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, Jul 08, 2016 at 11:46:39PM +0900, Andi Shyti wrote:
-> The new compatible is related to the Samsung Exynos5433 SoC. The
-> difference between the previous is that in the exynos5433 the SPI
-> controller is driven by three clocks instead of only one.
-> 
-> The new clock (ioclk) is controlling the input/output clock
-> whenever the controller is slave or master.
-> 
-> The presence of the clock line is detected from the compatibility
-> structure (exynos5433_spi_port_config) as a boolean value.
-> 
-> The probe function checks whether the ioclk is present and if so,
-> it acquires.
-> 
-> The runtime suspend and resume functions will handle the clock
-> enabling and disabling as well.
-> 
-> Signed-off-by: Andi Shyti <andi.shyti@samsung.com>
-> ---
->  drivers/spi/spi-s3c64xx.c | 57 ++++++++++++++++++++++++++++++++++++++++++-----
->  1 file changed, 52 insertions(+), 5 deletions(-)
->
+When a word length of 1 byte is selected and writing data of length
+more than QSPI_WLEN_MAX_BYTES, first MAX_BYTES will be transfered
+and remaining will be transfered byte by byte. In that case wlen
+field should be cleared before setting.
 
-Looks fine to me, thanks for updates.
+Signed-off-by: Prahlad V <prahlad.eee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi-ti-qspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Reviewed-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
+diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+index 29ea8d2..6c61f54 100644
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -276,9 +276,9 @@ static int qspi_write_msg(struct ti_qspi *qspi, struct spi_transfer *t,
+ 				cmd |= QSPI_WLEN(QSPI_WLEN_MAX_BITS);
+ 			} else {
+ 				writeb(*txbuf, qspi->base + QSPI_SPI_DATA_REG);
+-				cmd = qspi->cmd | QSPI_WR_SNGL;
+ 				xfer_len = wlen;
+-				cmd |= QSPI_WLEN(wlen);
++				cmd = ((qspi->cmd & ~QSPI_WLEN_MASK) |
++					     QSPI_WLEN(wlen));
+ 			}
+ 			break;
+ 		case 2:
+-- 
+2.5.5
 
-Best regards,
-Krzysztof
-
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

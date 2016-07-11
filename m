@@ -1,48 +1,40 @@
-From: Sylwester Nawrocki <s.nawrocki@samsung.com>
-Subject: Re: [PATCH v2 7/7] clk: exynos5433: remove CLK_IGNORE_UNUSED flag from
- SPI clocks
-Date: Mon, 11 Jul 2016 12:58:28 +0200
-Message-ID: <57837BD4.5030602@samsung.com>
-References: <1467989201-14661-1-git-send-email-andi.shyti@samsung.com>
- <1467989201-14661-8-git-send-email-andi.shyti@samsung.com>
+From: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH 2/2] dt-bindings: spi: add binding for clps711x SPI
+Date: Mon, 11 Jul 2016 09:42:38 -0500
+Message-ID: <20160711144238.GA10877@rob-hp-laptop>
+References: <20160706145326.2658600-1-arnd@arndb.de>
+ <20160706145326.2658600-2-arnd@arndb.de>
+ <20160707092546.GJ6247@sirena.org.uk>
+ <3501318.cujsGY8KyD@wuerfel>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: Rob Herring <robh+dt@kernel.org>,
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie@kernel.org>,
 	Mark Rutland <mark.rutland@arm.com>,
-	Kukjin Kim <kgene@kernel.org>,
-	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-	Tomasz Figa <tomasz.figa@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@codeaurora.org>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	Jaehoon Chung <jh80.chung@samsung.com>,
-	linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-	Andi Shyti <andi@etezian.org>
-To: Andi Shyti <andi.shyti@samsung.com>,
-	Mark Brown <broonie@kernel.org>
-Return-path: <linux-clk-owner@vger.kernel.org>
-In-reply-to: <1467989201-14661-8-git-send-email-andi.shyti@samsung.com>
-Sender: linux-clk-owner@vger.kernel.org
+	Alexander Shiyan <shc_work@mail.ru>, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+To: Arnd Bergmann <arnd@arndb.de>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <3501318.cujsGY8KyD@wuerfel>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 07/08/2016 04:46 PM, Andi Shyti wrote:
-> Because the Exynos5433 SPI driver supports the ioclk handling and
-> the following patch:
+On Thu, Jul 07, 2016 at 11:48:25AM +0200, Arnd Bergmann wrote:
+> On Thursday, July 7, 2016 11:25:46 AM CEST Mark Brown wrote:
+> > On Wed, Jul 06, 2016 at 04:53:13PM +0200, Arnd Bergmann wrote:
+> > > This documents the binding used by Alexander Shiyan's DT support for
+> > > the clps711x SPI controller.
+> > 
+> > Please use subject lines matching the style for the subsystem.  This
+> > makes it easier for people to identify relevant patches.
 > 
->   http://marc.info/?l=linux-kernel&m=146787645626318&w=2
-> 
-> fixes a synchronus abort issue, none of the SPI clocks require
-s/synchronus/synchronous
+> I tried, though it's a bit tricky for dt-bindings. When I created the
+> patch, using 'dt-bindings: $SUBSYSTEM' appeared to be the most common
+> one, ahead of '$SUBSYSTEM' (mainly used for combined patches)
+> and other random prefixes.
 
-> any critical handling: remove, then, the CLK_IGNORE_UNUSED flag
-> for the SPI related clocks.
-> 
-> Signed-off-by: Andi Shyti <andi.shyti@samsung.com>
-> Reviewed-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
+There isn't. Mark and I don't agree here as the former is my 
+preference, but I care less than he does. :) 
 
-In case this goes through the spi tree:
-Acked-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
-
+Rob

@@ -1,102 +1,77 @@
-From: Bhaktipriya Shridhar <bhaktipriya96-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v2] spi: spi-sh: Remove deprecated create_singlethread_workqueue
-Date: Sun, 10 Jul 2016 19:55:19 +0530
-Message-ID: <1468160719-32600-1-git-send-email-bhaktipriya96@gmail.com>
-References: <201607021811.Q9yqxNLJ%fengguang.wu@intel.com>
-Cc: Tejun Heo <tj-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Bhaktipriya Shridhar <bhaktipriya96-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Subject: [PATCH v3] bindings: spi-samsung: document the clocks and the
+ clock-name property
+Date: Mon, 11 Jul 2016 11:36:21 +0900
+Message-ID: <1468204581-16873-1-git-send-email-andi.shyti@samsung.com>
+References: <20160708203207.GB25980@kozik-lap>
+Cc: Chanwoo Choi <cw00.choi-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Jaehoon Chung <jh80.chung-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	linux-clk-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Andi Shyti <andi-ahk0KpmfxKRAfugRpC6u6w@public.gmane.org>
+To: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Sylwester Nawrocki <s.nawrocki-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Tomasz Figa <tomasz.figa-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Michael Turquette <mturquette-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
+	Stephen Boyd <sboyd-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <201607021811.Q9yqxNLJ%fengguang.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+In-reply-to: <20160708203207.GB25980@kozik-lap>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The workqueue has a single workitem(&ss->ws) and hence doesn't require
-ordering. Also, it is not being used on a memory reclaim path. Hence, the
-singlethreaded workqueue has been replaced with the use of system_wq.
+These two properties were not documented but used in the spi
+dts. Add the related documentation.
 
-System workqueues have been able to handle high level of concurrency
-for a long time now and hence it's not required to have a singlethreaded
-workqueue just to gain concurrency. Unlike a dedicated per-cpu workqueue
-created with create_singlethread_workqueue(), system_wq allows multiple
-work items to overlap executions even on the same CPU; however, a
-per-cpu workqueue doesn't have any CPU locality or global ordering
-guarantee unless the target CPU is explicitly specified and thus the
-increase of local concurrency shouldn't make any difference.
-
-Work item has been flushed in spi_sh_remove() to ensure that
-there are no pending tasks while disconnecting the driver.
-
-Signed-off-by: Bhaktipriya Shridhar <bhaktipriya96-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Suggested-by: Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Signed-off-by: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Reviewed-by: Michael Turquette <mturquette-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Reviewed-by: Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- Changes in v2:
-	-Fixed build error by correcting parameter passed to flush_work
+Hi,
 
- drivers/spi/spi-sh.c | 16 +++-------------
- 1 file changed, 3 insertions(+), 13 deletions(-)
+Changelog related only to this patch:
 
-diff --git a/drivers/spi/spi-sh.c b/drivers/spi/spi-sh.c
-index 5025011..2bf53f0 100644
---- a/drivers/spi/spi-sh.c
-+++ b/drivers/spi/spi-sh.c
-@@ -82,7 +82,6 @@ struct spi_sh_data {
- 	int irq;
- 	struct spi_master *master;
- 	struct list_head queue;
--	struct workqueue_struct *workqueue;
- 	struct work_struct ws;
- 	unsigned long cr1;
- 	wait_queue_head_t wait;
-@@ -380,7 +379,7 @@ static int spi_sh_transfer(struct spi_device *spi, struct spi_message *mesg)
- 	spi_sh_clear_bit(ss, SPI_SH_SSA, SPI_SH_CR1);
+V1 -> V2: [new] added the clocks and clock-name documentation
+   in the bindings
 
- 	list_add_tail(&mesg->queue, &ss->queue);
--	queue_work(ss->workqueue, &ss->ws);
-+	schedule_work(&ss->ws);
+V2 -> V3: reworded the 'clock-names' as suggested by Krzysztof,
+   added Mike's and Krzysztof's review and Krzysztof's
+   suggested-by.
 
- 	spin_unlock_irqrestore(&ss->lock, flags);
+Thanks,
+Andi
 
-@@ -425,7 +424,7 @@ static int spi_sh_remove(struct platform_device *pdev)
- 	struct spi_sh_data *ss = platform_get_drvdata(pdev);
+ Documentation/devicetree/bindings/spi/spi-samsung.txt | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
- 	spi_unregister_master(ss->master);
--	destroy_workqueue(ss->workqueue);
-+	flush_work(&ss->ws);
- 	free_irq(ss->irq, ss);
-
- 	return 0;
-@@ -484,18 +483,11 @@ static int spi_sh_probe(struct platform_device *pdev)
- 	spin_lock_init(&ss->lock);
- 	INIT_WORK(&ss->ws, spi_sh_work);
- 	init_waitqueue_head(&ss->wait);
--	ss->workqueue = create_singlethread_workqueue(
--					dev_name(master->dev.parent));
--	if (ss->workqueue == NULL) {
--		dev_err(&pdev->dev, "create workqueue error\n");
--		ret = -EBUSY;
--		goto error1;
--	}
-
- 	ret = request_irq(irq, spi_sh_irq, 0, "spi_sh", ss);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "request_irq error\n");
--		goto error2;
-+		goto error1;
- 	}
-
- 	master->num_chipselect = 2;
-@@ -514,8 +506,6 @@ static int spi_sh_probe(struct platform_device *pdev)
-
-  error3:
- 	free_irq(irq, ss);
-- error2:
--	destroy_workqueue(ss->workqueue);
-  error1:
- 	spi_master_put(master);
-
---
-2.1.4
+diff --git a/Documentation/devicetree/bindings/spi/spi-samsung.txt b/Documentation/devicetree/bindings/spi/spi-samsung.txt
+index 57d5539..f45c6eb 100644
+--- a/Documentation/devicetree/bindings/spi/spi-samsung.txt
++++ b/Documentation/devicetree/bindings/spi/spi-samsung.txt
+@@ -24,6 +24,15 @@ Required SoC Specific Properties:
+ - dma-names: Names for the dma channels. There must be at least one channel
+   named "tx" for transmit and named "rx" for receive.
+ 
++- clocks: specifies the clock IDs provided to the SPI controller; they are
++  required for interacting with the controller itself, for synchronizing the bus
++  and as I/O clock (the latter is required by exynos5433 and exynos7).
++
++- clock-names: string names of the clocks in the 'clocks' property; for all the
++  the devices the names must be "spi", "spi_busclkN" (where N is determined by
++  "samsung,spi-src-clk"), while Exynos5433 should specify a third clock
++  "spi_ioclk" for the I/O clock.
++
+ Required Board Specific Properties:
+ 
+ - #address-cells: should be 1.
+-- 
+2.8.1
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

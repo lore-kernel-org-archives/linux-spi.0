@@ -1,188 +1,48 @@
-From: Andi Shyti <andi.shyti@samsung.com>
-Subject: [PATCH v3 5/7] spi: s3c64xx: add Exynos5433 compatible for ioclk
- handling
-Date: Tue, 12 Jul 2016 19:02:14 +0900
-Message-ID: <1468317736-18841-6-git-send-email-andi.shyti@samsung.com>
-References: <1468317736-18841-1-git-send-email-andi.shyti@samsung.com>
-Cc: Chanwoo Choi <cw00.choi@samsung.com>,
-	Jaehoon Chung <jh80.chung@samsung.com>,
-	linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-	Andi Shyti <andi.shyti@samsung.com>,
-	Andi Shyti <andi@etezian.org>
-To: Rob Herring <robh+dt@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Kukjin Kim <kgene@kernel.org>,
-	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	Tomasz Figa <tomasz.figa@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@codeaurora.org>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-reply-to: <1468317736-18841-1-git-send-email-andi.shyti@samsung.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: weiyj_lk-9Onoh4P/yGk@public.gmane.org
+Subject: [PATCH -next] spi: s3c64xx: fix reference leak to master in s3c64xx_spi_remove()
+Date: Tue, 12 Jul 2016 11:08:42 +0000
+Message-ID: <1468321722-16568-1-git-send-email-weiyj_lk@163.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Cc: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The new compatible is related to the Samsung Exynos5433 SoC. The
-difference between the previous is that in the exynos5433 the SPI
-controller is driven by three clocks instead of only one.
+From: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
 
-The new clock (ioclk) is controlling the input/output clock
-whenever the controller is slave or master.
+Once a spi_master_get() call succeeds, we need an additional
+spi_master_put() call to free the memory, otherwise we will
+leak a reference to master. Fix by removing the unnecessary
+spi_master_get() call.
 
-The presence of the clock line is detected from the compatibility
-structure (exynos5433_spi_port_config) as a boolean value.
-
-The probe function checks whether the ioclk is present and if so,
-it acquires.
-
-The runtime suspend and resume functions will handle the clock
-enabling and disabling as well.
-
-Signed-off-by: Andi Shyti <andi.shyti@samsung.com>
-Reviewed-by: Michael Turquette <mturquette@baylibre.com>
-Reviewed-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
+Signed-off-by: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
 ---
- drivers/spi/spi-s3c64xx.c | 57 ++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 52 insertions(+), 5 deletions(-)
+ drivers/spi/spi-s3c64xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 3a65adf..6da663f 100644
+index df88fa1..001c9eb 100644
 --- a/drivers/spi/spi-s3c64xx.c
 +++ b/drivers/spi/spi-s3c64xx.c
-@@ -156,12 +156,14 @@ struct s3c64xx_spi_port_config {
- 	int	quirks;
- 	bool	high_speed;
- 	bool	clk_from_cmu;
-+	bool	clk_ioclk;
- };
+@@ -1211,7 +1211,7 @@ err0:
  
- /**
-  * struct s3c64xx_spi_driver_data - Runtime info holder for SPI driver.
-  * @clk: Pointer to the spi clock.
-  * @src_clk: Pointer to the clock used to generate SPI signals.
-+ * @ioclk: Pointer to the i/o clock between master and slave
-  * @master: Pointer to the SPI Protocol master.
-  * @cntrlr_info: Platform specific data for the controller this driver manages.
-  * @tgl_spi: Pointer to the last CS left untoggled by the cs_change hint.
-@@ -181,6 +183,7 @@ struct s3c64xx_spi_driver_data {
- 	void __iomem                    *regs;
- 	struct clk                      *clk;
- 	struct clk                      *src_clk;
-+	struct clk                      *ioclk;
- 	struct platform_device          *pdev;
- 	struct spi_master               *master;
- 	struct s3c64xx_spi_info  *cntrlr_info;
-@@ -1147,6 +1150,21 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 		goto err_disable_clk;
- 	}
- 
-+	if (sdd->port_conf->clk_ioclk) {
-+		sdd->ioclk = devm_clk_get(&pdev->dev, "spi_ioclk");
-+		if (IS_ERR(sdd->ioclk)) {
-+			dev_err(&pdev->dev, "Unable to acquire 'ioclk'\n");
-+			ret = PTR_ERR(sdd->ioclk);
-+			goto err_disable_src_clk;
-+		}
-+
-+		ret = clk_prepare_enable(sdd->ioclk);
-+		if (ret) {
-+			dev_err(&pdev->dev, "Couldn't enable clock 'ioclk'\n");
-+			goto err_disable_src_clk;
-+		}
-+	}
-+
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, AUTOSUSPEND_TIMEOUT);
- 	pm_runtime_use_autosuspend(&pdev->dev);
- 	pm_runtime_set_active(&pdev->dev);
-@@ -1193,6 +1211,8 @@ err_pm_put:
- 	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_set_suspended(&pdev->dev);
- 
-+	clk_disable_unprepare(sdd->ioclk);
-+err_disable_src_clk:
- 	clk_disable_unprepare(sdd->src_clk);
- err_disable_clk:
- 	clk_disable_unprepare(sdd->clk);
-@@ -1211,6 +1231,8 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
- 
- 	writel(0, sdd->regs + S3C64XX_SPI_INT_EN);
- 
-+	clk_disable_unprepare(sdd->ioclk);
-+
- 	clk_disable_unprepare(sdd->src_clk);
- 
- 	clk_disable_unprepare(sdd->clk);
-@@ -1269,6 +1291,7 @@ static int s3c64xx_spi_runtime_suspend(struct device *dev)
- 
- 	clk_disable_unprepare(sdd->clk);
- 	clk_disable_unprepare(sdd->src_clk);
-+	clk_disable_unprepare(sdd->ioclk);
- 
- 	return 0;
- }
-@@ -1279,17 +1302,28 @@ static int s3c64xx_spi_runtime_resume(struct device *dev)
+ static int s3c64xx_spi_remove(struct platform_device *pdev)
+ {
+-	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
++	struct spi_master *master = platform_get_drvdata(pdev);
  	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
- 	int ret;
  
-+	if (sdd->port_conf->clk_ioclk) {
-+		ret = clk_prepare_enable(sdd->ioclk);
-+		if (ret != 0)
-+			return ret;
-+	}
-+
- 	ret = clk_prepare_enable(sdd->src_clk);
- 	if (ret != 0)
--		return ret;
-+		goto err_disable_ioclk;
- 
- 	ret = clk_prepare_enable(sdd->clk);
--	if (ret != 0) {
--		clk_disable_unprepare(sdd->src_clk);
--		return ret;
--	}
-+	if (ret != 0)
-+		goto err_disable_src_clk;
- 
- 	return 0;
-+
-+err_disable_src_clk:
-+	clk_disable_unprepare(sdd->src_clk);
-+err_disable_ioclk:
-+	clk_disable_unprepare(sdd->ioclk);
-+
-+	return ret;
- }
- #endif /* CONFIG_PM */
- 
-@@ -1345,6 +1379,16 @@ static struct s3c64xx_spi_port_config exynos7_spi_port_config = {
- 	.quirks		= S3C64XX_SPI_QUIRK_CS_AUTO,
- };
- 
-+static struct s3c64xx_spi_port_config exynos5433_spi_port_config = {
-+	.fifo_lvl_mask	= { 0x1ff, 0x7f, 0x7f, 0x7f, 0x7f, 0x1ff},
-+	.rx_lvl_offset	= 15,
-+	.tx_st_done	= 25,
-+	.high_speed	= true,
-+	.clk_from_cmu	= true,
-+	.clk_ioclk	= true,
-+	.quirks		= S3C64XX_SPI_QUIRK_CS_AUTO,
-+};
-+
- static const struct platform_device_id s3c64xx_spi_driver_ids[] = {
- 	{
- 		.name		= "s3c2443-spi",
-@@ -1375,6 +1419,9 @@ static const struct of_device_id s3c64xx_spi_dt_match[] = {
- 	{ .compatible = "samsung,exynos7-spi",
- 			.data = (void *)&exynos7_spi_port_config,
- 	},
-+	{ .compatible = "samsung,exynos5433-spi",
-+			.data = (void *)&exynos5433_spi_port_config,
-+	},
- 	{ },
- };
- MODULE_DEVICE_TABLE(of, s3c64xx_spi_dt_match);
--- 
-2.8.1
+ 	pm_runtime_get_sync(&pdev->dev);
+
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,8 +1,7 @@
 From: Andi Shyti <andi.shyti@samsung.com>
-Subject: [PATCH v3 3/7] spi: s3c64xx: rename goto labels to meaningful names
-Date: Tue, 12 Jul 2016 19:02:12 +0900
-Message-ID: <1468317736-18841-4-git-send-email-andi.shyti@samsung.com>
-References: <1468317736-18841-1-git-send-email-andi.shyti@samsung.com>
+Subject: [PATCH v3 0/7] spi s3c64xx ioclk handling
+Date: Tue, 12 Jul 2016 19:02:09 +0900
+Message-ID: <1468317736-18841-1-git-send-email-andi.shyti@samsung.com>
 Cc: Chanwoo Choi <cw00.choi@samsung.com>,
 	Jaehoon Chung <jh80.chung@samsung.com>,
 	linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
@@ -20,126 +19,68 @@ To: Rob Herring <robh+dt@kernel.org>,
 	Michael Turquette <mturquette@baylibre.com>,
 	Stephen Boyd <sboyd@codeaurora.org>
 Return-path: <linux-clk-owner@vger.kernel.org>
-In-reply-to: <1468317736-18841-1-git-send-email-andi.shyti@samsung.com>
 Sender: linux-clk-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The goto labels of the style of
+Hi,
 
-  err4:
-  err3:
-  err2:
-  err1:
+this patchset improves the compatibility between the s3c64xx
+driver and the exynos5433. One point of incompatibility, indeed,
+was that the SPI controller in exynos5433 is fed by three clocks
+which need to be handled by the driver. The third clock is the
+ioclk which support is the main purpose of this patchset.
+  
+The last patch was first sent on its own and it was its 5th
+version, it has been queued to this patchset as there is a
+dependency with it.
 
-are complex to insert in between new errors without renaming all
-the goto statements. Replace the errX naming style to meaningful
-names in order to make it easier to insert new goto exit points.
+Changelog V1 -> V2:
 
-Signed-off-by: Andi Shyti <andi.shyti@samsung.com>
-Reviewed-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
-Reviewed-by: Michael Turquette <mturquette@baylibre.com>
----
- drivers/spi/spi-s3c64xx.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ - patch 1: the exynos5433-spi compatible is placed in
+   alphabetical order compared to exynos7-spi
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 6f2e91a..0784a4d 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -1071,7 +1071,7 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 		if (ret < 0) {
- 			dev_err(&pdev->dev, "failed to get alias id, errno %d\n",
- 				ret);
--			goto err0;
-+			goto err_deref_master;
- 		}
- 		sdd->port_id = ret;
- 	} else {
-@@ -1109,13 +1109,13 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 	sdd->regs = devm_ioremap_resource(&pdev->dev, mem_res);
- 	if (IS_ERR(sdd->regs)) {
- 		ret = PTR_ERR(sdd->regs);
--		goto err0;
-+		goto err_deref_master;
- 	}
- 
- 	if (sci->cfg_gpio && sci->cfg_gpio()) {
- 		dev_err(&pdev->dev, "Unable to config gpio\n");
- 		ret = -EBUSY;
--		goto err0;
-+		goto err_deref_master;
- 	}
- 
- 	/* Setup clocks */
-@@ -1123,13 +1123,13 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 	if (IS_ERR(sdd->clk)) {
- 		dev_err(&pdev->dev, "Unable to acquire clock 'spi'\n");
- 		ret = PTR_ERR(sdd->clk);
--		goto err0;
-+		goto err_deref_master;
- 	}
- 
- 	if (clk_prepare_enable(sdd->clk)) {
- 		dev_err(&pdev->dev, "Couldn't enable clock 'spi'\n");
- 		ret = -EBUSY;
--		goto err0;
-+		goto err_deref_master;
- 	}
- 
- 	sprintf(clk_name, "spi_busclk%d", sci->src_clk_nr);
-@@ -1138,13 +1138,13 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 		dev_err(&pdev->dev,
- 			"Unable to acquire clock '%s'\n", clk_name);
- 		ret = PTR_ERR(sdd->src_clk);
--		goto err2;
-+		goto err_disable_clk;
- 	}
- 
- 	if (clk_prepare_enable(sdd->src_clk)) {
- 		dev_err(&pdev->dev, "Couldn't enable clock '%s'\n", clk_name);
- 		ret = -EBUSY;
--		goto err2;
-+		goto err_disable_clk;
- 	}
- 
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, AUTOSUSPEND_TIMEOUT);
-@@ -1164,7 +1164,7 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 	if (ret != 0) {
- 		dev_err(&pdev->dev, "Failed to request IRQ %d: %d\n",
- 			irq, ret);
--		goto err3;
-+		goto err_pm_put;
- 	}
- 
- 	writel(S3C64XX_SPI_INT_RX_OVERRUN_EN | S3C64XX_SPI_INT_RX_UNDERRUN_EN |
-@@ -1174,7 +1174,7 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 	ret = devm_spi_register_master(&pdev->dev, master);
- 	if (ret != 0) {
- 		dev_err(&pdev->dev, "cannot register SPI master: %d\n", ret);
--		goto err3;
-+		goto err_pm_put;
- 	}
- 
- 	dev_dbg(&pdev->dev, "Samsung SoC SPI Driver loaded for Bus SPI-%d with %d Slaves attached\n",
-@@ -1188,15 +1188,15 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 
- 	return 0;
- 
--err3:
-+err_pm_put:
- 	pm_runtime_put_noidle(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_set_suspended(&pdev->dev);
- 
- 	clk_disable_unprepare(sdd->src_clk);
--err2:
-+err_disable_clk:
- 	clk_disable_unprepare(sdd->clk);
--err0:
-+err_deref_master:
- 	spi_master_put(master);
- 
- 	return ret;
+ - patch 1: deprecates exynos7-spi
+
+ - patch 2: [new] added the clocks and clock-name documentation
+   in the bindings
+
+ - patch 3: fixed some typos, renamed the goto label from
+   err_power_off to err_pm_put add the reviewd-by Krzysztof
+
+ - patch 4: new patch
+
+ - patch 5: fixed typos in commit message and use low letters for
+   hex numbers
+
+ - patch 6: removed one line of comment
+
+ - patch 7: added to ensure sequentiality.
+
+Changelog V2 -> V3
+
+ - patch 2: reworded the property descriptions
+
+ - patch 6: reworded the added comment
+
+ - added on all the patches the proper reviewed and acks
+
+Thanks,
+Andi
+
+Andi Shyti (7):
+  bindings: spi-samsung: add exynos5433 spi compatible
+  bindings: spi-samsung: document the clocks and the clock-name property
+  spi: s3c64xx: rename goto labels to meaningful names
+  spi: s3c64xx: use error code from clk_prepare_enable()
+  spi: s3c64xx: add Exynos5433 compatible for ioclk handling
+  spi: s3c64xx: restore removed comments
+  clk: exynos5433: remove CLK_IGNORE_UNUSED flag from SPI clocks
+
+ .../devicetree/bindings/spi/spi-samsung.txt        | 12 ++-
+ drivers/clk/samsung/clk-exynos5433.c               |  5 +-
+ drivers/spi/spi-s3c64xx.c                          | 90 +++++++++++++++++-----
+ 3 files changed, 82 insertions(+), 25 deletions(-)
+
 -- 
 2.8.1
 

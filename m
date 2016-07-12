@@ -1,48 +1,62 @@
-From: weiyj_lk-9Onoh4P/yGk@public.gmane.org
-Subject: [PATCH -next] spi: s3c64xx: fix reference leak to master in s3c64xx_spi_remove()
-Date: Tue, 12 Jul 2016 11:08:42 +0000
-Message-ID: <1468321722-16568-1-git-send-email-weiyj_lk@163.com>
+From: Sylwester Nawrocki <s.nawrocki@samsung.com>
+Subject: Re: [PATCH v2 6/7] spi: s3c64xx: restore removed comments
+Date: Tue, 12 Jul 2016 14:16:40 +0200
+Message-ID: <5784DFA8.60606@samsung.com>
+References: <1467989201-14661-1-git-send-email-andi.shyti@samsung.com>
+ <1467989201-14661-7-git-send-email-andi.shyti@samsung.com>
+ <146799464881.73491.7507792367941552864@resonance>
+ <57837606.8050906@samsung.com>
+ <146827545163.73491.5083923656346798965@resonance>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Cc: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Andi Shyti <andi.shyti@samsung.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Kukjin Kim <kgene@kernel.org>,
+	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+	Mark Brown <broonie@kernel.org>,
+	Tomasz Figa <tomasz.figa@gmail.com>,
+	Stephen Boyd <sboyd@codeaurora.org>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Jaehoon Chung <jh80.chung@samsung.com>,
+	linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
+	Andi Shyti <andi@etezian.org>
+To: Michael Turquette <mturquette@baylibre.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-reply-to: <146827545163.73491.5083923656346798965@resonance>
+Sender: linux-samsung-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
+On 07/12/2016 12:17 AM, Michael Turquette wrote:
+> Quoting Sylwester Nawrocki (2016-07-11 03:33:42)
+>> On 07/08/2016 06:17 PM, Michael Turquette wrote:
 
-Once a spi_master_get() call succeeds, we need an additional
-spi_master_put() call to free the memory, otherwise we will
-leak a reference to master. Fix by removing the unnecessary
-spi_master_get() call.
+> Sure, but it's only a few lines of code to this, and there are examples
+> in the kernel already.
+> 
+>> Additionally, the "There is half-multiplier before the SPI" comment
+>> seems to be obfuscating how the hardware really looks like to me.
+>> It talks about multiplier (which reminds me of PLLs with a divider
+>> in the feedback loop) while there is a simple divider which should
+>> be considered as an integral part of the controller IP block.
+>>
+>> While we are at it, I'd propose to change this comment to something
+>> like:
+>>
+>> /* The SCLK_SPI clock is divided internally by 2 */
+> 
+> It's your choice, but debug output would benefit from showing the real
+> clock frequency at some point.
 
-Signed-off-by: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
----
- drivers/spi/spi-s3c64xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+OK, it's indeed fairly easy to add a fixed rate divide-by-two clock,
+but for the older SoCs we would need to also model the internal mux, gate,
+and an 8-bit divider.  Then it becomes a bit bigger task. Anyway it might
+be worth to try it, this could let us deprecate the samsung,spi-src-clk
+property and for all the SoCs use assigned-clock-parents.
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index df88fa1..001c9eb 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -1211,7 +1211,7 @@ err0:
- 
- static int s3c64xx_spi_remove(struct platform_device *pdev)
- {
--	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
-+	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
- 
- 	pm_runtime_get_sync(&pdev->dev);
-
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+-- 
+Thanks,
+Sylwester

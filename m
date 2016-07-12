@@ -1,12 +1,13 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Subject: Re: [PATCH v3 6/7] spi: s3c64xx: restore removed comments
-Date: Tue, 12 Jul 2016 09:22:56 +0100
-Message-ID: <20160712082256.GD9976@sirena.org.uk>
+Date: Tue, 12 Jul 2016 17:25:46 +0900
+Message-ID: <20160712082545.GG18237@samsunx.samsung>
 References: <57837606.8050906@samsung.com>
  <1468306444-18512-1-git-send-email-andi.shyti@samsung.com>
+ <CGME20160712082324epcas1p483daf92a019d69f6e96d43e2c55d31cf@epcas1p4.samsung.com>
+ <20160712082256.GD9976@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="ZARJHfwaSJQLOEUz"
+Content-Type: text/plain; charset=us-ascii
 Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
 	Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
@@ -21,44 +22,25 @@ Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	Andi Shyti <andi-ahk0KpmfxKRAfugRpC6u6w@public.gmane.org>
-To: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1468306444-18512-1-git-send-email-andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Content-disposition: inline
+In-reply-to: <20160712082256.GD9976-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+> > Patch a9e93e8 has erroneously removed some comments which are
+> > important to understand why the bus frequency is multiplied by
+> > two during the spi transfer.
+> 
+> Please don't bury patches in the middle of old threads, it makes it very
+> confusing trying to figure out what's going on especially when you do
+> this one patch at a time in a series.  Submit new patches as a complete
+> series, ideally not threaded in with anything else (at least for me).
 
---ZARJHfwaSJQLOEUz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+OK, sorry, do you want me to send everything again?
 
-On Tue, Jul 12, 2016 at 03:54:04PM +0900, Andi Shyti wrote:
-> Patch a9e93e8 has erroneously removed some comments which are
-> important to understand why the bus frequency is multiplied by
-> two during the spi transfer.
-
-Please don't bury patches in the middle of old threads, it makes it very
-confusing trying to figure out what's going on especially when you do
-this one patch at a time in a series.  Submit new patches as a complete
-series, ideally not threaded in with anything else (at least for me).
-
---ZARJHfwaSJQLOEUz
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJXhKjfAAoJECTWi3JdVIfQSQ8H/imKcL5X9zL3/qnSek1oyoD8
-Zdq2JKr2OiJ57H7NtoTFcZqHfEdSFgXqNVumGTeA0Nzpn04PT1UsMzcS/xjwt2l8
-c52YhqCZx7JCOPwPY9/IOtVa5B2OkE6HH7pzPVtFyJY5LbswpPCpzXYomjig5Yxq
-f2og8S1BvMX31EiIJQCN2CY1O1OQV6gOMR866l9I2ii4G1Ji47hOsWUGBUJ25ick
-1dhKP48XFPNs1fkTkdzPmAIyw4qVEG6Hv0qNDH+RPIKe2cW/rZQixLOLlcHIzmzo
-eX3mFgUeEjfgnr8FDDtsC1nUxQKxFR5zwSyFK7LabRtsxM2mqQr2eJ3zWDNr698=
-=sadm
------END PGP SIGNATURE-----
-
---ZARJHfwaSJQLOEUz--
+Andi
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,77 +1,51 @@
-From: Michael Turquette <mturquette@baylibre.com>
-Subject: Re: [PATCH v3 6/7] spi: s3c64xx: restore removed comments
-Date: Tue, 12 Jul 2016 11:07:53 -0700
-Message-ID: <146834687302.73491.6686338412638288829@resonance>
-References: <57837606.8050906@samsung.com>
- <1468306444-18512-1-git-send-email-andi.shyti@samsung.com>
+From: Tejun Heo <tj-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2] spi: spi-topcliff-pch: Remove deprecated
+ create_singlethread_workqueue
+Date: Tue, 12 Jul 2016 14:44:07 -0400
+Message-ID: <20160712184407.GD3190@htj.duckdns.org>
+References: <201607022003.aKXFDba1%fengguang.wu@intel.com>
+ <1468159933-28099-1-git-send-email-bhaktipriya96@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
-Cc: "Chanwoo Choi" <cw00.choi@samsung.com>,
-	"Jaehoon Chung" <jh80.chung@samsung.com>,
-	linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-	"Andi Shyti" <andi.shyti@samsung.com>,
-	"Andi Shyti" <andi@etezian.org>
-To: Andi Shyti <andi.shyti@samsung.com>,
-	"Rob Herring" <robh+dt@kernel.org>,
-	"Mark Rutland" <mark.rutland@arm.com>,
-	"Kukjin Kim" <kgene@kernel.org>,
-	"Krzysztof Kozlowski" <k.kozlowski@samsung.com>,
-	"Mark Brown" <broonie@kernel.org>,
-	"Sylwester Nawrocki" <s.nawrocki@samsung.com>,
-	"Tomasz Figa" <tomasz.figa@gmail.com>,
-	"Stephen Boyd" <sboyd@codeaurora.org>
-Return-path: <linux-clk-owner@vger.kernel.org>
-In-Reply-To: <1468306444-18512-1-git-send-email-andi.shyti@samsung.com>
-Sender: linux-clk-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Bhaktipriya Shridhar <bhaktipriya96-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1468159933-28099-1-git-send-email-bhaktipriya96-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Quoting Andi Shyti (2016-07-11 23:54:04)
-> Patch a9e93e8 has erroneously removed some comments which are
-> important to understand why the bus frequency is multiplied by
-> two during the spi transfer.
+On Sun, Jul 10, 2016 at 07:42:13PM +0530, Bhaktipriya Shridhar wrote:
+> The workqueue "wk" serves as a queue for carrying out execution
+> of requests. It has a single work item(&drv_data->work) and hence doesn't
+> require ordering. Also, it is not being used on a memory reclaim path.
+> Hence, the singlethreaded workqueue has been replaced with the use of
+> system_wq.
 > 
-> Reword the previous comment to a more appropriate message.
+> System workqueues have been able to handle high level of concurrency
+> for a long time now and hence it's not required to have a singlethreaded
+> workqueue just to gain concurrency. Unlike a dedicated per-cpu workqueue
+> created with create_singlethread_workqueue(), system_wq allows multiple
+> work items to overlap executions even on the same CPU; however, a
+> per-cpu workqueue doesn't have any CPU locality or global ordering
+> guarantee unless the target CPU is explicitly specified and thus the
+> increase of local concurrency shouldn't make any difference.
 > 
-> Suggested-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
-> Signed-off-by: Andi Shyti <andi.shyti@samsung.com>
-> Reviewed-by: Michael Turquette <mturquette@baylibre.com>
-> ---
-> Hi,
+> Work item has been flushed in pch_spi_free_resources() to ensure that
+> there are no pending tasks while disconnecting the driver.
 > 
-> despite Mike's comments I'm sending the patch as it was
-> originally meant. I think that fixing the exact clk where to set
-> the rate should anyway go in a different patch.
+> Also dropped the label 'err_return' since it's not being used anymore.
+> 
+> Signed-off-by: Bhaktipriya Shridhar <bhaktipriya96-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-That sounds fair.
+Acked-by: Tejun Heo <tj-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 
-Regards,
-Mike
+Thanks.
 
-> 
-> V2->V3
-> The comment has been reworded as Sylwester recommended.
-> 
-> Thanks,
-> Andi
-> 
->  drivers/spi/spi-s3c64xx.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-> index 6da663f..5bedafc 100644
-> --- a/drivers/spi/spi-s3c64xx.c
-> +++ b/drivers/spi/spi-s3c64xx.c
-> @@ -639,6 +639,7 @@ static void s3c64xx_spi_config(struct s3c64xx_spi_driver_data *sdd)
->         writel(val, regs + S3C64XX_SPI_MODE_CFG);
->  
->         if (sdd->port_conf->clk_from_cmu) {
-> +               /* The src_clk clock is divided internally by 2 */
->                 clk_set_rate(sdd->src_clk, sdd->cur_speed * 2);
->         } else {
->                 /* Configure Clock */
-> -- 
-> 2.8.1
-> 
+-- 
+tejun
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

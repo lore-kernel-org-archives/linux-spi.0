@@ -1,62 +1,47 @@
-From: Sylwester Nawrocki <s.nawrocki@samsung.com>
-Subject: Re: [PATCH v2 6/7] spi: s3c64xx: restore removed comments
-Date: Tue, 12 Jul 2016 14:16:40 +0200
-Message-ID: <5784DFA8.60606@samsung.com>
-References: <1467989201-14661-1-git-send-email-andi.shyti@samsung.com>
- <1467989201-14661-7-git-send-email-andi.shyti@samsung.com>
- <146799464881.73491.7507792367941552864@resonance>
- <57837606.8050906@samsung.com>
- <146827545163.73491.5083923656346798965@resonance>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: Andi Shyti <andi.shyti@samsung.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Kukjin Kim <kgene@kernel.org>,
-	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-	Mark Brown <broonie@kernel.org>,
-	Tomasz Figa <tomasz.figa@gmail.com>,
-	Stephen Boyd <sboyd@codeaurora.org>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	Jaehoon Chung <jh80.chung@samsung.com>,
-	linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-	Andi Shyti <andi@etezian.org>
-To: Michael Turquette <mturquette@baylibre.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-reply-to: <146827545163.73491.5083923656346798965@resonance>
-Sender: linux-samsung-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+Subject: [PATCH 1/2] spi: xilinx: Handle errors from platform_get_irq()
+Date: Tue, 12 Jul 2016 15:24:40 +0200
+Message-ID: <1468329881-5894-1-git-send-email-lars@metafoo.de>
+Cc: Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	=?UTF-8?q?S=C3=B6ren=20Brinkmann?= <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 07/12/2016 12:17 AM, Michael Turquette wrote:
-> Quoting Sylwester Nawrocki (2016-07-11 03:33:42)
->> On 07/08/2016 06:17 PM, Michael Turquette wrote:
+The Xilinx SPI driver can operate without an IRQ, but not every error
+returned by platform_get_irq() means that no IRQ was specified. It will
+also return an error if the IRQ specification is invalid or the IRQ
+provider is not yet available (EPROBE_DEFER).
 
-> Sure, but it's only a few lines of code to this, and there are examples
-> in the kernel already.
-> 
->> Additionally, the "There is half-multiplier before the SPI" comment
->> seems to be obfuscating how the hardware really looks like to me.
->> It talks about multiplier (which reminds me of PLLs with a divider
->> in the feedback loop) while there is a simple divider which should
->> be considered as an integral part of the controller IP block.
->>
->> While we are at it, I'd propose to change this comment to something
->> like:
->>
->> /* The SCLK_SPI clock is divided internally by 2 */
-> 
-> It's your choice, but debug output would benefit from showing the real
-> clock frequency at some point.
+So instead of ignoring all errors only ignore ENXIO, which means no IRQ was
+specified, and propagate all other errors to device driver core.
 
-OK, it's indeed fairly easy to add a fixed rate divide-by-two clock,
-but for the older SoCs we would need to also model the internal mux, gate,
-and an 8-bit divider.  Then it becomes a bit bigger task. Anyway it might
-be worth to try it, this could let us deprecate the samsung,spi-src-clk
-property and for all the SoCs use assigned-clock-parents.
+Signed-off-by: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+---
+ drivers/spi/spi-xilinx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
+diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
+index 3009121..334f423 100644
+--- a/drivers/spi/spi-xilinx.c
++++ b/drivers/spi/spi-xilinx.c
+@@ -455,6 +455,9 @@ static int xilinx_spi_probe(struct platform_device *pdev)
+ 	xspi->buffer_size = xilinx_spi_find_buffer_size(xspi);
+ 
+ 	xspi->irq = platform_get_irq(pdev, 0);
++	if (xspi->irq < 0 && xspi->irq != -ENXIO)
++		return xspi->irq;
++
+ 	if (xspi->irq >= 0) {
+ 		/* Register for SPI Interrupt */
+ 		ret = devm_request_irq(&pdev->dev, xspi->irq, xilinx_spi_irq, 0,
 -- 
-Thanks,
-Sylwester
+2.1.4
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,81 +1,66 @@
-From: Michael Turquette <mturquette-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCH v2 6/7] spi: s3c64xx: restore removed comments
-Date: Mon, 11 Jul 2016 15:17:31 -0700
-Message-ID: <146827545163.73491.5083923656346798965@resonance>
-References: <1467989201-14661-1-git-send-email-andi.shyti@samsung.com>
- <1467989201-14661-7-git-send-email-andi.shyti@samsung.com>
- <146799464881.73491.7507792367941552864@resonance>
- <57837606.8050906@samsung.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
-Cc: "Rob Herring" <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"Mark Rutland" <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	"Kukjin Kim" <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"Krzysztof Kozlowski" <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	"Mark Brown" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"Tomasz Figa" <tomasz.figa-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"Stephen Boyd" <sboyd-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	"Chanwoo Choi" <cw00.choi-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	"Jaehoon Chung" <jh80.chung-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	linux-clk-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"Andi Shyti" <andi-ahk0KpmfxKRAfugRpC6u6w@public.gmane.org>
-To: Sylwester Nawrocki <s.nawrocki-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	"Andi Shyti" <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <57837606.8050906-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Andi Shyti <andi.shyti@samsung.com>
+Subject: [PATCH v3 6/7] spi: s3c64xx: restore removed comments
+Date: Tue, 12 Jul 2016 15:54:04 +0900
+Message-ID: <1468306444-18512-1-git-send-email-andi.shyti@samsung.com>
+References: <57837606.8050906@samsung.com>
+Cc: Chanwoo Choi <cw00.choi@samsung.com>,
+	Jaehoon Chung <jh80.chung@samsung.com>,
+	linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
+	Andi Shyti <andi.shyti@samsung.com>,
+	Andi Shyti <andi@etezian.org>
+To: Rob Herring <robh+dt@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Kukjin Kim <kgene@kernel.org>,
+	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Tomasz Figa <tomasz.figa@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@codeaurora.org>
+Return-path: <linux-clk-owner@vger.kernel.org>
+In-reply-to: <57837606.8050906@samsung.com>
+Sender: linux-clk-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Quoting Sylwester Nawrocki (2016-07-11 03:33:42)
-> On 07/08/2016 06:17 PM, Michael Turquette wrote:
-> > Quoting Andi Shyti (2016-07-08 07:46:40)
-> 
-> >> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-> >> index 6da663f..32b66f0 100644
-> >> --- a/drivers/spi/spi-s3c64xx.c
-> >> +++ b/drivers/spi/spi-s3c64xx.c
-> >> @@ -639,6 +639,7 @@ static void s3c64xx_spi_config(struct s3c64xx_spi_driver_data *sdd)
-> >>         writel(val, regs + S3C64XX_SPI_MODE_CFG);
-> >>  
-> >>         if (sdd->port_conf->clk_from_cmu) {
-> >> +               /* There is half-multiplier before the SPI */
-> >>                 clk_set_rate(sdd->src_clk, sdd->cur_speed * 2);
-> > 
-> > Just a small comment, but if the fixed-factor divide-by-two clock was
-> > modeled in Linux, then this driver could call clk_set_rate on that clock
-> > with the "correct" rate.
-> > 
-> > I guess that this driver would be the provider of that clock?
-> 
-> Good point, however I'm not sure if it is worth to model this divider
-> with a clk object.  It is an internal divider and the clock it provides
-> is only used internally within the SPI controller.  Thus the spi-s3c64xx
-> driver would be provider on the only consumer of this clock.
+Patch a9e93e8 has erroneously removed some comments which are
+important to understand why the bus frequency is multiplied by
+two during the spi transfer.
 
-Sure, but it's only a few lines of code to this, and there are examples
-in the kernel already.
+Reword the previous comment to a more appropriate message.
 
-> 
-> Additionally, the "There is half-multiplier before the SPI" comment
-> seems to be obfuscating how the hardware really looks like to me.
-> It talks about multiplier (which reminds me of PLLs with a divider
-> in the feedback loop) while there is a simple divider which should
-> be considered as an integral part of the controller IP block.
-> 
-> While we are at it, I'd propose to change this comment to something
-> like:
-> 
-> /* The SCLK_SPI clock is divided internally by 2 */
+Suggested-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
+Signed-off-by: Andi Shyti <andi.shyti@samsung.com>
+Reviewed-by: Michael Turquette <mturquette@baylibre.com>
+---
+Hi,
 
-It's your choice, but debug output would benefit from showing the real
-clock frequency at some point.
+despite Mike's comments I'm sending the patch as it was
+originally meant. I think that fixing the exact clk where to set
+the rate should anyway go in a different patch.
 
-Regards,
-Mike
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+V2->V3
+The comment has been reworded as Sylwester recommended.
+
+Thanks,
+Andi
+
+ drivers/spi/spi-s3c64xx.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 6da663f..5bedafc 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -639,6 +639,7 @@ static void s3c64xx_spi_config(struct s3c64xx_spi_driver_data *sdd)
+ 	writel(val, regs + S3C64XX_SPI_MODE_CFG);
+ 
+ 	if (sdd->port_conf->clk_from_cmu) {
++		/* The src_clk clock is divided internally by 2 */
+ 		clk_set_rate(sdd->src_clk, sdd->cur_speed * 2);
+ 	} else {
+ 		/* Configure Clock */
+-- 
+2.8.1
+

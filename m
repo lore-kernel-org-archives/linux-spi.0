@@ -1,74 +1,97 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH, V4, 2/5] spi: bcm-qspi: Add SPI flash and MSPI driver
-Date: Wed, 13 Jul 2016 12:10:53 +0100
-Message-ID: <20160713111053.GG9976@sirena.org.uk>
-References: <1466197433-11290-1-git-send-email-kdasu.kdev@gmail.com>
- <1466197433-11290-2-git-send-email-kdasu.kdev@gmail.com>
- <20160622160726.GQ28202@sirena.org.uk>
- <CAKekbevYN3CLvqQs3stUXDFEMREMOJ0g4+w7Zsno1kV-ieYEiw@mail.gmail.com>
- <20160701160753.GX6247@sirena.org.uk>
- <CAC=U0a3WN9TGw7zwwP3qFf5MUsRteUcVLytFgjnP4zScZS0xXA@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="sLx0z+5FKKtIVDwd"
-Cc: Kamal Dasu <kamal.dasu-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"Jayachandran C <jchandra-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>, bcm-kernel-feedback-list"
-	<bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Vikram Prakash <vikram.prakash-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Andy Fung <andy.fung-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Jon Mason <jon.mason-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Yendapally Reddy Dhananjaya Reddy
-	<yendapally.reddy-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-To: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Crestez Dan Leonard <leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v2 1/3] acpi: Export acpi_of_modalias equiv of of_modalias_node
+Date: Wed, 13 Jul 2016 14:53:40 +0300
+Message-ID: <fde8d7c9312a887553feab9877a33f01e5ceda47.1468409668.git.leonard.crestez@intel.com>
+References: <cover.1468409668.git.leonard.crestez@intel.com>
+Cc: Crestez Dan Leonard <leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Len Brown <lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
+	Jarkko Nikula <jarkko.nikula-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAC=U0a3WN9TGw7zwwP3qFf5MUsRteUcVLytFgjnP4zScZS0xXA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <cover.1468409668.git.leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <cover.1468409668.git.leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+References: <cover.1468409668.git.leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+When using devicetree stuff like i2c_client.name or spi_device.modalias
+is initialized to the first DT compatible id with the vendor prefix
+stripped. Since some drivers rely on this try to replicate it when using
+ACPI with DT ids.
 
---sLx0z+5FKKtIVDwd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Crestez Dan Leonard <leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+---
+ drivers/acpi/bus.c      | 36 ++++++++++++++++++++++++++++++++++++
+ include/acpi/acpi_bus.h |  1 +
+ 2 files changed, 37 insertions(+)
 
-On Tue, Jul 12, 2016 at 06:06:04PM -0400, Kamal Dasu wrote:
+diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+index cb9558e..77a1a80 100644
+--- a/drivers/acpi/bus.c
++++ b/drivers/acpi/bus.c
+@@ -654,6 +654,42 @@ static bool acpi_of_match_device(struct acpi_device *adev,
+ 	return false;
+ }
+ 
++/**
++ * acpi_of_modalias - Like of_modalias_node for ACPI with DT ids
++ * @adev:	ACPI device object to match.
++ * @outstr:	Pointer to buffer for result
++ * @outlen:	Length of outstr value
++ *
++ * If we have a DT id set outstr to the first compatible string with the vendor
++ * prefix stripped, just like of_modalias_node does for devicetree.
++ *
++ * Returns 0 on success or negative errno on failure.
++ */
++int acpi_of_modalias(struct acpi_device *adev, char *outstr, size_t outlen)
++{
++	const union acpi_object *of_compatible;
++	const union acpi_object *obj;
++	const char *str, *chr;
++
++	of_compatible = adev->data.of_compatible;
++	if (!of_compatible)
++		return -ENODEV;
++
++	if (of_compatible->type == ACPI_TYPE_PACKAGE)
++		obj = of_compatible->package.elements;
++	else /* Must be ACPI_TYPE_STRING. */
++		obj = of_compatible;
++
++	str = obj->string.pointer;
++	chr = strchr(str, ',');
++	if (chr)
++		str = chr + 1;
++	strlcpy(outstr, str, outlen);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(acpi_of_modalias);
++
+ static bool __acpi_match_device_cls(const struct acpi_device_id *id,
+ 				    struct acpi_hardware_id *hwid)
+ {
+diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+index 788c6c35..1d8ff0d 100644
+--- a/include/acpi/acpi_bus.h
++++ b/include/acpi/acpi_bus.h
+@@ -515,6 +515,7 @@ void acpi_bus_trim(struct acpi_device *start);
+ acpi_status acpi_bus_get_ejd(acpi_handle handle, acpi_handle * ejd);
+ int acpi_match_device_ids(struct acpi_device *device,
+ 			  const struct acpi_device_id *ids);
++int acpi_of_modalias(struct acpi_device *adev, char *outstr, size_t outlen);
+ int acpi_create_dir(struct acpi_device *);
+ void acpi_remove_dir(struct acpi_device *);
+ 
+-- 
+2.7.4
 
-> The NS* SoC  SPI blocks has hw glue logic specific to MSPI+BSPI, so
-> the re-usability of an interrupt controller driver for this  logic is
-> limited.  The spi only (spi protocol) block does use l2 controller,
-> however for the MSPI+BSPI block used for the spi-nor flash had to
-> introduce the code to handle l1 interrupts within the code itself. In
-> this case can the driver be accepted without having to introduce a new
-> intc driver ?.
-
-It's not really about reuse, it's about maintainability.  All the code
-for handling this within the driver is quite unusual and makes the
-driver harder to understand and review.  That's going to have an impact
-now and make things harder to follow in future too.  Fitting in with the
-frameworks means that we get the benefit of the structure and support
-code that the frameworks provide while minimizing the amount of unusal
-code in the driver.
-
-You may find that you may even be able to use one of the existing
-generic interrupt controller drivers if the hardware is simple enough.
-
---sLx0z+5FKKtIVDwd
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJXhiG8AAoJECTWi3JdVIfQGLMH/3+PAqoXb5FoKd2yANhAIGev
-1rv0zeouokLgvF0hNfni7ptlIweeKbwffzj4inx8h8UnBohAK4amfVEfqzAOsjOP
-UmWAhTPsjaLq5/h51dtsnliz9CNH8/a1gk47fiyCWRJ0yuuUs1ROwAPs74VREx8q
-l4D7KPWPYiHpqHcJBwmdORqauH0rL9eQTetL4DOO0YpsdhKarUSOOQSLyeWyMepV
-s0chK80nHpf+Bj39X+GexvnO3CEItmuzHNrosZk+b4MLIFDZQTxHzNMfLZSQVaze
-ZL7t3iHWkW7MjBjbIbjgaorOlWfujKJ1O0tXa1NDmnw10nMos0XnxAAqopdCMoM=
-=TCCV
------END PGP SIGNATURE-----
-
---sLx0z+5FKKtIVDwd--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

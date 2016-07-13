@@ -1,68 +1,63 @@
-From: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: Re: [PATCH -next] spi: s3c64xx: fix reference leak to master in
+From: Andi Shyti <andi.shyti@samsung.com>
+Subject: Re: [PATCH -next] spi: s3c64xx: fix reference leak to master in
  s3c64xx_spi_remove()
-Date: Wed, 13 Jul 2016 17:34:13 +0900
-Message-ID: <20160713083413.GK18237@samsunx.samsung>
+Date: Wed, 13 Jul 2016 18:17:56 +0900
+Message-ID: <20160713091756.GL18237@samsunx.samsung>
 References: <CGME20160712110926epcas1p13bbc88f5867d41d09d9b8c1172a7150b@epcas1p1.samsung.com>
  <1468321722-16568-1-git-send-email-weiyj_lk@163.com>
- <20160713045030.GI18237@samsunx.samsung>
- <481c6f26.751d.155e2c1d661.Coremail.weiyj_lk@163.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: weiyj <weiyj_lk-9Onoh4P/yGk@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: Kukjin Kim <kgene@kernel.org>,
+	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+	Mark Brown <broonie@kernel.org>,
+	Wei Yongjun <yongjun_wei@trendmicro.com.cn>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org
+To: weiyj_lk@163.com
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
 Content-disposition: inline
-In-reply-to: <481c6f26.751d.155e2c1d661.Coremail.weiyj_lk-9Onoh4P/yGk@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-reply-to: <1468321722-16568-1-git-send-email-weiyj_lk@163.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Wei,
+On Tue, Jul 12, 2016 at 11:08:42AM +0000, weiyj_lk@163.com wrote:
+> From: Wei Yongjun <yongjun_wei@trendmicro.com.cn>
+> 
+> Once a spi_master_get() call succeeds, we need an additional
+> spi_master_put() call to free the memory, otherwise we will
+> leak a reference to master. Fix by removing the unnecessary
+> spi_master_get() call.
+> 
+> Signed-off-by: Wei Yongjun <yongjun_wei@trendmicro.com.cn>
 
-> >> Once a spi_master_get() call succeeds, we need an additional
-> >> spi_master_put() call to free the memory, otherwise we will
-> >> leak a reference to master. Fix by removing the unnecessary
-> >> spi_master_get() call.
-> >> 
-> >> Signed-off-by: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
-> >
-> >The patch doesn't have anything wrong, but what you write in the
-> >description is not what you are doing in the patch.
-> >
-> >There is no memory allocated in spi_master_get and nothing leaks.
-> >Besides master's resources are managed, so that there would
-> >not be any need to call spi_master_put().
-> >
-> >spi_master_put() has been, indeed, removed in this commit:
-> >91800f0e90050a4db4c77e940796f501e02af8be.
-> >
-> 
-> master allocated in spi_alloc_master() need device reference count to zero
-> to be freed.
-> 
-> The call sequence spi_alloc_master/spi_register_master/spi_unregister_master
-> is complete; it reduces the device reference count to zero, which results in
-> device memory being freed.
-> 
-> In commit 91800f0e90050a4db4c77e940796f501e02af8be, 
-> devm_spi_register_master() equal to spi_register_master() and auto call
-> spi_unregister_master() when remove. But  remove spi_master_put()
-> will cause the device reference count left no zero, since spi_master_get()
-> is callled at the begin of remove function already.
-> 
-> So I think we should either remove the spi_master_get() or add spi_master_put()
-> before return from remove function.
+After our discussion, I checked it again and feel free to add
 
-Yes, you are right, I missed this part :)
+Reviewed-by: Andi Shyti <andi.shyti@samsung.com>
 
 Thanks,
 Andi
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+
+> ---
+>  drivers/spi/spi-s3c64xx.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+> index df88fa1..001c9eb 100644
+> --- a/drivers/spi/spi-s3c64xx.c
+> +++ b/drivers/spi/spi-s3c64xx.c
+> @@ -1211,7 +1211,7 @@ err0:
+>  
+>  static int s3c64xx_spi_remove(struct platform_device *pdev)
+>  {
+> -	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
+> +	struct spi_master *master = platform_get_drvdata(pdev);
+>  	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
+>  
+>  	pm_runtime_get_sync(&pdev->dev);
+> 
+> 
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-samsung-soc" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> 

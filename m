@@ -1,64 +1,94 @@
-From: Andi Shyti <andi.shyti@samsung.com>
-Subject: Re: [PATCH v3 7/7] clk: exynos5433: remove CLK_IGNORE_UNUSED flag from
- SPI clocks
-Date: Wed, 13 Jul 2016 21:44:16 +0900
-Message-ID: <20160713124416.GN18237@samsunx.samsung>
-References: <1468317736-18841-1-git-send-email-andi.shyti@samsung.com>
- <1468317736-18841-8-git-send-email-andi.shyti@samsung.com>
- <CGME20160712222323epcas1p4020f224ba47b193243867ab41bc109c8@epcas1p4.samsung.com>
- <146836184696.73491.9452469757415968654@resonance>
+From: Dan O'Donovan <dan@emutex.com>
+Subject: Re: [PATCH v2 0/3] Init device ids from ACPI of_compatible
+Date: Wed, 13 Jul 2016 15:15:44 +0100
+Message-ID: <57864D10.2020007@emutex.com>
+References: <cover.1468409668.git.leonard.crestez@intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
- Krzysztof Kozlowski <k.kozlowski@samsung.com>,
- linux-samsung-soc@vger.kernel.org, Andi Shyti <andi@etezian.org>,
- Mark Brown <broonie@kernel.org>, Stephen Boyd <sboyd@codeaurora.org>,
- Tomasz Figa <tomasz.figa@gmail.com>, linux-spi@vger.kernel.org,
- Jaehoon Chung <jh80.chung@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>,
- Rob Herring <robh+dt@kernel.org>, Kukjin Kim <kgene@kernel.org>,
- Sylwester Nawrocki <s.nawrocki@samsung.com>, linux-clk@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-To: Michael Turquette <mturquette@baylibre.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-Content-disposition: inline
-In-reply-to: <146836184696.73491.9452469757415968654@resonance>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Cc: Len Brown <lenb@kernel.org>, linux-i2c@vger.kernel.org,
+	Wolfram Sang <wsa@the-dreams.de>, linux-spi@vger.kernel.org,
+	Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
+	Octavian Purdila <octavian.purdila@intel.com>
+To: Crestez Dan Leonard <leonard.crestez@intel.com>,
+	linux-acpi@vger.kernel.org,
+	"Rafael J. Wysocki" <rjw@rjwysocki.net>,
+	Jarkko Nikula <jarkko.nikula@intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Return-path: <linux-i2c-owner@vger.kernel.org>
+In-Reply-To: <cover.1468409668.git.leonard.crestez@intel.com>
+Sender: linux-i2c-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mike,
+On 07/13/2016 12:53 PM, Crestez Dan Leonard wrote:
+> When using devicetree stuff like i2c_client.name or spi_device.modalias
+> is initialized to the first DT compatible id with the vendor prefix
+> stripped. Since some drivers rely on this in order to differentiate between
+> hardware variants try to replicate it when using ACPI with DT ids.
+>
+> This also makes it so that the i2c_device_id parameter passed to probe is
+> non-NULL when matching with ACPI and DT ids.
+This solves a problem for me, thanks Leonard!  For the series (in case
+it helps):
 
-> > Because the Exynos5433 SPI driver supports the ioclk handling and
-> > the following patch:
-> > 
-> >   http://marc.info/?l=linux-kernel&m=146787645626318&w=2
-> > 
-> > fixes a synchronus abort issue, none of the SPI clocks require
-> > any critical handling: remove, then, the CLK_IGNORE_UNUSED flag
-> > for the SPI related clocks.
-> > 
-> > Signed-off-by: Andi Shyti <andi.shyti@samsung.com>
-> > Reviewed-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
-> > Reviewed-by: Michael Turquette <mturquette@baylibre.com>
-> > Acked-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
-> 
-> Do you want these patches to go through same tree? If not, I can take
-> this patch into clk-next.
+Tested-by: Dan O'Donovan <dan@emutex.com>
 
-oh yes, as Krzysztof and Sylwester pointed out, the dependency is
-not that strict as there is no exynos5433 dts yet, so that we
-wouldn't break anything if patch 7/7 gets in before the others.
-
-If you want to take in your branch the 7/7, please feel free to
-do so. Only the patches on the drivers/spi/spi-s3c64xx.c file
-have some dependencies on some previous patches I sent to Mark.
-
-Andi
+>
+> These patches are on top of linux-pm/linux-next. I delayed v2 until ACPI
+> overlays got in in order to avoid conflicts. I tested using ACPI overlays but
+> there is no actual dependency. This series just extends the PRP0001 feature to
+> be more useful for I2C/SPI.
+>
+> The patches only touches the ACPI-specific parts of the i2c and spi core.
+>
+> Here is an example .dsl for an SPI accelerometer connected to minnowboard max:
+>
+> Device (ACCL)
+> {
+>     Name (_ADR, Zero)
+>     Name (_HID, "PRP0001")
+>     Name (_CID, "PRP0001")
+>     Name (_UID, One)
+>
+>     Method (_CRS, 0, Serialized)
+>     {
+> 	Name (RBUF, ResourceTemplate ()
+> 	{
+> 	    SPISerialBus(1, PolarityLow, FourWireMode, 16,
+> 		    ControllerInitiated, 1000000, ClockPolarityLow,
+> 		    ClockPhaseFirst, "\\_SB.SPI1",)
+> 	    GpioInt (Edge, ActiveHigh, Exclusive, PullDown, 0x0000,
+> 		     "\\_SB.GPO2", 0x00, ResourceConsumer, , )
+> 	    { // Pin list
+> 		    1
+> 	    }
+> 	})
+> 	Return (RBUF)
+>     }
+>     Name (_DSD, Package ()
+>     {
+> 	ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+> 	Package ()
+> 	{
+> 	    Package () {"compatible", "st,lis3dh"},
+> 	}
+>     })
+> }
+>
+> Link to v1: https://www.spinics.net/lists/linux-acpi/msg66469.html
+> Changes:
+>  * Rebase on after acpi overlays got it.
+>  * Change acpi_of_modalias outlen param to size_t
+>  * Use {} after else
+>
+> Crestez Dan Leonard (3):
+>   acpi: Export acpi_of_modalias equiv of of_modalias_node
+>   acpi i2c: Initialize info.type from of_compatible
+>   acpi spi: Initialize modalias from of_compatible
+>
+>  drivers/acpi/bus.c      | 36 ++++++++++++++++++++++++++++++++++++
+>  drivers/i2c/i2c-core.c  |  8 +++++++-
+>  drivers/spi/spi.c       | 11 ++++++++++-
+>  include/acpi/acpi_bus.h |  1 +
+>  4 files changed, 54 insertions(+), 2 deletions(-)
+>

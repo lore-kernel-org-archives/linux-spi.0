@@ -1,76 +1,64 @@
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH v2 3/3] acpi spi: Initialize modalias from of_compatible
-Date: Wed, 13 Jul 2016 14:22:02 +0200
-Message-ID: <CAJZ5v0jPfx0DEKkfJ8ma2_+emtbSrCv3KrmRGP7gG-6j6h3yfw@mail.gmail.com>
-References: <cover.1468409668.git.leonard.crestez@intel.com> <1d26e956f12fcd86ad915659adeb86e242b96ac7.1468409668.git.leonard.crestez@intel.com>
+From: Andi Shyti <andi.shyti@samsung.com>
+Subject: Re: [PATCH v3 7/7] clk: exynos5433: remove CLK_IGNORE_UNUSED flag from
+ SPI clocks
+Date: Wed, 13 Jul 2016 21:44:16 +0900
+Message-ID: <20160713124416.GN18237@samsunx.samsung>
+References: <1468317736-18841-1-git-send-email-andi.shyti@samsung.com>
+ <1468317736-18841-8-git-send-email-andi.shyti@samsung.com>
+ <CGME20160712222323epcas1p4020f224ba47b193243867ab41bc109c8@epcas1p4.samsung.com>
+ <146836184696.73491.9452469757415968654@resonance>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-	"Rafael J. Wysocki" <rjw@rjwysocki.net>,
-	Jarkko Nikula <jarkko.nikula@intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Len Brown <lenb@kernel.org>,
-	linux-i2c <linux-i2c@vger.kernel.org>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Octavian Purdila <octavian.purdila@intel.com>
-To: Crestez Dan Leonard <leonard.crestez@intel.com>
-Return-path: <linux-i2c-owner@vger.kernel.org>
-In-Reply-To: <1d26e956f12fcd86ad915659adeb86e242b96ac7.1468409668.git.leonard.crestez@intel.com>
-Sender: linux-i2c-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
+ Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+ linux-samsung-soc@vger.kernel.org, Andi Shyti <andi@etezian.org>,
+ Mark Brown <broonie@kernel.org>, Stephen Boyd <sboyd@codeaurora.org>,
+ Tomasz Figa <tomasz.figa@gmail.com>, linux-spi@vger.kernel.org,
+ Jaehoon Chung <jh80.chung@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>,
+ Rob Herring <robh+dt@kernel.org>, Kukjin Kim <kgene@kernel.org>,
+ Sylwester Nawrocki <s.nawrocki@samsung.com>, linux-clk@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+To: Michael Turquette <mturquette@baylibre.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-disposition: inline
+In-reply-to: <146836184696.73491.9452469757415968654@resonance>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Jul 13, 2016 at 1:53 PM, Crestez Dan Leonard
-<leonard.crestez@intel.com> wrote:
-> When using devicetree spi_device.modalias is set to the compatible
-> string with the vendor prefix removed. For SPI devices described via
-> ACPI the i2c_board_info.type string is initialized by acpi_device_hid.
-> When using ACPI and DT ids this string ends up something like "PRP0001".
->
-> Change acpi_register_spi_device to use the of_compatible property if
-> present. This makes it easier to instantiate spi drivers through ACPI
-> with DT ids.
->
-> Signed-off-by: Crestez Dan Leonard <leonard.crestez@intel.com>
+Hi Mike,
 
-Same as for the i2c patch: it looks good to me, but I'd prefer to get
-a word from Mika on it too.
+> > Because the Exynos5433 SPI driver supports the ioclk handling and
+> > the following patch:
+> > 
+> >   http://marc.info/?l=linux-kernel&m=146787645626318&w=2
+> > 
+> > fixes a synchronus abort issue, none of the SPI clocks require
+> > any critical handling: remove, then, the CLK_IGNORE_UNUSED flag
+> > for the SPI related clocks.
+> > 
+> > Signed-off-by: Andi Shyti <andi.shyti@samsung.com>
+> > Reviewed-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
+> > Reviewed-by: Michael Turquette <mturquette@baylibre.com>
+> > Acked-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
+> 
+> Do you want these patches to go through same tree? If not, I can take
+> this patch into clk-next.
 
-> ---
->  drivers/spi/spi.c | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index 7589c8a..49fdf6e 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -1679,13 +1679,22 @@ static acpi_status acpi_register_spi_device(struct spi_master *master,
->                 return AE_OK;
->         }
->
-> +       if (adev->data.of_compatible) {
-> +               ret = acpi_of_modalias(adev, spi->modalias, sizeof(spi->modalias));
-> +               if (ret) {
-> +                       spi_dev_put(spi);
-> +                       return AE_NOT_FOUND;
-> +               }
-> +       } else {
-> +               strlcpy(spi->modalias, acpi_device_hid(adev), sizeof(spi->modalias));
-> +       }
-> +
->         if (spi->irq < 0)
->                 spi->irq = acpi_dev_gpio_irq_get(adev, 0);
->
->         acpi_device_set_enumerated(adev);
->
->         adev->power.flags.ignore_parent = true;
-> -       strlcpy(spi->modalias, acpi_device_hid(adev), sizeof(spi->modalias));
->         if (spi_add_device(spi)) {
->                 adev->power.flags.ignore_parent = false;
->                 dev_err(&master->dev, "failed to add SPI device %s from ACPI\n",
-> --
+oh yes, as Krzysztof and Sylwester pointed out, the dependency is
+not that strict as there is no exynos5433 dts yet, so that we
+wouldn't break anything if patch 7/7 gets in before the others.
 
-Thanks,
-Rafael
+If you want to take in your branch the 7/7, please feel free to
+do so. Only the patches on the drivers/spi/spi-s3c64xx.c file
+have some dependencies on some previous patches I sent to Mark.
+
+Andi

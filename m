@@ -1,21 +1,20 @@
-From: weiyj  <weiyj_lk@163.com>
-Subject: Re:Re: [PATCH -next] spi: s3c64xx: fix reference leak to master in
- s3c64xx_spi_remove()
-Date: Wed, 13 Jul 2016 13:36:42 +0800 (CST)
-Message-ID: <481c6f26.751d.155e2c1d661.Coremail.weiyj_lk@163.com>
-References: <CGME20160712110926epcas1p13bbc88f5867d41d09d9b8c1172a7150b@epcas1p1.samsung.com>
- <1468321722-16568-1-git-send-email-weiyj_lk@163.com>
- <20160713045030.GI18237@samsunx.samsung>
+From: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH v2 2/2] spi: add DT binding for clps711x SPI
+Date: Wed, 13 Jul 2016 10:13:58 +0200
+Message-ID: <9132787.CoNHcRuYpT@wuerfel>
+References: <20160707094952.4111577-1-arnd@arndb.de>
+ <20160707094952.4111577-2-arnd@arndb.de>
+ <20160712204947.GA6182@rob-hp-laptop>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Krzysztof Kozlowski <k.kozlowski@samsung.com>,
- linux-samsung-soc@vger.kernel.org, Mark Brown <broonie@kernel.org>,
- linux-spi@vger.kernel.org, Wei Yongjun <yongjun_wei@trendmicro.com.cn>,
- Kukjin Kim <kgene@kernel.org>, linux-arm-kernel@lists.infradead.org
-To: "Andi Shyti" <andi.shyti@samsung.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
+ Alexander Shiyan <shc_work@mail.ru>, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+ linux-arm-kernel@lists.infradead.org
+To: Rob Herring <robh@kernel.org>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20160713045030.GI18237@samsunx.samsung>
+In-Reply-To: <20160712204947.GA6182@rob-hp-laptop>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -27,44 +26,29 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Andi,
+On Tuesday, July 12, 2016 3:49:47 PM CEST Rob Herring wrote:
+> On Thu, Jul 07, 2016 at 11:49:46AM +0200, Arnd Bergmann wrote:
+> > +
+> > +An additional register is present in the system controller,
+> > +which is assumed to be in the same device tree, with and marked
+> > +as compatible with "cirrus,ep7209-syscon3".
+> > +
+> > +Example:
+> > +
+> > +spi@80000500 {
+> > +     #address-cells = <1>;
+> > +     #size-cells = <0>;
+> > +     compatible = "cirrus,ep7209-spi";
+> > +     reg = <0x80000500 0x4>;
+> > +     interrupts = <15>;
+> > +     clocks = <&clks CLPS711X_CLK_SPI>;
+> > +     status = "disabled";
+> > +};
+> > +
+> > +syscon3: syscon@80002200 {
+> 
+> This looks like it shouldn't be here.
 
-At 2016-07-13 12:50:30, "Andi Shyti" <andi.shyti@samsung.com> wrote:
->Hi Wei,
->
->> Once a spi_master_get() call succeeds, we need an additional
->> spi_master_put() call to free the memory, otherwise we will
->> leak a reference to master. Fix by removing the unnecessary
->> spi_master_get() call.
->> 
->> Signed-off-by: Wei Yongjun <yongjun_wei@trendmicro.com.cn>
->
->The patch doesn't have anything wrong, but what you write in the
->description is not what you are doing in the patch.
->
->There is no memory allocated in spi_master_get and nothing leaks.
->Besides master's resources are managed, so that there would
->not be any need to call spi_master_put().
->
->spi_master_put() has been, indeed, removed in this commit:
->91800f0e90050a4db4c77e940796f501e02af8be.
->
+The label, or the entire node?
 
-master allocated in spi_alloc_master() need device reference count to zero
-to be freed.
-
-The call sequence spi_alloc_master/spi_register_master/spi_unregister_master
-is complete; it reduces the device reference count to zero, which results in
-device memory being freed.
-
-In commit 91800f0e90050a4db4c77e940796f501e02af8be, 
-devm_spi_register_master() equal to spi_register_master() and auto call
-spi_unregister_master() when remove. But  remove spi_master_put()
-will cause the device reference count left no zero, since spi_master_get()
-is callled at the begin of remove function already.
-
-So I think we should either remove the spi_master_get() or add spi_master_put()
-before return from remove function.
-
-Regards,
-Yongjun Wei
+	Arnd

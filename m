@@ -1,94 +1,32 @@
-From: Dan O'Donovan <dan@emutex.com>
-Subject: Re: [PATCH v2 0/3] Init device ids from ACPI of_compatible
-Date: Wed, 13 Jul 2016 15:15:44 +0100
-Message-ID: <57864D10.2020007@emutex.com>
-References: <cover.1468409668.git.leonard.crestez@intel.com>
+From: Girish Mahadevan <girishm@codeaurora.org>
+Subject: [PATCH RFCv1 0/1] Update struct spi_transfer to specify 8x bit transfers
+Date: Wed, 13 Jul 2016 13:34:36 -0600
+Message-ID: <1468438477-18883-1-git-send-email-girishm@codeaurora.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: Len Brown <lenb@kernel.org>, linux-i2c@vger.kernel.org,
-	Wolfram Sang <wsa@the-dreams.de>, linux-spi@vger.kernel.org,
-	Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
-	Octavian Purdila <octavian.purdila@intel.com>
-To: Crestez Dan Leonard <leonard.crestez@intel.com>,
-	linux-acpi@vger.kernel.org,
-	"Rafael J. Wysocki" <rjw@rjwysocki.net>,
-	Jarkko Nikula <jarkko.nikula@intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Return-path: <linux-i2c-owner@vger.kernel.org>
-In-Reply-To: <cover.1468409668.git.leonard.crestez@intel.com>
-Sender: linux-i2c-owner@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: sboyd@codeaurora.org, sdharia@codeaurora.org,
+	girishm@codeaurora.org, linux-arm-msm@vger.kernel.org
+To: broonie@kernel.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Return-path: <linux-arm-msm-owner@vger.kernel.org>
+Sender: linux-arm-msm-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 07/13/2016 12:53 PM, Crestez Dan Leonard wrote:
-> When using devicetree stuff like i2c_client.name or spi_device.modalias
-> is initialized to the first DT compatible id with the vendor prefix
-> stripped. Since some drivers rely on this in order to differentiate between
-> hardware variants try to replicate it when using ACPI with DT ids.
->
-> This also makes it so that the i2c_device_id parameter passed to probe is
-> non-NULL when matching with ACPI and DT ids.
-This solves a problem for me, thanks Leonard!  For the series (in case
-it helps):
+We=E2=80=99re working on a driver for a Quad SPI controller [using up t=
+o 4 data lines] which can use dual-data-sampling to implement 8-bit tra=
+nsfers. To allow a slave driver to specify the 8-bit transfer we'd like=
+ to make this change to the spi_transfer data structure. We are still w=
+orking on the driver we will send an RFC for the driver patches separat=
+ely once it is ready.
 
-Tested-by: Dan O'Donovan <dan@emutex.com>
+Girish Mahadevan (1):
+  spi: Expand tx_nbits/rx_nbits to add 8-bit transfer
 
->
-> These patches are on top of linux-pm/linux-next. I delayed v2 until ACPI
-> overlays got in in order to avoid conflicts. I tested using ACPI overlays but
-> there is no actual dependency. This series just extends the PRP0001 feature to
-> be more useful for I2C/SPI.
->
-> The patches only touches the ACPI-specific parts of the i2c and spi core.
->
-> Here is an example .dsl for an SPI accelerometer connected to minnowboard max:
->
-> Device (ACCL)
-> {
->     Name (_ADR, Zero)
->     Name (_HID, "PRP0001")
->     Name (_CID, "PRP0001")
->     Name (_UID, One)
->
->     Method (_CRS, 0, Serialized)
->     {
-> 	Name (RBUF, ResourceTemplate ()
-> 	{
-> 	    SPISerialBus(1, PolarityLow, FourWireMode, 16,
-> 		    ControllerInitiated, 1000000, ClockPolarityLow,
-> 		    ClockPhaseFirst, "\\_SB.SPI1",)
-> 	    GpioInt (Edge, ActiveHigh, Exclusive, PullDown, 0x0000,
-> 		     "\\_SB.GPO2", 0x00, ResourceConsumer, , )
-> 	    { // Pin list
-> 		    1
-> 	    }
-> 	})
-> 	Return (RBUF)
->     }
->     Name (_DSD, Package ()
->     {
-> 	ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-> 	Package ()
-> 	{
-> 	    Package () {"compatible", "st,lis3dh"},
-> 	}
->     })
-> }
->
-> Link to v1: https://www.spinics.net/lists/linux-acpi/msg66469.html
-> Changes:
->  * Rebase on after acpi overlays got it.
->  * Change acpi_of_modalias outlen param to size_t
->  * Use {} after else
->
-> Crestez Dan Leonard (3):
->   acpi: Export acpi_of_modalias equiv of of_modalias_node
->   acpi i2c: Initialize info.type from of_compatible
->   acpi spi: Initialize modalias from of_compatible
->
->  drivers/acpi/bus.c      | 36 ++++++++++++++++++++++++++++++++++++
->  drivers/i2c/i2c-core.c  |  8 +++++++-
->  drivers/spi/spi.c       | 11 ++++++++++-
->  include/acpi/acpi_bus.h |  1 +
->  4 files changed, 54 insertions(+), 2 deletions(-)
->
+ include/linux/spi/spi.h | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+--=20
+Employee of Qualcomm Innovation Center, Inc.
+Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum, a Li=
+nux Foundation Collaborative Project

@@ -1,82 +1,59 @@
-From: Michael Turquette <mturquette@baylibre.com>
-Subject: Re: [PATCH v3 7/7] clk: exynos5433: remove CLK_IGNORE_UNUSED flag from SPI
- clocks
-Date: Tue, 12 Jul 2016 15:17:27 -0700
-Message-ID: <146836184696.73491.9452469757415968654@resonance>
+From: Andi Shyti <andi.shyti@samsung.com>
+Subject: Re: [PATCH v3 7/7] clk: exynos5433: remove CLK_IGNORE_UNUSED flag from
+ SPI clocks
+Date: Wed, 13 Jul 2016 11:08:52 +0900
+Message-ID: <20160713020852.GH18237@samsunx.samsung>
 References: <1468317736-18841-1-git-send-email-andi.shyti@samsung.com>
  <1468317736-18841-8-git-send-email-andi.shyti@samsung.com>
+ <CGME20160712221734epcas1p2e2069af657e3afa912bea5bf7217e08a@epcas1p2.samsung.com>
+ <146836184696.73491.9452469757415968654@resonance>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
-Cc: "Chanwoo Choi" <cw00.choi@samsung.com>,
-	"Jaehoon Chung" <jh80.chung@samsung.com>,
+Content-Type: text/plain; charset=us-ascii
+Cc: Rob Herring <robh+dt@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Kukjin Kim <kgene@kernel.org>,
+	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Tomasz Figa <tomasz.figa@gmail.com>,
+	Stephen Boyd <sboyd@codeaurora.org>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Jaehoon Chung <jh80.chung@samsung.com>,
 	linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-	"Andi Shyti" <andi.shyti@samsung.com>,
-	"Andi Shyti" <andi@etezian.org>
-To: Andi Shyti <andi.shyti@samsung.com>,
-	"Rob Herring" <robh+dt@kernel.org>,
-	"Mark Rutland" <mark.rutland@arm.com>,
-	"Kukjin Kim" <kgene@kernel.org>,
-	"Krzysztof Kozlowski" <k.kozlowski@samsung.com>,
-	"Mark Brown" <broonie@kernel.org>,
-	"Sylwester Nawrocki" <s.nawrocki@samsung.com>,
-	"Tomasz Figa" <tomasz.figa@gmail.com>,
-	"Stephen Boyd" <sboyd@codeaurora.org>
+	Andi Shyti <andi@etezian.org>
+To: Michael Turquette <mturquette@baylibre.com>
 Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <1468317736-18841-8-git-send-email-andi.shyti@samsung.com>
+Content-disposition: inline
+In-reply-to: <146836184696.73491.9452469757415968654@resonance>
 Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Quoting Andi Shyti (2016-07-12 03:02:16)
-> Because the Exynos5433 SPI driver supports the ioclk handling and
-> the following patch:
-> 
->   http://marc.info/?l=linux-kernel&m=146787645626318&w=2
-> 
-> fixes a synchronus abort issue, none of the SPI clocks require
-> any critical handling: remove, then, the CLK_IGNORE_UNUSED flag
-> for the SPI related clocks.
-> 
-> Signed-off-by: Andi Shyti <andi.shyti@samsung.com>
-> Reviewed-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
-> Reviewed-by: Michael Turquette <mturquette@baylibre.com>
-> Acked-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
+Hi Mike,
 
-Do you want these patches to go through same tree? If not, I can take
-this patch into clk-next.
-
-Regards,
-Mike
-
-> ---
->  drivers/clk/samsung/clk-exynos5433.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
+> > Because the Exynos5433 SPI driver supports the ioclk handling and
+> > the following patch:
+> > 
+> >   http://marc.info/?l=linux-kernel&m=146787645626318&w=2
+> > 
+> > fixes a synchronus abort issue, none of the SPI clocks require
+> > any critical handling: remove, then, the CLK_IGNORE_UNUSED flag
+> > for the SPI related clocks.
+> > 
+> > Signed-off-by: Andi Shyti <andi.shyti@samsung.com>
+> > Reviewed-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
+> > Reviewed-by: Michael Turquette <mturquette@baylibre.com>
+> > Acked-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
 > 
-> diff --git a/drivers/clk/samsung/clk-exynos5433.c b/drivers/clk/samsung/clk-exynos5433.c
-> index c3a5318..fb19525 100644
-> --- a/drivers/clk/samsung/clk-exynos5433.c
-> +++ b/drivers/clk/samsung/clk-exynos5433.c
-> @@ -1661,8 +1661,7 @@ static struct samsung_gate_clock peric_gate_clks[] __initdata = {
->         GATE(CLK_SCLK_IOCLK_SPI2, "sclk_ioclk_spi2", "ioclk_spi2_clk_in",
->                         ENABLE_SCLK_PERIC, 13, CLK_SET_RATE_PARENT, 0),
->         GATE(CLK_SCLK_IOCLK_SPI1, "sclk_ioclk_spi1", "ioclk_spi1_clk_in",
-> -                       ENABLE_SCLK_PERIC, 12,
-> -                       CLK_IGNORE_UNUSED | CLK_SET_RATE_PARENT, 0),
-> +                       ENABLE_SCLK_PERIC, 12, CLK_SET_RATE_PARENT, 0),
->         GATE(CLK_SCLK_IOCLK_SPI0, "sclk_ioclk_spi0", "ioclk_spi0_clk_in",
->                         ENABLE_SCLK_PERIC, 11, CLK_SET_RATE_PARENT, 0),
->         GATE(CLK_SCLK_IOCLK_I2S1_BCLK, "sclk_ioclk_i2s1_bclk",
-> @@ -1677,7 +1676,7 @@ static struct samsung_gate_clock peric_gate_clks[] __initdata = {
->         GATE(CLK_SCLK_SPI2, "sclk_spi2", "sclk_spi2_peric", ENABLE_SCLK_PERIC,
->                         5, CLK_SET_RATE_PARENT, 0),
->         GATE(CLK_SCLK_SPI1, "sclk_spi1", "sclk_spi1_peric", ENABLE_SCLK_PERIC,
-> -                       4, CLK_IGNORE_UNUSED | CLK_SET_RATE_PARENT, 0),
-> +                       4, CLK_SET_RATE_PARENT, 0),
->         GATE(CLK_SCLK_SPI0, "sclk_spi0", "sclk_spi0_peric", ENABLE_SCLK_PERIC,
->                         3, CLK_SET_RATE_PARENT, 0),
->         GATE(CLK_SCLK_UART2, "sclk_uart2", "sclk_uart2_peric",
-> -- 
-> 2.8.1
-> 
+> Do you want these patches to go through same tree? If not, I can take
+> this patch into clk-next.
+
+I think this patchset doesn't apply in your repository, but in
+Mark Brown's spi/topic/s3c64xx branch. So that I guess Mark
+should take this patchset.
+
+Sorry, I should have specified it in the cover letter.
+
+Thanks,
+Andi

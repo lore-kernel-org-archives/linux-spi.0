@@ -1,85 +1,60 @@
-From: Crestez Dan Leonard <leonard.crestez@intel.com>
-Subject: [PATCH v2 0/3] Init device ids from ACPI of_compatible
-Date: Wed, 13 Jul 2016 14:53:39 +0300
-Message-ID: <cover.1468409668.git.leonard.crestez@intel.com>
-Cc: Crestez Dan Leonard <leonard.crestez@intel.com>,
-	Len Brown <lenb@kernel.org>, linux-i2c@vger.kernel.org,
-	Wolfram Sang <wsa@the-dreams.de>, linux-spi@vger.kernel.org,
-	Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
-	Octavian Purdila <octavian.purdila@intel.com>
-To: linux-acpi@vger.kernel.org,
-	"Rafael J. Wysocki" <rjw@rjwysocki.net>,
-	Jarkko Nikula <jarkko.nikula@intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Crestez Dan Leonard <leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v2 2/3] acpi i2c: Initialize info.type from of_compatible
+Date: Wed, 13 Jul 2016 14:53:41 +0300
+Message-ID: <4b9ea75003d78406307cbb392150fb038b1b72f7.1468409668.git.leonard.crestez@intel.com>
+References: <cover.1468409668.git.leonard.crestez@intel.com>
+Cc: Crestez Dan Leonard <leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Len Brown <lenb-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
+	Jarkko Nikula <jarkko.nikula-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <cover.1468409668.git.leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <cover.1468409668.git.leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+References: <cover.1468409668.git.leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-When using devicetree stuff like i2c_client.name or spi_device.modalias
-is initialized to the first DT compatible id with the vendor prefix
-stripped. Since some drivers rely on this in order to differentiate between
-hardware variants try to replicate it when using ACPI with DT ids.
+When using devicetree i2c_board_info.type is set to the compatible
+string with the vendor prefix removed. For I2C devices described via
+ACPI the i2c_board_info.type string is set to the ACPI device name. When
+using ACPI and DT ids this string ends up something like "PRP0001:00".
 
-This also makes it so that the i2c_device_id parameter passed to probe is
-non-NULL when matching with ACPI and DT ids.
+If the of_compatible property is present try to use that instead. This
+makes it easier to instantiate i2c drivers through ACPI with DT ids.
 
-These patches are on top of linux-pm/linux-next. I delayed v2 until ACPI
-overlays got in in order to avoid conflicts. I tested using ACPI overlays but
-there is no actual dependency. This series just extends the PRP0001 feature to
-be more useful for I2C/SPI.
+Signed-off-by: Crestez Dan Leonard <leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+---
+ drivers/i2c/i2c-core.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-The patches only touches the ACPI-specific parts of the i2c and spi core.
-
-Here is an example .dsl for an SPI accelerometer connected to minnowboard max:
-
-Device (ACCL)
-{
-    Name (_ADR, Zero)
-    Name (_HID, "PRP0001")
-    Name (_CID, "PRP0001")
-    Name (_UID, One)
-
-    Method (_CRS, 0, Serialized)
-    {
-	Name (RBUF, ResourceTemplate ()
-	{
-	    SPISerialBus(1, PolarityLow, FourWireMode, 16,
-		    ControllerInitiated, 1000000, ClockPolarityLow,
-		    ClockPhaseFirst, "\\_SB.SPI1",)
-	    GpioInt (Edge, ActiveHigh, Exclusive, PullDown, 0x0000,
-		     "\\_SB.GPO2", 0x00, ResourceConsumer, , )
-	    { // Pin list
-		    1
-	    }
-	})
-	Return (RBUF)
-    }
-    Name (_DSD, Package ()
-    {
-	ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-	Package ()
-	{
-	    Package () {"compatible", "st,lis3dh"},
-	}
-    })
-}
-
-Link to v1: https://www.spinics.net/lists/linux-acpi/msg66469.html
-Changes:
- * Rebase on after acpi overlays got it.
- * Change acpi_of_modalias outlen param to size_t
- * Use {} after else
-
-Crestez Dan Leonard (3):
-  acpi: Export acpi_of_modalias equiv of of_modalias_node
-  acpi i2c: Initialize info.type from of_compatible
-  acpi spi: Initialize modalias from of_compatible
-
- drivers/acpi/bus.c      | 36 ++++++++++++++++++++++++++++++++++++
- drivers/i2c/i2c-core.c  |  8 +++++++-
- drivers/spi/spi.c       | 11 ++++++++++-
- include/acpi/acpi_bus.h |  1 +
- 4 files changed, 54 insertions(+), 2 deletions(-)
-
+diff --git a/drivers/i2c/i2c-core.c b/drivers/i2c/i2c-core.c
+index 74e5aea..62a1339 100644
+--- a/drivers/i2c/i2c-core.c
++++ b/drivers/i2c/i2c-core.c
+@@ -179,7 +179,13 @@ static int acpi_i2c_get_info(struct acpi_device *adev,
+ 
+ 	acpi_dev_free_resource_list(&resource_list);
+ 
+-	strlcpy(info->type, dev_name(&adev->dev), sizeof(info->type));
++	if (adev->data.of_compatible) {
++		ret = acpi_of_modalias(adev, info->type, sizeof(info->type));
++		if (ret)
++			return -EINVAL;
++	} else {
++		strlcpy(info->type, dev_name(&adev->dev), sizeof(info->type));
++	}
+ 
+ 	return 0;
+ }
 -- 
 2.7.4
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

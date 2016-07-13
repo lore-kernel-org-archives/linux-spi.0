@@ -1,20 +1,21 @@
-From: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH v2 2/2] spi: add DT binding for clps711x SPI
-Date: Wed, 13 Jul 2016 10:13:58 +0200
-Message-ID: <9132787.CoNHcRuYpT@wuerfel>
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2MiAyLzJdIHNwaTogYWRkIERUIGJpbmRpbmcgZm9yIGNs?=
+ =?UTF-8?B?cHM3MTF4IFNQSQ==?=
+Date: Wed, 13 Jul 2016 11:20:00 +0300
+Message-ID: <1468398000.319627182@f165.i.mail.ru>
 References: <20160707094952.4111577-1-arnd@arndb.de>
- <20160707094952.4111577-2-arnd@arndb.de>
- <20160712204947.GA6182@rob-hp-laptop>
+ <20160712204947.GA6182@rob-hp-laptop> <9132787.CoNHcRuYpT@wuerfel>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
- Alexander Shiyan <shc_work@mail.ru>, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: =?UTF-8?B?TWFyayBSdXRsYW5k?= <mark.rutland@arm.com>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, =?UTF-8?B?TWFyayBCcm93bg==?= <broonie@kernel.org>,
  linux-arm-kernel@lists.infradead.org
-To: Rob Herring <robh@kernel.org>
+To: =?UTF-8?B?QXJuZCBCZXJnbWFubg==?= <arnd@arndb.de>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20160712204947.GA6182@rob-hp-laptop>
+In-Reply-To: <9132787.CoNHcRuYpT@wuerfel>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -26,29 +27,22 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tuesday, July 12, 2016 3:49:47 PM CEST Rob Herring wrote:
-> On Thu, Jul 07, 2016 at 11:49:46AM +0200, Arnd Bergmann wrote:
-> > +
-> > +An additional register is present in the system controller,
-> > +which is assumed to be in the same device tree, with and marked
-> > +as compatible with "cirrus,ep7209-syscon3".
-> > +
-> > +Example:
-> > +
-> > +spi@80000500 {
-> > +     #address-cells = <1>;
-> > +     #size-cells = <0>;
-> > +     compatible = "cirrus,ep7209-spi";
-> > +     reg = <0x80000500 0x4>;
-> > +     interrupts = <15>;
-> > +     clocks = <&clks CLPS711X_CLK_SPI>;
-> > +     status = "disabled";
-> > +};
-> > +
-> > +syscon3: syscon@80002200 {
-> 
-> This looks like it shouldn't be here.
-
-The label, or the entire node?
-
-	Arnd
+PtCh0YDQtdC00LAsIDEzINC40Y7Qu9GPIDIwMTYsIDExOjEzICswMzowMCDQvtGCIEFybmQgQmVy
+Z21hbm4gPGFybmRAYXJuZGIuZGU+Ogo+Cj5PbiBUdWVzZGF5LCBKdWx5IDEyLCAyMDE2IDM6NDk6
+NDcgUE0gQ0VTVCBSb2IgSGVycmluZyB3cm90ZToKPj4gT24gVGh1LCBKdWwgMDcsIDIwMTYgYXQg
+MTE6NDk6NDZBTSArMDIwMCwgQXJuZCBCZXJnbWFubiB3cm90ZToKPj4gPiArCj4+ID4gK0FuIGFk
+ZGl0aW9uYWwgcmVnaXN0ZXIgaXMgcHJlc2VudCBpbiB0aGUgc3lzdGVtIGNvbnRyb2xsZXIsCj4+
+ID4gK3doaWNoIGlzIGFzc3VtZWQgdG8gYmUgaW4gdGhlIHNhbWUgZGV2aWNlIHRyZWUsIHdpdGgg
+YW5kIG1hcmtlZAo+PiA+ICthcyBjb21wYXRpYmxlIHdpdGggImNpcnJ1cyxlcDcyMDktc3lzY29u
+MyIuCj4+ID4gKwo+PiA+ICtFeGFtcGxlOgo+PiA+ICsKPj4gPiArc3BpQDgwMDAwNTAwIHsKPj4g
+PiArICAgICAjYWRkcmVzcy1jZWxscyA9IDwxPjsKPj4gPiArICAgICAjc2l6ZS1jZWxscyA9IDww
+PjsKPj4gPiArICAgICBjb21wYXRpYmxlID0gImNpcnJ1cyxlcDcyMDktc3BpIjsKPj4gPiArICAg
+ICByZWcgPSA8MHg4MDAwMDUwMCAweDQ+Owo+PiA+ICsgICAgIGludGVycnVwdHMgPSA8MTU+Owo+
+PiA+ICsgICAgIGNsb2NrcyA9IDwmY2xrcyBDTFBTNzExWF9DTEtfU1BJPjsKPj4gPiArICAgICBz
+dGF0dXMgPSAiZGlzYWJsZWQiOwo+PiA+ICt9Owo+PiA+ICsKPj4gPiArc3lzY29uMzogc3lzY29u
+QDgwMDAyMjAwIHsKPj4gCj4+IFRoaXMgbG9va3MgbGlrZSBpdCBzaG91bGRuJ3QgYmUgaGVyZS4K
+Pgo+VGhlIGxhYmVsLCBvciB0aGUgZW50aXJlIG5vZGU/CgpJIHRoaW5rIHRoYXQgdGhlIHdob2xl
+IHN5c2NvbjMgbm9kZSBpcyByZWR1bmRhbnQuCgotLS0KCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCmxpbnV4LWFybS1rZXJuZWwgbWFpbGluZyBsaXN0Cmxp
+bnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFk
+Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LWFybS1rZXJuZWwK

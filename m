@@ -1,95 +1,62 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH, V4, 2/5] spi: bcm-qspi: Add SPI flash and MSPI driver
-Date: Wed, 13 Jul 2016 23:36:38 +0100
-Message-ID: <20160713223638.GI9976@sirena.org.uk>
-References: <1466197433-11290-1-git-send-email-kdasu.kdev@gmail.com>
- <1466197433-11290-2-git-send-email-kdasu.kdev@gmail.com>
- <20160622160726.GQ28202@sirena.org.uk>
- <CAKekbevYN3CLvqQs3stUXDFEMREMOJ0g4+w7Zsno1kV-ieYEiw@mail.gmail.com>
- <20160701160753.GX6247@sirena.org.uk>
- <CAC=U0a3WN9TGw7zwwP3qFf5MUsRteUcVLytFgjnP4zScZS0xXA@mail.gmail.com>
- <20160713111053.GG9976@sirena.org.uk>
- <5786B401.2050306@gmail.com>
+Subject: Re: [PATCH RFCv1 0/1] Update struct spi_transfer to specify 8x bit
+ transfers
+Date: Thu, 14 Jul 2016 14:30:53 +0100
+Message-ID: <20160714133053.GL9976@sirena.org.uk>
+References: <1468438477-18883-1-git-send-email-girishm@codeaurora.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="YhFoJY/gx7awiIuK"
-Cc: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Kamal Dasu <kamal.dasu-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jayachandran C <jchandra-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	bcm-kernel-feedback-list <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Vikram Prakash <vikram.prakash-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Andy Fung <andy.fung-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Jon Mason <jon.mason-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Yendapally Reddy Dhananjaya Reddy
-	<yendapally.reddy-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-To: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="Pz0BBB9QxoYXlT+x"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	sboyd-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org, sdharia-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org,
+	linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Girish Mahadevan <girishm-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <5786B401.2050306-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1468438477-18883-1-git-send-email-girishm-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---YhFoJY/gx7awiIuK
-Content-Type: text/plain; charset=us-ascii
+--Pz0BBB9QxoYXlT+x
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 13, 2016 at 02:34:57PM -0700, Florian Fainelli wrote:
-> On 07/13/2016 04:10 AM, Mark Brown wrote:
+On Wed, Jul 13, 2016 at 01:34:36PM -0600, Girish Mahadevan wrote:
+> We=E2=80=99re working on a driver for a Quad SPI controller [using up to =
+4 data lines] which can use dual-data-sampling to implement 8-bit transfers=
+=2E To allow a slave driver to specify the 8-bit transfer we'd like to make=
+ this change to the spi_transfer data structure. We are still working on th=
+e driver we will send an RFC for the driver patches separately once it is r=
+eady.
 
-> > It's not really about reuse, it's about maintainability.  All the code
-> > for handling this within the driver is quite unusual and makes the
-> > driver harder to understand and review.  That's going to have an impact
-> > now and make things harder to follow in future too.  Fitting in with the
-> > frameworks means that we get the benefit of the structure and support
-> > code that the frameworks provide while minimizing the amount of unusal
-> > code in the driver.
+Please don't send cover letters for single patches, if there is anything
+that needs saying put it in the changelog of the patch or after the ---
+if it's administrative stuff.  This reduces mail volume and ensures that=20
+any important information is recorded in the changelog rather than being
+lost.=20
 
-> This is not unusual at all, there are tons of peripherals that embed a
-> L2/L3 interrupt controller, yet keep the code localized because the
-> interrupt sources are not visible outside of the specific block and it
-> would not make sense to demultiplex these different interrupt sources as
-> individually requestable interrupt lines when the consumer is also local
-> and self contained.
+Please fix your mail client to word wrap within paragraphs at something
+substantially less than 80 columns.  Doing this makes your messages much
+easier to read and reply to.
 
-If it was unconditionally in the perhipheral it'd be fairly normal and
-standard but it's not, it's a completely separate and optional register
-block with a bunch of separate code in a driver which already has above
-average complexity even for the bits that belong in it.
-
-> This is exactly what is going on here, and it this makes the driver more
-> self contained without external dependencies to an irqchip driver to an
-> interrupt controller provider.
-
-Like I say it just isn't, it's an obviously separate interrupt
-controller.
-
-> The reusability argument is kind of the only one that makes sense here,
-> maintaining two drivers instead of one seems like more maintenance
-> burden imho.
-
-It's definitely adding to the review complexity as things stand mainly
-due to the obvious disconnect from the actual IP.  It should take very
-little time to refactor and it's really hard to see it ever taking much
-time to maintain in future, though it might be helpful if one of your
-hardware engineers ever tries to reuse that IP.
-
---YhFoJY/gx7awiIuK
+--Pz0BBB9QxoYXlT+x
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJXhsJ1AAoJECTWi3JdVIfQ0+sH/AkLoSNIQQ+n35NQnI9OjMuI
-oE6BqJyHL4KzZUwiz+1AmV+e2pg8vRfN4PWPjp+ZlVvCiIafByGxjrLDo7T6Afz7
-8LPBy1WtKCVbtLoRwdhLI8F0DMCozfcXyEzKwfMMKWgYwip4fE8fk6r2DQ4tggja
-FE1hnB6sCRgT5o+TNHA3CmwcvDoLg5uiN5xq/4wHXKDWtUfMwL0xpS83wZ935bTr
-8fRTjDnLElmE9qDho+c9x2EFfKDIFHUU4JEyh5rIFV5+ehA+8w2lzy28dWLWdHVU
-OjU6F0RXZ1hrp1YDsNlqWHmma2FcMS/d1yzHxM13Mg/xj44at9RIAjWWNZHssmk=
-=8EWi
+iQEcBAEBCAAGBQJXh5QKAAoJECTWi3JdVIfQq9EH/054epe5EsPUYjaFZ2EajmOs
+h76Zd4FfKEfiZdqagx+nGPLrHss+IJdy3SduwOJBuSosPqo1izH09ujHdX543hCd
+xlZ8IpGfamixx1iUbDR3/OaagOWlr8O4kOoGE5q5rnCIvgqbChRuPD+t1veAcgIK
+ysTmSgIsX9ZdMkHY7orDyuYO/f/bgzEXLNmB6xsan6bNNJk2MudFZFJfzi2rNVWk
+PB0d7LJ7JssiGOnIcpcWvD4aJ4uI+GWuzYm/vZC9aatnXYOm1kt83F7jq9WHDmjX
+CD8N9SSmk9xw6OIcu9jrqlPwQFRVWyu/arFD/FySkmHjgNQH7zTpKHu06UClOTU=
+=Ew+w
 -----END PGP SIGNATURE-----
 
---YhFoJY/gx7awiIuK--
+--Pz0BBB9QxoYXlT+x--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

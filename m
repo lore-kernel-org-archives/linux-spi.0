@@ -1,32 +1,22 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: s3c64xx: add exynos5433 spi compatible" to the spi tree
-Date: Thu, 14 Jul 2016 17:33:01 +0100
-Message-ID: <E1bNjZN-0001qI-NZ@debutante>
-References: <1467989201-14661-2-git-send-email-andi.shyti@samsung.com>
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Kukjin Kim <kgene@kernel.org>,
-	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	Tomasz Figa <tomasz.figa@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@codeaurora.org>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	Jaehoon Chung <jh80.chung@samsung.com>,
-	linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-	Andi Shyti <andi@etezian.org>
-To: Andi Shyti <andi.shyti@samsung.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <1467989201-14661-2-git-send-email-andi.shyti@samsung.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: s3c64xx: fix reference leak to master in s3c64xx_spi_remove()" to the spi tree
+Date: Thu, 14 Jul 2016 17:33:04 +0100
+Message-ID: <E1bNjZQ-0001rC-Ju@debutante>
+References: <1468321722-16568-1-git-send-email-weiyj_lk@163.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1468321722-16568-1-git-send-email-weiyj_lk-9Onoh4P/yGk@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: s3c64xx: add exynos5433 spi compatible
+   spi: s3c64xx: fix reference leak to master in s3c64xx_spi_remove()
 
 has been applied to the spi tree at
 
@@ -51,42 +41,41 @@ to this mail.
 Thanks,
 Mark
 
->From c068042bf0872c9121f4a6eab281dd63f61df5d3 Mon Sep 17 00:00:00 2001
-From: Andi Shyti <andi.shyti@samsung.com>
-Date: Tue, 12 Jul 2016 19:02:10 +0900
-Subject: [PATCH] spi: s3c64xx: add exynos5433 spi compatible
+>From 9f135787b1d29b0069059b580c1c77965e5e8af4 Mon Sep 17 00:00:00 2001
+From: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
+Date: Tue, 12 Jul 2016 11:08:42 +0000
+Subject: [PATCH] spi: s3c64xx: fix reference leak to master in
+ s3c64xx_spi_remove()
 
-The samsung,exynos5433-spi has some peculiarities that bring the
-need of creating a new compatible in the binding.
+Once a spi_master_get() call succeeds, we need an additional
+spi_master_put() call to free the memory, otherwise we will
+leak a reference to master. Fix by removing the unnecessary
+spi_master_get() call.
 
-One of those is the 3-clocks controller management where the spi
-is fed with three clocks: "spi", "busclkN" and "ioclk".
-
-By adding the exynos5433-spi, we deprecate the exynos7 compatible
-and discourage its use.
-
-Signed-off-by: Andi Shyti <andi.shyti@samsung.com>
-Reviewed-by: Michael Turquette <mturquette@baylibre.com>
-Reviewed-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
-Reviewed-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
+Reviewed-by: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- Documentation/devicetree/bindings/spi/spi-samsung.txt | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-s3c64xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-samsung.txt b/Documentation/devicetree/bindings/spi/spi-samsung.txt
-index 930bc7349271..ab4f0a46e859 100644
---- a/Documentation/devicetree/bindings/spi/spi-samsung.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-samsung.txt
-@@ -9,7 +9,8 @@ Required SoC Specific Properties:
-     - samsung,s3c2443-spi: for s3c2443, s3c2416 and s3c2450 platforms
-     - samsung,s3c6410-spi: for s3c6410 platforms
-     - samsung,s5pv210-spi: for s5pv210 and s5pc110 platforms
--    - samsung,exynos7-spi: for exynos7 platforms
-+    - samsung,exynos5433-spi: for exynos5433 compatible controllers
-+    - samsung,exynos7-spi: for exynos7 platforms <DEPRECATED>
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index df88fa161d8a..001c9ebf884d 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -1211,7 +1211,7 @@ err0:
  
- - reg: physical base address of the controller and length of memory mapped
-   region.
+ static int s3c64xx_spi_remove(struct platform_device *pdev)
+ {
+-	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
++	struct spi_master *master = platform_get_drvdata(pdev);
+ 	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
+ 
+ 	pm_runtime_get_sync(&pdev->dev);
 -- 
 2.8.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

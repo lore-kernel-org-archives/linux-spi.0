@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: s3c64xx: use error code from clk_prepare_enable()" to the spi tree
-Date: Thu, 14 Jul 2016 17:32:52 +0100
-Message-ID: <E1bNjZE-0001mT-Vp@debutante>
-References: <1467989201-14661-5-git-send-email-andi.shyti@samsung.com>
+Subject: Applied "spi: s3c64xx: add exynos5433 spi compatible" to the spi tree
+Date: Thu, 14 Jul 2016 17:33:01 +0100
+Message-ID: <E1bNjZN-0001qI-NZ@debutante>
+References: <1467989201-14661-2-git-send-email-andi.shyti@samsung.com>
 Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
 	Mark Rutland <mark.rutland@arm.com>,
 	Kukjin Kim <kgene@kernel.org>,
@@ -19,14 +19,14 @@ Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
 	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
 	Andi Shyti <andi@etezian.org>
 To: Andi Shyti <andi.shyti@samsung.com>
-Return-path: <linux-clk-owner@vger.kernel.org>
-In-Reply-To: <1467989201-14661-5-git-send-email-andi.shyti@samsung.com>
-Sender: linux-clk-owner@vger.kernel.org
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <1467989201-14661-2-git-send-email-andi.shyti@samsung.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: s3c64xx: use error code from clk_prepare_enable()
+   spi: s3c64xx: add exynos5433 spi compatible
 
 has been applied to the spi tree at
 
@@ -51,51 +51,42 @@ to this mail.
 Thanks,
 Mark
 
->From 25981d8281ee4cbbd6f7c5bc0f8c048ad9548037 Mon Sep 17 00:00:00 2001
+>From c068042bf0872c9121f4a6eab281dd63f61df5d3 Mon Sep 17 00:00:00 2001
 From: Andi Shyti <andi.shyti@samsung.com>
-Date: Tue, 12 Jul 2016 19:02:13 +0900
-Subject: [PATCH] spi: s3c64xx: use error code from clk_prepare_enable()
+Date: Tue, 12 Jul 2016 19:02:10 +0900
+Subject: [PATCH] spi: s3c64xx: add exynos5433 spi compatible
 
-If clk_prepare_enable() fails do not return -EBUSY but use the
-value provided by the function itself.
+The samsung,exynos5433-spi has some peculiarities that bring the
+need of creating a new compatible in the binding.
 
-Suggested-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
+One of those is the 3-clocks controller management where the spi
+is fed with three clocks: "spi", "busclkN" and "ioclk".
+
+By adding the exynos5433-spi, we deprecate the exynos7 compatible
+and discourage its use.
+
 Signed-off-by: Andi Shyti <andi.shyti@samsung.com>
 Reviewed-by: Michael Turquette <mturquette@baylibre.com>
 Reviewed-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
+Reviewed-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-s3c64xx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ Documentation/devicetree/bindings/spi/spi-samsung.txt | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 0a93eb98c2b6..3d21f8a35837 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -1133,9 +1133,9 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 		goto err_deref_master;
- 	}
+diff --git a/Documentation/devicetree/bindings/spi/spi-samsung.txt b/Documentation/devicetree/bindings/spi/spi-samsung.txt
+index 930bc7349271..ab4f0a46e859 100644
+--- a/Documentation/devicetree/bindings/spi/spi-samsung.txt
++++ b/Documentation/devicetree/bindings/spi/spi-samsung.txt
+@@ -9,7 +9,8 @@ Required SoC Specific Properties:
+     - samsung,s3c2443-spi: for s3c2443, s3c2416 and s3c2450 platforms
+     - samsung,s3c6410-spi: for s3c6410 platforms
+     - samsung,s5pv210-spi: for s5pv210 and s5pc110 platforms
+-    - samsung,exynos7-spi: for exynos7 platforms
++    - samsung,exynos5433-spi: for exynos5433 compatible controllers
++    - samsung,exynos7-spi: for exynos7 platforms <DEPRECATED>
  
--	if (clk_prepare_enable(sdd->clk)) {
-+	ret = clk_prepare_enable(sdd->clk);
-+	if (ret) {
- 		dev_err(&pdev->dev, "Couldn't enable clock 'spi'\n");
--		ret = -EBUSY;
- 		goto err_deref_master;
- 	}
- 
-@@ -1148,9 +1148,9 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 		goto err_disable_clk;
- 	}
- 
--	if (clk_prepare_enable(sdd->src_clk)) {
-+	ret = clk_prepare_enable(sdd->src_clk);
-+	if (ret) {
- 		dev_err(&pdev->dev, "Couldn't enable clock '%s'\n", clk_name);
--		ret = -EBUSY;
- 		goto err_disable_clk;
- 	}
- 
+ - reg: physical base address of the controller and length of memory mapped
+   region.
 -- 
 2.8.1
-

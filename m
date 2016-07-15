@@ -1,88 +1,106 @@
-From: Brian Norris <briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH] spi: rockchip: limit transfers to (64K - 1) bytes
-Date: Thu, 14 Jul 2016 18:30:59 -0700
-Message-ID: <1468546259-136659-1-git-send-email-briannorris@chromium.org>
-Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Caesar Wang <wxt-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-	Brian Norris <briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Eddie Cai <eddie.cai-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-	Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-	Tomeu Vizoso <tomeu.vizoso-ZGY8ohtN/8qB+jHODAdFcQ@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Subject: Re: [PATCH] spi: rockchip: limit transfers to (64K - 1) bytes
+Date: Fri, 15 Jul 2016 09:56:59 +0800
+Message-ID: <131afa39-4287-0fb8-61f4-146283dc7cf0@rock-chips.com>
+References: <1468546259-136659-1-git-send-email-briannorris@chromium.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Transfer-Encoding: base64
+Cc: Tomeu Vizoso <tomeu.vizoso-ZGY8ohtN/8qB+jHODAdFcQ@public.gmane.org>, shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org,
+ linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+ linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Eddie Cai <eddie.cai-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
+ hhb-TNX95d0MmH7DzftRWevZcw@public.gmane.org, Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+ linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Caesar Wang <wxt-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+To: Brian Norris <briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+ Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>
+Return-path: <linux-rockchip-bounces+glpar-linux-rockchip=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+In-Reply-To: <1468546259-136659-1-git-send-email-briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rockchip>,
+ <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-rockchip/>
+List-Post: <mailto:linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+List-Help: <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rockchip>,
+ <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
+Sender: "Linux-rockchip" <linux-rockchip-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Errors-To: linux-rockchip-bounces+glpar-linux-rockchip=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-The Rockchip SPI controller's length register only supports 16-bits,
-yielding a maximum length of 64KiB (the CTRLR1 register holds "length -
-1"). Trying to transfer more than that (e.g., with a large SPI flash
-read) will cause the driver to hang.
-
-Now, it seems that while theoretically we should be able to program
-CTRLR1 with 0xffff, and get a 64KiB transfer, but that also seems to
-cause the core to choke, so stick with a maximum of 64K - 1 bytes --
-i.e., 0xffff.
-
-Signed-off-by: Brian Norris <briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
----
- drivers/spi/spi-rockchip.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
-
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index d840324bcc9f..0f89c2169c24 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -142,6 +142,12 @@
- /* sclk_out: spi master internal logic in rk3x can support 50Mhz */
- #define MAX_SCLK_OUT		50000000
- 
-+/*
-+ * SPI_CTRLR1 is 16-bits, so we should support lengths of 0xffff + 1. However,
-+ * the controller seems to hang when given 0x10000, so stick with this for now.
-+ */
-+#define ROCKCHIP_SPI_MAX_TRANLEN		0xffff
-+
- enum rockchip_ssi_type {
- 	SSI_MOTO_SPI = 0,
- 	SSI_TI_SSP,
-@@ -573,6 +579,11 @@ static void rockchip_spi_config(struct rockchip_spi *rs)
- 	dev_dbg(rs->dev, "cr0 0x%x, div %d\n", cr0, div);
- }
- 
-+static size_t rockchip_spi_max_transfer_size(struct spi_device *spi)
-+{
-+	return ROCKCHIP_SPI_MAX_TRANLEN;
-+}
-+
- static int rockchip_spi_transfer_one(
- 		struct spi_master *master,
- 		struct spi_device *spi,
-@@ -589,6 +600,11 @@ static int rockchip_spi_transfer_one(
- 		return -EINVAL;
- 	}
- 
-+	if (xfer->len > ROCKCHIP_SPI_MAX_TRANLEN) {
-+		dev_err(rs->dev, "Transfer is too long (%d)\n", xfer->len);
-+		return -EINVAL;
-+	}
-+
- 	rs->speed = xfer->speed_hz;
- 	rs->bpw = xfer->bits_per_word;
- 	rs->n_bytes = rs->bpw >> 3;
-@@ -730,6 +746,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 	master->prepare_message = rockchip_spi_prepare_message;
- 	master->unprepare_message = rockchip_spi_unprepare_message;
- 	master->transfer_one = rockchip_spi_transfer_one;
-+	master->max_transfer_size = rockchip_spi_max_transfer_size;
- 	master->handle_err = rockchip_spi_handle_err;
- 
- 	rs->dma_tx.ch = dma_request_chan(rs->dev, "tx");
--- 
-2.8.0.rc3.226.g39d4020
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+KyBodWliaW5nCgrlnKggMjAxNi83LzE1IDk6MzAsIEJyaWFuIE5vcnJpcyDlhpnpgZM6Cj4gVGhl
+IFJvY2tjaGlwIFNQSSBjb250cm9sbGVyJ3MgbGVuZ3RoIHJlZ2lzdGVyIG9ubHkgc3VwcG9ydHMg
+MTYtYml0cywKPiB5aWVsZGluZyBhIG1heGltdW0gbGVuZ3RoIG9mIDY0S2lCICh0aGUgQ1RSTFIx
+IHJlZ2lzdGVyIGhvbGRzICJsZW5ndGggLQo+IDEiKS4gVHJ5aW5nIHRvIHRyYW5zZmVyIG1vcmUg
+dGhhbiB0aGF0IChlLmcuLCB3aXRoIGEgbGFyZ2UgU1BJIGZsYXNoCj4gcmVhZCkgd2lsbCBjYXVz
+ZSB0aGUgZHJpdmVyIHRvIGhhbmcuCgpCcmlhbiwgYXJlIHlvdSB1c2luZyBkbWEgb3IgcGlvPwoK
+IEZyb20gaHVpYmluZydzIGZlZWRiYWNrIGZvciByazMzOTksIHlvdSBjYW4gc2VlLi4uCgpyb290
+QHJrMzM5OTovICMgZWNobyByZWFkIDAgMSAweDEwMDAxID4gL3N5cy9zbHQvU1BJLjAvU1BJLjAg
+CgpbMTQ4MzYwLjAwNDMzMl0gZjAwNDEyMDA6ICAgICAgIERNQU1PViBDQ1IgMHg4MDQyMDAKWzE0
+ODM2MC4wMDQ3NzJdIGYwMDQxMjA2OiAgICAgICBETUFNT1YgU0FSIDB4ZmYxZDA4MDAKWzE0ODM2
+MC4wMDUxNjFdIGYwMDQxMjBjOiAgICAgICBETUFNT1YgREFSIDB4YzlmNjAwMDAKWzE0ODM2MC4w
+MDU1NDldIGYwMDQxMjEyOiAgICAgICBETUFMUF8wIDI1NQpbMTQ4MzYwLjAwNTg2Nl0gZjAwNDEy
+MTQ6ICAgICAgIERNQUxQXzEgMjU1ClsxNDgzNjAuMDA2MTc4XSBmMDA0MTIxNjogICAgICAgRE1B
+V0ZQQiAxMwpbMTQ4MzYwLjAwNjQ4M10gZjAwNDEyMTg6ICAgICAgIERNQUxEUEIgMTMKWzE0ODM2
+MC4wMDY3ODhdIGYwMDQxMjFhOiAgICAgICBETUFTVEEKWzE0ODM2MC4wMDcwNjFdIGYwMDQxMjFi
+OiAgICAgICBETUFGTFVTSFAgMTMKWzE0ODM2MC4wMDczODBdIGYwMDQxMjFkOiAgICAgICBETUFM
+UEVOREFfMSBiam1wdG9fNwpbMTQ4MzYwLjAwNzc2M10gZjAwNDEyMWY6ICAgICAgIERNQUxQRU5E
+QV8wIGJqbXB0b19iClsxNDgzNjAuMDA4MTQ0XSBmMDA0MTIyMTogICAgICAgRE1BV0ZQQiAxMwpb
+MTQ4MzYwLjAwODQ0OF0gZjAwNDEyMjM6ICAgICAgIERNQUxEUEIgMTMKWzE0ODM2MC4wMDg3NTJd
+IGYwMDQxMjI1OiAgICAgICBETUFTVEEKWzE0ODM2MC4wMDkwMjZdIGYwMDQxMjI2OiAgICAgICBE
+TUFGTFVTSFAgMTMKWzE0ODM2MC4wMDkzNDRdIGYwMDQxMjI4OiAgICAgICBETUFTRVYgMQpbMTQ4
+MzYwLjAwOTYzM10gZjAwNDEyMmE6ICAgICAgIERNQUVORApbMTQ4MzYwLjE0Nzk5M10gc2x0X3Nw
+aV90ZXN0IHNwaTMyNzY2LjA6IFNQSSB0cmFuc2ZlciB0aW1lZCBvdXQKWzE0ODM2MC4xNDg2NTNd
+IHNwaSByZWFkIDY1NTM3KjEgY29zdCAxNDQ0OTN1cyBzcGVlZDo0NTNLQi9TCnJvb3RAcmszMzk5
+Oi8gIwpyb290QHJrMzM5OTovICMgZWNobyByZWFkIDAgMSAweDEwMDAwID4gL3N5cy9zbHQvU1BJ
+LjAvU1BJLjAgCgpbMTQ4MzY1LjE3MjQyOV0gZjAwNDEyMDA6ICAgICAgIERNQU1PViBDQ1IgMHg4
+MDQyMDAKWzE0ODM2NS4xNzI4NjNdIGYwMDQxMjA2OiAgICAgICBETUFNT1YgU0FSIDB4ZmYxZDA4
+MDAKWzE0ODM2NS4xNzMyNTJdIGYwMDQxMjBjOiAgICAgICBETUFNT1YgREFSIDB4YzlmOTAwMDAK
+WzE0ODM2NS4xNzM2NDFdIGYwMDQxMjEyOiAgICAgICBETUFMUF8wIDI1NQpbMTQ4MzY1LjE3Mzk1
+OF0gZjAwNDEyMTQ6ICAgICAgIERNQUxQXzEgMjU1ClsxNDgzNjUuMTc0MjcwXSBmMDA0MTIxNjog
+ICAgICAgRE1BV0ZQQiAxMwpbMTQ4MzY1LjE3NDU3NF0gZjAwNDEyMTg6ICAgICAgIERNQUxEUEIg
+MTMKWzE0ODM2NS4xNzQ4NzhdIGYwMDQxMjFhOiAgICAgICBETUFTVEEKWzE0ODM2NS4xNzUxNTJd
+IGYwMDQxMjFiOiAgICAgICBETUFGTFVTSFAgMTMKWzE0ODM2NS4xNzU0NzFdIGYwMDQxMjFkOiAg
+ICAgICBETUFMUEVOREFfMSBiam1wdG9fNwpbMTQ4MzY1LjE3NTg1Ml0gZjAwNDEyMWY6ICAgICAg
+IERNQUxQRU5EQV8wIGJqbXB0b19iClsxNDgzNjUuMTc2MjM0XSBmMDA0MTIyMTogICAgICAgRE1B
+U0VWIDEKWzE0ODM2NS4xNzY1MjJdIGYwMDQxMjIzOiAgICAgICBETUFFTkQKWzE0ODM2NS4yMDc0
+MjFdIHNwaSByZWFkIDY1NTM2KjEgY29zdCAzNTE0NHVzIHNwZWVkOjE4NjRLQi9TCgoKCj4KPiBO
+b3csIGl0IHNlZW1zIHRoYXQgd2hpbGUgdGhlb3JldGljYWxseSB3ZSBzaG91bGQgYmUgYWJsZSB0
+byBwcm9ncmFtCj4gQ1RSTFIxIHdpdGggMHhmZmZmLCBhbmQgZ2V0IGEgNjRLaUIgdHJhbnNmZXIs
+IGJ1dCB0aGF0IGFsc28gc2VlbXMgdG8KPiBjYXVzZSB0aGUgY29yZSB0byBjaG9rZSwgc28gc3Rp
+Y2sgd2l0aCBhIG1heGltdW0gb2YgNjRLIC0gMSBieXRlcyAtLQo+IGkuZS4sIDB4ZmZmZi4KPgo+
+IFNpZ25lZC1vZmYtYnk6IEJyaWFuIE5vcnJpcyA8YnJpYW5ub3JyaXNAY2hyb21pdW0ub3JnPgo+
+IC0tLQo+ICBkcml2ZXJzL3NwaS9zcGktcm9ja2NoaXAuYyB8IDE3ICsrKysrKysrKysrKysrKysr
+Cj4gIDEgZmlsZSBjaGFuZ2VkLCAxNyBpbnNlcnRpb25zKCspCj4KPiBkaWZmIC0tZ2l0IGEvZHJp
+dmVycy9zcGkvc3BpLXJvY2tjaGlwLmMgYi9kcml2ZXJzL3NwaS9zcGktcm9ja2NoaXAuYwo+IGlu
+ZGV4IGQ4NDAzMjRiY2M5Zi4uMGY4OWMyMTY5YzI0IDEwMDY0NAo+IC0tLSBhL2RyaXZlcnMvc3Bp
+L3NwaS1yb2NrY2hpcC5jCj4gKysrIGIvZHJpdmVycy9zcGkvc3BpLXJvY2tjaGlwLmMKPiBAQCAt
+MTQyLDYgKzE0MiwxMiBAQAo+ICAvKiBzY2xrX291dDogc3BpIG1hc3RlciBpbnRlcm5hbCBsb2dp
+YyBpbiByazN4IGNhbiBzdXBwb3J0IDUwTWh6ICovCj4gICNkZWZpbmUgTUFYX1NDTEtfT1VUCQk1
+MDAwMDAwMAo+Cj4gKy8qCj4gKyAqIFNQSV9DVFJMUjEgaXMgMTYtYml0cywgc28gd2Ugc2hvdWxk
+IHN1cHBvcnQgbGVuZ3RocyBvZiAweGZmZmYgKyAxLiBIb3dldmVyLAo+ICsgKiB0aGUgY29udHJv
+bGxlciBzZWVtcyB0byBoYW5nIHdoZW4gZ2l2ZW4gMHgxMDAwMCwgc28gc3RpY2sgd2l0aCB0aGlz
+IGZvciBub3cuCj4gKyAqLwo+ICsjZGVmaW5lIFJPQ0tDSElQX1NQSV9NQVhfVFJBTkxFTgkJMHhm
+ZmZmCj4gKwo+ICBlbnVtIHJvY2tjaGlwX3NzaV90eXBlIHsKPiAgCVNTSV9NT1RPX1NQSSA9IDAs
+Cj4gIAlTU0lfVElfU1NQLAo+IEBAIC01NzMsNiArNTc5LDExIEBAIHN0YXRpYyB2b2lkIHJvY2tj
+aGlwX3NwaV9jb25maWcoc3RydWN0IHJvY2tjaGlwX3NwaSAqcnMpCj4gIAlkZXZfZGJnKHJzLT5k
+ZXYsICJjcjAgMHgleCwgZGl2ICVkXG4iLCBjcjAsIGRpdik7Cj4gIH0KPgo+ICtzdGF0aWMgc2l6
+ZV90IHJvY2tjaGlwX3NwaV9tYXhfdHJhbnNmZXJfc2l6ZShzdHJ1Y3Qgc3BpX2RldmljZSAqc3Bp
+KQo+ICt7Cj4gKwlyZXR1cm4gUk9DS0NISVBfU1BJX01BWF9UUkFOTEVOOwo+ICt9Cj4gKwo+ICBz
+dGF0aWMgaW50IHJvY2tjaGlwX3NwaV90cmFuc2Zlcl9vbmUoCj4gIAkJc3RydWN0IHNwaV9tYXN0
+ZXIgKm1hc3RlciwKPiAgCQlzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpLAo+IEBAIC01ODksNiArNjAw
+LDExIEBAIHN0YXRpYyBpbnQgcm9ja2NoaXBfc3BpX3RyYW5zZmVyX29uZSgKPiAgCQlyZXR1cm4g
+LUVJTlZBTDsKPiAgCX0KPgo+ICsJaWYgKHhmZXItPmxlbiA+IFJPQ0tDSElQX1NQSV9NQVhfVFJB
+TkxFTikgewo+ICsJCWRldl9lcnIocnMtPmRldiwgIlRyYW5zZmVyIGlzIHRvbyBsb25nICglZClc
+biIsIHhmZXItPmxlbik7Cj4gKwkJcmV0dXJuIC1FSU5WQUw7Cj4gKwl9Cj4gKwo+ICAJcnMtPnNw
+ZWVkID0geGZlci0+c3BlZWRfaHo7Cj4gIAlycy0+YnB3ID0geGZlci0+Yml0c19wZXJfd29yZDsK
+PiAgCXJzLT5uX2J5dGVzID0gcnMtPmJwdyA+PiAzOwo+IEBAIC03MzAsNiArNzQ2LDcgQEAgc3Rh
+dGljIGludCByb2NrY2hpcF9zcGlfcHJvYmUoc3RydWN0IHBsYXRmb3JtX2RldmljZSAqcGRldikK
+PiAgCW1hc3Rlci0+cHJlcGFyZV9tZXNzYWdlID0gcm9ja2NoaXBfc3BpX3ByZXBhcmVfbWVzc2Fn
+ZTsKPiAgCW1hc3Rlci0+dW5wcmVwYXJlX21lc3NhZ2UgPSByb2NrY2hpcF9zcGlfdW5wcmVwYXJl
+X21lc3NhZ2U7Cj4gIAltYXN0ZXItPnRyYW5zZmVyX29uZSA9IHJvY2tjaGlwX3NwaV90cmFuc2Zl
+cl9vbmU7Cj4gKwltYXN0ZXItPm1heF90cmFuc2Zlcl9zaXplID0gcm9ja2NoaXBfc3BpX21heF90
+cmFuc2Zlcl9zaXplOwo+ICAJbWFzdGVyLT5oYW5kbGVfZXJyID0gcm9ja2NoaXBfc3BpX2hhbmRs
+ZV9lcnI7Cj4KPiAgCXJzLT5kbWFfdHguY2ggPSBkbWFfcmVxdWVzdF9jaGFuKHJzLT5kZXYsICJ0
+eCIpOwo+CgoKLS0gCkJlc3QgUmVnYXJkcwpTaGF3biBMaW4KCgpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1yb2NrY2hpcCBtYWlsaW5nIGxpc3QK
+TGludXgtcm9ja2NoaXBAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFk
+Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LXJvY2tjaGlwCg==

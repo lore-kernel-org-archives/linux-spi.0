@@ -1,8 +1,8 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: xilinx: Return IRQ_NONE if no interrupts were detected" to the spi tree
-Date: Fri, 15 Jul 2016 12:57:03 +0100
-Message-ID: <E1bO1jr-0006yy-IC@debutante>
-References: <1468329881-5894-2-git-send-email-lars@metafoo.de>
+Subject: Applied "spi: xilinx: Handle errors from platform_get_irq()" to the spi tree
+Date: Fri, 15 Jul 2016 12:57:09 +0100
+Message-ID: <E1bO1jx-0006zt-ID@debutante>
+References: <1468573459-3071-1-git-send-email-lars@metafoo.de>
 Cc: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
@@ -12,13 +12,13 @@ Cc: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1468329881-5894-2-git-send-email-lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+In-Reply-To: <1468573459-3071-1-git-send-email-lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: xilinx: Return IRQ_NONE if no interrupts were detected
+   spi: xilinx: Handle errors from platform_get_irq()
 
 has been applied to the spi tree at
 
@@ -43,39 +43,42 @@ to this mail.
 Thanks,
 Mark
 
->From d33648478501407267557b1bf6897169625f4178 Mon Sep 17 00:00:00 2001
+>From 4db9bf548bb00d84ba7dfd70f124de16386c0c55 Mon Sep 17 00:00:00 2001
 From: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-Date: Fri, 15 Jul 2016 11:04:19 +0200
-Subject: [PATCH] spi: xilinx: Return IRQ_NONE if no interrupts were detected
+Date: Fri, 15 Jul 2016 11:04:18 +0200
+Subject: [PATCH] spi: xilinx: Handle errors from platform_get_irq()
 
-Return IRQ_NONE from the interrupt handler if the handler is running, but
-no interrupt was detected. This allows the system to recover in case of an
-interrupt storm due to an invalid interrupt configuration or faulty
-hardware.
+The Xilinx SPI driver can operate without an IRQ, but not every error
+returned by platform_get_irq() means that no IRQ was specified. It will
+also return an error if the IRQ specification is invalid or the IRQ
+provider is not yet available (EPROBE_DEFER).
+
+So instead of ignoring all errors only ignore ENXIO, which means no IRQ was
+specified, and propagate all other errors to device driver core.
 
 Signed-off-by: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
 Acked-by: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-xilinx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-xilinx.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-index e62eb9ace825..bc7100b93dfc 100644
+index 3009121173cd..e62eb9ace825 100644
 --- a/drivers/spi/spi-xilinx.c
 +++ b/drivers/spi/spi-xilinx.c
-@@ -341,9 +341,10 @@ static irqreturn_t xilinx_spi_irq(int irq, void *dev_id)
+@@ -455,7 +455,10 @@ static int xilinx_spi_probe(struct platform_device *pdev)
+ 	xspi->buffer_size = xilinx_spi_find_buffer_size(xspi);
  
- 	if (ipif_isr & XSPI_INTR_TX_EMPTY) {	/* Transmission completed */
- 		complete(&xspi->done);
-+		return IRQ_HANDLED;
- 	}
- 
--	return IRQ_HANDLED;
-+	return IRQ_NONE;
- }
- 
- static int xilinx_spi_find_buffer_size(struct xilinx_spi *xspi)
+ 	xspi->irq = platform_get_irq(pdev, 0);
+-	if (xspi->irq >= 0) {
++	if (xspi->irq < 0 && xspi->irq != -ENXIO) {
++		ret = xspi->irq;
++		goto put_master;
++	} else if (xspi->irq >= 0) {
+ 		/* Register for SPI Interrupt */
+ 		ret = devm_request_irq(&pdev->dev, xspi->irq, xilinx_spi_irq, 0,
+ 				dev_name(&pdev->dev), xspi);
 -- 
 2.8.1
 

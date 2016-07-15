@@ -1,49 +1,47 @@
 From: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-Subject: [PATCH v2 1/2] spi: xilinx: Handle errors from platform_get_irq()
-Date: Fri, 15 Jul 2016 11:04:18 +0200
-Message-ID: <1468573459-3071-1-git-send-email-lars@metafoo.de>
+Subject: [PATCH v2 2/2] spi: xilinx: Return IRQ_NONE if no interrupts were detected
+Date: Fri, 15 Jul 2016 11:04:19 +0200
+Message-ID: <1468573459-3071-2-git-send-email-lars@metafoo.de>
+References: <1468573459-3071-1-git-send-email-lars@metafoo.de>
 Cc: Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
 	=?UTF-8?q?S=C3=B6ren=20Brinkmann?= <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
 	Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1468573459-3071-1-git-send-email-lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The Xilinx SPI driver can operate without an IRQ, but not every error
-returned by platform_get_irq() means that no IRQ was specified. It will
-also return an error if the IRQ specification is invalid or the IRQ
-provider is not yet available (EPROBE_DEFER).
-
-So instead of ignoring all errors only ignore ENXIO, which means no IRQ was
-specified, and propagate all other errors to device driver core.
+Return IRQ_NONE from the interrupt handler if the handler is running, but
+no interrupt was detected. This allows the system to recover in case of an
+interrupt storm due to an invalid interrupt configuration or faulty
+hardware.
 
 Signed-off-by: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
 Acked-by: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
-Changes since v1:
-	* Fix error path handling
+No changes since v1
 ---
- drivers/spi/spi-xilinx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/spi/spi-xilinx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-index 3009121..e62eb9a 100644
+index e62eb9a..bc7100b 100644
 --- a/drivers/spi/spi-xilinx.c
 +++ b/drivers/spi/spi-xilinx.c
-@@ -455,7 +455,10 @@ static int xilinx_spi_probe(struct platform_device *pdev)
- 	xspi->buffer_size = xilinx_spi_find_buffer_size(xspi);
+@@ -341,9 +341,10 @@ static irqreturn_t xilinx_spi_irq(int irq, void *dev_id)
  
- 	xspi->irq = platform_get_irq(pdev, 0);
--	if (xspi->irq >= 0) {
-+	if (xspi->irq < 0 && xspi->irq != -ENXIO) {
-+		ret = xspi->irq;
-+		goto put_master;
-+	} else if (xspi->irq >= 0) {
- 		/* Register for SPI Interrupt */
- 		ret = devm_request_irq(&pdev->dev, xspi->irq, xilinx_spi_irq, 0,
- 				dev_name(&pdev->dev), xspi);
+ 	if (ipif_isr & XSPI_INTR_TX_EMPTY) {	/* Transmission completed */
+ 		complete(&xspi->done);
++		return IRQ_HANDLED;
+ 	}
+ 
+-	return IRQ_HANDLED;
++	return IRQ_NONE;
+ }
+ 
+ static int xilinx_spi_find_buffer_size(struct xilinx_spi *xspi)
 -- 
 2.1.4
 

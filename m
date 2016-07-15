@@ -1,50 +1,67 @@
-From: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-Subject: [PATCH v2 2/2] spi: xilinx: Return IRQ_NONE if no interrupts were detected
-Date: Fri, 15 Jul 2016 11:04:19 +0200
-Message-ID: <1468573459-3071-2-git-send-email-lars@metafoo.de>
-References: <1468573459-3071-1-git-send-email-lars@metafoo.de>
-Cc: Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	=?UTF-8?q?S=C3=B6ren=20Brinkmann?= <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [Question] Can of_find_spi_xx_by_node be moved out of
+ CONFIG_OF_DYNAMIC in SPI driver
+Date: Fri, 15 Jul 2016 11:58:41 +0100
+Message-ID: <20160715105841.GE30372@sirena.org.uk>
+References: <5786E7C0.4050709@asrmicro.com>
+ <20160714101128.GK9976@sirena.org.uk>
+ <5788446E.9080601@asrmicro.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="xJK8B5Wah2CMJs8h"
+Cc: pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org, grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: qiaozhou <qiaozhou-XOWFcpiLszpWk0Htik3J/w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1468573459-3071-1-git-send-email-lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <5788446E.9080601-XOWFcpiLszpWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Return IRQ_NONE from the interrupt handler if the handler is running, but
-no interrupt was detected. This allows the system to recover in case of an
-interrupt storm due to an invalid interrupt configuration or faulty
-hardware.
 
-Signed-off-by: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-Acked-by: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
-No changes since v1
----
- drivers/spi/spi-xilinx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+--xJK8B5Wah2CMJs8h
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-index e62eb9a..bc7100b 100644
---- a/drivers/spi/spi-xilinx.c
-+++ b/drivers/spi/spi-xilinx.c
-@@ -341,9 +341,10 @@ static irqreturn_t xilinx_spi_irq(int irq, void *dev_id)
- 
- 	if (ipif_isr & XSPI_INTR_TX_EMPTY) {	/* Transmission completed */
- 		complete(&xspi->done);
-+		return IRQ_HANDLED;
- 	}
- 
--	return IRQ_HANDLED;
-+	return IRQ_NONE;
- }
- 
- static int xilinx_spi_find_buffer_size(struct xilinx_spi *xspi)
--- 
-2.1.4
+On Fri, Jul 15, 2016 at 10:03:26AM +0800, qiaozhou wrote:
 
+> My case is like this: I got a ARM mali-video driver, which may have several
+> ports/endpoints, which needs I2C/SPI interface to do some initiation. In the
+> video driver, it uses device node conf to find matching ports, and calls
+
+This sounds like a fairly standard setup, most external HDMI encoders
+are I2C and SPI controlled, which already works fine as far as I'm aware.
+
+> functions, such as of_find_video_tx_by_node -> of_find_i2c_device_by_node.
+> Now the hardware changes from i2c to spi, so I wonder whether
+> of_find_spi_device_by_node can be used freely. Otherwise I may need to
+> modify the mali-video driver, and as it's provided to us and may get updated
+> from time to time, my change may be conflicted with future versions.
+> Also I didn't quite understand the way to "use a phandle to connect the two
+> devices", is there any code/driver which I can take as a reference? I'll
+> study it.
+
+Off the top of my head something like the TDA998x or ADV7511 should be
+worth looking at here - it just sounds like the the Mali driver may just
+not be using the frameworks well, you should probably encourage people
+to get it upstreamed.
+
+--xJK8B5Wah2CMJs8h
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJXiMHgAAoJECTWi3JdVIfQ7AgH/jkTrSUFXyS7NUVSKTZjU+3c
+G1Y5ERjDQ3c2+DZ7df/hDvHNFdRVXJCJcqRtvr8x6AMZWXGebPCbO3n/6Yc1RUUI
+XQ2Jd6TLscS2olS7D4ZLVJ2bihD6jIbCyD2Jg6wES7Ig7xNLrhW1X2wMa/lPGqSd
+Jenci9NLY3oCWGLOgTKO7ffpXalpq0EUtcCGVd6qDPOekAz5nEguS9xUMiH20Y9D
+xxdpPBThdNZ62n1ykKs9OihDUV4OFyXScBmNlWkiFT5dlUmWemine8nbL6e63epY
+ai7S+wrggHjoNVArCylVO3DpQM4szNqTBVlRUC2q3nHcFal6pihbsNJb0TkA4ck=
+=qbxS
+-----END PGP SIGNATURE-----
+
+--xJK8B5Wah2CMJs8h--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

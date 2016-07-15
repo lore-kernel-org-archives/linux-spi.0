@@ -1,180 +1,86 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: s3c64xx: rename goto labels to meaningful names" to the spi tree
-Date: Thu, 14 Jul 2016 17:32:55 +0100
-Message-ID: <E1bNjZH-0001ni-TY@debutante>
-References: <1467989201-14661-4-git-send-email-andi.shyti@samsung.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Sylwester Nawrocki <s.nawrocki-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Tomasz Figa <tomasz.figa-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Michael Turquette <mturquette-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
-	Stephen Boyd <sboyd-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Chanwoo Choi <cw00.choi-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Jaehoon Chung <jh80.chung-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	linux-clk-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+From: Brian Norris <briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: [PATCH] spi: rockchip: limit transfers to (64K - 1) bytes
+Date: Thu, 14 Jul 2016 18:30:59 -0700
+Message-ID: <1468546259-136659-1-git-send-email-briannorris@chromium.org>
+Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Caesar Wang <wxt-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
+	Brian Norris <briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Andi Shyti <andi-ahk0KpmfxKRAfugRpC6u6w@public.gmane.org>
-To: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+	linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Eddie Cai <eddie.cai-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
+	Shawn Lin <shawn.lin-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
+	Tomeu Vizoso <tomeu.vizoso-ZGY8ohtN/8qB+jHODAdFcQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1467989201-14661-4-git-send-email-andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+The Rockchip SPI controller's length register only supports 16-bits,
+yielding a maximum length of 64KiB (the CTRLR1 register holds "length -
+1"). Trying to transfer more than that (e.g., with a large SPI flash
+read) will cause the driver to hang.
 
-   spi: s3c64xx: rename goto labels to meaningful names
+Now, it seems that while theoretically we should be able to program
+CTRLR1 with 0xffff, and get a 64KiB transfer, but that also seems to
+cause the core to choke, so stick with a maximum of 64K - 1 bytes --
+i.e., 0xffff.
 
-has been applied to the spi tree at
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 60a9a964420912a4c4b66efd210d98006177695a Mon Sep 17 00:00:00 2001
-From: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Date: Tue, 12 Jul 2016 19:02:12 +0900
-Subject: [PATCH] spi: s3c64xx: rename goto labels to meaningful names
-
-The goto labels of the style of
-
-  err4:
-  err3:
-  err2:
-  err1:
-
-are complex to insert in between new errors without renaming all
-the goto statements. Replace the errX naming style to meaningful
-names in order to make it easier to insert new goto exit points.
-
-Signed-off-by: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Reviewed-by: Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Reviewed-by: Michael Turquette <mturquette-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Brian Norris <briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 ---
- drivers/spi/spi-s3c64xx.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/spi/spi-rockchip.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 001c9ebf884d..0a93eb98c2b6 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -1078,7 +1078,7 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 		if (ret < 0) {
- 			dev_err(&pdev->dev, "failed to get alias id, errno %d\n",
- 				ret);
--			goto err0;
-+			goto err_deref_master;
- 		}
- 		sdd->port_id = ret;
- 	} else {
-@@ -1116,13 +1116,13 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 	sdd->regs = devm_ioremap_resource(&pdev->dev, mem_res);
- 	if (IS_ERR(sdd->regs)) {
- 		ret = PTR_ERR(sdd->regs);
--		goto err0;
-+		goto err_deref_master;
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index d840324bcc9f..0f89c2169c24 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -142,6 +142,12 @@
+ /* sclk_out: spi master internal logic in rk3x can support 50Mhz */
+ #define MAX_SCLK_OUT		50000000
+ 
++/*
++ * SPI_CTRLR1 is 16-bits, so we should support lengths of 0xffff + 1. However,
++ * the controller seems to hang when given 0x10000, so stick with this for now.
++ */
++#define ROCKCHIP_SPI_MAX_TRANLEN		0xffff
++
+ enum rockchip_ssi_type {
+ 	SSI_MOTO_SPI = 0,
+ 	SSI_TI_SSP,
+@@ -573,6 +579,11 @@ static void rockchip_spi_config(struct rockchip_spi *rs)
+ 	dev_dbg(rs->dev, "cr0 0x%x, div %d\n", cr0, div);
+ }
+ 
++static size_t rockchip_spi_max_transfer_size(struct spi_device *spi)
++{
++	return ROCKCHIP_SPI_MAX_TRANLEN;
++}
++
+ static int rockchip_spi_transfer_one(
+ 		struct spi_master *master,
+ 		struct spi_device *spi,
+@@ -589,6 +600,11 @@ static int rockchip_spi_transfer_one(
+ 		return -EINVAL;
  	}
  
- 	if (sci->cfg_gpio && sci->cfg_gpio()) {
- 		dev_err(&pdev->dev, "Unable to config gpio\n");
- 		ret = -EBUSY;
--		goto err0;
-+		goto err_deref_master;
- 	}
++	if (xfer->len > ROCKCHIP_SPI_MAX_TRANLEN) {
++		dev_err(rs->dev, "Transfer is too long (%d)\n", xfer->len);
++		return -EINVAL;
++	}
++
+ 	rs->speed = xfer->speed_hz;
+ 	rs->bpw = xfer->bits_per_word;
+ 	rs->n_bytes = rs->bpw >> 3;
+@@ -730,6 +746,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 	master->prepare_message = rockchip_spi_prepare_message;
+ 	master->unprepare_message = rockchip_spi_unprepare_message;
+ 	master->transfer_one = rockchip_spi_transfer_one;
++	master->max_transfer_size = rockchip_spi_max_transfer_size;
+ 	master->handle_err = rockchip_spi_handle_err;
  
- 	/* Setup clocks */
-@@ -1130,13 +1130,13 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 	if (IS_ERR(sdd->clk)) {
- 		dev_err(&pdev->dev, "Unable to acquire clock 'spi'\n");
- 		ret = PTR_ERR(sdd->clk);
--		goto err0;
-+		goto err_deref_master;
- 	}
- 
- 	if (clk_prepare_enable(sdd->clk)) {
- 		dev_err(&pdev->dev, "Couldn't enable clock 'spi'\n");
- 		ret = -EBUSY;
--		goto err0;
-+		goto err_deref_master;
- 	}
- 
- 	sprintf(clk_name, "spi_busclk%d", sci->src_clk_nr);
-@@ -1145,13 +1145,13 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 		dev_err(&pdev->dev,
- 			"Unable to acquire clock '%s'\n", clk_name);
- 		ret = PTR_ERR(sdd->src_clk);
--		goto err2;
-+		goto err_disable_clk;
- 	}
- 
- 	if (clk_prepare_enable(sdd->src_clk)) {
- 		dev_err(&pdev->dev, "Couldn't enable clock '%s'\n", clk_name);
- 		ret = -EBUSY;
--		goto err2;
-+		goto err_disable_clk;
- 	}
- 
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, AUTOSUSPEND_TIMEOUT);
-@@ -1171,7 +1171,7 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 	if (ret != 0) {
- 		dev_err(&pdev->dev, "Failed to request IRQ %d: %d\n",
- 			irq, ret);
--		goto err3;
-+		goto err_pm_put;
- 	}
- 
- 	writel(S3C64XX_SPI_INT_RX_OVERRUN_EN | S3C64XX_SPI_INT_RX_UNDERRUN_EN |
-@@ -1181,7 +1181,7 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 	ret = devm_spi_register_master(&pdev->dev, master);
- 	if (ret != 0) {
- 		dev_err(&pdev->dev, "cannot register SPI master: %d\n", ret);
--		goto err3;
-+		goto err_pm_put;
- 	}
- 
- 	dev_dbg(&pdev->dev, "Samsung SoC SPI Driver loaded for Bus SPI-%d with %d Slaves attached\n",
-@@ -1195,15 +1195,15 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 
- 	return 0;
- 
--err3:
-+err_pm_put:
- 	pm_runtime_put_noidle(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_set_suspended(&pdev->dev);
- 
- 	clk_disable_unprepare(sdd->src_clk);
--err2:
-+err_disable_clk:
- 	clk_disable_unprepare(sdd->clk);
--err0:
-+err_deref_master:
- 	spi_master_put(master);
- 
- 	return ret;
+ 	rs->dma_tx.ch = dma_request_chan(rs->dev, "tx");
 -- 
-2.8.1
+2.8.0.rc3.226.g39d4020
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

@@ -1,59 +1,83 @@
-From: qiaozhou <qiaozhou-XOWFcpiLszpWk0Htik3J/w@public.gmane.org>
-Subject: Re: [Question] Can of_find_spi_xx_by_node be moved out of
- CONFIG_OF_DYNAMIC in SPI driver
-Date: Fri, 15 Jul 2016 19:23:26 +0800
-Message-ID: <5788C7AE.4050203@asrmicro.com>
-References: <5786E7C0.4050709@asrmicro.com>
- <20160714101128.GK9976@sirena.org.uk> <5788446E.9080601@asrmicro.com>
- <20160715105841.GE30372@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
-	format=flowed
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>, <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: xilinx: Return IRQ_NONE if no interrupts were detected" to the spi tree
+Date: Fri, 15 Jul 2016 12:57:03 +0100
+Message-ID: <E1bO1jr-0006yy-IC@debutante>
+References: <1468329881-5894-2-git-send-email-lars@metafoo.de>
+Cc: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	=?UTF-8?q?S=C3=B6ren=20Brinkmann?= <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160715105841.GE30372-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <1468329881-5894-2-git-send-email-lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
+   spi: xilinx: Return IRQ_NONE if no interrupts were detected
 
-On 2016=E5=B9=B407=E6=9C=8815=E6=97=A5 18:58, Mark Brown wrote:
-> On Fri, Jul 15, 2016 at 10:03:26AM +0800, qiaozhou wrote:
->
->> My case is like this: I got a ARM mali-video driver, which may have =
-several
->> ports/endpoints, which needs I2C/SPI interface to do some initiation=
-=2E In the
->> video driver, it uses device node conf to find matching ports, and c=
-alls
-> This sounds like a fairly standard setup, most external HDMI encoders
-> are I2C and SPI controlled, which already works fine as far as I'm aw=
-are.
->
->> functions, such as of_find_video_tx_by_node -> of_find_i2c_device_by=
-_node.
->> Now the hardware changes from i2c to spi, so I wonder whether
->> of_find_spi_device_by_node can be used freely. Otherwise I may need =
-to
->> modify the mali-video driver, and as it's provided to us and may get=
- updated
->> from time to time, my change may be conflicted with future versions.
->> Also I didn't quite understand the way to "use a phandle to connect =
-the two
->> devices", is there any code/driver which I can take as a reference? =
-I'll
->> study it.
-> Off the top of my head something like the TDA998x or ADV7511 should b=
-e
-> worth looking at here - it just sounds like the the Mali driver may j=
-ust
-> not be using the frameworks well, you should probably encourage peopl=
-e
-> to get it upstreamed.
-Got it. I'll check it. Thanks a lot for the suggestions.
+has been applied to the spi tree at
+
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From d33648478501407267557b1bf6897169625f4178 Mon Sep 17 00:00:00 2001
+From: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+Date: Fri, 15 Jul 2016 11:04:19 +0200
+Subject: [PATCH] spi: xilinx: Return IRQ_NONE if no interrupts were detected
+
+Return IRQ_NONE from the interrupt handler if the handler is running, but
+no interrupt was detected. This allows the system to recover in case of an
+interrupt storm due to an invalid interrupt configuration or faulty
+hardware.
+
+Signed-off-by: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+Acked-by: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-xilinx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
+index e62eb9ace825..bc7100b93dfc 100644
+--- a/drivers/spi/spi-xilinx.c
++++ b/drivers/spi/spi-xilinx.c
+@@ -341,9 +341,10 @@ static irqreturn_t xilinx_spi_irq(int irq, void *dev_id)
+ 
+ 	if (ipif_isr & XSPI_INTR_TX_EMPTY) {	/* Transmission completed */
+ 		complete(&xspi->done);
++		return IRQ_HANDLED;
+ 	}
+ 
+-	return IRQ_HANDLED;
++	return IRQ_NONE;
+ }
+ 
+ static int xilinx_spi_find_buffer_size(struct xilinx_spi *xspi)
+-- 
+2.8.1
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

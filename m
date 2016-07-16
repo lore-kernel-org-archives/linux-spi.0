@@ -1,42 +1,52 @@
-From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v5] wlcore: spi: add wl18xx support
-Date: Sat, 16 Jul 2016 08:42:27 -0500
-Message-ID: <20160716134227.GA327@rob-hp-laptop>
-References: <8665E2433BC68541A24DFFCA87B70F5B36156367@DFRE01.ent.ti.com>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v3 1/7] bindings: spi-samsung: add exynos5433 spi
+ compatible
+Date: Sat, 16 Jul 2016 15:26:32 -0500
+Message-ID: <20160716202632.GA12145@rob-hp-laptop>
+References: <1468317736-18841-1-git-send-email-andi.shyti@samsung.com>
+ <1468317736-18841-2-git-send-email-andi.shyti@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: Kalle Valo <kvalo@codeaurora.org>,
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
-To: "Reizer, Eyal" <eyalr@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, Kukjin Kim <kgene-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Sylwester Nawrocki <s.nawrocki-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Tomasz Figa <tomasz.figa-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Michael Turquette <mturquette-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
+	Stephen Boyd <sboyd-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Chanwoo Choi <cw00.choi-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Jaehoon Chung <jh80.chung-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	linux-clk-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Andi Shyti <andi-ahk0KpmfxKRAfugRpC6u6w@public.gmane.org>
+To: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <8665E2433BC68541A24DFFCA87B70F5B36156367@DFRE01.ent.ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1468317736-18841-2-git-send-email-andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Sun, Jul 10, 2016 at 08:32:40AM +0000, Reizer, Eyal wrote:
-> Add support for using with both wl12xx and wl18xx.
+On Tue, Jul 12, 2016 at 07:02:10PM +0900, Andi Shyti wrote:
+> The samsung,exynos5433-spi has some peculiarities that bring the
+> need of creating a new compatible in the binding.
 > 
-> - all wilink family needs special init command for entering wspi mode.
->   extra clock cycles should be sent after the spi init command while the
->   cs pin is high.
-> - Use inverted chip select for sending a dummy 4 bytes command that
->   completes the init stage.
+> One of those is the 3-clocks controller management where the spi
+> is fed with three clocks: "spi", "busclkN" and "ioclk".
 > 
-> Signed-off-by: Eyal Reizer <eyalr@ti.com>
+> By adding the exynos5433-spi, we deprecate the exynos7 compatible
+> and discourage its use.
+> 
+> Signed-off-by: Andi Shyti <andi.shyti-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+> Reviewed-by: Michael Turquette <mturquette-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+> Reviewed-by: Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+> Reviewed-by: Sylwester Nawrocki <s.nawrocki-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 > ---
-> v1->v2:update device tree bindings configuration
-> v2->v3:revert from manual gpio manipulation. use inverted chip select instead
-> for sending the extra init cycle which, achieves the same hardware purpose.
-> update device tree bindings docucmentation accordingly
-> v3->v4: Remove redundant data form binding documentation and fix chip select
-> number mismatch in wl1271 example
-> v4->v5: Rebase on top of head of wireless-drivers-next
+>  Documentation/devicetree/bindings/spi/spi-samsung.txt | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 
-Please add acks when reposting.
-
-Rob
+Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

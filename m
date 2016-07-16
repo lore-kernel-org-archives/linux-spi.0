@@ -1,86 +1,99 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: xilinx: Handle errors from platform_get_irq()" to the spi tree
-Date: Fri, 15 Jul 2016 12:57:09 +0100
-Message-ID: <E1bO1jx-0006zt-ID@debutante>
-References: <1468573459-3071-1-git-send-email-lars@metafoo.de>
-Cc: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	=?UTF-8?q?S=C3=B6ren=20Brinkmann?= <soren.brinkmann-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+From: Bhaktipriya Shridhar <bhaktipriya96-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: spi-sh: Remove deprecated create_singlethread_workqueue
+Date: Sat, 16 Jul 2016 13:35:02 +0530
+Message-ID: <20160716080502.GA4700@Karyakshetra>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Tejun Heo <tj-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1468573459-3071-1-git-send-email-lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+Content-Disposition: inline
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+The workqueue has a single workitem(&ss->ws) and hence doesn't require
+ordering. Also, it is not being used on a memory reclaim path. Hence, the
+singlethreaded workqueue has been replaced with the use of system_wq.
 
-   spi: xilinx: Handle errors from platform_get_irq()
+System workqueues have been able to handle high level of concurrency
+for a long time now and hence it's not required to have a singlethreaded
+workqueue just to gain concurrency. Unlike a dedicated per-cpu workqueue
+created with create_singlethread_workqueue(), system_wq allows multiple
+work items to overlap executions even on the same CPU; however, a
+per-cpu workqueue doesn't have any CPU locality or global ordering
+guarantee unless the target CPU is explicitly specified and thus the
+increase of local concurrency shouldn't make any difference.
 
-has been applied to the spi tree at
+Work item has been flushed in spi_sh_remove() to ensure that
+there are no pending tasks while disconnecting the driver.
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 4db9bf548bb00d84ba7dfd70f124de16386c0c55 Mon Sep 17 00:00:00 2001
-From: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-Date: Fri, 15 Jul 2016 11:04:18 +0200
-Subject: [PATCH] spi: xilinx: Handle errors from platform_get_irq()
-
-The Xilinx SPI driver can operate without an IRQ, but not every error
-returned by platform_get_irq() means that no IRQ was specified. It will
-also return an error if the IRQ specification is invalid or the IRQ
-provider is not yet available (EPROBE_DEFER).
-
-So instead of ignoring all errors only ignore ENXIO, which means no IRQ was
-specified, and propagate all other errors to device driver core.
-
-Signed-off-by: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-Acked-by: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Bhaktipriya Shridhar <bhaktipriya96-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-xilinx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/spi/spi-sh.c | 16 +++-------------
+ 1 file changed, 3 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-index 3009121173cd..e62eb9ace825 100644
---- a/drivers/spi/spi-xilinx.c
-+++ b/drivers/spi/spi-xilinx.c
-@@ -455,7 +455,10 @@ static int xilinx_spi_probe(struct platform_device *pdev)
- 	xspi->buffer_size = xilinx_spi_find_buffer_size(xspi);
- 
- 	xspi->irq = platform_get_irq(pdev, 0);
--	if (xspi->irq >= 0) {
-+	if (xspi->irq < 0 && xspi->irq != -ENXIO) {
-+		ret = xspi->irq;
-+		goto put_master;
-+	} else if (xspi->irq >= 0) {
- 		/* Register for SPI Interrupt */
- 		ret = devm_request_irq(&pdev->dev, xspi->irq, xilinx_spi_irq, 0,
- 				dev_name(&pdev->dev), xspi);
--- 
-2.8.1
+diff --git a/drivers/spi/spi-sh.c b/drivers/spi/spi-sh.c
+index 5025011..2bf53f0 100644
+--- a/drivers/spi/spi-sh.c
++++ b/drivers/spi/spi-sh.c
+@@ -82,7 +82,6 @@ struct spi_sh_data {
+ 	int irq;
+ 	struct spi_master *master;
+ 	struct list_head queue;
+-	struct workqueue_struct *workqueue;
+ 	struct work_struct ws;
+ 	unsigned long cr1;
+ 	wait_queue_head_t wait;
+@@ -380,7 +379,7 @@ static int spi_sh_transfer(struct spi_device *spi, struct spi_message *mesg)
+ 	spi_sh_clear_bit(ss, SPI_SH_SSA, SPI_SH_CR1);
+
+ 	list_add_tail(&mesg->queue, &ss->queue);
+-	queue_work(ss->workqueue, &ss->ws);
++	schedule_work(&ss->ws);
+
+ 	spin_unlock_irqrestore(&ss->lock, flags);
+
+@@ -425,7 +424,7 @@ static int spi_sh_remove(struct platform_device *pdev)
+ 	struct spi_sh_data *ss = platform_get_drvdata(pdev);
+
+ 	spi_unregister_master(ss->master);
+-	destroy_workqueue(ss->workqueue);
++	flush_work(&ss->ws);
+ 	free_irq(ss->irq, ss);
+
+ 	return 0;
+@@ -484,18 +483,11 @@ static int spi_sh_probe(struct platform_device *pdev)
+ 	spin_lock_init(&ss->lock);
+ 	INIT_WORK(&ss->ws, spi_sh_work);
+ 	init_waitqueue_head(&ss->wait);
+-	ss->workqueue = create_singlethread_workqueue(
+-					dev_name(master->dev.parent));
+-	if (ss->workqueue == NULL) {
+-		dev_err(&pdev->dev, "create workqueue error\n");
+-		ret = -EBUSY;
+-		goto error1;
+-	}
+
+ 	ret = request_irq(irq, spi_sh_irq, 0, "spi_sh", ss);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "request_irq error\n");
+-		goto error2;
++		goto error1;
+ 	}
+
+ 	master->num_chipselect = 2;
+@@ -514,8 +506,6 @@ static int spi_sh_probe(struct platform_device *pdev)
+
+  error3:
+ 	free_irq(irq, ss);
+- error2:
+-	destroy_workqueue(ss->workqueue);
+  error1:
+ 	spi_master_put(master);
+
+--
+2.1.4
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

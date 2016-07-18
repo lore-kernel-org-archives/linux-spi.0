@@ -1,69 +1,82 @@
-From: Sylwester Nawrocki <s.nawrocki@samsung.com>
-Subject: Re: [PATCH v3 2/7] bindings: spi-samsung: document the clocks and the
- clock-name property
-Date: Mon, 18 Jul 2016 12:30:07 +0200
-Message-ID: <578CAFAF.9060704@samsung.com>
-References: <1468317736-18841-1-git-send-email-andi.shyti@samsung.com>
- <1468317736-18841-3-git-send-email-andi.shyti@samsung.com>
- <20160716203044.GA13087@rob-hp-laptop>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH] spi: sh-msiof: request and set cs-gpio direction to output
+Date: Mon, 18 Jul 2016 14:09:03 +0200
+Message-ID: <CAMuHMdWb4PngmRa+U=4x1Nq8s+ehWu_ZSTvSzovPs9ngeKhK-A@mail.gmail.com>
+References: <1468832259-26476-1-git-send-email-ulrich.hecht+renesas@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland@arm.com>, Kukjin Kim <kgene@kernel.org>,
-	Krzysztof Kozlowski <k.kozlowski@samsung.com>,
+Content-Type: text/plain; charset=UTF-8
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
 	Mark Brown <broonie@kernel.org>,
-	Tomasz Figa <tomasz.figa@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@codeaurora.org>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	Jaehoon Chung <jh80.chung@samsung.com>,
-	linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-	Andi Shyti <andi@etezian.org>
-To: Rob Herring <robh@kernel.org>, Andi Shyti <andi.shyti@samsung.com>
-Return-path: <linux-clk-owner@vger.kernel.org>
-In-reply-to: <20160716203044.GA13087@rob-hp-laptop>
-Sender: linux-clk-owner@vger.kernel.org
+	linux-spi <linux-spi@vger.kernel.org>,
+	Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+	Wolfram Sang <wsa@the-dreams.de>,
+	Magnus Damm <magnus.damm@gmail.com>
+To: Ulrich Hecht <ulrich.hecht+renesas@gmail.com>
+Return-path: <linux-renesas-soc-owner@vger.kernel.org>
+In-Reply-To: <1468832259-26476-1-git-send-email-ulrich.hecht+renesas@gmail.com>
+Sender: linux-renesas-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 07/16/2016 10:30 PM, Rob Herring wrote:
->> diff --git a/Documentation/devicetree/bindings/spi/spi-samsung.txt 
->> b/Documentation/devicetree/bindings/spi/spi-samsung.txt
->> > index 57d5539..f45c6eb 100644
->> > --- a/Documentation/devicetree/bindings/spi/spi-samsung.txt
->> > +++ b/Documentation/devicetree/bindings/spi/spi-samsung.txt
->> > @@ -24,6 +24,15 @@ Required SoC Specific Properties:
->> >  - dma-names: Names for the dma channels. There must be at least one channel
->> >    named "tx" for transmit and named "rx" for receive.
->> >  
->> > +- clocks: specifies the clock IDs provided to the SPI controller; they are
->> > +  required for interacting with the controller itself, for synchronizing the bus
->> > +  and as I/O clock (the latter is required by exynos5433 and exynos7).
->> > +
->> > +- clock-names: string names of the clocks in the 'clocks' property; for all the
->> > +  the devices the names must be "spi", "spi_busclkN" (where N is determined by
->> > +  "samsung,spi-src-clk"), while Exynos5433 should specify a third clock
+Hi Ulrich,
+
+On Mon, Jul 18, 2016 at 10:57 AM, Ulrich Hecht
+<ulrich.hecht+renesas@gmail.com> wrote:
+> Required for the CS signal to actually be visible to the device.
 >
-> This sounds like you are describing the configuration of the clocks, not 
-> the connections. The binding here should list clocks for all possible 
-> vaules of N as those are all the input clocks to the block.
-> 
->> > +  "spi_ioclk" for the I/O clock.
+> Signed-off-by: Ulrich Hecht <ulrich.hecht+renesas@gmail.com>
 
-I agree we should list all possible spi_busclkN, I must admit  I might
-have introduced some confusion by suggesting wording for clock-names 
-similar to the above while discussing those things internally.  Afterwards 
-I came to a similar conclusion all possible input clocks should be listed
-These will differ depending  on the compatible.  I checked in documentation 
-of most of related SoCs and for "samsung,s3c6410-spi" or older compatibles 
-possible N is 0..2 (PCLK, USBCLK, PLL clock), for "samsung,s5pv210-spi" 
-and newer possible N is 0 (SCLK_SPI).  
+Thanks, I can confirm this indeed makes cs-gpios work with MSIOF on
+Koelsch, hence
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-It's important to have all the input clocks listed so we have a list 
-of parent clocks to the SPI controller's internal clocks, should we 
-ever decide to model them with the clk API.
+> ---
+>  drivers/spi/spi-sh-msiof.c | 25 +++++++++++++++++++++++--
+>  1 file changed, 23 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+> index a7934ab..d4b5772 100644
+> --- a/drivers/spi/spi-sh-msiof.c
+> +++ b/drivers/spi/spi-sh-msiof.c
+> @@ -536,15 +536,35 @@ static int sh_msiof_spi_setup(struct spi_device *spi)
+
+Is there any specific reason you don't do this in .probe(), like spi-efm32
+does?
+
+>                                   !!(spi->mode & SPI_LSB_FIRST),
+>                                   !!(spi->mode & SPI_CS_HIGH));
+>
+> -       if (spi->cs_gpio >= 0)
+> -               gpio_set_value(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
+> +       if (spi->cs_gpio >= 0 && !spi_get_ctldata(spi)) {
+> +               int status = gpio_request(spi->cs_gpio, dev_name(&spi->dev));
+
+devm_gpio_request()...
+
+> +
+> +               if (status)
+> +                       return status;
+>
+> +               status = gpio_direction_output(spi->cs_gpio,
+> +                                              !(spi->mode & SPI_CS_HIGH));
+> +               if (status) {
+> +                       gpio_free(spi->cs_gpio);
+> +                       return status;
+> +               }
+
+... or even better, devm_gpio_request_one(), as it allows configuring direction
+and initial level in one go.
+
+> +
+> +               spi_set_ctldata(spi, (void *)spi->cs_gpio);
+> +       }
+
+Gr{oetje,eeting}s,
+
+                        Geert
 
 --
-Thanks, 
-Sylwester
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

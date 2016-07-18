@@ -1,7 +1,7 @@
 From: Michal Suchanek <hramrach@gmail.com>
-Subject: [PATCH v3 3/3] spi: core: allow creating devices without spi-max-frequency
-Date: Tue, 19 Jul 2016 00:35:42 +0200
-Message-ID: <8955fbeac9d1ec999555b3a5e58041509bf4a74c.1468880530.git.hramrach@gmail.com>
+Subject: [PATCH v3 2/3] spi: of: allow instantiating slaves without a driver
+Date: Tue, 19 Jul 2016 00:35:41 +0200
+Message-ID: <42e65e5c714f079cb4b85761e59fb700d4550a26.1468880530.git.hramrach@gmail.com>
 References: <cover.1468880530.git.hramrach@gmail.com>
 Cc: Michal Suchanek <hramrach@gmail.com>
 To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
@@ -13,35 +13,28 @@ References: <cover.1468880530.git.hramrach@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Since the previous patch allows creating SPI slaves without specifying
-what device the CS connects to make spi-max-frequency also optional.
-
-The spi-max-frequency is device-specific and the driver can set it
-anyway.
+SPI slave devices are not created when looking up driver for the slave
+fails. Create a device anyway so it can be used with spidev.
 
 Signed-off-by: Michal Suchanek <hramrach@gmail.com>
 ---
- drivers/spi/spi.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/spi.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index f0de2ec..08e65e4 100644
+index f3ea768..f0de2ec 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -1554,11 +1554,11 @@ of_register_spi_device(struct spi_master *master, struct device_node *nc)
- 	/* Device speed */
- 	rc = of_property_read_u32(nc, "spi-max-frequency", &value);
- 	if (rc) {
--		dev_err(&master->dev, "%s has no valid 'spi-max-frequency' property (%d)\n",
-+		dev_warn(&master->dev, "%s has no valid 'spi-max-frequency' property (%d)\n",
- 			nc->full_name, rc);
+@@ -1489,9 +1489,8 @@ of_register_spi_device(struct spi_master *master, struct device_node *nc)
+ 	rc = of_modalias_node(nc, spi->modalias,
+ 				sizeof(spi->modalias));
+ 	if (rc < 0) {
+-		dev_err(&master->dev, "cannot find modalias for %s\n",
++		dev_warn(&master->dev, "cannot find modalias for %s\n",
+ 			nc->full_name);
 -		goto err_out;
-+	} else {
-+		spi->max_speed_hz = value;
  	}
--	spi->max_speed_hz = value;
  
- 	/* Store a pointer to the node in the device structure */
- 	of_node_get(nc);
+ 	/* Device address */
 -- 
 2.8.1

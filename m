@@ -1,70 +1,63 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH/RFC 2/6] spi: core: Add support for registering SPI slave
- controllers
-Date: Mon, 18 Jul 2016 18:02:33 +0100
-Message-ID: <20160718170233.GU30372@sirena.org.uk>
-References: <1466602929-4191-1-git-send-email-geert+renesas@glider.be>
- <1466602929-4191-3-git-send-email-geert+renesas@glider.be>
+From: Kalle Valo <kvalo-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Subject: Re: [PATCH v5] wlcore: spi: add wl18xx support
+Date: Mon, 18 Jul 2016 20:04:19 +0300
+Message-ID: <87vb02x4h8.fsf@kamboji.qca.qualcomm.com>
+References: <8665E2433BC68541A24DFFCA87B70F5B36156367@DFRE01.ent.ti.com>
+	<8665E2433BC68541A24DFFCA87B70F5B3615D8AA@DFRE01.ent.ti.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="uUozbLrG2OP+gMtx"
-Cc: Rob Herring <robh+dt@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Hisashi Nakamura <hisashi.nakamura.ak@renesas.com>,
-	Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>,
-	linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Geert Uytterhoeven <geert+renesas@glider.be>
-Return-path: <linux-renesas-soc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1466602929-4191-3-git-send-email-geert+renesas@glider.be>
-Sender: linux-renesas-soc-owner@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"linux-wireless\@vger.kernel.org" <linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"netdev\@vger.kernel.org" <netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-kernel\@vger.kernel.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"devicetree\@vger.kernel.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-spi\@vger.kernel.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: "Reizer\, Eyal" <eyalr-l0cyMroinI0@public.gmane.org>
+Return-path: <linux-wireless-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <8665E2433BC68541A24DFFCA87B70F5B3615D8AA-1tpBd5JUCm6IQmiDNMet8wC/G2K4zDHf@public.gmane.org>
+	(Eyal Reizer's message of "Sun, 17 Jul 2016 06:36:11 +0000")
+Sender: linux-wireless-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+"Reizer, Eyal" <eyalr-l0cyMroinI0@public.gmane.org> writes:
 
---uUozbLrG2OP+gMtx
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Add support for using with both wl12xx and wl18xx.
+>
+> - all wilink family needs special init command for entering wspi mode.
+>   extra clock cycles should be sent after the spi init command while the
+>   cs pin is high.
+> - Use inverted chip select for sending a dummy 4 bytes command that
+>   completes the init stage.
+>
+> Signed-off-by: Eyal Reizer <eyalr-l0cyMroinI0@public.gmane.org>
+> Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+> ---
+> v1->v2:update device tree bindings configuration
+> v2->v3:revert from manual gpio manipulation. use inverted chip select 
+> instead for sending the extra init cycle which, achieves the same hardware 
+> purpose.
+> update device tree bindings docucmentation accordingly
+> v3->v4: Remove redundant data form binding documentation and fix chip 
+> select number mismatch in wl1271 example
+> v4->v5: Rebase on top of head of wireless-drivers-next
 
-On Wed, Jun 22, 2016 at 03:42:05PM +0200, Geert Uytterhoeven wrote:
-> Add support for registering SPI slave controllers using the existing SPI
-> master framework:
->   - SPI slave controllers must set the SPI_MASTER_IS_SLAVE flag in
->     spi_master.flags,
->   - The "cs-gpios" property is ignored,
->   - The bus is described in DT as having a single slave node, "reg" and
->     "spi-max-frequency" properties are ignored.
->=20
-> From the point of view of an SPI slave protocol handler, an SPI slave
-> controller looks exactly like an ordinary SPI master controller.
+You now sent me two patches with v5 which is just confusing. To make the
+life of maintainers easier ALWAYS increase the revision number, no
+matter how small the change is.
 
-I think this needs a *bit* more fleshing out around cancellation of
-transfers, the inability to remove any of the modules due to them being
-blocked in SPI calls.  Probably just an API call that allows us to
-inject a timeout/cancellation but I think it does need to be there and
-used before we start getting bad practice propagating around.
+But the "latter" v5 is corrupted somehow in patchwork:
 
-I'm also wondering about supporting varible length transfers but that's
-going to be rather controller specific I fear and I'm not sure there's
-much demand.
+https://patchwork.kernel.org/patch/9233597/
 
-Otherwise the basic idea looks OK.
+The "former" v5 again looks ok:
 
---uUozbLrG2OP+gMtx
-Content-Type: application/pgp-signature; name="signature.asc"
+https://patchwork.kernel.org/patch/9222403/
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+I can't immeaditely see why that happened, but please resend.
 
-iQEcBAEBCAAGBQJXjQuoAAoJECTWi3JdVIfQyBUIAIY3+xCkGmBQI4DeFSF3pEng
-h3h5G8oSxRlKd/NxWlpVsFq7ZB92U5pimpKLTHoRVgvAj2a0SZcGmcryqYPfgpDT
-tgoECSRAL1aZJ4Jk5wTxSJMBug8sQZiLWQsg4r02GVyKEkCc93B4QrqB9xN7ceCq
-z5z5xTmDSIjqwt4N8OwNkFRfW4E20cvtUHjk9K7jPq90NJHqB3//gSdbSVpZ87Nz
-W+dqAos5mf+uF2ebi8TzOu6hoCePAEAgrcBRR5SF4vtgmTEAnvkDlgLbuO7B8GmB
-EK4ZzZnDif9u949TsjT6TSFA9a4j7f1DUSkl0Wz8r62O23FG0+m7sHELQf2Cw7Q=
-=tfa9
------END PGP SIGNATURE-----
-
---uUozbLrG2OP+gMtx--
+-- 
+Kalle Valo
+--
+To unsubscribe from this list: send the line "unsubscribe linux-wireless" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

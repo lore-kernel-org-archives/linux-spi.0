@@ -1,86 +1,70 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH/RFC 4/6] spi: slave: Add SPI slave handler reporting boot
- up time
-Date: Mon, 18 Jul 2016 13:14:27 +0100
-Message-ID: <20160718121427.GS30372@sirena.org.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH/RFC 2/6] spi: core: Add support for registering SPI slave
+ controllers
+Date: Mon, 18 Jul 2016 18:02:33 +0100
+Message-ID: <20160718170233.GU30372@sirena.org.uk>
 References: <1466602929-4191-1-git-send-email-geert+renesas@glider.be>
- <1466602929-4191-5-git-send-email-geert+renesas@glider.be>
+ <1466602929-4191-3-git-send-email-geert+renesas@glider.be>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="GFHULmA0mO3kKGOo"
-Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Hisashi Nakamura <hisashi.nakamura.ak-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-	Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="uUozbLrG2OP+gMtx"
+Cc: Rob Herring <robh+dt@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Hisashi Nakamura <hisashi.nakamura.ak@renesas.com>,
+	Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>,
+	linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Return-path: <linux-renesas-soc-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1466602929-4191-5-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1466602929-4191-3-git-send-email-geert+renesas@glider.be>
+Sender: linux-renesas-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---GFHULmA0mO3kKGOo
+--uUozbLrG2OP+gMtx
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 22, 2016 at 03:42:07PM +0200, Geert Uytterhoeven wrote:
-> Add an SPI slave handler responding with the time of reception of the
-> last SPI message.
+On Wed, Jun 22, 2016 at 03:42:05PM +0200, Geert Uytterhoeven wrote:
+> Add support for registering SPI slave controllers using the existing SPI
+> master framework:
+>   - SPI slave controllers must set the SPI_MASTER_IS_SLAVE flag in
+>     spi_master.flags,
+>   - The "cs-gpios" property is ignored,
+>   - The bus is described in DT as having a single slave node, "reg" and
+>     "spi-max-frequency" properties are ignored.
 >=20
-> This can be used by an external microcontroller as a dead man's switch.
+> From the point of view of an SPI slave protocol handler, an SPI slave
+> controller looks exactly like an ordinary SPI master controller.
 
-The subject says boot up time, this says time of reception of the last
-message.  Which is it?
+I think this needs a *bit* more fleshing out around cancellation of
+transfers, the inability to remove any of the modules due to them being
+blocked in SPI calls.  Probably just an API call that allows us to
+inject a timeout/cancellation but I think it does need to be there and
+used before we start getting bad practice propagating around.
 
-> +static int spi_slave_time_send(struct spi_device *spi)
-> +{
-> +	__be32 msg[2];
-> +	u32 rem_ns;
-> +	u64 ts;
-> +
-> +	ts =3D local_clock();
-> +	rem_ns =3D do_div(ts, 1000000000) / 1000;
-> +
-> +	msg[0] =3D cpu_to_be32(ts);
-> +	msg[1] =3D cpu_to_be32(rem_ns);
-> +
-> +	return spi_write(spi, &msg, sizeof(msg));
-> +}
+I'm also wondering about supporting varible length transfers but that's
+going to be rather controller specific I fear and I'm not sure there's
+much demand.
 
-Looks like uptime which is a third thing.
+Otherwise the basic idea looks OK.
 
-> +static int spi_slave_time_remove(struct spi_device *spi)
-> +{
-> +	struct spi_slave_time_priv *priv =3D spi_get_drvdata(spi);
-> +
-> +	/* FIXME Doesn't work, as spi_write() is blocked on a completion */
-> +	kthread_stop(priv->thread);
-
-spi_async()?  Still no cancellation on the actual operation but it
-pushes it more inside the framework.
-
---GFHULmA0mO3kKGOo
+--uUozbLrG2OP+gMtx
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJXjMgiAAoJECTWi3JdVIfQxN8H/iTfhmcWrE0RQpPOF9FQ4WLA
-45W5GkH13mncePGwfWt4pHlpWfCSRp6E0c2gYKJqd+QA7OZOBihaLJEpLY0Fc8pJ
-5qv0bYjCIb8fQcqrmUYo4KkzkgchEqIZ+OlHmTAgWPyOiiDS/doGxPzgjQK3W8XO
-EJijsscQXazBrgEjGlqpiJ6U/jRXi/qELJ8UUlfqYV7QdCHV2IUl2yaRghgOQNMf
-3uQ59kL9E4tzWLZywxpwkL5HOHL16dAZRphxs//IYgWE/a6KHxKuN3e7kcuDGiwZ
-KoTankimBu9HW4v7/8IGxwCg6RywDVRkl4seau7QwFTpyrlTeRwY75og0ixB+1I=
-=tjIp
+iQEcBAEBCAAGBQJXjQuoAAoJECTWi3JdVIfQyBUIAIY3+xCkGmBQI4DeFSF3pEng
+h3h5G8oSxRlKd/NxWlpVsFq7ZB92U5pimpKLTHoRVgvAj2a0SZcGmcryqYPfgpDT
+tgoECSRAL1aZJ4Jk5wTxSJMBug8sQZiLWQsg4r02GVyKEkCc93B4QrqB9xN7ceCq
+z5z5xTmDSIjqwt4N8OwNkFRfW4E20cvtUHjk9K7jPq90NJHqB3//gSdbSVpZ87Nz
+W+dqAos5mf+uF2ebi8TzOu6hoCePAEAgrcBRR5SF4vtgmTEAnvkDlgLbuO7B8GmB
+EK4ZzZnDif9u949TsjT6TSFA9a4j7f1DUSkl0Wz8r62O23FG0+m7sHELQf2Cw7Q=
+=tfa9
 -----END PGP SIGNATURE-----
 
---GFHULmA0mO3kKGOo--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--uUozbLrG2OP+gMtx--

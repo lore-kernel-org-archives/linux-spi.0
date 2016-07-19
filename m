@@ -1,97 +1,100 @@
-From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v3 1/3] spi: spidev: create spidev device for all spi slaves.
-Date: Tue, 19 Jul 2016 20:33:12 +0200
-Message-ID: <CAOMqctSqkSNHjsGn-qobNknZNM5cY=0SVgrYBFPZE=odWQR=FA@mail.gmail.com>
-References: <cover.1468880530.git.hramrach@gmail.com> <5bfcceff7b6132cf3447f97c24d1646043224164.1468880530.git.hramrach@gmail.com>
- <20160718225952.GW30372@sirena.org.uk> <CAOMqctQ7Uq7JEYZovYqzQHLpjgk8HoK8Q2Bei3gEzFboyUxNyg@mail.gmail.com>
- <20160719124409.GC30372@sirena.org.uk> <CAOMqctRTNRTKKLVMXgxzdJEq0giRp5f8ujAUf-gUty9fSjqGXA@mail.gmail.com>
- <20160719171959.GD30372@sirena.org.uk>
+From: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH, V4, 2/5] spi: bcm-qspi: Add SPI flash and MSPI driver
+Date: Tue, 19 Jul 2016 15:15:49 -0700
+Message-ID: <578EA695.1030909@gmail.com>
+References: <1466197433-11290-1-git-send-email-kdasu.kdev@gmail.com>
+ <1466197433-11290-2-git-send-email-kdasu.kdev@gmail.com>
+ <20160622160726.GQ28202@sirena.org.uk>
+ <CAKekbevYN3CLvqQs3stUXDFEMREMOJ0g4+w7Zsno1kV-ieYEiw@mail.gmail.com>
+ <20160701160753.GX6247@sirena.org.uk>
+ <CAC=U0a3WN9TGw7zwwP3qFf5MUsRteUcVLytFgjnP4zScZS0xXA@mail.gmail.com>
+ <20160713111053.GG9976@sirena.org.uk> <5786B401.2050306@gmail.com>
+ <20160713223638.GI9976@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Kamal Dasu <kamal.dasu-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jayachandran C <jchandra-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	bcm-kernel-feedback-list <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	Vikram Prakash <vikram.prakash-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	Andy Fung <andy.fung-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	Jon Mason <jon.mason-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	Yendapally Reddy Dhananjaya Reddy
+	<yendapally.reddy-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160719171959.GD30372-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <20160713223638.GI9976-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 19 July 2016 at 19:19, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Tue, Jul 19, 2016 at 05:32:24PM +0200, Michal Suchanek wrote:
->> On 19 July 2016 at 14:44, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
->
->> >> -       status = register_chrdev(SPIDEV_MAJOR, "spi", &spidev_fops);
->> >> +       status = register_chrdev(SPIDEV_MAJOR, "spidev", &spidev_fops);
->
->> > also looks like a needless ABI change
->
->> ABI change to what?
->
->> The spidev ABI should be the IOCTLs on /dev/spidev*. These are preserved.
->
->> What parts of the kernel or userspace should depend on spidev
->> devices belonging to class spi?
->
-> It's a string that's exposed to userspace (via /proc/devices if nothing
-> else).
+On 07/13/2016 03:36 PM, Mark Brown wrote:
+> On Wed, Jul 13, 2016 at 02:34:57PM -0700, Florian Fainelli wrote:
+>> On 07/13/2016 04:10 AM, Mark Brown wrote:
+> 
+>>> It's not really about reuse, it's about maintainability.  All the code
+>>> for handling this within the driver is quite unusual and makes the
+>>> driver harder to understand and review.  That's going to have an impact
+>>> now and make things harder to follow in future too.  Fitting in with the
+>>> frameworks means that we get the benefit of the structure and support
+>>> code that the frameworks provide while minimizing the amount of unusal
+>>> code in the driver.
+> 
+>> This is not unusual at all, there are tons of peripherals that embed a
+>> L2/L3 interrupt controller, yet keep the code localized because the
+>> interrupt sources are not visible outside of the specific block and it
+>> would not make sense to demultiplex these different interrupt sources as
+>> individually requestable interrupt lines when the consumer is also local
+>> and self contained.
+> 
+> If it was unconditionally in the perhipheral it'd be fairly normal and
+> standard but it's not, it's a completely separate and optional register
+> block with a bunch of separate code in a driver which already has above
+> average complexity even for the bits that belong in it.
 
-Yes, the change can be detected from userspace. The question is
-more like 'Is there any sane reason anyone would rely on seeing
-that exact string for something?'
+It is not separate nor optional, the fact that the register range seems
+discontiguous is just an integration choice here, but it contains bits
+that are relevant exclusively to the SPI controller.
 
-BTW the classes are also exported through /sys so the spidev devices
-would look differently there also.
+> 
+>> This is exactly what is going on here, and it this makes the driver more
+>> self contained without external dependencies to an irqchip driver to an
+>> interrupt controller provider.
+> 
+> Like I say it just isn't, it's an obviously separate interrupt
+> controller.
 
->
->> > If userspace is managing to figure out how to control the device then
->> > providing a description of the hardware is clearly within the bounds of
->> > possibility and there is no need to fake anything.
->
->> However. maintaining the hardware description in multiple places is
->> redundant and error-prone. Since the userspace somehow managed to
->> figure it out on legacy kernels without devicetree it does not need
->> the information in devicetree. Users of such software will not want the
->> hardware description in devicetree and if forced to provide it will stub it out.
->
-> Userspace is just as capable of looking at the DT as anything else, I'd
-> expect that where this is a viable way of deploying things people would
-> be writing udev/systemd magic to fire up userspace drivers automatically
-> when they see suitable hardware.  The only way this has ever worked in
-> the past has been with system specific hacks which lead to fragile,
-> non-portable userpaces that are hard to upgrade.  If we're trying to say
-> this is an interface that's there for all devices then we shouldn't be
-> defining it in a way that makes it difficult to automatically configure.
+First of all you cannot make that statement with just looking at the
+code and not having access to the datasheet, but I will accept that the
+limited view of what you got to see from the driver can make you think that.
 
-Oh sure. Once a device-specific hack turns out to be something
-desirable to maintain over long time and deploy on variety of devices we
-have infrastructure to automate that.
+It is not exclusively an interrupt controller, there are other bits in
+there are do not functionally belong into an interrupt controller driver
+per-se, things like a clock enable, arbiter control and a random bit to
+control MSPI flush behavior.
 
-That does not make device-specific hacks go away. Initially the user
-will do only as much as it takes to get the device working right now
-and that does not include writing devicetree description of the device
-when it is used with userspace driver.
+Oh, and please don't tell me regmap is the solution here if we need to
+control both the interrupt-related bits and the other bits within this
+register.
 
->
->> Also world is not all devicetree so userspace applications should be free
->> to consult devicetree information if present or use whatever other means
->> at their disposal to determine what hardware they are dealing with.
->> When portability is a concern consulting devicetree may be a secondary
->> source at best.
->
-> ACPI has similar facilities (it's got a direct translation of DT in it
-> these days so most things with a DT binding also have an ACPI one for
-> free).
+> 
+>> The reusability argument is kind of the only one that makes sense here,
+>> maintaining two drivers instead of one seems like more maintenance
+>> burden imho.
+> 
+> It's definitely adding to the review complexity as things stand mainly
+> due to the obvious disconnect from the actual IP.  It should take very
+> little time to refactor and it's really hard to see it ever taking much
+> time to maintain in future, though it might be helpful if one of your
+> hardware engineers ever tries to reuse that IP.
+> 
 
-There is even a patch floating around for adding empty DT and some proxy
-nodes for existing hardware so dynamically connected devices can be
-configured with devicetree overlays on boards without devicetree.
-
-So you can have devicetree description of the hardware. It's just sometimes
-not useful.
-
-Thanks
-
-Michal
+Considering that this block aggregates interrupt enable bits, but not
+just, there is no reason for this block to change over time, and clearly
+this won't be handled via a generic interrupt controller driver either.
+-- 
+Florian
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

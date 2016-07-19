@@ -1,131 +1,133 @@
-From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v3 1/3] spi: spidev: create spidev device for all spi slaves.
-Date: Tue, 19 Jul 2016 13:17:52 +0200
-Message-ID: <CAOMqctQ7Uq7JEYZovYqzQHLpjgk8HoK8Q2Bei3gEzFboyUxNyg@mail.gmail.com>
-References: <cover.1468880530.git.hramrach@gmail.com> <5bfcceff7b6132cf3447f97c24d1646043224164.1468880530.git.hramrach@gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v3 1/3] spi: spidev: create spidev device for all spi
+ slaves.
+Date: Tue, 19 Jul 2016 13:44:09 +0100
+Message-ID: <20160719124409.GC30372@sirena.org.uk>
+References: <cover.1468880530.git.hramrach@gmail.com>
+ <5bfcceff7b6132cf3447f97c24d1646043224164.1468880530.git.hramrach@gmail.com>
  <20160718225952.GW30372@sirena.org.uk>
+ <CAOMqctQ7Uq7JEYZovYqzQHLpjgk8HoK8Q2Bei3gEzFboyUxNyg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160718225952.GW30372-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="pqZtgxSH0iQu6R78"
+Cc: linux-spi <linux-spi@vger.kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+To: Michal Suchanek <hramrach@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <CAOMqctQ7Uq7JEYZovYqzQHLpjgk8HoK8Q2Bei3gEzFboyUxNyg@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hello,
 
-On 19 July 2016 at 00:59, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Tue, Jul 19, 2016 at 12:35:40AM +0200, Michal Suchanek wrote:
->
->>  config SPI_SPIDEV
->> -     tristate "User mode SPI device driver support"
->> +     bool "User mode SPI device driver support"
->
-> This is a step back, it would require spidev to be built in.
+--pqZtgxSH0iQu6R78
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-That's a technical problem so it can be addressed.
+On Tue, Jul 19, 2016 at 01:17:52PM +0200, Michal Suchanek wrote:
+> On 19 July 2016 at 00:59, Mark Brown <broonie@kernel.org> wrote:
 
->
->> -     spin_lock_irq(&spidev->spi_lock);
->> -     spi = spi_dev_get(spidev->spi);
->> -     spin_unlock_irq(&spidev->spi_lock);
->> +     spi = filp->private_data;
->> +     spi = spi_dev_get(spi);
->
-> All this refactoring to move spidev about should've been a separate
-> patch, it's hard to find the actual content in here.
+> Looking into SPI more this whole point is mostly moot, anyway. Most of the
+> time the unused CS lines will not be multiplexed to the SPI controller so
+> even if the SPI master tries to use them it does nothing. Also most of the
+> time all the CS lines can be exported as GPIO regardless of their use for=
+ SPI.
+> And set to any possible level using the GPIO userspace API.
 
-And re-modularizing will probably need to move thing back, mostly.
+Your system is not the entire world, Linux has to run on other systems
+too.  There are actual devices out there with inflexible pinmuxing, we
+can't just ignore them.
 
-Regarding this change
+> In order to reduce the amount of objects and management I appended
+> the link object at the end of struct spi_device.
 
-spidev uses device_create to allocate spidev character devices so
-these are not part of some struct spidev_device but live separately
-which gives needlessly more objects to manage
+> Is there a better way?
 
-- the spi device
-- the spidev character device
-- a link object that points to both spi and spidev and is manually
-  managed by the spidev driver
+That seems mostly fine, the problem is one of code review - because the
+patch does many logically distinct things in a single patch it is much
+harder to review than if it were split out.  There's a lot of mechanical
+refactoring which obscures the several more substantive changes that are
+being made at the same time and since most of those substantive changes
+are explicitly described at all it's hard to tell if they're intended or
+doing what is expected.
 
-In order to reduce the amount of objects and management I appended
-the link object at the end of struct spi_device.
+> > I am getting completely fed up of saying this, it's not OK to just
+> > expose pins to userspace when we have no idea what they are connected
+> > to.
 
-Is there a better way?
+> I am getting fed up with this argument.
 
->
->> -     mutex_lock(&device_list_lock);
->> +     dev = bus_find_device(&spi_bus_type, NULL, (void *) inode->i_rdev,
->> +                           spidev_devt_match);
->
-> ...
->
->> -                     dev_dbg(&spidev->spi->dev, "open/ENOMEM\n");
->> +     spi = to_spi_device(dev);
->> +
->> +     mutex_lock(&spi->buf_lock);
->> +     spin_lock_irq(&spi->spidev_lock);
->> +     spi->spidev_users++;
->> +     spin_unlock_irq(&spi->spidev_lock);
->
-> This is broken, it will unconditionally create a spidev for any chip
-> select regardless of if there's any actual hardware there and (even more
-> importantly) regardless if that hardware is actually a SPI device.  This
-> is not safe, especially given some of the ideas people seem to have for
-> userspaces.
+> First, this patchset only exposes to userspace pins that are configured a=
+s SPI
+> slaves in devicetree.
 
-This is as safe as it gets. For the device probe to happen somebody must
-have configured the CS as spi slave device somewhere. What this patchset
-accomplishes is creating an userspace interface for accessing SPI bus using
-the CS regardless of the probe result (at least for devicetree nodes).
+Are you *absolutely* positive your changes won't do anything on non-DT
+systems?  That definitely doesn't appear to be the case (and shouldn't
+be, not all the world is DT), but now I look in more detail what it is
+doing is exposing spidev for each explicitly described slave which is
+substantially more safe and does address the main problem with
+undescribed devices.
 
-In particular it does not create a spidev device for CS lines which are unused.
+Please split this up so it can be reviewed, providing clear and specific
+descriptions of each individual change (as covered in
+SubmittingPatches).
 
-Looking into SPI more this whole point is mostly moot, anyway. Most of the
-time the unused CS lines will not be multiplexed to the SPI controller so
-even if the SPI master tries to use them it does nothing. Also most of the
-time all the CS lines can be exported as GPIO regardless of their use for SPI.
-And set to any possible level using the GPIO userspace API.
+This:
 
->
-> I am getting completely fed up of saying this, it's not OK to just
-> expose pins to userspace when we have no idea what they are connected
-> to.
+> -       status =3D register_chrdev(SPIDEV_MAJOR, "spi", &spidev_fops);
+> +       status =3D register_chrdev(SPIDEV_MAJOR, "spidev", &spidev_fops);
 
-I am getting fed up with this argument.
+also looks like a needless ABI change and the removal of the locking on
+minor device allocation seems concerning and at least needs to be
+covered in the changelog.
 
-First, this patchset only exposes to userspace pins that are configured as SPI
-slaves in devicetree.
+> The fact that devicetree does not allow talking to a SPI device from user=
+space
+> without telling kernel what kind of protocol userspace is using is a regr=
+ession
+> from using board files. The kernel has no business knowing that. When you
+> use a userspace driver it's userspace's job to manage protocols and devic=
+es.
 
-It does so even in the cases when the driver for the device in question is not
-available in the kernel (because it is not loaded or excluded completely) or
-in the case you do not specify which SPI slave is connected to those pins.
-This is the only change.
+The system as a whole, including both the kernel and userspace, has
+every business knowing what the hardware is so it can understand how to
+control it.  Userspace is no more able to discover what the magic
+undescribed bits of hardware are automatically than the kernel is
+without help from a hardware description, the DT isn't just something
+for the kernel once you have userspace drivers. =20
 
-So in addition to saying 'load driver XY with parameters Z=BJ' this allows
-saying 'there is possibly a SPI device and I may want to talk to it with an
-userspace application'. With overlays this can be later amended to 'load
-driver ZY with parameters X=XN' or whatever.
+Directly enumerating spidev wasn't an especially great idea for board
+files either, it was just an expedient hack that worked when the
+hardware description was entirely in kernel and much easier to just go
+and change but now we have an external ABI for hardware description and
+we have to expect that people will use it as such.
 
-The fact that devicetree does not allow talking to a SPI device from userspace
-without telling kernel what kind of protocol userspace is using is a regression
-from using board files. The kernel has no business knowing that. When you
-use a userspace driver it's userspace's job to manage protocols and devices.
-The purpose of this patchset is for the userspace applications to continue doing
-so with devicetree based systems without the need to fabricate fake hardware
-description. And the hardware description will necessarily be fake in the case
-when it is in fact userspace implementing and managing the drivers.
+> The purpose of this patchset is for the userspace applications to continu=
+e doing
+> so with devicetree based systems without the need to fabricate fake hardw=
+are
+> description. And the hardware description will necessarily be fake in the=
+ case
+> when it is in fact userspace implementing and managing the drivers.
 
-It's not to say that userspace drivers that duplicate kernel drivers cannot
-examine the devicetree for configuration data. That's up to the userspace
-driver writer to decide, however.
+If userspace is managing to figure out how to control the device then
+providing a description of the hardware is clearly within the bounds of
+possibility and there is no need to fake anything.
 
-Thanks
+--pqZtgxSH0iQu6R78
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Michal
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJXjiCYAAoJECTWi3JdVIfQ2UMH/0cLDXxhZaHEmD4xx5VCqHTf
+UNtPTVXzPirjfaEslj6bWGFLmsKxWC3MOKaRu5M0FBRsu+3pBVdzNVs/gHhODpwd
+YsKbbOUaLBrzh2KLQ16IgLqdWbAX0cTEWh7QbGzj/c3Ls19w1NTf9g6yd9fOh+eu
+ob52VlARYk0iQEgrYb8leORQFAOvZ4Kndlr7mrfsg8R4cBWJBYvnLhRFxOjMbqJM
+eTJCJLGraR0xU08fOxpfRMzXwhPlGfoQXzMbr5nfPSPZpV/4wS4+DrU+zfu7MLSA
+Hgj628ldZBd+/HQZ5sqv2pZNJPwTIqsmxrn6Hy5QIVXg2NNQ1lpEnIDbH2YYikg=
+=KSVV
+-----END PGP SIGNATURE-----
+
+--pqZtgxSH0iQu6R78--

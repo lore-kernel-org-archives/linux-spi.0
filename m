@@ -1,23 +1,17 @@
-From: "Reizer, Eyal" <eyalr-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH v6] wlcore: spi: add wl18xx support
-Date: Tue, 19 Jul 2016 06:30:10 +0000
-Message-ID: <8665E2433BC68541A24DFFCA87B70F5B361603FE@DFRE01.ent.ti.com>
-References: <1468907385-31844-1-git-send-email-eyalr@ti.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Kalle Valo <kvalo-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1468907385-31844-1-git-send-email-eyalr-l0cyMroinI0@public.gmane.org>
-Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Eyal Reizer <eyalreizer-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v7] wlcore: spi: add wl18xx support
+Date: Tue, 19 Jul 2016 09:58:02 +0300
+Message-ID: <1468911482-32560-1-git-send-email-eyalr@ti.com>
+Cc: Eyal Reizer <eyalreizer-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Eyal Reizer <eyalr-l0cyMroinI0@public.gmane.org>
+To: kvalo-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org, linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
+
+From: Eyal Reizer <eyalreizer-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
 Add support for using with both wl12xx and wl18xx.
 
@@ -31,15 +25,14 @@ Signed-off-by: Eyal Reizer <eyalr-l0cyMroinI0@public.gmane.org>
 Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
 v1->v2:update device tree bindings configuration
-v2->v3:revert from manual gpio manipulation. use inverted chip select 
-v2->instead
+v2->v3:revert from manual gpio manipulation. use inverted chip select instead
 for sending the extra init cycle which, achieves the same hardware purpose.
 update device tree bindings docucmentation accordingly
-v3->v4: Remove redundant data form binding documentation and fix chip 
-v3->select
+v3->v4: Remove redundant data form binding documentation and fix chip select
 number mismatch in wl1271 example
 v4->v5: Rebase on top of head of wireless-drivers-next
 v5->v6: Add ACKs
+v6->v7: Mail format issues
  .../bindings/net/wireless/ti,wlcore,spi.txt        |  41 +++++--
  drivers/net/wireless/ti/wlcore/spi.c               | 123 ++++++++++++++++++---
  2 files changed, 137 insertions(+), 27 deletions(-)
@@ -80,8 +73,7 @@ index 9180724..8f9ced0 100644
 +                        wl12xx/wl18xx chip
  
  Optional properties:
-+- ref-clock-frequency : Reference clock frequency (should be set for 
-+wl12xx)
++- ref-clock-frequency : Reference clock frequency (should be set for wl12xx)
  - clock-xtal :          boolean, clock is generated from XTAL
  
  - Please consult Documentation/devicetree/bindings/spi/spi-bus.txt
@@ -128,15 +120,14 @@ index cea9443..73fbcf1 100644
  /*
 - * only support SPI for 12xx - this code should be reworked when 18xx
 - * support is introduced
-+ * wl18xx driver aggregation buffer size is (13 * PAGE_SIZE) compared 
-+ to
-+ * (4 * PAGE_SIZE) for wl12xx, so use the larger buffer needed for 
-+ wl18xx
++ * wl18xx driver aggregation buffer size is (13 * PAGE_SIZE) compared to
++ * (4 * PAGE_SIZE) for wl12xx, so use the larger buffer needed for wl18xx
   */
 -#define SPI_AGGR_BUFFER_SIZE (4 * PAGE_SIZE)
 +#define SPI_AGGR_BUFFER_SIZE (13 * PAGE_SIZE)
  
- /* Maximum number of SPI write chunks */  #define WSPI_MAX_NUM_OF_CHUNKS \
+ /* Maximum number of SPI write chunks */
+ #define WSPI_MAX_NUM_OF_CHUNKS \
  	((SPI_AGGR_BUFFER_SIZE / WSPI_MAX_CHUNK_SIZE) + 1)
  
  
@@ -242,7 +233,8 @@ index cea9443..73fbcf1 100644
  }
  
 +static int __must_check wl12xx_spi_raw_write(struct device *child, int addr,
-+					     void *buf, size_t len, bool fixed) {
++					     void *buf, size_t len, bool fixed)
++{
 +	int ret;
 +
 +	/* The ELP wakeup write may fail the first time due to internal
@@ -299,7 +291,9 @@ index cea9443..73fbcf1 100644
 +	{ .compatible = "ti,wl1837", .data = &wl18xx_data},
  	{ }
  };
- MODULE_DEVICE_TABLE(of, wlcore_spi_of_match_table); @@ -376,17 +455,24 @@ static int wlcore_probe_of(struct spi_device *spi, struct wl12xx_spi_glue *glue,  {
+ MODULE_DEVICE_TABLE(of, wlcore_spi_of_match_table);
+@@ -376,17 +455,24 @@ static int wlcore_probe_of(struct spi_device *spi, struct wl12xx_spi_glue *glue,
+ {
  	struct device_node *dt_node = spi->dev.of_node;
  	int ret;
 +	const struct of_device_id *of_id;
@@ -340,9 +334,10 @@ index cea9443..73fbcf1 100644
  	if (!glue->core) {
  		dev_err(glue->dev, "can't allocate platform_device\n");
  		return -ENOMEM;
---
+-- 
 2.7.4
+
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

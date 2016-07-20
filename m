@@ -1,82 +1,168 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 3/3] acpi spi: Initialize modalias from of_compatible
-Date: Wed, 20 Jul 2016 12:37:53 +0100
-Message-ID: <20160720113753.GF6509@sirena.org.uk>
-References: <cover.1468409668.git.leonard.crestez@intel.com>
- <1d26e956f12fcd86ad915659adeb86e242b96ac7.1468409668.git.leonard.crestez@intel.com>
- <20160719102213.GZ30372@sirena.org.uk>
- <a9507dd1-93cf-547a-3bf1-1d7a18fcc761@intel.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="SxgehGEc6vB0cZwN"
-Cc: linux-acpi@vger.kernel.org,
-	"Rafael J. Wysocki" <rjw@rjwysocki.net>,
-	Jarkko Nikula <jarkko.nikula@intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Len Brown <lenb@kernel.org>, linux-i2c@vger.kernel.org,
-	Wolfram Sang <wsa@the-dreams.de>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Octavian Purdila <octavian.purdila@intel.com>
-To: Crestez Dan Leonard <leonard.crestez@intel.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <a9507dd1-93cf-547a-3bf1-1d7a18fcc761@intel.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Crestez Dan Leonard <leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: [RFC v2] regmap: Add regmap_pipe_read API
+Date: Wed, 20 Jul 2016 18:08:05 +0300
+Message-ID: <c64a366156bd450cae2419890e2ec06b0b09e93b.1469026858.git.leonard.crestez@intel.com>
+Cc: Crestez Dan Leonard <leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
+	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jonathan Cameron <jic23-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Laurentiu Palcu <laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+The regmap API usually assumes that bulk read operations will read a
+range of registers but some I2C/SPI devices have certain registers for
+which a such a read operation will return data from an internal FIFO or
+some other kind of buffer. Add an explicit API to support bulk read with
+"output pipe" rather than range semantics.
 
---SxgehGEc6vB0cZwN
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Some linux drivers use regmap_bulk_read or regmap_raw_read for such
+registers, for example mpu6050 or bmi150 from IIO. This only happens to
+work because when caching is disabled a single short regmap read op will
+map to a single bus read op and behave as intended. This breaks if
+caching is enabled and reg+1 happens to be a cacheable register.
 
-On Wed, Jul 20, 2016 at 02:21:55PM +0300, Crestez Dan Leonard wrote:
-> On 07/19/2016 01:22 PM, Mark Brown wrote:
+Without regmap support refactoring a driver to enable regmap caching
+requires separate i2c and spi paths. This is exactly what regmap is
+supposed to help avoid.
 
-> > Please submit patches using subject lines reflecting the style for the
-> > subsystem.  This makes it easier for people to identify relevant
-> > patches.  Look at what existing commits in the area you're changing are
-> > doing and make sure your subject lines visually resemble what they're
-> > doing.
+Suggested-by: Jonathan Cameron <jic23-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Crestez Dan Leonard <leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 
-> So the prefix should be something like "spi: acpi: "?
+---
+Changes since V1:
+* Improve comments. I think "pipe" is the correct word here.
+* Rely on void* pointer arithmetic instead of casting to u8*
 
-Yes.
+The SPMI implementations of regmap_bus have read functions which
+auto-increment internally and this will not work correctly with
+regmap_pipe_read. I think the correct fix would be for regmap-spmi to
+only implement reg_read. This can be considered an acceptable limitation
+because in order to run into this somebody would have to write new code
+to call this new API with an SPMI device.
 
-> >> +	if (adev->data.of_compatible) {
-> >> +		ret = acpi_of_modalias(adev, spi->modalias, sizeof(spi->modalias));
-> >> +		if (ret) {
-> >> +			spi_dev_put(spi);
-> >> +			return AE_NOT_FOUND;
-> >> +		}
+I attempted to also support this when the underlying bus only supports
+reg_read (for example an adapter with only I2C_FUNC_SMBUS_BYTE_DATA) but
+it's not clear how to do this on top of _regmap_read. Apparently this
+returns the value as an "unsigned int" which needs to be formatted
+according to val_bytes. Unfortunately map->format.format_val is not
+always available. Presumably the code dealing with this from regmap_bulk_read
+should be refactored into a separate function?
 
-> > The only reason this could fail currently is that there wasn't a
-> > compatible in the first place so why don't we just handle it like the no
-> > compatible case?  It's probably not realistic but it seems like there's
-> > a small chance this could regress some platform if we do add more error
-> > detection in acpi_of_modalias().
+It's not clear why regmap doesn't just always initialize format_val.
 
-> If acpi_of_modalias fails for some new reason wouldn't it be better to
-> fail explicitly rather than ignore it?
+ drivers/base/regmap/regmap.c | 64 ++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/regmap.h       |  9 +++++++
+ 2 files changed, 73 insertions(+)
 
-The current code will happily proceed to create a device without doing
-this parsing so clearly we can do that.  It's not clear to me that it's
-better to refuse to create the device at all than to soldier on and
-create a device with only the native ACPI information, perhaps it just
-needs a comment explaining why we do that.
+diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
+index df2d2ef..55c3090 100644
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -2408,6 +2408,70 @@ int regmap_raw_read(struct regmap *map, unsigned int reg, void *val,
+ EXPORT_SYMBOL_GPL(regmap_raw_read);
+ 
+ /**
++ * regmap_pipe_read(): Read data from a register with pipe semantics
++ *
++ * @map: Register map to read from
++ * @reg: Register to read from
++ * @val: Pointer to data buffer
++ * @val_len: Length of output buffer in bytes.
++ *
++ * The regmap API usually assumes that bulk bus read operations will read a
++ * range of registers. Some devices have certain registers for which a read
++ * operation will read a block of data from an internal buffer.
++ *
++ * The target register must be volatile but registers after it can be
++ * completely unrelated cacheable registers.
++ *
++ * This will attempt multiple reads as required to read val_len bytes.
++ *
++ * This function is not supported over SPMI.
++ *
++ * A value of zero will be returned on success, a negative errno will be
++ * returned in error cases.
++ */
++int regmap_pipe_read(struct regmap *map, unsigned int reg,
++		     void *val, size_t val_len)
++{
++	size_t read_len;
++	int ret;
++
++	if (!map->bus)
++		return -EINVAL;
++	if (!map->bus->read)
++		return -ENOTSUPP;
++	if (val_len % map->format.val_bytes)
++		return -EINVAL;
++	if (!IS_ALIGNED(reg, map->reg_stride))
++		return -EINVAL;
++	if (val_len == 0)
++		return -EINVAL;
++
++	map->lock(map->lock_arg);
++
++	if (!regmap_volatile(map, reg)) {
++		ret = -EINVAL;
++		goto out_unlock;
++	}
++
++	while (val_len) {
++		if (map->max_raw_read && map->max_raw_read < val_len)
++			read_len = map->max_raw_read;
++		else
++			read_len = val_len;
++		ret = _regmap_raw_read(map, reg, val, read_len);
++		if (ret)
++			goto out_unlock;
++		val += read_len;
++		val_len -= read_len;
++	}
++
++out_unlock:
++	map->unlock(map->lock_arg);
++	return ret;
++}
++EXPORT_SYMBOL_GPL(regmap_pipe_read);
++
++/**
+  * regmap_field_read(): Read a value to a single register field
+  *
+  * @field: Register field to read from
+diff --git a/include/linux/regmap.h b/include/linux/regmap.h
+index 3dc08ce..18ee90e 100644
+--- a/include/linux/regmap.h
++++ b/include/linux/regmap.h
+@@ -719,6 +719,8 @@ int regmap_raw_write_async(struct regmap *map, unsigned int reg,
+ int regmap_read(struct regmap *map, unsigned int reg, unsigned int *val);
+ int regmap_raw_read(struct regmap *map, unsigned int reg,
+ 		    void *val, size_t val_len);
++int regmap_pipe_read(struct regmap *map, unsigned int reg,
++		     void *val, size_t val_len);
+ int regmap_bulk_read(struct regmap *map, unsigned int reg, void *val,
+ 		     size_t val_count);
+ int regmap_update_bits_base(struct regmap *map, unsigned int reg,
+@@ -955,6 +957,13 @@ static inline int regmap_raw_read(struct regmap *map, unsigned int reg,
+ 	return -EINVAL;
+ }
+ 
++static inline int regmap_pipe_read(struct regmap *map, unsigned int reg,
++				   void *val, size_t val_len)
++{
++	WARN_ONCE(1, "regmap API is disabled");
++	return -EINVAL;
++}
++
+ static inline int regmap_bulk_read(struct regmap *map, unsigned int reg,
+ 				   void *val, size_t val_count)
+ {
+-- 
+2.7.4
 
---SxgehGEc6vB0cZwN
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJXj2KRAAoJECTWi3JdVIfQ+3cH/j/95PTTAtamo6IZMtlDeQHY
-MW/1vLd4ZEHEvU9i/dokwjR4dLAj7+wcFIGBzNLqygQeY4RLWS0YzTR2VFsFaFwU
-h29n2YH1htn5cCqMxZxw/a9suISSExZcLdFxH8msBoqddNXEqeEZ9fZROLBZiJQd
-XkUbTYvneodtv52Cn0LsJemT3QbQMvPWGaeu9pnWf6VGW6wYcIJZ2yr8fGN22Qw2
-ZOFYwsC1zErjLYj4z0YOS3JFn3WsRTvd22q8sUmzx0IBKAZpVQYflpzDNZT8qlFq
-4AmqIOZdC6RVVp2W4iNKtBFxpwbXfmdK41vPJCU/ClEH9HHPKus7NgfXDKbDlhA=
-=+bTh
------END PGP SIGNATURE-----
-
---SxgehGEc6vB0cZwN--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

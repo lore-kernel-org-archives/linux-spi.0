@@ -1,49 +1,64 @@
-From: "Reizer, Eyal" <eyalr-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH] wlcore: spi: fix build warning caused by redundant variable
-Date: Wed, 20 Jul 2016 07:30:20 +0000
-Message-ID: <8665E2433BC68541A24DFFCA87B70F5B36161A64@DFRE01.ent.ti.com>
-References: <1468999637-31006-1-git-send-email-eyalr@ti.com>
+From: Crestez Dan Leonard <leonard.crestez@intel.com>
+Subject: Re: [PATCH v2 3/3] acpi spi: Initialize modalias from of_compatible
+Date: Wed, 20 Jul 2016 14:21:55 +0300
+Message-ID: <a9507dd1-93cf-547a-3bf1-1d7a18fcc761@intel.com>
+References: <cover.1468409668.git.leonard.crestez@intel.com>
+ <1d26e956f12fcd86ad915659adeb86e242b96ac7.1468409668.git.leonard.crestez@intel.com>
+ <20160719102213.GZ30372@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="Windows-1252"
-Content-Transfer-Encoding: 8BIT
-To: Kalle Valo <kvalo-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	"linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1468999637-31006-1-git-send-email-eyalr-l0cyMroinI0@public.gmane.org>
-Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Cc: linux-acpi@vger.kernel.org,
+	"Rafael J. Wysocki" <rjw@rjwysocki.net>,
+	Jarkko Nikula <jarkko.nikula@intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Len Brown <lenb@kernel.org>, linux-i2c@vger.kernel.org,
+	Wolfram Sang <wsa@the-dreams.de>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Octavian Purdila <octavian.purdila@intel.com>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-acpi-owner@vger.kernel.org>
+In-Reply-To: <20160719102213.GZ30372@sirena.org.uk>
+Sender: linux-acpi-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-The ret variable is unused in wlcore_probe_of()
-Remove it for fixing build warning.
+On 07/19/2016 01:22 PM, Mark Brown wrote:
+> On Wed, Jul 13, 2016 at 02:53:42PM +0300, Crestez Dan Leonard wrote:
+>> When using devicetree spi_device.modalias is set to the compatible
+>> string with the vendor prefix removed. For SPI devices described via
+>> ACPI the i2c_board_info.type string is initialized by acpi_device_hid.
+>> When using ACPI and DT ids this string ends up something like "PRP0001".
+> 
+> Please submit patches using subject lines reflecting the style for the
+> subsystem.  This makes it easier for people to identify relevant
+> patches.  Look at what existing commits in the area you're changing are
+> doing and make sure your subject lines visually resemble what they're
+> doing.
 
-Fixes: 01efe65aba65 ("wlcore: spi: add wl18xx support")
-Signed-off-by: Eyal Reizer <eyalr-l0cyMroinI0@public.gmane.org>
----
- drivers/net/wireless/ti/wlcore/spi.c | 1 -
- 1 file changed, 1 deletion(-)
+So the prefix should be something like "spi: acpi: "?
 
-diff --git a/drivers/net/wireless/ti/wlcore/spi.c b/drivers/net/wireless/ti/wlcore/spi.c
-index 73fbcf1..6d24040 100644
---- a/drivers/net/wireless/ti/wlcore/spi.c
-+++ b/drivers/net/wireless/ti/wlcore/spi.c
-@@ -454,7 +454,6 @@ static int wlcore_probe_of(struct spi_device *spi, struct wl12xx_spi_glue *glue,
- 			   struct wlcore_platdev_data *pdev_data)
- {
- 	struct device_node *dt_node = spi->dev.of_node;
--	int ret;
- 	const struct of_device_id *of_id;
- 
- 	of_id = of_match_node(wlcore_spi_of_match_table, dt_node);
+>> Change acpi_register_spi_device to use the of_compatible property if
+>> present. This makes it easier to instantiate spi drivers through ACPI
+>> with DT ids.
+> 
+> This is basically fine but...
+> 
+>> +	if (adev->data.of_compatible) {
+>> +		ret = acpi_of_modalias(adev, spi->modalias, sizeof(spi->modalias));
+>> +		if (ret) {
+>> +			spi_dev_put(spi);
+>> +			return AE_NOT_FOUND;
+>> +		}
+> 
+> The only reason this could fail currently is that there wasn't a
+> compatible in the first place so why don't we just handle it like the no
+> compatible case?  It's probably not realistic but it seems like there's
+> a small chance this could regress some platform if we do add more error
+> detection in acpi_of_modalias().
+
+If acpi_of_modalias fails for some new reason wouldn't it be better to
+fail explicitly rather than ignore it?
+
 -- 
-2.7.4
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Regards,
+Leonard

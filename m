@@ -1,167 +1,52 @@
-From: Crestez Dan Leonard <leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: [RFC v2] regmap: Add regmap_pipe_read API
-Date: Wed, 20 Jul 2016 18:08:05 +0300
-Message-ID: <c64a366156bd450cae2419890e2ec06b0b09e93b.1469026858.git.leonard.crestez@intel.com>
-Cc: Crestez Dan Leonard <leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [RFC v2] regmap: Add regmap_pipe_read API
+Date: Wed, 20 Jul 2016 17:17:57 +0100
+Message-ID: <20160720161757.GH6509@sirena.org.uk>
+References: <c64a366156bd450cae2419890e2ec06b0b09e93b.1469026858.git.leonard.crestez@intel.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="U3BNvdZEnlJXqmh+"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
 	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jonathan Cameron <jic23-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	Laurentiu Palcu <laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Crestez Dan Leonard <leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <c64a366156bd450cae2419890e2ec06b0b09e93b.1469026858.git.leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The regmap API usually assumes that bulk read operations will read a
-range of registers but some I2C/SPI devices have certain registers for
-which a such a read operation will return data from an internal FIFO or
-some other kind of buffer. Add an explicit API to support bulk read with
-"output pipe" rather than range semantics.
 
-Some linux drivers use regmap_bulk_read or regmap_raw_read for such
-registers, for example mpu6050 or bmi150 from IIO. This only happens to
-work because when caching is disabled a single short regmap read op will
-map to a single bus read op and behave as intended. This breaks if
-caching is enabled and reg+1 happens to be a cacheable register.
+--U3BNvdZEnlJXqmh+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Without regmap support refactoring a driver to enable regmap caching
-requires separate i2c and spi paths. This is exactly what regmap is
-supposed to help avoid.
+On Wed, Jul 20, 2016 at 06:08:05PM +0300, Crestez Dan Leonard wrote:
 
-Suggested-by: Jonathan Cameron <jic23-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Signed-off-by: Crestez Dan Leonard <leonard.crestez-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+> Changes since V1:
+> * Improve comments. I think "pipe" is the correct word here.
 
----
-Changes since V1:
-* Improve comments. I think "pipe" is the correct word here.
-* Rely on void* pointer arithmetic instead of casting to u8*
+I really don't.  To the extent it means something to me I'd expect it to
+have something to do with a normal Unix pipe and be pushing data into a
+file or network socket.  Something like _rep or something perhaps?
 
-The SPMI implementations of regmap_bus have read functions which
-auto-increment internally and this will not work correctly with
-regmap_pipe_read. I think the correct fix would be for regmap-spmi to
-only implement reg_read. This can be considered an acceptable limitation
-because in order to run into this somebody would have to write new code
-to call this new API with an SPMI device.
+--U3BNvdZEnlJXqmh+
+Content-Type: application/pgp-signature; name="signature.asc"
 
-I attempted to also support this when the underlying bus only supports
-reg_read (for example an adapter with only I2C_FUNC_SMBUS_BYTE_DATA) but
-it's not clear how to do this on top of _regmap_read. Apparently this
-returns the value as an "unsigned int" which needs to be formatted
-according to val_bytes. Unfortunately map->format.format_val is not
-always available. Presumably the code dealing with this from regmap_bulk_read
-should be refactored into a separate function?
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-It's not clear why regmap doesn't just always initialize format_val.
+iQEcBAEBCAAGBQJXj6Q0AAoJECTWi3JdVIfQgwwH/iRH1H4Yw6MIaVH2p4GyO7Ew
++pna/wnK/CuLfTSdjw55Io9GTkFJMOBa0kYL8AAmMN4RRjVBE0SEEiIwt+7AdIQH
+d57jKsZziJz9F94EL/39ZNbpWEqq8ccOxWAh7ZqCYZwsIWf5Hya8rhH1ztx4+Sjv
+yFi5wIfhs7kI0lf5O0FoCwPxAmzpL0NK+6BE/vILFMuhf3nbFnC+VROkVf/PhjZM
+PjeyYSL/+OovGIWmmYJdfrhb5ozbj0KJUmZWDGq0U+h6cvKxxJ1YBHGuNV3QVCLv
+NpuuWmTg1RuyF7LJi7afvTT/tgh89C3CSCfohHruyAwagUd+mc9epIXebcCIko0=
+=nrs7
+-----END PGP SIGNATURE-----
 
- drivers/base/regmap/regmap.c | 64 ++++++++++++++++++++++++++++++++++++++++++++
- include/linux/regmap.h       |  9 +++++++
- 2 files changed, 73 insertions(+)
-
-diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
-index df2d2ef..55c3090 100644
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -2408,6 +2408,70 @@ int regmap_raw_read(struct regmap *map, unsigned int reg, void *val,
- EXPORT_SYMBOL_GPL(regmap_raw_read);
- 
- /**
-+ * regmap_pipe_read(): Read data from a register with pipe semantics
-+ *
-+ * @map: Register map to read from
-+ * @reg: Register to read from
-+ * @val: Pointer to data buffer
-+ * @val_len: Length of output buffer in bytes.
-+ *
-+ * The regmap API usually assumes that bulk bus read operations will read a
-+ * range of registers. Some devices have certain registers for which a read
-+ * operation will read a block of data from an internal buffer.
-+ *
-+ * The target register must be volatile but registers after it can be
-+ * completely unrelated cacheable registers.
-+ *
-+ * This will attempt multiple reads as required to read val_len bytes.
-+ *
-+ * This function is not supported over SPMI.
-+ *
-+ * A value of zero will be returned on success, a negative errno will be
-+ * returned in error cases.
-+ */
-+int regmap_pipe_read(struct regmap *map, unsigned int reg,
-+		     void *val, size_t val_len)
-+{
-+	size_t read_len;
-+	int ret;
-+
-+	if (!map->bus)
-+		return -EINVAL;
-+	if (!map->bus->read)
-+		return -ENOTSUPP;
-+	if (val_len % map->format.val_bytes)
-+		return -EINVAL;
-+	if (!IS_ALIGNED(reg, map->reg_stride))
-+		return -EINVAL;
-+	if (val_len == 0)
-+		return -EINVAL;
-+
-+	map->lock(map->lock_arg);
-+
-+	if (!regmap_volatile(map, reg)) {
-+		ret = -EINVAL;
-+		goto out_unlock;
-+	}
-+
-+	while (val_len) {
-+		if (map->max_raw_read && map->max_raw_read < val_len)
-+			read_len = map->max_raw_read;
-+		else
-+			read_len = val_len;
-+		ret = _regmap_raw_read(map, reg, val, read_len);
-+		if (ret)
-+			goto out_unlock;
-+		val += read_len;
-+		val_len -= read_len;
-+	}
-+
-+out_unlock:
-+	map->unlock(map->lock_arg);
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(regmap_pipe_read);
-+
-+/**
-  * regmap_field_read(): Read a value to a single register field
-  *
-  * @field: Register field to read from
-diff --git a/include/linux/regmap.h b/include/linux/regmap.h
-index 3dc08ce..18ee90e 100644
---- a/include/linux/regmap.h
-+++ b/include/linux/regmap.h
-@@ -719,6 +719,8 @@ int regmap_raw_write_async(struct regmap *map, unsigned int reg,
- int regmap_read(struct regmap *map, unsigned int reg, unsigned int *val);
- int regmap_raw_read(struct regmap *map, unsigned int reg,
- 		    void *val, size_t val_len);
-+int regmap_pipe_read(struct regmap *map, unsigned int reg,
-+		     void *val, size_t val_len);
- int regmap_bulk_read(struct regmap *map, unsigned int reg, void *val,
- 		     size_t val_count);
- int regmap_update_bits_base(struct regmap *map, unsigned int reg,
-@@ -955,6 +957,13 @@ static inline int regmap_raw_read(struct regmap *map, unsigned int reg,
- 	return -EINVAL;
- }
- 
-+static inline int regmap_pipe_read(struct regmap *map, unsigned int reg,
-+				   void *val, size_t val_len)
-+{
-+	WARN_ONCE(1, "regmap API is disabled");
-+	return -EINVAL;
-+}
-+
- static inline int regmap_bulk_read(struct regmap *map, unsigned int reg,
- 				   void *val, size_t val_count)
- {
--- 
-2.7.4
-
+--U3BNvdZEnlJXqmh+--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

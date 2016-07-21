@@ -1,105 +1,61 @@
-From: Olliver Schinagl <oliver-dxLnbx3+1qmEVqv0pETR8A@public.gmane.org>
-Subject: Re: [PATCH v6] ARM: sun4i: spi: Allow transfers larger
- than FIFO size
-Date: Thu, 21 Jul 2016 20:03:16 +0200
-Message-ID: <34E27D10-C620-4288-A1A8-489B75D4757B@schinagl.nl>
-References: <1439062912-4405-1-git-send-email-oliver@schinagl.nl> <20160721112701.GB6610@weiser.dinsnail.net> <20160721163153.GO6509@sirena.org.uk> <20160721172712.GA10640@weiser.dinsnail.net>
-Reply-To: oliver-dxLnbx3+1qmEVqv0pETR8A@public.gmane.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v6] ARM: sun4i: spi: Allow transfers larger than FIFO size
+Date: Thu, 21 Jul 2016 19:15:45 +0100
+Message-ID: <20160721181545.GP6509@sirena.org.uk>
+References: <1439062912-4405-1-git-send-email-oliver@schinagl.nl>
+ <20160721112701.GB6610@weiser.dinsnail.net>
+ <20160721163153.GO6509@sirena.org.uk>
+ <20160721172712.GA10640@weiser.dinsnail.net>
+ <34E27D10-C620-4288-A1A8-489B75D4757B@schinagl.nl>
 Mime-Version: 1.0
-Content-Type: multipart/alternative; boundary="----PV0WJX9A3TM3OK7YFWTZSAAOFL239S"
-Content-Transfer-Encoding: 8bit
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,dev-3kdeTeqwOZ9EV1b7eY7vFQ@public.gmane.org,Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Michael Weiser <michael.weiser-Mmb7MZpHnFY@public.gmane.org>,Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-sunxi+bncBDC2JNWXZAJBB3U4YS6AKGQEBGLGWMY-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-In-Reply-To: <20160721172712.GA10640-kvmrdUZdB1uagOi/AmBnLNHuzzzSOjJt@public.gmane.org>
-List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <https://groups.google.com/group/linux-sunxi
-List-Subscribe: <https://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
- <https://groups.google.com/group/linux-sunxi/subscribe>
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="8MZM6zh5Bb05FW+3"
+Cc: Michael Weiser <michael.weiser-Mmb7MZpHnFY@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	dev-3kdeTeqwOZ9EV1b7eY7vFQ@public.gmane.org,
+	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Olliver Schinagl <oliver-dxLnbx3+1qmEVqv0pETR8A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <34E27D10-C620-4288-A1A8-489B75D4757B-dxLnbx3+1qmEVqv0pETR8A@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-------PV0WJX9A3TM3OK7YFWTZSAAOFL239S
-Content-Type: text/plain; charset=UTF-8
 
-As i recall, some claimed it was needed as we have dma now, but i think this patch still scratches the same itch ...
+--8MZM6zh5Bb05FW+3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On July 21, 2016 7:27:12 PM CEST, Michael Weiser <michael.weiser-Mmb7MZpHnFY@public.gmane.org> wrote:
->Hi Mark,
->
->On Thu, Jul 21, 2016 at 05:31:53PM +0100, Mark Brown wrote:
->
->> > What is keeping the patch from being merged (i.e. into mainline)?
->> Someone needs to address whatever review comments there were on the
->last
->> version and submit it.
->
->That's my point: There don't seem to be any.
->
->v6 was resend with fixes to checkpatch niggles on v5:
->http://lists.infradead.org/pipermail/linux-arm-kernel/2015-August/363073.html
->
->v5 addressed comments by Maxime on v4:
->http://lists.infradead.org/pipermail/linux-arm-kernel/2014-April/244305.html
->http://lists.infradead.org/pipermail/linux-arm-kernel/2014-March/243995.html
->
->I can't find any comments on v5 or v6.
->-- 
->Thanks,
->Michael
+On Thu, Jul 21, 2016 at 08:03:16PM +0200, Olliver Schinagl wrote:
+> As i recall, some claimed it was needed as we have dma now, but i think this patch still scratches the same itch ...
 
--- 
-Sent from my Android device with K-9 Mail. Please excuse my brevity.
+Please don't top post, reply in line with needed context.  This allows
+readers to readily follow the flow of conversation and understand what
+you are talking about and also helps ensure that everything in the
+discussion is being addressed.
 
--- 
-You received this message because you are subscribed to the Google Groups "linux-sunxi" group.
-To unsubscribe from this group and stop receiving emails from it, send an email to linux-sunxi+unsubscribe-/JYPxA39Uh5TLH3MbocFF+G/Ez6ZCGd0@public.gmane.org
-For more options, visit https://groups.google.com/d/optout.
+Please fix your mail client to word wrap within paragraphs at something
+substantially less than 80 columns.  Doing this makes your messages much
+easier to read and reply to.
 
-------PV0WJX9A3TM3OK7YFWTZSAAOFL239S
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+--8MZM6zh5Bb05FW+3
+Content-Type: application/pgp-signature; name="signature.asc"
 
-<html><head></head><body>As i recall, some claimed it was needed as we have=
- dma now, but i think this patch still scratches the same itch ...<br><br><=
-div class=3D"gmail_quote">On July 21, 2016 7:27:12 PM CEST, Michael Weiser =
-&lt;michael.weiser-Mmb7MZpHnFY@public.gmane.org&gt; wrote:<blockquote class=3D"gmail_quote" style=
-=3D"margin: 0pt 0pt 0pt 0.8ex; border-left: 1px solid rgb(204, 204, 204); p=
-adding-left: 1ex;">
-<pre class=3D"k9mail">Hi Mark,<br /><br />On Thu, Jul 21, 2016 at 05:31:53P=
-M +0100, Mark Brown wrote:<br /><br /><blockquote class=3D"gmail_quote" sty=
-le=3D"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #729fcf; padding-le=
-ft: 1ex;"><blockquote class=3D"gmail_quote" style=3D"margin: 0pt 0pt 1ex 0.=
-8ex; border-left: 1px solid #ad7fa8; padding-left: 1ex;"> What is keeping t=
-he patch from being merged (i.e. into mainline)?<br /></blockquote> Someone=
- needs to address whatever review comments there were on the last<br /> ver=
-sion and submit it.<br /></blockquote><br />That's my point: There don't se=
-em to be any.<br /><br />v6 was resend with fixes to checkpatch niggles on =
-v5:<br /><a href=3D"http://lists.infradead.org/pipermail/linux-arm-kernel/2=
-015-August/363073.html">http://lists.infradead.org/pipermail/linux-arm-kern=
-el/2015-August/363073.html</a><br /><br />v5 addressed comments by Maxime o=
-n v4:<br /><a
-href=3D"http://lists.infradead.org/pipermail/linux-arm-kernel/2014-April/24=
-4305.html">http://lists.infradead.org/pipermail/linux-arm-kernel/2014-April=
-/244305.html</a><br /><a href=3D"http://lists.infradead.org/pipermail/linux=
--arm-kernel/2014-March/243995.html">http://lists.infradead.org/pipermail/li=
-nux-arm-kernel/2014-March/243995.html</a><br /><br />I can't find any comme=
-nts on v5 or v6.</pre></blockquote></div><br>
--- <br>
-Sent from my Android device with K-9 Mail. Please excuse my brevity.</body>=
-</html>
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-<p></p>
+iQEcBAEBCAAGBQJXkRFQAAoJECTWi3JdVIfQOEgH/1+rv6GXF8TsfDY8bYFsi0PI
+t4ohQuEISP0TYpYs2rf32Ke7bICvAmaFPCzPm5QOxUAA+usfwaqijYaBCqH6KOHU
+hi9YwLoiAJhpIhRHZ6tWwyRM47fuyl890OO1nJlD4GTY75I7tBlQgC5O8rGTgzx1
+65W4376fX9pD1fogbC6HLZmS/hyxWz9y4CMnSzr1mb5rdcakV/wFRKKqGKWY73wx
+SEX4Go7pj8mtUbGjvT5hF563t4dCvinhs4R2nwErRiKMYb59mWIXutqZoPeTD/xu
+ovlKRx635oex/dkLE2TDoCdsm6BvFRcmeDlJKEL3Yp2aQvbKTURJ97wR9hAXIQA=
+=EvpZ
+-----END PGP SIGNATURE-----
 
--- <br />
-You received this message because you are subscribed to the Google Groups &=
-quot;linux-sunxi&quot; group.<br />
-To unsubscribe from this group and stop receiving emails from it, send an e=
-mail to <a href=3D"mailto:linux-sunxi+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org">linux-s=
-unxi+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org</a>.<br />
-For more options, visit <a href=3D"https://groups.google.com/d/optout">http=
-s://groups.google.com/d/optout</a>.<br />
-
-------PV0WJX9A3TM3OK7YFWTZSAAOFL239S--
+--8MZM6zh5Bb05FW+3--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

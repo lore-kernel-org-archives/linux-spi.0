@@ -1,61 +1,51 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v6] ARM: sun4i: spi: Allow transfers larger than FIFO size
-Date: Thu, 21 Jul 2016 19:15:45 +0100
-Message-ID: <20160721181545.GP6509@sirena.org.uk>
+Subject: Re: [PATCH v6] ARM: sun4i: spi: Allow transfers larger
+ than FIFO size
+Date: Thu, 21 Jul 2016 19:20:37 +0100
+Message-ID: <20160721182037.GQ6509@sirena.org.uk>
 References: <1439062912-4405-1-git-send-email-oliver@schinagl.nl>
  <20160721112701.GB6610@weiser.dinsnail.net>
  <20160721163153.GO6509@sirena.org.uk>
  <20160721172712.GA10640@weiser.dinsnail.net>
- <34E27D10-C620-4288-A1A8-489B75D4757B@schinagl.nl>
+Reply-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="8MZM6zh5Bb05FW+3"
-Cc: Michael Weiser <michael.weiser-Mmb7MZpHnFY@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	dev-3kdeTeqwOZ9EV1b7eY7vFQ@public.gmane.org,
+	protocol="application/pgp-signature"; boundary="keoAwTxaagou87Dg"
+Cc: Olliver Schinagl <oliver-dxLnbx3+1qmEVqv0pETR8A@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dev-3kdeTeqwOZ9EV1b7eY7vFQ@public.gmane.org,
 	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Olliver Schinagl <oliver-dxLnbx3+1qmEVqv0pETR8A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Michael Weiser <michael.weiser-Mmb7MZpHnFY@public.gmane.org>
+Return-path: <linux-sunxi+bncBDQ2L75W5QGBB75EYS6AKGQE7FOKKKY-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
 Content-Disposition: inline
-In-Reply-To: <34E27D10-C620-4288-A1A8-489B75D4757B-dxLnbx3+1qmEVqv0pETR8A@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <20160721172712.GA10640-kvmrdUZdB1uagOi/AmBnLNHuzzzSOjJt@public.gmane.org>
+List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <https://groups.google.com/group/linux-sunxi
+List-Subscribe: <https://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+ <https://groups.google.com/group/linux-sunxi/subscribe>
+List-Id: linux-spi.vger.kernel.org
 
 
---8MZM6zh5Bb05FW+3
-Content-Type: text/plain; charset=us-ascii
+--keoAwTxaagou87Dg
+Content-Type: text/plain; charset=UTF-8
 Content-Disposition: inline
 
-On Thu, Jul 21, 2016 at 08:03:16PM +0200, Olliver Schinagl wrote:
-> As i recall, some claimed it was needed as we have dma now, but i think this patch still scratches the same itch ...
+On Thu, Jul 21, 2016 at 07:27:12PM +0200, Michael Weiser wrote:
+> On Thu, Jul 21, 2016 at 05:31:53PM +0100, Mark Brown wrote:
 
-Please don't top post, reply in line with needed context.  This allows
-readers to readily follow the flow of conversation and understand what
-you are talking about and also helps ensure that everything in the
-discussion is being addressed.
+> > > What is keeping the patch from being merged (i.e. into mainline)?
+> > Someone needs to address whatever review comments there were on the last
+> > version and submit it.
 
-Please fix your mail client to word wrap within paragraphs at something
-substantially less than 80 columns.  Doing this makes your messages much
-easier to read and reply to.
+> That's my point: There don't seem to be any.
 
---8MZM6zh5Bb05FW+3
-Content-Type: application/pgp-signature; name="signature.asc"
+> v6 was resend with fixes to checkpatch niggles on v5:
+> http://lists.infradead.org/pipermail/linux-arm-kernel/2015-August/363073.html
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJXkRFQAAoJECTWi3JdVIfQOEgH/1+rv6GXF8TsfDY8bYFsi0PI
-t4ohQuEISP0TYpYs2rf32Ke7bICvAmaFPCzPm5QOxUAA+usfwaqijYaBCqH6KOHU
-hi9YwLoiAJhpIhRHZ6tWwyRM47fuyl890OO1nJlD4GTY75I7tBlQgC5O8rGTgzx1
-65W4376fX9pD1fogbC6HLZmS/hyxWz9y4CMnSzr1mb5rdcakV/wFRKKqGKWY73wx
-SEX4Go7pj8mtUbGjvT5hF563t4dCvinhs4R2nwErRiKMYb59mWIXutqZoPeTD/xu
-ovlKRx635oex/dkLE2TDoCdsm6BvFRcmeDlJKEL3Yp2aQvbKTURJ97wR9hAXIQA=
-=EvpZ
------END PGP SIGNATURE-----
-
---8MZM6zh5Bb05FW+3--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+I can't tell if that was even submitted, it's got a subject line of
+"ARM: sun4i" so there's every chance that even if it was sent to me it
+got deleted unread.  Whatever was going on it needs to be submited.
+--keoAwTxaagou87Dg--

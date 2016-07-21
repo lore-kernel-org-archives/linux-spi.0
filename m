@@ -1,73 +1,96 @@
-From: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH, V4, 2/5] spi: bcm-qspi: Add SPI flash and MSPI driver
-Date: Thu, 21 Jul 2016 15:06:16 -0700
-Message-ID: <583d6ec8-b367-b53a-7d9e-1d7ee06004c0@gmail.com>
-References: <1466197433-11290-1-git-send-email-kdasu.kdev@gmail.com>
- <1466197433-11290-2-git-send-email-kdasu.kdev@gmail.com>
- <20160622160726.GQ28202@sirena.org.uk>
- <CAKekbevYN3CLvqQs3stUXDFEMREMOJ0g4+w7Zsno1kV-ieYEiw@mail.gmail.com>
- <20160701160753.GX6247@sirena.org.uk>
- <CAC=U0a3WN9TGw7zwwP3qFf5MUsRteUcVLytFgjnP4zScZS0xXA@mail.gmail.com>
- <20160713111053.GG9976@sirena.org.uk> <5786B401.2050306@gmail.com>
- <20160713223638.GI9976@sirena.org.uk> <578EA695.1030909@gmail.com>
- <20160720112547.GE6509@sirena.org.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: Unsynchronized access to spi bus by mmc_rescan?
+Date: Thu, 21 Jul 2016 23:43:08 +0100
+Message-ID: <20160721224308.GT6509@sirena.org.uk>
+References: <20160422212842.GB21636@brightrain.aerifal.cx>
+ <20160504224445.GW21636@brightrain.aerifal.cx>
+ <20160721204451.GE15995@brightrain.aerifal.cx>
+ <20160721214015.GG15995@brightrain.aerifal.cx>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Kamal Dasu <kamal.dasu-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jayachandran C <jchandra-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	bcm-kernel-feedback-list <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Vikram Prakash <vikram.prakash-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Andy Fung <andy.fung-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Jon Mason <jon.mason-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Yendapally Reddy Dhananjaya Reddy
-	<yendapally.reddy-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="chReQkDOePndSGWY"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Heiko =?iso-8859-1?Q?St=FCbner?= <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
+	Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>,
+	Matt Fleming <matt-HNK1S37rvNbeXh+fF434Mdi2O/JbrIOy@public.gmane.org>,
+	Antonio Ospite <ospite-aNJ+ML1ZbiP93QAQaVx+gl6hYfS7NtTn@public.gmane.org>
+To: Rich Felker <dalias-8zAoT0mYgF4@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160720112547.GE6509-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20160721214015.GG15995-C3MtFaGISjmo6RMmaWD+6Sb1p8zYI1N1@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 07/20/2016 04:25 AM, Mark Brown wrote:
-> On Tue, Jul 19, 2016 at 03:15:49PM -0700, Florian Fainelli wrote:
->> On 07/13/2016 03:36 PM, Mark Brown wrote:
-> 
->>> If it was unconditionally in the perhipheral it'd be fairly normal and
->>> standard but it's not, it's a completely separate and optional register
->>> block with a bunch of separate code in a driver which already has above
->>> average complexity even for the bits that belong in it.
-> 
->> It is not separate nor optional, the fact that the register range seems
->> discontiguous is just an integration choice here, but it contains bits
->> that are relevant exclusively to the SPI controller.
-> 
-> Some versions of the block have it, some versions of the block don't
-> have it.  That suggests that it's optional.  It is a completely separate
-> register map, that suggests that it is an external block.
 
-Mark, would you oppose to a driver structure that looks like the
-Broadcom NAND driver under drivers/mtd/nand/brcmnand/, where we have
-something like this:
+--chReQkDOePndSGWY
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-- the core driver only deals with individual interrupt lines which are
-available in the original version of the IP block as integrated on
-Set-top-box/Cable Modem chips
+On Thu, Jul 21, 2016 at 05:40:15PM -0400, Rich Felker wrote:
 
-- the core driver allows for callbacks to perform additional interupt
-work when that is required for the iProc (Northstar, Northstar Plus,
-Northstar 2) and DSL SoCs where we have additional logic to
-enable/disable/acknowledge interrupt lines
+> The spi master device has a "bus lock flag" that's used in lieu of a
+> recursive mutex, but it seems to be used entirely incorrectly. The
+> logic I'm seeing in spi.c is essentially:
 
-We came up with this design for the NAND controller driver pretty much
-for the same reasons that the NAND controller originally came from the
-STB/CM group and was later adopted by the iProc SoCs and integrated in a
-way that made the number of layout of interrupts and control register
-different...
+I am entirely unclear why you believe there is a recursive mutex here,
+that's not the purpose of the spi_bus_lock() API at all.
 
-Thanks
--- 
-Florian
+> 	if (some_task_has_spi_bus_locked)
+> 		use_spi_master_without_locking();
+
+> There seems to be no check that the task that's using the master
+> without locking is the same one that locked it!
+
+That's because there is no requirement that something that takes a bus
+lock be executing from a single context.  It is just granting exclusive
+access to the bus, the caller is free to do those accesses in any manner
+it sees fit.
+
+> Also, master->bus_lock_flag is modified completely unsynchonized from
+> read access to master->bus_lock_flag. There is no locking of
+> master->bus_lock_mutex or master->bus_lock_spinlock around the read
+> accesses to master->bus_lock_flag, and in one place the write (of 0)
+> to master->bus_lock_flag takes place without holding the spinlock.
+
+The critical read access is in spi_async where we exclude users that
+don't hold the lock which *is* spinlocked; we should probably hold the
+spinlock on release but it's not so important since we know that we hold
+the lock when we call it and the mutex ends up providing protection.
+spi_sync() shouldn't be reading the flag in the first place as far as I
+can tell, it should unconditionally have the flag clear as locked
+callers have to use spi_sync_locked() but that will give us a fast path
+that doesn't check for the bus lock which starts to reveal the
+underlying issue.
+
+This underlying issue is that we are trying to use one mutex for two
+purposes, the existing mutex is mainly being used to serialize access to
+the physical bus but the externally visible bus lock is there to ensure
+that only one caller is able to queue new transfers which is not the
+same thing at all.  It is completely irrelevant when we are pushing
+messages to the bus if we are doing so with the bus lock held.
+
+> The obvious fix would be using an actual recursive mutex to obtain
+> recursive mutex semantics.
+
+This would be broken since we need to be able to start transfers from
+atomic context.
+
+--chReQkDOePndSGWY
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJXkU/7AAoJECTWi3JdVIfQrdMH/11fr5pongn/k5IrWS14SIJT
+DeBvojeLTEudU4NVBxjNbqQYesrHpgmHtMN2kFdO/YW3padqp679Z92WFywFN3DV
+KyaerefpqvFwwJNiWRwD4/k5f48I7hgT6bilAx08JV6pHqVSSLExPC3p5byr9Q27
+j6+LGtqOOcs9pmSOpAN6HdXUAQcaKmp2k8rsAs6ylcorgqIOXLbKJQmoJfC00SO5
+ko4BPZlIohD+wPSkGz/nr57g5yUgDtHcVP6ikOxVrPDs4ip+sHvh3Jw8dAKqyhex
+tk71y1u3L7xgJrjVD0aUU6zmbJNMBhgHWIaxdW9UnfQdB1JcQuPjZiZYldrGa+0=
+=m6xI
+-----END PGP SIGNATURE-----
+
+--chReQkDOePndSGWY--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

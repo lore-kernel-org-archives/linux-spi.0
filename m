@@ -1,82 +1,73 @@
-From: Rich Felker <dalias-8zAoT0mYgF4@public.gmane.org>
-Subject: Re: Unsynchronized access to spi bus by mmc_rescan?
-Date: Thu, 21 Jul 2016 17:40:15 -0400
-Message-ID: <20160721214015.GG15995@brightrain.aerifal.cx>
-References: <20160422212842.GB21636@brightrain.aerifal.cx>
- <20160504224445.GW21636@brightrain.aerifal.cx>
- <20160721204451.GE15995@brightrain.aerifal.cx>
+From: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH, V4, 2/5] spi: bcm-qspi: Add SPI flash and MSPI driver
+Date: Thu, 21 Jul 2016 15:06:16 -0700
+Message-ID: <583d6ec8-b367-b53a-7d9e-1d7ee06004c0@gmail.com>
+References: <1466197433-11290-1-git-send-email-kdasu.kdev@gmail.com>
+ <1466197433-11290-2-git-send-email-kdasu.kdev@gmail.com>
+ <20160622160726.GQ28202@sirena.org.uk>
+ <CAKekbevYN3CLvqQs3stUXDFEMREMOJ0g4+w7Zsno1kV-ieYEiw@mail.gmail.com>
+ <20160701160753.GX6247@sirena.org.uk>
+ <CAC=U0a3WN9TGw7zwwP3qFf5MUsRteUcVLytFgjnP4zScZS0xXA@mail.gmail.com>
+ <20160713111053.GG9976@sirena.org.uk> <5786B401.2050306@gmail.com>
+ <20160713223638.GI9976@sirena.org.uk> <578EA695.1030909@gmail.com>
+ <20160720112547.GE6509@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Heiko =?utf-8?Q?St=C3=BCbner?= <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
-	Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>,
-	Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Matt Fleming <matt-HNK1S37rvNbeXh+fF434Mdi2O/JbrIOy@public.gmane.org>,
-	Antonio Ospite <ospite-aNJ+ML1ZbiP93QAQaVx+gl6hYfS7NtTn@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Kamal Dasu <kamal.dasu-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jayachandran C <jchandra-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	bcm-kernel-feedback-list <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	Vikram Prakash <vikram.prakash-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	Andy Fung <andy.fung-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	Jon Mason <jon.mason-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	Yendapally Reddy Dhananjaya Reddy
+	<yendapally.reddy-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20160721204451.GE15995-C3MtFaGISjmo6RMmaWD+6Sb1p8zYI1N1@public.gmane.org>
+In-Reply-To: <20160720112547.GE6509-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Jul 21, 2016 at 04:44:51PM -0400, Rich Felker wrote:
-> On Wed, May 04, 2016 at 06:44:45PM -0400, Rich Felker wrote:
-> > Ping.
-> > 
-> > On Fri, Apr 22, 2016 at 05:28:42PM -0400, Rich Felker wrote:
-> > > I'm working on a driver for the J-core (http://j-core.org) SPI master,
-> > > which is currently limited to PIO and using the spi-bitbang framework
-> > > (probably not the right thing to use, but planned to change, and seems
-> > > orthogonal to the issue at hand). We're using it to access an SD card
-> > > via the mmc_spi mmc host driver, and experiencing crashes/corruption
-> > > that I tracked down to mmc_rescan (we don't yet have an interrupt for
-> > > media change) happening during SPI message transfers. Which locks are
-> > > supposed to preclude this from happening? Is it likely something wrong
-> > > our driver is using, or is there possibly a general bug in the MMC/SPI
-> > > subsystem(s)?
+On 07/20/2016 04:25 AM, Mark Brown wrote:
+> On Tue, Jul 19, 2016 at 03:15:49PM -0700, Florian Fainelli wrote:
+>> On 07/13/2016 03:36 PM, Mark Brown wrote:
 > 
-> Ping. I'm also experiencing this issue with multiple devices on the
-> same spi bus; access seems completely unsynchronized. While it's hard
-> to rule out the possibility of it being specific to the spi master
-> driver, the driver just implements transfer_one and set_cs, so
-> synchronization would necessarily have to happen at a higher level.
-> Any tips on how I could further track down the cause?
+>>> If it was unconditionally in the perhipheral it'd be fairly normal and
+>>> standard but it's not, it's a completely separate and optional register
+>>> block with a bunch of separate code in a driver which already has above
+>>> average complexity even for the bits that belong in it.
+> 
+>> It is not separate nor optional, the fact that the register range seems
+>> discontiguous is just an integration choice here, but it contains bits
+>> that are relevant exclusively to the SPI controller.
+> 
+> Some versions of the block have it, some versions of the block don't
+> have it.  That suggests that it's optional.  It is a completely separate
+> register map, that suggests that it is an external block.
 
-OK, I've been reading the code again, and unless I'm mistaken it's
-utter nonsense.
+Mark, would you oppose to a driver structure that looks like the
+Broadcom NAND driver under drivers/mtd/nand/brcmnand/, where we have
+something like this:
 
-The spi master device has a "bus lock flag" that's used in lieu of a
-recursive mutex, but it seems to be used entirely incorrectly. The
-logic I'm seeing in spi.c is essentially:
+- the core driver only deals with individual interrupt lines which are
+available in the original version of the IP block as integrated on
+Set-top-box/Cable Modem chips
 
-	if (some_task_has_spi_bus_locked)
-		use_spi_master_without_locking();
+- the core driver allows for callbacks to perform additional interupt
+work when that is required for the iProc (Northstar, Northstar Plus,
+Northstar 2) and DSL SoCs where we have additional logic to
+enable/disable/acknowledge interrupt lines
 
-There seems to be no check that the task that's using the master
-without locking is the same one that locked it!
+We came up with this design for the NAND controller driver pretty much
+for the same reasons that the NAND controller originally came from the
+STB/CM group and was later adopted by the iProc SoCs and integrated in a
+way that made the number of layout of interrupts and control register
+different...
 
-The relevant code in spi.c is in __pump_messages, where locking is
-
-	if (!bus_locked)
-		mutex_lock(&master->bus_lock_mutex);
-
-bus_locked was provided by the caller from master->bus_lock_flag.
-
-Also, master->bus_lock_flag is modified completely unsynchonized from
-read access to master->bus_lock_flag. There is no locking of
-master->bus_lock_mutex or master->bus_lock_spinlock around the read
-accesses to master->bus_lock_flag, and in one place the write (of 0)
-to master->bus_lock_flag takes place without holding the spinlock.
-
-The obvious fix would be using an actual recursive mutex to obtain
-recursive mutex semantics.
-
-I've Cc'd everybody who appears to have been involved in the original
-addition of the spi bus lock infrastructure and subsequent changes to
-it.
-
-Rich
+Thanks
+-- 
+Florian
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,51 +1,42 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v6] ARM: sun4i: spi: Allow transfers larger
- than FIFO size
-Date: Thu, 21 Jul 2016 19:20:37 +0100
-Message-ID: <20160721182037.GQ6509@sirena.org.uk>
-References: <1439062912-4405-1-git-send-email-oliver@schinagl.nl>
- <20160721112701.GB6610@weiser.dinsnail.net>
- <20160721163153.GO6509@sirena.org.uk>
- <20160721172712.GA10640@weiser.dinsnail.net>
-Reply-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+From: Rich Felker <dalias-8zAoT0mYgF4@public.gmane.org>
+Subject: Re: Unsynchronized access to spi bus by mmc_rescan?
+Date: Thu, 21 Jul 2016 16:44:51 -0400
+Message-ID: <20160721204451.GE15995@brightrain.aerifal.cx>
+References: <20160422212842.GB21636@brightrain.aerifal.cx>
+ <20160504224445.GW21636@brightrain.aerifal.cx>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="keoAwTxaagou87Dg"
-Cc: Olliver Schinagl <oliver-dxLnbx3+1qmEVqv0pETR8A@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dev-3kdeTeqwOZ9EV1b7eY7vFQ@public.gmane.org,
-	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Michael Weiser <michael.weiser-Mmb7MZpHnFY@public.gmane.org>
-Return-path: <linux-sunxi+bncBDQ2L75W5QGBB75EYS6AKGQE7FOKKKY-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20160721172712.GA10640-kvmrdUZdB1uagOi/AmBnLNHuzzzSOjJt@public.gmane.org>
-List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <https://groups.google.com/group/linux-sunxi
-List-Subscribe: <https://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
- <https://groups.google.com/group/linux-sunxi/subscribe>
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <20160504224445.GW21636-C3MtFaGISjmo6RMmaWD+6Sb1p8zYI1N1@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+On Wed, May 04, 2016 at 06:44:45PM -0400, Rich Felker wrote:
+> Ping.
+> 
+> On Fri, Apr 22, 2016 at 05:28:42PM -0400, Rich Felker wrote:
+> > I'm working on a driver for the J-core (http://j-core.org) SPI master,
+> > which is currently limited to PIO and using the spi-bitbang framework
+> > (probably not the right thing to use, but planned to change, and seems
+> > orthogonal to the issue at hand). We're using it to access an SD card
+> > via the mmc_spi mmc host driver, and experiencing crashes/corruption
+> > that I tracked down to mmc_rescan (we don't yet have an interrupt for
+> > media change) happening during SPI message transfers. Which locks are
+> > supposed to preclude this from happening? Is it likely something wrong
+> > our driver is using, or is there possibly a general bug in the MMC/SPI
+> > subsystem(s)?
 
---keoAwTxaagou87Dg
-Content-Type: text/plain; charset=UTF-8
-Content-Disposition: inline
+Ping. I'm also experiencing this issue with multiple devices on the
+same spi bus; access seems completely unsynchronized. While it's hard
+to rule out the possibility of it being specific to the spi master
+driver, the driver just implements transfer_one and set_cs, so
+synchronization would necessarily have to happen at a higher level.
+Any tips on how I could further track down the cause?
 
-On Thu, Jul 21, 2016 at 07:27:12PM +0200, Michael Weiser wrote:
-> On Thu, Jul 21, 2016 at 05:31:53PM +0100, Mark Brown wrote:
-
-> > > What is keeping the patch from being merged (i.e. into mainline)?
-> > Someone needs to address whatever review comments there were on the last
-> > version and submit it.
-
-> That's my point: There don't seem to be any.
-
-> v6 was resend with fixes to checkpatch niggles on v5:
-> http://lists.infradead.org/pipermail/linux-arm-kernel/2015-August/363073.html
-
-I can't tell if that was even submitted, it's got a subject line of
-"ARM: sun4i" so there's every chance that even if it was sent to me it
-got deleted unread.  Whatever was going on it needs to be submited.
---keoAwTxaagou87Dg--
+Rich
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

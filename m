@@ -1,7 +1,7 @@
 From: Jan Glauber <jglauber@cavium.com>
-Subject: [PATCH 3/6] spi: octeon: Put register offsets into a struct
-Date: Sat, 23 Jul 2016 12:42:52 +0200
-Message-ID: <68bc7f3f56fabc4777de47ec37c8752ab84816dd.1469174814.git.jglauber@cavium.com>
+Subject: [PATCH 4/6] spi: octeon: Move include file from arch/mips to drivers/spi
+Date: Sat, 23 Jul 2016 12:42:53 +0200
+Message-ID: <b1c9628171224d3c28946f6d559376618cd3633d.1469174814.git.jglauber@cavium.com>
 References: <cover.1469174814.git.jglauber@cavium.com>
 Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
 	"Steven J. Hill" <steven.hill@cavium.com>,
@@ -15,140 +15,77 @@ References: <cover.1469174814.git.jglauber@cavium.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Instead of hard-coding the register offsets put them into a struct
-and set them in the probe function.
+Move the register definitions to the drivers directory because they
+are only used there.
 
 Signed-off-by: Jan Glauber <jglauber@cavium.com>
 Tested-by: Steven J. Hill <steven.hill@cavium.com>
 ---
- drivers/spi/spi-octeon.c | 41 +++++++++++++++++++++++++++--------------
- 1 file changed, 27 insertions(+), 14 deletions(-)
+ .../cvmx-mpi-defs.h => drivers/spi/spi-cavium.h    | 32 +---------------------
+ drivers/spi/spi-octeon.c                           |  3 +-
+ 2 files changed, 3 insertions(+), 32 deletions(-)
+ rename arch/mips/include/asm/octeon/cvmx-mpi-defs.h => drivers/spi/spi-cavium.h (84%)
 
+diff --git a/arch/mips/include/asm/octeon/cvmx-mpi-defs.h b/drivers/spi/spi-cavium.h
+similarity index 84%
+rename from arch/mips/include/asm/octeon/cvmx-mpi-defs.h
+rename to drivers/spi/spi-cavium.h
+index 4615b10..d41dba5 100644
+--- a/arch/mips/include/asm/octeon/cvmx-mpi-defs.h
++++ b/drivers/spi/spi-cavium.h
+@@ -1,32 +1,4 @@
+-/***********************license start***************
+- * Author: Cavium Networks
+- *
+- * Contact: support@caviumnetworks.com
+- * This file is part of the OCTEON SDK
+- *
+- * Copyright (c) 2003-2012 Cavium Networks
+- *
+- * This file is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License, Version 2, as
+- * published by the Free Software Foundation.
+- *
+- * This file is distributed in the hope that it will be useful, but
+- * AS-IS and WITHOUT ANY WARRANTY; without even the implied warranty
+- * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE, TITLE, or
+- * NONINFRINGEMENT.  See the GNU General Public License for more
+- * details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this file; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+- * or visit http://www.gnu.org/licenses/.
+- *
+- * This file may also be available under a different license from Cavium.
+- * Contact Cavium Networks for more information
+- ***********************license end**************************************/
+-
+-#ifndef __CVMX_MPI_DEFS_H__
+-#define __CVMX_MPI_DEFS_H__
++/* MPI register descriptions */
+ 
+ #define CVMX_MPI_CFG (CVMX_ADD_IO_SEG(0x0001070000001000ull))
+ #define CVMX_MPI_DATX(offset) (CVMX_ADD_IO_SEG(0x0001070000001080ull) + ((offset) & 15) * 8)
+@@ -324,5 +296,3 @@ union cvmx_mpi_tx {
+ 	struct cvmx_mpi_tx_s cn66xx;
+ 	struct cvmx_mpi_tx_cn61xx cnf71xx;
+ };
+-
+-#endif
 diff --git a/drivers/spi/spi-octeon.c b/drivers/spi/spi-octeon.c
-index e722040..209eddc 100644
+index 209eddc..2180176 100644
 --- a/drivers/spi/spi-octeon.c
 +++ b/drivers/spi/spi-octeon.c
-@@ -17,22 +17,30 @@
- #include <asm/octeon/octeon.h>
- #include <asm/octeon/cvmx-mpi-defs.h>
+@@ -15,7 +15,8 @@
+ #include <linux/of.h>
  
--#define OCTEON_SPI_CFG 0
--#define OCTEON_SPI_STS 0x08
--#define OCTEON_SPI_TX 0x10
--#define OCTEON_SPI_DAT0 0x80
--
+ #include <asm/octeon/octeon.h>
+-#include <asm/octeon/cvmx-mpi-defs.h>
++
++#include "spi-cavium.h"
+ 
  #define OCTEON_SPI_MAX_BYTES 9
  
- #define OCTEON_SPI_MAX_CLOCK_HZ 16000000
- 
-+struct octeon_spi_regs {
-+	int config;
-+	int status;
-+	int tx;
-+	int data;
-+};
-+
- struct octeon_spi {
- 	void __iomem *register_base;
- 	u64 last_cfg;
- 	u64 cs_enax;
- 	int sys_freq;
-+	struct octeon_spi_regs regs;
- };
- 
-+#define OCTEON_SPI_CFG(x)	(x->regs.config)
-+#define OCTEON_SPI_STS(x)	(x->regs.status)
-+#define OCTEON_SPI_TX(x)	(x->regs.tx)
-+#define OCTEON_SPI_DAT0(x)	(x->regs.data)
-+
- static void octeon_spi_wait_ready(struct octeon_spi *p)
- {
- 	union cvmx_mpi_sts mpi_sts;
-@@ -41,7 +49,7 @@ static void octeon_spi_wait_ready(struct octeon_spi *p)
- 	do {
- 		if (loops++)
- 			__delay(500);
--		mpi_sts.u64 = readq(p->register_base + OCTEON_SPI_STS);
-+		mpi_sts.u64 = readq(p->register_base + OCTEON_SPI_STS(p));
- 	} while (mpi_sts.s.busy);
- }
- 
-@@ -83,7 +91,7 @@ static int octeon_spi_do_transfer(struct octeon_spi *p,
- 
- 	if (mpi_cfg.u64 != p->last_cfg) {
- 		p->last_cfg = mpi_cfg.u64;
--		writeq(mpi_cfg.u64, p->register_base + OCTEON_SPI_CFG);
-+		writeq(mpi_cfg.u64, p->register_base + OCTEON_SPI_CFG(p));
- 	}
- 	tx_buf = xfer->tx_buf;
- 	rx_buf = xfer->rx_buf;
-@@ -95,19 +103,19 @@ static int octeon_spi_do_transfer(struct octeon_spi *p,
- 				d = *tx_buf++;
- 			else
- 				d = 0;
--			writeq(d, p->register_base + OCTEON_SPI_DAT0 + (8 * i));
-+			writeq(d, p->register_base + OCTEON_SPI_DAT0(p) + (8 * i));
- 		}
- 		mpi_tx.u64 = 0;
- 		mpi_tx.s.csid = spi->chip_select;
- 		mpi_tx.s.leavecs = 1;
- 		mpi_tx.s.txnum = tx_buf ? OCTEON_SPI_MAX_BYTES : 0;
- 		mpi_tx.s.totnum = OCTEON_SPI_MAX_BYTES;
--		writeq(mpi_tx.u64, p->register_base + OCTEON_SPI_TX);
-+		writeq(mpi_tx.u64, p->register_base + OCTEON_SPI_TX(p));
- 
- 		octeon_spi_wait_ready(p);
- 		if (rx_buf)
- 			for (i = 0; i < OCTEON_SPI_MAX_BYTES; i++) {
--				u64 v = readq(p->register_base + OCTEON_SPI_DAT0 + (8 * i));
-+				u64 v = readq(p->register_base + OCTEON_SPI_DAT0(p) + (8 * i));
- 				*rx_buf++ = (u8)v;
- 			}
- 		len -= OCTEON_SPI_MAX_BYTES;
-@@ -119,7 +127,7 @@ static int octeon_spi_do_transfer(struct octeon_spi *p,
- 			d = *tx_buf++;
- 		else
- 			d = 0;
--		writeq(d, p->register_base + OCTEON_SPI_DAT0 + (8 * i));
-+		writeq(d, p->register_base + OCTEON_SPI_DAT0(p) + (8 * i));
- 	}
- 
- 	mpi_tx.u64 = 0;
-@@ -130,12 +138,12 @@ static int octeon_spi_do_transfer(struct octeon_spi *p,
- 		mpi_tx.s.leavecs = !xfer->cs_change;
- 	mpi_tx.s.txnum = tx_buf ? len : 0;
- 	mpi_tx.s.totnum = len;
--	writeq(mpi_tx.u64, p->register_base + OCTEON_SPI_TX);
-+	writeq(mpi_tx.u64, p->register_base + OCTEON_SPI_TX(p));
- 
- 	octeon_spi_wait_ready(p);
- 	if (rx_buf)
- 		for (i = 0; i < len; i++) {
--			u64 v = readq(p->register_base + OCTEON_SPI_DAT0 + (8 * i));
-+			u64 v = readq(p->register_base + OCTEON_SPI_DAT0(p) + (8 * i));
- 			*rx_buf++ = (u8)v;
- 		}
- 
-@@ -194,6 +202,11 @@ static int octeon_spi_probe(struct platform_device *pdev)
- 	p->register_base = reg_base;
- 	p->sys_freq = octeon_get_io_clock_rate();
- 
-+	p->regs.config = 0;
-+	p->regs.status = 0x08;
-+	p->regs.tx = 0x10;
-+	p->regs.data = 0x80;
-+
- 	master->num_chipselect = 4;
- 	master->mode_bits = SPI_CPHA |
- 			    SPI_CPOL |
-@@ -226,7 +239,7 @@ static int octeon_spi_remove(struct platform_device *pdev)
- 	struct octeon_spi *p = spi_master_get_devdata(master);
- 
- 	/* Clear the CSENA* and put everything in a known state. */
--	writeq(0, p->register_base + OCTEON_SPI_CFG);
-+	writeq(0, p->register_base + OCTEON_SPI_CFG(p));
- 
- 	return 0;
- }
 -- 
 2.9.0.rc0.21.g7777322

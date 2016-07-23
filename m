@@ -1,349 +1,60 @@
-From: Jan Glauber <jglauber@cavium.com>
-Subject: [PATCH 5/6] spi: octeon: Split driver into Octeon specific and common parts
-Date: Sat, 23 Jul 2016 12:42:54 +0200
-Message-ID: <edfc55f3653fedd5e13a8bd1282e089b269a4e61.1469174814.git.jglauber@cavium.com>
-References: <cover.1469174814.git.jglauber@cavium.com>
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	"Steven J. Hill" <steven.hill@cavium.com>,
-	David Daney <david.daney@cavium.com>,
-	Jan Glauber <jglauber@cavium.com>
+From: Nicholas Mc Guire <hofrat@osadl.org>
+Subject: [PATCH] spi: pic32-sqi: fixup wait_for_completion_timeout return handling
+Date: Sat, 23 Jul 2016 21:08:35 +0200
+Message-ID: <1469300915-30903-1-git-send-email-hofrat@osadl.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Nicholas Mc Guire <hofrat@osadl.org>
 To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <cover.1469174814.git.jglauber@cavium.com>
-In-Reply-To: <cover.1469174814.git.jglauber@cavium.com>
-References: <cover.1469174814.git.jglauber@cavium.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Separate driver probing from SPI transfer functions.
+wait_for_completion_timeout returns unsigned long not int so the check for
+<= 0 should be == 0 here, and the type unsigned long. The function return
+is set to -ETIMEDOUT to reflect the actual problem.
 
-Signed-off-by: Jan Glauber <jglauber@cavium.com>
-Tested-by: Steven J. Hill <steven.hill@cavium.com>
+Signed-off-by: Nicholas Mc Guire <hofrat@osadl.org>
 ---
- drivers/spi/Makefile                       |   1 +
- drivers/spi/spi-cavium-octeon.c            | 104 +++++++++++++++++++++++++
- drivers/spi/{spi-octeon.c => spi-cavium.c} | 120 +----------------------------
- drivers/spi/spi-cavium.h                   |  31 ++++++++
- 4 files changed, 138 insertions(+), 118 deletions(-)
- create mode 100644 drivers/spi/spi-cavium-octeon.c
- rename drivers/spi/{spi-octeon.c => spi-cavium.c} (55%)
 
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index 3c74d00..185367e 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -56,6 +56,7 @@ obj-$(CONFIG_SPI_MT65XX)                += spi-mt65xx.o
- obj-$(CONFIG_SPI_MXS)			+= spi-mxs.o
- obj-$(CONFIG_SPI_NUC900)		+= spi-nuc900.o
- obj-$(CONFIG_SPI_OC_TINY)		+= spi-oc-tiny.o
-+spi-octeon-objs				:= spi-cavium.o spi-cavium-octeon.o
- obj-$(CONFIG_SPI_OCTEON)		+= spi-octeon.o
- obj-$(CONFIG_SPI_OMAP_UWIRE)		+= spi-omap-uwire.o
- obj-$(CONFIG_SPI_OMAP_100K)		+= spi-omap-100k.o
-diff --git a/drivers/spi/spi-cavium-octeon.c b/drivers/spi/spi-cavium-octeon.c
-new file mode 100644
-index 0000000..ee4703e
---- /dev/null
-+++ b/drivers/spi/spi-cavium-octeon.c
-@@ -0,0 +1,104 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2011, 2012 Cavium, Inc.
-+ */
-+
-+#include <linux/platform_device.h>
-+#include <linux/spi/spi.h>
-+#include <linux/module.h>
-+#include <linux/io.h>
-+#include <linux/of.h>
-+
-+#include <asm/octeon/octeon.h>
-+
-+#include "spi-cavium.h"
-+
-+static int octeon_spi_probe(struct platform_device *pdev)
-+{
-+	struct resource *res_mem;
-+	void __iomem *reg_base;
-+	struct spi_master *master;
-+	struct octeon_spi *p;
-+	int err = -ENOENT;
-+
-+	master = spi_alloc_master(&pdev->dev, sizeof(struct octeon_spi));
-+	if (!master)
-+		return -ENOMEM;
-+	p = spi_master_get_devdata(master);
-+	platform_set_drvdata(pdev, master);
-+
-+	res_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	reg_base = devm_ioremap_resource(&pdev->dev, res_mem);
-+	if (IS_ERR(reg_base)) {
-+		err = PTR_ERR(reg_base);
-+		goto fail;
-+	}
-+
-+	p->register_base = reg_base;
-+	p->sys_freq = octeon_get_io_clock_rate();
-+
-+	p->regs.config = 0;
-+	p->regs.status = 0x08;
-+	p->regs.tx = 0x10;
-+	p->regs.data = 0x80;
-+
-+	master->num_chipselect = 4;
-+	master->mode_bits = SPI_CPHA |
-+			    SPI_CPOL |
-+			    SPI_CS_HIGH |
-+			    SPI_LSB_FIRST |
-+			    SPI_3WIRE;
-+
-+	master->transfer_one_message = octeon_spi_transfer_one_message;
-+	master->bits_per_word_mask = SPI_BPW_MASK(8);
-+	master->max_speed_hz = OCTEON_SPI_MAX_CLOCK_HZ;
-+
-+	master->dev.of_node = pdev->dev.of_node;
-+	err = devm_spi_register_master(&pdev->dev, master);
-+	if (err) {
-+		dev_err(&pdev->dev, "register master failed: %d\n", err);
-+		goto fail;
-+	}
-+
-+	dev_info(&pdev->dev, "OCTEON SPI bus driver\n");
-+
-+	return 0;
-+fail:
-+	spi_master_put(master);
-+	return err;
-+}
-+
-+static int octeon_spi_remove(struct platform_device *pdev)
-+{
-+	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct octeon_spi *p = spi_master_get_devdata(master);
-+
-+	/* Clear the CSENA* and put everything in a known state. */
-+	writeq(0, p->register_base + OCTEON_SPI_CFG(p));
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id octeon_spi_match[] = {
-+	{ .compatible = "cavium,octeon-3010-spi", },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, octeon_spi_match);
-+
-+static struct platform_driver octeon_spi_driver = {
-+	.driver = {
-+		.name		= "spi-octeon",
-+		.of_match_table = octeon_spi_match,
-+	},
-+	.probe		= octeon_spi_probe,
-+	.remove		= octeon_spi_remove,
-+};
-+
-+module_platform_driver(octeon_spi_driver);
-+
-+MODULE_DESCRIPTION("Cavium, Inc. OCTEON SPI bus driver");
-+MODULE_AUTHOR("David Daney");
-+MODULE_LICENSE("GPL");
-diff --git a/drivers/spi/spi-octeon.c b/drivers/spi/spi-cavium.c
-similarity index 55%
-rename from drivers/spi/spi-octeon.c
-rename to drivers/spi/spi-cavium.c
-index 2180176..5aaf215 100644
---- a/drivers/spi/spi-octeon.c
-+++ b/drivers/spi/spi-cavium.c
-@@ -6,42 +6,13 @@
-  * Copyright (C) 2011, 2012 Cavium, Inc.
-  */
+the only call site of pic32_sqi_one_messag() is in
+drivers/spi/spi.c:__spi_pump_messages() (via struct spi_master
+master->transfer_one_message) which is checking for non-zero
+return only so technically -EIO is fine, for consistency this
+should probably be -ETIMEDOUT though.
+
+Compile tested with: pic32mzda_defconfig + CONFIG_SPI=y,
+CONFIG_SPI_PIC32_SQI=m
+
+Patch is against 4.7.0-rc7 (localversion-next -next-20160719)
+
+ drivers/spi/spi-pic32-sqi.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/spi/spi-pic32-sqi.c b/drivers/spi/spi-pic32-sqi.c
+index ca3c8d9..c41abdd 100644
+--- a/drivers/spi/spi-pic32-sqi.c
++++ b/drivers/spi/spi-pic32-sqi.c
+@@ -354,6 +354,7 @@ static int pic32_sqi_one_message(struct spi_master *master,
+ 	struct spi_transfer *xfer;
+ 	struct pic32_sqi *sqi;
+ 	int ret = 0, mode;
++	unsigned long timeout;
+ 	u32 val;
  
--#include <linux/platform_device.h>
--#include <linux/interrupt.h>
- #include <linux/spi/spi.h>
- #include <linux/module.h>
- #include <linux/delay.h>
- #include <linux/io.h>
--#include <linux/of.h>
--
--#include <asm/octeon/octeon.h>
+ 	sqi = spi_master_get_devdata(master);
+@@ -419,10 +420,10 @@ static int pic32_sqi_one_message(struct spi_master *master,
+ 	writel(val, sqi->regs + PESQI_BD_CTRL_REG);
  
- #include "spi-cavium.h"
- 
--#define OCTEON_SPI_MAX_BYTES 9
--
--#define OCTEON_SPI_MAX_CLOCK_HZ 16000000
--
--struct octeon_spi_regs {
--	int config;
--	int status;
--	int tx;
--	int data;
--};
--
--struct octeon_spi {
--	void __iomem *register_base;
--	u64 last_cfg;
--	u64 cs_enax;
--	int sys_freq;
--	struct octeon_spi_regs regs;
--};
--
--#define OCTEON_SPI_CFG(x)	(x->regs.config)
--#define OCTEON_SPI_STS(x)	(x->regs.status)
--#define OCTEON_SPI_TX(x)	(x->regs.tx)
--#define OCTEON_SPI_DAT0(x)	(x->regs.data)
--
- static void octeon_spi_wait_ready(struct octeon_spi *p)
- {
- 	union cvmx_mpi_sts mpi_sts;
-@@ -154,8 +125,8 @@ static int octeon_spi_do_transfer(struct octeon_spi *p,
- 	return xfer->len;
- }
- 
--static int octeon_spi_transfer_one_message(struct spi_master *master,
--					   struct spi_message *msg)
-+int octeon_spi_transfer_one_message(struct spi_master *master,
-+				    struct spi_message *msg)
- {
- 	struct octeon_spi *p = spi_master_get_devdata(master);
- 	unsigned int total_len = 0;
-@@ -178,90 +149,3 @@ err:
- 	spi_finalize_current_message(master);
- 	return status;
- }
--
--static int octeon_spi_probe(struct platform_device *pdev)
--{
--	struct resource *res_mem;
--	void __iomem *reg_base;
--	struct spi_master *master;
--	struct octeon_spi *p;
--	int err = -ENOENT;
--
--	master = spi_alloc_master(&pdev->dev, sizeof(struct octeon_spi));
--	if (!master)
--		return -ENOMEM;
--	p = spi_master_get_devdata(master);
--	platform_set_drvdata(pdev, master);
--
--	res_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	reg_base = devm_ioremap_resource(&pdev->dev, res_mem);
--	if (IS_ERR(reg_base)) {
--		err = PTR_ERR(reg_base);
--		goto fail;
--	}
--
--	p->register_base = reg_base;
--	p->sys_freq = octeon_get_io_clock_rate();
--
--	p->regs.config = 0;
--	p->regs.status = 0x08;
--	p->regs.tx = 0x10;
--	p->regs.data = 0x80;
--
--	master->num_chipselect = 4;
--	master->mode_bits = SPI_CPHA |
--			    SPI_CPOL |
--			    SPI_CS_HIGH |
--			    SPI_LSB_FIRST |
--			    SPI_3WIRE;
--
--	master->transfer_one_message = octeon_spi_transfer_one_message;
--	master->bits_per_word_mask = SPI_BPW_MASK(8);
--	master->max_speed_hz = OCTEON_SPI_MAX_CLOCK_HZ;
--
--	master->dev.of_node = pdev->dev.of_node;
--	err = devm_spi_register_master(&pdev->dev, master);
--	if (err) {
--		dev_err(&pdev->dev, "register master failed: %d\n", err);
--		goto fail;
--	}
--
--	dev_info(&pdev->dev, "OCTEON SPI bus driver\n");
--
--	return 0;
--fail:
--	spi_master_put(master);
--	return err;
--}
--
--static int octeon_spi_remove(struct platform_device *pdev)
--{
--	struct spi_master *master = platform_get_drvdata(pdev);
--	struct octeon_spi *p = spi_master_get_devdata(master);
--
--	/* Clear the CSENA* and put everything in a known state. */
--	writeq(0, p->register_base + OCTEON_SPI_CFG(p));
--
--	return 0;
--}
--
--static const struct of_device_id octeon_spi_match[] = {
--	{ .compatible = "cavium,octeon-3010-spi", },
--	{},
--};
--MODULE_DEVICE_TABLE(of, octeon_spi_match);
--
--static struct platform_driver octeon_spi_driver = {
--	.driver = {
--		.name		= "spi-octeon",
--		.of_match_table = octeon_spi_match,
--	},
--	.probe		= octeon_spi_probe,
--	.remove		= octeon_spi_remove,
--};
--
--module_platform_driver(octeon_spi_driver);
--
--MODULE_DESCRIPTION("Cavium, Inc. OCTEON SPI bus driver");
--MODULE_AUTHOR("David Daney");
--MODULE_LICENSE("GPL");
-diff --git a/drivers/spi/spi-cavium.h b/drivers/spi/spi-cavium.h
-index d41dba5..88c5f36 100644
---- a/drivers/spi/spi-cavium.h
-+++ b/drivers/spi/spi-cavium.h
-@@ -1,3 +1,32 @@
-+#ifndef __SPI_CAVIUM_H
-+#define __SPI_CAVIUM_H
-+
-+#define OCTEON_SPI_MAX_BYTES 9
-+#define OCTEON_SPI_MAX_CLOCK_HZ 16000000
-+
-+struct octeon_spi_regs {
-+	int config;
-+	int status;
-+	int tx;
-+	int data;
-+};
-+
-+struct octeon_spi {
-+	void __iomem *register_base;
-+	u64 last_cfg;
-+	u64 cs_enax;
-+	int sys_freq;
-+	struct octeon_spi_regs regs;
-+};
-+
-+#define OCTEON_SPI_CFG(x)	(x->regs.config)
-+#define OCTEON_SPI_STS(x)	(x->regs.status)
-+#define OCTEON_SPI_TX(x)	(x->regs.tx)
-+#define OCTEON_SPI_DAT0(x)	(x->regs.data)
-+
-+int octeon_spi_transfer_one_message(struct spi_master *master,
-+				    struct spi_message *msg);
-+
- /* MPI register descriptions */
- 
- #define CVMX_MPI_CFG (CVMX_ADD_IO_SEG(0x0001070000001000ull))
-@@ -296,3 +325,5 @@ union cvmx_mpi_tx {
- 	struct cvmx_mpi_tx_s cn66xx;
- 	struct cvmx_mpi_tx_cn61xx cnf71xx;
- };
-+
-+#endif /* __SPI_CAVIUM_H */
+ 	/* wait for xfer completion */
+-	ret = wait_for_completion_timeout(&sqi->xfer_done, 5 * HZ);
+-	if (ret <= 0) {
++	timeout = wait_for_completion_timeout(&sqi->xfer_done, 5 * HZ);
++	if (timeout == 0) {
+ 		dev_err(&sqi->master->dev, "wait timedout/interrupted\n");
+-		ret = -EIO;
++		ret = -ETIMEDOUT;
+ 		msg->status = ret;
+ 	} else {
+ 		/* success */
 -- 
-2.9.0.rc0.21.g7777322
+2.1.4

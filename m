@@ -1,7 +1,7 @@
 From: Jan Glauber <jglauber@cavium.com>
-Subject: [PATCH 2/6] spi: octeon: Store system clock freqency in struct octeon_spi
-Date: Sat, 23 Jul 2016 12:42:51 +0200
-Message-ID: <b0ca252dc316a20b4111412b5f08e79644b867b1.1469174814.git.jglauber@cavium.com>
+Subject: [PATCH 1/6] spi: octeon: Convert driver to use readq()/writeq() functions
+Date: Sat, 23 Jul 2016 12:42:50 +0200
+Message-ID: <1274287cd1222c1ad50b4f8b4f41cf500eb4ae6a.1469174814.git.jglauber@cavium.com>
 References: <cover.1469174814.git.jglauber@cavium.com>
 Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
 	"Steven J. Hill" <steven.hill@cavium.com>,
@@ -15,53 +15,115 @@ References: <cover.1469174814.git.jglauber@cavium.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Storing the system clock frequency in struct octeon_spi avoids
-calling the MIPS specific octeon_get_io_clock_rate() for every transfer.
+From: "Steven J. Hill" <steven.hill@cavium.com>
 
+Remove all calls to cvmx_read_csr()/cvmx_write_csr() and use
+the portable readq()/writeq() functions.
+
+Signed-off-by: Steven J. Hill <steven.hill@cavium.com>
 Signed-off-by: Jan Glauber <jglauber@cavium.com>
-Tested-by: Steven J. Hill <steven.hill@cavium.com>
 ---
- drivers/spi/spi-octeon.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/spi/spi-octeon.c | 23 +++++++++++------------
+ 1 file changed, 11 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/spi/spi-octeon.c b/drivers/spi/spi-octeon.c
-index b53ba53..e722040 100644
+index 3b17009..b53ba53 100644
 --- a/drivers/spi/spi-octeon.c
 +++ b/drivers/spi/spi-octeon.c
-@@ -30,6 +30,7 @@ struct octeon_spi {
- 	void __iomem *register_base;
+@@ -27,7 +27,7 @@
+ #define OCTEON_SPI_MAX_CLOCK_HZ 16000000
+ 
+ struct octeon_spi {
+-	u64 register_base;
++	void __iomem *register_base;
  	u64 last_cfg;
  	u64 cs_enax;
-+	int sys_freq;
  };
+@@ -40,7 +40,7 @@ static void octeon_spi_wait_ready(struct octeon_spi *p)
+ 	do {
+ 		if (loops++)
+ 			__delay(500);
+-		mpi_sts.u64 = cvmx_read_csr(p->register_base + OCTEON_SPI_STS);
++		mpi_sts.u64 = readq(p->register_base + OCTEON_SPI_STS);
+ 	} while (mpi_sts.s.busy);
+ }
  
- static void octeon_spi_wait_ready(struct octeon_spi *p)
-@@ -53,7 +54,6 @@ static int octeon_spi_do_transfer(struct octeon_spi *p,
- 	union cvmx_mpi_cfg mpi_cfg;
- 	union cvmx_mpi_tx mpi_tx;
- 	unsigned int clkdiv;
--	unsigned int speed_hz;
- 	int mode;
- 	bool cpha, cpol;
- 	const u8 *tx_buf;
-@@ -65,9 +65,7 @@ static int octeon_spi_do_transfer(struct octeon_spi *p,
- 	cpha = mode & SPI_CPHA;
- 	cpol = mode & SPI_CPOL;
+@@ -85,7 +85,7 @@ static int octeon_spi_do_transfer(struct octeon_spi *p,
  
--	speed_hz = xfer->speed_hz;
--
--	clkdiv = octeon_get_io_clock_rate() / (2 * speed_hz);
-+	clkdiv = p->sys_freq / (2 * xfer->speed_hz);
+ 	if (mpi_cfg.u64 != p->last_cfg) {
+ 		p->last_cfg = mpi_cfg.u64;
+-		cvmx_write_csr(p->register_base + OCTEON_SPI_CFG, mpi_cfg.u64);
++		writeq(mpi_cfg.u64, p->register_base + OCTEON_SPI_CFG);
+ 	}
+ 	tx_buf = xfer->tx_buf;
+ 	rx_buf = xfer->rx_buf;
+@@ -97,19 +97,19 @@ static int octeon_spi_do_transfer(struct octeon_spi *p,
+ 				d = *tx_buf++;
+ 			else
+ 				d = 0;
+-			cvmx_write_csr(p->register_base + OCTEON_SPI_DAT0 + (8 * i), d);
++			writeq(d, p->register_base + OCTEON_SPI_DAT0 + (8 * i));
+ 		}
+ 		mpi_tx.u64 = 0;
+ 		mpi_tx.s.csid = spi->chip_select;
+ 		mpi_tx.s.leavecs = 1;
+ 		mpi_tx.s.txnum = tx_buf ? OCTEON_SPI_MAX_BYTES : 0;
+ 		mpi_tx.s.totnum = OCTEON_SPI_MAX_BYTES;
+-		cvmx_write_csr(p->register_base + OCTEON_SPI_TX, mpi_tx.u64);
++		writeq(mpi_tx.u64, p->register_base + OCTEON_SPI_TX);
  
- 	mpi_cfg.u64 = 0;
- 
-@@ -194,6 +192,7 @@ static int octeon_spi_probe(struct platform_device *pdev)
+ 		octeon_spi_wait_ready(p);
+ 		if (rx_buf)
+ 			for (i = 0; i < OCTEON_SPI_MAX_BYTES; i++) {
+-				u64 v = cvmx_read_csr(p->register_base + OCTEON_SPI_DAT0 + (8 * i));
++				u64 v = readq(p->register_base + OCTEON_SPI_DAT0 + (8 * i));
+ 				*rx_buf++ = (u8)v;
+ 			}
+ 		len -= OCTEON_SPI_MAX_BYTES;
+@@ -121,7 +121,7 @@ static int octeon_spi_do_transfer(struct octeon_spi *p,
+ 			d = *tx_buf++;
+ 		else
+ 			d = 0;
+-		cvmx_write_csr(p->register_base + OCTEON_SPI_DAT0 + (8 * i), d);
++		writeq(d, p->register_base + OCTEON_SPI_DAT0 + (8 * i));
  	}
  
- 	p->register_base = reg_base;
-+	p->sys_freq = octeon_get_io_clock_rate();
+ 	mpi_tx.u64 = 0;
+@@ -132,12 +132,12 @@ static int octeon_spi_do_transfer(struct octeon_spi *p,
+ 		mpi_tx.s.leavecs = !xfer->cs_change;
+ 	mpi_tx.s.txnum = tx_buf ? len : 0;
+ 	mpi_tx.s.totnum = len;
+-	cvmx_write_csr(p->register_base + OCTEON_SPI_TX, mpi_tx.u64);
++	writeq(mpi_tx.u64, p->register_base + OCTEON_SPI_TX);
+ 
+ 	octeon_spi_wait_ready(p);
+ 	if (rx_buf)
+ 		for (i = 0; i < len; i++) {
+-			u64 v = cvmx_read_csr(p->register_base + OCTEON_SPI_DAT0 + (8 * i));
++			u64 v = readq(p->register_base + OCTEON_SPI_DAT0 + (8 * i));
+ 			*rx_buf++ = (u8)v;
+ 		}
+ 
+@@ -193,7 +193,7 @@ static int octeon_spi_probe(struct platform_device *pdev)
+ 		goto fail;
+ 	}
+ 
+-	p->register_base = (u64)reg_base;
++	p->register_base = reg_base;
  
  	master->num_chipselect = 4;
  	master->mode_bits = SPI_CPHA |
+@@ -225,10 +225,9 @@ static int octeon_spi_remove(struct platform_device *pdev)
+ {
+ 	struct spi_master *master = platform_get_drvdata(pdev);
+ 	struct octeon_spi *p = spi_master_get_devdata(master);
+-	u64 register_base = p->register_base;
+ 
+ 	/* Clear the CSENA* and put everything in a known state. */
+-	cvmx_write_csr(register_base + OCTEON_SPI_CFG, 0);
++	writeq(0, p->register_base + OCTEON_SPI_CFG);
+ 
+ 	return 0;
+ }
 -- 
 2.9.0.rc0.21.g7777322

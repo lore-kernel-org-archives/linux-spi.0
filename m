@@ -1,62 +1,67 @@
-From: Jan Glauber <jglauber-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH 0/6] SPI ThunderX driver
-Date: Sat, 23 Jul 2016 12:42:49 +0200
-Message-ID: <cover.1469174814.git.jglauber@cavium.com>
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"Steven J. Hill" <steven.hill-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>,
-	David Daney <david.daney-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>,
-	Jan Glauber <jglauber-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Jan Glauber <jglauber@cavium.com>
+Subject: [PATCH 2/6] spi: octeon: Store system clock freqency in struct octeon_spi
+Date: Sat, 23 Jul 2016 12:42:51 +0200
+Message-ID: <b0ca252dc316a20b4111412b5f08e79644b867b1.1469174814.git.jglauber@cavium.com>
+References: <cover.1469174814.git.jglauber@cavium.com>
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+	"Steven J. Hill" <steven.hill@cavium.com>,
+	David Daney <david.daney@cavium.com>,
+	Jan Glauber <jglauber@cavium.com>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <cover.1469174814.git.jglauber@cavium.com>
+In-Reply-To: <cover.1469174814.git.jglauber@cavium.com>
+References: <cover.1469174814.git.jglauber@cavium.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
+Storing the system clock frequency in struct octeon_spi avoids
+calling the MIPS specific octeon_get_io_clock_rate() for every transfer.
 
-This series adds support for SPI on Cavium's ThunderX (arm64). The SPI
-hardware is the same as on MIPS Octeon, the only difference is that the
-device appears as a PCI device. To avoid copy and paste of the Octeon
-driver I've moved the common parts into a shared file.
+Signed-off-by: Jan Glauber <jglauber@cavium.com>
+Tested-by: Steven J. Hill <steven.hill@cavium.com>
+---
+ drivers/spi/spi-octeon.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-Patches #1-5 prepare the Octeon driver for re-use.
-
-Patch #6 adds the ThunderX driver.
-
-The series was tested on MIPS (Edge Router PRO and cn71xx) and ThunderX.
-
-Feedback welcome!
-
-thanks,
-Jan
-
-Jan Glauber (5):
-  spi: octeon: Store system clock freqency in struct octeon_spi
-  spi: octeon: Put register offsets into a struct
-  spi: octeon: Move include file from arch/mips to drivers/spi
-  spi: octeon: Split driver into Octeon specific and common parts
-  spi: octeon: Add thunderx driver
-
-Steven J. Hill (1):
-  spi: octeon: Convert driver to use readq()/writeq() functions
-
- drivers/spi/Kconfig                                |   7 +
- drivers/spi/Makefile                               |   3 +
- drivers/spi/spi-cavium-octeon.c                    | 104 +++++++++
- drivers/spi/spi-cavium-thunderx.c                  | 158 +++++++++++++
- drivers/spi/spi-cavium.c                           | 151 ++++++++++++
- .../cvmx-mpi-defs.h => drivers/spi/spi-cavium.h    |  62 ++---
- drivers/spi/spi-octeon.c                           | 255 ---------------------
- 7 files changed, 456 insertions(+), 284 deletions(-)
- create mode 100644 drivers/spi/spi-cavium-octeon.c
- create mode 100644 drivers/spi/spi-cavium-thunderx.c
- create mode 100644 drivers/spi/spi-cavium.c
- rename arch/mips/include/asm/octeon/cvmx-mpi-defs.h => drivers/spi/spi-cavium.h (84%)
- delete mode 100644 drivers/spi/spi-octeon.c
-
+diff --git a/drivers/spi/spi-octeon.c b/drivers/spi/spi-octeon.c
+index b53ba53..e722040 100644
+--- a/drivers/spi/spi-octeon.c
++++ b/drivers/spi/spi-octeon.c
+@@ -30,6 +30,7 @@ struct octeon_spi {
+ 	void __iomem *register_base;
+ 	u64 last_cfg;
+ 	u64 cs_enax;
++	int sys_freq;
+ };
+ 
+ static void octeon_spi_wait_ready(struct octeon_spi *p)
+@@ -53,7 +54,6 @@ static int octeon_spi_do_transfer(struct octeon_spi *p,
+ 	union cvmx_mpi_cfg mpi_cfg;
+ 	union cvmx_mpi_tx mpi_tx;
+ 	unsigned int clkdiv;
+-	unsigned int speed_hz;
+ 	int mode;
+ 	bool cpha, cpol;
+ 	const u8 *tx_buf;
+@@ -65,9 +65,7 @@ static int octeon_spi_do_transfer(struct octeon_spi *p,
+ 	cpha = mode & SPI_CPHA;
+ 	cpol = mode & SPI_CPOL;
+ 
+-	speed_hz = xfer->speed_hz;
+-
+-	clkdiv = octeon_get_io_clock_rate() / (2 * speed_hz);
++	clkdiv = p->sys_freq / (2 * xfer->speed_hz);
+ 
+ 	mpi_cfg.u64 = 0;
+ 
+@@ -194,6 +192,7 @@ static int octeon_spi_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	p->register_base = reg_base;
++	p->sys_freq = octeon_get_io_clock_rate();
+ 
+ 	master->num_chipselect = 4;
+ 	master->mode_bits = SPI_CPHA |
 -- 
 2.9.0.rc0.21.g7777322
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,88 +1,84 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 6/6] spi: octeon: Add thunderx driver
-Date: Sun, 24 Jul 2016 22:04:52 +0100
-Message-ID: <20160724210452.GB6345@sirena.org.uk>
-References: <cover.1469174814.git.jglauber@cavium.com>
- <f87d7a5ef8a713fb6e64c5d9471e7e5bf2051d18.1469174814.git.jglauber@cavium.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="5I6of5zJg18YgZEa"
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"Steven J. Hill" <steven.hill-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>,
-	David Daney <david.daney-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
-To: Jan Glauber <jglauber-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <f87d7a5ef8a713fb6e64c5d9471e7e5bf2051d18.1469174814.git.jglauber-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: pic32-sqi: fixup wait_for_completion_timeout return handling" to the spi tree
+Date: Sun, 24 Jul 2016 22:06:49 +0100
+Message-ID: <E1bRQbp-0004CG-G7@debutante>
+References: <1469300915-30903-1-git-send-email-hofrat@osadl.org>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Nicholas Mc Guire <hofrat@osadl.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1469300915-30903-1-git-send-email-hofrat@osadl.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---5I6of5zJg18YgZEa
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: pic32-sqi: fixup wait_for_completion_timeout return handling
 
-On Sat, Jul 23, 2016 at 12:42:55PM +0200, Jan Glauber wrote:
+has been applied to the spi tree at
 
-> +config SPI_THUNDERX
-> +	tristate "Cavium ThunderX SPI controller"
-> +	depends on 64BIT && PCI && !CAVIUM_OCTEON_SOC
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-This is a *weird* and most likely broken set of dependencies - why
-exclude this if we're on Octeon (or Octeon happens to have been enabled
-in a config)?
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> +static void thunderx_spi_clock_enable(struct device *dev, struct octeon_spi *p)
-> +{
-> +	int ret;
-> +
-> +	p->clk = devm_clk_get(dev, NULL);
-> +	if (IS_ERR(p->clk)) {
-> +		p->clk = NULL;
-> +		goto skip;
-> +	}
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-This is really not clever - we should be requesting clocks on probe, not
-only when we're trying to enable them, and using devm_ outside of probe
-paths is usually a warning sign too.  Now, this is actually called from
-probe so it works out fine but obviously it'd be better to improve the
-power management to only enable the clock when needed and at that point
-this function will be used and we'll fall into a bad pattern.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-Given how tiny this function is and that we've not bothered splitting
-out any of the other resource acquisition it's probably better to just
-inline it into probe.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-> +	dev_info(&pdev->dev, "Cavium SPI bus driver probed\n");
+Thanks,
+Mark
 
-Again, this is just adding noise to the boot log.
+>From 33d5097dbf650b84238c6ebdfea4a335f64f9608 Mon Sep 17 00:00:00 2001
+From: Nicholas Mc Guire <hofrat@osadl.org>
+Date: Sat, 23 Jul 2016 21:08:35 +0200
+Subject: [PATCH] spi: pic32-sqi: fixup wait_for_completion_timeout return
+ handling
 
-> +#define PCI_DEVICE_ID_THUNDERX_SPI      0xa00b
-> +
-> +static const struct pci_device_id thunderx_spi_pci_id_table[] = {
-> +	{ PCI_DEVICE(PCI_VENDOR_ID_CAVIUM, PCI_DEVICE_ID_THUNDERX_SPI) },
-> +	{ 0, }
-> +};
+wait_for_completion_timeout returns unsigned long not int so the check for
+<= 0 should be == 0 here, and the type unsigned long. The function return
+is set to -ETIMEDOUT to reflect the actual problem.
 
-The define for the device ID doesn't seem to be adding much here.
+Signed-off-by: Nicholas Mc Guire <hofrat@osadl.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-pic32-sqi.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---5I6of5zJg18YgZEa
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJXlS1zAAoJECTWi3JdVIfQfGAH/2tFpOy5l4QPY5ba71xv2ucs
-EB4zSLVICi0N+ebySRF89BD+eSIX/8TPAP5+GjAfAf2BkihtaHzXpzNN3xkD39ed
-VFQdhpS2RS7W55JWEJHtTVLBns4Mhvvt/LBBHrS55c5ph1ERjhd0AT037VXpxktL
-64BHi01sLCrK6jVLACpIYUCn3C93ucCPO+c0iwj1UFA8w8ugBQ1EGRT3AHwPXYR7
-OXd9uV1P8DrwXi1CiRKlN+xFwlQcCX/OP5wum2BexUkusxkruTMsvtZr6OjqbAT+
-ca8gAYpt0NhV3o3A5WABe7mV0RdG0c5BUiRy17IFLR7Dohn2VF1ycllXUhH+nJ0=
-=GbMc
------END PGP SIGNATURE-----
-
---5I6of5zJg18YgZEa--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/drivers/spi/spi-pic32-sqi.c b/drivers/spi/spi-pic32-sqi.c
+index ca3c8d94b290..c41abddab318 100644
+--- a/drivers/spi/spi-pic32-sqi.c
++++ b/drivers/spi/spi-pic32-sqi.c
+@@ -354,6 +354,7 @@ static int pic32_sqi_one_message(struct spi_master *master,
+ 	struct spi_transfer *xfer;
+ 	struct pic32_sqi *sqi;
+ 	int ret = 0, mode;
++	unsigned long timeout;
+ 	u32 val;
+ 
+ 	sqi = spi_master_get_devdata(master);
+@@ -419,10 +420,10 @@ static int pic32_sqi_one_message(struct spi_master *master,
+ 	writel(val, sqi->regs + PESQI_BD_CTRL_REG);
+ 
+ 	/* wait for xfer completion */
+-	ret = wait_for_completion_timeout(&sqi->xfer_done, 5 * HZ);
+-	if (ret <= 0) {
++	timeout = wait_for_completion_timeout(&sqi->xfer_done, 5 * HZ);
++	if (timeout == 0) {
+ 		dev_err(&sqi->master->dev, "wait timedout/interrupted\n");
+-		ret = -EIO;
++		ret = -ETIMEDOUT;
+ 		msg->status = ret;
+ 	} else {
+ 		/* success */
+-- 
+2.8.1

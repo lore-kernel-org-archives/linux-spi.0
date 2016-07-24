@@ -1,19 +1,19 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: pic32-sqi: fixup wait_for_completion_timeout return handling" to the spi tree
-Date: Sun, 24 Jul 2016 22:06:49 +0100
-Message-ID: <E1bRQbp-0004CG-G7@debutante>
-References: <1469300915-30903-1-git-send-email-hofrat@osadl.org>
-Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Nicholas Mc Guire <hofrat@osadl.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1469300915-30903-1-git-send-email-hofrat@osadl.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: pic32: fixup wait_for_completion_timeout return handling" to the spi tree
+Date: Sun, 24 Jul 2016 22:06:54 +0100
+Message-ID: <E1bRQbu-0004D9-Cr@debutante>
+References: <1469302280-32461-1-git-send-email-hofrat@osadl.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Nicholas Mc Guire <hofrat-Q945KHDl0DbYtjvyW6yDsg@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1469302280-32461-1-git-send-email-hofrat-Q945KHDl0DbYtjvyW6yDsg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: pic32-sqi: fixup wait_for_completion_timeout return handling
+   spi: pic32: fixup wait_for_completion_timeout return handling
 
 has been applied to the spi tree at
 
@@ -38,47 +38,47 @@ to this mail.
 Thanks,
 Mark
 
->From 33d5097dbf650b84238c6ebdfea4a335f64f9608 Mon Sep 17 00:00:00 2001
-From: Nicholas Mc Guire <hofrat@osadl.org>
-Date: Sat, 23 Jul 2016 21:08:35 +0200
-Subject: [PATCH] spi: pic32-sqi: fixup wait_for_completion_timeout return
- handling
+>From 57c2b0ddd14d8831cbaab855373fe8797812ea53 Mon Sep 17 00:00:00 2001
+From: Nicholas Mc Guire <hofrat-Q945KHDl0DbYtjvyW6yDsg@public.gmane.org>
+Date: Sat, 23 Jul 2016 21:31:20 +0200
+Subject: [PATCH] spi: pic32: fixup wait_for_completion_timeout return handling
 
 wait_for_completion_timeout returns unsigned long not int so the check for
-<= 0 should be == 0 here, and the type unsigned long. The function return
-is set to -ETIMEDOUT to reflect the actual problem.
+<= 0 should be == 0 here.
 
-Signed-off-by: Nicholas Mc Guire <hofrat@osadl.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Nicholas Mc Guire <hofrat-Q945KHDl0DbYtjvyW6yDsg@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-pic32-sqi.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/spi/spi-pic32.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-pic32-sqi.c b/drivers/spi/spi-pic32-sqi.c
-index ca3c8d94b290..c41abddab318 100644
---- a/drivers/spi/spi-pic32-sqi.c
-+++ b/drivers/spi/spi-pic32-sqi.c
-@@ -354,6 +354,7 @@ static int pic32_sqi_one_message(struct spi_master *master,
- 	struct spi_transfer *xfer;
- 	struct pic32_sqi *sqi;
- 	int ret = 0, mode;
+diff --git a/drivers/spi/spi-pic32.c b/drivers/spi/spi-pic32.c
+index 73db87f805a1..fefb688a3432 100644
+--- a/drivers/spi/spi-pic32.c
++++ b/drivers/spi/spi-pic32.c
+@@ -507,6 +507,7 @@ static int pic32_spi_one_transfer(struct spi_master *master,
+ {
+ 	struct pic32_spi *pic32s;
+ 	bool dma_issued = false;
 +	unsigned long timeout;
- 	u32 val;
+ 	int ret;
  
- 	sqi = spi_master_get_devdata(master);
-@@ -419,10 +420,10 @@ static int pic32_sqi_one_message(struct spi_master *master,
- 	writel(val, sqi->regs + PESQI_BD_CTRL_REG);
+ 	pic32s = spi_master_get_devdata(master);
+@@ -553,8 +554,8 @@ static int pic32_spi_one_transfer(struct spi_master *master,
+ 	}
  
- 	/* wait for xfer completion */
--	ret = wait_for_completion_timeout(&sqi->xfer_done, 5 * HZ);
+ 	/* wait for completion */
+-	ret = wait_for_completion_timeout(&pic32s->xfer_done, 2 * HZ);
 -	if (ret <= 0) {
-+	timeout = wait_for_completion_timeout(&sqi->xfer_done, 5 * HZ);
++	timeout = wait_for_completion_timeout(&pic32s->xfer_done, 2 * HZ);
 +	if (timeout == 0) {
- 		dev_err(&sqi->master->dev, "wait timedout/interrupted\n");
--		ret = -EIO;
-+		ret = -ETIMEDOUT;
- 		msg->status = ret;
- 	} else {
- 		/* success */
+ 		dev_err(&spi->dev, "wait error/timedout\n");
+ 		if (dma_issued) {
+ 			dmaengine_terminate_all(master->dma_rx);
 -- 
 2.8.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

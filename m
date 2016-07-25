@@ -1,179 +1,97 @@
-From: Crt Mori <cmo@melexis.com>
-Subject: Re: [RFC v2] regmap: Add regmap_pipe_read API
-Date: Mon, 25 Jul 2016 09:28:42 +0200
-Message-ID: <CAKv63uufrAKU5M7bwzYT5Pfi+KOC=VhFE8Z1Br9kUVeagi3h=Q@mail.gmail.com>
-References: <c64a366156bd450cae2419890e2ec06b0b09e93b.1469026858.git.leonard.crestez@intel.com>
+From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH v3 00/13] sunxi spi fixes
+Date: Mon, 25 Jul 2016 09:32:04 +0200
+Message-ID: <20160725073204.GD7419@lukather>
+References: <cover.1465490774.git.hramrach@gmail.com>
+ <20160613195716.GD9354@lukather>
+ <CAOMqctS6ZQ3_a97sE2e7H34ZCny2aDE38V1tQA=-SBZwF2sbDQ@mail.gmail.com>
+Reply-To: maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-	Wolfram Sang <wsa@the-dreams.de>, linux-i2c@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	Laurentiu Palcu <laurentiu.palcu@intel.com>,
-	Linux Iio <linux-iio@vger.kernel.org>
-To: Crestez Dan Leonard <leonard.crestez@intel.com>
-Return-path: <linux-i2c-owner@vger.kernel.org>
-In-Reply-To: <c64a366156bd450cae2419890e2ec06b0b09e93b.1469026858.git.leonard.crestez@intel.com>
-Sender: linux-i2c-owner@vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="11Y7aswkeuHtSBEs"
+Cc: linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>, stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>,
+	Russell King <linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
+	Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>,
+	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
+	Simon Horman <horms+renesas-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
+	Sjoerd Simons <sjoerd.simons-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>,
+	Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+	Alison Wang <b18965-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Timo Sigurdsson <public_timo.s-fWgRPtSzPNU3WX+qO2AYSQ@public.gmane.org>,
+	Jonathan Liu <net147-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Gerhard Bertelsmann <info-La43T0Mi4bH5xCKuJOYmCvaTkwRoYoCU@public.gmane.org>,
+	Priit Laes <plaes-q/aMd4JkU83YtjvyW6yDsg@public.gmane.org>,
+	devicetree <devicetree-u79uwXL29TaqPxH82wqD4g@public.gmane.org
+To: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-sunxi+bncBDSJBYGBRIMBB5MA266AKGQEXL5TNPI-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+Content-Disposition: inline
+In-Reply-To: <CAOMqctS6ZQ3_a97sE2e7H34ZCny2aDE38V1tQA=-SBZwF2sbDQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <https://groups.google.com/group/linux-sunxi
+List-Subscribe: <https://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+ <https://groups.google.com/group/linux-sunxi/subscribe>
 List-Id: linux-spi.vger.kernel.org
 
-Adding linux-iio list to this - especially since there are IIO
-drivers which work because of some special case...
 
-Otherwise nice series.
-Crt
-On 20 July 2016 at 17:08, Crestez Dan Leonard <leonard.crestez@intel.com> wrote:
-> The regmap API usually assumes that bulk read operations will read a
-> range of registers but some I2C/SPI devices have certain registers for
-> which a such a read operation will return data from an internal FIFO or
-> some other kind of buffer. Add an explicit API to support bulk read with
-> "output pipe" rather than range semantics.
->
-> Some linux drivers use regmap_bulk_read or regmap_raw_read for such
-> registers, for example mpu6050 or bmi150 from IIO. This only happens to
-> work because when caching is disabled a single short regmap read op will
-> map to a single bus read op and behave as intended. This breaks if
-> caching is enabled and reg+1 happens to be a cacheable register.
->
-> Without regmap support refactoring a driver to enable regmap caching
-> requires separate i2c and spi paths. This is exactly what regmap is
-> supposed to help avoid.
->
-> Suggested-by: Jonathan Cameron <jic23@kernel.org>
-> Signed-off-by: Crestez Dan Leonard <leonard.crestez@intel.com>
->
-> ---
-> Changes since V1:
-> * Improve comments. I think "pipe" is the correct word here.
-> * Rely on void* pointer arithmetic instead of casting to u8*
->
-> The SPMI implementations of regmap_bus have read functions which
-> auto-increment internally and this will not work correctly with
-> regmap_pipe_read. I think the correct fix would be for regmap-spmi to
-> only implement reg_read. This can be considered an acceptable limitation
-> because in order to run into this somebody would have to write new code
-> to call this new API with an SPMI device.
->
-> I attempted to also support this when the underlying bus only supports
-> reg_read (for example an adapter with only I2C_FUNC_SMBUS_BYTE_DATA) but
-> it's not clear how to do this on top of _regmap_read. Apparently this
-> returns the value as an "unsigned int" which needs to be formatted
-> according to val_bytes. Unfortunately map->format.format_val is not
-> always available. Presumably the code dealing with this from regmap_bulk_read
-> should be refactored into a separate function?
->
-> It's not clear why regmap doesn't just always initialize format_val.
->
->  drivers/base/regmap/regmap.c | 64 ++++++++++++++++++++++++++++++++++++++++++++
->  include/linux/regmap.h       |  9 +++++++
->  2 files changed, 73 insertions(+)
->
-> diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
-> index df2d2ef..55c3090 100644
-> --- a/drivers/base/regmap/regmap.c
-> +++ b/drivers/base/regmap/regmap.c
-> @@ -2408,6 +2408,70 @@ int regmap_raw_read(struct regmap *map, unsigned int reg, void *val,
->  EXPORT_SYMBOL_GPL(regmap_raw_read);
->
->  /**
-> + * regmap_pipe_read(): Read data from a register with pipe semantics
-> + *
-> + * @map: Register map to read from
-> + * @reg: Register to read from
-> + * @val: Pointer to data buffer
-> + * @val_len: Length of output buffer in bytes.
-> + *
-> + * The regmap API usually assumes that bulk bus read operations will read a
-> + * range of registers. Some devices have certain registers for which a read
-> + * operation will read a block of data from an internal buffer.
-> + *
-> + * The target register must be volatile but registers after it can be
-> + * completely unrelated cacheable registers.
-> + *
-> + * This will attempt multiple reads as required to read val_len bytes.
-> + *
-> + * This function is not supported over SPMI.
-> + *
-> + * A value of zero will be returned on success, a negative errno will be
-> + * returned in error cases.
-> + */
-> +int regmap_pipe_read(struct regmap *map, unsigned int reg,
-> +                    void *val, size_t val_len)
-> +{
-> +       size_t read_len;
-> +       int ret;
-> +
-> +       if (!map->bus)
-> +               return -EINVAL;
-> +       if (!map->bus->read)
-> +               return -ENOTSUPP;
-> +       if (val_len % map->format.val_bytes)
-> +               return -EINVAL;
-> +       if (!IS_ALIGNED(reg, map->reg_stride))
-> +               return -EINVAL;
-> +       if (val_len == 0)
-> +               return -EINVAL;
-> +
-> +       map->lock(map->lock_arg);
-> +
-> +       if (!regmap_volatile(map, reg)) {
-> +               ret = -EINVAL;
-> +               goto out_unlock;
-> +       }
-> +
-> +       while (val_len) {
-> +               if (map->max_raw_read && map->max_raw_read < val_len)
-> +                       read_len = map->max_raw_read;
-> +               else
-> +                       read_len = val_len;
-> +               ret = _regmap_raw_read(map, reg, val, read_len);
-> +               if (ret)
-> +                       goto out_unlock;
-> +               val += read_len;
-> +               val_len -= read_len;
-> +       }
-> +
-> +out_unlock:
-> +       map->unlock(map->lock_arg);
-> +       return ret;
-> +}
-> +EXPORT_SYMBOL_GPL(regmap_pipe_read);
-> +
-> +/**
->   * regmap_field_read(): Read a value to a single register field
->   *
->   * @field: Register field to read from
-> diff --git a/include/linux/regmap.h b/include/linux/regmap.h
-> index 3dc08ce..18ee90e 100644
-> --- a/include/linux/regmap.h
-> +++ b/include/linux/regmap.h
-> @@ -719,6 +719,8 @@ int regmap_raw_write_async(struct regmap *map, unsigned int reg,
->  int regmap_read(struct regmap *map, unsigned int reg, unsigned int *val);
->  int regmap_raw_read(struct regmap *map, unsigned int reg,
->                     void *val, size_t val_len);
-> +int regmap_pipe_read(struct regmap *map, unsigned int reg,
-> +                    void *val, size_t val_len);
->  int regmap_bulk_read(struct regmap *map, unsigned int reg, void *val,
->                      size_t val_count);
->  int regmap_update_bits_base(struct regmap *map, unsigned int reg,
-> @@ -955,6 +957,13 @@ static inline int regmap_raw_read(struct regmap *map, unsigned int reg,
->         return -EINVAL;
->  }
->
-> +static inline int regmap_pipe_read(struct regmap *map, unsigned int reg,
-> +                                  void *val, size_t val_len)
-> +{
-> +       WARN_ONCE(1, "regmap API is disabled");
-> +       return -EINVAL;
-> +}
-> +
->  static inline int regmap_bulk_read(struct regmap *map, unsigned int reg,
->                                    void *val, size_t val_count)
->  {
-> --
-> 2.7.4
->
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-i2c" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--11Y7aswkeuHtSBEs
+Content-Type: text/plain; charset=UTF-8
+Content-Disposition: inline
+
+On Fri, Jun 17, 2016 at 12:34:44PM +0200, Michal Suchanek wrote:
+> Hello,
+> 
+> On 13 June 2016 at 21:57, Maxime Ripard
+> <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> wrote:
+> > On Mon, Jun 13, 2016 at 05:46:48PM -0000, Michal Suchanek wrote:
+> >> Hello,
+> >>
+> >> This is update of the sunxi spi patches that should give full-featured SPI
+> >> driver.
+> >>
+> >> First three patches fix issues with the current driver and can be of use for
+> >> stable kernels so adding cc for those.
+> >>
+> >> I merged the sun4i and sun6i driver because there several issues that need to
+> >> be fixed in both separately and they are even out of sync wrt some fixes.
+> >> I guess some of the merge patches can be squashed.
+> >>
+> >> I tested this with A10s Olinuxino Micro. I have no sun6i device so I cannot
+> >> tell if that side was broken by this patchset - especially the last patch that
+> >> adds DMA was afaik never tested on sun6i.
+> >
+> >
+> > For the record, I'm still very much opposed to such a merge.
+> 
+> What is the reason against the merge? I did not find the original
+> discussion.
+
+I really prefer some code that is concise and clear but a little
+duplicated over some code that shares every possible lines of code but
+is a giant mess impossible to understand.
+
+I just came across the reg_field stuff in regmap that would allow to
+partially address that problem though, there's still the bit indices
+issue to overcome though.
+
+> I tried to rename everything in the drivers from sun4i and sun6i to
+> sunxi to look at a clean diff and found about 5 differences 2 of which
+> look like a bug.
+
+It's hard to tell without testing.
+
+Maxime
+
+-- 
+Maxime Ripard, Free Electrons
+Embedded Linux and Kernel engineering
+http://free-electrons.com
+--11Y7aswkeuHtSBEs--

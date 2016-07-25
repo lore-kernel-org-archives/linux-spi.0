@@ -1,83 +1,138 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pic32: fixup wait_for_completion_timeout return handling" to the spi tree
-Date: Sun, 24 Jul 2016 22:06:54 +0100
-Message-ID: <E1bRQbu-0004D9-Cr@debutante>
-References: <1469302280-32461-1-git-send-email-hofrat@osadl.org>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Nicholas Mc Guire <hofrat-Q945KHDl0DbYtjvyW6yDsg@public.gmane.org>
+From: Heiko Schocher <hs-ynQEQJNshbs@public.gmane.org>
+Subject: Re: SPI: performance regression when using the common message queuing
+ infrastructure
+Date: Mon, 25 Jul 2016 06:51:41 +0200
+Message-ID: <57959ADD.40700@denx.de>
+References: <577CD464.6050506@atmel.com> <577CD767.2080309@ti.com>
+ <577E0EF3.6000308@atmel.com>
+Reply-To: hs-ynQEQJNshbs@public.gmane.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8;
+	format=flowed
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	"Nicolas.FERRE-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org" <Nicolas.FERRE-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+	"Wenyou.Yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org" <Wenyou.Yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	hs-ynQEQJNshbs@public.gmane.org,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1469302280-32461-1-git-send-email-hofrat-Q945KHDl0DbYtjvyW6yDsg@public.gmane.org>
+In-Reply-To: <577E0EF3.6000308-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+Hello Cyrille,
 
-   spi: pic32: fixup wait_for_completion_timeout return handling
+sorry for the late answer, but just back from holidays ...
 
-has been applied to the spi tree at
+Am 07.07.2016 um 10:12 schrieb Cyrille Pitchen:
+> Hi Grygorii,
+>
+> Le 06/07/2016 12:03, Grygorii Strashko a =C3=A9crit :
+>> On 07/06/2016 12:50 PM, Cyrille Pitchen wrote:
+>>> Hi Mark,
+>>>
+>>> recently Heiko reported to us a performance regression with Atmel S=
+PI
+>>> controllers. He noticed the issue on a sam9g15ek board and I was al=
+so able to
+>>> reproduce it on a sama5d36ek board.
+>>>
+>>> We found out that the performance regression was introduced in 3.14=
+ by commit:
+>>> 8090d6d1a415d3ae1a7208995decfab8f60f4f36
+>>> spi: atmel: Refactor spi-atmel to use SPI framework queue
+>>>
+>>> For the test, I connected a Spansion S25FL512 memory on the SPI1 co=
+ntroller of
+>>> a sama5d36ek board. Then with an oscilloscope I monitored the chip-=
+select, clock
+>>> and MOSI signals on the SPI bus.
+>>>
+>>>
+>>> 1 - Reading 512 bytes from the memory
+>>>
+>>> # dd if=3D/dev/mtd6 bs=3D512 count=3D1 of=3D/dev/null
+>>>
+>>> With the oscilloscope, I measured the time between the chip-select =
+fell before
+>>> the Read Status command (05h) and the chip-select rose after all da=
+ta had been
+>>> read by the 4-byte address Fast Read 1-1-1 command (13h).
+>>>
+>>> 3.14 vanilla                      : 305 =C2=B5s
+>>> 3.14 commit 8090d6d1a415 reverted : 242 =C2=B5s   -21%
+>>>
+>>> 2 - Reading 1000 x 1024 bytes from the memory
+>>>
+>>> # dd if=3D/dev/mtd6 bs=3D1024 count=3D1000 of=3D/dev/null
+>>>
+>>> Still with the scope, I measured the time to read all data.
+>>>
+>>> 3.14 vanilla                      : 435 ms
+>>> 3.14 commit 8090d6d1a415 reverted : 361 ms   -17%
+>>>
+>>>
+>>> Indeed the oscilloscope shows that more time is spent between messa=
+ges and
+>>> transfers.
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+Yes this fits with my observations.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+>>> commit 8090d6d1a415 replaced the tasklet used to manage a SPI messa=
+ge/transfer
+>>> queue by a workqueue provided by the SPI framework.
+>>>
+>>> The support of this (optional) workqueue was introduced by commit:
+>>> ffbbdd21329f3e15eeca6df2d4bc11c04d9d91c0
+>>> spi: create a message queuing infrastructure
+>>>
+>>> Though the commit message claims that is common infrastructure is o=
+ptional,
+>>> the patch also claims the .transfer() hook is deprecated, suggestin=
+g drivers
+>>> should implement the new .transfer_one_message() hook instead.
+>>>
+>>> This is the reason why commit 8090d6d1a415 was submitted. However w=
+e lost
+>>> quite amount of performances moving from our tasklet to the generic=
+ workqueue.
+>>>
+>>> So do you recommend us to keep our current generic implementation r=
+elying on
+>>> the SPI framework workqueue or to go back to a custom implementatio=
+n using
+>>> tasklet?
+>>> If we keep the current implementation, is there a way to improve th=
+e
+>>> performances so we go back to something close to what he had before=
+?
+>>>
+>>> We saw in commit ffbbdd21329f that we can change the workqueue thre=
+ad
+>>> scheduling policy to SCHED_FIFO by setting master->rt.
+>>>
+>>
+>> master->rt is not a good choice as i know and
+>> you may find thread [1] useful for you.
+>>
+>> [1] http://www.spinics.net/lists/linux-rt-users/msg14347.html
+>>
+>
+> thanks for the link, I'll look at it :)
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Thanks for digging into this issue and your tests!
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+Do you have some new results? Can I help you?
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 57c2b0ddd14d8831cbaab855373fe8797812ea53 Mon Sep 17 00:00:00 2001
-From: Nicholas Mc Guire <hofrat-Q945KHDl0DbYtjvyW6yDsg@public.gmane.org>
-Date: Sat, 23 Jul 2016 21:31:20 +0200
-Subject: [PATCH] spi: pic32: fixup wait_for_completion_timeout return handling
-
-wait_for_completion_timeout returns unsigned long not int so the check for
-<= 0 should be == 0 here.
-
-Signed-off-by: Nicholas Mc Guire <hofrat-Q945KHDl0DbYtjvyW6yDsg@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-pic32.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-pic32.c b/drivers/spi/spi-pic32.c
-index 73db87f805a1..fefb688a3432 100644
---- a/drivers/spi/spi-pic32.c
-+++ b/drivers/spi/spi-pic32.c
-@@ -507,6 +507,7 @@ static int pic32_spi_one_transfer(struct spi_master *master,
- {
- 	struct pic32_spi *pic32s;
- 	bool dma_issued = false;
-+	unsigned long timeout;
- 	int ret;
- 
- 	pic32s = spi_master_get_devdata(master);
-@@ -553,8 +554,8 @@ static int pic32_spi_one_transfer(struct spi_master *master,
- 	}
- 
- 	/* wait for completion */
--	ret = wait_for_completion_timeout(&pic32s->xfer_done, 2 * HZ);
--	if (ret <= 0) {
-+	timeout = wait_for_completion_timeout(&pic32s->xfer_done, 2 * HZ);
-+	if (timeout == 0) {
- 		dev_err(&spi->dev, "wait error/timedout\n");
- 		if (dma_issued) {
- 			dmaengine_terminate_all(master->dma_rx);
--- 
-2.8.1
-
+bye,
+Heiko
+--=20
+DENX Software Engineering GmbH,      Managing Director: Wolfgang Denk
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

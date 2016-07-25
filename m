@@ -1,98 +1,127 @@
-From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v3 00/13] sunxi spi fixes
-Date: Mon, 25 Jul 2016 10:03:14 +0200
-Message-ID: <CAOMqctQybJoOfUHGtpmpB_koQ=iY+GpQ_BOL2o0QBbwC_HXC0g@mail.gmail.com>
-References: <cover.1465490774.git.hramrach@gmail.com> <20160613195716.GD9354@lukather>
- <CAOMqctS6ZQ3_a97sE2e7H34ZCny2aDE38V1tQA=-SBZwF2sbDQ@mail.gmail.com> <20160725073204.GD7419@lukather>
-Reply-To: hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: Jan Glauber <jan.glauber-M3mlKVOIwJVv6pq1l3V1OdBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH 5/6] spi: octeon: Split driver into Octeon specific and
+ common parts
+Date: Mon, 25 Jul 2016 13:32:41 +0200
+Message-ID: <20160725113241.GA2849@hardcore>
+References: <cover.1469174814.git.jglauber@cavium.com>
+ <edfc55f3653fedd5e13a8bd1282e089b269a4e61.1469174814.git.jglauber@cavium.com>
+ <CAP=VYLrQDwCfYFCkxd0N4PfgP-2U+pcw_Gm0Yo_8m0=0o3pBrA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>, stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>,
-	Russell King <linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>,
-	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>, Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
-	Simon Horman <horms+renesas-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>, Sjoerd Simons <sjoerd.simons-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>,
-	Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, Alison Wang <b18965-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Timo Sigurdsson <public_timo.s-fWgRPtSzPNU3WX+qO2AYSQ@public.gmane.org>, Jonathan Liu <net147-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Gerhard Bertelsmann <info-La43T0Mi4bH5xCKuJOYmCvaTkwRoYoCU@public.gmane.org>, Priit Laes <plaes-q/aMd4JkU83YtjvyW6yDsg@public.gmane.org>,
-	devicetree <devicetree-u79uwXL29TZNg+MwTxZMZA@public.gmane.org
-To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Return-path: <linux-sunxi+bncBCQMLUOX54MBB2MP266AKGQEQQP3GTA-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-In-Reply-To: <20160725073204.GD7419@lukather>
-List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <https://groups.google.com/group/linux-sunxi
-List-Subscribe: <https://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
- <https://groups.google.com/group/linux-sunxi/subscribe>
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"Steven J. Hill" <steven.hill-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>,
+	"David Daney" <david.daney-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
+To: Paul Gortmaker <paul.gortmaker-CWA4WttNNZF54TAoqtyWWQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAP=VYLrQDwCfYFCkxd0N4PfgP-2U+pcw_Gm0Yo_8m0=0o3pBrA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hello,
+On Sun, Jul 24, 2016 at 02:38:11PM -0400, Paul Gortmaker wrote:
+> On Sat, Jul 23, 2016 at 6:42 AM, Jan Glauber <jglauber-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org> wrote:
+> > Separate driver probing from SPI transfer functions.
+> >
+> > Signed-off-by: Jan Glauber <jglauber-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
+> > Tested-by: Steven J. Hill <steven.hill-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
+> > ---
+> >  drivers/spi/Makefile                       |   1 +
+> >  drivers/spi/spi-cavium-octeon.c            | 104 +++++++++++++++++++++++++
+> >  drivers/spi/{spi-octeon.c => spi-cavium.c} | 120 +----------------------------
+> >  drivers/spi/spi-cavium.h                   |  31 ++++++++
+> >  4 files changed, 138 insertions(+), 118 deletions(-)
+> >  create mode 100644 drivers/spi/spi-cavium-octeon.c
+> >  rename drivers/spi/{spi-octeon.c => spi-cavium.c} (55%)
+> >
+> > diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+> > index 3c74d00..185367e 100644
+> > --- a/drivers/spi/Makefile
+> > +++ b/drivers/spi/Makefile
+> > @@ -56,6 +56,7 @@ obj-$(CONFIG_SPI_MT65XX)                += spi-mt65xx.o
+> >  obj-$(CONFIG_SPI_MXS)                  += spi-mxs.o
+> >  obj-$(CONFIG_SPI_NUC900)               += spi-nuc900.o
+> >  obj-$(CONFIG_SPI_OC_TINY)              += spi-oc-tiny.o
+> > +spi-octeon-objs                                := spi-cavium.o spi-cavium-octeon.o
+> >  obj-$(CONFIG_SPI_OCTEON)               += spi-octeon.o
+> >  obj-$(CONFIG_SPI_OMAP_UWIRE)           += spi-omap-uwire.o
+> >  obj-$(CONFIG_SPI_OMAP_100K)            += spi-omap-100k.o
+> > diff --git a/drivers/spi/spi-cavium-octeon.c b/drivers/spi/spi-cavium-octeon.c
+> > new file mode 100644
+> > index 0000000..ee4703e
+> > --- /dev/null
+> > +++ b/drivers/spi/spi-cavium-octeon.c
+> > @@ -0,0 +1,104 @@
+> > +/*
+> > + * This file is subject to the terms and conditions of the GNU General Public
+> > + * License.  See the file "COPYING" in the main directory of this archive
+> > + * for more details.
+> > + *
+> > + * Copyright (C) 2011, 2012 Cavium, Inc.
+> > + */
+> > +
+> > +#include <linux/platform_device.h>
+> > +#include <linux/spi/spi.h>
+> > +#include <linux/module.h>
+> > +#include <linux/io.h>
+> > +#include <linux/of.h>
+> 
+> [...]
+> 
+> > +MODULE_DEVICE_TABLE(of, octeon_spi_match);
+> > +
+> > +static struct platform_driver octeon_spi_driver = {
+> > +       .driver = {
+> > +               .name           = "spi-octeon",
+> > +               .of_match_table = octeon_spi_match,
+> > +       },
+> > +       .probe          = octeon
+> _spi_probe,
+> > +       .remove         = octeon_spi_remove,
+> > +};
+> > +
+> > +module_platform_driver(octeon_spi_driver);
+> > +
+> > +MODULE_DESCRIPTION("Cavium, Inc. OCTEON SPI bus driver");
+> > +MODULE_AUTHOR("David Daney");
+> > +MODULE_LICENSE("GPL");
+> > diff --git a/drivers/spi/spi-octeon.c b/drivers/spi/spi-cavium.c
+> > similarity index 55%
+> > rename from drivers/spi/spi-octeon.c
+> > rename to drivers/spi/spi-cavium.c
+> > index 2180176..5aaf215 100644
+> > --- a/drivers/spi/spi-octeon.c
+> > +++ b/drivers/spi/spi-cavium.c
+> > @@ -6,42 +6,13 @@
+> >   * Copyright (C) 2011, 2012 Cavium, Inc.
+> >   */
+> >
+> > -#include <linux/platform_device.h>
+> > -#include <linux/interrupt.h>
+> >  #include <linux/spi/spi.h>
+> >  #include <linux/module.h>
+> 
+> It almost looks like all the modular stuff got moved to the new file and
+> maybe the above module.h isn't needed in the original file anymore?
+> 
+> Paul.
+> --
 
-On 25 July 2016 at 09:32, Maxime Ripard
-<maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> wrote:
-> On Fri, Jun 17, 2016 at 12:34:44PM +0200, Michal Suchanek wrote:
->> Hello,
->>
->> On 13 June 2016 at 21:57, Maxime Ripard
->> <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> wrote:
->> > On Mon, Jun 13, 2016 at 05:46:48PM -0000, Michal Suchanek wrote:
->> >> Hello,
->> >>
->> >> This is update of the sunxi spi patches that should give full-featured SPI
->> >> driver.
->> >>
->> >> First three patches fix issues with the current driver and can be of use for
->> >> stable kernels so adding cc for those.
->> >>
->> >> I merged the sun4i and sun6i driver because there several issues that need to
->> >> be fixed in both separately and they are even out of sync wrt some fixes.
->> >> I guess some of the merge patches can be squashed.
->> >>
->> >> I tested this with A10s Olinuxino Micro. I have no sun6i device so I cannot
->> >> tell if that side was broken by this patchset - especially the last patch that
->> >> adds DMA was afaik never tested on sun6i.
->> >
->> >
->> > For the record, I'm still very much opposed to such a merge.
->>
->> What is the reason against the merge? I did not find the original
->> discussion.
->
-> I really prefer some code that is concise and clear but a little
-> duplicated over some code that shares every possible lines of code but
-> is a giant mess impossible to understand.
+Yes, that can be removed. Also io.h isn't needed there.
 
-Yes, it's been tried. In the case of this driver there is more duplication
-than differences. Also bitrot due to different variants receiving different
-updates and fixes crept in already.
+thanks,
+Jan
 
-Adding the remap layer certainly does not make the driver easier to
-understand but it's not becoming giant mess either.
-
->
-> I just came across the reg_field stuff in regmap that would allow to
-> partially address that problem though, there's still the bit indices
-> issue to overcome though.
->
->> I tried to rename everything in the drivers from sun4i and sun6i to
->> sunxi to look at a clean diff and found about 5 differences 2 of which
->> look like a bug.
->
-> It's hard to tell without testing.
-
-I tested the merged (and separate) driver on a H3 board and found a
-type bug in the remap layer.
-
-I also found I can transfer at most 68 bytes without DMA although
-the manuals claim 128 byte FIFO. DMA transfers weren't very reliable
-which may or may not be a wiring issue. I have seen similar issues
-intermittently with SPI on A10s.
-
-Thanks
-
-Michal
+> >  #include <linux/delay.h>
+> >  #include <linux/io.h>
+> > -#include <linux/of.h>
+> > -
+> > -#include <asm/octeon/octeon.h>
+> >
+> >  #include "spi-cavium.h"
+> 
+> [...]
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

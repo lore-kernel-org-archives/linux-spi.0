@@ -1,56 +1,99 @@
-From: David Daney <ddaney-M3mlKVOIwJVv6pq1l3V1OdBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH 6/6] spi: octeon: Add thunderx driver
-Date: Mon, 25 Jul 2016 09:31:15 -0700
-Message-ID: <57963ED3.4090402@caviumnetworks.com>
-References: <cover.1469174814.git.jglauber@cavium.com> <f87d7a5ef8a713fb6e64c5d9471e7e5bf2051d18.1469174814.git.jglauber@cavium.com> <20160724210452.GB6345@sirena.org.uk> <20160725155122.GA2710@hardcore> <20160725161632.GD11806@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Jan Glauber <jan.glauber-M3mlKVOIwJVv6pq1l3V1OdBPR1lH4CV8@public.gmane.org>,
-	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"Steven J. Hill" <steven.hill-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>,
-	David Daney <david.daney-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
+From: kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org
+Subject: [PATCH] spi: vulcan: Add ACPI support for SPI driver
+Date: Tue, 26 Jul 2016 10:52:06 +0530
+Message-ID: <1469510526-7593-1-git-send-email-kamlakant.patel@broadcom.com>
+Cc: Kamlakant Patel <kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jayachandran C <jchandra-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160725161632.GD11806-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 07/25/2016 09:16 AM, Mark Brown wrote:
-> On Mon, Jul 25, 2016 at 05:51:22PM +0200, Jan Glauber wrote:
->> On Sun, Jul 24, 2016 at 10:04:52PM +0100, Mark Brown wrote:
->>> On Sat, Jul 23, 2016 at 12:42:55PM +0200, Jan Glauber wrote:
->
->>>> +	depends on 64BIT && PCI && !CAVIUM_OCTEON_SOC
->
->>> This is a *weird* and most likely broken set of dependencies - why
->>> exclude this if we're on Octeon (or Octeon happens to have been enabled
->>> in a config)?
->
->> I agree that it looks weird, the reasoning is that we would like
->> to avoid making the driver depend on something like ARCH_THUNDER.
->
-> Why?
->
->> So I made the driver depend on the things it actually uses
->> (PCI for probing and 64BIT because of readq/writeq) and don't care if it
->> compiles on other platforms too (like x86).
->
-> The usual pattern would be something like (ARCH_THUNDER || COMPILE_TEST)
-> && PCI && 64BIT (so that people on other platforms where the device will
-> never actually appear don't get bothered by the prompt).
+From: Kamlakant Patel <kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
 
-ARCH_THUNDER needs to die, so perhaps it should be (ARM64 || 
-COMPILE_TEST) && PCI && 64BIT if you really want to hide it from 
-non-arm64 kernel configs.
+Add ACPI support for SPI controller driver on Broadcom Vulcan ARM64
+plateform.
 
+Signed-off-by: Kamlakant Patel <kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+---
+ drivers/spi/spi-xlp.c |   33 ++++++++++++++++++++++++++++-----
+ 1 files changed, 28 insertions(+), 5 deletions(-)
 
->
->> That said, I can remove the !CAVIUM_OCTEON_SOC, it compiles without
->> errors on MIPS too. Would that be ok?
->
-> Sure.
->
+diff --git a/drivers/spi/spi-xlp.c b/drivers/spi/spi-xlp.c
+index 8f04fec..7494254 100644
+--- a/drivers/spi/spi-xlp.c
++++ b/drivers/spi/spi-xlp.c
+@@ -11,6 +11,7 @@
+  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  * GNU General Public License for more details.
+  */
++#include <linux/acpi.h>
+ #include <linux/clk.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+@@ -85,7 +86,7 @@
+ #define XLP_SPI_TXRXTH			0x80
+ #define XLP_SPI_FIFO_SIZE		8
+ #define XLP_SPI_MAX_CS			4
+-#define XLP_SPI_DEFAULT_FREQ		133333333
++#define VULCAN_SPI_DEFAULT_FREQ		133000000
+ #define XLP_SPI_FDIV_MIN		4
+ #define XLP_SPI_FDIV_MAX		65535
+ /*
+@@ -403,11 +404,24 @@ static int xlp_spi_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	clk = devm_clk_get(&pdev->dev, NULL);
+-	if (IS_ERR(clk)) {
+-		dev_err(&pdev->dev, "could not get spi clock\n");
+-		return -ENODEV;
++	if (!IS_ERR(clk)) {
++		xspi->spi_clk = clk_get_rate(clk);
++	} else {
++		u32 freq;
++
++		err = device_property_read_u32(&pdev->dev,
++					"clock-frequency", &freq);
++		if (err) {
++			/*
++			 * Use default SPI frequency for Vulcan unless
++			 * changed by firmaware.
++			 */
++			dev_err(&pdev->dev, "Can't get clock-frequency,
++						using default\n");
++			freq = VULCAN_SPI_DEFAULT_FREQ;
++		}
++		xspi->spi_clk = freq;
+ 	}
+-	xspi->spi_clk = clk_get_rate(clk);
+ 
+ 	master = spi_alloc_master(&pdev->dev, 0);
+ 	if (!master) {
+@@ -437,6 +451,14 @@ static int xlp_spi_probe(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
++#ifdef CONFIG_ACPI
++static const struct acpi_device_id xlp_spi_acpi_match[] = {
++	{ "BRCM900D", 0 },
++	{ },
++};
++MODULE_DEVICE_TABLE(acpi, xlp_spi_acpi_match);
++#endif
++
+ static const struct of_device_id xlp_spi_dt_id[] = {
+ 	{ .compatible = "netlogic,xlp832-spi" },
+ 	{ },
+@@ -447,6 +469,7 @@ static struct platform_driver xlp_spi_driver = {
+ 	.driver = {
+ 		.name	= "xlp-spi",
+ 		.of_match_table = xlp_spi_dt_id,
++		.acpi_match_table = ACPI_PTR(xlp_spi_acpi_match),
+ 	},
+ };
+ module_platform_driver(xlp_spi_driver);
+-- 
+1.7.1
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

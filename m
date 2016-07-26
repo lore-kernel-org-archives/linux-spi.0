@@ -1,46 +1,42 @@
 From: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH -next] spi: core: fix missing unlock on error in __spi_pump_messages()
-Date: Tue, 26 Jul 2016 09:35:33 +0000
-Message-ID: <1469525733-26302-1-git-send-email-weiyj.lk@gmail.com>
+Subject: [PATCH] spi: qup: Remove spi_master_put in spi_qup_remove()
+Date: Tue, 26 Jul 2016 14:53:53 +0000
+Message-ID: <1469544833-32205-1-git-send-email-weiyj.lk@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Cc: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Andy Gross <andy.gross-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	David Brown <david.brown-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Add the missing unlock before return from function
-__spi_pump_messages() in the error handling case.
+The call to spi_master_put() in spi_qup_remove() is redundant since
+the master is registered using devm_spi_register_master() and no
+reference hold by using spi_master_get() in spi_qup_remove().
 
-Fixes: ef4d96ec4ad9 ("spi: Split bus and I/O locking")
+This is detected by Coccinelle semantic patch.
+
 Signed-off-by: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-qup.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 51ad42f..a1be046 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1159,7 +1159,7 @@ static void __spi_pump_messages(struct spi_master *master, bool in_kthread)
- 		if (ret < 0) {
- 			dev_err(&master->dev, "Failed to power device: %d\n",
- 				ret);
--			return;
-+			goto out;
- 		}
- 	}
+diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
+index c338ef1..7f15556 100644
+--- a/drivers/spi/spi-qup.c
++++ b/drivers/spi/spi-qup.c
+@@ -1030,7 +1030,6 @@ static int spi_qup_remove(struct platform_device *pdev)
  
-@@ -1174,7 +1174,7 @@ static void __spi_pump_messages(struct spi_master *master, bool in_kthread)
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+-	spi_master_put(master);
  
- 			if (master->auto_runtime_pm)
- 				pm_runtime_put(master->dev.parent);
--			return;
-+			goto out;
- 		}
- 	}
+ 	return 0;
+ }
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

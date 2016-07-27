@@ -1,19 +1,21 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: img-spfi: Remove spi_master_put in img_spfi_remove()" to the spi tree
-Date: Wed, 27 Jul 2016 20:13:30 +0100
-Message-ID: <E1bSUGo-00050b-JT@debutante>
-References: <1469545075-32446-1-git-send-email-weiyj.lk@gmail.com>
+Subject: Applied "spi: mediatek: remove spi_master_put in mtk_spi_remove()" to the spi tree
+Date: Wed, 27 Jul 2016 20:13:33 +0100
+Message-ID: <E1bSUGr-00051R-Fx@debutante>
+References: <1469545010-32327-1-git-send-email-weiyj.lk@gmail.com>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 To: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1469545075-32446-1-git-send-email-weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1469545010-32327-1-git-send-email-weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: img-spfi: Remove spi_master_put in img_spfi_remove()
+   spi: mediatek: remove spi_master_put in mtk_spi_remove()
 
 has been applied to the spi tree at
 
@@ -38,36 +40,35 @@ to this mail.
 Thanks,
 Mark
 
->From 2932c287108e2987454449b8214eae6db066da85 Mon Sep 17 00:00:00 2001
+>From c2b08cede727387a5e19b40fa8e1a1e3a53e8527 Mon Sep 17 00:00:00 2001
 From: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Tue, 26 Jul 2016 14:57:55 +0000
-Subject: [PATCH] spi: img-spfi: Remove spi_master_put in img_spfi_remove()
+Date: Tue, 26 Jul 2016 14:56:50 +0000
+Subject: [PATCH] spi: mediatek: remove spi_master_put in mtk_spi_remove()
 
-The call to spi_master_put() in img_spfi_remove() is redundant since
+The call to spi_master_put() in mtk_spi_remove() is redundant since
 the master is registered using devm_spi_register_master() and no
-reference hold by using spi_master_get() in img_spfi_remove().
+reference hold by using spi_master_get() in mtk_spi_remove().
 
 This is detected by Coccinelle semantic patch.
 
 Signed-off-by: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-img-spfi.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/spi/spi-mt65xx.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
-index 823cbc92d1e7..7a37090dabbe 100644
---- a/drivers/spi/spi-img-spfi.c
-+++ b/drivers/spi/spi-img-spfi.c
-@@ -720,8 +720,6 @@ static int img_spfi_remove(struct platform_device *pdev)
- 		clk_disable_unprepare(spfi->sys_clk);
- 	}
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index 0be89e052428..899d7a8f0889 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -685,7 +685,6 @@ static int mtk_spi_remove(struct platform_device *pdev)
+ 	pm_runtime_disable(&pdev->dev);
  
+ 	mtk_spi_reset(mdata);
 -	spi_master_put(master);
--
+ 
  	return 0;
  }
- 
 -- 
 2.8.1
 

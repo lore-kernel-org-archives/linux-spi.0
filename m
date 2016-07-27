@@ -1,75 +1,53 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: vulcan: Add ACPI support for SPI driver
-Date: Wed, 27 Jul 2016 19:20:51 +0100
-Message-ID: <20160727182051.GU11806@sirena.org.uk>
-References: <1469510526-7593-1-git-send-email-kamlakant.patel@broadcom.com>
+From: David Daney <ddaney-M3mlKVOIwJVv6pq1l3V1OdBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH 6/6] spi: octeon: Add thunderx driver
+Date: Wed, 27 Jul 2016 11:25:10 -0700
+Message-ID: <5798FC86.8040601@caviumnetworks.com>
+References: <cover.1469174814.git.jglauber@cavium.com> <f87d7a5ef8a713fb6e64c5d9471e7e5bf2051d18.1469174814.git.jglauber@cavium.com> <20160724210452.GB6345@sirena.org.uk> <20160725155122.GA2710@hardcore> <20160725161632.GD11806@sirena.org.uk> <57963ED3.4090402@caviumnetworks.com> <20160727181205.GT11806@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="lCKkSrrNUaKEhaIQ"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jayachandran C <jchandra-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-To: kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Jan Glauber <jan.glauber-M3mlKVOIwJVv6pq1l3V1OdBPR1lH4CV8@public.gmane.org>,
+	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"Steven J. Hill" <steven.hill-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>,
+	David Daney <david.daney-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1469510526-7593-1-git-send-email-kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <20160727181205.GT11806-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On 07/27/2016 11:12 AM, Mark Brown wrote:
+> On Mon, Jul 25, 2016 at 09:31:15AM -0700, David Daney wrote:
+>> On 07/25/2016 09:16 AM, Mark Brown wrote:
+>
+>>> The usual pattern would be something like (ARCH_THUNDER || COMPILE_TEST)
+>>> && PCI && 64BIT (so that people on other platforms where the device will
+>>> never actually appear don't get bothered by the prompt).
+>
+>> ARCH_THUNDER needs to die, so perhaps it should be (ARM64 || COMPILE_TEST)
+>> && PCI && 64BIT if you really want to hide it from non-arm64 kernel configs.
+>
+> It does?  Why?
 
---lCKkSrrNUaKEhaIQ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+It adds clutter.  If we build a generic kernel, we first must select all 
+the ARCH_*, then go back and select the devices we want.  Not much of a 
+value add.
 
-On Tue, Jul 26, 2016 at 10:52:06AM +0530, kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org wrote:
+Better to just directly select the devices and remove this middle ARCH_* 
+layer.
 
-> -	if (IS_ERR(clk)) {
-> -		dev_err(&pdev->dev, "could not get spi clock\n");
-> -		return -ENODEV;
-> +	if (!IS_ERR(clk)) {
-> +		xspi->spi_clk = clk_get_rate(clk);
-> +	} else {
-> +		u32 freq;
-> +
-> +		err = device_property_read_u32(&pdev->dev,
-> +					"clock-frequency", &freq);
+Also who is responsible for making sure the proper ARCH_* constraints 
+are maintained?  If we remove ARCH_THUNDER, no need to worry about this.
 
-Ugh, this is horrible, especially with...
 
-> +		if (err) {
-> +			/*
-> +			 * Use default SPI frequency for Vulcan unless
-> +			 * changed by firmaware.
-> +			 */
-> +			dev_err(&pdev->dev, "Can't get clock-frequency,
-> +						using default\n");
-> +			freq = VULCAN_SPI_DEFAULT_FREQ;
+>  One of the functions of the vendor specific Kconfig
+> options is to improve UX when configuring the kernel, if you're building
+> for a particular SoC or set of SoCs then we can avoid showing you
+> drivers that can never possibly appear in your system which makes life
+> a bit easier.  We shouldn't be using them in the code itself but they do
+> help people in Kconfig.
+>
 
-...this just completely ignoring error handling (it at least needs
-fixing for probe deferral).  This actively breaks things for existing
-users of the driver.  Splitting the log message up like that is also
-very bad, the log message will end up with a newline and a huge number
-of spaces in the middle of it.
-
-This should be specific to the relevant systems, not unconditionally
-changed for all users, and should be implemented by registering a fixed
-clock on the relevant platforms like spi-pxa2xx does on Intel systems so
-that the driver works in the same manner outside of probe on everything.
-
---lCKkSrrNUaKEhaIQ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJXmPuCAAoJECTWi3JdVIfQvncH/2SAPrg+Goxe5WBFD/+SnqxR
-p08q6Kv1xSSaB9Yj09x1awQa8zX/XdHjqNKe+/xkVysS2x7wqfXmv0z7g4vNfHv1
-l1nA92mP9eLtFQbBfnqqzOtjXZ06U45bUWn+6TBSX2YBqjIdMI537NmsG77qo88G
-RjE8QlqXTTschqR6bRpGPN+CBlUO5kDxCTJr+g4TeCCu/ht8z9+2ylQBPWUnvUuX
-R/HJB56C5zCTsNLp3Q+xdtuopfnDqPba5iih8I+InTTWS1ekViGSkMi05ZQ5K5oD
-ZgghO75CT8gTePlLuQUwzXJcwiK0aJU4Vxl7PSszmwwMZzfmHojR9z7av93Y3DY=
-=2yVv
------END PGP SIGNATURE-----
-
---lCKkSrrNUaKEhaIQ--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

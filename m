@@ -1,85 +1,76 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 6/6] spi: octeon: Add thunderx driver
-Date: Wed, 27 Jul 2016 20:08:55 +0100
-Message-ID: <20160727190855.GA11806@sirena.org.uk>
-References: <cover.1469174814.git.jglauber@cavium.com>
- <f87d7a5ef8a713fb6e64c5d9471e7e5bf2051d18.1469174814.git.jglauber@cavium.com>
- <20160724210452.GB6345@sirena.org.uk>
- <20160725155122.GA2710@hardcore>
- <20160725161632.GD11806@sirena.org.uk>
- <57963ED3.4090402@caviumnetworks.com>
- <20160727181205.GT11806@sirena.org.uk>
- <5798FC86.8040601@caviumnetworks.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Qn4G1eBrv+t66M9q"
-Cc: Jan Glauber <jan.glauber-M3mlKVOIwJVv6pq1l3V1OdBPR1lH4CV8@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"Steven J. Hill" <steven.hill-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>,
-	David Daney <david.daney-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
-To: David Daney <ddaney-M3mlKVOIwJVv6pq1l3V1OdBPR1lH4CV8@public.gmane.org>
+Subject: Applied "spi: img-spfi: Remove spi_master_put in img_spfi_remove()" to the spi tree
+Date: Wed, 27 Jul 2016 20:13:30 +0100
+Message-ID: <E1bSUGo-00050b-JT@debutante>
+References: <1469545075-32446-1-git-send-email-weiyj.lk@gmail.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <5798FC86.8040601-M3mlKVOIwJVv6pq1l3V1OdBPR1lH4CV8@public.gmane.org>
+In-Reply-To: <1469545075-32446-1-git-send-email-weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---Qn4G1eBrv+t66M9q
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: img-spfi: Remove spi_master_put in img_spfi_remove()
 
-On Wed, Jul 27, 2016 at 11:25:10AM -0700, David Daney wrote:
-> On 07/27/2016 11:12 AM, Mark Brown wrote:
-> > On Mon, Jul 25, 2016 at 09:31:15AM -0700, David Daney wrote:
+has been applied to the spi tree at
 
-> > > ARCH_THUNDER needs to die, so perhaps it should be (ARM64 || COMPILE_TEST)
-> > > && PCI && 64BIT if you really want to hide it from non-arm64 kernel configs.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> > It does?  Why?
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> It adds clutter.  If we build a generic kernel, we first must select all the
-> ARCH_*, then go back and select the devices we want.  Not much of a value
-> add.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-The value comes when moving to a new kernel version and updating your
-config or doing a new board - if you're building for a specific system
-then you get fewer new driver prompts (especially if you've got a
-smaller number of hotpluggable buses enabled).  This is the much more
-common case for people doing kernel configuration, it did bother people
-a lot in the past.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-> Better to just directly select the devices and remove this middle ARCH_*
-> layer.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-It's one option every time a new vendor appears rather than every time a
-new driver appears - it's a useful quality of life improvement for
-people who are doing system customization that is fairly painless for
-those doing generic kernels (who can just enable everything).
+Thanks,
+Mark
 
-> Also who is responsible for making sure the proper ARCH_* constraints are
-> maintained?  If we remove ARCH_THUNDER, no need to worry about this.
+>From 2932c287108e2987454449b8214eae6db066da85 Mon Sep 17 00:00:00 2001
+From: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Tue, 26 Jul 2016 14:57:55 +0000
+Subject: [PATCH] spi: img-spfi: Remove spi_master_put in img_spfi_remove()
 
-People using the devices or writing drivers...  this really isn't
-particularly challenging and it's not like it's hard to fix if people
-notice issues.
+The call to spi_master_put() in img_spfi_remove() is redundant since
+the master is registered using devm_spi_register_master() and no
+reference hold by using spi_master_get() in img_spfi_remove().
 
---Qn4G1eBrv+t66M9q
-Content-Type: application/pgp-signature; name="signature.asc"
+This is detected by Coccinelle semantic patch.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Signed-off-by: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-img-spfi.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-iQEcBAEBCAAGBQJXmQbGAAoJECTWi3JdVIfQVnIH/0e8h6u1HqlwqR+GLZ0haihW
-/3UDaq83XQmQfBMD9JXEUnztKV59gQPvel4vK7AdOFHyCORcwM9I8T1xtbQP2sXs
-pIrsm1KIAYLBXPDfIoTjwiRHy+rjz7/1iNuhKarUc1k/f4FUnHwmbMp4lXJCBz9a
-HwULPWuCJ+ipn+FdZyfx5ecok5PnWXx/QTaJdQuW8bLLEPO1KZiDK2nQPT1tKmpF
-twuk/OAJE/KbwafJa3s2Kg39JdiNV6/miuEfGgWkCOntgeAW0aivbUcgDNZmFnoa
-ucU7eE7ZKugBTrGwCLKhSKjviuGAcZv4gIbiL2Z3d/Yk/xhCcLHO9F2iNvRYIKs=
-=vlYs
------END PGP SIGNATURE-----
+diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
+index 823cbc92d1e7..7a37090dabbe 100644
+--- a/drivers/spi/spi-img-spfi.c
++++ b/drivers/spi/spi-img-spfi.c
+@@ -720,8 +720,6 @@ static int img_spfi_remove(struct platform_device *pdev)
+ 		clk_disable_unprepare(spfi->sys_clk);
+ 	}
+ 
+-	spi_master_put(master);
+-
+ 	return 0;
+ }
+ 
+-- 
+2.8.1
 
---Qn4G1eBrv+t66M9q--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

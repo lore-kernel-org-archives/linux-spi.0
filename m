@@ -1,79 +1,82 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v4 2/2] spi: add driver for J-Core SPI controller
-Date: Thu, 28 Jul 2016 20:51:25 +0100
-Message-ID: <20160728195125.GN11806@sirena.org.uk>
-References: <cover.1469686300.git.dalias@libc.org>
- <2a46090a5a7c177b7eca83f68406650844423e7f.1469686300.git.dalias@libc.org>
- <20160728191153.GL11806@sirena.org.uk>
- <20160728194045.GK15995@brightrain.aerifal.cx>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="KsSkVHHhotaZRe1D"
-Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>
-To: Rich Felker <dalias-8zAoT0mYgF4@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20160728194045.GK15995-C3MtFaGISjmo6RMmaWD+6Sb1p8zYI1N1@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Subject: Applied "spi: pic32-sqi: use list_move_tail and list_move" to the spi tree
+Date: Thu, 28 Jul 2016 20:56:56 +0100
+Message-ID: <E1bSrQO-00039d-I9@debutante>
+References: <1469722787-15413-1-git-send-email-weiyj.lk@gmail.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1469722787-15413-1-git-send-email-weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---KsSkVHHhotaZRe1D
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: pic32-sqi: use list_move_tail and list_move
 
-On Thu, Jul 28, 2016 at 03:40:45PM -0400, Rich Felker wrote:
-> On Thu, Jul 28, 2016 at 08:11:53PM +0100, Mark Brown wrote:
+has been applied to the spi tree at
 
-> > An architecture or SoC dependency with || COMPILE_TEST would be useful
-> > for avoiding cluttering Kconfig for other users.  Though as this is in a
-> > FPGA it's perhaps likely people will pick this up for other FPGAs so
-> > perhaps a comment to that effect if it seems likely.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> Unlike some of the other SoC hardware (interrupt controller) that's
-> more closely tied to the SH cpu trap behavior, the SPI master seems
-> like something that would be nice and easy to reuse elsewhere. I don't
-> feel strongly about it either way though; I can add the arch dep if
-> you want.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-I guess it depends if anyone is actually doing that or not, if nobody is
-the dependency would be better.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-> > Why are you not using the clock API for this?  Just require a clock and
-> > use clk_get_rate() to find out what rate it is.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-> I thought about that but I'm not familiar with it. I can try to figure
-> it out quickly and test that approach; don't see any reason it
-> shouldn't work. Would you insist on having full support for
-> enabling/disabling the clk when it's in use, or would you be happy
-> with treating it as a fixed clock that's always-on for now and
-> possibly extending it with more functionality later if there's ever
-> hardware where that's relevant/helpful?
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-It's fine to just enable it at startup and leave it on, though the
-runtime PM ops are trivial and you can set auto_runtime_pm to have the
-core do the gets and puts.
+Thanks,
+Mark
 
---KsSkVHHhotaZRe1D
-Content-Type: application/pgp-signature; name="signature.asc"
+>From 27d4b7dbf55c0b5f8cdf12b07401ebd7b41977d0 Mon Sep 17 00:00:00 2001
+From: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Thu, 28 Jul 2016 16:19:47 +0000
+Subject: [PATCH] spi: pic32-sqi: use list_move_tail and list_move
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Using list_move_tail() and list_move() to simplify the code.
 
-iQEcBAEBCAAGBQJXmmI8AAoJECTWi3JdVIfQcUsH/24azC7orxSkRAiAbOE2fiDY
-s9reR3nHmds+Lv+jCtXgAf23W3KXVivaBAd8tNz5jXQyMDBeoqA1pgp5iDyL+/7C
-WICMdYwkuZ3dWzsuPZB85Yu/1SN+pia9NkJDS4+m4ODJA/nmIA0/5G1ZR6dj5Hxr
-L1uWF2pH2685PskB+AhGAqNn3SIJqeOSjy2O178uMKvY99s2Bp2sVFTUW4fk3K/c
-T961zPilop0+csiYDyYD9OzGKN9RUlwSb1Me1dIDbJk7Cj49SMR6ZMqcWL8bkHbA
-8rzsFQ0sbSc0GALjQKtK0VPHcPHLEgMRwnuUfTAdOjr6//3AlcHZiUeA1nxZkOo=
-=6WQn
------END PGP SIGNATURE-----
+Signed-off-by: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-pic32-sqi.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---KsSkVHHhotaZRe1D--
+diff --git a/drivers/spi/spi-pic32-sqi.c b/drivers/spi/spi-pic32-sqi.c
+index c41abddab318..bd1c6b53283f 100644
+--- a/drivers/spi/spi-pic32-sqi.c
++++ b/drivers/spi/spi-pic32-sqi.c
+@@ -253,15 +253,13 @@ static struct ring_desc *ring_desc_get(struct pic32_sqi *sqi)
+ 		return NULL;
+ 
+ 	rdesc = list_first_entry(&sqi->bd_list_free, struct ring_desc, list);
+-	list_del(&rdesc->list);
+-	list_add_tail(&rdesc->list, &sqi->bd_list_used);
++	list_move_tail(&rdesc->list, &sqi->bd_list_used);
+ 	return rdesc;
+ }
+ 
+ static void ring_desc_put(struct pic32_sqi *sqi, struct ring_desc *rdesc)
+ {
+-	list_del(&rdesc->list);
+-	list_add(&rdesc->list, &sqi->bd_list_free);
++	list_move(&rdesc->list, &sqi->bd_list_free);
+ }
+ 
+ static int pic32_sqi_one_transfer(struct pic32_sqi *sqi,
+-- 
+2.8.1
+
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

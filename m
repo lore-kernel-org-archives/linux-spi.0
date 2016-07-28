@@ -1,234 +1,344 @@
-From: Jan Glauber <jglauber-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH v2 2/2] spi: octeon: Add thunderx driver
-Date: Thu, 28 Jul 2016 10:31:44 +0200
-Message-ID: <20160728083144.16625-3-jglauber@cavium.com>
+From: Jan Glauber <jglauber@cavium.com>
+Subject: [PATCH v2 1/2] spi: octeon: Split driver into Octeon specific and common parts
+Date: Thu, 28 Jul 2016 10:31:43 +0200
+Message-ID: <20160728083144.16625-2-jglauber@cavium.com>
 References: <20160728083144.16625-1-jglauber@cavium.com>
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	David Daney <david.daney-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>,
-	"Steven J . Hill" <steven.hill-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>,
-	Jan Glauber <jglauber-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160728083144.16625-1-jglauber-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+	David Daney <david.daney@cavium.com>,
+	"Steven J . Hill" <steven.hill@cavium.com>,
+	Jan Glauber <jglauber@cavium.com>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20160728083144.16625-1-jglauber@cavium.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Add ThunderX SPI driver using the shared part from the Octeon
-driver. The main difference of the ThunderX driver is that it
-is a PCI device so probing is different. The system clock settings
-can be specified in device tree.
+Separate driver probing from SPI transfer functions.
 
-Signed-off-by: Jan Glauber <jglauber-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Jan Glauber <jglauber@cavium.com>
 ---
- drivers/spi/Kconfig               |   7 ++
- drivers/spi/Makefile              |   2 +
- drivers/spi/spi-cavium-thunderx.c | 140 ++++++++++++++++++++++++++++++++++++++
- drivers/spi/spi-cavium.h          |   3 +
- 4 files changed, 152 insertions(+)
- create mode 100644 drivers/spi/spi-cavium-thunderx.c
+ drivers/spi/Makefile                       |   1 +
+ drivers/spi/spi-cavium-octeon.c            | 102 ++++++++++++++++++++++++
+ drivers/spi/{spi-octeon.c => spi-cavium.c} | 122 +----------------------------
+ drivers/spi/spi-cavium.h                   |  31 ++++++++
+ 4 files changed, 136 insertions(+), 120 deletions(-)
+ create mode 100644 drivers/spi/spi-cavium-octeon.c
+ rename drivers/spi/{spi-octeon.c => spi-cavium.c} (54%)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 4b931ec..e0ee112 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -630,6 +630,13 @@ config SPI_TEGRA20_SLINK
- 	help
- 	  SPI driver for Nvidia Tegra20/Tegra30 SLINK Controller interface.
- 
-+config SPI_THUNDERX
-+	tristate "Cavium ThunderX SPI controller"
-+	depends on (ARM64 || CONFIG_TEST) && 64BIT && PCI
-+	help
-+	  SPI host driver for the hardware found on Cavium ThunderX
-+	  SOCs.
-+
- config SPI_TOPCLIFF_PCH
- 	tristate "Intel EG20T PCH/LAPIS Semicon IOH(ML7213/ML7223/ML7831) SPI"
- 	depends on PCI && (X86_32 || MIPS || COMPILE_TEST)
 diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index 185367e..133364b 100644
+index 3c74d00..185367e 100644
 --- a/drivers/spi/Makefile
 +++ b/drivers/spi/Makefile
-@@ -91,6 +91,8 @@ obj-$(CONFIG_SPI_TEGRA114)		+= spi-tegra114.o
- obj-$(CONFIG_SPI_TEGRA20_SFLASH)	+= spi-tegra20-sflash.o
- obj-$(CONFIG_SPI_TEGRA20_SLINK)		+= spi-tegra20-slink.o
- obj-$(CONFIG_SPI_TLE62X0)		+= spi-tle62x0.o
-+spi-thunderx-objs			:= spi-cavium.o spi-cavium-thunderx.o
-+obj-$(CONFIG_SPI_THUNDERX)		+= spi-thunderx.o
- obj-$(CONFIG_SPI_TOPCLIFF_PCH)		+= spi-topcliff-pch.o
- obj-$(CONFIG_SPI_TXX9)			+= spi-txx9.o
- obj-$(CONFIG_SPI_XCOMM)		+= spi-xcomm.o
-diff --git a/drivers/spi/spi-cavium-thunderx.c b/drivers/spi/spi-cavium-thunderx.c
+@@ -56,6 +56,7 @@ obj-$(CONFIG_SPI_MT65XX)                += spi-mt65xx.o
+ obj-$(CONFIG_SPI_MXS)			+= spi-mxs.o
+ obj-$(CONFIG_SPI_NUC900)		+= spi-nuc900.o
+ obj-$(CONFIG_SPI_OC_TINY)		+= spi-oc-tiny.o
++spi-octeon-objs				:= spi-cavium.o spi-cavium-octeon.o
+ obj-$(CONFIG_SPI_OCTEON)		+= spi-octeon.o
+ obj-$(CONFIG_SPI_OMAP_UWIRE)		+= spi-omap-uwire.o
+ obj-$(CONFIG_SPI_OMAP_100K)		+= spi-omap-100k.o
+diff --git a/drivers/spi/spi-cavium-octeon.c b/drivers/spi/spi-cavium-octeon.c
 new file mode 100644
-index 0000000..28c3dcc
+index 0000000..97310c1
 --- /dev/null
-+++ b/drivers/spi/spi-cavium-thunderx.c
-@@ -0,0 +1,140 @@
++++ b/drivers/spi/spi-cavium-octeon.c
+@@ -0,0 +1,102 @@
 +/*
-+ * Cavium ThunderX SPI driver.
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
 + *
-+ * Copyright (C) 2016 Cavium Inc.
-+ * Authors: Jan Glauber <jglauber-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
++ * Copyright (C) 2011, 2012 Cavium, Inc.
 + */
 +
-+#include <linux/delay.h>
-+#include <linux/io.h>
-+#include <linux/module.h>
-+#include <linux/pci.h>
++#include <linux/platform_device.h>
 +#include <linux/spi/spi.h>
++#include <linux/module.h>
++#include <linux/io.h>
++#include <linux/of.h>
++
++#include <asm/octeon/octeon.h>
 +
 +#include "spi-cavium.h"
 +
-+#define DRV_NAME "spi-thunderx"
-+
-+#define SYS_FREQ_DEFAULT 700000000 /* 700 Mhz */
-+
-+static int thunderx_spi_probe(struct pci_dev *pdev,
-+			      const struct pci_device_id *ent)
++static int octeon_spi_probe(struct platform_device *pdev)
 +{
-+	struct device *dev = &pdev->dev;
++	struct resource *res_mem;
++	void __iomem *reg_base;
 +	struct spi_master *master;
 +	struct octeon_spi *p;
-+	int ret = -ENOENT;
++	int err = -ENOENT;
 +
-+	master = spi_alloc_master(dev, sizeof(struct octeon_spi));
++	master = spi_alloc_master(&pdev->dev, sizeof(struct octeon_spi));
 +	if (!master)
 +		return -ENOMEM;
 +	p = spi_master_get_devdata(master);
++	platform_set_drvdata(pdev, master);
 +
-+	ret = pci_enable_device(pdev);
-+	if (ret) {
-+		dev_err(dev, "Failed to enable PCI device\n");
-+		goto out_free;
++	res_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	reg_base = devm_ioremap_resource(&pdev->dev, res_mem);
++	if (IS_ERR(reg_base)) {
++		err = PTR_ERR(reg_base);
++		goto fail;
 +	}
 +
-+	ret = pci_request_regions(pdev, DRV_NAME);
-+	if (ret) {
-+		dev_err(dev, "PCI request regions failed 0x%x\n", ret);
-+		goto out_disable;
-+	}
++	p->register_base = reg_base;
++	p->sys_freq = octeon_get_io_clock_rate();
 +
-+	p->register_base = pci_ioremap_bar(pdev, 0);
-+	if (!p->register_base) {
-+		dev_err(dev, "Cannot map reg base\n");
-+		ret = -EINVAL;
-+		goto out_region;
-+	}
-+
-+	p->regs.config = 0x1000;
-+	p->regs.status = 0x1008;
-+	p->regs.tx = 0x1010;
-+	p->regs.data = 0x1080;
-+
-+	p->clk = devm_clk_get(dev, NULL);
-+	if (IS_ERR(p->clk))
-+		goto out_unmap;
-+
-+	ret = clk_prepare_enable(p->clk);
-+	if (ret)
-+		goto out_clock_devm;
-+
-+	p->sys_freq = clk_get_rate(p->clk);
-+	if (!p->sys_freq)
-+		p->sys_freq = SYS_FREQ_DEFAULT;
-+	dev_info(dev, "Set system clock to %u\n", p->sys_freq);
++	p->regs.config = 0;
++	p->regs.status = 0x08;
++	p->regs.tx = 0x10;
++	p->regs.data = 0x80;
 +
 +	master->num_chipselect = 4;
-+	master->mode_bits = SPI_CPHA | SPI_CPOL | SPI_CS_HIGH |
-+			    SPI_LSB_FIRST | SPI_3WIRE;
++	master->mode_bits = SPI_CPHA |
++			    SPI_CPOL |
++			    SPI_CS_HIGH |
++			    SPI_LSB_FIRST |
++			    SPI_3WIRE;
++
 +	master->transfer_one_message = octeon_spi_transfer_one_message;
 +	master->bits_per_word_mask = SPI_BPW_MASK(8);
 +	master->max_speed_hz = OCTEON_SPI_MAX_CLOCK_HZ;
-+	master->dev.of_node = pdev->dev.of_node;
 +
-+	pci_set_drvdata(pdev, master);
-+	ret = devm_spi_register_master(dev, master);
-+	if (ret) {
-+		dev_err(&pdev->dev, "Register master failed: %d\n", ret);
-+		goto out_clock;
++	master->dev.of_node = pdev->dev.of_node;
++	err = devm_spi_register_master(&pdev->dev, master);
++	if (err) {
++		dev_err(&pdev->dev, "register master failed: %d\n", err);
++		goto fail;
 +	}
 +
 +	return 0;
-+
-+out_clock:
-+	clk_disable_unprepare(p->clk);
-+out_clock_devm:
-+	devm_clk_put(dev, p->clk);
-+out_unmap:
-+	iounmap(p->register_base);
-+out_region:
-+	pci_release_regions(pdev);
-+out_disable:
-+	pci_disable_device(pdev);
-+out_free:
++fail:
 +	spi_master_put(master);
-+	return ret;
++	return err;
 +}
 +
-+static void thunderx_spi_remove(struct pci_dev *pdev)
++static int octeon_spi_remove(struct platform_device *pdev)
 +{
-+	struct spi_master *master = pci_get_drvdata(pdev);
-+	struct octeon_spi *p;
++	struct spi_master *master = platform_get_drvdata(pdev);
++	struct octeon_spi *p = spi_master_get_devdata(master);
 +
-+	p = spi_master_get_devdata(master);
-+	if (!p)
-+		return;
-+
-+	/* Put everything in a known state. */
++	/* Clear the CSENA* and put everything in a known state. */
 +	writeq(0, p->register_base + OCTEON_SPI_CFG(p));
 +
-+	clk_disable_unprepare(p->clk);
-+	devm_clk_put(&pdev->dev, p->clk);
-+	iounmap(p->register_base);
-+	pci_release_regions(pdev);
-+	pci_disable_device(pdev);
-+	pci_set_drvdata(pdev, NULL);
++	return 0;
 +}
 +
-+static const struct pci_device_id thunderx_spi_pci_id_table[] = {
-+	{ PCI_DEVICE(PCI_VENDOR_ID_CAVIUM, 0xa00b) },
-+	{ 0, }
++static const struct of_device_id octeon_spi_match[] = {
++	{ .compatible = "cavium,octeon-3010-spi", },
++	{},
++};
++MODULE_DEVICE_TABLE(of, octeon_spi_match);
++
++static struct platform_driver octeon_spi_driver = {
++	.driver = {
++		.name		= "spi-octeon",
++		.of_match_table = octeon_spi_match,
++	},
++	.probe		= octeon_spi_probe,
++	.remove		= octeon_spi_remove,
 +};
 +
-+MODULE_DEVICE_TABLE(pci, thunderx_spi_pci_id_table);
++module_platform_driver(octeon_spi_driver);
 +
-+static struct pci_driver thunderx_spi_driver = {
-+	.name		= DRV_NAME,
-+	.id_table	= thunderx_spi_pci_id_table,
-+	.probe		= thunderx_spi_probe,
-+	.remove		= thunderx_spi_remove,
-+};
-+
-+module_pci_driver(thunderx_spi_driver);
-+
-+MODULE_DESCRIPTION("Cavium, Inc. ThunderX SPI bus driver");
-+MODULE_AUTHOR("Jan Glauber");
++MODULE_DESCRIPTION("Cavium, Inc. OCTEON SPI bus driver");
++MODULE_AUTHOR("David Daney");
 +MODULE_LICENSE("GPL");
+diff --git a/drivers/spi/spi-octeon.c b/drivers/spi/spi-cavium.c
+similarity index 54%
+rename from drivers/spi/spi-octeon.c
+rename to drivers/spi/spi-cavium.c
+index 2180176..8857e7d 100644
+--- a/drivers/spi/spi-octeon.c
++++ b/drivers/spi/spi-cavium.c
+@@ -6,42 +6,11 @@
+  * Copyright (C) 2011, 2012 Cavium, Inc.
+  */
+ 
+-#include <linux/platform_device.h>
+-#include <linux/interrupt.h>
+ #include <linux/spi/spi.h>
+-#include <linux/module.h>
+ #include <linux/delay.h>
+-#include <linux/io.h>
+-#include <linux/of.h>
+-
+-#include <asm/octeon/octeon.h>
+ 
+ #include "spi-cavium.h"
+ 
+-#define OCTEON_SPI_MAX_BYTES 9
+-
+-#define OCTEON_SPI_MAX_CLOCK_HZ 16000000
+-
+-struct octeon_spi_regs {
+-	int config;
+-	int status;
+-	int tx;
+-	int data;
+-};
+-
+-struct octeon_spi {
+-	void __iomem *register_base;
+-	u64 last_cfg;
+-	u64 cs_enax;
+-	int sys_freq;
+-	struct octeon_spi_regs regs;
+-};
+-
+-#define OCTEON_SPI_CFG(x)	(x->regs.config)
+-#define OCTEON_SPI_STS(x)	(x->regs.status)
+-#define OCTEON_SPI_TX(x)	(x->regs.tx)
+-#define OCTEON_SPI_DAT0(x)	(x->regs.data)
+-
+ static void octeon_spi_wait_ready(struct octeon_spi *p)
+ {
+ 	union cvmx_mpi_sts mpi_sts;
+@@ -154,8 +123,8 @@ static int octeon_spi_do_transfer(struct octeon_spi *p,
+ 	return xfer->len;
+ }
+ 
+-static int octeon_spi_transfer_one_message(struct spi_master *master,
+-					   struct spi_message *msg)
++int octeon_spi_transfer_one_message(struct spi_master *master,
++				    struct spi_message *msg)
+ {
+ 	struct octeon_spi *p = spi_master_get_devdata(master);
+ 	unsigned int total_len = 0;
+@@ -178,90 +147,3 @@ err:
+ 	spi_finalize_current_message(master);
+ 	return status;
+ }
+-
+-static int octeon_spi_probe(struct platform_device *pdev)
+-{
+-	struct resource *res_mem;
+-	void __iomem *reg_base;
+-	struct spi_master *master;
+-	struct octeon_spi *p;
+-	int err = -ENOENT;
+-
+-	master = spi_alloc_master(&pdev->dev, sizeof(struct octeon_spi));
+-	if (!master)
+-		return -ENOMEM;
+-	p = spi_master_get_devdata(master);
+-	platform_set_drvdata(pdev, master);
+-
+-	res_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	reg_base = devm_ioremap_resource(&pdev->dev, res_mem);
+-	if (IS_ERR(reg_base)) {
+-		err = PTR_ERR(reg_base);
+-		goto fail;
+-	}
+-
+-	p->register_base = reg_base;
+-	p->sys_freq = octeon_get_io_clock_rate();
+-
+-	p->regs.config = 0;
+-	p->regs.status = 0x08;
+-	p->regs.tx = 0x10;
+-	p->regs.data = 0x80;
+-
+-	master->num_chipselect = 4;
+-	master->mode_bits = SPI_CPHA |
+-			    SPI_CPOL |
+-			    SPI_CS_HIGH |
+-			    SPI_LSB_FIRST |
+-			    SPI_3WIRE;
+-
+-	master->transfer_one_message = octeon_spi_transfer_one_message;
+-	master->bits_per_word_mask = SPI_BPW_MASK(8);
+-	master->max_speed_hz = OCTEON_SPI_MAX_CLOCK_HZ;
+-
+-	master->dev.of_node = pdev->dev.of_node;
+-	err = devm_spi_register_master(&pdev->dev, master);
+-	if (err) {
+-		dev_err(&pdev->dev, "register master failed: %d\n", err);
+-		goto fail;
+-	}
+-
+-	dev_info(&pdev->dev, "OCTEON SPI bus driver\n");
+-
+-	return 0;
+-fail:
+-	spi_master_put(master);
+-	return err;
+-}
+-
+-static int octeon_spi_remove(struct platform_device *pdev)
+-{
+-	struct spi_master *master = platform_get_drvdata(pdev);
+-	struct octeon_spi *p = spi_master_get_devdata(master);
+-
+-	/* Clear the CSENA* and put everything in a known state. */
+-	writeq(0, p->register_base + OCTEON_SPI_CFG(p));
+-
+-	return 0;
+-}
+-
+-static const struct of_device_id octeon_spi_match[] = {
+-	{ .compatible = "cavium,octeon-3010-spi", },
+-	{},
+-};
+-MODULE_DEVICE_TABLE(of, octeon_spi_match);
+-
+-static struct platform_driver octeon_spi_driver = {
+-	.driver = {
+-		.name		= "spi-octeon",
+-		.of_match_table = octeon_spi_match,
+-	},
+-	.probe		= octeon_spi_probe,
+-	.remove		= octeon_spi_remove,
+-};
+-
+-module_platform_driver(octeon_spi_driver);
+-
+-MODULE_DESCRIPTION("Cavium, Inc. OCTEON SPI bus driver");
+-MODULE_AUTHOR("David Daney");
+-MODULE_LICENSE("GPL");
 diff --git a/drivers/spi/spi-cavium.h b/drivers/spi/spi-cavium.h
-index 88c5f36..1f91d61 100644
+index d41dba5..88c5f36 100644
 --- a/drivers/spi/spi-cavium.h
 +++ b/drivers/spi/spi-cavium.h
-@@ -1,6 +1,8 @@
- #ifndef __SPI_CAVIUM_H
- #define __SPI_CAVIUM_H
- 
-+#include <linux/clk.h>
+@@ -1,3 +1,32 @@
++#ifndef __SPI_CAVIUM_H
++#define __SPI_CAVIUM_H
 +
- #define OCTEON_SPI_MAX_BYTES 9
- #define OCTEON_SPI_MAX_CLOCK_HZ 16000000
++#define OCTEON_SPI_MAX_BYTES 9
++#define OCTEON_SPI_MAX_CLOCK_HZ 16000000
++
++struct octeon_spi_regs {
++	int config;
++	int status;
++	int tx;
++	int data;
++};
++
++struct octeon_spi {
++	void __iomem *register_base;
++	u64 last_cfg;
++	u64 cs_enax;
++	int sys_freq;
++	struct octeon_spi_regs regs;
++};
++
++#define OCTEON_SPI_CFG(x)	(x->regs.config)
++#define OCTEON_SPI_STS(x)	(x->regs.status)
++#define OCTEON_SPI_TX(x)	(x->regs.tx)
++#define OCTEON_SPI_DAT0(x)	(x->regs.data)
++
++int octeon_spi_transfer_one_message(struct spi_master *master,
++				    struct spi_message *msg);
++
+ /* MPI register descriptions */
  
-@@ -17,6 +19,7 @@ struct octeon_spi {
- 	u64 cs_enax;
- 	int sys_freq;
- 	struct octeon_spi_regs regs;
-+	struct clk *clk;
+ #define CVMX_MPI_CFG (CVMX_ADD_IO_SEG(0x0001070000001000ull))
+@@ -296,3 +325,5 @@ union cvmx_mpi_tx {
+ 	struct cvmx_mpi_tx_s cn66xx;
+ 	struct cvmx_mpi_tx_cn61xx cnf71xx;
  };
- 
- #define OCTEON_SPI_CFG(x)	(x->regs.config)
++
++#endif /* __SPI_CAVIUM_H */
 -- 
 2.9.0.rc0.21.g7777322
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

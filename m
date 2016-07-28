@@ -1,77 +1,90 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH, V4, 2/5] spi: bcm-qspi: Add SPI flash and MSPI driver
-Date: Thu, 28 Jul 2016 19:34:21 +0100
-Message-ID: <20160728183421.GJ11806@sirena.org.uk>
-References: <20160622160726.GQ28202@sirena.org.uk>
- <CAKekbevYN3CLvqQs3stUXDFEMREMOJ0g4+w7Zsno1kV-ieYEiw@mail.gmail.com>
- <20160701160753.GX6247@sirena.org.uk>
- <CAC=U0a3WN9TGw7zwwP3qFf5MUsRteUcVLytFgjnP4zScZS0xXA@mail.gmail.com>
- <20160713111053.GG9976@sirena.org.uk>
- <5786B401.2050306@gmail.com>
- <20160713223638.GI9976@sirena.org.uk>
- <578EA695.1030909@gmail.com>
- <20160720112547.GE6509@sirena.org.uk>
- <583d6ec8-b367-b53a-7d9e-1d7ee06004c0@gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v4 2/2] spi: add driver for J-Core SPI controller
+Date: Thu, 28 Jul 2016 20:11:53 +0100
+Message-ID: <20160728191153.GL11806@sirena.org.uk>
+References: <cover.1469686300.git.dalias@libc.org>
+ <2a46090a5a7c177b7eca83f68406650844423e7f.1469686300.git.dalias@libc.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="bmlge7Pg4VPvffji"
-Cc: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Kamal Dasu <kamal.dasu-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jayachandran C <jchandra-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	bcm-kernel-feedback-list <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Vikram Prakash <vikram.prakash-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Andy Fung <andy.fung-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Jon Mason <jon.mason-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Yendapally Reddy Dhananjaya Reddy
-	<yendapally.reddy-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-To: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="Epi5nlKhkk4Kf+ga"
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
+	Rob Herring <robh+dt@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>
+To: Rich Felker <dalias@libc.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <583d6ec8-b367-b53a-7d9e-1d7ee06004c0-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <2a46090a5a7c177b7eca83f68406650844423e7f.1469686300.git.dalias@libc.org>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---bmlge7Pg4VPvffji
+--Epi5nlKhkk4Kf+ga
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Jul 21, 2016 at 03:06:16PM -0700, Florian Fainelli wrote:
+On Sun, Apr 03, 2016 at 05:12:45AM +0000, Rich Felker wrote:
 
-> Mark, would you oppose to a driver structure that looks like the
-> Broadcom NAND driver under drivers/mtd/nand/brcmnand/, where we have
-> something like this:
+> +config SPI_JCORE
+> +	tristate "J-Core SPI Master"
+> +	depends on OF
+> +
 
-> - the core driver only deals with individual interrupt lines which are
-> available in the original version of the IP block as integrated on
-> Set-top-box/Cable Modem chips
+An architecture or SoC dependency with || COMPILE_TEST would be useful
+for avoiding cluttering Kconfig for other users.  Though as this is in a
+FPGA it's perhaps likely people will pick this up for other FPGAs so
+perhaps a comment to that effect if it seems likely.
 
-> - the core driver allows for callbacks to perform additional interupt
-> work when that is required for the iProc (Northstar, Northstar Plus,
-> Northstar 2) and DSL SoCs where we have additional logic to
-> enable/disable/acknowledge interrupt lines
+> +static void jcore_spi_baudrate(struct jcore_spi *hw, int speed)
+> +{
+> +	if (speed == hw->speed_hz) return;
+> +	hw->speed_hz = speed;
+> +	if (speed >= hw->clock_freq/2)
 
-That seems like it might work but I'd need to see the code.  Like I said
-previously it might be easier to deal with this as a separate patch to
-the core driver just from a review/code management point of view.
+Coding style, spaces around /.
 
---bmlge7Pg4VPvffji
+> +	return count<len ? -EREMOTEIO : 0;
+
+Again here, and please also write this as a normal if statement so it's
+easier to read.
+
+> +	/* The SPI clock rate controlled via a configurable clock divider
+> +	 * which is applied to the reference clock. A 50 MHz reference is
+> +	 * most suitable for obtaining standard SPI clock rates, but some
+> +	 * designs may have a different reference clock, and the DT must
+> +	 * make the driver aware so that it can properly program the
+> +	 * requested rate. If omitted, 50 MHz is assumed. */
+> +	clock_freq = 50000000;
+> +	of_property_read_u32(node, "clock-frequency", &clock_freq);
+> +	hw->clock_freq = clock_freq;
+
+Why are you not using the clock API for this?  Just require a clock and
+use clk_get_rate() to find out what rate it is.
+
+> +	pdev->dev.dma_mask = 0;
+
+Why are we doing this?  There's no DMA code...
+
+> +	dev_info(&pdev->dev, "base %p, noirq\n", hw->base);
+
+This is just adding noise to the boot, just remove it - it's useful to
+log information we get from the silicon but things like the base address
+don't really add anything and end up cluttering (and slowing) the boot
+when everything does it.
+
+--Epi5nlKhkk4Kf+ga
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJXmlArAAoJECTWi3JdVIfQxL4H/1nIzCXWn6Js5omGowZ5Zeg7
-glPS0qGHae4RxZz6v9qZKLq+JDhAA9a6rmPNyt0jTNojRl+DbUYO0XwgsW4JERDh
-fp4zZNgXeuReSR2dfa/0XMpjXvnAXdtYpQmi1srzHdvh507bN+j1uH+EI5jICcjy
-bZz677gglCPtLV98Tyaoy8qdtWsq8BfR+84lncWH1YgKJEDLKXUGSMHH4XW/3UuH
-xd4hi31LnnHTFiJ2bt5inikJpiAUoX7qX6KSjYRCX3lVAIMUJ69H35AnPptuCJaK
-97ll+D/EiBH8Z/qoq5VyBoBMM7sTsbqSWatht3vuDdVHUjTb/xUXo2bpzBUeNoM=
-=tw6s
+iQEcBAEBCAAGBQJXmlj4AAoJECTWi3JdVIfQy5QH/35g8/6zlsdIcQujUaCJiXiO
+2zojNTrkofTDrfsHQCT7/5Pp82Q9Dze1XZ3LmAEFLg/mWgJX5VZA89WYBEAw/Jkf
+dEpLBN/FfnnLJH60ReZf80nytfbKIidLm8gpfjrGZ+KNM1UTACOrN5kkwvdJHk+t
+7jQZJ5M/rOu++CFKBmMIE3zXk81GkbPe1OBs8/S0/phTUFEah7GxaJ8i6iK5cECM
+du+mzvYU2D9oiPC4rFeQw3Tcigmm4GmYItsqq3ePYxJBuEB0nHrU3+xFbFvw1OgR
+rMfZjDHM0KWFdZaxozl4UxqbC0RWE8+cbzmjhglxe54BjvDjh59wzhRhfH/uXYk=
+=1y9J
 -----END PGP SIGNATURE-----
 
---bmlge7Pg4VPvffji--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--Epi5nlKhkk4Kf+ga--

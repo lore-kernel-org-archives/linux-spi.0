@@ -1,7 +1,7 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH, V4, 2/5] spi: bcm-qspi: Add SPI flash and MSPI driver
-Date: Thu, 28 Jul 2016 19:28:03 +0100
-Message-ID: <20160728182803.GI11806@sirena.org.uk>
+Date: Thu, 28 Jul 2016 19:34:21 +0100
+Message-ID: <20160728183421.GJ11806@sirena.org.uk>
 References: <20160622160726.GQ28202@sirena.org.uk>
  <CAKekbevYN3CLvqQs3stUXDFEMREMOJ0g4+w7Zsno1kV-ieYEiw@mail.gmail.com>
  <20160701160753.GX6247@sirena.org.uk>
@@ -11,10 +11,10 @@ References: <20160622160726.GQ28202@sirena.org.uk>
  <20160713223638.GI9976@sirena.org.uk>
  <578EA695.1030909@gmail.com>
  <20160720112547.GE6509@sirena.org.uk>
- <578FD3D7.9030402@gmail.com>
+ <583d6ec8-b367-b53a-7d9e-1d7ee06004c0@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Ut0KX4oafLh8aNyr"
+	protocol="application/pgp-signature"; boundary="bmlge7Pg4VPvffji"
 Cc: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Kamal Dasu <kamal.dasu-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jayachandran C <jchandra-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
@@ -27,45 +27,50 @@ Cc: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 To: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <578FD3D7.9030402-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <583d6ec8-b367-b53a-7d9e-1d7ee06004c0-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---Ut0KX4oafLh8aNyr
+--bmlge7Pg4VPvffji
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Jul 20, 2016 at 12:41:11PM -0700, Florian Fainelli wrote:
+On Thu, Jul 21, 2016 at 03:06:16PM -0700, Florian Fainelli wrote:
 
-> Now, as to whether it makes sense to model the IDM enable/disable
-> (intr_regs resource) and the 7 32-bits interrupt status/acknowledge
-> words at the end of the MSPI+BSPI block (intr_status_regs resource) as
-> an interrupt controller makes sense or not, it is kind of hard to say,
-> because really the IDM IO_CONTROL aggregates more than just interrupt
-> enable/disable bits here, but the overall ownership of this IDM
-> IO_CONTROL is clear and it belongs to the SPI function of the system.
+> Mark, would you oppose to a driver structure that looks like the
+> Broadcom NAND driver under drivers/mtd/nand/brcmnand/, where we have
+> something like this:
 
-TBH if that's all it's doing then I'm surprised it's not simple to
-handle it with irq_setup_generic_chip() - have you looked at that at
-all?
+> - the core driver only deals with individual interrupt lines which are
+> available in the original version of the IP block as integrated on
+> Set-top-box/Cable Modem chips
 
---Ut0KX4oafLh8aNyr
+> - the core driver allows for callbacks to perform additional interupt
+> work when that is required for the iProc (Northstar, Northstar Plus,
+> Northstar 2) and DSL SoCs where we have additional logic to
+> enable/disable/acknowledge interrupt lines
+
+That seems like it might work but I'd need to see the code.  Like I said
+previously it might be easier to deal with this as a separate patch to
+the core driver just from a review/code management point of view.
+
+--bmlge7Pg4VPvffji
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJXmk6qAAoJECTWi3JdVIfQNzYH+wbVr6mDCsOwtQLPbg78ewlK
-4tY/klJ92bQgS2FSYHbzFbk6GBrqj17IBFaBbqYU2snQCyrO3OpBl9ZZsYUfx9qu
-RjFRYTKy6DomOEte+bJHl/lv6TvlQhM0oicWLuphq55rTDpupd0XCp6rHDq7rifR
-humZ420mdBWQmCesoiw8gJ4dDrfdc9CKZ/HQl8GC9ZiVVbGVtzLbGmuiJFz60YGD
-pdJWcZcqQR0O4GIpUyOUkCauSH9gczwo9WUquqwvKh+VsPKdKD8NQCX+LkQtWCQs
-I6xMPHgQaZ3jZIpt546SKLrTKzLNj8rVd58PkyP0Txjsl7+f7Iq/EdUaHgJuBt4=
-=vXn6
+iQEcBAEBCAAGBQJXmlArAAoJECTWi3JdVIfQxL4H/1nIzCXWn6Js5omGowZ5Zeg7
+glPS0qGHae4RxZz6v9qZKLq+JDhAA9a6rmPNyt0jTNojRl+DbUYO0XwgsW4JERDh
+fp4zZNgXeuReSR2dfa/0XMpjXvnAXdtYpQmi1srzHdvh507bN+j1uH+EI5jICcjy
+bZz677gglCPtLV98Tyaoy8qdtWsq8BfR+84lncWH1YgKJEDLKXUGSMHH4XW/3UuH
+xd4hi31LnnHTFiJ2bt5inikJpiAUoX7qX6KSjYRCX3lVAIMUJ69H35AnPptuCJaK
+97ll+D/EiBH8Z/qoq5VyBoBMM7sTsbqSWatht3vuDdVHUjTb/xUXo2bpzBUeNoM=
+=tw6s
 -----END PGP SIGNATURE-----
 
---Ut0KX4oafLh8aNyr--
+--bmlge7Pg4VPvffji--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

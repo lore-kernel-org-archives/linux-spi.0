@@ -1,81 +1,71 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pic32-sqi: use list_move_tail and list_move" to the spi tree
-Date: Thu, 28 Jul 2016 20:56:56 +0100
-Message-ID: <E1bSrQO-00039d-I9@debutante>
-References: <1469722787-15413-1-git-send-email-weiyj.lk@gmail.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH, V4, 2/5] spi: bcm-qspi: Add SPI flash and MSPI driver
+Date: Thu, 28 Jul 2016 17:34:50 -0700
+Message-ID: <e3a069ad-ca2b-7c12-bde1-5566f5fe24d3@gmail.com>
+References: <20160622160726.GQ28202@sirena.org.uk>
+ <CAKekbevYN3CLvqQs3stUXDFEMREMOJ0g4+w7Zsno1kV-ieYEiw@mail.gmail.com>
+ <20160701160753.GX6247@sirena.org.uk>
+ <CAC=U0a3WN9TGw7zwwP3qFf5MUsRteUcVLytFgjnP4zScZS0xXA@mail.gmail.com>
+ <20160713111053.GG9976@sirena.org.uk> <5786B401.2050306@gmail.com>
+ <20160713223638.GI9976@sirena.org.uk> <578EA695.1030909@gmail.com>
+ <20160720112547.GE6509@sirena.org.uk> <578FD3D7.9030402@gmail.com>
+ <20160728182803.GI11806@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Kamal Dasu <kamal.dasu-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jayachandran C <jchandra-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	bcm-kernel-feedback-list <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	Vikram Prakash <vikram.prakash-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	Andy Fung <andy.fung-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	Jon Mason <jon.mason-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	Yendapally Reddy Dhananjaya Reddy
+	<yendapally.reddy-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1469722787-15413-1-git-send-email-weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <20160728182803.GI11806-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+On 07/28/2016 11:28 AM, Mark Brown wrote:
+> On Wed, Jul 20, 2016 at 12:41:11PM -0700, Florian Fainelli wrote:
+> 
+>> Now, as to whether it makes sense to model the IDM enable/disable
+>> (intr_regs resource) and the 7 32-bits interrupt status/acknowledge
+>> words at the end of the MSPI+BSPI block (intr_status_regs resource) as
+>> an interrupt controller makes sense or not, it is kind of hard to say,
+>> because really the IDM IO_CONTROL aggregates more than just interrupt
+>> enable/disable bits here, but the overall ownership of this IDM
+>> IO_CONTROL is clear and it belongs to the SPI function of the system.
+> 
+> TBH if that's all it's doing then I'm surprised it's not simple to
+> handle it with irq_setup_generic_chip() - have you looked at that at
+> all?
 
-   spi: pic32-sqi: use list_move_tail and list_move
+The generic IRQ chip model assumes that the mask/unmask/ack logic will
+operate against the same register base address, which won't be the case
+for the NS/NSP/NS2 platforms where the mask/unmask is in one register
+set (coined IDM), and the ack is in another one (actually 7 * 32-bits
+words).
 
-has been applied to the spi tree at
+You would need to write a custom irq_chip implementation to suppor that
+which is not a great fit because it is not dealing with just pure
+interrupt enable/disable bits, but manages a 32-bits word of register
+space which has other controls, and another set of 32-bits words which
+functionally belongs in the SPI controller for interrupt statuses.
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+In that case, my personal preference is to abstract that within a
+SoC-specific glue layer, ala brcmnand, where the SoC that needs this
+glue has full control and clear ownership of this 32-bits word of
+register space. This keeps the SoC-specific logic clean and separate,
+reasonably well abstracted, while making the core SPI driver deal with
+the ideal situation and not knowing how the SoC glues things together.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 27d4b7dbf55c0b5f8cdf12b07401ebd7b41977d0 Mon Sep 17 00:00:00 2001
-From: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Thu, 28 Jul 2016 16:19:47 +0000
-Subject: [PATCH] spi: pic32-sqi: use list_move_tail and list_move
-
-Using list_move_tail() and list_move() to simplify the code.
-
-Signed-off-by: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-pic32-sqi.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/spi/spi-pic32-sqi.c b/drivers/spi/spi-pic32-sqi.c
-index c41abddab318..bd1c6b53283f 100644
---- a/drivers/spi/spi-pic32-sqi.c
-+++ b/drivers/spi/spi-pic32-sqi.c
-@@ -253,15 +253,13 @@ static struct ring_desc *ring_desc_get(struct pic32_sqi *sqi)
- 		return NULL;
- 
- 	rdesc = list_first_entry(&sqi->bd_list_free, struct ring_desc, list);
--	list_del(&rdesc->list);
--	list_add_tail(&rdesc->list, &sqi->bd_list_used);
-+	list_move_tail(&rdesc->list, &sqi->bd_list_used);
- 	return rdesc;
- }
- 
- static void ring_desc_put(struct pic32_sqi *sqi, struct ring_desc *rdesc)
- {
--	list_del(&rdesc->list);
--	list_add(&rdesc->list, &sqi->bd_list_free);
-+	list_move(&rdesc->list, &sqi->bd_list_free);
- }
- 
- static int pic32_sqi_one_transfer(struct pic32_sqi *sqi,
+So yes, we actually did put some thought into this.
 -- 
-2.8.1
-
+Florian
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

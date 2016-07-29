@@ -1,7 +1,8 @@
 From: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v5 0/8]  Broadcom stb, nsp, ns2, cygnus QSPI driver
-Date: Fri, 29 Jul 2016 18:12:13 -0400
-Message-ID: <1469830341-13244-1-git-send-email-kdasu.kdev@gmail.com>
+Subject: [PATCH v5 1/8] Documentation: dt: spi: Add BRCMSTB SoC bindings
+Date: Fri, 29 Jul 2016 18:12:14 -0400
+Message-ID: <1469830341-13244-2-git-send-email-kdasu.kdev@gmail.com>
+References: <1469830341-13244-1-git-send-email-kdasu.kdev@gmail.com>
 Cc: bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, vikram.prakash-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
 	andy.fung-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, jon.mason-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
 	jchandra-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
@@ -9,65 +10,170 @@ To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM
 	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, vigneshr-l0cyMroinI0@public.gmane.org,
 	f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1469830341-13244-1-git-send-email-kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-This is V5 changes for common spi driver for the brcmstb, nsp, ns2, cygnus
-SoCs. Changes include driver for  standard MSPI and accelerated BSPI blocks.
-The Brodcom STB uses l2-intc where as the SoC specific interrupt handling
-code has been separated in a new  driver. In case of NS and NS2 SoCs it does
-not have a dedicated l2 controller and the interrupts are specific to the 
-spi core. The drivers are organized in the follwoing way:
- 
- drivers/spi/spi-bcm-qspi.c      - Common MSPI, BSPI driver
+Added device tree bindings documentation for SoCs supported by the
+new spi-bcm-qspi, spi-brcmstb-qspi driver.
 
- drivers/spi/spi-bcm-qspi.h      - Common header 
-
- drivers/spi/spi-brcmstb-qspi.c  - SoC specific wth brcm,spi-brcmstb-qspi 
-                                   compatibility, does not have anything 
-                                   specific for stb SoC
-
- drivers/spi/spi-nsp-qspi.c      - Implements the interrupt hooks used by 
-                                   the common driver with "brcm,spi-nsp-qspi"
-                                   compatibility
-Changes in V5:
- - Added additional description in the binding documentation non MSPI and BSPI SoC IP
- - Split commits for MSPI spi driver and accelarated BSPI driver used for accelerated
-   flash reads
- - Removed any parsing of transfer structures for commands
- - Other code cleanup for readability
- - Kept the interrupt handling code in separate driver, since hardware abstraction and l2
-   controller driver in software do not exisit certain SoCs
-
-Kamal Dasu (8):
-  Documentation: dt: spi: Add BRCMSTB SoC bindings
-  spi: bcm-qspi: Add Broadcom MSPI driver
-  spi: bcm-qspi: Add BSPI spi-nor flash controller driver
-  mtd: m25p80: Let m25p80_read() fallback to spi transfer
-  Documentation: dt: spi: Add Broadcom NSP, NS2 SoC bindings
-  arm: dts: Add bcm-nsp and bcm958625k support
-  arm64: dts: Add ns2 SoC support
-  spi: nsp-qspi: Add Broadcom NSP, NS2, Cygnus SoC support
-
- .../devicetree/bindings/spi/brcm,spi-bcm-qspi.txt  |  235 ++++
- arch/arm/boot/dts/bcm-nsp.dtsi                     |   33 +-
- arch/arm/boot/dts/bcm958625k.dts                   |   34 +
- arch/arm64/boot/dts/broadcom/ns2-svk.dts           |   34 +-
- arch/arm64/boot/dts/broadcom/ns2.dtsi              |   19 +
- drivers/mtd/devices/m25p80.c                       |    7 +-
- drivers/spi/Kconfig                                |   10 +
- drivers/spi/Makefile                               |    1 +
- drivers/spi/spi-bcm-qspi.c                         | 1440 ++++++++++++++++++++
- drivers/spi/spi-bcm-qspi.h                         |  112 ++
- drivers/spi/spi-brcmstb-qspi.c                     |   53 +
- drivers/spi/spi-nsp-qspi.c                         |  158 +++
- 12 files changed, 2126 insertions(+), 10 deletions(-)
+Signed-off-by: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ .../devicetree/bindings/spi/brcm,spi-bcm-qspi.txt  | 145 +++++++++++++++++++++
+ 1 file changed, 145 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/spi/brcm,spi-bcm-qspi.txt
- create mode 100644 drivers/spi/spi-bcm-qspi.c
- create mode 100644 drivers/spi/spi-bcm-qspi.h
- create mode 100644 drivers/spi/spi-brcmstb-qspi.c
- create mode 100644 drivers/spi/spi-nsp-qspi.c
 
+diff --git a/Documentation/devicetree/bindings/spi/brcm,spi-bcm-qspi.txt b/Documentation/devicetree/bindings/spi/brcm,spi-bcm-qspi.txt
+new file mode 100644
+index 0000000..bbae763
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/brcm,spi-bcm-qspi.txt
+@@ -0,0 +1,145 @@
++Broadcom SPI controller
++
++The Broadcom SPI controller is a SPI master found on various SOCs, including
++BRCMSTB (BCM7XXX), Cygnus, NSP and NS2. The Broadcom Master SPI hw IP consits
++of :
++ MSPI : SPI master controller can read and write to a SPI slave device
++ BSPI : Broadcom SPI in combination with the MSPI hw IP provides acceleration
++        for flash reads and be configured to do single, double, quad lane
++        io with 3-byte and 4-byte addressing support.
++
++ Supported Broadcom SoCs have one instance of MSPI+BSPI controller IP.
++ MSPI master can be used wihout BSPI. BRCMSTB SoCs have an additional instance
++ of a MSPI master without the BSPI to use with non flash slave devices that
++ use SPI protocol.
++
++Required properties:
++
++- #address-cells:
++    Must be <1>, as required by generic SPI binding.
++
++- #size-cells:
++    Must be <0>, also as required by generic SPI binding.
++
++- compatible:
++    Must be one of :
++    "brcm,spi-bcm-qspi", "brcm,spi-brcmstb-qspi" : MSPI+BSPI on BRCMSTB SoCs
++    "brcm,spi-bcm-qspi", "brcm,spi-brcmstb-mspi" : Second Instance of MSPI
++						   BRCMSTB  SoCs
++
++- reg:
++    Define the bases and ranges of the associated I/O address spaces.
++    The required range is MSPI controller registers.
++
++- reg-names:
++    First name does not matter, but must be reserved for the MSPI controller
++    register range as mentioned in 'reg' above, and will typically contain
++    - "bspi_regs": BSPI register range, not required with compatible
++                   "spi-brcmstb-mspi"
++    - "mspi_regs": MSPI register range is required for compatible strings
++
++- interrupts
++    The interrupts used by the MSPI and/or BSPI controller.
++
++- interrupt-names:
++    Names of interrupts associated with MSPI
++    - "mspi_halted" :
++    - "mspi_done": Indicates that the requested SPI operation is complete.
++    - "spi_lr_fullness_reached" : Linear read BSPI pipe full
++    - "spi_lr_session_aborted"  : Linear read BSPI pipe aborted
++    - "spi_lr_impatient" : Linear read BSPI requested when pipe empty
++    - "spi_lr_session_done" : Linear read BSPI session done
++
++- clocks:
++    A phandle to the reference clock for this block.
++
++Optional properties:
++
++
++- native-endian
++    Defined when using BE SoC and device uses BE register read/write
++
++Recommended optional m25p80 properties:
++- spi-rx-bus-width: Definition as per
++                    Documentation/devicetree/bindings/spi/spi-bus.txt
++
++Examples:
++
++BRCMSTB SoC Example:
++
++  SPI Master (MSPI+BSPI) for SPI-NOR access:
++
++    spi@f03e3400 {
++		#address-cells = <0x1>;
++		#size-cells = <0x0>;
++		compatible = "brcm,spi-brcmstb-qspi", "brcm,spi-brcmstb-qspi";
++		reg = <0xf03e0920 0x4 0xf03e3400 0x188 0xf03e3200 0x50>;
++		reg-names = "cs_reg", "mspi", "bspi";
++		interrupts = <0x6 0x5 0x4 0x3 0x2 0x1 0x0>;
++		interrupt-parent = <0x1c>;
++		interrupt-names = "mspi_halted",
++				  "mspi_done",
++				  "spi_lr_overread",
++				  "spi_lr_session_done",
++				  "spi_lr_impatient",
++				  "spi_lr_session_aborted",
++				  "spi_lr_fullness_reached";
++
++		clocks = <&hif_spi>;
++		clock-names = "sw_spi";
++
++		m25p80@0 {
++			#size-cells = <0x2>;
++			#address-cells = <0x2>;
++			compatible = "m25p80";
++			reg = <0x0>;
++			spi-max-frequency = <0x2625a00>;
++			spi-cpol;
++			spi-cpha;
++			m25p,fast-read;
++
++			flash0.bolt@0 {
++				reg = <0x0 0x0 0x0 0x100000>;
++			};
++
++			flash0.macadr@100000 {
++				reg = <0x0 0x100000 0x0 0x10000>;
++			};
++
++			flash0.nvram@110000 {
++				reg = <0x0 0x110000 0x0 0x10000>;
++			};
++
++			flash0.kernel@120000 {
++				reg = <0x0 0x120000 0x0 0x400000>;
++			};
++
++			flash0.devtree@520000 {
++				reg = <0x0 0x520000 0x0 0x10000>;
++			};
++
++			flash0.splash@530000 {
++				reg = <0x0 0x530000 0x0 0x80000>;
++			};
++
++			flash0@0 {
++				reg = <0x0 0x0 0x0 0x4000000>;
++			};
++		};
++	};
++
++
++    MSPI master for any SPI device :
++
++	spi@f0416000 {
++		#address-cells = <1>;
++		#size-cells = <0>;
++		clocks = <&upg_fixed>;
++		compatible = "brcm,spi-brcmstb-qspi", "brcm,spi-brcmstb-mspi";
++		reg = <0xf0416000 0x180>;
++		reg-names = "mspi";
++		interrupts = <0x14>;
++		interrupt-parent = <&irq0_aon_intc>;
++		interrupt-names = "mspi_done";
++	};
++
 -- 
 1.9.1
 

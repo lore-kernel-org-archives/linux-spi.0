@@ -1,109 +1,72 @@
-From: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v5 7/8] arm64: dts: Add ns2 SoC support
-Date: Fri, 29 Jul 2016 18:13:12 -0400
-Message-ID: <1469830393-13295-8-git-send-email-kdasu.kdev@gmail.com>
-References: <1469830393-13295-1-git-send-email-kdasu.kdev@gmail.com>
-Cc: bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, vikram.prakash-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
-	andy.fung-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, jon.mason-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
-	jchandra-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Yendapally Reddy Dhananjaya Reddy
-	<yendapally.reddy-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, vigneshr-l0cyMroinI0@public.gmane.org,
-	f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1469830393-13295-1-git-send-email-kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Rich Felker <dalias@libc.org>
+Subject: Re: [PATCH v4 2/2] spi: add driver for J-Core SPI controller
+Date: Fri, 29 Jul 2016 23:34:41 -0400
+Message-ID: <20160730033441.GO15995@brightrain.aerifal.cx>
+References: <cover.1469686300.git.dalias@libc.org>
+ <2a46090a5a7c177b7eca83f68406650844423e7f.1469686300.git.dalias@libc.org>
+ <20160728191153.GL11806@sirena.org.uk>
+ <20160728194045.GK15995@brightrain.aerifal.cx>
+ <20160728195125.GN11806@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
+	Rob Herring <robh+dt@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20160728195125.GN11806@sirena.org.uk>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Adding qspi node compatible with the new spi-bcm-qspi
-driver for the broadcom's northstar2 SoC.
+On Thu, Jul 28, 2016 at 08:51:25PM +0100, Mark Brown wrote:
+> On Thu, Jul 28, 2016 at 03:40:45PM -0400, Rich Felker wrote:
+> > On Thu, Jul 28, 2016 at 08:11:53PM +0100, Mark Brown wrote:
+> 
+> > > An architecture or SoC dependency with || COMPILE_TEST would be useful
+> > > for avoiding cluttering Kconfig for other users.  Though as this is in a
+> > > FPGA it's perhaps likely people will pick this up for other FPGAs so
+> > > perhaps a comment to that effect if it seems likely.
+> 
+> > Unlike some of the other SoC hardware (interrupt controller) that's
+> > more closely tied to the SH cpu trap behavior, the SPI master seems
+> > like something that would be nice and easy to reuse elsewhere. I don't
+> > feel strongly about it either way though; I can add the arch dep if
+> > you want.
+> 
+> I guess it depends if anyone is actually doing that or not, if nobody is
+> the dependency would be better.
 
-Signed-off-by: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Yendapally Reddy Dhananjaya Reddy <yendapally.reddy-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
----
- arch/arm64/boot/dts/broadcom/ns2-svk.dts | 34 ++++++++++++++++++++++++++++----
- arch/arm64/boot/dts/broadcom/ns2.dtsi    | 19 ++++++++++++++++++
- 2 files changed, 49 insertions(+), 4 deletions(-)
+OK, let's add the dependency for now with the intent to remove it
+if/when there's a need.
 
-diff --git a/arch/arm64/boot/dts/broadcom/ns2-svk.dts b/arch/arm64/boot/dts/broadcom/ns2-svk.dts
-index ea5603f..a40d3f5 100644
---- a/arch/arm64/boot/dts/broadcom/ns2-svk.dts
-+++ b/arch/arm64/boot/dts/broadcom/ns2-svk.dts
-@@ -141,10 +141,36 @@
- 	};
- };
- 
--&mdio_mux_iproc {
--	mdio@10 {
--		gphy0: eth-phy@10 {
--			reg = <0x10>;
-+&qspi {
-+	bspi-sel = <0>;
-+	flash: m25p80@0 {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		compatible = "m25p80";
-+		reg = <0x0>;
-+		spi-max-frequency = <12500000>;
-+		m25p,fast-read;
-+		spi-cpol;
-+		spi-cpha;
-+
-+		partition@0 {
-+			label = "boot";
-+			reg = <0x00000000 0x000a0000>;
-+		};
-+
-+		partition@1 {
-+			label = "env";
-+			reg = <0x000a0000 0x00060000>;
-+		};
-+
-+		partition@2 {
-+			label = "system";
-+			reg = <0x00100000 0x00600000>;
-+		};
-+
-+		partition@3 {
-+			label = "rootfs";
-+			reg = <0x00700000 0x01900000>;
- 		};
- 	};
- };
-diff --git a/arch/arm64/boot/dts/broadcom/ns2.dtsi b/arch/arm64/boot/dts/broadcom/ns2.dtsi
-index 46b78fa..efc5d50 100644
---- a/arch/arm64/boot/dts/broadcom/ns2.dtsi
-+++ b/arch/arm64/boot/dts/broadcom/ns2.dtsi
-@@ -438,5 +438,24 @@
- 
- 			brcm,nand-has-wp;
- 		};
-+
-+		qspi: spi@66470200 {
-+			compatible = "brcm,spi-bcm-qspi";
-+			reg = <0x66470200 0x184>,
-+				<0x66470000 0x124>,
-+				<0x67017408 0x004>,
-+				<0x664703a0 0x01c>;
-+			reg-names = "mspi", "bspi", "intr_regs",
-+				"intr_status_reg";
-+			interrupts = <GIC_SPI 419 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-names = "spi_l1_intr";
-+			clocks = <&iprocmed>;
-+			clock-names = "iprocmed";
-+			clock-frequency = <12500000>;
-+			num-cs = <2>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+		};
-+
- 	};
- };
--- 
-1.9.1
+> > > Why are you not using the clock API for this?  Just require a clock and
+> > > use clk_get_rate() to find out what rate it is.
+> 
+> > I thought about that but I'm not familiar with it. I can try to figure
+> > it out quickly and test that approach; don't see any reason it
+> > shouldn't work. Would you insist on having full support for
+> > enabling/disabling the clk when it's in use, or would you be happy
+> > with treating it as a fixed clock that's always-on for now and
+> > possibly extending it with more functionality later if there's ever
+> > hardware where that's relevant/helpful?
+> 
+> It's fine to just enable it at startup and leave it on, though the
+> runtime PM ops are trivial and you can set auto_runtime_pm to have the
+> core do the gets and puts.
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+I was able to get it working via the clk api and I'll include support
+for this in the next version of the patch, but to actually use it
+depends on changing arch/sh to use the common clk framework; otherwise
+there's no way to provide a suitable clk in the DT and have
+[devm_]clk_get actually pick it up. Should I keep around the option of
+using clock-frequency too? That would be most convenient.
+
+I do have a pending patch from Sato-san to switch arch/sh over to CCF
+but it's part of a series and I don't think it's ready to merge. I may
+be able to merge just a minimal, safe subset that won't break legacy
+non-DT configurations, though.
+
+Rich

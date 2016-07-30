@@ -1,72 +1,100 @@
-From: Rich Felker <dalias@libc.org>
-Subject: Re: [PATCH v4 2/2] spi: add driver for J-Core SPI controller
-Date: Fri, 29 Jul 2016 23:34:41 -0400
-Message-ID: <20160730033441.GO15995@brightrain.aerifal.cx>
-References: <cover.1469686300.git.dalias@libc.org>
- <2a46090a5a7c177b7eca83f68406650844423e7f.1469686300.git.dalias@libc.org>
- <20160728191153.GL11806@sirena.org.uk>
- <20160728194045.GK15995@brightrain.aerifal.cx>
- <20160728195125.GN11806@sirena.org.uk>
+From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v3 00/13] sunxi spi fixes
+Date: Sat, 30 Jul 2016 19:32:51 +0200
+Message-ID: <CAOMqctQkaQnEt6U3dd_kzi8GtfS_G3=hue3sz_TomMATn8o3iA@mail.gmail.com>
+References: <cover.1465490774.git.hramrach@gmail.com> <20160613195716.GD9354@lukather>
+ <CAOMqctS6ZQ3_a97sE2e7H34ZCny2aDE38V1tQA=-SBZwF2sbDQ@mail.gmail.com>
+ <20160725073204.GD7419@lukather> <CAOMqctQybJoOfUHGtpmpB_koQ=iY+GpQ_BOL2o0QBbwC_HXC0g@mail.gmail.com>
+ <20160729202247.GJ6215@lukather>
+Reply-To: hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
-	Rob Herring <robh+dt@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20160728195125.GN11806@sirena.org.uk>
-Sender: linux-sh-owner@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>, stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>,
+	Russell King <linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>,
+	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>, Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
+	Simon Horman <horms+renesas-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>, Sjoerd Simons <sjoerd.simons-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>,
+	Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, Alison Wang <b18965-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Timo Sigurdsson <public_timo.s-fWgRPtSzPNU3WX+qO2AYSQ@public.gmane.org>, Jonathan Liu <net147-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Gerhard Bertelsmann <info-La43T0Mi4bH5xCKuJOYmCvaTkwRoYoCU@public.gmane.org>, Priit Laes <plaes-q/aMd4JkU83YtjvyW6yDsg@public.gmane.org>,
+	devicetree <devicetree-u79uwXL29TZNg+MwTxZMZA@public.gmane.org
+To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Return-path: <linux-sunxi+bncBCQMLUOX54MBB26J6O6AKGQE3YKBUYQ-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+In-Reply-To: <20160729202247.GJ6215@lukather>
+List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <https://groups.google.com/group/linux-sunxi
+List-Subscribe: <https://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+ <https://groups.google.com/group/linux-sunxi/subscribe>
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Jul 28, 2016 at 08:51:25PM +0100, Mark Brown wrote:
-> On Thu, Jul 28, 2016 at 03:40:45PM -0400, Rich Felker wrote:
-> > On Thu, Jul 28, 2016 at 08:11:53PM +0100, Mark Brown wrote:
-> 
-> > > An architecture or SoC dependency with || COMPILE_TEST would be useful
-> > > for avoiding cluttering Kconfig for other users.  Though as this is in a
-> > > FPGA it's perhaps likely people will pick this up for other FPGAs so
-> > > perhaps a comment to that effect if it seems likely.
-> 
-> > Unlike some of the other SoC hardware (interrupt controller) that's
-> > more closely tied to the SH cpu trap behavior, the SPI master seems
-> > like something that would be nice and easy to reuse elsewhere. I don't
-> > feel strongly about it either way though; I can add the arch dep if
-> > you want.
-> 
-> I guess it depends if anyone is actually doing that or not, if nobody is
-> the dependency would be better.
+On 29 July 2016 at 22:22, Maxime Ripard
+<maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> wrote:
+> On Mon, Jul 25, 2016 at 10:03:14AM +0200, Michal Suchanek wrote:
+>> Hello,
+>>
+>> On 25 July 2016 at 09:32, Maxime Ripard
+>> <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> wrote:
+>> > On Fri, Jun 17, 2016 at 12:34:44PM +0200, Michal Suchanek wrote:
+>> >> Hello,
+>> >>
+>> >> On 13 June 2016 at 21:57, Maxime Ripard
+>> >> <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> wrote:
+>> >> > On Mon, Jun 13, 2016 at 05:46:48PM -0000, Michal Suchanek wrote:
+>> >> >> Hello,
+>> >> >>
+>> >> >> This is update of the sunxi spi patches that should give full-featured SPI
+>> >> >> driver.
+>> >> >>
+>> >> >> First three patches fix issues with the current driver and can be of use for
+>> >> >> stable kernels so adding cc for those.
+>> >> >>
+>> >> >> I merged the sun4i and sun6i driver because there several issues that need to
+>> >> >> be fixed in both separately and they are even out of sync wrt some fixes.
+>> >> >> I guess some of the merge patches can be squashed.
+>> >> >>
+>> >> >> I tested this with A10s Olinuxino Micro. I have no sun6i device so I cannot
+>> >> >> tell if that side was broken by this patchset - especially the last patch that
+>> >> >> adds DMA was afaik never tested on sun6i.
+>> >> >
+>> >> >
+>> >> > For the record, I'm still very much opposed to such a merge.
+>> >>
+>> >> What is the reason against the merge? I did not find the original
+>> >> discussion.
+>> >
+>> > I really prefer some code that is concise and clear but a little
+>> > duplicated over some code that shares every possible lines of code but
+>> > is a giant mess impossible to understand.
+>>
+>> Yes, it's been tried. In the case of this driver there is more duplication
+>> than differences. Also bitrot due to different variants receiving different
+>> updates and fixes crept in already.
+>>
+>> Adding the remap layer certainly does not make the driver easier to
+>> understand but it's not becoming giant mess either.
+>
+> Well, when you say that you're not quite fond of using your structure
+> all over the place because "it makes your eyes bleed", I wouldn't call
+> that a good sales pitch.
 
-OK, let's add the dependency for now with the intent to remove it
-if/when there's a need.
+That's why put dereferencing it inside the read function. It reduces the noise
+throughout the code and make it easier to add checks or change the remap
+implementation.
 
-> > > Why are you not using the clock API for this?  Just require a clock and
-> > > use clk_get_rate() to find out what rate it is.
-> 
-> > I thought about that but I'm not familiar with it. I can try to figure
-> > it out quickly and test that approach; don't see any reason it
-> > shouldn't work. Would you insist on having full support for
-> > enabling/disabling the clk when it's in use, or would you be happy
-> > with treating it as a fixed clock that's always-on for now and
-> > possibly extending it with more functionality later if there's ever
-> > hardware where that's relevant/helpful?
-> 
-> It's fine to just enable it at startup and leave it on, though the
-> runtime PM ops are trivial and you can set auto_runtime_pm to have the
-> core do the gets and puts.
+>
+> But again, reg_field seems like a good solution for that.
 
-I was able to get it working via the clk api and I'll include support
-for this in the next version of the patch, but to actually use it
-depends on changing arch/sh to use the common clk framework; otherwise
-there's no way to provide a suitable clk in the DT and have
-[devm_]clk_get actually pick it up. Should I keep around the option of
-using clock-frequency too? That would be most convenient.
+I will look at reg_field.
 
-I do have a pending patch from Sato-san to switch arch/sh over to CCF
-but it's part of a series and I don't think it's ready to merge. I may
-be able to merge just a minimal, safe subset that won't break legacy
-non-DT configurations, though.
+I saw some drivers using remap layers that are way more heavyweight than
+looking up an integer in a table so I wanted to avoid that.
 
-Rich
+Thanks
+
+Michal

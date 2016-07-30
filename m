@@ -1,100 +1,56 @@
 From: Michal Suchanek <hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v3 00/13] sunxi spi fixes
-Date: Sat, 30 Jul 2016 19:32:51 +0200
-Message-ID: <CAOMqctQkaQnEt6U3dd_kzi8GtfS_G3=hue3sz_TomMATn8o3iA@mail.gmail.com>
-References: <cover.1465490774.git.hramrach@gmail.com> <20160613195716.GD9354@lukather>
- <CAOMqctS6ZQ3_a97sE2e7H34ZCny2aDE38V1tQA=-SBZwF2sbDQ@mail.gmail.com>
- <20160725073204.GD7419@lukather> <CAOMqctQybJoOfUHGtpmpB_koQ=iY+GpQ_BOL2o0QBbwC_HXC0g@mail.gmail.com>
- <20160729202247.GJ6215@lukather>
-Reply-To: hramrach-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Subject: Re: [PATCH v3 2/3] spi: of: allow instantiating slaves without a driver
+Date: Sat, 30 Jul 2016 19:45:10 +0200
+Message-ID: <CAOMqctTRon3mqswhPnWeTvdKUvyU=4kefd737bwBrzvc-ssZ1w@mail.gmail.com>
+References: <cover.1468880530.git.hramrach@gmail.com> <42e65e5c714f079cb4b85761e59fb700d4550a26.1468880530.git.hramrach@gmail.com>
+ <20160718230234.GX30372@sirena.org.uk> <CAOMqctS0+eaufGdsGV96h3SJCOGrjhaAL1aRxxkMRtpK_p_3YQ@mail.gmail.com>
+ <20160719105212.GA30372@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Cc: linux-sunxi <linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>, stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>,
-	Russell King <linux-I+IVW8TIWO2tmTQ+vhA3Yw@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>,
-	Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>, Javier Martinez Canillas <javier-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>,
-	Simon Horman <horms+renesas-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>, Sjoerd Simons <sjoerd.simons-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>,
-	Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, Alison Wang <b18965-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Timo Sigurdsson <public_timo.s-fWgRPtSzPNU3WX+qO2AYSQ@public.gmane.org>, Jonathan Liu <net147-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Gerhard Bertelsmann <info-La43T0Mi4bH5xCKuJOYmCvaTkwRoYoCU@public.gmane.org>, Priit Laes <plaes-q/aMd4JkU83YtjvyW6yDsg@public.gmane.org>,
-	devicetree <devicetree-u79uwXL29TZNg+MwTxZMZA@public.gmane.org
-To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Return-path: <linux-sunxi+bncBCQMLUOX54MBB26J6O6AKGQE3YKBUYQ-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-In-Reply-To: <20160729202247.GJ6215@lukather>
-List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <https://groups.google.com/group/linux-sunxi
-List-Subscribe: <https://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
- <https://groups.google.com/group/linux-sunxi/subscribe>
-List-Id: linux-spi.vger.kernel.org
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20160719105212.GA30372-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 29 July 2016 at 22:22, Maxime Ripard
-<maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> wrote:
-> On Mon, Jul 25, 2016 at 10:03:14AM +0200, Michal Suchanek wrote:
->> Hello,
->>
->> On 25 July 2016 at 09:32, Maxime Ripard
->> <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> wrote:
->> > On Fri, Jun 17, 2016 at 12:34:44PM +0200, Michal Suchanek wrote:
->> >> Hello,
->> >>
->> >> On 13 June 2016 at 21:57, Maxime Ripard
->> >> <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> wrote:
->> >> > On Mon, Jun 13, 2016 at 05:46:48PM -0000, Michal Suchanek wrote:
->> >> >> Hello,
->> >> >>
->> >> >> This is update of the sunxi spi patches that should give full-featured SPI
->> >> >> driver.
->> >> >>
->> >> >> First three patches fix issues with the current driver and can be of use for
->> >> >> stable kernels so adding cc for those.
->> >> >>
->> >> >> I merged the sun4i and sun6i driver because there several issues that need to
->> >> >> be fixed in both separately and they are even out of sync wrt some fixes.
->> >> >> I guess some of the merge patches can be squashed.
->> >> >>
->> >> >> I tested this with A10s Olinuxino Micro. I have no sun6i device so I cannot
->> >> >> tell if that side was broken by this patchset - especially the last patch that
->> >> >> adds DMA was afaik never tested on sun6i.
->> >> >
->> >> >
->> >> > For the record, I'm still very much opposed to such a merge.
->> >>
->> >> What is the reason against the merge? I did not find the original
->> >> discussion.
->> >
->> > I really prefer some code that is concise and clear but a little
->> > duplicated over some code that shares every possible lines of code but
->> > is a giant mess impossible to understand.
->>
->> Yes, it's been tried. In the case of this driver there is more duplication
->> than differences. Also bitrot due to different variants receiving different
->> updates and fixes crept in already.
->>
->> Adding the remap layer certainly does not make the driver easier to
->> understand but it's not becoming giant mess either.
+On 19 July 2016 at 12:52, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Tue, Jul 19, 2016 at 10:31:54AM +0200, Michal Suchanek wrote:
+>> On 19 July 2016 at 01:02, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+>> > On Tue, Jul 19, 2016 at 12:35:41AM +0200, Michal Suchanek wrote:
 >
-> Well, when you say that you're not quite fond of using your structure
-> all over the place because "it makes your eyes bleed", I wouldn't call
-> that a good sales pitch.
-
-That's why put dereferencing it inside the read function. It reduces the noise
-throughout the code and make it easier to add checks or change the remap
-implementation.
-
+>> >> SPI slave devices are not created when looking up driver for the slave
+>> >> fails. Create a device anyway so it can be used with spidev.
 >
-> But again, reg_field seems like a good solution for that.
+>> > Nothing has change since you last sent this patch which converts
+>> > of_modailias_node() into something which looks up a driver so the
+>> > patch description still fails to describe what the patch is doing.
+>
+>> I have split the other part of the patch. Regarding the commit message
+>> if you have suggestion for better wording please do share it.
+>
+> As covered in SubmittingPatches your commit message should describe what
+> the change does and what the intended effect is.  If we were looking for
+> a device driver the code would be looking up a struct device_driver or
+> some other struct that contains one.
+>
+>> From my point of view the conceptual change described in the commit message
+>> is that whenever SPI slave node is encountered in devicetree you get either
+>> a device with active driver or a device with no driver whereas
+>> previously you either
+>> got a device with active driver or no device. So yes, it's about
+>
+> This is not the case, it is perfectly possible to have a device with no
+> driver bound to it otherwise it would not be possible to use loadable
+> modules for drivers.
 
-I will look at reg_field.
-
-I saw some drivers using remap layers that are way more heavyweight than
-looking up an integer in a table so I wanted to avoid that.
+Ok, I missed this part. That makes the commit message indeed broken.
 
 Thanks
 
 Michal
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

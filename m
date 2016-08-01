@@ -1,59 +1,70 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v4 2/2] spi: add driver for J-Core SPI controller
-Date: Mon, 1 Aug 2016 19:12:45 +0100
-Message-ID: <20160801181245.GZ10376@sirena.org.uk>
-References: <cover.1469686300.git.dalias@libc.org>
- <2a46090a5a7c177b7eca83f68406650844423e7f.1469686300.git.dalias@libc.org>
- <20160728191153.GL11806@sirena.org.uk>
- <20160728194045.GK15995@brightrain.aerifal.cx>
- <20160728195125.GN11806@sirena.org.uk>
- <20160730033441.GO15995@brightrain.aerifal.cx>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2 2/2] spi: octeon: Add thunderx driver
+Date: Mon, 1 Aug 2016 18:28:38 +0100
+Message-ID: <20160801172838.GW10376@sirena.org.uk>
+References: <20160728083144.16625-1-jglauber@cavium.com>
+ <20160728083144.16625-3-jglauber@cavium.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="j+Rb494BzBd9643b"
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
-	Rob Herring <robh+dt@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>
-To: Rich Felker <dalias@libc.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="1RhGCd1AsoFHGRHc"
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	David Daney <david.daney-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>,
+	"Steven J . Hill" <steven.hill-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
+To: Jan Glauber <jglauber-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20160730033441.GO15995@brightrain.aerifal.cx>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <20160728083144.16625-3-jglauber-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---j+Rb494BzBd9643b
+--1RhGCd1AsoFHGRHc
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Jul 29, 2016 at 11:34:41PM -0400, Rich Felker wrote:
+On Thu, Jul 28, 2016 at 10:31:44AM +0200, Jan Glauber wrote:
 
-> I was able to get it working via the clk api and I'll include support
-> for this in the next version of the patch, but to actually use it
-> depends on changing arch/sh to use the common clk framework; otherwise
-> there's no way to provide a suitable clk in the DT and have
-> [devm_]clk_get actually pick it up. Should I keep around the option of
-> using clock-frequency too? That would be most convenient.
+> +config SPI_THUNDERX
+> +	tristate "Cavium ThunderX SPI controller"
+> +	depends on (ARM64 || CONFIG_TEST) && 64BIT && PCI
 
-It sounds like at the minute the devices all have one frequency anyway
-in which case just having a default frequency in there that you fall
-back to if you get -ENOENT from a failed clock lookup might be enough?
+You mean COMPILE_TEST.
 
---j+Rb494BzBd9643b
+> +	p->clk = devm_clk_get(dev, NULL);
+> +	if (IS_ERR(p->clk))
+> +		goto out_unmap;
+
+We're now just using the normal clock API which is good but I'm now
+unclear what is going to ensure that the clock is there - is there some
+other change elsewhere that I'm not aware of?  We're also not passing
+the resulting error code back to the caller which will break deferred
+probe.
+
+> +out_clock:
+> +	clk_disable_unprepare(p->clk);
+> +out_clock_devm:
+> +	devm_clk_put(dev, p->clk);
+
+There's no point in using managed allocations if you're going to manually
+free things...
+
+--1RhGCd1AsoFHGRHc
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJXn5EcAAoJECTWi3JdVIfQBIwH/iNPu2AxYU0oEIYk3n5UVMvR
-mR5548bNX7JboYJX5rlwnlLqirN0emD1BR+5WDRx1JIieqDf6PbO6yRw7FWjUw/n
-NhjfMiX3IhaQWqGwNjNKXP4DhNjIqA9535ouwEMmS7hh+in8PTeMTY9Ixut/aX9R
-xHdLQO/pfM/F7QDPUB05ODIq6CrpP6SFNFD/dPQWiBSa+H8ZfhYf5XvpQHEdKVNO
-2uU+U3IGoIIEO6YL3pOGRxuwr+OFBUIo539wCv8v2FWhNL1i6mFfeLLCnfNWGV7t
-nCDPIrjYYe4bASU7pQV8M0kasqI10ilTGXJJbQP+eWglaoqXkZBanxKwN0HogrA=
-=8TC0
+iQEcBAEBCAAGBQJXn4bBAAoJECTWi3JdVIfQeQEH/2676yiEm8S+6e8Ydj4kqZmr
+peWvuXS1jEZ1NgSmsfurExIXd/sZR7B6eNRdPIyEtJv77HaAUxMbFr3J/29GKTMS
+og3crc4wgGoR9zPEBrqTFGDkTDnK5g2FxVsi7wNsQ6RDhcBm4rScJgVkbq5OHpWw
+SX8rf/U0TAUvsyMUmdQZGjwbGbSpWGnR96mxSax66LEg7yD6wU0MpUwoLkgS1nya
+xFfQ07/KuYl4R0dgQVdnl7K11YgJy0D0A3ihxIEMM7kk5AOoOdSaPFH43oBWIHPM
+nzYbgIopKbMpjzhbK2PqwAyh1DkR70gfUw9MLe8YJqn0oFsyxPwShzWZPg3/ObQ=
+=F/6Y
 -----END PGP SIGNATURE-----
 
---j+Rb494BzBd9643b--
+--1RhGCd1AsoFHGRHc--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

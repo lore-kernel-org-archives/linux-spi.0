@@ -1,133 +1,162 @@
-From: sparticvs svcitraps <sparticvs-QL8avWE+bvHQT0dZR+AlfA@public.gmane.org>
-Subject: Re: Question about spi_transfer_one_message
-Date: Mon, 1 Aug 2016 10:47:49 -0400
-Message-ID: <4E8B39B1-368C-4441-936E-31132316F2B7@popebp.com>
-References: <C4BF9129-AA1D-4112-BC34-33C02C7BEB2B@popebp.com>
-Mime-Version: 1.0 (Mac OS X Mail 10.0 \(3204\))
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <C4BF9129-AA1D-4112-BC34-33C02C7BEB2B-QL8avWE+bvHQT0dZR+AlfA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Jonas Gorski <jonas.gorski@gmail.com>
+Subject: Re: [PATCH v5 6/8] arm: dts: Add bcm-nsp and bcm958625k support
+Date: Mon, 1 Aug 2016 17:09:26 +0200
+Message-ID: <CAOiHx=n8a64d-2LGGFHuyBQBg3Cz=ALVXEbvPRHxTyzFjWRMXA@mail.gmail.com>
+References: <1469830393-13295-1-git-send-email-kdasu.kdev@gmail.com>
+ <1469830393-13295-7-git-send-email-kdasu.kdev@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Florian Fainelli <f.fainelli@gmail.com>,
+ Jayachandran C <jchandra@broadcom.com>, vigneshr@ti.com,
+ linux-spi@vger.kernel.org,
+ Yendapally Reddy Dhananjaya Reddy <yendapally.reddy@broadcom.com>,
+ Mark Brown <broonie@kernel.org>,
+ bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
+ MTD Maling List <linux-mtd@lists.infradead.org>, jon.mason@broadcom.com,
+ vikram.prakash@broadcom.com, andy.fung@broadcom.com
+To: Kamal Dasu <kdasu.kdev@gmail.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <1469830393-13295-7-git-send-email-kdasu.kdev@gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-And I did just realize that xfr->cs_change is the outer if-conditional on the last in the list, so I do realize that I missed that in the pseudo code, which I think makes my pseudo code almost correct and would instead mean that there is no need for the `keep_cs` variable. I updated the Pseudo-code inline since I just realized the rest.
+Hi,
 
-BEGIN spi_transfer_one_message
-cs_acquire()
+On 30 July 2016 at 00:13, Kamal Dasu <kdasu.kdev@gmail.com> wrote:
+> Adding qspi node compatible with the new spi-bcm-qspi
+> driver for the broadcom's northstar SoC.
+>
+> Signed-off-by: Kamal Dasu <kdasu.kdev@gmail.com>
+> Signed-off-by: Yendapally Reddy Dhananjaya Reddy <yendapally.reddy@broadcom.com>
+> ---
+>  arch/arm/boot/dts/bcm-nsp.dtsi   | 33 +++++++++++++++++++++++++++++----
+>  arch/arm/boot/dts/bcm958625k.dts | 34 ++++++++++++++++++++++++++++++++++
+>  2 files changed, 63 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/arm/boot/dts/bcm-nsp.dtsi b/arch/arm/boot/dts/bcm-nsp.dtsi
+> index 6a40ed7..26c863e 100644
+> --- a/arch/arm/boot/dts/bcm-nsp.dtsi
+> +++ b/arch/arm/boot/dts/bcm-nsp.dtsi
+> @@ -160,7 +160,7 @@
+>
+>         axi {
+>                 compatible = "simple-bus";
+> -               ranges = <0x00000000 0x18000000 0x0011ba08>;
+> +               ranges = <0x00000000 0x18000000 0x0011c40a>;
+>                 #address-cells = <1>;
+>                 #size-cells = <1>;
+>
+> @@ -206,9 +206,34 @@
+>                         brcm,nand-has-wp;
+>                 };
+>
+> -               rng: rng@33000 {
+> -                       compatible = "brcm,bcm-nsp-rng";
+> -                       reg = <0x33000 0x14>;
 
-FOR EACH xfr IN msg:
+You remove the rng node, is this intentional?
 
-	ret := transfer_one(xfr)
-	IF ret > 0:
-		# wait for completion timeout (estimated)
-		ms := estimate_xfr_time
-	ENDIF
+> +               qspi: qspi@27200 {
+> +                       compatible = "brcm,spi-bcm-qspi";
+> +                       reg = <0x027200 0x184>,
+> +                             <0x027000 0x124>,
+> +                             <0x11c408 0x004>,
+> +                             <0x0273a0 0x01c>;
+> +                       reg-names = "mspi", "bspi", "intr_regs",
+> +                                   "intr_status_reg";
+> +                       interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>,
+> +                                    <GIC_SPI 73 IRQ_TYPE_LEVEL_HIGH>,
+> +                                    <GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>,
+> +                                    <GIC_SPI 75 IRQ_TYPE_LEVEL_HIGH>,
+> +                                    <GIC_SPI 76 IRQ_TYPE_LEVEL_HIGH>,
+> +                                    <GIC_SPI 77 IRQ_TYPE_LEVEL_HIGH>,
+> +                                    <GIC_SPI 78 IRQ_TYPE_LEVEL_HIGH>;
+> +                       interrupt-names = "spi_lr_fullness_reached",
+> +                                         "spi_lr_session_aborted",
+> +                                         "spi_lr_impatient",
+> +                                         "spi_lr_session_done",
+> +                                         "spi_lr_overhead",
+> +                                         "mspi_done",
+> +                                         "mspi_halted";
+> +                       clocks = <&iprocmed>;
+> +                       clock-names = "iprocmed";
+> +                       clock-frequency = <12500000>;
+> +                       num-cs = <2>;
+> +                       #address-cells = <1>;
+> +                       #size-cells = <0>;
+>                 };
+>
+>                 ccbtimer0: timer@34000 {
+> diff --git a/arch/arm/boot/dts/bcm958625k.dts b/arch/arm/boot/dts/bcm958625k.dts
+> index 2d84226..ab7ba8f 100644
+> --- a/arch/arm/boot/dts/bcm958625k.dts
+> +++ b/arch/arm/boot/dts/bcm958625k.dts
+> @@ -126,3 +126,37 @@
+>                 groups = "nand_grp";
+>         };
+>  };
+> +
+> +&qspi {
+> +       bspi-sel = <0>;
+> +       flash: m25p80@0 {
+> +               #address-cells = <1>;
+> +               #size-cells = <1>;
+> +               compatible = "m25p80";
+> +               reg = <0x0>;
+> +               spi-max-frequency = <12500000>;
+> +               m25p,fast-read;
+> +               spi-cpol;
+> +               spi-cpha;
+> +
+> +               partition@0 {
+> +                       label = "boot";
+> +                       reg = <0x00000000 0x000a0000>;
+> +               };
 
-	IF xfr.delay:
-		delay
-	ENDIF
+these should be enclosed by a partitions node with compatible
+"fixed-partitions", see
+Documentation/devicetree/bindings/mtd/partition.txt.
 
-- 	IF is_last(xfr):
--		KEEP_CS := TRUE
--	ELSE:
-+	IF xfr.cs_change AND NOT is_last(xfr):
-		cs_release
-		delay
-		cs_acquire
-	ENDIF
+> +
+> +               partition@1 {
 
--	IF ret != OK OR NOT KEEP_CS:
-+	IF ret != OK OR xfr.cs_change:
-		cs_release
-	ENDIF
+The address is 0xa0000 so this should be partition@a0000.
 
-	finalize_curr_msg()
+> +                       label = "env";
+> +                       reg = <0x000a0000 0x00060000>;
+> +               };
+> +
+> +               partition@2 {
 
-END
+likewise.
 
-> On Aug 1, 2016, at 10:29 AM, sparticvs svcitraps <sparticvs-QL8avWE+bvHQT0dZR+AlfA@public.gmane.org> wrote:
-> 
-> Hello.
-> 
-> I am writing a spi device driver, and I ran into some interesting behavior (at least interesting in terms of this spi device) regarding chip select.
-> 
-> For the spi_transfer_one_message, the logic for chip select bouncing is as follows (in pseudo code to ensure I understand it correctly and I am skipping abort paths):
-> 
-> BEGIN spi_transfer_one_message
-> cs_acquire()
-> 
-> FOR EACH xfr IN msg:
-> 	ret := transfer_one(xfr)
-> 	IF ret > 0:
-> 		# wait for completion timeout (estimated)
-> 		ms := estimate_xfr_time
-> 	ENDIF
-> 
-> 	IF xfr.delay:
-> 		delay
-> 	ENDIF
-> 
->  	IF is_last(xfr):
-> 		KEEP_CS := TRUE
-> 	ELSE:
-> 		cs_release
-> 		delay
-> 		cs_acquire
-> 	ENDIF
-> 
-> 	IF ret != OK OR NOT KEEP_CS:
-> 		cs_release
-> 	ENDIF
-> 
-> 	finalize_curr_msg()
-> END
-> 
-> 
-> From my understanding (and experiments) CS is held low even when there are no more transfers. What is the reason for this to be done this way?
-> 
-> The issue I am running into is that this spi-device (EPSON S1D13781 LCDC) requires that CS is bounced before the next command. I am not sure if this is required of all SPI devices, but it makes sense to me.
-> 
-> So, the only way that I could fix this issue, and get the proper behavior on chip was to change the code to:
-> 
-> 
-> BEGIN spi_transfer_one_message
-> cs_acquire()
-> 
-> FOR EACH xfr IN msg:
-> 
-> 	ret := transfer_one(xfr)
-> 	IF ret > 0:
-> 		# wait for completion timeout (estimated)
-> 		ms := estimate_xfr_time
-> 	ENDIF
-> 
-> 	IF xfr.delay:
-> 		delay
-> 	ENDIF
-> 
-> - 	IF is_last(xfr):
-> -		KEEP_CS := TRUE
-> -	ELSE:
-> +	IF xfr.cs_change AND NOT is_last(xfr):
-> 		cs_release
-> 		delay
-> 		cs_acquire
-> 	ENDIF
-> 
-> -	IF ret != OK OR NOT KEEP_CS:
-> +	IF ret != OK OR xfr.cs_change:
-> 		cs_release
-> 	ENDIF
-> 
-> 	finalize_curr_msg()
-> 
-> END
-> 
-> Basically, this always forces the CS hold to be released when completing a message. Does this make sense for all other use-cases? If so, I can start a patch, but I just wasn’t sure if the current behavior was expected for all other operations. The only place where I can see this being in conflict is the use of `spi_transfer::cs_change’, but that said, this logic could (and probably should) use the cs_change to determine if it should keep the CS held low instead of the original logic.
+> +                       label = "system";
+> +                       reg = <0x00100000 0x00600000>;
+> +               };
+> +
+> +               partition@3 {
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+etc.
+
+> +                       label = "rootfs";
+> +                       reg = <0x00700000 0x01900000>;
+> +               };
+> +       };
+> +};
+
+
+Regards
+Jonas
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

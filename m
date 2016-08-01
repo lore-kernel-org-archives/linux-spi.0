@@ -1,53 +1,59 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 1/2] spi: octeon: Split driver into Octeon specific
- and common parts
-Date: Mon, 1 Aug 2016 18:36:47 +0100
-Message-ID: <20160801173646.GX10376@sirena.org.uk>
-References: <20160728083144.16625-1-jglauber@cavium.com>
- <20160728083144.16625-2-jglauber@cavium.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v4 2/2] spi: add driver for J-Core SPI controller
+Date: Mon, 1 Aug 2016 19:12:45 +0100
+Message-ID: <20160801181245.GZ10376@sirena.org.uk>
+References: <cover.1469686300.git.dalias@libc.org>
+ <2a46090a5a7c177b7eca83f68406650844423e7f.1469686300.git.dalias@libc.org>
+ <20160728191153.GL11806@sirena.org.uk>
+ <20160728194045.GK15995@brightrain.aerifal.cx>
+ <20160728195125.GN11806@sirena.org.uk>
+ <20160730033441.GO15995@brightrain.aerifal.cx>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="gu8wNMO+QVC0jLZM"
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	David Daney <david.daney-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>,
-	"Steven J . Hill" <steven.hill-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
-To: Jan Glauber <jglauber-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="j+Rb494BzBd9643b"
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
+	Rob Herring <robh+dt@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>
+To: Rich Felker <dalias@libc.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20160728083144.16625-2-jglauber-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <20160730033441.GO15995@brightrain.aerifal.cx>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---gu8wNMO+QVC0jLZM
+--j+Rb494BzBd9643b
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Jul 28, 2016 at 10:31:43AM +0200, Jan Glauber wrote:
-> Separate driver probing from SPI transfer functions.
+On Fri, Jul 29, 2016 at 11:34:41PM -0400, Rich Felker wrote:
 
-This doesn't apply against current code as an earlier version of it was
-already applied.  Please don't resubmit already applied code, please
-send incremental updates against current code for any changes that are
-needed.
+> I was able to get it working via the clk api and I'll include support
+> for this in the next version of the patch, but to actually use it
+> depends on changing arch/sh to use the common clk framework; otherwise
+> there's no way to provide a suitable clk in the DT and have
+> [devm_]clk_get actually pick it up. Should I keep around the option of
+> using clock-frequency too? That would be most convenient.
 
---gu8wNMO+QVC0jLZM
+It sounds like at the minute the devices all have one frequency anyway
+in which case just having a default frequency in there that you fall
+back to if you get -ENOENT from a failed clock lookup might be enough?
+
+--j+Rb494BzBd9643b
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJXn4itAAoJECTWi3JdVIfQM4kH/3hWqr9bAgzRi60pcr2fjC0q
-wdKM613vOqFvOLO3eA/ctXFWY3nUPv3HNOSzThI68RYg9ltPnviexcXnQVDBfmKV
-lsmpaXzDGdit5KPgCHM89tGOIMQ++n4Kjw6s1CYR2RYyn8Q0y2gyeyCfOHcajG6Q
-kuDJGXcebMIa8pr4o2qU2rBKOuJhLGANPxqLSckV+hkvDsTX5ucellip0aTCYhnA
-Od2vVMClnUBUFWio1txTW+7x8vhGgE/Db01JGixWuvQc7jNW4niyFJG1ukDIRpqy
-brHAEwSs8gVi1ikN9RiYKasy6iFnRKsgbqrtdC7nmgav1rK04+c1MJmmSvrRZiA=
-=GiuA
+iQEcBAEBCAAGBQJXn5EcAAoJECTWi3JdVIfQBIwH/iNPu2AxYU0oEIYk3n5UVMvR
+mR5548bNX7JboYJX5rlwnlLqirN0emD1BR+5WDRx1JIieqDf6PbO6yRw7FWjUw/n
+NhjfMiX3IhaQWqGwNjNKXP4DhNjIqA9535ouwEMmS7hh+in8PTeMTY9Ixut/aX9R
+xHdLQO/pfM/F7QDPUB05ODIq6CrpP6SFNFD/dPQWiBSa+H8ZfhYf5XvpQHEdKVNO
+2uU+U3IGoIIEO6YL3pOGRxuwr+OFBUIo539wCv8v2FWhNL1i6mFfeLLCnfNWGV7t
+nCDPIrjYYe4bASU7pQV8M0kasqI10ilTGXJJbQP+eWglaoqXkZBanxKwN0HogrA=
+=8TC0
 -----END PGP SIGNATURE-----
 
---gu8wNMO+QVC0jLZM--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--j+Rb494BzBd9643b--

@@ -1,52 +1,56 @@
-From: David Daney <ddaney-M3mlKVOIwJVv6pq1l3V1OdBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH v2 2/2] spi: octeon: Add thunderx driver
-Date: Mon, 1 Aug 2016 12:02:54 -0700
-Message-ID: <579F9CDE.5050207@caviumnetworks.com>
-References: <20160728083144.16625-1-jglauber@cavium.com> <20160728083144.16625-3-jglauber@cavium.com> <20160801172838.GW10376@sirena.org.uk> <579F958F.9020508@caviumnetworks.com> <20160801184931.GB10376@sirena.org.uk>
+From: Rich Felker <dalias-8zAoT0mYgF4@public.gmane.org>
+Subject: Re: [PATCH v4 2/2] spi: add driver for J-Core SPI controller
+Date: Mon, 1 Aug 2016 21:45:32 -0400
+Message-ID: <20160802014531.GS15995@brightrain.aerifal.cx>
+References: <cover.1469686300.git.dalias@libc.org>
+ <2a46090a5a7c177b7eca83f68406650844423e7f.1469686300.git.dalias@libc.org>
+ <20160728191153.GL11806@sirena.org.uk>
+ <20160728194045.GK15995@brightrain.aerifal.cx>
+ <20160728195125.GN11806@sirena.org.uk>
+ <20160730033441.GO15995@brightrain.aerifal.cx>
+ <20160801181245.GZ10376@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Jan Glauber <jglauber-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, David Daney <david.daney-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>,
-	"Steven J . Hill" <steven.hill-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Yoshinori Sato <ysato-Rn4VEauK+AKRv+LV9MX5uooqe+aC9MnS@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160801184931.GB10376-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20160801181245.GZ10376-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-On 08/01/2016 11:49 AM, Mark Brown wrote:
-> On Mon, Aug 01, 2016 at 11:31:43AM -0700, David Daney wrote:
->> On 08/01/2016 10:28 AM, Mark Brown wrote:
->>> On Thu, Jul 28, 2016 at 10:31:44AM +0200, Jan Glauber wrote:
->
->>>> +	p->clk = devm_clk_get(dev, NULL);
->>>> +	if (IS_ERR(p->clk))
->>>> +		goto out_unmap;
->
->>> We're now just using the normal clock API which is good but I'm now
->>> unclear what is going to ensure that the clock is there - is there some
->>> other change elsewhere that I'm not aware of?
->
->> The clock is an integral part of the SoC and is always running, so it will
->> always be there.  All we want to know is the frequency, which is supplied by
->> the device tree clock-bindings framework
->
-> So there's something there that registers the clock?
+On Mon, Aug 01, 2016 at 07:12:45PM +0100, Mark Brown wrote:
+> On Fri, Jul 29, 2016 at 11:34:41PM -0400, Rich Felker wrote:
+> 
+> > I was able to get it working via the clk api and I'll include support
+> > for this in the next version of the patch, but to actually use it
+> > depends on changing arch/sh to use the common clk framework; otherwise
+> > there's no way to provide a suitable clk in the DT and have
+> > [devm_]clk_get actually pick it up. Should I keep around the option of
+> > using clock-frequency too? That would be most convenient.
+> 
+> It sounds like at the minute the devices all have one frequency anyway
+> in which case just having a default frequency in there that you fall
+> back to if you get -ENOENT from a failed clock lookup might be enough?
 
-Yes, when using OF device tree, standard device probing registers the clock.
+Yes. 50 MHz is the natural default frequency, but I found out at the
+last minute from the hardware engineers that clocking the current SoC
+up to 62.5 MHz (for faster cpu) will require the SPI timing to be
+programmed based on the faster reference clock. This messes up the
+ability to get optimal SD card transfer rates, so we'll probably end
+up having a real 50 MHz clock for the SPI anyway, but I thought it was
+important to be able to handle this issue in the DT binding anyway.
 
-> What is that thing on ACPI systems?
+Since it's not an immediate need right now anyway I'll drop the
+clock-frequency property proposal and just use the more general clocks
+approach you suggested.
 
-I don't know if it works ACPI, or if ACPI even has support for the clock 
-framework.  But does it matter?  We are not currently using ACPI on 
-systems where this driver is used.
-
-In the future, if we ever need ACPI support, we will add support for it.
-
-David.
-
+Rich
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

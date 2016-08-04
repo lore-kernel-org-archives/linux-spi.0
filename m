@@ -1,97 +1,42 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: jcore: add J-Core SPI master bindings" to the spi tree
-Date: Thu, 04 Aug 2016 22:09:32 +0100
-Message-ID: <E1bVPtU-0007O2-Hu@debutante>
-References: <bc53c38fe100bd17b278dfb214eefea323a3ac4a.1470187592.git.dalias@libc.org>
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-sh@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>
-To: Rich Felker <dalias@libc.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <bc53c38fe100bd17b278dfb214eefea323a3ac4a.1470187592.git.dalias@libc.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v5 1/8] Documentation: dt: spi: Add BRCMSTB SoC bindings
+Date: Thu, 4 Aug 2016 15:20:17 -0700
+Message-ID: <1fddf72d-cbc1-225f-b482-d6ba99dab823@gmail.com>
+References: <1469830393-13295-1-git-send-email-kdasu.kdev@gmail.com>
+ <1469830393-13295-2-git-send-email-kdasu.kdev@gmail.com>
+ <20160804210634.GM10383@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	vigneshr-l0cyMroinI0@public.gmane.org, bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
+	vikram.prakash-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, andy.fung-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
+	jon.mason-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, jchandra-dY08KVG/lbpWk0Htik3J/w@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20160804210634.GM10383-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+On 08/04/2016 02:06 PM, Mark Brown wrote:
+> On Fri, Jul 29, 2016 at 06:13:06PM -0400, Kamal Dasu wrote:
+>> Added device tree bindings documentation for SoCs supported by the
+>> new spi-bcm-qspi, spi-brcmstb-qspi driver.
+> 
+> Please submit patches using subject lines reflecting the style for the
+> subsystem.  This makes it easier for people to identify relevant
+> patches.  Look at what existing commits in the area you're changing are
+> doing and make sure your subject lines visually resemble what they're
+> doing.
 
-   spi: jcore: add J-Core SPI master bindings
+What's wrong with the subjects being used here? It's not like there is a
+consistent subject for DT bindings, is spi/dt what you would expect here?
 
-has been applied to the spi tree at
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 4b87b6da506dc91b45df06984ed55fcb4676c68d Mon Sep 17 00:00:00 2001
-From: Rich Felker <dalias@libc.org>
-Date: Thu, 4 Aug 2016 04:30:37 +0000
-Subject: [PATCH] spi: jcore: add J-Core SPI master bindings
-
-Signed-off-by: Rich Felker <dalias@libc.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- .../devicetree/bindings/spi/jcore,spi.txt          | 34 ++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/jcore,spi.txt
-
-diff --git a/Documentation/devicetree/bindings/spi/jcore,spi.txt b/Documentation/devicetree/bindings/spi/jcore,spi.txt
-new file mode 100644
-index 000000000000..93936d16e139
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/jcore,spi.txt
-@@ -0,0 +1,34 @@
-+J-Core SPI master
-+
-+Required properties:
-+
-+- compatible: Must be "jcore,spi2".
-+
-+- reg: Memory region for registers.
-+
-+- #address-cells: Must be 1.
-+
-+- #size-cells: Must be 0.
-+
-+Optional properties:
-+
-+- clocks: If a phandle named "ref_clk" is present, SPI clock speed
-+  programming is relative to the frequency of the indicated clock.
-+  Necessary only if the input clock rate is something other than a
-+  fixed 50 MHz.
-+
-+- clock-names: Clock names, one for each phandle in clocks.
-+
-+See spi-bus.txt for additional properties not specific to this device.
-+
-+Example:
-+
-+spi@40 {
-+	compatible = "jcore,spi2";
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	reg = <0x40 0x8>;
-+	spi-max-frequency = <25000000>;
-+	clocks = <&bus_clk>;
-+	clock-names = "ref_clk";
-+}
+Can we save Kamal another round of patches and provide feedback on the
+patch contents (as well as their form)?
 -- 
-2.8.1
+Florian
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

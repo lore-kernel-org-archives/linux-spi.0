@@ -1,42 +1,52 @@
-From: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v5 1/8] Documentation: dt: spi: Add BRCMSTB SoC bindings
-Date: Thu, 4 Aug 2016 15:20:17 -0700
-Message-ID: <1fddf72d-cbc1-225f-b482-d6ba99dab823@gmail.com>
-References: <1469830393-13295-1-git-send-email-kdasu.kdev@gmail.com>
- <1469830393-13295-2-git-send-email-kdasu.kdev@gmail.com>
- <20160804210634.GM10383@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	vigneshr-l0cyMroinI0@public.gmane.org, bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
-	vikram.prakash-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, andy.fung-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
-	jon.mason-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, jchandra-dY08KVG/lbpWk0Htik3J/w@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160804210634.GM10383-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH] spi: sh-msiof: Avoid invalid clock generator parameters
+Date: Fri,  5 Aug 2016 10:17:52 +0200
+Message-ID: <1470385072-1313-1-git-send-email-geert+renesas@glider.be>
+Cc: Magnus Damm <magnus.damm@gmail.com>,
+	Nobuhiro Iwamatsu <iwamatsu@nigauri.org>,
+	Ulrich Hecht <ulrich.hecht@gmail.com>,
+	linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-renesas-soc-owner@vger.kernel.org>
+Sender: linux-renesas-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On 08/04/2016 02:06 PM, Mark Brown wrote:
-> On Fri, Jul 29, 2016 at 06:13:06PM -0400, Kamal Dasu wrote:
->> Added device tree bindings documentation for SoCs supported by the
->> new spi-bcm-qspi, spi-brcmstb-qspi driver.
-> 
-> Please submit patches using subject lines reflecting the style for the
-> subsystem.  This makes it easier for people to identify relevant
-> patches.  Look at what existing commits in the area you're changing are
-> doing and make sure your subject lines visually resemble what they're
-> doing.
+The conversion from a look-up table to a calculation for clock generator
+parameters forgot to take into account that BRDV x 1/1 is valid only if
+BRPS is x 1/1 or x 1/2, leading to undefined behavior (e.g. arbitrary
+clock rates).
 
-What's wrong with the subjects being used here? It's not like there is a
-consistent subject for DT bindings, is spi/dt what you would expect here?
+This limitation is documented for the MSIOF module in all supported
+SH/R-Mobile and R-Car Gen2/Gen3 ARM SoCs.
 
-Can we save Kamal another round of patches and provide feedback on the
-patch contents (as well as their form)?
+Tested on r8a7791/koelsch and r8a7795/salvator-x.
+
+Fixes: 65d5665bb260b034 ("spi: sh-msiof: Update calculation of frequency dividing")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+I think this is suitable for stable, so please add
+
+    Cc: stable@vger.kernel.org
+
+when applying.
+
+ drivers/spi/spi-sh-msiof.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 8d1120931f343776..91dc730880264fe8 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -301,6 +301,9 @@ static void sh_msiof_spi_set_clk_regs(struct sh_msiof_spi_priv *p,
+ 
+ 	for (k = 0; k < ARRAY_SIZE(sh_msiof_spi_div_table); k++) {
+ 		brps = DIV_ROUND_UP(div, sh_msiof_spi_div_table[k].div);
++		/* SCR_BRDV_DIV_1 is valid only if BRPS is x 1/1 or x 1/2 */
++		if (sh_msiof_spi_div_table[k].div == 1 && brps > 2)
++			continue;
+ 		if (brps <= 32) /* max of brdv is 32 */
+ 			break;
+ 	}
 -- 
-Florian
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+1.9.1

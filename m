@@ -1,65 +1,85 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v5 1/8] Documentation: dt: spi: Add BRCMSTB SoC bindings
-Date: Fri, 5 Aug 2016 12:03:36 +0100
-Message-ID: <20160805110336.GR10383@sirena.org.uk>
-References: <1469830393-13295-1-git-send-email-kdasu.kdev@gmail.com>
- <1469830393-13295-2-git-send-email-kdasu.kdev@gmail.com>
- <20160804210634.GM10383@sirena.org.uk>
- <1fddf72d-cbc1-225f-b482-d6ba99dab823@gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="6tPipYVl+OcoAvSh"
-Cc: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, vigneshr-l0cyMroinI0@public.gmane.org,
-	bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, vikram.prakash-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
-	andy.fung-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, jon.mason-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
-	jchandra-dY08KVG/lbpWk0Htik3J/w@public.gmane.org
-To: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Applied "spi: sh-msiof: Avoid invalid clock generator parameters" to the spi tree
+Date: Fri, 05 Aug 2016 12:19:12 +0100
+Message-ID: <E1bVd9k-0001RH-Qo@debutante>
+References: <1470385072-1313-1-git-send-email-geert+renesas@glider.be>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Nobuhiro Iwamatsu <iwamatsu-+mkmVskJBflAfugRpC6u6w@public.gmane.org>,
+	Ulrich Hecht <ulrich.hecht-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1fddf72d-cbc1-225f-b482-d6ba99dab823-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1470385072-1313-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---6tPipYVl+OcoAvSh
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: sh-msiof: Avoid invalid clock generator parameters
 
-On Thu, Aug 04, 2016 at 03:20:17PM -0700, Florian Fainelli wrote:
+has been applied to the spi tree at
 
-> What's wrong with the subjects being used here? It's not like there is a
-> consistent subject for DT bindings, is spi/dt what you would expect here?
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-As a quick look at the git log for the SPI DT bindings should show you
-I'm looking for something in the same style as the drivers which at
-least starts with "spi".  A *vanishingly* small number of them start
-with Documentation which ought to be a bit of a warning sign.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> Can we save Kamal another round of patches and provide feedback on the
-> patch contents (as well as their form)?
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-I will look at them when I have time, this is the result of the triage
-where I work out if the patches are in some way relevant to me or I can
-just delete them.  Please don't chase me for faster review unless
-there's some strong reason, it tends to result in slower review.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---6tPipYVl+OcoAvSh
-Content-Type: application/pgp-signature; name="signature.asc"
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Thanks,
+Mark
 
-iQEcBAEBCAAGBQJXpHKHAAoJECTWi3JdVIfQTGAH/1ExBIy6bB/aJ0cyh0PQRkTM
-9wS+PFsDquTSGFePK/Uf9UXBqSS1aq51c/X07LJdVWYsbSZgp4eYMhrWAcJs9KRT
-HX0Bu5mZPxW72wK6bIODPjQvlhHsoIjJmjwGdnO4pbZ2NYxqKQWGPHys7ISfjD1L
-IUgS1rQ3M162DGHIcfVMhOC0IE06Tq6xIUqPzUMom8mWKC68U5m+ApvIrhWAhVjV
-y4b5Cz2V5q6+GSZulI26/5tRGAzDF8nVNP2L9x3DuYD2AZCH9YYAy7blu7jiSaJ2
-KoQK0B70c4fRpWqhyUxKtKSy/+1qAbtKEiLMyXKZi8HXMLhJM7NShWLmUI69p7Y=
-=4De1
------END PGP SIGNATURE-----
+>From c3ccf357c3d75bd2924e049b6a991f7c0c111068 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Date: Fri, 5 Aug 2016 10:17:52 +0200
+Subject: [PATCH] spi: sh-msiof: Avoid invalid clock generator parameters
 
---6tPipYVl+OcoAvSh--
+The conversion from a look-up table to a calculation for clock generator
+parameters forgot to take into account that BRDV x 1/1 is valid only if
+BRPS is x 1/1 or x 1/2, leading to undefined behavior (e.g. arbitrary
+clock rates).
+
+This limitation is documented for the MSIOF module in all supported
+SH/R-Mobile and R-Car Gen2/Gen3 ARM SoCs.
+
+Tested on r8a7791/koelsch and r8a7795/salvator-x.
+
+Fixes: 65d5665bb260b034 ("spi: sh-msiof: Update calculation of frequency dividing")
+Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-sh-msiof.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 0f83ad1d5a58..1de3a772eb7d 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -262,6 +262,9 @@ static void sh_msiof_spi_set_clk_regs(struct sh_msiof_spi_priv *p,
+ 
+ 	for (k = 0; k < ARRAY_SIZE(sh_msiof_spi_div_table); k++) {
+ 		brps = DIV_ROUND_UP(div, sh_msiof_spi_div_table[k].div);
++		/* SCR_BRDV_DIV_1 is valid only if BRPS is x 1/1 or x 1/2 */
++		if (sh_msiof_spi_div_table[k].div == 1 && brps > 2)
++			continue;
+ 		if (brps <= 32) /* max of brdv is 32 */
+ 			break;
+ 	}
+-- 
+2.8.1
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

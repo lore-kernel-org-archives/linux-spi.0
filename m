@@ -1,66 +1,91 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/1] generic spidev devices must be registered
-Date: Fri, 5 Aug 2016 15:21:08 +0100
-Message-ID: <20160805142108.GZ10383@sirena.org.uk>
-References: <1470402714-10798-1-git-send-email-fabien.lahoudere@collabora.co.uk>
- <20160805134342.GD25152@leverpostej>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="sT0SRK93LqpGW452"
-Cc: Fabien Lahoudere <fabien.lahoudere-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"open list:SPI SUBSYSTEM" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	open list <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20160805134342.GD25152@leverpostej>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: rspi: Increase accuracy of bit rate for RZ" to the spi tree
+Date: Fri, 05 Aug 2016 15:50:56 +0100
+Message-ID: <E1bVgSe-00058k-CZ@debutante>
+References: <1470404163-27427-1-git-send-email-chris.brandt@renesas.com>
+Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
+	linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Daniel Palmer <danieruru@gmail.com>
+To: Chris Brandt <chris.brandt@renesas.com>
+Return-path: <linux-renesas-soc-owner@vger.kernel.org>
+In-Reply-To: <1470404163-27427-1-git-send-email-chris.brandt@renesas.com>
+Sender: linux-renesas-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---sT0SRK93LqpGW452
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: rspi: Increase accuracy of bit rate for RZ
 
-On Fri, Aug 05, 2016 at 02:43:43PM +0100, Mark Rutland wrote:
-> On Fri, Aug 05, 2016 at 03:11:53PM +0200, Fabien Lahoudere wrote:
-> > Adding spidev in the compatible list, let configure spidev from device tree
-> > instead of C source code.
+has been applied to the spi tree at
 
-> I'm not keen on this.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> It ties the hardware description to today's use-case, and leaves the DT
-> without information regarding the particuarl device. The binding is also
-> written in terms of the userspace interface, which is backwards.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> So NAK to this as-is.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Indeed.  Fabien, please see the *extensive* and repeated previous
-discussions of this topic.  Device tree is there to describe the
-hardware, not the software you currently happen to be using on your
-system.  Please also see the comments in the driver which explain why we
-require a compatible string which is descriptive of the hardware.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---sT0SRK93LqpGW452
-Content-Type: application/pgp-signature; name="signature.asc"
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Thanks,
+Mark
 
-iQEcBAEBCAAGBQJXpKDSAAoJECTWi3JdVIfQ6OIH/1/cbQhUpJBx5bGDOLQdoz2A
-A7JufH4XkyGqDbicXlX8XE6aBiCGtZSmMX7jSz4UDG3Zk9SkRSzmxrhqGC4ec5HZ
-tdyKwRpnZ+KunFf4m4V80ek26ZS11cYCTRpxZ1haQtpYiBJD2rT/9rn65N9cGA2m
-i1yONN3m/1FP+RWvNheVJ3PTi070fQIMXDOJHusHXqAOqOyfGvllIvXId//c+Zoa
-TcsI+M1KseybLzxU/UEiMQ95Fv6g/An2I0gJloBwr4+gm3XLhoiSaz14hUyUyV8v
-PWEhc8PqXXe/BdS7ppdsq+Jhk42geN0GVdax8Zpsjh47KEeLrfRIjTFdPzl5Pos=
-=Ep5f
------END PGP SIGNATURE-----
+>From ed66b659f95717432b7ede24efd8b2a34f479d32 Mon Sep 17 00:00:00 2001
+From: Chris Brandt <chris.brandt@renesas.com>
+Date: Fri, 5 Aug 2016 09:36:03 -0400
+Subject: [PATCH] spi: rspi: Increase accuracy of bit rate for RZ
 
---sT0SRK93LqpGW452--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+When you leave the clock divider at 0, 130kHz is the lowest you can go.
+Also, by adjusting the clock divider you can get more accurate resolutions
+for clock speeds lower than 16MHz. This patch uses the clock divider as
+part of the bit rate setup.
+
+Signed-off-by: Chris Brandt <chris.brandt@renesas.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-rspi.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index 818843336932..a816f07e168e 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -295,14 +295,24 @@ static int rspi_set_config_register(struct rspi_data *rspi, int access_size)
+ static int rspi_rz_set_config_register(struct rspi_data *rspi, int access_size)
+ {
+ 	int spbr;
++	int div = 0;
++	unsigned long clksrc;
+ 
+ 	/* Sets output mode, MOSI signal, and (optionally) loopback */
+ 	rspi_write8(rspi, rspi->sppcr, RSPI_SPPCR);
+ 
++	clksrc = clk_get_rate(rspi->clk);
++	while (div < 3) {
++		if (rspi->max_speed_hz >= clksrc/4) /* 4=(CLK/2)/2 */
++			break;
++		div++;
++		clksrc /= 2;
++	}
++
+ 	/* Sets transfer bit rate */
+-	spbr = DIV_ROUND_UP(clk_get_rate(rspi->clk),
+-			    2 * rspi->max_speed_hz) - 1;
++	spbr = DIV_ROUND_UP(clksrc, 2 * rspi->max_speed_hz) - 1;
+ 	rspi_write8(rspi, clamp(spbr, 0, 255), RSPI_SPBR);
++	rspi->spcmd |= div << 2;
+ 
+ 	/* Disable dummy transmission, set byte access */
+ 	rspi_write8(rspi, SPDCR_SPLBYTE, RSPI_SPDCR);
+-- 
+2.8.1

@@ -1,7 +1,7 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 1/3] spi: introduce max message size flag in spi_master
-Date: Sun, 7 Aug 2016 21:47:18 +0200
-Message-ID: <6c95366c-7fcc-ef4c-033a-f9f6e152a669@gmail.com>
+Subject: [PATCH 2/3] mtd: m25p80: consider max message size in m25p80_read
+Date: Sun, 7 Aug 2016 21:48:37 +0200
+Message-ID: <d910ea7b-d5a9-b1f1-fc45-5fdc11449f2c@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
@@ -13,40 +13,42 @@ Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Recently a maximum transfer size was was introduced in struct spi_master.
-However there are also spi controllers with a maximum message size, e.g.
-fsl-espi has a max message size of 64KB.
-As there are no (known) spi controller with differing size limits for
-transfer and message, introduce a flag in spi_master to indicate that
-the max transfer size is also the maximum message size.
+If the spi_master has the max_message_size_flag set, the maximum amount
+of data that can be read is the message size limit minus length of the
+read command.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- include/linux/spi/spi.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/mtd/devices/m25p80.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 072cb2a..cadb1de 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -312,6 +312,8 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
-  * @flags: other constraints relevant to this driver
-  * @max_transfer_size: function that returns the max transfer size for
-  *	a &spi_device; may be %NULL, so the default %SIZE_MAX will be used.
-+ * @max_message_size_flag: indicates that max transfer size is also
-+ *	max message size
-  * @io_mutex: mutex for physical bus access
-  * @bus_lock_spinlock: spinlock for SPI bus locking
-  * @bus_lock_mutex: mutex for exclusion of multiple callers
-@@ -446,6 +448,8 @@ struct spi_master {
- 	 * the limit may depend on device transfer settings
- 	 */
- 	size_t (*max_transfer_size)(struct spi_device *spi);
-+	/* flag indicating that max transfer size is also max message size */
-+	bool			max_message_size_flag;
+diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+index 9cf7fcd..2925038 100644
+--- a/drivers/mtd/devices/m25p80.c
++++ b/drivers/mtd/devices/m25p80.c
+@@ -133,6 +133,7 @@ static ssize_t m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
+ 	struct spi_transfer t[2];
+ 	struct spi_message m;
+ 	unsigned int dummy = nor->read_dummy;
++	size_t max_read_len;
+ 	ssize_t ret;
  
- 	/* I/O mutex */
- 	struct mutex		io_mutex;
+ 	/* convert the dummy cycles to the number of bytes */
+@@ -170,9 +171,13 @@ static ssize_t m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
+ 	t[0].len = m25p_cmdsz(nor) + dummy;
+ 	spi_message_add_tail(&t[0], &m);
+ 
++	max_read_len = spi_max_transfer_size(spi);
++	if (spi->master->max_message_size_flag)
++		max_read_len -= t[0].len;
++
+ 	t[1].rx_buf = buf;
+ 	t[1].rx_nbits = m25p80_rx_nbits(nor);
+-	t[1].len = min(len, spi_max_transfer_size(spi));
++	t[1].len = min(len, max_read_len);
+ 	spi_message_add_tail(&t[1], &m);
+ 
+ 	ret = spi_sync(spi, &m);
 -- 
 2.9.2
 

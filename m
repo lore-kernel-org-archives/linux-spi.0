@@ -1,56 +1,76 @@
-From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 2/3] mtd: m25p80: consider max message size in m25p80_read
-Date: Sun, 7 Aug 2016 21:48:37 +0200
-Message-ID: <d910ea7b-d5a9-b1f1-fc45-5fdc11449f2c@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org
+Subject: [PATCH 2/2] spi: xlp: Add ACPI support for Vulcan SPI controller
+Date: Mon,  8 Aug 2016 17:48:28 +0530
+Message-ID: <1470658708-8203-2-git-send-email-kamlakant.patel@broadcom.com>
+References: <1470658708-8203-1-git-send-email-kamlakant.patel@broadcom.com>
+Cc: Kamlakant Patel <kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jayachandran C <jchandra-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1470658708-8203-1-git-send-email-kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-If the spi_master has the max_message_size_flag set, the maximum amount
-of data that can be read is the message size limit minus length of the
-read command.
+From: Kamlakant Patel <kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
 
-Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Add ACPI support for SPI controller on Broadcom Vulcan ARM64.
+
+Signed-off-by: Kamlakant Patel <kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
 ---
- drivers/mtd/devices/m25p80.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/spi/spi-xlp.c |   17 +++++++++++++----
+ 1 files changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
-index 9cf7fcd..2925038 100644
---- a/drivers/mtd/devices/m25p80.c
-+++ b/drivers/mtd/devices/m25p80.c
-@@ -133,6 +133,7 @@ static ssize_t m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
- 	struct spi_transfer t[2];
- 	struct spi_message m;
- 	unsigned int dummy = nor->read_dummy;
-+	size_t max_read_len;
- 	ssize_t ret;
+diff --git a/drivers/spi/spi-xlp.c b/drivers/spi/spi-xlp.c
+index 8f04fec..63483f5 100644
+--- a/drivers/spi/spi-xlp.c
++++ b/drivers/spi/spi-xlp.c
+@@ -11,6 +11,7 @@
+  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  * GNU General Public License for more details.
+  */
++#include <linux/acpi.h>
+ #include <linux/clk.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+@@ -403,10 +404,9 @@ static int xlp_spi_probe(struct platform_device *pdev)
+ 	}
  
- 	/* convert the dummy cycles to the number of bytes */
-@@ -170,9 +171,13 @@ static ssize_t m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
- 	t[0].len = m25p_cmdsz(nor) + dummy;
- 	spi_message_add_tail(&t[0], &m);
- 
-+	max_read_len = spi_max_transfer_size(spi);
-+	if (spi->master->max_message_size_flag)
-+		max_read_len -= t[0].len;
+ 	clk = devm_clk_get(&pdev->dev, NULL);
+-	if (IS_ERR(clk)) {
+-		dev_err(&pdev->dev, "could not get spi clock\n");
+-		return -ENODEV;
+-	}
++	if (IS_ERR(clk))
++		return -EPROBE_DEFER;
 +
- 	t[1].rx_buf = buf;
- 	t[1].rx_nbits = m25p80_rx_nbits(nor);
--	t[1].len = min(len, spi_max_transfer_size(spi));
-+	t[1].len = min(len, max_read_len);
- 	spi_message_add_tail(&t[1], &m);
+ 	xspi->spi_clk = clk_get_rate(clk);
  
- 	ret = spi_sync(spi, &m);
+ 	master = spi_alloc_master(&pdev->dev, 0);
+@@ -437,6 +437,14 @@ static int xlp_spi_probe(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
++#ifdef CONFIG_ACPI
++static const struct acpi_device_id xlp_spi_acpi_match[] = {
++	{ "BRCM900D", 0 },
++	{ },
++};
++MODULE_DEVICE_TABLE(acpi, xlp_spi_acpi_match);
++#endif
++
+ static const struct of_device_id xlp_spi_dt_id[] = {
+ 	{ .compatible = "netlogic,xlp832-spi" },
+ 	{ },
+@@ -447,6 +455,7 @@ static struct platform_driver xlp_spi_driver = {
+ 	.driver = {
+ 		.name	= "xlp-spi",
+ 		.of_match_table = xlp_spi_dt_id,
++		.acpi_match_table = ACPI_PTR(xlp_spi_acpi_match),
+ 	},
+ };
+ module_platform_driver(xlp_spi_driver);
 -- 
-2.9.2
+1.7.1
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

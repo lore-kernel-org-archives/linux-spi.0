@@ -1,71 +1,74 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v5] spi: spi-ti-qspi: Add DMA support for QSPI mmap read
-Date: Tue, 9 Aug 2016 12:33:29 +0100
-Message-ID: <20160809113329.GA9347@sirena.org.uk>
-References: <20160809110311.13521-1-vigneshr@ti.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="qDbXVdCdHGoSgWSk"
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org
-To: Vignesh R <vigneshr@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20160809110311.13521-1-vigneshr@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: jcore: remove unnecessary platform_set_drvdata()" to the spi tree
+Date: Tue, 09 Aug 2016 13:44:42 +0100
+Message-ID: <E1bX6Og-0003lN-Ns@debutante>
+References: <1470664403-9452-1-git-send-email-weiyj.lk@gmail.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Rich Felker <dalias-8zAoT0mYgF4@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1470664403-9452-1-git-send-email-weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---qDbXVdCdHGoSgWSk
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: jcore: remove unnecessary platform_set_drvdata()
 
-On Tue, Aug 09, 2016 at 04:33:11PM +0530, Vignesh R wrote:
+has been applied to the spi tree at
 
-> +static int ti_qspi_map_buf(struct ti_qspi *qspi, void *buf,
-> +			   unsigned int len, struct sg_table *sgt)
-> +{
-> +	unsigned int max_seg_size =
-> +		dma_get_max_seg_size(qspi->rx_chan->device->dev);
-> +	unsigned int desc_len = min_t(int, max_seg_size, PAGE_SIZE);
-> +	int sgs = DIV_ROUND_UP(len + offset_in_page(buf), desc_len);
-> +	struct page *vm_page;
-> +	size_t min;
-> +	int i, ret;
-> +
-> +	ret = sg_alloc_table(sgt, sgs, GFP_KERNEL);
-> +	if (ret)
-> +		return ret;
-> +
-> +	for (i = 0; i < sgs; i++) {
-> +		min = min_t(size_t, len, desc_len -
-> +			    offset_in_page(buf));
-> +		vm_page = kmap_to_page(buf);
-> +		if (!vm_page) {
-> +			sg_free_table(sgt);
-> +			return -ENOMEM;
-> +		}
-> +		sg_set_page(&sgt->sgl[i], vm_page, min,
-> +			    offset_in_page(buf));
-> +		buf += min;
-> +		len -= min;
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-This looks a lot like the core code for mapping the buffers - why is
-this open coded rather than reused?
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
---qDbXVdCdHGoSgWSk
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iQEcBAEBCAAGBQJXqb+IAAoJECTWi3JdVIfQvxgH/17pZtV583l7jw7L9Rri4i94
-/cDiBCWEUgtyQHxYTd2bu+tSTZNeMEWrhnWwotOesZQfLwiiKM4Y7GgIhhaS+F6y
-2wU/22M2JLdpVSPl17V1U178m3uXCg5KluIxH+u8mgdyxoWn9XH1fBGFJNkNw8v8
-5fuuIdOcEpY9x1WMPQPqdBNvAovRs/lU0E1PXgSgeIxMtuSMwWr5pxqwMzxIHyGL
-7yMAXysMe2G/GxQWRWpb/bnVIHFWe1of8gbqv2fhKlgFj5FC3uVZuTUOV2Cg3K0C
-pi0ALKr0M5cV45bilPYpNlqQ/Tn1B7wGhwpC9lOp1f/N1DuW8XEVSrIfOdRj/xE=
-=/Cfu
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---qDbXVdCdHGoSgWSk--
+Thanks,
+Mark
+
+>From f75529fd712cb147a81925c58cf260346eae5da3 Mon Sep 17 00:00:00 2001
+From: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Mon, 8 Aug 2016 13:53:23 +0000
+Subject: [PATCH] spi: jcore: remove unnecessary platform_set_drvdata()
+
+The driver core clears the driver data to NULL after device_release
+or on probe failure. Thus, it is not needed to manually clear the
+device driver data to NULL.
+
+Signed-off-by: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-jcore.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/spi/spi-jcore.c b/drivers/spi/spi-jcore.c
+index 7d2044a106a2..f8117b80fa22 100644
+--- a/drivers/spi/spi-jcore.c
++++ b/drivers/spi/spi-jcore.c
+@@ -206,7 +206,6 @@ static int jcore_spi_probe(struct platform_device *pdev)
+ exit_busy:
+ 	err = -EBUSY;
+ exit:
+-	platform_set_drvdata(pdev, NULL);
+ 	spi_master_put(master);
+ 	return err;
+ }
+-- 
+2.8.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

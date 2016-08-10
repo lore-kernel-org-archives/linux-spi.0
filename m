@@ -1,61 +1,84 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: =?utf-8?B?562U5aSN?= =?utf-8?Q?=3A?= dw-spi driver bus number
-Date: Wed, 10 Aug 2016 12:03:29 +0100
-Message-ID: <20160810110328.GH9347@sirena.org.uk>
-References: <1470712490330.33016@dji.com>
- <20160809105132.GI10383@sirena.org.uk>
- <1470819008289.64659@dji.com>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH 3/3] lis3: SPI transport layer
+Date: Wed, 10 Aug 2016 12:31:08 +0200
+Message-ID: <CAMuHMdX-aX20QXMzKm5kxgCp+Bg+bYa-6+hNONy=rZ0MX4F2vA@mail.gmail.com>
+References: <20090322234248.GG22927@buzzloop.caiaq.de> <1237765887-32672-1-git-send-email-daniel@caiaq.de>
+ <1237765887-32672-2-git-send-email-daniel@caiaq.de> <1237765887-32672-3-git-send-email-daniel@caiaq.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="svZFHVx8/dhPCe52"
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Edison Chen <yongsen.chen-dS4nfl7sBO4@public.gmane.org>,
-	Fang Yingju <yingju.fang-dS4nfl7sBO4@public.gmane.org>, Flare <jiaquan.su-dS4nfl7sBO4@public.gmane.org>
-To: First Light <xiaoguang.chen-dS4nfl7sBO4@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Cc: "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	=?UTF-8?Q?=C3=89ric_Piel?= <eric.piel-VkQ1JFuSMpfAbQlEx87xDw@public.gmane.org>,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
+	Greg KH <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
+	Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Daniel Mack <daniel-rDUAYElUppE@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1470819008289.64659-dS4nfl7sBO4@public.gmane.org>
+In-Reply-To: <1237765887-32672-3-git-send-email-daniel-rDUAYElUppE@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hi Daniel,
 
---svZFHVx8/dhPCe52
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Mon, Mar 23, 2009 at 12:51 AM, Daniel Mack <daniel-rDUAYElUppE@public.gmane.org> wrote:
+> Make use of the new abstraction layer and add a new transport layer for
+> spi. Works fine on a PXA based board.
+>
+> Signed-off-by: Daniel Mack <daniel-rDUAYElUppE@public.gmane.org>
+> Acked-by: Pavel Machek <pavel-+ZI9xUNit7I@public.gmane.org>
+> Cc: Éric Piel <eric.piel-VkQ1JFuSMpfAbQlEx87xDw@public.gmane.org>
+> Cc: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+> ---
+>  drivers/hwmon/Kconfig         |   16 ++++++
+>  drivers/hwmon/Makefile        |    1 +
+>  drivers/hwmon/lis3lv02d_spi.c |  114 +++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 131 insertions(+), 0 deletions(-)
+>  create mode 100644 drivers/hwmon/lis3lv02d_spi.c
+>
+> diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
+> index b84bf06..9d78ab4 100644
+> --- a/drivers/hwmon/Kconfig
+> +++ b/drivers/hwmon/Kconfig
 
-On Wed, Aug 10, 2016 at 08:50:08AM +0000, First Light wrote:
+In the mean time, this has moved to drivers/misc/lis3lv02d/Kconfig
 
-Please don't top post, reply in line with needed context.  This allows
-readers to readily follow the flow of conversation and understand what
-you are talking about and also helps ensure that everything in the
-discussion is being addressed.
+> @@ -895,6 +895,22 @@ config SENSORS_LIS3LV02D
+>           Say Y here if you have an applicable laptop and want to experience
+>           the awesome power of lis3lv02d.
+>
+> +config SENSORS_LIS3_SPI
+> +       tristate "STMicroeletronics LIS3LV02Dx three-axis digital accelerometer (SPI)"
+> +       depends on !ACPI && SPI_MASTER && INPUT
 
-> But I found the dynamically assigned bus number is always -1.?
+Is there any specific reason this option depends on !ACPI?
+This hurts multi-platform kernels, supporting both OF and ACPI.
 
-> I have two spi buses, both get the -1 bus number.
+> +       default n
+> +       help
+> +         This driver provides support for the LIS3LV02Dx accelerometer connected
+> +         via SPI. The accelerometer data is readable via
+> +         /sys/devices/platform/lis3lv02d.
+> +
+> +         This driver also provides an absolute input class device, allowing
+> +         the laptop to act as a pinball machine-esque joystick.
+> +
+> +         This driver can also be built as modules.  If so, the core module
+> +         will be called lis3lv02d and a specific module for the SPI transport
+> +         is called lis3lv02d_spi.
+> +
 
-That shouldn't happen, if it does it's a bug - users should never see a
-negative bus number, the core should dynamically assign one if it is
-given a negative bus number.  Can you check what happens in
-spi_register_master()?  That's where the dynamic bus number should be
-being assigned.
+Gr{oetje,eeting}s,
 
---svZFHVx8/dhPCe52
-Content-Type: application/pgp-signature; name="signature.asc"
+                        Geert
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
 
-iQEcBAEBCAAGBQJXqwn/AAoJECTWi3JdVIfQG5oH/3ts+uURkuUPI41V+SOawYqk
-CYdHLeKOlwGHzwpBCwtnxxbEDvFm9GEUBzNOQQ3soKQRhFzad1Fwu300L7o5KJXx
-HpVIYs9lN5ONxKMZQWhw4RcxAx68yk1mOXvo6Mw/8+jkIE6Us+UQxhYCqUWDlQ8V
-qaLUqePjD2giNAEAzKDwPE+cVUz3Yvl8qqcay+aJxyaTQBCoGbzJasCnuM7UHj65
-wbqImz9RrjzLwVvgJrw6a1lla7LGkJu9F7Js2tag1kcEgqKUU3tKqcNCOp4ZhPuk
-sD+H4oNxka8eRGvCC6OHCzL/adJ4Ld2gZii9gONH/F19lTjeEj3eUyzHIbxaQzA=
-=8vaK
------END PGP SIGNATURE-----
-
---svZFHVx8/dhPCe52--
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

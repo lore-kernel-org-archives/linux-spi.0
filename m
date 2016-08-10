@@ -1,84 +1,105 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH 3/3] lis3: SPI transport layer
-Date: Wed, 10 Aug 2016 12:31:08 +0200
-Message-ID: <CAMuHMdX-aX20QXMzKm5kxgCp+Bg+bYa-6+hNONy=rZ0MX4F2vA@mail.gmail.com>
-References: <20090322234248.GG22927@buzzloop.caiaq.de> <1237765887-32672-1-git-send-email-daniel@caiaq.de>
- <1237765887-32672-2-git-send-email-daniel@caiaq.de> <1237765887-32672-3-git-send-email-daniel@caiaq.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Cc: "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	=?UTF-8?Q?=C3=89ric_Piel?= <eric.piel-VkQ1JFuSMpfAbQlEx87xDw@public.gmane.org>,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
-	Greg KH <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
-	Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Daniel Mack <daniel-rDUAYElUppE@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: xlp: Add ACPI support for Vulcan SPI controller" to the spi tree
+Date: Wed, 10 Aug 2016 21:04:27 +0100
+Message-ID: <E1bXZjn-0000bJ-3E@debutante>
+References: <1470751522-11060-2-git-send-email-kamlakant.patel@broadcom.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jayachandran C <jchandra-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+To: Kamlakant Patel <kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1237765887-32672-3-git-send-email-daniel-rDUAYElUppE@public.gmane.org>
+In-Reply-To: <1470751522-11060-2-git-send-email-kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Daniel,
+The patch
 
-On Mon, Mar 23, 2009 at 12:51 AM, Daniel Mack <daniel-rDUAYElUppE@public.gmane.org> wrote:
-> Make use of the new abstraction layer and add a new transport layer for
-> spi. Works fine on a PXA based board.
->
-> Signed-off-by: Daniel Mack <daniel-rDUAYElUppE@public.gmane.org>
-> Acked-by: Pavel Machek <pavel-+ZI9xUNit7I@public.gmane.org>
-> Cc: Éric Piel <eric.piel-VkQ1JFuSMpfAbQlEx87xDw@public.gmane.org>
-> Cc: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-> ---
->  drivers/hwmon/Kconfig         |   16 ++++++
->  drivers/hwmon/Makefile        |    1 +
->  drivers/hwmon/lis3lv02d_spi.c |  114 +++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 131 insertions(+), 0 deletions(-)
->  create mode 100644 drivers/hwmon/lis3lv02d_spi.c
->
-> diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
-> index b84bf06..9d78ab4 100644
-> --- a/drivers/hwmon/Kconfig
-> +++ b/drivers/hwmon/Kconfig
+   spi: xlp: Add ACPI support for Vulcan SPI controller
 
-In the mean time, this has moved to drivers/misc/lis3lv02d/Kconfig
+has been applied to the spi tree at
 
-> @@ -895,6 +895,22 @@ config SENSORS_LIS3LV02D
->           Say Y here if you have an applicable laptop and want to experience
->           the awesome power of lis3lv02d.
->
-> +config SENSORS_LIS3_SPI
-> +       tristate "STMicroeletronics LIS3LV02Dx three-axis digital accelerometer (SPI)"
-> +       depends on !ACPI && SPI_MASTER && INPUT
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-Is there any specific reason this option depends on !ACPI?
-This hurts multi-platform kernels, supporting both OF and ACPI.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> +       default n
-> +       help
-> +         This driver provides support for the LIS3LV02Dx accelerometer connected
-> +         via SPI. The accelerometer data is readable via
-> +         /sys/devices/platform/lis3lv02d.
-> +
-> +         This driver also provides an absolute input class device, allowing
-> +         the laptop to act as a pinball machine-esque joystick.
-> +
-> +         This driver can also be built as modules.  If so, the core module
-> +         will be called lis3lv02d and a specific module for the SPI transport
-> +         is called lis3lv02d_spi.
-> +
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Gr{oetje,eeting}s,
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-                        Geert
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+Thanks,
+Mark
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+>From 097d06192caf6db29ff6b8a9117cfaf7a514821f Mon Sep 17 00:00:00 2001
+From: Kamlakant Patel <kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+Date: Tue, 9 Aug 2016 19:35:22 +0530
+Subject: [PATCH] spi: xlp: Add ACPI support for Vulcan SPI controller
+
+Add ACPI support for SPI controller on Broadcom Vulcan ARM64.
+
+Signed-off-by: Kamlakant Patel <kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-xlp.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-xlp.c b/drivers/spi/spi-xlp.c
+index 8f04feca6ee3..4071a729eb2f 100644
+--- a/drivers/spi/spi-xlp.c
++++ b/drivers/spi/spi-xlp.c
+@@ -11,6 +11,7 @@
+  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  * GNU General Public License for more details.
+  */
++#include <linux/acpi.h>
+ #include <linux/clk.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+@@ -405,8 +406,9 @@ static int xlp_spi_probe(struct platform_device *pdev)
+ 	clk = devm_clk_get(&pdev->dev, NULL);
+ 	if (IS_ERR(clk)) {
+ 		dev_err(&pdev->dev, "could not get spi clock\n");
+-		return -ENODEV;
++		return PTR_ERR(clk);
+ 	}
++
+ 	xspi->spi_clk = clk_get_rate(clk);
+ 
+ 	master = spi_alloc_master(&pdev->dev, 0);
+@@ -437,6 +439,14 @@ static int xlp_spi_probe(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
++#ifdef CONFIG_ACPI
++static const struct acpi_device_id xlp_spi_acpi_match[] = {
++	{ "BRCM900D", 0 },
++	{ },
++};
++MODULE_DEVICE_TABLE(acpi, xlp_spi_acpi_match);
++#endif
++
+ static const struct of_device_id xlp_spi_dt_id[] = {
+ 	{ .compatible = "netlogic,xlp832-spi" },
+ 	{ },
+@@ -447,6 +457,7 @@ static struct platform_driver xlp_spi_driver = {
+ 	.driver = {
+ 		.name	= "xlp-spi",
+ 		.of_match_table = xlp_spi_dt_id,
++		.acpi_match_table = ACPI_PTR(xlp_spi_acpi_match),
+ 	},
+ };
+ module_platform_driver(xlp_spi_driver);
+-- 
+2.8.1
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

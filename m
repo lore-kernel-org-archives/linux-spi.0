@@ -1,65 +1,83 @@
-From: First Light <xiaoguang.chen-dS4nfl7sBO4@public.gmane.org>
-Subject: Re:Re: dw-spi driver bus number
-Date: Thu, 11 Aug 2016 01:13:27 +0000
-Message-ID: <019c75c3a7b841eba898ca3542f2b5c9@CWMAIL-AP-F14.dji.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: Re: dw-spi driver bus number
+Date: Thu, 11 Aug 2016 17:40:27 +0100
+Message-ID: <20160811164027.GW9347@sirena.org.uk>
+References: <019c75c3a7b841eba898ca3542f2b5c9@CWMAIL-AP-F14.dji.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="wfgmFf0LjPE7xkRl"
 Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	Edison Chen <yongsen.chen-dS4nfl7sBO4@public.gmane.org>,
 	Fang Yingju <yingju.fang-dS4nfl7sBO4@public.gmane.org>, Flare <jiaquan.su-dS4nfl7sBO4@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: First Light <xiaoguang.chen-dS4nfl7sBO4@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Language: zh-CN
+Content-Disposition: inline
+In-Reply-To: <019c75c3a7b841eba898ca3542f2b5c9-wl3m2YU9F6jCyPUpEMH5pa0bRtRcJeJQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-DQo+IE9uIFdlZCwgQXVnIDEwLCAyMDE2IGF0IDA4OjUwOjA4QU0gKzAwMDAsIEZpcnN0IExpZ2h0
-IHdyb3RlOg0KPg0KPiBQbGVhc2UgZG9uJ3QgdG9wIHBvc3QsIHJlcGx5IGluIGxpbmUgd2l0aCBu
-ZWVkZWQgY29udGV4dC4gIFRoaXMgYWxsb3dzIHJlYWRlcnMNCj4gdG8gcmVhZGlseSBmb2xsb3cg
-dGhlIGZsb3cgb2YgY29udmVyc2F0aW9uIGFuZCB1bmRlcnN0YW5kIHdoYXQgeW91IGFyZSB0YWxr
-aW5nDQo+IGFib3V0IGFuZCBhbHNvIGhlbHBzIGVuc3VyZSB0aGF0IGV2ZXJ5dGhpbmcgaW4gdGhl
-IGRpc2N1c3Npb24gaXMgYmVpbmcNCj4gYWRkcmVzc2VkLg0KDQpbRmlyc3QgTGlnaHRdIFNvcnJ5
-LCBNYXJrLCBNeSBlbWFpbCBjbGllbnQgaXMgbm90IHF1aXRlIG9wZW4gc291cmNlIHN0eWxlLiBJ
-J20gdHJ5aW5nIHRvIHVzZSB0aGlzIHdheS4NCj4NCj4gPiBCdXQgSSBmb3VuZCB0aGUgZHluYW1p
-Y2FsbHkgYXNzaWduZWQgYnVzIG51bWJlciBpcyBhbHdheXMgLTEuPw0KPg0KPiA+IEkgaGF2ZSB0
-d28gc3BpIGJ1c2VzLCBib3RoIGdldCB0aGUgLTEgYnVzIG51bWJlci4NCj4NCj4gVGhhdCBzaG91
-bGRuJ3QgaGFwcGVuLCBpZiBpdCBkb2VzIGl0J3MgYSBidWcgLSB1c2VycyBzaG91bGQgbmV2ZXIg
-c2VlIGEgbmVnYXRpdmUNCj4gYnVzIG51bWJlciwgdGhlIGNvcmUgc2hvdWxkIGR5bmFtaWNhbGx5
-IGFzc2lnbiBvbmUgaWYgaXQgaXMgZ2l2ZW4gYSBuZWdhdGl2ZSBidXMNCj4gbnVtYmVyLiAgQ2Fu
-IHlvdSBjaGVjayB3aGF0IGhhcHBlbnMgaW4gc3BpX3JlZ2lzdGVyX21hc3RlcigpPyAgVGhhdCdz
-DQo+IHdoZXJlIHRoZSBkeW5hbWljIGJ1cyBudW1iZXIgc2hvdWxkIGJlIGJlaW5nIGFzc2lnbmVk
-Lg0KW0ZpcnN0IExpZ2h0XSBJJ20gdXNpbmcgbGludXgtNC40IGtlcm5lbCwgYW5kIEluIHNwaS1k
-dy1tbWlvLmMsDQpJIHNlZSB0aGF0Og0KIExJTkU3NDogZHdzLT5idXNfbnVtID0gcGRldi0tPmlk
-OyAoZHdzIGlzIHN0cnVjdCBkd19zcGksIG5vdCBzdHJ1Y3Qgc3BpX21hc3RlcikNCiBMSU5FMTA3
-OiByZXQ9ZHdfc3BpX2FkZF9ob3N0KCZwZGV2LT5kZXYsIGR3cyk7DQpzcGlfcmVnaXN0ZXJfbWFz
-dGVyIGlzIGNhbGxlZCBpbiBkd19zcGlfYWRkX2hvc3QuDQpTbyBkd3MtPmJ1c19udW0gaXMgbm90
-IGR5bmFtaWNhbGx5IGFzc2lnbmVkLCBidXQganVzdCBvbmUgc3RhdGljIHZhbHVlIHNpbmNlIHBk
-ZXYtPmlkIGlzIG5vdCBpbml0ZWQuDQpJIHRoaW5rIHlvdSBhcmUgc2F5aW5nIHNwaV9tYXN0ZXIt
-PmJ1c19udW0gaXMgZHluYW1pY2FsbHkgaW5pdGVkLiBSaWdodD8NCg0KSSBhbHNvIHNlZSB0aGF0
-IHNwaV9tYXN0ZXItPmJ1c19udW0gaXMgaW5pdGVkIHdpdGggZHdzLT5idXNfbnVtYmVyIGZpcnN0
-LCBhbmQgdGhlIGl0IGZpbmRzIHRoYXQgdGhpcyBidXNfbnVtIDwgMCwNCnRoZW4gdXNlcyBvZl9h
-bGlhc19nZXRfaWQgb3IgYXRvbWljX2RlY19yZXR1cm4oJmR5bl9idXNfaWQpIHRvIGdldCBhIGR5
-bmFtaWMgb25lLg0KDQpRdWVzdGlvbiBpczogZG8gd2UgbmVlZCB0byB1cGRhdGUgZHdzLT5idXNf
-bnVtIGFnYWluPyBJdCBpcyAtMSBhbHdheXMuDQpGcm9tIC9wcm9jL2ludGVycnVwdHMsIEkgY2hl
-Y2sgaXJxIG9mIHNwaSwgYW5kIHRoZSBsYXN0IGNvbHVtbiBpcyB0aGUgZGV2aWNlIG5hbWUsDQp1
-bmxpa2Ugb3RoZXIgZGV2aWNlcywgbGlrZSBpMmMwLCBpMmMxLC4uLiwgc3BpJ3MgZGV2aWNlIG5h
-bWUgaXMgZHdfc3BpNjU1MzUsDQpib3RoIG9mIHRoZSBzcGkgZGV2aWNlcyBJIHJlZ2lzdGVyZWQg
-aGF2ZSB0aGlzIG5hbWUuIDY1NTM1IGlzIC0xLg0KVGhlcmUgbXVzdCBiZSBzb21ldGhpbmcgdW5t
-YXRjaGVkLg0KDQpUaGFua3MNClhpYW9ndWFuZw0KDQoNCg0KDQoNCg0KVGhpcyBlbWFpbCBhbmQg
-YW55IGF0dGFjaG1lbnRzIHRoZXJldG8gbWF5IGNvbnRhaW4gcHJpdmF0ZSwgY29uZmlkZW50aWFs
-LCBhbmQgcHJpdmlsZWdlZCBtYXRlcmlhbCBmb3IgdGhlIHNvbGUgdXNlIG9mIHRoZSBpbnRlbmRl
-ZCByZWNpcGllbnQuIEFueSByZXZpZXcsIGNvcHlpbmcsIG9yIGRpc3RyaWJ1dGlvbiBvZiB0aGlz
-IGVtYWlsIChvciBhbnkgYXR0YWNobWVudHMgdGhlcmV0bykgYnkgb3RoZXJzIGlzIHN0cmljdGx5
-IHByb2hpYml0ZWQuIElmIHlvdSBhcmUgbm90IHRoZSBpbnRlbmRlZCByZWNpcGllbnQsIHBsZWFz
-ZSBjb250YWN0IHRoZSBzZW5kZXIgaW1tZWRpYXRlbHkgYW5kIHBlcm1hbmVudGx5IGRlbGV0ZSB0
-aGUgb3JpZ2luYWwgYW5kIGFueSBjb3BpZXMgb2YgdGhpcyBlbWFpbCBhbmQgYW55IGF0dGFjaG1l
-bnRzIHRoZXJldG8uDQoNCuatpOeUteWtkOmCruS7tuWPiumZhOS7tuaJgOWMheWQq+WGheWuueWF
-t+acieacuuWvhuaAp++8jOS4lOS7hemZkOS6juaOpeaUtuS6uuS9v+eUqOOAguacque7j+WFgSDo
-rrjvvIznpoHmraLnrKzkuInkurrpmIXor7vjgIHlpI3liLbmiJbkvKDmkq3or6XnlLXlrZDpgq7k
-u7bkuK3nmoTku7vkvZXkv6Hmga/jgILlpoLmnpzmgqjkuI3lsZ7kuo7ku6XkuIrnlLXlrZDpgq7k
-u7bnmoTnm67moIfmjqXmlLbogIXvvIzor7fmgqjnq4vljbPpgJrnn6Xlj5HpgIHkurrlubbliKDp
-maTljp/nlLXlrZDpgq7ku7blj4rlhbbnm7jlhbPnmoTpmYTku7bjgIINCg==
+
+--wfgmFf0LjPE7xkRl
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Thu, Aug 11, 2016 at 01:13:27AM +0000, First Light wrote:
+> > On Wed, Aug 10, 2016 at 08:50:08AM +0000, First Light wrote:
+
+Please fix your mail client to word wrap within paragraphs at something
+substantially less than 80 columns.  Doing this makes your messages much
+easier to read and reply to.
+
+> > That shouldn't happen, if it does it's a bug - users should never see a negative
+> > bus number, the core should dynamically assign one if it is given a negative bus
+> > number.  Can you check what happens in spi_register_master()?  That's
+> > where the dynamic bus number should be being assigned.
+
+> [First Light] I'm using linux-4.4 kernel, and In spi-dw-mmio.c,
+> I see that:
+>  LINE74: dws->bus_num = pdev-->id; (dws is struct dw_spi, not struct spi_master)
+>  LINE107: ret=dw_spi_add_host(&pdev->dev, dws);
+> spi_register_master is called in dw_spi_add_host.
+> So dws->bus_num is not dynamically assigned, but just one static value since pdev->id is not inited.
+
+This doesn't matter so long as the default value passed into
+spi_register_master() is negative.
+
+> I think you are saying spi_master->bus_num is dynamically inited. Right?
+
+Yes, but by spi_register_master().
+
+> I also see that spi_master->bus_num is inited with dws->bus_number first, and the it finds that this bus_num < 0,
+> then uses of_alias_get_id or atomic_dec_return(&dyn_bus_id) to get a dynamic one.
+
+> Question is: do we need to update dws->bus_num again? It is -1 always.
+
+No, just pass that into the core and the core should take care of
+things.
+
+> unlike other devices, like i2c0, i2c1,..., spi's device name is dw_spi65535,
+> both of the spi devices I registered have this name. 65535 is -1.
+> There must be something unmatched.
+
+Please trace through the code and try to see where this is happening,
+this doesn't seem to be affecting other users.
+
+--wfgmFf0LjPE7xkRl
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJXrKp6AAoJECTWi3JdVIfQGm8H+wQbH7nzBStD24WdiCmggN+m
+zn42xXkWdkiZnVbnc20nltwqZQ3aCg84c8Chg3UX6imcFZ7MCES0w3qs0WsmNxE3
+SB07beoQj7MyXp4+KHFLwxjB5/PYm3QF1hIqRRTbH8o27WXu2eIwdkf1X4qsGFPW
+9/Pqv3IwMbb3OPL1+9UTrZfjxqs2c+wPL4Z2tECpNNlfywU8vw4CrJHfF3I04uUa
+SKQH38tXqCSNbGjVBkZirLYt9CSTk9akcy9BpbF+OFq5hwi5I2B07AtHO25VPzq0
++NML4FkqeEzqmXKf3uhRcixOrbE28z5+9FoS90NCHrEP9Wre94hnLRsUft8JZ/A=
+=S/TZ
+-----END PGP SIGNATURE-----
+
+--wfgmFf0LjPE7xkRl--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

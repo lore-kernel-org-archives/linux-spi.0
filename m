@@ -1,105 +1,65 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: xlp: Add ACPI support for Vulcan SPI controller" to the spi tree
-Date: Wed, 10 Aug 2016 21:04:27 +0100
-Message-ID: <E1bXZjn-0000bJ-3E@debutante>
-References: <1470751522-11060-2-git-send-email-kamlakant.patel@broadcom.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jayachandran C <jchandra-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-To: Kamlakant Patel <kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+From: First Light <xiaoguang.chen-dS4nfl7sBO4@public.gmane.org>
+Subject: Re:Re: dw-spi driver bus number
+Date: Thu, 11 Aug 2016 01:13:27 +0000
+Message-ID: <019c75c3a7b841eba898ca3542f2b5c9@CWMAIL-AP-F14.dji.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Edison Chen <yongsen.chen-dS4nfl7sBO4@public.gmane.org>,
+	Fang Yingju <yingju.fang-dS4nfl7sBO4@public.gmane.org>, Flare <jiaquan.su-dS4nfl7sBO4@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1470751522-11060-2-git-send-email-kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+Content-Language: zh-CN
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
-
-   spi: xlp: Add ACPI support for Vulcan SPI controller
-
-has been applied to the spi tree at
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 097d06192caf6db29ff6b8a9117cfaf7a514821f Mon Sep 17 00:00:00 2001
-From: Kamlakant Patel <kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-Date: Tue, 9 Aug 2016 19:35:22 +0530
-Subject: [PATCH] spi: xlp: Add ACPI support for Vulcan SPI controller
-
-Add ACPI support for SPI controller on Broadcom Vulcan ARM64.
-
-Signed-off-by: Kamlakant Patel <kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-xlp.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-xlp.c b/drivers/spi/spi-xlp.c
-index 8f04feca6ee3..4071a729eb2f 100644
---- a/drivers/spi/spi-xlp.c
-+++ b/drivers/spi/spi-xlp.c
-@@ -11,6 +11,7 @@
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
-  */
-+#include <linux/acpi.h>
- #include <linux/clk.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-@@ -405,8 +406,9 @@ static int xlp_spi_probe(struct platform_device *pdev)
- 	clk = devm_clk_get(&pdev->dev, NULL);
- 	if (IS_ERR(clk)) {
- 		dev_err(&pdev->dev, "could not get spi clock\n");
--		return -ENODEV;
-+		return PTR_ERR(clk);
- 	}
-+
- 	xspi->spi_clk = clk_get_rate(clk);
- 
- 	master = spi_alloc_master(&pdev->dev, 0);
-@@ -437,6 +439,14 @@ static int xlp_spi_probe(struct platform_device *pdev)
- 	return 0;
- }
- 
-+#ifdef CONFIG_ACPI
-+static const struct acpi_device_id xlp_spi_acpi_match[] = {
-+	{ "BRCM900D", 0 },
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(acpi, xlp_spi_acpi_match);
-+#endif
-+
- static const struct of_device_id xlp_spi_dt_id[] = {
- 	{ .compatible = "netlogic,xlp832-spi" },
- 	{ },
-@@ -447,6 +457,7 @@ static struct platform_driver xlp_spi_driver = {
- 	.driver = {
- 		.name	= "xlp-spi",
- 		.of_match_table = xlp_spi_dt_id,
-+		.acpi_match_table = ACPI_PTR(xlp_spi_acpi_match),
- 	},
- };
- module_platform_driver(xlp_spi_driver);
--- 
-2.8.1
-
+DQo+IE9uIFdlZCwgQXVnIDEwLCAyMDE2IGF0IDA4OjUwOjA4QU0gKzAwMDAsIEZpcnN0IExpZ2h0
+IHdyb3RlOg0KPg0KPiBQbGVhc2UgZG9uJ3QgdG9wIHBvc3QsIHJlcGx5IGluIGxpbmUgd2l0aCBu
+ZWVkZWQgY29udGV4dC4gIFRoaXMgYWxsb3dzIHJlYWRlcnMNCj4gdG8gcmVhZGlseSBmb2xsb3cg
+dGhlIGZsb3cgb2YgY29udmVyc2F0aW9uIGFuZCB1bmRlcnN0YW5kIHdoYXQgeW91IGFyZSB0YWxr
+aW5nDQo+IGFib3V0IGFuZCBhbHNvIGhlbHBzIGVuc3VyZSB0aGF0IGV2ZXJ5dGhpbmcgaW4gdGhl
+IGRpc2N1c3Npb24gaXMgYmVpbmcNCj4gYWRkcmVzc2VkLg0KDQpbRmlyc3QgTGlnaHRdIFNvcnJ5
+LCBNYXJrLCBNeSBlbWFpbCBjbGllbnQgaXMgbm90IHF1aXRlIG9wZW4gc291cmNlIHN0eWxlLiBJ
+J20gdHJ5aW5nIHRvIHVzZSB0aGlzIHdheS4NCj4NCj4gPiBCdXQgSSBmb3VuZCB0aGUgZHluYW1p
+Y2FsbHkgYXNzaWduZWQgYnVzIG51bWJlciBpcyBhbHdheXMgLTEuPw0KPg0KPiA+IEkgaGF2ZSB0
+d28gc3BpIGJ1c2VzLCBib3RoIGdldCB0aGUgLTEgYnVzIG51bWJlci4NCj4NCj4gVGhhdCBzaG91
+bGRuJ3QgaGFwcGVuLCBpZiBpdCBkb2VzIGl0J3MgYSBidWcgLSB1c2VycyBzaG91bGQgbmV2ZXIg
+c2VlIGEgbmVnYXRpdmUNCj4gYnVzIG51bWJlciwgdGhlIGNvcmUgc2hvdWxkIGR5bmFtaWNhbGx5
+IGFzc2lnbiBvbmUgaWYgaXQgaXMgZ2l2ZW4gYSBuZWdhdGl2ZSBidXMNCj4gbnVtYmVyLiAgQ2Fu
+IHlvdSBjaGVjayB3aGF0IGhhcHBlbnMgaW4gc3BpX3JlZ2lzdGVyX21hc3RlcigpPyAgVGhhdCdz
+DQo+IHdoZXJlIHRoZSBkeW5hbWljIGJ1cyBudW1iZXIgc2hvdWxkIGJlIGJlaW5nIGFzc2lnbmVk
+Lg0KW0ZpcnN0IExpZ2h0XSBJJ20gdXNpbmcgbGludXgtNC40IGtlcm5lbCwgYW5kIEluIHNwaS1k
+dy1tbWlvLmMsDQpJIHNlZSB0aGF0Og0KIExJTkU3NDogZHdzLT5idXNfbnVtID0gcGRldi0tPmlk
+OyAoZHdzIGlzIHN0cnVjdCBkd19zcGksIG5vdCBzdHJ1Y3Qgc3BpX21hc3RlcikNCiBMSU5FMTA3
+OiByZXQ9ZHdfc3BpX2FkZF9ob3N0KCZwZGV2LT5kZXYsIGR3cyk7DQpzcGlfcmVnaXN0ZXJfbWFz
+dGVyIGlzIGNhbGxlZCBpbiBkd19zcGlfYWRkX2hvc3QuDQpTbyBkd3MtPmJ1c19udW0gaXMgbm90
+IGR5bmFtaWNhbGx5IGFzc2lnbmVkLCBidXQganVzdCBvbmUgc3RhdGljIHZhbHVlIHNpbmNlIHBk
+ZXYtPmlkIGlzIG5vdCBpbml0ZWQuDQpJIHRoaW5rIHlvdSBhcmUgc2F5aW5nIHNwaV9tYXN0ZXIt
+PmJ1c19udW0gaXMgZHluYW1pY2FsbHkgaW5pdGVkLiBSaWdodD8NCg0KSSBhbHNvIHNlZSB0aGF0
+IHNwaV9tYXN0ZXItPmJ1c19udW0gaXMgaW5pdGVkIHdpdGggZHdzLT5idXNfbnVtYmVyIGZpcnN0
+LCBhbmQgdGhlIGl0IGZpbmRzIHRoYXQgdGhpcyBidXNfbnVtIDwgMCwNCnRoZW4gdXNlcyBvZl9h
+bGlhc19nZXRfaWQgb3IgYXRvbWljX2RlY19yZXR1cm4oJmR5bl9idXNfaWQpIHRvIGdldCBhIGR5
+bmFtaWMgb25lLg0KDQpRdWVzdGlvbiBpczogZG8gd2UgbmVlZCB0byB1cGRhdGUgZHdzLT5idXNf
+bnVtIGFnYWluPyBJdCBpcyAtMSBhbHdheXMuDQpGcm9tIC9wcm9jL2ludGVycnVwdHMsIEkgY2hl
+Y2sgaXJxIG9mIHNwaSwgYW5kIHRoZSBsYXN0IGNvbHVtbiBpcyB0aGUgZGV2aWNlIG5hbWUsDQp1
+bmxpa2Ugb3RoZXIgZGV2aWNlcywgbGlrZSBpMmMwLCBpMmMxLC4uLiwgc3BpJ3MgZGV2aWNlIG5h
+bWUgaXMgZHdfc3BpNjU1MzUsDQpib3RoIG9mIHRoZSBzcGkgZGV2aWNlcyBJIHJlZ2lzdGVyZWQg
+aGF2ZSB0aGlzIG5hbWUuIDY1NTM1IGlzIC0xLg0KVGhlcmUgbXVzdCBiZSBzb21ldGhpbmcgdW5t
+YXRjaGVkLg0KDQpUaGFua3MNClhpYW9ndWFuZw0KDQoNCg0KDQoNCg0KVGhpcyBlbWFpbCBhbmQg
+YW55IGF0dGFjaG1lbnRzIHRoZXJldG8gbWF5IGNvbnRhaW4gcHJpdmF0ZSwgY29uZmlkZW50aWFs
+LCBhbmQgcHJpdmlsZWdlZCBtYXRlcmlhbCBmb3IgdGhlIHNvbGUgdXNlIG9mIHRoZSBpbnRlbmRl
+ZCByZWNpcGllbnQuIEFueSByZXZpZXcsIGNvcHlpbmcsIG9yIGRpc3RyaWJ1dGlvbiBvZiB0aGlz
+IGVtYWlsIChvciBhbnkgYXR0YWNobWVudHMgdGhlcmV0bykgYnkgb3RoZXJzIGlzIHN0cmljdGx5
+IHByb2hpYml0ZWQuIElmIHlvdSBhcmUgbm90IHRoZSBpbnRlbmRlZCByZWNpcGllbnQsIHBsZWFz
+ZSBjb250YWN0IHRoZSBzZW5kZXIgaW1tZWRpYXRlbHkgYW5kIHBlcm1hbmVudGx5IGRlbGV0ZSB0
+aGUgb3JpZ2luYWwgYW5kIGFueSBjb3BpZXMgb2YgdGhpcyBlbWFpbCBhbmQgYW55IGF0dGFjaG1l
+bnRzIHRoZXJldG8uDQoNCuatpOeUteWtkOmCruS7tuWPiumZhOS7tuaJgOWMheWQq+WGheWuueWF
+t+acieacuuWvhuaAp++8jOS4lOS7hemZkOS6juaOpeaUtuS6uuS9v+eUqOOAguacque7j+WFgSDo
+rrjvvIznpoHmraLnrKzkuInkurrpmIXor7vjgIHlpI3liLbmiJbkvKDmkq3or6XnlLXlrZDpgq7k
+u7bkuK3nmoTku7vkvZXkv6Hmga/jgILlpoLmnpzmgqjkuI3lsZ7kuo7ku6XkuIrnlLXlrZDpgq7k
+u7bnmoTnm67moIfmjqXmlLbogIXvvIzor7fmgqjnq4vljbPpgJrnn6Xlj5HpgIHkurrlubbliKDp
+maTljp/nlLXlrZDpgq7ku7blj4rlhbbnm7jlhbPnmoTpmYTku7bjgIINCg==
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

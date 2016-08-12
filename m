@@ -1,47 +1,54 @@
-From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Subject: [PATCH] tools: spidev_test: fix build with musl libc
-Date: Fri, 12 Aug 2016 16:04:33 +0300
-Message-ID: <9c96a08dcf783de3008800ea497775fcaa52147b.1471007073.git.baruch@tkos.co.il>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH/PROTO 1/9 common] spi: sh-msiof: Add support for R-Car H3
+Date: Fri, 12 Aug 2016 18:38:37 +0200
+Message-ID: <1471019925-29083-2-git-send-email-geert+renesas@glider.be>
+References: <1471019925-29083-1-git-send-email-geert+renesas@glider.be>
+Cc: linux-spi@vger.kernel.org, linux-clk@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+To: linux-renesas-soc@vger.kernel.org
+Return-path: <linux-clk-owner@vger.kernel.org>
+In-Reply-To: <1471019925-29083-1-git-send-email-geert+renesas@glider.be>
+Sender: linux-clk-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-spidev.h uses _IOC_SIZEBITS directly. musl libc does not provide this macro
-unless linux/ioctl.h is included explicitly. Fixes build failures like:
+Add support for MSIOF in r8a7795 (R-Car H3).
 
-In file included from .../host/usr/arm-buildroot-linux-musleabihf/sysroot/usr/include/sys/ioctl.h:7:0,
-                 from .../build/spidev_test-v3.15/spidev_test.c:20:
-.../build/spidev_test-v3.15/spidev_test.c: In function ‘transfer’:
-.../build/spidev_test-v3.15/spidev_test.c:75:18: error: ‘_IOC_SIZEBITS’ undeclared (first use in this function)
-  ret = ioctl(fd, SPI_IOC_MESSAGE(1), &tr);
-                  ^
-
-Signed-off-by: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Not-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- tools/spi/spidev_test.c | 1 +
- 1 file changed, 1 insertion(+)
+Not intended for upstream merge.
 
-diff --git a/tools/spi/spidev_test.c b/tools/spi/spidev_test.c
-index 8a73d8185316..1eaa4de6605b 100644
---- a/tools/spi/spidev_test.c
-+++ b/tools/spi/spidev_test.c
-@@ -19,6 +19,7 @@
- #include <getopt.h>
- #include <fcntl.h>
- #include <sys/ioctl.h>
-+#include <linux/ioctl.h>
- #include <sys/stat.h>
- #include <linux/types.h>
- #include <linux/spi/spidev.h>
+R-Car H3 ES1.0 has a hardware bug preventing MSIOF from being used with
+real SPI devices. However, this does not affect the generation of clock
+signals on the SPI bus.
+---
+ Documentation/devicetree/bindings/spi/sh-msiof.txt | 1 +
+ drivers/spi/spi-sh-msiof.c                         | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/spi/sh-msiof.txt b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+index aa005c1d10d95756..e4ba96cb45ffff31 100644
+--- a/Documentation/devicetree/bindings/spi/sh-msiof.txt
++++ b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+@@ -10,6 +10,7 @@ Required properties:
+ 			 "renesas,msiof-r8a7792" (R-Car V2H)
+ 			 "renesas,msiof-r8a7793" (R-Car M2-N)
+ 			 "renesas,msiof-r8a7794" (R-Car E2)
++			 "renesas,msiof-r8a7795" (R-Car H3)
+ 			 "renesas,msiof-sh73a0" (SH-Mobile AG5)
+ - reg                  : A list of offsets and lengths of the register sets for
+ 			 the device.
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 6852552a32ef7457..ffa5efdf266a8276 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -996,6 +996,7 @@ static const struct of_device_id sh_msiof_match[] = {
+ 	{ .compatible = "renesas,msiof-r8a7792",   .data = &r8a779x_data },
+ 	{ .compatible = "renesas,msiof-r8a7793",   .data = &r8a779x_data },
+ 	{ .compatible = "renesas,msiof-r8a7794",   .data = &r8a779x_data },
++	{ .compatible = "renesas,msiof-r8a7795",   .data = &r8a779x_data },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, sh_msiof_match);
 -- 
-2.8.1
+1.9.1
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

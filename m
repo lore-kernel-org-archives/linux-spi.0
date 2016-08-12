@@ -1,7 +1,7 @@
 From: Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH/PROTO 3/9 common] arm64: dts: r8a7795: Add all MSIOF nodes
-Date: Fri, 12 Aug 2016 18:38:39 +0200
-Message-ID: <1471019925-29083-4-git-send-email-geert+renesas@glider.be>
+Subject: [PATCH/PROTO 2/9 common] spi: sh-msiof: Print max and transfer frequency
+Date: Fri, 12 Aug 2016 18:38:38 +0200
+Message-ID: <1471019925-29083-3-git-send-email-geert+renesas@glider.be>
 References: <1471019925-29083-1-git-send-email-geert+renesas@glider.be>
 Cc: linux-spi@vger.kernel.org, linux-clk@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
@@ -11,87 +11,47 @@ In-Reply-To: <1471019925-29083-1-git-send-email-geert+renesas@glider.be>
 Sender: linux-renesas-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add the device nodes for all MSIOF SPI controllers, incl. clocks, clock
-domain, and dma properties.
-
 Not-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
 Not intended for upstream merge.
-
-R-Car H3 ES1.0 has a hardware bug preventing MSIOF from being used with
-real SPI devices. However, this does not affect the generation of clock
-signals on the SPI bus.
-
-v2:
-  - Rebased,
-  - Switch to final CPG/MSSR bindings,
-  - Change one-line summary prefix to match current arm-soc practices.
 ---
- arch/arm64/boot/dts/renesas/r8a7795.dtsi | 52 ++++++++++++++++++++++++++++++++
- 1 file changed, 52 insertions(+)
+ drivers/spi/spi-sh-msiof.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/renesas/r8a7795.dtsi b/arch/arm64/boot/dts/renesas/r8a7795.dtsi
-index 80af0ba68750f346..41549faec07bae3d 100644
---- a/arch/arm64/boot/dts/renesas/r8a7795.dtsi
-+++ b/arch/arm64/boot/dts/renesas/r8a7795.dtsi
-@@ -838,6 +838,58 @@
- 			status = "disabled";
- 		};
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index ffa5efdf266a8276..72f80a088cddd395 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -272,6 +272,13 @@ static void sh_msiof_spi_set_clk_regs(struct sh_msiof_spi_priv *p,
+ 	k = min_t(int, k, ARRAY_SIZE(sh_msiof_spi_div_table) - 1);
  
-+		msiof0: spi@e6e90000 {
-+			compatible = "renesas,msiof-r8a7795";
-+			reg = <0 0xe6e90000 0 0x0064>;
-+			interrupts = <GIC_SPI 156 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&cpg CPG_MOD 211>;
-+			dmas = <&dmac1 0x41>, <&dmac1 0x40>;
-+			dma-names = "tx", "rx";
-+			power-domains = <&sysc R8A7795_PD_ALWAYS_ON>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			status = "disabled";
-+		};
+ 	scr = sh_msiof_spi_div_table[k].brdv | SCR_BRPS(brps);
++	dev_info(&p->pdev->dev, "clk at %lu Hz, brps = %u, brdv = %u%s\n",
++		 parent_rate, brps, sh_msiof_spi_div_table[k].div,
++		 ((sh_msiof_spi_div_table[k].div == 1 && brps > 2) ||
++		  (brps > 32)) ? " INVALID!" : "");
++	dev_info(&p->pdev->dev, "wanted: %u Hz, actual: %lu Hz\n", spi_hz,
++		 parent_rate / sh_msiof_spi_div_table[k].div / brps);
 +
-+		msiof1: spi@e6ea0000 {
-+			compatible = "renesas,msiof-r8a7795";
-+			reg = <0 0xe6ea0000 0 0x0064>;
-+			interrupts = <GIC_SPI 157 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&cpg CPG_MOD 210>;
-+			dmas = <&dmac1 0x43>, <&dmac1 0x42>;
-+			dma-names = "tx", "rx";
-+			power-domains = <&sysc R8A7795_PD_ALWAYS_ON>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			status = "disabled";
-+		};
+ 	sh_msiof_write(p, TSCR, scr);
+ 	if (!(p->master->flags & SPI_MASTER_MUST_TX))
+ 		sh_msiof_write(p, RSCR, scr);
+@@ -523,6 +530,16 @@ static int sh_msiof_spi_setup(struct spi_device *spi)
+ {
+ 	struct device_node	*np = spi->master->dev.of_node;
+ 	struct sh_msiof_spi_priv *p = spi_master_get_devdata(spi->master);
++	u32 max_speed_hz, min_speed_hz;
++	unsigned long rate;
 +
-+		msiof2: spi@e6c00000 {
-+			compatible = "renesas,msiof-r8a7795";
-+			reg = <0 0xe6c00000 0 0x0064>;
-+			interrupts = <GIC_SPI 158 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&cpg CPG_MOD 209>;
-+			dmas = <&dmac0 0x45>, <&dmac0 0x44>;
-+			dma-names = "tx", "rx";
-+			power-domains = <&sysc R8A7795_PD_ALWAYS_ON>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			status = "disabled";
-+		};
++	rate = clk_get_rate(p->clk);
++	max_speed_hz = rate;
++	min_speed_hz = rate / 1024;
 +
-+		msiof3: spi@e6c10000 {
-+			compatible = "renesas,msiof-r8a7795";
-+			reg = <0 0xe6c10000 0 0x0064>;
-+			interrupts = <GIC_SPI 159 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&cpg CPG_MOD 208>;
-+			dmas = <&dmac0 0x47>, <&dmac0 0x46>;
-+			dma-names = "tx", "rx";
-+			power-domains = <&sysc R8A7795_PD_ALWAYS_ON>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			status = "disabled";
-+		};
-+
- 		scif0: serial@e6e60000 {
- 			compatible = "renesas,scif-r8a7795",
- 				     "renesas,rcar-gen3-scif", "renesas,scif";
++	dev_info(&p->pdev->dev,
++		 "%s: master speed min %u max %u, device speed max = %u\n",
++		 __func__, min_speed_hz, max_speed_hz, spi->max_speed_hz);
+ 
+ 	pm_runtime_get_sync(&p->pdev->dev);
+ 
 -- 
 1.9.1

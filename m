@@ -1,7 +1,7 @@
 From: Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH/PROTO 5/9 option 1] arm64: dts: salvator-x: Configure MSIOF parent clock
-Date: Fri, 12 Aug 2016 18:38:41 +0200
-Message-ID: <1471019925-29083-6-git-send-email-geert+renesas@glider.be>
+Subject: [PATCH/PROTO 6/9 option 2/3] spi: sh-msiof: Add clock notifier to enforce valid parent clock
+Date: Fri, 12 Aug 2016 18:38:42 +0200
+Message-ID: <1471019925-29083-7-git-send-email-geert+renesas@glider.be>
 References: <1471019925-29083-1-git-send-email-geert+renesas@glider.be>
 Cc: linux-spi@vger.kernel.org, linux-clk@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
@@ -11,59 +11,146 @@ In-Reply-To: <1471019925-29083-1-git-send-email-geert+renesas@glider.be>
 Sender: linux-renesas-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add assigned-clocks and assigned-clock-rates DT properties to the cpg
-device node, to configure the MSIOF parent clock for 20 MHz.
+Use clock notifiers to avoid changing the clock rate to an out-of-range
+setting for already configured devices. This will allow dynamic
+configuration of the MSIOF parent clock.
 
 Not-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
 Not intended for upstream merge.
-
-Note that these properties could also be added to an individual MSIOF
-device node. As all MSIOF instances share the same parent clock, this
-is not a good idea:
-  - MSIOF instances initialized before the one with the properties will
-    use the old (default) parent clock rate.
-    When the MSIOF instances with the properties is initialized, the
-    parent clock rate will change. In the absence of a clock notifier,
-    no one will notice (at this point).
-    All subsequent operations will use the new parent clock rate.
-    As the MSIOF driver use clk_get_rate() before setting up each
-    transfer, it will automatically adapt.
-    However, spi_master.{min,max}_speed_hz are not updated (note that
-    currently they are not set by the MSIOF driver anyway!).
-  - If you add conflicting properties to multiple msiof nodes, they will
-    still be used, but override each other, determined by probe order.
-
-Cfr. Documentation/devicetree/bindings/clock/clock-bindings.txt
-
-   "Configuring a clock's parent and rate through the device node that
-    consumes the clock can be done only for clocks that have a single
-    user. Specifying conflicting parent or rate configuration in
-    multiple consumer nodes for a shared clock is forbidden."
-
-and
-
-   "Configuration of common clocks, which affect multiple consumer
-    devices can be similarly specified in the clock provider node."
 ---
- arch/arm64/boot/dts/renesas/r8a7795-salvator-x.dts | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/spi/spi-sh-msiof.c | 65 ++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 63 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/renesas/r8a7795-salvator-x.dts b/arch/arm64/boot/dts/renesas/r8a7795-salvator-x.dts
-index 9040a691b8b61887..61c9f651adbdfcad 100644
---- a/arch/arm64/boot/dts/renesas/r8a7795-salvator-x.dts
-+++ b/arch/arm64/boot/dts/renesas/r8a7795-salvator-x.dts
-@@ -143,6 +143,11 @@
- 	};
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 72f80a088cddd395..656eaa4d03ed497b 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -53,6 +53,8 @@ struct sh_msiof_spi_priv {
+ 	void *rx_dma_page;
+ 	dma_addr_t tx_dma_addr;
+ 	dma_addr_t rx_dma_addr;
++	struct notifier_block clk_rate_change_nb;
++	u32 dev_max_speed_hz;
  };
  
-+&cpg {
-+	assigned-clocks = <&cpg CPG_CORE R8A7795_CLK_MSO>;
-+	assigned-clock-rates = <20000000>;
-+};
+ #define TMDR1	0x00	/* Transmit Mode Register 1 */
+@@ -180,6 +182,10 @@ struct sh_msiof_spi_priv {
+ #define IER_RFOVFE	0x00000008 /* Receive FIFO Overflow Enable */
+ 
+ 
++/* Maximum internal divider */
++#define MAX_DIV		1024
 +
- &extal_clk {
- 	clock-frequency = <16666666>;
- };
++
+ static u32 sh_msiof_read(struct sh_msiof_spi_priv *p, int reg_offs)
+ {
+ 	switch (reg_offs) {
+@@ -253,7 +259,7 @@ static struct {
+ static void sh_msiof_spi_set_clk_regs(struct sh_msiof_spi_priv *p,
+ 				      unsigned long parent_rate, u32 spi_hz)
+ {
+-	unsigned long div = 1024;
++	unsigned long div = MAX_DIV;
+ 	u32 brps, scr;
+ 	size_t k;
+ 
+@@ -526,6 +532,53 @@ static void sh_msiof_spi_read_fifo_s32u(struct sh_msiof_spi_priv *p,
+ 		put_unaligned(swab32(sh_msiof_read(p, RFDR) >> fs), &buf_32[k]);
+ }
+ 
++static int sh_msiof_clk_notifier_cb(struct notifier_block *nb,
++				    unsigned long event, void *data)
++{
++	struct clk_notifier_data *ndata = data;
++	struct sh_msiof_spi_priv *p =
++		container_of(nb, struct sh_msiof_spi_priv, clk_rate_change_nb);
++
++	// FIXME locking
++
++	if (!p->dev_max_speed_hz)
++		return NOTIFY_OK;
++
++	switch (event) {
++	case PRE_RATE_CHANGE:
++		dev_info(&p->pdev->dev, "%s: %pC old_rate %lu new_rate %lu\n",
++			 "PRE_RATE_CHANGE", ndata->clk, ndata->old_rate,
++			 ndata->new_rate);
++		if (p->dev_max_speed_hz < ndata->new_rate / MAX_DIV) {
++			dev_err(&p->pdev->dev,
++				"New parent clock rate too high for %u\n",
++				p->dev_max_speed_hz);
++			return NOTIFY_STOP;
++		}
++		if (p->dev_max_speed_hz > ndata->new_rate) {
++			dev_warn(&p->pdev->dev,
++				 "New parent clock rate too low for %u, ignoring\n",
++				 p->dev_max_speed_hz);
++		}
++		return NOTIFY_OK;
++
++	case POST_RATE_CHANGE:
++		dev_info(&p->pdev->dev, "%s: %pC old_rate %lu new_rate %lu\n",
++			 "POST_RATE_CHANGE", ndata->clk, ndata->old_rate,
++			 ndata->new_rate);
++		return NOTIFY_OK;
++
++	case ABORT_RATE_CHANGE:
++		return NOTIFY_OK;
++
++	default:
++		dev_info(&p->pdev->dev,
++			 "0x%lx: %pC old_rate %lu new_rate %lu\n", event,
++			 ndata->clk, ndata->old_rate, ndata->new_rate);
++		return NOTIFY_DONE;
++	}
++}
++
+ static int sh_msiof_spi_setup(struct spi_device *spi)
+ {
+ 	struct device_node	*np = spi->master->dev.of_node;
+@@ -535,12 +588,14 @@ static int sh_msiof_spi_setup(struct spi_device *spi)
+ 
+ 	rate = clk_get_rate(p->clk);
+ 	max_speed_hz = rate;
+-	min_speed_hz = rate / 1024;
++	min_speed_hz = rate / MAX_DIV;
+ 
+ 	dev_info(&p->pdev->dev,
+ 		 "%s: master speed min %u max %u, device speed max = %u\n",
+ 		 __func__, min_speed_hz, max_speed_hz, spi->max_speed_hz);
+ 
++	p->dev_max_speed_hz = spi->max_speed_hz;
++
+ 	pm_runtime_get_sync(&p->pdev->dev);
+ 
+ 	if (!np) {
+@@ -1263,6 +1318,10 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 	p->pdev = pdev;
+ 	pm_runtime_enable(&pdev->dev);
+ 
++	p->clk_rate_change_nb.notifier_call = sh_msiof_clk_notifier_cb;
++	if (clk_notifier_register(p->clk, &p->clk_rate_change_nb))
++		dev_warn(&pdev->dev, "Unable to register clock notifier.\n");
++
+ 	/* Platform data may override FIFO sizes */
+ 	p->tx_fifo_size = chipdata->tx_fifo_size;
+ 	p->rx_fifo_size = chipdata->rx_fifo_size;
+@@ -1299,6 +1358,7 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 	return 0;
+ 
+  err2:
++	clk_notifier_unregister(p->clk, &p->clk_rate_change_nb);
+ 	sh_msiof_release_dma(p);
+ 	pm_runtime_disable(&pdev->dev);
+  err1:
+@@ -1310,6 +1370,7 @@ static int sh_msiof_spi_remove(struct platform_device *pdev)
+ {
+ 	struct sh_msiof_spi_priv *p = platform_get_drvdata(pdev);
+ 
++	clk_notifier_unregister(p->clk, &p->clk_rate_change_nb);
+ 	sh_msiof_release_dma(p);
+ 	pm_runtime_disable(&pdev->dev);
+ 	return 0;
 -- 
 1.9.1

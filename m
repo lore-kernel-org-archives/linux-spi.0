@@ -1,20 +1,19 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: spi-fsl-dspi: fix a possible NULL dereference" to the spi tree
-Date: Tue, 16 Aug 2016 12:30:33 +0100
-Message-ID: <E1bZcZl-0004o1-Fa@debutante>
-References: <1471341021-22522-2-git-send-email-clabbe.montjoie@gmail.com>
-Cc: coverity-GFdadSzt00ze9xe1eoZjHA@public.gmane.org (CID 1324129),
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: LABBE Corentin <clabbe.montjoie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1471341021-22522-2-git-send-email-clabbe.montjoie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: spi-fsl-dspi: constify devtype_data" to the spi tree
+Date: Tue, 16 Aug 2016 12:30:36 +0100
+Message-ID: <E1bZcZo-0004oq-Da@debutante>
+References: <1471341021-22522-1-git-send-email-clabbe.montjoie@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
+	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: LABBE Corentin <clabbe.montjoie@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1471341021-22522-1-git-send-email-clabbe.montjoie@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: spi-fsl-dspi: fix a possible NULL dereference
+   spi: spi-fsl-dspi: constify devtype_data
 
 has been applied to the spi tree at
 
@@ -39,51 +38,41 @@ to this mail.
 Thanks,
 Mark
 
->From 53d89160753c7d32bb82d3bed980fd3dc3f2538a Mon Sep 17 00:00:00 2001
-From: LABBE Corentin <clabbe.montjoie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Tue, 16 Aug 2016 11:50:21 +0200
-Subject: [PATCH] spi: spi-fsl-dspi: fix a possible NULL dereference
+>From 94b968b5a3e282edbdf21735edbeb93a5a1fa119 Mon Sep 17 00:00:00 2001
+From: LABBE Corentin <clabbe.montjoie@gmail.com>
+Date: Tue, 16 Aug 2016 11:50:20 +0200
+Subject: [PATCH] spi: spi-fsl-dspi: constify devtype_data
 
-of_match_device could return NULL, and so cause a NULL pointer
-dereference later.
+of_id->data is const, so instead of casting the pointer to drop its
+const status, this patch constify the devtype_data pointer.
 
-For fixing this problem, we use of_device_get_match_data(), this will
-simplify the code a little by using a standard function for
-getting the match data.
-
-Reported-by: coverity (CID 1324129)
-Signed-off-by: LABBE Corentin <clabbe.montjoie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: LABBE Corentin <clabbe.montjoie@gmail.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/spi/spi-fsl-dspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index ab6b9e1f79a3..d57baf6c2d1e 100644
+index 9e9dadb52b3d..ab6b9e1f79a3 100644
 --- a/drivers/spi/spi-fsl-dspi.c
 +++ b/drivers/spi/spi-fsl-dspi.c
-@@ -651,8 +651,6 @@ static int dspi_probe(struct platform_device *pdev)
- 	struct resource *res;
- 	void __iomem *base;
- 	int ret = 0, cs_num, bus_num;
--	const struct of_device_id *of_id =
--			of_match_device(fsl_dspi_dt_ids, &pdev->dev);
+@@ -159,7 +159,7 @@ struct fsl_dspi {
+ 	u8			cs;
+ 	u16			void_write_data;
+ 	u32			cs_change;
+-	struct fsl_dspi_devtype_data *devtype_data;
++	const struct fsl_dspi_devtype_data *devtype_data;
  
- 	master = spi_alloc_master(&pdev->dev, sizeof(struct fsl_dspi));
- 	if (!master)
-@@ -686,7 +684,7 @@ static int dspi_probe(struct platform_device *pdev)
+ 	wait_queue_head_t	waitq;
+ 	u32			waitflags;
+@@ -686,7 +686,7 @@ static int dspi_probe(struct platform_device *pdev)
  	}
  	master->bus_num = bus_num;
  
--	dspi->devtype_data = of_id->data;
-+	dspi->devtype_data = of_device_get_match_data(&pdev->dev);
+-	dspi->devtype_data = (struct fsl_dspi_devtype_data *)of_id->data;
++	dspi->devtype_data = of_id->data;
  	if (!dspi->devtype_data) {
  		dev_err(&pdev->dev, "can't get devtype_data\n");
  		ret = -EFAULT;
 -- 
 2.8.1
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

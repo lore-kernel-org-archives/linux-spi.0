@@ -1,78 +1,58 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-fsl-dspi: constify devtype_data" to the spi tree
-Date: Tue, 16 Aug 2016 12:30:36 +0100
-Message-ID: <E1bZcZo-0004oq-Da@debutante>
-References: <1471341021-22522-1-git-send-email-clabbe.montjoie@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: LABBE Corentin <clabbe.montjoie@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1471341021-22522-1-git-send-email-clabbe.montjoie@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/3] spi: introduce max message size flag in spi_master
+Date: Tue, 16 Aug 2016 17:42:04 +0100
+Message-ID: <20160816164204.GV9347@sirena.org.uk>
+References: <6c95366c-7fcc-ef4c-033a-f9f6e152a669@gmail.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="+vl+q9EKybVy/Rgp"
+Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <6c95366c-7fcc-ef4c-033a-f9f6e152a669-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The patch
 
-   spi: spi-fsl-dspi: constify devtype_data
+--+vl+q9EKybVy/Rgp
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-has been applied to the spi tree at
+On Sun, Aug 07, 2016 at 09:47:18PM +0200, Heiner Kallweit wrote:
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+> As there are no (known) spi controller with differing size limits for
+> transfer and message, introduce a flag in spi_master to indicate that
+> the max transfer size is also the maximum message size.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+This is a *really* cumbersome interface which will doubtless be found to
+be broken at some point by some hardware that does have separate
+restrictons on both.  Let's just specify the limit directly unless
+there's some pressing reason not to.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+There's also something off with the way you're posting the patches, your
+patch series isn't threaded together. =20
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+--+vl+q9EKybVy/Rgp
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-Thanks,
-Mark
+iQEcBAEBCAAGBQJXs0JbAAoJECTWi3JdVIfQ30QH/1G10NoEbQojjCdSxsUdRun8
+A63pC+L/E9/Pt6T+VRzTY+UESWpn2+IzZxcGZ8DbxrL3R81yEUvy2ZgdMQ9mfUxM
+DIdvUbdHHlDoF98FFLGO0tayaGLjMfFmsrkOqdO5mOIhu1N6LICXAbKxlUVKQDr4
+c87DLJl1jElUDHJbkiuwY2Kn89phtlwSTqvBu3bHRinMiiWoxliAWioJlX4wpx2p
+wbQlV8tWjCoMb2SDvRsC7hLw+Lu1ZYOrik5IKyzECmfe12wsY4gKHNBZbMkujq5y
+2ymXOGMOjjW9cpa6qHAAonlPalsxq/RTRCL+42V5r6Vo7G6nXgz6nPtvOQx8dDE=
+=HLhb
+-----END PGP SIGNATURE-----
 
->From 94b968b5a3e282edbdf21735edbeb93a5a1fa119 Mon Sep 17 00:00:00 2001
-From: LABBE Corentin <clabbe.montjoie@gmail.com>
-Date: Tue, 16 Aug 2016 11:50:20 +0200
-Subject: [PATCH] spi: spi-fsl-dspi: constify devtype_data
-
-of_id->data is const, so instead of casting the pointer to drop its
-const status, this patch constify the devtype_data pointer.
-
-Signed-off-by: LABBE Corentin <clabbe.montjoie@gmail.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-fsl-dspi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 9e9dadb52b3d..ab6b9e1f79a3 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -159,7 +159,7 @@ struct fsl_dspi {
- 	u8			cs;
- 	u16			void_write_data;
- 	u32			cs_change;
--	struct fsl_dspi_devtype_data *devtype_data;
-+	const struct fsl_dspi_devtype_data *devtype_data;
- 
- 	wait_queue_head_t	waitq;
- 	u32			waitflags;
-@@ -686,7 +686,7 @@ static int dspi_probe(struct platform_device *pdev)
- 	}
- 	master->bus_num = bus_num;
- 
--	dspi->devtype_data = (struct fsl_dspi_devtype_data *)of_id->data;
-+	dspi->devtype_data = of_id->data;
- 	if (!dspi->devtype_data) {
- 		dev_err(&pdev->dev, "can't get devtype_data\n");
- 		ret = -EFAULT;
--- 
-2.8.1
+--+vl+q9EKybVy/Rgp--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

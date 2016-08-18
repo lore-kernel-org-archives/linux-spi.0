@@ -1,58 +1,69 @@
-From: Jonatan Magnusson <jonatan.magnusson-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: omap2-mcspi, invalid SPI data received
-Date: Thu, 18 Aug 2016 13:47:56 +0200
-Message-ID: <B4201E8C-196E-47A9-8AD5-97109CE5A991@gmail.com>
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, samuel.ortiz-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org,
-	juha.yrjola-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH 0/3] MIPS: TXx9: Common Clock Framework Conversion
+Date: Thu, 18 Aug 2016 19:34:24 +0200
+Message-ID: <1471541667-30689-1-git-send-email-geert@linux-m68k.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Cc: linux-clk@vger.kernel.org, linux-mips@linux-mips.org,
+        linux-spi@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+To: Ralf Baechle <ralf@linux-mips.org>,
+        Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
+        Mark Brown <broonie@kernel.org>,
+        Wim Van Sebroeck <wim@iguana.be>,
+        Guenter Roeck <linux@roeck-us.net>
+Return-path: <linux-mips-bounce@linux-mips.org>
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+List-Id: linux-spi.vger.kernel.org
 
+	Hi Ralf, Nemoto-san, Mark, Wim, Günter,
 
-Hi,
+This patch series converts the Toshiba TXx9 platforms from their own
+custom minimal clock implementation to the Common Clock Framework.
 
-I have this problem that originally started when I tried to use an =
-ENC28J60 device on a Beaglebone (Beaglebone Green Wireless). I noted =
-that while reading one register on the device (EREVID) the value was =
-0x3C. That register holds the hardware revision and should not be higher =
-than 6 or possibly 7. So I started investigating the code and to make a =
-long story short I ended up writing this silly loop that continuously =
-reads and prints out EREVID:
+  - Patches 1 and 2 add missing clock (un)prepare calls to TXx9-specific
+    drivers,
+  - Patch 3 replaces the custom clock implementation by a CCF-based one,
+    providing a minimal set of clocks.
 
-for(;;) {
-  printk(KERN_ALERT "REV: 0x%02x\n", nolock_regb_read(priv, EREVID));
-}
+Patches 1 and 2 can be applied independently.
+Patch 3 has a hard dependency on patches 1 and 2.
+I don't know how you prefer to handle this?
 
-It reports 0x3C every time so it=E2=80=99s not completely random. If I =
-force the pin to 0V i get 0x00 instead, and 0xFF if I force the pin to =
-3.3V. That should mean that the hardware config and pinmux is correct, =
-since otherwise it would not change anything if I manipulate the pin.
+This has been tested with the watchdog on RBTX4927.
 
-With this loop active I could investigate what happens with a scope and =
-to my surprise both the sent byte and the received byte are what to be =
-expected: 0x12 and 0x06.  But somehow the SPI driver still reads 0x3C =
-instead of 0x06.
+Thanks!
 
-Here=E2=80=99s two screenshots from the scope: =
-https://dl.dropboxusercontent.com/u/176615/erevid.png
+Geert Uytterhoeven (3):
+  spi: spi-txx9: Add missing clock (un)prepare calls for CCF
+  watchdog: txx9wdt: Add missing clock (un)prepare calls for CCF
+  MIPS: TXx9: Convert to Common Clock Framework
 
-The first shows clock and mosi, the second clock and miso.
+ arch/mips/txx9/Kconfig         |  2 +-
+ arch/mips/txx9/generic/setup.c | 68 ++++++++++++++++++++----------------------
+ drivers/spi/spi-txx9.c         |  6 ++--
+ drivers/watchdog/txx9wdt.c     |  6 ++--
+ 4 files changed, 40 insertions(+), 42 deletions(-)
 
-I=E2=80=99ve tried to track the error and got as far as =
-drivers/spi/spi-omap2-mcspi.c, function omap2_mcspi_txrx_pio. Around =
-line 715, readl_relaxed returns 0x3C.
+-- 
+1.9.1
 
-Any ideas?
+Gr{oetje,eeting}s,
 
-
-Best regards,
-Jonatan Magnusson
+						Geert
 
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

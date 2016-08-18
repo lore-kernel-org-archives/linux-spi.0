@@ -1,97 +1,58 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "MAINTAINERS: add myself as Samsung SPI maintainer" to the spi tree
-Date: Thu, 18 Aug 2016 11:17:48 +0100
-Message-ID: <E1baKOS-0002Br-90@debutante>
-References: <20160818072555.9208-1-andi.shyti@samsung.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Kukjin Kim <kgene@kernel.org>, Mark Brown <broonie@kernel.org>,
-	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Andi Shyti <andi@etezian.org>
-To: Andi Shyti <andi.shyti@samsung.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20160818072555.9208-1-andi.shyti@samsung.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Jonatan Magnusson <jonatan.magnusson-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: omap2-mcspi, invalid SPI data received
+Date: Thu, 18 Aug 2016 13:47:56 +0200
+Message-ID: <B4201E8C-196E-47A9-8AD5-97109CE5A991@gmail.com>
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, samuel.ortiz-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org,
+	juha.yrjola-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The patch
 
-   MAINTAINERS: add myself as Samsung SPI maintainer
+Hi,
 
-has been applied to the spi tree at
+I have this problem that originally started when I tried to use an =
+ENC28J60 device on a Beaglebone (Beaglebone Green Wireless). I noted =
+that while reading one register on the device (EREVID) the value was =
+0x3C. That register holds the hardware revision and should not be higher =
+than 6 or possibly 7. So I started investigating the code and to make a =
+long story short I ended up writing this silly loop that continuously =
+reads and prints out EREVID:
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+for(;;) {
+  printk(KERN_ALERT "REV: 0x%02x\n", nolock_regb_read(priv, EREVID));
+}
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+It reports 0x3C every time so it=E2=80=99s not completely random. If I =
+force the pin to 0V i get 0x00 instead, and 0xFF if I force the pin to =
+3.3V. That should mean that the hardware config and pinmux is correct, =
+since otherwise it would not change anything if I manipulate the pin.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+With this loop active I could investigate what happens with a scope and =
+to my surprise both the sent byte and the received byte are what to be =
+expected: 0x12 and 0x06.  But somehow the SPI driver still reads 0x3C =
+instead of 0x06.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+Here=E2=80=99s two screenshots from the scope: =
+https://dl.dropboxusercontent.com/u/176615/erevid.png
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+The first shows clock and mosi, the second clock and miso.
 
-Thanks,
-Mark
+I=E2=80=99ve tried to track the error and got as far as =
+drivers/spi/spi-omap2-mcspi.c, function omap2_mcspi_txrx_pio. Around =
+line 715, readl_relaxed returns 0x3C.
 
->From 2e365a703ea60de617287354ae63bf677e406feb Mon Sep 17 00:00:00 2001
-From: Andi Shyti <andi.shyti@samsung.com>
-Date: Thu, 18 Aug 2016 16:25:55 +0900
-Subject: [PATCH] MAINTAINERS: add myself as Samsung SPI maintainer
+Any ideas?
 
-Create a new entry for the Samsung SPI driver supported by the
-drivers/spi/spi-s3c* and remove it from its original place under
-"ARM/SAMSUNG EXYNOS ARM ARCHITECTURES".
 
-The original maintainership inherited from the Samsung Exynos
-ARM Architecture is kept as it was (i.e. Kukjin and Krzysztof), I
-will help and co-maintain the driver.
+Best regards,
+Jonatan Magnusson
 
-Signed-off-by: Andi Shyti <andi.shyti@samsung.com>
-Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- MAINTAINERS | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 20bb1d00098c..5051c2f46d47 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1633,7 +1633,6 @@ F:	drivers/*/*s3c64xx*
- F:	drivers/*/*s5pv210*
- F:	drivers/memory/samsung/*
- F:	drivers/soc/samsung/*
--F:	drivers/spi/spi-s3c*
- F:	Documentation/arm/Samsung/
- F:	Documentation/devicetree/bindings/arm/samsung/
- F:	Documentation/devicetree/bindings/sram/samsung-sram.txt
-@@ -10237,6 +10236,17 @@ S:	Supported
- L:	linux-samsung-soc@vger.kernel.org (moderated for non-subscribers)
- F:	drivers/clk/samsung/
- 
-+SAMSUNG SPI DRIVERS
-+M:	Kukjin Kim <kgene@kernel.org>
-+M:	Krzysztof Kozlowski <krzk@kernel.org>
-+M:	Andi Shyti <andi.shyti@samsung.com>
-+L:	linux-spi@vger.kernel.org
-+L:	linux-samsung-soc@vger.kernel.org (moderated for non-subscribers)
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/spi/spi-samsung.txt
-+F:	drivers/spi/spi-s3c*
-+F:	include/linux/platform_data/spi-s3c64xx.h
-+
- SAMSUNG SXGBE DRIVERS
- M:	Byungho An <bh74.an@samsung.com>
- M:	Girish K S <ks.giri@samsung.com>
--- 
-2.8.1
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,7 +1,7 @@
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH 1/3] spi: spi-txx9: Add missing clock (un)prepare calls for CCF
-Date: Thu, 18 Aug 2016 19:34:25 +0200
-Message-ID: <1471541667-30689-2-git-send-email-geert@linux-m68k.org>
+Subject: [PATCH 3/3] MIPS: TXx9: Convert to Common Clock Framework
+Date: Thu, 18 Aug 2016 19:34:27 +0200
+Message-ID: <1471541667-30689-4-git-send-email-geert@linux-m68k.org>
 References: <1471541667-30689-1-git-send-email-geert@linux-m68k.org>
 Cc: linux-clk@vger.kernel.org, linux-mips@linux-mips.org,
         linux-spi@vger.kernel.org, linux-watchdog@vger.kernel.org,
@@ -24,49 +24,128 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 List-Id: linux-spi.vger.kernel.org
 
-While the custom minimal TXx9 clock implementation doesn't need or use
-clock (un)prepare calls (they are dummies if !CONFIG_HAVE_CLK_PREPARE),
-they are mandatory when using the Common Clock Framework.
+Replace the custom minimal clock implementation for Toshiba TXx9 by a
+basic implementation using the Common Clock Framework.
 
-Hence add them, to prepare for the advent of CCF.
+The only clocks that are provided are those needed by TXx9-specific
+drivers ("imbus" and "spi" (TX4938 only)), and their common parent
+clock "gbus". Other clocks can be added when needed.
 
 Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 ---
-Untested due to lack of hardware.
+Tested on RBTX4927.
 ---
- drivers/spi/spi-txx9.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/mips/txx9/Kconfig         |  2 +-
+ arch/mips/txx9/generic/setup.c | 68 ++++++++++++++++++++----------------------
+ 2 files changed, 34 insertions(+), 36 deletions(-)
 
-diff --git a/drivers/spi/spi-txx9.c b/drivers/spi/spi-txx9.c
-index 7492ea346b43ed5b..51759d3fd45f6b06 100644
---- a/drivers/spi/spi-txx9.c
-+++ b/drivers/spi/spi-txx9.c
-@@ -346,7 +346,7 @@ static int txx9spi_probe(struct platform_device *dev)
- 		c->clk = NULL;
- 		goto exit;
- 	}
--	ret = clk_enable(c->clk);
-+	ret = clk_prepare_enable(c->clk);
- 	if (ret) {
- 		c->clk = NULL;
- 		goto exit;
-@@ -395,7 +395,7 @@ static int txx9spi_probe(struct platform_device *dev)
- exit_busy:
- 	ret = -EBUSY;
- exit:
--	clk_disable(c->clk);
-+	clk_disable_unprepare(c->clk);
- 	spi_master_put(master);
- 	return ret;
- }
-@@ -406,7 +406,7 @@ static int txx9spi_remove(struct platform_device *dev)
- 	struct txx9spi *c = spi_master_get_devdata(master);
+diff --git a/arch/mips/txx9/Kconfig b/arch/mips/txx9/Kconfig
+index 8c337d60f790db9f..42923478d45ca363 100644
+--- a/arch/mips/txx9/Kconfig
++++ b/arch/mips/txx9/Kconfig
+@@ -20,7 +20,7 @@ config MACH_TXX9
+ 	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+-	select HAVE_CLK
++	select COMMON_CLK
  
- 	flush_work(&c->work);
--	clk_disable(c->clk);
-+	clk_disable_unprepare(c->clk);
+ config TOSHIBA_JMR3927
+ 	bool "Toshiba JMR-TX3927 board"
+diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
+index ada92db92f87d91a..2fdbcf91b2cc472c 100644
+--- a/arch/mips/txx9/generic/setup.c
++++ b/arch/mips/txx9/generic/setup.c
+@@ -15,7 +15,8 @@
+ #include <linux/interrupt.h>
+ #include <linux/string.h>
+ #include <linux/module.h>
+-#include <linux/clk.h>
++#include <linux/clk-provider.h>
++#include <linux/clkdev.h>
+ #include <linux/err.h>
+ #include <linux/gpio/driver.h>
+ #include <linux/platform_device.h>
+@@ -83,40 +84,6 @@ int txx9_ccfg_toeon __initdata;
+ int txx9_ccfg_toeon __initdata = 1;
+ #endif
+ 
+-/* Minimum CLK support */
+-
+-struct clk *clk_get(struct device *dev, const char *id)
+-{
+-	if (!strcmp(id, "spi-baseclk"))
+-		return (struct clk *)((unsigned long)txx9_gbus_clock / 2 / 2);
+-	if (!strcmp(id, "imbus_clk"))
+-		return (struct clk *)((unsigned long)txx9_gbus_clock / 2);
+-	return ERR_PTR(-ENOENT);
+-}
+-EXPORT_SYMBOL(clk_get);
+-
+-int clk_enable(struct clk *clk)
+-{
+-	return 0;
+-}
+-EXPORT_SYMBOL(clk_enable);
+-
+-void clk_disable(struct clk *clk)
+-{
+-}
+-EXPORT_SYMBOL(clk_disable);
+-
+-unsigned long clk_get_rate(struct clk *clk)
+-{
+-	return (unsigned long)clk;
+-}
+-EXPORT_SYMBOL(clk_get_rate);
+-
+-void clk_put(struct clk *clk)
+-{
+-}
+-EXPORT_SYMBOL(clk_put);
+-
+ #define BOARD_VEC(board)	extern struct txx9_board_vec board;
+ #include <asm/txx9/boards.h>
+ #undef BOARD_VEC
+@@ -560,8 +527,39 @@ void __init plat_time_init(void)
+ 	txx9_board_vec->time_init();
+ }
+ 
++static void txx9_clk_init(void)
++{
++	struct clk *clk;
++	int error;
++
++	clk = clk_register_fixed_rate(NULL, "gbus", NULL, 0, txx9_gbus_clock);
++	if (IS_ERR(clk)) {
++		error = PTR_ERR(clk);
++		goto fail;
++	}
++
++	clk = clk_register_fixed_factor(NULL, "imbus", "gbus", 0, 1, 2);
++	error = clk_register_clkdev(clk, "imbus_clk", NULL);
++	if (error)
++		goto fail;
++
++	if (TX4938_REV_PCODE() == 0x4938) {
++		clk = clk_register_fixed_factor(NULL, "spi", "gbus", 0, 1, 4);
++		error = clk_register_clkdev(clk, "spi-baseclk", NULL);
++		if (error)
++			goto fail;
++	}
++
++	return;
++
++fail:
++	pr_err("Failed to register clocks: %d\n", error);
++}
++
+ static int __init _txx9_arch_init(void)
+ {
++	txx9_clk_init();
++
+ 	if (txx9_board_vec->arch_init)
+ 		txx9_board_vec->arch_init();
  	return 0;
- }
- 
 -- 
 1.9.1

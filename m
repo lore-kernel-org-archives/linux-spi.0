@@ -1,21 +1,22 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 0/3] MIPS: TXx9: Common Clock Framework Conversion
-Date: Thu, 18 Aug 2016 19:11:39 +0100
-Message-ID: <20160818181139.GS9347@sirena.org.uk>
+From: Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH 2/3] watchdog: txx9wdt: Add missing clock (un)prepare
+ calls for CCF
+Date: Thu, 18 Aug 2016 11:58:36 -0700
+Message-ID: <20160818185836.GA7221@roeck-us.net>
 References: <1471541667-30689-1-git-send-email-geert@linux-m68k.org>
+ <1471541667-30689-3-git-send-email-geert@linux-m68k.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="/OxAoNYcURhUkoHv"
+Content-Type: text/plain; charset=us-ascii
 Cc: Ralf Baechle <ralf@linux-mips.org>,
         Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
-        Wim Van Sebroeck <wim@iguana.be>,
-        Guenter Roeck <linux@roeck-us.net>, linux-clk@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>,
+        Wim Van Sebroeck <wim@iguana.be>, linux-clk@vger.kernel.org,
         linux-mips@linux-mips.org, linux-spi@vger.kernel.org,
         linux-watchdog@vger.kernel.org
 To: Geert Uytterhoeven <geert@linux-m68k.org>
 Return-path: <linux-mips-bounce@linux-mips.org>
 Content-Disposition: inline
-In-Reply-To: <1471541667-30689-1-git-send-email-geert@linux-m68k.org>
+In-Reply-To: <1471541667-30689-3-git-send-email-geert@linux-m68k.org>
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
@@ -27,32 +28,54 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 List-Id: linux-spi.vger.kernel.org
 
+On Thu, Aug 18, 2016 at 07:34:26PM +0200, Geert Uytterhoeven wrote:
+> While the custom minimal TXx9 clock implementation doesn't need or use
+> clock (un)prepare calls (they are dummies if !CONFIG_HAVE_CLK_PREPARE),
+> they are mandatory when using the Common Clock Framework.
+> 
+> Hence add them, to prepare for the advent of CCF.
+> 
+> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
---/OxAoNYcURhUkoHv
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
 
-On Thu, Aug 18, 2016 at 07:34:24PM +0200, Geert Uytterhoeven wrote:
-
-> Patches 1 and 2 can be applied independently.
-> Patch 3 has a hard dependency on patches 1 and 2.
-> I don't know how you prefer to handle this?
-
-I can sign a tag for pulling in easily enough for the SPI change.
-
---/OxAoNYcURhUkoHv
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJXtfpaAAoJECTWi3JdVIfQUZoH/iQFeSN75ptSllwhU4cxzmL3
-GQuPrk70Ogkv5rX6oZs0n2lxoA5Ag+lECP7QxPIBSK7MMfFABUDr9uI7oNzTS8XY
-Ww7eyY/gx1zha0MUgnjTAmcONgfibXZljnRggHpjvMNfZRrHEnEWAU/jlHksEv39
-Q0aVntPDksyjKKkVv2x16uKZBubyr44axnPq7RltYEK8DH74coKcOeZwHQbslgjO
-/Llj8kshJSsJ3IrEsNBiOCzoW2EFT82S7Cm7cFxmSVJf4Vx7vntR/AYtE85fW6RY
-wEEHt+ObqlDvAPviCZe0Z+zxqG0o8qcXwJNm0lDyB95kJf5ulXOU0DhQDZB04Uc=
-=IkHd
------END PGP SIGNATURE-----
-
---/OxAoNYcURhUkoHv--
+> ---
+> Tested on RBTX4927.
+> ---
+>  drivers/watchdog/txx9wdt.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/watchdog/txx9wdt.c b/drivers/watchdog/txx9wdt.c
+> index c2da880292bc2f32..6f7a9deb27d05d25 100644
+> --- a/drivers/watchdog/txx9wdt.c
+> +++ b/drivers/watchdog/txx9wdt.c
+> @@ -112,7 +112,7 @@ static int __init txx9wdt_probe(struct platform_device *dev)
+>  		txx9_imclk = NULL;
+>  		goto exit;
+>  	}
+> -	ret = clk_enable(txx9_imclk);
+> +	ret = clk_prepare_enable(txx9_imclk);
+>  	if (ret) {
+>  		clk_put(txx9_imclk);
+>  		txx9_imclk = NULL;
+> @@ -144,7 +144,7 @@ static int __init txx9wdt_probe(struct platform_device *dev)
+>  	return 0;
+>  exit:
+>  	if (txx9_imclk) {
+> -		clk_disable(txx9_imclk);
+> +		clk_disable_unprepare(txx9_imclk);
+>  		clk_put(txx9_imclk);
+>  	}
+>  	return ret;
+> @@ -153,7 +153,7 @@ exit:
+>  static int __exit txx9wdt_remove(struct platform_device *dev)
+>  {
+>  	watchdog_unregister_device(&txx9wdt);
+> -	clk_disable(txx9_imclk);
+> +	clk_disable_unprepare(txx9_imclk);
+>  	clk_put(txx9_imclk);
+>  	return 0;
+>  }
+> -- 
+> 1.9.1
+> 

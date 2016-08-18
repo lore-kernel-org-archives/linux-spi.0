@@ -1,21 +1,24 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: introduce max_message_size hook in spi_master" to the spi tree
-Date: Thu, 18 Aug 2016 11:17:45 +0100
-Message-ID: <E1baKOP-0002Ab-9s@debutante>
-References: <69c4ce26-7b41-222e-07b2-92818cedd05f@gmail.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <69c4ce26-7b41-222e-07b2-92818cedd05f-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "MAINTAINERS: add myself as Samsung SPI maintainer" to the spi tree
+Date: Thu, 18 Aug 2016 11:17:48 +0100
+Message-ID: <E1baKOS-0002Br-90@debutante>
+References: <20160818072555.9208-1-andi.shyti@samsung.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Kukjin Kim <kgene@kernel.org>, Mark Brown <broonie@kernel.org>,
+	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Andi Shyti <andi@etezian.org>
+To: Andi Shyti <andi.shyti@samsung.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20160818072555.9208-1-andi.shyti@samsung.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: introduce max_message_size hook in spi_master
+   MAINTAINERS: add myself as Samsung SPI maintainer
 
 has been applied to the spi tree at
 
@@ -40,85 +43,55 @@ to this mail.
 Thanks,
 Mark
 
->From 5090cc6ae2f79ee779e5faf7c8a28edf42b7d738 Mon Sep 17 00:00:00 2001
-From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Wed, 17 Aug 2016 21:08:01 +0200
-Subject: [PATCH] spi: introduce max_message_size hook in spi_master
+>From 2e365a703ea60de617287354ae63bf677e406feb Mon Sep 17 00:00:00 2001
+From: Andi Shyti <andi.shyti@samsung.com>
+Date: Thu, 18 Aug 2016 16:25:55 +0900
+Subject: [PATCH] MAINTAINERS: add myself as Samsung SPI maintainer
 
-Recently a maximum transfer size was was introduced in struct spi_master.
-However there are also spi controllers with a maximum message size, e.g.
-fsl-espi has a max message size of 64KB.
-Introduce a hook max_message_size to deal with such limitations.
+Create a new entry for the Samsung SPI driver supported by the
+drivers/spi/spi-s3c* and remove it from its original place under
+"ARM/SAMSUNG EXYNOS ARM ARCHITECTURES".
 
-Also make sure that spi_max_transfer_size doesn't return greater values
-than spi_max_message_size, even if hook max_transfer_size is not set.
+The original maintainership inherited from the Samsung Exynos
+ARM Architecture is kept as it was (i.e. Kukjin and Krzysztof), I
+will help and co-maintain the driver.
 
-Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Andi Shyti <andi.shyti@samsung.com>
+Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- include/linux/spi/spi.h | 25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+ MAINTAINERS | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 072cb2aa2413..f2d3960cc3c3 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -312,6 +312,8 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
-  * @flags: other constraints relevant to this driver
-  * @max_transfer_size: function that returns the max transfer size for
-  *	a &spi_device; may be %NULL, so the default %SIZE_MAX will be used.
-+ * @max_message_size: function that returns the max message size for
-+ *	a &spi_device; may be %NULL, so the default %SIZE_MAX will be used.
-  * @io_mutex: mutex for physical bus access
-  * @bus_lock_spinlock: spinlock for SPI bus locking
-  * @bus_lock_mutex: mutex for exclusion of multiple callers
-@@ -442,10 +444,11 @@ struct spi_master {
- #define SPI_MASTER_MUST_TX      BIT(4)		/* requires tx */
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 20bb1d00098c..5051c2f46d47 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1633,7 +1633,6 @@ F:	drivers/*/*s3c64xx*
+ F:	drivers/*/*s5pv210*
+ F:	drivers/memory/samsung/*
+ F:	drivers/soc/samsung/*
+-F:	drivers/spi/spi-s3c*
+ F:	Documentation/arm/Samsung/
+ F:	Documentation/devicetree/bindings/arm/samsung/
+ F:	Documentation/devicetree/bindings/sram/samsung-sram.txt
+@@ -10237,6 +10236,17 @@ S:	Supported
+ L:	linux-samsung-soc@vger.kernel.org (moderated for non-subscribers)
+ F:	drivers/clk/samsung/
  
- 	/*
--	 * on some hardware transfer size may be constrained
-+	 * on some hardware transfer / message size may be constrained
- 	 * the limit may depend on device transfer settings
- 	 */
- 	size_t (*max_transfer_size)(struct spi_device *spi);
-+	size_t (*max_message_size)(struct spi_device *spi);
- 
- 	/* I/O mutex */
- 	struct mutex		io_mutex;
-@@ -905,12 +908,26 @@ extern int spi_async_locked(struct spi_device *spi,
- 			    struct spi_message *message);
- 
- static inline size_t
--spi_max_transfer_size(struct spi_device *spi)
-+spi_max_message_size(struct spi_device *spi)
- {
- 	struct spi_master *master = spi->master;
--	if (!master->max_transfer_size)
-+	if (!master->max_message_size)
- 		return SIZE_MAX;
--	return master->max_transfer_size(spi);
-+	return master->max_message_size(spi);
-+}
++SAMSUNG SPI DRIVERS
++M:	Kukjin Kim <kgene@kernel.org>
++M:	Krzysztof Kozlowski <krzk@kernel.org>
++M:	Andi Shyti <andi.shyti@samsung.com>
++L:	linux-spi@vger.kernel.org
++L:	linux-samsung-soc@vger.kernel.org (moderated for non-subscribers)
++S:	Maintained
++F:	Documentation/devicetree/bindings/spi/spi-samsung.txt
++F:	drivers/spi/spi-s3c*
++F:	include/linux/platform_data/spi-s3c64xx.h
 +
-+static inline size_t
-+spi_max_transfer_size(struct spi_device *spi)
-+{
-+	struct spi_master *master = spi->master;
-+	size_t tr_max = SIZE_MAX;
-+	size_t msg_max = spi_max_message_size(spi);
-+
-+	if (master->max_transfer_size)
-+		tr_max = master->max_transfer_size(spi);
-+
-+	/* transfer size limit must not be greater than messsage size limit */
-+	return min(tr_max, msg_max);
- }
- 
- /*---------------------------------------------------------------------------*/
+ SAMSUNG SXGBE DRIVERS
+ M:	Byungho An <bh74.an@samsung.com>
+ M:	Girish K S <ks.giri@samsung.com>
 -- 
 2.8.1
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

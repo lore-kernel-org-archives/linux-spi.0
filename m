@@ -1,7 +1,7 @@
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH 2/3] watchdog: txx9wdt: Add missing clock (un)prepare calls for CCF
-Date: Thu, 18 Aug 2016 19:34:26 +0200
-Message-ID: <1471541667-30689-3-git-send-email-geert@linux-m68k.org>
+Subject: [PATCH 1/3] spi: spi-txx9: Add missing clock (un)prepare calls for CCF
+Date: Thu, 18 Aug 2016 19:34:25 +0200
+Message-ID: <1471541667-30689-2-git-send-email-geert@linux-m68k.org>
 References: <1471541667-30689-1-git-send-email-geert@linux-m68k.org>
 Cc: linux-clk@vger.kernel.org, linux-mips@linux-mips.org,
         linux-spi@vger.kernel.org, linux-watchdog@vger.kernel.org,
@@ -32,41 +32,41 @@ Hence add them, to prepare for the advent of CCF.
 
 Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 ---
-Tested on RBTX4927.
+Untested due to lack of hardware.
 ---
- drivers/watchdog/txx9wdt.c | 6 +++---
+ drivers/spi/spi-txx9.c | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/watchdog/txx9wdt.c b/drivers/watchdog/txx9wdt.c
-index c2da880292bc2f32..6f7a9deb27d05d25 100644
---- a/drivers/watchdog/txx9wdt.c
-+++ b/drivers/watchdog/txx9wdt.c
-@@ -112,7 +112,7 @@ static int __init txx9wdt_probe(struct platform_device *dev)
- 		txx9_imclk = NULL;
+diff --git a/drivers/spi/spi-txx9.c b/drivers/spi/spi-txx9.c
+index 7492ea346b43ed5b..51759d3fd45f6b06 100644
+--- a/drivers/spi/spi-txx9.c
++++ b/drivers/spi/spi-txx9.c
+@@ -346,7 +346,7 @@ static int txx9spi_probe(struct platform_device *dev)
+ 		c->clk = NULL;
  		goto exit;
  	}
--	ret = clk_enable(txx9_imclk);
-+	ret = clk_prepare_enable(txx9_imclk);
+-	ret = clk_enable(c->clk);
++	ret = clk_prepare_enable(c->clk);
  	if (ret) {
- 		clk_put(txx9_imclk);
- 		txx9_imclk = NULL;
-@@ -144,7 +144,7 @@ static int __init txx9wdt_probe(struct platform_device *dev)
- 	return 0;
+ 		c->clk = NULL;
+ 		goto exit;
+@@ -395,7 +395,7 @@ static int txx9spi_probe(struct platform_device *dev)
+ exit_busy:
+ 	ret = -EBUSY;
  exit:
- 	if (txx9_imclk) {
--		clk_disable(txx9_imclk);
-+		clk_disable_unprepare(txx9_imclk);
- 		clk_put(txx9_imclk);
- 	}
+-	clk_disable(c->clk);
++	clk_disable_unprepare(c->clk);
+ 	spi_master_put(master);
  	return ret;
-@@ -153,7 +153,7 @@ exit:
- static int __exit txx9wdt_remove(struct platform_device *dev)
- {
- 	watchdog_unregister_device(&txx9wdt);
--	clk_disable(txx9_imclk);
-+	clk_disable_unprepare(txx9_imclk);
- 	clk_put(txx9_imclk);
+ }
+@@ -406,7 +406,7 @@ static int txx9spi_remove(struct platform_device *dev)
+ 	struct txx9spi *c = spi_master_get_devdata(master);
+ 
+ 	flush_work(&c->work);
+-	clk_disable(c->clk);
++	clk_disable_unprepare(c->clk);
  	return 0;
  }
+ 
 -- 
 1.9.1

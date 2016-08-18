@@ -1,10 +1,8 @@
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH 0/3] MIPS: TXx9: Common Clock Framework Conversion
-Date: Thu, 18 Aug 2016 19:34:24 +0200
-Message-ID: <1471541667-30689-1-git-send-email-geert@linux-m68k.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: [PATCH 2/3] watchdog: txx9wdt: Add missing clock (un)prepare calls for CCF
+Date: Thu, 18 Aug 2016 19:34:26 +0200
+Message-ID: <1471541667-30689-3-git-send-email-geert@linux-m68k.org>
+References: <1471541667-30689-1-git-send-email-geert@linux-m68k.org>
 Cc: linux-clk@vger.kernel.org, linux-mips@linux-mips.org,
         linux-spi@vger.kernel.org, linux-watchdog@vger.kernel.org,
         Geert Uytterhoeven <geert@linux-m68k.org>
@@ -14,6 +12,7 @@ To: Ralf Baechle <ralf@linux-mips.org>,
         Wim Van Sebroeck <wim@iguana.be>,
         Guenter Roeck <linux@roeck-us.net>
 Return-path: <linux-mips-bounce@linux-mips.org>
+In-Reply-To: <1471541667-30689-1-git-send-email-geert@linux-m68k.org>
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
@@ -25,45 +24,49 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 List-Id: linux-spi.vger.kernel.org
 
-	Hi Ralf, Nemoto-san, Mark, Wim, Günter,
+While the custom minimal TXx9 clock implementation doesn't need or use
+clock (un)prepare calls (they are dummies if !CONFIG_HAVE_CLK_PREPARE),
+they are mandatory when using the Common Clock Framework.
 
-This patch series converts the Toshiba TXx9 platforms from their own
-custom minimal clock implementation to the Common Clock Framework.
+Hence add them, to prepare for the advent of CCF.
 
-  - Patches 1 and 2 add missing clock (un)prepare calls to TXx9-specific
-    drivers,
-  - Patch 3 replaces the custom clock implementation by a CCF-based one,
-    providing a minimal set of clocks.
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+---
+Tested on RBTX4927.
+---
+ drivers/watchdog/txx9wdt.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Patches 1 and 2 can be applied independently.
-Patch 3 has a hard dependency on patches 1 and 2.
-I don't know how you prefer to handle this?
-
-This has been tested with the watchdog on RBTX4927.
-
-Thanks!
-
-Geert Uytterhoeven (3):
-  spi: spi-txx9: Add missing clock (un)prepare calls for CCF
-  watchdog: txx9wdt: Add missing clock (un)prepare calls for CCF
-  MIPS: TXx9: Convert to Common Clock Framework
-
- arch/mips/txx9/Kconfig         |  2 +-
- arch/mips/txx9/generic/setup.c | 68 ++++++++++++++++++++----------------------
- drivers/spi/spi-txx9.c         |  6 ++--
- drivers/watchdog/txx9wdt.c     |  6 ++--
- 4 files changed, 40 insertions(+), 42 deletions(-)
-
+diff --git a/drivers/watchdog/txx9wdt.c b/drivers/watchdog/txx9wdt.c
+index c2da880292bc2f32..6f7a9deb27d05d25 100644
+--- a/drivers/watchdog/txx9wdt.c
++++ b/drivers/watchdog/txx9wdt.c
+@@ -112,7 +112,7 @@ static int __init txx9wdt_probe(struct platform_device *dev)
+ 		txx9_imclk = NULL;
+ 		goto exit;
+ 	}
+-	ret = clk_enable(txx9_imclk);
++	ret = clk_prepare_enable(txx9_imclk);
+ 	if (ret) {
+ 		clk_put(txx9_imclk);
+ 		txx9_imclk = NULL;
+@@ -144,7 +144,7 @@ static int __init txx9wdt_probe(struct platform_device *dev)
+ 	return 0;
+ exit:
+ 	if (txx9_imclk) {
+-		clk_disable(txx9_imclk);
++		clk_disable_unprepare(txx9_imclk);
+ 		clk_put(txx9_imclk);
+ 	}
+ 	return ret;
+@@ -153,7 +153,7 @@ exit:
+ static int __exit txx9wdt_remove(struct platform_device *dev)
+ {
+ 	watchdog_unregister_device(&txx9wdt);
+-	clk_disable(txx9_imclk);
++	clk_disable_unprepare(txx9_imclk);
+ 	clk_put(txx9_imclk);
+ 	return 0;
+ }
 -- 
 1.9.1
-
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds

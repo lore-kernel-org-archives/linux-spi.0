@@ -1,48 +1,209 @@
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Subject: Re: [PATCH 3/3] MIPS: TXx9: Convert to Common Clock Framework
-Date: Fri, 19 Aug 2016 21:05:04 +0900 (JST)
-Message-ID: <20160819.210504.65713466261092409.anemo@mba.ocn.ne.jp>
-References: <1471541667-30689-1-git-send-email-geert@linux-m68k.org>
-        <1471541667-30689-4-git-send-email-geert@linux-m68k.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Cc: ralf@linux-mips.org, broonie@kernel.org, wim@iguana.be,
-        linux@roeck-us.net, linux-clk@vger.kernel.org,
-        linux-mips@linux-mips.org, linux-spi@vger.kernel.org,
-        linux-watchdog@vger.kernel.org
-To: geert@linux-m68k.org
-Return-path: <linux-mips-bounce@linux-mips.org>
-In-Reply-To: <1471541667-30689-4-git-send-email-geert@linux-m68k.org>
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
-List-Id: linux-spi.vger.kernel.org
+From: Jan Glauber <jglauber-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH v3] spi: octeon: Add ThunderX driver
+Date: Fri, 19 Aug 2016 16:03:20 +0200
+Message-ID: <20160819140320.12954-1-jglauber@cavium.com>
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        David Daney <david.daney-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>,
+        Jan Glauber <jglauber-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, 18 Aug 2016 19:34:27 +0200, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> Replace the custom minimal clock implementation for Toshiba TXx9 by a
-> basic implementation using the Common Clock Framework.
+Add ThunderX SPI driver using the shared part from the Octeon
+driver. The main difference of the ThunderX driver is that it
+is a PCI device so probing is different. The system clock settings
+can be specified in device tree.
 
-Thank you for good cleanup.
-
-> +	if (TX4938_REV_PCODE() == 0x4938) {
-> +		clk = clk_register_fixed_factor(NULL, "spi", "gbus", 0, 1, 4);
-> +		error = clk_register_clkdev(clk, "spi-baseclk", NULL);
-> +		if (error)
-> +			goto fail;
-> +	}
-
-Unfortunately, TX4938_REV_PCODE() can be used only on TX49 based
-platforms.  Please enclose this block with #ifdef CONFIG_CPU_TX49XX.
-
-Or, while registering unused clkdev will not bloat kernel so much,
-just remove this TX4938 checking.
-
+Signed-off-by: Jan Glauber <jglauber-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
 ---
-Atsushi Nemoto
+ drivers/spi/Kconfig               |   7 +++
+ drivers/spi/Makefile              |   2 +
+ drivers/spi/spi-cavium-thunderx.c | 118 ++++++++++++++++++++++++++++++++++++++
+ drivers/spi/spi-cavium.h          |   3 +
+ 4 files changed, 130 insertions(+)
+ create mode 100644 drivers/spi/spi-cavium-thunderx.c
+
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index d6fb8d4..8108971 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -631,6 +631,13 @@ config SPI_TEGRA20_SLINK
+ 	help
+ 	  SPI driver for Nvidia Tegra20/Tegra30 SLINK Controller interface.
+ 
++config SPI_THUNDERX
++	tristate "Cavium ThunderX SPI controller"
++	depends on PCI && 64BIT && (ARM64 || COMPILE_TEST)
++	help
++	  SPI host driver for the hardware found on Cavium ThunderX
++	  SOCs.
++
+ config SPI_TOPCLIFF_PCH
+ 	tristate "Intel EG20T PCH/LAPIS Semicon IOH(ML7213/ML7223/ML7831) SPI"
+ 	depends on PCI && (X86_32 || MIPS || COMPILE_TEST)
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 185367e..133364b 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -91,6 +91,8 @@ obj-$(CONFIG_SPI_TEGRA114)		+= spi-tegra114.o
+ obj-$(CONFIG_SPI_TEGRA20_SFLASH)	+= spi-tegra20-sflash.o
+ obj-$(CONFIG_SPI_TEGRA20_SLINK)		+= spi-tegra20-slink.o
+ obj-$(CONFIG_SPI_TLE62X0)		+= spi-tle62x0.o
++spi-thunderx-objs			:= spi-cavium.o spi-cavium-thunderx.o
++obj-$(CONFIG_SPI_THUNDERX)		+= spi-thunderx.o
+ obj-$(CONFIG_SPI_TOPCLIFF_PCH)		+= spi-topcliff-pch.o
+ obj-$(CONFIG_SPI_TXX9)			+= spi-txx9.o
+ obj-$(CONFIG_SPI_XCOMM)		+= spi-xcomm.o
+diff --git a/drivers/spi/spi-cavium-thunderx.c b/drivers/spi/spi-cavium-thunderx.c
+new file mode 100644
+index 0000000..eff2a13
+--- /dev/null
++++ b/drivers/spi/spi-cavium-thunderx.c
+@@ -0,0 +1,118 @@
++/*
++ * Cavium ThunderX SPI driver.
++ *
++ * Copyright (C) 2016 Cavium Inc.
++ * Authors: Jan Glauber <jglauber-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
++ */
++
++#include <linux/module.h>
++#include <linux/pci.h>
++#include <linux/spi/spi.h>
++
++#include "spi-cavium.h"
++
++#define DRV_NAME "spi-thunderx"
++
++#define SYS_FREQ_DEFAULT 700000000 /* 700 Mhz */
++
++static int thunderx_spi_probe(struct pci_dev *pdev,
++			      const struct pci_device_id *ent)
++{
++	struct device *dev = &pdev->dev;
++	struct spi_master *master;
++	struct octeon_spi *p;
++	int ret;
++
++	master = spi_alloc_master(dev, sizeof(struct octeon_spi));
++	if (!master)
++		return -ENOMEM;
++
++	p = spi_master_get_devdata(master);
++
++	ret = pcim_enable_device(pdev);
++	if (ret)
++		goto error;
++
++	ret = pci_request_regions(pdev, DRV_NAME);
++	if (ret)
++		goto error;
++
++	p->register_base = pcim_iomap(pdev, 0, pci_resource_len(pdev, 0));
++	if (!p->register_base) {
++		ret = -EINVAL;
++		goto error;
++	}
++
++	p->regs.config = 0x1000;
++	p->regs.status = 0x1008;
++	p->regs.tx = 0x1010;
++	p->regs.data = 0x1080;
++
++	p->clk = devm_clk_get(dev, NULL);
++	if (IS_ERR(p->clk)) {
++		ret = PTR_ERR(p->clk);
++		goto error;
++	}
++
++	ret = clk_prepare_enable(p->clk);
++	if (ret)
++		goto error;
++
++	p->sys_freq = clk_get_rate(p->clk);
++	if (!p->sys_freq)
++		p->sys_freq = SYS_FREQ_DEFAULT;
++	dev_info(dev, "Set system clock to %u\n", p->sys_freq);
++
++	master->num_chipselect = 4;
++	master->mode_bits = SPI_CPHA | SPI_CPOL | SPI_CS_HIGH |
++			    SPI_LSB_FIRST | SPI_3WIRE;
++	master->transfer_one_message = octeon_spi_transfer_one_message;
++	master->bits_per_word_mask = SPI_BPW_MASK(8);
++	master->max_speed_hz = OCTEON_SPI_MAX_CLOCK_HZ;
++	master->dev.of_node = pdev->dev.of_node;
++
++	pci_set_drvdata(pdev, master);
++
++	ret = devm_spi_register_master(dev, master);
++	if (ret)
++		goto error;
++
++	return 0;
++
++error:
++	spi_master_put(master);
++	return ret;
++}
++
++static void thunderx_spi_remove(struct pci_dev *pdev)
++{
++	struct spi_master *master = pci_get_drvdata(pdev);
++	struct octeon_spi *p;
++
++	p = spi_master_get_devdata(master);
++	if (!p)
++		return;
++
++	/* Put everything in a known state. */
++	writeq(0, p->register_base + OCTEON_SPI_CFG(p));
++}
++
++static const struct pci_device_id thunderx_spi_pci_id_table[] = {
++	{ PCI_DEVICE(PCI_VENDOR_ID_CAVIUM, 0xa00b) },
++	{ 0, }
++};
++
++MODULE_DEVICE_TABLE(pci, thunderx_spi_pci_id_table);
++
++static struct pci_driver thunderx_spi_driver = {
++	.name		= DRV_NAME,
++	.id_table	= thunderx_spi_pci_id_table,
++	.probe		= thunderx_spi_probe,
++	.remove		= thunderx_spi_remove,
++};
++
++module_pci_driver(thunderx_spi_driver);
++
++MODULE_DESCRIPTION("Cavium, Inc. ThunderX SPI bus driver");
++MODULE_AUTHOR("Jan Glauber");
++MODULE_LICENSE("GPL");
+diff --git a/drivers/spi/spi-cavium.h b/drivers/spi/spi-cavium.h
+index 88c5f36..1f91d61 100644
+--- a/drivers/spi/spi-cavium.h
++++ b/drivers/spi/spi-cavium.h
+@@ -1,6 +1,8 @@
+ #ifndef __SPI_CAVIUM_H
+ #define __SPI_CAVIUM_H
+ 
++#include <linux/clk.h>
++
+ #define OCTEON_SPI_MAX_BYTES 9
+ #define OCTEON_SPI_MAX_CLOCK_HZ 16000000
+ 
+@@ -17,6 +19,7 @@ struct octeon_spi {
+ 	u64 cs_enax;
+ 	int sys_freq;
+ 	struct octeon_spi_regs regs;
++	struct clk *clk;
+ };
+ 
+ #define OCTEON_SPI_CFG(x)	(x->regs.config)
+-- 
+2.9.0.rc0.21.g7777322
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

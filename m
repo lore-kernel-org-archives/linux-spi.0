@@ -1,9 +1,9 @@
 From: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v5 3/8] spi: bcm-qspi: Add BSPI spi-nor flash controller driver
-Date: Fri, 19 Aug 2016 11:33:01 -0400
-Message-ID: <CAC=U0a0NkjUQ1gAGNCsLycUhU_x0k=munc4bPTZW1YEW6OY1yw@mail.gmail.com>
+Subject: Re: [PATCH v5 8/8] spi: nsp-qspi: Add Broadcom NSP, NS2, Cygnus SoC support
+Date: Fri, 19 Aug 2016 11:43:24 -0400
+Message-ID: <CAC=U0a31LOphD=21-tBtiCxN-JqxSArxqhQ4_=fXwH-vEKnbHA@mail.gmail.com>
 References: <1469830393-13295-1-git-send-email-kdasu.kdev@gmail.com>
- <1469830393-13295-4-git-send-email-kdasu.kdev@gmail.com> <20160816183148.GZ9347@sirena.org.uk>
+ <1469830393-13295-9-git-send-email-kdasu.kdev@gmail.com> <20160816184030.GB9347@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
@@ -15,77 +15,48 @@ Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         Andy Fung <andy.fung-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
         Jon Mason <jon.mason-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
         "Jayachandran C <jchandra-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>, bcm-kernel-feedback-list"
-        <jchandra-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-        Yendapally Reddy Dhananjaya Reddy
-        <yendapally.reddy-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+        <jchandra-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160816183148.GZ9347-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <20160816184030.GB9347-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Aug 16, 2016 at 2:31 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Fri, Jul 29, 2016 at 06:13:08PM -0400, Kamal Dasu wrote:
+On Tue, Aug 16, 2016 at 2:40 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Fri, Jul 29, 2016 at 06:13:13PM -0400, Kamal Dasu wrote:
 >
->> +     bcm_qspi_bspi_lr_start(qspi);
->> +     /* Must flush previous writes before starting BSPI operation */
->> +     mb();
->> +     if (!wait_for_completion_timeout(&qspi->bspi_done, timeo)) {
+>> -             irq = platform_get_irq_byname(pdev, name);
+>> +             if (soc && qspi_irq_tab[val].irq_source == MUXED_L1) {
+>> +                     /* all mspi, bspi intrs muxed to one L1 intr */
+>> +                     irq = platform_get_irq(pdev, 0);
+>> +                     of_property_read_string(dev->of_node,
+>> +                                             "interrupt-names",
+>> +                                             &name);
+>> +             }
 >
-> The comment suggests that the memory barrier is misplaced or that
-> there's something missing?
->
-
-Yes it got misplaced during refactoring the code. will move it to the
-right place.
-
->> +             if (retry--)
->> +                     goto retry;
->
-> Please write loops using normal C looping constructs rather than goto
-> statements, it makes life a lot easier.  I'm not convinced that the loop
-> is safe as is with the completion reinitializaiton and so on, we should
-> at least be turning off the hardware before we reinitialize the
-> completion to avoid races with slow hardware.
+> I am confused why we are parsing the interrupt-names property here?
 >
 
-Actually will get rid of the retry logic.
+For Muxed L1 single source interrupt, there is only one irq, and  SoCs
+could use a different different name wanted to use that name. But I
+could force a name as well.
 
->> +     io_width = msg->data_nbits ? msg->data_nbits : SPI_NBITS_SINGLE;
+>> +     /*
+>> +      * Some SoCs integrate spi controller (e.g., its interrupt bits)
+>> +      * in specific ways
+>> +      */
+>> +     if (soc) {
+>> +             qspi->soc = soc;
+>> +             soc->bcm_qspi_int_set(soc, MSPI_DONE, true);
+>> +     } else {
+>> +             qspi->soc = NULL;
+>> +     }
 >
-> Normal if statements please.
->
+> The variable name "soc" here doesn't seem hugely descriptive when it's
+> just for the interrupt controller.
 
-Ok will fix this.
-
->> +static irqreturn_t bcm_qspi_bspi_lr_err_l2_isr(int irq, void *dev_id)
->> +{
->> +     struct bcm_qspi_dev_id *qspi_dev_id = dev_id;
->> +     struct bcm_qspi *qspi = qspi_dev_id->dev;
->> +
->> +     dev_dbg(&qspi->pdev->dev, "BSPI INT error status %x\n",
->> +             qspi_dev_id->irqp->mask);
->
-> I'd expect this to be dev_err() or something, but then the message
-> claims this an error status and it doesn't seem to actually read that
-> from the hardware.
->
-
-Agreed will change this.
-
->> +#ifdef  QSPI_INT_DEBUG
->> +     /* this interrupt is for debug purposes only, dont request irq */
->> +     {
->> +             .irq_name = "spi_lr_overread",
->> +             .irq_handler = bcm_qspi_bspi_lr_err_l2_isr,
->> +             .mask = INTR_BSPI_LR_OVERREAD_MASK,
->> +     },
->> +#endif
->
-> Why not?
-
-Is there in the HW block but will never get triggered,  will never get
-triggered in the current driver. But kept it for completeness.
+Named it that way since it could potentially have other SoC specific
+settings for spi master bus needed in future.
 
 Kamal
 --

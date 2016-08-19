@@ -1,22 +1,19 @@
-From: Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH 2/3] watchdog: txx9wdt: Add missing clock (un)prepare
- calls for CCF
-Date: Thu, 18 Aug 2016 11:58:36 -0700
-Message-ID: <20160818185836.GA7221@roeck-us.net>
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Subject: Re: [PATCH 3/3] MIPS: TXx9: Convert to Common Clock Framework
+Date: Fri, 19 Aug 2016 21:05:04 +0900 (JST)
+Message-ID: <20160819.210504.65713466261092409.anemo@mba.ocn.ne.jp>
 References: <1471541667-30689-1-git-send-email-geert@linux-m68k.org>
- <1471541667-30689-3-git-send-email-geert@linux-m68k.org>
+        <1471541667-30689-4-git-send-email-geert@linux-m68k.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Ralf Baechle <ralf@linux-mips.org>,
-        Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
-        Mark Brown <broonie@kernel.org>,
-        Wim Van Sebroeck <wim@iguana.be>, linux-clk@vger.kernel.org,
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Cc: ralf@linux-mips.org, broonie@kernel.org, wim@iguana.be,
+        linux@roeck-us.net, linux-clk@vger.kernel.org,
         linux-mips@linux-mips.org, linux-spi@vger.kernel.org,
         linux-watchdog@vger.kernel.org
-To: Geert Uytterhoeven <geert@linux-m68k.org>
+To: geert@linux-m68k.org
 Return-path: <linux-mips-bounce@linux-mips.org>
-Content-Disposition: inline
-In-Reply-To: <1471541667-30689-3-git-send-email-geert@linux-m68k.org>
+In-Reply-To: <1471541667-30689-4-git-send-email-geert@linux-m68k.org>
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
 List-help: <mailto:ecartis@linux-mips.org?Subject=help>
@@ -28,54 +25,24 @@ List-post: <mailto:linux-mips@linux-mips.org>
 List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Aug 18, 2016 at 07:34:26PM +0200, Geert Uytterhoeven wrote:
-> While the custom minimal TXx9 clock implementation doesn't need or use
-> clock (un)prepare calls (they are dummies if !CONFIG_HAVE_CLK_PREPARE),
-> they are mandatory when using the Common Clock Framework.
-> 
-> Hence add them, to prepare for the advent of CCF.
-> 
-> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+On Thu, 18 Aug 2016 19:34:27 +0200, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> Replace the custom minimal clock implementation for Toshiba TXx9 by a
+> basic implementation using the Common Clock Framework.
 
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Thank you for good cleanup.
 
-> ---
-> Tested on RBTX4927.
-> ---
->  drivers/watchdog/txx9wdt.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/watchdog/txx9wdt.c b/drivers/watchdog/txx9wdt.c
-> index c2da880292bc2f32..6f7a9deb27d05d25 100644
-> --- a/drivers/watchdog/txx9wdt.c
-> +++ b/drivers/watchdog/txx9wdt.c
-> @@ -112,7 +112,7 @@ static int __init txx9wdt_probe(struct platform_device *dev)
->  		txx9_imclk = NULL;
->  		goto exit;
->  	}
-> -	ret = clk_enable(txx9_imclk);
-> +	ret = clk_prepare_enable(txx9_imclk);
->  	if (ret) {
->  		clk_put(txx9_imclk);
->  		txx9_imclk = NULL;
-> @@ -144,7 +144,7 @@ static int __init txx9wdt_probe(struct platform_device *dev)
->  	return 0;
->  exit:
->  	if (txx9_imclk) {
-> -		clk_disable(txx9_imclk);
-> +		clk_disable_unprepare(txx9_imclk);
->  		clk_put(txx9_imclk);
->  	}
->  	return ret;
-> @@ -153,7 +153,7 @@ exit:
->  static int __exit txx9wdt_remove(struct platform_device *dev)
->  {
->  	watchdog_unregister_device(&txx9wdt);
-> -	clk_disable(txx9_imclk);
-> +	clk_disable_unprepare(txx9_imclk);
->  	clk_put(txx9_imclk);
->  	return 0;
->  }
-> -- 
-> 1.9.1
-> 
+> +	if (TX4938_REV_PCODE() == 0x4938) {
+> +		clk = clk_register_fixed_factor(NULL, "spi", "gbus", 0, 1, 4);
+> +		error = clk_register_clkdev(clk, "spi-baseclk", NULL);
+> +		if (error)
+> +			goto fail;
+> +	}
+
+Unfortunately, TX4938_REV_PCODE() can be used only on TX49 based
+platforms.  Please enclose this block with #ifdef CONFIG_CPU_TX49XX.
+
+Or, while registering unused clkdev will not bloat kernel so much,
+just remove this TX4938 checking.
+
+---
+Atsushi Nemoto

@@ -1,208 +1,45 @@
-From: Jan Glauber <jglauber-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH v3] spi: octeon: Add ThunderX driver
-Date: Fri, 19 Aug 2016 16:03:20 +0200
-Message-ID: <20160819140320.12954-1-jglauber@cavium.com>
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        David Daney <david.daney-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>,
-        Jan Glauber <jglauber-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v5 4/8] mtd: m25p80: Let m25p80_read() fallback to spi transfer
+Date: Fri, 19 Aug 2016 10:59:47 -0400
+Message-ID: <CAC=U0a3sDaiwRhAEZW0u_itaD7o3oUTRAEdDi_O3r9yZSr+cjA@mail.gmail.com>
+References: <1469830393-13295-1-git-send-email-kdasu.kdev@gmail.com>
+ <1469830393-13295-5-git-send-email-kdasu.kdev@gmail.com> <20160804210747.GN10383@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        vigneshr-l0cyMroinI0@public.gmane.org, Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        "Jayachandran C <jchandra-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>, bcm-kernel-feedback-list"
+        <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+        Vikram Prakash <vikram.prakash-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+        Andy Fung <andy.fung-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+        Jon Mason <jon.mason-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+        "Jayachandran C <jchandra-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>, bcm-kernel-feedback-list"
+        <jchandra-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20160804210747.GN10383-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Add ThunderX SPI driver using the shared part from the Octeon
-driver. The main difference of the ThunderX driver is that it
-is a PCI device so probing is different. The system clock settings
-can be specified in device tree.
+Adding Brian for this particular patch since its in the mtd domain. I
+will specifically  add him as well in the next  patch set.  I do have
+Vignesh in the list who added the spi_flash_read() in the list.
 
-Signed-off-by: Jan Glauber <jglauber-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
----
- drivers/spi/Kconfig               |   7 +++
- drivers/spi/Makefile              |   2 +
- drivers/spi/spi-cavium-thunderx.c | 118 ++++++++++++++++++++++++++++++++++++++
- drivers/spi/spi-cavium.h          |   3 +
- 4 files changed, 130 insertions(+)
- create mode 100644 drivers/spi/spi-cavium-thunderx.c
+Kamal
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index d6fb8d4..8108971 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -631,6 +631,13 @@ config SPI_TEGRA20_SLINK
- 	help
- 	  SPI driver for Nvidia Tegra20/Tegra30 SLINK Controller interface.
- 
-+config SPI_THUNDERX
-+	tristate "Cavium ThunderX SPI controller"
-+	depends on PCI && 64BIT && (ARM64 || COMPILE_TEST)
-+	help
-+	  SPI host driver for the hardware found on Cavium ThunderX
-+	  SOCs.
-+
- config SPI_TOPCLIFF_PCH
- 	tristate "Intel EG20T PCH/LAPIS Semicon IOH(ML7213/ML7223/ML7831) SPI"
- 	depends on PCI && (X86_32 || MIPS || COMPILE_TEST)
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index 185367e..133364b 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -91,6 +91,8 @@ obj-$(CONFIG_SPI_TEGRA114)		+= spi-tegra114.o
- obj-$(CONFIG_SPI_TEGRA20_SFLASH)	+= spi-tegra20-sflash.o
- obj-$(CONFIG_SPI_TEGRA20_SLINK)		+= spi-tegra20-slink.o
- obj-$(CONFIG_SPI_TLE62X0)		+= spi-tle62x0.o
-+spi-thunderx-objs			:= spi-cavium.o spi-cavium-thunderx.o
-+obj-$(CONFIG_SPI_THUNDERX)		+= spi-thunderx.o
- obj-$(CONFIG_SPI_TOPCLIFF_PCH)		+= spi-topcliff-pch.o
- obj-$(CONFIG_SPI_TXX9)			+= spi-txx9.o
- obj-$(CONFIG_SPI_XCOMM)		+= spi-xcomm.o
-diff --git a/drivers/spi/spi-cavium-thunderx.c b/drivers/spi/spi-cavium-thunderx.c
-new file mode 100644
-index 0000000..eff2a13
---- /dev/null
-+++ b/drivers/spi/spi-cavium-thunderx.c
-@@ -0,0 +1,118 @@
-+/*
-+ * Cavium ThunderX SPI driver.
-+ *
-+ * Copyright (C) 2016 Cavium Inc.
-+ * Authors: Jan Glauber <jglauber-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/pci.h>
-+#include <linux/spi/spi.h>
-+
-+#include "spi-cavium.h"
-+
-+#define DRV_NAME "spi-thunderx"
-+
-+#define SYS_FREQ_DEFAULT 700000000 /* 700 Mhz */
-+
-+static int thunderx_spi_probe(struct pci_dev *pdev,
-+			      const struct pci_device_id *ent)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct spi_master *master;
-+	struct octeon_spi *p;
-+	int ret;
-+
-+	master = spi_alloc_master(dev, sizeof(struct octeon_spi));
-+	if (!master)
-+		return -ENOMEM;
-+
-+	p = spi_master_get_devdata(master);
-+
-+	ret = pcim_enable_device(pdev);
-+	if (ret)
-+		goto error;
-+
-+	ret = pci_request_regions(pdev, DRV_NAME);
-+	if (ret)
-+		goto error;
-+
-+	p->register_base = pcim_iomap(pdev, 0, pci_resource_len(pdev, 0));
-+	if (!p->register_base) {
-+		ret = -EINVAL;
-+		goto error;
-+	}
-+
-+	p->regs.config = 0x1000;
-+	p->regs.status = 0x1008;
-+	p->regs.tx = 0x1010;
-+	p->regs.data = 0x1080;
-+
-+	p->clk = devm_clk_get(dev, NULL);
-+	if (IS_ERR(p->clk)) {
-+		ret = PTR_ERR(p->clk);
-+		goto error;
-+	}
-+
-+	ret = clk_prepare_enable(p->clk);
-+	if (ret)
-+		goto error;
-+
-+	p->sys_freq = clk_get_rate(p->clk);
-+	if (!p->sys_freq)
-+		p->sys_freq = SYS_FREQ_DEFAULT;
-+	dev_info(dev, "Set system clock to %u\n", p->sys_freq);
-+
-+	master->num_chipselect = 4;
-+	master->mode_bits = SPI_CPHA | SPI_CPOL | SPI_CS_HIGH |
-+			    SPI_LSB_FIRST | SPI_3WIRE;
-+	master->transfer_one_message = octeon_spi_transfer_one_message;
-+	master->bits_per_word_mask = SPI_BPW_MASK(8);
-+	master->max_speed_hz = OCTEON_SPI_MAX_CLOCK_HZ;
-+	master->dev.of_node = pdev->dev.of_node;
-+
-+	pci_set_drvdata(pdev, master);
-+
-+	ret = devm_spi_register_master(dev, master);
-+	if (ret)
-+		goto error;
-+
-+	return 0;
-+
-+error:
-+	spi_master_put(master);
-+	return ret;
-+}
-+
-+static void thunderx_spi_remove(struct pci_dev *pdev)
-+{
-+	struct spi_master *master = pci_get_drvdata(pdev);
-+	struct octeon_spi *p;
-+
-+	p = spi_master_get_devdata(master);
-+	if (!p)
-+		return;
-+
-+	/* Put everything in a known state. */
-+	writeq(0, p->register_base + OCTEON_SPI_CFG(p));
-+}
-+
-+static const struct pci_device_id thunderx_spi_pci_id_table[] = {
-+	{ PCI_DEVICE(PCI_VENDOR_ID_CAVIUM, 0xa00b) },
-+	{ 0, }
-+};
-+
-+MODULE_DEVICE_TABLE(pci, thunderx_spi_pci_id_table);
-+
-+static struct pci_driver thunderx_spi_driver = {
-+	.name		= DRV_NAME,
-+	.id_table	= thunderx_spi_pci_id_table,
-+	.probe		= thunderx_spi_probe,
-+	.remove		= thunderx_spi_remove,
-+};
-+
-+module_pci_driver(thunderx_spi_driver);
-+
-+MODULE_DESCRIPTION("Cavium, Inc. ThunderX SPI bus driver");
-+MODULE_AUTHOR("Jan Glauber");
-+MODULE_LICENSE("GPL");
-diff --git a/drivers/spi/spi-cavium.h b/drivers/spi/spi-cavium.h
-index 88c5f36..1f91d61 100644
---- a/drivers/spi/spi-cavium.h
-+++ b/drivers/spi/spi-cavium.h
-@@ -1,6 +1,8 @@
- #ifndef __SPI_CAVIUM_H
- #define __SPI_CAVIUM_H
- 
-+#include <linux/clk.h>
-+
- #define OCTEON_SPI_MAX_BYTES 9
- #define OCTEON_SPI_MAX_CLOCK_HZ 16000000
- 
-@@ -17,6 +19,7 @@ struct octeon_spi {
- 	u64 cs_enax;
- 	int sys_freq;
- 	struct octeon_spi_regs regs;
-+	struct clk *clk;
- };
- 
- #define OCTEON_SPI_CFG(x)	(x->regs.config)
--- 
-2.9.0.rc0.21.g7777322
-
+On Thu, Aug 4, 2016 at 5:07 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Fri, Jul 29, 2016 at 06:13:09PM -0400, Kamal Dasu wrote:
+>> In m25p80_read() even though spi_flash_read() is supported
+>> by some drivers, under certain circumstances like unaligned
+>> buffer, address or address range limitations on certain SoCs
+>> let it fallback to core spi reads. Such drivers are expected
+>> to return -EAGAIN so that the m25p80_read() uses standard
+>> spi transfer.
+>
+> You need to send this to the MTD maintainers, I see you've CCed the list
+> but not Brian and any comaintainers he has AFAICT.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

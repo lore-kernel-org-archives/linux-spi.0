@@ -1,40 +1,56 @@
-From: Robert David <clarkraymond377-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Attention Beneficially
-Date: Sun, 21 Aug 2016 06:50:47 +0000 (UTC)
-Message-ID: <908285276.426230.1471762247322__25133.8531416424$1471762795$gmane$org@mail.yahoo.com>
-References: <908285276.426230.1471762247322.ref@mail.yahoo.com>
-Reply-To: Robert David <dhlservicesbenindhl-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-To: unlisted-recipients:; (no To-header on input)
+From: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: spi-fsl-dspi: Check clk_prepare_enable() error
+Date: Sun, 21 Aug 2016 23:05:30 -0300
+Message-ID: <1471831530-8527-1-git-send-email-festevam@gmail.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Attention Beneficially
+From: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
 
+clk_prepare_enable() may fail, so we should better check its
+return value and propagate it in the case of failure.
 
-WESTERN UNION
+Signed-off-by: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
+---
+ drivers/spi/spi-fsl-dspi.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-This is very urgent Our Operation manager has sent your first payment of $5000.00 to you. Here is what we need from you to complete the
-transfer, Your Name, Your Address,A Copy Of Your ID and Your Telephone Number: Noted That Only Fee Request from You Is to
-Reactivate Transfer Files which is Sum Of $65Only, No More Fee again after that.
-Western Union Agent: Mr. Peterson Godwin
-Direct phone line is: + 229 98782817
-E-mail ::(westernunion8087-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org)
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index d57baf6..95d8b92 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -624,10 +624,13 @@ static int dspi_resume(struct device *dev)
+ {
+ 	struct spi_master *master = dev_get_drvdata(dev);
+ 	struct fsl_dspi *dspi = spi_master_get_devdata(master);
++	int ret;
+ 
+ 	pinctrl_pm_select_default_state(dev);
+ 
+-	clk_prepare_enable(dspi->clk);
++	ret = clk_prepare_enable(dspi->clk);
++	if (ret)
++		return ret;
+ 	spi_master_resume(master);
+ 
+ 	return 0;
+@@ -726,7 +729,9 @@ static int dspi_probe(struct platform_device *pdev)
+ 		dev_err(&pdev->dev, "unable to get clock\n");
+ 		goto out_master_put;
+ 	}
+-	clk_prepare_enable(dspi->clk);
++	ret = clk_prepare_enable(dspi->clk);
++	if (ret)
++		goto out_master_put;
+ 
+ 	master->max_speed_hz =
+ 		clk_get_rate(dspi->clk) / dspi->devtype_data->max_clock_factor;
+-- 
+1.9.1
 
-Bellow is your first payment for $5000usd sent today in your name.
-Sender Name: Mr. 
-MTCN: 
-Question
-Answer
-Amount Sent: $5000.00
-
-You can use this link to confirm the payment,
-
-Best Regards,
-Mr.Joseph Ezo
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

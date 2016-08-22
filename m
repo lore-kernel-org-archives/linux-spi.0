@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: spi-fsl-dspi: Check clk_prepare_enable() error" to the spi tree
-Date: Mon, 22 Aug 2016 18:59:44 +0100
-Message-ID: <E1bbtVg-000135-Re@debutante>
-References: <1471831530-8527-1-git-send-email-festevam@gmail.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
+Subject: Applied "spi: spi-fsl-dspi: Drop extra spi_master_put in device remove function" to the spi tree
+Date: Mon, 22 Aug 2016 18:59:41 +0100
+Message-ID: <E1bbtVd-00011K-5x@debutante>
+References: <1471706732-25944-1-git-send-email-weiyj.lk@gmail.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Chao Fu <B44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1471831530-8527-1-git-send-email-festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1471706732-25944-1-git-send-email-weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: spi-fsl-dspi: Check clk_prepare_enable() error
+   spi: spi-fsl-dspi: Drop extra spi_master_put in device remove function
 
 has been applied to the spi tree at
 
@@ -38,50 +38,36 @@ to this mail.
 Thanks,
 Mark
 
->From 1c5ea2b4de22434b9da9c33640f47458ba093dea Mon Sep 17 00:00:00 2001
-From: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
-Date: Sun, 21 Aug 2016 23:05:30 -0300
-Subject: [PATCH] spi: spi-fsl-dspi: Check clk_prepare_enable() error
+>From 6999aeabbb703a81a204cb6f9f8f151759a99ac4 Mon Sep 17 00:00:00 2001
+From: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Sat, 20 Aug 2016 15:25:32 +0000
+Subject: [PATCH] spi: spi-fsl-dspi: Drop extra spi_master_put in device remove
+ function
 
-clk_prepare_enable() may fail, so we should better check its
-return value and propagate it in the case of failure.
+The call sequence spi_alloc_master/spi_register_master/spi_unregister_master
+is complete; it reduces the device reference count to zero, which and results
+in device memory being freed. The subsequent call to spi_master_put is
+unnecessary and results in an access to free memory. Drop it.
 
-Signed-off-by: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
+Fixes: 9298bc727385 ("spi: spi-fsl-dspi: Remove spi-bitbang")
+Signed-off-by: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/spi/spi-fsl-dspi.c | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index d57baf6c2d1e..95d8b929cd52 100644
+index 95d8b929cd52..35c0dd945668 100644
 --- a/drivers/spi/spi-fsl-dspi.c
 +++ b/drivers/spi/spi-fsl-dspi.c
-@@ -624,10 +624,13 @@ static int dspi_resume(struct device *dev)
- {
- 	struct spi_master *master = dev_get_drvdata(dev);
- 	struct fsl_dspi *dspi = spi_master_get_devdata(master);
-+	int ret;
- 
- 	pinctrl_pm_select_default_state(dev);
- 
--	clk_prepare_enable(dspi->clk);
-+	ret = clk_prepare_enable(dspi->clk);
-+	if (ret)
-+		return ret;
- 	spi_master_resume(master);
+@@ -763,7 +763,6 @@ static int dspi_remove(struct platform_device *pdev)
+ 	/* Disconnect from the SPI framework */
+ 	clk_disable_unprepare(dspi->clk);
+ 	spi_unregister_master(dspi->master);
+-	spi_master_put(dspi->master);
  
  	return 0;
-@@ -726,7 +729,9 @@ static int dspi_probe(struct platform_device *pdev)
- 		dev_err(&pdev->dev, "unable to get clock\n");
- 		goto out_master_put;
- 	}
--	clk_prepare_enable(dspi->clk);
-+	ret = clk_prepare_enable(dspi->clk);
-+	if (ret)
-+		goto out_master_put;
- 
- 	master->max_speed_hz =
- 		clk_get_rate(dspi->clk) / dspi->devtype_data->max_clock_factor;
+ }
 -- 
 2.8.1
 

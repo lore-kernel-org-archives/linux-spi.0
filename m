@@ -1,56 +1,62 @@
-From: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: spi-fsl-dspi: Check clk_prepare_enable() error
-Date: Sun, 21 Aug 2016 23:05:30 -0300
-Message-ID: <1471831530-8527-1-git-send-email-festevam@gmail.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH 3/3] MIPS: TXx9: Convert to Common Clock Framework
+Date: Mon, 22 Aug 2016 10:46:24 +0200
+Message-ID: <CAMuHMdVjd5iJL8AJBb0aVOEkcgJ-m-K19pjD-tJL=GLhPVm_Pg@mail.gmail.com>
+References: <1471541667-30689-1-git-send-email-geert@linux-m68k.org>
+ <1471541667-30689-4-git-send-email-geert@linux-m68k.org> <20160819191750.GV361@codeaurora.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
+        Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Wim Van Sebroeck <wim-IQzOog9fTRqzQB+pC5nmwQ@public.gmane.org>,
+        Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>,
+        linux-clk <linux-clk-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Linux MIPS Mailing List <linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Linux Watchdog Mailing List <linux-watchdog-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Stephen Boyd <sboyd-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20160819191750.GV361-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
+Hi Stephen,
 
-clk_prepare_enable() may fail, so we should better check its
-return value and propagate it in the case of failure.
+On Fri, Aug 19, 2016 at 9:17 PM, Stephen Boyd <sboyd-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org> wrote:
+> On 08/18, Geert Uytterhoeven wrote:
+>> diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
+>> index ada92db92f87d91a..2fdbcf91b2cc472c 100644
+>> --- a/arch/mips/txx9/generic/setup.c
+>> +++ b/arch/mips/txx9/generic/setup.c
+>> @@ -560,8 +527,39 @@ void __init plat_time_init(void)
+>>       txx9_board_vec->time_init();
+>>  }
+>>
+>> +static void txx9_clk_init(void)
+>> +{
+>> +     struct clk *clk;
+>> +     int error;
+>> +
+>> +     clk = clk_register_fixed_rate(NULL, "gbus", NULL, 0, txx9_gbus_clock);
+>
+> Can we use the clk_hw_*() based variants instead please?
 
-Signed-off-by: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
----
- drivers/spi/spi-fsl-dspi.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+Yes we can.
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index d57baf6..95d8b92 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -624,10 +624,13 @@ static int dspi_resume(struct device *dev)
- {
- 	struct spi_master *master = dev_get_drvdata(dev);
- 	struct fsl_dspi *dspi = spi_master_get_devdata(master);
-+	int ret;
- 
- 	pinctrl_pm_select_default_state(dev);
- 
--	clk_prepare_enable(dspi->clk);
-+	ret = clk_prepare_enable(dspi->clk);
-+	if (ret)
-+		return ret;
- 	spi_master_resume(master);
- 
- 	return 0;
-@@ -726,7 +729,9 @@ static int dspi_probe(struct platform_device *pdev)
- 		dev_err(&pdev->dev, "unable to get clock\n");
- 		goto out_master_put;
- 	}
--	clk_prepare_enable(dspi->clk);
-+	ret = clk_prepare_enable(dspi->clk);
-+	if (ret)
-+		goto out_master_put;
- 
- 	master->max_speed_hz =
- 		clk_get_rate(dspi->clk) / dspi->devtype_data->max_clock_factor;
--- 
-1.9.1
+BTW, is it intentional that clk_hw_register_clkdev() doesn't detect errors
+from a previous registration call, like clk_register_clkdev() does?
 
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,76 +1,61 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pxa2xx-pci: fix ACPI-based enumeration of SPI devices" to the spi tree
-Date: Wed, 24 Aug 2016 12:20:47 +0100
-Message-ID: <E1bcWEh-0000GQ-5W@debutante>
-References: <1472037090-123990-1-git-send-email-andriy.shevchenko@linux.intel.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: How to handle SPI components requiring heading/leading clock
+ cycles with CS off
+Date: Wed, 24 Aug 2016 12:27:02 +0100
+Message-ID: <20160824112701.GE22076@sirena.org.uk>
+References: <79679118-c092-1f9c-1972-0bb81bc59411@c-s.fr>
+ <20160824094456.GB22076@sirena.org.uk>
+ <8c6cbd99-7dd8-bbbf-89ee-a33752ab3063@c-s.fr>
+ <20160824105640.GC22076@sirena.org.uk>
+ <15444613-2f3d-9417-7d81-e545058afdf0@c-s.fr>
+ <20160824111206.GD22076@sirena.org.uk>
+ <9e854e9d-146c-61ea-da6e-a46b316b56c5@c-s.fr>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="kUmo4NyTJbuJZ752"
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Christophe Leroy <christophe.leroy-GgN8y9CXRhA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1472037090-123990-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <9e854e9d-146c-61ea-da6e-a46b316b56c5-GgN8y9CXRhA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
 
-   spi: pxa2xx-pci: fix ACPI-based enumeration of SPI devices
+--kUmo4NyTJbuJZ752
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-has been applied to the spi tree at
+On Wed, Aug 24, 2016 at 01:19:50PM +0200, Christophe Leroy wrote:
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+> No I can't see any special reason for this. But I can confirm that without
+> the two additional clock cycles with CS\ high, the commands are not taken
+> into account.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+Right, I just looked at the datasheet and it says in the serial control
+interface section that it needs a three clock cycle idle state.  Clearly
+the designers weren't having a very good day when they did the digital
+here but based on that you probably only need to send an extra byte with
+chip select deasserted at the end of the transfer to satisfy it rather
+than padding at both start and end.  Like I say it'll need a new core
+feature though.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+--kUmo4NyTJbuJZ752
+Content-Type: application/pgp-signature; name="signature.asc"
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+iQEcBAEBCAAGBQJXvYSEAAoJECTWi3JdVIfQq1oH+wWjrLPyOoIX+6dPHcMtV9zT
+p50kPHxBIR9XS6c5KVFZ/F/AZV4FVdjqLaSGAxLrAIwTO363DARpAwXW9XWlYGZB
+Ne/Be6kMsoki4nR6S1ea8wVYb994/ZeVg8V+l5pgZVVMjOX7KbbadbHUoivzKouo
+Wkfln9rDsai5xOvwP286w+ZzFFhqBRry7T30lGQoKq/MfarAKXtT5qXrJ8yYBZN0
+esy7wcWi9EnAy5P+XS3hwwCdXYQ006TV9DzYjFdWkXZLavbqx/lwZbDtDOl7lguQ
+TQLDmOCCkGBxp3g+UGBALwXfjXOdO6mhMP3FhkwYgVJt7LY85/BpmynjYeyfSCY=
+=jIRs
+-----END PGP SIGNATURE-----
 
-Thanks,
-Mark
-
->From b70cd2de0ea85f5ab51a1d01893cba6415011b9d Mon Sep 17 00:00:00 2001
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Wed, 24 Aug 2016 14:11:30 +0300
-Subject: [PATCH] spi: pxa2xx-pci: fix ACPI-based enumeration of SPI devices
-
-Slave devices are not enumerated by ACPI data because the ACPI handle for the
-core driver is NULL if it was enumerated by PCI.
-
-Propagate firmware node handle of the PCI device to the platform device.
-
-Suggested-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-pxa2xx-pci.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
-index f3df522db93b..58d2d48e16a5 100644
---- a/drivers/spi/spi-pxa2xx-pci.c
-+++ b/drivers/spi/spi-pxa2xx-pci.c
-@@ -214,6 +214,7 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
- 		return PTR_ERR(ssp->clk);
- 
- 	memset(&pi, 0, sizeof(pi));
-+	pi.fwnode = dev->dev.fwnode;
- 	pi.parent = &dev->dev;
- 	pi.name = "pxa2xx-spi";
- 	pi.id = ssp->port_id;
--- 
-2.8.1
-
+--kUmo4NyTJbuJZ752--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

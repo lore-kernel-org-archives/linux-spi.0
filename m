@@ -1,124 +1,112 @@
-From: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v6, 6/8] arm: dts: Add bcm-nsp and bcm958625k support
-Date: Wed, 24 Aug 2016 18:04:27 -0400
-Message-ID: <1472076269-4731-7-git-send-email-kdasu.kdev@gmail.com>
-References: <1472076269-4731-1-git-send-email-kdasu.kdev@gmail.com>
-Cc: bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, jon.mason-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
-        Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        vigneshr-l0cyMroinI0@public.gmane.org, f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-        yendapally.reddy-dY08KVG/lbpWk0Htik3J/w@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1472076269-4731-1-git-send-email-kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Kamal Dasu <kdasu.kdev@gmail.com>
+Subject: [PATCH v6, 0/8] Broadcom stb, and iProc SoC QSPI driver
+Date: Wed, 24 Aug 2016 18:04:21 -0400
+Message-ID: <1472076269-4731-1-git-send-email-kdasu.kdev@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Kamal Dasu <kdasu.kdev@gmail.com>, bcm-kernel-feedback-list@broadcom.com,
+ jon.mason@broadcom.com
+To: broonie@kernel.org, linux-spi@vger.kernel.org, computersforpeace@gmail.com,
+ linux-mtd@lists.infradead.org, vigneshr@ti.com, f.fainelli@gmail.com,
+ yendapally.reddy@broadcom.com
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-Adding qspi node compatible with the new spi-bcm-qspi
-driver for the broadcom's northstar SoC.
+This is v6 changes for common spi driver for the brcmstb, nsp, ns2, cygnus
+iProc SoCs. Changes include driver for standard MSPI and accelerated BSPI
+blocks.The Brodcom STB uses l2-intc where as the SoC specific interrupt 
+handling code has been separated in a new  driver. In case iProc SoCs it does
+not have a dedicated l2 controller and the interrupts are specific to the 
+spi core. The drivers are organized in the following way:
+ 
+ drivers/spi/spi-bcm-qspi.c      - Common MSPI, BSPI driver
 
-Signed-off-by: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Yendapally Reddy Dhananjaya Reddy <yendapally.reddy-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
----
- arch/arm/boot/dts/bcm-nsp.dtsi   | 31 ++++++++++++++++++++++++++++++-
- arch/arm/boot/dts/bcm958625k.dts | 34 ++++++++++++++++++++++++++++++++++
- 2 files changed, 64 insertions(+), 1 deletion(-)
+ drivers/spi/spi-bcm-qspi.h      - Common header 
 
-diff --git a/arch/arm/boot/dts/bcm-nsp.dtsi b/arch/arm/boot/dts/bcm-nsp.dtsi
-index c3bf7d2..dd59019 100644
---- a/arch/arm/boot/dts/bcm-nsp.dtsi
-+++ b/arch/arm/boot/dts/bcm-nsp.dtsi
-@@ -160,7 +160,7 @@
- 
- 	axi {
- 		compatible = "simple-bus";
--		ranges = <0x00000000 0x18000000 0x0011ba08>;
-+		ranges = <0x00000000 0x18000000 0x0011c40a>;
- 		#address-cells = <1>;
- 		#size-cells = <1>;
- 
-@@ -228,6 +228,35 @@
- 			reg = <0x33000 0x14>;
- 		};
- 
-+		qspi: qspi@27200 {
-+			compatible = "brcm,spi-bcm-qspi", "brcm,spi-nsp-qspi";
-+			reg = <0x027200 0x184>,
-+			      <0x027000 0x124>,
-+			      <0x11c408 0x004>,
-+			      <0x0273a0 0x01c>;
-+			reg-names = "mspi", "bspi", "intr_regs",
-+				    "intr_status_reg";
-+			interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 73 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 75 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 76 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 77 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 78 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-names = "spi_lr_fullness_reached",
-+					  "spi_lr_session_aborted",
-+					  "spi_lr_impatient",
-+					  "spi_lr_session_done",
-+					  "spi_lr_overhead",
-+					  "mspi_done",
-+					  "mspi_halted";
-+			clocks = <&iprocmed>;
-+			clock-names = "iprocmed";
-+			num-cs = <2>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+		};
-+
- 		ccbtimer0: timer@34000 {
- 			compatible = "arm,sp804";
- 			reg = <0x34000 0x1000>;
-diff --git a/arch/arm/boot/dts/bcm958625k.dts b/arch/arm/boot/dts/bcm958625k.dts
-index 2d84226..1e04923 100644
---- a/arch/arm/boot/dts/bcm958625k.dts
-+++ b/arch/arm/boot/dts/bcm958625k.dts
-@@ -126,3 +126,37 @@
- 		groups = "nand_grp";
- 	};
- };
-+
-+&qspi {
-+	bspi-sel = <0>;
-+	flash: m25p80@0 {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		compatible = "m25p80";
-+		reg = <0x0>;
-+		spi-max-frequency = <12500000>;
-+		m25p,fast-read;
-+		spi-cpol;
-+		spi-cpha;
-+
-+		partition@0 {
-+			label = "boot";
-+			reg = <0x00000000 0x000a0000>;
-+		};
-+
-+		partition@a0000 {
-+			label = "env";
-+			reg = <0x000a0000 0x00060000>;
-+		};
-+
-+		partition@100000 {
-+			label = "system";
-+			reg = <0x00100000 0x00600000>;
-+		};
-+
-+		partition@700000 {
-+			label = "rootfs";
-+			reg = <0x00700000 0x01900000>;
-+		};
-+	};
-+};
+ drivers/spi/spi-brcmstb-qspi.c  - SoC specific wth brcm,spi-brcmstb-qspi 
+                                   compatibility, does not have anything 
+                                   specific for stb SoC
+
+ drivers/spi/spi-iproc-qspi.c      - Implements the interrupt hooks used by 
+                                   the common driver with "brcm,spi-nsp-qspi"
+                                   compatibility
+
+V6 Changes 
+----------
+
+Bindings Documentation:
+- Changed subject to spi:
+- Squashed all SoCs bindings in one commit 
+- Removed clock-frequency redundant parameter from main spi node
+
+spi-bcm-qspi 
+- Removed redundant transfer delays, let core handle it
+- Removed chip select changes, let core handle it
+- Use of named labels in probe function
+- Add comments for the exported symbols for probe, remove, pm_ops
+  suspend/resume, to be called by the SoC platform driver
+- Remove redundant clock-frequency parsing
+- Removed retry logic code from BSPI
+- Use of big_endian as input parameter to the r/w inline function
+- Suspend/resume uses spi core msg queue suspend and resume calls
+- Other code cleanup to remove unused code
+
+spi-brcmstb-qspi
+-Separated just separated the commit
+
+spi-iproc-qspi
+- Changes name to spi-iproc-qspi
+- Read the dt native endian locally and stored in soc structure
+  to pass to r/w macro
+
+mtd/devices/m25p80 
+- Made a change to be able to fallback to normal spi read
+  when the accelarated read function does not get aligned 
+  buffers, feature used by the BSPI spi_flash_read() method
+
+Kamal Dasu (8):
+  spi: Broadcom BRCMSTB, NSP, NS2 SoC bindings
+  spi: bcm-qspi: Add Broadcom MSPI driver
+  spi: brcmstb-qspi: Broadcom settop platform driver
+  spi: bcm-qspi: Add BSPI spi-nor flash controller driver
+  mtd: m25p80: Let m25p80_read() fallback to spi transfer
+  arm: dts: Add bcm-nsp and bcm958625k support
+  arm64: dts: Add ns2 SoC support
+  spi: iproc-qspi: Add Broadcom iProc SoCs support
+
+ .../devicetree/bindings/spi/brcm,spi-bcm-qspi.txt  |  233 ++++
+ arch/arm/boot/dts/bcm-nsp.dtsi                     |   31 +-
+ arch/arm/boot/dts/bcm958625k.dts                   |   34 +
+ arch/arm64/boot/dts/broadcom/ns2-svk.dts           |   34 +
+ arch/arm64/boot/dts/broadcom/ns2.dtsi              |   18 +
+ drivers/mtd/devices/m25p80.c                       |   11 +-
+ drivers/spi/Kconfig                                |   10 +
+ drivers/spi/Makefile                               |    1 +
+ drivers/spi/spi-bcm-qspi.c                         | 1400 ++++++++++++++++++++
+ drivers/spi/spi-bcm-qspi.h                         |  115 ++
+ drivers/spi/spi-brcmstb-qspi.c                     |   53 +
+ drivers/spi/spi-iproc-qspi.c                       |  163 +++
+ 12 files changed, 2100 insertions(+), 3 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/spi/brcm,spi-bcm-qspi.txt
+ create mode 100644 drivers/spi/spi-bcm-qspi.c
+ create mode 100644 drivers/spi/spi-bcm-qspi.h
+ create mode 100644 drivers/spi/spi-brcmstb-qspi.c
+ create mode 100644 drivers/spi/spi-iproc-qspi.c
+
 -- 
 1.9.1
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

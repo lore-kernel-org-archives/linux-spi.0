@@ -1,7 +1,7 @@
 From: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v6, 5/8] mtd: m25p80: Let m25p80_read() fallback to spi transfer
-Date: Wed, 24 Aug 2016 18:04:26 -0400
-Message-ID: <1472076269-4731-6-git-send-email-kdasu.kdev@gmail.com>
+Subject: [PATCH v6, 6/8] arm: dts: Add bcm-nsp and bcm958625k support
+Date: Wed, 24 Aug 2016 18:04:27 -0400
+Message-ID: <1472076269-4731-7-git-send-email-kdasu.kdev@gmail.com>
 References: <1472076269-4731-1-git-send-email-kdasu.kdev@gmail.com>
 Cc: bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, jon.mason-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
         Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
@@ -14,41 +14,107 @@ In-Reply-To: <1472076269-4731-1-git-send-email-kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-In m25p80_read() even though spi_flash_read() is supported
-by some drivers, under certain circumstances like unaligned
-buffer, address or address range limitations on certain SoCs
-let it fallback to core spi reads. Such drivers are expected
-to return -EAGAIN so that the m25p80_read() uses standard
-spi transfer.
+Adding qspi node compatible with the new spi-bcm-qspi
+driver for the broadcom's northstar SoC.
 
 Signed-off-by: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Yendapally Reddy Dhananjaya Reddy <yendapally.reddy-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
 ---
- drivers/mtd/devices/m25p80.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/bcm-nsp.dtsi   | 31 ++++++++++++++++++++++++++++++-
+ arch/arm/boot/dts/bcm958625k.dts | 34 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 64 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
-index 9cf7fcd..77c2d2c 100644
---- a/drivers/mtd/devices/m25p80.c
-+++ b/drivers/mtd/devices/m25p80.c
-@@ -155,9 +155,16 @@ static ssize_t m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
- 		msg.data_nbits = m25p80_rx_nbits(nor);
+diff --git a/arch/arm/boot/dts/bcm-nsp.dtsi b/arch/arm/boot/dts/bcm-nsp.dtsi
+index c3bf7d2..dd59019 100644
+--- a/arch/arm/boot/dts/bcm-nsp.dtsi
++++ b/arch/arm/boot/dts/bcm-nsp.dtsi
+@@ -160,7 +160,7 @@
  
- 		ret = spi_flash_read(spi, &msg);
--		if (ret < 0)
-+
-+		if (ret >= 0)
-+			return msg.retlen;
-+
-+		/*
-+		 * some spi master drivers might need to fallback to
-+		 * normal spi transfer
-+		 */
-+		if (ret != -EAGAIN)
- 			return ret;
--		return msg.retlen;
- 	}
+ 	axi {
+ 		compatible = "simple-bus";
+-		ranges = <0x00000000 0x18000000 0x0011ba08>;
++		ranges = <0x00000000 0x18000000 0x0011c40a>;
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
  
- 	spi_message_init(&m);
+@@ -228,6 +228,35 @@
+ 			reg = <0x33000 0x14>;
+ 		};
+ 
++		qspi: qspi@27200 {
++			compatible = "brcm,spi-bcm-qspi", "brcm,spi-nsp-qspi";
++			reg = <0x027200 0x184>,
++			      <0x027000 0x124>,
++			      <0x11c408 0x004>,
++			      <0x0273a0 0x01c>;
++			reg-names = "mspi", "bspi", "intr_regs",
++				    "intr_status_reg";
++			interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 73 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 75 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 76 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 77 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 78 IRQ_TYPE_LEVEL_HIGH>;
++			interrupt-names = "spi_lr_fullness_reached",
++					  "spi_lr_session_aborted",
++					  "spi_lr_impatient",
++					  "spi_lr_session_done",
++					  "spi_lr_overhead",
++					  "mspi_done",
++					  "mspi_halted";
++			clocks = <&iprocmed>;
++			clock-names = "iprocmed";
++			num-cs = <2>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++		};
++
+ 		ccbtimer0: timer@34000 {
+ 			compatible = "arm,sp804";
+ 			reg = <0x34000 0x1000>;
+diff --git a/arch/arm/boot/dts/bcm958625k.dts b/arch/arm/boot/dts/bcm958625k.dts
+index 2d84226..1e04923 100644
+--- a/arch/arm/boot/dts/bcm958625k.dts
++++ b/arch/arm/boot/dts/bcm958625k.dts
+@@ -126,3 +126,37 @@
+ 		groups = "nand_grp";
+ 	};
+ };
++
++&qspi {
++	bspi-sel = <0>;
++	flash: m25p80@0 {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		compatible = "m25p80";
++		reg = <0x0>;
++		spi-max-frequency = <12500000>;
++		m25p,fast-read;
++		spi-cpol;
++		spi-cpha;
++
++		partition@0 {
++			label = "boot";
++			reg = <0x00000000 0x000a0000>;
++		};
++
++		partition@a0000 {
++			label = "env";
++			reg = <0x000a0000 0x00060000>;
++		};
++
++		partition@100000 {
++			label = "system";
++			reg = <0x00100000 0x00600000>;
++		};
++
++		partition@700000 {
++			label = "rootfs";
++			reg = <0x00700000 0x01900000>;
++		};
++	};
++};
 -- 
 1.9.1
 

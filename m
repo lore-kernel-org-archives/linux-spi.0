@@ -1,476 +1,88 @@
-From: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v6, 8/8] spi: iproc-qspi: Add Broadcom iProc SoCs support
-Date: Wed, 24 Aug 2016 18:04:29 -0400
-Message-ID: <1472076269-4731-9-git-send-email-kdasu.kdev@gmail.com>
-References: <1472076269-4731-1-git-send-email-kdasu.kdev@gmail.com>
-Cc: bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, jon.mason-dY08KVG/lbpWk0Htik3J/w@public.gmane.org,
-        Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        vigneshr-l0cyMroinI0@public.gmane.org, f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-        yendapally.reddy-dY08KVG/lbpWk0Htik3J/w@public.gmane.org
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 17/23] spi: fsl-espi: improve the ISR frame
+Date: Thu, 25 Aug 2016 06:50:21 +0200
+Message-ID: <f4067947-b0e3-cb41-81c8-75051908e121@gmail.com>
+References: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1472076269-4731-1-git-send-email-kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-This spi driver uses the common spi-bcm-qspi driver and implements iProc
-SoCs specific interrupt controller. The common driver now calls the SoC
-handlers when present. Adding support for both muxed l1 and unmuxed interrupt
-sources.
+Improve the ISR frame:
+- move resetting the event bits to the ISR frame
+- change type of parameter irq to int
+- make sure that the event bits match at least one bit in the
+  interrupt mask register
 
-Signed-off-by: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Yendapally Reddy Dhananjaya Reddy <yendapally.reddy-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/Makefile         |   2 +-
- drivers/spi/spi-bcm-qspi.c   |  97 ++++++++++++++++++++++++-
- drivers/spi/spi-bcm-qspi.h   |  34 ++++++++-
- drivers/spi/spi-iproc-qspi.c | 163 +++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 291 insertions(+), 5 deletions(-)
- create mode 100644 drivers/spi/spi-iproc-qspi.c
+ drivers/spi/spi-fsl-espi.c | 23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index 3e753db..2dc1b71 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -21,7 +21,7 @@ obj-$(CONFIG_SPI_BCM2835AUX)		+= spi-bcm2835aux.o
- obj-$(CONFIG_SPI_BCM53XX)		+= spi-bcm53xx.o
- obj-$(CONFIG_SPI_BCM63XX)		+= spi-bcm63xx.o
- obj-$(CONFIG_SPI_BCM63XX_HSSPI)		+= spi-bcm63xx-hsspi.o
--obj-$(CONFIG_SPI_BCM_QSPI)		+= spi-brcmstb-qspi.o spi-bcm-qspi.o
-+obj-$(CONFIG_SPI_BCM_QSPI)		+= spi-iproc-qspi.o spi-brcmstb-qspi.o spi-bcm-qspi.o
- obj-$(CONFIG_SPI_BFIN5XX)		+= spi-bfin5xx.o
- obj-$(CONFIG_SPI_ADI_V3)                += spi-adi-v3.o
- obj-$(CONFIG_SPI_BFIN_SPORT)		+= spi-bfin-sport.o
-diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
-index 8fff43e..19995c5 100644
---- a/drivers/spi/spi-bcm-qspi.c
-+++ b/drivers/spi/spi-bcm-qspi.c
-@@ -176,9 +176,15 @@ enum base_type {
- 	BASEMAX,
- };
- 
-+enum irq_source {
-+	SINGLE_L2,
-+	MUXED_L1,
-+};
-+
- struct bcm_qspi_irq {
- 	const char *irq_name;
- 	const irq_handler_t irq_handler;
-+	int irq_source;
- 	u32 mask;
- };
- 
-@@ -199,6 +205,10 @@ struct bcm_qspi {
- 	u32 base_clk;
- 	u32 max_speed_hz;
- 	void __iomem *base[BASEMAX];
-+
-+	/* Some SoCs provide custom interrupt status register(s) */
-+	struct bcm_qspi_soc_intc	*soc_intc;
-+
- 	struct bcm_qspi_parms last_parms;
- 	struct qspi_trans  trans_pos;
- 	int curr_cs;
-@@ -807,6 +817,7 @@ static int bcm_qspi_bspi_flash_read(struct spi_device *spi,
- 	u32 addr = 0, len, len_words;
- 	int ret = 0;
- 	unsigned long timeo = msecs_to_jiffies(100);
-+	struct bcm_qspi_soc_intc *soc_intc = qspi->soc_intc;
- 
- 	if (bcm_qspi_bspi_ver_three(qspi))
- 		if (msg->addr_width == BSPI_ADDRLEN_4BYTES)
-@@ -851,6 +862,15 @@ static int bcm_qspi_bspi_flash_read(struct spi_device *spi,
- 	bcm_qspi_write(qspi, BSPI, BSPI_RAF_NUM_WORDS, len_words);
- 	bcm_qspi_write(qspi, BSPI, BSPI_RAF_WATERMARK, 0);
- 
-+	if (qspi->soc_intc) {
-+		/*
-+		 * clear soc MSPI and BSPI interrupts and enable
-+		 * BSPI interrupts.
-+		 */
-+		soc_intc->bcm_qspi_int_ack(soc_intc, MSPI_BSPI_DONE);
-+		soc_intc->bcm_qspi_int_set(soc_intc, BSPI_DONE, true);
-+	}
-+
- 	/* Must flush previous writes before starting BSPI operation */
- 	mb();
- 
-@@ -953,9 +973,12 @@ static irqreturn_t bcm_qspi_mspi_l2_isr(int irq, void *dev_id)
- 	u32 status = bcm_qspi_read(qspi, MSPI, MSPI_MSPI_STATUS);
- 
- 	if (status & MSPI_MSPI_STATUS_SPIF) {
-+		struct bcm_qspi_soc_intc *soc_intc = qspi->soc_intc;
- 		/* clear interrupt */
- 		status &= ~MSPI_MSPI_STATUS_SPIF;
- 		bcm_qspi_write(qspi, MSPI, MSPI_MSPI_STATUS, status);
-+		if (qspi->soc_intc)
-+			soc_intc->bcm_qspi_int_ack(soc_intc, MSPI_DONE);
- 		complete(&qspi->mspi_done);
- 		return IRQ_HANDLED;
- 	}
-@@ -967,20 +990,33 @@ static irqreturn_t bcm_qspi_bspi_lr_l2_isr(int irq, void *dev_id)
- {
- 	struct bcm_qspi_dev_id *qspi_dev_id = dev_id;
- 	struct bcm_qspi *qspi = qspi_dev_id->dev;
--	u32 status;
-+	struct bcm_qspi_soc_intc *soc_intc = qspi->soc_intc;
-+	u32 status = qspi_dev_id->irqp->mask;
- 
- 	if (qspi->bspi_enabled && qspi->bspi_rf_msg) {
- 		bcm_qspi_bspi_lr_data_read(qspi);
- 		if (qspi->bspi_rf_msg_len == 0) {
- 			qspi->bspi_rf_msg = NULL;
-+			if (qspi->soc_intc) {
-+				/* disable soc BSPI interrupt */
-+				soc_intc->bcm_qspi_int_set(soc_intc, BSPI_DONE,
-+							   false);
-+				/* indicate done */
-+				status = INTR_BSPI_LR_SESSION_DONE_MASK;
-+			}
-+
- 			if (qspi->bspi_rf_msg_status)
- 				bcm_qspi_bspi_lr_clear(qspi);
- 			else
- 				bcm_qspi_bspi_flush_prefetch_buffers(qspi);
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index ee4e778..8d5bebc 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -451,17 +451,11 @@ static void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
+ 				&reg_base->event)) & SPIE_NF), 1000, 0);
+ 		if (!ret) {
+ 			dev_err(mspi->dev, "tired waiting for SPIE_NF\n");
+-
+-			/* Clear the SPIE bits */
+-			mpc8xxx_spi_write_reg(&reg_base->event, events);
+ 			complete(&mspi->done);
+ 			return;
  		}
-+
-+		if (qspi->soc_intc)
-+			/* clear soc BSPI interrupt */
-+			soc_intc->bcm_qspi_int_ack(soc_intc, BSPI_DONE);
  	}
  
--	status = (qspi_dev_id->irqp->mask & INTR_BSPI_LR_SESSION_DONE_MASK);
-+	status &= INTR_BSPI_LR_SESSION_DONE_MASK;
- 	if (qspi->bspi_enabled && status && qspi->bspi_rf_msg_len == 0)
- 		complete(&qspi->bspi_done);
+-	/* Clear the events */
+-	mpc8xxx_spi_write_reg(&reg_base->event, events);
+-
+ 	mspi->count -= 1;
+ 	if (mspi->count) {
+ 		u32 word = mspi->get_tx(mspi);
+@@ -472,23 +466,26 @@ static void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
+ 	}
+ }
  
-@@ -991,13 +1027,39 @@ static irqreturn_t bcm_qspi_bspi_lr_err_l2_isr(int irq, void *dev_id)
+-static irqreturn_t fsl_espi_irq(s32 irq, void *context_data)
++static irqreturn_t fsl_espi_irq(int irq, void *context_data)
  {
- 	struct bcm_qspi_dev_id *qspi_dev_id = dev_id;
- 	struct bcm_qspi *qspi = qspi_dev_id->dev;
-+	struct bcm_qspi_soc_intc *soc_intc = qspi->soc_intc;
+ 	struct mpc8xxx_spi *mspi = context_data;
+ 	struct fsl_espi_reg *reg_base = mspi->reg_base;
+-	irqreturn_t ret = IRQ_NONE;
+-	u32 events;
++	u32 mask, events;
  
- 	dev_err(&qspi->pdev->dev, "BSPI INT error\n");
- 	qspi->bspi_rf_msg_status = -EIO;
-+	if (qspi->soc_intc)
-+		/* clear soc interrupt */
-+		soc_intc->bcm_qspi_int_ack(soc_intc, BSPI_ERR);
+-	/* Get interrupt events(tx/rx) */
++	/* Get interrupt mask and events and check that irq belongs to us */
++	mask = mpc8xxx_spi_read_reg(&reg_base->mask);
+ 	events = mpc8xxx_spi_read_reg(&reg_base->event);
+-	if (events)
+-		ret = IRQ_HANDLED;
++	if (!(mask & events))
++		return IRQ_NONE;
+ 
+ 	dev_vdbg(mspi->dev, "%s: events %x\n", __func__, events);
+ 
+ 	fsl_espi_cpu_irq(mspi, events);
+ 
+-	return ret;
++	/* Clear the events */
++	mpc8xxx_spi_write_reg(&reg_base->event, events);
 +
- 	complete(&qspi->bspi_done);
- 	return IRQ_HANDLED;
++	return IRQ_HANDLED;
  }
  
-+static irqreturn_t bcm_qspi_l1_isr(int irq, void *dev_id)
-+{
-+	struct bcm_qspi_dev_id *qspi_dev_id = dev_id;
-+	struct bcm_qspi *qspi = qspi_dev_id->dev;
-+	struct bcm_qspi_soc_intc *soc_intc = qspi->soc_intc;
-+	irqreturn_t ret = IRQ_NONE;
-+
-+	if (soc_intc) {
-+		u32 status = soc_intc->bcm_qspi_get_int_status(soc_intc);
-+
-+		if (status & MSPI_DONE)
-+			ret = bcm_qspi_mspi_l2_isr(irq, dev_id);
-+		else if (status & BSPI_DONE)
-+			ret = bcm_qspi_bspi_lr_l2_isr(irq, dev_id);
-+		else if (status & BSPI_ERR)
-+			ret = bcm_qspi_bspi_lr_err_l2_isr(irq, dev_id);
-+	}
-+
-+	return ret;
-+}
-+
- static const struct bcm_qspi_irq qspi_irq_tab[] = {
- 	{
- 		.irq_name = "spi_lr_fullness_reached",
-@@ -1037,6 +1099,13 @@ static const struct bcm_qspi_irq qspi_irq_tab[] = {
- 		.irq_handler = bcm_qspi_mspi_l2_isr,
- 		.mask = INTR_MSPI_HALTED_MASK,
- 	},
-+	{
-+		/* single muxed L1 interrupt source */
-+		.irq_name = "spi_l1_intr",
-+		.irq_handler = bcm_qspi_l1_isr,
-+		.irq_source = MUXED_L1,
-+		.mask = QSPI_INTERRUPTS_ALL,
-+	},
- };
- 
- static void bcm_qspi_bspi_init(struct bcm_qspi *qspi)
-@@ -1183,7 +1252,13 @@ int bcm_qspi_probe(struct platform_device *pdev,
- 	for (val = 0; val < num_irqs; val++) {
- 		irq = -1;
- 		name = qspi_irq_tab[val].irq_name;
--		irq = platform_get_irq_byname(pdev, name);
-+		if (qspi_irq_tab[val].irq_source == SINGLE_L2) {
-+			/* get the l2 interrupts */
-+			irq = platform_get_irq_byname(pdev, name);
-+		} else if (!num_ints && soc_intc) {
-+			/* all mspi, bspi intrs muxed to one L1 intr */
-+			irq = platform_get_irq(pdev, 0);
-+		}
- 
- 		if (irq  >= 0) {
- 			ret = devm_request_irq(&pdev->dev, irq,
-@@ -1209,6 +1284,17 @@ int bcm_qspi_probe(struct platform_device *pdev,
- 		goto qspi_probe_err;
- 	}
- 
-+	/*
-+	 * Some SoCs integrate spi controller (e.g., its interrupt bits)
-+	 * in specific ways
-+	 */
-+	if (soc_intc) {
-+		qspi->soc_intc = soc_intc;
-+		soc_intc->bcm_qspi_int_set(soc_intc, MSPI_DONE, true);
-+	} else {
-+		qspi->soc_intc = NULL;
-+	}
-+
- 	qspi->clk = devm_clk_get(&pdev->dev, NULL);
- 	if (IS_ERR(qspi->clk)) {
- 		dev_warn(dev, "unable to get clock\n");
-@@ -1288,6 +1374,11 @@ static int bcm_qspi_resume(struct device *dev)
- 
- 	bcm_qspi_hw_init(qspi);
- 	bcm_qspi_chip_select(qspi, qspi->curr_cs);
-+	if (qspi->soc_intc)
-+		/* enable MSPI interrupt */
-+		qspi->soc_intc->bcm_qspi_int_set(qspi->soc_intc, MSPI_DONE,
-+						 true);
-+
- 	ret = clk_enable(qspi->clk);
- 	if (!ret)
- 		spi_master_resume(qspi->master);
-diff --git a/drivers/spi/spi-bcm-qspi.h b/drivers/spi/spi-bcm-qspi.h
-index 65c363b..7abfc75 100644
---- a/drivers/spi/spi-bcm-qspi.h
-+++ b/drivers/spi/spi-bcm-qspi.h
-@@ -48,10 +48,26 @@
- 	(INTR_MSPI_DONE_MASK |		       \
- 	 INTR_MSPI_HALTED_MASK)
- 
-+#define QSPI_INTERRUPTS_ALL                    \
-+	(MSPI_INTERRUPTS_ALL |		       \
-+	 BSPI_LR_INTERRUPTS_ALL)
-+
- struct platform_device;
- struct dev_pm_ops;
- 
--struct bcm_qspi_soc_intc;
-+enum {
-+	MSPI_DONE = 0x1,
-+	BSPI_DONE = 0x2,
-+	BSPI_ERR = 0x4,
-+	MSPI_BSPI_DONE = 0x7
-+};
-+
-+struct bcm_qspi_soc_intc {
-+	void (*bcm_qspi_int_ack)(struct bcm_qspi_soc_intc *soc_intc, int type);
-+	void (*bcm_qspi_int_set)(struct bcm_qspi_soc_intc *soc_intc, int type,
-+				 bool en);
-+	u32 (*bcm_qspi_get_int_status)(struct bcm_qspi_soc_intc *soc_intc);
-+};
- 
- /* Read controller register*/
- static inline u32 bcm_qspi_readl(bool be, void __iomem *addr)
-@@ -72,6 +88,22 @@ static inline void bcm_qspi_writel(bool be,
- 		writel_relaxed(data, addr);
- }
- 
-+static inline u32 get_qspi_mask(int type)
-+{
-+	switch (type) {
-+	case MSPI_DONE:
-+		return INTR_MSPI_DONE_MASK;
-+	case BSPI_DONE:
-+		return BSPI_LR_INTERRUPTS_ALL;
-+	case MSPI_BSPI_DONE:
-+		return QSPI_INTERRUPTS_ALL;
-+	case BSPI_ERR:
-+		return BSPI_LR_INTERRUPTS_ERROR;
-+	}
-+
-+	return 0;
-+}
-+
- /* The common driver functions to be called by the SoC platform driver */
- int bcm_qspi_probe(struct platform_device *pdev,
- 		   struct bcm_qspi_soc_intc *soc_intc);
-diff --git a/drivers/spi/spi-iproc-qspi.c b/drivers/spi/spi-iproc-qspi.c
-new file mode 100644
-index 0000000..be6ccb2
---- /dev/null
-+++ b/drivers/spi/spi-iproc-qspi.c
-@@ -0,0 +1,163 @@
-+/*
-+ * Copyright 2016 Broadcom Limited
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#include <linux/device.h>
-+#include <linux/io.h>
-+#include <linux/ioport.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/of_address.h>
-+#include <linux/platform_device.h>
-+#include <linux/slab.h>
-+
-+#include "spi-bcm-qspi.h"
-+
-+#define INTR_BASE_BIT_SHIFT			0x02
-+#define INTR_COUNT				0x07
-+
-+struct bcm_iproc_intc {
-+	struct bcm_qspi_soc_intc soc_intc;
-+	struct platform_device *pdev;
-+	void __iomem *int_reg;
-+	void __iomem *int_status_reg;
-+	spinlock_t soclock;
-+	bool big_endian;
-+};
-+
-+static u32 bcm_iproc_qspi_get_l2_int_status(struct bcm_qspi_soc_intc *soc_intc)
-+{
-+	struct bcm_iproc_intc *priv =
-+			container_of(soc_intc, struct bcm_iproc_intc, soc_intc);
-+	void __iomem *mmio = priv->int_status_reg;
-+	int i;
-+	u32 val = 0, sts = 0;
-+
-+	for (i = 0; i < INTR_COUNT; i++) {
-+		if (bcm_qspi_readl(priv->big_endian, mmio + (i * 4)))
-+			val |= 1UL << i;
-+	}
-+
-+	if (val & INTR_MSPI_DONE_MASK)
-+		sts |= MSPI_DONE;
-+
-+	if (val & BSPI_LR_INTERRUPTS_ALL)
-+		sts |= BSPI_DONE;
-+
-+	if (val & BSPI_LR_INTERRUPTS_ERROR)
-+		sts |= BSPI_ERR;
-+
-+	return sts;
-+}
-+
-+static void bcm_iproc_qspi_int_ack(struct bcm_qspi_soc_intc *soc_intc, int type)
-+{
-+	struct bcm_iproc_intc *priv =
-+			container_of(soc_intc, struct bcm_iproc_intc, soc_intc);
-+	void __iomem *mmio = priv->int_status_reg;
-+	u32 mask = get_qspi_mask(type);
-+	int i;
-+
-+	for (i = 0; i < INTR_COUNT; i++) {
-+		if (mask & (1UL << i))
-+			bcm_qspi_writel(priv->big_endian, 1, mmio + (i * 4));
-+	}
-+}
-+
-+static void bcm_iproc_qspi_int_set(struct bcm_qspi_soc_intc *soc_intc, int type,
-+				   bool en)
-+{
-+	struct bcm_iproc_intc *priv =
-+			container_of(soc_intc, struct bcm_iproc_intc, soc_intc);
-+	void __iomem *mmio = priv->int_reg;
-+	u32 mask = get_qspi_mask(type);
-+	u32 val;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&priv->soclock, flags);
-+
-+	val = bcm_qspi_readl(priv->big_endian, mmio);
-+
-+	if (en)
-+		val = val | (mask << INTR_BASE_BIT_SHIFT);
-+	else
-+		val = val & ~(mask << INTR_BASE_BIT_SHIFT);
-+
-+	bcm_qspi_writel(priv->big_endian, val, mmio);
-+
-+	spin_unlock_irqrestore(&priv->soclock, flags);
-+}
-+
-+static int bcm_iproc_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct bcm_iproc_intc *priv;
-+	struct bcm_qspi_soc_intc *soc_intc;
-+	struct resource *res;
-+
-+	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+	soc_intc = &priv->soc_intc;
-+	priv->pdev = pdev;
-+
-+	spin_lock_init(&priv->soclock);
-+
-+	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "intr_regs");
-+	priv->int_reg = devm_ioremap_resource(dev, res);
-+	if (IS_ERR(priv->int_reg))
-+		return PTR_ERR(priv->int_reg);
-+
-+	res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
-+					   "intr_status_reg");
-+	priv->int_status_reg = devm_ioremap_resource(dev, res);
-+	if (IS_ERR(priv->int_status_reg))
-+		return PTR_ERR(priv->int_status_reg);
-+
-+	priv->big_endian = of_device_is_big_endian(dev->of_node);
-+
-+	bcm_iproc_qspi_int_ack(soc_intc, MSPI_BSPI_DONE);
-+	bcm_iproc_qspi_int_set(soc_intc, MSPI_BSPI_DONE, false);
-+
-+	soc_intc->bcm_qspi_int_ack = bcm_iproc_qspi_int_ack;
-+	soc_intc->bcm_qspi_int_set = bcm_iproc_qspi_int_set;
-+	soc_intc->bcm_qspi_get_int_status = bcm_iproc_qspi_get_l2_int_status;
-+
-+	return bcm_qspi_probe(pdev, soc_intc);
-+}
-+
-+static int bcm_iproc_remove(struct platform_device *pdev)
-+{
-+	return bcm_qspi_remove(pdev);
-+}
-+
-+static const struct of_device_id bcm_iproc_of_match[] = {
-+	{ .compatible = "brcm,spi-nsp-qspi" },
-+	{ .compatible = "brcm,spi-ns2-qspi" },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, bcm_iproc_of_match);
-+
-+static struct platform_driver bcm_iproc_driver = {
-+	.probe			= bcm_iproc_probe,
-+	.remove			= bcm_iproc_remove,
-+	.driver = {
-+		.name		= "bcm_iproc",
-+		.pm		= &bcm_qspi_pm_ops,
-+		.of_match_table = bcm_iproc_of_match,
-+	}
-+};
-+module_platform_driver(bcm_iproc_driver);
-+
-+MODULE_LICENSE("GPL v2");
-+MODULE_AUTHOR("Kamal Dasu");
-+MODULE_DESCRIPTION("SPI flash driver for Broadcom iProc SoCs");
+ #ifdef CONFIG_PM
 -- 
-1.9.1
+2.9.2
+
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

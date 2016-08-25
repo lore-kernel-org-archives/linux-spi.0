@@ -1,7 +1,7 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 21/23] spi: fsl-espi: simplify fsl_espi_setup_transfer
-Date: Thu, 25 Aug 2016 06:51:43 +0200
-Message-ID: <b65bdf36-d8cd-dc67-54ad-64672e367d2f@gmail.com>
+Subject: [PATCH 22/23] spi: fsl-espi: improve message length handling
+Date: Thu, 25 Aug 2016 06:52:00 +0200
+Message-ID: <1fa1d34d-e384-7134-d41f-2bfd96b69d2a@gmail.com>
 References: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -13,31 +13,64 @@ In-Reply-To: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217-Re5JQEeQqe8AvxtiuMwx3w@public
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Simplify fsl_espi_setup_transfer a little.
+Move checking for a zero-length message up in the call chain and
+use m->frame_length instead of re-calculating the overall length
+of all transfers in the message.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index d348a66..a5a67ce 100644
+index a5a67ce..51b0213 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -210,12 +210,10 @@ static void fsl_espi_setup_transfer(struct spi_device *spi,
- 	mpc8xxx_spi->get_rx = cs->get_rx;
- 	mpc8xxx_spi->get_tx = cs->get_tx;
+@@ -283,8 +283,7 @@ static int fsl_espi_do_trans(struct spi_message *m, struct spi_transfer *trans)
  
--	bits_per_word = bits_per_word - 1;
--
- 	/* mask out bits we are going to set */
- 	cs->hw_mode &= ~(CSMODE_LEN(0xF) | CSMODE_DIV16 | CSMODE_PM(0xF));
+ 	fsl_espi_setup_transfer(spi, trans);
  
--	cs->hw_mode |= CSMODE_LEN(bits_per_word);
-+	cs->hw_mode |= CSMODE_LEN(bits_per_word - 1);
+-	if (trans->len)
+-		ret = fsl_espi_bufs(spi, trans);
++	ret = fsl_espi_bufs(spi, trans);
  
- 	if ((mpc8xxx_spi->spibrg / hz) > 64) {
- 		cs->hw_mode |= CSMODE_DIV16;
+ 	if (trans->delay_usecs)
+ 		udelay(trans->delay_usecs);
+@@ -313,7 +312,7 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
+ 			       struct spi_message *m)
+ {
+ 	struct mpc8xxx_spi *mspi = spi_master_get_devdata(m->spi->master);
+-	unsigned int delay_usecs = 0, xfer_len = 0;
++	unsigned int delay_usecs = 0;
+ 	struct spi_transfer *t, trans = {};
+ 	int ret;
+ 
+@@ -322,8 +321,6 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
+ 		goto out;
+ 
+ 	list_for_each_entry(t, &m->transfers, transfer_list) {
+-		if ((t->tx_buf) || (t->rx_buf))
+-			xfer_len += t->len;
+ 		if (t->delay_usecs > delay_usecs)
+ 			delay_usecs = t->delay_usecs;
+ 	}
+@@ -331,13 +328,14 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
+ 	t = list_first_entry(&m->transfers, struct spi_transfer,
+ 			     transfer_list);
+ 
+-	trans.len = xfer_len;
++	trans.len = m->frame_length;
+ 	trans.speed_hz = t->speed_hz;
+ 	trans.bits_per_word = t->bits_per_word;
+ 	trans.delay_usecs = delay_usecs;
+ 	trans.tx_buf = trans.rx_buf = mspi->local_buf;
+ 
+-	ret = fsl_espi_trans(m, &trans);
++	if (trans.len)
++		ret = fsl_espi_trans(m, &trans);
+ 
+ 	m->actual_length = ret ? 0 : trans.len;
+ out:
 -- 
 2.9.2
 

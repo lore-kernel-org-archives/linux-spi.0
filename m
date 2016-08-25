@@ -1,8 +1,8 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 11/23] spi: fsl-espi: remove element actual_length from struct
- fsl_espi_trans
-Date: Thu, 25 Aug 2016 06:47:58 +0200
-Message-ID: <5aedfb17-f7c7-bab1-68c8-17136945bfd3@gmail.com>
+Subject: [PATCH 07/23] spi: fsl-espi: remove unneeded variable in
+ fsl_espi_do_trans
+Date: Thu, 25 Aug 2016 06:45:55 +0200
+Message-ID: <683bca81-4522-78d7-338f-0e1a137f4f4f@gmail.com>
 References: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -14,62 +14,63 @@ In-Reply-To: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217-Re5JQEeQqe8AvxtiuMwx3w@public
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-If an error occurs during processing the message, then we don't have
-to populate the actual_length element of struct message.
-So we can get rid of element actual_length in struct
-fsl_espi_transfer.
+Creating a message, adding one transfer, and then iterating over
+all transfers in the message doesn't make sense.
+We can simply use the original transfer directly.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 23 ++++++++---------------
+ 1 file changed, 8 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index c15d2bc..4ff27bf 100644
+index b3c3612..494a7bf 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -41,7 +41,6 @@ struct fsl_espi_transfer {
- 	const void *tx_buf;
- 	void *rx_buf;
- 	unsigned len;
--	unsigned actual_length;
- };
+@@ -256,11 +256,9 @@ static void fsl_espi_do_trans(struct spi_message *m,
+ 	struct spi_device *spi = m->spi;
+ 	struct mpc8xxx_spi *mspi = spi_master_get_devdata(spi->master);
+ 	struct fsl_espi_transfer *espi_trans = tr;
+-	struct spi_message message;
+ 	struct spi_transfer *t, *first, trans;
+ 	int status = 0;
  
- /* eSPI Controller mode register definitions */
-@@ -328,8 +327,6 @@ static int fsl_espi_cmd_trans(struct spi_message *m,
- 	espi_trans->tx_buf = espi_trans->rx_buf = mspi->local_buf;
- 	ret = fsl_espi_do_trans(m, espi_trans);
+-	spi_message_init(&message);
+ 	memset(&trans, 0, sizeof(trans));
  
--	espi_trans->actual_length = espi_trans->len;
--
- 	return ret;
- }
+ 	first = list_first_entry(&m->transfers, struct spi_transfer,
+@@ -282,23 +280,18 @@ static void fsl_espi_do_trans(struct spi_message *m,
+ 	trans.len = espi_trans->len;
+ 	trans.tx_buf = espi_trans->tx_buf;
+ 	trans.rx_buf = espi_trans->rx_buf;
+-	spi_message_add_tail(&trans, &message);
  
-@@ -350,7 +347,6 @@ static int fsl_espi_rw_trans(struct spi_message *m,
- 		if (trans->len > tx_only)
- 			memcpy(rx_buff, trans->rx_buf + tx_only,
- 			       trans->len - tx_only);
--		trans->actual_length += trans->len;
- 	}
+-	list_for_each_entry(t, &message.transfers, transfer_list) {
+-		if (t->bits_per_word || t->speed_hz)
+-			fsl_espi_setup_transfer(spi, t);
++	if (trans.bits_per_word || trans.speed_hz)
++		fsl_espi_setup_transfer(spi, &trans);
  
- 	return ret;
-@@ -373,14 +369,14 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
- 	}
+-		if (t->len)
+-			status = fsl_espi_bufs(spi, t);
++	if (trans.len)
++		status = fsl_espi_bufs(spi, &trans);
  
- 	espi_trans.len = xfer_len;
--	espi_trans.actual_length = 0;
+-		if (status) {
+-			status = -EMSGSIZE;
+-			break;
+-		}
++	if (status)
++		status = -EMSGSIZE;
  
- 	if (!rx_buf)
- 		ret = fsl_espi_cmd_trans(m, &espi_trans, NULL);
- 	else
- 		ret = fsl_espi_rw_trans(m, &espi_trans, rx_buf);
+-		if (t->delay_usecs)
+-			udelay(t->delay_usecs);
+-	}
++	if (trans.delay_usecs)
++		udelay(trans.delay_usecs);
  
--	m->actual_length = espi_trans.actual_length;
-+	m->actual_length = ret ? 0 : espi_trans.len;
-+
- 	if (m->status == -EINPROGRESS)
- 		m->status = ret;
- 
+ 	espi_trans->status = status;
+ 	fsl_espi_setup_transfer(spi, NULL);
 -- 
 2.9.2
 

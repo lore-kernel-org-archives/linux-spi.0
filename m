@@ -1,8 +1,8 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 03/23] spi: fsl-espi: remove unused elements n_rx and n_tx in
- struct fsl_espi_transfer
-Date: Thu, 25 Aug 2016 06:44:19 +0200
-Message-ID: <b5777cc4-1ab7-d7cb-00be-c597060e7af6@gmail.com>
+Subject: [PATCH 05/23] spi: fsl-espi: change return type of fsl_espi_cpu_bufs
+ to void
+Date: Thu, 25 Aug 2016 06:44:58 +0200
+Message-ID: <40dcd903-fdae-6669-5c35-af4b9e9e953b@gmail.com>
 References: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -14,54 +14,46 @@ In-Reply-To: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217-Re5JQEeQqe8AvxtiuMwx3w@public
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Both elements are not used, so remove them.
+fsl_espi_cpu_bufs always returns 0, so change the return type to void.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 2c4b2f8..12cb0c5 100644
+index 38eced3..cc09ce6 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -41,8 +41,6 @@ struct fsl_espi_transfer {
- 	const void *tx_buf;
- 	void *rx_buf;
- 	unsigned len;
--	unsigned n_tx;
--	unsigned n_rx;
- 	unsigned actual_length;
- 	int status;
- };
-@@ -372,26 +370,18 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
- 	struct mpc8xxx_spi *mspi = spi_master_get_devdata(master);
- 	struct spi_transfer *t;
- 	u8 *rx_buf = NULL;
--	unsigned int n_tx = 0;
--	unsigned int n_rx = 0;
- 	unsigned int xfer_len = 0;
- 	struct fsl_espi_transfer espi_trans;
+@@ -195,7 +195,7 @@ static void fsl_espi_setup_transfer(struct spi_device *spi,
+ 	fsl_espi_change_mode(spi);
+ }
  
- 	memset(mspi->local_buf, 0, SPCOM_TRANLEN_MAX);
+-static int fsl_espi_cpu_bufs(struct mpc8xxx_spi *mspi, struct spi_transfer *t,
++static void fsl_espi_cpu_bufs(struct mpc8xxx_spi *mspi, struct spi_transfer *t,
+ 		unsigned int len)
+ {
+ 	u32 word;
+@@ -209,8 +209,6 @@ static int fsl_espi_cpu_bufs(struct mpc8xxx_spi *mspi, struct spi_transfer *t,
+ 	/* transmit word */
+ 	word = mspi->get_tx(mspi);
+ 	mpc8xxx_spi_write_reg(&reg_base->transmit, word);
+-
+-	return 0;
+ }
  
- 	list_for_each_entry(t, &m->transfers, transfer_list) {
--		if (t->tx_buf)
--			n_tx += t->len;
--		if (t->rx_buf) {
--			n_rx += t->len;
-+		if (t->rx_buf)
- 			rx_buf = t->rx_buf;
--		}
- 		if ((t->tx_buf) || (t->rx_buf))
- 			xfer_len += t->len;
- 	}
+ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
+@@ -237,9 +235,7 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	mpc8xxx_spi_write_reg(&reg_base->command,
+ 		(SPCOM_CS(spi->chip_select) | SPCOM_TRANLEN(t->len - 1)));
  
--	espi_trans.n_tx = n_tx;
--	espi_trans.n_rx = n_rx;
- 	espi_trans.len = xfer_len;
- 	espi_trans.actual_length = 0;
- 	espi_trans.status = 0;
+-	ret = fsl_espi_cpu_bufs(mpc8xxx_spi, t, len);
+-	if (ret)
+-		return ret;
++	fsl_espi_cpu_bufs(mpc8xxx_spi, t, len);
+ 
+ 	/* Won't hang up forever, SPI bus sometimes got lost interrupts... */
+ 	ret = wait_for_completion_timeout(&mpc8xxx_spi->done, 2 * HZ);
 -- 
 2.9.2
 

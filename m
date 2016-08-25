@@ -1,8 +1,8 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 04/23] spi: fsl-espi: change return type of
- fsl_espi_setup_transfer to void
-Date: Thu, 25 Aug 2016 06:44:42 +0200
-Message-ID: <2800693b-704a-5530-2d58-8fd38d33dc10@gmail.com>
+Subject: [PATCH 03/23] spi: fsl-espi: remove unused elements n_rx and n_tx in
+ struct fsl_espi_transfer
+Date: Thu, 25 Aug 2016 06:44:19 +0200
+Message-ID: <b5777cc4-1ab7-d7cb-00be-c597060e7af6@gmail.com>
 References: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -14,76 +14,54 @@ In-Reply-To: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217-Re5JQEeQqe8AvxtiuMwx3w@public
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-fsl_espi_setup_transfer always returns 0, so change the return type
-to void.
+Both elements are not used, so remove them.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 19 ++++---------------
- 1 file changed, 4 insertions(+), 15 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 12cb0c5..38eced3 100644
+index 2c4b2f8..12cb0c5 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -128,7 +128,7 @@ static u32 fsl_espi_tx_buf_lsb(struct mpc8xxx_spi *mpc8xxx_spi)
- 	return data;
- }
+@@ -41,8 +41,6 @@ struct fsl_espi_transfer {
+ 	const void *tx_buf;
+ 	void *rx_buf;
+ 	unsigned len;
+-	unsigned n_tx;
+-	unsigned n_rx;
+ 	unsigned actual_length;
+ 	int status;
+ };
+@@ -372,26 +370,18 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
+ 	struct mpc8xxx_spi *mspi = spi_master_get_devdata(master);
+ 	struct spi_transfer *t;
+ 	u8 *rx_buf = NULL;
+-	unsigned int n_tx = 0;
+-	unsigned int n_rx = 0;
+ 	unsigned int xfer_len = 0;
+ 	struct fsl_espi_transfer espi_trans;
  
--static int fsl_espi_setup_transfer(struct spi_device *spi,
-+static void fsl_espi_setup_transfer(struct spi_device *spi,
- 					struct spi_transfer *t)
- {
- 	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
-@@ -193,7 +193,6 @@ static int fsl_espi_setup_transfer(struct spi_device *spi,
- 	cs->hw_mode |= CSMODE_PM(pm);
+ 	memset(mspi->local_buf, 0, SPCOM_TRANLEN_MAX);
  
- 	fsl_espi_change_mode(spi);
--	return 0;
- }
- 
- static int fsl_espi_cpu_bufs(struct mpc8xxx_spi *mspi, struct spi_transfer *t,
-@@ -290,13 +289,8 @@ static void fsl_espi_do_trans(struct spi_message *m,
- 	spi_message_add_tail(&trans, &message);
- 
- 	list_for_each_entry(t, &message.transfers, transfer_list) {
--		if (t->bits_per_word || t->speed_hz) {
--			status = -EINVAL;
--
--			status = fsl_espi_setup_transfer(spi, t);
--			if (status < 0)
--				break;
+ 	list_for_each_entry(t, &m->transfers, transfer_list) {
+-		if (t->tx_buf)
+-			n_tx += t->len;
+-		if (t->rx_buf) {
+-			n_rx += t->len;
++		if (t->rx_buf)
+ 			rx_buf = t->rx_buf;
 -		}
-+		if (t->bits_per_word || t->speed_hz)
-+			fsl_espi_setup_transfer(spi, t);
+ 		if ((t->tx_buf) || (t->rx_buf))
+ 			xfer_len += t->len;
+ 	}
  
- 		if (t->len)
- 			status = fsl_espi_bufs(spi, t);
-@@ -401,7 +395,6 @@ static int fsl_espi_setup(struct spi_device *spi)
- {
- 	struct mpc8xxx_spi *mpc8xxx_spi;
- 	struct fsl_espi_reg *reg_base;
--	int retval;
- 	u32 hw_mode;
- 	u32 loop_mode;
- 	struct spi_mpc8xxx_cs *cs = spi_get_ctldata(spi);
-@@ -442,15 +435,11 @@ static int fsl_espi_setup(struct spi_device *spi)
- 		loop_mode |= SPMODE_LOOP;
- 	mpc8xxx_spi_write_reg(&reg_base->mode, loop_mode);
- 
--	retval = fsl_espi_setup_transfer(spi, NULL);
-+	fsl_espi_setup_transfer(spi, NULL);
- 
- 	pm_runtime_mark_last_busy(mpc8xxx_spi->dev);
- 	pm_runtime_put_autosuspend(mpc8xxx_spi->dev);
- 
--	if (retval < 0) {
--		cs->hw_mode = hw_mode; /* Restore settings */
--		return retval;
--	}
- 	return 0;
- }
- 
+-	espi_trans.n_tx = n_tx;
+-	espi_trans.n_rx = n_rx;
+ 	espi_trans.len = xfer_len;
+ 	espi_trans.actual_length = 0;
+ 	espi_trans.status = 0;
 -- 
 2.9.2
 

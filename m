@@ -1,50 +1,55 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 10/23] spi: fsl-espi: fix status handling in
- fsl_espi_do_one_msg
-Date: Thu, 25 Aug 2016 06:47:35 +0200
-Message-ID: <212d80f1-e3d1-0065-7366-e509a30b9c6c@gmail.com>
-References: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217@gmail.com>
+Subject: [PATCH 00/23] spi: fsl-espi: several cleanups, improvements, and few
+ fixes
+Date: Thu, 25 Aug 2016 06:42:53 +0200
+Message-ID: <c6d032d3-3ac3-5826-1087-26ffa4cb8feb@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-If an error occurred during message handling return this error instead
-of always returning 0 and align the code with the generic
-implementation in spi_transfer_one_message.
+This patch series includes several cleanups, improvements, and few
+smaller fixes. It was successfully tested on a P1014-based
+WiFi router with SPI NOR flash.
 
-Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spi-fsl-espi.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+There are also some functional extensions in the pipe, I'll send
+them part of a separate patch set.
 
-diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 68bf72a..c15d2bc 100644
---- a/drivers/spi/spi-fsl-espi.c
-+++ b/drivers/spi/spi-fsl-espi.c
-@@ -381,9 +381,12 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
- 		ret = fsl_espi_rw_trans(m, &espi_trans, rx_buf);
- 
- 	m->actual_length = espi_trans.actual_length;
--	m->status = ret;
-+	if (m->status == -EINPROGRESS)
-+		m->status = ret;
-+
- 	spi_finalize_current_message(master);
--	return 0;
-+
-+	return ret;
- }
- 
- static int fsl_espi_setup(struct spi_device *spi)
+Heiner Kallweit (23):
+  spi: fsl-espi: don't include irq.h
+  spi: fsl-espi: pre-allocate message buffer
+  spi: fsl-espi: remove unused elements n_rx and n_tx in struct fsl_espi_transfer
+  spi: fsl-espi: change return type of fsl_espi_setup_transfer to void
+  spi: fsl-espi: change return type of fsl_espi_cpu_bufs to void
+  spi: fsl-espi: add missing static declaration to fsl_espi_cpu_irq
+  spi: fsl-espi: remove unneeded variable in fsl_espi_do_trans
+  spi: fsl-espi: factor out filling the local buffer
+  spi: fsl-espi: remove element status from struct fsl_espi_transfer
+  spi: fsl-espi: fix status handling in fsl_espi_do_one_msg
+  spi: fsl-espi: remove element actual_length from struct fsl_espi_trans
+  spi: fsl-espi: eliminate struct fsl_espi_transfer
+  spi: fsl-espi: merge fsl_espi_cmd_trans and fsl_espi_rw_trans
+  spi: fsl-espi: remove unneeded check in fsl_espi_do_trans
+  spi: fsl-espi: improve return value handling in fsl_espi_bufs
+  spi: fsl-espi: merge fsl_espi_bufs and fsl_espi_cpu_bufs
+  spi: fsl-espi: improve ISR frame
+  spi: fsl-espi: factor out initial message checking
+  spi: fsl-espi: centralize populating struct spi_transfer
+  spi: fsl-espi: factor out handling of read data
+  spi: fsl-espi: simplify fsl_espi_setup_transfer
+  spi: fsl-espi: improve message length handling
+  spi: fsl-espi: merge fsl_espi_trans and fsl_espi_do_trans
+
+ drivers/spi/spi-fsl-espi.c | 326 +++++++++++++++++----------------------------
+ drivers/spi/spi-fsl-lib.h  |   1 +
+ 2 files changed, 121 insertions(+), 206 deletions(-)
+
 -- 
 2.9.2
-
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

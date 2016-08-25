@@ -1,7 +1,8 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 17/23] spi: fsl-espi: improve the ISR frame
-Date: Thu, 25 Aug 2016 06:50:21 +0200
-Message-ID: <f4067947-b0e3-cb41-81c8-75051908e121@gmail.com>
+Subject: [PATCH 16/23] spi: fsl-espi: merge fsl_espi_bufs and
+ fsl_espi_cpu_bufs
+Date: Thu, 25 Aug 2016 06:49:54 +0200
+Message-ID: <178b274d-2785-5f64-0334-40526c13d7f9@gmail.com>
 References: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -13,73 +14,65 @@ In-Reply-To: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217-Re5JQEeQqe8AvxtiuMwx3w@public
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Improve the ISR frame:
-- move resetting the event bits to the ISR frame
-- change type of parameter irq to int
-- make sure that the event bits match at least one bit in the
-  interrupt mask register
+fsl_espi_bufs and fsl_espi_cpu_bufs are very small that we can merge them.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 27 ++++++++-------------------
+ 1 file changed, 8 insertions(+), 19 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index ee4e778..8d5bebc 100644
+index 821ec3e..ee4e778 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -451,17 +451,11 @@ static void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
- 				&reg_base->event)) & SPIE_NF), 1000, 0);
- 		if (!ret) {
- 			dev_err(mspi->dev, "tired waiting for SPIE_NF\n");
--
--			/* Clear the SPIE bits */
--			mpc8xxx_spi_write_reg(&reg_base->event, events);
- 			complete(&mspi->done);
- 			return;
- 		}
- 	}
- 
--	/* Clear the events */
--	mpc8xxx_spi_write_reg(&reg_base->event, events);
--
- 	mspi->count -= 1;
- 	if (mspi->count) {
- 		u32 word = mspi->get_tx(mspi);
-@@ -472,23 +466,26 @@ static void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
- 	}
+@@ -207,31 +207,15 @@ static void fsl_espi_setup_transfer(struct spi_device *spi,
+ 	fsl_espi_change_mode(spi);
  }
  
--static irqreturn_t fsl_espi_irq(s32 irq, void *context_data)
-+static irqreturn_t fsl_espi_irq(int irq, void *context_data)
+-static void fsl_espi_cpu_bufs(struct mpc8xxx_spi *mspi, struct spi_transfer *t,
+-		unsigned int len)
+-{
+-	u32 word;
+-	struct fsl_espi_reg *reg_base = mspi->reg_base;
+-
+-	mspi->count = len;
+-
+-	/* enable rx ints */
+-	mpc8xxx_spi_write_reg(&reg_base->mask, SPIM_NE);
+-
+-	/* transmit word */
+-	word = mspi->get_tx(mspi);
+-	mpc8xxx_spi_write_reg(&reg_base->transmit, word);
+-}
+-
+ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
  {
- 	struct mpc8xxx_spi *mspi = context_data;
- 	struct fsl_espi_reg *reg_base = mspi->reg_base;
--	irqreturn_t ret = IRQ_NONE;
--	u32 events;
-+	u32 mask, events;
+ 	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
+ 	struct fsl_espi_reg *reg_base = mpc8xxx_spi->reg_base;
+-	unsigned int len = t->len;
++	u32 word;
+ 	int ret;
  
--	/* Get interrupt events(tx/rx) */
-+	/* Get interrupt mask and events and check that irq belongs to us */
-+	mask = mpc8xxx_spi_read_reg(&reg_base->mask);
- 	events = mpc8xxx_spi_read_reg(&reg_base->event);
--	if (events)
--		ret = IRQ_HANDLED;
-+	if (!(mask & events))
-+		return IRQ_NONE;
+ 	mpc8xxx_spi->len = t->len;
+-	len = roundup(len, 4) / 4;
++	mpc8xxx_spi->count = roundup(t->len, 4) / 4;
  
- 	dev_vdbg(mspi->dev, "%s: events %x\n", __func__, events);
+ 	mpc8xxx_spi->tx = t->tx_buf;
+ 	mpc8xxx_spi->rx = t->rx_buf;
+@@ -247,7 +231,12 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	mpc8xxx_spi_write_reg(&reg_base->command,
+ 		(SPCOM_CS(spi->chip_select) | SPCOM_TRANLEN(t->len - 1)));
  
- 	fsl_espi_cpu_irq(mspi, events);
- 
--	return ret;
-+	/* Clear the events */
-+	mpc8xxx_spi_write_reg(&reg_base->event, events);
+-	fsl_espi_cpu_bufs(mpc8xxx_spi, t, len);
++	/* enable rx ints */
++	mpc8xxx_spi_write_reg(&reg_base->mask, SPIM_NE);
 +
-+	return IRQ_HANDLED;
- }
++	/* transmit word */
++	word = mpc8xxx_spi->get_tx(mpc8xxx_spi);
++	mpc8xxx_spi_write_reg(&reg_base->transmit, word);
  
- #ifdef CONFIG_PM
+ 	/* Won't hang up forever, SPI bus sometimes got lost interrupts... */
+ 	ret = wait_for_completion_timeout(&mpc8xxx_spi->done, 2 * HZ);
 -- 
 2.9.2
 

@@ -1,66 +1,79 @@
-From: Sien Wu <sien.wu-acOepvfBmUk@public.gmane.org>
-Subject: [RFC] spi: Prevent unexpected SPI time out due to arithmetic overflow
-Date: Mon, 29 Aug 2016 09:02:47 -0500
-Message-ID: <1472479367-50682-1-git-send-email-sien.wu@ni.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Sien Wu <sien.wu-acOepvfBmUk@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH] spi: rspi: Increase accuracy of bit rate for RZ
+Date: Mon, 29 Aug 2016 17:43:46 +0200
+Message-ID: <CAMuHMdWVvZLWvVVzHMr+5--PAJkGx0r-Z1=eCiGJddcY6aDNLA@mail.gmail.com>
+References: <1470404163-27427-1-git-send-email-chris.brandt@renesas.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Linux-Renesas <linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
+        Daniel Palmer <danieruru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Chris Brandt <chris.brandt-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1470404163-27427-1-git-send-email-chris.brandt-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-When reading SPI flash as MTD device, the transfer length is
-directly passed to the spi driver. If the requested data size
-exceeds 512KB, it will cause the time out calculation to
-overflow since transfer length is 32-bit unsigned integer.
-This issue is resolved by using 64-bit unsigned integer
-to perform the arithmetic.
+Hi Chris,
 
-Signed-off-by: Sien Wu <sien.wu-acOepvfBmUk@public.gmane.org>
-Acked-by: Brad Keryan <brad.keryan-acOepvfBmUk@public.gmane.org>
-Acked-by: Gratian Crisan <gratian.crisan-acOepvfBmUk@public.gmane.org>
-Acked-by: Brad Mouring <brad.mouring-acOepvfBmUk@public.gmane.org>
+On Fri, Aug 5, 2016 at 3:36 PM, Chris Brandt <chris.brandt-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org> wrote:
+> When you leave the clock divider at 0, 130kHz is the lowest you can go.
+> Also, by adjusting the clock divider you can get more accurate resolutions
+> for clock speeds lower than 16MHz. This patch uses the clock divider as
+> part of the bit rate setup.
+>
+> Signed-off-by: Chris Brandt <chris.brandt-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+> ---
+>  drivers/spi/spi-rspi.c | 14 ++++++++++++--
+>  1 file changed, 12 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+> index 8188433..a816f07 100644
+> --- a/drivers/spi/spi-rspi.c
+> +++ b/drivers/spi/spi-rspi.c
+> @@ -295,14 +295,24 @@ static int rspi_set_config_register(struct rspi_data *rspi, int access_size)
+>  static int rspi_rz_set_config_register(struct rspi_data *rspi, int access_size)
+>  {
+>         int spbr;
+> +       int div = 0;
+> +       unsigned long clksrc;
+>
+>         /* Sets output mode, MOSI signal, and (optionally) loopback */
+>         rspi_write8(rspi, rspi->sppcr, RSPI_SPPCR);
+>
+> +       clksrc = clk_get_rate(rspi->clk);
+> +       while (div < 3) {
+> +               if (rspi->max_speed_hz >= clksrc/4) /* 4=(CLK/2)/2 */
+> +                       break;
+> +               div++;
+> +               clksrc /= 2;
+> +       }
+> +
+>         /* Sets transfer bit rate */
+> -       spbr = DIV_ROUND_UP(clk_get_rate(rspi->clk),
+> -                           2 * rspi->max_speed_hz) - 1;
+> +       spbr = DIV_ROUND_UP(clksrc, 2 * rspi->max_speed_hz) - 1;
+>         rspi_write8(rspi, clamp(spbr, 0, 255), RSPI_SPBR);
+> +       rspi->spcmd |= div << 2;
+>
+>         /* Disable dummy transmission, set byte access */
+>         rspi_write8(rspi, SPDCR_SPLBYTE, RSPI_SPDCR);
 
-Natinst-ReviewBoard-ID 150232
----
- drivers/spi/spi.c |   11 ++++++++---
- 1 files changed, 8 insertions(+), 3 deletions(-)
+I believe this applies not only to RZ, but to all other supported RSPI variants?
+Hence I think it should be made common.
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 029dbd3..a186a62 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -678,7 +678,7 @@ static int spi_transfer_one_message(struct spi_master *master,
- 	struct spi_transfer *xfer;
- 	bool keep_cs = false;
- 	int ret = 0;
--	unsigned long ms = 1;
-+	unsigned long long ms = 1;
- 
- 	spi_set_cs(msg->spi, true);
- 
-@@ -697,11 +697,16 @@ static int spi_transfer_one_message(struct spi_master *master,
- 
- 			if (ret > 0) {
- 				ret = 0;
--				ms = xfer->len * 8 * 1000 / xfer->speed_hz;
-+
-+				ms = 8LL * 1000LL * xfer->len;
-+				do_div(ms, xfer->speed_hz);
- 				ms += ms + 100; /* some tolerance */
- 
-+				if (ms > UINT_MAX)
-+					ms = UINT_MAX;
-+
- 				ms = wait_for_completion_timeout(&master->xfer_completion,
--								 msecs_to_jiffies(ms));
-+							msecs_to_jiffies(ms));
- 			}
- 
- 			if (ms == 0) {
--- 
-1.7.1
+Gr{oetje,eeting}s,
 
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

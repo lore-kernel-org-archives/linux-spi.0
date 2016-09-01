@@ -1,84 +1,51 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: qup: skip clk_disable_unprepare if the device is already runtime suspended" to the spi tree
-Date: Thu, 01 Sep 2016 21:35:28 +0100
-Message-ID: <E1bfYhs-0002xJ-12@debutante>
-References: <1472128408-7231-1-git-send-email-sudeep.holla@arm.com>
-Cc: Andy Gross <andy.gross@linaro.org>,
-        Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-soc@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, Andy Gross <andy.gross@linaro.org>,
-        David Brown <david.brown@linaro.org>,
-        Mark Brown <broonie@kernel.org>
-To: Sudeep Holla <sudeep.holla@arm.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1472128408-7231-1-git-send-email-sudeep.holla@arm.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 03/23] spi: fsl-espi: remove unused elements n_rx and
+ n_tx in struct fsl_espi_transfer
+Date: Thu, 1 Sep 2016 21:14:29 +0100
+Message-ID: <20160901201429.GR5967@sirena.org.uk>
+References: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217@gmail.com>
+ <b5777cc4-1ab7-d7cb-00be-c597060e7af6@gmail.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="OiITrshLgfui8fEl"
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <b5777cc4-1ab7-d7cb-00be-c597060e7af6-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The patch
 
-   spi: qup: skip clk_disable_unprepare if the device is already runtime suspended
+--OiITrshLgfui8fEl
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-has been applied to the spi tree at
+On Thu, Aug 25, 2016 at 06:44:19AM +0200, Heiner Kallweit wrote:
+> Both elements are not used, so remove them.
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+Mechanical changes like this are better done before more substantial
+optimisations and enhancements like the previous patch, that way they
+won't get blocked if there's a problem with the previous patch as is the
+case here.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+--OiITrshLgfui8fEl
+Content-Type: application/pgp-signature; name="signature.asc"
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+iQEcBAEBCAAGBQJXyIwlAAoJECTWi3JdVIfQk40H/2QaeIYaa1rTUJxgYOk+x8ye
+OA+RENgZAt4Kt76kQC890o4KAmYS1DO0KmdjJSE+CsSQAS0A7DdkhSFN/MHKnWb9
+mCo0CxMCHOZvtMa0zNagweVADTuaxTJ4THwPvkrzTzkt41tkXhfEMkZPz79hzlpT
+c6T5O5zNKlNzCji/bIaEujzhsqPK4UZ8y90XMPh0MTSV4edwiz1KZa058V6LoTBc
+d9laFdyxJZTQW5DaeXJ5d2h9QAtGlRi0qquapgrl8bYI638br378yHdPKqaLHVJX
+d5Caf7l+f+WAQQMmT7wTwXvHc7wYVH+Hy284CuJMMvHhFO2S3TWcxS7ZGiFtnEU=
+=lP6f
+-----END PGP SIGNATURE-----
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 9d04d8bc4c18765f6a1f7b632fffe47b4578fb26 Mon Sep 17 00:00:00 2001
-From: Sudeep Holla <sudeep.holla@arm.com>
-Date: Thu, 25 Aug 2016 13:33:28 +0100
-Subject: [PATCH] spi: qup: skip clk_disable_unprepare if the device is already
- runtime suspended
-
-If the spi device is already runtime suspended, if spi_qup_suspend is
-executed during suspend-to-idle or suspend-to-ram it will result in the
-a splat from unpreparing a non-prepared clock.
-
-This patch fixes the issue by executing clk_disable_unprepare conditionally
-in spi_qup_suspend.
-
-[Reworded commit message to remove irrelevant backtrace -- broonie]
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Tested-by: Andy Gross <andy.gross@linaro.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-qup.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index c338ef1136f6..a047e9882da8 100644
---- a/drivers/spi/spi-qup.c
-+++ b/drivers/spi/spi-qup.c
-@@ -982,8 +982,10 @@ static int spi_qup_suspend(struct device *device)
- 	if (ret)
- 		return ret;
- 
--	clk_disable_unprepare(controller->cclk);
--	clk_disable_unprepare(controller->iclk);
-+	if (!pm_runtime_suspended(device)) {
-+		clk_disable_unprepare(controller->cclk);
-+		clk_disable_unprepare(controller->iclk);
-+	}
- 	return 0;
- }
- 
--- 
-2.8.1
+--OiITrshLgfui8fEl--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

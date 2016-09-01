@@ -1,63 +1,73 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: qup: skip clk_disable_unprepare if the device is
- already runtime suspended
-Date: Thu, 1 Sep 2016 21:29:40 +0100
-Message-ID: <20160901202940.GU5967@sirena.org.uk>
-References: <1472128408-7231-1-git-send-email-sudeep.holla@arm.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="+k4Drb7WGefOwc9B"
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        Andy Gross <andy.gross@linaro.org>,
-        David Brown <david.brown@linaro.org>
-To: Sudeep Holla <sudeep.holla@arm.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1472128408-7231-1-git-send-email-sudeep.holla@arm.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: fsl-espi: dont include irq.h" to the spi tree
+Date: Thu, 01 Sep 2016 21:35:43 +0100
+Message-ID: <E1bfYi7-00032A-8O@debutante>
+References: <3a4b4e11-9283-5d52-d125-66c7565913d4@gmail.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <3a4b4e11-9283-5d52-d125-66c7565913d4-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---+k4Drb7WGefOwc9B
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   spi: fsl-espi: dont include irq.h
 
-On Thu, Aug 25, 2016 at 01:33:28PM +0100, Sudeep Holla wrote:
-> If the spi device is already runtime suspended, if spi_qup_suspend is
-> executed during suspend-to-idle or suspend-to-ram it will result in the
-> following splat:
->=20
-> WARNING: CPU: 3 PID: 1593 at drivers/clk/clk.c:476 clk_core_unprepare+0x8=
-0/0x90
-> Modules linked in:
->=20
-> CPU: 3 PID: 1593 Comm: bash Tainted: G        W       4.8.0-rc3 #14
-> Hardware name: Qualcomm Technologies, Inc. APQ 8016 SBC (DT)
-> PC is at clk_core_unprepare+0x80/0x90
-> LR is at clk_unprepare+0x28/0x40
-> pc : [<ffff0000086eecf0>] lr : [<ffff0000086f0c58>] pstate: 60000145
+has been applied to the spi tree at
 
-Please think hard before including complete backtraces in upstream
-reports, they are very large and contain almost no useful information
-relative to their size so often obscure the relevant content in your
-message. If part of the backtrace is usefully illustrative then it's
-usually better to pull out the relevant sections.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
---+k4Drb7WGefOwc9B
-Content-Type: application/pgp-signature; name="signature.asc"
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEcBAEBCAAGBQJXyI+zAAoJECTWi3JdVIfQVC0H/2EDpbTfV1Pa+9C4kLrUnCpo
-hncxEg3HlKOehHm80vsO369v4hU9KQh/RbQHY9bHWm4RZOI0b2M3kehuP3sDyXGL
-HWU+rOsv3TXM057cr0E140y/nF2UKuCKixn0eg//HJveCuyj1JBOKfx3AAZ8NmC2
-V9MVGryDYbCv+WzrLidSEASEk1nypMImLvGrxT6GGRGpaNjlZmWvq53wIpwBtk/A
-W/uHFRkxlVFiujn+KmlDDjpAD/OuYTkeSxnp5IM26Afi/6yos71c62d8vdbi6t+t
-s5vuugAOvpsZSYy43eJ1ln7jfbjPPp+AWXgSqrrBcwmabJq3BwpHnegIqwuzNew=
-=N6Cn
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---+k4Drb7WGefOwc9B--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 6bdf03b30ed0ac72d309fe22aed8101f4cc6a2df Mon Sep 17 00:00:00 2001
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Thu, 25 Aug 2016 06:43:17 +0200
+Subject: [PATCH] spi: fsl-espi: dont include irq.h
+
+irq.h isn't needed and it even shouldn't be included, see comment
+at the beginning of this header file.
+
+Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-fsl-espi.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index 96a2442c1623..d95fdd0632e4 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -12,7 +12,6 @@
+ #include <linux/err.h>
+ #include <linux/fsl_devices.h>
+ #include <linux/interrupt.h>
+-#include <linux/irq.h>
+ #include <linux/module.h>
+ #include <linux/mm.h>
+ #include <linux/of.h>
+-- 
+2.8.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

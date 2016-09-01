@@ -1,58 +1,73 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 08/23] spi: fsl-espi: factor out filling the local buffer
-Date: Thu, 1 Sep 2016 21:18:29 +0100
-Message-ID: <20160901201829.GS5967@sirena.org.uk>
-References: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217@gmail.com>
- <41a045ab-2629-658f-cccd-23f7182a4bc2@gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="WVXkb2QE2eH0aWe4"
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <41a045ab-2629-658f-cccd-23f7182a4bc2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: sh-msiof: Use ARCH_SHMOBILE instead of SUPERH" to the spi tree
+Date: Thu, 01 Sep 2016 21:35:49 +0100
+Message-ID: <E1bfYiD-00033v-36@debutante>
+References: <1472636225-27091-1-git-send-email-geert+renesas@glider.be>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+        linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1472636225-27091-1-git-send-email-geert+renesas@glider.be>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---WVXkb2QE2eH0aWe4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: sh-msiof: Use ARCH_SHMOBILE instead of SUPERH
 
-On Thu, Aug 25, 2016 at 06:46:26AM +0200, Heiner Kallweit wrote:
+has been applied to the spi tree at
 
-> +		if (t->tx_buf) {
-> +			memcpy(buf, t->tx_buf, t->len);
-> +			if (!t->rx_buf)
-> +				tx_only += t->len;
-> +		} else
-> +			memset(buf, 0, t->len);
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-Coding style, { } on both or neither side of the if.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> -	memset(mspi->local_buf, 0, SPCOM_TRANLEN_MAX);
-> -
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-This optimization wasn't mentioned in the changelog...
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---WVXkb2QE2eH0aWe4
-Content-Type: application/pgp-signature; name="signature.asc"
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Thanks,
+Mark
 
-iQEcBAEBCAAGBQJXyI0UAAoJECTWi3JdVIfQmZQIAIGgt9icVu6iYMeHyNITLXwq
-eMlerLOEiS+xBIQh28mmo/cUdSFF6G2e6A3oQSb+oAyFOjSwhwW2gWBqSaPIr5fN
-4uSf7KjXuFGnDFuD63TrLfFCi/EufVEngNcTKBq5F6cOVd8Urcwj6ptjO3rM8Gie
-THazvC3YYq0BYquHn6nfoLXM9Msf9knNK2VSdrM2arvCRg8UqIekadNadqa6MW9k
-t2r/bhXhTOpUeP9oNvcXVvD/ngFh08d54g7ElHpvUmba6Efc+LDpU+Q+UIagObOh
-2hFPlRGVxS/I9xsExPzjFFkxJTWNcIUv2jCwGSVb3Hye05poqm3cUJSa5vtxuYk=
-=oAYa
------END PGP SIGNATURE-----
+>From 6ffc84dd1590a7af837a23c8d2c405eaa0a7faef Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Wed, 31 Aug 2016 11:37:05 +0200
+Subject: [PATCH] spi: sh-msiof: Use ARCH_SHMOBILE instead of SUPERH
 
---WVXkb2QE2eH0aWe4--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+"spi_sh_msiof" is used on sh7723 and sh7724 only. As all of the above
+select ARCH_SHMOBILE, restrict its driver dependencies from SUPERH to
+ARCH_SHMOBILE.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Simon Horman <horms+renesas@verge.net.au>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index d6fb8d4b7786..056e3bada65f 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -549,7 +549,7 @@ config SPI_SC18IS602
+ config SPI_SH_MSIOF
+ 	tristate "SuperH MSIOF SPI controller"
+ 	depends on HAVE_CLK && HAS_DMA
+-	depends on SUPERH || ARCH_RENESAS || COMPILE_TEST
++	depends on ARCH_SHMOBILE || ARCH_RENESAS || COMPILE_TEST
+ 	help
+ 	  SPI driver for SuperH and SH Mobile MSIOF blocks.
+ 
+-- 
+2.8.1
+

@@ -1,19 +1,21 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: sc18is602: Add reset control via gpio pin." to the spi tree
-Date: Thu, 01 Sep 2016 21:35:52 +0100
-Message-ID: <E1bfYiG-00034f-0h@debutante>
-References: <1472628698-10599-2-git-send-email-preid@electromag.com.au>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Phil Reid <preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org>
+Subject: Applied "spi: loopback-test: mark rx_ranges_cmp() static" to the spi tree
+Date: Thu, 01 Sep 2016 21:35:46 +0100
+Message-ID: <E1bfYiA-000335-5d@debutante>
+References: <1472635307-16513-1-git-send-email-baoyou.xie@linaro.org>
+Cc: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TaqPxH82wqD4g@public.gmane.org, arnd-r2nGTMty4D4@public.gmane.org, baoyou.xie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+        xie.baoyou-Th6q7B73Y6EnDS1+zs4M5A@public.gmane.org
+To: Baoyou Xie <baoyou.xie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1472628698-10599-2-git-send-email-preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org>
+In-Reply-To: <1472635307-16513-1-git-send-email-baoyou.xie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: sc18is602: Add reset control via gpio pin.
+   spi: loopback-test: mark rx_ranges_cmp() static
 
 has been applied to the spi tree at
 
@@ -38,55 +40,38 @@ to this mail.
 Thanks,
 Mark
 
->From f99008013e199e6b88ef26c98ecb042c94c7450c Mon Sep 17 00:00:00 2001
-From: Phil Reid <preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org>
-Date: Wed, 31 Aug 2016 15:31:38 +0800
-Subject: [PATCH] spi: sc18is602: Add reset control via gpio pin.
+>From dc34b89a8c611946bfa18ddc322d355e97811f01 Mon Sep 17 00:00:00 2001
+From: Baoyou Xie <baoyou.xie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Date: Wed, 31 Aug 2016 17:21:47 +0800
+Subject: [PATCH] spi: loopback-test: mark rx_ranges_cmp() static
 
-This sc18is602 has a reset pin that may need to be deasserted.
-Add optional binding to specifiy the reset pin via a gpio and deassert
-during probe.
+We get 1 warning when building kernel with W=1:
+drivers/spi/spi-loopback-test.c:408:5: warning: no previous prototype for 'rx_ranges_cmp' [-Wmissing-prototypes]
 
-Signed-off-by: Phil Reid <preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org>
+In fact, this function is only used in the file in which it is
+declared and don't need a declaration, but can be made static.
+So this patch marks it 'static'.
+
+Signed-off-by: Baoyou Xie <baoyou.xie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Acked-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-sc18is602.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/spi/spi-loopback-test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-sc18is602.c b/drivers/spi/spi-sc18is602.c
-index 36af4d48a700..5666b5d20b87 100644
---- a/drivers/spi/spi-sc18is602.c
-+++ b/drivers/spi/spi-sc18is602.c
-@@ -23,6 +23,7 @@
- #include <linux/pm_runtime.h>
- #include <linux/of.h>
- #include <linux/platform_data/sc18is602.h>
-+#include <linux/gpio/consumer.h>
- 
- enum chips { sc18is602, sc18is602b, sc18is603 };
- 
-@@ -50,6 +51,8 @@ struct sc18is602 {
- 	u8			buffer[SC18IS602_BUFSIZ + 1];
- 	int			tlen;	/* Data queued for tx in buffer */
- 	int			rindex;	/* Receive data index in buffer */
-+
-+	struct gpio_desc	*reset;
+diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
+index faa1b133b0f1..50e620f4e8fe 100644
+--- a/drivers/spi/spi-loopback-test.c
++++ b/drivers/spi/spi-loopback-test.c
+@@ -405,7 +405,7 @@ struct rx_ranges {
+ 	u8 *end;
  };
  
- static int sc18is602_wait_ready(struct sc18is602 *hw, int len)
-@@ -257,6 +260,12 @@ static int sc18is602_probe(struct i2c_client *client,
- 	hw = spi_master_get_devdata(master);
- 	i2c_set_clientdata(client, hw);
- 
-+	/* assert reset and then release */
-+	hw->reset = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
-+	if (IS_ERR(hw->reset))
-+		return PTR_ERR(hw->reset);
-+	gpiod_set_value(hw->reset, 0);
-+
- 	hw->master = master;
- 	hw->client = client;
- 	hw->dev = dev;
+-int rx_ranges_cmp(void *priv, struct list_head *a, struct list_head *b)
++static int rx_ranges_cmp(void *priv, struct list_head *a, struct list_head *b)
+ {
+ 	struct rx_ranges *rx_a = list_entry(a, struct rx_ranges, list);
+ 	struct rx_ranges *rx_b = list_entry(b, struct rx_ranges, list);
 -- 
 2.8.1
 

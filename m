@@ -1,45 +1,110 @@
-From: Simon Horman <horms@verge.net.au>
-Subject: Re: [PATCH] spi: sh-msiof: Use ARCH_SHMOBILE instead of SUPERH
-Date: Thu, 1 Sep 2016 15:42:02 +0200
-Message-ID: <20160901134159.GA14300@verge.net.au>
-References: <1472636225-27091-1-git-send-email-geert+renesas@glider.be>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-renesas-soc@vger.kernel.org
-To: Geert Uytterhoeven <geert+renesas@glider.be>
-Return-path: <linux-renesas-soc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1472636225-27091-1-git-send-email-geert+renesas@glider.be>
-Sender: linux-renesas-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: fsl-espi: remove unneeded variable in fsl_espi_do_trans" to the spi tree
+Date: Thu, 01 Sep 2016 21:35:31 +0100
+Message-ID: <E1bfYhv-0002y8-0j@debutante>
+References: <683bca81-4522-78d7-338f-0e1a137f4f4f@gmail.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <683bca81-4522-78d7-338f-0e1a137f4f4f-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Aug 31, 2016 at 11:37:05AM +0200, Geert Uytterhoeven wrote:
-> "spi_sh_msiof" is used on sh7723 and sh7724 only. As all of the above
-> select ARCH_SHMOBILE, restrict its driver dependencies from SUPERH to
-> ARCH_SHMOBILE.
-> 
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+The patch
 
-Reviewed-by: Simon Horman <horms+renesas@verge.net.au>
+   spi: fsl-espi: remove unneeded variable in fsl_espi_do_trans
 
-> ---
->  drivers/spi/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-> index 5c8e51e96888cc53..96087e9fc998461c 100644
-> --- a/drivers/spi/Kconfig
-> +++ b/drivers/spi/Kconfig
-> @@ -556,7 +556,7 @@ config SPI_SC18IS602
->  config SPI_SH_MSIOF
->  	tristate "SuperH MSIOF SPI controller"
->  	depends on HAVE_CLK && HAS_DMA
-> -	depends on SUPERH || ARCH_RENESAS || COMPILE_TEST
-> +	depends on ARCH_SHMOBILE || ARCH_RENESAS || COMPILE_TEST
->  	help
->  	  SPI driver for SuperH and SH Mobile MSIOF blocks.
->  
-> -- 
-> 1.9.1
-> 
+has been applied to the spi tree at
+
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From dbd4fefb5b7cba19e3f89c097d93ad02049e38e3 Mon Sep 17 00:00:00 2001
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Thu, 25 Aug 2016 06:45:55 +0200
+Subject: [PATCH] spi: fsl-espi: remove unneeded variable in fsl_espi_do_trans
+
+Creating a message, adding one transfer, and then iterating over
+all transfers in the message doesn't make sense.
+We can simply use the original transfer directly.
+
+Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-fsl-espi.c | 23 ++++++++---------------
+ 1 file changed, 8 insertions(+), 15 deletions(-)
+
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index 029017818685..f9ef50444447 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -258,11 +258,9 @@ static void fsl_espi_do_trans(struct spi_message *m,
+ 	struct spi_device *spi = m->spi;
+ 	struct mpc8xxx_spi *mspi = spi_master_get_devdata(spi->master);
+ 	struct fsl_espi_transfer *espi_trans = tr;
+-	struct spi_message message;
+ 	struct spi_transfer *t, *first, trans;
+ 	int status = 0;
+ 
+-	spi_message_init(&message);
+ 	memset(&trans, 0, sizeof(trans));
+ 
+ 	first = list_first_entry(&m->transfers, struct spi_transfer,
+@@ -284,23 +282,18 @@ static void fsl_espi_do_trans(struct spi_message *m,
+ 	trans.len = espi_trans->len;
+ 	trans.tx_buf = espi_trans->tx_buf;
+ 	trans.rx_buf = espi_trans->rx_buf;
+-	spi_message_add_tail(&trans, &message);
+ 
+-	list_for_each_entry(t, &message.transfers, transfer_list) {
+-		if (t->bits_per_word || t->speed_hz)
+-			fsl_espi_setup_transfer(spi, t);
++	if (trans.bits_per_word || trans.speed_hz)
++		fsl_espi_setup_transfer(spi, &trans);
+ 
+-		if (t->len)
+-			status = fsl_espi_bufs(spi, t);
++	if (trans.len)
++		status = fsl_espi_bufs(spi, &trans);
+ 
+-		if (status) {
+-			status = -EMSGSIZE;
+-			break;
+-		}
++	if (status)
++		status = -EMSGSIZE;
+ 
+-		if (t->delay_usecs)
+-			udelay(t->delay_usecs);
+-	}
++	if (trans.delay_usecs)
++		udelay(trans.delay_usecs);
+ 
+ 	espi_trans->status = status;
+ 	fsl_espi_setup_transfer(spi, NULL);
+-- 
+2.8.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

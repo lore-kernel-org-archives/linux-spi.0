@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: fsl-espi: dont include irq.h" to the spi tree
-Date: Thu, 01 Sep 2016 21:35:43 +0100
-Message-ID: <E1bfYi7-00032A-8O@debutante>
-References: <3a4b4e11-9283-5d52-d125-66c7565913d4@gmail.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Applied "spi: sc18is602: Add reset control via gpio pin." to the spi tree
+Date: Thu, 01 Sep 2016 21:35:52 +0100
+Message-ID: <E1bfYiG-00034f-0h@debutante>
+References: <1472628698-10599-2-git-send-email-preid@electromag.com.au>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Phil Reid <preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <3a4b4e11-9283-5d52-d125-66c7565913d4-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1472628698-10599-2-git-send-email-preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: fsl-espi: dont include irq.h
+   spi: sc18is602: Add reset control via gpio pin.
 
 has been applied to the spi tree at
 
@@ -38,32 +38,55 @@ to this mail.
 Thanks,
 Mark
 
->From 6bdf03b30ed0ac72d309fe22aed8101f4cc6a2df Mon Sep 17 00:00:00 2001
-From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Thu, 25 Aug 2016 06:43:17 +0200
-Subject: [PATCH] spi: fsl-espi: dont include irq.h
+>From f99008013e199e6b88ef26c98ecb042c94c7450c Mon Sep 17 00:00:00 2001
+From: Phil Reid <preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org>
+Date: Wed, 31 Aug 2016 15:31:38 +0800
+Subject: [PATCH] spi: sc18is602: Add reset control via gpio pin.
 
-irq.h isn't needed and it even shouldn't be included, see comment
-at the beginning of this header file.
+This sc18is602 has a reset pin that may need to be deasserted.
+Add optional binding to specifiy the reset pin via a gpio and deassert
+during probe.
 
-Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Phil Reid <preid-qgqNFa1JUf/o2iN0hyhwsIdd74u8MsAO@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/spi/spi-sc18is602.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 96a2442c1623..d95fdd0632e4 100644
---- a/drivers/spi/spi-fsl-espi.c
-+++ b/drivers/spi/spi-fsl-espi.c
-@@ -12,7 +12,6 @@
- #include <linux/err.h>
- #include <linux/fsl_devices.h>
- #include <linux/interrupt.h>
--#include <linux/irq.h>
- #include <linux/module.h>
- #include <linux/mm.h>
+diff --git a/drivers/spi/spi-sc18is602.c b/drivers/spi/spi-sc18is602.c
+index 36af4d48a700..5666b5d20b87 100644
+--- a/drivers/spi/spi-sc18is602.c
++++ b/drivers/spi/spi-sc18is602.c
+@@ -23,6 +23,7 @@
+ #include <linux/pm_runtime.h>
  #include <linux/of.h>
+ #include <linux/platform_data/sc18is602.h>
++#include <linux/gpio/consumer.h>
+ 
+ enum chips { sc18is602, sc18is602b, sc18is603 };
+ 
+@@ -50,6 +51,8 @@ struct sc18is602 {
+ 	u8			buffer[SC18IS602_BUFSIZ + 1];
+ 	int			tlen;	/* Data queued for tx in buffer */
+ 	int			rindex;	/* Receive data index in buffer */
++
++	struct gpio_desc	*reset;
+ };
+ 
+ static int sc18is602_wait_ready(struct sc18is602 *hw, int len)
+@@ -257,6 +260,12 @@ static int sc18is602_probe(struct i2c_client *client,
+ 	hw = spi_master_get_devdata(master);
+ 	i2c_set_clientdata(client, hw);
+ 
++	/* assert reset and then release */
++	hw->reset = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
++	if (IS_ERR(hw->reset))
++		return PTR_ERR(hw->reset);
++	gpiod_set_value(hw->reset, 0);
++
+ 	hw->master = master;
+ 	hw->client = client;
+ 	hw->dev = dev;
 -- 
 2.8.1
 

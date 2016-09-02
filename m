@@ -1,8 +1,8 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v2 12/23] spi: fsl-espi: fix status handling in
- fsl_espi_do_one_msg
-Date: Fri, 2 Sep 2016 23:22:15 +0200
-Message-ID: <7aede0d3-1ec5-81c4-5079-7685b3b2d3bf@gmail.com>
+Subject: [PATCH v2 16/23] spi: fsl-espi: improve return value handling in
+ fsl_espi_bufs
+Date: Fri, 2 Sep 2016 23:22:24 +0200
+Message-ID: <7112aa16-5106-0cdb-0006-594315f1031c@gmail.com>
 References: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -14,37 +14,40 @@ In-Reply-To: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217-Re5JQEeQqe8AvxtiuMwx3w@public
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-If an error occurred during message handling return this error instead
-of always returning 0 and align the code with the generic
-implementation in spi_transfer_one_message.
+Return a proper status code from fsl_espi_bufs instead of returning
+the number of remaining words and let the caller evaluate it.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
 v2:
 - rebased
 ---
- drivers/spi/spi-fsl-espi.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 5f01b65..6b60f7b 100644
+index f8a6dd1..8d6a570 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -381,9 +381,12 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
- 		ret = fsl_espi_rw_trans(m, &espi_trans, rx_buf);
+@@ -258,7 +258,7 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	/* disable rx ints */
+ 	mpc8xxx_spi_write_reg(&reg_base->mask, 0);
  
- 	m->actual_length = espi_trans.actual_length;
--	m->status = ret;
-+	if (m->status == -EINPROGRESS)
-+		m->status = ret;
-+
- 	spi_finalize_current_message(master);
--	return 0;
-+
-+	return ret;
+-	return mpc8xxx_spi->count;
++	return mpc8xxx_spi->count > 0 ? -EMSGSIZE : 0;
  }
  
- static int fsl_espi_setup(struct spi_device *spi)
+ static int fsl_espi_do_trans(struct spi_message *m, struct spi_transfer *trans)
+@@ -288,9 +288,6 @@ static int fsl_espi_do_trans(struct spi_message *m, struct spi_transfer *trans)
+ 	if (trans->len)
+ 		ret = fsl_espi_bufs(spi, trans);
+ 
+-	if (ret)
+-		ret = -EMSGSIZE;
+-
+ 	if (trans->delay_usecs)
+ 		udelay(trans->delay_usecs);
+ 
 -- 
 2.9.2
 

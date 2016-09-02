@@ -1,7 +1,7 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v2 21/23] spi: fsl-espi: factor out handling of read data
-Date: Fri, 2 Sep 2016 23:22:36 +0200
-Message-ID: <23b15e58-4833-7180-5c5d-81af382c54c0@gmail.com>
+Subject: [PATCH v2 18/23] spi: fsl-espi: improve the ISR frame
+Date: Fri, 2 Sep 2016 23:22:29 +0200
+Message-ID: <ed7206a6-cba3-ffd9-0a38-f615312f8853@gmail.com>
 References: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -13,115 +13,76 @@ In-Reply-To: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217-Re5JQEeQqe8AvxtiuMwx3w@public
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Factor out copying read data to the read buffers in the original
-message to a new function fsl_espi_copy_from_buf.
-This also allows to simplify fsl_espi_copy_to_buf.
+Improve the ISR frame:
+- move resetting the event bits to the ISR frame
+- change type of parameter irq to int
+- make sure that the event bits match at least one bit in the
+  interrupt mask register
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
 v2:
 - rebased
 ---
- drivers/spi/spi-fsl-espi.c | 41 +++++++++++++++++++++--------------------
- 1 file changed, 21 insertions(+), 20 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 79c89bf..88935a3 100644
+index 190ca5c..534dc14 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -77,25 +77,32 @@ struct fsl_espi_reg {
- 
- #define AUTOSUSPEND_TIMEOUT 2000
- 
--static unsigned int fsl_espi_copy_to_buf(struct spi_message *m,
--					 struct mpc8xxx_spi *mspi)
-+static void fsl_espi_copy_to_buf(struct spi_message *m,
-+				 struct mpc8xxx_spi *mspi)
- {
--	unsigned int tx_only = 0;
- 	struct spi_transfer *t;
- 	u8 *buf = mspi->local_buf;
- 
- 	list_for_each_entry(t, &m->transfers, transfer_list) {
--		if (t->tx_buf) {
-+		if (t->tx_buf)
- 			memcpy(buf, t->tx_buf, t->len);
--			if (!t->rx_buf)
--				tx_only += t->len;
--		} else {
-+		else
- 			memset(buf, 0, t->len);
--		}
- 		buf += t->len;
+@@ -451,17 +451,11 @@ static void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
+ 				&reg_base->event)) & SPIE_NF), 1000, 0);
+ 		if (!ret) {
+ 			dev_err(mspi->dev, "tired waiting for SPIE_NF\n");
+-
+-			/* Clear the SPIE bits */
+-			mpc8xxx_spi_write_reg(&reg_base->event, events);
+ 			complete(&mspi->done);
+ 			return;
+ 		}
  	}
-+}
+ 
+-	/* Clear the events */
+-	mpc8xxx_spi_write_reg(&reg_base->event, events);
+-
+ 	mspi->count -= 1;
+ 	if (mspi->count) {
+ 		u32 word = mspi->get_tx(mspi);
+@@ -472,23 +466,26 @@ static void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
+ 	}
+ }
+ 
+-static irqreturn_t fsl_espi_irq(s32 irq, void *context_data)
++static irqreturn_t fsl_espi_irq(int irq, void *context_data)
+ {
+ 	struct mpc8xxx_spi *mspi = context_data;
+ 	struct fsl_espi_reg *reg_base = mspi->reg_base;
+-	irqreturn_t ret = IRQ_NONE;
+-	u32 events;
++	u32 mask, events;
+ 
+-	/* Get interrupt events(tx/rx) */
++	/* Get interrupt mask and events and check that irq belongs to us */
++	mask = mpc8xxx_spi_read_reg(&reg_base->mask);
+ 	events = mpc8xxx_spi_read_reg(&reg_base->event);
+-	if (events)
+-		ret = IRQ_HANDLED;
++	if (!(mask & events))
++		return IRQ_NONE;
+ 
+ 	dev_vdbg(mspi->dev, "%s: events %x\n", __func__, events);
+ 
+ 	fsl_espi_cpu_irq(mspi, events);
+ 
+-	return ret;
++	/* Clear the events */
++	mpc8xxx_spi_write_reg(&reg_base->event, events);
 +
-+static void fsl_espi_copy_from_buf(struct spi_message *m,
-+				   struct mpc8xxx_spi *mspi)
-+{
-+	struct spi_transfer *t;
-+	u8 *buf = mspi->local_buf;
- 
--	return tx_only;
-+	list_for_each_entry(t, &m->transfers, transfer_list) {
-+		if (t->rx_buf)
-+			memcpy(t->rx_buf, buf, t->len);
-+		buf += t->len;
-+	}
++	return IRQ_HANDLED;
  }
  
- static int fsl_espi_check_message(struct spi_message *m)
-@@ -287,20 +294,17 @@ static int fsl_espi_do_trans(struct spi_message *m, struct spi_transfer *trans)
- 	return ret;
- }
- 
--static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans,
--			  u8 *rx_buff)
-+static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans)
- {
- 	struct mpc8xxx_spi *mspi = spi_master_get_devdata(m->spi->master);
--	unsigned int tx_only;
- 	int ret;
- 
--	tx_only = fsl_espi_copy_to_buf(m, mspi);
-+	fsl_espi_copy_to_buf(m, mspi);
- 
- 	ret = fsl_espi_do_trans(m, trans);
- 
--	/* If there is at least one RX byte then copy it to rx_buff */
--	if (!ret && rx_buff && trans->len > tx_only)
--		memcpy(rx_buff, trans->rx_buf + tx_only, trans->len - tx_only);
-+	if (!ret)
-+		fsl_espi_copy_from_buf(m, mspi);
- 
- 	return ret;
- }
-@@ -309,7 +313,6 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
- 			       struct spi_message *m)
- {
- 	struct mpc8xxx_spi *mspi = spi_master_get_devdata(m->spi->master);
--	u8 *rx_buf = NULL;
- 	unsigned int delay_usecs = 0, xfer_len = 0;
- 	struct spi_transfer *t, trans = {};
- 	int ret;
-@@ -319,8 +322,6 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
- 		goto out;
- 
- 	list_for_each_entry(t, &m->transfers, transfer_list) {
--		if (t->rx_buf)
--			rx_buf = t->rx_buf;
- 		if ((t->tx_buf) || (t->rx_buf))
- 			xfer_len += t->len;
- 		if (t->delay_usecs > delay_usecs)
-@@ -337,7 +338,7 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
- 	trans.tx_buf = mspi->local_buf;
- 	trans.rx_buf = mspi->local_buf;
- 
--	ret = fsl_espi_trans(m, &trans, rx_buf);
-+	ret = fsl_espi_trans(m, &trans);
- 
- 	m->actual_length = ret ? 0 : trans.len;
- out:
+ #ifdef CONFIG_PM
 -- 
 2.9.2
 

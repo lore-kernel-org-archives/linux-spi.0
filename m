@@ -1,47 +1,45 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 02/23] spi: fsl-espi: remove unused elements n_rx and
- n_tx in struct fsl_espi_transfer
-Date: Sat, 3 Sep 2016 01:09:10 +0100
-Message-ID: <20160903000910.GP3950@sirena.org.uk>
-References: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217@gmail.com>
- <52c5893a-5927-4c83-4838-d618d434922c@gmail.com>
+Subject: Re: [PATCH 1/2] spi: dw: fix multiple slaves with different baudrates
+Date: Sat, 3 Sep 2016 12:01:18 +0100
+Message-ID: <20160903110118.GT3950@sirena.org.uk>
+References: <84f71116-1c79-6769-d537-860ac6ea0de9@mseidel.net>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="hOmQO3H5Qmmwdmk8"
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+        protocol="application/pgp-signature"; boundary="GdlkuMH+DRYbUHkj"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Matthias Seidel <kernel-NoMTM8u0nx3R7s880joybQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <52c5893a-5927-4c83-4838-d618d434922c-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <84f71116-1c79-6769-d537-860ac6ea0de9-NoMTM8u0nx3R7s880joybQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---hOmQO3H5Qmmwdmk8
+--GdlkuMH+DRYbUHkj
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Sep 02, 2016 at 10:02:34PM +0200, Heiner Kallweit wrote:
-> Both elements are not used, so remove them.
+On Fri, Sep 02, 2016 at 05:39:12PM +0200, Matthias Seidel wrote:
+> Add current master clock to dws struct and compare it against the
+> requestedtransfer speed. Update clock divider only if necessary.
 
-I'm missing a lot of patches from this series, at least the first one
-but there's a bunch of others too.  Please check and resend.
+This doesn't apply against current code, please check and resend.
 
---hOmQO3H5Qmmwdmk8
+--GdlkuMH+DRYbUHkj
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEcBAEBCAAGBQJXyhSlAAoJECTWi3JdVIfQmfsH/iE/1rRkrIMXtRkBCQ4yq5xU
-l+Fi+W+wtzBDWJ7TSLh7g2wIgGexd7WBz2qJmBV823e86NQbxE/qDahN1X9sAmvI
-e83601sE3YSsz9Z4S/uDiCFgGjTtbKf3keUoQ1y7+JtsMPr2NWePcLu2yDAE88Ck
-SaD8bXX00aI1Q/x47G5WonEPIpMYC3SEAAKwT+vzLjpuRKXNl25S9R99/mFKG3bs
-Tz/78Ac+JdFForqA3Jvhn8J7SRk5uXnMYQ1Id7uQHqRe5J6OXyzSg04n6cskD9cz
-slaNM771wN4XMOQ5FeVu56sfs6+HmoKPn7LyhGu/lTJ4TzAR7ZYZCEWfTvCiLQw=
-=h8KX
+iQEcBAEBCAAGBQJXyq19AAoJECTWi3JdVIfQhNAH+wXSljyWzsp6OS8059U9/+Ec
+QdOYXlsP2PGjLWK3UOvRW1v0XcjE8LSJ10HaQwDsWMVrQCnWvR/nvILe4MvKydCn
+pQ03mZLK8fhzfidcM9LfSoAs/FZoXrLQWnHuWQiDW9+LaqIZxBxtfyTv4LAsIC5R
+XVVVK+kk1cy3K/H/qPqcXL70t0dhkf79zS50Aa1s5PvFItBsM/So3gs8SWyL4EL0
+56yGPhhA9oywaEnaAKh11zqJE4a8/x312y9gqNOWZm1NChqOa1U3xDd2c0vaa1Yg
+e1sZVgcbpO0umi+vroLbgXYBgqKIwUrUmHoYp7WSGtSQGQ4KFGZZdXepKEzdM90=
+=GJXO
 -----END PGP SIGNATURE-----
 
---hOmQO3H5Qmmwdmk8--
+--GdlkuMH+DRYbUHkj--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

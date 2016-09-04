@@ -1,8 +1,8 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v2 08/18] spi: fsl-espi: remove element actual_length from
- struct fsl_espi_trans
-Date: Sun, 4 Sep 2016 09:59:41 +0200
-Message-ID: <67c8d6d6-322e-65e0-b78d-bbb8354353c9@gmail.com>
+Subject: [PATCH v2 07/18] spi: fsl-espi: fix status handling in
+ fsl_espi_do_one_msg
+Date: Sun, 4 Sep 2016 09:59:23 +0200
+Message-ID: <5153add7-b1b8-8634-3547-b048225330a5@gmail.com>
 References: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -14,65 +14,37 @@ In-Reply-To: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217-Re5JQEeQqe8AvxtiuMwx3w@public
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-If an error occurs during processing the message, then we don't have
-to populate the actual_length element of struct message.
-So we can get rid of element actual_length in struct
-fsl_espi_transfer.
+If an error occurred during message handling return this error instead
+of always returning 0 and align the code with the generic
+implementation in spi_transfer_one_message.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
 v2:
 - rebased
 ---
- drivers/spi/spi-fsl-espi.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 6b60f7b..726d5fd 100644
+index 5f01b65..6b60f7b 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -41,7 +41,6 @@ struct fsl_espi_transfer {
- 	const void *tx_buf;
- 	void *rx_buf;
- 	unsigned len;
--	unsigned actual_length;
- };
- 
- /* eSPI Controller mode register definitions */
-@@ -327,8 +326,6 @@ static int fsl_espi_cmd_trans(struct spi_message *m,
- 	espi_trans->rx_buf = mspi->local_buf;
- 	ret = fsl_espi_do_trans(m, espi_trans);
- 
--	espi_trans->actual_length = espi_trans->len;
--
- 	return ret;
- }
- 
-@@ -350,7 +347,6 @@ static int fsl_espi_rw_trans(struct spi_message *m,
- 		if (trans->len > tx_only)
- 			memcpy(rx_buff, trans->rx_buf + tx_only,
- 			       trans->len - tx_only);
--		trans->actual_length += trans->len;
- 	}
- 
- 	return ret;
-@@ -373,14 +369,14 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
- 	}
- 
- 	espi_trans.len = xfer_len;
--	espi_trans.actual_length = 0;
- 
- 	if (!rx_buf)
- 		ret = fsl_espi_cmd_trans(m, &espi_trans, NULL);
- 	else
+@@ -381,9 +381,12 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
  		ret = fsl_espi_rw_trans(m, &espi_trans, rx_buf);
  
--	m->actual_length = espi_trans.actual_length;
-+	m->actual_length = ret ? 0 : espi_trans.len;
+ 	m->actual_length = espi_trans.actual_length;
+-	m->status = ret;
++	if (m->status == -EINPROGRESS)
++		m->status = ret;
 +
- 	if (m->status == -EINPROGRESS)
- 		m->status = ret;
+ 	spi_finalize_current_message(master);
+-	return 0;
++
++	return ret;
+ }
  
+ static int fsl_espi_setup(struct spi_device *spi)
 -- 
 2.9.2
 

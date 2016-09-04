@@ -1,8 +1,8 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v2 10/18] spi: fsl-espi: merge fsl_espi_cmd_trans and
- fsl_espi_rw_trans
-Date: Sun, 4 Sep 2016 10:00:56 +0200
-Message-ID: <077f4dc7-be65-41e4-07c3-73bd8b486ae0@gmail.com>
+Subject: [PATCH v2 11/18] spi: fsl-espi: improve return value handling in
+ fsl_espi_bufs
+Date: Sun, 4 Sep 2016 10:01:09 +0200
+Message-ID: <58e22410-1ae3-7d2d-91d1-3f827b4d0fa1@gmail.com>
 References: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -14,74 +14,39 @@ In-Reply-To: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217-Re5JQEeQqe8AvxtiuMwx3w@public
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-fsl_espi_cmd_trans and fsl_espi_rw_trans share most of the code so
-we can merge them.
+Return a proper status code from fsl_espi_bufs instead of returning
+the number of remaining words and let the caller evaluate it.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
 v2:
 - rebased
 ---
- drivers/spi/spi-fsl-espi.c | 33 ++++++---------------------------
- 1 file changed, 6 insertions(+), 27 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 8554f18..f8a6dd1 100644
+index f8a6dd1..8d6a570 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -299,23 +299,8 @@ static int fsl_espi_do_trans(struct spi_message *m, struct spi_transfer *trans)
- 	return ret;
+@@ -258,7 +258,7 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	/* disable rx ints */
+ 	mpc8xxx_spi_write_reg(&reg_base->mask, 0);
+ 
+-	return mpc8xxx_spi->count;
++	return mpc8xxx_spi->count > 0 ? -EMSGSIZE : 0;
  }
  
--static int fsl_espi_cmd_trans(struct spi_message *m,
--			      struct spi_transfer *trans, u8 *rx_buff)
--{
--	struct mpc8xxx_spi *mspi = spi_master_get_devdata(m->spi->master);
--	int ret;
+ static int fsl_espi_do_trans(struct spi_message *m, struct spi_transfer *trans)
+@@ -288,9 +288,6 @@ static int fsl_espi_do_trans(struct spi_message *m, struct spi_transfer *trans)
+ 	if (trans->len)
+ 		ret = fsl_espi_bufs(spi, trans);
+ 
+-	if (ret)
+-		ret = -EMSGSIZE;
 -
--	fsl_espi_copy_to_buf(m, mspi);
--
--	trans->tx_buf = mspi->local_buf;
--	trans->rx_buf = mspi->local_buf;
--	ret = fsl_espi_do_trans(m, trans);
--
--	return ret;
--}
--
--static int fsl_espi_rw_trans(struct spi_message *m,
--			     struct spi_transfer *trans, u8 *rx_buff)
-+static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans,
-+			  u8 *rx_buff)
- {
- 	struct mpc8xxx_spi *mspi = spi_master_get_devdata(m->spi->master);
- 	unsigned int tx_only;
-@@ -327,12 +312,9 @@ static int fsl_espi_rw_trans(struct spi_message *m,
- 	trans->rx_buf = mspi->local_buf;
- 	ret = fsl_espi_do_trans(m, trans);
- 
--	if (!ret) {
--		/* If there is at least one RX byte then copy it to rx_buff */
--		if (trans->len > tx_only)
--			memcpy(rx_buff, trans->rx_buf + tx_only,
--			       trans->len - tx_only);
--	}
-+	/* If there is at least one RX byte then copy it to rx_buff */
-+	if (!ret && rx_buff && trans->len > tx_only)
-+		memcpy(rx_buff, trans->rx_buf + tx_only, trans->len - tx_only);
- 
- 	return ret;
- }
-@@ -354,10 +336,7 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
- 
- 	trans.len = xfer_len;
- 
--	if (!rx_buf)
--		ret = fsl_espi_cmd_trans(m, &trans, NULL);
--	else
--		ret = fsl_espi_rw_trans(m, &trans, rx_buf);
-+	ret = fsl_espi_trans(m, &trans, rx_buf);
- 
- 	m->actual_length = ret ? 0 : trans.len;
+ 	if (trans->delay_usecs)
+ 		udelay(trans->delay_usecs);
  
 -- 
 2.9.2

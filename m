@@ -1,8 +1,7 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v2 03/18] spi: fsl-espi: remove unneeded check in
- fsl_espi_do_trans
-Date: Sun, 4 Sep 2016 09:57:18 +0200
-Message-ID: <5a69cfbe-d636-c991-0e59-4b554a081490@gmail.com>
+Subject: [PATCH v2 05/18] spi: fsl-espi: factor out filling the local buffer
+Date: Sun, 4 Sep 2016 09:58:18 +0200
+Message-ID: <c64ac991-9d7a-d69e-872f-cde0be03a90a@gmail.com>
 References: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -14,30 +13,108 @@ In-Reply-To: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217-Re5JQEeQqe8AvxtiuMwx3w@public
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-SPI core takes care that both values are always populated.
+Better structure the code by factoring out filling the local buffer.
+
+In addition don't initialize the complete local buffer at the
+beginning of fsl_espi_do_one_msg. Instead move initialization of
+those parts of the local buffer to be used for transfers w/o tx_buf
+to fsl_espi_copy_to_buf.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
 v2:
-- switch order of patches to do trivial changes first
+- fixed coding style issue
+- improved commit message
 ---
- drivers/spi/spi-fsl-espi.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 46 ++++++++++++++++++++++++----------------------
+ 1 file changed, 24 insertions(+), 22 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 51696a6..8e6ef9b 100644
+index a3a75ae..c0023c0 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -300,8 +300,7 @@ static void fsl_espi_do_trans(struct spi_message *m,
- 	trans.tx_buf = espi_trans->tx_buf;
- 	trans.rx_buf = espi_trans->rx_buf;
+@@ -85,6 +85,27 @@ struct fsl_espi_transfer {
  
--	if (trans.bits_per_word || trans.speed_hz)
--		fsl_espi_setup_transfer(spi, &trans);
-+	fsl_espi_setup_transfer(spi, &trans);
+ #define AUTOSUSPEND_TIMEOUT 2000
  
- 	if (trans.len)
- 		status = fsl_espi_bufs(spi, &trans);
++static unsigned int fsl_espi_copy_to_buf(struct spi_message *m,
++					 struct mpc8xxx_spi *mspi)
++{
++	unsigned int tx_only = 0;
++	struct spi_transfer *t;
++	u8 *buf = mspi->local_buf;
++
++	list_for_each_entry(t, &m->transfers, transfer_list) {
++		if (t->tx_buf) {
++			memcpy(buf, t->tx_buf, t->len);
++			if (!t->rx_buf)
++				tx_only += t->len;
++		} else {
++			memset(buf, 0, t->len);
++		}
++		buf += t->len;
++	}
++
++	return tx_only;
++}
++
+ static void fsl_espi_change_mode(struct spi_device *spi)
+ {
+ 	struct mpc8xxx_spi *mspi = spi_master_get_devdata(spi->master);
+@@ -301,16 +322,9 @@ static void fsl_espi_cmd_trans(struct spi_message *m,
+ 				struct fsl_espi_transfer *trans, u8 *rx_buff)
+ {
+ 	struct mpc8xxx_spi *mspi = spi_master_get_devdata(m->spi->master);
+-	struct spi_transfer *t;
+-	int i = 0;
+ 	struct fsl_espi_transfer *espi_trans = trans;
+ 
+-	list_for_each_entry(t, &m->transfers, transfer_list) {
+-		if (t->tx_buf) {
+-			memcpy(mspi->local_buf + i, t->tx_buf, t->len);
+-			i += t->len;
+-		}
+-	}
++	fsl_espi_copy_to_buf(m, mspi);
+ 
+ 	espi_trans->tx_buf = mspi->local_buf;
+ 	espi_trans->rx_buf = mspi->local_buf;
+@@ -323,18 +337,9 @@ static void fsl_espi_rw_trans(struct spi_message *m,
+ 				struct fsl_espi_transfer *trans, u8 *rx_buff)
+ {
+ 	struct mpc8xxx_spi *mspi = spi_master_get_devdata(m->spi->master);
+-	struct spi_transfer *t;
+-	unsigned int tx_only = 0;
+-	int i = 0;
++	unsigned int tx_only;
+ 
+-	list_for_each_entry(t, &m->transfers, transfer_list) {
+-		if (t->tx_buf) {
+-			memcpy(mspi->local_buf + i, t->tx_buf, t->len);
+-			i += t->len;
+-			if (!t->rx_buf)
+-				tx_only += t->len;
+-		}
+-	}
++	tx_only = fsl_espi_copy_to_buf(m, mspi);
+ 
+ 	trans->tx_buf = mspi->local_buf;
+ 	trans->rx_buf = mspi->local_buf;
+@@ -352,14 +357,11 @@ static void fsl_espi_rw_trans(struct spi_message *m,
+ static int fsl_espi_do_one_msg(struct spi_master *master,
+ 			       struct spi_message *m)
+ {
+-	struct mpc8xxx_spi *mspi = spi_master_get_devdata(master);
+ 	struct spi_transfer *t;
+ 	u8 *rx_buf = NULL;
+ 	unsigned int xfer_len = 0;
+ 	struct fsl_espi_transfer espi_trans;
+ 
+-	memset(mspi->local_buf, 0, SPCOM_TRANLEN_MAX);
+-
+ 	list_for_each_entry(t, &m->transfers, transfer_list) {
+ 		if (t->rx_buf)
+ 			rx_buf = t->rx_buf;
 -- 
 2.9.2
 

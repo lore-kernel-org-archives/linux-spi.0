@@ -1,63 +1,78 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 04/18] spi: fsl-espi: pre-allocate message buffer
-Date: Tue, 6 Sep 2016 11:58:33 +0100
-Message-ID: <20160906105833.GL3950@sirena.org.uk>
-References: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217@gmail.com>
- <cabc3522-8ca9-516a-e0ef-5a2ed9ad8507@gmail.com>
- <0e60b4b5-5016-e1c3-d29d-b81a41f64f48@gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="mgiPvHqStUXOBTSF"
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Subject: Applied "spi: fsl-espi: simplify fsl_espi_setup_transfer" to the spi tree
+Date: Tue, 06 Sep 2016 12:29:47 +0100
+Message-ID: <E1bhEZX-00047M-B4@finisterre>
+References: <b65bdf36-d8cd-dc67-54ad-64672e367d2f@gmail.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <0e60b4b5-5016-e1c3-d29d-b81a41f64f48-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <b65bdf36-d8cd-dc67-54ad-64672e367d2f-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---mgiPvHqStUXOBTSF
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   spi: fsl-espi: simplify fsl_espi_setup_transfer
 
-On Sun, Sep 04, 2016 at 09:58:02AM +0200, Heiner Kallweit wrote:
-> Currently the driver allocates a 64kb buffer with each single message.
-> On systems with little and fragmented memory this can result in
-> memory allocation errors. Solve this by pre-allocating a buffer.
->=20
-> This patch was developed in OpenWRT long ago, however it never
-> made it upstream. Author: Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
->=20
-> I slightly modified the original patch to re-initialize the buffer
-> at the beginning of each transfer.
->=20
-> Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+has been applied to the spi tree at
 
-When you sent this previously I asked what happened with the signoff
-=66rom Gabor.  A little Google tells me that he did in fact sign off the
-copy that's in OpenWRT.  Please don't drop signoffs, they're important
-for tracking licensing - see SubmittingPatches for details.  If the
-modifications you made really are slight as you say then I'd also expect
-Gabor's authorship to be preserved.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
---mgiPvHqStUXOBTSF
-Content-Type: application/pgp-signature; name="signature.asc"
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
------BEGIN PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEcBAEBCAAGBQJXzqFYAAoJECTWi3JdVIfQKUEIAIHpLgQ9hXHiWrSg0l8PpCPr
-1YM21GGnOLsODApx1WEVBMwfLHbr36FYMGE5C+0kMHssTqKQ16uBIWunIBuCuXsu
-P0f5fFTD7Mex55mCihH3AKPnU79BBQ6sI1wGyqsZVGQ77XH715Iap8G4/n8scFcm
-yam/19oyPVqLRQHDB27m5esPcltcrKR1NcuAloypNjER5Fq8a6gy1zT1J/cb3RHi
-VaBzd5fFpt7MmpueJJA0R+TAg6S+qb/yGJ9c+smLvQwJwyc3mMC/WsoYLZMVrZqv
-m9vY4wTxLAjtZX8pMaCyREFn0tdyB5KZuC4SDpfkrAlr/iHu1bKAOFLIYwo0Im4=
-=oIu1
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---mgiPvHqStUXOBTSF--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From a755af52f8ef278985d1475070c0647f2e6e47a7 Mon Sep 17 00:00:00 2001
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Sun, 4 Sep 2016 09:56:57 +0200
+Subject: [PATCH] spi: fsl-espi: simplify fsl_espi_setup_transfer
+
+Simplify fsl_espi_setup_transfer a little.
+
+Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-fsl-espi.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index a9004fe5a5ed..b00313bed7e9 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -166,12 +166,10 @@ static void fsl_espi_setup_transfer(struct spi_device *spi,
+ 	mpc8xxx_spi->get_rx = cs->get_rx;
+ 	mpc8xxx_spi->get_tx = cs->get_tx;
+ 
+-	bits_per_word = bits_per_word - 1;
+-
+ 	/* mask out bits we are going to set */
+ 	cs->hw_mode &= ~(CSMODE_LEN(0xF) | CSMODE_DIV16 | CSMODE_PM(0xF));
+ 
+-	cs->hw_mode |= CSMODE_LEN(bits_per_word);
++	cs->hw_mode |= CSMODE_LEN(bits_per_word - 1);
+ 
+ 	if ((mpc8xxx_spi->spibrg / hz) > 64) {
+ 		cs->hw_mode |= CSMODE_DIV16;
+-- 
+2.9.3
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,20 +1,20 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: fsl-espi: remove unneeded check in fsl_espi_do_trans" to the spi tree
-Date: Tue, 06 Sep 2016 12:29:42 +0100
-Message-ID: <E1bhEZS-00046b-Is@finisterre>
-References: <a246d482-9c6c-72ce-5179-f661de42cb5b@gmail.com>
+Subject: Applied "spi: fsl-espi: remove unused elements n_rx and n_tx in struct fsl_espi_transfer" to the spi tree
+Date: Tue, 06 Sep 2016 12:29:52 +0100
+Message-ID: <E1bhEZc-000488-3R@finisterre>
+References: <52c5893a-5927-4c83-4838-d618d434922c@gmail.com>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
         linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <a246d482-9c6c-72ce-5179-f661de42cb5b-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <52c5893a-5927-4c83-4838-d618d434922c-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: fsl-espi: remove unneeded check in fsl_espi_do_trans
+   spi: fsl-espi: remove unused elements n_rx and n_tx in struct fsl_espi_transfer
 
 has been applied to the spi tree at
 
@@ -39,33 +39,59 @@ to this mail.
 Thanks,
 Mark
 
->From 71581a1507e642bbc6f698a3f43355552ee8056f Mon Sep 17 00:00:00 2001
+>From daae020ce9fe4324322c6ed18a840234a05d76b3 Mon Sep 17 00:00:00 2001
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Sun, 4 Sep 2016 09:57:18 +0200
-Subject: [PATCH] spi: fsl-espi: remove unneeded check in fsl_espi_do_trans
+Date: Sun, 4 Sep 2016 09:53:01 +0200
+Subject: [PATCH] spi: fsl-espi: remove unused elements n_rx and n_tx in struct
+ fsl_espi_transfer
 
-SPI core takes care that both values are always populated.
+Both elements are not used, so remove them.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index b00313bed7e9..16fff7237ab2 100644
+index f9ef50444447..a9004fe5a5ed 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -279,8 +279,7 @@ static void fsl_espi_do_trans(struct spi_message *m,
- 	trans.tx_buf = espi_trans->tx_buf;
- 	trans.rx_buf = espi_trans->rx_buf;
+@@ -41,8 +41,6 @@ struct fsl_espi_transfer {
+ 	const void *tx_buf;
+ 	void *rx_buf;
+ 	unsigned len;
+-	unsigned n_tx;
+-	unsigned n_rx;
+ 	unsigned actual_length;
+ 	int status;
+ };
+@@ -371,24 +369,16 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
+ {
+ 	struct spi_transfer *t;
+ 	u8 *rx_buf = NULL;
+-	unsigned int n_tx = 0;
+-	unsigned int n_rx = 0;
+ 	unsigned int xfer_len = 0;
+ 	struct fsl_espi_transfer espi_trans;
  
--	if (trans.bits_per_word || trans.speed_hz)
--		fsl_espi_setup_transfer(spi, &trans);
-+	fsl_espi_setup_transfer(spi, &trans);
+ 	list_for_each_entry(t, &m->transfers, transfer_list) {
+-		if (t->tx_buf)
+-			n_tx += t->len;
+-		if (t->rx_buf) {
+-			n_rx += t->len;
++		if (t->rx_buf)
+ 			rx_buf = t->rx_buf;
+-		}
+ 		if ((t->tx_buf) || (t->rx_buf))
+ 			xfer_len += t->len;
+ 	}
  
- 	if (trans.len)
- 		status = fsl_espi_bufs(spi, &trans);
+-	espi_trans.n_tx = n_tx;
+-	espi_trans.n_rx = n_rx;
+ 	espi_trans.len = xfer_len;
+ 	espi_trans.actual_length = 0;
+ 	espi_trans.status = 0;
 -- 
 2.9.3
 

@@ -1,51 +1,63 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 2/2] spi: dw: round up result of calculation for clock
- divider
-Date: Tue, 6 Sep 2016 11:53:52 +0100
-Message-ID: <20160906105352.GK3950@sirena.org.uk>
-References: <20160904020535.2bb2ab68@vm>
+Subject: Re: [PATCH v2 04/18] spi: fsl-espi: pre-allocate message buffer
+Date: Tue, 6 Sep 2016 11:58:33 +0100
+Message-ID: <20160906105833.GL3950@sirena.org.uk>
+References: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217@gmail.com>
+ <cabc3522-8ca9-516a-e0ef-5a2ed9ad8507@gmail.com>
+ <0e60b4b5-5016-e1c3-d29d-b81a41f64f48@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="aglTZS2R0flMmvQN"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Matthias Seidel <kernel-NoMTM8u0nx3R7s880joybQ@public.gmane.org>
+        protocol="application/pgp-signature"; boundary="mgiPvHqStUXOBTSF"
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20160904020535.2bb2ab68@vm>
+In-Reply-To: <0e60b4b5-5016-e1c3-d29d-b81a41f64f48-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---aglTZS2R0flMmvQN
+--mgiPvHqStUXOBTSF
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Sep 04, 2016 at 02:05:35AM +0200, Matthias Seidel wrote:
+On Sun, Sep 04, 2016 at 09:58:02AM +0200, Heiner Kallweit wrote:
+> Currently the driver allocates a 64kb buffer with each single message.
+> On systems with little and fragmented memory this can result in
+> memory allocation errors. Solve this by pre-allocating a buffer.
+>=20
+> This patch was developed in OpenWRT long ago, however it never
+> made it upstream. Author: Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+>=20
+> I slightly modified the original patch to re-initialize the buffer
+> at the beginning of each transfer.
+>=20
+> Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
->  			/* clk_div doesn't support odd number */
-> -			chip->clk_div = (dws->max_freq / transfer->speed_hz + 1) & 0xfffe;
-> +			chip->clk_div = ((dws->max_freq + transfer->speed_hz) /
-> +				transfer->speed_hz + 1) & 0xfffe;
+When you sent this previously I asked what happened with the signoff
+=66rom Gabor.  A little Google tells me that he did in fact sign off the
+copy that's in OpenWRT.  Please don't drop signoffs, they're important
+for tracking licensing - see SubmittingPatches for details.  If the
+modifications you made really are slight as you say then I'd also expect
+Gabor's authorship to be preserved.
 
-Can we not use DIV_ROUND_UP here if that's what we're trying to do?  The
-above probably needs a comment if not, I'm finding the intent rather
-confusing looking at the code.
-
---aglTZS2R0flMmvQN
+--mgiPvHqStUXOBTSF
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEcBAEBCAAGBQJXzqA0AAoJECTWi3JdVIfQlCwH/0CMYdWut1ZP2cLCzCh5WQGY
-pqVYyd8HlErVvhoxWJ5wWiQItZwJ0VYChEWwZbXshPV36aJ0o04nAAlDAg7y2d9y
-/p0G8fneyNIVueNxCXzUL8/bv1thbJ6AXGWYlLFsGFYoBiqiU9IXkmqP2VjHhAbU
-VXOv86lVvOyes68/nrjlnESDp8bhINu6A8mrXC4qsM3iLwb/3fo8c1xPYDihwJy2
-kyue+x/zajmeYLkldPRfXJwSwhtaTyfg4FVPQYqYkY+Bwlg9h6wG6nOb28mM8s3q
-8GhXpjLX/QLQOw96jcXDhuGWWI7kck4qmS55uC6b43zFW8XUODzwuQYylOAhLDk=
-=y2h5
+iQEcBAEBCAAGBQJXzqFYAAoJECTWi3JdVIfQKUEIAIHpLgQ9hXHiWrSg0l8PpCPr
+1YM21GGnOLsODApx1WEVBMwfLHbr36FYMGE5C+0kMHssTqKQ16uBIWunIBuCuXsu
+P0f5fFTD7Mex55mCihH3AKPnU79BBQ6sI1wGyqsZVGQ77XH715Iap8G4/n8scFcm
+yam/19oyPVqLRQHDB27m5esPcltcrKR1NcuAloypNjER5Fq8a6gy1zT1J/cb3RHi
+VaBzd5fFpt7MmpueJJA0R+TAg6S+qb/yGJ9c+smLvQwJwyc3mMC/WsoYLZMVrZqv
+m9vY4wTxLAjtZX8pMaCyREFn0tdyB5KZuC4SDpfkrAlr/iHu1bKAOFLIYwo0Im4=
+=oIu1
 -----END PGP SIGNATURE-----
 
---aglTZS2R0flMmvQN--
+--mgiPvHqStUXOBTSF--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

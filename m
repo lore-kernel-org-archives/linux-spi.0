@@ -1,20 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: fsl-espi: remove unused elements n_rx and n_tx in struct fsl_espi_transfer" to the spi tree
-Date: Tue, 06 Sep 2016 12:29:52 +0100
-Message-ID: <E1bhEZc-000488-3R@finisterre>
-References: <52c5893a-5927-4c83-4838-d618d434922c@gmail.com>
+Subject: Applied "spi: dw: fix multiple slaves with different baudrates" to the spi tree
+Date: Tue, 06 Sep 2016 12:29:57 +0100
+Message-ID: <E1bhEZh-00048t-7z@finisterre>
+References: <20160904020449.217e13f4@vm>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Matthias Seidel <kernel-NoMTM8u0nx3R7s880joybQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <52c5893a-5927-4c83-4838-d618d434922c-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <20160904020449.217e13f4@vm>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: fsl-espi: remove unused elements n_rx and n_tx in struct fsl_espi_transfer
+   spi: dw: fix multiple slaves with different baudrates
 
 has been applied to the spi tree at
 
@@ -39,59 +38,66 @@ to this mail.
 Thanks,
 Mark
 
->From daae020ce9fe4324322c6ed18a840234a05d76b3 Mon Sep 17 00:00:00 2001
-From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Sun, 4 Sep 2016 09:53:01 +0200
-Subject: [PATCH] spi: fsl-espi: remove unused elements n_rx and n_tx in struct
- fsl_espi_transfer
+>From 13b10301b858e355613bfc6dc297580bf34d3fb5 Mon Sep 17 00:00:00 2001
+From: Matthias Seidel <kernel-NoMTM8u0nx3R7s880joybQ@public.gmane.org>
+Date: Sun, 4 Sep 2016 02:04:49 +0200
+Subject: [PATCH] spi: dw: fix multiple slaves with different baudrates
 
-Both elements are not used, so remove them.
+Add current master clock to dws struct and compare it against the
+requestedtransfer speed. Update clock divider only if necessary.
 
-Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Matthias Seidel <kernel-NoMTM8u0nx3R7s880joybQ@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
+ drivers/spi/spi-dw.c | 15 +++++++--------
+ drivers/spi/spi-dw.h |  1 +
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index f9ef50444447..a9004fe5a5ed 100644
---- a/drivers/spi/spi-fsl-espi.c
-+++ b/drivers/spi/spi-fsl-espi.c
-@@ -41,8 +41,6 @@ struct fsl_espi_transfer {
- 	const void *tx_buf;
- 	void *rx_buf;
- 	unsigned len;
--	unsigned n_tx;
--	unsigned n_rx;
- 	unsigned actual_length;
- 	int status;
- };
-@@ -371,24 +369,16 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
- {
- 	struct spi_transfer *t;
- 	u8 *rx_buf = NULL;
--	unsigned int n_tx = 0;
--	unsigned int n_rx = 0;
- 	unsigned int xfer_len = 0;
- 	struct fsl_espi_transfer espi_trans;
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index c09bb745693a..c85e4b327a4a 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -283,7 +283,6 @@ static int dw_spi_transfer_one(struct spi_master *master,
+ 	struct chip_data *chip = spi_get_ctldata(spi);
+ 	u8 imask = 0;
+ 	u16 txlevel = 0;
+-	u16 clk_div;
+ 	u32 cr0;
+ 	int ret;
  
- 	list_for_each_entry(t, &m->transfers, transfer_list) {
--		if (t->tx_buf)
--			n_tx += t->len;
--		if (t->rx_buf) {
--			n_rx += t->len;
-+		if (t->rx_buf)
- 			rx_buf = t->rx_buf;
--		}
- 		if ((t->tx_buf) || (t->rx_buf))
- 			xfer_len += t->len;
+@@ -298,13 +297,13 @@ static int dw_spi_transfer_one(struct spi_master *master,
+ 	spi_enable_chip(dws, 0);
+ 
+ 	/* Handle per transfer options for bpw and speed */
+-	if (transfer->speed_hz != chip->speed_hz) {
+-		/* clk_div doesn't support odd number */
+-		clk_div = (dws->max_freq / transfer->speed_hz + 1) & 0xfffe;
+-
+-		chip->speed_hz = transfer->speed_hz;
+-		chip->clk_div = clk_div;
+-
++	if (transfer->speed_hz != dws->current_freq) {
++		if (transfer->speed_hz != chip->speed_hz) {
++			/* clk_div doesn't support odd number */
++			chip->clk_div = (dws->max_freq / transfer->speed_hz + 1) & 0xfffe;
++			chip->speed_hz = transfer->speed_hz;
++		}
++		dws->current_freq = transfer->speed_hz;
+ 		spi_set_clk(dws, chip->clk_div);
  	}
+ 	if (transfer->bits_per_word == 8) {
+diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+index 61bc3cbab38d..c21ca02f8ec5 100644
+--- a/drivers/spi/spi-dw.h
++++ b/drivers/spi/spi-dw.h
+@@ -123,6 +123,7 @@ struct dw_spi {
+ 	u8			n_bytes;	/* current is a 1/2 bytes op */
+ 	u32			dma_width;
+ 	irqreturn_t		(*transfer_handler)(struct dw_spi *dws);
++	u32			current_freq;	/* frequency in hz */
  
--	espi_trans.n_tx = n_tx;
--	espi_trans.n_rx = n_rx;
- 	espi_trans.len = xfer_len;
- 	espi_trans.actual_length = 0;
- 	espi_trans.status = 0;
+ 	/* DMA info */
+ 	int			dma_inited;
 -- 
 2.9.3
 

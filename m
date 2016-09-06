@@ -1,47 +1,53 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3 2/2] spi: dw: round up result of calculation for clock
- divider
-Date: Tue, 6 Sep 2016 23:21:31 +0100
-Message-ID: <20160906222131.GT3950@sirena.org.uk>
-References: <20160904020535.2bb2ab68@vm>
- <20160906105352.GK3950@sirena.org.uk>
- <20160906191652.01a11698@vm>
+Subject: Re: [PATCH v2 04/18] spi: fsl-espi: pre-allocate message buffer
+Date: Tue, 6 Sep 2016 23:40:33 +0100
+Message-ID: <20160906224033.GW3950@sirena.org.uk>
+References: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217@gmail.com>
+ <cabc3522-8ca9-516a-e0ef-5a2ed9ad8507@gmail.com>
+ <0e60b4b5-5016-e1c3-d29d-b81a41f64f48@gmail.com>
+ <20160906105833.GL3950@sirena.org.uk>
+ <f895014d-e8d6-9917-47a6-12f37b798b86@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="PnL8HyO6hCYZ2Glf"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Matthias Seidel <kernel-NoMTM8u0nx3R7s880joybQ@public.gmane.org>
+        protocol="application/pgp-signature"; boundary="yfuuGBTZ0Eg3HEy0"
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20160906191652.01a11698@vm>
+In-Reply-To: <f895014d-e8d6-9917-47a6-12f37b798b86-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---PnL8HyO6hCYZ2Glf
+--yfuuGBTZ0Eg3HEy0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Sep 06, 2016 at 07:16:52PM +0200, Matthias Seidel wrote:
-> Avoid ending up with a higher frequency than requested
+On Tue, Sep 06, 2016 at 10:57:49PM +0200, Heiner Kallweit wrote:
 
-I'm missing patch 1/2 here?
+> Sorry, then I misunderstood your comment.
+> I'll resend the patch with Gabor's Signed-off-by. Do you want my
+> Signed-off-by in addition?
 
---PnL8HyO6hCYZ2Glf
+You need your signoff on anything you send including this - like I say
+see SubmittingPatches for what this is doing.
+
+--yfuuGBTZ0Eg3HEy0
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEcBAEBCAAGBQJXz0FqAAoJECTWi3JdVIfQOBMH/2JKRnsATF7QFdZyi+JI1Lj6
-RRjcYNSMzIVHLymf9krb0vBllwglNX0RSRWHLWwytFxvrEA7s0dmqqbrKwqEk8De
-DbCut2eiKeQExMP28hpsIi/3svLQsvK+Ze4/fC+241h00f/TRjS6vlfobaBvTCMC
-Okx/jgHlPFLabkNZyvJFOT8ge+uOxRqXQQduvN6vLfYs2pH5ysMkl65OiPTUeFlm
-WH1xD6VHP/HRth5EE94fBz+NNyUB0Y9mwuX8Xg7TCw6iJQ+wus7nWz1HmhD60blR
-c4k7dUHQnRyqrQiC3NCG+69BlKJ3GrwXFrVZbAw6wrYf8T9LK+f5+d4AIZ/rf+4=
-=syH1
+iQEcBAEBCAAGBQJXz0XfAAoJECTWi3JdVIfQku8H/3Vp1t32vyPuklwjMAGp0FpH
+vO5GJKbfyml5+kG/a6p6Ek1VxxHnSd0ozMiNzuQk3ytDO9iIF9LXo48Jgp6hwTzm
+9y4gfiHY1/A/uHfbNDu00JyJChmdG5oyRp/YpGx0Z65SPk30XbhPa+EXO5V/l0Ev
+hjau+sTS6UAJGDtiUDbal7Q0z7ikHH0ov3kb7qecyv9fRCXx7MAAcOyoq04Ih4ul
+UddiKNE/59YM9rvd0jSeY9f7ZGsNMp6pVn8jjrWwtwqJ8h8vxNIPBvFvQGkRm/c5
+MST3XIYVPi3cm4ejTFYv3vU2rzMk1N89ES6xU8ySBQrPdR79VGdS/ST8D6kj/ls=
+=VkWy
 -----END PGP SIGNATURE-----
 
---PnL8HyO6hCYZ2Glf--
+--yfuuGBTZ0Eg3HEy0--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,84 +1,51 @@
-From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v2 17/18] spi: fsl-espi: improve message length handling
-Date: Sun, 4 Sep 2016 10:02:35 +0200
-Message-ID: <7d4a66bb-11ed-a870-7d3d-5c64cc0bd7e4@gmail.com>
-References: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217@gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2 2/2] spi: dw: round up result of calculation for clock
+ divider
+Date: Tue, 6 Sep 2016 11:53:52 +0100
+Message-ID: <20160906105352.GK3950@sirena.org.uk>
+References: <20160904020535.2bb2ab68@vm>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="aglTZS2R0flMmvQN"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Matthias Seidel <kernel-NoMTM8u0nx3R7s880joybQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20160904020535.2bb2ab68@vm>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Move checking for a zero-length message up in the call chain and
-use m->frame_length instead of re-calculating the overall length
-of all transfers in the message.
 
-Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
-v2:
-- rebased
----
- drivers/spi/spi-fsl-espi.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+--aglTZS2R0flMmvQN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 88935a3..84355bb 100644
---- a/drivers/spi/spi-fsl-espi.c
-+++ b/drivers/spi/spi-fsl-espi.c
-@@ -283,8 +283,7 @@ static int fsl_espi_do_trans(struct spi_message *m, struct spi_transfer *trans)
- 
- 	fsl_espi_setup_transfer(spi, trans);
- 
--	if (trans->len)
--		ret = fsl_espi_bufs(spi, trans);
-+	ret = fsl_espi_bufs(spi, trans);
- 
- 	if (trans->delay_usecs)
- 		udelay(trans->delay_usecs);
-@@ -313,7 +312,7 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
- 			       struct spi_message *m)
- {
- 	struct mpc8xxx_spi *mspi = spi_master_get_devdata(m->spi->master);
--	unsigned int delay_usecs = 0, xfer_len = 0;
-+	unsigned int delay_usecs = 0;
- 	struct spi_transfer *t, trans = {};
- 	int ret;
- 
-@@ -322,8 +321,6 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
- 		goto out;
- 
- 	list_for_each_entry(t, &m->transfers, transfer_list) {
--		if ((t->tx_buf) || (t->rx_buf))
--			xfer_len += t->len;
- 		if (t->delay_usecs > delay_usecs)
- 			delay_usecs = t->delay_usecs;
- 	}
-@@ -331,14 +328,15 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
- 	t = list_first_entry(&m->transfers, struct spi_transfer,
- 			     transfer_list);
- 
--	trans.len = xfer_len;
-+	trans.len = m->frame_length;
- 	trans.speed_hz = t->speed_hz;
- 	trans.bits_per_word = t->bits_per_word;
- 	trans.delay_usecs = delay_usecs;
- 	trans.tx_buf = mspi->local_buf;
- 	trans.rx_buf = mspi->local_buf;
- 
--	ret = fsl_espi_trans(m, &trans);
-+	if (trans.len)
-+		ret = fsl_espi_trans(m, &trans);
- 
- 	m->actual_length = ret ? 0 : trans.len;
- out:
--- 
-2.9.2
+On Sun, Sep 04, 2016 at 02:05:35AM +0200, Matthias Seidel wrote:
 
+>  			/* clk_div doesn't support odd number */
+> -			chip->clk_div = (dws->max_freq / transfer->speed_hz + 1) & 0xfffe;
+> +			chip->clk_div = ((dws->max_freq + transfer->speed_hz) /
+> +				transfer->speed_hz + 1) & 0xfffe;
 
+Can we not use DIV_ROUND_UP here if that's what we're trying to do?  The
+above probably needs a comment if not, I'm finding the intent rather
+confusing looking at the code.
+
+--aglTZS2R0flMmvQN
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEcBAEBCAAGBQJXzqA0AAoJECTWi3JdVIfQlCwH/0CMYdWut1ZP2cLCzCh5WQGY
+pqVYyd8HlErVvhoxWJ5wWiQItZwJ0VYChEWwZbXshPV36aJ0o04nAAlDAg7y2d9y
+/p0G8fneyNIVueNxCXzUL8/bv1thbJ6AXGWYlLFsGFYoBiqiU9IXkmqP2VjHhAbU
+VXOv86lVvOyes68/nrjlnESDp8bhINu6A8mrXC4qsM3iLwb/3fo8c1xPYDihwJy2
+kyue+x/zajmeYLkldPRfXJwSwhtaTyfg4FVPQYqYkY+Bwlg9h6wG6nOb28mM8s3q
+8GhXpjLX/QLQOw96jcXDhuGWWI7kck4qmS55uC6b43zFW8XUODzwuQYylOAhLDk=
+=y2h5
+-----END PGP SIGNATURE-----
+
+--aglTZS2R0flMmvQN--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,91 +1,80 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: [GIT PULL] SPI fixes for v4.8
-Date: Tue, 6 Sep 2016 12:54:50 +0100
-Message-ID: <20160906115450.GQ3950@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="5VAQUh6c1nDcgJYL"
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Ulrich Hecht <ulrich.hecht+renesas-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v2] spi: sh-msiof: request and set cs-gpio direction to output
+Date: Tue,  6 Sep 2016 14:41:18 +0200
+Message-ID: <20160906124118.13979-1-ulrich.hecht+renesas@gmail.com>
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org,
+        magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, ulrich.hecht+renesas-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+To: linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
+
+Required for the CS signal to actually be visible to the device.
+
+Signed-off-by: Ulrich Hecht <ulrich.hecht+renesas-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+
+This revision uses devm_gpio_request_one() instead of gpio_request()/
+gpio_direction_output(), as suggested by Geert.
+
+CU
+Uli
 
 
---5VAQUh6c1nDcgJYL
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+ drivers/spi/spi-sh-msiof.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-The following changes since commit c6935931c1894ff857616ff8549b61236a19148f:
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 6852552a..ed01289 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -541,15 +541,32 @@ static int sh_msiof_spi_setup(struct spi_device *spi)
+ 				  !!(spi->mode & SPI_LSB_FIRST),
+ 				  !!(spi->mode & SPI_CS_HIGH));
+ 
+-	if (spi->cs_gpio >= 0)
+-		gpio_set_value(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
++	if (spi->cs_gpio >= 0 && !spi_get_ctldata(spi)) {
++		int ret = devm_gpio_request_one(&p->pdev->dev, spi->cs_gpio,
++				spi->mode & SPI_CS_HIGH ? GPIOF_OUT_INIT_LOW :
++				GPIOF_OUT_INIT_HIGH, dev_name(&spi->dev));
++
++		if (ret < 0)
++			return ret;
+ 
++		spi_set_ctldata(spi, (void *)spi->cs_gpio);
++	}
+ 
+ 	pm_runtime_put(&p->pdev->dev);
+ 
+ 	return 0;
+ }
+ 
++static void sh_msiof_spi_cleanup(struct spi_device *spi)
++{
++	struct sh_msiof_spi_priv *p = spi_master_get_devdata(spi->master);
++
++	if (spi->cs_gpio >= 0)
++		devm_gpio_free(&p->pdev->dev, spi->cs_gpio);
++
++	spi_set_ctldata(spi, NULL);
++}
++
+ static int sh_msiof_prepare_message(struct spi_master *master,
+ 				    struct spi_message *msg)
+ {
+@@ -1263,6 +1280,7 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 	master->dev.of_node = pdev->dev.of_node;
+ 	master->num_chipselect = p->info->num_chipselect;
+ 	master->setup = sh_msiof_spi_setup;
++	master->cleanup = sh_msiof_spi_cleanup;
+ 	master->prepare_message = sh_msiof_prepare_message;
+ 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 32);
+ 	master->auto_runtime_pm = true;
+-- 
+2.9.3
 
-  Linux 4.8-rc5 (2016-09-04 14:31:46 -0700)
-
-are available in the git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v4.8-rc5
-
-for you to fetch changes up to ae4860b5333586b60ca1798f3f83b8b37520904c:
-
-  Merge remote-tracking branches 'spi/fix/lock', 'spi/fix/maintainers', 'spi/fix/put', 'spi/fix/pxa2xx', 'spi/fix/sh-msiof' and 'spi/fix/timeout' into spi-linus (2016-09-06 12:32:09 +0100)
-
-----------------------------------------------------------------
-spi: Fixes for v4.8
-
-As well as the usual driver fixes there's a couple of non-trivial core
-fixes in here:
-
- - Fixes for issues reported by Julia Lawall in the changes that were
-   sent last time to fix interaction between the bus lock and the
-   locking done for the SPI thread.  I'd let this one cook for a while
-   to make sure nothing else came up in testing.
- - A fix from Sien Wu arithmetic overflows when calculating the timeout
-   for larger transfers (espcially common with slow buses with flashes
-   on them).
-
-----------------------------------------------------------------
-Andi Shyti (1):
-      MAINTAINERS: add myself as Samsung SPI maintainer
-
-Andy Shevchenko (1):
-      spi: pxa2xx-pci: fix ACPI-based enumeration of SPI devices
-
-Geert Uytterhoeven (1):
-      spi: sh-msiof: Avoid invalid clock generator parameters
-
-Mark Brown (2):
-      spi: Drop io_mutex in error paths
-      Merge remote-tracking branches 'spi/fix/lock', 'spi/fix/maintainers', 'spi/fix/put', 'spi/fix/pxa2xx', 'spi/fix/sh-msiof' and 'spi/fix/timeout' into spi-linus
-
-Sien Wu (1):
-      spi: Prevent unexpected SPI time out due to arithmetic overflow
-
-Wei Yongjun (3):
-      spi: qup: Remove spi_master_put in spi_qup_remove()
-      spi: mediatek: remove spi_master_put in mtk_spi_remove()
-      spi: img-spfi: Remove spi_master_put in img_spfi_remove()
-
- MAINTAINERS                  | 12 +++++++++++-
- drivers/spi/spi-img-spfi.c   |  2 --
- drivers/spi/spi-mt65xx.c     |  1 -
- drivers/spi/spi-pxa2xx-pci.c |  1 +
- drivers/spi/spi-qup.c        |  1 -
- drivers/spi/spi-sh-msiof.c   |  3 +++
- drivers/spi/spi.c            | 10 ++++++++--
- 7 files changed, 23 insertions(+), 7 deletions(-)
-
---5VAQUh6c1nDcgJYL
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEcBAEBCAAGBQJXzq6JAAoJECTWi3JdVIfQLqwH/jKXTwG4qw69NCCr6BrKRNF+
-vkviD+bnkhYslpnK0T/qNbFMBXG3VSX1W8FA/eKyefL047cC7887IJB66K3kc/N2
-a4s/HK1nilGINWG1QKmb8zwmyyahc7ISWIyI7a1wYZ/i5TqwPZ++cu7VY518pF0e
-BjJQWWBti4qMA+9nZA882/A60Vnft/tSomHVKFzaVcqTd/6qcpfnl+mCpqWXl9p2
-XM8ScJ8rH6xTd3YUz/i8kCpZXKHmW+mpNsLuaAjSAZxPMUSvqbyZpvlJw1qf5JBV
-nmpPblm/2t5Ot1ObFvRoiVuv0jRp8c7KuP5zx8NHCU3iL9YdO0psqRUd8V16/bQ=
-=zwH7
------END PGP SIGNATURE-----
-
---5VAQUh6c1nDcgJYL--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

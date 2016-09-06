@@ -1,46 +1,47 @@
-From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v2 04/18] spi: fsl-espi: pre-allocate message buffer
-Date: Tue, 6 Sep 2016 22:57:49 +0200
-Message-ID: <f895014d-e8d6-9917-47a6-12f37b798b86@gmail.com>
-References: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217@gmail.com>
- <cabc3522-8ca9-516a-e0ef-5a2ed9ad8507@gmail.com>
- <0e60b4b5-5016-e1c3-d29d-b81a41f64f48@gmail.com>
- <20160906105833.GL3950@sirena.org.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v3 2/2] spi: dw: round up result of calculation for clock
+ divider
+Date: Tue, 6 Sep 2016 23:21:31 +0100
+Message-ID: <20160906222131.GT3950@sirena.org.uk>
+References: <20160904020535.2bb2ab68@vm>
+ <20160906105352.GK3950@sirena.org.uk>
+ <20160906191652.01a11698@vm>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="PnL8HyO6hCYZ2Glf"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Matthias Seidel <kernel-NoMTM8u0nx3R7s880joybQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160906105833.GL3950-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20160906191652.01a11698@vm>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Am 06.09.2016 um 12:58 schrieb Mark Brown:
-> On Sun, Sep 04, 2016 at 09:58:02AM +0200, Heiner Kallweit wrote:
->> Currently the driver allocates a 64kb buffer with each single message.
->> On systems with little and fragmented memory this can result in
->> memory allocation errors. Solve this by pre-allocating a buffer.
->>
->> This patch was developed in OpenWRT long ago, however it never
->> made it upstream. Author: Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
->>
->> I slightly modified the original patch to re-initialize the buffer
->> at the beginning of each transfer.
->>
->> Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> 
-> When you sent this previously I asked what happened with the signoff
-> from Gabor.  A little Google tells me that he did in fact sign off the
-> copy that's in OpenWRT.  Please don't drop signoffs, they're important
-> for tracking licensing - see SubmittingPatches for details.  If the
-> modifications you made really are slight as you say then I'd also expect
-> Gabor's authorship to be preserved.
-> 
-Sorry, then I misunderstood your comment.
-I'll resend the patch with Gabor's Signed-off-by. Do you want my
-Signed-off-by in addition?
+
+--PnL8HyO6hCYZ2Glf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Tue, Sep 06, 2016 at 07:16:52PM +0200, Matthias Seidel wrote:
+> Avoid ending up with a higher frequency than requested
+
+I'm missing patch 1/2 here?
+
+--PnL8HyO6hCYZ2Glf
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEcBAEBCAAGBQJXz0FqAAoJECTWi3JdVIfQOBMH/2JKRnsATF7QFdZyi+JI1Lj6
+RRjcYNSMzIVHLymf9krb0vBllwglNX0RSRWHLWwytFxvrEA7s0dmqqbrKwqEk8De
+DbCut2eiKeQExMP28hpsIi/3svLQsvK+Ze4/fC+241h00f/TRjS6vlfobaBvTCMC
+Okx/jgHlPFLabkNZyvJFOT8ge+uOxRqXQQduvN6vLfYs2pH5ysMkl65OiPTUeFlm
+WH1xD6VHP/HRth5EE94fBz+NNyUB0Y9mwuX8Xg7TCw6iJQ+wus7nWz1HmhD60blR
+c4k7dUHQnRyqrQiC3NCG+69BlKJ3GrwXFrVZbAw6wrYf8T9LK+f5+d4AIZ/rf+4=
+=syH1
+-----END PGP SIGNATURE-----
+
+--PnL8HyO6hCYZ2Glf--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

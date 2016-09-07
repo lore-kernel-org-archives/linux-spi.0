@@ -1,7 +1,7 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v3 10/15] spi: fsl-espi: improve the ISR frame
-Date: Wed, 7 Sep 2016 22:53:23 +0200
-Message-ID: <7733dbde-1950-d6e3-6d71-975b25d6ded1@gmail.com>
+Subject: [PATCH v3 11/15] spi: fsl-espi: factor out initial message checking
+Date: Wed, 7 Sep 2016 22:53:38 +0200
+Message-ID: <1df813fd-e444-c8fd-0ca4-ccf7b879ebbc@gmail.com>
 References: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -13,11 +13,8 @@ In-Reply-To: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217-Re5JQEeQqe8AvxtiuMwx3w@public
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Improve the ISR frame:
-- move resetting the event bits to the ISR frame
-- change type of parameter irq to int
-- make sure that the event bits match at least one bit in the
-  interrupt mask register
+Checking the message is currently done at diffrent places in the
+driver. Factor it out to fsl_espi_check_message.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
@@ -26,65 +23,97 @@ v2:
 v3:
 - new numbering
 ---
- drivers/spi/spi-fsl-espi.c | 23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 43 +++++++++++++++++++++++++++++--------------
+ 1 file changed, 29 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 190ca5c..534dc14 100644
+index 534dc14..a32bc3a 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -451,17 +451,11 @@ static void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
- 				&reg_base->event)) & SPIE_NF), 1000, 0);
- 		if (!ret) {
- 			dev_err(mspi->dev, "tired waiting for SPIE_NF\n");
--
--			/* Clear the SPIE bits */
--			mpc8xxx_spi_write_reg(&reg_base->event, events);
- 			complete(&mspi->done);
- 			return;
- 		}
- 	}
- 
--	/* Clear the events */
--	mpc8xxx_spi_write_reg(&reg_base->event, events);
--
- 	mspi->count -= 1;
- 	if (mspi->count) {
- 		u32 word = mspi->get_tx(mspi);
-@@ -472,23 +466,26 @@ static void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
- 	}
+@@ -98,6 +98,30 @@ static unsigned int fsl_espi_copy_to_buf(struct spi_message *m,
+ 	return tx_only;
  }
  
--static irqreturn_t fsl_espi_irq(s32 irq, void *context_data)
-+static irqreturn_t fsl_espi_irq(int irq, void *context_data)
- {
- 	struct mpc8xxx_spi *mspi = context_data;
- 	struct fsl_espi_reg *reg_base = mspi->reg_base;
--	irqreturn_t ret = IRQ_NONE;
--	u32 events;
-+	u32 mask, events;
- 
--	/* Get interrupt events(tx/rx) */
-+	/* Get interrupt mask and events and check that irq belongs to us */
-+	mask = mpc8xxx_spi_read_reg(&reg_base->mask);
- 	events = mpc8xxx_spi_read_reg(&reg_base->event);
--	if (events)
--		ret = IRQ_HANDLED;
-+	if (!(mask & events))
-+		return IRQ_NONE;
- 
- 	dev_vdbg(mspi->dev, "%s: events %x\n", __func__, events);
- 
- 	fsl_espi_cpu_irq(mspi, events);
- 
--	return ret;
-+	/* Clear the events */
-+	mpc8xxx_spi_write_reg(&reg_base->event, events);
++static int fsl_espi_check_message(struct spi_message *m)
++{
++	struct mpc8xxx_spi *mspi = spi_master_get_devdata(m->spi->master);
++	struct spi_transfer *t, *first;
 +
-+	return IRQ_HANDLED;
- }
++	if (m->frame_length > SPCOM_TRANLEN_MAX) {
++		dev_err(mspi->dev, "message too long, size is %u bytes\n",
++			m->frame_length);
++		return -EMSGSIZE;
++	}
++
++	first = list_first_entry(&m->transfers, struct spi_transfer,
++				 transfer_list);
++	list_for_each_entry(t, &m->transfers, transfer_list) {
++		if (first->bits_per_word != t->bits_per_word ||
++		    first->speed_hz != t->speed_hz) {
++			dev_err(mspi->dev, "bits_per_word/speed_hz should be the same for all transfers\n");
++			return -EINVAL;
++		}
++	}
++
++	return 0;
++}
++
+ static void fsl_espi_change_mode(struct spi_device *spi)
+ {
+ 	struct mpc8xxx_spi *mspi = spi_master_get_devdata(spi->master);
+@@ -222,11 +246,6 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	reinit_completion(&mpc8xxx_spi->done);
  
- #ifdef CONFIG_PM
+ 	/* Set SPCOM[CS] and SPCOM[TRANLEN] field */
+-	if (t->len > SPCOM_TRANLEN_MAX) {
+-		dev_err(mpc8xxx_spi->dev, "Transaction length (%d)"
+-				" beyond the SPCOM[TRANLEN] field\n", t->len);
+-		return -EINVAL;
+-	}
+ 	mpc8xxx_spi_write_reg(&reg_base->command,
+ 		(SPCOM_CS(spi->chip_select) | SPCOM_TRANLEN(t->len - 1)));
+ 
+@@ -253,20 +272,12 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ static int fsl_espi_do_trans(struct spi_message *m, struct spi_transfer *trans)
+ {
+ 	struct spi_device *spi = m->spi;
+-	struct mpc8xxx_spi *mspi = spi_master_get_devdata(spi->master);
+ 	struct spi_transfer *t, *first;
+ 	int ret = 0;
+ 
+ 	first = list_first_entry(&m->transfers, struct spi_transfer,
+ 			transfer_list);
+ 	list_for_each_entry(t, &m->transfers, transfer_list) {
+-		if ((first->bits_per_word != t->bits_per_word) ||
+-			(first->speed_hz != t->speed_hz)) {
+-			dev_err(mspi->dev,
+-				"bits_per_word/speed_hz should be same for the same SPI transfer\n");
+-			return -EINVAL;
+-		}
+-
+ 		trans->speed_hz = t->speed_hz;
+ 		trans->bits_per_word = t->bits_per_word;
+ 		trans->delay_usecs = max(first->delay_usecs, t->delay_usecs);
+@@ -313,6 +324,10 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
+ 	struct spi_transfer *t, trans = {};
+ 	int ret;
+ 
++	ret = fsl_espi_check_message(m);
++	if (ret)
++		goto out;
++
+ 	list_for_each_entry(t, &m->transfers, transfer_list) {
+ 		if (t->rx_buf)
+ 			rx_buf = t->rx_buf;
+@@ -325,7 +340,7 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
+ 	ret = fsl_espi_trans(m, &trans, rx_buf);
+ 
+ 	m->actual_length = ret ? 0 : trans.len;
+-
++out:
+ 	if (m->status == -EINPROGRESS)
+ 		m->status = ret;
+ 
 -- 
 2.9.2
 

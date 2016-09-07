@@ -1,10 +1,14 @@
 From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH v1 1/1] spi: pxa2xx: Default thresholds to PXA configuration
-Date: Wed,  7 Sep 2016 03:35:12 +0300
-Message-ID: <20160907003512.33040-1-andriy.shevchenko@linux.intel.com>
-Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: [PATCH v2 1/1] spi: pxa2xx: Default thresholds to PXA configuration
+Date: Wed,  7 Sep 2016 04:11:31 +0300
+Message-ID: <20160907011133.56465-1-andriy.shevchenko@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+        Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+        Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+        Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
@@ -16,17 +20,43 @@ Split CE4100 in the similar way how it was done for Intel Quark, i.e. prefix
 definitions by CE4100 and append necessary pieces of code to switch case
 conditions.
 
+Cc: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 ---
- drivers/spi/spi-pxa2xx.c   | 38 +++++++++++++++++++++++++++++++++-----
+- convert SSCR1_CHANGE_MASK as well
+
+ drivers/spi/spi-pxa2xx.c   | 47 +++++++++++++++++++++++++++++++++++++++++-----
  include/linux/pxa2xx_ssp.h | 20 ++++++++------------
- 2 files changed, 41 insertions(+), 17 deletions(-)
+ 2 files changed, 50 insertions(+), 17 deletions(-)
 
 diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 7bb7db0..711015a 100644
+index 7bb7db0..c06ab29 100644
 --- a/drivers/spi/spi-pxa2xx.c
 +++ b/drivers/spi/spi-pxa2xx.c
-@@ -186,6 +186,8 @@ pxa2xx_spi_get_rx_default_thre(const struct driver_data *drv_data)
+@@ -62,6 +62,13 @@ MODULE_ALIAS("platform:pxa2xx-spi");
+ 				| QUARK_X1000_SSCR1_TFT		\
+ 				| SSCR1_SPH | SSCR1_SPO | SSCR1_LBM)
+ 
++#define CE4100_SSCR1_CHANGE_MASK (SSCR1_TTELP | SSCR1_TTE | SSCR1_SCFR \
++				| SSCR1_ECRA | SSCR1_ECRB | SSCR1_SCLKDIR \
++				| SSCR1_SFRMDIR | SSCR1_RWOT | SSCR1_TRAIL \
++				| SSCR1_IFS | SSCR1_STRF | SSCR1_EFWR \
++				| CE4100_SSCR1_RFT | CE4100_SSCR1_TFT | SSCR1_MWDS \
++				| SSCR1_SPH | SSCR1_SPO | SSCR1_LBM)
++
+ #define LPSS_GENERAL_REG_RXTO_HOLDOFF_DISABLE	BIT(24)
+ #define LPSS_CS_CONTROL_SW_MODE			BIT(0)
+ #define LPSS_CS_CONTROL_CS_HIGH			BIT(1)
+@@ -175,6 +182,8 @@ static u32 pxa2xx_spi_get_ssrc1_change_mask(const struct driver_data *drv_data)
+ 	switch (drv_data->ssp_type) {
+ 	case QUARK_X1000_SSP:
+ 		return QUARK_X1000_SSCR1_CHANGE_MASK;
++	case CE4100_SSP:
++		return CE4100_SSCR1_CHANGE_MASK;
+ 	default:
+ 		return SSCR1_CHANGE_MASK;
+ 	}
+@@ -186,6 +195,8 @@ pxa2xx_spi_get_rx_default_thre(const struct driver_data *drv_data)
  	switch (drv_data->ssp_type) {
  	case QUARK_X1000_SSP:
  		return RX_THRESH_QUARK_X1000_DFLT;
@@ -35,7 +65,7 @@ index 7bb7db0..711015a 100644
  	default:
  		return RX_THRESH_DFLT;
  	}
-@@ -199,6 +201,9 @@ static bool pxa2xx_spi_txfifo_full(const struct driver_data *drv_data)
+@@ -199,6 +210,9 @@ static bool pxa2xx_spi_txfifo_full(const struct driver_data *drv_data)
  	case QUARK_X1000_SSP:
  		mask = QUARK_X1000_SSSR_TFL_MASK;
  		break;
@@ -45,7 +75,7 @@ index 7bb7db0..711015a 100644
  	default:
  		mask = SSSR_TFL_MASK;
  		break;
-@@ -216,6 +221,9 @@ static void pxa2xx_spi_clear_rx_thre(const struct driver_data *drv_data,
+@@ -216,6 +230,9 @@ static void pxa2xx_spi_clear_rx_thre(const struct driver_data *drv_data,
  	case QUARK_X1000_SSP:
  		mask = QUARK_X1000_SSCR1_RFT;
  		break;
@@ -55,7 +85,7 @@ index 7bb7db0..711015a 100644
  	default:
  		mask = SSCR1_RFT;
  		break;
-@@ -230,6 +238,9 @@ static void pxa2xx_spi_set_rx_thre(const struct driver_data *drv_data,
+@@ -230,6 +247,9 @@ static void pxa2xx_spi_set_rx_thre(const struct driver_data *drv_data,
  	case QUARK_X1000_SSP:
  		*sccr1_reg |= QUARK_X1000_SSCR1_RxTresh(threshold);
  		break;
@@ -65,7 +95,7 @@ index 7bb7db0..711015a 100644
  	default:
  		*sccr1_reg |= SSCR1_RxTresh(threshold);
  		break;
-@@ -589,6 +600,9 @@ static void reset_sccr1(struct driver_data *drv_data)
+@@ -589,6 +609,9 @@ static void reset_sccr1(struct driver_data *drv_data)
  	case QUARK_X1000_SSP:
  		sccr1_reg &= ~QUARK_X1000_SSCR1_RFT;
  		break;
@@ -75,7 +105,7 @@ index 7bb7db0..711015a 100644
  	default:
  		sccr1_reg &= ~SSCR1_RFT;
  		break;
-@@ -1225,6 +1239,11 @@ static int setup(struct spi_device *spi)
+@@ -1225,6 +1248,11 @@ static int setup(struct spi_device *spi)
  		tx_hi_thres = 0;
  		rx_thres = RX_THRESH_QUARK_X1000_DFLT;
  		break;
@@ -87,7 +117,7 @@ index 7bb7db0..711015a 100644
  	case LPSS_LPT_SSP:
  	case LPSS_BYT_SSP:
  	case LPSS_BSW_SSP:
-@@ -1310,6 +1329,10 @@ chip->enable_dma = 1;
+@@ -1310,6 +1338,10 @@ chip->enable_dma = 1;
  				   | (QUARK_X1000_SSCR1_TxTresh(tx_thres)
  				   & QUARK_X1000_SSCR1_TFT);
  		break;
@@ -98,7 +128,7 @@ index 7bb7db0..711015a 100644
  	default:
  		chip->threshold = (SSCR1_RxTresh(rx_thres) & SSCR1_RFT) |
  			(SSCR1_TxTresh(tx_thres) & SSCR1_TFT);
-@@ -1631,15 +1654,20 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+@@ -1631,15 +1663,20 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
  	pxa2xx_spi_write(drv_data, SSCR0, 0);
  	switch (drv_data->ssp_type) {
  	case QUARK_X1000_SSP:

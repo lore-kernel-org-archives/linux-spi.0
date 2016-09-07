@@ -1,55 +1,54 @@
-From: Matthias Seidel <kernel-NoMTM8u0nx3R7s880joybQ@public.gmane.org>
-Subject: [PATCH v4] spi: dw: round up result of calculation for clock
- divider
-Date: Wed, 7 Sep 2016 17:45:30 +0200
-Message-ID: <20160907174530.1ada556f@vm>
-References: <20160904020535.2bb2ab68@vm>
-        <20160906105352.GK3950@sirena.org.uk>
-        <20160906191652.01a11698@vm>
-        <20160906222131.GT3950@sirena.org.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v3 04/18] spi: fsl-espi: pre-allocate message buffer
+Date: Wed, 7 Sep 2016 19:56:14 +0100
+Message-ID: <20160907185614.GD3950@sirena.org.uk>
+References: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217@gmail.com>
+ <cabc3522-8ca9-516a-e0ef-5a2ed9ad8507@gmail.com>
+ <14371aa8-17f2-69a2-99d4-cd095a87545c@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="AgVde/5+edhW42SA"
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160906222131.GT3950-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <14371aa8-17f2-69a2-99d4-cd095a87545c-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Avoid ending up with a higher frequency than requested
 
-Signed-off-by: Matthias Seidel <kernel-NoMTM8u0nx3R7s880joybQ@public.gmane.org>
----
-v4: Corrected subject, thanks for your work!
+--AgVde/5+edhW42SA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Previously failing example:
-requested transfer freq: 16MHz
-max_freq = 200MHz
-calculated clk_div = 12
-actual frequency = 200/12 = 16.6666MHz
----
- drivers/spi/spi-dw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Wed, Sep 07, 2016 at 07:46:33AM +0200, Heiner Kallweit wrote:
+> Currently the driver allocates a 64kb buffer for each single message.
+> On systems with little and fragmented memory this can result in
+> memory allocation errors. Solve this by pre-allocating a buffer.
 
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index c85e4b3..27960e4 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -300,7 +300,7 @@ static int dw_spi_transfer_one(struct spi_master *master,
- 	if (transfer->speed_hz != dws->current_freq) {
- 		if (transfer->speed_hz != chip->speed_hz) {
- 			/* clk_div doesn't support odd number */
--			chip->clk_div = (dws->max_freq / transfer->speed_hz + 1) & 0xfffe;
-+			chip->clk_div = (DIV_ROUND_UP(dws->max_freq, transfer->speed_hz) + 1) & 0xfffe;
- 			chip->speed_hz = transfer->speed_hz;
- 		}
- 		dws->current_freq = transfer->speed_hz;
--- 
-2.7.4
+This is flagged as patch 4/18 but I only have this as a single patch.
+As previously discussed the purpose of the numbering in a patch series
+is to order things, if you're just sending a single patch it doesn't
+need numbering and if you're sending a series you need to send either
+the whole thing or at least a cover letter to everyone so they know
+what's going on.
 
+--AgVde/5+edhW42SA
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
+iQEcBAEBCAAGBQJX0GLNAAoJECTWi3JdVIfQSeIH/25A9nUJqyQqrDsyrUXbXv4P
+xkgPu6X91MYQGp9Y1qJSnrAnSC1CPRq6KWmcy84Vd0MsriZCAxQrOy+Fi8LEXIcr
+x8Hy7L9o0KbrIYFV9l98hogmdjrziVqXPAOR1CWRDm2EoDDHAatlOs0TyGVpPAiu
+jxOp6mIlixPMk+5oqFUbnF2mpzDpZUepg/j+rLmwVIcqAHZv1lMTffWamIR3o0hx
+8yqsUfn6QpYEWjdh2TR749ZkRDueYnJyma5m+Ll7xy7IjfnmAUe894WyqL405q8j
+OzRBvIIMqzaf7nrI3sATRGqrkaw7Z/rzO6wF9dF4yEP99JAstg0Py68/k09K8RU=
+=DUwY
+-----END PGP SIGNATURE-----
+
+--AgVde/5+edhW42SA--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

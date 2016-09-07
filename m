@@ -1,36 +1,82 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v3 04/18] spi: fsl-espi: pre-allocate message buffer
-Date: Wed, 7 Sep 2016 22:01:10 +0200
-Message-ID: <2e735147-7a3f-0b08-dba9-bbca2a01cdc6@gmail.com>
+Subject: [PATCH v3 05/15] spi: fsl-espi: remove element actual_length from
+ struct fsl_espi_trans
+Date: Wed, 7 Sep 2016 22:51:48 +0200
+Message-ID: <52f1d7a5-d0d5-2734-3977-715347047587@gmail.com>
 References: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217@gmail.com>
- <cabc3522-8ca9-516a-e0ef-5a2ed9ad8507@gmail.com>
- <14371aa8-17f2-69a2-99d4-cd095a87545c@gmail.com>
- <20160907185614.GD3950@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160907185614.GD3950-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Am 07.09.2016 um 20:56 schrieb Mark Brown:
-> On Wed, Sep 07, 2016 at 07:46:33AM +0200, Heiner Kallweit wrote:
->> Currently the driver allocates a 64kb buffer for each single message.
->> On systems with little and fragmented memory this can result in
->> memory allocation errors. Solve this by pre-allocating a buffer.
-> 
-> This is flagged as patch 4/18 but I only have this as a single patch.
-> As previously discussed the purpose of the numbering in a patch series
-> is to order things, if you're just sending a single patch it doesn't
-> need numbering and if you're sending a series you need to send either
-> the whole thing or at least a cover letter to everyone so they know
-> what's going on.
-> 
-OK, as you applied three further patches from the series already, I'll
-resend the remaining 15 with new numbering.
+If an error occurs during processing the message, then we don't have
+to populate the actual_length element of struct message.
+So we can get rid of element actual_length in struct
+fsl_espi_transfer.
+
+Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+v2:
+- rebased
+v3:
+- new numbering
+---
+ drivers/spi/spi-fsl-espi.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index 6b60f7b..726d5fd 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -41,7 +41,6 @@ struct fsl_espi_transfer {
+ 	const void *tx_buf;
+ 	void *rx_buf;
+ 	unsigned len;
+-	unsigned actual_length;
+ };
+ 
+ /* eSPI Controller mode register definitions */
+@@ -327,8 +326,6 @@ static int fsl_espi_cmd_trans(struct spi_message *m,
+ 	espi_trans->rx_buf = mspi->local_buf;
+ 	ret = fsl_espi_do_trans(m, espi_trans);
+ 
+-	espi_trans->actual_length = espi_trans->len;
+-
+ 	return ret;
+ }
+ 
+@@ -350,7 +347,6 @@ static int fsl_espi_rw_trans(struct spi_message *m,
+ 		if (trans->len > tx_only)
+ 			memcpy(rx_buff, trans->rx_buf + tx_only,
+ 			       trans->len - tx_only);
+-		trans->actual_length += trans->len;
+ 	}
+ 
+ 	return ret;
+@@ -373,14 +369,14 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
+ 	}
+ 
+ 	espi_trans.len = xfer_len;
+-	espi_trans.actual_length = 0;
+ 
+ 	if (!rx_buf)
+ 		ret = fsl_espi_cmd_trans(m, &espi_trans, NULL);
+ 	else
+ 		ret = fsl_espi_rw_trans(m, &espi_trans, rx_buf);
+ 
+-	m->actual_length = espi_trans.actual_length;
++	m->actual_length = ret ? 0 : espi_trans.len;
++
+ 	if (m->status == -EINPROGRESS)
+ 		m->status = ret;
+ 
+-- 
+2.9.2
 
 
 --

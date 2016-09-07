@@ -1,8 +1,7 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v3 08/15] spi: fsl-espi: improve return value handling in
- fsl_espi_bufs
-Date: Wed, 7 Sep 2016 22:52:43 +0200
-Message-ID: <3d3ec02a-dfaf-0494-edaa-3a2871d0d4ec@gmail.com>
+Subject: [PATCH v3 10/15] spi: fsl-espi: improve the ISR frame
+Date: Wed, 7 Sep 2016 22:53:23 +0200
+Message-ID: <7733dbde-1950-d6e3-6d71-975b25d6ded1@gmail.com>
 References: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -14,8 +13,11 @@ In-Reply-To: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217-Re5JQEeQqe8AvxtiuMwx3w@public
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Return a proper status code from fsl_espi_bufs instead of returning
-the number of remaining words and let the caller evaluate it.
+Improve the ISR frame:
+- move resetting the event bits to the ISR frame
+- change type of parameter irq to int
+- make sure that the event bits match at least one bit in the
+  interrupt mask register
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
@@ -24,32 +26,65 @@ v2:
 v3:
 - new numbering
 ---
- drivers/spi/spi-fsl-espi.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index f8a6dd1..8d6a570 100644
+index 190ca5c..534dc14 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -258,7 +258,7 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
- 	/* disable rx ints */
- 	mpc8xxx_spi_write_reg(&reg_base->mask, 0);
+@@ -451,17 +451,11 @@ static void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
+ 				&reg_base->event)) & SPIE_NF), 1000, 0);
+ 		if (!ret) {
+ 			dev_err(mspi->dev, "tired waiting for SPIE_NF\n");
+-
+-			/* Clear the SPIE bits */
+-			mpc8xxx_spi_write_reg(&reg_base->event, events);
+ 			complete(&mspi->done);
+ 			return;
+ 		}
+ 	}
  
--	return mpc8xxx_spi->count;
-+	return mpc8xxx_spi->count > 0 ? -EMSGSIZE : 0;
+-	/* Clear the events */
+-	mpc8xxx_spi_write_reg(&reg_base->event, events);
+-
+ 	mspi->count -= 1;
+ 	if (mspi->count) {
+ 		u32 word = mspi->get_tx(mspi);
+@@ -472,23 +466,26 @@ static void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
+ 	}
  }
  
- static int fsl_espi_do_trans(struct spi_message *m, struct spi_transfer *trans)
-@@ -288,9 +288,6 @@ static int fsl_espi_do_trans(struct spi_message *m, struct spi_transfer *trans)
- 	if (trans->len)
- 		ret = fsl_espi_bufs(spi, trans);
+-static irqreturn_t fsl_espi_irq(s32 irq, void *context_data)
++static irqreturn_t fsl_espi_irq(int irq, void *context_data)
+ {
+ 	struct mpc8xxx_spi *mspi = context_data;
+ 	struct fsl_espi_reg *reg_base = mspi->reg_base;
+-	irqreturn_t ret = IRQ_NONE;
+-	u32 events;
++	u32 mask, events;
  
--	if (ret)
--		ret = -EMSGSIZE;
--
- 	if (trans->delay_usecs)
- 		udelay(trans->delay_usecs);
+-	/* Get interrupt events(tx/rx) */
++	/* Get interrupt mask and events and check that irq belongs to us */
++	mask = mpc8xxx_spi_read_reg(&reg_base->mask);
+ 	events = mpc8xxx_spi_read_reg(&reg_base->event);
+-	if (events)
+-		ret = IRQ_HANDLED;
++	if (!(mask & events))
++		return IRQ_NONE;
  
+ 	dev_vdbg(mspi->dev, "%s: events %x\n", __func__, events);
+ 
+ 	fsl_espi_cpu_irq(mspi, events);
+ 
+-	return ret;
++	/* Clear the events */
++	mpc8xxx_spi_write_reg(&reg_base->event, events);
++
++	return IRQ_HANDLED;
+ }
+ 
+ #ifdef CONFIG_PM
 -- 
 2.9.2
 

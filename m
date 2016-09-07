@@ -1,8 +1,8 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v3 07/15] spi: fsl-espi: merge fsl_espi_cmd_trans and
- fsl_espi_rw_trans
-Date: Wed, 7 Sep 2016 22:52:25 +0200
-Message-ID: <9fbe79e2-6793-b03a-7b12-a178917c0e2d@gmail.com>
+Subject: [PATCH v3 09/15] spi: fsl-espi: merge fsl_espi_bufs and
+ fsl_espi_cpu_bufs
+Date: Wed, 7 Sep 2016 22:53:01 +0200
+Message-ID: <60c463fc-3a46-8787-164b-821efd80fd16@gmail.com>
 References: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -14,8 +14,7 @@ In-Reply-To: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217-Re5JQEeQqe8AvxtiuMwx3w@public
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-fsl_espi_cmd_trans and fsl_espi_rw_trans share most of the code so
-we can merge them.
+fsl_espi_bufs and fsl_espi_cpu_bufs are very small that we can merge them.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
@@ -24,67 +23,61 @@ v2:
 v3:
 - new numbering
 ---
- drivers/spi/spi-fsl-espi.c | 33 ++++++---------------------------
- 1 file changed, 6 insertions(+), 27 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 27 ++++++++-------------------
+ 1 file changed, 8 insertions(+), 19 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 8554f18..f8a6dd1 100644
+index 8d6a570..190ca5c 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -299,23 +299,8 @@ static int fsl_espi_do_trans(struct spi_message *m, struct spi_transfer *trans)
- 	return ret;
+@@ -206,31 +206,15 @@ static void fsl_espi_setup_transfer(struct spi_device *spi,
+ 	fsl_espi_change_mode(spi);
  }
  
--static int fsl_espi_cmd_trans(struct spi_message *m,
--			      struct spi_transfer *trans, u8 *rx_buff)
+-static void fsl_espi_cpu_bufs(struct mpc8xxx_spi *mspi, struct spi_transfer *t,
+-		unsigned int len)
 -{
--	struct mpc8xxx_spi *mspi = spi_master_get_devdata(m->spi->master);
--	int ret;
+-	u32 word;
+-	struct fsl_espi_reg *reg_base = mspi->reg_base;
 -
--	fsl_espi_copy_to_buf(m, mspi);
+-	mspi->count = len;
 -
--	trans->tx_buf = mspi->local_buf;
--	trans->rx_buf = mspi->local_buf;
--	ret = fsl_espi_do_trans(m, trans);
+-	/* enable rx ints */
+-	mpc8xxx_spi_write_reg(&reg_base->mask, SPIM_NE);
 -
--	return ret;
+-	/* transmit word */
+-	word = mspi->get_tx(mspi);
+-	mpc8xxx_spi_write_reg(&reg_base->transmit, word);
 -}
 -
--static int fsl_espi_rw_trans(struct spi_message *m,
--			     struct spi_transfer *trans, u8 *rx_buff)
-+static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans,
-+			  u8 *rx_buff)
+ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
  {
- 	struct mpc8xxx_spi *mspi = spi_master_get_devdata(m->spi->master);
- 	unsigned int tx_only;
-@@ -327,12 +312,9 @@ static int fsl_espi_rw_trans(struct spi_message *m,
- 	trans->rx_buf = mspi->local_buf;
- 	ret = fsl_espi_do_trans(m, trans);
+ 	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
+ 	struct fsl_espi_reg *reg_base = mpc8xxx_spi->reg_base;
+-	unsigned int len = t->len;
++	u32 word;
+ 	int ret;
  
--	if (!ret) {
--		/* If there is at least one RX byte then copy it to rx_buff */
--		if (trans->len > tx_only)
--			memcpy(rx_buff, trans->rx_buf + tx_only,
--			       trans->len - tx_only);
--	}
-+	/* If there is at least one RX byte then copy it to rx_buff */
-+	if (!ret && rx_buff && trans->len > tx_only)
-+		memcpy(rx_buff, trans->rx_buf + tx_only, trans->len - tx_only);
+ 	mpc8xxx_spi->len = t->len;
+-	len = roundup(len, 4) / 4;
++	mpc8xxx_spi->count = roundup(t->len, 4) / 4;
  
- 	return ret;
- }
-@@ -354,10 +336,7 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
+ 	mpc8xxx_spi->tx = t->tx_buf;
+ 	mpc8xxx_spi->rx = t->rx_buf;
+@@ -246,7 +230,12 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	mpc8xxx_spi_write_reg(&reg_base->command,
+ 		(SPCOM_CS(spi->chip_select) | SPCOM_TRANLEN(t->len - 1)));
  
- 	trans.len = xfer_len;
+-	fsl_espi_cpu_bufs(mpc8xxx_spi, t, len);
++	/* enable rx ints */
++	mpc8xxx_spi_write_reg(&reg_base->mask, SPIM_NE);
++
++	/* transmit word */
++	word = mpc8xxx_spi->get_tx(mpc8xxx_spi);
++	mpc8xxx_spi_write_reg(&reg_base->transmit, word);
  
--	if (!rx_buf)
--		ret = fsl_espi_cmd_trans(m, &trans, NULL);
--	else
--		ret = fsl_espi_rw_trans(m, &trans, rx_buf);
-+	ret = fsl_espi_trans(m, &trans, rx_buf);
- 
- 	m->actual_length = ret ? 0 : trans.len;
- 
+ 	/* Won't hang up forever, SPI bus sometimes got lost interrupts... */
+ 	ret = wait_for_completion_timeout(&mpc8xxx_spi->done, 2 * HZ);
 -- 
 2.9.2
 

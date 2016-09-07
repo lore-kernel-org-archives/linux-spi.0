@@ -1,59 +1,38 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 4/7] spi: meson: Add GXBB compatible
-Date: Wed, 7 Sep 2016 19:58:46 +0100
-Message-ID: <20160907185846.GE3950@sirena.org.uk>
-References: <1473261223-15412-1-git-send-email-jbrunet@baylibre.com>
- <1473261223-15412-5-git-send-email-jbrunet@baylibre.com>
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v3 04/18] spi: fsl-espi: pre-allocate message buffer
+Date: Wed, 7 Sep 2016 22:01:10 +0200
+Message-ID: <2e735147-7a3f-0b08-dba9-bbca2a01cdc6@gmail.com>
+References: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217@gmail.com>
+ <cabc3522-8ca9-516a-e0ef-5a2ed9ad8507@gmail.com>
+ <14371aa8-17f2-69a2-99d4-cd095a87545c@gmail.com>
+ <20160907185614.GD3950@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="WVXhfWX7iGQecmy9"
-Cc: Kevin Hilman <khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
-        Carlo Caione <carlo-KA+7E9HrN00dnm+yROfE0A@public.gmane.org>,
-        Neil Armstrong <narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
-        linux-amlogic-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jerome Brunet <jbrunet-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1473261223-15412-5-git-send-email-jbrunet-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <20160907185614.GD3950-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Am 07.09.2016 um 20:56 schrieb Mark Brown:
+> On Wed, Sep 07, 2016 at 07:46:33AM +0200, Heiner Kallweit wrote:
+>> Currently the driver allocates a 64kb buffer for each single message.
+>> On systems with little and fragmented memory this can result in
+>> memory allocation errors. Solve this by pre-allocating a buffer.
+> 
+> This is flagged as patch 4/18 but I only have this as a single patch.
+> As previously discussed the purpose of the numbering in a patch series
+> is to order things, if you're just sending a single patch it doesn't
+> need numbering and if you're sending a series you need to send either
+> the whole thing or at least a cover letter to everyone so they know
+> what's going on.
+> 
+OK, as you applied three further patches from the series already, I'll
+resend the remaining 15 with new numbering.
 
---WVXhfWX7iGQecmy9
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 07, 2016 at 05:13:40PM +0200, Jerome Brunet wrote:
-> From: Neil Armstrong <narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
->=20
-> Signed-off-by: Neil Armstrong <narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-> ---
-
-I can't do anything with this, you've not provided a signoff.  Please
-resend with a signoff - see SubmittingPatches for details on what this
-means and why it's important.
-
-I also only have patches 4 and 5 of this series and no cover letter,
-what is going on there?
-
---WVXhfWX7iGQecmy9
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEcBAEBCAAGBQJX0GNlAAoJECTWi3JdVIfQayUH/RtFb9RuoO0/REFBqG76pGW8
-/xCGrOYWbSri1tU/4irfMkg5kSOofY82Q9EF2LO3qVLRzErdiQ+x/Bk82N4qwWkh
-j1Jf0H/dS4e+JtQoLUoDQIATqk3xDNeeTR8XqCum2JndoU+jpqB8I8gT4Vs/6QBi
-cOD5eeXbOzGAqu3bnO2KbZUKptSQFB9lwurHkfCX/fUGTxPgb2RMKG5TwLPPuSMG
-OjzUIEYbqgapGNGzQ3/9N0gh2SSEhGO0fMALEtF7YI473wNlf5CHIl6lBn1tfZfM
-ujhFek7VG4Ad1wkuogcBH8nqFpJwCeVXc6a0NwGSILDYLgmmKXjJSkaJDgObzMM=
-=rEFD
------END PGP SIGNATURE-----
-
---WVXhfWX7iGQecmy9--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

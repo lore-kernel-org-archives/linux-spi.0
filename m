@@ -1,41 +1,43 @@
-From: Daniel Thompson <daniel.thompson@linaro.org>
-Subject: Re: [PATCH] tools: spi: enable CROSS_COMPILE in Makefile
-Date: Wed, 7 Sep 2016 16:06:39 +0100
-Message-ID: <ab8b24cf-0d9a-60e5-9291-d5e6e44756be@linaro.org>
-References: <1473258496-14565-1-git-send-email-jorge.ramirez-ortiz@linaro.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-To: Jorge Ramirez-Ortiz <jorge.ramirez-ortiz@linaro.org>,
-        broonie@kernel.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1473258496-14565-1-git-send-email-jorge.ramirez-ortiz@linaro.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Jerome Brunet <jbrunet-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Subject: [PATCH 4/7] spi: meson: Add GXBB compatible
+Date: Wed,  7 Sep 2016 17:13:40 +0200
+Message-ID: <1473261223-15412-5-git-send-email-jbrunet@baylibre.com>
+References: <1473261223-15412-1-git-send-email-jbrunet@baylibre.com>
+Cc: Neil Armstrong <narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
+        linux-amlogic-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Kevin Hilman <khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
+        Carlo Caione <carlo-KA+7E9HrN00dnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1473261223-15412-1-git-send-email-jbrunet-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 07/09/16 15:28, Jorge Ramirez-Ortiz wrote:
-> Signed-off-by: Jorge Ramirez-Ortiz <jorge.ramirez-ortiz@linaro.org>
-> ---
->  tools/spi/Makefile | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/tools/spi/Makefile b/tools/spi/Makefile
-> index cd0db62..d1845b0 100644
-> --- a/tools/spi/Makefile
-> +++ b/tools/spi/Makefile
-> @@ -1,4 +1,8 @@
-> +CC = $(CROSS_COMPILE)gcc
-> +
->  all: spidev_test spidev_fdx
->
-> +%: %.c
-> +	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $<
+From: Neil Armstrong <narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
 
-What is this extra rule for?
+Signed-off-by: Neil Armstrong <narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+---
+ drivers/spi/spi-meson-spifc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-The built in rules should already honour both these variables (and more 
-besides).
+diff --git a/drivers/spi/spi-meson-spifc.c b/drivers/spi/spi-meson-spifc.c
+index 2465259..616566e 100644
+--- a/drivers/spi/spi-meson-spifc.c
++++ b/drivers/spi/spi-meson-spifc.c
+@@ -442,6 +442,7 @@ static const struct dev_pm_ops meson_spifc_pm_ops = {
+ 
+ static const struct of_device_id meson_spifc_dt_match[] = {
+ 	{ .compatible = "amlogic,meson6-spifc", },
++	{ .compatible = "amlogic,meson-gxbb-spifc", },
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(of, meson_spifc_dt_match);
+-- 
+2.7.4
 
-
-Daniel.
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

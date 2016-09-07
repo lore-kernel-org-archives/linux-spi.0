@@ -1,201 +1,165 @@
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH v2 1/1] spi: pxa2xx: Default thresholds to PXA configuration
-Date: Wed,  7 Sep 2016 04:11:31 +0300
-Message-ID: <20160907011133.56465-1-andriy.shevchenko@linux.intel.com>
-Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-        Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v3 04/18] spi: fsl-espi: pre-allocate message buffer
+Date: Wed, 7 Sep 2016 07:46:33 +0200
+Message-ID: <14371aa8-17f2-69a2-99d4-cd095a87545c@gmail.com>
+References: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217@gmail.com>
+ <cabc3522-8ca9-516a-e0ef-5a2ed9ad8507@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <cabc3522-8ca9-516a-e0ef-5a2ed9ad8507-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Most of the devices in the supported list have PXA configuration of FIFO. In
-particularly Intel Merrifield has bigger FIFO, than it's defined for CE4100.
+Currently the driver allocates a 64kb buffer for each single message.
+On systems with little and fragmented memory this can result in
+memory allocation errors. Solve this by pre-allocating a buffer.
 
-Split CE4100 in the similar way how it was done for Intel Quark, i.e. prefix
-definitions by CE4100 and append necessary pieces of code to switch case
-conditions.
+This patch was developed in OpenWRT long ago, however it never
+made it upstream.
 
-Cc: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+I slightly modified the original patch to re-initialize the buffer
+at the beginning of each transfer.
+
+Signed-off-by: Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Signed-off-by: Felix Fietkau <nbd-Vt+b4OUoWG0@public.gmane.org>
+Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
-- convert SSCR1_CHANGE_MASK as well
+v2:
+- fixed coding style issue
+- fixed commit message
+v3:
+- changed Signed-off-by to include original author
+---
+ drivers/spi/spi-fsl-espi.c | 41 ++++++++++++++++++-----------------------
+ drivers/spi/spi-fsl-lib.h  |  1 +
+ 2 files changed, 19 insertions(+), 23 deletions(-)
 
- drivers/spi/spi-pxa2xx.c   | 47 +++++++++++++++++++++++++++++++++++++++++-----
- include/linux/pxa2xx_ssp.h | 20 ++++++++------------
- 2 files changed, 50 insertions(+), 17 deletions(-)
-
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 7bb7db0..c06ab29 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -62,6 +62,13 @@ MODULE_ALIAS("platform:pxa2xx-spi");
- 				| QUARK_X1000_SSCR1_TFT		\
- 				| SSCR1_SPH | SSCR1_SPO | SSCR1_LBM)
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index a9004fe..a3a75ae 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -300,57 +300,44 @@ static void fsl_espi_do_trans(struct spi_message *m,
+ static void fsl_espi_cmd_trans(struct spi_message *m,
+ 				struct fsl_espi_transfer *trans, u8 *rx_buff)
+ {
++	struct mpc8xxx_spi *mspi = spi_master_get_devdata(m->spi->master);
+ 	struct spi_transfer *t;
+-	u8 *local_buf;
+ 	int i = 0;
+ 	struct fsl_espi_transfer *espi_trans = trans;
  
-+#define CE4100_SSCR1_CHANGE_MASK (SSCR1_TTELP | SSCR1_TTE | SSCR1_SCFR \
-+				| SSCR1_ECRA | SSCR1_ECRB | SSCR1_SCLKDIR \
-+				| SSCR1_SFRMDIR | SSCR1_RWOT | SSCR1_TRAIL \
-+				| SSCR1_IFS | SSCR1_STRF | SSCR1_EFWR \
-+				| CE4100_SSCR1_RFT | CE4100_SSCR1_TFT | SSCR1_MWDS \
-+				| SSCR1_SPH | SSCR1_SPO | SSCR1_LBM)
-+
- #define LPSS_GENERAL_REG_RXTO_HOLDOFF_DISABLE	BIT(24)
- #define LPSS_CS_CONTROL_SW_MODE			BIT(0)
- #define LPSS_CS_CONTROL_CS_HIGH			BIT(1)
-@@ -175,6 +182,8 @@ static u32 pxa2xx_spi_get_ssrc1_change_mask(const struct driver_data *drv_data)
- 	switch (drv_data->ssp_type) {
- 	case QUARK_X1000_SSP:
- 		return QUARK_X1000_SSCR1_CHANGE_MASK;
-+	case CE4100_SSP:
-+		return CE4100_SSCR1_CHANGE_MASK;
- 	default:
- 		return SSCR1_CHANGE_MASK;
- 	}
-@@ -186,6 +195,8 @@ pxa2xx_spi_get_rx_default_thre(const struct driver_data *drv_data)
- 	switch (drv_data->ssp_type) {
- 	case QUARK_X1000_SSP:
- 		return RX_THRESH_QUARK_X1000_DFLT;
-+	case CE4100_SSP:
-+		return RX_THRESH_CE4100_DFLT;
- 	default:
- 		return RX_THRESH_DFLT;
- 	}
-@@ -199,6 +210,9 @@ static bool pxa2xx_spi_txfifo_full(const struct driver_data *drv_data)
- 	case QUARK_X1000_SSP:
- 		mask = QUARK_X1000_SSSR_TFL_MASK;
- 		break;
-+	case CE4100_SSP:
-+		mask = CE4100_SSSR_TFL_MASK;
-+		break;
- 	default:
- 		mask = SSSR_TFL_MASK;
- 		break;
-@@ -216,6 +230,9 @@ static void pxa2xx_spi_clear_rx_thre(const struct driver_data *drv_data,
- 	case QUARK_X1000_SSP:
- 		mask = QUARK_X1000_SSCR1_RFT;
- 		break;
-+	case CE4100_SSP:
-+		mask = CE4100_SSCR1_RFT;
-+		break;
- 	default:
- 		mask = SSCR1_RFT;
- 		break;
-@@ -230,6 +247,9 @@ static void pxa2xx_spi_set_rx_thre(const struct driver_data *drv_data,
- 	case QUARK_X1000_SSP:
- 		*sccr1_reg |= QUARK_X1000_SSCR1_RxTresh(threshold);
- 		break;
-+	case CE4100_SSP:
-+		*sccr1_reg |= CE4100_SSCR1_RxTresh(threshold);
-+		break;
- 	default:
- 		*sccr1_reg |= SSCR1_RxTresh(threshold);
- 		break;
-@@ -589,6 +609,9 @@ static void reset_sccr1(struct driver_data *drv_data)
- 	case QUARK_X1000_SSP:
- 		sccr1_reg &= ~QUARK_X1000_SSCR1_RFT;
- 		break;
-+	case CE4100_SSP:
-+		sccr1_reg &= ~CE4100_SSCR1_RFT;
-+		break;
- 	default:
- 		sccr1_reg &= ~SSCR1_RFT;
- 		break;
-@@ -1225,6 +1248,11 @@ static int setup(struct spi_device *spi)
- 		tx_hi_thres = 0;
- 		rx_thres = RX_THRESH_QUARK_X1000_DFLT;
- 		break;
-+	case CE4100_SSP:
-+		tx_thres = TX_THRESH_CE4100_DFLT;
-+		tx_hi_thres = 0;
-+		rx_thres = RX_THRESH_CE4100_DFLT;
-+		break;
- 	case LPSS_LPT_SSP:
- 	case LPSS_BYT_SSP:
- 	case LPSS_BSW_SSP:
-@@ -1310,6 +1338,10 @@ chip->enable_dma = 1;
- 				   | (QUARK_X1000_SSCR1_TxTresh(tx_thres)
- 				   & QUARK_X1000_SSCR1_TFT);
- 		break;
-+	case CE4100_SSP:
-+		chip->threshold = (CE4100_SSCR1_RxTresh(rx_thres) & CE4100_SSCR1_RFT) |
-+			(CE4100_SSCR1_TxTresh(tx_thres) & CE4100_SSCR1_TFT);
-+		break;
- 	default:
- 		chip->threshold = (SSCR1_RxTresh(rx_thres) & SSCR1_RFT) |
- 			(SSCR1_TxTresh(tx_thres) & SSCR1_TFT);
-@@ -1631,15 +1663,20 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
- 	pxa2xx_spi_write(drv_data, SSCR0, 0);
- 	switch (drv_data->ssp_type) {
- 	case QUARK_X1000_SSP:
--		tmp = QUARK_X1000_SSCR1_RxTresh(RX_THRESH_QUARK_X1000_DFLT)
--		      | QUARK_X1000_SSCR1_TxTresh(TX_THRESH_QUARK_X1000_DFLT);
-+		tmp = QUARK_X1000_SSCR1_RxTresh(RX_THRESH_QUARK_X1000_DFLT) |
-+		      QUARK_X1000_SSCR1_TxTresh(TX_THRESH_QUARK_X1000_DFLT);
- 		pxa2xx_spi_write(drv_data, SSCR1, tmp);
- 
- 		/* using the Motorola SPI protocol and use 8 bit frame */
--		pxa2xx_spi_write(drv_data, SSCR0,
--				 QUARK_X1000_SSCR0_Motorola
--				 | QUARK_X1000_SSCR0_DataSize(8));
-+		tmp = QUARK_X1000_SSCR0_Motorola | QUARK_X1000_SSCR0_DataSize(8);
-+		pxa2xx_spi_write(drv_data, SSCR0, tmp);
- 		break;
-+	case CE4100_SSP:
-+		tmp = CE4100_SSCR1_RxTresh(RX_THRESH_CE4100_DFLT) |
-+		      CE4100_SSCR1_TxTresh(TX_THRESH_CE4100_DFLT);
-+		pxa2xx_spi_write(drv_data, SSCR1, tmp);
-+		tmp = SSCR0_SCR(2) | SSCR0_Motorola | SSCR0_DataSize(8);
-+		pxa2xx_spi_write(drv_data, SSCR0, tmp);
- 	default:
- 		tmp = SSCR1_RxTresh(RX_THRESH_DFLT) |
- 		      SSCR1_TxTresh(TX_THRESH_DFLT);
-diff --git a/include/linux/pxa2xx_ssp.h b/include/linux/pxa2xx_ssp.h
-index 2a097d1..2d6f0c39 100644
---- a/include/linux/pxa2xx_ssp.h
-+++ b/include/linux/pxa2xx_ssp.h
-@@ -83,7 +83,6 @@
- #define SSSR_RFS	(1 << 6)	/* Receive FIFO Service Request */
- #define SSSR_ROR	(1 << 7)	/* Receive FIFO Overrun */
- 
--#ifdef CONFIG_ARCH_PXA
- #define RX_THRESH_DFLT	8
- #define TX_THRESH_DFLT	8
- 
-@@ -95,19 +94,16 @@
- #define SSCR1_RFT	(0x00003c00)	/* Receive FIFO Threshold (mask) */
- #define SSCR1_RxTresh(x) (((x) - 1) << 10) /* level [1..16] */
- 
--#else
+-	local_buf = kzalloc(SPCOM_TRANLEN_MAX, GFP_KERNEL);
+-	if (!local_buf) {
+-		espi_trans->status = -ENOMEM;
+-		return;
+-	}
 -
--#define RX_THRESH_DFLT	2
--#define TX_THRESH_DFLT	2
-+#define RX_THRESH_CE4100_DFLT	2
-+#define TX_THRESH_CE4100_DFLT	2
+ 	list_for_each_entry(t, &m->transfers, transfer_list) {
+ 		if (t->tx_buf) {
+-			memcpy(local_buf + i, t->tx_buf, t->len);
++			memcpy(mspi->local_buf + i, t->tx_buf, t->len);
+ 			i += t->len;
+ 		}
+ 	}
  
--#define SSSR_TFL_MASK	(0x3 << 8)	/* Transmit FIFO Level mask */
--#define SSSR_RFL_MASK	(0x3 << 12)	/* Receive FIFO Level mask */
-+#define CE4100_SSSR_TFL_MASK	(0x3 << 8)	/* Transmit FIFO Level mask */
-+#define CE4100_SSSR_RFL_MASK	(0x3 << 12)	/* Receive FIFO Level mask */
+-	espi_trans->tx_buf = local_buf;
+-	espi_trans->rx_buf = local_buf;
++	espi_trans->tx_buf = mspi->local_buf;
++	espi_trans->rx_buf = mspi->local_buf;
+ 	fsl_espi_do_trans(m, espi_trans);
  
--#define SSCR1_TFT	(0x000000c0)	/* Transmit FIFO Threshold (mask) */
--#define SSCR1_TxTresh(x) (((x) - 1) << 6) /* level [1..4] */
--#define SSCR1_RFT	(0x00000c00)	/* Receive FIFO Threshold (mask) */
--#define SSCR1_RxTresh(x) (((x) - 1) << 10) /* level [1..4] */
--#endif
-+#define CE4100_SSCR1_TFT	(0x000000c0)	/* Transmit FIFO Threshold (mask) */
-+#define CE4100_SSCR1_TxTresh(x) (((x) - 1) << 6)	/* level [1..4] */
-+#define CE4100_SSCR1_RFT	(0x00000c00)	/* Receive FIFO Threshold (mask) */
-+#define CE4100_SSCR1_RxTresh(x) (((x) - 1) << 10)	/* level [1..4] */
+ 	espi_trans->actual_length = espi_trans->len;
+-	kfree(local_buf);
+ }
  
- /* QUARK_X1000 SSCR0 bit definition */
- #define QUARK_X1000_SSCR0_DSS	(0x1F)		/* Data Size Select (mask) */
+ static void fsl_espi_rw_trans(struct spi_message *m,
+ 				struct fsl_espi_transfer *trans, u8 *rx_buff)
+ {
++	struct mpc8xxx_spi *mspi = spi_master_get_devdata(m->spi->master);
+ 	struct spi_transfer *t;
+-	u8 *local_buf;
+ 	unsigned int tx_only = 0;
+ 	int i = 0;
+ 
+-	local_buf = kzalloc(SPCOM_TRANLEN_MAX, GFP_KERNEL);
+-	if (!local_buf) {
+-		trans->status = -ENOMEM;
+-		return;
+-	}
+-
+ 	list_for_each_entry(t, &m->transfers, transfer_list) {
+ 		if (t->tx_buf) {
+-			memcpy(local_buf + i, t->tx_buf, t->len);
++			memcpy(mspi->local_buf + i, t->tx_buf, t->len);
+ 			i += t->len;
+ 			if (!t->rx_buf)
+ 				tx_only += t->len;
+ 		}
+ 	}
+ 
+-	trans->tx_buf = local_buf;
+-	trans->rx_buf = local_buf;
++	trans->tx_buf = mspi->local_buf;
++	trans->rx_buf = mspi->local_buf;
+ 	fsl_espi_do_trans(m, trans);
+ 
+ 	if (!trans->status) {
+@@ -360,18 +347,19 @@ static void fsl_espi_rw_trans(struct spi_message *m,
+ 			       trans->len - tx_only);
+ 		trans->actual_length += trans->len;
+ 	}
+-
+-	kfree(local_buf);
+ }
+ 
+ static int fsl_espi_do_one_msg(struct spi_master *master,
+ 			       struct spi_message *m)
+ {
++	struct mpc8xxx_spi *mspi = spi_master_get_devdata(master);
+ 	struct spi_transfer *t;
+ 	u8 *rx_buf = NULL;
+ 	unsigned int xfer_len = 0;
+ 	struct fsl_espi_transfer espi_trans;
+ 
++	memset(mspi->local_buf, 0, SPCOM_TRANLEN_MAX);
++
+ 	list_for_each_entry(t, &m->transfers, transfer_list) {
+ 		if (t->rx_buf)
+ 			rx_buf = t->rx_buf;
+@@ -617,6 +605,13 @@ static struct spi_master * fsl_espi_probe(struct device *dev,
+ 
+ 	mpc8xxx_spi = spi_master_get_devdata(master);
+ 
++	mpc8xxx_spi->local_buf =
++		devm_kmalloc(dev, SPCOM_TRANLEN_MAX, GFP_KERNEL);
++	if (!mpc8xxx_spi->local_buf) {
++		ret = -ENOMEM;
++		goto err_probe;
++	}
++
+ 	mpc8xxx_spi->reg_base = devm_ioremap_resource(dev, mem);
+ 	if (IS_ERR(mpc8xxx_spi->reg_base)) {
+ 		ret = PTR_ERR(mpc8xxx_spi->reg_base);
+diff --git a/drivers/spi/spi-fsl-lib.h b/drivers/spi/spi-fsl-lib.h
+index 84f5dcb..065b9db 100644
+--- a/drivers/spi/spi-fsl-lib.h
++++ b/drivers/spi/spi-fsl-lib.h
+@@ -30,6 +30,7 @@ struct mpc8xxx_spi {
+ 	void *rx;
+ #if IS_ENABLED(CONFIG_SPI_FSL_ESPI)
+ 	int len;
++	u8 *local_buf;
+ #endif
+ 
+ 	int subblock;
 -- 
-2.9.3
+2.9.2
+
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

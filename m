@@ -1,134 +1,46 @@
-From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v3 13/15] spi: fsl-espi: factor out handling of read data
-Date: Wed, 7 Sep 2016 22:54:18 +0200
-Message-ID: <d276a6a9-145f-0f58-7858-1ac38579c938@gmail.com>
-References: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217@gmail.com>
+From: Neil Armstrong <narmstrong@baylibre.com>
+Subject: Re: [PATCH 4/7] spi: meson: Add GXBB compatible
+Date: Thu, 8 Sep 2016 09:44:57 +0200
+Message-ID: <639f64f7-1268-12e3-1f22-44a45baa9559@baylibre.com>
+References: <1473261223-15412-1-git-send-email-jbrunet@baylibre.com>
+ <1473261223-15412-5-git-send-email-jbrunet@baylibre.com>
+ <20160907185846.GE3950@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 7bit
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <e5c7d6cd-0ba1-b1ec-60a8-72d6e2607217-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Kevin Hilman <khilman@baylibre.com>,
+        Carlo Caione <carlo@caione.org>,
+        linux-amlogic@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>,
+        Jerome Brunet <jbrunet@baylibre.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20160907185846.GE3950@sirena.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Factor out copying read data to the read buffers in the original
-message to a new function fsl_espi_copy_from_buf.
-This also allows to simplify fsl_espi_copy_to_buf.
+On 09/07/2016 08:58 PM, Mark Brown wrote:
+> On Wed, Sep 07, 2016 at 05:13:40PM +0200, Jerome Brunet wrote:
+>> From: Neil Armstrong <narmstrong@baylibre.com>
+>>
+>> Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
+>> ---
+> 
+> I can't do anything with this, you've not provided a signoff.  Please
+> resend with a signoff - see SubmittingPatches for details on what this
+> means and why it's important.
+> 
+> I also only have patches 4 and 5 of this series and no cover letter,
+> what is going on there?
+> 
 
-Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
-v2:
-- rebased
-v3:
-- new numbering
----
- drivers/spi/spi-fsl-espi.c | 41 +++++++++++++++++++++--------------------
- 1 file changed, 21 insertions(+), 20 deletions(-)
+Hi Mark,
 
-diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 79c89bf..88935a3 100644
---- a/drivers/spi/spi-fsl-espi.c
-+++ b/drivers/spi/spi-fsl-espi.c
-@@ -77,25 +77,32 @@ struct fsl_espi_reg {
- 
- #define AUTOSUSPEND_TIMEOUT 2000
- 
--static unsigned int fsl_espi_copy_to_buf(struct spi_message *m,
--					 struct mpc8xxx_spi *mspi)
-+static void fsl_espi_copy_to_buf(struct spi_message *m,
-+				 struct mpc8xxx_spi *mspi)
- {
--	unsigned int tx_only = 0;
- 	struct spi_transfer *t;
- 	u8 *buf = mspi->local_buf;
- 
- 	list_for_each_entry(t, &m->transfers, transfer_list) {
--		if (t->tx_buf) {
-+		if (t->tx_buf)
- 			memcpy(buf, t->tx_buf, t->len);
--			if (!t->rx_buf)
--				tx_only += t->len;
--		} else {
-+		else
- 			memset(buf, 0, t->len);
--		}
- 		buf += t->len;
- 	}
-+}
-+
-+static void fsl_espi_copy_from_buf(struct spi_message *m,
-+				   struct mpc8xxx_spi *mspi)
-+{
-+	struct spi_transfer *t;
-+	u8 *buf = mspi->local_buf;
- 
--	return tx_only;
-+	list_for_each_entry(t, &m->transfers, transfer_list) {
-+		if (t->rx_buf)
-+			memcpy(t->rx_buf, buf, t->len);
-+		buf += t->len;
-+	}
- }
- 
- static int fsl_espi_check_message(struct spi_message *m)
-@@ -287,20 +294,17 @@ static int fsl_espi_do_trans(struct spi_message *m, struct spi_transfer *trans)
- 	return ret;
- }
- 
--static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans,
--			  u8 *rx_buff)
-+static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans)
- {
- 	struct mpc8xxx_spi *mspi = spi_master_get_devdata(m->spi->master);
--	unsigned int tx_only;
- 	int ret;
- 
--	tx_only = fsl_espi_copy_to_buf(m, mspi);
-+	fsl_espi_copy_to_buf(m, mspi);
- 
- 	ret = fsl_espi_do_trans(m, trans);
- 
--	/* If there is at least one RX byte then copy it to rx_buff */
--	if (!ret && rx_buff && trans->len > tx_only)
--		memcpy(rx_buff, trans->rx_buf + tx_only, trans->len - tx_only);
-+	if (!ret)
-+		fsl_espi_copy_from_buf(m, mspi);
- 
- 	return ret;
- }
-@@ -309,7 +313,6 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
- 			       struct spi_message *m)
- {
- 	struct mpc8xxx_spi *mspi = spi_master_get_devdata(m->spi->master);
--	u8 *rx_buf = NULL;
- 	unsigned int delay_usecs = 0, xfer_len = 0;
- 	struct spi_transfer *t, trans = {};
- 	int ret;
-@@ -319,8 +322,6 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
- 		goto out;
- 
- 	list_for_each_entry(t, &m->transfers, transfer_list) {
--		if (t->rx_buf)
--			rx_buf = t->rx_buf;
- 		if ((t->tx_buf) || (t->rx_buf))
- 			xfer_len += t->len;
- 		if (t->delay_usecs > delay_usecs)
-@@ -337,7 +338,7 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
- 	trans.tx_buf = mspi->local_buf;
- 	trans.rx_buf = mspi->local_buf;
- 
--	ret = fsl_espi_trans(m, &trans, rx_buf);
-+	ret = fsl_espi_trans(m, &trans);
- 
- 	m->actual_length = ret ? 0 : trans.len;
- out:
--- 
-2.9.2
+Submitting patchsets for multiple subsystems is not straightforward, the cover-letter should also have been sent to linux-spi ML, lesson learned !
 
+Jerome left my signoff because the patches were left untouched from my branch.
+Nevertheless, I will submit these patches 4 & 5 in a separate SPI serie, please ignore them in this patchset.
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Thanks,
+Neil

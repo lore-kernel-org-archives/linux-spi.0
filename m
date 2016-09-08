@@ -1,46 +1,29 @@
 From: Neil Armstrong <narmstrong@baylibre.com>
-Subject: Re: [PATCH 4/7] spi: meson: Add GXBB compatible
-Date: Thu, 8 Sep 2016 09:44:57 +0200
-Message-ID: <639f64f7-1268-12e3-1f22-44a45baa9559@baylibre.com>
-References: <1473261223-15412-1-git-send-email-jbrunet@baylibre.com>
- <1473261223-15412-5-git-send-email-jbrunet@baylibre.com>
- <20160907185846.GE3950@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: Kevin Hilman <khilman@baylibre.com>,
-        Carlo Caione <carlo@caione.org>,
-        linux-amlogic@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>,
-        Jerome Brunet <jbrunet@baylibre.com>
+Subject: [PATCH 0/2] spi: meson: Add Amlogic GXBB compatible
+Date: Thu,  8 Sep 2016 09:53:24 +0200
+Message-ID: <1473321206-32284-1-git-send-email-narmstrong@baylibre.com>
+Cc: Neil Armstrong <narmstrong@baylibre.com>,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
+To: broonie@kernel.org, carlo@caione.org, khilman@baylibre.com
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20160907185846.GE3950@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 09/07/2016 08:58 PM, Mark Brown wrote:
-> On Wed, Sep 07, 2016 at 05:13:40PM +0200, Jerome Brunet wrote:
->> From: Neil Armstrong <narmstrong@baylibre.com>
->>
->> Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
->> ---
-> 
-> I can't do anything with this, you've not provided a signoff.  Please
-> resend with a signoff - see SubmittingPatches for details on what this
-> means and why it's important.
-> 
-> I also only have patches 4 and 5 of this series and no cover letter,
-> what is going on there?
-> 
+This patchset adds a specific compatible string in the Meson SPIFC driver for
+the Amlogic Meson GXBB SoC.
 
-Hi Mark,
+This patchset is SPI-only respin from Jerome Brunet patchset at [1].
 
-Submitting patchsets for multiple subsystems is not straightforward, the cover-letter should also have been sent to linux-spi ML, lesson learned !
+[1] http://lkml.kernel.org/r/1473261223-15412-1-git-send-email-jbrunet@baylibre.com
 
-Jerome left my signoff because the patches were left untouched from my branch.
-Nevertheless, I will submit these patches 4 & 5 in a separate SPI serie, please ignore them in this patchset.
+Neil Armstrong (2):
+  dt-bindings: spi-meson: Add GXBB Compatible string
+  spi: meson: Add GXBB compatible
 
-Thanks,
-Neil
+ Documentation/devicetree/bindings/spi/spi-meson.txt | 2 +-
+ drivers/spi/spi-meson-spifc.c                       | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+-- 
+1.9.1

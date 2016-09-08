@@ -1,29 +1,35 @@
 From: Neil Armstrong <narmstrong@baylibre.com>
-Subject: [PATCH 0/2] spi: meson: Add Amlogic GXBB compatible
-Date: Thu,  8 Sep 2016 09:53:24 +0200
-Message-ID: <1473321206-32284-1-git-send-email-narmstrong@baylibre.com>
+Subject: [PATCH 1/2] dt-bindings: spi-meson: Add GXBB Compatible string
+Date: Thu,  8 Sep 2016 09:53:25 +0200
+Message-ID: <1473321206-32284-2-git-send-email-narmstrong@baylibre.com>
+References: <1473321206-32284-1-git-send-email-narmstrong@baylibre.com>
 Cc: Neil Armstrong <narmstrong@baylibre.com>,
         linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
-To: broonie@kernel.org, carlo@caione.org, khilman@baylibre.com
+To: broonie@kernel.org, carlo@caione.org, khilman@baylibre.com,
+        devicetree@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1473321206-32284-1-git-send-email-narmstrong@baylibre.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This patchset adds a specific compatible string in the Meson SPIFC driver for
-the Amlogic Meson GXBB SoC.
-
-This patchset is SPI-only respin from Jerome Brunet patchset at [1].
-
-[1] http://lkml.kernel.org/r/1473261223-15412-1-git-send-email-jbrunet@baylibre.com
-
-Neil Armstrong (2):
-  dt-bindings: spi-meson: Add GXBB Compatible string
-  spi: meson: Add GXBB compatible
-
+Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
+---
  Documentation/devicetree/bindings/spi/spi-meson.txt | 2 +-
- drivers/spi/spi-meson-spifc.c                       | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/Documentation/devicetree/bindings/spi/spi-meson.txt b/Documentation/devicetree/bindings/spi/spi-meson.txt
+index bb52a86..dc6d031 100644
+--- a/Documentation/devicetree/bindings/spi/spi-meson.txt
++++ b/Documentation/devicetree/bindings/spi/spi-meson.txt
+@@ -7,7 +7,7 @@ NOR memories, without DMA support and a 64-byte unified transmit /
+ receive buffer.
+ 
+ Required properties:
+- - compatible: should be "amlogic,meson6-spifc"
++ - compatible: should be "amlogic,meson6-spifc" or "amlogic,meson-gxbb-spifc"
+  - reg: physical base address and length of the controller registers
+  - clocks: phandle of the input clock for the baud rate generator
+  - #address-cells: should be 1
 -- 
 1.9.1

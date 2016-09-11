@@ -1,82 +1,183 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH 1/1] mtd: devices: m25p80: Add PM suspend resume support
-Date: Sun, 11 Sep 2016 12:10:24 +0200
-Message-ID: <CAMuHMdUb6nhzzkPy4z1tFouM+FAsNKhh=EXYFTSL00ziSUcKqw@mail.gmail.com>
-References: <1473448438-13245-1-git-send-email-kdasu.kdev@gmail.com>
+From: Julia Lawall <Julia.Lawall@lip6.fr>
+Subject: [PATCH 00/26] constify local structures
+Date: Sun, 11 Sep 2016 15:05:42 +0200
+Message-ID: <1473599168-30561-1-git-send-email-Julia.Lawall@lip6.fr>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org
-To: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1473448438-13245-1-git-send-email-kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: alsa-devel@alsa-project.org, Mustafa Ismail <mustafa.ismail@intel.com>,
+ Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
+ kernel-janitors@vger.kernel.org, linux-fbdev@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org, devel@driverdev.osuosl.org,
+ linux-scsi@vger.kernel.org, linux-rdma@vger.kernel.org,
+ Jason Gunthorpe <jgunthorpe@obsidianresearch.com>, linux-acpi@vger.kernel.org,
+ tpmdd-devel@lists.sourceforge.net, linux-media@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-can@vger.kernel.org,
+ Shiraz Saleem <shiraz.saleem@intel.com>,
+ Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>, netdev@vger.kernel.org,
+ Chien Tin Tung <chien.tin.tung@intel.com>, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-usb@vger.kernel.org, joe@perches.com
+To: linux-renesas-soc@vger.kernel.org
+Return-path: <driverdev-devel-bounces@linuxdriverproject.org>
+List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/driverdev-devel>,
+ <mailto:driverdev-devel-request@linuxdriverproject.org?subject=unsubscribe>
+List-Archive: <http://driverdev.linuxdriverproject.org/pipermail/driverdev-devel/>
+List-Post: <mailto:driverdev-devel@linuxdriverproject.org>
+List-Help: <mailto:driverdev-devel-request@linuxdriverproject.org?subject=help>
+List-Subscribe: <http://driverdev.linuxdriverproject.org/mailman/listinfo/driverdev-devel>,
+ <mailto:driverdev-devel-request@linuxdriverproject.org?subject=subscribe>
+Errors-To: driverdev-devel-bounces@linuxdriverproject.org
+Sender: "devel" <driverdev-devel-bounces@linuxdriverproject.org>
+List-Id: linux-spi.vger.kernel.org
 
-On Fri, Sep 9, 2016 at 9:13 PM, Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> Adding PM support so as to be able to probe spi-nor flash
-> on resume. There are vendor specific commands to setup
-> the transfer mode and enable read/write as part of
-> spi_nor_scan(), done on intial probe and needed on resume().
-> The spi-nor stucture is private to the m25p driver and hence
-> is the only place this can be done without having to duplicate
-> code in controller driver.
->
-> Signed-off-by: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> ---
->  drivers/mtd/devices/m25p80.c | 37 ++++++++++++++++++++++++++++++++++++-
->  1 file changed, 36 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
-> index 9cf7fcd..f8294b4 100644
-> --- a/drivers/mtd/devices/m25p80.c
-> +++ b/drivers/mtd/devices/m25p80.c
+Constify local structures.
 
-> +static int m25p_resume(struct device *dev)
-> +{
-> +       struct m25p *flash = dev_get_drvdata(dev);
-> +       struct flash_platform_data      *data;
-> +       char *flash_name = NULL;
-> +       enum read_mode mode = SPI_NOR_NORMAL;
-> +       int ret;
-> +
-> +       data = dev_get_platdata(&flash->spi->dev);
-> +
-> +       if (data && data->type)
-> +               flash_name = data->type;
-> +       else if (!strcmp(flash->spi->modalias, "spi-nor"))
-> +               flash_name = NULL; /* auto-detect */
-> +       else
-> +               flash_name = flash->spi->modalias;
-> +
-> +       if (flash->spi->mode & SPI_RX_QUAD)
-> +               mode = SPI_NOR_QUAD;
-> +       else if (flash->spi->mode & SPI_RX_DUAL)
-> +               mode = SPI_NOR_DUAL;
-> +
-> +       ret = spi_nor_scan(&flash->spi_nor, flash_name, mode);
+The semantic patch that makes this change is as follows:
+(http://coccinelle.lip6.fr/)
 
-All of the above is also done in m25p_probe(). Hence please factor out the
-commonalities into its own function.
+// <smpl>
+// The first rule ignores some cases that posed problems
+@r disable optional_qualifier@
+identifier s != {peri_clk_data,threshold_attr,tracer_flags,tracer};
+identifier i != {s5k5baf_cis_rect,smtcfb_fix};
+position p;
+@@
+static struct s i@p = { ... };
 
-> +
-> +       return ret;
-> +}
+@lstruct@
+identifier r.s;
+@@
+struct s { ... };
 
-Gr{oetje,eeting}s,
+@used depends on lstruct@
+identifier r.i;
+@@
+i
 
-                        Geert
+@bad1@
+expression e;
+identifier r.i;
+assignment operator a;
+@@
+ (<+...i...+>) a e
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+@bad2@
+identifier r.i;
+@@
+ &(<+...i...+>)
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+@bad3@
+identifier r.i;
+declarer d;
+@@
+ d(...,<+...i...+>,...);
+
+@bad4@
+identifier r.i;
+type T;
+T[] e;
+identifier f;
+position p;
+@@
+
+f@p(...,
+(
+  (<+...i...+>)
+&
+  e
+)
+,...)
+
+@bad4a@
+identifier r.i;
+type T;
+T *e;
+identifier f;
+position p;
+@@
+
+f@p(...,
+(
+  (<+...i...+>)
+&
+  e
+)
+,...)
+
+@ok5@
+expression *e;
+identifier r.i;
+position p;
+@@
+e =@p i
+
+@bad5@
+expression *e;
+identifier r.i;
+position p != ok5.p;
+@@
+e =@p (<+...i...+>)
+
+@rr depends on used && !bad1 && !bad2 && !bad3 && !bad4 && !bad4a && !bad5@
+identifier s,r.i;
+position r.p;
+@@
+
+static
++const
+ struct s i@p = { ... };
+
+@depends on used && !bad1 && !bad2 && !bad3 && !bad4 && !bad4a && !bad5
+ disable optional_qualifier@
+identifier rr.s,r.i;
+@@
+
+static
++const
+ struct s i;
+// </smpl>
+
+---
+
+ drivers/acpi/acpi_apd.c                              |    8 +++---
+ drivers/char/tpm/tpm-interface.c                     |   10 ++++----
+ drivers/char/tpm/tpm-sysfs.c                         |    2 -
+ drivers/cpufreq/intel_pstate.c                       |    8 +++---
+ drivers/infiniband/hw/i40iw/i40iw_uk.c               |    6 ++---
+ drivers/media/i2c/tvp514x.c                          |    2 -
+ drivers/media/pci/ddbridge/ddbridge-core.c           |   18 +++++++--------
+ drivers/media/pci/ngene/ngene-cards.c                |   14 ++++++------
+ drivers/media/pci/smipcie/smipcie-main.c             |    8 +++---
+ drivers/misc/sgi-xp/xpc_uv.c                         |    2 -
+ drivers/net/arcnet/com20020-pci.c                    |   10 ++++----
+ drivers/net/can/c_can/c_can_pci.c                    |    4 +--
+ drivers/net/can/sja1000/plx_pci.c                    |   20 ++++++++---------
+ drivers/net/ethernet/mellanox/mlx4/main.c            |    4 +--
+ drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c |    2 -
+ drivers/net/ethernet/renesas/sh_eth.c                |   14 ++++++------
+ drivers/net/ethernet/stmicro/stmmac/stmmac_pci.c     |    2 -
+ drivers/net/wireless/ath/dfs_pattern_detector.c      |    2 -
+ drivers/net/wireless/intel/iwlegacy/3945.c           |    4 +--
+ drivers/net/wireless/realtek/rtlwifi/rtl8188ee/sw.c  |    2 -
+ drivers/net/wireless/realtek/rtlwifi/rtl8192ce/sw.c  |    2 -
+ drivers/net/wireless/realtek/rtlwifi/rtl8192de/sw.c  |    2 -
+ drivers/net/wireless/realtek/rtlwifi/rtl8192ee/sw.c  |    2 -
+ drivers/net/wireless/realtek/rtlwifi/rtl8192se/sw.c  |    2 -
+ drivers/net/wireless/realtek/rtlwifi/rtl8723ae/sw.c  |    2 -
+ drivers/net/wireless/realtek/rtlwifi/rtl8723be/sw.c  |    2 -
+ drivers/net/wireless/realtek/rtlwifi/rtl8821ae/sw.c  |    2 -
+ drivers/platform/chrome/chromeos_laptop.c            |   22 +++++++++----------
+ drivers/platform/x86/intel_scu_ipc.c                 |    6 ++---
+ drivers/platform/x86/intel_telemetry_debugfs.c       |    2 -
+ drivers/scsi/esas2r/esas2r_flash.c                   |    2 -
+ drivers/scsi/hptiop.c                                |    6 ++---
+ drivers/spi/spi-dw-pci.c                             |    4 +--
+ drivers/staging/rtl8192e/rtl8192e/rtl_core.c         |    2 -
+ drivers/usb/misc/ezusb.c                             |    2 -
+ drivers/video/fbdev/matrox/matroxfb_g450.c           |    2 -
+ lib/crc64_ecma.c                                     |    2 -
+ sound/pci/ctxfi/ctatc.c                              |    2 -
+ sound/pci/hda/patch_ca0132.c                         |   10 ++++----
+ sound/pci/riptide/riptide.c                          |    2 -
+ 40 files changed, 110 insertions(+), 110 deletions(-)

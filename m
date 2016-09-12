@@ -1,19 +1,25 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: fsl-espi: remove element actual_length from struct fsl_espi_trans" to the spi tree
-Date: Mon, 12 Sep 2016 20:08:40 +0100
-Message-ID: <E1bjWau-0002tW-LB@debutante>
-References: <ebb38b20-1977-9980-9042-cefaac7ed765@gmail.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Applied "spi: meson: Add GXBB compatible" to the spi tree
+Date: Mon, 12 Sep 2016 20:12:28 +0100
+Message-ID: <E1bjWea-0003hH-1K@debutante>
+References: <1473261223-15412-5-git-send-email-jbrunet@baylibre.com>
+Cc: Kevin Hilman <khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Kevin Hilman <khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
+        Carlo Caione <carlo-KA+7E9HrN00dnm+yROfE0A@public.gmane.org>,
+        linux-amlogic-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Neil Armstrong <narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <ebb38b20-1977-9980-9042-cefaac7ed765-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1473261223-15412-5-git-send-email-jbrunet-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: fsl-espi: remove element actual_length from struct fsl_espi_trans
+   spi: meson: Add GXBB compatible
 
 has been applied to the spi tree at
 
@@ -38,69 +44,30 @@ to this mail.
 Thanks,
 Mark
 
->From 5cd7b8be6b7b4c4fb9e2bfbfba596d27357cc359 Mon Sep 17 00:00:00 2001
-From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Wed, 7 Sep 2016 22:51:48 +0200
-Subject: [PATCH] spi: fsl-espi: remove element actual_length from struct
- fsl_espi_trans
+>From 2f58ea64bd8931bd7709732fe0a96e0bfb44a00b Mon Sep 17 00:00:00 2001
+From: Neil Armstrong <narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Date: Thu, 8 Sep 2016 09:53:26 +0200
+Subject: [PATCH] spi: meson: Add GXBB compatible
 
-If an error occurs during processing the message, then we don't have
-to populate the actual_length element of struct message.
-So we can get rid of element actual_length in struct
-fsl_espi_transfer.
-
-Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Neil Armstrong <narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Acked-by: Kevin Hilman <khilman-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/spi/spi-meson-spifc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 6b60f7b29869..726d5fdca3b6 100644
---- a/drivers/spi/spi-fsl-espi.c
-+++ b/drivers/spi/spi-fsl-espi.c
-@@ -41,7 +41,6 @@ struct fsl_espi_transfer {
- 	const void *tx_buf;
- 	void *rx_buf;
- 	unsigned len;
--	unsigned actual_length;
+diff --git a/drivers/spi/spi-meson-spifc.c b/drivers/spi/spi-meson-spifc.c
+index 2465259f6241..616566e793c6 100644
+--- a/drivers/spi/spi-meson-spifc.c
++++ b/drivers/spi/spi-meson-spifc.c
+@@ -442,6 +442,7 @@ static const struct dev_pm_ops meson_spifc_pm_ops = {
+ 
+ static const struct of_device_id meson_spifc_dt_match[] = {
+ 	{ .compatible = "amlogic,meson6-spifc", },
++	{ .compatible = "amlogic,meson-gxbb-spifc", },
+ 	{ },
  };
- 
- /* eSPI Controller mode register definitions */
-@@ -327,8 +326,6 @@ static int fsl_espi_cmd_trans(struct spi_message *m,
- 	espi_trans->rx_buf = mspi->local_buf;
- 	ret = fsl_espi_do_trans(m, espi_trans);
- 
--	espi_trans->actual_length = espi_trans->len;
--
- 	return ret;
- }
- 
-@@ -350,7 +347,6 @@ static int fsl_espi_rw_trans(struct spi_message *m,
- 		if (trans->len > tx_only)
- 			memcpy(rx_buff, trans->rx_buf + tx_only,
- 			       trans->len - tx_only);
--		trans->actual_length += trans->len;
- 	}
- 
- 	return ret;
-@@ -373,14 +369,14 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
- 	}
- 
- 	espi_trans.len = xfer_len;
--	espi_trans.actual_length = 0;
- 
- 	if (!rx_buf)
- 		ret = fsl_espi_cmd_trans(m, &espi_trans, NULL);
- 	else
- 		ret = fsl_espi_rw_trans(m, &espi_trans, rx_buf);
- 
--	m->actual_length = espi_trans.actual_length;
-+	m->actual_length = ret ? 0 : espi_trans.len;
-+
- 	if (m->status == -EINPROGRESS)
- 		m->status = ret;
- 
+ MODULE_DEVICE_TABLE(of, meson_spifc_dt_match);
 -- 
 2.8.1
 

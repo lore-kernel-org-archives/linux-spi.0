@@ -1,89 +1,88 @@
-From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH/RFC v2 4/7] spi: Document SPI slave controller support
-Date: Mon, 12 Sep 2016 22:50:43 +0200
-Message-ID: <1473713446-30366-5-git-send-email-geert+renesas@glider.be>
-References: <1473713446-30366-1-git-send-email-geert+renesas@glider.be>
-Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Wolfram Sang <wsa+renesas-jBu1N2QxHDJrcw3mvpCnnVaTQe2KTcn/@public.gmane.org>,
-        Hisashi Nakamura <hisashi.nakamura.ak-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-        Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1473713446-30366-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Julia Lawall <julia.lawall@lip6.fr>
+Subject: Re: [PATCH 00/26] constify local structures
+Date: Mon, 12 Sep 2016 23:11:46 +0200 (CEST)
+Message-ID: <alpine.DEB.2.10.1609122311040.3549@hadrien>
+References: <1473599168-30561-1-git-send-email-Julia.Lawall@lip6.fr> <20160911172105.GB5493@intel.com> <alpine.DEB.2.10.1609121051050.3049@hadrien> <20160912131625.GD957@intel.com> <877fah5j35.fsf@linux.intel.com> <20160912201450.GA8889@intel.com>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Cc: Felipe Balbi <felipe.balbi@linux.intel.com>,
+        Julia Lawall <julia.lawall@lip6.fr>,
+        linux-renesas-soc@vger.kernel.org, joe@perches.com,
+        kernel-janitors@vger.kernel.org,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        linux-pm@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-can@vger.kernel.org,
+        Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
+        Shiraz Saleem <shiraz.saleem@intel.com>,
+        Mustafa Ismail <mustafa.ismail@intel.com>,
+        Chien Tin Tung <chien.tin.tung@intel.com>,
+        linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
+        devel@driverdev.osuosl.org, alsa-devel@alsa-project.org,
+        linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        Jason Gunthorpe <jgunthorpe@obsidianresearch.com>,
+        t
+To: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Return-path: <linux-can-owner@vger.kernel.org>
+In-Reply-To: <20160912201450.GA8889@intel.com>
+Sender: linux-can-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
----
-v2:
-  - New.
----
- Documentation/spi/spi-summary | 27 ++++++++++++++++++++-------
- 1 file changed, 20 insertions(+), 7 deletions(-)
 
-diff --git a/Documentation/spi/spi-summary b/Documentation/spi/spi-summary
-index d1824b399b2d1d79..1721c1b570c32466 100644
---- a/Documentation/spi/spi-summary
-+++ b/Documentation/spi/spi-summary
-@@ -62,8 +62,8 @@ chips described as using "three wire" signaling: SCK, data, nCSx.
- (That data line is sometimes called MOMI or SISO.)
- 
- Microcontrollers often support both master and slave sides of the SPI
--protocol.  This document (and Linux) currently only supports the master
--side of SPI interactions.
-+protocol.  This document (and Linux) supports both the master and slave
-+sides of SPI interactions.
- 
- 
- Who uses it?  On what kinds of systems?
-@@ -154,9 +154,8 @@ control audio interfaces, present touchscreen sensors as input interfaces,
- or monitor temperature and voltage levels during industrial processing.
- And those might all be sharing the same controller driver.
- 
--A "struct spi_device" encapsulates the master-side interface between
--those two types of driver.  At this writing, Linux has no slave side
--programming interface.
-+A "struct spi_device" encapsulates the controller-side interface between
-+those two types of drivers.
- 
- There is a minimal core of SPI programming interfaces, focussing on
- using the driver model to connect controller and protocol drivers using
-@@ -177,10 +176,24 @@ shows up in sysfs in several locations:
-    /sys/bus/spi/drivers/D ... driver for one or more spi*.* devices
- 
-    /sys/class/spi_master/spiB ... symlink (or actual device node) to
--	a logical node which could hold class related state for the
--	controller managing bus "B".  All spiB.* devices share one
-+	a logical node which could hold class related state for the SPI
-+	master controller managing bus "B".  All spiB.* devices share one
- 	physical SPI bus segment, with SCLK, MOSI, and MISO.
- 
-+   /sys/devices/.../CTLR/slave ... virtual file for (un)registering the
-+	slave device for an SPI slave controller.
-+	Writing the driver name of an SPI slave handler to this file
-+	registers the slave device; writing "(null)" unregisters the slave
-+	device.
-+	Reading from this file shows the name of the slave device ("(null)"
-+	if not registered).
-+
-+   /sys/class/spi_slave/spiB ... symlink (or actual device node) to
-+	a logical node which could hold class related state for the SPI
-+	slave controller on bus "B".  When registered, a single spiB.*
-+	device is present here, possible sharing the physical SPI bus
-+	segment with other SPI slave devices.
-+
- Note that the actual location of the controller's class state depends
- on whether you enabled CONFIG_SYSFS_DEPRECATED or not.  At this time,
- the only class-specific state is the bus number ("B" in "spiB"), so
--- 
-1.9.1
 
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+On Mon, 12 Sep 2016, Jarkko Sakkinen wrote:
+
+> On Mon, Sep 12, 2016 at 04:43:58PM +0300, Felipe Balbi wrote:
+> >
+> > Hi,
+> >
+> > Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com> writes:
+> > > On Mon, Sep 12, 2016 at 10:54:07AM +0200, Julia Lawall wrote:
+> > >>
+> > >>
+> > >> On Sun, 11 Sep 2016, Jarkko Sakkinen wrote:
+> > >>
+> > >> > On Sun, Sep 11, 2016 at 03:05:42PM +0200, Julia Lawall wrote:
+> > >> > > Constify local structures.
+> > >> > >
+> > >> > > The semantic patch that makes this change is as follows:
+> > >> > > (http://coccinelle.lip6.fr/)
+> > >> >
+> > >> > Just my two cents but:
+> > >> >
+> > >> > 1. You *can* use a static analysis too to find bugs or other issues.
+> > >> > 2. However, you should manually do the commits and proper commit
+> > >> >    messages to subsystems based on your findings. And I generally think
+> > >> >    that if one contributes code one should also at least smoke test changes
+> > >> >    somehow.
+> > >> >
+> > >> > I don't know if I'm alone with my opinion. I just think that one should
+> > >> > also do the analysis part and not blindly create and submit patches.
+> > >>
+> > >> All of the patches are compile tested.  And the individual patches are
+> > >
+> > > Compile-testing is not testing. If you are not able to test a commit,
+> > > you should explain why.
+> >
+> > Dude, Julia has been doing semantic patching for years already and
+> > nobody has raised any concerns so far. There's already an expectation
+> > that Coccinelle *works* and Julia's sematic patches are sound.
+> >
+> > Besides, adding 'const' is something that causes virtually no functional
+> > changes to the point that build-testing is really all you need. Any
+> > problems caused by adding 'const' to a definition will be seen by build
+> > errors or warnings.
+> >
+> > Really, just stop with the pointless discussion and go read a bit about
+> > Coccinelle and what semantic patches are giving you. The work done by
+> > Julia and her peers are INRIA have measurable benefits.
+> >
+> > You're really making a thunderstorm in a glass of water.
+>
+> Hmm... I've been using coccinelle in cyclic basis for some time now.
+> My comment was oversized but I didn't mean it to be impolite or attack
+> of any kind for that matter.
+
+No problem :)  Thanks for the feedback.
+
+julia

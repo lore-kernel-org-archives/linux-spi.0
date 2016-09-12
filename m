@@ -1,94 +1,101 @@
-From: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Subject: Re: [PATCH 00/26] constify local structures
-Date: Mon, 12 Sep 2016 23:14:50 +0300
-Message-ID: <20160912201450.GA8889@intel.com>
-References: <1473599168-30561-1-git-send-email-Julia.Lawall@lip6.fr>
- <20160911172105.GB5493@intel.com>
- <alpine.DEB.2.10.1609121051050.3049@hadrien>
- <20160912131625.GD957@intel.com> <877fah5j35.fsf@linux.intel.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: alsa-devel@alsa-project.org, Mustafa Ismail <mustafa.ismail@intel.com>,
- Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
- kernel-janitors@vger.kernel.org, linux-fbdev@vger.kernel.org,
- platform-driver-x86@vger.kernel.org, devel@driverdev.osuosl.org,
- linux-scsi@vger.kernel.org, linux-rdma@vger.kernel.org,
- Jason Gunthorpe <jgunthorpe@obsidianresearch.com>, linux-acpi@vger.kernel.org,
- tpmdd-devel@lists.sourceforge.net, linux-media@vger.kernel.org,
- linux-pm@vger.kernel.org, linux-can@vger.kernel.org,
- Julia Lawall <julia.lawall@lip6.fr>, Shiraz Saleem <shiraz.saleem@intel.com>,
- Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>, netdev@vger.kernel.org,
- Chien Tin Tung <chien.tin.tung@intel.com>, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, linux-usb@vger.kernel.org, joe@perches.com
-To: Felipe Balbi <felipe.balbi@linux.intel.com>
-Return-path: <driverdev-devel-bounces@linuxdriverproject.org>
-Content-Disposition: inline
-In-Reply-To: <877fah5j35.fsf@linux.intel.com>
-List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/driverdev-devel>,
- <mailto:driverdev-devel-request@linuxdriverproject.org?subject=unsubscribe>
-List-Archive: <http://driverdev.linuxdriverproject.org/pipermail/driverdev-devel/>
-List-Post: <mailto:driverdev-devel@linuxdriverproject.org>
-List-Help: <mailto:driverdev-devel-request@linuxdriverproject.org?subject=help>
-List-Subscribe: <http://driverdev.linuxdriverproject.org/mailman/listinfo/driverdev-devel>,
- <mailto:driverdev-devel-request@linuxdriverproject.org?subject=subscribe>
-Errors-To: driverdev-devel-bounces@linuxdriverproject.org
-Sender: "devel" <driverdev-devel-bounces@linuxdriverproject.org>
-List-Id: linux-spi.vger.kernel.org
+From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Subject: [PATCH/RFC v2 1/7] spi: Document DT bindings for SPI controllers in slave mode
+Date: Mon, 12 Sep 2016 22:50:40 +0200
+Message-ID: <1473713446-30366-2-git-send-email-geert+renesas@glider.be>
+References: <1473713446-30366-1-git-send-email-geert+renesas@glider.be>
+Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Wolfram Sang <wsa+renesas-jBu1N2QxHDJrcw3mvpCnnVaTQe2KTcn/@public.gmane.org>,
+        Hisashi Nakamura <hisashi.nakamura.ak-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
+        Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1473713446-30366-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, Sep 12, 2016 at 04:43:58PM +0300, Felipe Balbi wrote:
-> 
-> Hi,
-> 
-> Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com> writes:
-> > On Mon, Sep 12, 2016 at 10:54:07AM +0200, Julia Lawall wrote:
-> >> 
-> >> 
-> >> On Sun, 11 Sep 2016, Jarkko Sakkinen wrote:
-> >> 
-> >> > On Sun, Sep 11, 2016 at 03:05:42PM +0200, Julia Lawall wrote:
-> >> > > Constify local structures.
-> >> > >
-> >> > > The semantic patch that makes this change is as follows:
-> >> > > (http://coccinelle.lip6.fr/)
-> >> >
-> >> > Just my two cents but:
-> >> >
-> >> > 1. You *can* use a static analysis too to find bugs or other issues.
-> >> > 2. However, you should manually do the commits and proper commit
-> >> >    messages to subsystems based on your findings. And I generally think
-> >> >    that if one contributes code one should also at least smoke test changes
-> >> >    somehow.
-> >> >
-> >> > I don't know if I'm alone with my opinion. I just think that one should
-> >> > also do the analysis part and not blindly create and submit patches.
-> >> 
-> >> All of the patches are compile tested.  And the individual patches are
-> >
-> > Compile-testing is not testing. If you are not able to test a commit,
-> > you should explain why.
-> 
-> Dude, Julia has been doing semantic patching for years already and
-> nobody has raised any concerns so far. There's already an expectation
-> that Coccinelle *works* and Julia's sematic patches are sound.
-> 
-> Besides, adding 'const' is something that causes virtually no functional
-> changes to the point that build-testing is really all you need. Any
-> problems caused by adding 'const' to a definition will be seen by build
-> errors or warnings.
-> 
-> Really, just stop with the pointless discussion and go read a bit about
-> Coccinelle and what semantic patches are giving you. The work done by
-> Julia and her peers are INRIA have measurable benefits.
-> 
-> You're really making a thunderstorm in a glass of water.
+Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+---
+v2:
+  - Do not create a child node in SPI slave mode. Instead, add an
+    "spi-slave" property, and put the mode properties in the controller
+    node.
+---
+ Documentation/devicetree/bindings/spi/spi-bus.txt | 34 ++++++++++++++---------
+ 1 file changed, 21 insertions(+), 13 deletions(-)
 
-Hmm... I've been using coccinelle in cyclic basis for some time now.
-My comment was oversized but I didn't mean it to be impolite or attack
-of any kind for that matter.
+diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
+index 17822860cb98c34d..1ae28d7cafb68dc5 100644
+--- a/Documentation/devicetree/bindings/spi/spi-bus.txt
++++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
+@@ -1,17 +1,23 @@
+ SPI (Serial Peripheral Interface) busses
+ 
+-SPI busses can be described with a node for the SPI master device
+-and a set of child nodes for each SPI slave on the bus.  For this
+-discussion, it is assumed that the system's SPI controller is in
+-SPI master mode.  This binding does not describe SPI controllers
+-in slave mode.
++SPI busses can be described with a node for the SPI controller device
++and a set of child nodes for each SPI slave on the bus.  The system's SPI
++controller may be described for use in SPI master mode or in SPI slave mode,
++but not for both at the same time.
+ 
+-The SPI master node requires the following properties:
++The SPI controller node requires the following properties:
++- compatible      - name of SPI bus controller following generic names
++		recommended practice.
++
++In master mode, the SPI controller node requires the following additional
++properties:
+ - #address-cells  - number of cells required to define a chip select
+ 		address on the SPI bus.
+ - #size-cells     - should be zero.
+-- compatible      - name of SPI bus controller following generic names
+-		recommended practice.
++
++In slave mode, the SPI controller node requires one additional property:
++- spi-slave       - Empty property.
++
+ No other properties are required in the SPI bus node.  It is assumed
+ that a driver for an SPI bus device will understand that it is an SPI bus.
+ However, the binding does not attempt to define the specific method for
+@@ -21,7 +27,7 @@ assumption that board specific platform code will be used to manage
+ chip selects.  Individual drivers can define additional properties to
+ support describing the chip select layout.
+ 
+-Optional properties:
++Optional properties (master mode only):
+ - cs-gpios	  - gpios chip select.
+ - num-cs	  - total number of chipselects.
+ 
+@@ -41,12 +47,14 @@ cs1 : native
+ cs2 : &gpio1 1 0
+ cs3 : &gpio1 2 0
+ 
+-SPI slave nodes must be children of the SPI master node and can
+-contain the following properties.
+-- reg             - (required) chip select address of device.
++In master mode, SPI slave nodes must be children of the SPI controller node.
++In slave mode, the (single) slave device is represented by the controller node
++itself. SPI slave nodes can contain the following properties.
++- reg             - (required, master mode only) chip select address of device.
+ - compatible      - (required) name of SPI device following generic names
+ 		recommended practice.
+-- spi-max-frequency - (required) Maximum SPI clocking speed of device in Hz.
++- spi-max-frequency - (required, master mode only) Maximum SPI clocking speed
++		of device in Hz.
+ - spi-cpol        - (optional) Empty property indicating device requires
+ 		inverse clock polarity (CPOL) mode.
+ - spi-cpha        - (optional) Empty property indicating device requires
+-- 
+1.9.1
 
-> -- 
-> balbi
-
-/Jarkko
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,73 +1,93 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: meson: Add GXBB Compatible string" to the spi tree
-Date: Mon, 12 Sep 2016 20:12:36 +0100
-Message-ID: <E1bjWei-0003iJ-IE@debutante>
-References: <1473261223-15412-6-git-send-email-jbrunet@baylibre.com>
-Cc: Kevin Hilman <khilman@baylibre.com>,
-        Mark Brown <broonie@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Carlo Caione <carlo@caione.org>,
-        linux-amlogic@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org
-To: Neil Armstrong <narmstrong@baylibre.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1473261223-15412-6-git-send-email-jbrunet@baylibre.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 1/1] mtd: devices: m25p80: Add PM suspend resume support
+Date: Mon, 12 Sep 2016 16:06:50 -0400
+Message-ID: <CAC=U0a3Pm=raVj0HnBjwiyf0eZNnCv4KP=uys31fk1UxtYdTqQ@mail.gmail.com>
+References: <1473448438-13245-1-git-send-email-kdasu.kdev@gmail.com> <CAMuHMdUb6nhzzkPy4z1tFouM+FAsNKhh=EXYFTSL00ziSUcKqw@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        "Jayachandran C <jchandra-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>, bcm-kernel-feedback-list"
+        <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CAMuHMdUb6nhzzkPy4z1tFouM+FAsNKhh=EXYFTSL00ziSUcKqw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+Geert,
 
-   spi: meson: Add GXBB Compatible string
+ I agree that scan code can be refactored into a common function to be
+called by probe and resume. Will send a v2 patch with the changes.
 
-has been applied to the spi tree at
+Thanks
+Kamal
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 164c5cd5ffabfa7a060999f8184927017287c39b Mon Sep 17 00:00:00 2001
-From: Neil Armstrong <narmstrong@baylibre.com>
-Date: Thu, 8 Sep 2016 09:53:25 +0200
-Subject: [PATCH] spi: meson: Add GXBB Compatible string
-
-Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
-Acked-by: Kevin Hilman <khilman@baylibre.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- Documentation/devicetree/bindings/spi/spi-meson.txt | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/Documentation/devicetree/bindings/spi/spi-meson.txt b/Documentation/devicetree/bindings/spi/spi-meson.txt
-index bb52a86f3365..dc6d0313324a 100644
---- a/Documentation/devicetree/bindings/spi/spi-meson.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-meson.txt
-@@ -7,7 +7,7 @@ NOR memories, without DMA support and a 64-byte unified transmit /
- receive buffer.
- 
- Required properties:
-- - compatible: should be "amlogic,meson6-spifc"
-+ - compatible: should be "amlogic,meson6-spifc" or "amlogic,meson-gxbb-spifc"
-  - reg: physical base address and length of the controller registers
-  - clocks: phandle of the input clock for the baud rate generator
-  - #address-cells: should be 1
--- 
-2.8.1
+On Sun, Sep 11, 2016 at 6:10 AM, Geert Uytterhoeven
+<geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org> wrote:
+> On Fri, Sep 9, 2016 at 9:13 PM, Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>> Adding PM support so as to be able to probe spi-nor flash
+>> on resume. There are vendor specific commands to setup
+>> the transfer mode and enable read/write as part of
+>> spi_nor_scan(), done on intial probe and needed on resume().
+>> The spi-nor stucture is private to the m25p driver and hence
+>> is the only place this can be done without having to duplicate
+>> code in controller driver.
+>>
+>> Signed-off-by: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+>> ---
+>>  drivers/mtd/devices/m25p80.c | 37 ++++++++++++++++++++++++++++++++++++-
+>>  1 file changed, 36 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+>> index 9cf7fcd..f8294b4 100644
+>> --- a/drivers/mtd/devices/m25p80.c
+>> +++ b/drivers/mtd/devices/m25p80.c
+>
+>> +static int m25p_resume(struct device *dev)
+>> +{
+>> +       struct m25p *flash = dev_get_drvdata(dev);
+>> +       struct flash_platform_data      *data;
+>> +       char *flash_name = NULL;
+>> +       enum read_mode mode = SPI_NOR_NORMAL;
+>> +       int ret;
+>> +
+>> +       data = dev_get_platdata(&flash->spi->dev);
+>> +
+>> +       if (data && data->type)
+>> +               flash_name = data->type;
+>> +       else if (!strcmp(flash->spi->modalias, "spi-nor"))
+>> +               flash_name = NULL; /* auto-detect */
+>> +       else
+>> +               flash_name = flash->spi->modalias;
+>> +
+>> +       if (flash->spi->mode & SPI_RX_QUAD)
+>> +               mode = SPI_NOR_QUAD;
+>> +       else if (flash->spi->mode & SPI_RX_DUAL)
+>> +               mode = SPI_NOR_DUAL;
+>> +
+>> +       ret = spi_nor_scan(&flash->spi_nor, flash_name, mode);
+>
+> All of the above is also done in m25p_probe(). Hence please factor out the
+> commonalities into its own function.
+>
+>> +
+>> +       return ret;
+>> +}
+>
+> Gr{oetje,eeting}s,
+>
+>                         Geert
+>
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+>
+> In personal conversations with technical people, I call myself a hacker. But
+> when I'm talking to journalists I just say "programmer" or something like that.
+>                                 -- Linus Torvalds
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,238 +1,262 @@
-From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH/RFC v2 0/7] spi: Add slave mode support
-Date: Mon, 12 Sep 2016 22:50:39 +0200
-Message-ID: <1473713446-30366-1-git-send-email-geert+renesas@glider.be>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Wolfram Sang <wsa+renesas-jBu1N2QxHDJrcw3mvpCnnVaTQe2KTcn/@public.gmane.org>,
-        Hisashi Nakamura <hisashi.nakamura.ak-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-        Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH/RFC v2 5/7] spi: sh-msiof: Add slave mode support
+Date: Mon, 12 Sep 2016 22:50:44 +0200
+Message-ID: <1473713446-30366-6-git-send-email-geert+renesas@glider.be>
+References: <1473713446-30366-1-git-send-email-geert+renesas@glider.be>
+Cc: Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Hisashi Nakamura <hisashi.nakamura.ak@renesas.com>,
+        Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1473713446-30366-1-git-send-email-geert+renesas@glider.be>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-	Hi all,
+From: Hisashi Nakamura <hisashi.nakamura.ak@renesas.com>
 
-This is a second take at adding support for SPI slave controllers to the
-Linux SPI subsystem, including:
-  - DT binding updates for SPI slave support,
-  - Core support for SPI slave controllers,
-  - SPI slave support for the Renesas MSIOF device driver (thanks to
-    Nakamura-san for the initial implementation in the R-Car BSP!),
-  - Sample SPI slave handlers.
+Add slave mode support to the MSIOF driver, in both PIO and DMA mode.
 
-Due to the nature of SPI slave (simultaneous transmit and receive, while
-everything runs at the pace of the master), it has hard real-time
-requirements: once an SPI transfer is started by the SPI master, a
-software SPI slave must have prepared all data to be sent back to the
-SPI master.  Hence without additional hardware support, an SPI slave
-response can never be a reply to a command being simultaneously
-transmitted, and SPI slave replies must be received by the SPI master in
-a subsequent SPI transfer.
+For now this only supports the transmission of messages with a size
+that is known in advance.
 
-Examples of possible use cases:
-  - Receiving streams of data in fixed-size messages (e.g. from a
-    tuner),
-  - Receiving and transmitting fixed-size messages of data (e.g. network
-    frames),
-  - Sending commands, and querying for responses,
-  - ...
+Signed-off-by: Hisashi Nakamura <hisashi.nakamura.ak@renesas.com>
+Signed-off-by: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>
+[geert: Timeout handling cleanup, spi core integration, cancellation,
+	rewording]
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+FIXME What's the proper way to cancel a completion blocked on
+      wait_for_completion_interruptible() from the kernel?
 
-(Un)binding an SPI slave handler to the SPI slave device represented by an
-SPI slave controller is done by (un)registering the slave device through
-a sysfs virtual file named "slave", cfr. Documentation/spi/spi-summary.
+  - When an in-kernel SPI slave handler calls signal_wake_up() on the
+    blocked thread (the SPI worker thread), this does cancel the
+    completion, and makes wait_for_completion_interruptible() return
+    -ERESTARTSYS.
+    However, all subsequent calls to wait_for_completion_interruptible()
+    fail immediately with -ERESTARTSYS :-(
+  - When using spidev as an SPI slave handler, stopping (CTRL-C) the
+    userspace process also cancels the completion, but subsequent calls
+    to wait_for_completion_interruptible() work fine.
 
-Originally I wanted to implement a simple SPI slave handler that could
-interface with an existing Linux SPI slave driver, cfr. Wolfram Sang's
-I2C slave mode EEPROM simulator for the i2c subsystem.
-Unfortunately I couldn't find any existing driver using an SPI slave
-protocol that fulfills the above requirements. The Nordic Semiconductor
-nRF8001 BLE controller seems to use a suitable protocol, but I couldn't
-find a Linux driver for it.  Hence I created two sample SPI slave
-protocols and drivers myself:
-  1. "spi-slave-time" responds with the system uptime at the time of
-     reception of the last SPI message, which can be used by an external
-     microcontroller as a dead man's switch.
-  2. "spi-slave-system-control" allows remote control of system reboot,
-     power off, halt, and suspend.
+Thanks!
 
-For some use cases, using spidev from user space may be a more appropriate
-solution than an in-kernel SPI protocol handler, and this is fully
-supported.
+v2:
+  - Document "spi-slave" property in DT bindings,
+  - Use spi_controller_is_slave() helper,
+  - Check for "spi-slave" property instead of "slave" child node,
+  - Replace SPI_MASTER_IS_SLAVE by SPI_CONTROLLER_IS_SLAVE,
+  - Implement cancellation.
+---
+ Documentation/devicetree/bindings/spi/sh-msiof.txt |  2 +
+ drivers/spi/spi-sh-msiof.c                         | 67 ++++++++++++++++++----
+ include/linux/spi/sh_msiof.h                       |  6 ++
+ 3 files changed, 63 insertions(+), 12 deletions(-)
 
->From the point of view of an SPI slave protocol handler, an SPI slave
-controller looks almost like an ordinary SPI master controller. The only
-exception is that a transfer request will block on the remote SPI
-master, and may be cancelled using spi_slave_abort().
-Hence "struct spi_master" has become a misnomer. For now I didn't bother
-fixing that.  Should we rename spi_master (and the spi_*master*()
-functions) to spi_controller? And create temporary wrappers until all
-drivers have been converted?  Or should create wrappers/defines with
-"slave" in their name?
-
-For now, the MSIOF SPI slave driver only supports the transmission of
-messages with a size that is known in advance (the hardware can provide
-an interrupt when CS is deasserted before, though).
-I.e. when the SPI master sends a shorter message, the slave won't
-receive it.  When the SPI master sends a longer message, the slave will
-receive the first part, and the rest will remain in the FIFO.
-
-There's also a known issue with spi_slave_abort(), which does manage to
-abort an ongoing transfer, but causes immediate aborts for any further
-transfers. See my question in "spi: sh-msiof: Add slave mode support".
-
-Handshaking (5-pin SPI, RDY-signal) is optional. An RDY-signal may be
-used for one or both of:
-  1. The SPI slave asserts RDY when it has data available, and wants to
-     be queried by the SPI master.
-       -> This can be handled on top, in the SPI slave protocol handler,
-	  using a GPIO.
-  2. After the SPI master has asserted CS, the SPI slave asserts RDY
-     when it is ready to accept the transfer.
-       -> This may need hardware support in the SPI slave controller,
-	  or dynamic GPIO vs. CS pinmuxing.
-
-Changes since v1:
-  - Do not create a child node in SPI slave mode. Instead, add an
-    "spi-slave" property, and put the mode properties in the controller
-    node.
-  - Attach SPI slave controllers to a new "spi_slave" device class,
-  - Don't call of_spi_register_master() instead of letting it return
-    early for SPI slave controllers,
-  - Skip registration of children from DT or ACPI for SPI slave
-    controllers,
-  - Use a "slave" virtual file in sysfs to (un)register the (single)
-    slave device for an SPI slave controller, incl. specifying the slave
-    protocol handler,
-  - Parse slave-specific mode properties in the SPI slave controller DT
-    node for the (single) slave device using of_spi_parse_dt(),
-  - Add cancellation support using spi_master.slave_abort() and
-    spi_slave_abort(),
-  - Rename flag SPI_MASTER_IS_SLAVE to SPI_CONTROLLER_IS_SLAVE,
-  - Introduce helper function spi_controller_is_slave(), making it easy
-    to leave out SPI slave support where appropriate,
-  - Document "spi-slave" property in the MSIOF DT bindings,
-  - Check for "spi-slave" property instead of "slave" child node in the
-    MSIOF SPI driver,
-  - Implement cancellation in the MSIOF SPI driver,
-  - Resolve semantic differences in patch description, file header, and
-    module description for spi-slave-time,
-  - Use spi_async() instead of spi_read() in slave handlers,
-  - Submit the next transfer from the previous transfer's completion
-    callback, removing the need for a thread in slave handlers,
-  - Let .remove() in slave handlers call spi_slave_abort() to cancel the
-    current ongoing transfer, and wait for the completion to terminate,
-  - Remove FIXME about hanging kthread_stop() in slave handlers,
-  - Fix copy-and-pasted module description of spi-slave-system-control,
-  - Added "spi: core: Extract of_spi_parse_dt()" and "spi: Document SPI
-    slave controller support",
-  - Dropped "spi: spidev: Allow direct references in DT from SPI slave
-    controllers".
-
-This patch series applies to v4.8-rc1..v4.8-rc6.
-It appplies to next-20160912 with some small context changes.
-For your convenience, I've pushed this series and its dependencies to
-the topic/spi-slave-v2 branch of the git repository at
-https://git.kernel.org/cgit/linux/kernel/git/geert/renesas-drivers.git
-
-Full test information is also available on the eLinux wiki
-(http://elinux.org/Tests:MSIOF-SPI-Slave).
-
-For testing, device tree overlays enabling SPI master and slave
-controllers on an expansion I/O connector on r8a7791/koelsch are
-available in the topic/renesas-overlays branch of my renesas-drivers git
-repository.  Please see http://elinux.org/R-Car/DT-Overlays for more
-information about using these overlays.
-
-Test wiring on r8a7791/koelsch, between MSIOF1 and MSIOF2 on EXIO
-connector A:
-   - Connect pin 48 (MSIOF1 CS#) to pin 63 (MSIOF2 CS#),
-   - Connect pin 46 (MSIOF1 SCK) to pin 61 (MSIOF2 SCK),
-   - Connect pin 54 (MSIOF1 TX/MOSI) to pin 70 (MSIOF2 RX/MOSI),
-   - Connect pin 56 (MSIOF1 RX/MISO) to pin 68 (MSIOF2 TX/MISO).
-
-Preparation for all examples below:
-    # overlay add a-msiof1-spidev # buggy DT: spidev listed directly in DT
-    # overlay add a-msiof2-slave
-
-Example 1:
-
-    # echo spi-slave-time > /sys/class/spi_slave/spi3/slave 
-    # spidev_test -D /dev/spidev2.0 -p dummy-8B
-    spi mode: 0x0
-    bits per word: 8
-    max speed: 500000 Hz (500 KHz)
-    RX | 00 00 04 6D 00 09 5B BB __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __  | ...m..[�
-               ^^^^^    ^^^^^^^^
-	       seconds  microseconds
-
-Example 2:
-
-    # echo spi-slave-system-control > /sys/class/spi_slave/spi3/slave 
-    # reboot='\x7c\x50'
-    # poweroff='\x71\x3f'
-    # halt='\x38\x76'
-    # suspend='\x1b\x1b'
-    # spidev_test -D /dev/spidev2.0 -p $suspend # or $reboot, $poweroff, $halt
-
-Example 3:
-
-    # echo spidev > /sys/class/spi_slave/spi3/slave 
-    # spidev_test -D /dev/spidev3.0 -p slave-hello-to-master &
-    # spidev_test -D /dev/spidev2.0 -p master-hello-to-slave
-
-Thanks for your comments!
-
-
-Geert Uytterhoeven (6):
-  [RFC] spi: Document DT bindings for SPI controllers in slave mode
-  [RFC] spi: core: Extract of_spi_parse_dt()
-  [RFC] spi: core: Add support for registering SPI slave controllers
-  [RFC] spi: Document SPI slave controller support
-  [RFC] spi: slave: Add SPI slave handler reporting uptime at previous
-    message
-  [RFC] spi: slave: Add SPI slave handler controlling system state
-
-Hisashi Nakamura (1):
-  [RFC] spi: sh-msiof: Add slave mode support
-
- Documentation/devicetree/bindings/spi/sh-msiof.txt |   2 +
- Documentation/devicetree/bindings/spi/spi-bus.txt  |  34 ++--
- Documentation/spi/spi-summary                      |  27 ++-
- drivers/spi/Kconfig                                |  26 ++-
- drivers/spi/Makefile                               |   4 +
- drivers/spi/spi-sh-msiof.c                         |  67 +++++--
- drivers/spi/spi-slave-system-control.c             | 154 +++++++++++++++
- drivers/spi/spi-slave-time.c                       | 126 ++++++++++++
- drivers/spi/spi.c                                  | 220 +++++++++++++++++----
- include/linux/spi/sh_msiof.h                       |   6 +
- include/linux/spi/spi.h                            |  17 +-
- 11 files changed, 608 insertions(+), 75 deletions(-)
- create mode 100644 drivers/spi/spi-slave-system-control.c
- create mode 100644 drivers/spi/spi-slave-time.c
-
+diff --git a/Documentation/devicetree/bindings/spi/sh-msiof.txt b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+index aa005c1d10d95756..7782c6abc7890bb0 100644
+--- a/Documentation/devicetree/bindings/spi/sh-msiof.txt
++++ b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+@@ -31,6 +31,8 @@ Optional properties:
+ 			 specifiers, one for transmission, and one for
+ 			 reception.
+ - dma-names            : Must contain a list of two DMA names, "tx" and "rx".
++- spi-slave            : Empty property indicating the SPI controller is used
++			 in slave mode.
+ - renesas,dtdl         : delay sync signal (setup) in transmit mode.
+ 			 Must contain one of the following values:
+ 			 0   (no bit delay)
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 0f83ad1d5a5858dd..c585c9f3eb126738 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -3,6 +3,7 @@
+  *
+  * Copyright (c) 2009 Magnus Damm
+  * Copyright (C) 2014 Glider bvba
++ * Copyright (C) 2014 Renesas Electronics Corporation
+  *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License version 2 as
+@@ -33,7 +34,6 @@
+ 
+ #include <asm/unaligned.h>
+ 
+-
+ struct sh_msiof_chipdata {
+ 	u16 tx_fifo_size;
+ 	u16 rx_fifo_size;
+@@ -334,7 +334,10 @@ static void sh_msiof_spi_set_pin_regs(struct sh_msiof_spi_priv *p,
+ 	tmp |= !cs_high << MDR1_SYNCAC_SHIFT;
+ 	tmp |= lsb_first << MDR1_BITLSB_SHIFT;
+ 	tmp |= sh_msiof_spi_get_dtdl_and_syncdl(p);
+-	sh_msiof_write(p, TMDR1, tmp | MDR1_TRMD | TMDR1_PCON);
++	if (spi_controller_is_slave(p->master))
++		sh_msiof_write(p, TMDR1, tmp | TMDR1_PCON);
++	else
++		sh_msiof_write(p, TMDR1, tmp | MDR1_TRMD | TMDR1_PCON);
+ 	if (p->master->flags & SPI_MASTER_MUST_TX) {
+ 		/* These bits are reserved if RX needs TX */
+ 		tmp &= ~0x0000ffff;
+@@ -561,17 +564,19 @@ static int sh_msiof_prepare_message(struct spi_master *master,
+ 
+ static int sh_msiof_spi_start(struct sh_msiof_spi_priv *p, void *rx_buf)
+ {
+-	int ret;
++	bool slave = spi_controller_is_slave(p->master);
++	int ret = 0;
+ 
+ 	/* setup clock and rx/tx signals */
+-	ret = sh_msiof_modify_ctr_wait(p, 0, CTR_TSCKE);
++	if (!slave)
++		ret = sh_msiof_modify_ctr_wait(p, 0, CTR_TSCKE);
+ 	if (rx_buf && !ret)
+ 		ret = sh_msiof_modify_ctr_wait(p, 0, CTR_RXE);
+ 	if (!ret)
+ 		ret = sh_msiof_modify_ctr_wait(p, 0, CTR_TXE);
+ 
+ 	/* start by setting frame bit */
+-	if (!ret)
++	if (!ret && !slave)
+ 		ret = sh_msiof_modify_ctr_wait(p, 0, CTR_TFSE);
+ 
+ 	return ret;
+@@ -579,20 +584,42 @@ static int sh_msiof_spi_start(struct sh_msiof_spi_priv *p, void *rx_buf)
+ 
+ static int sh_msiof_spi_stop(struct sh_msiof_spi_priv *p, void *rx_buf)
+ {
+-	int ret;
++	bool slave = spi_controller_is_slave(p->master);
++	int ret = 0;
+ 
+ 	/* shut down frame, rx/tx and clock signals */
+-	ret = sh_msiof_modify_ctr_wait(p, CTR_TFSE, 0);
++	if (!slave)
++		ret = sh_msiof_modify_ctr_wait(p, CTR_TFSE, 0);
+ 	if (!ret)
+ 		ret = sh_msiof_modify_ctr_wait(p, CTR_TXE, 0);
+ 	if (rx_buf && !ret)
+ 		ret = sh_msiof_modify_ctr_wait(p, CTR_RXE, 0);
+-	if (!ret)
++	if (!ret && !slave)
+ 		ret = sh_msiof_modify_ctr_wait(p, CTR_TSCKE, 0);
+ 
+ 	return ret;
+ }
+ 
++static int sh_msiof_slave_abort(struct spi_master *master)
++{
++	struct sh_msiof_spi_priv *p = spi_master_get_devdata(master);
++	unsigned long flags;
++
++	spin_lock_irqsave(&p->done.wait.lock, flags);
++	if (!p->done.done) {
++		wait_queue_t *curr, *next;
++
++		list_for_each_entry_safe(curr, next, &p->done.wait.task_list,
++					 task_list) {
++			// FIXME Find a better way to signal and wake up
++			signal_wake_up(curr->private, 1);
++			break;
++		}
++	}
++	spin_unlock_irqrestore(&p->done.wait.lock, flags);
++	return 0;
++}
++
+ static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
+ 				  void (*tx_fifo)(struct sh_msiof_spi_priv *,
+ 						  const void *, int, int),
+@@ -633,7 +660,11 @@ static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
+ 	}
+ 
+ 	/* wait for tx fifo to be emptied / rx fifo to be filled */
+-	if (!wait_for_completion_timeout(&p->done, HZ)) {
++	if (spi_controller_is_slave(p->master))
++		ret = !wait_for_completion_interruptible(&p->done);
++	else
++		ret = wait_for_completion_timeout(&p->done, HZ);
++	if (!ret) {
+ 		dev_err(&p->pdev->dev, "PIO timeout\n");
+ 		ret = -ETIMEDOUT;
+ 		goto stop_reset;
+@@ -743,7 +774,11 @@ static int sh_msiof_dma_once(struct sh_msiof_spi_priv *p, const void *tx,
+ 	}
+ 
+ 	/* wait for tx fifo to be emptied / rx fifo to be filled */
+-	if (!wait_for_completion_timeout(&p->done, HZ)) {
++	if (spi_controller_is_slave(p->master))
++		ret = !wait_for_completion_interruptible(&p->done);
++	else
++		ret = wait_for_completion_timeout(&p->done, HZ);
++	if (!ret) {
+ 		dev_err(&p->pdev->dev, "DMA timeout\n");
+ 		ret = -ETIMEDOUT;
+ 		goto stop_reset;
+@@ -840,7 +875,8 @@ static int sh_msiof_transfer_one(struct spi_master *master,
+ 	int ret;
+ 
+ 	/* setup clocks (clock already enabled in chipselect()) */
+-	sh_msiof_spi_set_clk_regs(p, clk_get_rate(p->clk), t->speed_hz);
++	if (!spi_controller_is_slave(p->master))
++		sh_msiof_spi_set_clk_regs(p, clk_get_rate(p->clk), t->speed_hz);
+ 
+ 	while (master->dma_tx && len > 15) {
+ 		/*
+@@ -992,8 +1028,12 @@ static struct sh_msiof_spi_info *sh_msiof_spi_parse_dt(struct device *dev)
+ 	if (!info)
+ 		return NULL;
+ 
++	info->mode = of_property_read_bool(np, "spi-slave") ? MSIOF_SPI_SLAVE
++							    : MSIOF_SPI_MASTER;
++
+ 	/* Parse the MSIOF properties */
+-	of_property_read_u32(np, "num-cs", &num_cs);
++	if (info->mode == MSIOF_SPI_MASTER)
++		of_property_read_u32(np, "num-cs", &num_cs);
+ 	of_property_read_u32(np, "renesas,tx-fifo-size",
+ 					&info->tx_fifo_override);
+ 	of_property_read_u32(np, "renesas,rx-fifo-size",
+@@ -1228,11 +1268,14 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+ 	master->mode_bits |= SPI_LSB_FIRST | SPI_3WIRE;
+ 	master->flags = chipdata->master_flags;
++	if (p->info->mode == MSIOF_SPI_SLAVE)
++		master->flags |= SPI_CONTROLLER_IS_SLAVE;
+ 	master->bus_num = pdev->id;
+ 	master->dev.of_node = pdev->dev.of_node;
+ 	master->num_chipselect = p->info->num_chipselect;
+ 	master->setup = sh_msiof_spi_setup;
+ 	master->prepare_message = sh_msiof_prepare_message;
++	master->slave_abort = sh_msiof_slave_abort;
+ 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 32);
+ 	master->auto_runtime_pm = true;
+ 	master->transfer_one = sh_msiof_transfer_one;
+diff --git a/include/linux/spi/sh_msiof.h b/include/linux/spi/sh_msiof.h
+index b087a85f5f72a351..f74b581f242f8c43 100644
+--- a/include/linux/spi/sh_msiof.h
++++ b/include/linux/spi/sh_msiof.h
+@@ -1,10 +1,16 @@
+ #ifndef __SPI_SH_MSIOF_H__
+ #define __SPI_SH_MSIOF_H__
+ 
++enum {
++	MSIOF_SPI_MASTER,
++	MSIOF_SPI_SLAVE,
++};
++
+ struct sh_msiof_spi_info {
+ 	int tx_fifo_override;
+ 	int rx_fifo_override;
+ 	u16 num_chipselect;
++	int mode;
+ 	unsigned int dma_tx_id;
+ 	unsigned int dma_rx_id;
+ 	u32 dtdl;
 -- 
 1.9.1
-
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,22 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: fsl-espi: pre-allocate message buffer" to the spi tree
-Date: Mon, 12 Sep 2016 20:08:52 +0100
-Message-ID: <E1bjWb6-0002x7-IS@debutante>
-References: <c6fcea87-94b1-76e8-b8da-a7727a22282e@gmail.com>
-Cc: Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, Felix Fietkau <nbd-Vt+b4OUoWG0@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Subject: Applied "spi: fsl-espi: remove element actual_length from struct fsl_espi_trans" to the spi tree
+Date: Mon, 12 Sep 2016 20:08:40 +0100
+Message-ID: <E1bjWau-0002tW-LB@debutante>
+References: <ebb38b20-1977-9980-9042-cefaac7ed765@gmail.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <c6fcea87-94b1-76e8-b8da-a7727a22282e-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <ebb38b20-1977-9980-9042-cefaac7ed765-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: fsl-espi: pre-allocate message buffer
+   spi: fsl-espi: remove element actual_length from struct fsl_espi_trans
 
 has been applied to the spi tree at
 
@@ -41,148 +38,69 @@ to this mail.
 Thanks,
 Mark
 
->From 1423877b73ed5f4982eaba8bed359605b9918a2b Mon Sep 17 00:00:00 2001
+>From 5cd7b8be6b7b4c4fb9e2bfbfba596d27357cc359 Mon Sep 17 00:00:00 2001
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Wed, 7 Sep 2016 22:50:22 +0200
-Subject: [PATCH] spi: fsl-espi: pre-allocate message buffer
+Date: Wed, 7 Sep 2016 22:51:48 +0200
+Subject: [PATCH] spi: fsl-espi: remove element actual_length from struct
+ fsl_espi_trans
 
-Currently the driver allocates a 64kb buffer for each single message.
-On systems with little and fragmented memory this can result in
-memory allocation errors. Solve this by pre-allocating a buffer.
+If an error occurs during processing the message, then we don't have
+to populate the actual_length element of struct message.
+So we can get rid of element actual_length in struct
+fsl_espi_transfer.
 
-This patch was developed in OpenWRT long ago, however it never
-made it upstream.
-
-I slightly modified the original patch to re-initialize the buffer
-at the beginning of each transfer.
-
-Signed-off-by: Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Signed-off-by: Felix Fietkau <nbd-Vt+b4OUoWG0@public.gmane.org>
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 41 ++++++++++++++++++-----------------------
- drivers/spi/spi-fsl-lib.h  |  1 +
- 2 files changed, 19 insertions(+), 23 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 16fff7237ab2..81d7416668b8 100644
+index 6b60f7b29869..726d5fdca3b6 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -297,57 +297,44 @@ static void fsl_espi_do_trans(struct spi_message *m,
- static void fsl_espi_cmd_trans(struct spi_message *m,
- 				struct fsl_espi_transfer *trans, u8 *rx_buff)
- {
-+	struct mpc8xxx_spi *mspi = spi_master_get_devdata(m->spi->master);
- 	struct spi_transfer *t;
--	u8 *local_buf;
- 	int i = 0;
- 	struct fsl_espi_transfer *espi_trans = trans;
+@@ -41,7 +41,6 @@ struct fsl_espi_transfer {
+ 	const void *tx_buf;
+ 	void *rx_buf;
+ 	unsigned len;
+-	unsigned actual_length;
+ };
  
--	local_buf = kzalloc(SPCOM_TRANLEN_MAX, GFP_KERNEL);
--	if (!local_buf) {
--		espi_trans->status = -ENOMEM;
--		return;
--	}
+ /* eSPI Controller mode register definitions */
+@@ -327,8 +326,6 @@ static int fsl_espi_cmd_trans(struct spi_message *m,
+ 	espi_trans->rx_buf = mspi->local_buf;
+ 	ret = fsl_espi_do_trans(m, espi_trans);
+ 
+-	espi_trans->actual_length = espi_trans->len;
 -
- 	list_for_each_entry(t, &m->transfers, transfer_list) {
- 		if (t->tx_buf) {
--			memcpy(local_buf + i, t->tx_buf, t->len);
-+			memcpy(mspi->local_buf + i, t->tx_buf, t->len);
- 			i += t->len;
- 		}
- 	}
- 
--	espi_trans->tx_buf = local_buf;
--	espi_trans->rx_buf = local_buf;
-+	espi_trans->tx_buf = mspi->local_buf;
-+	espi_trans->rx_buf = mspi->local_buf;
- 	fsl_espi_do_trans(m, espi_trans);
- 
- 	espi_trans->actual_length = espi_trans->len;
--	kfree(local_buf);
+ 	return ret;
  }
  
- static void fsl_espi_rw_trans(struct spi_message *m,
- 				struct fsl_espi_transfer *trans, u8 *rx_buff)
- {
-+	struct mpc8xxx_spi *mspi = spi_master_get_devdata(m->spi->master);
- 	struct spi_transfer *t;
--	u8 *local_buf;
- 	unsigned int tx_only = 0;
- 	int i = 0;
- 
--	local_buf = kzalloc(SPCOM_TRANLEN_MAX, GFP_KERNEL);
--	if (!local_buf) {
--		trans->status = -ENOMEM;
--		return;
--	}
--
- 	list_for_each_entry(t, &m->transfers, transfer_list) {
- 		if (t->tx_buf) {
--			memcpy(local_buf + i, t->tx_buf, t->len);
-+			memcpy(mspi->local_buf + i, t->tx_buf, t->len);
- 			i += t->len;
- 			if (!t->rx_buf)
- 				tx_only += t->len;
- 		}
- 	}
- 
--	trans->tx_buf = local_buf;
--	trans->rx_buf = local_buf;
-+	trans->tx_buf = mspi->local_buf;
-+	trans->rx_buf = mspi->local_buf;
- 	fsl_espi_do_trans(m, trans);
- 
- 	if (!trans->status) {
-@@ -357,18 +344,19 @@ static void fsl_espi_rw_trans(struct spi_message *m,
+@@ -350,7 +347,6 @@ static int fsl_espi_rw_trans(struct spi_message *m,
+ 		if (trans->len > tx_only)
+ 			memcpy(rx_buff, trans->rx_buf + tx_only,
  			       trans->len - tx_only);
- 		trans->actual_length += trans->len;
+-		trans->actual_length += trans->len;
  	}
--
--	kfree(local_buf);
- }
  
- static int fsl_espi_do_one_msg(struct spi_master *master,
- 			       struct spi_message *m)
- {
-+	struct mpc8xxx_spi *mspi = spi_master_get_devdata(master);
- 	struct spi_transfer *t;
- 	u8 *rx_buf = NULL;
- 	unsigned int xfer_len = 0;
- 	struct fsl_espi_transfer espi_trans;
+ 	return ret;
+@@ -373,14 +369,14 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
+ 	}
  
-+	memset(mspi->local_buf, 0, SPCOM_TRANLEN_MAX);
+ 	espi_trans.len = xfer_len;
+-	espi_trans.actual_length = 0;
+ 
+ 	if (!rx_buf)
+ 		ret = fsl_espi_cmd_trans(m, &espi_trans, NULL);
+ 	else
+ 		ret = fsl_espi_rw_trans(m, &espi_trans, rx_buf);
+ 
+-	m->actual_length = espi_trans.actual_length;
++	m->actual_length = ret ? 0 : espi_trans.len;
 +
- 	list_for_each_entry(t, &m->transfers, transfer_list) {
- 		if (t->rx_buf)
- 			rx_buf = t->rx_buf;
-@@ -614,6 +602,13 @@ static struct spi_master * fsl_espi_probe(struct device *dev,
+ 	if (m->status == -EINPROGRESS)
+ 		m->status = ret;
  
- 	mpc8xxx_spi = spi_master_get_devdata(master);
- 
-+	mpc8xxx_spi->local_buf =
-+		devm_kmalloc(dev, SPCOM_TRANLEN_MAX, GFP_KERNEL);
-+	if (!mpc8xxx_spi->local_buf) {
-+		ret = -ENOMEM;
-+		goto err_probe;
-+	}
-+
- 	mpc8xxx_spi->reg_base = devm_ioremap_resource(dev, mem);
- 	if (IS_ERR(mpc8xxx_spi->reg_base)) {
- 		ret = PTR_ERR(mpc8xxx_spi->reg_base);
-diff --git a/drivers/spi/spi-fsl-lib.h b/drivers/spi/spi-fsl-lib.h
-index 84f5dcb7a897..065b9db212cf 100644
---- a/drivers/spi/spi-fsl-lib.h
-+++ b/drivers/spi/spi-fsl-lib.h
-@@ -30,6 +30,7 @@ struct mpc8xxx_spi {
- 	void *rx;
- #if IS_ENABLED(CONFIG_SPI_FSL_ESPI)
- 	int len;
-+	u8 *local_buf;
- #endif
- 
- 	int subblock;
 -- 
 2.8.1
 

@@ -1,228 +1,238 @@
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH/RFC v2 7/7] spi: slave: Add SPI slave handler controlling system state
-Date: Mon, 12 Sep 2016 22:50:46 +0200
-Message-ID: <1473713446-30366-8-git-send-email-geert+renesas@glider.be>
-References: <1473713446-30366-1-git-send-email-geert+renesas@glider.be>
-Cc: Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Hisashi Nakamura <hisashi.nakamura.ak@renesas.com>,
-        Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-renesas-soc-owner@vger.kernel.org>
-In-Reply-To: <1473713446-30366-1-git-send-email-geert+renesas@glider.be>
-Sender: linux-renesas-soc-owner@vger.kernel.org
+From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Subject: [PATCH/RFC v2 0/7] spi: Add slave mode support
+Date: Mon, 12 Sep 2016 22:50:39 +0200
+Message-ID: <1473713446-30366-1-git-send-email-geert+renesas@glider.be>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Wolfram Sang <wsa+renesas-jBu1N2QxHDJrcw3mvpCnnVaTQe2KTcn/@public.gmane.org>,
+        Hisashi Nakamura <hisashi.nakamura.ak-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
+        Hiromitsu Yamasaki <hiromitsu.yamasaki.ym-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Add an example SPI slave handler to allow remote control of system
-reboot, power off, halt, and suspend.
+	Hi all,
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
-v2:
-  - Use spi_async() instead of spi_read(),
+This is a second take at adding support for SPI slave controllers to the
+Linux SPI subsystem, including:
+  - DT binding updates for SPI slave support,
+  - Core support for SPI slave controllers,
+  - SPI slave support for the Renesas MSIOF device driver (thanks to
+    Nakamura-san for the initial implementation in the R-Car BSP!),
+  - Sample SPI slave handlers.
+
+Due to the nature of SPI slave (simultaneous transmit and receive, while
+everything runs at the pace of the master), it has hard real-time
+requirements: once an SPI transfer is started by the SPI master, a
+software SPI slave must have prepared all data to be sent back to the
+SPI master.  Hence without additional hardware support, an SPI slave
+response can never be a reply to a command being simultaneously
+transmitted, and SPI slave replies must be received by the SPI master in
+a subsequent SPI transfer.
+
+Examples of possible use cases:
+  - Receiving streams of data in fixed-size messages (e.g. from a
+    tuner),
+  - Receiving and transmitting fixed-size messages of data (e.g. network
+    frames),
+  - Sending commands, and querying for responses,
+  - ...
+
+(Un)binding an SPI slave handler to the SPI slave device represented by an
+SPI slave controller is done by (un)registering the slave device through
+a sysfs virtual file named "slave", cfr. Documentation/spi/spi-summary.
+
+Originally I wanted to implement a simple SPI slave handler that could
+interface with an existing Linux SPI slave driver, cfr. Wolfram Sang's
+I2C slave mode EEPROM simulator for the i2c subsystem.
+Unfortunately I couldn't find any existing driver using an SPI slave
+protocol that fulfills the above requirements. The Nordic Semiconductor
+nRF8001 BLE controller seems to use a suitable protocol, but I couldn't
+find a Linux driver for it.  Hence I created two sample SPI slave
+protocols and drivers myself:
+  1. "spi-slave-time" responds with the system uptime at the time of
+     reception of the last SPI message, which can be used by an external
+     microcontroller as a dead man's switch.
+  2. "spi-slave-system-control" allows remote control of system reboot,
+     power off, halt, and suspend.
+
+For some use cases, using spidev from user space may be a more appropriate
+solution than an in-kernel SPI protocol handler, and this is fully
+supported.
+
+>From the point of view of an SPI slave protocol handler, an SPI slave
+controller looks almost like an ordinary SPI master controller. The only
+exception is that a transfer request will block on the remote SPI
+master, and may be cancelled using spi_slave_abort().
+Hence "struct spi_master" has become a misnomer. For now I didn't bother
+fixing that.  Should we rename spi_master (and the spi_*master*()
+functions) to spi_controller? And create temporary wrappers until all
+drivers have been converted?  Or should create wrappers/defines with
+"slave" in their name?
+
+For now, the MSIOF SPI slave driver only supports the transmission of
+messages with a size that is known in advance (the hardware can provide
+an interrupt when CS is deasserted before, though).
+I.e. when the SPI master sends a shorter message, the slave won't
+receive it.  When the SPI master sends a longer message, the slave will
+receive the first part, and the rest will remain in the FIFO.
+
+There's also a known issue with spi_slave_abort(), which does manage to
+abort an ongoing transfer, but causes immediate aborts for any further
+transfers. See my question in "spi: sh-msiof: Add slave mode support".
+
+Handshaking (5-pin SPI, RDY-signal) is optional. An RDY-signal may be
+used for one or both of:
+  1. The SPI slave asserts RDY when it has data available, and wants to
+     be queried by the SPI master.
+       -> This can be handled on top, in the SPI slave protocol handler,
+	  using a GPIO.
+  2. After the SPI master has asserted CS, the SPI slave asserts RDY
+     when it is ready to accept the transfer.
+       -> This may need hardware support in the SPI slave controller,
+	  or dynamic GPIO vs. CS pinmuxing.
+
+Changes since v1:
+  - Do not create a child node in SPI slave mode. Instead, add an
+    "spi-slave" property, and put the mode properties in the controller
+    node.
+  - Attach SPI slave controllers to a new "spi_slave" device class,
+  - Don't call of_spi_register_master() instead of letting it return
+    early for SPI slave controllers,
+  - Skip registration of children from DT or ACPI for SPI slave
+    controllers,
+  - Use a "slave" virtual file in sysfs to (un)register the (single)
+    slave device for an SPI slave controller, incl. specifying the slave
+    protocol handler,
+  - Parse slave-specific mode properties in the SPI slave controller DT
+    node for the (single) slave device using of_spi_parse_dt(),
+  - Add cancellation support using spi_master.slave_abort() and
+    spi_slave_abort(),
+  - Rename flag SPI_MASTER_IS_SLAVE to SPI_CONTROLLER_IS_SLAVE,
+  - Introduce helper function spi_controller_is_slave(), making it easy
+    to leave out SPI slave support where appropriate,
+  - Document "spi-slave" property in the MSIOF DT bindings,
+  - Check for "spi-slave" property instead of "slave" child node in the
+    MSIOF SPI driver,
+  - Implement cancellation in the MSIOF SPI driver,
+  - Resolve semantic differences in patch description, file header, and
+    module description for spi-slave-time,
+  - Use spi_async() instead of spi_read() in slave handlers,
   - Submit the next transfer from the previous transfer's completion
-    callback, removing the need for a thread,
-  - Let .remove() call spi_slave_abort() to cancel the current ongoing
-    transfer, and wait for the completion to terminate,
-  - Remove FIXME about hanging kthread_stop(),
-  - Fix copy-and-pasted module description.
----
- drivers/spi/Kconfig                    |   6 ++
- drivers/spi/Makefile                   |   1 +
- drivers/spi/spi-slave-system-control.c | 154 +++++++++++++++++++++++++++++++++
- 3 files changed, 161 insertions(+)
- create mode 100644 drivers/spi/spi-slave-system-control.c
+    callback, removing the need for a thread in slave handlers,
+  - Let .remove() in slave handlers call spi_slave_abort() to cancel the
+    current ongoing transfer, and wait for the completion to terminate,
+  - Remove FIXME about hanging kthread_stop() in slave handlers,
+  - Fix copy-and-pasted module description of spi-slave-system-control,
+  - Added "spi: core: Extract of_spi_parse_dt()" and "spi: Document SPI
+    slave controller support",
+  - Dropped "spi: spidev: Allow direct references in DT from SPI slave
+    controllers".
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 515bddee4018c246..3d8ae9505ef95992 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -755,6 +755,12 @@ config SPI_SLAVE_TIME
- 	  SPI slave handler responding with the time of reception of the last
- 	  SPI message.
- 
-+config SPI_SLAVE_SYSTEM_CONTROL
-+	tristate "SPI slave handler controlling system state"
-+	help
-+	  SPI slave handler to allow remote control of system reboot, power
-+	  off, halt, and suspend.
-+
- endif # SPI_SLAVE
- 
- endif # SPI
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index ba4a7e79fe113d3e..e402c1a12f47c38f 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -101,3 +101,4 @@ obj-$(CONFIG_SPI_ZYNQMP_GQSPI)		+= spi-zynqmp-gqspi.o
- 
- # SPI slave protocol handlers
- obj-$(CONFIG_SPI_SLAVE_TIME)		+= spi-slave-time.o
-+obj-$(CONFIG_SPI_SLAVE_SYSTEM_CONTROL)	+= spi-slave-system-control.o
-diff --git a/drivers/spi/spi-slave-system-control.c b/drivers/spi/spi-slave-system-control.c
-new file mode 100644
-index 0000000000000000..736dd59928cb3bc3
---- /dev/null
-+++ b/drivers/spi/spi-slave-system-control.c
-@@ -0,0 +1,154 @@
-+/*
-+ * SPI slave handler controlling system state
-+ *
-+ * This SPI slave handler allows remote control of system reboot, power off,
-+ * halt, and suspend.
-+ *
-+ * Copyright (C) 2016 Glider bvba
-+ *
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ */
-+
-+#include <linux/completion.h>
-+#include <linux/module.h>
-+#include <linux/reboot.h>
-+#include <linux/suspend.h>
-+#include <linux/spi/spi.h>
-+
-+/*
-+ * The numbers are chosen to display something human-readable on two 7-segment
-+ * displays connected to two 74HC595 shift registers
-+ */
-+#define CMD_REBOOT	0x507c	/* rb */
-+#define CMD_POWEROFF	0x3f71	/* OF */
-+#define CMD_HALT	0x7638	/* HL */
-+#define CMD_SUSPEND	0x1b1b	/* ZZ */
-+
-+struct spi_slave_system_control_priv {
-+	struct spi_device *spi;
-+	struct completion finished;
-+	struct spi_transfer xfer;
-+	struct spi_message msg;
-+	__le16 cmd;
-+};
-+
-+static
-+int spi_slave_system_control_submit(struct spi_slave_system_control_priv *priv);
-+
-+static void spi_slave_system_control_complete(void *arg)
-+{
-+	struct spi_slave_system_control_priv *priv = arg;
-+	u16 cmd;
-+	int ret;
-+
-+	if (priv->msg.status)
-+		goto terminate;
-+
-+	cmd = le16_to_cpu(priv->cmd);
-+	switch (cmd) {
-+	case CMD_REBOOT:
-+		pr_info("Rebooting system...\n");
-+		kernel_restart(NULL);
-+
-+	case CMD_POWEROFF:
-+		pr_info("Powering off system...\n");
-+		kernel_power_off();
-+		break;
-+
-+	case CMD_HALT:
-+		pr_info("Halting system...\n");
-+		kernel_halt();
-+		break;
-+
-+	case CMD_SUSPEND:
-+		pr_info("Suspending system...\n");
-+		pm_suspend(PM_SUSPEND_MEM);
-+		break;
-+
-+	default:
-+		pr_warn("%s: Unknown command 0x%x\n", __func__, cmd);
-+		break;
-+	}
-+
-+	ret = spi_slave_system_control_submit(priv);
-+	if (ret)
-+		goto terminate;
-+
-+	return;
-+
-+terminate:
-+	pr_info("%s: Terminating\n", __func__);
-+	complete(&priv->finished);
-+}
-+
-+static
-+int spi_slave_system_control_submit(struct spi_slave_system_control_priv *priv)
-+{
-+	int ret;
-+
-+	spi_message_init_with_transfers(&priv->msg, &priv->xfer, 1);
-+
-+	priv->msg.complete = spi_slave_system_control_complete;
-+	priv->msg.context = priv;
-+
-+	ret = spi_async(priv->spi, &priv->msg);
-+	if (ret)
-+		pr_err("%s: spi_async() failed %d\n", __func__, ret);
-+
-+	return ret;
-+}
-+
-+static int spi_slave_system_control_probe(struct spi_device *spi)
-+{
-+	struct spi_slave_system_control_priv *priv;
-+	int ret;
-+
-+	/*
-+	 * bits_per_word cannot be configured in platform data
-+	 */
-+	spi->bits_per_word = 8;
-+
-+	ret = spi_setup(spi);
-+	if (ret < 0)
-+		return ret;
-+
-+	priv = devm_kzalloc(&spi->dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+
-+	priv->spi = spi;
-+	init_completion(&priv->finished);
-+	priv->xfer.rx_buf = &priv->cmd;
-+	priv->xfer.len = sizeof(priv->cmd);
-+
-+	ret = spi_slave_system_control_submit(priv);
-+	if (ret)
-+		return ret;
-+
-+	spi_set_drvdata(spi, priv);
-+	return 0;
-+}
-+
-+static int spi_slave_system_control_remove(struct spi_device *spi)
-+{
-+	struct spi_slave_system_control_priv *priv = spi_get_drvdata(spi);
-+
-+	spi_slave_abort(spi);
-+	wait_for_completion(&priv->finished);
-+	return 0;
-+}
-+
-+static struct spi_driver spi_slave_system_control_driver = {
-+	.driver = {
-+		.name	= "spi-slave-system-control",
-+	},
-+	.probe		= spi_slave_system_control_probe,
-+	.remove		= spi_slave_system_control_remove,
-+};
-+module_spi_driver(spi_slave_system_control_driver);
-+
-+MODULE_AUTHOR("Geert Uytterhoeven <geert+renesas@glider.be>");
-+MODULE_DESCRIPTION("SPI slave handler controlling system state");
-+MODULE_LICENSE("GPL v2");
+This patch series applies to v4.8-rc1..v4.8-rc6.
+It appplies to next-20160912 with some small context changes.
+For your convenience, I've pushed this series and its dependencies to
+the topic/spi-slave-v2 branch of the git repository at
+https://git.kernel.org/cgit/linux/kernel/git/geert/renesas-drivers.git
+
+Full test information is also available on the eLinux wiki
+(http://elinux.org/Tests:MSIOF-SPI-Slave).
+
+For testing, device tree overlays enabling SPI master and slave
+controllers on an expansion I/O connector on r8a7791/koelsch are
+available in the topic/renesas-overlays branch of my renesas-drivers git
+repository.  Please see http://elinux.org/R-Car/DT-Overlays for more
+information about using these overlays.
+
+Test wiring on r8a7791/koelsch, between MSIOF1 and MSIOF2 on EXIO
+connector A:
+   - Connect pin 48 (MSIOF1 CS#) to pin 63 (MSIOF2 CS#),
+   - Connect pin 46 (MSIOF1 SCK) to pin 61 (MSIOF2 SCK),
+   - Connect pin 54 (MSIOF1 TX/MOSI) to pin 70 (MSIOF2 RX/MOSI),
+   - Connect pin 56 (MSIOF1 RX/MISO) to pin 68 (MSIOF2 TX/MISO).
+
+Preparation for all examples below:
+    # overlay add a-msiof1-spidev # buggy DT: spidev listed directly in DT
+    # overlay add a-msiof2-slave
+
+Example 1:
+
+    # echo spi-slave-time > /sys/class/spi_slave/spi3/slave 
+    # spidev_test -D /dev/spidev2.0 -p dummy-8B
+    spi mode: 0x0
+    bits per word: 8
+    max speed: 500000 Hz (500 KHz)
+    RX | 00 00 04 6D 00 09 5B BB __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __ __  | ...m..[�
+               ^^^^^    ^^^^^^^^
+	       seconds  microseconds
+
+Example 2:
+
+    # echo spi-slave-system-control > /sys/class/spi_slave/spi3/slave 
+    # reboot='\x7c\x50'
+    # poweroff='\x71\x3f'
+    # halt='\x38\x76'
+    # suspend='\x1b\x1b'
+    # spidev_test -D /dev/spidev2.0 -p $suspend # or $reboot, $poweroff, $halt
+
+Example 3:
+
+    # echo spidev > /sys/class/spi_slave/spi3/slave 
+    # spidev_test -D /dev/spidev3.0 -p slave-hello-to-master &
+    # spidev_test -D /dev/spidev2.0 -p master-hello-to-slave
+
+Thanks for your comments!
+
+
+Geert Uytterhoeven (6):
+  [RFC] spi: Document DT bindings for SPI controllers in slave mode
+  [RFC] spi: core: Extract of_spi_parse_dt()
+  [RFC] spi: core: Add support for registering SPI slave controllers
+  [RFC] spi: Document SPI slave controller support
+  [RFC] spi: slave: Add SPI slave handler reporting uptime at previous
+    message
+  [RFC] spi: slave: Add SPI slave handler controlling system state
+
+Hisashi Nakamura (1):
+  [RFC] spi: sh-msiof: Add slave mode support
+
+ Documentation/devicetree/bindings/spi/sh-msiof.txt |   2 +
+ Documentation/devicetree/bindings/spi/spi-bus.txt  |  34 ++--
+ Documentation/spi/spi-summary                      |  27 ++-
+ drivers/spi/Kconfig                                |  26 ++-
+ drivers/spi/Makefile                               |   4 +
+ drivers/spi/spi-sh-msiof.c                         |  67 +++++--
+ drivers/spi/spi-slave-system-control.c             | 154 +++++++++++++++
+ drivers/spi/spi-slave-time.c                       | 126 ++++++++++++
+ drivers/spi/spi.c                                  | 220 +++++++++++++++++----
+ include/linux/spi/sh_msiof.h                       |   6 +
+ include/linux/spi/spi.h                            |  17 +-
+ 11 files changed, 608 insertions(+), 75 deletions(-)
+ create mode 100644 drivers/spi/spi-slave-system-control.c
+ create mode 100644 drivers/spi/spi-slave-time.c
+
 -- 
 1.9.1
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

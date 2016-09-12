@@ -1,46 +1,99 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2] tools: spi: enable CROSS_COMPILE in Makefile
-Date: Mon, 12 Sep 2016 20:02:43 +0100
-Message-ID: <20160912190243.GI27946@sirena.org.uk>
-References: <1473262980-20103-1-git-send-email-jorge.ramirez-ortiz@linaro.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="KCBbHYs95wY/7dOt"
-Cc: daniel.thompson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jorge Ramirez-Ortiz <jorge.ramirez-ortiz-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: fsl-espi: merge fsl_espi_trans and fsl_espi_do_trans" to the spi tree
+Date: Mon, 12 Sep 2016 20:07:09 +0100
+Message-ID: <E1bjWZR-0002fX-NB@debutante>
+References: <b8a3ee2d-b46a-2681-a11e-b5a773179589@gmail.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1473262980-20103-1-git-send-email-jorge.ramirez-ortiz-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+In-Reply-To: <b8a3ee2d-b46a-2681-a11e-b5a773179589-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---KCBbHYs95wY/7dOt
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: fsl-espi: merge fsl_espi_trans and fsl_espi_do_trans
 
-On Wed, Sep 07, 2016 at 05:43:00PM +0200, Jorge Ramirez-Ortiz wrote:
-> Signed-off-by: Jorge Ramirez-Ortiz <jorge.ramirez-ortiz-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+has been applied to the spi tree at
 
-Please use subject lines matching the style for the subsystem.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
---KCBbHYs95wY/7dOt
-Content-Type: application/pgp-signature; name="signature.asc"
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEcBAEBCAAGBQJX1vvRAAoJECTWi3JdVIfQdnwH/iOHVVQcvRriJRQv5vEwCNGZ
-kS1KuT6cSk0TAr204kgylkk8rP0Zx4Da1e4H3hJVkZBZRAMXD0GLPXlaP0r5Ca+A
-5/nEeh6a4FcKhxQ2+JRUxt/fWec2U70rAckpVlxSOnCpSRCPFrOWSE6qsQ+/5iFK
-2q2xmMpGLpAadKJaU2qrA5nNF0+N5uKQRJr604Nw0ks4vqFNJYpBIwVVb9+LQYr/
-sKkZ4AIag++EFIwbiBNK53qGHd9Vgi6vFd0zEvOsJ/Jj8jrgLVTAZ/F+/tbD/km0
-8vN4v94EVmXwhF0jt81cC5iDmkXfrFo3JI45re2lh76pm1oxtJ5xjjwrzJmbDlM=
-=JeDc
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---KCBbHYs95wY/7dOt--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 38d003f1a43f3afd6b5e0da728f06dad07a85687 Mon Sep 17 00:00:00 2001
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Wed, 7 Sep 2016 22:54:51 +0200
+Subject: [PATCH] spi: fsl-espi: merge fsl_espi_trans and fsl_espi_do_trans
+
+Merge both functions to reduce source code size and improve
+readability.
+
+Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-fsl-espi.c | 18 ++++--------------
+ 1 file changed, 4 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index 7b2f997b061f..bef06762a770 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -276,11 +276,13 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	return mpc8xxx_spi->count > 0 ? -EMSGSIZE : 0;
+ }
+ 
+-static int fsl_espi_do_trans(struct spi_message *m, struct spi_transfer *trans)
++static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans)
+ {
++	struct mpc8xxx_spi *mspi = spi_master_get_devdata(m->spi->master);
+ 	struct spi_device *spi = m->spi;
+-	int ret = 0;
++	int ret;
+ 
++	fsl_espi_copy_to_buf(m, mspi);
+ 	fsl_espi_setup_transfer(spi, trans);
+ 
+ 	ret = fsl_espi_bufs(spi, trans);
+@@ -290,18 +292,6 @@ static int fsl_espi_do_trans(struct spi_message *m, struct spi_transfer *trans)
+ 
+ 	fsl_espi_setup_transfer(spi, NULL);
+ 
+-	return ret;
+-}
+-
+-static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans)
+-{
+-	struct mpc8xxx_spi *mspi = spi_master_get_devdata(m->spi->master);
+-	int ret;
+-
+-	fsl_espi_copy_to_buf(m, mspi);
+-
+-	ret = fsl_espi_do_trans(m, trans);
+-
+ 	if (!ret)
+ 		fsl_espi_copy_from_buf(m, mspi);
+ 
+-- 
+2.8.1
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

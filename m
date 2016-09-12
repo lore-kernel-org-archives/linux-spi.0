@@ -1,101 +1,47 @@
-From: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Subject: Re: [PATCH 00/26] constify local structures
-Date: Mon, 12 Sep 2016 21:50:23 +0300
-Message-ID: <20160912185023.GB14727@intel.com>
-References: <1473599168-30561-1-git-send-email-Julia.Lawall@lip6.fr>
- <20160911172105.GB5493@intel.com>
- <alpine.DEB.2.10.1609121051050.3049@hadrien>
- <20160912131625.GD957@intel.com>
- <877fah5j35.fsf@linux.intel.com>
- <alpine.DEB.2.10.1609121548200.29099@hadrien>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2] tools: spi: enable CROSS_COMPILE in Makefile
+Date: Mon, 12 Sep 2016 20:02:43 +0100
+Message-ID: <20160912190243.GI27946@sirena.org.uk>
+References: <1473262980-20103-1-git-send-email-jorge.ramirez-ortiz@linaro.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Felipe Balbi <felipe.balbi@linux.intel.com>,
-        linux-renesas-soc@vger.kernel.org, joe@perches.com,
-        kernel-janitors@vger.kernel.org,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        linux-pm@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-can@vger.kernel.org,
-        Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
-        Shiraz Saleem <shiraz.saleem@intel.com>,
-        Mustafa Ismail <mustafa.ismail@intel.com>,
-        Chien Tin Tung <chien.tin.tung@intel.com>,
-        linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
-        devel@driverdev.osuosl.org, alsa-devel@alsa-project.org,
-        linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        Jason Gunthorpe <jgunthorpe@obsidianresearch.com>,
-        tpmdd-devel@lists.sourceforge.net, linux-scsi@
-To: Julia Lawall <julia.lawall@lip6.fr>
-Return-path: <linux-can-owner@vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="KCBbHYs95wY/7dOt"
+Cc: daniel.thompson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jorge Ramirez-Ortiz <jorge.ramirez-ortiz-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.10.1609121548200.29099@hadrien>
-Sender: linux-can-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1473262980-20103-1-git-send-email-jorge.ramirez-ortiz-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, Sep 12, 2016 at 03:52:08PM +0200, Julia Lawall wrote:
-> 
-> 
-> On Mon, 12 Sep 2016, Felipe Balbi wrote:
-> 
-> >
-> > Hi,
-> >
-> > Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com> writes:
-> > > On Mon, Sep 12, 2016 at 10:54:07AM +0200, Julia Lawall wrote:
-> > >>
-> > >>
-> > >> On Sun, 11 Sep 2016, Jarkko Sakkinen wrote:
-> > >>
-> > >> > On Sun, Sep 11, 2016 at 03:05:42PM +0200, Julia Lawall wrote:
-> > >> > > Constify local structures.
-> > >> > >
-> > >> > > The semantic patch that makes this change is as follows:
-> > >> > > (http://coccinelle.lip6.fr/)
-> > >> >
-> > >> > Just my two cents but:
-> > >> >
-> > >> > 1. You *can* use a static analysis too to find bugs or other issues.
-> > >> > 2. However, you should manually do the commits and proper commit
-> > >> >    messages to subsystems based on your findings. And I generally think
-> > >> >    that if one contributes code one should also at least smoke test changes
-> > >> >    somehow.
-> > >> >
-> > >> > I don't know if I'm alone with my opinion. I just think that one should
-> > >> > also do the analysis part and not blindly create and submit patches.
-> > >>
-> > >> All of the patches are compile tested.  And the individual patches are
-> > >
-> > > Compile-testing is not testing. If you are not able to test a commit,
-> > > you should explain why.
-> >
-> > Dude, Julia has been doing semantic patching for years already and
-> > nobody has raised any concerns so far. There's already an expectation
-> > that Coccinelle *works* and Julia's sematic patches are sound.
-> >
-> > Besides, adding 'const' is something that causes virtually no functional
-> > changes to the point that build-testing is really all you need. Any
-> > problems caused by adding 'const' to a definition will be seen by build
-> > errors or warnings.
-> >
-> > Really, just stop with the pointless discussion and go read a bit about
-> > Coccinelle and what semantic patches are giving you. The work done by
-> > Julia and her peers are INRIA have measurable benefits.
-> >
-> > You're really making a thunderstorm in a glass of water.
-> 
-> Thanks for the defense, but since a lot of these patches torned out to be
-> wrong, due to an incorrect parse by Coccinelle, combined with an
-> unpleasantly lax compiler, Jarkko does have a point that I should have
-> looked at the patches more carefully.  In any case, I have written to the
-> maintainers relevant to the patches that turned out to be incorrect.
 
-Exactly. I'm not excepting that every commit would require extensive
-analysis but it would be good to quickly at least skim through commits
-and see if they make sense (or ask if unsure) :) 
+--KCBbHYs95wY/7dOt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-And I'm fine with compile testing if it is mentioned in the commit msg.
+On Wed, Sep 07, 2016 at 05:43:00PM +0200, Jorge Ramirez-Ortiz wrote:
+> Signed-off-by: Jorge Ramirez-Ortiz <jorge.ramirez-ortiz-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
-> julia
+Please use subject lines matching the style for the subsystem.
 
-/Jarkko
+--KCBbHYs95wY/7dOt
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBCAAGBQJX1vvRAAoJECTWi3JdVIfQdnwH/iOHVVQcvRriJRQv5vEwCNGZ
+kS1KuT6cSk0TAr204kgylkk8rP0Zx4Da1e4H3hJVkZBZRAMXD0GLPXlaP0r5Ca+A
+5/nEeh6a4FcKhxQ2+JRUxt/fWec2U70rAckpVlxSOnCpSRCPFrOWSE6qsQ+/5iFK
+2q2xmMpGLpAadKJaU2qrA5nNF0+N5uKQRJr604Nw0ks4vqFNJYpBIwVVb9+LQYr/
+sKkZ4AIag++EFIwbiBNK53qGHd9Vgi6vFd0zEvOsJ/Jj8jrgLVTAZ/F+/tbD/km0
+8vN4v94EVmXwhF0jt81cC5iDmkXfrFo3JI45re2lh76pm1oxtJ5xjjwrzJmbDlM=
+=JeDc
+-----END PGP SIGNATURE-----
+
+--KCBbHYs95wY/7dOt--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

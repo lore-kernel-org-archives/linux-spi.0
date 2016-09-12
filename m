@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: fsl-espi: merge fsl_espi_trans and fsl_espi_do_trans" to the spi tree
-Date: Mon, 12 Sep 2016 20:07:09 +0100
-Message-ID: <E1bjWZR-0002fX-NB@debutante>
-References: <b8a3ee2d-b46a-2681-a11e-b5a773179589@gmail.com>
+Subject: Applied "spi: fsl-espi: improve message length handling" to the spi tree
+Date: Mon, 12 Sep 2016 20:07:19 +0100
+Message-ID: <E1bjWZb-0002gp-CV@debutante>
+References: <aac7ea51-62ea-69b9-a149-2209e0766905@gmail.com>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <b8a3ee2d-b46a-2681-a11e-b5a773179589-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <aac7ea51-62ea-69b9-a149-2209e0766905-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: fsl-espi: merge fsl_espi_trans and fsl_espi_do_trans
+   spi: fsl-espi: improve message length handling
 
 has been applied to the spi tree at
 
@@ -38,59 +38,71 @@ to this mail.
 Thanks,
 Mark
 
->From 38d003f1a43f3afd6b5e0da728f06dad07a85687 Mon Sep 17 00:00:00 2001
+>From 06af115d6c6d8b3d7b6cbc8a46f0603e70b1be58 Mon Sep 17 00:00:00 2001
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Wed, 7 Sep 2016 22:54:51 +0200
-Subject: [PATCH] spi: fsl-espi: merge fsl_espi_trans and fsl_espi_do_trans
+Date: Wed, 7 Sep 2016 22:54:35 +0200
+Subject: [PATCH] spi: fsl-espi: improve message length handling
 
-Merge both functions to reduce source code size and improve
-readability.
+Move checking for a zero-length message up in the call chain and
+use m->frame_length instead of re-calculating the overall length
+of all transfers in the message.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 18 ++++--------------
- 1 file changed, 4 insertions(+), 14 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 7b2f997b061f..bef06762a770 100644
+index 2af7463aea8d..7b2f997b061f 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -276,11 +276,13 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
- 	return mpc8xxx_spi->count > 0 ? -EMSGSIZE : 0;
- }
+@@ -283,8 +283,7 @@ static int fsl_espi_do_trans(struct spi_message *m, struct spi_transfer *trans)
  
--static int fsl_espi_do_trans(struct spi_message *m, struct spi_transfer *trans)
-+static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans)
- {
-+	struct mpc8xxx_spi *mspi = spi_master_get_devdata(m->spi->master);
- 	struct spi_device *spi = m->spi;
--	int ret = 0;
-+	int ret;
- 
-+	fsl_espi_copy_to_buf(m, mspi);
  	fsl_espi_setup_transfer(spi, trans);
  
- 	ret = fsl_espi_bufs(spi, trans);
-@@ -290,18 +292,6 @@ static int fsl_espi_do_trans(struct spi_message *m, struct spi_transfer *trans)
+-	if (trans->len)
+-		ret = fsl_espi_bufs(spi, trans);
++	ret = fsl_espi_bufs(spi, trans);
  
- 	fsl_espi_setup_transfer(spi, NULL);
+ 	if (trans->delay_usecs)
+ 		udelay(trans->delay_usecs);
+@@ -313,7 +312,7 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
+ 			       struct spi_message *m)
+ {
+ 	struct mpc8xxx_spi *mspi = spi_master_get_devdata(m->spi->master);
+-	unsigned int delay_usecs = 0, xfer_len = 0;
++	unsigned int delay_usecs = 0;
+ 	struct spi_transfer *t, trans = {};
+ 	int ret;
  
--	return ret;
--}
--
--static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans)
--{
--	struct mpc8xxx_spi *mspi = spi_master_get_devdata(m->spi->master);
--	int ret;
--
--	fsl_espi_copy_to_buf(m, mspi);
--
--	ret = fsl_espi_do_trans(m, trans);
--
- 	if (!ret)
- 		fsl_espi_copy_from_buf(m, mspi);
+@@ -322,8 +321,6 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
+ 		goto out;
  
+ 	list_for_each_entry(t, &m->transfers, transfer_list) {
+-		if ((t->tx_buf) || (t->rx_buf))
+-			xfer_len += t->len;
+ 		if (t->delay_usecs > delay_usecs)
+ 			delay_usecs = t->delay_usecs;
+ 	}
+@@ -331,14 +328,15 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
+ 	t = list_first_entry(&m->transfers, struct spi_transfer,
+ 			     transfer_list);
+ 
+-	trans.len = xfer_len;
++	trans.len = m->frame_length;
+ 	trans.speed_hz = t->speed_hz;
+ 	trans.bits_per_word = t->bits_per_word;
+ 	trans.delay_usecs = delay_usecs;
+ 	trans.tx_buf = mspi->local_buf;
+ 	trans.rx_buf = mspi->local_buf;
+ 
+-	ret = fsl_espi_trans(m, &trans);
++	if (trans.len)
++		ret = fsl_espi_trans(m, &trans);
+ 
+ 	m->actual_length = ret ? 0 : trans.len;
+ out:
 -- 
 2.8.1
 

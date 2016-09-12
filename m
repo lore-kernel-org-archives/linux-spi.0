@@ -1,22 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pxa2xx: Do not needlessly initialize stack variables" to the spi tree
-Date: Mon, 12 Sep 2016 20:08:00 +0100
-Message-ID: <E1bjWaG-0002oV-Cs@debutante>
-References: <20160907140407.17631-1-jarkko.nikula@linux.intel.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-        Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Applied "spi: fsl-espi: eliminate struct fsl_espi_transfer" to the spi tree
+Date: Mon, 12 Sep 2016 20:08:37 +0100
+Message-ID: <E1bjWar-0002si-KP@debutante>
+References: <2872c612-a0c4-581f-4880-80bf7f8af9f9@gmail.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160907140407.17631-1-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <2872c612-a0c4-581f-4880-80bf7f8af9f9-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: pxa2xx: Do not needlessly initialize stack variables
+   spi: fsl-espi: eliminate struct fsl_espi_transfer
 
 has been applied to the spi tree at
 
@@ -41,85 +38,152 @@ to this mail.
 Thanks,
 Mark
 
->From bffc967e93c771805739a4cc4c7849a749a7b0a6 Mon Sep 17 00:00:00 2001
-From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Wed, 7 Sep 2016 17:04:05 +0300
-Subject: [PATCH] spi: pxa2xx: Do not needlessly initialize stack variables
+>From faceef390702bad8bdf9c93554a3364253d9d943 Mon Sep 17 00:00:00 2001
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Wed, 7 Sep 2016 22:52:06 +0200
+Subject: [PATCH] spi: fsl-espi: eliminate struct fsl_espi_transfer
 
-All of these variables are unconditionally set before their use.
+The remaining elements of struct fsl_espi_transfer are part of struct
+spi_transfer anyway. So we can get rid of struct fsl_espi_transfer
+and use a struct spi_transfer only.
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-pxa2xx-dma.c |  2 +-
- drivers/spi/spi-pxa2xx.c     | 20 ++++++++++----------
- 2 files changed, 11 insertions(+), 11 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 56 +++++++++++++++++-----------------------------
+ 1 file changed, 20 insertions(+), 36 deletions(-)
 
-diff --git a/drivers/spi/spi-pxa2xx-dma.c b/drivers/spi/spi-pxa2xx-dma.c
-index db3ae1dd829e..80c8e27a2f73 100644
---- a/drivers/spi/spi-pxa2xx-dma.c
-+++ b/drivers/spi/spi-pxa2xx-dma.c
-@@ -146,7 +146,7 @@ irqreturn_t pxa2xx_spi_dma_transfer(struct driver_data *drv_data)
- int pxa2xx_spi_dma_prepare(struct driver_data *drv_data, u32 dma_burst)
- {
- 	struct dma_async_tx_descriptor *tx_desc, *rx_desc;
--	int err = 0;
-+	int err;
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index 726d5fdca3b6..8554f18e4cf6 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -37,12 +37,6 @@ struct fsl_espi_reg {
+ 	__be32 csmode[4];	/* 0x020 - 0x02c eSPI cs mode register */
+ };
  
- 	tx_desc = pxa2xx_spi_dma_prepare_one(drv_data, DMA_MEM_TO_DEV);
- 	if (!tx_desc) {
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 87150a1049bd..0e0d445f4028 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -934,13 +934,13 @@ static void pump_transfers(unsigned long data)
- {
- 	struct driver_data *drv_data = (struct driver_data *)data;
- 	struct spi_master *master = drv_data->master;
--	struct spi_message *message = NULL;
--	struct spi_transfer *transfer = NULL;
--	struct spi_transfer *previous = NULL;
--	struct chip_data *chip = NULL;
--	u32 clk_div = 0;
--	u8 bits = 0;
--	u32 speed = 0;
-+	struct spi_message *message;
-+	struct spi_transfer *transfer;
-+	struct spi_transfer *previous;
-+	struct chip_data *chip;
-+	u32 clk_div;
-+	u8 bits;
-+	u32 speed;
- 	u32 cr0;
- 	u32 cr1;
- 	u32 dma_thresh = drv_data->cur_chip->dma_threshold;
-@@ -1213,7 +1213,7 @@ static int setup_cs(struct spi_device *spi, struct chip_data *chip,
+-struct fsl_espi_transfer {
+-	const void *tx_buf;
+-	void *rx_buf;
+-	unsigned len;
+-};
+-
+ /* eSPI Controller mode register definitions */
+ #define SPMODE_ENABLE		(1 << 31)
+ #define SPMODE_LOOP		(1 << 30)
+@@ -267,17 +261,13 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	return mpc8xxx_spi->count;
+ }
  
- static int setup(struct spi_device *spi)
+-static int fsl_espi_do_trans(struct spi_message *m,
+-			     struct fsl_espi_transfer *tr)
++static int fsl_espi_do_trans(struct spi_message *m, struct spi_transfer *trans)
  {
--	struct pxa2xx_spi_chip *chip_info = NULL;
-+	struct pxa2xx_spi_chip *chip_info;
- 	struct chip_data *chip;
- 	const struct lpss_config *config;
- 	struct driver_data *drv_data = spi_master_get_devdata(spi->master);
-@@ -1742,7 +1742,7 @@ static int pxa2xx_spi_suspend(struct device *dev)
- {
- 	struct driver_data *drv_data = dev_get_drvdata(dev);
- 	struct ssp_device *ssp = drv_data->ssp;
--	int status = 0;
-+	int status;
+ 	struct spi_device *spi = m->spi;
+ 	struct mpc8xxx_spi *mspi = spi_master_get_devdata(spi->master);
+-	struct fsl_espi_transfer *espi_trans = tr;
+-	struct spi_transfer *t, *first, trans;
++	struct spi_transfer *t, *first;
+ 	int ret = 0;
  
- 	status = spi_master_suspend(drv_data->master);
- 	if (status != 0)
-@@ -1759,7 +1759,7 @@ static int pxa2xx_spi_resume(struct device *dev)
- {
- 	struct driver_data *drv_data = dev_get_drvdata(dev);
- 	struct ssp_device *ssp = drv_data->ssp;
--	int status = 0;
-+	int status;
+-	memset(&trans, 0, sizeof(trans));
+-
+ 	first = list_first_entry(&m->transfers, struct spi_transfer,
+ 			transfer_list);
+ 	list_for_each_entry(t, &m->transfers, transfer_list) {
+@@ -288,25 +278,21 @@ static int fsl_espi_do_trans(struct spi_message *m,
+ 			return -EINVAL;
+ 		}
  
- 	/* Enable the SSP clock */
- 	if (!pm_runtime_suspended(dev))
+-		trans.speed_hz = t->speed_hz;
+-		trans.bits_per_word = t->bits_per_word;
+-		trans.delay_usecs = max(first->delay_usecs, t->delay_usecs);
++		trans->speed_hz = t->speed_hz;
++		trans->bits_per_word = t->bits_per_word;
++		trans->delay_usecs = max(first->delay_usecs, t->delay_usecs);
+ 	}
+ 
+-	trans.len = espi_trans->len;
+-	trans.tx_buf = espi_trans->tx_buf;
+-	trans.rx_buf = espi_trans->rx_buf;
+-
+-	fsl_espi_setup_transfer(spi, &trans);
++	fsl_espi_setup_transfer(spi, trans);
+ 
+-	if (trans.len)
+-		ret = fsl_espi_bufs(spi, &trans);
++	if (trans->len)
++		ret = fsl_espi_bufs(spi, trans);
+ 
+ 	if (ret)
+ 		ret = -EMSGSIZE;
+ 
+-	if (trans.delay_usecs)
+-		udelay(trans.delay_usecs);
++	if (trans->delay_usecs)
++		udelay(trans->delay_usecs);
+ 
+ 	fsl_espi_setup_transfer(spi, NULL);
+ 
+@@ -314,23 +300,22 @@ static int fsl_espi_do_trans(struct spi_message *m,
+ }
+ 
+ static int fsl_espi_cmd_trans(struct spi_message *m,
+-			      struct fsl_espi_transfer *trans, u8 *rx_buff)
++			      struct spi_transfer *trans, u8 *rx_buff)
+ {
+ 	struct mpc8xxx_spi *mspi = spi_master_get_devdata(m->spi->master);
+-	struct fsl_espi_transfer *espi_trans = trans;
+ 	int ret;
+ 
+ 	fsl_espi_copy_to_buf(m, mspi);
+ 
+-	espi_trans->tx_buf = mspi->local_buf;
+-	espi_trans->rx_buf = mspi->local_buf;
+-	ret = fsl_espi_do_trans(m, espi_trans);
++	trans->tx_buf = mspi->local_buf;
++	trans->rx_buf = mspi->local_buf;
++	ret = fsl_espi_do_trans(m, trans);
+ 
+ 	return ret;
+ }
+ 
+ static int fsl_espi_rw_trans(struct spi_message *m,
+-			     struct fsl_espi_transfer *trans, u8 *rx_buff)
++			     struct spi_transfer *trans, u8 *rx_buff)
+ {
+ 	struct mpc8xxx_spi *mspi = spi_master_get_devdata(m->spi->master);
+ 	unsigned int tx_only;
+@@ -355,10 +340,9 @@ static int fsl_espi_rw_trans(struct spi_message *m,
+ static int fsl_espi_do_one_msg(struct spi_master *master,
+ 			       struct spi_message *m)
+ {
+-	struct spi_transfer *t;
+ 	u8 *rx_buf = NULL;
+ 	unsigned int xfer_len = 0;
+-	struct fsl_espi_transfer espi_trans;
++	struct spi_transfer *t, trans = {};
+ 	int ret;
+ 
+ 	list_for_each_entry(t, &m->transfers, transfer_list) {
+@@ -368,14 +352,14 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
+ 			xfer_len += t->len;
+ 	}
+ 
+-	espi_trans.len = xfer_len;
++	trans.len = xfer_len;
+ 
+ 	if (!rx_buf)
+-		ret = fsl_espi_cmd_trans(m, &espi_trans, NULL);
++		ret = fsl_espi_cmd_trans(m, &trans, NULL);
+ 	else
+-		ret = fsl_espi_rw_trans(m, &espi_trans, rx_buf);
++		ret = fsl_espi_rw_trans(m, &trans, rx_buf);
+ 
+-	m->actual_length = ret ? 0 : espi_trans.len;
++	m->actual_length = ret ? 0 : trans.len;
+ 
+ 	if (m->status == -EINPROGRESS)
+ 		m->status = ret;
 -- 
 2.8.1
 

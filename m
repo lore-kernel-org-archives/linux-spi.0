@@ -1,7 +1,7 @@
 From: Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH/RFC v2 2/7] spi: core: Extract of_spi_parse_dt()
-Date: Mon, 12 Sep 2016 22:50:41 +0200
-Message-ID: <1473713446-30366-3-git-send-email-geert+renesas@glider.be>
+Subject: [PATCH/RFC v2 7/7] spi: slave: Add SPI slave handler controlling system state
+Date: Mon, 12 Sep 2016 22:50:46 +0200
+Message-ID: <1473713446-30366-8-git-send-email-geert+renesas@glider.be>
 References: <1473713446-30366-1-git-send-email-geert+renesas@glider.be>
 Cc: Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
@@ -13,110 +13,216 @@ Cc: Rob Herring <robh+dt@kernel.org>,
         linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
         Geert Uytterhoeven <geert+renesas@glider.be>
 To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Return-path: <linux-renesas-soc-owner@vger.kernel.org>
 In-Reply-To: <1473713446-30366-1-git-send-email-geert+renesas@glider.be>
-Sender: linux-kernel-owner@vger.kernel.org
+Sender: linux-renesas-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Extract the parsing of SPI slave-specific properties into its own
-function, so it can be reused later for SPI slave controllers.
+Add an example SPI slave handler to allow remote control of system
+reboot, power off, halt, and suspend.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
 v2:
-  - New.
+  - Use spi_async() instead of spi_read(),
+  - Submit the next transfer from the previous transfer's completion
+    callback, removing the need for a thread,
+  - Let .remove() call spi_slave_abort() to cancel the current ongoing
+    transfer, and wait for the completion to terminate,
+  - Remove FIXME about hanging kthread_stop(),
+  - Fix copy-and-pasted module description.
 ---
- drivers/spi/spi.c | 60 +++++++++++++++++++++++++++++++++----------------------
- 1 file changed, 36 insertions(+), 24 deletions(-)
+ drivers/spi/Kconfig                    |   6 ++
+ drivers/spi/Makefile                   |   1 +
+ drivers/spi/spi-slave-system-control.c | 154 +++++++++++++++++++++++++++++++++
+ 3 files changed, 161 insertions(+)
+ create mode 100644 drivers/spi/spi-slave-system-control.c
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 51ad42fad5679133..79e5c1ba23c81dc1 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1471,37 +1471,18 @@ err_init_queue:
- /*-------------------------------------------------------------------------*/
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 515bddee4018c246..3d8ae9505ef95992 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -755,6 +755,12 @@ config SPI_SLAVE_TIME
+ 	  SPI slave handler responding with the time of reception of the last
+ 	  SPI message.
  
- #if defined(CONFIG_OF)
--static struct spi_device *
--of_register_spi_device(struct spi_master *master, struct device_node *nc)
-+static int of_spi_parse_dt(struct spi_master *master, struct spi_device *spi,
-+			   struct device_node *nc)
- {
--	struct spi_device *spi;
--	int rc;
- 	u32 value;
--
--	/* Alloc an spi_device */
--	spi = spi_alloc_device(master);
--	if (!spi) {
--		dev_err(&master->dev, "spi_device alloc error for %s\n",
--			nc->full_name);
--		rc = -ENOMEM;
--		goto err_out;
--	}
--
--	/* Select device driver */
--	rc = of_modalias_node(nc, spi->modalias,
--				sizeof(spi->modalias));
--	if (rc < 0) {
--		dev_err(&master->dev, "cannot find modalias for %s\n",
--			nc->full_name);
--		goto err_out;
--	}
-+	int rc;
++config SPI_SLAVE_SYSTEM_CONTROL
++	tristate "SPI slave handler controlling system state"
++	help
++	  SPI slave handler to allow remote control of system reboot, power
++	  off, halt, and suspend.
++
+ endif # SPI_SLAVE
  
- 	/* Device address */
- 	rc = of_property_read_u32(nc, "reg", &value);
- 	if (rc) {
- 		dev_err(&master->dev, "%s has no valid 'reg' property (%d)\n",
- 			nc->full_name, rc);
--		goto err_out;
-+		return rc;
- 	}
- 	spi->chip_select = value;
+ endif # SPI
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index ba4a7e79fe113d3e..e402c1a12f47c38f 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -101,3 +101,4 @@ obj-$(CONFIG_SPI_ZYNQMP_GQSPI)		+= spi-zynqmp-gqspi.o
  
-@@ -1559,10 +1540,41 @@ of_register_spi_device(struct spi_master *master, struct device_node *nc)
- 	if (rc) {
- 		dev_err(&master->dev, "%s has no valid 'spi-max-frequency' property (%d)\n",
- 			nc->full_name, rc);
--		goto err_out;
-+		return rc;
- 	}
- 	spi->max_speed_hz = value;
- 
+ # SPI slave protocol handlers
+ obj-$(CONFIG_SPI_SLAVE_TIME)		+= spi-slave-time.o
++obj-$(CONFIG_SPI_SLAVE_SYSTEM_CONTROL)	+= spi-slave-system-control.o
+diff --git a/drivers/spi/spi-slave-system-control.c b/drivers/spi/spi-slave-system-control.c
+new file mode 100644
+index 0000000000000000..736dd59928cb3bc3
+--- /dev/null
++++ b/drivers/spi/spi-slave-system-control.c
+@@ -0,0 +1,154 @@
++/*
++ * SPI slave handler controlling system state
++ *
++ * This SPI slave handler allows remote control of system reboot, power off,
++ * halt, and suspend.
++ *
++ * Copyright (C) 2016 Glider bvba
++ *
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ */
++
++#include <linux/completion.h>
++#include <linux/module.h>
++#include <linux/reboot.h>
++#include <linux/suspend.h>
++#include <linux/spi/spi.h>
++
++/*
++ * The numbers are chosen to display something human-readable on two 7-segment
++ * displays connected to two 74HC595 shift registers
++ */
++#define CMD_REBOOT	0x507c	/* rb */
++#define CMD_POWEROFF	0x3f71	/* OF */
++#define CMD_HALT	0x7638	/* HL */
++#define CMD_SUSPEND	0x1b1b	/* ZZ */
++
++struct spi_slave_system_control_priv {
++	struct spi_device *spi;
++	struct completion finished;
++	struct spi_transfer xfer;
++	struct spi_message msg;
++	__le16 cmd;
++};
++
++static
++int spi_slave_system_control_submit(struct spi_slave_system_control_priv *priv);
++
++static void spi_slave_system_control_complete(void *arg)
++{
++	struct spi_slave_system_control_priv *priv = arg;
++	u16 cmd;
++	int ret;
++
++	if (priv->msg.status)
++		goto terminate;
++
++	cmd = le16_to_cpu(priv->cmd);
++	switch (cmd) {
++	case CMD_REBOOT:
++		pr_info("Rebooting system...\n");
++		kernel_restart(NULL);
++
++	case CMD_POWEROFF:
++		pr_info("Powering off system...\n");
++		kernel_power_off();
++		break;
++
++	case CMD_HALT:
++		pr_info("Halting system...\n");
++		kernel_halt();
++		break;
++
++	case CMD_SUSPEND:
++		pr_info("Suspending system...\n");
++		pm_suspend(PM_SUSPEND_MEM);
++		break;
++
++	default:
++		pr_warn("%s: Unknown command 0x%x\n", __func__, cmd);
++		break;
++	}
++
++	ret = spi_slave_system_control_submit(priv);
++	if (ret)
++		goto terminate;
++
++	return;
++
++terminate:
++	pr_info("%s: Terminating\n", __func__);
++	complete(&priv->finished);
++}
++
++static
++int spi_slave_system_control_submit(struct spi_slave_system_control_priv *priv)
++{
++	int ret;
++
++	spi_message_init_with_transfers(&priv->msg, &priv->xfer, 1);
++
++	priv->msg.complete = spi_slave_system_control_complete;
++	priv->msg.context = priv;
++
++	ret = spi_async(priv->spi, &priv->msg);
++	if (ret)
++		pr_err("%s: spi_async() failed %d\n", __func__, ret);
++
++	return ret;
++}
++
++static int spi_slave_system_control_probe(struct spi_device *spi)
++{
++	struct spi_slave_system_control_priv *priv;
++	int ret;
++
++	/*
++	 * bits_per_word cannot be configured in platform data
++	 */
++	spi->bits_per_word = 8;
++
++	ret = spi_setup(spi);
++	if (ret < 0)
++		return ret;
++
++	priv = devm_kzalloc(&spi->dev, sizeof(*priv), GFP_KERNEL);
++	if (!priv)
++		return -ENOMEM;
++
++	priv->spi = spi;
++	init_completion(&priv->finished);
++	priv->xfer.rx_buf = &priv->cmd;
++	priv->xfer.len = sizeof(priv->cmd);
++
++	ret = spi_slave_system_control_submit(priv);
++	if (ret)
++		return ret;
++
++	spi_set_drvdata(spi, priv);
 +	return 0;
 +}
 +
-+static struct spi_device *
-+of_register_spi_device(struct spi_master *master, struct device_node *nc)
++static int spi_slave_system_control_remove(struct spi_device *spi)
 +{
-+	struct spi_device *spi;
-+	int rc;
++	struct spi_slave_system_control_priv *priv = spi_get_drvdata(spi);
 +
-+	/* Alloc an spi_device */
-+	spi = spi_alloc_device(master);
-+	if (!spi) {
-+		dev_err(&master->dev, "spi_device alloc error for %s\n",
-+			nc->full_name);
-+		rc = -ENOMEM;
-+		goto err_out;
-+	}
++	spi_slave_abort(spi);
++	wait_for_completion(&priv->finished);
++	return 0;
++}
 +
-+	/* Select device driver */
-+	rc = of_modalias_node(nc, spi->modalias,
-+				sizeof(spi->modalias));
-+	if (rc < 0) {
-+		dev_err(&master->dev, "cannot find modalias for %s\n",
-+			nc->full_name);
-+		goto err_out;
-+	}
++static struct spi_driver spi_slave_system_control_driver = {
++	.driver = {
++		.name	= "spi-slave-system-control",
++	},
++	.probe		= spi_slave_system_control_probe,
++	.remove		= spi_slave_system_control_remove,
++};
++module_spi_driver(spi_slave_system_control_driver);
 +
-+	rc = of_spi_parse_dt(master, spi, nc);
-+	if (rc)
-+		goto err_out;
-+
- 	/* Store a pointer to the node in the device structure */
- 	of_node_get(nc);
- 	spi->dev.of_node = nc;
++MODULE_AUTHOR("Geert Uytterhoeven <geert+renesas@glider.be>");
++MODULE_DESCRIPTION("SPI slave handler controlling system state");
++MODULE_LICENSE("GPL v2");
 -- 
 1.9.1

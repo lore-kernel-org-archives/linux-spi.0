@@ -1,7 +1,8 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 2/4] spi: fsl-espi: improve and simplify interrupt handler
-Date: Tue, 13 Sep 2016 23:15:57 +0200
-Message-ID: <5be7ab71-3401-0e9e-b374-d781afda98f1@gmail.com>
+Subject: [PATCH 4/4] spi: fsl-espi: improve and extend register bit
+ definitions
+Date: Tue, 13 Sep 2016 23:16:06 +0200
+Message-ID: <e510529b-8db6-a878-84c3-90ad07d39fbf@gmail.com>
 References: <848f06e1-3cb9-bef1-bb41-455fa72822b1@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -13,62 +14,130 @@ In-Reply-To: <848f06e1-3cb9-bef1-bb41-455fa72822b1-Re5JQEeQqe8AvxtiuMwx3w@public
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Simplify the interrupt handler a little. In addition don't call
-fsl_espi_cpu_irq() if no event bit is set.
+Add definition of further register bits for use in upcoming
+driver extensions and improve current bit definitions:
+- use BIT macro
+- use bit names as in the chip spec
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 52 +++++++++++++++++++++++++++++-----------------
+ 1 file changed, 33 insertions(+), 19 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 060624f..032bf3a 100644
+index 328b04a..a7984ae 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -443,17 +443,11 @@ static void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
- 				&reg_base->event)) & SPIE_NF), 1000, 0);
- 		if (!ret) {
- 			dev_err(mspi->dev, "tired waiting for SPIE_NF\n");
+@@ -37,18 +37,18 @@
+ #define ESPI_SPMODEx(x)	(ESPI_SPMODE0 + (x) * 4)
+ 
+ /* eSPI Controller mode register definitions */
+-#define SPMODE_ENABLE		(1 << 31)
+-#define SPMODE_LOOP		(1 << 30)
++#define SPMODE_ENABLE		BIT(31)
++#define SPMODE_LOOP		BIT(30)
+ #define SPMODE_TXTHR(x)		((x) << 8)
+ #define SPMODE_RXTHR(x)		((x) << 0)
+ 
+ /* eSPI Controller CS mode register definitions */
+-#define CSMODE_CI_INACTIVEHIGH	(1 << 31)
+-#define CSMODE_CP_BEGIN_EDGECLK	(1 << 30)
+-#define CSMODE_REV		(1 << 29)
+-#define CSMODE_DIV16		(1 << 28)
++#define CSMODE_CI_INACTIVEHIGH	BIT(31)
++#define CSMODE_CP_BEGIN_EDGECLK	BIT(30)
++#define CSMODE_REV		BIT(29)
++#define CSMODE_DIV16		BIT(28)
+ #define CSMODE_PM(x)		((x) << 24)
+-#define CSMODE_POL_1		(1 << 20)
++#define CSMODE_POL_1		BIT(20)
+ #define CSMODE_LEN(x)		((x) << 16)
+ #define CSMODE_BEF(x)		((x) << 12)
+ #define CSMODE_AFT(x)		((x) << 8)
+@@ -60,18 +60,32 @@
+ 		| CSMODE_AFT(0) | CSMODE_CG(1))
+ 
+ /* SPIE register values */
+-#define	SPIE_NE		0x00000200	/* Not empty */
+-#define	SPIE_NF		0x00000100	/* Not full */
 -
--			/* Clear the SPIE bits */
--			mpc8xxx_spi_write_reg(&reg_base->event, events);
+-/* SPIM register values */
+-#define	SPIM_NE		0x00000200	/* Not empty */
+-#define	SPIM_NF		0x00000100	/* Not full */
+ #define SPIE_RXCNT(reg)     ((reg >> 24) & 0x3F)
+ #define SPIE_TXCNT(reg)     ((reg >> 16) & 0x3F)
++#define	SPIE_TXE		BIT(15)	/* TX FIFO empty */
++#define	SPIE_DON		BIT(14)	/* TX done */
++#define	SPIE_RXT		BIT(13)	/* RX FIFO threshold */
++#define	SPIE_RXF		BIT(12)	/* RX FIFO full */
++#define	SPIE_TXT		BIT(11)	/* TX FIFO threshold*/
++#define	SPIE_RNE		BIT(9)	/* RX FIFO not empty */
++#define	SPIE_TNF		BIT(8)	/* TX FIFO not full */
++
++/* SPIM register values */
++#define	SPIM_TXE		BIT(15)	/* TX FIFO empty */
++#define	SPIM_DON		BIT(14)	/* TX done */
++#define	SPIM_RXT		BIT(13)	/* RX FIFO threshold */
++#define	SPIM_RXF		BIT(12)	/* RX FIFO full */
++#define	SPIM_TXT		BIT(11)	/* TX FIFO threshold*/
++#define	SPIM_RNE		BIT(9)	/* RX FIFO not empty */
++#define	SPIM_TNF		BIT(8)	/* TX FIFO not full */
+ 
+ /* SPCOM register values */
+ #define SPCOM_CS(x)		((x) << 30)
++#define SPCOM_DO		BIT(28) /* Dual output */
++#define SPCOM_TO		BIT(27) /* TX only */
++#define SPCOM_RXSKIP(x)		((x) << 16)
+ #define SPCOM_TRANLEN(x)	((x) << 0)
++
+ #define	SPCOM_TRANLEN_MAX	0x10000	/* Max transaction length */
+ 
+ #define AUTOSUSPEND_TIMEOUT 2000
+@@ -263,7 +277,7 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 		(SPCOM_CS(spi->chip_select) | SPCOM_TRANLEN(t->len - 1)));
+ 
+ 	/* enable rx ints */
+-	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPIM, SPIM_NE);
++	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPIM, SPIM_RNE);
+ 
+ 	/* transmit word */
+ 	word = mpc8xxx_spi->get_tx(mpc8xxx_spi);
+@@ -405,7 +419,7 @@ static void fsl_espi_cleanup(struct spi_device *spi)
+ static void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
+ {
+ 	/* We need handle RX first */
+-	if (events & SPIE_NE) {
++	if (events & SPIE_RNE) {
+ 		u32 rx_data, tmp;
+ 		u8 rx_data_8;
+ 		int rx_nr_bytes = 4;
+@@ -427,7 +441,7 @@ static void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
+ 			rx_data = fsl_espi_read_reg(mspi, ESPI_SPIRF);
+ 		} else if (mspi->len <= 0) {
+ 			dev_err(mspi->dev,
+-				"unexpected RX(SPIE_NE) interrupt occurred,\n"
++				"unexpected RX(SPIE_RNE) interrupt occurred,\n"
+ 				"(local rxlen %d bytes, reg rxlen %d bytes)\n",
+ 				min(4, mspi->len), SPIE_RXCNT(events));
+ 			rx_nr_bytes = 0;
+@@ -450,14 +464,14 @@ static void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
+ 			mspi->get_rx(rx_data, mspi);
+ 	}
+ 
+-	if (!(events & SPIE_NF)) {
++	if (!(events & SPIE_TNF)) {
+ 		int ret;
+ 
+ 		/* spin until TX is done */
+ 		ret = spin_event_timeout(((events = fsl_espi_read_reg(
+-				mspi, ESPI_SPIE)) & SPIE_NF), 1000, 0);
++				mspi, ESPI_SPIE)) & SPIE_TNF), 1000, 0);
+ 		if (!ret) {
+-			dev_err(mspi->dev, "tired waiting for SPIE_NF\n");
++			dev_err(mspi->dev, "tired waiting for SPIE_TNF\n");
  			complete(&mspi->done);
  			return;
  		}
- 	}
- 
--	/* Clear the events */
--	mpc8xxx_spi_write_reg(&reg_base->event, events);
--
- 	mspi->count -= 1;
- 	if (mspi->count) {
- 		u32 word = mspi->get_tx(mspi);
-@@ -468,19 +462,21 @@ static irqreturn_t fsl_espi_irq(s32 irq, void *context_data)
- {
- 	struct mpc8xxx_spi *mspi = context_data;
- 	struct fsl_espi_reg *reg_base = mspi->reg_base;
--	irqreturn_t ret = IRQ_NONE;
- 	u32 events;
- 
- 	/* Get interrupt events(tx/rx) */
- 	events = mpc8xxx_spi_read_reg(&reg_base->event);
--	if (events)
--		ret = IRQ_HANDLED;
-+	if (!events)
-+		return IRQ_NONE;
- 
- 	dev_vdbg(mspi->dev, "%s: events %x\n", __func__, events);
- 
- 	fsl_espi_cpu_irq(mspi, events);
- 
--	return ret;
-+	/* Clear the events */
-+	mpc8xxx_spi_write_reg(&reg_base->event, events);
-+
-+	return IRQ_HANDLED;
- }
- 
- #ifdef CONFIG_PM
 -- 
 2.9.2
 

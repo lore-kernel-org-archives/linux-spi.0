@@ -1,112 +1,77 @@
-From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH] spi: core: Use spi_sync_transfer() in spi_write()/spi_read()
-Date: Tue, 13 Sep 2016 15:38:25 +0200
-Message-ID: <1473773905-15451-1-git-send-email-geert+renesas@glider.be>
-Cc: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>,
-        Jonathan Cameron <jic23-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 2/4] spi: fsl-espi: improve and simplify interrupt handler
+Date: Tue, 13 Sep 2016 23:15:57 +0200
+Message-ID: <5be7ab71-3401-0e9e-b374-d781afda98f1@gmail.com>
+References: <848f06e1-3cb9-bef1-bb41-455fa72822b1@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <848f06e1-3cb9-bef1-bb41-455fa72822b1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Simplify spi_write() and spi_read() using the spi_sync_transfer()
-helper.
+Simplify the interrupt handler a little. In addition don't call
+fsl_espi_cpu_irq() if no event bit is set.
 
-This requires moving spi_sync_transfer() up.
-
-Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- include/linux/spi/spi.h | 58 ++++++++++++++++++++++---------------------------
- 1 file changed, 26 insertions(+), 32 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index de8ae3d92e94c440..3d498110d3e68f5e 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -1010,6 +1010,30 @@ extern int spi_bus_lock(struct spi_master *master);
- extern int spi_bus_unlock(struct spi_master *master);
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index 060624f..032bf3a 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -443,17 +443,11 @@ static void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
+ 				&reg_base->event)) & SPIE_NF), 1000, 0);
+ 		if (!ret) {
+ 			dev_err(mspi->dev, "tired waiting for SPIE_NF\n");
+-
+-			/* Clear the SPIE bits */
+-			mpc8xxx_spi_write_reg(&reg_base->event, events);
+ 			complete(&mspi->done);
+ 			return;
+ 		}
+ 	}
  
- /**
-+ * spi_sync_transfer - synchronous SPI data transfer
-+ * @spi: device with which data will be exchanged
-+ * @xfers: An array of spi_transfers
-+ * @num_xfers: Number of items in the xfer array
-+ * Context: can sleep
-+ *
-+ * Does a synchronous SPI data transfer of the given spi_transfer array.
-+ *
-+ * For more specific semantics see spi_sync().
-+ *
-+ * Return: Return: zero on success, else a negative error code.
-+ */
-+static inline int
-+spi_sync_transfer(struct spi_device *spi, struct spi_transfer *xfers,
-+	unsigned int num_xfers)
-+{
-+	struct spi_message msg;
-+
-+	spi_message_init_with_transfers(&msg, xfers, num_xfers);
-+
-+	return spi_sync(spi, &msg);
-+}
-+
-+/**
-  * spi_write - SPI synchronous write
-  * @spi: device to which data will be written
-  * @buf: data buffer
-@@ -1028,11 +1052,8 @@ spi_write(struct spi_device *spi, const void *buf, size_t len)
- 			.tx_buf		= buf,
- 			.len		= len,
- 		};
--	struct spi_message	m;
+-	/* Clear the events */
+-	mpc8xxx_spi_write_reg(&reg_base->event, events);
+-
+ 	mspi->count -= 1;
+ 	if (mspi->count) {
+ 		u32 word = mspi->get_tx(mspi);
+@@ -468,19 +462,21 @@ static irqreturn_t fsl_espi_irq(s32 irq, void *context_data)
+ {
+ 	struct mpc8xxx_spi *mspi = context_data;
+ 	struct fsl_espi_reg *reg_base = mspi->reg_base;
+-	irqreturn_t ret = IRQ_NONE;
+ 	u32 events;
  
--	spi_message_init(&m);
--	spi_message_add_tail(&t, &m);
--	return spi_sync(spi, &m);
-+	return spi_sync_transfer(spi, &t, 1);
+ 	/* Get interrupt events(tx/rx) */
+ 	events = mpc8xxx_spi_read_reg(&reg_base->event);
+-	if (events)
+-		ret = IRQ_HANDLED;
++	if (!events)
++		return IRQ_NONE;
+ 
+ 	dev_vdbg(mspi->dev, "%s: events %x\n", __func__, events);
+ 
+ 	fsl_espi_cpu_irq(mspi, events);
+ 
+-	return ret;
++	/* Clear the events */
++	mpc8xxx_spi_write_reg(&reg_base->event, events);
++
++	return IRQ_HANDLED;
  }
  
- /**
-@@ -1054,35 +1075,8 @@ spi_read(struct spi_device *spi, void *buf, size_t len)
- 			.rx_buf		= buf,
- 			.len		= len,
- 		};
--	struct spi_message	m;
- 
--	spi_message_init(&m);
--	spi_message_add_tail(&t, &m);
--	return spi_sync(spi, &m);
--}
--
--/**
-- * spi_sync_transfer - synchronous SPI data transfer
-- * @spi: device with which data will be exchanged
-- * @xfers: An array of spi_transfers
-- * @num_xfers: Number of items in the xfer array
-- * Context: can sleep
-- *
-- * Does a synchronous SPI data transfer of the given spi_transfer array.
-- *
-- * For more specific semantics see spi_sync().
-- *
-- * Return: Return: zero on success, else a negative error code.
-- */
--static inline int
--spi_sync_transfer(struct spi_device *spi, struct spi_transfer *xfers,
--	unsigned int num_xfers)
--{
--	struct spi_message msg;
--
--	spi_message_init_with_transfers(&msg, xfers, num_xfers);
--
--	return spi_sync(spi, &msg);
-+	return spi_sync_transfer(spi, &t, 1);
- }
- 
- /* this copies txbuf and rxbuf data; for small transfers only! */
+ #ifdef CONFIG_PM
 -- 
-1.9.1
+2.9.2
+
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

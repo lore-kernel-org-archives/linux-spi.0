@@ -1,19 +1,19 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: imx: support loopback mode on imx35" to the spi tree
-Date: Wed, 14 Sep 2016 18:16:17 +0100
-Message-ID: <E1bkDnF-0001uB-MK@debutante>
-References: <20160901203957.GA7994@reykholt.kaiser.cx>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Martin Kaiser <martin-XxZfDwE/svGeZLLa646FqQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160901203957.GA7994-i8im91xUMdo3MargkJlfT5YgPPQkE1Si@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: imx: set spi_bus_clk for mx1, mx31 and mx35" to the spi tree
+Date: Wed, 14 Sep 2016 18:16:21 +0100
+Message-ID: <E1bkDnJ-0001v5-2W@debutante>
+References: <20160901203840.GA7972@reykholt.kaiser.cx>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Martin Kaiser <martin@kaiser.cx>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20160901203840.GA7972@reykholt.kaiser.cx>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: imx: support loopback mode on imx35
+   spi: imx: set spi_bus_clk for mx1, mx31 and mx35
 
 has been applied to the spi tree at
 
@@ -38,62 +38,77 @@ to this mail.
 Thanks,
 Mark
 
->From 15ca92156e6242060dff91c8d8e7fe7ae82d424a Mon Sep 17 00:00:00 2001
-From: Martin Kaiser <martin-XxZfDwE/svGeZLLa646FqQ@public.gmane.org>
-Date: Thu, 1 Sep 2016 22:39:58 +0200
-Subject: [PATCH] spi: imx: support loopback mode on imx35
+>From 2636ba8fa39915c7b8d73166961ebbb4c14251cd Mon Sep 17 00:00:00 2001
+From: Martin Kaiser <martin@kaiser.cx>
+Date: Thu, 1 Sep 2016 22:38:40 +0200
+Subject: [PATCH] spi: imx: set spi_bus_clk for mx1, mx31 and mx35
 
-imx35 and compatible chipsets support loopback mode by setting a
-loopback control bit in the test register. Make this setting available
-for data transfers, similar to what we do for imx51.
+Modify spi_imx_clkdiv_2() to return the resulting bus clock frequency
+when the selected clock divider is applied. Set spi_imx->spi_bus_clk to
+this frequency.
 
-Signed-off-by: Martin Kaiser <martin-XxZfDwE/svGeZLLa646FqQ@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+If spi_bus_clk is unset, spi_imx_calculate_timeout() causes a
+division by 0.
+
+Signed-off-by: Martin Kaiser <martin@kaiser.cx>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-imx.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/spi/spi-imx.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 5cc72be30744..53e7a326c213 100644
+index f63cb30f9010..5cc72be30744 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -455,6 +455,9 @@ static void mx51_ecspi_reset(struct spi_imx_data *spi_imx)
- #define MX31_CSPISTATUS		0x14
- #define MX31_STATUS_RR		(1 << 3)
+@@ -186,17 +186,19 @@ static unsigned int spi_imx_clkdiv_1(unsigned int fin,
  
-+#define MX31_CSPI_TESTREG	0x1C
-+#define MX31_TEST_LBC		(1 << 14)
-+
- /* These functions also work for the i.MX35, but be aware that
-  * the i.MX35 has a slightly different register layout for bits
-  * we do not use here.
-@@ -510,6 +513,13 @@ static int mx31_config(struct spi_device *spi, struct spi_imx_config *config)
+ /* MX1, MX31, MX35, MX51 CSPI */
+ static unsigned int spi_imx_clkdiv_2(unsigned int fin,
+-		unsigned int fspi)
++		unsigned int fspi, unsigned int *fres)
+ {
+ 	int i, div = 4;
  
- 	writel(reg, spi_imx->base + MXC_CSPICTRL);
+ 	for (i = 0; i < 7; i++) {
+ 		if (fspi * div >= fin)
+-			return i;
++			goto out;
+ 		div <<= 1;
+ 	}
  
-+	reg = readl(spi_imx->base + MX31_CSPI_TESTREG);
-+	if (spi->mode & SPI_LOOP)
-+		reg |= MX31_TEST_LBC;
-+	else
-+		reg &= ~MX31_TEST_LBC;
-+	writel(reg, spi_imx->base + MX31_CSPI_TESTREG);
-+
- 	return 0;
+-	return 7;
++out:
++	*fres = fin / div;
++	return i;
  }
  
-@@ -1186,7 +1196,7 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	spi_imx->bitbang.master->prepare_message = spi_imx_prepare_message;
- 	spi_imx->bitbang.master->unprepare_message = spi_imx_unprepare_message;
- 	spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
--	if (is_imx51_ecspi(spi_imx))
-+	if (is_imx35_cspi(spi_imx) || is_imx51_ecspi(spi_imx))
- 		spi_imx->bitbang.master->mode_bits |= SPI_LOOP;
+ static int spi_imx_bytes_per_word(const int bpw)
+@@ -482,9 +484,11 @@ static int mx31_config(struct spi_device *spi, struct spi_imx_config *config)
+ {
+ 	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
+ 	unsigned int reg = MX31_CSPICTRL_ENABLE | MX31_CSPICTRL_MASTER;
++	unsigned int clk;
  
- 	init_completion(&spi_imx->xfer_done);
+-	reg |= spi_imx_clkdiv_2(spi_imx->spi_clk, config->speed_hz) <<
++	reg |= spi_imx_clkdiv_2(spi_imx->spi_clk, config->speed_hz, &clk) <<
+ 		MX31_CSPICTRL_DR_SHIFT;
++	spi_imx->spi_bus_clk = clk;
+ 
+ 	if (is_imx35_cspi(spi_imx)) {
+ 		reg |= (config->bpw - 1) << MX35_CSPICTRL_BL_SHIFT;
+@@ -625,9 +629,12 @@ static int mx1_config(struct spi_device *spi, struct spi_imx_config *config)
+ {
+ 	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
+ 	unsigned int reg = MX1_CSPICTRL_ENABLE | MX1_CSPICTRL_MASTER;
++	unsigned int clk;
+ 
+-	reg |= spi_imx_clkdiv_2(spi_imx->spi_clk, config->speed_hz) <<
++	reg |= spi_imx_clkdiv_2(spi_imx->spi_clk, config->speed_hz, &clk) <<
+ 		MX1_CSPICTRL_DR_SHIFT;
++	spi_imx->spi_bus_clk = clk;
++
+ 	reg |= config->bpw - 1;
+ 
+ 	if (spi->mode & SPI_CPHA)
 -- 
 2.8.1
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

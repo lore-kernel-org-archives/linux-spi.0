@@ -1,22 +1,19 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: bcm-qspi: fix suspend/resume #ifdef" to the spi tree
-Date: Fri, 16 Sep 2016 18:40:40 +0100
-Message-ID: <E1bkx7w-0004CB-R7@debutante>
-References: <20160915154712.3007781-1-arnd@arndb.de>
+Subject: Applied "spi: bcm-qspi: Fix return value check in bcm_qspi_probe()" to the spi tree
+Date: Fri, 16 Sep 2016 18:40:23 +0100
+Message-ID: <E1bkx7f-0004BD-Dr@debutante>
+References: <1474033517-20430-1-git-send-email-weiyj.lk@gmail.com>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Yendapally Reddy Dhananjaya Reddy
-        <yendapally.reddy-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+        Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Wei Yongjun <weiyongjun1-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20160915154712.3007781-1-arnd-r2nGTMty4D4@public.gmane.org>
+In-Reply-To: <1474033517-20430-1-git-send-email-weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: bcm-qspi: fix suspend/resume #ifdef
+   spi: bcm-qspi: Fix return value check in bcm_qspi_probe()
 
 has been applied to the spi tree at
 
@@ -41,70 +38,36 @@ to this mail.
 Thanks,
 Mark
 
->From a0319f8b12c0fb9800da61f4cba9bd6fd80e37a4 Mon Sep 17 00:00:00 2001
-From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Date: Thu, 15 Sep 2016 17:46:53 +0200
-Subject: [PATCH] spi: bcm-qspi: fix suspend/resume #ifdef
+>From 3bf3eb2b95aaf18eff3080444b24673cda8ff9a2 Mon Sep 17 00:00:00 2001
+From: Wei Yongjun <weiyongjun1-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
+Date: Fri, 16 Sep 2016 13:45:17 +0000
+Subject: [PATCH] spi: bcm-qspi: Fix return value check in bcm_qspi_probe()
 
-The two power management functions are define inside of an #ifdef
-but referenced unconditionally, which is obviously broken when
-CONFIG_PM_SLEEP is not set:
+In case of error, the function kcalloc() returns NULL pointer
+not ERR_PTR(). The IS_ERR() test in the return value check
+should be replaced with NULL test.
 
-drivers/spi/spi-bcm-qspi.c:1300:13: error: 'bcm_qspi_suspend' undeclared here (not in a function)
-drivers/spi/spi-bcm-qspi.c:1301:13: error: 'bcm_qspi_resume' undeclared here (not in a function)
-
-This replaces the #ifdef with a __maybe_unused annotation that lets
-the compiler figure out whether to drop the functions itself,
-and uses SIMPLE_DEV_PM_OPS() to refer to the functions.
-
-This will also fill the freeze/thaw/poweroff/restore callback
-pointers in addition to suspend/resume, but as far as I can tell,
-this is what we want.
-
-Signed-off-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
 Fixes: fa236a7ef240 ("spi: bcm-qspi: Add Broadcom MSPI driver")
+Signed-off-by: Wei Yongjun <weiyongjun1-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-bcm-qspi.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ drivers/spi/spi-bcm-qspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
-index 5da182be073e..64e693de1486 100644
+index 64e693de1486..2caeea75a752 100644
 --- a/drivers/spi/spi-bcm-qspi.c
 +++ b/drivers/spi/spi-bcm-qspi.c
-@@ -1268,8 +1268,7 @@ int bcm_qspi_remove(struct platform_device *pdev)
- /* function to be called by SoC specific platform driver remove() */
- EXPORT_SYMBOL_GPL(bcm_qspi_remove);
+@@ -1174,8 +1174,8 @@ int bcm_qspi_probe(struct platform_device *pdev,
  
--#ifdef CONFIG_PM_SLEEP
--static int bcm_qspi_suspend(struct device *dev)
-+static int __maybe_unused bcm_qspi_suspend(struct device *dev)
- {
- 	struct bcm_qspi *qspi = dev_get_drvdata(dev);
- 
-@@ -1280,7 +1279,7 @@ static int bcm_qspi_suspend(struct device *dev)
- 	return 0;
- };
- 
--static int bcm_qspi_resume(struct device *dev)
-+static int __maybe_unused bcm_qspi_resume(struct device *dev)
- {
- 	struct bcm_qspi *qspi = dev_get_drvdata(dev);
- 	int ret = 0;
-@@ -1293,12 +1292,9 @@ static int bcm_qspi_resume(struct device *dev)
- 
- 	return ret;
- }
--#endif /* CONFIG_PM_SLEEP */
- 
--const struct dev_pm_ops bcm_qspi_pm_ops = {
--	.suspend = bcm_qspi_suspend,
--	.resume  = bcm_qspi_resume,
--};
-+SIMPLE_DEV_PM_OPS(bcm_qspi_pm_ops, bcm_qspi_suspend, bcm_qspi_resume);
-+
- /* pm_ops to be called by SoC specific platform driver */
- EXPORT_SYMBOL_GPL(bcm_qspi_pm_ops);
+ 	qspi->dev_ids = kcalloc(num_irqs, sizeof(struct bcm_qspi_dev_id),
+ 				GFP_KERNEL);
+-	if (IS_ERR(qspi->dev_ids)) {
+-		ret = PTR_ERR(qspi->dev_ids);
++	if (!qspi->dev_ids) {
++		ret = -ENOMEM;
+ 		goto qspi_probe_err;
+ 	}
  
 -- 
 2.8.1

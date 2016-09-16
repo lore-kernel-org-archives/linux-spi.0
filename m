@@ -1,19 +1,20 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: bcm-qspi: Fix return value check in bcm_qspi_probe()" to the spi tree
-Date: Fri, 16 Sep 2016 18:40:23 +0100
-Message-ID: <E1bkx7f-0004BD-Dr@debutante>
-References: <1474033517-20430-1-git-send-email-weiyj.lk@gmail.com>
+Subject: Applied "spi: core: Use spi_sync_transfer() in spi_write()/spi_read()" to the spi tree
+Date: Fri, 16 Sep 2016 18:40:53 +0100
+Message-ID: <E1bkx89-0004Dz-DC@debutante>
+References: <1473773905-15451-1-git-send-email-geert+renesas@glider.be>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Wei Yongjun <weiyongjun1-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
+        Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>,
+        Jonathan Cameron <jic23-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1474033517-20430-1-git-send-email-weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1473773905-15451-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: bcm-qspi: Fix return value check in bcm_qspi_probe()
+   spi: core: Use spi_sync_transfer() in spi_write()/spi_read()
 
 has been applied to the spi tree at
 
@@ -38,37 +39,107 @@ to this mail.
 Thanks,
 Mark
 
->From 3bf3eb2b95aaf18eff3080444b24673cda8ff9a2 Mon Sep 17 00:00:00 2001
-From: Wei Yongjun <weiyongjun1-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
-Date: Fri, 16 Sep 2016 13:45:17 +0000
-Subject: [PATCH] spi: bcm-qspi: Fix return value check in bcm_qspi_probe()
+>From 323117ab60156d5ef021eeef260c4e7e0a7f520e Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Date: Tue, 13 Sep 2016 15:38:25 +0200
+Subject: [PATCH] spi: core: Use spi_sync_transfer() in spi_write()/spi_read()
 
-In case of error, the function kcalloc() returns NULL pointer
-not ERR_PTR(). The IS_ERR() test in the return value check
-should be replaced with NULL test.
+Simplify spi_write() and spi_read() using the spi_sync_transfer()
+helper.
 
-Fixes: fa236a7ef240 ("spi: bcm-qspi: Add Broadcom MSPI driver")
-Signed-off-by: Wei Yongjun <weiyongjun1-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
+This requires moving spi_sync_transfer() up.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-bcm-qspi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/spi/spi.h | 58 ++++++++++++++++++++++---------------------------
+ 1 file changed, 26 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
-index 64e693de1486..2caeea75a752 100644
---- a/drivers/spi/spi-bcm-qspi.c
-+++ b/drivers/spi/spi-bcm-qspi.c
-@@ -1174,8 +1174,8 @@ int bcm_qspi_probe(struct platform_device *pdev,
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 072cb2aa2413..74278c7d0f52 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -980,6 +980,30 @@ extern int spi_bus_lock(struct spi_master *master);
+ extern int spi_bus_unlock(struct spi_master *master);
  
- 	qspi->dev_ids = kcalloc(num_irqs, sizeof(struct bcm_qspi_dev_id),
- 				GFP_KERNEL);
--	if (IS_ERR(qspi->dev_ids)) {
--		ret = PTR_ERR(qspi->dev_ids);
-+	if (!qspi->dev_ids) {
-+		ret = -ENOMEM;
- 		goto qspi_probe_err;
- 	}
+ /**
++ * spi_sync_transfer - synchronous SPI data transfer
++ * @spi: device with which data will be exchanged
++ * @xfers: An array of spi_transfers
++ * @num_xfers: Number of items in the xfer array
++ * Context: can sleep
++ *
++ * Does a synchronous SPI data transfer of the given spi_transfer array.
++ *
++ * For more specific semantics see spi_sync().
++ *
++ * Return: Return: zero on success, else a negative error code.
++ */
++static inline int
++spi_sync_transfer(struct spi_device *spi, struct spi_transfer *xfers,
++	unsigned int num_xfers)
++{
++	struct spi_message msg;
++
++	spi_message_init_with_transfers(&msg, xfers, num_xfers);
++
++	return spi_sync(spi, &msg);
++}
++
++/**
+  * spi_write - SPI synchronous write
+  * @spi: device to which data will be written
+  * @buf: data buffer
+@@ -998,11 +1022,8 @@ spi_write(struct spi_device *spi, const void *buf, size_t len)
+ 			.tx_buf		= buf,
+ 			.len		= len,
+ 		};
+-	struct spi_message	m;
  
+-	spi_message_init(&m);
+-	spi_message_add_tail(&t, &m);
+-	return spi_sync(spi, &m);
++	return spi_sync_transfer(spi, &t, 1);
+ }
+ 
+ /**
+@@ -1024,35 +1045,8 @@ spi_read(struct spi_device *spi, void *buf, size_t len)
+ 			.rx_buf		= buf,
+ 			.len		= len,
+ 		};
+-	struct spi_message	m;
+ 
+-	spi_message_init(&m);
+-	spi_message_add_tail(&t, &m);
+-	return spi_sync(spi, &m);
+-}
+-
+-/**
+- * spi_sync_transfer - synchronous SPI data transfer
+- * @spi: device with which data will be exchanged
+- * @xfers: An array of spi_transfers
+- * @num_xfers: Number of items in the xfer array
+- * Context: can sleep
+- *
+- * Does a synchronous SPI data transfer of the given spi_transfer array.
+- *
+- * For more specific semantics see spi_sync().
+- *
+- * Return: Return: zero on success, else a negative error code.
+- */
+-static inline int
+-spi_sync_transfer(struct spi_device *spi, struct spi_transfer *xfers,
+-	unsigned int num_xfers)
+-{
+-	struct spi_message msg;
+-
+-	spi_message_init_with_transfers(&msg, xfers, num_xfers);
+-
+-	return spi_sync(spi, &msg);
++	return spi_sync_transfer(spi, &t, 1);
+ }
+ 
+ /* this copies txbuf and rxbuf data; for small transfers only! */
 -- 
 2.8.1
 

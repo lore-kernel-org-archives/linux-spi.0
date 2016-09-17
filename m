@@ -1,7 +1,7 @@
-From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 1/4] spi: fsl-espi: remove unused variable in fsl_espi_setup
-Date: Sat, 17 Sep 2016 15:42:42 +0200
-Message-ID: <a71abf9f-4254-af63-f7eb-1579faaeada3@gmail.com>
+From: Heiner Kallweit <heiner.kallweit-S0/GAf8tV78@public.gmane.org>
+Subject: [PATCH 2/4] spi: fsl-espi: simplify of_fsl_espi_probe
+Date: Sat, 17 Sep 2016 15:43:00 +0200
+Message-ID: <5bfd3921-5bb6-b9c3-dc64-3882491bba13@web.de>
 References: <1d67ce99-42ea-c816-da35-e64575cca8ff@web.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -13,33 +13,61 @@ In-Reply-To: <1d67ce99-42ea-c816-da35-e64575cca8ff-S0/GAf8tV78@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Remove an unused variable.
+Simplify of_fsl_espi_probe.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 21 +++++++--------------
+ 1 file changed, 7 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index a7984ae..4f9d9ec 100644
+index 4f9d9ec..dee3f82 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -361,7 +361,6 @@ out:
- static int fsl_espi_setup(struct spi_device *spi)
- {
- 	struct mpc8xxx_spi *mpc8xxx_spi;
--	u32 hw_mode;
- 	u32 loop_mode;
- 	struct spi_mpc8xxx_cs *cs = spi_get_ctldata(spi);
+@@ -685,7 +685,7 @@ static int of_fsl_espi_probe(struct platform_device *ofdev)
+ 	struct spi_master *master;
+ 	struct resource mem;
+ 	unsigned int irq;
+-	int ret = -ENOMEM;
++	int ret;
  
-@@ -379,7 +378,6 @@ static int fsl_espi_setup(struct spi_device *spi)
+ 	ret = of_mpc8xxx_spi_probe(ofdev);
+ 	if (ret)
+@@ -693,28 +693,21 @@ static int of_fsl_espi_probe(struct platform_device *ofdev)
  
- 	pm_runtime_get_sync(mpc8xxx_spi->dev);
+ 	ret = of_fsl_espi_get_chipselects(dev);
+ 	if (ret)
+-		goto err;
++		return ret;
  
--	hw_mode = cs->hw_mode; /* Save original settings */
- 	cs->hw_mode = fsl_espi_read_reg(mpc8xxx_spi,
- 					   ESPI_SPMODEx(spi->chip_select));
- 	/* mask out bits we are going to set */
+ 	ret = of_address_to_resource(np, 0, &mem);
+ 	if (ret)
+-		goto err;
++		return ret;
+ 
+ 	irq = irq_of_parse_and_map(np, 0);
+-	if (!irq) {
+-		ret = -EINVAL;
+-		goto err;
+-	}
++	if (!irq)
++		return -EINVAL;
+ 
+ 	master = fsl_espi_probe(dev, &mem, irq);
+-	if (IS_ERR(master)) {
+-		ret = PTR_ERR(master);
+-		goto err;
+-	}
++	if (IS_ERR(master))
++		return PTR_ERR(master);
+ 
+ 	return 0;
+-
+-err:
+-	return ret;
+ }
+ 
+ static int of_fsl_espi_remove(struct platform_device *dev)
 -- 
 2.9.2
 

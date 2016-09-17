@@ -1,7 +1,8 @@
 From: Heiner Kallweit <heiner.kallweit-S0/GAf8tV78@public.gmane.org>
-Subject: [PATCH 2/4] spi: fsl-espi: simplify of_fsl_espi_probe
-Date: Sat, 17 Sep 2016 15:43:00 +0200
-Message-ID: <5bfd3921-5bb6-b9c3-dc64-3882491bba13@web.de>
+Subject: [PATCH 4/4] spi: fsl-espi: replace of_get_property with
+ of_property_read_u32
+Date: Sat, 17 Sep 2016 15:44:20 +0200
+Message-ID: <faa8bb6f-a644-5779-6a65-a6d8394bd17f@web.de>
 References: <1d67ce99-42ea-c816-da35-e64575cca8ff@web.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -13,61 +14,95 @@ In-Reply-To: <1d67ce99-42ea-c816-da35-e64575cca8ff-S0/GAf8tV78@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Simplify of_fsl_espi_probe.
+Replace of_get_property with of_property_read_u32, thus simplifying
+the code and improving readability.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 21 +++++++--------------
- 1 file changed, 7 insertions(+), 14 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 41 ++++++++++++++++++++---------------------
+ 1 file changed, 20 insertions(+), 21 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 4f9d9ec..dee3f82 100644
+index 7451585..1f97cce 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -685,7 +685,7 @@ static int of_fsl_espi_probe(struct platform_device *ofdev)
+@@ -545,9 +545,8 @@ static int fsl_espi_probe(struct device *dev, struct resource *mem,
  	struct spi_master *master;
- 	struct resource mem;
- 	unsigned int irq;
--	int ret = -ENOMEM;
+ 	struct mpc8xxx_spi *mpc8xxx_spi;
+ 	struct device_node *nc;
+-	const __be32 *prop;
+-	u32 regval, csmode;
+-	int i, len, ret;
++	u32 regval, csmode, cs, prop;
 +	int ret;
  
- 	ret = of_mpc8xxx_spi_probe(ofdev);
- 	if (ret)
-@@ -693,28 +693,21 @@ static int of_fsl_espi_probe(struct platform_device *ofdev)
+ 	master = spi_alloc_master(dev, sizeof(struct mpc8xxx_spi));
+ 	if (!master)
+@@ -599,29 +598,29 @@ static int fsl_espi_probe(struct device *dev, struct resource *mem,
+ 	/* Init eSPI CS mode register */
+ 	for_each_available_child_of_node(master->dev.of_node, nc) {
+ 		/* get chip select */
+-		prop = of_get_property(nc, "reg", &len);
+-		if (!prop || len < sizeof(*prop))
+-			continue;
+-		i = be32_to_cpup(prop);
+-		if (i < 0 || i >= pdata->max_chipselect)
++		ret = of_property_read_u32(nc, "reg", &cs);
++		if (ret || cs >= pdata->max_chipselect)
+ 			continue;
  
- 	ret = of_fsl_espi_get_chipselects(dev);
- 	if (ret)
--		goto err;
-+		return ret;
+ 		csmode = CSMODE_INIT_VAL;
++
+ 		/* check if CSBEF is set in device tree */
+-		prop = of_get_property(nc, "fsl,csbef", &len);
+-		if (prop && len >= sizeof(*prop)) {
++		ret = of_property_read_u32(nc, "fsl,csbef", &prop);
++		if (!ret) {
+ 			csmode &= ~(CSMODE_BEF(0xf));
+-			csmode |= CSMODE_BEF(be32_to_cpup(prop));
++			csmode |= CSMODE_BEF(prop);
+ 		}
++
+ 		/* check if CSAFT is set in device tree */
+-		prop = of_get_property(nc, "fsl,csaft", &len);
+-		if (prop && len >= sizeof(*prop)) {
++		ret = of_property_read_u32(nc, "fsl,csaft", &prop);
++		if (!ret) {
+ 			csmode &= ~(CSMODE_AFT(0xf));
+-			csmode |= CSMODE_AFT(be32_to_cpup(prop));
++			csmode |= CSMODE_AFT(prop);
+ 		}
+-		fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPMODEx(i), csmode);
  
- 	ret = of_address_to_resource(np, 0, &mem);
- 	if (ret)
--		goto err;
-+		return ret;
+-		dev_info(dev, "cs=%d, init_csmode=0x%x\n", i, csmode);
++		fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPMODEx(cs), csmode);
++
++		dev_info(dev, "cs=%u, init_csmode=0x%x\n", cs, csmode);
+ 	}
  
- 	irq = irq_of_parse_and_map(np, 0);
--	if (!irq) {
--		ret = -EINVAL;
--		goto err;
--	}
-+	if (!irq)
-+		return -EINVAL;
+ 	/* Enable SPI interface */
+@@ -660,16 +659,16 @@ static int of_fsl_espi_get_chipselects(struct device *dev)
+ {
+ 	struct device_node *np = dev->of_node;
+ 	struct fsl_spi_platform_data *pdata = dev_get_platdata(dev);
+-	const u32 *prop;
+-	int len;
++	u32 num_cs;
++	int ret;
  
- 	master = fsl_espi_probe(dev, &mem, irq);
--	if (IS_ERR(master)) {
--		ret = PTR_ERR(master);
--		goto err;
--	}
-+	if (IS_ERR(master))
-+		return PTR_ERR(master);
+-	prop = of_get_property(np, "fsl,espi-num-chipselects", &len);
+-	if (!prop || len < sizeof(*prop)) {
++	ret = of_property_read_u32(np, "fsl,espi-num-chipselects", &num_cs);
++	if (ret) {
+ 		dev_err(dev, "No 'fsl,espi-num-chipselects' property\n");
+ 		return -EINVAL;
+ 	}
+ 
+-	pdata->max_chipselect = *prop;
++	pdata->max_chipselect = num_cs;
+ 	pdata->cs_control = NULL;
  
  	return 0;
--
--err:
--	return ret;
- }
- 
- static int of_fsl_espi_remove(struct platform_device *dev)
 -- 
 2.9.2
 

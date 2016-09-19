@@ -1,53 +1,84 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: bcm-qspi: fix build error
-Date: Mon, 19 Sep 2016 10:20:44 +0100
-Message-ID: <20160919092044.GG10189@sirena.org.uk>
-References: <1474223614-18406-1-git-send-email-sudipm.mukherjee@gmail.com>
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Subject: Re: [PATCH] spi: dw: use relaxed IO accessor
+Date: Mon, 19 Sep 2016 12:19:33 +0200
+Message-ID: <5512851.aA4Sb0uIYP@wuerfel>
+References: <20160919090041.4024-1-jszhang@marvell.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="t4apE7yKrX2dGgJC"
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        arnd@arndb.de
-To: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1474223614-18406-1-git-send-email-sudipm.mukherjee@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: Jisheng Zhang <jszhang-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20160919090041.4024-1-jszhang-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+On Monday, September 19, 2016 5:00:41 PM CEST Jisheng Zhang wrote:
+> Using the __raw functions is discouraged.  Update the driver to use the
+> relaxed functions.
+> 
+> Signed-off-by: Jisheng Zhang <jszhang-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
 
---t4apE7yKrX2dGgJC
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This should mention that it fixes the driver for big-endian kernels.
 
-On Sun, Sep 18, 2016 at 07:33:34PM +0100, Sudip Mukherjee wrote:
-> While building m68k allmodconfig, the build was failing with the error:
->=20
-> drivers/spi/spi-bcm-qspi.c:1300:13:
-> error: 'bcm_qspi_suspend' undeclared here (not in a function)
->   .suspend =3D bcm_qspi_suspend,
->=20
-> drivers/spi/spi-bcm-qspi.c:1301:13:
-> error: 'bcm_qspi_resume' undeclared here (not in a function)
->   .resume  =3D bcm_qspi_resume,
+However, it seems that the fix is only correct for the MMIO
+registers, while the polled FIFO access is now wrong AFAICT,
+both reader and writer:
 
-This doesn't apply against current code, please check and resend if it's
-not because it's already fixed.
+static void dw_reader(struct dw_spi *dws)
+{
+        u32 max = rx_max(dws);
+        u16 rxw;
 
---t4apE7yKrX2dGgJC
-Content-Type: application/pgp-signature; name="signature.asc"
+        while (max--) {
+                rxw = dw_read_io_reg(dws, DW_SPI_DR);
+                /* Care rx only if the transfer's original "rx" is not null */
+                if (dws->rx_end - dws->len) {
+                        if (dws->n_bytes == 1)
+                                *(u8 *)(dws->rx) = rxw;
+                        else
+                                *(u16 *)(dws->rx) = rxw;
+                }
+                dws->rx += dws->n_bytes;
+        }
+}
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+As the FIFO is a byte stream, we have to use a non-swapping
+accessor here, such as readsl() which would also take care of the
+loop. The "n_bytes == 1" case probably should look like e.g.
 
-iQEcBAEBCAAGBQJX363rAAoJECTWi3JdVIfQmXoH/ihaTM6wkYYL34rLGByOZODz
-3u8oG857UUwqLNkbmDw8VFXQQJPyUc+J8umXOLcTgFAEUU9LPkN+TVoDjnL3g4Jb
-19+/nQaK5jAYQZAwcEFOFlbr42K2BPsj7I6MM2OHVE7W4qwY4t5Wa5mb3HGWUQEc
-cqEKt3hMTil6KUzagD7Cyi6Hzw7nmfmXMtE0e7GmXHWZpFuORHSx2xg4e9qJ4ZYj
-FsbVTfqrvjry8Nfxfw2rl8zn0CZI0Rvi7wNsiWIz3yFdfXD25eCG8q8GZZSrQCW3
-zxrqBFaWfTfG9Mbqu6R4Xyj5R9Y7xwCJyHZHFKdp/hVpFA8MjncxhH1SwWFUyhM=
-=d8rM
------END PGP SIGNATURE-----
+	*(u8 *)(dws->rx) = *(u8 *)&rxw;
 
---t4apE7yKrX2dGgJC--
+so you are sure to get the first byte of the rxw variable
+rather than the lower 8 bits.
+
+> diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+> index 61bc3cb..2cfdc4d 100644
+> --- a/drivers/spi/spi-dw.h
+> +++ b/drivers/spi/spi-dw.h
+> @@ -143,22 +143,22 @@ struct dw_spi {
+>  
+>  static inline u32 dw_readl(struct dw_spi *dws, u32 offset)
+>  {
+> -	return __raw_readl(dws->regs + offset);
+> +	return readl_relaxed(dws->regs + offset);
+>  }
+>  
+>  static inline u16 dw_readw(struct dw_spi *dws, u32 offset)
+>  {
+> -	return __raw_readw(dws->regs + offset);
+> +	return readw_relaxed(dws->regs + offset);
+>  }
+>  
+
+What is the reason for using readl_relaxed() rather than the
+normal readl() here? In almost all instances that these are
+called, you don't care about the added latency and should just
+default to the normal I/O functions.
+
+	Arnd
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

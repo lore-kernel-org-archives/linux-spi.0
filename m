@@ -1,54 +1,58 @@
-From: Sudip Mukherjee <sudipm.mukherjee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: bcm-qspi: fix build error
-Date: Sun, 18 Sep 2016 19:33:34 +0100
-Message-ID: <1474223614-18406-1-git-send-email-sudipm.mukherjee@gmail.com>
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Sudip Mukherjee <sudipm.mukherjee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Jisheng Zhang <jszhang-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
+Subject: [PATCH] spi: dw: use relaxed IO accessor
+Date: Mon, 19 Sep 2016 17:00:41 +0800
+Message-ID: <20160919090041.4024-1-jszhang@marvell.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        Jisheng Zhang <jszhang-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-While building m68k allmodconfig, the build was failing with the error:
+Using the __raw functions is discouraged.  Update the driver to use the
+relaxed functions.
 
-drivers/spi/spi-bcm-qspi.c:1300:13:
-error: 'bcm_qspi_suspend' undeclared here (not in a function)
-  .suspend = bcm_qspi_suspend,
-
-drivers/spi/spi-bcm-qspi.c:1301:13:
-error: 'bcm_qspi_resume' undeclared here (not in a function)
-  .resume  = bcm_qspi_resume,
-
-bcm_qspi_suspend() and bcm_qspi_resume() are only defined when
-CONFIG_PM_SLEEP is defined. Use the macro SET_SYSTEM_SLEEP_PM_OPS to
-use it only when CONFIG_PM_SLEEP is defined.
-
-Signed-off-by: Sudip Mukherjee <sudip.mukherjee-4yDnlxn2s6sWdaTGBSpHTA@public.gmane.org>
+Signed-off-by: Jisheng Zhang <jszhang-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
 ---
+ drivers/spi/spi-dw.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-m68k build log is at:
-https://travis-ci.org/sudipm-mukherjee/parport/jobs/160355865
-
- drivers/spi/spi-bcm-qspi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
-index 8fff43e..f06a3824 100644
---- a/drivers/spi/spi-bcm-qspi.c
-+++ b/drivers/spi/spi-bcm-qspi.c
-@@ -1297,8 +1297,8 @@ static int bcm_qspi_resume(struct device *dev)
- #endif /* CONFIG_PM_SLEEP */
+diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+index 61bc3cb..2cfdc4d 100644
+--- a/drivers/spi/spi-dw.h
++++ b/drivers/spi/spi-dw.h
+@@ -143,22 +143,22 @@ struct dw_spi {
  
- const struct dev_pm_ops bcm_qspi_pm_ops = {
--	.suspend = bcm_qspi_suspend,
--	.resume  = bcm_qspi_resume,
-+	SET_SYSTEM_SLEEP_PM_OPS(bcm_qspi_suspend,
-+				bcm_qspi_resume)
- };
- /* pm_ops to be called by SoC specific platform driver */
- EXPORT_SYMBOL_GPL(bcm_qspi_pm_ops);
+ static inline u32 dw_readl(struct dw_spi *dws, u32 offset)
+ {
+-	return __raw_readl(dws->regs + offset);
++	return readl_relaxed(dws->regs + offset);
+ }
+ 
+ static inline u16 dw_readw(struct dw_spi *dws, u32 offset)
+ {
+-	return __raw_readw(dws->regs + offset);
++	return readw_relaxed(dws->regs + offset);
+ }
+ 
+ static inline void dw_writel(struct dw_spi *dws, u32 offset, u32 val)
+ {
+-	__raw_writel(val, dws->regs + offset);
++	writel_relaxed(val, dws->regs + offset);
+ }
+ 
+ static inline void dw_writew(struct dw_spi *dws, u32 offset, u16 val)
+ {
+-	__raw_writew(val, dws->regs + offset);
++	writew_relaxed(val, dws->regs + offset);
+ }
+ 
+ static inline u32 dw_read_io_reg(struct dw_spi *dws, u32 offset)
 -- 
-1.9.1
+2.9.3
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

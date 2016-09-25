@@ -1,141 +1,138 @@
-From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH/RFC v2 1/7] spi: Document DT bindings for SPI controllers
- in slave mode
-Date: Thu, 22 Sep 2016 16:13:36 -0500
-Message-ID: <20160922211336.GB29078@rob-hp-laptop>
-References: <1473713446-30366-1-git-send-email-geert+renesas@glider.be>
- <1473713446-30366-2-git-send-email-geert+renesas@glider.be>
- <20160920150058.GA29078@rob-hp-laptop>
- <CAMuHMdU_YnhFTPiuTEeka+4H0ft+4vjeSAhbu8wHU2PPr4exHQ@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
-        Mark Brown <broonie@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Hisashi Nakamura <hisashi.nakamura.ak@renesas.com>,
-        Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdU_YnhFTPiuTEeka+4H0ft+4vjeSAhbu8wHU2PPr4exHQ@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: fsl-espi: improve return value handling in fsl_espi_probe" to the spi tree
+Date: Sat, 24 Sep 2016 22:59:23 -0700
+Message-ID: <E1bo2TD-0003GD-3j@finisterre>
+References: <dc06d27a-09ed-7720-d86f-9d20134557af@web.de>
+Cc: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Heiner Kallweit <heiner.kallweit-S0/GAf8tV78@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <dc06d27a-09ed-7720-d86f-9d20134557af-S0/GAf8tV78@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Sep 21, 2016 at 02:47:50PM +0200, Geert Uytterhoeven wrote:
-> Hi Rob,
-> 
-> On Tue, Sep 20, 2016 at 5:00 PM, Rob Herring <robh@kernel.org> wrote:
-> > On Mon, Sep 12, 2016 at 10:50:40PM +0200, Geert Uytterhoeven wrote:
-> >> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> >> ---
-> >> v2:
-> >>   - Do not create a child node in SPI slave mode. Instead, add an
-> >>     "spi-slave" property, and put the mode properties in the controller
-> >>     node.
-> >> ---
-> >>  Documentation/devicetree/bindings/spi/spi-bus.txt | 34 ++++++++++++++---------
-> >>  1 file changed, 21 insertions(+), 13 deletions(-)
-> >>
-> >> diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
-> >> index 17822860cb98c34d..1ae28d7cafb68dc5 100644
-> >> --- a/Documentation/devicetree/bindings/spi/spi-bus.txt
-> >> +++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
-> >> @@ -1,17 +1,23 @@
-> >>  SPI (Serial Peripheral Interface) busses
-> >>
-> >> -SPI busses can be described with a node for the SPI master device
-> >> -and a set of child nodes for each SPI slave on the bus.  For this
-> >> -discussion, it is assumed that the system's SPI controller is in
-> >> -SPI master mode.  This binding does not describe SPI controllers
-> >> -in slave mode.
-> >> +SPI busses can be described with a node for the SPI controller device
-> >> +and a set of child nodes for each SPI slave on the bus.  The system's SPI
-> >> +controller may be described for use in SPI master mode or in SPI slave mode,
-> >> +but not for both at the same time.
-> >>
-> >> -The SPI master node requires the following properties:
-> >> +The SPI controller node requires the following properties:
-> >> +- compatible      - name of SPI bus controller following generic names
-> >> +             recommended practice.
-> >
-> > We'll probably need some way to define what interface/protocol
-> > the slave has. Perhaps the most specific compatible should be the
-> > protocol the slave uses? Maybe that is how you use a child node?
-> 
-> That was indeed an advantage of using a child node (which you suggested
-> _not_ doing in your review of v1?): you can specify which protocol to use.
+The patch
 
-Yeah, maybe V1 was better... One thing though, the child node should be 
-optional IMO. Maybe you keep "spi-slave" too to define the controller is 
-in slave mode, but the protocol is not defined. Or maybe no child nodes 
-is sufficient?
+   spi: fsl-espi: improve return value handling in fsl_espi_probe
 
-> In v2, the protocol is specified through sysfs, like for i2c slave.
+has been applied to the spi tree at
 
-That's fine, because it may be purely a s/w decision what the protocol 
-is. If it is fixed, then in DT is fine.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> Note that SPI is different than I2C: an SPI slave is connected to a single
-> master, and can assume a single role only, while I2C is a shared bus, and
-> a slave can assume multiple roles (an I2C slave can respond to multiple
-> addresses, and can e.g. provide more than one software I2C EEPROM).
-> So you could argue the protocol is fixed by the hardware topology, cfr.
-> my v1.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-If the protocol is s/w on both sides, then the protocol could easily 
-change.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-> >> +In master mode, the SPI controller node requires the following additional
-> >> +properties:
-> >>  - #address-cells  - number of cells required to define a chip select
-> >>               address on the SPI bus.
-> >>  - #size-cells     - should be zero.
-> >> -- compatible      - name of SPI bus controller following generic names
-> >> -             recommended practice.
-> >> +
-> >> +In slave mode, the SPI controller node requires one additional property:
-> >> +- spi-slave       - Empty property.
-> >> +
-> >>  No other properties are required in the SPI bus node.  It is assumed
-> >>  that a driver for an SPI bus device will understand that it is an SPI bus.
-> >>  However, the binding does not attempt to define the specific method for
-> >> @@ -21,7 +27,7 @@ assumption that board specific platform code will be used to manage
-> >>  chip selects.  Individual drivers can define additional properties to
-> >>  support describing the chip select layout.
-> >>
-> >> -Optional properties:
-> >> +Optional properties (master mode only):
-> >>  - cs-gpios     - gpios chip select.
-> >>  - num-cs       - total number of chipselects.
-> >>
-> >> @@ -41,12 +47,14 @@ cs1 : native
-> >>  cs2 : &gpio1 1 0
-> >>  cs3 : &gpio1 2 0
-> >>
-> >> -SPI slave nodes must be children of the SPI master node and can
-> >> -contain the following properties.
-> >> -- reg             - (required) chip select address of device.
-> >> +In master mode, SPI slave nodes must be children of the SPI controller node.
-> >> +In slave mode, the (single) slave device is represented by the controller node
-> >> +itself. SPI slave nodes can contain the following properties.
-> >
-> > I find this a bit confusing as you talk about master mode, then slave
-> > mode, then slave nodes (master mode again).
-> 
-> The last part is actually about both master and slave mode: in slave mode,
-> the properties apply to the controller node itself, instead of to child nodes.
-> 
-> I wanted to reuse as much of the existing text as possible.
-> But I agree the description could use some refactoring.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-Even with a child node, I think it is better to just have 2 sections and 
-list common properties twice.
+Thanks,
+Mark
 
-Rob
+>From 604042af7697314fffb16e266fd7d5ad488439cc Mon Sep 17 00:00:00 2001
+From: Heiner Kallweit <heiner.kallweit-S0/GAf8tV78@public.gmane.org>
+Date: Sat, 17 Sep 2016 15:43:31 +0200
+Subject: [PATCH] spi: fsl-espi: improve return value handling in
+ fsl_espi_probe
+
+The return value of fsl_espi_probe (currently struct spi_master *)
+is just used for checking whether an error occurred.
+Change the return value type to int and simplify the code.
+
+Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-fsl-espi.c | 24 ++++++++----------------
+ 1 file changed, 8 insertions(+), 16 deletions(-)
+
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index dee3f822cea8..7451585a080e 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -538,8 +538,8 @@ static size_t fsl_espi_max_message_size(struct spi_device *spi)
+ 	return SPCOM_TRANLEN_MAX;
+ }
+ 
+-static struct spi_master * fsl_espi_probe(struct device *dev,
+-		struct resource *mem, unsigned int irq)
++static int fsl_espi_probe(struct device *dev, struct resource *mem,
++			  unsigned int irq)
+ {
+ 	struct fsl_spi_platform_data *pdata = dev_get_platdata(dev);
+ 	struct spi_master *master;
+@@ -547,13 +547,11 @@ static struct spi_master * fsl_espi_probe(struct device *dev,
+ 	struct device_node *nc;
+ 	const __be32 *prop;
+ 	u32 regval, csmode;
+-	int i, len, ret = 0;
++	int i, len, ret;
+ 
+ 	master = spi_alloc_master(dev, sizeof(struct mpc8xxx_spi));
+-	if (!master) {
+-		ret = -ENOMEM;
+-		goto err;
+-	}
++	if (!master)
++		return -ENOMEM;
+ 
+ 	dev_set_drvdata(dev, master);
+ 
+@@ -647,7 +645,7 @@ static struct spi_master * fsl_espi_probe(struct device *dev,
+ 	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+ 
+-	return master;
++	return 0;
+ 
+ err_pm:
+ 	pm_runtime_put_noidle(dev);
+@@ -655,8 +653,7 @@ err_pm:
+ 	pm_runtime_set_suspended(dev);
+ err_probe:
+ 	spi_master_put(master);
+-err:
+-	return ERR_PTR(ret);
++	return ret;
+ }
+ 
+ static int of_fsl_espi_get_chipselects(struct device *dev)
+@@ -682,7 +679,6 @@ static int of_fsl_espi_probe(struct platform_device *ofdev)
+ {
+ 	struct device *dev = &ofdev->dev;
+ 	struct device_node *np = ofdev->dev.of_node;
+-	struct spi_master *master;
+ 	struct resource mem;
+ 	unsigned int irq;
+ 	int ret;
+@@ -703,11 +699,7 @@ static int of_fsl_espi_probe(struct platform_device *ofdev)
+ 	if (!irq)
+ 		return -EINVAL;
+ 
+-	master = fsl_espi_probe(dev, &mem, irq);
+-	if (IS_ERR(master))
+-		return PTR_ERR(master);
+-
+-	return 0;
++	return fsl_espi_probe(dev, &mem, irq);
+ }
+ 
+ static int of_fsl_espi_remove(struct platform_device *dev)
+-- 
+2.9.3
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

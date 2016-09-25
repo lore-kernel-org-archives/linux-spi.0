@@ -1,22 +1,20 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: fsl-espi: simplify of_fsl_espi_probe" to the spi tree
-Date: Sat, 24 Sep 2016 22:59:26 -0700
-Message-ID: <E1bo2TG-0003H0-Kq@finisterre>
-References: <5bfd3921-5bb6-b9c3-dc64-3882491bba13@web.de>
-Cc: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+Subject: Applied "spi: fsl-espi: remove unused variable in fsl_espi_setup" to the spi tree
+Date: Sat, 24 Sep 2016 22:59:29 -0700
+Message-ID: <E1bo2TJ-0003Ho-3V@finisterre>
+References: <a71abf9f-4254-af63-f7eb-1579faaeada3@gmail.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
         linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Heiner Kallweit <heiner.kallweit-S0/GAf8tV78@public.gmane.org>
+To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <5bfd3921-5bb6-b9c3-dc64-3882491bba13-S0/GAf8tV78@public.gmane.org>
+In-Reply-To: <a71abf9f-4254-af63-f7eb-1579faaeada3-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: fsl-espi: simplify of_fsl_espi_probe
+   spi: fsl-espi: remove unused variable in fsl_espi_setup
 
 has been applied to the spi tree at
 
@@ -41,67 +39,39 @@ to this mail.
 Thanks,
 Mark
 
->From acf692190f972ee2ed6578f30278f21c244d6148 Mon Sep 17 00:00:00 2001
-From: Heiner Kallweit <heiner.kallweit-S0/GAf8tV78@public.gmane.org>
-Date: Sat, 17 Sep 2016 15:43:00 +0200
-Subject: [PATCH] spi: fsl-espi: simplify of_fsl_espi_probe
+>From fb8ac912df93ea4edc549992d7c9d173e5413164 Mon Sep 17 00:00:00 2001
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Sat, 17 Sep 2016 15:42:42 +0200
+Subject: [PATCH] spi: fsl-espi: remove unused variable in fsl_espi_setup
 
-Simplify of_fsl_espi_probe.
+Remove an unused variable.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 21 +++++++--------------
- 1 file changed, 7 insertions(+), 14 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 4f9d9ec6880a..dee3f822cea8 100644
+index a7984aeede6b..4f9d9ec6880a 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -685,7 +685,7 @@ static int of_fsl_espi_probe(struct platform_device *ofdev)
- 	struct spi_master *master;
- 	struct resource mem;
- 	unsigned int irq;
--	int ret = -ENOMEM;
-+	int ret;
+@@ -361,7 +361,6 @@ out:
+ static int fsl_espi_setup(struct spi_device *spi)
+ {
+ 	struct mpc8xxx_spi *mpc8xxx_spi;
+-	u32 hw_mode;
+ 	u32 loop_mode;
+ 	struct spi_mpc8xxx_cs *cs = spi_get_ctldata(spi);
  
- 	ret = of_mpc8xxx_spi_probe(ofdev);
- 	if (ret)
-@@ -693,28 +693,21 @@ static int of_fsl_espi_probe(struct platform_device *ofdev)
+@@ -379,7 +378,6 @@ static int fsl_espi_setup(struct spi_device *spi)
  
- 	ret = of_fsl_espi_get_chipselects(dev);
- 	if (ret)
--		goto err;
-+		return ret;
+ 	pm_runtime_get_sync(mpc8xxx_spi->dev);
  
- 	ret = of_address_to_resource(np, 0, &mem);
- 	if (ret)
--		goto err;
-+		return ret;
- 
- 	irq = irq_of_parse_and_map(np, 0);
--	if (!irq) {
--		ret = -EINVAL;
--		goto err;
--	}
-+	if (!irq)
-+		return -EINVAL;
- 
- 	master = fsl_espi_probe(dev, &mem, irq);
--	if (IS_ERR(master)) {
--		ret = PTR_ERR(master);
--		goto err;
--	}
-+	if (IS_ERR(master))
-+		return PTR_ERR(master);
- 
- 	return 0;
--
--err:
--	return ret;
- }
- 
- static int of_fsl_espi_remove(struct platform_device *dev)
+-	hw_mode = cs->hw_mode; /* Save original settings */
+ 	cs->hw_mode = fsl_espi_read_reg(mpc8xxx_spi,
+ 					   ESPI_SPMODEx(spi->chip_select));
+ 	/* mask out bits we are going to set */
 -- 
 2.9.3
 

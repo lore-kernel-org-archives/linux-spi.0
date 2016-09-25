@@ -1,8 +1,8 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: fsl-espi: improve return value handling in fsl_espi_probe" to the spi tree
-Date: Sat, 24 Sep 2016 22:59:23 -0700
-Message-ID: <E1bo2TD-0003GD-3j@finisterre>
-References: <dc06d27a-09ed-7720-d86f-9d20134557af@web.de>
+Subject: Applied "spi: fsl-espi: simplify of_fsl_espi_probe" to the spi tree
+Date: Sat, 24 Sep 2016 22:59:26 -0700
+Message-ID: <E1bo2TG-0003H0-Kq@finisterre>
+References: <5bfd3921-5bb6-b9c3-dc64-3882491bba13@web.de>
 Cc: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
         Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
@@ -10,13 +10,13 @@ Cc: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
         linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Heiner Kallweit <heiner.kallweit-S0/GAf8tV78@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <dc06d27a-09ed-7720-d86f-9d20134557af-S0/GAf8tV78@public.gmane.org>
+In-Reply-To: <5bfd3921-5bb6-b9c3-dc64-3882491bba13-S0/GAf8tV78@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: fsl-espi: improve return value handling in fsl_espi_probe
+   spi: fsl-espi: simplify of_fsl_espi_probe
 
 has been applied to the spi tree at
 
@@ -41,91 +41,64 @@ to this mail.
 Thanks,
 Mark
 
->From 604042af7697314fffb16e266fd7d5ad488439cc Mon Sep 17 00:00:00 2001
+>From acf692190f972ee2ed6578f30278f21c244d6148 Mon Sep 17 00:00:00 2001
 From: Heiner Kallweit <heiner.kallweit-S0/GAf8tV78@public.gmane.org>
-Date: Sat, 17 Sep 2016 15:43:31 +0200
-Subject: [PATCH] spi: fsl-espi: improve return value handling in
- fsl_espi_probe
+Date: Sat, 17 Sep 2016 15:43:00 +0200
+Subject: [PATCH] spi: fsl-espi: simplify of_fsl_espi_probe
 
-The return value of fsl_espi_probe (currently struct spi_master *)
-is just used for checking whether an error occurred.
-Change the return value type to int and simplify the code.
+Simplify of_fsl_espi_probe.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 24 ++++++++----------------
- 1 file changed, 8 insertions(+), 16 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 21 +++++++--------------
+ 1 file changed, 7 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index dee3f822cea8..7451585a080e 100644
+index 4f9d9ec6880a..dee3f822cea8 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -538,8 +538,8 @@ static size_t fsl_espi_max_message_size(struct spi_device *spi)
- 	return SPCOM_TRANLEN_MAX;
- }
- 
--static struct spi_master * fsl_espi_probe(struct device *dev,
--		struct resource *mem, unsigned int irq)
-+static int fsl_espi_probe(struct device *dev, struct resource *mem,
-+			  unsigned int irq)
- {
- 	struct fsl_spi_platform_data *pdata = dev_get_platdata(dev);
+@@ -685,7 +685,7 @@ static int of_fsl_espi_probe(struct platform_device *ofdev)
  	struct spi_master *master;
-@@ -547,13 +547,11 @@ static struct spi_master * fsl_espi_probe(struct device *dev,
- 	struct device_node *nc;
- 	const __be32 *prop;
- 	u32 regval, csmode;
--	int i, len, ret = 0;
-+	int i, len, ret;
- 
- 	master = spi_alloc_master(dev, sizeof(struct mpc8xxx_spi));
--	if (!master) {
--		ret = -ENOMEM;
--		goto err;
--	}
-+	if (!master)
-+		return -ENOMEM;
- 
- 	dev_set_drvdata(dev, master);
- 
-@@ -647,7 +645,7 @@ static struct spi_master * fsl_espi_probe(struct device *dev,
- 	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 
--	return master;
-+	return 0;
- 
- err_pm:
- 	pm_runtime_put_noidle(dev);
-@@ -655,8 +653,7 @@ err_pm:
- 	pm_runtime_set_suspended(dev);
- err_probe:
- 	spi_master_put(master);
--err:
--	return ERR_PTR(ret);
-+	return ret;
- }
- 
- static int of_fsl_espi_get_chipselects(struct device *dev)
-@@ -682,7 +679,6 @@ static int of_fsl_espi_probe(struct platform_device *ofdev)
- {
- 	struct device *dev = &ofdev->dev;
- 	struct device_node *np = ofdev->dev.of_node;
--	struct spi_master *master;
  	struct resource mem;
  	unsigned int irq;
- 	int ret;
-@@ -703,11 +699,7 @@ static int of_fsl_espi_probe(struct platform_device *ofdev)
- 	if (!irq)
- 		return -EINVAL;
+-	int ret = -ENOMEM;
++	int ret;
  
--	master = fsl_espi_probe(dev, &mem, irq);
--	if (IS_ERR(master))
--		return PTR_ERR(master);
+ 	ret = of_mpc8xxx_spi_probe(ofdev);
+ 	if (ret)
+@@ -693,28 +693,21 @@ static int of_fsl_espi_probe(struct platform_device *ofdev)
+ 
+ 	ret = of_fsl_espi_get_chipselects(dev);
+ 	if (ret)
+-		goto err;
++		return ret;
+ 
+ 	ret = of_address_to_resource(np, 0, &mem);
+ 	if (ret)
+-		goto err;
++		return ret;
+ 
+ 	irq = irq_of_parse_and_map(np, 0);
+-	if (!irq) {
+-		ret = -EINVAL;
+-		goto err;
+-	}
++	if (!irq)
++		return -EINVAL;
+ 
+ 	master = fsl_espi_probe(dev, &mem, irq);
+-	if (IS_ERR(master)) {
+-		ret = PTR_ERR(master);
+-		goto err;
+-	}
++	if (IS_ERR(master))
++		return PTR_ERR(master);
+ 
+ 	return 0;
 -
--	return 0;
-+	return fsl_espi_probe(dev, &mem, irq);
+-err:
+-	return ret;
  }
  
  static int of_fsl_espi_remove(struct platform_device *dev)

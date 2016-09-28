@@ -1,62 +1,155 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 4/4] spi: fsl-espi: replace of_get_property with
- of_property_read_u32
-Date: Tue, 27 Sep 2016 09:19:50 -0700
-Message-ID: <20160927161950.bwivnu3eiwbxe25n@sirena.org.uk>
-References: <1d67ce99-42ea-c816-da35-e64575cca8ff@web.de>
- <faa8bb6f-a644-5779-6a65-a6d8394bd17f@web.de>
- <10e52aa2-9327-8aa3-0132-74c1feefa165@gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="g77nx3pug2sgcbkr"
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH v2] spi: pxa2xx: Add support for GPIO descriptor chip selects
+Date: Wed, 28 Sep 2016 16:04:52 +0300
+Message-ID: <20160928130452.51831-1-mika.westerberg@linux.intel.com>
+Cc: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+        Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+        Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+        Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <10e52aa2-9327-8aa3-0132-74c1feefa165-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The driver uses custom chip_info coming from platform data for chip selects
+implemented as GPIOs. If the system lacks board files setting up the
+platform data, it is not possible to use GPIOs as chip selects.
 
---g77nx3pug2sgcbkr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This adds support for GPIO descriptors so that regardless of the underlying
+firmware interface (DT, ACPI or platform data) the driver can request GPIOs
+used as chip selects and configure them accordingly.
 
-On Tue, Sep 27, 2016 at 07:39:20AM +0200, Heiner Kallweit wrote:
+The custom chip_info GPIO support is still left there to make sure the
+existing systems keep working as expected.
 
-> The other three patches of the series you applied already. Any comment
-> on this one?
-> Or did your comment on another patch (which you applied nevertheless),
-> to improve the commit message and better explain the benefit,
-> actually refer to this one?
+Signed-off-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+---
+Changes from v1:
+  * Include linux/gpio/consumer.h to prevent build error reported by kbuild
+    test robot.
 
-I really have no idea, sorry.
+ drivers/spi/spi-pxa2xx.c | 58 +++++++++++++++++++++++++++++++++++++++++++++---
+ drivers/spi/spi-pxa2xx.h |  3 +++
+ 2 files changed, 58 insertions(+), 3 deletions(-)
 
-Please don't send content free pings and please allow a reasonable time
-for review.  People get busy, go on holiday, attend conferences and so=20
-on so unless there is some reason for urgency (like critical bug fixes)
-please allow at least a couple of weeks for review.  If there have been
-review comments then people may be waiting for those to be addressed.
-Sending content free pings just adds to the mail volume (if they are
-seen at all) and if something has gone wrong you'll have to resend the
-patches anyway.
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 935fab2972bb..49cd7ac2e9eb 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -28,6 +28,7 @@
+ #include <linux/spi/spi.h>
+ #include <linux/delay.h>
+ #include <linux/gpio.h>
++#include <linux/gpio/consumer.h>
+ #include <linux/slab.h>
+ #include <linux/clk.h>
+ #include <linux/pm_runtime.h>
+@@ -1176,9 +1177,26 @@ static int pxa2xx_spi_unprepare_transfer(struct spi_master *master)
+ static int setup_cs(struct spi_device *spi, struct chip_data *chip,
+ 		    struct pxa2xx_spi_chip *chip_info)
+ {
++	struct driver_data *drv_data = spi_master_get_devdata(spi->master);
+ 	int err = 0;
+ 
+-	if (chip == NULL || chip_info == NULL)
++	if (chip == NULL)
++		return 0;
++
++	if (drv_data->cs_gpiods) {
++		struct gpio_desc *gpiod;
++
++		gpiod = drv_data->cs_gpiods[spi->chip_select];
++		if (gpiod) {
++			chip->gpio_cs = desc_to_gpio(gpiod);
++			chip->gpio_cs_inverted = spi->mode & SPI_CS_HIGH;
++			gpiod_set_value(gpiod, chip->gpio_cs_inverted);
++		}
++
++		return 0;
++	}
++
++	if (chip_info == NULL)
+ 		return 0;
+ 
+ 	/* NOTE: setup() can be called multiple times, possibly with
+@@ -1352,7 +1370,8 @@ static void cleanup(struct spi_device *spi)
+ 	if (!chip)
+ 		return;
+ 
+-	if (drv_data->ssp_type != CE4100_SSP && gpio_is_valid(chip->gpio_cs))
++	if (drv_data->ssp_type != CE4100_SSP && !drv_data->cs_gpiods &&
++	    gpio_is_valid(chip->gpio_cs))
+ 		gpio_free(chip->gpio_cs);
+ 
+ 	kfree(chip);
+@@ -1538,7 +1557,7 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+ 	struct driver_data *drv_data;
+ 	struct ssp_device *ssp;
+ 	const struct lpss_config *config;
+-	int status;
++	int status, count;
+ 	u32 tmp;
+ 
+ 	platform_info = dev_get_platdata(dev);
+@@ -1677,6 +1696,39 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+ 	}
+ 	master->num_chipselect = platform_info->num_chipselect;
+ 
++	count = gpiod_count(&pdev->dev, "cs");
++	if (count > 0) {
++		int i;
++
++		master->num_chipselect = max_t(int, count,
++			master->num_chipselect);
++
++		drv_data->cs_gpiods = devm_kcalloc(&pdev->dev,
++			master->num_chipselect, sizeof(struct gpio_desc *),
++			GFP_KERNEL);
++		if (!drv_data->cs_gpiods) {
++			status = -ENOMEM;
++			goto out_error_clock_enabled;
++		}
++
++		for (i = 0; i < master->num_chipselect; i++) {
++			struct gpio_desc *gpiod;
++
++			gpiod = devm_gpiod_get_index(dev, "cs", i,
++						     GPIOD_OUT_HIGH);
++			if (IS_ERR(gpiod)) {
++				/* Means use native chip select */
++				if (PTR_ERR(gpiod) == -ENOENT)
++					continue;
++
++				status = (int)PTR_ERR(gpiod);
++				goto out_error_clock_enabled;
++			} else {
++				drv_data->cs_gpiods[i] = gpiod;
++			}
++		}
++	}
++
+ 	tasklet_init(&drv_data->pump_transfers, pump_transfers,
+ 		     (unsigned long)drv_data);
+ 
+diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
+index d217ad55cc12..0ce1e41f574b 100644
+--- a/drivers/spi/spi-pxa2xx.h
++++ b/drivers/spi/spi-pxa2xx.h
+@@ -68,6 +68,9 @@ struct driver_data {
+ 	void (*cs_control)(u32 command);
+ 
+ 	void __iomem *lpss_base;
++
++	/* GPIOs for chip selects */
++	struct gpio_desc **cs_gpiods;
+ };
+ 
+ struct chip_data {
+-- 
+2.9.3
 
---g77nx3pug2sgcbkr
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEcBAABCAAGBQJX6pwmAAoJECTWi3JdVIfQplEH/2UwxBosfp8sbeWSY34DJyom
-HrJCvss1CRcn79SziincecmEUQvUER+dKe1c2nUcpiNxFAG2Rx/pNrglNfuNTCEq
-m1koKMBW6K1r2jDG4KxGr0TM4Zer6mhyKDyBmauR/6mcATlwtMakENzJygGr9doh
-46/OCQitb/Ub4IkJ4t3KrzjHtGZBpqQx9N5nZdO3i2J1OD/3LAcdaYKZmykotB1C
-g9Kpf3sP/Nk8N8cYpxVvs4P0nYvgsm3fJ2PqhplKmW2jRvi4UO6PPUbQI8njpIsM
-fhespTOFs7D+c0jFB5EC6KIL+R40eD7HZSdUQZDGsgMvKOInK8Is9LaxnUIRQ1Q=
-=x+eG
------END PGP SIGNATURE-----
-
---g77nx3pug2sgcbkr--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

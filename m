@@ -1,52 +1,55 @@
-From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH -next] spi: imx: fix error return code in spi_imx_probe()
-Date: Wed, 28 Sep 2016 17:29:45 +0200
-Message-ID: <c1565f7c-9287-47fb-71bd-67ce52c4169e@denx.de>
-References: <1475074218-13164-1-git-send-email-weiyj.lk@gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2] spi: pxa2xx: Add support for GPIO descriptor chip
+ selects
+Date: Wed, 28 Sep 2016 09:50:20 -0700
+Message-ID: <20160928165020.ua46onz5oitv6qbj@sirena.org.uk>
+References: <20160928130452.51831-1-mika.westerberg@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: Wei Yongjun <weiyongjun1-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="phmh2huzriszvxzg"
+Cc: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+        Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+        Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1475074218-13164-1-git-send-email-weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20160928130452.51831-1-mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 09/28/2016 04:50 PM, Wei Yongjun wrote:
-> From: Wei Yongjun <weiyongjun1-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
-> 
-> Fix to return error code -EINVAL if no CS GPIOs available
-> instead of 0, as done elsewhere in this function.
-> 
-> Fixes: f13d4e189d20 ("spi: imx: Gracefully handle NULL master->cs_gpios")
-> Signed-off-by: Wei Yongjun <weiyongjun1-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
 
-Oops, good catch, thanks.
+--phmh2huzriszvxzg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Acked-by: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+On Wed, Sep 28, 2016 at 04:04:52PM +0300, Mika Westerberg wrote:
+> The driver uses custom chip_info coming from platform data for chip selects
+> implemented as GPIOs. If the system lacks board files setting up the
+> platform data, it is not possible to use GPIOs as chip selects.
 
-> ---
->  drivers/spi/spi-imx.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-> index 1ef5429..deb782f 100644
-> --- a/drivers/spi/spi-imx.c
-> +++ b/drivers/spi/spi-imx.c
-> @@ -1270,6 +1270,7 @@ static int spi_imx_probe(struct platform_device *pdev)
->  
->  	if (!master->cs_gpios) {
->  		dev_err(&pdev->dev, "No CS GPIOs available\n");
-> +		ret = -EINVAL;
->  		goto out_clk_put;
->  	}
-> 
+Please do not submit new versions of already applied patches, please
+submit incremental updates to the existing code.  Modifying existing
+commits creates problems for other users building on top of those
+commits so it's best practice to only change pubished git commits if
+absolutely essential.
 
+--phmh2huzriszvxzg
+Content-Type: application/pgp-signature; name="signature.asc"
 
--- 
-Best regards,
-Marek Vasut
+-----BEGIN PGP SIGNATURE-----
+
+iQEcBAABCAAGBQJX6/TMAAoJECTWi3JdVIfQpNoH/2sTEIoKe6JYkZ0x/TyS50Hx
+oJYa9JIyhpl8VbuzaHWhoKGxTF2V6DUmMeKOfIdgLKocS3eV1A80kRGbIdib6Kc2
+rRG3IeaF4AARJbMndfyG6C6HFL7/LXGuEcAE4TuTWzvTwI2VU/t9cR7gLsEL8zyJ
+CpQtSVu4+r1HGw20LmPsuUeJj46AOD1W5vM6mGlXLVwcK7wdY7uF4LR4d9QACCqH
+MW7bBMXGQV0oZLBlYwomiY3u+FZPzdgM980/miSm78HfsyIA7RRLGhZBT8GY5bIJ
+0WYshbZrt2WfUrbheiZdp5Ph9Zv1t3YjB+jMbIwLXcwo2MBMLcX+6JTQphWZBfw=
+=ux2v
+-----END PGP SIGNATURE-----
+
+--phmh2huzriszvxzg--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

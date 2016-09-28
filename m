@@ -1,55 +1,75 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2] spi: pxa2xx: Add support for GPIO descriptor chip
- selects
-Date: Wed, 28 Sep 2016 09:50:20 -0700
-Message-ID: <20160928165020.ua46onz5oitv6qbj@sirena.org.uk>
-References: <20160928130452.51831-1-mika.westerberg@linux.intel.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="phmh2huzriszvxzg"
-Cc: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-        Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Applied "spi: imx: fix error return code in spi_imx_probe()" to the spi tree
+Date: Wed, 28 Sep 2016 11:27:33 -0700
+Message-ID: <E1bpJZt-0003xr-It@finisterre>
+References: <1475074218-13164-1-git-send-email-weiyj.lk@gmail.com>
+Cc: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Wei Yongjun <weiyongjun1-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20160928130452.51831-1-mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <1475074218-13164-1-git-send-email-weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---phmh2huzriszvxzg
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: imx: fix error return code in spi_imx_probe()
 
-On Wed, Sep 28, 2016 at 04:04:52PM +0300, Mika Westerberg wrote:
-> The driver uses custom chip_info coming from platform data for chip selects
-> implemented as GPIOs. If the system lacks board files setting up the
-> platform data, it is not possible to use GPIOs as chip selects.
+has been applied to the spi tree at
 
-Please do not submit new versions of already applied patches, please
-submit incremental updates to the existing code.  Modifying existing
-commits creates problems for other users building on top of those
-commits so it's best practice to only change pubished git commits if
-absolutely essential.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
---phmh2huzriszvxzg
-Content-Type: application/pgp-signature; name="signature.asc"
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
------BEGIN PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEcBAABCAAGBQJX6/TMAAoJECTWi3JdVIfQpNoH/2sTEIoKe6JYkZ0x/TyS50Hx
-oJYa9JIyhpl8VbuzaHWhoKGxTF2V6DUmMeKOfIdgLKocS3eV1A80kRGbIdib6Kc2
-rRG3IeaF4AARJbMndfyG6C6HFL7/LXGuEcAE4TuTWzvTwI2VU/t9cR7gLsEL8zyJ
-CpQtSVu4+r1HGw20LmPsuUeJj46AOD1W5vM6mGlXLVwcK7wdY7uF4LR4d9QACCqH
-MW7bBMXGQV0oZLBlYwomiY3u+FZPzdgM980/miSm78HfsyIA7RRLGhZBT8GY5bIJ
-0WYshbZrt2WfUrbheiZdp5Ph9Zv1t3YjB+jMbIwLXcwo2MBMLcX+6JTQphWZBfw=
-=ux2v
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---phmh2huzriszvxzg--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 446576f9ea5308c671eafb1cdc2a977b406c1dc5 Mon Sep 17 00:00:00 2001
+From: Wei Yongjun <weiyongjun1-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
+Date: Wed, 28 Sep 2016 14:50:18 +0000
+Subject: [PATCH] spi: imx: fix error return code in spi_imx_probe()
+
+Fix to return error code -EINVAL if no CS GPIOs available
+instead of 0, as done elsewhere in this function.
+
+Fixes: f13d4e189d20 ("spi: imx: Gracefully handle NULL master->cs_gpios")
+Signed-off-by: Wei Yongjun <weiyongjun1-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
+Acked-by: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-imx.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 1ef5429afcb6..deb782f6556c 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -1270,6 +1270,7 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 
+ 	if (!master->cs_gpios) {
+ 		dev_err(&pdev->dev, "No CS GPIOs available\n");
++		ret = -EINVAL;
+ 		goto out_clk_put;
+ 	}
+ 
+-- 
+2.9.3
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

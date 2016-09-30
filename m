@@ -1,49 +1,51 @@
-From: Shuah Khan <shuahkh@osg.samsung.com>
-Subject: Re: [PATCH 0/2] Moving runnable code from Documentation (last 2
- patches)
-Date: Fri, 30 Sep 2016 07:57:51 -0600
-Message-ID: <0f5557aa-23ad-c37c-6d97-13789c0b5726@osg.samsung.com>
-References: <cover.1474912582.git.shuahkh@osg.samsung.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: akpm@linux-foundation.org, keescook@chromium.org,
-        dan.j.williams@intel.com, mingo@kernel.org,
-        paulmck@linux.vnet.ibm.com, jpoimboe@redhat.com, tj@kernel.org,
-        aryabinin@virtuozzo.com, nikolay@cumulusnetworks.com,
-        dvyukov@google.com, rostedt@goodmis.org, olof@lixom.net,
-        arnd@arndb.de, hans.verkuil@cisco.com, nab@linux-iscsi.org,
-        mchehab@kernel.org, broonie@kernel.org, tglx@linutronix.de,
-        ecree@solarflare.com, davem@davemloft.net,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-kbuild@vger.kernel.org, linux-spi@vger.kernel.org,
-        Shuah Khan <shuahkh@osg.samsung.com>
-To: corbet@lwn.net, mmarek@suse.com
-Return-path: <linux-kbuild-owner@vger.kernel.org>
-In-Reply-To: <cover.1474912582.git.shuahkh@osg.samsung.com>
-Sender: linux-kbuild-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Vikram N <vicky773-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: omap2-mcspi: Fix modifying platform resource data
+Date: Fri, 30 Sep 2016 19:53:11 +0530
+Message-ID: <1475245427-4140-1-git-send-email-vicky773@gmail.com>
+Cc: Vikram N <vicky773-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 09/26/2016 12:40 PM, Shuah Khan wrote:
-> This patch series contains the last 2 patches to complete moving runnable
-> code from Documentation to selftests, samples, and tools.
-> 
-> The first patch moves blackfin gptimers-example to samples and removes
-> CONFIG_BUILD_DOCSRC.
-> 
-> The second one updates 00-INDEX files under Documentation to reflect the
-> move of runnable code from Documentation.
-> 
-> Shuah Khan (2):
->   samples: move blackfin gptimers-example from Documentation
->   Doc: update 00-INDEX files to reflect the runnable code move
-> 
+currently during probe the resource data gets modified and device
+physical address remains valid only during first load. If the module is
+unloaded and loaded again, the ioremp will be done on a incorrect address
+as the resource was modified during previous module load.
+This patch fixes this issue.
 
-Hi Jon and Michal,
+Signed-off-by: Vikram N <vicky773-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi-omap2-mcspi.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-Do these patches look good to you? I can get these into 4.9-rc1
-with your Ack.
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index d5157b2..3567e1d 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -1391,15 +1391,13 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
+ 		goto free_master;
+ 	}
+ 
+-	r->start += regs_offset;
+-	r->end += regs_offset;
+-	mcspi->phys = r->start;
+-
+ 	mcspi->base = devm_ioremap_resource(&pdev->dev, r);
+ 	if (IS_ERR(mcspi->base)) {
+ 		status = PTR_ERR(mcspi->base);
+ 		goto free_master;
+ 	}
++	mcspi->phys = r->start + regs_offset;
++	mcspi->base += regs_offset;
+ 
+ 	mcspi->dev = &pdev->dev;
+ 
+-- 
+1.9.1
 
-thanks,
--- Shuah
-
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,50 +1,49 @@
-From: Vikram N <vicky773-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: omap2-mcspi: Fix modifying platform resource data
-Date: Fri, 30 Sep 2016 19:53:11 +0530
-Message-ID: <1475245427-4140-1-git-send-email-vicky773@gmail.com>
-Cc: Vikram N <vicky773-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/1] Add devices to spidev device tree compatibility list
+Date: Fri, 30 Sep 2016 09:08:32 -0700
+Message-ID: <20160930160832.fnnvxkwdh5ex4xqt@sirena.org.uk>
+References: <1475230554-5986-1-git-send-email-fabien.lahoudere@collabora.co.uk>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="vp3ng6iqfzgtthk4"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Fabien Lahoudere <fabien.lahoudere-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1475230554-5986-1-git-send-email-fabien.lahoudere-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-currently during probe the resource data gets modified and device
-physical address remains valid only during first load. If the module is
-unloaded and loaded again, the ioremp will be done on a incorrect address
-as the resource was modified during previous module load.
-This patch fixes this issue.
 
-Signed-off-by: Vikram N <vicky773-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spi-omap2-mcspi.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+--vp3ng6iqfzgtthk4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index d5157b2..3567e1d 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1391,15 +1391,13 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
- 		goto free_master;
- 	}
- 
--	r->start += regs_offset;
--	r->end += regs_offset;
--	mcspi->phys = r->start;
--
- 	mcspi->base = devm_ioremap_resource(&pdev->dev, r);
- 	if (IS_ERR(mcspi->base)) {
- 		status = PTR_ERR(mcspi->base);
- 		goto free_master;
- 	}
-+	mcspi->phys = r->start + regs_offset;
-+	mcspi->base += regs_offset;
- 
- 	mcspi->dev = &pdev->dev;
- 
--- 
-1.9.1
+On Fri, Sep 30, 2016 at 12:15:54PM +0200, Fabien Lahoudere wrote:
 
+> - "fsl,mk20fn1m0vmd12" : a cortex m4 based chip
+
+> +	{ .compatible = "fsl,MK20FN1M0VMD12" },
+
+This compatible is in uppercase which is not the normal style for DT
+bindings at all.  I'd also guess that this is a binding for a specific
+application running on this device rather than the chip itself.
+
+--vp3ng6iqfzgtthk4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEcBAABCAAGBQJX7o3/AAoJECTWi3JdVIfQMFoH/2xU+jKtWZ+qDdvst92rCc7l
+VWcpuDKsXHV8/qEnTADWWyyNSxTRTebvjFRKVkYkCrRLoUqTKTuTiVt8cyEsbddZ
+xz7UPOtlY65pnFtClkddTjm0YJ2GK+8eLpmEeBpq/9gvtcKMKzTTEKDCk8m/g7bV
+/g3W9ll0eWbcIXUWQhR1t3ysg4zAqEY0xCaIQ2fgFW19K8p9xmyP+4mWjSK3YFJe
+ttgrwGcglRidQaANmx3yP3Huw/fwF3GQz574zGJ8dwVZ/fYlyffW6v0tSabOLwAP
+3IpANR02cmKiBDiM8uFMk+XDL4v7nUM5LtIQ0HNCOwj1s1WSkzQr6D7I+Ry33bo=
+=BCFu
+-----END PGP SIGNATURE-----
+
+--vp3ng6iqfzgtthk4--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

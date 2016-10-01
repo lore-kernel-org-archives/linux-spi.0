@@ -1,56 +1,117 @@
-From: Jonathan Corbet <corbet-T1hC0tSOHrs@public.gmane.org>
-Subject: Re: [PATCH 0/2] Moving runnable code from Documentation (last 2
- patches)
-Date: Sat, 1 Oct 2016 01:10:44 -0600
-Message-ID: <20161001011044.70aefa33@lwn.net>
-References: <cover.1474912582.git.shuahkh@osg.samsung.com>
-        <0f5557aa-23ad-c37c-6d97-13789c0b5726@osg.samsung.com>
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v2] spi: fsl-espi: replace of_get_property with
+ of_property_read_u32
+Date: Sat, 1 Oct 2016 21:07:52 +0200
+Message-ID: <35013230-4ec5-d8ce-6383-00ba684dea7c@gmail.com>
+References: <1d67ce99-42ea-c816-da35-e64575cca8ff@web.de>
+ <faa8bb6f-a644-5779-6a65-a6d8394bd17f@web.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8bit
-Cc: mmarek-IBi9RG/b67k@public.gmane.org, akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org, keescook-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
-        dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, mingo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        paulmck-23VcF4HTsmIX0ybBhKVfKdBPR1lH4CV8@public.gmane.org, jpoimboe-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org, tj-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        aryabinin-5HdwGun5lf+gSpxsJD1C4w@public.gmane.org, nikolay-qUQiAmfTcIp+XZJcv9eMoEEOCMrvLtNR@public.gmane.org,
-        dvyukov-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org, rostedt-nx8X9YLhiw1AfugRpC6u6w@public.gmane.org, olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org,
-        arnd-r2nGTMty4D4@public.gmane.org, hans.verkuil-FYB4Gu1CFyUAvxtiuMwx3w@public.gmane.org, nab-IzHhD5pYlfBP7FQvKIMDCQ@public.gmane.org,
-        mchehab-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, tglx-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org,
-        ecree-s/n/eUQHGBpZroRs9YW3xA@public.gmane.org, davem-fT/PcQaiUtIeIZ0/mPfg9Q@public.gmane.org,
-        linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kbuild-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Shuah Khan <shuahkh-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <0f5557aa-23ad-c37c-6d97-13789c0b5726-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org>
+In-Reply-To: <faa8bb6f-a644-5779-6a65-a6d8394bd17f-S0/GAf8tV78@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, 30 Sep 2016 07:57:51 -0600
-Shuah Khan <shuahkh-JPH+aEBZ4P+UEJcrhfAQsw@public.gmane.org> wrote:
+of_property_read_u32 is better here than generic of_get_property:
+- implicit endianness conversion if needed
+- implicit checking of size of property
 
-> > This patch series contains the last 2 patches to complete moving runnable
-> > code from Documentation to selftests, samples, and tools.
-> > 
-> > The first patch moves blackfin gptimers-example to samples and removes
-> > CONFIG_BUILD_DOCSRC.
-> > 
-> > The second one updates 00-INDEX files under Documentation to reflect the
-> > move of runnable code from Documentation.
-> > 
-> > Shuah Khan (2):
-> >   samples: move blackfin gptimers-example from Documentation
-> >   Doc: update 00-INDEX files to reflect the runnable code move
-> >   
-> 
-> Hi Jon and Michal,
-> 
-> Do these patches look good to you? I can get these into 4.9-rc1
-> with your Ack.
+Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+v2:
+- improved commit message
+---
+ drivers/spi/spi-fsl-espi.c | 41 ++++++++++++++++++++---------------------
+ 1 file changed, 20 insertions(+), 21 deletions(-)
 
-Seems good to me.
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index 7451585..1f97cce 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -545,9 +545,8 @@ static int fsl_espi_probe(struct device *dev, struct resource *mem,
+ 	struct spi_master *master;
+ 	struct mpc8xxx_spi *mpc8xxx_spi;
+ 	struct device_node *nc;
+-	const __be32 *prop;
+-	u32 regval, csmode;
+-	int i, len, ret;
++	u32 regval, csmode, cs, prop;
++	int ret;
+ 
+ 	master = spi_alloc_master(dev, sizeof(struct mpc8xxx_spi));
+ 	if (!master)
+@@ -599,29 +598,29 @@ static int fsl_espi_probe(struct device *dev, struct resource *mem,
+ 	/* Init eSPI CS mode register */
+ 	for_each_available_child_of_node(master->dev.of_node, nc) {
+ 		/* get chip select */
+-		prop = of_get_property(nc, "reg", &len);
+-		if (!prop || len < sizeof(*prop))
+-			continue;
+-		i = be32_to_cpup(prop);
+-		if (i < 0 || i >= pdata->max_chipselect)
++		ret = of_property_read_u32(nc, "reg", &cs);
++		if (ret || cs >= pdata->max_chipselect)
+ 			continue;
+ 
+ 		csmode = CSMODE_INIT_VAL;
++
+ 		/* check if CSBEF is set in device tree */
+-		prop = of_get_property(nc, "fsl,csbef", &len);
+-		if (prop && len >= sizeof(*prop)) {
++		ret = of_property_read_u32(nc, "fsl,csbef", &prop);
++		if (!ret) {
+ 			csmode &= ~(CSMODE_BEF(0xf));
+-			csmode |= CSMODE_BEF(be32_to_cpup(prop));
++			csmode |= CSMODE_BEF(prop);
+ 		}
++
+ 		/* check if CSAFT is set in device tree */
+-		prop = of_get_property(nc, "fsl,csaft", &len);
+-		if (prop && len >= sizeof(*prop)) {
++		ret = of_property_read_u32(nc, "fsl,csaft", &prop);
++		if (!ret) {
+ 			csmode &= ~(CSMODE_AFT(0xf));
+-			csmode |= CSMODE_AFT(be32_to_cpup(prop));
++			csmode |= CSMODE_AFT(prop);
+ 		}
+-		fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPMODEx(i), csmode);
+ 
+-		dev_info(dev, "cs=%d, init_csmode=0x%x\n", i, csmode);
++		fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPMODEx(cs), csmode);
++
++		dev_info(dev, "cs=%u, init_csmode=0x%x\n", cs, csmode);
+ 	}
+ 
+ 	/* Enable SPI interface */
+@@ -660,16 +659,16 @@ static int of_fsl_espi_get_chipselects(struct device *dev)
+ {
+ 	struct device_node *np = dev->of_node;
+ 	struct fsl_spi_platform_data *pdata = dev_get_platdata(dev);
+-	const u32 *prop;
+-	int len;
++	u32 num_cs;
++	int ret;
+ 
+-	prop = of_get_property(np, "fsl,espi-num-chipselects", &len);
+-	if (!prop || len < sizeof(*prop)) {
++	ret = of_property_read_u32(np, "fsl,espi-num-chipselects", &num_cs);
++	if (ret) {
+ 		dev_err(dev, "No 'fsl,espi-num-chipselects' property\n");
+ 		return -EINVAL;
+ 	}
+ 
+-	pdata->max_chipselect = *prop;
++	pdata->max_chipselect = num_cs;
+ 	pdata->cs_control = NULL;
+ 
+ 	return 0;
+-- 
+2.9.2
 
-Acked-by: Jonathan Corbet <corbet-T1hC0tSOHrs@public.gmane.org>
 
-jon
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

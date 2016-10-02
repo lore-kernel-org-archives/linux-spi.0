@@ -1,7 +1,8 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 10/11] spi: fsl-espi: add support for RXSKIP mode
-Date: Sun, 2 Oct 2016 14:23:51 +0200
-Message-ID: <cb1f65f6-075d-e131-7824-3321750a602d@gmail.com>
+Subject: [PATCH 05/11] spi: fsl-espi: Rename len in struct mpc8xxx_spi to
+ rx_len and make it unsigned
+Date: Sun, 2 Oct 2016 14:23:11 +0200
+Message-ID: <4d2b96d6-4a74-404f-c3a8-1e41b3022b91@gmail.com>
 References: <5b98be38-17a2-79a2-14da-fb2bb6f8820f@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -13,125 +14,100 @@ In-Reply-To: <5b98be38-17a2-79a2-14da-fb2bb6f8820f-Re5JQEeQqe8AvxtiuMwx3w@public
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-This patch adds support for ESPI RXSKIP mode. This mode is optimized
-for flash reads:
-- sends a number of bytes and then reads a number of bytes
-- shifts out zeros automatically when reading
-- optionally can be configured for dual read mode
+Now that we introduced element tx_len in struct mpc8xxx_spi let's
+rename element len to rx_len as it actually is the number of bytes to
+receive. In addition make it unsigned.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 56 ++++++++++++++++++++++++++++++++++++++++++----
- drivers/spi/spi-fsl-lib.h  |  1 +
- 2 files changed, 53 insertions(+), 4 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 22 +++++++++++-----------
+ drivers/spi/spi-fsl-lib.h  |  2 +-
+ 2 files changed, 12 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index cbfb6da..8cfcf41 100644
+index 9068861..d9d9f7f 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -150,7 +150,8 @@ static void fsl_espi_copy_to_buf(struct spi_message *m,
- 	list_for_each_entry(t, &m->transfers, transfer_list) {
- 		if (t->tx_buf)
- 			fsl_espi_memcpy_swab(buf, t->tx_buf, m, t);
--		else
-+		/* In RXSKIP mode controller shifts zeros automatically */
-+		else if (!mspi->rxskip)
- 			memset(buf, 0, t->len);
- 		buf += t->len;
- 	}
-@@ -203,6 +204,42 @@ static int fsl_espi_check_message(struct spi_message *m)
- 	return 0;
+@@ -284,7 +284,7 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
+ 	int ret;
+ 
+-	mpc8xxx_spi->len = t->len;
++	mpc8xxx_spi->rx_len = t->len;
+ 	mpc8xxx_spi->tx_len = t->len;
+ 
+ 	mpc8xxx_spi->tx = t->tx_buf;
+@@ -445,28 +445,28 @@ static void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
+ 		int ret;
+ 
+ 		/* Spin until RX is done */
+-		if (SPIE_RXCNT(events) < min(4, mspi->len)) {
++		if (SPIE_RXCNT(events) < min(4U, mspi->rx_len)) {
+ 			ret = spin_event_timeout(
+ 				!(SPIE_RXCNT(events =
+ 				fsl_espi_read_reg(mspi, ESPI_SPIE)) <
+-						min(4, mspi->len)),
++						min(4U, mspi->rx_len)),
+ 						10000, 0); /* 10 msec */
+ 			if (!ret)
+ 				dev_err(mspi->dev,
+ 					 "tired waiting for SPIE_RXCNT\n");
+ 		}
+ 
+-		if (mspi->len >= 4) {
++		if (mspi->rx_len >= 4) {
+ 			rx_data = fsl_espi_read_reg(mspi, ESPI_SPIRF);
+-		} else if (mspi->len <= 0) {
++		} else if (!mspi->rx_len) {
+ 			dev_err(mspi->dev,
+ 				"unexpected RX(SPIE_RNE) interrupt occurred,\n"
+ 				"(local rxlen %d bytes, reg rxlen %d bytes)\n",
+-				min(4, mspi->len), SPIE_RXCNT(events));
++				min(4U, mspi->rx_len), SPIE_RXCNT(events));
+ 			rx_nr_bytes = 0;
+ 		} else {
+-			rx_nr_bytes = mspi->len;
+-			tmp = mspi->len;
++			rx_nr_bytes = mspi->rx_len;
++			tmp = mspi->rx_len;
+ 			rx_data = 0;
+ 			while (tmp--) {
+ 				rx_data_8 = fsl_espi_read_reg8(mspi,
+@@ -474,10 +474,10 @@ static void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
+ 				rx_data |= (rx_data_8 << (tmp * 8));
+ 			}
+ 
+-			rx_data <<= (4 - mspi->len) * 8;
++			rx_data <<= (4 - mspi->rx_len) * 8;
+ 		}
+ 
+-		mspi->len -= rx_nr_bytes;
++		mspi->rx_len -= rx_nr_bytes;
+ 
+ 		if (mspi->rx) {
+ 			*(u32 *)mspi->rx = rx_data;
+@@ -488,7 +488,7 @@ static void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
+ 	if (mspi->tx_len)
+ 		fsl_espi_fill_tx_fifo(mspi, events);
+ 
+-	if (!mspi->tx_len && !mspi->len)
++	if (!mspi->tx_len && !mspi->rx_len)
+ 		complete(&mspi->done);
  }
  
-+static void fsl_espi_check_rxskip_mode(struct spi_message *m,
-+				       struct mpc8xxx_spi *mspi)
-+{
-+	struct spi_transfer *t;
-+	unsigned int i = 0, rxskip_len = 0;
-+
-+	mspi->rxskip = 0;
-+
-+	/*
-+	 * prerequisites for rxskip mode:
-+	 * - message has two transfers
-+	 * - first transfer is a write and second is a read
-+	 *
-+	 * In addition enable rxskip mode only if length of write transfer
-+	 * is <= FSL_ESPI_FIFO_SIZE. This allows to keep the current
-+	 * low-level transfer implementation.
-+	 * This constraint doesn't affect SPI NOR reads as typical use case
-+	 * for rxskip mode as the read command has only few bytes.
-+	 */
-+	list_for_each_entry(t, &m->transfers, transfer_list) {
-+		if (i == 0) {
-+			if (!t->tx_buf || t->rx_buf ||
-+			    t->len > FSL_ESPI_FIFO_SIZE)
-+				return;
-+			rxskip_len = t->len;
-+		} else if (i == 1) {
-+			if (t->tx_buf || !t->rx_buf)
-+				return;
-+		}
-+		i++;
-+	}
-+
-+	if (i == 2)
-+		mspi->rxskip = rxskip_len;
-+}
-+
- static void fsl_espi_fill_tx_fifo(struct mpc8xxx_spi *mspi, u32 events)
- {
- 	u32 tx_fifo_avail;
-@@ -282,7 +319,7 @@ static void fsl_espi_setup_transfer(struct spi_device *spi,
- static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
- {
- 	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
--	u32 mask;
-+	u32 mask, spcom;
- 	int ret;
- 
- 	mpc8xxx_spi->rx_len = t->len;
-@@ -294,8 +331,18 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
- 	reinit_completion(&mpc8xxx_spi->done);
- 
- 	/* Set SPCOM[CS] and SPCOM[TRANLEN] field */
--	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPCOM,
--		(SPCOM_CS(spi->chip_select) | SPCOM_TRANLEN(t->len - 1)));
-+	spcom = SPCOM_CS(spi->chip_select);
-+	spcom |= SPCOM_TRANLEN(t->len - 1);
-+
-+	/* configure RXSKIP mode */
-+	if (mpc8xxx_spi->rxskip) {
-+		spcom |= SPCOM_RXSKIP(mpc8xxx_spi->rxskip);
-+		mpc8xxx_spi->tx_len = mpc8xxx_spi->rxskip;
-+		mpc8xxx_spi->rx_len = t->len - mpc8xxx_spi->rxskip;
-+		mpc8xxx_spi->rx = t->rx_buf + mpc8xxx_spi->rxskip;
-+	}
-+
-+	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPCOM, spcom);
- 
- 	/* enable interrupts */
- 	mask = SPIM_DON;
-@@ -327,6 +374,7 @@ static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans)
- 	struct spi_device *spi = m->spi;
- 	int ret;
- 
-+	fsl_espi_check_rxskip_mode(m, mspi);
- 	fsl_espi_copy_to_buf(m, mspi);
- 	fsl_espi_setup_transfer(spi, trans);
- 
 diff --git a/drivers/spi/spi-fsl-lib.h b/drivers/spi/spi-fsl-lib.h
-index 35a7a17..8096fae 100644
+index 24d8bc8..35a7a17 100644
 --- a/drivers/spi/spi-fsl-lib.h
 +++ b/drivers/spi/spi-fsl-lib.h
-@@ -32,6 +32,7 @@ struct mpc8xxx_spi {
- 	unsigned int rx_len;
+@@ -29,7 +29,7 @@ struct mpc8xxx_spi {
+ 	const void *tx;
+ 	void *rx;
+ #if IS_ENABLED(CONFIG_SPI_FSL_ESPI)
+-	int len;
++	unsigned int rx_len;
  	unsigned int tx_len;
  	u8 *local_buf;
-+	unsigned int rxskip;
  	spinlock_t lock;
- #endif
- 
 -- 
 2.10.0
 

@@ -1,61 +1,62 @@
-From: Michal Marek <mmarek@suse.com>
-Subject: Re: [PATCH 0/2] Moving runnable code from Documentation (last 2
- patches)
-Date: Sat, 1 Oct 2016 22:46:45 +0200
-Message-ID: <57F020B5.4060704@suse.com>
-References: <cover.1474912582.git.shuahkh@osg.samsung.com>
- <0f5557aa-23ad-c37c-6d97-13789c0b5726@osg.samsung.com>
- <20161001011044.70aefa33@lwn.net>
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 01/11] spi: fsl-espi: reject MSB-first transfers with word
+ sizes other than 8 or 16
+Date: Sun, 2 Oct 2016 14:22:35 +0200
+Message-ID: <d0497ac8-c74e-de72-62e7-b7de19b244b4@gmail.com>
+References: <bb70b41a-f58c-074d-0d97-c6635a0aa29d@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Cc: akpm@linux-foundation.org, keescook@chromium.org,
-        dan.j.williams@intel.com, mingo@kernel.org,
-        paulmck@linux.vnet.ibm.com, jpoimboe@redhat.com, tj@kernel.org,
-        aryabinin@virtuozzo.com, nikolay@cumulusnetworks.com,
-        dvyukov@google.com, rostedt@goodmis.org, olof@lixom.net,
-        arnd@arndb.de, hans.verkuil@cisco.com, nab@linux-iscsi.org,
-        mchehab@kernel.org, broonie@kernel.org, tglx@linutronix.de,
-        ecree@solarflare.com, davem@davemloft.net,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-kbuild@vger.kernel.org, linux-spi@vger.kernel.org
-To: Jonathan Corbet <corbet@lwn.net>,
-        Shuah Khan <shuahkh@osg.samsung.com>
-Return-path: <linux-kbuild-owner@vger.kernel.org>
-In-Reply-To: <20161001011044.70aefa33@lwn.net>
-Sender: linux-kbuild-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <bb70b41a-f58c-074d-0d97-c6635a0aa29d-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Dne 1.10.2016 v 09:10 Jonathan Corbet napsal(a):
-> On Fri, 30 Sep 2016 07:57:51 -0600
-> Shuah Khan <shuahkh@osg.samsung.com> wrote:
-> 
->>> This patch series contains the last 2 patches to complete moving runnable
->>> code from Documentation to selftests, samples, and tools.
->>>
->>> The first patch moves blackfin gptimers-example to samples and removes
->>> CONFIG_BUILD_DOCSRC.
->>>
->>> The second one updates 00-INDEX files under Documentation to reflect the
->>> move of runnable code from Documentation.
->>>
->>> Shuah Khan (2):
->>>   samples: move blackfin gptimers-example from Documentation
->>>   Doc: update 00-INDEX files to reflect the runnable code move
->>>   
->>
->> Hi Jon and Michal,
->>
->> Do these patches look good to you? I can get these into 4.9-rc1
->> with your Ack.
-> 
-> Seems good to me.
-> 
-> Acked-by: Jonathan Corbet <corbet@lwn.net>
+According to the ESPI spec MSB-first transfers are supported for
+word size 8 and 16 only.
 
-Likewise,
+Check for this and reject MSB-first transfers with other word sizes.
 
-Acked-by: Michal Marek <mmarek@suse.com>
+Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi-fsl-espi.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-Michal
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index 1f97cce..65bb70d 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -153,6 +153,7 @@ static int fsl_espi_check_message(struct spi_message *m)
+ 
+ 	first = list_first_entry(&m->transfers, struct spi_transfer,
+ 				 transfer_list);
++
+ 	list_for_each_entry(t, &m->transfers, transfer_list) {
+ 		if (first->bits_per_word != t->bits_per_word ||
+ 		    first->speed_hz != t->speed_hz) {
+@@ -161,6 +162,15 @@ static int fsl_espi_check_message(struct spi_message *m)
+ 		}
+ 	}
+ 
++	/* ESPI supports MSB-first transfers for word size 8 / 16 only */
++	if (!(m->spi->mode & SPI_LSB_FIRST) && first->bits_per_word != 8 &&
++	    first->bits_per_word != 16) {
++		dev_err(mspi->dev,
++			"MSB-first transfer not supported for wordsize %u\n",
++			first->bits_per_word);
++		return -EINVAL;
++	}
++
+ 	return 0;
+ }
+ 
+-- 
+2.10.0
 
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

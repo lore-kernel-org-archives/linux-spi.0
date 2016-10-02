@@ -1,10 +1,10 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 07/11] spi: fsl-espi: fix and improve reading from RX FIFO
-Date: Sun, 2 Oct 2016 14:23:27 +0200
-Message-ID: <1b7b3f5f-0b67-1799-1cb0-0ab6b3bdac54@gmail.com>
+Subject: [PATCH 08/11] spi: fsl-espi: make better use of the RX FIFO
+Date: Sun, 2 Oct 2016 14:23:32 +0200
+Message-ID: <144b73b1-dff2-a5b6-9df1-837238f20008@gmail.com>
 References: <5b98be38-17a2-79a2-14da-fb2bb6f8820f@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
@@ -13,101 +13,59 @@ In-Reply-To: <5b98be38-17a2-79a2-14da-fb2bb6f8820f-Re5JQEeQqe8AvxtiuMwx3w@public
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Currently the driver polls in the ISR for enough bytes in the RX FIFO.
-An ISR should never do this.
-Change it to read as much as possible whenever the ISR is called.
-This also allows to significantly simplify the code.
+So far an interrupt is triggered whenever there's at least one byte
+in the RX FIFO. This results in a unnecessarily high number of
+interrupts.
+Change this to generate an interrupt if
+- RX FIFO is half full (except if all bytes to read fit into the
+  RX FIFO anyway)
+- end of transfer has been reached
+
+This way the number of interrupts can be significantly reduced.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 67 ++++++++++++++--------------------------------
- 1 file changed, 20 insertions(+), 47 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index c3e55c8..5abbb62 100644
+index 5abbb62..10d06f2 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -223,6 +223,24 @@ static void fsl_espi_fill_tx_fifo(struct mpc8xxx_spi *mspi, u32 events)
- 		}
- }
+@@ -55,9 +55,10 @@
+ #define CSMODE_CG(x)		((x) << 3)
  
-+static void fsl_espi_read_rx_fifo(struct mpc8xxx_spi *mspi, u32 events)
-+{
-+	u32 rx_fifo_avail = SPIE_RXCNT(events);
-+
-+	while (rx_fifo_avail >= min(4U, mspi->rx_len) && mspi->rx_len)
-+		if (mspi->rx_len >= 4) {
-+			*(u32 *)mspi->rx = fsl_espi_read_reg(mspi, ESPI_SPIRF);
-+			mspi->rx += 4;
-+			mspi->rx_len -= 4;
-+			rx_fifo_avail -= 4;
-+		} else {
-+			*(u8 *)mspi->rx = fsl_espi_read_reg8(mspi, ESPI_SPIRF);
-+			mspi->rx += 1;
-+			mspi->rx_len -= 1;
-+			rx_fifo_avail -= 1;
-+		}
-+}
-+
- static void fsl_espi_setup_transfer(struct spi_device *spi,
- 					struct spi_transfer *t)
+ #define FSL_ESPI_FIFO_SIZE	32
++#define FSL_ESPI_RXTHR		15
+ 
+ /* Default mode/csmode for eSPI controller */
+-#define SPMODE_INIT_VAL (SPMODE_TXTHR(4) | SPMODE_RXTHR(3))
++#define SPMODE_INIT_VAL (SPMODE_TXTHR(4) | SPMODE_RXTHR(FSL_ESPI_RXTHR))
+ #define CSMODE_INIT_VAL (CSMODE_POL_1 | CSMODE_BEF(0) \
+ 		| CSMODE_AFT(0) | CSMODE_CG(1))
+ 
+@@ -281,6 +282,7 @@ static void fsl_espi_setup_transfer(struct spi_device *spi,
+ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
  {
-@@ -418,53 +436,8 @@ static void fsl_espi_cleanup(struct spi_device *spi)
+ 	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
++	u32 mask;
+ 	int ret;
  
- static void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
- {
--	/* We need handle RX first */
--	if (events & SPIE_RNE) {
--		u32 rx_data, tmp;
--		u8 rx_data_8;
--		int rx_nr_bytes = 4;
--		int ret;
--
--		/* Spin until RX is done */
--		if (SPIE_RXCNT(events) < min(4U, mspi->rx_len)) {
--			ret = spin_event_timeout(
--				!(SPIE_RXCNT(events =
--				fsl_espi_read_reg(mspi, ESPI_SPIE)) <
--						min(4U, mspi->rx_len)),
--						10000, 0); /* 10 msec */
--			if (!ret)
--				dev_err(mspi->dev,
--					 "tired waiting for SPIE_RXCNT\n");
--		}
--
--		if (mspi->rx_len >= 4) {
--			rx_data = fsl_espi_read_reg(mspi, ESPI_SPIRF);
--		} else if (!mspi->rx_len) {
--			dev_err(mspi->dev,
--				"unexpected RX(SPIE_RNE) interrupt occurred,\n"
--				"(local rxlen %d bytes, reg rxlen %d bytes)\n",
--				min(4U, mspi->rx_len), SPIE_RXCNT(events));
--			rx_nr_bytes = 0;
--		} else {
--			rx_nr_bytes = mspi->rx_len;
--			tmp = mspi->rx_len;
--			rx_data = 0;
--			while (tmp--) {
--				rx_data_8 = fsl_espi_read_reg8(mspi,
--							       ESPI_SPIRF);
--				rx_data |= (rx_data_8 << (tmp * 8));
--			}
--
--			rx_data <<= (4 - mspi->rx_len) * 8;
--		}
--
--		mspi->rx_len -= rx_nr_bytes;
--
--		if (mspi->rx) {
--			*(u32 *)mspi->rx = rx_data;
--			mspi->rx += 4;
--		}
--	}
-+	if (mspi->rx_len)
-+		fsl_espi_read_rx_fifo(mspi, events);
+ 	mpc8xxx_spi->rx_len = t->len;
+@@ -295,8 +297,11 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPCOM,
+ 		(SPCOM_CS(spi->chip_select) | SPCOM_TRANLEN(t->len - 1)));
  
- 	if (mspi->tx_len)
- 		fsl_espi_fill_tx_fifo(mspi, events);
+-	/* enable rx ints */
+-	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPIM, SPIM_RNE);
++	/* enable interrupts */
++	mask = SPIM_DON;
++	if (mpc8xxx_spi->rx_len > FSL_ESPI_FIFO_SIZE)
++		mask |= SPIM_RXT;
++	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPIM, mask);
+ 
+ 	/* Prevent filling the fifo from getting interrupted */
+ 	spin_lock_irq(&mpc8xxx_spi->lock);
 -- 
 2.10.0
 

@@ -1,8 +1,8 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 05/11] spi: fsl-espi: Rename len in struct mpc8xxx_spi to
- rx_len and make it unsigned
-Date: Sun, 2 Oct 2016 14:23:11 +0200
-Message-ID: <4d2b96d6-4a74-404f-c3a8-1e41b3022b91@gmail.com>
+Subject: [PATCH 06/11] spi: fsl-espi: simplify and inline function
+ fsl_espi_change_mode
+Date: Sun, 2 Oct 2016 14:23:22 +0200
+Message-ID: <0aeb49f0-dbfb-7acb-3829-cabafe4e7291@gmail.com>
 References: <5b98be38-17a2-79a2-14da-fb2bb6f8820f@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -14,100 +14,58 @@ In-Reply-To: <5b98be38-17a2-79a2-14da-fb2bb6f8820f-Re5JQEeQqe8AvxtiuMwx3w@public
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Now that we introduced element tx_len in struct mpc8xxx_spi let's
-rename element len to rx_len as it actually is the number of bytes to
-receive. In addition make it unsigned.
+The ESPI spec mentions no requirement to turn off the ESPI unit prior
+to changing the mode. Most likely the ESPI unit is only turned off to
+clear the FIFO's as before this patch series single bytes could
+remain in the TX FIFO after transfer end.
+Therefore remove disabling / re-enabling the ESPI unit.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 22 +++++++++++-----------
- drivers/spi/spi-fsl-lib.h  |  2 +-
- 2 files changed, 12 insertions(+), 12 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 23 ++---------------------
+ 1 file changed, 2 insertions(+), 21 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 9068861..d9d9f7f 100644
+index d9d9f7f..c3e55c8 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -284,7 +284,7 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
- 	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
- 	int ret;
- 
--	mpc8xxx_spi->len = t->len;
-+	mpc8xxx_spi->rx_len = t->len;
- 	mpc8xxx_spi->tx_len = t->len;
- 
- 	mpc8xxx_spi->tx = t->tx_buf;
-@@ -445,28 +445,28 @@ static void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
- 		int ret;
- 
- 		/* Spin until RX is done */
--		if (SPIE_RXCNT(events) < min(4, mspi->len)) {
-+		if (SPIE_RXCNT(events) < min(4U, mspi->rx_len)) {
- 			ret = spin_event_timeout(
- 				!(SPIE_RXCNT(events =
- 				fsl_espi_read_reg(mspi, ESPI_SPIE)) <
--						min(4, mspi->len)),
-+						min(4U, mspi->rx_len)),
- 						10000, 0); /* 10 msec */
- 			if (!ret)
- 				dev_err(mspi->dev,
- 					 "tired waiting for SPIE_RXCNT\n");
+@@ -223,26 +223,6 @@ static void fsl_espi_fill_tx_fifo(struct mpc8xxx_spi *mspi, u32 events)
  		}
- 
--		if (mspi->len >= 4) {
-+		if (mspi->rx_len >= 4) {
- 			rx_data = fsl_espi_read_reg(mspi, ESPI_SPIRF);
--		} else if (mspi->len <= 0) {
-+		} else if (!mspi->rx_len) {
- 			dev_err(mspi->dev,
- 				"unexpected RX(SPIE_RNE) interrupt occurred,\n"
- 				"(local rxlen %d bytes, reg rxlen %d bytes)\n",
--				min(4, mspi->len), SPIE_RXCNT(events));
-+				min(4U, mspi->rx_len), SPIE_RXCNT(events));
- 			rx_nr_bytes = 0;
- 		} else {
--			rx_nr_bytes = mspi->len;
--			tmp = mspi->len;
-+			rx_nr_bytes = mspi->rx_len;
-+			tmp = mspi->rx_len;
- 			rx_data = 0;
- 			while (tmp--) {
- 				rx_data_8 = fsl_espi_read_reg8(mspi,
-@@ -474,10 +474,10 @@ static void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
- 				rx_data |= (rx_data_8 << (tmp * 8));
- 			}
- 
--			rx_data <<= (4 - mspi->len) * 8;
-+			rx_data <<= (4 - mspi->rx_len) * 8;
- 		}
- 
--		mspi->len -= rx_nr_bytes;
-+		mspi->rx_len -= rx_nr_bytes;
- 
- 		if (mspi->rx) {
- 			*(u32 *)mspi->rx = rx_data;
-@@ -488,7 +488,7 @@ static void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
- 	if (mspi->tx_len)
- 		fsl_espi_fill_tx_fifo(mspi, events);
- 
--	if (!mspi->tx_len && !mspi->len)
-+	if (!mspi->tx_len && !mspi->rx_len)
- 		complete(&mspi->done);
  }
  
-diff --git a/drivers/spi/spi-fsl-lib.h b/drivers/spi/spi-fsl-lib.h
-index 24d8bc8..35a7a17 100644
---- a/drivers/spi/spi-fsl-lib.h
-+++ b/drivers/spi/spi-fsl-lib.h
-@@ -29,7 +29,7 @@ struct mpc8xxx_spi {
- 	const void *tx;
- 	void *rx;
- #if IS_ENABLED(CONFIG_SPI_FSL_ESPI)
--	int len;
-+	unsigned int rx_len;
- 	unsigned int tx_len;
- 	u8 *local_buf;
- 	spinlock_t lock;
+-static void fsl_espi_change_mode(struct spi_device *spi)
+-{
+-	struct mpc8xxx_spi *mspi = spi_master_get_devdata(spi->master);
+-	struct spi_mpc8xxx_cs *cs = spi->controller_state;
+-	u32 tmp;
+-	unsigned long flags;
+-
+-	/* Turn off IRQs locally to minimize time that SPI is disabled. */
+-	local_irq_save(flags);
+-
+-	/* Turn off SPI unit prior changing mode */
+-	tmp = fsl_espi_read_reg(mspi, ESPI_SPMODE);
+-	fsl_espi_write_reg(mspi, ESPI_SPMODE, tmp & ~SPMODE_ENABLE);
+-	fsl_espi_write_reg(mspi, ESPI_SPMODEx(spi->chip_select),
+-			      cs->hw_mode);
+-	fsl_espi_write_reg(mspi, ESPI_SPMODE, tmp);
+-
+-	local_irq_restore(flags);
+-}
+-
+ static void fsl_espi_setup_transfer(struct spi_device *spi,
+ 					struct spi_transfer *t)
+ {
+@@ -276,7 +256,8 @@ static void fsl_espi_setup_transfer(struct spi_device *spi,
+ 
+ 	cs->hw_mode |= CSMODE_PM(pm);
+ 
+-	fsl_espi_change_mode(spi);
++	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPMODEx(spi->chip_select),
++			   cs->hw_mode);
+ }
+ 
+ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
 -- 
 2.10.0
 

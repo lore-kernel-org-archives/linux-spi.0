@@ -1,7 +1,8 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 08/11] spi: fsl-espi: make better use of the RX FIFO
-Date: Sun, 2 Oct 2016 14:23:32 +0200
-Message-ID: <144b73b1-dff2-a5b6-9df1-837238f20008@gmail.com>
+Subject: [PATCH 09/11] spi: fsl-espi: extend and improve transfer error
+ handling
+Date: Sun, 2 Oct 2016 14:23:37 +0200
+Message-ID: <4ba19a7f-9f66-54c4-9119-e85671d608fb@gmail.com>
 References: <5b98be38-17a2-79a2-14da-fb2bb6f8820f@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -13,59 +14,62 @@ In-Reply-To: <5b98be38-17a2-79a2-14da-fb2bb6f8820f-Re5JQEeQqe8AvxtiuMwx3w@public
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-So far an interrupt is triggered whenever there's at least one byte
-in the RX FIFO. This results in a unnecessarily high number of
-interrupts.
-Change this to generate an interrupt if
-- RX FIFO is half full (except if all bytes to read fit into the
-  RX FIFO anyway)
-- end of transfer has been reached
-
-This way the number of interrupts can be significantly reduced.
+Extend and improve transfer error handling
+- in case of timeout report also number of remaining rx bytes
+- in case of timeout return ETIMEDOUT instead of EMSGSIZE
+- add sanity checks after all bytes have been sent / read:
+ - check that HW has flag SPIE_DON set
+ - check that RX / TX FIFO are empty
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 5abbb62..10d06f2 100644
+index 10d06f2..cbfb6da 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -55,9 +55,10 @@
- #define CSMODE_CG(x)		((x) << 3)
+@@ -312,13 +312,13 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	ret = wait_for_completion_timeout(&mpc8xxx_spi->done, 2 * HZ);
+ 	if (ret == 0)
+ 		dev_err(mpc8xxx_spi->dev,
+-			"Transaction hanging up (left %u bytes)\n",
+-			mpc8xxx_spi->tx_len);
++			"Transaction hanging up (left %u tx bytes, %u rx bytes)\n",
++			mpc8xxx_spi->tx_len, mpc8xxx_spi->rx_len);
  
- #define FSL_ESPI_FIFO_SIZE	32
-+#define FSL_ESPI_RXTHR		15
+ 	/* disable rx ints */
+ 	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPIM, 0);
  
- /* Default mode/csmode for eSPI controller */
--#define SPMODE_INIT_VAL (SPMODE_TXTHR(4) | SPMODE_RXTHR(3))
-+#define SPMODE_INIT_VAL (SPMODE_TXTHR(4) | SPMODE_RXTHR(FSL_ESPI_RXTHR))
- #define CSMODE_INIT_VAL (CSMODE_POL_1 | CSMODE_BEF(0) \
- 		| CSMODE_AFT(0) | CSMODE_CG(1))
+-	return mpc8xxx_spi->tx_len > 0 ? -EMSGSIZE : 0;
++	return ret == 0 ? -ETIMEDOUT : 0;
+ }
  
-@@ -281,6 +282,7 @@ static void fsl_espi_setup_transfer(struct spi_device *spi,
- static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
- {
- 	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
-+	u32 mask;
- 	int ret;
+ static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans)
+@@ -447,8 +447,20 @@ static void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
+ 	if (mspi->tx_len)
+ 		fsl_espi_fill_tx_fifo(mspi, events);
  
- 	mpc8xxx_spi->rx_len = t->len;
-@@ -295,8 +297,11 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
- 	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPCOM,
- 		(SPCOM_CS(spi->chip_select) | SPCOM_TRANLEN(t->len - 1)));
+-	if (!mspi->tx_len && !mspi->rx_len)
+-		complete(&mspi->done);
++	if (mspi->tx_len || mspi->rx_len)
++		return;
++
++	/* we're done, but check for errors before returning */
++	events = fsl_espi_read_reg(mspi, ESPI_SPIE);
++
++	if (!(events & SPIE_DON))
++		dev_err(mspi->dev,
++			"Transfer done but SPIE_DON isn't set!\n");
++
++	if (SPIE_RXCNT(events) || SPIE_TXCNT(events) != FSL_ESPI_FIFO_SIZE)
++		dev_err(mspi->dev, "Transfer done but rx/tx fifo's aren't empty!\n");
++
++	complete(&mspi->done);
+ }
  
--	/* enable rx ints */
--	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPIM, SPIM_RNE);
-+	/* enable interrupts */
-+	mask = SPIM_DON;
-+	if (mpc8xxx_spi->rx_len > FSL_ESPI_FIFO_SIZE)
-+		mask |= SPIM_RXT;
-+	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPIM, mask);
- 
- 	/* Prevent filling the fifo from getting interrupted */
- 	spin_lock_irq(&mpc8xxx_spi->lock);
+ static irqreturn_t fsl_espi_irq(s32 irq, void *context_data)
 -- 
 2.10.0
 

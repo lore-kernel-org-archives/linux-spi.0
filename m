@@ -1,11 +1,10 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 06/11] spi: fsl-espi: simplify and inline function
- fsl_espi_change_mode
-Date: Sun, 2 Oct 2016 14:23:22 +0200
-Message-ID: <0aeb49f0-dbfb-7acb-3829-cabafe4e7291@gmail.com>
+Subject: [PATCH 07/11] spi: fsl-espi: fix and improve reading from RX FIFO
+Date: Sun, 2 Oct 2016 14:23:27 +0200
+Message-ID: <1b7b3f5f-0b67-1799-1cb0-0ab6b3bdac54@gmail.com>
 References: <5b98be38-17a2-79a2-14da-fb2bb6f8820f@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 7bit
 Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
@@ -14,58 +13,101 @@ In-Reply-To: <5b98be38-17a2-79a2-14da-fb2bb6f8820f-Re5JQEeQqe8AvxtiuMwx3w@public
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The ESPI spec mentions no requirement to turn off the ESPI unit prior
-to changing the mode. Most likely the ESPI unit is only turned off to
-clear the FIFO's as before this patch series single bytes could
-remain in the TX FIFO after transfer end.
-Therefore remove disabling / re-enabling the ESPI unit.
+Currently the driver polls in the ISR for enough bytes in the RX FIFO.
+An ISR should never do this.
+Change it to read as much as possible whenever the ISR is called.
+This also allows to significantly simplify the code.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 23 ++---------------------
- 1 file changed, 2 insertions(+), 21 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 67 ++++++++++++++--------------------------------
+ 1 file changed, 20 insertions(+), 47 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index d9d9f7f..c3e55c8 100644
+index c3e55c8..5abbb62 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -223,26 +223,6 @@ static void fsl_espi_fill_tx_fifo(struct mpc8xxx_spi *mspi, u32 events)
+@@ -223,6 +223,24 @@ static void fsl_espi_fill_tx_fifo(struct mpc8xxx_spi *mspi, u32 events)
  		}
  }
  
--static void fsl_espi_change_mode(struct spi_device *spi)
--{
--	struct mpc8xxx_spi *mspi = spi_master_get_devdata(spi->master);
--	struct spi_mpc8xxx_cs *cs = spi->controller_state;
--	u32 tmp;
--	unsigned long flags;
--
--	/* Turn off IRQs locally to minimize time that SPI is disabled. */
--	local_irq_save(flags);
--
--	/* Turn off SPI unit prior changing mode */
--	tmp = fsl_espi_read_reg(mspi, ESPI_SPMODE);
--	fsl_espi_write_reg(mspi, ESPI_SPMODE, tmp & ~SPMODE_ENABLE);
--	fsl_espi_write_reg(mspi, ESPI_SPMODEx(spi->chip_select),
--			      cs->hw_mode);
--	fsl_espi_write_reg(mspi, ESPI_SPMODE, tmp);
--
--	local_irq_restore(flags);
--}
--
++static void fsl_espi_read_rx_fifo(struct mpc8xxx_spi *mspi, u32 events)
++{
++	u32 rx_fifo_avail = SPIE_RXCNT(events);
++
++	while (rx_fifo_avail >= min(4U, mspi->rx_len) && mspi->rx_len)
++		if (mspi->rx_len >= 4) {
++			*(u32 *)mspi->rx = fsl_espi_read_reg(mspi, ESPI_SPIRF);
++			mspi->rx += 4;
++			mspi->rx_len -= 4;
++			rx_fifo_avail -= 4;
++		} else {
++			*(u8 *)mspi->rx = fsl_espi_read_reg8(mspi, ESPI_SPIRF);
++			mspi->rx += 1;
++			mspi->rx_len -= 1;
++			rx_fifo_avail -= 1;
++		}
++}
++
  static void fsl_espi_setup_transfer(struct spi_device *spi,
  					struct spi_transfer *t)
  {
-@@ -276,7 +256,8 @@ static void fsl_espi_setup_transfer(struct spi_device *spi,
+@@ -418,53 +436,8 @@ static void fsl_espi_cleanup(struct spi_device *spi)
  
- 	cs->hw_mode |= CSMODE_PM(pm);
+ static void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
+ {
+-	/* We need handle RX first */
+-	if (events & SPIE_RNE) {
+-		u32 rx_data, tmp;
+-		u8 rx_data_8;
+-		int rx_nr_bytes = 4;
+-		int ret;
+-
+-		/* Spin until RX is done */
+-		if (SPIE_RXCNT(events) < min(4U, mspi->rx_len)) {
+-			ret = spin_event_timeout(
+-				!(SPIE_RXCNT(events =
+-				fsl_espi_read_reg(mspi, ESPI_SPIE)) <
+-						min(4U, mspi->rx_len)),
+-						10000, 0); /* 10 msec */
+-			if (!ret)
+-				dev_err(mspi->dev,
+-					 "tired waiting for SPIE_RXCNT\n");
+-		}
+-
+-		if (mspi->rx_len >= 4) {
+-			rx_data = fsl_espi_read_reg(mspi, ESPI_SPIRF);
+-		} else if (!mspi->rx_len) {
+-			dev_err(mspi->dev,
+-				"unexpected RX(SPIE_RNE) interrupt occurred,\n"
+-				"(local rxlen %d bytes, reg rxlen %d bytes)\n",
+-				min(4U, mspi->rx_len), SPIE_RXCNT(events));
+-			rx_nr_bytes = 0;
+-		} else {
+-			rx_nr_bytes = mspi->rx_len;
+-			tmp = mspi->rx_len;
+-			rx_data = 0;
+-			while (tmp--) {
+-				rx_data_8 = fsl_espi_read_reg8(mspi,
+-							       ESPI_SPIRF);
+-				rx_data |= (rx_data_8 << (tmp * 8));
+-			}
+-
+-			rx_data <<= (4 - mspi->rx_len) * 8;
+-		}
+-
+-		mspi->rx_len -= rx_nr_bytes;
+-
+-		if (mspi->rx) {
+-			*(u32 *)mspi->rx = rx_data;
+-			mspi->rx += 4;
+-		}
+-	}
++	if (mspi->rx_len)
++		fsl_espi_read_rx_fifo(mspi, events);
  
--	fsl_espi_change_mode(spi);
-+	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPMODEx(spi->chip_select),
-+			   cs->hw_mode);
- }
- 
- static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	if (mspi->tx_len)
+ 		fsl_espi_fill_tx_fifo(mspi, events);
 -- 
 2.10.0
 

@@ -1,82 +1,87 @@
-From: maitysanchayan@gmail.com
-Subject: Re: [PATCH v1 1/2] ARM: dts: vfxxx: Enable DMA for DSPI on Vybrid
-Date: Tue, 4 Oct 2016 10:02:29 +0530
-Message-ID: <20161004043228.GA1424@Sanchayan-Arch.localdomain>
-References: <63fc108e2df00d2297a9b7014955f203bc802f34.1475498805.git.maitysanchayan@gmail.com>
- <48b237c5d8709a67112465ea147f4c0c@agner.ch>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Cc: broonie@kernel.org, shawnguo@kernel.org, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, bhuvanchandra.dv@toradex.com
-To: Stefan Agner <stefan@agner.ch>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: omap2-mcspi: Fix modifying platform resource data" to the spi tree
+Date: Tue, 04 Oct 2016 11:27:17 +0200
+Message-ID: <E1brM0L-0003Zk-Qz@finisterre>
+References: <1405683053-14104-1-git-send-email-LW@KARO-electronics.de>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Benoit Cousson <bcousson@baylibre.com>,
+        Shubhrajyoti D <shubhrajyoti@ti.com>,
+        Charulatha V <charu@ti.com>,
+        =?UTF-8?q?Lothar=20Wa=C3=9Fmann?= <LW@KARO-electronics.de>,
+        linux-spi@vger.kernel.org
+To: Vikram N <vicky773@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <48b237c5d8709a67112465ea147f4c0c@agner.ch>
+In-Reply-To: <1405683053-14104-1-git-send-email-LW@KARO-electronics.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello Stefan,
+The patch
 
-On 16-10-03 11:05:59, Stefan Agner wrote:
-> On 2016-10-03 05:50, Sanchayan Maity wrote:
-> > Enable DMA for DSPI on Vybrid.
-> 
-> Hm, we have that in 4.4 already, is that meant for 4.1?
+   spi: omap2-mcspi: Fix modifying platform resource data
 
-Sorry?! I send this out for mainline and the patch series is based
-on top of shawn's for-next branch. Did not intend it for our downstream
-4.1.
+has been applied to the spi tree at
 
-Thanks.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-Regards,
-Stefan.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> 
-> > 
-> > Signed-off-by: Sanchayan Maity <maitysanchayan@gmail.com>
-> > ---
-> >  arch/arm/boot/dts/vf-colibri.dtsi | 4 ++++
-> >  arch/arm/boot/dts/vfxxx.dtsi      | 6 ++++++
-> >  2 files changed, 10 insertions(+)
-> > 
-> > diff --git a/arch/arm/boot/dts/vf-colibri.dtsi
-> > b/arch/arm/boot/dts/vf-colibri.dtsi
-> > index b741709..21bfef9 100644
-> > --- a/arch/arm/boot/dts/vf-colibri.dtsi
-> > +++ b/arch/arm/boot/dts/vf-colibri.dtsi
-> > @@ -108,6 +108,10 @@
-> >  	status = "okay";
-> >  };
-> >  
-> > +&edma1 {
-> > +	status = "okay";
-> > +};
-> > +
-> >  &esdhc1 {
-> >  	pinctrl-names = "default";
-> >  	pinctrl-0 = <&pinctrl_esdhc1>;
-> > diff --git a/arch/arm/boot/dts/vfxxx.dtsi b/arch/arm/boot/dts/vfxxx.dtsi
-> > index 2c13ec6..eac4213 100644
-> > --- a/arch/arm/boot/dts/vfxxx.dtsi
-> > +++ b/arch/arm/boot/dts/vfxxx.dtsi
-> > @@ -194,6 +194,9 @@
-> >  				clocks = <&clks VF610_CLK_DSPI0>;
-> >  				clock-names = "dspi";
-> >  				spi-num-chipselects = <6>;
-> > +				dmas = <&edma1 1 12>,
-> > +					<&edma1 1 13>;
-> > +				dma-names = "rx", "tx";
-> >  				status = "disabled";
-> >  			};
-> >  
-> > @@ -206,6 +209,9 @@
-> >  				clocks = <&clks VF610_CLK_DSPI1>;
-> >  				clock-names = "dspi";
-> >  				spi-num-chipselects = <4>;
-> > +				dmas = <&edma1 1 14>,
-> > +					<&edma1 1 15>;
-> > +				dma-names = "rx", "tx";
-> >  				status = "disabled";
-> >  			};
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 0142d2ee7e9f107248ebf69bd66037c536d3f6cc Mon Sep 17 00:00:00 2001
+From: Vikram N <vicky773@gmail.com>
+Date: Fri, 30 Sep 2016 19:53:11 +0530
+Subject: [PATCH] spi: omap2-mcspi: Fix modifying platform resource data
+
+currently during probe the resource data gets modified and device
+physical address remains valid only during first load. If the module is
+unloaded and loaded again, the ioremp will be done on a incorrect address
+as the resource was modified during previous module load.
+This patch fixes this issue.
+
+Signed-off-by: Vikram N <vicky773@gmail.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-omap2-mcspi.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index d5157b2222ce..3567e1dfd30d 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -1391,15 +1391,13 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
+ 		goto free_master;
+ 	}
+ 
+-	r->start += regs_offset;
+-	r->end += regs_offset;
+-	mcspi->phys = r->start;
+-
+ 	mcspi->base = devm_ioremap_resource(&pdev->dev, r);
+ 	if (IS_ERR(mcspi->base)) {
+ 		status = PTR_ERR(mcspi->base);
+ 		goto free_master;
+ 	}
++	mcspi->phys = r->start + regs_offset;
++	mcspi->base += regs_offset;
+ 
+ 	mcspi->dev = &pdev->dev;
+ 
+-- 
+2.9.3

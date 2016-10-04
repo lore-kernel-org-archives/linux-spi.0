@@ -1,413 +1,228 @@
-From: Sanchayan Maity <maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v2] spi: spi-fsl-dspi: Add DMA support for Vybrid
-Date: Tue,  4 Oct 2016 16:28:33 +0530
-Message-ID: <607397542d083f13dc98909958672eeb0d326c79.1475578195.git.maitysanchayan@gmail.com>
-References: <8ccf4f2f4e6739410d9e242f9d0e3f3bcc76d0e2.1475498805.git.maitysanchayan@gmail.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, stefan-XLVq0VzYD2Y@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, bhuvanchandra.dv-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org,
-        Sanchayan Maity <maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <8ccf4f2f4e6739410d9e242f9d0e3f3bcc76d0e2.1475498805.git.maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+From: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
+Subject: Re: [PATCH] spi: intel-ssc: add support for Intel SSC SPI controller
+Date: Tue, 4 Oct 2016 23:56:05 +0200
+Message-ID: <c90eff61-2aa9-130e-54de-fd8160ce97cd@hauke-m.de>
+References: <20161002214408.30329-1-hauke@hauke-m.de>
+ <20161004031303.mwn6rk54owuu6eto@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 8bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
+        thomas.langer-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, daniel.schwierzeck-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org, nbd-Vt+b4OUoWG0@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20161004031303.mwn6rk54owuu6eto-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Add DMA support for Vybrid.
+Hi,
 
-Signed-off-by: Sanchayan Maity <maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
-Changes since v1:
-- Change in the dspi_dma_xfer function. Use more apt DSPI_FIFO_SIZE
-instead of sizeof(u32)
-- Do not set RSER on every iteration of loop
+Thank you for the review. I will send a new version in the next days.
 
-Tested on Toradex Colibri Vybrid VF61 module with spi based MCP CAN 251x
-and spidev using RX/TX loopback and based on shawn's for-next branch
-currently at 4.8-rc1.
+On 10/04/2016 05:13 AM, Mark Brown wrote:
+> On Sun, Oct 02, 2016 at 11:44:08PM +0200, Hauke Mehrtens wrote:
+>> From: Daniel Schwierzeck <daniel.schwierzeck-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+>>
+>> This driver supports the Intel SSC SPI controller in master
+>> mode. This controller is found on Intel (former Lantiq) SoCs like
+>> the Danube, Falcon, xRX200, xRX300.
+> 
+> Can we please just call this Lantiq like all the other Lantiq IPs?
+> Intel has a number of other SPI controllers in use (there's at least the
+> Intel designed pxa2xx one, plus DesignWare) so just calling it the Intel
+> SPI controller isn't very clear and most people would assume it's for
+> x86 chips.
+> 
+> Overall this looks good, most of the comments below are about use of
+> more modern APIs.
+> 
+>> +config SPI_INTEL_SSC
+>> +	tristate "Intel SSC SPI controller"
+>> +	depends on LANTIQ
+> 
+> Why no || COMPILE_TEST?  Not being able to build on other architectures
+> makes the driver much harder to maintain.  It looks like this is just
+> for the fpi clock which is exported by the architecture in a very
+> unusual way.
 
-Regards,
-Sanchayan.
----
- drivers/spi/spi-fsl-dspi.c | 291 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 291 insertions(+)
+Yes this was not activated because of the fpi clock. I will try to make
+it work.
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 9e9dadb..0f81075 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -15,6 +15,8 @@
- 
- #include <linux/clk.h>
- #include <linux/delay.h>
-+#include <linux/dmaengine.h>
-+#include <linux/dma-mapping.h>
- #include <linux/err.h>
- #include <linux/errno.h>
- #include <linux/interrupt.h>
-@@ -40,6 +42,7 @@
- #define TRAN_STATE_WORD_ODD_NUM	0x04
- 
- #define DSPI_FIFO_SIZE			4
-+#define DSPI_DMA_BUFSIZE		(DSPI_FIFO_SIZE * 1024)
- 
- #define SPI_MCR		0x00
- #define SPI_MCR_MASTER		(1 << 31)
-@@ -71,6 +74,11 @@
- #define SPI_SR_EOQF		0x10000000
- #define SPI_SR_TCFQF		0x80000000
- 
-+#define SPI_RSER_TFFFE		BIT(25)
-+#define SPI_RSER_TFFFD		BIT(24)
-+#define SPI_RSER_RFDFE		BIT(17)
-+#define SPI_RSER_RFDFD		BIT(16)
-+
- #define SPI_RSER		0x30
- #define SPI_RSER_EOQFE		0x10000000
- #define SPI_RSER_TCFQE		0x80000000
-@@ -108,6 +116,8 @@
- 
- #define SPI_TCR_TCNT_MAX	0x10000
- 
-+#define DMA_COMPLETION_TIMEOUT	msecs_to_jiffies(3000)
-+
- struct chip_data {
- 	u32 mcr_val;
- 	u32 ctar_val;
-@@ -117,6 +127,7 @@ struct chip_data {
- enum dspi_trans_mode {
- 	DSPI_EOQ_MODE = 0,
- 	DSPI_TCFQ_MODE,
-+	DSPI_DMA_MODE,
- };
- 
- struct fsl_dspi_devtype_data {
-@@ -139,6 +150,22 @@ static const struct fsl_dspi_devtype_data ls2085a_data = {
- 	.max_clock_factor = 8,
- };
- 
-+struct fsl_dspi_dma {
-+	u32 curr_xfer_len;
-+
-+	u32 *tx_dma_buf;
-+	struct dma_chan *chan_tx;
-+	dma_addr_t tx_dma_phys;
-+	struct completion cmd_tx_complete;
-+	struct dma_async_tx_descriptor *tx_desc;
-+
-+	u32 *rx_dma_buf;
-+	struct dma_chan *chan_rx;
-+	dma_addr_t rx_dma_phys;
-+	struct completion cmd_rx_complete;
-+	struct dma_async_tx_descriptor *rx_desc;
-+};
-+
- struct fsl_dspi {
- 	struct spi_master	*master;
- 	struct platform_device	*pdev;
-@@ -165,6 +192,7 @@ struct fsl_dspi {
- 	u32			waitflags;
- 
- 	u32			spi_tcnt;
-+	struct fsl_dspi_dma	*dma;
- };
- 
- static inline int is_double_byte_mode(struct fsl_dspi *dspi)
-@@ -368,6 +396,259 @@ static void dspi_tcfq_read(struct fsl_dspi *dspi)
- 	dspi_data_from_popr(dspi, rx_word);
- }
- 
-+static void dspi_tx_dma_callback(void *arg)
-+{
-+	struct fsl_dspi *dspi = arg;
-+	struct fsl_dspi_dma *dma = dspi->dma;
-+
-+	complete(&dma->cmd_tx_complete);
-+}
-+
-+static void dspi_rx_dma_callback(void *arg)
-+{
-+	struct fsl_dspi *dspi = arg;
-+	struct fsl_dspi_dma *dma = dspi->dma;
-+	int rx_word;
-+	int i, len;
-+	u16 d;
-+
-+	rx_word = is_double_byte_mode(dspi);
-+
-+	len = rx_word ? (dma->curr_xfer_len / 2) : dma->curr_xfer_len;
-+
-+	if (!(dspi->dataflags & TRAN_STATE_RX_VOID)) {
-+		for (i = 0; i < len; i++) {
-+			d = dspi->dma->rx_dma_buf[i];
-+			rx_word ? (*(u16 *)dspi->rx = d) :
-+						(*(u8 *)dspi->rx = d);
-+			dspi->rx += rx_word + 1;
-+		}
-+	}
-+
-+	complete(&dma->cmd_rx_complete);
-+}
-+
-+static int dspi_next_xfer_dma_submit(struct fsl_dspi *dspi)
-+{
-+	struct fsl_dspi_dma *dma = dspi->dma;
-+	struct device *dev = &dspi->pdev->dev;
-+	int time_left;
-+	int tx_word;
-+	int i, len;
-+	u16 val;
-+
-+	tx_word = is_double_byte_mode(dspi);
-+
-+	len = tx_word ? (dma->curr_xfer_len / 2) : dma->curr_xfer_len;
-+
-+	for (i = 0; i < len - 1; i++) {
-+		val = tx_word ? *(u16 *) dspi->tx : *(u8 *) dspi->tx;
-+		dspi->dma->tx_dma_buf[i] =
-+			SPI_PUSHR_TXDATA(val) | SPI_PUSHR_PCS(dspi->cs) |
-+			SPI_PUSHR_CTAS(0) | SPI_PUSHR_CONT;
-+		dspi->tx += tx_word + 1;
-+	}
-+
-+	val = tx_word ? *(u16 *) dspi->tx : *(u8 *) dspi->tx;
-+	dspi->dma->tx_dma_buf[i] = SPI_PUSHR_TXDATA(val) |
-+					SPI_PUSHR_PCS(dspi->cs) |
-+					SPI_PUSHR_CTAS(0);
-+	dspi->tx += tx_word + 1;
-+
-+	dma->tx_desc = dmaengine_prep_slave_single(dma->chan_tx,
-+					dma->tx_dma_phys,
-+					DSPI_DMA_BUFSIZE, DMA_MEM_TO_DEV,
-+					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
-+	if (!dma->tx_desc) {
-+		dev_err(dev, "Not able to get desc for DMA xfer\n");
-+		return -EIO;
-+	}
-+
-+	dma->tx_desc->callback = dspi_tx_dma_callback;
-+	dma->tx_desc->callback_param = dspi;
-+	if (dma_submit_error(dmaengine_submit(dma->tx_desc))) {
-+		dev_err(dev, "DMA submit failed\n");
-+		return -EINVAL;
-+	}
-+
-+	dma->rx_desc = dmaengine_prep_slave_single(dma->chan_rx,
-+					dma->rx_dma_phys,
-+					DSPI_DMA_BUFSIZE, DMA_DEV_TO_MEM,
-+					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
-+	if (!dma->rx_desc) {
-+		dev_err(dev, "Not able to get desc for DMA xfer\n");
-+		return -EIO;
-+	}
-+
-+	dma->rx_desc->callback = dspi_rx_dma_callback;
-+	dma->rx_desc->callback_param = dspi;
-+	if (dma_submit_error(dmaengine_submit(dma->rx_desc))) {
-+		dev_err(dev, "DMA submit failed\n");
-+		return -EINVAL;
-+	}
-+
-+	reinit_completion(&dspi->dma->cmd_rx_complete);
-+	reinit_completion(&dspi->dma->cmd_tx_complete);
-+
-+	dma_async_issue_pending(dma->chan_rx);
-+	dma_async_issue_pending(dma->chan_tx);
-+
-+	time_left = wait_for_completion_timeout(&dspi->dma->cmd_tx_complete,
-+					DMA_COMPLETION_TIMEOUT);
-+	if (time_left == 0) {
-+		dev_err(dev, "DMA tx timeout\n");
-+		dmaengine_terminate_all(dma->chan_tx);
-+		dmaengine_terminate_all(dma->chan_rx);
-+		return -ETIMEDOUT;
-+	}
-+
-+	time_left = wait_for_completion_timeout(&dspi->dma->cmd_rx_complete,
-+					DMA_COMPLETION_TIMEOUT);
-+	if (time_left == 0) {
-+		dev_err(dev, "DMA rx timeout\n");
-+		dmaengine_terminate_all(dma->chan_tx);
-+		dmaengine_terminate_all(dma->chan_rx);
-+		return -ETIMEDOUT;
-+	}
-+
-+	return 0;
-+}
-+
-+static int dspi_dma_xfer(struct fsl_dspi *dspi)
-+{
-+	struct fsl_dspi_dma *dma = dspi->dma;
-+	struct device *dev = &dspi->pdev->dev;
-+	int curr_remaining_bytes;
-+	int ret = 0;
-+
-+	curr_remaining_bytes = dspi->len;
-+	while (curr_remaining_bytes) {
-+		/* Check if current transfer fits the DMA buffer */
-+		dma->curr_xfer_len = curr_remaining_bytes;
-+		if (curr_remaining_bytes > DSPI_DMA_BUFSIZE / DSPI_FIFO_SIZE)
-+			dma->curr_xfer_len = DSPI_DMA_BUFSIZE / DSPI_FIFO_SIZE;
-+
-+		ret = dspi_next_xfer_dma_submit(dspi);
-+		if (ret) {
-+			dev_err(dev, "DMA transfer failed\n");
-+			goto exit;
-+
-+		} else {
-+			curr_remaining_bytes -= dma->curr_xfer_len;
-+			if (curr_remaining_bytes < 0)
-+				curr_remaining_bytes = 0;
-+			dspi->len = curr_remaining_bytes;
-+		}
-+	}
-+
-+exit:
-+	return ret;
-+}
-+
-+static int dspi_request_dma(struct fsl_dspi *dspi, phys_addr_t phy_addr)
-+{
-+	struct fsl_dspi_dma *dma;
-+	struct dma_slave_config cfg;
-+	struct device *dev = &dspi->pdev->dev;
-+	int ret;
-+
-+	dma = devm_kzalloc(dev, sizeof(*dma), GFP_KERNEL);
-+	if (!dma)
-+		return -ENOMEM;
-+
-+	dma->chan_rx = dma_request_slave_channel(dev, "rx");
-+	if (!dma->chan_rx) {
-+		dev_err(dev, "rx dma channel not available\n");
-+		ret = -ENODEV;
-+		return ret;
-+	}
-+
-+	dma->chan_tx = dma_request_slave_channel(dev, "tx");
-+	if (!dma->chan_tx) {
-+		dev_err(dev, "tx dma channel not available\n");
-+		ret = -ENODEV;
-+		goto err_tx_channel;
-+	}
-+
-+	dma->tx_dma_buf = dma_alloc_coherent(dev, DSPI_DMA_BUFSIZE,
-+					&dma->tx_dma_phys, GFP_KERNEL);
-+	if (!dma->tx_dma_buf) {
-+		ret = -ENOMEM;
-+		goto err_tx_dma_buf;
-+	}
-+
-+	dma->rx_dma_buf = dma_alloc_coherent(dev, DSPI_DMA_BUFSIZE,
-+					&dma->rx_dma_phys, GFP_KERNEL);
-+	if (!dma->rx_dma_buf) {
-+		ret = -ENOMEM;
-+		goto err_rx_dma_buf;
-+	}
-+
-+	cfg.src_addr = phy_addr + SPI_POPR;
-+	cfg.dst_addr = phy_addr + SPI_PUSHR;
-+	cfg.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
-+	cfg.dst_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
-+	cfg.src_maxburst = 1;
-+	cfg.dst_maxburst = 1;
-+
-+	cfg.direction = DMA_DEV_TO_MEM;
-+	ret = dmaengine_slave_config(dma->chan_rx, &cfg);
-+	if (ret) {
-+		dev_err(dev, "can't configure rx dma channel\n");
-+		ret = -EINVAL;
-+		goto err_slave_config;
-+	}
-+
-+	cfg.direction = DMA_MEM_TO_DEV;
-+	ret = dmaengine_slave_config(dma->chan_tx, &cfg);
-+	if (ret) {
-+		dev_err(dev, "can't configure tx dma channel\n");
-+		ret = -EINVAL;
-+		goto err_slave_config;
-+	}
-+
-+	dspi->dma = dma;
-+	dspi->devtype_data->trans_mode = DSPI_DMA_MODE;
-+	init_completion(&dma->cmd_tx_complete);
-+	init_completion(&dma->cmd_rx_complete);
-+
-+	return 0;
-+
-+err_slave_config:
-+	devm_kfree(dev, dma->rx_dma_buf);
-+err_rx_dma_buf:
-+	devm_kfree(dev, dma->tx_dma_buf);
-+err_tx_dma_buf:
-+	dma_release_channel(dma->chan_tx);
-+err_tx_channel:
-+	dma_release_channel(dma->chan_rx);
-+
-+	devm_kfree(dev, dma);
-+	dspi->dma = NULL;
-+
-+	return ret;
-+}
-+
-+static void dspi_release_dma(struct fsl_dspi *dspi)
-+{
-+	struct fsl_dspi_dma *dma = dspi->dma;
-+	struct device *dev = &dspi->pdev->dev;
-+
-+	if (dma) {
-+		if (dma->chan_tx) {
-+			dma_unmap_single(dev, dma->tx_dma_phys,
-+					DSPI_DMA_BUFSIZE, DMA_TO_DEVICE);
-+			dma_release_channel(dma->chan_tx);
-+		}
-+
-+		if (dma->chan_rx) {
-+			dma_unmap_single(dev, dma->rx_dma_phys,
-+					DSPI_DMA_BUFSIZE, DMA_FROM_DEVICE);
-+			dma_release_channel(dma->chan_rx);
-+		}
-+	}
-+}
-+
- static int dspi_transfer_one_message(struct spi_master *master,
- 		struct spi_message *message)
- {
-@@ -424,6 +705,12 @@ static int dspi_transfer_one_message(struct spi_master *master,
- 			regmap_write(dspi->regmap, SPI_RSER, SPI_RSER_TCFQE);
- 			dspi_tcfq_write(dspi);
- 			break;
-+		case DSPI_DMA_MODE:
-+			regmap_write(dspi->regmap, SPI_RSER,
-+				SPI_RSER_TFFFE | SPI_RSER_TFFFD |
-+				SPI_RSER_RFDFE | SPI_RSER_RFDFD);
-+			status = dspi_dma_xfer(dspi);
-+			goto out;
- 		default:
- 			dev_err(&dspi->pdev->dev, "unsupported trans_mode %u\n",
- 				trans_mode);
-@@ -730,6 +1017,9 @@ static int dspi_probe(struct platform_device *pdev)
- 	}
- 	clk_prepare_enable(dspi->clk);
- 
-+	if (dspi_request_dma(dspi, res->start))
-+		dev_warn(&pdev->dev, "can't get dma channels\n");
-+
- 	master->max_speed_hz =
- 		clk_get_rate(dspi->clk) / dspi->devtype_data->max_clock_factor;
- 
-@@ -758,6 +1048,7 @@ static int dspi_remove(struct platform_device *pdev)
- 	struct fsl_dspi *dspi = spi_master_get_devdata(master);
- 
- 	/* Disconnect from the SPI framework */
-+	dspi_release_dma(dspi);
- 	clk_disable_unprepare(dspi->clk);
- 	spi_unregister_master(dspi->master);
- 	spi_master_put(dspi->master);
--- 
-2.10.0
+>> +static void hw_chipselect_set(struct intel_ssc_spi *spi, unsigned int cs)
+>> +{
+>> +	u32 fgpo = (1 << (cs - spi->base_cs + SPI_FGPO_SETOUTN_S));
+>> +	intel_ssc_spi_writel(spi, fgpo, SPI_FPGO);
+>> +}
+>> +
+>> +static void hw_chipselect_clear(struct intel_ssc_spi *spi, unsigned int cs)
+>> +{
+>> +	u32 fgpo = (1 << (cs - spi->base_cs));
+>> +	intel_ssc_spi_writel(spi, fgpo, SPI_FPGO);
+>> +}
+> 
+> We really need separate functions for this?
+> 
+>> +static void chipselect_enable(struct spi_device *spidev)
+>> +{
+>> +	struct intel_ssc_spi *spi = spi_master_get_devdata(spidev->master);
+>> +	struct intel_ssc_spi_cstate *cstate = spi_get_ctldata(spidev);
+>> +
+>> +	if (cstate->cs_gpio >= 0)
+>> +		gpio_set_value(cstate->cs_gpio, spidev->mode & SPI_CS_HIGH);
+>> +	else
+>> +		hw_chipselect_clear(spi, spidev->chip_select);
+> 
+> Please use the core support for GPIO chip selects rather than open
+> coding.
+> 
+>> +
+>> +	/* CS setup/recovery time */
+>> +	if (spi->cs_delay)
+>> +		ndelay(spi->cs_delay);
+> 
+> Please add this to the core, the idea of needing a settling time after
+> asserting chip select doesn't seem device specific.
+> 
+>> +		err = gpio_request(spidev->cs_gpio, dev_name(spi->dev));
+>> +		if (err)
+>> +			return err;
+>> +
+>> +		gpio_direction_output(spidev->cs_gpio,
+>> +			!(spidev->mode & SPI_CS_HIGH));
+> 
+> Use gpio_request_one() to combine these.
+> 
+>> +static void hw_finish_message(const struct intel_ssc_spi *spi)
+>> +{
+>> +	/* Disable interrupts */
+>> +	intel_ssc_spi_writel(spi, 0, SPI_IRNEN);
+>> +
+>> +	/* Disable transmitter and receiver */
+>> +	intel_ssc_spi_maskl(spi, 0, SPI_CON_TXOFF | SPI_CON_RXOFF, SPI_CON);
+>> +}
+> 
+> This needs to be done per message or just when the hardware idles?
 
+I can not find anything suggesting that this is needed after every
+message, just when the hardware is idle we should do it.
+
+>> +		switch (spi->bits_per_word) {
+> 
+>> +		default:
+>> +			WARN_ON(1);
+>> +		}
+> 
+> The driver hasn't set bits_per_word_mask, it should do so so that we've
+> got error checking for this further up the stack where it can be
+> usefully reported and so client drivers can discover what's supported.
+
+Thanks for the hint, I will set bits_per_word_mask. Then I do not have
+to manually check if the mask is supported any more, is that correct?
+
+>> +static irqreturn_t intel_ssc_spi_xmit_interrupt(int irq, void *data)
+>> +{
+>> +	struct intel_ssc_spi *spi = data;
+>> +
+>> +	/* handle possible interrupts after device initialization */
+>> +	if (!spi->rx && !spi->tx)
+>> +		return IRQ_HANDLED;
+> 
+> This is broken if the interrupt is ever shared - the driver should
+> really quiesce the hardware before requesting interrupts.  It also
+> prevents the interrupt core from handling things if there is ever a
+> problem which causes lots of spurious interrupts.  Why do we *need* to
+> do this?  It'd also be clearer if this were part of the if/else chain
+> below.
+
+This is probably a leftover form some older time.
+
+>> +				goto completed;
+>> +		} else
+>> +			goto completed;
+> 
+> Coding style, if one side of the if statement has brackets both should.
+> 
+>> +static int transfer_wait_finished(struct intel_ssc_spi *spi)
+>> +{
+>> +	unsigned long timeout;
+> 
+> The core already supports waiting for transfer completion?
+> 
+>> +static int intel_ssc_spi_transfer_one_message(struct spi_master *master,
+>> +					      struct spi_message *msg)
+> 
+> Why not implement transfer_one()?  This seems to just duplicate the
+> standard implementation.
+
+Yes I will look into this. The chip documentation says that we should
+not change the clock while a chip select is active becasue this could be
+interpreed as data by the device. How should I handle the speed_hz
+member in the transfer?
+
+>> +		status = spi->status;
+>> +		if (status) {
+>> +			dev_err(spi->dev, "transfer failed\n");
+>> +			goto done;
+>> +		}
+> 
+> There's no need to log this, let the generic code do it if it's useful
+> since we're not adding any detail here (or incuding the error value).
+> 
+>> +static int intel_ssc_spi_prepare_transfer(struct spi_master *master)
+>> +{
+>> +	struct intel_ssc_spi *spi = spi_master_get_devdata(master);
+>> +
+>> +	pm_runtime_get_sync(spi->dev);
+> 
+> Use the core runtime PM support, it avoids duplication and checks the
+> return values.  auto_runtime_pm.
+> 
+>> +	tx_irq = platform_get_irq_byname(pdev, SPI_TX_IRQ_NAME);
+> 
+> I'm not sure the define is helping readabiliy here.
+> 
+>> +	spi->spi_clk = devm_clk_get(&pdev->dev, NULL);
+>> +	if (IS_ERR(spi->spi_clk)) {
+>> +		err = PTR_ERR(spi->spi_clk);
+>> +		goto err_master_put;
+>> +	}
+>> +	clk_prepare_enable(spi->spi_clk);
+> 
+> Check the return code here.
+> 
+>> +	spi->fpi_clk = clk_get_fpi();
+>> +	if (IS_ERR(spi->fpi_clk)) {
+>> +		err = PTR_ERR(spi->fpi_clk);
+>> +		goto err_clk_disable;
+>> +	}
+> 
+> This is pretty horrible, why does the platform not just export the FPI
+> clock as a normal clock?  clk_get(NULL, "fpi") would work just fine as
+> an interface and avoid the needless platform dependency here (as would
+> explicitly mapping it in per device).  It looks like there's only one
+> existing user so this would be easy to fix.
+
+The clock hanlding was done for kernel 3.4 when all this was very new
+and more or less not existing for MIPS. There is a patch series to
+convert it to modern frameworks on github:
+https://github.com/xdarklight/linux/commits/lantiq-clk-20160123 This
+should go into mainline probably soon.
+
+> 
+>> +	clk_disable_unprepare(spi->spi_clk);
+>> +	clk_put(spi->fpi_clk);
+> 
+> You used devm_clk_get() but you're calling clk_put() here.  Not only is
+> this redundant but if you do explicitly need to free a devm_ allocated
+> thing you should use the matching devm_ function (devm_clk_put() here)
+> to ensure that the managed deallocation is removed.
+
+I am calling clk_put on the fpi_clk which I got throgh clk_get_fpi(). I
+do not call put on the spi_clk.
+
+Hauke
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

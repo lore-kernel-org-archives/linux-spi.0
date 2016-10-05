@@ -1,82 +1,77 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: intel-ssc: add support for Intel SSC SPI controller
-Date: Wed, 5 Oct 2016 17:25:27 +0200
-Message-ID: <20161005152527.u7jjlo5sd57hazbj@sirena.org.uk>
-References: <20161002214408.30329-1-hauke@hauke-m.de>
- <20161004031303.mwn6rk54owuu6eto@sirena.org.uk>
- <c90eff61-2aa9-130e-54de-fd8160ce97cd@hauke-m.de>
+From: <tthayer@opensource.altera.com>
+Subject: [PATCH] spi: dw: Enable Slave Select with GPIO Chip Select.
+Date: Wed, 5 Oct 2016 16:38:58 -0500
+Message-ID: <1475703538-5018-1-git-send-email-tthayer@opensource.altera.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="w4bi36jjogpypzld"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, hauke.mehrtens-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
-        thomas.langer-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, daniel.schwierzeck-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-        john-Pj+rj9U5foFAfugRpC6u6w@public.gmane.org, nbd-Vt+b4OUoWG0@public.gmane.org
-To: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <c90eff61-2aa9-130e-54de-fd8160ce97cd-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain
+Cc: <andriy.shevchenko@linux.intel.com>,
+        <jarkko.nikula@linux.intel.com>, <jszhang@marvell.com>,
+        <michael@smart-africa.com>, <kernel@mseidel.net>,
+        <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <tthayer@opensource.altera.com>
+To: <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+From: Thor Thayer <tthayer@opensource.altera.com>
 
---w4bi36jjogpypzld
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Currently in the GPIO CS case, the transfer is stalled. The DesignWare
+IP datasheet points out that the slave must be selected (SER) before the
+transfer can start [1]. The SPI framework selects the chip using either
+1) the internal CS mechanism or 2) the GPIO CS, but not both.
 
-On Tue, Oct 04, 2016 at 11:56:05PM +0200, Hauke Mehrtens wrote:
-> On 10/04/2016 05:13 AM, Mark Brown wrote:
+This patch adds the Slave Select locally so that the transfer will
+start and complete. The GPIO CS is taken care of earlier in the SPI
+framework (spi_set_cs).
 
-> >> +static void hw_finish_message(const struct intel_ssc_spi *spi)
-> >> +{
-> >> +	/* Disable interrupts */
-> >> +	intel_ssc_spi_writel(spi, 0, SPI_IRNEN);
-> >> +
-> >> +	/* Disable transmitter and receiver */
-> >> +	intel_ssc_spi_maskl(spi, 0, SPI_CON_TXOFF | SPI_CON_RXOFF, SPI_CON);
-> >> +}
+Tested On:
+    Altera CycloneV development kit
+    Compile tested for build errors on x86_64 (allyesconfigs)
 
-> > This needs to be done per message or just when the hardware idles?
+[1] DesignWare dw_apb_ssi Databook, Version 3.20a (page 39)
 
-> I can not find anything suggesting that this is needed after every
-> message, just when the hardware is idle we should do it.
+Signed-off-by: Thor Thayer <tthayer@opensource.altera.com>
+---
+ drivers/spi/spi-dw.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-Make it an unprepare_transfer_hardware() then and let the core figure
-out when to call it.
-
-> Thanks for the hint, I will set bits_per_word_mask. Then I do not have
-> to manually check if the mask is supported any more, is that correct?
-
-Yes.
-
-> >> +static int intel_ssc_spi_transfer_one_message(struct spi_master *master,
-> >> +					      struct spi_message *msg)
-
-> > Why not implement transfer_one()?  This seems to just duplicate the
-> > standard implementation.
-
-> Yes I will look into this. The chip documentation says that we should
-> not change the clock while a chip select is active becasue this could be
-> interpreed as data by the device. How should I handle the speed_hz
-> member in the transfer?
-
-Return an error (you need to do that regardless of open coding or not).
-
---w4bi36jjogpypzld
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEcBAABCAAGBQJX9RtmAAoJECTWi3JdVIfQAQAH/3msFGzsWbVOFK1dwHvbHeiz
-DxZ6DNYkAyjS2UB4c2PR6VP28b3Ya212FLHqzj7TyNnUpOJbT93P7rEd1BgFHr4k
-sXpiEisbMAYiY7Fw/Yg5mSsrzV+XpODE4PxV/KY8CHQNH1CWYzsye92/UZ9ns3c4
-HEo4ud/hYqHnwWuztusL/OptMmHVSCtw85BQxRxy6N59yDqbwsbqocHlSZptrIpX
-S9mVHDDfLDkxLxFSX3Luh0dhDiZFAB3roxhsYIVt5koX0Rnk1VVdljrnXLcOWGaE
-eZIvACZSwL+TaheOeA8zilwljYGFFAxxvgWnzJPC8JD7PNr7DNXSl5iBRXzOlZ4=
-=eTQM
------END PGP SIGNATURE-----
-
---w4bi36jjogpypzld--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index 27960e4..86e321d 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -296,6 +296,10 @@ static int dw_spi_transfer_one(struct spi_master *master,
+ 
+ 	spi_enable_chip(dws, 0);
+ 
++	/* Slave select required before transfer can begin. Force in gpio CS */
++	if (gpio_is_valid(spi->cs_gpio))
++		dw_spi_set_cs(spi, 0);
++
+ 	/* Handle per transfer options for bpw and speed */
+ 	if (transfer->speed_hz != dws->current_freq) {
+ 		if (transfer->speed_hz != chip->speed_hz) {
+@@ -390,6 +394,10 @@ static void dw_spi_handle_err(struct spi_master *master,
+ 	if (dws->dma_mapped)
+ 		dws->dma_ops->dma_stop(dws);
+ 
++	/* Cleanup Slave Select in gpio CS case */
++	if (gpio_is_valid(msg->spi->cs_gpio))
++		dw_spi_set_cs(msg->spi, 1);
++
+ 	spi_reset_chip(dws);
+ }
+ 
+@@ -440,6 +448,10 @@ static void dw_spi_cleanup(struct spi_device *spi)
+ {
+ 	struct chip_data *chip = spi_get_ctldata(spi);
+ 
++	/* Cleanup Slave Select in gpio CS case */
++	if (gpio_is_valid(spi->cs_gpio))
++		dw_spi_set_cs(spi, 1);
++
+ 	kfree(chip);
+ 	spi_set_ctldata(spi, NULL);
+ }
+-- 
+1.7.9.5

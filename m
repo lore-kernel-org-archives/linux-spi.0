@@ -1,9 +1,9 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: fsl-espi: reject MSB-first transfers with word sizes other than 8 or 16" to the spi tree
+Subject: Applied "spi: spidev: Add device to spidev device tree compatibility list" to the spi tree
 Date: Thu, 06 Oct 2016 18:03:31 +0200
-Message-ID: <E1bsB8t-0001sJ-0N@finisterre>
+Message-ID: <E1bsB8t-0001to-IB@finisterre>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Fabien Lahoudere <fabien.lahoudere-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: 
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
@@ -11,7 +11,7 @@ List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: fsl-espi: reject MSB-first transfers with word sizes other than 8 or 16
+   spi: spidev: Add device to spidev device tree compatibility list
 
 has been applied to the spi tree at
 
@@ -36,51 +36,40 @@ to this mail.
 Thanks,
 Mark
 
->From 3a38341deb01bf136ce40859bfc6f38f63b1c9e6 Mon Sep 17 00:00:00 2001
-From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Sun, 2 Oct 2016 14:22:35 +0200
-Subject: [PATCH] spi: fsl-espi: reject MSB-first transfers with word sizes
- other than 8 or 16
+>From 1edc5d4f777f43ab5b10c6c3d160990d1da33126 Mon Sep 17 00:00:00 2001
+From: Fabien Lahoudere <fabien.lahoudere-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>
+Date: Thu, 6 Oct 2016 16:44:27 +0200
+Subject: [PATCH] spi: spidev: Add device to spidev device tree compatibility
+ list
 
-According to the ESPI spec MSB-first transfers are supported for
-word size 8 and 16 only.
+Entries are needed in the spidev ID list to configure configure it from a
+device tree. Add entry for the following device:
+- "ge,achc" :  GE Healthcare USB Management Controller
 
-Check for this and reject MSB-first transfers with other word sizes.
+The USB Management Controller does not expose USB to the host, but acts as
+an offload engine, communicating with specific USB based data acquisition
+devices which are connected to it, extracting the required data and
+providing it to the host via other methods. SPI is used as an out-of-band
+configuration channel.
 
-Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Fabien Lahoudere <fabien.lahoudere-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/spi/spidev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 1f97cce615d3..65bb70d3bfc4 100644
---- a/drivers/spi/spi-fsl-espi.c
-+++ b/drivers/spi/spi-fsl-espi.c
-@@ -153,6 +153,7 @@ static int fsl_espi_check_message(struct spi_message *m)
- 
- 	first = list_first_entry(&m->transfers, struct spi_transfer,
- 				 transfer_list);
-+
- 	list_for_each_entry(t, &m->transfers, transfer_list) {
- 		if (first->bits_per_word != t->bits_per_word ||
- 		    first->speed_hz != t->speed_hz) {
-@@ -161,6 +162,15 @@ static int fsl_espi_check_message(struct spi_message *m)
- 		}
- 	}
- 
-+	/* ESPI supports MSB-first transfers for word size 8 / 16 only */
-+	if (!(m->spi->mode & SPI_LSB_FIRST) && first->bits_per_word != 8 &&
-+	    first->bits_per_word != 16) {
-+		dev_err(mspi->dev,
-+			"MSB-first transfer not supported for wordsize %u\n",
-+			first->bits_per_word);
-+		return -EINVAL;
-+	}
-+
- 	return 0;
- }
- 
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 2e05046f866b..9e2e099baf8c 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -696,6 +696,7 @@ static struct class *spidev_class;
+ static const struct of_device_id spidev_dt_ids[] = {
+ 	{ .compatible = "rohm,dh2228fv" },
+ 	{ .compatible = "lineartechnology,ltc2488" },
++	{ .compatible = "ge,achc" },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, spidev_dt_ids);
 -- 
 2.9.3
 

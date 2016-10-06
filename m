@@ -1,36 +1,42 @@
-From: Thor Thayer <tthayer@opensource.altera.com>
-Subject: Re: [PATCH] spi: dw: Enable Slave Select with GPIO Chip Select.
-Date: Thu, 6 Oct 2016 09:15:02 -0500
-Message-ID: <2df0001c-dd59-1352-f5be-a22a9798a357@opensource.altera.com>
-References: <1475703538-5018-1-git-send-email-tthayer@opensource.altera.com>
- <20161006093755.kv6tondkeauu5oz2@sirena.org.uk>
-Reply-To: <tthayer@opensource.altera.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: <andriy.shevchenko@linux.intel.com>,
-        <jarkko.nikula@linux.intel.com>, <jszhang@marvell.com>,
-        <michael@smart-africa.com>, <kernel@mseidel.net>,
-        <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: Mark Brown <broonie@kernel.org>
+From: Fabien Lahoudere <fabien.lahoudere@collabora.co.uk>
+Subject: [PATCH v2 1/1] Add device to spidev device tree compatibility list
+Date: Thu,  6 Oct 2016 16:44:27 +0200
+Message-ID: <1475765067-29403-1-git-send-email-fabien.lahoudere@collabora.co.uk>
+References: <20160930160832.fnnvxkwdh5ex4xqt@sirena.org.uk>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Fabien Lahoudere <fabien.lahoudere@collabora.co.uk>
+To: broonie@kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20161006093755.kv6tondkeauu5oz2@sirena.org.uk>
+In-Reply-To: <20160930160832.fnnvxkwdh5ex4xqt@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Entries are needed in the spidev ID list to configure configure it from a
+device tree. Add entry for the following device:
+- "ge,achc" :  GE Healthcare USB Management Controller
 
+The USB Management Controller does not expose USB to the host, but acts as
+an offload engine, communicating with specific USB based data acquisition
+devices which are connected to it, extracting the required data and
+providing it to the host via other methods. SPI is used as an out-of-band
+configuration channel.
 
-On 10/06/2016 04:37 AM, Mark Brown wrote:
-> On Wed, Oct 05, 2016 at 04:38:58PM -0500, tthayer@opensource.altera.com wrote:
->
->> This patch adds the Slave Select locally so that the transfer will
->> start and complete. The GPIO CS is taken care of earlier in the SPI
->> framework (spi_set_cs).
->
-> This seems like something that other devices might need - it's not the
-> first time I heard of a device with the data transfer start and chip
-> select being tied together.  Why not make this a generic feature that
-> the core implements and drivers can enable?
->
-OK. Thanks for the suggestion and review. I'll add a new boolean and 
-device tree binding to the SPI core. Thanks.
+Signed-off-by: Fabien Lahoudere <fabien.lahoudere@collabora.co.uk>
+---
+ drivers/spi/spidev.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 2e05046..9e2e099 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -696,6 +696,7 @@ static struct class *spidev_class;
+ static const struct of_device_id spidev_dt_ids[] = {
+ 	{ .compatible = "rohm,dh2228fv" },
+ 	{ .compatible = "lineartechnology,ltc2488" },
++	{ .compatible = "ge,achc" },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, spidev_dt_ids);
+-- 
+2.1.4

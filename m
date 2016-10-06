@@ -1,38 +1,76 @@
-From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 02/11] spi: fsl-espi: remove unneeded check for
- SPI_QE_CPU_MODE
-Date: Thu, 6 Oct 2016 20:36:29 +0200
-Message-ID: <bbe77580-1ac2-4071-5d7d-f786c54ad177@gmail.com>
-References: <5b98be38-17a2-79a2-14da-fb2bb6f8820f@gmail.com>
- <20608368-44e6-21f8-d970-5ade9990ce59@gmail.com>
- <20161006154543.rxlrc3sumejozpcg@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20161006154543.rxlrc3sumejozpcg-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Shuah Khan <shuahkh@osg.samsung.com>
+Subject: [PATCH v2 0/2] Moving runnable code from Documentation (last 2 patches)
+Date: Thu,  6 Oct 2016 17:48:50 -0600
+Message-ID: <cover.1475792538.git.shuahkh@osg.samsung.com>
+Cc: Shuah Khan <shuahkh@osg.samsung.com>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-kbuild@vger.kernel.org, linux-media@vger.kernel.org
+To: corbet@lwn.net, broonie@kernel.org, tglx@linutronix.de,
+        mmarek@suse.com, mchehab@kernel.org, davem@davemloft.net,
+        ecree@solarflare.com, arnd@arndb.de, j.anaszewski@samsung.com,
+        akpm@linux-foundation.org, keescook@chromium.org, mingo@kernel.org,
+        paulmck@linux.vnet.ibm.com, dan.j.williams@intel.com,
+        aryabinin@virtuozzo.com, tj@kernel.org, jpoimboe@redhat.com,
+        nikolay@cumulusnetworks.com, dvyukov@google.com, olof@lixom.net,
+        nab@linux-iscsi.org, rostedt@goodmis.org, hans.verkuil@cisco.com,
+        valentinrothberg@gmail.com, paul.gortmaker@windriver.com
+Return-path: <linux-doc-owner@vger.kernel.org>
+Sender: linux-doc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Am 06.10.2016 um 17:45 schrieb Mark Brown:
-> On Sun, Oct 02, 2016 at 02:22:48PM +0200, Heiner Kallweit wrote:
->> SPI_QE_CPU_MODE doesn't exist for ESPI and is set by of_mpc8xxx_spi_probe
->> based on DT property "mode". This property is not defined for ESPI,
->> see Documentation/devicetree/bindings/spi/fsl-spi.txt
->> Therefore remove the check.
-> 
-> Shouldn't we be warning if we encounter a DT that has this set since it
-> probably indicates that something went wrong?
-> 
-The values of mpc8xxx_spi->rx_shift and mpc8xxx_spi->tx_shift were
-overwritten in fsl_espi_setup_transfer anyway. Therefore the removed
-code effectively was dead code.
-As we just remove dead code and don't change the behavior of the driver
-I see no need to introduce an additional check / warning.
+This patch series contains the last 2 patches to complete moving runnable
+code from Documentation to selftests, samples, and tools.
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+The first patch moves blackfin gptimers-example to samples, removes
+BUILD_DOCSRC and updates BUILD_DOCSRC dependencies.
+
+The second one updates 00-INDEX files under Documentation to reflect the
+move of runnable code from Documentation.
+
+Patch 0001 Changes since v1:
+- Fixed make htmldocs and make distclean failures. Documentation/Makefile
+  is not deleted to avoid these failures. Makefile.sphinx could be renamed
+  to be the Documentation Makefile in a future patch.
+- Fixed samples/Kconfig error in v1 that preserved the 'CONFIG_'
+  prefix (i.e., depends on CONFIG_BLACKFIN && CONFIG_BFIN_GPTIMERS...),
+  rendering SAMPLE_BLACKFIN_GPTIMERS to be dead.
+- Updated rivers/media/v4l2-core/Kconfig (VIDEO_PCI_SKELETON) dependency
+  on BUILD_DOCSRC.
+- Added Acks from Jon Corbet, Michal Marek, and reviewed by from Kees Cook
+- Added Reported-by from Valentin Rothberg, and Paul Gortmaker.
+
+Patch 0002 Changes since v1:
+- Updated Documentation/timers/00-INDEX to remove hpet_example.c. I missed
+  this change in v1.
+- Added Acks from Jon Corbet, Michal Marek, and reviewed by from Kees Cook
+
+Shuah Khan (2):
+  samples: move blackfin gptimers-example from Documentation
+  Doc: update 00-INDEX files to reflect the runnable code move
+
+ Documentation/00-INDEX                    |  3 +-
+ Documentation/Makefile                    |  2 +-
+ Documentation/arm/00-INDEX                |  2 -
+ Documentation/blackfin/00-INDEX           |  4 --
+ Documentation/blackfin/Makefile           |  5 --
+ Documentation/blackfin/gptimers-example.c | 91 -------------------------------
+ Documentation/filesystems/00-INDEX        |  2 -
+ Documentation/networking/00-INDEX         |  2 -
+ Documentation/spi/00-INDEX                |  2 -
+ Documentation/timers/00-INDEX             |  4 --
+ Makefile                                  |  3 -
+ drivers/media/v4l2-core/Kconfig           |  2 +-
+ lib/Kconfig.debug                         |  9 ---
+ samples/Kconfig                           |  6 ++
+ samples/Makefile                          |  2 +-
+ samples/blackfin/Makefile                 |  1 +
+ samples/blackfin/gptimers-example.c       | 91 +++++++++++++++++++++++++++++++
+ 17 files changed, 103 insertions(+), 128 deletions(-)
+ delete mode 100644 Documentation/blackfin/Makefile
+ delete mode 100644 Documentation/blackfin/gptimers-example.c
+ create mode 100644 samples/blackfin/Makefile
+ create mode 100644 samples/blackfin/gptimers-example.c
+
+-- 
+2.7.4
+

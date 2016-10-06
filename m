@@ -1,77 +1,54 @@
-From: <tthayer@opensource.altera.com>
-Subject: [PATCH] spi: dw: Enable Slave Select with GPIO Chip Select.
-Date: Wed, 5 Oct 2016 16:38:58 -0500
-Message-ID: <1475703538-5018-1-git-send-email-tthayer@opensource.altera.com>
+From: Fabien Lahoudere <fabien.lahoudere-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>
+Subject: Re: [PATCH 1/1] Add devices to spidev device tree compatibility list
+Date: Thu, 6 Oct 2016 10:01:30 +0200
+Message-ID: <49803380-8bc0-2bfa-1947-e4fcafa15778@collabora.co.uk>
+References: <1475230554-5986-1-git-send-email-fabien.lahoudere@collabora.co.uk>
+ <CAMuHMdVY78gNfq0FyXTEBxCZy7LqqOL3UqumW9P=46NgW1SASA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <andriy.shevchenko@linux.intel.com>,
-        <jarkko.nikula@linux.intel.com>, <jszhang@marvell.com>,
-        <michael@smart-africa.com>, <kernel@mseidel.net>,
-        <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <tthayer@opensource.altera.com>
-To: <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CAMuHMdVY78gNfq0FyXTEBxCZy7LqqOL3UqumW9P=46NgW1SASA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Thor Thayer <tthayer@opensource.altera.com>
+Hi,
 
-Currently in the GPIO CS case, the transfer is stalled. The DesignWare
-IP datasheet points out that the slave must be selected (SER) before the
-transfer can start [1]. The SPI framework selects the chip using either
-1) the internal CS mechanism or 2) the GPIO CS, but not both.
+On 30/09/16 19:35, Geert Uytterhoeven wrote:
+> On Fri, Sep 30, 2016 at 12:15 PM, Fabien Lahoudere
+> <fabien.lahoudere-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org> wrote:
+>> Entries are needed in the spidev ID list to configure configure it from a
+>> device tree. Add entries for the following devices:
+>
+>> - "exar,xra1403" : a GPIO expander
+>
+> Looks like a suitable target for a drivers/gpio/ driver.
+> Datasheet available at
+> https://www.exar.com/product/interface/bridges/bridging-solutions/spi-gpio-expanders/xra1403
+>
 
-This patch adds the Slave Select locally so that the transfer will
-start and complete. The GPIO CS is taken care of earlier in the SPI
-framework (spi_set_cs).
+Good idea, however we have to measure impact of this change on the project.
 
-Tested On:
-    Altera CycloneV development kit
-    Compile tested for build errors on x86_64 (allyesconfigs)
+Thanks
 
-[1] DesignWare dw_apb_ssi Databook, Version 3.20a (page 39)
+Fabien
 
-Signed-off-by: Thor Thayer <tthayer@opensource.altera.com>
----
- drivers/spi/spi-dw.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index 27960e4..86e321d 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -296,6 +296,10 @@ static int dw_spi_transfer_one(struct spi_master *master,
- 
- 	spi_enable_chip(dws, 0);
- 
-+	/* Slave select required before transfer can begin. Force in gpio CS */
-+	if (gpio_is_valid(spi->cs_gpio))
-+		dw_spi_set_cs(spi, 0);
-+
- 	/* Handle per transfer options for bpw and speed */
- 	if (transfer->speed_hz != dws->current_freq) {
- 		if (transfer->speed_hz != chip->speed_hz) {
-@@ -390,6 +394,10 @@ static void dw_spi_handle_err(struct spi_master *master,
- 	if (dws->dma_mapped)
- 		dws->dma_ops->dma_stop(dws);
- 
-+	/* Cleanup Slave Select in gpio CS case */
-+	if (gpio_is_valid(msg->spi->cs_gpio))
-+		dw_spi_set_cs(msg->spi, 1);
-+
- 	spi_reset_chip(dws);
- }
- 
-@@ -440,6 +448,10 @@ static void dw_spi_cleanup(struct spi_device *spi)
- {
- 	struct chip_data *chip = spi_get_ctldata(spi);
- 
-+	/* Cleanup Slave Select in gpio CS case */
-+	if (gpio_is_valid(spi->cs_gpio))
-+		dw_spi_set_cs(spi, 1);
-+
- 	kfree(chip);
- 	spi_set_ctldata(spi, NULL);
- }
--- 
-1.7.9.5
+> Gr{oetje,eeting}s,
+>
+>                         Geert
+>
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+>
+> In personal conversations with technical people, I call myself a hacker. But
+> when I'm talking to journalists I just say "programmer" or something like that.
+>                                 -- Linus Torvalds
+>
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

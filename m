@@ -1,53 +1,52 @@
-From: Fabien Lahoudere <fabien.lahoudere-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>
-Subject: Re: [PATCH 1/1] Add devices to spidev device tree compatibility list
-Date: Thu, 6 Oct 2016 10:01:30 +0200
-Message-ID: <49803380-8bc0-2bfa-1947-e4fcafa15778@collabora.co.uk>
-References: <1475230554-5986-1-git-send-email-fabien.lahoudere@collabora.co.uk>
- <CAMuHMdVY78gNfq0FyXTEBxCZy7LqqOL3UqumW9P=46NgW1SASA@mail.gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: dw: Enable Slave Select with GPIO Chip Select.
+Date: Thu, 6 Oct 2016 11:37:55 +0200
+Message-ID: <20161006093755.kv6tondkeauu5oz2@sirena.org.uk>
+References: <1475703538-5018-1-git-send-email-tthayer@opensource.altera.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="ae2icfuas7dz3v5v"
+Cc: andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
+        jszhang-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org, michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org, kernel-NoMTM8u0nx3R7s880joybQ@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAMuHMdVY78gNfq0FyXTEBxCZy7LqqOL3UqumW9P=46NgW1SASA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1475703538-5018-1-git-send-email-tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi,
 
-On 30/09/16 19:35, Geert Uytterhoeven wrote:
-> On Fri, Sep 30, 2016 at 12:15 PM, Fabien Lahoudere
-> <fabien.lahoudere-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org> wrote:
->> Entries are needed in the spidev ID list to configure configure it from a
->> device tree. Add entries for the following devices:
->
->> - "exar,xra1403" : a GPIO expander
->
-> Looks like a suitable target for a drivers/gpio/ driver.
-> Datasheet available at
-> https://www.exar.com/product/interface/bridges/bridging-solutions/spi-gpio-expanders/xra1403
->
+--ae2icfuas7dz3v5v
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Good idea, however we have to measure impact of this change on the project.
+On Wed, Oct 05, 2016 at 04:38:58PM -0500, tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org wrote:
 
-Thanks
+> This patch adds the Slave Select locally so that the transfer will
+> start and complete. The GPIO CS is taken care of earlier in the SPI
+> framework (spi_set_cs).
 
-Fabien
+This seems like something that other devices might need - it's not the
+first time I heard of a device with the data transfer start and chip
+select being tied together.  Why not make this a generic feature that
+the core implements and drivers can enable?
 
-> Gr{oetje,eeting}s,
->
->                         Geert
->
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
->
-> In personal conversations with technical people, I call myself a hacker. But
-> when I'm talking to journalists I just say "programmer" or something like that.
->                                 -- Linus Torvalds
->
+--ae2icfuas7dz3v5v
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEcBAABCAAGBQJX9htwAAoJECTWi3JdVIfQXqUIAIOwBbezrzCG+vo1W4jvdL69
+0IIZVJi/hqAWRRyA4GwQkxtk9PeJulbcwCy5/2hBOu6nlHcg4Oa2+ggQzzkCVc0E
+ToIshHZ6uxEgd2zCTSj6BwhCfZIadCCAOyY4L2ZqaeA/2AKUqP4daz0cLFjxGheZ
+Ndso3mqge6hBd3SO5ZFov+XMC7w0rNxrAR50PtJgXUvj27/8ckP3/lLZLj6++VFP
+vcrnIY4GjcrtasvwDaQeWz0xN0mdxDoEpjXu36uyC7nWjo/625fM0hQoNdLRGcUN
+vU/BpACOq3GOyVdpsm0MGebsq2vobRqv766MqS5+lFS42nA0nImXskcfeN+OUtY=
+=Lmk8
+-----END PGP SIGNATURE-----
+
+--ae2icfuas7dz3v5v--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

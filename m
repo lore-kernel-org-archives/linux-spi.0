@@ -1,125 +1,73 @@
-From: Shuah Khan <shuahkh@osg.samsung.com>
-Subject: [PATCH v2 2/2] Doc: update 00-INDEX files to reflect the runnable code move
-Date: Thu,  6 Oct 2016 17:48:52 -0600
-Message-ID: <1f6bf489083cdf1173ab165efa921878f6038d8e.1475792539.git.shuahkh@osg.samsung.com>
-References: <cover.1475792538.git.shuahkh@osg.samsung.com>
-Cc: Shuah Khan <shuahkh@osg.samsung.com>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-kbuild@vger.kernel.org, linux-media@vger.kernel.org
-To: corbet@lwn.net, broonie@kernel.org, tglx@linutronix.de,
-        mmarek@suse.com, mchehab@kernel.org, davem@davemloft.net,
-        ecree@solarflare.com, arnd@arndb.de, j.anaszewski@samsung.com,
-        akpm@linux-foundation.org, keescook@chromium.org, mingo@kernel.org,
-        paulmck@linux.vnet.ibm.com, dan.j.williams@intel.com,
-        aryabinin@virtuozzo.com, tj@kernel.org, jpoimboe@redhat.com,
-        nikolay@cumulusnetworks.com, dvyukov@google.com, olof@lixom.net,
-        nab@linux-iscsi.org, rostedt@goodmis.org, hans.verkuil@cisco.com,
-        valentinrothberg@gmail.com, paul.gortmaker@windriver.com
-Return-path: <linux-kbuild-owner@vger.kernel.org>
-In-Reply-To: <cover.1475792538.git.shuahkh@osg.samsung.com>
-In-Reply-To: <cover.1475792538.git.shuahkh@osg.samsung.com>
-References: <cover.1475792538.git.shuahkh@osg.samsung.com>
-Sender: linux-kbuild-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Daniel Kurtz <djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: [PATCH] spi: change post transfer udelay() to usleep_range() for long delays
+Date: Fri,  7 Oct 2016 18:55:47 +0800
+Message-ID: <1475837747-7385-1-git-send-email-djkurtz@chromium.org>
+Cc: dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, gwendal-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
+        Daniel Kurtz <djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org (open list:SPI SUBSYSTEM),
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org (open list)
+To: unlisted-recipients:; (no To-header on input)
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Update 00-INDEX files with the current file list to reflect the runnable
-code move.
+The spi_transfer parameter delay_usecs allows specifying a time to wait
+after transferring a spi message.  This wait can be quite long - some
+devices, such as some Chrome OS ECs, require as much as 2000 usecs after
+a SPI transaction, before it can respond.
 
-Acked-by: Michal Marek <mmarek@suse.com>
-Acked-by: Jonathan Corbet <corbet@lwn.net>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Shuah Khan <shuahkh@osg.samsung.com>
+(cf: arch/arm64/boot/dts/nvidia/tegra132-norrin.dts:
+   google,cros-ec-spi-msg-delay = <2000>
+)
+
+Blocking a CPU for 2 msecs in a busy loop like this doesn't seem very
+friendly to other processes, so change the blocking delay to a sleep
+to allow other things to use this CPU (or so it can sleep).
+
+This should be safe to do, because:
+ (a) A post-transaction delay like this is always specified as a minimum
+     wait time
+ (b) A delay here is most likely not very time sensitive, as it occurs
+     after all data has been transferred
+ (c) This delay occurs in a non-critical section of the spi worker thread
+     so where it is safe to sleep.
+
+Two caveats:
+ 1) To avoid penalizing short delays, still use udelay for delays < 10us.
+ 2) usleep_range() very often picks the upper bound, an upper bounds 10%
+    should be plenty.
+
+Signed-off-by: Daniel Kurtz <djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 ---
- Documentation/00-INDEX             | 3 ++-
- Documentation/arm/00-INDEX         | 2 --
- Documentation/filesystems/00-INDEX | 2 --
- Documentation/networking/00-INDEX  | 2 --
- Documentation/spi/00-INDEX         | 2 --
- Documentation/timers/00-INDEX      | 4 ----
- 6 files changed, 2 insertions(+), 13 deletions(-)
+ drivers/spi/spi.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/00-INDEX b/Documentation/00-INDEX
-index cb9a6c6..3acc4f1 100644
---- a/Documentation/00-INDEX
-+++ b/Documentation/00-INDEX
-@@ -46,7 +46,8 @@ IRQ.txt
- Intel-IOMMU.txt
- 	- basic info on the Intel IOMMU virtualization support.
- Makefile
--	- some files in Documentation dir are actually sample code to build
-+	- This file does nothing. Removing it breaks make htmldocs and
-+	  make distclean.
- ManagementStyle
- 	- how to (attempt to) manage kernel hackers.
- RCU/
-diff --git a/Documentation/arm/00-INDEX b/Documentation/arm/00-INDEX
-index dea011c..b6e69fd 100644
---- a/Documentation/arm/00-INDEX
-+++ b/Documentation/arm/00-INDEX
-@@ -8,8 +8,6 @@ Interrupts
- 	- ARM Interrupt subsystem documentation
- IXP4xx
- 	- Intel IXP4xx Network processor.
--Makefile
--	- Build sourcefiles as part of the Documentation-build for arm
- Netwinder
- 	- Netwinder specific documentation
- Porting
-diff --git a/Documentation/filesystems/00-INDEX b/Documentation/filesystems/00-INDEX
-index 9922939..f66e748 100644
---- a/Documentation/filesystems/00-INDEX
-+++ b/Documentation/filesystems/00-INDEX
-@@ -2,8 +2,6 @@
- 	- this file (info on some of the filesystems supported by linux).
- Locking
- 	- info on locking rules as they pertain to Linux VFS.
--Makefile
--	- Makefile for building the filsystems-part of DocBook.
- 9p.txt
- 	- 9p (v9fs) is an implementation of the Plan 9 remote fs protocol.
- adfs.txt
-diff --git a/Documentation/networking/00-INDEX b/Documentation/networking/00-INDEX
-index 415154a..98f3d4b 100644
---- a/Documentation/networking/00-INDEX
-+++ b/Documentation/networking/00-INDEX
-@@ -10,8 +10,6 @@ LICENSE.qlge
- 	- GPLv2 for QLogic Linux qlge NIC Driver
- LICENSE.qlcnic
- 	- GPLv2 for QLogic Linux qlcnic NIC Driver
--Makefile
--	- Makefile for docsrc.
- PLIP.txt
- 	- PLIP: The Parallel Line Internet Protocol device driver
- README.ipw2100
-diff --git a/Documentation/spi/00-INDEX b/Documentation/spi/00-INDEX
-index 4644bf0..8e4bb17 100644
---- a/Documentation/spi/00-INDEX
-+++ b/Documentation/spi/00-INDEX
-@@ -1,7 +1,5 @@
- 00-INDEX
- 	- this file.
--Makefile
--	- Makefile for the example sourcefiles.
- butterfly
- 	- AVR Butterfly SPI driver overview and pin configuration.
- ep93xx_spi
-diff --git a/Documentation/timers/00-INDEX b/Documentation/timers/00-INDEX
-index ee212a2..3be05fe 100644
---- a/Documentation/timers/00-INDEX
-+++ b/Documentation/timers/00-INDEX
-@@ -4,12 +4,8 @@ highres.txt
- 	- High resolution timers and dynamic ticks design notes
- hpet.txt
- 	- High Precision Event Timer Driver for Linux
--hpet_example.c
--	- sample hpet timer test program
- hrtimers.txt
- 	- subsystem for high-resolution kernel timers
--Makefile
--	- Build and link hpet_example
- NO_HZ.txt
- 	- Summary of the different methods for the scheduler clock-interrupts management.
- timekeeping.txt
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index a0b6e14..31b4440 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -845,8 +845,14 @@ static int spi_transfer_one_message(struct spi_master *master,
+ 		if (msg->status != -EINPROGRESS)
+ 			goto out;
+ 
+-		if (xfer->delay_usecs)
+-			udelay(xfer->delay_usecs);
++		if (xfer->delay_usecs) {
++			u16 us = xfer->delay_usecs;
++
++			if (us <= 10)
++				udelay(us);
++			else
++				usleep_range(us, us + DIV_ROUND_UP(us, 10));
++		}
+ 
+ 		if (xfer->cs_change) {
+ 			if (list_is_last(&xfer->transfer_list,
 -- 
-2.7.4
+2.8.0.rc3.226.g39d4020
 
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

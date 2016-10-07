@@ -1,71 +1,89 @@
-From: Daniel Kurtz <djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH] spi: change post transfer udelay() to usleep_range() for long delays
-Date: Fri,  7 Oct 2016 18:55:47 +0800
-Message-ID: <1475837747-7385-1-git-send-email-djkurtz@chromium.org>
-Cc: dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, gwendal-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
-        Daniel Kurtz <djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org (open list:SPI SUBSYSTEM),
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org (open list)
-To: unlisted-recipients:; (no To-header on input)
+From: <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+Subject: [PATCHv2 2/2] spi: Add Flag to Enable Slave Select with GPIO Chip Select.
+Date: Fri, 7 Oct 2016 09:56:34 -0500
+Message-ID: <1475852194-27690-2-git-send-email-tthayer@opensource.altera.com>
+References: <1475852194-27690-1-git-send-email-tthayer@opensource.altera.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+Cc: <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+        <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>, <jszhang-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+        <michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org>, <kernel-NoMTM8u0nx3R7s880joybQ@public.gmane.org>,
+        <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1475852194-27690-1-git-send-email-tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The spi_transfer parameter delay_usecs allows specifying a time to wait
-after transferring a spi message.  This wait can be quite long - some
-devices, such as some Chrome OS ECs, require as much as 2000 usecs after
-a SPI transaction, before it can respond.
+From: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
 
-(cf: arch/arm64/boot/dts/nvidia/tegra132-norrin.dts:
-   google,cros-ec-spi-msg-delay = <2000>
-)
+Some SPI masters require slave selection before the transfer
+can begin [1]. The SPI framework currently selects the chip using
+either 1) the internal CS mechanism or 2) the GPIO CS, but not both.
 
-Blocking a CPU for 2 msecs in a busy loop like this doesn't seem very
-friendly to other processes, so change the blocking delay to a sleep
-to allow other things to use this CPU (or so it can sleep).
+This patch adds a boolean variable to indicate both the GPIO CS and
+the internal chip select should be used.
 
-This should be safe to do, because:
- (a) A post-transaction delay like this is always specified as a minimum
-     wait time
- (b) A delay here is most likely not very time sensitive, as it occurs
-     after all data has been transferred
- (c) This delay occurs in a non-critical section of the spi worker thread
-     so where it is safe to sleep.
+Tested On:
+    Altera CycloneV development kit
+    Compile tested for build errors on x86_64 (allyesconfigs)
 
-Two caveats:
- 1) To avoid penalizing short delays, still use udelay for delays < 10us.
- 2) usleep_range() very often picks the upper bound, an upper bounds 10%
-    should be plenty.
+[1] DesignWare dw_apb_ssi Databook, Version 3.20a (page 39)
 
-Signed-off-by: Daniel Kurtz <djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Signed-off-by: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
 ---
- drivers/spi/spi.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+v2  Move changes to SPI framework based on maintainer comments
+    Add a new SPI master boolean variable.
+---
+ drivers/spi/spi.c       |   10 ++++++++--
+ include/linux/spi/spi.h |    1 +
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index a0b6e14..31b4440 100644
+index 5787b72..c042a8c 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -845,8 +845,14 @@ static int spi_transfer_one_message(struct spi_master *master,
- 		if (msg->status != -EINPROGRESS)
- 			goto out;
+@@ -697,10 +697,14 @@ static void spi_set_cs(struct spi_device *spi, bool enable)
+ 	if (spi->mode & SPI_CS_HIGH)
+ 		enable = !enable;
  
--		if (xfer->delay_usecs)
--			udelay(xfer->delay_usecs);
-+		if (xfer->delay_usecs) {
-+			u16 us = xfer->delay_usecs;
+-	if (gpio_is_valid(spi->cs_gpio))
++	if (gpio_is_valid(spi->cs_gpio)) {
+ 		gpio_set_value(spi->cs_gpio, !enable);
+-	else if (spi->master->set_cs)
++		/* Some SPI masters need both GPIO CS & slave_select */
++		if (spi->master->set_cs && spi->master->gpio_ss)
++			spi->master->set_cs(spi, !enable);
++	} else if (spi->master->set_cs) {
+ 		spi->master->set_cs(spi, !enable);
++	}
+ }
+ 
+ #ifdef CONFIG_HAS_DMA
+@@ -1845,6 +1849,8 @@ static int of_spi_register_master(struct spi_master *master)
+ 	for (i = 0; i < nb; i++)
+ 		cs[i] = of_get_named_gpio(np, "cs-gpios", i);
+ 
++	master->gpio_ss = of_property_read_bool(np, "gpio-ss");
 +
-+			if (us <= 10)
-+				udelay(us);
-+			else
-+				usleep_range(us, us + DIV_ROUND_UP(us, 10));
-+		}
+ 	return 0;
+ }
+ #else
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 4b743ac..0437995 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -551,6 +551,7 @@ struct spi_master {
  
- 		if (xfer->cs_change) {
- 			if (list_is_last(&xfer->transfer_list,
+ 	/* gpio chip select */
+ 	int			*cs_gpios;
++	bool			gpio_ss;
+ 
+ 	/* statistics */
+ 	struct spi_statistics	statistics;
 -- 
-2.8.0.rc3.226.g39d4020
+1.7.9.5
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

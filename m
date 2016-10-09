@@ -1,74 +1,41 @@
-From: Thor Thayer <tthayer@opensource.altera.com>
-Subject: Re: [PATCHv2 1/2] Documentation: dt: spi: Add GPIO Slave Select
- Parameter
-Date: Fri, 7 Oct 2016 15:01:26 -0500
-Message-ID: <f22a7978-f47a-3fbc-925f-9e7c85ed2bd3@opensource.altera.com>
-References: <1475852194-27690-1-git-send-email-tthayer@opensource.altera.com>
- <CAMuHMdXuJbc+smiY8DNMYHiCuOxtt44o2N0eJvzq+FKUoZm+Rg@mail.gmail.com>
-Reply-To: <tthayer@opensource.altera.com>
+From: Alexander Kurz <akurz-3EoFODjbY6Q@public.gmane.org>
+Subject: Re: Applied "spi: imx: wait_for_completion_timeout(..) for PIO
+ transfers" to the spi tree
+Date: Sun, 9 Oct 2016 22:39:53 +0200 (CEST)
+Message-ID: <alpine.DEB.2.00.1610092225030.19531@blala.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        <jszhang@marvell.com>, <michael@smart-africa.com>,
-        <kernel@mseidel.net>, linux-spi <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAMuHMdXuJbc+smiY8DNMYHiCuOxtt44o2N0eJvzq+FKUoZm+Rg@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Cc: Christian Gmeiner <christian.gmeiner-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+Hi,
+regarding upstream commit ff1ba3dac08e ("spi: imx: wait_for_completion_timeout(..) for 
+PIO transfers")
+this commit introduces some timeout calculation with struct spi_imx_data 
+spi_bus_clk as denominator. Please note, this variable is assigned 
+exclusively when the driver is used for imx51-ecspi. (IMX5 ecspi/IMX6/...)
 
+All earlier variants (IMX5 cspi / IMX3* / IMX2* ...) will run into
+pretty ugly kernel div by zero faults like
 
-On 10/07/2016 02:33 PM, Geert Uytterhoeven wrote:
-> On Fri, Oct 7, 2016 at 4:56 PM,  <tthayer@opensource.altera.com> wrote:
->> From: Thor Thayer <tthayer@opensource.altera.com>
->>
->> Some SPI masters require the slave to be selected before a
->> transaction can occur - even in the case of GPIO chip select.
->>
->> This patch adds a GPIO slave select parameter to indicate
->> the slave needs to be selected in the GPIO CS case.
->>
->> Signed-off-by: Thor Thayer <tthayer@opensource.altera.com>
->> ---
->> v2  Add to SPI framework - add bindings.
->> ---
->>  Documentation/devicetree/bindings/spi/spi-bus.txt |    1 +
->>  1 file changed, 1 insertion(+)
->>
->> diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
->> index 4b1d6e7..3a006bc 100644
->> --- a/Documentation/devicetree/bindings/spi/spi-bus.txt
->> +++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
->> @@ -24,6 +24,7 @@ support describing the chip select layout.
->>  Optional properties:
->>  - cs-gpios       - gpios chip select.
->>  - num-cs         - total number of chipselects.
->> +- gpio-ss        - use internal slave select with gpio chip select.
->>
->>  If cs-gpios is used the number of chip selects will be increased automatically
->>  with max(cs-gpios > hw cs).
->
-> To me, this looks more like a new flag the SPI controller driver should
-> set in spi_master.flags, instead of a DT property.
->
-Yes, I see your point since this is SPI master specific. I'll respin as 
-you suggest.
+>[    2.620552] Division by zero in kernel.
+>[    2.622489] CPU: 0 PID: 1 Comm: swapper Not tainted 4.8.0-00001-g98e97b9 #7
+>[    2.625974] Hardware name: Freescale i.MX50 (Device Tree Support)
+>[    2.629058] Backtrace: 
+>[    2.630313] [<c010ae48>] (dump_backtrace) from [<c010aff4>] (show_stack+0x18/0x1c)
+>[    2.634102]  r7:ceac9000 r6:ceac9000 r5:ce855a98 r4:ce8aa4a0
+>[    2.636998] [<c010afdc>] (show_stack) from [<c02d1744>] (dump_stack+0x20/0x28)
+>[    2.640619] [<c02d1724>] (dump_stack) from [<c010b994>] (__div0+0x18/0x20)
+>[    2.644064] [<c010b97c>] (__div0) from [<c02d07d4>] (Ldiv0+0x8/0x14)
+>[    2.647267] [<c037e950>] (spi_imx_calculate_timeout) from [<c037eb9c>] (spi_imx_transfer+0x218/0x270)
+>[    2.651886] [<c037e984>] (spi_imx_transfer) from [<c037db90>] (spi_bitbang_transfer_one+0x58/0x84)
 
-Thanks for reviewing!
-
-> Gr{oetje,eeting}s,
->
->                         Geert
->
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
->
-> In personal conversations with technical people, I call myself a hacker. But
-> when I'm talking to journalists I just say "programmer" or something like that.
->                                 -- Linus Torvalds
->
+Regards, Alexander
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

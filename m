@@ -1,83 +1,50 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: dw: Set GPIO_SS flag to toggle Slave Select on GPIO CS" to the spi tree
-Date: Tue, 11 Oct 2016 12:30:41 +0200
-Message-ID: <E1btuKX-0008Qw-2W@finisterre>
-References: <1476109525-21213-2-git-send-email-tthayer@opensource.altera.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
-        jszhang-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org, michael-XrNoQAPr3WXM9gW82pYGhQ@public.gmane.org, kernel-NoMTM8u0nx3R7s880joybQ@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v2 RESEND 2/3] mtd: m25p80: consider max message size in
+ m25p80_read
+Date: Thu, 13 Oct 2016 20:50:09 +0200
+Message-ID: <e084ae6e-2d89-7d96-0ccf-da23cef00043@gmail.com>
+References: <6c95366c-7fcc-ef4c-033a-f9f6e152a669@gmail.com>
+ <20160816164204.GV9347@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1476109525-21213-2-git-send-email-tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+In-Reply-To: <20160816164204.GV9347-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+Consider a message size limit when calculating the maximum amount
+of data that can be read.
 
-   spi: dw: Set GPIO_SS flag to toggle Slave Select on GPIO CS
-
-has been applied to the spi tree at
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 80b444e57948ea4bd5a89fb1f8c404ddab6c1973 Mon Sep 17 00:00:00 2001
-From: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
-Date: Mon, 10 Oct 2016 09:25:25 -0500
-Subject: [PATCH] spi: dw: Set GPIO_SS flag to toggle Slave Select on GPIO CS
-
-The Designware SPI master requires slave selection before the transfer
-can begin [1].
-
-This patch uses the new master flag to indicate both the GPIO CS and
-the internal chip select should be used.
-
-Tested On:
-    Altera CycloneV development kit
-    Compile tested for build errors on x86_64 (allyesconfigs)
-
-[1] DesignWare dw_apb_ssi Databook, Version 3.20a (page 39)
-
-Signed-off-by: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-dw.c | 1 +
- 1 file changed, 1 insertion(+)
+v2:
+- use the new function spi_max_message_size
+---
+ drivers/mtd/devices/m25p80.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index 27960e46135d..b715a26a9148 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -502,6 +502,7 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
- 	master->handle_err = dw_spi_handle_err;
- 	master->max_speed_hz = dws->max_freq;
- 	master->dev.of_node = dev->of_node;
-+	master->flags = SPI_MASTER_GPIO_SS;
+diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+index 9cf7fcd..16a7df2 100644
+--- a/drivers/mtd/devices/m25p80.c
++++ b/drivers/mtd/devices/m25p80.c
+@@ -172,7 +172,8 @@ static ssize_t m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
  
- 	/* Basic HW init */
- 	spi_hw_init(dev, dws);
+ 	t[1].rx_buf = buf;
+ 	t[1].rx_nbits = m25p80_rx_nbits(nor);
+-	t[1].len = min(len, spi_max_transfer_size(spi));
++	t[1].len = min3(len, spi_max_transfer_size(spi),
++			spi_max_message_size(spi) - t[0].len);
+ 	spi_message_add_tail(&t[1], &m);
+ 
+ 	ret = spi_sync(spi, &m);
 -- 
-2.9.3
+2.9.2
+
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

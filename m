@@ -1,90 +1,157 @@
-From: Cyrille Pitchen <cyrille.pitchen@atmel.com>
-Subject: Re: [PATCH v6, 5/8] mtd: m25p80: Let m25p80_read() fallback to spi
- transfer
-Date: Fri, 14 Oct 2016 15:17:44 +0200
-Message-ID: <ae2c984e-2bcf-380e-a257-dbe786973af1@atmel.com>
-References: <1472076269-4731-1-git-send-email-kdasu.kdev@gmail.com>
- <1472076269-4731-6-git-send-email-kdasu.kdev@gmail.com>
- <4b3b3d3e-b3f8-1d5b-65e3-0c37b6a29096@gmail.com>
- <8309370e-f99f-ed51-4789-c1d97d9d8191@atmel.com>
- <CAKekbesq1deU_0TCV4STAi=o8jZwoc_u+9zkdZuEhmd+BGwU2A@mail.gmail.com>
+From: Kamal Dasu <kamal.dasu-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+Subject: Re: [PATCH v2, 1/1] mtd: devices: m25p80: Add PM suspend resume support
+Date: Fri, 14 Oct 2016 13:42:55 -0400
+Message-ID: <CAKekbeuFqEXvhWYuPqER3wFA=0pJrSoBZH+9X5zbjjJ=yTuqxA@mail.gmail.com>
+References: <1473710494-4084-1-git-send-email-kdasu.kdev@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Florian Fainelli <f.fainelli@gmail.com>, vigneshr@ti.com,
- Kamal Dasu <kdasu.kdev@gmail.com>, linux-spi@vger.kernel.org, Yendapally Reddy
- Dhananjaya Reddy <yendapally.reddy@broadcom.com>,
- Mark Brown <broonie@kernel.org>, linux-mtd@lists.infradead.org,
- bcm-kernel-feedback-list@broadcom.com, Jon Mason <jon.mason@broadcom.com>,
- Brian Norris <computersforpeace@gmail.com>
-To: Kamal Dasu <kamal.dasu@broadcom.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <CAKekbesq1deU_0TCV4STAi=o8jZwoc_u+9zkdZuEhmd+BGwU2A@mail.gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org
+To: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1473710494-4084-1-git-send-email-kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-TGUgMTMvMTAvMjAxNiDDoCAyMzoxNSwgS2FtYWwgRGFzdSBhIMOpY3JpdCA6Cj4gT24gTW9uLCBP
-Y3QgMTAsIDIwMTYgYXQgNDoyOSBBTSwgQ3lyaWxsZSBQaXRjaGVuCj4gPGN5cmlsbGUucGl0Y2hl
-bkBhdG1lbC5jb20+IHdyb3RlOgo+PiBIaSBhbGwsCj4+Cj4+Cj4+IExlIDEwLzEwLzIwMTYgw6Ag
-MTA6MDQsIEZsb3JpYW4gRmFpbmVsbGkgYSDDqWNyaXQgOgo+Pj4gT24gMDgvMjQvMjAxNiAwMzow
-NCBQTSwgS2FtYWwgRGFzdSB3cm90ZToKPj4+PiBJbiBtMjVwODBfcmVhZCgpIGV2ZW4gdGhvdWdo
-IHNwaV9mbGFzaF9yZWFkKCkgaXMgc3VwcG9ydGVkCj4+Pj4gYnkgc29tZSBkcml2ZXJzLCB1bmRl
-ciBjZXJ0YWluIGNpcmN1bXN0YW5jZXMgbGlrZSB1bmFsaWduZWQKPj4+PiBidWZmZXIsIGFkZHJl
-c3Mgb3IgYWRkcmVzcyByYW5nZSBsaW1pdGF0aW9ucyBvbiBjZXJ0YWluIFNvQ3MKPj4+PiBsZXQg
-aXQgZmFsbGJhY2sgdG8gY29yZSBzcGkgcmVhZHMuIFN1Y2ggZHJpdmVycyBhcmUgZXhwZWN0ZWQK
-Pj4+PiB0byByZXR1cm4gLUVBR0FJTiBzbyB0aGF0IHRoZSBtMjVwODBfcmVhZCgpIHVzZXMgc3Rh
-bmRhcmQKPj4+PiBzcGkgdHJhbnNmZXIuCj4+Pj4KPj4+PiBTaWduZWQtb2ZmLWJ5OiBLYW1hbCBE
-YXN1IDxrZGFzdS5rZGV2QGdtYWlsLmNvbT4KPj4+Cj4+PiBNVEQgZm9sa3MsIGFueSBjb21tZW50
-cyBvbiB0aGlzPwo+Pj4KPj4+PiAtLS0KPj4+PiAgZHJpdmVycy9tdGQvZGV2aWNlcy9tMjVwODAu
-YyB8IDExICsrKysrKysrKy0tCj4+Pj4gIDEgZmlsZSBjaGFuZ2VkLCA5IGluc2VydGlvbnMoKyks
-IDIgZGVsZXRpb25zKC0pCj4+Pj4KPj4+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9tdGQvZGV2aWNl
-cy9tMjVwODAuYyBiL2RyaXZlcnMvbXRkL2RldmljZXMvbTI1cDgwLmMKPj4+PiBpbmRleCA5Y2Y3
-ZmNkLi43N2MyZDJjIDEwMDY0NAo+Pj4+IC0tLSBhL2RyaXZlcnMvbXRkL2RldmljZXMvbTI1cDgw
-LmMKPj4+PiArKysgYi9kcml2ZXJzL210ZC9kZXZpY2VzL20yNXA4MC5jCj4+Pj4gQEAgLTE1NSw5
-ICsxNTUsMTYgQEAgc3RhdGljIHNzaXplX3QgbTI1cDgwX3JlYWQoc3RydWN0IHNwaV9ub3IgKm5v
-ciwgbG9mZl90IGZyb20sIHNpemVfdCBsZW4sCj4+Pj4gICAgICAgICAgICAgIG1zZy5kYXRhX25i
-aXRzID0gbTI1cDgwX3J4X25iaXRzKG5vcik7Cj4+Pj4KPj4+PiAgICAgICAgICAgICAgcmV0ID0g
-c3BpX2ZsYXNoX3JlYWQoc3BpLCAmbXNnKTsKPj4+PiAtICAgICAgICAgICAgaWYgKHJldCA8IDAp
-Cj4+Pj4gKwo+Pj4+ICsgICAgICAgICAgICBpZiAocmV0ID49IDApCj4+Pj4gKyAgICAgICAgICAg
-ICAgICAgICAgcmV0dXJuIG1zZy5yZXRsZW47Cj4+Pj4gKwo+Pj4+ICsgICAgICAgICAgICAvKgo+
-Pj4+ICsgICAgICAgICAgICAgKiBzb21lIHNwaSBtYXN0ZXIgZHJpdmVycyBtaWdodCBuZWVkIHRv
-IGZhbGxiYWNrIHRvCj4+Pj4gKyAgICAgICAgICAgICAqIG5vcm1hbCBzcGkgdHJhbnNmZXIKPj4+
-PiArICAgICAgICAgICAgICovCj4+Pj4gKyAgICAgICAgICAgIGlmIChyZXQgIT0gLUVBR0FJTikK
-Pj4gSSBqdXN0IHdvbmRlciB3aGV0aGVyIEVJTlZBTCB3b3VsZCBiZSBhIGJldHRlciBjaG9pY2Uu
-Cj4gCj4gIHNwaV9mbGFzaF9yZWFkIGNhbGxzIHRoZSBkb3duIHN0cmVhbSBjb250cm9sbGVyIGRy
-aXZlciB3aXRoIGFsbAo+IHBhcmFtcyBhZGRyZXNzZXMgaG93ZXZlciAgYWNjZWxlcmF0ZWQgdHJh
-bnNmZXIgaXMgbm90IHBvc3NpYmxlIGJ5IHRoZQo+IGNvbnRyb2xsZXIgZHVlIHRvIGFsaWdubWVu
-dCBpc3N1ZXMsIGl0IG5lZWRzIHRvIGluZGljYXRlIHRvIG0yNXAgY2FsbAo+IHRvIHRyeSB0aGUg
-bm9ybWFsIHRyYW5zZmVyLCBoZW5jZSB1c2Ugb2YgRUFHQUlOIHNlZW1lZCBhcHByb3ByaWF0ZS4K
-PiAKPgoKWWVzLCBJIHRoaW5rIEkndmUgdW5kZXJzdG9vZCB0aGUgcHVycG9zZSBvZiB0aGlzIHBh
-dGNoLiBJbiB0aGUgZXhhbXBsZSB5b3UKZ2F2ZSwgdGhlIGFjdHVhbCBpbXBsZW1lbnRhdGlvbiBv
-ZiBzcGlfZmxhc2hfcmVhZCgpIHdvcmtzIGZpbmUgd2l0aCBhbGlnbmVkCmFkZHJlc3NlcyBidXQg
-ZG9lc24ndCBzdXBwb3J0IHVuYWxpZ25lZCBhZGRyZXNzZXMuIEhlbmNlLCBzdWNoIHVuYWxpZ25l
-ZAphZGRyZXNzZXMgYXJlIGludmFsaWQgYXJndW1lbnQgZm9yIHNwaV9mbGFzaF9yZWFkKCkgYW5k
-IHdlIHNob3VsZCBmYWxsIGJhY2sKdG8gdGhlIGxlZ2FjeSBpbXBsZW1lbnRhdGlvbiBvZiBtMjVw
-ODBfcmVhZCgpLgoKTXkgcG9pbnQgaXMganVzdCB0aGF0IEVJTlZBTCBjbGVhcmx5IHRlbGxzIHRo
-YXQgdGhlIFNQSSBjb250cm9sbGVyIGRyaXZlcgppbXBsZW1lbnRhdGlvbiBvZiBzcGlfZmxhc2hf
-cmVhZCgpIGRvZXNuJ3Qgc3VwcG9ydCB0aGUgZ2l2ZW4gaW5wdXQKcGFyYW1ldGVycywgaGVyZSBh
-biB1bmFsaWduZWQgYWRkcmVzcywgd2hlcmVhcyBFQUdBSU4gc3VnZ2VzdHMgdGhhdCBzb21lCmhh
-cmR3YXJlIHJlc291cmNlIGlzIHRlbXBvcmFyaWx5IHVuYXZhaWxhYmxlIGFuZCB3ZSBjb3VsZCBj
-YWxsIHNwaV9mbGFzaF9yZWFkKCkKYWdhaW4gbGF0ZXIuIEhvd2V2ZXIsIGluIHRoaXMgY2FzZSwg
-c3BpX2ZsYXNoX3JlYWQoKSB3b3VsZCBzdGlsbCBmYWlsIGV2ZW4gaWYKY2FsbGVkIGxhdGVyLgoK
-VGhhdCdzIHdoeSBJJ3ZlIHN1Z2dlc3RlZCBFSU5WQUwgbWlnaHQgaGF2ZSBiZWVuIGEgYmV0dGVy
-IGNob2ljZSB0aGFuIEVBR0FJTiwKYnV0IGhvbmVzdGx5IGl0J3Mgbm90IGEgYmlnIGRlYWwsIG9u
-bHkgYSBkZXRhaWwuIFNvIGlmIG1vc3QgcGVvcGxlIHByZWZlciB0bwprZWVwIEVBR0FJTiwgSSdt
-IHBlcmZlY3RseSBmaW5lIHdpdGggaXQhIDopCgpJIGRvbid0IHdhbnQgbXkgY29tbWVudCB0byBk
-ZWxheSB0aGUgaW50ZWdyYXRpb24gb2YgdGhpcyBwYXRjaC4KCj4+Pj4gICAgICAgICAgICAgICAg
-ICAgICAgcmV0dXJuIHJldDsKPj4+PiAtICAgICAgICAgICAgcmV0dXJuIG1zZy5yZXRsZW47Cj4+
-Pj4gICAgICB9Cj4+Pj4KPj4+PiAgICAgIHNwaV9tZXNzYWdlX2luaXQoJm0pOwo+Pj4+Cj4+Pgo+
-Pgo+PiBCZXN0IHJlZ2FyZHMsCj4+Cj4+IEN5cmlsbGUKCgpfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXggTVREIGRpc2N1c3Npb24gbWFp
-bGluZyBsaXN0Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vbGlu
-dXgtbXRkLwo=
+Is everyone Ok with the latest patch ?
+
+Kamal
+
+On Mon, Sep 12, 2016 at 4:01 PM, Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> Adding PM support so as to be able to probe spi-nor flash
+> on resume. There are vendor specific commands to setup
+> the transfer mode and enable read/write as part of
+> spi_nor_scan(), done on initial probe and needed on resume().
+> The spi-nor structure is private to the m25p driver and hence
+> is the only place this can be done without having to duplicate
+> code in controller driver.
+>
+> Signed-off-by: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> ---
+>  drivers/mtd/devices/m25p80.c | 68 +++++++++++++++++++++++++++++++-------------
+>  1 file changed, 48 insertions(+), 20 deletions(-)
+>
+> diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+> index 9cf7fcd..48c3f64 100644
+> --- a/drivers/mtd/devices/m25p80.c
+> +++ b/drivers/mtd/devices/m25p80.c
+> @@ -186,6 +186,39 @@ static ssize_t m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
+>  }
+>
+>  /*
+> + * scan for spi nor flash vendor parts and setup
+> + * read/write mode
+> + */
+> +static int m25p_nor_flash_scan(struct device *dev)
+> +{
+> +       struct m25p *flash = dev_get_drvdata(dev);
+> +       struct flash_platform_data      *data;
+> +       char *flash_name = NULL;
+> +       enum read_mode mode = SPI_NOR_NORMAL;
+> +
+> +       data = dev_get_platdata(dev);
+> +
+> +       /* For some (historical?) reason many platforms provide two different
+> +        * names in flash_platform_data: "name" and "type". Quite often name is
+> +        * set to "m25p80" and then "type" provides a real chip name.
+> +        * If that's the case, respect "type" and ignore a "name".
+> +        */
+> +       if (data && data->type)
+> +               flash_name = data->type;
+> +       else if (!strcmp(flash->spi->modalias, "spi-nor"))
+> +               flash_name = NULL; /* auto-detect */
+> +       else
+> +               flash_name = flash->spi->modalias;
+> +
+> +       if (flash->spi->mode & SPI_RX_QUAD)
+> +               mode = SPI_NOR_QUAD;
+> +       else if (flash->spi->mode & SPI_RX_DUAL)
+> +               mode = SPI_NOR_DUAL;
+> +
+> +       return spi_nor_scan(&flash->spi_nor, flash_name, mode);
+> +}
+> +
+> +/*
+>   * board specific setup should have ensured the SPI clock used here
+>   * matches what the READ command supports, at least until this driver
+>   * understands FAST_READ (for clocks over 25 MHz).
+> @@ -195,8 +228,6 @@ static int m25p_probe(struct spi_device *spi)
+>         struct flash_platform_data      *data;
+>         struct m25p *flash;
+>         struct spi_nor *nor;
+> -       enum read_mode mode = SPI_NOR_NORMAL;
+> -       char *flash_name;
+>         int ret;
+>
+>         data = dev_get_platdata(&spi->dev);
+> @@ -220,27 +251,11 @@ static int m25p_probe(struct spi_device *spi)
+>         spi_set_drvdata(spi, flash);
+>         flash->spi = spi;
+>
+> -       if (spi->mode & SPI_RX_QUAD)
+> -               mode = SPI_NOR_QUAD;
+> -       else if (spi->mode & SPI_RX_DUAL)
+> -               mode = SPI_NOR_DUAL;
+> -
+>         if (data && data->name)
+>                 nor->mtd.name = data->name;
+>
+> -       /* For some (historical?) reason many platforms provide two different
+> -        * names in flash_platform_data: "name" and "type". Quite often name is
+> -        * set to "m25p80" and then "type" provides a real chip name.
+> -        * If that's the case, respect "type" and ignore a "name".
+> -        */
+> -       if (data && data->type)
+> -               flash_name = data->type;
+> -       else if (!strcmp(spi->modalias, "spi-nor"))
+> -               flash_name = NULL; /* auto-detect */
+> -       else
+> -               flash_name = spi->modalias;
+> +       ret = m25p_nor_flash_scan(nor->dev);
+>
+> -       ret = spi_nor_scan(nor, flash_name, mode);
+>         if (ret)
+>                 return ret;
+>
+> @@ -248,7 +263,6 @@ static int m25p_probe(struct spi_device *spi)
+>                                    data ? data->nr_parts : 0);
+>  }
+>
+> -
+>  static int m25p_remove(struct spi_device *spi)
+>  {
+>         struct m25p     *flash = spi_get_drvdata(spi);
+> @@ -319,10 +333,24 @@ static const struct of_device_id m25p_of_table[] = {
+>  };
+>  MODULE_DEVICE_TABLE(of, m25p_of_table);
+>
+> +#ifdef CONFIG_PM_SLEEP
+> +static int m25p_suspend(struct device *dev)
+> +{
+> +       return 0;
+> +}
+> +
+> +static int m25p_resume(struct device *dev)
+> +{
+> +       return m25p_nor_flash_scan(dev);
+> +}
+> +#endif
+> +static SIMPLE_DEV_PM_OPS(m25p_pm_ops, m25p_suspend, m25p_resume);
+> +
+>  static struct spi_driver m25p80_driver = {
+>         .driver = {
+>                 .name   = "m25p80",
+>                 .of_match_table = m25p_of_table,
+> +               .pm     = &m25p_pm_ops,
+>         },
+>         .id_table       = m25p_ids,
+>         .probe  = m25p_probe,
+> --
+> 1.9.1
+>
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

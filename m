@@ -1,58 +1,44 @@
-From: Yuan Yao <yao.yuan@freescale.com>
-Subject: [PATCH] spi: dspi: clear SPI_SR before enable interrupt
-Date: Mon, 17 Oct 2016 18:02:34 +0800
-Message-ID: <1476698554-12150-1-git-send-email-yao.yuan@freescale.com>
-Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <yao.yuan@nxp.com>, <linux-kernel@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>
-To: <broonie@kernel.org>
+From: Ralf Ramsauer <ralf@ramses-pyramidenbau.de>
+Subject: [PATCH v2 0/2] spi, i2c: mark device nodes only in case of successful instantiation
+Date: Mon, 17 Oct 2016 15:59:55 +0200
+Message-ID: <20161017135957.20297-1-ralf@ramses-pyramidenbau.de>
+Cc: Ralf Ramsauer <ralf@ramses-pyramidenbau.de>,
+        "linux-kernel @ vger . kernel . org" <linux-kernel@vger.kernel.org>,
+        Pantelis Antoniou <pantelis.antoniou@konsulko.com>
+To: Mark Brown <broonie@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        Linux SPI <linux-spi@vger.kernel.org>,
+        Linux I2C <linux-i2c@vger.kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Yuan Yao <yao.yuan@nxp.com>
+Hi,
 
-Once dspi is used in uboot, the SPI_SR have been set by some value.
-At this time, if kernel enable the interrupt before clear the
-status flag, that will trigger the wrong interrupt.
+this one fixes initialisation of I2C/SPI nodes.  Upon failure during
+intialisation, nodes were erroneously populated and never unmarked.
 
-Signed-off-by: Yuan Yao <yao.yuan@nxp.com>
----
- drivers/spi/spi-fsl-dspi.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+This lead to the problem that re-loaded drivers will never probe those devices
+again and can easily be fixed by clearing the OF_POPULATE flag when the node
+doesn't successfully initialise.
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 35c0dd9..a67b0ff 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -70,6 +70,7 @@
- #define SPI_SR			0x2c
- #define SPI_SR_EOQF		0x10000000
- #define SPI_SR_TCFQF		0x80000000
-+#define SPI_SR_CLEAR		0xdaad0000
- 
- #define SPI_RSER		0x30
- #define SPI_RSER_EOQFE		0x10000000
-@@ -646,6 +647,11 @@ static const struct regmap_config dspi_regmap_config = {
- 	.max_register = 0x88,
- };
- 
-+static void dspi_init(struct fsl_dspi *dspi)
-+{
-+	regmap_write(dspi->regmap, SPI_SR, SPI_SR_CLEAR);
-+}
-+
- static int dspi_probe(struct platform_device *pdev)
- {
- 	struct device_node *np = pdev->dev.of_node;
-@@ -709,6 +715,7 @@ static int dspi_probe(struct platform_device *pdev)
- 		return PTR_ERR(dspi->regmap);
- 	}
- 
-+	dspi_init(dspi);
- 	dspi->irq = platform_get_irq(pdev, 0);
- 	if (dspi->irq < 0) {
- 		dev_err(&pdev->dev, "can't get platform irq\n");
+For the discussion of v1, see
+https://lkml.org/lkml/2016/10/14/483
+
+  Ralf
+
+changes since v1:
+  - also fix I2C core driver
+  - keep the atomic test-and-set, as Geert suggested
+
+Ralf Ramsauer (2):
+  spi: mark device nodes only in case of successful instantiation
+  i2c: mark device nodes only in case of successful instantiation
+
+ drivers/i2c/i2c-core.c | 11 ++++++++++-
+ drivers/spi/spi.c      |  5 ++++-
+ 2 files changed, 14 insertions(+), 2 deletions(-)
+
 -- 
-2.1.0.27.g96db324
+2.10.1

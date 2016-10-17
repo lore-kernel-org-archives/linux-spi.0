@@ -1,90 +1,178 @@
-From: Ralf Ramsauer <ralf@ramses-pyramidenbau.de>
-Subject: Re: [PATCH v2 2/2] i2c: mark device nodes only in case of successful
- instantiation
-Date: Mon, 17 Oct 2016 16:37:01 +0200
-Message-ID: <065e2d93-67fc-de05-1727-5c04f0f1210a@ramses-pyramidenbau.de>
-References: <20161017135957.20297-1-ralf@ramses-pyramidenbau.de>
- <20161017135957.20297-3-ralf@ramses-pyramidenbau.de>
- <CAMuHMdXsGXV-udnNXmrUet6rDgiW5dYYam5vXg7450POALXkVQ@mail.gmail.com>
+From: Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v2, 1/1] mtd: devices: m25p80: Add PM suspend resume
+ support
+Date: Mon, 17 Oct 2016 19:08:49 +0200
+Message-ID: <4fe502a4-ee01-3fb8-6697-161de814596e@atmel.com>
+References: <1473710494-4084-1-git-send-email-kdasu.kdev@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="windows-1252"
 Content-Transfer-Encoding: 8bit
-Cc: Mark Brown <broonie@kernel.org>, Wolfram Sang <wsa@the-dreams.de>,
-        Linux SPI <linux-spi@vger.kernel.org>,
-        Linux I2C <linux-i2c@vger.kernel.org>,
-        "linux-kernel @ vger . kernel . org" <linux-kernel@vger.kernel.org>,
-        Pantelis Antoniou <pantelis.antoniou@konsulko.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-i2c-owner@vger.kernel.org>
-In-Reply-To: <CAMuHMdXsGXV-udnNXmrUet6rDgiW5dYYam5vXg7450POALXkVQ@mail.gmail.com>
-Sender: linux-i2c-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+To: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1473710494-4084-1-git-send-email-kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
+
+Hi Kamal,
+
+Le 12/09/2016 à 22:01, Kamal Dasu a écrit :
+> Adding PM support so as to be able to probe spi-nor flash
+> on resume. There are vendor specific commands to setup
+> the transfer mode and enable read/write as part of
+> spi_nor_scan(), done on initial probe and needed on resume().
+> The spi-nor structure is private to the m25p driver and hence
+> is the only place this can be done without having to duplicate
+> code in controller driver.
+
+Just to be sure I've understood the purpose of this patch: here we suppose
+that the SPI NOR memory power supply was cut when the CPU entered its suspend
+mode. So when the CPU is resumed, the SPI NOR memory power supply is enabled
+again as well and the internal state of the memory is reset.
+
+Depending on the manufacturer, we may need to send dedicated commands so the
+memory is ready again (for instance, a Global Unlock Block command for SST
+memories so we can perform Sector Erase and Page Program operations).
+Those commands are sent from spi_nor_scan(). Hence you call spi_nor_scan()
+once again from the resume callback.
+
+If so, your patch does make sense but I wonder whether some operations done
+inside spi_nor_scan() and not related to the memory itself but more to other
+layers like mtd (struct mtd_info) could always be safely performed a second
+time. I don't know if that issue already exists or would ever exist, if so
+it might be interesting to find a mean to tell spi_nor_scan() whether it's
+called for the first time on this memory (boot) or not (resume).
+
+Best regards,
+
+Cyrille
 
 
+> Signed-off-by: Kamal Dasu <kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> ---
+>  drivers/mtd/devices/m25p80.c | 68 +++++++++++++++++++++++++++++++-------------
+>  1 file changed, 48 insertions(+), 20 deletions(-)
+> 
+> diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+> index 9cf7fcd..48c3f64 100644
+> --- a/drivers/mtd/devices/m25p80.c
+> +++ b/drivers/mtd/devices/m25p80.c
+> @@ -186,6 +186,39 @@ static ssize_t m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
+>  }
+>  
+>  /*
+> + * scan for spi nor flash vendor parts and setup
+> + * read/write mode
+> + */
+> +static int m25p_nor_flash_scan(struct device *dev)
+> +{
+> +	struct m25p *flash = dev_get_drvdata(dev);
+> +	struct flash_platform_data	*data;
+> +	char *flash_name = NULL;
+> +	enum read_mode mode = SPI_NOR_NORMAL;
+> +
+> +	data = dev_get_platdata(dev);
+> +
+> +	/* For some (historical?) reason many platforms provide two different
+> +	 * names in flash_platform_data: "name" and "type". Quite often name is
+> +	 * set to "m25p80" and then "type" provides a real chip name.
+> +	 * If that's the case, respect "type" and ignore a "name".
+> +	 */
+> +	if (data && data->type)
+> +		flash_name = data->type;
+> +	else if (!strcmp(flash->spi->modalias, "spi-nor"))
+> +		flash_name = NULL; /* auto-detect */
+> +	else
+> +		flash_name = flash->spi->modalias;
+> +
+> +	if (flash->spi->mode & SPI_RX_QUAD)
+> +		mode = SPI_NOR_QUAD;
+> +	else if (flash->spi->mode & SPI_RX_DUAL)
+> +		mode = SPI_NOR_DUAL;
+> +
+> +	return spi_nor_scan(&flash->spi_nor, flash_name, mode);
+> +}
+> +
+> +/*
+>   * board specific setup should have ensured the SPI clock used here
+>   * matches what the READ command supports, at least until this driver
+>   * understands FAST_READ (for clocks over 25 MHz).
+> @@ -195,8 +228,6 @@ static int m25p_probe(struct spi_device *spi)
+>  	struct flash_platform_data	*data;
+>  	struct m25p *flash;
+>  	struct spi_nor *nor;
+> -	enum read_mode mode = SPI_NOR_NORMAL;
+> -	char *flash_name;
+>  	int ret;
+>  
+>  	data = dev_get_platdata(&spi->dev);
+> @@ -220,27 +251,11 @@ static int m25p_probe(struct spi_device *spi)
+>  	spi_set_drvdata(spi, flash);
+>  	flash->spi = spi;
+>  
+> -	if (spi->mode & SPI_RX_QUAD)
+> -		mode = SPI_NOR_QUAD;
+> -	else if (spi->mode & SPI_RX_DUAL)
+> -		mode = SPI_NOR_DUAL;
+> -
+>  	if (data && data->name)
+>  		nor->mtd.name = data->name;
+>  
+> -	/* For some (historical?) reason many platforms provide two different
+> -	 * names in flash_platform_data: "name" and "type". Quite often name is
+> -	 * set to "m25p80" and then "type" provides a real chip name.
+> -	 * If that's the case, respect "type" and ignore a "name".
+> -	 */
+> -	if (data && data->type)
+> -		flash_name = data->type;
+> -	else if (!strcmp(spi->modalias, "spi-nor"))
+> -		flash_name = NULL; /* auto-detect */
+> -	else
+> -		flash_name = spi->modalias;
+> +	ret = m25p_nor_flash_scan(nor->dev);
+>  
+> -	ret = spi_nor_scan(nor, flash_name, mode);
+>  	if (ret)
+>  		return ret;
+>  
+> @@ -248,7 +263,6 @@ static int m25p_probe(struct spi_device *spi)
+>  				   data ? data->nr_parts : 0);
+>  }
+>  
+> -
+>  static int m25p_remove(struct spi_device *spi)
+>  {
+>  	struct m25p	*flash = spi_get_drvdata(spi);
+> @@ -319,10 +333,24 @@ static const struct of_device_id m25p_of_table[] = {
+>  };
+>  MODULE_DEVICE_TABLE(of, m25p_of_table);
+>  
+> +#ifdef CONFIG_PM_SLEEP
+> +static int m25p_suspend(struct device *dev)
+> +{
+> +	return 0;
+> +}
+> +
+> +static int m25p_resume(struct device *dev)
+> +{
+> +	return m25p_nor_flash_scan(dev);
+> +}
+> +#endif
+> +static SIMPLE_DEV_PM_OPS(m25p_pm_ops, m25p_suspend, m25p_resume);
+> +
+>  static struct spi_driver m25p80_driver = {
+>  	.driver = {
+>  		.name	= "m25p80",
+>  		.of_match_table = m25p_of_table,
+> +		.pm	= &m25p_pm_ops,
+>  	},
+>  	.id_table	= m25p_ids,
+>  	.probe	= m25p_probe,
+> 
 
-On 10/17/2016 04:16 PM, Geert Uytterhoeven wrote:
-> On Mon, Oct 17, 2016 at 3:59 PM, Ralf Ramsauer
-> <ralf@ramses-pyramidenbau.de> wrote:
->> Instantiated I2C device nodes are marked with OF_POPULATE. This was
->> introduced in 4f001fd. On unloading, loaded device nodes will of course
->> be unmarked. The problem are nodes that fail during initialisation: If a
->> node fails, it won't be unloaded and hence not be unmarked.
->>
->> If a I2C driver module is unloaded and reloaded, it will skip nodes that
->> failed before.
->>
->> Skip device nodes that are already populated and mark them only in case
->> of success.
->>
->> Note that the same issue exists for SPI.
->>
->> Fixes: 4f001fd ("i2c: Mark instantiated device nodes with OF_POPULATE")
->> Signed-off-by: Ralf Ramsauer <ralf@ramses-pyramidenbau.de>
-> 
-> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> 
->> --- a/drivers/i2c/i2c-core.c
->> +++ b/drivers/i2c/i2c-core.c
-> 
->> @@ -1695,7 +1696,14 @@ static void of_i2c_register_devices(struct i2c_adapter *adap)
->>         for_each_available_child_of_node(bus, node) {
->>                 if (of_node_test_and_set_flag(node, OF_POPULATED))
->>                         continue;
->> -               of_i2c_register_device(adap, node);
->> +
->> +               client = of_i2c_register_device(adap, node);
->> +               if (IS_ERR(client)) {
->> +                       dev_warn(&adap->dev,
->> +                                "Failed to create I2C device for %s\n",
->> +                                node->full_name);
-> 
-> I don't think there's a need to add this warning, as of_i2c_register_device()
-> already prints messages in all failure paths.
-So does of_register_spi_device(). And there's a dev_warn() in
-of_spi_register_devices() as well...
-But yes, I was also thinking of this.
-
-Nevertheless, I added it as I thought this would keep both drivers
-somehow consistent. And it's a very rare error case, though.
-
-  Ralf
-> 
->> +                       of_node_clear_flag(node, OF_POPULATED);
->> +               }
->>         }
-> 
-> Gr{oetje,eeting}s,
-> 
->                         Geert
-> 
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-> 
-> In personal conversations with technical people, I call myself a hacker. But
-> when I'm talking to journalists I just say "programmer" or something like that.
->                                 -- Linus Torvalds
-> 
-
--- 
-Ralf Ramsauer
-PGP: 0x8F10049B
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

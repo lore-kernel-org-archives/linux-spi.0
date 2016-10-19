@@ -1,11 +1,13 @@
 From: Martin Kaiser <martin-XxZfDwE/svGeZLLa646FqQ@public.gmane.org>
-Subject: [PATCH] spi: imx: support DMA for imx35
-Date: Wed, 19 Oct 2016 23:38:24 +0200
-Message-ID: <1476913104-2405-1-git-send-email-martin@kaiser.cx>
+Subject: [PATCH v2] spi: imx: support DMA for imx35
+Date: Thu, 20 Oct 2016 00:42:25 +0200
+Message-ID: <1476916945-2744-1-git-send-email-martin@kaiser.cx>
+References: <1476913104-2405-1-git-send-email-martin@kaiser.cx>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, Martin Kaiser <martin-XxZfDwE/svGeZLLa646FqQ@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1476913104-2405-1-git-send-email-martin-XxZfDwE/svGeZLLa646FqQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
@@ -17,11 +19,14 @@ requests when the fifo is half empty during tx or half full during rx.
 
 Signed-off-by: Martin Kaiser <martin-XxZfDwE/svGeZLLa646FqQ@public.gmane.org>
 ---
+changes since v1:
+   fix indentation
+
  drivers/spi/spi-imx.c |   21 ++++++++++++++++++---
  1 file changed, 18 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index deb782f..e9e0938 100644
+index deb782f..08124b2 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
 @@ -442,6 +442,7 @@ static void mx51_ecspi_reset(struct spi_imx_data *spi_imx)
@@ -62,7 +67,7 @@ index deb782f..e9e0938 100644
 +		   when TXFIFO is half empty */
 +		writel(MX31_DMAREG_RH_DEN | MX31_DMAREG_TH_DEN,
 +			spi_imx->base + MX31_CSPI_DMAREG);
-+   }
++	}
 +
  	return 0;
  }

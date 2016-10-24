@@ -1,103 +1,42 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: mark device nodes only in case of successful instantiation" to the spi tree
-Date: Mon, 24 Oct 2016 19:05:20 +0100
-Message-ID: <E1byjce-0001mu-N6@debutante>
-References: <20161017135957.20297-2-ralf@ramses-pyramidenbau.de>
-Cc: Pantelis Antoniou <pantelis.antoniou@konsulko.com>,
-        Mark Brown <broonie@kernel.org>, stable@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Linux SPI <linux-spi@vger.kernel.org>,
-        Linux I2C <linux-i2c@vger.kernel.org>,
-        "linux-kernel @ vger . kernel . org" <linux-kernel@vger.kernel.org>,
-        Pantelis Antoniou <pantelis.antoniou@konsulko.com>
-To: Ralf Ramsauer <ralf@ramses-pyramidenbau.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20161017135957.20297-2-ralf@ramses-pyramidenbau.de>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 17/28] spi: fsl-espi: avoid processing uninitalized data
+ on error
+Date: Mon, 24 Oct 2016 20:36:37 +0200
+Message-ID: <f364c025-91c0-6625-e2a3-d00baf17d71c@gmail.com>
+References: <20161017220342.1627073-1-arnd@arndb.de>
+ <20161017221355.1861551-5-arnd@arndb.de>
+ <20161024172713.GI17252@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Cc: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
+        Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Heiner Kallweit <heiner.kallweit-S0/GAf8tV78@public.gmane.org>,
+        Nobuteru Hayashi <hayashi.nbb-MBed0sS7vigTBYAz+LHnZg@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20161024172713.GI17252-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+Am 24.10.2016 um 19:27 schrieb Mark Brown:
+> On Tue, Oct 18, 2016 at 12:13:38AM +0200, Arnd Bergmann wrote:
+>> When we get a spurious interrupt in fsl_espi_irq, we end up
+>> processing four uninitalized bytes of data, as shown in this
+>> warning message:
+> 
+> This doesn't apply against current code, please check and resend.
+> 
+The not yet reviewed part of my patch series from Oct 2nd,
+namely "[PATCH 07/11] spi: fsl-espi: fix and improve reading
+from RX FIFO" replaces the code in question.
+There's more to fix like removing polling from the ISR.
+If you prefer to apply Arnd's fix first I'd rebase the open part
+of the patch series and resend it.
 
-   spi: mark device nodes only in case of successful instantiation
-
-has been applied to the spi tree at
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From e0af98a7e025a7263ae7e50264f6f79ed29642a7 Mon Sep 17 00:00:00 2001
-From: Ralf Ramsauer <ralf@ramses-pyramidenbau.de>
-Date: Mon, 17 Oct 2016 15:59:56 +0200
-Subject: [PATCH] spi: mark device nodes only in case of successful
- instantiation
-
-Instantiated SPI device nodes are marked with OF_POPULATE. This was
-introduced in bd6c164. On unloading, loaded device nodes will of course
-be unmarked. The problem are nodes that fail during initialisation: If a
-node fails, it won't be unloaded and hence not be unmarked.
-
-If a SPI driver module is unloaded and reloaded, it will skip nodes that
-failed before.
-
-Skip device nodes that are already populated and mark them only in case
-of success.
-
-Note that the same issue exists for I2C.
-
-Fixes: bd6c164 ("spi: Mark instantiated device nodes with OF_POPULATE")
-Signed-off-by: Ralf Ramsauer <ralf@ramses-pyramidenbau.de>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Acked-by: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
----
- drivers/spi/spi.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 5787b723b593..838783c3fed0 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1618,9 +1618,11 @@ static void of_register_spi_devices(struct spi_master *master)
- 		if (of_node_test_and_set_flag(nc, OF_POPULATED))
- 			continue;
- 		spi = of_register_spi_device(master, nc);
--		if (IS_ERR(spi))
-+		if (IS_ERR(spi)) {
- 			dev_warn(&master->dev, "Failed to create SPI device for %s\n",
- 				nc->full_name);
-+			of_node_clear_flag(nc, OF_POPULATED);
-+		}
- 	}
- }
- #else
-@@ -3131,6 +3133,7 @@ static int of_spi_notify(struct notifier_block *nb, unsigned long action,
- 		if (IS_ERR(spi)) {
- 			pr_err("%s: failed to create for '%s'\n",
- 					__func__, rd->dn->full_name);
-+			of_node_clear_flag(rd->dn, OF_POPULATED);
- 			return notifier_from_errno(PTR_ERR(spi));
- 		}
- 		break;
--- 
-2.8.1
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

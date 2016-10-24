@@ -1,59 +1,60 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2] spi: imx: support DMA for imx35
-Date: Mon, 24 Oct 2016 18:04:53 +0100
-Message-ID: <20161024170453.GE17252@sirena.org.uk>
-References: <1476913104-2405-1-git-send-email-martin@kaiser.cx>
- <1476916945-2744-1-git-send-email-martin@kaiser.cx>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2 1/2] spi: mark device nodes only in case of successful
+ instantiation
+Date: Mon, 24 Oct 2016 18:30:51 +0100
+Message-ID: <20161024173051.GK17252@sirena.org.uk>
+References: <20161017135957.20297-1-ralf@ramses-pyramidenbau.de>
+ <20161017135957.20297-2-ralf@ramses-pyramidenbau.de>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="DrWhICOqskFTAXiy"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
-To: Martin Kaiser <martin-XxZfDwE/svGeZLLa646FqQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+        protocol="application/pgp-signature"; boundary="8jNwmpfkpox/fiJK"
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        Linux SPI <linux-spi@vger.kernel.org>,
+        Linux I2C <linux-i2c@vger.kernel.org>,
+        "linux-kernel @ vger . kernel . org" <linux-kernel@vger.kernel.org>,
+        Pantelis Antoniou <pantelis.antoniou@konsulko.com>
+To: Ralf Ramsauer <ralf@ramses-pyramidenbau.de>
+Return-path: <linux-i2c-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1476916945-2744-1-git-send-email-martin-XxZfDwE/svGeZLLa646FqQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <20161017135957.20297-2-ralf@ramses-pyramidenbau.de>
+Sender: linux-i2c-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---DrWhICOqskFTAXiy
+--8jNwmpfkpox/fiJK
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 20, 2016 at 12:42:25AM +0200, Martin Kaiser wrote:
-> Support DMA transfers on imx35 and compatible chipsets (imx31, imx25).
->=20
-> If DMA can be used, set the start mode control (SMC) bit to start the
-> SPI burst as soon as data is written into the tx fifo. Configure DMA
-> requests when the fifo is half empty during tx or half full during rx.
->=20
-> Signed-off-by: Martin Kaiser <martin-XxZfDwE/svGeZLLa646FqQ@public.gmane.org>
-> ---
-> changes since v1:
->    fix indentation
+On Mon, Oct 17, 2016 at 03:59:56PM +0200, Ralf Ramsauer wrote:
+> Instantiated SPI device nodes are marked with OF_POPULATE. This was
+> introduced in bd6c164. On unloading, loaded device nodes will of course
 
-Please don't send new patches as followups for old ones, it makes it
-harder to follow what's going on when things get threaded.
+Please include human readable descriptions of things like commits and
+issues being discussed in e-mail in your mails, this makes them much
+easier for humans to read especially when they have no internet access.
+I do frequently catch up on my mail on flights or while otherwise
+travelling so this is even more pressing for me than just being about
+making things a bit easier to read.
 
---DrWhICOqskFTAXiy
+Please also use longer hashes - the kernel repository is big enough that
+we do actually have a few collisons on shorter hash lengths IIRC.  The
+standard thing is 12 characthers (you can set core.abbrev to 12 to help
+with this).
+
+--8jNwmpfkpox/fiJK
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJYDj80AAoJECTWi3JdVIfQpFsH/iQ4fuoFRR00/mZH0IRJTk0O
-qnH5ACzfZz7CjtNQ/4Kh6bOoD91M4nHpg6u57FaUFx6upOfMuuFHJ4LyaxRz6cBw
-zKGxuYXdXX+d8WJjgAl0IE0MK6Nrju6AT7F4ImUeKPDvSLSZkS5o6KijKeCqd3nK
-jnSA82jrOp9Bhw1Nz7/h+bPptg5rVWZJCy0+Bc6Q8sbK4QZmFzC8XEKPutD9uBYG
-AHccv5fAlcH4bROVUfQyxehsvY4PdAxHkE5tzMHaCIKL/avdh5EEL0Sa+vEDlRN9
-OVTk03UywHjHP9tJwNPriIz1EZQciWr/MGMVa1hSMFYw6RdXtNwCJiKXl8C9shU=
-=YQLp
+iQEcBAEBCAAGBQJYDkVKAAoJECTWi3JdVIfQNA0H+gKYoRfi1hrYmOAC+LbCDmAq
+bFKNP/Wm8QZm4Ox0AFUrJQvg1/ZUA8hOq29Q2iT+Q4aA0wh/kMoYiqptKYHDJR4i
+1cOuJ9f8h7UhlSoQnhVn6Jtkxjyh/NgeE8kUZqw4dKerAPx1S4JIzMWWWqf3IQCm
+WYT5ktLxIflHEuPQXzIeY1sQAr840L/T7MrI2rblEAsGfI0qiM9iXgfJX/aywa8T
++9M5snM0em9eLdlulGeHxhhQYCIx0pJrOwudcnSCJaTamyJ0rmuzhBQzH9UOWiZo
+fjYfIsSsnNkSV98M3PPnzYWC6hKhgPkt6ByNCvntxEZNxcWgOlNXq7/bBLxnFaE=
+=DPzU
 -----END PGP SIGNATURE-----
 
---DrWhICOqskFTAXiy--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--8jNwmpfkpox/fiJK--

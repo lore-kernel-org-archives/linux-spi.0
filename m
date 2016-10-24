@@ -1,60 +1,121 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 1/2] spi: mark device nodes only in case of successful
- instantiation
-Date: Mon, 24 Oct 2016 18:30:51 +0100
-Message-ID: <20161024173051.GK17252@sirena.org.uk>
-References: <20161017135957.20297-1-ralf@ramses-pyramidenbau.de>
- <20161017135957.20297-2-ralf@ramses-pyramidenbau.de>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="8jNwmpfkpox/fiJK"
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Linux SPI <linux-spi@vger.kernel.org>,
-        Linux I2C <linux-i2c@vger.kernel.org>,
-        "linux-kernel @ vger . kernel . org" <linux-kernel@vger.kernel.org>,
-        Pantelis Antoniou <pantelis.antoniou@konsulko.com>
-To: Ralf Ramsauer <ralf@ramses-pyramidenbau.de>
-Return-path: <linux-i2c-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20161017135957.20297-2-ralf@ramses-pyramidenbau.de>
-Sender: linux-i2c-owner@vger.kernel.org
+Subject: Applied "spi: imx: support DMA for imx35" to the spi tree
+Date: Mon, 24 Oct 2016 19:05:23 +0100
+Message-ID: <E1byjch-0001nl-Sj@debutante>
+References: <1476916945-2744-1-git-send-email-martin@kaiser.cx>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        s.hauer@pengutronix.de
+To: Martin Kaiser <martin@kaiser.cx>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1476916945-2744-1-git-send-email-martin@kaiser.cx>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---8jNwmpfkpox/fiJK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: imx: support DMA for imx35
 
-On Mon, Oct 17, 2016 at 03:59:56PM +0200, Ralf Ramsauer wrote:
-> Instantiated SPI device nodes are marked with OF_POPULATE. This was
-> introduced in bd6c164. On unloading, loaded device nodes will of course
+has been applied to the spi tree at
 
-Please include human readable descriptions of things like commits and
-issues being discussed in e-mail in your mails, this makes them much
-easier for humans to read especially when they have no internet access.
-I do frequently catch up on my mail on flights or while otherwise
-travelling so this is even more pressing for me than just being about
-making things a bit easier to read.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-Please also use longer hashes - the kernel repository is big enough that
-we do actually have a few collisons on shorter hash lengths IIRC.  The
-standard thing is 12 characthers (you can set core.abbrev to 12 to help
-with this).
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
---8jNwmpfkpox/fiJK
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iQEcBAEBCAAGBQJYDkVKAAoJECTWi3JdVIfQNA0H+gKYoRfi1hrYmOAC+LbCDmAq
-bFKNP/Wm8QZm4Ox0AFUrJQvg1/ZUA8hOq29Q2iT+Q4aA0wh/kMoYiqptKYHDJR4i
-1cOuJ9f8h7UhlSoQnhVn6Jtkxjyh/NgeE8kUZqw4dKerAPx1S4JIzMWWWqf3IQCm
-WYT5ktLxIflHEuPQXzIeY1sQAr840L/T7MrI2rblEAsGfI0qiM9iXgfJX/aywa8T
-+9M5snM0em9eLdlulGeHxhhQYCIx0pJrOwudcnSCJaTamyJ0rmuzhBQzH9UOWiZo
-fjYfIsSsnNkSV98M3PPnzYWC6hKhgPkt6ByNCvntxEZNxcWgOlNXq7/bBLxnFaE=
-=DPzU
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---8jNwmpfkpox/fiJK--
+Thanks,
+Mark
+
+>From 2dd33f9cec90499029fd49ffae2922c3f9ccad11 Mon Sep 17 00:00:00 2001
+From: Martin Kaiser <martin@kaiser.cx>
+Date: Thu, 20 Oct 2016 00:42:25 +0200
+Subject: [PATCH] spi: imx: support DMA for imx35
+
+Support DMA transfers on imx35 and compatible chipsets (imx31, imx25).
+
+If DMA can be used, set the start mode control (SMC) bit to start the
+SPI burst as soon as data is written into the tx fifo. Configure DMA
+requests when the fifo is half empty during tx or half full during rx.
+
+Signed-off-by: Martin Kaiser <martin@kaiser.cx>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-imx.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index deb782f6556c..08124b29665e 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -442,6 +442,7 @@ static void mx51_ecspi_reset(struct spi_imx_data *spi_imx)
+ #define MX31_CSPICTRL_ENABLE	(1 << 0)
+ #define MX31_CSPICTRL_MASTER	(1 << 1)
+ #define MX31_CSPICTRL_XCH	(1 << 2)
++#define MX31_CSPICTRL_SMC	(1 << 3)
+ #define MX31_CSPICTRL_POL	(1 << 4)
+ #define MX31_CSPICTRL_PHA	(1 << 5)
+ #define MX31_CSPICTRL_SSCTL	(1 << 6)
+@@ -452,6 +453,10 @@ static void mx51_ecspi_reset(struct spi_imx_data *spi_imx)
+ #define MX35_CSPICTRL_CS_SHIFT	12
+ #define MX31_CSPICTRL_DR_SHIFT	16
+ 
++#define MX31_CSPI_DMAREG	0x10
++#define MX31_DMAREG_RH_DEN	(1<<4)
++#define MX31_DMAREG_TH_DEN	(1<<1)
++
+ #define MX31_CSPISTATUS		0x14
+ #define MX31_STATUS_RR		(1 << 3)
+ 
+@@ -511,6 +516,9 @@ static int mx31_config(struct spi_device *spi, struct spi_imx_config *config)
+ 			(is_imx35_cspi(spi_imx) ? MX35_CSPICTRL_CS_SHIFT :
+ 						  MX31_CSPICTRL_CS_SHIFT);
+ 
++	if (spi_imx->usedma)
++		reg |= MX31_CSPICTRL_SMC;
++
+ 	writel(reg, spi_imx->base + MXC_CSPICTRL);
+ 
+ 	reg = readl(spi_imx->base + MX31_CSPI_TESTREG);
+@@ -520,6 +528,13 @@ static int mx31_config(struct spi_device *spi, struct spi_imx_config *config)
+ 		reg &= ~MX31_TEST_LBC;
+ 	writel(reg, spi_imx->base + MX31_CSPI_TESTREG);
+ 
++	if (spi_imx->usedma) {
++		/* configure DMA requests when RXFIFO is half full and
++		   when TXFIFO is half empty */
++		writel(MX31_DMAREG_RH_DEN | MX31_DMAREG_TH_DEN,
++			spi_imx->base + MX31_CSPI_DMAREG);
++	}
++
+ 	return 0;
+ }
+ 
+@@ -1244,10 +1259,10 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 
+ 	spi_imx->spi_clk = clk_get_rate(spi_imx->clk_per);
+ 	/*
+-	 * Only validated on i.mx6 now, can remove the constrain if validated on
+-	 * other chips.
++	 * Only validated on i.mx35 and i.mx6 now, can remove the constraint
++	 * if validated on other chips.
+ 	 */
+-	if (is_imx51_ecspi(spi_imx)) {
++	if (is_imx35_cspi(spi_imx) || is_imx51_ecspi(spi_imx)) {
+ 		ret = spi_imx_sdma_init(&pdev->dev, spi_imx, master);
+ 		if (ret == -EPROBE_DEFER)
+ 			goto out_clk_put;
+-- 
+2.8.1

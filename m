@@ -1,19 +1,26 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: omap2-mcspi: Remove redundant return value check of platform_get_resource()" to the spi tree
-Date: Mon, 24 Oct 2016 19:05:27 +0100
-Message-ID: <E1byjcl-0001ok-3U@debutante>
-References: <1477146797-30818-1-git-send-email-weiyj.lk@gmail.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Wei Yongjun <weiyongjun1-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1477146797-30818-1-git-send-email-weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: mark device nodes only in case of successful instantiation" to the spi tree
+Date: Mon, 24 Oct 2016 19:05:20 +0100
+Message-ID: <E1byjce-0001mu-N6@debutante>
+References: <20161017135957.20297-2-ralf@ramses-pyramidenbau.de>
+Cc: Pantelis Antoniou <pantelis.antoniou@konsulko.com>,
+        Mark Brown <broonie@kernel.org>, stable@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        Linux SPI <linux-spi@vger.kernel.org>,
+        Linux I2C <linux-i2c@vger.kernel.org>,
+        "linux-kernel @ vger . kernel . org" <linux-kernel@vger.kernel.org>,
+        Pantelis Antoniou <pantelis.antoniou@konsulko.com>
+To: Ralf Ramsauer <ralf@ramses-pyramidenbau.de>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20161017135957.20297-2-ralf@ramses-pyramidenbau.de>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: omap2-mcspi: Remove redundant return value check of platform_get_resource()
+   spi: mark device nodes only in case of successful instantiation
 
 has been applied to the spi tree at
 
@@ -38,42 +45,59 @@ to this mail.
 Thanks,
 Mark
 
->From 2e9c079cccedbe0d47265ca0c8121c8c66ebb241 Mon Sep 17 00:00:00 2001
-From: Wei Yongjun <weiyongjun1-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
-Date: Sat, 22 Oct 2016 14:33:17 +0000
-Subject: [PATCH] spi: omap2-mcspi: Remove redundant return value check of
- platform_get_resource()
+>From e0af98a7e025a7263ae7e50264f6f79ed29642a7 Mon Sep 17 00:00:00 2001
+From: Ralf Ramsauer <ralf@ramses-pyramidenbau.de>
+Date: Mon, 17 Oct 2016 15:59:56 +0200
+Subject: [PATCH] spi: mark device nodes only in case of successful
+ instantiation
 
-Remove unneeded error handling on the result of a call
-to platform_get_resource() when the value is passed to
-devm_ioremap_resource().
+Instantiated SPI device nodes are marked with OF_POPULATE. This was
+introduced in bd6c164. On unloading, loaded device nodes will of course
+be unmarked. The problem are nodes that fail during initialisation: If a
+node fails, it won't be unloaded and hence not be unmarked.
 
-Signed-off-by: Wei Yongjun <weiyongjun1-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+If a SPI driver module is unloaded and reloaded, it will skip nodes that
+failed before.
+
+Skip device nodes that are already populated and mark them only in case
+of success.
+
+Note that the same issue exists for I2C.
+
+Fixes: bd6c164 ("spi: Mark instantiated device nodes with OF_POPULATE")
+Signed-off-by: Ralf Ramsauer <ralf@ramses-pyramidenbau.de>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Acked-by: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
 ---
- drivers/spi/spi-omap2-mcspi.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/spi/spi.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 3567e1dfd30d..79800e991ccd 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1386,11 +1386,6 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
- 	regs_offset = pdata->regs_offset;
- 
- 	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (r == NULL) {
--		status = -ENODEV;
--		goto free_master;
--	}
--
- 	mcspi->base = devm_ioremap_resource(&pdev->dev, r);
- 	if (IS_ERR(mcspi->base)) {
- 		status = PTR_ERR(mcspi->base);
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 5787b723b593..838783c3fed0 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1618,9 +1618,11 @@ static void of_register_spi_devices(struct spi_master *master)
+ 		if (of_node_test_and_set_flag(nc, OF_POPULATED))
+ 			continue;
+ 		spi = of_register_spi_device(master, nc);
+-		if (IS_ERR(spi))
++		if (IS_ERR(spi)) {
+ 			dev_warn(&master->dev, "Failed to create SPI device for %s\n",
+ 				nc->full_name);
++			of_node_clear_flag(nc, OF_POPULATED);
++		}
+ 	}
+ }
+ #else
+@@ -3131,6 +3133,7 @@ static int of_spi_notify(struct notifier_block *nb, unsigned long action,
+ 		if (IS_ERR(spi)) {
+ 			pr_err("%s: failed to create for '%s'\n",
+ 					__func__, rd->dn->full_name);
++			of_node_clear_flag(rd->dn, OF_POPULATED);
+ 			return notifier_from_errno(PTR_ERR(spi));
+ 		}
+ 		break;
 -- 
 2.8.1
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

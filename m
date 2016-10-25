@@ -1,71 +1,40 @@
-From: Wolfram Sang <wsa@the-dreams.de>
-Subject: Re: [PATCH v2 2/2] i2c: mark device nodes only in case of successful
- instantiation
-Date: Tue, 25 Oct 2016 11:23:01 +0200
-Message-ID: <20161025092301.GC1597@katana>
-References: <20161017135957.20297-1-ralf@ramses-pyramidenbau.de>
- <20161017135957.20297-3-ralf@ramses-pyramidenbau.de>
+From: Joel Holdsworth <joel-IJEoVVyKhCJXvIrf17iDB/XRex20P6io@public.gmane.org>
+Subject: Why isn't spi_set_cs() public?
+Date: Tue, 25 Oct 2016 11:03:17 -0600
+Message-ID: <937c638f-a3f7-cb68-7f9a-94dd38d52be5@airwebreathe.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="z4+8/lEcDcG5Ke9S"
-Cc: Mark Brown <broonie@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Linux SPI <linux-spi@vger.kernel.org>,
-        Linux I2C <linux-i2c@vger.kernel.org>,
-        "linux-kernel @ vger . kernel . org" <linux-kernel@vger.kernel.org>,
-        Pantelis Antoniou <pantelis.antoniou@konsulko.com>
-To: Ralf Ramsauer <ralf@ramses-pyramidenbau.de>
-Return-path: <linux-i2c-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20161017135957.20297-3-ralf@ramses-pyramidenbau.de>
-Sender: linux-i2c-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: atull-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org, moritz.fischer-+aYTwkv1SeIAvxtiuMwx3w@public.gmane.org
+To: broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+Hi Folks,
 
---z4+8/lEcDcG5Ke9S
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I'm working a little driver for configuring the Lattice iCE40 FPGA in 
+the FPGA Manager framework.
 
-On Mon, Oct 17, 2016 at 03:59:57PM +0200, Ralf Ramsauer wrote:
-> Instantiated I2C device nodes are marked with OF_POPULATE. This was
-> introduced in 4f001fd. On unloading, loaded device nodes will of course
-> be unmarked. The problem are nodes that fail during initialisation: If a
-> node fails, it won't be unloaded and hence not be unmarked.
->=20
-> If a I2C driver module is unloaded and reloaded, it will skip nodes that
-> failed before.
->=20
-> Skip device nodes that are already populated and mark them only in case
-> of success.
->=20
-> Note that the same issue exists for SPI.
->=20
-> Fixes: 4f001fd ("i2c: Mark instantiated device nodes with OF_POPULATE")
-> Signed-off-by: Ralf Ramsauer <ralf@ramses-pyramidenbau.de>
+https://patchwork.kernel.org/patch/9393981/
 
-Applied to for-current, thanks!
+It's mostly working now, but I wanted to ask about manually setting the 
+slave-select line.
 
+The iCE40 requires master to assert the slave-select, then pulse a reset 
+line, then wait a while then release the slave-select.
 
---z4+8/lEcDcG5Ke9S
-Content-Type: application/pgp-signature; name="signature.asc"
+To do this I lock the bus with spi_bus_lock(), then I copy-pasted code 
+from spi_set_cs() into the driver so I could manually control the 
+slave-select.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
+I was wondering if anyone could explain why spi_set_cs() is a static 
+function, not public? Manually controlling the slave-select seems like 
+quite a common-place thing to do.
 
-iQIcBAEBAgAGBQJYDyR1AAoJEBQN5MwUoCm2Xj8P/3C1MutimouBmDa59NrKf/DV
-evEZBR9Echq0bu3MlvJYrfoqsgYMLtDQ3Y37sB4gswceD+b8W1cSfn0MK7R97m1l
-78QWtxm9ZISKVg2JIt9Kut47ZM3iFD2dzkM5I0HEkcYOApRB+QADp9t7j1LL0o4P
-fiukJiX0JdBoDRZFoVKLxGt3/X3RUJfwMYs1bTnDvA7UrmX8thcYeGt4yQ9r1eoe
-yUP4lVT0wZKToXnWmnLUYxgGbCZjXMIN4IK9X/33fyAySrIossdwzGTKy/wxSpDb
-neYztFT8B2I8cFfgQOvdhHXJwfV0h8jofgRKjTJGpGYSwzOqr+Pkmmldwifw3Wpc
-0Sg7erFGfEI8hUXu4GlPXXCQzOXCGYyubYLrLmhytA/4+kbF32GjXF7PRKBNxh1a
-hljPdPqNyN2oflWEoPNgJnUKFRCAVZsSOOQeIqcdo1ErUwTA/d7GPKQyOiGFxcqz
-03NkaTYxOIgNP1F/L0NXHyAMKr4brPU2jlVRuwM1Ohvc6MnY+6vVrORPtHrzgsH2
-PMOd9oQjrYygNQ7AFo9EzI2lRxgd+6slZNdlTUnEyh6gwaIgxWzMTNPSSyi4QMeH
-PtYK/gJhSrTL4qb+jKitA0GFvG70Z3FU+V0TGccx/dt30ikihj1Y+YN3dgvT+kgr
-h/wN2a1xBdQIUad28mSf
-=DSaT
------END PGP SIGNATURE-----
-
---z4+8/lEcDcG5Ke9S--
+Best Regards
+Joel Holdsworth
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

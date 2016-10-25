@@ -1,50 +1,71 @@
-From: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH 17/28] spi: fsl-espi: avoid processing uninitalized data on error
-Date: Mon, 24 Oct 2016 22:37:53 +0200
-Message-ID: <3945489.MQiL9ES5FK@wuerfel>
-References: <20161017220342.1627073-1-arnd@arndb.de> <f364c025-91c0-6625-e2a3-d00baf17d71c@gmail.com> <20161024184543.GR17252@sirena.org.uk>
+From: Wolfram Sang <wsa@the-dreams.de>
+Subject: Re: [PATCH v2 2/2] i2c: mark device nodes only in case of successful
+ instantiation
+Date: Tue, 25 Oct 2016 11:23:01 +0200
+Message-ID: <20161025092301.GC1597@katana>
+References: <20161017135957.20297-1-ralf@ramses-pyramidenbau.de>
+ <20161017135957.20297-3-ralf@ramses-pyramidenbau.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org,
-        Heiner Kallweit <heiner.kallweit@web.de>,
-        Nobuteru Hayashi <hayashi.nbb@ncos.nec.co.jp>,
-        linux-spi@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20161024184543.GR17252@sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="z4+8/lEcDcG5Ke9S"
+Cc: Mark Brown <broonie@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Linux SPI <linux-spi@vger.kernel.org>,
+        Linux I2C <linux-i2c@vger.kernel.org>,
+        "linux-kernel @ vger . kernel . org" <linux-kernel@vger.kernel.org>,
+        Pantelis Antoniou <pantelis.antoniou@konsulko.com>
+To: Ralf Ramsauer <ralf@ramses-pyramidenbau.de>
+Return-path: <linux-i2c-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20161017135957.20297-3-ralf@ramses-pyramidenbau.de>
+Sender: linux-i2c-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Monday, October 24, 2016 7:45:43 PM CEST Mark Brown wrote:
-> On Mon, Oct 24, 2016 at 08:36:37PM +0200, Heiner Kallweit wrote:
-> > Am 24.10.2016 um 19:27 schrieb Mark Brown:
-> 
-> > > This doesn't apply against current code, please check and resend.
-> 
-> > The not yet reviewed part of my patch series from Oct 2nd,
-> > namely "[PATCH 07/11] spi: fsl-espi: fix and improve reading
-> > from RX FIFO" replaces the code in question.
-> > There's more to fix like removing polling from the ISR.
-> > If you prefer to apply Arnd's fix first I'd rebase the open part
-> > of the patch series and resend it.
-> 
-> If there are dependencies you should mention them when you resend (in
-> general you should always mention any unapplied or cross tree
-> dependencies when sending things).
 
-I think my patch (the version I sent) should ideally make it into
-v4.9 as a bugfix. This was the powerpc warning I saw from Olof's
-autobuilder with the -Wmaybe-uninitialized warning added back, and
-it's one of the actual bugs I found (though rather unlikely
-to hit in practice).
+--z4+8/lEcDcG5Ke9S
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Merging with Heiner's patches should be trivial, and I'm pretty
-sure we want the patch either way. Not sure if we need a backport,
-it was introduced earlier this year in commit 6319a68011b8
-("spi/fsl-espi: avoid infinite loops on fsl_espi_cpu_irq()") as
-I now found.
+On Mon, Oct 17, 2016 at 03:59:57PM +0200, Ralf Ramsauer wrote:
+> Instantiated I2C device nodes are marked with OF_POPULATE. This was
+> introduced in 4f001fd. On unloading, loaded device nodes will of course
+> be unmarked. The problem are nodes that fail during initialisation: If a
+> node fails, it won't be unloaded and hence not be unmarked.
+>=20
+> If a I2C driver module is unloaded and reloaded, it will skip nodes that
+> failed before.
+>=20
+> Skip device nodes that are already populated and mark them only in case
+> of success.
+>=20
+> Note that the same issue exists for SPI.
+>=20
+> Fixes: 4f001fd ("i2c: Mark instantiated device nodes with OF_POPULATE")
+> Signed-off-by: Ralf Ramsauer <ralf@ramses-pyramidenbau.de>
 
-	Arnd
+Applied to for-current, thanks!
+
+
+--z4+8/lEcDcG5Ke9S
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBAgAGBQJYDyR1AAoJEBQN5MwUoCm2Xj8P/3C1MutimouBmDa59NrKf/DV
+evEZBR9Echq0bu3MlvJYrfoqsgYMLtDQ3Y37sB4gswceD+b8W1cSfn0MK7R97m1l
+78QWtxm9ZISKVg2JIt9Kut47ZM3iFD2dzkM5I0HEkcYOApRB+QADp9t7j1LL0o4P
+fiukJiX0JdBoDRZFoVKLxGt3/X3RUJfwMYs1bTnDvA7UrmX8thcYeGt4yQ9r1eoe
+yUP4lVT0wZKToXnWmnLUYxgGbCZjXMIN4IK9X/33fyAySrIossdwzGTKy/wxSpDb
+neYztFT8B2I8cFfgQOvdhHXJwfV0h8jofgRKjTJGpGYSwzOqr+Pkmmldwifw3Wpc
+0Sg7erFGfEI8hUXu4GlPXXCQzOXCGYyubYLrLmhytA/4+kbF32GjXF7PRKBNxh1a
+hljPdPqNyN2oflWEoPNgJnUKFRCAVZsSOOQeIqcdo1ErUwTA/d7GPKQyOiGFxcqz
+03NkaTYxOIgNP1F/L0NXHyAMKr4brPU2jlVRuwM1Ohvc6MnY+6vVrORPtHrzgsH2
+PMOd9oQjrYygNQ7AFo9EzI2lRxgd+6slZNdlTUnEyh6gwaIgxWzMTNPSSyi4QMeH
+PtYK/gJhSrTL4qb+jKitA0GFvG70Z3FU+V0TGccx/dt30ikihj1Y+YN3dgvT+kgr
+h/wN2a1xBdQIUad28mSf
+=DSaT
+-----END PGP SIGNATURE-----
+
+--z4+8/lEcDcG5Ke9S--

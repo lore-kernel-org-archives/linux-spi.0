@@ -1,24 +1,21 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: fsl-espi: avoid processing uninitalized data on error" to the spi tree
-Date: Wed, 26 Oct 2016 11:15:57 +0100
-Message-ID: <E1bzLFV-0004Wz-Ut@debutante>
-References: <20161017221355.1861551-5-arnd@arndb.de>
-Cc: Mark Brown <broonie@kernel.org>, stable@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org,
-        Heiner Kallweit <heiner.kallweit@web.de>,
-        Nobuteru Hayashi <hayashi.nbb@ncos.nec.co.jp>,
-        linux-spi@vger.kernel.org
-To: Arnd Bergmann <arnd@arndb.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20161017221355.1861551-5-arnd@arndb.de>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: change post transfer udelay() to usleep_range() for long delays" to the spi tree
+Date: Wed, 26 Oct 2016 16:13:04 +0100
+Message-ID: <E1bzPt2-0008DQ-55@debutante>
+References: <1475837747-7385-1-git-send-email-djkurtz@chromium.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
+        gwendal-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "open list:SPI SUBSYSTEM" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        open list <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Daniel Kurtz <djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1475837747-7385-1-git-send-email-djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: fsl-espi: avoid processing uninitalized data on error
+   spi: change post transfer udelay() to usleep_range() for long delays
 
 has been applied to the spi tree at
 
@@ -43,40 +40,69 @@ to this mail.
 Thanks,
 Mark
 
->From 5c0ba57744b1422d528f19430dd66d6803cea86f Mon Sep 17 00:00:00 2001
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Tue, 25 Oct 2016 22:57:10 +0200
-Subject: [PATCH] spi: fsl-espi: avoid processing uninitalized data on error
+>From 8244bd3ab405a1268223a282b32d28031f7e16fe Mon Sep 17 00:00:00 2001
+From: Daniel Kurtz <djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Date: Fri, 7 Oct 2016 18:55:47 +0800
+Subject: [PATCH] spi: change post transfer udelay() to usleep_range() for long
+ delays
 
-When we get a spurious interrupt in fsl_espi_irq, we end up
-processing four uninitalized bytes of data, as shown in this
-warning message:
+The spi_transfer parameter delay_usecs allows specifying a time to wait
+after transferring a spi message.  This wait can be quite long - some
+devices, such as some Chrome OS ECs, require as much as 2000 usecs after
+a SPI transaction, before it can respond.
 
-   drivers/spi/spi-fsl-espi.c: In function 'fsl_espi_irq':
-   drivers/spi/spi-fsl-espi.c:462:4: warning: 'rx_data' may be used uninitialized in this function [-Wmaybe-uninitialized]
+(cf: arch/arm64/boot/dts/nvidia/tegra132-norrin.dts:
+   google,cros-ec-spi-msg-delay = <2000>
+)
 
-This adds another check so we skip the data in this case.
+Blocking a CPU for 2 msecs in a busy loop like this doesn't seem very
+friendly to other processes, so change the blocking delay to a sleep
+to allow other things to use this CPU (or so it can sleep).
 
-Fixes: 6319a68011b8 ("spi/fsl-espi: avoid infinite loops on fsl_espi_cpu_irq()")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
+This should be safe to do, because:
+ (a) A post-transaction delay like this is always specified as a minimum
+     wait time
+ (b) A delay here is most likely not very time sensitive, as it occurs
+     after all data has been transferred
+ (c) This delay occurs in a non-critical section of the spi worker thread
+     so where it is safe to sleep.
+
+Two caveats:
+ 1) To avoid penalizing short delays, still use udelay for delays < 10us.
+ 2) usleep_range() very often picks the upper bound, an upper bounds 10%
+    should be plenty.
+
+Signed-off-by: Daniel Kurtz <djkurtz-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 7451585a080e..2c175b9495f7 100644
---- a/drivers/spi/spi-fsl-espi.c
-+++ b/drivers/spi/spi-fsl-espi.c
-@@ -458,7 +458,7 @@ static void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 5787b723b593..42f3e1cb9212 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1034,8 +1034,14 @@ static int spi_transfer_one_message(struct spi_master *master,
+ 		if (msg->status != -EINPROGRESS)
+ 			goto out;
  
- 		mspi->len -= rx_nr_bytes;
+-		if (xfer->delay_usecs)
+-			udelay(xfer->delay_usecs);
++		if (xfer->delay_usecs) {
++			u16 us = xfer->delay_usecs;
++
++			if (us <= 10)
++				udelay(us);
++			else
++				usleep_range(us, us + DIV_ROUND_UP(us, 10));
++		}
  
--		if (mspi->rx)
-+		if (rx_nr_bytes && mspi->rx)
- 			mspi->get_rx(rx_data, mspi);
- 	}
- 
+ 		if (xfer->cs_change) {
+ 			if (list_is_last(&xfer->transfer_list,
 -- 
 2.8.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

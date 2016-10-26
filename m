@@ -1,59 +1,73 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: Merge problem: Re: Applied "spi: fsl-espi: avoid processing
- uninitalized data on error" to the spi tree
-Date: Wed, 26 Oct 2016 22:59:24 +0100
-Message-ID: <20161026215923.GF25322@sirena.org.uk>
-References: <E1bzLFV-0004Wz-Ut@debutante>
- <4b1c5f78-d754-fdc8-0f15-17f88ed224b7@gmail.com>
+From: Maxime Ripard <maxime.ripard@free-electrons.com>
+Subject: Re: [PATCH v7] spi: sun4i: Allow transfers larger than FIFO size
+Date: Wed, 26 Oct 2016 10:55:28 +0200
+Message-ID: <20161026085528.vjjypbfmfbhvileb@lukather>
+References: <1477465231-17704-1-git-send-email-mr.nuke.me@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="/aVve/J9H4Wl5yVO"
-Cc: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
-        Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Nobuteru Hayashi <hayashi.nbb-MBed0sS7vigTBYAz+LHnZg@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+        protocol="application/pgp-signature"; boundary="r2ndqqqu2w33zcqa"
+Cc: broonie@kernel.org, wens@csie.org, linux-spi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+To: Alexandru Gagniuc <mr.nuke.me@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <4b1c5f78-d754-fdc8-0f15-17f88ed224b7-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1477465231-17704-1-git-send-email-mr.nuke.me@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---/aVve/J9H4Wl5yVO
+--r2ndqqqu2w33zcqa
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 26, 2016 at 08:11:28PM +0200, Heiner Kallweit wrote:
-
-> Instead it should be:
+On Wed, Oct 26, 2016 at 12:00:30AM -0700, Alexandru Gagniuc wrote:
+> This is the seventh attempt to get this patch in. I was prompted to look
+> into this again as someone recently remarked:
 >=20
-> if (rx_nr_bytes && mspi->rx) {
-> 	*(u32 *)mspi->rx =3D rx_data;
-> 	mspi->rx +=3D 4;
-> }
+> " cool, to bad spi does not work properly on allwinner..."
+>=20
+> Two and a half years ago,  we were told this will all be handled with DMA.
+> A year or so ago, we were told this will all be handled with DMA.
+> A week or so ago, we were told this will all be handled with DMA.
+>=20
+> See the pattern?
+> When DMA finally takes over, this fallback path is not mutually exclusive.
 
-Please send a patch.
+I definitely agree, and we had this patch in the CHIP kernel for quite
+some time, working like a charm.
 
---/aVve/J9H4Wl5yVO
+I was planning to respin it in the next few days, glad to see you took
+care of it :)
+
+Mark, any comments on this? For the record, it already has my Acked-by.
+
+Thanks,
+Maxime
+
+--=20
+Maxime Ripard, Free Electrons
+Embedded Linux and Kernel engineering
+http://free-electrons.com
+
+--r2ndqqqu2w33zcqa
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
 
-iQEbBAEBCAAGBQJYESc6AAoJECTWi3JdVIfQof0H92wRDgwPB0nvuXFPMDGTK/+8
-9J20Ly8/bzuRCDCpwrDsEWZUhqmnoulzHmLZCN0q2cNP1MdG8oMpX17VbriU/swo
-gfoChL1gga/8fRebZQCkPrSuzMkzKbCZzhZAVweM/dH80GBoS90YEGbvUVY4wbUx
-OtTqT6MVQTdPSJ+OM0h5TXoeArLBrO0XuaXzKolGjiuK3A6O6StGTPgESvwR66sN
-hRYSzrOboqTLw2bgxzAIq8x7r2qc2G80m311pyCwdnZJFPs+WUSwegQACIPee8mL
-T9kUsV1XwyLol0X+GLxhG0ffjFh3gKD9yDq9C20J/HY74MyZq1ryK6oxl5Dnig==
-=EBeH
+iQIcBAEBCAAGBQJYEG98AAoJEBx+YmzsjxAg0BoP/2mpKmhuQqgMt6IqcM6aAyu/
+JFaco/hMkHm+dw+sFFUw+gtq+HUGqAL8KmVgtkzrJo9uYcaQJEPzEhKXfUQP/n5U
+VlJjXH0TWSuIqBrd5YvMhNXEFuMjWnO9q2i/aFyFcXsvj5RJw1852zK1w2hJmasX
+Gkz24Pqd5mWpMHjScledTLDSkYhLAa0XWRuCwJCE92jgmoFR+2wGd0eKfUobvBCn
+4s6qowpAEro2pXuwYfokzlBgYBodMzEAMD0vtlVk3Q0fWcp7h6XvDCw4A3uuK0Gx
+epMaIQYljhoQtg70fkMDAW7QMOASFR8OPdlDE4DamHc/iBNuxns9IzNSH9DYf+1J
+MbWxKTPw5pFtb5Tm0GN+S88vMRvHx9vimzSZriGgDygxL1PDGXdVS0UUIWHeGUqY
+7tzhJ1NJEQWz/ZIGeAbGN6jDEgeUOfClkGL8Wt9BdwsWNtzRb8pONhhrUU8KJYQI
+p7f51kYEDFOoMQZi742Syugbhh7aabwLcnfIUKMLBOMx7/ZTGEwmFhi1M13ZIAmZ
+cYs2y/zGv4lp7hUnffk80FDdwwTO1lY8VcOrL3YG0DkO9Uw6YAvu8VvrL/cwUr3I
+UiOKeMIqRYJuPyOSUj6zZMEfYgL/c5itbYgTIeNOubLSb/iq0luSHYyqetTgoAO9
+mUZz42WA5CqUtXLflzbt
+=IimF
 -----END PGP SIGNATURE-----
 
---/aVve/J9H4Wl5yVO--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--r2ndqqqu2w33zcqa--

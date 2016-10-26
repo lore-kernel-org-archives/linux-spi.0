@@ -1,51 +1,61 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v7] spi: sun4i: Allow transfers larger than FIFO size
-Date: Wed, 26 Oct 2016 17:45:51 +0100
-Message-ID: <20161026164551.GB25322@sirena.org.uk>
-References: <1477465231-17704-1-git-send-email-mr.nuke.me@gmail.com>
- <20161026100743.GZ17252@sirena.org.uk>
- <CADi83T55fLfiMs+z0R6tf=fcFmuPS0fDFKwtXy25AKiEP1DiXw@mail.gmail.com>
+Subject: Re: [PATCH 02/11] spi: fsl-espi: remove unneeded check for
+ SPI_QE_CPU_MODE
+Date: Wed, 26 Oct 2016 18:07:00 +0100
+Message-ID: <20161026170700.GD25322@sirena.org.uk>
+References: <5b98be38-17a2-79a2-14da-fb2bb6f8820f@gmail.com>
+ <20608368-44e6-21f8-d970-5ade9990ce59@gmail.com>
+ <20161006154543.rxlrc3sumejozpcg@sirena.org.uk>
+ <bbe77580-1ac2-4071-5d7d-f786c54ad177@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="1UWUbFP1cBYEclgG"
-Cc: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-        Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Alex Gagniuc <mr.nuke.me-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+        protocol="application/pgp-signature"; boundary="M38YqGLZlgb6RLPS"
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CADi83T55fLfiMs+z0R6tf=fcFmuPS0fDFKwtXy25AKiEP1DiXw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <bbe77580-1ac2-4071-5d7d-f786c54ad177-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---1UWUbFP1cBYEclgG
+--M38YqGLZlgb6RLPS
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Oct 26, 2016 at 09:06:31AM -0700, Alex Gagniuc wrote:
+On Thu, Oct 06, 2016 at 08:36:29PM +0200, Heiner Kallweit wrote:
+> Am 06.10.2016 um 17:45 schrieb Mark Brown:
 
-> Thanks for the heads up! Sorry about that. Do you want me to resend
-> this as a single mail?
+> > Shouldn't we be warning if we encounter a DT that has this set since it
+> > probably indicates that something went wrong?
 
-It's fine, no need.
+> The values of mpc8xxx_spi->rx_shift and mpc8xxx_spi->tx_shift were
+> overwritten in fsl_espi_setup_transfer anyway. Therefore the removed
+> code effectively was dead code.
+> As we just remove dead code and don't change the behavior of the driver
+> I see no need to introduce an additional check / warning.
 
---1UWUbFP1cBYEclgG
+There's still the potential to either uncover an existing bug that only
+worked by accident or to catch some future bug that someone introduces.
+The existing code may have problems but that doesn't mean it's not a
+good idea to do a good job now.
+
+--M38YqGLZlgb6RLPS
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJYEN2+AAoJECTWi3JdVIfQTAsH/ignFpVkPzAIodgl6VsXGdC7
-xDZINGUjB9bLxEbR/8Zyw03/202DNqyTuApZPZy3Mu8Wcs6dYrvvG8dp/98ZuINO
-AWC44xq6Z8N8CXYVC3TK+qT7cIfZ9NKyW8+iT1IbZZ+f0bSkZ0rtAj7cyu7juN1X
-wcJ23aW1PJrx/ocTGz+woG5jSaZn7ooSjcHTTCzTSZBffynkQwq1R0zMISOgGdJW
-2roqOtHFKgTlebOv9Doecg0nHZ/T7C+qDPKAAlT0Z7WANLr3TZG2tBh9Dhwo4JYo
-YSfXH65AiRf0h6CHvQLxVyhsw1bgh0OnXOcHKqQH4rjNPqI0acgxuhJGyTrL97A=
-=tgwH
+iQEcBAEBCAAGBQJYEOKzAAoJECTWi3JdVIfQndUH/jTgsTgB7ygqilJhl+MbJWjQ
+2U79x6VJ0UL9h3IpAQ45a6RAzRF8JBQMSVvkgN2E2INMhLzogq7cr0ifwz7AqPDI
+KQYXGOcMcti2r7MAhj2Rtazmj9P1iEinD9Z9smOdZIy6d0c/qtA/CA1jOA2lf1Ne
+MyQ25OUd2tG8tZEuBRczRjGa23qvrYX75XV7uVKSXg2gw15hPO+o3qZ4gneQi/OG
+FJb0C3aS3gTjLIOIbLJhcXACGtxoFsLfYyWRFemtRkU4KbmByhzH7L5pQck1x8cS
+1+HDMNCKiSTAGMRVKYNCpFITb9+zeHnETNsnduuYDfXwR6ux9SuP7sBicLuTExE=
+=u90b
 -----END PGP SIGNATURE-----
 
---1UWUbFP1cBYEclgG--
+--M38YqGLZlgb6RLPS--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

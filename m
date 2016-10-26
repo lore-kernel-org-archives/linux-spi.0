@@ -1,105 +1,59 @@
-From: Heiner Kallweit <hkallweit1@gmail.com>
-Subject: Merge problem: Re: Applied "spi: fsl-espi: avoid processing
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: Merge problem: Re: Applied "spi: fsl-espi: avoid processing
  uninitalized data on error" to the spi tree
-Date: Wed, 26 Oct 2016 20:11:28 +0200
-Message-ID: <4b1c5f78-d754-fdc8-0f15-17f88ed224b7@gmail.com>
+Date: Wed, 26 Oct 2016 22:59:24 +0100
+Message-ID: <20161026215923.GF25322@sirena.org.uk>
 References: <E1bzLFV-0004Wz-Ut@debutante>
+ <4b1c5f78-d754-fdc8-0f15-17f88ed224b7@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 7bit
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org,
-        Nobuteru Hayashi <hayashi.nbb@ncos.nec.co.jp>,
-        linux-spi@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>, Arnd Bergmann <arnd@arndb.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <E1bzLFV-0004Wz-Ut@debutante>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="/aVve/J9H4Wl5yVO"
+Cc: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
+        Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Nobuteru Hayashi <hayashi.nbb-MBed0sS7vigTBYAz+LHnZg@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <4b1c5f78-d754-fdc8-0f15-17f88ed224b7-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Am 26.10.2016 um 12:15 schrieb Mark Brown:
-> The patch
-> 
->    spi: fsl-espi: avoid processing uninitalized data on error
-> 
-> has been applied to the spi tree at
-> 
->    git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-> 
-> All being well this means that it will be integrated into the linux-next
-> tree (usually sometime in the next 24 hours) and sent to Linus during
-> the next merge window (or sooner if it is a bug fix), however if
-> problems are discovered then the patch may be dropped or reverted.  
-> 
-> You may get further e-mails resulting from automated or manual testing
-> and review of the tree, please engage with people reporting problems and
-> send followup patches addressing any issues that are reported if needed.
-> 
-> If any updates are required or you are submitting further changes they
-> should be sent as incremental updates against current git, existing
-> patches will not be replaced.
-> 
-> Please add any relevant lists and maintainers to the CCs when replying
-> to this mail.
-> 
-> Thanks,
-> Mark
-> 
->>From 5c0ba57744b1422d528f19430dd66d6803cea86f Mon Sep 17 00:00:00 2001
-> From: Arnd Bergmann <arnd@arndb.de>
-> Date: Tue, 25 Oct 2016 22:57:10 +0200
-> Subject: [PATCH] spi: fsl-espi: avoid processing uninitalized data on error
-> 
-> When we get a spurious interrupt in fsl_espi_irq, we end up
-> processing four uninitalized bytes of data, as shown in this
-> warning message:
-> 
->    drivers/spi/spi-fsl-espi.c: In function 'fsl_espi_irq':
->    drivers/spi/spi-fsl-espi.c:462:4: warning: 'rx_data' may be used uninitialized in this function [-Wmaybe-uninitialized]
-> 
-> This adds another check so we skip the data in this case.
-> 
-> Fixes: 6319a68011b8 ("spi/fsl-espi: avoid infinite loops on fsl_espi_cpu_irq()")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> Cc: stable@vger.kernel.org
-> ---
->  drivers/spi/spi-fsl-espi.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-> index 7451585a080e..2c175b9495f7 100644
-> --- a/drivers/spi/spi-fsl-espi.c
-> +++ b/drivers/spi/spi-fsl-espi.c
-> @@ -458,7 +458,7 @@ static void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
->  
->  		mspi->len -= rx_nr_bytes;
->  
-> -		if (mspi->rx)
-> +		if (rx_nr_bytes && mspi->rx)
->  			mspi->get_rx(rx_data, mspi);
->  	}
->  
-> 
-There seems to be a merge problem. Before the relevant code was:
-(changed in recent commit "spi: fsl-espi: fix handling of word
-sizes other than 8 bit")
 
-if (mspi->rx) {
-	*(u32 *)mspi->rx = rx_data;
-	mspi->rx += 4;
-}
+--/aVve/J9H4Wl5yVO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Now it's:
+On Wed, Oct 26, 2016 at 08:11:28PM +0200, Heiner Kallweit wrote:
 
-if (rx_nr_bytes && mspi->rx) {
-	mspi->get_rx(rx_data, mspi);
-	mspi->rx += 4;
-}
+> Instead it should be:
+>=20
+> if (rx_nr_bytes && mspi->rx) {
+> 	*(u32 *)mspi->rx =3D rx_data;
+> 	mspi->rx +=3D 4;
+> }
 
-Instead it should be:
+Please send a patch.
 
-if (rx_nr_bytes && mspi->rx) {
-	*(u32 *)mspi->rx = rx_data;
-	mspi->rx += 4;
-}
+--/aVve/J9H4Wl5yVO
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEbBAEBCAAGBQJYESc6AAoJECTWi3JdVIfQof0H92wRDgwPB0nvuXFPMDGTK/+8
+9J20Ly8/bzuRCDCpwrDsEWZUhqmnoulzHmLZCN0q2cNP1MdG8oMpX17VbriU/swo
+gfoChL1gga/8fRebZQCkPrSuzMkzKbCZzhZAVweM/dH80GBoS90YEGbvUVY4wbUx
+OtTqT6MVQTdPSJ+OM0h5TXoeArLBrO0XuaXzKolGjiuK3A6O6StGTPgESvwR66sN
+hRYSzrOboqTLw2bgxzAIq8x7r2qc2G80m311pyCwdnZJFPs+WUSwegQACIPee8mL
+T9kUsV1XwyLol0X+GLxhG0ffjFh3gKD9yDq9C20J/HY74MyZq1ryK6oxl5Dnig==
+=EBeH
+-----END PGP SIGNATURE-----
+
+--/aVve/J9H4Wl5yVO--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

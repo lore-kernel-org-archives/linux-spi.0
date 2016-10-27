@@ -1,7 +1,7 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v2 06/09] spi: fsl-espi: make better use of the RX FIFO
-Date: Thu, 27 Oct 2016 21:27:56 +0200
-Message-ID: <082fee3f-4623-2cca-803b-b0fdf7cc8ab1@gmail.com>
+Subject: [PATCH v2 01/09] spi: fsl-espi: improve check for SPI_QE_CPU_MODE
+Date: Thu, 27 Oct 2016 21:24:01 +0200
+Message-ID: <0b5e7849-88d6-2af5-a428-eeb0de0f2af2@gmail.com>
 References: <5b98be38-17a2-79a2-14da-fb2bb6f8820f@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -13,62 +13,35 @@ In-Reply-To: <5b98be38-17a2-79a2-14da-fb2bb6f8820f-Re5JQEeQqe8AvxtiuMwx3w@public
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-So far an interrupt is triggered whenever there's at least one byte
-in the RX FIFO. This results in a unnecessarily high number of
-interrupts.
-Change this to generate an interrupt if
-- RX FIFO is half full (except if all bytes to read fit into the
-  RX FIFO anyway)
-- end of transfer has been reached
-
-This way the number of interrupts can be significantly reduced.
+SPI_QE_CPU_MODE doesn't exist for ESPI and is set by of_mpc8xxx_spi_probe
+based on DT property "mode". This property is not defined for ESPI,
+see Documentation/devicetree/bindings/spi/fsl-spi.txt.
+So print an error message and bail out if SPI_QE_CPU_MODE is set.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
 v2:
-- rebased
+- print error message and bail out instead of removing the check
 ---
- drivers/spi/spi-fsl-espi.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index ca14575..06fb185 100644
+index 4e8a99d..f04c246 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -55,9 +55,10 @@
- #define CSMODE_CG(x)		((x) << 3)
+@@ -583,8 +583,9 @@ static int fsl_espi_probe(struct device *dev, struct resource *mem,
+ 		goto err_probe;
  
- #define FSL_ESPI_FIFO_SIZE	32
-+#define FSL_ESPI_RXTHR		15
+ 	if (mpc8xxx_spi->flags & SPI_QE_CPU_MODE) {
+-		mpc8xxx_spi->rx_shift = 16;
+-		mpc8xxx_spi->tx_shift = 24;
++		dev_err(dev, "SPI_QE_CPU_MODE is not supported on ESPI!\n");
++		ret = -EINVAL;
++		goto err_probe;
+ 	}
  
- /* Default mode/csmode for eSPI controller */
--#define SPMODE_INIT_VAL (SPMODE_TXTHR(4) | SPMODE_RXTHR(3))
-+#define SPMODE_INIT_VAL (SPMODE_TXTHR(4) | SPMODE_RXTHR(FSL_ESPI_RXTHR))
- #define CSMODE_INIT_VAL (CSMODE_POL_1 | CSMODE_BEF(0) \
- 		| CSMODE_AFT(0) | CSMODE_CG(1))
- 
-@@ -281,6 +282,7 @@ static void fsl_espi_setup_transfer(struct spi_device *spi,
- static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
- {
- 	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
-+	u32 mask;
- 	int ret;
- 
- 	mpc8xxx_spi->rx_len = t->len;
-@@ -295,8 +297,11 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
- 	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPCOM,
- 		(SPCOM_CS(spi->chip_select) | SPCOM_TRANLEN(t->len - 1)));
- 
--	/* enable rx ints */
--	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPIM, SPIM_RNE);
-+	/* enable interrupts */
-+	mask = SPIM_DON;
-+	if (mpc8xxx_spi->rx_len > FSL_ESPI_FIFO_SIZE)
-+		mask |= SPIM_RXT;
-+	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPIM, mask);
- 
- 	/* Prevent filling the fifo from getting interrupted */
- 	spin_lock_irq(&mpc8xxx_spi->lock);
+ 	/* SPI controller initializations */
 -- 
 2.10.1
 

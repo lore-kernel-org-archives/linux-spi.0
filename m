@@ -1,91 +1,50 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v7] spi: sun4i: Allow transfers larger than FIFO size
-Date: Thu, 27 Oct 2016 12:14:19 +0100
-Message-ID: <20161027111419.GK25322@sirena.org.uk>
-References: <1477465231-17704-1-git-send-email-mr.nuke.me@gmail.com>
- <20161026085528.vjjypbfmfbhvileb@lukather>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: fsl-espi: avoid processing uninitalized data on
+ error
+Date: Thu, 27 Oct 2016 11:14:17 +0100
+Message-ID: <20161027101417.GG25322@sirena.org.uk>
+References: <b5d3b5f3-034e-28c4-e616-69de4bf7cb8f@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8161123457528038119=="
-Cc: linux-kernel@vger.kernel.org, wens@csie.org,
- Alexandru Gagniuc <mr.nuke.me@gmail.com>, linux-arm-kernel@lists.infradead.org,
- linux-spi@vger.kernel.org
-To: Maxime Ripard <maxime.ripard@free-electrons.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20161026085528.vjjypbfmfbhvileb@lukather>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
-
-
---===============8161123457528038119==
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="VJJoKLVEFXdmHQwR"
+        protocol="application/pgp-signature"; boundary="fCcDWlUEdh43YKr8"
+Cc: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
+In-Reply-To: <b5d3b5f3-034e-28c4-e616-69de4bf7cb8f-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---VJJoKLVEFXdmHQwR
+--fCcDWlUEdh43YKr8
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Oct 26, 2016 at 10:55:28AM +0200, Maxime Ripard wrote:
-> On Wed, Oct 26, 2016 at 12:00:30AM -0700, Alexandru Gagniuc wrote:
+On Thu, Oct 27, 2016 at 07:55:30AM +0200, Heiner Kallweit wrote:
+> When we get a spurious interrupt in fsl_espi_irq, we end up
+> processing four uninitalized bytes of data, as shown in this
+> warning message:
 
-> > When DMA finally takes over, this fallback path is not mutually exclusive.
+This doesn't apply against current code, please check and resend.
 
-> I definitely agree, and we had this patch in the CHIP kernel for quite
-> some time, working like a charm.
-
-> I was planning to respin it in the next few days, glad to see you took
-> care of it :)
-
-> Mark, any comments on this? For the record, it already has my Acked-by.
-
-Without knowing what the previous discussion was it's hard to comment,
-it sounds like some prior review comments are just being ignored here
-but since I'm not turning up anything with this subject line I've no
-idea what that might have been (and that's very concerning in itself
-given that this is apparently v7...).  I'm also concerned that there
-isn't a version of this for sun6i, it's going to make all the
-cut'n'pasting between the two drivers harder if we make changes in one
-and not the other.
-
-If the concern from the previous reviews to do with not using DMA is
-there some reason it's hard to do DMA?
-
---VJJoKLVEFXdmHQwR
+--fCcDWlUEdh43YKr8
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBCAAGBQJYEeGJAAoJECTWi3JdVIfQSyEH/3k3GzjIYMnn0hdDfwRaqDHM
-RxJmHIFDd4k1HhOtoAXwiYKntHPkpY/Mw9c/VWp041QcLnXhranQW1tEZ2HyjNQJ
-sWrpfPy6RwCetsF3sjMF/89qFSjrSTdyJd5y9b38qUuw5IjYcUr660yFjrQtj6w1
-0wsC9MXRP5ffBa74qdSljz01f49OOnIvxj8pWPGrQu95BtpSQz1TW3BYfLGdJF1o
-jEtTddHiWwLEi5/qPcVCHWxmLPbsxuUAvjAx2Im87FGaPDFaQtJmf6ud+vrdGi/z
-eY4nl8jK40ZUtWpyy/AJQP3Kcyamv3gXJSkwl89B3xIGR0+cLOXvvKBxtJuudrY=
-=xfxp
+iQEcBAEBCAAGBQJYEdN1AAoJECTWi3JdVIfQCNYH/jll2msfeYMbzvpvHbfHmVPq
+c7qRdVOeyHr72KY20ZT0Xu9zC2f255rgUGi6e2UXLXyDn05XqpBvEPvJygC7sosW
+JuPrt6jvnJEG1F4CriF/e/uR/pDyX2/fqswdQQrsHmWwLxBiVticdarDQPMna5Yv
+rugQdh3xjDIM5YlOlC1iH3wd6jxnNFO+4nn/HdP+aGwyhBqYc2kxdDpCQ3iAubxy
+4YEGYYvHsByH0iK6OCfoZg/wA2Rek1l7Ex/NCzl+GZbRR07h81MMtCGTaqffGlTO
+YvixgFaInjg8GvUEeHRgEN23NdsvYYNzIPc5IuojgYzkK+w17Q1q4g6uhs5+UdI=
+=lirX
 -----END PGP SIGNATURE-----
 
---VJJoKLVEFXdmHQwR--
-
-
---===============8161123457528038119==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-linux-arm-kernel mailing list
-linux-arm-kernel@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-
---===============8161123457528038119==--
+--fCcDWlUEdh43YKr8--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,49 +1,43 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: fsl-espi: avoid processing uninitalized data on
- error
-Date: Thu, 27 Oct 2016 11:14:17 +0100
-Message-ID: <20161027101417.GG25322@sirena.org.uk>
-References: <b5d3b5f3-034e-28c4-e616-69de4bf7cb8f@gmail.com>
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: fsl-espi: fix merge conflict for commit "avoid
+ processing uninitalized data on error"
+Date: Thu, 27 Oct 2016 20:24:19 +0200
+Message-ID: <f23a6a66-878e-28f4-20be-e0246ff8cc9a@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="fCcDWlUEdh43YKr8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
 Cc: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
         "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <b5d3b5f3-034e-28c4-e616-69de4bf7cb8f-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Commit 5c0ba57744b1 ("spi: fsl-espi: avoid processing uninitalized
+data on error") applied fine to stable but caused a merge conflict
+on next. This patch fixes that.
 
---fCcDWlUEdh43YKr8
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi-fsl-espi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On Thu, Oct 27, 2016 at 07:55:30AM +0200, Heiner Kallweit wrote:
-> When we get a spurious interrupt in fsl_espi_irq, we end up
-> processing four uninitalized bytes of data, as shown in this
-> warning message:
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index a7e4c28..4e8a99d 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -456,7 +456,7 @@ static void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
+ 		mspi->len -= rx_nr_bytes;
+ 
+ 		if (rx_nr_bytes && mspi->rx) {
+-			mspi->get_rx(rx_data, mspi);
++			*(u32 *)mspi->rx = rx_data;
+ 			mspi->rx += 4;
+ 		}
+ 	}
+-- 
+2.10.1
 
-This doesn't apply against current code, please check and resend.
-
---fCcDWlUEdh43YKr8
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBCAAGBQJYEdN1AAoJECTWi3JdVIfQCNYH/jll2msfeYMbzvpvHbfHmVPq
-c7qRdVOeyHr72KY20ZT0Xu9zC2f255rgUGi6e2UXLXyDn05XqpBvEPvJygC7sosW
-JuPrt6jvnJEG1F4CriF/e/uR/pDyX2/fqswdQQrsHmWwLxBiVticdarDQPMna5Yv
-rugQdh3xjDIM5YlOlC1iH3wd6jxnNFO+4nn/HdP+aGwyhBqYc2kxdDpCQ3iAubxy
-4YEGYYvHsByH0iK6OCfoZg/wA2Rek1l7Ex/NCzl+GZbRR07h81MMtCGTaqffGlTO
-YvixgFaInjg8GvUEeHRgEN23NdsvYYNzIPc5IuojgYzkK+w17Q1q4g6uhs5+UdI=
-=lirX
------END PGP SIGNATURE-----
-
---fCcDWlUEdh43YKr8--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,20 +1,21 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: fsl-espi: improve check for SPI_QE_CPU_MODE" to the spi tree
-Date: Fri, 28 Oct 2016 19:53:52 +0100
-Message-ID: <E1c0CHo-0006BA-M0@finisterre>
-References: <0b5e7849-88d6-2af5-a428-eeb0de0f2af2@gmail.com>
+Subject: Applied "spi: fsl-espi: fix merge conflict for commit "avoid processing uninitalized data on error"" to the spi tree
+Date: Fri, 28 Oct 2016 19:54:13 +0100
+Message-ID: <E1c0CI9-0006By-I5@finisterre>
+References: <f23a6a66-878e-28f4-20be-e0246ff8cc9a@gmail.com>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
         "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
         linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <0b5e7849-88d6-2af5-a428-eeb0de0f2af2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <f23a6a66-878e-28f4-20be-e0246ff8cc9a-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: fsl-espi: improve check for SPI_QE_CPU_MODE
+   spi: fsl-espi: fix merge conflict for commit "avoid processing uninitalized data on error"
 
 has been applied to the spi tree at
 
@@ -39,38 +40,35 @@ to this mail.
 Thanks,
 Mark
 
->From e9e128a69af2b5fd2a4e01a59cc7e479ce9b8813 Mon Sep 17 00:00:00 2001
+>From e3cd6cf425bf40061418edf7b295f654301446fe Mon Sep 17 00:00:00 2001
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Thu, 27 Oct 2016 21:24:01 +0200
-Subject: [PATCH] spi: fsl-espi: improve check for SPI_QE_CPU_MODE
+Date: Thu, 27 Oct 2016 20:24:19 +0200
+Subject: [PATCH] spi: fsl-espi: fix merge conflict for commit "avoid
+ processing uninitalized data on error"
 
-SPI_QE_CPU_MODE doesn't exist for ESPI and is set by of_mpc8xxx_spi_probe
-based on DT property "mode". This property is not defined for ESPI,
-see Documentation/devicetree/bindings/spi/fsl-spi.txt.
-So print an error message and bail out if SPI_QE_CPU_MODE is set.
+Commit 5c0ba57744b1 ("spi: fsl-espi: avoid processing uninitalized
+data on error") applied fine to stable but caused a merge conflict
+on next. This patch fixes that.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 4e8a99d0cb63..f04c2464e854 100644
+index a7e4c284d50a..4e8a99d0cb63 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -583,8 +583,9 @@ static int fsl_espi_probe(struct device *dev, struct resource *mem,
- 		goto err_probe;
+@@ -456,7 +456,7 @@ static void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
+ 		mspi->len -= rx_nr_bytes;
  
- 	if (mpc8xxx_spi->flags & SPI_QE_CPU_MODE) {
--		mpc8xxx_spi->rx_shift = 16;
--		mpc8xxx_spi->tx_shift = 24;
-+		dev_err(dev, "SPI_QE_CPU_MODE is not supported on ESPI!\n");
-+		ret = -EINVAL;
-+		goto err_probe;
+ 		if (rx_nr_bytes && mspi->rx) {
+-			mspi->get_rx(rx_data, mspi);
++			*(u32 *)mspi->rx = rx_data;
+ 			mspi->rx += 4;
+ 		}
  	}
- 
- 	/* SPI controller initializations */
 -- 
 2.10.1
 

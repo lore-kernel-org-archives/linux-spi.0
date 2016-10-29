@@ -1,103 +1,70 @@
-From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: fsl-espi: fix support for all available clock rates
-Date: Sat, 29 Oct 2016 11:02:19 +0200
-Message-ID: <6da14f3b-24ad-366a-68d6-ade31ff50d2e@gmail.com>
+From: Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v2] mtd: m25p80: consider max message size in m25p80_read
+Date: Sat, 29 Oct 2016 19:59:09 +0200
+Message-ID: <6f1aed1e-9467-aa94-56cb-5e9435b21ae4@gmail.com>
+References: <6c95366c-7fcc-ef4c-033a-f9f6e152a669@gmail.com>
+ <20160816164204.GV9347@sirena.org.uk>
+ <b65240ff-7e28-5ecb-0670-abfca871246b@gmail.com>
+ <a5aad691-fb3b-39a5-943e-43068df74c44@gmail.com>
+ <e2e4ecfe-b888-f335-57f6-634f5c818252@gmail.com>
+ <0e38d1ed-af5c-160f-e02a-f1433c507d23@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 7bit
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Paulo Zaneti <paulo.zaneti-rCUF4CxDseZknzVnJbg3IA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Cyrille Pitchen <cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <0e38d1ed-af5c-160f-e02a-f1433c507d23-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-According to NXP ESPI datasheet, the SPI clock rate is:
+On 10/28/2016 07:58 AM, Heiner Kallweit wrote:
+> Consider a message size limit when calculating the maximum amount
+> of data that can be read.
+> 
+> The message size limit has been introduced with 4.9, so cc it
+> to stable.
+> 
+> Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> Cc: <stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org> # 4.9.x
+> ---
+> v2:
+> - This patch was part of a series and the other patches of the
+>   series went into 4.9. It's needed to correctly support
+>   reads > 64k on fsl-espi as first user of spi_max_message_size.
+>   See commit 02a595d5d6e4 ("spi: fsl-espi: eliminate spi nor
+>   flash read loop"). CC it to stable.  
 
-    spi_clk = System_Clock / ( 2 * DIV16 * ( 1 + PM ) )
+Does this imply that we have to fix every single driver this way ?
 
-Where System_Clock is the platform clock divided by 2,
-DIV16 may be 1 or 16, and PM is a 4 bits integer (0 to 15).
+> ---
+>  drivers/mtd/devices/m25p80.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+> index 9cf7fcd..16a7df2 100644
+> --- a/drivers/mtd/devices/m25p80.c
+> +++ b/drivers/mtd/devices/m25p80.c
+> @@ -172,7 +172,8 @@ static ssize_t m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
+>  
+>  	t[1].rx_buf = buf;
+>  	t[1].rx_nbits = m25p80_rx_nbits(nor);
+> -	t[1].len = min(len, spi_max_transfer_size(spi));
+> +	t[1].len = min3(len, spi_max_transfer_size(spi),
+> +			spi_max_message_size(spi) - t[0].len);
+>  	spi_message_add_tail(&t[1], &m);
+>  
+>  	ret = spi_sync(spi, &m);
+> 
 
-Isolating PM on the expression, we get:
 
-    PM = (System_Clock / ( 2 * DIV16 * spi_clk ) ) - 1
-
-Where System_Clock = mpc8xxx_spi->spibrg / 2, spi_clk = hz,
-and DIV16 = 1 or DIV16 = 16. So,
-
-    PM = (mpc8xxx_spi->spibrg / ( 4 * hz) ) - 1
-or
-    PM = (mpc8xxx_spi->spibrg / ( 16 * 4 * hz) ) - 1
-
-Current spi-fsl-espi driver can't configure the HW for all
-supported clock rates. It filters out clock rates for PM = 0
-and PM = 1.
-
-This patch allows all range of supported clock rates to be
-configured on the ESPI controller.
-
-Signed-off-by: Paulo Zaneti <paulo.zaneti-rCUF4CxDseZknzVnJbg3IA@public.gmane.org>
-Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
-This patch was sent to the list two months ago, however Paulo missed
-to send it to the maintainer. I slightly modified it to not break
-long strings.
----
- drivers/spi/spi-fsl-espi.c | 28 ++++++++++++----------------
- 1 file changed, 12 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 4d11203..ce34609 100644
---- a/drivers/spi/spi-fsl-espi.c
-+++ b/drivers/spi/spi-fsl-espi.c
-@@ -291,8 +291,7 @@ static void fsl_espi_setup_transfer(struct spi_device *spi,
- {
- 	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
- 	int bits_per_word = t ? t->bits_per_word : spi->bits_per_word;
--	u32 hz = t ? t->speed_hz : spi->max_speed_hz;
--	u8 pm;
-+	u32 pm, hz = t ? t->speed_hz : spi->max_speed_hz;
- 	struct spi_mpc8xxx_cs *cs = spi->controller_state;
- 
- 	/* mask out bits we are going to set */
-@@ -300,22 +299,19 @@ static void fsl_espi_setup_transfer(struct spi_device *spi,
- 
- 	cs->hw_mode |= CSMODE_LEN(bits_per_word - 1);
- 
--	if ((mpc8xxx_spi->spibrg / hz) > 64) {
-+	pm = DIV_ROUND_UP(mpc8xxx_spi->spibrg, hz * 4) - 1;
-+
-+	if (pm > 15) {
- 		cs->hw_mode |= CSMODE_DIV16;
--		pm = DIV_ROUND_UP(mpc8xxx_spi->spibrg, hz * 16 * 4);
--
--		WARN_ONCE(pm > 33, "%s: Requested speed is too low: %d Hz. "
--			  "Will use %d Hz instead.\n", dev_name(&spi->dev),
--				hz, mpc8xxx_spi->spibrg / (4 * 16 * (32 + 1)));
--		if (pm > 33)
--			pm = 33;
--	} else {
--		pm = DIV_ROUND_UP(mpc8xxx_spi->spibrg, hz * 4);
-+		pm = DIV_ROUND_UP(mpc8xxx_spi->spibrg, hz * 16 * 4) - 1;
-+
-+		WARN_ONCE(pm > 15,
-+			  "%s: Requested speed is too low: %u Hz. Will use %u Hz instead.\n",
-+			  dev_name(&spi->dev), hz,
-+			  mpc8xxx_spi->spibrg / (4 * 16 * (15 + 1)));
-+		if (pm > 15)
-+			pm = 15;
- 	}
--	if (pm)
--		pm--;
--	if (pm < 2)
--		pm = 2;
- 
- 	cs->hw_mode |= CSMODE_PM(pm);
- 
 -- 
-2.10.1
-
+Best regards,
+Marek Vasut
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

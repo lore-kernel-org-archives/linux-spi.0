@@ -1,33 +1,35 @@
-From: Joel Holdsworth <joel-IJEoVVyKhCJXvIrf17iDB/XRex20P6io@public.gmane.org>
-Subject: Re: [PATCH v4 2/2] fpga: Add support for Lattice iCE40 FPGAs
-Date: Sun, 30 Oct 2016 15:34:54 -0600
-Message-ID: <9e80dbd9-835d-5215-f2fe-40db0a3db05e@airwebreathe.org.uk>
-References: <1477776746-3678-1-git-send-email-joel@airwebreathe.org.uk>
- <1477776746-3678-2-git-send-email-joel@airwebreathe.org.uk>
- <CAMuHMdWJYrUp2Bqh6PW7KCEv16HYpvKXG9dAQBjfw+pMxDQd_A@mail.gmail.com>
+From: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH v2 3/4] spi: sun6i: Add binding for Allwinner H3 SPI
+ controller
+Date: Mon, 31 Oct 2016 01:06:06 -0500
+Message-ID: <20161031060606.fk6vhfzyxie6ebg5@rob-hp-laptop>
+References: <20161028065412.23008-1-woogyom.kim@gmail.com>
+ <20161028065412.23008-4-woogyom.kim@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: atull-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org, moritz.fischer-+aYTwkv1SeIAvxtiuMwx3w@public.gmane.org,
-        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAMuHMdWJYrUp2Bqh6PW7KCEv16HYpvKXG9dAQBjfw+pMxDQd_A-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Maxime Ripard <maxime.ripard@free-electrons.com>,
+        Chen-Yu Tsai <wens@csie.org>, Mark Brown <broonie@kernel.org>,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Milo Kim <woogyom.kim@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20161028065412.23008-4-woogyom.kim@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+On Fri, Oct 28, 2016 at 03:54:11PM +0900, Milo Kim wrote:
+> H3 SPI has same architecture as A31 except FIFO capacity.
+> To configure the buffer size separately, compatible property should be
+> different. Optional DMA specifiers and example are added.
+> 
+> Acked-by: Maxime Ripard <maxime.ripard@free-electrons.com>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Cc: Chen-Yu Tsai <wens@csie.org>
+> Signed-off-by: Milo Kim <woogyom.kim@gmail.com>
+> ---
+>  .../devicetree/bindings/spi/spi-sun6i.txt          | 25 ++++++++++++++++++++--
+>  1 file changed, 23 insertions(+), 2 deletions(-)
 
->
-> Plural, please, like in the previous version, cfr.
->
-
-Hmm ok - it used to be plural, but I received advice to make it 
-singular. I'll change it back.
-
-Joel
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Acked-by: Rob Herring <robh@kernel.org>

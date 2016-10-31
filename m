@@ -1,94 +1,78 @@
-From: Moritz Fischer <moritz.fischer-+aYTwkv1SeIAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v4 2/2] fpga: Add support for Lattice iCE40 FPGAs
-Date: Mon, 31 Oct 2016 10:04:45 -0700
-Message-ID: <CAAtXAHfPSFvA0xf_UHfcZCjd1DcxUHs8WE12pRmPQEzEq8CscQ@mail.gmail.com>
-References: <1477776746-3678-1-git-send-email-joel@airwebreathe.org.uk>
- <1477776746-3678-2-git-send-email-joel@airwebreathe.org.uk>
- <20161031063317.fqoaqemoiqhrrjzg@rob-hp-laptop> <f3c6dac1-bf10-c945-3e8a-9146e07253fd@airwebreathe.org.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: [GIT PULL] spi fixes for v4.9
+Date: Mon, 31 Oct 2016 11:55:13 -0600
+Message-ID: <20161031175513.g7pgdaidlmwhgshb@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Alan Tull <atull-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>,
-        Devicetree List <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Joel Holdsworth <joel-IJEoVVyKhCJXvIrf17iDB/XRex20P6io@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <f3c6dac1-bf10-c945-3e8a-9146e07253fd-IJEoVVyKhCJXvIrf17iDB/XRex20P6io@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="mml77k3zcwztxbxi"
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Oct 31, 2016 at 9:58 AM, Joel Holdsworth
-<joel-IJEoVVyKhCJXvIrf17iDB/XRex20P6io@public.gmane.org> wrote:
-> Hi Rob,
->
-> Thanks for taking the time review the patches.
->
->>>  .../bindings/fpga/lattice-ice40-fpga-mgr.txt       |  23 +++
->>
->>
->> It's preferred that bindings are a separate patch.
->
->
-> Can you just clarify a little? I'm happy to split the patch up, but I don't
-> understand how it could work without the bindings. For example, in
-> ice40_fpga_probe, I have to get the GPIOs with devm_gpiod_get for the driver
-> to work.
->
-> Maybe I'm missing something. Or do you just mean the documentation?
 
-In general, the bindings go in a separate patch, that goes *before*
-the code that uses it.
-That way you're guaranteed it's there if you apply the series in order.
+--mml77k3zcwztxbxi
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-So [1/2] would be your bindings (ice40-fpga-mgr.txt) and [2/2] would
-be your driver.
+The following changes since commit 07d9a380680d1c0eb51ef87ff2eab5c994949e69:
 
->
->
->>
->> -gpios is preferred.
->>
->> Please state direction and polarity.
->
->
-> Thanks, I'll fix that up.
->
->>
->>> +- creset_b-gpio:       GPIO connected to CRESET_B pin. Note that
->>> CRESET_B is
->>
->>
->> Don't use '_'. In this case, I'd just do cresetb-gpios.
->
->
-> So the pin is called CRESET_B in the datasheet. I think the _B refers to the
-> active-low polarity of the line.
->
-> So I would think it should be creset-b-gpios or creset-gpios. I'm not so
-> convinced cresetb-gpios is ideal, but it's a minor point.
->
->>
->>> +                       treated as an active-low output because the
->>> signal is
->>> +                       treated as an enable signal, rather than a reset.
->>> This
->>
->>
->> Though for enable signals, enable-gpios is fairly standard even if that
->> deviates from the pin name.
->
->
-> I would think that would just confuse the user, unless they dig out the
-> binding docs. The FPGA doesn't have an enable pin, and it's not at all
-> obvious that a "reset" pin means "enable" in this driver.
+  Linux 4.9-rc2 (2016-10-23 17:10:14 -0700)
 
-That's why you have the binding docs ;-)
+are available in the git repository at:
 
-Cheers,
+  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v4.9-rc3
 
-Moritz
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+for you to fetch changes up to 2fbef66e1407d1b13d181f7f5614a5897b452188:
+
+  Merge remote-tracking branches 'spi/fix/dt', 'spi/fix/fsl-dspi' and 'spi/fix/fsl-espi' into spi-linus (2016-10-29 12:51:55 -0600)
+
+----------------------------------------------------------------
+spi: Fixes for v4.9
+
+A few small fixes for SPI, one core fix that only applies in cases where
+we're handling DT overlays and a couple of driver specific fixes:
+
+ - Fix handling of error cases when instantiating DT overlays so we
+   don't end up just ignoring devices that encountered an error during
+   instantiation.
+ - Avoid reading uninitialized data when handing spurious interrupts
+   in the espi driver.
+ - A driver specific fix for the dspi driver to fix a bad interaction
+   with u-boot.
+
+----------------------------------------------------------------
+Arnd Bergmann (1):
+      spi: fsl-espi: avoid processing uninitalized data on error
+
+Mark Brown (1):
+      Merge remote-tracking branches 'spi/fix/dt', 'spi/fix/fsl-dspi' and 'spi/fix/fsl-espi' into spi-linus
+
+Ralf Ramsauer (1):
+      spi: mark device nodes only in case of successful instantiation
+
+Yuan Yao (1):
+      spi: dspi: clear SPI_SR before enable interrupt
+
+ drivers/spi/spi-fsl-dspi.c | 7 +++++++
+ drivers/spi/spi-fsl-espi.c | 2 +-
+ drivers/spi/spi.c          | 5 ++++-
+ 3 files changed, 12 insertions(+), 2 deletions(-)
+
+--mml77k3zcwztxbxi
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEcBAABCAAGBQJYF4WAAAoJECTWi3JdVIfQpdcH/2VVDR3NC7iWtI7aL767JlHT
+JX/bvcX3/w+Fig5iToRjnn0ho5dYDYdv3Vvtx+6SdLjJ9jnJlJW/UJydJ5ycub4J
+ZIIp0s/MaJC0kWn1tAQtp9XrOXZS1fnorvakg8Z61l+OgFmBoq+e2E22GjvmVh4+
+ufelUMKfG7nWkHPv6PoqTKdoz0mviscZTgW2Xnr+T/gTp4I5fq19GjjgDwBOXt8d
+icsIS3MPReC/LKNu8WfRtpFABvvloZf0/GgDWxA5wvgwPDlUwXATYgZR+ZNOf3U+
+uGQr3IvS8I9Aw2hcVVeUKKbXZ2syJ+iKf8mqfM2QLxINCxsL9EHoOYANMFfhwIU=
+=g+ii
+-----END PGP SIGNATURE-----
+
+--mml77k3zcwztxbxi--

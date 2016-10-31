@@ -1,35 +1,23 @@
 From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v2 3/4] spi: sun6i: Add binding for Allwinner H3 SPI
- controller
-Date: Mon, 31 Oct 2016 01:06:06 -0500
-Message-ID: <20161031060606.fk6vhfzyxie6ebg5@rob-hp-laptop>
-References: <20161028065412.23008-1-woogyom.kim@gmail.com>
- <20161028065412.23008-4-woogyom.kim@gmail.com>
+Subject: Re: [PATCH v4 1/2] of: Add vendor prefix for Lattice Semiconductor
+Date: Mon, 31 Oct 2016 01:29:33 -0500
+Message-ID: <20161031062933.m2xuspqa3w472eph@rob-hp-laptop>
+References: <1477776746-3678-1-git-send-email-joel@airwebreathe.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Chen-Yu Tsai <wens@csie.org>, Mark Brown <broonie@kernel.org>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Milo Kim <woogyom.kim@gmail.com>
+Cc: atull@opensource.altera.com, moritz.fischer@ettus.com,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: Joel Holdsworth <joel@airwebreathe.org.uk>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20161028065412.23008-4-woogyom.kim@gmail.com>
+In-Reply-To: <1477776746-3678-1-git-send-email-joel@airwebreathe.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Oct 28, 2016 at 03:54:11PM +0900, Milo Kim wrote:
-> H3 SPI has same architecture as A31 except FIFO capacity.
-> To configure the buffer size separately, compatible property should be
-> different. Optional DMA specifiers and example are added.
-> 
-> Acked-by: Maxime Ripard <maxime.ripard@free-electrons.com>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Rob Herring <robh+dt@kernel.org>
-> Cc: Chen-Yu Tsai <wens@csie.org>
-> Signed-off-by: Milo Kim <woogyom.kim@gmail.com>
+On Sat, Oct 29, 2016 at 03:32:25PM -0600, Joel Holdsworth wrote:
 > ---
->  .../devicetree/bindings/spi/spi-sun6i.txt          | 25 ++++++++++++++++++++--
->  1 file changed, 23 insertions(+), 2 deletions(-)
+>  Documentation/devicetree/bindings/vendor-prefixes.txt | 1 +
+>  1 file changed, 1 insertion(+)
 
 Acked-by: Rob Herring <robh@kernel.org>

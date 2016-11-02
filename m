@@ -1,66 +1,101 @@
-From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH v2 2/4] ARM: dts: sun8i: Add SPI controller node in H3
-Date: Wed, 2 Nov 2016 19:36:04 +0100
-Message-ID: <20161102183604.b3zqtf6rdavvdlvh@lukather>
-References: <20161028065412.23008-1-woogyom.kim@gmail.com>
- <20161028065412.23008-3-woogyom.kim@gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="rwer2lgketwp6d2f"
-Cc: Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Milo Kim <woogyom.kim-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: imx: set spi_bus_clk for mx21 and mx27" to the spi tree
+Date: Wed, 02 Nov 2016 10:53:48 -0600
+Message-ID: <E1c1ynM-0006MY-9n@finisterre>
+References: <1478035119-21731-1-git-send-email-r.baldyga@hackerion.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Robert Baldyga <r.baldyga-anjuHVi6/WSaMJb+Lgu22Q@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20161028065412.23008-3-woogyom.kim-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1478035119-21731-1-git-send-email-r.baldyga-anjuHVi6/WSaMJb+Lgu22Q@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---rwer2lgketwp6d2f
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   spi: imx: set spi_bus_clk for mx21 and mx27
 
-1;4600;0c
-On Fri, Oct 28, 2016 at 03:54:10PM +0900, Milo Kim wrote:
-> H3 SPI subsystem is almost same as A31 SPI except buffer size, so those
-> DT properties are reusable.
->=20
-> Cc: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-> Cc: Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>
-> Signed-off-by: Milo Kim <woogyom.kim-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+has been applied to the spi tree at
 
-Applied both, thanks!
-Maxime
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
---=20
-Maxime Ripard, Free Electrons
-Embedded Linux and Kernel engineering
-http://free-electrons.com
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
---rwer2lgketwp6d2f
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iQIcBAEBCAAGBQJYGjIQAAoJEBx+YmzsjxAg9bIQAIQUSFhzzMEuNk7pWf1a4aTF
-ifLoqzifD9hRqoHTsoaRqnP3nbWkE10or3xbXiRFGvD4p4IGjlHia9DhJqU7Y3gO
-4AZHlB2kElQzYdA02nELsEWxMaM4Yje5Nn02AvIuHc9CuQkDt+iMsOJ395dCSo+Y
-c6thzwqx2qvqiPXxXOF+DD1syfYX4GgJwPk66qcwdZ/OcNtr1mkZ3/QabJH9oNT2
-E2+9DPS3i+yd4+C8Ak1rLOlNDRphQHz3rIA+LhS0hL9CqkhzhCrXwDUdfVAja4Rt
-3Sg1o+p7i+5aQ2eHAHrz88bs1MJ4TY+VHLz8teCw8mfKenlalGQc/iDOlFP2KFHJ
-Ady6YTtKwdJUlhu0QNG8xPwacFEnErVFLB0zM6k6YfDWfHIpDH0YhC7gJmNjRB3w
-+GTkOvGIF7XQj4/+lXt6HwzCuQZtmVSmGlDANLcX7og/HXpondqUKtXfRLA2/bPt
-HN7CIFt/BRCkjHI+x4YPgvEr84pq1/73F0/8FqOtzf1xKqnLVXCJdzxCsbPrPUfE
-YJf3Y1+c40kMn3SS7QFFliNh7uAdXtjL2e36c4dwz5J21oFwx9o1OOMQ6kvtuyq7
-k8EIJrdIj41pOs2jm/c6aGpiMSRJTGoFZYAAIXWsy6r0WIFQxbsKy0S2+xuCzlJV
-6gUmciLKBY7eKIQLgW/W
-=PUJQ
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---rwer2lgketwp6d2f--
+Thanks,
+Mark
+
+>From 32df9ff2b88f9b3ef0865837cd6a39c957dab875 Mon Sep 17 00:00:00 2001
+From: Robert Baldyga <r.baldyga-anjuHVi6/WSaMJb+Lgu22Q@public.gmane.org>
+Date: Tue, 1 Nov 2016 22:18:39 +0100
+Subject: [PATCH] spi: imx: set spi_bus_clk for mx21 and mx27
+
+Introduce additional output parameter in spi_imx_clkdiv_1()
+function to return result frequency and set it to spi_bus_clk.
+
+This fixes division by zero bug, which occurred in
+spi_imx_calculate_timeout() function.
+
+Signed-off-by: Robert Baldyga <r.baldyga-anjuHVi6/WSaMJb+Lgu22Q@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-imx.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 08124b29665e..32ced64a5bb9 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -173,15 +173,16 @@ static int mxc_clkdivs[] = {0, 3, 4, 6, 8, 12, 16, 24, 32, 48, 64, 96, 128, 192,
+ 
+ /* MX21, MX27 */
+ static unsigned int spi_imx_clkdiv_1(unsigned int fin,
+-		unsigned int fspi, unsigned int max)
++		unsigned int fspi, unsigned int max, unsigned int *fres)
+ {
+ 	int i;
+ 
+ 	for (i = 2; i < max; i++)
+ 		if (fspi * mxc_clkdivs[i] >= fin)
+-			return i;
++			break;
+ 
+-	return max;
++	*fres = fin / mxc_clkdivs[i];
++	return i;
+ }
+ 
+ /* MX1, MX31, MX35, MX51 CSPI */
+@@ -589,9 +590,12 @@ static int mx21_config(struct spi_device *spi, struct spi_imx_config *config)
+ 	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
+ 	unsigned int reg = MX21_CSPICTRL_ENABLE | MX21_CSPICTRL_MASTER;
+ 	unsigned int max = is_imx27_cspi(spi_imx) ? 16 : 18;
++	unsigned int clk;
++
++	reg |= spi_imx_clkdiv_1(spi_imx->spi_clk, config->speed_hz, max, &clk)
++		<< MX21_CSPICTRL_DR_SHIFT;
++	spi_imx->spi_bus_clk = clk;
+ 
+-	reg |= spi_imx_clkdiv_1(spi_imx->spi_clk, config->speed_hz, max) <<
+-		MX21_CSPICTRL_DR_SHIFT;
+ 	reg |= config->bpw - 1;
+ 
+ 	if (spi->mode & SPI_CPHA)
+-- 
+2.10.1
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

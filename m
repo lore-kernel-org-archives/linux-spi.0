@@ -1,48 +1,50 @@
-From: Maxime Ripard <maxime.ripard@free-electrons.com>
-Subject: Re: [PATCH v2 4/4] spi: sun6i: Support Allwinner H3 SPI controller
-Date: Wed, 2 Nov 2016 14:40:11 +0100
-Message-ID: <20161102134011.aotjogti4vl4ebdt@lukather>
-References: <20161028065412.23008-1-woogyom.kim@gmail.com>
- <20161028065412.23008-5-woogyom.kim@gmail.com>
+From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH v7] spi: sun4i: Allow transfers larger than FIFO size
+Date: Wed, 2 Nov 2016 18:47:53 +0100
+Message-ID: <20161102174753.elbukxnrc3x27xxc@lukather>
+References: <1477465231-17704-1-git-send-email-mr.nuke.me@gmail.com>
+ <20161026085528.vjjypbfmfbhvileb@lukather>
+ <20161027111419.GK25322@sirena.org.uk>
+ <20161027212727.leqg3gvwhd3u64er@lukather>
+ <20161027224712.GY25322@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="7jqiaq7vz2zjy3ub"
-Cc: Chen-Yu Tsai <wens@csie.org>, Mark Brown <broonie@kernel.org>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Milo Kim <woogyom.kim@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+        protocol="application/pgp-signature"; boundary="7eofhf2lw3xmi3lr"
+Cc: Alexandru Gagniuc <mr.nuke.me-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, wens-jdAy2FN1RRM@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20161028065412.23008-5-woogyom.kim@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <20161027224712.GY25322-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---7jqiaq7vz2zjy3ub
+--7eofhf2lw3xmi3lr
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 28, 2016 at 03:54:12PM +0900, Milo Kim wrote:
-> H3 has two SPI controllers. The size of the buffer is 64 * 8.
-> (8 bit transfer by 64 entry FIFO)
-> A31 has four controllers. The size of the buffer is 128 * 8.
-> (8 bit transfer by 128 entry FIFO)
->=20
-> Register maps are sharable, so sun6i SPI driver is reusable with
-> device configuration.
->=20
-> Use the variable, 'fifo_depth' instead of fixed value to support both SPI
-> controllers.
->=20
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Maxime Ripard <maxime.ripard@free-electrons.com>
-> Cc: Chen-Yu Tsai <wens@csie.org>
-> Signed-off-by: Milo Kim <woogyom.kim@gmail.com>
+Hi Mark,
 
-Acked-by: Maxime Ripard <maxime.ripard@free-electrons.com>
+On Thu, Oct 27, 2016 at 11:47:12PM +0100, Mark Brown wrote:
+> > > If the concern from the previous reviews to do with not using DMA is
+> > > there some reason it's hard to do DMA?
+>=20
+> > I think just like Alexandru that it is orthogonal. But to really
+> > answer, no, it's not difficult. There's just been some fundamental
+> > disagreement on whether DMA was supposed to be optional or not that
+> > stalled everything I guess.
+>=20
+> Oh, I seem to remember some patches adding DMA support that were doing
+> some strange special snowflake thing with ignoring errors now that I
+> think about it but that's not this one...  why did nobody ever follow up
+> on those?
 
-Thanks!
+I have no idea. I think last time we discussed this was last
+July. Especially with this in now, there's probably no rush anyway.
+
 Maxime
 
 --=20
@@ -50,24 +52,28 @@ Maxime Ripard, Free Electrons
 Embedded Linux and Kernel engineering
 http://free-electrons.com
 
---7jqiaq7vz2zjy3ub
+--7eofhf2lw3xmi3lr
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIcBAEBCAAGBQJYGey7AAoJEBx+YmzsjxAgQ4UP/iJWM6G5KwwVrWCH7+2ZvsyL
-55JXP3XWCOZYELcLJgeksWLuMZMuy/oGtKVNyK91VC33lOYF4RXzHAc27pO8MRN6
-bw6WyNVXobMGPIP1qciH4yLKwwJwGvHMG5a0I5RMBfEOCkOl1HUuNbRwnO8Zrc/5
-i3PLxYR8Y0qciOWrC1f5j84nX92nUz3YiNOTJFWRFM4phtKRCjHWgwYXzHB4xWc2
-cyYrRZ8UzZ9iQvaw7gm1DUheTIzVaUc7S4mtUtrVd6wb4lzAZbOG9MRvfUhQp9TJ
-2Q2d/tDtyfIYn+reRoMly19q4wEqxMqgwINt0V8EIUnOL6jNKQLQVSBDym7swf8R
-7vEYFtcV9H5zjOXHx6ZDgvgFAd7KD9c8WrJ5yybjxgYFEGMWoApbSFXkp/nU8Zjb
-/ZTitSFuPPRTwME1xjQNqunZBHs6WvBFx6V3jdW2GBgA6MgqueudahHb/du+vavi
-ZX5sp5sZApXQ6eK6KeMPk1/Ro3I18pvxDPe0m1TFXNxFfRo1pKQAfHnQH+r51cCA
-pw3uroJr5057xwqj0ESF3f9tWF/l1hCtd27cjwqzzy7dMl+v/BnJ/LE6rDux5/1C
-pmFYhlNJpAl/rUjfctIq4snjjhslArV//nPV0aPoncU/sArJfO2kUL//lBXBctUu
-0mZ4jcEp+TGndnC6yG67
-=JqxL
+iQIcBAEBCAAGBQJYGibEAAoJEBx+YmzsjxAg8xcP/1VLSmk7F7b0Xcxonymz9dO8
+kqdwJSn3q9eJSaSkUqKRsQBdau6FdW9/c9uAKTJL5aurfzH+zaRW5RkVKpGdHdjy
+2gpliBYHP5b8B1Cfvt3bKV/efKBpppKOcSr+pWya8DysjAmjFAV3+nNAAAC/XYn6
+eKGL1lBk9JVnZt8VbTR4LlJJVsXVI1E2T+D/dSDbXv2bs87R+io2qFofMKBFBsA4
+x7jlEpbf7QlVu+YHZL6cJmVVdp4UFhT1D/zq5LAwVEpa0XVcap16AOlbjpAh+nXf
+eDtBIbYSMunTwKkrLKBXWZVx6M8/3NLQWq4VrQd1bJ1CpGxX9f0rLwRdkgg2FupY
+TSVnSi/bb1XkbkJ86+uMPQ00fX+vGmv41Km39TC3rHrp3a+sHhBFt5VuGxmCrUhA
+qsp1rSwulMT2A9kjX7aCpVq6HiE26VpjfM8KRt0hwL4PkYffi/yt3+jRXDGy/G35
+Wj9Z6YDMNDs3Jzv7vblPzvhiiCcZOicDFlotVsGajcgmwlE+6n3gckFWU8ZxfJ+g
+JskR8+YuTvAy0ZPxkhDHKoWDEuo+hItP2gPJEBzZ1Q7LrqKDeGQER7a5aoAzjLBA
+7u930UdKm45uSNu5mMHuVC/+4zLjSfYTkyEgIePOtXxr5YifRV+H3MYxMsiJ1C38
+TYFaP3iZqZGmZPnU1hEM
+=GM2B
 -----END PGP SIGNATURE-----
 
---7jqiaq7vz2zjy3ub--
+--7eofhf2lw3xmi3lr--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

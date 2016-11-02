@@ -1,69 +1,73 @@
-From: Robert Baldyga <r.baldyga-anjuHVi6/WSaMJb+Lgu22Q@public.gmane.org>
-Subject: [PATCH] spi: imx: set spi_bus_clk for mx21 and mx27
-Date: Tue,  1 Nov 2016 22:18:39 +0100
-Message-ID: <1478035119-21731-1-git-send-email-r.baldyga@hackerion.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Robert Baldyga <r.baldyga-anjuHVi6/WSaMJb+Lgu22Q@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
-
-Introduce additional output parameter in spi_imx_clkdiv_1()
-function to return result frequency and set it to spi_bus_clk.
-
-This fixes division by zero bug, which occurred in
-spi_imx_calculate_timeout() function.
-
-Signed-off-by: Robert Baldyga <r.baldyga-anjuHVi6/WSaMJb+Lgu22Q@public.gmane.org>
----
- drivers/spi/spi-imx.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index deb782f..088828c 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -173,15 +173,16 @@ static int mxc_clkdivs[] = {0, 3, 4, 6, 8, 12, 16, 24, 32, 48, 64, 96, 128, 192,
- 
- /* MX21, MX27 */
- static unsigned int spi_imx_clkdiv_1(unsigned int fin,
--		unsigned int fspi, unsigned int max)
-+		unsigned int fspi, unsigned int max, unsigned int *fres)
- {
- 	int i;
- 
- 	for (i = 2; i < max; i++)
- 		if (fspi * mxc_clkdivs[i] >= fin)
--			return i;
-+			break;
- 
--	return max;
-+	*fres = fin / mxc_clkdivs[i];
-+	return i;
- }
- 
- /* MX1, MX31, MX35, MX51 CSPI */
-@@ -574,9 +575,12 @@ static int mx21_config(struct spi_device *spi, struct spi_imx_config *config)
- 	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
- 	unsigned int reg = MX21_CSPICTRL_ENABLE | MX21_CSPICTRL_MASTER;
- 	unsigned int max = is_imx27_cspi(spi_imx) ? 16 : 18;
-+	unsigned int clk;
-+
-+	reg |= spi_imx_clkdiv_1(spi_imx->spi_clk, config->speed_hz, max, &clk)
-+		<< MX21_CSPICTRL_DR_SHIFT;
-+	spi_imx->spi_bus_clk = clk;
- 
--	reg |= spi_imx_clkdiv_1(spi_imx->spi_clk, config->speed_hz, max) <<
--		MX21_CSPICTRL_DR_SHIFT;
- 	reg |= config->bpw - 1;
- 
- 	if (spi->mode & SPI_CPHA)
--- 
-2.7.4
+From: Maxime Ripard <maxime.ripard@free-electrons.com>
+Subject: Re: [PATCH v2 4/4] spi: sun6i: Support Allwinner H3 SPI controller
+Date: Wed, 2 Nov 2016 14:40:11 +0100
+Message-ID: <20161102134011.aotjogti4vl4ebdt@lukather>
+References: <20161028065412.23008-1-woogyom.kim@gmail.com>
+ <20161028065412.23008-5-woogyom.kim@gmail.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="7jqiaq7vz2zjy3ub"
+Cc: Chen-Yu Tsai <wens@csie.org>, Mark Brown <broonie@kernel.org>,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Milo Kim <woogyom.kim@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20161028065412.23008-5-woogyom.kim@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--7jqiaq7vz2zjy3ub
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Oct 28, 2016 at 03:54:12PM +0900, Milo Kim wrote:
+> H3 has two SPI controllers. The size of the buffer is 64 * 8.
+> (8 bit transfer by 64 entry FIFO)
+> A31 has four controllers. The size of the buffer is 128 * 8.
+> (8 bit transfer by 128 entry FIFO)
+>=20
+> Register maps are sharable, so sun6i SPI driver is reusable with
+> device configuration.
+>=20
+> Use the variable, 'fifo_depth' instead of fixed value to support both SPI
+> controllers.
+>=20
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Maxime Ripard <maxime.ripard@free-electrons.com>
+> Cc: Chen-Yu Tsai <wens@csie.org>
+> Signed-off-by: Milo Kim <woogyom.kim@gmail.com>
+
+Acked-by: Maxime Ripard <maxime.ripard@free-electrons.com>
+
+Thanks!
+Maxime
+
+--=20
+Maxime Ripard, Free Electrons
+Embedded Linux and Kernel engineering
+http://free-electrons.com
+
+--7jqiaq7vz2zjy3ub
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIcBAEBCAAGBQJYGey7AAoJEBx+YmzsjxAgQ4UP/iJWM6G5KwwVrWCH7+2ZvsyL
+55JXP3XWCOZYELcLJgeksWLuMZMuy/oGtKVNyK91VC33lOYF4RXzHAc27pO8MRN6
+bw6WyNVXobMGPIP1qciH4yLKwwJwGvHMG5a0I5RMBfEOCkOl1HUuNbRwnO8Zrc/5
+i3PLxYR8Y0qciOWrC1f5j84nX92nUz3YiNOTJFWRFM4phtKRCjHWgwYXzHB4xWc2
+cyYrRZ8UzZ9iQvaw7gm1DUheTIzVaUc7S4mtUtrVd6wb4lzAZbOG9MRvfUhQp9TJ
+2Q2d/tDtyfIYn+reRoMly19q4wEqxMqgwINt0V8EIUnOL6jNKQLQVSBDym7swf8R
+7vEYFtcV9H5zjOXHx6ZDgvgFAd7KD9c8WrJ5yybjxgYFEGMWoApbSFXkp/nU8Zjb
+/ZTitSFuPPRTwME1xjQNqunZBHs6WvBFx6V3jdW2GBgA6MgqueudahHb/du+vavi
+ZX5sp5sZApXQ6eK6KeMPk1/Ro3I18pvxDPe0m1TFXNxFfRo1pKQAfHnQH+r51cCA
+pw3uroJr5057xwqj0ESF3f9tWF/l1hCtd27cjwqzzy7dMl+v/BnJ/LE6rDux5/1C
+pmFYhlNJpAl/rUjfctIq4snjjhslArV//nPV0aPoncU/sArJfO2kUL//lBXBctUu
+0mZ4jcEp+TGndnC6yG67
+=JqxL
+-----END PGP SIGNATURE-----
+
+--7jqiaq7vz2zjy3ub--

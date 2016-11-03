@@ -1,24 +1,25 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: sun6i: Support Allwinner H3 SPI controller" to the spi tree
-Date: Thu, 03 Nov 2016 09:42:47 -0600
-Message-ID: <E1c2KAB-0000B9-TX@finisterre>
-References: <20161028065412.23008-5-woogyom.kim@gmail.com>
+Subject: Applied "spi: sun6i: Add binding for Allwinner H3 SPI controller" to the spi tree
+Date: Thu, 03 Nov 2016 09:42:56 -0600
+Message-ID: <E1c2KAK-0000CV-Ad@finisterre>
+References: <20161019140234.13518-2-woogyom.kim@gmail.com>
 Cc: Maxime Ripard <maxime.ripard@free-electrons.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
         Mark Brown <broonie@kernel.org>,
         Maxime Ripard <maxime.ripard@free-electrons.com>,
-        Chen-Yu Tsai <wens@csie.org>, Mark Brown <broonie@kernel.org>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Chen-Yu Tsai <wens@csie.org>, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         linux-spi@vger.kernel.org
 To: Milo Kim <woogyom.kim@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20161028065412.23008-5-woogyom.kim@gmail.com>
+In-Reply-To: <20161019140234.13518-2-woogyom.kim@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: sun6i: Support Allwinner H3 SPI controller
+   spi: sun6i: Add binding for Allwinner H3 SPI controller
 
 has been applied to the spi tree at
 
@@ -43,113 +44,68 @@ to this mail.
 Thanks,
 Mark
 
->From 10565dfd35488c45826201b4ce28597d6b5de3dd Mon Sep 17 00:00:00 2001
+>From 8ea7ce9cc6dec26db22a97f00523a4bfd3a97d72 Mon Sep 17 00:00:00 2001
 From: Milo Kim <woogyom.kim@gmail.com>
-Date: Fri, 28 Oct 2016 15:54:12 +0900
-Subject: [PATCH] spi: sun6i: Support Allwinner H3 SPI controller
+Date: Fri, 28 Oct 2016 15:54:11 +0900
+Subject: [PATCH] spi: sun6i: Add binding for Allwinner H3 SPI controller
 
-H3 has two SPI controllers. The size of the buffer is 64 * 8.
-(8 bit transfer by 64 entry FIFO)
-A31 has four controllers. The size of the buffer is 128 * 8.
-(8 bit transfer by 128 entry FIFO)
-
-Register maps are sharable, so sun6i SPI driver is reusable with
-device configuration.
-
-Use the variable, 'fifo_depth' instead of fixed value to support both SPI
-controllers.
+H3 SPI has same architecture as A31 except FIFO capacity.
+To configure the buffer size separately, compatible property should be
+different. Optional DMA specifiers and example are added.
 
 Signed-off-by: Milo Kim <woogyom.kim@gmail.com>
 Acked-by: Maxime Ripard <maxime.ripard@free-electrons.com>
+Acked-by: Rob Herring <robh+dt@kernel.org>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-sun6i.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ .../devicetree/bindings/spi/spi-sun6i.txt          | 25 ++++++++++++++++++++--
+ 1 file changed, 23 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
-index 9918a57a6a6e..e3114832c485 100644
---- a/drivers/spi/spi-sun6i.c
-+++ b/drivers/spi/spi-sun6i.c
-@@ -17,6 +17,7 @@
- #include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/module.h>
-+#include <linux/of_device.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
- #include <linux/reset.h>
-@@ -24,6 +25,7 @@
- #include <linux/spi/spi.h>
+diff --git a/Documentation/devicetree/bindings/spi/spi-sun6i.txt b/Documentation/devicetree/bindings/spi/spi-sun6i.txt
+index 21de73db6a05..2ec99b86b622 100644
+--- a/Documentation/devicetree/bindings/spi/spi-sun6i.txt
++++ b/Documentation/devicetree/bindings/spi/spi-sun6i.txt
+@@ -1,7 +1,7 @@
+-Allwinner A31 SPI controller
++Allwinner A31/H3 SPI controller
  
- #define SUN6I_FIFO_DEPTH		128
-+#define SUN8I_FIFO_DEPTH		64
+ Required properties:
+-- compatible: Should be "allwinner,sun6i-a31-spi".
++- compatible: Should be "allwinner,sun6i-a31-spi" or "allwinner,sun8i-h3-spi".
+ - reg: Should contain register location and length.
+ - interrupts: Should contain interrupt.
+ - clocks: phandle to the clocks feeding the SPI controller. Two are
+@@ -12,6 +12,11 @@ Required properties:
+ - resets: phandle to the reset controller asserting this device in
+           reset
  
- #define SUN6I_GBL_CTL_REG		0x04
- #define SUN6I_GBL_CTL_BUS_ENABLE		BIT(0)
-@@ -90,6 +92,7 @@ struct sun6i_spi {
- 	const u8		*tx_buf;
- 	u8			*rx_buf;
- 	int			len;
-+	unsigned long		fifo_depth;
- };
- 
- static inline u32 sun6i_spi_read(struct sun6i_spi *sspi, u32 reg)
-@@ -155,7 +158,9 @@ static void sun6i_spi_set_cs(struct spi_device *spi, bool enable)
- 
- static size_t sun6i_spi_max_transfer_size(struct spi_device *spi)
- {
--	return SUN6I_FIFO_DEPTH - 1;
-+	struct sun6i_spi *sspi = spi_master_get_devdata(spi->master);
++Optional properties:
++- dmas: DMA specifiers for rx and tx dma. See the DMA client binding,
++	Documentation/devicetree/bindings/dma/dma.txt
++- dma-names: DMA request names should include "rx" and "tx" if present.
 +
-+	return sspi->fifo_depth - 1;
- }
+ Example:
  
- static int sun6i_spi_transfer_one(struct spi_master *master,
-@@ -170,7 +175,7 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
- 	u32 reg;
- 
- 	/* We don't support transfer larger than the FIFO */
--	if (tfr->len > SUN6I_FIFO_DEPTH)
-+	if (tfr->len > sspi->fifo_depth)
- 		return -EINVAL;
- 
- 	reinit_completion(&sspi->done);
-@@ -265,7 +270,7 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
- 			SUN6I_BURST_CTL_CNT_STC(tx_len));
- 
- 	/* Fill the TX FIFO */
--	sun6i_spi_fill_fifo(sspi, SUN6I_FIFO_DEPTH);
-+	sun6i_spi_fill_fifo(sspi, sspi->fifo_depth);
- 
- 	/* Enable the interrupts */
- 	sun6i_spi_write(sspi, SUN6I_INT_CTL_REG, SUN6I_INT_CTL_TC);
-@@ -288,7 +293,7 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
- 		goto out;
- 	}
- 
--	sun6i_spi_drain_fifo(sspi, SUN6I_FIFO_DEPTH);
-+	sun6i_spi_drain_fifo(sspi, sspi->fifo_depth);
- 
- out:
- 	sun6i_spi_write(sspi, SUN6I_INT_CTL_REG, 0);
-@@ -398,6 +403,8 @@ static int sun6i_spi_probe(struct platform_device *pdev)
- 	}
- 
- 	sspi->master = master;
-+	sspi->fifo_depth = (unsigned long)of_device_get_match_data(&pdev->dev);
-+
- 	master->max_speed_hz = 100 * 1000 * 1000;
- 	master->min_speed_hz = 3 * 1000;
- 	master->set_cs = sun6i_spi_set_cs;
-@@ -470,7 +477,8 @@ static int sun6i_spi_remove(struct platform_device *pdev)
- }
- 
- static const struct of_device_id sun6i_spi_match[] = {
--	{ .compatible = "allwinner,sun6i-a31-spi", },
-+	{ .compatible = "allwinner,sun6i-a31-spi", .data = (void *)SUN6I_FIFO_DEPTH },
-+	{ .compatible = "allwinner,sun8i-h3-spi",  .data = (void *)SUN8I_FIFO_DEPTH },
- 	{}
+ spi1: spi@01c69000 {
+@@ -22,3 +27,19 @@ spi1: spi@01c69000 {
+ 	clock-names = "ahb", "mod";
+ 	resets = <&ahb1_rst 21>;
  };
- MODULE_DEVICE_TABLE(of, sun6i_spi_match);
++
++spi0: spi@01c68000 {
++	compatible = "allwinner,sun8i-h3-spi";
++	reg = <0x01c68000 0x1000>;
++	interrupts = <GIC_SPI 65 IRQ_TYPE_LEVEL_HIGH>;
++	clocks = <&ccu CLK_BUS_SPI0>, <&ccu CLK_SPI0>;
++	clock-names = "ahb", "mod";
++	dmas = <&dma 23>, <&dma 23>;
++	dma-names = "rx", "tx";
++	pinctrl-names = "default";
++	pinctrl-0 = <&spi0_pins>;
++	resets = <&ccu RST_BUS_SPI0>;
++	status = "disabled";
++	#address-cells = <1>;
++	#size-cells = <0>;
++};
 -- 
 2.10.1

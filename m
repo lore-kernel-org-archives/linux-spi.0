@@ -1,18 +1,24 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: imx: set spi_bus_clk for mx21 and mx27" to the spi tree
-Date: Wed, 02 Nov 2016 10:53:48 -0600
-Message-ID: <E1c1ynM-0006MY-9n@finisterre>
-References: <1478035119-21731-1-git-send-email-r.baldyga@hackerion.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Robert Baldyga <r.baldyga-anjuHVi6/WSaMJb+Lgu22Q@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1478035119-21731-1-git-send-email-r.baldyga-anjuHVi6/WSaMJb+Lgu22Q@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: sun6i: Support Allwinner H3 SPI controller" to the spi tree
+Date: Thu, 03 Nov 2016 09:42:47 -0600
+Message-ID: <E1c2KAB-0000B9-TX@finisterre>
+References: <20161028065412.23008-5-woogyom.kim@gmail.com>
+Cc: Maxime Ripard <maxime.ripard@free-electrons.com>,
+        Mark Brown <broonie@kernel.org>,
+        Maxime Ripard <maxime.ripard@free-electrons.com>,
+        Chen-Yu Tsai <wens@csie.org>, Mark Brown <broonie@kernel.org>,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: Milo Kim <woogyom.kim@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20161028065412.23008-5-woogyom.kim@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: imx: set spi_bus_clk for mx21 and mx27
+   spi: sun6i: Support Allwinner H3 SPI controller
 
 has been applied to the spi tree at
 
@@ -37,66 +43,113 @@ to this mail.
 Thanks,
 Mark
 
->From 32df9ff2b88f9b3ef0865837cd6a39c957dab875 Mon Sep 17 00:00:00 2001
-From: Robert Baldyga <r.baldyga-anjuHVi6/WSaMJb+Lgu22Q@public.gmane.org>
-Date: Tue, 1 Nov 2016 22:18:39 +0100
-Subject: [PATCH] spi: imx: set spi_bus_clk for mx21 and mx27
+>From 10565dfd35488c45826201b4ce28597d6b5de3dd Mon Sep 17 00:00:00 2001
+From: Milo Kim <woogyom.kim@gmail.com>
+Date: Fri, 28 Oct 2016 15:54:12 +0900
+Subject: [PATCH] spi: sun6i: Support Allwinner H3 SPI controller
 
-Introduce additional output parameter in spi_imx_clkdiv_1()
-function to return result frequency and set it to spi_bus_clk.
+H3 has two SPI controllers. The size of the buffer is 64 * 8.
+(8 bit transfer by 64 entry FIFO)
+A31 has four controllers. The size of the buffer is 128 * 8.
+(8 bit transfer by 128 entry FIFO)
 
-This fixes division by zero bug, which occurred in
-spi_imx_calculate_timeout() function.
+Register maps are sharable, so sun6i SPI driver is reusable with
+device configuration.
 
-Signed-off-by: Robert Baldyga <r.baldyga-anjuHVi6/WSaMJb+Lgu22Q@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Use the variable, 'fifo_depth' instead of fixed value to support both SPI
+controllers.
+
+Signed-off-by: Milo Kim <woogyom.kim@gmail.com>
+Acked-by: Maxime Ripard <maxime.ripard@free-electrons.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-imx.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/spi/spi-sun6i.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 08124b29665e..32ced64a5bb9 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -173,15 +173,16 @@ static int mxc_clkdivs[] = {0, 3, 4, 6, 8, 12, 16, 24, 32, 48, 64, 96, 128, 192,
+diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
+index 9918a57a6a6e..e3114832c485 100644
+--- a/drivers/spi/spi-sun6i.c
++++ b/drivers/spi/spi-sun6i.c
+@@ -17,6 +17,7 @@
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
+ #include <linux/module.h>
++#include <linux/of_device.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/reset.h>
+@@ -24,6 +25,7 @@
+ #include <linux/spi/spi.h>
  
- /* MX21, MX27 */
- static unsigned int spi_imx_clkdiv_1(unsigned int fin,
--		unsigned int fspi, unsigned int max)
-+		unsigned int fspi, unsigned int max, unsigned int *fres)
+ #define SUN6I_FIFO_DEPTH		128
++#define SUN8I_FIFO_DEPTH		64
+ 
+ #define SUN6I_GBL_CTL_REG		0x04
+ #define SUN6I_GBL_CTL_BUS_ENABLE		BIT(0)
+@@ -90,6 +92,7 @@ struct sun6i_spi {
+ 	const u8		*tx_buf;
+ 	u8			*rx_buf;
+ 	int			len;
++	unsigned long		fifo_depth;
+ };
+ 
+ static inline u32 sun6i_spi_read(struct sun6i_spi *sspi, u32 reg)
+@@ -155,7 +158,9 @@ static void sun6i_spi_set_cs(struct spi_device *spi, bool enable)
+ 
+ static size_t sun6i_spi_max_transfer_size(struct spi_device *spi)
  {
- 	int i;
- 
- 	for (i = 2; i < max; i++)
- 		if (fspi * mxc_clkdivs[i] >= fin)
--			return i;
-+			break;
- 
--	return max;
-+	*fres = fin / mxc_clkdivs[i];
-+	return i;
+-	return SUN6I_FIFO_DEPTH - 1;
++	struct sun6i_spi *sspi = spi_master_get_devdata(spi->master);
++
++	return sspi->fifo_depth - 1;
  }
  
- /* MX1, MX31, MX35, MX51 CSPI */
-@@ -589,9 +590,12 @@ static int mx21_config(struct spi_device *spi, struct spi_imx_config *config)
- 	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
- 	unsigned int reg = MX21_CSPICTRL_ENABLE | MX21_CSPICTRL_MASTER;
- 	unsigned int max = is_imx27_cspi(spi_imx) ? 16 : 18;
-+	unsigned int clk;
+ static int sun6i_spi_transfer_one(struct spi_master *master,
+@@ -170,7 +175,7 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
+ 	u32 reg;
+ 
+ 	/* We don't support transfer larger than the FIFO */
+-	if (tfr->len > SUN6I_FIFO_DEPTH)
++	if (tfr->len > sspi->fifo_depth)
+ 		return -EINVAL;
+ 
+ 	reinit_completion(&sspi->done);
+@@ -265,7 +270,7 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
+ 			SUN6I_BURST_CTL_CNT_STC(tx_len));
+ 
+ 	/* Fill the TX FIFO */
+-	sun6i_spi_fill_fifo(sspi, SUN6I_FIFO_DEPTH);
++	sun6i_spi_fill_fifo(sspi, sspi->fifo_depth);
+ 
+ 	/* Enable the interrupts */
+ 	sun6i_spi_write(sspi, SUN6I_INT_CTL_REG, SUN6I_INT_CTL_TC);
+@@ -288,7 +293,7 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
+ 		goto out;
+ 	}
+ 
+-	sun6i_spi_drain_fifo(sspi, SUN6I_FIFO_DEPTH);
++	sun6i_spi_drain_fifo(sspi, sspi->fifo_depth);
+ 
+ out:
+ 	sun6i_spi_write(sspi, SUN6I_INT_CTL_REG, 0);
+@@ -398,6 +403,8 @@ static int sun6i_spi_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	sspi->master = master;
++	sspi->fifo_depth = (unsigned long)of_device_get_match_data(&pdev->dev);
 +
-+	reg |= spi_imx_clkdiv_1(spi_imx->spi_clk, config->speed_hz, max, &clk)
-+		<< MX21_CSPICTRL_DR_SHIFT;
-+	spi_imx->spi_bus_clk = clk;
+ 	master->max_speed_hz = 100 * 1000 * 1000;
+ 	master->min_speed_hz = 3 * 1000;
+ 	master->set_cs = sun6i_spi_set_cs;
+@@ -470,7 +477,8 @@ static int sun6i_spi_remove(struct platform_device *pdev)
+ }
  
--	reg |= spi_imx_clkdiv_1(spi_imx->spi_clk, config->speed_hz, max) <<
--		MX21_CSPICTRL_DR_SHIFT;
- 	reg |= config->bpw - 1;
- 
- 	if (spi->mode & SPI_CPHA)
+ static const struct of_device_id sun6i_spi_match[] = {
+-	{ .compatible = "allwinner,sun6i-a31-spi", },
++	{ .compatible = "allwinner,sun6i-a31-spi", .data = (void *)SUN6I_FIFO_DEPTH },
++	{ .compatible = "allwinner,sun8i-h3-spi",  .data = (void *)SUN8I_FIFO_DEPTH },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, sun6i_spi_match);
 -- 
 2.10.1
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

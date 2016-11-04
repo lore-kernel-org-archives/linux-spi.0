@@ -1,7 +1,7 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: fsl-espi: don't write ESPI_SPMODE register if the mode doesn't change" to the spi tree
-Date: Fri, 04 Nov 2016 14:46:53 -0600
-Message-ID: <E1c2lO1-00027L-OU@finisterre>
+Subject: Applied "spi: fsl-espi: remove unneeded call to fsl_espi_setup_transfer" to the spi tree
+Date: Fri, 04 Nov 2016 14:47:05 -0600
+Message-ID: <E1c2lOD-000282-5D@finisterre>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
@@ -11,7 +11,7 @@ List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: fsl-espi: don't write ESPI_SPMODE register if the mode doesn't change
+   spi: fsl-espi: remove unneeded call to fsl_espi_setup_transfer
 
 has been applied to the spi tree at
 
@@ -36,45 +36,34 @@ to this mail.
 Thanks,
 Mark
 
->From 8f3086d2a9c1104f42d2d0247ef52b01c6d898d8 Mon Sep 17 00:00:00 2001
+>From 60d9531a61efc8e6b69d04089d50a0a929090fe1 Mon Sep 17 00:00:00 2001
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Fri, 4 Nov 2016 21:01:12 +0100
-Subject: [PATCH] spi: fsl-espi: don't write ESPI_SPMODE register if the mode
- doesn't change
+Date: Fri, 4 Nov 2016 21:00:40 +0100
+Subject: [PATCH] spi: fsl-espi: remove unneeded call to
+ fsl_espi_setup_transfer
 
-There's no need to bother the chip if the mode doesn't change.
+Resetting the chip to a default transfer mode after each transfer
+doesn't provide any benefit. Therefore remove this call.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 1029bd2ff5f1..edb524f831a3 100644
+index 8b3a28739d9a..1029bd2ff5f1 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -249,6 +249,7 @@ static void fsl_espi_setup_transfer(struct spi_device *spi,
- 	int bits_per_word = t ? t->bits_per_word : spi->bits_per_word;
- 	u32 pm, hz = t ? t->speed_hz : spi->max_speed_hz;
- 	struct spi_mpc8xxx_cs *cs = spi->controller_state;
-+	u32 hw_mode_old = cs->hw_mode;
+@@ -331,8 +331,6 @@ static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans)
+ 	if (trans->delay_usecs)
+ 		udelay(trans->delay_usecs);
  
- 	/* mask out bits we are going to set */
- 	cs->hw_mode &= ~(CSMODE_LEN(0xF) | CSMODE_DIV16 | CSMODE_PM(0xF));
-@@ -271,8 +272,10 @@ static void fsl_espi_setup_transfer(struct spi_device *spi,
+-	fsl_espi_setup_transfer(spi, NULL);
+-
+ 	if (!ret)
+ 		fsl_espi_copy_from_buf(m, mspi);
  
- 	cs->hw_mode |= CSMODE_PM(pm);
- 
--	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPMODEx(spi->chip_select),
--			   cs->hw_mode);
-+	/* don't write the mode register if the mode doesn't change */
-+	if (cs->hw_mode != hw_mode_old)
-+		fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPMODEx(spi->chip_select),
-+				   cs->hw_mode);
- }
- 
- static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
 -- 
 2.10.1
 

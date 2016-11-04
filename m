@@ -1,18 +1,18 @@
-From: atull <atull-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+From: atull <atull@opensource.altera.com>
 Subject: Re: [PATCH v7 3/3] fpga: Add support for Lattice iCE40 FPGAs
-Date: Fri, 4 Nov 2016 10:09:22 -0500
-Message-ID: <alpine.DEB.2.10.1611040945100.2940@atull-VirtualBox>
+Date: Fri, 4 Nov 2016 10:48:16 -0500
+Message-ID: <alpine.DEB.2.10.1611041047200.2777@atull-VirtualBox>
 References: <1478236004-7852-1-git-send-email-joel@airwebreathe.org.uk> <1478236004-7852-3-git-send-email-joel@airwebreathe.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
-Cc: <moritz.fischer-+aYTwkv1SeIAvxtiuMwx3w@public.gmane.org>, <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-        <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        <marex-mMYRjVVXLP4@public.gmane.org>
-To: Joel Holdsworth <joel-IJEoVVyKhCJXvIrf17iDB/XRex20P6io@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1478236004-7852-3-git-send-email-joel-IJEoVVyKhCJXvIrf17iDB/XRex20P6io@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: <moritz.fischer@ettus.com>, <geert@linux-m68k.org>,
+        <robh@kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+        <marex@denk.de>
+To: Joel Holdsworth <joel@airwebreathe.org.uk>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1478236004-7852-3-git-send-email-joel@airwebreathe.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 On Fri, 4 Nov 2016, Joel Holdsworth wrote:
@@ -110,9 +110,9 @@ On Fri, 4 Nov 2016, Joel Holdsworth wrote:
 
 Hi Joel,
 
-The build breaks without this:
-
-#include <linux/module.h>
+It needs
+ #include <linux/module.h>
+to be able to build.
 
 Alan
 
@@ -294,14 +294,10 @@ Alan
 > +
 > +module_spi_driver(ice40_fpga_driver);
 > +
-> +MODULE_AUTHOR("Joel Holdsworth <joel-IJEoVVyKhCJXvIrf17iDB/XRex20P6io@public.gmane.org>");
+> +MODULE_AUTHOR("Joel Holdsworth <joel@airwebreathe.org.uk>");
 > +MODULE_DESCRIPTION("Lattice iCE40 FPGA Manager");
 > +MODULE_LICENSE("GPL v2");
 > -- 
 > 2.7.4
 > 
 > 
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

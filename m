@@ -1,143 +1,81 @@
-From: Niklas =?iso-8859-1?Q?S=F6derlund?=
-        <niklas.soderlund-1zkq55x86MTxsAP9Fp7wbw@public.gmane.org>
-Subject: Re: [PATCH 1/1] ARM: spi supports 32bytes buffer for DUAL and QUAD
-Date: Sat, 5 Nov 2016 08:32:39 +0100
-Message-ID: <20161105073239.GA30888@bigcity.dyn.berto.se>
-References: <1478248734-32044-1-git-send-email-cm-hiep@jinso.co.jp>
- <1478248734-32044-2-git-send-email-cm-hiep@jinso.co.jp>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org,
-        yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org, ryusuke.sakato.bx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org,
-        linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, nv-dung-HEF513clHfp3+QwDJ9on6Q@public.gmane.org,
-        h-inayoshi-HEF513clHfp3+QwDJ9on6Q@public.gmane.org
-To: Cao Minh Hiep <cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
+From: Peter Robinson <pbrobinson-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: make architecture specific hardware depend on the associated hardware
+Date: Sun,  6 Nov 2016 22:21:28 +0000
+Message-ID: <20161106222128.24433-1-pbrobinson@gmail.com>
+Cc: Peter Robinson <pbrobinson-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1478248734-32044-2-git-send-email-cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Cao,
+There's not much point enabling hardware specific hardware drivers if the
+actual SoC architecture platforms aren't enabled as they're not much use
+with out it.
 
-On 2016-11-04 17:38:54 +0900, Cao Minh Hiep wrote:
-> From: Hiep Cao Minh <cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
-> 
-> This patch supports 32bytes of buffer for DUAL and QUAD in QSPI by
-> Using Transmit/Receive Buffer Data Triggering Number.
-> In order to improve the DUAL and QUAD's performance of SPI 
-> while transferring data in PIO mode, it sends/receives each 32bytes 
-> data instead of each byte data as current situation.
-> 
-> Signed-off-by: Hiep Cao Minh <cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
-> ---
->  drivers/spi/spi-rspi.c | 52 +++++++++++++++++++++++++++++++++++++++++++++++---
->  1 file changed, 49 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-> index a816f07..fb12bc5 100644
-> --- a/drivers/spi/spi-rspi.c
-> +++ b/drivers/spi/spi-rspi.c
-> @@ -413,7 +413,7 @@ static unsigned int qspi_set_send_trigger(struct rspi_data *rspi,
->  	return n;
->  }
->  
-> -static void qspi_set_receive_trigger(struct rspi_data *rspi, unsigned int len)
-> +static int qspi_set_receive_trigger(struct rspi_data *rspi, unsigned int len)
->  {
->  	unsigned int n;
->  
-> @@ -428,6 +428,7 @@ static void qspi_set_receive_trigger(struct rspi_data *rspi, unsigned int len)
->  		qspi_update(rspi, SPBFCR_RXTRG_MASK,
->  			     SPBFCR_RXTRG_1B, QSPI_SPBFCR);
->  	}
-> +	return n;
->  }
->  
->  #define set_config_register(spi, n) spi->ops->set_config_register(spi, n)
-> @@ -514,6 +515,51 @@ static int rspi_pio_transfer(struct rspi_data *rspi, const u8 *tx, u8 *rx,
->  	return 0;
->  }
->  
-> +static int rspi_pio_transfer_in_or_our(struct rspi_data *rspi, const u8 *tx,
-> +				       u8 *rx, unsigned int n)
+Signed-off-by: Peter Robinson <pbrobinson-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/Kconfig | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-Nitpicking, s/rspi_pio_transfer_in_or_our/rspi_pio_transfer_in_or_out/ 
-or am I missing something?
-
-> +{
-> +	unsigned int i, len;
-> +	int ret;
-> +
-> +	while (n > 0) {
-> +		if (tx) {
-> +			len = qspi_set_send_trigger(rspi, n);
-> +			if (len == QSPI_BUFFER_SIZE) {
-> +				ret = rspi_wait_for_tx_empty(rspi);
-> +				if (ret < 0) {
-> +					dev_err(&rspi->master->dev, "transmit timeout\n");
-> +					return ret;
-> +				}
-> +				for (i = 0; i < len; i++)
-> +					rspi_write_data(rspi, *tx++);
-> +			} else {
-> +				ret = rspi_pio_transfer(rspi, tx, NULL, n);
-> +				if (ret < 0)
-> +					return ret;
-> +			}
-> +		}
-> +		if (rx) {
-> +			len = qspi_set_receive_trigger(rspi, n);
-> +			if (len == QSPI_BUFFER_SIZE) {
-> +				ret = rspi_wait_for_rx_full(rspi);
-> +				if (ret < 0) {
-> +					dev_err(&rspi->master->dev, "receive timeout\n");
-> +					return ret;
-> +				}
-> +				for (i = 0; i < len; i++)
-> +					*rx++ = rspi_read_data(rspi);
-> +			} else {
-> +				ret = rspi_pio_transfer(rspi, NULL, rx, n);
-> +				if (ret < 0)
-> +					return ret;
-> +				*rx++ = ret;
-> +			}
-> +		}
-> +		n -= len;
-> +	}
-> +	return 0;
-> +}
-> +
->  static void rspi_dma_complete(void *arg)
->  {
->  	struct rspi_data *rspi = arg;
-> @@ -793,7 +839,7 @@ static int qspi_transfer_out(struct rspi_data *rspi, struct spi_transfer *xfer)
->  			return ret;
->  	}
->  
-> -	ret = rspi_pio_transfer(rspi, xfer->tx_buf, NULL, xfer->len);
-> +	ret = rspi_pio_transfer_in_or_our(rspi, xfer->tx_buf, NULL, xfer->len);
->  	if (ret < 0)
->  		return ret;
->  
-> @@ -811,7 +857,7 @@ static int qspi_transfer_in(struct rspi_data *rspi, struct spi_transfer *xfer)
->  			return ret;
->  	}
->  
-> -	return rspi_pio_transfer(rspi, NULL, xfer->rx_buf, xfer->len);
-> +	return rspi_pio_transfer_in_or_our(rspi, NULL, xfer->rx_buf, xfer->len);
->  }
->  
->  static int qspi_transfer_one(struct spi_master *master, struct spi_device *spi,
-> -- 
-> 1.9.1
-> 
-
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index b799547..5a25ab8 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -188,6 +188,7 @@ config SPI_BUTTERFLY
+ 
+ config SPI_CADENCE
+ 	tristate "Cadence SPI controller"
++	depends on ARCH_ZYNQ || ARCH_ZYNQMP || COMPILE_TEST
+ 	help
+ 	  This selects the Cadence SPI controller master driver
+ 	  used by Xilinx Zynq and ZynqMP.
+@@ -224,7 +225,7 @@ config SPI_DW_PCI
+ 
+ config SPI_DW_MID_DMA
+ 	bool "DMA support for DW SPI controller on Intel MID platform"
+-	depends on SPI_DW_PCI && DW_DMAC_PCI
++	depends on X86 && SPI_DW_PCI && DW_DMAC_PCI
+ 
+ config SPI_DW_MMIO
+ 	tristate "Memory-mapped io interface driver for DW SPI core"
+@@ -499,6 +500,7 @@ config SPI_PXA2XX_PCI
+ 
+ config SPI_ROCKCHIP
+ 	tristate "Rockchip SPI controller driver"
++	depends on ARCH_ROCKCHIP || COMPILE_TEST
+ 	help
+ 	  This selects a driver for Rockchip SPI controller.
+ 
+@@ -650,7 +652,7 @@ config SPI_TEGRA20_SLINK
+ 
+ config SPI_THUNDERX
+ 	tristate "Cavium ThunderX SPI controller"
+-	depends on PCI && 64BIT && (ARM64 || COMPILE_TEST)
++	depends on PCI && 64BIT && (ARCH_THUNDER || COMPILE_TEST)
+ 	help
+ 	  SPI host driver for the hardware found on Cavium ThunderX
+ 	  SOCs.
+@@ -680,7 +682,7 @@ config SPI_XCOMM
+ 
+ config SPI_XILINX
+ 	tristate "Xilinx SPI controller common module"
+-	depends on HAS_IOMEM
++	depends on HAS_IOMEM && (ARCH_ZYNQ || ARCH_ZYNQMP)
+ 	select SPI_BITBANG
+ 	help
+ 	  This exposes the SPI controller IP from the Xilinx EDK.
+@@ -715,7 +717,7 @@ config SPI_XTENSA_XTFPGA
+ 
+ config SPI_ZYNQMP_GQSPI
+ 	tristate "Xilinx ZynqMP GQSPI controller"
+-	depends on SPI_MASTER && HAS_DMA
++	depends on SPI_MASTER && HAS_DMA && ARCH_ZYNQMP
+ 	help
+ 	  Enables Xilinx GQSPI controller driver for Zynq UltraScale+ MPSoC.
+ 
 -- 
-Regards,
-Niklas Söderlund
+2.9.3
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,52 +1,96 @@
-From: Peter Robinson <pbrobinson-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi: make architecture specific hardware depend on the
- associated hardware
-Date: Mon, 7 Nov 2016 18:12:21 +0000
-Message-ID: <CALeDE9NiTvKd1So=Hw4oe2LQUNnZhq4e0NLroG6K_vc82_oE6w@mail.gmail.com>
-References: <20161106222128.24433-1-pbrobinson@gmail.com> <20161107174935.25r32yoq626yselg@sirena.org.uk>
+From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH v8 3/3] fpga: Add support for Lattice iCE40 FPGAs
+Date: Mon, 7 Nov 2016 19:01:12 +0100
+Message-ID: <2255968d-b97c-2b9c-4e4d-7f3717a748e3@denx.de>
+References: <1478486962-26794-1-git-send-email-joel@airwebreathe.org.uk>
+ <1478486962-26794-3-git-send-email-joel@airwebreathe.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+To: Joel Holdsworth <joel-IJEoVVyKhCJXvIrf17iDB/XRex20P6io@public.gmane.org>,
+        atull-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org, moritz.fischer-+aYTwkv1SeIAvxtiuMwx3w@public.gmane.org,
+        geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org, robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        clifford-cPpHkPqGOEfk7+2FdBfRIA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20161107174935.25r32yoq626yselg-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <1478486962-26794-3-git-send-email-joel-IJEoVVyKhCJXvIrf17iDB/XRex20P6io@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-">> There's not much point enabling hardware specific hardware drivers if the
->> actual SoC architecture platforms aren't enabled as they're not much use
->> with out it.
->
-> This really needs cross checking with the various platform maintainers
-> that the dependencies are correct and it's breaking compile test
-> coverage for quite a few of the individual drivers.
+On 11/07/2016 03:49 AM, Joel Holdsworth wrote:
+> The Lattice iCE40 is a family of FPGAs with a minimalistic architecture
+> and very regular structure, designed for low-cost, high-volume consumer
+> and system applications.
 
-Was going on the get maintainers script, but on the breakage I'm not
-sure how it does breaks stuff as it just adds in the explicit ARCH
-config for those SoCs. Are the compile test breakages somewhere public
-where I can see them and cross verify with my testing?
+[...]
 
->>  config SPI_DW_MID_DMA
->>       bool "DMA support for DW SPI controller on Intel MID platform"
->> -     depends on SPI_DW_PCI && DW_DMAC_PCI
->> +     depends on X86 && SPI_DW_PCI && DW_DMAC_PCI
->
-> This isn't right - while Intel do use this IP Desginware are a generic
-> IP vendor and PCI is an architecture neutral bus so there shouldn't be
-> an x86 dependency.
+> +static int ice40_fpga_ops_write_init(struct fpga_manager *mgr, u32 flags,
+> +				     const char *buf, size_t count)
+> +{
+> +	struct ice40_fpga_priv *priv = mgr->priv;
+> +	struct spi_device *dev = priv->dev;
+> +	struct spi_message message;
+> +	struct spi_transfer assert_cs_then_reset_delay = {.cs_change = 1,
+> +		.delay_usecs = ICE40_SPI_FPGAMGR_RESET_DELAY};
 
-The SPI_DW_PCI seems to be the generic part. The description for the
-DMA bit explicitly says "Intel MID platform" and looking in
-spi-dw-mid.c it has comments like "Get pci device for DMA controller,
-currently it could only be the DMA controller of Medfield" so while
-I'm aware that DesignWare is generic IP a lot of the ARM DW stuff is
-mostly generic drivers a lot have a bunch of platform specific
-wrapping it the form of platform specific bits (see the SW stmmac
-ethernet directory for numerous examples. This does look at least
-currently to be specific for that Intel part so at the moment I still
-think that makes sense.
+Should be this way for the sake of readability, fix globally:
 
-Peter
+	struct spi_transfer assert_cs_then_reset_delay = {
+		.cs_change	= 1,
+		.delay_usecs	= ICE40_SPI_FPGAMGR_RESET_DELAY
+	};
+
+Also I believe this could be const.
+
+> +	struct spi_transfer housekeeping_delay_then_release_cs = {
+> +		.delay_usecs = ICE40_SPI_FPGAMGR_HOUSEKEEPING_DELAY};
+
+Don't we have some less hacky way of toggling the nCS ? Is this even nCS
+or is this some control pin of the FPGA ? Maybe it should be treated
+like a regular GPIO instead ?
+
+[...]
+
+> +static int ice40_fpga_ops_write_complete(struct fpga_manager *mgr, u32 flags)
+> +{
+> +	struct ice40_fpga_priv *priv = mgr->priv;
+> +	struct spi_device *dev = priv->dev;
+> +	const u8 padding[ICE40_SPI_FPGAMGR_NUM_ACTIVATION_BYTES] = {0,};
+
+The comma is not needed.
+
+> +
+> +	/* Check CDONE is asserted */
+> +	if (!gpiod_get_value(priv->cdone)) {
+> +		dev_err(&dev->dev,
+> +			"CDONE was not asserted after firmware transfer\n");
+> +		return -EIO;
+> +	}
+> +
+> +	/* Send of zero-padding to activate the firmware */
+> +	return spi_write(dev, padding, sizeof(padding));
+> +}
+
+[...]
+
+> +	/* Check board setup data. */
+> +	if (spi->max_speed_hz > 25000000) {
+> +		dev_err(dev, "Speed is too high\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	if (spi->max_speed_hz < 1000000) {
+> +		dev_err(dev, "Speed is too low\n");
+> +		return -EINVAL;
+> +	}
+
+Do you have some explanation for this limitation ?
+
+[...]
+
+-- 
+Best regards,
+Marek Vasut
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

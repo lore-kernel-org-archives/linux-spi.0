@@ -1,74 +1,60 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH/RFC] spi: sh-msiof: Fix MSIOF address for DMAC
-Date: Mon, 7 Nov 2016 15:45:06 +0100
-Message-ID: <CAMuHMdUzZJ9YUEe_i7hbqsLomZybvkUbsF-B6sX9JgxYVzSNCA@mail.gmail.com>
-References: <1478527635-18031-1-git-send-email-horms+renesas@verge.net.au>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: make architecture specific hardware depend on the
+ associated hardware
+Date: Mon, 7 Nov 2016 17:49:35 +0000
+Message-ID: <20161107174935.25r32yoq626yselg@sirena.org.uk>
+References: <20161106222128.24433-1-pbrobinson@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-To: Simon Horman <horms+renesas@verge.net.au>
-Return-path: <linux-renesas-soc-owner@vger.kernel.org>
-In-Reply-To: <1478527635-18031-1-git-send-email-horms+renesas@verge.net.au>
-Sender: linux-renesas-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="rsy2gb42cho647l6"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Peter Robinson <pbrobinson-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20161106222128.24433-1-pbrobinson-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Simon,
 
-On Mon, Nov 7, 2016 at 3:07 PM, Simon Horman <horms+renesas@verge.net.au> wrote:
-> From: Ryo Kataoka <ryo.kataoka.wt@renesas.com>
->
-> MSIOF Base Address H'E6xx can be accessed by CPU and DMAC.
-> MSIOF Base Address H'E7xx for DMAC was removed from H/W manual.
->
->     Fixes: b0d0ce8b6b91 ("spi: sh-msiof: Add DMA support")
-> Signed-off-by: Ryo Kataoka <ryo.kataoka.wt@renesas.com>
-> Signed-off-by: Hiromitsu Yamasaki <hiromitsu.yamasaki.ym@renesas.com>
-> Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
-> ---
-> Geert, this is a patch from the Gen3 BSP 3.3.2 kernel.
-> Please consider if it is appropriate for mainline.
+--rsy2gb42cho647l6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-AFAIK we haven't received any additional information to clear my reservations
-in http://www.spinics.net/lists/linux-spi/msg03179.html
+On Sun, Nov 06, 2016 at 10:21:28PM +0000, Peter Robinson wrote:
 
-While the DMAC limitation has been removed from the R-Car Gen2 manual,
-the SH-Mobile AG5 (sh73a0), R-Mobile APE6 (r8a73a4), and R-Mobile A1 (r8a7740)
-manuals still state these SoCs have MSIOF blocks with two register banks,
-and may thus be subject to this limitation.
+> There's not much point enabling hardware specific hardware drivers if the
+> actual SoC architecture platforms aren't enabled as they're not much use
+> with out it.
 
-Until this has been clarified, I'd like to keep the code as-is.
+This really needs cross checking with the various platform maintainers
+that the dependencies are correct and it's breaking compile test
+coverage for quite a few of the individual drivers.
 
-> ---
->  drivers/spi/spi-sh-msiof.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
->
-> diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-> index cbf02ebb30a2..b882e0a500f8 100644
-> --- a/drivers/spi/spi-sh-msiof.c
-> +++ b/drivers/spi/spi-sh-msiof.c
-> @@ -1076,10 +1076,7 @@ static int sh_msiof_request_dma(struct sh_msiof_spi_priv *p)
->                 return 0;
->         }
->
-> -       /* The DMA engine uses the second register set, if present */
-> -       res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
-> -       if (!res)
-> -               res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +       res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->
->         master = p->master;
->         master->dma_tx = sh_msiof_request_dma_chan(dev, DMA_MEM_TO_DEV,
+>  config SPI_DW_MID_DMA
+>  	bool "DMA support for DW SPI controller on Intel MID platform"
+> -	depends on SPI_DW_PCI && DW_DMAC_PCI
+> +	depends on X86 && SPI_DW_PCI && DW_DMAC_PCI
 
-Gr{oetje,eeting}s,
+This isn't right - while Intel do use this IP Desginware are a generic
+IP vendor and PCI is an architecture neutral bus so there shouldn't be
+an x86 dependency.
 
-                        Geert
+--rsy2gb42cho647l6
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEcBAABCAAGBQJYIL6uAAoJECTWi3JdVIfQrIkH/2xPW+6WGi2EoQ6DylxFVPkj
+BPPPl+t+YVe49BD7Z+ZC01SkBLll4njbcRCLgLxB298dbLRHK8sUHlOf86sIsU9g
+nZNvcY8/wG+h5soPk0izz+vO8pjk/ae+zY4mjOrwQHyiJQ7r2Re8sQUmqCSlEYCY
+kbQugEltkmZXKTri8C+m/Z2Uua6taTH/wjCGr0MOQqNo14PhorrB8cBWlRqb8uRm
+Q1qHYRyPCgo84GUdts2Bc3TNiD2c3avd88kGoMghEkYComoLvxjTjed8e0f1fSkk
+j3IdGjj3zDcMOwuEdIJGEA5h6/bY51E7s+K4PFHW9bcTYawAI00j95Z9iRzsovc=
+=fupc
+-----END PGP SIGNATURE-----
+
+--rsy2gb42cho647l6--
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

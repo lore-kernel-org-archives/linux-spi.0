@@ -1,143 +1,37 @@
-From: Nicolas Ferre <nicolas.ferre@atmel.com>
-Subject: [PATCH v2] spi: atmel: use managed resource for gpio chip select
-Date: Tue, 8 Nov 2016 18:48:52 +0100
-Message-ID: <20161108174852.14311-1-nicolas.ferre@atmel.com>
+From: Moritz Fischer <moritz.fischer@ettus.com>
+Subject: Re: [PATCH v8 3/3] fpga: Add support for Lattice iCE40 FPGAs
+Date: Tue, 8 Nov 2016 09:06:10 -0800
+Message-ID: <CAAtXAHe_pz=oUpeP+t-Fy0z88LMmTeSffkD2Cbun3r+uTnmGYw@mail.gmail.com>
+References: <1478486962-26794-1-git-send-email-joel@airwebreathe.org.uk>
+ <1478486962-26794-3-git-send-email-joel@airwebreathe.org.uk>
+ <2255968d-b97c-2b9c-4e4d-7f3717a748e3@denx.de> <01d1a97b-2f43-49a6-51fb-e223ef4dce9b@airwebreathe.org.uk>
+ <4bdba358-db18-48f1-3286-a7a7f4c30215@denx.de>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: Ludovic Desroches <ludovic.desroches@atmel.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        Cyrille Pitchen <cyrille.pitchen@atmel.com>,
-        Wenyou Yang <wenyou.yang@atmel.com>,
-        Nicolas Ferre <nicolas.ferre@atmel.com>
-To: <linux@meltdown.ru>, Mark Brown <broonie@kernel.org>,
-        Alexandre Belloni <alexandre.belloni@free-electrons.com>,
-        Boris BREZILLON <boris.brezillon@free-electrons.com>,
-        <linux-spi@vger.kernel.org>, <geert@linux-m68k.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Joel Holdsworth <joel@airwebreathe.org.uk>,
+        Alan Tull <atull@opensource.altera.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Rob Herring <robh@kernel.org>,
+        Devicetree List <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-spi@vger.kernel.org, Clifford Wolf <clifford@clifford.at>
+To: Marek Vasut <marex@denx.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <4bdba358-db18-48f1-3286-a7a7f4c30215@denx.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Use the managed gpio CS pin request so that we avoid having trouble
-in the cleanup code.
-In fact, if module was configured with DT, cleanup code released
-invalid pin.  Since resource wasn't freed, module cannot be reinserted.
+Marek,
 
-This require to extract the gpio request call from the "setup" function
-and call it in the appropriate probe function.
+On Mon, Nov 7, 2016 at 10:53 AM, Marek Vasut <marex@denx.de> wrote:
 
-Reported-by: Alexander Morozov <linux@meltdown.ru>
-Signed-off-by: Nicolas Ferre <nicolas.ferre@atmel.com>
----
-v2: fix devm_gpio_request location: the setup code for device was not proper
-    location. Move it to the probe function and add needed DT routines to
-    handle all CS gpio specified.
+>> On the whole, I don't think the zero-length transfers are too
+>> egregiously bad, and all the alternatives seem worse to me.
+>
+> So why not turn the CS line into GPIO and just toggle the GPIO?
 
- drivers/spi/spi-atmel.c | 50 ++++++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 39 insertions(+), 11 deletions(-)
+Does that work with *all* SPI controllers?
 
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 32683a13dd60..a60925614480 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -24,6 +24,7 @@
- 
- #include <linux/io.h>
- #include <linux/gpio.h>
-+#include <linux/of_gpio.h>
- #include <linux/pinctrl/consumer.h>
- #include <linux/pm_runtime.h>
- 
-@@ -1204,7 +1205,6 @@ static int atmel_spi_setup(struct spi_device *spi)
- 	u32			csr;
- 	unsigned int		bits = spi->bits_per_word;
- 	unsigned int		npcs_pin;
--	int			ret;
- 
- 	as = spi_master_get_devdata(spi->master);
- 
-@@ -1247,16 +1247,9 @@ static int atmel_spi_setup(struct spi_device *spi)
- 		if (!asd)
- 			return -ENOMEM;
- 
--		if (as->use_cs_gpios) {
--			ret = gpio_request(npcs_pin, dev_name(&spi->dev));
--			if (ret) {
--				kfree(asd);
--				return ret;
--			}
--
-+		if (as->use_cs_gpios)
- 			gpio_direction_output(npcs_pin,
- 					      !(spi->mode & SPI_CS_HIGH));
--		}
- 
- 		asd->npcs_pin = npcs_pin;
- 		spi->controller_state = asd;
-@@ -1471,13 +1464,11 @@ static int atmel_spi_transfer_one_message(struct spi_master *master,
- static void atmel_spi_cleanup(struct spi_device *spi)
- {
- 	struct atmel_spi_device	*asd = spi->controller_state;
--	unsigned		gpio = (unsigned long) spi->controller_data;
- 
- 	if (!asd)
- 		return;
- 
- 	spi->controller_state = NULL;
--	gpio_free(gpio);
- 	kfree(asd);
- }
- 
-@@ -1499,6 +1490,39 @@ static void atmel_get_caps(struct atmel_spi *as)
- }
- 
- /*-------------------------------------------------------------------------*/
-+static int atmel_spi_gpio_cs(struct platform_device *pdev)
-+{
-+	struct spi_master	*master = platform_get_drvdata(pdev);
-+	struct atmel_spi	*as = spi_master_get_devdata(master);
-+	struct device_node	*np = master->dev.of_node;
-+	int			i;
-+	int			ret = 0;
-+	int			nb = 0;
-+
-+	if (!as->use_cs_gpios)
-+		return 0;
-+
-+	if (!np)
-+		return 0;
-+
-+	nb = of_gpio_named_count(np, "cs-gpios");
-+	for (i = 0; i < nb; i++) {
-+		int cs_gpio = of_get_named_gpio(pdev->dev.of_node,
-+						"cs-gpios", i);
-+
-+			if (cs_gpio == -EPROBE_DEFER)
-+				return cs_gpio;
-+
-+			if (gpio_is_valid(cs_gpio)) {
-+				ret = devm_gpio_request(&pdev->dev, cs_gpio,
-+							dev_name(&pdev->dev));
-+				if (ret)
-+					return ret;
-+			}
-+	}
-+
-+	return 0;
-+}
- 
- static int atmel_spi_probe(struct platform_device *pdev)
- {
-@@ -1577,6 +1601,10 @@ static int atmel_spi_probe(struct platform_device *pdev)
- 		master->num_chipselect = 4;
- 	}
- 
-+	ret = atmel_spi_gpio_cs(pdev);
-+	if (ret)
-+		goto out_unmap_regs;
-+
- 	as->use_dma = false;
- 	as->use_pdc = false;
- 	if (as->caps.has_dma_support) {
--- 
-2.9.0
+Cheers,
+
+Moritz

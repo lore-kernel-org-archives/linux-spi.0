@@ -1,52 +1,181 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2] spi: rspi: rewrites the name of the function
-Date: Wed, 9 Nov 2016 14:05:38 +0000
-Message-ID: <20161109140538.2eeyrxrmjk2zaafd@sirena.org.uk>
-References: <1478565346-4320-1-git-send-email-cm-hiep@jinso.co.jp>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: atmel: use managed resource for gpio chip select" to
+ the spi tree
+Date: Wed, 09 Nov 2016 15:00:42 +0000
+Message-ID: <E1c4UMk-0002p4-LW@finisterre>
+References: <20161108174852.14311-1-nicolas.ferre@atmel.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="vpwbh5blonqwm46n"
-Cc: geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org, yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org,
-        ryusuke.sakato.bx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org, linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        nv-dung-HEF513clHfp3+QwDJ9on6Q@public.gmane.org, h-inayoshi-HEF513clHfp3+QwDJ9on6Q@public.gmane.org
-To: Cao Minh Hiep <cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1478565346-4320-1-git-send-email-cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Boris BREZILLON <boris.brezillon@free-electrons.com>,
+ Ludovic Desroches <ludovic.desroches@atmel.com>, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux@meltdown.ru, Mark Brown <broonie@kernel.org>,
+ Alexandre Belloni <alexandre.belloni@free-electrons.com>, geert@linux-m68k.org,
+ Cyrille Pitchen <cyrille.pitchen@atmel.com>,
+ Wenyou Yang <wenyou.yang@atmel.com>, linux-arm-kernel@lists.infradead.org
+To: Nicolas Ferre <nicolas.ferre@atmel.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20161108174852.14311-1-nicolas.ferre@atmel.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---vpwbh5blonqwm46n
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   spi: atmel: use managed resource for gpio chip select
 
-On Tue, Nov 08, 2016 at 09:35:46AM +0900, Cao Minh Hiep wrote:
-> From: Hiep Cao Minh <cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
->=20
-> This patch rewrites the name of rspi_pio_transfer_in_or_out
-> function.
+has been applied to the spi tree at
 
-This doesn't apply against current code, please check and resend.
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
---vpwbh5blonqwm46n
-Content-Type: application/pgp-signature; name="signature.asc"
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
------BEGIN PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEcBAABCAAGBQJYIy0xAAoJECTWi3JdVIfQ0NIH/i16fHMGL/4tBiro9trCOBq5
-eGjFgESaVv4YYFOISIT60RjARnBV2olb0xMg6IbeyfdAzAH2x6WMafeYD9WJYmhe
-CpTN0poiogPAASQywz6vRlgzDcYlK2QwV9cTn5n7DI09roFTeEd2ItNf5osif+L7
-ySrSwhMmHKBcP32/eUY50Eb6OwG8Vk1CoywsbNVoIN3dzUuNwNRs4ib0445TQw7C
-qy11l4PKO+z0NppDxY1i7i+riai1IR6283RQm+/WRRbmVDHBZKQemx2LfTIGH0xm
-7xLdDdNVfznFcGdRKqZxC/kgwWgyXz72WgxDOz0afFNVfGAd80XPtSyjj8NAmiA=
-=jydZ
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---vpwbh5blonqwm46n--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 9610620078a3900e7fad82de620ce809fd29ba60 Mon Sep 17 00:00:00 2001
+From: Nicolas Ferre <nicolas.ferre@atmel.com>
+Date: Tue, 8 Nov 2016 18:48:52 +0100
+Subject: [PATCH] spi: atmel: use managed resource for gpio chip select
+
+Use the managed gpio CS pin request so that we avoid having trouble
+in the cleanup code.
+In fact, if module was configured with DT, cleanup code released
+invalid pin.  Since resource wasn't freed, module cannot be reinserted.
+
+This require to extract the gpio request call from the "setup" function
+and call it in the appropriate probe function.
+
+Reported-by: Alexander Morozov <linux@meltdown.ru>
+Signed-off-by: Nicolas Ferre <nicolas.ferre@atmel.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-atmel.c | 50 ++++++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 39 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index 8feac599e9ab..d3affa6afe7e 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -24,6 +24,7 @@
+ 
+ #include <linux/io.h>
+ #include <linux/gpio.h>
++#include <linux/of_gpio.h>
+ #include <linux/pinctrl/consumer.h>
+ #include <linux/pm_runtime.h>
+ 
+@@ -1204,7 +1205,6 @@ static int atmel_spi_setup(struct spi_device *spi)
+ 	u32			csr;
+ 	unsigned int		bits = spi->bits_per_word;
+ 	unsigned int		npcs_pin;
+-	int			ret;
+ 
+ 	as = spi_master_get_devdata(spi->master);
+ 
+@@ -1247,16 +1247,9 @@ static int atmel_spi_setup(struct spi_device *spi)
+ 		if (!asd)
+ 			return -ENOMEM;
+ 
+-		if (as->use_cs_gpios) {
+-			ret = gpio_request(npcs_pin, dev_name(&spi->dev));
+-			if (ret) {
+-				kfree(asd);
+-				return ret;
+-			}
+-
++		if (as->use_cs_gpios)
+ 			gpio_direction_output(npcs_pin,
+ 					      !(spi->mode & SPI_CS_HIGH));
+-		}
+ 
+ 		asd->npcs_pin = npcs_pin;
+ 		spi->controller_state = asd;
+@@ -1471,13 +1464,11 @@ static int atmel_spi_transfer_one_message(struct spi_master *master,
+ static void atmel_spi_cleanup(struct spi_device *spi)
+ {
+ 	struct atmel_spi_device	*asd = spi->controller_state;
+-	unsigned		gpio = (unsigned long) spi->controller_data;
+ 
+ 	if (!asd)
+ 		return;
+ 
+ 	spi->controller_state = NULL;
+-	gpio_free(gpio);
+ 	kfree(asd);
+ }
+ 
+@@ -1499,6 +1490,39 @@ static void atmel_get_caps(struct atmel_spi *as)
+ }
+ 
+ /*-------------------------------------------------------------------------*/
++static int atmel_spi_gpio_cs(struct platform_device *pdev)
++{
++	struct spi_master	*master = platform_get_drvdata(pdev);
++	struct atmel_spi	*as = spi_master_get_devdata(master);
++	struct device_node	*np = master->dev.of_node;
++	int			i;
++	int			ret = 0;
++	int			nb = 0;
++
++	if (!as->use_cs_gpios)
++		return 0;
++
++	if (!np)
++		return 0;
++
++	nb = of_gpio_named_count(np, "cs-gpios");
++	for (i = 0; i < nb; i++) {
++		int cs_gpio = of_get_named_gpio(pdev->dev.of_node,
++						"cs-gpios", i);
++
++			if (cs_gpio == -EPROBE_DEFER)
++				return cs_gpio;
++
++			if (gpio_is_valid(cs_gpio)) {
++				ret = devm_gpio_request(&pdev->dev, cs_gpio,
++							dev_name(&pdev->dev));
++				if (ret)
++					return ret;
++			}
++	}
++
++	return 0;
++}
+ 
+ static int atmel_spi_probe(struct platform_device *pdev)
+ {
+@@ -1577,6 +1601,10 @@ static int atmel_spi_probe(struct platform_device *pdev)
+ 		master->num_chipselect = 4;
+ 	}
+ 
++	ret = atmel_spi_gpio_cs(pdev);
++	if (ret)
++		goto out_unmap_regs;
++
+ 	as->use_dma = false;
+ 	as->use_pdc = false;
+ 	if (as->caps.has_dma_support) {
+-- 
+2.10.2

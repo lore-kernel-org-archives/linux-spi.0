@@ -1,75 +1,44 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: s3c64xx: Allow driver to build if COMPILE_TEST is enabled" to the spi tree
-Date: Wed, 09 Nov 2016 15:00:23 +0000
-Message-ID: <E1c4UMR-0002n6-UR@finisterre>
-References: <1478551612-5110-1-git-send-email-javier@osg.samsung.com>
-Cc: Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: Javier Martinez Canillas <javier@osg.samsung.com>
+From: Marek Vasut <marex@denx.de>
+Subject: Re: [PATCH v8 3/3] fpga: Add support for Lattice iCE40 FPGAs
+Date: Wed, 9 Nov 2016 13:01:56 +0100
+Message-ID: <f7917987-a4cb-2840-8128-07eebd242c17@denx.de>
+References: <1478486962-26794-1-git-send-email-joel@airwebreathe.org.uk>
+ <1478486962-26794-3-git-send-email-joel@airwebreathe.org.uk>
+ <2255968d-b97c-2b9c-4e4d-7f3717a748e3@denx.de>
+ <01d1a97b-2f43-49a6-51fb-e223ef4dce9b@airwebreathe.org.uk>
+ <4bdba358-db18-48f1-3286-a7a7f4c30215@denx.de>
+ <CAAtXAHe_pz=oUpeP+t-Fy0z88LMmTeSffkD2Cbun3r+uTnmGYw@mail.gmail.com>
+ <feae0954-7e85-3946-defe-ce252869786d@airwebreathe.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: Alan Tull <atull@opensource.altera.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Rob Herring <robh@kernel.org>,
+        Devicetree List <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-spi@vger.kernel.org, Clifford Wolf <clifford@clifford.at>
+To: Joel Holdsworth <joel@airwebreathe.org.uk>,
+        Moritz Fischer <moritz.fischer@ettus.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1478551612-5110-1-git-send-email-javier@osg.samsung.com>
+In-Reply-To: <feae0954-7e85-3946-defe-ce252869786d@airwebreathe.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+On 11/08/2016 06:30 PM, Joel Holdsworth wrote:
+>>>> On the whole, I don't think the zero-length transfers are too
+>>>> egregiously bad, and all the alternatives seem worse to me.
+>>>
+>>> So why not turn the CS line into GPIO and just toggle the GPIO?
+>>
+>> Does that work with *all* SPI controllers?
+>>
+> 
+> It does not - no. See my other email.
 
-   spi: s3c64xx: Allow driver to build if COMPILE_TEST is enabled
+And is that line an actual CS of that lattice chip or a generic input
+which almost works like CS?
 
-has been applied to the spi tree at
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From b099b1319d581243402d8dc56b4237d9928d00ca Mon Sep 17 00:00:00 2001
-From: Javier Martinez Canillas <javier@osg.samsung.com>
-Date: Mon, 7 Nov 2016 17:46:52 -0300
-Subject: [PATCH] spi: s3c64xx: Allow driver to build if COMPILE_TEST is
- enabled
-
-The driver only has runtime but no build time dependency with PLAT_SAMSUNG
-|| ARCH_EXYNOS so it can be built for testing purposes if the COMPILE_TEST
-option is enabled.
-
-This is useful to have more build coverage and make sure that the driver
-is not affected by changes that could cause build regressions.
-
-Signed-off-by: Javier Martinez Canillas <javier@osg.samsung.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index b7995474148c..68910915ca49 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -553,7 +553,7 @@ config SPI_S3C24XX_FIQ
- 
- config SPI_S3C64XX
- 	tristate "Samsung S3C64XX series type SPI"
--	depends on (PLAT_SAMSUNG || ARCH_EXYNOS)
-+	depends on (PLAT_SAMSUNG || ARCH_EXYNOS || COMPILE_TEST)
- 	help
- 	  SPI driver for Samsung S3C64XX and newer SoCs.
- 
 -- 
-2.10.2
+Best regards,
+Marek Vasut

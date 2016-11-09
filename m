@@ -1,74 +1,92 @@
-From: Joel Holdsworth <joel-IJEoVVyKhCJXvIrf17iDB/XRex20P6io@public.gmane.org>
-Subject: Re: [PATCH v8 3/3] fpga: Add support for Lattice iCE40 FPGAs
-Date: Wed, 9 Nov 2016 11:54:06 -0700
-Message-ID: <d3af549a-0f68-7511-ad38-b9ec8aab62ca@airwebreathe.org.uk>
-References: <1478486962-26794-1-git-send-email-joel@airwebreathe.org.uk>
- <1478486962-26794-3-git-send-email-joel@airwebreathe.org.uk>
- <2255968d-b97c-2b9c-4e4d-7f3717a748e3@denx.de>
- <01d1a97b-2f43-49a6-51fb-e223ef4dce9b@airwebreathe.org.uk>
- <4bdba358-db18-48f1-3286-a7a7f4c30215@denx.de>
- <CAAtXAHe_pz=oUpeP+t-Fy0z88LMmTeSffkD2Cbun3r+uTnmGYw@mail.gmail.com>
- <feae0954-7e85-3946-defe-ce252869786d@airwebreathe.org.uk>
- <f7917987-a4cb-2840-8128-07eebd242c17@denx.de>
- <5828eb84-ab29-49e2-34f0-3cd7e527ca66@airwebreathe.org.uk>
- <a580bfa4-7852-aaf8-3a44-24da717f3d51@denx.de>
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 2/2] spi: fsl-espi: add support for dual output read mode
+Date: Wed, 9 Nov 2016 22:58:34 +0100
+Message-ID: <e23b4753-bdcc-3c79-7307-44052fd9e0dc@gmail.com>
+References: <c9f32ebc-43e9-41a5-809c-7e11751deef7@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Cc: Alan Tull <atull-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>,
-        Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-        Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Devicetree List <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Clifford Wolf <clifford-cPpHkPqGOEfk7+2FdBfRIA@public.gmane.org>
-To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
-        Moritz Fischer <moritz.fischer-+aYTwkv1SeIAvxtiuMwx3w@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <a580bfa4-7852-aaf8-3a44-24da717f3d51-ynQEQJNshbs@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <c9f32ebc-43e9-41a5-809c-7e11751deef7-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 09/11/16 11:39, Marek Vasut wrote:
-> On 11/09/2016 07:37 PM, Joel Holdsworth wrote:
->> On 09/11/16 05:01, Marek Vasut wrote:
->>> On 11/08/2016 06:30 PM, Joel Holdsworth wrote:
->>>>>>> On the whole, I don't think the zero-length transfers are too
->>>>>>> egregiously bad, and all the alternatives seem worse to me.
->>>>>>
->>>>>> So why not turn the CS line into GPIO and just toggle the GPIO?
->>>>>
->>>>> Does that work with *all* SPI controllers?
->>>>>
->>>>
->>>> It does not - no. See my other email.
->>>
->>> And is that line an actual CS of that lattice chip or a generic input
->>> which almost works like CS?
->>>
->>
->> I mean a generic output vs. a special CS output built into the SPI
->> master of the application processor. Take a look at how spi_set_cs(..)
->> works:
->
-> No. I am asking whether the signal which is INPUT on the iCE40 side is
-> really a chipselect signal for the SPI bus OR something which mostly
-> behaves/looks like a chipselect but is not really a chipselect.
+This patch adds support for dual output read mode.
 
-Oh I see. The SS_B line is the SPI SlaveSelect for the configuration port.
+It was successfully tested on a P1014-based device with S25FL128S
+SPINOR flash. With 50MHz SPI clock the read rate is 11MByte/s.
 
-This is the text from the datasheet:
+Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi-fsl-espi.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-"SPI Slave Select. Active Low. Includes an internal weak pull-up 
-resistor to VCC_SPI during configuration. During configuration, the 
-logic level sampled on this pin deter-mines the configuration mode used 
-by the iCE40 device. An input when sampled at the start of 
-configuration. An input when in SPI Peripheral configuration mode 
-(SPI_SS_B = Low). An output when in Master SPI Flash configuration mode."
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index e147fa7..789ca06 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -334,6 +334,8 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 		mpc8xxx_spi->tx_len = mpc8xxx_spi->rxskip;
+ 		mpc8xxx_spi->rx_len = t->len - mpc8xxx_spi->rxskip;
+ 		mpc8xxx_spi->rx = t->rx_buf + mpc8xxx_spi->rxskip;
++		if (t->rx_nbits == SPI_NBITS_DUAL)
++			spcom |= SPCOM_DO;
+ 	}
+ 
+ 	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPCOM, spcom);
+@@ -369,6 +371,11 @@ static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans)
+ 	int ret;
+ 
+ 	mspi->rxskip = fsl_espi_check_rxskip_mode(m);
++	if (trans->rx_nbits == SPI_NBITS_DUAL && !mspi->rxskip) {
++		dev_err(mspi->dev, "Dual output mode requires RXSKIP mode!\n");
++		return -EINVAL;
++	}
++
+ 	fsl_espi_copy_to_buf(m, mspi);
+ 	fsl_espi_setup_transfer(spi, trans);
+ 
+@@ -387,7 +394,7 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
+ 			       struct spi_message *m)
+ {
+ 	struct mpc8xxx_spi *mspi = spi_master_get_devdata(m->spi->master);
+-	unsigned int delay_usecs = 0;
++	unsigned int delay_usecs = 0, rx_nbits = 0;
+ 	struct spi_transfer *t, trans = {};
+ 	int ret;
+ 
+@@ -398,6 +405,8 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
+ 	list_for_each_entry(t, &m->transfers, transfer_list) {
+ 		if (t->delay_usecs > delay_usecs)
+ 			delay_usecs = t->delay_usecs;
++		if (t->rx_nbits > rx_nbits)
++			rx_nbits = t->rx_nbits;
+ 	}
+ 
+ 	t = list_first_entry(&m->transfers, struct spi_transfer,
+@@ -409,6 +418,7 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
+ 	trans.delay_usecs = delay_usecs;
+ 	trans.tx_buf = mspi->local_buf;
+ 	trans.rx_buf = mspi->local_buf;
++	trans.rx_nbits = rx_nbits;
+ 
+ 	if (trans.len)
+ 		ret = fsl_espi_trans(m, &trans);
+@@ -580,6 +590,7 @@ static int fsl_espi_probe(struct device *dev, struct resource *mem,
+ 
+ 	mpc8xxx_spi_probe(dev, mem, irq);
+ 
++	master->mode_bits |= SPI_RX_DUAL;
+ 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 16);
+ 	master->setup = fsl_espi_setup;
+ 	master->cleanup = fsl_espi_cleanup;
+-- 
+2.10.1
 
-So yes - it is a "real" SPI chip-select line.
 
-Joel
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

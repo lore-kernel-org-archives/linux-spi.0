@@ -1,431 +1,79 @@
-From: Sanchayan Maity <maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v3] spi: spi-fsl-dspi: Add DMA support for Vybrid
-Date: Thu, 10 Nov 2016 17:49:15 +0530
-Message-ID: <836dd6a84fa149cafdbb0b53e792d305febf6207.1478778329.git.maitysanchayan@gmail.com>
-Cc: stefan-XLVq0VzYD2Y@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Sanchayan Maity <maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH v8 3/3] fpga: Add support for Lattice iCE40 FPGAs
+Date: Thu, 10 Nov 2016 13:11:08 +0100
+Message-ID: <d2902132-2745-b9f6-5799-ffd3db96941d@denx.de>
+References: <1478486962-26794-1-git-send-email-joel@airwebreathe.org.uk>
+ <1478486962-26794-3-git-send-email-joel@airwebreathe.org.uk>
+ <2255968d-b97c-2b9c-4e4d-7f3717a748e3@denx.de>
+ <01d1a97b-2f43-49a6-51fb-e223ef4dce9b@airwebreathe.org.uk>
+ <4bdba358-db18-48f1-3286-a7a7f4c30215@denx.de>
+ <CAAtXAHe_pz=oUpeP+t-Fy0z88LMmTeSffkD2Cbun3r+uTnmGYw@mail.gmail.com>
+ <feae0954-7e85-3946-defe-ce252869786d@airwebreathe.org.uk>
+ <f7917987-a4cb-2840-8128-07eebd242c17@denx.de>
+ <5828eb84-ab29-49e2-34f0-3cd7e527ca66@airwebreathe.org.uk>
+ <a580bfa4-7852-aaf8-3a44-24da717f3d51@denx.de>
+ <d3af549a-0f68-7511-ad38-b9ec8aab62ca@airwebreathe.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: Alan Tull <atull-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>,
+        Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+        Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Devicetree List <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Clifford Wolf <clifford-cPpHkPqGOEfk7+2FdBfRIA@public.gmane.org>
+To: Joel Holdsworth <joel-IJEoVVyKhCJXvIrf17iDB/XRex20P6io@public.gmane.org>,
+        Moritz Fischer <moritz.fischer-+aYTwkv1SeIAvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <d3af549a-0f68-7511-ad38-b9ec8aab62ca-IJEoVVyKhCJXvIrf17iDB/XRex20P6io@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Add DMA support for Vybrid.
+On 11/09/2016 07:54 PM, Joel Holdsworth wrote:
+> On 09/11/16 11:39, Marek Vasut wrote:
+>> On 11/09/2016 07:37 PM, Joel Holdsworth wrote:
+>>> On 09/11/16 05:01, Marek Vasut wrote:
+>>>> On 11/08/2016 06:30 PM, Joel Holdsworth wrote:
+>>>>>>>> On the whole, I don't think the zero-length transfers are too
+>>>>>>>> egregiously bad, and all the alternatives seem worse to me.
+>>>>>>>
+>>>>>>> So why not turn the CS line into GPIO and just toggle the GPIO?
+>>>>>>
+>>>>>> Does that work with *all* SPI controllers?
+>>>>>>
+>>>>>
+>>>>> It does not - no. See my other email.
+>>>>
+>>>> And is that line an actual CS of that lattice chip or a generic input
+>>>> which almost works like CS?
+>>>>
+>>>
+>>> I mean a generic output vs. a special CS output built into the SPI
+>>> master of the application processor. Take a look at how spi_set_cs(..)
+>>> works:
+>>
+>> No. I am asking whether the signal which is INPUT on the iCE40 side is
+>> really a chipselect signal for the SPI bus OR something which mostly
+>> behaves/looks like a chipselect but is not really a chipselect.
+> 
+> Oh I see. The SS_B line is the SPI SlaveSelect for the configuration port.
+> 
+> This is the text from the datasheet:
+> 
+> "SPI Slave Select. Active Low. Includes an internal weak pull-up
+> resistor to VCC_SPI during configuration. During configuration, the
+> logic level sampled on this pin deter-mines the configuration mode used
+> by the iCE40 device. An input when sampled at the start of
+> configuration. An input when in SPI Peripheral configuration mode
+> (SPI_SS_B = Low). An output when in Master SPI Flash configuration mode."
+> 
+> So yes - it is a "real" SPI chip-select line.
 
-Signed-off-by: Sanchayan Maity <maitysanchayan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
-Changes since v2:
-1. Rebase on top of Shawn's latest for-next branch
-2. Make DMA mode the default for Vybrid. We no longer use the EOQ mode.
-Since devtype_data has been constantified it's no longer makes sense to
-change the trans_mode at run time.
+OK, thanks for checking.
 
-Tested on Toradex Colibri Vybrid VF61 module using spidev and MCP CAN.
-
-v1 Patch:
-https://patchwork.kernel.org/patch/9360583/
-
-v2 Patch:
-https://patchwork.kernel.org/patch/9361601/
-
-Regards,
-Sanchayan.
----
- drivers/spi/spi-fsl-dspi.c | 301 ++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 300 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 35c0dd9..bc64700 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -15,6 +15,8 @@
- 
- #include <linux/clk.h>
- #include <linux/delay.h>
-+#include <linux/dmaengine.h>
-+#include <linux/dma-mapping.h>
- #include <linux/err.h>
- #include <linux/errno.h>
- #include <linux/interrupt.h>
-@@ -40,6 +42,7 @@
- #define TRAN_STATE_WORD_ODD_NUM	0x04
- 
- #define DSPI_FIFO_SIZE			4
-+#define DSPI_DMA_BUFSIZE		(DSPI_FIFO_SIZE * 1024)
- 
- #define SPI_MCR		0x00
- #define SPI_MCR_MASTER		(1 << 31)
-@@ -71,6 +74,11 @@
- #define SPI_SR_EOQF		0x10000000
- #define SPI_SR_TCFQF		0x80000000
- 
-+#define SPI_RSER_TFFFE		BIT(25)
-+#define SPI_RSER_TFFFD		BIT(24)
-+#define SPI_RSER_RFDFE		BIT(17)
-+#define SPI_RSER_RFDFD		BIT(16)
-+
- #define SPI_RSER		0x30
- #define SPI_RSER_EOQFE		0x10000000
- #define SPI_RSER_TCFQE		0x80000000
-@@ -108,6 +116,8 @@
- 
- #define SPI_TCR_TCNT_MAX	0x10000
- 
-+#define DMA_COMPLETION_TIMEOUT	msecs_to_jiffies(3000)
-+
- struct chip_data {
- 	u32 mcr_val;
- 	u32 ctar_val;
-@@ -117,6 +127,7 @@ struct chip_data {
- enum dspi_trans_mode {
- 	DSPI_EOQ_MODE = 0,
- 	DSPI_TCFQ_MODE,
-+	DSPI_DMA_MODE,
- };
- 
- struct fsl_dspi_devtype_data {
-@@ -125,7 +136,7 @@ struct fsl_dspi_devtype_data {
- };
- 
- static const struct fsl_dspi_devtype_data vf610_data = {
--	.trans_mode = DSPI_EOQ_MODE,
-+	.trans_mode = DSPI_DMA_MODE,
- 	.max_clock_factor = 2,
- };
- 
-@@ -139,6 +150,22 @@ static const struct fsl_dspi_devtype_data ls2085a_data = {
- 	.max_clock_factor = 8,
- };
- 
-+struct fsl_dspi_dma {
-+	u32 curr_xfer_len;
-+
-+	u32 *tx_dma_buf;
-+	struct dma_chan *chan_tx;
-+	dma_addr_t tx_dma_phys;
-+	struct completion cmd_tx_complete;
-+	struct dma_async_tx_descriptor *tx_desc;
-+
-+	u32 *rx_dma_buf;
-+	struct dma_chan *chan_rx;
-+	dma_addr_t rx_dma_phys;
-+	struct completion cmd_rx_complete;
-+	struct dma_async_tx_descriptor *rx_desc;
-+};
-+
- struct fsl_dspi {
- 	struct spi_master	*master;
- 	struct platform_device	*pdev;
-@@ -165,6 +192,7 @@ struct fsl_dspi {
- 	u32			waitflags;
- 
- 	u32			spi_tcnt;
-+	struct fsl_dspi_dma	*dma;
- };
- 
- static inline int is_double_byte_mode(struct fsl_dspi *dspi)
-@@ -176,6 +204,263 @@ static inline int is_double_byte_mode(struct fsl_dspi *dspi)
- 	return ((val & SPI_FRAME_BITS_MASK) == SPI_FRAME_BITS(8)) ? 0 : 1;
- }
- 
-+static void dspi_tx_dma_callback(void *arg)
-+{
-+	struct fsl_dspi *dspi = arg;
-+	struct fsl_dspi_dma *dma = dspi->dma;
-+
-+	complete(&dma->cmd_tx_complete);
-+}
-+
-+static void dspi_rx_dma_callback(void *arg)
-+{
-+	struct fsl_dspi *dspi = arg;
-+	struct fsl_dspi_dma *dma = dspi->dma;
-+	int rx_word;
-+	int i, len;
-+	u16 d;
-+
-+	rx_word = is_double_byte_mode(dspi);
-+
-+	len = rx_word ? (dma->curr_xfer_len / 2) : dma->curr_xfer_len;
-+
-+	if (!(dspi->dataflags & TRAN_STATE_RX_VOID)) {
-+		for (i = 0; i < len; i++) {
-+			d = dspi->dma->rx_dma_buf[i];
-+			rx_word ? (*(u16 *)dspi->rx = d) :
-+						(*(u8 *)dspi->rx = d);
-+			dspi->rx += rx_word + 1;
-+		}
-+	}
-+
-+	complete(&dma->cmd_rx_complete);
-+}
-+
-+static int dspi_next_xfer_dma_submit(struct fsl_dspi *dspi)
-+{
-+	struct fsl_dspi_dma *dma = dspi->dma;
-+	struct device *dev = &dspi->pdev->dev;
-+	int time_left;
-+	int tx_word;
-+	int i, len;
-+	u16 val;
-+
-+	tx_word = is_double_byte_mode(dspi);
-+
-+	len = tx_word ? (dma->curr_xfer_len / 2) : dma->curr_xfer_len;
-+
-+	for (i = 0; i < len - 1; i++) {
-+		val = tx_word ? *(u16 *) dspi->tx : *(u8 *) dspi->tx;
-+		dspi->dma->tx_dma_buf[i] =
-+			SPI_PUSHR_TXDATA(val) | SPI_PUSHR_PCS(dspi->cs) |
-+			SPI_PUSHR_CTAS(0) | SPI_PUSHR_CONT;
-+		dspi->tx += tx_word + 1;
-+	}
-+
-+	val = tx_word ? *(u16 *) dspi->tx : *(u8 *) dspi->tx;
-+	dspi->dma->tx_dma_buf[i] = SPI_PUSHR_TXDATA(val) |
-+					SPI_PUSHR_PCS(dspi->cs) |
-+					SPI_PUSHR_CTAS(0);
-+	dspi->tx += tx_word + 1;
-+
-+	dma->tx_desc = dmaengine_prep_slave_single(dma->chan_tx,
-+					dma->tx_dma_phys,
-+					DSPI_DMA_BUFSIZE, DMA_MEM_TO_DEV,
-+					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
-+	if (!dma->tx_desc) {
-+		dev_err(dev, "Not able to get desc for DMA xfer\n");
-+		return -EIO;
-+	}
-+
-+	dma->tx_desc->callback = dspi_tx_dma_callback;
-+	dma->tx_desc->callback_param = dspi;
-+	if (dma_submit_error(dmaengine_submit(dma->tx_desc))) {
-+		dev_err(dev, "DMA submit failed\n");
-+		return -EINVAL;
-+	}
-+
-+	dma->rx_desc = dmaengine_prep_slave_single(dma->chan_rx,
-+					dma->rx_dma_phys,
-+					DSPI_DMA_BUFSIZE, DMA_DEV_TO_MEM,
-+					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
-+	if (!dma->rx_desc) {
-+		dev_err(dev, "Not able to get desc for DMA xfer\n");
-+		return -EIO;
-+	}
-+
-+	dma->rx_desc->callback = dspi_rx_dma_callback;
-+	dma->rx_desc->callback_param = dspi;
-+	if (dma_submit_error(dmaengine_submit(dma->rx_desc))) {
-+		dev_err(dev, "DMA submit failed\n");
-+		return -EINVAL;
-+	}
-+
-+	reinit_completion(&dspi->dma->cmd_rx_complete);
-+	reinit_completion(&dspi->dma->cmd_tx_complete);
-+
-+	dma_async_issue_pending(dma->chan_rx);
-+	dma_async_issue_pending(dma->chan_tx);
-+
-+	time_left = wait_for_completion_timeout(&dspi->dma->cmd_tx_complete,
-+					DMA_COMPLETION_TIMEOUT);
-+	if (time_left == 0) {
-+		dev_err(dev, "DMA tx timeout\n");
-+		dmaengine_terminate_all(dma->chan_tx);
-+		dmaengine_terminate_all(dma->chan_rx);
-+		return -ETIMEDOUT;
-+	}
-+
-+	time_left = wait_for_completion_timeout(&dspi->dma->cmd_rx_complete,
-+					DMA_COMPLETION_TIMEOUT);
-+	if (time_left == 0) {
-+		dev_err(dev, "DMA rx timeout\n");
-+		dmaengine_terminate_all(dma->chan_tx);
-+		dmaengine_terminate_all(dma->chan_rx);
-+		return -ETIMEDOUT;
-+	}
-+
-+	return 0;
-+}
-+
-+static int dspi_dma_xfer(struct fsl_dspi *dspi)
-+{
-+	struct fsl_dspi_dma *dma = dspi->dma;
-+	struct device *dev = &dspi->pdev->dev;
-+	int curr_remaining_bytes;
-+	int bytes_per_buffer;
-+	int tx_word;
-+	int ret = 0;
-+
-+	tx_word = is_double_byte_mode(dspi);
-+	curr_remaining_bytes = dspi->len;
-+	while (curr_remaining_bytes) {
-+		/* Check if current transfer fits the DMA buffer */
-+		dma->curr_xfer_len = curr_remaining_bytes;
-+		bytes_per_buffer = DSPI_DMA_BUFSIZE /
-+				(DSPI_FIFO_SIZE / (tx_word ? 2 : 1));
-+		if (curr_remaining_bytes > bytes_per_buffer)
-+			dma->curr_xfer_len = bytes_per_buffer;
-+
-+		ret = dspi_next_xfer_dma_submit(dspi);
-+		if (ret) {
-+			dev_err(dev, "DMA transfer failed\n");
-+			goto exit;
-+
-+		} else {
-+			curr_remaining_bytes -= dma->curr_xfer_len;
-+			if (curr_remaining_bytes < 0)
-+				curr_remaining_bytes = 0;
-+			dspi->len = curr_remaining_bytes;
-+		}
-+	}
-+
-+exit:
-+	return ret;
-+}
-+
-+static int dspi_request_dma(struct fsl_dspi *dspi, phys_addr_t phy_addr)
-+{
-+	struct fsl_dspi_dma *dma;
-+	struct dma_slave_config cfg;
-+	struct device *dev = &dspi->pdev->dev;
-+	int ret;
-+
-+	dma = devm_kzalloc(dev, sizeof(*dma), GFP_KERNEL);
-+	if (!dma)
-+		return -ENOMEM;
-+
-+	dma->chan_rx = dma_request_slave_channel(dev, "rx");
-+	if (!dma->chan_rx) {
-+		dev_err(dev, "rx dma channel not available\n");
-+		ret = -ENODEV;
-+		return ret;
-+	}
-+
-+	dma->chan_tx = dma_request_slave_channel(dev, "tx");
-+	if (!dma->chan_tx) {
-+		dev_err(dev, "tx dma channel not available\n");
-+		ret = -ENODEV;
-+		goto err_tx_channel;
-+	}
-+
-+	dma->tx_dma_buf = dma_alloc_coherent(dev, DSPI_DMA_BUFSIZE,
-+					&dma->tx_dma_phys, GFP_KERNEL);
-+	if (!dma->tx_dma_buf) {
-+		ret = -ENOMEM;
-+		goto err_tx_dma_buf;
-+	}
-+
-+	dma->rx_dma_buf = dma_alloc_coherent(dev, DSPI_DMA_BUFSIZE,
-+					&dma->rx_dma_phys, GFP_KERNEL);
-+	if (!dma->rx_dma_buf) {
-+		ret = -ENOMEM;
-+		goto err_rx_dma_buf;
-+	}
-+
-+	cfg.src_addr = phy_addr + SPI_POPR;
-+	cfg.dst_addr = phy_addr + SPI_PUSHR;
-+	cfg.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
-+	cfg.dst_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
-+	cfg.src_maxburst = 1;
-+	cfg.dst_maxburst = 1;
-+
-+	cfg.direction = DMA_DEV_TO_MEM;
-+	ret = dmaengine_slave_config(dma->chan_rx, &cfg);
-+	if (ret) {
-+		dev_err(dev, "can't configure rx dma channel\n");
-+		ret = -EINVAL;
-+		goto err_slave_config;
-+	}
-+
-+	cfg.direction = DMA_MEM_TO_DEV;
-+	ret = dmaengine_slave_config(dma->chan_tx, &cfg);
-+	if (ret) {
-+		dev_err(dev, "can't configure tx dma channel\n");
-+		ret = -EINVAL;
-+		goto err_slave_config;
-+	}
-+
-+	dspi->dma = dma;
-+	init_completion(&dma->cmd_tx_complete);
-+	init_completion(&dma->cmd_rx_complete);
-+
-+	return 0;
-+
-+err_slave_config:
-+	devm_kfree(dev, dma->rx_dma_buf);
-+err_rx_dma_buf:
-+	devm_kfree(dev, dma->tx_dma_buf);
-+err_tx_dma_buf:
-+	dma_release_channel(dma->chan_tx);
-+err_tx_channel:
-+	dma_release_channel(dma->chan_rx);
-+
-+	devm_kfree(dev, dma);
-+	dspi->dma = NULL;
-+
-+	return ret;
-+}
-+
-+static void dspi_release_dma(struct fsl_dspi *dspi)
-+{
-+	struct fsl_dspi_dma *dma = dspi->dma;
-+	struct device *dev = &dspi->pdev->dev;
-+
-+	if (dma) {
-+		if (dma->chan_tx) {
-+			dma_unmap_single(dev, dma->tx_dma_phys,
-+					DSPI_DMA_BUFSIZE, DMA_TO_DEVICE);
-+			dma_release_channel(dma->chan_tx);
-+		}
-+
-+		if (dma->chan_rx) {
-+			dma_unmap_single(dev, dma->rx_dma_phys,
-+					DSPI_DMA_BUFSIZE, DMA_FROM_DEVICE);
-+			dma_release_channel(dma->chan_rx);
-+		}
-+	}
-+}
-+
- static void hz_to_spi_baud(char *pbr, char *br, int speed_hz,
- 		unsigned long clkrate)
- {
-@@ -424,6 +709,12 @@ static int dspi_transfer_one_message(struct spi_master *master,
- 			regmap_write(dspi->regmap, SPI_RSER, SPI_RSER_TCFQE);
- 			dspi_tcfq_write(dspi);
- 			break;
-+		case DSPI_DMA_MODE:
-+			regmap_write(dspi->regmap, SPI_RSER,
-+				SPI_RSER_TFFFE | SPI_RSER_TFFFD |
-+				SPI_RSER_RFDFE | SPI_RSER_RFDFD);
-+			status = dspi_dma_xfer(dspi);
-+			goto out;
- 		default:
- 			dev_err(&dspi->pdev->dev, "unsupported trans_mode %u\n",
- 				trans_mode);
-@@ -733,6 +1024,13 @@ static int dspi_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto out_master_put;
- 
-+	if (dspi->devtype_data->trans_mode == DSPI_DMA_MODE) {
-+		if (dspi_request_dma(dspi, res->start)) {
-+			dev_err(&pdev->dev, "can't get dma channels\n");
-+			goto out_clk_put;
-+		}
-+	}
-+
- 	master->max_speed_hz =
- 		clk_get_rate(dspi->clk) / dspi->devtype_data->max_clock_factor;
- 
-@@ -761,6 +1059,7 @@ static int dspi_remove(struct platform_device *pdev)
- 	struct fsl_dspi *dspi = spi_master_get_devdata(master);
- 
- 	/* Disconnect from the SPI framework */
-+	dspi_release_dma(dspi);
- 	clk_disable_unprepare(dspi->clk);
- 	spi_unregister_master(dspi->master);
- 
 -- 
-2.10.2
-
+Best regards,
+Marek Vasut
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

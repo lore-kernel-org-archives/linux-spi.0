@@ -1,68 +1,171 @@
 From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 07/10] spi: fsl-espi: introduce struct fsl_espi_cs
-Date: Sun, 13 Nov 2016 14:38:05 +0100
-Message-ID: <fcce5b10-4433-9ff2-2f17-bc0cf2f0f6b5@gmail.com>
-References: <e1c18c6c-62e3-175e-b2a5-a4ee51d68b59@gmail.com>
+Subject: [PATCH 08/10] spi: fsl-espi: factor out fsl_espi_init_regs
+Date: Sun, 13 Nov 2016 14:40:18 +0100
+Message-ID: <4e79541e-d512-8b66-9692-13d20722c9c0@gmail.com>
+References: <8057df29-f045-74a8-212a-b228995d752d@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <e1c18c6c-62e3-175e-b2a5-a4ee51d68b59-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <8057df29-f045-74a8-212a-b228995d752d-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Very little from struct spi_mpc8xxx_cs is relevant for fsl-espi.
-Therefore replace it with struct fsl_espi_cs.
+The register initialization is the same in fsl_espi_probe and in
+of_fsl_espi_resume. Therefore factor it out into fsl_espi_init_regs.
+
+It was actually a bug that CSMODE_BEF and CSMODE_AFT were not set
+in of_fsl_espi_resume. Seems like nobody ever used values other
+than zero for these parameters.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 110 +++++++++++++++++++++------------------------
+ 1 file changed, 50 insertions(+), 60 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 58314d7..5d84694 100644
+index 5d84694..7a90343 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -93,6 +93,10 @@
+@@ -576,13 +576,58 @@ static size_t fsl_espi_max_message_size(struct spi_device *spi)
+ 	return SPCOM_TRANLEN_MAX;
+ }
  
- #define AUTOSUSPEND_TIMEOUT 2000
- 
-+struct fsl_espi_cs {
-+	u32 hw_mode;
-+};
++static void fsl_espi_init_regs(struct device *dev, bool initial)
++{
++	struct spi_master *master = dev_get_drvdata(dev);
++	struct mpc8xxx_spi *mspi = spi_master_get_devdata(master);
++	struct device_node *nc;
++	u32 csmode, cs, prop;
++	int ret;
 +
- static inline u32 fsl_espi_read_reg(struct mpc8xxx_spi *mspi, int offset)
++	/* SPI controller initializations */
++	fsl_espi_write_reg(mspi, ESPI_SPMODE, 0);
++	fsl_espi_write_reg(mspi, ESPI_SPIM, 0);
++	fsl_espi_write_reg(mspi, ESPI_SPCOM, 0);
++	fsl_espi_write_reg(mspi, ESPI_SPIE, 0xffffffff);
++
++	/* Init eSPI CS mode register */
++	for_each_available_child_of_node(master->dev.of_node, nc) {
++		/* get chip select */
++		ret = of_property_read_u32(nc, "reg", &cs);
++		if (ret || cs >= master->num_chipselect)
++			continue;
++
++		csmode = CSMODE_INIT_VAL;
++
++		/* check if CSBEF is set in device tree */
++		ret = of_property_read_u32(nc, "fsl,csbef", &prop);
++		if (!ret) {
++			csmode &= ~(CSMODE_BEF(0xf));
++			csmode |= CSMODE_BEF(prop);
++		}
++
++		/* check if CSAFT is set in device tree */
++		ret = of_property_read_u32(nc, "fsl,csaft", &prop);
++		if (!ret) {
++			csmode &= ~(CSMODE_AFT(0xf));
++			csmode |= CSMODE_AFT(prop);
++		}
++
++		fsl_espi_write_reg(mspi, ESPI_SPMODEx(cs), csmode);
++
++		if (initial)
++			dev_info(dev, "cs=%u, init_csmode=0x%x\n", cs, csmode);
++	}
++
++	/* Enable SPI interface */
++	fsl_espi_write_reg(mspi, ESPI_SPMODE, SPMODE_INIT_VAL | SPMODE_ENABLE);
++}
++
+ static int fsl_espi_probe(struct device *dev, struct resource *mem,
+ 			  unsigned int irq, unsigned int num_cs)
  {
- 	return ioread32be(mspi->reg_base + offset);
-@@ -280,7 +284,7 @@ static void fsl_espi_setup_transfer(struct spi_device *spi,
- 	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
- 	int bits_per_word = t ? t->bits_per_word : spi->bits_per_word;
- 	u32 pm, hz = t ? t->speed_hz : spi->max_speed_hz;
--	struct spi_mpc8xxx_cs *cs = spi->controller_state;
-+	struct fsl_espi_cs *cs = spi_get_ctldata(spi);
- 	u32 hw_mode_old = cs->hw_mode;
- 
- 	/* mask out bits we are going to set */
-@@ -437,7 +441,7 @@ static int fsl_espi_setup(struct spi_device *spi)
- {
+ 	struct spi_master *master;
  	struct mpc8xxx_spi *mpc8xxx_spi;
- 	u32 loop_mode;
--	struct spi_mpc8xxx_cs *cs = spi_get_ctldata(spi);
-+	struct fsl_espi_cs *cs = spi_get_ctldata(spi);
+-	struct device_node *nc;
+-	u32 regval, csmode, cs, prop;
+ 	int ret;
  
- 	if (!spi->max_speed_hz)
- 		return -EINVAL;
-@@ -483,7 +487,7 @@ static int fsl_espi_setup(struct spi_device *spi)
+ 	master = spi_alloc_master(dev, sizeof(struct mpc8xxx_spi));
+@@ -634,44 +679,7 @@ static int fsl_espi_probe(struct device *dev, struct resource *mem,
+ 	if (ret)
+ 		goto err_probe;
  
- static void fsl_espi_cleanup(struct spi_device *spi)
+-	/* SPI controller initializations */
+-	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPMODE, 0);
+-	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPIM, 0);
+-	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPCOM, 0);
+-	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPIE, 0xffffffff);
+-
+-	/* Init eSPI CS mode register */
+-	for_each_available_child_of_node(master->dev.of_node, nc) {
+-		/* get chip select */
+-		ret = of_property_read_u32(nc, "reg", &cs);
+-		if (ret || cs >= num_cs)
+-			continue;
+-
+-		csmode = CSMODE_INIT_VAL;
+-
+-		/* check if CSBEF is set in device tree */
+-		ret = of_property_read_u32(nc, "fsl,csbef", &prop);
+-		if (!ret) {
+-			csmode &= ~(CSMODE_BEF(0xf));
+-			csmode |= CSMODE_BEF(prop);
+-		}
+-
+-		/* check if CSAFT is set in device tree */
+-		ret = of_property_read_u32(nc, "fsl,csaft", &prop);
+-		if (!ret) {
+-			csmode &= ~(CSMODE_AFT(0xf));
+-			csmode |= CSMODE_AFT(prop);
+-		}
+-
+-		fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPMODEx(cs), csmode);
+-
+-		dev_info(dev, "cs=%u, init_csmode=0x%x\n", cs, csmode);
+-	}
+-
+-	/* Enable SPI interface */
+-	regval = SPMODE_INIT_VAL | SPMODE_ENABLE;
+-
+-	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPMODE, regval);
++	fsl_espi_init_regs(dev, true);
+ 
+ 	pm_runtime_set_autosuspend_delay(dev, AUTOSUSPEND_TIMEOUT);
+ 	pm_runtime_use_autosuspend(dev);
+@@ -771,27 +779,9 @@ static int of_fsl_espi_suspend(struct device *dev)
+ static int of_fsl_espi_resume(struct device *dev)
  {
--	struct spi_mpc8xxx_cs *cs = spi_get_ctldata(spi);
-+	struct fsl_espi_cs *cs = spi_get_ctldata(spi);
+ 	struct spi_master *master = dev_get_drvdata(dev);
+-	struct mpc8xxx_spi *mpc8xxx_spi;
+-	u32 regval;
+-	int i, ret;
+-
+-	mpc8xxx_spi = spi_master_get_devdata(master);
+-
+-	/* SPI controller initializations */
+-	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPMODE, 0);
+-	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPIM, 0);
+-	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPCOM, 0);
+-	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPIE, 0xffffffff);
+-
+-	/* Init eSPI CS mode register */
+-	for (i = 0; i < master->num_chipselect; i++)
+-		fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPMODEx(i),
+-				      CSMODE_INIT_VAL);
+-
+-	/* Enable SPI interface */
+-	regval = SPMODE_INIT_VAL | SPMODE_ENABLE;
++	int ret;
  
- 	kfree(cs);
- 	spi_set_ctldata(spi, NULL);
+-	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPMODE, regval);
++	fsl_espi_init_regs(dev, false);
+ 
+ 	ret = pm_runtime_force_resume(dev);
+ 	if (ret < 0)
 -- 
 2.10.1
 

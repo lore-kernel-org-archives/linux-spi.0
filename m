@@ -1,168 +1,135 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: fsl-espi: add support for ESPI RXSKIP mode" to the spi tree
-Date: Fri, 11 Nov 2016 16:01:34 +0000
-Message-ID: <E1c5EGk-0003pI-Mc@finisterre>
-References: <0e96f53c-5e83-77bd-a57a-2e576ca20019@gmail.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 03/10] spi: fsl-espi: remove remaining usage of struct
+ fsl_spi_platform_data
+Date: Sun, 13 Nov 2016 14:36:39 +0100
+Message-ID: <75bd88e0-e1bf-9729-6cd0-e88633d940e6@gmail.com>
+References: <882d05f1-a963-c03a-38ae-2dd701f561a6@gmail.com>
+ <46d0ab77-d645-1db3-cca4-99b1b04d599c@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <0e96f53c-5e83-77bd-a57a-2e576ca20019-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <46d0ab77-d645-1db3-cca4-99b1b04d599c-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+Use master->num_chipselect directly instead of pdata->max_chipselect.
+In this context let of_fsl_espi_get_chipselects return max_chipselect.
 
-   spi: fsl-espi: add support for ESPI RXSKIP mode
-
-has been applied to the spi tree at
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From aca75157d9beb7b171a178446ecdb4d047b9f934 Mon Sep 17 00:00:00 2001
-From: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Wed, 9 Nov 2016 22:58:01 +0100
-Subject: [PATCH] spi: fsl-espi: add support for ESPI RXSKIP mode
-
-This patch adds support for ESPI RXSKIP mode. This mode is optimized
-for flash reads:
-- sends a number of bytes and then reads a number of bytes
-- shifts out zeros automatically when reading
-
-Supporting RXSKIP mode is a prerequisite for supporting dual output
-read mode.
+This change allows us to get rid of struct fsl_spi_platform_data
+completely in the fsl-espi driver.
 
 Signed-off-by: Heiner Kallweit <hkallweit1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-fsl-espi.c | 51 ++++++++++++++++++++++++++++++++++++++++++----
- drivers/spi/spi-fsl-lib.h  |  1 +
- 2 files changed, 48 insertions(+), 4 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 26 +++++++++++---------------
+ 1 file changed, 11 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index edb524f831a3..9ccbfbc75933 100644
+index e5d7164..29cd4e0 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -150,7 +150,8 @@ static void fsl_espi_copy_to_buf(struct spi_message *m,
- 	list_for_each_entry(t, &m->transfers, transfer_list) {
- 		if (t->tx_buf)
- 			fsl_espi_memcpy_swab(buf, t->tx_buf, m, t);
--		else
-+		/* In RXSKIP mode controller shifts out zeros internally */
-+		else if (!mspi->rxskip)
- 			memset(buf, 0, t->len);
- 		buf += t->len;
- 	}
-@@ -203,6 +204,37 @@ static int fsl_espi_check_message(struct spi_message *m)
- 	return 0;
+@@ -573,9 +573,8 @@ static size_t fsl_espi_max_message_size(struct spi_device *spi)
  }
  
-+static unsigned int fsl_espi_check_rxskip_mode(struct spi_message *m)
-+{
-+	struct spi_transfer *t;
-+	unsigned int i = 0, rxskip = 0;
-+
-+	/*
-+	 * prerequisites for ESPI rxskip mode:
-+	 * - message has two transfers
-+	 * - first transfer is a write and second is a read
-+	 *
-+	 * In addition the current low-level transfer mechanism requires
-+	 * that the rxskip bytes fit into the TX FIFO. Else the transfer
-+	 * would hang because after the first FSL_ESPI_FIFO_SIZE bytes
-+	 * the TX FIFO isn't re-filled.
-+	 */
-+	list_for_each_entry(t, &m->transfers, transfer_list) {
-+		if (i == 0) {
-+			if (!t->tx_buf || t->rx_buf ||
-+			    t->len > FSL_ESPI_FIFO_SIZE)
-+				return 0;
-+			rxskip = t->len;
-+		} else if (i == 1) {
-+			if (t->tx_buf || !t->rx_buf)
-+				return 0;
-+		}
-+		i++;
-+	}
-+
-+	return i == 2 ? rxskip : 0;
-+}
-+
- static void fsl_espi_fill_tx_fifo(struct mpc8xxx_spi *mspi, u32 events)
+ static int fsl_espi_probe(struct device *dev, struct resource *mem,
+-			  unsigned int irq)
++			  unsigned int irq, unsigned int num_cs)
  {
- 	u32 tx_fifo_avail;
-@@ -281,7 +313,7 @@ static void fsl_espi_setup_transfer(struct spi_device *spi,
- static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
+-	struct fsl_spi_platform_data *pdata = dev_get_platdata(dev);
+ 	struct spi_master *master;
+ 	struct mpc8xxx_spi *mpc8xxx_spi;
+ 	struct device_node *nc;
+@@ -597,6 +596,7 @@ static int fsl_espi_probe(struct device *dev, struct resource *mem,
+ 	master->transfer_one_message = fsl_espi_do_one_msg;
+ 	master->auto_runtime_pm = true;
+ 	master->max_message_size = fsl_espi_max_message_size;
++	master->num_chipselect = num_cs;
+ 
+ 	mpc8xxx_spi = spi_master_get_devdata(master);
+ 	spin_lock_init(&mpc8xxx_spi->lock);
+@@ -636,7 +636,7 @@ static int fsl_espi_probe(struct device *dev, struct resource *mem,
+ 	for_each_available_child_of_node(master->dev.of_node, nc) {
+ 		/* get chip select */
+ 		ret = of_property_read_u32(nc, "reg", &cs);
+-		if (ret || cs >= pdata->max_chipselect)
++		if (ret || cs >= num_cs)
+ 			continue;
+ 
+ 		csmode = CSMODE_INIT_VAL;
+@@ -695,19 +695,16 @@ static int fsl_espi_probe(struct device *dev, struct resource *mem,
+ static int of_fsl_espi_get_chipselects(struct device *dev)
  {
- 	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
--	u32 mask;
-+	u32 mask, spcom;
+ 	struct device_node *np = dev->of_node;
+-	struct fsl_spi_platform_data *pdata = dev_get_platdata(dev);
+ 	u32 num_cs;
  	int ret;
  
- 	mpc8xxx_spi->rx_len = t->len;
-@@ -293,8 +325,18 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
- 	reinit_completion(&mpc8xxx_spi->done);
+ 	ret = of_property_read_u32(np, "fsl,espi-num-chipselects", &num_cs);
+ 	if (ret) {
+ 		dev_err(dev, "No 'fsl,espi-num-chipselects' property\n");
+-		return -EINVAL;
++		return 0;
+ 	}
  
- 	/* Set SPCOM[CS] and SPCOM[TRANLEN] field */
--	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPCOM,
--		(SPCOM_CS(spi->chip_select) | SPCOM_TRANLEN(t->len - 1)));
-+	spcom = SPCOM_CS(spi->chip_select);
-+	spcom |= SPCOM_TRANLEN(t->len - 1);
-+
-+	/* configure RXSKIP mode */
-+	if (mpc8xxx_spi->rxskip) {
-+		spcom |= SPCOM_RXSKIP(mpc8xxx_spi->rxskip);
-+		mpc8xxx_spi->tx_len = mpc8xxx_spi->rxskip;
-+		mpc8xxx_spi->rx_len = t->len - mpc8xxx_spi->rxskip;
-+		mpc8xxx_spi->rx = t->rx_buf + mpc8xxx_spi->rxskip;
-+	}
-+
-+	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPCOM, spcom);
+-	pdata->max_chipselect = num_cs;
+-
+-	return 0;
++	return num_cs;
+ }
  
- 	/* enable interrupts */
- 	mask = SPIM_DON;
-@@ -326,6 +368,7 @@ static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans)
- 	struct spi_device *spi = m->spi;
+ static int of_fsl_espi_probe(struct platform_device *ofdev)
+@@ -715,16 +712,16 @@ static int of_fsl_espi_probe(struct platform_device *ofdev)
+ 	struct device *dev = &ofdev->dev;
+ 	struct device_node *np = ofdev->dev.of_node;
+ 	struct resource mem;
+-	unsigned int irq;
++	unsigned int irq, num_cs;
  	int ret;
  
-+	mspi->rxskip = fsl_espi_check_rxskip_mode(m);
- 	fsl_espi_copy_to_buf(m, mspi);
- 	fsl_espi_setup_transfer(spi, trans);
+ 	ret = of_mpc8xxx_spi_probe(ofdev);
+ 	if (ret)
+ 		return ret;
  
-diff --git a/drivers/spi/spi-fsl-lib.h b/drivers/spi/spi-fsl-lib.h
-index 35a7a1730d0c..3951322265d4 100644
---- a/drivers/spi/spi-fsl-lib.h
-+++ b/drivers/spi/spi-fsl-lib.h
-@@ -31,6 +31,7 @@ struct mpc8xxx_spi {
- #if IS_ENABLED(CONFIG_SPI_FSL_ESPI)
- 	unsigned int rx_len;
- 	unsigned int tx_len;
-+	unsigned int rxskip;
- 	u8 *local_buf;
- 	spinlock_t lock;
- #endif
+-	ret = of_fsl_espi_get_chipselects(dev);
+-	if (ret)
+-		return ret;
++	num_cs = of_fsl_espi_get_chipselects(dev);
++	if (!num_cs)
++		return -EINVAL;
+ 
+ 	ret = of_address_to_resource(np, 0, &mem);
+ 	if (ret)
+@@ -734,7 +731,7 @@ static int of_fsl_espi_probe(struct platform_device *ofdev)
+ 	if (!irq)
+ 		return -EINVAL;
+ 
+-	return fsl_espi_probe(dev, &mem, irq);
++	return fsl_espi_probe(dev, &mem, irq, num_cs);
+ }
+ 
+ static int of_fsl_espi_remove(struct platform_device *dev)
+@@ -765,7 +762,6 @@ static int of_fsl_espi_suspend(struct device *dev)
+ 
+ static int of_fsl_espi_resume(struct device *dev)
+ {
+-	struct fsl_spi_platform_data *pdata = dev_get_platdata(dev);
+ 	struct spi_master *master = dev_get_drvdata(dev);
+ 	struct mpc8xxx_spi *mpc8xxx_spi;
+ 	u32 regval;
+@@ -780,7 +776,7 @@ static int of_fsl_espi_resume(struct device *dev)
+ 	fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPIE, 0xffffffff);
+ 
+ 	/* Init eSPI CS mode register */
+-	for (i = 0; i < pdata->max_chipselect; i++)
++	for (i = 0; i < master->num_chipselect; i++)
+ 		fsl_espi_write_reg(mpc8xxx_spi, ESPI_SPMODEx(i),
+ 				      CSMODE_INIT_VAL);
+ 
 -- 
-2.10.2
+2.10.1
+
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
